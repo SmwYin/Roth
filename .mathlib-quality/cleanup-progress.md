@@ -13,7 +13,7 @@ Started: 2026-10-14 (America/Chicago).
 
 ## Current status
 
-Build/tool setup completed; publication awaits Git authentication. The first file audit
+Build/tool setup completed; GitHub browser authentication and branch publication succeeded. The first file audit
 (`Roth/HasseDeriv.lean`, 26 declarations) is in progress. No completed declaration checkpoints yet.
 
 The first `lake build` installed Lean v4.34.0 and fetched the pinned dependencies.
@@ -22,13 +22,16 @@ precompiled cache. After cache installation, `lake build` passed with exit code 
 `lake build Roth.LeanEval` also passed with exit code 0 (2,585 jobs), covering the
 verification module absent from root imports.
 
-GitHub publication is blocked pending local Git authentication. The first push returned:
-`fatal: could not read Username for 'https://github.com': Device not configured`.
-The connected GitHub app reports that the user has repository write access, but the actual
-branch-creation API returned HTTP 403, `Resource not accessible by integration`.
-Thus repository account permissions do not establish the app's own write permissions.
-The user has Terminal authentication instructions; no credentials will be stored here.
-The connected profile supplies the commit author identity, so this need not be guessed.
+GitHub CLI 2.102.0 is installed at `~/.local/bin/gh` (official macOS arm64 release,
+SHA-256 verified). Browser authentication succeeded as `rtakloo`; Git uses HTTPS credentials
+managed by GitHub CLI. Initial setup commit `0d7c74c` was pushed successfully to
+[`ramin-cleanup`](https://github.com/SmwYin/Roth/tree/ramin-cleanup).
+The earlier HTTPS credential failure and connected-app HTTP 403 are resolved by this local
+CLI authentication. No token is stored in this repository.
+
+The active file audit and declaration results are recorded in
+[`cleanup/HasseDeriv.md`](cleanup/HasseDeriv.md). Each completed declaration's report and
+source change are committed and pushed together after validation.
 
 ## Installed tooling and verification
 
@@ -42,6 +45,7 @@ The connected profile supplies the commit author identity, so this need not be g
 | uv | 0.13.1 | Installed; successfully installed the LSP tool and Python runtime |
 | Python for LSP | 3.12.15, uv-managed | MCP client probe runs |
 | lean-lsp-mcp | 0.31.0 | `--version` and MCP initialization/tool discovery passed (22 tools); complete diagnostics on `Roth/Box.lean` passed: no errors, existing linter warnings |
+| GitHub CLI | 2.102.0 | Browser authentication and branch push succeeded |
 | ask_chatgpt_math | Skipped | Optional, as authorized |
 
 The Lean LSP server is configured in `~/.codex/config.toml` using its absolute executable
