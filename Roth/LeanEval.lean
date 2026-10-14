@@ -1,0 +1,60 @@
+import Roth.Main
+
+/-! The exact statement from `LeanEval/NumberTheory/ThueSiegelRoth.lean`
+(https://github.com/leanprover/lean-eval/blob/main/LeanEval/NumberTheory/ThueSiegelRoth.lean),
+proved using `Roth.roth`. -/
+
+namespace LeanEval.NumberTheory.ThueSiegelRothProblem
+
+open Real
+
+def IsDiophantine (x : ℝ) : Prop :=
+  ∀ ε : ℝ, 0 < ε → ∃ C : ℝ, 0 < C ∧
+    ∀ (p q : ℤ), 0 < q → C / (q : ℝ) ^ ((2 : ℝ) + ε) < |x - (p : ℝ) / (q : ℝ)|
+
+/-- For irrational `x`, the LeanEval bounds are equivalent to the exponent bound in `Roth.roth`. -/
+theorem isDiophantine_iff {x : ℝ} (hx : Irrational x) :
+    IsDiophantine x ↔ ∀ {κ : ℝ}, (Roth.approxSet x κ).Infinite → κ ≤ 2 := by
+  constructor
+  · intro h κ hinf
+    by_contra! hκ
+    obtain ⟨C, hC, hbound⟩ := h ((κ - 2) / 2) (by linarith)
+    obtain ⟨Q, hQ⟩ := Roth.eventually_div_rpow_lt (one_div_pos.mpr hC)
+      (by linarith : 2 + (κ - 2) / 2 < κ)
+    obtain ⟨⟨p, q⟩, hpq, hq⟩ :=
+      (hinf.sdiff (Roth.approxSet_den_le_finite x κ Q)).nonempty
+    have hQq : Q < q := lt_of_not_ge fun h ↦ hq ⟨hpq, h⟩
+    have hgap : 1 / (q : ℝ) ^ κ < C / (q : ℝ) ^ (2 + (κ - 2) / 2) := by
+      simpa [div_eq_mul_inv, ← mul_assoc, hC.ne'] using
+        mul_lt_mul_of_pos_left (hQ q hQq) hC
+    exact (hpq.2.trans hgap).not_gt (by simpa using hbound p q (by exact_mod_cast hpq.1))
+  · intro h ε hε
+    have hs : (Roth.approxSet x (2 + ε)).Finite := Set.not_infinite.mp fun hinf ↦
+      (by linarith : ¬ (2 + ε ≤ 2)) (h hinf)
+    let f : ℤ × ℕ → ℝ := fun a ↦ |x - (a.1 : ℝ) / a.2| * (a.2 : ℝ) ^ (2 + ε)
+    obtain ⟨a, ha, hmin⟩ := Set.exists_min_image _ f (hs.insert (0, 1))
+      (Set.insert_nonempty (0, 1) _)
+    have haq : 0 < a.2 := by
+      rcases ha with rfl | ha <;> first | exact ha.1 | norm_num
+    have hfa : 0 < f a := mul_pos
+      (abs_pos.mpr (sub_ne_zero.mpr (by simpa using hx.ne_rational a.1 a.2)))
+      (rpow_pos_of_pos (by positivity) _)
+    refine ⟨min (1 / 2) (f a / 2), by positivity, fun p q hq ↦ ?_⟩
+    lift q to ℕ using hq.le
+    have hq' : 0 < (q : ℝ) ^ (2 + ε) := rpow_pos_of_pos (by exact_mod_cast hq) _
+    rw [Int.cast_natCast, div_lt_iff₀ hq']
+    by_cases hmem : (p, q) ∈ Roth.approxSet x (2 + ε)
+    · exact (min_le_right _ _).trans_lt
+        ((half_lt_self hfa).trans_le (hmin _ (Set.mem_insert_of_mem _ hmem)))
+    · apply ((min_le_left _ _).trans_lt (by norm_num : (1 : ℝ) / 2 < 1)).trans_le
+      exact le_of_not_gt fun h ↦ hmem ⟨by exact_mod_cast hq, (lt_div_iff₀ hq').mpr h⟩
+
+/-- **Thue–Siegel–Roth theorem** (Klaus Roth, 1955). Every irrational
+algebraic real is Diophantine: its irrationality measure is at most
+`2`. -/
+theorem thueSiegelRoth (x : ℝ) (_h_irr : Irrational x)
+    (_h_alg : IsAlgebraic ℤ x) : IsDiophantine x := by
+  exact (isDiophantine_iff _h_irr).mpr
+    (Roth.roth _h_irr ((IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).mp _h_alg))
+
+end LeanEval.NumberTheory.ThueSiegelRothProblem
