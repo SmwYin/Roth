@@ -72,7 +72,7 @@ Proof-lambda arrows and packing are handled at the corresponding sequential decl
 
 ## Phase 4 — sequential declaration results
 
-Completed 13/14 dedicated declaration workers. Each completed declaration is fully validated,
+Completed 14/14 dedicated declaration workers. Each completed declaration is fully validated,
 committed and pushed before the next source edit.
 
 ## Concrete API proposal prepared for user decision
@@ -195,3 +195,11 @@ All target gates pass; [audit](Box-weight_le_degree_div.md).
 Publication verification: full `lake build` session 46898 exited 0 (2586 jobs;
 `/private/tmp/roth-box-d13-full.log`); separate `lake build Roth.LeanEval` session 24692
 exited 0 (2585 jobs; `/private/tmp/roth-box-d13-leaneval.log`). All affected dependents pass.
+
+Declaration 14: `Roth.weight_mapDomain`, 6 → 4 declaration lines plus scoped omission.
+Both unused instances removed; generic Mathlib sum theorem replaces manual reindexing.
+All target gates pass; [audit](Box-weight_mapDomain.md). Only header warning remains.
+
+Publication verification: full `lake build` session 56521 exited 0 (2586 jobs;
+`/private/tmp/roth-box-d14-full.log`); separate `lake build Roth.LeanEval` session 76596
+exited 0 (2585 jobs; `/private/tmp/roth-box-d14-leaneval.log`). All affected dependents pass.

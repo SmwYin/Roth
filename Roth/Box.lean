@@ -124,14 +124,13 @@ theorem weight_le_degree_div {r : σ → ℕ} {m : ℕ} (hm : 0 < m) (hr : ∀ j
   gcongr with j
   exact hr j
 
+omit [DecidableEq σ] in
 /-- Weights are invariant under an injective change of variables `f : σ → τ`.
 Source: §4, Lemma 4-2 (embedding a polynomial in fewer variables does not change the weights
 of its monomials). -/
-theorem weight_mapDomain {τ : Type*} [Fintype τ] [DecidableEq τ] {f : σ → τ}
-    (hf : Function.Injective f) (r : τ → ℕ) (d : σ →₀ ℕ) :
-    weight r (d.mapDomain f) = weight (r ∘ f) d := by
-  refine (Fintype.sum_of_injective f hf _ _ (fun i hi => ?_) fun i => ?_).symm
-  · simp [Finsupp.mapDomain_of_notMem_range _ _ hi]
-  · simp [Finsupp.mapDomain_apply_of_injective hf]
+theorem weight_mapDomain {τ : Type*} [Fintype τ] {f : σ → τ} (hf : Function.Injective f) (r : τ → ℕ)
+    (d : σ →₀ ℕ) : weight r (d.mapDomain f) = weight (r ∘ f) d := by
+  simpa [Finsupp.sum_fintype, weight] using
+    Finsupp.sum_mapDomain_index_inj (s := d) (h := fun j n ↦ (n : ℝ) / r j) hf
 
 end Roth
