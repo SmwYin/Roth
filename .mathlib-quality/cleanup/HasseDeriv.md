@@ -1,8 +1,8 @@
 # HasseDeriv cleanup audit
 
-Status: 18 of 26 declarations audited and validated.
-Active after the user's resumption: declaration eighteen is complete; next is
-`degreeOf_hasseDeriv_le` (nineteenth). Continue sequentially through this file and the
+Status: 19 of 26 declarations audited and validated.
+Active after the user's resumption: declaration nineteen is complete; next is
+`hasseDeriv_eq_zero_of_degreeOf_lt` (twentieth). Continue sequentially through this file and the
 remaining full-project queue.
 `hasseCoeff`, `hasseCoeff_eq_zero_iff`, and `hasseCoeff_eq_prod` are reviewed with their related optional
 argument-type generalization deferred for approval.
@@ -67,7 +67,7 @@ Body line counts include a same-line term after `:=`; names using existing camel
 | C.16 | `hasseDeriv_hasseDeriv_of_disjoint` (theorem) | 188–192 | 4 | Full audit complete; single-use coefficient-equals-one fact inlined in composition rewrite; exact statement retained |
 | C.17 | `hasseCoeff_mul_succ` (lemma) | 194–218 | 23 | Full audit complete; two-line coefficient-composition specialization replaces 22-line product-erasure proof; exact statement preserved |
 | C.18 | `pderiv_hasseDeriv` (theorem) | 223–231 | 8 | Reviewed with optional API deferral; direct ordered coefficient/cast rewrites remove local cast identity and arithmetic normalization |
-| C.19 | `degreeOf_hasseDeriv_le` (theorem) | 236–240 | 4 | naming: descriptive, no forbidden pattern; public docstring present (OK); public: downstream users (OK); lambda arrows → ↦ |
+| C.19 | `degreeOf_hasseDeriv_le` (theorem) | 236–240 | 4 | Full original-theorem cleanup complete; lambda arrow and dot notation improved; separate stronger-bound proposal surfaced for user decision |
 | C.20 | `hasseDeriv_eq_zero_of_degreeOf_lt` (theorem) | 245–250 | 5 | naming: descriptive, no forbidden pattern; public docstring present (OK); public: downstream users (OK); lambda arrows → ↦; scan single-use have |
 | C.21 | `hasseDeriv_monomial_mul` (lemma) | 252–266 | 14 | naming: descriptive, no forbidden pattern; private: no docstring (OK); private (OK); lambda arrows → ↦; inspect terminal simp only; scan single-use have; assess descriptive helper naming |
 | C.22 | `hasseDeriv_mul_of_degreeOf_eq_zero` (theorem) | 272–277 | 5 | naming: descriptive, no forbidden pattern; public docstring present (OK); public: downstream users (OK); lambda arrows → ↦; scan single-use have |
@@ -326,5 +326,17 @@ No file-level edits needed beyond A.1, deferred because ownership/licensing is u
     `/private/tmp/roth-pderiv_hasseDeriv-leaneval.log`.
     Optional abstract Hasse–Schmidt or bundled composition APIs would change the
     interface; they remain proposals, not applied changes or blockers.
+
+19. `MvPolynomial.degreeOf_hasseDeriv_le`: dedicated worker complete; see
+    [the full declaration audit](HasseDeriv-degreeOf_hasseDeriv_le.md). Standardized
+    the lambda arrow and expressed the same degree comparison with `.trans'`.
+    Signature and documentation are unchanged. Isolated proof/type/standard-axiom
+    checks, module build, and complete LSP passed. Full `lake build` (2586 jobs)
+    and separate `lake build Roth.LeanEval` (2585 jobs) exited 0; logs
+    `/private/tmp/roth-degreeOf_hasseDeriv_le-build.log` and
+    `/private/tmp/roth-degreeOf_hasseDeriv_le-leaneval.log`.
+    A scratch proof verifies the stronger subtraction bound as a potential separate
+    `degreeOf_hasseDeriv_le_sub` theorem. It was surfaced for user decision rather
+    than automatically deferred; existing theorem and four callers remain unchanged.
 
 Phases 5a, 5b, 6, 6.5 (independent simplify review), 6.6 (buzz profiling), and 7 remain pending until every declaration is processed. No claim of file completion is made.

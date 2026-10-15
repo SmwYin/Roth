@@ -10,23 +10,26 @@ Started: 2026-10-14 (America/Chicago).
 - Preserve mathematical meaning, theorem contracts, and the pinned Lean/mathlib versions.
 - Validate, commit, and push each completed declaration cleanup before proceeding.
 - No pushes to `main`, force pushes, or merges.
-- User-approved deferral policy (2026-10-15): record proposed changes that need user
-  input and why approval is needed, leave them unapplied, and continue independent
-  cleanup in declaration order. Mark those declarations reviewed with deferral.
-  Required system approvals remain mandatory.
+- Approval policy updated 2026-10-15 after phone resumption: surface concrete,
+  warranted changes needing user input promptly for a decision rather than
+  automatically deferring them. Prepare reviewable evidence and continue independent
+  authorized cleanup while an answer is pending. Substantial definition, statement,
+  or project-structure changes still need explicit approval before application.
+  Earlier deferred proposals will be reconsidered during the relevant file review;
+  speculative future APIs do not become blockers. Required system approvals remain mandatory.
 
 ## Current status
 
 Build/tool setup completed; GitHub browser authentication and branch publication succeeded. The first file audit
-(`Roth/HasseDeriv.lean`, 26 declarations) is in progress. The first eighteen declarations,
-through `MvPolynomial.pderiv_hasseDeriv`, have completed their audits and
-validation; 18 of 264 declarations reviewed. Optional API proposals are recorded
+(`Roth/HasseDeriv.lean`, 26 declarations) is in progress. The first nineteen declarations,
+through `MvPolynomial.degreeOf_hasseDeriv_le`, have completed their audits and
+validation; 19 of 264 declarations reviewed. Optional API proposals are recorded
 below and remain unapplied. File-level final
 review and profiling remain pending.
 
 Cleanup resumed: the user revoked the controlling-session handover hold. The
-fully validated eighteenth checkpoint is complete; next is
-`degreeOf_hasseDeriv_le` (declaration 19) in `Roth/HasseDeriv.lean`.
+fully validated nineteenth checkpoint is complete; next is
+`hasseDeriv_eq_zero_of_degreeOf_lt` (declaration 20) in `Roth/HasseDeriv.lean`.
 Continue sequential declaration validation, commit, and push through
 every remaining file in the inventory order, without waiting at file boundaries.
 Each file still requires final independent review, profiling, and a full build.
@@ -88,7 +91,7 @@ Files will be processed in dependency order; declarations within each file are s
 
 | File | Initial lines | Status |
 | --- | ---: | --- |
-| `Roth/HasseDeriv.lean` | 329 | In progress: 18/26 declarations reviewed; next `degreeOf_hasseDeriv_le` |
+| `Roth/HasseDeriv.lean` | 329 | In progress: 19/26 declarations reviewed; next `hasseDeriv_eq_zero_of_degreeOf_lt` |
 | `Roth/Box.lean` | 128 | Awaiting cleanup |
 | `Roth/Wronskian.lean` | 271 | Awaiting cleanup |
 | `Roth/Taylor.lean` | 239 | Awaiting cleanup |
@@ -128,6 +131,8 @@ Files will be processed in dependency order; declarations within each file are s
 
 | `MvPolynomial.pderiv_hasseDeriv` (reviewed with optional API deferral) | Replaced cast bookkeeping and arithmetic normalization with direct ordered rewrites, reducing seven proof lines to four | Isolated proof/type/standard-axiom checks, module build, complete LSP, full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-pderiv_hasseDeriv.md) |
 
+| `MvPolynomial.degreeOf_hasseDeriv_le` | Standardized lambda arrow and used `.trans'` for the degree comparison; unchanged statement | Isolated proof/type/standard-axiom checks, module build, complete LSP, full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-degreeOf_hasseDeriv_le.md) |
+
 ## Validation and deferrals
 
 - `lake exe cache get`: exit 0; 8,908 cached dependency files downloaded/decompressed.
@@ -151,6 +156,9 @@ Files will be processed in dependency order; declarations within each file are s
 - Eighteenth declaration: module, complete LSP, proof/type/axioms and both full
   dependent builds passed (2586 and 2585 jobs). Optional bundled/abstract Hasse API
   suggestions remain unapplied; no statement or definition changed.
+- Nineteenth declaration: all required declaration and dependent gates passed.
+  A separate stronger bound, `degreeOf j (hasseDeriv d P) ≤ degreeOf j P - d j`,
+  compiled in a scratch proof and was surfaced for user decision. It has not been added.
 - File-level profiling and final project verification remain pending.
 - Sixteenth declaration: proof/type/axioms, module/direct-client LSP, full build
   (2,586 jobs), and separate LeanEval build (2,585 jobs) passed. The three-line proof

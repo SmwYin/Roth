@@ -206,9 +206,9 @@ theorem pderiv_hasseDeriv (j : σ) (d : σ →₀ ℕ) (P : MvPolynomial σ R) :
 Source: §2, proof of Lemma 2. -/
 theorem degreeOf_hasseDeriv_le (j : σ) (d : σ →₀ ℕ) (P : MvPolynomial σ R) :
     degreeOf j (hasseDeriv d P) ≤ degreeOf j P := by
-  refine degreeOf_le_iff.2 fun m hm => ?_
+  refine degreeOf_le_iff.2 fun m hm ↦ ?_
   rw [mem_support_iff, coeff_hasseDeriv] at hm
-  exact le_trans (by simp) (monomial_le_degreeOf j (mem_support_iff.2 (right_ne_zero_of_mul hm)))
+  exact (monomial_le_degreeOf j (mem_support_iff.2 (right_ne_zero_of_mul hm))).trans' (by simp)
 
 /-- `Δ_d P = 0` as soon as `d j` exceeds the degree of `P` in some variable `j`.
 
