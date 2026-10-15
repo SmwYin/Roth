@@ -35,7 +35,7 @@ Every public declaration has an existing docstring, preserved. Private helpers h
 |---|---|---|---|---|
 | 1 | `wronskianMatrix` | 54–55 | 2 | validated; [audit](Wronskian-wronskianMatrix.md) |
 | 2 | `wronskian` | 58–58 | 1 | validated; [audit](Wronskian-wronskian.md) |
-| 3 | `wronskian_eq_zero_of_not_linearIndependent` | 63–70 | 8 | pending |
+| 3 | `wronskian_eq_zero_of_not_linearIndependent` | 63–70 | 8 | validated; [audit](Wronskian-wronskian_eq_zero_of_not_linearIndependent.md) |
 | 4 | `det_choose_eq` | 77–92 | 16 | pending |
 | 5 | `sum_range_card_le_sum` | 94–104 | 11 | pending |
 | 6 | `coeff_prod_of_natDegree_le'` | 106–117 | 12 | pending |
@@ -56,3 +56,7 @@ Every public declaration has an existing docstring, preserved. Private helpers h
 ## Declaration 2 checkpoint
 
 `wronskian`: Definition already minimal, retained unchanged; complete dedicated audit and definitional equality/type checks passed. All worker gates pass; full `lake build` session73364 and separate `lake build Roth.LeanEval` session97956 exited0. Logs `/private/tmp/roth-wronskian-d2-full.log` and `...-leaneval.log`.
+
+## Declaration 3 checkpoint
+
+`wronskian_eq_zero_of_not_linearIndependent`: Packed signature, normalized two lambdas and removed redundant Nat ascription; direct determinant proof and contract preserved,8lines retained. All worker gates pass; full `lake build` session22706 and separate `lake build Roth.LeanEval` session1146 exited0. Logs `/private/tmp/roth-wronskian-d3-full.log` and `...-leaneval.log`.

@@ -60,14 +60,14 @@ noncomputable def wronskian (φ : Fin l → K[X]) : K[X] := (wronskianMatrix φ)
 /-- A linearly dependent family has vanishing Wronskian; this holds over any field.
 Source: §2, first lemma, easy direction ("Linear dependence gives a nontrivial constant linear
 relation between the columns, so the determinant vanishes"). -/
-theorem wronskian_eq_zero_of_not_linearIndependent {φ : Fin l → K[X]}
-    (h : ¬ LinearIndependent K φ) : wronskian φ = 0 := by
+theorem wronskian_eq_zero_of_not_linearIndependent {φ : Fin l → K[X]} (h : ¬ LinearIndependent K φ)
+    : wronskian φ = 0 := by
   obtain ⟨g, hg, ν₀, hν₀⟩ := Fintype.not_linearIndependent_iff.1 h
-  refine Matrix.exists_mulVec_eq_zero_iff.1 ⟨fun ν => C (g ν), fun h0 => hν₀ ?_, ?_⟩
+  refine Matrix.exists_mulVec_eq_zero_iff.1 ⟨fun ν ↦ C (g ν), fun h0 ↦ hν₀ ?_, ?_⟩
   · simpa using congrFun h0 ν₀
   · ext1 μ
     simpa [wronskianMatrix, Matrix.mulVec, dotProduct, ← smul_eq_C_mul, mul_comm]
-      using congrArg (hasseDeriv (μ : ℕ)) hg
+      using congrArg (hasseDeriv μ) hg
 
 /-- The determinant of the binomial matrix `(d ν choose μ)_{μ, ν}` is the Vandermonde product
 `∏_{i<j} (d j - d i)` times `∏ μ, (μ!)⁻¹`.
