@@ -31,7 +31,7 @@ PASS-THROUGH. Actual profiling: all 25 retained declarations under 1000ms, maxim
 See [final-phase report](cleanup/HasseDeriv-final.md) for evidence and limitations.
 
 Cleanup is active. Current file: `Roth/Box.lean`, handled by a fresh file worker.
-Box declaration 10/14 has completed its audit; overall 36/264 original declarations reviewed.
+Box declaration 11/14 has completed its audit; overall 37/264 original declarations reviewed.
 Continue sequential declaration validation, commit, and push through every remaining
 file in inventory order without waiting at file boundaries. Each file requires final
 independent review, profiling, and a full build. The project remains incomplete.
@@ -97,7 +97,7 @@ Files will be processed in dependency order; declarations within each file are s
 | File | Initial lines | Status |
 | --- | ---: | --- |
 | `Roth/HasseDeriv.lean` | 329 | All cleanup phases complete; 26/26 original declarations reviewed; copyright/license metadata unresolved |
-| `Roth/Box.lean` | 128 | In progress; 10/14 declarations reviewed |
+| `Roth/Box.lean` | 128 | In progress; 11/14 declarations reviewed |
 | `Roth/Wronskian.lean` | 271 | Awaiting cleanup |
 | `Roth/Taylor.lean` | 239 | Awaiting cleanup |
 | `Roth/CoeffNorm.lean` | 320 | Awaiting cleanup |
@@ -371,3 +371,15 @@ proof retained. All target gates pass. [Declaration audit](cleanup/Box-weight_si
 Publication verification: full `lake build` session 41056 exited 0 (2586 jobs;
 `/private/tmp/roth-box-d10-full.log`); separate `lake build Roth.LeanEval` session 58453
 exited 0 (2585 jobs; `/private/tmp/roth-box-d10-leaneval.log`). All affected dependents pass.
+
+## Box declaration 11 checkpoint
+
+`Roth.weight_le_card`: removed approved unused positivity hr and DecidableEq;
+conclusion retained, proof lambda normalized. Updated the sole Index call by removing
+its obsolete hr argument. Complete Index LSP passes with no errors; Index.index_le_card
+now has an exposed unused hr warning, retained for that file’s dedicated cleanup.
+All Box target gates pass. [Declaration audit](cleanup/Box-weight_le_card.md).
+
+Publication verification: full `lake build` session 7727 exited 0 (2586 jobs;
+`/private/tmp/roth-box-d11-full.log`); separate `lake build Roth.LeanEval` session 44525
+exited 0 (2585 jobs; `/private/tmp/roth-box-d11-leaneval.log`). All affected dependents pass.

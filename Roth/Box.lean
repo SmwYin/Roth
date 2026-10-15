@@ -97,12 +97,13 @@ theorem weight_single (r : σ → ℕ) (j : σ) (n : ℕ) : weight r (Finsupp.si
   classical
   simp [weight, Finsupp.single_apply, ite_div]
 
+omit [DecidableEq σ] in
 /-- A multi-index in the box `box r` has weight at most the number of variables.
 Source: §5 ("Taylor's theorem gives a nonzero derivative with `0 ≤ i_j ≤ r_j`, of weight at
 most `m`"). -/
-theorem weight_le_card {r : σ → ℕ} (hr : ∀ j, 0 < r j) {d : σ →₀ ℕ} (hd : ∀ j, d j ≤ r j) :
+theorem weight_le_card {r : σ → ℕ} {d : σ →₀ ℕ} (hd : ∀ j, d j ≤ r j) :
     weight r d ≤ Fintype.card σ :=
-  (Finset.sum_le_sum fun j _ => div_le_one_of_le₀ (by exact_mod_cast hd j) (by positivity)).trans_eq
+  (Finset.sum_le_sum fun j _ ↦ div_le_one_of_le₀ (by exact_mod_cast hd j) (by positivity)).trans_eq
     (by simp)
 
 /-- Scaling all parameters by `l` divides the weight by `l`.

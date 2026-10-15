@@ -238,7 +238,7 @@ most `m`"). -/
 theorem index_le_card {P : MvPolynomial σ ℝ} (hP : P ≠ 0) {r : σ → ℕ} (hr : ∀ j, 0 < r j)
     (hd : ∀ j, degreeOf j P ≤ r j) (α : σ → ℝ) : index P α r ≤ Fintype.card σ := by
   obtain ⟨d, hd0, hdw⟩ := exists_weight_eq_index hP α r
-  exact hdw ▸ weight_le_card hr fun j =>
+  exact hdw ▸ weight_le_card fun j =>
     (monomial_le_degreeOf j (mem_support_taylor_iff.2 hd0)).trans
       ((degreeOf_taylor_le α j P).trans (hd j))
 
