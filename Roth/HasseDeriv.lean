@@ -72,8 +72,8 @@ theorem hasseDeriv_apply (d : σ →₀ ℕ) (P : MvPolynomial σ R) :
 
 Source: §1, "`0` otherwise" case of the definition of `Δ_i`. -/
 theorem hasseCoeff_eq_zero_iff (d k : σ →₀ ℕ) : hasseCoeff d k = 0 ↔ ¬d ≤ k := by
-  simp only [hasseCoeff, Finsupp.prod, Finset.prod_eq_zero_iff, Nat.choose_eq_zero_iff,
-    Finsupp.le_iff, not_forall, not_le, exists_prop]
+  simp [hasseCoeff, Finsupp.prod, Finset.prod_eq_zero_iff, Nat.choose_eq_zero_iff, Finsupp.le_iff,
+    not_forall]
 
 /-- The coefficient identity `[X^e] Δ_d P = hasseCoeff d (e + d) * [X^(e + d)] P`. This is the
 main computational interface to `hasseDeriv`; most identities below are proved by `ext` followed
