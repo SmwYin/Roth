@@ -71,6 +71,7 @@ Source: §4, proof of the lemma `index ≥ 0` ("Every weight `∑ i_j / r_j` is 
 theorem weight_nonneg (r : σ → ℕ) (d : σ →₀ ℕ) : 0 ≤ weight r d :=
   Fintype.sum_nonneg fun _ ↦ by positivity
 
+omit [DecidableEq σ] in
 /-- The zero multi-index has weight zero. -/
 @[simp]
 theorem weight_zero (r : σ → ℕ) : weight r 0 = 0 := by
