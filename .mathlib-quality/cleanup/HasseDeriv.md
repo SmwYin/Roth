@@ -1,9 +1,9 @@
 # HasseDeriv cleanup audit
 
-Status: 25 of 26 declarations audited and validated.
-Active after the user's resumption: declaration twenty-five is complete; next is
-`factorial_smul_hasseDeriv_single` (twenty-sixth). Continue sequentially through this file and the
-remaining full-project queue.
+Status: all 26 original declarations audited and validated.
+Active after the user's resumption: declaration twenty-six is complete. Final
+file-level refactoring, cumulative gates, independent review, profiling and report
+remain before continuing to the next file in the full-project queue.
 `hasseCoeff`, `hasseCoeff_eq_zero_iff`, and `hasseCoeff_eq_prod` are reviewed with their related optional
 argument-type generalization deferred for approval.
 `coeff_hasseDeriv` is reviewed with a broader coefficient-type API exploration deferred.
@@ -74,7 +74,7 @@ Body line counts include a same-line term after `:=`; names using existing camel
 | C.23 | `hasseDeriv_single_aeval_X` (theorem) | 283–292 | 8 | Full audit complete; removed hc and unsqueezed terminal simp, with local map_natCast exclusion; two proof lines removed |
 | C.24 | `uniqueAlgEquiv_hasseDeriv` (theorem) | 298–304 | 6 | Full audit complete; three-line coefficient proof eliminates conversion helper, lambda, and semicolon |
 | C.25 | `hasseCoeff_le_two_pow` (theorem) | 309–313 | 4 | Full audit complete; existing proof retained, lambda standardized; optional summed-bound companion compiled and declined by user |
-| C.26 | `factorial_smul_hasseDeriv_single` (theorem) | 319–327 | 8 | naming: descriptive, no forbidden pattern; public docstring present (OK); public API; inspect reuse in worker; deep audit pending |
+| C.26 | `factorial_smul_hasseDeriv_single` (theorem) | 319–327 | 8 | Full audit complete; direct cast-product and commutativity rewrites replace push_cast and ring_nf; two proof lines removed |
 
 ## Phase 3 — File-level fixes
 
@@ -406,4 +406,15 @@ No file-level edits needed beyond A.1, deferred because ownership/licensing is u
     with the stronger degree bound. User decision: keep the current API; both additions
     declined, neither applied, no pending decision for these proposals.
 
-Phases 5a, 5b, 6, 6.5 (independent simplify review), 6.6 (buzz profiling), and 7 remain pending until every declaration is processed. No claim of file completion is made.
+26. `MvPolynomial.factorial_smul_hasseDeriv_single`: dedicated worker complete;
+    see [the full declaration audit](HasseDeriv-factorial_smul_hasseDeriv_single.md).
+    Extended the final rewrite chain with `Nat.cast_mul` and `mul_comm`, replacing
+    `push_cast` and `ring_nf` and saving two lines. Exact signature/docs preserved.
+    Isolated proof/type/standard-axiom, module and complete LSP checks passed.
+    Full `lake build` (2586 jobs) and separate `lake build Roth.LeanEval`
+    (2585 jobs) exited 0; logs
+    `/private/tmp/roth-factorial_smul_hasseDeriv_single-build.log` and
+    `/private/tmp/roth-factorial_smul_hasseDeriv_single-leaneval.log`.
+    No new proposal, rename, or unresolved worker item.
+
+Phases 5a, 5b, 6, 6.5 (independent simplify review), 6.6 (buzz profiling), and 7 remain pending after the completed declaration pass. No claim of file completion is made.

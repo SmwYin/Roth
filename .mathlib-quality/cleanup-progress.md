@@ -21,15 +21,15 @@ Started: 2026-10-14 (America/Chicago).
 ## Current status
 
 Build/tool setup completed; GitHub browser authentication and branch publication succeeded. The first file audit
-(`Roth/HasseDeriv.lean`, 26 declarations) is in progress. The first twenty-five declarations,
-through `MvPolynomial.hasseCoeff_le_two_pow`, have completed their audits and
-validation; 25 of 264 declarations reviewed. Optional API proposals are recorded
+(`Roth/HasseDeriv.lean`, 26 declarations) is in progress. The all twenty-six original declarations in this file,
+through `MvPolynomial.factorial_smul_hasseDeriv_single`, have completed their audits and
+validation; 26 of 264 declarations reviewed. Optional API proposals are recorded
 below and remain unapplied. File-level final
 review and profiling remain pending.
 
 Cleanup resumed: the user revoked the controlling-session handover hold. The
-fully validated twenty-fifth checkpoint is complete; next is
-`factorial_smul_hasseDeriv_single` (declaration 26) in `Roth/HasseDeriv.lean`.
+fully validated twenty-sixth checkpoint is complete. File-level refactoring, cumulative
+verification, independent review, and profiling are next for `Roth/HasseDeriv.lean`.
 Continue sequential declaration validation, commit, and push through
 every remaining file in the inventory order, without waiting at file boundaries.
 Each file still requires final independent review, profiling, and a full build.
@@ -91,7 +91,7 @@ Files will be processed in dependency order; declarations within each file are s
 
 | File | Initial lines | Status |
 | --- | ---: | --- |
-| `Roth/HasseDeriv.lean` | 329 | In progress: 25/26 declarations reviewed; next `factorial_smul_hasseDeriv_single` |
+| `Roth/HasseDeriv.lean` | 329 | In progress: 26/26 original declarations reviewed; final file phases pending |
 | `Roth/Box.lean` | 128 | Awaiting cleanup |
 | `Roth/Wronskian.lean` | 271 | Awaiting cleanup |
 | `Roth/Taylor.lean` | 239 | Awaiting cleanup |
@@ -144,6 +144,8 @@ Files will be processed in dependency order; declarations within each file are s
 | `MvPolynomial.uniqueAlgEquiv_hasseDeriv` | Replaced conversion helper with direct three-line coefficient proof | Isolated proof/type/standard-axiom checks, module build, complete LSP, full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-uniqueAlgEquiv_hasseDeriv.md) |
 
 | `MvPolynomial.hasseCoeff_le_two_pow` | Retained existing product proof and standardized mathematical lambda arrow | Isolated proof/type/standard-axiom checks, module build, complete LSP, full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-hasseCoeff_le_two_pow.md) |
+
+| `MvPolynomial.factorial_smul_hasseDeriv_single` | Replaced push_cast and ring_nf with explicit cast-product and commutativity rewrites, saving two lines | Isolated proof/type/standard-axiom checks, module build, complete LSP, full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-factorial_smul_hasseDeriv_single.md) |
 
 ## Validation and deferrals
 

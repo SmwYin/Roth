@@ -286,8 +286,6 @@ theorem factorial_smul_hasseDeriv_single (j : σ) (n : ℕ) (P : MvPolynomial σ
   | zero => simp
   | succ n ih =>
     rw [Function.iterate_succ_apply', ← ih, Derivation.map_smul, pderiv_hasseDeriv, smul_smul,
-      Finsupp.single_eq_same, ← Finsupp.single_add, Nat.factorial_succ]
-    push_cast
-    ring_nf
+      Finsupp.single_eq_same, ← Finsupp.single_add, Nat.factorial_succ, Nat.cast_mul, mul_comm]
 
 end MvPolynomial
