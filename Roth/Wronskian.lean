@@ -115,10 +115,8 @@ private lemma coeff_prod_of_natDegree_le' {ι : Type*} (s : Finset ι) (f : ι �
 Source: §2, first lemma (`D = ∑ d_ν - l(l-1)/2 ≥ 0` for distinct degrees). -/
 theorem sum_range_le_sum_of_injective (d : Fin l → ℕ) (hd : Function.Injective d) :
     ∑ ν : Fin l, (ν : ℕ) ≤ ∑ ν, d ν := by
-  classical
-  have h := sum_range_card_le_sum (Finset.univ.image d)
-  rwa [Finset.card_image_of_injective _ hd, Finset.card_univ, Fintype.card_fin,
-    Finset.sum_image fun x _ y _ hxy => hd hxy, ← Fin.sum_univ_eq_sum_range] at h
+  simpa [Finset.card_image_of_injective _ hd, Finset.sum_image hd.injOn,
+    ← Fin.sum_univ_eq_sum_range] using sum_range_card_le_sum (Finset.univ.image d)
 
 /-- For a family of pairwise distinct degrees `d ν`, the coefficient of the Wronskian in degree
 `∑ d ν - ∑ ν` is `∏ (leading coefficients)` times the binomial determinant `det (d ν choose μ)`.
