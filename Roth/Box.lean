@@ -65,10 +65,11 @@ theorem card_le_card_box {r : σ → ℕ} {s : Finset (σ →₀ ℕ)} (hs : ∀
 /-- The weight `∑ j, d j / r j` of a multi-index. Source: §4, definition of the index. -/
 noncomputable def weight (r : σ → ℕ) (d : σ →₀ ℕ) : ℝ := ∑ j, (d j : ℝ) / r j
 
+omit [DecidableEq σ] in
 /-- Weights are nonnegative.
 Source: §4, proof of the lemma `index ≥ 0` ("Every weight `∑ i_j / r_j` is nonnegative"). -/
 theorem weight_nonneg (r : σ → ℕ) (d : σ →₀ ℕ) : 0 ≤ weight r d :=
-  Finset.sum_nonneg fun _ _ => by positivity
+  Fintype.sum_nonneg fun _ ↦ by positivity
 
 /-- The zero multi-index has weight zero. -/
 @[simp]
