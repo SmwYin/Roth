@@ -1,8 +1,8 @@
 # HasseDeriv cleanup audit
 
-Status: 9 of 26 declarations audited and validated.
-Next declaration: `hasseDeriv_C` (tenth). Hold here for controlling-session handover;
-resume sequentially from that declaration after the handover.
+Status: 10 of 26 declarations audited and validated.
+User resumed active cleanup after the ninth checkpoint. Next declaration:
+`hasseDeriv_map` (eleventh); continue sequentially through the full project.
 `hasseCoeff`, `hasseCoeff_eq_zero_iff`, and `hasseCoeff_eq_prod` are reviewed with their related optional
 argument-type generalization deferred for approval.
 `coeff_hasseDeriv` is reviewed with a broader coefficient-type API exploration deferred.
@@ -57,7 +57,7 @@ Body line counts include a same-line term after `:=`; names using existing camel
 | C.7 | `hasseCoeff_eq_prod` (theorem) | 101–103 | 2 | Reviewed with inherited deferral: signature packed to 99 columns; dot notation and lambda arrow updated; existing coefficient-domain proposal deferred |
 | C.8 | `hasseDeriv_zero_apply` (theorem) | 108–110 | 3 | Full audit complete; existing short coefficient proof retained; no source change justified |
 | C.9 | `hasseDeriv_zero` (theorem) | 116–117 | 2 | Full audit complete; existing minimal LinearMap.ext proof retained; no source change justified |
-| C.10 | `hasseDeriv_C` (theorem) | 122–124 | 3 | naming: descriptive, no forbidden pattern; public docstring present (OK); public API; inspect reuse in worker; deep audit pending |
+| C.10 | `hasseDeriv_C` (theorem) | 122–124 | 3 | Reviewed with optional API idea deferred; existing clear rw/simp proof retained |
 | C.11 | `hasseDeriv_map` (theorem) | 130–133 | 3 | naming: descriptive, no forbidden pattern; public docstring present (OK); public: downstream users (OK); deep audit pending |
 | C.12 | `hasseDeriv_rename` (theorem) | 139–149 | 9 | naming: descriptive, no forbidden pattern; public docstring present (OK); public: downstream users (OK); scan single-use have |
 | C.13 | `choose_mul_choose_eq` (lemma) | 151–156 | 5 | naming: descriptive, no forbidden pattern; private: no docstring (OK); private (OK); scan single-use have; test available arithmetic tactic alternatives; assess descriptive helper naming |
@@ -208,5 +208,19 @@ No file-level edits needed beyond A.1, deferred because ownership/licensing is u
    `/private/tmp/roth-hasseDeriv_zero-leaneval.log`.
    Source is byte-identical; this checkpoint records the completed review and the
    resumption point for controlling-session handover.
+
+   Publication: committed and pushed to `ramin-cleanup` as `667acf6`.
+
+10. `MvPolynomial.hasseDeriv_C`: dedicated worker complete; see
+    [the full declaration audit](HasseDeriv-hasseDeriv_C.md). Retained the original
+    rw/simp proof. Direct simp consolidation looped; excluding a simp rule compiled
+    but added an exception without a useful clarity benefit. The original target
+    compiled independently with only standard axioms. Module build (1430 jobs),
+    complete LSP, full `lake build` (2586 jobs), and separate `lake build Roth.LeanEval`
+    (2585 jobs) all passed; only the existing header warning remains in this file.
+    Logs `/private/tmp/roth-hasseDeriv_C-build.log` and
+    `/private/tmp/roth-hasseDeriv_C-leaneval.log`.
+    A broader public monomial-vanishing lemma is an optional unimplemented API idea;
+    no current cleanup need was established, and it does not block continued work.
 
 Phases 5a, 5b, 6, 6.5 (independent simplify review), 6.6 (buzz profiling), and 7 remain pending until every declaration is processed. No claim of file completion is made.

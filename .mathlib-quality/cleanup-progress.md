@@ -18,17 +18,18 @@ Started: 2026-10-14 (America/Chicago).
 ## Current status
 
 Build/tool setup completed; GitHub browser authentication and branch publication succeeded. The first file audit
-(`Roth/HasseDeriv.lean`, 26 declarations) is in progress. The first nine declarations,
-through `MvPolynomial.hasseDeriv_zero`, have completed their audits and
-validation; 9 of 264 declarations reviewed, including four
+(`Roth/HasseDeriv.lean`, 26 declarations) is in progress. The first ten declarations,
+through `MvPolynomial.hasseDeriv_C`, have completed their audits and
+validation; 10 of 264 declarations reviewed, including five
 with deferred API proposals. File-level final
 review and profiling remain pending.
 
-Session handover checkpoint: stop before the tenth declaration while the controlling
-session is transferred. Resume with `MvPolynomial.hasseDeriv_C` in `Roth/HasseDeriv.lean`,
-using the same sequential declaration validation/commit/push workflow. The first nine
-reviews are complete; the file and project cleanup are not complete. No build or
-source edit remains in flight at this checkpoint.
+Active cleanup resumed at the user's request after the ninth checkpoint. Continue
+sequential declaration validation, commit, and push through every remaining file in
+the inventory order below, without waiting for a new prompt at file boundaries.
+Each file still requires its final independent review, profiling, and full build.
+Next declaration: `MvPolynomial.hasseDeriv_map`. The file and project cleanup remain
+incomplete; optional substantive proposals remain unapplied.
 
 The first `lake build` installed Lean v4.34.0 and fetched the pinned dependencies.
 It was deliberately interrupted during dependency compilation to fetch mathlib's
@@ -82,7 +83,7 @@ Files will be processed in dependency order; declarations within each file are s
 
 | File | Initial lines | Status |
 | --- | ---: | --- |
-| `Roth/HasseDeriv.lean` | 329 | In progress: 9/26 declarations reviewed; next `hasseDeriv_C` |
+| `Roth/HasseDeriv.lean` | 329 | In progress: 10/26 declarations reviewed; next `hasseDeriv_map` |
 | `Roth/Box.lean` | 128 | Awaiting cleanup |
 | `Roth/Wronskian.lean` | 271 | Awaiting cleanup |
 | `Roth/Taylor.lean` | 239 | Awaiting cleanup |
@@ -110,6 +111,7 @@ Files will be processed in dependency order; declarations within each file are s
 | `MvPolynomial.hasseCoeff_eq_prod` (reviewed with inherited deferral) | Packed the 99-column signature; used dot notation and `↦`; earlier coefficient-domain proposal remains deferred | Independent proof and standard-axiom probe, module build and complete LSP passed; full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-hasseCoeff_eq_prod.md) |
 | `MvPolynomial.hasseDeriv_zero_apply` | Reviewed; existing short coefficient proof retained, no source change justified | Standard-axiom inspection, module build and complete LSP passed; full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-hasseDeriv_zero_apply.md) |
 | `MvPolynomial.hasseDeriv_zero` | Reviewed; existing `LinearMap.ext` proof retained, no source change justified | Standard-axiom/type inspection, module build and complete LSP passed; full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-hasseDeriv_zero.md) |
+| `MvPolynomial.hasseDeriv_C` (reviewed with optional deferral) | Existing clear rw/simp proof retained; a broader public vanishing lemma is an unnecessary, unimplemented API idea | Isolated original-proof and standard-axiom checks, module build and complete LSP passed; full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-hasseDeriv_C.md) |
 
 ## Validation and deferrals
 
@@ -129,6 +131,10 @@ Files will be processed in dependency order; declarations within each file are s
   LeanSearch returned HTTP 500. Alternative automation probes timed out; the chosen
   simp proof was independently verified and compiled in the project.
 - File-level profiling and final project verification remain pending.
+- Tenth declaration: original proof, module/LSP, full build (2,586 jobs), and separate
+  LeanEval build (2,585 jobs) passed. A direct simp trial looped; excluding a simp
+  rule compiled but was less clear than the retained proof. A broader public
+  monomial-vanishing lemma remains an optional unimplemented API idea, not a blocker.
 - Ninth declaration: retained identity-map proof verified by module/LSP checks,
   standard-axiom/type inspection, full build (2,586 jobs), and separate LeanEval
   build (2,585 jobs). Report-only checkpoint; next declaration is `hasseDeriv_C`.
