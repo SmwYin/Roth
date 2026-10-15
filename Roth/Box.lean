@@ -41,8 +41,7 @@ variable {σ : Type*} [Fintype σ] [DecidableEq σ]
 /-- The box `{d | ∀ j, d j ≤ r j}` of multi-indices, as a `Finset`.
 Source: §6, Lemma 8 ("`0 ≤ j_1 ≤ r_1, …, 0 ≤ j_m ≤ r_m`"). -/
 noncomputable def box (r : σ → ℕ) : Finset (σ →₀ ℕ) :=
-  (Fintype.piFinset fun j => Finset.range (r j + 1)).map
-    Finsupp.equivFunOnFinite.symm.toEmbedding
+  (Fintype.piFinset fun j ↦ Finset.range (r j + 1)).map Finsupp.equivFunOnFinite.symm.toEmbedding
 
 /-- Membership in `box r` is the coordinatewise bound `d j ≤ r j`. Source: §6, Lemma 8. -/
 theorem mem_box {r : σ → ℕ} {d : σ →₀ ℕ} : d ∈ box r ↔ ∀ j, d j ≤ r j := by

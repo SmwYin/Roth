@@ -30,7 +30,8 @@ PASS-THROUGH. Actual profiling: all 25 retained declarations under 1000ms, maxim
 597.68ms. Module, complete LSP, full project and separate LeanEval builds passed.
 See [final-phase report](cleanup/HasseDeriv-final.md) for evidence and limitations.
 
-Cleanup is active. Next file: `Roth/Box.lean`, handled by a fresh file worker.
+Cleanup is active. Current file: `Roth/Box.lean`, handled by a fresh file worker.
+Box declaration 1/14 has completed its audit; overall 27/264 original declarations reviewed.
 Continue sequential declaration validation, commit, and push through every remaining
 file in inventory order without waiting at file boundaries. Each file requires final
 independent review, profiling, and a full build. The project remains incomplete.
@@ -53,7 +54,7 @@ The earlier HTTPS credential failure and connected-app HTTP 403 are resolved by 
 CLI authentication. No token is stored in this repository.
 
 The active file audit and declaration results are recorded in
-[`cleanup/HasseDeriv.md`](cleanup/HasseDeriv.md). Each completed declaration's report and
+[`cleanup/Box.md`](cleanup/Box.md), following the completed HasseDeriv report. Each completed declaration's report and
 source change are committed and pushed together after validation.
 
 ## Installed tooling and verification
@@ -96,7 +97,7 @@ Files will be processed in dependency order; declarations within each file are s
 | File | Initial lines | Status |
 | --- | ---: | --- |
 | `Roth/HasseDeriv.lean` | 329 | All cleanup phases complete; 26/26 original declarations reviewed; copyright/license metadata unresolved |
-| `Roth/Box.lean` | 128 | Awaiting cleanup |
+| `Roth/Box.lean` | 128 | In progress; 1/14 declarations reviewed |
 | `Roth/Wronskian.lean` | 271 | Awaiting cleanup |
 | `Roth/Taylor.lean` | 239 | Awaiting cleanup |
 | `Roth/CoeffNorm.lean` | 320 | Awaiting cleanup |
@@ -250,3 +251,16 @@ fix or source instrumentation needed. All 26 original declaration reports and
 final audit gates are complete. Full evidence: [HasseDeriv-final.md](cleanup/HasseDeriv-final.md).
 The absent confirmed copyright/license metadata remains explicit; warning-free
 status is not claimed. The global rename pass remains for the project end.
+
+## Box declaration 1 checkpoint
+
+`Roth.box`: mathematical lambda normalized to `↦`; two body lines packed to one
+97-codepoint line. Declaration 3 → 2 lines, file 128 → 127. Public signature and
+existing docstring unchanged; isolated `rfl` verifies identical construction.
+Complete LSP, module build, type/isolation/standard-axiom checks pass.
+Declaration audit: [Box-box.md](cleanup/Box-box.md).
+
+Publication verification for `Roth.box`: actual full `lake build` session 17861 exited 0
+(2586 jobs; `/private/tmp/roth-box-box-build.log`); separate `lake build Roth.LeanEval`
+session 96802 exited 0 (2585 jobs; `/private/tmp/roth-box-d01-leaneval.log`).
+All dependent modules pass; remaining warnings are baseline warnings tracked for their own cleanup.
