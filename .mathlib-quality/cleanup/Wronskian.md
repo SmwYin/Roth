@@ -37,7 +37,7 @@ Every public declaration has an existing docstring, preserved. Private helpers h
 | 2 | `wronskian` | 58–58 | 1 | validated; [audit](Wronskian-wronskian.md) |
 | 3 | `wronskian_eq_zero_of_not_linearIndependent` | 63–70 | 8 | validated; [audit](Wronskian-wronskian_eq_zero_of_not_linearIndependent.md) |
 | 4 | `det_choose_eq` | 77–92 | 16 | validated; [audit](Wronskian-det_choose_eq.md) |
-| 5 | `sum_range_card_le_sum` | 94–104 | 11 | pending |
+| 5 | `sum_range_card_le_sum` | 94–104 | 11 | validated; [audit](Wronskian-sum_range_card_le_sum.md) |
 | 6 | `coeff_prod_of_natDegree_le'` | 106–117 | 12 | pending |
 | 7 | `sum_range_le_sum_of_injective` | 121–126 | 6 | pending |
 | 8 | `coeff_wronskian_of_natDegree_injective` | 134–162 | 29 | pending |
@@ -64,3 +64,7 @@ Every public declaration has an existing docstring, preserved. Private helpers h
 ## Declaration 4 checkpoint
 
 `det_choose_eq`: Oriented the scaling equality toward the transposed evaluation matrix, removed redundant h2 and normalized lambdas; declaration16→13lines, statement preserved. All worker gates pass; full `lake build` session6371 and separate `lake build Roth.LeanEval` session37787 exited0. Logs `/private/tmp/roth-wronskian-d4-full.log` and `...-leaneval.log`.
+
+## Declaration 5 checkpoint
+
+`sum_range_card_le_sum`: Packed signature to100codepoints and normalized lambdas/ascription;11→10lines. Verified Mathlib replacement queued for Phase5a, public API unchanged. All worker gates pass; full `lake build` session4157 and separate `lake build Roth.LeanEval` session51137 exited0. Logs `/private/tmp/roth-wronskian-d5-full.log` and `...-leaneval.log`.

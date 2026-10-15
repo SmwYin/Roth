@@ -88,15 +88,14 @@ theorem det_choose_eq [CharZero K] (d : Fin l → ℕ) :
       (fun j ↦ descPochhammer K j) (fun i ↦ descPochhammer_natDegree K _)
       (fun i ↦ monic_descPochhammer K _), Matrix.det_vandermonde]
 
-private lemma sum_range_card_le_sum (S : Finset ℕ) :
-    ∑ k ∈ Finset.range S.card, k ≤ ∑ x ∈ S, x := by
+private lemma sum_range_card_le_sum (S : Finset ℕ) : ∑ k ∈ Finset.range S.card, k ≤ ∑ x ∈ S, x := by
   induction S using Finset.induction_on_max with
   | empty => simp
   | insert a s ha ih =>
-    have has : a ∉ s := fun h => lt_irrefl a (ha a h)
+    have has : a ∉ s := fun h ↦ lt_irrefl a (ha a h)
     have hcard : s.card ≤ a := by
-      simpa using Finset.card_le_card
-        (fun x hx => Finset.mem_range.2 (ha x hx) : s ⊆ Finset.range a)
+      simpa using Finset.card_le_card (t := Finset.range a)
+        (fun x hx ↦ Finset.mem_range.2 (ha x hx))
     rw [Finset.card_insert_of_notMem has, Finset.sum_range_succ, Finset.sum_insert has]
     lia
 
