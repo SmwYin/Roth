@@ -1,8 +1,8 @@
 # HasseDeriv cleanup audit
 
-Status: 24 of 26 declarations audited and validated.
-Active after the user's resumption: declaration twenty-four is complete; next is
-`hasseCoeff_le_two_pow` (twenty-fifth). Continue sequentially through this file and the
+Status: 25 of 26 declarations audited and validated.
+Active after the user's resumption: declaration twenty-five is complete; next is
+`factorial_smul_hasseDeriv_single` (twenty-sixth). Continue sequentially through this file and the
 remaining full-project queue.
 `hasseCoeff`, `hasseCoeff_eq_zero_iff`, and `hasseCoeff_eq_prod` are reviewed with their related optional
 argument-type generalization deferred for approval.
@@ -73,7 +73,7 @@ Body line counts include a same-line term after `:=`; names using existing camel
 | C.22 | `hasseDeriv_mul_of_degreeOf_eq_zero` (theorem) | 272–277 | 5 | Full audit complete; inlined support-degree fact, standardized lambdas; one proof line removed |
 | C.23 | `hasseDeriv_single_aeval_X` (theorem) | 283–292 | 8 | Full audit complete; removed hc and unsqueezed terminal simp, with local map_natCast exclusion; two proof lines removed |
 | C.24 | `uniqueAlgEquiv_hasseDeriv` (theorem) | 298–304 | 6 | Full audit complete; three-line coefficient proof eliminates conversion helper, lambda, and semicolon |
-| C.25 | `hasseCoeff_le_two_pow` (theorem) | 309–313 | 4 | naming: descriptive, no forbidden pattern; public docstring present (OK); public: downstream users (OK); lambda arrows → ↦ |
+| C.25 | `hasseCoeff_le_two_pow` (theorem) | 309–313 | 4 | Full audit complete; existing proof retained, lambda standardized; optional summed-bound companion compiled and declined by user |
 | C.26 | `factorial_smul_hasseDeriv_single` (theorem) | 319–327 | 8 | naming: descriptive, no forbidden pattern; public docstring present (OK); public API; inspect reuse in worker; deep audit pending |
 
 ## Phase 3 — File-level fixes
@@ -336,8 +336,9 @@ No file-level edits needed beyond A.1, deferred because ownership/licensing is u
     `/private/tmp/roth-degreeOf_hasseDeriv_le-build.log` and
     `/private/tmp/roth-degreeOf_hasseDeriv_le-leaneval.log`.
     A scratch proof verifies the stronger subtraction bound as a potential separate
-    `degreeOf_hasseDeriv_le_sub` theorem. It was surfaced for user decision rather
-    than automatically deferred; existing theorem and four callers remain unchanged.
+    `degreeOf_hasseDeriv_le_sub` theorem. It was surfaced for user decision; the
+    user declined the addition and chose the current API. Existing theorem and four
+    callers remain unchanged, with no pending decision for this proposal.
 
 20. `MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt`: dedicated worker complete;
     see [the full declaration audit](HasseDeriv-hasseDeriv_eq_zero_of_degreeOf_lt.md).
@@ -392,5 +393,17 @@ No file-level edits needed beyond A.1, deferred because ownership/licensing is u
     logs `/private/tmp/roth-uniqueAlgEquiv_hasseDeriv-build.log` and
     `/private/tmp/roth-uniqueAlgEquiv_hasseDeriv-leaneval.log`.
     No new proposal, rename, or unresolved worker item.
+
+25. `MvPolynomial.hasseCoeff_le_two_pow`: dedicated worker complete; see
+    [the full declaration audit](HasseDeriv-hasseCoeff_le_two_pow.md). Retained
+    the existing concise product proof and standardized its mathematical lambda.
+    Statement/docs unchanged. Isolated proof/type/standard-axiom, module and complete
+    LSP checks passed. Full `lake build` (2586 jobs) and separate
+    `lake build Roth.LeanEval` (2585 jobs) exited 0; logs
+    `/private/tmp/roth-hasseCoeff_le_two_pow-build.log` and
+    `/private/tmp/roth-hasseCoeff_le_two_pow-leaneval.log`.
+    The optional sum-bound companion was compiled in scratch and considered together
+    with the stronger degree bound. User decision: keep the current API; both additions
+    declined, neither applied, no pending decision for these proposals.
 
 Phases 5a, 5b, 6, 6.5 (independent simplify review), 6.6 (buzz profiling), and 7 remain pending until every declaration is processed. No claim of file completion is made.

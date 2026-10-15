@@ -287,3 +287,10 @@ The file owner ran `lake build` (2586 jobs) and `lake build Roth.LeanEval`
 (2585 jobs), sequentially; both exited 0. Logs:
 `/private/tmp/roth-degreeOf_hasseDeriv_le-build.log` and
 `/private/tmp/roth-degreeOf_hasseDeriv_le-leaneval.log`.
+
+## User decision
+
+The compiled stronger-degree-bound companion was presented together with the optional
+summed-exponent coefficient-bound companion. The user chose: “Keep the current API
+as you recommend.” Both additions were considered and declined; neither was added.
+This resolves the earlier pending decision recorded above.

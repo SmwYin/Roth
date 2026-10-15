@@ -273,7 +273,7 @@ Source: §3, proof of Lemma 3. -/
 theorem hasseCoeff_le_two_pow [Fintype σ] {d k : σ →₀ ℕ} {r : σ → ℕ} (hk : ∀ j, k j ≤ r j) :
     hasseCoeff d k ≤ 2 ^ (∑ j, r j) := by
   rw [hasseCoeff_eq_prod, ← Finset.prod_pow_eq_pow_sum]
-  exact Finset.prod_le_prod fun j _ =>
+  exact Finset.prod_le_prod fun j _ ↦
     (Nat.choose_le_two_pow _ _).trans (Nat.pow_le_pow_right two_pos (hk j))
 
 /-- `n! • Δ_{n e_j} = ∂_j ^ n`; as for `Polynomial.factorial_smul_hasseDeriv`, this holds over

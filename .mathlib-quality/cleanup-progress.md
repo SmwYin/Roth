@@ -21,15 +21,15 @@ Started: 2026-10-14 (America/Chicago).
 ## Current status
 
 Build/tool setup completed; GitHub browser authentication and branch publication succeeded. The first file audit
-(`Roth/HasseDeriv.lean`, 26 declarations) is in progress. The first twenty-four declarations,
-through `MvPolynomial.uniqueAlgEquiv_hasseDeriv`, have completed their audits and
-validation; 24 of 264 declarations reviewed. Optional API proposals are recorded
+(`Roth/HasseDeriv.lean`, 26 declarations) is in progress. The first twenty-five declarations,
+through `MvPolynomial.hasseCoeff_le_two_pow`, have completed their audits and
+validation; 25 of 264 declarations reviewed. Optional API proposals are recorded
 below and remain unapplied. File-level final
 review and profiling remain pending.
 
 Cleanup resumed: the user revoked the controlling-session handover hold. The
-fully validated twenty-fourth checkpoint is complete; next is
-`hasseCoeff_le_two_pow` (declaration 25) in `Roth/HasseDeriv.lean`.
+fully validated twenty-fifth checkpoint is complete; next is
+`factorial_smul_hasseDeriv_single` (declaration 26) in `Roth/HasseDeriv.lean`.
 Continue sequential declaration validation, commit, and push through
 every remaining file in the inventory order, without waiting at file boundaries.
 Each file still requires final independent review, profiling, and a full build.
@@ -91,7 +91,7 @@ Files will be processed in dependency order; declarations within each file are s
 
 | File | Initial lines | Status |
 | --- | ---: | --- |
-| `Roth/HasseDeriv.lean` | 329 | In progress: 24/26 declarations reviewed; next `hasseCoeff_le_two_pow` |
+| `Roth/HasseDeriv.lean` | 329 | In progress: 25/26 declarations reviewed; next `factorial_smul_hasseDeriv_single` |
 | `Roth/Box.lean` | 128 | Awaiting cleanup |
 | `Roth/Wronskian.lean` | 271 | Awaiting cleanup |
 | `Roth/Taylor.lean` | 239 | Awaiting cleanup |
@@ -143,7 +143,13 @@ Files will be processed in dependency order; declarations within each file are s
 
 | `MvPolynomial.uniqueAlgEquiv_hasseDeriv` | Replaced conversion helper with direct three-line coefficient proof | Isolated proof/type/standard-axiom checks, module build, complete LSP, full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-uniqueAlgEquiv_hasseDeriv.md) |
 
+| `MvPolynomial.hasseCoeff_le_two_pow` | Retained existing product proof and standardized mathematical lambda arrow | Isolated proof/type/standard-axiom checks, module build, complete LSP, full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-hasseCoeff_le_two_pow.md) |
+
 ## Validation and deferrals
+
+- User decision (2026-10-15): “Keep the current API as you recommend.” The compiled
+  optional stronger degree bound and total-exponent-sum coefficient-bound companion
+  were considered and declined. Neither was added; no decision remains pending for them.
 
 - Remote CI diagnosis supplied by the controlling agent: [run 38788900661](https://github.com/SmwYin/Roth/actions/runs/38788900661)
   at `170ea7b` passed the Lean action. Docgen built and uploaded the documentation,
@@ -174,7 +180,8 @@ Files will be processed in dependency order; declarations within each file are s
   suggestions remain unapplied; no statement or definition changed.
 - Nineteenth declaration: all required declaration and dependent gates passed.
   A separate stronger bound, `degreeOf j (hasseDeriv d P) ≤ degreeOf j P - d j`,
-  compiled in a scratch proof and was surfaced for user decision. It has not been added.
+  compiled in a scratch proof and was surfaced for user decision. The user declined
+  adding it, choosing to keep the current API.
 - File-level profiling and final project verification remain pending.
 - Sixteenth declaration: proof/type/axioms, module/direct-client LSP, full build
   (2,586 jobs), and separate LeanEval build (2,585 jobs) passed. The three-line proof
