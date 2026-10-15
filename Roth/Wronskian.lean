@@ -106,11 +106,10 @@ private lemma coeff_prod_of_natDegree_le' {ι : Type*} (s : Finset ι) (f : ι �
   induction s using Finset.induction_on with
   | empty => simp
   | insert a s has ih =>
+    simp only [Finset.forall_mem_insert] at h
     rw [Finset.prod_insert has, Finset.sum_insert has, Finset.prod_insert has,
-      coeff_mul_add_eq_of_natDegree_le (h a (Finset.mem_insert_self a s))
-        ((natDegree_prod_le _ _).trans
-          (Finset.sum_le_sum fun i hi => h i (Finset.mem_insert_of_mem hi))),
-      ih fun i hi => h i (Finset.mem_insert_of_mem hi)]
+      coeff_mul_add_eq_of_natDegree_le h.1 ((natDegree_prod_le _ _).trans (Finset.sum_le_sum h.2)),
+      ih h.2]
 
 /-- `l` distinct natural numbers sum to at least `0 + 1 + ⋯ + (l - 1)`.
 Source: §2, first lemma (`D = ∑ d_ν - l(l-1)/2 ≥ 0` for distinct degrees). -/

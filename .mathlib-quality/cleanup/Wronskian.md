@@ -38,7 +38,7 @@ Every public declaration has an existing docstring, preserved. Private helpers h
 | 3 | `wronskian_eq_zero_of_not_linearIndependent` | 63–70 | 8 | validated; [audit](Wronskian-wronskian_eq_zero_of_not_linearIndependent.md) |
 | 4 | `det_choose_eq` | 77–92 | 16 | validated; [audit](Wronskian-det_choose_eq.md) |
 | 5 | `sum_range_card_le_sum` | 94–104 | 11 | validated; [audit](Wronskian-sum_range_card_le_sum.md) |
-| 6 | `coeff_prod_of_natDegree_le'` | 106–117 | 12 | pending |
+| 6 | `coeff_prod_of_natDegree_le'` | 106–117 | 12 | validated; [audit](Wronskian-coeff_prod_of_natDegree_le.md) |
 | 7 | `sum_range_le_sum_of_injective` | 121–126 | 6 | pending |
 | 8 | `coeff_wronskian_of_natDegree_injective` | 134–162 | 29 | pending |
 | 9 | `wronskian_ne_zero_of_natDegree_injective` | 168–175 | 8 | pending |
@@ -68,3 +68,7 @@ Every public declaration has an existing docstring, preserved. Private helpers h
 ## Declaration 5 checkpoint
 
 `sum_range_card_le_sum`: Packed signature to100codepoints and normalized lambdas/ascription;11→10lines. Verified Mathlib replacement queued for Phase5a, public API unchanged. All worker gates pass; full `lake build` session4157 and separate `lake build Roth.LeanEval` session51137 exited0. Logs `/private/tmp/roth-wronskian-d5-full.log` and `...-leaneval.log`.
+
+## Declaration 6 checkpoint
+
+`coeff_prod_of_natDegree_le'`: Simplified the inserted-bound premise once and reused projections, eliminating repeated membership lambdas;12→11lines, exact signature preserved. All worker gates pass; full `lake build` session84949 and separate `lake build Roth.LeanEval` session56529 exited0. Logs `/private/tmp/roth-wronskian-d6-full.log` and `...-leaneval.log`.
