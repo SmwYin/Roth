@@ -14,9 +14,10 @@ Started: 2026-10-14 (America/Chicago).
 ## Current status
 
 Build/tool setup completed; GitHub browser authentication and branch publication succeeded. The first file audit
-(`Roth/HasseDeriv.lean`, 26 declarations) is in progress. `MvPolynomial.hasseCoeff` and
-`MvPolynomial.hasseDeriv` have completed their declaration audits and validation;
-2 of 264 declarations reviewed. File-level final review and profiling remain pending.
+(`Roth/HasseDeriv.lean`, 26 declarations) is in progress. `MvPolynomial.hasseCoeff`,
+`MvPolynomial.hasseDeriv`, and `MvPolynomial.hasseDeriv_monomial` have completed their
+declaration audits and validation; 3 of 264 declarations reviewed. File-level final
+review and profiling remain pending.
 
 The first `lake build` installed Lean v4.34.0 and fetched the pinned dependencies.
 It was deliberately interrupted during dependency compilation to fetch mathlib's
@@ -46,17 +47,20 @@ source change are committed and pushed together after validation.
 | Lean | `leanprover/lean4:v4.34.0` | Installed by elan; Lake compiled dependency modules |
 | uv | 0.13.1 | Installed; successfully installed the LSP tool and Python runtime |
 | Python for LSP | 3.12.15, uv-managed | MCP client probe runs |
-| lean-lsp-mcp | 0.31.0 | Version and discovery passed (22 tools). Local search, file diagnostics, and code execution succeeded. Remote Loogle and LeanFinder requests succeeded; LeanSearch returned HTTP 500. Not all 22 tools have been individually tested. |
+| lean-lsp-mcp | 0.31.0 | 22 native tools are now registered. Native Loogle and LeanFinder requests succeeded; LeanSearch returned HTTP 500. Direct-client local search, goal inspection, file diagnostics, and code execution also succeeded. Not all 22 tools have been individually tested. |
 | GitHub CLI | 2.102.0 | Browser authentication and branch push succeeded |
 | ask_chatgpt_math | Skipped | Optional, as authorized |
 
 The Lean LSP server is configured in `~/.codex/config.toml` using its absolute executable
-path. It is not registered in this session's tool list. A direct stdio MCP client is
-available for testing and use in this session. Host registration must be checked after
-a new session/restart. The first 45-second diagnostic request timed out; a retry with
+path. Native tools became registered during this session and native remote search was
+verified successfully. Older worker sessions can still use the tested direct stdio MCP
+client as a fallback. The first 45-second diagnostic request timed out; a retry with
 a 180-second limit completed successfully. A shutdown event-loop warning was emitted after
-the successful response and did not invalidate the diagnostics. Skills should be discoverable on the next turn; their instructions
-can already be read directly. The installed workflow repositories contain 24 mathlib-quality command files, 12 lean4 command files, and 21 lean4 helper wrappers. These counts describe installed files, not individually tested functions. Claude-specific slash commands and hooks are not installed.
+the successful response and did not invalidate the diagnostics. The `lean4` and
+`mathlib-quality` skills are now discoverable. The installed workflow repositories contain
+24 mathlib-quality command files, 12 lean4 command files, and 21 lean4 helper wrappers.
+These counts describe installed files, not individually tested functions. Claude-specific
+slash commands and hooks are adapted manually rather than registered as native commands.
 The built-in Claude `/simplify` pass will be adapted to an independent review with the same
 reuse, quality, and efficiency checks; unavailable capabilities will be recorded explicitly.
 
@@ -67,7 +71,7 @@ Files will be processed in dependency order; declarations within each file are s
 
 | File | Initial lines | Status |
 | --- | ---: | --- |
-| `Roth/HasseDeriv.lean` | 329 | In progress: 2/26 declarations reviewed |
+| `Roth/HasseDeriv.lean` | 329 | In progress: 3/26 declarations reviewed |
 | `Roth/Box.lean` | 128 | Awaiting cleanup |
 | `Roth/Wronskian.lean` | 271 | Awaiting cleanup |
 | `Roth/Taylor.lean` | 239 | Awaiting cleanup |
@@ -88,6 +92,7 @@ Files will be processed in dependency order; declarations within each file are s
 | --- | --- | --- | --- |
 | `MvPolynomial.hasseCoeff` | Eta-reduced the defining function; unchanged signature and mathematical meaning | Definitional equality by `rfl`; complete LSP diagnostics, zero errors; full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-hasseCoeff.md) |
 | `MvPolynomial.hasseDeriv` | Used `↦` for the mathematical lambda; unchanged construction and signature | Definitional equality by `rfl`; module build and complete LSP diagnostics passed; full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-hasseDeriv.md) |
+| `MvPolynomial.hasseDeriv_monomial` | Replaced the transitivity proof with `simp [hasseDeriv]`; unchanged statement | Independent isolated proof probe, module build and complete LSP passed; full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-hasseDeriv_monomial.md) |
 
 ## Validation and deferrals
 
@@ -102,4 +107,8 @@ Files will be processed in dependency order; declarations within each file are s
   Local searches and literature lookup succeeded; remote MCP searches failed DNS and
   their permission-dependent retry was interrupted. No remote absence claim is made.
 - Deferred: a possible generalization of `hasseCoeff` from finitely supported `k` to an arbitrary function was tested but not applied because it changes the public definition signature.
+- Third declaration: module build, complete LSP diagnostics, and both downstream
+  builds passed (2,586 and 2,585 jobs). Native Loogle and LeanFinder succeeded;
+  LeanSearch returned HTTP 500. Alternative automation probes timed out; the chosen
+  simp proof was independently verified and compiled in the project.
 - File-level profiling and final project verification remain pending.

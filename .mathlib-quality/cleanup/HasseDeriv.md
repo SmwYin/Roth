@@ -1,6 +1,6 @@
 # HasseDeriv cleanup audit
 
-Status: 2 of 26 declarations audited and validated; second checkpoint ready for publication.
+Status: 3 of 26 declarations audited and validated; third checkpoint ready for publication.
 The file has **not** completed all cleanup phases.
 Source: `Roth/HasseDeriv.lean`; dialect: classic imports (no `module`).
 
@@ -45,7 +45,7 @@ Body line counts include a same-line term after `:=`; names using existing camel
 |---|---|---|---|---|
 | C.1 | `hasseCoeff` (def) | 44–44 | 1 | naming: descriptive, no forbidden pattern; public docstring present (OK); public: downstream users (OK); lambda arrows → ↦ |
 | C.2 | `hasseDeriv` (def) | 51–54 | 4 | naming: descriptive, no forbidden pattern; public docstring present (OK); public: downstream users (OK); lambda arrows → ↦ |
-| C.3 | `hasseDeriv_monomial` (theorem) | 60–62 | 2 | naming: descriptive, no forbidden pattern; public docstring present (OK); public: downstream users (OK); deep audit pending |
+| C.3 | `hasseDeriv_monomial` (theorem) | 60–62 | 2 | Full audit complete; replaced transitivity proof with terminal `simp [hasseDeriv]`; unchanged statement |
 | C.4 | `hasseDeriv_apply` (theorem) | 67–70 | 3 | naming: descriptive, no forbidden pattern; public docstring present (OK); public API; inspect reuse in worker; deep audit pending |
 | C.5 | `hasseCoeff_eq_zero_iff` (theorem) | 75–77 | 3 | naming: descriptive, no forbidden pattern; public docstring present (OK); public: downstream users (OK); inspect terminal simp only |
 | C.6 | `coeff_hasseDeriv` (theorem) | 84–95 | 11 | naming: descriptive, no forbidden pattern; public docstring present (OK); public: downstream users (OK); split tactic chains |
@@ -103,5 +103,20 @@ No file-level edits needed beyond A.1, deferred because ownership/licensing is u
    Local search and literature lookup succeeded. Remote MCP searches failed DNS and
    the escalated retry was interrupted while awaiting approval; their unavailability
    is recorded without claiming mathematical absence. No substantive refactor proposed.
+
+   Publication: committed and pushed to `ramin-cleanup` as `59d451d`.
+
+3. `MvPolynomial.hasseDeriv_monomial`: dedicated worker complete; see
+   [the full declaration audit](HasseDeriv-hasseDeriv_monomial.md). The proof is now
+   `by simp [hasseDeriv]`, preserving its statement and simp attribute. An isolated
+   copied-definition probe verified the proof independently of this theorem.
+   Module build passed (1430 jobs); complete LSP diagnostics found no errors and only
+   the existing header warning. Full `lake build` passed (2586 jobs) and separate
+   `lake build Roth.LeanEval` passed (2585 jobs), both exit 0. Logs:
+   `/private/tmp/roth-hasseDeriv_monomial-build.log` and
+   `/private/tmp/roth-hasseDeriv_monomial-leaneval.log`.
+   Native Loogle and LeanFinder succeeded; LeanSearch returned HTTP 500. Read-only
+   alternative automation probes timed out; no success or failure of individual
+   alternatives is inferred. The chosen proof passed all compilation gates.
 
 Phases 5a, 5b, 6, 6.5 (independent simplify review), 6.6 (buzz profiling), and 7 remain pending until every declaration is processed. No claim of file completion is made.

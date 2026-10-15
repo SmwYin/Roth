@@ -58,8 +58,8 @@ noncomputable def hasseDeriv (d : σ →₀ ℕ) : MvPolynomial σ R →ₗ[R] M
 Source: §1, definition of `Δ_i` on monomials. -/
 @[simp]
 theorem hasseDeriv_monomial (d k : σ →₀ ℕ) (a : R) :
-    hasseDeriv d (monomial k a) = monomial (k - d) ((hasseCoeff d k : R) * a) :=
-  (sum_monomial_eq (by simp)).trans (by simp)
+    hasseDeriv d (monomial k a) = monomial (k - d) ((hasseCoeff d k : R) * a) := by
+  simp [hasseDeriv]
 
 /-- Expansion of `Δ_d P` as a sum over the support of `P`.
 
