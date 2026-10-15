@@ -1,6 +1,6 @@
 # HasseDeriv cleanup audit
 
-Status: 7 of 26 declarations audited and validated.
+Status: 8 of 26 declarations audited and validated.
 `hasseCoeff`, `hasseCoeff_eq_zero_iff`, and `hasseCoeff_eq_prod` are reviewed with their related optional
 argument-type generalization deferred for approval.
 `coeff_hasseDeriv` is reviewed with a broader coefficient-type API exploration deferred.
@@ -53,7 +53,7 @@ Body line counts include a same-line term after `:=`; names using existing camel
 | C.5 | `hasseCoeff_eq_zero_iff` (theorem) | 75–77 | 3 | Reviewed with deferral: terminal simp unsqueezed and validated; related argument-type generalization deferred |
 | C.6 | `coeff_hasseDeriv` (theorem) | 84–95 | 11 | Reviewed with deferral: reused standard subtraction equivalence; broader coefficient-type API exploration deferred |
 | C.7 | `hasseCoeff_eq_prod` (theorem) | 101–103 | 2 | Reviewed with inherited deferral: signature packed to 99 columns; dot notation and lambda arrow updated; existing coefficient-domain proposal deferred |
-| C.8 | `hasseDeriv_zero_apply` (theorem) | 108–110 | 3 | naming: descriptive, no forbidden pattern; public docstring present (OK); public: downstream users (OK); deep audit pending |
+| C.8 | `hasseDeriv_zero_apply` (theorem) | 108–110 | 3 | Full audit complete; existing short coefficient proof retained; no source change justified |
 | C.9 | `hasseDeriv_zero` (theorem) | 116–117 | 2 | naming: descriptive, no forbidden pattern; public docstring present (OK); public API; inspect reuse in worker; deep audit pending |
 | C.10 | `hasseDeriv_C` (theorem) | 122–124 | 3 | naming: descriptive, no forbidden pattern; public docstring present (OK); public API; inspect reuse in worker; deep audit pending |
 | C.11 | `hasseDeriv_map` (theorem) | 130–133 | 3 | naming: descriptive, no forbidden pattern; public docstring present (OK); public: downstream users (OK); deep audit pending |
@@ -180,5 +180,18 @@ No file-level edits needed beyond A.1, deferred because ownership/licensing is u
    Native Loogle/Finder confirmed existing generic product infrastructure; LeanSearch
    returned HTTP 500. The earlier coefficient-domain proposal remains deferred;
    no new substantial change is proposed.
+
+   Publication: committed and pushed to `ramin-cleanup` as `6ab3654`.
+
+8. `MvPolynomial.hasseDeriv_zero_apply`: dedicated worker complete; see
+   [the full declaration audit](HasseDeriv-hasseDeriv_zero_apply.md). Retained the
+   existing coefficient-extensionality proof. Direct unfolding left a residual sum
+   identity in an isolated experiment; no failed experiment was adopted. Module
+   build (1430 jobs), complete LSP, and standard-axiom/type inspection passed;
+   only the existing header warning remains. Full `lake build` (2586 jobs) and
+   separate `lake build Roth.LeanEval` (2585 jobs) both exited 0. Logs:
+   `/private/tmp/roth-hasseDeriv_zero_apply-build.log` and
+   `/private/tmp/roth-hasseDeriv_zero_apply-leaneval.log`.
+   Source is byte-identical; this checkpoint records the completed review.
 
 Phases 5a, 5b, 6, 6.5 (independent simplify review), 6.6 (buzz profiling), and 7 remain pending until every declaration is processed. No claim of file completion is made.

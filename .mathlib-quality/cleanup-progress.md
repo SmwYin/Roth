@@ -18,9 +18,9 @@ Started: 2026-10-14 (America/Chicago).
 ## Current status
 
 Build/tool setup completed; GitHub browser authentication and branch publication succeeded. The first file audit
-(`Roth/HasseDeriv.lean`, 26 declarations) is in progress. The first seven declarations,
-through `MvPolynomial.hasseCoeff_eq_prod`, have completed their audits and
-validation; 7 of 264 declarations reviewed, including four
+(`Roth/HasseDeriv.lean`, 26 declarations) is in progress. The first eight declarations,
+through `MvPolynomial.hasseDeriv_zero_apply`, have completed their audits and
+validation; 8 of 264 declarations reviewed, including four
 with deferred API proposals. File-level final
 review and profiling remain pending.
 
@@ -76,7 +76,7 @@ Files will be processed in dependency order; declarations within each file are s
 
 | File | Initial lines | Status |
 | --- | ---: | --- |
-| `Roth/HasseDeriv.lean` | 329 | In progress: 7/26 declarations reviewed |
+| `Roth/HasseDeriv.lean` | 329 | In progress: 8/26 declarations reviewed |
 | `Roth/Box.lean` | 128 | Awaiting cleanup |
 | `Roth/Wronskian.lean` | 271 | Awaiting cleanup |
 | `Roth/Taylor.lean` | 239 | Awaiting cleanup |
@@ -102,6 +102,7 @@ Files will be processed in dependency order; declarations within each file are s
 | `MvPolynomial.hasseCoeff_eq_zero_iff` (reviewed with deferral) | Unsqueezed terminal simp; removed two redundant explicit lemmas. Related argument-type generalization deferred | Independent proof and standard-axiom probe, module build and complete LSP passed; full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-hasseCoeff_eq_zero_iff.md) |
 | `MvPolynomial.coeff_hasseDeriv` (reviewed with deferral) | Replaced an inline subtraction contradiction with `tsub_eq_iff_eq_add_of_le`; broader coefficient-type API exploration deferred | Independent proof and standard-axiom probe, module build and complete LSP passed; full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-coeff_hasseDeriv.md) |
 | `MvPolynomial.hasseCoeff_eq_prod` (reviewed with inherited deferral) | Packed the 99-column signature; used dot notation and `↦`; earlier coefficient-domain proposal remains deferred | Independent proof and standard-axiom probe, module build and complete LSP passed; full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-hasseCoeff_eq_prod.md) |
+| `MvPolynomial.hasseDeriv_zero_apply` | Reviewed; existing short coefficient proof retained, no source change justified | Standard-axiom inspection, module build and complete LSP passed; full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-hasseDeriv_zero_apply.md) |
 
 ## Validation and deferrals
 
@@ -121,6 +122,9 @@ Files will be processed in dependency order; declarations within each file are s
   LeanSearch returned HTTP 500. Alternative automation probes timed out; the chosen
   simp proof was independently verified and compiled in the project.
 - File-level profiling and final project verification remain pending.
+- Eighth declaration: retained proof verified by module/LSP checks, standard-axiom
+  inspection, full build (2,586 jobs), and separate LeanEval build (2,585 jobs).
+  A direct unfolding alternative failed in an isolated probe and was not adopted.
 - Seventh declaration: module/LSP/isolated proof checks and both dependent builds
   passed (2,586 and 2,585 jobs). Native Loogle/Finder confirmed the generic product
   lemma already used; LeanSearch returned HTTP 500. No new API proposal was added.
