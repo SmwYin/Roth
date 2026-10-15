@@ -41,7 +41,7 @@ namespace MvPolynomial
 variable {σ R : Type*} [CommSemiring R]
 
 /-- The binomial factor `∏ j, (k j).choose (d j)` (a product over the support of `d`). -/
-def hasseCoeff (d k : σ →₀ ℕ) : ℕ := d.prod fun j n => (k j).choose n
+def hasseCoeff (d k : σ →₀ ℕ) : ℕ := d.prod fun j ↦ (k j).choose
 
 /-- The multivariate Hasse derivative `Δ_d`: the `R`-linear map sending `monomial k a` to
 `monomial (k - d) (hasseCoeff d k * a)` (see `hasseDeriv_monomial`). The coefficient

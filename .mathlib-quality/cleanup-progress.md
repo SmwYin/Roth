@@ -14,7 +14,7 @@ Started: 2026-10-14 (America/Chicago).
 ## Current status
 
 Build/tool setup completed; GitHub browser authentication and branch publication succeeded. The first file audit
-(`Roth/HasseDeriv.lean`, 26 declarations) is in progress. No completed declaration checkpoints yet.
+(`Roth/HasseDeriv.lean`, 26 declarations) is in progress. The first declaration, `MvPolynomial.hasseCoeff`, has completed its declaration audit and validation; 1 of 264 declarations reviewed. File-level final review and profiling remain pending.
 
 The first `lake build` installed Lean v4.34.0 and fetched the pinned dependencies.
 It was deliberately interrupted during dependency compilation to fetch mathlib's
@@ -44,7 +44,7 @@ source change are committed and pushed together after validation.
 | Lean | `leanprover/lean4:v4.34.0` | Installed by elan; Lake compiled dependency modules |
 | uv | 0.13.1 | Installed; successfully installed the LSP tool and Python runtime |
 | Python for LSP | 3.12.15, uv-managed | MCP client probe runs |
-| lean-lsp-mcp | 0.31.0 | `--version` and MCP initialization/tool discovery passed (22 tools); complete diagnostics on `Roth/Box.lean` passed: no errors, existing linter warnings |
+| lean-lsp-mcp | 0.31.0 | Version and discovery passed (22 tools). Local search, file diagnostics, and code execution succeeded. Remote Loogle and LeanFinder requests succeeded; LeanSearch returned HTTP 500. Not all 22 tools have been individually tested. |
 | GitHub CLI | 2.102.0 | Browser authentication and branch push succeeded |
 | ask_chatgpt_math | Skipped | Optional, as authorized |
 
@@ -54,7 +54,7 @@ available for testing and use in this session. Host registration must be checked
 a new session/restart. The first 45-second diagnostic request timed out; a retry with
 a 180-second limit completed successfully. A shutdown event-loop warning was emitted after
 the successful response and did not invalidate the diagnostics. Skills should be discoverable on the next turn; their instructions
-can already be read directly. Claude-specific slash commands and hooks are not installed.
+can already be read directly. The installed workflow repositories contain 24 mathlib-quality command files, 12 lean4 command files, and 21 lean4 helper wrappers. These counts describe installed files, not individually tested functions. Claude-specific slash commands and hooks are not installed.
 The built-in Claude `/simplify` pass will be adapted to an independent review with the same
 reuse, quality, and efficiency checks; unavailable capabilities will be recorded explicitly.
 
@@ -65,7 +65,7 @@ Files will be processed in dependency order; declarations within each file are s
 
 | File | Initial lines | Status |
 | --- | ---: | --- |
-| `Roth/HasseDeriv.lean` | 329 | Awaiting cleanup |
+| `Roth/HasseDeriv.lean` | 329 | In progress: 1/26 declarations reviewed |
 | `Roth/Box.lean` | 128 | Awaiting cleanup |
 | `Roth/Wronskian.lean` | 271 | Awaiting cleanup |
 | `Roth/Taylor.lean` | 239 | Awaiting cleanup |
@@ -82,7 +82,9 @@ Files will be processed in dependency order; declarations within each file are s
 
 ## Completed declarations
 
-None yet.
+| Declaration | Change | Validation | Report |
+| --- | --- | --- | --- |
+| `MvPolynomial.hasseCoeff` | Eta-reduced the defining function; unchanged signature and mathematical meaning | Definitional equality by `rfl`; complete LSP diagnostics, zero errors; full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-hasseCoeff.md) |
 
 ## Validation and deferrals
 
@@ -91,5 +93,6 @@ None yet.
 - `lake build Roth.LeanEval`: exit 0; 2,585 jobs (separate verification module).
 - Lean LSP diagnostics on `Roth/Box.lean`: complete, 0 errors, 21 existing warnings.
 - Source `sorry` scan: passed (14 files, zero findings).
-- Per-declaration validation, downstream checks after edits, profiling, axiom checks, and final build:
-  not yet run; no success claimed.
+- First declaration: post-edit LSP diagnostics completed, zero errors and the existing header warning. Full downstream builds passed (2,586 jobs and 2,585 jobs respectively). Its equivalence and axiom probes passed; see the declaration audit.
+- Deferred: a possible generalization of `hasseCoeff` from finitely supported `k` to an arbitrary function was tested but not applied because it changes the public definition signature.
+- File-level profiling and final project verification remain pending.
