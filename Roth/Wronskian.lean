@@ -52,7 +52,7 @@ variable {K : Type*} [Field K] {l : ℕ}
 
 /-- The Wronskian matrix `(hasseDeriv μ (φ ν))_{μ, ν}`. Source: §2, definition of `W`. -/
 noncomputable def wronskianMatrix (φ : Fin l → K[X]) : Matrix (Fin l) (Fin l) K[X] :=
-  Matrix.of fun μ ν => hasseDeriv (μ : ℕ) (φ ν)
+  Matrix.of fun μ ν ↦ hasseDeriv μ (φ ν)
 
 /-- The Wronskian `det (hasseDeriv μ (φ ν))_{μ, ν}`. Source: §2, definition of `W`. -/
 noncomputable def wronskian (φ : Fin l → K[X]) : K[X] := (wronskianMatrix φ).det

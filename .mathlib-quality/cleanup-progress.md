@@ -35,7 +35,7 @@ All 14 declarations retained and reviewed; overall 40/264 original declarations 
 Box source 128 → 126 lines; independent simplify finding fixed (two redundant imports),
 final module/full/LeanEval and complete LSP gates pass. Actual profiling: all 14 below 1000ms,
 maximum 196.39ms. See [Box final report](cleanup/Box-final.md).
-Next file: `Roth/Wronskian.lean`, awaiting the next fresh file worker.
+Active file: `Roth/Wronskian.lean`; 1/15 original declarations reviewed and validated. Overall 41/264 original declarations reviewed. File-level final phases remain pending.
 Continue sequential declaration validation, commit, and push through every remaining
 file in inventory order without waiting at file boundaries. Each file requires final
 independent review, profiling, and a full build. The project remains incomplete.
@@ -59,7 +59,7 @@ The earlier HTTPS credential failure and connected-app HTTP 403 are resolved by 
 CLI authentication. No token is stored in this repository.
 
 The active file audit and declaration results are recorded in
-[`cleanup/Box.md`](cleanup/Box.md), following the completed HasseDeriv report. Each completed declaration's report and
+[`cleanup/Wronskian.md`](cleanup/Wronskian.md), following the completed HasseDeriv and Box reports. Each completed declaration's report and
 source change are committed and pushed together after validation.
 
 ## Installed tooling and verification
@@ -438,3 +438,7 @@ pass remains scheduled after all files; Box queues none. [Final report](cleanup/
 
 The Box worker stops at this file boundary and releases source/report/shared-log/Git
 ownership to the orchestrator for dispatch of the next fresh Wronskian worker.
+
+## Wronskian declaration 1 checkpoint
+
+`Roth.wronskianMatrix`: Normalized lambda arrow and removed redundant explicit Fin-to-Nat ascription; original definition verified by rfl, API retained. [Full declaration audit](cleanup/Wronskian-wronskianMatrix.md). Module, complete LSP, isolated type/axiom and diff gates pass. Publication validation: full `lake build` session77119 exit0; separate `lake build Roth.LeanEval` session65973 exit0. Logs `/private/tmp/roth-wronskian-d1-full.log` and `...-leaneval.log`.
