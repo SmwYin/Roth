@@ -218,7 +218,7 @@ theorem index_mul_left_weights {l : ℕ} (hl : 0 < l) (P : MvPolynomial σ ℝ) 
       (l : ℝ)⁻¹ • (weight r '' ((taylor α P).support : Set (σ →₀ ℕ))) := by
     rw [← Set.image_smul, Set.image_image]
     refine Set.image_congr fun d _ => ?_
-    rw [weight_mul_left hl, smul_eq_mul, div_eq_inv_mul]
+    rw [weight_mul_left, smul_eq_mul, div_eq_inv_mul]
   rw [index, index, himg, Real.sInf_smul_of_nonneg (by positivity), smul_eq_mul, div_eq_inv_mul]
 
 /-- The index is invariant under injective renaming of variables.

@@ -106,10 +106,11 @@ theorem weight_le_card {r : σ → ℕ} {d : σ →₀ ℕ} (hd : ∀ j, d j ≤
   (Finset.sum_le_sum fun j _ ↦ div_le_one_of_le₀ (by exact_mod_cast hd j) (by positivity)).trans_eq
     (by simp)
 
+omit [DecidableEq σ] in
 /-- Scaling all parameters by `l` divides the weight by `l`.
 Source: §4, end ("`ind(P; α; l r) = (1/l) ind(P; α; r)`"). -/
-theorem weight_mul_left {l : ℕ} (hl : 0 < l) (r : σ → ℕ) (d : σ →₀ ℕ) :
-    weight (fun j => l * r j) d = weight r d / l := by
+theorem weight_mul_left {l : ℕ} (r : σ → ℕ) (d : σ →₀ ℕ) :
+    weight (fun j ↦ l * r j) d = weight r d / l := by
   simp [weight, Finset.sum_div, div_div, mul_comm]
 
 /-- If every parameter is at least `m`, a multi-index of total degree `w` has weight at most
