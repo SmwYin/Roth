@@ -197,12 +197,9 @@ Source: §2, proof of Lemma 1. -/
 theorem pderiv_hasseDeriv (j : σ) (d : σ →₀ ℕ) (P : MvPolynomial σ R) :
     pderiv j (hasseDeriv d P) = ((d j + 1 : ℕ) : R) • hasseDeriv (d + Finsupp.single j 1) P := by
   ext e
-  have h := congrArg (Nat.cast : ℕ → R) (hasseCoeff_mul_succ j d e)
-  push_cast at h
   rw [coeff_pderiv, coeff_smul, coeff_hasseDeriv, coeff_hasseDeriv, smul_eq_mul,
-    show e + (d + Finsupp.single j 1) = e + Finsupp.single j 1 + d by abel, mul_right_comm, h]
-  push_cast
-  ring
+    ← add_assoc e d, add_right_comm e d, mul_right_comm, ← Nat.cast_add_one, ← Nat.cast_mul,
+    hasseCoeff_mul_succ, Nat.cast_mul, mul_assoc]
 
 /-- Hasse derivatives do not increase the degree in any variable.
 
