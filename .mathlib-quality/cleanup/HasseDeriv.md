@@ -1,6 +1,8 @@
 # HasseDeriv cleanup audit
 
-Status: 8 of 26 declarations audited and validated.
+Status: 9 of 26 declarations audited and validated.
+Next declaration: `hasseDeriv_C` (tenth). Hold here for controlling-session handover;
+resume sequentially from that declaration after the handover.
 `hasseCoeff`, `hasseCoeff_eq_zero_iff`, and `hasseCoeff_eq_prod` are reviewed with their related optional
 argument-type generalization deferred for approval.
 `coeff_hasseDeriv` is reviewed with a broader coefficient-type API exploration deferred.
@@ -54,7 +56,7 @@ Body line counts include a same-line term after `:=`; names using existing camel
 | C.6 | `coeff_hasseDeriv` (theorem) | 84–95 | 11 | Reviewed with deferral: reused standard subtraction equivalence; broader coefficient-type API exploration deferred |
 | C.7 | `hasseCoeff_eq_prod` (theorem) | 101–103 | 2 | Reviewed with inherited deferral: signature packed to 99 columns; dot notation and lambda arrow updated; existing coefficient-domain proposal deferred |
 | C.8 | `hasseDeriv_zero_apply` (theorem) | 108–110 | 3 | Full audit complete; existing short coefficient proof retained; no source change justified |
-| C.9 | `hasseDeriv_zero` (theorem) | 116–117 | 2 | naming: descriptive, no forbidden pattern; public docstring present (OK); public API; inspect reuse in worker; deep audit pending |
+| C.9 | `hasseDeriv_zero` (theorem) | 116–117 | 2 | Full audit complete; existing minimal LinearMap.ext proof retained; no source change justified |
 | C.10 | `hasseDeriv_C` (theorem) | 122–124 | 3 | naming: descriptive, no forbidden pattern; public docstring present (OK); public API; inspect reuse in worker; deep audit pending |
 | C.11 | `hasseDeriv_map` (theorem) | 130–133 | 3 | naming: descriptive, no forbidden pattern; public docstring present (OK); public: downstream users (OK); deep audit pending |
 | C.12 | `hasseDeriv_rename` (theorem) | 139–149 | 9 | naming: descriptive, no forbidden pattern; public docstring present (OK); public: downstream users (OK); scan single-use have |
@@ -193,5 +195,18 @@ No file-level edits needed beyond A.1, deferred because ownership/licensing is u
    `/private/tmp/roth-hasseDeriv_zero_apply-build.log` and
    `/private/tmp/roth-hasseDeriv_zero_apply-leaneval.log`.
    Source is byte-identical; this checkpoint records the completed review.
+
+   Publication: committed and pushed to `ramin-cleanup` as `f9f649f`.
+
+9. `MvPolynomial.hasseDeriv_zero`: dedicated worker complete; see
+   [the full declaration audit](HasseDeriv-hasseDeriv_zero.md). Retained the existing
+   minimal `LinearMap.ext` proof, matching the analogous library packaging.
+   Module build (1430 jobs), complete LSP, and standard-axiom/type inspection passed;
+   only the existing header warning remains. Full `lake build` (2586 jobs) and
+   separate `lake build Roth.LeanEval` (2585 jobs) both exited 0. Logs:
+   `/private/tmp/roth-hasseDeriv_zero-build.log` and
+   `/private/tmp/roth-hasseDeriv_zero-leaneval.log`.
+   Source is byte-identical; this checkpoint records the completed review and the
+   resumption point for controlling-session handover.
 
 Phases 5a, 5b, 6, 6.5 (independent simplify review), 6.6 (buzz profiling), and 7 remain pending until every declaration is processed. No claim of file completion is made.

@@ -18,11 +18,17 @@ Started: 2026-10-14 (America/Chicago).
 ## Current status
 
 Build/tool setup completed; GitHub browser authentication and branch publication succeeded. The first file audit
-(`Roth/HasseDeriv.lean`, 26 declarations) is in progress. The first eight declarations,
-through `MvPolynomial.hasseDeriv_zero_apply`, have completed their audits and
-validation; 8 of 264 declarations reviewed, including four
+(`Roth/HasseDeriv.lean`, 26 declarations) is in progress. The first nine declarations,
+through `MvPolynomial.hasseDeriv_zero`, have completed their audits and
+validation; 9 of 264 declarations reviewed, including four
 with deferred API proposals. File-level final
 review and profiling remain pending.
+
+Session handover checkpoint: stop before the tenth declaration while the controlling
+session is transferred. Resume with `MvPolynomial.hasseDeriv_C` in `Roth/HasseDeriv.lean`,
+using the same sequential declaration validation/commit/push workflow. The first nine
+reviews are complete; the file and project cleanup are not complete. No build or
+source edit remains in flight at this checkpoint.
 
 The first `lake build` installed Lean v4.34.0 and fetched the pinned dependencies.
 It was deliberately interrupted during dependency compilation to fetch mathlib's
@@ -76,7 +82,7 @@ Files will be processed in dependency order; declarations within each file are s
 
 | File | Initial lines | Status |
 | --- | ---: | --- |
-| `Roth/HasseDeriv.lean` | 329 | In progress: 8/26 declarations reviewed |
+| `Roth/HasseDeriv.lean` | 329 | In progress: 9/26 declarations reviewed; next `hasseDeriv_C` |
 | `Roth/Box.lean` | 128 | Awaiting cleanup |
 | `Roth/Wronskian.lean` | 271 | Awaiting cleanup |
 | `Roth/Taylor.lean` | 239 | Awaiting cleanup |
@@ -103,6 +109,7 @@ Files will be processed in dependency order; declarations within each file are s
 | `MvPolynomial.coeff_hasseDeriv` (reviewed with deferral) | Replaced an inline subtraction contradiction with `tsub_eq_iff_eq_add_of_le`; broader coefficient-type API exploration deferred | Independent proof and standard-axiom probe, module build and complete LSP passed; full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-coeff_hasseDeriv.md) |
 | `MvPolynomial.hasseCoeff_eq_prod` (reviewed with inherited deferral) | Packed the 99-column signature; used dot notation and `↦`; earlier coefficient-domain proposal remains deferred | Independent proof and standard-axiom probe, module build and complete LSP passed; full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-hasseCoeff_eq_prod.md) |
 | `MvPolynomial.hasseDeriv_zero_apply` | Reviewed; existing short coefficient proof retained, no source change justified | Standard-axiom inspection, module build and complete LSP passed; full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-hasseDeriv_zero_apply.md) |
+| `MvPolynomial.hasseDeriv_zero` | Reviewed; existing `LinearMap.ext` proof retained, no source change justified | Standard-axiom/type inspection, module build and complete LSP passed; full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-hasseDeriv_zero.md) |
 
 ## Validation and deferrals
 
@@ -122,6 +129,9 @@ Files will be processed in dependency order; declarations within each file are s
   LeanSearch returned HTTP 500. Alternative automation probes timed out; the chosen
   simp proof was independently verified and compiled in the project.
 - File-level profiling and final project verification remain pending.
+- Ninth declaration: retained identity-map proof verified by module/LSP checks,
+  standard-axiom/type inspection, full build (2,586 jobs), and separate LeanEval
+  build (2,585 jobs). Report-only checkpoint; next declaration is `hasseDeriv_C`.
 - Eighth declaration: retained proof verified by module/LSP checks, standard-axiom
   inspection, full build (2,586 jobs), and separate LeanEval build (2,585 jobs).
   A direct unfolding alternative failed in an isolated probe and was not adopted.
