@@ -144,11 +144,6 @@ theorem hasseDeriv_rename {τ : Type*} {f : σ → τ} (hf : Function.Injective 
       Finsupp.mapDomain_apply_of_injective hf, ← Finsupp.mapDomain_tsub hf]
   | add p q hp hq => simp [hp, hq]
 
-private lemma choose_mul_choose_eq (f d e : ℕ) :
-    (f + d).choose d * (f + d + e).choose e = (d + e).choose d * (f + d + e).choose (d + e) := by
-  simpa [mul_comm, ← Nat.choose_symm_add (a := d) (b := e)] using
-    (Nat.choose_mul (n := f + d + e) (k := d + e) (s := e) (Nat.le_add_left e d)).symm
-
 private lemma hasseCoeff_mul_hasseCoeff (f d e : σ →₀ ℕ) :
     hasseCoeff d (f + d) * hasseCoeff e (f + d + e) =
       hasseCoeff d (d + e) * hasseCoeff (d + e) (f + (d + e)) := by
@@ -162,7 +157,9 @@ private lemma hasseCoeff_mul_hasseCoeff (f d e : σ →₀ ℕ) :
     Finsupp.prod_of_support_subset _ Finsupp.support_add _ fun _ _ ↦ Nat.choose_zero_right _,
     ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]
   exact Finset.prod_congr rfl fun i _ ↦ by
-    simpa [← add_assoc] using choose_mul_choose_eq (f i) (d i) (e i)
+    simpa [← add_assoc, mul_comm, ← Nat.choose_symm_add (a := d i) (b := e i)] using
+      (Nat.choose_mul (n := f i + d i + e i) (k := d i + e i) (s := e i)
+        (Nat.le_add_left (e i) (d i))).symm
 
 /-- The composition rule `Δ_d Δ_e P = hasseCoeff d (d + e) • Δ_{d + e} P`, where
 `hasseCoeff d (d + e) = ∏ j, (d j + e j).choose (d j)`. See

@@ -417,4 +417,16 @@ No file-level edits needed beyond A.1, deferred because ownership/licensing is u
     `/private/tmp/roth-factorial_smul_hasseDeriv_single-leaneval.log`.
     No new proposal, rename, or unresolved worker item.
 
-Phases 5a, 5b, 6, 6.5 (independent simplify review), 6.6 (buzz profiling), and 7 remain pending after the completed declaration pass. No claim of file completion is made.
+## Final-phase checkpoint
+
+Phase 5a removed the single-use private `choose_mul_choose_eq` wrapper and used
+`Nat.choose_mul` directly at its sole caller, saving three lines. The original
+26-declaration audit trail remains intact; 25 declarations remain in the source.
+Complete LSP, module build, full `lake build` (2586 jobs) and separate
+`lake build Roth.LeanEval` (2585 jobs) all passed. Retained signatures and all
+documentation are preserved. See [the final-phase report](HasseDeriv-final.md).
+
+The rename queue is empty; project-wide Phase 5b will run after all files.
+Phase 6 cumulative code/build gates pass with the known copyright metadata warning.
+Phase 6.5 independent review, Phase 6.6 profiling, and the final report remain active;
+no file-completion claim is made at this checkpoint.

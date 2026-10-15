@@ -25,7 +25,12 @@ Build/tool setup completed; GitHub browser authentication and branch publication
 through `MvPolynomial.factorial_smul_hasseDeriv_single`, have completed their audits and
 validation; 26 of 264 declarations reviewed. Optional API proposals are recorded
 below and remain unapplied. File-level final
-review and profiling remain pending.
+review and profiling remain pending. The file-level internal refactor removes the
+single-use private `choose_mul_choose_eq` wrapper and specializes `Nat.choose_mul`
+directly at its sole caller. This reduces the source from 291 to 288 lines; all
+retained signatures and documentation are preserved. Module, complete LSP, full
+project and separate LeanEval gates passed for this refactor; independent review
+and profiling are active. See [final-phase report](cleanup/HasseDeriv-final.md).
 
 Cleanup resumed: the user revoked the controlling-session handover hold. The
 fully validated twenty-sixth checkpoint is complete. File-level refactoring, cumulative
