@@ -89,7 +89,7 @@ theorem coeff_hasseDeriv (d e : σ →₀ ℕ) (P : MvPolynomial σ R) :
     by_cases hk : k = e + d
     · simp [hk]
     by_cases hdk : d ≤ k
-    · simp [hk, show k - d ≠ e by rintro rfl; exact hk (tsub_add_cancel_of_le hdk).symm]
+    · simp [hk, tsub_eq_iff_eq_add_of_le hdk]
     · simp [hk, (hasseCoeff_eq_zero_iff d k).2 hdk]
   | add p q hp hq => simp [hp, hq, mul_add]
 

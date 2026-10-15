@@ -1,8 +1,9 @@
 # HasseDeriv cleanup audit
 
-Status: 5 of 26 declarations audited and validated.
+Status: 6 of 26 declarations audited and validated.
 `hasseCoeff` and `hasseCoeff_eq_zero_iff` are reviewed with their related optional
 argument-type generalization deferred for approval.
+`coeff_hasseDeriv` is reviewed with a broader coefficient-type API exploration deferred.
 The file has **not** completed all cleanup phases.
 Source: `Roth/HasseDeriv.lean`; dialect: classic imports (no `module`).
 
@@ -50,7 +51,7 @@ Body line counts include a same-line term after `:=`; names using existing camel
 | C.3 | `hasseDeriv_monomial` (theorem) | 60–62 | 2 | Full audit complete; replaced transitivity proof with terminal `simp [hasseDeriv]`; unchanged statement |
 | C.4 | `hasseDeriv_apply` (theorem) | 67–70 | 3 | Full audit complete; direct `simp [hasseDeriv, sum_def]` replaces two-tactic proof; unchanged statement |
 | C.5 | `hasseCoeff_eq_zero_iff` (theorem) | 75–77 | 3 | Reviewed with deferral: terminal simp unsqueezed and validated; related argument-type generalization deferred |
-| C.6 | `coeff_hasseDeriv` (theorem) | 84–95 | 11 | naming: descriptive, no forbidden pattern; public docstring present (OK); public: downstream users (OK); split tactic chains |
+| C.6 | `coeff_hasseDeriv` (theorem) | 84–95 | 11 | Reviewed with deferral: reused standard subtraction equivalence; broader coefficient-type API exploration deferred |
 | C.7 | `hasseCoeff_eq_prod` (theorem) | 101–103 | 2 | naming: descriptive, no forbidden pattern; public docstring present (OK); public API; inspect reuse in worker; lambda arrows → ↦ |
 | C.8 | `hasseDeriv_zero_apply` (theorem) | 108–110 | 3 | naming: descriptive, no forbidden pattern; public docstring present (OK); public: downstream users (OK); deep audit pending |
 | C.9 | `hasseDeriv_zero` (theorem) | 116–117 | 2 | naming: descriptive, no forbidden pattern; public docstring present (OK); public API; inspect reuse in worker; deep audit pending |
@@ -149,5 +150,21 @@ No file-level edits needed beyond A.1, deferred because ownership/licensing is u
    Finder/Loogle succeeded, LeanSearch returned HTTP 500. Reviewed with deferral:
    the previously proposed broader `hasseCoeff` argument would also change this
    theorem's public statement, requiring approval. It remains unapplied.
+
+   Publication: committed and pushed to `ramin-cleanup` as `2d62138`.
+
+6. `MvPolynomial.coeff_hasseDeriv`: dedicated worker complete; see
+   [the full declaration audit](HasseDeriv-coeff_hasseDeriv.md). Replaced an inline
+   subtraction contradiction with `tsub_eq_iff_eq_add_of_le hdk` in the existing
+   simp proof. The coefficient formula and documentation are unchanged. Independent
+   proof/standard-axiom probe, module build (1430 jobs), and complete LSP passed;
+   only the existing header warning remains. Full `lake build` (2586 jobs) and
+   separate `lake build Roth.LeanEval` (2585 jobs) both exited 0. Logs:
+   `/private/tmp/roth-coeff_hasseDeriv-build.log` and
+   `/private/tmp/roth-coeff_hasseDeriv-leaneval.log`.
+   Native Loogle/Finder searches succeeded; LeanSearch returned HTTP 500.
+   Reviewed with deferral: broader noncommutative-semiring or module-valued operator
+   formulations would require substantive construction/interface changes. This is
+   an unproved optional exploration, left unapplied pending approval.
 
 Phases 5a, 5b, 6, 6.5 (independent simplify review), 6.6 (buzz profiling), and 7 remain pending until every declaration is processed. No claim of file completion is made.

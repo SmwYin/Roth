@@ -18,10 +18,10 @@ Started: 2026-10-14 (America/Chicago).
 ## Current status
 
 Build/tool setup completed; GitHub browser authentication and branch publication succeeded. The first file audit
-(`Roth/HasseDeriv.lean`, 26 declarations) is in progress. The first five declarations,
-through `MvPolynomial.hasseCoeff_eq_zero_iff`, have completed their audits and
-validation; 5 of 264 declarations reviewed, including two
-affected by the same deferred generalization proposal. File-level final
+(`Roth/HasseDeriv.lean`, 26 declarations) is in progress. The first six declarations,
+through `MvPolynomial.coeff_hasseDeriv`, have completed their audits and
+validation; 6 of 264 declarations reviewed, including three
+with deferred API proposals. File-level final
 review and profiling remain pending.
 
 The first `lake build` installed Lean v4.34.0 and fetched the pinned dependencies.
@@ -76,7 +76,7 @@ Files will be processed in dependency order; declarations within each file are s
 
 | File | Initial lines | Status |
 | --- | ---: | --- |
-| `Roth/HasseDeriv.lean` | 329 | In progress: 5/26 declarations reviewed |
+| `Roth/HasseDeriv.lean` | 329 | In progress: 6/26 declarations reviewed |
 | `Roth/Box.lean` | 128 | Awaiting cleanup |
 | `Roth/Wronskian.lean` | 271 | Awaiting cleanup |
 | `Roth/Taylor.lean` | 239 | Awaiting cleanup |
@@ -100,6 +100,7 @@ Files will be processed in dependency order; declarations within each file are s
 | `MvPolynomial.hasseDeriv_monomial` | Replaced the transitivity proof with `simp [hasseDeriv]`; unchanged statement | Independent isolated proof probe, module build and complete LSP passed; full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-hasseDeriv_monomial.md) |
 | `MvPolynomial.hasseDeriv_apply` | Replaced conversion/rewrite and simp with `simp [hasseDeriv, sum_def]`; unchanged statement | Independent isolated proof probe, module build and complete LSP passed; full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-hasseDeriv_apply.md) |
 | `MvPolynomial.hasseCoeff_eq_zero_iff` (reviewed with deferral) | Unsqueezed terminal simp; removed two redundant explicit lemmas. Related argument-type generalization deferred | Independent proof and standard-axiom probe, module build and complete LSP passed; full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-hasseCoeff_eq_zero_iff.md) |
+| `MvPolynomial.coeff_hasseDeriv` (reviewed with deferral) | Replaced an inline subtraction contradiction with `tsub_eq_iff_eq_add_of_le`; broader coefficient-type API exploration deferred | Independent proof and standard-axiom probe, module build and complete LSP passed; full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-coeff_hasseDeriv.md) |
 
 ## Validation and deferrals
 
@@ -119,6 +120,11 @@ Files will be processed in dependency order; declarations within each file are s
   LeanSearch returned HTTP 500. Alternative automation probes timed out; the chosen
   simp proof was independently verified and compiled in the project.
 - File-level profiling and final project verification remain pending.
+- Sixth declaration: all module/LSP/dependent gates passed (2,586 full-build jobs and
+  2,585 separate LeanEval jobs). A noncommutative-semiring or module-valued formulation
+  would require reviewing and changing the public derivative construction and theorem
+  interface. This is an unproved optional API exploration, deferred for approval;
+  no broader result has been implemented or claimed.
 - Fifth declaration: module build, complete LSP diagnostics, full build (2,586 jobs),
   and separate LeanEval build (2,585 jobs) passed. The earlier optional generalization
   of `hasseCoeff` would also require changing this theorem's public statement; this
