@@ -140,10 +140,8 @@ theorem hasseDeriv_rename {τ : Type*} {f : σ → τ} (hf : Function.Injective 
   classical
   induction P using MvPolynomial.induction_on' with
   | monomial k a =>
-    have hc : hasseCoeff (d.mapDomain f) (k.mapDomain f) = hasseCoeff d k := by
-      simp [hasseCoeff, Finsupp.prod_mapDomain_index_inj hf,
-        Finsupp.mapDomain_apply_of_injective hf]
-    simp [rename_monomial, hc, ← Finsupp.mapDomain_tsub hf]
+    simp [rename_monomial, hasseCoeff, Finsupp.prod_mapDomain_index_inj hf,
+      Finsupp.mapDomain_apply_of_injective hf, ← Finsupp.mapDomain_tsub hf]
   | add p q hp hq => simp [hp, hq]
 
 private lemma choose_mul_choose_eq (f d e : ℕ) :
