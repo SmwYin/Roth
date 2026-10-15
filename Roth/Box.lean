@@ -45,7 +45,7 @@ noncomputable def box (r : σ → ℕ) : Finset (σ →₀ ℕ) :=
 
 /-- Membership in `box r` is the coordinatewise bound `d j ≤ r j`. Source: §6, Lemma 8. -/
 theorem mem_box {r : σ → ℕ} {d : σ →₀ ℕ} : d ∈ box r ↔ ∀ j, d j ≤ r j := by
-  simp [box, Finset.mem_map_equiv, Nat.lt_succ_iff]
+  simp [box, Nat.lt_succ_iff]
 
 /-- The box `box r` has `∏ j, (r j + 1)` elements.
 Source: §6, Lemma 9, equation (43) (`r = (r_1 + 1) ⋯ (r_m + 1)`), and §6, Lemma 8 ("the

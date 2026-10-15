@@ -24,14 +24,14 @@ Build/tool setup completed; GitHub browser authentication and branch publication
 The first file, `Roth/HasseDeriv.lean`, has completed all declaration and final review,
 build, and profiling phases, with unconfirmed copyright/license metadata remaining
 as an external limitation. All 26 original declarations were audited and validated;
-25 remain after removal of a single-use private wrapper. Progress: 26 of 264 original
+25 remain after removal of a single-use private wrapper. HasseDeriv accounts for 26 of 264 original
 declarations reviewed. Source: 329 → 288 lines (−41). Independent simplify review:
 PASS-THROUGH. Actual profiling: all 25 retained declarations under 1000ms, maximum
 597.68ms. Module, complete LSP, full project and separate LeanEval builds passed.
 See [final-phase report](cleanup/HasseDeriv-final.md) for evidence and limitations.
 
 Cleanup is active. Current file: `Roth/Box.lean`, handled by a fresh file worker.
-Box declaration 1/14 has completed its audit; overall 27/264 original declarations reviewed.
+Box declaration 2/14 has completed its audit; overall 28/264 original declarations reviewed.
 Continue sequential declaration validation, commit, and push through every remaining
 file in inventory order without waiting at file boundaries. Each file requires final
 independent review, profiling, and a full build. The project remains incomplete.
@@ -97,7 +97,7 @@ Files will be processed in dependency order; declarations within each file are s
 | File | Initial lines | Status |
 | --- | ---: | --- |
 | `Roth/HasseDeriv.lean` | 329 | All cleanup phases complete; 26/26 original declarations reviewed; copyright/license metadata unresolved |
-| `Roth/Box.lean` | 128 | In progress; 1/14 declarations reviewed |
+| `Roth/Box.lean` | 128 | In progress; 2/14 declarations reviewed |
 | `Roth/Wronskian.lean` | 271 | Awaiting cleanup |
 | `Roth/Taylor.lean` | 239 | Awaiting cleanup |
 | `Roth/CoeffNorm.lean` | 320 | Awaiting cleanup |
@@ -264,3 +264,14 @@ Publication verification for `Roth.box`: actual full `lake build` session 17861 
 (2586 jobs; `/private/tmp/roth-box-box-build.log`); separate `lake build Roth.LeanEval`
 session 96802 exited 0 (2585 jobs; `/private/tmp/roth-box-d01-leaneval.log`).
 All dependent modules pass; remaining warnings are baseline warnings tracked for their own cleanup.
+
+## Box declaration 2 checkpoint
+
+`Roth.mem_box`: removed redundant `Finset.mem_map_equiv` from the terminal simp
+argument list; statement and documentation unchanged. Complete per-declaration audit,
+module build, native full LSP, isolated proof/type/standard-axiom checks pass.
+Declaration audit: [Box-mem_box.md](cleanup/Box-mem_box.md).
+
+Publication verification for `Roth.mem_box`: full `lake build` session 29589 exited 0
+(2586 jobs; `/private/tmp/roth-box-d02-full.log`); separate `lake build Roth.LeanEval`
+session 68459 exited 0 (2585 jobs; `/private/tmp/roth-box-d02-leaneval.log`).
