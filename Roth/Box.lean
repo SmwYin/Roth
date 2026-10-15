@@ -113,15 +113,16 @@ theorem weight_mul_left {l : ℕ} (r : σ → ℕ) (d : σ →₀ ℕ) :
     weight (fun j ↦ l * r j) d = weight r d / l := by
   simp [weight, Finset.sum_div, div_div, mul_comm]
 
+omit [DecidableEq σ] in
 /-- If every parameter is at least `m`, a multi-index of total degree `w` has weight at most
 `w / m`.
 Source: §5, proof of Lemma 6 ("`∑_{j<p} i_j / r_j ≤ w / r_{p-1}`": a multi-index of total
 degree `w` has weight at most `w / min r`). -/
-theorem weight_le_degree_div {r : σ → ℕ} {m : ℕ} (hm : 0 < m) (hr : ∀ j, m ≤ r j)
-    (d : σ →₀ ℕ) : weight r d ≤ d.degree / m := by
-  rw [Finsupp.degree_eq_sum, Nat.cast_sum, Finset.sum_div]
-  exact Finset.sum_le_sum fun j _ =>
-    div_le_div_of_nonneg_left (by positivity) (by exact_mod_cast hm) (by exact_mod_cast hr j)
+theorem weight_le_degree_div {r : σ → ℕ} {m : ℕ} (hm : 0 < m) (hr : ∀ j, m ≤ r j) (d : σ →₀ ℕ) :
+    weight r d ≤ d.degree / m := by
+  rw [weight, Finsupp.degree_eq_sum, Nat.cast_sum, Finset.sum_div]
+  gcongr with j
+  exact hr j
 
 /-- Weights are invariant under an injective change of variables `f : σ → τ`.
 Source: §4, Lemma 4-2 (embedding a polynomial in fewer variables does not change the weights

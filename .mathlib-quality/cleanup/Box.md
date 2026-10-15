@@ -72,7 +72,7 @@ Proof-lambda arrows and packing are handled at the corresponding sequential decl
 
 ## Phase 4 — sequential declaration results
 
-Completed 12/14 dedicated declaration workers. Each completed declaration is fully validated,
+Completed 13/14 dedicated declaration workers. Each completed declaration is fully validated,
 committed and pushed before the next source edit.
 
 ## Concrete API proposal prepared for user decision
@@ -187,3 +187,11 @@ Complete Index LSP passes. All target gates pass; [audit](Box-weight_mul_left.md
 Publication verification: full `lake build` session 84040 exited 0 (2586 jobs;
 `/private/tmp/roth-box-d12-full.log`); separate `lake build Roth.LeanEval` session 7710
 exited 0 (2585 jobs; `/private/tmp/roth-box-d12-leaneval.log`). All affected dependents pass.
+
+Declaration 13: `Roth.weight_le_degree_div`, 5 → 5 declaration lines plus scoped omission,
+94 fewer codepoints. Unused instance removed, signature packed, gcongr proof simplified.
+All target gates pass; [audit](Box-weight_le_degree_div.md).
+
+Publication verification: full `lake build` session 46898 exited 0 (2586 jobs;
+`/private/tmp/roth-box-d13-full.log`); separate `lake build Roth.LeanEval` session 24692
+exited 0 (2585 jobs; `/private/tmp/roth-box-d13-leaneval.log`). All affected dependents pass.
