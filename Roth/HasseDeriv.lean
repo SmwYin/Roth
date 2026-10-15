@@ -188,28 +188,8 @@ theorem hasseDeriv_hasseDeriv_of_disjoint {d e : σ →₀ ℕ} (h : Disjoint d.
 private lemma hasseCoeff_mul_succ (j : σ) (d e : σ →₀ ℕ) :
     hasseCoeff d (e + Finsupp.single j 1 + d) * (e j + 1) =
       (d j + 1) * hasseCoeff (d + Finsupp.single j 1) (e + Finsupp.single j 1 + d) := by
-  classical
-  simp only [hasseCoeff]
-  set S := insert j d.support
-  have hd : d.support ⊆ S := Finset.subset_insert _ _
-  have hds : (d + Finsupp.single j 1).support ⊆ S :=
-    Finsupp.support_add.trans <| Finset.union_subset hd <|
-      Finsupp.support_single_subset.trans <| by simp [S]
-  rw [Finsupp.prod_of_support_subset _ hd _ fun _ _ => Nat.choose_zero_right _,
-    Finsupp.prod_of_support_subset _ hds _ fun _ _ => Nat.choose_zero_right _,
-    ← Finset.mul_prod_erase S _ (Finset.mem_insert_self j _),
-    ← Finset.mul_prod_erase S _ (Finset.mem_insert_self j _)]
-  have hrest : ∏ x ∈ S.erase j, ((e + Finsupp.single j 1 + d : σ →₀ ℕ) x).choose (d x) =
-      ∏ x ∈ S.erase j, ((e + Finsupp.single j 1 + d : σ →₀ ℕ) x).choose
-        ((d + Finsupp.single j 1 : σ →₀ ℕ) x) := by
-    refine Finset.prod_congr rfl fun i hi => ?_
-    simp [Finsupp.single_eq_of_ne (Finset.ne_of_mem_erase hi)]
-  rw [hrest]
-  simp only [Finsupp.add_apply, Finsupp.single_eq_same]
-  have key := Nat.choose_succ_right_eq (e j + 1 + d j) (d j)
-  rw [Nat.add_sub_cancel] at key
-  rw [mul_right_comm, ← key]
-  ring
+  simpa [hasseCoeff, add_comm, add_left_comm, add_assoc, mul_comm] using
+    hasseCoeff_mul_hasseCoeff e (Finsupp.single j 1) d
 
 /-- A partial derivative of a Hasse derivative: `∂_j Δ_d = (d j + 1) • Δ_{d + e_j}`.
 

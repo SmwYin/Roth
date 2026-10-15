@@ -18,17 +18,16 @@ Started: 2026-10-14 (America/Chicago).
 ## Current status
 
 Build/tool setup completed; GitHub browser authentication and branch publication succeeded. The first file audit
-(`Roth/HasseDeriv.lean`, 26 declarations) is in progress. The first sixteen declarations,
-through `MvPolynomial.hasseDeriv_hasseDeriv_of_disjoint`, have completed their audits and
-validation; 16 of 264 declarations reviewed. Optional API proposals are recorded
+(`Roth/HasseDeriv.lean`, 26 declarations) is in progress. The first seventeen declarations,
+through private `hasseCoeff_mul_succ`, have completed their audits and
+validation; 17 of 264 declarations reviewed. Optional API proposals are recorded
 below and remain unapplied. File-level final
 review and profiling remain pending.
 
-Controlling-session handover: hold after the fully validated sixteenth checkpoint
-at the user's request to switch from VS Code to phone access. No build, probe, or
-source edit remains in flight at this checkpoint. Resume with private
-`hasseCoeff_mul_succ` (declaration 17) in `Roth/HasseDeriv.lean`.
-After resumption, continue sequential declaration validation, commit, and push through
+Cleanup resumed: the user revoked the controlling-session handover hold. The
+fully validated seventeenth checkpoint is complete; next is
+`pderiv_hasseDeriv` (declaration 18) in `Roth/HasseDeriv.lean`.
+Continue sequential declaration validation, commit, and push through
 every remaining file in the inventory order, without waiting at file boundaries.
 Each file still requires final independent review, profiling, and a full build.
 The file and project cleanup remain incomplete; substantive proposals remain unapplied.
@@ -89,7 +88,7 @@ Files will be processed in dependency order; declarations within each file are s
 
 | File | Initial lines | Status |
 | --- | ---: | --- |
-| `Roth/HasseDeriv.lean` | 329 | In progress: 16/26 declarations reviewed; next private `hasseCoeff_mul_succ` after handover |
+| `Roth/HasseDeriv.lean` | 329 | In progress: 17/26 declarations reviewed; next `pderiv_hasseDeriv` |
 | `Roth/Box.lean` | 128 | Awaiting cleanup |
 | `Roth/Wronskian.lean` | 271 | Awaiting cleanup |
 | `Roth/Taylor.lean` | 239 | Awaiting cleanup |
@@ -125,6 +124,8 @@ Files will be processed in dependency order; declarations within each file are s
 | `MvPolynomial.hasseDeriv_hasseDeriv` | Reviewed; original ordered coefficient/cast rewrites retained | Isolated original proof/type/axioms, module build and complete direct-client LSP passed; full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-hasseDeriv_hasseDeriv.md) |
 | `MvPolynomial.hasseDeriv_hasseDeriv_of_disjoint` | Inlined the single-use coefficient-equals-one fact in the composition rewrite | Isolated proof/type/axioms, module build and complete direct-client LSP passed; full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-hasseDeriv_hasseDeriv_of_disjoint.md) |
 
+| Private `hasseCoeff_mul_succ` | Replaced 22 proof lines with a two-line specialization of the coefficient composition identity | Independent original/final proof, type and standard-axiom checks, module build, complete LSP, full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-hasseCoeff_mul_succ.md) |
+
 ## Validation and deferrals
 
 - `lake exe cache get`: exit 0; 8,908 cached dependency files downloaded/decompressed.
@@ -142,6 +143,9 @@ Files will be processed in dependency order; declarations within each file are s
   builds passed (2,586 and 2,585 jobs). Native Loogle and LeanFinder succeeded;
   LeanSearch returned HTTP 500. Alternative automation probes timed out; the chosen
   simp proof was independently verified and compiled in the project.
+- Seventeenth declaration: all audit and worker gates passed; full `lake build`
+  (2,586 jobs) and separate `lake build Roth.LeanEval` (2,585 jobs) exited 0.
+  The exact statement is preserved and no new proposal or rename is deferred.
 - File-level profiling and final project verification remain pending.
 - Sixteenth declaration: proof/type/axioms, module/direct-client LSP, full build
   (2,586 jobs), and separate LeanEval build (2,585 jobs) passed. The three-line proof
