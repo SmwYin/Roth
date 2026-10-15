@@ -251,12 +251,10 @@ theorem hasseDeriv_single_aeval_X (j : σ) (n : ℕ) (f : Polynomial R) :
     hasseDeriv (Finsupp.single j n) (Polynomial.aeval (X j : MvPolynomial σ R) f) =
       Polynomial.aeval (X j : MvPolynomial σ R) (Polynomial.hasseDeriv n f) := by
   induction f using Polynomial.induction_on' with
-  | add p q hp hq => simp only [map_add, hp, hq]
+  | add p q hp hq => simp [hp, hq]
   | monomial m a =>
-    have hc : hasseCoeff (Finsupp.single j n) (Finsupp.single j m) = m.choose n := by
-      simp [hasseCoeff, Finsupp.prod_single_index]
-    simp only [Polynomial.hasseDeriv_monomial, Polynomial.aeval_monomial, algebraMap_eq,
-      X_pow_eq_monomial, C_mul_monomial, mul_one, hasseDeriv_monomial, hc, Finsupp.single_tsub]
+    simp [-map_natCast, X_pow_eq_monomial, C_mul_monomial, hasseCoeff, Finsupp.single_tsub,
+      mul_assoc]
 
 /-- For a single variable, `hasseDeriv` corresponds to `Polynomial.hasseDeriv` under
 `MvPolynomial.uniqueAlgEquiv`.
