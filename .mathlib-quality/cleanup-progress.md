@@ -21,15 +21,15 @@ Started: 2026-10-14 (America/Chicago).
 ## Current status
 
 Build/tool setup completed; GitHub browser authentication and branch publication succeeded. The first file audit
-(`Roth/HasseDeriv.lean`, 26 declarations) is in progress. The first twenty-one declarations,
-through private `hasseDeriv_monomial_mul`, have completed their audits and
-validation; 21 of 264 declarations reviewed. Optional API proposals are recorded
+(`Roth/HasseDeriv.lean`, 26 declarations) is in progress. The first twenty-two declarations,
+through `MvPolynomial.hasseDeriv_mul_of_degreeOf_eq_zero`, have completed their audits and
+validation; 22 of 264 declarations reviewed. Optional API proposals are recorded
 below and remain unapplied. File-level final
 review and profiling remain pending.
 
 Cleanup resumed: the user revoked the controlling-session handover hold. The
-fully validated twenty-first checkpoint is complete; next is
-`hasseDeriv_mul_of_degreeOf_eq_zero` (declaration 22) in `Roth/HasseDeriv.lean`.
+fully validated twenty-second checkpoint is complete; next is
+`hasseDeriv_single_aeval_X` (declaration 23) in `Roth/HasseDeriv.lean`.
 Continue sequential declaration validation, commit, and push through
 every remaining file in the inventory order, without waiting at file boundaries.
 Each file still requires final independent review, profiling, and a full build.
@@ -91,7 +91,7 @@ Files will be processed in dependency order; declarations within each file are s
 
 | File | Initial lines | Status |
 | --- | ---: | --- |
-| `Roth/HasseDeriv.lean` | 329 | In progress: 21/26 declarations reviewed; next `hasseDeriv_mul_of_degreeOf_eq_zero` |
+| `Roth/HasseDeriv.lean` | 329 | In progress: 22/26 declarations reviewed; next `hasseDeriv_single_aeval_X` |
 | `Roth/Box.lean` | 128 | Awaiting cleanup |
 | `Roth/Wronskian.lean` | 271 | Awaiting cleanup |
 | `Roth/Taylor.lean` | 239 | Awaiting cleanup |
@@ -136,6 +136,8 @@ Files will be processed in dependency order; declarations within each file are s
 | `MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt` | Used mathlib support exclusion directly, removing the single-use local contradiction | Isolated proof/type/standard-axiom checks, module build, complete LSP, full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-hasseDeriv_eq_zero_of_degreeOf_lt.md) |
 
 | Private `hasseDeriv_monomial_mul` | Inlined coefficient identity, simplified support cases, and replaced ring normalization with simp; two lines removed | Isolated proof/type/standard-axiom checks, module build, complete native LSP, full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-hasseDeriv_monomial_mul.md) |
+
+| `MvPolynomial.hasseDeriv_mul_of_degreeOf_eq_zero` | Inlined the support-degree fact and standardized lambdas; four proof lines reduced to three | Isolated proof/type/standard-axiom checks, module build, complete native LSP, full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-hasseDeriv_mul_of_degreeOf_eq_zero.md) |
 
 ## Validation and deferrals
 

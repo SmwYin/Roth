@@ -239,10 +239,9 @@ private lemma hasseDeriv_monomial_mul {d a : σ →₀ ℕ} (ha : ∀ j ∈ d.su
 Source: §2, proof of Lemma 2. -/
 theorem hasseDeriv_mul_of_degreeOf_eq_zero {d : σ →₀ ℕ} {f g : MvPolynomial σ R}
     (hf : ∀ j ∈ d.support, degreeOf j f = 0) : hasseDeriv d (f * g) = f * hasseDeriv d g := by
-  have ha : ∀ a ∈ f.support, ∀ j ∈ d.support, a j = 0 := fun a ha j hj =>
-    Nat.eq_zero_of_le_zero (hf j hj ▸ monomial_le_degreeOf j ha)
   rw [f.as_sum, Finset.sum_mul, Finset.sum_mul, map_sum]
-  exact Finset.sum_congr rfl fun a haf => hasseDeriv_monomial_mul (ha a haf) _ _
+  exact Finset.sum_congr rfl fun a haf ↦ hasseDeriv_monomial_mul
+    (fun j hj ↦ Nat.eq_zero_of_le_zero (hf j hj ▸ monomial_le_degreeOf j haf)) _ _
 
 /-- The operator `Δ_{n e_j}` restricted to polynomials in the single variable `X j` is the
 univariate Hasse derivative `Polynomial.hasseDeriv n`.
