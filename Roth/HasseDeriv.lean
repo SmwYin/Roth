@@ -146,10 +146,8 @@ theorem hasseDeriv_rename {τ : Type*} {f : σ → τ} (hf : Function.Injective 
 
 private lemma choose_mul_choose_eq (f d e : ℕ) :
     (f + d).choose d * (f + d + e).choose e = (d + e).choose d * (f + d + e).choose (d + e) := by
-  have h := Nat.choose_mul (n := f + d + e) (k := d + e) (s := e) (by omega)
-  rw [show f + d + e - e = f + d by omega, show d + e - e = d by omega,
-    ← Nat.choose_symm_of_eq_add (show d + e = d + e from rfl)] at h
-  rw [mul_comm, ← h, mul_comm]
+  simpa [mul_comm, ← Nat.choose_symm_add (a := d) (b := e)] using
+    (Nat.choose_mul (n := f + d + e) (k := d + e) (s := e) (Nat.le_add_left e d)).symm
 
 private lemma hasseCoeff_mul_hasseCoeff (f d e : σ →₀ ℕ) :
     hasseCoeff d (f + d) * hasseCoeff e (f + d + e) =

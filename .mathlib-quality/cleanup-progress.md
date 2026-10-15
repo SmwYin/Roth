@@ -18,9 +18,9 @@ Started: 2026-10-14 (America/Chicago).
 ## Current status
 
 Build/tool setup completed; GitHub browser authentication and branch publication succeeded. The first file audit
-(`Roth/HasseDeriv.lean`, 26 declarations) is in progress. The first twelve declarations,
-through `MvPolynomial.hasseDeriv_rename`, have completed their audits and
-validation; 12 of 264 declarations reviewed, including seven
+(`Roth/HasseDeriv.lean`, 26 declarations) is in progress. The first thirteen declarations,
+through private `choose_mul_choose_eq`, have completed their audits and
+validation; 13 of 264 declarations reviewed, including seven
 with deferred API proposals. File-level final
 review and profiling remain pending.
 
@@ -28,7 +28,7 @@ Active cleanup resumed at the user's request after the ninth checkpoint. Continu
 sequential declaration validation, commit, and push through every remaining file in
 the inventory order below, without waiting for a new prompt at file boundaries.
 Each file still requires its final independent review, profiling, and full build.
-Next declaration: private `choose_mul_choose_eq`. The file and project cleanup remain
+Next declaration: private `hasseCoeff_mul_hasseCoeff`. The file and project cleanup remain
 incomplete; optional substantive proposals remain unapplied.
 
 The first `lake build` installed Lean v4.34.0 and fetched the pinned dependencies.
@@ -83,7 +83,7 @@ Files will be processed in dependency order; declarations within each file are s
 
 | File | Initial lines | Status |
 | --- | ---: | --- |
-| `Roth/HasseDeriv.lean` | 329 | In progress: 12/26 declarations reviewed; next private `choose_mul_choose_eq` |
+| `Roth/HasseDeriv.lean` | 329 | In progress: 13/26 declarations reviewed; next private `hasseCoeff_mul_hasseCoeff` |
 | `Roth/Box.lean` | 128 | Awaiting cleanup |
 | `Roth/Wronskian.lean` | 271 | Awaiting cleanup |
 | `Roth/Taylor.lean` | 239 | Awaiting cleanup |
@@ -114,6 +114,7 @@ Files will be processed in dependency order; declarations within each file are s
 | `MvPolynomial.hasseDeriv_C` (reviewed with optional deferral) | Existing clear rw/simp proof retained; a broader public vanishing lemma is an unnecessary, unimplemented API idea | Isolated original-proof and standard-axiom checks, module build and complete LSP passed; full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-hasseDeriv_C.md) |
 | `MvPolynomial.hasseDeriv_map` (reviewed with optional deferral) | Existing ext/simp proof retained; optional additive coefficient-map API deferred | Isolated original proof/type/axioms, module build and complete LSP passed; full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-hasseDeriv_map.md) |
 | `MvPolynomial.hasseDeriv_rename` (reviewed with optional deferral) | Inlined single-use coefficient transport, removing two proof lines; support-specific API variant deferred | Isolated proof/type/axioms, module build and complete LSP passed; full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-hasseDeriv_rename.md) |
+| Private `choose_mul_choose_eq` | Replaced four-line arithmetic proof with two-line library specialization; removed three `omega` calls | Isolated proof/type/axioms, module build and complete LSP passed; full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-choose_mul_choose_eq.md) |
 
 ## Validation and deferrals
 
@@ -133,6 +134,10 @@ Files will be processed in dependency order; declarations within each file are s
   LeanSearch returned HTTP 500. Alternative automation probes timed out; the chosen
   simp proof was independently verified and compiled in the project.
 - File-level profiling and final project verification remain pending.
+- Thirteenth declaration: proof/type/axioms, module/LSP, full build (2,586 jobs), and
+  separate LeanEval build (2,585 jobs) passed. Removing the now-small private wrapper
+  is a file-level review candidate; no user-approval requirement is inferred solely
+  from this minor structural possibility. Its name may aid the following proof.
 - Twelfth declaration: proof/type/axioms, module/LSP, full build (2,586 jobs), and
   separate LeanEval build (2,585 jobs) passed. Global injectivity is necessary for
   the stated theorem; a support-specific variant would need a different public
