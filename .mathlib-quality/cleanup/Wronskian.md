@@ -34,7 +34,7 @@ Every public declaration has an existing docstring, preserved. Private helpers h
 | # | Declaration | Original lines | Decl length | Status |
 |---|---|---|---|---|
 | 1 | `wronskianMatrix` | 54–55 | 2 | validated; [audit](Wronskian-wronskianMatrix.md) |
-| 2 | `wronskian` | 58–58 | 1 | pending |
+| 2 | `wronskian` | 58–58 | 1 | validated; [audit](Wronskian-wronskian.md) |
 | 3 | `wronskian_eq_zero_of_not_linearIndependent` | 63–70 | 8 | pending |
 | 4 | `det_choose_eq` | 77–92 | 16 | pending |
 | 5 | `sum_range_card_le_sum` | 94–104 | 11 | pending |
@@ -52,3 +52,7 @@ Every public declaration has an existing docstring, preserved. Private helpers h
 ## Declaration 1 checkpoint
 
 `wronskianMatrix`: Normalized lambda arrow and removed redundant explicit Fin-to-Nat ascription; original definition verified by rfl, API retained. All worker gates pass; full `lake build` session77119 and separate `lake build Roth.LeanEval` session65973 exited0. Logs `/private/tmp/roth-wronskian-d1-full.log` and `...-leaneval.log`.
+
+## Declaration 2 checkpoint
+
+`wronskian`: Definition already minimal, retained unchanged; complete dedicated audit and definitional equality/type checks passed. All worker gates pass; full `lake build` session73364 and separate `lake build Roth.LeanEval` session97956 exited0. Logs `/private/tmp/roth-wronskian-d2-full.log` and `...-leaneval.log`.
