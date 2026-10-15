@@ -75,21 +75,18 @@ Source: §2, first lemma ("`det (d_ν choose μ) = ∏_{i<j} (d_j - d_i) / ∏ �
 degree `μ` and leading coefficient `1/μ!`, so its evaluation determinant is the Vandermonde
 determinant multiplied by `∏ 1/μ!`"). -/
 theorem det_choose_eq [CharZero K] (d : Fin l → ℕ) :
-    (Matrix.of fun μ ν : Fin l => ((d ν).choose μ : K)).det =
+    (Matrix.of fun μ ν : Fin l ↦ ((d ν).choose μ : K)).det =
       (∏ μ : Fin l, ((μ : ℕ).factorial : K)⁻¹) *
         ∏ i : Fin l, ∏ j ∈ Finset.Ioi i, ((d j : K) - d i) := by
-  have h1 : (Matrix.of fun μ ν : Fin l => ((d ν).choose μ : K)) =
-      Matrix.of fun μ ν : Fin l => ((μ : ℕ).factorial : K)⁻¹ *
-        (Matrix.of fun μ' ν' : Fin l => (descPochhammer K μ').eval (d ν' : K)) μ ν := by
+  have h1 : (Matrix.of fun μ ν : Fin l ↦ ((d ν).choose μ : K)) =
+      Matrix.of fun μ ν : Fin l ↦ ((μ : ℕ).factorial : K)⁻¹ *
+        (Matrix.of fun i j : Fin l ↦ (descPochhammer K j).eval (d i : K)).transpose μ ν := by
     ext μ ν
     simp [Nat.cast_choose_eq_descPochhammer_div, div_eq_inv_mul]
-  have h2 : Matrix.transpose (Matrix.of fun μ ν : Fin l => (descPochhammer K μ).eval (d ν : K)) =
-      Matrix.of fun i j : Fin l => (descPochhammer K j).eval (d i : K) :=
-    rfl
-  rw [h1, Matrix.det_mul_column, ← Matrix.det_transpose, h2,
-    ← Matrix.det_eval_matrixOfPolynomials_eq_det_vandermonde (fun i => (d i : K))
-      (fun j => descPochhammer K j) (fun i => descPochhammer_natDegree K _)
-      (fun i => monic_descPochhammer K _), Matrix.det_vandermonde]
+  rw [h1, Matrix.det_mul_column, Matrix.det_transpose,
+    ← Matrix.det_eval_matrixOfPolynomials_eq_det_vandermonde (fun i ↦ (d i : K))
+      (fun j ↦ descPochhammer K j) (fun i ↦ descPochhammer_natDegree K _)
+      (fun i ↦ monic_descPochhammer K _), Matrix.det_vandermonde]
 
 private lemma sum_range_card_le_sum (S : Finset ℕ) :
     ∑ k ∈ Finset.range S.card, k ≤ ∑ x ∈ S, x := by

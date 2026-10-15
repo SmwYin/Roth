@@ -35,7 +35,7 @@ All 14 declarations retained and reviewed; overall 40/264 original declarations 
 Box source 128 → 126 lines; independent simplify finding fixed (two redundant imports),
 final module/full/LeanEval and complete LSP gates pass. Actual profiling: all 14 below 1000ms,
 maximum 196.39ms. See [Box final report](cleanup/Box-final.md).
-Active file: `Roth/Wronskian.lean`; 3/15 original declarations reviewed and validated. Overall 43/264 original declarations reviewed. File-level final phases remain pending.
+Active file: `Roth/Wronskian.lean`; 4/15 original declarations reviewed and validated. Overall 44/264 original declarations reviewed. File-level final phases remain pending.
 Continue sequential declaration validation, commit, and push through every remaining
 file in inventory order without waiting at file boundaries. Each file requires final
 independent review, profiling, and a full build. The project remains incomplete.
@@ -450,3 +450,7 @@ ownership to the orchestrator for dispatch of the next fresh Wronskian worker.
 ## Wronskian declaration 3 checkpoint
 
 `Roth.wronskian_eq_zero_of_not_linearIndependent`: Packed signature, normalized two lambdas and removed redundant Nat ascription; direct determinant proof and contract preserved,8lines retained. [Full declaration audit](cleanup/Wronskian-wronskian_eq_zero_of_not_linearIndependent.md). Module, complete LSP, isolated type/axiom and diff gates pass. Publication validation: full `lake build` session22706 exit0; separate `lake build Roth.LeanEval` session1146 exit0. Logs `/private/tmp/roth-wronskian-d3-full.log` and `...-leaneval.log`.
+
+## Wronskian declaration 4 checkpoint
+
+`Roth.det_choose_eq`: Oriented the scaling equality toward the transposed evaluation matrix, removed redundant h2 and normalized lambdas; declaration16→13lines, statement preserved. [Full declaration audit](cleanup/Wronskian-det_choose_eq.md). Module, complete LSP, isolated type/axiom and diff gates pass. Publication validation: full `lake build` session6371 exit0; separate `lake build Roth.LeanEval` session37787 exit0. Logs `/private/tmp/roth-wronskian-d4-full.log` and `...-leaneval.log`.
