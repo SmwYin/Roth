@@ -1,6 +1,6 @@
 # HasseDeriv cleanup audit
 
-Status: 1 of 26 declarations audited and validated; first checkpoint ready for publication.
+Status: 2 of 26 declarations audited and validated; second checkpoint ready for publication.
 The file has **not** completed all cleanup phases.
 Source: `Roth/HasseDeriv.lean`; dialect: classic imports (no `module`).
 
@@ -91,6 +91,17 @@ No file-level edits needed beyond A.1, deferred because ownership/licensing is u
    A scratch probe compiled, but this would change the public argument type and is not
    needed for the current cleanup. No such change was applied.
 
-   Publication: pending parent checkpoint; do not advance until its push succeeds.
+   Publication: committed and pushed to `ramin-cleanup` as `f234f0e`.
+
+2. `MvPolynomial.hasseDeriv`: dedicated worker complete; see
+   [the full declaration audit](HasseDeriv-hasseDeriv.md). Changed only the lambda arrow
+   `=>` to `↦`, with compiled `rfl` equivalence and unchanged name, signature, and
+   construction. Module build passed (1430 jobs); fresh LSP completed with no errors
+   and only the existing header warning. Full `lake build` passed (2586 jobs), as did
+   `lake build Roth.LeanEval` (2585 jobs); logs:
+   `/private/tmp/roth-hasseDeriv-build.log`, `/private/tmp/roth-hasseDeriv-leaneval.log`.
+   Local search and literature lookup succeeded. Remote MCP searches failed DNS and
+   the escalated retry was interrupted while awaiting approval; their unavailability
+   is recorded without claiming mathematical absence. No substantive refactor proposed.
 
 Phases 5a, 5b, 6, 6.5 (independent simplify review), 6.6 (buzz profiling), and 7 remain pending until every declaration is processed. No claim of file completion is made.

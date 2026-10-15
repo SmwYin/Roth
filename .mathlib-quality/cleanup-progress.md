@@ -14,7 +14,9 @@ Started: 2026-10-14 (America/Chicago).
 ## Current status
 
 Build/tool setup completed; GitHub browser authentication and branch publication succeeded. The first file audit
-(`Roth/HasseDeriv.lean`, 26 declarations) is in progress. The first declaration, `MvPolynomial.hasseCoeff`, has completed its declaration audit and validation; 1 of 264 declarations reviewed. File-level final review and profiling remain pending.
+(`Roth/HasseDeriv.lean`, 26 declarations) is in progress. `MvPolynomial.hasseCoeff` and
+`MvPolynomial.hasseDeriv` have completed their declaration audits and validation;
+2 of 264 declarations reviewed. File-level final review and profiling remain pending.
 
 The first `lake build` installed Lean v4.34.0 and fetched the pinned dependencies.
 It was deliberately interrupted during dependency compilation to fetch mathlib's
@@ -65,7 +67,7 @@ Files will be processed in dependency order; declarations within each file are s
 
 | File | Initial lines | Status |
 | --- | ---: | --- |
-| `Roth/HasseDeriv.lean` | 329 | In progress: 1/26 declarations reviewed |
+| `Roth/HasseDeriv.lean` | 329 | In progress: 2/26 declarations reviewed |
 | `Roth/Box.lean` | 128 | Awaiting cleanup |
 | `Roth/Wronskian.lean` | 271 | Awaiting cleanup |
 | `Roth/Taylor.lean` | 239 | Awaiting cleanup |
@@ -85,6 +87,7 @@ Files will be processed in dependency order; declarations within each file are s
 | Declaration | Change | Validation | Report |
 | --- | --- | --- | --- |
 | `MvPolynomial.hasseCoeff` | Eta-reduced the defining function; unchanged signature and mathematical meaning | Definitional equality by `rfl`; complete LSP diagnostics, zero errors; full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-hasseCoeff.md) |
+| `MvPolynomial.hasseDeriv` | Used `↦` for the mathematical lambda; unchanged construction and signature | Definitional equality by `rfl`; module build and complete LSP diagnostics passed; full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-hasseDeriv.md) |
 
 ## Validation and deferrals
 
@@ -94,5 +97,9 @@ Files will be processed in dependency order; declarations within each file are s
 - Lean LSP diagnostics on `Roth/Box.lean`: complete, 0 errors, 21 existing warnings.
 - Source `sorry` scan: passed (14 files, zero findings).
 - First declaration: post-edit LSP diagnostics completed, zero errors and the existing header warning. Full downstream builds passed (2,586 jobs and 2,585 jobs respectively). Its equivalence and axiom probes passed; see the declaration audit.
+- Second declaration: module build, fresh complete LSP diagnostics, equivalence/axiom
+  probes, and both downstream builds passed. The existing header warning remains.
+  Local searches and literature lookup succeeded; remote MCP searches failed DNS and
+  their permission-dependent retry was interrupted. No remote absence claim is made.
 - Deferred: a possible generalization of `hasseCoeff` from finitely supported `k` to an arbitrary function was tested but not applied because it changes the public definition signature.
 - File-level profiling and final project verification remain pending.

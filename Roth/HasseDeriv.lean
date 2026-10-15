@@ -49,7 +49,7 @@ def hasseCoeff (d k : σ →₀ ℕ) : ℕ := d.prod fun j ↦ (k j).choose
 
 Source: §1, definition of `Δ_i` on monomials. -/
 noncomputable def hasseDeriv (d : σ →₀ ℕ) : MvPolynomial σ R →ₗ[R] MvPolynomial σ R :=
-  Finsupp.lsum R (fun k : σ →₀ ℕ =>
+  Finsupp.lsum R (fun k : σ →₀ ℕ ↦
       (monomial (k - d)).comp (LinearMap.lsmul R R (hasseCoeff d k : R))) ∘ₗ
     (AddMonoidAlgebra.coeffLinearEquiv R).toLinearMap
 
