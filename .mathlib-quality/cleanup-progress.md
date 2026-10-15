@@ -31,7 +31,7 @@ PASS-THROUGH. Actual profiling: all 25 retained declarations under 1000ms, maxim
 See [final-phase report](cleanup/HasseDeriv-final.md) for evidence and limitations.
 
 Cleanup is active. Current file: `Roth/Box.lean`, handled by a fresh file worker.
-Box declaration 9/14 has completed its audit; overall 35/264 original declarations reviewed.
+Box declaration 10/14 has completed its audit; overall 36/264 original declarations reviewed.
 Continue sequential declaration validation, commit, and push through every remaining
 file in inventory order without waiting at file boundaries. Each file requires final
 independent review, profiling, and a full build. The project remains incomplete.
@@ -97,7 +97,7 @@ Files will be processed in dependency order; declarations within each file are s
 | File | Initial lines | Status |
 | --- | ---: | --- |
 | `Roth/HasseDeriv.lean` | 329 | All cleanup phases complete; 26/26 original declarations reviewed; copyright/license metadata unresolved |
-| `Roth/Box.lean` | 128 | In progress; 9/14 declarations reviewed |
+| `Roth/Box.lean` | 128 | In progress; 10/14 declarations reviewed |
 | `Roth/Wronskian.lean` | 271 | Awaiting cleanup |
 | `Roth/Taylor.lean` | 239 | Awaiting cleanup |
 | `Roth/CoeffNorm.lean` | 320 | Awaiting cleanup |
@@ -361,3 +361,13 @@ proof/docstring/conclusion retained. All target gates pass.
 Publication verification: full `lake build` session 2639 exited 0 (2586 jobs;
 `/private/tmp/roth-box-d09-full.log`); separate `lake build Roth.LeanEval` session 25122
 exited 0 (2585 jobs; `/private/tmp/roth-box-d09-leaneval.log`). All affected dependents pass.
+
+## Box declaration 10 checkpoint
+
+`Roth.weight_single`: approved unused DecidableEq removed and classical reasoning
+localized to the proof. Packed its signature to one 97-character line; original simp
+proof retained. All target gates pass. [Declaration audit](cleanup/Box-weight_single.md).
+
+Publication verification: full `lake build` session 41056 exited 0 (2586 jobs;
+`/private/tmp/roth-box-d10-full.log`); separate `lake build Roth.LeanEval` session 58453
+exited 0 (2585 jobs; `/private/tmp/roth-box-d10-leaneval.log`). All affected dependents pass.

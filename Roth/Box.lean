@@ -91,9 +91,10 @@ theorem weight_eq_zero_iff {r : σ → ℕ} (hr : ∀ j, 0 < r j) {d : σ →₀
     weight r d = 0 ↔ d = 0 := by
   simp [weight, Finset.sum_eq_zero_iff_of_nonneg, div_nonneg, (hr _).ne', Finsupp.ext_iff]
 
+omit [DecidableEq σ] in
 /-- The weight of the single multi-index `n • e_j` is `n / r j`. -/
-theorem weight_single (r : σ → ℕ) (j : σ) (n : ℕ) :
-    weight r (Finsupp.single j n) = n / r j := by
+theorem weight_single (r : σ → ℕ) (j : σ) (n : ℕ) : weight r (Finsupp.single j n) = n / r j := by
+  classical
   simp [weight, Finsupp.single_apply, ite_div]
 
 /-- A multi-index in the box `box r` has weight at most the number of variables.
