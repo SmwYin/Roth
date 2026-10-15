@@ -216,9 +216,8 @@ Source: §6, proof of Lemma 9. -/
 theorem hasseDeriv_eq_zero_of_degreeOf_lt {j : σ} {d : σ →₀ ℕ} {P : MvPolynomial σ R}
     (h : degreeOf j P < d j) : hasseDeriv d P = 0 := by
   ext e
-  have hP : e + d ∉ P.support := fun hP =>
-    (monomial_le_degreeOf j hP).not_gt (h.trans_le (by simp))
-  simp [coeff_hasseDeriv, notMem_support_iff.1 hP]
+  simp [coeff_hasseDeriv, notMem_support_iff.1
+    (notMem_support_of_degreeOf_lt j (s := e + d) (h.trans_le (by simp)))]
 
 private lemma hasseDeriv_monomial_mul {d a : σ →₀ ℕ} (ha : ∀ j ∈ d.support, a j = 0) (c : R)
     (g : MvPolynomial σ R) : hasseDeriv d (monomial a c * g) = monomial a c * hasseDeriv d g := by

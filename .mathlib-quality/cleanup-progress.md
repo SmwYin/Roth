@@ -21,15 +21,15 @@ Started: 2026-10-14 (America/Chicago).
 ## Current status
 
 Build/tool setup completed; GitHub browser authentication and branch publication succeeded. The first file audit
-(`Roth/HasseDeriv.lean`, 26 declarations) is in progress. The first nineteen declarations,
-through `MvPolynomial.degreeOf_hasseDeriv_le`, have completed their audits and
-validation; 19 of 264 declarations reviewed. Optional API proposals are recorded
+(`Roth/HasseDeriv.lean`, 26 declarations) is in progress. The first twenty declarations,
+through `MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt`, have completed their audits and
+validation; 20 of 264 declarations reviewed. Optional API proposals are recorded
 below and remain unapplied. File-level final
 review and profiling remain pending.
 
 Cleanup resumed: the user revoked the controlling-session handover hold. The
-fully validated nineteenth checkpoint is complete; next is
-`hasseDeriv_eq_zero_of_degreeOf_lt` (declaration 20) in `Roth/HasseDeriv.lean`.
+fully validated twentieth checkpoint is complete; next is
+private `hasseDeriv_monomial_mul` (declaration 21) in `Roth/HasseDeriv.lean`.
 Continue sequential declaration validation, commit, and push through
 every remaining file in the inventory order, without waiting at file boundaries.
 Each file still requires final independent review, profiling, and a full build.
@@ -91,7 +91,7 @@ Files will be processed in dependency order; declarations within each file are s
 
 | File | Initial lines | Status |
 | --- | ---: | --- |
-| `Roth/HasseDeriv.lean` | 329 | In progress: 19/26 declarations reviewed; next `hasseDeriv_eq_zero_of_degreeOf_lt` |
+| `Roth/HasseDeriv.lean` | 329 | In progress: 20/26 declarations reviewed; next private `hasseDeriv_monomial_mul` |
 | `Roth/Box.lean` | 128 | Awaiting cleanup |
 | `Roth/Wronskian.lean` | 271 | Awaiting cleanup |
 | `Roth/Taylor.lean` | 239 | Awaiting cleanup |
@@ -133,8 +133,16 @@ Files will be processed in dependency order; declarations within each file are s
 
 | `MvPolynomial.degreeOf_hasseDeriv_le` | Standardized lambda arrow and used `.trans'` for the degree comparison; unchanged statement | Isolated proof/type/standard-axiom checks, module build, complete LSP, full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-degreeOf_hasseDeriv_le.md) |
 
+| `MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt` | Used mathlib support exclusion directly, removing the single-use local contradiction | Isolated proof/type/standard-axiom checks, module build, complete LSP, full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-hasseDeriv_eq_zero_of_degreeOf_lt.md) |
+
 ## Validation and deferrals
 
+- Remote CI diagnosis supplied by the controlling agent: [run 38788900661](https://github.com/SmwYin/Roth/actions/runs/38788900661)
+  at `170ea7b` passed the Lean action. Docgen built and uploaded the documentation,
+  but GitHub Pages deployment returned HTTP 400 because the previous `d20b6d5`
+  deployment was still in progress. This was a publication-concurrency failure,
+  not a Lean compilation failure. No old deployment was rerun and no workflow was
+  changed by this cleanup worker; the controlling agent is handling publication separately.
 - `lake exe cache get`: exit 0; 8,908 cached dependency files downloaded/decompressed.
 - Baseline `lake build`: exit 0; 2,586 jobs. Full compiler output: `cleanup-baseline.log`.
 - `lake build Roth.LeanEval`: exit 0; 2,585 jobs (separate verification module).
