@@ -31,7 +31,7 @@ PASS-THROUGH. Actual profiling: all 25 retained declarations under 1000ms, maxim
 See [final-phase report](cleanup/HasseDeriv-final.md) for evidence and limitations.
 
 Cleanup is active. Current file: `Roth/Box.lean`, handled by a fresh file worker.
-Box declaration 4/14 has completed its audit; overall 30/264 original declarations reviewed.
+Box declaration 5/14 has completed its audit; overall 31/264 original declarations reviewed.
 Continue sequential declaration validation, commit, and push through every remaining
 file in inventory order without waiting at file boundaries. Each file requires final
 independent review, profiling, and a full build. The project remains incomplete.
@@ -97,7 +97,7 @@ Files will be processed in dependency order; declarations within each file are s
 | File | Initial lines | Status |
 | --- | ---: | --- |
 | `Roth/HasseDeriv.lean` | 329 | All cleanup phases complete; 26/26 original declarations reviewed; copyright/license metadata unresolved |
-| `Roth/Box.lean` | 128 | In progress; 4/14 declarations reviewed |
+| `Roth/Box.lean` | 128 | In progress; 5/14 declarations reviewed |
 | `Roth/Wronskian.lean` | 271 | Awaiting cleanup |
 | `Roth/Taylor.lean` | 239 | Awaiting cleanup |
 | `Roth/CoeffNorm.lean` | 320 | Awaiting cleanup |
@@ -310,3 +310,11 @@ Final approved-source publication verification: full `lake build` session 11996 
 `lake build Roth.LeanEval` session 35385 exited 0 (2585 jobs;
 `/private/tmp/roth-box-d04-leaneval-approved.log`). These runs supersede the earlier
 proof-only full build 90150 and verify the selected generalized signature plus all callers.
+
+## Box declaration 5 checkpoint
+
+`Roth.weight` reviewed unchanged: the one-line normalized sum and its actual signature
+(no DecidableEq argument) are appropriate for the existing API. Module/full LSP,
+independent rfl/type/standard-axiom checks pass. Full `lake build` session 76138
+and separate `lake build Roth.LeanEval` session 34164 exited 0 (2586/2585 jobs).
+[Declaration audit](cleanup/Box-weight.md).
