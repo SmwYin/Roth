@@ -263,10 +263,9 @@ Source: §1. -/
 theorem uniqueAlgEquiv_hasseDeriv [Unique σ] (n : ℕ) (P : MvPolynomial σ R) :
     uniqueAlgEquiv R σ (hasseDeriv (R := R) (Finsupp.single (default : σ) n) P) =
       Polynomial.hasseDeriv n (uniqueAlgEquiv R σ P) := by
-  obtain ⟨f, rfl⟩ := (uniqueAlgEquiv R σ).symm.surjective P
-  have hX : ∀ g : Polynomial R, (uniqueAlgEquiv R σ).symm g = Polynomial.aeval (X default) g :=
-    fun g => by rw [Polynomial.aeval_def]; rfl
-  rw [AlgEquiv.apply_symm_apply, hX, hasseDeriv_single_aeval_X, ← hX, AlgEquiv.apply_symm_apply]
+  ext m
+  rw [coeff_uniqueAlgEquiv, coeff_hasseDeriv, Polynomial.hasseDeriv_coeff, coeff_uniqueAlgEquiv]
+  simp [hasseCoeff, Finsupp.single_add]
 
 /-- The binomial factor of a Hasse derivative is at most `2 ^ (∑ j, r j)` on the box `k ≤ r`.
 

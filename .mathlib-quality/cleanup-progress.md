@@ -21,15 +21,15 @@ Started: 2026-10-14 (America/Chicago).
 ## Current status
 
 Build/tool setup completed; GitHub browser authentication and branch publication succeeded. The first file audit
-(`Roth/HasseDeriv.lean`, 26 declarations) is in progress. The first twenty-three declarations,
-through `MvPolynomial.hasseDeriv_single_aeval_X`, have completed their audits and
-validation; 23 of 264 declarations reviewed. Optional API proposals are recorded
+(`Roth/HasseDeriv.lean`, 26 declarations) is in progress. The first twenty-four declarations,
+through `MvPolynomial.uniqueAlgEquiv_hasseDeriv`, have completed their audits and
+validation; 24 of 264 declarations reviewed. Optional API proposals are recorded
 below and remain unapplied. File-level final
 review and profiling remain pending.
 
 Cleanup resumed: the user revoked the controlling-session handover hold. The
-fully validated twenty-third checkpoint is complete; next is
-`uniqueAlgEquiv_hasseDeriv` (declaration 24) in `Roth/HasseDeriv.lean`.
+fully validated twenty-fourth checkpoint is complete; next is
+`hasseCoeff_le_two_pow` (declaration 25) in `Roth/HasseDeriv.lean`.
 Continue sequential declaration validation, commit, and push through
 every remaining file in the inventory order, without waiting at file boundaries.
 Each file still requires final independent review, profiling, and a full build.
@@ -91,7 +91,7 @@ Files will be processed in dependency order; declarations within each file are s
 
 | File | Initial lines | Status |
 | --- | ---: | --- |
-| `Roth/HasseDeriv.lean` | 329 | In progress: 23/26 declarations reviewed; next `uniqueAlgEquiv_hasseDeriv` |
+| `Roth/HasseDeriv.lean` | 329 | In progress: 24/26 declarations reviewed; next `hasseCoeff_le_two_pow` |
 | `Roth/Box.lean` | 128 | Awaiting cleanup |
 | `Roth/Wronskian.lean` | 271 | Awaiting cleanup |
 | `Roth/Taylor.lean` | 239 | Awaiting cleanup |
@@ -140,6 +140,8 @@ Files will be processed in dependency order; declarations within each file are s
 | `MvPolynomial.hasseDeriv_mul_of_degreeOf_eq_zero` | Inlined the support-degree fact and standardized lambdas; four proof lines reduced to three | Isolated proof/type/standard-axiom checks, module build, complete native LSP, full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-hasseDeriv_mul_of_degreeOf_eq_zero.md) |
 
 | `MvPolynomial.hasseDeriv_single_aeval_X` | Removed local coefficient fact and unsqueezed terminal simp calls; seven proof lines reduced to five | Isolated proof/type/standard-axiom checks, module build, complete LSP, full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-hasseDeriv_single_aeval_X.md) |
+
+| `MvPolynomial.uniqueAlgEquiv_hasseDeriv` | Replaced conversion helper with direct three-line coefficient proof | Isolated proof/type/standard-axiom checks, module build, complete LSP, full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-uniqueAlgEquiv_hasseDeriv.md) |
 
 ## Validation and deferrals
 
