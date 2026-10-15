@@ -66,8 +66,7 @@ theorem hasseDeriv_monomial (d k : σ →₀ ℕ) (a : R) :
 Source: §1, definition of `Δ_i` on monomials. -/
 theorem hasseDeriv_apply (d : σ →₀ ℕ) (P : MvPolynomial σ R) :
     hasseDeriv d P = ∑ k ∈ P.support, monomial (k - d) ((hasseCoeff d k : R) * P.coeff k) := by
-  conv_lhs => rw [P.as_sum, map_sum]
-  simp
+  simp [hasseDeriv, sum_def]
 
 /-- The binomial factor `hasseCoeff d k` vanishes exactly when `d ≰ k`.
 

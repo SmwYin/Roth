@@ -1,6 +1,7 @@
 # HasseDeriv cleanup audit
 
-Status: 3 of 26 declarations audited and validated; third checkpoint ready for publication.
+Status: 4 of 26 declarations audited and validated; fourth checkpoint ready for publication.
+`hasseCoeff` is reviewed with its optional argument-type generalization deferred for approval.
 The file has **not** completed all cleanup phases.
 Source: `Roth/HasseDeriv.lean`; dialect: classic imports (no `module`).
 
@@ -46,7 +47,7 @@ Body line counts include a same-line term after `:=`; names using existing camel
 | C.1 | `hasseCoeff` (def) | 44–44 | 1 | naming: descriptive, no forbidden pattern; public docstring present (OK); public: downstream users (OK); lambda arrows → ↦ |
 | C.2 | `hasseDeriv` (def) | 51–54 | 4 | naming: descriptive, no forbidden pattern; public docstring present (OK); public: downstream users (OK); lambda arrows → ↦ |
 | C.3 | `hasseDeriv_monomial` (theorem) | 60–62 | 2 | Full audit complete; replaced transitivity proof with terminal `simp [hasseDeriv]`; unchanged statement |
-| C.4 | `hasseDeriv_apply` (theorem) | 67–70 | 3 | naming: descriptive, no forbidden pattern; public docstring present (OK); public API; inspect reuse in worker; deep audit pending |
+| C.4 | `hasseDeriv_apply` (theorem) | 67–70 | 3 | Full audit complete; direct `simp [hasseDeriv, sum_def]` replaces two-tactic proof; unchanged statement |
 | C.5 | `hasseCoeff_eq_zero_iff` (theorem) | 75–77 | 3 | naming: descriptive, no forbidden pattern; public docstring present (OK); public: downstream users (OK); inspect terminal simp only |
 | C.6 | `coeff_hasseDeriv` (theorem) | 84–95 | 11 | naming: descriptive, no forbidden pattern; public docstring present (OK); public: downstream users (OK); split tactic chains |
 | C.7 | `hasseCoeff_eq_prod` (theorem) | 101–103 | 2 | naming: descriptive, no forbidden pattern; public docstring present (OK); public API; inspect reuse in worker; lambda arrows → ↦ |
@@ -118,5 +119,19 @@ No file-level edits needed beyond A.1, deferred because ownership/licensing is u
    Native Loogle and LeanFinder succeeded; LeanSearch returned HTTP 500. Read-only
    alternative automation probes timed out; no success or failure of individual
    alternatives is inferred. The chosen proof passed all compilation gates.
+
+   Publication: committed and pushed to `ramin-cleanup` as `1bfa9f3`.
+
+4. `MvPolynomial.hasseDeriv_apply`: dedicated worker complete; see
+   [the full declaration audit](HasseDeriv-hasseDeriv_apply.md). Direct simplification
+   with `hasseDeriv` and `sum_def` replaces conversion and rewriting, removing one
+   line while preserving the statement. The independent probe excludes the target
+   and later theorems. Module build passed (1430 jobs); complete LSP found no errors
+   and only the existing header warning. Full `lake build` (2586 jobs) and separate
+   `lake build Roth.LeanEval` (2585 jobs) both exited 0. Logs:
+   `/private/tmp/roth-hasseDeriv_apply-build.log` and
+   `/private/tmp/roth-hasseDeriv_apply-leaneval.log`.
+   Finder/Loogle succeeded through the approved direct client; LeanSearch returned
+   HTTP 500. No substantive change is queued.
 
 Phases 5a, 5b, 6, 6.5 (independent simplify review), 6.6 (buzz profiling), and 7 remain pending until every declaration is processed. No claim of file completion is made.

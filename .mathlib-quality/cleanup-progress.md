@@ -10,13 +10,18 @@ Started: 2026-10-14 (America/Chicago).
 - Preserve mathematical meaning, theorem contracts, and the pinned Lean/mathlib versions.
 - Validate, commit, and push each completed declaration cleanup before proceeding.
 - No pushes to `main`, force pushes, or merges.
+- User-approved deferral policy (2026-10-15): record proposed changes that need user
+  input and why approval is needed, leave them unapplied, and continue independent
+  cleanup in declaration order. Mark those declarations reviewed with deferral.
+  Required system approvals remain mandatory.
 
 ## Current status
 
 Build/tool setup completed; GitHub browser authentication and branch publication succeeded. The first file audit
 (`Roth/HasseDeriv.lean`, 26 declarations) is in progress. `MvPolynomial.hasseCoeff`,
-`MvPolynomial.hasseDeriv`, and `MvPolynomial.hasseDeriv_monomial` have completed their
-declaration audits and validation; 3 of 264 declarations reviewed. File-level final
+`MvPolynomial.hasseDeriv`, `MvPolynomial.hasseDeriv_monomial`, and
+`MvPolynomial.hasseDeriv_apply` have completed their declaration audits and validation;
+4 of 264 declarations reviewed, including one with a deferred proposal. File-level final
 review and profiling remain pending.
 
 The first `lake build` installed Lean v4.34.0 and fetched the pinned dependencies.
@@ -71,7 +76,7 @@ Files will be processed in dependency order; declarations within each file are s
 
 | File | Initial lines | Status |
 | --- | ---: | --- |
-| `Roth/HasseDeriv.lean` | 329 | In progress: 3/26 declarations reviewed |
+| `Roth/HasseDeriv.lean` | 329 | In progress: 4/26 declarations reviewed |
 | `Roth/Box.lean` | 128 | Awaiting cleanup |
 | `Roth/Wronskian.lean` | 271 | Awaiting cleanup |
 | `Roth/Taylor.lean` | 239 | Awaiting cleanup |
@@ -90,9 +95,10 @@ Files will be processed in dependency order; declarations within each file are s
 
 | Declaration | Change | Validation | Report |
 | --- | --- | --- | --- |
-| `MvPolynomial.hasseCoeff` | Eta-reduced the defining function; unchanged signature and mathematical meaning | Definitional equality by `rfl`; complete LSP diagnostics, zero errors; full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-hasseCoeff.md) |
+| `MvPolynomial.hasseCoeff` (reviewed with deferral) | Eta-reduced the defining function; unchanged signature and mathematical meaning. Optional argument-type generalization deferred for approval | Definitional equality by `rfl`; complete LSP diagnostics, zero errors; full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-hasseCoeff.md) |
 | `MvPolynomial.hasseDeriv` | Used `↦` for the mathematical lambda; unchanged construction and signature | Definitional equality by `rfl`; module build and complete LSP diagnostics passed; full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-hasseDeriv.md) |
 | `MvPolynomial.hasseDeriv_monomial` | Replaced the transitivity proof with `simp [hasseDeriv]`; unchanged statement | Independent isolated proof probe, module build and complete LSP passed; full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-hasseDeriv_monomial.md) |
+| `MvPolynomial.hasseDeriv_apply` | Replaced conversion/rewrite and simp with `simp [hasseDeriv, sum_def]`; unchanged statement | Independent isolated proof probe, module build and complete LSP passed; full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-hasseDeriv_apply.md) |
 
 ## Validation and deferrals
 
@@ -112,3 +118,6 @@ Files will be processed in dependency order; declarations within each file are s
   LeanSearch returned HTTP 500. Alternative automation probes timed out; the chosen
   simp proof was independently verified and compiled in the project.
 - File-level profiling and final project verification remain pending.
+- Fourth declaration: module build, complete LSP diagnostics, full build (2,586 jobs),
+  and separate LeanEval build (2,585 jobs) passed. Finder/Loogle succeeded through the
+  approved direct MCP client; LeanSearch returned HTTP 500.
