@@ -18,9 +18,9 @@ Started: 2026-10-14 (America/Chicago).
 ## Current status
 
 Build/tool setup completed; GitHub browser authentication and branch publication succeeded. The first file audit
-(`Roth/HasseDeriv.lean`, 26 declarations) is in progress. The first fourteen declarations,
-through private `hasseCoeff_mul_hasseCoeff`, have completed their audits and
-validation; 14 of 264 declarations reviewed. Optional API proposals are recorded
+(`Roth/HasseDeriv.lean`, 26 declarations) is in progress. The first fifteen declarations,
+through `MvPolynomial.hasseDeriv_hasseDeriv`, have completed their audits and
+validation; 15 of 264 declarations reviewed. Optional API proposals are recorded
 below and remain unapplied. File-level final
 review and profiling remain pending.
 
@@ -28,7 +28,7 @@ Active cleanup resumed at the user's request after the ninth checkpoint. Continu
 sequential declaration validation, commit, and push through every remaining file in
 the inventory order below, without waiting for a new prompt at file boundaries.
 Each file still requires its final independent review, profiling, and full build.
-Next declaration: `MvPolynomial.hasseDeriv_hasseDeriv`. The file and project cleanup remain
+Next declaration: `MvPolynomial.hasseDeriv_hasseDeriv_of_disjoint`. The file and project cleanup remain
 incomplete; optional substantive proposals remain unapplied.
 
 The first `lake build` installed Lean v4.34.0 and fetched the pinned dependencies.
@@ -59,14 +59,18 @@ source change are committed and pushed together after validation.
 | Lean | `leanprover/lean4:v4.34.0` | Installed by elan; Lake compiled dependency modules |
 | uv | 0.13.1 | Installed; successfully installed the LSP tool and Python runtime |
 | Python for LSP | 3.12.15, uv-managed | MCP client probe runs |
-| lean-lsp-mcp | 0.31.0 | 22 native tools are now registered. Native Loogle and LeanFinder requests succeeded; LeanSearch returned HTTP 500. Direct-client local search, goal inspection, file diagnostics, and code execution also succeeded. Not all 22 tools have been individually tested. |
+| lean-lsp-mcp | 0.31.0 | 22 native tools are registered. Native Loogle/Finder and source-search fallback succeeded; LeanSearch returned HTTP 500. Native code execution could not start its server because `lake` was missing from that server's PATH. Direct-client local search, goal inspection, complete diagnostics, and code execution succeeded. Not all 22 tools have been individually tested. |
 | GitHub CLI | 2.102.0 | Browser authentication and branch push succeeded |
 | ask_chatgpt_math | Skipped | Optional, as authorized |
 
 The Lean LSP server is configured in `~/.codex/config.toml` using its absolute executable
 path. Native tools became registered during this session and native remote search was
-verified successfully. Older worker sessions can still use the tested direct stdio MCP
-client as a fallback. The first 45-second diagnostic request timed out; a retry with
+verified successfully. A later worker had native tools but native `lean_run_code`
+failed to start the server because it could not find `lake`; native local search
+returned source matches with `index=unavailable`. Registration alone therefore does
+not establish working native proof execution. The tested direct stdio MCP client
+continues to supply complete diagnostics and code execution successfully. No repair
+or restart of the native session is claimed. The first 45-second diagnostic request timed out; a retry with
 a 180-second limit completed successfully. A shutdown event-loop warning was emitted after
 the successful response and did not invalidate the diagnostics. The `lean4` and
 `mathlib-quality` skills are now discoverable. The installed workflow repositories contain
@@ -83,7 +87,7 @@ Files will be processed in dependency order; declarations within each file are s
 
 | File | Initial lines | Status |
 | --- | ---: | --- |
-| `Roth/HasseDeriv.lean` | 329 | In progress: 14/26 declarations reviewed; next `hasseDeriv_hasseDeriv` |
+| `Roth/HasseDeriv.lean` | 329 | In progress: 15/26 declarations reviewed; next `hasseDeriv_hasseDeriv_of_disjoint` |
 | `Roth/Box.lean` | 128 | Awaiting cleanup |
 | `Roth/Wronskian.lean` | 271 | Awaiting cleanup |
 | `Roth/Taylor.lean` | 239 | Awaiting cleanup |
@@ -116,6 +120,7 @@ Files will be processed in dependency order; declarations within each file are s
 | `MvPolynomial.hasseDeriv_rename` (reviewed with optional deferral) | Inlined single-use coefficient transport, removing two proof lines; support-specific API variant deferred | Isolated proof/type/axioms, module build and complete LSP passed; full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-hasseDeriv_rename.md) |
 | Private `choose_mul_choose_eq` | Replaced four-line arithmetic proof with two-line library specialization; removed three `omega` calls | Isolated proof/type/axioms, module build and complete LSP passed; full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-choose_mul_choose_eq.md) |
 | Private `hasseCoeff_mul_hasseCoeff` (reviewed with inherited deferral) | Standardized lambda arrows and simplified terminal `simpa`; existing function-domain proposal remains unapplied | Isolated proof/type/axioms, module build and complete LSP passed; full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-hasseCoeff_mul_hasseCoeff.md) |
+| `MvPolynomial.hasseDeriv_hasseDeriv` | Reviewed; original ordered coefficient/cast rewrites retained | Isolated original proof/type/axioms, module build and complete direct-client LSP passed; full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-hasseDeriv_hasseDeriv.md) |
 
 ## Validation and deferrals
 
@@ -135,6 +140,10 @@ Files will be processed in dependency order; declarations within each file are s
   LeanSearch returned HTTP 500. Alternative automation probes timed out; the chosen
   simp proof was independently verified and compiled in the project.
 - File-level profiling and final project verification remain pending.
+- Fifteenth declaration: original proof/type/axioms, module/direct-client LSP, full
+  build (2,586 jobs), and separate LeanEval build (2,585 jobs) passed. A combined simp
+  trial failed from rewrite ordering and was not adopted. Native run-code PATH
+  limitation is documented above; the verified direct client supplies the fallback.
 - Fourteenth declaration: proof/type/axioms, module/LSP, full build (2,586 jobs), and
   separate LeanEval build (2,585 jobs) passed. The twice-used support inclusion was
   retained; only notation and terminal simplification changed. Allowing an arbitrary

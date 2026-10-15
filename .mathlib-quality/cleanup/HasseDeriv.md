@@ -1,8 +1,8 @@
 # HasseDeriv cleanup audit
 
-Status: 14 of 26 declarations audited and validated.
+Status: 15 of 26 declarations audited and validated.
 User resumed active cleanup after the ninth checkpoint. Next declaration:
-`hasseDeriv_hasseDeriv` (fifteenth); continue sequentially through the full project.
+`hasseDeriv_hasseDeriv_of_disjoint` (sixteenth); continue sequentially through the full project.
 `hasseCoeff`, `hasseCoeff_eq_zero_iff`, and `hasseCoeff_eq_prod` are reviewed with their related optional
 argument-type generalization deferred for approval.
 `coeff_hasseDeriv` is reviewed with a broader coefficient-type API exploration deferred.
@@ -62,7 +62,7 @@ Body line counts include a same-line term after `:=`; names using existing camel
 | C.12 | `hasseDeriv_rename` (theorem) | 139–149 | 9 | Reviewed with optional support-specific API deferred; inlined single-use coefficient transport and removed two proof lines |
 | C.13 | `choose_mul_choose_eq` (lemma) | 151–156 | 5 | Full audit complete; two-line library specialization replaces four-line proof and all omega calls; helper retention queued for final review |
 | C.14 | `hasseCoeff_mul_hasseCoeff` (lemma) | 158–171 | 12 | Reviewed with inherited coefficient-domain proposal deferred; lambda notation and terminal simpa simplified; twice-used support fact retained |
-| C.15 | `hasseDeriv_hasseDeriv` (theorem) | 178–182 | 4 | naming: descriptive, no forbidden pattern; public docstring present (OK); public: downstream users (OK); deep audit pending |
+| C.15 | `hasseDeriv_hasseDeriv` (theorem) | 178–182 | 4 | Full audit complete; original ordered coefficient/cast rewrite proof retained |
 | C.16 | `hasseDeriv_hasseDeriv_of_disjoint` (theorem) | 188–192 | 4 | naming: descriptive, no forbidden pattern; public docstring present (OK); public: downstream users (OK); lambda arrows → ↦; scan single-use have |
 | C.17 | `hasseCoeff_mul_succ` (lemma) | 194–218 | 23 | naming: descriptive, no forbidden pattern; private: no docstring (OK); private (OK); lambda arrows → ↦; inspect terminal simp only; scan single-use have; assess descriptive helper naming |
 | C.18 | `pderiv_hasseDeriv` (theorem) | 223–231 | 8 | naming: descriptive, no forbidden pattern; public docstring present (OK); public: downstream users (OK); scan single-use have |
@@ -275,5 +275,18 @@ No file-level edits needed beyond A.1, deferred because ownership/licensing is u
     `/private/tmp/roth-hasseCoeff_mul_hasseCoeff-leaneval.log`.
     The inherited coefficient-domain generalization remains unapplied; this checkpoint
     makes no substantive definition or statement change.
+
+    Publication: committed and pushed to `ramin-cleanup` as `7df4a50`.
+
+15. `MvPolynomial.hasseDeriv_hasseDeriv`: dedicated worker complete; see
+    [the full declaration audit](HasseDeriv-hasseDeriv_hasseDeriv.md). Retained the
+    ordered rewrite proof; a combined simp trial normalized an index too early and
+    was not adopted. Original proof/type/standard-axiom checks, module build (1430 jobs),
+    and complete direct-client LSP passed. Full `lake build` (2586 jobs) and separate
+    `lake build Roth.LeanEval` (2585 jobs) both exited 0. Logs:
+    `/private/tmp/roth-hasseDeriv_hasseDeriv-build.log` and
+    `/private/tmp/roth-hasseDeriv_hasseDeriv-leaneval.log`.
+    Native run-code failed because its server could not find `lake`; the direct-client
+    fallback succeeded. The shared tooling report records this verified limitation.
 
 Phases 5a, 5b, 6, 6.5 (independent simplify review), 6.6 (buzz profiling), and 7 remain pending until every declaration is processed. No claim of file completion is made.
