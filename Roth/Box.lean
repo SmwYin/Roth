@@ -1,10 +1,8 @@
 import Mathlib.Algebra.BigOperators.Field
-import Mathlib.Algebra.BigOperators.Ring.Finset
 import Mathlib.Algebra.Order.BigOperators.Ring.Finset
 import Mathlib.Basic.Real.Basic
 import Mathlib.Data.Finsupp.Interval
 import Mathlib.Data.Finsupp.Weight
-import Mathlib.Data.Fintype.Pi
 import Mathlib.Tactic.Positivity
 
 /-!
@@ -53,7 +51,8 @@ latter is equal to the number of solutions ... `0 ≤ j_1 ≤ r_1, …`"). -/
 theorem card_box (r : σ → ℕ) : (box r).card = ∏ j, (r j + 1) := by
   simp [box]
 
-omit [DecidableEq σ] in
+omit [DecidableEq σ]
+
 /-- A finset of multi-indices bounded coordinatewise by `r` has at most `∏ j, (r j + 1)`
 elements, since it is contained in `box r`.
 Source: §3, proof of Lemma 3 ("Pad the monomial expansion of `R` by zero terms ... `N`"). -/
@@ -65,25 +64,21 @@ theorem card_le_card_box {r : σ → ℕ} {s : Finset (σ →₀ ℕ)} (hs : ∀
 /-- The weight `∑ j, d j / r j` of a multi-index. Source: §4, definition of the index. -/
 noncomputable def weight (r : σ → ℕ) (d : σ →₀ ℕ) : ℝ := ∑ j, (d j : ℝ) / r j
 
-omit [DecidableEq σ] in
 /-- Weights are nonnegative.
 Source: §4, proof of the lemma `index ≥ 0` ("Every weight `∑ i_j / r_j` is nonnegative"). -/
 theorem weight_nonneg (r : σ → ℕ) (d : σ →₀ ℕ) : 0 ≤ weight r d :=
   Fintype.sum_nonneg fun _ ↦ by positivity
 
-omit [DecidableEq σ] in
 /-- The zero multi-index has weight zero. -/
 @[simp]
 theorem weight_zero (r : σ → ℕ) : weight r 0 = 0 := by
   simp [weight]
 
-omit [DecidableEq σ] in
 /-- The weight is additive in the multi-index.
 Source: §4, proof of Lemma `index-of-derivative` (`∑ (i_j + k_j)/r_j = … + ∑ k_j/r_j`). -/
 theorem weight_add (r : σ → ℕ) (d e : σ →₀ ℕ) : weight r (d + e) = weight r d + weight r e := by
   simp [weight, add_div, Finset.sum_add_distrib]
 
-omit [DecidableEq σ] in
 /-- For positive parameters `r`, only the zero multi-index has weight zero.
 Source: §4, proof of the lemma `index = 0 ↔ P(α) ≠ 0` ("Since each `r_j > 0`, such a weight
 is zero exactly when every `i_j = 0`"). -/
@@ -91,13 +86,11 @@ theorem weight_eq_zero_iff {r : σ → ℕ} (hr : ∀ j, 0 < r j) {d : σ →₀
     weight r d = 0 ↔ d = 0 := by
   simp [weight, Finset.sum_eq_zero_iff_of_nonneg, div_nonneg, (hr _).ne', Finsupp.ext_iff]
 
-omit [DecidableEq σ] in
 /-- The weight of the single multi-index `n • e_j` is `n / r j`. -/
 theorem weight_single (r : σ → ℕ) (j : σ) (n : ℕ) : weight r (Finsupp.single j n) = n / r j := by
   classical
   simp [weight, Finsupp.single_apply, ite_div]
 
-omit [DecidableEq σ] in
 /-- A multi-index in the box `box r` has weight at most the number of variables.
 Source: §5 ("Taylor's theorem gives a nonzero derivative with `0 ≤ i_j ≤ r_j`, of weight at
 most `m`"). -/
@@ -106,14 +99,12 @@ theorem weight_le_card {r : σ → ℕ} {d : σ →₀ ℕ} (hd : ∀ j, d j ≤
   (Finset.sum_le_sum fun j _ ↦ div_le_one_of_le₀ (by exact_mod_cast hd j) (by positivity)).trans_eq
     (by simp)
 
-omit [DecidableEq σ] in
 /-- Scaling all parameters by `l` divides the weight by `l`.
 Source: §4, end ("`ind(P; α; l r) = (1/l) ind(P; α; r)`"). -/
 theorem weight_mul_left {l : ℕ} (r : σ → ℕ) (d : σ →₀ ℕ) :
     weight (fun j ↦ l * r j) d = weight r d / l := by
   simp [weight, Finset.sum_div, div_div, mul_comm]
 
-omit [DecidableEq σ] in
 /-- If every parameter is at least `m`, a multi-index of total degree `w` has weight at most
 `w / m`.
 Source: §5, proof of Lemma 6 ("`∑_{j<p} i_j / r_j ≤ w / r_{p-1}`": a multi-index of total
@@ -124,7 +115,6 @@ theorem weight_le_degree_div {r : σ → ℕ} {m : ℕ} (hm : 0 < m) (hr : ∀ j
   gcongr with j
   exact hr j
 
-omit [DecidableEq σ] in
 /-- Weights are invariant under an injective change of variables `f : σ → τ`.
 Source: §4, Lemma 4-2 (embedding a polynomial in fewer variables does not change the weights
 of its monomials). -/

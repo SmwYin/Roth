@@ -30,15 +30,20 @@ PASS-THROUGH. Actual profiling: all 25 retained declarations under 1000ms, maxim
 597.68ms. Module, complete LSP, full project and separate LeanEval builds passed.
 See [final-phase report](cleanup/HasseDeriv-final.md) for evidence and limitations.
 
-Cleanup is active. Current file: `Roth/Box.lean`, handled by a fresh file worker.
-Box declaration 14/14 has completed its audit; overall 40/264 original declarations reviewed.
+Cleanup is active. `Roth/Box.lean` has completed all declaration and final file-level phases.
+All 14 declarations retained and reviewed; overall 40/264 original declarations reviewed.
+Box source 128 → 126 lines; independent simplify finding fixed (two redundant imports),
+final module/full/LeanEval and complete LSP gates pass. Actual profiling: all 14 below 1000ms,
+maximum 196.39ms. See [Box final report](cleanup/Box-final.md).
+Next file: `Roth/Wronskian.lean`, awaiting the next fresh file worker.
 Continue sequential declaration validation, commit, and push through every remaining
 file in inventory order without waiting at file boundaries. Each file requires final
 independent review, profiling, and a full build. The project remains incomplete.
 The user declined the two optional companion bounds and chose to preserve the API;
 other speculative API explorations were assessed and closed without implementation
 at final file review. No warranted API change is awaiting approval for HasseDeriv.
-Confirmed copyright/license metadata is still needed; no metadata was invented.
+The user chose unchanged copyright/license metadata without supplying authoritative facts;
+the header warnings remain explicit, and no metadata was invented or suppressed.
 
 The first `lake build` installed Lean v4.34.0 and fetched the pinned dependencies.
 It was deliberately interrupted during dependency compilation to fetch mathlib's
@@ -97,7 +102,7 @@ Files will be processed in dependency order; declarations within each file are s
 | File | Initial lines | Status |
 | --- | ---: | --- |
 | `Roth/HasseDeriv.lean` | 329 | All cleanup phases complete; 26/26 original declarations reviewed; copyright/license metadata unresolved |
-| `Roth/Box.lean` | 128 | All 14 declarations reviewed; final file-level phases pending |
+| `Roth/Box.lean` | 128 | All cleanup phases complete; 14/14 declarations reviewed; header warning retained by user decision |
 | `Roth/Wronskian.lean` | 271 | Awaiting cleanup |
 | `Roth/Taylor.lean` | 239 | Awaiting cleanup |
 | `Roth/CoeffNorm.lean` | 320 | Awaiting cleanup |
@@ -418,3 +423,18 @@ pass; only the user-preserved Box header warning remains.
 Publication verification: full `lake build` session 56521 exited 0 (2586 jobs;
 `/private/tmp/roth-box-d14-full.log`); separate `lake build Roth.LeanEval` session 76596
 exited 0 (2585 jobs; `/private/tmp/roth-box-d14-leaneval.log`). All affected dependents pass.
+
+
+## Box final file-level checkpoint
+
+All 14 dedicated declaration audits and sequential publications are complete. Final scope
+consolidation preserves all 14 elaborated types/axioms byte-for-byte. Fresh independent
+simplify review found two redundant direct imports; both removed and validated. Final
+source 128 → 126 lines, declaration lines 41 → 39, all 14 declarations retained, all original
+comments/docs preserved. Final module 91862/full 88871/LeanEval 70480 exited 0; complete LSP
+has only the agreed metadata warning. Actual profiling 3955 passed all 14 declarations,
+maximum 196.39ms, with no limit changes or source instrumentation. Project-wide rename
+pass remains scheduled after all files; Box queues none. [Final report](cleanup/Box-final.md).
+
+The Box worker stops at this file boundary and releases source/report/shared-log/Git
+ownership to the orchestrator for dispatch of the next fresh Wronskian worker.

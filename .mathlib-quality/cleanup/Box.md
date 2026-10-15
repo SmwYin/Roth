@@ -203,3 +203,16 @@ All target gates pass; [audit](Box-weight_mapDomain.md). Only header warning rem
 Publication verification: full `lake build` session 56521 exited 0 (2586 jobs;
 `/private/tmp/roth-box-d14-full.log`); separate `lake build Roth.LeanEval` session 76596
 exited 0 (2585 jobs; `/private/tmp/roth-box-d14-leaneval.log`). All affected dependents pass.
+
+
+## Final file-level completion
+
+All 14 declarations are complete and individually pushed. Subsequent Phase 5a consolidated
+repeated unused-instance scope commands without changing any final elaborated type.
+Fresh independent holistic review identified two redundant public-reexport imports;
+both were removed and all cumulative gates rerun successfully. Final source 128 → 126 lines;
+14 declarations retained; all original docstrings/comments byte-identical.
+Final module 91862, full 88871, and separate LeanEval 70480 exited 0; complete Box LSP has
+zero errors and only the user-preserved metadata warning. Actual profiler 3955 exited 0;
+all 14 declarations below 1000ms, maximum 196.39ms. Full artifact/gate/review/timing evidence:
+[final-phase report](Box-final.md). No outstanding Box refactor/rename/approval/performance item.
