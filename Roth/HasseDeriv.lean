@@ -224,15 +224,13 @@ private lemma hasseDeriv_monomial_mul {d a : σ →₀ ℕ} (ha : ∀ j ∈ d.su
   classical
   induction g using MvPolynomial.induction_on' with
   | monomial b c' =>
-    have hc : hasseCoeff d (a + b) = hasseCoeff d b :=
-      Finset.prod_congr rfl fun j hj => by simp [ha j hj]
     have hs : a + b - d = a + (b - d) := by
       ext j
-      by_cases hj : j ∈ d.support
-      · simp [ha j hj]
-      · simp [Finsupp.notMem_support_iff.1 hj]
-    simp only [monomial_mul_monomial, hasseDeriv_monomial, hc, hs]
-    ring_nf
+      by_cases hj : j ∈ d.support <;> simp_all
+    rw [monomial_mul_monomial, hasseDeriv_monomial, hasseDeriv_monomial,
+      show hasseCoeff d (a + b) = hasseCoeff d b from
+        Finset.prod_congr rfl fun j hj ↦ by simp [ha j hj]]
+    simp [monomial_mul_monomial, hs, mul_left_comm]
   | add p q hp hq => simp [mul_add, hp, hq]
 
 /-- A factor `f` not involving any variable in the support of `d` passes through `Δ_d`:

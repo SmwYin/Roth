@@ -1,8 +1,8 @@
 # HasseDeriv cleanup audit
 
-Status: 20 of 26 declarations audited and validated.
-Active after the user's resumption: declaration twenty is complete; next is
-private `hasseDeriv_monomial_mul` (twenty-first). Continue sequentially through this file and the
+Status: 21 of 26 declarations audited and validated.
+Active after the user's resumption: declaration twenty-one is complete; next is
+`hasseDeriv_mul_of_degreeOf_eq_zero` (twenty-second). Continue sequentially through this file and the
 remaining full-project queue.
 `hasseCoeff`, `hasseCoeff_eq_zero_iff`, and `hasseCoeff_eq_prod` are reviewed with their related optional
 argument-type generalization deferred for approval.
@@ -69,7 +69,7 @@ Body line counts include a same-line term after `:=`; names using existing camel
 | C.18 | `pderiv_hasseDeriv` (theorem) | 223–231 | 8 | Reviewed with optional API deferral; direct ordered coefficient/cast rewrites remove local cast identity and arithmetic normalization |
 | C.19 | `degreeOf_hasseDeriv_le` (theorem) | 236–240 | 4 | Full original-theorem cleanup complete; lambda arrow and dot notation improved; separate stronger-bound proposal surfaced for user decision |
 | C.20 | `hasseDeriv_eq_zero_of_degreeOf_lt` (theorem) | 245–250 | 5 | Full audit complete; mathlib support-exclusion API replaces local contradiction, removing one proof line |
-| C.21 | `hasseDeriv_monomial_mul` (lemma) | 252–266 | 14 | naming: descriptive, no forbidden pattern; private: no docstring (OK); private (OK); lambda arrows → ↦; inspect terminal simp only; scan single-use have; assess descriptive helper naming |
+| C.21 | `hasseDeriv_monomial_mul` (lemma) | 252–266 | 14 | Full audit complete; inlined coefficient identity, compact support cases, terminal simp replaces ring_nf; two lines removed |
 | C.22 | `hasseDeriv_mul_of_degreeOf_eq_zero` (theorem) | 272–277 | 5 | naming: descriptive, no forbidden pattern; public docstring present (OK); public: downstream users (OK); lambda arrows → ↦; scan single-use have |
 | C.23 | `hasseDeriv_single_aeval_X` (theorem) | 283–292 | 8 | naming: descriptive, no forbidden pattern; public docstring present (OK); public: downstream users (OK); inspect terminal simp only; scan single-use have |
 | C.24 | `uniqueAlgEquiv_hasseDeriv` (theorem) | 298–304 | 6 | naming: descriptive, no forbidden pattern; public docstring present (OK); public: downstream users (OK); lambda arrows → ↦; scan single-use have; split tactic chains |
@@ -348,6 +348,17 @@ No file-level edits needed beyond A.1, deferred because ownership/licensing is u
     `lake build Roth.LeanEval` (2585 jobs) exited 0; logs
     `/private/tmp/roth-hasseDeriv_eq_zero_of_degreeOf_lt-build.log` and
     `/private/tmp/roth-hasseDeriv_eq_zero_of_degreeOf_lt-leaneval.log`.
+    No new proposal, rename, or unresolved worker item.
+
+21. Private `hasseDeriv_monomial_mul`: dedicated worker complete; see
+    [the full declaration audit](HasseDeriv-hasseDeriv_monomial_mul.md). Inlined
+    the single-use coefficient identity, simplified the support split and replaced
+    `ring_nf` with terminal `simp`, reducing fifteen declaration lines to thirteen.
+    Exact signature preserved; no new helper/import/API. Isolated proof/type/axiom,
+    module build and complete native LSP checks passed. Full `lake build` (2586 jobs)
+    and separate `lake build Roth.LeanEval` (2585 jobs) exited 0; logs
+    `/private/tmp/roth-hasseDeriv_monomial_mul-build.log` and
+    `/private/tmp/roth-hasseDeriv_monomial_mul-leaneval.log`.
     No new proposal, rename, or unresolved worker item.
 
 Phases 5a, 5b, 6, 6.5 (independent simplify review), 6.6 (buzz profiling), and 7 remain pending until every declaration is processed. No claim of file completion is made.

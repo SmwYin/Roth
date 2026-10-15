@@ -21,15 +21,15 @@ Started: 2026-10-14 (America/Chicago).
 ## Current status
 
 Build/tool setup completed; GitHub browser authentication and branch publication succeeded. The first file audit
-(`Roth/HasseDeriv.lean`, 26 declarations) is in progress. The first twenty declarations,
-through `MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt`, have completed their audits and
-validation; 20 of 264 declarations reviewed. Optional API proposals are recorded
+(`Roth/HasseDeriv.lean`, 26 declarations) is in progress. The first twenty-one declarations,
+through private `hasseDeriv_monomial_mul`, have completed their audits and
+validation; 21 of 264 declarations reviewed. Optional API proposals are recorded
 below and remain unapplied. File-level final
 review and profiling remain pending.
 
 Cleanup resumed: the user revoked the controlling-session handover hold. The
-fully validated twentieth checkpoint is complete; next is
-private `hasseDeriv_monomial_mul` (declaration 21) in `Roth/HasseDeriv.lean`.
+fully validated twenty-first checkpoint is complete; next is
+`hasseDeriv_mul_of_degreeOf_eq_zero` (declaration 22) in `Roth/HasseDeriv.lean`.
 Continue sequential declaration validation, commit, and push through
 every remaining file in the inventory order, without waiting at file boundaries.
 Each file still requires final independent review, profiling, and a full build.
@@ -73,8 +73,8 @@ verified successfully. A later worker had native tools but native `lean_run_code
 failed to start the server because it could not find `lake`; native local search
 returned source matches with `index=unavailable`. Registration alone therefore does
 not establish working native proof execution. The tested direct stdio MCP client
-continues to supply complete diagnostics and code execution successfully. No repair
-or restart of the native session is claimed. The first 45-second diagnostic request timed out; a retry with
+continues to supply complete diagnostics and code execution successfully. Native proof execution and complete diagnostics later succeeded for declaration 21;
+this records that observed recovery without claiming a configuration repair or restart. The first 45-second diagnostic request timed out; a retry with
 a 180-second limit completed successfully. A shutdown event-loop warning was emitted after
 the successful response and did not invalidate the diagnostics. The `lean4` and
 `mathlib-quality` skills are now discoverable. The installed workflow repositories contain
@@ -91,7 +91,7 @@ Files will be processed in dependency order; declarations within each file are s
 
 | File | Initial lines | Status |
 | --- | ---: | --- |
-| `Roth/HasseDeriv.lean` | 329 | In progress: 20/26 declarations reviewed; next private `hasseDeriv_monomial_mul` |
+| `Roth/HasseDeriv.lean` | 329 | In progress: 21/26 declarations reviewed; next `hasseDeriv_mul_of_degreeOf_eq_zero` |
 | `Roth/Box.lean` | 128 | Awaiting cleanup |
 | `Roth/Wronskian.lean` | 271 | Awaiting cleanup |
 | `Roth/Taylor.lean` | 239 | Awaiting cleanup |
@@ -134,6 +134,8 @@ Files will be processed in dependency order; declarations within each file are s
 | `MvPolynomial.degreeOf_hasseDeriv_le` | Standardized lambda arrow and used `.trans'` for the degree comparison; unchanged statement | Isolated proof/type/standard-axiom checks, module build, complete LSP, full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-degreeOf_hasseDeriv_le.md) |
 
 | `MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt` | Used mathlib support exclusion directly, removing the single-use local contradiction | Isolated proof/type/standard-axiom checks, module build, complete LSP, full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-hasseDeriv_eq_zero_of_degreeOf_lt.md) |
+
+| Private `hasseDeriv_monomial_mul` | Inlined coefficient identity, simplified support cases, and replaced ring normalization with simp; two lines removed | Isolated proof/type/standard-axiom checks, module build, complete native LSP, full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-hasseDeriv_monomial_mul.md) |
 
 ## Validation and deferrals
 
