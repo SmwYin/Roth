@@ -155,14 +155,14 @@ private lemma hasseCoeff_mul_hasseCoeff (f d e : σ →₀ ℕ) :
   classical
   simp only [hasseCoeff]
   have hd : d.support ⊆ d.support ∪ e.support := Finset.subset_union_left
-  rw [Finsupp.prod_of_support_subset _ hd _ fun _ _ => Nat.choose_zero_right _,
+  rw [Finsupp.prod_of_support_subset _ hd _ fun _ _ ↦ Nat.choose_zero_right _,
     Finsupp.prod_of_support_subset _ Finset.subset_union_right _
-      fun _ _ => Nat.choose_zero_right _,
-    Finsupp.prod_of_support_subset _ hd _ fun _ _ => Nat.choose_zero_right _,
-    Finsupp.prod_of_support_subset _ Finsupp.support_add _ fun _ _ => Nat.choose_zero_right _,
+      fun _ _ ↦ Nat.choose_zero_right _,
+    Finsupp.prod_of_support_subset _ hd _ fun _ _ ↦ Nat.choose_zero_right _,
+    Finsupp.prod_of_support_subset _ Finsupp.support_add _ fun _ _ ↦ Nat.choose_zero_right _,
     ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]
-  exact Finset.prod_congr rfl fun i _ => by
-    simpa only [Finsupp.add_apply, ← add_assoc] using choose_mul_choose_eq (f i) (d i) (e i)
+  exact Finset.prod_congr rfl fun i _ ↦ by
+    simpa [← add_assoc] using choose_mul_choose_eq (f i) (d i) (e i)
 
 /-- The composition rule `Δ_d Δ_e P = hasseCoeff d (d + e) • Δ_{d + e} P`, where
 `hasseCoeff d (d + e) = ∏ j, (d j + e j).choose (d j)`. See

@@ -18,17 +18,17 @@ Started: 2026-10-14 (America/Chicago).
 ## Current status
 
 Build/tool setup completed; GitHub browser authentication and branch publication succeeded. The first file audit
-(`Roth/HasseDeriv.lean`, 26 declarations) is in progress. The first thirteen declarations,
-through private `choose_mul_choose_eq`, have completed their audits and
-validation; 13 of 264 declarations reviewed, including seven
-with deferred API proposals. File-level final
+(`Roth/HasseDeriv.lean`, 26 declarations) is in progress. The first fourteen declarations,
+through private `hasseCoeff_mul_hasseCoeff`, have completed their audits and
+validation; 14 of 264 declarations reviewed. Optional API proposals are recorded
+below and remain unapplied. File-level final
 review and profiling remain pending.
 
 Active cleanup resumed at the user's request after the ninth checkpoint. Continue
 sequential declaration validation, commit, and push through every remaining file in
 the inventory order below, without waiting for a new prompt at file boundaries.
 Each file still requires its final independent review, profiling, and full build.
-Next declaration: private `hasseCoeff_mul_hasseCoeff`. The file and project cleanup remain
+Next declaration: `MvPolynomial.hasseDeriv_hasseDeriv`. The file and project cleanup remain
 incomplete; optional substantive proposals remain unapplied.
 
 The first `lake build` installed Lean v4.34.0 and fetched the pinned dependencies.
@@ -83,7 +83,7 @@ Files will be processed in dependency order; declarations within each file are s
 
 | File | Initial lines | Status |
 | --- | ---: | --- |
-| `Roth/HasseDeriv.lean` | 329 | In progress: 13/26 declarations reviewed; next private `hasseCoeff_mul_hasseCoeff` |
+| `Roth/HasseDeriv.lean` | 329 | In progress: 14/26 declarations reviewed; next `hasseDeriv_hasseDeriv` |
 | `Roth/Box.lean` | 128 | Awaiting cleanup |
 | `Roth/Wronskian.lean` | 271 | Awaiting cleanup |
 | `Roth/Taylor.lean` | 239 | Awaiting cleanup |
@@ -115,6 +115,7 @@ Files will be processed in dependency order; declarations within each file are s
 | `MvPolynomial.hasseDeriv_map` (reviewed with optional deferral) | Existing ext/simp proof retained; optional additive coefficient-map API deferred | Isolated original proof/type/axioms, module build and complete LSP passed; full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-hasseDeriv_map.md) |
 | `MvPolynomial.hasseDeriv_rename` (reviewed with optional deferral) | Inlined single-use coefficient transport, removing two proof lines; support-specific API variant deferred | Isolated proof/type/axioms, module build and complete LSP passed; full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-hasseDeriv_rename.md) |
 | Private `choose_mul_choose_eq` | Replaced four-line arithmetic proof with two-line library specialization; removed three `omega` calls | Isolated proof/type/axioms, module build and complete LSP passed; full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-choose_mul_choose_eq.md) |
+| Private `hasseCoeff_mul_hasseCoeff` (reviewed with inherited deferral) | Standardized lambda arrows and simplified terminal `simpa`; existing function-domain proposal remains unapplied | Isolated proof/type/axioms, module build and complete LSP passed; full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-hasseCoeff_mul_hasseCoeff.md) |
 
 ## Validation and deferrals
 
@@ -134,6 +135,11 @@ Files will be processed in dependency order; declarations within each file are s
   LeanSearch returned HTTP 500. Alternative automation probes timed out; the chosen
   simp proof was independently verified and compiled in the project.
 - File-level profiling and final project verification remain pending.
+- Fourteenth declaration: proof/type/axioms, module/LSP, full build (2,586 jobs), and
+  separate LeanEval build (2,585 jobs) passed. The twice-used support inclusion was
+  retained; only notation and terminal simplification changed. Allowing an arbitrary
+  function in the remaining multi-index would depend on the earlier deferred
+  coefficient-domain redesign; no such API change was applied.
 - Thirteenth declaration: proof/type/axioms, module/LSP, full build (2,586 jobs), and
   separate LeanEval build (2,585 jobs) passed. Removing the now-small private wrapper
   is a file-level review candidate; no user-approval requirement is inferred solely
