@@ -1,6 +1,6 @@
 # HasseDeriv final file-level cleanup report
 
-Status: Phase 5a refactor and Phase 6 cumulative gates passed, including separate LeanEval. Independent simplify review and profiling remain in progress. Original baseline: `d2eb5e9a1806e12e66db25d15d8954ade4be9874`; final-phase starting checkpoint: `eb1710d`.
+Status: post-Phase-4 artifact sweep and Phases 5a, 6, 6.5, 6.6 and 7 complete. Code/build/performance gates pass. The baseline header metadata warning remains explicitly unresolved; project-wide Phase 5b remains scheduled after all files. Phase-5a source checkpoint committed and pushed by the parent as `76f8c58`. Original baseline: `d2eb5e9a1806e12e66db25d15d8954ade4be9874`; final-phase starting checkpoint: `eb1710d`.
 
 ## Baseline, audit and file-level fixes (Phases 0–3)
 
@@ -116,11 +116,75 @@ Source search inspected direct uses in `Roth.CoeffNorm`, `Roth.GenWronskian`, `R
 
 ## Phase 6.5 — Independent holistic simplify review
 
-Pending gates and fresh reviewer.
+Outcome: **PASS-THROUGH**.
+
+The built-in `/simplify` command is not exposed on this host. The required independent second pair of eyes was implemented by a fresh child agent, `simplify_review`, which read the whole source, cumulative original-baseline diff and relevant Lean/mathlib guidance after the actual full-build gate passed. It made no edits and did not repeat or replace the 26 declaration audits.
+
+Issues identified: none requiring a change.
+
+Reviewer findings:
+- The successor coefficient identity appropriately reuses the general coefficient composition identity.
+- Removing the scalar choose wrapper retains a clear direct `Nat.choose_mul` specialization.
+- Remaining induction/extensionality patterns are short and mathematically distinct; factoring them would add unnecessary abstraction.
+- Explicit cast rewrites cleanly replace arithmetic normalization. No new expensive search, duplicated substantial argument, or unnecessary public API appeared.
+- No warranted import removal was established.
+
+Fixes applied: none. Files modified by reviewer: none. No post-review source change means the verified cumulative gates remain current. Simplify follow-up suggestions: none.
 
 ## Phase 6.6 — Buzz performance sweep
 
-Pending independent simplify review.
+Outcome: **FAST-BOARD (nothing over the 1000ms budget)**.
+
+Actual sweep commands, all exit 0:
+
+- `lake env lean -Dprofiler=true -Dprofiler.threshold=0 Roth/HasseDeriv.lean`, exec session 79126; `/private/tmp/roth-hasse-final-profile.log`.
+- `lake env lean --profile Roth/HasseDeriv.lean`, exec session 67351; `/private/tmp/roth-hasse-final-profile-anchored.log`.
+- `lake env lean --profile -Dtrace.profiler=true -Dtrace.profiler.threshold=0 Roth/HasseDeriv.lean`, exec session 19277; `/private/tmp/roth-hasse-final-profile-trace.log`.
+
+Toolchain-specific adaptation: the first two supported profiler invocations yielded aggregate category timings without declaration anchors. Those totals were not presented as per-declaration evidence. The final trace supplied explicit `Elab.command` and named async proof nodes, providing the table below. All instrumentation was command-line-only; no source scaffolding was inserted.
+
+Times are milliseconds. The conservative total adds the command duration and its async proof, kernel and compiler durations, excluding import and lint work. Private `lemma` macro expansions emit both inner and outer command nodes; their maximum is used once to avoid double-counting. The proof column separately records the explicitly named async proof node. Definitions and direct term proofs are described as term elaboration; the dominant tactic column names the largest relevant tactic node rather than inferring an unmeasured root cause. Parsed evidence: `/private/tmp/roth-hasse-final-profile-table.json`; parser: `/private/tmp/roth-hasse-profile-parse.py`.
+
+| Declaration | Source line | Command ms | Proof ms | Conservative total ms | Dominant operation | Budget |
+|---|---:|---:|---:|---:|---|---|
+| `hasseCoeff` | 44 | 8.81 | 0.00 | 15.79 | term elaboration | pass |
+| `hasseDeriv` | 51 | 50.07 | 0.00 | 53.15 | term elaboration | pass |
+| `hasseDeriv_monomial` | 60 | 18.12 | 198.01 | 223.45 | simp | pass |
+| `hasseDeriv_apply` | 67 | 22.17 | 329.04 | 360.75 | simp | pass |
+| `hasseCoeff_eq_zero_iff` | 74 | 2.25 | 254.57 | 263.03 | simp | pass |
+| `coeff_hasseDeriv` | 83 | 14.60 | 564.45 | 597.68 | tactic execution: induction | pass |
+| `hasseCoeff_eq_prod` | 100 | 5.46 | 2.86 | 8.81 | term elaboration | pass |
+| `hasseDeriv_zero_apply` | 106 | 7.25 | 36.90 | 49.87 | simp | pass |
+| `hasseDeriv_zero` | 114 | 15.91 | 7.03 | 23.84 | term elaboration | pass |
+| `hasseDeriv_C` | 120 | 17.24 | 71.08 | 90.55 | simp | pass |
+| `hasseDeriv_map` | 128 | 31.41 | 203.53 | 237.08 | simp | pass |
+| `hasseDeriv_rename` | 137 | 38.54 | 420.07 | 475.87 | tactic execution: induction | pass |
+| `hasseCoeff_mul_hasseCoeff` | 147 | 11.88 | 446.42 | 461.01 | term elaboration in exact | pass |
+| `hasseDeriv_hasseDeriv` | 169 | 53.27 | 115.98 | 174.50 | tactic execution: rewrites | pass |
+| `hasseDeriv_hasseDeriv_of_disjoint` | 179 | 68.49 | 76.54 | 151.03 | tactic execution: rewrites | pass |
+| `hasseCoeff_mul_succ` | 185 | 62.02 | 368.44 | 437.67 | simp | pass |
+| `pderiv_hasseDeriv` | 194 | 40.92 | 138.49 | 187.94 | tactic execution: rewrites | pass |
+| `degreeOf_hasseDeriv_le` | 204 | 17.37 | 61.01 | 80.73 | term elaboration in exact | pass |
+| `hasseDeriv_eq_zero_of_degreeOf_lt` | 213 | 20.02 | 97.52 | 119.92 | simp | pass |
+| `hasseDeriv_monomial_mul` | 219 | 69.23 | 457.70 | 548.43 | tactic execution: induction | pass |
+| `hasseDeriv_mul_of_degreeOf_eq_zero` | 237 | 39.73 | 98.31 | 141.36 | tactic execution: rewrites | pass |
+| `hasseDeriv_single_aeval_X` | 247 | 48.65 | 233.72 | 292.25 | tactic execution: induction | pass |
+| `uniqueAlgEquiv_hasseDeriv` | 260 | 40.03 | 144.34 | 188.75 | simp | pass |
+| `hasseCoeff_le_two_pow` | 270 | 11.02 | 29.45 | 41.64 | term elaboration in exact | pass |
+| `factorial_smul_hasseDeriv_single` | 280 | 24.00 | 95.88 | 127.78 | tactic execution: induction | pass |
+
+Maximum: `coeff_hasseDeriv`, **597.68ms**. All 25 current declarations are below budget and below the 750ms borderline-resweep threshold. No performance defect was found, so trace diagnosis/fix/propagation/heartbeat before-after measurements are inapplicable; no unmeasured optimization was made. No second budget sweep is needed because there were no changes and no borderline declaration.
+
+- Existing maxHeartbeats overrides: 0; removed: 0; added: 0.
+- Other limit raises: 0.
+- Performance fixes: none.
+- Deferred over-budget declarations: none.
+- Big changes requiring approval: none.
+- Scaffolding check: clean; no profiler/trace/diagnostics/count_heartbeats source wrapper.
+- Statements and definitions: unchanged during buzz.
+- Build/dependent gates: actual module/full/LeanEval builds above apply to the identical source; all profiled compiles also exit 0.
+- Flagged for `/decompose-proof`: none.
+- File-wide wall-clock speedup: not claimed; this was a measurement-only sweep, not a performance edit.
 
 ## Metadata evidence and remaining limitation
 
@@ -129,3 +193,16 @@ The tracked tree has no LICENSE/COPYING/NOTICE/AUTHORS file. README.md contains 
 ## Total line delta
 
 329 → 288 lines: −41 lines (−12.5%). Phase 5a alone: 291 → 288. Public API, mathematical meaning, documentation, imports and toolchain preserved.
+
+## Final phase checklist
+
+- [x] Post-Phase-4 inventory and artifact completeness checked: 26 original declaration reports, each with all 11 checklist steps complete.
+- [x] Phase 5a: private wrapper removed; every earlier substantive proposal assessed; no warranted unapproved API change remains.
+- [x] Phase 5b scope recorded: empty HasseDeriv queue; project-wide pass deliberately deferred by orchestrator.
+- [x] Phase 6a: complete diagnostics, comment and identifier verification, source/style/trust scans.
+- [x] Phase 6b: actual module/full/separate LeanEval builds and cumulative definition/statement/caller gates.
+- [x] Phase 6.5: fresh independent holistic reviewer, PASS-THROUGH.
+- [x] Phase 6.6: actual all-declaration profiling, FAST-BOARD.
+- [x] Phase 7: comprehensive report, all 26 original declaration rows, timing table and exact limitations.
+
+Remaining external item: confirmed header metadata, owned by the controlling session. This report does not claim warning-free status or completion of the remaining project files.

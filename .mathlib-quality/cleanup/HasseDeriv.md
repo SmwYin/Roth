@@ -1,13 +1,12 @@
 # HasseDeriv cleanup audit
 
-Status: all 26 original declarations audited and validated.
-Active after the user's resumption: declaration twenty-six is complete. Final
-file-level refactoring, cumulative gates, independent review, profiling and report
-remain before continuing to the next file in the full-project queue.
-`hasseCoeff`, `hasseCoeff_eq_zero_iff`, and `hasseCoeff_eq_prod` are reviewed with their related optional
-argument-type generalization deferred for approval.
-`coeff_hasseDeriv` is reviewed with a broader coefficient-type API exploration deferred.
-The file has **not** completed all cleanup phases.
+Status: all 26 original declarations audited and validated; all final cleanup phases complete.
+The source retains 25 declarations after the single-use private wrapper was removed.
+Independent review passed without changes; actual profiling puts every retained
+declaration under 1000ms (maximum 597.68ms). Public API preserved. The two optional
+companion bounds were declined by the user; other speculative API explorations were
+closed without implementation in final review. Unconfirmed copyright/license
+metadata remains an external limitation; warning-free status is not claimed.
 Source: `Roth/HasseDeriv.lean`; dialect: classic imports (no `module`).
 
 ## Phase 0 — Baseline
@@ -428,5 +427,8 @@ documentation are preserved. See [the final-phase report](HasseDeriv-final.md).
 
 The rename queue is empty; project-wide Phase 5b will run after all files.
 Phase 6 cumulative code/build gates pass with the known copyright metadata warning.
-Phase 6.5 independent review, Phase 6.6 profiling, and the final report remain active;
-no file-completion claim is made at this checkpoint.
+Phase 6.5 independent review completed with PASS-THROUGH. Phase 6.6 actual profiling
+completed with FAST-BOARD: all 25 retained declarations below 1000ms, maximum
+597.68ms. Phase 7 comprehensive report is complete. Source: 329 → 288 lines (−41).
+All source cleanup and verification phases are complete, with the unconfirmed
+copyright/license metadata limitation remaining explicit.

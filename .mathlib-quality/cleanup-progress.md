@@ -20,25 +20,24 @@ Started: 2026-10-14 (America/Chicago).
 
 ## Current status
 
-Build/tool setup completed; GitHub browser authentication and branch publication succeeded. The first file audit
-(`Roth/HasseDeriv.lean`, 26 declarations) is in progress. The all twenty-six original declarations in this file,
-through `MvPolynomial.factorial_smul_hasseDeriv_single`, have completed their audits and
-validation; 26 of 264 declarations reviewed. Optional API proposals are recorded
-below and remain unapplied. File-level final
-review and profiling remain pending. The file-level internal refactor removes the
-single-use private `choose_mul_choose_eq` wrapper and specializes `Nat.choose_mul`
-directly at its sole caller. This reduces the source from 291 to 288 lines; all
-retained signatures and documentation are preserved. Module, complete LSP, full
-project and separate LeanEval gates passed for this refactor; independent review
-and profiling are active. See [final-phase report](cleanup/HasseDeriv-final.md).
+Build/tool setup completed; GitHub browser authentication and branch publication succeeded.
+The first file, `Roth/HasseDeriv.lean`, has completed all declaration and final review,
+build, and profiling phases, with unconfirmed copyright/license metadata remaining
+as an external limitation. All 26 original declarations were audited and validated;
+25 remain after removal of a single-use private wrapper. Progress: 26 of 264 original
+declarations reviewed. Source: 329 → 288 lines (−41). Independent simplify review:
+PASS-THROUGH. Actual profiling: all 25 retained declarations under 1000ms, maximum
+597.68ms. Module, complete LSP, full project and separate LeanEval builds passed.
+See [final-phase report](cleanup/HasseDeriv-final.md) for evidence and limitations.
 
-Cleanup resumed: the user revoked the controlling-session handover hold. The
-fully validated twenty-sixth checkpoint is complete. File-level refactoring, cumulative
-verification, independent review, and profiling are next for `Roth/HasseDeriv.lean`.
-Continue sequential declaration validation, commit, and push through
-every remaining file in the inventory order, without waiting at file boundaries.
-Each file still requires final independent review, profiling, and a full build.
-The file and project cleanup remain incomplete; substantive proposals remain unapplied.
+Cleanup is active. Next file: `Roth/Box.lean`, handled by a fresh file worker.
+Continue sequential declaration validation, commit, and push through every remaining
+file in inventory order without waiting at file boundaries. Each file requires final
+independent review, profiling, and a full build. The project remains incomplete.
+The user declined the two optional companion bounds and chose to preserve the API;
+other speculative API explorations were assessed and closed without implementation
+at final file review. No warranted API change is awaiting approval for HasseDeriv.
+Confirmed copyright/license metadata is still needed; no metadata was invented.
 
 The first `lake build` installed Lean v4.34.0 and fetched the pinned dependencies.
 It was deliberately interrupted during dependency compilation to fetch mathlib's
@@ -96,7 +95,7 @@ Files will be processed in dependency order; declarations within each file are s
 
 | File | Initial lines | Status |
 | --- | ---: | --- |
-| `Roth/HasseDeriv.lean` | 329 | In progress: 26/26 original declarations reviewed; final file phases pending |
+| `Roth/HasseDeriv.lean` | 329 | All cleanup phases complete; 26/26 original declarations reviewed; copyright/license metadata unresolved |
 | `Roth/Box.lean` | 128 | Awaiting cleanup |
 | `Roth/Wronskian.lean` | 271 | Awaiting cleanup |
 | `Roth/Taylor.lean` | 239 | Awaiting cleanup |
@@ -189,11 +188,10 @@ Files will be processed in dependency order; declarations within each file are s
   A separate stronger bound, `degreeOf j (hasseDeriv d P) ≤ degreeOf j P - d j`,
   compiled in a scratch proof and was surfaced for user decision. The user declined
   adding it, choosing to keep the current API.
-- File-level profiling and final project verification remain pending.
+- HasseDeriv file-level independent review and profiling completed; all 25 retained declarations are below budget. Final whole-project verification remains pending until the remaining files are cleaned.
 - Sixteenth declaration: proof/type/axioms, module/direct-client LSP, full build
   (2,586 jobs), and separate LeanEval build (2,585 jobs) passed. The three-line proof
-  retains its exact statement and documentation. This is the clean handover checkpoint;
-  declaration 17 has not been started.
+  retains its exact statement and documentation. This was the earlier handover checkpoint; declarations 17–26 and final file phases have since completed.
 - Fifteenth declaration: original proof/type/axioms, module/direct-client LSP, full
   build (2,586 jobs), and separate LeanEval build (2,585 jobs) passed. A combined simp
   trial failed from rewrite ordering and was not adopted. Native run-code PATH
@@ -241,3 +239,14 @@ Files will be processed in dependency order; declarations within each file are s
 - Fourth declaration: module build, complete LSP diagnostics, full build (2,586 jobs),
   and separate LeanEval build (2,585 jobs) passed. Finder/Loogle succeeded through the
   approved direct MCP client; LeanSearch returned HTTP 500.
+
+## HasseDeriv final checkpoint
+
+Final source checkpoint `76f8c58` passed module, complete LSP, full `lake build`
+and separate `lake build Roth.LeanEval`. Fresh independent simplify review found
+no actionable issue. Supported Lean 4.34 profiling with trace anchors measured
+all 25 retained declarations below 1000ms (maximum 597.68ms), with no performance
+fix or source instrumentation needed. All 26 original declaration reports and
+final audit gates are complete. Full evidence: [HasseDeriv-final.md](cleanup/HasseDeriv-final.md).
+The absent confirmed copyright/license metadata remains explicit; warning-free
+status is not claimed. The global rename pass remains for the project end.
