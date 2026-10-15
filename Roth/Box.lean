@@ -77,6 +77,7 @@ omit [DecidableEq σ] in
 theorem weight_zero (r : σ → ℕ) : weight r 0 = 0 := by
   simp [weight]
 
+omit [DecidableEq σ] in
 /-- The weight is additive in the multi-index.
 Source: §4, proof of Lemma `index-of-derivative` (`∑ (i_j + k_j)/r_j = … + ∑ k_j/r_j`). -/
 theorem weight_add (r : σ → ℕ) (d e : σ →₀ ℕ) : weight r (d + e) = weight r d + weight r e := by
