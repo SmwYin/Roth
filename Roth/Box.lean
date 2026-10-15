@@ -83,6 +83,7 @@ Source: §4, proof of Lemma `index-of-derivative` (`∑ (i_j + k_j)/r_j = … + 
 theorem weight_add (r : σ → ℕ) (d e : σ →₀ ℕ) : weight r (d + e) = weight r d + weight r e := by
   simp [weight, add_div, Finset.sum_add_distrib]
 
+omit [DecidableEq σ] in
 /-- For positive parameters `r`, only the zero multi-index has weight zero.
 Source: §4, proof of the lemma `index = 0 ↔ P(α) ≠ 0` ("Since each `r_j > 0`, such a weight
 is zero exactly when every `i_j = 0`"). -/

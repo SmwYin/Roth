@@ -72,7 +72,7 @@ Proof-lambda arrows and packing are handled at the corresponding sequential decl
 
 ## Phase 4 — sequential declaration results
 
-Completed 8/14 dedicated declaration workers. Each completed declaration is fully validated,
+Completed 9/14 dedicated declaration workers. Each completed declaration is fully validated,
 committed and pushed before the next source edit.
 
 ## Concrete API proposal prepared for user decision
@@ -154,3 +154,11 @@ All target gates pass; [audit](Box-weight_add.md).
 Publication verification: full `lake build` session 60506 exited 0 (2586 jobs;
 `/private/tmp/roth-box-d08-full.log`); separate `lake build Roth.LeanEval` session 78621
 exited 0 (2585 jobs; `/private/tmp/roth-box-d08-leaneval.log`). All affected dependents pass.
+
+Declaration 9: `Roth.weight_eq_zero_iff`, 3 → 3 declaration lines plus one scoped
+omission. Approved unused instance removed; positivity and proof retained.
+All target gates pass; [audit](Box-weight_eq_zero_iff.md).
+
+Publication verification: full `lake build` session 2639 exited 0 (2586 jobs;
+`/private/tmp/roth-box-d09-full.log`); separate `lake build Roth.LeanEval` session 25122
+exited 0 (2585 jobs; `/private/tmp/roth-box-d09-leaneval.log`). All affected dependents pass.
