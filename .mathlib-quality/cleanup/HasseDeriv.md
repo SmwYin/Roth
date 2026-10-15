@@ -1,7 +1,7 @@
 # HasseDeriv cleanup audit
 
-Status: 6 of 26 declarations audited and validated.
-`hasseCoeff` and `hasseCoeff_eq_zero_iff` are reviewed with their related optional
+Status: 7 of 26 declarations audited and validated.
+`hasseCoeff`, `hasseCoeff_eq_zero_iff`, and `hasseCoeff_eq_prod` are reviewed with their related optional
 argument-type generalization deferred for approval.
 `coeff_hasseDeriv` is reviewed with a broader coefficient-type API exploration deferred.
 The file has **not** completed all cleanup phases.
@@ -52,7 +52,7 @@ Body line counts include a same-line term after `:=`; names using existing camel
 | C.4 | `hasseDeriv_apply` (theorem) | 67–70 | 3 | Full audit complete; direct `simp [hasseDeriv, sum_def]` replaces two-tactic proof; unchanged statement |
 | C.5 | `hasseCoeff_eq_zero_iff` (theorem) | 75–77 | 3 | Reviewed with deferral: terminal simp unsqueezed and validated; related argument-type generalization deferred |
 | C.6 | `coeff_hasseDeriv` (theorem) | 84–95 | 11 | Reviewed with deferral: reused standard subtraction equivalence; broader coefficient-type API exploration deferred |
-| C.7 | `hasseCoeff_eq_prod` (theorem) | 101–103 | 2 | naming: descriptive, no forbidden pattern; public docstring present (OK); public API; inspect reuse in worker; lambda arrows → ↦ |
+| C.7 | `hasseCoeff_eq_prod` (theorem) | 101–103 | 2 | Reviewed with inherited deferral: signature packed to 99 columns; dot notation and lambda arrow updated; existing coefficient-domain proposal deferred |
 | C.8 | `hasseDeriv_zero_apply` (theorem) | 108–110 | 3 | naming: descriptive, no forbidden pattern; public docstring present (OK); public: downstream users (OK); deep audit pending |
 | C.9 | `hasseDeriv_zero` (theorem) | 116–117 | 2 | naming: descriptive, no forbidden pattern; public docstring present (OK); public API; inspect reuse in worker; deep audit pending |
 | C.10 | `hasseDeriv_C` (theorem) | 122–124 | 3 | naming: descriptive, no forbidden pattern; public docstring present (OK); public API; inspect reuse in worker; deep audit pending |
@@ -166,5 +166,19 @@ No file-level edits needed beyond A.1, deferred because ownership/licensing is u
    Reviewed with deferral: broader noncommutative-semiring or module-valued operator
    formulations would require substantive construction/interface changes. This is
    an unproved optional exploration, left unapplied pending approval.
+
+   Publication: committed and pushed to `ramin-cleanup` as `b37a775`.
+
+7. `MvPolynomial.hasseCoeff_eq_prod`: dedicated worker complete; see
+   [the full declaration audit](HasseDeriv-hasseCoeff_eq_prod.md). Packed the unchanged
+   signature onto one 99-column line and expressed the same `Finsupp.prod_fintype`
+   proof using dot notation and `↦`. Independent proof/standard-axiom probe, module
+   build (1430 jobs), and complete LSP passed; only the existing header warning remains.
+   Full `lake build` (2586 jobs) and separate `lake build Roth.LeanEval` (2585 jobs)
+   both exited 0. Logs `/private/tmp/roth-hasseCoeff_eq_prod-build.log` and
+   `/private/tmp/roth-hasseCoeff_eq_prod-leaneval.log`.
+   Native Loogle/Finder confirmed existing generic product infrastructure; LeanSearch
+   returned HTTP 500. The earlier coefficient-domain proposal remains deferred;
+   no new substantial change is proposed.
 
 Phases 5a, 5b, 6, 6.5 (independent simplify review), 6.6 (buzz profiling), and 7 remain pending until every declaration is processed. No claim of file completion is made.
