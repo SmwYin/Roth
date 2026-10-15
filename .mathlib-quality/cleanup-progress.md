@@ -31,7 +31,7 @@ PASS-THROUGH. Actual profiling: all 25 retained declarations under 1000ms, maxim
 See [final-phase report](cleanup/HasseDeriv-final.md) for evidence and limitations.
 
 Cleanup is active. Current file: `Roth/Box.lean`, handled by a fresh file worker.
-Box declaration 3/14 has completed its audit; overall 29/264 original declarations reviewed.
+Box declaration 4/14 has completed its audit; overall 30/264 original declarations reviewed.
 Continue sequential declaration validation, commit, and push through every remaining
 file in inventory order without waiting at file boundaries. Each file requires final
 independent review, profiling, and a full build. The project remains incomplete.
@@ -97,7 +97,7 @@ Files will be processed in dependency order; declarations within each file are s
 | File | Initial lines | Status |
 | --- | ---: | --- |
 | `Roth/HasseDeriv.lean` | 329 | All cleanup phases complete; 26/26 original declarations reviewed; copyright/license metadata unresolved |
-| `Roth/Box.lean` | 128 | In progress; 3/14 declarations reviewed |
+| `Roth/Box.lean` | 128 | In progress; 4/14 declarations reviewed |
 | `Roth/Wronskian.lean` | 271 | Awaiting cleanup |
 | `Roth/Taylor.lean` | 239 | Awaiting cleanup |
 | `Roth/CoeffNorm.lean` | 320 | Awaiting cleanup |
@@ -284,3 +284,29 @@ independent proof/type/standard-axiom gates pass. Full `lake build` session 4764
 and separate `lake build Roth.LeanEval` session 20469 both exited 0 (2586/2585 jobs);
 logs `/private/tmp/roth-box-d03-{full,leaneval}.log`.
 Declaration audit: [Box-card_box.md](cleanup/Box-card_box.md).
+
+## User decision on Box assumptions and metadata
+
+The user approved the recommendation: “Follow your recommendation.” Authorized scope:
+remove verified unused positivity hypotheses and DecidableEq arguments from Box theorems,
+preserve their conclusions, and adjust the two affected Index callsites. Apply each
+verified removal at its sequential declaration checkpoint, with complete dependent builds.
+No broader API additions or generalisations are authorized by this decision.
+Copyright/license metadata stays unchanged because authoritative facts were not supplied;
+the remaining header warning must stay explicit rather than being invented or suppressed.
+The card_le_card_box DecidableEq drop is compiler-verified and will be the first application.
+
+## Box declaration 4 checkpoint
+
+`Roth.card_le_card_box`: with explicit user approval, removed unused DecidableEq σ
+from the elaborated theorem type and used local classical reasoning. Conclusion and
+explicit parameters unchanged. Composed cardinality inequality with equality directly
+using `trans_eq`, with mathematical lambda `↦`. Target unused-instance warning fixed.
+Module/full LSP, isolated proof/type/standard-axiom gates pass.
+Declaration audit: [Box-card_le_card_box.md](cleanup/Box-card_le_card_box.md).
+
+Final approved-source publication verification: full `lake build` session 11996 exited 0
+(2586 jobs; `/private/tmp/roth-box-d04-full-approved.log`), separate
+`lake build Roth.LeanEval` session 35385 exited 0 (2585 jobs;
+`/private/tmp/roth-box-d04-leaneval-approved.log`). These runs supersede the earlier
+proof-only full build 90150 and verify the selected generalized signature plus all callers.

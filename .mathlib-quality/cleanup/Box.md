@@ -72,7 +72,7 @@ Proof-lambda arrows and packing are handled at the corresponding sequential decl
 
 ## Phase 4 — sequential declaration results
 
-Completed 3/14 dedicated declaration workers. Each completed declaration is fully validated,
+Completed 4/14 dedicated declaration workers. Each completed declaration is fully validated,
 committed and pushed before the next source edit.
 
 ## Concrete API proposal prepared for user decision
@@ -105,3 +105,24 @@ session 68459 exited 0 (2585 jobs; `/private/tmp/roth-box-d02-leaneval.log`).
 Declaration 3: `Roth.card_box`, 2 → 2 lines, reviewed unchanged; all declaration
 gates pass. Full build session 4764 and separate LeanEval 20469 exited 0
 (2586/2585 jobs). [Audit](Box-card_box.md).
+
+## User decision on Box assumptions and metadata
+
+The user approved the recommendation: “Follow your recommendation.” Authorized scope:
+remove verified unused positivity hypotheses and DecidableEq arguments from Box theorems,
+preserve their conclusions, and adjust the two affected Index callsites. Apply each
+verified removal at its sequential declaration checkpoint, with complete dependent builds.
+No broader API additions or generalisations are authorized by this decision.
+Copyright/license metadata stays unchanged because authoritative facts were not supplied;
+the remaining header warning must stay explicit rather than being invented or suppressed.
+The card_le_card_box DecidableEq drop is compiler-verified and will be the first application.
+
+Declaration 4: `Roth.card_le_card_box`, 3 → 4 declaration lines plus scoped omission
+(net +2 source lines), approved unused DecidableEq removed; `trans_eq` composition
+and `↦`. All target gates pass; [audit](Box-card_le_card_box.md).
+
+Final approved-source publication verification: full `lake build` session 11996 exited 0
+(2586 jobs; `/private/tmp/roth-box-d04-full-approved.log`), separate
+`lake build Roth.LeanEval` session 35385 exited 0 (2585 jobs;
+`/private/tmp/roth-box-d04-leaneval-approved.log`). These runs supersede the earlier
+proof-only full build 90150 and verify the selected generalized signature plus all callers.

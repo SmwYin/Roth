@@ -53,12 +53,14 @@ latter is equal to the number of solutions ... `0 ≤ j_1 ≤ r_1, …`"). -/
 theorem card_box (r : σ → ℕ) : (box r).card = ∏ j, (r j + 1) := by
   simp [box]
 
+omit [DecidableEq σ] in
 /-- A finset of multi-indices bounded coordinatewise by `r` has at most `∏ j, (r j + 1)`
 elements, since it is contained in `box r`.
 Source: §3, proof of Lemma 3 ("Pad the monomial expansion of `R` by zero terms ... `N`"). -/
 theorem card_le_card_box {r : σ → ℕ} {s : Finset (σ →₀ ℕ)} (hs : ∀ d ∈ s, ∀ j, d j ≤ r j) :
-    s.card ≤ ∏ j, (r j + 1) :=
-  (Finset.card_le_card fun d hd => mem_box.2 (hs d hd)).trans (card_box r).le
+    s.card ≤ ∏ j, (r j + 1) := by
+  classical
+  exact (Finset.card_le_card fun d hd ↦ mem_box.2 (hs d hd)).trans_eq (card_box r)
 
 /-- The weight `∑ j, d j / r j` of a multi-index. Source: §4, definition of the index. -/
 noncomputable def weight (r : σ → ℕ) (d : σ →₀ ℕ) : ℝ := ∑ j, (d j : ℝ) / r j
