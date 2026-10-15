@@ -18,18 +18,20 @@ Started: 2026-10-14 (America/Chicago).
 ## Current status
 
 Build/tool setup completed; GitHub browser authentication and branch publication succeeded. The first file audit
-(`Roth/HasseDeriv.lean`, 26 declarations) is in progress. The first fifteen declarations,
-through `MvPolynomial.hasseDeriv_hasseDeriv`, have completed their audits and
-validation; 15 of 264 declarations reviewed. Optional API proposals are recorded
+(`Roth/HasseDeriv.lean`, 26 declarations) is in progress. The first sixteen declarations,
+through `MvPolynomial.hasseDeriv_hasseDeriv_of_disjoint`, have completed their audits and
+validation; 16 of 264 declarations reviewed. Optional API proposals are recorded
 below and remain unapplied. File-level final
 review and profiling remain pending.
 
-Active cleanup resumed at the user's request after the ninth checkpoint. Continue
-sequential declaration validation, commit, and push through every remaining file in
-the inventory order below, without waiting for a new prompt at file boundaries.
-Each file still requires its final independent review, profiling, and full build.
-Next declaration: `MvPolynomial.hasseDeriv_hasseDeriv_of_disjoint`. The file and project cleanup remain
-incomplete; optional substantive proposals remain unapplied.
+Controlling-session handover: hold after the fully validated sixteenth checkpoint
+at the user's request to switch from VS Code to phone access. No build, probe, or
+source edit remains in flight at this checkpoint. Resume with private
+`hasseCoeff_mul_succ` (declaration 17) in `Roth/HasseDeriv.lean`.
+After resumption, continue sequential declaration validation, commit, and push through
+every remaining file in the inventory order, without waiting at file boundaries.
+Each file still requires final independent review, profiling, and a full build.
+The file and project cleanup remain incomplete; substantive proposals remain unapplied.
 
 The first `lake build` installed Lean v4.34.0 and fetched the pinned dependencies.
 It was deliberately interrupted during dependency compilation to fetch mathlib's
@@ -87,7 +89,7 @@ Files will be processed in dependency order; declarations within each file are s
 
 | File | Initial lines | Status |
 | --- | ---: | --- |
-| `Roth/HasseDeriv.lean` | 329 | In progress: 15/26 declarations reviewed; next `hasseDeriv_hasseDeriv_of_disjoint` |
+| `Roth/HasseDeriv.lean` | 329 | In progress: 16/26 declarations reviewed; next private `hasseCoeff_mul_succ` after handover |
 | `Roth/Box.lean` | 128 | Awaiting cleanup |
 | `Roth/Wronskian.lean` | 271 | Awaiting cleanup |
 | `Roth/Taylor.lean` | 239 | Awaiting cleanup |
@@ -121,6 +123,7 @@ Files will be processed in dependency order; declarations within each file are s
 | Private `choose_mul_choose_eq` | Replaced four-line arithmetic proof with two-line library specialization; removed three `omega` calls | Isolated proof/type/axioms, module build and complete LSP passed; full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-choose_mul_choose_eq.md) |
 | Private `hasseCoeff_mul_hasseCoeff` (reviewed with inherited deferral) | Standardized lambda arrows and simplified terminal `simpa`; existing function-domain proposal remains unapplied | Isolated proof/type/axioms, module build and complete LSP passed; full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-hasseCoeff_mul_hasseCoeff.md) |
 | `MvPolynomial.hasseDeriv_hasseDeriv` | Reviewed; original ordered coefficient/cast rewrites retained | Isolated original proof/type/axioms, module build and complete direct-client LSP passed; full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-hasseDeriv_hasseDeriv.md) |
+| `MvPolynomial.hasseDeriv_hasseDeriv_of_disjoint` | Inlined the single-use coefficient-equals-one fact in the composition rewrite | Isolated proof/type/axioms, module build and complete direct-client LSP passed; full `lake build` and separate `lake build Roth.LeanEval` passed | [Declaration audit](cleanup/HasseDeriv-hasseDeriv_hasseDeriv_of_disjoint.md) |
 
 ## Validation and deferrals
 
@@ -140,6 +143,10 @@ Files will be processed in dependency order; declarations within each file are s
   LeanSearch returned HTTP 500. Alternative automation probes timed out; the chosen
   simp proof was independently verified and compiled in the project.
 - File-level profiling and final project verification remain pending.
+- Sixteenth declaration: proof/type/axioms, module/direct-client LSP, full build
+  (2,586 jobs), and separate LeanEval build (2,585 jobs) passed. The three-line proof
+  retains its exact statement and documentation. This is the clean handover checkpoint;
+  declaration 17 has not been started.
 - Fifteenth declaration: original proof/type/axioms, module/direct-client LSP, full
   build (2,586 jobs), and separate LeanEval build (2,585 jobs) passed. A combined simp
   trial failed from rewrite ordering and was not adopted. Native run-code PATH

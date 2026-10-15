@@ -181,9 +181,9 @@ the binomial factor in `hasseDeriv_hasseDeriv` is `1`.
 Source: §4, proof of Lemma `index-of-derivative`. -/
 theorem hasseDeriv_hasseDeriv_of_disjoint {d e : σ →₀ ℕ} (h : Disjoint d.support e.support)
     (P : MvPolynomial σ R) : hasseDeriv d (hasseDeriv e P) = hasseDeriv (d + e) P := by
-  have h1 : hasseCoeff d (d + e) = 1 := Finset.prod_eq_one fun i hi => by
-    simp [Finsupp.notMem_support_iff.1 (Finset.disjoint_left.1 h hi)]
-  rw [hasseDeriv_hasseDeriv, h1, Nat.cast_one, one_smul]
+  rw [hasseDeriv_hasseDeriv, show hasseCoeff d (d + e) = 1 from
+    Finset.prod_eq_one fun i hi ↦ by
+      simp [Finsupp.notMem_support_iff.1 (Finset.disjoint_left.1 h hi)], Nat.cast_one, one_smul]
 
 private lemma hasseCoeff_mul_succ (j : σ) (d e : σ →₀ ℕ) :
     hasseCoeff d (e + Finsupp.single j 1 + d) * (e j + 1) =
