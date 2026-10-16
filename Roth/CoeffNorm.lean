@@ -200,10 +200,10 @@ Source: §6, proof of Lemma 9 ("for every `t ≥ 0` and integer `r ≥ 0`, `∑_
 theorem geom_sum_le_one_add_pow {t : ℝ} (ht : 0 ≤ t) (r : ℕ) :
     ∑ s ∈ Finset.range (r + 1), t ^ s ≤ (1 + t) ^ r := by
   rw [add_comm (1 : ℝ) t, add_pow]
-  refine Finset.sum_le_sum fun m hm => ?_
+  refine Finset.sum_le_sum fun m hm ↦ ?_
   rw [one_pow, mul_one]
   refine le_mul_of_one_le_right (pow_nonneg ht m) ?_
-  exact_mod_cast Nat.choose_pos (Nat.lt_succ_iff.1 (Finset.mem_range.1 hm))
+  exact_mod_cast Nat.choose_pos (Finset.mem_range_succ_iff.1 hm)
 
 private lemma sum_box_prod_pow [Fintype σ] [DecidableEq σ] (r : σ → ℕ) (y : σ → ℝ) :
     ∑ k ∈ box r, ∏ j, y j ^ k j = ∏ j, ∑ s ∈ Finset.range (r j + 1), y j ^ s := by
