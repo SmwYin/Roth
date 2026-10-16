@@ -108,3 +108,10 @@ Every public declaration has an existing docstring, preserved. Private helpers h
 ## Declaration 15 checkpoint
 
 `wronskian_eq_zero_iff`: Replaced manual implication lambda with imp_not_comm.mp;4lines retained, exact theorem type/docs unchanged. All15 original declaration audits complete; final file phases pending. All worker gates pass; full `lake build` session76389 and separate `lake build Roth.LeanEval` session69359 exited0. Logs `/private/tmp/roth-wronskian-d15-full.log` and `...-leaneval.log`.
+
+
+## Final file checkpoint
+
+All 15 original declaration audits and all file-level phases complete. Two private wrappers removed using Mathlib; five redundant imports removed following fresh independent simplify review. Source 271 → 219 lines; 13 declarations retained. Public API/definition values and every comment preserved. Final module76381, full10167, separate LeanEval82516, compatibility62603 and complete native LSP pass (zero errors; three explicit warnings retained). Actual profiler16927: all13 under1000ms, maximum647.20ms. See [complete final report](Wronskian-final.md) and [independent review](Wronskian-simplify.md).
+
+The coefficient identity's verified unused `hφ`/`hd` removal remains a concrete pending user decision; neither signature nor caller was changed. Header metadata remains unchanged by explicit user decision. Next file: Taylor under a fresh file worker; overall55/264 original declarations audited.

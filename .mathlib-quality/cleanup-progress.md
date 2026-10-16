@@ -35,7 +35,15 @@ All 14 declarations retained and reviewed; overall 40/264 original declarations 
 Box source 128 → 126 lines; independent simplify finding fixed (two redundant imports),
 final module/full/LeanEval and complete LSP gates pass. Actual profiling: all 14 below 1000ms,
 maximum 196.39ms. See [Box final report](cleanup/Box-final.md).
-Active file: `Roth/Wronskian.lean`; 15/15 original declarations reviewed and validated. Overall 55/264 original declarations reviewed. File-level final phases remain pending.
+`Roth/Wronskian.lean` has completed all 15 original declaration audits and final file-level phases.
+13 declarations remain after two private Mathlib replacements; source271 → 219 lines.
+Fresh independent simplify review found five redundant imports, removed and revalidated.
+Final module/full/separate LeanEval, complete LSP, public-type/definition compatibility, and
+axiom gates pass. Actual profiling: all13 below1000ms, maximum647.20ms.
+See [Wronskian final report](cleanup/Wronskian-final.md). Overall55/264 original declarations audited.
+Next file: `Roth/Taylor.lean`, assigned to a fresh file worker after ownership handoff.
+The verified removal of unused `hφ`/`hd` in the Wronskian coefficient identity remains pending
+user decision; existing API and both warnings are preserved. Header metadata remains unchanged.
 Continue sequential declaration validation, commit, and push through every remaining
 file in inventory order without waiting at file boundaries. Each file requires final
 independent review, profiling, and a full build. The project remains incomplete.
@@ -498,3 +506,13 @@ ownership to the orchestrator for dispatch of the next fresh Wronskian worker.
 ## Wronskian declaration 15 checkpoint
 
 `Roth.wronskian_eq_zero_iff`: Replaced manual implication lambda with imp_not_comm.mp;4lines retained, exact theorem type/docs unchanged. All15 original declaration audits complete; final file phases pending. [Full declaration audit](cleanup/Wronskian-wronskian_eq_zero_iff.md). Module, complete LSP, isolated type/axiom and diff gates pass. Publication validation: full `lake build` session76389 exit0; separate `lake build Roth.LeanEval` session69359 exit0. Logs `/private/tmp/roth-wronskian-d15-full.log` and `...-leaneval.log`.
+
+
+## Wronskian final file checkpoint
+
+Completed all15 original audits and final phases; two private wrappers replaced with Mathlib,
+five redundant imports removed by independent review, source271→219 lines. Final gates:
+module76381, full10167, LeanEval82516, compatibility62603 all exit0; complete LSP zero errors,
+three explicit existing warnings. Actual profiling16927 exit0: maximum647.20ms, all13 retained
+declarations below1000ms. No pending source edit; coefficient-hypothesis proposal still awaiting
+user decision. Final reports prepared; Taylor next. Overall55/264 original declarations audited.

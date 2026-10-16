@@ -1,12 +1,8 @@
-import Mathlib.Algebra.Polynomial.BigOperators
-import Mathlib.Algebra.Polynomial.Degree.Lemmas
+import Mathlib.Algebra.Order.Group.Int.Sum
 import Mathlib.Algebra.Polynomial.HasseDeriv
-import Mathlib.LinearAlgebra.Dimension.Finite
 import Mathlib.LinearAlgebra.Dimension.OrzechProperty
-import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
 import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
 import Mathlib.LinearAlgebra.Vandermonde
-import Mathlib.RingTheory.Polynomial.Pochhammer
 
 /-!
 # Wronskians of finitely many univariate polynomials
@@ -88,17 +84,6 @@ theorem det_choose_eq [CharZero K] (d : Fin l → ℕ) :
       (fun j ↦ descPochhammer K j) (fun i ↦ descPochhammer_natDegree K _)
       (fun i ↦ monic_descPochhammer K _), Matrix.det_vandermonde]
 
-private lemma sum_range_card_le_sum (S : Finset ℕ) : ∑ k ∈ Finset.range S.card, k ≤ ∑ x ∈ S, x := by
-  induction S using Finset.induction_on_max with
-  | empty => simp
-  | insert a s ha ih =>
-    have has : a ∉ s := fun h ↦ lt_irrefl a (ha a h)
-    have hcard : s.card ≤ a := by
-      simpa using Finset.card_le_card (t := Finset.range a)
-        (fun x hx ↦ Finset.mem_range.2 (ha x hx))
-    rw [Finset.card_insert_of_notMem has, Finset.sum_range_succ, Finset.sum_insert has]
-    lia
-
 private lemma coeff_prod_of_natDegree_le' {ι : Type*} (s : Finset ι) (f : ι → K[X]) (n : ι → ℕ)
     (h : ∀ i ∈ s, (f i).natDegree ≤ n i) :
     (∏ i ∈ s, f i).coeff (∑ i ∈ s, n i) = ∏ i ∈ s, (f i).coeff (n i) := by
@@ -115,8 +100,12 @@ private lemma coeff_prod_of_natDegree_le' {ι : Type*} (s : Finset ι) (f : ι �
 Source: §2, first lemma (`D = ∑ d_ν - l(l-1)/2 ≥ 0` for distinct degrees). -/
 theorem sum_range_le_sum_of_injective (d : Fin l → ℕ) (hd : Function.Injective d) :
     ∑ ν : Fin l, (ν : ℕ) ≤ ∑ ν, d ν := by
-  simpa [Finset.card_image_of_injective _ hd, Finset.sum_image hd.injOn,
-    ← Fin.sum_univ_eq_sum_range] using sum_range_card_le_sum (Finset.univ.image d)
+  exact_mod_cast (show ((∑ ν : Fin l, (ν : ℕ) : ℕ) : ℤ) ≤
+      ((∑ ν, d ν : ℕ) : ℤ) by
+    simpa [Finset.card_image_of_injective _ hd, Finset.sum_image hd.injOn,
+      ← Fin.sum_univ_eq_sum_range, Nat.cast_sum] using
+      Finset.sum_range_le_sum (s := (Finset.univ.image d).map Nat.castEmbedding)
+        (c := 0) (by simp))
 
 /-- For a family of pairwise distinct degrees `d ν`, the coefficient of the Wronskian in degree
 `∑ d ν - ∑ ν` is `∏ (leading coefficients)` times the binomial determinant `det (d ν choose μ)`.
@@ -168,12 +157,6 @@ theorem wronskian_update_sub_smul {φ : Fin l → K[X]} {ν ν' : Fin l} (h : ν
   ext μ ρ
   simp [wronskianMatrix, Matrix.updateCol_apply, Function.update_apply, apply_ite,
     ← smul_eq_C_mul, sub_eq_add_neg]
-
-private lemma span_range_update_sub_le (φ : Fin l → K[X]) (ν ν' : Fin l) (c : K) :
-    Submodule.span K (Set.range (Function.update φ ν' (φ ν' - C c * φ ν))) ≤
-      Submodule.span K (Set.range φ) := by
-  rw [Submodule.span_le, Set.range_subset_iff, Function.forall_update_iff, ← smul_eq_C_mul]
-  aesop
 
 /-- Subtracting a constant multiple of one member of a linearly independent family from another
 gives a linearly independent family.
