@@ -123,19 +123,18 @@ theorem le_index_sum {ι : Type*} {s : Finset ι} {f : ι → MvPolynomial σ �
   have hfi : f i ≠ 0 := fun h0 ↦ hid (by rw [h0, map_zero, map_zero])
   exact (le_index_iff hfi).1 (hf i hi hfi) d hid
 
+omit [DecidableEq σ] in
 /-- The rational weight of `d` as a natural-number weight divided by `D = ∏ r_j`.
 Source: §4, Lean implementation note ("set `D = ∏ r_j` and use the natural weights
 `w_j = D / r_j`"). -/
 theorem weight_eq_finsuppWeight_div {r : σ → ℕ} (hr : ∀ j, 0 < r j) (d : σ →₀ ℕ) :
-    weight r d = (Finsupp.weight (fun j => (∏ i, r i) / r j) d : ℝ) / ∏ i, r i := by
-  have hD : (0 : ℝ) < ∏ i, (r i : ℝ) := Finset.prod_pos fun i _ => by exact_mod_cast hr i
-  rw [weight, Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Nat.cast_sum,
-    Finset.sum_div, Nat.cast_prod]
-  refine Finset.sum_congr rfl fun j _ => ?_
-  have hrj : (r j : ℝ) ≠ 0 := by exact_mod_cast (hr j).ne'
+    weight r d = (Finsupp.weight (fun j ↦ (∏ i, r i) / r j) d : ℝ) / ∏ i, r i := by
+  have hD : (0 : ℝ) < ∏ i, (r i : ℝ) := Finset.prod_pos fun i _ ↦ by exact_mod_cast hr i
+  rw [weight, Finsupp.weight_eq_sum, Nat.cast_sum, Finset.sum_div, Nat.cast_prod]
+  refine Finset.sum_congr rfl fun j _ ↦ ?_
   rw [smul_eq_mul, Nat.cast_mul,
-    Nat.cast_div (Finset.dvd_prod_of_mem _ (Finset.mem_univ j)) hrj, Nat.cast_prod]
-  field_simp
+    Nat.cast_div_charZero (Finset.dvd_prod_of_mem _ (Finset.mem_univ j)), Nat.cast_prod,
+    ← mul_div_assoc, div_right_comm, mul_div_cancel_right₀ _ hD.ne']
 
 /-- The index as the weighted order of the Taylor expansion `P(X + α)`, viewed as a power series,
 divided by `D = ∏ r_j`. Source: §4, Lean implementation note ("use the natural weights in
