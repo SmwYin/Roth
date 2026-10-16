@@ -56,6 +56,7 @@ private lemma mem_support_taylor_iff {P : MvPolynomial σ ℝ} {α : σ → ℝ}
     d ∈ (taylor α P).support ↔ eval α (hasseDeriv d P) ≠ 0 := by
   rw [mem_support_iff, coeff_taylor]
 
+omit [DecidableEq σ] in
 /-- The index is at most the weight of any multi-index `d` with `(Δ_d P)(α) ≠ 0`.
 Source: §4, definition of the index ("the minimum ... over all tuples `(i_1, …, i_p)` such
 that `Δ_i P(α) ≠ 0`"). -/

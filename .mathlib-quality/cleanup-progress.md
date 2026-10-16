@@ -1289,3 +1289,24 @@ exit0(137.39s/33.18s), Index+Theta hashes stable; logs
 `/private/tmp/roth-index-d04-{full,leaneval}.log`. No addedhelper/rename/API change.
 Index4/21 originals audited, overall134/264. Exact-path push precedes declaration5,
 the first fresh public audit where the scoped approved instance removal will apply.
+
+
+## Index declaration5 checkpoint — first approved public instance removal
+
+`index_le_weight` now omits unused σ-DecidableEq, specifically covered by user group1
+approval; mathematical statement/proof/name/docs/other arguments unchanged.
+[Dedicated audit](cleanup/Index-index_le_weight.md): all24/42/five actual searches/public
+literature/every binder probe/11checks, worker module92257, complete native target-clean
+LSP and fresh54440 actual new-type/nonself stronger proof/original-type adapter/standard
+axioms pass. All leaf Lean calls finished and source editing explicitly revoked.
+Frozen SHA2562bf2b502f4e95caf1b28cdc247ccd4a26cc9f1c60c747d8e7c388cf9035234cb.
+Owner entire ORIGINAL independent reproof/all18 public recoveries/all19 actual standard
+axioms55805 exit0; actual type Expr scan confirms no DecidableEq. Sequential full then
+separate LeanEval89783 both exit0(144.71s/36.17s), Index+Theta hashes stable;
+logs `/private/tmp/roth-index-d05-{full,leaneval}.log`. External Main native diagnostics
+cell118 complete, zero errors/four inherited warnings; saved JSON. Current Index26
+remaining warnings concern metadata/remaining approved omissions, no target warning.
+Source267→268 from scoped omit command; all block docs preserved. First5canonical
+reports each42rule labels/11checked steps. Index5/21, overall135/264 originals.
+Exact-path publication precedes next edit. Group1 applied1/17 σ-removals; group2/card
+and renameτ remain scheduled. Group3 scalinghl still unapproved/unapplied.

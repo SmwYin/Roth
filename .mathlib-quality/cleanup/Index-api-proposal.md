@@ -2,7 +2,9 @@
 
 Status: **groups1+2 explicitly approved by user via root/parent on2026-10-16;
 application scheduled at each dedicated declaration checkpoint. Group3 remains
-unapproved and unapplied.** No source API removal has been applied as of this record.
+unapproved and unapplied.** Current application: `index_le_weight`'s σ-DecidableEq
+is removed and validated at its dedicated checkpoint. The other16 σ-binders,
+rename's τ-binder and card-bound positivity remain for their dedicated audits.
 This proposal concerns Index only; earlier approvals in CoeffNorm and GenWronskian
 were not reused as authorization.
 

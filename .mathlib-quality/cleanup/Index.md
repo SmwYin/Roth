@@ -192,3 +192,26 @@ diff clean. Sequential full then separate LeanEval47084 both exit0(137.39s/33.18
 Index+Theta hashes stable; logs `/private/tmp/roth-index-d04-{full,leaneval}.log`.
 No new helper/rename/public API change. Index4/21 originals, overall134/264.
 Exact-path publication precedes first approved public-instance removal audit.
+
+### Declaration5 — index_le_weight; first approved API omission
+
+[Fresh dedicated audit](Index-index_le_weight.md): public4→4 declaration lines;
+one scoped `omit [DecidableEq σ] in` added before the byte-identical docstring,
+as expressly approved in groups1+2. No proof/conclusion/other argument change.
+All24/42/five actual searches/public literature/every binder probe/packing+inequality
+tables/11steps inspected. Actual worker module92257 exit0; complete native LSP
+zero errors/zero target diagnostics/26 remaining outside warnings. Fresh54440
+actual no-DecEq signature/standard axioms/nonself stronger proof/original-type
+adapter pass. Stale native scratch and corrected scratch heartbeat failure disclosed.
+
+Explicit source editing revoked; frozen SHA256
+`2bf2b502f4e95caf1b28cdc247ccd4a26cc9f1c60c747d8e7c388cf9035234cb`.
+Owner whole ORIGINAL independent reproof/all18 public type+value recoveries/all19
+actual standard-axiom checks55805 exit0; actual new type also inspected by Expr.find?
+and has no DecidableEq constant. Sequential full then separate LeanEval89783 both
+exit0(144.71s/36.17s), Index+Theta hashes stable. Native Main caller cell118 complete,
+zero errors/four existing warnings; JSON `/private/tmp/roth-index-d05-main-lsp.json`.
+Docs identical, widths≤100, canonical first5reports each42rules/11checked steps.
+No helper/rename. Source267→268 from omit command. Index5/21 originals, overall135/264;
+publication precedes next edit. Group1 application1/17 σ-omissions; group2/card and
+rename τ still future targets. Group3 hl unapproved, untouched.
