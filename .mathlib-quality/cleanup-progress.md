@@ -45,7 +45,7 @@ See [Wronskian final report](cleanup/Wronskian-final.md). Overall55/264 original
 and every final file-level phase. Source239 → 218lines; original public API/docs preserved.
 Independent simplify finding fixed and revalidated; actual profile all22 retained declarations
 below750ms, maximum672.30ms. Overall75/264 original declarations audited.
-See [Taylor final report](cleanup/Taylor-final.md). `Roth/CoeffNorm.lean` is active:1/26original declarations complete, overall76/264. Compiled public-hypothesis proposal awaits scoped user decision; original signatures remain unchanged.
+See [Taylor final report](cleanup/Taylor-final.md). `Roth/CoeffNorm.lean` is active:2/26original declarations complete, overall77/264. Compiled public-hypothesis proposal awaits scoped user decision; original signatures remain unchanged.
 The user approved removing unused `hφ`/`hd` from the Wronskian coefficient identity;
 the exact removal and sole-caller update are implemented and fully revalidated. Both unused
 argument warnings are gone; header metadata remains unchanged.
@@ -667,3 +667,7 @@ All20 originals and2 added helpers complete; overall75/264. [Final report](clean
 ## CoeffNorm declaration1 checkpoint
 
 `Roth.normOne`: retained the one-line coefficient norm definition unchanged after full dedicated audit; file-level imports alphabetized. [Dedicated audit](cleanup/CoeffNorm-normOne.md), [initial file audit](cleanup/CoeffNorm.md). Module89974 exit0, complete LSP noerrors, independent originaltype/value and standardaxiom gates pass. Frozen source SHA256 `1290a45f7dbbe5f2a37df1dfd7cb9718884fad6f1d6ae903c0afcf7dbbee9c5b`; source320→321lines from import grouping. Full `lake build` session25646 exit0,2587jobs; separate `lake build Roth.LeanEval` session18016 exit0,2586jobs. Logs `/private/tmp/roth-coeffnorm-d01-{full,leaneval}.log`. [Concrete API proposal](cleanup/CoeffNorm-api-proposal.md) compiled46719 exit0: four unused publicDecidableEq removals and unused hC removal await userdecision, not applied. Overall76/264original declarations audited; CoeffNorm1/26.
+
+## CoeffNorm declaration2 checkpoint
+
+`Roth.normOne_nonneg`: normalized mathematical lambda; retained direct sum_nonneg term and exact publictype/docstring,2→2lines. [Dedicated audit](cleanup/CoeffNorm-normOne_nonneg.md). Module1883 exit0; complete finalLSP noerrors; independent CLI originaltype/reproof/standardaxioms session88771 exit0. Full `lake build` then separate `lake build Roth.LeanEval` both exit0 in sequential publication session18176, frozen SHA256 `602e34191b8255ce65c19e1217e7cfe653f3516fd4a439371f60b771f45c2a57` unchanged through both. Logs `/private/tmp/roth-coeffnorm-d02-{full,leaneval}.log`. All24audit/42rules/5search/11checks complete. CoeffNorm2/26,overall77/264; existing APIproposal remains pending, source signatures unchanged.

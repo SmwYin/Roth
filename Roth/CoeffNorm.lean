@@ -43,7 +43,7 @@ noncomputable def normOne (P : MvPolynomial σ ℤ) : ℝ := ∑ d ∈ P.support
 
 /-- The ℓ¹ norm of the coefficients is nonnegative. -/
 theorem normOne_nonneg (P : MvPolynomial σ ℤ) : 0 ≤ normOne P :=
-  Finset.sum_nonneg fun _ _ => abs_nonneg _
+  Finset.sum_nonneg fun _ _ ↦ abs_nonneg _
 
 /-- `normOne P` can be computed over any finite set of exponents containing the support. -/
 theorem normOne_eq_sum_of_support_subset {P : MvPolynomial σ ℤ} {s : Finset (σ →₀ ℕ)}
