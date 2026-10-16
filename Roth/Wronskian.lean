@@ -172,13 +172,8 @@ theorem wronskian_update_sub_smul {φ : Fin l → K[X]} {ν ν' : Fin l} (h : ν
 private lemma span_range_update_sub_le (φ : Fin l → K[X]) (ν ν' : Fin l) (c : K) :
     Submodule.span K (Set.range (Function.update φ ν' (φ ν' - C c * φ ν))) ≤
       Submodule.span K (Set.range φ) := by
-  refine Submodule.span_le.2 (Set.range_subset_iff.2 fun i => ?_)
-  rcases eq_or_ne i ν' with rfl | hi
-  · rw [Function.update_self, ← smul_eq_C_mul]
-    exact sub_mem (Submodule.subset_span ⟨i, rfl⟩)
-      (Submodule.smul_mem _ _ (Submodule.subset_span ⟨ν, rfl⟩))
-  · rw [Function.update_of_ne hi]
-    exact Submodule.subset_span ⟨i, rfl⟩
+  rw [Submodule.span_le, Set.range_subset_iff, Function.forall_update_iff, ← smul_eq_C_mul]
+  aesop
 
 /-- Subtracting a constant multiple of one member of a linearly independent family from another
 gives a linearly independent family.
