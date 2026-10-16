@@ -116,12 +116,11 @@ theorem normOne_det_le [DecidableEq σ] {l : ℕ} (M : Matrix (Fin l) (Fin l) (M
     normOne M.det ≤ l.factorial * C ^ l := by
   rw [Matrix.det_apply']
   calc _ ≤ ∑ τ : Equiv.Perm (Fin l), normOne (_ * ∏ i, M (τ i) i) := normOne_sum_le _ _
-    _ ≤ ∑ _τ : Equiv.Perm (Fin l), C ^ l := Finset.sum_le_sum fun τ _ => ?_
+    _ ≤ ∑ _τ : Equiv.Perm (Fin l), C ^ l := Finset.sum_le_sum fun τ _ ↦ ?_
     _ = l.factorial * C ^ l := by simp [Fintype.card_perm]
-  rw [show normOne (_ * ∏ i, M (τ i) i) = normOne (∏ i, M (τ i) i) by
-    rcases Int.units_eq_one_or (Equiv.Perm.sign τ) with h | h <;> simp [h, normOne_neg]]
-  exact (normOne_prod_le _ _).trans <|
-    (Finset.prod_le_prod₀ (fun _ _ => normOne_nonneg _) fun i _ => hM _ _).trans_eq (by simp)
+  rcases Int.units_eq_one_or (Equiv.Perm.sign τ) with h | h <;>
+    simpa [h, normOne_neg] using (normOne_prod_le Finset.univ fun i ↦ M (τ i) i).trans
+      ((Finset.prod_le_prod₀ (fun _ _ ↦ normOne_nonneg _) fun i _ ↦ hM _ _).trans_eq (by simp))
 
 /-- Coefficient bound for a Hasse derivative of a polynomial with `deg_{X_j} P ≤ r_j`.
 Source: §3, proof of Lemma 3 and §6, proof of Lemma 9 ("`abc(Δ_j W) ≤ 2^{r_1+⋯+r_m} B_1`":
