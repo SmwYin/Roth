@@ -219,16 +219,13 @@ Source: §2, proof of Lemma 1 ("multilinearity of the determinant in each row gi
 `det (∑_i f^μ_i ⋯) = ∑_{i ∈ 𝒮} f_i(t) det (⋯)`"). -/
 theorem det_sum_rows {A : Type*} [CommRing A] {ι : Type*} [DecidableEq ι] (s : Fin l → Finset ι)
     (c : Fin l → ι → A) (N : Fin l → ι → Fin l → A) :
-    (Matrix.of fun μ ν => ∑ i ∈ s μ, c μ i * N μ i ν).det =
-      ∑ f ∈ Fintype.piFinset s, (∏ μ, c μ (f μ)) * (Matrix.of fun μ ν => N μ (f μ) ν).det := by
-  have hM : (Matrix.of fun μ ν => ∑ i ∈ s μ, c μ i * N μ i ν) =
-      fun μ => ∑ i ∈ s μ, c μ i • N μ i := by
-    ext μ ν
-    simp [Finset.sum_apply]
-  rw [Matrix.det, hM, ← AlternatingMap.coe_multilinearMap, MultilinearMap.map_sum_finset]
-  refine Finset.sum_congr rfl fun f _ => ?_
-  rw [MultilinearMap.map_smul_univ, smul_eq_mul]
-  rfl
+    (Matrix.of fun μ ν ↦ ∑ i ∈ s μ, c μ i * N μ i ν).det =
+      ∑ f ∈ Fintype.piFinset s, (∏ μ, c μ (f μ)) * (Matrix.of fun μ ν ↦ N μ (f μ) ν).det := by
+  have h := (Matrix.detRowAlternating (R := A) (n := Fin l)).toMultilinearMap.map_sum_finset
+    (fun μ i ↦ c μ i • N μ i) s
+  simp_rw [MultilinearMap.map_smul_univ, smul_eq_mul] at h
+  simp only [Matrix.det, Finset.sum_fn, Pi.smul_def, smul_eq_mul] at h ⊢
+  exact h
 
 /-- **Lemma 1**: a linearly independent family of polynomials has a generalized Wronskian (with
 Hasse operators of orders `|D μ| ≤ μ`) that is not identically zero.
