@@ -171,3 +171,24 @@ Scoped user approval arrived via root/parent2026-10-16 for API groups1+2 only.
 Approved removals will occur at each corresponding fresh public-declaration audit;
 none is applied in this private-wrapper checkpoint. Group3 scaling positivity remains
 unapproved/unapplied. See [current proposal/decision record](Index-api-proposal.md).
+
+### Declaration4 — weightSet_nonempty
+
+[Fresh dedicated audit](Index-weightSet_nonempty.md): original4lines→3 via terminal
+simpa, then owner accepted its compiled Phase5a wrapper-deletion proposal and removed
+the helper/omit command. Both callers now directly simplify nonemptiness from hP;
+attained-minimum receiver has a load-bearing term-mode type annotation. All24audit/
+42rules/five actual searches/every binder probe/width+inequality tables/11steps inspected.
+Worker module99920, complete LSP, independent exact original-type proof and actual
+private standard axioms18097 passed; all worker processes complete before handoff.
+Owner explicitly revoked source authority before applying caller edits/deletion.
+
+Source272→267lines,19 retained declarations. Frozen SHA256
+`531003ff42de90398daad179eb7b7006cc520efea475de29274078cad567bf9a`.
+Owner module2756 exit0; complete native LSP zero errors27 inherited warnings;
+fresh whole ORIGINAL nonself reproof/all18 original public type+value equalities/
+all19 actual standard-axiom checks58412 exit0. Docs byte-identical, widths≤100,
+diff clean. Sequential full then separate LeanEval47084 both exit0(137.39s/33.18s),
+Index+Theta hashes stable; logs `/private/tmp/roth-index-d04-{full,leaneval}.log`.
+No new helper/rename/public API change. Index4/21 originals, overall134/264.
+Exact-path publication precedes first approved public-instance removal audit.

@@ -1271,3 +1271,21 @@ remove index_le_card.hr and repair precisely2Theta callers preserving Theta cont
 These will apply during corresponding fresh declaration checkpoints, not prematurely
 across unaudited declarations. Group3 index_mul_left_weights.hl remains unapproved and
 unchanged pending separate user decision. No broader approval inferred.
+
+
+## Index declaration4 checkpoint
+
+Private `weightSet_nonempty` golfed4→3 and removed as a thin support/image simp wrapper;
+two callers now simplify nonemptiness directly from hP. [Dedicated audit](cleanup/Index-weightSet_nonempty.md)
+records all24/42/five actual searches/every binder probe/11steps, module/complete LSP,
+independent original proof and actual private standardaxioms. Owner explicitly revoked
+leaf source edits before applying compiled caller-deletion proposal. Source272→267,
+19retained declarations; public types, definition and block docs unchanged.
+Frozen SHA256531003ff42de90398daad179eb7b7006cc520efea475de29274078cad567bf9a.
+Owner module2756 exit0, complete native LSP zero errors27 inherited warnings;
+fresh whole ORIGINAL nonself reproof/all18 public type+value equalities/all19 actual
+standardaxiom checks58412 exit0. Sequential full then separate LeanEval47084 both
+exit0(137.39s/33.18s), Index+Theta hashes stable; logs
+`/private/tmp/roth-index-d04-{full,leaneval}.log`. No addedhelper/rename/API change.
+Index4/21 originals audited, overall134/264. Exact-path push precedes declaration5,
+the first fresh public audit where the scoped approved instance removal will apply.
