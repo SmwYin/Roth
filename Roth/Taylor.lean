@@ -97,10 +97,9 @@ private lemma coeff_taylor_monomial_single_add_aux (α : σ → R) (a : R) {i : 
     (ih : ∀ d, (taylor α (monomial k a)).coeff d = eval α (hasseDeriv d (monomial k a)))
     (d : σ →₀ ℕ) : (taylor α (monomial (Finsupp.single i n + k) a)).coeff d =
       eval α (hasseDeriv d (monomial (Finsupp.single i n + k) a)) := by
-  classical
   have hXC : (X i + C (α i) : MvPolynomial σ R) ^ n =
       Polynomial.aeval (X i) ((Polynomial.X + Polynomial.C (α i)) ^ n) := by
-    simp [algebraMap_eq]
+    simp
   have hsupp : ∀ e ∈ (taylor α (monomial k a)).support, e i = 0 := by
     intro e he
     rw [mem_support_iff, ih e, hasseDeriv_monomial] at he

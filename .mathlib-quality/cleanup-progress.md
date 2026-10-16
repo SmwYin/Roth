@@ -576,3 +576,15 @@ overall61/264. Taylor7 resumes after this separate publication checkpoint.
 ## Taylor declaration 9 checkpoint
 
 `MvPolynomial.coeff_taylor`: Separated monomial expansion into two private helpers; headline33 to3bodylines, original public contract/docs preserved, source net+2lines. New helpers await fresh dedicated audits. [Dedicated audit](cleanup/Taylor-coeff_taylor.md). Module, complete LSP, isolated type/axiom and diff gates pass. Publication validation: full `lake build` session19265 exit0; separate `lake build Roth.LeanEval` session62727 exit0. Frozen source SHA256 `339ca8621ef76a233dab2c5f86002e6a1016b9116616266e78b9a5d311177b39`. Logs `/private/tmp/roth-taylor-d09-full.log` and `...-leaneval.log`.
+
+## Added helper1 checkpoint
+
+Fresh GPT-6 Astra Medium worker independently audited `coeff_taylor_monomial_single_add_aux`
+under the user-requested model setting. Removed redundant classical and a redundant terminal
+simp argument;19→18declarationlines, exact signature retained. All24audit/42rules/search/
+generalisation/width/inequality/checklist artifacts and module/completeLSP/isolatedproof/type/
+standardaxiom gates pass. [Dedicated audit](cleanup/Taylor-coeff_taylor_monomial_single_add_aux.md).
+Full `lake build` session38813 and separate `lake build Roth.LeanEval` session94812 exit0
+(2587/2586jobs); `/private/tmp/roth-taylor-newhelper01-{full,leaneval}.log`.
+Frozen source SHA256 `9a4189e83c942dbf021d9c6f831a4d4a17384e5b7ad8a88e1ded62dbba73cdd8`.
+Original tally unchanged: Taylor9/20, overall64/264. Second new helper audit remains pending.
