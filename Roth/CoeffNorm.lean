@@ -53,7 +53,7 @@ theorem normOne_eq_sum_of_support_subset {P : MvPolynomial σ ℤ} {s : Finset (
 /-- The ℓ¹ norm of a monomial is the absolute value of its coefficient. -/
 theorem normOne_monomial (e : σ →₀ ℕ) (c : ℤ) : normOne (monomial e c) = |(c : ℝ)| := by
   classical
-  rw [normOne_eq_sum_of_support_subset (support_monomial_subset : (monomial e c).support ⊆ {e})]
+  rw [normOne_eq_sum_of_support_subset support_monomial_subset]
   simp
 
 /-- The zero polynomial has ℓ¹ norm `0`. -/
