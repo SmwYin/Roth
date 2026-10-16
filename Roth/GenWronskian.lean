@@ -144,13 +144,12 @@ private noncomputable def kronSpan (k μ : ℕ) : Submodule (Polynomial K)
 
 private lemma derivative_kronHasse_aux (k : ℕ) (d : σ →₀ ℕ) :
     (fun P ↦ Polynomial.derivative (kronHasse (K := K) k d P)) =
-      ∑ j, (Polynomial.derivative (Polynomial.X ^ (k ^ (Fintype.equivFin σ j : ℕ))) *
+      ∑ j, (Polynomial.derivative (Polynomial.X ^ k ^ (Fintype.equivFin σ j : ℕ)) *
         Polynomial.C ((d j + 1 : ℕ) : K)) • kronHasse k (d + Finsupp.single j 1) := by
   classical
   funext P
-  simp only [kronHasse, kronecker, derivative_aeval, pderiv_hasseDeriv, map_smul,
-    Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Polynomial.smul_eq_C_mul]
-  exact Finset.sum_congr rfl fun j _ ↦ by ring
+  simp [kronHasse, kronecker, derivative_aeval, pderiv_hasseDeriv, map_smul,
+    Polynomial.smul_eq_C_mul, mul_assoc, mul_comm, mul_left_comm]
 
 private lemma derivative_mem_kronSpan (k μ : ℕ) {F : MvPolynomial σ K → Polynomial K}
     (hF : F ∈ kronSpan k μ) :
