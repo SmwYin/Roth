@@ -113,8 +113,7 @@ The hypotheses are not needed for the identity itself, which holds for any famil
 may vanish), but they are the setting in which it is used.
 Source: §2, first lemma ("The coefficient of `t^D` in the new Wronskian is
 `(∏ a_ν) det (d_ν choose μ)`... All other contributions have lower total degree"). -/
-theorem coeff_wronskian_of_natDegree_injective {φ : Fin l → K[X]} (hφ : ∀ ν, φ ν ≠ 0)
-    (hd : Function.Injective fun ν ↦ (φ ν).natDegree) :
+theorem coeff_wronskian_of_natDegree_injective {φ : Fin l → K[X]} :
     (wronskian φ).coeff (∑ ν, (φ ν).natDegree - ∑ ν : Fin l, (ν : ℕ)) = (∏ ν, (φ ν).leadingCoeff) *
       (Matrix.of fun μ ν : Fin l ↦ ((φ ν).natDegree.choose μ : K)).det := by
   classical
@@ -144,7 +143,7 @@ theorem wronskian_ne_zero_of_natDegree_injective [CharZero K] {φ : Fin l → K[
     (hd : Function.Injective fun ν ↦ (φ ν).natDegree) : wronskian φ ≠ 0 := by
   intro h0
   simpa [h0, det_choose_eq, eq_comm (a := 0), Finset.prod_eq_zero_iff, sub_eq_zero, hφ,
-    Nat.factorial_ne_zero, hd.eq_iff] using coeff_wronskian_of_natDegree_injective hφ hd
+    Nat.factorial_ne_zero, hd.eq_iff] using coeff_wronskian_of_natDegree_injective (φ := φ)
 
 /-- Subtracting a constant multiple of one member of the family from another does not change
 the Wronskian.

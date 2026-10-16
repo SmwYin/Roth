@@ -1,6 +1,8 @@
 # Wronskian final file-level cleanup report
 
-Status: all 15 declaration checkpoints and all final file-level phases complete; final publication checkpoint prepared. Baseline `d259f95`; all 15 original declaration checkpoints published through `ed342ce`. Header metadata remains unchanged under the explicit user decision. The concrete compiled removal of the coefficient theorem's unused `hφ` and `hd` is awaiting a user decision; the current API retains both.
+Current status: the user-approved removal of both unused hypotheses is applied and fully validated. See the amendment section below; earlier pending references describe the historical checkpoint.
+
+Status: all 15 declaration checkpoints and all final file-level phases complete; final publication checkpoint prepared. Baseline `d259f95`; all 15 original declaration checkpoints published through `ed342ce`. Header metadata remains unchanged under the explicit user decision. The coefficient theorem now omits the two unused arguments under explicit user approval; the original final-phase evidence below is historical, supplemented by the amendment verification.
 
 ## Phases 0–3 — baseline and preparation
 
@@ -112,7 +114,7 @@ FAST BOARD — all 13 declarations below 1000ms; maximum 647.20ms. No declaratio
 
 ## Phase 7 — final disposition
 
-All authorized source work and required checks are complete. Known limitations: unchanged header metadata by user decision; coefficient identity hypothesis removal awaits user decision. The overall project is incomplete: 55/264 original declarations audited; Taylor is next.
+All authorized source work and required checks are complete. Known limitations: unchanged header metadata by user decision; the approved coefficient-hypothesis removal is implemented and verified. The overall project is incomplete: 61/264 original declarations audited; Taylor is active.
 
 
 ## Required phase checklist
@@ -127,4 +129,26 @@ All authorized source work and required checks are complete. Known limitations: 
 - [x] Phase 6: cumulative module/full/separate LeanEval, LSP, type/definition/axiom, hygiene gates.
 - [x] Phase 6.5: fresh independent holistic simplify finding applied and all gates rerun.
 - [x] Phase 6.6: actual anchored per-declaration profiling; all 13 below budget.
-- [x] Phase 7: complete final report, with explicit unchanged header and pending API-decision limitations.
+- [x] Phase 7: complete final report, with explicit unchanged header limitation and resolved API decision.
+
+## User-approved hypothesis amendment (2026-10-15)
+
+The user approved removal of both unused `hφ`/`hd` arguments from
+`coeff_wronskian_of_natDegree_injective`, preserving its name and conclusion,
+and the minimal sole-caller update to `(φ := φ)`. A fresh narrow worker applied exactly
+those two replacements. All other source, definitions, proof, documentation and the
+nonvanishing caller's hypotheses remain byte-identical. Earlier pending-proposal
+statements in historical checkpoints are superseded by this approval and implementation.
+
+Wronskian source is now271→218lines,13retained declarations; the original audit count
+remains15. Module28780 exit0, complete LSP zeroerrors and only the user-preserved header
+warning, independent pre-target theorem/caller compilation and standard-axiom checks pass.
+Actual profiling5470 exit0: all13 below750ms, maximum586.13ms; caller457.33ms.
+Full `lake build` session30588 exit0 (2587jobs), followed by separate
+`lake build Roth.LeanEval` session6721 exit0 (2586jobs). The full result was recovered
+successfully after a usage interruption; both source hashes stayed unchanged.
+Logs `/private/tmp/roth-wronskian-approved-{full,leaneval}.log`.
+Frozen Wronskian SHA256 `b4f0c0db36bcbd81983f5a38c137dcefdf57bce18e12445e8241689a8abf888e`.
+[Full amendment evidence](Wronskian-approved-hypotheses.md). No API proposal remains pending.
+This amendment does not increment the264original-declaration tally; Taylor remains6/20,
+overall61/264. Taylor7 resumes after this separate publication checkpoint.

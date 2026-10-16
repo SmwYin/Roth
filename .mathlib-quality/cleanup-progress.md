@@ -36,15 +36,16 @@ Box source 128 → 126 lines; independent simplify finding fixed (two redundant 
 final module/full/LeanEval and complete LSP gates pass. Actual profiling: all 14 below 1000ms,
 maximum 196.39ms. See [Box final report](cleanup/Box-final.md).
 `Roth/Wronskian.lean` has completed all 15 original declaration audits and final file-level phases.
-13 declarations remain after two private Mathlib replacements; source271 → 219 lines.
+13 declarations remain after two private Mathlib replacements; source271 → 218 lines after the approved hypothesis amendment.
 Fresh independent simplify review found five redundant imports, removed and revalidated.
 Final module/full/separate LeanEval, complete LSP, public-type/definition compatibility, and
-axiom gates pass. Actual profiling: all13 below1000ms, maximum647.20ms.
+axiom gates pass. Post-amendment actual profiling: all13 below1000ms, maximum586.13ms.
 See [Wronskian final report](cleanup/Wronskian-final.md). Overall55/264 original declarations audited.
 Current file: `Roth/Taylor.lean`, under a fresh file worker with sequential dedicated declaration audits.
 Taylor progress: 6/20 original declarations reviewed; overall 61/264. File-level final phases remain pending.
-The verified removal of unused `hφ`/`hd` in the Wronskian coefficient identity remains pending
-user decision; existing API and both warnings are preserved. Header metadata remains unchanged.
+The user approved removing unused `hφ`/`hd` from the Wronskian coefficient identity;
+the exact removal and sole-caller update are implemented and fully revalidated. Both unused
+argument warnings are gone; header metadata remains unchanged.
 Continue sequential declaration validation, commit, and push through every remaining
 file in inventory order without waiting at file boundaries. Each file requires final
 independent review, profiling, and a full build. The project remains incomplete.
@@ -541,3 +542,25 @@ user decision. Final reports prepared; Taylor next. Overall55/264 original decla
 ## Taylor declaration 6 checkpoint
 
 `MvPolynomial.coeff_aeval_X_mul`: Direct evaluation expansion and Finsupp erase cancellation replace two intermediate proofs; single-use inequality inlined,24 to18lines, exact statement retained. [Dedicated audit](cleanup/Taylor-coeff_aeval_X_mul.md). Module, complete LSP, isolated type/axiom and diff gates pass. Publication validation: full `lake build` session53572 exit0; separate `lake build Roth.LeanEval` session61138 exit0. Frozen source SHA256 `f4a686acc2e188a3bea162eb6bff0afd5079cd162d2297afbe1ce2b0d830529a`. Logs `/private/tmp/roth-taylor-d06-full.log` and `...-leaneval.log`.
+
+## User-approved hypothesis amendment (2026-10-15)
+
+The user approved removal of both unused `hφ`/`hd` arguments from
+`coeff_wronskian_of_natDegree_injective`, preserving its name and conclusion,
+and the minimal sole-caller update to `(φ := φ)`. A fresh narrow worker applied exactly
+those two replacements. All other source, definitions, proof, documentation and the
+nonvanishing caller's hypotheses remain byte-identical. Earlier pending-proposal
+statements in historical checkpoints are superseded by this approval and implementation.
+
+Wronskian source is now271→218lines,13retained declarations; the original audit count
+remains15. Module28780 exit0, complete LSP zeroerrors and only the user-preserved header
+warning, independent pre-target theorem/caller compilation and standard-axiom checks pass.
+Actual profiling5470 exit0: all13 below750ms, maximum586.13ms; caller457.33ms.
+Full `lake build` session30588 exit0 (2587jobs), followed by separate
+`lake build Roth.LeanEval` session6721 exit0 (2586jobs). The full result was recovered
+successfully after a usage interruption; both source hashes stayed unchanged.
+Logs `/private/tmp/roth-wronskian-approved-{full,leaneval}.log`.
+Frozen Wronskian SHA256 `b4f0c0db36bcbd81983f5a38c137dcefdf57bce18e12445e8241689a8abf888e`.
+[Full amendment evidence](cleanup/Wronskian-approved-hypotheses.md). No API proposal remains pending.
+This amendment does not increment the264original-declaration tally; Taylor remains6/20,
+overall61/264. Taylor7 resumes after this separate publication checkpoint.

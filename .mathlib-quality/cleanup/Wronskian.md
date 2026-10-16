@@ -1,5 +1,7 @@
 # Wronskian cleanup
 
+Current status: the user-approved removal of both unused hypotheses is applied and fully validated. See the amendment section below; earlier pending references describe the historical checkpoint.
+
 Baseline: d259f95, `ramin-cleanup`; classic dialect,271 lines,15 original declarations.
 
 ## Phase 0
@@ -115,3 +117,25 @@ Every public declaration has an existing docstring, preserved. Private helpers h
 All 15 original declaration audits and all file-level phases complete. Two private wrappers removed using Mathlib; five redundant imports removed following fresh independent simplify review. Source 271 → 219 lines; 13 declarations retained. Public API/definition values and every comment preserved. Final module76381, full10167, separate LeanEval82516, compatibility62603 and complete native LSP pass (zero errors; three explicit warnings retained). Actual profiler16927: all13 under1000ms, maximum647.20ms. See [complete final report](Wronskian-final.md) and [independent review](Wronskian-simplify.md).
 
 The coefficient identity's verified unused `hφ`/`hd` removal remains a concrete pending user decision; neither signature nor caller was changed. Header metadata remains unchanged by explicit user decision. Next file: Taylor under a fresh file worker; overall55/264 original declarations audited.
+
+## User-approved hypothesis amendment (2026-10-15)
+
+The user approved removal of both unused `hφ`/`hd` arguments from
+`coeff_wronskian_of_natDegree_injective`, preserving its name and conclusion,
+and the minimal sole-caller update to `(φ := φ)`. A fresh narrow worker applied exactly
+those two replacements. All other source, definitions, proof, documentation and the
+nonvanishing caller's hypotheses remain byte-identical. Earlier pending-proposal
+statements in historical checkpoints are superseded by this approval and implementation.
+
+Wronskian source is now271→218lines,13retained declarations; the original audit count
+remains15. Module28780 exit0, complete LSP zeroerrors and only the user-preserved header
+warning, independent pre-target theorem/caller compilation and standard-axiom checks pass.
+Actual profiling5470 exit0: all13 below750ms, maximum586.13ms; caller457.33ms.
+Full `lake build` session30588 exit0 (2587jobs), followed by separate
+`lake build Roth.LeanEval` session6721 exit0 (2586jobs). The full result was recovered
+successfully after a usage interruption; both source hashes stayed unchanged.
+Logs `/private/tmp/roth-wronskian-approved-{full,leaneval}.log`.
+Frozen Wronskian SHA256 `b4f0c0db36bcbd81983f5a38c137dcefdf57bce18e12445e8241689a8abf888e`.
+[Full amendment evidence](Wronskian-approved-hypotheses.md). No API proposal remains pending.
+This amendment does not increment the264original-declaration tally; Taylor remains6/20,
+overall61/264. Taylor7 resumes after this separate publication checkpoint.

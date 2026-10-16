@@ -1,5 +1,7 @@
 # Declaration audit: `Roth.coeff_wronskian_of_natDegree_injective`
 
+Current status: the user-approved removal of both unused hypotheses is applied and fully validated. See the amendment section below; earlier pending references describe the historical checkpoint.
+
 Baseline: `ab65b1b`, `Roth/Wronskian.lean` lines 127–155 (original inventory 134–162), 29 declaration lines, 24 proof lines. Routine result: lines 127–148, 22 declaration lines, 18 proof lines; 7 declaration lines saved. Dedicated worker: `decl08`. Ownership: this declaration and this report only; no Git/shared-log ownership.
 
 I have read golfing-rules.md, proof-patterns.md, mathlib-search.md, generalisation-patterns.md, and cleanup-gates.md in full. Also read both SKILL.md files, the complete supplied worker contract, naming-conventions.md, and the relevant style-rules.md sections. The parent's explicit scope preserves public API/docstrings pending the specific hypothesis-removal decision.
@@ -223,3 +225,25 @@ Overall: routine-proof gates pass, with explicit pending public-API decision on 
 - [x] Step 6a: no rename queued; optional rename awaits explicit API decision.
 
 Rules applied: 1.10 (direct elimination of hD), 1.11, 1.14, 1.15, 2.3, plus lambda/cast/packing cleanup. Refactoring needed: decide compiled removal of `hφ` and `hd` and sole caller repair; optional rename separately. No Git operations performed by this worker.
+
+## User-approved hypothesis amendment (2026-10-15)
+
+The user approved removal of both unused `hφ`/`hd` arguments from
+`coeff_wronskian_of_natDegree_injective`, preserving its name and conclusion,
+and the minimal sole-caller update to `(φ := φ)`. A fresh narrow worker applied exactly
+those two replacements. All other source, definitions, proof, documentation and the
+nonvanishing caller's hypotheses remain byte-identical. Earlier pending-proposal
+statements in historical checkpoints are superseded by this approval and implementation.
+
+Wronskian source is now271→218lines,13retained declarations; the original audit count
+remains15. Module28780 exit0, complete LSP zeroerrors and only the user-preserved header
+warning, independent pre-target theorem/caller compilation and standard-axiom checks pass.
+Actual profiling5470 exit0: all13 below750ms, maximum586.13ms; caller457.33ms.
+Full `lake build` session30588 exit0 (2587jobs), followed by separate
+`lake build Roth.LeanEval` session6721 exit0 (2586jobs). The full result was recovered
+successfully after a usage interruption; both source hashes stayed unchanged.
+Logs `/private/tmp/roth-wronskian-approved-{full,leaneval}.log`.
+Frozen Wronskian SHA256 `b4f0c0db36bcbd81983f5a38c137dcefdf57bce18e12445e8241689a8abf888e`.
+[Full amendment evidence](Wronskian-approved-hypotheses.md). No API proposal remains pending.
+This amendment does not increment the264original-declaration tally; Taylor remains6/20,
+overall61/264. Taylor7 resumes after this separate publication checkpoint.
