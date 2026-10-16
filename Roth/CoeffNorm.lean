@@ -98,13 +98,9 @@ theorem normOne_mul_le [DecidableEq σ] (P Q : MvPolynomial σ ℤ) :
 
 /-- `normOne` is submultiplicative over a finite product. -/
 theorem normOne_prod_le [DecidableEq σ] {ι : Type*} (s : Finset ι) (f : ι → MvPolynomial σ ℤ) :
-    normOne (∏ i ∈ s, f i) ≤ ∏ i ∈ s, normOne (f i) := by
-  classical
-  induction s using Finset.induction_on with
-  | empty => simpa using (normOne_monomial (0 : σ →₀ ℕ) 1).le
-  | insert a s has ih =>
-    rw [Finset.prod_insert has, Finset.prod_insert has]
-    exact (normOne_mul_le _ _).trans (mul_le_mul_of_nonneg_left ih (normOne_nonneg _))
+    normOne (∏ i ∈ s, f i) ≤ ∏ i ∈ s, normOne (f i) :=
+  Finset.le_prod_of_submultiplicative_of_nonneg normOne normOne_nonneg
+    (by simpa using (normOne_monomial (0 : σ →₀ ℕ) 1).le) normOne_mul_le s f
 
 /-- A polynomial with coefficients bounded by `B` has `normOne` at most `#support * B`.
 Source: §3, proof of Lemma 3 ("Pad the monomial expansion of `R` by zero terms and write
