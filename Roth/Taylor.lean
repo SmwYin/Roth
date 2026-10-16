@@ -38,7 +38,7 @@ noncomputable def taylor (α : σ → R) : MvPolynomial σ R →ₐ[R] MvPolynom
 
 /-- `taylor α` is evaluation at `X + α`. -/
 theorem taylor_apply (α : σ → R) (P : MvPolynomial σ R) :
-    taylor α P = aeval (fun j => X j + C (α j)) P := rfl
+    taylor α P = aeval (fun j ↦ X j + C (α j)) P := rfl
 
 /-- `taylor α` sends the variable `X j` to `X j + α j`. -/
 @[simp]

@@ -27,7 +27,7 @@ Two headline proofs require structural review: coeff_taylor35bodylines; eq_sum_b
 | # | Declaration | Original lines | Length | Light audit | Status |
 |---|---|---|---:|---|---|
 | 1 | `taylor` | 36–37 | 2 | definition; naming descriptive, documentation appropriate; data definition with extensive API; normalize lambda | validated; [audit](Taylor-taylor.md) |
-| 2 | `taylor_apply` | 40–41 | 2 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | Pending |
+| 2 | `taylor_apply` | 40–41 | 2 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | validated; [audit](Taylor-taylor_apply.md) |
 | 3 | `taylor_X` | 45–46 | 2 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | Pending |
 | 4 | `taylor_C` | 50–51 | 2 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | Pending |
 | 5 | `taylor_monomial` | 55–57 | 3 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | Pending |
@@ -60,3 +60,7 @@ LeanEval build, then exact-path commit/push before the next source edit.
 ## Declaration 1 checkpoint
 
 `taylor`: Normalized the mathematical lambda arrow; original definition verified by rfl, exact public API/docstring preserved. File-level project imports alphabetized. All worker gates pass. Frozen source SHA256 `91e0b1f92db86dacca1c06b0ae8c3e87793d5a27ffafc3070db8074caa2d40ae`. Full `lake build` session54303 and separate `lake build Roth.LeanEval` session6076 exited0. Logs `/private/tmp/roth-taylor-d01-full.log` and `...-leaneval.log`.
+
+## Declaration 2 checkpoint
+
+`taylor_apply`: Normalized the mathematical lambda arrow; retained the minimal rfl proof, original elaborated type and docstring. All worker gates pass. Frozen source SHA256 `b09b1665ded220e46380fb7174a024f0f5d12144caafdb60a25f107d0488f56a`. Full `lake build` session35545 and separate `lake build Roth.LeanEval` session40919 exited0. Logs `/private/tmp/roth-taylor-d02-full.log` and `...-leaneval.log`.
