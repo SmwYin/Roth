@@ -83,17 +83,14 @@ private lemma hasseCoeff_single_add_eq {i : σ} {n : ℕ} {k' : σ →₀ ℕ} (
     rw [Finsupp.support_erase] at hj
     simp [Finsupp.single_eq_of_ne (Finset.ne_of_mem_erase hj)]
 
-private lemma prod_pow_single_add_tsub (α : σ → R) {i : σ} {n : ℕ} {k' : σ →₀ ℕ}
-    (hi : k' i = 0) (d : σ →₀ ℕ) :
-    ((Finsupp.single i n + k') - d).prod (fun j e => α j ^ e) =
-      α i ^ (n - d i) * (k' - d.erase i).prod (fun j e => α j ^ e) := by
+private lemma prod_pow_single_add_tsub (α : σ → R) {i : σ} {n : ℕ} {k' : σ →₀ ℕ} (hi : k' i = 0)
+    (d : σ →₀ ℕ) : ((Finsupp.single i n + k') - d).prod (fun j e ↦ α j ^ e) = α i ^ (n - d i) *
+      (k' - d.erase i).prod (fun j e ↦ α j ^ e) := by
   classical
   have h : Finsupp.single i n + k' - d = Finsupp.single i (n - d i) + (k' - d.erase i) := by
     ext j
     obtain rfl | hj := eq_or_ne j i <;> simp [*, Finsupp.erase_ne]
-  rw [h, Finsupp.prod_add_index' (fun _ => pow_zero _) (fun _ _ _ => pow_add _ _ _)]
-  congr 1
-  exact Finsupp.prod_single_index (pow_zero _)
+  simp [h, Finsupp.prod_add_index', pow_add, -Finsupp.single_tsub]
 
 /-- Taylor's theorem, coefficient form. Source: §4, Lean implementation note ("`P_α(X) = P(X+α)`,
 whose coefficient at `d` is `(Δ_d P)(α)`"), proved as in the Theorem (Taylor's expansion) by

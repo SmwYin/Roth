@@ -42,7 +42,7 @@ Final module/full/separate LeanEval, complete LSP, public-type/definition compat
 axiom gates pass. Post-amendment actual profiling: all13 below1000ms, maximum586.13ms.
 See [Wronskian final report](cleanup/Wronskian-final.md). Overall55/264 original declarations audited.
 Current file: `Roth/Taylor.lean`, under a fresh file worker with sequential dedicated declaration audits.
-Taylor progress: 7/20 original declarations reviewed; overall 62/264. File-level final phases remain pending.
+Taylor progress: 8/20 original declarations reviewed; overall 63/264. File-level final phases remain pending.
 The user approved removing unused `hφ`/`hd` from the Wronskian coefficient identity;
 the exact removal and sole-caller update are implemented and fully revalidated. Both unused
 argument warnings are gone; header metadata remains unchanged.
@@ -568,3 +568,7 @@ overall61/264. Taylor7 resumes after this separate publication checkpoint.
 ## Taylor declaration 7 checkpoint
 
 `MvPolynomial.hasseCoeff_single_add_eq`: Used Mathlib mul_prod_erase and support_erase to remove explicit disjointness and case splitting; packed unchanged signature,16 to9lines. [Dedicated audit](cleanup/Taylor-hasseCoeff_single_add_eq.md). Module, complete LSP, isolated type/axiom and diff gates pass. Publication validation: full `lake build` session6797 exit0; separate `lake build Roth.LeanEval` session18199 exit0. Frozen source SHA256 `72a52b08db494fd445a13c5716fc1afd32fbf315b1e41dccffe81f230ef1f7bd`. Logs `/private/tmp/roth-taylor-d07-full.log` and `...-leaneval.log`.
+
+## Taylor declaration 8 checkpoint
+
+`MvPolynomial.prod_pow_single_add_tsub`: Terminal simp replaces rewrite/congr/exact assembly with local single_tsub exclusion; lambda syntax and signature packed,11 to8lines, original contract preserved. [Dedicated audit](cleanup/Taylor-prod_pow_single_add_tsub.md). Module, complete LSP, isolated type/axiom and diff gates pass. Publication validation: full `lake build` session26690 exit0; separate `lake build Roth.LeanEval` session78586 exit0. Frozen source SHA256 `58a982948ba48df089ea5e4a00e8050fb00566e381e9a942279484ac88e0818e`. Logs `/private/tmp/roth-taylor-d08-full.log` and `...-leaneval.log`.
