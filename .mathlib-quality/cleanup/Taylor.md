@@ -40,7 +40,7 @@ Two headline proofs require structural review: coeff_taylor35bodylines; eq_sum_b
 | 12 | `taylor_zero` | 164–165 | 2 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | validated; [audit](Taylor-taylor_zero.md) |
 | 13 | `taylor_map` | 169–171 | 3 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | validated; [audit](Taylor-taylor_map.md) |
 | 14 | `taylor_rename` | 176–178 | 3 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | validated; [audit](Taylor-taylor_rename.md) |
-| 15 | `degreeOf_taylor_le` | 182–186 | 5 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | Pending |
+| 15 | `degreeOf_taylor_le` | 182–186 | 5 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | validated; [audit](Taylor-degreeOf_taylor_le.md) |
 | 16 | `taylor_neg_taylor` | 195–197 | 3 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | Pending |
 | 17 | `taylor_injective` | 200–201 | 2 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | Pending |
 | 18 | `taylor_eq_zero_iff` | 205–206 | 2 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | Pending |
@@ -140,3 +140,7 @@ environment repair.
 ## Declaration 14 checkpoint
 
 `taylor_rename`: Direct substitution composition replaces induction; exact public signature and documentation unchanged. All worker gates pass. Frozen source SHA256 `4cd871acc4a0ad26ceba2c01bef9ee5c88e0f5117254a50d24a895b56af32f7a`. Full `lake build` session21806 and separate `lake build Roth.LeanEval` session71085 exited0. Logs `/private/tmp/roth-taylor-d14-full.log` and `...-leaneval.log`.
+
+## Declaration 15 checkpoint
+
+`degreeOf_taylor_le`: Retained direct coefficient-vanishing degree proof after search; normalized two mathematical lambda arrows, exact signature and docs preserved. All worker gates pass. Frozen source SHA256 `1f69c55d06c8b562930bb9bbc90e9ab3a676f2491d6ddbf4f8dd4c08b8fe3de8`. Full `lake build` session9544 and separate `lake build Roth.LeanEval` session22563 exited0. Logs `/private/tmp/roth-taylor-d15-full.log` and `...-leaneval.log`.

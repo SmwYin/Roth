@@ -163,7 +163,7 @@ theorem taylor_rename {τ : Type*} (f : σ → τ) (α : τ → R) (P : MvPolyno
 Source: §5 ("Taylor's theorem gives a nonzero derivative with `0 ≤ i_j ≤ r_j`"). -/
 theorem degreeOf_taylor_le (α : σ → R) (j : σ) (P : MvPolynomial σ R) :
     degreeOf j (taylor α P) ≤ degreeOf j P := by
-  refine degreeOf_le_iff.2 fun e he => not_lt.1 fun h => ?_
+  refine degreeOf_le_iff.2 fun e he ↦ not_lt.1 fun h ↦ ?_
   rw [mem_support_iff, coeff_taylor, hasseDeriv_eq_zero_of_degreeOf_lt h, map_zero] at he
   exact he rfl
 
