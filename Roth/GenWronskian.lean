@@ -138,8 +138,8 @@ private noncomputable def kronHasse (k : ℕ) (d : σ →₀ ℕ) : MvPolynomial
   fun P ↦ kronecker k (hasseDeriv d P)
 
 /-- The `K[X]`-span of the operators `kronHasse k d` with `|d| ≤ μ`. -/
-private noncomputable def kronSpan (k μ : ℕ) :
-    Submodule (Polynomial K) (MvPolynomial σ K → Polynomial K) :=
+private noncomputable def kronSpan (k μ : ℕ) : Submodule (Polynomial K)
+    (MvPolynomial σ K → Polynomial K) :=
   Submodule.span (Polynomial K) (kronHasse (K := K) k '' {d | d.degree ≤ μ})
 
 private lemma kronSpan_mono (k : ℕ) {μ ν : ℕ} (h : μ ≤ ν) :
