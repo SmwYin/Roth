@@ -1,5 +1,18 @@
 # CoeffNorm final file-level cleanup report
 
+Current status — approved amendment, 2026-10-16: the four unused public DecidableEq
+parameters and `normOne_det_le.hC` have been removed with explicit user approval.
+Names, conclusions, other arguments, definitions and documentation remain unchanged.
+Current source SHA256 `ee0b23cfee16cf674512a5c8f912a8030242e736db6e79fc1270be71675e67a9`.
+Complete LSP has zero errors and one preserved metadata warning (previously six).
+Actual current-source profiling checks all26 declarations: maximum625.993ms, all below750ms.
+Independent reproofs verify all four stronger statements; all25 historical public types and
+both definition values are recovered, with standard axioms only.
+See [approved amendment audit](CoeffNorm-api-amendment.md) for current verification and
+publication evidence. The whole-file cleanup report below is historical evidence for its
+original checkpoint; its pending-proposal, warning-count and old-profile statements are
+superseded by this amendment. Original project tally remains130/264;7/14 files complete.
+
 Status: all26 original declarations, one new private helper and every final file-level phase complete. Source checkpoint `72871a7`, SHA256 `7165f8d8bacbd22a337d00a95133d3b1264c5e2a972e7e2ee6ec9ddcc6517d5c`. Public mathematical API, original definition values, documentation and pinned toolchain preserved. Header metadata and the compiled public-hypothesis proposal remain explicit limitations, not a clean-lint claim.
 
 ## Phases 0–3 — baseline and preparation

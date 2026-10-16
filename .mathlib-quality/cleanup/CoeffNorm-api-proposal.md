@@ -1,6 +1,14 @@
-# Concrete CoeffNorm unused-hypothesis proposal — awaiting user decision
+# CoeffNorm unused-hypothesis proposal — USER APPROVED / APPLIED
 
-No proposed public signature change has been applied to project source.
+Status2026-10-16: the user explicitly approved both proposed changes. Applied to the
+current cleaned module and validated by complete LSP, independent stronger reproofs,
+original-type recovery, standard-axiom checks, current-source profiling, full build and
+separate LeanEval build. See [amendment audit](CoeffNorm-api-amendment.md).
+The original proposal below is retained as historical evidence; its awaiting-decision
+statements are superseded. The cleaned caller had already inlined hC0/hN0: application
+therefore removed its `(by positivity)` argument directly.
+
+Historical proposal (before approval and application):
 
 Compiler evidence: `/Users/ramin/.elan/bin/lake env lean /private/tmp/roth-coeffnorm-api-proposal.lean`, session46719 exit0. The entire original320-line module was compiled under `Roth.CoeffNormProposal` with exactly the following changes, so proofs and internal callers work together. All four proposed theorem axiom sets contain only propext,Classical.choice,Quot.sound. Both old and proposed fully elaborated signatures are printed in `/private/tmp/roth-coeffnorm-api-proposal.log`.
 

@@ -1,5 +1,10 @@
 # Phase 4 — Roth.abs_coeff_det_hasseDeriv_le
 
+Current amendment: the user explicitly approved the unused public-binder removals on
+2026-10-16. See [approved amendment audit](CoeffNorm-api-amendment.md) for the current
+source, types, warning count and verification. The original audit below records its
+historical checkpoint and remains unchanged.
+
 Dedicated declaration 26 audit. Baseline: `/private/tmp/roth-coeffnorm-original.lean`
 L299–318; worker-start snapshot `/private/tmp/roth-d26-start.lean` L254–273;
 final source `Roth/CoeffNorm.lean` L254–268.

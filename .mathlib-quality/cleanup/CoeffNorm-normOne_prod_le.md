@@ -1,5 +1,10 @@
 # Phase 4: Roth.normOne_prod_le
 
+Current amendment: the user explicitly approved the unused public-binder removals on
+2026-10-16. See [approved amendment audit](CoeffNorm-api-amendment.md) for the current
+source, types, warning count and verification. The original audit below records its
+historical checkpoint and remains unchanged.
+
 Dedicated declaration worker, branch ramin-cleanup, assigned HEAD 84cc582.
 Scope: target block only in Roth/CoeffNorm.lean and this report. No Git mutations,
 shared logs, imports, definitions, docs, instances, or other declarations changed.

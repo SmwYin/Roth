@@ -1,5 +1,10 @@
 # CoeffNorm initial file audit
 
+Current amendment: the user explicitly approved the unused public-binder removals on
+2026-10-16. See [approved amendment audit](CoeffNorm-api-amendment.md) for the current
+source, types, warning count and verification. The original audit below records its
+historical checkpoint and remains unchanged.
+
 Source baseline `e63b156a9d2faabc1bf569f0e86eb8fe82569b96`, 320 lines, 26 originals (25 public, 1 private). Both skills and complete cleanup/cleanup-all workflow read. Classic dialect.
 
 ## Baseline (Phase 0)

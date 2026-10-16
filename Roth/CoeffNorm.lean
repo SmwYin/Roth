@@ -87,8 +87,8 @@ theorem normOne_sum_le {ι : Type*} (s : Finset ι) (f : ι → MvPolynomial σ 
 
 /-- `normOne` is submultiplicative.
 Source: §3, Lean note ("submultiplicativity for `‖·‖₁`"). -/
-theorem normOne_mul_le [DecidableEq σ] (P Q : MvPolynomial σ ℤ) :
-    normOne (P * Q) ≤ normOne P * normOne Q := by
+theorem normOne_mul_le (P Q : MvPolynomial σ ℤ) : normOne (P * Q) ≤ normOne P * normOne Q := by
+  classical
   rw [MvPolynomial.mul_def]
   refine (normOne_sum_le _ _).trans ?_
   rw [normOne, normOne, Finset.sum_mul_sum]
@@ -96,7 +96,7 @@ theorem normOne_mul_le [DecidableEq σ] (P Q : MvPolynomial σ ℤ) :
     Finset.sum_congr rfl fun b _ ↦ by simp [normOne_monomial, abs_mul]
 
 /-- `normOne` is submultiplicative over a finite product. -/
-theorem normOne_prod_le [DecidableEq σ] {ι : Type*} (s : Finset ι) (f : ι → MvPolynomial σ ℤ) :
+theorem normOne_prod_le {ι : Type*} (s : Finset ι) (f : ι → MvPolynomial σ ℤ) :
     normOne (∏ i ∈ s, f i) ≤ ∏ i ∈ s, normOne (f i) :=
   Finset.le_prod_of_submultiplicative_of_nonneg normOne normOne_nonneg
     (by simpa using (normOne_monomial (0 : σ →₀ ℕ) 1).le) normOne_mul_le s f
@@ -110,9 +110,9 @@ theorem normOne_le_card_mul (P : MvPolynomial σ ℤ) {B : ℝ} (hB : ∀ d, |((
 
 /-- The determinant of an `l × l` matrix whose entries have `normOne` at most `C` has `normOne`
 at most `l! C^l`. Source: §3, proof of Lemma 3 ("`‖det(...)‖₁ ≤ ∑_σ ‖∏_ν ...‖₁ ≤ l! (B 2^S)^l`"). -/
-theorem normOne_det_le [DecidableEq σ] {l : ℕ} (M : Matrix (Fin l) (Fin l) (MvPolynomial σ ℤ))
-    {C : ℝ} (hC : 0 ≤ C) (hM : ∀ μ ν, normOne (M μ ν) ≤ C) :
-    normOne M.det ≤ l.factorial * C ^ l := by
+theorem normOne_det_le {l : ℕ} (M : Matrix (Fin l) (Fin l) (MvPolynomial σ ℤ)) {C : ℝ}
+    (hM : ∀ μ ν, normOne (M μ ν) ≤ C) : normOne M.det ≤ l.factorial * C ^ l := by
+  classical
   rw [Matrix.det_apply']
   calc _ ≤ ∑ τ : Equiv.Perm (Fin l), normOne (_ * ∏ i, M (τ i) i) := normOne_sum_le _ _
     _ ≤ ∑ _τ : Equiv.Perm (Fin l), C ^ l := Finset.sum_le_sum fun τ _ ↦ ?_
@@ -249,9 +249,9 @@ theorem degreeOf_det_hasseDeriv_le {l : ℕ} (E : Fin l → Fin l → (σ →₀
 /-- Lemma 3. Source: §3, Lemma `roth:lem3` ("all the coefficients of `F` have absolute value
 bounded by `((r_1 + 1) ⋯ (r_p + 1))^l l! B^l 2^{(r_1 + ⋯ + r_p) l}`"), stated for a determinant
 of Hasse derivatives of arbitrary multi-indices. -/
-theorem abs_coeff_det_hasseDeriv_le [Fintype σ] [DecidableEq σ] {l : ℕ}
-    (E : Fin l → Fin l → (σ →₀ ℕ)) (P : MvPolynomial σ ℤ) {r : σ → ℕ} (hP : ∀ j, degreeOf j P ≤ r j)
-    {B : ℝ} (hB0 : 0 ≤ B) (hB : ∀ d, |((P.coeff d : ℤ) : ℝ)| ≤ B) (d : σ →₀ ℕ) :
+theorem abs_coeff_det_hasseDeriv_le [Fintype σ] {l : ℕ} (E : Fin l → Fin l → (σ →₀ ℕ))
+    (P : MvPolynomial σ ℤ) {r : σ → ℕ} (hP : ∀ j, degreeOf j P ≤ r j) {B : ℝ} (hB0 : 0 ≤ B)
+    (hB : ∀ d, |((P.coeff d : ℤ) : ℝ)| ≤ B) (d : σ →₀ ℕ) :
     |(((Matrix.of fun μ ν : Fin l ↦ hasseDeriv (E μ ν) P).det.coeff d : ℤ) : ℝ)| ≤
       (∏ j, ((r j : ℝ) + 1)) ^ l * l.factorial * B ^ l * 2 ^ ((∑ j, r j) * l) := by
   have hsupp : (P.support.card : ℝ) ≤ ∏ j, ((r j : ℝ) + 1) := by
@@ -259,7 +259,7 @@ theorem abs_coeff_det_hasseDeriv_le [Fintype σ] [DecidableEq σ] {l : ℕ}
   calc _ ≤ normOne (Matrix.of fun μ ν : Fin l ↦ hasseDeriv (E μ ν) P).det :=
         abs_coeff_le_normOne _ _
     _ ≤ l.factorial * (2 ^ (∑ j, r j) * ((∏ j, ((r j : ℝ) + 1)) * B)) ^ l :=
-        normOne_det_le _ (by positivity) fun μ ν ↦
+        normOne_det_le _ fun μ ν ↦
           (normOne_hasseDeriv_le _ P hP).trans (mul_le_mul_of_nonneg_left
             ((normOne_le_card_mul P hB).trans (mul_le_mul_of_nonneg_right hsupp hB0))
             (by positivity))

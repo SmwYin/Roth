@@ -1,5 +1,10 @@
 # Phase 4: `Roth.normOne_mul_le`
 
+Current amendment: the user explicitly approved the unused public-binder removals on
+2026-10-16. See [approved amendment audit](CoeffNorm-api-amendment.md) for the current
+source, types, warning count and verification. The original audit below records its
+historical checkpoint and remains unchanged.
+
 Scope: only the target block in `Roth/CoeffNorm.lean` (initial L89–102, final L89–97) and this report. Parent supplied branch `ramin-cleanup`, HEAD `84b944e`, full baseline build followed by separate LeanEval session 90598 exit 0, and complete baseline LSP without errors. No Git or shared-log operations performed.
 
 Read the full mathlib-quality and lean4 SKILL.md files, `/private/tmp/roth-coeffnorm-worker-contract.md`, and required references golfing-rules.md, proof-patterns.md, mathlib-search.md, generalisation-patterns.md, cleanup-gates.md, style-rules.md, naming-conventions.md; also mathlib-review-stages.md and local source `clean.tex` L475–498. Native Lean MCP discovered through ALL_TOOLS worked; no fallback needed.

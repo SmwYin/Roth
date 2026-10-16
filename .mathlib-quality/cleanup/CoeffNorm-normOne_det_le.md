@@ -1,5 +1,10 @@
 # Phase 4 — Roth.normOne_det_le
 
+Current amendment: the user explicitly approved the unused public-binder removals on
+2026-10-16. See [approved amendment audit](CoeffNorm-api-amendment.md) for the current
+source, types, warning count and verification. The original audit below records its
+historical checkpoint and remains unchanged.
+
 Scope: one declaration in `Roth/CoeffNorm.lean`, original L114–124, final L114–123.
 Before 11 declaration lines / 8 body lines; after 10 / 7; saved one line.
 Public signature and original docstring are byte-identical. The only source changes are
