@@ -120,7 +120,7 @@ Files will be processed in dependency order; declarations within each file are s
 | `Roth/Taylor.lean` | 239 | All cleanup phases complete;20/20 originals and2 added helpers audited; user-preserved metadata |
 | `Roth/CoeffNorm.lean` | 320 | All cleanup phases complete;26/26 originals and1 added helper audited; compiled public proposal pending |
 | `Roth/GenWronskian.lean` | 292 | All cleanup phases complete;19/19 originals and2 added helpers audited; metadata/two compiled public proposals explicit |
-| `Roth/Lattice.lean` | 217 | Active: original declarations 6/10 audited; final file phases pending |
+| `Roth/Lattice.lean` | 217 | Active: original declarations 7/10 audited; new fibre helper awaits separate audit; final file phases pending |
 | `Roth/Index.lean` | 275 | Awaiting cleanup |
 | `Roth/Separation.lean` | 618 | Awaiting cleanup |
 | `Roth/Theta.lean` | 981 | Awaiting cleanup |
@@ -986,3 +986,21 @@ Explicit owner source edit revocation at frozen SHA256
 Sequential full `lake build` then separate `lake build Roth.LeanEval`, session51672,
 both exit0 (96.32s/34.26s), hash stable; logs `/private/tmp/roth-lattice-d06-{full,leaneval}.log`.
 Lattice6/10 originals audited, overall126/264; final file phases remain.
+
+
+## Lattice declaration 7 checkpoint
+
+`card_filter_box_last`: extracted substantive private fibre-bijection identity, shared one
+reconstruction proof across two obligations; public43→11 declaration lines/7 proof lines,
+new `card_filter_box_fiber_aux`25 declaration/20 proof lines (largest branch9). Exact
+public mathematical type and existing docs preserved, with signature packing/lambda style
+normalized. [Dedicated audit](cleanup/Lattice-card_filter_box_last.md) records all24/42/five
+actual searches/public literature/four binder probes/all11 checks. Finder timeout and native
+standalone profiler limitation are explicit; aggregate profiling does not claim per-declaration
+measurement. Actual module build exit0(34s), complete LSP zero errors/header only; exact
+original-type assignment and independent original nonself proof exit0. Actual public/new
+private helper standard axioms verified. Explicit owner source edit revocation at SHA256
+`d3a5301ef1c44bf385b8918923fe31d25d013840fefa4fc5764a3dbf903386a5`.
+Owner sequential full `lake build` then separate `lake build Roth.LeanEval`, session33681,
+both exit0(102.58s/38.00s), frozen hash stable; logs `/private/tmp/roth-lattice-d07-{full,leaneval}.log`.
+Lattice7/10 originals audited, overall127/264; helper fresh audit and final file phases remain.

@@ -91,54 +91,48 @@ private lemma extend_apply_last {m : ℕ} (d : Fin m →₀ ℕ) (i : ℕ) :
     (d.mapDomain Fin.castSucc + Finsupp.single (Fin.last m) i) (Fin.last m) = i := by
   simp [Finsupp.mapDomain_of_notMem_range]
 
+private lemma card_filter_box_fiber_aux {m : ℕ} (r : Fin (m + 1) → ℕ)
+    (p : (Fin (m + 1) →₀ ℕ) → Prop) [DecidablePred p] {i : ℕ} (hi : i ≤ r (Fin.last m)) :
+    ((box (r ∘ Fin.castSucc)).filter fun d ↦
+      p (d.mapDomain Fin.castSucc + Finsupp.single (Fin.last m) i)).card =
+        (((box r).filter p).filter fun d ↦ d (Fin.last m) = i).card := by
+  classical
+  refine Finset.card_bij
+    (fun d _ ↦ d.mapDomain Fin.castSucc + Finsupp.single (Fin.last m) i) ?_ ?_ ?_
+  · intro d hd
+    simp only [Finset.mem_filter, mem_box, Function.comp_apply] at hd ⊢
+    refine ⟨⟨fun j ↦ ?_, hd.2⟩, extend_apply_last d i⟩
+    exact Fin.lastCases (by simpa [extend_apply_last] using hi)
+      (fun j ↦ by simpa [extend_apply_castSucc] using hd.1 j) j
+  · intro d₁ _ d₂ _ h
+    ext j
+    simpa [extend_apply_castSucc] using congrArg (fun d ↦ d j.castSucc) h
+  · intro d hd
+    obtain ⟨⟨hdr, hdp⟩, hdi⟩ := (by simpa only [Finset.mem_filter, mem_box] using hd)
+    have hext : (Finsupp.equivFunOnFinite.symm fun j ↦ d j.castSucc).mapDomain Fin.castSucc +
+        Finsupp.single (Fin.last m) i = d := by
+      ext j
+      refine Fin.lastCases ?_ (fun j ↦ ?_) j <;>
+        simp [extend_apply_last, extend_apply_castSucc, hdi]
+    refine ⟨Finsupp.equivFunOnFinite.symm fun j ↦ d j.castSucc, ?_, hext⟩
+    simpa [mem_box, hext] using And.intro (fun j : Fin m ↦ hdr j.castSucc) hdp
+
 /-- Counting a filtered box by fibres over the last coordinate: each fibre is identified with
 the box in the first `m` coordinates, filtered by the extended predicate.
 
 Source: §6, Lean implementation note ("induction counts the fibres of the last-coordinate
 projection"). -/
 theorem card_filter_box_last {m : ℕ} (r : Fin (m + 1) → ℕ) (p : (Fin (m + 1) →₀ ℕ) → Prop)
-    [DecidablePred p] :
-    ((box r).filter p).card = ∑ i ∈ range (r (Fin.last m) + 1),
-      ((box (r ∘ Fin.castSucc)).filter fun d =>
+    [DecidablePred p] : ((box r).filter p).card = ∑ i ∈ range (r (Fin.last m) + 1),
+      ((box (r ∘ Fin.castSucc)).filter fun d ↦
         p (d.mapDomain Fin.castSucc + Finsupp.single (Fin.last m) i)).card := by
   classical
-  rw [Finset.card_eq_sum_card_fiberwise (f := fun d => d (Fin.last m))
-    (t := range (r (Fin.last m) + 1)) fun d hd => by
+  rw [Finset.card_eq_sum_card_fiberwise (f := fun d ↦ d (Fin.last m))
+    (t := range (r (Fin.last m) + 1)) fun d hd ↦ by
       simp only [Finset.coe_filter, Set.mem_ofPred_eq, mem_box] at hd
       simpa [Nat.lt_succ_iff] using hd.1 (Fin.last m)]
-  refine Finset.sum_congr rfl fun i hi => ?_
-  symm
-  refine Finset.card_bij
-    (fun d _ => d.mapDomain Fin.castSucc + Finsupp.single (Fin.last m) i) ?_ ?_ ?_
-  · intro d hd
-    simp only [Finset.mem_filter, mem_box, Function.comp_apply] at hd ⊢
-    refine ⟨⟨fun j => ?_, hd.2⟩, extend_apply_last d i⟩
-    refine Fin.lastCases ?_ (fun j => ?_) j
-    · rw [extend_apply_last]
-      exact Nat.lt_succ_iff.1 (mem_range.1 hi)
-    · rw [extend_apply_castSucc]
-      exact hd.1 j
-  · intro d₁ _ d₂ _ h
-    ext j
-    simpa [extend_apply_castSucc] using congrArg (fun d => d j.castSucc) h
-  · intro d hd
-    simp only [Finset.mem_filter, mem_box] at hd
-    obtain ⟨⟨hdr, hdp⟩, hdi⟩ := hd
-    refine ⟨Finsupp.equivFunOnFinite.symm fun j => d j.castSucc, ?_, ?_⟩
-    · simp only [Finset.mem_filter, mem_box, Function.comp_apply]
-      have hext : (Finsupp.equivFunOnFinite.symm fun j => d j.castSucc).mapDomain Fin.castSucc +
-          Finsupp.single (Fin.last m) i = d := by
-        ext j
-        refine Fin.lastCases ?_ (fun j => ?_) j
-        · rw [extend_apply_last, hdi]
-        · rw [extend_apply_castSucc]
-          simp
-      exact ⟨fun j => by simpa using hdr j.castSucc, by rw [hext]; exact hdp⟩
-    · ext j
-      refine Fin.lastCases ?_ (fun j => ?_) j
-      · rw [extend_apply_last, hdi]
-      · rw [extend_apply_castSucc]
-        simp
+  exact Finset.sum_congr rfl fun i hi ↦
+    (card_filter_box_fiber_aux r p (Nat.lt_succ_iff.1 (mem_range.1 hi))).symm
 
 private lemma filter_weight_le_eq_empty {m : ℕ} (r : Fin m → ℕ) {lam : ℝ} (hlam : (m : ℝ) < lam) :
     (box r).filter (fun d => weight r d ≤ ((m : ℝ) - lam) / 2) = ∅ :=
