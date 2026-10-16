@@ -149,8 +149,8 @@ theorem taylor_zero (P : MvPolynomial σ R) : taylor (fun _ ↦ (0 : R)) P = P :
 /-- Translation commutes with changing the coefficient ring along `f`.
 Source: §1, Lean implementation note ("compatibility with coefficient maps"). -/
 theorem taylor_map {S : Type*} [CommSemiring S] (f : R →+* S) (α : σ → R) (P : MvPolynomial σ R) :
-    taylor (fun j => f (α j)) (map f P) = map f (taylor α P) := by
-  induction P using MvPolynomial.induction_on <;> simp_all
+    taylor (fun j ↦ f (α j)) (map f P) = map f (taylor α P) := by
+  simp [taylor, aeval_def, map_eval₂, Function.comp_def]
 
 /-- Translation commutes with renaming variables.
 Source: §4, Lemma 4-2 ("When `P` is embedded into the larger polynomial ring, its translated

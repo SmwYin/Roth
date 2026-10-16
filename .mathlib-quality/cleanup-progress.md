@@ -42,7 +42,7 @@ Final module/full/separate LeanEval, complete LSP, public-type/definition compat
 axiom gates pass. Post-amendment actual profiling: all13 below1000ms, maximum586.13ms.
 See [Wronskian final report](cleanup/Wronskian-final.md). Overall55/264 original declarations audited.
 Current file: `Roth/Taylor.lean`, under a fresh file worker with sequential dedicated declaration audits.
-Taylor progress: 12/20 original declarations reviewed; overall 67/264. File-level final phases remain pending.
+Taylor progress: 13/20 original declarations reviewed; overall 68/264. File-level final phases remain pending.
 The user approved removing unused `hφ`/`hd` from the Wronskian coefficient identity;
 the exact removal and sole-caller update are implemented and fully revalidated. Both unused
 argument warnings are gone; header metadata remains unchanged.
@@ -618,3 +618,9 @@ environment repair.
 `MvPolynomial.taylor_zero`: Direct Mathlib identity-evaluation simplification replaces induction; equivalent lambda notation normalized, original public API and docstring preserved. [Dedicated audit](cleanup/Taylor-taylor_zero.md). Module, complete LSP, isolated type/axiom and diff gates pass. Publication validation: full `lake build` session11614 exit0; separate `lake build Roth.LeanEval` session44120 exit0. Frozen source SHA256 `a2f43a6a92cc7e8cee595b4fdb1047638cc7f8a9d1d031e050f72a95f086a6af`. Logs `/private/tmp/roth-taylor-d12-full.log` and `...-leaneval.log`.
 
 CI follow-up: the root agent inspected [run 38848241891](https://github.com/SmwYin/Roth/actions/runs/38848241891) at `5496d75`: Lean action succeeded; the Pages deployment failed with HTTP400 because it overlapped the newer `2c552b3` deployment. [Newer run 38849121428](https://github.com/SmwYin/Roth/actions/runs/38849121428) completed successfully. This was a deployment overlap, not a Lean regression; no rerun or workflow change was needed.
+
+## Taylor declaration 13 checkpoint
+
+`MvPolynomial.taylor_map`: Evaluation-map naturality replaces polynomial induction; equivalent lambda notation normalized, exact public API and docs retained. [Dedicated audit](cleanup/Taylor-taylor_map.md). Module, complete LSP, isolated type/axiom and diff gates pass. Publication validation: full `lake build` session53057 exit0; separate `lake build Roth.LeanEval` session18619 exit0. Frozen source SHA256 `d4a821b4ee428a5e8b052cb7a6cd0a62a9830b3fdb5a3d78557b86bd29d2dd74`. Logs `/private/tmp/roth-taylor-d13-full.log` and `...-leaneval.log`.
+
+User model preference update: all new declaration/helper/review workers now use GPT-6.1 Sol Medium with fresh context. The already-running Taylor13 Astra Medium worker finished its existing audit; no model switch is claimed for that worker. Required gates remain unchanged, with concise output and no unchanged status updates.
