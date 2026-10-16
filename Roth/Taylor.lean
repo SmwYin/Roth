@@ -157,7 +157,7 @@ Source: §4, Lemma 4-2 ("When `P` is embedded into the larger polynomial ring, i
 monomials have zero exponent in `x_p`"). -/
 theorem taylor_rename {τ : Type*} (f : σ → τ) (α : τ → R) (P : MvPolynomial σ R) :
     taylor α (rename f P) = rename f (taylor (α ∘ f) P) := by
-  induction P using MvPolynomial.induction_on <;> simp_all
+  simp [taylor, rename_eq_aeval, comp_aeval_apply]
 
 /-- Translation does not increase the degree in any variable.
 Source: §5 ("Taylor's theorem gives a nonzero derivative with `0 ≤ i_j ≤ r_j`"). -/

@@ -39,7 +39,7 @@ Two headline proofs require structural review: coeff_taylor35bodylines; eq_sum_b
 | 11 | `taylor_taylor` | 158–160 | 3 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | validated; [audit](Taylor-taylor_taylor.md) |
 | 12 | `taylor_zero` | 164–165 | 2 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | validated; [audit](Taylor-taylor_zero.md) |
 | 13 | `taylor_map` | 169–171 | 3 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | validated; [audit](Taylor-taylor_map.md) |
-| 14 | `taylor_rename` | 176–178 | 3 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | Pending |
+| 14 | `taylor_rename` | 176–178 | 3 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | validated; [audit](Taylor-taylor_rename.md) |
 | 15 | `degreeOf_taylor_le` | 182–186 | 5 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | Pending |
 | 16 | `taylor_neg_taylor` | 195–197 | 3 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | Pending |
 | 17 | `taylor_injective` | 200–201 | 2 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | Pending |
@@ -136,3 +136,7 @@ environment repair.
 ## Declaration 13 checkpoint
 
 `taylor_map`: Evaluation-map naturality replaces polynomial induction; equivalent lambda notation normalized, exact public API and docs retained. All worker gates pass. Frozen source SHA256 `d4a821b4ee428a5e8b052cb7a6cd0a62a9830b3fdb5a3d78557b86bd29d2dd74`. Full `lake build` session53057 and separate `lake build Roth.LeanEval` session18619 exited0. Logs `/private/tmp/roth-taylor-d13-full.log` and `...-leaneval.log`.
+
+## Declaration 14 checkpoint
+
+`taylor_rename`: Direct substitution composition replaces induction; exact public signature and documentation unchanged. All worker gates pass. Frozen source SHA256 `4cd871acc4a0ad26ceba2c01bef9ee5c88e0f5117254a50d24a895b56af32f7a`. Full `lake build` session21806 and separate `lake build Roth.LeanEval` session71085 exited0. Logs `/private/tmp/roth-taylor-d14-full.log` and `...-leaneval.log`.
