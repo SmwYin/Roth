@@ -108,17 +108,15 @@ are all `< k`.
 Source: §2, proof of Lemma 1 ("We claim that these polynomials are linearly independent"). -/
 theorem linearIndependent_kronecker {k : ℕ} (hk : 1 < k) {φ : Fin l → MvPolynomial σ K}
     (hφ : ∀ ν j, degreeOf j (φ ν) < k) (h : LinearIndependent K φ) :
-    LinearIndependent K fun ν => kronecker k (φ ν) := by
+    LinearIndependent K fun ν ↦ kronecker k (φ ν) := by
   rw [Fintype.linearIndependent_iff] at h ⊢
   intro g hg
   apply h g
-  have hdeg : ∀ j, degreeOf j (∑ i, g i • φ i) < k := fun j => by
-    refine lt_of_le_of_lt (degreeOf_sum_le _ _ _) ?_
-    refine (Finset.sup_lt_iff (Nat.zero_lt_of_lt hk)).2 fun i _ => ?_
-    rw [smul_eq_C_mul]
-    exact (degreeOf_C_mul_le _ _ _).trans_lt (hφ i j)
-  rw [← kronecker_eq_zero_iff hk hdeg, map_sum]
-  simpa [map_smul] using hg
+  refine (kronecker_eq_zero_iff hk fun j ↦ ?_).mp ?_
+  · refine (degreeOf_sum_le _ _ _).trans_lt <|
+      (Finset.sup_lt_iff (Nat.zero_lt_of_lt hk)).2 fun i _ ↦ ?_
+    simpa [smul_eq_C_mul] using (degreeOf_C_mul_le (φ i) j (g i)).trans_lt (hφ i j)
+  · simpa [map_sum, map_smul] using hg
 
 /-- The algebraic chain rule for substituting univariate polynomials into a multivariate one.
 
