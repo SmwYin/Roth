@@ -130,12 +130,8 @@ theorem derivative_aeval (γ : σ → Polynomial K) (P : MvPolynomial σ K) :
   | C a => simp
   | add p q hp hq => simp [hp, hq, Finset.sum_add_distrib, mul_add]
   | mul_X p j hp =>
-    rw [map_mul, aeval_X, Polynomial.derivative_mul, hp, add_comm]
-    simp only [Derivation.leibniz, pderiv_X, map_add, smul_eq_mul, mul_add,
-      Finset.sum_add_distrib, Finset.sum_mul]
-    congr 1
-    · simp [Pi.single_apply, apply_ite (aeval γ), mul_comm]
-    · exact Finset.sum_congr rfl fun _ _ => by rw [map_mul, aeval_X]; ring
+    simp [hp, Finset.sum_add_distrib, ← Finset.mul_sum, add_mul, mul_assoc, mul_comm,
+      Pi.single_apply, apply_ite (aeval γ)]
 
 /-- The operator `P ↦ kronecker k (Δ_d P)`, as an element of the `K[X]`-module of functions. -/
 private noncomputable def kronHasse (k : ℕ) (d : σ →₀ ℕ) : MvPolynomial σ K → Polynomial K :=
