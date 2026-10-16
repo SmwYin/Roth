@@ -229,19 +229,12 @@ theorem det_sum_rows {A : Type*} [CommRing A] {ι : Type*} [DecidableEq ι] (s :
 
 private lemma wronskian_kronecker_eq_sum_aux (k : ℕ) (φ : Fin l → MvPolynomial σ K)
     (s : Fin l → Finset (σ →₀ ℕ)) (c : Fin l → (σ →₀ ℕ) → Polynomial K)
-    (hc : ∀ (μ : Fin l) P, Polynomial.hasseDeriv μ (kronecker k P) =
-      ∑ d ∈ s μ, c μ d * kronecker k (hasseDeriv d P)) :
-    wronskian (fun ν ↦ kronecker k (φ ν)) = ∑ f ∈ Fintype.piFinset s,
-      (∏ μ, c μ (f μ)) * kronecker k (genWronskian f φ) := by
+    (hc : ∀ μ ν : Fin l, Polynomial.hasseDeriv μ (kronecker k (φ ν)) =
+      ∑ d ∈ s μ, c μ d * kronecker k (hasseDeriv d (φ ν))) : wronskian (fun ν ↦ kronecker k (φ ν)) =
+    ∑ f ∈ Fintype.piFinset s, (∏ μ, c μ (f μ)) * kronecker k (genWronskian f φ) := by
   classical
-  have hM : wronskianMatrix (fun ν ↦ kronecker k (φ ν)) =
-      Matrix.of fun μ ν ↦ ∑ d ∈ s μ, c μ d * kronecker k (hasseDeriv d (φ ν)) := by
-    ext1 μ ν
-    exact hc μ (φ ν)
-  rw [wronskian, hM, det_sum_rows]
-  refine Finset.sum_congr rfl fun f _ ↦ ?_
-  rw [genWronskian, ← AlgHom.coe_toRingHom, RingHom.map_det]
-  rfl
+  simpa [wronskian, wronskianMatrix, hc, genWronskian, AlgHom.map_det, Matrix.map] using
+    det_sum_rows s c (fun μ d ν ↦ kronecker k (hasseDeriv d (φ ν)))
 
 /-- **Lemma 1**: a linearly independent family of polynomials has a generalized Wronskian (with
 Hasse operators of orders `|D μ| ≤ μ`) that is not identically zero.
@@ -262,7 +255,7 @@ theorem exists_genWronskian_ne_zero [CharZero K] {φ : Fin l → MvPolynomial σ
         (by simp) (Finset.mem_univ j)).trans (Finset.single_le_sum
           (f := fun ν ↦ ∑ j, degreeOf j (φ ν)) (by simp) (Finset.mem_univ ν)))
         (Nat.lt_add_of_pos_left two_pos)) h)
-  rw [wronskian_kronecker_eq_sum_aux k φ s c hc]
+  rw [wronskian_kronecker_eq_sum_aux k φ s c (fun μ ν ↦ hc μ (φ ν))]
   refine Finset.sum_eq_zero fun f hf ↦ ?_
   rw [hcon f fun μ ↦ hs μ _ (Fintype.mem_piFinset.1 hf μ), map_zero, mul_zero]
 
