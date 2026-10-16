@@ -90,16 +90,11 @@ theorem normOne_sum_le {ι : Type*} (s : Finset ι) (f : ι → MvPolynomial σ 
 Source: §3, Lean note ("submultiplicativity for `‖·‖₁`"). -/
 theorem normOne_mul_le [DecidableEq σ] (P Q : MvPolynomial σ ℤ) :
     normOne (P * Q) ≤ normOne P * normOne Q := by
-  have hPQ : P * Q = ∑ a ∈ P.support, ∑ b ∈ Q.support,
-      monomial (a + b) (P.coeff a * Q.coeff b) := by
-    conv_lhs => rw [P.as_sum, Q.as_sum]
-    rw [Finset.sum_mul_sum]
-    simp [monomial_mul_monomial]
-  rw [hPQ]
+  rw [MvPolynomial.mul_def]
   refine (normOne_sum_le _ _).trans ?_
   rw [normOne, normOne, Finset.sum_mul_sum]
-  exact Finset.sum_le_sum fun a _ => (normOne_sum_le _ _).trans_eq <|
-    Finset.sum_congr rfl fun b _ => by simp [normOne_monomial, abs_mul]
+  exact Finset.sum_le_sum fun a _ ↦ (normOne_sum_le _ _).trans_eq <|
+    Finset.sum_congr rfl fun b _ ↦ by simp [normOne_monomial, abs_mul]
 
 /-- `normOne` is submultiplicative over a finite product. -/
 theorem normOne_prod_le [DecidableEq σ] {ι : Type*} (s : Finset ι) (f : ι → MvPolynomial σ ℤ) :
