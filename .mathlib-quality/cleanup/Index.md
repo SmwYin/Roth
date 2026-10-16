@@ -29,22 +29,22 @@ receive separate fresh audits and never increment the original-declaration tally
 | 2 | mem_support_taylor_iff | 54 | 3 |
 | 3 | weightSet_finite | 59 | 3 |
 | 4 | weightSet_nonempty | 64 | 4 |
-| 5 | index_le_weight | 72 | 5 |
-| 6 | exists_weight_eq_index | 79 | 5 |
-| 7 | le_index_iff | 86 | 7 |
+| 5 | index_le_weight | 72 | 4 |
+| 6 | exists_weight_eq_index | 79 | 4 |
+| 7 | le_index_iff | 86 | 6 |
 | 8 | index_nonneg | 94 | 4 |
-| 9 | index_eq_zero_iff | 101 | 9 |
-| 10 | index_hasseDeriv_ge | 112 | 8 |
-| 11 | le_index_sum | 122 | 10 |
-| 12 | weight_eq_finsuppWeight_div | 134 | 11 |
+| 9 | index_eq_zero_iff | 101 | 8 |
+| 10 | index_hasseDeriv_ge | 112 | 7 |
+| 11 | le_index_sum | 122 | 8 |
+| 12 | weight_eq_finsuppWeight_div | 134 | 10 |
 | 13 | index_eq_weightedOrder_div | 149 | 21 |
 | 14 | index_mul | 173 | 13 |
 | 15 | index_prod | 190 | 13 |
 | 16 | index_neg | 205 | 3 |
 | 17 | index_C_mul | 210 | 3 |
-| 18 | index_mul_left_weights | 215 | 9 |
+| 18 | index_mul_left_weights | 215 | 8 |
 | 19 | index_rename | 227 | 7 |
-| 20 | index_le_card | 238 | 7 |
+| 20 | index_le_card | 238 | 6 |
 | 21 | index_unique | 248 | 26 |
 
 ## Phase 2 — Audit punch-list (before fixes)
@@ -66,6 +66,36 @@ receive separate fresh audits and never increment the original-declaration tally
 | C.3 docs | All18 public declarations documented; preserve existing docstrings. |
 | C.4 structure | Headline weighted-order bridge and unique-variable identity exceed15body lines; workers must simplify/extract substantive private helpers or give explicit supported decomposition flag. |
 | C.5 junk | index names the mathematical index and has17 public API results and downstream users; retain. No trivial private existential helper. |
+
+Original-declaration light scan (all widths/proof measurements are subsequently
+checked by the dedicated worker; names here identify the original API). The three
+private lemmas have no docstrings; all18 public declarations have docstrings.
+All public visibility decisions preserve the established API pending a concrete
+approved change. No private single-use trivial existential wrapper was found.
+
+| Declaration | Naming | Visibility/docs | Length/structure and junk scan |
+|---|---|---|---|
+| index | lowerCamelCase data, descriptive | public/doc present | 1term line; nontrivial mathematical concept and extensive API, retain |
+| mem_support_taylor_iff | snake_case, describes iff | private/no doc | 1proof line, repeated support API, not existential |
+| weightSet_finite | mixed camel prefix needs dedicated naming check | private/no doc | 1term line; repeated finite-set support infrastructure |
+| weightSet_nonempty | mixed camel prefix needs dedicated naming check | private/no doc | 2proof lines; repeated nonempty-set infrastructure |
+| index_le_weight | descriptive snake_case | public/doc present | 2term lines; no long branch |
+| exists_weight_eq_index | descriptive snake_case | public/doc present | 2proof lines; existential witness pairs nonvanishing/equality, no top-level conjunction to split |
+| le_index_iff | descriptive snake_case | public/doc present | 4proof lines; headline below15 |
+| index_nonneg | descriptive snake_case | public/doc present | 3proof lines |
+| index_eq_zero_iff | descriptive snake_case | public/doc present | 6proof lines; short iff branches |
+| index_hasseDeriv_ge | final_ge suffix needs orientation rename consideration | public/doc present | 5proof lines; headline below15 |
+| le_index_sum | descriptive snake_case | public/doc present | 5proof lines; headline below15 |
+| weight_eq_finsuppWeight_div | camel component refers to Finsupp weight API | public/doc present | 8proof lines; audit casts and hD usage |
+| index_eq_weightedOrder_div | camel component names weightedOrder | public/doc present | 14proof lines; headline bound and largest branch need precise worker count |
+| index_mul | descriptive snake_case | public/doc present | 11proof lines; headline below15 |
+| index_prod | descriptive snake_case | public/doc present | 10proof lines; induction branches below10 |
+| index_neg | descriptive snake_case | public/doc present | 1proof line |
+| index_C_mul | C refers to polynomial constant map | public/doc present | 1proof line |
+| index_mul_left_weights | descriptive snake_case | public/doc present | 6proof lines; local image-equality proof |
+| index_rename | descriptive snake_case | public/doc present | 4proof lines; headline below15 |
+| index_le_card | descriptive snake_case | public/doc present | 4proof lines; positivity candidate in B.3 |
+| index_unique | descriptive snake_case | public/doc present | 23proof lines; headline needs substantive simplification/extraction |
 
 ## Phase 3 — File-level work
 
@@ -101,3 +131,18 @@ Logs `/private/tmp/roth-index-d01-{full,leaneval}.log`; command/exit/hash eviden
 `/private/tmp/roth-index-d01-builds.json`. No public declaration or mathematical
 definition changed; all block docs preserved. Exact-path publication follows before
 the next declaration's source edit. Original tally131/264; Index1/21, file incomplete.
+
+### Declaration2 — mem_support_taylor_iff
+
+[Fresh dedicated audit](Index-mem_support_taylor_iff.md): private support/Taylor iff
+retained unchanged,3→3 lines. All24audit/42rules/five actual searches/every binder
+probe/signature+inequality tables/11checked steps inspected. No helper/rename/required
+refactor. Generic coefficient observation remains optional/report-only. Actual module
+47848 exit0; complete native LSP success=true,partial=false, zero target diagnostics;
+independent original-type nonself proof and actual imported private constant axiom
+checks pass. Isolated166heartbeats preliminary; actual anchored file profiling remains
+for final buzz. All leaf processes complete, source/report editing released.
+
+Frozen source unchanged9ea214…; owner sequential full then separate LeanEval64010,
+both exit0(5.12s/3.05s), `/private/tmp/roth-index-d02-{full,leaneval}.log`, frozen hash
+stable. Exact-path publication precedes next edit. Index2/21; overall132/264 originals.

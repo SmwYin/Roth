@@ -1233,3 +1233,18 @@ the next declaration edit. Index1/21 originals audited, overall131/264; final fi
 remain. [Compiled API proposal](cleanup/Index-api-proposal.md) awaits scoped decision:
 18 unused public decidability binders, index_le_card.hr, exactly2Theta caller repairs;
 none applied. No previous other-file approval was reused. Header remains user-preserved.
+
+
+## Index declaration2 checkpoint
+
+Private `mem_support_taylor_iff` retained unchanged,3→3lines. [Dedicated audit](cleanup/Index-mem_support_taylor_iff.md)
+records all24audit/42rules/five actual searches/every binder probe/11checked steps.
+Actual module47848 exit0; complete native LSP zero errors/zero target diagnostics,
+27 inherited other warnings; independent exact original-type nonself proof and actual
+imported private constant standardaxioms pass. Isolated166heartbeats is preliminary;
+owner final anchored file profiling remains. No newhelper/rename/required refactor.
+All leaf compiler processes complete; source/report ownership released. Source freeze
+unchanged9ea21436746c9e155e485b0ae6ef6deb884e4391417044407c717cb2f6206f64.
+Owner sequential full then separate LeanEval64010 both exit0(5.12s/3.05s), hash stable;
+logs `/private/tmp/roth-index-d02-{full,leaneval}.log`. Exact-path publication precedes
+nextedit. Index2/21 originals, overall132/264; API proposal still unapplied.
