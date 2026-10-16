@@ -178,10 +178,10 @@ Source: §6, proof of Lemma 9 ("`s ≤ ∑ r_j ≤ m r_1`"). -/
 theorem natDegree_diag_le [Fintype σ] (P : MvPolynomial σ ℤ) {r : σ → ℕ}
     (hP : ∀ j, degreeOf j P ≤ r j) : (diag P).natDegree ≤ ∑ j, r j := by
   rw [diag_eq_sum]
-  refine Polynomial.natDegree_sum_le_of_forall_le _ _ fun k hk =>
+  refine Polynomial.natDegree_sum_le_of_forall_le _ _ fun k hk ↦
     (Polynomial.natDegree_monomial_le _).trans ?_
   rw [Finsupp.degree_eq_sum]
-  exact Finset.sum_le_sum fun j _ => (monomial_le_degreeOf j hk).trans (hP j)
+  exact Finset.sum_le_sum fun j _ ↦ (monomial_le_degreeOf j hk).trans (hP j)
 
 /-- Evaluating `diag P` at `x` is evaluating `P` at the diagonal point `(x, …, x)`.
 Source: §6, proof of Lemma 9 ("`Δ_j W^*(x_1, …, x_m)` are zero when `x_1 = ⋯ = x_m = α`"). -/
