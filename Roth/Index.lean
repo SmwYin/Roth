@@ -85,11 +85,10 @@ theorem le_index_iff {P : MvPolynomial σ ℝ} (hP : P ≠ 0) {α : σ → ℝ} 
   rintro _ ⟨d, hd, rfl⟩
   exact h d (mem_support_taylor_iff.1 hd)
 
+omit [DecidableEq σ] in
 /-- The index is nonnegative. Source: §4, first lemma on the index ("We have `ind(P) ≥ 0`"). -/
-theorem index_nonneg (P : MvPolynomial σ ℝ) (α : σ → ℝ) (r : σ → ℕ) : 0 ≤ index P α r := by
-  refine Real.sInf_nonneg ?_
-  rintro _ ⟨d, -, rfl⟩
-  exact weight_nonneg r d
+theorem index_nonneg (P : MvPolynomial σ ℝ) (α : σ → ℝ) (r : σ → ℕ) : 0 ≤ index P α r :=
+  Real.sInf_nonneg (Set.forall_mem_image.mpr fun d _ ↦ weight_nonneg r d)
 
 /-- For nonzero `P` and positive weights, the index vanishes iff `P(α) ≠ 0`.
 Source: §4, first lemma on the index ("`ind(P) = 0` if and only if `P(α_1, …, α_p) ≠ 0`"). -/

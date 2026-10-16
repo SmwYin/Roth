@@ -1348,3 +1348,22 @@ All original block docs byte-identical, source widths≤100, diff checked before
 Index7/21 originals,overall137/264; source270lines,
 19retained declarations. Exact-path commit and successful cleanup-branch push
 precede the next edit. Header remains explicitly user-preserved.
+
+
+## Index d08 checkpoint — index_nonneg
+
+Applied approved unused σ-DecidableEq omission and direct nonnegative-infimum/image-transport term; proof3→1 lines, measured18.34→4.37ms, file270→269. Definitions, mathematical binders/conclusion and docs retained.
+
+[Dedicated audit](cleanup/Index-index_nonneg.md): all24/42/five searches/binder probes/11checks;
+worker module/complete LSP/independent proof/type/actual standard-axiom gates passed.
+Frozen SHA256 `2497bbf3fc19aa862b47a5c66474cc336a2e04b745cd9f74f424c7ae05913755`. Fresh whole ORIGINAL nonself reproof, all18 original public
+type/value recoveries and all19 actual retained standard-axiom checks: compiler
+session55139 exit0, `/private/tmp/roth-index-d08-compatibility.log`.
+Approved no-DecEq types are additionally checked by Expr.find?; actual signatures printed.
+Sequential owner full then separate LeanEval87007 both exit0(153.09s/35.49s),
+Index+Theta hashes stable; `/private/tmp/roth-index-d08-{full,leaneval}.log`.
+Worker complete Index LSP success=true partial=false timed_out=false, 0target diagnostics/25unrelated warnings. External Theta complete native LSP after one45second partial timeout and immediate complete retry: success=true partial=false timed_out=false, 0errors/23inherited warnings, noinfos/no faileddependencies. All3 index_nonneg callers accepted; raw /private/tmp/roth-index-d08-theta-lsp.json.
+All original block docs byte-identical, source widths≤100, diff checked before staging.
+Index8/21 originals,overall138/264; source269lines,
+19retained declarations. Exact-path commit and successful cleanup-branch push
+precede the next edit. Header remains explicitly user-preserved.
