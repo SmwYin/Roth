@@ -135,7 +135,7 @@ theorem derivative_aeval (γ : σ → Polynomial K) (P : MvPolynomial σ K) :
 
 /-- The operator `P ↦ kronecker k (Δ_d P)`, as an element of the `K[X]`-module of functions. -/
 private noncomputable def kronHasse (k : ℕ) (d : σ →₀ ℕ) : MvPolynomial σ K → Polynomial K :=
-  fun P => kronecker k (hasseDeriv d P)
+  fun P ↦ kronecker k (hasseDeriv d P)
 
 /-- The `K[X]`-span of the operators `kronHasse k d` with `|d| ≤ μ`. -/
 private noncomputable def kronSpan (k μ : ℕ) :
