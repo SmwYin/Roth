@@ -1,6 +1,7 @@
 import Mathlib.Data.List.Indexes
 import Mathlib.Data.Nat.Digits.Defs
 import Mathlib.LinearAlgebra.Multilinear.Basic
+
 import Roth.HasseDeriv
 import Roth.Wronskian
 
@@ -24,9 +25,9 @@ variable {K : Type*} [Field K] {σ : Type*} [Fintype σ] {l : ℕ}
 
 /-- The generalized Wronskian `det (Δ_{D μ} φ_ν)_{μ, ν}`. Source: §2, definition of
 `W(φ_0, …, φ_{l-1}; Δ_0, …, Δ_{l-1})`. -/
-noncomputable def genWronskian (D : Fin l → (σ →₀ ℕ)) (φ : Fin l → MvPolynomial σ K) :
+noncomputable def genWronskian (D : Fin l → σ →₀ ℕ) (φ : Fin l → MvPolynomial σ K) :
     MvPolynomial σ K :=
-  (Matrix.of fun μ ν => hasseDeriv (D μ) (φ ν)).det
+  (Matrix.of fun μ ν ↦ hasseDeriv (D μ) (φ ν)).det
 
 /-- Linearly dependent polynomials have identically vanishing generalized Wronskians.
 
