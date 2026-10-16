@@ -1,5 +1,10 @@
 # GenWronskian initial file audit
 
+Current amendment: the user explicitly approved the two proposed unused public-instance
+removals on2026-10-16. See [approved amendment audit](GenWronskian-api-amendment.md) for
+the later source, type and verification evidence. The audit below records its historical
+checkpoint; its pending-proposal statements describe that earlier state.
+
 ## Phase 0 — baseline
 
 Baseline commit `21318b11fc132a3a2b800e55e22db5a48092492d`, branch `ramin-cleanup`; clean working tree. Full `lake build` session95276 exit0, log `/private/tmp/roth-genwronskian-baseline-full.log`. Complete LSP session41268:success=true,partial=false,timed_out=false,zero errors/no failed imports; artifact `/private/tmp/roth-genwronskian-baseline-lsp.json`. Cache skipped: populated. Standalone runLinter unavailable; mathlibStandardSet enabled during build. Missing authoritative header metadata remains user-preserved.

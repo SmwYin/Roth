@@ -27,6 +27,7 @@ noncomputable def genWronskian (D : Fin l → σ →₀ ℕ) (φ : Fin l → MvP
     MvPolynomial σ K :=
   (Matrix.of fun μ ν ↦ hasseDeriv (D μ) (φ ν)).det
 
+omit [Fintype σ] in
 /-- Linearly dependent polynomials have identically vanishing generalized Wronskians.
 
 Source: §2, second lemma ("If `φ_0, …, φ_{l-1}` ... are linearly dependent ..., then all of
@@ -218,8 +219,8 @@ in the rows.
 
 Source: §2, proof of Lemma 1 ("multilinearity of the determinant in each row gives
 `det (∑_i f^μ_i ⋯) = ∑_{i ∈ 𝒮} f_i(t) det (⋯)`"). -/
-theorem det_sum_rows {A : Type*} [CommRing A] {ι : Type*} [DecidableEq ι] (s : Fin l → Finset ι)
-    (c : Fin l → ι → A) (N : Fin l → ι → Fin l → A) :
+theorem det_sum_rows {A : Type*} [CommRing A] {ι : Type*} (s : Fin l → Finset ι) (c : Fin l → ι → A)
+    (N : Fin l → ι → Fin l → A) :
     (Matrix.of fun μ ν ↦ ∑ i ∈ s μ, c μ i * N μ i ν).det =
       ∑ f ∈ Fintype.piFinset s, (∏ μ, c μ (f μ)) * (Matrix.of fun μ ν ↦ N μ (f μ) ν).det := by
   have h := (Matrix.detRowAlternating (R := A) (n := Fin l)).toMultilinearMap.map_sum_finset

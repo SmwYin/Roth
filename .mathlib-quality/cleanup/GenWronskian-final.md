@@ -1,5 +1,21 @@
 # GenWronskian final file-level cleanup report
 
+Current status — approved amendment, 2026-10-16: unused `[Fintype σ]` is omitted only
+from `genWronskian_eq_zero_of_not_linearIndependent`, and unused `[DecidableEq ι]`
+is removed from `det_sum_rows`, with explicit user approval. Other arguments, names,
+conclusions, three definition values and documentation remain unchanged. The existence
+theorem's Fintype is retained. Current source SHA256
+`5283b554baa1fcfce18f2298a0f5181cc58586f22b541dd2222745ef651b6e32`.
+Complete current LSP has zero errors and two preserved warnings (metadata and the
+existence theorem's Fintype), previously five. Two actual current-source full profiles
+check all19 declarations below1000ms; maxima998.25/907.78ms, required borderline repeat
+passed. Independent stronger proofs and all13 original public type/three definition-value
+recoveries pass with standard axioms. See [approved amendment audit](GenWronskian-api-amendment.md)
+for current evidence and owner final gates. The full-file report below is historical:
+its pending-proposal, old-source-profile and five-warning statements are superseded.
+Current source264 lines (baseline292); the inserted omit command adds one line.
+Original project tally remains130/264;7/14 files complete.
+
 Status: all19 original declarations, both added private helpers and every mandatory final file phase complete. Final source SHA256 `cc7b2786088d6c839d36a14d9b5b09a884eb1de1a0d521b3bc2b84c9772cbfcf`. All13 public types, three definition values, documentation and pinned toolchain preserved. Metadata and two compiled public-assumption proposals remain explicit limitations, with no unapproved source change.
 
 ## Phases 0–3 — baseline and preparation

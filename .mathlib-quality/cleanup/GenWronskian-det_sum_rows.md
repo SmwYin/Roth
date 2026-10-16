@@ -1,5 +1,10 @@
 # `det_sum_rows` — Phase 4
 
+Current amendment: the user explicitly approved the two proposed unused public-instance
+removals on2026-10-16. See [approved amendment audit](GenWronskian-api-amendment.md) for
+the later source, type and verification evidence. The audit below records its historical
+checkpoint; its pending-proposal statements describe that earlier state.
+
 Result: **12 → 9 declaration lines**, proof body **8 → 5**. Replaced the separately proved
 matrix identity and summand congruence with `MultilinearMap.map_sum_finset`, scalar extraction,
 and the existing unapplied function-sum API `Finset.sum_fn`. Mathematical statement, instance

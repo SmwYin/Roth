@@ -1,5 +1,10 @@
 # Phase 4 — `Roth.genWronskian_eq_zero_of_not_linearIndependent`
 
+Current amendment: the user explicitly approved the two proposed unused public-instance
+removals on2026-10-16. See [approved amendment audit](GenWronskian-api-amendment.md) for
+the later source, type and verification evidence. The audit below records its historical
+checkpoint; its pending-proposal statements describe that earlier state.
+
 Scope: only this declaration, originally L36–45; now L36–44. Source snapshot:
 `/private/tmp/roth-d02-before.lean`. No Git operations, shared reports, full builds,
 or other declarations changed. Source ownership returned to file owner after freeze.

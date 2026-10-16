@@ -1,6 +1,14 @@
-# GenWronskian unused-public-parameter proposal
+# GenWronskian unused-public-parameter proposal — USER APPROVED / APPLIED
 
-Status: compiled proposal; not applied, awaiting a scoped user decision through the project orchestrator. Existing public signatures remain unchanged.
+Status2026-10-16: the user explicitly approved both listed removals. Both are now
+applied to the current cleaned module. Stronger independent reproofs, exact new types,
+all13 original public recoveries/three definition values, standard axioms, complete LSP
+and two actual current-source profiles pass. See [approved amendment audit](GenWronskian-api-amendment.md)
+for final downstream/publication evidence. Awaiting-decision statements below are
+historical and superseded. The existence theorem's Fintype removal was not approved and
+was not applied; no other public generalization is included.
+
+Historical proposal before approval/application; the original evidence below describes that checkpoint.
 
 ## Dependent-family vanishing theorem
 

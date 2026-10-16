@@ -45,7 +45,7 @@ See [Wronskian final report](cleanup/Wronskian-final.md). Overall55/264 original
 and every final file-level phase. Source239 → 218lines; original public API/docs preserved.
 Independent simplify finding fixed and revalidated; actual profile all22 retained declarations
 below750ms, maximum672.30ms. Overall75/264 original declarations audited.
-See [Taylor final report](cleanup/Taylor-final.md). `Roth/CoeffNorm.lean` has completed all26 original declaration audits, its new private-helper audit and every final file phase. Source320→268; independent simplify fixes applied and revalidated. All26 retained declarations profile below750ms (maximum656.95ms); final module/full/separate LeanEval, complete module/caller LSP, all25 original-public type/value comparisons and standard axioms pass. Overall101/264 originals audited. See [CoeffNorm final report](cleanup/CoeffNorm-final.md). The explicitly user-approved public-hypothesis removals are applied and validated; current complete LSP has one preserved metadata warning, all26 declarations profile below750ms (maximum625.993ms), stronger independent reproofs/original-type recovery and full/separate LeanEval builds pass. See [approved amendment audit](cleanup/CoeffNorm-api-amendment.md). Earlier evidence in this status paragraph describes the pre-amendment checkpoint. Header metadata warning remains user-preserved. GenWronskian has completed all19 original audits, both added-helper audits and every final file phase. Source292→263; independent simplify removed two redundant imports, measured digit-injection optimization applied. All19 retained declarations below1000ms, maximum921.00ms with required borderline repeat passed. Final complete module/caller diagnostics, all13 public type/three definition-value comparisons, standard axioms, full build and separate LeanEval pass. See [GenWronskian final report](cleanup/GenWronskian-final.md). Overall120/264 originals;6/14 files complete. Both compiled GenWronskian public-assumption removals are now user-approved and remain unapplied pending the next amendment owner; metadata remains user-preserved.
+See [Taylor final report](cleanup/Taylor-final.md). `Roth/CoeffNorm.lean` has completed all26 original declaration audits, its new private-helper audit and every final file phase. Source320→268; independent simplify fixes applied and revalidated. All26 retained declarations profile below750ms (maximum656.95ms); final module/full/separate LeanEval, complete module/caller LSP, all25 original-public type/value comparisons and standard axioms pass. Overall101/264 originals audited. See [CoeffNorm final report](cleanup/CoeffNorm-final.md). The explicitly user-approved public-hypothesis removals are applied and validated; current complete LSP has one preserved metadata warning, all26 declarations profile below750ms (maximum625.993ms), stronger independent reproofs/original-type recovery and full/separate LeanEval builds pass. See [approved amendment audit](cleanup/CoeffNorm-api-amendment.md). Earlier evidence in this status paragraph describes the pre-amendment checkpoint. Header metadata warning remains user-preserved. GenWronskian has completed all19 original audits, both added-helper audits and every final file phase. Source292→263; independent simplify removed two redundant imports, measured digit-injection optimization applied. All19 retained declarations below1000ms, maximum921.00ms with required borderline repeat passed. Final complete module/caller diagnostics, all13 public type/three definition-value comparisons, standard axioms, full build and separate LeanEval pass. See [GenWronskian final report](cleanup/GenWronskian-final.md). Overall120/264 originals;6/14 files complete. Both explicitly user-approved GenWronskian public-assumption removals are applied and independently checked. Current source264 lines, complete LSP zero errors/two warnings, actual profiles all19 below1000ms with required repeat passed (maxima998.25/907.78ms). See [approved amendment audit](cleanup/GenWronskian-api-amendment.md) for current type/proof/axiom/build evidence. Earlier profile/type-preservation figures in this paragraph describe the pre-amendment checkpoint; metadata and the unapproved existence-theorem Fintype remain explicit.
 `Roth/Lattice.lean` has completed all10 original audits, all3 added private-helper audits and every final file phase. Source217→214; headline proof43→14 body lines, all4 original public types/docs preserved. Independent simplify import finding fixed and revalidated. All13 declarations below1000ms in both final complete profiling sweeps, maximum994.79ms; initial square-root1034.98ms sample explicitly recorded with required959.56/994.79ms repeats. Final module/full/separate LeanEval, complete module/caller diagnostics, independent original proofs/public-type equalities and actual standard axioms pass. See [Lattice final report](cleanup/Lattice-final.md). Overall130/264 originals audited;7/14 files complete. Header metadata remains user-preserved.
 
 The user approved removing unused `hφ`/`hd` from the Wronskian coefficient identity;
@@ -121,8 +121,8 @@ Files will be processed in dependency order; declarations within each file are s
 | `Roth/Box.lean` | 128 | All cleanup phases complete; 14/14 declarations reviewed; header warning retained by user decision |
 | `Roth/Wronskian.lean` | 271 | All cleanup phases complete;15/15 original declarations audited; user-preserved metadata |
 | `Roth/Taylor.lean` | 239 | All cleanup phases complete;20/20 originals and2 added helpers audited; user-preserved metadata |
-| `Roth/CoeffNorm.lean` | 320 | All cleanup phases complete;26/26 originals and1 added helper audited; compiled public proposal pending |
-| `Roth/GenWronskian.lean` | 292 | All cleanup phases complete;19/19 originals and2 added helpers audited; metadata/two compiled public proposals explicit |
+| `Roth/CoeffNorm.lean` | 320 | All cleanup phases complete;26/26 originals and1 added helper audited; user-approved public amendment applied and validated |
+| `Roth/GenWronskian.lean` | 292 | All cleanup phases complete;19/19 originals and2 added helpers audited; both user-approved public amendments applied;2 preserved warnings |
 | `Roth/Lattice.lean` | 217 | All cleanup phases complete;10/10 originals and3/3 added helpers audited; user-preserved metadata |
 | `Roth/Index.lean` | 275 | Awaiting cleanup |
 | `Roth/Separation.lean` | 618 | Awaiting cleanup |
@@ -1183,3 +1183,31 @@ Sequential owner full27622 then separate LeanEval35871 both exit0, frozen hash s
 logs `/private/tmp/roth-coeffnorm-api-amendment-{full,leaneval}.log`. Theta and other downstream
 sources unchanged; full build covers callers. Dedicated exact-path publication precedes
 any GenWronskian source edit. Original count remains130/264,7/14 files complete.
+
+
+## Both approved API amendments complete — 2026-10-16
+
+CoeffNorm's dedicated checkpoint `9a9cc37bdf1671d83dc3fb5bef40af943666f8a4` was
+successfully pushed before the second group began. GenWronskian's explicit approval covers
+only the dependent-zero theorem's unused Fintype and `det_sum_rows`' unused DecidableEq.
+A fresh Sol Medium narrow leaf applied exactly these and packed the shortened signature;
+no other binder/proof/import/docs/definition/version changed. The existence theorem's
+Fintype remains. Frozen source/explicit leaf edit revocation SHA256
+`5283b554baa1fcfce18f2298a0f5181cc58586f22b541dd2222745ef651b6e32`.
+[Amendment audit](cleanup/GenWronskian-api-amendment.md): packed module21414 exit0,
+complete native LSP zero errors/two preserved warnings (previously five), independent
+stronger nonself reproofs, actual new-type applications, all13 historical public
+recoveries/three definition values and standard axioms pass. Actual isolated full-source
+profiles78404/92985 both exit0; all19 below1000ms, required borderline repeats
+929.00→829.00ms and998.25→907.78ms. No performance source edit required.
+Sequential owner full15112 then separate LeanEval83552 both exit0, hashes stable;
+logs `/private/tmp/roth-genwronskian-api-amendment-{full,leaneval}.log`. Source263→264
+from the omit command. Current proposals/final reports and affected historical reports
+link these amendments; earlier awaiting-decision statements are superseded.
+
+Both approved groups now have their own validation/build/publication checkpoints.
+Overall130/264 original declarations and7/14 files remain complete; amendments do not
+increment this tally. No pending decision remains for these approved removals. Header
+metadata remains user-preserved. After the second successful push, all amendment source,
+report, shared-progress and Git ownership is released to the orchestrator; next Index
+requires a fresh file owner. This amendment owner does not start Index.
