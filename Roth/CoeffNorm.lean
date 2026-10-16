@@ -169,11 +169,9 @@ bound"). -/
 theorem abs_coeff_diag_le (P : MvPolynomial σ ℤ) {B : ℝ} (hB : ∀ d, |((P.coeff d : ℤ) : ℝ)| ≤ B)
     (n : ℕ) : |(((diag P).coeff n : ℤ) : ℝ)| ≤ P.support.card * B := by
   rw [diag_eq_sum, Polynomial.finsetSum_coeff, Int.cast_sum, ← nsmul_eq_mul]
-  refine (Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_card_nsmul _ _ B fun k _ => ?_)
+  refine (Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_card_nsmul _ _ B fun k _ ↦ ?_)
   rw [Polynomial.coeff_monomial]
-  split_ifs
-  · exact hB k
-  · simpa using (abs_nonneg _).trans (hB k)
+  split_ifs <;> grind [abs_nonneg]
 
 /-- The degree of `diag P` is at most `∑ r_j` when `deg_{X_j} P ≤ r_j`.
 Source: §6, proof of Lemma 9 ("`s ≤ ∑ r_j ≤ m r_1`"). -/

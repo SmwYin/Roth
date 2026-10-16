@@ -45,7 +45,7 @@ See [Wronskian final report](cleanup/Wronskian-final.md). Overall55/264 original
 and every final file-level phase. Source239 → 218lines; original public API/docs preserved.
 Independent simplify finding fixed and revalidated; actual profile all22 retained declarations
 below750ms, maximum672.30ms. Overall75/264 original declarations audited.
-See [Taylor final report](cleanup/Taylor-final.md). `Roth/CoeffNorm.lean` is active:17/26original declarations complete, overall92/264. Compiled public-hypothesis proposal awaits scoped user decision; original signatures remain unchanged.
+See [Taylor final report](cleanup/Taylor-final.md). `Roth/CoeffNorm.lean` is active:18/26original declarations complete, overall93/264. Compiled public-hypothesis proposal awaits scoped user decision; original signatures remain unchanged.
 The user approved removing unused `hφ`/`hd` from the Wronskian coefficient identity;
 the exact removal and sole-caller update are implemented and fully revalidated. Both unused
 argument warnings are gone; header metadata remains unchanged.
@@ -731,3 +731,7 @@ All20 originals and2 added helpers complete; overall75/264. [Final report](clean
 ## CoeffNorm declaration 17 checkpoint
 
 `Roth.diag_eq_sum`: direct eval₂_eq expansion removes explicit monomial-sum congruence; proof5→3, declaration7→5 lines, exact public type/docs preserved. [Dedicated audit](cleanup/CoeffNorm-diag_eq_sum.md). Module48754 exit0, complete final LSP no errors, fresh CLI original-type assignment/independent monomial-sum reproof/standard axioms20109 exit0. All24 audit/42 rules/5 searches/11 checks pass. Sequential full `lake build` and separate `lake build Roth.LeanEval` session39188 exit0; SHA256 `f3e745f4aab0b8c61c9ee4196bf8267aa97138ac57cada23aae913b0a79d31c0` unchanged. Logs `/private/tmp/roth-coeffnorm-d17-{full,leaneval}.log`. CoeffNorm17/26, overall92/264.
+
+## CoeffNorm declaration 18 checkpoint
+
+`Roth.abs_coeff_diag_le`: consolidated coefficient-monomial cases with split_ifs/grind; body6→4, declaration8→6 lines. Exact public type/docs preserved. [Dedicated audit](cleanup/CoeffNorm-abs_coeff_diag_le.md). Module37835 exit0; complete frozen-source LSP no errors or target warnings; fresh CLI original-type assignment/independent explicit-branch reproof/standard axioms38036 exit0. All24 audit/42 rules/5 searches/11 checks pass. Scratch timing compares both proofs below100ms; production profiling remains final-phase work. Sequential full `lake build` and separate `lake build Roth.LeanEval` session47381 exit0; SHA256 `e8cec540e872c07592442cd4c2a9cf8bbaec03e0ee89ab0ebe9814295cb79d2c` unchanged. Logs `/private/tmp/roth-coeffnorm-d18-{full,leaneval}.log`. All stalled sessions finished; optional public variants closed. CoeffNorm18/26, overall93/264.
