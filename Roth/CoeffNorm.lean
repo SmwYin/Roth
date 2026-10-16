@@ -64,11 +64,8 @@ theorem normOne_zero : normOne (0 : MvPolynomial σ ℤ) = 0 := by
 /-- Each coefficient is bounded in absolute value by the ℓ¹ norm.
 Source: §3, Lean note ("Prove `abc(f) ≤ ‖f‖₁`"). -/
 theorem abs_coeff_le_normOne (P : MvPolynomial σ ℤ) (d : σ →₀ ℕ) :
-    |((P.coeff d : ℤ) : ℝ)| ≤ normOne P := by
-  by_cases hd : d ∈ P.support
-  · exact Finset.single_le_sum (f := fun d => |((P.coeff d : ℤ) : ℝ)|)
-      (fun _ _ => abs_nonneg _) hd
-  · simp [notMem_support_iff.1 hd, normOne_nonneg]
+    |((P.coeff d : ℤ) : ℝ)| ≤ normOne P :=
+  Finsupp.single_eval_le_sum P.coeff (g := fun z ↦ |(z : ℝ)|) (by simp) (fun _ ↦ abs_nonneg _) d
 
 /-- The triangle inequality for `normOne`. Source: §3, proof of Lemma 3 ("The triangle inequality
 gives `‖f + k g‖₁ ≤ ‖f‖₁ + |k| ‖g‖₁`"). -/
