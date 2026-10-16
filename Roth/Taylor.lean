@@ -73,22 +73,15 @@ private lemma coeff_aeval_X_mul (i : σ) (f : Polynomial R) (B : MvPolynomial σ
   · intro hnot
     simp [Polynomial.notMem_support_iff.1 hnot]
 
-private lemma hasseCoeff_single_add_eq {i : σ} {n : ℕ} {k' : σ →₀ ℕ}
-    (hi : k' i = 0) (d : σ →₀ ℕ) :
+private lemma hasseCoeff_single_add_eq {i : σ} {n : ℕ} {k' : σ →₀ ℕ} (hi : k' i = 0) (d : σ →₀ ℕ) :
     hasseCoeff d (Finsupp.single i n + k') = n.choose (d i) * hasseCoeff (d.erase i) k' := by
   classical
-  simp only [hasseCoeff]
-  have hdisj : Disjoint (Finsupp.single i (d i)).support (d.erase i).support :=
-    Finset.disjoint_left.2 fun j hj => by
-      simp [Finset.mem_singleton.1 (Finsupp.support_single_subset hj)]
-  conv_lhs => rw [← Finsupp.single_add_erase i d]
-  rw [Finsupp.prod_add_index_of_disjoint hdisj, Finsupp.prod_single_index (by simp)]
+  rw [hasseCoeff, ← Finsupp.mul_prod_erase' d i _ (by simp), hasseCoeff]
   congr 1
   · simp [hi]
-  · refine Finsupp.prod_congr fun j hj => ?_
-    obtain rfl | hj' := eq_or_ne j i
-    · simp at hj
-    · simp [Finsupp.single_eq_of_ne hj']
+  · refine Finsupp.prod_congr fun j hj ↦ ?_
+    rw [Finsupp.support_erase] at hj
+    simp [Finsupp.single_eq_of_ne (Finset.ne_of_mem_erase hj)]
 
 private lemma prod_pow_single_add_tsub (α : σ → R) {i : σ} {n : ℕ} {k' : σ →₀ ℕ}
     (hi : k' i = 0) (d : σ →₀ ℕ) :
