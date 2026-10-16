@@ -41,7 +41,8 @@ Fresh independent simplify review found five redundant imports, removed and reva
 Final module/full/separate LeanEval, complete LSP, public-type/definition compatibility, and
 axiom gates pass. Actual profiling: all13 below1000ms, maximum647.20ms.
 See [Wronskian final report](cleanup/Wronskian-final.md). Overall55/264 original declarations audited.
-Next file: `Roth/Taylor.lean`, assigned to a fresh file worker after ownership handoff.
+Current file: `Roth/Taylor.lean`, under a fresh file worker with sequential dedicated declaration audits.
+Taylor progress: 1/20 original declarations reviewed; overall 56/264. File-level final phases remain pending.
 The verified removal of unused `hφ`/`hd` in the Wronskian coefficient identity remains pending
 user decision; existing API and both warnings are preserved. Header metadata remains unchanged.
 Continue sequential declaration validation, commit, and push through every remaining
@@ -67,7 +68,7 @@ The earlier HTTPS credential failure and connected-app HTTP 403 are resolved by 
 CLI authentication. No token is stored in this repository.
 
 The active file audit and declaration results are recorded in
-[`cleanup/Wronskian.md`](cleanup/Wronskian.md), following the completed HasseDeriv and Box reports. Each completed declaration's report and
+[`cleanup/Taylor.md`](cleanup/Taylor.md), following the completed HasseDeriv, Box and Wronskian reports. Each completed declaration's report and
 source change are committed and pushed together after validation.
 
 ## Installed tooling and verification
@@ -516,3 +517,7 @@ module76381, full10167, LeanEval82516, compatibility62603 all exit0; complete LS
 three explicit existing warnings. Actual profiling16927 exit0: maximum647.20ms, all13 retained
 declarations below1000ms. No pending source edit; coefficient-hypothesis proposal still awaiting
 user decision. Final reports prepared; Taylor next. Overall55/264 original declarations audited.
+
+## Taylor declaration 1 checkpoint
+
+`MvPolynomial.taylor`: Normalized the mathematical lambda arrow; original definition verified by rfl, exact public API/docstring preserved. File-level project imports alphabetized. [Dedicated audit](cleanup/Taylor-taylor.md). Module, complete LSP, isolated type/axiom and diff gates pass. Publication validation: full `lake build` session54303 exit0; separate `lake build Roth.LeanEval` session6076 exit0. Frozen source SHA256 `91e0b1f92db86dacca1c06b0ae8c3e87793d5a27ffafc3070db8074caa2d40ae`. Logs `/private/tmp/roth-taylor-d01-full.log` and `...-leaneval.log`.

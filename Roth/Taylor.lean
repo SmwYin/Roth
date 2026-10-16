@@ -1,5 +1,5 @@
-import Roth.HasseDeriv
 import Roth.Box
+import Roth.HasseDeriv
 
 /-!
 # Taylor expansion of multivariate polynomials
@@ -34,7 +34,7 @@ variable {σ R : Type*} [CommSemiring R]
 
 /-- Translation `P ↦ P(X + α)`. Source: §4, Lean implementation note ("Let `P_α(X) = P(X+α)`"). -/
 noncomputable def taylor (α : σ → R) : MvPolynomial σ R →ₐ[R] MvPolynomial σ R :=
-  aeval fun j => X j + C (α j)
+  aeval fun j ↦ X j + C (α j)
 
 /-- `taylor α` is evaluation at `X + α`. -/
 theorem taylor_apply (α : σ → R) (P : MvPolynomial σ R) :
