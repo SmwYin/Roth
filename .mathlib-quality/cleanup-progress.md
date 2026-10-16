@@ -120,7 +120,7 @@ Files will be processed in dependency order; declarations within each file are s
 | `Roth/Taylor.lean` | 239 | All cleanup phases complete;20/20 originals and2 added helpers audited; user-preserved metadata |
 | `Roth/CoeffNorm.lean` | 320 | All cleanup phases complete;26/26 originals and1 added helper audited; compiled public proposal pending |
 | `Roth/GenWronskian.lean` | 292 | All cleanup phases complete;19/19 originals and2 added helpers audited; metadata/two compiled public proposals explicit |
-| `Roth/Lattice.lean` | 217 | Active: all10 originals and2/3 added helpers audited; successor helper audit and final phases pending; final file phases pending |
+| `Roth/Lattice.lean` | 217 | Active: all10 originals and3/3 added helpers audited; cumulative/review/profile final phases pending; final file phases pending |
 | `Roth/Index.lean` | 275 | Awaiting cleanup |
 | `Roth/Separation.lean` | 618 | Awaiting cleanup |
 | `Roth/Theta.lean` | 981 | Awaiting cleanup |
@@ -1090,3 +1090,24 @@ Sequential full `lake build` then separate `lake build Roth.LeanEval`, session37
 both exit0(115.31s/45.69s), frozen hash stable; logs
 `/private/tmp/roth-lattice-helper-easy-{full,leaneval}.log`.
 Lattice10/10 originals plus2/3 helpers audited, overall130/264 unchanged.
+
+
+## Lattice extracted successor-helper checkpoint
+
+Fresh dedicated `card_filter_weight_le_succ_aux` audit localizes private positivity to the
+last coordinate, adapts sole headline argument, removes unused classical and grouping
+parentheses, packs signature;33→30 declaration/25→24 body lines. Headline remains14body
+lines; all public types/docs preserved. [Dedicated audit](cleanup/Lattice-card_filter_weight_le_succ_aux.md)
+records all24/42/five actual searches/all binder probes/11 checks; failed weakenings explicitly
+concern the proof, not logical necessity. Actual module exit0(26s), complete nativeLSP zero
+errors/header only; independent INITIAL exact-type nonself reproof/recovery and actual imported
+private/headline standard-axiom checks exit0. All worker compiler processes finished.
+Explicit owner source edit revocation at SHA256
+`be707274cdc77d8e31a73497e8392e8a556f8d13af1e3c190e32ad9c9496a2b3`.
+Sequential full `lake build` then separate `lake build Roth.LeanEval`, session96137,
+both exit0(144.68s/36.29s), frozen hash stable; logs
+`/private/tmp/roth-lattice-helper-succ-{full,leaneval}.log`.
+Owner inventory parser confirms all13 canonical dedicated reports each contain42 rule labels,
+11 checked steps and zero unchecked items; all original block comments identical, no overwidth
+source line. Source217→214, declaration content170→163. Lattice10/10 originals plus3/3 helpers
+audited, overall130/264; fresh independent simplify, actual profiling and final gates/report remain.

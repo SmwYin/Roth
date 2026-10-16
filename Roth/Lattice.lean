@@ -157,17 +157,14 @@ private lemma card_filter_weight_le_of_le_sqrt_aux (m : ℕ) (r : Fin m → ℕ)
     _ = ∏ j, ((r j : ℝ) + 1) := by simp [card_box]
     _ ≤ _ := le_mul_of_one_le_left (by positivity) ((one_le_div hlam).2 h)
 
-private lemma card_filter_weight_le_succ_aux {n : ℕ} (r : Fin (n + 1) → ℕ)
-    (hr : ∀ j, 0 < r j) (hn : 0 < n) {lam : ℝ} (hlam : 2 * √((n + 1 : ℕ) : ℝ) < lam)
-    (ih : ∀ {t : ℝ}, 0 < t →
-      (((box (r ∘ Fin.castSucc)).filter fun d ↦
-        weight (r ∘ Fin.castSucc) d ≤ ((n : ℝ) - t) / 2).card : ℝ) ≤
-          2 * √(n : ℝ) / t * ∏ j, (((r ∘ Fin.castSucc) j : ℝ) + 1)) :
+private lemma card_filter_weight_le_succ_aux {n : ℕ} (r : Fin (n + 1) → ℕ) (hr : 0 < r (Fin.last n))
+    (hn : 0 < n) {lam : ℝ} (hlam : 2 * √((n + 1 : ℕ) : ℝ) < lam) (ih : ∀ {t : ℝ}, 0 < t →
+      (((box (r ∘ Fin.castSucc)).filter fun d ↦ weight (r ∘ Fin.castSucc) d ≤
+        ((n : ℝ) - t) / 2).card : ℝ) ≤ 2 * √(n : ℝ) / t * ∏ j, (((r ∘ Fin.castSucc) j : ℝ) + 1)) :
     (((box r).filter fun d ↦ weight r d ≤ (((n + 1 : ℕ) : ℝ) - lam) / 2).card : ℝ) ≤
-      2 * √(((n + 1 : ℕ) : ℝ)) / lam * ∏ j, ((r j : ℝ) + 1) := by
-  classical
+      2 * √((n + 1 : ℕ) : ℝ) / lam * ∏ j, ((r j : ℝ) + 1) := by
   set R := r (Fin.last n)
-  have hs := sum_inv_lt (r := R) (m := n + 1) (hr _) (Nat.succ_le_succ hn) hlam
+  have hs := sum_inv_lt (r := R) (m := n + 1) hr (Nat.succ_le_succ hn) hlam
   push_cast [add_sub_cancel_right] at hs
   rw [card_filter_box_last, Nat.cast_sum,
     Finset.sum_congr rfl fun i _ ↦ card_filter_fiber_eq r lam i]
@@ -185,7 +182,7 @@ private lemma card_filter_weight_le_succ_aux {n : ℕ} (r : Fin (n + 1) → ℕ)
     _ ≤ 2 * √(n : ℝ) * (∏ j, (((r ∘ Fin.castSucc) j : ℝ) + 1)) *
           (lam⁻¹ * (√(n : ℝ))⁻¹ * √((n : ℝ) + 1) * (R + 1)) :=
         mul_le_mul_of_nonneg_left hs.le (by positivity)
-    _ = 2 * √(((n + 1 : ℕ) : ℝ)) / lam * ∏ j, ((r j : ℝ) + 1) := by
+    _ = 2 * √((n + 1 : ℕ) : ℝ) / lam * ∏ j, ((r j : ℝ) + 1) := by
         rw [Fin.prod_univ_castSucc]
         push_cast
         field_simp
@@ -212,6 +209,6 @@ theorem card_filter_weight_le (m : ℕ) (r : Fin m → ℕ) (hr : ∀ j, 0 < r j
         norm_num at h ⊢
         linarith), card_empty, Nat.cast_zero]
       positivity
-    exact card_filter_weight_le_succ_aux r hr hn (lt_of_not_ge h) (ih _ fun j ↦ hr _)
+    exact card_filter_weight_le_succ_aux r (hr _) hn (lt_of_not_ge h) (ih _ fun j ↦ hr _)
 
 end Roth
