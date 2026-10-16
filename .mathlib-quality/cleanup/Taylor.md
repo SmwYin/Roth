@@ -31,7 +31,7 @@ Two headline proofs require structural review: coeff_taylor35bodylines; eq_sum_b
 | 3 | `taylor_X` | 45–46 | 2 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | validated; [audit](Taylor-taylor_X.md) |
 | 4 | `taylor_C` | 50–51 | 2 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | validated; [audit](Taylor-taylor_C.md) |
 | 5 | `taylor_monomial` | 55–57 | 3 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | validated; [audit](Taylor-taylor_monomial.md) |
-| 6 | `coeff_aeval_X_mul` | 59–82 | 24 | private lemma; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | Pending |
+| 6 | `coeff_aeval_X_mul` | 59–82 | 24 | private lemma; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | validated; [audit](Taylor-coeff_aeval_X_mul.md) |
 | 7 | `hasseCoeff_single_add_eq` | 84–99 | 16 | private lemma; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | Pending |
 | 8 | `prod_pow_single_add_tsub` | 101–111 | 11 | private lemma; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | Pending |
 | 9 | `coeff_taylor` | 116–150 | 35 | public theorem; naming descriptive, documentation appropriate; headline theorem: structure review required | Pending |
@@ -76,3 +76,7 @@ LeanEval build, then exact-path commit/push before the next source edit.
 ## Declaration 5 checkpoint
 
 `taylor_monomial`: Replaced simp and definition unfolding with direct Mathlib aeval_monomial term; mathematical lambda normalized,3lines retained, original contract/docstring preserved. All worker gates pass. Frozen source SHA256 `a913c9258bdcb0630d0d3398f34626f52c2d9f9504a7077e443ef2f24f1090a4`. Full `lake build` session63285 and separate `lake build Roth.LeanEval` session31201 exited0. Logs `/private/tmp/roth-taylor-d05-full.log` and `...-leaneval.log`.
+
+## Declaration 6 checkpoint
+
+`coeff_aeval_X_mul`: Direct evaluation expansion and Finsupp erase cancellation replace two intermediate proofs; single-use inequality inlined,24 to18lines, exact statement retained. All worker gates pass. Frozen source SHA256 `f4a686acc2e188a3bea162eb6bff0afd5079cd162d2297afbe1ce2b0d830529a`. Full `lake build` session53572 and separate `lake build Roth.LeanEval` session61138 exited0. Logs `/private/tmp/roth-taylor-d06-full.log` and `...-leaneval.log`.

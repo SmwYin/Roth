@@ -59,22 +59,16 @@ private lemma coeff_aeval_X_mul (i : σ) (f : Polynomial R) (B : MvPolynomial σ
     (Polynomial.aeval (X i : MvPolynomial σ R) f * B).coeff d =
       f.coeff (d i) * B.coeff (d.erase i) := by
   classical
-  have hA : Polynomial.aeval (X i : MvPolynomial σ R) f =
-      ∑ m ∈ f.support, monomial (Finsupp.single i m) (f.coeff m) := by
-    conv_lhs => rw [f.as_sum_support]
-    simp [Polynomial.aeval_monomial, X_pow_eq_monomial, C_mul_monomial, algebraMap_eq]
-  have herase : d - Finsupp.single i (d i) = d.erase i := by
-    ext j
-    obtain rfl | hj := eq_or_ne j i <;> simp [*, Finsupp.erase_ne]
-  rw [hA, Finset.sum_mul, coeff_sum]
-  simp_rw [coeff_monomial_mul']
+  rw [Polynomial.aeval_def, Polynomial.eval₂_eq_sum, Polynomial.sum_def, Finset.sum_mul,
+    coeff_sum]
+  simp_rw [algebraMap_eq, X_pow_eq_monomial, C_mul_monomial, coeff_monomial_mul']
   rw [Finset.sum_eq_single (d i)]
-  · simp [herase]
+  · simp [tsub_eq_of_eq_add (Finsupp.erase_add_single i d).symm]
   · intro m _ hne
     split_ifs with hle
-    · have hlt : m < d i := (Finsupp.single_le_iff.1 hle).lt_of_ne hne
-      rw [notMem_support_iff.1 fun h => by simpa [Nat.sub_eq_zero_iff_le, hlt.not_ge] using hB _ h,
-        mul_zero]
+    · rw [notMem_support_iff.1 fun h ↦ by
+        simpa [Nat.sub_eq_zero_iff_le,
+          ((Finsupp.single_le_iff.1 hle).lt_of_ne hne).not_ge] using hB _ h, mul_zero]
     · rfl
   · intro hnot
     simp [Polynomial.notMem_support_iff.1 hnot]

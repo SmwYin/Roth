@@ -42,7 +42,7 @@ Final module/full/separate LeanEval, complete LSP, public-type/definition compat
 axiom gates pass. Actual profiling: all13 below1000ms, maximum647.20ms.
 See [Wronskian final report](cleanup/Wronskian-final.md). Overall55/264 original declarations audited.
 Current file: `Roth/Taylor.lean`, under a fresh file worker with sequential dedicated declaration audits.
-Taylor progress: 5/20 original declarations reviewed; overall 60/264. File-level final phases remain pending.
+Taylor progress: 6/20 original declarations reviewed; overall 61/264. File-level final phases remain pending.
 The verified removal of unused `hφ`/`hd` in the Wronskian coefficient identity remains pending
 user decision; existing API and both warnings are preserved. Header metadata remains unchanged.
 Continue sequential declaration validation, commit, and push through every remaining
@@ -537,3 +537,7 @@ user decision. Final reports prepared; Taylor next. Overall55/264 original decla
 ## Taylor declaration 5 checkpoint
 
 `MvPolynomial.taylor_monomial`: Replaced simp and definition unfolding with direct Mathlib aeval_monomial term; mathematical lambda normalized,3lines retained, original contract/docstring preserved. [Dedicated audit](cleanup/Taylor-taylor_monomial.md). Module, complete LSP, isolated type/axiom and diff gates pass. Publication validation: full `lake build` session63285 exit0; separate `lake build Roth.LeanEval` session31201 exit0. Frozen source SHA256 `a913c9258bdcb0630d0d3398f34626f52c2d9f9504a7077e443ef2f24f1090a4`. Logs `/private/tmp/roth-taylor-d05-full.log` and `...-leaneval.log`.
+
+## Taylor declaration 6 checkpoint
+
+`MvPolynomial.coeff_aeval_X_mul`: Direct evaluation expansion and Finsupp erase cancellation replace two intermediate proofs; single-use inequality inlined,24 to18lines, exact statement retained. [Dedicated audit](cleanup/Taylor-coeff_aeval_X_mul.md). Module, complete LSP, isolated type/axiom and diff gates pass. Publication validation: full `lake build` session53572 exit0; separate `lake build Roth.LeanEval` session61138 exit0. Frozen source SHA256 `f4a686acc2e188a3bea162eb6bff0afd5079cd162d2297afbe1ce2b0d830529a`. Logs `/private/tmp/roth-taylor-d06-full.log` and `...-leaneval.log`.
