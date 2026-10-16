@@ -35,7 +35,7 @@ Two headline proofs require structural review: coeff_taylor35bodylines; eq_sum_b
 | 7 | `hasseCoeff_single_add_eq` | 84–99 | 16 | private lemma; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | validated; [audit](Taylor-hasseCoeff_single_add_eq.md) |
 | 8 | `prod_pow_single_add_tsub` | 101–111 | 11 | private lemma; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | validated; [audit](Taylor-prod_pow_single_add_tsub.md) |
 | 9 | `coeff_taylor` | 116–150 | 35 | public theorem; naming descriptive, documentation appropriate; headline theorem: structure review required | validated; [audit](Taylor-coeff_taylor.md) |
-| 10 | `eval_taylor` | 153–155 | 3 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | Pending |
+| 10 | `eval_taylor` | 153–155 | 3 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | validated; [audit](Taylor-eval_taylor.md) |
 | 11 | `taylor_taylor` | 158–160 | 3 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | Pending |
 | 12 | `taylor_zero` | 164–165 | 2 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | Pending |
 | 13 | `taylor_map` | 169–171 | 3 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | Pending |
@@ -120,3 +120,7 @@ Taylor9/20, overall64/264. Original declaration10 resumes next.
 LeanSearch recovered in this audit and returned a verified univariate partial match; this
 supersedes the earlier service-unavailable status for future searches without claiming an
 environment repair.
+
+## Declaration 10 checkpoint
+
+`eval_taylor`: Direct Mathlib evaluation composition replaces induction; lambda arrow normalized,3 declaration lines retained, exact public contract and docstring preserved. All worker gates pass. Frozen source SHA256 `fbd691573b1e1fa3dd2c4f33449095583791028ee6cbd25a8d92df2175e9ab39`. Full `lake build` session26144 and separate `lake build Roth.LeanEval` session9704 exited0. Logs `/private/tmp/roth-taylor-d10-full.log` and `...-leaneval.log`.

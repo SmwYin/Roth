@@ -133,8 +133,8 @@ theorem coeff_taylor (α : σ → R) (d : σ →₀ ℕ) (P : MvPolynomial σ R)
 
 /-- Evaluating `P(X + α)` at `x` is evaluating `P` at `x + α`. -/
 theorem eval_taylor (α x : σ → R) (P : MvPolynomial σ R) :
-    eval x (taylor α P) = eval (fun j => x j + α j) P := by
-  induction P using MvPolynomial.induction_on <;> simp_all
+    eval x (taylor α P) = eval (fun j ↦ x j + α j) P := by
+  simp [taylor, aeval_def, ← eval_assoc, Function.comp_def]
 
 /-- Translations compose additively. -/
 theorem taylor_taylor (α β : σ → R) (P : MvPolynomial σ R) :
