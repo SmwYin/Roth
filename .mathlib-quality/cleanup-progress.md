@@ -120,7 +120,7 @@ Files will be processed in dependency order; declarations within each file are s
 | `Roth/Taylor.lean` | 239 | All cleanup phases complete;20/20 originals and2 added helpers audited; user-preserved metadata |
 | `Roth/CoeffNorm.lean` | 320 | All cleanup phases complete;26/26 originals and1 added helper audited; compiled public proposal pending |
 | `Roth/GenWronskian.lean` | 292 | All cleanup phases complete;19/19 originals and2 added helpers audited; metadata/two compiled public proposals explicit |
-| `Roth/Lattice.lean` | 217 | Active: all10 originals and1/3 added helpers audited; two helper audits and final file phases pending; final file phases pending |
+| `Roth/Lattice.lean` | 217 | Active: all10 originals and2/3 added helpers audited; successor helper audit and final phases pending; final file phases pending |
 | `Roth/Index.lean` | 275 | Awaiting cleanup |
 | `Roth/Separation.lean` | 618 | Awaiting cleanup |
 | `Roth/Theta.lean` | 981 | Awaiting cleanup |
@@ -1075,3 +1075,18 @@ Logs `/private/tmp/roth-lattice-d10-packed-{module,compatibility,axioms}.log`. S
 (6.37s/3.15s), frozen hash stable; logs `/private/tmp/roth-lattice-d10-packed-{full,leaneval}.log`.
 Lattice10/10 originals plus1/3 helpers audited, overall130/264; helper audits and final file
 phases remain before Lattice completion.
+
+
+## Lattice extracted easy-range helper checkpoint
+
+Fresh dedicated `card_filter_weight_le_of_le_sqrt_aux` audit replaces chained cast rewrites
+with terminal `simp [card_box]` and packs the signature;8→7 declaration/4 body lines.
+[Dedicated audit](cleanup/Lattice-card_filter_weight_le_of_le_sqrt_aux.md) records all24/42/five
+actual searches/five binder probes/all11 checks. Module build exit0(61s), complete native
+LSP zero errors/header only; independent INITIAL exact-type nonself proof and actual private
+standard-axiom verification pass. Public API/docs unchanged. Explicit owner source edit
+revocation at SHA256 `c4001f0b35048a95614d8a819471d639a1d9f66dcfbf41633728f2a290ffb73e`.
+Sequential full `lake build` then separate `lake build Roth.LeanEval`, session37542,
+both exit0(115.31s/45.69s), frozen hash stable; logs
+`/private/tmp/roth-lattice-helper-easy-{full,leaneval}.log`.
+Lattice10/10 originals plus2/3 helpers audited, overall130/264 unchanged.
