@@ -46,7 +46,7 @@ theorem genWronskian_eq_zero_of_not_linearIndependent (D : Fin l → (σ →₀ 
 /-- Kronecker substitution `x_j ↦ t^{k^{e j}}` where `e : σ ≃ Fin (card σ)` is the chosen
 enumeration. Source: §2, proof of Lemma 1 (`h_ν(t) = φ_ν(t, t^k, …, t^{k^{p-1}})`). -/
 noncomputable def kronecker (k : ℕ) : MvPolynomial σ K →ₐ[K] Polynomial K :=
-  aeval fun j => Polynomial.X ^ (k ^ (Fintype.equivFin σ j : ℕ))
+  aeval fun j ↦ Polynomial.X ^ k ^ (Fintype.equivFin σ j : ℕ)
 
 /-- The exponent `∑ j, d j * k^{e j}` of the image of the monomial `X^d`. -/
 noncomputable def kroneckerExp (k : ℕ) (d : σ →₀ ℕ) : ℕ := ∑ j, d j * k ^ (Fintype.equivFin σ j : ℕ)
