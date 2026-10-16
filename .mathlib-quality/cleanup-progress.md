@@ -120,7 +120,7 @@ Files will be processed in dependency order; declarations within each file are s
 | `Roth/Taylor.lean` | 239 | All cleanup phases complete;20/20 originals and2 added helpers audited; user-preserved metadata |
 | `Roth/CoeffNorm.lean` | 320 | All cleanup phases complete;26/26 originals and1 added helper audited; compiled public proposal pending |
 | `Roth/GenWronskian.lean` | 292 | All cleanup phases complete;19/19 originals and2 added helpers audited; metadata/two compiled public proposals explicit |
-| `Roth/Lattice.lean` | 217 | Active: original declarations 3/10 audited; final file phases pending |
+| `Roth/Lattice.lean` | 217 | Active: original declarations 4/10 audited; final file phases pending |
 | `Roth/Index.lean` | 275 | Awaiting cleanup |
 | `Roth/Separation.lean` | 618 | Awaiting cleanup |
 | `Roth/Theta.lean` | 981 | Awaiting cleanup |
@@ -941,3 +941,18 @@ Explicit owner source-ownership revocation at frozen SHA256
 Sequential full `lake build` then separate `lake build Roth.LeanEval`, session38839,
 both exit0 (104.70s/35.53s), hash stable; logs `/private/tmp/roth-lattice-d03-{full,leaneval}.log`.
 Lattice3/10 originals audited, overall123/264; final file phases remain.
+
+
+## Lattice declaration 4 checkpoint
+
+`sum_inv_lt`: inlined one single-use square-root fact, separated positivity proof tactics,
+used `Nat.cast_nonneg` and direct `gcongr` comparison;24→23 declaration/21→20 bodylines.
+Exact publictype/docs preserved. [Dedicated audit](cleanup/Lattice-sum_inv_lt.md) records all24
+audititems/42rules/fiveactualsearches/publicliterature/everyparameterprobe/all11checks.
+Actual modulebuild exit0(26s), complete nativeLSP zeroerrors/headeronly; independent
+original-type nonself proof and actual public target standardaxioms pass. Nohelper/rename/API
+proposal. Explicit owner source-ownership revocation at frozen SHA256
+`ee64506a923d08cf5a57871b5f670a67f6f4509e924c56feac07e27909366d42`.
+Sequential owner full `lake build` then separate `lake build Roth.LeanEval`, session36147,
+both exit0 (108.79s/34.18s), hash stable; logs `/private/tmp/roth-lattice-d04-{full,leaneval}.log`.
+Lattice4/10 originals audited, overall124/264; final filephases remain.

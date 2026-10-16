@@ -63,12 +63,12 @@ theorem sum_inv_lt {r m : ℕ} (hr : 1 ≤ r) (hm : 2 ≤ m) {lam : ℝ} (hlam :
     ∑ j ∈ range (r + 1), (lam - 1 + 2 * (j : ℝ) / r)⁻¹ <
       lam⁻¹ * (√((m : ℝ) - 1))⁻¹ * √(m : ℝ) * (r + 1) := by
   have hm' : (2 : ℝ) ≤ m := by exact_mod_cast hm
-  have hsq1 : 1 < √(m : ℝ) := Real.lt_sqrt_of_sq_lt (by linarith)
-  have hlam2 : 2 < lam := by linarith
-  have hpos1 : 0 < √(1 - 1 / (m : ℝ)) :=
-    Real.sqrt_pos.2 (by rw [sub_pos, div_lt_one (by linarith)]; linarith)
+  have hlam2 : 2 < lam := by linarith [Real.lt_sqrt_of_sq_lt (by linarith : (1 : ℝ) ^ 2 < m)]
+  have hpos1 : 0 < √(1 - 1 / (m : ℝ)) := by
+    rw [Real.sqrt_pos, sub_pos, div_lt_one (by linarith)]
+    linarith
   have hsqrt : √(1 - 1 / (m : ℝ)) = √((m : ℝ) - 1) / √(m : ℝ) := by
-    rw [← Real.sqrt_div' _ (by linarith : (0 : ℝ) ≤ m)]
+    rw [← Real.sqrt_div' _ (Nat.cast_nonneg m)]
     congr 1
     field_simp
   have hlam' : lam / (lam ^ 2 - 1) = lam⁻¹ / (1 - lam⁻¹ ^ 2) := by
@@ -77,9 +77,8 @@ theorem sum_inv_lt {r m : ℕ} (hr : 1 ≤ r) (hm : 2 ≤ m) {lam : ℝ} (hlam :
   calc _ ≤ (r + 1) * (lam / (lam ^ 2 - 1)) := sum_inv_le hr hlam2
     _ < (r + 1) * (lam⁻¹ / √(1 - 1 / (m : ℝ))) := by
       rw [hlam']
-      exact mul_lt_mul_of_pos_left
-        (div_lt_div_of_pos_left (by positivity) hpos1 (sqrt_one_sub_inv_lt hm hlam))
-        (by positivity)
+      gcongr
+      exact sqrt_one_sub_inv_lt hm hlam
     _ = _ := by
       rw [hsqrt]
       field_simp
