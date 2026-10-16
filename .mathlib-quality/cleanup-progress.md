@@ -45,7 +45,7 @@ See [Wronskian final report](cleanup/Wronskian-final.md). Overall55/264 original
 and every final file-level phase. Source239 → 218lines; original public API/docs preserved.
 Independent simplify finding fixed and revalidated; actual profile all22 retained declarations
 below750ms, maximum672.30ms. Overall75/264 original declarations audited.
-See [Taylor final report](cleanup/Taylor-final.md). `Roth/CoeffNorm.lean` is active:20/26original declarations complete, overall95/264. Compiled public-hypothesis proposal awaits scoped user decision; original signatures remain unchanged.
+See [Taylor final report](cleanup/Taylor-final.md). `Roth/CoeffNorm.lean` is active:21/26original declarations complete, overall96/264. Compiled public-hypothesis proposal awaits scoped user decision; original signatures remain unchanged.
 The user approved removing unused `hφ`/`hd` from the Wronskian coefficient identity;
 the exact removal and sole-caller update are implemented and fully revalidated. Both unused
 argument warnings are gone; header metadata remains unchanged.
@@ -743,3 +743,7 @@ All20 originals and2 added helpers complete; overall75/264. [Final report](clean
 ## CoeffNorm declaration 20 checkpoint
 
 `Roth.eval_diag`: normalized constant-lambda arrow in the statement, retained one-line structural induction after compiled composition alternatives;4→4 declaration lines. Exact elaborated public type and docs preserved. [Dedicated audit](cleanup/CoeffNorm-eval_diag.md). Module1379 exit0, complete final LSP no errors, fresh CLI exact original-type assignment/independent composition reproof/standard axioms34678 exit0. All24 audit/42 rules/5 searches/11 checks pass. Sequential full `lake build` and separate `lake build Roth.LeanEval` session32277 exit0; SHA256 `815a7a525d0a6ec34149da5b5d141cf978321d242abbefb9eb50bbcad4fe2cd8` unchanged. Logs `/private/tmp/roth-coeffnorm-d20-{full,leaneval}.log`. Optional abstract-target variant closed under API preservation. CoeffNorm20/26, overall95/264.
+
+## CoeffNorm declaration 21 checkpoint
+
+`Roth.diag_sub`: retained direct map_sub term unchanged after compiled alternatives;2→2 declaration lines, exact public API/docs preserved. [Dedicated audit](cleanup/CoeffNorm-diag_sub.md). Module57811 exit0; complete final LSP no errors, independent exact original-type assignment/nonself simp reproof/standard axioms pass. All24 audit/42 rules/5 searches/11 checks complete. Sequential full `lake build` and separate `lake build Roth.LeanEval` session89064 exit0; frozen SHA256 `815a7a525d0a6ec34149da5b5d141cf978321d242abbefb9eb50bbcad4fe2cd8` unchanged. Logs `/private/tmp/roth-coeffnorm-d21-{full,leaneval}.log`. CoeffNorm21/26, overall96/264.
