@@ -45,8 +45,7 @@ See [Wronskian final report](cleanup/Wronskian-final.md). Overall55/264 original
 and every final file-level phase. Source239 → 218lines; original public API/docs preserved.
 Independent simplify finding fixed and revalidated; actual profile all22 retained declarations
 below750ms, maximum672.30ms. Overall75/264 original declarations audited.
-See [Taylor final report](cleanup/Taylor-final.md). Next file: `Roth/CoeffNorm.lean`,
-to be assigned to a fresh file worker after ownership handoff.
+See [Taylor final report](cleanup/Taylor-final.md). `Roth/CoeffNorm.lean` is active:1/26original declarations complete, overall76/264. Compiled public-hypothesis proposal awaits scoped user decision; original signatures remain unchanged.
 The user approved removing unused `hφ`/`hd` from the Wronskian coefficient identity;
 the exact removal and sole-caller update are implemented and fully revalidated. Both unused
 argument warnings are gone; header metadata remains unchanged.
@@ -664,3 +663,7 @@ Fresh GPT-6.1 Sol Medium review found one compiled degree-bound proof improvemen
 ## Taylor final phases complete
 
 All20 originals and2 added helpers complete; overall75/264. [Final report](cleanup/Taylor-final.md) contains cumulative gates, exact original-public compatibility, all22 profiling timings, independent review and artifact sweep. Final source SHA256 `31af75afd28f840ddee51978509ba63b28536aa84bba56dc047df2aa4b23fbdc`;218lines. Post-review full91300 and separateLeanEval69418 exit0, complete source/caller diagnostics no errors, profile24788 exit0 maximum672.30ms, post-profile module42517 exit0. Header metadata remains the explicit user-preserved limitation. No Taylor proposal/rename/refactor remains pending. Prior pending final-phase notes above are historical and superseded. Worker releases Taylor/shared-log/Git ownership after final publication; no CoeffNorm work started.
+
+## CoeffNorm declaration1 checkpoint
+
+`Roth.normOne`: retained the one-line coefficient norm definition unchanged after full dedicated audit; file-level imports alphabetized. [Dedicated audit](cleanup/CoeffNorm-normOne.md), [initial file audit](cleanup/CoeffNorm.md). Module89974 exit0, complete LSP noerrors, independent originaltype/value and standardaxiom gates pass. Frozen source SHA256 `1290a45f7dbbe5f2a37df1dfd7cb9718884fad6f1d6ae903c0afcf7dbbee9c5b`; source320→321lines from import grouping. Full `lake build` session25646 exit0,2587jobs; separate `lake build Roth.LeanEval` session18016 exit0,2586jobs. Logs `/private/tmp/roth-coeffnorm-d01-{full,leaneval}.log`. [Concrete API proposal](cleanup/CoeffNorm-api-proposal.md) compiled46719 exit0: four unused publicDecidableEq removals and unused hC removal await userdecision, not applied. Overall76/264original declarations audited; CoeffNorm1/26.

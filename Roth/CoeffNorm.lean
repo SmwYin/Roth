@@ -1,7 +1,8 @@
-import Roth.HasseDeriv
-import Roth.Box
-import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
 import Mathlib.Algebra.MvPolynomial.Polynomial
+import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
+
+import Roth.Box
+import Roth.HasseDeriv
 
 /-!
 # Coefficient norms of integer polynomials
