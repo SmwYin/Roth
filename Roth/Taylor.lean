@@ -194,18 +194,17 @@ theorem eq_sum_box_hasseDeriv [Fintype σ] [DecidableEq σ] (α : σ → A) (r :
     P = ∑ d ∈ Roth.box r, C (eval α (hasseDeriv d P)) * ∏ j, (X j - C (α j)) ^ d j := by
   have h1 : taylor α P = ∑ d ∈ Roth.box r, monomial d (eval α (hasseDeriv d P)) := by
     ext e
-    rw [coeff_taylor, coeff_sum]
-    simp only [coeff_monomial, Finset.sum_ite_eq']
+    simp only [coeff_taylor, coeff_sum, coeff_monomial, Finset.sum_ite_eq']
     split_ifs with he
     · rfl
     · obtain ⟨j, hj⟩ : ∃ j, r j < e j := by
         simpa [Roth.mem_box] using he
       rw [hasseDeriv_eq_zero_of_degreeOf_lt ((hP j).trans_lt hj), map_zero]
-  calc P = taylor (fun j => -α j) (taylor α P) := (taylor_neg_taylor α P).symm
+  calc P = taylor (fun j ↦ -α j) (taylor α P) := (taylor_neg_taylor α P).symm
     _ = _ := by
       rw [h1, map_sum]
-      refine Finset.sum_congr rfl fun d _ => ?_
-      rw [taylor_monomial, Finsupp.prod_fintype _ _ fun _ => pow_zero _]
+      refine Finset.sum_congr rfl fun d _ ↦ ?_
+      rw [taylor_monomial, Finsupp.prod_fintype _ _ fun _ ↦ pow_zero _]
       simp [sub_eq_add_neg]
 
 /-- Taylor's theorem, evaluation form. Source: §7 ("`Q(h_1/q_1, …) = ∑ Δ_i Q(α,…,α) ∏ (h_j/q_j -

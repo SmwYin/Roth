@@ -44,7 +44,7 @@ Two headline proofs require structural review: coeff_taylor35bodylines; eq_sum_b
 | 16 | `taylor_neg_taylor` | 195–197 | 3 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | validated; [audit](Taylor-taylor_neg_taylor.md) |
 | 17 | `taylor_injective` | 200–201 | 2 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | validated; [audit](Taylor-taylor_injective.md) |
 | 18 | `taylor_eq_zero_iff` | 205–206 | 2 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | validated; [audit](Taylor-taylor_eq_zero_iff.md) |
-| 19 | `eq_sum_box_hasseDeriv` | 210–227 | 18 | public theorem; naming descriptive, documentation appropriate; headline theorem: structure review required | Pending |
+| 19 | `eq_sum_box_hasseDeriv` | 210–227 | 18 | public theorem; naming descriptive, documentation appropriate; headline theorem: structure review required | validated; [audit](Taylor-eq_sum_box_hasseDeriv.md) |
 | 20 | `eval_eq_sum_box` | 231–235 | 5 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | Pending |
 
 ## Phase3 file-level actions
@@ -156,3 +156,7 @@ environment repair.
 ## Declaration 18 checkpoint
 
 `taylor_eq_zero_iff`: Retained minimal injectivity eq_iff term after compiled alternatives; no source change, exact public simp API and docs verified. All worker gates pass. Frozen source SHA256 `0a6ab3437c5950f4d2e800b78f03e7a53b7ce97f6cc248c3bff71fcf00a46f22`. Full `lake build` session21654 and separate `lake build Roth.LeanEval` session88267 exited0. Logs `/private/tmp/roth-taylor-d18-full.log` and `...-leaneval.log`.
+
+## Declaration 19 checkpoint
+
+`eq_sum_box_hasseDeriv`: Consolidated coefficient rewriting into one squeezed simp, reducing headline proof16 to15 lines including by; lambdas normalized, no helper or public contract change. All worker gates pass. Frozen source SHA256 `eda896cd346e776d923237cdc4235045d1dd2e4fe32a8d039f561ca6068221a6`. Full `lake build` session8153 and separate `lake build Roth.LeanEval` session30826 exited0. Logs `/private/tmp/roth-taylor-d19-full.log` and `...-leaneval.log`.

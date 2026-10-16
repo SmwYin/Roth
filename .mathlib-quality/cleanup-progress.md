@@ -42,7 +42,7 @@ Final module/full/separate LeanEval, complete LSP, public-type/definition compat
 axiom gates pass. Post-amendment actual profiling: all13 below1000ms, maximum586.13ms.
 See [Wronskian final report](cleanup/Wronskian-final.md). Overall55/264 original declarations audited.
 Current file: `Roth/Taylor.lean`, under a fresh file worker with sequential dedicated declaration audits.
-Taylor progress: 18/20 original declarations reviewed; overall 73/264. File-level final phases remain pending.
+Taylor progress: 19/20 original declarations reviewed; overall 74/264. File-level final phases remain pending.
 The user approved removing unused `hφ`/`hd` from the Wronskian coefficient identity;
 the exact removal and sole-caller update are implemented and fully revalidated. Both unused
 argument warnings are gone; header metadata remains unchanged.
@@ -644,3 +644,7 @@ User model preference update: all new declaration/helper/review workers now use 
 ## Taylor declaration 18 checkpoint
 
 `MvPolynomial.taylor_eq_zero_iff`: Retained minimal injectivity eq_iff term after compiled alternatives; no source change, exact public simp API and docs verified. [Dedicated audit](cleanup/Taylor-taylor_eq_zero_iff.md). Module, complete LSP, isolated type/axiom and diff gates pass. Publication validation: full `lake build` session21654 exit0; separate `lake build Roth.LeanEval` session88267 exit0. Frozen source SHA256 `0a6ab3437c5950f4d2e800b78f03e7a53b7ce97f6cc248c3bff71fcf00a46f22`. Logs `/private/tmp/roth-taylor-d18-full.log` and `...-leaneval.log`.
+
+## Taylor declaration 19 checkpoint
+
+`MvPolynomial.eq_sum_box_hasseDeriv`: Consolidated coefficient rewriting into one squeezed simp, reducing headline proof16 to15 lines including by; lambdas normalized, no helper or public contract change. [Dedicated audit](cleanup/Taylor-eq_sum_box_hasseDeriv.md). Module, complete LSP, isolated type/axiom and diff gates pass. Publication validation: full `lake build` session8153 exit0; separate `lake build Roth.LeanEval` session30826 exit0. Frozen source SHA256 `eda896cd346e776d923237cdc4235045d1dd2e4fe32a8d039f561ca6068221a6`. Logs `/private/tmp/roth-taylor-d19-full.log` and `...-leaneval.log`.
