@@ -139,16 +139,15 @@ private lemma filter_weight_le_eq_empty {m : ℕ} (r : Fin m → ℕ) {lam : ℝ
   Finset.filter_eq_empty_iff.2 fun d _ h ↦ by linarith [weight_nonneg r d]
 
 private lemma card_filter_fiber_eq {n : ℕ} (r : Fin (n + 1) → ℕ) (lam : ℝ) (i : ℕ) :
-    (((box (r ∘ Fin.castSucc)).filter fun d => weight r
-        (d.mapDomain Fin.castSucc + Finsupp.single (Fin.last n) i) ≤
-          (((n + 1 : ℕ) : ℝ) - lam) / 2).card : ℝ) =
-      (((box (r ∘ Fin.castSucc)).filter fun d => weight (r ∘ Fin.castSucc) d ≤
-          ((n : ℝ) - (lam - 1 + 2 * (i : ℝ) / r (Fin.last n))) / 2).card : ℝ) := by
+    (((box (r ∘ Fin.castSucc)).filter fun d ↦ weight r
+      (d.mapDomain Fin.castSucc + Finsupp.single (Fin.last n) i) ≤
+        (((n + 1 : ℕ) : ℝ) - lam) / 2).card : ℝ) =
+      (((box (r ∘ Fin.castSucc)).filter fun d ↦ weight (r ∘ Fin.castSucc) d ≤
+        ((n : ℝ) - (lam - 1 + 2 * (i : ℝ) / r (Fin.last n))) / 2).card : ℝ) := by
   congr 2
-  refine Finset.filter_congr fun d _ => ?_
+  refine Finset.filter_congr fun d _ ↦ ?_
   rw [weight_add, weight_mapDomain (Fin.castSucc_injective n), weight_single, mul_div_assoc]
-  push_cast
-  constructor <;> intro h <;> linarith
+  grind
 
 /-- **Lemma 8** (lattice count estimate): the number of multi-indices in the box `∏ [0, r_j]`
 of weight at most `(m - λ)/2` is at most `2 √m λ⁻¹ ∏ (r_j + 1)`.

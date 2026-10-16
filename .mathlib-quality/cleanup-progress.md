@@ -120,7 +120,7 @@ Files will be processed in dependency order; declarations within each file are s
 | `Roth/Taylor.lean` | 239 | All cleanup phases complete;20/20 originals and2 added helpers audited; user-preserved metadata |
 | `Roth/CoeffNorm.lean` | 320 | All cleanup phases complete;26/26 originals and1 added helper audited; compiled public proposal pending |
 | `Roth/GenWronskian.lean` | 292 | All cleanup phases complete;19/19 originals and2 added helpers audited; metadata/two compiled public proposals explicit |
-| `Roth/Lattice.lean` | 217 | Active: originals 8/10 and added fibre helper 1/1 audited; final file phases pending; final file phases pending |
+| `Roth/Lattice.lean` | 217 | Active: originals 9/10 and added fibre helper 1/1 audited; final file phases pending; final file phases pending |
 | `Roth/Index.lean` | 275 | Awaiting cleanup |
 | `Roth/Separation.lean` | 618 | Awaiting cleanup |
 | `Roth/Theta.lean` | 981 | Awaiting cleanup |
@@ -1035,3 +1035,19 @@ Explicit owner source edit revocation at SHA256
 Sequential full `lake build` then separate `lake build Roth.LeanEval`, session67566,
 both exit0(109.71s/40.64s), frozen hash stable; logs `/private/tmp/roth-lattice-d08-{full,leaneval}.log`.
 Lattice8/10 originals plus1/1 helper audited, overall128/264.
+
+
+## Lattice declaration 9 checkpoint
+
+Private `card_filter_fiber_eq`: terminal grind replaces push_cast and two-direction arithmetic;
+lambdas/continuation style normalized,11→10 declaration/5→4 proof lines. Exact mathematical
+type preserved. [Dedicated audit](cleanup/Lattice-card_filter_fiber_eq.md) records all24/42/five
+actual searches/four parameter probes/all11 checks. Stalled native tactic query bounded;
+complete persistent direct LSP42366 passes (partial=false, zero errors/header only), earlier
+partial calls not counted. Actual module85742 exit0(58s), independent exact original-type
+nonself proof exits0 with standard axioms; actual private target verification standard.
+Explicit owner source edit revocation at SHA256
+`00bedd0a4607a8fa4017206e750d8827f2b5c672ec116b8664093d1b386bfbea`.
+Sequential full `lake build` then separate `lake build Roth.LeanEval`, session72585,
+both exit0(70.69s/28.67s), frozen hash stable; logs `/private/tmp/roth-lattice-d09-{full,leaneval}.log`.
+Lattice9/10 originals plus1/1 helper audited, overall129/264.
