@@ -1329,3 +1329,22 @@ All original block docs byte-identical, source widths≤100, diff checked before
 Index6/21 originals,overall136/264; source269lines,
 19retained declarations. Exact-path commit and successful cleanup-branch push
 precede the next edit. Header remains explicitly user-preserved.
+
+
+## Index d07 checkpoint — le_index_iff
+
+Applied the explicitly approved unused σ-DecidableEq omission and two Unicode lambda arrows; retained the explicit proof after shorter generic candidate measured 443.491ms versus original95.231ms; final162.62ms. Mathematical arguments, conclusion and docs retained.
+
+[Dedicated audit](cleanup/Index-le_index_iff.md): all24/42/five searches/binder probes/11checks;
+worker module/complete LSP/independent proof/type/actual standard-axiom gates passed.
+Frozen SHA256 `35ec8776ff8a9da254b521bc6e651b013c8c87b769931bfc37646bf3ee3411d9`. Fresh whole ORIGINAL nonself reproof, all18 original public
+type/value recoveries and all19 actual retained standard-axiom checks: compiler
+session53801 exit0, `/private/tmp/roth-index-d07-compatibility.log`.
+Approved no-DecEq types are additionally checked by Expr.find?; actual signatures printed.
+Sequential owner full then separate LeanEval93535 both exit0(145.71s/40.38s),
+Index+Theta hashes stable; `/private/tmp/roth-index-d07-{full,leaneval}.log`.
+Worker complete Index LSP: success=true partial=false timed_out=false, 0target diagnostics/26unrelated warnings. External MainLemma complete native LSP functions cell172: success=true partial=false timed_out=false, 0errors/3inherited warnings, noinfos, no faileddependencies. MainLemma:477 caller accepted; raw /private/tmp/roth-index-d07-mainlemma-lsp.json.
+All original block docs byte-identical, source widths≤100, diff checked before staging.
+Index7/21 originals,overall137/264; source270lines,
+19retained declarations. Exact-path commit and successful cleanup-branch push
+precede the next edit. Header remains explicitly user-preserved.

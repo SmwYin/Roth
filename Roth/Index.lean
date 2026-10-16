@@ -75,11 +75,12 @@ theorem exists_weight_eq_index {P : MvPolynomial σ ℝ} (hP : P ≠ 0) (α : σ
       simpa using hP).csInf_mem ((taylor α P).support.finite_toSet.image (weight r))
   exact ⟨d, mem_support_taylor_iff.1 hd, hdw⟩
 
+omit [DecidableEq σ] in
 /-- The characterisation of lower bounds for the index of a nonzero polynomial: `c ≤ index P α r`
 iff every multi-index `d` with `(Δ_d P)(α) ≠ 0` has weight at least `c`. -/
 theorem le_index_iff {P : MvPolynomial σ ℝ} (hP : P ≠ 0) {α : σ → ℝ} {r : σ → ℕ} {c : ℝ} :
     c ≤ index P α r ↔ ∀ d, eval α (hasseDeriv d P) ≠ 0 → c ≤ weight r d := by
-  refine ⟨fun h d hd => h.trans (index_le_weight hd), fun h => ?_⟩
+  refine ⟨fun h d hd ↦ h.trans (index_le_weight hd), fun h ↦ ?_⟩
   refine le_csInf (by simpa using hP) ?_
   rintro _ ⟨d, hd, rfl⟩
   exact h d (mem_support_taylor_iff.1 hd)
