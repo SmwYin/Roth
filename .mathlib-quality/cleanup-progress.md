@@ -1367,3 +1367,22 @@ All original block docs byte-identical, source widths≤100, diff checked before
 Index8/21 originals,overall138/264; source269lines,
 19retained declarations. Exact-path commit and successful cleanup-branch push
 precede the next edit. Header remains explicitly user-preserved.
+
+
+## Index d09 checkpoint — index_eq_zero_iff
+
+Applied explicitly approved unused σ-DecidableEq omission and two Unicode lambda arrows. Independent counterexamples validate retained nonzero-polynomial and positive-weight assumptions; no broader API/proof change, docs preserved. Target measured154.51ms.
+
+[Dedicated audit](cleanup/Index-index_eq_zero_iff.md): all24/42/five searches/binder probes/11checks;
+worker module/complete LSP/independent proof/type/actual standard-axiom gates passed.
+Frozen SHA256 `089b92ef70eee154e17169baf76710e227ed3dc3f8f1894496a006eca0fd86b5`. Fresh whole ORIGINAL nonself reproof, all18 original public
+type/value recoveries and all19 actual retained standard-axiom checks: compiler
+session76431 exit0, `/private/tmp/roth-index-d09-compatibility.log`.
+Approved no-DecEq types are additionally checked by Expr.find?; actual signatures printed.
+Sequential owner full then separate LeanEval20223 both exit0(164.93s/36.44s),
+Index+Theta hashes stable; `/private/tmp/roth-index-d09-{full,leaneval}.log`.
+Worker final target-filtered diagnostics clean; owner unfiltered COMPLETE Index native diagnostics after fullbuild success=true partial=false timed_out=false, no faileddependencies, 0errors/23unrelated warnings, targetlines93–104 empty. Raw /private/tmp/roth-index-d09-index-lsp.json. Source rg finds only internal index_prod caller, accepted by module/fullbuild; no external caller to query.
+All original block docs byte-identical, source widths≤100, diff checked before staging.
+Index9/21 originals,overall139/264; source270lines,
+19retained declarations. Exact-path commit and successful cleanup-branch push
+precede the next edit. Header remains explicitly user-preserved.
