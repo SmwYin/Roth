@@ -34,7 +34,7 @@ Two headline proofs require structural review: coeff_taylor35bodylines; eq_sum_b
 | 6 | `coeff_aeval_X_mul` | 59–82 | 24 | private lemma; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | validated; [audit](Taylor-coeff_aeval_X_mul.md) |
 | 7 | `hasseCoeff_single_add_eq` | 84–99 | 16 | private lemma; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | validated; [audit](Taylor-hasseCoeff_single_add_eq.md) |
 | 8 | `prod_pow_single_add_tsub` | 101–111 | 11 | private lemma; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | validated; [audit](Taylor-prod_pow_single_add_tsub.md) |
-| 9 | `coeff_taylor` | 116–150 | 35 | public theorem; naming descriptive, documentation appropriate; headline theorem: structure review required | Pending |
+| 9 | `coeff_taylor` | 116–150 | 35 | public theorem; naming descriptive, documentation appropriate; headline theorem: structure review required | validated; [audit](Taylor-coeff_taylor.md) |
 | 10 | `eval_taylor` | 153–155 | 3 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | Pending |
 | 11 | `taylor_taylor` | 158–160 | 3 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | Pending |
 | 12 | `taylor_zero` | 164–165 | 2 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | Pending |
@@ -88,3 +88,7 @@ LeanEval build, then exact-path commit/push before the next source edit.
 ## Declaration 8 checkpoint
 
 `prod_pow_single_add_tsub`: Terminal simp replaces rewrite/congr/exact assembly with local single_tsub exclusion; lambda syntax and signature packed,11 to8lines, original contract preserved. All worker gates pass. Frozen source SHA256 `58a982948ba48df089ea5e4a00e8050fb00566e381e9a942279484ac88e0818e`. Full `lake build` session26690 and separate `lake build Roth.LeanEval` session78586 exited0. Logs `/private/tmp/roth-taylor-d08-full.log` and `...-leaneval.log`.
+
+## Declaration 9 checkpoint
+
+`coeff_taylor`: Separated monomial expansion into two private helpers; headline33 to3bodylines, original public contract/docs preserved, source net+2lines. New helpers await fresh dedicated audits. All worker gates pass. Frozen source SHA256 `339ca8621ef76a233dab2c5f86002e6a1016b9116616266e78b9a5d311177b39`. Full `lake build` session19265 and separate `lake build Roth.LeanEval` session62727 exited0. Logs `/private/tmp/roth-taylor-d09-full.log` and `...-leaneval.log`.

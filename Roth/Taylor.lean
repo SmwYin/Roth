@@ -92,44 +92,46 @@ private lemma prod_pow_single_add_tsub (α : σ → R) {i : σ} {n : ℕ} {k' : 
     obtain rfl | hj := eq_or_ne j i <;> simp [*, Finsupp.erase_ne]
   simp [h, Finsupp.prod_add_index', pow_add, -Finsupp.single_tsub]
 
+private lemma coeff_taylor_monomial_single_add_aux (α : σ → R) (a : R) {i : σ} (n : ℕ) {k : σ →₀ ℕ}
+    (hi : k i = 0)
+    (ih : ∀ d, (taylor α (monomial k a)).coeff d = eval α (hasseDeriv d (monomial k a)))
+    (d : σ →₀ ℕ) : (taylor α (monomial (Finsupp.single i n + k) a)).coeff d =
+      eval α (hasseDeriv d (monomial (Finsupp.single i n + k) a)) := by
+  classical
+  have hXC : (X i + C (α i) : MvPolynomial σ R) ^ n =
+      Polynomial.aeval (X i) ((Polynomial.X + Polynomial.C (α i)) ^ n) := by
+    simp [algebraMap_eq]
+  have hsupp : ∀ e ∈ (taylor α (monomial k a)).support, e i = 0 := by
+    intro e he
+    rw [mem_support_iff, ih e, hasseDeriv_monomial] at he
+    by_contra h
+    simp [(hasseCoeff_eq_zero_iff e k).2 fun hle ↦ h (le_zero_iff.1 (hi ▸ hle i))] at he
+  rw [monomial_single_add, map_mul, map_pow, taylor_X, hXC,
+    coeff_aeval_X_mul i _ _ hsupp, ih, Polynomial.coeff_X_add_C_pow,
+    ← monomial_single_add, hasseDeriv_monomial, hasseDeriv_monomial, eval_monomial,
+    eval_monomial, hasseCoeff_single_add_eq hi, prod_pow_single_add_tsub α hi]
+  simp [mul_assoc, mul_comm, mul_left_comm]
+
+private lemma coeff_taylor_monomial_aux (α : σ → R) (d k : σ →₀ ℕ) (a : R) :
+    (taylor α (monomial k a)).coeff d = eval α (hasseDeriv d (monomial k a)) := by
+  classical
+  induction k using Finsupp.induction generalizing d with
+  | zero =>
+    rw [← C_apply, taylor_C, coeff_C, C_apply, hasseDeriv_monomial, eval_monomial]
+    obtain rfl | hd := eq_or_ne d 0
+    · simp [hasseCoeff]
+    · simp [(hasseCoeff_eq_zero_iff d 0).2 fun h ↦ hd (le_zero_iff.1 h), hd.symm]
+  | single_add i n k hi _ ih =>
+    exact coeff_taylor_monomial_single_add_aux α a n (Finsupp.notMem_support_iff.1 hi) ih d
+
 /-- Taylor's theorem, coefficient form. Source: §4, Lean implementation note ("`P_α(X) = P(X+α)`,
 whose coefficient at `d` is `(Δ_d P)(α)`"), proved as in the Theorem (Taylor's expansion) by
 linearity and the one-variable binomial expansion on monomials. -/
 theorem coeff_taylor (α : σ → R) (d : σ →₀ ℕ) (P : MvPolynomial σ R) :
     (taylor α P).coeff d = eval α (hasseDeriv d P) := by
-  classical
-  induction P using MvPolynomial.induction_on' generalizing d with
+  induction P using MvPolynomial.induction_on' with
   | add p q hp hq => simp [hp, hq]
-  | monomial k a =>
-    induction k using Finsupp.induction generalizing d with
-    | zero =>
-      rw [← C_apply, taylor_C, coeff_C, C_apply, hasseDeriv_monomial, eval_monomial]
-      obtain rfl | hd := eq_or_ne d 0
-      · simp [hasseCoeff]
-      · have : hasseCoeff d 0 = 0 := (hasseCoeff_eq_zero_iff d 0).2 fun h => hd (le_zero_iff.1 h)
-        simp [this, hd.symm]
-    | single_add i n k' hi hn ih =>
-      have hi' : k' i = 0 := Finsupp.notMem_support_iff.1 hi
-      have hXC : (X i + C (α i) : MvPolynomial σ R) ^ n =
-          Polynomial.aeval (X i) ((Polynomial.X + Polynomial.C (α i)) ^ n) := by
-        simp [algebraMap_eq]
-      have hsupp : ∀ e ∈ (taylor α (monomial k' a)).support, e i = 0 := by
-        intro e he
-        rw [mem_support_iff, ih e, hasseDeriv_monomial] at he
-        by_contra h
-        have : hasseCoeff e k' = 0 := (hasseCoeff_eq_zero_iff e k').2 fun hle => by
-          have := hle i
-          lia
-        simp [this] at he
-      have htay : taylor α (monomial (Finsupp.single i n + k') a) =
-          Polynomial.aeval (X i) ((Polynomial.X + Polynomial.C (α i)) ^ n) *
-            taylor α (monomial k' a) := by
-        rw [monomial_single_add, map_mul, map_pow, taylor_X, hXC]
-      rw [htay, coeff_aeval_X_mul i _ _ hsupp, ih, Polynomial.coeff_X_add_C_pow,
-        hasseDeriv_monomial, hasseDeriv_monomial, eval_monomial, eval_monomial,
-        hasseCoeff_single_add_eq hi', prod_pow_single_add_tsub α hi']
-      push_cast
-      ring
+  | monomial k a => exact coeff_taylor_monomial_aux α d k a
 
 /-- Evaluating `P(X + α)` at `x` is evaluating `P` at `x + α`. -/
 theorem eval_taylor (α x : σ → R) (P : MvPolynomial σ R) :
