@@ -97,12 +97,10 @@ Source: §2, Lean implementation note ("prove injectivity only on the subspace w
 individual exponent is less than `k`"). -/
 theorem kronecker_eq_zero_iff {k : ℕ} (hk : 1 < k) {P : MvPolynomial σ K}
     (hP : ∀ j, degreeOf j P < k) : kronecker k P = 0 ↔ P = 0 := by
-  refine ⟨fun h => ?_, fun h => by rw [h, map_zero]⟩
-  ext d
-  by_cases hd : ∀ j, d j < k
-  · simpa [h] using (coeff_kronecker hk hP hd).symm
-  · obtain ⟨j, hj⟩ := not_forall.1 hd
-    simpa using notMem_support_iff.1 fun hdP => hj ((monomial_le_degreeOf j hdP).trans_lt (hP j))
+  refine ⟨fun h ↦ support_eq_empty.1 <| Finset.eq_empty_iff_forall_notMem.2 fun d hd ↦ ?_,
+    fun h ↦ by rw [h, map_zero]⟩
+  apply mem_support_iff.1 hd
+  simpa [h] using (coeff_kronecker hk hP fun j ↦ (monomial_le_degreeOf j hd).trans_lt (hP j)).symm
 
 /-- The Kronecker substitution preserves linear independence of polynomials whose partial degrees
 are all `< k`.
