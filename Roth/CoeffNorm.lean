@@ -1,4 +1,3 @@
-import Mathlib.Algebra.MvPolynomial.Polynomial
 import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
 
 import Roth.Box
@@ -208,7 +207,6 @@ theorem geom_sum_le_one_add_pow {t : ℝ} (ht : 0 ≤ t) (r : ℕ) :
 open scoped Classical in
 private theorem sum_box_prod_pow_le_aux [Fintype σ] (r : σ → ℕ) {B : ℝ} (hB : 0 ≤ B) (x : σ → ℝ) :
     ∑ k ∈ box r, B * ∏ j, |x j| ^ k j ≤ B * ∏ j, (1 + |x j|) ^ r j := by
-  classical
   simpa [← Finset.mul_sum, box, Finset.prod_univ_sum] using
     mul_le_mul_of_nonneg_left (Finset.prod_le_prod₀ (s := Finset.univ) (fun _ _ ↦ by positivity)
       fun j _ ↦ geom_sum_le_one_add_pow (abs_nonneg (x j)) (r j)) hB
