@@ -45,7 +45,7 @@ See [Wronskian final report](cleanup/Wronskian-final.md). Overall55/264 original
 and every final file-level phase. Source239 → 218lines; original public API/docs preserved.
 Independent simplify finding fixed and revalidated; actual profile all22 retained declarations
 below750ms, maximum672.30ms. Overall75/264 original declarations audited.
-See [Taylor final report](cleanup/Taylor-final.md). `Roth/CoeffNorm.lean` is active:23/26original declarations complete, overall98/264. Compiled public-hypothesis proposal awaits scoped user decision; original signatures remain unchanged.
+See [Taylor final report](cleanup/Taylor-final.md). `Roth/CoeffNorm.lean` is active:24/26original declarations complete, overall99/264. Compiled public-hypothesis proposal awaits scoped user decision; original signatures remain unchanged.
 The user approved removing unused `hφ`/`hd` from the Wronskian coefficient identity;
 the exact removal and sole-caller update are implemented and fully revalidated. Both unused
 argument warnings are gone; header metadata remains unchanged.
@@ -755,3 +755,7 @@ All20 originals and2 added helpers complete; overall75/264. [Final report](clean
 ## CoeffNorm declaration 23 checkpoint
 
 Private `Roth.sum_box_prod_pow`: removed four-line wrapper and separator; sole abs_eval_le equality step now uses direct terminal simp with Mathlib finite-product/sum APIs. Public caller type/docs unchanged. [Dedicated audit](cleanup/CoeffNorm-sum_box_prod_pow.md). Module79122 exit0, complete final LSP no errors, fresh CLI original private-statement reproof/caller original-type/standard axioms16772 exit0. All24 audit/42 rules/5 searches/11 checks pass; private literature exemption explicit. Sequential full `lake build` and separate `lake build Roth.LeanEval` session8381 exit0; SHA256 `15d3ac71121de58374fd6d7bce63a35c7a25e81b1bf4bae306a12a3809277a5b` unchanged. Logs `/private/tmp/roth-coeffnorm-d23-{full,leaneval}.log`. CoeffNorm23/26 originals audited;25 declarations retained, overall98/264.
+
+## CoeffNorm declaration 24 checkpoint
+
+`Roth.abs_eval_le`: reduced proof25→14 lines through direct eval₂ expansion and a private geometric-box bound; exact public type/docs preserved. [Dedicated audit](cleanup/CoeffNorm-abs_eval_le.md). Module24551 exit0, complete final LSP no errors, fresh CLI original-type assignment/nonself reproof/standard axioms90708 exit0. All24 audit/42 rules/5 searches/11 checks pass. New private `sum_box_prod_pow_le_aux` awaits a fresh dedicated audit before declaration25. Sequential full `lake build` and separate `lake build Roth.LeanEval` session29495 exit0; SHA256 `f3bf41ffebbac5dab7b9fd600a154957131ae7b259e6281c4bc48f879004a2ad` unchanged. Logs `/private/tmp/roth-coeffnorm-d24-{full,leaneval}.log`. CoeffNorm24/26 originals audited, overall99/264.

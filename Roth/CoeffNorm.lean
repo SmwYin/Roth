@@ -205,6 +205,18 @@ theorem geom_sum_le_one_add_pow {t : ℝ} (ht : 0 ≤ t) (r : ℕ) :
   refine le_mul_of_one_le_right (pow_nonneg ht m) ?_
   exact_mod_cast Nat.choose_pos (Finset.mem_range_succ_iff.1 hm)
 
+private theorem sum_box_prod_pow_le_aux [Fintype σ] [DecidableEq σ] (r : σ → ℕ) {B : ℝ}
+    (hB : 0 ≤ B) (x : σ → ℝ) :
+    ∑ k ∈ box r, B * ∏ j, |x j| ^ k j ≤ B * ∏ j, (1 + |x j|) ^ r j := by
+  classical
+  calc
+    ∑ k ∈ box r, B * ∏ j, |x j| ^ k j =
+        B * ∏ j, ∑ s ∈ Finset.range (r j + 1), |x j| ^ s := by
+      simp [← Finset.mul_sum, box, Finset.prod_univ_sum]
+    _ ≤ B * ∏ j, (1 + |x j|) ^ r j :=
+      mul_le_mul_of_nonneg_left (Finset.prod_le_prod₀ (fun _ _ ↦ by positivity)
+        fun j _ ↦ geom_sum_le_one_add_pow (abs_nonneg _) _) hB
+
 /-- A value bound for an integer polynomial with bounded coefficients and degrees.
 Source: §6, proof of Lemma 9 ("`|(Δ_i Q)(α, …, α)| ≤ abc(Δ_i Q) ∏_j ∑_{s ≤ r_j} |α|^s`",
 combined with the geometric-sum bound). -/
@@ -213,29 +225,18 @@ theorem abs_eval_le [Fintype σ] (P : MvPolynomial σ ℤ) {r : σ → ℕ} (hP 
     |eval x (map (Int.castRingHom ℝ) P)| ≤ B * ∏ j, (1 + |x j|) ^ r j := by
   classical
   have hB0 : 0 ≤ B := (abs_nonneg _).trans (hB 0)
-  have hbox : P.support ⊆ box r := fun k hk =>
-    mem_box.2 fun j => (monomial_le_degreeOf j hk).trans (hP j)
-  have heval : eval x (map (Int.castRingHom ℝ) P) =
-      ∑ k ∈ P.support, (P.coeff k : ℝ) * ∏ j, x j ^ k j := by
-    conv_lhs => rw [P.as_sum]
-    rw [map_sum, map_sum]
-    refine Finset.sum_congr rfl fun k _ => ?_
-    rw [map_monomial, eval_monomial, Finsupp.prod_fintype _ _ fun _ => pow_zero _]
-    rfl
-  rw [heval]
+  rw [eval_map, eval₂_eq']
   calc |∑ k ∈ P.support, (P.coeff k : ℝ) * ∏ j, x j ^ k j|
       ≤ ∑ k ∈ P.support, B * ∏ j, |x j| ^ k j := by
-        refine (Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun k _ => ?_)
-        rw [abs_mul, Finset.abs_prod]
-        simp only [abs_pow]
+        refine (Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun k _ ↦ ?_)
+        simp only [abs_mul, Finset.abs_prod, abs_pow]
         exact mul_le_mul_of_nonneg_right (hB k) (by positivity)
     _ ≤ ∑ k ∈ box r, B * ∏ j, |x j| ^ k j :=
-        Finset.sum_le_sum_of_subset_of_nonneg hbox fun _ _ _ => by positivity
-    _ = B * ∏ j, ∑ s ∈ Finset.range (r j + 1), |x j| ^ s := by
-        simp [← Finset.mul_sum, box, Finset.prod_univ_sum]
+        Finset.sum_le_sum_of_subset_of_nonneg
+          (fun k hk ↦ mem_box.2 fun j ↦ (monomial_le_degreeOf j hk).trans (hP j))
+          fun _ _ _ ↦ by positivity
     _ ≤ B * ∏ j, (1 + |x j|) ^ r j :=
-        mul_le_mul_of_nonneg_left (Finset.prod_le_prod₀ (fun _ _ => by positivity)
-          fun j _ => geom_sum_le_one_add_pow (abs_nonneg _) _) hB0
+        sum_box_prod_pow_le_aux r hB0 x
 
 /-- Degree bound for a determinant of Hasse derivatives of `P`.
 Source: §2, end of the proof of Lemma 2 ("Since `F` is a determinant of an `l × l` matrix whose
