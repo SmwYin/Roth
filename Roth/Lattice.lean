@@ -89,10 +89,7 @@ private lemma extend_apply_castSucc {m : ℕ} (d : Fin m →₀ ℕ) (i : ℕ) (
 
 private lemma extend_apply_last {m : ℕ} (d : Fin m →₀ ℕ) (i : ℕ) :
     (d.mapDomain Fin.castSucc + Finsupp.single (Fin.last m) i) (Fin.last m) = i := by
-  have : Fin.last m ∉ Set.range (Fin.castSucc : Fin m → Fin (m + 1)) := by
-    rintro ⟨j, hj⟩
-    exact (Fin.castSucc_lt_last j).ne hj
-  simp [Finsupp.mapDomain_of_notMem_range _ _ this]
+  simp [Finsupp.mapDomain_of_notMem_range]
 
 /-- Counting a filtered box by fibres over the last coordinate: each fibre is identified with
 the box in the first `m` coordinates, filtered by the extended predicate.
