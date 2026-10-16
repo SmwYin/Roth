@@ -149,14 +149,56 @@ private lemma card_filter_fiber_eq {n : ℕ} (r : Fin (n + 1) → ℕ) (lam : �
   rw [weight_add, weight_mapDomain (Fin.castSucc_injective n), weight_single, mul_div_assoc]
   grind
 
+private lemma card_filter_weight_le_of_le_sqrt_aux (m : ℕ) (r : Fin m → ℕ) {lam : ℝ}
+    (hlam : 0 < lam) (h : lam ≤ 2 * √(m : ℝ)) :
+    (((box r).filter fun d ↦ weight r d ≤ ((m : ℝ) - lam) / 2).card : ℝ) ≤
+      2 * √(m : ℝ) / lam * ∏ j, ((r j : ℝ) + 1) := by
+  classical
+  calc _ ≤ ((box r).card : ℝ) := by exact_mod_cast Finset.card_filter_le (box r) _
+    _ = ∏ j, ((r j : ℝ) + 1) := by rw [card_box]; push_cast; rfl
+    _ ≤ _ := le_mul_of_one_le_left (by positivity) ((one_le_div hlam).2 h)
+
+private lemma card_filter_weight_le_succ_aux {n : ℕ} (r : Fin (n + 1) → ℕ)
+    (hr : ∀ j, 0 < r j) (hn : 0 < n) {lam : ℝ} (hlam : 2 * √((n + 1 : ℕ) : ℝ) < lam)
+    (ih : ∀ {t : ℝ}, 0 < t →
+      (((box (r ∘ Fin.castSucc)).filter fun d ↦
+        weight (r ∘ Fin.castSucc) d ≤ ((n : ℝ) - t) / 2).card : ℝ) ≤
+          2 * √(n : ℝ) / t * ∏ j, (((r ∘ Fin.castSucc) j : ℝ) + 1)) :
+    (((box r).filter fun d ↦ weight r d ≤ (((n + 1 : ℕ) : ℝ) - lam) / 2).card : ℝ) ≤
+      2 * √(((n + 1 : ℕ) : ℝ)) / lam * ∏ j, ((r j : ℝ) + 1) := by
+  classical
+  set R := r (Fin.last n)
+  have hs := sum_inv_lt (r := R) (m := n + 1) (hr _) (Nat.succ_le_succ hn) hlam
+  push_cast [add_sub_cancel_right] at hs
+  rw [card_filter_box_last, Nat.cast_sum,
+    Finset.sum_congr rfl fun i _ ↦ card_filter_fiber_eq r lam i]
+  calc ∑ i ∈ range (R + 1), (((box (r ∘ Fin.castSucc)).filter fun d ↦
+          weight (r ∘ Fin.castSucc) d ≤ ((n : ℝ) - (lam - 1 + 2 * (i : ℝ) / R)) / 2).card : ℝ)
+      ≤ ∑ i ∈ range (R + 1), 2 * √(n : ℝ) / (lam - 1 + 2 * (i : ℝ) / R) *
+          ∏ j, (((r ∘ Fin.castSucc) j : ℝ) + 1) := by
+        refine Finset.sum_le_sum fun i _ ↦ ih ?_
+        linarith [Real.one_le_sqrt.2 (by simp : (1 : ℝ) ≤ ((n + 1 : ℕ) : ℝ)),
+          show 0 ≤ 2 * (i : ℝ) / R by positivity]
+    _ = 2 * √(n : ℝ) * (∏ j, (((r ∘ Fin.castSucc) j : ℝ) + 1)) *
+          ∑ i ∈ range (R + 1), (lam - 1 + 2 * (i : ℝ) / R)⁻¹ := by
+        rw [Finset.mul_sum]
+        exact Finset.sum_congr rfl fun i _ ↦ by ring
+    _ ≤ 2 * √(n : ℝ) * (∏ j, (((r ∘ Fin.castSucc) j : ℝ) + 1)) *
+          (lam⁻¹ * (√(n : ℝ))⁻¹ * √((n : ℝ) + 1) * (R + 1)) :=
+        mul_le_mul_of_nonneg_left hs.le (by positivity)
+    _ = 2 * √(((n + 1 : ℕ) : ℝ)) / lam * ∏ j, ((r j : ℝ) + 1) := by
+        rw [Fin.prod_univ_castSucc]
+        push_cast
+        field_simp
+        simp [R]
+
 /-- **Lemma 8** (lattice count estimate): the number of multi-indices in the box `∏ [0, r_j]`
 of weight at most `(m - λ)/2` is at most `2 √m λ⁻¹ ∏ (r_j + 1)`.
 
 Source: §6, Lemma `roth:lem8` ("the number of `m`-tuples ... `∑ j_i/r_i ≤ (m-λ)/2`
 does not exceed `2 m^{1/2} λ^{-1} (r_1 + 1) ⋯ (r_m + 1)`"). -/
-theorem card_filter_weight_le (m : ℕ) (r : Fin m → ℕ) (hr : ∀ j, 0 < r j) {lam : ℝ}
-    (hlam : 0 < lam) :
-    (((box r).filter fun d => weight r d ≤ ((m : ℝ) - lam) / 2).card : ℝ) ≤
+theorem card_filter_weight_le (m : ℕ) (r : Fin m → ℕ) (hr : ∀ j, 0 < r j) {lam : ℝ} (hlam : 0 < lam)
+    : (((box r).filter fun d ↦ weight r d ≤ ((m : ℝ) - lam) / 2).card : ℝ) ≤
       2 * √(m : ℝ) / lam * ∏ j, ((r j : ℝ) + 1) := by
   classical
   induction m generalizing lam with
@@ -164,42 +206,13 @@ theorem card_filter_weight_le (m : ℕ) (r : Fin m → ℕ) (hr : ∀ j, 0 < r j
     rw [filter_weight_le_eq_empty r (by simpa using hlam)]
     simp
   | succ n ih =>
-    by_cases hA : lam ≤ 2 * √(((n + 1 : ℕ) : ℝ))
-    · calc (((box r).filter fun d => weight r d ≤ (((n + 1 : ℕ) : ℝ) - lam) / 2).card : ℝ)
-          ≤ (box r).card := by exact_mod_cast Finset.card_le_card (Finset.filter_subset _ _)
-        _ = ∏ j, ((r j : ℝ) + 1) := by rw [card_box]; push_cast; rfl
-        _ ≤ 2 * √(((n + 1 : ℕ) : ℝ)) / lam * ∏ j, ((r j : ℝ) + 1) :=
-          le_mul_of_one_le_left (by positivity) (by rw [one_le_div hlam]; exact hA)
-    push Not at hA
+    by_cases h : lam ≤ 2 * √(((n + 1 : ℕ) : ℝ))
+    · exact card_filter_weight_le_of_le_sqrt_aux (n + 1) r hlam h
     rcases Nat.eq_zero_or_pos n with rfl | hn
-    · norm_num at hA
-      rw [filter_weight_le_eq_empty r (by norm_num; linarith), card_empty, Nat.cast_zero]
+    · rw [filter_weight_le_eq_empty r (by
+        norm_num at h ⊢
+        linarith), card_empty, Nat.cast_zero]
       positivity
-    set R := r (Fin.last n)
-    have hR : 1 ≤ R := hr _
-    have hsq1 : 1 ≤ √(((n + 1 : ℕ) : ℝ)) := Real.one_le_sqrt.2 (by simp)
-    have hlami : ∀ i ∈ range (R + 1), 0 < lam - 1 + 2 * (i : ℝ) / R := fun i _ => by
-      linarith [show 0 ≤ 2 * (i : ℝ) / R by positivity]
-    have hs := sum_inv_lt (r := R) (m := n + 1) hR (by omega) hA
-    push_cast [add_sub_cancel_right] at hs
-    rw [card_filter_box_last, Nat.cast_sum,
-      Finset.sum_congr rfl fun i _ => card_filter_fiber_eq r lam i]
-    calc ∑ i ∈ range (R + 1), (((box (r ∘ Fin.castSucc)).filter fun d =>
-            weight (r ∘ Fin.castSucc) d ≤ ((n : ℝ) - (lam - 1 + 2 * (i : ℝ) / R)) / 2).card : ℝ)
-        ≤ ∑ i ∈ range (R + 1), 2 * √(n : ℝ) / (lam - 1 + 2 * (i : ℝ) / R) *
-            ∏ j, (((r ∘ Fin.castSucc) j : ℝ) + 1) :=
-          Finset.sum_le_sum fun i hi => ih (r ∘ Fin.castSucc) (fun j => hr _) (hlami i hi)
-      _ = 2 * √(n : ℝ) * (∏ j, (((r ∘ Fin.castSucc) j : ℝ) + 1)) *
-            ∑ i ∈ range (R + 1), (lam - 1 + 2 * (i : ℝ) / R)⁻¹ := by
-          rw [Finset.mul_sum]
-          exact Finset.sum_congr rfl fun i _ => by ring
-      _ ≤ 2 * √(n : ℝ) * (∏ j, (((r ∘ Fin.castSucc) j : ℝ) + 1)) *
-            (lam⁻¹ * (√(n : ℝ))⁻¹ * √((n : ℝ) + 1) * (R + 1)) :=
-          mul_le_mul_of_nonneg_left hs.le (by positivity)
-      _ = 2 * √(((n + 1 : ℕ) : ℝ)) / lam * ∏ j, ((r j : ℝ) + 1) := by
-          rw [Fin.prod_univ_castSucc]
-          push_cast
-          field_simp
-          simp [R]
+    exact card_filter_weight_le_succ_aux r hr hn (lt_of_not_ge h) (ih _ fun j ↦ hr _)
 
 end Roth

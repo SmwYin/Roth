@@ -120,7 +120,7 @@ Files will be processed in dependency order; declarations within each file are s
 | `Roth/Taylor.lean` | 239 | All cleanup phases complete;20/20 originals and2 added helpers audited; user-preserved metadata |
 | `Roth/CoeffNorm.lean` | 320 | All cleanup phases complete;26/26 originals and1 added helper audited; compiled public proposal pending |
 | `Roth/GenWronskian.lean` | 292 | All cleanup phases complete;19/19 originals and2 added helpers audited; metadata/two compiled public proposals explicit |
-| `Roth/Lattice.lean` | 217 | Active: originals 9/10 and added fibre helper 1/1 audited; final file phases pending; final file phases pending |
+| `Roth/Lattice.lean` | 217 | Active: all10 originals and1/3 added helpers audited; two helper audits and final file phases pending; final file phases pending |
 | `Roth/Index.lean` | 275 | Awaiting cleanup |
 | `Roth/Separation.lean` | 618 | Awaiting cleanup |
 | `Roth/Theta.lean` | 981 | Awaiting cleanup |
@@ -1051,3 +1051,27 @@ Explicit owner source edit revocation at SHA256
 Sequential full `lake build` then separate `lake build Roth.LeanEval`, session72585,
 both exit0(70.69s/28.67s), frozen hash stable; logs `/private/tmp/roth-lattice-d09-{full,leaneval}.log`.
 Lattice9/10 originals plus1/1 helper audited, overall129/264.
+
+
+## Lattice declaration 10 checkpoint
+
+Headline `card_filter_weight_le`: extracted two substantive private easy-range and successor
+estimates; public47→17 declaration/43→14 body lines, largest branch9. Exact public type/docs
+preserved. New private helpers `card_filter_weight_le_of_le_sqrt_aux`8 declaration/4 body
+lines and `card_filter_weight_le_succ_aux`33 declaration/25 body lines await separate fresh
+audits. [Dedicated audit](cleanup/Lattice-card_filter_weight_le.md) records all24/42/five actual
+searches/public literature/five parameter probes/all11 checks. Original no-by aliases and
+omega removed. Worker caught a final binder packing defect during report-only phase; owner
+let historical786d2720 full/separate60475 finish, applied the exact packing correction, then
+renewed all affected gates. No earlier hash's gates certify the corrected source.
+
+Corrected source freeze SHA256 `97697192cf943554cec6fbc3735d556e63eb441571c2f30b39ff2f7b6e73883e`,
+all leaf source ownership explicitly revoked. Module73103 exit0(30s), complete native LSP
+cell98 success/partial=false/zero errors/header only. Independent ORIGINAL entire source
+reproof and all4 original public proof-function equality comparisons29613 exit0; actual
+all13 imported public/private declarations axiom scan68502 exits0, standard axioms only.
+Logs `/private/tmp/roth-lattice-d10-packed-{module,compatibility,axioms}.log`. Sequential full
+`lake build` then separate `lake build Roth.LeanEval`, corrected session16889, both exit0
+(6.37s/3.15s), frozen hash stable; logs `/private/tmp/roth-lattice-d10-packed-{full,leaneval}.log`.
+Lattice10/10 originals plus1/3 helpers audited, overall130/264; helper audits and final file
+phases remain before Lattice completion.
