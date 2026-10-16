@@ -57,11 +57,6 @@ private lemma mem_support_taylor_iff {P : MvPolynomial σ ℝ} {α : σ → ℝ}
   rw [mem_support_iff, coeff_taylor]
 
 omit [DecidableEq σ] in
-private lemma weightSet_finite (P : MvPolynomial σ ℝ) (α : σ → ℝ) (r : σ → ℕ) :
-    (weight r '' ((taylor α P).support : Set (σ →₀ ℕ))).Finite :=
-  (Finset.finite_toSet _).image _
-
-omit [DecidableEq σ] in
 private lemma weightSet_nonempty {P : MvPolynomial σ ℝ} (hP : P ≠ 0) (α : σ → ℝ) (r : σ → ℕ) :
     (weight r '' ((taylor α P).support : Set (σ →₀ ℕ))).Nonempty := by
   rwa [Set.image_nonempty, Finset.coe_nonempty, Finset.nonempty_iff_ne_empty, Ne,
@@ -72,14 +67,15 @@ Source: §4, definition of the index ("the minimum ... over all tuples `(i_1, �
 that `Δ_i P(α) ≠ 0`"). -/
 theorem index_le_weight {P : MvPolynomial σ ℝ} {α : σ → ℝ} {r : σ → ℕ} {d : σ →₀ ℕ}
     (h : eval α (hasseDeriv d P) ≠ 0) : index P α r ≤ weight r d :=
-  csInf_le (weightSet_finite P α r).bddBelow
+  csInf_le ((taylor α P).support.finite_toSet.image (weight r)).bddBelow
     (Set.mem_image_of_mem _ (Finset.mem_coe.2 (mem_support_taylor_iff.2 h)))
 
 /-- For nonzero `P`, the index is attained by some multi-index `d` with `(Δ_d P)(α) ≠ 0`.
 Source: §4, definition of the index ("Thus this is an attained minimum"). -/
 theorem exists_weight_eq_index {P : MvPolynomial σ ℝ} (hP : P ≠ 0) (α : σ → ℝ) (r : σ → ℕ) :
     ∃ d, eval α (hasseDeriv d P) ≠ 0 ∧ weight r d = index P α r := by
-  obtain ⟨d, hd, hdw⟩ := (weightSet_nonempty hP α r).csInf_mem (weightSet_finite P α r)
+  obtain ⟨d, hd, hdw⟩ :=
+    (weightSet_nonempty hP α r).csInf_mem ((taylor α P).support.finite_toSet.image (weight r))
   exact ⟨d, mem_support_taylor_iff.1 hd, hdw⟩
 
 /-- The characterisation of lower bounds for the index of a nonzero polynomial: `c ≤ index P α r`

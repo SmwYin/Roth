@@ -1248,3 +1248,26 @@ unchanged9ea21436746c9e155e485b0ae6ef6deb884e4391417044407c717cb2f6206f64.
 Owner sequential full then separate LeanEval64010 both exit0(5.12s/3.05s), hash stable;
 logs `/private/tmp/roth-index-d02-{full,leaneval}.log`. Exact-path publication precedes
 nextedit. Index2/21 originals, overall132/264; API proposal still unapplied.
+
+
+## Index declaration3 checkpoint and scoped API approval
+
+Private `weightSet_finite` generic two-call Mathlib wrapper removed; both callers use
+finite-image API directly. [Dedicated audit](cleanup/Index-weightSet_finite.md) records
+all24/42/five actual searches/every binder probe/11checks, independent original proof,
+actual built private standard axioms and compiled caller proposals. Worker source editing
+explicitly revoked before owner deletion. Source276→272lines,20retained declarations;
+all original public types, definition and block docs preserved.
+Frozen SHA2566897edb8955031680fa67e41007292a74287c1f0737f9dbcd5b44ca42e471ef7.
+Owner module45739 exit0, complete native LSP zero errors27 inherited warnings;
+fresh whole ORIGINAL reproof/all18 public type+value equalities/all20actual standard
+axiom checks90385 exit0. Sequential owner full then separate LeanEval7465 both
+exit0(143.50s/32.05s), hash stable; logs `/private/tmp/roth-index-d03-{full,leaneval}.log`.
+Index3/21 originals audited, overall133/264; publication precedes next edit.
+
+Explicit USER approval via root/parent now covers only [API proposal](cleanup/Index-api-proposal.md)
+groups1+2: remove σ-DecEq from17 public Index theorems plus τ-DecEq in index_rename,
+remove index_le_card.hr and repair precisely2Theta callers preserving Theta contracts.
+These will apply during corresponding fresh declaration checkpoints, not prematurely
+across unaudited declarations. Group3 index_mul_left_weights.hl remains unapproved and
+unchanged pending separate user decision. No broader approval inferred.

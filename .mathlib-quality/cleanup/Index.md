@@ -146,3 +146,28 @@ for final buzz. All leaf processes complete, source/report editing released.
 Frozen source unchanged9ea214…; owner sequential full then separate LeanEval64010,
 both exit0(5.12s/3.05s), `/private/tmp/roth-index-d02-{full,leaneval}.log`, frozen hash
 stable. Exact-path publication precedes next edit. Index2/21; overall132/264 originals.
+
+### Declaration3 — weightSet_finite
+
+[Fresh dedicated audit](Index-weightSet_finite.md): generic finite-image wrapper
+selected for deletion; all24audit/42rules/five actual searches/all binder probes/
+packing+inequality tables/11checks inspected. Worker independently compiled original
+private type/proof, actual private standard axioms and both concrete caller repairs;
+module63141/complete pre-deletion diagnostics pass. Worker explicitly released source,
+then owner removed private declaration+omit command and specialized Mathlib's existing
+finite-image API directly at both callers. Public types/docs/definition unchanged.
+
+Source276→272 lines,20 retained declarations. Frozen SHA256
+`6897edb8955031680fa67e41007292a74287c1f0737f9dbcd5b44ca42e471ef7`.
+Actual owner module45739 exit0, complete native LSP zero errors27 inherited warnings;
+fresh whole ORIGINAL independent reproof/all18 public type+value equalities/all20
+actual retained standard-axiom checks90385 exit0. All block docs identical, widths≤100,
+no new external identifier beyond existing finite-image API, diff check clean.
+Sequential owner full then separate LeanEval7465 both exit0(143.50s/32.05s), hash stable;
+logs `/private/tmp/roth-index-d03-{full,leaneval}.log`. No helper or rename added.
+Index3/21 originals audited, overall133/264; exact-path publication before next edit.
+
+Scoped user approval arrived via root/parent2026-10-16 for API groups1+2 only.
+Approved removals will occur at each corresponding fresh public-declaration audit;
+none is applied in this private-wrapper checkpoint. Group3 scaling positivity remains
+unapproved/unapplied. See [current proposal/decision record](Index-api-proposal.md).

@@ -1,8 +1,10 @@
 # Index: compiled public-hypothesis proposal
 
-Status: **awaiting scoped user decision; no source API change applied**.
+Status: **groups1+2 explicitly approved by user via root/parent on2026-10-16;
+application scheduled at each dedicated declaration checkpoint. Group3 remains
+unapproved and unapplied.** No source API removal has been applied as of this record.
 This proposal concerns Index only; earlier approvals in CoeffNorm and GenWronskian
-do not authorize it.
+were not reused as authorization.
 
 ## 1. Remove unused decidable-equality binders
 
@@ -38,10 +40,31 @@ generalized in Box, and needs no positivity assumption.
 
 Exactly two explicit project call sites need removal of the `hr` argument:
 `Roth/Theta.lean` in `indexSet_bddAbove` (currently90) and `Θ_le_card` (currently113).
-Keep both Theta public contracts unchanged. In particular, retain the existing
-decidable-equality binder of `indexSet_bddAbove` with an `include` command if it
-would otherwise disappear from automatic section-variable inclusion. Removing its
-own positivity binder is outside this proposal and belongs to Theta's later audit.
+Keep both Theta public contracts unchanged. A subsequent exact ambient-scope
+compile confirms that both old decidable-equality binders remain automatically
+included; no additional caller-scope command is needed. Removing Theta's own
+positivity binders is outside this proposal and belongs to its later audit.
+
+## 3. Remove unnecessary positive scaling factor
+
+Further owner audit found that `index_mul_left_weights.hl : 0 < l` is also
+unnecessary: Box's current `weight_mul_left` works for every natural `l`, and
+the existing infimum-scaling proof only needs nonnegativity of its reciprocal.
+The unchanged proof compiles after dropping `hl`, including the new `l = 0`
+case under the existing totalized division/zero-index conventions.
+
+Proposed signature (independent of decision1 about decidability):
+
+```lean
+theorem index_mul_left_weights {l : ℕ} (P : MvPolynomial σ ℝ) (α : σ → ℝ)
+    (r : σ → ℕ) : index P α (fun j ↦ l * r j) = index P α r / l
+```
+
+Exactly two Theta rewrites (currently500/506) change
+`rw [index_mul_left_weights hl0]` to `rw [index_mul_left_weights]`.
+Their existing positive-scaling assumptions remain needed for later cancellation;
+no Theta theorem statement changes. This is a separate scoped decision, not
+authorization inferred from decisions1/2 or other-file approvals.
 
 ## Compiled evidence
 
@@ -62,7 +85,21 @@ proposed theorem/caller constants have only `propext`, `Classical.choice`, and
 `Quot.sound`. The compile has no errors or sorry axiom. Its only warning is the
 deliberately retained unused Theta `hr` in the preserved caller contract.
 
-If approved, apply only these removals and the two caller repairs, preserve
+Ambient-scope follow-up: `/private/tmp/roth-index-api-proposal-caller-scope.lean`,
+session35306 exit0, log of the same prefix. All original Index adapters and both
+original Theta type equalities also pass with the original automatic section
+instance inclusion. The resulting unused-section warning is deliberately retained.
+
+Decision3 evidence: `/private/tmp/roth-index-scaling-proposal.lean`, actual
+`lake env lean` session81861 exit0, `/private/tmp/roth-index-scaling-proposal.log`.
+It independently proves the stronger scaling theorem from the original proof,
+checks recovery of the original full public type by eta equality, and compiles
+both exact Theta rewrite/cancellation subproofs with the removed argument.
+The stronger theorem has only the three standard axioms. No source edit applied.
+
+Apply only approved groups1+2 and corresponding caller repairs, preserve
 definitions/docs/names/conclusions/other hypotheses, and rerun complete module,
 caller, original-type, standard-axiom, full-project and separate LeanEval gates.
-The ongoing dedicated declaration audits can continue while a decision is pending.
+The dedicated declaration audits continue sequentially. Keep group3's `hl` unchanged
+unless a separate explicit user approval arrives; the root has not included it in
+the approved enumeration.
