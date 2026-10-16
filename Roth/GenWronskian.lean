@@ -54,10 +54,8 @@ noncomputable def kroneckerExp (k : ℕ) (d : σ →₀ ℕ) : ℕ := ∑ j, d j
 /-- The Kronecker substitution sends the monomial `a X^d` to `a t^{kroneckerExp k d}`. -/
 theorem kronecker_monomial (k : ℕ) (d : σ →₀ ℕ) (a : K) :
     kronecker k (monomial d a) = Polynomial.C a * Polynomial.X ^ kroneckerExp k d := by
-  rw [kronecker, aeval_monomial, Polynomial.algebraMap_eq,
-    Finsupp.prod_fintype _ _ fun _ => pow_zero _, kroneckerExp, ← Finset.prod_pow_eq_pow_sum]
-  congr 1
-  exact Finset.prod_congr rfl fun j _ => by rw [← pow_mul, mul_comm]
+  simp [kronecker, kroneckerExp, aeval_monomial, Finsupp.prod_fintype, ← pow_mul, mul_comm,
+    ← Finset.prod_pow_eq_pow_sum]
 
 private lemma digits_unique {k : ℕ} (hk : 1 < k) {n : ℕ} {f g : Fin n → ℕ} (hf : ∀ i, f i < k)
     (hg : ∀ i, g i < k) (h : ∑ i, f i * k ^ (i : ℕ) = ∑ i, g i * k ^ (i : ℕ)) : f = g := by
