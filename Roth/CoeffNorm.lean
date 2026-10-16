@@ -48,7 +48,7 @@ theorem normOne_nonneg (P : MvPolynomial σ ℤ) : 0 ≤ normOne P :=
 /-- `normOne P` can be computed over any finite set of exponents containing the support. -/
 theorem normOne_eq_sum_of_support_subset {P : MvPolynomial σ ℤ} {s : Finset (σ →₀ ℕ)}
     (hs : P.support ⊆ s) : normOne P = ∑ d ∈ s, |((P.coeff d : ℤ) : ℝ)| :=
-  Finset.sum_subset hs fun d _ hd => by simp [notMem_support_iff.1 hd]
+  Finset.sum_subset hs fun d _ hd ↦ by simp [notMem_support_iff.1 hd]
 
 /-- The ℓ¹ norm of a monomial is the absolute value of its coefficient. -/
 theorem normOne_monomial (e : σ →₀ ℕ) (c : ℤ) : normOne (monomial e c) = |(c : ℝ)| := by
