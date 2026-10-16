@@ -2,9 +2,7 @@
 
 Status: **groups1+2 explicitly approved by user via root/parent on2026-10-16;
 application scheduled at each dedicated declaration checkpoint. Group3 remains
-unapproved and unapplied.** Current application: `index_le_weight`'s σ-DecidableEq
-is removed and validated at its dedicated checkpoint. The other16 σ-binders,
-rename's τ-binder and card-bound positivity remain for their dedicated audits.
+unapproved and unapplied.** See the application ledger below for current verified progress.
 This proposal concerns Index only; earlier approvals in CoeffNorm and GenWronskian
 were not reused as authorization.
 
@@ -105,3 +103,14 @@ caller, original-type, standard-axiom, full-project and separate LeanEval gates.
 The dedicated declaration audits continue sequentially. Keep group3's `hl` unchanged
 unless a separate explicit user approval arrives; the root has not included it in
 the approved enumeration.
+
+## Application ledger
+
+Verified σ-DecidableEq omissions: 2/17.
+
+- [index_le_weight](Index-index_le_weight.md)
+- [exists_weight_eq_index](Index-exists_weight_eq_index.md)
+
+Rename τ-DecidableEq removed: False.
+index_le_card.hr removed: False.
+Group3 scaling hl removed: False; scope requires separate approval.

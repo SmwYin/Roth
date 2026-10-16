@@ -215,3 +215,21 @@ Docs identical, widths≤100, canonical first5reports each42rules/11checked step
 No helper/rename. Source267→268 from omit command. Index5/21 originals, overall135/264;
 publication precedes next edit. Group1 application1/17 σ-omissions; group2/card and
 rename τ still future targets. Group3 hl unapproved, untouched.
+
+
+### Checkpoint d06 — exists_weight_eq_index
+
+Applied the explicitly approved unused σ-DecidableEq omission only; all proof, docs and mathematical binders retained.
+
+[Dedicated audit](Index-exists_weight_eq_index.md) inspected:24 audit items,42rules,five actual searches,
+binder probes,literature/exemption,complete packing+inequality tables,all11steps.
+Frozen SHA256 `a872711cb58cfec0e2bb6b24ba400001fb4f3d3e6518276b3f6f47f46f25352b`. Fresh whole ORIGINAL nonself reproof, all18 original public
+type/value recoveries and all19 actual retained standard-axiom checks: compiler
+session35801 exit0, `/private/tmp/roth-index-d06-compatibility.log`.
+Approved no-DecEq types are additionally checked by Expr.find?; actual signatures printed.
+Sequential owner full then separate LeanEval56008 both exit0(147.16s/34.47s),
+Index+Theta hashes stable; `/private/tmp/roth-index-d06-{full,leaneval}.log`.
+Worker complete Index LSP: success=true partial=false timed_out=false, 0target diagnostics/26unrelated warnings. External MainLemma complete native LSP functions cell146: success=true partial=false timed_out=false, 0errors/3inherited warnings, noinfos, no faileddependencies. MainLemma:522 caller accepted; raw /private/tmp/roth-index-d06-mainlemma-lsp.json.
+All original block docs byte-identical, source widths≤100, diff checked before staging.
+Source269lines/19retained. Index6/21 originals,overall136/264;
+no file-final completion claimed. Leaf source/Lean requests finished before owner gates.

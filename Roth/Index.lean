@@ -65,6 +65,7 @@ theorem index_le_weight {P : MvPolynomial σ ℝ} {α : σ → ℝ} {r : σ → 
   csInf_le ((taylor α P).support.finite_toSet.image (weight r)).bddBelow
     (Set.mem_image_of_mem _ (Finset.mem_coe.2 (mem_support_taylor_iff.2 h)))
 
+omit [DecidableEq σ] in
 /-- For nonzero `P`, the index is attained by some multi-index `d` with `(Δ_d P)(α) ≠ 0`.
 Source: §4, definition of the index ("Thus this is an attained minimum"). -/
 theorem exists_weight_eq_index {P : MvPolynomial σ ℝ} (hP : P ≠ 0) (α : σ → ℝ) (r : σ → ℕ) :
