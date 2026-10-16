@@ -45,7 +45,7 @@ See [Wronskian final report](cleanup/Wronskian-final.md). Overall55/264 original
 and every final file-level phase. Source239 → 218lines; original public API/docs preserved.
 Independent simplify finding fixed and revalidated; actual profile all22 retained declarations
 below750ms, maximum672.30ms. Overall75/264 original declarations audited.
-See [Taylor final report](cleanup/Taylor-final.md). `Roth/CoeffNorm.lean` is active:8/26original declarations complete, overall83/264. Compiled public-hypothesis proposal awaits scoped user decision; original signatures remain unchanged.
+See [Taylor final report](cleanup/Taylor-final.md). `Roth/CoeffNorm.lean` is active:9/26original declarations complete, overall84/264. Compiled public-hypothesis proposal awaits scoped user decision; original signatures remain unchanged.
 The user approved removing unused `hφ`/`hd` from the Wronskian coefficient identity;
 the exact removal and sole-caller update are implemented and fully revalidated. Both unused
 argument warnings are gone; header metadata remains unchanged.
@@ -695,3 +695,7 @@ All20 originals and2 added helpers complete; overall75/264. [Final report](clean
 ## CoeffNorm declaration 8 checkpoint
 
 `Roth.normOne_neg`: removed redundant support_neg simp argument; 2→2 declaration lines, exact public type/docs preserved. [Dedicated audit](cleanup/CoeffNorm-normOne_neg.md). Module62505 exit0, complete final LSP no errors, fresh CLI original type/nonself reproof/standard axioms75775 exit0. All24 audit/42 rules/5 searches/11 checks pass. Sequential full `lake build` and separate `lake build Roth.LeanEval` session54826 exit0; SHA256 `12422f3bbb5a494633eede6148bc384c1c3eff739be1aa3c00181dabea5d7423` unchanged. Logs `/private/tmp/roth-coeffnorm-d08-{full,leaneval}.log`. CoeffNorm8/26, overall83/264.
+
+## CoeffNorm declaration 9 checkpoint
+
+`Roth.normOne_sum_le`: retained direct Mathlib subadditivity term, 3→3 declaration lines, exact public API/docs preserved. [Dedicated audit](cleanup/CoeffNorm-normOne_sum_le.md). Module73402 exit0, complete final LSP no errors, fresh CLI original-type assignment/independent induction reproof/standard axioms62550 exit0. All24 audit/42 rules/5 searches/11 checks pass. Sequential full `lake build` and separate `lake build Roth.LeanEval` session90598 exit0; frozen SHA256 `12422f3bbb5a494633eede6148bc384c1c3eff739be1aa3c00181dabea5d7423` unchanged. Logs `/private/tmp/roth-coeffnorm-d09-{full,leaneval}.log`. The leaf's optional wrapper-deletion idea is closed under the explicit public-API preservation policy; no required caller benefit or requested deletion warrants another approval question. CoeffNorm9/26, overall84/264.
