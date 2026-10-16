@@ -35,7 +35,7 @@ All 14 declarations retained and reviewed; overall 40/264 original declarations 
 Box source 128 → 126 lines; independent simplify finding fixed (two redundant imports),
 final module/full/LeanEval and complete LSP gates pass. Actual profiling: all 14 below 1000ms,
 maximum 196.39ms. See [Box final report](cleanup/Box-final.md).
-Active file: `Roth/Wronskian.lean`; 13/15 original declarations reviewed and validated. Overall 53/264 original declarations reviewed. File-level final phases remain pending.
+Active file: `Roth/Wronskian.lean`; 14/15 original declarations reviewed and validated. Overall 54/264 original declarations reviewed. File-level final phases remain pending.
 Continue sequential declaration validation, commit, and push through every remaining
 file in inventory order without waiting at file boundaries. Each file requires final
 independent review, profiling, and a full build. The project remains incomplete.
@@ -490,3 +490,7 @@ ownership to the orchestrator for dispatch of the next fresh Wronskian worker.
 ## Wronskian declaration 13 checkpoint
 
 `Roth.sum_natDegree_update_lt`: Reused updated-family independence for nonzero cancellation, inlined scalar nonzero fact and simplified sum comparison;23→19lines, original statement/docs retained. [Full declaration audit](cleanup/Wronskian-sum_natDegree_update_lt.md). Module, complete LSP, isolated type/axiom and diff gates pass. Publication validation: full `lake build` session18116 exit0; separate `lake build Roth.LeanEval` session13785 exit0. Logs `/private/tmp/roth-wronskian-d13-full.log` and `...-leaneval.log`.
+
+## Wronskian declaration 14 checkpoint
+
+`Roth.wronskian_ne_zero_of_linearIndependent`: Packed induction branch heading and normalized lambda;11→10lines, original signature/docs and degree-descent strategy preserved. [Full declaration audit](cleanup/Wronskian-wronskian_ne_zero_of_linearIndependent.md). Module, complete LSP, isolated type/axiom and diff gates pass. Publication validation: full `lake build` session41757 exit0; separate `lake build Roth.LeanEval` session34353 exit0. Logs `/private/tmp/roth-wronskian-d14-full.log` and `...-leaneval.log`.

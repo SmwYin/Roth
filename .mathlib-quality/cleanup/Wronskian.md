@@ -46,7 +46,7 @@ Every public declaration has an existing docstring, preserved. Private helpers h
 | 11 | `span_range_update_sub_le` | 192–201 | 10 | validated; [audit](Wronskian-span_range_update_sub_le.md) |
 | 12 | `linearIndependent_update_sub_smul` | 207–217 | 11 | validated; [audit](Wronskian-linearIndependent_update_sub_smul.md) |
 | 13 | `sum_natDegree_update_lt` | 224–246 | 23 | validated; [audit](Wronskian-sum_natDegree_update_lt.md) |
-| 14 | `wronskian_ne_zero_of_linearIndependent` | 251–261 | 11 | pending |
+| 14 | `wronskian_ne_zero_of_linearIndependent` | 251–261 | 11 | validated; [audit](Wronskian-wronskian_ne_zero_of_linearIndependent.md) |
 | 15 | `wronskian_eq_zero_iff` | 266–269 | 4 | pending |
 
 ## Declaration 1 checkpoint
@@ -100,3 +100,7 @@ Every public declaration has an existing docstring, preserved. Private helpers h
 ## Declaration 13 checkpoint
 
 `sum_natDegree_update_lt`: Reused updated-family independence for nonzero cancellation, inlined scalar nonzero fact and simplified sum comparison;23→19lines, original statement/docs retained. All worker gates pass; full `lake build` session18116 and separate `lake build Roth.LeanEval` session13785 exited0. Logs `/private/tmp/roth-wronskian-d13-full.log` and `...-leaneval.log`.
+
+## Declaration 14 checkpoint
+
+`wronskian_ne_zero_of_linearIndependent`: Packed induction branch heading and normalized lambda;11→10lines, original signature/docs and degree-descent strategy preserved. All worker gates pass; full `lake build` session41757 and separate `lake build Roth.LeanEval` session34353 exited0. Logs `/private/tmp/roth-wronskian-d14-full.log` and `...-leaneval.log`.

@@ -217,9 +217,8 @@ independent ... Thus the new Wronskian, and hence the original one, is nonzero")
 theorem wronskian_ne_zero_of_linearIndependent [CharZero K] {φ : Fin l → K[X]}
     (h : LinearIndependent K φ) : wronskian φ ≠ 0 := by
   classical
-  induction hN : ∑ ρ, (φ ρ).natDegree using Nat.strong_induction_on generalizing φ with
-  | _ N ih =>
-    by_cases hinj : Function.Injective fun ν => (φ ν).natDegree
+  induction hN : ∑ ρ, (φ ρ).natDegree using Nat.strong_induction_on generalizing φ with | _ N ih =>
+    by_cases hinj : Function.Injective fun ν ↦ (φ ν).natDegree
     · exact wronskian_ne_zero_of_natDegree_injective h.ne_zero hinj
     obtain ⟨ν, ν', hdeg, hne⟩ := Function.not_injective_iff.1 hinj
     rw [← wronskian_update_sub_smul hne ((φ ν').leadingCoeff / (φ ν).leadingCoeff)]
