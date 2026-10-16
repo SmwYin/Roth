@@ -209,11 +209,10 @@ theorem eq_sum_box_hasseDeriv [Fintype σ] [DecidableEq σ] (α : σ → A) (r :
 
 /-- Taylor's theorem, evaluation form. Source: §7 ("`Q(h_1/q_1, …) = ∑ Δ_i Q(α,…,α) ∏ (h_j/q_j -
 α)^{i_j}`"). -/
-theorem eval_eq_sum_box [Fintype σ] [DecidableEq σ] (α x : σ → A) (r : σ → ℕ)
-    (P : MvPolynomial σ A) (hP : ∀ j, degreeOf j P ≤ r j) :
+theorem eval_eq_sum_box [Fintype σ] [DecidableEq σ] (α x : σ → A) (r : σ → ℕ) (P : MvPolynomial σ A)
+    (hP : ∀ j, degreeOf j P ≤ r j) :
     eval x P = ∑ d ∈ Roth.box r, eval α (hasseDeriv d P) * ∏ j, (x j - α j) ^ d j := by
-  conv_lhs => rw [eq_sum_box_hasseDeriv α r P hP]
-  simp
+  simpa using congrArg (eval x) (eq_sum_box_hasseDeriv α r P hP)
 
 end CommRing
 

@@ -45,7 +45,7 @@ Two headline proofs require structural review: coeff_taylor35bodylines; eq_sum_b
 | 17 | `taylor_injective` | 200–201 | 2 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | validated; [audit](Taylor-taylor_injective.md) |
 | 18 | `taylor_eq_zero_iff` | 205–206 | 2 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | validated; [audit](Taylor-taylor_eq_zero_iff.md) |
 | 19 | `eq_sum_box_hasseDeriv` | 210–227 | 18 | public theorem; naming descriptive, documentation appropriate; headline theorem: structure review required | validated; [audit](Taylor-eq_sum_box_hasseDeriv.md) |
-| 20 | `eval_eq_sum_box` | 231–235 | 5 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | Pending |
+| 20 | `eval_eq_sum_box` | 231–235 | 5 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | validated; [audit](Taylor-eval_eq_sum_box.md) |
 
 ## Phase3 file-level actions
 
@@ -160,3 +160,7 @@ environment repair.
 ## Declaration 19 checkpoint
 
 `eq_sum_box_hasseDeriv`: Consolidated coefficient rewriting into one squeezed simp, reducing headline proof16 to15 lines including by; lambdas normalized, no helper or public contract change. All worker gates pass. Frozen source SHA256 `eda896cd346e776d923237cdc4235045d1dd2e4fe32a8d039f561ca6068221a6`. Full `lake build` session8153 and separate `lake build Roth.LeanEval` session30826 exited0. Logs `/private/tmp/roth-taylor-d19-full.log` and `...-leaneval.log`.
+
+## Declaration 20 checkpoint
+
+`eval_eq_sum_box`: Applied evaluation congruence directly with simpa; body2 to1lines and signature packed, exact public type/docs preserved. All worker gates pass. Frozen source SHA256 `4878106187d61fe102f4f1b52582772cbc6938085e3e1e1845843279cfd356de`. Full `lake build` session80735 and separate `lake build Roth.LeanEval` session37852 exited0. Logs `/private/tmp/roth-taylor-d20-full.log` and `...-leaneval.log`.

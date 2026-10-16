@@ -42,7 +42,7 @@ Final module/full/separate LeanEval, complete LSP, public-type/definition compat
 axiom gates pass. Post-amendment actual profiling: all13 below1000ms, maximum586.13ms.
 See [Wronskian final report](cleanup/Wronskian-final.md). Overall55/264 original declarations audited.
 Current file: `Roth/Taylor.lean`, under a fresh file worker with sequential dedicated declaration audits.
-Taylor progress: 19/20 original declarations reviewed; overall 74/264. File-level final phases remain pending.
+Taylor progress: 20/20 original declarations reviewed; overall 75/264. File-level final phases remain pending.
 The user approved removing unused `hφ`/`hd` from the Wronskian coefficient identity;
 the exact removal and sole-caller update are implemented and fully revalidated. Both unused
 argument warnings are gone; header metadata remains unchanged.
@@ -648,3 +648,7 @@ User model preference update: all new declaration/helper/review workers now use 
 ## Taylor declaration 19 checkpoint
 
 `MvPolynomial.eq_sum_box_hasseDeriv`: Consolidated coefficient rewriting into one squeezed simp, reducing headline proof16 to15 lines including by; lambdas normalized, no helper or public contract change. [Dedicated audit](cleanup/Taylor-eq_sum_box_hasseDeriv.md). Module, complete LSP, isolated type/axiom and diff gates pass. Publication validation: full `lake build` session8153 exit0; separate `lake build Roth.LeanEval` session30826 exit0. Frozen source SHA256 `eda896cd346e776d923237cdc4235045d1dd2e4fe32a8d039f561ca6068221a6`. Logs `/private/tmp/roth-taylor-d19-full.log` and `...-leaneval.log`.
+
+## Taylor declaration 20 checkpoint
+
+`MvPolynomial.eval_eq_sum_box`: Applied evaluation congruence directly with simpa; body2 to1lines and signature packed, exact public type/docs preserved. [Dedicated audit](cleanup/Taylor-eval_eq_sum_box.md). Module, complete LSP, isolated type/axiom and diff gates pass. Publication validation: full `lake build` session80735 exit0; separate `lake build Roth.LeanEval` session37852 exit0. Frozen source SHA256 `4878106187d61fe102f4f1b52582772cbc6938085e3e1e1845843279cfd356de`. Logs `/private/tmp/roth-taylor-d20-full.log` and `...-leaneval.log`.
