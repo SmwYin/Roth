@@ -43,7 +43,7 @@ Two headline proofs require structural review: coeff_taylor35bodylines; eq_sum_b
 | 15 | `degreeOf_taylor_le` | 182–186 | 5 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | validated; [audit](Taylor-degreeOf_taylor_le.md) |
 | 16 | `taylor_neg_taylor` | 195–197 | 3 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | validated; [audit](Taylor-taylor_neg_taylor.md) |
 | 17 | `taylor_injective` | 200–201 | 2 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | validated; [audit](Taylor-taylor_injective.md) |
-| 18 | `taylor_eq_zero_iff` | 205–206 | 2 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | Pending |
+| 18 | `taylor_eq_zero_iff` | 205–206 | 2 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | validated; [audit](Taylor-taylor_eq_zero_iff.md) |
 | 19 | `eq_sum_box_hasseDeriv` | 210–227 | 18 | public theorem; naming descriptive, documentation appropriate; headline theorem: structure review required | Pending |
 | 20 | `eval_eq_sum_box` | 231–235 | 5 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | Pending |
 
@@ -152,3 +152,7 @@ environment repair.
 ## Declaration 17 checkpoint
 
 `taylor_injective`: Retained direct LeftInverse.injective proof after tested alternatives; no source change, complete dedicated audit and exact API verification. All worker gates pass. Frozen source SHA256 `0a6ab3437c5950f4d2e800b78f03e7a53b7ce97f6cc248c3bff71fcf00a46f22`. Full `lake build` session30998 and separate `lake build Roth.LeanEval` session69947 exited0. Logs `/private/tmp/roth-taylor-d17-full.log` and `...-leaneval.log`.
+
+## Declaration 18 checkpoint
+
+`taylor_eq_zero_iff`: Retained minimal injectivity eq_iff term after compiled alternatives; no source change, exact public simp API and docs verified. All worker gates pass. Frozen source SHA256 `0a6ab3437c5950f4d2e800b78f03e7a53b7ce97f6cc248c3bff71fcf00a46f22`. Full `lake build` session21654 and separate `lake build Roth.LeanEval` session88267 exited0. Logs `/private/tmp/roth-taylor-d18-full.log` and `...-leaneval.log`.
