@@ -187,7 +187,7 @@ theorem natDegree_diag_le [Fintype σ] (P : MvPolynomial σ ℤ) {r : σ → ℕ
 Source: §6, proof of Lemma 9 ("`Δ_j W^*(x_1, …, x_m)` are zero when `x_1 = ⋯ = x_m = α`"). -/
 theorem eval_diag (P : MvPolynomial σ ℤ) (x : ℝ) :
     Polynomial.eval x (Polynomial.map (Int.castRingHom ℝ) (diag P)) =
-      eval (fun _ => x) (map (Int.castRingHom ℝ) P) := by
+      eval (fun _ ↦ x) (map (Int.castRingHom ℝ) P) := by
   induction P using MvPolynomial.induction_on <;> simp_all [diag]
 
 /-- `diag` is additive. -/
