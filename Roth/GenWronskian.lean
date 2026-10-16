@@ -203,16 +203,14 @@ Source: §2, proof of Lemma 1 ("for each `μ`, there is a natural number `r(μ)`
 `f^μ_i(t)` with rational coefficients, and differential operators `Δ^{(i)}_μ` of order `≤ μ` such
 that for all `ν`, `d^μ/dt^μ h_ν = ∑_i f^μ_i(t) (Δ^{(i)}_μ φ_ν)(γ(t))`"; here stated with Hasse
 derivatives on both sides, which over `ℚ` differ from iterated derivatives by factorials). -/
-theorem exists_hasseDeriv_kronecker_eq_sum [CharZero K] (k μ : ℕ) :
-    ∃ (s : Finset (σ →₀ ℕ)) (c : (σ →₀ ℕ) → Polynomial K), (∀ d ∈ s, d.degree ≤ μ) ∧
-      ∀ P : MvPolynomial σ K, Polynomial.hasseDeriv μ (kronecker k P) =
-        ∑ d ∈ s, c d * kronecker k (hasseDeriv d P) := by
+theorem exists_hasseDeriv_kronecker_eq_sum [CharZero K] (k μ : ℕ) : ∃ (s : Finset (σ →₀ ℕ))
+    (c : (σ →₀ ℕ) → Polynomial K), (∀ d ∈ s, d.degree ≤ μ) ∧ ∀ P : MvPolynomial σ K,
+      Polynomial.hasseDeriv μ (kronecker k P) = ∑ d ∈ s, c d * kronecker k (hasseDeriv d P) := by
   classical
   obtain ⟨c, hc, hsum⟩ := (Finsupp.mem_span_image_iff_linearCombination _).1
     (hasseDeriv_kronecker_mem (K := K) (σ := σ) k μ)
-  refine ⟨c.support, c, fun d hd => hc hd, fun P => ?_⟩
-  rw [← congrFun hsum P, Finsupp.linearCombination_apply, Finsupp.sum, Finset.sum_apply]
-  rfl
+  refine ⟨c.support, c, hc, fun P ↦ ?_⟩
+  simpa [Finsupp.linearCombination_apply, Finsupp.sum, kronHasse] using congrFun hsum.symm P
 
 /-- Expanding the determinant of a matrix whose rows are linear combinations, by multilinearity
 in the rows.
