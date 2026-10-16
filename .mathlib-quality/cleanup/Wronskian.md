@@ -42,7 +42,7 @@ Every public declaration has an existing docstring, preserved. Private helpers h
 | 7 | `sum_range_le_sum_of_injective` | 121–126 | 6 | validated; [audit](Wronskian-sum_range_le_sum_of_injective.md) |
 | 8 | `coeff_wronskian_of_natDegree_injective` | 134–162 | 29 | validated; [audit](Wronskian-coeff_wronskian_of_natDegree_injective.md) |
 | 9 | `wronskian_ne_zero_of_natDegree_injective` | 168–175 | 8 | validated; [audit](Wronskian-wronskian_ne_zero_of_natDegree_injective.md) |
-| 10 | `wronskian_update_sub_smul` | 181–190 | 10 | pending |
+| 10 | `wronskian_update_sub_smul` | 181–190 | 10 | validated; [audit](Wronskian-wronskian_update_sub_smul.md) |
 | 11 | `span_range_update_sub_le` | 192–201 | 10 | pending |
 | 12 | `linearIndependent_update_sub_smul` | 207–217 | 11 | pending |
 | 13 | `sum_natDegree_update_lt` | 224–246 | 23 | pending |
@@ -84,3 +84,7 @@ Every public declaration has an existing docstring, preserved. Private helpers h
 ## Declaration 9 checkpoint
 
 `wronskian_ne_zero_of_natDegree_injective`: Direct simpa from coefficient identity replaces h1/rewrite chain, signature packed and redundant cast removed;8→5lines. Final-source closure rerun after premature freeze, earlier full36477 not counted. All worker gates pass; full `lake build` session80038 and separate `lake build Roth.LeanEval` session58989 exited0. Logs `/private/tmp/roth-wronskian-d9-full-final.log` and `...-leaneval.log`.
+
+## Declaration 10 checkpoint
+
+`wronskian_update_sub_smul`: Composed determinant congruence with Mathlib column-operation invariance and used one terminal conditional simp;10→7lines, signature/documentation unchanged. All worker gates pass; full `lake build` session21216 and separate `lake build Roth.LeanEval` session9301 exited0. Logs `/private/tmp/roth-wronskian-d10-full.log` and `...-leaneval.log`.

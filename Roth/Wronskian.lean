@@ -163,14 +163,11 @@ Source: §2, first lemma ("By invertible column operations over `ℚ`" — a sin
 operation does not change the Wronskian). -/
 theorem wronskian_update_sub_smul {φ : Fin l → K[X]} {ν ν' : Fin l} (h : ν ≠ ν') (c : K) :
     wronskian (Function.update φ ν' (φ ν' - C c * φ ν)) = wronskian φ := by
-  have hM : wronskianMatrix (Function.update φ ν' (φ ν' - C c * φ ν)) =
-      (wronskianMatrix φ).updateCol ν'
-        fun k => wronskianMatrix φ k ν' + (-C c) • wronskianMatrix φ k ν := by
-    ext μ ρ
-    rcases eq_or_ne ρ ν' with rfl | hρ
-    · simp [wronskianMatrix, ← smul_eq_C_mul, sub_eq_add_neg]
-    · simp [wronskianMatrix, Matrix.updateCol_ne hρ, Function.update_of_ne hρ]
-  rw [wronskian, hM, Matrix.det_updateCol_add_smul_self _ h.symm, wronskian]
+  refine (congrArg Matrix.det ?_).trans
+    (Matrix.det_updateCol_add_smul_self (wronskianMatrix φ) h.symm (-C c))
+  ext μ ρ
+  simp [wronskianMatrix, Matrix.updateCol_apply, Function.update_apply, apply_ite,
+    ← smul_eq_C_mul, sub_eq_add_neg]
 
 private lemma span_range_update_sub_le (φ : Fin l → K[X]) (ν ν' : Fin l) (c : K) :
     Submodule.span K (Set.range (Function.update φ ν' (φ ν' - C c * φ ν))) ≤
