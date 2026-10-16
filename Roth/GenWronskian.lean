@@ -180,25 +180,21 @@ private lemma derivative_mem_kronSpan (k μ : ℕ) {F : MvPolynomial σ K → Po
     simp [Polynomial.derivative_mul, add_comm]
 
 private lemma hasseDeriv_kronecker_mem [CharZero K] (k μ : ℕ) :
-    (fun P => Polynomial.hasseDeriv μ (kronecker k P)) ∈ kronSpan (K := K) (σ := σ) k μ := by
+    (fun P ↦ Polynomial.hasseDeriv μ (kronecker k P)) ∈ kronSpan (K := K) (σ := σ) k μ := by
   induction μ with
   | zero =>
     refine Submodule.subset_span ⟨0, by simp, ?_⟩
     funext P
     simp [kronHasse]
   | succ μ ih =>
-    have heq : (fun P : MvPolynomial σ K => Polynomial.hasseDeriv (μ + 1) (kronecker k P)) =
-        Polynomial.C ((μ + 1 : ℕ) : K)⁻¹ • fun P : MvPolynomial σ K =>
-          Polynomial.derivative (Polynomial.hasseDeriv μ (kronecker k P)) := by
-      funext P
-      have h := congrArg (fun L => L (kronecker k P)) (Polynomial.hasseDeriv_comp (R := K) 1 μ)
-      simp only [LinearMap.comp_apply, Polynomial.hasseDeriv_one', LinearMap.smul_apply,
-        Nat.choose_one_right] at h
-      rw [Pi.smul_apply, h, add_comm 1 μ, smul_eq_mul, nsmul_eq_mul, ← mul_assoc,
-        ← Polynomial.C_eq_natCast, ← Polynomial.C_mul,
-        inv_mul_cancel₀ (Nat.cast_ne_zero.2 μ.succ_ne_zero), Polynomial.C_1, one_mul]
-    rw [heq]
-    exact Submodule.smul_mem _ _ (derivative_mem_kronSpan k μ ih)
+    apply (((kronSpan (K := K) (σ := σ) k (μ + 1)).restrictScalars K).smul_mem_iff
+      (s := ((μ + 1 : ℕ) : K)) (Nat.cast_ne_zero.2 μ.succ_ne_zero)).mp
+    change (((μ + 1 : ℕ) : K) • fun P ↦ Polynomial.hasseDeriv (μ + 1) (kronecker k P)) ∈
+      kronSpan (K := K) (σ := σ) k (μ + 1)
+    convert derivative_mem_kronSpan k μ ih using 1
+    funext P
+    simpa [← Nat.cast_smul_eq_nsmul K, add_comm] using
+      (congrArg (fun L ↦ L (kronecker k P)) (Polynomial.hasseDeriv_comp (R := K) 1 μ)).symm
 
 /-- The `μ`-th Hasse derivative of a Kronecker substitution is a `K[t]`-linear combination of
 Kronecker substitutions of Hasse derivatives `Δ_d` of order `|d| ≤ μ`, uniformly in `P`.
