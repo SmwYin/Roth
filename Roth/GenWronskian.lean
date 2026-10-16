@@ -65,16 +65,13 @@ theorem kroneckerExp_injOn {k : ℕ} (hk : 1 < k) :
     Set.InjOn (kroneckerExp (σ := σ) k) {d | ∀ j, d j < k} := by
   intro d hd d' hd' h
   set e := Fintype.equivFin σ
-  have hsum : ∀ d : σ →₀ ℕ, kroneckerExp k d = ∑ i, d (e.symm i) * k ^ (i : ℕ) := fun d => by
-    rw [kroneckerExp, ← e.symm.sum_comp]
-    simp [e]
-  rw [hsum, hsum] at h
-  have : (fun i ↦ d (e.symm i)) = (fun i ↦ d' (e.symm i)) := by
-    refine List.ofFn_inj.mp (Nat.ofDigits_inj_of_len_eq hk (by simp)
-      (by simpa using fun i ↦ hd (e.symm i)) (by simpa using fun i ↦ hd' (e.symm i)) ?_)
-    simpa [Nat.ofDigits_eq_sum_mapIdx, List.mapIdx_eq_ofFn, Fin.sum_ofFn] using h
-  ext j
-  simpa using congrFun this (e j)
+  have hsum (d : σ →₀ ℕ) : Nat.ofDigits k (List.ofFn fun i ↦ d (e.symm i)) = kroneckerExp k d := by
+    simp [Nat.ofDigits_eq_sum_mapIdx, List.mapIdx_eq_ofFn, Fin.sum_ofFn, kroneckerExp,
+      ← e.symm.sum_comp, e]
+  refine DFunLike.coe_injective <| e.symm.surjective.injective_comp_right ?_
+  refine List.ofFn_injective (Nat.ofDigits_inj_of_len_eq hk (by simp)
+    (by simpa using fun i ↦ hd (e.symm i)) (by simpa using fun i ↦ hd' (e.symm i)) ?_)
+  simpa [Function.comp_def, hsum] using h
 
 /-- If all partial degrees of `P` are `< k`, the Kronecker substitution preserves the coefficient
 of `X^d` for every `d` with entries `< k`.
