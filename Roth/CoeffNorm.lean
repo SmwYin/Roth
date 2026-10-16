@@ -79,7 +79,7 @@ theorem normOne_add_le (P Q : MvPolynomial σ ℤ) : normOne (P + Q) ≤ normOne
 
 /-- `normOne` is invariant under negation. -/
 theorem normOne_neg (P : MvPolynomial σ ℤ) : normOne (-P) = normOne P := by
-  simp [normOne, support_neg]
+  simp [normOne]
 
 /-- The triangle inequality for `normOne` over a finite sum. -/
 theorem normOne_sum_le {ι : Type*} (s : Finset ι) (f : ι → MvPolynomial σ ℤ) :
