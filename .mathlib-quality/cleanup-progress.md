@@ -72,7 +72,7 @@ The earlier HTTPS credential failure and connected-app HTTP 403 are resolved by 
 CLI authentication. No token is stored in this repository.
 
 The active file audit and declaration results are recorded in
-[`cleanup/Taylor.md`](cleanup/Taylor.md), following the completed HasseDeriv, Box and Wronskian reports. Each completed declaration's report and
+[`cleanup/Lattice.md`](cleanup/Lattice.md), following the six completed files. Each completed declaration's report and
 source change are committed and pushed together after validation.
 
 ## Installed tooling and verification
@@ -120,7 +120,7 @@ Files will be processed in dependency order; declarations within each file are s
 | `Roth/Taylor.lean` | 239 | All cleanup phases complete;20/20 originals and2 added helpers audited; user-preserved metadata |
 | `Roth/CoeffNorm.lean` | 320 | All cleanup phases complete;26/26 originals and1 added helper audited; compiled public proposal pending |
 | `Roth/GenWronskian.lean` | 292 | All cleanup phases complete;19/19 originals and2 added helpers audited; metadata/two compiled public proposals explicit |
-| `Roth/Lattice.lean` | 217 | Active: originals 7/10 and added fibre helper 1/1 audited; final file phases pending; final file phases pending |
+| `Roth/Lattice.lean` | 217 | Active: originals 8/10 and added fibre helper 1/1 audited; final file phases pending; final file phases pending |
 | `Roth/Index.lean` | 275 | Awaiting cleanup |
 | `Roth/Separation.lean` | 618 | Awaiting cleanup |
 | `Roth/Theta.lean` | 981 | Awaiting cleanup |
@@ -1020,3 +1020,18 @@ Sequential full `lake build` then separate `lake build Roth.LeanEval`, session46
 both exit0(84.53s/29.47s), frozen hash stable; logs
 `/private/tmp/roth-lattice-helper-fiber-{full,leaneval}.log`.
 Lattice7/10 originals plus1/1 added helper audited; overall127/264 unchanged.
+
+
+## Lattice declaration 8 checkpoint
+
+Private `filter_weight_le_eq_empty`: normalized two mathematical lambda arrows;3→3 lines,
+exact mathematical type/proof strategy preserved. [Dedicated audit](cleanup/Lattice-filter_weight_le_eq_empty.md)
+records24 audit items/42 rules/five actual search attempts/four binder drop probes/strict
+weakening refuted by compiled zero-dimensional counterexample/all11 checks. Finder timeout
+is explicit; no absence claim. Module build exit0(35s), complete LSP zero errors/header only;
+independent original-type nonself clone and actual private theorem standard axioms pass.
+Explicit owner source edit revocation at SHA256
+`ff720f72959dc95143cec984113dd0fe3fef768e5757b8854a2eedbc90602dc7`.
+Sequential full `lake build` then separate `lake build Roth.LeanEval`, session67566,
+both exit0(109.71s/40.64s), frozen hash stable; logs `/private/tmp/roth-lattice-d08-{full,leaneval}.log`.
+Lattice8/10 originals plus1/1 helper audited, overall128/264.

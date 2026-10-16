@@ -135,8 +135,8 @@ theorem card_filter_box_last {m : ℕ} (r : Fin (m + 1) → ℕ) (p : (Fin (m + 
     (card_filter_box_fiber_aux r p (Nat.lt_succ_iff.1 (mem_range.1 hi))).symm
 
 private lemma filter_weight_le_eq_empty {m : ℕ} (r : Fin m → ℕ) {lam : ℝ} (hlam : (m : ℝ) < lam) :
-    (box r).filter (fun d => weight r d ≤ ((m : ℝ) - lam) / 2) = ∅ :=
-  Finset.filter_eq_empty_iff.2 fun d _ h => by linarith [weight_nonneg r d]
+    (box r).filter (fun d ↦ weight r d ≤ ((m : ℝ) - lam) / 2) = ∅ :=
+  Finset.filter_eq_empty_iff.2 fun d _ h ↦ by linarith [weight_nonneg r d]
 
 private lemma card_filter_fiber_eq {n : ℕ} (r : Fin (n + 1) → ℕ) (lam : ℝ) (i : ℕ) :
     (((box (r ∘ Fin.castSucc)).filter fun d => weight r
