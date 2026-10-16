@@ -158,11 +158,9 @@ noncomputable def diag (P : MvPolynomial σ ℤ) : Polynomial ℤ := aeval (fun 
 /-- `diag P` collects each monomial `a_k X^k` into `a_k x^{|k|}`. -/
 theorem diag_eq_sum (P : MvPolynomial σ ℤ) :
     diag P = ∑ k ∈ P.support, Polynomial.monomial k.degree (P.coeff k) := by
-  conv_lhs => rw [P.as_sum]
-  rw [diag, map_sum]
-  refine Finset.sum_congr rfl fun k _ => ?_
-  rw [aeval_monomial, Finsupp.prod, Finset.prod_pow_eq_pow_sum, ← Finsupp.degree_apply,
-    Polynomial.algebraMap_eq, Polynomial.C_mul_X_pow_eq_monomial]
+  rw [diag, aeval_def, eval₂_eq]
+  simp_rw [Finset.prod_pow_eq_pow_sum, ← Finsupp.degree_apply, Polynomial.algebraMap_eq,
+    Polynomial.C_mul_X_pow_eq_monomial]
 
 /-- The coefficients of `diag P` are bounded by `#support P` times a bound for those of `P`.
 Source: §6, proof of Lemma 9 ("the absolute value of the coefficients of the resulting
