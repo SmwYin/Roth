@@ -61,3 +61,5 @@ Outstanding:
 ## Parent integration and validation
 
 Applied exactly the compiled terminal simp proposal; degree bound body3→2lines. No signature, definition or doc change. Frozen SHA256 `31af75afd28f840ddee51978509ba63b28536aa84bba56dc047df2aa4b23fbdc`. Module87739, full91300, then separateLeanEval69418 all exited0. Complete final whole-file LSP success=true, partial=false, only preserved header warning. Baseline-vs-final17publicconstant rfl compatibility and standard axioms compiled after module completion, session7752 exit0. Logs `/private/tmp/roth-taylor-simplify-{module,full,leaneval}.log` and `/private/tmp/roth-taylor-post-simplify-compatibility-final.log`. The earlier parent application item is resolved; profiling remains the next file phase.
+
+Final resolution: the parent applied and published the sole suggestion in `6f039c2`; actual performance sweep and all remaining gates are complete in [Taylor-final.md](Taylor-final.md). No outstanding review suggestion remains.

@@ -54,8 +54,8 @@ and sections retained, no forbidden mechanical forms or limits to remove. Native
 
 ## Phase4 checkpoints
 
-Pending dedicated sequential workers; each declaration requires frozen-source full build and separate
-LeanEval build, then exact-path commit/push before the next source edit.
+Completed dedicated sequential workers for all20 originals and both added helpers, each with
+frozen-source full build, separate LeanEval and exact-path commit/push before the next source edit.
 
 ## Declaration 1 checkpoint
 
@@ -168,3 +168,7 @@ environment repair.
 ## Taylor independent simplify checkpoint
 
 Fresh GPT-6.1 Sol Medium review found one compiled degree-bound proof improvement, now applied: terminal simp replaces rw/contradiction,3→2bodylines. [Review](Taylor-simplify.md) in the cleanup directory. Final source218lines, original20/20 and overall75/264 unchanged. Module87739/full91300/separateLeanEval69418 exit0, complete LSP only preserved header warning, exact17publicconstant compatibility session7752 exit0. Frozen SHA256 `31af75afd28f840ddee51978509ba63b28536aa84bba56dc047df2aa4b23fbdc`. Profiling and final report remain pending.
+
+## Final file-level completion
+
+All final phases complete; [consolidated final report](Taylor-final.md) supersedes historical pending notes. Final source218lines, all17 public constants compare by rfl against baseline, docs byte-identical. Fresh independent review fix applied and fully revalidated. Actual profiler covers22 retained declarations; maximum672.30ms, all below750ms. No pending refactor or rename; header warning preserved by user decision. Overall75/264 original declarations.

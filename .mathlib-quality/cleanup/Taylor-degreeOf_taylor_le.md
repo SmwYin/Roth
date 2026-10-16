@@ -220,3 +220,5 @@ Overall local gates: pass. Parent full build and separate LeanEval are pending p
 - [✓] Step 5a — native diagnostics complete and clean in target.
 - [✓] Step 5b — diff-gate table and actual successful module build.
 - [✓] Step 6a — no rename needed, sidecar unchanged.
+
+Final holistic-review supplement: fresh independent reviewer subsequently compiled the terminal `simp [mem_support_iff, coeff_taylor, hasseDeriv_eq_zero_of_degreeOf_lt h] at he` replacement for the last two tactics. Parent applied it, reducing body3→2lines, and revalidated module/full/separateLeanEval/completeLSP/original-type compatibility. See [independent review](Taylor-simplify.md) and [final report](Taylor-final.md). This supersedes the original retained-proof decision without changing the mathematical statement.

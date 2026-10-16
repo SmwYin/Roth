@@ -41,8 +41,12 @@ Fresh independent simplify review found five redundant imports, removed and reva
 Final module/full/separate LeanEval, complete LSP, public-type/definition compatibility, and
 axiom gates pass. Post-amendment actual profiling: all13 below1000ms, maximum586.13ms.
 See [Wronskian final report](cleanup/Wronskian-final.md). Overall55/264 original declarations audited.
-Current file: `Roth/Taylor.lean`, under a fresh file worker with sequential dedicated declaration audits.
-Taylor progress: 20/20 original declarations reviewed; overall 75/264. File-level final phases remain pending.
+`Roth/Taylor.lean` has completed all20 original declaration audits, both new private-helper audits,
+and every final file-level phase. Source239 → 218lines; original public API/docs preserved.
+Independent simplify finding fixed and revalidated; actual profile all22 retained declarations
+below750ms, maximum672.30ms. Overall75/264 original declarations audited.
+See [Taylor final report](cleanup/Taylor-final.md). Next file: `Roth/CoeffNorm.lean`,
+to be assigned to a fresh file worker after ownership handoff.
 The user approved removing unused `hφ`/`hd` from the Wronskian coefficient identity;
 the exact removal and sole-caller update are implemented and fully revalidated. Both unused
 argument warnings are gone; header metadata remains unchanged.
@@ -655,4 +659,8 @@ User model preference update: all new declaration/helper/review workers now use 
 
 ## Taylor independent simplify checkpoint
 
-Fresh GPT-6.1 Sol Medium review found one compiled degree-bound proof improvement, now applied: terminal simp replaces rw/contradiction,3→2bodylines. [Review](Taylor-simplify.md) in the cleanup directory. Final source218lines, original20/20 and overall75/264 unchanged. Module87739/full91300/separateLeanEval69418 exit0, complete LSP only preserved header warning, exact17publicconstant compatibility session7752 exit0. Frozen SHA256 `31af75afd28f840ddee51978509ba63b28536aa84bba56dc047df2aa4b23fbdc`. Profiling and final report remain pending.
+Fresh GPT-6.1 Sol Medium review found one compiled degree-bound proof improvement, now applied: terminal simp replaces rw/contradiction,3→2bodylines. [Review](cleanup/Taylor-simplify.md). Final source218lines, original20/20 and overall75/264 unchanged. Module87739/full91300/separateLeanEval69418 exit0, complete LSP only preserved header warning, exact17publicconstant compatibility session7752 exit0. Frozen SHA256 `31af75afd28f840ddee51978509ba63b28536aa84bba56dc047df2aa4b23fbdc`. Profiling and final report remain pending.
+
+## Taylor final phases complete
+
+All20 originals and2 added helpers complete; overall75/264. [Final report](cleanup/Taylor-final.md) contains cumulative gates, exact original-public compatibility, all22 profiling timings, independent review and artifact sweep. Final source SHA256 `31af75afd28f840ddee51978509ba63b28536aa84bba56dc047df2aa4b23fbdc`;218lines. Post-review full91300 and separateLeanEval69418 exit0, complete source/caller diagnostics no errors, profile24788 exit0 maximum672.30ms, post-profile module42517 exit0. Header metadata remains the explicit user-preserved limitation. No Taylor proposal/rename/refactor remains pending. Prior pending final-phase notes above are historical and superseded. Worker releases Taylor/shared-log/Git ownership after final publication; no CoeffNorm work started.
