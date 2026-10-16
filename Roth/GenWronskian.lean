@@ -57,12 +57,6 @@ theorem kronecker_monomial (k : ℕ) (d : σ →₀ ℕ) (a : K) :
   simp [kronecker, kroneckerExp, aeval_monomial, Finsupp.prod_fintype, ← pow_mul, mul_comm,
     ← Finset.prod_pow_eq_pow_sum]
 
-private lemma digits_unique {k : ℕ} (hk : 1 < k) {n : ℕ} {f g : Fin n → ℕ} (hf : ∀ i, f i < k)
-    (hg : ∀ i, g i < k) (h : ∑ i, f i * k ^ (i : ℕ) = ∑ i, g i * k ^ (i : ℕ)) : f = g := by
-  refine List.ofFn_inj.mp (Nat.ofDigits_inj_of_len_eq hk (by simp) (by simpa using hf)
-    (by simpa using hg) ?_)
-  simpa [Nat.ofDigits_eq_sum_mapIdx, List.mapIdx_eq_ofFn, Fin.sum_ofFn] using h
-
 /-- The Kronecker exponent map is injective on exponent vectors whose entries are all `< k`.
 
 Source: §2, proof of Lemma 1, FACT ("Since each `s_i` is strictly smaller than `k`, the
@@ -75,7 +69,10 @@ theorem kroneckerExp_injOn {k : ℕ} (hk : 1 < k) :
     rw [kroneckerExp, ← e.symm.sum_comp]
     simp [e]
   rw [hsum, hsum] at h
-  have := digits_unique hk (fun i => hd _) (fun i => hd' _) h
+  have : (fun i ↦ d (e.symm i)) = (fun i ↦ d' (e.symm i)) := by
+    refine List.ofFn_inj.mp (Nat.ofDigits_inj_of_len_eq hk (by simp)
+      (by simpa using fun i ↦ hd (e.symm i)) (by simpa using fun i ↦ hd' (e.symm i)) ?_)
+    simpa [Nat.ofDigits_eq_sum_mapIdx, List.mapIdx_eq_ofFn, Fin.sum_ofFn] using h
   ext j
   simpa using congrFun this (e j)
 
