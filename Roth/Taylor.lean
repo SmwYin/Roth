@@ -51,8 +51,8 @@ theorem taylor_C (α : σ → R) (a : R) : taylor α (C a) = C a := algHom_C _ _
 /-- The translate of a monomial is a product of powers of the translated variables.
 Source: §4, proof of Taylor's theorem ("it suffices to prove the theorem for monomials"). -/
 theorem taylor_monomial (α : σ → R) (k : σ →₀ ℕ) (a : R) :
-    taylor α (monomial k a) = C a * k.prod fun j n => (X j + C (α j)) ^ n := by
-  simp [taylor, aeval_monomial, algebraMap_eq]
+    taylor α (monomial k a) = C a * k.prod fun j n ↦ (X j + C (α j)) ^ n :=
+  aeval_monomial _ _ _
 
 private lemma coeff_aeval_X_mul (i : σ) (f : Polynomial R) (B : MvPolynomial σ R)
     (hB : ∀ e ∈ B.support, e i = 0) (d : σ →₀ ℕ) :
