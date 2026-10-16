@@ -47,7 +47,7 @@ Every public declaration has an existing docstring, preserved. Private helpers h
 | 12 | `linearIndependent_update_sub_smul` | 207–217 | 11 | validated; [audit](Wronskian-linearIndependent_update_sub_smul.md) |
 | 13 | `sum_natDegree_update_lt` | 224–246 | 23 | validated; [audit](Wronskian-sum_natDegree_update_lt.md) |
 | 14 | `wronskian_ne_zero_of_linearIndependent` | 251–261 | 11 | validated; [audit](Wronskian-wronskian_ne_zero_of_linearIndependent.md) |
-| 15 | `wronskian_eq_zero_iff` | 266–269 | 4 | pending |
+| 15 | `wronskian_eq_zero_iff` | 266–269 | 4 | validated; [audit](Wronskian-wronskian_eq_zero_iff.md) |
 
 ## Declaration 1 checkpoint
 
@@ -104,3 +104,7 @@ Every public declaration has an existing docstring, preserved. Private helpers h
 ## Declaration 14 checkpoint
 
 `wronskian_ne_zero_of_linearIndependent`: Packed induction branch heading and normalized lambda;11→10lines, original signature/docs and degree-descent strategy preserved. All worker gates pass; full `lake build` session41757 and separate `lake build Roth.LeanEval` session34353 exited0. Logs `/private/tmp/roth-wronskian-d14-full.log` and `...-leaneval.log`.
+
+## Declaration 15 checkpoint
+
+`wronskian_eq_zero_iff`: Replaced manual implication lambda with imp_not_comm.mp;4lines retained, exact theorem type/docs unchanged. All15 original declaration audits complete; final file phases pending. All worker gates pass; full `lake build` session76389 and separate `lake build Roth.LeanEval` session69359 exited0. Logs `/private/tmp/roth-wronskian-d15-full.log` and `...-leaneval.log`.

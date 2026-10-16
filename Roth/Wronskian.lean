@@ -230,7 +230,7 @@ Source: §2, first lemma ("the Wronskian vanishes if and only if they are linear
 dependent"). -/
 theorem wronskian_eq_zero_iff [CharZero K] {φ : Fin l → K[X]} :
     wronskian φ = 0 ↔ ¬ LinearIndependent K φ :=
-  ⟨fun hw hli => wronskian_ne_zero_of_linearIndependent hli hw,
+  ⟨imp_not_comm.mp wronskian_ne_zero_of_linearIndependent,
     wronskian_eq_zero_of_not_linearIndependent⟩
 
 end Roth
