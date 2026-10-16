@@ -85,8 +85,7 @@ theorem sum_inv_lt {r m : ℕ} (hr : 1 ≤ r) (hm : 2 ≤ m) {lam : ℝ} (hlam :
 
 private lemma extend_apply_castSucc {m : ℕ} (d : Fin m →₀ ℕ) (i : ℕ) (j : Fin m) :
     (d.mapDomain Fin.castSucc + Finsupp.single (Fin.last m) i) j.castSucc = d j := by
-  simp [Finsupp.mapDomain_apply_of_injective (Fin.castSucc_injective m),
-    Finsupp.single_eq_of_ne (Fin.castSucc_lt_last j).ne]
+  simp [Finsupp.mapDomain_apply_of_injective (Fin.castSucc_injective m)]
 
 private lemma extend_apply_last {m : ℕ} (d : Fin m →₀ ℕ) (i : ℕ) :
     (d.mapDomain Fin.castSucc + Finsupp.single (Fin.last m) i) (Fin.last m) = i := by

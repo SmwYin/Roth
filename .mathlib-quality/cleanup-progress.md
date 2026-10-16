@@ -120,7 +120,7 @@ Files will be processed in dependency order; declarations within each file are s
 | `Roth/Taylor.lean` | 239 | All cleanup phases complete;20/20 originals and2 added helpers audited; user-preserved metadata |
 | `Roth/CoeffNorm.lean` | 320 | All cleanup phases complete;26/26 originals and1 added helper audited; compiled public proposal pending |
 | `Roth/GenWronskian.lean` | 292 | All cleanup phases complete;19/19 originals and2 added helpers audited; metadata/two compiled public proposals explicit |
-| `Roth/Lattice.lean` | 217 | Active: original declarations 4/10 audited; final file phases pending |
+| `Roth/Lattice.lean` | 217 | Active: original declarations 5/10 audited; final file phases pending |
 | `Roth/Index.lean` | 275 | Awaiting cleanup |
 | `Roth/Separation.lean` | 618 | Awaiting cleanup |
 | `Roth/Theta.lean` | 981 | Awaiting cleanup |
@@ -956,3 +956,18 @@ proposal. Explicit owner source-ownership revocation at frozen SHA256
 Sequential owner full `lake build` then separate `lake build Roth.LeanEval`, session36147,
 both exit0 (108.79s/34.18s), hash stable; logs `/private/tmp/roth-lattice-d04-{full,leaneval}.log`.
 Lattice4/10 originals audited, overall124/264; final filephases remain.
+
+
+## Lattice declaration 5 checkpoint
+
+Private `extend_apply_castSucc`: removed redundant singleton-zero simplification hint;
+4→3 declaration lines, exact private type and four local rewrite sites preserved.
+[Dedicated audit](cleanup/Lattice-extend_apply_castSucc.md) records all24 audit items,42 rules,
+five actual searches, parameter probes and all11 checks. Actual module13844 exits0; complete
+native LSP zero errors/header only. Independent exact original-type proof and actual built
+private constant check31949 pass with standard axioms. No helper or rename.
+Explicit owner source-ownership revocation at frozen SHA256
+`7e42ef79b31d4fe9dcd627cc064dc656732639564afbf968f10a91ae38d56aa0`.
+Owner sequential full `lake build` then separate `lake build Roth.LeanEval`, session5569,
+both exit0(104.10s/35.13s), frozen hash stable; logs `/private/tmp/roth-lattice-d05-{full,leaneval}.log`.
+Lattice5/10 originals audited, overall125/264; final file phases remain.
