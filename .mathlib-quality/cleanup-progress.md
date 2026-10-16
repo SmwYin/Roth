@@ -42,7 +42,7 @@ Final module/full/separate LeanEval, complete LSP, public-type/definition compat
 axiom gates pass. Post-amendment actual profiling: all13 below1000ms, maximum586.13ms.
 See [Wronskian final report](cleanup/Wronskian-final.md). Overall55/264 original declarations audited.
 Current file: `Roth/Taylor.lean`, under a fresh file worker with sequential dedicated declaration audits.
-Taylor progress: 16/20 original declarations reviewed; overall 71/264. File-level final phases remain pending.
+Taylor progress: 17/20 original declarations reviewed; overall 72/264. File-level final phases remain pending.
 The user approved removing unused `hφ`/`hd` from the Wronskian coefficient identity;
 the exact removal and sole-caller update are implemented and fully revalidated. Both unused
 argument warnings are gone; header metadata remains unchanged.
@@ -636,3 +636,7 @@ User model preference update: all new declaration/helper/review workers now use 
 ## Taylor declaration 16 checkpoint
 
 `MvPolynomial.taylor_neg_taylor`: Retained minimal composition-cancellation simp; normalized lambda and packed signature, exact mathematical type and docstring preserved. [Dedicated audit](cleanup/Taylor-taylor_neg_taylor.md). Module, complete LSP, isolated type/axiom and diff gates pass. Publication validation: full `lake build` session58028 exit0; separate `lake build Roth.LeanEval` session88498 exit0. Frozen source SHA256 `0a6ab3437c5950f4d2e800b78f03e7a53b7ce97f6cc248c3bff71fcf00a46f22`. Logs `/private/tmp/roth-taylor-d16-full.log` and `...-leaneval.log`.
+
+## Taylor declaration 17 checkpoint
+
+`MvPolynomial.taylor_injective`: Retained direct LeftInverse.injective proof after tested alternatives; no source change, complete dedicated audit and exact API verification. [Dedicated audit](cleanup/Taylor-taylor_injective.md). Module, complete LSP, isolated type/axiom and diff gates pass. Publication validation: full `lake build` session30998 exit0; separate `lake build Roth.LeanEval` session69947 exit0. Frozen source SHA256 `0a6ab3437c5950f4d2e800b78f03e7a53b7ce97f6cc248c3bff71fcf00a46f22`. Logs `/private/tmp/roth-taylor-d17-full.log` and `...-leaneval.log`.
