@@ -1,5 +1,6 @@
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Analysis.SpecialFunctions.Sqrt
+
 import Roth.Box
 
 /-!
@@ -22,13 +23,12 @@ Source: §6, proof of Lemma 8 ("`1 - λ⁻² > 1 - 1/(4m) > √(1 - 1/m) > 0`").
 theorem sqrt_one_sub_inv_lt {m : ℕ} (hm : 2 ≤ m) {lam : ℝ} (hlam : 2 * √(m : ℝ) < lam) :
     √(1 - 1 / (m : ℝ)) < 1 - lam⁻¹ ^ 2 := by
   have hm' : (2 : ℝ) ≤ m := by exact_mod_cast hm
-  have h0 := Real.sqrt_nonneg (m : ℝ)
-  have hsq : 4 * (m : ℝ) < lam ^ 2 := by nlinarith [Real.sq_sqrt (by positivity : (0 : ℝ) ≤ m)]
+  have hsq : 4 * (m : ℝ) < lam ^ 2 := by
+    nlinarith [Real.sqrt_nonneg (m : ℝ), Real.sq_sqrt (Nat.cast_nonneg m)]
   have hu : lam⁻¹ ^ 2 < 1 / m / 4 := by
     rw [inv_pow, div_div, ← one_div]
     exact one_div_lt_one_div_of_lt (by positivity) (by linarith)
-  have htm : 1 / (m : ℝ) ≤ 1 / 2 := one_div_le_one_div_of_le two_pos hm'
-  rw [Real.sqrt_lt' (by linarith)]
+  rw [Real.sqrt_lt' (by linarith [one_div_le_one_div_of_le two_pos hm'])]
   nlinarith [sq_nonneg (lam⁻¹ ^ 2)]
 
 private lemma inv_add_inv_le {lam x : ℝ} (hlam : 2 < lam) (hx0 : 0 ≤ x) (hx2 : x ≤ 2) :

@@ -120,7 +120,7 @@ Files will be processed in dependency order; declarations within each file are s
 | `Roth/Taylor.lean` | 239 | All cleanup phases complete;20/20 originals and2 added helpers audited; user-preserved metadata |
 | `Roth/CoeffNorm.lean` | 320 | All cleanup phases complete;26/26 originals and1 added helper audited; compiled public proposal pending |
 | `Roth/GenWronskian.lean` | 292 | All cleanup phases complete;19/19 originals and2 added helpers audited; metadata/two compiled public proposals explicit |
-| `Roth/Lattice.lean` | 217 | Awaiting cleanup |
+| `Roth/Lattice.lean` | 217 | Active: original declaration 1/10 audited; final file phases pending |
 | `Roth/Index.lean` | 275 | Awaiting cleanup |
 | `Roth/Separation.lean` | 618 | Awaiting cleanup |
 | `Roth/Theta.lean` | 981 | Awaiting cleanup |
@@ -893,3 +893,20 @@ All19 original declarations plus2 added private helpers have fresh dedicated aud
 Final SHA256 `cc7b2786088d6c839d36a14d9b5b09a884eb1de1a0d521b3bc2b84c9772cbfcf`, all leaf/reviewer source ownership explicitly revoked before owner gates. Module31484 exit0; complete module/Separation diagnostics zero errors,5/32 inherited warnings, no partial/timeouts/failed dependencies. Fresh all13 public type/value rfl comparisons,31-identifier batch and all6 private standard-axiom checks14185 exit0. Actual full `lake build` then separate `lake build Roth.LeanEval`, session90179, both exit0 (196.18s/32.16s), frozen hash stable; logs `/private/tmp/roth-genwronskian-performance-final-{full,leaneval}.log`. Final source/comments/width/trust sweep and git diff --check pass. Five meaningful learnings recorded. [Final report](cleanup/GenWronskian-final.md) contains every phase, full declaration/profile tables and exact cumulative gate evidence.
 
 Project original tally120/264,6/14 files complete. Metadata remains user-preserved; two independently compiled public proposals remain unapplied. Final caller search refreshed: dependent-zero theorem has no project caller; det_sum_rows now has only the private expansion helper's implicit-instance call (the original headline call moved there during decomposition). Other pending CoeffNorm proposals unchanged. No routine GenWronskian work remains. Ownership of file/reports/shared-progress/Git transfers back to the project orchestrator on successful final report push; next Lattice requires its fresh file owner.
+
+
+## Lattice declaration 1 checkpoint
+
+`sqrt_one_sub_inv_lt`: inlined two single-use local facts and replaced typed positivity
+with `Nat.cast_nonneg`;11→10 declaration lines, exact original public signature/docs
+preserved. Added authorized import-group separator. [Dedicated audit](cleanup/Lattice-sqrt_one_sub_inv_lt.md)
+records24 audit items/42 golfing rules/five actual searches/public literature/hypothesis
+probes/11 checked steps. Module build exit0, complete native diagnostics zero errors/one
+user-preserved header warning; independent original-type proof and actual target standard
+axioms pass. Optional compiled hm1 weakening closed by project owner as unnecessary with
+no current caller benefit; no pending decision. Explicit leaf source-ownership revocation
+at SHA256 `9d5a4630daf715a8a7c8248c41046c74276421ccc603c004d020e129d049c53c`.
+Owner sequential full `lake build` then separate `lake build Roth.LeanEval`, session61721,
+both exit0 (114.13s/37.98s), frozen source hash unchanged; logs
+`/private/tmp/roth-lattice-d01-{full,leaneval}.log`.
+Lattice1/10 originals, overall121/264; final file phases remain.
