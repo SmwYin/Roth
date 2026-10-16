@@ -142,27 +142,30 @@ private noncomputable def kronSpan (k μ : ℕ) : Submodule (Polynomial K)
     (MvPolynomial σ K → Polynomial K) :=
   Submodule.span (Polynomial K) (kronHasse (K := K) k '' {d | d.degree ≤ μ})
 
+private lemma derivative_kronHasse_aux (k : ℕ) (d : σ →₀ ℕ) :
+    (fun P ↦ Polynomial.derivative (kronHasse (K := K) k d P)) =
+      ∑ j, (Polynomial.derivative (Polynomial.X ^ (k ^ (Fintype.equivFin σ j : ℕ))) *
+        Polynomial.C ((d j + 1 : ℕ) : K)) • kronHasse k (d + Finsupp.single j 1) := by
+  classical
+  funext P
+  simp only [kronHasse, kronecker, derivative_aeval, pderiv_hasseDeriv, map_smul,
+    Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Polynomial.smul_eq_C_mul]
+  exact Finset.sum_congr rfl fun j _ ↦ by ring
+
 private lemma derivative_mem_kronSpan (k μ : ℕ) {F : MvPolynomial σ K → Polynomial K}
     (hF : F ∈ kronSpan k μ) :
-    (fun P => Polynomial.derivative (F P)) ∈ kronSpan (K := K) (σ := σ) k (μ + 1) := by
+    (fun P ↦ Polynomial.derivative (F P)) ∈ kronSpan (K := K) (σ := σ) k (μ + 1) := by
   classical
   induction hF using Submodule.span_induction with
   | mem F hF =>
     obtain ⟨d, hd, rfl⟩ := hF
-    have heq : (fun P => Polynomial.derivative (kronHasse (K := K) k d P)) =
-        ∑ j, (Polynomial.derivative (Polynomial.X ^ (k ^ (Fintype.equivFin σ j : ℕ))) *
-          Polynomial.C ((d j + 1 : ℕ) : K)) • kronHasse k (d + Finsupp.single j 1) := by
-      funext P
-      simp only [kronHasse, kronecker, derivative_aeval, pderiv_hasseDeriv, map_smul,
-        Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Polynomial.smul_eq_C_mul]
-      exact Finset.sum_congr rfl fun j _ => by ring
-    rw [heq]
-    refine Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ?_)
+    rw [derivative_kronHasse_aux]
+    refine Submodule.sum_mem _ fun j _ ↦ Submodule.smul_mem _ _ (Submodule.subset_span ?_)
     refine ⟨d + Finsupp.single j 1, ?_, rfl⟩
     simp only [Set.mem_ofPred_eq, map_add, Finsupp.degree_single] at hd ⊢
-    omega
+    exact Nat.add_le_add_right hd 1
   | zero =>
-    convert Submodule.zero_mem (kronSpan (K := K) (σ := σ) k (μ + 1)) using 1
+    convert (kronSpan (K := K) (σ := σ) k (μ + 1)).zero_mem using 1
     funext P
     simp
   | add F G _ _ hF hG =>
@@ -170,14 +173,12 @@ private lemma derivative_mem_kronSpan (k μ : ℕ) {F : MvPolynomial σ K → Po
     funext P
     simp [Polynomial.derivative_add]
   | smul a F hF' hF =>
-    have heq : (fun P => Polynomial.derivative ((a • F) P)) =
-        Polynomial.derivative a • F + a • fun P => Polynomial.derivative (F P) := by
-      funext P
-      simp [Polynomial.derivative_mul, add_comm]
-    rw [heq]
-    exact Submodule.add_mem _ (Submodule.smul_mem _ _
-      (Submodule.span_mono (Set.image_mono fun _ hd ↦ le_trans hd (Nat.le_succ μ)) hF'))
-      (Submodule.smul_mem _ _ hF)
+    convert Submodule.add_mem (kronSpan (K := K) (σ := σ) k (μ + 1))
+      (Submodule.smul_mem _ (Polynomial.derivative a)
+        (Submodule.span_mono (Set.image_mono fun _ hd ↦ le_trans hd (Nat.le_succ μ)) hF'))
+      (Submodule.smul_mem _ a hF) using 1
+    funext P
+    simp [Polynomial.derivative_mul, add_comm]
 
 private lemma hasseDeriv_kronecker_mem [CharZero K] (k μ : ℕ) :
     (fun P => Polynomial.hasseDeriv μ (kronecker k P)) ∈ kronSpan (K := K) (σ := σ) k μ := by
