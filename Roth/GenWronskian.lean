@@ -83,14 +83,13 @@ theorem coeff_kronecker {k : ℕ} (hk : 1 < k) {P : MvPolynomial σ K} (hP : ∀
   conv_lhs => rw [P.as_sum]
   rw [map_sum, Polynomial.finsetSum_coeff]
   simp_rw [kronecker_monomial, Polynomial.coeff_C_mul_X_pow]
-  have hlt : ∀ e ∈ P.support, ∀ j, e j < k := fun e he j =>
-    (monomial_le_degreeOf j he).trans_lt (hP j)
-  by_cases hdP : d ∈ P.support
-  · rw [Finset.sum_eq_single d (fun e he hed => ite_eq_right fun h' =>
-      hed (kroneckerExp_injOn hk (hlt e he) hd h'.symm)) (absurd hdP), ite_eq_left rfl]
-  · rw [notMem_support_iff.1 hdP]
-    exact Finset.sum_eq_zero fun e he => ite_eq_right fun h' =>
-      hdP (kroneckerExp_injOn hk (hlt e he) hd (Eq.symm h') ▸ he)
+  rw [Finset.sum_eq_single d]
+  · simp
+  · intro e he hed
+    exact ite_eq_right fun h ↦ hed (kroneckerExp_injOn hk
+      (fun j ↦ (monomial_le_degreeOf j he).trans_lt (hP j)) hd h.symm)
+  · intro hdP
+    simp [notMem_support_iff.1 hdP]
 
 /-- A polynomial with all partial degrees `< k` vanishes iff its Kronecker substitution does.
 
