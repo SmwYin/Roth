@@ -5,6 +5,7 @@ import Mathlib.Basic.Real.Pointwise
 import Mathlib.Data.Nat.Cast.Field
 import Mathlib.Order.ConditionallyCompleteLattice.Finset
 import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+
 import Roth.Box
 import Roth.Taylor
 

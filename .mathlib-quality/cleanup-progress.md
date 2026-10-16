@@ -1211,3 +1211,25 @@ increment this tally. No pending decision remains for these approved removals. H
 metadata remains user-preserved. After the second successful push, all amendment source,
 report, shared-progress and Git ownership is released to the orchestrator; next Index
 requires a fresh file owner. This amendment owner does not start Index.
+
+
+## Index declaration1 checkpoint — 2026-10-16
+
+Fresh Index file owner starts from `e557886`, source275lines/21original declarations.
+Actual baseline full build28852 exits0; complete native LSP has zero errors/27 inherited
+warnings. [File audit](cleanup/Index.md) records phases0–3 and complete original inventory.
+Fresh dedicated [index audit](cleanup/Index-index.md) retains the 2line public definition:
+all24audit items/42golf slots/five actual searches/every binder probe/literature/11checks,
+module build, complete LSP, independent original type/value and standardaxioms pass.
+Optional generic-coefficient observation remains report-only, not a required change.
+
+Owner explicitly revoked leaf source editing and added the missing Mathlib/project
+import separator. Frozen SHA256
+`9ea21436746c9e155e485b0ae6ef6deb884e4391417044407c717cb2f6206f64`.
+Owner module80771 exit0 and complete native LSP zero errors/27 inherited warnings.
+Sequential full then separate LeanEval24111 both exit0 (170.57s/39.02s), hash stable;
+logs `/private/tmp/roth-index-d01-{full,leaneval}.log`. Exact-path commit/push precedes
+the next declaration edit. Index1/21 originals audited, overall131/264; final file phases
+remain. [Compiled API proposal](cleanup/Index-api-proposal.md) awaits scoped decision:
+18 unused public decidability binders, index_le_card.hr, exactly2Theta caller repairs;
+none applied. No previous other-file approval was reused. Header remains user-preserved.
