@@ -107,8 +107,7 @@ Source: §3, proof of Lemma 3 ("Pad the monomial expansion of `R` by zero terms 
 `R = ∑_{i=1}^N α_i`" — a polynomial with `N` terms of size `≤ B` has `‖R‖₁ ≤ N B`). -/
 theorem normOne_le_card_mul (P : MvPolynomial σ ℤ) {B : ℝ} (hB : ∀ d, |((P.coeff d : ℤ) : ℝ)| ≤ B) :
     normOne P ≤ P.support.card * B := by
-  rw [normOne, ← nsmul_eq_mul]
-  exact Finset.sum_le_card_nsmul _ _ B fun d _ => hB d
+  simpa [normOne] using P.support.sum_le_card_nsmul _ _ (fun d _ ↦ hB d)
 
 /-- The determinant of an `l × l` matrix whose entries have `normOne` at most `C` has `normOne`
 at most `l! C^l`. Source: §3, proof of Lemma 3 ("`‖det(...)‖₁ ≤ ∑_σ ‖∏_ν ...‖₁ ≤ l! (B 2^S)^l`"). -/
