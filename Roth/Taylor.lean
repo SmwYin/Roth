@@ -42,8 +42,7 @@ theorem taylor_apply (α : σ → R) (P : MvPolynomial σ R) :
 
 /-- `taylor α` sends the variable `X j` to `X j + α j`. -/
 @[simp]
-theorem taylor_X (α : σ → R) (j : σ) : taylor α (X j) = X j + C (α j) := by
-  simp [taylor]
+theorem taylor_X (α : σ → R) (j : σ) : taylor α (X j) = X j + C (α j) := aeval_X _ _
 
 /-- `taylor α` fixes constants. -/
 @[simp]
