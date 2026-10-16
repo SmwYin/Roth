@@ -46,8 +46,7 @@ theorem taylor_X (α : σ → R) (j : σ) : taylor α (X j) = X j + C (α j) := 
 
 /-- `taylor α` fixes constants. -/
 @[simp]
-theorem taylor_C (α : σ → R) (a : R) : taylor α (C a) = C a := by
-  simp [taylor]
+theorem taylor_C (α : σ → R) (a : R) : taylor α (C a) = C a := algHom_C _ _
 
 /-- The translate of a monomial is a product of powers of the translated variables.
 Source: §4, proof of Taylor's theorem ("it suffices to prove the theorem for monomials"). -/
