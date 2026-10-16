@@ -37,7 +37,7 @@ Two headline proofs require structural review: coeff_taylor35bodylines; eq_sum_b
 | 9 | `coeff_taylor` | 116–150 | 35 | public theorem; naming descriptive, documentation appropriate; headline theorem: structure review required | validated; [audit](Taylor-coeff_taylor.md) |
 | 10 | `eval_taylor` | 153–155 | 3 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | validated; [audit](Taylor-eval_taylor.md) |
 | 11 | `taylor_taylor` | 158–160 | 3 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | validated; [audit](Taylor-taylor_taylor.md) |
-| 12 | `taylor_zero` | 164–165 | 2 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | Pending |
+| 12 | `taylor_zero` | 164–165 | 2 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | validated; [audit](Taylor-taylor_zero.md) |
 | 13 | `taylor_map` | 169–171 | 3 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | Pending |
 | 14 | `taylor_rename` | 176–178 | 3 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | Pending |
 | 15 | `degreeOf_taylor_le` | 182–186 | 5 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | Pending |
@@ -128,3 +128,7 @@ environment repair.
 ## Declaration 11 checkpoint
 
 `taylor_taylor`: Direct Mathlib algebra evaluation composition replaces induction; lambda normalized, exact public contract and documentation retained. All worker gates pass. Frozen source SHA256 `c3b13e052d8ffa6af70404bf29d2853cce67a99b36cd0dc4a8584f5bfbf23020`. Full `lake build` session87659 and separate `lake build Roth.LeanEval` session70984 exited0. Logs `/private/tmp/roth-taylor-d11-full.log` and `...-leaneval.log`.
+
+## Declaration 12 checkpoint
+
+`taylor_zero`: Direct Mathlib identity-evaluation simplification replaces induction; equivalent lambda notation normalized, original public API and docstring preserved. All worker gates pass. Frozen source SHA256 `a2f43a6a92cc7e8cee595b4fdb1047638cc7f8a9d1d031e050f72a95f086a6af`. Full `lake build` session11614 and separate `lake build Roth.LeanEval` session44120 exited0. Logs `/private/tmp/roth-taylor-d12-full.log` and `...-leaneval.log`.

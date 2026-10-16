@@ -143,8 +143,8 @@ theorem taylor_taylor (α β : σ → R) (P : MvPolynomial σ R) :
 
 /-- Translation by `0` is the identity. -/
 @[simp]
-theorem taylor_zero (P : MvPolynomial σ R) : taylor (fun _ => (0 : R)) P = P := by
-  induction P using MvPolynomial.induction_on <;> simp_all
+theorem taylor_zero (P : MvPolynomial σ R) : taylor (fun _ ↦ (0 : R)) P = P := by
+  simp [taylor, aeval_X_left_apply]
 
 /-- Translation commutes with changing the coefficient ring along `f`.
 Source: §1, Lean implementation note ("compatibility with coefficient maps"). -/
