@@ -45,7 +45,7 @@ See [Wronskian final report](cleanup/Wronskian-final.md). Overall55/264 original
 and every final file-level phase. Source239 → 218lines; original public API/docs preserved.
 Independent simplify finding fixed and revalidated; actual profile all22 retained declarations
 below750ms, maximum672.30ms. Overall75/264 original declarations audited.
-See [Taylor final report](cleanup/Taylor-final.md). `Roth/CoeffNorm.lean` is active:6/26original declarations complete, overall81/264. Compiled public-hypothesis proposal awaits scoped user decision; original signatures remain unchanged.
+See [Taylor final report](cleanup/Taylor-final.md). `Roth/CoeffNorm.lean` is active:7/26original declarations complete, overall82/264. Compiled public-hypothesis proposal awaits scoped user decision; original signatures remain unchanged.
 The user approved removing unused `hφ`/`hd` from the Wronskian coefficient identity;
 the exact removal and sole-caller update are implemented and fully revalidated. Both unused
 argument warnings are gone; header metadata remains unchanged.
@@ -687,3 +687,7 @@ All20 originals and2 added helpers complete; overall75/264. [Final report](clean
 ## CoeffNorm declaration6 checkpoint
 
 `Roth.abs_coeff_le_normOne`: direct Mathlib Finsupp.single_eval_le_sum replaces supportcases,6→3declarationlines; exact publictype/docs preserved. [Dedicated audit](cleanup/CoeffNorm-abs_coeff_le_normOne.md). Module71860 exit0; completefinalLSP noerrors; fresh CLI originaltype/independentnonselfreproof/standardaxioms33658 exit0. All24audit/42rules/5search/11checks pass. Sequential full `lake build` and separate `lake build Roth.LeanEval` session9002 exit0; source SHA256 `29e747bec2da1d802c9dea2a034b17dfe1db36b793f966b7007c46c3529e93bc` unchanged. Logs `/private/tmp/roth-coeffnorm-d06-{full,leaneval}.log`. CoeffNorm6/26,overall81/264.
+
+## CoeffNorm declaration7 checkpoint
+
+`Roth.normOne_add_le`: normalized mathematical lambda and retained direct supportunion triangleinequality proof,7→7declarationlines, exact publictype/docs preserved. [Dedicated audit](cleanup/CoeffNorm-normOne_add_le.md). Module10663 exit0, completefinalLSP noerrors, fresh CLI originaltype/nonselfreproof/standardaxioms36739 exit0. All24audit/42rules/5search/11checks pass. Sequential full `lake build` and separate `lake build Roth.LeanEval` session55968 exit0; SHA256 `1c67627438e2ed4ecec1e2024e1d517b23c235fc3b3f44d409394477fc5a818c` unchanged. Logs `/private/tmp/roth-coeffnorm-d07-{full,leaneval}.log`. CoeffNorm7/26,overall82/264.

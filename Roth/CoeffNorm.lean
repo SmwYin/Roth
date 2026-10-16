@@ -75,7 +75,7 @@ theorem normOne_add_le (P Q : MvPolynomial σ ℤ) : normOne (P + Q) ≤ normOne
     normOne_eq_sum_of_support_subset (s := P.support ∪ Q.support) Finset.subset_union_left,
     normOne_eq_sum_of_support_subset (s := P.support ∪ Q.support) Finset.subset_union_right,
     ← Finset.sum_add_distrib]
-  exact Finset.sum_le_sum fun d _ => by simpa using abs_add_le (P.coeff d : ℝ) (Q.coeff d)
+  exact Finset.sum_le_sum fun d _ ↦ by simpa using abs_add_le (P.coeff d : ℝ) (Q.coeff d)
 
 /-- `normOne` is invariant under negation. -/
 theorem normOne_neg (P : MvPolynomial σ ℤ) : normOne (-P) = normOne P := by
