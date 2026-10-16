@@ -45,7 +45,7 @@ Every public declaration has an existing docstring, preserved. Private helpers h
 | 10 | `wronskian_update_sub_smul` | 181–190 | 10 | validated; [audit](Wronskian-wronskian_update_sub_smul.md) |
 | 11 | `span_range_update_sub_le` | 192–201 | 10 | validated; [audit](Wronskian-span_range_update_sub_le.md) |
 | 12 | `linearIndependent_update_sub_smul` | 207–217 | 11 | validated; [audit](Wronskian-linearIndependent_update_sub_smul.md) |
-| 13 | `sum_natDegree_update_lt` | 224–246 | 23 | pending |
+| 13 | `sum_natDegree_update_lt` | 224–246 | 23 | validated; [audit](Wronskian-sum_natDegree_update_lt.md) |
 | 14 | `wronskian_ne_zero_of_linearIndependent` | 251–261 | 11 | pending |
 | 15 | `wronskian_eq_zero_iff` | 266–269 | 4 | pending |
 
@@ -96,3 +96,7 @@ Every public declaration has an existing docstring, preserved. Private helpers h
 ## Declaration 12 checkpoint
 
 `linearIndependent_update_sub_smul`: Replaced inverse-update/span machinery with direct Mathlib span preservation,11→6lines and8→3bodylines; signature/docs unchanged. Private span helper now unused, scheduled for Phase5a deletion. All worker gates pass; full `lake build` session37876 and separate `lake build Roth.LeanEval` session72281 exited0. Logs `/private/tmp/roth-wronskian-d12-full.log` and `...-leaneval.log`.
+
+## Declaration 13 checkpoint
+
+`sum_natDegree_update_lt`: Reused updated-family independence for nonzero cancellation, inlined scalar nonzero fact and simplified sum comparison;23→19lines, original statement/docs retained. All worker gates pass; full `lake build` session18116 and separate `lake build Roth.LeanEval` session13785 exited0. Logs `/private/tmp/roth-wronskian-d13-full.log` and `...-leaneval.log`.

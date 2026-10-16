@@ -192,28 +192,24 @@ Source: §2, first lemma ("Such a basis is obtained by eliminating equal leading
 column operation that cancels a leading coefficient strictly lowers the sum of the degrees; the
 difference is nonzero because the family is linearly independent). -/
 theorem sum_natDegree_update_lt {φ : Fin l → K[X]} (hφ : LinearIndependent K φ) {ν ν' : Fin l}
-    (h : ν ≠ ν') (hdeg : (φ ν).natDegree = (φ ν').natDegree) :
-    ∑ ρ, (Function.update φ ν'
-        (φ ν' - C ((φ ν').leadingCoeff / (φ ν).leadingCoeff) * φ ν) ρ).natDegree
+    (h : ν ≠ ν') (hdeg : (φ ν).natDegree = (φ ν').natDegree) : ∑ ρ, (Function.update φ ν'
+      (φ ν' - C ((φ ν').leadingCoeff / (φ ν).leadingCoeff) * φ ν) ρ).natDegree
       < ∑ ρ, (φ ρ).natDegree := by
   set a := (φ ν').leadingCoeff / (φ ν).leadingCoeff
   have h0 : ∀ i, φ i ≠ 0 := hφ.ne_zero
   have hlc : (φ ν).leadingCoeff ≠ 0 := leadingCoeff_ne_zero.2 (h0 ν)
-  have ha : a ≠ 0 := div_ne_zero (leadingCoeff_ne_zero.2 (h0 ν')) hlc
-  have hne : φ ν' - C a * φ ν ≠ 0 := fun h' =>
-    hφ.notMem_span_image (s := {ν}) (Set.mem_singleton_iff.not.2 h.symm) <| by
-      rw [Set.image_singleton, Submodule.mem_span_singleton]
-      exact ⟨a, by rw [smul_eq_C_mul, ← sub_eq_zero.1 h']⟩
+  have hne : φ ν' - C a * φ ν ≠ 0 := by
+    simpa using (linearIndependent_update_sub_smul h a hφ).ne_zero ν'
   have hdeg' : degree (φ ν') = degree (C a * φ ν) := by
-    rw [degree_C_mul ha, degree_eq_natDegree (h0 ν), degree_eq_natDegree (h0 ν'), hdeg]
+    rw [degree_C_mul (div_ne_zero (leadingCoeff_ne_zero.2 (h0 ν')) hlc),
+      degree_eq_natDegree (h0 ν), degree_eq_natDegree (h0 ν'), hdeg]
   have hlt : (φ ν' - C a * φ ν).natDegree < (φ ν').natDegree :=
     natDegree_lt_natDegree hne (degree_sub_lt_left hdeg' (h0 ν') (by
       rw [leadingCoeff_mul, leadingCoeff_C, div_mul_cancel₀ _ hlc]))
-  refine Finset.sum_lt_sum (fun i _ => ?_) ⟨ν', Finset.mem_univ _, by rwa [Function.update_self]⟩
-  rcases eq_or_ne i ν' with rfl | hi
-  · rw [Function.update_self]
-    exact hlt.le
-  · rw [Function.update_of_ne hi]
+  refine Finset.sum_lt_sum (fun i _ ↦ ?_) ⟨ν', Finset.mem_univ _, by simpa⟩
+  by_cases hi : i = ν'
+  · simpa [hi] using hlt.le
+  · simp [Function.update_of_ne hi]
 
 /-- In characteristic zero, a linearly independent family has nonzero Wronskian.
 Source: §2, first lemma, hard direction ("Conversely, suppose the polynomials are linearly
