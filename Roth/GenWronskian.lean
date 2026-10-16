@@ -37,12 +37,11 @@ theorem genWronskian_eq_zero_of_not_linearIndependent (D : Fin l → (σ →₀ 
     {φ : Fin l → MvPolynomial σ K} (h : ¬ LinearIndependent K φ) : genWronskian D φ = 0 := by
   classical
   obtain ⟨g, hg, ν₀, hν₀⟩ := Fintype.not_linearIndependent_iff.1 h
-  refine Matrix.exists_mulVec_eq_zero_iff.1 ⟨fun ν => C (g ν), fun h0 => hν₀ ?_, ?_⟩
+  refine Matrix.exists_mulVec_eq_zero_iff.1 ⟨fun ν ↦ C (g ν), fun h0 ↦ hν₀ ?_, ?_⟩
   · simpa using congrFun h0 ν₀
   · ext1 μ
-    have := congrArg (hasseDeriv (D μ)) hg
-    simp only [map_sum, map_smul, map_zero] at this
-    simpa [Matrix.mulVec, dotProduct, smul_eq_C_mul, mul_comm] using this
+    simpa [Matrix.mulVec, dotProduct, map_smul, ← smul_eq_C_mul, mul_comm] using
+      congrArg (hasseDeriv (D μ)) hg
 
 /-- Kronecker substitution `x_j ↦ t^{k^{e j}}` where `e : σ ≃ Fin (card σ)` is the chosen
 enumeration. Source: §2, proof of Lemma 1 (`h_ν(t) = φ_ν(t, t^k, …, t^{k^{p-1}})`). -/
