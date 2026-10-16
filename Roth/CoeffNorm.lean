@@ -205,17 +205,13 @@ theorem geom_sum_le_one_add_pow {t : ℝ} (ht : 0 ≤ t) (r : ℕ) :
   refine le_mul_of_one_le_right (pow_nonneg ht m) ?_
   exact_mod_cast Nat.choose_pos (Finset.mem_range_succ_iff.1 hm)
 
-private theorem sum_box_prod_pow_le_aux [Fintype σ] [DecidableEq σ] (r : σ → ℕ) {B : ℝ}
-    (hB : 0 ≤ B) (x : σ → ℝ) :
+open scoped Classical in
+private theorem sum_box_prod_pow_le_aux [Fintype σ] (r : σ → ℕ) {B : ℝ} (hB : 0 ≤ B) (x : σ → ℝ) :
     ∑ k ∈ box r, B * ∏ j, |x j| ^ k j ≤ B * ∏ j, (1 + |x j|) ^ r j := by
   classical
-  calc
-    ∑ k ∈ box r, B * ∏ j, |x j| ^ k j =
-        B * ∏ j, ∑ s ∈ Finset.range (r j + 1), |x j| ^ s := by
-      simp [← Finset.mul_sum, box, Finset.prod_univ_sum]
-    _ ≤ B * ∏ j, (1 + |x j|) ^ r j :=
-      mul_le_mul_of_nonneg_left (Finset.prod_le_prod₀ (fun _ _ ↦ by positivity)
-        fun j _ ↦ geom_sum_le_one_add_pow (abs_nonneg _) _) hB
+  simpa [← Finset.mul_sum, box, Finset.prod_univ_sum] using
+    mul_le_mul_of_nonneg_left (Finset.prod_le_prod₀ (s := Finset.univ) (fun _ _ ↦ by positivity)
+      fun j _ ↦ geom_sum_le_one_add_pow (abs_nonneg (x j)) (r j)) hB
 
 /-- A value bound for an integer polynomial with bounded coefficients and degrees.
 Source: §6, proof of Lemma 9 ("`|(Δ_i Q)(α, …, α)| ≤ abc(Δ_i Q) ∏_j ∑_{s ≤ r_j} |α|^s`",
