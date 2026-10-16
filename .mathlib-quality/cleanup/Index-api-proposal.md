@@ -1,8 +1,8 @@
 # Index: compiled public-hypothesis proposal
 
-Status: **groups1+2 explicitly approved by user via root/parent on2026-10-16;
-application scheduled at each dedicated declaration checkpoint. Group3 remains
-unapproved and unapplied.** See the application ledger below for current verified progress.
+Status: **all three scoped groups explicitly approved by the user via root/parent
+on2026-10-16; group3 received a separate approval after groups1+2. Application
+scheduled at each dedicated declaration checkpoint; no broader API authorized.** See the application ledger below for current verified progress.
 This proposal concerns Index only; earlier approvals in CoeffNorm and GenWronskian
 were not reused as authorization.
 
@@ -97,16 +97,16 @@ checks recovery of the original full public type by eta equality, and compiles
 both exact Theta rewrite/cancellation subproofs with the removed argument.
 The stronger theorem has only the three standard axioms. No source edit applied.
 
-Apply only approved groups1+2 and corresponding caller repairs, preserve
+Apply the three separately approved groups and their minimal caller repairs; preserve
 definitions/docs/names/conclusions/other hypotheses, and rerun complete module,
 caller, original-type, standard-axiom, full-project and separate LeanEval gates.
-The dedicated declaration audits continue sequentially. Keep group3's `hl` unchanged
-unless a separate explicit user approval arrives; the root has not included it in
-the approved enumeration.
+The dedicated declaration audits continue sequentially. The user's later separate
+explicit approval includes group3's unused `hl` and its two minimal Theta rewrite
+argument deletions, with all Theta contracts and positivity assumptions preserved.
 
 ## Application ledger
 
-Verified σ-DecidableEq omissions: 6/17.
+Verified σ-DecidableEq omissions: 7/17.
 
 - [index_le_weight](Index-index_le_weight.md)
 - [exists_weight_eq_index](Index-exists_weight_eq_index.md)
@@ -114,7 +114,8 @@ Verified σ-DecidableEq omissions: 6/17.
 - [index_nonneg](Index-index_nonneg.md)
 - [index_eq_zero_iff](Index-index_eq_zero_iff.md)
 - [index_hasseDeriv_ge](Index-index_hasseDeriv_ge.md)
+- [le_index_sum](Index-le_index_sum.md)
 
 Rename τ-DecidableEq removed: False.
 index_le_card.hr removed: False.
-Group3 scaling hl removed: False; scope requires separate approval.
+Group3 scaling hl removed: False; separate scoped user approval received2026-10-16; apply at target checkpoint.

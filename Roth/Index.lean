@@ -111,15 +111,16 @@ theorem index_hasseDeriv_ge {P : MvPolynomial σ ℝ} {k : σ →₀ ℕ} (hk : 
   rw [hasseDeriv_hasseDeriv, smul_eq_C_mul, map_mul, eval_C, mul_ne_zero_iff] at hi
   exact sub_le_iff_le_add.2 (by simpa [weight_add, hiw] using index_le_weight (r := r) hi.2)
 
+omit [DecidableEq σ] in
 /-- Source: §4, Lemma 4-1 ("`ind(P + Q) ≥ min(ind P, ind Q)`"), in the form used in the proof of
 Lemma 6 (a common lower bound for the nonzero summands is a lower bound for a nonzero sum). -/
 theorem le_index_sum {ι : Type*} {s : Finset ι} {f : ι → MvPolynomial σ ℝ} {α : σ → ℝ} {r : σ → ℕ}
     (hs : ∑ i ∈ s, f i ≠ 0) {c : ℝ} (hf : ∀ i ∈ s, f i ≠ 0 → c ≤ index (f i) α r) :
     c ≤ index (∑ i ∈ s, f i) α r := by
-  refine (le_index_iff hs).2 fun d hd => ?_
+  refine (le_index_iff hs).2 fun d hd ↦ ?_
   rw [map_sum, map_sum] at hd
   obtain ⟨i, hi, hid⟩ := Finset.exists_ne_zero_of_sum_ne_zero hd
-  have hfi : f i ≠ 0 := fun h0 => hid (by rw [h0, map_zero, map_zero])
+  have hfi : f i ≠ 0 := fun h0 ↦ hid (by rw [h0, map_zero, map_zero])
   exact (le_index_iff hfi).1 (hf i hi hfi) d hid
 
 /-- The rational weight of `d` as a natural-number weight divided by `D = ∏ r_j`.

@@ -1405,3 +1405,22 @@ All original block docs byte-identical, source widths≤100, diff checked before
 Index10/21 originals,overall140/264; source269lines,
 19retained declarations. Exact-path commit and successful cleanup-branch push
 precede the next edit. Header remains explicitly user-preserved.
+
+
+## Index d11 checkpoint — le_index_sum
+
+Applied approved unused σ-DecidableEq omission and two Unicode lambda arrows only; retained explicit5-line coefficient argument after exhaustive probes. Updated proposal record for separately user-approved group3 scaling-hl removal and2minimalTheta rewrite arguments, scheduled at target18; no scaling change yet. Target394.921ms.
+
+[Dedicated audit](cleanup/Index-le_index_sum.md): all24/42/five searches/binder probes/11checks;
+worker module/complete LSP/independent proof/type/actual standard-axiom gates passed.
+Frozen SHA256 `ca55d5c8adada4876194803c57bc4ab41cad3f30c13f17d414827852de268aeb`. Fresh whole ORIGINAL nonself reproof, all18 original public
+type/value recoveries and all19 actual retained standard-axiom checks: compiler
+session73801 exit0, `/private/tmp/roth-index-d11-compatibility.log`.
+Approved no-DecEq types are additionally checked by Expr.find?; actual signatures printed.
+Sequential owner full then separate LeanEval86657 both exit0(150.60s/35.53s),
+Index+Theta hashes stable; `/private/tmp/roth-index-d11-{full,leaneval}.log`.
+Worker COMPLETE unfiltered Index LSP success=true partial=false timed_out=false, 0target diagnostics/19other warnings. External Theta complete native LSP0errors/23inheritedwarnings, noinfos/no faileddependencies after one45second partial request followed complete retry; sole le_index_sum callerTheta:394 accepted. Raw /private/tmp/roth-index-d11-theta-lsp.json.
+All original block docs byte-identical, source widths≤100, diff checked before staging.
+Index11/21 originals,overall141/264; source270lines,
+19retained declarations. Exact-path commit and successful cleanup-branch push
+precede the next edit. Header remains explicitly user-preserved.

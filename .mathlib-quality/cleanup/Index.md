@@ -305,3 +305,21 @@ Worker COMPLETE unfiltered Index LSP success=true partial=false timed_out=false,
 All original block docs byte-identical, source widths≤100, diff checked before staging.
 Source269lines/19retained. Index10/21 originals,overall140/264;
 no file-final completion claimed. Leaf source/Lean requests finished before owner gates.
+
+
+### Checkpoint d11 — le_index_sum
+
+Applied approved unused σ-DecidableEq omission and two Unicode lambda arrows only; retained explicit5-line coefficient argument after exhaustive probes. Updated proposal record for separately user-approved group3 scaling-hl removal and2minimalTheta rewrite arguments, scheduled at target18; no scaling change yet. Target394.921ms.
+
+[Dedicated audit](Index-le_index_sum.md) inspected:24 audit items,42rules,five actual searches,
+binder probes,literature/exemption,complete packing+inequality tables,all11steps.
+Frozen SHA256 `ca55d5c8adada4876194803c57bc4ab41cad3f30c13f17d414827852de268aeb`. Fresh whole ORIGINAL nonself reproof, all18 original public
+type/value recoveries and all19 actual retained standard-axiom checks: compiler
+session73801 exit0, `/private/tmp/roth-index-d11-compatibility.log`.
+Approved no-DecEq types are additionally checked by Expr.find?; actual signatures printed.
+Sequential owner full then separate LeanEval86657 both exit0(150.60s/35.53s),
+Index+Theta hashes stable; `/private/tmp/roth-index-d11-{full,leaneval}.log`.
+Worker COMPLETE unfiltered Index LSP success=true partial=false timed_out=false, 0target diagnostics/19other warnings. External Theta complete native LSP0errors/23inheritedwarnings, noinfos/no faileddependencies after one45second partial request followed complete retry; sole le_index_sum callerTheta:394 accepted. Raw /private/tmp/roth-index-d11-theta-lsp.json.
+All original block docs byte-identical, source widths≤100, diff checked before staging.
+Source270lines/19retained. Index11/21 originals,overall141/264;
+no file-final completion claimed. Leaf source/Lean requests finished before owner gates.
