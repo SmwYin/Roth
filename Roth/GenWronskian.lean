@@ -1,6 +1,4 @@
 import Mathlib.Data.List.Indexes
-import Mathlib.Data.Nat.Digits.Defs
-import Mathlib.LinearAlgebra.Multilinear.Basic
 
 import Roth.HasseDeriv
 import Roth.Wronskian
@@ -66,11 +64,14 @@ theorem kroneckerExp_injOn {k : ℕ} (hk : 1 < k) :
   intro d hd d' hd' h
   set e := Fintype.equivFin σ
   have hsum (d : σ →₀ ℕ) : Nat.ofDigits k (List.ofFn fun i ↦ d (e.symm i)) = kroneckerExp k d := by
-    simp [Nat.ofDigits_eq_sum_mapIdx, List.mapIdx_eq_ofFn, Fin.sum_ofFn, kroneckerExp,
-      ← e.symm.sum_comp, e]
-  refine DFunLike.coe_injective <| e.symm.surjective.injective_comp_right ?_
+    simp only [Nat.ofDigits_eq_sum_mapIdx, List.mapIdx_eq_ofFn, Fin.sum_ofFn, kroneckerExp,
+      ← e.symm.sum_comp, e, List.get_eq_getElem, List.getElem_ofFn, List.length_ofFn,
+      Equiv.apply_symm_apply, Fin.val_cast, Fin.eta]
+  apply DFunLike.coe_injective
+  apply e.symm.surjective.injective_comp_right
   refine List.ofFn_injective (Nat.ofDigits_inj_of_len_eq hk (by simp)
-    (by simpa using fun i ↦ hd (e.symm i)) (by simpa using fun i ↦ hd' (e.symm i)) ?_)
+    (List.forall_mem_ofFn_iff.2 fun i ↦ hd (e.symm i))
+    (List.forall_mem_ofFn_iff.2 fun i ↦ hd' (e.symm i)) ?_)
   simpa [Function.comp_def, hsum] using h
 
 /-- If all partial degrees of `P` are `< k`, the Kronecker substitution preserves the coefficient
