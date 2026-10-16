@@ -287,3 +287,21 @@ Worker final target-filtered diagnostics clean; owner unfiltered COMPLETE Index 
 All original block docs byte-identical, source widths≤100, diff checked before staging.
 Source270lines/19retained. Index9/21 originals,overall139/264;
 no file-final completion claimed. Leaf source/Lean requests finished before owner gates.
+
+
+### Checkpoint d10 — index_hasseDeriv_ge
+
+Applied approved unused σ-DecidableEq omission and direct sub_le_iff_le_add/simpa proof, removing have/rewrite/linarith; proof5→3 lines, measured289.94→192.16ms. Appended public project-end rename request index_hasseDeriv_ge→index_sub_weight_le_index_hasseDeriv; no source rename.
+
+[Dedicated audit](Index-index_hasseDeriv_ge.md) inspected:24 audit items,42rules,five actual searches,
+binder probes,literature/exemption,complete packing+inequality tables,all11steps.
+Frozen SHA256 `e5f65f41f0054212ead03ba47fb84d660a1fbe451c7918ee83df9fb9325d4174`. Fresh whole ORIGINAL nonself reproof, all18 original public
+type/value recoveries and all19 actual retained standard-axiom checks: compiler
+session71946 exit0, `/private/tmp/roth-index-d10-compatibility.log`.
+Approved no-DecEq types are additionally checked by Expr.find?; actual signatures printed.
+Sequential owner full then separate LeanEval62194 both exit0(176.89s/40.45s),
+Index+Theta hashes stable; `/private/tmp/roth-index-d10-{full,leaneval}.log`.
+Worker COMPLETE unfiltered Index LSP success=true partial=false timed_out=false, 0target items/21other warnings. External MainLemma and Theta complete native LSP0errors/3and23inherited warnings, noinfos/no faileddependencies; Theta one45second partial followed complete retry. Both external callers accepted; raw /private/tmp/roth-index-d10-callers-lsp.json.
+All original block docs byte-identical, source widths≤100, diff checked before staging.
+Source269lines/19retained. Index10/21 originals,overall140/264;
+no file-final completion claimed. Leaf source/Lean requests finished before owner gates.

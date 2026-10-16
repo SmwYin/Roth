@@ -1386,3 +1386,22 @@ All original block docs byte-identical, source widths≤100, diff checked before
 Index9/21 originals,overall139/264; source270lines,
 19retained declarations. Exact-path commit and successful cleanup-branch push
 precede the next edit. Header remains explicitly user-preserved.
+
+
+## Index d10 checkpoint — index_hasseDeriv_ge
+
+Applied approved unused σ-DecidableEq omission and direct sub_le_iff_le_add/simpa proof, removing have/rewrite/linarith; proof5→3 lines, measured289.94→192.16ms. Appended public project-end rename request index_hasseDeriv_ge→index_sub_weight_le_index_hasseDeriv; no source rename.
+
+[Dedicated audit](cleanup/Index-index_hasseDeriv_ge.md): all24/42/five searches/binder probes/11checks;
+worker module/complete LSP/independent proof/type/actual standard-axiom gates passed.
+Frozen SHA256 `e5f65f41f0054212ead03ba47fb84d660a1fbe451c7918ee83df9fb9325d4174`. Fresh whole ORIGINAL nonself reproof, all18 original public
+type/value recoveries and all19 actual retained standard-axiom checks: compiler
+session71946 exit0, `/private/tmp/roth-index-d10-compatibility.log`.
+Approved no-DecEq types are additionally checked by Expr.find?; actual signatures printed.
+Sequential owner full then separate LeanEval62194 both exit0(176.89s/40.45s),
+Index+Theta hashes stable; `/private/tmp/roth-index-d10-{full,leaneval}.log`.
+Worker COMPLETE unfiltered Index LSP success=true partial=false timed_out=false, 0target items/21other warnings. External MainLemma and Theta complete native LSP0errors/3and23inherited warnings, noinfos/no faileddependencies; Theta one45second partial followed complete retry. Both external callers accepted; raw /private/tmp/roth-index-d10-callers-lsp.json.
+All original block docs byte-identical, source widths≤100, diff checked before staging.
+Index10/21 originals,overall140/264; source269lines,
+19retained declarations. Exact-path commit and successful cleanup-branch push
+precede the next edit. Header remains explicitly user-preserved.

@@ -106,13 +106,14 @@ the approved enumeration.
 
 ## Application ledger
 
-Verified σ-DecidableEq omissions: 5/17.
+Verified σ-DecidableEq omissions: 6/17.
 
 - [index_le_weight](Index-index_le_weight.md)
 - [exists_weight_eq_index](Index-exists_weight_eq_index.md)
 - [le_index_iff](Index-le_index_iff.md)
 - [index_nonneg](Index-index_nonneg.md)
 - [index_eq_zero_iff](Index-index_eq_zero_iff.md)
+- [index_hasseDeriv_ge](Index-index_hasseDeriv_ge.md)
 
 Rename τ-DecidableEq removed: False.
 index_le_card.hr removed: False.

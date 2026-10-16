@@ -102,15 +102,14 @@ theorem index_eq_zero_iff {P : MvPolynomial σ ℝ} (hP : P ≠ 0) {r : σ → �
     simpa [hasseDeriv_zero_apply] using hd
   · simpa using index_le_weight (r := r) (d := 0) (by simpa [hasseDeriv_zero_apply] using h)
 
+omit [DecidableEq σ] in
 /-- Applying `Δ_k` lowers the index by at most the weight of `k`.
 Source: §4, Lemma `lem:index-of-derivative` ("`ind(Δ_k P) ≥ ind(P) - ∑ k_j / r_j`"). -/
 theorem index_hasseDeriv_ge {P : MvPolynomial σ ℝ} {k : σ →₀ ℕ} (hk : hasseDeriv k P ≠ 0)
     (α : σ → ℝ) (r : σ → ℕ) : index P α r - weight r k ≤ index (hasseDeriv k P) α r := by
   obtain ⟨i, hi, hiw⟩ := exists_weight_eq_index hk α r
   rw [hasseDeriv_hasseDeriv, smul_eq_C_mul, map_mul, eval_C, mul_ne_zero_iff] at hi
-  have := index_le_weight (r := r) hi.2
-  rw [weight_add] at this
-  linarith
+  exact sub_le_iff_le_add.2 (by simpa [weight_add, hiw] using index_le_weight (r := r) hi.2)
 
 /-- Source: §4, Lemma 4-1 ("`ind(P + Q) ≥ min(ind P, ind Q)`"), in the form used in the proof of
 Lemma 6 (a common lower bound for the nonzero summands is a lower bound for a nonzero sum). -/
