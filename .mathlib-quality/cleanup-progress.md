@@ -35,7 +35,7 @@ All 14 declarations retained and reviewed; overall 40/264 original declarations 
 Box source 128 → 126 lines; independent simplify finding fixed (two redundant imports),
 final module/full/LeanEval and complete LSP gates pass. Actual profiling: all 14 below 1000ms,
 maximum 196.39ms. See [Box final report](cleanup/Box-final.md).
-Active file: `Roth/Wronskian.lean`; 8/15 original declarations reviewed and validated. Overall 48/264 original declarations reviewed. File-level final phases remain pending.
+Active file: `Roth/Wronskian.lean`; 9/15 original declarations reviewed and validated. Overall 49/264 original declarations reviewed. File-level final phases remain pending.
 Continue sequential declaration validation, commit, and push through every remaining
 file in inventory order without waiting at file boundaries. Each file requires final
 independent review, profiling, and a full build. The project remains incomplete.
@@ -470,3 +470,7 @@ ownership to the orchestrator for dispatch of the next fresh Wronskian worker.
 ## Wronskian declaration 8 checkpoint
 
 `Roth.coeff_wronskian_of_natDegree_injective`: Eliminated hD through direct sum rewrites and replaced final simp-only/ring with terminal simp;29→22lines,18bodylines. Both unused hypotheses retained pending explicit user decision on compiled removal proposal and sole caller repair. [Full declaration audit](cleanup/Wronskian-coeff_wronskian_of_natDegree_injective.md). Module, complete LSP, isolated type/axiom and diff gates pass. Publication validation: full `lake build` session10237 exit0; separate `lake build Roth.LeanEval` session38808 exit0. Logs `/private/tmp/roth-wronskian-d8-full.log` and `...-leaneval.log`.
+
+## Wronskian declaration 9 checkpoint
+
+`Roth.wronskian_ne_zero_of_natDegree_injective`: Direct simpa from coefficient identity replaces h1/rewrite chain, signature packed and redundant cast removed;8→5lines. Final-source closure rerun after premature freeze, earlier full36477 not counted. [Full declaration audit](cleanup/Wronskian-wronskian_ne_zero_of_natDegree_injective.md). Module, complete LSP, isolated type/axiom and diff gates pass. Publication validation: full `lake build` session80038 exit0; separate `lake build Roth.LeanEval` session58989 exit0. Logs `/private/tmp/roth-wronskian-d9-full-final.log` and `...-leaneval.log`.

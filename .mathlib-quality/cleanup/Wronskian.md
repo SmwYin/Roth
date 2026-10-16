@@ -41,7 +41,7 @@ Every public declaration has an existing docstring, preserved. Private helpers h
 | 6 | `coeff_prod_of_natDegree_le'` | 106–117 | 12 | validated; [audit](Wronskian-coeff_prod_of_natDegree_le.md) |
 | 7 | `sum_range_le_sum_of_injective` | 121–126 | 6 | validated; [audit](Wronskian-sum_range_le_sum_of_injective.md) |
 | 8 | `coeff_wronskian_of_natDegree_injective` | 134–162 | 29 | validated; [audit](Wronskian-coeff_wronskian_of_natDegree_injective.md) |
-| 9 | `wronskian_ne_zero_of_natDegree_injective` | 168–175 | 8 | pending |
+| 9 | `wronskian_ne_zero_of_natDegree_injective` | 168–175 | 8 | validated; [audit](Wronskian-wronskian_ne_zero_of_natDegree_injective.md) |
 | 10 | `wronskian_update_sub_smul` | 181–190 | 10 | pending |
 | 11 | `span_range_update_sub_le` | 192–201 | 10 | pending |
 | 12 | `linearIndependent_update_sub_smul` | 207–217 | 11 | pending |
@@ -80,3 +80,7 @@ Every public declaration has an existing docstring, preserved. Private helpers h
 ## Declaration 8 checkpoint
 
 `coeff_wronskian_of_natDegree_injective`: Eliminated hD through direct sum rewrites and replaced final simp-only/ring with terminal simp;29→22lines,18bodylines. Both unused hypotheses retained pending explicit user decision on compiled removal proposal and sole caller repair. All worker gates pass; full `lake build` session10237 and separate `lake build Roth.LeanEval` session38808 exited0. Logs `/private/tmp/roth-wronskian-d8-full.log` and `...-leaneval.log`.
+
+## Declaration 9 checkpoint
+
+`wronskian_ne_zero_of_natDegree_injective`: Direct simpa from coefficient identity replaces h1/rewrite chain, signature packed and redundant cast removed;8→5lines. Final-source closure rerun after premature freeze, earlier full36477 not counted. All worker gates pass; full `lake build` session80038 and separate `lake build Roth.LeanEval` session58989 exited0. Logs `/private/tmp/roth-wronskian-d9-full-final.log` and `...-leaneval.log`.

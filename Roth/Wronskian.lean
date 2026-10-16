@@ -151,14 +151,11 @@ theorem coeff_wronskian_of_natDegree_injective {φ : Fin l → K[X]} (hφ : ∀ 
 Wronskian.
 Source: §2, first lemma ("Thus the new Wronskian ... is nonzero" for a family with distinct
 degrees). -/
-theorem wronskian_ne_zero_of_natDegree_injective [CharZero K] {φ : Fin l → K[X]}
-    (hφ : ∀ ν, φ ν ≠ 0) (hd : Function.Injective fun ν => (φ ν).natDegree) :
-    wronskian φ ≠ 0 := by
+theorem wronskian_ne_zero_of_natDegree_injective [CharZero K] {φ : Fin l → K[X]} (hφ : ∀ ν, φ ν ≠ 0)
+    (hd : Function.Injective fun ν ↦ (φ ν).natDegree) : wronskian φ ≠ 0 := by
   intro h0
-  have h1 := coeff_wronskian_of_natDegree_injective hφ hd
-  rw [h0, coeff_zero, det_choose_eq] at h1
-  simp [eq_comm (a := (0 : K)), Finset.prod_eq_zero_iff, sub_eq_zero, hφ, Nat.factorial_ne_zero,
-    hd.eq_iff] at h1
+  simpa [h0, det_choose_eq, eq_comm (a := 0), Finset.prod_eq_zero_iff, sub_eq_zero, hφ,
+    Nat.factorial_ne_zero, hd.eq_iff] using coeff_wronskian_of_natDegree_injective hφ hd
 
 /-- Subtracting a constant multiple of one member of the family from another does not change
 the Wronskian.
