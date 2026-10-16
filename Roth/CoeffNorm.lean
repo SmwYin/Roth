@@ -252,24 +252,19 @@ theorem degreeOf_det_hasseDeriv_le {l : ℕ} (E : Fin l → Fin l → (σ →₀
 bounded by `((r_1 + 1) ⋯ (r_p + 1))^l l! B^l 2^{(r_1 + ⋯ + r_p) l}`"), stated for a determinant
 of Hasse derivatives of arbitrary multi-indices. -/
 theorem abs_coeff_det_hasseDeriv_le [Fintype σ] [DecidableEq σ] {l : ℕ}
-    (E : Fin l → Fin l → (σ →₀ ℕ)) (P : MvPolynomial σ ℤ) {r : σ → ℕ}
-    (hP : ∀ j, degreeOf j P ≤ r j) {B : ℝ} (hB0 : 0 ≤ B) (hB : ∀ d, |((P.coeff d : ℤ) : ℝ)| ≤ B)
-    (d : σ →₀ ℕ) :
-    |(((Matrix.of fun μ ν : Fin l => hasseDeriv (E μ ν) P).det.coeff d : ℤ) : ℝ)| ≤
+    (E : Fin l → Fin l → (σ →₀ ℕ)) (P : MvPolynomial σ ℤ) {r : σ → ℕ} (hP : ∀ j, degreeOf j P ≤ r j)
+    {B : ℝ} (hB0 : 0 ≤ B) (hB : ∀ d, |((P.coeff d : ℤ) : ℝ)| ≤ B) (d : σ →₀ ℕ) :
+    |(((Matrix.of fun μ ν : Fin l ↦ hasseDeriv (E μ ν) P).det.coeff d : ℤ) : ℝ)| ≤
       (∏ j, ((r j : ℝ) + 1)) ^ l * l.factorial * B ^ l * 2 ^ ((∑ j, r j) * l) := by
-  have hN0 : 0 ≤ ∏ j, ((r j : ℝ) + 1) := by positivity
   have hsupp : (P.support.card : ℝ) ≤ ∏ j, ((r j : ℝ) + 1) := by
-    exact_mod_cast card_le_card_box fun d hd j => (monomial_le_degreeOf j hd).trans (hP j)
-  have hC0 : 0 ≤ 2 ^ (∑ j, r j) * ((∏ j, ((r j : ℝ) + 1)) * B) :=
-    mul_nonneg (by positivity) (mul_nonneg hN0 hB0)
-  have hentry : ∀ μ ν, normOne ((Matrix.of fun μ ν : Fin l => hasseDeriv (E μ ν) P) μ ν) ≤
-      2 ^ (∑ j, r j) * ((∏ j, ((r j : ℝ) + 1)) * B) := fun μ ν =>
-    (normOne_hasseDeriv_le _ P hP).trans (mul_le_mul_of_nonneg_left
-      ((normOne_le_card_mul P hB).trans (mul_le_mul_of_nonneg_right hsupp hB0)) (by positivity))
-  calc _ ≤ normOne (Matrix.of fun μ ν : Fin l => hasseDeriv (E μ ν) P).det :=
+    exact_mod_cast card_le_card_box fun d hd j ↦ (monomial_le_degreeOf j hd).trans (hP j)
+  calc _ ≤ normOne (Matrix.of fun μ ν : Fin l ↦ hasseDeriv (E μ ν) P).det :=
         abs_coeff_le_normOne _ _
     _ ≤ l.factorial * (2 ^ (∑ j, r j) * ((∏ j, ((r j : ℝ) + 1)) * B)) ^ l :=
-        normOne_det_le _ hC0 hentry
-    _ = _ := by rw [pow_mul]; ring
+        normOne_det_le _ (by positivity) fun μ ν ↦
+          (normOne_hasseDeriv_le _ P hP).trans (mul_le_mul_of_nonneg_left
+            ((normOne_le_card_mul P hB).trans (mul_le_mul_of_nonneg_right hsupp hB0))
+            (by positivity))
+    _ = _ := by ring
 
 end Roth
