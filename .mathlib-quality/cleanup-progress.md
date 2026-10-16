@@ -652,3 +652,7 @@ User model preference update: all new declaration/helper/review workers now use 
 ## Taylor declaration 20 checkpoint
 
 `MvPolynomial.eval_eq_sum_box`: Applied evaluation congruence directly with simpa; body2 to1lines and signature packed, exact public type/docs preserved. [Dedicated audit](cleanup/Taylor-eval_eq_sum_box.md). Module, complete LSP, isolated type/axiom and diff gates pass. Publication validation: full `lake build` session80735 exit0; separate `lake build Roth.LeanEval` session37852 exit0. Frozen source SHA256 `4878106187d61fe102f4f1b52582772cbc6938085e3e1e1845843279cfd356de`. Logs `/private/tmp/roth-taylor-d20-full.log` and `...-leaneval.log`.
+
+## Taylor independent simplify checkpoint
+
+Fresh GPT-6.1 Sol Medium review found one compiled degree-bound proof improvement, now applied: terminal simp replaces rw/contradiction,3→2bodylines. [Review](Taylor-simplify.md) in the cleanup directory. Final source218lines, original20/20 and overall75/264 unchanged. Module87739/full91300/separateLeanEval69418 exit0, complete LSP only preserved header warning, exact17publicconstant compatibility session7752 exit0. Frozen SHA256 `31af75afd28f840ddee51978509ba63b28536aa84bba56dc047df2aa4b23fbdc`. Profiling and final report remain pending.
