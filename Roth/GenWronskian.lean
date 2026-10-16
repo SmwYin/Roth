@@ -142,10 +142,6 @@ private noncomputable def kronSpan (k μ : ℕ) : Submodule (Polynomial K)
     (MvPolynomial σ K → Polynomial K) :=
   Submodule.span (Polynomial K) (kronHasse (K := K) k '' {d | d.degree ≤ μ})
 
-private lemma kronSpan_mono (k : ℕ) {μ ν : ℕ} (h : μ ≤ ν) :
-    kronSpan (K := K) (σ := σ) k μ ≤ kronSpan k ν :=
-  Submodule.span_mono (Set.image_mono fun _ hd => (Set.mem_ofPred_eq ▸ hd).trans h)
-
 private lemma derivative_mem_kronSpan (k μ : ℕ) {F : MvPolynomial σ K → Polynomial K}
     (hF : F ∈ kronSpan k μ) :
     (fun P => Polynomial.derivative (F P)) ∈ kronSpan (K := K) (σ := σ) k (μ + 1) := by
@@ -179,7 +175,8 @@ private lemma derivative_mem_kronSpan (k μ : ℕ) {F : MvPolynomial σ K → Po
       funext P
       simp [Polynomial.derivative_mul, add_comm]
     rw [heq]
-    exact Submodule.add_mem _ (Submodule.smul_mem _ _ (kronSpan_mono k (Nat.le_succ μ) hF'))
+    exact Submodule.add_mem _ (Submodule.smul_mem _ _
+      (Submodule.span_mono (Set.image_mono fun _ hd ↦ le_trans hd (Nat.le_succ μ)) hF'))
       (Submodule.smul_mem _ _ hF)
 
 private lemma hasseDeriv_kronecker_mem [CharZero K] (k μ : ℕ) :
