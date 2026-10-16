@@ -1111,3 +1111,19 @@ Owner inventory parser confirms all13 canonical dedicated reports each contain42
 11 checked steps and zero unchecked items; all original block comments identical, no overwidth
 source line. Source217→214, declaration content170→163. Lattice10/10 originals plus3/3 helpers
 audited, overall130/264; fresh independent simplify, actual profiling and final gates/report remain.
+
+
+## Lattice independent simplify checkpoint
+
+Fresh [independent review](cleanup/Lattice-simplify.md) compiled a narrower two-import
+proposal, applied by owner; unnecessary real/complex powers and square-root smoothness
+imports replaced with the actual elementary sqrt/finite-product defining modules. No proof
+or public contract change. Frozen sourcea363c5532a161603683d3d9de0af3b5adbb7914a6df8dae8aba79216fd343df8,
+all worker/reviewer source ownership revoked. Actual module5997 exit0, complete module/caller
+LSP132 zero errors/1+3 inherited warnings; fresh original-source independent proof/all4public
+typeequalities/4 external#checks/all13actual standardaxioms46950 exit0. Sequential full/separate
+93589 both exit0(82.60s/23.98s), frozen hash stable. Logs
+`/private/tmp/roth-lattice-simplify-{module,compatibility,identifiers,axioms,full,leaneval}.log`.
+All13 canonical audits verified42rule labels/11checked steps; no source overwidth or comment
+drift. Source214lines. Original130/264, all10Lattice originals+3helpers audited; actual
+per-declaration profiling and final file report remain before7/14file completion.

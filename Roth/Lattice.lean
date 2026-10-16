@@ -1,5 +1,5 @@
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Analysis.SpecialFunctions.Sqrt
+import Mathlib.Algebra.BigOperators.Fin
+import Mathlib.Analysis.Real.Sqrt
 
 import Roth.Box
 
