@@ -23,7 +23,7 @@ Dialect: classic imports. Original snapshot: `/private/tmp/roth-lattice-original
 | ---: | --- | --- | --- |
 | 1 | sqrt_one_sub_inv_lt | 22–32 | Descriptive theorem name; public docs preserved; short algebraic proof. |
 | 2 | inv_add_inv_le | 34–39 | Private descriptive bound; no docstring; arithmetic hypotheses audit. |
-| 3 | sum_inv_le | 41–54 | Private finite reflection bound; lambda and chained tactics review. |
+| 3 | sum_inv_le | 41–55 | Private finite reflection bound; lambda and chained tactics review. |
 | 4 | sum_inv_lt | 62–85 | Public docs preserved; signature/auxiliary aliases audit. |
 | 5 | extend_apply_castSucc | 87–90 | Private Finsupp extension coordinate identity; library replacement review. |
 | 6 | extend_apply_last | 92–98 | Private last-coordinate identity; library replacement review. |

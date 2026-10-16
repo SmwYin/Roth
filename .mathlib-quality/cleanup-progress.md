@@ -120,7 +120,7 @@ Files will be processed in dependency order; declarations within each file are s
 | `Roth/Taylor.lean` | 239 | All cleanup phases complete;20/20 originals and2 added helpers audited; user-preserved metadata |
 | `Roth/CoeffNorm.lean` | 320 | All cleanup phases complete;26/26 originals and1 added helper audited; compiled public proposal pending |
 | `Roth/GenWronskian.lean` | 292 | All cleanup phases complete;19/19 originals and2 added helpers audited; metadata/two compiled public proposals explicit |
-| `Roth/Lattice.lean` | 217 | Active: original declarations 2/10 audited; final file phases pending |
+| `Roth/Lattice.lean` | 217 | Active: original declarations 3/10 audited; final file phases pending |
 | `Roth/Index.lean` | 275 | Awaiting cleanup |
 | `Roth/Separation.lean` | 618 | Awaiting cleanup |
 | `Roth/Theta.lean` | 981 | Awaiting cleanup |
@@ -925,3 +925,19 @@ Explicit owner source-ownership revocation at unchanged SHA256
 Sequential full `lake build` then separate `lake build Roth.LeanEval`, session74194, both
 exit0 (6.14s/2.86s), hash stable; logs `/private/tmp/roth-lattice-d02-{full,leaneval}.log`.
 Lattice2/10 originals audited, overall122/264; final file phases remain.
+
+
+## Lattice declaration 3 checkpoint
+
+Private `sum_inv_le`: inlined single-use reciprocal estimate, used cast-aware `gcongr`,
+normalized two lambda arrows and separated chained tactics;15→15 declaration lines.
+Exact private signature retained. [Dedicated audit](cleanup/Lattice-sum_inv_le.md) records
+all24/42/five actual searches/all11 checks; native unsqueezed terminal simpa fails the
+subsequent reflection rewrite by changing the inferred index, so restricted simpa retains
+that required normal form. Module69913 exit0, complete LSP zeroerrors/headeronly; independent
+original-type nonself proof and actual built private target standard axioms pass.
+Explicit owner source-ownership revocation at frozen SHA256
+`f94e0e1dcdc5dc0fc14ca4c9940b57963f59d44c60361a4724d50604b501251d`.
+Sequential full `lake build` then separate `lake build Roth.LeanEval`, session38839,
+both exit0 (104.70s/35.53s), hash stable; logs `/private/tmp/roth-lattice-d03-{full,leaneval}.log`.
+Lattice3/10 originals audited, overall123/264; final file phases remain.
