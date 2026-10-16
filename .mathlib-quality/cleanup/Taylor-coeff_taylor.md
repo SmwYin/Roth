@@ -196,3 +196,11 @@ Before 35 declaration/33 body lines; after 5 declaration/3 body lines; headline 
 - [x] Step 5a — complete live LSP diagnostics clean for target.
 - [x] Step 5b — diff gates and actual module/isolation/type/axiom checks.
 - [x] Step 6a — no rename required.
+
+## Extracted-helper audit closure
+
+Both extracted helpers subsequently received separate fresh GPT-6 Astra Medium declaration
+audits, not a batch audit: [single-add helper](Taylor-coeff_taylor_monomial_single_add_aux.md)
+and [monomial helper](Taylor-coeff_taylor_monomial_aux.md). All required artifacts/gates passed,
+with separate full/separateLeanEval publication checkpoints. The historical pending-helper
+status above is resolved; no extraction follow-up remains.

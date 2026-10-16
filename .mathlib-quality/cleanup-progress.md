@@ -588,3 +588,19 @@ Full `lake build` session38813 and separate `lake build Roth.LeanEval` session94
 (2587/2586jobs); `/private/tmp/roth-taylor-newhelper01-{full,leaneval}.log`.
 Frozen source SHA256 `9a4189e83c942dbf021d9c6f831a4d4a17384e5b7ad8a88e1ded62dbba73cdd8`.
 Original tally unchanged: Taylor9/20, overall64/264. Second new helper audit remains pending.
+
+## Added helper2 checkpoint
+
+Fresh GPT-6 Astra Medium worker independently audited `coeff_taylor_monomial_aux`.
+Existing hasseDeriv_C replaces manual constant-case coefficient expansion and vanishing;
+11→10declarationlines, exact signature retained. All24audit/42rules/search/generalisation/
+width/inequality/checklist artifacts and module/completeLSP/isolatedproof/type/standardaxiom
+gates pass. [Dedicated audit](cleanup/Taylor-coeff_taylor_monomial_aux.md).
+Full `lake build` session74901 and separate `lake build Roth.LeanEval` session24217 exit0
+(2587/2586jobs); `/private/tmp/roth-taylor-newhelper02-{full,leaneval}.log`.
+Frozen source SHA256 `61807d7fe836eb95dbcea48055b0c9a5f5747d3c98b8d15f0d82fe33aee3f81d`.
+Both added helpers now have fresh dedicated audits/publication gates; original tally remains
+Taylor9/20, overall64/264. Original declaration10 resumes next.
+LeanSearch recovered in this audit and returned a verified univariate partial match; this
+supersedes the earlier service-unavailable status for future searches without claiming an
+environment repair.

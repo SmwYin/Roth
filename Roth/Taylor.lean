@@ -116,10 +116,9 @@ private lemma coeff_taylor_monomial_aux (α : σ → R) (d k : σ →₀ ℕ) (a
   classical
   induction k using Finsupp.induction generalizing d with
   | zero =>
-    rw [← C_apply, taylor_C, coeff_C, C_apply, hasseDeriv_monomial, eval_monomial]
     obtain rfl | hd := eq_or_ne d 0
-    · simp [hasseCoeff]
-    · simp [(hasseCoeff_eq_zero_iff d 0).2 fun h ↦ hd (le_zero_iff.1 h), hd.symm]
+    · simp
+    · simp [← C_apply, hasseDeriv_C hd, hd.symm]
   | single_add i n k hi _ ih =>
     exact coeff_taylor_monomial_single_add_aux α a n (Finsupp.notMem_support_iff.1 hi) ih d
 
