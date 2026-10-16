@@ -41,7 +41,7 @@ Two headline proofs require structural review: coeff_taylor35bodylines; eq_sum_b
 | 13 | `taylor_map` | 169–171 | 3 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | validated; [audit](Taylor-taylor_map.md) |
 | 14 | `taylor_rename` | 176–178 | 3 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | validated; [audit](Taylor-taylor_rename.md) |
 | 15 | `degreeOf_taylor_le` | 182–186 | 5 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | validated; [audit](Taylor-degreeOf_taylor_le.md) |
-| 16 | `taylor_neg_taylor` | 195–197 | 3 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | Pending |
+| 16 | `taylor_neg_taylor` | 195–197 | 3 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | validated; [audit](Taylor-taylor_neg_taylor.md) |
 | 17 | `taylor_injective` | 200–201 | 2 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | Pending |
 | 18 | `taylor_eq_zero_iff` | 205–206 | 2 | public theorem; naming descriptive, documentation appropriate; check packing, proof reuse and lambda style | Pending |
 | 19 | `eq_sum_box_hasseDeriv` | 210–227 | 18 | public theorem; naming descriptive, documentation appropriate; headline theorem: structure review required | Pending |
@@ -144,3 +144,7 @@ environment repair.
 ## Declaration 15 checkpoint
 
 `degreeOf_taylor_le`: Retained direct coefficient-vanishing degree proof after search; normalized two mathematical lambda arrows, exact signature and docs preserved. All worker gates pass. Frozen source SHA256 `1f69c55d06c8b562930bb9bbc90e9ab3a676f2491d6ddbf4f8dd4c08b8fe3de8`. Full `lake build` session9544 and separate `lake build Roth.LeanEval` session22563 exited0. Logs `/private/tmp/roth-taylor-d15-full.log` and `...-leaneval.log`.
+
+## Declaration 16 checkpoint
+
+`taylor_neg_taylor`: Retained minimal composition-cancellation simp; normalized lambda and packed signature, exact mathematical type and docstring preserved. All worker gates pass. Frozen source SHA256 `0a6ab3437c5950f4d2e800b78f03e7a53b7ce97f6cc248c3bff71fcf00a46f22`. Full `lake build` session58028 and separate `lake build Roth.LeanEval` session88498 exited0. Logs `/private/tmp/roth-taylor-d16-full.log` and `...-leaneval.log`.

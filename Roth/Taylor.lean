@@ -174,8 +174,8 @@ section CommRing
 variable {σ A : Type*} [CommRing A]
 
 /-- Translation by `-α` undoes translation by `α`. -/
-theorem taylor_neg_taylor (α : σ → A) (P : MvPolynomial σ A) :
-    taylor (fun j => -α j) (taylor α P) = P := by
+theorem taylor_neg_taylor (α : σ → A) (P : MvPolynomial σ A) : taylor (fun j ↦ -α j) (taylor α P) =
+    P := by
   simp [taylor_taylor]
 
 /-- Over a ring, translation is injective, since translation by `-α` is a left inverse. -/
