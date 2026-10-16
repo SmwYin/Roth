@@ -44,7 +44,7 @@ Every public declaration has an existing docstring, preserved. Private helpers h
 | 9 | `wronskian_ne_zero_of_natDegree_injective` | 168–175 | 8 | validated; [audit](Wronskian-wronskian_ne_zero_of_natDegree_injective.md) |
 | 10 | `wronskian_update_sub_smul` | 181–190 | 10 | validated; [audit](Wronskian-wronskian_update_sub_smul.md) |
 | 11 | `span_range_update_sub_le` | 192–201 | 10 | validated; [audit](Wronskian-span_range_update_sub_le.md) |
-| 12 | `linearIndependent_update_sub_smul` | 207–217 | 11 | pending |
+| 12 | `linearIndependent_update_sub_smul` | 207–217 | 11 | validated; [audit](Wronskian-linearIndependent_update_sub_smul.md) |
 | 13 | `sum_natDegree_update_lt` | 224–246 | 23 | pending |
 | 14 | `wronskian_ne_zero_of_linearIndependent` | 251–261 | 11 | pending |
 | 15 | `wronskian_eq_zero_iff` | 266–269 | 4 | pending |
@@ -92,3 +92,7 @@ Every public declaration has an existing docstring, preserved. Private helpers h
 ## Declaration 11 checkpoint
 
 `span_range_update_sub_le`: Reduced span-membership proof to structural rewrites and aesop;10→5lines, exact signature unchanged. Compiled Mathlib span-update equality replacement in sole caller queued for Phase5a helper deletion. All worker gates pass; full `lake build` session15006 and separate `lake build Roth.LeanEval` session18366 exited0. Logs `/private/tmp/roth-wronskian-d11-full.log` and `...-leaneval.log`.
+
+## Declaration 12 checkpoint
+
+`linearIndependent_update_sub_smul`: Replaced inverse-update/span machinery with direct Mathlib span preservation,11→6lines and8→3bodylines; signature/docs unchanged. Private span helper now unused, scheduled for Phase5a deletion. All worker gates pass; full `lake build` session37876 and separate `lake build Roth.LeanEval` session72281 exited0. Logs `/private/tmp/roth-wronskian-d12-full.log` and `...-leaneval.log`.

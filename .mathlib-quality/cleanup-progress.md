@@ -35,7 +35,7 @@ All 14 declarations retained and reviewed; overall 40/264 original declarations 
 Box source 128 → 126 lines; independent simplify finding fixed (two redundant imports),
 final module/full/LeanEval and complete LSP gates pass. Actual profiling: all 14 below 1000ms,
 maximum 196.39ms. See [Box final report](cleanup/Box-final.md).
-Active file: `Roth/Wronskian.lean`; 11/15 original declarations reviewed and validated. Overall 51/264 original declarations reviewed. File-level final phases remain pending.
+Active file: `Roth/Wronskian.lean`; 12/15 original declarations reviewed and validated. Overall 52/264 original declarations reviewed. File-level final phases remain pending.
 Continue sequential declaration validation, commit, and push through every remaining
 file in inventory order without waiting at file boundaries. Each file requires final
 independent review, profiling, and a full build. The project remains incomplete.
@@ -482,3 +482,7 @@ ownership to the orchestrator for dispatch of the next fresh Wronskian worker.
 ## Wronskian declaration 11 checkpoint
 
 `Roth.span_range_update_sub_le`: Reduced span-membership proof to structural rewrites and aesop;10→5lines, exact signature unchanged. Compiled Mathlib span-update equality replacement in sole caller queued for Phase5a helper deletion. [Full declaration audit](cleanup/Wronskian-span_range_update_sub_le.md). Module, complete LSP, isolated type/axiom and diff gates pass. Publication validation: full `lake build` session15006 exit0; separate `lake build Roth.LeanEval` session18366 exit0. Logs `/private/tmp/roth-wronskian-d11-full.log` and `...-leaneval.log`.
+
+## Wronskian declaration 12 checkpoint
+
+`Roth.linearIndependent_update_sub_smul`: Replaced inverse-update/span machinery with direct Mathlib span preservation,11→6lines and8→3bodylines; signature/docs unchanged. Private span helper now unused, scheduled for Phase5a deletion. [Full declaration audit](cleanup/Wronskian-linearIndependent_update_sub_smul.md). Module, complete LSP, isolated type/axiom and diff gates pass. Publication validation: full `lake build` session37876 exit0; separate `lake build Roth.LeanEval` session72281 exit0. Logs `/private/tmp/roth-wronskian-d12-full.log` and `...-leaneval.log`.

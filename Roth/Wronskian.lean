@@ -182,14 +182,9 @@ operation preserves linear independence). -/
 theorem linearIndependent_update_sub_smul {φ : Fin l → K[X]} {ν ν' : Fin l} (h : ν ≠ ν') (c : K)
     (hφ : LinearIndependent K φ) :
     LinearIndependent K (Function.update φ ν' (φ ν' - C c * φ ν)) := by
-  set ψ := Function.update φ ν' (φ ν' - C c * φ ν)
-  have hinv : Function.update ψ ν' (ψ ν' - C (-c) * ψ ν) = φ := by
-    simp [ψ, Function.update_of_ne h]
-  have hspan : Submodule.span K (Set.range ψ) = Submodule.span K (Set.range φ) :=
-    (span_range_update_sub_le φ ν ν' c).antisymm
-      ((span_range_update_sub_le ψ ν ν' (-c)).trans_eq' (by rw [hinv]))
-  rw [linearIndependent_iff_card_eq_finrank_span] at hφ ⊢
-  rw [hφ, Set.finrank, Set.finrank, hspan]
+  rw [linearIndependent_iff_card_eq_finrank_span, Set.finrank, ← smul_eq_C_mul,
+    Submodule.span_range_update_sub_smul h]
+  exact linearIndependent_iff_card_eq_finrank_span.mp hφ
 
 /-- If two members `φ ν`, `φ ν'` of a linearly independent family have the same degree, cancelling
 the leading coefficient of `φ ν'` against `φ ν` strictly lowers the total degree.
