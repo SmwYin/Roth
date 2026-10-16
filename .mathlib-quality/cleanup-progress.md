@@ -45,7 +45,7 @@ See [Wronskian final report](cleanup/Wronskian-final.md). Overall55/264 original
 and every final file-level phase. Source239 → 218lines; original public API/docs preserved.
 Independent simplify finding fixed and revalidated; actual profile all22 retained declarations
 below750ms, maximum672.30ms. Overall75/264 original declarations audited.
-See [Taylor final report](cleanup/Taylor-final.md). `Roth/CoeffNorm.lean` is active:13/26original declarations complete, overall88/264. Compiled public-hypothesis proposal awaits scoped user decision; original signatures remain unchanged.
+See [Taylor final report](cleanup/Taylor-final.md). `Roth/CoeffNorm.lean` is active:14/26original declarations complete, overall89/264. Compiled public-hypothesis proposal awaits scoped user decision; original signatures remain unchanged.
 The user approved removing unused `hφ`/`hd` from the Wronskian coefficient identity;
 the exact removal and sole-caller update are implemented and fully revalidated. Both unused
 argument warnings are gone; header metadata remains unchanged.
@@ -715,3 +715,7 @@ All20 originals and2 added helpers complete; overall75/264. [Final report](clean
 ## CoeffNorm declaration 13 checkpoint
 
 `Roth.normOne_det_le`: direct sign-case simpa removes intermediate show/rw equality; declaration11→10 and body8→7 lines. Exact public signature/docs preserved; unused DecidableEq and hC remain pending scoped approval. [Dedicated audit](cleanup/CoeffNorm-normOne_det_le.md). Module95270 exit0, complete frozen-source LSP no errors, fresh CLI original-type assignment/nonself reproof/standard axioms exit0. All24 audit/42 rules/5 searches/11 checks pass; all stalled probes terminated, no orphan process. Sequential full `lake build` and separate `lake build Roth.LeanEval` session12002 exit0; SHA256 `539842bb50df433db0d3ee8d8f366892b352427103407526700baa23ae5cd33f` unchanged. Logs `/private/tmp/roth-coeffnorm-d13-{full,leaneval}.log`. CoeffNorm13/26, overall88/264.
+
+## CoeffNorm declaration 14 checkpoint
+
+`Roth.abs_coeff_hasseDeriv_le`: explicit cast rewrite chain replaces separate rewrite/push_cast/rewrite; declaration12→10, body9→7 lines, exact public type/docs preserved. [Dedicated audit](cleanup/CoeffNorm-abs_coeff_hasseDeriv_le.md). Module31196 exit0; complete final LSP no errors, fresh CLI original-type assignment/nonself reproof/standard axioms30662 exit0. All24 audit/42 rules/5 searches/11 checks pass. Sequential full `lake build` and separate `lake build Roth.LeanEval` session24717 exit0; SHA256 `e69bf642ea61b7df2ae8ea75e5b379a66aa58a3da95b0a9b8ea4c9bc21231b47` unchanged. Logs `/private/tmp/roth-coeffnorm-d14-{full,leaneval}.log`. An unnecessary repeated leaf baseline build and incorrectly named LeanEval target are disclosed in its report; publication used the correct Roth.LeanEval target successfully. Optional public hB localization closed under API preservation. CoeffNorm14/26, overall89/264.

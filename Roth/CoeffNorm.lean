@@ -129,12 +129,10 @@ multiplied by a binomial factor at most `2^{∑ r_j}`). -/
 theorem abs_coeff_hasseDeriv_le [Fintype σ] (d : σ →₀ ℕ) (P : MvPolynomial σ ℤ) {r : σ → ℕ}
     (hP : ∀ j, degreeOf j P ≤ r j) {B : ℝ} (hB : ∀ e, |((P.coeff e : ℤ) : ℝ)| ≤ B) (e : σ →₀ ℕ) :
     |(((hasseDeriv d P).coeff e : ℤ) : ℝ)| ≤ 2 ^ (∑ j, r j) * B := by
-  rw [coeff_hasseDeriv]
-  push_cast
-  rw [abs_mul, Nat.abs_cast]
+  rw [coeff_hasseDeriv, Int.cast_mul, Int.cast_natCast, abs_mul, Nat.abs_cast]
   by_cases he : e + d ∈ P.support
   · have hc : (hasseCoeff d (e + d) : ℝ) ≤ 2 ^ (∑ j, r j) := by
-      exact_mod_cast hasseCoeff_le_two_pow fun j => (monomial_le_degreeOf j he).trans (hP j)
+      exact_mod_cast hasseCoeff_le_two_pow fun j ↦ (monomial_le_degreeOf j he).trans (hP j)
     exact mul_le_mul hc (hB _) (abs_nonneg _) (by positivity)
   · rw [notMem_support_iff.1 he]
     simpa using mul_nonneg (by positivity : (0 : ℝ) ≤ 2 ^ (∑ j, r j)) ((abs_nonneg _).trans (hB e))
