@@ -205,11 +205,6 @@ theorem geom_sum_le_one_add_pow {t : ℝ} (ht : 0 ≤ t) (r : ℕ) :
   refine le_mul_of_one_le_right (pow_nonneg ht m) ?_
   exact_mod_cast Nat.choose_pos (Finset.mem_range_succ_iff.1 hm)
 
-private lemma sum_box_prod_pow [Fintype σ] [DecidableEq σ] (r : σ → ℕ) (y : σ → ℝ) :
-    ∑ k ∈ box r, ∏ j, y j ^ k j = ∏ j, ∑ s ∈ Finset.range (r j + 1), y j ^ s := by
-  rw [box, Finset.sum_map, Finset.prod_univ_sum]
-  rfl
-
 /-- A value bound for an integer polynomial with bounded coefficients and degrees.
 Source: §6, proof of Lemma 9 ("`|(Δ_i Q)(α, …, α)| ≤ abc(Δ_i Q) ∏_j ∑_{s ≤ r_j} |α|^s`",
 combined with the geometric-sum bound). -/
@@ -237,7 +232,7 @@ theorem abs_eval_le [Fintype σ] (P : MvPolynomial σ ℤ) {r : σ → ℕ} (hP 
     _ ≤ ∑ k ∈ box r, B * ∏ j, |x j| ^ k j :=
         Finset.sum_le_sum_of_subset_of_nonneg hbox fun _ _ _ => by positivity
     _ = B * ∏ j, ∑ s ∈ Finset.range (r j + 1), |x j| ^ s := by
-        rw [← Finset.mul_sum, sum_box_prod_pow]
+        simp [← Finset.mul_sum, box, Finset.prod_univ_sum]
     _ ≤ B * ∏ j, (1 + |x j|) ^ r j :=
         mul_le_mul_of_nonneg_left (Finset.prod_le_prod₀ (fun _ _ => by positivity)
           fun j _ => geom_sum_le_one_add_pow (abs_nonneg _) _) hB0
