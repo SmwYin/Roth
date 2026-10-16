@@ -125,23 +125,17 @@ may vanish), but they are the setting in which it is used.
 Source: §2, first lemma ("The coefficient of `t^D` in the new Wronskian is
 `(∏ a_ν) det (d_ν choose μ)`... All other contributions have lower total degree"). -/
 theorem coeff_wronskian_of_natDegree_injective {φ : Fin l → K[X]} (hφ : ∀ ν, φ ν ≠ 0)
-    (hd : Function.Injective fun ν => (φ ν).natDegree) :
-    (wronskian φ).coeff (∑ ν, (φ ν).natDegree - ∑ ν : Fin l, (ν : ℕ)) =
-      (∏ ν, (φ ν).leadingCoeff) *
-        (Matrix.of fun μ ν : Fin l => (((φ ν).natDegree.choose μ : ℕ) : K)).det := by
+    (hd : Function.Injective fun ν ↦ (φ ν).natDegree) :
+    (wronskian φ).coeff (∑ ν, (φ ν).natDegree - ∑ ν : Fin l, (ν : ℕ)) = (∏ ν, (φ ν).leadingCoeff) *
+      (Matrix.of fun μ ν : Fin l ↦ ((φ ν).natDegree.choose μ : K)).det := by
   classical
-  have key : ∀ σ : Equiv.Perm (Fin l),
-      (∏ i, hasseDeriv ((σ i : Fin l) : ℕ) (φ i)).coeff
-          (∑ ν, (φ ν).natDegree - ∑ ν : Fin l, (ν : ℕ)) =
-        ∏ i, (((φ i).natDegree.choose (σ i) : ℕ) : K) * (φ i).leadingCoeff := by
-    intro σ
-    by_cases h : ∀ i, ((σ i : Fin l) : ℕ) ≤ (φ i).natDegree
-    · have hD : ∑ i, ((φ i).natDegree - (σ i : ℕ)) =
-          ∑ ν, (φ ν).natDegree - ∑ ν : Fin l, (ν : ℕ) := by
-        rw [Finset.sum_tsub_distrib _ fun i _ => h i,
-          Equiv.sum_comp σ (fun i : Fin l => (i : ℕ))]
-      rw [← hD, coeff_prod_of_natDegree_le' _ _ _ fun i _ => natDegree_hasseDeriv_le _ _]
-      refine Finset.prod_congr rfl fun i _ => ?_
+  have key (σ : Equiv.Perm (Fin l)) : (∏ i, hasseDeriv (σ i : ℕ) (φ i)).coeff
+      (∑ ν, (φ ν).natDegree - ∑ ν : Fin l, (ν : ℕ)) =
+      ∏ i, ((φ i).natDegree.choose (σ i) : K) * (φ i).leadingCoeff := by
+    by_cases h : ∀ i, (σ i : ℕ) ≤ (φ i).natDegree
+    · rw [← Equiv.sum_comp σ (fun i : Fin l ↦ (i : ℕ)), ← Finset.sum_tsub_distrib _ fun i _ ↦ h i,
+        coeff_prod_of_natDegree_le' _ _ _ fun i _ ↦ natDegree_hasseDeriv_le _ _]
+      refine Finset.prod_congr rfl fun i _ ↦ ?_
       rw [hasseDeriv_coeff, Nat.sub_add_cancel (h i), leadingCoeff]
     · push Not at h
       obtain ⟨i, hi⟩ := h
@@ -150,9 +144,8 @@ theorem coeff_wronskian_of_natDegree_injective {φ : Fin l → K[X]} (hφ : ∀ 
       exact (Finset.prod_eq_zero (Finset.mem_univ i) (by simp [Nat.choose_eq_zero_of_lt hi])).symm
   rw [wronskian, wronskianMatrix, Matrix.det_apply', Matrix.det_apply', finsetSum_coeff,
     Finset.mul_sum]
-  refine Finset.sum_congr rfl fun σ _ => ?_
-  simp only [Matrix.of_apply, coeff_intCast_mul, key, Finset.prod_mul_distrib]
-  ring
+  refine Finset.sum_congr rfl fun σ _ ↦ ?_
+  simp [coeff_intCast_mul, key, Finset.prod_mul_distrib, mul_comm, mul_assoc]
 
 /-- In characteristic zero, nonzero polynomials of pairwise distinct degrees have nonzero
 Wronskian.

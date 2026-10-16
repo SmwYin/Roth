@@ -40,7 +40,7 @@ Every public declaration has an existing docstring, preserved. Private helpers h
 | 5 | `sum_range_card_le_sum` | 94–104 | 11 | validated; [audit](Wronskian-sum_range_card_le_sum.md) |
 | 6 | `coeff_prod_of_natDegree_le'` | 106–117 | 12 | validated; [audit](Wronskian-coeff_prod_of_natDegree_le.md) |
 | 7 | `sum_range_le_sum_of_injective` | 121–126 | 6 | validated; [audit](Wronskian-sum_range_le_sum_of_injective.md) |
-| 8 | `coeff_wronskian_of_natDegree_injective` | 134–162 | 29 | pending |
+| 8 | `coeff_wronskian_of_natDegree_injective` | 134–162 | 29 | validated; [audit](Wronskian-coeff_wronskian_of_natDegree_injective.md) |
 | 9 | `wronskian_ne_zero_of_natDegree_injective` | 168–175 | 8 | pending |
 | 10 | `wronskian_update_sub_smul` | 181–190 | 10 | pending |
 | 11 | `span_range_update_sub_le` | 192–201 | 10 | pending |
@@ -76,3 +76,7 @@ Every public declaration has an existing docstring, preserved. Private helpers h
 ## Declaration 7 checkpoint
 
 `sum_range_le_sum_of_injective`: Replaced single-use h/rwa with direct simpa and hd.injOn, removed unnecessary classical;6→4lines with original contract retained. All worker gates pass; full `lake build` session28169 and separate `lake build Roth.LeanEval` session83466 exited0. Logs `/private/tmp/roth-wronskian-d7-full.log` and `...-leaneval.log`.
+
+## Declaration 8 checkpoint
+
+`coeff_wronskian_of_natDegree_injective`: Eliminated hD through direct sum rewrites and replaced final simp-only/ring with terminal simp;29→22lines,18bodylines. Both unused hypotheses retained pending explicit user decision on compiled removal proposal and sole caller repair. All worker gates pass; full `lake build` session10237 and separate `lake build Roth.LeanEval` session38808 exited0. Logs `/private/tmp/roth-wronskian-d8-full.log` and `...-leaneval.log`.
