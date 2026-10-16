@@ -138,8 +138,8 @@ theorem eval_taylor (α x : σ → R) (P : MvPolynomial σ R) :
 
 /-- Translations compose additively. -/
 theorem taylor_taylor (α β : σ → R) (P : MvPolynomial σ R) :
-    taylor α (taylor β P) = taylor (fun j => α j + β j) P := by
-  induction P using MvPolynomial.induction_on <;> simp_all [add_assoc]
+    taylor α (taylor β P) = taylor (fun j ↦ α j + β j) P := by
+  simp [taylor, comp_aeval_apply, add_assoc]
 
 /-- Translation by `0` is the identity. -/
 @[simp]

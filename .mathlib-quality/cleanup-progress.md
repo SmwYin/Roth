@@ -42,7 +42,7 @@ Final module/full/separate LeanEval, complete LSP, public-type/definition compat
 axiom gates pass. Post-amendment actual profiling: all13 below1000ms, maximum586.13ms.
 See [Wronskian final report](cleanup/Wronskian-final.md). Overall55/264 original declarations audited.
 Current file: `Roth/Taylor.lean`, under a fresh file worker with sequential dedicated declaration audits.
-Taylor progress: 10/20 original declarations reviewed; overall 65/264. File-level final phases remain pending.
+Taylor progress: 11/20 original declarations reviewed; overall 66/264. File-level final phases remain pending.
 The user approved removing unused `hφ`/`hd` from the Wronskian coefficient identity;
 the exact removal and sole-caller update are implemented and fully revalidated. Both unused
 argument warnings are gone; header metadata remains unchanged.
@@ -608,3 +608,7 @@ environment repair.
 ## Taylor declaration 10 checkpoint
 
 `MvPolynomial.eval_taylor`: Direct Mathlib evaluation composition replaces induction; lambda arrow normalized,3 declaration lines retained, exact public contract and docstring preserved. [Dedicated audit](cleanup/Taylor-eval_taylor.md). Module, complete LSP, isolated type/axiom and diff gates pass. Publication validation: full `lake build` session26144 exit0; separate `lake build Roth.LeanEval` session9704 exit0. Frozen source SHA256 `fbd691573b1e1fa3dd2c4f33449095583791028ee6cbd25a8d92df2175e9ab39`. Logs `/private/tmp/roth-taylor-d10-full.log` and `...-leaneval.log`.
+
+## Taylor declaration 11 checkpoint
+
+`MvPolynomial.taylor_taylor`: Direct Mathlib algebra evaluation composition replaces induction; lambda normalized, exact public contract and documentation retained. [Dedicated audit](cleanup/Taylor-taylor_taylor.md). Module, complete LSP, isolated type/axiom and diff gates pass. Publication validation: full `lake build` session87659 exit0; separate `lake build Roth.LeanEval` session70984 exit0. Frozen source SHA256 `c3b13e052d8ffa6af70404bf29d2853cce67a99b36cd0dc4a8584f5bfbf23020`. Logs `/private/tmp/roth-taylor-d11-full.log` and `...-leaneval.log`.
