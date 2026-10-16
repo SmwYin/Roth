@@ -227,6 +227,22 @@ theorem det_sum_rows {A : Type*} [CommRing A] {ι : Type*} [DecidableEq ι] (s :
   simp only [Matrix.det, Finset.sum_fn, Pi.smul_def, smul_eq_mul] at h ⊢
   exact h
 
+private lemma wronskian_kronecker_eq_sum_aux (k : ℕ) (φ : Fin l → MvPolynomial σ K)
+    (s : Fin l → Finset (σ →₀ ℕ)) (c : Fin l → (σ →₀ ℕ) → Polynomial K)
+    (hc : ∀ (μ : Fin l) P, Polynomial.hasseDeriv μ (kronecker k P) =
+      ∑ d ∈ s μ, c μ d * kronecker k (hasseDeriv d P)) :
+    wronskian (fun ν ↦ kronecker k (φ ν)) = ∑ f ∈ Fintype.piFinset s,
+      (∏ μ, c μ (f μ)) * kronecker k (genWronskian f φ) := by
+  classical
+  have hM : wronskianMatrix (fun ν ↦ kronecker k (φ ν)) =
+      Matrix.of fun μ ν ↦ ∑ d ∈ s μ, c μ d * kronecker k (hasseDeriv d (φ ν)) := by
+    ext1 μ ν
+    exact hc μ (φ ν)
+  rw [wronskian, hM, det_sum_rows]
+  refine Finset.sum_congr rfl fun f _ ↦ ?_
+  rw [genWronskian, ← AlgHom.coe_toRingHom, RingHom.map_det]
+  rfl
+
 /-- **Lemma 1**: a linearly independent family of polynomials has a generalized Wronskian (with
 Hasse operators of orders `|D μ| ≤ μ`) that is not identically zero.
 
@@ -237,27 +253,17 @@ theorem exists_genWronskian_ne_zero [CharZero K] {φ : Fin l → MvPolynomial σ
     (h : LinearIndependent K φ) :
     ∃ D : Fin l → (σ →₀ ℕ), (∀ μ, (D μ).degree ≤ μ) ∧ genWronskian D φ ≠ 0 := by
   classical
-  set k := 2 + ∑ ν, ∑ j, degreeOf j (φ ν)
-  have hk : 1 < k := by omega
-  have hdeg : ∀ ν j, degreeOf j (φ ν) < k := fun ν j => by
-    have h1 := Finset.single_le_sum (f := fun j => degreeOf j (φ ν)) (by simp) (Finset.mem_univ j)
-    have h2 := Finset.single_le_sum (f := fun ν => ∑ j, degreeOf j (φ ν)) (by simp)
-      (Finset.mem_univ ν)
-    omega
-  have hW := wronskian_ne_zero_of_linearIndependent (linearIndependent_kronecker hk hdeg h)
-  choose s c hs hc using fun μ : Fin l => exists_hasseDeriv_kronecker_eq_sum (K := K) (σ := σ) k μ
-  have hexp : wronskian (fun ν => kronecker k (φ ν)) = ∑ f ∈ Fintype.piFinset s,
-      (∏ μ, c μ (f μ)) * kronecker k (genWronskian f φ) := by
-    have hM : wronskianMatrix (fun ν => kronecker k (φ ν)) =
-        Matrix.of fun μ ν => ∑ d ∈ s μ, c μ d * kronecker k (hasseDeriv d (φ ν)) := by
-      ext1 μ ν
-      exact hc μ (φ ν)
-    rw [wronskian, hM, det_sum_rows]
-    refine Finset.sum_congr rfl fun f _ => ?_
-    rw [genWronskian, ← AlgHom.coe_toRingHom, RingHom.map_det]
-    rfl
+  let k := 2 + ∑ ν, ∑ j, degreeOf j (φ ν)
+  choose s c hs hc using fun μ : Fin l ↦ exists_hasseDeriv_kronecker_eq_sum (K := K) (σ := σ) k μ
   by_contra! hcon
-  refine hW (hexp ▸ Finset.sum_eq_zero fun f hf => ?_)
-  rw [hcon f fun μ => hs μ _ (Fintype.mem_piFinset.1 hf μ), map_zero, mul_zero]
+  apply wronskian_ne_zero_of_linearIndependent
+    (linearIndependent_kronecker (Nat.lt_add_right _ (by decide)) (fun ν j ↦
+      lt_of_le_of_lt ((Finset.single_le_sum (f := fun j ↦ degreeOf j (φ ν))
+        (by simp) (Finset.mem_univ j)).trans (Finset.single_le_sum
+          (f := fun ν ↦ ∑ j, degreeOf j (φ ν)) (by simp) (Finset.mem_univ ν)))
+        (Nat.lt_add_of_pos_left two_pos)) h)
+  rw [wronskian_kronecker_eq_sum_aux k φ s c hc]
+  refine Finset.sum_eq_zero fun f hf ↦ ?_
+  rw [hcon f fun μ ↦ hs μ _ (Fintype.mem_piFinset.1 hf μ), map_zero, mul_zero]
 
 end Roth
