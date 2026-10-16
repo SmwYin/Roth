@@ -45,7 +45,9 @@ See [Wronskian final report](cleanup/Wronskian-final.md). Overall55/264 original
 and every final file-level phase. Source239 → 218lines; original public API/docs preserved.
 Independent simplify finding fixed and revalidated; actual profile all22 retained declarations
 below750ms, maximum672.30ms. Overall75/264 original declarations audited.
-See [Taylor final report](cleanup/Taylor-final.md). `Roth/CoeffNorm.lean` has completed all26 original declaration audits, its new private-helper audit and every final file phase. Source320→268; independent simplify fixes applied and revalidated. All26 retained declarations profile below750ms (maximum656.95ms); final module/full/separate LeanEval, complete module/caller LSP, all25 original-public type/value comparisons and standard axioms pass. Overall101/264 originals audited. See [CoeffNorm final report](cleanup/CoeffNorm-final.md). Compiled public-hypothesis proposal awaits scoped user decision; published public signatures remain unchanged. Header metadata warning remains user-preserved. GenWronskian has completed all19 original audits, both added-helper audits and every final file phase. Source292→263; independent simplify removed two redundant imports, measured digit-injection optimization applied. All19 retained declarations below1000ms, maximum921.00ms with required borderline repeat passed. Final complete module/caller diagnostics, all13 public type/three definition-value comparisons, standard axioms, full build and separate LeanEval pass. See [GenWronskian final report](cleanup/GenWronskian-final.md). Overall120/264 originals;6/14 files complete. Two compiled GenWronskian public-assumption proposals remain unapplied awaiting scoped decision; metadata remains user-preserved.
+See [Taylor final report](cleanup/Taylor-final.md). `Roth/CoeffNorm.lean` has completed all26 original declaration audits, its new private-helper audit and every final file phase. Source320→268; independent simplify fixes applied and revalidated. All26 retained declarations profile below750ms (maximum656.95ms); final module/full/separate LeanEval, complete module/caller LSP, all25 original-public type/value comparisons and standard axioms pass. Overall101/264 originals audited. See [CoeffNorm final report](cleanup/CoeffNorm-final.md). The scoped public-hypothesis removals are now user-approved; implementation and validation are queued with a fresh amendment owner after Lattice release. Published public signatures remain unchanged. Header metadata warning remains user-preserved. GenWronskian has completed all19 original audits, both added-helper audits and every final file phase. Source292→263; independent simplify removed two redundant imports, measured digit-injection optimization applied. All19 retained declarations below1000ms, maximum921.00ms with required borderline repeat passed. Final complete module/caller diagnostics, all13 public type/three definition-value comparisons, standard axioms, full build and separate LeanEval pass. See [GenWronskian final report](cleanup/GenWronskian-final.md). Overall120/264 originals;6/14 files complete. Both compiled GenWronskian public-assumption removals are now user-approved and remain unapplied pending the next amendment owner; metadata remains user-preserved.
+`Roth/Lattice.lean` has completed all10 original audits, all3 added private-helper audits and every final file phase. Source217→214; headline proof43→14 body lines, all4 original public types/docs preserved. Independent simplify import finding fixed and revalidated. All13 declarations below1000ms in both final complete profiling sweeps, maximum994.79ms; initial square-root1034.98ms sample explicitly recorded with required959.56/994.79ms repeats. Final module/full/separate LeanEval, complete module/caller diagnostics, independent original proofs/public-type equalities and actual standard axioms pass. See [Lattice final report](cleanup/Lattice-final.md). Overall130/264 originals audited;7/14 files complete. Header metadata remains user-preserved.
+
 The user approved removing unused `hφ`/`hd` from the Wronskian coefficient identity;
 the exact removal and sole-caller update are implemented and fully revalidated. Both unused
 argument warnings are gone; header metadata remains unchanged.
@@ -71,8 +73,9 @@ managed by GitHub CLI. Initial setup commit `0d7c74c` was pushed successfully to
 The earlier HTTPS credential failure and connected-app HTTP 403 are resolved by this local
 CLI authentication. No token is stored in this repository.
 
-The active file audit and declaration results are recorded in
-[`cleanup/Lattice.md`](cleanup/Lattice.md), following the six completed files. Each completed declaration's report and
+The latest completed file audit and declaration results are recorded in
+[`cleanup/Lattice.md`](cleanup/Lattice.md) and [its final report](cleanup/Lattice-final.md),
+following the six earlier completed files. Each completed declaration's report and
 source change are committed and pushed together after validation.
 
 ## Installed tooling and verification
@@ -120,7 +123,7 @@ Files will be processed in dependency order; declarations within each file are s
 | `Roth/Taylor.lean` | 239 | All cleanup phases complete;20/20 originals and2 added helpers audited; user-preserved metadata |
 | `Roth/CoeffNorm.lean` | 320 | All cleanup phases complete;26/26 originals and1 added helper audited; compiled public proposal pending |
 | `Roth/GenWronskian.lean` | 292 | All cleanup phases complete;19/19 originals and2 added helpers audited; metadata/two compiled public proposals explicit |
-| `Roth/Lattice.lean` | 217 | Active: all10 originals and3/3 added helpers audited; cumulative/review/profile final phases pending; final file phases pending |
+| `Roth/Lattice.lean` | 217 | All cleanup phases complete;10/10 originals and3/3 added helpers audited; user-preserved metadata |
 | `Roth/Index.lean` | 275 | Awaiting cleanup |
 | `Roth/Separation.lean` | 618 | Awaiting cleanup |
 | `Roth/Theta.lean` | 981 | Awaiting cleanup |
@@ -1127,3 +1130,38 @@ typeequalities/4 external#checks/all13actual standardaxioms46950 exit0. Sequenti
 All13 canonical audits verified42rule labels/11checked steps; no source overwidth or comment
 drift. Source214lines. Original130/264, all10Lattice originals+3helpers audited; actual
 per-declaration profiling and final file report remain before7/14file completion.
+
+
+## Lattice final publication and handoff
+
+All final file phases complete: [final report](cleanup/Lattice-final.md), all13 canonical
+declaration reports and fresh independent simplify report present. Source217→214 lines,
+declaration content170→163; headline43→14 body lines, largest branch9. All4 original public
+types, mathematical conclusions, existing block docs and pinned versions preserved.
+Source freeze SHA256 `a363c5532a161603683d3d9de0af3b5adbb7914a6df8dae8aba79216fd343df8`;
+all worker/reviewer source ownership explicitly revoked. Import-only simplify fix published
+as `b34d56d`; source unchanged throughout subsequent final profiling/build/report gates.
+
+Actual isolated full-source profiler sessions3913/82130/19793 all exit0. Initial square-root
+1034.98ms required repeated complete sweeps;959.56/994.79ms pass, all13 below1000ms in both
+final sweeps. sum_inv_lt774.15/790.97ms; remaining11 below750ms. Final maximum994.79ms.
+Actual per-declaration totals include elaboration and associated async proof/kernel/compiler
+tasks without nested double counting; no aggregate-only inference or performance patch.
+Trace/table evidence `/private/tmp/roth-lattice-profile-passN-{trace.log,table.json}` N=1,2,3;
+final copies `/private/tmp/roth-lattice-final-profile-{trace.log,table.json}`.
+
+Fresh final sequential full `lake build` then separate `lake build Roth.LeanEval`, session6730,
+both exit0(6.36s/3.23s), frozen source hash stable; logs
+`/private/tmp/roth-lattice-final-{full,leaneval}.log`. Current source also has module5997,
+complete module/caller LSP132 zero errors, independent original whole-file reproof/all4
+public equalities/all4 external identifiers/all13 actual standard axioms46950 exit0.
+All13 audit reports42 rule labels/11 checked steps/no unchecked entries; original block
+comments identical, no source overwidth, final diff check passes. Three meaningful learnings
+recorded. No pending Lattice rename, public proposal, decomposition or routine follow-up;
+header metadata warning explicitly preserved by user decision.
+
+Project tally130/264 original declarations,7/14 files complete; private helpers do not
+increment the original count. Following successful final report push, file/report/shared
+progress/Git ownership is released to the project orchestrator. Newly approved CoeffNorm
+and GenWronskian API removals remain unapplied and belong to the fresh amendment owner
+before Index; no prior Lean source or report changed during Lattice ownership.

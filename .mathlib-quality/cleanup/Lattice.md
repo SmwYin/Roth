@@ -26,7 +26,7 @@ Dialect: classic imports. Original snapshot: `/private/tmp/roth-lattice-original
 | 3 | sum_inv_le | 41–55 | Private finite reflection bound; lambda and chained tactics review. |
 | 4 | sum_inv_lt | 62–85 | Public docs preserved; signature/auxiliary aliases audit. |
 | 5 | extend_apply_castSucc | 87–90 | Private Finsupp extension coordinate identity; library replacement review. |
-| 6 | extend_apply_last | 92–98 | Private last-coordinate identity; library replacement review. |
+| 6 | extend_apply_last | 92–97 | Private last-coordinate identity; library replacement review. |
 | 7 | card_filter_box_last | 104–146 | Public docs preserved; long bijection proof requires structure review. |
 | 8 | filter_weight_le_eq_empty | 148–150 | Private empty-cutoff identity; direct arithmetic proof. |
 | 9 | card_filter_fiber_eq | 152–162 | Private fibre-weight transport; signature and cast audit. |
@@ -118,3 +118,13 @@ All cumulative protection/structure/width/inequality/comment/trust/identifier/ca
 renewed PASS. Source remains214 lines, declaration content163, original block comments
 identical; all13 reports remain42 rules/11 checked steps. Actual final per-declaration
 profiling still required; file completion not yet claimed.
+
+## Phases 6.6–7 — final profiling and report
+
+Actual complete-source trace sweeps3913/82130/19793 exit0. Both consecutive final sweeps all13
+under1000ms; maximum994.79ms, preceding959.56ms. Initial borderline1034.98ms explicitly
+disclosed; no performance patch or limit raise. [Final report](Lattice-final.md) contains all
+three actual timing tables/evidence, final full/separate6730 exit0/exit0(6.36s/3.23s), every
+phase/gate/artifact and limitations. Sourcehash a363c553… unchanged;214lines,13 declarations,
+all4 original public types/docs preserved. All cleanup phases complete; final publication
+and ownership release handled by owner.
