@@ -108,14 +108,14 @@ private lemma card_filter_box_fiber_aux {m : ℕ} (r : Fin (m + 1) → ℕ)
     ext j
     simpa [extend_apply_castSucc] using congrArg (fun d ↦ d j.castSucc) h
   · intro d hd
-    obtain ⟨⟨hdr, hdp⟩, hdi⟩ := (by simpa only [Finset.mem_filter, mem_box] using hd)
+    obtain ⟨⟨hdr, hdp⟩, hdi⟩ := (by simpa [mem_box] using hd)
     have hext : (Finsupp.equivFunOnFinite.symm fun j ↦ d j.castSucc).mapDomain Fin.castSucc +
         Finsupp.single (Fin.last m) i = d := by
       ext j
       refine Fin.lastCases ?_ (fun j ↦ ?_) j <;>
         simp [extend_apply_last, extend_apply_castSucc, hdi]
     refine ⟨Finsupp.equivFunOnFinite.symm fun j ↦ d j.castSucc, ?_, hext⟩
-    simpa [mem_box, hext] using And.intro (fun j : Fin m ↦ hdr j.castSucc) hdp
+    simp [mem_box, hext, hdp, hdr]
 
 /-- Counting a filtered box by fibres over the last coordinate: each fibre is identified with
 the box in the first `m` coordinates, filtered by the extended predicate.
