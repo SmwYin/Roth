@@ -153,7 +153,7 @@ theorem normOne_hasseDeriv_le [Fintype σ] (d : σ →₀ ℕ) (P : MvPolynomial
 
 /-- Diagonal substitution `P(x, …, x)`. Source: §6, proof of Lemma 9 ("When we replace
 `x_1, …, x_m` by the same variable `x`"). -/
-noncomputable def diag (P : MvPolynomial σ ℤ) : Polynomial ℤ := aeval (fun _ => Polynomial.X) P
+noncomputable def diag (P : MvPolynomial σ ℤ) : Polynomial ℤ := aeval (fun _ ↦ Polynomial.X) P
 
 /-- `diag P` collects each monomial `a_k X^k` into `a_k x^{|k|}`. -/
 theorem diag_eq_sum (P : MvPolynomial σ ℤ) :
