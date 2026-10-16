@@ -45,7 +45,7 @@ See [Wronskian final report](cleanup/Wronskian-final.md). Overall55/264 original
 and every final file-level phase. Source239 → 218lines; original public API/docs preserved.
 Independent simplify finding fixed and revalidated; actual profile all22 retained declarations
 below750ms, maximum672.30ms. Overall75/264 original declarations audited.
-See [Taylor final report](cleanup/Taylor-final.md). `Roth/CoeffNorm.lean` is active:24/26original declarations complete, overall99/264. Compiled public-hypothesis proposal awaits scoped user decision; original signatures remain unchanged.
+See [Taylor final report](cleanup/Taylor-final.md). `Roth/CoeffNorm.lean` is active:25/26original declarations complete, overall100/264. Compiled public-hypothesis proposal awaits scoped user decision; original signatures remain unchanged.
 The user approved removing unused `hφ`/`hd` from the Wronskian coefficient identity;
 the exact removal and sole-caller update are implemented and fully revalidated. Both unused
 argument warnings are gone; header metadata remains unchanged.
@@ -763,3 +763,7 @@ Private `Roth.sum_box_prod_pow`: removed four-line wrapper and separator; sole a
 ## CoeffNorm added private helper checkpoint
 
 Fresh independent dedicated audit of `sum_box_prod_pow_le_aux` completed: direct simpa composition reduces body8→4 lines; private unused DecidableEq removed with declaration-local Classical scope. All public signatures/docs preserved; old private statement transported across subsingleton instances in compiled scratch, independent binomial-expansion reproof and live-helper axioms standard. [Dedicated audit](cleanup/CoeffNorm-sum_box_prod_pow_le_aux.md) contains all24 audit/42 rules/5 actual searches/11 checks. Module and complete final LSP pass. Sequential full `lake build` and separate `lake build Roth.LeanEval` session13387 exit0, frozen SHA256 `7270e6f1cb84f697ca7016758951801f6805d2867ca2a1ad0597f6bc7be8ca68` unchanged; logs `/private/tmp/roth-coeffnorm-helper-box-{full,leaneval}.log`. Original tally remains CoeffNorm24/26, overall99/264; added helper1/1 audited.
+
+## CoeffNorm declaration 25 checkpoint
+
+`degreeOf_det_hasseDeriv_le`: direct degreeOf_C_mul_le replaces sign-cast casework; terminal simpa closes finite-sum arithmetic. Declaration14→9, body11→6, original public type/docs preserved. [Dedicated audit](cleanup/CoeffNorm-degreeOf_det_hasseDeriv_le.md) completes all24 audit/42 rules/5 actual searches/11 checks. Module exit0, complete final native LSP no errors/targetwarnings, original-type assignment/nonself prerequisite reproof/standard axioms pass. Optional public generalizations closed under API preservation; no new question. Sequential full `lake build` then separate `lake build Roth.LeanEval` session24977 both exit0, frozen SHA256 `dbbbeba0c96895502c9830ac2bca3fe8fb952028582f53e76e49964d6f9cc63a` unchanged; logs `/private/tmp/roth-coeffnorm-d25-{full,leaneval}.log`. Actual file-level profiling remains final-phase work. CoeffNorm25/26 originals plus1/1 new helper complete, overall100/264.

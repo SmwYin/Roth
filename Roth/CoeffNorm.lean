@@ -240,18 +240,13 @@ entries are polynomials of degree at most `r_j` in `x_j`, `F` will be of degree 
 each variable `x_j`"). -/
 theorem degreeOf_det_hasseDeriv_le {l : ℕ} (E : Fin l → Fin l → (σ →₀ ℕ)) (P : MvPolynomial σ ℤ)
     {r : σ → ℕ} (hP : ∀ j, degreeOf j P ≤ r j) (j : σ) :
-    degreeOf j (Matrix.of fun μ ν : Fin l => hasseDeriv (E μ ν) P).det ≤ l * r j := by
+    degreeOf j (Matrix.of fun μ ν : Fin l ↦ hasseDeriv (E μ ν) P).det ≤ l * r j := by
   rw [Matrix.det_apply']
-  refine (degreeOf_sum_le _ _ _).trans (Finset.sup_le fun τ _ => ?_)
-  refine (degreeOf_mul_le _ _ _).trans ?_
-  have hsign : degreeOf j ((Equiv.Perm.sign τ : ℤ) : MvPolynomial σ ℤ) = 0 := by
-    rcases Int.units_eq_one_or (Equiv.Perm.sign τ) with h | h <;> simp [h, degreeOf_neg]
-  rw [hsign, zero_add]
+  refine (degreeOf_sum_le _ _ _).trans (Finset.sup_le fun τ _ ↦ ?_)
+  refine (degreeOf_C_mul_le _ j (Equiv.Perm.sign τ : ℤ)).trans ?_
   refine (degreeOf_prod_le _ _ _).trans ?_
-  calc ∑ i, degreeOf j ((Matrix.of fun μ ν : Fin l => hasseDeriv (E μ ν) P) (τ i) i)
-      ≤ ∑ _i : Fin l, r j :=
-        Finset.sum_le_sum fun i _ => (degreeOf_hasseDeriv_le _ _ _).trans (hP j)
-    _ = l * r j := by simp
+  simpa using Finset.sum_le_sum (s := Finset.univ)
+    (fun (i : Fin l) _ ↦ (degreeOf_hasseDeriv_le _ _ _).trans (hP j))
 
 /-- Lemma 3. Source: §3, Lemma `roth:lem3` ("all the coefficients of `F` have absolute value
 bounded by `((r_1 + 1) ⋯ (r_p + 1))^l l! B^l 2^{(r_1 + ⋯ + r_p) l}`"), stated for a determinant
