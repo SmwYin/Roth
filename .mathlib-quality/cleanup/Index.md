@@ -431,3 +431,21 @@ Worker COMPLETE unfiltered native Index diagnostics success=true partial=false t
 All original block docs byte-identical, source widths≤100, diff checked before staging.
 Source265lines/19retained. Index17/21 originals,overall147/264;
 no file-final completion claimed. Leaf source/Lean requests finished before owner gates.
+
+
+### Checkpoint d18 — index_mul_left_weights
+
+Applied separately approved σ-DecidableEq and unused hl removals; original literal-index/stronger/zero proofs pass; target205.02ms. Exactly2Theta rewrite-argument deletions, all contracts/instances/positive facts preserved. Theta module97645exit0; independent ORIGINAL Index+Theta prefix86171exit0 with all6 original public type/value recoveries and standard actual axioms, including index_det_le with DecidableEqτ. Logs /private/tmp/roth-index-d18-theta-{module,scaling-compatibility}.log. Group3 validated/closed; no broader API change.
+
+[Dedicated audit](Index-index_mul_left_weights.md) inspected:24 audit items,42rules,five actual searches,
+binder probes,literature/exemption,complete packing+inequality tables,all11steps.
+Frozen SHA256 `c7ecc3d5d361a6f72515e0b4b400045466f6b79da07159eb003eca394addc402`. Fresh whole ORIGINAL nonself reproof, all18 original public
+type/value recoveries and all19 actual retained standard-axiom checks: compiler
+session37175 exit0, `/private/tmp/roth-index-d18-compatibility.log`.
+Approved no-DecEq types are additionally checked by Expr.find?; actual signatures printed.
+Sequential owner full then separate LeanEval97631 both exit0(101.23s/35.65s),
+Index+Theta hashes stable; `/private/tmp/roth-index-d18-{full,leaneval}.log`.
+Worker COMPLETE unfiltered Index LSP success=true partial=false timed_out=false, no faileddependencies, 0target diagnostics/8other warnings; /private/tmp/roth-index-scale-lsp.json. Owner COMPLETE Theta native LSP0errors/24warnings/noinfos after bounded partial+complete retry; both repaired callers accepted. Raw /private/tmp/roth-index-d18-theta-lsp.json. Theta docs/definition/theorem signatures untouched; only2exact rewrite argument deletions.
+All original block docs byte-identical, source widths≤100, diff checked before staging.
+Source266lines/19retained. Index18/21 originals,overall148/264;
+no file-final completion claimed. Leaf source/Lean requests finished before owner gates.

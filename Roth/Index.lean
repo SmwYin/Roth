@@ -201,13 +201,14 @@ theorem index_C_mul {c : ℝ} (hc : c ≠ 0) (P : MvPolynomial σ ℝ) (α : σ 
     index (C c * P) α r = index P α r := by
   rw [index, index, map_mul, taylor_C, ← smul_eq_C_mul, support_smul_eq hc]
 
+omit [DecidableEq σ] in
 /-- Source: §4, end ("`ind(P; α; l r) = (1/l) ind(P; α; r)`"). -/
-theorem index_mul_left_weights {l : ℕ} (hl : 0 < l) (P : MvPolynomial σ ℝ) (α : σ → ℝ)
-    (r : σ → ℕ) : index P α (fun j => l * r j) = index P α r / l := by
-  have himg : weight (fun j => l * r j) '' ((taylor α P).support : Set (σ →₀ ℕ)) =
+theorem index_mul_left_weights {l : ℕ} (P : MvPolynomial σ ℝ) (α : σ → ℝ) (r : σ → ℕ) :
+    index P α (fun j ↦ l * r j) = index P α r / l := by
+  have himg : weight (fun j ↦ l * r j) '' ((taylor α P).support : Set (σ →₀ ℕ)) =
       (l : ℝ)⁻¹ • (weight r '' ((taylor α P).support : Set (σ →₀ ℕ))) := by
     rw [← Set.image_smul, Set.image_image]
-    refine Set.image_congr fun d _ => ?_
+    refine Set.image_congr fun d _ ↦ ?_
     rw [weight_mul_left, smul_eq_mul, div_eq_inv_mul]
   rw [index, index, himg, Real.sInf_smul_of_nonneg (by positivity), smul_eq_mul, div_eq_inv_mul]
 

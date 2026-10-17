@@ -66,6 +66,13 @@ Their existing positive-scaling assumptions remain needed for later cancellation
 no Theta theorem statement changes. This is a separate scoped decision, not
 authorization inferred from decisions1/2 or other-file approvals.
 
+Group3 application is **validated and closed at checkpoint d18**: unused `hl` removed,
+exactly the two Theta rewrite arguments deleted, and all Theta theorem contracts,
+instances and remaining positivity facts preserved. Fresh original Index/Theta
+reproof and six exact public type/value recoveries (including `index_det_le`) compile
+with only standard axioms; complete module/LSP/full/separate LeanEval gates passed.
+Evidence: [dedicated audit](Index-index_mul_left_weights.md), owner checkpoint d18.
+
 ## Compiled evidence
 
 Isolated full source clone: `/private/tmp/roth-index-api-proposal.lean`.
@@ -106,7 +113,7 @@ argument deletions, with all Theta contracts and positivity assumptions preserve
 
 ## Application ledger
 
-Verified σ-DecidableEq omissions: 13/17.
+Verified σ-DecidableEq omissions: 14/17.
 
 - [index_le_weight](Index-index_le_weight.md)
 - [exists_weight_eq_index](Index-exists_weight_eq_index.md)
@@ -121,7 +128,8 @@ Verified σ-DecidableEq omissions: 13/17.
 - [index_prod](Index-index_prod.md)
 - [index_neg](Index-index_neg.md)
 - [index_C_mul](Index-index_C_mul.md)
+- [index_mul_left_weights](Index-index_mul_left_weights.md)
 
 Rename τ-DecidableEq removed: False.
 index_le_card.hr removed: False.
-Group3 scaling hl removed: False; separate scoped user approval received2026-10-16; apply at target checkpoint.
+Group3 scaling hl removed: True; applied and validated at its dedicated checkpoint.

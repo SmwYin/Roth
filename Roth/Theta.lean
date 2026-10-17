@@ -497,13 +497,13 @@ theorem index_det_le {δ : ℝ} {r : Option τ → ℕ} (hr0 : ∀ j, 0 < r j) {
   have hU' : index (map (Int.castRingHom ℝ) U) ((fun j => (h j : ℝ) / q j) ∘ some) (r ∘ some) =
       l * index (map (Int.castRingHom ℝ) U) ((fun j => (h j : ℝ) / q j) ∘ some)
         (fun j => l * (r ∘ some) j) := by
-    rw [index_mul_left_weights hl0]
+    rw [index_mul_left_weights]
     field_simp
   have hV'' : index (map (Int.castRingHom ℝ) V') ((fun j => (h j : ℝ) / q j) ∘ fun _ => none)
         (r ∘ fun _ => none) =
       l * index (map (Int.castRingHom ℝ) V') ((fun j => (h j : ℝ) / q j) ∘ fun _ => none)
         (fun j => l * (r ∘ fun _ : Unit => none) j) := by
-    rw [index_mul_left_weights hl0]
+    rw [index_mul_left_weights]
     field_simp
   have hUΘ := index_le_Θ hrU hUmem (h := h ∘ some) fun j => hh (some j)
   have hVΘ := index_le_Θ hrV hVmem (q := fun _ : Unit => q none) (h := fun _ => h none)
