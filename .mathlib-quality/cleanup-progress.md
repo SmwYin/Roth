@@ -125,7 +125,7 @@ Files will be processed in dependency order; declarations within each file are s
 | `Roth/GenWronskian.lean` | 292 | All cleanup phases complete;19/19 originals and2 added helpers audited; both user-approved public amendments applied;2 preserved warnings |
 | `Roth/Lattice.lean` | 217 | All cleanup phases complete;10/10 originals and3/3 added helpers audited; user-preserved metadata |
 | `Roth/Index.lean` | 275 | All cleanup phases complete;21/21 originals audited; user-approved hypothesis groups applied and validated |
-| `Roth/Separation.lean` | 618 | Active;1/30 originals audited at d01 published checkpoint; public instance proposal pending approval |
+| `Roth/Separation.lean` | 618 | Active;2/30 originals audited at d02 published checkpoint; public instance proposal pending approval |
 | `Roth/Theta.lean` | 981 | Awaiting cleanup |
 | `Roth/MainLemma.lean` | 704 | Awaiting cleanup |
 | `Roth/Main.lean` | 684 | Awaiting cleanup |
@@ -1643,3 +1643,14 @@ Source FROZEN SHA256 `8de29f33439259fa33927a72c7411dbd40ff2a3afacfeb97d8ea4a14bf
 Owner73355exit0: whole ORIGINAL30 independently re-proved in isolated namespace,all20 original public type/value recoveries by rfl,and ALL29 actual retained standard-axiom checks. `/private/tmp/roth-separation-d01-compatibility.{lean,log}`. Owner sequential full then separateLeanEval39911 both exit0(127.65s/32.76s),stable frozen hashes; `/private/tmp/roth-separation-d01-{full,leaneval}.log` and `...-builds.json`. Original block docs byte-identical; focused diff checked.
 
 Separation1/30,overall152/264 original audits after this checkpoint's exact-path commit and successful cleanup-branch push;8/14files complete. Public scoped12-theorem instance proposal compiled but NOT applied; see [proposal](cleanup/Separation-instance-proposal.md). Header remains user-preserved. Next original eq_mapDomain_some_add_single starts only after successful publication.
+
+
+## Separation d02 checkpoint — eq_mapDomain_some_add_single
+
+[Dedicated audit](cleanup/Separation-eq_mapDomain_some_add_single.md): all24/42/five actual searches,every effective binder/public literature,inequality/width tables and11steps. Shared Option case simplification reduces proof6→3lines; signature/docs unchanged. Public12-theorem instance proposal remains pending/unapplied; broader generic additive-coefficient candidate independently compiles but is outside that menu and unapplied. Source616→613,29retained.
+
+Frozen SHA256 `92ffb3a092b9a23fdedc0da16bdd954f57d4c979ddf469b1d4f36cefc8c20278`; worker ownership revoked/all requests drained before owner gates. Module63738exit0,independent original contract/proof+actual standardaxioms28197exit0,complete native unfiltered LSP0errors/32baselinewarnings,success=true/partial=false/timed_out=false. `/private/tmp/roth-separation-d02-lsp.json`. Worker standalone source-extracted timing78.513ms is supplemented by OWNER ACTUAL MODULE anchored profile2444exit0: command14.840+async83.286=98.126ms,below750/1000budget. `/private/tmp/roth-separation-d02-actual-profile.log{,.json}`. No scaffolding/limits.
+
+Owner14103exit0: independent whole ORIGINAL30 proof bodies,all20 public original type/value recoveries and ALL29 actual retained standardaxioms. Actual probe47.29s,`/private/tmp/roth-separation-d02-compatibility.{lean,log,json}`. Owner22880 sequentialfull/separateLeanEval both exit0(122.05s/30.04s),sourcehashstable; `/private/tmp/roth-separation-d02-{full,leaneval}.log` and `...-builds.json`. Exact focused diff/docs/whitespace checked.
+
+Separation2/30,overall153/264 after exact-path commit and successful cleanup-branch push,8/14files complete. Next fresh private some_mapDomain_add_single only after publication. Header remains user-preserved.

@@ -50,10 +50,8 @@ variable {R : Type*} [CommSemiring R]
 theorem eq_mapDomain_some_add_single (d : Option τ →₀ ℕ) :
     d = (Finsupp.some d).mapDomain some + Finsupp.single none (d none) := by
   ext o
-  cases o with
-  | none => simp [Finsupp.mapDomain_of_notMem_range]
-  | some j =>
-    simp [Finsupp.mapDomain_apply_of_injective (Option.some_injective τ), Finsupp.some_apply]
+  cases o <;> simp [Finsupp.mapDomain_of_notMem_range,
+    Finsupp.mapDomain_apply_of_injective (Option.some_injective τ), Finsupp.some_apply]
 
 omit [Fintype τ] [DecidableEq τ] in
 private lemma some_mapDomain_add_single (d : τ →₀ ℕ) (ν : ℕ) :

@@ -100,3 +100,7 @@ Fresh dedicated worker per original declaration and independently audited added 
 ## d01 completed declaration checkpoint
 
 [mapDomain_some_none](Separation-mapDomain_some_none.md): private library wrapper deleted;four direct specialisations. All20 original public contracts/definition/docs preserved. Owner complete ORIGINAL30 reproof/public20 exact type-value comparisons/all29 actual standard axioms73355exit0; sequential full/separateLeanEval39911exit0(127.65/32.76s),hash stable. Actual source618→616; target103.002ms before deletion. Exact-path commit and successful push precede next declaration.
+
+## d02 completed declaration checkpoint
+
+[eq_mapDomain_some_add_single](Separation-eq_mapDomain_some_add_single.md):6→3prooflines; original public contract/docs preserved. Owner14103 independent ORIGINAL30/public20/actual29standardaxioms pass; sequentialfull/separateLeanEval22880exit0(122.05/30.04s),stable hashes. ACTUAL module anchored profile2444exit0:98.126ms. Source613lines;2/30 originals,overall153/264 after successful publication. Public omission menu and optional generic coefficient generalization remain unapplied.
