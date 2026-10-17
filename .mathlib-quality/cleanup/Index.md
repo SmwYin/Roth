@@ -467,3 +467,21 @@ Worker COMPLETE unfiltered native Index LSP success=true partial=false timed_out
 All original block docs byte-identical, source widths≤100, diff checked before staging.
 Source268lines/19retained. Index19/21 originals,overall149/264;
 no file-final completion claimed. Leaf source/Lean requests finished before owner gates.
+
+
+### Checkpoint d20 — index_le_card
+
+Applied approved σ-DecidableEq and unused hr removals, packed signature and Unicode lambda; hP retained. Exactly2Theta hr call-argument deletions preserve everyΘcontract/instance/positivity premise. Θmodule21251exit0; independent ORIGINAL Index+Θprefix14771exit0/all9 original public type/value recoveries+standard actual axioms, including indexSet_bddAbove and Θ_le_card. Evidence /private/tmp/roth-index-d20-theta-{module,prefix-compatibility}.log. Group2 validated/CLOSED; optional hP-free zero-case extension not applied. Target38.970ms, source268→269.
+
+[Dedicated audit](Index-index_le_card.md) inspected:24 audit items,42rules,five actual searches,
+binder probes,literature/exemption,complete packing+inequality tables,all11steps.
+Frozen SHA256 `e05d2a8a8a08c937ab43f96999efb4e9476b9a8ce47c08f9e6267459b236f190`. Fresh whole ORIGINAL nonself reproof, all18 original public
+type/value recoveries and all19 actual retained standard-axiom checks: compiler
+session27382 exit0, `/private/tmp/roth-index-d20-compatibility.log`.
+Approved no-DecEq types are additionally checked by Expr.find?; actual signatures printed.
+Sequential owner full then separate LeanEval93853 both exit0(97.14s/39.29s),
+Index+Theta hashes stable; `/private/tmp/roth-index-d20-{full,leaneval}.log`.
+Worker COMPLETE unfiltered native Index LSP success=true partial=false timed_out=false, no faileddependencies, 0target diagnostics/3other warnings; /private/tmp/roth-index-card-final-lsp.json. Owner COMPLETE Theta LSP0errors/28warnings after bounded partial+complete retry:25previous +3new preserved-contract warnings (unused section instance and hr at86, hr at109). Exactly2caller repairs accepted; no suppression/Theta contract removal. Raw /private/tmp/roth-index-d20-theta-lsp.json.
+All original block docs byte-identical, source widths≤100, diff checked before staging.
+Source269lines/19retained. Index20/21 originals,overall150/264;
+no file-final completion claimed. Leaf source/Lean requests finished before owner gates.

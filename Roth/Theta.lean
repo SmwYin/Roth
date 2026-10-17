@@ -87,7 +87,7 @@ theorem indexSet_bddAbove (B : ℝ) (q : σ → ℕ) {r : σ → ℕ} (hr : ∀ 
     BddAbove (indexSet B q r) := by
   refine ⟨Fintype.card σ, ?_⟩
   rintro _ ⟨R, ⟨hR0, hRd, -⟩, h, -, rfl⟩
-  exact index_le_card (map_intCast_real_ne_zero hR0) hr
+  exact index_le_card (map_intCast_real_ne_zero hR0)
     (fun j => (degreeOf_map_intCast_real R j).trans_le (hRd j)) _
 
 /-- The index of any `R ∈ ℛ_m(B; r)` at a point `(h_j / q_j)_j` with each `h_j` coprime to `q_j`
@@ -110,7 +110,7 @@ theorem Θ_le_card {B : ℝ} (hB : 1 ≤ B) (q : σ → ℕ) {r : σ → ℕ} (h
     Θ B q r ≤ Fintype.card σ := by
   refine csSup_le (indexSet_nonempty hB q r) ?_
   rintro _ ⟨R, ⟨hR0, hRd, -⟩, h, -, rfl⟩
-  exact index_le_card (map_intCast_real_ne_zero hR0) hr
+  exact index_le_card (map_intCast_real_ne_zero hR0)
     (fun j => (degreeOf_map_intCast_real R j).trans_le (hRd j)) _
 
 /-- A bound on every index is a bound on `Θ`. Source: §5, Lemma 5 ("Taking the supremum proves

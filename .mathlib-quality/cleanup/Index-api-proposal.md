@@ -45,6 +45,13 @@ compile confirms that both old decidable-equality binders remain automatically
 included; no additional caller-scope command is needed. Removing Theta's own
 positivity binders is outside this proposal and belongs to its later audit.
 
+Group2 application is **validated and closed at checkpoint d20**: unused `hr` removed
+from Index and exactly its two Theta call arguments deleted. All Theta contracts,
+instances and positivity premises are preserved, verified by nine original public
+type/value recoveries and standard actual axioms. Complete module/LSP/full/separate
+LeanEval gates passed; [dedicated audit](Index-index_le_card.md), owner checkpoint d20.
+`hP` remains; a separately checked zero-case extension is outside this approval.
+
 ## 3. Remove unnecessary positive scaling factor
 
 Further owner audit found that `index_mul_left_weights.hl : 0 < l` is also
@@ -113,7 +120,7 @@ argument deletions, with all Theta contracts and positivity assumptions preserve
 
 ## Application ledger
 
-Verified σ-DecidableEq omissions: 15/17.
+Verified σ-DecidableEq omissions: 16/17.
 
 - [index_le_weight](Index-index_le_weight.md)
 - [exists_weight_eq_index](Index-exists_weight_eq_index.md)
@@ -130,7 +137,8 @@ Verified σ-DecidableEq omissions: 15/17.
 - [index_C_mul](Index-index_C_mul.md)
 - [index_mul_left_weights](Index-index_mul_left_weights.md)
 - [index_rename](Index-index_rename.md)
+- [index_le_card](Index-index_le_card.md)
 
 Rename τ-DecidableEq removed: True.
-index_le_card.hr removed: False.
+index_le_card.hr removed: True.
 Group3 scaling hl removed: True; applied and validated at its dedicated checkpoint.

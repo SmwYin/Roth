@@ -225,13 +225,14 @@ theorem index_rename {τ : Type*} [Fintype τ] {f : σ → τ} (hf : Function.In
   refine congrArg sInf (Set.image_congr fun d _ ↦ ?_)
   exact weight_mapDomain hf r d
 
+omit [DecidableEq σ] in
 /-- If `P` has degree at most `r j` in each `x_j`, its index is at most the number of variables.
 Source: §5 ("Taylor's theorem gives a nonzero derivative with `0 ≤ i_j ≤ r_j`, of weight at
 most `m`"). -/
-theorem index_le_card {P : MvPolynomial σ ℝ} (hP : P ≠ 0) {r : σ → ℕ} (hr : ∀ j, 0 < r j)
-    (hd : ∀ j, degreeOf j P ≤ r j) (α : σ → ℝ) : index P α r ≤ Fintype.card σ := by
+theorem index_le_card {P : MvPolynomial σ ℝ} (hP : P ≠ 0) {r : σ → ℕ} (hd : ∀ j, degreeOf j P ≤ r j)
+    (α : σ → ℝ) : index P α r ≤ Fintype.card σ := by
   obtain ⟨d, hd0, hdw⟩ := exists_weight_eq_index hP α r
-  exact hdw ▸ weight_le_card fun j =>
+  exact hdw ▸ weight_le_card fun j ↦
     (monomial_le_degreeOf j (mem_support_taylor_iff.2 hd0)).trans
       ((degreeOf_taylor_le α j P).trans (hd j))
 
