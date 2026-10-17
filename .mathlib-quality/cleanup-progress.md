@@ -1557,3 +1557,22 @@ All original block docs byte-identical, source widths≤100, diff checked before
 Index18/21 originals,overall148/264; source266lines,
 19retained declarations. Exact-path commit and successful cleanup-branch push
 precede the next edit. Header remains explicitly user-preserved.
+
+
+## Index d19 checkpoint — index_rename
+
+Applied approved σ/τ-DecidableEq removals; local classical, packed signature and Unicode lambda. Original and no-instance independent literal-index proofs pass; actual Expr9binders versus old11, noDecEq. Explicit proof retained after slower simp alternative; target105.050ms, source266→268. No Theta source edit.
+
+[Dedicated audit](cleanup/Index-index_rename.md): all24/42/five searches/binder probes/11checks;
+worker module/complete LSP/independent proof/type/actual standard-axiom gates passed.
+Frozen SHA256 `8b24b3d3662da1a203889b8987874a03d11038f39578339564209e7e6b0d6718`. Fresh whole ORIGINAL nonself reproof, all18 original public
+type/value recoveries and all19 actual retained standard-axiom checks: compiler
+session74452 exit0, `/private/tmp/roth-index-d19-compatibility.log`.
+Approved no-DecEq types are additionally checked by Expr.find?; actual signatures printed.
+Sequential owner full then separate LeanEval43968 both exit0(149.84s/37.90s),
+Index+Theta hashes stable; `/private/tmp/roth-index-d19-{full,leaneval}.log`.
+Worker COMPLETE unfiltered native Index LSP success=true partial=false timed_out=false, no faileddependencies, 0target diagnostics/6other warnings; /private/tmp/roth-index-rename-lsp.json. Owner COMPLETE Theta native LSP0errors/25warnings after bounded partial+complete retry:24previous plus newly exposed unused-section σ-DecEq on private indexSet_comp_subset:134; Θinstances retained for its later audit. Callers148/495 accepted; raw /private/tmp/roth-index-d19-theta-lsp.json.
+All original block docs byte-identical, source widths≤100, diff checked before staging.
+Index19/21 originals,overall149/264; source268lines,
+19retained declarations. Exact-path commit and successful cleanup-branch push
+precede the next edit. Header remains explicitly user-preserved.

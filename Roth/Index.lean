@@ -212,15 +212,17 @@ theorem index_mul_left_weights {l : ℕ} (P : MvPolynomial σ ℝ) (α : σ → 
     rw [weight_mul_left, smul_eq_mul, div_eq_inv_mul]
   rw [index, index, himg, Real.sInf_smul_of_nonneg (by positivity), smul_eq_mul, div_eq_inv_mul]
 
+omit [DecidableEq σ] in
 /-- The index is invariant under injective renaming of variables.
 Source: §4, Lemma 4-2 and its Lean note ("invariance under ... variable renaming": the index
 of a polynomial embedded into a larger set of variables is its index in its own variables). -/
-theorem index_rename {τ : Type*} [Fintype τ] [DecidableEq τ] {f : σ → τ}
-    (hf : Function.Injective f) (P : MvPolynomial σ ℝ) (α : τ → ℝ) (r : τ → ℕ) :
+theorem index_rename {τ : Type*} [Fintype τ] {f : σ → τ} (hf : Function.Injective f)
+    (P : MvPolynomial σ ℝ) (α : τ → ℝ) (r : τ → ℕ) :
     index (rename f P) α r = index P (α ∘ f) (r ∘ f) := by
+  classical
   rw [index, index, taylor_rename, support_rename_of_injective hf, Finset.coe_image,
     Set.image_image]
-  refine congrArg sInf (Set.image_congr fun d _ => ?_)
+  refine congrArg sInf (Set.image_congr fun d _ ↦ ?_)
   exact weight_mapDomain hf r d
 
 /-- If `P` has degree at most `r j` in each `x_j`, its index is at most the number of variables.
