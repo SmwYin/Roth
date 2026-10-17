@@ -341,3 +341,21 @@ Worker COMPLETE unfiltered Index native LSP success=true partial=false timed_out
 All original block docs byte-identical, source widths≤100, diff checked before staging.
 Source269lines/19retained. Index12/21 originals,overall142/264;
 no file-final completion claimed. Leaf source/Lean requests finished before owner gates.
+
+
+### Checkpoint d13 — index_eq_weightedOrder_div
+
+Applied approved σ-DecidableEq omission, packed signature and reduced headline bridge16→12bodylines using one attained coefficient plus le_index_iff/ENat.toNat_le_toNat; no helper added. Preserved hP/hr/math/docs. Final241.789ms, source269→265. Recovered completed frozen full/separate build session after usage reset; no duplicate work.
+
+[Dedicated audit](Index-index_eq_weightedOrder_div.md) inspected:24 audit items,42rules,five actual searches,
+binder probes,literature/exemption,complete packing+inequality tables,all11steps.
+Frozen SHA256 `5f04282b1750289a3a79d03b8a282620d4af9a4f14c3845bde6100ee3f43f770`. Fresh whole ORIGINAL nonself reproof, all18 original public
+type/value recoveries and all19 actual retained standard-axiom checks: compiler
+session48345 exit0, `/private/tmp/roth-index-d13-compatibility.log`.
+Approved no-DecEq types are additionally checked by Expr.find?; actual signatures printed.
+Sequential owner full then separate LeanEval45205 both exit0(170.63s/39.73s),
+Index+Theta hashes stable; `/private/tmp/roth-index-d13-{full,leaneval}.log`.
+Worker COMPLETE unfiltered native Index diagnostics success=true partial=false timed_out=false, no faileddependencies, 0target diagnostics/17other warnings; /private/tmp/roth-index-weighted-final2-lsp.json. Owner rg finds onlyinternal index_mul uses; all accepted by module/full builds, no external caller to query.
+All original block docs byte-identical, source widths≤100, diff checked before staging.
+Source265lines/19retained. Index13/21 originals,overall143/264;
+no file-final completion claimed. Leaf source/Lean requests finished before owner gates.

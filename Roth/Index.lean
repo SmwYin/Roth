@@ -136,31 +136,27 @@ theorem weight_eq_finsuppWeight_div {r : σ → ℕ} (hr : ∀ j, 0 < r j) (d : 
     Nat.cast_div_charZero (Finset.dvd_prod_of_mem _ (Finset.mem_univ j)), Nat.cast_prod,
     ← mul_div_assoc, div_right_comm, mul_div_cancel_right₀ _ hD.ne']
 
+omit [DecidableEq σ] in
 /-- The index as the weighted order of the Taylor expansion `P(X + α)`, viewed as a power series,
 divided by `D = ∏ r_j`. Source: §4, Lean implementation note ("use the natural weights in
 `MvPowerSeries.weightedOrder`, then divide the finite value by `D` after embedding `P_α` as a
 power series"). -/
 theorem index_eq_weightedOrder_div {P : MvPolynomial σ ℝ} (hP : P ≠ 0) {r : σ → ℕ}
-    (hr : ∀ j, 0 < r j) (α : σ → ℝ) :
-    index P α r =
-      (((taylor α P : MvPowerSeries σ ℝ).weightedOrder fun j => (∏ i, r i) / r j).toNat : ℝ) /
+    (hr : ∀ j, 0 < r j) (α : σ → ℝ) : index P α r =
+      (((taylor α P : MvPowerSeries σ ℝ).weightedOrder fun j ↦ (∏ i, r i) / r j).toNat : ℝ) /
         ∏ i, r i := by
-  set w : σ → ℕ := fun j => (∏ i, r i) / r j
-  set F : MvPowerSeries σ ℝ := ↑(taylor α P) with hFdef
-  have hF : F ≠ 0 := by rwa [hFdef, Ne, MvPolynomial.coe_eq_zero_iff, taylor_eq_zero_iff]
-  have hfin := (MvPowerSeries.ne_zero_iff_weightedOrder_finite w).1 hF
+  set w : σ → ℕ := fun j ↦ (∏ i, r i) / r j
+  set F : MvPowerSeries σ ℝ := ↑(taylor α P)
+  obtain ⟨d, hd, hdw⟩ := MvPowerSeries.exists_coeff_ne_zero_and_weightedOrder w (f := F)
+    ((MvPowerSeries.ne_zero_iff_weightedOrder_finite w).1 (by simpa [F] using hP))
   apply le_antisymm
-  · obtain ⟨d, hd, hdw⟩ := MvPowerSeries.exists_coeff_ne_zero_and_weightedOrder w hfin
-    rw [MvPolynomial.coeff_coe] at hd
-    rw [← hdw, ENat.toNat_natCast, ← weight_eq_finsuppWeight_div hr]
-    exact index_le_weight (mem_support_taylor_iff.1 (mem_support_iff.2 hd))
-  · obtain ⟨e, he, hew⟩ := exists_weight_eq_index hP α r
-    rw [← hew, weight_eq_finsuppWeight_div hr]
+  · rw [← hdw, ENat.toNat_natCast, ← weight_eq_finsuppWeight_div hr]
+    exact index_le_weight (by simpa [F, MvPolynomial.coeff_coe, coeff_taylor] using hd)
+  · refine (le_index_iff hP).2 fun e he ↦ ?_
+    rw [weight_eq_finsuppWeight_div hr]
     refine div_le_div_of_nonneg_right ?_ (Nat.cast_nonneg _)
-    have h1 := MvPowerSeries.weightedOrder_le w (f := F) (d := e)
-      (by rw [hFdef, MvPolynomial.coeff_coe]; exact mem_support_iff.1 (mem_support_taylor_iff.2 he))
-    rw [← hfin] at h1
-    exact_mod_cast h1
+    exact_mod_cast ENat.toNat_le_toNat (MvPowerSeries.weightedOrder_le w (f := F) (d := e)
+      (by simpa [F, MvPolynomial.coeff_coe, coeff_taylor] using he)) (by simp)
 
 /-- The index is additive on products of nonzero polynomials.
 Source: §4, Lemma 4-1 ("`ind(P Q) = ind(P) + ind(Q)`"). -/
