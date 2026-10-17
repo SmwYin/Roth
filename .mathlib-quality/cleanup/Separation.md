@@ -121,3 +121,16 @@ ACTUAL repository module anchored profile 79783 exit 0: changed coeff_coeffNone 
 Source FROZEN SHA256 `1fd92ece12094dc1d71783cfcfe6b7f92e92cf019d409e048e70f1074208831d`; leaf ownership revoked and requests drained before owner gates. Owner probe `48051` exit0,39.71s: independent ORIGINAL30 proof bodies,all20 original public type/value recoveries and ALL27 actual retained standardaxiom checks. `/private/tmp/roth-separation-d04-compatibility.{lean,log,json}`. Owner build session `79342` sequential `lake build` then separate `lake build Roth.LeanEval` both exit0,117.27s/27.24s; source hash stable. `/private/tmp/roth-separation-d04-{full,leaneval}.log`, `...-builds.json`. Owner original block docs byte-identical; exact diff/whitespace checked. Exact-path commit and successful cleanup-branch push precede next declaration.
 
 Public12-theorem instance menu remains pending/unapplied; header remains user-preserved.
+
+
+## d05 completed declaration checkpoint — coeff_X_none_pow_mul_rename
+
+[Dedicated audit](Separation-coeff_X_none_pow_mul_rename.md): all24/42/fiveactualsearches/everybinder/width/inequality/11steps; Option-equivalence polynomial coefficient calculation replaces nested exponent-subtraction casework; both unused private Fintype/DecidableEq instances omitted. Target body 20 to 11 lines; no public contract, definition, documentation or other proof changed; no new helper or rename. Source610→602;27retained. Separation5/30,overall156/264 original audits after successful publication;8/14files complete.
+
+Actual lake build Roth.Separation exits 0 (`/private/tmp/roth-separation-d05-build.log`). Complete native unfiltered LSP success=true/partial=false/timed_out=false, no failed dependencies, 0 errors/31 warnings (`...-final-lsp.json`). Two target warnings removed; coeff_rename_mul_aeval newly exposes one unusedSectionVars warning for its unchanged pending public instances: 32 - 2 + 1 = 31. Independent exact ORIGINAL proof/type and actual built target/affected public standard axioms pass (`...-independent.{lean,log}`, `...-axioms.{lean,log}`).
+
+ACTUAL repository module anchored profile exits 0 (`/private/tmp/roth-separation-d05-final-profile.log`, `...-profile-anchors.json`): target before 248.710 ms, final outer omit 60.400 + async 209.913 = 270.313 ms. Actual affected callers eq_sum_X_none_pow_mul_coeffNone 157.857 ms and coeff_rename_mul_aeval 428.503 ms. All below 750/1000 ms; no speedup claim, scaffolding, limits or deferral.
+
+Source FROZEN SHA256 `c6488cc1c5738d1f9e69b7267a0ad182c823f7bacd02c347e644d710ff559c3f`; leaf ownership revoked and requests drained before owner gates. Owner probe `16920` exit0,48.70s: independent ORIGINAL30 proof bodies,all20 original public type/value recoveries and ALL27 actual retained standardaxiom checks. `/private/tmp/roth-separation-d05-compatibility.{lean,log,json}`. Owner build session `8141` sequential `lake build` then separate `lake build Roth.LeanEval` both exit0,139.72s/32.94s; source hash stable. `/private/tmp/roth-separation-d05-{full,leaneval}.log`, `...-builds.json`. Owner original block docs byte-identical; exact diff/whitespace checked. Exact-path commit and successful cleanup-branch push precede next declaration.
+
+Public12-theorem instance menu remains pending/unapplied; header remains user-preserved.

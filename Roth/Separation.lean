@@ -53,28 +53,20 @@ theorem eq_mapDomain_some_add_single (d : Option τ →₀ ℕ) :
   cases o <;> simp [Finsupp.mapDomain_of_notMem_range,
     Finsupp.mapDomain_apply_of_injective (Option.some_injective τ), Finsupp.some_apply]
 
+omit [Fintype τ] [DecidableEq τ] in
 private lemma coeff_X_none_pow_mul_rename (ν : ℕ) (Q : MvPolynomial τ R) (e : Option τ →₀ ℕ) :
     (X none ^ ν * rename some Q).coeff e = if e none = ν then Q.coeff (Finsupp.some e) else 0 := by
   classical
-  rw [X_pow_eq_monomial, coeff_monomial_mul', one_mul]
-  by_cases hle : Finsupp.single none ν ≤ e
-  · rw [ite_eq_left hle]
-    have hν : ν ≤ e none := by simpa using Finsupp.single_le_iff.1 hle
-    by_cases heq : e none = ν
-    · rw [ite_eq_left heq]
-      have : e - Finsupp.single none ν = (Finsupp.some e).mapDomain some := by
-        conv_lhs => rw [eq_mapDomain_some_add_single e]
-        rw [heq, add_tsub_cancel_right]
-      rw [this, coeff_rename_mapDomain _ (Option.some_injective τ)]
-    · rw [ite_eq_right heq]
-      refine coeff_rename_eq_zero _ _ _ fun u hu => ?_
-      have := congrArg (fun f => f none) hu
-      simp only [Finsupp.mapDomain_of_notMem_range (f := some) _ none (by simp), Finsupp.tsub_apply,
-        Finsupp.single_eq_same] at this
-      omega
-  · rw [ite_eq_right hle, ite_eq_right]
-    intro heq
-    exact hle (Finsupp.single_le_iff.2 heq.ge)
+  have h : (optionEquivLeft R τ).toAlgHom.comp (rename some) = Polynomial.CAlgHom := by
+    ext i
+    simp
+  have hQ : optionEquivLeft R τ (rename some Q) = Polynomial.C Q := AlgHom.congr_fun h Q
+  rw [← optionEquivLeft_coeff_some_coeff_none R τ e, map_mul, map_pow,
+    optionEquivLeft_X_none, hQ, Polynomial.X_pow_mul_C,
+    Polynomial.C_mul_X_pow_eq_monomial, Polynomial.coeff_monomial]
+  by_cases he : e none = ν
+  · simp [he]
+  · simp [he, Ne.symm he]
 
 /-- The coefficient of `X none ^ ν` in `P`, a polynomial in the variables `τ`.
 Source: §2, proof of Lemma 2 ("collecting the terms in terms of the powers of `x_p`"). -/
