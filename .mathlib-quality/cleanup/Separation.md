@@ -103,4 +103,8 @@ Fresh dedicated worker per original declaration and independently audited added 
 
 ## d02 completed declaration checkpoint
 
-[eq_mapDomain_some_add_single](Separation-eq_mapDomain_some_add_single.md):6→3prooflines; original public contract/docs preserved. Owner14103 independent ORIGINAL30/public20/actual29standardaxioms pass; sequentialfull/separateLeanEval22880exit0(122.05/30.04s),stable hashes. ACTUAL module anchored profile2444exit0:98.126ms. Source613lines;2/30 originals,overall153/264 after successful publication. Public omission menu and optional generic coefficient generalization remain unapplied.
+[eq_mapDomain_some_add_single](Separation-eq_mapDomain_some_add_single.md):5→3prooflines; original public contract/docs preserved. Owner14103 independent ORIGINAL30/public20/actual29standardaxioms pass; sequentialfull/separateLeanEval22880exit0(122.05/30.04s),stable hashes. ACTUAL module anchored profile2444exit0:98.126ms. Source614lines;2/30 originals,overall153/264 after successful publication. Public omission menu and optional generic coefficient generalization remain unapplied.
+
+## d03 completed declaration checkpoint
+
+[some_mapDomain_add_single](Separation-some_mapDomain_add_single.md): private wrapper removed,exactly2callers use generic existing API. Source614→611;28retained (20public/8private). Owner90175 independent ORIGINAL30/public20type-value/ALL28actualstandardaxioms pass. Sequentialfull/separateLeanEval94244exit0(124.01/30.50s),frozen hashes stable. Actual module changed callers51.006/394.509ms. All original block docs byte-identical.3/30 originals,overall154/264 after successful publication. Historical d02 counts corrected from git to proof5→3/file616→614; checks/counts unaffected. No public omission applied.

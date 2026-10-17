@@ -54,12 +54,6 @@ theorem eq_mapDomain_some_add_single (d : Option τ →₀ ℕ) :
     Finsupp.mapDomain_apply_of_injective (Option.some_injective τ), Finsupp.some_apply]
 
 omit [Fintype τ] [DecidableEq τ] in
-private lemma some_mapDomain_add_single (d : τ →₀ ℕ) (ν : ℕ) :
-    Finsupp.some (d.mapDomain some + Finsupp.single none ν) = d := by
-  ext j
-  simp [Finsupp.some_apply, Finsupp.mapDomain_apply_of_injective (Option.some_injective τ)]
-
-omit [Fintype τ] [DecidableEq τ] in
 private lemma mapDomain_add_single_none (d : τ →₀ ℕ) (ν : ℕ) :
     (d.mapDomain some + Finsupp.single none ν : Option τ →₀ ℕ) none = ν := by
   simp [Finsupp.mapDomain_of_notMem_range]
@@ -95,8 +89,9 @@ noncomputable def coeffNone (P : MvPolynomial (Option τ) R) (ν : ℕ) : MvPoly
 /-- The coefficient of `x_τ^d` in `coeffNone P ν` is the coefficient of `x_τ^d x_none^ν` in `P`. -/
 theorem coeff_coeffNone (P : MvPolynomial (Option τ) R) (ν : ℕ) (d : τ →₀ ℕ) :
     (coeffNone P ν).coeff d = P.coeff (d.mapDomain some + Finsupp.single none ν) := by
-  rw [← optionEquivLeft_coeff_some_coeff_none, mapDomain_add_single_none,
-    some_mapDomain_add_single]
+  rw [← optionEquivLeft_coeff_some_coeff_none, mapDomain_add_single_none, Finsupp.some_add,
+    Finsupp.some_single_none, add_zero, ← Function.Embedding.some_apply,
+    ← Finsupp.embDomain_eq_mapDomain, Finsupp.some_embDomain_some]
   rfl
 
 /-- Expansion of `P` in powers of the distinguished variable: if `P` has degree at most `n` in
@@ -142,7 +137,9 @@ theorem coeff_rename_mul_aeval (U : MvPolynomial τ R) (V : Polynomial R) (a : �
     rw [Polynomial.aeval_monomial, map_mul, rename_C, algebraMap_eq]
     ring
   rw [hA, coeff_sum]
-  simp_rw [coeff_X_none_pow_mul_rename, mapDomain_add_single_none, some_mapDomain_add_single]
+  simp_rw [coeff_X_none_pow_mul_rename, mapDomain_add_single_none, Finsupp.some_add,
+    Finsupp.some_single_none, add_zero, ← Function.Embedding.some_apply,
+    ← Finsupp.embDomain_eq_mapDomain, Finsupp.some_embDomain_some]
   rw [Finset.sum_ite_eq]
   split_ifs with hb
   · rw [coeff_C_mul, mul_comm]

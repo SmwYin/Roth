@@ -19,7 +19,7 @@ Read both skills, full installed cleanup instructions, golfing-rules.md, proof-p
 | 9 | COMMENTS | No proof comments existed; docstring preserved byte-for-byte. |
 | 10 | DOCSTRING | Public theorem has a concise interpretation of multi-index splitting; preserved. |
 | 11 | VISIBILITY | Public API is frozen; retain visibility. General Finsupp decomposition is reusable beyond its two current local uses. |
-| 12 | STRUCTURE | Six original proof lines become three; no conjunction or long branch. No helper extraction necessary. |
+| 12 | STRUCTURE | Five original proof lines become three; no conjunction or long branch. No helper extraction necessary. |
 | 13 | MATHLIB | Five actual searches below locate restriction/Option equivalence and pointwise mapDomain API. No exact additive mapDomain decomposition found; retain pointwise extensional proof built directly from library lemmas. |
 | 14 | JUNK DEF | n/a: theorem, no definition. |
 | 15 | EXISTS LEMMA | n/a: public equality, no existential witness. |
@@ -33,7 +33,7 @@ Read both skills, full installed cleanup instructions, golfing-rules.md, proof-p
 | 23 | CASTS | No casts or type ascriptions introduced by diff. |
 | 24 | INSTANCE-NAME | n/a: theorem, no instance declaration. |
 
-Issues fixed: duplicate Option branch simplification merged; three proof lines saved. Refactoring needed: pending public instance-removal decision remains with parent. No new declaration, rename or decomposition flag.
+Issues fixed: duplicate Option branch simplification merged; two proof lines saved. Refactoring needed: pending public instance-removal decision remains with parent. No new declaration, rename or decomposition flag.
 
 ## Line packing
 
@@ -141,7 +141,7 @@ rfl, bare simp, grind and aesop do not close; exact? found no complete proof. Op
 
 - Native complete unfiltered LSP: `/private/tmp/roth-separation-d02-lsp.json`, success=true, partial=false, timed_out=false, 0 errors,32 unchanged warnings. Three target warnings are the explicit pending instance-removal proposal; other declarations remain outside scope. Header warning preserved per owner/user decision. No sorry diagnostic.
 - Actual module command `lake build Roth.Separation`, session63738 exit0; `/private/tmp/roth-separation-d02-build.log` ends `Build completed successfully (1876 jobs)`.
-- Independent original statement and six-line coordinate proof in namespace D02, plus actual `@original = @Roth.eq_mapDomain_some_add_single := rfl`, compiled in `/private/tmp/roth-separation-d02-verify.lean`, final session28197 exit0. This checks original effective type and proof-irrelevance identity while independently proving the statement. Original proof does not call target. First draft accidentally used unknown pp.width; corrected to format.width before successful gate. Failed draft is excluded.
+- Independent original statement and five-line coordinate proof in namespace D02, plus actual `@original = @Roth.eq_mapDomain_some_add_single := rfl`, compiled in `/private/tmp/roth-separation-d02-verify.lean`, final session28197 exit0. This checks original effective type and proof-irrelevance identity while independently proving the statement. Original proof does not call target. First draft accidentally used unknown pp.width; corrected to format.width before successful gate. Failed draft is excluded.
 - Actual built target `#print axioms` returns exactly propext, Classical.choice, Quot.sound. Generic arbitrary-coefficient candidate also has only these axioms. Raw verification log `/private/tmp/roth-separation-d02-verify.log`.
 - No new identifiers: moved library names all already occur in original theorem. No changed definitions, public statement, imports or docstrings. Automated exact original-signature and docstring comparison passes.
 
@@ -172,7 +172,7 @@ Session87396 exit0. Raw `/private/tmp/roth-separation-d02-anchored-profile.log` 
 
 ## Result / all eleven Phase-4 steps
 
-Original effective signature and documentation preserved. Proof six→three lines; declaration eight→five lines, saving3. File616→613lines. Rule2.15 applied. No proof comments existed. No renames queued. Pending public-instance decision reported, no unauthorized omission.
+Original effective signature and documentation preserved. Proof five→three lines; declaration seven→five lines, saving2. File616→614lines. Rule2.15 applied. No proof comments existed. No renames queued. Pending public-instance decision reported, no unauthorized omission.
 
 - [x] Step1 references read.
 - [x] Step2 all24 audit items recorded.

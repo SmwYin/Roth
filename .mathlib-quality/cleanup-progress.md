@@ -125,7 +125,7 @@ Files will be processed in dependency order; declarations within each file are s
 | `Roth/GenWronskian.lean` | 292 | All cleanup phases complete;19/19 originals and2 added helpers audited; both user-approved public amendments applied;2 preserved warnings |
 | `Roth/Lattice.lean` | 217 | All cleanup phases complete;10/10 originals and3/3 added helpers audited; user-preserved metadata |
 | `Roth/Index.lean` | 275 | All cleanup phases complete;21/21 originals audited; user-approved hypothesis groups applied and validated |
-| `Roth/Separation.lean` | 618 | Active;2/30 originals audited at d02 published checkpoint; public instance proposal pending approval |
+| `Roth/Separation.lean` | 618 | Active;3/30 originals audited at d03 published checkpoint; public instance proposal pending approval |
 | `Roth/Theta.lean` | 981 | Awaiting cleanup |
 | `Roth/MainLemma.lean` | 704 | Awaiting cleanup |
 | `Roth/Main.lean` | 684 | Awaiting cleanup |
@@ -1647,10 +1647,21 @@ Separation1/30,overall152/264 original audits after this checkpoint's exact-path
 
 ## Separation d02 checkpoint — eq_mapDomain_some_add_single
 
-[Dedicated audit](cleanup/Separation-eq_mapDomain_some_add_single.md): all24/42/five actual searches,every effective binder/public literature,inequality/width tables and11steps. Shared Option case simplification reduces proof6→3lines; signature/docs unchanged. Public12-theorem instance proposal remains pending/unapplied; broader generic additive-coefficient candidate independently compiles but is outside that menu and unapplied. Source616→613,29retained.
+[Dedicated audit](cleanup/Separation-eq_mapDomain_some_add_single.md): all24/42/five actual searches,every effective binder/public literature,inequality/width tables and11steps. Shared Option case simplification reduces proof5→3lines; signature/docs unchanged. Public12-theorem instance proposal remains pending/unapplied; broader generic additive-coefficient candidate independently compiles but is outside that menu and unapplied. Source616→614,29retained.
 
 Frozen SHA256 `92ffb3a092b9a23fdedc0da16bdd954f57d4c979ddf469b1d4f36cefc8c20278`; worker ownership revoked/all requests drained before owner gates. Module63738exit0,independent original contract/proof+actual standardaxioms28197exit0,complete native unfiltered LSP0errors/32baselinewarnings,success=true/partial=false/timed_out=false. `/private/tmp/roth-separation-d02-lsp.json`. Worker standalone source-extracted timing78.513ms is supplemented by OWNER ACTUAL MODULE anchored profile2444exit0: command14.840+async83.286=98.126ms,below750/1000budget. `/private/tmp/roth-separation-d02-actual-profile.log{,.json}`. No scaffolding/limits.
 
 Owner14103exit0: independent whole ORIGINAL30 proof bodies,all20 public original type/value recoveries and ALL29 actual retained standardaxioms. Actual probe47.29s,`/private/tmp/roth-separation-d02-compatibility.{lean,log,json}`. Owner22880 sequentialfull/separateLeanEval both exit0(122.05s/30.04s),sourcehashstable; `/private/tmp/roth-separation-d02-{full,leaneval}.log` and `...-builds.json`. Exact focused diff/docs/whitespace checked.
 
 Separation2/30,overall153/264 after exact-path commit and successful cleanup-branch push,8/14files complete. Next fresh private some_mapDomain_add_single only after publication. Header remains user-preserved.
+
+
+## Separation d03 checkpoint — some_mapDomain_add_single
+
+[Dedicated audit](cleanup/Separation-some_mapDomain_add_single.md): all24/42/fiveactualsearches/everybinder+negativeprobes/private literature exemption/width/inequality/11steps. Redundant private restriction-extension wrapper deleted; exactly2callers directly use existing generic restriction/embedding API. Source614→611;28retained (20public/8private),all original public contracts/definition/docs preserved. No new helper,public omission or rename.
+
+Source FROZEN SHA256 `0f24374fef7d2a0392679a8848e1ef5358fff49531082934a021ee6a50c2e622`; all leaf requests drained/source ownership revoked before owner gates. Actual module91161exit0; COMPLETE unfiltered native LSP0errors/32baselinewarnings,success=true/partial=false/timed_out=false,no faileddeps; `/private/tmp/roth-separation-d03-lsp.json`. Exact independent original and generic proofs pass; all8actualprivate +2affected public axioms standard-only. ACTUAL MODULE trace53646exit0: changed coeff_coeffNone51.006ms and coeff_rename_mul_aeval394.509ms; original target28.042ms from preceding actual-module profile,deleted target no finalcost. `/private/tmp/roth-separation-d03-final-profile.log{,.json}`.
+
+Owner90175exit0 independently re-proves ALL30original declarations,recovers all20 original public type/value contracts and checks ALL28actualretained standardaxiom sets (43.10s); `/private/tmp/roth-separation-d03-compatibility.{lean,log,json}`. Owner94244 sequentialfull then separateLeanEval both exit0(124.01s/30.50s),frozen sourcehashstable; `/private/tmp/roth-separation-d03-{full,leaneval}.log` and `...-builds.json`. Owner original block-doc comparison and exact diff/whitespace checks pass.
+
+Historical d02 arithmetic corrected against git: body5→3lines (saving2),file616→614; earlier six/613 counts were incorrect. No source,validation or original-declaration-count consequence. Separation3/30,overall154/264 after exact-path commit/successful cleanup-branch push;8/14files complete. Pending12-theorem public-instance proposal remains unapplied; header user-preserved. Next fresh original mapDomain_add_single_none follows publication.
