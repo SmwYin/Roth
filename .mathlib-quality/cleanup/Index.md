@@ -359,3 +359,21 @@ Worker COMPLETE unfiltered native Index diagnostics success=true partial=false t
 All original block docs byte-identical, source widths≤100, diff checked before staging.
 Source265lines/19retained. Index13/21 originals,overall143/264;
 no file-final completion claimed. Leaf source/Lean requests finished before owner gates.
+
+
+### Checkpoint d14 — index_mul
+
+Applied approved σ-DecidableEq omission; inlined hPQ and simplified shared finite-order certificate with terminal simp. Selected7body versus original11, rejected fully inlined5body after actual-module regression; finalrepeat209.54ms. Definitions, hP/hQ/hr, formula/docs preserved; file265→262.
+
+[Dedicated audit](Index-index_mul.md) inspected:24 audit items,42rules,five actual searches,
+binder probes,literature/exemption,complete packing+inequality tables,all11steps.
+Frozen SHA256 `975ba0a5f5fc234c48bdf161c0bb178cff8c1bab7ac40d4f876dc8bcc2453e25`. Fresh whole ORIGINAL nonself reproof, all18 original public
+type/value recoveries and all19 actual retained standard-axiom checks: compiler
+session16109 exit0, `/private/tmp/roth-index-d14-compatibility.log`.
+Approved no-DecEq types are additionally checked by Expr.find?; actual signatures printed.
+Sequential owner full then separate LeanEval41871 both exit0(122.00s/41.50s),
+Index+Theta hashes stable; `/private/tmp/roth-index-d14-{full,leaneval}.log`.
+Worker COMPLETE unfiltered native Index diagnostics success=true partial=false timed_out=false, no faileddependencies, 0target diagnostics/16other warnings; /private/tmp/roth-index-mul-selected-lsp.json. External Theta complete native LSP0errors/23inheritedwarnings/noinfos after one45second partial and complete retry, caller493 accepted; raw /private/tmp/roth-index-d14-theta-lsp.json.
+All original block docs byte-identical, source widths≤100, diff checked before staging.
+Source262lines/19retained. Index14/21 originals,overall144/264;
+no file-final completion claimed. Leaf source/Lean requests finished before owner gates.

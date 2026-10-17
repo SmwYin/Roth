@@ -158,20 +158,17 @@ theorem index_eq_weightedOrder_div {P : MvPolynomial σ ℝ} (hP : P ≠ 0) {r :
     exact_mod_cast ENat.toNat_le_toNat (MvPowerSeries.weightedOrder_le w (f := F) (d := e)
       (by simpa [F, MvPolynomial.coeff_coe, coeff_taylor] using he)) (by simp)
 
+omit [DecidableEq σ] in
 /-- The index is additive on products of nonzero polynomials.
 Source: §4, Lemma 4-1 ("`ind(P Q) = ind(P) + ind(Q)`"). -/
 theorem index_mul {P Q : MvPolynomial σ ℝ} (hP : P ≠ 0) (hQ : Q ≠ 0) (α : σ → ℝ) {r : σ → ℕ}
     (hr : ∀ j, 0 < r j) : index (P * Q) α r = index P α r + index Q α r := by
-  have hPQ : P * Q ≠ 0 := mul_ne_zero hP hQ
   rw [index_eq_weightedOrder_div hP hr, index_eq_weightedOrder_div hQ hr,
-    index_eq_weightedOrder_div hPQ hr, ← add_div, map_mul, MvPolynomial.coe_mul,
+    index_eq_weightedOrder_div (mul_ne_zero hP hQ) hr, ← add_div, map_mul, MvPolynomial.coe_mul,
     MvPowerSeries.weightedOrder_mul]
   congr 1
   have hfin : ∀ R : MvPolynomial σ ℝ, R ≠ 0 →
-      ((taylor α R : MvPowerSeries σ ℝ).weightedOrder fun j => (∏ i, r i) / r j) ≠ ⊤ := by
-    intro R hR
-    rwa [Ne, MvPowerSeries.weightedOrder_eq_top_iff, MvPolynomial.coe_eq_zero_iff,
-      taylor_eq_zero_iff]
+      ((taylor α R : MvPowerSeries σ ℝ).weightedOrder fun j ↦ (∏ i, r i) / r j) ≠ ⊤ := by simp
   rw [ENat.toNat_add (hfin P hP) (hfin Q hQ), Nat.cast_add]
 
 /-- The index is additive on finite products of nonzero polynomials.
