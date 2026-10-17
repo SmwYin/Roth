@@ -171,6 +171,7 @@ theorem index_mul {P Q : MvPolynomial σ ℝ} (hP : P ≠ 0) (hQ : Q ≠ 0) (α 
       ((taylor α R : MvPowerSeries σ ℝ).weightedOrder fun j ↦ (∏ i, r i) / r j) ≠ ⊤ := by simp
   rw [ENat.toNat_add (hfin P hP) (hfin Q hQ), Nat.cast_add]
 
+omit [DecidableEq σ] in
 /-- The index is additive on finite products of nonzero polynomials.
 Source: §4, Lemma 4-1, iterated ("`ind ∏_ν ... = ∑_ν ind ...`", as used in the proof of
 Lemma 6). -/
@@ -185,8 +186,8 @@ theorem index_prod {ι : Type*} (s : Finset ι) {f : ι → MvPolynomial σ ℝ}
   | insert a s has ih =>
     rw [Finset.prod_insert has, Finset.sum_insert has,
       index_mul (hf a (Finset.mem_insert_self a s))
-        (Finset.prod_ne_zero_iff.2 fun i hi => hf i (Finset.mem_insert_of_mem hi)) α hr,
-      ih fun i hi => hf i (Finset.mem_insert_of_mem hi)]
+        (Finset.prod_ne_zero_iff.2 fun i hi ↦ hf i (Finset.mem_insert_of_mem hi)) α hr,
+      ih fun i hi ↦ hf i (Finset.mem_insert_of_mem hi)]
 
 /-- Source: §5, proof of Lemma 6 ("Multiplication by a sign does not change the index"). -/
 theorem index_neg (P : MvPolynomial σ ℝ) (α : σ → ℝ) (r : σ → ℕ) :

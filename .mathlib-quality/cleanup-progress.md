@@ -1481,3 +1481,22 @@ All original block docs byte-identical, source widths≤100, diff checked before
 Index14/21 originals,overall144/264; source262lines,
 19retained declarations. Exact-path commit and successful cleanup-branch push
 precede the next edit. Header remains explicitly user-preserved.
+
+
+## Index d15 checkpoint — index_prod
+
+Applied approved σ-DecidableEq omission and two Unicode lambda arrows only; retained readable induction after one-line base alternative cost922vs900heartbeats. Independent direct weightedOrder_prod proof validates original type; target433.14ms, source262→263.
+
+[Dedicated audit](cleanup/Index-index_prod.md): all24/42/five searches/binder probes/11checks;
+worker module/complete LSP/independent proof/type/actual standard-axiom gates passed.
+Frozen SHA256 `568dc824159ae7476977806bf4eff276e9d175d5317c5381aee0c57a72d2e232`. Fresh whole ORIGINAL nonself reproof, all18 original public
+type/value recoveries and all19 actual retained standard-axiom checks: compiler
+session51247 exit0, `/private/tmp/roth-index-d15-compatibility.log`.
+Approved no-DecEq types are additionally checked by Expr.find?; actual signatures printed.
+Sequential owner full then separate LeanEval1153 both exit0(86.70s/23.18s),
+Index+Theta hashes stable; `/private/tmp/roth-index-d15-{full,leaneval}.log`.
+Worker COMPLETE unfiltered native Index diagnostics success=true partial=false timed_out=false, no faileddependencies, 0target diagnostics/14other warnings; /private/tmp/roth-index-prod-after-lsp.json. External Theta COMPLETE native LSP0errors/23inheritedwarnings/noinfos, caller399 accepted; raw /private/tmp/roth-index-d15-theta-lsp.json.
+All original block docs byte-identical, source widths≤100, diff checked before staging.
+Index15/21 originals,overall145/264; source263lines,
+19retained declarations. Exact-path commit and successful cleanup-branch push
+precede the next edit. Header remains explicitly user-preserved.
