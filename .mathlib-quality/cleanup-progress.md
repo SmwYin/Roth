@@ -125,7 +125,7 @@ Files will be processed in dependency order; declarations within each file are s
 | `Roth/GenWronskian.lean` | 292 | All cleanup phases complete;19/19 originals and2 added helpers audited; both user-approved public amendments applied;2 preserved warnings |
 | `Roth/Lattice.lean` | 217 | All cleanup phases complete;10/10 originals and3/3 added helpers audited; user-preserved metadata |
 | `Roth/Index.lean` | 275 | All cleanup phases complete;21/21 originals audited; user-approved hypothesis groups applied and validated |
-| `Roth/Separation.lean` | 618 | Active;3/30 originals audited at d03 published checkpoint; public instance proposal pending approval |
+| `Roth/Separation.lean` | 618 | Active;4/30 originals audited at d04 published checkpoint; public instance proposal pending approval |
 | `Roth/Theta.lean` | 981 | Awaiting cleanup |
 | `Roth/MainLemma.lean` | 704 | Awaiting cleanup |
 | `Roth/Main.lean` | 684 | Awaiting cleanup |
@@ -1665,3 +1665,16 @@ Source FROZEN SHA256 `0f24374fef7d2a0392679a8848e1ef5358fff49531082934a021ee6a50
 Owner90175exit0 independently re-proves ALL30original declarations,recovers all20 original public type/value contracts and checks ALL28actualretained standardaxiom sets (43.10s); `/private/tmp/roth-separation-d03-compatibility.{lean,log,json}`. Owner94244 sequentialfull then separateLeanEval both exit0(124.01s/30.50s),frozen sourcehashstable; `/private/tmp/roth-separation-d03-{full,leaneval}.log` and `...-builds.json`. Owner original block-doc comparison and exact diff/whitespace checks pass.
 
 Historical d02 arithmetic corrected against git: body5→3lines (saving2),file616→614; earlier six/613 counts were incorrect. No source,validation or original-declaration-count consequence. Separation3/30,overall154/264 after exact-path commit/successful cleanup-branch push;8/14files complete. Pending12-theorem public-instance proposal remains unapplied; header user-preserved. Next fresh original mapDomain_add_single_none follows publication.
+
+
+## Separation d04 checkpoint — mapDomain_add_single_none
+
+[Dedicated audit](cleanup/Separation-mapDomain_add_single_none.md): all24/42/fiveactualsearches/everybinder/width/inequality/11steps; Redundant private scalar-evaluation wrapper removed; exactly two uses inline terminal simp equality proofs after direct dependent-if expansion was tested and reverted. No public signature, definition, documentation or pin change; no new helper or rename. Source611→610;27retained. Separation4/30,overall155/264 original audits after successful publication;8/14files complete.
+
+Actual module 35267 exit 0; complete unfiltered native LSP 0 errors/32 baseline warnings, success=true, partial=false, timed_out=false; `/private/tmp/roth-separation-d04-lsp.json`. Exact ORIGINAL independent proof 96354 exit 0, only standard axioms. Leaf additional cumulative original/actual-axiom probe 39457 passed; its temporary compatibility path is subsequently reused by the fresh owner probe, whose evidence below is authoritative.
+
+ACTUAL repository module anchored profile 79783 exit 0: changed coeff_coeffNone 108.746 ms and coeff_rename_mul_aeval 524.749 ms, both below 750/1000 ms; `/private/tmp/roth-separation-d04-final-profile.log` and `...-profile-anchors.json`. Original unchanged target baseline 69.331 ms; deleted target has no final cost. No source profiler scaffolding or limits.
+
+Source FROZEN SHA256 `1fd92ece12094dc1d71783cfcfe6b7f92e92cf019d409e048e70f1074208831d`; leaf ownership revoked and requests drained before owner gates. Owner probe `48051` exit0,39.71s: independent ORIGINAL30 proof bodies,all20 original public type/value recoveries and ALL27 actual retained standardaxiom checks. `/private/tmp/roth-separation-d04-compatibility.{lean,log,json}`. Owner build session `79342` sequential `lake build` then separate `lake build Roth.LeanEval` both exit0,117.27s/27.24s; source hash stable. `/private/tmp/roth-separation-d04-{full,leaneval}.log`, `...-builds.json`. Owner original block docs byte-identical; exact diff/whitespace checked. Exact-path commit and successful cleanup-branch push precede next declaration.
+
+Public12-theorem instance menu remains pending/unapplied; header remains user-preserved.

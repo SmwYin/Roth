@@ -53,11 +53,6 @@ theorem eq_mapDomain_some_add_single (d : Option τ →₀ ℕ) :
   cases o <;> simp [Finsupp.mapDomain_of_notMem_range,
     Finsupp.mapDomain_apply_of_injective (Option.some_injective τ), Finsupp.some_apply]
 
-omit [Fintype τ] [DecidableEq τ] in
-private lemma mapDomain_add_single_none (d : τ →₀ ℕ) (ν : ℕ) :
-    (d.mapDomain some + Finsupp.single none ν : Option τ →₀ ℕ) none = ν := by
-  simp [Finsupp.mapDomain_of_notMem_range]
-
 private lemma coeff_X_none_pow_mul_rename (ν : ℕ) (Q : MvPolynomial τ R) (e : Option τ →₀ ℕ) :
     (X none ^ ν * rename some Q).coeff e = if e none = ν then Q.coeff (Finsupp.some e) else 0 := by
   classical
@@ -89,7 +84,9 @@ noncomputable def coeffNone (P : MvPolynomial (Option τ) R) (ν : ℕ) : MvPoly
 /-- The coefficient of `x_τ^d` in `coeffNone P ν` is the coefficient of `x_τ^d x_none^ν` in `P`. -/
 theorem coeff_coeffNone (P : MvPolynomial (Option τ) R) (ν : ℕ) (d : τ →₀ ℕ) :
     (coeffNone P ν).coeff d = P.coeff (d.mapDomain some + Finsupp.single none ν) := by
-  rw [← optionEquivLeft_coeff_some_coeff_none, mapDomain_add_single_none, Finsupp.some_add,
+  rw [← optionEquivLeft_coeff_some_coeff_none,
+    show (d.mapDomain some + Finsupp.single none ν : Option τ →₀ ℕ) none = ν by
+      simp [Finsupp.mapDomain_of_notMem_range], Finsupp.some_add,
     Finsupp.some_single_none, add_zero, ← Function.Embedding.some_apply,
     ← Finsupp.embDomain_eq_mapDomain, Finsupp.some_embDomain_some]
   rfl
@@ -137,7 +134,9 @@ theorem coeff_rename_mul_aeval (U : MvPolynomial τ R) (V : Polynomial R) (a : �
     rw [Polynomial.aeval_monomial, map_mul, rename_C, algebraMap_eq]
     ring
   rw [hA, coeff_sum]
-  simp_rw [coeff_X_none_pow_mul_rename, mapDomain_add_single_none, Finsupp.some_add,
+  simp_rw [coeff_X_none_pow_mul_rename,
+    show (a.mapDomain some + Finsupp.single none b : Option τ →₀ ℕ) none = b by
+      simp [Finsupp.mapDomain_of_notMem_range], Finsupp.some_add,
     Finsupp.some_single_none, add_zero, ← Function.Embedding.some_apply,
     ← Finsupp.embDomain_eq_mapDomain, Finsupp.some_embDomain_some]
   rw [Finset.sum_ite_eq]

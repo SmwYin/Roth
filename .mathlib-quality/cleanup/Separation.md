@@ -108,3 +108,16 @@ Fresh dedicated worker per original declaration and independently audited added 
 ## d03 completed declaration checkpoint
 
 [some_mapDomain_add_single](Separation-some_mapDomain_add_single.md): private wrapper removed,exactly2callers use generic existing API. Source614→611;28retained (20public/8private). Owner90175 independent ORIGINAL30/public20type-value/ALL28actualstandardaxioms pass. Sequentialfull/separateLeanEval94244exit0(124.01/30.50s),frozen hashes stable. Actual module changed callers51.006/394.509ms. All original block docs byte-identical.3/30 originals,overall154/264 after successful publication. Historical d02 counts corrected from git to proof5→3/file616→614; checks/counts unaffected. No public omission applied.
+
+
+## d04 completed declaration checkpoint — mapDomain_add_single_none
+
+[Dedicated audit](Separation-mapDomain_add_single_none.md): all24/42/fiveactualsearches/everybinder/width/inequality/11steps; Redundant private scalar-evaluation wrapper removed; exactly two uses inline terminal simp equality proofs after direct dependent-if expansion was tested and reverted. No public signature, definition, documentation or pin change; no new helper or rename. Source611→610;27retained. Separation4/30,overall155/264 original audits after successful publication;8/14files complete.
+
+Actual module 35267 exit 0; complete unfiltered native LSP 0 errors/32 baseline warnings, success=true, partial=false, timed_out=false; `/private/tmp/roth-separation-d04-lsp.json`. Exact ORIGINAL independent proof 96354 exit 0, only standard axioms. Leaf additional cumulative original/actual-axiom probe 39457 passed; its temporary compatibility path is subsequently reused by the fresh owner probe, whose evidence below is authoritative.
+
+ACTUAL repository module anchored profile 79783 exit 0: changed coeff_coeffNone 108.746 ms and coeff_rename_mul_aeval 524.749 ms, both below 750/1000 ms; `/private/tmp/roth-separation-d04-final-profile.log` and `...-profile-anchors.json`. Original unchanged target baseline 69.331 ms; deleted target has no final cost. No source profiler scaffolding or limits.
+
+Source FROZEN SHA256 `1fd92ece12094dc1d71783cfcfe6b7f92e92cf019d409e048e70f1074208831d`; leaf ownership revoked and requests drained before owner gates. Owner probe `48051` exit0,39.71s: independent ORIGINAL30 proof bodies,all20 original public type/value recoveries and ALL27 actual retained standardaxiom checks. `/private/tmp/roth-separation-d04-compatibility.{lean,log,json}`. Owner build session `79342` sequential `lake build` then separate `lake build Roth.LeanEval` both exit0,117.27s/27.24s; source hash stable. `/private/tmp/roth-separation-d04-{full,leaneval}.log`, `...-builds.json`. Owner original block docs byte-identical; exact diff/whitespace checked. Exact-path commit and successful cleanup-branch push precede next declaration.
+
+Public12-theorem instance menu remains pending/unapplied; header remains user-preserved.
