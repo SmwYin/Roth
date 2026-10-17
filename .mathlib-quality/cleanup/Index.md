@@ -485,3 +485,21 @@ Worker COMPLETE unfiltered native Index LSP success=true partial=false timed_out
 All original block docs byte-identical, source widths≤100, diff checked before staging.
 Source269lines/19retained. Index20/21 originals,overall150/264;
 no file-final completion claimed. Leaf source/Lean requests finished before owner gates.
+
+
+### Checkpoint d21 — index_unique
+
+Approved final σ-DecidableEq omission; all17 public theorem omissions now applied. Genuine proof23→15lines by direct Taylor-coefficient bounds and alias removal; all hP/Fintype/Unique/data/docs preserved, no helper. Group1 target applications validated.
+
+[Dedicated audit](Index-index_unique.md) inspected:24 audit items,42rules,five actual searches,
+binder probes,literature/exemption,complete packing+inequality tables,all11steps.
+Frozen SHA256 `f706f41e57e50a6449b372c7ed36bc37cac254d6e52b21b94af1b03bdc5e0ee7`. Fresh whole ORIGINAL nonself reproof, all18 original public
+type/value recoveries and all19 actual retained standard-axiom checks: compiler
+session27558 exit0, `/private/tmp/roth-index-d21-compatibility.log`.
+Approved no-DecEq types are additionally checked by Expr.find?; actual signatures printed.
+Sequential owner full then separate LeanEval99632 both exit0(169.65s/41.84s),
+Index+Theta hashes stable; `/private/tmp/roth-index-d21-{full,leaneval}.log`.
+Complete unfiltered native Index diagnostics: header warning only; Theta caller254 checked, success=true/partial=false/timed_out=false,0errors/28warnings, unchanged from d20. Evidence /private/tmp/roth-index-d21-theta-lsp.json.
+All original block docs byte-identical, source widths≤100, diff checked before staging.
+Source262lines/19retained. Index21/21 originals,overall151/264;
+no file-final completion claimed. Leaf source/Lean requests finished before owner gates.

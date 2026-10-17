@@ -236,34 +236,27 @@ theorem index_le_card {P : MvPolynomial σ ℝ} (hP : P ≠ 0) {r : σ → ℕ} 
     (monomial_le_degreeOf j (mem_support_taylor_iff.2 hd0)).trans
       ((degreeOf_taylor_le α j P).trans (hd j))
 
+omit [DecidableEq σ] in
 /-- In one variable, the index is the multiplicity of `α` as a root divided by the weight.
 Source: §5, proof of Lemma 5 ("Let `t` be the multiplicity of `h_1/q_1` as a root of `R`;
 Taylor's theorem gives `ind(R; h_1/q_1; r_1) = t/r_1`"). -/
 theorem index_unique [Unique σ] {P : MvPolynomial σ ℝ} (hP : P ≠ 0) (α : σ → ℝ) (r : σ → ℕ) :
     index P α r =
       (Polynomial.rootMultiplicity (α default) (uniqueAlgEquiv ℝ σ P) : ℝ) / r default := by
-  set e := uniqueAlgEquiv ℝ σ
-  set q := Polynomial.taylor (α default) (e P) with hqdef
-  have hevalQ : ∀ Q : MvPolynomial σ ℝ, (e Q).eval (α default) = eval α Q := fun Q =>
-    eval₂_uniqueAlgEquiv (f := Q) (φ := RingHom.id ℝ) (a := α)
-  have key : ∀ d : σ →₀ ℕ, eval α (hasseDeriv d P) = q.coeff (d default) := fun d => by
-    rw [hqdef, Polynomial.taylor_coeff, ← uniqueAlgEquiv_hasseDeriv, hevalQ,
-      ← Finsupp.unique_single d]
+  set q := Polynomial.taylor (α default) (uniqueAlgEquiv ℝ σ P) with hqdef
+  have key (d : σ →₀ ℕ) : eval α (hasseDeriv d P) = q.coeff (d default) := by
+    rw [Polynomial.taylor_coeff, ← uniqueAlgEquiv_hasseDeriv, ← Finsupp.unique_single d]
+    exact (eval₂_uniqueAlgEquiv (f := hasseDeriv d P) (φ := RingHom.id ℝ) (a := α)).symm
   have hq : q ≠ 0 := by
-    rwa [hqdef, Ne, Polynomial.taylor_eq_zero, map_eq_zero_iff e e.injective]
-  have hw : ∀ d : σ →₀ ℕ, weight r d = (d default : ℝ) / r default := fun d => by
-    simp [weight]
+    rwa [hqdef, Ne, Polynomial.taylor_eq_zero, map_eq_zero_iff _ (uniqueAlgEquiv ℝ σ).injective]
   rw [Polynomial.rootMultiplicity_eq_natTrailingDegree, ← Polynomial.taylor_apply]
   apply le_antisymm
-  · have hN : q.coeff q.natTrailingDegree ≠ 0 :=
-      Polynomial.trailingCoeff_nonzero_iff_nonzero.2 hq
-    have h1 := index_le_weight (P := P) (α := α) (r := r)
-      (d := Finsupp.single default q.natTrailingDegree) (by rw [key]; simpa using hN)
-    rwa [hw, Finsupp.single_eq_same] at h1
-  · refine (le_index_iff hP).2 fun d hd => ?_
-    rw [key] at hd
-    rw [hw]
-    exact div_le_div_of_nonneg_right
-      (by exact_mod_cast Polynomial.natTrailingDegree_le_of_ne_zero hd) (Nat.cast_nonneg _)
+  · simpa [weight, hqdef] using index_le_weight (P := P) (α := α) (r := r)
+      (d := Finsupp.single default q.natTrailingDegree)
+      (by simpa [key] using Polynomial.trailingCoeff_nonzero_iff_nonzero.2 hq)
+  · refine (le_index_iff hP).2 fun d hd ↦ ?_
+    simpa [weight, hqdef] using div_le_div_of_nonneg_right
+      (by exact_mod_cast Polynomial.natTrailingDegree_le_of_ne_zero (key d ▸ hd))
+      (Nat.cast_nonneg (r default))
 
 end Roth

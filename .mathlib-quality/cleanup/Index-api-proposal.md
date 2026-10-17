@@ -120,7 +120,7 @@ argument deletions, with all Theta contracts and positivity assumptions preserve
 
 ## Application ledger
 
-Verified σ-DecidableEq omissions: 16/17.
+Verified σ-DecidableEq omissions: 17/17.
 
 - [index_le_weight](Index-index_le_weight.md)
 - [exists_weight_eq_index](Index-exists_weight_eq_index.md)
@@ -138,6 +138,7 @@ Verified σ-DecidableEq omissions: 16/17.
 - [index_mul_left_weights](Index-index_mul_left_weights.md)
 - [index_rename](Index-index_rename.md)
 - [index_le_card](Index-index_le_card.md)
+- [index_unique](Index-index_unique.md)
 
 Rename τ-DecidableEq removed: True.
 index_le_card.hr removed: True.

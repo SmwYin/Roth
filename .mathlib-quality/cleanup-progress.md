@@ -1595,3 +1595,22 @@ All original block docs byte-identical, source widths≤100, diff checked before
 Index20/21 originals,overall150/264; source269lines,
 19retained declarations. Exact-path commit and successful cleanup-branch push
 precede the next edit. Header remains explicitly user-preserved.
+
+
+## Index d21 checkpoint — index_unique
+
+Approved final σ-DecidableEq omission; all17 public theorem omissions now applied. Genuine proof23→15lines by direct Taylor-coefficient bounds and alias removal; all hP/Fintype/Unique/data/docs preserved, no helper. Group1 target applications validated.
+
+[Dedicated audit](cleanup/Index-index_unique.md): all24/42/five searches/binder probes/11checks;
+worker module/complete LSP/independent proof/type/actual standard-axiom gates passed.
+Frozen SHA256 `f706f41e57e50a6449b372c7ed36bc37cac254d6e52b21b94af1b03bdc5e0ee7`. Fresh whole ORIGINAL nonself reproof, all18 original public
+type/value recoveries and all19 actual retained standard-axiom checks: compiler
+session27558 exit0, `/private/tmp/roth-index-d21-compatibility.log`.
+Approved no-DecEq types are additionally checked by Expr.find?; actual signatures printed.
+Sequential owner full then separate LeanEval99632 both exit0(169.65s/41.84s),
+Index+Theta hashes stable; `/private/tmp/roth-index-d21-{full,leaneval}.log`.
+Complete unfiltered native Index diagnostics: header warning only; Theta caller254 checked, success=true/partial=false/timed_out=false,0errors/28warnings, unchanged from d20. Evidence /private/tmp/roth-index-d21-theta-lsp.json.
+All original block docs byte-identical, source widths≤100, diff checked before staging.
+Index21/21 originals,overall151/264; source262lines,
+19retained declarations. Exact-path commit and successful cleanup-branch push
+precede the next edit. Header remains explicitly user-preserved.
