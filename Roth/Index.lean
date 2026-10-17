@@ -195,6 +195,7 @@ theorem index_neg (P : MvPolynomial σ ℝ) (α : σ → ℝ) (r : σ → ℕ) :
     index (-P) α r = index P α r := by
   simp [index, support_neg]
 
+omit [DecidableEq σ] in
 /-- Source: §4, end ("`ind(cP; α; r) = ind(P; α; r)`" for nonzero `c`). -/
 theorem index_C_mul {c : ℝ} (hc : c ≠ 0) (P : MvPolynomial σ ℝ) (α : σ → ℝ) (r : σ → ℕ) :
     index (C c * P) α r = index P α r := by

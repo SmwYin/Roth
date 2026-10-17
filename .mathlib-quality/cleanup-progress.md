@@ -1519,3 +1519,22 @@ All original block docs byte-identical, source widths≤100, diff checked before
 Index16/21 originals,overall146/264; source264lines,
 19retained declarations. Exact-path commit and successful cleanup-branch push
 precede the next edit. Header remains explicitly user-preserved.
+
+
+## Index d17 checkpoint — index_C_mul
+
+Applied approved σ-DecidableEq omission only; original one-rewrite support-scaling proof, hc/data/formula/docs preserved. Independent coefficientwise-support proof validates original type. Target102.65ms; file264→265.
+
+[Dedicated audit](cleanup/Index-index_C_mul.md): all24/42/five searches/binder probes/11checks;
+worker module/complete LSP/independent proof/type/actual standard-axiom gates passed.
+Frozen SHA256 `580afc142903ea2171cb7e4411d681524fd1fbdaedef33611af5d7c50fef24c1`. Fresh whole ORIGINAL nonself reproof, all18 original public
+type/value recoveries and all19 actual retained standard-axiom checks: compiler
+session21635 exit0, `/private/tmp/roth-index-d17-compatibility.log`.
+Approved no-DecEq types are additionally checked by Expr.find?; actual signatures printed.
+Sequential owner full then separate LeanEval88853 both exit0(163.72s/39.89s),
+Index+Theta hashes stable; `/private/tmp/roth-index-d17-{full,leaneval}.log`.
+Worker COMPLETE unfiltered native Index diagnostics success=true partial=false timed_out=false, no faileddependencies, 0target diagnostics/10other warnings; /private/tmp/roth-index-cmul-diagnostics.json. Owner rg finds no project callers; no external caller query needed.
+All original block docs byte-identical, source widths≤100, diff checked before staging.
+Index17/21 originals,overall147/264; source265lines,
+19retained declarations. Exact-path commit and successful cleanup-branch push
+precede the next edit. Header remains explicitly user-preserved.

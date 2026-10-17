@@ -413,3 +413,21 @@ Worker COMPLETE unfiltered Index LSP success=true partial=false timed_out=false,
 All original block docs byte-identical, source widths≤100, diff checked before staging.
 Source264lines/19retained. Index16/21 originals,overall146/264;
 no file-final completion claimed. Leaf source/Lean requests finished before owner gates.
+
+
+### Checkpoint d17 — index_C_mul
+
+Applied approved σ-DecidableEq omission only; original one-rewrite support-scaling proof, hc/data/formula/docs preserved. Independent coefficientwise-support proof validates original type. Target102.65ms; file264→265.
+
+[Dedicated audit](Index-index_C_mul.md) inspected:24 audit items,42rules,five actual searches,
+binder probes,literature/exemption,complete packing+inequality tables,all11steps.
+Frozen SHA256 `580afc142903ea2171cb7e4411d681524fd1fbdaedef33611af5d7c50fef24c1`. Fresh whole ORIGINAL nonself reproof, all18 original public
+type/value recoveries and all19 actual retained standard-axiom checks: compiler
+session21635 exit0, `/private/tmp/roth-index-d17-compatibility.log`.
+Approved no-DecEq types are additionally checked by Expr.find?; actual signatures printed.
+Sequential owner full then separate LeanEval88853 both exit0(163.72s/39.89s),
+Index+Theta hashes stable; `/private/tmp/roth-index-d17-{full,leaneval}.log`.
+Worker COMPLETE unfiltered native Index diagnostics success=true partial=false timed_out=false, no faileddependencies, 0target diagnostics/10other warnings; /private/tmp/roth-index-cmul-diagnostics.json. Owner rg finds no project callers; no external caller query needed.
+All original block docs byte-identical, source widths≤100, diff checked before staging.
+Source265lines/19retained. Index17/21 originals,overall147/264;
+no file-final completion claimed. Leaf source/Lean requests finished before owner gates.
