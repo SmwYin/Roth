@@ -1,8 +1,8 @@
 # Index: compiled public-hypothesis proposal
 
 Status: **all three scoped groups explicitly approved by the user via root/parent
-on2026-10-16; group3 received a separate approval after groups1+2. Application
-scheduled at each dedicated declaration checkpoint; no broader API authorized.** See the application ledger below for current verified progress.
+on2026-10-16; group3 received a separate approval after groups1+2. All groups applied at dedicated declaration checkpoints and finally validated;
+CLOSED. No broader API authorized.** See the application ledger below for current verified progress.
 This proposal concerns Index only; earlier approvals in CoeffNorm and GenWronskian
 were not reused as authorization.
 
@@ -117,6 +117,17 @@ caller, original-type, standard-axiom, full-project and separate LeanEval gates.
 The dedicated declaration audits continue sequentially. The user's later separate
 explicit approval includes group3's unused `hl` and its two minimal Theta rewrite
 argument deletions, with all Theta contracts and positivity assumptions preserved.
+
+## Final closure — all3 approved groups CLOSED
+
+All17 σ-DecEq removals,rename τ removal,card hr removal,and scaling hl removal
+are applied and validated. All18 original Index public type/value recoveries and
+all19 retained actual standard-axiom checks compile (3443 exit0). Whole ORIGINAL
+Index+FULL ORIGINAL Theta,all29 original Theta public exact-type/value equalities
+and actual standard axioms compile (54584 exit0); allTheta contracts/positivity/
+instances preserved. Final full+separateLeanEval35061 both exit0,stable hashes.
+Complete unfiltered allcaller LSP0errors; newly exposed Theta unused-contract
+warnings intentionally reserved for its fresh file audit. [Final evidence](Index-final.md).
 
 ## Application ledger
 

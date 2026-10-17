@@ -1614,3 +1614,21 @@ All original block docs byte-identical, source widths≤100, diff checked before
 Index21/21 originals,overall151/264; source262lines,
 19retained declarations. Exact-path commit and successful cleanup-branch push
 precede the next edit. Header remains explicitly user-preserved.
+
+
+## Index final completion — 8/14files,151/264 originals
+
+[Final report](cleanup/Index-final.md). All21 originals audited by fresh dedicated workers;
+19retained,two trivial private wrappers removed,no added helpers. Source275→245lines.
+All3 scoped approved hypothesis groups CLOSED; four minimal Theta argument deletions
+preserve all29 Theta original public contracts. No broader API change.
+Final SHA256 `30e6f151ddd2d9c344b9537d1bef87124e3f5814d2e58f3cba499a7e1ea6c939`. Actual Index module62865,
+independent original18recoveries/all19actualaxioms3443,identifiers72331,whole original
+Index+Theta29contracts/actualaxioms54584 all exit0. Complete native Index/Theta/MainLemma/
+Main LSP0errors,1/28/3/4warnings; Indexheader user-preserved,Theta five newly exposed
+unused-contract warnings retained for its own fresh audit. Full/separateLeanEval35061
+both exit0(87.99s/40.00s),stable hashes. Fresh independent simplify PASS-THROUGH;
+actual two complete19-declaration finalprofile sweeps98346/75637 exit0,max374.66/341.66ms,
+allbelow750borderline/1000budget,no limitraises/deferrals. All21 reports42rules/11checks.
+One rename remains in shared queue for parent project-end drain. Final exact-path commit
+and successful push precede release; nextfresh owner is Separation.

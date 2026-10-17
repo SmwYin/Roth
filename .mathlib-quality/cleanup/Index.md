@@ -503,3 +503,17 @@ Complete unfiltered native Index diagnostics: header warning only; Theta caller2
 All original block docs byte-identical, source widths≤100, diff checked before staging.
 Source262lines/19retained. Index21/21 originals,overall151/264;
 no file-final completion claimed. Leaf source/Lean requests finished before owner gates.
+
+
+## Phases 5a–7 — final completion
+
+Consolidated unused ambient DecidableEq and17 redundant scoped omissions after d21's
+successful push. Actual types unchanged; final245 lines/19retained/21 original audits.
+[Final report](Index-final.md) records all cumulative gates,full original Index18 and
+Theta29 exact recoveries/actual standard axioms,complete allcaller LSP,independent
+PASS-THROUGH review,and both19-declaration actual timing sweeps (max374.66/341.66ms).
+Frozen SHA256 `30e6f151ddd2d9c344b9537d1bef87124e3f5814d2e58f3cba499a7e1ea6c939`. Module62865,Indexcompat3443,
+identifier72331,Thetaoriginal54584 exit0. Full/separate35061 exit0/exit0(87.99/40.00s),
+Index+Theta hashes stable. All phases complete; soleIndex header warning user-preserved.
+All3 scoped API groups applied/validated/CLOSED; no broader change. Renamequeue1 remains
+for authorized parent project-end drain. Final exact-path successful push precedes release.

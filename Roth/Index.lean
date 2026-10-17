@@ -43,7 +43,7 @@ namespace Roth
 open MvPolynomial
 open scoped Pointwise
 
-variable {σ : Type*} [Fintype σ] [DecidableEq σ]
+variable {σ : Type*} [Fintype σ]
 
 /-- The index of `P` at `α` relative to `r`. Source: §4, definition of the index and the Lean
 implementation note ("Define the index as the minimum of `∑ d_j/r_j` over its nonzero
@@ -51,12 +51,11 @@ coefficients"). -/
 noncomputable def index (P : MvPolynomial σ ℝ) (α : σ → ℝ) (r : σ → ℕ) : ℝ :=
   sInf (weight r '' ((taylor α P).support : Set (σ →₀ ℕ)))
 
-omit [Fintype σ] [DecidableEq σ] in
+omit [Fintype σ] in
 private lemma mem_support_taylor_iff {P : MvPolynomial σ ℝ} {α : σ → ℝ} {d : σ →₀ ℕ} :
     d ∈ (taylor α P).support ↔ eval α (hasseDeriv d P) ≠ 0 := by
   rw [mem_support_iff, coeff_taylor]
 
-omit [DecidableEq σ] in
 /-- The index is at most the weight of any multi-index `d` with `(Δ_d P)(α) ≠ 0`.
 Source: §4, definition of the index ("the minimum ... over all tuples `(i_1, …, i_p)` such
 that `Δ_i P(α) ≠ 0`"). -/
@@ -65,7 +64,6 @@ theorem index_le_weight {P : MvPolynomial σ ℝ} {α : σ → ℝ} {r : σ → 
   csInf_le ((taylor α P).support.finite_toSet.image (weight r)).bddBelow
     (Set.mem_image_of_mem _ (Finset.mem_coe.2 (mem_support_taylor_iff.2 h)))
 
-omit [DecidableEq σ] in
 /-- For nonzero `P`, the index is attained by some multi-index `d` with `(Δ_d P)(α) ≠ 0`.
 Source: §4, definition of the index ("Thus this is an attained minimum"). -/
 theorem exists_weight_eq_index {P : MvPolynomial σ ℝ} (hP : P ≠ 0) (α : σ → ℝ) (r : σ → ℕ) :
@@ -75,7 +73,6 @@ theorem exists_weight_eq_index {P : MvPolynomial σ ℝ} (hP : P ≠ 0) (α : σ
       simpa using hP).csInf_mem ((taylor α P).support.finite_toSet.image (weight r))
   exact ⟨d, mem_support_taylor_iff.1 hd, hdw⟩
 
-omit [DecidableEq σ] in
 /-- The characterisation of lower bounds for the index of a nonzero polynomial: `c ≤ index P α r`
 iff every multi-index `d` with `(Δ_d P)(α) ≠ 0` has weight at least `c`. -/
 theorem le_index_iff {P : MvPolynomial σ ℝ} (hP : P ≠ 0) {α : σ → ℝ} {r : σ → ℕ} {c : ℝ} :
@@ -85,12 +82,10 @@ theorem le_index_iff {P : MvPolynomial σ ℝ} (hP : P ≠ 0) {α : σ → ℝ} 
   rintro _ ⟨d, hd, rfl⟩
   exact h d (mem_support_taylor_iff.1 hd)
 
-omit [DecidableEq σ] in
 /-- The index is nonnegative. Source: §4, first lemma on the index ("We have `ind(P) ≥ 0`"). -/
 theorem index_nonneg (P : MvPolynomial σ ℝ) (α : σ → ℝ) (r : σ → ℕ) : 0 ≤ index P α r :=
   Real.sInf_nonneg (Set.forall_mem_image.mpr fun d _ ↦ weight_nonneg r d)
 
-omit [DecidableEq σ] in
 /-- For nonzero `P` and positive weights, the index vanishes iff `P(α) ≠ 0`.
 Source: §4, first lemma on the index ("`ind(P) = 0` if and only if `P(α_1, …, α_p) ≠ 0`"). -/
 theorem index_eq_zero_iff {P : MvPolynomial σ ℝ} (hP : P ≠ 0) {r : σ → ℕ} (hr : ∀ j, 0 < r j)
@@ -102,7 +97,6 @@ theorem index_eq_zero_iff {P : MvPolynomial σ ℝ} (hP : P ≠ 0) {r : σ → �
     simpa [hasseDeriv_zero_apply] using hd
   · simpa using index_le_weight (r := r) (d := 0) (by simpa [hasseDeriv_zero_apply] using h)
 
-omit [DecidableEq σ] in
 /-- Applying `Δ_k` lowers the index by at most the weight of `k`.
 Source: §4, Lemma `lem:index-of-derivative` ("`ind(Δ_k P) ≥ ind(P) - ∑ k_j / r_j`"). -/
 theorem index_hasseDeriv_ge {P : MvPolynomial σ ℝ} {k : σ →₀ ℕ} (hk : hasseDeriv k P ≠ 0)
@@ -111,7 +105,6 @@ theorem index_hasseDeriv_ge {P : MvPolynomial σ ℝ} {k : σ →₀ ℕ} (hk : 
   rw [hasseDeriv_hasseDeriv, smul_eq_C_mul, map_mul, eval_C, mul_ne_zero_iff] at hi
   exact sub_le_iff_le_add.2 (by simpa [weight_add, hiw] using index_le_weight (r := r) hi.2)
 
-omit [DecidableEq σ] in
 /-- Source: §4, Lemma 4-1 ("`ind(P + Q) ≥ min(ind P, ind Q)`"), in the form used in the proof of
 Lemma 6 (a common lower bound for the nonzero summands is a lower bound for a nonzero sum). -/
 theorem le_index_sum {ι : Type*} {s : Finset ι} {f : ι → MvPolynomial σ ℝ} {α : σ → ℝ} {r : σ → ℕ}
@@ -123,7 +116,6 @@ theorem le_index_sum {ι : Type*} {s : Finset ι} {f : ι → MvPolynomial σ �
   have hfi : f i ≠ 0 := fun h0 ↦ hid (by rw [h0, map_zero, map_zero])
   exact (le_index_iff hfi).1 (hf i hi hfi) d hid
 
-omit [DecidableEq σ] in
 /-- The rational weight of `d` as a natural-number weight divided by `D = ∏ r_j`.
 Source: §4, Lean implementation note ("set `D = ∏ r_j` and use the natural weights
 `w_j = D / r_j`"). -/
@@ -136,7 +128,6 @@ theorem weight_eq_finsuppWeight_div {r : σ → ℕ} (hr : ∀ j, 0 < r j) (d : 
     Nat.cast_div_charZero (Finset.dvd_prod_of_mem _ (Finset.mem_univ j)), Nat.cast_prod,
     ← mul_div_assoc, div_right_comm, mul_div_cancel_right₀ _ hD.ne']
 
-omit [DecidableEq σ] in
 /-- The index as the weighted order of the Taylor expansion `P(X + α)`, viewed as a power series,
 divided by `D = ∏ r_j`. Source: §4, Lean implementation note ("use the natural weights in
 `MvPowerSeries.weightedOrder`, then divide the finite value by `D` after embedding `P_α` as a
@@ -158,7 +149,6 @@ theorem index_eq_weightedOrder_div {P : MvPolynomial σ ℝ} (hP : P ≠ 0) {r :
     exact_mod_cast ENat.toNat_le_toNat (MvPowerSeries.weightedOrder_le w (f := F) (d := e)
       (by simpa [F, MvPolynomial.coeff_coe, coeff_taylor] using he)) (by simp)
 
-omit [DecidableEq σ] in
 /-- The index is additive on products of nonzero polynomials.
 Source: §4, Lemma 4-1 ("`ind(P Q) = ind(P) + ind(Q)`"). -/
 theorem index_mul {P Q : MvPolynomial σ ℝ} (hP : P ≠ 0) (hQ : Q ≠ 0) (α : σ → ℝ) {r : σ → ℕ}
@@ -171,7 +161,6 @@ theorem index_mul {P Q : MvPolynomial σ ℝ} (hP : P ≠ 0) (hQ : Q ≠ 0) (α 
       ((taylor α R : MvPowerSeries σ ℝ).weightedOrder fun j ↦ (∏ i, r i) / r j) ≠ ⊤ := by simp
   rw [ENat.toNat_add (hfin P hP) (hfin Q hQ), Nat.cast_add]
 
-omit [DecidableEq σ] in
 /-- The index is additive on finite products of nonzero polynomials.
 Source: §4, Lemma 4-1, iterated ("`ind ∏_ν ... = ∑_ν ind ...`", as used in the proof of
 Lemma 6). -/
@@ -189,19 +178,16 @@ theorem index_prod {ι : Type*} (s : Finset ι) {f : ι → MvPolynomial σ ℝ}
         (Finset.prod_ne_zero_iff.2 fun i hi ↦ hf i (Finset.mem_insert_of_mem hi)) α hr,
       ih fun i hi ↦ hf i (Finset.mem_insert_of_mem hi)]
 
-omit [DecidableEq σ] in
 /-- Source: §5, proof of Lemma 6 ("Multiplication by a sign does not change the index"). -/
 theorem index_neg (P : MvPolynomial σ ℝ) (α : σ → ℝ) (r : σ → ℕ) :
     index (-P) α r = index P α r := by
   simp [index, support_neg]
 
-omit [DecidableEq σ] in
 /-- Source: §4, end ("`ind(cP; α; r) = ind(P; α; r)`" for nonzero `c`). -/
 theorem index_C_mul {c : ℝ} (hc : c ≠ 0) (P : MvPolynomial σ ℝ) (α : σ → ℝ) (r : σ → ℕ) :
     index (C c * P) α r = index P α r := by
   rw [index, index, map_mul, taylor_C, ← smul_eq_C_mul, support_smul_eq hc]
 
-omit [DecidableEq σ] in
 /-- Source: §4, end ("`ind(P; α; l r) = (1/l) ind(P; α; r)`"). -/
 theorem index_mul_left_weights {l : ℕ} (P : MvPolynomial σ ℝ) (α : σ → ℝ) (r : σ → ℕ) :
     index P α (fun j ↦ l * r j) = index P α r / l := by
@@ -212,7 +198,6 @@ theorem index_mul_left_weights {l : ℕ} (P : MvPolynomial σ ℝ) (α : σ → 
     rw [weight_mul_left, smul_eq_mul, div_eq_inv_mul]
   rw [index, index, himg, Real.sInf_smul_of_nonneg (by positivity), smul_eq_mul, div_eq_inv_mul]
 
-omit [DecidableEq σ] in
 /-- The index is invariant under injective renaming of variables.
 Source: §4, Lemma 4-2 and its Lean note ("invariance under ... variable renaming": the index
 of a polynomial embedded into a larger set of variables is its index in its own variables). -/
@@ -225,7 +210,6 @@ theorem index_rename {τ : Type*} [Fintype τ] {f : σ → τ} (hf : Function.In
   refine congrArg sInf (Set.image_congr fun d _ ↦ ?_)
   exact weight_mapDomain hf r d
 
-omit [DecidableEq σ] in
 /-- If `P` has degree at most `r j` in each `x_j`, its index is at most the number of variables.
 Source: §5 ("Taylor's theorem gives a nonzero derivative with `0 ≤ i_j ≤ r_j`, of weight at
 most `m`"). -/
@@ -236,7 +220,6 @@ theorem index_le_card {P : MvPolynomial σ ℝ} (hP : P ≠ 0) {r : σ → ℕ} 
     (monomial_le_degreeOf j (mem_support_taylor_iff.2 hd0)).trans
       ((degreeOf_taylor_le α j P).trans (hd j))
 
-omit [DecidableEq σ] in
 /-- In one variable, the index is the multiplicity of `α` as a root divided by the weight.
 Source: §5, proof of Lemma 5 ("Let `t` be the multiplicity of `h_1/q_1` as a root of `R`;
 Taylor's theorem gives `ind(R; h_1/q_1; r_1) = t/r_1`"). -/
