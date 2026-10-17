@@ -124,8 +124,8 @@ Files will be processed in dependency order; declarations within each file are s
 | `Roth/CoeffNorm.lean` | 320 | All cleanup phases complete;26/26 originals and1 added helper audited; user-approved public amendment applied and validated |
 | `Roth/GenWronskian.lean` | 292 | All cleanup phases complete;19/19 originals and2 added helpers audited; both user-approved public amendments applied;2 preserved warnings |
 | `Roth/Lattice.lean` | 217 | All cleanup phases complete;10/10 originals and3/3 added helpers audited; user-preserved metadata |
-| `Roth/Index.lean` | 275 | Awaiting cleanup |
-| `Roth/Separation.lean` | 618 | Awaiting cleanup |
+| `Roth/Index.lean` | 275 | All cleanup phases complete;21/21 originals audited; user-approved hypothesis groups applied and validated |
+| `Roth/Separation.lean` | 618 | Active;1/30 originals audited at d01 published checkpoint; public instance proposal pending approval |
 | `Roth/Theta.lean` | 981 | Awaiting cleanup |
 | `Roth/MainLemma.lean` | 704 | Awaiting cleanup |
 | `Roth/Main.lean` | 684 | Awaiting cleanup |
@@ -1632,3 +1632,14 @@ actual two complete19-declaration finalprofile sweeps98346/75637 exit0,max374.66
 allbelow750borderline/1000budget,no limitraises/deferrals. All21 reports42rules/11checks.
 One rename remains in shared queue for parent project-end drain. Final exact-path commit
 and successful push precede release; nextfresh owner is Separation.
+
+
+## Separation d01 checkpoint — mapDomain_some_none
+
+[Dedicated audit](cleanup/Separation-mapDomain_some_none.md): all24 audit items,42golf rules,five actual searches,binder/generalisation/inequality/width tables and11steps. Private redundant wrapper removed; four calls directly specialise existing Mathlib off-range API. Import groups separated. Source618→616;29 retained declarations; all20public contracts/docs/definition unchanged. No added helper or rename.
+
+Source FROZEN SHA256 `8de29f33439259fa33927a72c7411dbd40ff2a3afacfeb97d8ea4a14bf0f3646`; leaf source ownership revoked before owner builds. Actual module25817 exit0; COMPLETE unfiltered native LSP success=true,partial=false,timed_out=false,no faileddependencies,0errors/32baselinewarnings. `/private/tmp/roth-separation-d01-lsp.json`. Exact ORIGINAL isolated proof and generic existing-library proof compile standard-only. Before actual anchored target profile103.002ms; removed target has no final elaboration cost.
+
+Owner73355exit0: whole ORIGINAL30 independently re-proved in isolated namespace,all20 original public type/value recoveries by rfl,and ALL29 actual retained standard-axiom checks. `/private/tmp/roth-separation-d01-compatibility.{lean,log}`. Owner sequential full then separateLeanEval39911 both exit0(127.65s/32.76s),stable frozen hashes; `/private/tmp/roth-separation-d01-{full,leaneval}.log` and `...-builds.json`. Original block docs byte-identical; focused diff checked.
+
+Separation1/30,overall152/264 original audits after this checkpoint's exact-path commit and successful cleanup-branch push;8/14files complete. Public scoped12-theorem instance proposal compiled but NOT applied; see [proposal](cleanup/Separation-instance-proposal.md). Header remains user-preserved. Next original eq_mapDomain_some_add_single starts only after successful publication.

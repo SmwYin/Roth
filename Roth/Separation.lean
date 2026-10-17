@@ -2,6 +2,7 @@ import Mathlib.Algebra.GCDMonoid.Finset
 import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
 import Mathlib.Algebra.MvPolynomial.Polynomial
 import Mathlib.Tactic.LinearCombination
+
 import Roth.CoeffNorm
 import Roth.GenWronskian
 
@@ -45,16 +46,12 @@ section General
 
 variable {R : Type*} [CommSemiring R]
 
-omit [Fintype τ] [DecidableEq τ] in
-private lemma mapDomain_some_none (u : τ →₀ ℕ) : (u.mapDomain some) none = 0 :=
-  Finsupp.mapDomain_of_notMem_range _ _ (by simp)
-
 /-- Every multi-index on `Option τ` is `(its restriction to τ) + (d none) e_none`. -/
 theorem eq_mapDomain_some_add_single (d : Option τ →₀ ℕ) :
     d = (Finsupp.some d).mapDomain some + Finsupp.single none (d none) := by
   ext o
   cases o with
-  | none => simp [mapDomain_some_none]
+  | none => simp [Finsupp.mapDomain_of_notMem_range]
   | some j =>
     simp [Finsupp.mapDomain_apply_of_injective (Option.some_injective τ), Finsupp.some_apply]
 
@@ -67,7 +64,7 @@ private lemma some_mapDomain_add_single (d : τ →₀ ℕ) (ν : ℕ) :
 omit [Fintype τ] [DecidableEq τ] in
 private lemma mapDomain_add_single_none (d : τ →₀ ℕ) (ν : ℕ) :
     (d.mapDomain some + Finsupp.single none ν : Option τ →₀ ℕ) none = ν := by
-  simp [mapDomain_some_none]
+  simp [Finsupp.mapDomain_of_notMem_range]
 
 private lemma coeff_X_none_pow_mul_rename (ν : ℕ) (Q : MvPolynomial τ R) (e : Option τ →₀ ℕ) :
     (X none ^ ν * rename some Q).coeff e = if e none = ν then Q.coeff (Finsupp.some e) else 0 := by
@@ -85,7 +82,8 @@ private lemma coeff_X_none_pow_mul_rename (ν : ℕ) (Q : MvPolynomial τ R) (e 
     · rw [ite_eq_right heq]
       refine coeff_rename_eq_zero _ _ _ fun u hu => ?_
       have := congrArg (fun f => f none) hu
-      simp only [mapDomain_some_none, Finsupp.tsub_apply, Finsupp.single_eq_same] at this
+      simp only [Finsupp.mapDomain_of_notMem_range (f := some) _ none (by simp), Finsupp.tsub_apply,
+        Finsupp.single_eq_same] at this
       omega
   · rw [ite_eq_right hle, ite_eq_right]
     intro heq
@@ -176,7 +174,7 @@ private lemma degreeOf_none_rename_some (U : MvPolynomial τ R) :
   refine Nat.eq_zero_of_le_zero (degreeOf_le_iff.2 fun e he => ?_)
   rw [support_rename_of_injective (Option.some_injective τ), Finset.mem_image] at he
   obtain ⟨u, -, rfl⟩ := he
-  simp [mapDomain_some_none]
+  simp [Finsupp.mapDomain_of_notMem_range]
 
 omit [Fintype τ] [DecidableEq τ] in
 private lemma degreeOf_aeval_X_none_of_ne {o : Option τ} (ho : o ≠ none) (V : Polynomial R) :
