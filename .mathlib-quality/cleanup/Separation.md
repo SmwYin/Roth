@@ -147,3 +147,16 @@ Source and exact target are unchanged from ACTUAL repository-module profile `/pr
 Source FROZEN SHA256 `c6488cc1c5738d1f9e69b7267a0ad182c823f7bacd02c347e644d710ff559c3f`; leaf ownership revoked and requests drained before owner gates. Owner probe `43989` exit0,34.00s: independent ORIGINAL30 proof bodies,all20 original public type/value recoveries and ALL27 actual retained standardaxiom checks. `/private/tmp/roth-separation-d06-compatibility.{lean,log,json}`. Owner build session `69566` sequential `lake build` then separate `lake build Roth.LeanEval` both exit0,5.86s/2.87s; source hash stable. `/private/tmp/roth-separation-d06-{full,leaneval}.log`, `...-builds.json`. Owner original block docs byte-identical; exact diff/whitespace checked. Exact-path commit and successful cleanup-branch push precede next declaration.
 
 Public12-theorem instance menu remains pending/unapplied; header remains user-preserved.
+
+
+## d07 completed declaration checkpoint — coeff_coeffNone
+
+[Dedicated audit](Separation-coeff_coeffNone.md): all24/42/fiveactualsearches/everybinder/width/inequality/11steps; Direct optionEquivLeft_coeff_coeff calculation and coordinate extensionality replace embedding and inline scalar-evaluation rewrites. Current-start proof six to five physical lines; original public effective signature/docs preserved, no helper, import or other declaration change. Source602→601;27retained. Separation7/30,overall158/264 original audits after successful publication;8/14files complete.
+
+Actual module build exits 0 (`/private/tmp/roth-separation-d07-module.log`). Complete native unfiltered LSP success=true/partial=false/timed_out=false, no failed dependencies, 0 errors/31 unchanged warnings (`...-final-lsp.json`). Independent ORIGINAL definition/type recovery and non-self proof compile; actual built target and independent proof use only standard axioms (`...-independent.{lean,log}`). All eight effective binders drop-tested and Semiring weakening tested; initial import-race negatives retried and excluded from successful evidence. Individual/joint public instance omissions compile but remain pending/unapplied.
+
+ACTUAL repository-module anchored profile exits 0 (`/private/tmp/roth-separation-d07-final-profile.log{,.json}`): command 9.753 + async 105.724 = 115.477 ms, below 750/1000 ms. Baseline 105.435 ms; no speedup claim, scaffolding, raised limit or deferral.
+
+Source FROZEN SHA256 `a3a41139893974634024440f0897d72359502621f287671625d000e2bb3fc25b`; leaf ownership revoked and requests drained before owner gates. Owner probe `48331` exit0,44.71s: independent ORIGINAL30 proof bodies,all20 original public type/value recoveries and ALL27 actual retained standardaxiom checks. `/private/tmp/roth-separation-d07-compatibility.{lean,log,json}`. Owner build session `87726` sequential `lake build` then separate `lake build Roth.LeanEval` both exit0,139.54s/33.53s; source hash stable. `/private/tmp/roth-separation-d07-{full,leaneval}.log`, `...-builds.json`. Owner original block docs byte-identical; exact diff/whitespace checked. Exact-path commit and successful cleanup-branch push precede next declaration.
+
+Public12-theorem instance menu remains pending/unapplied; header remains user-preserved.

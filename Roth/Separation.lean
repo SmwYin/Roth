@@ -76,12 +76,11 @@ noncomputable def coeffNone (P : MvPolynomial (Option τ) R) (ν : ℕ) : MvPoly
 /-- The coefficient of `x_τ^d` in `coeffNone P ν` is the coefficient of `x_τ^d x_none^ν` in `P`. -/
 theorem coeff_coeffNone (P : MvPolynomial (Option τ) R) (ν : ℕ) (d : τ →₀ ℕ) :
     (coeffNone P ν).coeff d = P.coeff (d.mapDomain some + Finsupp.single none ν) := by
-  rw [← optionEquivLeft_coeff_some_coeff_none,
-    show (d.mapDomain some + Finsupp.single none ν : Option τ →₀ ℕ) none = ν by
-      simp [Finsupp.mapDomain_of_notMem_range], Finsupp.some_add,
-    Finsupp.some_single_none, add_zero, ← Function.Embedding.some_apply,
-    ← Finsupp.embDomain_eq_mapDomain, Finsupp.some_embDomain_some]
-  rfl
+  rw [coeffNone, optionEquivLeft_coeff_coeff]
+  congr 1
+  ext o
+  cases o <;> simp [Finsupp.mapDomain_of_notMem_range,
+    Finsupp.mapDomain_apply_of_injective (Option.some_injective τ)]
 
 /-- Expansion of `P` in powers of the distinguished variable: if `P` has degree at most `n` in
 `x_none`, then `P = ∑_{ν ≤ n} x_none^ν · coeffNone P ν`.
