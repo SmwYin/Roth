@@ -189,6 +189,7 @@ theorem index_prod {ι : Type*} (s : Finset ι) {f : ι → MvPolynomial σ ℝ}
         (Finset.prod_ne_zero_iff.2 fun i hi ↦ hf i (Finset.mem_insert_of_mem hi)) α hr,
       ih fun i hi ↦ hf i (Finset.mem_insert_of_mem hi)]
 
+omit [DecidableEq σ] in
 /-- Source: §5, proof of Lemma 6 ("Multiplication by a sign does not change the index"). -/
 theorem index_neg (P : MvPolynomial σ ℝ) (α : σ → ℝ) (r : σ → ℕ) :
     index (-P) α r = index P α r := by

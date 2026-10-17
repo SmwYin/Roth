@@ -1500,3 +1500,22 @@ All original block docs byte-identical, source widths≤100, diff checked before
 Index15/21 originals,overall145/264; source263lines,
 19retained declarations. Exact-path commit and successful cleanup-branch push
 precede the next edit. Header remains explicitly user-preserved.
+
+
+## Index d16 checkpoint — index_neg
+
+Applied approved σ-DecidableEq omission only; unchanged one-tactic support-negation proof. Actual target250.05ms; original independent literal-index proof/recovery/axioms pass; source263→264. Caller Theta retains its section instances; stronger Index API exposes one additional unused-section warning there, reserved for Theta audit.
+
+[Dedicated audit](cleanup/Index-index_neg.md): all24/42/five searches/binder probes/11checks;
+worker module/complete LSP/independent proof/type/actual standard-axiom gates passed.
+Frozen SHA256 `4117b5c634957e30e7df55bdc5a43b0c98d1b5a12dec1343fdc662155f7975b1`. Fresh whole ORIGINAL nonself reproof, all18 original public
+type/value recoveries and all19 actual retained standard-axiom checks: compiler
+session49904 exit0, `/private/tmp/roth-index-d16-compatibility.log`.
+Approved no-DecEq types are additionally checked by Expr.find?; actual signatures printed.
+Sequential owner full then separate LeanEval13150 both exit0(101.62s/26.94s),
+Index+Theta hashes stable; `/private/tmp/roth-index-d16-{full,leaneval}.log`.
+Worker COMPLETE unfiltered Index LSP success=true partial=false timed_out=false, no faileddependencies, 0target diagnostics/12other warnings; /private/tmp/roth-index-neg-after-lsp.json. External Theta COMPLETE native LSP0errors/24warnings after bounded partial+complete retry:23previous plus newly exposed unused-section instance in sum_max_sub_le_index_det at371; original section instance retained, no warning suppression or Theta edit. Caller398 accepted; raw /private/tmp/roth-index-d16-theta-lsp.json.
+All original block docs byte-identical, source widths≤100, diff checked before staging.
+Index16/21 originals,overall146/264; source264lines,
+19retained declarations. Exact-path commit and successful cleanup-branch push
+precede the next edit. Header remains explicitly user-preserved.
