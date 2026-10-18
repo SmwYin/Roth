@@ -184,12 +184,14 @@ section Domain
 
 variable {R : Type*} [CommRing R] [IsDomain R]
 
+omit [Fintype τ] [DecidableEq τ] in
 /-- For `V ≠ 0`, the degree of `U(x_τ) V(x_none)` in `x_j` is the degree of `U` in `x_j`.
 Source: §2, end of the proof of Lemma 2 ("since the variables are disjoint and both factors are
 nonzero, the individual degrees of `U, V` equal the corresponding degrees of `F`"). -/
 theorem degreeOf_rename_mul_aeval (U : MvPolynomial τ R) {V : Polynomial R} (hV : V ≠ 0) (j : τ) :
     degreeOf (some j) (rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) R) V) =
       degreeOf j U := by
+  classical
   by_cases hU : U = 0
   · simp [hU]
   rw [degreeOf_mul_eq ((rename_eq_zero_iff_of_injective U (Option.some_injective τ)).not.mpr hU)

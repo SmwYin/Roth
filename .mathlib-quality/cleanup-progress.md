@@ -125,7 +125,7 @@ Files will be processed in dependency order; declarations within each file are s
 | `Roth/GenWronskian.lean` | 292 | All cleanup phases complete;19/19 originals and2 added helpers audited; both user-approved public amendments applied;2 preserved warnings |
 | `Roth/Lattice.lean` | 217 | All cleanup phases complete;10/10 originals and3/3 added helpers audited; user-preserved metadata |
 | `Roth/Index.lean` | 275 | All cleanup phases complete;21/21 originals audited; user-approved hypothesis groups applied and validated |
-| `Roth/Separation.lean` | 618 | Active;21/30 originals audited at r06 published checkpoint; approved instance removals in progress; wrapper/domain API alternatives considered and declined |
+| `Roth/Separation.lean` | 618 | Active;21/30 originals audited at r07 published checkpoint; approved instance removals in progress; wrapper/domain API alternatives considered and declined |
 | `Roth/Theta.lean` | 981 | Awaiting cleanup |
 | `Roth/MainLemma.lean` | 704 | Awaiting cleanup |
 | `Roth/Main.lean` | 684 | Awaiting cleanup |
@@ -1977,3 +1977,16 @@ Actual isolated repository-module /private/tmp/roth-separation-r06-profile.log{,
 Source FROZEN SHA256 `187f69cba6b1e16d665130375348c4038f3aa5cd7a3cb8d650e3e055b2a5bf7d`; leaf ownership revoked and requests drained before owner gates. Owner probe `98402` exit0,43.30s: independent ORIGINAL30 proof bodies,all20 original public type/value recoveries and ALL25 actual retained standardaxiom checks. `/private/tmp/roth-separation-r06-compatibility.{lean,log,json}`. Owner build session `84517` sequential `lake build` then separate `lake build Roth.LeanEval` both exit0,120.76s/28.80s; source hash stable. `/private/tmp/roth-separation-r06-{full,leaneval}.log`, `...-builds.json`. Owner original block docs byte-identical; exact diff/whitespace checked. Exact-path commit and successful cleanup-branch push precede next declaration.
 
 Exact12instance menu approved; six revisits applied. Optional wrapper deletions and Domain coefficient widening considered/DECLINED; Nat codomain unchanged; no required user input pending. Next degreeOf_rename_mul_aeval approved revisit; preserve current coefficient assumptions.
+
+
+## Separation r07 checkpoint — degreeOf_rename_mul_aeval
+
+[Dedicated audit](cleanup/Separation-approved-instances-degreeOf_rename_mul_aeval.md): All 24 audit items, 42 golf rules, five actual search methods, every binder, width/inequality checks and 11 completion steps; Approved instance revisit 7/9 (original19): scoped omit and local classical remove both ambient index instances. Current CommRing/IsDomain assumptions, nonzero hypothesis, proof and original docs otherwise preserved. Original audit count remains21/30. Source 580 → 582; 25 retained declarations. Separation 21/30, overall 172/264 original audits after successful publication; 8/14 files complete.
+
+Fresh audit covers all24 items,42 golf rules,five actual searches,every effective binder,literature,width/inequalities and11 steps. Actual module build exits0; complete native LSP0errors/15warnings/0infos, partial=false/timed_out=false and no failed dependencies. Exact NEW arbitrary-τ @type/nonself proof, explicit ORIGINAL Fintype/DecEq adapter and built target/exists_det_eq_mul standard-three axioms pass (...-independent.lean/.log). All16 compiler probes drained; counterexample confirms hV cannot be dropped. No external direct caller or helper. ALL source ownership revoked and requests drained; SHA700e71b2e6acaec6767a0bd483fd17ee0e029340a4b3e745831542b8cc720ab5.
+
+Actual isolated /private/tmp/roth-separation-r07-profile.log{,.json} exit0: outer omit command17.912ms at200422 + outer async110.900ms at200459 =128.812ms. Inner16.381ms command excluded. Below750/1000ms; no repeat, raised limits or scaffolding.
+
+Source FROZEN SHA256 `700e71b2e6acaec6767a0bd483fd17ee0e029340a4b3e745831542b8cc720ab5`; leaf ownership revoked and requests drained before owner gates. Owner probe `55892` exit0,42.65s: independent ORIGINAL30 proof bodies,all20 original public type/value recoveries and ALL25 actual retained standardaxiom checks. `/private/tmp/roth-separation-r07-compatibility.{lean,log,json}`. Owner build session `59964` sequential `lake build` then separate `lake build Roth.LeanEval` both exit0,120.36s/27.69s; source hash stable. `/private/tmp/roth-separation-r07-{full,leaneval}.log`, `...-builds.json`. Owner original block docs byte-identical; exact diff/whitespace checked. Exact-path commit and successful cleanup-branch push precede next declaration.
+
+Exact12-instance menu approved; seven revisits applied. Both wrapper deletions and coefficient-domain widening considered/declined, Nat codomain unchanged; no required input pending. Next degreeOf_none_rename_mul_aeval approved revisit.
