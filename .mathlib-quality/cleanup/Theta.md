@@ -363,3 +363,19 @@ standard axioms pass. All four actual calls in index_le_lem6 and Θ_lt remain un
 Frozen owner full build (54.394 s), then separate LeanEval (17.121 s),
 both pass on identical SHA. [Dedicated revisit audit](Theta-Theta_nonneg-approved.md).
 Original counts unchanged: Theta 15/35, overall 196/264, 9/14 files. Next: approved revisit of original 11, Θ_le_card (DecidableEq σ and hr only; hB retained).
+
+
+## Approved revisit of original 11 — Θ_le_card
+
+Applied approved A+C: scoped omit for DecidableEq σ, hr deletion and signature packing to one 95-codepoint line. The five-line canonical proof and complete docstring are unchanged. The user-retained hB assumption and Fintype σ remain; the extra E bound widening is not applied. The full immutable original eight-binder type is recovered by an explicit adapter to the actual six-binder theorem, with precise selected AST and retained metadata. No helper, definition, domain or conclusion change.
+
+Fresh dedicated full 24-item audit, 42 golf rules, five actual searches, every-binder probes,
+literature/inversion, packing, inequality scan and 11-step checklist pass. Immutable independent
+original proof and explicit old-telescope adapter recover the original contract from the actual
+new theorem; exact retained types/order/BinderInfo/user names, selected-drop AST and actual
+standard axioms pass. Fresh project-wide Lean inventory finds no actual caller, only the declaration and module documentation. Named/inferred compatibility examples are not represented as existing calls. Module and complete unfiltered final LSP pass with
+0 errors and 22 warnings. Accepted uncontended exact-prefix aggregate:
+147.521 → 148.013 ms; no whole-file performance claim.
+Frozen owner full build (65.268 s), then separate LeanEval (23.107 s),
+both pass on identical SHA. [Dedicated revisit audit](Theta-Theta_le_card-approved.md).
+Original counts unchanged: Theta 15/35, overall 196/264, 9/14 files. Next: approved revisit of original 12, Θ_le_of_forall_index_le (DecidableEq σ only).

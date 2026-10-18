@@ -104,9 +104,9 @@ theorem Θ_nonneg {B : ℝ} (hB : 1 ≤ B) (q : σ → ℕ) {r : σ → ℕ} (hr
   rintro _ ⟨R, _, h, _, rfl⟩
   exact index_nonneg _ _ _
 
+omit [DecidableEq σ] in
 /-- `Θ_m(B; q; r)` is at most the number `m` of variables. Source: §5 ("`Θ_m ≤ m`"). -/
-theorem Θ_le_card {B : ℝ} (hB : 1 ≤ B) (q : σ → ℕ) {r : σ → ℕ} (hr : ∀ j, 0 < r j) :
-    Θ B q r ≤ Fintype.card σ := by
+theorem Θ_le_card {B : ℝ} (hB : 1 ≤ B) (q : σ → ℕ) {r : σ → ℕ} : Θ B q r ≤ Fintype.card σ := by
   refine Real.sSup_le ?_ (Nat.cast_nonneg _)
   rintro _ ⟨R, ⟨hR0, hRd, -⟩, h, -, rfl⟩
   exact index_le_card ((map_ne_zero_iff _ (map_injective _ Int.cast_injective)).2 hR0)

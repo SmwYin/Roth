@@ -21,13 +21,13 @@ Started: 2026-10-14 (America/Chicago).
 ## Current status
 
 Latest completed file after successful final publication: Separation. Theta originals 15/35
-completed; overall 196/264 original declarations, 9/14 files. Approved revisit of original 10,
-Θ_nonneg, completed without increasing counts. Only the approved DecidableEq σ removal; hB, hr and Fintype remain applied.
+completed; overall 196/264 original declarations, 9/14 files. Approved revisit of original 11,
+Θ_le_card, completed without increasing counts. Removed only the approved DecidableEq σ and hr; retained hB and Fintype σ.
 Immutable original proof/explicit adapter, retained metadata/selected-drop AST/actual standard
 axioms and affected caller checks pass. Module and complete unfiltered LSP (0 errors,
-25 warnings), accepted uncontended prefix (14.808 ms), frozen full build
-(54.394 s), then separate LeanEval (17.121 s), all pass.
-[Latest audit](cleanup/Theta-Theta_nonneg-approved.md). Next: approved revisit of original 11, Θ_le_card (DecidableEq σ and hr only; hB retained).
+22 warnings), accepted uncontended prefix (148.013 ms), frozen full build
+(65.268 s), then separate LeanEval (23.107 s), all pass.
+[Latest audit](cleanup/Theta-Theta_le_card-approved.md). Next: approved revisit of original 12, Θ_le_of_forall_index_le (DecidableEq σ only).
 [Exact contract decision](cleanup/Theta-contract-proposal.md): A/B and first five C rows approved;
 hq and D/E/F's extra hB/hr assumptions remain per user choice. Whole-Theta profiling, 20 remaining
 originals and final phases are outstanding; the known late instrumented linarith failure awaits

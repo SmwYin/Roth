@@ -50,7 +50,10 @@ removals. No unselected row may be inferred from that probe's successful compile
 - Approved revisit 10, Θ_nonneg: Only the approved DecidableEq σ removal; hB, hr and Fintype remain.
   Independent original adapter, actual axioms/metadata/caller, complete LSP, profile and frozen
   full/LeanEval gates pass.
-- Next: approved revisit of original 11, Θ_le_card (DecidableEq σ and hr only; hB retained). Counts remain unchanged on approved revisits.
+- Approved revisit 11, Θ_le_card: Removed only the approved DecidableEq σ and hr; retained hB and Fintype σ.
+  Independent original adapter, actual axioms/metadata/caller, complete LSP, profile and frozen
+  full/LeanEval gates pass.
+- Next: approved revisit of original 12, Θ_le_of_forall_index_le (DecidableEq σ only). Counts remain unchanged on approved revisits.
 
 The evidence and proposal descriptions below were prepared before this decision. Their historic
 unapplied status is superseded only by the exact selected scope above and subsequent checkpoint
