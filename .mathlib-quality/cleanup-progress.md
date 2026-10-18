@@ -20,14 +20,18 @@ Started: 2026-10-14 (America/Chicago).
 
 ## Current status
 
-Latest completed file after successful final publication: Separation. Theta checkpoint3 completed;
-overall184/264 original declarations,9/14 files. Theta3/35originals(RSet,indexSet,Θ) complete;
-fresh module,completeLSP,exactoriginaltype/value,actualstandardaxioms,uncontended prefixprofile
-and frozen sequential full+separateLeanEval passed. [RSet audit](cleanup/Theta-RSet.md).
-FullTheta profiling/remaining32originals/finalphases remain outstanding.
+Latest completed file after successful final publication: Separation. Theta checkpoint4 completed;
+overall185/264 original declarations,9/14 files. Theta4/35 originals complete. The private
+mapped-nonzero wrapper was deleted in favor of Mathlib at seven uses; exact actual types of all
+five public callers remain unchanged. Fresh module, complete unfiltered LSP, independent original
+proof/type, actual standard axioms, original/prefix trace profiles and frozen sequential full125.449s
+then separate LeanEval34.928s all pass. [Dedicated audit](cleanup/Theta-map_intCast_real_ne_zero.md).
+WholeTheta profiling/remaining31 originals/final phases remain outstanding; the known late
+instrumented linarith failure still awaits its dedicated declaration audit.
 A concrete [Theta contract menu](cleanup/Theta-contract-proposal.md) is compiled but UNAPPLIED;
-all29 kernel-checked originaltype adapters/actualcandidateaxioms/AST and exactexternalcall checks
-now pass,with no approval inferred. See [Separation final report](cleanup/Separation-final.md). All30 original audits and all final gates complete; the project remains active,continuing with Theta.
+all29 kernel-checked original-type adapters/actual candidate axioms/AST and exact external-call
+checks pass, with no approval inferred. See [Separation final report](cleanup/Separation-final.md).
+Next: private degreeOf_map_intCast_real.
 
 Build/tool setup completed; GitHub browser authentication and branch publication succeeded.
 The first file, `Roth/HasseDeriv.lean`, has completed all declaration and final review,

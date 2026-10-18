@@ -206,3 +206,11 @@ separator. Six original imports retained; no declaration/body/docs changed. Fina
   `lake build Roth.LeanEval`:exit0 in37.522s;sourcehash stable in both.
   `/private/tmp/roth-theta-d01-builds.json` and corresponding full/leaneval logs.
   Exact-path commit and successful push are final checkpoint publication gates.
+
+
+Owner timing-accounting refinement (same accepted raw run,no source/proof change): earlier36.027ms
+was the outercommand plus nested kernel/compiler components. For a fully conservative charge,
+use outercommand35.280ms + associated non-nested async addDecl0.723ms + async compilation0.088ms
++ async targetlinters25.558ms =61.649ms. Parent namespace/variable command linters are excluded;
+no nested child is counted twice. The same uncontended final-prefix log supplies all anchors.
+The classification remains well below750/1000ms; no new performance claim or declaration count.

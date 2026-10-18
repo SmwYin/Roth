@@ -61,10 +61,6 @@ def indexSet (B : ℝ) (q r : σ → ℕ) : Set ℝ :=
 `R ∈ ℛ_m(B; r)` and `h` with each `h_j` coprime to `q_j`. Source: §5, definition of `Θ_m`. -/
 noncomputable def Θ (B : ℝ) (q r : σ → ℕ) : ℝ := sSup (indexSet B q r)
 
-private lemma map_intCast_real_ne_zero {σ : Type*} {R : MvPolynomial σ ℤ} (hR : R ≠ 0) :
-    map (Int.castRingHom ℝ) R ≠ 0 := fun h =>
-  hR (MvPolynomial.map_injective _ Int.cast_injective (h.trans (map_zero _).symm))
-
 private lemma degreeOf_map_intCast_real {σ : Type*} (R : MvPolynomial σ ℤ) (j : σ) :
     degreeOf j (map (Int.castRingHom ℝ) R) = degreeOf j R := by
   rw [degreeOf_eq_sup, degreeOf_eq_sup, support_map_of_injective _ Int.cast_injective]
@@ -88,7 +84,7 @@ theorem indexSet_bddAbove (B : ℝ) (q : σ → ℕ) {r : σ → ℕ} (hr : ∀ 
     BddAbove (indexSet B q r) := by
   refine ⟨Fintype.card σ, ?_⟩
   rintro _ ⟨R, ⟨hR0, hRd, -⟩, h, -, rfl⟩
-  exact index_le_card (map_intCast_real_ne_zero hR0)
+  exact index_le_card ((map_ne_zero_iff _ (map_injective _ Int.cast_injective)).2 hR0)
     (fun j => (degreeOf_map_intCast_real R j).trans_le (hRd j)) _
 
 /-- The index of any `R ∈ ℛ_m(B; r)` at a point `(h_j / q_j)_j` with each `h_j` coprime to `q_j`
@@ -111,7 +107,7 @@ theorem Θ_le_card {B : ℝ} (hB : 1 ≤ B) (q : σ → ℕ) {r : σ → ℕ} (h
     Θ B q r ≤ Fintype.card σ := by
   refine csSup_le (indexSet_nonempty hB q r) ?_
   rintro _ ⟨R, ⟨hR0, hRd, -⟩, h, -, rfl⟩
-  exact index_le_card (map_intCast_real_ne_zero hR0)
+  exact index_le_card ((map_ne_zero_iff _ (map_injective _ Int.cast_injective)).2 hR0)
     (fun j => (degreeOf_map_intCast_real R j).trans_le (hRd j)) _
 
 /-- A bound on every index is a bound on `Θ`. Source: §5, Lemma 5 ("Taking the supremum proves
@@ -252,7 +248,7 @@ theorem Θ_unique_le [Unique σ] {B : ℝ} (hB : 1 ≤ B) {q : σ → ℕ} (hq :
       Polynomial.map_map]
     congr 1
     simp
-  rw [index_unique (map_intCast_real_ne_zero hR0), hmapeq, hmult,
+  rw [index_unique ((map_ne_zero_iff _ (map_injective _ Int.cast_injective)).2 hR0), hmapeq, hmult,
     div_le_div_iff₀ hrpos (by positivity)]
   have hlog : (Polynomial.rootMultiplicity ((h default : ℚ) / q default)
       (R1.map (Int.castRingHom ℚ)) : ℝ) * Real.log (q default) ≤ Real.log B := by
@@ -484,8 +480,10 @@ theorem index_det_le {δ : ℝ} {r : Option τ → ℕ} (hr0 : ∀ j, 0 < r j) {
   have hinjU : Function.Injective (some : τ → Option τ) := Option.some_injective _
   have hinjV : Function.Injective (fun _ : Unit => (none : Option τ)) :=
     fun a b _ => Subsingleton.elim a b
-  have hmU := map_intCast_real_ne_zero hU
-  have hmV := map_intCast_real_ne_zero hV'0
+  have hmU := (map_ne_zero_iff (map (Int.castRingHom ℝ))
+    (map_injective _ Int.cast_injective)).2 hU
+  have hmV := (map_ne_zero_iff (map (Int.castRingHom ℝ))
+    (map_injective _ Int.cast_injective)).2 hV'0
   have hmapF : map (Int.castRingHom ℝ) F = rename some (map (Int.castRingHom ℝ) U) *
       rename (fun _ : Unit => (none : Option τ)) (map (Int.castRingHom ℝ) V') := by
     rw [hF, aeval_X_eq_rename, _root_.map_mul, map_rename, map_rename]
@@ -557,7 +555,8 @@ theorem index_le_lem6 {δ : ℝ} (hδ0 : 0 < δ) (hδ1 : δ < 1) {r : Option τ 
   push Not at h10
   -- the two bounds for the index of `F`.
   have hupper := index_det_le hr0 hr₁ hB hR hh hl hl' hU hV hUd hVd hF hδ0
-  have hmapR := map_intCast_real_ne_zero hR.1
+  have hmapR := (map_ne_zero_iff (map (Int.castRingHom ℝ))
+    (map_injective _ Int.cast_injective)).2 hR.1
   have hmapdet : map (Int.castRingHom ℝ) (Matrix.of fun μ ν : Fin l =>
       hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) R).det =
       (Matrix.of fun μ ν : Fin l => hasseDeriv ((D μ).mapDomain some +
@@ -569,7 +568,7 @@ theorem index_le_lem6 {δ : ℝ} (hδ0 : 0 < δ) (hδ1 : δ < 1) {r : Option τ 
   have hFne : (Matrix.of fun μ ν : Fin l => hasseDeriv ((D μ).mapDomain some +
         Finsupp.single none (ν : ℕ)) (map (Int.castRingHom ℝ) R)).det ≠ 0 := by
     rw [← hmapdet]
-    refine map_intCast_real_ne_zero ?_
+    refine (map_ne_zero_iff _ (map_injective _ Int.cast_injective)).2 ?_
     rw [hF]
     refine mul_ne_zero ((map_ne_zero_iff _ (rename_injective _ (Option.some_injective _))).2 hU) ?_
     rw [aeval_X_eq_rename]

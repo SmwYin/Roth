@@ -41,7 +41,7 @@ ordinary baseline builds passing does not imply any all-file profile pass.
 | 1 | `RSet` | 49 | 1 | Complete;[audit](Theta-RSet.md) |
 | 2 | `indexSet` | 55 | 2 | Complete;[audit](Theta-indexSet.md) |
 | 3 | `Θ` | 61 | 0 | Complete;[audit](Theta-Theta.md) |
-| 4 | `map_intCast_real_ne_zero` | 63 | 1 | Pending dedicated audit |
+| 4 | `map_intCast_real_ne_zero` | 63 | 1 | Complete; deleted Mathlib wrapper;[audit](Theta-map_intCast_real_ne_zero.md) |
 | 5 | `degreeOf_map_intCast_real` | 67 | 1 | Pending dedicated audit |
 | 6 | `one_mem_RSet` | 73 | 3 | Pending dedicated audit |
 | 7 | `indexSet_nonempty` | 80 | 1 | Pending dedicated audit |
@@ -78,7 +78,7 @@ ordinary baseline builds passing does not imply any all-file profile pass.
 
 Dedicated fresh leaf audit complete; retained two-line definition. Owner Phase3 import grouping
 applied. Fresh module,complete unfilteredLSP,original exacttype/value/actualstandardaxioms and
-uncontended actual prefixprofile36.027ms passed. Frozen sequential full+separateLeanEval exit0.
+uncontended actual prefixprofile61.649ms(conservative async/lint charge) passed. Frozen sequential full+separateLeanEval exit0.
 After successful publication:1/35Theta originals;overall182/264,9/14filescomplete.
 No helpers/newpublicAPI;all29publicTheta contracts unchanged. Next:indexSet.
 
@@ -101,3 +101,16 @@ After successful publication:3/35Theta originals;overall184/264,9/14filescomplet
 No helpers/newAPI. [Scoped contract menu](Theta-contract-proposal.md) now has all29kernel-checked
 old-type adapters,actualcandidateaxiom/AST and exactexternalcaller checks,stillUNAPPLIED.
 Next:private map_intCast_real_ne_zero.
+
+## Published checkpoint4 — map_intCast_real_ne_zero
+
+Fresh dedicated audit deleted the private wrapper and specialized Mathlib directly at seven uses
+across five public proofs. No new declaration or public amendment. Actual module, complete
+unfiltered LSP (0 errors/28 preserved warnings), independent original proof/type, five exact actual
+consumer-type comparisons after universe alpha-renaming, actual standard axioms and private-suffix
+absence checks pass. Original-only trace profile42.625ms; edited early consumer-prefix samples
+61.011/52.708ms pass. These samples do not certify the still-pending wholeTheta profile.
+Owner sequential full/separateLeanEval gates and exact publication recorded in the dedicated report.
+After successful publication:4/35Theta originals;overall185/264,9/14filescomplete.
+RSet's original accepted raw trace was re-accounted conservatively at61.649ms including async/lint;
+no source or timing sample changed. Contract menu remains UNAPPLIED. Next:degreeOf_map_intCast_real.
