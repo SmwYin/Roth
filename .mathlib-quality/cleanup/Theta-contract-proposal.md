@@ -74,7 +74,7 @@ removals. No unselected row may be inferred from that probe's successful compile
 - Supported revisit 29, index_le_lem6 arithmetic boundary: K weakens hδ0/hδ1 to nonstrict bounds and hrp to3≤(rnone:ℝ); removes only index_le_lem6.hr0/hB. Domains, exact conclusion, hq and protected globalΘ hB/hr hypotheses remain..
   Independent original adapter, actual axioms/metadata/caller, complete LSP, profile and frozen
   full/LeanEval gates pass.
-- Next: original30 Θ_option_le (selected DecidableEq removal, explicit hq retained; assess corresponding supported boundary with concrete caller evidence). Counts remain unchanged on validated revisits.
+- Next: original31 private one_lt_of_log_pos (assess direct existing Real.log_pos_iff replacement and actual deleted-wrapper absence/caller proofs). Published originals now Theta 30/35, overall 211/264; approved revisits themselves do not increase counts.
 
 The evidence and proposal descriptions below were prepared before this decision. Their historic
 unapplied status is superseded only by the exact selected scope above and subsequent checkpoint
@@ -486,3 +486,46 @@ validated revisit (eight prior approved-scope revisits, this supported standing-
 revisit), with no original-count increase. Next original30 Θ_option_le. The UNCOMPILED future
 all29 generator must encode exact weakδ/rp3 forwarding and index29 hr0/hB drops; no cumulative
 final-state verification is claimed until original30's own audit and cumulative gates.
+
+
+## L. Θ_option_le boundary alignment (original30; validated publication)
+
+The fresh original30 audit removes the selected `[DecidableEq τ]` binder and its now-derived
+`hr0` premise, and aligns the unchanged bound with index_le_lem6: `0 ≤ δ`, `δ ≤ 1`,
+`3 ≤ (r none : ℝ)`, and weak coordinate ratios. It retains `hq` by explicit user preference
+and `hB` as the existing supremum-wrapper input. No domain, conclusion, definition, import or
+private helper changes. The public headline proof is five lines (immutable initial6; immediate
+pre-audit8 after K forwarding). These supported recommendations follow the standing instruction
+to implement recommended changes; no additional user approval was inferred or requested.
+
+Before live application, `/private/tmp/roth-public30-option/candidate-compatibility.lean/log`
+compiled the exact new theorem and complete original30 adapter, preserving every retained name,
+type, BinderInfo and positional universe. The ENTIRE original Θ_lt proof and its entire adapted
+new proof/type/value/standard axioms were checked, including explicit new30 dependency. The
+minimal actual caller forwards old strictδ/ratio premises by.le and derives3≤rp from the old
+reciprocal bound; its own entire public telescope remains unchanged. Protected hq omission was
+positively tested but deliberately not applied. [Fresh audit](Theta-Theta_option_le.md).
+
+Final source SHA256
+`c488d3189154ae0da29fd6d798c3b1d016e44fa588ab4ab32a5ea7c93c3837fd`,948lines. Module, actual
+complete compatibility and complete unfiltered native LSP0errors8warnings pass. REAL exact
+prefix-through30 first/repeat ms: Θ_option158.615/144.368,index29 901.577/925.763,
+numeric903.545/922.672,mapped693.423/723.578,weight401.279/399.404; all five pass both1000ms
+sweeps. Earlier broader-prefix baseline overages remain diagnostic history; no whole-module
+performance pass is claimed.
+
+All selected A/B/C applications are now applied, including all15 DecidableEq removals across
+14 public declarations and the single selected Fintype removal. Owner compiled cumulative
+recovery of ALL29 original public contracts and ALL5 definition values, with exact named
+drops/forwarding and both immutable entire original proof blocks. The final enhanced verifier
+passes29 entire old adapters,87 explicit opaque body-type checks and87 actual standard axiom
+checks (exit0,48.324s). Source/log/record are archived as
+`/private/tmp/ThetaApprovedOriginalFinalProbe-d30-values.lean` and
+`/private/tmp/roth-theta-d30-values-cumulative29.{log,json}`. These completed current cumulative
+gates supersede earlier sections' UNCOMPILED/pending-original30 generator status.
+
+Frozen full build113.288s THEN separateLeanEval37.676s both exit0; all17 project/source/pin
+hashes remain identical, including after the cumulative verifier. After successful publication:
+overall211/264,Theta30/35,9/14files. No new helper or count from revisits. Next original31
+private one_lt_of_log_pos, then32–35 and mandatory final file phases. Earlier public-wrapper,
+hq, globalΘ hB/hr, domain and header preservation choices remain in force.

@@ -69,7 +69,7 @@ ordinary baseline builds passing does not imply any all-file profile pass.
 | 27 | `sum_max_sub_le_index_det` | 371 | 25 | Complete;[audit](Theta-sum_max_sub_le_index_det.md) |
 | 28 | `index_det_le` | 410 | 94 | Complete;[audit](Theta-index_det_le.md) |
 | 29 | `index_le_lem6` | 521 | 89 | Complete;[audit](Theta-index_le_lem6.md) |
-| 30 | `Θ_option_le` | 623 | 6 | Pending dedicated audit |
+| 30 | `Θ_option_le` | 623 | 6 | Complete;[audit](Theta-Theta_option_le.md) |
 | 31 | `one_lt_of_log_pos` | 640 | 5 | Pending dedicated audit |
 | 32 | `lem6M_lt` | 650 | 53 | Pending dedicated audit |
 | 33 | `lem7_Φ_bound` | 711 | 22 | Pending dedicated audit |
@@ -583,3 +583,14 @@ public895.050/854.163, weight408.013/361.605, mapped707.126/651.477, numeric939.
 Frozen owner full build (92.105 s), then separate LeanEval (29.557 s),
 both pass on identical SHA. [Dedicated revisit audit](Theta-index_le_lem6-boundary-revisit.md).
 Original counts unchanged: Theta 29/35, overall 210/264, 9/14 files. Next: original30 Θ_option_le (selected DecidableEq removal, explicit hq retained; assess corresponding supported boundary with concrete caller evidence).
+
+
+## Published checkpoint30 — Θ_option_le
+
+Removed approved `[DecidableEq τ]` and the derived `hr0` premise from `Θ_option_le`, extending its unchanged conclusion to closed δ bounds, `3 ≤ r none` and weak coordinate ratios. Retained `hq` and `hB`. The headline proof is five lines; the entire `Θ_lt` caller contract is preserved with minimal forwarding.
+
+Fresh 24-item audit, 42 golf rules, five actual searches, every-binder probes, literature/inversion, packing, inequality and 11-step checks pass. Independent entire original30 and original Θ_lt proofs/adapters, actual new caller dependency, retained metadata and standard axioms pass. Owner cumulative recovery of all29 public contracts and all five definition values passes, including29 explicit old adapters,87 opaque body-type checks and87 actual standard axiom checks; both immutable original proof blocks are byte-identical. Module and complete unfiltered final LSP pass with 0 errors / 8 warnings.
+Accepted uncontended exact-prefix profile: Θ_option158.615/144.368; public29 901.577/925.763; weight401.279/399.404; mapped693.423/723.578; numeric903.545/922.672 (first/required repeat; all<1000) ms; no whole-file performance claim.
+Frozen owner full (113.288 s) then separate LeanEval (37.676 s) pass.
+[Dedicated audit](Theta-Theta_option_le.md). Theta 30/35, overall 211/264 originals;9/14 files complete.
+No new private helper; all three previously audited helpers unchanged. Original counts exclude revisits and helper audits. Next: original31 private one_lt_of_log_pos (assess direct existing Real.log_pos_iff replacement and actual deleted-wrapper absence/caller proofs).

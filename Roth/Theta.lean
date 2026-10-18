@@ -580,22 +580,20 @@ theorem index_le_lem6 {δ : ℝ} (hδ0 : 0 ≤ δ) (hδ1 : δ ≤ 1) {r : Option
   exact (min_le_sum_max (θ := index (map (Int.castRingHom ℝ) R) α r) (rp := r none) l).trans
     (by simpa [mul_add] using sub_le_iff_le_add.1 (hlower.trans hupper))
 
+omit [DecidableEq τ] in
 /-- **Lemma 6**: `Θ_p(B; q; r)` is at most twice the maximum of `Φ + Φ^{1/2} + δ^{1/2}` over
 `1 ≤ l ≤ r_p + 1`. Source: §5, Lemma `roth:lem6` ("`Θ_p(B; q; r) ≤ 2 max_l (Φ + Φ^{1/2} + δ^{1/2})`,
 where the maximum is taken over integers `l` satisfying `1 ≤ l ≤ r_p + 1`"). -/
-theorem Θ_option_le {δ : ℝ} (hδ0 : 0 < δ) (hδ1 : δ < 1) {r : Option τ → ℕ} (hr0 : ∀ j, 0 < r j)
-    (hrp : 10 / δ < r none) (hratio : ∀ j, (r none : ℝ) < δ * r (some j)) {r₁ : ℕ}
-    (hr₁ : ∀ j, r j ≤ r₁) {q : Option τ → ℕ} (hq : ∀ j, 0 < q j) {B : ℝ} (hB : 1 ≤ B) :
-    Θ B q r ≤ 2 * (Finset.Icc 1 (r none + 1)).sup' (Finset.nonempty_Icc.2 (by omega))
-      (fun l => lem6Φ q r (lem6M (Fintype.card τ + 1) r₁ B l) l +
+theorem Θ_option_le {δ : ℝ} (hδ0 : 0 ≤ δ) (hδ1 : δ ≤ 1) {r : Option τ → ℕ} (hrp : 3 ≤ (r none : ℝ))
+    (hratio : ∀ j, (r none : ℝ) ≤ δ * r (some j)) {r₁ : ℕ} (hr₁ : ∀ j, r j ≤ r₁) {q : Option τ → ℕ}
+    (hq : ∀ j, 0 < q j) {B : ℝ} (hB : 1 ≤ B) :
+    Θ B q r ≤ 2 * (Finset.Icc 1 (r none + 1)).sup' (Finset.nonempty_Icc.2 (by lia))
+      (fun l ↦ lem6Φ q r (lem6M (Fintype.card τ + 1) r₁ B l) l +
         √(lem6Φ q r (lem6M (Fintype.card τ + 1) r₁ B l) l) + √δ) := by
-  refine Θ_le_of_forall_index_le hB fun R hR h hh => ?_
-  obtain ⟨l, hl, hl', hle⟩ :=
-    index_le_lem6 hδ0.le hδ1.le ((by norm_num : (3 : ℝ) ≤ 10).trans
-      ((le_div_self (by norm_num) hδ0 hδ1.le).trans hrp.le))
-      (fun j ↦ (hratio j).le) hr₁ hq hR hh
+  refine Θ_le_of_forall_index_le hB fun R hR h hh ↦ ?_
+  obtain ⟨l, hl, hl', hle⟩ := index_le_lem6 hδ0 hδ1 hrp hratio hr₁ hq hR hh
   refine hle.trans (mul_le_mul_of_nonneg_left ?_ (by norm_num))
-  exact Finset.le_sup' (fun l => lem6Φ q r (lem6M (Fintype.card τ + 1) r₁ B l) l +
+  exact Finset.le_sup' (fun l ↦ lem6Φ q r (lem6M (Fintype.card τ + 1) r₁ B l) l +
     √(lem6Φ q r (lem6M (Fintype.card τ + 1) r₁ B l) l) + √δ) (Finset.mem_Icc.2 ⟨hl, hl'⟩)
 
 end Lemma6
@@ -816,8 +814,12 @@ theorem Θ_lt (n : ℕ) {δ : ℝ} (hδ0 : 0 < δ) (hδ : δ < 1 / ((n : ℝ) + 
     have hr'1 : ∀ j, r' j ≤ r 0 := fun j => hr₁ _
     have hq'0 : ∀ j, 0 < q' j := fun j => hq0 _
     clear_value q' r' e
-    have hle := Θ_option_le (τ := Fin (n + 1)) hδ0 hδ1 (r := r') hr'0
-      (by rw [hr'n]; exact hrlast) (fun j => by rw [hr'n, hr's]; exact hratio' j)
+    have hle := Θ_option_le (τ := Fin (n + 1)) hδ0.le hδ1.le (r := r')
+      (by
+        rw [hr'n]
+        exact (by norm_num : (3 : ℝ) ≤ 10).trans
+          ((le_div_self (by norm_num) hδ0 hδ1.le).trans hrlast.le))
+      (fun j ↦ by rw [hr'n, hr's]; exact (hratio' j).le)
       (r₁ := r 0) hr'1 (q := q') hq'0 hB
     refine lt_of_le_of_lt hle ?_
     set X : ℝ := 10 ^ (n + 1 + 1) * δ ^ ((1 / 2 : ℝ) ^ (n + 1 + 1))

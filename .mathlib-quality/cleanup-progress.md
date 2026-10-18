@@ -25,21 +25,26 @@ Started: 2026-10-14 (America/Chicago).
 
 ## Current status
 
-Latest completed file after successful final publication: Separation. Theta originals29/35
-completed; overall210/264 original declarations,9/14files. Supported original29 boundary
-revisit K completed without increasing counts. It weakens δ bounds to0≤δ≤1 and replaces
-the reciprocal degree restriction by3≤rnone; derived hr0/hB are removed only from
-index_le_lem6. Explicit hq, domains, exact conclusion and protected globalΘ hB/hr remain.
-Immutable original proof/explicit adapter, retained metadata/selected-drop AST/actual standard
-axioms and the entire affected caller proof/type/dependency pass. Module34.272s and complete
-unfiltered nativeLSP0errors11warnings pass. Both exact-prefix REAL sweeps pass: public996.125/936.382,
-numeric918.885/829.176,weight455.974/355.065,mapped722.709/634.434ms. Frozen full build92.105s
-THEN separateLeanEval29.557s pass with all17source/pin hashes unchanged.
-[Latest audit](cleanup/Theta-index_le_lem6-boundary-revisit.md). Next original30 Θ_option_le,
-including its selected DecidableEq removal and newly exposed unused hr0, with explicit hq retained.
-[Exact contract decisions](cleanup/Theta-contract-proposal.md): selected A/B/C and supported G–K
-applications; earlier hq/D–F preservation choices remain. Six remaining originals, whole-Theta
-profiling and final file phases are outstanding. No whole-module performance pass is claimed.
+Latest completed file after successful final publication: Separation. Theta originals 30/35
+completed; overall 211/264 original declarations, 9/14 files. Latest original: `Θ_option_le`.
+Its five-line proof supports closed δ bounds, `3 ≤ r none` and weak coordinate ratios;
+selected DecidableEq and derived hr0 inputs are removed, while hq and hB remain. The entire
+Θ_lt caller contract and all three private helpers are preserved.
+
+Fresh declaration audit, module build and complete unfiltered native LSP pass (0 errors,
+8 warnings). Both real prefix-through30 sweeps pass for all five related declarations:
+Θ_option_le 158.615/144.368 ms; maximum across the five is 925.763 ms. Owner cumulative
+recovery passes all 29 original public contracts and five definition values, with 29 entire
+old adapters, 87 explicit opaque body-type checks and 87 actual standard axiom checks.
+Both independent original proof blocks remain byte-identical. Frozen full build 113.288 s
+THEN separate LeanEval 37.676 s pass; all 17 source/pin hashes remain unchanged.
+[Latest audit](cleanup/Theta-Theta_option_le.md).
+
+[Contract decisions](cleanup/Theta-contract-proposal.md): selected A/B/C and supported G–L
+applications are complete; prior hq/globalΘ hB/hr/domain/header preservation choices remain.
+Five originals and all final file phases, including whole-Theta profiling, are outstanding.
+Earlier diagnostic baseline overages remain recorded; no whole-module performance pass is
+claimed. Next: original31 private `one_lt_of_log_pos`, then originals32–35.
 
 Build/tool setup completed; GitHub browser authentication and branch publication succeeded.
 The first file, `Roth/HasseDeriv.lean`, has completed all declaration and final review,
@@ -2462,3 +2467,15 @@ caller hr0 warning and selected DecidableEq removal receive its own fresh audit.
 Supported K29 validated source/audit checkpoint: [e0784cf](https://github.com/SmwYin/Roth/commit/e0784cf931052862a49e9d618c3408a95438616e).
 The following central-log metadata commit changes no Lean source; both publish together
 before original30 edits. Counts remain210/264,Theta29/35,9/14files; validated revisits9.
+
+
+## Theta original30 checkpoint — Θ_option_le
+
+Removed approved `[DecidableEq τ]` and the derived `hr0` premise from `Θ_option_le`, extending its unchanged conclusion to closed δ bounds, `3 ≤ r none` and weak coordinate ratios. Retained `hq` and `hB`. The headline proof is five lines; the entire `Θ_lt` caller contract is preserved with minimal forwarding.
+
+Fresh 24-item audit, 42 golf rules, five actual searches, every-binder probes, literature/inversion, packing, inequality and 11-step checks pass. Independent entire original30 and original Θ_lt proofs/adapters, actual new caller dependency, retained metadata and standard axioms pass. Owner cumulative recovery of all29 public contracts and all five definition values passes, including29 explicit old adapters,87 opaque body-type checks and87 actual standard axiom checks; both immutable original proof blocks are byte-identical. [Dedicated audit](cleanup/Theta-Theta_option_le.md).
+Final Theta SHA256 `c488d3189154ae0da29fd6d798c3b1d016e44fa588ab4ab32a5ea7c93c3837fd`. Module and complete unfiltered LSP:0 errors/8 warnings;
+accepted real prefix profile:Θ_option158.615/144.368; public29 901.577/925.763; weight401.279/399.404; mapped693.423/723.578; numeric903.545/922.672 (first/required repeat; all<1000) ms. Frozen full build113.288s then
+separate LeanEval37.676s both exit0; all17project/pin/source hashes stable.
+No new private helper; all three previously audited helpers unchanged. Original counts exclude revisits and helper audits. After successful publication:Theta30/35,overall211/264,9/14files.
+Next:original31 private one_lt_of_log_pos (assess direct existing Real.log_pos_iff replacement and actual deleted-wrapper absence/caller proofs). Actual whole-Theta profiling and final file phases remain outstanding.
