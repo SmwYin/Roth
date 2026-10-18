@@ -132,18 +132,16 @@ theorem aeval_X_eq_rename {σ : Type*} (i : σ) (f : Polynomial R) :
 factorwise. Source: §2, proof of Lemma 2 ("`Δ_μ (1/ν!) ∂^ν_{x_p} (φ_ρ(x_p) ψ_ρ(x_1, …, x_{p-1}))
 = (Δ_μ ψ_ρ) ((1/ν!) ∂^ν φ_ρ)`", the entries of `A Bᵀ`). -/
 theorem hasseDeriv_rename_mul_aeval (d : τ →₀ ℕ) (ν : ℕ) (U : MvPolynomial τ R) (V : Polynomial R) :
-    hasseDeriv (d.mapDomain some + Finsupp.single none ν)
-        (rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) R) V) =
-      rename some (hasseDeriv d U) *
-        Polynomial.aeval (X none : MvPolynomial (Option τ) R) (Polynomial.hasseDeriv ν V) := by
+    hasseDeriv (d.mapDomain some + Finsupp.single none ν) (rename some U * Polynomial.aeval
+      (X none : MvPolynomial (Option τ) R) V) = rename some (hasseDeriv d U) * Polynomial.aeval
+      (X none : MvPolynomial (Option τ) R) (Polynomial.hasseDeriv ν V) := by
   have hnone : ∀ {o : Option τ}, o ∈ (d.mapDomain some).support → o ≠ none := by
-    rintro _ ho rfl
-    simp at ho
+    simp
   have hdisj : Disjoint (d.mapDomain some).support (Finsupp.single none ν).support :=
-    Finset.disjoint_left.2 fun _ ho ho' =>
+    Finset.disjoint_left.2 fun _ ho ho' ↦
       hnone ho (Finset.mem_singleton.1 (Finsupp.support_single_subset ho'))
   rw [← hasseDeriv_hasseDeriv_of_disjoint hdisj,
-    hasseDeriv_mul_of_degreeOf_eq_zero fun j hj => by
+    hasseDeriv_mul_of_degreeOf_eq_zero fun j hj ↦ by
       rw [Finset.mem_singleton.1 (Finsupp.support_single_subset hj)]
       simp [degreeOf, degrees_rename_of_injective (Option.some_injective τ)],
     hasseDeriv_single_aeval_X, mul_comm,
