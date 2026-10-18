@@ -196,3 +196,8 @@ Frozen source SHA256: `1c58b8b35fe3c01d326d802b94c54dbc8ed0349e1ca388f87e9b34aa2
 ## Owner cumulative publication gates
 
 Source FROZEN SHA256 `1c58b8b35fe3c01d326d802b94c54dbc8ed0349e1ca388f87e9b34aa2a0278d4`; leaf ownership revoked and requests drained before owner gates. Owner probe `75014` exit0,34.54s: independent ORIGINAL30 proof bodies,all20 original public type/value recoveries and ALL23 actual retained standardaxiom checks. `/private/tmp/roth-separation-d19-compatibility.{lean,log,json}`. Owner build session `45446` sequential `lake build` then separate `lake build Roth.LeanEval` both exit0,5.75s/2.65s; source hash stable. `/private/tmp/roth-separation-d19-{full,leaneval}.log`, `...-builds.json`. Owner original block docs byte-identical; exact diff/whitespace checked. Exact-path commit and successful cleanup-branch push precede next declaration.
+
+
+## Subsequent user decision
+
+Retain the current `CommRing`/`IsDomain` assumptions on both product-degree theorems; the optional `CommSemiring`/`NoZeroDivisors` widening was considered and declined. Historical compiled candidates remain unapplied evidence. This is a closed optional alternative, not a pending required decision. The exact twelve-theorem index-instance menu remains approved independently.

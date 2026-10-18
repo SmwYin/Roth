@@ -74,6 +74,7 @@ Source: §2, proof of Lemma 2 ("collecting the terms in terms of the powers of `
 noncomputable def coeffNone (P : MvPolynomial (Option τ) R) (ν : ℕ) : MvPolynomial τ R :=
   (optionEquivLeft R τ P).coeff ν
 
+omit [Fintype τ] [DecidableEq τ] in
 /-- The coefficient of `x_τ^d` in `coeffNone P ν` is the coefficient of `x_τ^d x_none^ν` in `P`. -/
 theorem coeff_coeffNone (P : MvPolynomial (Option τ) R) (ν : ℕ) (d : τ →₀ ℕ) :
     (coeffNone P ν).coeff d = P.coeff (d.mapDomain some + Finsupp.single none ν) := by

@@ -55,3 +55,8 @@ Subsequent D13 private-helper removal moves and duplicates an internal wrapper c
 compiled proposal above records its explicit historical source hashes. Both proposals
 remain unapplied; refresh the full project inventory and exact candidate against the
 then-current source before applying any eventual approval.
+
+
+## User decision after the original21 checkpoint
+
+Considered and declined: retain public `Roth.aeval_X_eq_rename` and its callers. The compiled candidate above remains historical evidence only; no removal is to be applied. The user likewise declined deleting `Roth.coeff_uniqueAlgEquiv_symm` and widening the two Domain theorem coefficient assumptions. These are closed optional alternatives, not pending required decisions.

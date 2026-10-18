@@ -292,3 +292,8 @@ pending public proposals remain unapplied; no approval inferred.
 ## Owner cumulative publication gates
 
 Source FROZEN SHA256 `a934daecc81ea79ce62d9f8ad460b98c4f49d80806659fa4311add86962c1b4a`; leaf ownership revoked and requests drained before owner gates. Owner probe `80848` exit0,37.50s: independent ORIGINAL30 proof bodies,all20 original public type/value recoveries and ALL23 actual retained standardaxiom checks. `/private/tmp/roth-separation-d17-compatibility.{lean,log,json}`. Owner build session `63509` sequential `lake build` then separate `lake build Roth.LeanEval` both exit0,6.89s/3.08s; source hash stable. `/private/tmp/roth-separation-d17-{full,leaneval}.log`, `...-builds.json`. Owner original block docs byte-identical; exact diff/whitespace checked. Exact-path commit and successful cleanup-branch push precede next declaration.
+
+
+## Subsequent user decision
+
+Retain public `Roth.coeff_uniqueAlgEquiv_symm`; the optional deletion was considered and declined. Historical compiled candidates remain unapplied evidence. This is a closed optional alternative, not a pending required decision. The exact twelve-theorem index-instance menu remains approved independently.
