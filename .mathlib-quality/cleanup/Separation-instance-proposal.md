@@ -1,4 +1,4 @@
-# Separation: scoped unused-instance proposal (pending approval)
+# Separation: approved scoped unused-instance menu
 
 Proposal: remove unused `[Fintype τ]` and `[DecidableEq τ]` from the eleven public theorems below; remove only `[DecidableEq τ]` from `exists_det_eq_mul`, retaining its `[Fintype τ]` because the existing generalized-Wronskian existence API uses it. All polynomial data, coefficient assumptions, nonzero/degree hypotheses and conclusions stay exactly the same. `coeffNone` and every other public declaration stay unchanged.
 
@@ -26,6 +26,6 @@ Implementation: scoped `omit` commands and local `classical` where required, plu
 - Actual expression traversal confirms no `DecidableEq` constant in all12 candidate types and no `Fintype` in the11 selected types. All12 candidate axiom sets consist only of `propext`, `Classical.choice`, `Quot.sound`.
 - Final raw source/log: `/private/tmp/roth-separation-hypothesis-candidate.{lean,log}`. An intermediate import check ran during module rebuilding and failed because the olean was temporarily absent; this failed attempt is excluded from the successful evidence above.
 
-This is a mathematical generality improvement: the eleven results concern finite polynomial support and need no finite ambient variable type. It does not claim that the final generalized-Wronskian construction is already available for an arbitrary infinite variable type. Baseline complete LSP already reports these unused-instance warnings. Each affected original declaration still receives its own fresh full audit/search/literature/verification pass before applying its approved scoped change. Approval of this menu would cover only these listed removals and necessary caller repairs; no other API generalization.
+This is a mathematical generality improvement: the eleven results concern finite polynomial support and need no finite ambient variable type. It does not claim that the final generalized-Wronskian construction is already available for an arbitrary infinite variable type. Baseline complete LSP already reports these unused-instance warnings. Each affected original declaration still receives its own fresh full audit/search/literature/verification pass before applying its approved scoped change. The user approved exactly these listed removals and necessary caller repairs; no other API generalization.
 
-Status: PENDING. No public omission has been applied to repository source.
+Status: USER APPROVED, relayed by the coordinator during original21 helper audits. No public omission has yet been applied in the original21 frozen batch. Nine already-audited targets will receive separate fresh checkpoints in dependency/source order after that batch; the three remaining originals will apply their approved removals during their ordinary declaration audit. Original audit counts do not increase on revisits. Public-wrapper deletions and Domain coefficient weakening remain unapproved.

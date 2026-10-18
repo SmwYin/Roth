@@ -125,7 +125,7 @@ Files will be processed in dependency order; declarations within each file are s
 | `Roth/GenWronskian.lean` | 292 | All cleanup phases complete;19/19 originals and2 added helpers audited; both user-approved public amendments applied;2 preserved warnings |
 | `Roth/Lattice.lean` | 217 | All cleanup phases complete;10/10 originals and3/3 added helpers audited; user-preserved metadata |
 | `Roth/Index.lean` | 275 | All cleanup phases complete;21/21 originals audited; user-approved hypothesis groups applied and validated |
-| `Roth/Separation.lean` | 618 | Active;20/30 originals audited at d20 published checkpoint; public instance proposal pending approval |
+| `Roth/Separation.lean` | 618 | Active;21/30 originals audited at d21 published checkpoint; approved instance removals in progress; optional API proposals unapproved |
 | `Roth/Theta.lean` | 981 | Awaiting cleanup |
 | `Roth/MainLemma.lean` | 704 | Awaiting cleanup |
 | `Roth/Main.lean` | 684 | Awaiting cleanup |
@@ -1886,3 +1886,16 @@ Unchanged actual source/target reuses repository-module profile `/private/tmp/ro
 Source FROZEN SHA256 `1c58b8b35fe3c01d326d802b94c54dbc8ed0349e1ca388f87e9b34aa2a0278d4`; leaf ownership revoked and requests drained before owner gates. Owner probe `76196` exit0,34.50s: independent ORIGINAL30 proof bodies,all20 original public type/value recoveries and ALL23 actual retained standardaxiom checks. `/private/tmp/roth-separation-d20-compatibility.{lean,log,json}`. Owner build session `12121` sequential `lake build` then separate `lake build Roth.LeanEval` both exit0,5.58s/2.79s; source hash stable. `/private/tmp/roth-separation-d20-{full,leaneval}.log`, `...-builds.json`. Owner original block docs byte-identical; exact diff/whitespace checked. Exact-path commit and successful cleanup-branch push precede next declaration.
 
 All four public options remain pending/unapplied: 12-theorem instance omissions, two public wrapper deletions, and grouped Domain coefficient weakening to CommSemiring/NoZeroDivisors (full-module d19 candidate already compiled). Header remains user-preserved. Original 21 performance/decomposition and fresh audits of any added helpers remain next, with original counts preserved.
+
+
+## Separation d21 checkpoint — exists_separated_representation
+
+[Dedicated audit](cleanup/Separation-exists_separated_representation.md): All 24 audit items, 42 golf rules, five actual search methods, every binder, width/inequality checks and 11 completion steps; Decomposed original64-line public proof into30-line proof and two freshly independently audited private helpers. A third newly added helper was independently audited and removed in favor of imported restrictSupport. Original public type/docs retained; no original-count inflation. Source 551 → 573; 25 retained declarations. Separation 21/30, overall 172/264 original audits after successful publication; 8/14 files complete.
+
+Original21 and all three new-helper fresh audits completed full24/42/five-search/binder/width/inequality/11step workflow. Actual module builds, exact-original independent non-self proofs and actual built standard-axiom checks passed. Final fresh helper complete unfiltered LSP0errors/31warnings; owner complete native diagnostics likewise0/31. Final SHA36a381873357317a18cc528ac03d6d55739d5487e00c3daa8fbf568d9dcdbc17; all leaf ownership revoked and all requests drained.
+
+Actual isolated final owner sweep /private/tmp/roth-separation-d21-owner-profile.log exit0: independence312.549ms, reconstruction718.272ms, public main895.154ms. Same-final-source preceding isolated main repeats844.929/853.337ms meet the >=750 repeat rule; every affected declaration below1000ms. No raised limits, source profiler scaffolding or deferral.
+
+Source FROZEN SHA256 `36a381873357317a18cc528ac03d6d55739d5487e00c3daa8fbf568d9dcdbc17`; leaf ownership revoked and requests drained before owner gates. Owner probe `88657` exit0,37.80s: independent ORIGINAL30 proof bodies,all20 original public type/value recoveries and ALL25 actual retained standardaxiom checks. `/private/tmp/roth-separation-d21-compatibility.{lean,log,json}`. Owner build session `56384` sequential `lake build` then separate `lake build Roth.LeanEval` both exit0,115.49s/28.60s; source hash stable. `/private/tmp/roth-separation-d21-{full,leaneval}.log`, `...-builds.json`. Owner original block docs byte-identical; exact diff/whitespace checked. Exact-path commit and successful cleanup-branch push precede next declaration.
+
+User explicitly approved exact12-theorem instance menu during helper audits. None applied in this frozen batch: nine already-audited targets will receive separate dependency/source-ordered revisit checkpoints next; three upcoming targets at ordinary audit. Optional public-wrapper deletions and Domain coefficient weakening remain unapproved/unapplied; header preserved.

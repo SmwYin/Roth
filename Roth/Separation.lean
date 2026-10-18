@@ -214,6 +214,62 @@ section Field
 
 variable {K : Type*} [Field K]
 
+omit [Fintype τ] [DecidableEq τ] in
+private lemma linearIndependent_coordinate_polynomials_aux {R M : Type*} [CommRing R]
+    [AddCommMonoid M] [Module R M] {n l : ℕ} (v : Fin (n + 1) → M)
+    (b : Module.Basis (Fin l) R (Submodule.span R (Set.range v))) :
+    LinearIndependent R (fun ρ ↦ ∑ ν : Fin (n + 1),
+      Polynomial.C (b.repr ⟨v ν, Submodule.subset_span ⟨ν, rfl⟩⟩ ρ) * Polynomial.X ^ (ν : ℕ)) := by
+  classical
+  let a := fun ν ρ ↦ b.repr ⟨v ν, Submodule.subset_span ⟨ν, rfl⟩⟩ ρ
+  rw [Fintype.linearIndependent_iff]
+  intro g hg ρ₀
+  have hcoeff : ∀ ν : Fin (n + 1), ∑ ρ, g ρ * a ν ρ = 0 := by
+    intro ν
+    have h1 := congrArg (fun p : Polynomial R ↦ p.coeff ν) hg
+    simp only [Polynomial.finsetSum_coeff, Polynomial.coeff_smul, smul_eq_mul,
+      Polynomial.coeff_C_mul_X_pow, Polynomial.coeff_zero] at h1
+    rw [← h1]
+    refine Finset.sum_congr rfl fun ρ _ ↦ ?_
+    rw [Finset.sum_eq_single ν (fun ν' _ hν' ↦ ite_eq_right fun h ↦ hν' (Fin.ext h).symm)
+      (fun h ↦ absurd (Finset.mem_univ ν) h), ite_eq_left rfl]
+  let f : Submodule.span R (Set.range v) →ₗ[R] R := ∑ ρ, g ρ • b.coord ρ
+  have hf : f = 0 := LinearMap.ext_on Submodule.span_span_coe_preimage fun x hx ↦ by
+    obtain ⟨ν, hν⟩ := hx
+    obtain rfl : x = ⟨v ν, Submodule.subset_span ⟨ν, rfl⟩⟩ := Subtype.ext hν.symm
+    simpa only [f, a, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul,
+      Module.Basis.coord_apply, LinearMap.zero_apply] using hcoeff ν
+  simpa only [f, LinearMap.sum_apply, LinearMap.smul_apply, Module.Basis.coord_apply,
+    Module.Basis.repr_self, Finsupp.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero,
+    Finset.sum_ite_eq, Finset.mem_univ, ite_true, LinearMap.zero_apply] using
+    LinearMap.congr_fun hf (b ρ₀)
+
+omit [Fintype τ] [DecidableEq τ] in
+private lemma eq_sum_aeval_basis_coeffNone_aux {R : Type*} [CommSemiring R]
+    {P : MvPolynomial (Option τ) R} {n l : ℕ}
+    (hP : P = ∑ ν : Fin (n + 1), X none ^ (ν : ℕ) * rename some (coeffNone P ν))
+    (b : Module.Basis (Fin l) R
+      (Submodule.span R (Set.range (fun ν : Fin (n + 1) ↦ coeffNone P ν)))) :
+    P = ∑ ρ, Polynomial.aeval (X none : MvPolynomial (Option τ) R) (∑ ν : Fin (n + 1),
+        Polynomial.C (b.repr ⟨coeffNone P ν, Submodule.subset_span ⟨ν, rfl⟩⟩ ρ) *
+          Polynomial.X ^ (ν : ℕ)) * rename some (b ρ : MvPolynomial τ R) := by
+  let a := fun (ν : Fin (n + 1)) ρ ↦ b.repr ⟨coeffNone P ν, Submodule.subset_span ⟨ν, rfl⟩⟩ ρ
+  have hexp : ∀ ν : Fin (n + 1), coeffNone P ν = ∑ ρ, a ν ρ • (b ρ : MvPolynomial τ R) := fun ν ↦ by
+    have h := congrArg Subtype.val (b.sum_repr ⟨coeffNone P ν, Submodule.subset_span ⟨ν, rfl⟩⟩)
+    simpa only [Submodule.coe_sum, Submodule.coe_smul] using h.symm
+  change P = ∑ ρ, Polynomial.aeval (X none : MvPolynomial (Option τ) R)
+    (∑ ν : Fin (n + 1), Polynomial.C (a ν ρ) * Polynomial.X ^ (ν : ℕ)) *
+      rename some (b ρ : MvPolynomial τ R)
+  conv_lhs => rw [hP]
+  simp_rw [hexp, map_sum, Finset.mul_sum]
+  rw [Finset.sum_comm]
+  refine Finset.sum_congr rfl fun ρ _ ↦ ?_
+  rw [Finset.sum_mul]
+  refine Finset.sum_congr rfl fun ν _ ↦ ?_
+  rw [map_smul, smul_eq_C_mul, map_mul, Polynomial.aeval_C, algebraMap_eq, map_pow,
+    Polynomial.aeval_X]
+  ac_rfl
+
 /-- Over a field, a nonzero `P` of degree at most `n` in `x_none` can be written as
 `∑_{ν < l} φ_ν(x_none) ψ_ν(x_τ)` with `1 ≤ l ≤ n + 1`, both families linearly independent,
 `deg φ_ν ≤ n`, and each `ψ_ν` of degree in `x_j` at most that of `P`.
@@ -227,69 +283,35 @@ theorem exists_separated_representation {P : MvPolynomial (Option τ) K} (hP : P
       (∀ ν j, degreeOf j (ψ ν) ≤ degreeOf (some j) P) ∧
       P = ∑ ν, Polynomial.aeval (X none : MvPolynomial (Option τ) K) (φ ν) * rename some (ψ ν) := by
   classical
-  set ψ' : Fin (n + 1) → MvPolynomial τ K := fun ν => coeffNone P ν
-  set V := Submodule.span K (Set.range ψ')
-  have : FiniteDimensional K V := FiniteDimensional.span_of_finite K (Set.finite_range ψ')
-  set l := Module.finrank K V
+  let v : Fin (n + 1) → MvPolynomial τ K := fun ν ↦ coeffNone P ν
+  let V := Submodule.span K (Set.range v)
+  have : FiniteDimensional K V := FiniteDimensional.span_of_finite K (Set.finite_range v)
+  let l := Module.finrank K V
   let b : Module.Basis (Fin l) K V := Module.finBasis K V
-  have hmem : ∀ ν, ψ' ν ∈ V := fun ν => Submodule.subset_span ⟨ν, rfl⟩
-  set a : Fin (n + 1) → Fin l → K := fun ν ρ => b.repr ⟨ψ' ν, hmem ν⟩ ρ
-  have hP' : P = ∑ ν : Fin (n + 1), X none ^ (ν : ℕ) * rename some (ψ' ν) := by
-    rw [Fin.sum_univ_eq_sum_range (fun ν => X none ^ ν * rename some (coeffNone P ν))]
+  have hP' : P = ∑ ν : Fin (n + 1), X none ^ (ν : ℕ) * rename some (v ν) := by
+    rw [Fin.sum_univ_eq_sum_range (fun ν ↦ X none ^ ν * rename some (coeffNone P ν))]
     exact eq_sum_X_none_pow_mul_coeffNone P hn
-  have hψexp : ∀ ν, ψ' ν = ∑ ρ, a ν ρ • (b ρ : MvPolynomial τ K) := fun ν => by
-    have h := congrArg Subtype.val (b.sum_repr ⟨ψ' ν, hmem ν⟩)
-    rw [Submodule.coe_sum] at h
-    simpa using h.symm
   have hl1 : 1 ≤ l := by
-    obtain ⟨ν, hν⟩ : ∃ ν, ψ' ν ≠ 0 := by
+    obtain ⟨ν, hν⟩ : ∃ ν, v ν ≠ 0 := by
       by_contra! h
-      exact hP (by simp [hP', h])
-    have : 0 < l := Module.finrank_pos_iff_exists_ne_zero.2
-      ⟨⟨ψ' ν, hmem ν⟩, fun h => hν (congrArg Subtype.val h)⟩
-    omega
-  have hln : l ≤ n + 1 := (finrank_range_le_card (R := K) ψ').trans_eq (Fintype.card_fin _)
-  let W : Submodule K (MvPolynomial τ K) :=
-    { carrier := {p | ∀ j, degreeOf j p ≤ degreeOf (some j) P}
-      add_mem' := fun {p q} hp hq j => (degreeOf_add_le j p q).trans (max_le (hp j) (hq j))
-      zero_mem' := fun j => by simp
-      smul_mem' := fun c p hp j => by
-        rw [smul_eq_C_mul]
-        exact (degreeOf_C_mul_le p j c).trans (hp j) }
-  have hVW : V ≤ W := Submodule.span_le.2 (Set.range_subset_iff.2 fun ν j =>
-    degreeOf_coeffNone_le P ν j)
-  refine ⟨l, hl1, hln, fun ρ => ∑ ν : Fin (n + 1), Polynomial.C (a ν ρ) * Polynomial.X ^ (ν : ℕ),
-    fun ρ => (b ρ : MvPolynomial τ K), ?_, ?_, ?_, ?_, ?_⟩
-  · rw [Fintype.linearIndependent_iff]
-    intro g hg ρ₀
-    have hcoeff : ∀ ν : Fin (n + 1), ∑ ρ, g ρ * a ν ρ = 0 := by
-      intro ν
-      have h1 := congrArg (fun p : Polynomial K => p.coeff ν) hg
-      simp only [Polynomial.finsetSum_coeff, Polynomial.coeff_smul, smul_eq_mul,
-        Polynomial.coeff_C_mul_X_pow, Polynomial.coeff_zero] at h1
-      rw [← h1]
-      refine Finset.sum_congr rfl fun ρ _ => ?_
-      rw [Finset.sum_eq_single ν (fun ν' _ hν' => ite_eq_right fun h => hν' (Fin.ext h).symm)
-        (fun h => absurd (Finset.mem_univ ν) h), ite_eq_left rfl]
-    let f : V →ₗ[K] K := ∑ ρ, g ρ • b.coord ρ
-    have hf : f = 0 := LinearMap.ext_on Submodule.span_span_coe_preimage fun x hx => by
-      obtain ⟨ν, hν⟩ := hx
-      obtain rfl : x = ⟨ψ' ν, hmem ν⟩ := Subtype.ext hν.symm
-      simpa [f] using hcoeff ν
-    simpa [f, Finsupp.single_apply] using LinearMap.congr_fun hf (b ρ₀)
-  · exact b.linearIndependent.map' V.subtype (Submodule.ker_subtype V)
-  · exact fun ρ => Polynomial.natDegree_sum_le_of_forall_le _ _ fun ν _ =>
-      (Polynomial.natDegree_C_mul_X_pow_le _ _).trans (Nat.lt_succ_iff.1 ν.2)
-  · exact fun ρ => hVW (b ρ).2
-  · conv_lhs => rw [hP']
-    simp_rw [hψexp, map_sum, Finset.mul_sum]
-    rw [Finset.sum_comm]
-    refine Finset.sum_congr rfl fun ρ _ => ?_
-    rw [Finset.sum_mul]
-    refine Finset.sum_congr rfl fun ν _ => ?_
-    rw [map_smul, smul_eq_C_mul, map_mul, Polynomial.aeval_C, algebraMap_eq, map_pow,
-      Polynomial.aeval_X]
-    ring
+      apply hP
+      rw [hP']
+      simp only [h, map_zero, mul_zero, Finset.sum_const_zero]
+    exact Module.finrank_pos_iff_exists_ne_zero.2
+      ⟨⟨v ν, Submodule.subset_span ⟨ν, rfl⟩⟩, fun h ↦ hν (congrArg Subtype.val h)⟩
+  have hdegree : V ≤ restrictSupport K {d | ∀ j, d j ≤ degreeOf (some j) P} :=
+    Submodule.span_le.2 (Set.range_subset_iff.2 fun (ν : Fin (n + 1)) d hd j ↦ by
+      simpa using monomial_le_degreeOf (some j)
+        ((mem_support_coeff_optionEquivLeft K).1 hd))
+  refine ⟨l, hl1, (finrank_range_le_card (R := K) v).trans_eq (Fintype.card_fin _),
+    fun ρ ↦ ∑ ν : Fin (n + 1),
+      Polynomial.C (b.repr ⟨v ν, Submodule.subset_span ⟨ν, rfl⟩⟩ ρ) * Polynomial.X ^ (ν : ℕ),
+    fun ρ ↦ (b ρ : MvPolynomial τ K), linearIndependent_coordinate_polynomials_aux v b,
+    b.linearIndependent.map' V.subtype (Submodule.ker_subtype V), ?_,
+    fun ρ j ↦ degreeOf_le_iff.2 fun d hd ↦ hdegree (b ρ).2 hd j,
+    eq_sum_aeval_basis_coeffNone_aux hP' b⟩
+  exact fun ρ ↦ Polynomial.natDegree_sum_le_of_forall_le _ _ fun ν _ ↦
+    (Polynomial.natDegree_C_mul_X_pow_le _ _).trans (Nat.lt_succ_iff.1 ν.2)
 
 /-- The determinant of Hasse derivatives of a separated sum `∑ φ_ρ(x_none) ψ_ρ(x_τ)` is the
 product of the generalised Wronskian of `ψ` and the Wronskian of `φ`.
