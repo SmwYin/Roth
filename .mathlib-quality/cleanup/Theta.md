@@ -45,7 +45,7 @@ ordinary baseline builds passing does not imply any all-file profile pass.
 | 5 | `degreeOf_map_intCast_real` | 67 | 1 | Complete; deleted Mathlib wrapper;[audit](Theta-degreeOf_map_intCast_real.md) |
 | 6 | `one_mem_RSet` | 73 | 3 | Complete;[audit](Theta-one_mem_RSet.md) |
 | 7 | `indexSet_nonempty` | 80 | 1 | Complete;[audit](Theta-indexSet_nonempty.md) |
-| 8 | `indexSet_bddAbove` | 86 | 4 | Pending dedicated audit |
+| 8 | `indexSet_bddAbove` | 86 | 4 | Complete;[audit](Theta-indexSet_bddAbove.md) |
 | 9 | `index_le_Θ` | 96 | 1 | Pending dedicated audit |
 | 10 | `Θ_nonneg` | 103 | 2 | Pending dedicated audit |
 | 11 | `Θ_le_card` | 109 | 4 | Pending dedicated audit |
@@ -152,3 +152,16 @@ trace14.238→13.303ms pass. No speedup claim for syntax-only change or whole-fi
 Owner sequential full/separateLeanEval/publication recorded in dedicated report. After successful
 publication:Theta7/35,overall188/264,9/14files complete. Contract menu still UNAPPLIED.
 Next:indexSet_bddAbove.
+
+## Published checkpoint8 — indexSet_bddAbove
+
+Fresh full dedicated audit compacted direct degreeOf specialization: live-start6→5body lines
+(initial-original4→final5 after the earlier wrapper replacements). All public binders/docs/callers
+retained; no helper. All24/42/five searches/effective-binder/literature/inversion/width/inequality
+and11leaf gates complete. Module, independent copied original nonself proof, direct actual old-type
+comparison and built/original standard axioms pass. Complete unfiltered native LSP0errors/28warnings:
+exactly one target unused-section-DecEq warning restored by the proof, no suppression/removal.
+Uncontended exact-prefix trace148.516→160.621ms (<750ms); no speedup or whole-file profile claim.
+Owner frozen sequential full/separateLeanEval/publication recorded in dedicated report. After
+successful publication:Theta8/35,overall189/264,9/14files complete. Menu remains UNAPPLIED.
+Next:index_le_Θ.
