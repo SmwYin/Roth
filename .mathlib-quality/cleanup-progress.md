@@ -125,7 +125,7 @@ Files will be processed in dependency order; declarations within each file are s
 | `Roth/GenWronskian.lean` | 292 | All cleanup phases complete;19/19 originals and2 added helpers audited; both user-approved public amendments applied;2 preserved warnings |
 | `Roth/Lattice.lean` | 217 | All cleanup phases complete;10/10 originals and3/3 added helpers audited; user-preserved metadata |
 | `Roth/Index.lean` | 275 | All cleanup phases complete;21/21 originals audited; user-approved hypothesis groups applied and validated |
-| `Roth/Separation.lean` | 618 | Active;9/30 originals audited at d09 published checkpoint; public instance proposal pending approval |
+| `Roth/Separation.lean` | 618 | Active;10/30 originals audited at d10 published checkpoint; public instance proposal pending approval |
 | `Roth/Theta.lean` | 981 | Awaiting cleanup |
 | `Roth/MainLemma.lean` | 704 | Awaiting cleanup |
 | `Roth/Main.lean` | 684 | Awaiting cleanup |
@@ -1741,5 +1741,18 @@ Actual module build exits 0 (`/private/tmp/roth-separation-d09-build.log`). Comp
 Actual repository-module profile exits 0 (`/private/tmp/roth-separation-d09-final-profile.log{,.json}`): command 4.112 + async 36.412 = 40.524 ms, baseline 66.515 ms; one anchor each and below 750/1000 ms. No whole-project speedup claim, source profiler scaffolding or raised limits.
 
 Source FROZEN SHA256 `72f715a6efc3664bfad5d760b598939f131a32393988c886da69206e67e1dc12`; leaf ownership revoked and requests drained before owner gates. Owner probe `68300` exit0,54.14s: independent ORIGINAL30 proof bodies,all20 original public type/value recoveries and ALL27 actual retained standardaxiom checks. `/private/tmp/roth-separation-d09-compatibility.{lean,log,json}`. Owner build session `50653` sequential `lake build` then separate `lake build Roth.LeanEval` both exit0,158.46s/38.75s; source hash stable. `/private/tmp/roth-separation-d09-{full,leaneval}.log`, `...-builds.json`. Owner original block docs byte-identical; exact diff/whitespace checked. Exact-path commit and successful cleanup-branch push precede next declaration.
+
+Public 12-theorem instance menu remains pending and unapplied; header remains user-preserved.
+
+
+## Separation d10 checkpoint — coeff_rename_mul_aeval
+
+[Dedicated audit](cleanup/Separation-coeff_rename_mul_aeval.md): All 24 audit items, 42 golf rules, five actual search methods, every binder, width/inequality checks and 11 completion steps; Direct polynomial-equivalence coefficient calculation replaces the support expansion, sum and case split. Body 18 to 7 lines; source 597 to 586, 27 retained. Public signature/docs unchanged, no helper or other declaration edit. Source 597 → 586; 27 retained declarations. Separation 10/30, overall 161/264 original audits after successful publication; 8/14 files complete.
+
+Actual module build exits 0; complete native unfiltered LSP success=true, partial=false, timed_out=false, no failed dependencies, 0 errors/31 warnings (`/private/tmp/roth-separation-d10-final-lsp.json`). One unusedSectionVars warning disappears because the new proof consumes the retained public coefficient bridge. Exact original type and independent non-self proof compile, actual target/bridge/caller use only standard axioms. All 12 binder suite cases finish; semantic instance omissions compile with an isolated probe-local bridge, whereas literal final-proof-only omission still depends on earlier retained public bridge instances. The grouped public proposal remains pending and unapplied.
+
+Actual repository-module sweeps exit 0: preceding 842.772 ms borderline measurement is reswept at 490.631 ms unchanged baseline; final target 52.568 + 215.845 = 268.413 ms, below 750/1000 ms (`/private/tmp/roth-separation-d10-final-profile.log{,.json}`). Future original 21 exists_separated_representation measures 1342.091 ms and remains tracked for its dedicated audit, not claimed under budget here. No source profiler scaffolding, raised limits or target deferral.
+
+Source FROZEN SHA256 `721b7cde6fe0430a6e37e3fd92be12f272ad38ed8409de2acfdb81567ca7dacb`; leaf ownership revoked and requests drained before owner gates. Owner probe `87314` exit0,40.79s: independent ORIGINAL30 proof bodies,all20 original public type/value recoveries and ALL27 actual retained standardaxiom checks. `/private/tmp/roth-separation-d10-compatibility.{lean,log,json}`. Owner build session `51365` sequential `lake build` then separate `lake build Roth.LeanEval` both exit0,123.85s/29.72s; source hash stable. `/private/tmp/roth-separation-d10-{full,leaneval}.log`, `...-builds.json`. Owner original block docs byte-identical; exact diff/whitespace checked. Exact-path commit and successful cleanup-branch push precede next declaration.
 
 Public 12-theorem instance menu remains pending and unapplied; header remains user-preserved.

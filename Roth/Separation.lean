@@ -112,24 +112,13 @@ coefficients of `U(x_τ) V(x_none)` are the products of coefficients). -/
 theorem coeff_rename_mul_aeval (U : MvPolynomial τ R) (V : Polynomial R) (a : τ →₀ ℕ) (b : ℕ) :
     (rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) R) V).coeff
         (a.mapDomain some + Finsupp.single none b) = U.coeff a * V.coeff b := by
-  classical
-  have hA : rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) R) V =
-      ∑ b' ∈ V.support, X none ^ b' * rename some (C (V.coeff b') * U) := by
-    conv_lhs => rw [V.as_sum_support]
-    rw [map_sum, Finset.mul_sum]
-    refine Finset.sum_congr rfl fun b' _ => ?_
-    rw [Polynomial.aeval_monomial, map_mul, rename_C, algebraMap_eq]
-    ring
-  rw [hA, coeff_sum]
-  simp_rw [coeff_X_none_pow_mul_rename,
-    show (a.mapDomain some + Finsupp.single none b : Option τ →₀ ℕ) none = b by
-      simp [Finsupp.mapDomain_of_notMem_range], Finsupp.some_add,
-    Finsupp.some_single_none, add_zero, ← Function.Embedding.some_apply,
-    ← Finsupp.embDomain_eq_mapDomain, Finsupp.some_embDomain_some]
-  rw [Finset.sum_ite_eq]
-  split_ifs with hb
-  · rw [coeff_C_mul, mul_comm]
-  · rw [Polynomial.notMem_support_iff.1 hb, mul_zero]
+  have h : (optionEquivLeft R τ).toAlgHom.comp (rename some) = Polynomial.CAlgHom := by
+    ext i
+    simp
+  rw [← coeff_coeffNone, coeffNone, map_mul,
+    (show optionEquivLeft R τ (rename some U) = Polynomial.C U from AlgHom.congr_fun h U),
+    ← Polynomial.aeval_algHom_apply, optionEquivLeft_X_none, Polynomial.aeval_X_left_eq_map,
+    Polynomial.coeff_C_mul, Polynomial.coeff_map, algebraMap_eq, mul_comm U, coeff_C_mul, mul_comm]
 
 /-- A univariate polynomial in the variable `X i`, as the renaming of a one-variable
 `MvPolynomial`. Source: §4, Lemma 4-2 ("the index of the embedded `Q` is its one-variable
