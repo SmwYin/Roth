@@ -375,18 +375,17 @@ theorem exists_nat_smul_eq_map {σ : Type*} (G : MvPolynomial σ ℚ) :
     ∃ (N : ℕ) (U : MvPolynomial σ ℤ), 0 < N ∧ map (Int.castRingHom ℚ) U = (N : ℚ) • G := by
   classical
   set N := ∏ d ∈ G.support, (G.coeff d).den with hN
-  have hN0 : 0 < N := Finset.prod_pos fun d _ => Rat.den_pos _
   have hint : ∀ d, ∃ z : ℤ, (N : ℚ) * G.coeff d = z := by
     intro d
     by_cases hd : d ∈ G.support
-    · obtain ⟨k, hk⟩ := Finset.dvd_prod_of_mem (fun d => (G.coeff d).den) hd
+    · obtain ⟨k, hk⟩ := Finset.dvd_prod_of_mem (fun d ↦ (G.coeff d).den) hd
       refine ⟨k * (G.coeff d).num, ?_⟩
       rw [hN, hk]
       push_cast
       rw [mul_comm ((G.coeff d).den : ℚ) k, mul_assoc, Rat.den_mul_eq_num]
     · exact ⟨0, by simp [notMem_support_iff.1 hd]⟩
   choose c hc using hint
-  refine ⟨N, ∑ d ∈ G.support, monomial d (c d), hN0, ?_⟩
+  refine ⟨N, ∑ d ∈ G.support, monomial d (c d), Finset.prod_pos fun _ _ ↦ Rat.den_pos _, ?_⟩
   ext e
   rw [coeff_map, coeff_sum, coeff_smul, smul_eq_mul, hc e]
   simp only [coeff_monomial, Finset.sum_ite_eq']
