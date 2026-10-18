@@ -128,12 +128,6 @@ theorem aeval_X_eq_rename {σ : Type*} (i : σ) (f : Polynomial R) :
       rename (fun _ : Unit => i) ((uniqueAlgEquiv R Unit).symm f) :=
   AlgHom.congr_fun (Polynomial.toMvPolynomial_eq_rename_comp i) f
 
-omit [Fintype τ] [DecidableEq τ] in
-private lemma aeval_X_none_ne_zero {V : Polynomial R} (hV : V ≠ 0) :
-    Polynomial.aeval (X none : MvPolynomial (Option τ) R) V ≠ 0 := by
-  rwa [aeval_X_eq_rename, map_ne_zero_iff _ (rename_injective _ fun _ _ _ => rfl),
-    map_ne_zero_iff _ (uniqueAlgEquiv R Unit).symm.injective]
-
 /-- A Hasse derivative `Δ_{d + ν e_none}` of a separated product `U(x_τ) V(x_none)` acts
 factorwise. Source: §2, proof of Lemma 2 ("`Δ_μ (1/ν!) ∂^ν_{x_p} (φ_ρ(x_p) ψ_ρ(x_1, …, x_{p-1}))
 = (Δ_μ ψ_ρ) ((1/ν!) ∂^ν φ_ρ)`", the entries of `A Bᵀ`). -/
@@ -196,7 +190,8 @@ theorem degreeOf_rename_mul_aeval (U : MvPolynomial τ R) {V : Polynomial R} (hV
   by_cases hU : U = 0
   · simp [hU]
   rw [degreeOf_mul_eq ((rename_eq_zero_iff_of_injective U (Option.some_injective τ)).not.mpr hU)
-      (aeval_X_none_ne_zero hV),
+      ((map_ne_zero_iff (Polynomial.aeval (X none))
+        (Polynomial.toMvPolynomial_injective none)).2 hV),
     degreeOf_rename_of_injective (Option.some_injective τ)]
   simp [aeval_X_eq_rename, degreeOf,
     degrees_rename_of_injective (Function.injective_of_subsingleton _), Multiset.mem_replicate]
@@ -209,7 +204,8 @@ theorem degreeOf_none_rename_mul_aeval {U : MvPolynomial τ R} (hU : U ≠ 0) (V
   by_cases hV : V = 0
   · simp [hV]
   rw [degreeOf_mul_eq ((rename_eq_zero_iff_of_injective U (Option.some_injective τ)).not.mpr hU)
-      (aeval_X_none_ne_zero hV),
+      ((map_ne_zero_iff (Polynomial.aeval (X none))
+        (Polynomial.toMvPolynomial_injective none)).2 hV),
     (show degreeOf none (rename some U) = 0 by
       simp [degreeOf, degrees_rename_of_injective (Option.some_injective τ)]),
     zero_add, aeval_X_eq_rename]
