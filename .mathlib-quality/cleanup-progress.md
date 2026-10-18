@@ -2415,3 +2415,7 @@ accepted real prefix profile:public742.222; retained helper655.221 (original pub
 separate LeanEval30.612s both exit0; all17project/pin/source hashes stable.
 One retained private separated-product helper26lines, separately freshly audited; the initially added coefficient helper was separately freshly audited and deleted. New helpers and revisits add no original count. After successful publication:Theta28/35,overall209/264,9/14files.
 Next:original29, index_le_lem6 (approved DecidableEqτ removal, explicit hq retention, ordinary≤30 structuring and actual instrumented performance repair). Actual whole-Theta profiling and final file phases remain outstanding.
+
+Original28 validated source/audit checkpoint: [6a1e668](https://github.com/SmwYin/Roth/commit/6a1e668bd056b14c513e6e994192c327fd169348).
+The following central-log metadata commit changes no Lean source; both commits publish
+together before original29 edits. Counts remain 209/264, Theta 28/35, 9/14 files.
