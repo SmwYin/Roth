@@ -238,3 +238,20 @@ explicit original λadapter/kernel/BinderInfo/AST/standardaxioms and full indepe
 caller reproof with exactly two prospective substitutions pass. Still UNAPPLIED pending decision.
 After publication:Theta13/35,overall194/264,9/14files complete. AllA–F menus remain UNAPPLIED.
 Next:private indexSet_comp_subset.
+
+
+## Published checkpoint 14 — private indexSet_comp_subset
+
+Fresh dedicated audit replaces manual nonzero transport, inverse exponent reindexing and final
+function congruence with existing mathlib APIs. Proof body: 16 → 12 lines; declaration: 18 → 14,
+plus one local omit command; file: 977 → 974. Both private decidability instances are removed.
+All public source and comments remain byte-identical; actual Θ_equiv retains all ten original
+binders, with exact type/universe/BinderInfo verified. No helper is added. Full 24-item audit,
+42 golf rules, five actual searches, ten binder probes, private literature exemption, inversion,
+packing, inequality scan and 11-step checklist are complete. Module and complete unfiltered native
+LSP pass with 0 errors and 32 warnings (one obsolete private warning removed). Independent original
+proof, explicit old ten-binder adapter to actual new eight-binder private constant, direct public
+caller contract and actual standard axioms pass. Uncontended prefix profiles: 178.731 → 181.401 ms;
+no speedup or whole-file claim. Frozen owner full build (60.885 s), then separate LeanEval (22.704 s),
+both pass with identical SHA. After publication: Theta 14/35, overall 195/264, 9/14 files complete.
+All public menus A–F remain unapplied. Next: Θ_equiv.

@@ -20,19 +20,18 @@ Started: 2026-10-14 (America/Chicago).
 
 ## Current status
 
-Latest completed file after successful final publication: Separation. Theta checkpoint13 completed;
-overall194/264 original declarations,9/14 files. Theta13/35 originals complete. Latest Θ_mono
-unpacks coefficient-bound witnesses, normalizes lambda notation and packs hr; body3unchanged,
-all original public binders/types/docs retained, no caller/helper change. Module, independent
-original/direct actual type+universe+BinderInfo/standard axioms, complete unfiltered LSP0errors
-33unchangedwarnings and uncontended exact-prefix23.606ms pass. Frozen owner full58.864s THEN
-separateLeanEval21.222s both0. [Latest audit](cleanup/Theta-Theta_mono.md). WholeTheta profiling,
-remaining22 originals and final phases remain outstanding; known late instrumented linarith
-failure awaits its audit. [Theta contract menu](cleanup/Theta-contract-proposal.md) A–F remains
-UNAPPLIED; D/E/F fully verified actual-import stronger bounds await explicit decision. F's two
-internal Θ_lt caller replacements compile in its complete independent reproof. Existing definitions
-and every live public contract unchanged. See [Separation final report](cleanup/Separation-final.md).
-Next:private indexSet_comp_subset.
+Latest completed file after successful final publication: Separation. Theta checkpoint 14 completed;
+overall 195/264 original declarations, 9/14 files. Theta 14/35 originals complete. The private
+variable-renaming helper now uses mathlib's coefficient reindexing API; proof body 16 → 12 lines,
+both private decidability instances removed. All public source and contracts remain unchanged;
+actual Θ_equiv's original type and ten BinderInfo entries are verified. Module, independent
+original proof/old private adapter/actual standard axioms, complete unfiltered LSP (0 errors,
+32 warnings) and uncontended exact-prefix profile (181.401 ms) pass. Frozen owner full build
+(60.885 s), then separate LeanEval (22.704 s), both pass. [Latest audit](cleanup/Theta-indexSet_comp_subset.md).
+Whole-Theta profiling, the remaining 21 originals and final phases remain outstanding; the known
+late instrumented linarith failure awaits its audit. [Theta contract menu](cleanup/Theta-contract-proposal.md)
+A–F remains UNAPPLIED pending explicit decision. Existing definitions and every live public
+contract are unchanged. See [Separation final report](cleanup/Separation-final.md). Next: Θ_equiv.
 
 Build/tool setup completed; GitHub browser authentication and branch publication succeeded.
 The first file, `Roth/HasseDeriv.lean`, has completed all declaration and final review,

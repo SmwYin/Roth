@@ -124,24 +124,21 @@ theorem Θ_mono {B B' : ℝ} (hB : 1 ≤ B) (hBB' : B ≤ B') (q : σ → ℕ) {
   rintro _ ⟨R, ⟨hR0, hRd, hRc⟩, h, hh, rfl⟩
   exact ⟨R, ⟨hR0, hRd, fun d ↦ (hRc d).trans hBB'⟩, h, hh, rfl⟩
 
-private lemma indexSet_comp_subset {τ : Type*} [Fintype τ] [DecidableEq τ] (e : σ ≃ τ) (B : ℝ)
-    (q r : τ → ℕ) : indexSet B (q ∘ e) (r ∘ e) ⊆ indexSet B q r := by
+omit [DecidableEq σ] in
+private lemma indexSet_comp_subset {τ : Type*} [Fintype τ] (e : σ ≃ τ) (B : ℝ) (q r : τ → ℕ) :
+    indexSet B (q ∘ e) (r ∘ e) ⊆ indexSet B q r := by
   rintro _ ⟨R, ⟨hR0, hRd, hRc⟩, h, hh, rfl⟩
-  refine ⟨rename e R, ⟨fun h0 => hR0 (rename_injective _ e.injective
-    (h0.trans (map_zero _).symm)), fun j => ?_, fun d => ?_⟩, h ∘ e.symm, fun j => ?_, ?_⟩
-  · obtain ⟨i, rfl⟩ := e.surjective j
-    rw [degreeOf_rename_of_injective e.injective]
-    exact hRd i
-  · have hd : d = (d.mapDomain e.symm).mapDomain e := by
-      rw [← Finsupp.mapDomain_comp]
-      simp
-    rw [hd, coeff_rename_mapDomain _ e.injective]
-    exact hRc _
-  · simpa using hh (e.symm j)
-  · rw [map_rename, index_rename e.injective]
-    congr 1
-    funext i
-    simp
+  refine ⟨rename e R, ⟨?_, ?_, ?_⟩, h ∘ e.symm, ?_, ?_⟩
+  · simpa [rename_eq_zero_iff_of_injective R e.injective] using hR0
+  · intro j
+    obtain ⟨i, rfl⟩ := e.surjective j
+    simpa [degreeOf_rename_of_injective e.injective] using hRd i
+  · intro d
+    obtain ⟨d, rfl⟩ := Finsupp.mapDomain_surjective e.surjective d
+    simpa [coeff_rename_mapDomain _ e.injective] using hRc d
+  · intro j
+    simpa using hh (e.symm j)
+  · simp [map_rename, index_rename e.injective, Function.comp_def]
 
 /-- `Θ` is invariant under renaming the variables. Source: §4, Lean note after Lemma 4-2
 ("invariance under ... variable renaming"). -/
