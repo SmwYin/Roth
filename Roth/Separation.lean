@@ -133,6 +133,7 @@ theorem aeval_X_eq_rename {σ : Type*} (i : σ) (f : Polynomial R) :
       rename (fun _ : Unit => i) ((uniqueAlgEquiv R Unit).symm f) :=
   AlgHom.congr_fun (Polynomial.toMvPolynomial_eq_rename_comp i) f
 
+omit [Fintype τ] [DecidableEq τ] in
 /-- A Hasse derivative `Δ_{d + ν e_none}` of a separated product `U(x_τ) V(x_none)` acts
 factorwise. Source: §2, proof of Lemma 2 ("`Δ_μ (1/ν!) ∂^ν_{x_p} (φ_ρ(x_p) ψ_ρ(x_1, …, x_{p-1}))
 = (Δ_μ ψ_ρ) ((1/ν!) ∂^ν φ_ρ)`", the entries of `A Bᵀ`). -/
@@ -140,6 +141,7 @@ theorem hasseDeriv_rename_mul_aeval (d : τ →₀ ℕ) (ν : ℕ) (U : MvPolyno
     hasseDeriv (d.mapDomain some + Finsupp.single none ν) (rename some U * Polynomial.aeval
       (X none : MvPolynomial (Option τ) R) V) = rename some (hasseDeriv d U) * Polynomial.aeval
       (X none : MvPolynomial (Option τ) R) (Polynomial.hasseDeriv ν V) := by
+  classical
   have hnone : ∀ {o : Option τ}, o ∈ (d.mapDomain some).support → o ≠ none := by
     simp
   have hdisj : Disjoint (d.mapDomain some).support (Finsupp.single none ν).support :=
