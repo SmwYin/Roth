@@ -54,7 +54,7 @@ ordinary baseline builds passing does not imply any all-file profile pass.
 | 14 | `indexSet_comp_subset` | 134 | 16 | Complete;[audit](Theta-indexSet_comp_subset.md) |
 | 15 | `Θ_equiv` | 155 | 4 | Complete;[audit](Theta-Theta_equiv.md) |
 | 16 | `isPrimitive_linear` | 164 | 9 | Complete;[audit](Theta-isPrimitive_linear.md) |
-| 17 | `isPrimitive_pow` | 176 | 3 | Pending dedicated audit |
+| 17 | `isPrimitive_pow` | 176 | 3 | Complete;[audit](Theta-isPrimitive_pow.md) |
 | 18 | `exists_eq_pow_mul_of_rootMultiplicity` | 187 | 14 | Pending dedicated audit |
 | 19 | `pow_rootMultiplicity_le` | 210 | 13 | Pending dedicated audit |
 | 20 | `Θ_unique_le` | 230 | 29 | Pending dedicated audit |
@@ -422,3 +422,14 @@ Accepted uncontended exact-prefix profile: 96.215 → 164.688 ms; no whole-file 
 Frozen owner full (62.585 s) then separate LeanEval (23.065 s) pass.
 [Dedicated audit](Theta-isPrimitive_linear.md). Theta 16/35, overall 197/264 originals;9/14 files complete.
 No new production helper. Next: original 17, private isPrimitive_pow.
+
+
+## Published checkpoint17 — isPrimitive_pow
+
+Replaced the private three-line induction with a one-line Nat.rec term using the same primitive-one and primitive-product lemmas. The private type and sole public caller, including its approved but not-yet-removed hR, remain unchanged. No definition, documentation or helper change.
+
+Fresh 24-item/42-rule audit, five actual searches and every-binder probes pass. Immutable independent helper/caller proofs, actual private/public type and binder metadata, and all actual standard axiom sets are verified. Module and complete unfiltered final LSP pass with 0 errors / 19 warnings.
+Accepted uncontended exact-prefix profile: 36.297 → 49.696 ms; no whole-file performance claim.
+Frozen owner full (64.388 s) then separate LeanEval (24.164 s) pass.
+[Dedicated audit](Theta-isPrimitive_pow.md). Theta 17/35, overall 198/264 originals;9/14 files complete.
+No new production helper. Next: original 18, exists_eq_pow_mul_of_rootMultiplicity, applying approved hR removal.

@@ -25,16 +25,16 @@ Started: 2026-10-14 (America/Chicago).
 
 ## Current status
 
-Latest completed file after successful final publication: Separation. Theta originals 16/35
-completed; overall 197/264 original declarations, 9/14 files. Latest original: isPrimitive_linear.
-Shortened the private coefficient-divisibility argument from nine proof lines to five by inlining the two once-used coefficient facts and removing a definitional rewrite. Its statement, sole public caller, documentation and all definitions remain unchanged.
-Fresh full24/42 audit, five actual searches and every-binder probes pass. Immutable independent original proofs, the actual private constant exact type/binder metadata/standard axioms and the sole caller’s complete original hR contract are verified. Module and complete unfiltered LSP (0errors/19warnings), accepted
-uncontended prefix profile (96.215 → 164.688 ms), frozen full build (62.585 s), then
-separate LeanEval (23.065 s), all pass. [Latest audit](cleanup/Theta-isPrimitive_linear.md).
-No new production helper. Next: original 17, private isPrimitive_pow.
+Latest completed file after successful final publication: Separation. Theta originals 17/35
+completed; overall 198/264 original declarations, 9/14 files. Latest original: isPrimitive_pow.
+Replaced the private three-line induction with a one-line Nat.rec term using the same primitive-one and primitive-product lemmas. The private type and sole public caller, including its approved but not-yet-removed hR, remain unchanged. No definition, documentation or helper change.
+Fresh 24-item/42-rule audit, five actual searches and every-binder probes pass. Immutable independent helper/caller proofs, actual private/public type and binder metadata, and all actual standard axiom sets are verified. Module and complete unfiltered LSP (0 errors / 19 warnings), accepted
+uncontended prefix profile (36.297 → 49.696 ms), frozen full build (64.388 s), then
+separate LeanEval (24.164 s), all pass. [Latest audit](cleanup/Theta-isPrimitive_pow.md).
+No new production helper. Next: original 18, exists_eq_pow_mul_of_rootMultiplicity, applying approved hR removal.
 [Exact contract decision](cleanup/Theta-contract-proposal.md): selected A/B/C scope applies;
 prior explicit hq and extra hB/hr preservation choices remain. Whole-Theta profiling,
-19 remaining originals and final phases are outstanding.
+18 remaining originals and final phases are outstanding.
 
 Build/tool setup completed; GitHub browser authentication and branch publication succeeded.
 The first file, `Roth/HasseDeriv.lean`, has completed all declaration and final review,

@@ -168,10 +168,8 @@ private lemma isPrimitive_linear {h : ℤ} {q : ℕ} (hcop : IsCoprime h (q : �
       Polynomial.coeff_C, mul_one, one_ne_zero, ↓reduceIte, sub_zero] using hc 1)
 
 private lemma isPrimitive_pow {p : Polynomial ℤ} (hp : p.IsPrimitive) (t : ℕ) :
-    (p ^ t).IsPrimitive := by
-  induction t with
-  | zero => simp [Polynomial.isPrimitive_one]
-  | succ t ih => rw [pow_succ]; exact ih.mul hp
+    (p ^ t).IsPrimitive :=
+  Nat.rec Polynomial.isPrimitive_one (fun t ih ↦ by simpa [pow_succ] using ih.mul hp) t
 
 /-- If `h` is coprime to `q > 0` and `t` is the multiplicity of `h / q` as a root of a nonzero
 `R ∈ ℤ[X]`, then `R = (q X - h)^t Q` for some `Q ∈ ℤ[X]`.

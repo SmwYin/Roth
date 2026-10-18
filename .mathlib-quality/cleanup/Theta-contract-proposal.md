@@ -59,7 +59,7 @@ removals. No unselected row may be inferred from that probe's successful compile
 - Approved revisit 13, Θ_mono: Removed only the approved DecidableEq σ; retained hB/hr, Fintype σ and every other argument.
   Independent original adapter, actual axioms/metadata/caller, complete LSP, profile and frozen
   full/LeanEval gates pass.
-- Next: original 16, private isPrimitive_linear. Counts remain unchanged on approved revisits.
+- Next: original 18, exists_eq_pow_mul_of_rootMultiplicity, applying approved hR removal. Published originals now Theta 17/35, overall 198/264; approved revisits themselves do not increase counts.
 
 The evidence and proposal descriptions below were prepared before this decision. Their historic
 unapplied status is superseded only by the exact selected scope above and subsequent checkpoint
