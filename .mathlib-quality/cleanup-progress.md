@@ -2351,3 +2351,7 @@ accepted real prefix profile:414.955 (baseline 503.277) ms. Frozen full build83.
 separate LeanEval29.992s both exit0; all17project/pin/source hashes stable.
 No new production helper; the prior helper remains separately audited. After successful publication:Theta24/35,overall205/264,9/14files.
 Next:original 25, sq_div_three_lt_floor_sq_div_two. Actual whole-Theta profiling and final file phases remain outstanding.
+
+Original24 validated source/audit checkpoint: [4ee4acc](https://github.com/SmwYin/Roth/commit/4ee4acc839e971d63927958b802372d811f183c6).
+The following central-log metadata commit changes no Lean source; both commits publish
+together before original25 edits. Counts remain 205/264, Theta 24/35, 9/14 files.
