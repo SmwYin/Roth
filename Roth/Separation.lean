@@ -337,33 +337,24 @@ theorem exists_separated_representation {P : MvPolynomial (Option τ) K} (hP : P
   exact fun ρ ↦ Polynomial.natDegree_sum_le_of_forall_le _ _ fun ν _ ↦
     (Polynomial.natDegree_C_mul_X_pow_le _ _).trans (Nat.lt_succ_iff.1 ν.2)
 
+omit [Fintype τ] [DecidableEq τ] in
 /-- The determinant of Hasse derivatives of a separated sum `∑ φ_ρ(x_none) ψ_ρ(x_τ)` is the
 product of the generalised Wronskian of `ψ` and the Wronskian of `φ`.
 Source: §2, proof of Lemma 2 ("The matrix defining `F` is `A Bᵀ`, so `F = det A det B` by
 multiplicativity and invariance under transpose. Explicitly, we obtain `GW = det (...)`"). -/
 theorem det_hasseDeriv_separated {l : ℕ} (D : Fin l → (τ →₀ ℕ)) (φ : Fin l → Polynomial K)
     (ψ : Fin l → MvPolynomial τ K) :
-    (Matrix.of fun μ ν : Fin l => hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ))
+    (Matrix.of fun μ ν : Fin l ↦ hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ))
         (∑ ρ, Polynomial.aeval (X none : MvPolynomial (Option τ) K) (φ ρ) *
-          rename some (ψ ρ))).det =
-      rename some (genWronskian D ψ) *
-        Polynomial.aeval (X none : MvPolynomial (Option τ) K) (wronskian φ) := by
-  have hA : rename some (genWronskian D ψ) =
-      (Matrix.of fun μ ρ : Fin l => rename some (hasseDeriv (D μ) (ψ ρ))).det := by
-    rw [genWronskian, ← AlgHom.coe_toRingHom, RingHom.map_det]
-    rfl
-  have hB : Polynomial.aeval (X none : MvPolynomial (Option τ) K) (wronskian φ) =
-      (Matrix.of fun ν ρ : Fin l => Polynomial.aeval (X none : MvPolynomial (Option τ) K)
-        (Polynomial.hasseDeriv ν (φ ρ))).det := by
-    rw [wronskian, ← AlgHom.coe_toRingHom, RingHom.map_det]
-    rfl
-  rw [hA, hB, ← Matrix.det_transpose (Matrix.of fun ν ρ : Fin l =>
-    Polynomial.aeval (X none : MvPolynomial (Option τ) K) (Polynomial.hasseDeriv ν (φ ρ))),
+          rename some (ψ ρ))).det = rename some (genWronskian D ψ) *
+      Polynomial.aeval (X none : MvPolynomial (Option τ) K) (wronskian φ) := by
+  rw [genWronskian, wronskian, AlgHom.map_det, AlgHom.map_det,
+    ← Matrix.det_transpose ((Polynomial.aeval (X none)).mapMatrix (wronskianMatrix φ)),
     ← Matrix.det_mul]
   congr 1
-  refine Matrix.ext fun μ ν => ?_
+  refine Matrix.ext fun μ ν ↦ ?_
   rw [Matrix.of_apply, map_sum, Matrix.mul_apply]
-  refine Finset.sum_congr rfl fun ρ _ => ?_
+  refine Finset.sum_congr rfl fun ρ _ ↦ ?_
   rw [mul_comm (Polynomial.aeval (X none : MvPolynomial (Option τ) K) (φ ρ)),
     hasseDeriv_rename_mul_aeval]
   rfl
