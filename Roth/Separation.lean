@@ -46,6 +46,7 @@ section General
 
 variable {R : Type*} [CommSemiring R]
 
+omit [Fintype τ] [DecidableEq τ] in
 /-- Every multi-index on `Option τ` is `(its restriction to τ) + (d none) e_none`. -/
 theorem eq_mapDomain_some_add_single (d : Option τ →₀ ℕ) :
     d = (Finsupp.some d).mapDomain some + Finsupp.single none (d none) := by
