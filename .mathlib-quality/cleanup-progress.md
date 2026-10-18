@@ -2367,3 +2367,7 @@ accepted real prefix profile:349.782 (baseline 376.779, corrected disjoint kerne
 separate LeanEval28.568s both exit0; all17project/pin/source hashes stable.
 No new production helper; the prior helper remains separately audited. After successful publication:Theta25/35,overall206/264,9/14files.
 Next:original 26, min_le_sum_max. Actual whole-Theta profiling and final file phases remain outstanding.
+
+Original25 validated source/audit checkpoint: [7342f45](https://github.com/SmwYin/Roth/commit/7342f4587c85a1c05e3b953b232782ffa704289e).
+The following central-log metadata commit changes no Lean source; both commits publish
+together before original26 edits. Counts remain 206/264, Theta 25/35, 9/14 files.
