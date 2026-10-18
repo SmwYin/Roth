@@ -2383,3 +2383,7 @@ accepted real prefix profile:public165.806; linear460.921, positivecore543.552, 
 separate LeanEval33.553s both exit0; all17project/pin/source hashes stable.
 Three new private helpers each received separate fresh dedicated audits; final bodies linear15, positivecore22, quadraticwrapper7. Helpers add0 original declarations. After successful publication:Theta26/35,overall207/264,9/14files.
 Next:original27, sum_max_sub_le_index_det (approved DecidableEqτ and hR removal). Actual whole-Theta profiling and final file phases remain outstanding.
+
+Original26 validated source/audit checkpoint: [9bf5ca8](https://github.com/SmwYin/Roth/commit/9bf5ca8bec00e85c3800de82627eeedae2facad8).
+The following central-log metadata commit changes no Lean source; both commits publish
+together before original27 edits. Counts remain 207/264, Theta 26/35, 9/14 files.
