@@ -125,17 +125,8 @@ theorem coeff_rename_mul_aeval (U : MvPolynomial τ R) (V : Polynomial R) (a : �
 index"). -/
 theorem aeval_X_eq_rename {σ : Type*} (i : σ) (f : Polynomial R) :
     Polynomial.aeval (X i : MvPolynomial σ R) f =
-      rename (fun _ : Unit => i) ((uniqueAlgEquiv R Unit).symm f) := by
-  have hsymmX : (uniqueAlgEquiv R Unit).symm Polynomial.X = X () := by
-    rw [← Polynomial.monomial_one_one_eq_X,
-      show (Polynomial.monomial 1 (1 : R)) =
-        Polynomial.monomial ((Finsupp.single () 1 : Unit →₀ ℕ) ()) 1 by simp,
-      uniqueAlgEquiv_symm_monomial]
-    rfl
-  have h : (Polynomial.aeval (X i : MvPolynomial σ R)) =
-      (rename fun _ : Unit => i).comp (uniqueAlgEquiv R Unit).symm.toAlgHom :=
-    Polynomial.algHom_ext (by simp [hsymmX])
-  exact AlgHom.congr_fun h f
+      rename (fun _ : Unit => i) ((uniqueAlgEquiv R Unit).symm f) :=
+  AlgHom.congr_fun (Polynomial.toMvPolynomial_eq_rename_comp i) f
 
 omit [Fintype τ] [DecidableEq τ] in
 private lemma degreeOf_none_rename_some (U : MvPolynomial τ R) :

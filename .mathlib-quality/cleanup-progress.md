@@ -125,7 +125,7 @@ Files will be processed in dependency order; declarations within each file are s
 | `Roth/GenWronskian.lean` | 292 | All cleanup phases complete;19/19 originals and2 added helpers audited; both user-approved public amendments applied;2 preserved warnings |
 | `Roth/Lattice.lean` | 217 | All cleanup phases complete;10/10 originals and3/3 added helpers audited; user-preserved metadata |
 | `Roth/Index.lean` | 275 | All cleanup phases complete;21/21 originals audited; user-approved hypothesis groups applied and validated |
-| `Roth/Separation.lean` | 618 | Active;10/30 originals audited at d10 published checkpoint; public instance proposal pending approval |
+| `Roth/Separation.lean` | 618 | Active;11/30 originals audited at d11 published checkpoint; public instance proposal pending approval |
 | `Roth/Theta.lean` | 981 | Awaiting cleanup |
 | `Roth/MainLemma.lean` | 704 | Awaiting cleanup |
 | `Roth/Main.lean` | 684 | Awaiting cleanup |
@@ -1756,3 +1756,16 @@ Actual repository-module sweeps exit 0: preceding 842.772 ms borderline measurem
 Source FROZEN SHA256 `721b7cde6fe0430a6e37e3fd92be12f272ad38ed8409de2acfdb81567ca7dacb`; leaf ownership revoked and requests drained before owner gates. Owner probe `87314` exit0,40.79s: independent ORIGINAL30 proof bodies,all20 original public type/value recoveries and ALL27 actual retained standardaxiom checks. `/private/tmp/roth-separation-d10-compatibility.{lean,log,json}`. Owner build session `51365` sequential `lake build` then separate `lake build Roth.LeanEval` both exit0,123.85s/29.72s; source hash stable. `/private/tmp/roth-separation-d10-{full,leaneval}.log`, `...-builds.json`. Owner original block docs byte-identical; exact diff/whitespace checked. Exact-path commit and successful cleanup-branch push precede next declaration.
 
 Public 12-theorem instance menu remains pending and unapplied; header remains user-preserved.
+
+
+## Separation d11 checkpoint — aeval_X_eq_rename
+
+[Dedicated audit](cleanup/Separation-aeval_X_eq_rename.md): All 24 audit items, 42 golf rules, five actual search methods, every binder, width/inequality checks and 11 completion steps; Existing Polynomial.toMvPolynomial_eq_rename_comp gives the proof directly via AlgHom.congr_fun. Body ten to one physical lines, declaration 13 to 4, source 586 to 577 (+2/−11 Git diff). Public type/docs preserved; no new helper or other source edit. Source 586 → 577; 27 retained declarations. Separation 11/30, overall 162/264 original audits after successful publication; 8/14 files complete.
+
+Actual module build exits 0 (`/private/tmp/roth-separation-d11-build.log`). Complete native unfiltered LSP success=true, partial=false, timed_out=false, no failed dependencies, 0 errors/31 unchanged warnings (`...-final-lsp.json`). Exact original effective type and independent non-self original proof compile after actual module build; actual target and independent proof use only standard three axioms (`...-independent.{lean,log}`). Every effective binder and parent weakening has actual probe evidence; original type has no τ/Fintype/DecidableEq section assumptions.
+
+Actual repository-module profile exits 0 (`/private/tmp/roth-separation-d11-final-profile.log{,.json}`), command 24.091 + async 18.511 = 42.602 ms; baseline 201.535 ms, below 750/1000 ms. No profiler scaffolding, raised limit or performance deferral.
+
+Source FROZEN SHA256 `9ca5d14b3bcfba066fa924fc0f6eca5aa5b13d88dbabeab9a281a749bbd689c1`; leaf ownership revoked and requests drained before owner gates. Owner probe `23627` exit0,42.59s: independent ORIGINAL30 proof bodies,all20 original public type/value recoveries and ALL27 actual retained standardaxiom checks. `/private/tmp/roth-separation-d11-compatibility.{lean,log,json}`. Owner build session `63999` sequential `lake build` then separate `lake build Roth.LeanEval` both exit0,124.32s/32.64s; source hash stable. `/private/tmp/roth-separation-d11-{full,leaneval}.log`, `...-builds.json`. Owner original block docs byte-identical; exact diff/whitespace checked. Exact-path commit and successful cleanup-branch push precede next declaration.
+
+Public 12-theorem instance menu remains pending and unapplied; header remains user-preserved. D11 additionally identifies an optional public-wrapper deletion with two Theta rewrite substitutions. The retained public name is unchanged; coordinator notified, no API deletion or Theta edit applied.
