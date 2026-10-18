@@ -47,7 +47,7 @@ ordinary baseline builds passing does not imply any all-file profile pass.
 | 7 | `indexSet_nonempty` | 80 | 1 | Complete;[audit](Theta-indexSet_nonempty.md) |
 | 8 | `indexSet_bddAbove` | 86 | 4 | Complete;[audit](Theta-indexSet_bddAbove.md) |
 | 9 | `index_le_Θ` | 96 | 1 | Complete;[audit](Theta-index_le_Theta.md) |
-| 10 | `Θ_nonneg` | 103 | 2 | Pending dedicated audit |
+| 10 | `Θ_nonneg` | 103 | 2 | Complete;[audit](Theta-Theta_nonneg.md) |
 | 11 | `Θ_le_card` | 109 | 4 | Pending dedicated audit |
 | 12 | `Θ_le_of_forall_index_le` | 118 | 3 | Pending dedicated audit |
 | 13 | `Θ_mono` | 128 | 3 | Pending dedicated audit |
@@ -177,3 +177,19 @@ Sequential uncontended actual exact-prefix traces24.066→26.208ms; ordinary noi
 whole-file profile claim. Owner frozen full/separateLeanEval/publication recorded in dedicated
 report. After successful publication:Theta9/35,overall190/264,9/14files complete.
 No contract menu amendment applied. Next:Θ_nonneg.
+
+## Published checkpoint10 — Θ_nonneg
+
+Fresh full dedicated audit replaced witness-specific transitivity with canonical Real.sSup_nonneg
+and direct nonnegativity of every index (body2→3clear lines). All original public binders/types/
+docs/callers preserved; no helper. Full24/42/five searches/every-binder/literature/inversion/width/
+inequality/11leaf gates complete. Module, independent original proof/direct actual exact type,
+actual standard axioms and fresh complete unfiltered LSP0errors/31warnings pass. Three protected
+unused warnings newly exposed: hB,hr,DecEq section instance; none removed/suppressed.
+Real exact-prefix aggregate14.181→13.669ms (corrected baseline includes async/kernel/linter);
+no speedup or whole-file claim. Owner frozen full/separateLeanEval/publication recorded in audit.
+After successful publication:Theta10/35,overall191/264,9/14files complete.
+New [proposalD](Theta-contract-proposal.md) independently proves no-hB/no-hr/no-DecEq target,
+with ACTUAL imported definitions, full original lambda adapter/kernel equality/direct type+
+binderInfo/order/AST/standardaxioms/four internalcaller trials; still UNAPPLIED awaiting decision.
+Next:Θ_le_card.

@@ -20,17 +20,20 @@ Started: 2026-10-14 (America/Chicago).
 
 ## Current status
 
-Latest completed file after successful final publication: Separation. Theta checkpoint9 completed;
-overall190/264 original declarations,9/14 files. Theta9/35 originals complete. Latest index_le_Θ
-only normalizes a conclusion lambda arrow; exact public type/proof/instances/hr retained. Module,
+Latest completed file after successful final publication: Separation. Theta checkpoint10 completed;
+overall191/264 original declarations,9/14 files. Theta10/35 originals complete. Latest Θ_nonneg
+uses canonical Real.sSup_nonneg; every original public type/binder/doc retained. Module,
 independent original nonself proof/direct actual type/standard axioms, complete unfiltered
-LSP0errors28identicalwarnings and uncontended exact-prefix26.208ms pass. Frozen owner full6.508s
-THEN separateLeanEval3.153s both0. [Latest audit](cleanup/Theta-index_le_Theta.md).
-WholeTheta profiling, remaining26 originals and final phases remain outstanding; known late
-instrumented linarith failure awaits its dedicated audit. The
-[Theta contract menu](cleanup/Theta-contract-proposal.md) remains UNAPPLIED; all29 kernel-checked
-original-type adapters/actual candidate axioms/AST and exact external-call checks pass, with
-no approval inferred. See [Separation final report](cleanup/Separation-final.md). Next:Θ_nonneg.
+LSP0errors31warnings and uncontended exact-prefix13.669ms pass. Three protected unused warnings
+newly exposed (hB/hr/DecEq section instance), none suppressed. Frozen owner full88.364s THEN
+separateLeanEval25.958s both0. [Latest audit](cleanup/Theta-Theta_nonneg.md).
+WholeTheta profiling, remaining25 originals and final phases remain outstanding; known late
+instrumented linarith failure awaits its dedicated audit. [Theta contract menu](cleanup/Theta-contract-proposal.md)
+remains UNAPPLIED. NEW proposalD drops Θ_nonneg hB/hr plus its proposedDecEq row: actual-import
+independent candidate/explicit full-original lambda adapter/kernel equality/direct type+BinderInfo/
+AST/standardaxiom and all4internalcaller trials pass; awaiting explicit decision. All definitions
+and live public contracts remain unchanged. Existing A/B/C menu evidence also retained.
+See [Separation final report](cleanup/Separation-final.md). Next:Θ_le_card.
 
 Build/tool setup completed; GitHub browser authentication and branch publication succeeded.
 The first file, `Roth/HasseDeriv.lean`, has completed all declaration and final review,

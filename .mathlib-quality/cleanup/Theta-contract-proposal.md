@@ -116,3 +116,41 @@ proposed. Their full project validation will run after any approved live amendme
 
 Current status remains UNAPPLIED,awaiting an explicit scoped decision. Candidate verification
 does not count toward the35 dedicated original Theta audits or authorize any further hr removal.
+
+## D. Fresh original10 proposal: nonnegativity for all bounds and weights (unapplied)
+
+The fresh dedicated Θ_nonneg audit found a canonical Real.sSup_nonneg proof. This gives the
+strictly stronger public candidate below, keeping B/r implicit and q explicit:
+
+```lean
+theorem Θ_nonneg {σ : Type*} [Fintype σ] {B : ℝ} (q : σ → ℕ) {r : σ → ℕ} :
+    0 ≤ Θ B q r := by
+  apply Real.sSup_nonneg
+  rintro _ ⟨R, _, h, _, rfl⟩
+  exact index_nonneg _ _ _
+```
+
+This newly proposes dropping hB:1≤B and hr:∀j,0<r j, in addition to groupA's already-proposed
+DecidableEqσ removal for this one theorem. No other groupA/B/C row is extended or inferred.
+Fintypeσ, coefficient/denominator/weight domains and every definition remain unchanged.
+The statement includes empty defining sets, whose real supremum is zero under the existing
+formal definition; every member is a nonnegative index. Paper's nonempty positive-parameter
+setting remains a special case. This proposal is UNAPPLIED, awaiting an explicit decision.
+The live proof can use the canonical argument with all original public binders retained.
+
+Definitive actual-import evidence: `/private/tmp/roth-theta-nonneg-original.lean`, exit0,
+raw `/private/tmp/roth-theta-nonneg-original.log`. It imports the ACTUAL Roth.Theta and proves
+Stronger10.candidate against its actual definitions. An explicit lambda taking the full old
+σ/Fintype/DecEq/B/hB/q/r/hr telescope kernel-equals actual Roth.Θ_nonneg by rfl; direct
+getConstInfo.type comparison modulo universe alpha-renaming plus binderInfo/order checks PASS.
+The independent copied baseline original proof also passes exact-type/kernel equality checks.
+Candidate AST has precisely σ/Fintype/B/q/r, no hB/hr/DecEq; actual candidate/adapter/original
+and both caller trials use only propext,Classical.choice,Quot.sound. Earlier prefix-only
+candidate probe is separately useful but is not this actual-import compatibility evidence.
+
+Exact caller inventory: four actual uses, all inside Theta, in index_le_lem6 (two) and Θ_lt
+(two); no external use (module-doc mention is not a call). Both are add_nonneg pairs proving
+0≤lem6Φ. Minimal prospective replacement after dropping hB/hr:
+`add_nonneg (Θ_nonneg (B := M) _) (Θ_nonneg (B := M) _)`; fully inferred variant also compiles
+against the actual lem6Φ definition. No caller edit or public amendment is applied from this
+preview, and this exploration is not counted as an additional original declaration audit.

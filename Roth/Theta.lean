@@ -93,9 +93,10 @@ theorem index_le_Θ {B : ℝ} {q r : σ → ℕ} (hr : ∀ j, 0 < r j) {R : MvPo
 /-- `Θ_m(B; q; r)` is nonnegative when `1 ≤ B` and every `r j` is positive. Source: §5
 ("`0 ≤ Θ_m`"). -/
 theorem Θ_nonneg {B : ℝ} (hB : 1 ≤ B) (q : σ → ℕ) {r : σ → ℕ} (hr : ∀ j, 0 < r j) :
-    0 ≤ Θ B q r :=
-  (index_nonneg _ _ _).trans
-    (index_le_Θ hr (one_mem_RSet hB r) (h := fun _ => 1) fun _ => isCoprime_one_left)
+    0 ≤ Θ B q r := by
+  apply Real.sSup_nonneg
+  rintro _ ⟨R, _, h, _, rfl⟩
+  exact index_nonneg _ _ _
 
 /-- `Θ_m(B; q; r)` is at most the number `m` of variables. Source: §5 ("`Θ_m ≤ m`"). -/
 theorem Θ_le_card {B : ℝ} (hB : 1 ≤ B) (q : σ → ℕ) {r : σ → ℕ} (hr : ∀ j, 0 < r j) :
