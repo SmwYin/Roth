@@ -50,9 +50,9 @@ ordinary baseline builds passing does not imply any all-file profile pass.
 | 10 | `Θ_nonneg` | 103 | 2 | Complete;[audit](Theta-Theta_nonneg.md) |
 | 11 | `Θ_le_card` | 109 | 4 | Complete;[audit](Theta-Theta_le_card.md) |
 | 12 | `Θ_le_of_forall_index_le` | 118 | 3 | Complete;[audit](Theta-Theta_le_of_forall_index_le.md) |
-| 13 | `Θ_mono` | 128 | 3 | Pending dedicated audit |
-| 14 | `indexSet_comp_subset` | 134 | 16 | Pending dedicated audit |
-| 15 | `Θ_equiv` | 155 | 4 | Pending dedicated audit |
+| 13 | `Θ_mono` | 128 | 3 | Complete;[audit](Theta-Theta_mono.md) |
+| 14 | `indexSet_comp_subset` | 134 | 16 | Complete;[audit](Theta-indexSet_comp_subset.md) |
+| 15 | `Θ_equiv` | 155 | 4 | Complete;[audit](Theta-Theta_equiv.md) |
 | 16 | `isPrimitive_linear` | 164 | 9 | Pending dedicated audit |
 | 17 | `isPrimitive_pow` | 176 | 3 | Pending dedicated audit |
 | 18 | `exists_eq_pow_mul_of_rootMultiplicity` | 187 | 14 | Pending dedicated audit |
@@ -395,3 +395,19 @@ standard axioms pass. Both unchanged actual internal callers compile in the modu
 Frozen owner full build (102.795 s), then separate LeanEval (31.734 s),
 both pass on identical SHA. [Dedicated revisit audit](Theta-Theta_le_of_forall_index_le-approved.md).
 Original counts unchanged: Theta 15/35, overall 196/264, 9/14 files. Next: approved revisit of original 13, Θ_mono (DecidableEq σ only; hB/hr retained).
+
+
+## Approved revisit of original 13 — Θ_mono
+
+Applied approved A only: one scoped omit before the byte-preserved docstring. The canonical three-line proof, hB/hr hypotheses, Fintype σ and both Θ_lt callers are unchanged; the user-declined extra F widening remains unapplied. The immutable original ten-binder contract is recovered by an explicit adapter to the actual nine-binder theorem, with exact retained metadata and selected-drop AST. No helper, definition, domain or conclusion change.
+
+Fresh dedicated full 24-item audit, 42 golf rules, five actual searches, every-binder probes,
+literature/inversion, packing, inequality scan and 11-step checklist pass. Immutable independent
+original proof and explicit old-telescope adapter recover the original contract from the actual
+new theorem; exact retained types/order/BinderInfo/user names, selected-drop AST and actual
+standard axioms pass. Both unchanged actual Θ_lt callers are module checked; actual caller axioms and a separate no-DecEq call example pass. No external direct caller or caller edit. Module and complete unfiltered final LSP pass with
+0 errors and 19 warnings. Accepted uncontended exact-prefix aggregate:
+25.133 → 23.713 ms; no whole-file performance claim.
+Frozen owner full build (68.560 s), then separate LeanEval (31.179 s),
+both pass on identical SHA. [Dedicated revisit audit](Theta-Theta_mono-approved.md).
+Original counts unchanged: Theta 15/35, overall 196/264, 9/14 files. Next: original 16, private isPrimitive_linear.

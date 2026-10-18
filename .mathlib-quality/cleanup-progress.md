@@ -17,17 +17,22 @@ Started: 2026-10-14 (America/Chicago).
   or project-structure changes still need explicit approval before application.
   Earlier deferred proposals will be reconsidered during the relevant file review;
   speculative future APIs do not become blockers. Required system approvals remain mandatory.
+- Standing approval updated 2026-10-18: the user says, “From now on implement all changes
+  that you recommend. Only ask me if you can't decide.” This supersedes the earlier
+  per-change approval policy above. Well-supported recommendations still require concrete
+  compiled evidence and all sequential validation/publication gates. Earlier explicit
+  preservation choices remain in force; platform escalation requirements are unchanged.
 
 ## Current status
 
 Latest completed file after successful final publication: Separation. Theta originals 15/35
-completed; overall 196/264 original declarations, 9/14 files. Approved revisit of original 12,
-Θ_le_of_forall_index_le, completed without increasing counts. Removed only the approved DecidableEq σ; retained every other parameter and hypothesis.
+completed; overall 196/264 original declarations, 9/14 files. Approved revisit of original 13,
+Θ_mono, completed without increasing counts. Removed only the approved DecidableEq σ; retained hB/hr, Fintype σ and every other argument.
 Immutable original proof/explicit adapter, retained metadata/selected-drop AST/actual standard
 axioms and affected caller checks pass. Module and complete unfiltered LSP (0 errors,
-21 warnings), accepted uncontended prefix (28.845 ms), frozen full build
-(102.795 s), then separate LeanEval (31.734 s), all pass.
-[Latest audit](cleanup/Theta-Theta_le_of_forall_index_le-approved.md). Next: approved revisit of original 13, Θ_mono (DecidableEq σ only; hB/hr retained).
+19 warnings), accepted uncontended prefix (23.713 ms), frozen full build
+(68.560 s), then separate LeanEval (31.179 s), all pass.
+[Latest audit](cleanup/Theta-Theta_mono-approved.md). Next: original 16, private isPrimitive_linear.
 [Exact contract decision](cleanup/Theta-contract-proposal.md): A/B and first five C rows approved;
 hq and D/E/F's extra hB/hr assumptions remain per user choice. Whole-Theta profiling, 20 remaining
 originals and final phases are outstanding; the known late instrumented linarith failure awaits

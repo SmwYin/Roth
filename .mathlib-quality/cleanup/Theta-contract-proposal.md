@@ -56,7 +56,10 @@ removals. No unselected row may be inferred from that probe's successful compile
 - Approved revisit 12, Θ_le_of_forall_index_le: Removed only the approved DecidableEq σ; retained every other parameter and hypothesis.
   Independent original adapter, actual axioms/metadata/caller, complete LSP, profile and frozen
   full/LeanEval gates pass.
-- Next: approved revisit of original 13, Θ_mono (DecidableEq σ only; hB/hr retained). Counts remain unchanged on approved revisits.
+- Approved revisit 13, Θ_mono: Removed only the approved DecidableEq σ; retained hB/hr, Fintype σ and every other argument.
+  Independent original adapter, actual axioms/metadata/caller, complete LSP, profile and frozen
+  full/LeanEval gates pass.
+- Next: original 16, private isPrimitive_linear. Counts remain unchanged on approved revisits.
 
 The evidence and proposal descriptions below were prepared before this decision. Their historic
 unapplied status is superseded only by the exact selected scope above and subsequent checkpoint

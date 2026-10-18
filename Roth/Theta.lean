@@ -123,6 +123,7 @@ theorem Θ_le_of_forall_index_le {B : ℝ} (hB : 1 ≤ B) {q r : σ → ℕ} {c 
   rintro _ ⟨R, hR, h, hh, rfl⟩
   exact hc R hR h hh
 
+omit [DecidableEq σ] in
 /-- `Θ_m(B; q; r)` is monotone in `B`. Source: §5 ("`Θ_m` is nondecreasing in `B`, since
 increasing `B` enlarges the set of allowed polynomials"). -/
 theorem Θ_mono {B B' : ℝ} (hB : 1 ≤ B) (hBB' : B ≤ B') (q : σ → ℕ) {r : σ → ℕ} (hr : ∀ j, 0 < r j) :
