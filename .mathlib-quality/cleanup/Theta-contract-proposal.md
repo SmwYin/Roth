@@ -28,8 +28,9 @@ removals. No unselected row may be inferred from that probe's successful compile
 - Original 15, Θ_equiv: both approved A.DecEq instance removals applied, independently original
   ten-binder recovered through an explicit adapter to the actual eight-binder theorem. Module,
   complete LSP, actual axioms, caller, final profile and owner full/separate LeanEval gates pass.
-- Next: completed targets 6–13 receive fresh sequential approved revisits, without increasing
-  original counts. Future targets 18/20/27/28/29/30 apply their selected rows in their own audits.
+- Approved revisit 6, one_mem_RSet: Only the approved Fintype σ and DecidableEq σ removals applied with independent original adapter,
+  actual axioms/metadata/caller, complete LSP, profile and frozen full/LeanEval gates.
+- Next: approved revisit of original 7, indexSet_nonempty (DecidableEq σ only). Counts remain unchanged on approved revisits.
 
 The evidence and proposal descriptions below were prepared before this decision. Their historic
 unapplied status is superseded only by the exact selected scope above and subsequent checkpoint

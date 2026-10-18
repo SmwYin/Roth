@@ -61,9 +61,11 @@ def indexSet (B : ℝ) (q r : σ → ℕ) : Set ℝ :=
 `R ∈ ℛ_m(B; r)` and `h` with each `h_j` coprime to `q_j`. Source: §5, definition of `Θ_m`. -/
 noncomputable def Θ (B : ℝ) (q r : σ → ℕ) : ℝ := sSup (indexSet B q r)
 
+omit [Fintype σ] [DecidableEq σ] in
 /-- If `1 ≤ B`, the constant polynomial `1` lies in `ℛ_m(B; r)`. Source: §5 ("the constant
 polynomial `1` with every `h_i = 1` is allowed"). -/
 theorem one_mem_RSet {B : ℝ} (hB : 1 ≤ B) (r : σ → ℕ) : (1 : MvPolynomial σ ℤ) ∈ RSet B r := by
+  classical
   simp [RSet, coeff_one, apply_ite, ite_apply, hB, zero_le_one.trans hB]
 
 /-- If `1 ≤ B`, the set of indices defining `Θ_m(B; q; r)` is nonempty. Source: §5 ("This

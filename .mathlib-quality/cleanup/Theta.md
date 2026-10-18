@@ -274,3 +274,19 @@ After publication: Theta 15/35, overall 196/264, 9/14 files. The exact user deci
 in [the contract menu](Theta-contract-proposal.md): A/B plus first five C rows approved; hq and
 D/E/F's extra hB/hr widenings declined. Next: fresh approved revisit of one_mem_RSet, then completed
 targets 7–13 in source/dependency order, with no original-count inflation; original 16 follows.
+
+
+## Approved revisit of original 6 — one_mem_RSet
+
+Applied exactly approved A+B: scoped omission of Fintype σ and DecidableEq σ before the preserved docstring, with proof-local classical decidability. The simp proof remains; body 1 → 2 lines and source +2 lines. No helper, caller edit, definition or other public change. The actual theorem has four binders; its full old six-binder form is recovered by the explicit adapter.
+
+Fresh dedicated full 24-item audit, 42 golf rules, five actual searches, every-binder probes,
+literature/inversion, packing, inequality scan and 11-step checklist pass. Immutable independent
+original proof and explicit old-telescope adapter recover the original contract from the actual
+new theorem; exact retained types/order/BinderInfo/user names, selected-drop AST and actual
+standard axioms pass. The sole caller, indexSet_nonempty, has an independent original proof and exact old type/BinderInfo recovery; no caller edit. Its now-unused DecEq is preserved until its separate approved revisit. Module and complete unfiltered final LSP pass with
+0 errors and 28 warnings. Accepted uncontended exact-prefix aggregate:
+195.926 → 185.150 ms; no whole-file performance claim.
+Frozen owner full build (45.375 s), then separate LeanEval (15.075 s),
+both pass on identical SHA. [Dedicated revisit audit](Theta-one_mem_RSet-approved.md).
+Original counts unchanged: Theta 15/35, overall 196/264, 9/14 files. Next: approved revisit of original 7, indexSet_nonempty (DecidableEq σ only).
