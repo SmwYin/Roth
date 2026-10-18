@@ -87,7 +87,7 @@ is at most `Θ_m(B; q; r)`. Source: §5, definition of `Θ_m` as a supremum, and
 ("lemmas for bounding an individual index"). -/
 theorem index_le_Θ {B : ℝ} {q r : σ → ℕ} (hr : ∀ j, 0 < r j) {R : MvPolynomial σ ℤ}
     (hR : R ∈ RSet B r) {h : σ → ℤ} (hh : ∀ j, IsCoprime (h j) (q j : ℤ)) :
-    index (map (Int.castRingHom ℝ) R) (fun j => (h j : ℝ) / q j) r ≤ Θ B q r :=
+    index (map (Int.castRingHom ℝ) R) (fun j ↦ (h j : ℝ) / q j) r ≤ Θ B q r :=
   le_csSup (indexSet_bddAbove B q hr) ⟨R, hR, h, hh, rfl⟩
 
 /-- `Θ_m(B; q; r)` is nonnegative when `1 ≤ B` and every `r j` is positive. Source: §5

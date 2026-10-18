@@ -46,7 +46,7 @@ ordinary baseline builds passing does not imply any all-file profile pass.
 | 6 | `one_mem_RSet` | 73 | 3 | Complete;[audit](Theta-one_mem_RSet.md) |
 | 7 | `indexSet_nonempty` | 80 | 1 | Complete;[audit](Theta-indexSet_nonempty.md) |
 | 8 | `indexSet_bddAbove` | 86 | 4 | Complete;[audit](Theta-indexSet_bddAbove.md) |
-| 9 | `index_le_Θ` | 96 | 1 | Pending dedicated audit |
+| 9 | `index_le_Θ` | 96 | 1 | Complete;[audit](Theta-index_le_Theta.md) |
 | 10 | `Θ_nonneg` | 103 | 2 | Pending dedicated audit |
 | 11 | `Θ_le_card` | 109 | 4 | Pending dedicated audit |
 | 12 | `Θ_le_of_forall_index_le` | 118 | 3 | Pending dedicated audit |
@@ -165,3 +165,15 @@ Uncontended exact-prefix trace148.516→160.621ms (<750ms); no speedup or whole-
 Owner frozen sequential full/separateLeanEval/publication recorded in dedicated report. After
 successful publication:Theta8/35,overall189/264,9/14files complete. Menu remains UNAPPLIED.
 Next:index_le_Θ.
+
+## Published checkpoint9 — index_le_Θ
+
+Fresh full dedicated audit retained the one-line domain corollary of le_csSup and normalized
+only a lambda arrow in its conclusion. All effective public parameters/types/docs/proof retained;
+no helper. All24/42/five actual searches/every-binder probes/literature/inversion/packing/inequality
+and11gates complete. Module, independent original nonself proof/direct actual-type comparison,
+original+actual standard axioms and fresh complete native LSP0errors/28identicalwarnings pass.
+Sequential uncontended actual exact-prefix traces24.066→26.208ms; ordinary noise, no speedup or
+whole-file profile claim. Owner frozen full/separateLeanEval/publication recorded in dedicated
+report. After successful publication:Theta9/35,overall190/264,9/14files complete.
+No contract menu amendment applied. Next:Θ_nonneg.
