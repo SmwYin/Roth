@@ -25,16 +25,16 @@ Started: 2026-10-14 (America/Chicago).
 
 ## Current status
 
-Latest completed file after successful final publication: Separation. Theta originals 27/35
-completed; overall 208/264 original declarations, 9/14 files. Latest original: sum_max_sub_le_index_det.
-Applied exactly the approved DecidableEqτ and hR removals from the determinant-index lower bound, retaining the degree/weight interface and all other original arguments. Proof25→24lines with explicit nonnegativity and restricted linear arithmetic. The sole index_le_lem6 caller drops the obsolete argument/local proof and retains its entire original public contract.
-Fresh24-item/42-rule audit, five actual searches, every effective binder compiled probe, literature/inversion and measured tables complete. Broader finite-family/strict-degree and generic determinant alternatives compiled but are not recommended for API churn. Independent immutable complete original target AND entire index_le_lem6 proof/type replay, exact old adapters/names/BinderInfo/value/universes/conclusions and actual standard axiom sets pass. Module and complete unfiltered LSP (0 errors / 14 warnings), accepted
-uncontended prefix profile (746.452 (clean baseline779.542, required clean repeat831.962; discarded closing-scope-error run excluded) ms), frozen full build (110.300 s), then
-separate LeanEval (32.749 s), all pass. [Latest audit](cleanup/Theta-sum_max_sub_le_index_det.md).
-No new production helper; all prior helpers remain separately audited. Next: original28, index_det_le (approved DecidableEqτ, hl′, hδ and unused implicitδ removal; proof/performance cleanup).
+Latest completed file after successful final publication: Separation. Theta originals 28/35
+completed; overall 209/264 original declarations, 9/14 files. Latest original: index_det_le.
+Applied approved DecidableEqτ/δ/hl′/hδ removals and the supported redundant hB removal under standing authorization. Uniform coefficient bounds imply the needed nonnegativity. Public proof94→24 physical lines including all3 Step comments; sole caller drops only obsolete application arguments and retains its entire original public contract.
+Fresh24-item/42-rule/five-actual-search/every-effective-binder/literature/inversion/packing/inequality/11-step audits complete. Independent immutable complete original target AND entire index_le_lem6 proof/value/type replay, exact old adapters/names/BinderInfo/universes/conclusions and actual standard axiom sets pass. Both initially extracted private helpers received separate fresh audits; the coefficient helper was deleted using the existing constant-degree bound specialization, with actual built and trace absence checked. Module and complete unfiltered LSP (0 errors / 11 warnings), accepted
+uncontended prefix profile (public742.222; retained helper655.221 (original public baseline2083.744; both final<750) ms), frozen full build (91.138 s), then
+separate LeanEval (30.612 s), all pass. [Latest audit](cleanup/Theta-index_det_le.md).
+One retained private separated-product helper26lines, separately freshly audited; the initially added coefficient helper was separately freshly audited and deleted. New helpers and revisits add no original count. Next: original29, index_le_lem6 (approved DecidableEqτ removal, explicit hq retention, ordinary≤30 structuring and actual instrumented performance repair).
 [Exact contract decision](cleanup/Theta-contract-proposal.md): selected A/B/C scope applies;
 prior explicit hq and extra hB/hr preservation choices remain. Whole-Theta profiling,
-8 remaining originals and final phases are outstanding. The known late index_le_lem6 instrumented default-heartbeat failure awaits its dedicated audit.
+7 remaining originals and final phases are outstanding. The known late index_le_lem6 instrumented default-heartbeat failure awaits its dedicated audit.
 
 Build/tool setup completed; GitHub browser authentication and branch publication succeeded.
 The first file, `Roth/HasseDeriv.lean`, has completed all declaration and final review,
@@ -2403,3 +2403,15 @@ Next:original28, index_det_le (approved DecidableEqτ, hl′, hδ and unused imp
 Original27 validated source/audit checkpoint: [8768665](https://github.com/SmwYin/Roth/commit/87686659b0839593a4a2070b06ce02cf5492b2f5).
 The following central-log metadata commit changes no Lean source; both commits publish
 together before original28 edits. Counts remain 208/264, Theta 27/35, 9/14 files.
+
+
+## Theta original28 checkpoint — index_det_le
+
+Applied approved DecidableEqτ/δ/hl′/hδ removals and the supported redundant hB removal under standing authorization. Uniform coefficient bounds imply the needed nonnegativity. Public proof94→24 physical lines including all3 Step comments; sole caller drops only obsolete application arguments and retains its entire original public contract.
+
+Fresh24-item/42-rule/five-actual-search/every-effective-binder/literature/inversion/packing/inequality/11-step audits complete. Independent immutable complete original target AND entire index_le_lem6 proof/value/type replay, exact old adapters/names/BinderInfo/universes/conclusions and actual standard axiom sets pass. Both initially extracted private helpers received separate fresh audits; the coefficient helper was deleted using the existing constant-degree bound specialization, with actual built and trace absence checked. [Dedicated audit](cleanup/Theta-index_det_le.md).
+Final Theta SHA256 `c6e59b0ff252c0cdfc0e00070bb7c0c5bea3a53e0786889767f4b1594f5e6ee3`. Module and complete unfiltered LSP:0 errors/11 warnings;
+accepted real prefix profile:public742.222; retained helper655.221 (original public baseline2083.744; both final<750) ms. Frozen full build91.138s then
+separate LeanEval30.612s both exit0; all17project/pin/source hashes stable.
+One retained private separated-product helper26lines, separately freshly audited; the initially added coefficient helper was separately freshly audited and deleted. New helpers and revisits add no original count. After successful publication:Theta28/35,overall209/264,9/14files.
+Next:original29, index_le_lem6 (approved DecidableEqτ removal, explicit hq retention, ordinary≤30 structuring and actual instrumented performance repair). Actual whole-Theta profiling and final file phases remain outstanding.

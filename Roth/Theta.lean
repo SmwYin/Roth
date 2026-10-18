@@ -401,118 +401,81 @@ theorem sum_max_sub_le_index_det {R : MvPolynomial (Option τ) ℝ} {l : ℕ} (D
   exact Finset.sum_le_sum fun i _ ↦
     hterm (s i) i ((Finset.prod_ne_zero_iff.1 hprod) i (Finset.mem_univ _))
 
-/-- If the determinant `F = det (∂_{D_μ} ∂_{x_p}^ν R)_{μ,ν}` factors as
-`U(x_1, …, x_{p-1}) V(x_p)` with suitably bounded degrees, then its index at `h/q` is at most
-`l Φ`, where `Φ` is formed with the coefficient bound `M` of Lemma 6.
-Source: §5, proof of Lemma 6, eq. (17) ("`ind F ≤ l Φ`"). -/
-theorem index_det_le {δ : ℝ} {r : Option τ → ℕ} (hr0 : ∀ j, 0 < r j) {r₁ : ℕ}
-    (hr₁ : ∀ j, r j ≤ r₁) {q : Option τ → ℕ} {B : ℝ} (hB : 1 ≤ B) {R : MvPolynomial (Option τ) ℤ}
-    (hR : R ∈ RSet B r) {h : Option τ → ℤ} (hh : ∀ j, IsCoprime (h j) (q j : ℤ)) {l : ℕ}
-    (hl : 1 ≤ l) (hl' : l ≤ r none + 1) {D : Fin l → (τ →₀ ℕ)} {U : MvPolynomial τ ℤ}
-    {V : Polynomial ℤ} (hU : U ≠ 0) (hV : V ≠ 0) (hUd : ∀ j, degreeOf j U ≤ l * r (some j))
-    (hVd : V.natDegree ≤ l * r none)
-    (hF : (Matrix.of fun μ ν : Fin l =>
-        hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) R).det =
-      rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) ℤ) V) (hδ : 0 < δ) :
-    index (map (Int.castRingHom ℝ) (Matrix.of fun μ ν : Fin l =>
-        hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) R).det)
-      (fun j => (h j : ℝ) / q j) r ≤ l * lem6Φ q r (lem6M (Fintype.card τ + 1) r₁ B l) l := by
-  set M := lem6M (Fintype.card τ + 1) r₁ B l with hMdef
-  set F := (Matrix.of fun μ ν : Fin l =>
-    hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) R).det
-  have hB0 : (0 : ℝ) ≤ B := zero_le_one.trans hB
-  have hl0 : 0 < l := hl
-  -- Step 1: the coefficients of `F` are bounded by `M`.
-  have hprod : ∏ j, ((r j : ℝ) + 1) ≤ ((r₁ : ℝ) + 1) ^ (Fintype.card τ + 1) := by
-    calc ∏ j, ((r j : ℝ) + 1) ≤ ∏ _j : Option τ, ((r₁ : ℝ) + 1) :=
-          Finset.prod_le_prod₀ (fun j _ => by positivity)
-            fun j _ => by have := hr₁ j; gcongr
-      _ = _ := by rw [Finset.prod_const, Finset.card_univ, Fintype.card_option]
-  have hsum : (∑ j, r j) * l ≤ (Fintype.card τ + 1) * l * r₁ := by
-    have : ∑ j, r j ≤ (Fintype.card τ + 1) * r₁ := by
-      calc ∑ j, r j ≤ ∑ _j : Option τ, r₁ := Finset.sum_le_sum fun j _ => hr₁ j
-        _ = _ := by rw [Finset.sum_const, Finset.card_univ, Fintype.card_option, smul_eq_mul]
-    calc (∑ j, r j) * l ≤ (Fintype.card τ + 1) * r₁ * l := Nat.mul_le_mul_right _ this
-      _ = _ := by ring
-  have hFcoef : ∀ d, |((F.coeff d : ℤ) : ℝ)| ≤ M := fun d => by
-    refine (abs_coeff_det_hasseDeriv_le (fun μ ν : Fin l => (D μ).mapDomain some +
-      Finsupp.single none (ν : ℕ)) R hR.2.1 hB0 hR.2.2 d).trans ?_
-    rw [hMdef, lem6M, pow_mul ((r₁ : ℝ) + 1)]
-    have h1 : (∏ j, ((r j : ℝ) + 1)) ^ l ≤ (((r₁ : ℝ) + 1) ^ (Fintype.card τ + 1)) ^ l :=
-      pow_le_pow_left₀ (by positivity) hprod l
-    have h2 : (2 : ℝ) ^ ((∑ j, r j) * l) ≤ 2 ^ ((Fintype.card τ + 1) * l * r₁) :=
-      pow_le_pow_right₀ (by norm_num) hsum
-    have h4 : (0 : ℝ) ≤ (∏ j, ((r j : ℝ) + 1)) ^ l * l.factorial * B ^ l := by positivity
-    calc (∏ j, ((r j : ℝ) + 1)) ^ l * l.factorial * B ^ l * 2 ^ ((∑ j, r j) * l)
-        ≤ (∏ j, ((r j : ℝ) + 1)) ^ l * l.factorial * B ^ l *
-            2 ^ ((Fintype.card τ + 1) * l * r₁) := mul_le_mul_of_nonneg_left h2 h4
-      _ ≤ (((r₁ : ℝ) + 1) ^ (Fintype.card τ + 1)) ^ l * l.factorial * B ^ l *
-            2 ^ ((Fintype.card τ + 1) * l * r₁) := by
-          rw [mul_assoc _ (l.factorial : ℝ), mul_assoc _ (l.factorial : ℝ)]
-          gcongr
-  -- Step 2: the coefficients of `U` and `V` are bounded by `M`.
-  obtain ⟨a₀, ha₀⟩ := MvPolynomial.ne_zero_iff.1 hU
-  have hb₀ : V.coeff V.natDegree ≠ 0 := Polynomial.leadingCoeff_ne_zero.2 hV
-  have hUc : ∀ a, |((U.coeff a : ℤ) : ℝ)| ≤ M := fun a => by
-    have h1 := hFcoef (a.mapDomain some + Finsupp.single none V.natDegree)
-    rw [hF, coeff_rename_mul_aeval, Int.cast_mul, abs_mul] at h1
-    have h2 : (1 : ℝ) ≤ |((V.coeff V.natDegree : ℤ) : ℝ)| := by
-      rw [← Int.cast_abs]
-      exact_mod_cast Int.one_le_abs hb₀
-    nlinarith [abs_nonneg ((U.coeff a : ℤ) : ℝ)]
-  have hVc : ∀ b, |((V.coeff b : ℤ) : ℝ)| ≤ M := fun b => by
-    have h1 := hFcoef (a₀.mapDomain some + Finsupp.single none b)
-    rw [hF, coeff_rename_mul_aeval, Int.cast_mul, abs_mul] at h1
-    have h2 : (1 : ℝ) ≤ |((U.coeff a₀ : ℤ) : ℝ)| := by
-      rw [← Int.cast_abs]
-      exact_mod_cast Int.one_le_abs ha₀
-    nlinarith [abs_nonneg ((V.coeff b : ℤ) : ℝ)]
+omit [DecidableEq τ] in
+private lemma index_separated_mul_le_aux {r : Option τ → ℕ} (hr0 : ∀ j, 0 < r j) {q : Option τ → ℕ}
+    {h : Option τ → ℤ} (hh : ∀ j, IsCoprime (h j) (q j : ℤ)) {M : ℝ} {l : ℕ} (hl : 0 < l)
+    {U : MvPolynomial τ ℤ} (hU : U ∈ RSet M (fun j ↦ l * r (some j))) {V : Polynomial ℤ}
+    (hV : V ≠ 0) (hVd : V.natDegree ≤ l * r none) (hVc : ∀ b, |(V.coeff b : ℝ)| ≤ M) :
+    index (map (Int.castRingHom ℝ)
+        (rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) ℤ) V))
+      (fun j ↦ (h j : ℝ) / q j) r ≤ l * lem6Φ q r M l := by
+  classical
   set V' : MvPolynomial Unit ℤ := (uniqueAlgEquiv ℤ Unit).symm V with hV'
   have hV'0 : V' ≠ 0 := by
     rwa [hV', ne_eq, map_eq_zero_iff _ (uniqueAlgEquiv ℤ Unit).symm.injective]
-  have hUmem : U ∈ RSet M (fun j => l * r (some j)) := ⟨hU, hUd, hUc⟩
-  have hVmem : V' ∈ RSet M (fun _ : Unit => l * r none) := by
-    refine ⟨hV'0, fun j => ?_, fun d => ?_⟩
+  have hVmem : V' ∈ RSet M (fun _ : Unit ↦ l * r none) := by
+    refine ⟨hV'0, fun j ↦ ?_, fun d ↦ ?_⟩
     · rw [Subsingleton.elim j default, hV', degreeOf_uniqueAlgEquiv_symm]
       exact hVd
     · rw [hV', MvPolynomial.coeff_uniqueAlgEquiv_symm]
       exact hVc _
+  have hinjV : Function.Injective (fun _ : Unit ↦ (none : Option τ)) :=
+    fun a b _ ↦ Subsingleton.elim a b
+  rw [aeval_X_eq_rename, _root_.map_mul, map_rename, map_rename,
+    index_mul ((map_ne_zero_iff _ (rename_injective _ (Option.some_injective _))).2
+      ((map_ne_zero_iff _ (map_injective _ Int.cast_injective)).2 hU.1))
+      ((map_ne_zero_iff _ (rename_injective _ hinjV)).2
+        ((map_ne_zero_iff _ (map_injective _ Int.cast_injective)).2 hV'0)) _ hr0,
+    index_rename (Option.some_injective _), index_rename hinjV]
+  have hUΘ := index_le_Θ (fun j ↦ Nat.mul_pos hl (hr0 _)) hU (h := h ∘ some)
+    fun j ↦ hh (some j)
+  have hVΘ := index_le_Θ (fun _ ↦ Nat.mul_pos hl (hr0 none)) hVmem
+    (q := fun _ : Unit ↦ q none) (h := fun _ ↦ h none) fun _ ↦ hh none
+  rw [index_mul_left_weights] at hUΘ hVΘ
+  have hlR : (0 : ℝ) < l := by exact_mod_cast hl
+  simpa only [lem6Φ, mul_add, Function.comp_def, mul_comm _ (l : ℝ), add_comm] using
+    add_le_add ((div_le_iff₀ hlR).1 hUΘ) ((div_le_iff₀ hlR).1 hVΘ)
+
+omit [DecidableEq τ] in
+/-- If the determinant `F = det (∂_{D_μ} ∂_{x_p}^ν R)_{μ,ν}` factors as
+`U(x_1, …, x_{p-1}) V(x_p)` with suitably bounded degrees, then its index at `h/q` is at most
+`l Φ`, where `Φ` is formed with the coefficient bound `M` of Lemma 6.
+Source: §5, proof of Lemma 6, eq. (17) ("`ind F ≤ l Φ`"). -/
+theorem index_det_le {r : Option τ → ℕ} (hr0 : ∀ j, 0 < r j) {r₁ : ℕ} (hr₁ : ∀ j, r j ≤ r₁)
+    {q : Option τ → ℕ} {B : ℝ} {R : MvPolynomial (Option τ) ℤ} (hR : R ∈ RSet B r)
+    {h : Option τ → ℤ} (hh : ∀ j, IsCoprime (h j) (q j : ℤ)) {l : ℕ} (hl : 1 ≤ l)
+    {D : Fin l → (τ →₀ ℕ)} {U : MvPolynomial τ ℤ} {V : Polynomial ℤ} (hU : U ≠ 0) (hV : V ≠ 0)
+    (hUd : ∀ j, degreeOf j U ≤ l * r (some j)) (hVd : V.natDegree ≤ l * r none)
+    (hF : (Matrix.of fun μ ν : Fin l ↦
+        hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) R).det =
+      rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) ℤ) V) :
+    index (map (Int.castRingHom ℝ) (Matrix.of fun μ ν : Fin l ↦
+        hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) R).det)
+      (fun j ↦ (h j : ℝ) / q j) r ≤ l * lem6Φ q r (lem6M (Fintype.card τ + 1) r₁ B l) l := by
+  classical
+  -- Step 1: the coefficients of `F` are bounded by `M`.
+  have hFcoef (d) : |(((Matrix.of fun μ ν : Fin l ↦ hasseDeriv
+      ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) R).det.coeff d : ℤ) : ℝ)| ≤
+      lem6M (Fintype.card τ + 1) r₁ B l := by
+    simpa [lem6M, Finset.prod_const, Finset.sum_const, Fintype.card_option, pow_mul,
+      mul_right_comm] using
+      abs_coeff_det_hasseDeriv_le _ R (r := fun _ ↦ r₁) (fun j ↦ (hR.2.1 j).trans (hr₁ j))
+        ((abs_nonneg ((R.coeff 0 : ℤ) : ℝ)).trans (hR.2.2 0)) hR.2.2 d
+  -- Step 2: the coefficients of `U` and `V` are bounded by `M`.
+  have hUc : ∀ a, |((U.coeff a : ℤ) : ℝ)| ≤ lem6M (Fintype.card τ + 1) r₁ B l := fun a ↦ by
+    have h1 := hFcoef (a.mapDomain some + Finsupp.single none V.natDegree)
+    rw [hF, coeff_rename_mul_aeval, Int.cast_mul, abs_mul] at h1
+    exact (le_mul_of_one_le_right (abs_nonneg _) (by
+      exact_mod_cast Int.one_le_abs (Polynomial.leadingCoeff_ne_zero.2 hV))).trans h1
+  have hVc : ∀ b, |((V.coeff b : ℤ) : ℝ)| ≤ lem6M (Fintype.card τ + 1) r₁ B l := fun b ↦ by
+    obtain ⟨a₀, ha₀⟩ := MvPolynomial.ne_zero_iff.1 hU
+    have h1 := hFcoef (a₀.mapDomain some + Finsupp.single none b)
+    rw [hF, coeff_rename_mul_aeval, Int.cast_mul, abs_mul] at h1
+    exact (le_mul_of_one_le_left (abs_nonneg _) (by
+      exact_mod_cast Int.one_le_abs ha₀)).trans h1
   -- Step 3: Lemma 4-2, the index of the product of polynomials in separate variables.
-  have hinjU : Function.Injective (some : τ → Option τ) := Option.some_injective _
-  have hinjV : Function.Injective (fun _ : Unit => (none : Option τ)) :=
-    fun a b _ => Subsingleton.elim a b
-  have hmU := (map_ne_zero_iff (map (Int.castRingHom ℝ))
-    (map_injective _ Int.cast_injective)).2 hU
-  have hmV := (map_ne_zero_iff (map (Int.castRingHom ℝ))
-    (map_injective _ Int.cast_injective)).2 hV'0
-  have hmapF : map (Int.castRingHom ℝ) F = rename some (map (Int.castRingHom ℝ) U) *
-      rename (fun _ : Unit => (none : Option τ)) (map (Int.castRingHom ℝ) V') := by
-    rw [hF, aeval_X_eq_rename, _root_.map_mul, map_rename, map_rename]
-  have hrU : ∀ j, 0 < l * r (some j) := fun j => Nat.mul_pos hl0 (hr0 _)
-  have hrV : ∀ _ : Unit, 0 < l * r none := fun _ => Nat.mul_pos hl0 (hr0 _)
-  rw [hmapF, index_mul ((map_ne_zero_iff _ (rename_injective _ hinjU)).2 hmU)
-    ((map_ne_zero_iff _ (rename_injective _ hinjV)).2 hmV) _ hr0,
-    index_rename hinjU, index_rename hinjV]
-  have hlR : (0 : ℝ) < l := by exact_mod_cast hl0
-  have hU' : index (map (Int.castRingHom ℝ) U) ((fun j => (h j : ℝ) / q j) ∘ some) (r ∘ some) =
-      l * index (map (Int.castRingHom ℝ) U) ((fun j => (h j : ℝ) / q j) ∘ some)
-        (fun j => l * (r ∘ some) j) := by
-    rw [index_mul_left_weights]
-    field_simp
-  have hV'' : index (map (Int.castRingHom ℝ) V') ((fun j => (h j : ℝ) / q j) ∘ fun _ => none)
-        (r ∘ fun _ => none) =
-      l * index (map (Int.castRingHom ℝ) V') ((fun j => (h j : ℝ) / q j) ∘ fun _ => none)
-        (fun j => l * (r ∘ fun _ : Unit => none) j) := by
-    rw [index_mul_left_weights]
-    field_simp
-  have hUΘ := index_le_Θ hrU hUmem (h := h ∘ some) fun j => hh (some j)
-  have hVΘ := index_le_Θ hrV hVmem (q := fun _ : Unit => q none) (h := fun _ => h none)
-    fun _ => hh none
-  rw [hU', hV'', lem6Φ, mul_add]
-  have := mul_le_mul_of_nonneg_left hUΘ hlR.le
-  have := mul_le_mul_of_nonneg_left hVΘ hlR.le
-  simp only [Function.comp_def] at *
-  linarith
+  rw [hF]
+  exact index_separated_mul_le_aux hr0 hh hl ⟨hU, hUd, hUc⟩ hV hVd hVc
 
 /-- **Lemma 6**, for one polynomial and one point: the index of `R ∈ ℛ_p(B; r)` at `h/q` is at
 most `2(Φ + Φ^{1/2} + δ^{1/2})` for some `1 ≤ l ≤ r_p + 1`. Source: §5, Lemma `roth:lem6` and
@@ -555,7 +518,7 @@ theorem index_le_lem6 {δ : ℝ} (hδ0 : 0 < δ) (hδ1 : δ < 1) {r : Option τ 
     linarith
   push Not at h10
   -- the two bounds for the index of `F`.
-  have hupper := index_det_le hr0 hr₁ hB hR hh hl hl' hU hV hUd hVd hF hδ0
+  have hupper := index_det_le hr0 hr₁ hR hh hl hU hV hUd hVd hF
   have hmapdet : map (Int.castRingHom ℝ) (Matrix.of fun μ ν : Fin l =>
       hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) R).det =
       (Matrix.of fun μ ν : Fin l => hasseDeriv ((D μ).mapDomain some +

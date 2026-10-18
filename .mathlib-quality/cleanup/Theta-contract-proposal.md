@@ -70,7 +70,8 @@ removals. No unselected row may be inferred from that probe's successful compile
   initial-contract adapter and final original-public adapter/actual axioms/LSP/profiles/full/LeanEval.
 - Original26, min_le_sum_max: recommended unconditional bound implemented under standing authority; removed exactly hrp/hθ, preserving domain/conclusion and the entire original sole caller contract. Three new private helpers each received a separate fresh audit; exact original adapters/actual standard axioms, full LSP, all-four real prefix profiles and frozen full/separate LeanEval gates pass. See section H.
 - Original27, sum_max_sub_le_index_det: approved A.DecidableEqτ and C.hR removals applied, all other arguments including hD/hδ retained. Sole caller obsolete argument/local proof removed; its entire original contract remains. Independent full original target and caller proofs/telescope/value/BinderInfo/standard axioms, full LSP0errors14warnings, real profile746.452ms and frozen full110.300s then separate LeanEval32.749s pass. No new helper or extra API change; generic finite-family/column-bound alternatives assessed and not recommended.
-- Next: original28, index_det_le (approved DecidableEqτ, hl′, hδ and unused implicitδ removal; proof/performance cleanup). Published originals now Theta 27/35, overall 208/264; approved revisits themselves do not increase counts.
+- Original28, index_det_le: approved A/C removals and supported redundant hB removal implemented under standing authorization, exact old drop set DecidableEqτ/δ/hB/hl′/hδ. Entire sole caller contract retained. Both new helpers freshly audited; coefficient wrapper deleted via existing constant-degree specialization, separated helper26 retained. Exact old target+entire caller/value/BinderInfo/actual standard axioms, full LSP0/11, real helper655.221ms/public742.222ms, frozen full91.138s then separate LeanEval30.612s pass. See section I.
+- Next: original29, index_le_lem6 (approved DecidableEqτ removal, explicit hq retention, ordinary≤30 structuring and actual instrumented performance repair). Published originals now Theta 28/35, overall 209/264; approved revisits themselves do not increase counts.
 
 The evidence and proposal descriptions below were prepared before this decision. Their historic
 unapplied status is superseded only by the exact selected scope above and subsequent checkpoint
@@ -355,3 +356,53 @@ project build92.510s then separate LeanEval33.553s both exit0, all17 source/pin 
 Theta26/35, overall207/264;9/14files. The final29 generator requires exact named drops
 `[hrp, hθ]`; it remains UNCOMPILED final-state scaffolding, not current cumulative evidence.
 Whole-Theta profiling and remaining originals/final phases remain outstanding.
+
+
+## I. Original28: redundant coefficient-bound premise (implemented and validated)
+
+Alongside the selected A/C removals, `index_det_le.hB : 1 ≤ B` is removed under the
+standing instruction to implement supported recommended changes. The target only used it
+to establish nonnegativity of B. Its retained uniform coefficient bound already proves
+that directly at the zero monomial:
+
+```lean
+have hB0 : (0 : ℝ) ≤ B :=
+  (abs_nonneg ((R.coeff 0 : ℤ) : ℝ)).trans (hR.2.2 0)
+```
+
+The coefficient estimate derives the same fact from its retained uniform coefficient premise,
+so it needs no separate nonnegativity argument. Its fresh helper audit found the existing
+`abs_coeff_det_hasseDeriv_le` at constant degree bound sufficient and deleted the single-use
+private coefficient wrapper. No nonzero witness or added assumption is needed for this deduction. This recommendation is separate from the user's
+explicitly retained hB arguments on Θ_nonneg, Θ_le_card and Θ_mono; those remain intact.
+The target's exact removed binders, in the original effective order, are DecidableEqτ,
+δ, hB, hl′, hδ. Every other public binder/domain/mode/name/order and conclusion remains.
+The sole caller deletes hB/hl′/hδ0 at its hupper application, while keeping its entire own
+original telescope, including its own hB, δ/hδ0, hq and DecidableEqτ.
+
+Before live application, the exact candidate containing both extracted helpers compiled
+with the complete independent original namespace, full-old target/caller adapters,
+all retained type/name/order/BinderInfo/universe/conclusion checks and original opaque
+proof-value checks. Both original target and ENTIRE original index_le_lem6 proof are
+replayed independently. Candidate/original/recovery axiom sets are standard only.
+Clean final preapply log: `/private/tmp/roth-theta-index-det/candidate-compatibility-final.log`;
+earlier clean candidate evidence is in candidate-compatibility.log. Failed scratch trials
+are not certification. The exact first live full snapshot SHA256 is
+`42d60acc1b1b3d587ffe568e246cb9ba637ee0a6449a6a2b29d6f02249354ba4`.
+
+Both initially extracted private helpers received separate fresh dedicated audits. The coefficient
+helper was deleted after replacing it with the existing constant-degree specialization; its
+independent first proof, exact contract and actual deleted-constant/trace absence pass. The
+retained separated-product helper has26 proof lines; its independent first proof and actual
+full private telescope/value/BinderInfo/standard axioms pass. Public proof24 physical lines
+includes all3 Step comments and satisfies its ordinary≤30 cap. No third helper was introduced.
+
+On final Theta SHA256 `c6e59b0ff252c0cdfc0e00070bb7c0c5bea3a53e0786889767f4b1594f5e6ee3`,
+module, complete unfiltered native LSP0errors11warnings, exact independent original public28
+and ENTIRE original caller proofs/adapters/type/value/standard axioms all pass. Fresh real global
+prefix profile: retained helper655.221ms/public742.222ms, both<750ms. Frozen full project
+build91.138s then separate LeanEval30.612s both exit0 with all17 source/pin hashes stable.
+[Original28 final batch evidence](Theta-index_det_le.md). After successful publication:
+Theta28/35, overall209/264;9/14files. The UNCOMPILED final29 generator records the exact hB
+drop but remains final-state scaffolding, not current cumulative evidence. Whole-Theta profiling
+and remaining originals/final phases remain outstanding.

@@ -67,7 +67,7 @@ ordinary baseline builds passing does not imply any all-file profile pass.
 | 25 | `sq_div_three_lt_floor_sq_div_two` | 307 | 5 | Complete;[audit](Theta-sq_div_three_lt_floor_sq_div_two.md) |
 | 26 | `min_le_sum_max` | 319 | 46 | Complete;[audit](Theta-min_le_sum_max.md) |
 | 27 | `sum_max_sub_le_index_det` | 371 | 25 | Complete;[audit](Theta-sum_max_sub_le_index_det.md) |
-| 28 | `index_det_le` | 410 | 94 | Pending dedicated audit |
+| 28 | `index_det_le` | 410 | 94 | Complete;[audit](Theta-index_det_le.md) |
 | 29 | `index_le_lem6` | 521 | 89 | Pending dedicated audit |
 | 30 | `Θ_option_le` | 623 | 6 | Pending dedicated audit |
 | 31 | `one_lt_of_log_pos` | 640 | 5 | Pending dedicated audit |
@@ -545,3 +545,14 @@ Accepted uncontended exact-prefix profile: 746.452 (clean baseline779.542, requi
 Frozen owner full (110.300 s) then separate LeanEval (32.749 s) pass.
 [Dedicated audit](Theta-sum_max_sub_le_index_det.md). Theta 27/35, overall 208/264 originals;9/14 files complete.
 No new production helper; all prior helpers remain separately audited. Next: original28, index_det_le (approved DecidableEqτ, hl′, hδ and unused implicitδ removal; proof/performance cleanup).
+
+
+## Published checkpoint28 — index_det_le
+
+Applied approved DecidableEqτ/δ/hl′/hδ removals and the supported redundant hB removal under standing authorization. Uniform coefficient bounds imply the needed nonnegativity. Public proof94→24 physical lines including all3 Step comments; sole caller drops only obsolete application arguments and retains its entire original public contract.
+
+Fresh24-item/42-rule/five-actual-search/every-effective-binder/literature/inversion/packing/inequality/11-step audits complete. Independent immutable complete original target AND entire index_le_lem6 proof/value/type replay, exact old adapters/names/BinderInfo/universes/conclusions and actual standard axiom sets pass. Both initially extracted private helpers received separate fresh audits; the coefficient helper was deleted using the existing constant-degree bound specialization, with actual built and trace absence checked. Module and complete unfiltered final LSP pass with 0 errors / 11 warnings.
+Accepted uncontended exact-prefix profile: public742.222; retained helper655.221 (original public baseline2083.744; both final<750) ms; no whole-file performance claim.
+Frozen owner full (91.138 s) then separate LeanEval (30.612 s) pass.
+[Dedicated audit](Theta-index_det_le.md). Theta 28/35, overall 209/264 originals;9/14 files complete.
+One retained private separated-product helper26lines, separately freshly audited; the initially added coefficient helper was separately freshly audited and deleted. New helpers and revisits add no original count. Next: original29, index_le_lem6 (approved DecidableEqτ removal, explicit hq retention, ordinary≤30 structuring and actual instrumented performance repair).
