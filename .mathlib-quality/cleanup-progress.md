@@ -2287,3 +2287,7 @@ original20 before original21 edits. After publication: **201/264 originals,Theta
 Actual whole-Theta profiling and15remaining originals/final file phases remain outstanding.
 Next: public definition lem6M. The exact source-checkpoint commit link is appended immediately
 after committing this validated batch, before its atomic branch push.
+
+Original20 validated source/audit checkpoint: [7e27859](https://github.com/SmwYin/Roth/commit/7e27859b95d3a8c12b41559836262e6ddd5a13b9).
+This following central-log metadata commit changes no Lean source; both commits are published
+together in one push before original21 edits. Counts remain201/264,Theta20/35,9/14files.
