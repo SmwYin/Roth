@@ -42,7 +42,9 @@ removals. No unselected row may be inferred from that probe's successful compile
   actual axioms/metadata/caller, complete LSP, profile and frozen full/LeanEval gates.
 - Approved revisit 7, indexSet_nonempty: Only the approved DecidableEq σ removal applied with independent original adapter,
   actual axioms/metadata/caller, complete LSP, profile and frozen full/LeanEval gates.
-- Next: approved revisit of original 8, indexSet_bddAbove (DecidableEq σ and hr only, plus necessary caller proof fixes). Counts remain unchanged on approved revisits.
+- Approved revisit 8, indexSet_bddAbove: Only the approved DecidableEq σ and hr removals, with two required helper-call argument deletions applied with independent original adapter,
+  actual axioms/metadata/caller, complete LSP, profile and frozen full/LeanEval gates.
+- Next: approved revisit of original 9, index_le_Θ (DecidableEq σ only; hr retained). Counts remain unchanged on approved revisits.
 
 The evidence and proposal descriptions below were prepared before this decision. Their historic
 unapplied status is superseded only by the exact selected scope above and subsequent checkpoint

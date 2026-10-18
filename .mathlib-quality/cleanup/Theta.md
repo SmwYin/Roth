@@ -315,3 +315,19 @@ standard axioms pass. Both actual callers have independent original proofs and e
 Frozen owner full build (53.182 s), then separate LeanEval (12.704 s),
 both pass on identical SHA. [Dedicated revisit audit](Theta-indexSet_nonempty-approved.md).
 Original counts unchanged: Theta 15/35, overall 196/264, 9/14 files. Next: approved revisit of original 8, indexSet_bddAbove (DecidableEq σ and hr only, plus necessary caller proof fixes).
+
+
+## Approved revisit of original 8 — indexSet_bddAbove
+
+Applied approved A+C: scoped omission of DecidableEq σ and removal of hr, retaining Fintype σ, B, q and implicit r. The proof uses local classical decidability. Exactly two obsolete helper hr arguments are removed inside index_le_Θ and Θ_mono proofs; both callers retain ALL original public hypotheses, including hr and their not-yet-revisited DecEq. The actual target has five binders; its full old seven-binder form is recovered by an explicit adapter. No new helper, definition, domain or conclusion change.
+
+Fresh dedicated full 24-item audit, 42 golf rules, five actual searches, every-binder probes,
+literature/inversion, packing, inequality scan and 11-step checklist pass. Immutable independent
+original proof and explicit old-telescope adapter recover the original contract from the actual
+new theorem; exact retained types/order/BinderInfo/user names, selected-drop AST and actual
+standard axioms pass. Both actual callers have independent immutable original proofs and exact actual old public type/order/BinderInfo/standard-axiom recovery. Their accepted final aggregates are 32.608 ms and 23.794 ms (baseline 26.474/24.818 ms), extracted with the target from the same two shared exact-prefix logs. Newly unused caller assumptions remain protected. Module and complete unfiltered final LSP pass with
+0 errors and 28 warnings. Accepted uncontended exact-prefix aggregate:
+165.828 → 215.404 ms; no whole-file performance claim.
+Frozen owner full build (80.493 s), then separate LeanEval (22.939 s),
+both pass on identical SHA. [Dedicated revisit audit](Theta-indexSet_bddAbove-approved.md).
+Original counts unchanged: Theta 15/35, overall 196/264, 9/14 files. Next: approved revisit of original 9, index_le_Θ (DecidableEq σ only; hr retained).

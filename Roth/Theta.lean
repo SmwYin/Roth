@@ -74,11 +74,12 @@ supremum is well-defined"). -/
 theorem indexSet_nonempty {B : ℝ} (hB : 1 ≤ B) (q r : σ → ℕ) : (indexSet B q r).Nonempty :=
   ⟨_, 1, one_mem_RSet hB r, fun _ ↦ 1, fun _ ↦ isCoprime_one_left, rfl⟩
 
+omit [DecidableEq σ] in
 /-- If every `r j` is positive, the indices defining `Θ_m(B; q; r)` are bounded above (by the
 number `m` of variables). Source: §5 ("`0 ≤ Θ_m ≤ m`": Taylor's theorem gives a nonzero
 derivative of weight at most `m`). -/
-theorem indexSet_bddAbove (B : ℝ) (q : σ → ℕ) {r : σ → ℕ} (hr : ∀ j, 0 < r j) :
-    BddAbove (indexSet B q r) := by
+theorem indexSet_bddAbove (B : ℝ) (q : σ → ℕ) {r : σ → ℕ} : BddAbove (indexSet B q r) := by
+  classical
   refine ⟨Fintype.card σ, ?_⟩
   rintro _ ⟨R, ⟨hR0, hRd, -⟩, h, -, rfl⟩
   exact index_le_card ((map_ne_zero_iff _ (map_injective _ Int.cast_injective)).2 hR0)
@@ -91,7 +92,7 @@ is at most `Θ_m(B; q; r)`. Source: §5, definition of `Θ_m` as a supremum, and
 theorem index_le_Θ {B : ℝ} {q r : σ → ℕ} (hr : ∀ j, 0 < r j) {R : MvPolynomial σ ℤ}
     (hR : R ∈ RSet B r) {h : σ → ℤ} (hh : ∀ j, IsCoprime (h j) (q j : ℤ)) :
     index (map (Int.castRingHom ℝ) R) (fun j ↦ (h j : ℝ) / q j) r ≤ Θ B q r :=
-  le_csSup (indexSet_bddAbove B q hr) ⟨R, hR, h, hh, rfl⟩
+  le_csSup (indexSet_bddAbove B q) ⟨R, hR, h, hh, rfl⟩
 
 /-- `Θ_m(B; q; r)` is nonnegative when `1 ≤ B` and every `r j` is positive. Source: §5
 ("`0 ≤ Θ_m`"). -/
@@ -123,7 +124,7 @@ theorem Θ_le_of_forall_index_le {B : ℝ} (hB : 1 ≤ B) {q r : σ → ℕ} {c 
 increasing `B` enlarges the set of allowed polynomials"). -/
 theorem Θ_mono {B B' : ℝ} (hB : 1 ≤ B) (hBB' : B ≤ B') (q : σ → ℕ) {r : σ → ℕ} (hr : ∀ j, 0 < r j) :
     Θ B q r ≤ Θ B' q r := by
-  refine csSup_le_csSup (indexSet_bddAbove B' q hr) (indexSet_nonempty hB q r) ?_
+  refine csSup_le_csSup (indexSet_bddAbove B' q) (indexSet_nonempty hB q r) ?_
   rintro _ ⟨R, ⟨hR0, hRd, hRc⟩, h, hh, rfl⟩
   exact ⟨R, ⟨hR0, hRd, fun d ↦ (hRc d).trans hBB'⟩, h, hh, rfl⟩
 
