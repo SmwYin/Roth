@@ -182,3 +182,35 @@ Repository-wide source inventory has NO actual caller, internal or external: onl
 and module-doc mention. Thus no downstream call fix is necessary; the named/inferred trials
 are compatibility examples, not claims that such calls already occur in the project.
 No source API edit/helper or additional original-declaration count follows from this preview.
+
+## F. Fresh original13 proposal: monotonicity for all B/weights (unapplied)
+
+The fresh Θ_mono audit compiled the stronger candidate against actual imported definitions:
+
+```lean
+theorem Θ_mono {σ : Type*} [Fintype σ] {B B' : ℝ} (hBB' : B ≤ B')
+    (q : σ → ℕ) {r : σ → ℕ} : Θ B q r ≤ Θ B' q r
+```
+
+This NEWLY proposes dropping hB:1≤B and hr:∀j,0<r j, alongside this target's existing menuA
+DecidableEqσ removal. The earlier menus do not implicitly authorize either new row. All other
+parameters, definitions, domains, Fintype and retained binder order/implicitness stay intact.
+The candidate supplies the cardinal upper bound for the larger indexSet directly, proves its
+supremum nonnegative, and uses Real.sSup_le. Thus it also covers empty defining sets and zero
+weights. This PUBLIC strengthening remains UNAPPLIED pending an explicit decision; the live
+three-line witness proof retains every old public binder.
+
+Definitive ACTUAL-import source `/private/tmp/roth-theta-mono/positive.lean:19`, exit0 raw
+`/private/tmp/roth-theta-mono/positive.log`. Independent baseline original proof, styled proof,
+and explicit full-old-args lambda adapter have the actual old theorem type modulo universe
+alpha-renaming, with BinderInfo checked separately. The lambda adapter kernel-equals actual
+Roth.Θ_mono by rfl. Candidate AST has exactly seven binders σ/Fintype/B/B'/hBB'/q/r, with no
+hB/hr/DecEq. Original/actual/candidate/adapter and the caller reproof all use only the standard
+three axioms. No performance claim is made for this optional API candidate.
+
+Exact caller inventory: two actual uses, both in Θ_lt; no external use (module-doc mention
+excluded). The complete independent original Θ_lt proof compiles against actual imported
+definitions after replacing exactly those two calls by `strong hMlt.le _`. Its actual public
+caller type is checked directly and its actual axiom set is standard. Thus the prospective
+minimal production fixes are `Θ_mono hMlt.le _` in both places; no caller or public API edit
+has been applied from this preview, and no additional original declaration is counted.

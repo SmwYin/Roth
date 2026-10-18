@@ -118,11 +118,11 @@ theorem Θ_le_of_forall_index_le {B : ℝ} (hB : 1 ≤ B) {q r : σ → ℕ} {c 
 
 /-- `Θ_m(B; q; r)` is monotone in `B`. Source: §5 ("`Θ_m` is nondecreasing in `B`, since
 increasing `B` enlarges the set of allowed polynomials"). -/
-theorem Θ_mono {B B' : ℝ} (hB : 1 ≤ B) (hBB' : B ≤ B') (q : σ → ℕ) {r : σ → ℕ}
-    (hr : ∀ j, 0 < r j) : Θ B q r ≤ Θ B' q r := by
+theorem Θ_mono {B B' : ℝ} (hB : 1 ≤ B) (hBB' : B ≤ B') (q : σ → ℕ) {r : σ → ℕ} (hr : ∀ j, 0 < r j) :
+    Θ B q r ≤ Θ B' q r := by
   refine csSup_le_csSup (indexSet_bddAbove B' q hr) (indexSet_nonempty hB q r) ?_
-  rintro _ ⟨R, hR, h, hh, rfl⟩
-  exact ⟨R, ⟨hR.1, hR.2.1, fun d => (hR.2.2 d).trans hBB'⟩, h, hh, rfl⟩
+  rintro _ ⟨R, ⟨hR0, hRd, hRc⟩, h, hh, rfl⟩
+  exact ⟨R, ⟨hR0, hRd, fun d ↦ (hRc d).trans hBB'⟩, h, hh, rfl⟩
 
 private lemma indexSet_comp_subset {τ : Type*} [Fintype τ] [DecidableEq τ] (e : σ ≃ τ) (B : ℝ)
     (q r : τ → ℕ) : indexSet B (q ∘ e) (r ∘ e) ⊆ indexSet B q r := by

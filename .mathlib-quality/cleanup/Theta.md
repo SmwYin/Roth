@@ -222,3 +222,19 @@ complete native LSP0errors/33unchangedwarnings pass. Uncontended exact-prefix26.
 no speedup/filewideclaim. Owner frozen full/separateLeanEval/publication recorded in audit.
 After publication:Theta12/35,overall193/264,9/14files complete. AllA/B/C/D/E menus UNAPPLIED.
 Next:Θ_mono.
+
+
+## Published checkpoint13 — Θ_mono
+
+Fresh full dedicated audit unpacks RSet's three properties in the witness pattern, normalizes
+one lambda and packs hr; body3unchanged, original public telescope/type/docs retained, no callers
+or helpers changed. Full24/42/five actual searches/every-binder/literature/inversion/packing/
+inequality/11gates complete. Module, independent original/direct actual type+universe+BinderInfo,
+actual standard axioms and fresh complete unfiltered LSP0errors33unchangedwarnings pass.
+Uncontended exact-prefix23.483→23.606ms, no speedup/filewideclaim. Frozen owner full58.864s THEN
+separateLeanEval21.222s both0, identical finalSHA. [ProposalF](Theta-contract-proposal.md) adds
+fully verified actual-import no-hB/no-hr monotonicity alongside this target's prior proposedDecEq;
+explicit original λadapter/kernel/BinderInfo/AST/standardaxioms and full independent actual Θ_lt
+caller reproof with exactly two prospective substitutions pass. Still UNAPPLIED pending decision.
+After publication:Theta13/35,overall194/264,9/14files complete. AllA–F menus remain UNAPPLIED.
+Next:private indexSet_comp_subset.
