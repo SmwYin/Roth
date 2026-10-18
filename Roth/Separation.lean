@@ -441,14 +441,11 @@ theorem exists_int_eq_of_gcd_eq_one {ι : Type*} {s : Finset ι} {u : ι → ℤ
   rw [hu] at hz
   choose! w hw using hv
   refine ⟨∑ i ∈ s, z i * w i, ?_⟩
-  calc v = ((∑ i ∈ s, z i * u i : ℤ) : ℚ) * v := by rw [hz]; simp
-    _ = ∑ i ∈ s, (z i : ℚ) * ((u i : ℚ) * v) := by
-        push_cast
-        rw [Finset.sum_mul]
-        exact Finset.sum_congr rfl fun i _ => by ring
+  calc v = ((∑ i ∈ s, z i * u i : ℤ) : ℚ) * v := by simp [hz]
     _ = ((∑ i ∈ s, z i * w i : ℤ) : ℚ) := by
         push_cast
-        exact Finset.sum_congr rfl fun i hi => by rw [hw i hi]
+        rw [Finset.sum_mul]
+        exact Finset.sum_congr rfl fun i hi ↦ by rw [mul_assoc, hw i hi]
 
 omit [Fintype τ] [DecidableEq τ] in
 private lemma map_aeval_X_none (V : Polynomial ℤ) :
