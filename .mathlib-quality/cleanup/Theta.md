@@ -59,7 +59,7 @@ ordinary baseline builds passing does not imply any all-file profile pass.
 | 19 | `pow_rootMultiplicity_le` | 210 | 13 | Complete;[audit](Theta-pow_rootMultiplicity_le.md) |
 | 20 | `Θ_unique_le` | 230 | 29 | Complete;[audit](Theta-Theta_unique_le.md) |
 | 21 | `lem6M` | 270 | 1 | Complete;[audit](Theta-lem6M.md) |
-| 22 | `lem6Φ` | 275 | 1 | Pending dedicated audit |
+| 22 | `lem6Φ` | 275 | 1 | Complete;[audit](Theta-lem6Phi.md) |
 | 23 | `one_le_lem6M` | 279 | 8 | Pending dedicated audit |
 | 24 | `floor_sq_div_two_le_sum` | 291 | 11 | Pending dedicated audit |
 | 25 | `sq_div_three_lt_floor_sq_div_two` | 307 | 5 | Pending dedicated audit |
@@ -477,3 +477,14 @@ Accepted uncontended exact-prefix profile: 37.516 ms; no whole-file performance 
 Frozen owner full (5.980 s) then separate LeanEval (3.018 s) pass.
 [Dedicated audit](Theta-lem6M.md). Theta 21/35, overall 202/264 originals;9/14 files complete.
 No new production helper; the previously added helper remains separately audited. Next: original 22, public definition lem6Φ.
+
+
+## Published checkpoint22 — lem6Φ
+
+Normalized three ordinary lambda arrows to ↦ in the one-line Φ definition. Its complete original telescope, mathematical value, public API, paper documentation and all callers remain unchanged; no helper introduced.
+
+Fresh 24-item/42-rule audit, five actual searches, all six effective binder probes, literature/inversion and measured tables pass. Independently elaborated immutable RSet/indexSet/Θ/Φ definitions, exact telescope metadata, type/value definitional equality and kernel rfl checks pass against the rebuilt actual constant; actual axioms remain standard only. Module and complete unfiltered final LSP pass with 0 errors / 17 warnings.
+Accepted uncontended exact-prefix profile: 19.752 ms; no whole-file performance claim.
+Frozen owner full (65.683 s) then separate LeanEval (26.314 s) pass.
+[Dedicated audit](Theta-lem6Phi.md). Theta 22/35, overall 203/264 originals;9/14 files complete.
+No new production helper; the prior helper remains separately audited. Next: original 23, one_le_lem6M.

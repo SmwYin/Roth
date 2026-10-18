@@ -268,7 +268,7 @@ noncomputable def lem6M (p r₁ : ℕ) (B : ℝ) (l : ℕ) : ℝ :=
 /-- The quantity `Φ = Θ_1(M; q_p; l r_p) + Θ_{p-1}(M; q_1, …, q_{p-1}; l r_1, …, l r_{p-1})` of
 Lemma 6. Source: §5, proof of Lemma 6, eq. (15). -/
 noncomputable def lem6Φ (q r : Option τ → ℕ) (M : ℝ) (l : ℕ) : ℝ :=
-  Θ M (fun _ : Unit => q none) (fun _ => l * r none) + Θ M (q ∘ some) fun j => l * r (some j)
+  Θ M (fun _ : Unit ↦ q none) (fun _ ↦ l * r none) + Θ M (q ∘ some) fun j ↦ l * r (some j)
 
 /-- The constant `M` of Lemma 6 is at least `1` when `B` is. Source: §5, proof of Lemma 6. -/
 theorem one_le_lem6M (p r₁ : ℕ) {B : ℝ} (hB : 1 ≤ B) (l : ℕ) : 1 ≤ lem6M p r₁ B l := by
