@@ -25,16 +25,16 @@ Started: 2026-10-14 (America/Chicago).
 
 ## Current status
 
-Latest completed file after successful final publication: Separation. Theta originals 17/35
-completed; overall 198/264 original declarations, 9/14 files. Latest original: isPrimitive_pow.
-Replaced the private three-line induction with a one-line Nat.rec term using the same primitive-one and primitive-product lemmas. The private type and sole public caller, including its approved but not-yet-removed hR, remain unchanged. No definition, documentation or helper change.
-Fresh 24-item/42-rule audit, five actual searches and every-binder probes pass. Immutable independent helper/caller proofs, actual private/public type and binder metadata, and all actual standard axiom sets are verified. Module and complete unfiltered LSP (0 errors / 19 warnings), accepted
-uncontended prefix profile (36.297 → 49.696 ms), frozen full build (64.388 s), then
-separate LeanEval (24.164 s), all pass. [Latest audit](cleanup/Theta-isPrimitive_pow.md).
-No new production helper. Next: original 18, exists_eq_pow_mul_of_rootMultiplicity, applying approved hR removal.
+Latest completed file after successful final publication: Separation. Theta originals 18/35
+completed; overall 199/264 original declarations, 9/14 files. Latest original: exists_eq_pow_mul_of_rootMultiplicity.
+Applied the approved removal of unused hR from the integer root-multiplicity factorization. Inlined the single-use primitive-power fact and applied Gauss’s lemma directly, shortening the proof from fourteen lines to twelve. The sole caller deletes the obsolete argument and retains its own hR and complete original contract. Definitions, remaining domains/arguments, conclusion and documentation are unchanged.
+Fresh 24-item/42-rule audit, five actual searches, every-binder probes and public literature pass. Independent immutable original target/caller proofs, explicit full-old adapter, exact retained binder metadata and selected-drop AST, and actual standard axioms pass. The edited caller also profiles at 279.948 → 259.915 ms. Module and complete unfiltered LSP (0 errors / 18 warnings), accepted
+uncontended prefix profile (395.202 → 361.739 ms), frozen full build (58.997 s), then
+separate LeanEval (23.527 s), all pass. [Latest audit](cleanup/Theta-exists_eq_pow_mul_of_rootMultiplicity.md).
+No new production helper. Next: original 19, pow_rootMultiplicity_le.
 [Exact contract decision](cleanup/Theta-contract-proposal.md): selected A/B/C scope applies;
 prior explicit hq and extra hB/hr preservation choices remain. Whole-Theta profiling,
-18 remaining originals and final phases are outstanding.
+17 remaining originals and final phases are outstanding.
 
 Build/tool setup completed; GitHub browser authentication and branch publication succeeded.
 The first file, `Roth/HasseDeriv.lean`, has completed all declaration and final review,

@@ -176,24 +176,22 @@ private lemma isPrimitive_pow {p : Polynomial ℤ} (hp : p.IsPrimitive) (t : ℕ
 Source: §5, proof of Lemma 5 ("The polynomial `(q_1 x_1 - h_1)^t` is primitive and divides
 `R` over `ℚ`. Gauss's lemma therefore gives a nonzero `Q ∈ ℤ[x_1]` with
 `R = (q_1 x_1 - h_1)^t Q`"). -/
-theorem exists_eq_pow_mul_of_rootMultiplicity {R : Polynomial ℤ} (hR : R ≠ 0) {h : ℤ} {q : ℕ}
-    (hq : 0 < q) (hcop : IsCoprime h (q : ℤ)) :
-    ∃ Q : Polynomial ℤ, R = (Polynomial.C (q : ℤ) * Polynomial.X - Polynomial.C h) ^
+theorem exists_eq_pow_mul_of_rootMultiplicity {R : Polynomial ℤ} {h : ℤ} {q : ℕ} (hq : 0 < q)
+    (hcop : IsCoprime h (q : ℤ)) : ∃ Q : Polynomial ℤ, R =
+      (Polynomial.C (q : ℤ) * Polynomial.X - Polynomial.C h) ^
       Polynomial.rootMultiplicity ((h : ℚ) / q) (R.map (Int.castRingHom ℚ)) * Q := by
   set t := Polynomial.rootMultiplicity ((h : ℚ) / q) (R.map (Int.castRingHom ℚ))
-  have hprim := isPrimitive_pow (isPrimitive_linear hcop) t
   have hq' : (q : ℚ) ≠ 0 := by exact_mod_cast hq.ne'
   have hmap : (Polynomial.C (q : ℤ) * Polynomial.X - Polynomial.C h).map (Int.castRingHom ℚ) =
       Polynomial.C (q : ℚ) * (Polynomial.X - Polynomial.C ((h : ℚ) / q)) := by
     rw [Polynomial.map_sub, Polynomial.map_mul, Polynomial.map_C, Polynomial.map_X,
       Polynomial.map_C, mul_sub, ← Polynomial.C_mul, mul_div_cancel₀ _ hq']
     simp
-  have hdvd : ((Polynomial.C (q : ℤ) * Polynomial.X - Polynomial.C h) ^ t).map
-      (Int.castRingHom ℚ) ∣ R.map (Int.castRingHom ℚ) := by
-    rw [Polynomial.map_pow, hmap, mul_pow, ← Polynomial.C_pow,
-      Polynomial.C_mul_dvd (pow_ne_zero _ hq')]
-    exact Polynomial.pow_rootMultiplicity_dvd _ _
-  exact (Polynomial.IsPrimitive.Int.dvd_iff_map_cast_dvd_map_cast _ _ hprim).2 hdvd
+  apply (Polynomial.IsPrimitive.Int.dvd_iff_map_cast_dvd_map_cast _ _
+    (isPrimitive_pow (isPrimitive_linear hcop) t)).2
+  rw [Polynomial.map_pow, hmap, mul_pow, ← Polynomial.C_pow,
+    Polynomial.C_mul_dvd (pow_ne_zero _ hq')]
+  exact Polynomial.pow_rootMultiplicity_dvd _ _
 
 /-- If the coefficients of a nonzero `R ∈ ℤ[X]` are bounded by `B` and `h / q`, with `h` coprime
 to `q > 0`, is a root of `R` of multiplicity `t`, then `q^t ≤ B`.
@@ -202,7 +200,7 @@ Source: §5, proof of Lemma 5 ("Comparing nonzero leading coefficients yields
 theorem pow_rootMultiplicity_le {R : Polynomial ℤ} (hR : R ≠ 0) {h : ℤ} {q : ℕ} (hq : 0 < q)
     (hcop : IsCoprime h (q : ℤ)) {B : ℝ} (hB : ∀ n, |((R.coeff n : ℤ) : ℝ)| ≤ B) :
     (q : ℝ) ^ Polynomial.rootMultiplicity ((h : ℚ) / q) (R.map (Int.castRingHom ℚ)) ≤ B := by
-  obtain ⟨Q, hQ⟩ := exists_eq_pow_mul_of_rootMultiplicity hR hq hcop
+  obtain ⟨Q, hQ⟩ := exists_eq_pow_mul_of_rootMultiplicity hq hcop
   set t := Polynomial.rootMultiplicity ((h : ℚ) / q) (R.map (Int.castRingHom ℚ))
   have hQ0 : Q ≠ 0 := right_ne_zero_of_mul (hQ ▸ hR)
   have hlc : R.leadingCoeff = (q : ℤ) ^ t * Q.leadingCoeff := by

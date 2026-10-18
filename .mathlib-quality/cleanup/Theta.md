@@ -55,7 +55,7 @@ ordinary baseline builds passing does not imply any all-file profile pass.
 | 15 | `Θ_equiv` | 155 | 4 | Complete;[audit](Theta-Theta_equiv.md) |
 | 16 | `isPrimitive_linear` | 164 | 9 | Complete;[audit](Theta-isPrimitive_linear.md) |
 | 17 | `isPrimitive_pow` | 176 | 3 | Complete;[audit](Theta-isPrimitive_pow.md) |
-| 18 | `exists_eq_pow_mul_of_rootMultiplicity` | 187 | 14 | Pending dedicated audit |
+| 18 | `exists_eq_pow_mul_of_rootMultiplicity` | 187 | 14 | Complete;[audit](Theta-exists_eq_pow_mul_of_rootMultiplicity.md) |
 | 19 | `pow_rootMultiplicity_le` | 210 | 13 | Pending dedicated audit |
 | 20 | `Θ_unique_le` | 230 | 29 | Pending dedicated audit |
 | 21 | `lem6M` | 270 | 1 | Pending dedicated audit |
@@ -433,3 +433,14 @@ Accepted uncontended exact-prefix profile: 36.297 → 49.696 ms; no whole-file p
 Frozen owner full (64.388 s) then separate LeanEval (24.164 s) pass.
 [Dedicated audit](Theta-isPrimitive_pow.md). Theta 17/35, overall 198/264 originals;9/14 files complete.
 No new production helper. Next: original 18, exists_eq_pow_mul_of_rootMultiplicity, applying approved hR removal.
+
+
+## Published checkpoint18 — exists_eq_pow_mul_of_rootMultiplicity
+
+Applied the approved removal of unused hR from the integer root-multiplicity factorization. Inlined the single-use primitive-power fact and applied Gauss’s lemma directly, shortening the proof from fourteen lines to twelve. The sole caller deletes the obsolete argument and retains its own hR and complete original contract. Definitions, remaining domains/arguments, conclusion and documentation are unchanged.
+
+Fresh 24-item/42-rule audit, five actual searches, every-binder probes and public literature pass. Independent immutable original target/caller proofs, explicit full-old adapter, exact retained binder metadata and selected-drop AST, and actual standard axioms pass. The edited caller also profiles at 279.948 → 259.915 ms. Module and complete unfiltered final LSP pass with 0 errors / 18 warnings.
+Accepted uncontended exact-prefix profile: 395.202 → 361.739 ms; no whole-file performance claim.
+Frozen owner full (58.997 s) then separate LeanEval (23.527 s) pass.
+[Dedicated audit](Theta-exists_eq_pow_mul_of_rootMultiplicity.md). Theta 18/35, overall 199/264 originals;9/14 files complete.
+No new production helper. Next: original 19, pow_rootMultiplicity_le.
