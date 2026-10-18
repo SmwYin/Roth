@@ -1,9 +1,10 @@
+import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.RingTheory.Polynomial.GaussLemma
+
+import Roth.CoeffNorm
 import Roth.Index
 import Roth.Separation
-import Roth.CoeffNorm
-import Mathlib.Analysis.SpecialFunctions.Pow.Real
-import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import Mathlib.RingTheory.Polynomial.GaussLemma
 
 /-!
 # The index across sets of polynomials: `Θ_m(B; q; r)` (Lemmas 5, 6, 7)
