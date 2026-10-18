@@ -1,8 +1,10 @@
 # Theta cleanup: preparation and declaration ledger
 
 Baseline: `2b64544bf9f77a8ff957bf1bcaf693ac72217ff6`; 981 lines, 35 original declarations
-(29 public,6 private). Original contracts and documentation protected; named public API changes
-require explicit fresh approval. Scope: all declaration audits, new-helper audits and final phases.
+(29 public,6 private). Original contracts are recovered independently and documentation is preserved.
+The user's standing authorization permits well-supported recommended API cleanup with compiled
+evidence and all validation gates; prior explicit preservation choices remain in force.
+Scope: all declaration audits, new-helper audits and final phases.
 Dialect: classic Lean (no module-system header).
 
 ## Phase 0 baseline
@@ -63,7 +65,7 @@ ordinary baseline builds passing does not imply any all-file profile pass.
 | 23 | `one_le_lem6M` | 279 | 8 | Complete;[audit](Theta-one_le_lem6M.md) |
 | 24 | `floor_sq_div_two_le_sum` | 291 | 11 | Complete;[audit](Theta-floor_sq_div_two_le_sum.md) |
 | 25 | `sq_div_three_lt_floor_sq_div_two` | 307 | 5 | Complete;[audit](Theta-sq_div_three_lt_floor_sq_div_two.md) |
-| 26 | `min_le_sum_max` | 319 | 46 | Pending dedicated audit |
+| 26 | `min_le_sum_max` | 319 | 46 | Complete;[audit](Theta-min_le_sum_max.md) |
 | 27 | `sum_max_sub_le_index_det` | 371 | 25 | Pending dedicated audit |
 | 28 | `index_det_le` | 410 | 94 | Pending dedicated audit |
 | 29 | `index_le_lem6` | 521 | 89 | Pending dedicated audit |
@@ -521,3 +523,14 @@ Accepted uncontended exact-prefix profile: 349.782 (baseline 376.779, corrected 
 Frozen owner full (89.100 s) then separate LeanEval (28.568 s) pass.
 [Dedicated audit](Theta-sq_div_three_lt_floor_sq_div_two.md). Theta 25/35, overall 206/264 originals;9/14 files complete.
 No new production helper; the prior helper remains separately audited. Next: original 26, min_le_sum_max.
+
+
+## Published checkpoint26 — min_le_sum_max
+
+Strengthened the positive-part arithmetic-sum bound by removing both public positivity/size hypotheses hrp and hθ; its exact real/natural domains and conclusion remain. Public proof46→7lines. The sole index_le_lem6 caller receives named θ/rp arguments and retains its entire original contract, including hq and DecidableEq.
+
+Fresh original audit plus three separate fresh helper audits complete: all24/42/5-search, effective-binder compiled probes, literature/inversion and measured tables. Independently replayed immutable original min and ENTIRE index_le_lem6 proofs; exact old telescopes/adapters, BinderInfo/value and actual built standard axioms pass. Private linear hr removal, quadratic hr removal/weak cutoff and separate positive-core proof are independently verified. Module and complete unfiltered final LSP pass with 0 errors / 17 warnings.
+Accepted uncontended exact-prefix profile: public165.806; linear460.921, positivecore543.552, quadraticwrapper304.757 (all four <750) ms; no whole-file performance claim.
+Frozen owner full (92.510 s) then separate LeanEval (33.553 s) pass.
+[Dedicated audit](Theta-min_le_sum_max.md). Theta 26/35, overall 207/264 originals;9/14 files complete.
+Three new private helpers each received separate fresh dedicated audits; final bodies linear15, positivecore22, quadraticwrapper7. Helpers add0 original declarations. Next: original27, sum_max_sub_le_index_det (approved DecidableEqτ and hR removal).

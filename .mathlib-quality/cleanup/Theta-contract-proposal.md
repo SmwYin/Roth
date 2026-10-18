@@ -68,7 +68,7 @@ removals. No unselected row may be inferred from that probe's successful compile
 - Original20, Θ_unique_le: approved A.DecidableEq σ removed; every other public parameter including hB/hr/Fintype retained.
   Headline29→3; ONE new private index/log helper has a separate fresh full audit, body23,
   initial-contract adapter and final original-public adapter/actual axioms/LSP/profiles/full/LeanEval.
-- Next: original 26, min_le_sum_max. Published originals now Theta 25/35, overall 206/264; approved revisits themselves do not increase counts.
+- Next: original27, sum_max_sub_le_index_det (approved DecidableEqτ and hR removal). Published originals now Theta 26/35, overall 207/264; approved revisits themselves do not increase counts.
 
 The evidence and proposal descriptions below were prepared before this decision. Their historic
 unapplied status is superseded only by the exact selected scope above and subsequent checkpoint
@@ -311,3 +311,45 @@ LeanEval24.504s both exit0 on all17identical project/pin hashes.
 Theta19/35,overall200/264,9/14files; no new helper. The uncompiled cumulative final29 verifier
 now explicitly handles this exact hB specialization alongside the selected A/B/C removals;
 it is FINAL-STATE scaffolding, not a current all29 verification claim.
+
+## H. Original26: unconditional positive-part sum bound (implemented under standing authorization)
+
+The independently compiled candidate removes both `min_le_sum_max.hrp` and `.hθ`:
+
+```lean
+theorem min_le_sum_max {θ : ℝ} {rp : ℕ} (l : ℕ) :
+    min (l * θ / 2) (rp * θ ^ 2 / 3) ≤
+      ∑ ν ∈ Finset.range l, max 0 (θ - ν / rp)
+```
+
+Zero `rp` and nonpositive `θ` give a nonpositive minimum. For positive inputs, the
+finite arithmetic-sum estimate handles both sides of the cutoff without the old `>10`
+condition. The public name, real/natural domains and exact conclusion stay unchanged.
+The owner implemented this supported recommendation under the user's standing instruction
+to implement recommended changes. It is separate from the explicitly retained Θ/hq assumptions.
+
+Before application, `/private/tmp/roth-theta-min-sum/candidate-compatibility.lean` and its
+exit-0 log independently replay the immutable original proof and its two old arithmetic
+predecessors, prove the unconditional candidate, and check the complete original-telescope
+adapter by kernel `rfl`. Original and candidate actual axioms are standard only. The
+sole-caller fix in `index_le_lem6` deletes the two proof arguments and supplies the now-needed
+inference parameters: `min_le_sum_max (θ := θ) (rp := r none) l`. Its independent full original
+contract/axiom checks remain required.
+
+The two previously audited public floor lemmas remain public. All original prose is preserved,
+with the additional explanation of the stronger scope. Three new private proof helpers each
+received a separate fresh dedicated audit: linear15, positivecore22, quadraticwrapper7 body
+lines; the public proof is7 lines. The wrapper audits additionally remove private radius
+positivity and admit the weak cutoff. Their exact first-contract adapters and independent
+proofs pass. No new helper or routine caller change adds an original declaration.
+
+On final Theta SHA256 `e6360c9acdc9d7be22356ba3a26006e24cc1b0b667b5992395759228e1087530`,
+module and complete unfiltered LSP pass (0errors17warnings); independent immutable original
+min plus ENTIRE index_le_lem6 proofs, exact original telescopes/BinderInfo and actual
+standard axiom sets pass. Final uncontended real exact-prefix profiles: public165.806ms,
+linear460.921ms, positivecore543.552ms, quadraticwrapper304.757ms, all<750ms. Frozen full
+project build92.510s then separate LeanEval33.553s both exit0, all17 source/pin hashes stable.
+[Original26 and helper audit links](Theta-min_le_sum_max.md). After successful publication:
+Theta26/35, overall207/264;9/14files. The final29 generator requires exact named drops
+`[hrp, hθ]`; it remains UNCOMPILED final-state scaffolding, not current cumulative evidence.
+Whole-Theta profiling and remaining originals/final phases remain outstanding.

@@ -296,58 +296,73 @@ theorem sq_div_three_lt_floor_sq_div_two {a : ℝ} (ha : 10 < a) :
     a ^ 2 / 3 < (⌊a⌋₊ : ℝ) ^ 2 / 2 := by
   nlinarith [Nat.lt_floor_add_one a]
 
+private lemma mul_div_two_le_sum_max_aux {θ r : ℝ} {l : ℕ} (hl : (l : ℝ) ≤ θ * r) :
+    l * θ / 2 ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / r) := by
+  rcases Nat.eq_zero_or_pos l with rfl | hl0
+  · simp
+  by_cases hθ : θ ≤ 0
+  · exact (div_nonpos_of_nonpos_of_nonneg
+      (mul_nonpos_of_nonneg_of_nonpos (Nat.cast_nonneg l) hθ) (by norm_num)).trans
+        (Finset.sum_nonneg fun _ _ ↦ le_max_left _ _)
+  have hr := pos_of_mul_pos_right ((Nat.cast_pos.mpr hl0).trans_le hl) (le_of_not_ge hθ)
+  have hsum := congrArg (Nat.cast (R := ℝ)) (Finset.sum_range_id_mul_two l)
+  push_cast [Nat.cast_sub hl0] at hsum
+  refine le_trans ?_ (Finset.sum_le_sum fun ν _ ↦ le_max_right 0 (θ - ν / r))
+  rw [Finset.sum_sub_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul,
+    ← Finset.sum_div, le_sub_iff_add_le, div_add_div _ _ (by norm_num) hr.ne',
+    div_le_iff₀ (by positivity)]
+  linarith only [hsum, (Nat.cast_nonneg l : (0 : ℝ) ≤ l),
+    mul_nonneg (Nat.cast_nonneg l) (sub_nonneg.mpr hl)]
+
+private lemma mul_sq_div_three_le_sum_max_of_pos_aux {θ r : ℝ} (hr : 0 < r) (hθ : 0 ≤ θ) {l : ℕ}
+    (hl : θ * r < l) : r * θ ^ 2 / 3 ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / r) := by
+  set n := ⌊θ * r⌋₊
+  have hnle : (n : ℝ) ≤ θ * r := Nat.floor_le (mul_nonneg hθ hr.le)
+  have hnlt : θ * r < n + 1 := Nat.lt_floor_add_one _
+  have hsum := congrArg (Nat.cast (R := ℝ)) (Finset.sum_range_id_mul_two (n + 1))
+  push_cast [Nat.add_sub_cancel] at hsum
+  have hbound : (θ * r) ^ 2 / 3 ≤ ∑ ν ∈ Finset.range (n + 1), (θ * r - ν) := by
+    rw [Finset.sum_sub_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul]
+    push_cast
+    generalize θ * r = a at hnle hnlt ⊢
+    linarith only [hsum, (Nat.cast_nonneg n : (0 : ℝ) ≤ n), hnle, sq_nonneg a,
+      mul_nonneg (sub_nonneg.mpr hnle) (sub_nonneg.mpr hnlt.le)]
+  calc
+    r * θ ^ 2 / 3 = (θ * r) ^ 2 / 3 / r := by field_simp
+    _ ≤ (∑ ν ∈ Finset.range (n + 1), (θ * r - ν)) / r :=
+      (div_le_div_iff_of_pos_right hr).2 hbound
+    _ ≤ ∑ ν ∈ Finset.range (n + 1), max 0 (θ - ν / r) := by
+      simp only [Finset.sum_div, sub_div, mul_div_cancel_right₀ _ hr.ne']
+      exact Finset.sum_le_sum fun ν _ ↦ le_max_right _ _
+    _ ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / r) :=
+      Finset.sum_le_sum_of_subset_of_nonneg (Finset.range_subset_range.2
+        ((Nat.floor_lt (mul_nonneg hθ hr.le)).2 hl))
+        fun _ _ _ ↦ le_max_left _ _
+
+private lemma mul_sq_div_three_le_sum_max_aux {θ r : ℝ} (hθ : 0 ≤ θ) {l : ℕ} (hl : θ * r ≤ l) :
+    r * θ ^ 2 / 3 ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / r) := by
+  rcases le_or_gt r 0 with hr | hr
+  · exact (div_nonpos_of_nonpos_of_nonneg (mul_nonpos_of_nonpos_of_nonneg hr (sq_nonneg θ))
+      (by norm_num)).trans (Finset.sum_nonneg fun _ _ ↦ le_max_left _ _)
+  rcases lt_or_eq_of_le hl with hl | hl
+  · exact mul_sq_div_three_le_sum_max_of_pos_aux hr hθ hl
+  · linarith only [mul_div_two_le_sum_max_aux hl.ge, congrArg (· * θ) hl,
+      mul_nonneg hr.le (sq_nonneg θ)]
+
 /-- If `θ r_p > 10`, then `min(lθ/2, r_p θ²/3) ≤ ∑_{ν<l} max(0, θ - ν/r_p)`.
 Source: §5, proof of Lemma 6 ("Combining everything, we obtain
 `∑_{ν<l} max(0, θ - ν/r_p) ≥ min(lθ/2, r_p θ²/3)`", the two cases `θ r_p < l` and
-`θ r_p ≥ l`), for `θ r_p > 10`. -/
-theorem min_le_sum_max {θ : ℝ} {rp : ℕ} (hrp : 0 < rp) (hθ : 10 < θ * rp) (l : ℕ) :
+`θ r_p ≥ l`), for `θ r_p > 10`.
+The inequality also holds without the source's positivity and size assumptions. -/
+theorem min_le_sum_max {θ : ℝ} {rp : ℕ} (l : ℕ) :
     min (l * θ / 2) (rp * θ ^ 2 / 3) ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / rp) := by
-  have hrp' : (0 : ℝ) < rp := by exact_mod_cast hrp
-  have hθ0 : 0 < θ := pos_of_mul_pos_left (by linarith) hrp'.le
-  by_cases hl : (l : ℝ) ≤ θ * rp
-  · refine (min_le_left _ _).trans ?_
-    have hterm : ∀ ν ∈ Finset.range l, max 0 (θ - ν / rp) = θ - ν / rp := by
-      intro ν hν
-      apply max_eq_right
-      have hν' : (ν : ℝ) < l := by exact_mod_cast Finset.mem_range.1 hν
-      rw [sub_nonneg, div_le_iff₀ hrp']
-      linarith
-    rw [Finset.sum_congr rfl hterm, Finset.sum_sub_distrib, Finset.sum_const, Finset.card_range,
-      nsmul_eq_mul, ← Finset.sum_div]
-    have h1 := Finset.sum_range_id_mul_two l
-    have h2 : (∑ ν ∈ Finset.range l, (ν : ℝ)) * 2 = l * ((l : ℝ) - 1) := by
-      rcases Nat.eq_zero_or_pos l with rfl | hl0
-      · simp
-      · have : ((l - 1 : ℕ) : ℝ) = l - 1 := by rw [Nat.cast_sub hl0]; simp
-        rw [← this]
-        have := congrArg (Nat.cast (R := ℝ)) h1
-        push_cast at this
-        exact this
-    have hl0 : (0 : ℝ) ≤ l := Nat.cast_nonneg l
-    rw [le_sub_iff_add_le, div_add_div _ _ (by norm_num) hrp'.ne', div_le_iff₀ (by positivity)]
-    nlinarith
-  · push Not at hl
-    refine (min_le_right _ _).trans ?_
-    set n := ⌊θ * rp⌋₊
-    have hθr : 0 ≤ θ * rp := by positivity
-    have hn : n < l := (Nat.floor_lt hθr).2 hl
-    have hnle : (n : ℝ) ≤ θ * rp := Nat.floor_le hθr
-    calc (rp : ℝ) * θ ^ 2 / 3 = (θ * rp) ^ 2 / 3 / rp := by field_simp
-      _ ≤ (n : ℝ) ^ 2 / 2 / rp :=
-          (div_le_div_iff_of_pos_right hrp').2 (sq_div_three_lt_floor_sq_div_two hθ).le
-      _ ≤ (∑ ν ∈ Finset.range (n + 1), (θ * rp - ν)) / rp :=
-          (div_le_div_iff_of_pos_right hrp').2 (floor_sq_div_two_le_sum hθr)
-      _ = ∑ ν ∈ Finset.range (n + 1), max 0 (θ - ν / rp) := by
-          rw [Finset.sum_div]
-          refine Finset.sum_congr rfl fun ν hν => ?_
-          have hν' : (ν : ℝ) ≤ n := by exact_mod_cast Nat.lt_succ_iff.1 (Finset.mem_range.1 hν)
-          rw [max_eq_right]
-          · field_simp
-          · rw [sub_nonneg, div_le_iff₀ hrp']
-            linarith
-      _ ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / rp) :=
-          Finset.sum_le_sum_of_subset_of_nonneg (Finset.range_subset_range.2 hn)
-            fun _ _ _ => le_max_left _ _
+  by_cases hθ : θ ≤ 0
+  · exact (min_le_left _ _).trans ((div_nonpos_of_nonpos_of_nonneg
+      (mul_nonpos_of_nonneg_of_nonpos (Nat.cast_nonneg l) hθ) (by norm_num)).trans
+        (Finset.sum_nonneg fun _ _ ↦ le_max_left _ _))
+  rcases le_or_gt (l : ℝ) (θ * rp) with hl | hl
+  · exact (min_le_left _ _).trans (mul_div_two_le_sum_max_aux hl)
+  · exact (min_le_right _ _).trans (mul_sq_div_three_le_sum_max_aux (le_of_not_ge hθ) hl.le)
 
 /-- The index of the determinant `F = det (∂_{D_μ} ∂_{x_p}^ν R)_{μ,ν}` is at least
 `∑_{ν<l} max(0, ind R - ν/r_p) - lδ`, where `δ` bounds the weights of the derivatives `D_μ`.
@@ -578,7 +593,7 @@ theorem index_le_lem6 {δ : ℝ} (hδ0 : 0 < δ) (hδ1 : δ < 1) {r : Option τ 
           nlinarith
   have hlower := sum_max_sub_le_index_det hmapR D hD hFne α hr0 hδ'
   rw [← hmapdet] at hlower
-  have hmin := min_le_sum_max (hr0 none) h10 l
+  have hmin := min_le_sum_max (θ := θ) (rp := r none) l
   have hkey : min (l * θ / 2) (r none * θ ^ 2 / 3) ≤ l * (Φ + δ) := by
     have := hupper
     simp only [← hα, ← hMdef, ← hΦ] at this
