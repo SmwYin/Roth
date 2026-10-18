@@ -2479,3 +2479,7 @@ accepted real prefix profile:Θ_option158.615/144.368; public29 901.577/925.763;
 separate LeanEval37.676s both exit0; all17project/pin/source hashes stable.
 No new private helper; all three previously audited helpers unchanged. Original counts exclude revisits and helper audits. After successful publication:Theta30/35,overall211/264,9/14files.
 Next:original31 private one_lt_of_log_pos (assess direct existing Real.log_pos_iff replacement and actual deleted-wrapper absence/caller proofs). Actual whole-Theta profiling and final file phases remain outstanding.
+
+Original30 validated source/audit checkpoint: [b2e29b5](https://github.com/SmwYin/Roth/commit/b2e29b589e54b42db53803b718a9c4b71249bb9a).
+The following central-log metadata commit changes no Lean source; both commits publish
+together before original31 edits. Counts remain 211/264, Theta 30/35, 9/14 files.
