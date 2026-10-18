@@ -39,7 +39,7 @@ ordinary baseline builds passing does not imply any all-file profile pass.
 | # | Declaration | Initial line | Physical body lines | State |
 |---|---|---:|---:|---|
 | 1 | `RSet` | 49 | 1 | Complete;[audit](Theta-RSet.md) |
-| 2 | `indexSet` | 55 | 2 | Pending dedicated audit |
+| 2 | `indexSet` | 55 | 2 | Complete;[audit](Theta-indexSet.md) |
 | 3 | `Θ` | 61 | 0 | Pending dedicated audit |
 | 4 | `map_intCast_real_ne_zero` | 63 | 1 | Pending dedicated audit |
 | 5 | `degreeOf_map_intCast_real` | 67 | 1 | Pending dedicated audit |
@@ -81,3 +81,13 @@ applied. Fresh module,complete unfilteredLSP,original exacttype/value/actualstan
 uncontended actual prefixprofile36.027ms passed. Frozen sequential full+separateLeanEval exit0.
 After successful publication:1/35Theta originals;overall182/264,9/14filescomplete.
 No helpers/newpublicAPI;all29publicTheta contracts unchanged. Next:indexSet.
+
+## Published checkpoint2 — indexSet
+
+Dedicated fresh audit complete;one lambda arrow normalized,public exact type/value protected.
+Module,complete unfilteredLSP,independent originalvalue/actualstandardaxioms and uncontended
+exactsource-prefix profile33.915ms passed. Owner frozen full94.839s then separateLeanEval31.755s
+both exit0. After successful publication:2/35Theta originals;overall183/264,9/14filescomplete.
+The separate [contract menu](Theta-contract-proposal.md) is unapplied: whole independent candidate
+proofs compile,explicit originaltype adapters/candidateaxioms/ASTchecks are being added separately.
+No candidate preview is counted as a declaration audit. Next:Θ.

@@ -20,11 +20,13 @@ Started: 2026-10-14 (America/Chicago).
 
 ## Current status
 
-Latest completed file after successful final publication: Separation. Theta checkpoint1 completed;
-overall182/264 original declarations,9/14 files. Theta1/35originals(RSet) complete;
+Latest completed file after successful final publication: Separation. Theta checkpoint2 completed;
+overall183/264 original declarations,9/14 files. Theta2/35originals(RSet,indexSet) complete;
 fresh module,completeLSP,exactoriginaltype/value,actualstandardaxioms,uncontended prefixprofile
 and frozen sequential full+separateLeanEval passed. [RSet audit](cleanup/Theta-RSet.md).
-FullTheta profiling/remaining34originals/finalphases remain outstanding. See [Separation final report](cleanup/Separation-final.md). All30 original audits and all final gates complete; the project remains active,continuing with Theta.
+FullTheta profiling/remaining33originals/finalphases remain outstanding.
+A concrete [Theta contract menu](cleanup/Theta-contract-proposal.md) is compiled but UNAPPLIED;
+originaltype adapters/candidateaxiom/AST/caller verification is pending,with no broad approval inferred. See [Separation final report](cleanup/Separation-final.md). All30 original audits and all final gates complete; the project remains active,continuing with Theta.
 
 Build/tool setup completed; GitHub browser authentication and branch publication succeeded.
 The first file, `Roth/HasseDeriv.lean`, has completed all declaration and final review,
@@ -132,7 +134,7 @@ Files will be processed in dependency order; declarations within each file are s
 | `Roth/Lattice.lean` | 217 | All cleanup phases complete;10/10 originals and3/3 added helpers audited; user-preserved metadata |
 | `Roth/Index.lean` | 275 | All cleanup phases complete;21/21 originals audited; user-approved hypothesis groups applied and validated |
 | `Roth/Separation.lean` | 618 | Complete;30/30 originals and all final phases;source556lines27retained;all12 approved instance amendments validated |
-| `Roth/Theta.lean` | 981 | Active;1/35originals audited(RSet);preparation/importgrouping complete;fullfileperformance remains pending |
+| `Roth/Theta.lean` | 981 | Active;2/35originals audited(RSet,indexSet);preparation/importgrouping complete;fullfileperformance remains pending |
 | `Roth/MainLemma.lean` | 704 | Awaiting cleanup |
 | `Roth/Main.lean` | 684 | Awaiting cleanup |
 | `Roth/LeanEval.lean` | 60 | Awaiting cleanup |

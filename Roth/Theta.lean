@@ -55,7 +55,7 @@ def RSet (B : ℝ) (r : σ → ℕ) : Set (MvPolynomial σ ℤ) :=
 Source: §5, definition of `Θ_m`. -/
 def indexSet (B : ℝ) (q r : σ → ℕ) : Set ℝ :=
   {x | ∃ R ∈ RSet B r, ∃ h : σ → ℤ, (∀ j, IsCoprime (h j) (q j : ℤ)) ∧
-    index (map (Int.castRingHom ℝ) R) (fun j => (h j : ℝ) / q j) r = x}
+    index (map (Int.castRingHom ℝ) R) (fun j ↦ (h j : ℝ) / q j) r = x}
 
 /-- `Θ_m(B; q_1, …, q_m; r_1, …, r_m)` is the supremum of the indices `ind(R; h/q; r)` over
 `R ∈ ℛ_m(B; r)` and `h` with each `h_j` coprime to `q_j`. Source: §5, definition of `Θ_m`. -/
