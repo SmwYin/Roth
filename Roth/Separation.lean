@@ -447,10 +447,6 @@ theorem exists_int_eq_of_gcd_eq_one {ι : Type*} {s : Finset ι} {u : ι → ℤ
         rw [Finset.sum_mul]
         exact Finset.sum_congr rfl fun i hi ↦ by rw [mul_assoc, hw i hi]
 
-private lemma degreeOf_map_intCast {σ : Type*} (U : MvPolynomial σ ℤ) (j : σ) :
-    degreeOf j (map (Int.castRingHom ℚ) U) = degreeOf j U := by
-  rw [degreeOf_eq_sup, degreeOf_eq_sup, support_map_of_injective _ Int.cast_injective]
-
 /-- If an integer polynomial `F` factors over `ℚ` as `U'(x_τ) V'(x_none)` with nonzero factors,
 then it factors over `ℤ` as `U(x_τ) V(x_none)` with the same partial degrees.
 Source: §2, proof of Lemma 2 ("Thus `U, V` are integral and nonzero, as required"), together
@@ -503,8 +499,8 @@ theorem exists_int_factors {U' : MvPolynomial τ ℚ} {V' : Polynomial ℚ} (hU 
     rw [hF', map_mul (map (Int.castRingHom ℚ)), map_rename,
       Polynomial.map_aeval_eq_aeval_map (φ := Int.castRingHom ℚ) (Subsingleton.elim _ _), map_X,
       hVmap]
-  · rw [← degreeOf_map_intCast, hUmap, smul_eq_C_mul,
-      degreeOf_C_mul j g (mem_nonZeroDivisors_of_ne_zero hg)]
+  · rw [degreeOf, ← degrees_map_of_injective U (f := Int.castRingHom ℚ) Int.cast_injective,
+      hUmap, ← degreeOf, smul_eq_C_mul, degreeOf_C_mul j g (mem_nonZeroDivisors_of_ne_zero hg)]
   · rw [← Polynomial.natDegree_map_eq_of_injective (f := Int.castRingHom ℚ)
       (RingHom.injective_int _), hVmap, hV'',
       Polynomial.natDegree_C_mul (inv_ne_zero hg)]
@@ -528,7 +524,9 @@ theorem exists_det_eq_mul {P : MvPolynomial (Option τ) ℤ} (hP : P ≠ 0) {r :
   set PQ := map (Int.castRingHom ℚ) P with hPQdef
   have hPQ0 : PQ ≠ 0 := fun h =>
     hP (MvPolynomial.map_injective _ Int.cast_injective (h.trans (map_zero _).symm))
-  have hdeg : degreeOf none PQ ≤ r none := (degreeOf_map_intCast P none).trans_le (hr none)
+  have hdeg : degreeOf none PQ ≤ r none := by
+    simpa [degreeOf_def, hPQdef,
+      degrees_map_of_injective P (f := Int.castRingHom ℚ) Int.cast_injective] using hr none
   obtain ⟨l, hl1, hl2, φ, ψ, hφ, hψ, -, -, hPQ⟩ := exists_separated_representation hPQ0 hdeg
   have hW := wronskian_ne_zero_of_linearIndependent hφ
   obtain ⟨D, hD, hG⟩ := exists_genWronskian_ne_zero hψ

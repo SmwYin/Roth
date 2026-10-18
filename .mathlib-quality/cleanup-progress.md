@@ -125,7 +125,7 @@ Files will be processed in dependency order; declarations within each file are s
 | `Roth/GenWronskian.lean` | 292 | All cleanup phases complete;19/19 originals and2 added helpers audited; both user-approved public amendments applied;2 preserved warnings |
 | `Roth/Lattice.lean` | 217 | All cleanup phases complete;10/10 originals and3/3 added helpers audited; user-preserved metadata |
 | `Roth/Index.lean` | 275 | All cleanup phases complete;21/21 originals audited; user-approved hypothesis groups applied and validated |
-| `Roth/Separation.lean` | 618 | Active;27/30 originals audited at d27 published checkpoint; approved instance removals in progress; wrapper/domain API alternatives considered and declined |
+| `Roth/Separation.lean` | 618 | Active;28/30 originals audited at d28 published checkpoint; approved instance removals in progress; wrapper/domain API alternatives considered and declined |
 | `Roth/Theta.lean` | 981 | Awaiting cleanup |
 | `Roth/MainLemma.lean` | 704 | Awaiting cleanup |
 | `Roth/Main.lean` | 684 | Awaiting cleanup |
@@ -2107,3 +2107,16 @@ Final isolated actual repository /private/tmp/roth-d27-final-profile.log{,.json}
 Source FROZEN SHA256 `f8eda96bc0bc19d15d9137243f08cbac7d3d5ad2e031077526262520abfcac23`; leaf ownership revoked and requests drained before owner gates. Owner probe `73423` exit0,39.39s: independent ORIGINAL30 proof bodies,all20 original public type/value recoveries and ALL25 actual retained standardaxiom checks. `/private/tmp/roth-separation-d27-compatibility.{lean,log,json}`. Owner build session `66697` sequential `lake build` then separate `lake build Roth.LeanEval` both exit0,124.48s/30.65s; source hash stable. `/private/tmp/roth-separation-d27-{full,leaneval}.log`, `...-builds.json`. Owner original block docs byte-identical; exact diff/whitespace checked. Exact-path commit and successful cleanup-branch push precede next declaration.
 
 No new proposal/helper. Approved instance menu remains29both/30DecEq-onlyretainFintype. Prior two wrapper deletions/Domain widenings declined; optional d23 deletion and d26Ringwidening compiled/unapplied, retention recommended, no blocker. Next original28 private degreeOf_map_intCast.
+
+
+## Separation d28 checkpoint — degreeOf_map_intCast
+
+[Dedicated audit](cleanup/Separation-degreeOf_map_intCast.md): All 24 audit items, 42 golf rules, five actual search methods, every binder, width/inequality checks and 11 completion steps; Original28 duplicate private degree-preservation wrapper removed; two callers use degrees_map_of_injective directly, second via degreeOf_def to avoid differing decidability reductions. Source553→551, retained25→24, diff+5/-7. No newhelper/publicsignature/docschange. Source 553 → 551; 24 retained declarations. Separation 28/30, overall 179/264 original audits after successful publication; 8/14 files complete.
+
+Full fresh24/42/five actual searches/every binder/private literature exemption/width/inequality/11step audit. Actual final module build exit0 (...-d28-packed-build.log). Independent EXACT ORIGINAL private-type proof plus generic CommSemiring/injective-map proof and actual two callers standard-three axioms compile0 (...-d28-proof.log); suffix confirms removedconstant absent. Complete unfiltered native freezeLSP0errors/6unchangedwarnings/0info, success=true,partial=false,timed_out=false,no failed dependencies (...-d28-freeze_lsp.json). Allrequestsdrained, ALLsourceownershiprevoked; SHA4a1043e85ba9f8cc40be0801aa9bbc8e733f3ebc7beaf60449c884bad858e3b3.
+
+Final isolated actual repository /private/tmp/roth-d28-final-profile.log{,.json} exit0: removed target has no finalcost; changedcaller exists_int_factors67.978+666.075=734.053ms, exists_det_eq_mul111.276+434.620=545.896ms. Both below750/1000; no repeat, limits/scaffolding or whole-project speedupclaim.
+
+Source FROZEN SHA256 `4a1043e85ba9f8cc40be0801aa9bbc8e733f3ebc7beaf60449c884bad858e3b3`; leaf ownership revoked and requests drained before owner gates. Owner probe `18565` exit0,40.91s: independent ORIGINAL30 proof bodies,all20 original public type/value recoveries and ALL24 actual retained standardaxiom checks. `/private/tmp/roth-separation-d28-compatibility.{lean,log,json}`. Owner build session `84237` sequential `lake build` then separate `lake build Roth.LeanEval` both exit0,124.05s/28.75s; source hash stable. `/private/tmp/roth-separation-d28-{full,leaneval}.log`, `...-builds.json`. Owner original block docs byte-identical; exact diff/whitespace checked. Exact-path commit and successful cleanup-branch push precede next declaration.
+
+No new proposal/helper. Approved menu remains29both/30DecEq-onlyretainFintype. Prior two wrapperdeletions/Domainwidenings declined; optional d23deletion/d26Ringwidening compiled/unapplied, retentionrecommended, no blocker. Next headline original29 exists_int_factors; <=15body target, fresh independent audit for any newprivatehelper BEFORE publication.
