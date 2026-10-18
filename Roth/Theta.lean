@@ -111,8 +111,7 @@ theorem Θ_le_card {B : ℝ} (hB : 1 ≤ B) (q : σ → ℕ) {r : σ → ℕ} (h
 the claim"). -/
 theorem Θ_le_of_forall_index_le {B : ℝ} (hB : 1 ≤ B) {q r : σ → ℕ} {c : ℝ}
     (hc : ∀ R ∈ RSet B r, ∀ h : σ → ℤ, (∀ j, IsCoprime (h j) (q j : ℤ)) →
-      index (map (Int.castRingHom ℝ) R) (fun j => (h j : ℝ) / q j) r ≤ c) :
-    Θ B q r ≤ c := by
+      index (map (Int.castRingHom ℝ) R) (fun j ↦ (h j : ℝ) / q j) r ≤ c) : Θ B q r ≤ c := by
   refine csSup_le (indexSet_nonempty hB q r) ?_
   rintro _ ⟨R, hR, h, hh, rfl⟩
   exact hc R hR h hh

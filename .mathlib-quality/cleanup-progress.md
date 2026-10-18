@@ -20,20 +20,19 @@ Started: 2026-10-14 (America/Chicago).
 
 ## Current status
 
-Latest completed file after successful final publication: Separation. Theta checkpoint11 completed;
-overall192/264 original declarations,9/14 files. Theta11/35 originals complete. Latest Θ_le_card
-uses canonical Real.sSup_le; every original public binder/type/doc retained. Module, independent
-original/direct actual type+BinderInfo/standard axioms, complete unfiltered LSP0errors33warnings
-and uncontended exact-prefix155.638ms pass. Two new protected-unused hB/DecEq warnings documented;
-none suppressed. Frozen owner full69.923s THEN separateLeanEval21.839s both0.
-[Latest audit](cleanup/Theta-Theta_le_card.md). WholeTheta profiling, remaining24 originals and
-final phases remain outstanding; known late instrumented linarith failure awaits its audit.
-[Theta contract menu](cleanup/Theta-contract-proposal.md) A/B/C/D/E remains UNAPPLIED. NEW E
-removes Θ_le_card hB alongside old proposedhr/DecEq: actual-import independent candidate/explicit
-full-original lambda adapter/kernel equality/direct type+BinderInfo/AST/standardaxioms pass;
-zero actual callers, inference examples compile. D likewise verified for Θ_nonneg (four internal
-calls). All definitions and live public contracts unchanged; explicit decision pending.
-See [Separation final report](cleanup/Separation-final.md). Next:Θ_le_of_forall_index_le.
+Latest completed file after successful final publication: Separation. Theta checkpoint12 completed;
+overall193/264 original declarations,9/14 files. Theta12/35 originals complete. Latest
+Θ_le_of_forall_index_le only normalizes lambda notation and packs the conclusion; body3unchanged,
+all9original binders/types/docs retained. Module, independent original/direct actual type+BinderInfo/
+standard axioms, complete unfiltered LSP0errors33unchangedwarnings and uncontended exact-prefix
+27.993ms pass. Certified counterexample B0/c−1 establishes hB cannot simply drop/weaken here;
+dropping hc also certified false. Frozen owner full89.886s THEN separateLeanEval28.529s both0.
+[Latest audit](cleanup/Theta-Theta_le_of_forall_index_le.md). WholeTheta profiling, remaining23
+originals and final phases remain outstanding; known late instrumented linarith failure awaits
+its audit. [Theta contract menu](cleanup/Theta-contract-proposal.md) A/B/C/D/E stays UNAPPLIED;
+D/E fully verified actual-import stronger bounds await explicit decision. Existing definitions
+and every live public contract unchanged. See [Separation final report](cleanup/Separation-final.md).
+Next:Θ_mono.
 
 Build/tool setup completed; GitHub browser authentication and branch publication succeeded.
 The first file, `Roth/HasseDeriv.lean`, has completed all declaration and final review,

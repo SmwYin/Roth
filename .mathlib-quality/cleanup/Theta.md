@@ -49,7 +49,7 @@ ordinary baseline builds passing does not imply any all-file profile pass.
 | 9 | `index_le_Θ` | 96 | 1 | Complete;[audit](Theta-index_le_Theta.md) |
 | 10 | `Θ_nonneg` | 103 | 2 | Complete;[audit](Theta-Theta_nonneg.md) |
 | 11 | `Θ_le_card` | 109 | 4 | Complete;[audit](Theta-Theta_le_card.md) |
-| 12 | `Θ_le_of_forall_index_le` | 118 | 3 | Pending dedicated audit |
+| 12 | `Θ_le_of_forall_index_le` | 118 | 3 | Complete;[audit](Theta-Theta_le_of_forall_index_le.md) |
 | 13 | `Θ_mono` | 128 | 3 | Pending dedicated audit |
 | 14 | `indexSet_comp_subset` | 134 | 16 | Pending dedicated audit |
 | 15 | `Θ_equiv` | 155 | 4 | Pending dedicated audit |
@@ -208,3 +208,17 @@ publication:Theta11/35,overall192/264,9/14files complete. New [proposalE](Theta-
 removes this target's hB alongside prior proposedhr/DecEq, actual-import original lambda adapter/
 BinderInfo/AST/standardaxioms/inference trials verified, ZERO actual callers. Still UNAPPLIED.
 Next:Θ_le_of_forall_index_le.
+
+## Published checkpoint12 — Θ_le_of_forall_index_le
+
+Fresh full dedicated audit normalized one lambda arrow and packed the short conclusion;
+body3→3, declaration7→6. All nine original actual binders/types/docs preserved. Full24/42/
+five searches/every-binder/literature/inversion/packing/inequality/11gates complete. The hB
+requirement is certified: B0 gives empty indexSet and Θ0=0, so universal c−1 bound is vacuous
+while conclusion fails; dropping hc also has a compiled counterexample. Nonempty-set criterion
+is only an optional generic csSup_le restatement, retained current parameter API recommended.
+Module, independent original proof/direct actual old-type+BinderInfo/standard axioms and fresh
+complete native LSP0errors/33unchangedwarnings pass. Uncontended exact-prefix26.433→27.993ms,
+no speedup/filewideclaim. Owner frozen full/separateLeanEval/publication recorded in audit.
+After publication:Theta12/35,overall193/264,9/14files complete. AllA/B/C/D/E menus UNAPPLIED.
+Next:Θ_mono.
