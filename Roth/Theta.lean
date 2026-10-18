@@ -195,24 +195,24 @@ theorem exists_eq_pow_mul_of_rootMultiplicity {R : Polynomial ℤ} {h : ℤ} {q 
 
 /-- If the coefficients of a nonzero `R ∈ ℤ[X]` are bounded by `B` and `h / q`, with `h` coprime
 to `q > 0`, is a root of `R` of multiplicity `t`, then `q^t ≤ B`.
+It suffices to bound the absolute value of the leading coefficient.
 Source: §5, proof of Lemma 5 ("Comparing nonzero leading coefficients yields
 `B ≥ |lc(R)| = q_1^t |lc(Q)| ≥ q_1^t`"). -/
 theorem pow_rootMultiplicity_le {R : Polynomial ℤ} (hR : R ≠ 0) {h : ℤ} {q : ℕ} (hq : 0 < q)
-    (hcop : IsCoprime h (q : ℤ)) {B : ℝ} (hB : ∀ n, |((R.coeff n : ℤ) : ℝ)| ≤ B) :
+    (hcop : IsCoprime h (q : ℤ)) {B : ℝ} (hB : |(R.leadingCoeff : ℝ)| ≤ B) :
     (q : ℝ) ^ Polynomial.rootMultiplicity ((h : ℚ) / q) (R.map (Int.castRingHom ℚ)) ≤ B := by
   obtain ⟨Q, hQ⟩ := exists_eq_pow_mul_of_rootMultiplicity hq hcop
   set t := Polynomial.rootMultiplicity ((h : ℚ) / q) (R.map (Int.castRingHom ℚ))
-  have hQ0 : Q ≠ 0 := right_ne_zero_of_mul (hQ ▸ hR)
   have hlc : R.leadingCoeff = (q : ℤ) ^ t * Q.leadingCoeff := by
     rw [hQ, Polynomial.leadingCoeff_mul, Polynomial.leadingCoeff_pow, sub_eq_add_neg,
       ← Polynomial.C_neg, Polynomial.leadingCoeff_linear (by exact_mod_cast hq.ne')]
   have h1 : (1 : ℝ) ≤ |(Q.leadingCoeff : ℝ)| := by
-    exact_mod_cast Int.one_le_abs (Polynomial.leadingCoeff_ne_zero.2 hQ0)
-  have h2 := hB R.natDegree
-  rw [← Polynomial.leadingCoeff, hlc] at h2
-  push_cast at h2
-  rw [abs_mul, abs_pow, Nat.abs_cast] at h2
-  exact (le_mul_of_one_le_right (by positivity) h1).trans h2
+    exact_mod_cast Int.one_le_abs (Polynomial.leadingCoeff_ne_zero.2
+      (right_ne_zero_of_mul (hQ ▸ hR)))
+  rw [hlc] at hB
+  push_cast at hB
+  rw [abs_mul, abs_pow, Nat.abs_cast] at hB
+  exact (le_mul_of_one_le_right (by positivity) h1).trans hB
 
 /-- **Lemma 5**: in one variable, if `q > 1` then `Θ_1(B; q; r) ≤ log B / (r log q)`.
 Source: §5, Lemma `roth:lem5` ("Suppose additionally that `q_1 > 1`. Then
@@ -229,7 +229,7 @@ theorem Θ_unique_le [Unique σ] {B : ℝ} (hB : 1 ≤ B) {q : σ → ℕ} (hq :
   have hcoef : ∀ n, |((R1.coeff n : ℤ) : ℝ)| ≤ B := fun n => by
     rw [hR1, coeff_uniqueAlgEquiv]
     exact hRB _
-  have hpow := pow_rootMultiplicity_le hR10 hq0 (hh default) hcoef
+  have hpow := pow_rootMultiplicity_le hR10 hq0 (hh default) (hcoef R1.natDegree)
   have hmapeq : uniqueAlgEquiv ℝ σ (map (Int.castRingHom ℝ) R) =
       R1.map (Int.castRingHom ℝ) := by
     ext n

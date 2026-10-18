@@ -62,7 +62,10 @@ removals. No unselected row may be inferred from that probe's successful compile
 - Original 18, exists_eq_pow_mul_of_rootMultiplicity: approved C.hR removal applied; sole caller obsolete argument removed while its own hR/full original contract remain.
   Immutable original proof and full-old adapter, exact retained metadata/selected-drop AST, actual
   standard axioms, complete LSP, target/caller profiles and frozen full/LeanEval gates pass.
-- Next: original 19, pow_rootMultiplicity_le. Published originals now Theta 18/35, overall 199/264; approved revisits themselves do not increase counts.
+- Original 19, pow_rootMultiplicity_le: recommended hB localization to the absolute leading coefficient implemented under the user’s standing authorization after concrete compiled candidate/old-adapter/caller evidence.
+  Exact new premise and all other retained domains/metadata, independent originals, actual standard
+  axioms, complete LSP, repeated target/caller profiles and frozen full/LeanEval gates pass.
+- Next: original 20, headline Θ_unique_le (approved DecidableEq σ removal and proof shortening). Published originals now Theta 19/35, overall 200/264; approved revisits themselves do not increase counts.
 
 The evidence and proposal descriptions below were prepared before this decision. Their historic
 unapplied status is superseded only by the exact selected scope above and subsequent checkpoint
@@ -280,3 +283,28 @@ definitions after replacing exactly those two calls by `strong hMlt.le _`. Its a
 caller type is checked directly and its actual axiom set is standard. Thus the prospective
 minimal production fixes are `Θ_mono hMlt.le _` in both places; no caller or public API edit
 has been applied from this preview, and no additional original declaration is counted.
+
+
+## G. Original19: leading-coefficient localization (implemented under standing authorization)
+
+`pow_rootMultiplicity_le` now assumes only `hB : |(R.leadingCoeff : ℝ)| ≤ B`,
+rather than the uniform coefficient premise. Every other parameter/domain, argument mode/order/name
+and the conclusion remain. This strengthens the theorem by using precisely the coefficient
+compared in the proof and the paper. The sole `Θ_unique_le` caller supplies
+`hcoef R1.natDegree`; its full immutable original public contract remains unchanged.
+The original uniform-bound theorem is recovered by the explicit adapter specializing the old
+`hB` at `R.natDegree`, definitionally the leading coefficient. This change is separate from
+the earlier declined D/E/F changes to the Θ bounds, which remain declined and unapplied.
+
+Preapply candidate, original-contract adapter and candidate caller compiled exit0 before mutation:
+`/private/tmp/roth-rootmult-bound/preapply.lean` and `preapply.log`. Definitive post-build
+`actual-original.lean`/`.log` independently replay immutable originals and check the exact new
+premise, every other retained domain/name/order/BinderInfo, full-old adapter, original caller
+contract and actual standard axiom sets. Source edits were frozen before final sequential gates.
+Complete final LSP: 0 errors,18 warnings. Repeated accepted target/caller profiles:366.074/829.009ms,
+under1000ms with the required ≥750 caller repeat passed. Frozen full build77.364s then separate
+LeanEval24.504s both exit0 on all17identical project/pin hashes.
+[Detailed original19 audit](Theta-pow_rootMultiplicity_le.md). Original counts after publication:
+Theta19/35,overall200/264,9/14files; no new helper. The uncompiled cumulative final29 verifier
+now explicitly handles this exact hB specialization alongside the selected A/B/C removals;
+it is FINAL-STATE scaffolding, not a current all29 verification claim.

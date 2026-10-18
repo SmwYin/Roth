@@ -25,16 +25,16 @@ Started: 2026-10-14 (America/Chicago).
 
 ## Current status
 
-Latest completed file after successful final publication: Separation. Theta originals 18/35
-completed; overall 199/264 original declarations, 9/14 files. Latest original: exists_eq_pow_mul_of_rootMultiplicity.
-Applied the approved removal of unused hR from the integer root-multiplicity factorization. Inlined the single-use primitive-power fact and applied Gauss’s lemma directly, shortening the proof from fourteen lines to twelve. The sole caller deletes the obsolete argument and retains its own hR and complete original contract. Definitions, remaining domains/arguments, conclusion and documentation are unchanged.
-Fresh 24-item/42-rule audit, five actual searches, every-binder probes and public literature pass. Independent immutable original target/caller proofs, explicit full-old adapter, exact retained binder metadata and selected-drop AST, and actual standard axioms pass. The edited caller also profiles at 279.948 → 259.915 ms. Module and complete unfiltered LSP (0 errors / 18 warnings), accepted
-uncontended prefix profile (395.202 → 361.739 ms), frozen full build (58.997 s), then
-separate LeanEval (23.527 s), all pass. [Latest audit](cleanup/Theta-exists_eq_pow_mul_of_rootMultiplicity.md).
-No new production helper. Next: original 19, pow_rootMultiplicity_le.
+Latest completed file after successful final publication: Separation. Theta originals 19/35
+completed; overall 200/264 original declarations, 9/14 files. Latest original: pow_rootMultiplicity_le.
+Localized hB from a bound on every coefficient to the bound on the absolute leading coefficient used by the proof. This strengthens the theorem while retaining every other binder, its domains and conclusion. The original uniform premise recovers the new one at R.natDegree. The sole Θ_unique_le caller specializes hcoef there and keeps its complete original public contract. Proof thirteen → twelve lines; existing documentation and source quote preserved with one clarification.
+Fresh 24-item/42-rule audit, five actual searches, every-binder probes and public literature pass. Concrete preapply candidate/old adapter/caller compiled before the authorized edit. Definitive actual-built checks establish the exact localized premise, full-old adapter, other retained metadata, immutable independent proofs, and actual standard axioms. Required borderline caller repeats pass: 820.803 and 829.009 ms, with no speedup claim. Module and complete unfiltered LSP (0 errors / 18 warnings), accepted
+uncontended prefix profile (295.693 → 366.074 ms), frozen full build (77.364 s), then
+separate LeanEval (24.504 s), all pass. [Latest audit](cleanup/Theta-pow_rootMultiplicity_le.md).
+No new production helper. Next: original 20, headline Θ_unique_le (approved DecidableEq σ removal and proof shortening).
 [Exact contract decision](cleanup/Theta-contract-proposal.md): selected A/B/C scope applies;
 prior explicit hq and extra hB/hr preservation choices remain. Whole-Theta profiling,
-17 remaining originals and final phases are outstanding.
+16 remaining originals and final phases are outstanding. The known late index_le_lem6 instrumented default-heartbeat failure awaits its dedicated audit.
 
 Build/tool setup completed; GitHub browser authentication and branch publication succeeded.
 The first file, `Roth/HasseDeriv.lean`, has completed all declaration and final review,

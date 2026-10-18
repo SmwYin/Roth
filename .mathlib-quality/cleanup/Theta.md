@@ -56,7 +56,7 @@ ordinary baseline builds passing does not imply any all-file profile pass.
 | 16 | `isPrimitive_linear` | 164 | 9 | Complete;[audit](Theta-isPrimitive_linear.md) |
 | 17 | `isPrimitive_pow` | 176 | 3 | Complete;[audit](Theta-isPrimitive_pow.md) |
 | 18 | `exists_eq_pow_mul_of_rootMultiplicity` | 187 | 14 | Complete;[audit](Theta-exists_eq_pow_mul_of_rootMultiplicity.md) |
-| 19 | `pow_rootMultiplicity_le` | 210 | 13 | Pending dedicated audit |
+| 19 | `pow_rootMultiplicity_le` | 210 | 13 | Complete;[audit](Theta-pow_rootMultiplicity_le.md) |
 | 20 | `Θ_unique_le` | 230 | 29 | Pending dedicated audit |
 | 21 | `lem6M` | 270 | 1 | Pending dedicated audit |
 | 22 | `lem6Φ` | 275 | 1 | Pending dedicated audit |
@@ -444,3 +444,14 @@ Accepted uncontended exact-prefix profile: 395.202 → 361.739 ms; no whole-file
 Frozen owner full (58.997 s) then separate LeanEval (23.527 s) pass.
 [Dedicated audit](Theta-exists_eq_pow_mul_of_rootMultiplicity.md). Theta 18/35, overall 199/264 originals;9/14 files complete.
 No new production helper. Next: original 19, pow_rootMultiplicity_le.
+
+
+## Published checkpoint19 — pow_rootMultiplicity_le
+
+Localized hB from a bound on every coefficient to the bound on the absolute leading coefficient used by the proof. This strengthens the theorem while retaining every other binder, its domains and conclusion. The original uniform premise recovers the new one at R.natDegree. The sole Θ_unique_le caller specializes hcoef there and keeps its complete original public contract. Proof thirteen → twelve lines; existing documentation and source quote preserved with one clarification.
+
+Fresh 24-item/42-rule audit, five actual searches, every-binder probes and public literature pass. Concrete preapply candidate/old adapter/caller compiled before the authorized edit. Definitive actual-built checks establish the exact localized premise, full-old adapter, other retained metadata, immutable independent proofs, and actual standard axioms. Required borderline caller repeats pass: 820.803 and 829.009 ms, with no speedup claim. Module and complete unfiltered final LSP pass with 0 errors / 18 warnings.
+Accepted uncontended exact-prefix profile: 295.693 → 366.074 ms; no whole-file performance claim.
+Frozen owner full (77.364 s) then separate LeanEval (24.504 s) pass.
+[Dedicated audit](Theta-pow_rootMultiplicity_le.md). Theta 19/35, overall 200/264 originals;9/14 files complete.
+No new production helper. Next: original 20, headline Θ_unique_le (approved DecidableEq σ removal and proof shortening).
