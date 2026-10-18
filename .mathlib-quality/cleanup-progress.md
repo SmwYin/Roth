@@ -2335,3 +2335,7 @@ accepted real prefix profile:131.343 (conservative including tiny lazy definitio
 separate LeanEval26.327s both exit0; all17project/pin/source hashes stable.
 No new production helper; the prior helper remains separately audited. After successful publication:Theta23/35,overall204/264,9/14files.
 Next:original 24, floor_sq_div_two_le_sum. Actual whole-Theta profiling and final file phases remain outstanding.
+
+Original23 validated source/audit checkpoint: [e5f28a0](https://github.com/SmwYin/Roth/commit/e5f28a07323b41272721234fd3770b728d658c13).
+The following central-log metadata commit changes no Lean source; both commits publish
+together before original24 edits. Counts remain 204/264, Theta 23/35, 9/14 files.
