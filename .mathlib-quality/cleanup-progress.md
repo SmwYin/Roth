@@ -2303,3 +2303,7 @@ accepted real prefix profile:37.516 ms. Frozen full build5.980s then
 separate LeanEval3.018s both exit0; all17project/pin/source hashes stable.
 No new production helper; the previously added helper remains separately audited. After successful publication:Theta21/35,overall202/264,9/14files.
 Next:original 22, public definition lem6Φ. Actual whole-Theta profiling and final file phases remain outstanding.
+
+Original21 validated source/audit checkpoint: [c366f7c](https://github.com/SmwYin/Roth/commit/c366f7c61ac742abde10c91713b73dc5c7b7243b).
+The following central-log metadata commit changes no Lean source; both commits publish
+together before original22 edits. Counts remain 202/264, Theta 21/35, 9/14 files.
