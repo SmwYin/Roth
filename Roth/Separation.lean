@@ -367,24 +367,7 @@ section Integrality
 ("if integer coefficients `u_a` have gcd `1` ... by a Bézout relation"). -/
 theorem exists_sum_mul_eq_gcd {ι : Type*} (s : Finset ι) (u : ι → ℤ) :
     ∃ z : ι → ℤ, ∑ i ∈ s, z i * u i = s.gcd u := by
-  classical
-  induction s using Finset.induction_on with
-  | empty => exact ⟨0, by simp⟩
-  | insert a s has ih =>
-    obtain ⟨z, hz⟩ := ih
-    refine ⟨fun i => if i = a then Int.gcdA (u a) (s.gcd u)
-      else Int.gcdB (u a) (s.gcd u) * z i, ?_⟩
-    have hs : ∑ i ∈ s, (if i = a then Int.gcdA (u a) (s.gcd u)
-        else Int.gcdB (u a) (s.gcd u) * z i) * u i =
-        Int.gcdB (u a) (s.gcd u) * ∑ i ∈ s, z i * u i := by
-      rw [Finset.mul_sum]
-      refine Finset.sum_congr rfl fun i hi => ?_
-      rw [ite_eq_right (fun h : i = a => has (h ▸ hi))]
-      ring
-    rw [Finset.sum_insert has]
-    beta_reduce
-    rw [ite_eq_left rfl, hs, hz, Finset.gcd_insert, ← Int.coe_gcd, Int.gcd_eq_gcd_ab]
-    ring
+  simpa [eq_comm, mul_comm] using Finset.gcd_eq_sum_mul s u
 
 /-- A rational polynomial becomes integral after multiplication by a positive integer.
 Source: §2, proof of Lemma 2 ("clearing denominators"). -/
