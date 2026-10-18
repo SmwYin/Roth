@@ -42,7 +42,7 @@ ordinary baseline builds passing does not imply any all-file profile pass.
 | 2 | `indexSet` | 55 | 2 | Complete;[audit](Theta-indexSet.md) |
 | 3 | `Θ` | 61 | 0 | Complete;[audit](Theta-Theta.md) |
 | 4 | `map_intCast_real_ne_zero` | 63 | 1 | Complete; deleted Mathlib wrapper;[audit](Theta-map_intCast_real_ne_zero.md) |
-| 5 | `degreeOf_map_intCast_real` | 67 | 1 | Pending dedicated audit |
+| 5 | `degreeOf_map_intCast_real` | 67 | 1 | Complete; deleted Mathlib wrapper;[audit](Theta-degreeOf_map_intCast_real.md) |
 | 6 | `one_mem_RSet` | 73 | 3 | Pending dedicated audit |
 | 7 | `indexSet_nonempty` | 80 | 1 | Pending dedicated audit |
 | 8 | `indexSet_bddAbove` | 86 | 4 | Pending dedicated audit |
@@ -114,3 +114,17 @@ Owner sequential full/separateLeanEval gates and exact publication recorded in t
 After successful publication:4/35Theta originals;overall185/264,9/14filescomplete.
 RSet's original accepted raw trace was re-accounted conservatively at61.649ms including async/lint;
 no source or timing sample changed. Contract menu remains UNAPPLIED. Next:degreeOf_map_intCast_real.
+
+## Published checkpoint5 — degreeOf_map_intCast_real
+
+Fresh dedicated audit deleted the private degree wrapper and rewrote both coordinate-bound
+families directly using Mathlib degreeOf_def/degrees_map_of_injective. No helper/public amendment.
+Module, complete unfiltered LSP0errors/27warnings, independent original proof/value/type and binder
+probes, independent original caller proofs, direct actual caller-type comparisons, actual standard
+axioms and deleted private-suffix scan pass. One unused-section-instance warning disappears because
+the new proof consumes the retained DecidableEq; no argument was removed or warning suppressed.
+Uncontended exact-prefix traces: original31.035ms; edited callers188.193/178.634ms (<750ms).
+The deliberate direct specialization is slower than the wrapper applications but comfortably
+within budget; no whole-file performance success inferred. Owner sequential full/separateLeanEval
+and publication are recorded in the dedicated report. After successful publication:Theta5/35,
+overall186/264,9/14files complete. Contract menu remains UNAPPLIED. Next:one_mem_RSet.

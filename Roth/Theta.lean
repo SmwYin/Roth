@@ -61,10 +61,6 @@ def indexSet (B : ℝ) (q r : σ → ℕ) : Set ℝ :=
 `R ∈ ℛ_m(B; r)` and `h` with each `h_j` coprime to `q_j`. Source: §5, definition of `Θ_m`. -/
 noncomputable def Θ (B : ℝ) (q r : σ → ℕ) : ℝ := sSup (indexSet B q r)
 
-private lemma degreeOf_map_intCast_real {σ : Type*} (R : MvPolynomial σ ℤ) (j : σ) :
-    degreeOf j (map (Int.castRingHom ℝ) R) = degreeOf j R := by
-  rw [degreeOf_eq_sup, degreeOf_eq_sup, support_map_of_injective _ Int.cast_injective]
-
 /-- If `1 ≤ B`, the constant polynomial `1` lies in `ℛ_m(B; r)`. Source: §5 ("the constant
 polynomial `1` with every `h_i = 1` is allowed"). -/
 theorem one_mem_RSet {B : ℝ} (hB : 1 ≤ B) (r : σ → ℕ) : (1 : MvPolynomial σ ℤ) ∈ RSet B r := by
@@ -85,7 +81,9 @@ theorem indexSet_bddAbove (B : ℝ) (q : σ → ℕ) {r : σ → ℕ} (hr : ∀ 
   refine ⟨Fintype.card σ, ?_⟩
   rintro _ ⟨R, ⟨hR0, hRd, -⟩, h, -, rfl⟩
   exact index_le_card ((map_ne_zero_iff _ (map_injective _ Int.cast_injective)).2 hR0)
-    (fun j => (degreeOf_map_intCast_real R j).trans_le (hRd j)) _
+    (by
+      simpa [degreeOf_def, degrees_map_of_injective R (f := Int.castRingHom ℝ)
+        Int.cast_injective] using hRd) _
 
 /-- The index of any `R ∈ ℛ_m(B; r)` at a point `(h_j / q_j)_j` with each `h_j` coprime to `q_j`
 is at most `Θ_m(B; q; r)`. Source: §5, definition of `Θ_m` as a supremum, and the Lean note
@@ -108,7 +106,9 @@ theorem Θ_le_card {B : ℝ} (hB : 1 ≤ B) (q : σ → ℕ) {r : σ → ℕ} (h
   refine csSup_le (indexSet_nonempty hB q r) ?_
   rintro _ ⟨R, ⟨hR0, hRd, -⟩, h, -, rfl⟩
   exact index_le_card ((map_ne_zero_iff _ (map_injective _ Int.cast_injective)).2 hR0)
-    (fun j => (degreeOf_map_intCast_real R j).trans_le (hRd j)) _
+    (by
+      simpa [degreeOf_def, degrees_map_of_injective R (f := Int.castRingHom ℝ)
+        Int.cast_injective] using hRd) _
 
 /-- A bound on every index is a bound on `Θ`. Source: §5, Lemma 5 ("Taking the supremum proves
 the claim"). -/
