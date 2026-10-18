@@ -25,16 +25,16 @@ Started: 2026-10-14 (America/Chicago).
 
 ## Current status
 
-Latest completed file after successful final publication: Separation. Theta originals 22/35
-completed; overall 203/264 original declarations, 9/14 files. Latest original: lem6Φ.
-Normalized three ordinary lambda arrows to ↦ in the one-line Φ definition. Its complete original telescope, mathematical value, public API, paper documentation and all callers remain unchanged; no helper introduced.
-Fresh 24-item/42-rule audit, five actual searches, all six effective binder probes, literature/inversion and measured tables pass. Independently elaborated immutable RSet/indexSet/Θ/Φ definitions, exact telescope metadata, type/value definitional equality and kernel rfl checks pass against the rebuilt actual constant; actual axioms remain standard only. Module and complete unfiltered LSP (0 errors / 17 warnings), accepted
-uncontended prefix profile (19.752 ms), frozen full build (65.683 s), then
-separate LeanEval (26.314 s), all pass. [Latest audit](cleanup/Theta-lem6Phi.md).
-No new production helper; the prior helper remains separately audited. Next: original 23, one_le_lem6M.
+Latest completed file after successful final publication: Separation. Theta originals 23/35
+completed; overall 204/264 original declarations, 9/14 files. Latest original: one_le_lem6M.
+Shortened the M lower-bound proof from eight to six body lines, replacing linarith with ordered-add nonnegativity and direct existing product/power lemmas. All public arguments, conclusion, name, documentation and callers remain unchanged.
+Dedicated 24-item/42-rule audit, five actual searches, all five effective binder probes with independent counterexamples, literature/inversion and measured tables pass. Immutable independent original nonself proof, exact complete original type AST/binder metadata and actual built standard-axiom checks pass. Module and complete unfiltered LSP (0 errors / 17 warnings), accepted
+uncontended prefix profile (131.343 (conservative including tiny lazy definition-equation tasks <133; baseline 284.544, conservatively <286) ms), frozen full build (73.770 s), then
+separate LeanEval (26.327 s), all pass. [Latest audit](cleanup/Theta-one_le_lem6M.md).
+No new production helper; the prior helper remains separately audited. Next: original 24, floor_sq_div_two_le_sum.
 [Exact contract decision](cleanup/Theta-contract-proposal.md): selected A/B/C scope applies;
 prior explicit hq and extra hB/hr preservation choices remain. Whole-Theta profiling,
-13 remaining originals and final phases are outstanding. The known late index_le_lem6 instrumented default-heartbeat failure awaits its dedicated audit.
+12 remaining originals and final phases are outstanding. The known late index_le_lem6 instrumented default-heartbeat failure awaits its dedicated audit.
 
 Build/tool setup completed; GitHub browser authentication and branch publication succeeded.
 The first file, `Roth/HasseDeriv.lean`, has completed all declaration and final review,
@@ -2323,3 +2323,15 @@ Next:original 23, one_le_lem6M. Actual whole-Theta profiling and final file phas
 Original22 validated source/audit checkpoint: [30814e0](https://github.com/SmwYin/Roth/commit/30814e00237eb0802eac8ffa96b7a69bde92b9e9).
 The following central-log metadata commit changes no Lean source; both commits publish
 together before original23 edits. Counts remain 203/264, Theta 22/35, 9/14 files.
+
+
+## Theta original23 checkpoint — one_le_lem6M
+
+Shortened the M lower-bound proof from eight to six body lines, replacing linarith with ordered-add nonnegativity and direct existing product/power lemmas. All public arguments, conclusion, name, documentation and callers remain unchanged.
+
+Dedicated 24-item/42-rule audit, five actual searches, all five effective binder probes with independent counterexamples, literature/inversion and measured tables pass. Immutable independent original nonself proof, exact complete original type AST/binder metadata and actual built standard-axiom checks pass. [Dedicated audit](cleanup/Theta-one_le_lem6M.md).
+Final Theta SHA256 `5c4aa2d1347aba94a182fdbe58a06e78f19ada9568e8f0b33876469ce8781cea`. Module and complete unfiltered LSP:0 errors/17 warnings;
+accepted real prefix profile:131.343 (conservative including tiny lazy definition-equation tasks <133; baseline 284.544, conservatively <286) ms. Frozen full build73.770s then
+separate LeanEval26.327s both exit0; all17project/pin/source hashes stable.
+No new production helper; the prior helper remains separately audited. After successful publication:Theta23/35,overall204/264,9/14files.
+Next:original 24, floor_sq_div_two_le_sum. Actual whole-Theta profiling and final file phases remain outstanding.

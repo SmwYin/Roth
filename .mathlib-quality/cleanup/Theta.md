@@ -60,7 +60,7 @@ ordinary baseline builds passing does not imply any all-file profile pass.
 | 20 | `Θ_unique_le` | 230 | 29 | Complete;[audit](Theta-Theta_unique_le.md) |
 | 21 | `lem6M` | 270 | 1 | Complete;[audit](Theta-lem6M.md) |
 | 22 | `lem6Φ` | 275 | 1 | Complete;[audit](Theta-lem6Phi.md) |
-| 23 | `one_le_lem6M` | 279 | 8 | Pending dedicated audit |
+| 23 | `one_le_lem6M` | 279 | 8 | Complete;[audit](Theta-one_le_lem6M.md) |
 | 24 | `floor_sq_div_two_le_sum` | 291 | 11 | Pending dedicated audit |
 | 25 | `sq_div_three_lt_floor_sq_div_two` | 307 | 5 | Pending dedicated audit |
 | 26 | `min_le_sum_max` | 319 | 46 | Pending dedicated audit |
@@ -488,3 +488,14 @@ Accepted uncontended exact-prefix profile: 19.752 ms; no whole-file performance 
 Frozen owner full (65.683 s) then separate LeanEval (26.314 s) pass.
 [Dedicated audit](Theta-lem6Phi.md). Theta 22/35, overall 203/264 originals;9/14 files complete.
 No new production helper; the prior helper remains separately audited. Next: original 23, one_le_lem6M.
+
+
+## Published checkpoint23 — one_le_lem6M
+
+Shortened the M lower-bound proof from eight to six body lines, replacing linarith with ordered-add nonnegativity and direct existing product/power lemmas. All public arguments, conclusion, name, documentation and callers remain unchanged.
+
+Dedicated 24-item/42-rule audit, five actual searches, all five effective binder probes with independent counterexamples, literature/inversion and measured tables pass. Immutable independent original nonself proof, exact complete original type AST/binder metadata and actual built standard-axiom checks pass. Module and complete unfiltered final LSP pass with 0 errors / 17 warnings.
+Accepted uncontended exact-prefix profile: 131.343 (conservative including tiny lazy definition-equation tasks <133; baseline 284.544, conservatively <286) ms; no whole-file performance claim.
+Frozen owner full (73.770 s) then separate LeanEval (26.327 s) pass.
+[Dedicated audit](Theta-one_le_lem6M.md). Theta 23/35, overall 204/264 originals;9/14 files complete.
+No new production helper; the prior helper remains separately audited. Next: original 24, floor_sq_div_two_le_sum.

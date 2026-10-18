@@ -273,13 +273,11 @@ noncomputable def lem6Φ (q r : Option τ → ℕ) (M : ℝ) (l : ℕ) : ℝ :=
 /-- The constant `M` of Lemma 6 is at least `1` when `B` is. Source: §5, proof of Lemma 6. -/
 theorem one_le_lem6M (p r₁ : ℕ) {B : ℝ} (hB : 1 ≤ B) (l : ℕ) : 1 ≤ lem6M p r₁ B l := by
   rw [lem6M]
-  have h1 : (1 : ℝ) ≤ ((r₁ : ℝ) + 1) ^ (p * l) :=
-    one_le_pow₀ (by linarith [(Nat.cast_nonneg r₁ : (0 : ℝ) ≤ r₁)])
-  have h2 : (1 : ℝ) ≤ l.factorial := by exact_mod_cast Nat.factorial_pos l
-  have h3 : (1 : ℝ) ≤ B ^ l := one_le_pow₀ hB
-  have h4 : (1 : ℝ) ≤ 2 ^ (p * l * r₁) := one_le_pow₀ (by norm_num)
-  exact one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le
-    (one_le_mul_of_one_le_of_one_le h1 h2) h3) h4
+  refine one_le_mul_of_one_le_of_one_le
+    (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le ?_ ?_)
+      (one_le_pow₀ hB)) (one_le_pow₀ (by norm_num))
+  · exact one_le_pow₀ (le_add_of_nonneg_left (Nat.cast_nonneg r₁))
+  · exact_mod_cast Nat.factorial_pos l
 
 /-- For `a ≥ 0`, `⌊a⌋² / 2 ≤ ∑_{0 ≤ ν ≤ ⌊a⌋} (a - ν)`. Source: §5, proof of Lemma 6, first
 FACT ("For any `α ≥ 0` we have `∑_{0 ≤ ν ≤ α} (α - ν) ≥ [α]²/2`"). -/
