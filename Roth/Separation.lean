@@ -281,6 +281,7 @@ private lemma eq_sum_aeval_basis_coeffNone_aux {R : Type*} [CommSemiring R]
     Polynomial.aeval_X]
   ac_rfl
 
+omit [Fintype τ] [DecidableEq τ] in
 /-- Over a field, a nonzero `P` of degree at most `n` in `x_none` can be written as
 `∑_{ν < l} φ_ν(x_none) ψ_ν(x_τ)` with `1 ≤ l ≤ n + 1`, both families linearly independent,
 `deg φ_ν ≤ n`, and each `ψ_ν` of degree in `x_j` at most that of `P`.
