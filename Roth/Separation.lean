@@ -129,18 +129,6 @@ theorem aeval_X_eq_rename {σ : Type*} (i : σ) (f : Polynomial R) :
   AlgHom.congr_fun (Polynomial.toMvPolynomial_eq_rename_comp i) f
 
 omit [Fintype τ] [DecidableEq τ] in
-private lemma degreeOf_aeval_X_none_of_ne {o : Option τ} (ho : o ≠ none) (V : Polynomial R) :
-    degreeOf o (Polynomial.aeval (X none : MvPolynomial (Option τ) R) V) = 0 := by
-  classical
-  refine Nat.eq_zero_of_le_zero (degreeOf_le_iff.2 fun e he => ?_)
-  rw [aeval_X_eq_rename, support_rename_of_injective (fun _ _ _ => rfl), Finset.mem_image] at he
-  obtain ⟨u, -, rfl⟩ := he
-  have : o ∉ Set.range (fun _ : Unit => (none : Option τ)) := by
-    rintro ⟨_, h⟩
-    exact ho h.symm
-  simp [Finsupp.mapDomain_of_notMem_range _ _ this]
-
-omit [Fintype τ] [DecidableEq τ] in
 private lemma rename_some_ne_zero {U : MvPolynomial τ R} (hU : U ≠ 0) :
     rename some U ≠ 0 :=
   (map_ne_zero_iff _ (rename_injective _ (Option.some_injective τ))).2 hU
@@ -170,7 +158,10 @@ theorem hasseDeriv_rename_mul_aeval (d : τ →₀ ℕ) (ν : ℕ) (U : MvPolyno
       rw [Finset.mem_singleton.1 (Finsupp.support_single_subset hj)]
       simp [degreeOf, degrees_rename_of_injective (Option.some_injective τ)],
     hasseDeriv_single_aeval_X, mul_comm,
-    hasseDeriv_mul_of_degreeOf_eq_zero fun j hj => degreeOf_aeval_X_none_of_ne (hnone hj) _,
+    hasseDeriv_mul_of_degreeOf_eq_zero fun j hj ↦ by
+      simp [aeval_X_eq_rename, degreeOf,
+        degrees_rename_of_injective (Function.injective_of_subsingleton _), Multiset.mem_replicate,
+        hnone hj],
     hasseDeriv_rename (Option.some_injective τ), mul_comm]
 
 /-- Source: §5, proof of Lemma 6 ("`V(x_p) ∈ ℛ_1(M; l r_p)`"): the coefficients of a univariate
@@ -210,8 +201,9 @@ theorem degreeOf_rename_mul_aeval (U : MvPolynomial τ R) {V : Polynomial R} (hV
   by_cases hU : U = 0
   · simp [hU]
   rw [degreeOf_mul_eq (rename_some_ne_zero hU) (aeval_X_none_ne_zero hV),
-    degreeOf_rename_of_injective (Option.some_injective τ),
-    degreeOf_aeval_X_none_of_ne (Option.some_ne_none j), add_zero]
+    degreeOf_rename_of_injective (Option.some_injective τ)]
+  simp [aeval_X_eq_rename, degreeOf,
+    degrees_rename_of_injective (Function.injective_of_subsingleton _), Multiset.mem_replicate]
 
 /-- For `U ≠ 0`, the degree of `U(x_τ) V(x_none)` in `x_none` is the degree of `V`.
 Source: §2, end of the proof of Lemma 2. -/

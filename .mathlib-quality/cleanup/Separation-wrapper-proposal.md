@@ -12,7 +12,7 @@ The concrete option is to delete this public wrapper and replace every use with:
   AlgHom.comp_apply, AlgEquiv.coe_toAlgHom
 ```
 
-There are **seven references at six proof sites**: two external Theta uses (current
+At the D12 candidate source hash below, there are **seven references at six proof sites**: two external Theta uses (current
 lines 490 and 574), plus five uses at four Separation sites:
 `degreeOf_aeval_X_none_of_ne`, `aeval_X_none_ne_zero`,
 `degreeOf_none_rename_mul_aeval`, and `map_aeval_X_none` (two uses).
@@ -50,3 +50,8 @@ Source hashes at the combined probe:
 
 - Separation: `1d7e167ce78eb18a4815866a71a286989095d26499f49534db6af2ee823d2137`.
 - Theta: `7804edad88aa3e586df46b7722755ba89e67566c5434c58ae970d0dd2fbfa4fd`.
+
+Subsequent D13 private-helper removal moves and duplicates an internal wrapper call. The
+compiled proposal above records its explicit historical source hashes. Both proposals
+remain unapplied; refresh the full project inventory and exact candidate against the
+then-current source before applying any eventual approval.
