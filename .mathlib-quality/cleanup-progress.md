@@ -25,16 +25,21 @@ Started: 2026-10-14 (America/Chicago).
 
 ## Current status
 
-Latest completed file after successful final publication: Separation. Theta originals 29/35
-completed; overall 210/264 original declarations, 9/14 files. Latest original: index_le_lem6.
-Removed approved DecidableEqτ and extended the coordinate ratio from strict to nonstrict after concrete old-contract/caller verification. Replaced the default-heartbeat-failing broad arithmetic with a 22-line public assembly and separately audited weight, mapped-determinant and numeric arguments. Explicit hq remains; the entire original strict Θ_option_le caller contract is preserved.
-Fresh full24/42/five-actual-search/every-binder/literature/inversion/packing/inequality/11-step audits complete. Immutable independent entire original29 and original30 proofs, exact original adapter, retained names/types/BinderInfo/universes/conclusions, actual opaque proof values and standard axiom sets pass. Each of the three new private helpers received its own separate fresh audit, including exact first-proof recovery and generalized private-contract adapters; no original count inflation. Module and complete unfiltered LSP (0 errors / 10 warnings), accepted
-uncontended prefix profile (public895.050/854.163; weight408.013/361.605; mapped707.126/651.477; numeric939.576/873.525 (first/required-repeat; all<1000) ms), frozen full build (92.063 s), then
-separate LeanEval (29.415 s), all pass. [Latest audit](cleanup/Theta-index_le_lem6.md).
-Three substantive retained private helpers separately freshly audited: numeric16lines (δ≤1,rp≥3, noδ positivity premise), weight12lines (no weight-positivity premise), mapped determinant14lines (same signature). No new public domain or conclusion change. Next: fresh dedicated supported original29 arithmetic-boundary revisit K (counts unchanged), then original30 Θ_option_le.
-[Exact contract decision](cleanup/Theta-contract-proposal.md): selected A/B/C scope applies;
-prior explicit hq and extra hB/hr preservation choices remain. Whole-Theta profiling,
-6 remaining originals and final phases are outstanding. The old original29 instrumented default-200000-heartbeat failure was reproduced; trace finalization required termination (exit130), so no finite successful baseline time is claimed. Final accepted prefix timings fix that target; remaining originals and whole-module cumulative profiling/final phases remain outstanding.
+Latest completed file after successful final publication: Separation. Theta originals29/35
+completed; overall210/264 original declarations,9/14files. Supported original29 boundary
+revisit K completed without increasing counts. It weakens δ bounds to0≤δ≤1 and replaces
+the reciprocal degree restriction by3≤rnone; derived hr0/hB are removed only from
+index_le_lem6. Explicit hq, domains, exact conclusion and protected globalΘ hB/hr remain.
+Immutable original proof/explicit adapter, retained metadata/selected-drop AST/actual standard
+axioms and the entire affected caller proof/type/dependency pass. Module34.272s and complete
+unfiltered nativeLSP0errors11warnings pass. Both exact-prefix REAL sweeps pass: public996.125/936.382,
+numeric918.885/829.176,weight455.974/355.065,mapped722.709/634.434ms. Frozen full build92.105s
+THEN separateLeanEval29.557s pass with all17source/pin hashes unchanged.
+[Latest audit](cleanup/Theta-index_le_lem6-boundary-revisit.md). Next original30 Θ_option_le,
+including its selected DecidableEq removal and newly exposed unused hr0, with explicit hq retained.
+[Exact contract decisions](cleanup/Theta-contract-proposal.md): selected A/B/C and supported G–K
+applications; earlier hq/D–F preservation choices remain. Six remaining originals, whole-Theta
+profiling and final file phases are outstanding. No whole-module performance pass is claimed.
 
 Build/tool setup completed; GitHub browser authentication and branch publication succeeded.
 The first file, `Roth/HasseDeriv.lean`, has completed all declaration and final review,
@@ -2435,3 +2440,21 @@ Next:fresh dedicated supported original29 arithmetic-boundary revisit K (counts 
 Original29 validated source/audit checkpoint: [6ac4373](https://github.com/SmwYin/Roth/commit/6ac4373f79e3d1fab6350f6f4bb4dae1ef8041ca).
 The following central-log metadata commit changes no Lean source; both commits publish
 together before original30 edits. Counts remain 210/264, Theta 29/35, 9/14 files.
+
+
+## Theta supported original29 boundary revisit — K
+
+Applied the supported weakδ/rp3 boundary and derived-away index_le_lem6.hr0/hB under the
+standing instruction to implement recommended changes. Explicit hq and protected globalΘ
+hB/hr preferences remain. Entire original29+original30 independent proofs/oldadapters,
+actual metadata/opaquevalues/standardaxioms and the entire new caller proof's dependency pass.
+All three private helpers and outside-scope source are unchanged; no new helper/original.
+[Dedicated audit](cleanup/Theta-index_le_lem6-boundary-revisit.md).
+Final source SHA256 `59fc1479999b47953aff7aee6bf8be17a325e9523ca94375d8b48b273618e427`.
+Module34.272s/actual50.088s/complete unfiltered nativeLSP0errors11warnings pass. Both real
+exact-prefix sweeps pass: public996.125/936.382,numeric918.885/829.176,weight455.974/355.065,
+mapped722.709/634.434ms. No whole-module performance claim. Frozen full build92.105s THEN
+separateLeanEval29.557s both exit0 with all17 source/pin hashes stable.
+Counts unchanged210/264,Theta29/35,9/14files; validated revisits9 (eight prior approved scope,
+this one under standing recommendation authority). Next original30 Θ_option_le; reserved new
+caller hr0 warning and selected DecidableEq removal receive its own fresh audit.

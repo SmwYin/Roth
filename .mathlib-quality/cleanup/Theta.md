@@ -567,3 +567,19 @@ Accepted uncontended exact-prefix profile: public895.050/854.163; weight408.013/
 Frozen owner full (92.063 s) then separate LeanEval (29.415 s) pass.
 [Dedicated audit](Theta-index_le_lem6.md). Theta 29/35, overall 210/264 originals;9/14 files complete.
 Three substantive retained private helpers separately freshly audited: numeric16lines (δ≤1,rp≥3, noδ positivity premise), weight12lines (no weight-positivity premise), mapped determinant14lines (same signature). No new public domain or conclusion change. Next: fresh dedicated supported original29 arithmetic-boundary revisit K (counts unchanged), then original30 Θ_option_le.
+
+
+## Supported revisit of original 29 — index_le_lem6 arithmetic boundary
+
+Extended the exact index bound to 0≤δ, δ≤1 and 3≤rnone, replacing the old strict reciprocal-degree restriction. Removed redundant public hr0 and hB after concrete reconstruction proofs: the ratio and positive distinguished weight force all weights positive, and a nonzero integer coefficient plus its uniform bound force1≤B. Explicit hq is retained.
+
+Fresh dedicated full 24-item audit, 42 golf rules, five actual searches, every-binder probes,
+literature/inversion, packing, inequality scan and 11-step checklist pass. Immutable independent
+original proof and explicit old-telescope adapter recover the original contract from the actual
+new theorem; exact retained types/order/BinderInfo/user names, selected-drop AST and actual
+standard axioms pass. ENTIRE original Θ_option_le telescope and independent original proof retained; its minimal new proof explicitly calls the changed index theorem, forwards old strict δ bounds via.le, derives3≤rnone from the original reciprocal premise and omits only newly obsolete hr0/hB application arguments. Module and complete unfiltered final LSP pass with
+0 errors and 11 warnings. Accepted uncontended exact-prefix aggregate:
+public895.050/854.163, weight408.013/361.605, mapped707.126/651.477, numeric939.576/873.525 → public996.125/936.382, weight455.974/355.065, mapped722.709/634.434, numeric918.885/829.176 (first/required-repeat; all<1000) ms; no whole-file performance claim.
+Frozen owner full build (92.105 s), then separate LeanEval (29.557 s),
+both pass on identical SHA. [Dedicated revisit audit](Theta-index_le_lem6-boundary-revisit.md).
+Original counts unchanged: Theta 29/35, overall 210/264, 9/14 files. Next: original30 Θ_option_le (selected DecidableEq removal, explicit hq retained; assess corresponding supported boundary with concrete caller evidence).

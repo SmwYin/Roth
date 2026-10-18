@@ -542,15 +542,24 @@ omit [DecidableEq τ] in
 most `2(Φ + Φ^{1/2} + δ^{1/2})` for some `1 ≤ l ≤ r_p + 1`. Source: §5, Lemma `roth:lem6` and
 its proof ("We need to show that the index `ind(R; h/q; r)` is bounded by the right hand side
 of (13)"). -/
-theorem index_le_lem6 {δ : ℝ} (hδ0 : 0 < δ) (hδ1 : δ < 1) {r : Option τ → ℕ} (hr0 : ∀ j, 0 < r j)
-    (hrp : 10 / δ < r none) (hratio : ∀ j, (r none : ℝ) ≤ δ * r (some j)) {r₁ : ℕ}
-    (hr₁ : ∀ j, r j ≤ r₁) {q : Option τ → ℕ} (hq : ∀ j, 0 < q j) {B : ℝ} (hB : 1 ≤ B)
+theorem index_le_lem6 {δ : ℝ} (hδ0 : 0 ≤ δ) (hδ1 : δ ≤ 1) {r : Option τ → ℕ}
+    (hrp : 3 ≤ (r none : ℝ)) (hratio : ∀ j, (r none : ℝ) ≤ δ * r (some j)) {r₁ : ℕ}
+    (hr₁ : ∀ j, r j ≤ r₁) {q : Option τ → ℕ} (hq : ∀ j, 0 < q j) {B : ℝ}
     {R : MvPolynomial (Option τ) ℤ} (hR : R ∈ RSet B r) {h : Option τ → ℤ}
     (hh : ∀ j, IsCoprime (h j) (q j : ℤ)) : ∃ l, 1 ≤ l ∧ l ≤ r none + 1 ∧
-      index (map (Int.castRingHom ℝ) R) (fun j => (h j : ℝ) / q j) r ≤
+      index (map (Int.castRingHom ℝ) R) (fun j ↦ (h j : ℝ) / q j) r ≤
         2 * (lem6Φ q r (lem6M (Fintype.card τ + 1) r₁ B l) l +
           √(lem6Φ q r (lem6M (Fintype.card τ + 1) r₁ B l) l) + √δ) := by
   classical
+  have hr0 : ∀ j, 0 < r j := fun j ↦ by
+    cases j with
+    | none => exact_mod_cast (by linarith only [hrp] : (0 : ℝ) < r none)
+    | some j =>
+      exact_mod_cast pos_of_mul_pos_right
+        ((by linarith only [hrp] : (0 : ℝ) < r none).trans_le (hratio j)) hδ0
+  have hB : 1 ≤ B := by
+    obtain ⟨d, hd⟩ := MvPolynomial.ne_zero_iff.1 hR.1
+    exact (by exact_mod_cast Int.one_le_abs hd : (1 : ℝ) ≤ |(R.coeff d : ℝ)|).trans (hR.2.2 d)
   obtain ⟨l, hl, hl', D, hD, U, V, hU, hV, hUd, hVd, hF⟩ := exists_det_eq_mul hR.1 hR.2.1
   refine ⟨l, hl, hl', ?_⟩
   let α : Option τ → ℝ := fun j ↦ (h j : ℝ) / q j
@@ -559,15 +568,13 @@ theorem index_le_lem6 {δ : ℝ} (hδ0 : 0 < δ) (hδ1 : δ < 1) {r : Option τ 
   have hM1 := one_le_lem6M (Fintype.card τ + 1) r₁ hB l
   -- The two bounds for the index of `F`.
   have hlower := sum_max_sub_le_index_det D hD (mapped_det_ne_zero_aux hU hV hF) α hr0
-    (fun d hd ↦ weight_le_delta_aux hδ0.le hratio (by lia))
+    (fun d hd ↦ weight_le_delta_aux hδ0 hratio (by lia))
   have hupper := index_det_le hr0 hr₁ hR hh hl hU hV hUd hVd hF
   simp only [RingHom.map_det, RingHom.mapMatrix_apply, Matrix.map, Matrix.of_apply] at hupper
   simp only [hasseDeriv_map] at hlower
   apply index_numeric_bound_aux (Φ := Φ) (l := (l : ℝ))
     (add_nonneg (Θ_nonneg hM1 _ fun _ ↦ Nat.mul_pos hl (hr0 _))
-      (Θ_nonneg hM1 _ fun _ ↦ Nat.mul_pos hl (hr0 _))) hδ1.le
-    ((by norm_num : (3 : ℝ) ≤ 10).trans
-      ((le_div_self (by norm_num) hδ0 hδ1.le).trans hrp.le))
+      (Θ_nonneg hM1 _ fun _ ↦ Nat.mul_pos hl (hr0 _))) hδ1 hrp
     (by exact_mod_cast (show 0 < l from hl))
     (by exact_mod_cast hl')
   exact (min_le_sum_max (θ := index (map (Int.castRingHom ℝ) R) α r) (rp := r none) l).trans
@@ -584,7 +591,9 @@ theorem Θ_option_le {δ : ℝ} (hδ0 : 0 < δ) (hδ1 : δ < 1) {r : Option τ �
         √(lem6Φ q r (lem6M (Fintype.card τ + 1) r₁ B l) l) + √δ) := by
   refine Θ_le_of_forall_index_le hB fun R hR h hh => ?_
   obtain ⟨l, hl, hl', hle⟩ :=
-    index_le_lem6 hδ0 hδ1 hr0 hrp (fun j ↦ (hratio j).le) hr₁ hq hB hR hh
+    index_le_lem6 hδ0.le hδ1.le ((by norm_num : (3 : ℝ) ≤ 10).trans
+      ((le_div_self (by norm_num) hδ0 hδ1.le).trans hrp.le))
+      (fun j ↦ (hratio j).le) hr₁ hq hR hh
   refine hle.trans (mul_le_mul_of_nonneg_left ?_ (by norm_num))
   exact Finset.le_sup' (fun l => lem6Φ q r (lem6M (Fintype.card τ + 1) r₁ B l) l +
     √(lem6Φ q r (lem6M (Fintype.card τ + 1) r₁ B l) l) + √δ) (Finset.mem_Icc.2 ⟨hl, hl'⟩)
