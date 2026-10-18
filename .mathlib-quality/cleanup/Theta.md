@@ -57,7 +57,7 @@ ordinary baseline builds passing does not imply any all-file profile pass.
 | 17 | `isPrimitive_pow` | 176 | 3 | Complete;[audit](Theta-isPrimitive_pow.md) |
 | 18 | `exists_eq_pow_mul_of_rootMultiplicity` | 187 | 14 | Complete;[audit](Theta-exists_eq_pow_mul_of_rootMultiplicity.md) |
 | 19 | `pow_rootMultiplicity_le` | 210 | 13 | Complete;[audit](Theta-pow_rootMultiplicity_le.md) |
-| 20 | `Θ_unique_le` | 230 | 29 | Pending dedicated audit |
+| 20 | `Θ_unique_le` | 230 | 29 | Complete;[audit](Theta-Theta_unique_le.md) |
 | 21 | `lem6M` | 270 | 1 | Pending dedicated audit |
 | 22 | `lem6Φ` | 275 | 1 | Pending dedicated audit |
 | 23 | `one_le_lem6M` | 279 | 8 | Pending dedicated audit |
@@ -455,3 +455,14 @@ Accepted uncontended exact-prefix profile: 295.693 → 366.074 ms; no whole-file
 Frozen owner full (77.364 s) then separate LeanEval (24.504 s) pass.
 [Dedicated audit](Theta-pow_rootMultiplicity_le.md). Theta 19/35, overall 200/264 originals;9/14 files complete.
 No new production helper. Next: original 20, headline Θ_unique_le (approved DecidableEq σ removal and proof shortening).
+
+
+## Published checkpoint20 — Θ_unique_le
+
+Shortened the headline proof from twenty-nine lines to three by extracting the per-polynomial index/log bound. Applied only the approved public DecidableEq σ removal; hB/hr/Fintype and every other original public parameter/domain/conclusion remain. The one new private helper received a separate fresh audit: its positive-weight hypothesis was removed and coefficient hypothesis localized to the equivalent univariate leading coefficient, shortening its body from twenty-six to twenty-three lines.
+
+Both original and fresh helper audits complete all 24 items/42 rules/five actual searches/binder probes and their literature requirements. Final-source actual checks independently replay the immutable original public proof and INITIAL helper proof, recover both original contracts through explicit adapters, verify exact selected AST/retained metadata and actual standard axioms. Final helper/public timings are 481.521/73.124 ms (combined 554.645), after every normal request drained. The public hr warning remains unsuppressed under this audit’s preserved public-API scope. Module and complete unfiltered final LSP pass with 0 errors / 17 warnings.
+Accepted uncontended exact-prefix profile: public 829.009 → 73.124; new helper 481.521 ms; no whole-file performance claim.
+Frozen owner full (39.883 s) then separate LeanEval (15.025 s) pass.
+[Dedicated audit](Theta-Theta_unique_le.md). Theta 20/35, overall 201/264 originals;9/14 files complete.
+One new private helper independently audited and retained; helper audits do not increase original counts. Next: original 21, public definition lem6M.

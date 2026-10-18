@@ -25,16 +25,16 @@ Started: 2026-10-14 (America/Chicago).
 
 ## Current status
 
-Latest completed file after successful final publication: Separation. Theta originals 19/35
-completed; overall 200/264 original declarations, 9/14 files. Latest original: pow_rootMultiplicity_le.
-Localized hB from a bound on every coefficient to the bound on the absolute leading coefficient used by the proof. This strengthens the theorem while retaining every other binder, its domains and conclusion. The original uniform premise recovers the new one at R.natDegree. The sole Θ_unique_le caller specializes hcoef there and keeps its complete original public contract. Proof thirteen → twelve lines; existing documentation and source quote preserved with one clarification.
-Fresh 24-item/42-rule audit, five actual searches, every-binder probes and public literature pass. Concrete preapply candidate/old adapter/caller compiled before the authorized edit. Definitive actual-built checks establish the exact localized premise, full-old adapter, other retained metadata, immutable independent proofs, and actual standard axioms. Required borderline caller repeats pass: 820.803 and 829.009 ms, with no speedup claim. Module and complete unfiltered LSP (0 errors / 18 warnings), accepted
-uncontended prefix profile (295.693 → 366.074 ms), frozen full build (77.364 s), then
-separate LeanEval (24.504 s), all pass. [Latest audit](cleanup/Theta-pow_rootMultiplicity_le.md).
-No new production helper. Next: original 20, headline Θ_unique_le (approved DecidableEq σ removal and proof shortening).
+Latest completed file after successful final publication: Separation. Theta originals 20/35
+completed; overall 201/264 original declarations, 9/14 files. Latest original: Θ_unique_le.
+Shortened the headline proof from twenty-nine lines to three by extracting the per-polynomial index/log bound. Applied only the approved public DecidableEq σ removal; hB/hr/Fintype and every other original public parameter/domain/conclusion remain. The one new private helper received a separate fresh audit: its positive-weight hypothesis was removed and coefficient hypothesis localized to the equivalent univariate leading coefficient, shortening its body from twenty-six to twenty-three lines.
+Both original and fresh helper audits complete all 24 items/42 rules/five actual searches/binder probes and their literature requirements. Final-source actual checks independently replay the immutable original public proof and INITIAL helper proof, recover both original contracts through explicit adapters, verify exact selected AST/retained metadata and actual standard axioms. Final helper/public timings are 481.521/73.124 ms (combined 554.645), after every normal request drained. The public hr warning remains unsuppressed under this audit’s preserved public-API scope. Module and complete unfiltered LSP (0 errors / 17 warnings), accepted
+uncontended prefix profile (public 829.009 → 73.124; new helper 481.521 ms), frozen full build (39.883 s), then
+separate LeanEval (15.025 s), all pass. [Latest audit](cleanup/Theta-Theta_unique_le.md).
+One new private helper independently audited and retained; helper audits do not increase original counts. Next: original 21, public definition lem6M.
 [Exact contract decision](cleanup/Theta-contract-proposal.md): selected A/B/C scope applies;
 prior explicit hq and extra hB/hr preservation choices remain. Whole-Theta profiling,
-16 remaining originals and final phases are outstanding. The known late index_le_lem6 instrumented default-heartbeat failure awaits its dedicated audit.
+15 remaining originals and final phases are outstanding. The known late index_le_lem6 instrumented default-heartbeat failure awaits its dedicated audit.
 
 Build/tool setup completed; GitHub browser authentication and branch publication succeeded.
 The first file, `Roth/HasseDeriv.lean`, has completed all declaration and final review,
@@ -2264,3 +2264,26 @@ late index_le_lem6 instrumented default-heartbeat failure and earlier index_det_
 diagnostics remain assigned to their dedicated audits; failed diagnostic samples are not
 successful profiles. Header metadata and all earlier explicitly retained public wrappers/domains
 remain unchanged. No new helper was introduced in published originals 1–19.
+
+
+## Theta original20 checkpoint — one-variable bound and fresh helper audit
+
+The headline `Θ_unique_le` proof is29→3 lines; only approved DecidableEq σ is removed.
+Every other public hypothesis/domain/name/order/BinderInfo, including hB/hr/Fintype, remains.
+The ONE new private `index_unique_le_log_div` has its own distinct fresh full audit: body26→23,
+private positive-weight premise removed, coefficient premise localized to the univariate leading
+coefficient. Initial-helper and immutable-original public contracts are independently reproved
+and recovered by explicit adapters; actual selected type AST/retained metadata/standard axioms
+all pass. No unaudited helper remains in this batch, and helper audits do not increase originals.
+[Original audit](cleanup/Theta-Theta_unique_le.md),
+[fresh helper audit](cleanup/Theta-index_unique_le_log_div-helper.md).
+
+Final SHA `b9cd75fb1bf852d76868e8c6abc53ad4898664e13b1ec6701c1b40a144f538fa`; complete native unfiltered LSP0errors17warnings
+(success=true,partial=false,timed_out=false,faileddeps[]), with the intentional unused public hr
+warning retained. Accepted final same-source prefix helper481.521ms/public73.124ms; combined
+554.645ms, each below750/1000ms. Frozen full build39.883s then separate LeanEval15.025s both
+exit0, all17project/pin hashes stable. Exact source/report staging and successful push publish
+original20 before original21 edits. After publication: **201/264 originals,Theta20/35,9/14files**.
+Actual whole-Theta profiling and15remaining originals/final file phases remain outstanding.
+Next: public definition lem6M. The exact source-checkpoint commit link is appended immediately
+after committing this validated batch, before its atomic branch push.

@@ -214,26 +214,19 @@ theorem pow_rootMultiplicity_le {R : Polynomial ℤ} (hR : R ≠ 0) {h : ℤ} {q
   rw [abs_mul, abs_pow, Nat.abs_cast] at hB
   exact (le_mul_of_one_le_right (by positivity) h1).trans hB
 
-/-- **Lemma 5**: in one variable, if `q > 1` then `Θ_1(B; q; r) ≤ log B / (r log q)`.
-Source: §5, Lemma `roth:lem5` ("Suppose additionally that `q_1 > 1`. Then
-`Θ_1(B; q_1; r_1) ≤ log B / (r_1 log q_1)`"), for a single variable `σ`. -/
-theorem Θ_unique_le [Unique σ] {B : ℝ} (hB : 1 ≤ B) {q : σ → ℕ} (hq : 1 < q default) {r : σ → ℕ}
-    (hr : 0 < r default) : Θ B q r ≤ Real.log B / (r default * Real.log (q default)) := by
-  have hq0 : 0 < q default := by omega
-  have hlogq : 0 < Real.log (q default) := Real.log_pos (by exact_mod_cast hq)
-  have hrpos : (0 : ℝ) < r default := by exact_mod_cast hr
-  refine Θ_le_of_forall_index_le hB fun R hR h hh => ?_
-  obtain ⟨hR0, -, hRB⟩ := hR
-  set R1 : Polynomial ℤ := uniqueAlgEquiv ℤ σ R with hR1
-  have hR10 : R1 ≠ 0 := by rwa [hR1, ne_eq, map_eq_zero_iff _ (uniqueAlgEquiv ℤ σ).injective]
-  have hcoef : ∀ n, |((R1.coeff n : ℤ) : ℝ)| ≤ B := fun n => by
-    rw [hR1, coeff_uniqueAlgEquiv]
-    exact hRB _
-  have hpow := pow_rootMultiplicity_le hR10 hq0 (hh default) (hcoef R1.natDegree)
+omit [DecidableEq σ] in
+private lemma index_unique_le_log_div [Unique σ] {B : ℝ} {q r : σ → ℕ} (hq : 1 < q default)
+    {R : MvPolynomial σ ℤ} (hR : R ≠ 0) (hRB : |((uniqueAlgEquiv ℤ σ R).leadingCoeff : ℝ)| ≤ B)
+    {h : σ → ℤ} (hh : IsCoprime (h default) (q default : ℤ)) :
+    index (map (Int.castRingHom ℝ) R) (fun j ↦ (h j : ℝ) / q j) r ≤
+      Real.log B / (r default * Real.log (q default)) := by
+  classical
+  let R1 : Polynomial ℤ := uniqueAlgEquiv ℤ σ R
   have hmapeq : uniqueAlgEquiv ℝ σ (map (Int.castRingHom ℝ) R) =
       R1.map (Int.castRingHom ℝ) := by
+    dsimp only [R1]
     ext n
-    rw [coeff_uniqueAlgEquiv, Polynomial.coeff_map, hR1, coeff_uniqueAlgEquiv, coeff_map]
+    rw [coeff_uniqueAlgEquiv, Polynomial.coeff_map, coeff_uniqueAlgEquiv, coeff_map]
   have hmult : Polynomial.rootMultiplicity ((h default : ℝ) / q default)
       (R1.map (Int.castRingHom ℝ)) =
       Polynomial.rootMultiplicity ((h default : ℚ) / q default) (R1.map (Int.castRingHom ℚ)) := by
@@ -241,13 +234,25 @@ theorem Θ_unique_le [Unique σ] {B : ℝ} (hB : 1 ≤ B) {q : σ → ℕ} (hq :
       Polynomial.map_map]
     congr 1
     simp
-  rw [index_unique ((map_ne_zero_iff _ (map_injective _ Int.cast_injective)).2 hR0), hmapeq, hmult,
-    div_le_div_iff₀ hrpos (by positivity)]
-  have hlog : (Polynomial.rootMultiplicity ((h default : ℚ) / q default)
-      (R1.map (Int.castRingHom ℚ)) : ℝ) * Real.log (q default) ≤ Real.log B := by
-    rw [← Real.log_pow]
-    exact Real.log_le_log (by positivity) hpow
-  nlinarith
+  rw [index_unique ((map_ne_zero_iff _ (map_injective _ Int.cast_injective)).2 hR), hmapeq, hmult]
+  have hlog := Real.log_le_log (by positivity : (0 : ℝ) < (q default : ℝ) ^
+    Polynomial.rootMultiplicity ((h default : ℚ) / q default) (R1.map (Int.castRingHom ℚ)))
+    (pow_rootMultiplicity_le ((map_ne_zero_iff _ (uniqueAlgEquiv ℤ σ).injective).2 hR)
+      (Nat.zero_lt_of_lt hq) hh hRB)
+  rw [Real.log_pow] at hlog
+  simpa [div_div, mul_comm] using
+    div_le_div_of_nonneg_right
+      ((le_div_iff₀ (Real.log_pos (by exact_mod_cast hq))).2 hlog) (Nat.cast_nonneg _)
+
+omit [DecidableEq σ] in
+/-- **Lemma 5**: in one variable, if `q > 1` then `Θ_1(B; q; r) ≤ log B / (r log q)`.
+Source: §5, Lemma `roth:lem5` ("Suppose additionally that `q_1 > 1`. Then
+`Θ_1(B; q_1; r_1) ≤ log B / (r_1 log q_1)`"), for a single variable `σ`. -/
+theorem Θ_unique_le [Unique σ] {B : ℝ} (hB : 1 ≤ B) {q : σ → ℕ} (hq : 1 < q default) {r : σ → ℕ}
+    (hr : 0 < r default) : Θ B q r ≤ Real.log B / (r default * Real.log (q default)) :=
+  Θ_le_of_forall_index_le hB fun _ hR _ hh ↦
+    index_unique_le_log_div hq hR.1
+      (by simpa only [Polynomial.leadingCoeff, coeff_uniqueAlgEquiv] using hR.2.2 _) (hh default)
 
 end Lemma5
 
