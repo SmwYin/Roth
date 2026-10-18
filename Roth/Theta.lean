@@ -477,107 +477,101 @@ theorem index_det_le {r : Option τ → ℕ} (hr0 : ∀ j, 0 < r j) {r₁ : ℕ}
   rw [hF]
   exact index_separated_mul_le_aux hr0 hh hl ⟨hU, hUd, hUc⟩ hV hVd hVc
 
+omit [DecidableEq τ] in
+private lemma weight_le_delta_aux {δ : ℝ} (hδ : 0 ≤ δ) {r : Option τ → ℕ}
+    (hratio : ∀ j, (r none : ℝ) ≤ δ * r (some j)) {d : τ →₀ ℕ} (hd : d.degree ≤ r none) :
+    weight (r ∘ some) d ≤ δ := by
+  classical
+  by_cases hr : r none = 0
+  · rw [(Finsupp.degree_eq_zero_iff d).1 (Nat.eq_zero_of_le_zero (hr ▸ hd))]
+    simpa [weight] using hδ
+  have hrp : (0 : ℝ) < r none := by exact_mod_cast Nat.pos_of_ne_zero hr
+  calc weight (r ∘ some) d = ∑ j, (d j : ℝ) / r (some j) := rfl
+    _ ≤ ∑ j, (d j : ℝ) * δ / r none := Finset.sum_le_sum fun j _ ↦ by
+        rw [div_le_div_iff₀ (pos_of_mul_pos_right (hrp.trans_le (hratio j)) hδ) hrp, mul_assoc]
+        exact mul_le_mul_of_nonneg_left (hratio j) (Nat.cast_nonneg _)
+    _ = δ * d.degree / r none := by
+        rw [← Finset.sum_div, ← Finset.sum_mul, Finsupp.degree_eq_sum, Nat.cast_sum, mul_comm]
+    _ ≤ δ := (div_le_iff₀ hrp).2 (mul_le_mul_of_nonneg_left (by exact_mod_cast hd) hδ)
+
+omit [Fintype τ] [DecidableEq τ] in
+private lemma mapped_det_ne_zero_aux {R : MvPolynomial (Option τ) ℤ} {l : ℕ} {D : Fin l → (τ →₀ ℕ)}
+    {U : MvPolynomial τ ℤ} {V : Polynomial ℤ} (hU : U ≠ 0) (hV : V ≠ 0)
+    (hF : (Matrix.of fun μ ν : Fin l ↦
+      hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) R).det =
+        rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) ℤ) V) :
+    (Matrix.of fun μ ν : Fin l ↦ hasseDeriv ((D μ).mapDomain some +
+      Finsupp.single none (ν : ℕ)) (map (Int.castRingHom ℝ) R)).det ≠ 0 := by
+  have hmapdet : map (Int.castRingHom ℝ) (Matrix.of fun μ ν : Fin l ↦
+      hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) R).det =
+      (Matrix.of fun μ ν : Fin l ↦ hasseDeriv ((D μ).mapDomain some +
+        Finsupp.single none (ν : ℕ)) (map (Int.castRingHom ℝ) R)).det := by
+    rw [RingHom.map_det]
+    congr 1
+    exact Matrix.ext fun μ ν ↦ by simp [hasseDeriv_map]
+  rw [← hmapdet]
+  refine (map_ne_zero_iff _ (map_injective _ Int.cast_injective)).2 ?_
+  rw [hF]
+  refine mul_ne_zero ((map_ne_zero_iff _ (rename_injective _ (Option.some_injective _))).2 hU) ?_
+  rw [aeval_X_eq_rename]
+  refine (map_ne_zero_iff _ (rename_injective _ fun a b _ ↦ Subsingleton.elim a b)).2 ?_
+  rwa [ne_eq, map_eq_zero_iff _ (uniqueAlgEquiv ℤ Unit).symm.injective]
+
+private lemma index_numeric_bound_aux {θ Φ δ rp l : ℝ} (hΦ : 0 ≤ Φ) (hδ1 : δ ≤ 1) (hrp : 3 ≤ rp)
+    (hl : 0 < l) (hl' : l ≤ rp + 1) (hmin : min (l * θ / 2) (rp * θ ^ 2 / 3) ≤ l * (Φ + δ)) :
+    θ ≤ 2 * (Φ + √Φ + √δ) := by
+  -- The small-index comparison `δ ≤ √δ` also controls the linear bound.
+  have hsΦ : 0 ≤ √Φ := Real.sqrt_nonneg _
+  rcases min_le_iff.1 hmin with hk | hk
+  · have hθ : θ ≤ 2 * (Φ + δ) := by
+      rwa [mul_div_assoc, mul_le_mul_iff_right₀ hl, div_le_iff₀ (by norm_num), mul_comm] at hk
+    linarith only [hθ, Real.le_sqrt_self_iff.2 hδ1, hsΦ]
+  · have hsum : 0 ≤ Φ + δ := nonneg_of_mul_nonneg_right
+      ((div_nonneg (mul_nonneg (by linarith only [hrp]) (sq_nonneg θ)) (by norm_num)).trans hk) hl
+    have hsq : θ ^ 2 ≤ 4 * (Φ + δ) := by
+      have h1 : rp * θ ^ 2 ≤ 3 * (rp + 1) * (Φ + δ) := by
+        nlinarith only [hk, mul_le_mul_of_nonneg_right hl' hsum]
+      nlinarith only [h1, mul_nonneg (sub_nonneg.2 hrp) hsum, hrp]
+    have hθ : θ ≤ 2 * (√Φ + √δ) := by
+      nlinarith only [hsq, Real.sq_sqrt hΦ, le_max_left δ 0, Real.sq_sqrt' (x := δ), hsΦ,
+        Real.sqrt_nonneg δ, mul_nonneg hsΦ (Real.sqrt_nonneg δ)]
+    linarith only [hθ, hΦ]
+
+omit [DecidableEq τ] in
 /-- **Lemma 6**, for one polynomial and one point: the index of `R ∈ ℛ_p(B; r)` at `h/q` is at
 most `2(Φ + Φ^{1/2} + δ^{1/2})` for some `1 ≤ l ≤ r_p + 1`. Source: §5, Lemma `roth:lem6` and
 its proof ("We need to show that the index `ind(R; h/q; r)` is bounded by the right hand side
 of (13)"). -/
 theorem index_le_lem6 {δ : ℝ} (hδ0 : 0 < δ) (hδ1 : δ < 1) {r : Option τ → ℕ} (hr0 : ∀ j, 0 < r j)
-    (hrp : 10 / δ < r none) (hratio : ∀ j, (r none : ℝ) < δ * r (some j)) {r₁ : ℕ}
+    (hrp : 10 / δ < r none) (hratio : ∀ j, (r none : ℝ) ≤ δ * r (some j)) {r₁ : ℕ}
     (hr₁ : ∀ j, r j ≤ r₁) {q : Option τ → ℕ} (hq : ∀ j, 0 < q j) {B : ℝ} (hB : 1 ≤ B)
     {R : MvPolynomial (Option τ) ℤ} (hR : R ∈ RSet B r) {h : Option τ → ℤ}
-    (hh : ∀ j, IsCoprime (h j) (q j : ℤ)) :
-    ∃ l, 1 ≤ l ∧ l ≤ r none + 1 ∧
+    (hh : ∀ j, IsCoprime (h j) (q j : ℤ)) : ∃ l, 1 ≤ l ∧ l ≤ r none + 1 ∧
       index (map (Int.castRingHom ℝ) R) (fun j => (h j : ℝ) / q j) r ≤
         2 * (lem6Φ q r (lem6M (Fintype.card τ + 1) r₁ B l) l +
           √(lem6Φ q r (lem6M (Fintype.card τ + 1) r₁ B l) l) + √δ) := by
+  classical
   obtain ⟨l, hl, hl', D, hD, U, V, hU, hV, hUd, hVd, hF⟩ := exists_det_eq_mul hR.1 hR.2.1
   refine ⟨l, hl, hl', ?_⟩
-  set α : Option τ → ℝ := fun j => (h j : ℝ) / q j with hα
-  set θ := index (map (Int.castRingHom ℝ) R) α r with hθ
-  set M := lem6M (Fintype.card τ + 1) r₁ B l with hMdef
-  set Φ := lem6Φ q r M l with hΦ
-  have hrp0 : (0 : ℝ) < r none := by exact_mod_cast hr0 none
-  have hl0 : 0 < l := hl
-  have hlR : (0 : ℝ) < l := by exact_mod_cast hl0
-  have hθ0 : 0 ≤ θ := index_nonneg _ _ _
-  have hδrp : 10 < δ * r none := by
-    rw [div_lt_iff₀ hδ0] at hrp
-    linarith
+  let α : Option τ → ℝ := fun j ↦ (h j : ℝ) / q j
+  let Φ := lem6Φ q r (lem6M (Fintype.card τ + 1) r₁ B l) l
   -- `1 ≤ M` and `0 ≤ Φ`.
-  have hM1 : 1 ≤ M := one_le_lem6M _ _ hB l
-  have hΦ0 : 0 ≤ Φ := add_nonneg (Θ_nonneg hM1 _ fun _ => Nat.mul_pos hl0 (hr0 _))
-    (Θ_nonneg hM1 _ fun _ => Nat.mul_pos hl0 (hr0 _))
-  have hsδ : δ ≤ √δ := (Real.le_sqrt hδ0.le hδ0.le).2 (by nlinarith)
-  have hsΦ := Real.sqrt_nonneg Φ
-  by_cases h10 : θ * r none ≤ 10
-  · -- small index: `θ ≤ 10 / r_p < δ ≤ √δ`.
-    have : θ < δ := by
-      by_contra hc
-      push Not at hc
-      nlinarith
-    linarith
-  push Not at h10
-  -- the two bounds for the index of `F`.
+  have hM1 := one_le_lem6M (Fintype.card τ + 1) r₁ hB l
+  -- The two bounds for the index of `F`.
+  have hlower := sum_max_sub_le_index_det D hD (mapped_det_ne_zero_aux hU hV hF) α hr0
+    (fun d hd ↦ weight_le_delta_aux hδ0.le hratio (by lia))
   have hupper := index_det_le hr0 hr₁ hR hh hl hU hV hUd hVd hF
-  have hmapdet : map (Int.castRingHom ℝ) (Matrix.of fun μ ν : Fin l =>
-      hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) R).det =
-      (Matrix.of fun μ ν : Fin l => hasseDeriv ((D μ).mapDomain some +
-        Finsupp.single none (ν : ℕ)) (map (Int.castRingHom ℝ) R)).det := by
-    rw [RingHom.map_det]
-    congr 1
-    refine Matrix.ext fun μ ν => ?_
-    simp [hasseDeriv_map]
-  have hFne : (Matrix.of fun μ ν : Fin l => hasseDeriv ((D μ).mapDomain some +
-        Finsupp.single none (ν : ℕ)) (map (Int.castRingHom ℝ) R)).det ≠ 0 := by
-    rw [← hmapdet]
-    refine (map_ne_zero_iff _ (map_injective _ Int.cast_injective)).2 ?_
-    rw [hF]
-    refine mul_ne_zero ((map_ne_zero_iff _ (rename_injective _ (Option.some_injective _))).2 hU) ?_
-    rw [aeval_X_eq_rename]
-    refine (map_ne_zero_iff _ (rename_injective _ fun a b _ => Subsingleton.elim a b)).2 ?_
-    rw [ne_eq, map_eq_zero_iff _ (uniqueAlgEquiv ℤ Unit).symm.injective]
-    exact hV
-  have hδ' : ∀ d : τ →₀ ℕ, d.degree ≤ l - 1 → weight (r ∘ some) d ≤ δ := fun d hd => by
-    have hdeg : (d.degree : ℝ) ≤ r none := by exact_mod_cast (by omega : d.degree ≤ r none)
-    calc weight (r ∘ some) d = ∑ j, (d j : ℝ) / r (some j) := rfl
-      _ ≤ ∑ j, (d j : ℝ) * δ / r none := Finset.sum_le_sum fun j _ => by
-          have hj : (0 : ℝ) < r (some j) := by exact_mod_cast hr0 (some j)
-          rw [div_le_div_iff₀ hj hrp0]
-          have := hratio j
-          have hdj : (0 : ℝ) ≤ d j := Nat.cast_nonneg _
-          nlinarith
-      _ = δ * d.degree / r none := by
-          rw [← Finset.sum_div, ← Finset.sum_mul, Finsupp.degree_eq_sum, Nat.cast_sum, mul_comm]
-      _ ≤ δ := by
-          rw [div_le_iff₀ hrp0]
-          nlinarith
-  have hlower := sum_max_sub_le_index_det D hD hFne α hr0 hδ'
-  rw [← hmapdet] at hlower
-  have hmin := min_le_sum_max (θ := θ) (rp := r none) l
-  have hkey : min (l * θ / 2) (r none * θ ^ 2 / 3) ≤ l * (Φ + δ) := by
-    have := hupper
-    simp only [← hα, ← hMdef, ← hΦ] at this
-    nlinarith
-  rcases min_le_iff.1 hkey with hk | hk
-  · have : θ ≤ 2 * (Φ + δ) := by
-      rw [div_le_iff₀ (by norm_num : (0 : ℝ) < 2)] at hk
-      nlinarith
-    linarith
-  · have hl'R : (l : ℝ) ≤ r none + 1 := by exact_mod_cast hl'
-    have hrp10 : (10 : ℝ) < r none := by nlinarith
-    have hθsq : θ ^ 2 < 4 * (Φ + δ) := by
-      have h1 : r none * θ ^ 2 ≤ 3 * (r none + 1) * (Φ + δ) := by nlinarith
-      nlinarith
-    set s := √(Φ + δ)
-    have hs0 : 0 ≤ s := Real.sqrt_nonneg _
-    have hs2 : s ^ 2 = Φ + δ := Real.sq_sqrt (by linarith)
-    have hθs : θ < 2 * s := by nlinarith
-    have hsle : s ≤ √Φ + √δ := by
-      have h1 := Real.sq_sqrt hΦ0
-      have h2 := Real.sq_sqrt hδ0.le
-      have h3 := Real.sqrt_nonneg δ
-      nlinarith
-    linarith
+  simp only [RingHom.map_det, RingHom.mapMatrix_apply, Matrix.map, Matrix.of_apply] at hupper
+  simp only [hasseDeriv_map] at hlower
+  apply index_numeric_bound_aux (Φ := Φ) (l := (l : ℝ))
+    (add_nonneg (Θ_nonneg hM1 _ fun _ ↦ Nat.mul_pos hl (hr0 _))
+      (Θ_nonneg hM1 _ fun _ ↦ Nat.mul_pos hl (hr0 _))) hδ1.le
+    ((by norm_num : (3 : ℝ) ≤ 10).trans
+      ((le_div_self (by norm_num) hδ0 hδ1.le).trans hrp.le))
+    (by exact_mod_cast (show 0 < l from hl))
+    (by exact_mod_cast hl')
+  exact (min_le_sum_max (θ := index (map (Int.castRingHom ℝ) R) α r) (rp := r none) l).trans
+    (by simpa [mul_add] using sub_le_iff_le_add.1 (hlower.trans hupper))
 
 /-- **Lemma 6**: `Θ_p(B; q; r)` is at most twice the maximum of `Φ + Φ^{1/2} + δ^{1/2}` over
 `1 ≤ l ≤ r_p + 1`. Source: §5, Lemma `roth:lem6` ("`Θ_p(B; q; r) ≤ 2 max_l (Φ + Φ^{1/2} + δ^{1/2})`,
@@ -590,7 +584,7 @@ theorem Θ_option_le {δ : ℝ} (hδ0 : 0 < δ) (hδ1 : δ < 1) {r : Option τ �
         √(lem6Φ q r (lem6M (Fintype.card τ + 1) r₁ B l) l) + √δ) := by
   refine Θ_le_of_forall_index_le hB fun R hR h hh => ?_
   obtain ⟨l, hl, hl', hle⟩ :=
-    index_le_lem6 hδ0 hδ1 hr0 hrp hratio hr₁ hq hB hR hh
+    index_le_lem6 hδ0 hδ1 hr0 hrp (fun j ↦ (hratio j).le) hr₁ hq hB hR hh
   refine hle.trans (mul_le_mul_of_nonneg_left ?_ (by norm_num))
   exact Finset.le_sup' (fun l => lem6Φ q r (lem6M (Fintype.card τ + 1) r₁ B l) l +
     √(lem6Φ q r (lem6M (Fintype.card τ + 1) r₁ B l) l) + √δ) (Finset.mem_Icc.2 ⟨hl, hl'⟩)

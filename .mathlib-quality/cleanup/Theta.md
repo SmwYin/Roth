@@ -68,7 +68,7 @@ ordinary baseline builds passing does not imply any all-file profile pass.
 | 26 | `min_le_sum_max` | 319 | 46 | Complete;[audit](Theta-min_le_sum_max.md) |
 | 27 | `sum_max_sub_le_index_det` | 371 | 25 | Complete;[audit](Theta-sum_max_sub_le_index_det.md) |
 | 28 | `index_det_le` | 410 | 94 | Complete;[audit](Theta-index_det_le.md) |
-| 29 | `index_le_lem6` | 521 | 89 | Pending dedicated audit |
+| 29 | `index_le_lem6` | 521 | 89 | Complete;[audit](Theta-index_le_lem6.md) |
 | 30 | `Θ_option_le` | 623 | 6 | Pending dedicated audit |
 | 31 | `one_lt_of_log_pos` | 640 | 5 | Pending dedicated audit |
 | 32 | `lem6M_lt` | 650 | 53 | Pending dedicated audit |
@@ -556,3 +556,14 @@ Accepted uncontended exact-prefix profile: public742.222; retained helper655.221
 Frozen owner full (91.138 s) then separate LeanEval (30.612 s) pass.
 [Dedicated audit](Theta-index_det_le.md). Theta 28/35, overall 209/264 originals;9/14 files complete.
 One retained private separated-product helper26lines, separately freshly audited; the initially added coefficient helper was separately freshly audited and deleted. New helpers and revisits add no original count. Next: original29, index_le_lem6 (approved DecidableEqτ removal, explicit hq retention, ordinary≤30 structuring and actual instrumented performance repair).
+
+
+## Published checkpoint29 — index_le_lem6
+
+Removed approved DecidableEqτ and extended the coordinate ratio from strict to nonstrict after concrete old-contract/caller verification. Replaced the default-heartbeat-failing broad arithmetic with a 22-line public assembly and separately audited weight, mapped-determinant and numeric arguments. Explicit hq remains; the entire original strict Θ_option_le caller contract is preserved.
+
+Fresh full24/42/five-actual-search/every-binder/literature/inversion/packing/inequality/11-step audits complete. Immutable independent entire original29 and original30 proofs, exact original adapter, retained names/types/BinderInfo/universes/conclusions, actual opaque proof values and standard axiom sets pass. Each of the three new private helpers received its own separate fresh audit, including exact first-proof recovery and generalized private-contract adapters; no original count inflation. Module and complete unfiltered final LSP pass with 0 errors / 10 warnings.
+Accepted uncontended exact-prefix profile: public895.050/854.163; weight408.013/361.605; mapped707.126/651.477; numeric939.576/873.525 (first/required-repeat; all<1000) ms; no whole-file performance claim.
+Frozen owner full (92.063 s) then separate LeanEval (29.415 s) pass.
+[Dedicated audit](Theta-index_le_lem6.md). Theta 29/35, overall 210/264 originals;9/14 files complete.
+Three substantive retained private helpers separately freshly audited: numeric16lines (δ≤1,rp≥3, noδ positivity premise), weight12lines (no weight-positivity premise), mapped determinant14lines (same signature). No new public domain or conclusion change. Next: fresh dedicated supported original29 arithmetic-boundary revisit K (counts unchanged), then original30 Θ_option_le.

@@ -25,16 +25,16 @@ Started: 2026-10-14 (America/Chicago).
 
 ## Current status
 
-Latest completed file after successful final publication: Separation. Theta originals 28/35
-completed; overall 209/264 original declarations, 9/14 files. Latest original: index_det_le.
-Applied approved DecidableEqτ/δ/hl′/hδ removals and the supported redundant hB removal under standing authorization. Uniform coefficient bounds imply the needed nonnegativity. Public proof94→24 physical lines including all3 Step comments; sole caller drops only obsolete application arguments and retains its entire original public contract.
-Fresh24-item/42-rule/five-actual-search/every-effective-binder/literature/inversion/packing/inequality/11-step audits complete. Independent immutable complete original target AND entire index_le_lem6 proof/value/type replay, exact old adapters/names/BinderInfo/universes/conclusions and actual standard axiom sets pass. Both initially extracted private helpers received separate fresh audits; the coefficient helper was deleted using the existing constant-degree bound specialization, with actual built and trace absence checked. Module and complete unfiltered LSP (0 errors / 11 warnings), accepted
-uncontended prefix profile (public742.222; retained helper655.221 (original public baseline2083.744; both final<750) ms), frozen full build (91.138 s), then
-separate LeanEval (30.612 s), all pass. [Latest audit](cleanup/Theta-index_det_le.md).
-One retained private separated-product helper26lines, separately freshly audited; the initially added coefficient helper was separately freshly audited and deleted. New helpers and revisits add no original count. Next: original29, index_le_lem6 (approved DecidableEqτ removal, explicit hq retention, ordinary≤30 structuring and actual instrumented performance repair).
+Latest completed file after successful final publication: Separation. Theta originals 29/35
+completed; overall 210/264 original declarations, 9/14 files. Latest original: index_le_lem6.
+Removed approved DecidableEqτ and extended the coordinate ratio from strict to nonstrict after concrete old-contract/caller verification. Replaced the default-heartbeat-failing broad arithmetic with a 22-line public assembly and separately audited weight, mapped-determinant and numeric arguments. Explicit hq remains; the entire original strict Θ_option_le caller contract is preserved.
+Fresh full24/42/five-actual-search/every-binder/literature/inversion/packing/inequality/11-step audits complete. Immutable independent entire original29 and original30 proofs, exact original adapter, retained names/types/BinderInfo/universes/conclusions, actual opaque proof values and standard axiom sets pass. Each of the three new private helpers received its own separate fresh audit, including exact first-proof recovery and generalized private-contract adapters; no original count inflation. Module and complete unfiltered LSP (0 errors / 10 warnings), accepted
+uncontended prefix profile (public895.050/854.163; weight408.013/361.605; mapped707.126/651.477; numeric939.576/873.525 (first/required-repeat; all<1000) ms), frozen full build (92.063 s), then
+separate LeanEval (29.415 s), all pass. [Latest audit](cleanup/Theta-index_le_lem6.md).
+Three substantive retained private helpers separately freshly audited: numeric16lines (δ≤1,rp≥3, noδ positivity premise), weight12lines (no weight-positivity premise), mapped determinant14lines (same signature). No new public domain or conclusion change. Next: fresh dedicated supported original29 arithmetic-boundary revisit K (counts unchanged), then original30 Θ_option_le.
 [Exact contract decision](cleanup/Theta-contract-proposal.md): selected A/B/C scope applies;
 prior explicit hq and extra hB/hr preservation choices remain. Whole-Theta profiling,
-7 remaining originals and final phases are outstanding. The known late index_le_lem6 instrumented default-heartbeat failure awaits its dedicated audit.
+6 remaining originals and final phases are outstanding. The old original29 instrumented default-200000-heartbeat failure was reproduced; trace finalization required termination (exit130), so no finite successful baseline time is claimed. Final accepted prefix timings fix that target; remaining originals and whole-module cumulative profiling/final phases remain outstanding.
 
 Build/tool setup completed; GitHub browser authentication and branch publication succeeded.
 The first file, `Roth/HasseDeriv.lean`, has completed all declaration and final review,
@@ -2419,3 +2419,15 @@ Next:original29, index_le_lem6 (approved DecidableEqτ removal, explicit hq rete
 Original28 validated source/audit checkpoint: [6a1e668](https://github.com/SmwYin/Roth/commit/6a1e668bd056b14c513e6e994192c327fd169348).
 The following central-log metadata commit changes no Lean source; both commits publish
 together before original29 edits. Counts remain 209/264, Theta 28/35, 9/14 files.
+
+
+## Theta original29 checkpoint — index_le_lem6
+
+Removed approved DecidableEqτ and extended the coordinate ratio from strict to nonstrict after concrete old-contract/caller verification. Replaced the default-heartbeat-failing broad arithmetic with a 22-line public assembly and separately audited weight, mapped-determinant and numeric arguments. Explicit hq remains; the entire original strict Θ_option_le caller contract is preserved.
+
+Fresh full24/42/five-actual-search/every-binder/literature/inversion/packing/inequality/11-step audits complete. Immutable independent entire original29 and original30 proofs, exact original adapter, retained names/types/BinderInfo/universes/conclusions, actual opaque proof values and standard axiom sets pass. Each of the three new private helpers received its own separate fresh audit, including exact first-proof recovery and generalized private-contract adapters; no original count inflation. [Dedicated audit](cleanup/Theta-index_le_lem6.md).
+Final Theta SHA256 `47369dc4b524f54d2981a0c23e67786b442f061e86c1ec2f6141d6c46fb62c69`. Module and complete unfiltered LSP:0 errors/10 warnings;
+accepted real prefix profile:public895.050/854.163; weight408.013/361.605; mapped707.126/651.477; numeric939.576/873.525 (first/required-repeat; all<1000) ms. Frozen full build92.063s then
+separate LeanEval29.415s both exit0; all17project/pin/source hashes stable.
+Three substantive retained private helpers separately freshly audited: numeric16lines (δ≤1,rp≥3, noδ positivity premise), weight12lines (no weight-positivity premise), mapped determinant14lines (same signature). No new public domain or conclusion change. After successful publication:Theta29/35,overall210/264,9/14files.
+Next:fresh dedicated supported original29 arithmetic-boundary revisit K (counts unchanged), then original30 Θ_option_le. Actual whole-Theta profiling and final file phases remain outstanding.

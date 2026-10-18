@@ -71,7 +71,7 @@ removals. No unselected row may be inferred from that probe's successful compile
 - Original26, min_le_sum_max: recommended unconditional bound implemented under standing authority; removed exactly hrp/hθ, preserving domain/conclusion and the entire original sole caller contract. Three new private helpers each received a separate fresh audit; exact original adapters/actual standard axioms, full LSP, all-four real prefix profiles and frozen full/separate LeanEval gates pass. See section H.
 - Original27, sum_max_sub_le_index_det: approved A.DecidableEqτ and C.hR removals applied, all other arguments including hD/hδ retained. Sole caller obsolete argument/local proof removed; its entire original contract remains. Independent full original target and caller proofs/telescope/value/BinderInfo/standard axioms, full LSP0errors14warnings, real profile746.452ms and frozen full110.300s then separate LeanEval32.749s pass. No new helper or extra API change; generic finite-family/column-bound alternatives assessed and not recommended.
 - Original28, index_det_le: approved A/C removals and supported redundant hB removal implemented under standing authorization, exact old drop set DecidableEqτ/δ/hB/hl′/hδ. Entire sole caller contract retained. Both new helpers freshly audited; coefficient wrapper deleted via existing constant-degree specialization, separated helper26 retained. Exact old target+entire caller/value/BinderInfo/actual standard axioms, full LSP0/11, real helper655.221ms/public742.222ms, frozen full91.138s then separate LeanEval30.612s pass. See section I.
-- Next: original29, index_le_lem6 (approved DecidableEqτ removal, explicit hq retention, ordinary≤30 structuring and actual instrumented performance repair). Published originals now Theta 28/35, overall 209/264; approved revisits themselves do not increase counts.
+- Next: fresh dedicated supported original29 arithmetic-boundary revisit K (counts unchanged), then original30 Θ_option_le. Published originals now Theta 29/35, overall 210/264; approved revisits themselves do not increase counts.
 
 The evidence and proposal descriptions below were prepared before this decision. Their historic
 unapplied status is superseded only by the exact selected scope above and subsequent checkpoint
@@ -406,3 +406,68 @@ build91.138s then separate LeanEval30.612s both exit0 with all17 source/pin hash
 Theta28/35, overall209/264;9/14files. The UNCOMPILED final29 generator records the exact hB
 drop but remains final-state scaffolding, not current cumulative evidence. Whole-Theta profiling
 and remaining originals/final phases remain outstanding.
+
+
+## J. Original29: weak ratio boundary (implemented; validated publication)
+
+The selected proof needs only `∀ j, (r none : ℝ) ≤ δ * r (some j)` in
+`index_le_lem6`, rather than the original strict inequality. The weight estimate multiplies
+this nonstrict bound by nonnegative multi-index coefficients; every later conclusion is a
+nonstrict bound. This admits the equality boundary with the exact same conclusion and
+unchanged domains. The owner recommends this supported weakening under the user's standing
+instruction to implement recommended changes. The explicit retained hq and earlier Θ-bound
+hB/hr preferences remain untouched; no other public argument is changed by this proposal.
+
+Before live application, the full weak-ratio candidate compiled independently in
+`/private/tmp/roth-theta-lem6/weak-ratio.lean`, exit0 (26.464s). The exact preapply verifier
+`ratio-preapply-compatibility.lean` and clean exit0 log (40.574s) replay the immutable original
+proof namespaces, check the exact entire old29 adapter (approved DecidableEq removal and
+strict hratio forwarded via `le_of_lt`), preserve the full original Θ_option_le type AND
+independent full caller proof with its strict assumption, and check opaque proof values and
+actual candidate standard axiom sets. The minimal actual caller fix is to pass
+`fun j ↦ (hratio j).le`; the caller's own public ratio remains strict.
+
+The exact weak-ratio API and the strict caller `.le` fix are applied. On final source SHA256
+`47369dc4b524f54d2981a0c23e67786b442f061e86c1ec2f6141d6c46fb62c69`, all three new private
+helpers have separate fresh complete audits; public proof22lines, numeric16, weight12, mapped14.
+Final module, independent entire original29+original30 proofs/adapters/type/value/standard axioms
+and complete unfiltered native LSP0errors10warnings pass. Both real exact-prefix sweeps pass
+(public895.050/854.163, numeric939.576/873.525, weight408.013/361.605, mapped707.126/651.477ms).
+A shorter mapped simp variant with an overbudget sweep was rejected and its raw history retained;
+the explicit14-line transport certificate is final. Frozen full project build92.063s then
+separate LeanEval29.415s both exit0 with all17 project/source/pin hashes unchanged.
+[Original29 final batch evidence](Theta-index_le_lem6.md). After successful publication:
+Theta29/35,overall210/264,9/14files. K below is a distinct queued dedicated revisit, not live
+public δ/rp generalisation. The UNCOMPILED future final29 generator includes the exact current
+strict-to-weak ratio localization; original30 DecidableEq removal remains pending and the
+generator is not cumulative verification evidence. Whole-module profiling/final phases remain.
+
+
+
+## K. Original29 arithmetic boundary (recommended; queued dedicated revisit)
+
+The separate fresh numeric-helper audit independently compiles the same public conclusion
+with `hδ0 : 0 ≤ δ`, `hδ1 : δ ≤ 1`, and `hrp : 3 ≤ (r none : ℝ)`; the weak coordinate ratio,
+positive weights, hq and every other public binder remain. The earlier unconditional min
+bound removes the old small-index split, so the final estimate does not need the artificial
+`10 / δ` degree coupling. The owner recommends this supported boundary generalization under
+the standing instruction to implement recommended changes. It will receive a fresh dedicated
+public29 revisit checkpoint after the current original29/helper batch is published; revisits
+do not increase original counts. No live public type change for K has occurred.
+
+Concrete candidate and exact full original29 adapter, including all original DecidableEq,
+strict δ/ratio and reciprocal-bound premises, compile in
+`/private/tmp/roth-numeric-helper/public-candidate-compatibility.lean` and its clean exit0 log.
+The old adapter forwards strict δ bounds by `.le`, derives `3 ≤ rp` from the original
+reciprocal premise, and forwards strict coordinate ratios by `.le`. All retained names,
+BinderInfo, universes and the exact conclusion are checked, along with opaque proof values
+and actual standard axiom sets. The immutable entire original29 and original30 proofs remain.
+
+The completed candidate caller check (50.921s, exit0) includes a separately compiled
+`NumericScratch.candidate_Θ_option_le` with the exact full original30 telescope and minimal
+proof forwarding to `numeric_public_candidate`. Its proof value explicitly contains that
+candidate constant; its full old adapter/names/BinderInfo/universes/values/standard axioms pass.
+An earlier check of unchanged actual Roth.Θ_option_le alone did not establish this new caller
+proof and is not presented as that evidence. The actual caller API remains strict during the
+current batch. Fresh revisit audit, live application, full diagnostics/actual recovery/performance,
+frozen full+separate LeanEval and publication are still pending for K.
