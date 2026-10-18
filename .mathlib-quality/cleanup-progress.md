@@ -25,18 +25,16 @@ Started: 2026-10-14 (America/Chicago).
 
 ## Current status
 
-Latest completed file after successful final publication: Separation. Theta originals 15/35
-completed; overall 196/264 original declarations, 9/14 files. Approved revisit of original 13,
-Θ_mono, completed without increasing counts. Removed only the approved DecidableEq σ; retained hB/hr, Fintype σ and every other argument.
-Immutable original proof/explicit adapter, retained metadata/selected-drop AST/actual standard
-axioms and affected caller checks pass. Module and complete unfiltered LSP (0 errors,
-19 warnings), accepted uncontended prefix (23.713 ms), frozen full build
-(68.560 s), then separate LeanEval (31.179 s), all pass.
-[Latest audit](cleanup/Theta-Theta_mono-approved.md). Next: original 16, private isPrimitive_linear.
-[Exact contract decision](cleanup/Theta-contract-proposal.md): A/B and first five C rows approved;
-hq and D/E/F's extra hB/hr assumptions remain per user choice. Whole-Theta profiling, 20 remaining
-originals and final phases are outstanding; the known late instrumented linarith failure awaits
-its audit. Definitions, domains and conclusions remain unchanged.
+Latest completed file after successful final publication: Separation. Theta originals 16/35
+completed; overall 197/264 original declarations, 9/14 files. Latest original: isPrimitive_linear.
+Shortened the private coefficient-divisibility argument from nine proof lines to five by inlining the two once-used coefficient facts and removing a definitional rewrite. Its statement, sole public caller, documentation and all definitions remain unchanged.
+Fresh full24/42 audit, five actual searches and every-binder probes pass. Immutable independent original proofs, the actual private constant exact type/binder metadata/standard axioms and the sole caller’s complete original hR contract are verified. Module and complete unfiltered LSP (0errors/19warnings), accepted
+uncontended prefix profile (96.215 → 164.688 ms), frozen full build (62.585 s), then
+separate LeanEval (23.065 s), all pass. [Latest audit](cleanup/Theta-isPrimitive_linear.md).
+No new production helper. Next: original 17, private isPrimitive_pow.
+[Exact contract decision](cleanup/Theta-contract-proposal.md): selected A/B/C scope applies;
+prior explicit hq and extra hB/hr preservation choices remain. Whole-Theta profiling,
+19 remaining originals and final phases are outstanding.
 
 Build/tool setup completed; GitHub browser authentication and branch publication succeeded.
 The first file, `Roth/HasseDeriv.lean`, has completed all declaration and final review,

@@ -53,7 +53,7 @@ ordinary baseline builds passing does not imply any all-file profile pass.
 | 13 | `Θ_mono` | 128 | 3 | Complete;[audit](Theta-Theta_mono.md) |
 | 14 | `indexSet_comp_subset` | 134 | 16 | Complete;[audit](Theta-indexSet_comp_subset.md) |
 | 15 | `Θ_equiv` | 155 | 4 | Complete;[audit](Theta-Theta_equiv.md) |
-| 16 | `isPrimitive_linear` | 164 | 9 | Pending dedicated audit |
+| 16 | `isPrimitive_linear` | 164 | 9 | Complete;[audit](Theta-isPrimitive_linear.md) |
 | 17 | `isPrimitive_pow` | 176 | 3 | Pending dedicated audit |
 | 18 | `exists_eq_pow_mul_of_rootMultiplicity` | 187 | 14 | Pending dedicated audit |
 | 19 | `pow_rootMultiplicity_le` | 210 | 13 | Pending dedicated audit |
@@ -411,3 +411,14 @@ standard axioms pass. Both unchanged actual Θ_lt callers are module checked; ac
 Frozen owner full build (68.560 s), then separate LeanEval (31.179 s),
 both pass on identical SHA. [Dedicated revisit audit](Theta-Theta_mono-approved.md).
 Original counts unchanged: Theta 15/35, overall 196/264, 9/14 files. Next: original 16, private isPrimitive_linear.
+
+
+## Published checkpoint16 — isPrimitive_linear
+
+Shortened the private coefficient-divisibility argument from nine proof lines to five by inlining the two once-used coefficient facts and removing a definitional rewrite. Its statement, sole public caller, documentation and all definitions remain unchanged.
+
+Fresh full24/42 audit, five actual searches and every-binder probes pass. Immutable independent original proofs, the actual private constant exact type/binder metadata/standard axioms and the sole caller’s complete original hR contract are verified. Module and complete unfiltered final LSP pass with0errors/19warnings.
+Accepted uncontended exact-prefix profile: 96.215 → 164.688 ms; no whole-file performance claim.
+Frozen owner full (62.585 s) then separate LeanEval (23.065 s) pass.
+[Dedicated audit](Theta-isPrimitive_linear.md). Theta 16/35, overall 197/264 originals;9/14 files complete.
+No new production helper. Next: original 17, private isPrimitive_pow.

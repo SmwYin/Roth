@@ -161,15 +161,11 @@ section Lemma5
 
 private lemma isPrimitive_linear {h : ℤ} {q : ℕ} (hcop : IsCoprime h (q : ℤ)) :
     (Polynomial.C (q : ℤ) * Polynomial.X - Polynomial.C h).IsPrimitive := by
-  rw [Polynomial.isPrimitive_iff_isUnit_of_C_dvd]
   intro c hc
   rw [Polynomial.C_dvd_iff_dvd_coeff] at hc
-  have h1 := hc 1
-  have h0 := hc 0
-  simp only [Polynomial.coeff_sub, Polynomial.coeff_C_mul, Polynomial.coeff_X_one,
-    Polynomial.coeff_X_zero, Polynomial.coeff_C, mul_one, mul_zero, zero_sub, one_ne_zero,
-    ↓reduceIte, sub_zero, dvd_neg] at h1 h0
-  exact hcop.isUnit_of_dvd' h0 h1
+  exact hcop.isUnit_of_dvd' (by simpa using hc 0)
+    (by simpa only [Polynomial.coeff_sub, Polynomial.coeff_C_mul, Polynomial.coeff_X_one,
+      Polynomial.coeff_C, mul_one, one_ne_zero, ↓reduceIte, sub_zero] using hc 1)
 
 private lemma isPrimitive_pow {p : Polynomial ℤ} (hp : p.IsPrimitive) (t : ℕ) :
     (p ^ t).IsPrimitive := by
