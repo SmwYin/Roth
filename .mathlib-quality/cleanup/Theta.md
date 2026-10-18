@@ -331,3 +331,19 @@ standard axioms pass. Both actual callers have independent immutable original pr
 Frozen owner full build (80.493 s), then separate LeanEval (22.939 s),
 both pass on identical SHA. [Dedicated revisit audit](Theta-indexSet_bddAbove-approved.md).
 Original counts unchanged: Theta 15/35, overall 196/264, 9/14 files. Next: approved revisit of original 9, index_le_Θ (DecidableEq σ only; hr retained).
+
+
+## Approved revisit of original 9 — index_le_Θ
+
+Applied exactly one scoped omit before the preserved docstring. Fintype σ, positivity hr and every ordinary argument remain; the existing le_csSup proof and all caller source are unchanged. The full immutable original contract is recovered by an explicit adapter to the actual new theorem, with only its approved class argument removed. No helper, definition, domain or conclusion change.
+
+Fresh dedicated full 24-item audit, 42 golf rules, five actual searches, every-binder probes,
+literature/inversion, packing, inequality scan and 11-step checklist pass. Immutable independent
+original proof and explicit old-telescope adapter recover the original contract from the actual
+new theorem; exact retained types/order/BinderInfo/user names, selected-drop AST and actual
+standard axioms pass. The internal index_det_le caller retains its complete immutable original public type, including its not-yet-revisited DecEq, with actual standard axioms. External main_lemma actual original type/names/order/BinderInfo/axioms are separately owner-verified after the full rebuild; its visible hr0 argument remains. Module and complete unfiltered final LSP pass with
+0 errors and 27 warnings. Accepted uncontended exact-prefix aggregate:
+25.452 → 26.385 ms; no whole-file performance claim.
+Frozen owner full build (57.757 s), then separate LeanEval (12.932 s),
+both pass on identical SHA. [Dedicated revisit audit](Theta-index_le_Theta-approved.md).
+Original counts unchanged: Theta 15/35, overall 196/264, 9/14 files. Next: approved revisit of original 10, Θ_nonneg (DecidableEq σ only; hB and hr retained).

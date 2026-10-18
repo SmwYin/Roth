@@ -86,6 +86,7 @@ theorem indexSet_bddAbove (B : ℝ) (q : σ → ℕ) {r : σ → ℕ} : BddAbove
     (by simpa [degreeOf, degrees_map_of_injective R (f := Int.castRingHom ℝ)
           Int.cast_injective] using hRd) _
 
+omit [DecidableEq σ] in
 /-- The index of any `R ∈ ℛ_m(B; r)` at a point `(h_j / q_j)_j` with each `h_j` coprime to `q_j`
 is at most `Θ_m(B; q; r)`. Source: §5, definition of `Θ_m` as a supremum, and the Lean note
 ("lemmas for bounding an individual index"). -/
