@@ -2458,3 +2458,7 @@ separateLeanEval29.557s both exit0 with all17 source/pin hashes stable.
 Counts unchanged210/264,Theta29/35,9/14files; validated revisits9 (eight prior approved scope,
 this one under standing recommendation authority). Next original30 Θ_option_le; reserved new
 caller hr0 warning and selected DecidableEq removal receive its own fresh audit.
+
+Supported K29 validated source/audit checkpoint: [e0784cf](https://github.com/SmwYin/Roth/commit/e0784cf931052862a49e9d618c3408a95438616e).
+The following central-log metadata commit changes no Lean source; both publish together
+before original30 edits. Counts remain210/264,Theta29/35,9/14files; validated revisits9.
