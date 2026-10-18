@@ -2179,3 +2179,88 @@ Overall181/264 original declarations;9/14 files complete after finalpush. Header
 warnings intentionallyretained; actualexternalTheta instrumentedprofilefailure and
 overbudgetdiagnostics explicitlyassignednextTheta file,notcalledsuccessfulsamples.
 Project-endIndexrename remainsparentqueue. No requiredinputpending; nextfileTheta.
+
+
+## Theta published history through original 19
+
+The central Current status above is updated at every published declaration. This appended
+history makes the Theta checkpoints visible alongside the earlier file history. At published
+commit `4fd80e70d4da2022f1fd97875322e95f99549aa3`: **200/264 original declarations**,
+**Theta 19/35**, **9/14 files complete**. Theta remains in progress; its inventory is
+29 public plus 6 private original declarations. Eight approved revisits below do not increase
+original counts. Full details and evidence are in [Theta's file report](cleanup/Theta.md)
+and its linked dedicated audits.
+
+| Original | Declaration | Overall originals after publication | Actual published commit |
+|---:|---|---:|---|
+| 1 | `RSet` | 182/264 | [08ab073](https://github.com/SmwYin/Roth/commit/08ab073cf398fea8f93cfdba17f6610b7eb61d05) |
+| 2 | `indexSet` | 183/264 | [2f5160b](https://github.com/SmwYin/Roth/commit/2f5160ba344b3d5f023497a97ffdca773dd2cfbd) |
+| 3 | `Θ` | 184/264 | [79b262c](https://github.com/SmwYin/Roth/commit/79b262cdf52b5db9b07e870d3ee4925ab138ba1d) |
+| 4 | `map_intCast_real_ne_zero` (private wrapper deleted) | 185/264 | [7c36b31](https://github.com/SmwYin/Roth/commit/7c36b3129bc7b18d42a907e1a969add38db15157) |
+| 5 | `degreeOf_map_intCast_real` (private wrapper deleted) | 186/264 | [dbfe215](https://github.com/SmwYin/Roth/commit/dbfe215f15e0ca4a5481ecd5bbd0434a81603c61) |
+| 6 | `one_mem_RSet` | 187/264 | [a460063](https://github.com/SmwYin/Roth/commit/a4600633fbc0c15c131ec6e0d85fbe644a15303b) |
+| 7 | `indexSet_nonempty` | 188/264 | [a4d22a3](https://github.com/SmwYin/Roth/commit/a4d22a3d162e1e93cd4a735c0eb66d16fb8e87b4) |
+| 8 | `indexSet_bddAbove` | 189/264 | [692d63c](https://github.com/SmwYin/Roth/commit/692d63c0fcc4d064239cd7ebc3043e83841c7621) |
+| 9 | `index_le_Θ` | 190/264 | [132df63](https://github.com/SmwYin/Roth/commit/132df630f7f677ae8afb08c57645ff7a3071d06b) |
+| 10 | `Θ_nonneg` | 191/264 | [3dc739a](https://github.com/SmwYin/Roth/commit/3dc739abcf1291966e13b8223bdadc3bdad195ff) |
+| 11 | `Θ_le_card` | 192/264 | [81ceeab](https://github.com/SmwYin/Roth/commit/81ceeab76d55cf73710d93ceee4b69294624f7bf) |
+| 12 | `Θ_le_of_forall_index_le` | 193/264 | [4f15ff1](https://github.com/SmwYin/Roth/commit/4f15ff1ee078bdc4a63491b77bdb09500d8743d5) |
+| 13 | `Θ_mono` | 194/264 | [1ca2873](https://github.com/SmwYin/Roth/commit/1ca2873855c5200fb62f203694821159b7f5bf2e) |
+| 14 | `indexSet_comp_subset` | 195/264 | [e777d0a](https://github.com/SmwYin/Roth/commit/e777d0a740a8c39ee7acdd618eaad67e98ae613d) |
+| 15 | `Θ_equiv` | 196/264 | [69a7271](https://github.com/SmwYin/Roth/commit/69a7271b5c0be978b59cb0fcd253a8545b89a163) |
+| 16 | `isPrimitive_linear` | 197/264 | [7c5bc39](https://github.com/SmwYin/Roth/commit/7c5bc39f4a2542eb7283c84f8b2387117d682640) |
+| 17 | `isPrimitive_pow` | 198/264 | [b7806ac](https://github.com/SmwYin/Roth/commit/b7806acc3b5fa15eef3f5424cbc2451b67162ff2) |
+| 18 | `exists_eq_pow_mul_of_rootMultiplicity` | 199/264 | [ab9c01a](https://github.com/SmwYin/Roth/commit/ab9c01a9913d5309b27f35db846cfda82cf8977d) |
+| 19 | `pow_rootMultiplicity_le` | 200/264 | [4fd80e7](https://github.com/SmwYin/Roth/commit/4fd80e70d4da2022f1fd97875322e95f99549aa3) |
+
+Every published original received a fresh dedicated full audit, target module and complete
+unfiltered diagnostics, independent immutable-original proof/type/value or authorized adapter
+checks, actual standard-axiom checks, real accepted target profiling, then frozen sequential
+full project build and separate LeanEval. Exact-path staging, commit and successful cleanup-branch
+push preceded the next original edit. Evidence is target/caller scoped where stated; these
+checkpoints do not claim final all-Theta profiling or a completed file-wide review.
+
+Original 15 applied both approved DecEq omissions during its own audit. The eight subsequent
+revisits of originals 6–13 were separately freshly audited and published, while original counts
+remained at Theta 15/35 and overall 196/264:
+
+| Revisited original | Exact applied scope | Actual published commit |
+|---:|---|---|
+| 6 | one_mem_RSet: DecEq σ and Fintype σ | [a646c9b](https://github.com/SmwYin/Roth/commit/a646c9b4393690e0c6501e9521f86cadf4b900d5) |
+| 7 | indexSet_nonempty: DecEq σ | [3f577ac](https://github.com/SmwYin/Roth/commit/3f577acbfe25a9a11c829f334a0353fbc0432439) |
+| 8 | indexSet_bddAbove: DecEq σ and hr | [c12193f](https://github.com/SmwYin/Roth/commit/c12193f2322542c9415892ee26354bf46532c74f) |
+| 9 | index_le_Θ: DecEq σ, hr retained | [bbd4d8a](https://github.com/SmwYin/Roth/commit/bbd4d8a1d49b0527a8070f4b1412f1716cd60391) |
+| 10 | Θ_nonneg: DecEq σ, hB/hr retained | [adaa875](https://github.com/SmwYin/Roth/commit/adaa87542f06102a2ef0364d63df2a817aff712f) |
+| 11 | Θ_le_card: DecEq σ and hr, hB retained | [74fd327](https://github.com/SmwYin/Roth/commit/74fd327fad902ff31fe45f37a7ee4a6d7f75d2d0) |
+| 12 | Θ_le_of_forall_index_le: DecEq σ | [85d940c](https://github.com/SmwYin/Roth/commit/85d940cc22e24a4eeb33e568d8b08c3456727698) |
+| 13 | Θ_mono: DecEq σ, hB/hr retained | [f9be46d](https://github.com/SmwYin/Roth/commit/f9be46d32024200bf5cff25fbacf26d7b2625773) |
+
+The explicit user decision selected all A removals (15 DecEq binders across 14 public
+theorems), B's Fintype removal only for one_mem_RSet, and C's first five rows:
+indexSet_bddAbove.hr; Θ_le_card.hr; exists_eq_pow_mul_of_rootMultiplicity.hR;
+sum_max_sub_le_index_det.hR; index_det_le.hl′/hδ/unused implicitδ. Original 18 applied its
+selected C.hR removal; the future original 27/28/29/30 rows still await their dedicated audits.
+The user retained hq in index_le_lem6/Θ_option_le, Θ_nonneg.hB/hr, Θ_le_card.hB, and
+Θ_mono.hB/hr; the extra D/E/F broadenings remain declined and unapplied.
+
+The standing authorization was then updated: “From now on implement all changes that you
+recommend. Only ask me if you can't decide.” It supersedes the earlier per-change approval
+policy while preserving explicit earlier choices and all validation gates. Under that authority,
+original 19 localized pow_rootMultiplicity_le.hB to the absolute leading coefficient after
+concrete candidate, full-original adapter and caller evidence compiled. This strengthens the
+theorem and is separate from the declined Θ-bound hypotheses. The old uniform coefficient
+premise recovers the new premise at R.natDegree; Θ_unique_le's full old contract is retained.
+See [the exact decision and application ledger](cleanup/Theta-contract-proposal.md).
+
+Latest original 19 gates: module and complete unfiltered LSP: 0 errors / 18 warnings; immutable
+independent original target/caller proofs, exact authorized new premise/full-old adapter/other
+metadata and actual standard axioms pass. Repeated final prefix timings target 352.542/366.074 ms,
+caller 820.803/829.009 ms; ≥750ms caller repeats pass below 1000 ms, with no speedup claim.
+Frozen full build 77.364 s then separate LeanEval 24.504 s both exit 0, all 17 project/pin hashes stable.
+Original 20 and any new-helper audits remain unpublished work at this historical snapshot.
+
+Theta's final file phases and actual whole-module profiling are still outstanding. The known
+late index_le_lem6 instrumented default-heartbeat failure and earlier index_det_le over-budget
+diagnostics remain assigned to their dedicated audits; failed diagnostic samples are not
+successful profiles. Header metadata and all earlier explicitly retained public wrappers/domains
+remain unchanged. No new helper was introduced in published originals 1–19.
