@@ -125,7 +125,7 @@ Files will be processed in dependency order; declarations within each file are s
 | `Roth/GenWronskian.lean` | 292 | All cleanup phases complete;19/19 originals and2 added helpers audited; both user-approved public amendments applied;2 preserved warnings |
 | `Roth/Lattice.lean` | 217 | All cleanup phases complete;10/10 originals and3/3 added helpers audited; user-preserved metadata |
 | `Roth/Index.lean` | 275 | All cleanup phases complete;21/21 originals audited; user-approved hypothesis groups applied and validated |
-| `Roth/Separation.lean` | 618 | Active;18/30 originals audited at d18 published checkpoint; public instance proposal pending approval |
+| `Roth/Separation.lean` | 618 | Active;19/30 originals audited at d19 published checkpoint; public instance proposal pending approval |
 | `Roth/Theta.lean` | 981 | Awaiting cleanup |
 | `Roth/MainLemma.lean` | 704 | Awaiting cleanup |
 | `Roth/Main.lean` | 684 | Awaiting cleanup |
@@ -1860,3 +1860,16 @@ Actual accepted final repository-module profile exits 0 (`/private/tmp/roth-sepa
 Source FROZEN SHA256 `1c58b8b35fe3c01d326d802b94c54dbc8ed0349e1ca388f87e9b34aa2a0278d4`; leaf ownership revoked and requests drained before owner gates. Owner probe `59024` exit0,45.72s: independent ORIGINAL30 proof bodies,all20 original public type/value recoveries and ALL23 actual retained standardaxiom checks. `/private/tmp/roth-separation-d18-compatibility.{lean,log,json}`. Owner build session `2299` sequential `lake build` then separate `lake build Roth.LeanEval` both exit0,128.62s/29.26s; source hash stable. `/private/tmp/roth-separation-d18-{full,leaneval}.log`, `...-builds.json`. Owner original block docs byte-identical; exact diff/whitespace checked. Exact-path commit and successful cleanup-branch push precede next declaration.
 
 All three public options remain pending and unapplied: 12-theorem instance omissions and the two optional public wrapper deletions. Fresh owner rg confirms coefficient references remain explicitly MvPolynomial-qualified; the unused Roth wrapper gained no caller. Refresh historical deletion candidates before any approved application. Header remains user-preserved.
+
+
+## Separation d19 checkpoint — degreeOf_rename_mul_aeval
+
+[Dedicated audit](cleanup/Separation-degreeOf_rename_mul_aeval.md): All 24 audit items, 42 golf rules, five actual search methods, every binder, width/inequality checks and 11 completion steps; Proof retained byte-identically after full direct-API/automation audit; no source edit or helper. Stronger generality is compiled as an unapproved grouped public option, not applied. Source unchanged at 551 lines and 23 declarations, all original public types/docs retained. Source 551 → 551; 23 retained declarations. Separation 19/30, overall 170/264 original audits after successful publication; 8/14 files complete.
+
+Actual module build exit 0 (`/private/tmp/roth-separation-d19-build.log`). Complete unfiltered native LSP success=true, partial=false, timed_out=false, no failed dependencies, 0 errors/31 warnings (`...-final-lsp.json`). Exact original type and independent non-self proof compile; actual target and independent proof use standard three axioms (`...-independent.{lean,log}`). Every binder probe completed; no-zero-divisors condition tested, hV removal independently refuted by compiled V=0/U=X integer counterexample. Full-module grouped coefficient proposal (`...-domain-proposal.{lean,log}`) exits 0 with both actual printed weaker types and standard axioms: only Domain section CommRing/IsDomain changed to CommSemiring/NoZeroDivisors, Fintype/DecidableEq and both existing proofs retained. Arbitrary-τ combined isolated candidate also passes (`...-weakest.{lean,log}`).
+
+Unchanged actual source/target reuses valid repository-module profile `/private/tmp/roth-separation-d18-direct-final-profile.log{,.json}`: command 13.297 + async 118.049 = 131.346 ms, one anchor each, below 750/1000 ms. No unnecessary repeat profile, source scaffolding, raised limits or target deferral.
+
+Source FROZEN SHA256 `1c58b8b35fe3c01d326d802b94c54dbc8ed0349e1ca388f87e9b34aa2a0278d4`; leaf ownership revoked and requests drained before owner gates. Owner probe `75014` exit0,34.54s: independent ORIGINAL30 proof bodies,all20 original public type/value recoveries and ALL23 actual retained standardaxiom checks. `/private/tmp/roth-separation-d19-compatibility.{lean,log,json}`. Owner build session `45446` sequential `lake build` then separate `lake build Roth.LeanEval` both exit0,5.75s/2.65s; source hash stable. `/private/tmp/roth-separation-d19-{full,leaneval}.log`, `...-builds.json`. Owner original block docs byte-identical; exact diff/whitespace checked. Exact-path commit and successful cleanup-branch push precede next declaration.
+
+Four public options remain pending/unapplied: 12-theorem index-instance omissions, two optional public wrapper deletions, and grouped Domain coefficient weakening for d19+d20 to CommSemiring/NoZeroDivisors. The coefficient option is independently compiled with original variable instances retained. No approval inferred from successful probes. Header remains user-preserved.
