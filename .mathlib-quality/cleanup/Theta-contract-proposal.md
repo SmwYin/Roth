@@ -22,7 +22,8 @@ The user approved exactly A and B below, plus the first five C rows:
 The user chose preservation for the remaining options: RETAIN hq in index_le_lem6 and
 Θ_option_le; RETAIN Θ_nonneg's hB/hr, Θ_le_card's hB, and Θ_mono's hB/hr. Thus D/E/F's
 additional bound/weight widening is declined; their overlapping A instance removals and
-Θ_le_card's overlapping C.hr removal remain approved. This selected scope does not itself authorize another hypothesis, definition,
+Θ_le_card's overlapping C.hr removal remain approved. This selected scope does not itself
+authorize another hypothesis, definition,
 domain, conclusion, binder order, naming or project structure change; the later standing
 authorization above governs any new well-supported recommendation.
 
@@ -38,15 +39,18 @@ removals. No unselected row may be inferred from that probe's successful compile
 - Original 15, Θ_equiv: both approved A.DecEq instance removals applied, independently original
   ten-binder recovered through an explicit adapter to the actual eight-binder theorem. Module,
   complete LSP, actual axioms, caller, final profile and owner full/separate LeanEval gates pass.
-- Approved revisit 6, one_mem_RSet: Only the approved Fintype σ and DecidableEq σ removals applied with independent original adapter,
-  actual axioms/metadata/caller, complete LSP, profile and frozen full/LeanEval gates.
-- Approved revisit 7, indexSet_nonempty: Only the approved DecidableEq σ removal applied with independent original adapter,
-  actual axioms/metadata/caller, complete LSP, profile and frozen full/LeanEval gates.
-- Approved revisit 8, indexSet_bddAbove: Only the approved DecidableEq σ and hr removals, with two required helper-call argument deletions applied with independent original adapter,
-  actual axioms/metadata/caller, complete LSP, profile and frozen full/LeanEval gates.
-- Approved revisit 9, index_le_Θ: Only the approved DecidableEq σ removal; hr remains public applied with independent original adapter,
-  actual axioms/metadata/caller, complete LSP, profile and frozen full/LeanEval gates.
-- Next: approved revisit of original 10, Θ_nonneg (DecidableEq σ only; hB and hr retained). Counts remain unchanged on approved revisits.
+- Approved revisit 6, one_mem_RSet: Only the approved Fintype σ and DecidableEq σ removals. Independent original adapter,
+  actual axioms/metadata/caller, complete LSP, profile and frozen full/LeanEval gates pass.
+- Approved revisit 7, indexSet_nonempty: Only the approved DecidableEq σ removal. Independent original adapter,
+  actual axioms/metadata/caller, complete LSP, profile and frozen full/LeanEval gates pass.
+- Approved revisit 8, indexSet_bddAbove: Only the approved DecidableEq σ and hr removals, with two required helper-call argument deletions. Independent original adapter,
+  actual axioms/metadata/caller, complete LSP, profile and frozen full/LeanEval gates pass.
+- Approved revisit 9, index_le_Θ: Only the approved DecidableEq σ removal; hr remains public. Independent original adapter,
+  actual axioms/metadata/caller, complete LSP, profile and frozen full/LeanEval gates pass.
+- Approved revisit 10, Θ_nonneg: Only the approved DecidableEq σ removal; hB, hr and Fintype remain.
+  Independent original adapter, actual axioms/metadata/caller, complete LSP, profile and frozen
+  full/LeanEval gates pass.
+- Next: approved revisit of original 11, Θ_le_card (DecidableEq σ and hr only; hB retained). Counts remain unchanged on approved revisits.
 
 The evidence and proposal descriptions below were prepared before this decision. Their historic
 unapplied status is superseded only by the exact selected scope above and subsequent checkpoint

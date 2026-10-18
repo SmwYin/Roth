@@ -347,3 +347,19 @@ standard axioms pass. The internal index_det_le caller retains its complete immu
 Frozen owner full build (57.757 s), then separate LeanEval (12.932 s),
 both pass on identical SHA. [Dedicated revisit audit](Theta-index_le_Theta-approved.md).
 Original counts unchanged: Theta 15/35, overall 196/264, 9/14 files. Next: approved revisit of original 10, Θ_nonneg (DecidableEq σ only; hB and hr retained).
+
+
+## Approved revisit of original 10 — Θ_nonneg
+
+Applied exactly one scoped omit before the preserved docstring. The canonical three-line proof and all four actual caller expressions are unchanged. The user-retained hB/hr assumptions and Fintype remain; the stronger D proposal is not applied. Immutable old proof and explicit full old adapter recover the original type from the actual DecEq-only amended theorem, including retained names/order/BinderInfo and selected-drop AST. No helper, definition, domain or conclusion change.
+
+Fresh dedicated full 24-item audit, 42 golf rules, five actual searches, every-binder probes,
+literature/inversion, packing, inequality scan and 11-step checklist pass. Immutable independent
+original proof and explicit old-telescope adapter recover the original contract from the actual
+new theorem; exact retained types/order/BinderInfo/user names, selected-drop AST and actual
+standard axioms pass. All four actual calls in index_le_lem6 and Θ_lt remain unchanged and module-checked. Both actual lem6Φ caller shapes independently compile with standard axioms; no claim is made here to independently reprove either complete long caller. Module and complete unfiltered final LSP pass with
+0 errors and 25 warnings. Accepted uncontended exact-prefix aggregate:
+15.233 → 14.808 ms; no whole-file performance claim.
+Frozen owner full build (54.394 s), then separate LeanEval (17.121 s),
+both pass on identical SHA. [Dedicated revisit audit](Theta-Theta_nonneg-approved.md).
+Original counts unchanged: Theta 15/35, overall 196/264, 9/14 files. Next: approved revisit of original 11, Θ_le_card (DecidableEq σ and hr only; hB retained).

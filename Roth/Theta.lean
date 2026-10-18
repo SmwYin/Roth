@@ -95,6 +95,7 @@ theorem index_le_Θ {B : ℝ} {q r : σ → ℕ} (hr : ∀ j, 0 < r j) {R : MvPo
     index (map (Int.castRingHom ℝ) R) (fun j ↦ (h j : ℝ) / q j) r ≤ Θ B q r :=
   le_csSup (indexSet_bddAbove B q) ⟨R, hR, h, hh, rfl⟩
 
+omit [DecidableEq σ] in
 /-- `Θ_m(B; q; r)` is nonnegative when `1 ≤ B` and every `r j` is positive. Source: §5
 ("`0 ≤ Θ_m`"). -/
 theorem Θ_nonneg {B : ℝ} (hB : 1 ≤ B) (q : σ → ℕ) {r : σ → ℕ} (hr : ∀ j, 0 < r j) :
