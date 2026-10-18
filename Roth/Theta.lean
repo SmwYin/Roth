@@ -68,6 +68,7 @@ theorem one_mem_RSet {B : ℝ} (hB : 1 ≤ B) (r : σ → ℕ) : (1 : MvPolynomi
   classical
   simp [RSet, coeff_one, apply_ite, ite_apply, hB, zero_le_one.trans hB]
 
+omit [DecidableEq σ] in
 /-- If `1 ≤ B`, the set of indices defining `Θ_m(B; q; r)` is nonempty. Source: §5 ("This
 supremum is well-defined"). -/
 theorem indexSet_nonempty {B : ℝ} (hB : 1 ≤ B) (q r : σ → ℕ) : (indexSet B q r).Nonempty :=

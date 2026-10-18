@@ -290,3 +290,28 @@ standard axioms pass. The sole caller, indexSet_nonempty, has an independent ori
 Frozen owner full build (45.375 s), then separate LeanEval (15.075 s),
 both pass on identical SHA. [Dedicated revisit audit](Theta-one_mem_RSet-approved.md).
 Original counts unchanged: Theta 15/35, overall 196/264, 9/14 files. Next: approved revisit of original 7, indexSet_nonempty (DecidableEq σ only).
+
+
+## Historical CI notification clarified
+
+The coordinator relayed root's verification of [run 39123476667](https://github.com/SmwYin/Roth/actions/runs/39123476667)
+at commit 692d63c: its Lean action passed; Pages deployment returned HTTP 400 while deployment
+for a4d22a3 overlapped. Newer 132df63 and following workflows completed successfully. This was
+not a Lean regression; no workflow change is required or applied. This CI note is independent
+of the local checkpoint gates documented above.
+
+
+## Approved revisit of original 7 — indexSet_nonempty
+
+Applied only a scoped omission of DecidableEq σ before the byte-preserved docstring. Fintype σ, B, hB, q and r, the original proof, all definitions and callers are unchanged. The actual theorem has six retained binders; an explicit full old seven-binder adapter recovers its immutable original contract.
+
+Fresh dedicated full 24-item audit, 42 golf rules, five actual searches, every-binder probes,
+literature/inversion, packing, inequality scan and 11-step checklist pass. Immutable independent
+original proof and explicit old-telescope adapter recover the original contract from the actual
+new theorem; exact retained types/order/BinderInfo/user names, selected-drop AST and actual
+standard axioms pass. Both actual callers have independent original proofs and exact original type/BinderInfo/standard-axiom checks. The newly unused DecEq in Θ_le_of_forall_index_le remains until its own approved revisit. Module and complete unfiltered final LSP pass with
+0 errors and 27 warnings. Accepted uncontended exact-prefix aggregate:
+15.137 → 14.645 ms; no whole-file performance claim.
+Frozen owner full build (53.182 s), then separate LeanEval (12.704 s),
+both pass on identical SHA. [Dedicated revisit audit](Theta-indexSet_nonempty-approved.md).
+Original counts unchanged: Theta 15/35, overall 196/264, 9/14 files. Next: approved revisit of original 8, indexSet_bddAbove (DecidableEq σ and hr only, plus necessary caller proof fixes).

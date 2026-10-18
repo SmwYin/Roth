@@ -1,5 +1,14 @@
 # Theta contract candidates and approved scope
 
+## Continuing cleanup authorization
+
+The user's later instruction is: “From now on implement all changes that you recommend.
+Only ask me if you can't decide.” This supersedes automatic per-change approval requests for
+new well-supported recommendations. Concrete compiler/original-contract/axiom evidence and all
+sequential checkpoint gates still apply. Earlier explicit preservation choices remain preferences:
+do not automatically reopen declined hq/D/E/F additions, retained wrappers or optional domains,
+or introduce unnecessary broad API churn. The current selected revisits proceed unchanged.
+
 ## Explicit user decision (2026-10-18)
 
 The user approved exactly A and B below, plus the first five C rows:
@@ -13,8 +22,9 @@ The user approved exactly A and B below, plus the first five C rows:
 The user chose preservation for the remaining options: RETAIN hq in index_le_lem6 and
 Θ_option_le; RETAIN Θ_nonneg's hB/hr, Θ_le_card's hB, and Θ_mono's hB/hr. Thus D/E/F's
 additional bound/weight widening is declined; their overlapping A instance removals and
-Θ_le_card's overlapping C.hr removal remain approved. No other hypothesis, definition,
-domain, conclusion, binder order, naming or project structure change is authorized.
+Θ_le_card's overlapping C.hr removal remain approved. This selected scope does not itself authorize another hypothesis, definition,
+domain, conclusion, binder order, naming or project structure change; the later standing
+authorization above governs any new well-supported recommendation.
 
 Application proceeds through dedicated sequential declaration checkpoints/revisits. Original 15
 Θ_equiv applies its approved A row in the first publication below; earlier completed targets
@@ -30,7 +40,9 @@ removals. No unselected row may be inferred from that probe's successful compile
   complete LSP, actual axioms, caller, final profile and owner full/separate LeanEval gates pass.
 - Approved revisit 6, one_mem_RSet: Only the approved Fintype σ and DecidableEq σ removals applied with independent original adapter,
   actual axioms/metadata/caller, complete LSP, profile and frozen full/LeanEval gates.
-- Next: approved revisit of original 7, indexSet_nonempty (DecidableEq σ only). Counts remain unchanged on approved revisits.
+- Approved revisit 7, indexSet_nonempty: Only the approved DecidableEq σ removal applied with independent original adapter,
+  actual axioms/metadata/caller, complete LSP, profile and frozen full/LeanEval gates.
+- Next: approved revisit of original 8, indexSet_bddAbove (DecidableEq σ and hr only, plus necessary caller proof fixes). Counts remain unchanged on approved revisits.
 
 The evidence and proposal descriptions below were prepared before this decision. Their historic
 unapplied status is superseded only by the exact selected scope above and subsequent checkpoint
