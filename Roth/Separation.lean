@@ -84,6 +84,7 @@ theorem coeff_coeffNone (P : MvPolynomial (Option τ) R) (ν : ℕ) (d : τ →�
   cases o <;> simp [Finsupp.mapDomain_of_notMem_range,
     Finsupp.mapDomain_apply_of_injective (Option.some_injective τ)]
 
+omit [Fintype τ] [DecidableEq τ] in
 /-- Expansion of `P` in powers of the distinguished variable: if `P` has degree at most `n` in
 `x_none`, then `P = ∑_{ν ≤ n} x_none^ν · coeffNone P ν`.
 Source: §2, proof of Lemma 2 ("we can let `l - 1 = r_p` and `φ_ν(x_p) = x_p^ν` by collecting
