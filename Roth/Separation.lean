@@ -201,11 +201,13 @@ theorem degreeOf_rename_mul_aeval (U : MvPolynomial τ R) {V : Polynomial R} (hV
   simp [aeval_X_eq_rename, degreeOf,
     degrees_rename_of_injective (Function.injective_of_subsingleton _), Multiset.mem_replicate]
 
+omit [Fintype τ] [DecidableEq τ] in
 /-- For `U ≠ 0`, the degree of `U(x_τ) V(x_none)` in `x_none` is the degree of `V`.
 Source: §2, end of the proof of Lemma 2. -/
 theorem degreeOf_none_rename_mul_aeval {U : MvPolynomial τ R} (hU : U ≠ 0) (V : Polynomial R) :
     degreeOf none (rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) R) V) =
       V.natDegree := by
+  classical
   by_cases hV : V = 0
   · simp [hV]
   rw [degreeOf_mul_eq ((rename_eq_zero_iff_of_injective U (Option.some_injective τ)).not.mpr hU)
