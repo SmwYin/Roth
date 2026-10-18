@@ -113,6 +113,7 @@ theorem Θ_le_card {B : ℝ} (hB : 1 ≤ B) (q : σ → ℕ) {r : σ → ℕ} : 
     (by simpa [degreeOf, degrees_map_of_injective R (f := Int.castRingHom ℝ)
           Int.cast_injective] using hRd) _
 
+omit [DecidableEq σ] in
 /-- A bound on every index is a bound on `Θ`. Source: §5, Lemma 5 ("Taking the supremum proves
 the claim"). -/
 theorem Θ_le_of_forall_index_le {B : ℝ} (hB : 1 ≤ B) {q r : σ → ℕ} {c : ℝ}
