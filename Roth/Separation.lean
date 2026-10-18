@@ -165,13 +165,11 @@ theorem degreeOf_uniqueAlgEquiv_symm {σ : Type*} [Unique σ] (f : Polynomial R)
     intro e he
     rw [mem_support_iff, MvPolynomial.coeff_uniqueAlgEquiv_symm] at he
     exact Polynomial.le_natDegree_of_ne_zero he
-  · by_cases hf : f = 0
-    · simp [hf]
-    · have h := monomial_le_degreeOf (default : σ)
-        (f := (uniqueAlgEquiv R σ).symm f) (m := Finsupp.single default f.natDegree)
-        (by rw [mem_support_iff, MvPolynomial.coeff_uniqueAlgEquiv_symm,
-          Finsupp.single_eq_same]; exact Polynomial.leadingCoeff_ne_zero.2 hf)
-      simpa using h
+  · refine Polynomial.natDegree_le_iff_coeff_eq_zero.2 fun n hn ↦ ?_
+    simpa only [mem_support_iff, MvPolynomial.coeff_uniqueAlgEquiv_symm,
+      Finsupp.single_eq_same, not_not] using
+      (notMem_support_of_degreeOf_lt (p := (uniqueAlgEquiv R σ).symm f) (i := default)
+        (s := Finsupp.single default n) (by simpa only [Finsupp.single_eq_same] using hn))
 
 end General
 
