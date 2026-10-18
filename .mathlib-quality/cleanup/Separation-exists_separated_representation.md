@@ -272,3 +272,8 @@ Owner complete unfiltered native diagnostics `/private/tmp/roth-separation-d21-o
 ## Owner cumulative publication gates
 
 Source FROZEN SHA256 `36a381873357317a18cc528ac03d6d55739d5487e00c3daa8fbf568d9dcdbc17`; leaf ownership revoked and requests drained before owner gates. Owner probe `88657` exit0,37.80s: independent ORIGINAL30 proof bodies,all20 original public type/value recoveries and ALL25 actual retained standardaxiom checks. `/private/tmp/roth-separation-d21-compatibility.{lean,log,json}`. Owner build session `56384` sequential `lake build` then separate `lake build Roth.LeanEval` both exit0,115.49s/28.60s; source hash stable. `/private/tmp/roth-separation-d21-{full,leaneval}.log`, `...-builds.json`. Owner original block docs byte-identical; exact diff/whitespace checked. Exact-path commit and successful cleanup-branch push precede next declaration.
+
+
+## Subsequent structure completion
+
+The dedicated private refactor [audit](Separation-structure-exists_separated_representation.md) closes the headline proof-length flag: 30→14 body lines (15 including `:= by`). New `exists_coeffNone_basis_aux` has21 body lines and received a separate fresh [independent audit](Separation-helper-exists_coeffNone_basis_aux.md), retained unchanged. Shared expansion is computed once; all public type/doc bytes and the two existing helpers remain unchanged. Its dependent existential bounds refer to the same chosen basis, so independent existential conjunction splits cannot preserve that witness relationship; this rule is mathematically inapplicable, not an unfinished refactor. Final actual helper646.450ms/main351.068ms/caller482.563ms, all below750/1000ms. The dedicated structure checkpoint records cumulative compatibility and publication gates.
