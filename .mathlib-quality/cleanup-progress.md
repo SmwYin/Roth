@@ -125,7 +125,7 @@ Files will be processed in dependency order; declarations within each file are s
 | `Roth/GenWronskian.lean` | 292 | All cleanup phases complete;19/19 originals and2 added helpers audited; both user-approved public amendments applied;2 preserved warnings |
 | `Roth/Lattice.lean` | 217 | All cleanup phases complete;10/10 originals and3/3 added helpers audited; user-preserved metadata |
 | `Roth/Index.lean` | 275 | All cleanup phases complete;21/21 originals audited; user-approved hypothesis groups applied and validated |
-| `Roth/Separation.lean` | 618 | Active;13/30 originals audited at d13 published checkpoint; public instance proposal pending approval |
+| `Roth/Separation.lean` | 618 | Active;14/30 originals audited at d14 published checkpoint; public instance proposal pending approval |
 | `Roth/Theta.lean` | 981 | Awaiting cleanup |
 | `Roth/MainLemma.lean` | 704 | Awaiting cleanup |
 | `Roth/Main.lean` | 684 | Awaiting cleanup |
@@ -1795,3 +1795,16 @@ Actual final repository-module profile exit 0 (`/private/tmp/roth-separation-d13
 Source FROZEN SHA256 `ba6cdd854cc9e3ae0df16663905d80233ae16b8f2240e8c8326e5ea801b1e1d2`; leaf ownership revoked and requests drained before owner gates. Owner probe `86125` exit0,47.19s: independent ORIGINAL30 proof bodies,all20 original public type/value recoveries and ALL25 actual retained standardaxiom checks. `/private/tmp/roth-separation-d13-compatibility.{lean,log,json}`. Owner build session `25929` sequential `lake build` then separate `lake build Roth.LeanEval` both exit0,128.57s/30.90s; source hash stable. `/private/tmp/roth-separation-d13-{full,leaneval}.log`, `...-builds.json`. Owner original block docs byte-identical; exact diff/whitespace checked. Exact-path commit and successful cleanup-branch push precede next declaration.
 
 Both public proposals remain pending and unapplied: 12-theorem instance omissions and optional aeval_X_eq_rename deletion. The public-wrapper scratch candidate is documented against its explicit D12 source hash; later proof cleanup moves its internal call sites, requiring a fresh scan/candidate before any approved application. Header remains user-preserved.
+
+
+## Separation d14 checkpoint — rename_some_ne_zero
+
+[Dedicated audit](cleanup/Separation-rename_some_ne_zero.md): All 24 audit items, 42 golf rules, five actual search methods, every binder, width/inequality checks and 11 completion steps; Private renaming-nonzero wrapper removed; exactly two callers use rename_eq_zero_iff_of_injective directly. Source 562 to 559 (Git +4/−7), 25 to 24 retained declarations. No public API, definition, documentation or import change. Source 562 → 559; 24 retained declarations. Separation 14/30, overall 165/264 original audits after successful publication; 8/14 files complete.
+
+Actual module build exit 0 (`/private/tmp/roth-separation-d14-build.log`). Complete native unfiltered LSP success=true, partial=false, timed_out=false, no failed dependencies, 0 errors/31 existing warnings (`...-final-lsp.json`). Exact original type and independent arbitrary-injective-map proof compile; actual changed caller axioms and original-type proof use standard three only (`...-independent-final.log`). All five binder negative probes have actual exit 1 (`...-binders.json`); all requests drained and all source ownership revoked before owner gates.
+
+Actual repository-module final profile exit 0 (`/private/tmp/roth-separation-d14-final-profile.log{,.json}`): degreeOf_rename_mul_aeval 28.381 + 71.092 = 99.473 ms, degreeOf_none_rename_mul_aeval 22.465 + 91.375 = 113.840 ms; one command/async anchor each, below 750/1000 ms. Removed target baseline 103.822 ms, no final target cost. No profiler scaffolding or raised limits.
+
+Source FROZEN SHA256 `5ee248fa04d6ef74d0d6cccb17c898c52302215f62eb480dfa5944562ebe5ea1`; leaf ownership revoked and requests drained before owner gates. Owner probe `59421` exit0,57.83s: independent ORIGINAL30 proof bodies,all20 original public type/value recoveries and ALL24 actual retained standardaxiom checks. `/private/tmp/roth-separation-d14-compatibility.{lean,log,json}`. Owner build session `84208` sequential `lake build` then separate `lake build Roth.LeanEval` both exit0,142.29s/41.59s; source hash stable. `/private/tmp/roth-separation-d14-{full,leaneval}.log`, `...-builds.json`. Owner original block docs byte-identical; exact diff/whitespace checked. Exact-path commit and successful cleanup-branch push precede next declaration.
+
+Both public proposals remain pending and unapplied: 12-theorem index-instance omissions and optional aeval_X_eq_rename removal. The latter records compiled historical D12 candidates; refresh actual source/caller inventory before eventual approved application. Header remains user-preserved.

@@ -129,11 +129,6 @@ theorem aeval_X_eq_rename {σ : Type*} (i : σ) (f : Polynomial R) :
   AlgHom.congr_fun (Polynomial.toMvPolynomial_eq_rename_comp i) f
 
 omit [Fintype τ] [DecidableEq τ] in
-private lemma rename_some_ne_zero {U : MvPolynomial τ R} (hU : U ≠ 0) :
-    rename some U ≠ 0 :=
-  (map_ne_zero_iff _ (rename_injective _ (Option.some_injective τ))).2 hU
-
-omit [Fintype τ] [DecidableEq τ] in
 private lemma aeval_X_none_ne_zero {V : Polynomial R} (hV : V ≠ 0) :
     Polynomial.aeval (X none : MvPolynomial (Option τ) R) V ≠ 0 := by
   rwa [aeval_X_eq_rename, map_ne_zero_iff _ (rename_injective _ fun _ _ _ => rfl),
@@ -200,7 +195,8 @@ theorem degreeOf_rename_mul_aeval (U : MvPolynomial τ R) {V : Polynomial R} (hV
       degreeOf j U := by
   by_cases hU : U = 0
   · simp [hU]
-  rw [degreeOf_mul_eq (rename_some_ne_zero hU) (aeval_X_none_ne_zero hV),
+  rw [degreeOf_mul_eq ((rename_eq_zero_iff_of_injective U (Option.some_injective τ)).not.mpr hU)
+      (aeval_X_none_ne_zero hV),
     degreeOf_rename_of_injective (Option.some_injective τ)]
   simp [aeval_X_eq_rename, degreeOf,
     degrees_rename_of_injective (Function.injective_of_subsingleton _), Multiset.mem_replicate]
@@ -212,7 +208,8 @@ theorem degreeOf_none_rename_mul_aeval {U : MvPolynomial τ R} (hU : U ≠ 0) (V
       V.natDegree := by
   by_cases hV : V = 0
   · simp [hV]
-  rw [degreeOf_mul_eq (rename_some_ne_zero hU) (aeval_X_none_ne_zero hV),
+  rw [degreeOf_mul_eq ((rename_eq_zero_iff_of_injective U (Option.some_injective τ)).not.mpr hU)
+      (aeval_X_none_ne_zero hV),
     (show degreeOf none (rename some U) = 0 by
       simp [degreeOf, degrees_rename_of_injective (Option.some_injective τ)]),
     zero_add, aeval_X_eq_rename]
