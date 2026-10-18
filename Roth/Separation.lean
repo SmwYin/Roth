@@ -399,43 +399,37 @@ Source: §2, proof of Lemma 2 ("Choose `g ∈ ℚ×` so that `U = gG` is an inte
 polynomial, by clearing denominators and then dividing by the gcd of its coefficients"). -/
 theorem exists_primitive_smul_eq {σ : Type*} {G : MvPolynomial σ ℚ} (hG : G ≠ 0) :
     ∃ (g : ℚ) (U : MvPolynomial σ ℤ), g ≠ 0 ∧ map (Int.castRingHom ℚ) U = g • G ∧
-      U.support.gcd (fun d => U.coeff d) = 1 := by
+      U.support.gcd (fun d ↦ U.coeff d) = 1 := by
   classical
   obtain ⟨N, U0, hN, hU0⟩ := exists_nat_smul_eq_map G
-  have hne : U0.support.Nonempty := by
-    rw [Finset.nonempty_iff_ne_empty, Ne, support_eq_empty]
-    rintro rfl
-    rw [map_zero] at hU0
-    exact hG ((smul_eq_zero.1 hU0.symm).resolve_left (by exact_mod_cast hN.ne'))
-  obtain ⟨g', hg', hg1⟩ := Finset.extract_gcd (fun d => U0.coeff d) hne
-  set g0 := U0.support.gcd (fun d => U0.coeff d) with hg0def
+  have hne : U0.support.Nonempty := support_nonempty.mpr fun h ↦ by
+    simpa [h, smul_eq_zero, hN.ne', hG] using hU0.symm
+  obtain ⟨g', hg', hg1⟩ := Finset.extract_gcd (fun d ↦ U0.coeff d) hne
+  set g0 := U0.support.gcd (fun d ↦ U0.coeff d) with hg0def
   have hg0 : g0 ≠ 0 := by
     obtain ⟨d, hd⟩ := hne
     rw [hg0def, Ne, Finset.gcd_eq_zero_iff]
-    exact fun h => mem_support_iff.1 hd (h d hd)
+    exact fun h ↦ mem_support_iff.1 hd (h d hd)
   set U := ∑ d ∈ U0.support, monomial d (g' d) with hUdef
   have hUcoeff : ∀ d, U.coeff d = if d ∈ U0.support then g' d else 0 := by
-    intro d
     simp [hUdef, coeff_monomial, Finset.sum_ite_eq']
   have hU0coeff : ∀ d, U0.coeff d = g0 * U.coeff d := by
     intro d
-    rw [hUcoeff]
-    split_ifs with hd
-    · exact hg' d hd
-    · rw [notMem_support_iff.1 hd, mul_zero]
+    by_cases hd : d ∈ U0.support
+    · simpa [hUcoeff, hd] using hg' d hd
+    · simp [hUcoeff, hd, notMem_support_iff.1 hd]
   refine ⟨N / g0, U, div_ne_zero (by exact_mod_cast hN.ne') (by exact_mod_cast hg0), ?_, ?_⟩
   · ext d
-    have h1 := congrArg (fun P => P.coeff d) hU0
+    have h1 := congrArg (fun P ↦ P.coeff d) hU0
     simp only [coeff_map, coeff_smul, smul_eq_mul, eq_intCast] at h1 ⊢
     rw [hU0coeff] at h1
     push_cast at h1
     rwa [div_mul_eq_mul_div, eq_div_iff (by exact_mod_cast hg0), mul_comm]
   · have hsupp : U.support = U0.support := by
       ext d
-      rw [mem_support_iff, mem_support_iff, hU0coeff d]
-      simp [hg0]
+      simp [mem_support_iff, hU0coeff d, hg0]
     rw [hsupp, ← hg1]
-    exact Finset.gcd_congr rfl fun d hd => by rw [hUcoeff, ite_eq_left hd]
+    exact Finset.gcd_congr rfl fun d hd ↦ by rw [hUcoeff, ite_eq_left hd]
 
 /-- If integers `u_a` have gcd `1` and every `u_a v` is an integer, then `v` is an integer.
 Source: §2, proof of Lemma 2 ("Primitivity gives a finite integral linear combination
