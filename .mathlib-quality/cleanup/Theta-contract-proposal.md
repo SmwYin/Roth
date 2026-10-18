@@ -68,7 +68,7 @@ removals. No unselected row may be inferred from that probe's successful compile
 - Original20, Θ_unique_le: approved A.DecidableEq σ removed; every other public parameter including hB/hr/Fintype retained.
   Headline29→3; ONE new private index/log helper has a separate fresh full audit, body23,
   initial-contract adapter and final original-public adapter/actual axioms/LSP/profiles/full/LeanEval.
-- Next: original 21, public definition lem6M. Published originals now Theta 20/35, overall 201/264; approved revisits themselves do not increase counts.
+- Next: original 22, public definition lem6Φ. Published originals now Theta 21/35, overall 202/264; approved revisits themselves do not increase counts.
 
 The evidence and proposal descriptions below were prepared before this decision. Their historic
 unapplied status is superseded only by the exact selected scope above and subsequent checkpoint

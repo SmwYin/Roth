@@ -58,7 +58,7 @@ ordinary baseline builds passing does not imply any all-file profile pass.
 | 18 | `exists_eq_pow_mul_of_rootMultiplicity` | 187 | 14 | Complete;[audit](Theta-exists_eq_pow_mul_of_rootMultiplicity.md) |
 | 19 | `pow_rootMultiplicity_le` | 210 | 13 | Complete;[audit](Theta-pow_rootMultiplicity_le.md) |
 | 20 | `Θ_unique_le` | 230 | 29 | Complete;[audit](Theta-Theta_unique_le.md) |
-| 21 | `lem6M` | 270 | 1 | Pending dedicated audit |
+| 21 | `lem6M` | 270 | 1 | Complete;[audit](Theta-lem6M.md) |
 | 22 | `lem6Φ` | 275 | 1 | Pending dedicated audit |
 | 23 | `one_le_lem6M` | 279 | 8 | Pending dedicated audit |
 | 24 | `floor_sq_div_two_le_sum` | 291 | 11 | Pending dedicated audit |
@@ -466,3 +466,14 @@ Accepted uncontended exact-prefix profile: public 829.009 → 73.124; new helper
 Frozen owner full (39.883 s) then separate LeanEval (15.025 s) pass.
 [Dedicated audit](Theta-Theta_unique_le.md). Theta 20/35, overall 201/264 originals;9/14 files complete.
 One new private helper independently audited and retained; helper audits do not increase original counts. Next: original 21, public definition lem6M.
+
+
+## Published checkpoint21 — lem6M
+
+Retained the one-line real coefficient-bound constant unchanged: it matches the paper’s equation (16), is reused by the main statements, and needs no extra abstraction or naming/API change. No source, caller, definition-value or documentation edits.
+
+Fresh 24-item/42-rule audit, five actual searches, all four compiled binder deletions/value-sensitivity certificates, semiring assessment and public literature pass. Independently elaborated immutable type/value, kernel definitional equality and both rfl comparisons protect the exact definition; actual built axioms are standard only. Module and complete unfiltered final LSP pass with 0 errors / 17 warnings.
+Accepted uncontended exact-prefix profile: 37.516 ms; no whole-file performance claim.
+Frozen owner full (5.980 s) then separate LeanEval (3.018 s) pass.
+[Dedicated audit](Theta-lem6M.md). Theta 21/35, overall 202/264 originals;9/14 files complete.
+No new production helper; the previously added helper remains separately audited. Next: original 22, public definition lem6Φ.

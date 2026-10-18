@@ -25,16 +25,16 @@ Started: 2026-10-14 (America/Chicago).
 
 ## Current status
 
-Latest completed file after successful final publication: Separation. Theta originals 20/35
-completed; overall 201/264 original declarations, 9/14 files. Latest original: Θ_unique_le.
-Shortened the headline proof from twenty-nine lines to three by extracting the per-polynomial index/log bound. Applied only the approved public DecidableEq σ removal; hB/hr/Fintype and every other original public parameter/domain/conclusion remain. The one new private helper received a separate fresh audit: its positive-weight hypothesis was removed and coefficient hypothesis localized to the equivalent univariate leading coefficient, shortening its body from twenty-six to twenty-three lines.
-Both original and fresh helper audits complete all 24 items/42 rules/five actual searches/binder probes and their literature requirements. Final-source actual checks independently replay the immutable original public proof and INITIAL helper proof, recover both original contracts through explicit adapters, verify exact selected AST/retained metadata and actual standard axioms. Final helper/public timings are 481.521/73.124 ms (combined 554.645), after every normal request drained. The public hr warning remains unsuppressed under this audit’s preserved public-API scope. Module and complete unfiltered LSP (0 errors / 17 warnings), accepted
-uncontended prefix profile (public 829.009 → 73.124; new helper 481.521 ms), frozen full build (39.883 s), then
-separate LeanEval (15.025 s), all pass. [Latest audit](cleanup/Theta-Theta_unique_le.md).
-One new private helper independently audited and retained; helper audits do not increase original counts. Next: original 21, public definition lem6M.
+Latest completed file after successful final publication: Separation. Theta originals 21/35
+completed; overall 202/264 original declarations, 9/14 files. Latest original: lem6M.
+Retained the one-line real coefficient-bound constant unchanged: it matches the paper’s equation (16), is reused by the main statements, and needs no extra abstraction or naming/API change. No source, caller, definition-value or documentation edits.
+Fresh 24-item/42-rule audit, five actual searches, all four compiled binder deletions/value-sensitivity certificates, semiring assessment and public literature pass. Independently elaborated immutable type/value, kernel definitional equality and both rfl comparisons protect the exact definition; actual built axioms are standard only. Module and complete unfiltered LSP (0 errors / 17 warnings), accepted
+uncontended prefix profile (37.516 ms), frozen full build (5.980 s), then
+separate LeanEval (3.018 s), all pass. [Latest audit](cleanup/Theta-lem6M.md).
+No new production helper; the previously added helper remains separately audited. Next: original 22, public definition lem6Φ.
 [Exact contract decision](cleanup/Theta-contract-proposal.md): selected A/B/C scope applies;
 prior explicit hq and extra hB/hr preservation choices remain. Whole-Theta profiling,
-15 remaining originals and final phases are outstanding. The known late index_le_lem6 instrumented default-heartbeat failure awaits its dedicated audit.
+14 remaining originals and final phases are outstanding. The known late index_le_lem6 instrumented default-heartbeat failure awaits its dedicated audit.
 
 Build/tool setup completed; GitHub browser authentication and branch publication succeeded.
 The first file, `Roth/HasseDeriv.lean`, has completed all declaration and final review,
@@ -2291,3 +2291,15 @@ after committing this validated batch, before its atomic branch push.
 Original20 validated source/audit checkpoint: [7e27859](https://github.com/SmwYin/Roth/commit/7e27859b95d3a8c12b41559836262e6ddd5a13b9).
 This following central-log metadata commit changes no Lean source; both commits are published
 together in one push before original21 edits. Counts remain201/264,Theta20/35,9/14files.
+
+
+## Theta original21 checkpoint — lem6M
+
+Retained the one-line real coefficient-bound constant unchanged: it matches the paper’s equation (16), is reused by the main statements, and needs no extra abstraction or naming/API change. No source, caller, definition-value or documentation edits.
+
+Fresh 24-item/42-rule audit, five actual searches, all four compiled binder deletions/value-sensitivity certificates, semiring assessment and public literature pass. Independently elaborated immutable type/value, kernel definitional equality and both rfl comparisons protect the exact definition; actual built axioms are standard only. [Dedicated audit](cleanup/Theta-lem6M.md).
+Final Theta SHA256 `b9cd75fb1bf852d76868e8c6abc53ad4898664e13b1ec6701c1b40a144f538fa`. Module and complete unfiltered LSP:0 errors/17 warnings;
+accepted real prefix profile:37.516 ms. Frozen full build5.980s then
+separate LeanEval3.018s both exit0; all17project/pin/source hashes stable.
+No new production helper; the previously added helper remains separately audited. After successful publication:Theta21/35,overall202/264,9/14files.
+Next:original 22, public definition lem6Φ. Actual whole-Theta profiling and final file phases remain outstanding.
