@@ -71,3 +71,48 @@ non-finite index theory,new companion API,renaming or module restructuring is pr
 Status: UNAPPLIED,awaiting explicit root/user decision. Routine authorized proof/style work can
 continue with the existing public contracts. Each selected amendment will be independently
 verified and published at its declaration checkpoint; this preview does not replace those gates.
+
+
+## Stronger original-contract, actual-axiom and caller verification
+
+Completed independently after the ordinary candidate compile,without any live API edit.
+Actual command `lake env lean --root=/private/tmp -o
+/private/tmp/ThetaContractCandidateChecked.olean /private/tmp/ThetaContractCandidateChecked.lean`
+exited0. `/private/tmp/roth-theta-contract-verified-v4.log` records29/29PASS lines.
+The source is the complete independent candidate plus actual imported Roth.Theta and a verifier.
+The earlier v1/v2 scratch meta/import errors and v3 missing --root export failure are NOT pass
+samples; only v4 is accepted. No source/proof limit was raised or standard axiom bypassed.
+
+For EVERY one of the29 original public declarations,the verifier constructs an explicit lambda
+adapter taking the full actual original telescope,passes exactly the retained matching arguments
+to the candidate,and kernel-checks an equality with the actual old constant. This checks exact
+old-type recovery;the five defining values also recover by definitional equality. It then checks
+all29 ACTUAL candidate axiom sets are subsets of propext,Classical.choice,Quot.sound. AST checks
+reject DecidableEq anywhere in each14 group-A type (both occurrences in Θ_equiv),Fintype anywhere
+in one_mem_RSet,and every removed C-row binder name in its actual candidate telescope.
+The kernel-checked adapter declarations are in namespace ThetaOriginalContractAdapters.
+
+An additional compiler importing the generated .olean exited0 and rendered ALL29 explicit
+adapters with format.width100 and pp.proofs=true. Full inspect source
+`/private/tmp/ThetaContractCandidateInspect.lean`;reviewable actual lambda terms in
+`/private/tmp/roth-theta-contract-adapters-explicit.log` (earlier rendering hid proof expressions
+with ellipses and is not the explicit-term artifact). Example:
+
+```lean
+@Roth.one_mem_RSet =
+  fun {σ} [Fintype σ] [DecidableEq σ] {B} hB r ↦
+    ThetaContractCandidate.one_mem_RSet hB r
+```
+
+Precise external caller inventory: repository-wide Lean-source searches for all15 changed public
+names find exactly one direct use outside Theta: Roth/MainLemma.lean:672,
+`index_le_Θ hr0 hWX hh`. Its hr and every explicit argument are retained;only implicit decidability
+changes. The exact call shape is separately compiled at the end of the verifier,with actual
+Roth.RSet/index/Θ in the hypotheses/conclusion and the candidate theorem as proof. No caller fix
+is needed for this menu. MainLemma:670 calls Θ_lt with hq0;Θ_lt's entire original public contract,
+including hq0,recovers in the29-adapter check. Roth/Main.lean,Roth/LeanEval.lean and Roth.lean have
+no direct changed-API use. No MainLemma/Main source edit or denominator-contract removal is
+proposed. Their full project validation will run after any approved live amendment.
+
+Current status remains UNAPPLIED,awaiting an explicit scoped decision. Candidate verification
+does not count toward the35 dedicated original Theta audits or authorize any further hr removal.

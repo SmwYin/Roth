@@ -49,7 +49,7 @@ Definition signature reference: `@Roth.RSet : {σ : Type u_1} → ℝ → (σ �
 
 | Signature line | Codepoints | Next signature token | Arithmetic | Action |
 |---|---:|---|---|---|
-| 49 | 56 | none; `:=` boundary reached | n/a | keep |
+| 49 | 56 | none; `:=` boundary reached | n/a | ok |
 
 L50 is a 76-codepoint body. Joining the entire body to L49 would require `56 + 1 + 74 = 131`, exceeding 100. No artificial signature break exists.
 

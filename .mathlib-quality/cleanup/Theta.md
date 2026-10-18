@@ -40,7 +40,7 @@ ordinary baseline builds passing does not imply any all-file profile pass.
 |---|---|---:|---:|---|
 | 1 | `RSet` | 49 | 1 | Complete;[audit](Theta-RSet.md) |
 | 2 | `indexSet` | 55 | 2 | Complete;[audit](Theta-indexSet.md) |
-| 3 | `Θ` | 61 | 0 | Pending dedicated audit |
+| 3 | `Θ` | 61 | 0 | Complete;[audit](Theta-Theta.md) |
 | 4 | `map_intCast_real_ne_zero` | 63 | 1 | Pending dedicated audit |
 | 5 | `degreeOf_map_intCast_real` | 67 | 1 | Pending dedicated audit |
 | 6 | `one_mem_RSet` | 73 | 3 | Pending dedicated audit |
@@ -89,5 +89,15 @@ Module,complete unfilteredLSP,independent originalvalue/actualstandardaxioms and
 exactsource-prefix profile33.915ms passed. Owner frozen full94.839s then separateLeanEval31.755s
 both exit0. After successful publication:2/35Theta originals;overall183/264,9/14filescomplete.
 The separate [contract menu](Theta-contract-proposal.md) is unapplied: whole independent candidate
-proofs compile,explicit originaltype adapters/candidateaxioms/ASTchecks are being added separately.
+proofs compile,explicit all29 originaltype adapters/actualcandidateaxioms/ASTchecks and exactexternalcall probe also pass.
 No candidate preview is counted as a declaration audit. Next:Θ.
+
+## Published checkpoint3 — Θ
+
+Dedicated fresh audit retained original one-line named supremum. Module,complete unfilteredLSP,
+independent original type/value rfl,actualstandardaxioms,sevenparameter probes and uncontended
+prefix traceprofile6.478ms passed. Frozen owner full4.975s then separateLeanEval2.850s both0.
+After successful publication:3/35Theta originals;overall184/264,9/14filescomplete.
+No helpers/newAPI. [Scoped contract menu](Theta-contract-proposal.md) now has all29kernel-checked
+old-type adapters,actualcandidateaxiom/AST and exactexternalcaller checks,stillUNAPPLIED.
+Next:private map_intCast_real_ne_zero.
