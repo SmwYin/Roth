@@ -62,7 +62,7 @@ ordinary baseline builds passing does not imply any all-file profile pass.
 | 22 | `lem6Φ` | 275 | 1 | Complete;[audit](Theta-lem6Phi.md) |
 | 23 | `one_le_lem6M` | 279 | 8 | Complete;[audit](Theta-one_le_lem6M.md) |
 | 24 | `floor_sq_div_two_le_sum` | 291 | 11 | Complete;[audit](Theta-floor_sq_div_two_le_sum.md) |
-| 25 | `sq_div_three_lt_floor_sq_div_two` | 307 | 5 | Pending dedicated audit |
+| 25 | `sq_div_three_lt_floor_sq_div_two` | 307 | 5 | Complete;[audit](Theta-sq_div_three_lt_floor_sq_div_two.md) |
 | 26 | `min_le_sum_max` | 319 | 46 | Pending dedicated audit |
 | 27 | `sum_max_sub_le_index_det` | 371 | 25 | Pending dedicated audit |
 | 28 | `index_det_le` | 410 | 94 | Pending dedicated audit |
@@ -510,3 +510,14 @@ Accepted uncontended exact-prefix profile: 414.955 (baseline 503.277) ms; no who
 Frozen owner full (83.621 s) then separate LeanEval (29.992 s) pass.
 [Dedicated audit](Theta-floor_sq_div_two_le_sum.md). Theta 24/35, overall 205/264 originals;9/14 files complete.
 No new production helper; the prior helper remains separately audited. Next: original 25, sq_div_three_lt_floor_sq_div_two.
+
+
+## Published checkpoint25 — sq_div_three_lt_floor_sq_div_two
+
+Reduced the floor-square comparison from five proof lines to one nlinarith application using the direct natural-floor upper bound. The exact original real-number API, strict threshold 10, docstring and sole caller remain unchanged.
+
+Dedicated 24-item/42-rule audit, five actual searches, both effective binder probes, compiled weaker thresholds/generic field candidates and certified counterexamples, literature/inversion and measured tables pass. Broader variants were assessed and not recommended for public API churn. Independent immutable original nonself proof, exact full telescope metadata/conclusion recovery and actual built standard axioms pass. Module and complete unfiltered final LSP pass with 0 errors / 17 warnings.
+Accepted uncontended exact-prefix profile: 349.782 (baseline 376.779, corrected disjoint kernel/linter accounting) ms; no whole-file performance claim.
+Frozen owner full (89.100 s) then separate LeanEval (28.568 s) pass.
+[Dedicated audit](Theta-sq_div_three_lt_floor_sq_div_two.md). Theta 25/35, overall 206/264 originals;9/14 files complete.
+No new production helper; the prior helper remains separately audited. Next: original 26, min_le_sum_max.

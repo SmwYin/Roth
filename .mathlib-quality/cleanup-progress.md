@@ -25,16 +25,16 @@ Started: 2026-10-14 (America/Chicago).
 
 ## Current status
 
-Latest completed file after successful final publication: Separation. Theta originals 24/35
-completed; overall 205/264 original declarations, 9/14 files. Latest original: floor_sq_div_two_le_sum.
-Shortened the floor-sum proof from eleven to six body lines using the directly cast Gauss sum identity and the floor bound. Removed the local floor name and nested cast-equality boilerplate; the exact public real-number statement, documentation and sole caller remain unchanged.
-Dedicated 24-item/42-rule audit, five actual searches, both effective binder probes, a certified negative-input counterexample, literature/inversion and measured tables pass. The compiled ordered-floor-field candidate was assessed and not recommended for public API churn. Immutable independent original nonself proof, complete original type recovery and actual built standard axioms pass. Module and complete unfiltered LSP (0 errors / 17 warnings), accepted
-uncontended prefix profile (414.955 (baseline 503.277) ms), frozen full build (83.621 s), then
-separate LeanEval (29.992 s), all pass. [Latest audit](cleanup/Theta-floor_sq_div_two_le_sum.md).
-No new production helper; the prior helper remains separately audited. Next: original 25, sq_div_three_lt_floor_sq_div_two.
+Latest completed file after successful final publication: Separation. Theta originals 25/35
+completed; overall 206/264 original declarations, 9/14 files. Latest original: sq_div_three_lt_floor_sq_div_two.
+Reduced the floor-square comparison from five proof lines to one nlinarith application using the direct natural-floor upper bound. The exact original real-number API, strict threshold 10, docstring and sole caller remain unchanged.
+Dedicated 24-item/42-rule audit, five actual searches, both effective binder probes, compiled weaker thresholds/generic field candidates and certified counterexamples, literature/inversion and measured tables pass. Broader variants were assessed and not recommended for public API churn. Independent immutable original nonself proof, exact full telescope metadata/conclusion recovery and actual built standard axioms pass. Module and complete unfiltered LSP (0 errors / 17 warnings), accepted
+uncontended prefix profile (349.782 (baseline 376.779, corrected disjoint kernel/linter accounting) ms), frozen full build (89.100 s), then
+separate LeanEval (28.568 s), all pass. [Latest audit](cleanup/Theta-sq_div_three_lt_floor_sq_div_two.md).
+No new production helper; the prior helper remains separately audited. Next: original 26, min_le_sum_max.
 [Exact contract decision](cleanup/Theta-contract-proposal.md): selected A/B/C scope applies;
 prior explicit hq and extra hB/hr preservation choices remain. Whole-Theta profiling,
-11 remaining originals and final phases are outstanding. The known late index_le_lem6 instrumented default-heartbeat failure awaits its dedicated audit.
+10 remaining originals and final phases are outstanding. The known late index_le_lem6 instrumented default-heartbeat failure awaits its dedicated audit.
 
 Build/tool setup completed; GitHub browser authentication and branch publication succeeded.
 The first file, `Roth/HasseDeriv.lean`, has completed all declaration and final review,
@@ -2355,3 +2355,15 @@ Next:original 25, sq_div_three_lt_floor_sq_div_two. Actual whole-Theta profiling
 Original24 validated source/audit checkpoint: [4ee4acc](https://github.com/SmwYin/Roth/commit/4ee4acc839e971d63927958b802372d811f183c6).
 The following central-log metadata commit changes no Lean source; both commits publish
 together before original25 edits. Counts remain 205/264, Theta 24/35, 9/14 files.
+
+
+## Theta original25 checkpoint — sq_div_three_lt_floor_sq_div_two
+
+Reduced the floor-square comparison from five proof lines to one nlinarith application using the direct natural-floor upper bound. The exact original real-number API, strict threshold 10, docstring and sole caller remain unchanged.
+
+Dedicated 24-item/42-rule audit, five actual searches, both effective binder probes, compiled weaker thresholds/generic field candidates and certified counterexamples, literature/inversion and measured tables pass. Broader variants were assessed and not recommended for public API churn. Independent immutable original nonself proof, exact full telescope metadata/conclusion recovery and actual built standard axioms pass. [Dedicated audit](cleanup/Theta-sq_div_three_lt_floor_sq_div_two.md).
+Final Theta SHA256 `c24f9782e08680eaaebf16b134c8b86cbe13e05c9778d1606119f28f392cc7b9`. Module and complete unfiltered LSP:0 errors/17 warnings;
+accepted real prefix profile:349.782 (baseline 376.779, corrected disjoint kernel/linter accounting) ms. Frozen full build89.100s then
+separate LeanEval28.568s both exit0; all17project/pin/source hashes stable.
+No new production helper; the prior helper remains separately audited. After successful publication:Theta25/35,overall206/264,9/14files.
+Next:original 26, min_le_sum_max. Actual whole-Theta profiling and final file phases remain outstanding.

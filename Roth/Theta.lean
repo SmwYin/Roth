@@ -294,11 +294,7 @@ theorem floor_sq_div_two_le_sum {a : ℝ} (ha : 0 ≤ a) :
 then `[α]²/2 > α²/3`"). -/
 theorem sq_div_three_lt_floor_sq_div_two {a : ℝ} (ha : 10 < a) :
     a ^ 2 / 3 < (⌊a⌋₊ : ℝ) ^ 2 / 2 := by
-  set n := ⌊a⌋₊
-  have hlt : a < n + 1 := Nat.lt_floor_add_one a
-  have h10 : (10 : ℝ) ≤ n := by
-    exact_mod_cast (Nat.le_floor (by norm_num; linarith) : 10 ≤ n)
-  nlinarith
+  nlinarith [Nat.lt_floor_add_one a]
 
 /-- If `θ r_p > 10`, then `min(lθ/2, r_p θ²/3) ≤ ∑_{ν<l} max(0, θ - ν/r_p)`.
 Source: §5, proof of Lemma 6 ("Combining everything, we obtain
