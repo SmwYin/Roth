@@ -125,7 +125,7 @@ Files will be processed in dependency order; declarations within each file are s
 | `Roth/GenWronskian.lean` | 292 | All cleanup phases complete;19/19 originals and2 added helpers audited; both user-approved public amendments applied;2 preserved warnings |
 | `Roth/Lattice.lean` | 217 | All cleanup phases complete;10/10 originals and3/3 added helpers audited; user-preserved metadata |
 | `Roth/Index.lean` | 275 | All cleanup phases complete;21/21 originals audited; user-approved hypothesis groups applied and validated |
-| `Roth/Separation.lean` | 618 | Active;11/30 originals audited at d11 published checkpoint; public instance proposal pending approval |
+| `Roth/Separation.lean` | 618 | Active;12/30 originals audited at d12 published checkpoint; public instance proposal pending approval |
 | `Roth/Theta.lean` | 981 | Awaiting cleanup |
 | `Roth/MainLemma.lean` | 704 | Awaiting cleanup |
 | `Roth/Main.lean` | 684 | Awaiting cleanup |
@@ -1769,3 +1769,16 @@ Actual repository-module profile exits 0 (`/private/tmp/roth-separation-d11-fina
 Source FROZEN SHA256 `9ca5d14b3bcfba066fa924fc0f6eca5aa5b13d88dbabeab9a281a749bbd689c1`; leaf ownership revoked and requests drained before owner gates. Owner probe `23627` exit0,42.59s: independent ORIGINAL30 proof bodies,all20 original public type/value recoveries and ALL27 actual retained standardaxiom checks. `/private/tmp/roth-separation-d11-compatibility.{lean,log,json}`. Owner build session `63999` sequential `lake build` then separate `lake build Roth.LeanEval` both exit0,124.32s/32.64s; source hash stable. `/private/tmp/roth-separation-d11-{full,leaneval}.log`, `...-builds.json`. Owner original block docs byte-identical; exact diff/whitespace checked. Exact-path commit and successful cleanup-branch push precede next declaration.
 
 Public 12-theorem instance menu remains pending and unapplied; header remains user-preserved. D11 additionally identifies an optional public-wrapper deletion with two Theta rewrite substitutions. The retained public name is unchanged; coordinator notified, no API deletion or Theta edit applied.
+
+
+## Separation d12 checkpoint — degreeOf_none_rename_some
+
+[Dedicated audit](cleanup/Separation-degreeOf_none_rename_some.md): All 24 audit items, 42 golf rules, five actual search methods, every binder, width/inequality checks and 11 completion steps; Redundant private wrapper removed, exactly two callers use direct degree/rename simplification. Source 577 to 570 lines (11 removed, 4 added), 27 to 26 retained declarations. No public signature, definition, documentation or import change. Source 577 → 570; 26 retained declarations. Separation 12/30, overall 163/264 original audits after successful publication; 8/14 files complete.
+
+Actual module build exit 0 (`/private/tmp/roth-separation-d12-module.log`). Complete unfiltered native LSP success=true, partial=false, timed_out=false, no failed dependencies, 0 errors/31 unchanged warnings (`...-final-lsp.json`). Independent exact original type/non-self proof and actual two changed public caller axiom checks exit 0, only standard three axioms (`...-original-axioms.log`). All binder compiler probes and native requests completed and drained; private literature exemption recorded.
+
+Actual final full-module profile exits 0, fully drained (`/private/tmp/roth-separation-d12-final-profile.log{,.json}`): changed hasseDeriv_rename_mul_aeval 65.655 + 182.016 = 247.671 ms; degreeOf_none_rename_mul_aeval 21.430 + 80.199 = 101.629 ms. Both below 750/1000 ms. Removed target baseline 95.394 ms, no final target cost; no profiler scaffolding or raised limits.
+
+Source FROZEN SHA256 `1d7e167ce78eb18a4815866a71a286989095d26499f49534db6af2ee823d2137`; leaf ownership revoked and requests drained before owner gates. Owner probe `83868` exit0,63.55s: independent ORIGINAL30 proof bodies,all20 original public type/value recoveries and ALL26 actual retained standardaxiom checks. `/private/tmp/roth-separation-d12-compatibility.{lean,log,json}`. Owner build session `20284` sequential `lake build` then separate `lake build Roth.LeanEval` both exit0,113.27s/25.24s; source hash stable. `/private/tmp/roth-separation-d12-{full,leaneval}.log`, `...-builds.json`. Owner original block docs byte-identical; exact diff/whitespace checked. Exact-path commit and successful cleanup-branch push precede next declaration.
+
+Public 12-theorem instance menu remains pending and unapplied; header remains user-preserved. Optional public renaming-wrapper removal is separate: two Theta uses plus five internal uses at four Separation sites require changes. The public API and all such uses remain in repository source; concrete scratch evidence is documented in Separation-wrapper-proposal.md.

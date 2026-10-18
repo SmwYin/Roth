@@ -129,15 +129,6 @@ theorem aeval_X_eq_rename {σ : Type*} (i : σ) (f : Polynomial R) :
   AlgHom.congr_fun (Polynomial.toMvPolynomial_eq_rename_comp i) f
 
 omit [Fintype τ] [DecidableEq τ] in
-private lemma degreeOf_none_rename_some (U : MvPolynomial τ R) :
-    degreeOf none (rename some U) = 0 := by
-  classical
-  refine Nat.eq_zero_of_le_zero (degreeOf_le_iff.2 fun e he => ?_)
-  rw [support_rename_of_injective (Option.some_injective τ), Finset.mem_image] at he
-  obtain ⟨u, -, rfl⟩ := he
-  simp [Finsupp.mapDomain_of_notMem_range]
-
-omit [Fintype τ] [DecidableEq τ] in
 private lemma degreeOf_aeval_X_none_of_ne {o : Option τ} (ho : o ≠ none) (V : Polynomial R) :
     degreeOf o (Polynomial.aeval (X none : MvPolynomial (Option τ) R) V) = 0 := by
   classical
@@ -177,7 +168,7 @@ theorem hasseDeriv_rename_mul_aeval (d : τ →₀ ℕ) (ν : ℕ) (U : MvPolyno
   rw [← hasseDeriv_hasseDeriv_of_disjoint hdisj,
     hasseDeriv_mul_of_degreeOf_eq_zero fun j hj => by
       rw [Finset.mem_singleton.1 (Finsupp.support_single_subset hj)]
-      exact degreeOf_none_rename_some U,
+      simp [degreeOf, degrees_rename_of_injective (Option.some_injective τ)],
     hasseDeriv_single_aeval_X, mul_comm,
     hasseDeriv_mul_of_degreeOf_eq_zero fun j hj => degreeOf_aeval_X_none_of_ne (hnone hj) _,
     hasseDeriv_rename (Option.some_injective τ), mul_comm]
@@ -230,7 +221,9 @@ theorem degreeOf_none_rename_mul_aeval {U : MvPolynomial τ R} (hU : U ≠ 0) (V
   by_cases hV : V = 0
   · simp [hV]
   rw [degreeOf_mul_eq (rename_some_ne_zero hU) (aeval_X_none_ne_zero hV),
-    degreeOf_none_rename_some, zero_add, aeval_X_eq_rename]
+    (show degreeOf none (rename some U) = 0 by
+      simp [degreeOf, degrees_rename_of_injective (Option.some_injective τ)]),
+    zero_add, aeval_X_eq_rename]
   exact (degreeOf_rename_of_injective (f := fun _ : Unit => (none : Option τ))
     (fun _ _ _ => rfl) ()).trans (degreeOf_uniqueAlgEquiv_symm V)
 
