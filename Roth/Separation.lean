@@ -110,6 +110,7 @@ theorem degreeOf_coeffNone_le (P : MvPolynomial (Option τ) R) (ν : ℕ) (j : �
   refine degreeOf_le_iff.2 fun d hd ↦ ?_
   simpa using monomial_le_degreeOf (some j) ((mem_support_coeff_optionEquivLeft R).1 hd)
 
+omit [Fintype τ] [DecidableEq τ] in
 /-- The coefficient of `x_τ^a x_none^b` in `U(x_τ) V(x_none)` is `U_a V_b`.
 Source: §2, proof of Lemma 2 ("the variables of the two factors are disjoint": the
 coefficients of `U(x_τ) V(x_none)` are the products of coefficients). -/
