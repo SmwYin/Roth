@@ -25,16 +25,16 @@ Started: 2026-10-14 (America/Chicago).
 
 ## Current status
 
-Latest completed file after successful final publication: Separation. Theta originals 26/35
-completed; overall 207/264 original declarations, 9/14 files. Latest original: min_le_sum_max.
-Strengthened the positive-part arithmetic-sum bound by removing both public positivity/size hypotheses hrp and hθ; its exact real/natural domains and conclusion remain. Public proof46→7lines. The sole index_le_lem6 caller receives named θ/rp arguments and retains its entire original contract, including hq and DecidableEq.
-Fresh original audit plus three separate fresh helper audits complete: all24/42/5-search, effective-binder compiled probes, literature/inversion and measured tables. Independently replayed immutable original min and ENTIRE index_le_lem6 proofs; exact old telescopes/adapters, BinderInfo/value and actual built standard axioms pass. Private linear hr removal, quadratic hr removal/weak cutoff and separate positive-core proof are independently verified. Module and complete unfiltered LSP (0 errors / 17 warnings), accepted
-uncontended prefix profile (public165.806; linear460.921, positivecore543.552, quadraticwrapper304.757 (all four <750) ms), frozen full build (92.510 s), then
-separate LeanEval (33.553 s), all pass. [Latest audit](cleanup/Theta-min_le_sum_max.md).
-Three new private helpers each received separate fresh dedicated audits; final bodies linear15, positivecore22, quadraticwrapper7. Helpers add0 original declarations. Next: original27, sum_max_sub_le_index_det (approved DecidableEqτ and hR removal).
+Latest completed file after successful final publication: Separation. Theta originals 27/35
+completed; overall 208/264 original declarations, 9/14 files. Latest original: sum_max_sub_le_index_det.
+Applied exactly the approved DecidableEqτ and hR removals from the determinant-index lower bound, retaining the degree/weight interface and all other original arguments. Proof25→24lines with explicit nonnegativity and restricted linear arithmetic. The sole index_le_lem6 caller drops the obsolete argument/local proof and retains its entire original public contract.
+Fresh24-item/42-rule audit, five actual searches, every effective binder compiled probe, literature/inversion and measured tables complete. Broader finite-family/strict-degree and generic determinant alternatives compiled but are not recommended for API churn. Independent immutable complete original target AND entire index_le_lem6 proof/type replay, exact old adapters/names/BinderInfo/value/universes/conclusions and actual standard axiom sets pass. Module and complete unfiltered LSP (0 errors / 14 warnings), accepted
+uncontended prefix profile (746.452 (clean baseline779.542, required clean repeat831.962; discarded closing-scope-error run excluded) ms), frozen full build (110.300 s), then
+separate LeanEval (32.749 s), all pass. [Latest audit](cleanup/Theta-sum_max_sub_le_index_det.md).
+No new production helper; all prior helpers remain separately audited. Next: original28, index_det_le (approved DecidableEqτ, hl′, hδ and unused implicitδ removal; proof/performance cleanup).
 [Exact contract decision](cleanup/Theta-contract-proposal.md): selected A/B/C scope applies;
 prior explicit hq and extra hB/hr preservation choices remain. Whole-Theta profiling,
-9 remaining originals and final phases are outstanding. The known late index_le_lem6 instrumented default-heartbeat failure awaits its dedicated audit.
+8 remaining originals and final phases are outstanding. The known late index_le_lem6 instrumented default-heartbeat failure awaits its dedicated audit.
 
 Build/tool setup completed; GitHub browser authentication and branch publication succeeded.
 The first file, `Roth/HasseDeriv.lean`, has completed all declaration and final review,
@@ -2387,3 +2387,15 @@ Next:original27, sum_max_sub_le_index_det (approved DecidableEqτ and hR removal
 Original26 validated source/audit checkpoint: [9bf5ca8](https://github.com/SmwYin/Roth/commit/9bf5ca8bec00e85c3800de82627eeedae2facad8).
 The following central-log metadata commit changes no Lean source; both commits publish
 together before original27 edits. Counts remain 207/264, Theta 26/35, 9/14 files.
+
+
+## Theta original27 checkpoint — sum_max_sub_le_index_det
+
+Applied exactly the approved DecidableEqτ and hR removals from the determinant-index lower bound, retaining the degree/weight interface and all other original arguments. Proof25→24lines with explicit nonnegativity and restricted linear arithmetic. The sole index_le_lem6 caller drops the obsolete argument/local proof and retains its entire original public contract.
+
+Fresh24-item/42-rule audit, five actual searches, every effective binder compiled probe, literature/inversion and measured tables complete. Broader finite-family/strict-degree and generic determinant alternatives compiled but are not recommended for API churn. Independent immutable complete original target AND entire index_le_lem6 proof/type replay, exact old adapters/names/BinderInfo/value/universes/conclusions and actual standard axiom sets pass. [Dedicated audit](cleanup/Theta-sum_max_sub_le_index_det.md).
+Final Theta SHA256 `ac43e6d19ce869213d3d0f6a260ffc92ab8f419d9b2be320483539746e5434a9`. Module and complete unfiltered LSP:0 errors/14 warnings;
+accepted real prefix profile:746.452 (clean baseline779.542, required clean repeat831.962; discarded closing-scope-error run excluded) ms. Frozen full build110.300s then
+separate LeanEval32.749s both exit0; all17project/pin/source hashes stable.
+No new production helper; all prior helpers remain separately audited. After successful publication:Theta27/35,overall208/264,9/14files.
+Next:original28, index_det_le (approved DecidableEqτ, hl′, hδ and unused implicitδ removal; proof/performance cleanup). Actual whole-Theta profiling and final file phases remain outstanding.

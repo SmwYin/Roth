@@ -364,19 +364,20 @@ theorem min_le_sum_max {θ : ℝ} {rp : ℕ} (l : ℕ) :
   · exact (min_le_left _ _).trans (mul_div_two_le_sum_max_aux hl)
   · exact (min_le_right _ _).trans (mul_sq_div_three_le_sum_max_aux (le_of_not_ge hθ) hl.le)
 
+omit [DecidableEq τ] in
 /-- The index of the determinant `F = det (∂_{D_μ} ∂_{x_p}^ν R)_{μ,ν}` is at least
 `∑_{ν<l} max(0, ind R - ν/r_p) - lδ`, where `δ` bounds the weights of the derivatives `D_μ`.
 Source: §5, proof of Lemma 6 ("We have proved `ind(F) ≥ ∑_{ν<l} max(0, θ - ν/r_p) - lδ`"). -/
-theorem sum_max_sub_le_index_det {R : MvPolynomial (Option τ) ℝ} (hR : R ≠ 0) {l : ℕ}
-    (D : Fin l → (τ →₀ ℕ)) (hD : ∀ μ, (D μ).degree ≤ μ)
-    (hdet : (Matrix.of fun μ ν : Fin l =>
-      hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) R).det ≠ 0)
-    (α : Option τ → ℝ) {r : Option τ → ℕ} (hr : ∀ j, 0 < r j) {δ : ℝ}
+theorem sum_max_sub_le_index_det {R : MvPolynomial (Option τ) ℝ} {l : ℕ} (D : Fin l → (τ →₀ ℕ))
+    (hD : ∀ μ, (D μ).degree ≤ μ) (hdet : (Matrix.of fun μ ν : Fin l ↦
+      hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) R).det ≠ 0) (α : Option τ → ℝ)
+    {r : Option τ → ℕ} (hr : ∀ j, 0 < r j) {δ : ℝ}
     (hδ : ∀ d : τ →₀ ℕ, d.degree ≤ l - 1 → weight (r ∘ some) d ≤ δ) :
     ∑ ν ∈ Finset.range l, max 0 (index R α r - ν / r none) - l * δ ≤
-      index (Matrix.of fun μ ν : Fin l =>
+      index (Matrix.of fun μ ν : Fin l ↦
         hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) R).det α r := by
-  set E : Fin l → Fin l → MvPolynomial (Option τ) ℝ := fun μ ν =>
+  classical
+  set E : Fin l → Fin l → MvPolynomial (Option τ) ℝ := fun μ ν ↦
     hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) R
   have hterm : ∀ μ ν : Fin l, E μ ν ≠ 0 →
       max 0 (index R α r - ν / r none) - δ ≤ index (E μ ν) α r := by
@@ -384,22 +385,20 @@ theorem sum_max_sub_le_index_det {R : MvPolynomial (Option τ) ℝ} (hR : R ≠ 
     have h1 := index_hasseDeriv_ge hE α r
     rw [weight_add, weight_mapDomain (Option.some_injective _), weight_single] at h1
     have h2 := hδ (D μ) ((hD μ).trans (Nat.le_sub_one_of_lt μ.isLt))
-    have h3 := index_nonneg (E μ ν) α r
-    have h4 := weight_nonneg (r ∘ some) (D μ)
     rw [sub_le_iff_le_add]
-    exact max_le (by linarith) (by linarith)
-  have hdet' := hdet
-  rw [Matrix.det_apply'] at hdet' ⊢
-  refine le_index_sum hdet' fun s _ hs => ?_
-  have hprod : ∏ i, Matrix.of E (s i) i ≠ 0 := fun h0 => hs (by rw [h0, mul_zero])
+    exact max_le (add_nonneg (index_nonneg _ _ _) ((weight_nonneg _ _).trans h2))
+      (by linarith only [h1, h2])
+  rw [Matrix.det_apply'] at hdet ⊢
+  refine le_index_sum hdet fun s _ hs ↦ ?_
+  have hprod : ∏ i, Matrix.of E (s i) i ≠ 0 := (mul_ne_zero_iff.mp hs).2
   have hidx : index (((Equiv.Perm.sign s : ℤ) : MvPolynomial (Option τ) ℝ) *
       ∏ i, Matrix.of E (s i) i) α r = index (∏ i, Matrix.of E (s i) i) α r := by
     rcases Int.units_eq_one_or (Equiv.Perm.sign s) with h | h <;> simp [h, index_neg]
-  rw [hidx, index_prod _ (fun i _ => (Finset.prod_ne_zero_iff.1 hprod) i (Finset.mem_univ _)) α hr,
-    ← Fin.sum_univ_eq_sum_range (fun ν : ℕ => max 0 (index R α r - ν / r none)) l]
+  rw [hidx, index_prod _ (fun i _ ↦ (Finset.prod_ne_zero_iff.1 hprod) i (Finset.mem_univ _)) α hr,
+    ← Fin.sum_univ_eq_sum_range (fun ν : ℕ ↦ max 0 (index R α r - ν / r none)) l]
   have hlδ : (l : ℝ) * δ = ∑ _i : Fin l, δ := by simp
   rw [hlδ, ← Finset.sum_sub_distrib]
-  exact Finset.sum_le_sum fun i _ =>
+  exact Finset.sum_le_sum fun i _ ↦
     hterm (s i) i ((Finset.prod_ne_zero_iff.1 hprod) i (Finset.mem_univ _))
 
 /-- If the determinant `F = det (∂_{D_μ} ∂_{x_p}^ν R)_{μ,ν}` factors as
@@ -557,8 +556,6 @@ theorem index_le_lem6 {δ : ℝ} (hδ0 : 0 < δ) (hδ1 : δ < 1) {r : Option τ 
   push Not at h10
   -- the two bounds for the index of `F`.
   have hupper := index_det_le hr0 hr₁ hB hR hh hl hl' hU hV hUd hVd hF hδ0
-  have hmapR := (map_ne_zero_iff (map (Int.castRingHom ℝ))
-    (map_injective _ Int.cast_injective)).2 hR.1
   have hmapdet : map (Int.castRingHom ℝ) (Matrix.of fun μ ν : Fin l =>
       hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) R).det =
       (Matrix.of fun μ ν : Fin l => hasseDeriv ((D μ).mapDomain some +
@@ -591,7 +588,7 @@ theorem index_le_lem6 {δ : ℝ} (hδ0 : 0 < δ) (hδ1 : δ < 1) {r : Option τ 
       _ ≤ δ := by
           rw [div_le_iff₀ hrp0]
           nlinarith
-  have hlower := sum_max_sub_le_index_det hmapR D hD hFne α hr0 hδ'
+  have hlower := sum_max_sub_le_index_det D hD hFne α hr0 hδ'
   rw [← hmapdet] at hlower
   have hmin := min_le_sum_max (θ := θ) (rp := r none) l
   have hkey : min (l * θ / 2) (r none * θ ^ 2 / 3) ≤ l * (Φ + δ) := by

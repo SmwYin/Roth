@@ -68,7 +68,9 @@ removals. No unselected row may be inferred from that probe's successful compile
 - Original20, Θ_unique_le: approved A.DecidableEq σ removed; every other public parameter including hB/hr/Fintype retained.
   Headline29→3; ONE new private index/log helper has a separate fresh full audit, body23,
   initial-contract adapter and final original-public adapter/actual axioms/LSP/profiles/full/LeanEval.
-- Next: original27, sum_max_sub_le_index_det (approved DecidableEqτ and hR removal). Published originals now Theta 26/35, overall 207/264; approved revisits themselves do not increase counts.
+- Original26, min_le_sum_max: recommended unconditional bound implemented under standing authority; removed exactly hrp/hθ, preserving domain/conclusion and the entire original sole caller contract. Three new private helpers each received a separate fresh audit; exact original adapters/actual standard axioms, full LSP, all-four real prefix profiles and frozen full/separate LeanEval gates pass. See section H.
+- Original27, sum_max_sub_le_index_det: approved A.DecidableEqτ and C.hR removals applied, all other arguments including hD/hδ retained. Sole caller obsolete argument/local proof removed; its entire original contract remains. Independent full original target and caller proofs/telescope/value/BinderInfo/standard axioms, full LSP0errors14warnings, real profile746.452ms and frozen full110.300s then separate LeanEval32.749s pass. No new helper or extra API change; generic finite-family/column-bound alternatives assessed and not recommended.
+- Next: original28, index_det_le (approved DecidableEqτ, hl′, hδ and unused implicitδ removal; proof/performance cleanup). Published originals now Theta 27/35, overall 208/264; approved revisits themselves do not increase counts.
 
 The evidence and proposal descriptions below were prepared before this decision. Their historic
 unapplied status is superseded only by the exact selected scope above and subsequent checkpoint

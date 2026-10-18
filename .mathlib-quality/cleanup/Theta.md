@@ -66,7 +66,7 @@ ordinary baseline builds passing does not imply any all-file profile pass.
 | 24 | `floor_sq_div_two_le_sum` | 291 | 11 | Complete;[audit](Theta-floor_sq_div_two_le_sum.md) |
 | 25 | `sq_div_three_lt_floor_sq_div_two` | 307 | 5 | Complete;[audit](Theta-sq_div_three_lt_floor_sq_div_two.md) |
 | 26 | `min_le_sum_max` | 319 | 46 | Complete;[audit](Theta-min_le_sum_max.md) |
-| 27 | `sum_max_sub_le_index_det` | 371 | 25 | Pending dedicated audit |
+| 27 | `sum_max_sub_le_index_det` | 371 | 25 | Complete;[audit](Theta-sum_max_sub_le_index_det.md) |
 | 28 | `index_det_le` | 410 | 94 | Pending dedicated audit |
 | 29 | `index_le_lem6` | 521 | 89 | Pending dedicated audit |
 | 30 | `Θ_option_le` | 623 | 6 | Pending dedicated audit |
@@ -534,3 +534,14 @@ Accepted uncontended exact-prefix profile: public165.806; linear460.921, positiv
 Frozen owner full (92.510 s) then separate LeanEval (33.553 s) pass.
 [Dedicated audit](Theta-min_le_sum_max.md). Theta 26/35, overall 207/264 originals;9/14 files complete.
 Three new private helpers each received separate fresh dedicated audits; final bodies linear15, positivecore22, quadraticwrapper7. Helpers add0 original declarations. Next: original27, sum_max_sub_le_index_det (approved DecidableEqτ and hR removal).
+
+
+## Published checkpoint27 — sum_max_sub_le_index_det
+
+Applied exactly the approved DecidableEqτ and hR removals from the determinant-index lower bound, retaining the degree/weight interface and all other original arguments. Proof25→24lines with explicit nonnegativity and restricted linear arithmetic. The sole index_le_lem6 caller drops the obsolete argument/local proof and retains its entire original public contract.
+
+Fresh24-item/42-rule audit, five actual searches, every effective binder compiled probe, literature/inversion and measured tables complete. Broader finite-family/strict-degree and generic determinant alternatives compiled but are not recommended for API churn. Independent immutable complete original target AND entire index_le_lem6 proof/type replay, exact old adapters/names/BinderInfo/value/universes/conclusions and actual standard axiom sets pass. Module and complete unfiltered final LSP pass with 0 errors / 14 warnings.
+Accepted uncontended exact-prefix profile: 746.452 (clean baseline779.542, required clean repeat831.962; discarded closing-scope-error run excluded) ms; no whole-file performance claim.
+Frozen owner full (110.300 s) then separate LeanEval (32.749 s) pass.
+[Dedicated audit](Theta-sum_max_sub_le_index_det.md). Theta 27/35, overall 208/264 originals;9/14 files complete.
+No new production helper; all prior helpers remain separately audited. Next: original28, index_det_le (approved DecidableEqτ, hl′, hδ and unused implicitδ removal; proof/performance cleanup).
