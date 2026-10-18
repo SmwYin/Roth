@@ -20,18 +20,18 @@ Started: 2026-10-14 (America/Chicago).
 
 ## Current status
 
-Latest completed file after successful final publication: Separation. Theta checkpoint6 completed;
-overall187/264 original declarations,9/14 files. Theta6/35 originals complete. Latest one_mem_RSet
-proof3→1line; exact public type (including both instances) unchanged. Fresh module, complete
-unfiltered LSP0errors/27warnings, independent original proof/direct actual-type comparison,
-actual standard axioms and uncontended prefix211.489→173.030ms pass. Frozen owner full60.236s
-THEN separateLeanEval16.524s both0. [Latest audit](cleanup/Theta-one_mem_RSet.md).
-WholeTheta profiling, remaining29 originals and final phases remain outstanding; known late
-instrumented linarith failure awaits its dedicated audit. The concrete
-[Theta contract menu](cleanup/Theta-contract-proposal.md) is compiled but UNAPPLIED; all29
-kernel-checked original-type adapters/actual candidate axioms/AST and exact external-call checks
-pass, with no approval inferred. See [Separation final report](cleanup/Separation-final.md).
-Next:indexSet_nonempty.
+Latest completed file after successful final publication: Separation. Theta checkpoint7 completed;
+overall188/264 original declarations,9/14 files. Theta7/35 originals complete. Latest
+indexSet_nonempty shared witness retained, two lambda arrows normalized; exact public type
+unchanged. Module, independent original nonself proof/direct actual type/standard axioms,
+complete unfiltered LSP0errors27warnings and uncontended exact-prefix13.303ms pass.
+Frozen owner full56.405s THEN separateLeanEval13.129s both0.
+[Latest audit](cleanup/Theta-indexSet_nonempty.md). WholeTheta profiling, remaining28 originals
+and final phases remain outstanding; known late instrumented linarith failure awaits its
+dedicated audit. The [Theta contract menu](cleanup/Theta-contract-proposal.md) is compiled but
+UNAPPLIED; all29 kernel-checked original-type adapters/actual candidate axioms/AST and exact
+external-call checks pass, with no approval inferred.
+See [Separation final report](cleanup/Separation-final.md). Next:indexSet_bddAbove.
 
 Build/tool setup completed; GitHub browser authentication and branch publication succeeded.
 The first file, `Roth/HasseDeriv.lean`, has completed all declaration and final review,

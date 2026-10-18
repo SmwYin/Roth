@@ -44,7 +44,7 @@ ordinary baseline builds passing does not imply any all-file profile pass.
 | 4 | `map_intCast_real_ne_zero` | 63 | 1 | Complete; deleted Mathlib wrapper;[audit](Theta-map_intCast_real_ne_zero.md) |
 | 5 | `degreeOf_map_intCast_real` | 67 | 1 | Complete; deleted Mathlib wrapper;[audit](Theta-degreeOf_map_intCast_real.md) |
 | 6 | `one_mem_RSet` | 73 | 3 | Complete;[audit](Theta-one_mem_RSet.md) |
-| 7 | `indexSet_nonempty` | 80 | 1 | Pending dedicated audit |
+| 7 | `indexSet_nonempty` | 80 | 1 | Complete;[audit](Theta-indexSet_nonempty.md) |
 | 8 | `indexSet_bddAbove` | 86 | 4 | Pending dedicated audit |
 | 9 | `index_le_Θ` | 96 | 1 | Pending dedicated audit |
 | 10 | `Θ_nonneg` | 103 | 2 | Pending dedicated audit |
@@ -140,3 +140,15 @@ pass. Exact-prefix actual trace211.489→173.030ms including async/lint charge; 
 profile claim. Owner sequential full/separateLeanEval and publication recorded in dedicated
 report. After successful publication:Theta6/35,overall187/264,9/14files complete.
 No public contract proposal applied. Next:indexSet_nonempty.
+
+## Published checkpoint7 — indexSet_nonempty
+
+Fresh full dedicated audit retained the shared existential witness and changed only two lambda
+arrows. Original public type/instances/docs/callers unchanged; no helper. Every parameter probed,
+including compiled zero-bound emptiness counterexample and unapplied DecidableEq candidate.
+Module41.172s, independent original nonself proof/direct actual-type check/standard axioms24.008s,
+complete unfiltered native LSP0errors/27identicalwarnings and uncontended exact-prefix actual
+trace14.238→13.303ms pass. No speedup claim for syntax-only change or whole-file profile claim.
+Owner sequential full/separateLeanEval/publication recorded in dedicated report. After successful
+publication:Theta7/35,overall188/264,9/14files complete. Contract menu still UNAPPLIED.
+Next:indexSet_bddAbove.

@@ -69,7 +69,7 @@ theorem one_mem_RSet {B : ℝ} (hB : 1 ≤ B) (r : σ → ℕ) : (1 : MvPolynomi
 /-- If `1 ≤ B`, the set of indices defining `Θ_m(B; q; r)` is nonempty. Source: §5 ("This
 supremum is well-defined"). -/
 theorem indexSet_nonempty {B : ℝ} (hB : 1 ≤ B) (q r : σ → ℕ) : (indexSet B q r).Nonempty :=
-  ⟨_, 1, one_mem_RSet hB r, fun _ => 1, fun _ => isCoprime_one_left, rfl⟩
+  ⟨_, 1, one_mem_RSet hB r, fun _ ↦ 1, fun _ ↦ isCoprime_one_left, rfl⟩
 
 /-- If every `r j` is positive, the indices defining `Θ_m(B; q; r)` are bounded above (by the
 number `m` of variables). Source: §5 ("`0 ≤ Θ_m ≤ m`": Taylor's theorem gives a nonzero
