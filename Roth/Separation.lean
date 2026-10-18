@@ -2,7 +2,6 @@ import Mathlib.Algebra.GCDMonoid.Finset
 import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
 import Mathlib.Algebra.MvPolynomial.Polynomial
 import Mathlib.Algebra.Polynomial.Eval.Subring
-import Mathlib.Tactic.LinearCombination
 
 import Roth.CoeffNorm
 import Roth.GenWronskian
@@ -131,7 +130,7 @@ theorem coeff_rename_mul_aeval (U : MvPolynomial τ R) (V : Polynomial R) (a : �
 index"). -/
 theorem aeval_X_eq_rename {σ : Type*} (i : σ) (f : Polynomial R) :
     Polynomial.aeval (X i : MvPolynomial σ R) f =
-      rename (fun _ : Unit => i) ((uniqueAlgEquiv R Unit).symm f) :=
+      rename (fun _ : Unit ↦ i) ((uniqueAlgEquiv R Unit).symm f) :=
   AlgHom.congr_fun (Polynomial.toMvPolynomial_eq_rename_comp i) f
 
 omit [Fintype τ] [DecidableEq τ] in
@@ -217,8 +216,8 @@ theorem degreeOf_none_rename_mul_aeval {U : MvPolynomial τ R} (hU : U ≠ 0) (V
     (show degreeOf none (rename some U) = 0 by
       simp [degreeOf, degrees_rename_of_injective (Option.some_injective τ)]),
     zero_add, aeval_X_eq_rename]
-  exact (degreeOf_rename_of_injective (f := fun _ : Unit => (none : Option τ))
-    (fun _ _ _ => rfl) ()).trans (degreeOf_uniqueAlgEquiv_symm V)
+  exact (degreeOf_rename_of_injective (f := fun _ : Unit ↦ (none : Option τ))
+    (fun _ _ _ ↦ rfl) ()).trans (degreeOf_uniqueAlgEquiv_symm V)
 
 end Domain
 
@@ -455,10 +454,7 @@ private lemma rescale_separated_factor_aux {K : Type*} [Field K] {U' U : MvPolyn
     F = rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) K)
       (Polynomial.C g⁻¹ * V') := by
   rw [hF, hUmap, map_mul, Polynomial.aeval_C, algebraMap_eq, smul_eq_C_mul, map_mul,
-    rename_C]
-  have : C g * C g⁻¹ = (1 : MvPolynomial (Option τ) K) := by
-    rw [← C_mul, mul_inv_cancel₀ hg, C_1]
-  linear_combination (rename some U' * Polynomial.aeval (X none) V') * this.symm
+    rename_C, mul_mul_mul_comm, ← C_mul, mul_inv_cancel₀ hg, C_1, one_mul]
 
 omit [Fintype τ] [DecidableEq τ] in
 private lemma exists_int_polynomial_of_primitive_factor_aux {U : MvPolynomial τ ℤ}

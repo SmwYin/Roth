@@ -20,6 +20,8 @@ Started: 2026-10-14 (America/Chicago).
 
 ## Current status
 
+Latest completed file after successful final publication: Separation;overall181/264 original declarations,9/14 files. See [Separation final report](cleanup/Separation-final.md). All30 original audits and all final gates complete; the project remains active,continuing with Theta.
+
 Build/tool setup completed; GitHub browser authentication and branch publication succeeded.
 The first file, `Roth/HasseDeriv.lean`, has completed all declaration and final review,
 build, and profiling phases, with unconfirmed copyright/license metadata remaining
@@ -74,8 +76,8 @@ The earlier HTTPS credential failure and connected-app HTTP 403 are resolved by 
 CLI authentication. No token is stored in this repository.
 
 The latest completed file audit and declaration results are recorded in
-[`cleanup/Lattice.md`](cleanup/Lattice.md) and [its final report](cleanup/Lattice-final.md),
-following the six earlier completed files. Each completed declaration's report and
+[`cleanup/Separation.md`](cleanup/Separation.md) and [its final report](cleanup/Separation-final.md),
+following the eight earlier completed files. Each completed declaration's report and
 source change are committed and pushed together after validation.
 
 ## Installed tooling and verification
@@ -125,7 +127,7 @@ Files will be processed in dependency order; declarations within each file are s
 | `Roth/GenWronskian.lean` | 292 | All cleanup phases complete;19/19 originals and2 added helpers audited; both user-approved public amendments applied;2 preserved warnings |
 | `Roth/Lattice.lean` | 217 | All cleanup phases complete;10/10 originals and3/3 added helpers audited; user-preserved metadata |
 | `Roth/Index.lean` | 275 | All cleanup phases complete;21/21 originals audited; user-approved hypothesis groups applied and validated |
-| `Roth/Separation.lean` | 618 | Active;30/30 originals audited at d30 published checkpoint; approved instance removals in progress; wrapper/domain API alternatives considered and declined |
+| `Roth/Separation.lean` | 618 | Complete;30/30 originals and all final phases;source556lines27retained;all12 approved instance amendments validated |
 | `Roth/Theta.lean` | 981 | Awaiting cleanup |
 | `Roth/MainLemma.lean` | 704 | Awaiting cleanup |
 | `Roth/Main.lean` | 684 | Awaiting cleanup |
@@ -2146,3 +2148,20 @@ AcceptedisolatedactualSeparation threshold0 /private/tmp/roth-separation-d30-pro
 Source FROZEN SHA256 `2f1dd34c7e9556683e147c522310bb4e07f9a21a6145a2f58018f928fb4b67f1`; leaf ownership revoked and requests drained before owner gates. Owner probe `26845` exit0,48.43s: independent ORIGINAL30 proof bodies,all20 original public type/value recoveries and ALL27 actual retained standardaxiom checks. `/private/tmp/roth-separation-d30-compatibility.{lean,log,json}`. Owner build session `71967` sequential `lake build` then separate `lake build Roth.LeanEval` both exit0,93.75s/32.91s; source hash stable. `/private/tmp/roth-separation-d30-{full,leaneval}.log`, `...-builds.json`. Owner original block docs byte-identical; exact diff/whitespace checked. Exact-path commit and successful cleanup-branch push precede next declaration.
 
 Exact12-instance menu nowALLapplied; publicFintype in exists_det_eq_mul deliberatelyretained. Prior two publicwrapperdeletions/Domainwidenings declined; optionald23deletion/d26Ringwidening compiled/unapplied, retentionrecommended. No requiredinput. Original30auditcountcompleteONLYaftersuccessfulpush; filefinalphasesstillrequired:freshindependentsimplifyreview, finalallprofiles/contracts/axioms/callerLSP/builds/report/push. NextfileTheta includesrecordedinstrumentedlinarithperformancework.
+
+
+## Completed final file checkpoint
+
+[Final phase report](cleanup/Separation-final.md): all30 original declaration audits,all8 historical
+new-helper audits,all12 approved instance amendments and every final file phase complete
+after successful publication. Source618→556;27 retained(20public,7private). Fresh independent
+simplify applied direct rescale rewrites/import removal; owner normalized3ordinary lambdas.
+FinalSHAdf4193795f1618f8f5cdbd71869583fc45d20a0a45c21f4b5eaf5f824133f37a. Alloriginal30 independentlyreproved,public20 recovered,actual27 standardaxioms
+checked; ALL29 originalTheta public contracts/axioms additionallypass. Complete6-fileLSP
+0errors,warningcounts2/28/3/4/0/0; full38.96s THEN separateLeanEval
+51.62s both0. Actualtwofinalall27profiles maxima793.891/
+717.493ms(<1000);46newreferencechecks compile. No unauditedhelper/structureflag.
+Overall181/264 original declarations;9/14 files complete after finalpush. Header/Fintype
+warnings intentionallyretained; actualexternalTheta instrumentedprofilefailure and
+overbudgetdiagnostics explicitlyassignednextTheta file,notcalledsuccessfulsamples.
+Project-endIndexrename remainsparentqueue. No requiredinputpending; nextfileTheta.
