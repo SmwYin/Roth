@@ -2431,3 +2431,7 @@ accepted real prefix profile:public895.050/854.163; weight408.013/361.605; mappe
 separate LeanEval29.415s both exit0; all17project/pin/source hashes stable.
 Three substantive retained private helpers separately freshly audited: numeric16lines (δ≤1,rp≥3, noδ positivity premise), weight12lines (no weight-positivity premise), mapped determinant14lines (same signature). No new public domain or conclusion change. After successful publication:Theta29/35,overall210/264,9/14files.
 Next:fresh dedicated supported original29 arithmetic-boundary revisit K (counts unchanged), then original30 Θ_option_le. Actual whole-Theta profiling and final file phases remain outstanding.
+
+Original29 validated source/audit checkpoint: [6ac4373](https://github.com/SmwYin/Roth/commit/6ac4373f79e3d1fab6350f6f4bb4dae1ef8041ca).
+The following central-log metadata commit changes no Lean source; both commits publish
+together before original30 edits. Counts remain 210/264, Theta 29/35, 9/14 files.
