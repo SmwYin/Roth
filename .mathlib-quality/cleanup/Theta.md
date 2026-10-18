@@ -43,7 +43,7 @@ ordinary baseline builds passing does not imply any all-file profile pass.
 | 3 | `Θ` | 61 | 0 | Complete;[audit](Theta-Theta.md) |
 | 4 | `map_intCast_real_ne_zero` | 63 | 1 | Complete; deleted Mathlib wrapper;[audit](Theta-map_intCast_real_ne_zero.md) |
 | 5 | `degreeOf_map_intCast_real` | 67 | 1 | Complete; deleted Mathlib wrapper;[audit](Theta-degreeOf_map_intCast_real.md) |
-| 6 | `one_mem_RSet` | 73 | 3 | Pending dedicated audit |
+| 6 | `one_mem_RSet` | 73 | 3 | Complete;[audit](Theta-one_mem_RSet.md) |
 | 7 | `indexSet_nonempty` | 80 | 1 | Pending dedicated audit |
 | 8 | `indexSet_bddAbove` | 86 | 4 | Pending dedicated audit |
 | 9 | `index_le_Θ` | 96 | 1 | Pending dedicated audit |
@@ -128,3 +128,15 @@ The deliberate direct specialization is slower than the wrapper applications but
 within budget; no whole-file performance success inferred. Owner sequential full/separateLeanEval
 and publication are recorded in the dedicated report. After successful publication:Theta5/35,
 overall186/264,9/14files complete. Contract menu remains UNAPPLIED. Next:one_mem_RSet.
+
+## Published checkpoint6 — one_mem_RSet
+
+Fresh dedicated audit simplified the original3-line proof to one terminal simp. Every public
+parameter/instance and all docs/callers retained; no helper. Full24/42/five actual searches,
+compiled parameter tests and threshold/counterexample/literature/inversion checks complete.
+Module51.177s, complete unfiltered native LSP0errors/27preservedwarnings, independent original
+proof, direct actual constant-type equality modulo universe renaming and actual standard axioms
+pass. Exact-prefix actual trace211.489→173.030ms including async/lint charge; no whole-file
+profile claim. Owner sequential full/separateLeanEval and publication recorded in dedicated
+report. After successful publication:Theta6/35,overall187/264,9/14files complete.
+No public contract proposal applied. Next:indexSet_nonempty.
