@@ -125,7 +125,7 @@ Files will be processed in dependency order; declarations within each file are s
 | `Roth/GenWronskian.lean` | 292 | All cleanup phases complete;19/19 originals and2 added helpers audited; both user-approved public amendments applied;2 preserved warnings |
 | `Roth/Lattice.lean` | 217 | All cleanup phases complete;10/10 originals and3/3 added helpers audited; user-preserved metadata |
 | `Roth/Index.lean` | 275 | All cleanup phases complete;21/21 originals audited; user-approved hypothesis groups applied and validated |
-| `Roth/Separation.lean` | 618 | Active;16/30 originals audited at d16 published checkpoint; public instance proposal pending approval |
+| `Roth/Separation.lean` | 618 | Active;17/30 originals audited at d17 published checkpoint; public instance proposal pending approval |
 | `Roth/Theta.lean` | 981 | Awaiting cleanup |
 | `Roth/MainLemma.lean` | 704 | Awaiting cleanup |
 | `Roth/Main.lean` | 684 | Awaiting cleanup |
@@ -1834,3 +1834,16 @@ Actual final repository-module profile exits 0 (`/private/tmp/roth-separation-d1
 Source FROZEN SHA256 `a934daecc81ea79ce62d9f8ad460b98c4f49d80806659fa4311add86962c1b4a`; leaf ownership revoked and requests drained before owner gates. Owner probe `94037` exit0,34.72s: independent ORIGINAL30 proof bodies,all20 original public type/value recoveries and ALL23 actual retained standardaxiom checks. `/private/tmp/roth-separation-d16-compatibility.{lean,log,json}`. Owner build session `72373` sequential `lake build` then separate `lake build Roth.LeanEval` both exit0,111.23s/28.20s; source hash stable. `/private/tmp/roth-separation-d16-{full,leaneval}.log`, `...-builds.json`. Owner original block docs byte-identical; exact diff/whitespace checked. Exact-path commit and successful cleanup-branch push precede next declaration.
 
 Both public proposals remain pending and unapplied: 12-theorem instance omissions and optional aeval_X_eq_rename deletion. Refresh historical wrapper-deletion candidate/caller inventory against current source before any approved application. Header remains user-preserved.
+
+
+## Separation d17 checkpoint — coeff_uniqueAlgEquiv_symm
+
+[Dedicated audit](cleanup/Separation-coeff_uniqueAlgEquiv_symm.md): All 24 audit items, 42 golf rules, five actual search methods, every binder, width/inequality checks and 11 completion steps; Original coefficient specialization retained byte-identically after full audit. Existing MvPolynomial theorem and Finsupp.single_eq_same already prove it; no project caller uses the Roth wrapper. Full-module deletion candidate compiles but is a separate unapproved public API option. Source unchanged at 553 lines, 23 retained declarations. Source 553 → 553; 23 retained declarations. Separation 17/30, overall 168/264 original audits after successful publication; 8/14 files complete.
+
+Actual module build exits 0 (`/private/tmp/roth-separation-d17-build.log`). Complete unfiltered native LSP success=true, partial=false, timed_out=false, no failed dependencies, 0 errors/31 existing warnings (`...-final-lsp.json`). Exact original type and independent non-self proof compile natively and via final CLI; actual target and independent proof use standard three axioms (`...-independent-final.log`). All binder/search/literature/width/inequality/completion evidence in dedicated report. Full-module deletion proposal `...-delete-proposal.{lean,log}` compiles exit 0, source untouched. Owner independently verifies every project coefficient reference is explicitly MvPolynomial-qualified.
+
+Unchanged source and target reuse the valid actual repository-module profile `/private/tmp/roth-separation-d16-final-profile-fixed.log{,.json}`: command 11.337 + async 10.160 = 21.497 ms, one anchor each, below 750/1000 ms. No unnecessary repeated profile, profiler scaffolding, raised limit or performance deferral.
+
+Source FROZEN SHA256 `a934daecc81ea79ce62d9f8ad460b98c4f49d80806659fa4311add86962c1b4a`; leaf ownership revoked and requests drained before owner gates. Owner probe `80848` exit0,37.50s: independent ORIGINAL30 proof bodies,all20 original public type/value recoveries and ALL23 actual retained standardaxiom checks. `/private/tmp/roth-separation-d17-compatibility.{lean,log,json}`. Owner build session `63509` sequential `lake build` then separate `lake build Roth.LeanEval` both exit0,6.89s/3.08s; source hash stable. `/private/tmp/roth-separation-d17-{full,leaneval}.log`, `...-builds.json`. Owner original block docs byte-identical; exact diff/whitespace checked. Exact-path commit and successful cleanup-branch push precede next declaration.
+
+Three public options remain pending and unapplied: 12-theorem instance omissions, optional aeval_X_eq_rename deletion, and optional unused coeff_uniqueAlgEquiv_symm deletion. The latter needs no caller edit and has a full compiled module candidate. Refresh historical wrapper-removal candidates against current source before any approved application. Header remains user-preserved.
