@@ -61,7 +61,7 @@ ordinary baseline builds passing does not imply any all-file profile pass.
 | 21 | `lem6M` | 270 | 1 | Complete;[audit](Theta-lem6M.md) |
 | 22 | `lem6Φ` | 275 | 1 | Complete;[audit](Theta-lem6Phi.md) |
 | 23 | `one_le_lem6M` | 279 | 8 | Complete;[audit](Theta-one_le_lem6M.md) |
-| 24 | `floor_sq_div_two_le_sum` | 291 | 11 | Pending dedicated audit |
+| 24 | `floor_sq_div_two_le_sum` | 291 | 11 | Complete;[audit](Theta-floor_sq_div_two_le_sum.md) |
 | 25 | `sq_div_three_lt_floor_sq_div_two` | 307 | 5 | Pending dedicated audit |
 | 26 | `min_le_sum_max` | 319 | 46 | Pending dedicated audit |
 | 27 | `sum_max_sub_le_index_det` | 371 | 25 | Pending dedicated audit |
@@ -499,3 +499,14 @@ Accepted uncontended exact-prefix profile: 131.343 (conservative including tiny 
 Frozen owner full (73.770 s) then separate LeanEval (26.327 s) pass.
 [Dedicated audit](Theta-one_le_lem6M.md). Theta 23/35, overall 204/264 originals;9/14 files complete.
 No new production helper; the prior helper remains separately audited. Next: original 24, floor_sq_div_two_le_sum.
+
+
+## Published checkpoint24 — floor_sq_div_two_le_sum
+
+Shortened the floor-sum proof from eleven to six body lines using the directly cast Gauss sum identity and the floor bound. Removed the local floor name and nested cast-equality boilerplate; the exact public real-number statement, documentation and sole caller remain unchanged.
+
+Dedicated 24-item/42-rule audit, five actual searches, both effective binder probes, a certified negative-input counterexample, literature/inversion and measured tables pass. The compiled ordered-floor-field candidate was assessed and not recommended for public API churn. Immutable independent original nonself proof, complete original type recovery and actual built standard axioms pass. Module and complete unfiltered final LSP pass with 0 errors / 17 warnings.
+Accepted uncontended exact-prefix profile: 414.955 (baseline 503.277) ms; no whole-file performance claim.
+Frozen owner full (83.621 s) then separate LeanEval (29.992 s) pass.
+[Dedicated audit](Theta-floor_sq_div_two_le_sum.md). Theta 24/35, overall 205/264 originals;9/14 files complete.
+No new production helper; the prior helper remains separately audited. Next: original 25, sq_div_three_lt_floor_sq_div_two.

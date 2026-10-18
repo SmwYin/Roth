@@ -25,16 +25,16 @@ Started: 2026-10-14 (America/Chicago).
 
 ## Current status
 
-Latest completed file after successful final publication: Separation. Theta originals 23/35
-completed; overall 204/264 original declarations, 9/14 files. Latest original: one_le_lem6M.
-Shortened the M lower-bound proof from eight to six body lines, replacing linarith with ordered-add nonnegativity and direct existing product/power lemmas. All public arguments, conclusion, name, documentation and callers remain unchanged.
-Dedicated 24-item/42-rule audit, five actual searches, all five effective binder probes with independent counterexamples, literature/inversion and measured tables pass. Immutable independent original nonself proof, exact complete original type AST/binder metadata and actual built standard-axiom checks pass. Module and complete unfiltered LSP (0 errors / 17 warnings), accepted
-uncontended prefix profile (131.343 (conservative including tiny lazy definition-equation tasks <133; baseline 284.544, conservatively <286) ms), frozen full build (73.770 s), then
-separate LeanEval (26.327 s), all pass. [Latest audit](cleanup/Theta-one_le_lem6M.md).
-No new production helper; the prior helper remains separately audited. Next: original 24, floor_sq_div_two_le_sum.
+Latest completed file after successful final publication: Separation. Theta originals 24/35
+completed; overall 205/264 original declarations, 9/14 files. Latest original: floor_sq_div_two_le_sum.
+Shortened the floor-sum proof from eleven to six body lines using the directly cast Gauss sum identity and the floor bound. Removed the local floor name and nested cast-equality boilerplate; the exact public real-number statement, documentation and sole caller remain unchanged.
+Dedicated 24-item/42-rule audit, five actual searches, both effective binder probes, a certified negative-input counterexample, literature/inversion and measured tables pass. The compiled ordered-floor-field candidate was assessed and not recommended for public API churn. Immutable independent original nonself proof, complete original type recovery and actual built standard axioms pass. Module and complete unfiltered LSP (0 errors / 17 warnings), accepted
+uncontended prefix profile (414.955 (baseline 503.277) ms), frozen full build (83.621 s), then
+separate LeanEval (29.992 s), all pass. [Latest audit](cleanup/Theta-floor_sq_div_two_le_sum.md).
+No new production helper; the prior helper remains separately audited. Next: original 25, sq_div_three_lt_floor_sq_div_two.
 [Exact contract decision](cleanup/Theta-contract-proposal.md): selected A/B/C scope applies;
 prior explicit hq and extra hB/hr preservation choices remain. Whole-Theta profiling,
-12 remaining originals and final phases are outstanding. The known late index_le_lem6 instrumented default-heartbeat failure awaits its dedicated audit.
+11 remaining originals and final phases are outstanding. The known late index_le_lem6 instrumented default-heartbeat failure awaits its dedicated audit.
 
 Build/tool setup completed; GitHub browser authentication and branch publication succeeded.
 The first file, `Roth/HasseDeriv.lean`, has completed all declaration and final review,
@@ -2339,3 +2339,15 @@ Next:original 24, floor_sq_div_two_le_sum. Actual whole-Theta profiling and fina
 Original23 validated source/audit checkpoint: [e5f28a0](https://github.com/SmwYin/Roth/commit/e5f28a07323b41272721234fd3770b728d658c13).
 The following central-log metadata commit changes no Lean source; both commits publish
 together before original24 edits. Counts remain 204/264, Theta 23/35, 9/14 files.
+
+
+## Theta original24 checkpoint — floor_sq_div_two_le_sum
+
+Shortened the floor-sum proof from eleven to six body lines using the directly cast Gauss sum identity and the floor bound. Removed the local floor name and nested cast-equality boilerplate; the exact public real-number statement, documentation and sole caller remain unchanged.
+
+Dedicated 24-item/42-rule audit, five actual searches, both effective binder probes, a certified negative-input counterexample, literature/inversion and measured tables pass. The compiled ordered-floor-field candidate was assessed and not recommended for public API churn. Immutable independent original nonself proof, complete original type recovery and actual built standard axioms pass. [Dedicated audit](cleanup/Theta-floor_sq_div_two_le_sum.md).
+Final Theta SHA256 `3522af0920e133d0f34f3da6c162e288d3987a0fb948ded6d3a89ef87ee1d62f`. Module and complete unfiltered LSP:0 errors/17 warnings;
+accepted real prefix profile:414.955 (baseline 503.277) ms. Frozen full build83.621s then
+separate LeanEval29.992s both exit0; all17project/pin/source hashes stable.
+No new production helper; the prior helper remains separately audited. After successful publication:Theta24/35,overall205/264,9/14files.
+Next:original 25, sq_div_three_lt_floor_sq_div_two. Actual whole-Theta profiling and final file phases remain outstanding.

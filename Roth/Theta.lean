@@ -283,17 +283,12 @@ theorem one_le_lem6M (p r₁ : ℕ) {B : ℝ} (hB : 1 ≤ B) (l : ℕ) : 1 ≤ l
 FACT ("For any `α ≥ 0` we have `∑_{0 ≤ ν ≤ α} (α - ν) ≥ [α]²/2`"). -/
 theorem floor_sq_div_two_le_sum {a : ℝ} (ha : 0 ≤ a) :
     (⌊a⌋₊ : ℝ) ^ 2 / 2 ≤ ∑ ν ∈ Finset.range (⌊a⌋₊ + 1), (a - ν) := by
-  set n := ⌊a⌋₊
-  have hn : (n : ℝ) ≤ a := Nat.floor_le ha
-  have h1 := Finset.sum_range_id_mul_two (n + 1)
-  simp only [Nat.add_sub_cancel] at h1
-  have h2 : (∑ ν ∈ Finset.range (n + 1), (ν : ℝ)) * 2 = ((n : ℝ) + 1) * n := by
-    have := congrArg (Nat.cast (R := ℝ)) h1
-    push_cast at this
-    exact this
+  have hsum := congrArg (Nat.cast (R := ℝ)) (Finset.sum_range_id_mul_two (⌊a⌋₊ + 1))
+  simp only [Nat.add_sub_cancel] at hsum
+  push_cast at hsum
   rw [Finset.sum_sub_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul]
   push_cast
-  nlinarith
+  nlinarith [Nat.floor_le ha]
 
 /-- For `a > 10`, `a² / 3 < ⌊a⌋² / 2`. Source: §5, proof of Lemma 6, second FACT ("If `α > 10`,
 then `[α]²/2 > α²/3`"). -/
