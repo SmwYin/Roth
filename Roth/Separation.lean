@@ -96,10 +96,8 @@ theorem eq_sum_X_none_pow_mul_coeffNone (P : MvPolynomial (Option τ) R) {n : �
   rw [Finset.sum_ite_eq]
   split_ifs with he
   · rw [coeff_coeffNone, ← eq_mapDomain_some_add_single]
-  · by_contra hne
-    have := monomial_le_degreeOf none (mem_support_iff.2 hne)
-    simp only [Finset.mem_range] at he
-    omega
+  · exact notMem_support_iff.1 fun h ↦
+      he (Finset.mem_range.2 (Nat.lt_succ_of_le ((monomial_le_degreeOf none h).trans hn)))
 
 /-- Taking the coefficient of a power of `x_none` does not increase the degree in `x_j`.
 Source: §2, proof of Lemma 2 ("the `ψ_ν`'s of degree at most `r_j` in `x_j`"). -/
