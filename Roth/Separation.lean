@@ -447,16 +447,6 @@ theorem exists_int_eq_of_gcd_eq_one {ι : Type*} {s : Finset ι} {u : ι → ℤ
         rw [Finset.sum_mul]
         exact Finset.sum_congr rfl fun i hi ↦ by rw [mul_assoc, hw i hi]
 
-omit [Fintype τ] [DecidableEq τ] in
-private lemma map_aeval_X_none (V : Polynomial ℤ) :
-    map (Int.castRingHom ℚ) (Polynomial.aeval (X none : MvPolynomial (Option τ) ℤ) V) =
-      Polynomial.aeval (X none : MvPolynomial (Option τ) ℚ) (V.map (Int.castRingHom ℚ)) := by
-  rw [aeval_X_eq_rename, aeval_X_eq_rename, map_rename]
-  congr 1
-  ext d
-  rw [coeff_map, MvPolynomial.coeff_uniqueAlgEquiv_symm, MvPolynomial.coeff_uniqueAlgEquiv_symm,
-    Polynomial.coeff_map]
-
 private lemma degreeOf_map_intCast {σ : Type*} (U : MvPolynomial σ ℤ) (j : σ) :
     degreeOf j (map (Int.castRingHom ℚ) U) = degreeOf j U := by
   rw [degreeOf_eq_sup, degreeOf_eq_sup, support_map_of_injective _ Int.cast_injective]
@@ -510,7 +500,9 @@ theorem exists_int_factors {U' : MvPolynomial τ ℚ} {V' : Polynomial ℚ} (hU 
     exact hV''ne hVmap.symm
   refine ⟨U, V, hUne, hVne, ?_, fun j => ?_, ?_⟩
   · apply MvPolynomial.map_injective (Int.castRingHom ℚ) Int.cast_injective
-    rw [hF', map_mul (map (Int.castRingHom ℚ)), map_rename, map_aeval_X_none, hVmap]
+    rw [hF', map_mul (map (Int.castRingHom ℚ)), map_rename,
+      Polynomial.map_aeval_eq_aeval_map (φ := Int.castRingHom ℚ) (Subsingleton.elim _ _), map_X,
+      hVmap]
   · rw [← degreeOf_map_intCast, hUmap, smul_eq_C_mul,
       degreeOf_C_mul j g (mem_nonZeroDivisors_of_ne_zero hg)]
   · rw [← Polynomial.natDegree_map_eq_of_injective (f := Int.castRingHom ℚ)
