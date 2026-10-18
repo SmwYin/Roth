@@ -1,8 +1,40 @@
-# Theta: concrete unused-contract candidate (unapplied)
+# Theta contract candidates and approved scope
 
-Live source remains at its existing public contracts. This is a menu for an explicit decision,
-not authorization to apply any row. Dedicated original-declaration audits remain mandatory;
-none is counted from this exploratory whole-file compiler probe.
+## Explicit user decision (2026-10-18)
+
+The user approved exactly A and B below, plus the first five C rows:
+
+- Remove all 15 DecidableEq binders from the 14 listed public theorems.
+- Remove Fintype only from one_mem_RSet.
+- Remove hr from indexSet_bddAbove and Θ_le_card.
+- Remove hR from exists_eq_pow_mul_of_rootMultiplicity and sum_max_sub_le_index_det.
+- Remove hl′, hδ and the consequently unused implicit δ from index_det_le.
+
+The user chose preservation for the remaining options: RETAIN hq in index_le_lem6 and
+Θ_option_le; RETAIN Θ_nonneg's hB/hr, Θ_le_card's hB, and Θ_mono's hB/hr. Thus D/E/F's
+additional bound/weight widening is declined; their overlapping A instance removals and
+Θ_le_card's overlapping C.hr removal remain approved. No other hypothesis, definition,
+domain, conclusion, binder order, naming or project structure change is authorized.
+
+Application proceeds through dedicated sequential declaration checkpoints/revisits. Original 15
+Θ_equiv applies its approved A row in the first publication below; earlier completed targets
+then receive fresh revisits in source/dependency order, without inflating original counts.
+Future approved targets apply their rows in their dedicated original audits. This decision is
+more restricted than the historical whole-candidate compiler probe, which also explored hq
+removals. No unselected row may be inferred from that probe's successful compile.
+
+### Published application ledger
+
+- Original 15, Θ_equiv: both approved A.DecEq instance removals applied, independently original
+  ten-binder recovered through an explicit adapter to the actual eight-binder theorem. Module,
+  complete LSP, actual axioms, caller, final profile and owner full/separate LeanEval gates pass.
+- Next: completed targets 6–13 receive fresh sequential approved revisits, without increasing
+  original counts. Future targets 18/20/27/28/29/30 apply their selected rows in their own audits.
+
+The evidence and proposal descriptions below were prepared before this decision. Their historic
+unapplied status is superseded only by the exact selected scope above and subsequent checkpoint
+publication evidence. Dedicated original-declaration audits remain mandatory; none is counted
+from the exploratory whole-file compiler probe.
 
 A full independent copy of current Theta was compiled in namespace ThetaContractCandidate,
 using Roth's existing Index/Separation APIs and original mathematical proofs. Only the menu
@@ -68,9 +100,9 @@ Removing the first two C restrictions exposes further unused hr parameters in in
 any further removal needs its own concrete scoped audit/decision. Likewise no general Ring,
 non-finite index theory,new companion API,renaming or module restructuring is proposed here.
 
-Status: UNAPPLIED,awaiting explicit root/user decision. Routine authorized proof/style work can
-continue with the existing public contracts. Each selected amendment will be independently
-verified and published at its declaration checkpoint; this preview does not replace those gates.
+Historical preview status was unapplied. The exact selected scope is now approved above; each
+selected amendment will be independently verified and published at its declaration checkpoint.
+This preview does not replace those gates or authorize the two declined hq removals.
 
 
 ## Stronger original-contract, actual-axiom and caller verification
@@ -114,10 +146,10 @@ including hq0,recovers in the29-adapter check. Roth/Main.lean,Roth/LeanEval.lean
 no direct changed-API use. No MainLemma/Main source edit or denominator-contract removal is
 proposed. Their full project validation will run after any approved live amendment.
 
-Current status remains UNAPPLIED,awaiting an explicit scoped decision. Candidate verification
+Historical status at verification was UNAPPLIED; the subsequent exact decision is recorded above. Candidate verification
 does not count toward the35 dedicated original Theta audits or authorize any further hr removal.
 
-## D. Fresh original10 proposal: nonnegativity for all bounds and weights (unapplied)
+## D. Fresh original10 proposal: nonnegativity for all bounds and weights (extra widening declined)
 
 The fresh dedicated Θ_nonneg audit found a canonical Real.sSup_nonneg proof. This gives the
 strictly stronger public candidate below, keeping B/r implicit and q explicit:
@@ -135,7 +167,8 @@ DecidableEqσ removal for this one theorem. No other groupA/B/C row is extended 
 Fintypeσ, coefficient/denominator/weight domains and every definition remain unchanged.
 The statement includes empty defining sets, whose real supremum is zero under the existing
 formal definition; every member is a nonnegative index. Paper's nonempty positive-parameter
-setting remains a special case. This proposal is UNAPPLIED, awaiting an explicit decision.
+setting remains a special case. The user declined the extra hB/hr removal; those hypotheses
+remain. Only the overlapping A.DecEq removal is approved.
 The live proof can use the canonical argument with all original public binders retained.
 
 Definitive actual-import evidence: `/private/tmp/roth-theta-nonneg-original.lean`, exit0,
@@ -155,7 +188,7 @@ Exact caller inventory: four actual uses, all inside Theta, in index_le_lem6 (tw
 against the actual lem6Φ definition. No caller edit or public amendment is applied from this
 preview, and this exploration is not counted as an additional original declaration audit.
 
-## E. Fresh original11 proposal: cardinal bound for all B/weights (unapplied)
+## E. Fresh original11 proposal: cardinal bound for all B/weights (extra hB removal declined)
 
 The fresh Θ_le_card audit compiled the stronger candidate:
 
@@ -169,8 +202,8 @@ and menuC hr:∀j,0<r j removals. No other old menu row or new assumption is bun
 It uses Real.sSup_le with the already-proved bound on each mapped-polynomial index and the
 nonnegativity of cardσ. The empty defining-set case also satisfies the same bound by the
 existing real-supremum convention. All definitions/domains/Fintype and remaining binder
-order/implicitness are unchanged. This candidate is UNAPPLIED pending an explicit decision;
-live target proof can use the canonical argument while preserving every old public binder.
+order/implicitness are unchanged. The user declined the extra hB removal, so hB remains.
+Only the overlapping A.DecEq and C.hr removals are approved.
 
 Definitive ACTUAL-import source `/private/tmp/roth-theta-card-original.lean:138`, successful
 raw `/private/tmp/roth-theta-card-original.log`. Independent baseline original proof, actual
@@ -183,7 +216,7 @@ and module-doc mention. Thus no downstream call fix is necessary; the named/infe
 are compatibility examples, not claims that such calls already occur in the project.
 No source API edit/helper or additional original-declaration count follows from this preview.
 
-## F. Fresh original13 proposal: monotonicity for all B/weights (unapplied)
+## F. Fresh original13 proposal: monotonicity for all B/weights (extra widening declined)
 
 The fresh Θ_mono audit compiled the stronger candidate against actual imported definitions:
 
@@ -197,8 +230,8 @@ DecidableEqσ removal. The earlier menus do not implicitly authorize either new 
 parameters, definitions, domains, Fintype and retained binder order/implicitness stay intact.
 The candidate supplies the cardinal upper bound for the larger indexSet directly, proves its
 supremum nonnegative, and uses Real.sSup_le. Thus it also covers empty defining sets and zero
-weights. This PUBLIC strengthening remains UNAPPLIED pending an explicit decision; the live
-three-line witness proof retains every old public binder.
+weights. The user declined the extra hB/hr removal, so both remain. Only the overlapping
+A.DecEq removal is approved; the broader candidate stays unapplied.
 
 Definitive ACTUAL-import source `/private/tmp/roth-theta-mono/positive.lean:19`, exit0 raw
 `/private/tmp/roth-theta-mono/positive.log`. Independent baseline original proof, styled proof,

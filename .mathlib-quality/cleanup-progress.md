@@ -20,18 +20,19 @@ Started: 2026-10-14 (America/Chicago).
 
 ## Current status
 
-Latest completed file after successful final publication: Separation. Theta checkpoint 14 completed;
-overall 195/264 original declarations, 9/14 files. Theta 14/35 originals complete. The private
-variable-renaming helper now uses mathlib's coefficient reindexing API; proof body 16 → 12 lines,
-both private decidability instances removed. All public source and contracts remain unchanged;
-actual Θ_equiv's original type and ten BinderInfo entries are verified. Module, independent
-original proof/old private adapter/actual standard axioms, complete unfiltered LSP (0 errors,
-32 warnings) and uncontended exact-prefix profile (181.401 ms) pass. Frozen owner full build
-(60.885 s), then separate LeanEval (22.704 s), both pass. [Latest audit](cleanup/Theta-indexSet_comp_subset.md).
-Whole-Theta profiling, the remaining 21 originals and final phases remain outstanding; the known
-late instrumented linarith failure awaits its audit. [Theta contract menu](cleanup/Theta-contract-proposal.md)
-A–F remains UNAPPLIED pending explicit decision. Existing definitions and every live public
-contract are unchanged. See [Separation final report](cleanup/Separation-final.md). Next: Θ_equiv.
+Latest completed file after successful final publication: Separation. Theta checkpoint 15 completed;
+overall 196/264 original declarations, 9/14 files. Theta 15/35 originals complete. Θ_equiv's proof
+is 4 → 3 lines, and its two explicitly approved DecEq instances are removed. Its immutable
+original ten-binder form is recovered through an explicit adapter to the actual eight-binder
+theorem; retained metadata, AST, standard axioms and original Θ_lt caller contract pass. Module,
+complete unfiltered LSP (0 errors, 30 warnings) and final uncontended prefix (37.638 ms) pass.
+Frozen owner full build (45.642 s), then separate LeanEval (14.442 s), both pass.
+[Latest audit](cleanup/Theta-Theta_equiv.md). The user approved A/B and the first five C rows in
+[the exact contract decision](cleanup/Theta-contract-proposal.md), and chose to RETAIN hq plus
+D/E/F's extra hB/hr assumptions. Next are fresh sequential approved revisits of completed targets
+6–13, without increasing original counts, then original 16. Whole-Theta profiling, 20 remaining
+originals and final phases remain outstanding; the known late instrumented linarith failure awaits
+its audit. Definitions, domains and conclusions are unchanged.
 
 Build/tool setup completed; GitHub browser authentication and branch publication succeeded.
 The first file, `Roth/HasseDeriv.lean`, has completed all declaration and final review,

@@ -255,3 +255,22 @@ caller contract and actual standard axioms pass. Uncontended prefix profiles: 17
 no speedup or whole-file claim. Frozen owner full build (60.885 s), then separate LeanEval (22.704 s),
 both pass with identical SHA. After publication: Theta 14/35, overall 195/264, 9/14 files complete.
 All public menus A–F remain unapplied. Next: Θ_equiv.
+
+
+## Published checkpoint 15 — Θ_equiv and approved instance removals
+
+Fresh dedicated audit applies `congrArg sSup` directly (proof 4 → 3 lines) and the user's newly
+approved A row: remove both DecEq instances, with a scoped omit before the preserved docstring.
+All other parameters, definitions, conclusions and caller source remain intact. No helper added.
+Full 24/42/five actual searches/every-binder/literature/inversion/packing/inequality/11 gates pass.
+Immutable independent original proof and explicit full-old-ten-binder adapter recover the original
+contract from actual new eight-binder theorem; exact retained types/order/BinderInfo/user names,
+AST absence and actual standard axioms pass. Anonymous synthetic instance renumbering is documented,
+with no artificial production names. Sole theorem caller Θ_lt retains its immutable original
+contract. Module and complete unfiltered LSP pass (0 errors, 30 warnings). Accepted post-LSP
+uncontended exact-prefix aggregate: 44.400 → 37.638 ms. No whole-file performance claim.
+Frozen owner full build (45.642 s), then separate LeanEval (14.442 s), both pass on identical SHA.
+After publication: Theta 15/35, overall 196/264, 9/14 files. The exact user decision is recorded
+in [the contract menu](Theta-contract-proposal.md): A/B plus first five C rows approved; hq and
+D/E/F's extra hB/hr widenings declined. Next: fresh approved revisit of one_mem_RSet, then completed
+targets 7–13 in source/dependency order, with no original-count inflation; original 16 follows.

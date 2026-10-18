@@ -140,12 +140,12 @@ private lemma indexSet_comp_subset {τ : Type*} [Fintype τ] (e : σ ≃ τ) (B 
     simpa using hh (e.symm j)
   · simp [map_rename, index_rename e.injective, Function.comp_def]
 
+omit [DecidableEq σ] in
 /-- `Θ` is invariant under renaming the variables. Source: §4, Lean note after Lemma 4-2
 ("invariance under ... variable renaming"). -/
-theorem Θ_equiv {τ : Type*} [Fintype τ] [DecidableEq τ] (e : σ ≃ τ) (B : ℝ) (q r : τ → ℕ) :
+theorem Θ_equiv {τ : Type*} [Fintype τ] (e : σ ≃ τ) (B : ℝ) (q r : τ → ℕ) :
     Θ B (q ∘ e) (r ∘ e) = Θ B q r := by
-  rw [Θ, Θ]
-  congr 1
+  apply congrArg sSup
   refine subset_antisymm (indexSet_comp_subset e B q r) ?_
   simpa [Function.comp_def] using indexSet_comp_subset e.symm B (q ∘ e) (r ∘ e)
 
