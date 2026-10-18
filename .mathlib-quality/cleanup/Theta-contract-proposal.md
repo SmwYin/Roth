@@ -154,3 +154,31 @@ Exact caller inventory: four actual uses, all inside Theta, in index_le_lem6 (tw
 `add_nonneg (Θ_nonneg (B := M) _) (Θ_nonneg (B := M) _)`; fully inferred variant also compiles
 against the actual lem6Φ definition. No caller edit or public amendment is applied from this
 preview, and this exploration is not counted as an additional original declaration audit.
+
+## E. Fresh original11 proposal: cardinal bound for all B/weights (unapplied)
+
+The fresh Θ_le_card audit compiled the stronger candidate:
+
+```lean
+theorem Θ_le_card {σ : Type*} [Fintype σ] {B : ℝ} (q : σ → ℕ) {r : σ → ℕ} :
+    Θ B q r ≤ Fintype.card σ
+```
+
+This NEWLY proposes dropping hB:1≤B, alongside this target's existing menuA DecidableEqσ
+and menuC hr:∀j,0<r j removals. No other old menu row or new assumption is bundled implicitly.
+It uses Real.sSup_le with the already-proved bound on each mapped-polynomial index and the
+nonnegativity of cardσ. The empty defining-set case also satisfies the same bound by the
+existing real-supremum convention. All definitions/domains/Fintype and remaining binder
+order/implicitness are unchanged. This candidate is UNAPPLIED pending an explicit decision;
+live target proof can use the canonical argument while preserving every old public binder.
+
+Definitive ACTUAL-import source `/private/tmp/roth-theta-card-original.lean:138`, successful
+raw `/private/tmp/roth-theta-card-original.log`. Independent baseline original proof, actual
+built theorem and candidate/explicit full-old-args lambda adapter all compile. The adapter
+kernel-equals actual Roth.Θ_le_card by rfl; direct old actual type/binderInfo/order checks PASS.
+AST has exactly σ/Fintype/B/q/r and no hB/hr/DecEq. Original/actual/candidate/adapter and
+named/inferred/old-shape inference trials all have only the standard three axioms.
+Repository-wide source inventory has NO actual caller, internal or external: only declaration
+and module-doc mention. Thus no downstream call fix is necessary; the named/inferred trials
+are compatibility examples, not claims that such calls already occur in the project.
+No source API edit/helper or additional original-declaration count follows from this preview.

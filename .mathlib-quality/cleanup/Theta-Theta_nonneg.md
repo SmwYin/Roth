@@ -289,7 +289,7 @@ Both exit0. All other compiler/native diagnostics/module requests drained before
 Raw UTF8 `/private/tmp/roth-theta-nonneg-{before,final}-profile.log`, declaration outer
 anchors76885/76899. Structured `/private/tmp/roth-theta-nonneg-profile-summary.json` lists
 all counted anchors. Count outer plus associated top-level async proof/addDecl/linter;
-nested tactic/Meta/kernel not double-counted. Earlier owner progress8.277ms reported only
+nested tactic/Meta/kernel not double-counted. Earlier leaf progress8.277ms reported only
 outer+proof and was incomplete;14.181ms is full corrected baseline. Difference is ordinary
 noise; no speedup claim. Both well below750ms, so no borderline repeat;1000msbudget.
 No limit raise, profiling scaffold or source option added. WholeTheta late index_le_lem6

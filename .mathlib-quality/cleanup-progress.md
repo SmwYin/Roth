@@ -20,20 +20,20 @@ Started: 2026-10-14 (America/Chicago).
 
 ## Current status
 
-Latest completed file after successful final publication: Separation. Theta checkpoint10 completed;
-overall191/264 original declarations,9/14 files. Theta10/35 originals complete. Latest Θ_nonneg
-uses canonical Real.sSup_nonneg; every original public type/binder/doc retained. Module,
-independent original nonself proof/direct actual type/standard axioms, complete unfiltered
-LSP0errors31warnings and uncontended exact-prefix13.669ms pass. Three protected unused warnings
-newly exposed (hB/hr/DecEq section instance), none suppressed. Frozen owner full88.364s THEN
-separateLeanEval25.958s both0. [Latest audit](cleanup/Theta-Theta_nonneg.md).
-WholeTheta profiling, remaining25 originals and final phases remain outstanding; known late
-instrumented linarith failure awaits its dedicated audit. [Theta contract menu](cleanup/Theta-contract-proposal.md)
-remains UNAPPLIED. NEW proposalD drops Θ_nonneg hB/hr plus its proposedDecEq row: actual-import
-independent candidate/explicit full-original lambda adapter/kernel equality/direct type+BinderInfo/
-AST/standardaxiom and all4internalcaller trials pass; awaiting explicit decision. All definitions
-and live public contracts remain unchanged. Existing A/B/C menu evidence also retained.
-See [Separation final report](cleanup/Separation-final.md). Next:Θ_le_card.
+Latest completed file after successful final publication: Separation. Theta checkpoint11 completed;
+overall192/264 original declarations,9/14 files. Theta11/35 originals complete. Latest Θ_le_card
+uses canonical Real.sSup_le; every original public binder/type/doc retained. Module, independent
+original/direct actual type+BinderInfo/standard axioms, complete unfiltered LSP0errors33warnings
+and uncontended exact-prefix155.638ms pass. Two new protected-unused hB/DecEq warnings documented;
+none suppressed. Frozen owner full69.923s THEN separateLeanEval21.839s both0.
+[Latest audit](cleanup/Theta-Theta_le_card.md). WholeTheta profiling, remaining24 originals and
+final phases remain outstanding; known late instrumented linarith failure awaits its audit.
+[Theta contract menu](cleanup/Theta-contract-proposal.md) A/B/C/D/E remains UNAPPLIED. NEW E
+removes Θ_le_card hB alongside old proposedhr/DecEq: actual-import independent candidate/explicit
+full-original lambda adapter/kernel equality/direct type+BinderInfo/AST/standardaxioms pass;
+zero actual callers, inference examples compile. D likewise verified for Θ_nonneg (four internal
+calls). All definitions and live public contracts unchanged; explicit decision pending.
+See [Separation final report](cleanup/Separation-final.md). Next:Θ_le_of_forall_index_le.
 
 Build/tool setup completed; GitHub browser authentication and branch publication succeeded.
 The first file, `Roth/HasseDeriv.lean`, has completed all declaration and final review,

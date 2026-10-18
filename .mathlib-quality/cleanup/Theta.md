@@ -48,7 +48,7 @@ ordinary baseline builds passing does not imply any all-file profile pass.
 | 8 | `indexSet_bddAbove` | 86 | 4 | Complete;[audit](Theta-indexSet_bddAbove.md) |
 | 9 | `index_le_Θ` | 96 | 1 | Complete;[audit](Theta-index_le_Theta.md) |
 | 10 | `Θ_nonneg` | 103 | 2 | Complete;[audit](Theta-Theta_nonneg.md) |
-| 11 | `Θ_le_card` | 109 | 4 | Pending dedicated audit |
+| 11 | `Θ_le_card` | 109 | 4 | Complete;[audit](Theta-Theta_le_card.md) |
 | 12 | `Θ_le_of_forall_index_le` | 118 | 3 | Pending dedicated audit |
 | 13 | `Θ_mono` | 128 | 3 | Pending dedicated audit |
 | 14 | `indexSet_comp_subset` | 134 | 16 | Pending dedicated audit |
@@ -193,3 +193,18 @@ New [proposalD](Theta-contract-proposal.md) independently proves no-hB/no-hr/no-
 with ACTUAL imported definitions, full original lambda adapter/kernel equality/direct type+
 binderInfo/order/AST/standardaxioms/four internalcaller trials; still UNAPPLIED awaiting decision.
 Next:Θ_le_card.
+
+## Published checkpoint11 — Θ_le_card
+
+Fresh full dedicated audit uses canonical Real.sSup_le and direct degreeOf unfolding. Live-start
+body6→5 (initial-original4→final5 after prior wrapper replacements). All original public binders/
+type/docs retained; no callers/helper. Full24/42/five searches/eightbinder probes/literature/
+inversion/width/inequality/11leaf gates complete. Module, independent original proof, actual
+old-type/BinderInfo and original+actual standard axioms pass. Fresh complete unfiltered native
+LSP0errors/33warnings: new protected hB-unused and DecEq-section-unused; none suppressed.
+Uncontended actual exact-prefix153.288→155.638ms (<750/1000), ordinary noise, no speedup/filewide
+claim. Owner frozen full/separateLeanEval/publication recorded in dedicated audit. After
+publication:Theta11/35,overall192/264,9/14files complete. New [proposalE](Theta-contract-proposal.md)
+removes this target's hB alongside prior proposedhr/DecEq, actual-import original lambda adapter/
+BinderInfo/AST/standardaxioms/inference trials verified, ZERO actual callers. Still UNAPPLIED.
+Next:Θ_le_of_forall_index_le.
