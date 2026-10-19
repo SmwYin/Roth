@@ -2553,3 +2553,13 @@ Next:dedicated sequential numeric/index29 performance repairs, fresh independent
 Original35 validated source/audit checkpoint: [6bf343c](https://github.com/SmwYin/Roth/commit/6bf343c4b91f530522cc2dbb19ad472cdd548ac4).
 The following central-log metadata commit changes no Lean source; both commits publish
 together before subsequent performance revisit edits. Counts remain 216/264, Theta 35/35, 9/14 files.
+
+
+## Validated Theta revisit — mul_sq_div_three_le_sum_max_of_pos_aux
+
+Replaced arithmetic search with an explicit nonnegative polynomial certificate and broad field_simp with eq_div_iff plus ring. The exact six-binder private contract, callers and22-line proof length remain unchanged; no new helper. Deterministic heartbeats2624→2111. [Dedicated audit](cleanup/Theta-mul_sq_div_three_le_sum_max_of_pos_aux-performance.md).
+Revisit source/audit commit `b9af0098b1241483aa01a4ea56c61368c4da0549`: [GitHub checkpoint](https://github.com/SmwYin/Roth/commit/b9af0098b1241483aa01a4ea56c61368c4da0549).
+Frozen Theta SHA256 `e94ada9acfbd31f74bf65a04ea750e022c117d5e8d6e0ffb32ff6a8e56fb2ad5`. All owner gates passed as recorded in the audit.
+This belongs to original26 batch; original counts remainTheta35/35,
+overall216/264,9/14files. No count inflation from helper/revisit audits.
+Next:fresh dedicated sum_max_sub_le_index_det performance revisit, then remaining six older repairs and independent filewide review/final gates. Seven older performance failures remain queued; no whole-file performance pass. MainLemma actual finite caller timing remains unmeasured before main_lemma.
