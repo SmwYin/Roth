@@ -25,14 +25,14 @@ Started: 2026-10-14 (America/Chicago).
 
 ## Current status
 
-MainLemma is active:2/27originals complete at the latest published checkpoint;
-overall218/264originals,10/14fullycompletedfiles. Latest:`gam` after fresh full
+MainLemma is active:3/27originals complete at the latest published checkpoint;
+overall219/264originals,10/14fullycompletedfiles. Latest:`eta` after fresh full
 24-item/42-rule/5-method/11-step audit,independent original/type/binder/value/standard-axiom
-checks,complete unfiltered affected diagnostics and actual anchored profile22.088ms.
-Owner fullbuild6.346s THEN separateLeanEval3.305s,both exit0 on immutable17pins.
-The gam formula,public documentation and complete call contract remain unchanged. Entry708→current709lines. Next:eta. MainLemma filewide final,
+checks,complete unfiltered affected diagnostics and actual anchored profile14.910ms.
+Owner fullbuild6.262s THEN separateLeanEval2.937s,both exit0 on immutable17pins.
+The eta formula,public documentation and complete call contract remain unchanged. Entry708→current709lines. Next:B₁. MainLemma filewide final,
 independent simplify and complete performance phases remain pending. See
-[MainLemma ledger](cleanup/MainLemma.md) and [latest audit](cleanup/MainLemma-gam.md).
+[MainLemma ledger](cleanup/MainLemma.md) and [latest audit](cleanup/MainLemma-eta.md).
 The exact source/audit commit is recorded in appended checkpoint history by its metadata
 child. Prior fullycompleted-file handoff is preserved below.
 
@@ -167,7 +167,7 @@ Files will be processed in dependency order; declarations within each file are s
 | `Roth/Index.lean` | 275 | All cleanup phases complete;21/21 originals audited; user-approved hypothesis groups applied and validated |
 | `Roth/Separation.lean` | 618 | Complete;30/30 originals and all final phases;source556lines27retained;all12 approved instance amendments validated |
 | `Roth/Theta.lean` | 981 | Complete;35/35 originals and all final file phases;source991lines,50retained |
-| `Roth/MainLemma.lean` | 704 | Active;2/27 originals audited/published;final file phases pending |
+| `Roth/MainLemma.lean` | 704 | Active;3/27 originals audited/published;final file phases pending |
 | `Roth/Main.lean` | 684 | Awaiting cleanup |
 | `Roth/LeanEval.lean` | 60 | Awaiting cleanup |
 | `Roth.lean` | 14 | Awaiting cleanup |

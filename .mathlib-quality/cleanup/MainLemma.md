@@ -111,3 +111,20 @@ All worker/compiler/native/profile ownership drained before publication.
 Source/audit publication hash follows in central checkpoint history via metadata child.
 MainLemma2/27 originals,overall218/264,10/14fullycompletedfiles;nexteta.
 Filewide final phases remain pending.
+
+
+### Original3: `eta`
+
+[Fresh dedicated full audit](MainLemma-eta.md):all24audit/42golf/5search/11checklist
+artifacts reviewed by owner. The eta formula,public documentation and complete call contract remain unchanged.
+Independent original reimplementation,exact old/current effective contract metadata/value
+and standard-axiom evidence reviewed; complete unfiltered livefile/affectedcaller diagnostics
+and actual affected-module/fullfile validation pass. Actual anchored profile14.910ms;
+required repeats/failed evidence,if any,remain in the dedicated report. Owner verified frozen
+source/evidence and ran fullbuild6.262s THEN separateLeanEval2.937s,both exit0 with all17pins immutable.
+Owner logs:`/private/tmp/roth-mainlemma-owner/eta-owner-full.json` and
+`eta-owner-eval.json`. SourceSHA256`0236435831af553f54e04569caadb7b985e0a556dbebf51d454e53abf3ea2abb`;current709lines.
+All worker/compiler/native/profile ownership drained before publication.
+Source/audit publication hash follows in central checkpoint history via metadata child.
+MainLemma3/27 originals,overall219/264,10/14fullycompletedfiles;nextB₁.
+Filewide final phases remain pending.
