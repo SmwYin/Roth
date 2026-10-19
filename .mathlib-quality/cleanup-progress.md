@@ -2498,3 +2498,7 @@ Scoped direct-replacement certificate:86.921 (real exact old-contract certificat
 separate LeanEval34.051s both exit0; all17project/pin/source hashes stable.
 Deleted one original private wrapper; no new helper. This still reviews one original declaration and adds no count from helpers/revisits. After successful publication:Theta31/35,overall212/264,9/14files.
 Next:original32 lem6M_lt (ordinary proof≤30; every new helper requires a separate fresh audit). Actual whole-Theta profiling and final file phases remain outstanding.
+
+Original31 validated source/audit checkpoint: [b654ab8](https://github.com/SmwYin/Roth/commit/b654ab84fc3f86231421a033a62cdc774bb26adb).
+The following central-log metadata commit changes no Lean source; both commits publish
+together before original32 edits. Counts remain 212/264, Theta 31/35, 9/14 files.
