@@ -808,3 +808,15 @@ inherited target51.095/39.828 and directlocalconsumer654.400/679.144 → index_l
 Frozen owner full build (78.617 s), then separate LeanEval (56.394 s),
 both pass on identical SHA. [Dedicated revisit audit](Theta-index_le_Theta-technical-hr.md).
 Original counts unchanged: Theta 35/35, overall 216/264, 9/14 files. Next: dedicated Θ_unique_le.hr checkpoint, then fresh final independent filewide review and owner finalgates.
+
+
+## Recommended technical hypothesis revisit of original 20 — Θ_unique_le technical hr removal
+
+Removed only unused public Θ_unique_le.hr, admitting zero natural weights with the same logarithmic bound. Two private caller arguments removed; their positivity contracts retained and existing base denominator nonzero evidence made explicit. Original three-line target proof unchanged, no new helper, MainLemma unchanged.
+
+Fresh24audit/42golf/five actualsearches/everybinder/drop/weakening/generic/zero-weight/publicliterature/inversion/packing/inequality/11steps complete. Ten literal-new-header anonymous examples omitDecEq explicitly; all errors located, boundedexact?/apply? inconclusive. Successful qualified/private-suffix absence and presentcontrols. Broad-simp recursionfailure retained with unchanged limits. Immutable original20 full proof/10-binder oldadapter and actualnew8-binder telescope/value/stdaxes/ASTabsence plus actualzeroWeights pass. Prior current9-binder drops onlyhr; previous DecEq removal preserved. Historicalcompatibility contexts distinct from new actualRoot checks. Entire prior/new private caller13/7-binder contracts and proof/type/value/stdaxiom/nonself/positive dependencies pass, plus whole actual/copy MainLemma26 contract/proofs/stdaxes/nonself. All1223cumulative checks retain1055prior under one labelled historicalASTmapping; inverse recovers every806170inputbyte and fourcanonicalblocks. All29old public adapters/five defVALUES pass. Module and complete unfiltered final LSP pass with
+0 errors and 6 warnings. Accepted single actual scoped capture; all50 declarations below750 so no repeat required:
+inherited Θ_unique_le66.189; scaledcaller652.177; basecaller616.343 → Θ_unique_le75.070; scaledcaller519.579; basecaller482.899 ms; no whole-file performance claim.
+Frozen owner full build (78.682 s), then separate LeanEval (50.523 s),
+both pass on identical SHA. [Dedicated revisit audit](Theta-Theta_unique_le-technical-hr.md).
+Original counts unchanged: Theta 35/35, overall 216/264, 9/14 files. Next: fresh final independent filewide assessment of both resolved hr recommendations, then owner finalcumulative/allactual/native/all-declaration profile/full+LeanEval gates.

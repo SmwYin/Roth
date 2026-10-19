@@ -26,15 +26,15 @@ Started: 2026-10-14 (America/Chicago).
 ## Current status
 
 Latest completed file after successful final publication: Separation. Theta originals 35/35
-completed; overall 216/264 original declarations, 9/14 files. Recommended technical hypothesis revisit of original 9,
-index_le_Θ technical hr removal, completed without increasing counts. Only technical index_le_Θ.hr and its three direct caller arguments removed; other public contracts/definitions/domains/conclusions and protected choices retained.
-Immutable original proof/full11-binder oldadapter and actualnew9-binder telescope/value/stdaxes/ASTabsence plus actualzero-weight application pass; only oldDecEq and selectedtechnicalhr removed. Historicalcompatibility probes distinct from newactualRoot semantics. Module and complete unfiltered LSP (0 errors,
-7 warnings), Accepted single actual scoped capture; target/directlocalconsumer below750 so no scopedrepeat (index_le_Θ38.121; entire directlocal index_separated_mul_le_aux679.595 ms), frozen full build
-(78.617 s), then separate LeanEval (56.394 s), all pass.
-[Latest audit](cleanup/Theta-index_le_Theta-technical-hr.md). Next: dedicated Θ_unique_le.hr checkpoint, then fresh final independent filewide review and owner finalgates.
+completed; overall 216/264 original declarations, 9/14 files. Recommended technical hypothesis revisit of original 20,
+Θ_unique_le technical hr removal, completed without increasing counts. Only selected public Θ_unique_le.hr and two necessary private caller repairs; every other public contract/definition/domain/conclusion and explicit protected choice retained.
+Immutable original20 full proof/10-binder oldadapter and actualnew8-binder telescope/value/stdaxes/ASTabsence plus actualzeroWeights pass. Prior current9-binder drops onlyhr; previous DecEq removal preserved. Historicalcompatibility contexts distinct from new actualRoot checks. Module and complete unfiltered LSP (0 errors,
+6 warnings), Accepted single actual scoped capture; all50 declarations below750 so no repeat required (Θ_unique_le75.070; scaledcaller519.579; basecaller482.899 ms), frozen full build
+(78.682 s), then separate LeanEval (50.523 s), all pass.
+[Latest audit](cleanup/Theta-Theta_unique_le-technical-hr.md). Next: fresh final independent filewide assessment of both resolved hr recommendations, then owner finalcumulative/allactual/native/all-declaration profile/full+LeanEval gates.
 [Exact contract decision](cleanup/Theta-contract-proposal.md): selected A/B/C applies;
 hq and D/E/F's extra hB/hr assumptions remain per user choice. Whole-Theta profiling, 0 remaining
-originals and final phases are outstanding; no whole-module performance pass is claimed. Definitions, domains and conclusions remain unchanged. All50 below1000 once, with unrelated750–1000 rows awaiting finalwholefile repeated profiling; no finalwholefile performancepass. MainLemma actualtiming unavailable after fresh60s pretargetcutoff(5/27).
+originals and final phases are outstanding; no whole-module performance pass is claimed. Definitions, domains and conclusions remain unchanged. All50 below750 in this scoped capture, but final filewide assessment/ownergates pending. MainLemma actualtiming remains unavailable after prior60s pretargetcutoff; unchanged MainLemma has no direct Θ_unique_le call and that timeout was not gratuitously repeated.
 
 Build/tool setup completed; GitHub browser authentication and branch publication succeeded.
 The first file, `Roth/HasseDeriv.lean`, has completed all declaration and final review,

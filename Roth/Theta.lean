@@ -248,8 +248,8 @@ omit [DecidableEq σ] in
 /-- **Lemma 5**: in one variable, if `q > 1` then `Θ_1(B; q; r) ≤ log B / (r log q)`.
 Source: §5, Lemma `roth:lem5` ("Suppose additionally that `q_1 > 1`. Then
 `Θ_1(B; q_1; r_1) ≤ log B / (r_1 log q_1)`"), for a single variable `σ`. -/
-theorem Θ_unique_le [Unique σ] {B : ℝ} (hB : 1 ≤ B) {q : σ → ℕ} (hq : 1 < q default) {r : σ → ℕ}
-    (hr : 0 < r default) : Θ B q r ≤ Real.log B / (r default * Real.log (q default)) :=
+theorem Θ_unique_le [Unique σ] {B : ℝ} (hB : 1 ≤ B) {q : σ → ℕ} (hq : 1 < q default) {r : σ → ℕ} :
+    Θ B q r ≤ Real.log B / (r default * Real.log (q default)) :=
   Θ_le_of_forall_index_le hB fun _ hR _ hh ↦
     index_unique_le_log_div hq hR.1
       (by simpa only [Polynomial.leadingCoeff, coeff_uniqueAlgEquiv] using hR.2.2 _) (hh default)
@@ -755,8 +755,8 @@ private lemma theta_scaled_unique_le_aux {δ M : ℝ} {q₁ q₂ r₁ r₂ l : �
   have hq₂ : 1 < q₂ := by
     exact_mod_cast (Real.log_pos_iff (Nat.cast_nonneg q₂)).1 hL₂
   refine (Θ_mono hM1 hM _ fun _ ↦ Nat.mul_pos hl hr₂).trans
-    ((Θ_unique_le (q := fun _ : Unit ↦ q₂) (r := fun _ ↦ l * r₂) (hM1.trans hM) hq₂
-      (Nat.mul_pos hl hr₂)).trans ?_)
+    ((Θ_unique_le (q := fun _ : Unit ↦ q₂) (r := fun _ ↦ l * r₂)
+      (hM1.trans hM) hq₂).trans ?_)
   rw [Real.log_rpow (by positivity), div_le_iff₀ (by
     push_cast
     exact mul_pos (mul_pos (by exact_mod_cast hl) (by exact_mod_cast hr₂)) hL₂)]
@@ -822,9 +822,10 @@ private lemma theta_lt_base_aux {δ : ℝ} (hδ0 : 0 < δ) (hδ : δ ≤ 1) {r q
     Θ ((q 0 : ℝ) ^ (δ * r 0)) q r < 10 ^ 1 * δ ^ ((1 / 2 : ℝ) ^ 1) := by
   have h : Θ ((q 0 : ℝ) ^ (δ * r 0)) q r ≤ δ := by
     refine (Θ_unique_le (q := q) (r := r)
-      (Real.one_le_rpow (by exact_mod_cast hq1.le) (by positivity)) hq1 hrlast).trans_eq ?_
+      (Real.one_le_rpow (by exact_mod_cast hq1.le) (by positivity)) hq1).trans_eq ?_
     rw [Subsingleton.elim (default : Fin 1) 0, Real.log_rpow (by positivity)]
-    field_simp [ne_of_gt (Real.log_pos (by exact_mod_cast hq1 : (1 : ℝ) < q 0))]
+    field_simp [ne_of_gt (by exact_mod_cast hrlast : (0 : ℝ) < r 0),
+      ne_of_gt (Real.log_pos (by exact_mod_cast hq1 : (1 : ℝ) < q 0))]
   have h1 : δ ≤ δ ^ ((1 / 2 : ℝ) ^ 1) := by
     simpa using Real.rpow_le_rpow_of_exponent_ge hδ0 hδ (by norm_num : (1 / 2 : ℝ) ^ 1 ≤ 1)
   norm_num only [pow_one] at h1 ⊢

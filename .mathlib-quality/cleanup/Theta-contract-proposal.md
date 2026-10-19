@@ -110,7 +110,10 @@ removals. No unselected row may be inferred from that probe's successful compile
 - Recommended technical hypothesis revisit 9, index_le_Θ technical hr removal: Only technical index_le_Θ.hr and its three direct caller arguments removed; other public contracts/definitions/domains/conclusions and protected choices retained.
   Independent original adapter, actual axioms/metadata/caller, complete LSP, profile and frozen
   full/LeanEval gates pass.
-- Next: dedicated Θ_unique_le.hr checkpoint, then fresh final independent filewide review and owner finalgates. Counts remain unchanged on validated revisits.
+- Recommended technical hypothesis revisit 20, Θ_unique_le technical hr removal: Only selected public Θ_unique_le.hr and two necessary private caller repairs; every other public contract/definition/domain/conclusion and explicit protected choice retained.
+  Independent original adapter, actual axioms/metadata/caller, complete LSP, profile and frozen
+  full/LeanEval gates pass.
+- Next: fresh final independent filewide assessment of both resolved hr recommendations, then owner finalcumulative/allactual/native/all-declaration profile/full+LeanEval gates. Counts remain unchanged on validated revisits.
 
 The evidence and proposal descriptions below were prepared before this decision. Their historic
 unapplied status is superseded only by the exact selected scope above and subsequent checkpoint
