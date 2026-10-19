@@ -2673,3 +2673,13 @@ Frozen Theta SHA256 `0afac9d3af66eb80eab0bc2d8aa9c50dd2f61d693ff0868663b274a5505
 This belongs to original9 batch; original counts remainTheta35/35,
 overall216/264,9/14files. No count inflation from helper/revisit audits.
 Next:dedicated Θ_unique_le.hr checkpoint, then fresh final independent filewide review and owner finalgates. All50 below1000 once, with unrelated750–1000 rows awaiting finalwholefile repeated profiling; no finalwholefile performancepass. MainLemma actualtiming unavailable after fresh60s pretargetcutoff(5/27).
+
+
+## Validated Theta revisit — Θ_unique_le technical hr removal
+
+Removed only unused public Θ_unique_le.hr, admitting zero natural weights with the same logarithmic bound. Two private caller arguments removed; their positivity contracts retained and existing base denominator nonzero evidence made explicit. Original three-line target proof unchanged, no new helper, MainLemma unchanged. [Dedicated audit](cleanup/Theta-Theta_unique_le-technical-hr.md).
+Revisit source/audit commit `367508ced3cb06f20874c08d30361a261b14a1a9`: [GitHub checkpoint](https://github.com/SmwYin/Roth/commit/367508ced3cb06f20874c08d30361a261b14a1a9).
+Frozen Theta SHA256 `ff85b7f132cf83c980323449b38558699e7e39d5a1b8bd895ac3374d78310207`. All owner gates passed as recorded in the audit.
+This belongs to original20 batch; original counts remainTheta35/35,
+overall216/264,9/14files. No count inflation from helper/revisit audits.
+Next:fresh final independent filewide assessment of both resolved hr recommendations, then owner finalcumulative/allactual/native/all-declaration profile/full+LeanEval gates. All50 below750 in this scoped capture, but final filewide assessment/ownergates pending. MainLemma actualtiming remains unavailable after prior60s pretargetcutoff; unchanged MainLemma has no direct Θ_unique_le call and that timeout was not gratuitously repeated.
