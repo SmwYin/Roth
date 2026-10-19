@@ -2729,3 +2729,20 @@ Next file: MainLemma; its unavailable actual caller timing and existing warnings
 explicit next-file work. The single authorized Index rename remains in the global pass queue.
 Successful push and a clean HEAD=origin are required before the owner releases source,
 shared reports and Git to the next file owner.
+
+
+### MainLemma original1 checkpoint — lam
+
+Source/audit commit `1a0c4a2d3b1d32c83ca0dd4867a16c2c890b254b`; this following metadata child records that exact
+checkpoint and is pushed with it before original2 edits. MainLemma1/27originals,overall217/264,
+10/14fully completefiles. Phase0/1/2/3 preparation and full fresh lam24audit/42golf/5search/
+11verification checklist complete. Definition,public docs and contract unchanged. Exact
+independent original formula/typeAST/universes/binder names/order/BinderInfo/value and only
+standard3axioms pass. Actual affectedmodule+Main and fullfile commands exit0; complete unfiltered
+native MainLemma/Main diagnostics succeed(nonpartial,nontimeout,no faileddependencies),0errors,
+3/4preservedwarnings. Anchored lam profile87.948ms (allrawUTF8/prefix/sourcehashes retained).
+Owner all-artifact rehash/exact-anchor/original checks pass; fullbuild31.136s THEN separate
+LeanEval31.436s exit0,17pins immutable. Source708→709lines solely import grouping. Reports:
+`cleanup/MainLemma.md`,`cleanup/MainLemma-lam.md`; owner evidence
+`/private/tmp/roth-mainlemma-owner/lam-owner-checkpoint.json`. All processes drained before
+publication;nextoriginalgam remains unedited. MainLemma finalfile/simplify/fullprofile pending.
