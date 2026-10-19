@@ -683,21 +683,23 @@ theorem lem7_Φ_bound {p : ℕ} (hp : 2 ≤ p) {δ : ℝ} (hδ0 : 0 < δ) (hδ1 
   have hp : (2 : ℝ) ≤ p := by exact_mod_cast hp
   have hc1 : 1 ≤ 1 + 1 / (p : ℝ) := le_add_of_nonneg_right (by positivity)
   have hc2 : 1 + 1 / (p : ℝ) ≤ 3 / 2 := by
-    have : 1 / (p : ℝ) ≤ 1 / 2 := one_div_le_one_div_of_le (by norm_num) hp
-    linarith only [this]
+    calc 1 + 1 / (p : ℝ) ≤ 1 + 1 / 2 :=
+          add_le_add_right (one_div_le_one_div_of_le (by norm_num) hp) 1
+      _ = 3 / 2 := by norm_num
   have hδe : δ ≤ δ ^ e := by
     simpa using Real.rpow_le_rpow_of_exponent_ge hδ0 hδ1 he1
   have hde0 : 0 < δ ^ e := Real.rpow_pos_of_pos hδ0 e
   have hmul : (δ * (1 + 1 / p)) ^ e ≤ δ ^ e * (3 / 2) := by
-    rw [Real.mul_rpow hδ0.le (by positivity)]
+    rw [Real.mul_rpow hδ0.le (zero_le_one.trans hc1)]
     refine mul_le_mul_of_nonneg_left ?_ hde0.le
     calc (1 + 1 / (p : ℝ)) ^ e ≤ (1 + 1 / (p : ℝ)) ^ (1 : ℝ) :=
           Real.rpow_le_rpow_of_exponent_le hc1 he1
       _ ≤ 3 / 2 := by simpa using hc2
-  nlinarith only [mul_le_mul hδe hc2 (zero_le_one.trans hc1) hde0.le,
-    mul_le_mul_of_nonneg_left hmul (by positivity : (0 : ℝ) ≤ 10 ^ (p - 1)),
-    mul_le_mul_of_nonneg_right
-      (le_self_pow₀ (by norm_num : (1 : ℝ) ≤ 10) (by lia : p - 1 ≠ 0)) hde0.le, hde0]
+  linear_combination mul_le_mul hδe hc2 (zero_le_one.trans hc1) hde0.le +
+    mul_le_mul_of_nonneg_left hmul (by positivity : (0 : ℝ) ≤ 10 ^ (p - 1)) +
+    (3 / 2) * mul_le_mul_of_nonneg_right
+      (le_self_pow₀ (by norm_num : (1 : ℝ) ≤ 10) (by lia : p - 1 ≠ 0)) hde0.le +
+    (27 / 2) * hde0
 
 /-- If `Φ ≤ 3 · 10^{p-1} δ^{(1/2)^{p-1}}` with `p ≥ 2` and `0 < δ ≤ 1`, then
 `2(Φ + Φ^{1/2} + δ^{1/2}) < 10^p δ^{(1/2)^p}`.

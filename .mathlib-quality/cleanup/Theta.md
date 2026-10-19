@@ -736,3 +736,15 @@ latest1333.349 failure; all15 supplied historical full captures preserved/indepe
 Frozen owner full build (72.029 s), then separate LeanEval (53.706 s),
 both pass on identical SHA. [Dedicated revisit audit](Theta-sum_max_sub_le_index_det-performance.md).
 Original counts unchanged: Theta 35/35, overall 216/264, 9/14 files. Next: fresh dedicated lem7_Φ_bound performance revisit, then lem7_numeric and the mandatory second theta_prefix_lt_aux repair, followed by independent filewide review/final gates.
+
+
+## Performance revisit of original 33 — lem7_Φ_bound
+
+Replaced nonlinear closure with the explicit weighted scalar certificate and direct reciprocal order transport. Full public contract/docstring and entire private phi caller unchanged; no helper or API change. Ordinary proof22 lines.
+
+Fresh full24-item audit,42 golf rules,every-binder probes,literature/inversion,packing,inequality/verification completed. Five search methods attempted; remote DNS failures retained with local/source fallback. Four anonymous automation failures located; apply? partial suggestions plus bounded10000HB line1 timeout is inconclusive and explicitly qualified. Qualified/suffix absence with present control passes. All29 old public recoveries,5 definition value equalities and full old/current MainLemma proofs retained and freshly executed; target5/current5/private caller15 binder rows pass. All592 cumulative semantic checks preserve the complete553-check prefix and four canonical blocks.30 independent current public/direct-private-caller checks and39 new cumulative checks pass; actual opaque values/types/standard axioms, old public adapter and metadata verified. Complete native Theta/MainLemma0errors8/3warnings. Module and complete unfiltered final LSP pass with
+0 errors and 8 warnings. Accepted actual whole-source scoped profile pair:
+latest1223.083/1190.696 failure pair; supplied historical Phi captures preserved → Phi722.285/659.737; direct theta_phi_lt_aux770.010/621.043; successor719.382/649.173; publicΘlt369.661/323.525 ms; no whole-file performance claim.
+Frozen owner full build (68.328 s), then separate LeanEval (43.778 s),
+both pass on identical SHA. [Dedicated revisit audit](Theta-lem7_Phi_bound-performance.md).
+Original counts unchanged: Theta 35/35, overall 216/264, 9/14 files. Next: fresh dedicated lem7_numeric repair, then mandatory second prefix and second summax repairs, independent filewide review and final gates.
