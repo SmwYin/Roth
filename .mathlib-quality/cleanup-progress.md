@@ -2583,3 +2583,13 @@ Frozen Theta SHA256 `2760ef227eb2d729381057ad02c2a0ac54c3fdc49e99a3a5a22c025b3fb
 This belongs to original28 batch; original counts remainTheta35/35,
 overall216/264,9/14files. No count inflation from helper/revisit audits.
 Next:fresh dedicated index_separated_mul_le_aux performance revisit, then index_numeric, sum_max, lem7_Φ_bound and lem7_numeric plus newly required second theta_prefix_lt_aux repair, followed by independent filewide review/final gates. Five older performance failures remain queued. New theta_prefix_lt_aux1047.277ms failure is preserved and requires a separate fresh repair even though its repeat is lower; no whole-file performance pass. MainLemma finite actual caller timing remains unmeasured before main_lemma.
+
+
+## Validated Theta revisit — index_separated_mul_le_aux
+
+Pinned the real coefficient and rename homomorphisms, retained two typed nonzero certificates, and replaced terminal simplification with direct rewrite/division bounds. Exact private FIRST contract and entire public caller remain unchanged; no new helper or import. Heartbeats6894→2410; proof26→30 lines. [Dedicated audit](cleanup/Theta-index_separated_mul_le_aux-performance.md).
+Revisit source/audit commit `ebb1021e9d72fc5aade7a9657a4a4b3e27c63616`: [GitHub checkpoint](https://github.com/SmwYin/Roth/commit/ebb1021e9d72fc5aade7a9657a4a4b3e27c63616).
+Frozen Theta SHA256 `3631ff20d25efdec5d9a846640a8c5a4f5efcac876a37dfee83e39c638fcfcde`. All owner gates passed as recorded in the audit.
+This belongs to original28 batch; original counts remainTheta35/35,
+overall216/264,9/14files. No count inflation from helper/revisit audits.
+Next:fresh dedicated index_numeric_bound_aux performance revisit, then sum_max, lem7_Φ_bound and lem7_numeric plus the mandatory second theta_prefix_lt_aux repair, followed by independent filewide review/final gates. Four older performance repairs and the historical prefix1047.277ms failure remain mandatory. The rejected intermediate1001.920ms sample is preserved with its own source, and a substantive second repair passed on a new source; no third unchanged-source sample. No whole-file performance pass. MainLemma finite actual caller timing remains unmeasured before main_lemma.
