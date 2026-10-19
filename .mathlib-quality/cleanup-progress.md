@@ -26,15 +26,15 @@ Started: 2026-10-14 (America/Chicago).
 ## Current status
 
 Latest completed file after successful final publication: Separation. Theta originals 35/35
-completed; overall 216/264 original declarations, 9/14 files. Performance revisit of original 35,
-theta_prefix_lt_aux (second performance repair), completed without increasing counts. Only assigned private proof changes; exact eighteen-binder current signature, entire direct private caller and all surrounding source byte-identical.
-Full immutable FIRST18 independent proof/adapter and current18/private caller15 effective metadata pass. All29 old public recoveries,5 definition values and entire old/current MainLemma independent proofs reexecuted unchanged. Module and complete unfiltered LSP (0 errors,
-8 warnings), Accepted actual scoped first capture plus one additional same-source confirmation (first scope below750; repeat not threshold-required) (prefix718.309/758.076; direct theta_phi_lt_aux731.235/754.888 ms), frozen full build
-(79.459 s), then separate LeanEval (49.955 s), all pass.
-[Latest audit](cleanup/Theta-theta_prefix_lt_aux-performance-second.md). Next: mandatory second sum_max_sub_le_index_det performance repair, then fresh independent filewide review and final gates.
+completed; overall 216/264 original declarations, 9/14 files. Performance revisit of original 27,
+sum_max_sub_le_index_det (second performance repair), completed without increasing counts. Only the assigned public proof changes; exact signature, all surrounding source and entire direct index29 caller byte-identical.
+Immutable original27 full-context proof and exact old-contract adapter, current full metadata/opaque values/standard axioms/nonself and direct caller dependency pass. All29 old public recoveries,five definition values and entire old/current MainLemma proofs reexecute unchanged. Module and complete unfiltered LSP (0 errors,
+8 warnings), Accepted actual scoped first capture and required identical-final-source repeat (summax900.517/748.233; entire direct index_le_lem6 659.696/552.163; transitive Θ_option_le184.508/217.591 ms), frozen full build
+(70.803 s), then separate LeanEval (38.034 s), all pass.
+[Latest audit](cleanup/Theta-sum_max_sub_le_index_det-performance-second.md). Next: mandatory mapped_det_ne_zero_aux performance repair, then fresh independent filewide review and final gates.
 [Exact contract decision](cleanup/Theta-contract-proposal.md): selected A/B/C applies;
 hq and D/E/F's extra hB/hr assumptions remain per user choice. Whole-Theta profiling, 0 remaining
-originals and final phases are outstanding; no whole-module performance pass is claimed. Definitions, domains and conclusions remain unchanged. Second summax remains mandatory from1004.335/809.108 and1131.027/1065.136 failure pairs, despite incidental passing rows in this scope. No whole-file performance pass; MainLemma finite actual timing remains unmeasured before main_lemma.
+originals and final phases are outstanding; no whole-module performance pass is claimed. Definitions, domains and conclusions remain unchanged. New mapped_det_ne_zero_aux failure1049.976ms remains mandatory despite829.583ms repeat. MainLemma finite actual timing remains unmeasured before main_lemma; no whole-file/project performance pass.
 
 Build/tool setup completed; GitHub browser authentication and branch publication succeeded.
 The first file, `Roth/HasseDeriv.lean`, has completed all declaration and final review,

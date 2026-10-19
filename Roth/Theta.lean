@@ -392,17 +392,18 @@ theorem sum_max_sub_le_index_det {R : MvPolynomial (Option τ) ℝ} {l : ℕ} (D
   rw [Matrix.det_apply'] at hdet ⊢
   refine le_index_sum hdet fun s _ hs ↦ ?_
   have hprod : ∏ i, Matrix.of E (s i) i ≠ 0 := (mul_ne_zero_iff.mp hs).2
+  have hentry (i : Fin l) : Matrix.of E (s i) i ≠ 0 :=
+    (Finset.prod_ne_zero_iff.1 hprod) i (Finset.mem_univ _)
   have hidx : index (((Equiv.Perm.sign s : ℤ) : MvPolynomial (Option τ) ℝ) *
       ∏ i, Matrix.of E (s i) i) α r = index (∏ i, Matrix.of E (s i) i) α r := by
     simpa only [map_intCast] using
       index_C_mul (Int.cast_ne_zero.2 (Units.ne_zero (Equiv.Perm.sign s)))
         (∏ i, Matrix.of E (s i) i) α r
-  rw [hidx, index_prod _ (fun i _ ↦ (Finset.prod_ne_zero_iff.1 hprod) i (Finset.mem_univ _)) α hr,
+  rw [hidx, index_prod _ (fun i _ ↦ hentry i) α hr,
     ← Fin.sum_univ_eq_sum_range (fun ν : ℕ ↦ max 0 (index R α r - ν / r none)) l]
-  have hlδ : (l : ℝ) * δ = ∑ _i : Fin l, δ := by simp
+  have hlδ : (l : ℝ) * δ = ∑ _i : Fin l, δ := by rw [Fin.sum_const, nsmul_eq_mul]
   rw [hlδ, ← Finset.sum_sub_distrib]
-  exact Finset.sum_le_sum fun i _ ↦
-    hterm (s i) i ((Finset.prod_ne_zero_iff.1 hprod) i (Finset.mem_univ _))
+  exact Finset.sum_le_sum fun i _ ↦ hterm (s i) i (hentry i)
 
 omit [DecidableEq τ] in
 private lemma index_separated_mul_le_aux {r : Option τ → ℕ} (hr0 : ∀ j, 0 < r j) {q : Option τ → ℕ}

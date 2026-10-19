@@ -101,7 +101,10 @@ removals. No unselected row may be inferred from that probe's successful compile
 - Performance revisit 35, theta_prefix_lt_aux (second performance repair): Only assigned private proof changes; exact eighteen-binder current signature, entire direct private caller and all surrounding source byte-identical.
   Independent original adapter, actual axioms/metadata/caller, complete LSP, profile and frozen
   full/LeanEval gates pass.
-- Next: mandatory second sum_max_sub_le_index_det performance repair, then fresh independent filewide review and final gates. Counts remain unchanged on validated revisits.
+- Performance revisit 27, sum_max_sub_le_index_det (second performance repair): Only the assigned public proof changes; exact signature, all surrounding source and entire direct index29 caller byte-identical.
+  Independent original adapter, actual axioms/metadata/caller, complete LSP, profile and frozen
+  full/LeanEval gates pass.
+- Next: mandatory mapped_det_ne_zero_aux performance repair, then fresh independent filewide review and final gates. Counts remain unchanged on validated revisits.
 
 The evidence and proposal descriptions below were prepared before this decision. Their historic
 unapplied status is superseded only by the exact selected scope above and subsequent checkpoint
