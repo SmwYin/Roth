@@ -325,10 +325,10 @@ private lemma mul_sq_div_three_le_sum_max_of_pos_aux {θ r : ℝ} (hr : 0 < r) (
     rw [Finset.sum_sub_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul]
     push_cast
     generalize θ * r = a at hnle hnlt ⊢
-    linarith only [hsum, (Nat.cast_nonneg n : (0 : ℝ) ≤ n), hnle, sq_nonneg a,
-      mul_nonneg (sub_nonneg.mpr hnle) (sub_nonneg.mpr hnlt.le)]
+    linear_combination hsum / 2 + sq_nonneg a / 6 + (le_trans (Nat.cast_nonneg n) hnle) / 2 +
+      mul_nonneg (sub_nonneg.mpr hnle) (sub_nonneg.mpr hnlt.le) / 2
   calc
-    r * θ ^ 2 / 3 = (θ * r) ^ 2 / 3 / r := by field_simp
+    r * θ ^ 2 / 3 = (θ * r) ^ 2 / 3 / r := (eq_div_iff hr.ne').2 (by ring)
     _ ≤ (∑ ν ∈ Finset.range (n + 1), (θ * r - ν)) / r :=
       (div_le_div_iff_of_pos_right hr).2 hbound
     _ ≤ ∑ ν ∈ Finset.range (n + 1), max 0 (θ - ν / r) := by

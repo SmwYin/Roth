@@ -659,3 +659,16 @@ Accepted actual whole-source scoped final pair: public Θ_lt413.535/330.244; pre
 Frozen owner full (61.547 s) then separate LeanEval (31.863 s) pass.
 [Dedicated audit](Theta-Theta_lt.md). Theta 35/35, overall 216/264 originals;9/14 files complete.
 All11 introduced obligations complete: retained scaled_unique,delta_succ,prefix_lt,base,denominators,phi,successor,large_delta; introduced/deleted fin_option,prefix_log,last_lt_first each have their own fresh generic original-contract/deletion-replacement audit. No helper or revisit count inflation. Next: dedicated sequential numeric/index29 performance repairs, fresh independent filewide simplify review, all cumulative semantic/native/import/actual whole-file profile/full+separateLeanEval gates before Theta file-final publication.
+
+
+## Performance revisit of original 26 — mul_sq_div_three_le_sum_max_of_pos_aux
+
+Replaced arithmetic search with an explicit nonnegative polynomial certificate and broad field_simp with eq_div_iff plus ring. The exact six-binder private contract, callers and22-line proof length remain unchanged; no new helper. Deterministic heartbeats2624→2111.
+
+Fresh dedicated full 24-item audit, 42 golf rules, five actual searches, every-binder probes,
+literature/inversion, packing, inequality scan and 11-step checklist pass. Exact independent FIRST source/context, current six-binder names/order/BinderInfo/universes/conclusion and opaque values/std axioms pass; no public signature/definition/domain change. Actual positive→quadratic-wrapper→public-min complete types, opaque values, standard axioms and positive dependencies pass; the entire366-check semantic scaffold preserves all359 prior gates and all four complete original/current proof blocks. Complete native responses for Theta and MainLemma pass with0errors/8+3warnings. Module and complete unfiltered final LSP pass with
+0 errors and 8 warnings. Accepted uncontended exact-prefix aggregate:
+historical1074.965/908.077 failed pair; published903.926/781.005 baseline → positive585.259/569.809; wrapper400.861/381.226; publicmin176.910/182.737 ms; no whole-file performance claim.
+Frozen owner full build (77.937 s), then separate LeanEval (35.334 s),
+both pass on identical SHA. [Dedicated revisit audit](Theta-mul_sq_div_three_le_sum_max_of_pos_aux-performance.md).
+Original counts unchanged: Theta 35/35, overall 216/264, 9/14 files. Next: fresh dedicated sum_max_sub_le_index_det performance revisit, then remaining six older repairs and independent filewide review/final gates.
