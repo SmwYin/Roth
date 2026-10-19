@@ -385,15 +385,18 @@ theorem sum_max_sub_le_index_det {R : MvPolynomial (Option τ) ℝ} {l : ℕ} (D
     have h1 := index_hasseDeriv_ge hE α r
     rw [weight_add, weight_mapDomain (Option.some_injective _), weight_single] at h1
     have h2 := hδ (D μ) ((hD μ).trans (Nat.le_sub_one_of_lt μ.isLt))
+    rw [← sub_sub, sub_right_comm] at h1
     rw [sub_le_iff_le_add]
     exact max_le (add_nonneg (index_nonneg _ _ _) ((weight_nonneg _ _).trans h2))
-      (by linarith only [h1, h2])
+      ((sub_le_iff_le_add).1 ((sub_le_sub_left h2 _).trans h1))
   rw [Matrix.det_apply'] at hdet ⊢
   refine le_index_sum hdet fun s _ hs ↦ ?_
   have hprod : ∏ i, Matrix.of E (s i) i ≠ 0 := (mul_ne_zero_iff.mp hs).2
   have hidx : index (((Equiv.Perm.sign s : ℤ) : MvPolynomial (Option τ) ℝ) *
       ∏ i, Matrix.of E (s i) i) α r = index (∏ i, Matrix.of E (s i) i) α r := by
-    rcases Int.units_eq_one_or (Equiv.Perm.sign s) with h | h <;> simp [h, index_neg]
+    simpa only [map_intCast] using
+      index_C_mul (Int.cast_ne_zero.2 (Units.ne_zero (Equiv.Perm.sign s)))
+        (∏ i, Matrix.of E (s i) i) α r
   rw [hidx, index_prod _ (fun i _ ↦ (Finset.prod_ne_zero_iff.1 hprod) i (Finset.mem_univ _)) α hr,
     ← Fin.sum_univ_eq_sum_range (fun ν : ℕ ↦ max 0 (index R α r - ν / r none)) l]
   have hlδ : (l : ℝ) * δ = ∑ _i : Fin l, δ := by simp

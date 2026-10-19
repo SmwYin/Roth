@@ -26,15 +26,15 @@ Started: 2026-10-14 (America/Chicago).
 ## Current status
 
 Latest completed file after successful final publication: Separation. Theta originals 35/35
-completed; overall 216/264 original declarations, 9/14 files. Performance revisit of original 29,
-index_numeric_bound_aux, completed without increasing counts. Only the assigned private proof changes; exact signature, original comment and all surrounding source/caller bytes remain unchanged.
-Exact independent FIRST/context proof and explicit independent plus actual original-telescope adapters preserve all original hypotheses; current11-binder arbitrary-negative-δ contract and entire direct public index29 type/value/metadata/standard axioms pass. No public signature, definition or domain change. Module and complete unfiltered LSP (0 errors,
-8 warnings), Accepted actual whole-source scoped profile (numeric592.602; direct index29 480.114 (both below750; no repeat required) ms), frozen full build
-(87.943 s), then separate LeanEval (35.135 s), all pass.
-[Latest audit](cleanup/Theta-index_numeric_bound_aux-performance.md). Next: fresh dedicated sum_max_sub_le_index_det performance revisit, then lem7_Φ_bound and lem7_numeric plus the mandatory second theta_prefix_lt_aux repair, followed by independent filewide review/final gates.
+completed; overall 216/264 original declarations, 9/14 files. Performance revisit of original 27,
+sum_max_sub_le_index_det, completed without increasing counts. Only the assigned public proof changes; exact signature, docstring and all surrounding source/caller bytes remain unchanged.
+Exact full original27 proof/adapter and entire unchanged current index29 proof, retained metadata/actual opaque values/standard axioms pass. No public signature, definition or domain change. Module and complete unfiltered LSP (0 errors,
+8 warnings), Accepted actual whole-source scoped profile pair (summax948.179/914.928; index29 549.970/553.202; Θ_option_le223.868/168.679 ms), frozen full build
+(72.029 s), then separate LeanEval (53.706 s), all pass.
+[Latest audit](cleanup/Theta-sum_max_sub_le_index_det-performance.md). Next: fresh dedicated lem7_Φ_bound performance revisit, then lem7_numeric and the mandatory second theta_prefix_lt_aux repair, followed by independent filewide review/final gates.
 [Exact contract decision](cleanup/Theta-contract-proposal.md): selected A/B/C applies;
 hq and D/E/F's extra hB/hr assumptions remain per user choice. Whole-Theta profiling, 0 remaining
-originals and final phases are outstanding; no whole-module performance pass is claimed. Definitions, domains and conclusions remain unchanged. Three older repairs and the historical prefix1047.277ms failure remain mandatory; no whole-file performance pass. MainLemma finite actual caller timing remains unmeasured before main_lemma.
+originals and final phases are outstanding; no whole-module performance pass is claimed. Definitions, domains and conclusions remain unchanged. Two older Lemma7 repairs and historical prefix1047.277ms failure remain mandatory; no whole-file performance pass. MainLemma finite actual caller timing remains unmeasured before main_lemma.
 
 Build/tool setup completed; GitHub browser authentication and branch publication succeeded.
 The first file, `Roth/HasseDeriv.lean`, has completed all declaration and final review,

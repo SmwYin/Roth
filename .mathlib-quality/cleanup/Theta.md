@@ -724,3 +724,15 @@ latest1097.018 and1286.394 whole-source failures; four earlier failures preserve
 Frozen owner full build (87.943 s), then separate LeanEval (35.135 s),
 both pass on identical SHA. [Dedicated revisit audit](Theta-index_numeric_bound_aux-performance.md).
 Original counts unchanged: Theta 35/35, overall 216/264, 9/14 files. Next: fresh dedicated sum_max_sub_le_index_det performance revisit, then lem7_Φ_bound and lem7_numeric plus the mandatory second theta_prefix_lt_aux repair, followed by independent filewide review/final gates.
+
+
+## Performance revisit of original 27 — sum_max_sub_le_index_det
+
+Replaced duplicated sign-case simplification with existing nonzero-scalar index invariance and local arithmetic search with direct subtraction order transport. Exact public contract, complete index29 caller and all surrounding source remain unchanged; no new helper/API/import. Heartbeats4759→3263; ordinary proof27 lines.
+
+Fresh full24-item audit,42 golf rules, every-binder probes, literature/inversion, packing, inequality and verification checklists completed. Five search methods were actually attempted; three remote services returned preserved DNS failures, with local/source fallbacks and no global absence claim. Corrected qualified-name absence plus present preceding control passes; bounded apply? output is qualified honestly. Exact full original27 proof/adapter and entire unchanged current index29 proof, retained metadata/actual opaque values/standard axioms pass. No public signature, definition or domain change. The entire553-check semantic scaffold preserves all513 preceding checks and four full canonical proof blocks.40 fresh independent original/current target and entire index29 proof/type/binder/universe/opaque/stdaxiom/nonself/caller-dependency checks pass. Complete native Theta/MainLemma responses pass with0errors/8+3warnings. Module and complete unfiltered final LSP pass with
+0 errors and 8 warnings. Accepted actual whole-source scoped profile pair:
+latest1333.349 failure; all15 supplied historical full captures preserved/independently checked → summax948.179/914.928; index29 549.970/553.202; Θ_option_le223.868/168.679 ms; no whole-file performance claim.
+Frozen owner full build (72.029 s), then separate LeanEval (53.706 s),
+both pass on identical SHA. [Dedicated revisit audit](Theta-sum_max_sub_le_index_det-performance.md).
+Original counts unchanged: Theta 35/35, overall 216/264, 9/14 files. Next: fresh dedicated lem7_Φ_bound performance revisit, then lem7_numeric and the mandatory second theta_prefix_lt_aux repair, followed by independent filewide review/final gates.
