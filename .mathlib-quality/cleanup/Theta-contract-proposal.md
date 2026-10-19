@@ -77,7 +77,10 @@ removals. No unselected row may be inferred from that probe's successful compile
 - Performance revisit 26, mul_sq_div_three_le_sum_max_of_pos_aux: Only the assigned private proof changes; exact FIRST six-binder contract and all source outside it remain byte-identical.
   Independent original adapter, actual axioms/metadata/caller, complete LSP, profile and frozen
   full/LeanEval gates pass.
-- Next: fresh dedicated sum_max_sub_le_index_det performance revisit, then remaining six older repairs and independent filewide review/final gates. Counts remain unchanged on validated revisits.
+- Performance revisit 29, index_le_lem6: Only the assigned public proof changes; exact signature and all surrounding source remain byte-identical.
+  Independent original adapter, actual axioms/metadata/caller, complete LSP, profile and frozen
+  full/LeanEval gates pass.
+- Next: fresh dedicated index_det_le performance revisit, then index_separated, index_numeric, sum_max, lem7_Φ_bound and lem7_numeric repairs, followed by independent filewide review/final gates. Counts remain unchanged on validated revisits.
 
 The evidence and proposal descriptions below were prepared before this decision. Their historic
 unapplied status is superseded only by the exact selected scope above and subsequent checkpoint

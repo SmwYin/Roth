@@ -551,12 +551,11 @@ theorem index_le_lem6 {δ : ℝ} (hδ0 : 0 ≤ δ) (hδ1 : δ ≤ 1) {r : Option
         2 * (lem6Φ q r (lem6M (Fintype.card τ + 1) r₁ B l) l +
           √(lem6Φ q r (lem6M (Fintype.card τ + 1) r₁ B l) l) + √δ) := by
   classical
+  have hrp0 : (0 : ℝ) < r none := (by norm_num : (0 : ℝ) < 3).trans_le hrp
   have hr0 : ∀ j, 0 < r j := fun j ↦ by
     cases j with
-    | none => exact_mod_cast (by linarith only [hrp] : (0 : ℝ) < r none)
-    | some j =>
-      exact_mod_cast pos_of_mul_pos_right
-        ((by linarith only [hrp] : (0 : ℝ) < r none).trans_le (hratio j)) hδ0
+    | none => exact_mod_cast hrp0
+    | some j => exact_mod_cast pos_of_mul_pos_right (hrp0.trans_le (hratio j)) hδ0
   have hB : 1 ≤ B := by
     obtain ⟨d, hd⟩ := MvPolynomial.ne_zero_iff.1 hR.1
     exact (by exact_mod_cast Int.one_le_abs hd : (1 : ℝ) ≤ |(R.coeff d : ℝ)|).trans (hR.2.2 d)
@@ -568,7 +567,7 @@ theorem index_le_lem6 {δ : ℝ} (hδ0 : 0 ≤ δ) (hδ1 : δ ≤ 1) {r : Option
   have hM1 := one_le_lem6M (Fintype.card τ + 1) r₁ hB l
   -- The two bounds for the index of `F`.
   have hlower := sum_max_sub_le_index_det D hD (mapped_det_ne_zero_aux hU hV hF) α hr0
-    (fun d hd ↦ weight_le_delta_aux hδ0 hratio (by lia))
+    (fun d hd ↦ weight_le_delta_aux hδ0 hratio (hd.trans (Nat.sub_le_iff_le_add.2 hl')))
   have hupper := index_det_le hr0 hr₁ hR hh hl hU hV hUd hVd hF
   simp only [RingHom.map_det, RingHom.mapMatrix_apply, Matrix.map, Matrix.of_apply] at hupper
   simp only [hasseDeriv_map] at hlower
@@ -578,7 +577,7 @@ theorem index_le_lem6 {δ : ℝ} (hδ0 : 0 ≤ δ) (hδ1 : δ ≤ 1) {r : Option
     (by exact_mod_cast (show 0 < l from hl))
     (by exact_mod_cast hl')
   exact (min_le_sum_max (θ := index (map (Int.castRingHom ℝ) R) α r) (rp := r none) l).trans
-    (by simpa [mul_add] using sub_le_iff_le_add.1 (hlower.trans hupper))
+    (by simpa only [mul_add] using sub_le_iff_le_add.1 (hlower.trans hupper))
 
 omit [DecidableEq τ] in
 /-- **Lemma 6**: `Θ_p(B; q; r)` is at most twice the maximum of `Φ + Φ^{1/2} + δ^{1/2}` over

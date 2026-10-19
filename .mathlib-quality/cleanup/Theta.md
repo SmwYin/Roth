@@ -672,3 +672,16 @@ historical1074.965/908.077 failed pair; published903.926/781.005 baseline → po
 Frozen owner full build (77.937 s), then separate LeanEval (35.334 s),
 both pass on identical SHA. [Dedicated revisit audit](Theta-mul_sq_div_three_le_sum_max_of_pos_aux-performance.md).
 Original counts unchanged: Theta 35/35, overall 216/264, 9/14 files. Next: fresh dedicated sum_max_sub_le_index_det performance revisit, then remaining six older repairs and independent filewide review/final gates.
+
+
+## Performance revisit of original 29 — index_le_lem6
+
+Replaced weight-cutoff arithmetic search with an exact Nat subtraction certificate, shared positive initial degree, and restricted terminal mul_add simplification. Exact public statement, explicit hq, shared existential witness and surrounding source remain unchanged; no new helper. Heartbeats4825→1946; proof27→26 noncomment lines.
+
+Fresh dedicated full 24-item audit, 42 golf rules, five actual searches, every-binder probes,
+literature/inversion, packing, inequality scan and 11-step checklist pass. All original public adapters, exact retained names/order/BinderInfo/universes/conclusion and actual opaque values/standard axioms pass. No public signature, definition or domain changes. The entire373-check semantic scaffold preserves the complete preceding366 prefix and all four independent original/current proof blocks. Fresh preceding target and entire Θ_option_le proof/type/opaque value/standard axioms/dependency pass. Complete native Theta/MainLemma responses pass with0errors/8+3warnings. Module and complete unfiltered final LSP pass with
+0 errors and 8 warnings. Accepted actual whole-source scoped profile:
+published1235.462/1644.559 failed pair → index_le_lem6 498.642; Θ_option_le160.903 (both below750; repeat not required) ms; no whole-file performance claim.
+Frozen owner full build (68.103 s), then separate LeanEval (33.964 s),
+both pass on identical SHA. [Dedicated revisit audit](Theta-index_le_lem6-performance.md).
+Original counts unchanged: Theta 35/35, overall 216/264, 9/14 files. Next: fresh dedicated index_det_le performance revisit, then index_separated, index_numeric, sum_max, lem7_Φ_bound and lem7_numeric repairs, followed by independent filewide review/final gates.
