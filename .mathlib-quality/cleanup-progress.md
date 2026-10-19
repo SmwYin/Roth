@@ -2603,3 +2603,13 @@ Frozen Theta SHA256 `f458cf85b2746b8d155074c3aaaccd8e8c0708bd2d7fa78787184d76ae0
 This belongs to original29 batch; original counts remainTheta35/35,
 overall216/264,9/14files. No count inflation from helper/revisit audits.
 Next:fresh dedicated sum_max_sub_le_index_det performance revisit, then lem7_Φ_bound and lem7_numeric plus the mandatory second theta_prefix_lt_aux repair, followed by independent filewide review/final gates. Three older repairs and the historical prefix1047.277ms failure remain mandatory; no whole-file performance pass. MainLemma finite actual caller timing remains unmeasured before main_lemma.
+
+
+## Validated Theta revisit — sum_max_sub_le_index_det
+
+Replaced duplicated sign-case simplification with existing nonzero-scalar index invariance and local arithmetic search with direct subtraction order transport. Exact public contract, complete index29 caller and all surrounding source remain unchanged; no new helper/API/import. Heartbeats4759→3263; ordinary proof27 lines. [Dedicated audit](cleanup/Theta-sum_max_sub_le_index_det-performance.md).
+Revisit source/audit commit `25fd68dadaaaf1d803c1e9787bf5d73d282ae760`: [GitHub checkpoint](https://github.com/SmwYin/Roth/commit/25fd68dadaaaf1d803c1e9787bf5d73d282ae760).
+Frozen Theta SHA256 `c0e8edc37192227f56814c674480b56143e2923e588a750dca5d7f3ecf03c2a8`. All owner gates passed as recorded in the audit.
+This belongs to original27 batch; original counts remainTheta35/35,
+overall216/264,9/14files. No count inflation from helper/revisit audits.
+Next:fresh dedicated lem7_Φ_bound performance revisit, then lem7_numeric and the mandatory second theta_prefix_lt_aux repair, followed by independent filewide review/final gates. Two older Lemma7 repairs and historical prefix1047.277ms failure remain mandatory; no whole-file performance pass. MainLemma finite actual caller timing remains unmeasured before main_lemma.
