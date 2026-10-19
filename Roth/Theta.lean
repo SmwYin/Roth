@@ -731,217 +731,250 @@ theorem lem7_numeric {p : ℕ} (hp : 2 ≤ p) {δ : ℝ} (hδ0 : 0 < δ) (hδ1 :
     hsqrt.trans
     (le_mul_of_one_le_left ha0.le (by linarith only [hT10] : 1 ≤ T))]
 
-/-- **Lemma 7**: under the growth conditions (19)–(22) on `r` and `q`,
-`Θ_m(q_1^{δ r_1}; q; r) < 10^m δ^{(1/2)^m}`.
+private lemma theta_scaled_unique_le_aux {δ M : ℝ} {q₁ q₂ r₁ r₂ l : ℕ} (hq₁ : 1 < q₁) (hr₁ : 0 < r₁)
+    (hl : 0 < l) (hqr : (r₁ : ℝ) * Real.log q₁ ≤ r₂ * Real.log q₂) (hM1 : 1 ≤ M)
+    (hM : M ≤ (q₁ : ℝ) ^ (δ * (l * r₁))) : Θ M (fun _ : Unit ↦ q₂) (fun _ ↦ l * r₂) ≤ δ := by
+  have hδ0 : 0 ≤ δ := by
+    have h : (0 : ℝ) ≤ δ * (l * r₁) :=
+      (Real.rpow_le_rpow_left_iff (x := (q₁ : ℝ)) (by exact_mod_cast hq₁)).1
+        (by simpa using hM1.trans hM)
+    exact nonneg_of_mul_nonneg_left h
+      (mul_pos (by exact_mod_cast hl : (0 : ℝ) < l)
+        (by exact_mod_cast hr₁ : (0 : ℝ) < r₁))
+  have hL : (0 : ℝ) < r₂ * Real.log q₂ :=
+    (mul_pos (by exact_mod_cast hr₁) (Real.log_pos (by exact_mod_cast hq₁))).trans_le hqr
+  have hL₂ : 0 < Real.log (q₂ : ℝ) := pos_of_mul_pos_right hL (Nat.cast_nonneg r₂)
+  have hr₂ : 0 < r₂ := by exact_mod_cast pos_of_mul_pos_left hL hL₂.le
+  have hq₂ : 1 < q₂ := by
+    exact_mod_cast (Real.log_pos_iff (Nat.cast_nonneg q₂)).1 hL₂
+  refine (Θ_mono hM1 hM _ fun _ ↦ Nat.mul_pos hl hr₂).trans
+    ((Θ_unique_le (q := fun _ : Unit ↦ q₂) (r := fun _ ↦ l * r₂) (hM1.trans hM) hq₂
+      (Nat.mul_pos hl hr₂)).trans ?_)
+  rw [Real.log_rpow (by positivity), div_le_iff₀ (by
+    push_cast
+    exact mul_pos (mul_pos (by exact_mod_cast hl) (by exact_mod_cast hr₂)) hL₂)]
+  push_cast
+  nlinarith only [mul_le_mul_of_nonneg_left hqr (mul_nonneg hδ0 (Nat.cast_nonneg l))]
+
+private lemma theta_delta_succ_lt_aux (n : ℕ) {δ : ℝ} (hδ : δ ≤ 1 / ((n : ℝ) + 1 + 1)) :
+    δ * (1 + 1 / ((n : ℝ) + 1 + 1)) < 1 / ((n : ℝ) + 1) := by
+  have hN : 0 < (n : ℝ) + 1 := by positivity
+  have hN2 : 0 < (n : ℝ) + 1 + 1 := by positivity
+  refine (mul_le_mul_of_nonneg_right hδ (by positivity)).trans_lt ?_
+  apply (lt_div_iff₀ hN).2
+  nlinarith only [one_div_mul_cancel (ne_of_gt hN2),
+    sq_pos_of_pos (one_div_pos.mpr hN2)]
+
+private lemma theta_prefix_lt_aux {n : ℕ} {δ ε M : ℝ} (hδ0 : 0 < δ) (hδε : δ ≤ ε)
+    {r q : Fin (n + 2) → ℕ} (hanti : ∀ j, r (Fin.last (n + 1)) ≤ r j)
+    (hrlast : 3 ≤ (r (Fin.last (n + 1)) : ℝ))
+    (hratio : ∀ i : Fin (n + 1), (r i.succ : ℝ) ≤ δ * r i.castSucc)
+    (hq1 : ((n : ℝ) + 1 + 1) * (2 * ((n : ℝ) + 1 + 1) + 1) / δ ≤ Real.log (q 0))
+    (hqr : ∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j)) {l : ℕ} (hl : 1 ≤ l)
+    (hM1 : 1 ≤ M) (hM : M ≤ (q 0 : ℝ) ^ (ε * (l * r 0)))
+    (ih : ∀ {r q : Fin (n + 1) → ℕ}, 3 ≤ (r (Fin.last n) : ℝ) →
+      (∀ i : Fin n, (r i.succ : ℝ) ≤ ε * r i.castSucc) →
+      ((n : ℝ) + 1) * (2 * ((n : ℝ) + 1) + 1) / ε ≤ Real.log (q 0) →
+      (∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j)) →
+      Θ ((q 0 : ℝ) ^ (ε * r 0)) q r < 10 ^ (n + 1) * ε ^ ((1 / 2 : ℝ) ^ (n + 1))) :
+    Θ M (fun j : Fin (n + 1) ↦ q j.castSucc) (fun j ↦ l * r j.castSucc) <
+      10 ^ (n + 1) * ε ^ ((1 / 2 : ℝ) ^ (n + 1)) := by
+  have hr0 : ∀ j, 0 < r j := fun j ↦ by
+    exact_mod_cast (lt_of_lt_of_le (by norm_num : (0 : ℝ) < 3)
+      (hrlast.trans (by exact_mod_cast hanti j) : (3 : ℝ) ≤ r j))
+  refine (Θ_mono hM1 hM _ fun j ↦ Nat.mul_pos hl (hr0 _)).trans_lt ?_
+  have hCeq : (q 0 : ℝ) ^ (ε * (l * r 0)) =
+      (q (Fin.castSucc 0) : ℝ) ^ (ε * ((l * r (Fin.castSucc 0) : ℕ) : ℝ)) := by
+    simp [Nat.cast_mul]
+  rw [hCeq]
+  refine ih (r := fun j ↦ l * r j.castSucc) (q := fun j ↦ q j.castSucc) ?_ ?_
+    ((div_le_div₀ (by positivity) (by
+      linarith only [Nat.cast_nonneg (α := ℝ) n]) hδ0 hδε).trans hq1) ?_
+  · have h2 : (r (Fin.last (n + 1)) : ℝ) ≤ r (Fin.castSucc (Fin.last n)) := by
+      exact_mod_cast hanti _
+    push_cast
+    exact hrlast.trans (h2.trans
+      (le_mul_of_one_le_left (Nat.cast_nonneg _) (by exact_mod_cast hl)))
+  · intro i
+    push_cast
+    calc
+      (l : ℝ) * r (Fin.castSucc i.succ) ≤ l * (δ * r (Fin.castSucc (Fin.castSucc i))) :=
+        mul_le_mul_of_nonneg_left (hratio (Fin.castSucc i)) (Nat.cast_nonneg l)
+      _ = δ * (l * r (Fin.castSucc (Fin.castSucc i))) := by ring
+      _ ≤ ε * (l * r (Fin.castSucc (Fin.castSucc i))) :=
+        mul_le_mul_of_nonneg_right hδε (by positivity)
+  · intro j
+    push_cast
+    simpa only [mul_assoc, Fin.castSucc_zero] using
+      mul_le_mul_of_nonneg_left (hqr j.castSucc) (Nat.cast_nonneg l)
+
+private lemma theta_lt_base_aux {δ : ℝ} (hδ0 : 0 < δ) (hδ : δ ≤ 1) {r q : Fin 1 → ℕ}
+    (hrlast : 0 < r 0) (hq1 : 1 < q 0) :
+    Θ ((q 0 : ℝ) ^ (δ * r 0)) q r < 10 ^ 1 * δ ^ ((1 / 2 : ℝ) ^ 1) := by
+  have h : Θ ((q 0 : ℝ) ^ (δ * r 0)) q r ≤ δ := by
+    refine (Θ_unique_le (q := q) (r := r)
+      (Real.one_le_rpow (by exact_mod_cast hq1.le) (by positivity)) hq1 hrlast).trans_eq ?_
+    rw [Subsingleton.elim (default : Fin 1) 0, Real.log_rpow (by positivity)]
+    field_simp [ne_of_gt (Real.log_pos (by exact_mod_cast hq1 : (1 : ℝ) < q 0))]
+  have h1 : δ ≤ δ ^ ((1 / 2 : ℝ) ^ 1) := by
+    simpa using Real.rpow_le_rpow_of_exponent_ge hδ0 hδ (by norm_num : (1 / 2 : ℝ) ^ 1 ≤ 1)
+  norm_num only [pow_one] at h1 ⊢
+  exact h.trans_lt (h1.trans_lt
+    (lt_mul_of_one_lt_left (Real.rpow_pos_of_pos hδ0 _) (by norm_num : (1 : ℝ) < 10)))
+
+private lemma theta_denominators_one_lt_aux {n : ℕ} {r q : Fin (n + 1) → ℕ} (hrlast : 0 < r 0)
+    (hq1 : 0 < Real.log (q 0)) (hqr : ∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j))
+    (j : Fin (n + 1)) : 1 < q j := by
+  exact_mod_cast (Real.log_pos_iff (Nat.cast_nonneg (q j))).1
+    (pos_of_mul_pos_right
+      ((mul_pos (by exact_mod_cast hrlast) hq1).trans_le (hqr j)) (Nat.cast_nonneg _))
+
+private lemma theta_phi_lt_aux {n : ℕ} {δ : ℝ} (hδ0 : 0 < δ) (hδ : δ ≤ 1 / ((n : ℝ) + 1 + 1))
+    (hδ1 : δ < 1) {r q : Fin (n + 2) → ℕ} (hanti : Antitone r)
+    (hrlast : 3 ≤ (r (Fin.last (n + 1)) : ℝ))
+    (hratio : ∀ i : Fin (n + 1), (r i.succ : ℝ) ≤ δ * r i.castSucc)
+    (hq1 : ((n : ℝ) + 1 + 1) * (2 * ((n : ℝ) + 1 + 1) + 1) / δ ≤ Real.log (q 0))
+    (hqr : ∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j))
+    (ih : ∀ {δ : ℝ}, 0 < δ → δ ≤ 1 / ((n : ℝ) + 1) →
+      ∀ {r q : Fin (n + 1) → ℕ}, 3 ≤ (r (Fin.last n) : ℝ) →
+      (∀ i : Fin n, (r i.succ : ℝ) ≤ δ * r i.castSucc) →
+      ((n : ℝ) + 1) * (2 * ((n : ℝ) + 1) + 1) / δ ≤ Real.log (q 0) →
+      (∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j)) →
+      Θ ((q 0 : ℝ) ^ (δ * r 0)) q r < 10 ^ (n + 1) * δ ^ ((1 / 2 : ℝ) ^ (n + 1))) {l : ℕ}
+    (hl : l ∈ Finset.Icc 1 (r (Fin.last (n + 1)) + 1)) :
+    let M := lem6M (n + 2) (r 0) ((q 0 : ℝ) ^ (δ * r 0)) l
+    let Φ := Θ M (fun _ : Unit ↦ q (Fin.last (n + 1))) (fun _ ↦ l * r (Fin.last (n + 1))) +
+      Θ M (fun j : Fin (n + 1) ↦ q j.castSucc) (fun j ↦ l * r j.castSucc)
+    Φ + √Φ + √δ < (10 ^ (n + 2) * δ ^ ((1 / 2 : ℝ) ^ (n + 2))) / 2 := by
+  dsimp only
+  obtain ⟨hl1, hl2⟩ := Finset.mem_Icc.1 hl
+  have hr0 : ∀ j, 0 < r j := fun j ↦ by
+    have h : (3 : ℝ) ≤ r j := hrlast.trans (by exact_mod_cast hanti (Fin.le_last j))
+    exact_mod_cast (lt_of_lt_of_le (by norm_num : (0 : ℝ) < 3) h)
+  have hq := theta_denominators_one_lt_aux (hr0 0) (lt_of_lt_of_le (by positivity) hq1) hqr 0
+  let ε : ℝ := δ * (1 + 1 / ((n : ℝ) + 1 + 1))
+  have hε0 : 0 < ε := mul_pos hδ0 (add_pos zero_lt_one (hδ0.trans_le hδ))
+  let M := lem6M (n + 2) (r 0) ((q 0 : ℝ) ^ (δ * r 0)) l
+  have hM1 : 1 ≤ M := one_le_lem6M _ _
+    (Real.one_le_rpow (by exact_mod_cast hq.le) (mul_nonneg hδ0.le (Nat.cast_nonneg _))) l
+  have hp : 2 ≤ n + 1 + 1 := Nat.succ_le_succ (Nat.succ_le_succ (Nat.zero_le n))
+  have hM : M < (q 0 : ℝ) ^ (ε * (l * r 0)) := by
+    simpa only [ε, Nat.cast_add, Nat.cast_one] using
+      lem6M_lt (p := n + 1 + 1) (Nat.zero_lt_succ _) hδ0
+      (by simpa only [Nat.cast_add, Nat.cast_one] using hq1) hl1
+      (hl2.trans (Nat.succ_le_of_lt ((hanti (Fin.le_last _)).trans_lt (by
+        exact_mod_cast (hratio 0).trans_lt
+          (mul_lt_of_lt_one_left (by exact_mod_cast hr0 0) hδ1)))))
+  have hb := lem7_Φ_bound (p := n + 1 + 1) hp hδ0 hδ1.le
+  simp only [Nat.add_sub_cancel, Nat.cast_add, Nat.cast_one] at hb
+  apply (lt_div_iff₀' (by norm_num : (0 : ℝ) < 2)).2
+  apply lem7_numeric hp hδ0 hδ1.le
+  -- combine
+  exact (lt_of_lt_of_le (add_lt_add_of_le_of_lt
+    -- the one-variable term
+    (theta_scaled_unique_le_aux hq (hr0 0) hl1
+      (hqr (Fin.last (n + 1))) hM1 hM.le)
+    -- the `(p - 1)`-variable term, by the induction hypothesis
+    (theta_prefix_lt_aux hδ0
+      (le_mul_of_one_le_right hδ0.le (le_add_of_nonneg_right (hδ0.trans_le hδ).le))
+      (fun j ↦ hanti (Fin.le_last j)) hrlast hratio hq1 hqr hl1 hM1 hM.le
+      (ih hε0 (theta_delta_succ_lt_aux n hδ).le))) hb.le).le
+
+private lemma theta_lt_succ_aux {n : ℕ} {δ : ℝ} (hδ0 : 0 < δ) (hδ : δ ≤ 1 / ((n : ℝ) + 1 + 1))
+    {r q : Fin (n + 2) → ℕ} (hrlast : 3 ≤ (r (Fin.last (n + 1)) : ℝ))
+    (hratio : ∀ i : Fin (n + 1), (r i.succ : ℝ) ≤ δ * r i.castSucc)
+    (hq1 : ((n : ℝ) + 1 + 1) * (2 * ((n : ℝ) + 1 + 1) + 1) / δ ≤ Real.log (q 0))
+    (hqr : ∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j))
+    (ih : ∀ {δ : ℝ}, 0 < δ → δ ≤ 1 / ((n : ℝ) + 1) →
+      ∀ {r q : Fin (n + 1) → ℕ}, 3 ≤ (r (Fin.last n) : ℝ) →
+      (∀ i : Fin n, (r i.succ : ℝ) ≤ δ * r i.castSucc) →
+      ((n : ℝ) + 1) * (2 * ((n : ℝ) + 1) + 1) / δ ≤ Real.log (q 0) →
+      (∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j)) →
+      Θ ((q 0 : ℝ) ^ (δ * r 0)) q r < 10 ^ (n + 1) * δ ^ ((1 / 2 : ℝ) ^ (n + 1))) :
+    Θ ((q 0 : ℝ) ^ (δ * r 0)) q r < 10 ^ (n + 2) * δ ^ ((1 / 2 : ℝ) ^ (n + 2)) := by
+  have hδ1 : δ < 1 := hδ.trans_lt ((div_lt_one (by positivity)).2
+    (by linarith only [Nat.cast_nonneg (α := ℝ) n]))
+  have hanti : Antitone r := Fin.antitone_iff_succ_le.2 fun i ↦ by
+    exact_mod_cast (hratio i).trans (mul_le_of_le_one_left (Nat.cast_nonneg _) hδ1.le)
+  have hq := theta_denominators_one_lt_aux
+    (by exact_mod_cast (lt_of_lt_of_le (by norm_num : (0 : ℝ) < 3)
+      (hrlast.trans (by exact_mod_cast hanti (Fin.zero_le _)) : (3 : ℝ) ≤ r 0)))
+    (lt_of_lt_of_le (by positivity) hq1) hqr
+  have hratio' : ∀ j : Fin (n + 1),
+      (r (Fin.last (n + 1)) : ℝ) ≤ δ * r j.castSucc := fun j ↦ by
+    have h := hratio (Fin.last n)
+    rw [Fin.succ_last] at h
+    exact h.trans (mul_le_mul_of_nonneg_left
+      (by exact_mod_cast hanti (Fin.castSucc_le_castSucc_iff.2 (Fin.le_last j))) hδ0.le)
+  -- transport to `Option (Fin (n + 1))`
+  let e : Fin (n + 2) ≃ Option (Fin (n + 1)) := finSuccEquivLast
+  rw [← Θ_equiv e.symm ((q 0 : ℝ) ^ (δ * r 0)) q r]
+  refine (Θ_option_le (τ := Fin (n + 1)) hδ0.le hδ1.le (r := r ∘ e.symm)
+    (by simpa only [Function.comp_apply, e, finSuccEquivLast_symm_none] using hrlast)
+    (fun j ↦ by simpa only [Function.comp_apply, e, finSuccEquivLast_symm_none,
+      finSuccEquivLast_symm_some] using hratio' j)
+    (r₁ := r 0) (fun j ↦ hanti (Fin.zero_le _)) (q := q ∘ e.symm)
+    (fun j ↦ Nat.zero_lt_of_lt (hq _))
+    (Real.one_le_rpow (by exact_mod_cast (hq 0).le) (by positivity))).trans_lt ?_
+  simp only [lem6Φ, e, Function.comp_def, finSuccEquivLast_symm_none,
+    finSuccEquivLast_symm_some, Fintype.card_fin]
+  rw [← lt_div_iff₀' (by norm_num : (0 : ℝ) < 2), Finset.sup'_lt_iff]
+  exact fun l hl ↦ theta_phi_lt_aux hδ0 hδ hδ1 hanti hrlast hratio hq1 hqr ih hl
+
+private lemma theta_lt_of_large_delta_aux {n : ℕ} {δ : ℝ} (hδ0 : 0 < δ) (hδ : 1 / ((n : ℝ) + 1) ≤ δ)
+    {r q : Fin (n + 1) → ℕ} (hq1 : ((n : ℝ) + 1) * (2 * ((n : ℝ) + 1) + 1) / δ ≤ Real.log (q 0)) :
+    Θ ((q 0 : ℝ) ^ (δ * r 0)) q r < 10 ^ (n + 1) * δ ^ ((1 / 2 : ℝ) ^ (n + 1)) := by
+  have hp : (0 : ℝ) < n + 1 := by positivity
+  have hq : 1 < q 0 := by
+    exact_mod_cast (Real.log_pos_iff (Nat.cast_nonneg (q 0))).1
+      (lt_of_lt_of_le (by positivity) hq1)
+  have hp2 : (n : ℝ) + 1 < (2 : ℝ) ^ (n + 1) := by exact_mod_cast Nat.lt_two_pow_self
+  calc
+    Θ ((q 0 : ℝ) ^ (δ * r 0)) q r ≤ (n : ℝ) + 1 := by
+      simpa using Θ_le_card (r := r)
+        (Real.one_le_rpow (by exact_mod_cast hq.le) (by positivity)) q
+    _ < 10 ^ (n + 1) / ((n : ℝ) + 1) :=
+      (lt_div_iff₀ hp).2 <| calc
+        ((n : ℝ) + 1) * ((n : ℝ) + 1) < (2 : ℝ) ^ (n + 1) * 2 ^ (n + 1) :=
+          mul_self_lt_mul_self hp.le hp2
+        _ = (4 : ℝ) ^ (n + 1) := by
+          rw [← mul_pow]
+          norm_num
+        _ ≤ (10 : ℝ) ^ (n + 1) := pow_le_pow_left₀ (by norm_num) (by norm_num) _
+    _ = 10 ^ (n + 1) * (1 / ((n : ℝ) + 1)) := (mul_one_div _ _).symm
+    _ ≤ 10 ^ (n + 1) * δ ^ ((1 / 2 : ℝ) ^ (n + 1)) :=
+      mul_le_mul_of_nonneg_left
+        ((Real.self_le_rpow_of_le_one (by positivity)
+          ((div_le_one hp).2 (by linarith only [Nat.cast_nonneg (α := ℝ) n]))
+          (pow_le_one₀ (by norm_num : (0 : ℝ) ≤ 1 / 2) (by norm_num))).trans
+          (Real.rpow_le_rpow (by positivity) hδ (by positivity))) (by positivity)
+
+/-- **Lemma 7**: under the weak growth and balanced-logarithm conditions on `r` and `q`,
+with `δ > 0` and final weight at least `3`,
+`Θ_m(q_1^{δ r_1}; q; r) < 10^m δ^{(1/2)^m}`. No upper bound on `δ` is required.
 Source: §5, Lemma `roth:lem7` ("`Θ_m(q_1^{δ r_1}; q_1, …, q_m; r_1, …, r_m) <
-10^m δ^{(1/2)^m}`" under (19)–(22)), for `m = n + 1` variables indexed by `Fin (n + 1)`. -/
-theorem Θ_lt (n : ℕ) {δ : ℝ} (hδ0 : 0 < δ) (hδ : δ < 1 / ((n : ℝ) + 1)) {r q : Fin (n + 1) → ℕ}
-    (hr0 : ∀ j, 0 < r j) (hrlast : 10 / δ < r (Fin.last n))
-    (hratio : ∀ i : Fin n, (r i.succ : ℝ) / δ < r i.castSucc) (hq0 : ∀ j, 0 < q j)
-    (hq1 : ((n : ℝ) + 1) * (2 * ((n : ℝ) + 1) + 1) / δ < Real.log (q 0))
+10^m δ^{(1/2)^m}`" under (19)–(22)), for `m = n + 1` variables indexed by `Fin (n + 1)`;
+the hypotheses here allow equality in the growth bounds and derive positivity. -/
+theorem Θ_lt (n : ℕ) {δ : ℝ} (hδ0 : 0 < δ) {r q : Fin (n + 1) → ℕ}
+    (hrlast : 3 ≤ (r (Fin.last n) : ℝ)) (hratio : ∀ i : Fin n, (r i.succ : ℝ) ≤ δ * r i.castSucc)
+    (hq1 : ((n : ℝ) + 1) * (2 * ((n : ℝ) + 1) + 1) / δ ≤ Real.log (q 0))
     (hqr : ∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j)) :
     Θ ((q 0 : ℝ) ^ (δ * r 0)) q r < 10 ^ (n + 1) * δ ^ ((1 / 2 : ℝ) ^ (n + 1)) := by
   induction n generalizing δ with
   | zero =>
-    have : Unique (Fin (0 + 1)) := inferInstanceAs (Unique (Fin 1))
-    have hL : 0 < Real.log (q 0) := lt_trans (by positivity) hq1
-    have hq : 1 < q 0 := by
-      exact_mod_cast (Real.log_pos_iff (Nat.cast_nonneg (q 0))).1 hL
-    have hB : (1 : ℝ) ≤ (q 0 : ℝ) ^ (δ * r 0) :=
-      Real.one_le_rpow (by exact_mod_cast hq.le) (by positivity)
-    have h := Θ_unique_le (q := q) (r := r) hB (by convert hq; exact Subsingleton.elim _ _) (hr0 _)
-    have hr : (0 : ℝ) < r 0 := by exact_mod_cast hr0 0
-    have key : ∀ x y : Fin (0 + 1), Θ ((q 0 : ℝ) ^ (δ * r 0)) q r ≤
-        Real.log ((q 0 : ℝ) ^ (δ * r 0)) / (r x * Real.log (q y)) →
-        Θ ((q 0 : ℝ) ^ (δ * r 0)) q r ≤ δ := fun x y hxy => by
-      rw [Subsingleton.elim x 0, Subsingleton.elim y 0, Real.log_rpow (by positivity)] at hxy
-      have hδeq : δ * r 0 * Real.log (q 0) / (r 0 * Real.log (q 0)) = δ := by
-        field_simp
-      rwa [hδeq] at hxy
-    replace h := key _ _ h
-    have hδ1 : δ < 1 := by simpa using hδ
-    have h1 : δ ≤ δ ^ ((1 / 2 : ℝ) ^ (0 + 1)) := by
-      simpa using Real.rpow_le_rpow_of_exponent_ge hδ0 hδ1.le
-        (by norm_num : (1 / 2 : ℝ) ^ (0 + 1) ≤ 1)
-    have h2 : 0 < δ ^ ((1 / 2 : ℝ) ^ (0 + 1)) := Real.rpow_pos_of_pos hδ0 _
-    have h3 : (10 : ℝ) ^ (0 + 1) = 10 := by norm_num
-    rw [h3]
-    linarith
+    have hr : 0 < r 0 := by
+      exact_mod_cast (lt_of_lt_of_le (by norm_num : (0 : ℝ) < 3)
+        (by simpa using hrlast : (3 : ℝ) ≤ r 0))
+    by_cases hδ : δ ≤ 1
+    · exact theta_lt_base_aux hδ0 hδ hr
+        (theta_denominators_one_lt_aux hr (lt_of_lt_of_le (by positivity) hq1) hqr 0)
+    · exact theta_lt_of_large_delta_aux hδ0 (by simpa using (not_le.mp hδ).le) hq1
   | succ n ih =>
-    have hL : 0 < Real.log (q 0) := lt_trans (by positivity) hq1
-    have hq0' : 1 < q 0 := by
-      exact_mod_cast (Real.log_pos_iff (Nat.cast_nonneg (q 0))).1 hL
-    set B : ℝ := (q 0 : ℝ) ^ (δ * r 0)
-    have hB : 1 ≤ B := Real.one_le_rpow (by exact_mod_cast hq0'.le) (by positivity)
-    have hn2 : (0 : ℝ) < (n : ℝ) + 1 + 1 := by positivity
-    set u : ℝ := 1 / ((n : ℝ) + 1 + 1) with hu
-    have hu0 : 0 < u := by positivity
-    have huP : u * ((n : ℝ) + 1 + 1) = 1 := by rw [hu]; field_simp
-    have hδu : δ < u := by
-      have := hδ
-      push_cast at this
-      exact this
-    have hδ1 : δ < 1 := by nlinarith
-    -- `r` is antitone
-    have hanti : Antitone r := Fin.antitone_iff_succ_le.2 fun i => by
-      have h1 := hratio i
-      have h2 : (r i.succ : ℝ) ≤ r i.succ / δ := le_div_self (Nat.cast_nonneg _) hδ0 hδ1.le
-      exact_mod_cast h2.trans h1.le
-    have hr₁ : ∀ j, r j ≤ r 0 := fun j => hanti (Fin.zero_le j)
-    have hratio' : ∀ j : Fin (n + 1), (r (Fin.last (n + 1)) : ℝ) < δ * r (Fin.castSucc j) :=
-      fun j => by
-        have h1 := hratio (Fin.last n)
-        rw [Fin.succ_last, div_lt_iff₀ hδ0] at h1
-        have h2 : (r (Fin.castSucc (Fin.last n)) : ℝ) ≤ r (Fin.castSucc j) := by
-          exact_mod_cast hanti (Fin.castSucc_le_castSucc_iff.2 (Fin.le_last j))
-        nlinarith
-    have hlast_lt0 : r (Fin.last (n + 1)) < r 0 := by
-      have h := hratio' 0
-      have hr0' : (0 : ℝ) < r 0 := by exact_mod_cast hr0 0
-      have : (r (Fin.last (n + 1)) : ℝ) < r 0 := by
-        change (r (Fin.last (n + 1)) : ℝ) < δ * r 0 at h
-        nlinarith
-      exact_mod_cast this
-    -- transport to `Option (Fin (n + 1))`
-    set e : Fin (n + 2) ≃ Option (Fin (n + 1)) := finSuccEquivLast with he
-    rw [← Θ_equiv e.symm B q r]
-    set q' := q ∘ e.symm with hq'
-    set r' := r ∘ e.symm with hr'
-    have hq'n : q' none = q (Fin.last (n + 1)) := by simp [hq', he]
-    have hr'n : r' none = r (Fin.last (n + 1)) := by simp [hr', he]
-    have hq's : ∀ j, q' (some j) = q (Fin.castSucc j) := fun j => by
-      simp [hq', he, finSuccEquivLast_symm_some]
-    have hr's : ∀ j, r' (some j) = r (Fin.castSucc j) := fun j => by
-      simp [hr', he, finSuccEquivLast_symm_some]
-    have hr'0 : ∀ j, 0 < r' j := fun j => hr0 _
-    have hr'1 : ∀ j, r' j ≤ r 0 := fun j => hr₁ _
-    have hq'0 : ∀ j, 0 < q' j := fun j => hq0 _
-    clear_value q' r' e
-    have hle := Θ_option_le (τ := Fin (n + 1)) hδ0.le hδ1.le (r := r')
-      (by
-        rw [hr'n]
-        exact (by norm_num : (3 : ℝ) ≤ 10).trans
-          ((le_div_self (by norm_num) hδ0 hδ1.le).trans hrlast.le))
-      (fun j ↦ by rw [hr'n, hr's]; exact (hratio' j).le)
-      (r₁ := r 0) hr'1 (q := q') hq'0 hB
-    refine lt_of_le_of_lt hle ?_
-    set X : ℝ := 10 ^ (n + 1 + 1) * δ ^ ((1 / 2 : ℝ) ^ (n + 1 + 1))
-    suffices hsup : (Finset.Icc 1 (r' none + 1)).sup' (Finset.nonempty_Icc.2 (by omega))
-        (fun l => lem6Φ q' r' (lem6M (Fintype.card (Fin (n + 1)) + 1) (r 0) B l) l +
-          √(lem6Φ q' r' (lem6M (Fintype.card (Fin (n + 1)) + 1) (r 0) B l) l) + √δ) < X / 2 by
-      linarith
-    rw [Finset.sup'_lt_iff]
-    intro l hl
-    obtain ⟨hl1, hl2⟩ := Finset.mem_Icc.1 hl
-    rw [hr'n] at hl2
-    have hl'' : l ≤ r 0 := by omega
-    rw [Fintype.card_fin]
-    set M := lem6M (n + 1 + 1) (r 0) B l
-    set δ₁ := δ * (1 + 1 / ((n + 1 + 1 : ℕ) : ℝ)) with hδ₁
-    have hδδ₁ : δ ≤ δ₁ := le_mul_of_one_le_right hδ0.le (le_add_of_nonneg_right (by positivity))
-    have hδ₁0 : 0 < δ₁ := by positivity
-    have hMlt : M < (q 0 : ℝ) ^ (δ₁ * (l * r 0)) :=
-      lem6M_lt (p := n + 1 + 1) (by omega) hδ0 (by
-        have := hq1
-        push_cast at this ⊢
-        linarith) hl1 hl''
-    have hM1 : 1 ≤ M := one_le_lem6M _ _ hB l
-    set C : ℝ := (q 0 : ℝ) ^ (δ₁ * (l * r 0)) with hC
-    have hC1 : 1 ≤ C := Real.one_le_rpow (by exact_mod_cast hq0'.le) (by positivity)
-    have hlR : (0 : ℝ) < l := by exact_mod_cast hl1
-    -- the one-variable term
-    have hΘ1 : Θ M (fun _ : Unit => q' none) (fun _ => l * r' none) ≤ δ₁ := by
-      rw [hq'n, hr'n]
-      have hqr' := hqr (Fin.last (n + 1))
-      have hrl : (0 : ℝ) < r (Fin.last (n + 1)) := by exact_mod_cast hr0 _
-      have hr0R : (0 : ℝ) < r 0 := by exact_mod_cast hr0 0
-      have hLl : 0 < Real.log (q (Fin.last (n + 1))) := by
-        by_contra hc
-        push Not at hc
-        nlinarith
-      have hql : 1 < q (Fin.last (n + 1)) := by
-        exact_mod_cast (Real.log_pos_iff (Nat.cast_nonneg (q (Fin.last (n + 1))))).1 hLl
-      calc Θ M (fun _ : Unit => q (Fin.last (n + 1))) (fun _ => l * r (Fin.last (n + 1)))
-          ≤ Θ C (fun _ : Unit => q (Fin.last (n + 1))) (fun _ => l * r (Fin.last (n + 1))) :=
-            Θ_mono hM1 hMlt.le _ fun _ => Nat.mul_pos hl1 (hr0 _)
-        _ ≤ Real.log C / (((l * r (Fin.last (n + 1)) : ℕ) : ℝ) *
-              Real.log (q (Fin.last (n + 1)))) :=
-            Θ_unique_le hC1 hql (Nat.mul_pos hl1 (hr0 _))
-        _ ≤ δ₁ := by
-            rw [hC, Real.log_rpow (by positivity), div_le_iff₀ (by push_cast; positivity)]
-            push_cast
-            have := mul_le_mul_of_nonneg_left hqr' (by positivity : (0 : ℝ) ≤ δ₁ * l)
-            nlinarith
-    -- the `(p - 1)`-variable term, by the induction hypothesis
-    have hΘ2 : Θ M (q' ∘ some) (fun j => l * r' (some j)) <
-        10 ^ (n + 1) * δ₁ ^ ((1 / 2 : ℝ) ^ (n + 1)) := by
-      have hfq : q' ∘ some = fun j => q (Fin.castSucc j) := funext hq's
-      have hfr : (fun j => l * r' (some j)) = fun j => l * r (Fin.castSucc j) :=
-        funext fun j => by rw [hr's]
-      rw [hfq, hfr]
-      refine lt_of_le_of_lt (Θ_mono hM1 hMlt.le _ fun j => Nat.mul_pos hl1 (hr0 _)) ?_
-      have hCeq : C = ((q (Fin.castSucc 0) : ℕ) : ℝ) ^
-          (δ₁ * ((l * r (Fin.castSucc 0) : ℕ) : ℝ)) := by
-        rw [Nat.cast_mul]
-        rfl
-      rw [hCeq]
-      have hA : δ₁ < 1 / ((n : ℝ) + 1) := by
-        have hδ₁u : δ₁ = δ * (1 + u) := by rw [hδ₁, hu]; push_cast; ring
-        rw [hδ₁u, lt_div_iff₀ (by positivity)]
-        have h1 : u * ((n : ℝ) + 1) = 1 - u := by linarith
-        have h2 : u * (1 + u) * ((n : ℝ) + 1) = 1 - u ^ 2 := by
-          rw [mul_right_comm, h1]
-          ring
-        have h3 := mul_lt_mul_of_pos_right hδu (by positivity : (0 : ℝ) < (1 + u) * (n + 1))
-        nlinarith
-      have hB' : 10 / δ₁ < ((l * r (Fin.castSucc (Fin.last n)) : ℕ) : ℝ) := by
-        have h1 : 10 / δ₁ ≤ 10 / δ := div_le_div_of_nonneg_left (by norm_num) hδ0 hδδ₁
-        have h2 : (r (Fin.last (n + 1)) : ℝ) ≤ r (Fin.castSucc (Fin.last n)) := by
-          exact_mod_cast hanti (Fin.le_last _)
-        have h3 : (r (Fin.castSucc (Fin.last n)) : ℝ) ≤ l * r (Fin.castSucc (Fin.last n)) :=
-          le_mul_of_one_le_left (Nat.cast_nonneg _) (by exact_mod_cast hl1)
-        push_cast
-        linarith
-      have hC' : ∀ i : Fin n, ((l * r (Fin.castSucc i.succ) : ℕ) : ℝ) / δ₁ <
-          ((l * r (Fin.castSucc (Fin.castSucc i)) : ℕ) : ℝ) := by
-        intro i
-        have h : (r (Fin.castSucc i.succ) : ℝ) / δ < r (Fin.castSucc (Fin.castSucc i)) :=
-          hratio (Fin.castSucc i)
-        push_cast
-        calc (l : ℝ) * r (Fin.castSucc i.succ) / δ₁ ≤ l * r (Fin.castSucc i.succ) / δ :=
-              div_le_div_of_nonneg_left (by positivity) hδ0 hδδ₁
-          _ = l * (r (Fin.castSucc i.succ) / δ) := by ring
-          _ < l * r (Fin.castSucc (Fin.castSucc i)) := mul_lt_mul_of_pos_left h hlR
-      have hD' : ((n : ℝ) + 1) * (2 * ((n : ℝ) + 1) + 1) / δ₁ <
-          Real.log (q (Fin.castSucc 0)) := by
-        calc ((n : ℝ) + 1) * (2 * ((n : ℝ) + 1) + 1) / δ₁
-            ≤ ((n : ℝ) + 1) * (2 * ((n : ℝ) + 1) + 1) / δ :=
-              div_le_div_of_nonneg_left (by positivity) hδ0 hδδ₁
-          _ ≤ (((n + 1 : ℕ) : ℝ) + 1) * (2 * (((n + 1 : ℕ) : ℝ) + 1) + 1) / δ := by
-              apply div_le_div_of_nonneg_right _ hδ0.le
-              push_cast
-              nlinarith
-          _ < Real.log (q 0) := hq1
-      have hE' : ∀ j : Fin (n + 1), ((l * r (Fin.castSucc 0) : ℕ) : ℝ) *
-          Real.log (q (Fin.castSucc 0)) ≤
-          ((l * r (Fin.castSucc j) : ℕ) : ℝ) * Real.log (q (Fin.castSucc j)) := by
-        intro j
-        have := hqr (Fin.castSucc j)
-        push_cast
-        rw [mul_assoc, mul_assoc]
-        exact mul_le_mul_of_nonneg_left this (Nat.cast_nonneg l)
-      exact ih (r := fun j => l * r (Fin.castSucc j)) (q := fun j => q (Fin.castSucc j)) hδ₁0 hA
-        (fun j => Nat.mul_pos hl1 (hr0 _)) hB' hC' (fun j => hq0 _) hD' hE'
-    -- combine
-    have hb := lem7_Φ_bound (p := n + 1 + 1) (by omega) hδ0 hδ1.le
-    simp only [Nat.add_sub_cancel] at hb
-    have hΦlt : lem6Φ q' r' M l <
-        3 * 10 ^ (n + 1 + 1 - 1) * δ ^ ((1 / 2 : ℝ) ^ (n + 1 + 1 - 1)) := by
-      simp only [Nat.add_sub_cancel]
-      rw [lem6Φ]
-      linarith
-    have hfin := lem7_numeric (p := n + 1 + 1) (by omega) hδ0 hδ1.le hΦlt.le
-    linarith
+    by_cases hδ : δ ≤ 1 / ((n : ℝ) + 1 + 1)
+    · exact theta_lt_succ_aux hδ0 hδ hrlast hratio
+        (by simpa only [Nat.cast_add, Nat.cast_one] using hq1) hqr (fun {δ} hδ0 _ ↦ ih hδ0)
+    · exact theta_lt_of_large_delta_aux hδ0
+        (by simpa only [Nat.cast_add, Nat.cast_one] using (not_le.mp hδ).le) hq1
 
 end Lemma7
 

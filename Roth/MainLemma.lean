@@ -667,8 +667,12 @@ theorem main_lemma {α : ℝ} {f : Polynomial ℤ} (hf : f.Monic) (hfα : Polyno
       (fun j => (degreeOf_map_intCast_real _ j).trans_le (hWR.2.1 j)) (fun _ => α)
       fun d hd hw => eval_hasseDeriv_sub_eq_zero hfα (hWeq d (Finset.mem_filter.2 ⟨hd, hw⟩))
   -- Lemma 7
-  have hΘ := Θ_lt m' hδ0 (by exact_mod_cast hδm) hr0 (h31a _) (fun i => h31b _ _ (by simp)) hq0
-    (by exact_mod_cast lem7_hyp_of_h32 hδ0 hδm hA1 h32) h33
+  have hΘ := Θ_lt m' hδ0
+    ((by norm_num : (3 : ℝ) ≤ 10).trans
+      ((le_div_self (by norm_num) hδ0 hδ1.le).trans (h31a _).le))
+    (fun i ↦ by
+      simpa [mul_comm] using ((div_lt_iff₀ hδ0).1 (h31b _ _ (by simp))).le)
+    (by exact_mod_cast (lem7_hyp_of_h32 hδ0 hδm hA1 h32).le) h33
   have hidx := index_le_Θ hr0 hWX hh
   obtain ⟨k, hkw, hkev⟩ := exists_hasseDeriv_eval_ne_zero hmap0 (fun j => (h j : ℝ) / q j) r
     (hidx.trans_lt hΘ)

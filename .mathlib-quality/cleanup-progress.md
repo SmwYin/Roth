@@ -25,23 +25,15 @@ Started: 2026-10-14 (America/Chicago).
 
 ## Current status
 
-Latest completed file: Separation. Theta originals34/35 are complete; overall215/264 original
-declarations,9/14 files. Original34 `lem7_numeric` now accepts closed δ/Φ upper bounds and
-arbitrary Φ while preserving the strict conclusion; proof25→29lines, no helpers. Its exact old
-contract and ENTIRE original/current Θ_lt caller proof/type/value/standard axioms pass.
-Owner cumulative recovery passes all29 public adapters/all5 definition values/87 opaque body
-types/87 actual standard-axiom sets; both complete original proof blocks are unchanged.
-Module and complete unfiltered LSP pass (0errors8samewarnings). Real target profile757.682ms,
-required same-source repeat865.831ms (baseline1429.265); frozen full build108.121s THEN separate
-LeanEval33.707s both pass, all17 source/pin hashes stable. [Original34 audit](cleanup/Theta-lem7_numeric.md).
-
-Next: fresh original35 headline Θ_lt and every new helper's separate fresh audit; then mandatory
-performance repairs and ALL final phases. Earlier numeric/index29 required repeat failures
-1068.193/1115.157ms and actual whole Θ_lt profiler stalls remain unresolved. No whole-file/caller
-performance pass is claimed. Nine validated revisits add no original counts;10 retained new
-private helpers have separate fresh audits. File-final completion has not yet been claimed.
-The user's standing authority implements supported recommendations autonomously; exact earlier
-hq/globalΘ hB/hr/header/wrapper/domain preservation choices remain. [Contract ledger](cleanup/Theta-contract-proposal.md).
+Latest completed file after successful final publication: Separation. Theta originals 35/35
+completed; overall 216/264 original declarations, 9/14 files. Latest original: Θ_lt.
+Factored Θ_lt into substantive numerical, transport, base and successor stages. Removed its δ upper bound and derived positive-weight/denominator premises, weakened the last weight to3≤rLast, closed adjacent product and log bounds, and preserved the strict conclusion. Headline stays within15lines (currently15 after base-helper contract cleanup); MainLemma receives only the necessary proof-call adaptation and keeps its entire public contract.
+All ELEVEN introduced helper obligations freshly and separately audited (eight retained, three introduced/deleted), followed by the additional measured prefix performance repair. Frozen current-source359 checks preserve the entire original Index/Theta, original2b MainLemma and independent current MainLemma proof blocks, publicTheta9/Main26 contracts, exact original helper adapters/deletion AST checks and actual standard axioms. Owner cumulative29 probe passes29 full old-public adapters,87 opaque value/type checks,87 actual standard-axiom sets and all five definition equality recoveries; independent all50 actual retained declaration values/types/axioms also pass. Module and complete unfiltered LSP (0 errors / 8 warnings), Accepted actual whole-source scoped final pair (public Θ_lt413.535/330.244; prefix757.698/767.127; phi887.425/641.027; successor852.192/728.387; all eight retained35 helpers below1000 in both captures ms), frozen full build (61.547 s), then
+separate LeanEval (31.863 s), all pass. [Latest audit](cleanup/Theta-Theta_lt.md).
+All11 introduced obligations complete: retained scaled_unique,delta_succ,prefix_lt,base,denominators,phi,successor,large_delta; introduced/deleted fin_option,prefix_log,last_lt_first each have their own fresh generic original-contract/deletion-replacement audit. No helper or revisit count inflation. Next: dedicated sequential numeric/index29 performance repairs, fresh independent filewide simplify review, all cumulative semantic/native/import/actual whole-file profile/full+separateLeanEval gates before Theta file-final publication.
+[Exact contract decision](cleanup/Theta-contract-proposal.md): selected A/B/C scope applies;
+prior explicit hq and extra hB/hr preservation choices remain. Whole-Theta profiling,
+0 remaining originals and final phases are outstanding. Eight older unrelated declaration performance revisits remain mandatory before Theta file-final; every failed raw sample is preserved. MainLemma actual profile remains bounded/unmeasured before main_lemma despite ordinary semantic/native/module success. No whole-file or finite-caller performance PASS is claimed.
 
 Build/tool setup completed; GitHub browser authentication and branch publication succeeded.
 The first file, `Roth/HasseDeriv.lean`, has completed all declaration and final review,
@@ -2544,3 +2536,15 @@ Next:original35 headline Θ_lt, every newhelper separate fresh audit, then manda
 Original34 validated source/audit checkpoint: [61b5c67](https://github.com/SmwYin/Roth/commit/61b5c67554a444fe1926d76883316cb41798c7f3).
 The following central-log metadata commit changes no Lean source; both commits publish
 together before original35 edits. Counts remain 215/264, Theta 34/35, 9/14 files.
+
+
+## Theta original35 checkpoint — Θ_lt
+
+Factored Θ_lt into substantive numerical, transport, base and successor stages. Removed its δ upper bound and derived positive-weight/denominator premises, weakened the last weight to3≤rLast, closed adjacent product and log bounds, and preserved the strict conclusion. Headline stays within15lines (currently15 after base-helper contract cleanup); MainLemma receives only the necessary proof-call adaptation and keeps its entire public contract.
+
+All ELEVEN introduced helper obligations freshly and separately audited (eight retained, three introduced/deleted), followed by the additional measured prefix performance repair. Frozen current-source359 checks preserve the entire original Index/Theta, original2b MainLemma and independent current MainLemma proof blocks, publicTheta9/Main26 contracts, exact original helper adapters/deletion AST checks and actual standard axioms. Owner cumulative29 probe passes29 full old-public adapters,87 opaque value/type checks,87 actual standard-axiom sets and all five definition equality recoveries; independent all50 actual retained declaration values/types/axioms also pass. [Dedicated audit](cleanup/Theta-Theta_lt.md).
+Final Theta SHA256 `cfa05489380deeae6eb1bc63202249c3754b791357912aabff24e29e1cae4788`. Module and complete unfiltered LSP:0 errors/8 warnings;
+Accepted actual whole-source scoped final pair:public Θ_lt413.535/330.244; prefix757.698/767.127; phi887.425/641.027; successor852.192/728.387; all eight retained35 helpers below1000 in both captures ms. Frozen full build61.547s then
+separate LeanEval31.863s both exit0; all17project/pin/source hashes stable.
+All11 introduced obligations complete: retained scaled_unique,delta_succ,prefix_lt,base,denominators,phi,successor,large_delta; introduced/deleted fin_option,prefix_log,last_lt_first each have their own fresh generic original-contract/deletion-replacement audit. No helper or revisit count inflation. After successful publication:Theta35/35,overall216/264,9/14files.
+Next:dedicated sequential numeric/index29 performance repairs, fresh independent filewide simplify review, all cumulative semantic/native/import/actual whole-file profile/full+separateLeanEval gates before Theta file-final publication. Actual whole-Theta profiling and final file phases remain outstanding.

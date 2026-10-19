@@ -74,7 +74,7 @@ removals. No unselected row may be inferred from that probe's successful compile
 - Supported revisit 29, index_le_lem6 arithmetic boundary: K weakens hδ0/hδ1 to nonstrict bounds and hrp to3≤(rnone:ℝ); removes only index_le_lem6.hr0/hB. Domains, exact conclusion, hq and protected globalΘ hB/hr hypotheses remain..
   Independent original adapter, actual axioms/metadata/caller, complete LSP, profile and frozen
   full/LeanEval gates pass.
-- Next: original35 headline Θ_lt, every newhelper separate fresh audit, then mandatory performance repairs and all final file phases. Published originals now Theta 34/35, overall 215/264; approved revisits themselves do not increase counts.
+- Next: dedicated sequential numeric/index29 performance repairs, fresh independent filewide simplify review, all cumulative semantic/native/import/actual whole-file profile/full+separateLeanEval gates before Theta file-final publication. Published originals now Theta 35/35, overall 216/264; approved revisits themselves do not increase counts.
 
 The evidence and proposal descriptions below were prepared before this decision. Their historic
 unapplied status is superseded only by the exact selected scope above and subsequent checkpoint
@@ -629,3 +629,8 @@ raised limits or whole-file performance claim. The earlier numeric/index29 requi
 failures1068.193/1115.157ms and actual wholeΘ_lt trace stalls remain mandatory final repairs.
 [Full original34 audit](Theta-lem7_numeric.md). Frozen owner full/separate LeanEval gates are
 recorded with this checkpoint. Successful publication givesTheta34/35,overall215/264,ninefiles.
+
+
+### Original35 recommended application under standing authorization
+
+The user’s standing instruction is “From now on implement all changes that you recommend. Only ask me if you can't decide.” The supported Θ_lt cleanup applies after concrete independent proofs, exact full original adapters and whole original/current MainLemma caller recovery: remove derived hr0/hq0 and the unnecessary δ upper bound; replace10/δ<rLast with3≤rLast; weaken adjacent strict division ratios to closed multiplicative bounds and the strict logarithm lower bound to≤. The conclusion, domains, retained binder names/order and public definitions remain unchanged. MainLemma keeps its entire26-binder public contract and changes only the necessary Θ_lt proof call. All11 introduced helper obligations and the extra prefix performance revisit are complete. Explicit prior hq preservation in index_le_lem6/Θ_option_le, selected global hB/hr choices and header/wrapper/domain preferences remain. Original35 is a scoped checkpoint; the eight older performance revisits and file-final phases remain outstanding.
