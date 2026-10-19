@@ -685,3 +685,16 @@ published1235.462/1644.559 failed pair → index_le_lem6 498.642; Θ_option_le16
 Frozen owner full build (68.103 s), then separate LeanEval (33.964 s),
 both pass on identical SHA. [Dedicated revisit audit](Theta-index_le_lem6-performance.md).
 Original counts unchanged: Theta 35/35, overall 216/264, 9/14 files. Next: fresh dedicated index_det_le performance revisit, then index_separated, index_numeric, sum_max, lem7_Φ_bound and lem7_numeric repairs, followed by independent filewide review/final gates.
+
+
+## Performance revisit of original 28 — index_det_le
+
+Replaced broad determinant coefficient-bound normalization with pinned finite-product, sum, cardinality, cast and power rewrites. Exact public contract, caller, surrounding source and all three Step comments remain unchanged; no new helper or import. Heartbeats4996→3357.
+
+Fresh dedicated full 24-item audit, 42 golf rules, five actual searches, every-binder probes,
+literature/inversion, packing, inequality scan and 11-step checklist pass. All original public adapters, exact retained names/order/BinderInfo/universes/conclusion and actual opaque values/standard axioms pass. No public signature, definition or domain changes. The entire380-check semantic scaffold preserves all373 preceding checks and four full canonical proof blocks. Fresh independent preceding target and entire index_le_lem6 proof/type/binder/universe/opaque value/standard axioms/nonself and actual caller dependency pass. Complete native Theta/MainLemma responses pass with0errors/8+3warnings. Module and complete unfiltered final LSP pass with
+0 errors and 8 warnings. Accepted actual whole-source scoped profile pair:
+latest1293.336 failed observation; historical1179.250/1424.714 failed pair → index_det_le822.592/726.010; index_le_lem6576.591/581.268; Θ_option_le170.607/142.216 ms; no whole-file performance claim.
+Frozen owner full build (78.752 s), then separate LeanEval (32.808 s),
+both pass on identical SHA. [Dedicated revisit audit](Theta-index_det_le-performance.md).
+Original counts unchanged: Theta 35/35, overall 216/264, 9/14 files. Next: fresh dedicated index_separated_mul_le_aux performance revisit, then index_numeric, sum_max, lem7_Φ_bound and lem7_numeric plus newly required second theta_prefix_lt_aux repair, followed by independent filewide review/final gates.

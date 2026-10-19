@@ -457,8 +457,8 @@ theorem index_det_le {r : Option τ → ℕ} (hr0 : ∀ j, 0 < r j) {r₁ : ℕ}
   have hFcoef (d) : |(((Matrix.of fun μ ν : Fin l ↦ hasseDeriv
       ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) R).det.coeff d : ℤ) : ℝ)| ≤
       lem6M (Fintype.card τ + 1) r₁ B l := by
-    simpa [lem6M, Finset.prod_const, Finset.sum_const, Fintype.card_option, pow_mul,
-      mul_right_comm] using
+    simpa only [lem6M, Finset.prod_const, Finset.sum_const, Finset.card_univ,
+      Fintype.card_option, nsmul_eq_mul, Nat.cast_id, pow_mul, mul_right_comm] using
       abs_coeff_det_hasseDeriv_le _ R (r := fun _ ↦ r₁) (fun j ↦ (hR.2.1 j).trans (hr₁ j))
         ((abs_nonneg ((R.coeff 0 : ℤ) : ℝ)).trans (hR.2.2 0)) hR.2.2 d
   -- Step 2: the coefficients of `U` and `V` are bounded by `M`.
