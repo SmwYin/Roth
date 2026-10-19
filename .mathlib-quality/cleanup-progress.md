@@ -2633,3 +2633,13 @@ Frozen Theta SHA256 `70465cb863f51a834bd0bf203bc14776e7492270ad4c345536d8fa8a06c
 This belongs to original34 batch; original counts remainTheta35/35,
 overall216/264,9/14files. No count inflation from helper/revisit audits.
 Next:mandatory second theta_prefix_lt_aux performance repair, then mandatory second sum_max_sub_le_index_det repair, independent filewide review and final gates. All eight original older performance repairs have checkpoints, but second prefix historical1047.277 and second summax1004.335 plus1131.027/1065.136 failures remain mandatory. No whole-file pass; MainLemma finite actual timing remains unmeasured before main_lemma.
+
+
+## Validated Theta revisit — theta_prefix_lt_aux (second performance repair)
+
+Replaced two measured nonnegativity searches with direct certificates and a multiplication ring search with mul_left_comm. Exact private contract and entire phi caller unchanged; proof30 lines/branch8, no helper. Heartbeats2886→2463. [Dedicated audit](cleanup/Theta-theta_prefix_lt_aux-performance-second.md).
+Revisit source/audit commit `3f4ab498398f79e9bad037de6df98b0ee5abfa2d`: [GitHub checkpoint](https://github.com/SmwYin/Roth/commit/3f4ab498398f79e9bad037de6df98b0ee5abfa2d).
+Frozen Theta SHA256 `3f9c23b83cd5bb8eaf9deb2b6d8c9182d0309464c5c76a3568c30eb1f86100ce`. All owner gates passed as recorded in the audit.
+This belongs to original35 batch; original counts remainTheta35/35,
+overall216/264,9/14files. No count inflation from helper/revisit audits.
+Next:mandatory second sum_max_sub_le_index_det performance repair, then fresh independent filewide review and final gates. Second summax remains mandatory from1004.335/809.108 and1131.027/1065.136 failure pairs, despite incidental passing rows in this scope. No whole-file performance pass; MainLemma finite actual timing remains unmeasured before main_lemma.
