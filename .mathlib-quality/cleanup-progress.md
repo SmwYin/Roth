@@ -2540,3 +2540,7 @@ Accepted real prefix profile:757.682 and required same-source repeat865.831 (bas
 separate LeanEval33.707s both exit0; all17project/pin/source hashes stable.
 No new helper; existing separately audited helpers unchanged. No original-count inflation from helper/revisit audits. After successful publication:Theta34/35,overall215/264,9/14files.
 Next:original35 headline Θ_lt, every newhelper separate fresh audit, then mandatory performance repairs and all final file phases. Actual whole-Theta profiling and final file phases remain outstanding.
+
+Original34 validated source/audit checkpoint: [61b5c67](https://github.com/SmwYin/Roth/commit/61b5c67554a444fe1926d76883316cb41798c7f3).
+The following central-log metadata commit changes no Lean source; both commits publish
+together before original35 edits. Counts remain 215/264, Theta 34/35, 9/14 files.
