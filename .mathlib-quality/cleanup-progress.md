@@ -2839,3 +2839,19 @@ current695lines. Owner rehash/review and sourcefreeze checks pass. All owned pro
 and native requests drained before publication;nextoriginalsqrt_lt_floor remains unedited.
 MainLemma finalfile/simplify/completeprofile phases pending. Metadata child changes only
 this checkpoint record,not source or verification inputs.
+
+
+### MainLemma original7 checkpoint — sqrt_lt_floor
+
+Source/audit commit `9bebcd06f79f643d43b6c1154c14a381ba400bf9`; the following metadata child records and publishes this
+exact checkpoint before the next original edit. MainLemma7/27,overall223/264,
+10/14fullycompletedfiles. [Dedicated audit](cleanup/MainLemma-sqrt_lt_floor.md) contains all
+24audit/42golf/5search/11verification steps,exact independent original reimplementation/
+effectivecontract/universe/binder/type/value/standard-axiom evidence,actual affectedmodule/
+fullfile and complete unfiltered native successes. Actual anchored profile16.945ms;
+raw evidence and required repeat/failure history are preserved. Sharp2≤X replaces4<X; both conclusions and historical quote retained, exactly four caller repairs. Public body6→1 plus one separately fresh-audited private helper2bodylines (not original-count credit). Matched GLOBAL public+helper127.982/104.364ms versus178.143/178.631ms; own public22.373/16.945ms. All90 ML/Main timing rows complete. Valid foreign FAILs including exists_delta_bound11188.775ms (preexisting full-file controls11594.369/12164.962) and pigeonhole1000.235ms remain mandatory final-file repairs; Main failures stay in its next-file queue, no Main audit credit. Earlier prefix passes do not certify whole-file performance. Owner verified275 frozen UTF8 artifacts, exact old/current proof/contracts and generated-hygiene-only normalization; fresh root/LeanEval native closure complete with zero messages/errors.
+Owner fullbuild37.145s THEN separateLeanEval37.339s,both exit0,all17pins immutable;sourceSHA256`85af4993b70decb29489013593420d99644a93e2ac6891cecfa7cad5fb2b55f8`,
+current697lines. Owner rehash/review and sourcefreeze checks pass. All owned processes
+and native requests drained before publication;nextoriginalfour_lt_rpow remains unedited.
+MainLemma finalfile/simplify/completeprofile phases pending. Metadata child changes only
+this checkpoint record,not source or verification inputs.
