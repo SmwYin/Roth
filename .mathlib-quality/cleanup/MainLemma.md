@@ -145,3 +145,34 @@ All worker/compiler/native/profile ownership drained before publication.
 Source/audit publication hash follows in central checkpoint history via metadata child.
 MainLemma4/27 originals,overall220/264,10/14fullycompletedfiles;nextexists_delta_bound.
 Filewide final phases remain pending.
+
+
+### Owner correction to original1–4 profile totals
+
+During original5 review, re-auditing immutable target traces found that earlier sums
+included unindented internal `Meta.whnf` events. Exact target command/async root totals
+are `lam`87.929ms (earlier87.948),`gam`22.074ms (earlier22.088),`eta`14.891ms
+(earlier14.910),`B₁`29.399ms (earlier29.417). All remain below1000ms; no budget
+conclusion changes. The earlier checkpoint text remains historical evidence; these
+corrected totals govern accepted measurements. Dedicated reports carry explicit
+addenda. Raw traces remain immutable; owner root re-audit JSON preserves both sums.
+Final whole-file profiling and future workers must count only exact anchored target
+`Elab.command`/`Elab.async` roots,excluding nested/internal Meta events and following
+end commands/lints.
+
+
+### Original5: `exists_delta_bound`
+
+[Fresh dedicated full audit](MainLemma-exists_delta_bound.md):all24audit/42golf/5search/11checklist
+artifacts reviewed by owner. Removed hn and strengthened the uniform interval to 0≤δ≤δ₀; proof30→15lines,0helpers. Necessary Pow.Continuity import; two exact Main calls and approved one-line explicit-premise linarith repair. Final target765.392/739.630ms; Main consumer1430.559/1459.407ms improves on original3926.336/3727.365 but remains in the Main-nextfile performance queue,with no Main audit credit. Fresh owner root/LeanEval native closure is complete,zero messages/errors. Explicit prior-parameter measurement addenda correct root accounting to lam87.929,gam22.074,eta14.891,B₁29.399ms;all raw evidence retained.
+Independent original reimplementation,exact old/current effective contract metadata/value
+and standard-axiom evidence reviewed; complete unfiltered livefile/affectedcaller diagnostics
+and actual affected-module/fullfile validation pass. Actual anchored profile765.392ms;
+required repeats/failed evidence,if any,remain in the dedicated report. Owner verified frozen
+source/evidence and ran fullbuild6.304s THEN separateLeanEval3.290s,both exit0 with all17pins immutable.
+Owner logs:`/private/tmp/roth-mainlemma-owner/exists_delta_bound-owner-full.json` and
+`exists_delta_bound-owner-eval.json`. SourceSHA256`37ac02db4702d7c91a21f66ee1f7f22bdf8b6c6c23e3ab740cc7d1a9c679fefc`;current694lines.
+All worker/compiler/native/profile ownership drained before publication.
+Source/audit publication hash follows in central checkpoint history via metadata child.
+MainLemma5/27 originals,overall221/264,10/14fullycompletedfiles;nexteta_lt_gam_iff.
+Filewide final phases remain pending.

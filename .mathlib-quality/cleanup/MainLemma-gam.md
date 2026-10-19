@@ -330,3 +330,16 @@ Frozen live-source SHA256:
 The entire live file remains byte-identical to pre-worker.lean. All owned subprocess
 sessions and native calls have returned; no background compiler/profile/native work
 remains. Source, compiler and native ownership are explicitly released to the parent.
+
+
+## Owner measurement correction (original5 checkpoint review)
+
+The immutable original raw profile remains retained. A fresh owner parser audit found
+unindented `Meta.whnf` internal trace events included in the earlier column-zero sum.
+The accepted disjoint target total is **22.074 ms**, replacing the earlier
+22.088 ms figure for measurement purposes. This counts only the exact target's
+column-zero `Elab.command` / `Elab.async` roots, excludes nested/internal Meta events,
+and excludes the following `end Roth` command and its asynchronous lint work.
+The budget conclusion is unchanged. Both sums and anchors are preserved in
+`/private/tmp/roth-mainlemma-owner/prior-profile-root-reaudit.json`; no raw evidence
+or original worker report text was overwritten.

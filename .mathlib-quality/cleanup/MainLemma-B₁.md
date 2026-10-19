@@ -367,3 +367,16 @@ project-original. All owned subprocess sessions and native calls returned; no
 owned compiler/profile/native work remains. Source, compiler and native ownership
 are explicitly released to the parent. This is a worker result, not a claim of
 whole-file completion or the parent's build/evaluation/commit/push checkpoint.
+
+
+## Owner measurement correction (original5 checkpoint review)
+
+The immutable original raw profile remains retained. A fresh owner parser audit found
+unindented `Meta.whnf` internal trace events included in the earlier column-zero sum.
+The accepted disjoint target total is **29.399 ms**, replacing the earlier
+29.417 ms figure for measurement purposes. This counts only the exact target's
+column-zero `Elab.command` / `Elab.async` roots, excludes nested/internal Meta events,
+and excludes the following `end Roth` command and its asynchronous lint work.
+The budget conclusion is unchanged. Both sums and anchors are preserved in
+`/private/tmp/roth-mainlemma-owner/prior-profile-root-reaudit.json`; no raw evidence
+or original worker report text was overwritten.

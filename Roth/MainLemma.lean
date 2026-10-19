@@ -1,5 +1,6 @@
 import Mathlib.Algebra.Polynomial.Div
 import Mathlib.Analysis.MeanInequalitiesPow
+import Mathlib.Analysis.SpecialFunctions.Pow.Continuity
 import Mathlib.Data.Fintype.Pigeonhole
 
 import Roth.Lattice
@@ -57,45 +58,29 @@ noncomputable def eta (δ : ℝ) (m : ℕ) : ℝ := 10 ^ m * δ ^ ((1 / 2 : ℝ)
 /-- The coefficient bound `B_1 = ⌊q_1^{δ r_1}⌋`. Source: §6, eq. (37). -/
 noncomputable def B₁ (δ : ℝ) (q₁ r₁ : ℕ) : ℕ := ⌊(q₁ : ℝ) ^ (δ * r₁)⌋₊
 
-/-- For fixed `m > 16 n²` there is `δ₀ > 0` such that every `0 < δ < δ₀` satisfies
+/-- For fixed `m > 16 n²` there is `δ₀ > 0` such that every `0 ≤ δ ≤ δ₀` satisfies
 `δ < 1/m` (29) and `η + 2(1 + 3δ) n √m < m/2` (30).
 
 Lemma `m-δ`, fixed-`m` form. Source: §6, Lemma `lem:m-delta` and its Lean note ("For each
 fixed `m > 16n²`, prove the stronger statement that some `δ_0 > 0` makes (29) and (30) hold for
 every `0 < δ < δ_0`"). -/
-theorem exists_delta_bound {n m : ℕ} (hn : 0 < n) (hm : 16 * n ^ 2 < m) :
-    ∃ δ₀ : ℝ, 0 < δ₀ ∧ ∀ δ : ℝ, 0 < δ → δ < δ₀ →
-      δ < 1 / m ∧ eta δ m + 2 * (1 + 3 * δ) * n * √(m : ℝ) < m / 2 := by
-  have hn' : (0 : ℝ) < n := by exact_mod_cast hn
+theorem exists_delta_bound {n m : ℕ} (hm : 16 * n ^ 2 < m) : ∃ δ₀ : ℝ, 0 < δ₀ ∧ ∀ δ : ℝ, 0 ≤ δ →
+    δ ≤ δ₀ → δ < 1 / m ∧ eta δ m + 2 * (1 + 3 * δ) * n * √(m : ℝ) < m / 2 := by
   have hm' : (16 * n ^ 2 : ℝ) < m := by exact_mod_cast hm
-  have hm0 : (0 : ℝ) < m := by nlinarith
-  have hs := Real.sq_sqrt hm0.le
-  have hs0 := Real.sqrt_nonneg (m : ℝ)
-  have h4n : 4 * (n : ℝ) < √(m : ℝ) := by nlinarith
-  set E : ℝ := m / 2 - 2 * n * √(m : ℝ) with hE
-  have hE0 : 0 < E := by nlinarith
-  have hsm : 0 < √(m : ℝ) := by linarith
-  set c : ℝ := E / (2 * 10 ^ m) with hc
-  have hc0 : 0 < c := by positivity
-  refine ⟨min (1 / m) (min (E / (12 * n * √(m : ℝ))) (c ^ (2 ^ m))), by positivity,
-    fun δ hδ0 hδ => ?_⟩
-  simp only [lt_min_iff] at hδ
-  obtain ⟨h1, h2, h3⟩ := hδ
-  refine ⟨h1, ?_⟩
-  have heta : eta δ m < E / 2 := by
-    have hpow : δ ^ ((1 / 2 : ℝ) ^ m) < c := by
-      have hz : (0 : ℝ) < (1 / 2 : ℝ) ^ m := by positivity
-      have := Real.rpow_lt_rpow hδ0.le h3 hz
-      rwa [← Real.rpow_natCast c (2 ^ m), ← Real.rpow_mul hc0.le, Nat.cast_pow, Nat.cast_ofNat,
-        ← mul_pow, show (2 : ℝ) * (1 / 2) = 1 by norm_num, one_pow, Real.rpow_one] at this
-    rw [eta]
-    have h10 : (0 : ℝ) < 10 ^ m := by positivity
-    calc (10 : ℝ) ^ m * δ ^ ((1 / 2 : ℝ) ^ m) < 10 ^ m * c := mul_lt_mul_of_pos_left hpow h10
-      _ = E / 2 := by rw [hc]; field_simp
-  have h6 : 6 * δ * n * √(m : ℝ) < E / 2 := by
-    rw [lt_div_iff₀ (by positivity)] at h2
-    linarith
-  linarith
+  have hm0 : (0 : ℝ) < m := by exact_mod_cast (Nat.zero_le _).trans_lt hm
+  have h4n : 4 * (n : ℝ) < √(m : ℝ) := Real.lt_sqrt_of_sq_lt (by nlinarith only [hm'])
+  have hgap : 2 * (n : ℝ) * √(m : ℝ) < m / 2 := by
+    nlinarith only [Real.sq_sqrt hm0.le,
+      mul_lt_mul_of_pos_right h4n (Real.sqrt_pos.mpr hm0)]
+  have hc : ContinuousAt (fun δ ↦ eta δ m + 2 * (1 + 3 * δ) * n * √(m : ℝ)) 0 := by
+    fun_prop (disch := positivity) [eta]
+  obtain ⟨ε, hε, hbound⟩ := Metric.eventually_nhds_iff.mp
+    (hc.eventually_lt continuousAt_const (by
+      simpa [eta, Real.zero_rpow (by positivity : (1 / 2 : ℝ) ^ m ≠ 0)] using hgap))
+  refine ⟨min (1 / (m : ℝ)) ε / 2, by positivity, fun δ hδ hle ↦ ?_⟩
+  have hlt := hle.trans_lt (half_lt_self (by positivity : 0 < min (1 / (m : ℝ)) ε))
+  exact ⟨(lt_min_iff.mp hlt).1,
+    hbound (by simpa [Real.dist_eq, abs_of_nonneg hδ] using (lt_min_iff.mp hlt).2)⟩
 
 /-- Inequality (30) is equivalent to `η < γ`.
 

@@ -297,7 +297,7 @@ theorem exists_delta {n m : ℕ} (hn : 0 < n) (hm : 16 * n ^ 2 < m) {κ : ℝ}
     rw [div_lt_iff₀ hG] at h47'
     rw [hEdef]
     linarith
-  obtain ⟨δ₀, hδ₀, hδ₀'⟩ := exists_delta_bound hn hm
+  obtain ⟨δ₀, hδ₀, hδ₀'⟩ := exists_delta_bound hm
   set c : ℝ := E / (3 * κ * 10 ^ m) with hc
   have hc0 : 0 < c := by positivity
   set μ := min δ₀ (min (E / (12 * m)) (min (E / (18 * κ * n * √(m : ℝ))) (c ^ (2 ^ m))))
@@ -310,7 +310,7 @@ theorem exists_delta {n m : ℕ} (hn : 0 < n) (hm : 16 * n ^ 2 < m) {κ : ℝ}
   have hδlt' := hδlt
   simp only [hμ, lt_min_iff] at hδlt'
   obtain ⟨h1, h2, h3, h4⟩ := hδlt'
-  obtain ⟨h29, h30⟩ := hδ₀' (μ / 2) hδ0 h1
+  obtain ⟨h29, h30⟩ := hδ₀' (μ / 2) hδ0.le h1.le
   refine ⟨μ / 2, hδ0, h29, h30, ?_⟩
   set δ := μ / 2
   have hgam := (eta_lt_gam_iff δ n m).1 h30
@@ -322,7 +322,7 @@ theorem exists_delta {n m : ℕ} (hn : 0 < n) (hm : 16 * n ^ 2 < m) {κ : ℝ}
   rw [div_lt_iff₀ (by linarith)]
   rw [gam, lam]
   rw [hEdef] at a1 a2 a3
-  nlinarith
+  linarith only [a1, a2, a3]
 
 /-- One can choose `m` reduced approximations `h_j / q_j ∈ approxSet α κ` with `q_j > 1`,
 `log q_1 > L` and `log q_{j+1} > (2 / δ) log q_j`.

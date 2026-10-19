@@ -330,3 +330,16 @@ file gate, final independent verifier) have exited; all native calls have return
 No background compiler/native/profile work remains. The worker explicitly releases
 source, compiler and native ownership to the parent. No file/checkpoint completion or
 commit/push claim is made here.
+
+
+## Owner measurement correction (original5 checkpoint review)
+
+The immutable original raw profile remains retained. A fresh owner parser audit found
+unindented `Meta.whnf` internal trace events included in the earlier column-zero sum.
+The accepted disjoint target total is **87.929 ms**, replacing the earlier
+87.948 ms figure for measurement purposes. This counts only the exact target's
+column-zero `Elab.command` / `Elab.async` roots, excludes nested/internal Meta events,
+and excludes the following `end Roth` command and its asynchronous lint work.
+The budget conclusion is unchanged. Both sums and anchors are preserved in
+`/private/tmp/roth-mainlemma-owner/prior-profile-root-reaudit.json`; no raw evidence
+or original worker report text was overwritten.
