@@ -2699,3 +2699,20 @@ Next:fresh final independent filewide assessment of both resolved hr recommendat
 ### Theta final file phases — immutable source ff85b7f1
 
 Fresh final independent review and owner cumulative/allactual/native/affectedmodule/whole50profile/fullTHENseparateEval gates pass; all17pins remain exact. See[Theta-final.md](cleanup/Theta-final.md) for actual commands/timings/all50table, warnings and evidence hashes. Original counts unchanged216/264; completed files advance9→10after successful finalpublication. Standing implementrecommended authorization and explicit retained choices remain. NextMainLemma; actualcaller timing limitation and single authorized globalIndexrename carried honestly. Finalaudit commit hash is recorded in the following publication entry.
+
+
+### Theta final publication — a2e286bbf82d22dd11c25c34c5879495342820a2
+
+Final audit commit `a2e286bbf82d22dd11c25c34c5879495342820a2` completes all Theta file phases on unchanged source
+SHA256 `ff85b7f132cf83c980323449b38558699e7e39d5a1b8bd895ac3374d78310207`.
+Fresh final semantics: 1,223 checks and all 50 actual proof-body/type/standard-axiom sets.
+Complete unfiltered diagnostics: zero errors, warnings 6/3/4/0/0. Actual whole-file first
+and required repeat maxima 778.325/907.046 ms; all 50 declarations pass both sweeps.
+Affected-module build 4.802 s, full build 6.695 s THEN separate LeanEval 3.353 s; all exit 0
+and all 17 source/configuration pins remain identical. All compiler/native requests drained.
+Counts are 216/264 original declarations, Theta 35/35 and 10/14 completed files.
+[Final audit](cleanup/Theta-final.md) and [independent review](cleanup/Theta-final-simplify-final.md).
+Next file: MainLemma; its unavailable actual caller timing and existing warnings remain
+explicit next-file work. The single authorized Index rename remains in the global pass queue.
+Successful push and a clean HEAD=origin are required before the owner releases source,
+shared reports and Git to the next file owner.
