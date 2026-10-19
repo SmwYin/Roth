@@ -74,7 +74,7 @@ removals. No unselected row may be inferred from that probe's successful compile
 - Supported revisit 29, index_le_lem6 arithmetic boundary: K weakens hδ0/hδ1 to nonstrict bounds and hrp to3≤(rnone:ℝ); removes only index_le_lem6.hr0/hB. Domains, exact conclusion, hq and protected globalΘ hB/hr hypotheses remain..
   Independent original adapter, actual axioms/metadata/caller, complete LSP, profile and frozen
   full/LeanEval gates pass.
-- Next: original32 lem6M_lt (ordinary proof≤30; every new helper requires a separate fresh audit). Published originals now Theta 31/35, overall 212/264; approved revisits themselves do not increase counts.
+- Next: original33 lem7_Φ_bound, then34/35 and every final file phase. Published originals now Theta 32/35, overall 213/264; approved revisits themselves do not increase counts.
 
 The evidence and proposal descriptions below were prepared before this decision. Their historic
 unapplied status is superseded only by the exact selected scope above and subsequent checkpoint
@@ -529,3 +529,42 @@ hashes remain identical, including after the cumulative verifier. After successf
 overall211/264,Theta30/35,9/14files. No new helper or count from revisits. Next original31
 private one_lt_of_log_pos, then32–35 and mandatory final file phases. Earlier public-wrapper,
 hq, globalΘ hB/hr, domain and header preservation choices remain in force.
+
+
+## M. lem6M_lt positive-p/closed-log bound (original32)
+
+Under the standing instruction to implement well-supported recommendations, original32 now
+requires `0 < p` instead of `2 ≤ p`, omits `0 < r₁` derived from `1 ≤ l ≤ r₁`, and accepts the
+closed logarithmic lower bound. Its conclusion remains strict because `log 2 < 1` supplies
+strict slack. Natural domains and all other public inputs remain, and the complete `Θ_lt`
+public telescope is unchanged. Only its obsolete positive-r₁ application argument is removed.
+The public docstring accurately records the strengthened range while retaining the source quote.
+
+Before application, the concrete entire candidate, exact immutable original32 adapter and ENTIRE
+original/current Θ_lt independent proof/type/value/standard axioms compiled. Original32 proof
+53→21 lines with two substantive private estimates, each subsequently assigned a separate fresh
+full audit. Final private coefficient bound accepts `l ≤ 2 ^ r₁` (proof9lines); the analytic
+estimate accepts `0 ≤ q` and internally derives positivity (proof21lines). Exact independent
+INITIAL helper contracts and all actual built values/standard axioms pass. No extra helper,
+public definition, conclusion, import, header or protected-hypothesis change.
+
+Final source `edd28b8b48e01767e9d4434e08c0190f8a8848a873497bd647fa25e8ecdbc35f`,949lines.
+Module and complete unfiltered native LSP pass (0errors8samewarnings). Actual uncontended final
+prefix profiles: public32675.914ms, coefficient290.063ms, exponential597.526ms, all below750.
+Owner cumulative final-state recovery passed47.118s: ALL29 original public adapters, ALL5
+original definition values,87opaque body-type checks and87actual standard-axiom sets. Both full
+immutable original proof blocks remain byte-identical72cf/355a. Exact successful source/log/record:
+`/private/tmp/ThetaApprovedOriginalFinalProbe-d32-values-corrected.lean` and
+`/private/tmp/roth-theta-d32-values-corrected-cumulative29.{log,json}`. The first stale generated
+probe failure and its correction are recorded in the original32 audit, with raw evidence retained.
+
+[Original32 audit](Theta-lem6M_lt.md), [fresh coefficient audit](Theta-factorial_coefficient_le_two_pow_aux.md),
+[fresh exponential audit](Theta-two_pow_lt_rpow_aux.md). Earlier numeric/index29 failed repeat
+1068.193/1115.157ms and actual whole Θ_lt profiler stalls remain mandatory file-final repair;
+no whole-file performance pass is claimed. Owner frozen full/separate LeanEval publication gates
+are recorded with this original32 checkpoint; helpers/revisits add no original counts.
+
+
+Original32 frozen owner full91.810s THEN separateLeanEval31.678s pass; all17 source/pin hashes
+stable. Successful publication yieldsTheta32/35,overall213/264,ninefiles. Exact source/audit commit
+is recorded in central cleanup-progress; no original inflation from the two fresh helper audits.

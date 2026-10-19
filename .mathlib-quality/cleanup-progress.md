@@ -25,29 +25,31 @@ Started: 2026-10-14 (America/Chicago).
 
 ## Current status
 
-Latest completed file: Separation. Theta originals **31/35** completed; overall
-**212/264** original declarations, **9/14** files. Latest: `one_lt_of_log_pos`.
-The private wrapper was deleted and its three `Θ_lt` calls now use `Real.log_pos_iff`
-directly. All public contracts and other helpers remain unchanged.
+Latest completed file: Separation. Theta originals **32/35** completed; overall
+**213/264** original declarations, **9/14** files. Latest: `lem6M_lt`.
+Its proof53→21 lines now accepts p>0 and the closed logarithmic bound, omits the derived
+positive-r₁ input, and preserves its strict result and the entire Θ_lt public contract.
+Two substantive private estimates completed separate fresh audits; their proofs are9/21lines.
+[Original32 and final-batch evidence](cleanup/Theta-lem6M_lt.md).
 
-The complete private audit, independent first proof, exact old caller contract/proof/value,
-actual standard axioms, removed-name absence and three direct AST applications pass.
-Module and complete unfiltered native LSP pass (0 errors, 8 existing warnings).
-Owner full build (103.738 s), then separate LeanEval (34.051 s), pass with all17 source/pin
-hashes stable. The scoped direct replacement certificate profiles at86.921 ms; a deleted
-production declaration has no timing. [Latest audit](cleanup/Theta-one_lt_of_log_pos.md).
+Module, complete unfiltered native diagnostics (0errors8existingwarnings), independent original
+public/helper adapters, all actual proof values/standard axioms and the ENTIRE old/current Θ_lt
+semantic caller pass. Final owner cumulative verification:29original-public adapters, all5
+original definition values,87opaque body-type checks and87actual standard-axiom sets (47.118s),
+with both complete immutable original proof blocks unchanged. Frozen full build91.810s THEN
+separateLeanEval31.678s pass, all17 source/pin hashes stable. Actual final prefix profiles:
+public32675.914ms, coefficient290.063ms, exponential597.526ms; all below750.
 
-Mandatory final performance repair remains: unchanged `index_numeric_bound_aux` and
-`index_le_lem6` failed the required repeat at1068.193/1115.157 ms (first876.997/935.661 ms).
-Baseline/final whole `Θ_lt` profiles stalled at218726572/217743378 raw bytes; only their own
-sessions were interrupted130. No explicit Lean error or finite caller time was observed.
-No all-five, whole-file, or caller performance pass is claimed. Fresh original35 and final
-file profiling must resolve these obligations; no third cherry-picked sweep was used.
+Mandatory file-final repair remains for unchanged earlier numeric/index29 required repeats
+1068.193/1115.157ms (first876.997/935.661ms) and the stalled actual whole Θ_lt profiles.
+No finite Θ_lt caller duration or explicit Lean error was observed in those bounded attempts.
+No whole-file performance pass or cherry-picked third sweep is claimed.
 
-Next: original32 `lem6M_lt`, then the remaining three originals and every file-final phase.
-Each new private helper requires a separate fresh audit; helpers/revisits do not increase counts.
-[Contract decisions](cleanup/Theta-contract-proposal.md) and standing implementation authority
-remain in force, including the earlier explicit hq and extra hB/hr preservation choices.
+Next: original33 `lem7_Φ_bound`,34 `lem7_numeric`,35 `Θ_lt`, then every file-final phase.
+Helper/revisit audits do not inflate original counts. [Contract decisions](cleanup/Theta-contract-proposal.md)
+and standing implementation authority remain in force, including earlier explicit hq and extra
+hB/hr preservation choices. Validated revisits remain9; original32 strengthenings are part of
+its first original audit. Latest exact source/audit hash is appended below after commit.
 
 Build/tool setup completed; GitHub browser authentication and branch publication succeeded.
 The first file, `Roth/HasseDeriv.lean`, has completed all declaration and final review,
@@ -2502,3 +2504,15 @@ Next:original32 lem6M_lt (ordinary proof≤30; every new helper requires a separ
 Original31 validated source/audit checkpoint: [b654ab8](https://github.com/SmwYin/Roth/commit/b654ab84fc3f86231421a033a62cdc774bb26adb).
 The following central-log metadata commit changes no Lean source; both commits publish
 together before original32 edits. Counts remain 212/264, Theta 31/35, 9/14 files.
+
+
+## Theta original32 checkpoint — lem6M_lt
+
+Simplified lem6M_lt from53 to21 proof lines using two substantive independently audited private estimates. Weakened p≥2 to p>0 and the logarithmic bound to≤, removed the derived positive-r₁ argument, and preserved the strict conclusion and entire Θ_lt caller contract.
+
+Original32 and BOTH new helpers completed separate fresh24/42/five-search/every-binder/inversion/packing/inequality/11-step audits. Exact immutable old32 adapter, ENTIRE original/current Θ_lt independent proof/type/value/standard axioms, both INITIAL helper contracts and actual built opaque values/standard axioms pass. Current private bounds accept l≤2^r₁ and q≥0 while public32 retains its documented assumptions. Owner final-state cumulative verification passed47.118s: all29 exact original-public adapters,87 opaque body-type checks and87 actual standard-axiom sets; both full immutable proof blocks byte-identical. [Dedicated audit](cleanup/Theta-lem6M_lt.md).
+Final Theta SHA256 `edd28b8b48e01767e9d4434e08c0190f8a8848a873497bd647fa25e8ecdbc35f`. Module and complete unfiltered LSP:0 errors/8 warnings;
+Accepted real prefix profile:lem6M_lt675.914, factorial_coefficient_le_two_pow_aux290.063, two_pow_lt_rpow_aux597.526 (all below750; no threshold repeat required) ms. Frozen full build91.810s then
+separate LeanEval31.678s both exit0; all17project/pin/source hashes stable.
+Two substantive private estimates have separate fresh completed audits: coefficient proof9lines with l≤2^r₁, exponential proof21lines with q≥0. Helper audits and supported revisits do not inflate original counts. After successful publication:Theta32/35,overall213/264,9/14files.
+Next:original33 lem7_Φ_bound, then34/35 and every final file phase. Actual whole-Theta profiling and final file phases remain outstanding.

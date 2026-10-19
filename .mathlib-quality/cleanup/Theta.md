@@ -71,7 +71,7 @@ ordinary baseline builds passing does not imply any all-file profile pass.
 | 29 | `index_le_lem6` | 521 | 89 | Complete;[audit](Theta-index_le_lem6.md) |
 | 30 | `Θ_option_le` | 623 | 6 | Complete;[audit](Theta-Theta_option_le.md) |
 | 31 | `one_lt_of_log_pos` | 640 | 5 | Complete;[audit](Theta-one_lt_of_log_pos.md) |
-| 32 | `lem6M_lt` | 650 | 53 | Pending dedicated audit |
+| 32 | `lem6M_lt` | 650 | 53 | Complete;[audit](Theta-lem6M_lt.md) |
 | 33 | `lem7_Φ_bound` | 711 | 22 | Pending dedicated audit |
 | 34 | `lem7_numeric` | 741 | 25 | Pending dedicated audit |
 | 35 | `Θ_lt` | 774 | 198 | Pending dedicated audit |
@@ -615,3 +615,14 @@ Baseline/final actual `Θ_lt` whole-source attempts stalled and only their own s
 interrupted130; neither produced a finite caller time or explicit Lean error. Original35 and
 file-final profiling must resolve these obligations. Scoped31 certificate PASS does not establish
 all-five or whole-file performance PASS. No third cherry-picked sweep was used.
+
+
+## Published checkpoint32 — lem6M_lt
+
+Simplified lem6M_lt from53 to21 proof lines using two substantive independently audited private estimates. Weakened p≥2 to p>0 and the logarithmic bound to≤, removed the derived positive-r₁ argument, and preserved the strict conclusion and entire Θ_lt caller contract.
+
+Original32 and BOTH new helpers completed separate fresh24/42/five-search/every-binder/inversion/packing/inequality/11-step audits. Exact immutable old32 adapter, ENTIRE original/current Θ_lt independent proof/type/value/standard axioms, both INITIAL helper contracts and actual built opaque values/standard axioms pass. Current private bounds accept l≤2^r₁ and q≥0 while public32 retains its documented assumptions. Owner final-state cumulative verification passed47.118s: all29 exact original-public adapters,87 opaque body-type checks and87 actual standard-axiom sets; both full immutable proof blocks byte-identical. Module and complete unfiltered final LSP pass with 0 errors / 8 warnings.
+Accepted uncontended exact-prefix profile: lem6M_lt675.914, factorial_coefficient_le_two_pow_aux290.063, two_pow_lt_rpow_aux597.526 (all below750; no threshold repeat required) ms; no whole-file performance claim.
+Frozen owner full (91.810 s) then separate LeanEval (31.678 s) pass.
+[Dedicated audit](Theta-lem6M_lt.md). Theta 32/35, overall 213/264 originals;9/14 files complete.
+Two substantive private estimates have separate fresh completed audits: coefficient proof9lines with l≤2^r₁, exponential proof21lines with q≥0. Helper audits and supported revisits do not inflate original counts. Next: original33 lem7_Φ_bound, then34/35 and every final file phase.

@@ -600,65 +600,70 @@ end Lemma6
 
 section Lemma7
 
-/-- For `log q_1 > p (2p + 1) / δ`, the constant `M` of Lemma 6 with `B = q_1^{δ r_1}` satisfies
-`M < q_1^{δ (1 + 1/p) l r_1}`. Source: §5, proof of Lemma 7 ("`M < q_1^{δ_1 l r_1}` with
-`δ_1 = δ(1 + p⁻¹)`"). -/
-theorem lem6M_lt {p : ℕ} (hp : 2 ≤ p) {δ : ℝ} (hδ0 : 0 < δ) {r₁ : ℕ} (hr₁ : 0 < r₁) {q₁ : ℕ}
-    (hq₁ : (p : ℝ) * (2 * p + 1) / δ < Real.log q₁) {l : ℕ} (hl : 1 ≤ l) (hl' : l ≤ r₁) :
-    lem6M p r₁ ((q₁ : ℝ) ^ (δ * r₁)) l < (q₁ : ℝ) ^ (δ * (1 + 1 / p) * (l * r₁)) := by
-  have hp0 : (0 : ℝ) < p := by exact_mod_cast (by omega : 0 < p)
-  have hlogq : 0 < Real.log q₁ := lt_trans (by positivity) hq₁
-  have hq1pos : (0 : ℝ) < q₁ := by
-    rcases Nat.eq_zero_or_pos q₁ with h | h
-    · simp [h] at hlogq
-    · exact_mod_cast h
-  -- the factors other than `B^l` are at most `2^{(2p+1) r₁ l}`
-  have hr2 : r₁ + 1 ≤ 2 ^ r₁ := Nat.lt_two_pow_self
-  have hlr : l ≤ 2 ^ r₁ := hl'.trans Nat.lt_two_pow_self.le
-  have hnat : (r₁ + 1) ^ (p * l) * l.factorial * 2 ^ (p * l * r₁) ≤
-      2 ^ ((2 * p + 1) * r₁ * l) := by
-    have h1 : (r₁ + 1) ^ (p * l) ≤ (2 ^ r₁) ^ (p * l) := Nat.pow_le_pow_left hr2 _
-    have h2 : l.factorial ≤ (2 ^ r₁) ^ l :=
-      (Nat.factorial_le_pow l).trans (Nat.pow_le_pow_left hlr _)
-    calc (r₁ + 1) ^ (p * l) * l.factorial * 2 ^ (p * l * r₁)
-        ≤ (2 ^ r₁) ^ (p * l) * (2 ^ r₁) ^ l * 2 ^ (p * l * r₁) := by gcongr
-      _ = 2 ^ ((2 * p + 1) * r₁ * l) := by
-          rw [← pow_mul, ← pow_mul, ← pow_add, ← pow_add]
-          ring_nf
-  have hnatR : ((r₁ : ℝ) + 1) ^ (p * l) * l.factorial * 2 ^ (p * l * r₁) ≤
-      2 ^ ((2 * p + 1) * r₁ * l) := by exact_mod_cast hnat
-  have hB : ((q₁ : ℝ) ^ (δ * r₁)) ^ l = (q₁ : ℝ) ^ (δ * r₁ * l) :=
-    (Real.rpow_mul_natCast hq1pos.le _ _).symm
-  have h2N : (2 : ℝ) ^ ((2 * p + 1) * r₁ * l) < (q₁ : ℝ) ^ (δ / p * (l * r₁)) := by
-    rw [← Real.rpow_natCast, Real.rpow_def_of_pos (by norm_num), Real.rpow_def_of_pos hq1pos,
-      Real.exp_lt_exp]
-    have hlog2 : Real.log 2 < 1 := by
-      have := Real.log_lt_sub_one_of_pos (by norm_num : (0 : ℝ) < 2) (by norm_num)
-      linarith
-    have hlr0 : (0 : ℝ) < l * r₁ := mul_pos (by exact_mod_cast hl) (by exact_mod_cast hr₁)
-    have h3 : (2 * p + 1 : ℝ) < Real.log q₁ * (δ / p) := by
-      rw [mul_div_assoc', lt_div_iff₀ hp0]
-      rw [div_lt_iff₀ hδ0] at hq₁
-      linarith
-    have h4 : Real.log 2 * (2 * p + 1) < Real.log q₁ * (δ / p) :=
-      (mul_lt_of_lt_one_left (by positivity) hlog2).trans h3
-    calc Real.log 2 * (((2 * p + 1) * r₁ * l : ℕ) : ℝ) = Real.log 2 * (2 * p + 1) * (l * r₁) := by
+private lemma factorial_coefficient_le_two_pow_aux (p r₁ l : ℕ) (hl : l ≤ 2 ^ r₁) :
+    (r₁ + 1) ^ (p * l) * l.factorial * 2 ^ (p * l * r₁) ≤ 2 ^ ((2 * p + 1) * r₁ * l) := by
+  calc
+    (r₁ + 1) ^ (p * l) * l.factorial * 2 ^ (p * l * r₁)
+        ≤ (2 ^ r₁) ^ (p * l) * (2 ^ r₁) ^ l * 2 ^ (p * l * r₁) := by
+          gcongr
+          · exact Nat.lt_two_pow_self
+          · exact (Nat.factorial_le_pow l).trans (Nat.pow_le_pow_left hl _)
+    _ = 2 ^ ((2 * p + 1) * r₁ * l) := by
+      rw [← pow_mul, ← pow_mul, ← pow_add, ← pow_add]
+      ring_nf
+
+private lemma two_pow_lt_rpow_aux {p r₁ l : ℕ} (hp : 0 < p) {δ q : ℝ} (hδ : 0 < δ) (hq : 0 ≤ q)
+    (hlog : (p : ℝ) * (2 * p + 1) / δ ≤ Real.log q) (hlr : 0 < l * r₁) :
+    (2 : ℝ) ^ ((2 * p + 1) * r₁ * l) < q ^ (δ / p * (l * r₁)) := by
+  have hp0 : (0 : ℝ) < p := by exact_mod_cast hp
+  replace hq : 0 < q := zero_lt_one.trans <|
+    (Real.log_pos_iff hq).1 <| lt_of_lt_of_le (by positivity) hlog
+  have hlog2 : Real.log 2 < 1 := by
+    exact (Real.log_lt_sub_one_of_pos (by norm_num : (0 : ℝ) < 2) (by norm_num)).trans_eq
+      (by norm_num)
+  have h3 : (2 * p + 1 : ℝ) ≤ Real.log q * (δ / p) := by
+    rw [mul_div_assoc', le_div_iff₀ hp0]
+    rw [div_le_iff₀ hδ] at hlog
+    linarith
+  rw [← Real.rpow_natCast, Real.rpow_def_of_pos (by norm_num), Real.rpow_def_of_pos hq,
+    Real.exp_lt_exp]
+  calc
+    Real.log 2 * (((2 * p + 1) * r₁ * l : ℕ) : ℝ)
+        = Real.log 2 * (2 * p + 1) * (l * r₁) := by
           push_cast
           ring
-      _ < Real.log q₁ * (δ / p) * (l * r₁) := mul_lt_mul_of_pos_right h4 hlr0
-      _ = Real.log q₁ * (δ / p * (l * r₁)) := by ring
-  calc lem6M p r₁ ((q₁ : ℝ) ^ (δ * r₁)) l = ((r₁ : ℝ) + 1) ^ (p * l) * l.factorial *
+    _ < Real.log q * (δ / p) * (l * r₁) :=
+      mul_lt_mul_of_pos_right
+        ((mul_lt_of_lt_one_left (by positivity) hlog2).trans_le h3) (by exact_mod_cast hlr)
+    _ = Real.log q * (δ / p * (l * r₁)) := by ring
+
+/-- For `log q_1 ≥ p (2p + 1) / δ` and `p > 0`, the constant `M` of Lemma 6 with
+`B = q_1^{δ r_1}` satisfies `M < q_1^{δ (1 + 1/p) l r_1}`.
+Source: §5, proof of Lemma 7 ("`M < q_1^{δ_1 l r_1}` with `δ_1 = δ(1 + p⁻¹)`"). -/
+theorem lem6M_lt {p : ℕ} (hp : 0 < p) {δ : ℝ} (hδ0 : 0 < δ) {r₁ q₁ : ℕ}
+    (hq₁ : (p : ℝ) * (2 * p + 1) / δ ≤ Real.log q₁) {l : ℕ} (hl : 1 ≤ l) (hl' : l ≤ r₁) :
+    lem6M p r₁ ((q₁ : ℝ) ^ (δ * r₁)) l < (q₁ : ℝ) ^ (δ * (1 + 1 / p) * (l * r₁)) := by
+  have hp0 : (0 : ℝ) < p := by exact_mod_cast hp
+  have hq1pos : (0 : ℝ) < q₁ := zero_lt_one.trans <|
+    (Real.log_pos_iff (Nat.cast_nonneg q₁)).1 <| lt_of_lt_of_le (by positivity) hq₁
+  -- the factors other than `B^l` are at most `2^{(2p+1) r₁ l}`
+  have hnatR : ((r₁ : ℝ) + 1) ^ (p * l) * l.factorial * 2 ^ (p * l * r₁) ≤
+      2 ^ ((2 * p + 1) * r₁ * l) := by
+    exact_mod_cast factorial_coefficient_le_two_pow_aux p r₁ l (hl'.trans Nat.lt_two_pow_self.le)
+  calc
+    lem6M p r₁ ((q₁ : ℝ) ^ (δ * r₁)) l = ((r₁ : ℝ) + 1) ^ (p * l) * l.factorial *
         2 ^ (p * l * r₁) * ((q₁ : ℝ) ^ (δ * r₁)) ^ l := by
-        rw [lem6M]
-        ring
+          rw [lem6M]
+          ring
     _ ≤ 2 ^ ((2 * p + 1) * r₁ * l) * ((q₁ : ℝ) ^ (δ * r₁)) ^ l :=
-        mul_le_mul_of_nonneg_right hnatR (by positivity)
+      mul_le_mul_of_nonneg_right hnatR (by positivity)
     _ < (q₁ : ℝ) ^ (δ / p * (l * r₁)) * ((q₁ : ℝ) ^ (δ * r₁)) ^ l :=
-        mul_lt_mul_of_pos_right h2N (by positivity)
+      mul_lt_mul_of_pos_right
+        (two_pow_lt_rpow_aux hp hδ0 hq1pos.le hq₁ (Nat.mul_pos (by lia) (by lia))) (by positivity)
     _ = (q₁ : ℝ) ^ (δ * (1 + 1 / p) * (l * r₁)) := by
-        rw [hB, ← Real.rpow_add hq1pos]
-        congr 1
-        ring
+      rw [← Real.rpow_mul_natCast hq1pos.le, ← Real.rpow_add hq1pos]
+      congr 1
+      ring
 
 /-- For `p ≥ 2` and `0 < δ < 1`, with `δ_1 = δ (1 + 1/p)`,
 `δ_1 + 10^{p-1} δ_1^{(1/2)^{p-1}} < 3 · 10^{p-1} δ^{(1/2)^{p-1}}`.
@@ -833,7 +838,7 @@ theorem Θ_lt (n : ℕ) {δ : ℝ} (hδ0 : 0 < δ) (hδ : δ < 1 / ((n : ℝ) + 
     have hδδ₁ : δ ≤ δ₁ := le_mul_of_one_le_right hδ0.le (le_add_of_nonneg_right (by positivity))
     have hδ₁0 : 0 < δ₁ := by positivity
     have hMlt : M < (q 0 : ℝ) ^ (δ₁ * (l * r 0)) :=
-      lem6M_lt (p := n + 1 + 1) (by omega) hδ0 (hr0 0) (by
+      lem6M_lt (p := n + 1 + 1) (by omega) hδ0 (by
         have := hq1
         push_cast at this ⊢
         linarith) hl1 hl''
