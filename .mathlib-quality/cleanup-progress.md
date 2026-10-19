@@ -25,6 +25,19 @@ Started: 2026-10-14 (America/Chicago).
 
 ## Current status
 
+MainLemma is active:1/27original declarations complete at the latest published checkpoint;
+overall217/264 originals,10/14fully completedfiles. `lam` retained unchanged after fresh
+24-item/42-rule/5-method/11-step audit,independent exact formula/type/AST/universe/binder/value/
+standard-axiom checks and complete unfiltered MainLemma/Main diagnostics. Actual anchored
+lam profile87.948ms. Owner fullbuild31.136s THEN separateLeanEval31.436s both exit0 on
+immutable17pins. Phase3 grouped imports; source708→709lines. MainLemma filewide final,
+simplify and complete performance phases remain pending. Next:gam. See
+[MainLemma ledger](cleanup/MainLemma.md) and [lam audit](cleanup/MainLemma-lam.md).
+The source/audit commit hash is recorded in the appended checkpoint history; its metadata
+child publishes that record. Prior final completed-file handoff is preserved below.
+
+### Previous completed-file handoff (Theta)
+
 Latest completed file after successful final publication: Theta. All 35/35 Theta originals
 are complete; overall 216/264 original declarations and 10/14 files. The 50 retained
 declarations comprise 32 originals and 18 new private helpers; all 22 introduced helper
@@ -154,7 +167,7 @@ Files will be processed in dependency order; declarations within each file are s
 | `Roth/Index.lean` | 275 | All cleanup phases complete;21/21 originals audited; user-approved hypothesis groups applied and validated |
 | `Roth/Separation.lean` | 618 | Complete;30/30 originals and all final phases;source556lines27retained;all12 approved instance amendments validated |
 | `Roth/Theta.lean` | 981 | Active;3/35originals audited(RSet,indexSet,Θ);preparation/importgrouping complete;fullfileperformance remains pending |
-| `Roth/MainLemma.lean` | 704 | Awaiting cleanup |
+| `Roth/MainLemma.lean` | 704 | Active;1/27 originals audited/published;final file phases pending |
 | `Roth/Main.lean` | 684 | Awaiting cleanup |
 | `Roth/LeanEval.lean` | 60 | Awaiting cleanup |
 | `Roth.lean` | 14 | Awaiting cleanup |

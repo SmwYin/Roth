@@ -1,8 +1,9 @@
-import Roth.Theta
-import Roth.Lattice
 import Mathlib.Algebra.Polynomial.Div
-import Mathlib.Data.Fintype.Pigeonhole
 import Mathlib.Analysis.MeanInequalitiesPow
+import Mathlib.Data.Fintype.Pigeonhole
+
+import Roth.Lattice
+import Roth.Theta
 
 /-!
 # Roth's main lemma (Lemma 9)
