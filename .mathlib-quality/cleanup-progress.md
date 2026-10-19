@@ -2643,3 +2643,13 @@ Frozen Theta SHA256 `3f9c23b83cd5bb8eaf9deb2b6d8c9182d0309464c5c76a3568c30eb1f86
 This belongs to original35 batch; original counts remainTheta35/35,
 overall216/264,9/14files. No count inflation from helper/revisit audits.
 Next:mandatory second sum_max_sub_le_index_det performance repair, then fresh independent filewide review and final gates. Second summax remains mandatory from1004.335/809.108 and1131.027/1065.136 failure pairs, despite incidental passing rows in this scope. No whole-file performance pass; MainLemma finite actual timing remains unmeasured before main_lemma.
+
+
+## Validated Theta revisit — sum_max_sub_le_index_det (second performance repair)
+
+Replaced broad constant-sum simp with Fin.sum_const/nsmul_eq_mul and shared a typed Matrix.of entry nonzero certificate. Exact public contract and entire direct index29 caller remain unchanged; proof28 lines/subproof9, no helper. Heartbeats3263→2581 (20.90% reduction). [Dedicated audit](cleanup/Theta-sum_max_sub_le_index_det-performance-second.md).
+Revisit source/audit commit `360815c908b578504b2724ed78a7ea2c01a66150`: [GitHub checkpoint](https://github.com/SmwYin/Roth/commit/360815c908b578504b2724ed78a7ea2c01a66150).
+Frozen Theta SHA256 `2a41e042e8a363fd01a5038dadd04e3ddbd5d6e9ff57d788aa418e389ff7cd52`. All owner gates passed as recorded in the audit.
+This belongs to original27 batch; original counts remainTheta35/35,
+overall216/264,9/14files. No count inflation from helper/revisit audits.
+Next:mandatory mapped_det_ne_zero_aux performance repair, then fresh independent filewide review and final gates. New mapped_det_ne_zero_aux failure1049.976ms remains mandatory despite829.583ms repeat. MainLemma finite actual timing remains unmeasured before main_lemma; no whole-file/project performance pass.
