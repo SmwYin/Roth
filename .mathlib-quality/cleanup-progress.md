@@ -2794,3 +2794,32 @@ current709lines. Owner rehash/review and sourcefreeze checks pass. All owned pro
 and native requests drained before publication;nextoriginalexists_delta_bound remains unedited.
 MainLemma finalfile/simplify/completeprofile phases pending. Metadata child changes only
 this checkpoint record,not source or verification inputs.
+
+
+### MainLemma original5 checkpoint — exists_delta_bound
+
+Source/audit commit `e124c7aa8f941f9ebc94d4a09c359455c5c770e8`; the following metadata child records and publishes this
+exact checkpoint before the next original edit. MainLemma5/27,overall221/264,
+10/14fullycompletedfiles. [Dedicated audit](cleanup/MainLemma-exists_delta_bound.md) contains all
+24audit/42golf/5search/11verification steps,exact independent original reimplementation/
+effectivecontract/universe/binder/type/value/standard-axiom evidence,actual affectedmodule/
+fullfile and complete unfiltered native successes. Actual anchored profile765.392ms;
+raw evidence and required repeat/failure history are preserved. Removed hn and strengthened the uniform interval to 0≤δ≤δ₀; proof30→15lines,0helpers. Necessary Pow.Continuity import; two exact Main calls and approved one-line explicit-premise linarith repair. Final target765.392/739.630ms; Main consumer1430.559/1459.407ms improves on original3926.336/3727.365 but remains in the Main-nextfile performance queue,with no Main audit credit. Fresh owner root/LeanEval native closure is complete,zero messages/errors. Explicit prior-parameter measurement addenda correct root accounting to lam87.929,gam22.074,eta14.891,B₁29.399ms;all raw evidence retained.
+Owner fullbuild6.304s THEN separateLeanEval3.290s,both exit0,all17pins immutable;sourceSHA256`37ac02db4702d7c91a21f66ee1f7f22bdf8b6c6c23e3ab740cc7d1a9c679fefc`,
+current694lines. Owner rehash/review and sourcefreeze checks pass. All owned processes
+and native requests drained before publication;nextoriginaleta_lt_gam_iff remains unedited.
+MainLemma finalfile/simplify/completeprofile phases pending. Metadata child changes only
+this checkpoint record,not source or verification inputs.
+
+
+### MainLemma original1–4 profile-accounting correction
+
+Source/audit commit `e124c7aa8f941f9ebc94d4a09c359455c5c770e8` includes explicit append-only corrections to the four
+earlier reports and MainLemma ledger. Exact target command/async roots give lam87.929ms
+(previous87.948),gam22.074ms(previous22.088),eta14.891ms(previous14.910),B₁29.399ms
+(previous29.417). Earlier sums included unindented internal Meta.whnf events; corrected
+sums exclude those internal/nested events and following end-command/lint work. All
+four budget results remain passes. Raw evidence and both old/new sums are retained;
+no earlier checkpoint history was silently rewritten. Owner evidence:
+`/private/tmp/roth-mainlemma-owner/prior-profile-root-reaudit.json`. Future workers and
+final whole-file gates must use exact anchored Elab.command/Elab.async roots.
