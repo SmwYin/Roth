@@ -128,3 +128,20 @@ All worker/compiler/native/profile ownership drained before publication.
 Source/audit publication hash follows in central checkpoint history via metadata child.
 MainLemma3/27 originals,overall219/264,10/14fullycompletedfiles;nextB₁.
 Filewide final phases remain pending.
+
+
+### Original4: `B₁`
+
+[Fresh dedicated full audit](MainLemma-B₁.md):all24audit/42golf/5search/11checklist
+artifacts reviewed by owner. Formula and domains unchanged; queued B₁→mainCoeffBound for the final project-wide rename pass,with the prior Index entry preserved.
+Independent original reimplementation,exact old/current effective contract metadata/value
+and standard-axiom evidence reviewed; complete unfiltered livefile/affectedcaller diagnostics
+and actual affected-module/fullfile validation pass. Actual anchored profile29.417ms;
+required repeats/failed evidence,if any,remain in the dedicated report. Owner verified frozen
+source/evidence and ran fullbuild5.439s THEN separateLeanEval5.054s,both exit0 with all17pins immutable.
+Owner logs:`/private/tmp/roth-mainlemma-owner/B₁-owner-full.json` and
+`B₁-owner-eval.json`. SourceSHA256`0236435831af553f54e04569caadb7b985e0a556dbebf51d454e53abf3ea2abb`;current709lines.
+All worker/compiler/native/profile ownership drained before publication.
+Source/audit publication hash follows in central checkpoint history via metadata child.
+MainLemma4/27 originals,overall220/264,10/14fullycompletedfiles;nextexists_delta_bound.
+Filewide final phases remain pending.
