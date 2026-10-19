@@ -2548,3 +2548,7 @@ Accepted actual whole-source scoped final pair:public Θ_lt413.535/330.244; pref
 separate LeanEval31.863s both exit0; all17project/pin/source hashes stable.
 All11 introduced obligations complete: retained scaled_unique,delta_succ,prefix_lt,base,denominators,phi,successor,large_delta; introduced/deleted fin_option,prefix_log,last_lt_first each have their own fresh generic original-contract/deletion-replacement audit. No helper or revisit count inflation. After successful publication:Theta35/35,overall216/264,9/14files.
 Next:dedicated sequential numeric/index29 performance repairs, fresh independent filewide simplify review, all cumulative semantic/native/import/actual whole-file profile/full+separateLeanEval gates before Theta file-final publication. Actual whole-Theta profiling and final file phases remain outstanding.
+
+Original35 validated source/audit checkpoint: [6bf343c](https://github.com/SmwYin/Roth/commit/6bf343c4b91f530522cc2dbb19ad472cdd548ac4).
+The following central-log metadata commit changes no Lean source; both commits publish
+together before subsequent performance revisit edits. Counts remain 216/264, Theta 35/35, 9/14 files.
