@@ -73,7 +73,7 @@ ordinary baseline builds passing does not imply any all-file profile pass.
 | 31 | `one_lt_of_log_pos` | 640 | 5 | Complete;[audit](Theta-one_lt_of_log_pos.md) |
 | 32 | `lem6M_lt` | 650 | 53 | Complete;[audit](Theta-lem6M_lt.md) |
 | 33 | `lem7_Φ_bound` | 711 | 22 | Complete;[audit](Theta-lem7_Phi_bound.md) |
-| 34 | `lem7_numeric` | 741 | 25 | Pending dedicated audit |
+| 34 | `lem7_numeric` | 741 | 25 | Complete;[audit](Theta-lem7_numeric.md) |
 | 35 | `Θ_lt` | 774 | 198 | Pending dedicated audit |
 
 ## Published checkpoint1 — RSet
@@ -637,3 +637,14 @@ Accepted uncontended exact-prefix profile: 876.021 / 757.251 (required same-sour
 Frozen owner full (105.519 s) then separate LeanEval (38.323 s) pass.
 [Dedicated audit](Theta-lem7_Phi_bound.md). Theta 33/35, overall 214/264 originals;9/14 files complete.
 No new helper; existing separately audited private helpers are unchanged. Next: original34 lem7_numeric, then35 Θ_lt and all final file phases.
+
+
+## Published checkpoint34 — lem7_numeric
+
+Extended lem7_numeric to δ≤1 and the closed Φ upper bound, removed the unnecessary Φ≥0 premise, and preserved its strict conclusion. Explicit scaled-square comparisons replace broad nonlinear search; proof25→29lines with no helper. The Θ_lt call is minimally adapted and its full public contract preserved.
+
+Fresh24/42/five actual searches/every-binder/public-literature/inversion/packing/inequality/11-step gates pass. Exact immutable old34 adapter, ENTIRE old/current/independent Θ_lt effective type, opaque proof value, standard axioms and actual dependency pass. Owner cumulative d34-values passed29 original-public adapters/all5 definition values/87 opaque body types/87 actual standard-axiom sets, with both complete immutable original proof blocks unchanged. Module and complete unfiltered final LSP pass with 0 errors / 8 warnings.
+Accepted uncontended exact-prefix profile: 757.682 and required same-source repeat865.831 (baseline1429.265) ms; no whole-file performance claim.
+Frozen owner full (108.121 s) then separate LeanEval (33.707 s) pass.
+[Dedicated audit](Theta-lem7_numeric.md). Theta 34/35, overall 215/264 originals;9/14 files complete.
+No new helper; existing separately audited helpers unchanged. No original-count inflation from helper/revisit audits. Next: original35 headline Θ_lt, every newhelper separate fresh audit, then mandatory performance repairs and all final file phases.

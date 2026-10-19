@@ -693,19 +693,19 @@ theorem lem7_Φ_bound {p : ℕ} (hp : 2 ≤ p) {δ : ℝ} (hδ0 : 0 < δ) (hδ1 
     mul_le_mul_of_nonneg_right
       (le_self_pow₀ (by norm_num : (1 : ℝ) ≤ 10) (by lia : p - 1 ≠ 0)) hde0.le, hde0]
 
-/-- If `0 ≤ Φ < 3 · 10^{p-1} δ^{(1/2)^{p-1}}` with `p ≥ 2` and `0 < δ < 1`, then
+/-- If `Φ ≤ 3 · 10^{p-1} δ^{(1/2)^{p-1}}` with `p ≥ 2` and `0 < δ ≤ 1`, then
 `2(Φ + Φ^{1/2} + δ^{1/2}) < 10^p δ^{(1/2)^p}`.
+The bound also allows negative `Φ` and equality in both upper hypotheses.
 Source: §5, proof of Lemma 7 ("Set `a = δ^{2^{-p}}` ... `Θ_p < 2(3·10^{p-1} a² + √3 10^{(p-1)/2}
 a + δ^{1/2}) ≤ ... < 10^p a`"). -/
-theorem lem7_numeric {p : ℕ} (hp : 2 ≤ p) {δ : ℝ} (hδ0 : 0 < δ) (hδ1 : δ < 1) {Φ : ℝ}
-    (hΦ0 : 0 ≤ Φ) (hΦ : Φ < 3 * 10 ^ (p - 1) * δ ^ ((1 / 2 : ℝ) ^ (p - 1))) :
+theorem lem7_numeric {p : ℕ} (hp : 2 ≤ p) {δ : ℝ} (hδ0 : 0 < δ) (hδ1 : δ ≤ 1) {Φ : ℝ}
+    (hΦ : Φ ≤ 3 * 10 ^ (p - 1) * δ ^ ((1 / 2 : ℝ) ^ (p - 1))) :
     2 * (Φ + √Φ + √δ) < 10 ^ p * δ ^ ((1 / 2 : ℝ) ^ p) := by
-  obtain ⟨k, rfl⟩ : ∃ k, p = k + 1 := ⟨p - 1, by omega⟩
+  obtain ⟨k, rfl⟩ : ∃ k, p = k + 1 := ⟨p - 1, by lia⟩
   rw [Nat.add_sub_cancel] at hΦ
   set a := δ ^ ((1 / 2 : ℝ) ^ (k + 1)) with ha
   set T : ℝ := 10 ^ k with hT
   have ha0 : 0 < a := Real.rpow_pos_of_pos hδ0 _
-  have ha1 : a ≤ 1 := Real.rpow_le_one hδ0.le hδ1.le (by positivity)
   have ha2 : a ^ 2 = δ ^ ((1 / 2 : ℝ) ^ k) := by
     rw [ha, ← Real.rpow_mul_natCast hδ0.le, pow_succ]
     congr 1
@@ -713,18 +713,23 @@ theorem lem7_numeric {p : ℕ} (hp : 2 ≤ p) {δ : ℝ} (hδ0 : 0 < δ) (hδ1 :
     ring
   have hsqrt : √δ ≤ a := by
     rw [Real.sqrt_eq_rpow, ha]
-    refine Real.rpow_le_rpow_of_exponent_ge hδ0 hδ1.le ?_
+    refine Real.rpow_le_rpow_of_exponent_ge hδ0 hδ1 ?_
     rw [pow_succ]
-    have : (1 / 2 : ℝ) ^ k ≤ 1 := pow_le_one₀ (by norm_num) (by norm_num)
-    linarith
-  have hT10 : (10 : ℝ) ≤ T := le_self_pow₀ (by norm_num) (by omega)
+    linarith only [(pow_le_one₀ (by norm_num) (by norm_num) : (1 / 2 : ℝ) ^ k ≤ 1)]
+  have hT10 : (10 : ℝ) ≤ T := le_self_pow₀ (by norm_num) (by lia)
   rw [← ha2] at hΦ
   have hsΦ : √Φ < T * a := by
-    rw [Real.sqrt_lt' (by positivity)]
-    nlinarith
-  have hpow : (10 : ℝ) ^ (k + 1) = 10 * T := by rw [pow_succ, hT, mul_comm]
-  rw [hpow]
-  nlinarith
+    refine (Real.sqrt_lt' (by positivity)).2 (hΦ.trans_lt ?_)
+    nlinarith only [mul_lt_mul_of_pos_right
+      (mul_lt_mul_of_pos_left (by linarith only [hT10] : (3 : ℝ) < T)
+        (by positivity : 0 < T)) (sq_pos_of_pos ha0)]
+  have haa : a ^ 2 ≤ a := by
+    simpa [pow_two] using mul_le_mul_of_nonneg_left
+      (Real.rpow_le_one hδ0.le hδ1 (by positivity)) ha0.le
+  rw [pow_succ, ← hT, mul_comm T]
+  linarith only [hΦ.trans (mul_le_mul_of_nonneg_left haa (by positivity : 0 ≤ 3 * T)), hsΦ,
+    hsqrt.trans
+    (le_mul_of_one_le_left ha0.le (by linarith only [hT10] : 1 ≤ T))]
 
 /-- **Lemma 7**: under the growth conditions (19)–(22) on `r` and `q`,
 `Θ_m(q_1^{δ r_1}; q; r) < 10^m δ^{(1/2)^m}`.
@@ -928,10 +933,6 @@ theorem Θ_lt (n : ℕ) {δ : ℝ} (hδ0 : 0 < δ) (hδ : δ < 1 / ((n : ℝ) + 
       exact ih (r := fun j => l * r (Fin.castSucc j)) (q := fun j => q (Fin.castSucc j)) hδ₁0 hA
         (fun j => Nat.mul_pos hl1 (hr0 _)) hB' hC' (fun j => hq0 _) hD' hE'
     -- combine
-    have hΦ0 : 0 ≤ lem6Φ q' r' M l := by
-      rw [lem6Φ]
-      exact add_nonneg (Θ_nonneg hM1 _ fun _ => Nat.mul_pos hl1 (hr'0 _))
-        (Θ_nonneg hM1 _ fun _ => Nat.mul_pos hl1 (hr'0 _))
     have hb := lem7_Φ_bound (p := n + 1 + 1) (by omega) hδ0 hδ1.le
     simp only [Nat.add_sub_cancel] at hb
     have hΦlt : lem6Φ q' r' M l <
@@ -939,7 +940,7 @@ theorem Θ_lt (n : ℕ) {δ : ℝ} (hδ0 : 0 < δ) (hδ : δ < 1 / ((n : ℝ) + 
       simp only [Nat.add_sub_cancel]
       rw [lem6Φ]
       linarith
-    have hfin := lem7_numeric (p := n + 1 + 1) (by omega) hδ0 hδ1 hΦ0 hΦlt
+    have hfin := lem7_numeric (p := n + 1 + 1) (by omega) hδ0 hδ1.le hΦlt.le
     linarith
 
 end Lemma7

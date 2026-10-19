@@ -74,7 +74,7 @@ removals. No unselected row may be inferred from that probe's successful compile
 - Supported revisit 29, index_le_lem6 arithmetic boundary: K weakens hδ0/hδ1 to nonstrict bounds and hrp to3≤(rnone:ℝ); removes only index_le_lem6.hr0/hB. Domains, exact conclusion, hq and protected globalΘ hB/hr hypotheses remain..
   Independent original adapter, actual axioms/metadata/caller, complete LSP, profile and frozen
   full/LeanEval gates pass.
-- Next: original34 lem7_numeric, then35 Θ_lt and all final file phases. Published originals now Theta 33/35, overall 214/264; approved revisits themselves do not increase counts.
+- Next: original35 headline Θ_lt, every newhelper separate fresh audit, then mandatory performance repairs and all final file phases. Published originals now Theta 34/35, overall 215/264; approved revisits themselves do not increase counts.
 
 The evidence and proposal descriptions below were prepared before this decision. Their historic
 unapplied status is superseded only by the exact selected scope above and subsequent checkpoint
@@ -601,3 +601,31 @@ recorded with this checkpoint; no new helper or revisit count.
 Original33 frozen owner full105.519s THEN separateLeanEval38.323s pass, all17 source/pin hashes
 stable. Successful publication yieldsTheta33/35,overall214/264,ninefiles; exact source/audit hash
 is recorded in central progress. Original34/35 and every file-final phase remain.
+
+
+## O. lem7_numeric closed bounds and arbitrary Φ (original34)
+
+Under standing implementation authority, δ<1 becomes δ≤1, the strict Φ upper bound becomes
+closed, and Φ nonnegativity is removed. The strict conclusion, domains and retained binder
+metadata remain. The only Θ_lt change forwards its strict bounds by.le and removes its now
+unneeded local Φ-nonnegativity proof. No new helper. The numerical target proof25→29lines
+meets its ordinary30-line cap; all subproofs≤5. Source attribution is preserved and the
+docstring accurately records the additional endpoints/negativeΦ range. Keeping the Nat/Real
+domains and public name is a technical recommendation, not an explicit user veto.
+
+Concrete preapply and final actual certificates recover the exact immutable old34 telescope
+(including old Φ nonnegativity), ENTIRE old/current/independent Θ_lt proof/type/opaque value,
+actual standard axioms and dependency. Complete native LSP has0errors8unchangedwarnings.
+Owner final cumulative d34-values passes all29 original-public adapters/all5 definition values/
+87opaque body-type checks/87actual standard-axiom sets in50.626s; both complete original
+proof blocks remain byte-identical72cf/355a. Exact archived input
+`/private/tmp/ThetaApprovedOriginalFinalProbe-d34-values.lean`,
+SHAdf89dc269811de74901c772a70a4ccf9fb0b0a9c2d1ebd2bb4c66063c14ad5b1.
+
+Actual baseline1429.265ms improves to757.682ms; mandatory same-source repeat865.831ms also
+passes. Both final full raw traces are strict UTF8; the baseline earlier-prefix invalid bytes
+remain untouched with exact offsets and valid target slice provenance. No third timing sweep,
+raised limits or whole-file performance claim. The earlier numeric/index29 required-repeat
+failures1068.193/1115.157ms and actual wholeΘ_lt trace stalls remain mandatory final repairs.
+[Full original34 audit](Theta-lem7_numeric.md). Frozen owner full/separate LeanEval gates are
+recorded with this checkpoint. Successful publication givesTheta34/35,overall215/264,ninefiles.

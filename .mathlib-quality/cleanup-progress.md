@@ -25,29 +25,23 @@ Started: 2026-10-14 (America/Chicago).
 
 ## Current status
 
-Latest completed file: Separation. Theta originals **33/35** completed; overall
-**214/264** original declarations, **9/14** files. Latest: `lem7_Φ_bound`.
-The scalar absorption now accepts δ≤1 while keeping its strict conclusion. Direct product
-bounds, restricted arithmetic and dead-local removal shorten proof22→20lines without helpers.
-The sole Θ_lt proof call forwards its old strict bound by.le; its full public contract remains.
-[Dedicated original33 audit](cleanup/Theta-lem7_Phi_bound.md).
+Latest completed file: Separation. Theta originals34/35 are complete; overall215/264 original
+declarations,9/14 files. Original34 `lem7_numeric` now accepts closed δ/Φ upper bounds and
+arbitrary Φ while preserving the strict conclusion; proof25→29lines, no helpers. Its exact old
+contract and ENTIRE original/current Θ_lt caller proof/type/value/standard axioms pass.
+Owner cumulative recovery passes all29 public adapters/all5 definition values/87 opaque body
+types/87 actual standard-axiom sets; both complete original proof blocks are unchanged.
+Module and complete unfiltered LSP pass (0errors8samewarnings). Real target profile757.682ms,
+required same-source repeat865.831ms (baseline1429.265); frozen full build108.121s THEN separate
+LeanEval33.707s both pass, all17 source/pin hashes stable. [Original34 audit](cleanup/Theta-lem7_numeric.md).
 
-Module, complete unfiltered native diagnostics (0errors8existingwarnings), exact independent old33
-proof and actual ROOT adapter, ENTIRE old/current Θ_lt type/proof/value/standard axioms pass.
-Actual target profile1489.059→876.021ms, required same-source repeat757.251ms; both final runs
-pass below1000 without a third sweep. Owner cumulative51.807s passes29original-public adapters,
-all5 definition values,87opaque body-type checks and87actual standard-axiom sets; both complete
-original proof blocks unchanged. Frozen full105.519s THEN separateLeanEval38.323s pass,
-all17 source/pin hashes stable.
-
-Mandatory file-final repair remains for earlier numeric/index29 required repeat failures
-1068.193/1115.157ms (first876.997/935.661ms) and stalled whole Θ_lt profiling. Those bounded
-whole-caller attempts produced no explicit Lean error or finite Θ_lt timing; no whole-file
-performance pass is claimed. Next: original34 `lem7_numeric`,35 `Θ_lt`, then all final file phases.
-
-[Contract decisions](cleanup/Theta-contract-proposal.md), standing implementation authority and
-earlier explicit hq/globalΘ hB/hr preservation choices remain. No new helper or revisit count
-from original33; validated revisits remain9. Exact source/audit commit is recorded below.
+Next: fresh original35 headline Θ_lt and every new helper's separate fresh audit; then mandatory
+performance repairs and ALL final phases. Earlier numeric/index29 required repeat failures
+1068.193/1115.157ms and actual whole Θ_lt profiler stalls remain unresolved. No whole-file/caller
+performance pass is claimed. Nine validated revisits add no original counts;10 retained new
+private helpers have separate fresh audits. File-final completion has not yet been claimed.
+The user's standing authority implements supported recommendations autonomously; exact earlier
+hq/globalΘ hB/hr/header/wrapper/domain preservation choices remain. [Contract ledger](cleanup/Theta-contract-proposal.md).
 
 Build/tool setup completed; GitHub browser authentication and branch publication succeeded.
 The first file, `Roth/HasseDeriv.lean`, has completed all declaration and final review,
@@ -2534,3 +2528,15 @@ Next:original34 lem7_numeric, then35 Θ_lt and all final file phases. Actual who
 Original33 validated source/audit checkpoint: [b80bf83](https://github.com/SmwYin/Roth/commit/b80bf8386bb88f518b743aa2b30f27813314ed62).
 The following central-log metadata commit changes no Lean source; both commits publish
 together before original34 edits. Counts remain 214/264, Theta 33/35, 9/14 files.
+
+
+## Theta original34 checkpoint — lem7_numeric
+
+Extended lem7_numeric to δ≤1 and the closed Φ upper bound, removed the unnecessary Φ≥0 premise, and preserved its strict conclusion. Explicit scaled-square comparisons replace broad nonlinear search; proof25→29lines with no helper. The Θ_lt call is minimally adapted and its full public contract preserved.
+
+Fresh24/42/five actual searches/every-binder/public-literature/inversion/packing/inequality/11-step gates pass. Exact immutable old34 adapter, ENTIRE old/current/independent Θ_lt effective type, opaque proof value, standard axioms and actual dependency pass. Owner cumulative d34-values passed29 original-public adapters/all5 definition values/87 opaque body types/87 actual standard-axiom sets, with both complete immutable original proof blocks unchanged. [Dedicated audit](cleanup/Theta-lem7_numeric.md).
+Final Theta SHA256 `a98740b5b006547f5deafca6cbb12c6b4972dbfc130eae64645e67bdd9b8d800`. Module and complete unfiltered LSP:0 errors/8 warnings;
+Accepted real prefix profile:757.682 and required same-source repeat865.831 (baseline1429.265) ms. Frozen full build108.121s then
+separate LeanEval33.707s both exit0; all17project/pin/source hashes stable.
+No new helper; existing separately audited helpers unchanged. No original-count inflation from helper/revisit audits. After successful publication:Theta34/35,overall215/264,9/14files.
+Next:original35 headline Θ_lt, every newhelper separate fresh audit, then mandatory performance repairs and all final file phases. Actual whole-Theta profiling and final file phases remain outstanding.
