@@ -94,3 +94,20 @@ recorded in central cleanup-progress history by the metadata child commit.
 
 MainLemma1/27originals completed at publication,overall217/264;10/14fully completedfiles.
 Next original:gam. Remaining MainLemma final file phases are pending; no filewide pass claimed.
+
+
+### Original2: `gam`
+
+[Fresh dedicated full audit](MainLemma-gam.md):all24audit/42golf/5search/11checklist
+artifacts reviewed by owner. The gam formula,public documentation and complete call contract remain unchanged.
+Independent original reimplementation,exact old/current effective contract metadata/value
+and standard-axiom evidence reviewed; complete unfiltered livefile/affectedcaller diagnostics
+and actual affected-module/fullfile validation pass. Actual anchored profile22.088ms;
+required repeats/failed evidence,if any,remain in the dedicated report. Owner verified frozen
+source/evidence and ran fullbuild6.346s THEN separateLeanEval3.305s,both exit0 with all17pins immutable.
+Owner logs:`/private/tmp/roth-mainlemma-owner/gam-owner-full.json` and
+`gam-owner-eval.json`. SourceSHA256`0236435831af553f54e04569caadb7b985e0a556dbebf51d454e53abf3ea2abb`;current709lines.
+All worker/compiler/native/profile ownership drained before publication.
+Source/audit publication hash follows in central checkpoint history via metadata child.
+MainLemma2/27 originals,overall218/264,10/14fullycompletedfiles;nexteta.
+Filewide final phases remain pending.

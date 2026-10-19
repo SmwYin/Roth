@@ -25,16 +25,16 @@ Started: 2026-10-14 (America/Chicago).
 
 ## Current status
 
-MainLemma is active:1/27original declarations complete at the latest published checkpoint;
-overall217/264 originals,10/14fully completedfiles. `lam` retained unchanged after fresh
-24-item/42-rule/5-method/11-step audit,independent exact formula/type/AST/universe/binder/value/
-standard-axiom checks and complete unfiltered MainLemma/Main diagnostics. Actual anchored
-lam profile87.948ms. Owner fullbuild31.136s THEN separateLeanEval31.436s both exit0 on
-immutable17pins. Phase3 grouped imports; source708→709lines. MainLemma filewide final,
-simplify and complete performance phases remain pending. Next:gam. See
-[MainLemma ledger](cleanup/MainLemma.md) and [lam audit](cleanup/MainLemma-lam.md).
-The source/audit commit hash is recorded in the appended checkpoint history; its metadata
-child publishes that record. Prior final completed-file handoff is preserved below.
+MainLemma is active:2/27originals complete at the latest published checkpoint;
+overall218/264originals,10/14fullycompletedfiles. Latest:`gam` after fresh full
+24-item/42-rule/5-method/11-step audit,independent original/type/binder/value/standard-axiom
+checks,complete unfiltered affected diagnostics and actual anchored profile22.088ms.
+Owner fullbuild6.346s THEN separateLeanEval3.305s,both exit0 on immutable17pins.
+The gam formula,public documentation and complete call contract remain unchanged. Entry708→current709lines. Next:eta. MainLemma filewide final,
+independent simplify and complete performance phases remain pending. See
+[MainLemma ledger](cleanup/MainLemma.md) and [latest audit](cleanup/MainLemma-gam.md).
+The exact source/audit commit is recorded in appended checkpoint history by its metadata
+child. Prior fullycompleted-file handoff is preserved below.
 
 ### Previous completed-file handoff (Theta)
 
@@ -166,8 +166,8 @@ Files will be processed in dependency order; declarations within each file are s
 | `Roth/Lattice.lean` | 217 | All cleanup phases complete;10/10 originals and3/3 added helpers audited; user-preserved metadata |
 | `Roth/Index.lean` | 275 | All cleanup phases complete;21/21 originals audited; user-approved hypothesis groups applied and validated |
 | `Roth/Separation.lean` | 618 | Complete;30/30 originals and all final phases;source556lines27retained;all12 approved instance amendments validated |
-| `Roth/Theta.lean` | 981 | Active;3/35originals audited(RSet,indexSet,Θ);preparation/importgrouping complete;fullfileperformance remains pending |
-| `Roth/MainLemma.lean` | 704 | Active;1/27 originals audited/published;final file phases pending |
+| `Roth/Theta.lean` | 981 | Complete;35/35 originals and all final file phases;source991lines,50retained |
+| `Roth/MainLemma.lean` | 704 | Active;2/27 originals audited/published;final file phases pending |
 | `Roth/Main.lean` | 684 | Awaiting cleanup |
 | `Roth/LeanEval.lean` | 60 | Awaiting cleanup |
 | `Roth.lean` | 14 | Awaiting cleanup |
