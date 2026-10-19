@@ -176,3 +176,20 @@ All worker/compiler/native/profile ownership drained before publication.
 Source/audit publication hash follows in central checkpoint history via metadata child.
 MainLemma5/27 originals,overall221/264,10/14fullycompletedfiles;nexteta_lt_gam_iff.
 Filewide final phases remain pending.
+
+
+### Original6: `eta_lt_gam_iff`
+
+[Fresh dedicated full audit](MainLemma-eta_lt_gam_iff.md):all24audit/42golf/5search/11checklist
+artifacts reviewed by owner. Packed signature93/29chars and replaced two-line proof with one grind[gam,lam]; added application guidance,preserved source quote. Exact API/three effective binders/imports/callers unchanged;0helpers. Profile281.175→208.229ms;heartbeats1588→1055. Actual rebuilt-module opaque body/full independent original/type AST/universe/binder/standard-axiom gates pass. Owner independently froze/rehashed54UTF8 artifacts and verified exact prefixes/root timings;fresh full root/LeanEval native closure returns zero messages/errors.
+Independent original reimplementation,exact old/current effective contract metadata/value
+and standard-axiom evidence reviewed; complete unfiltered livefile/affectedcaller diagnostics
+and actual affected-module/fullfile validation pass. Actual anchored profile208.229ms;
+required repeats/failed evidence,if any,remain in the dedicated report. Owner verified frozen
+source/evidence and ran fullbuild55.789s THEN separateLeanEval43.154s,both exit0 with all17pins immutable.
+Owner logs:`/private/tmp/roth-mainlemma-owner/eta_lt_gam_iff-owner-full.json` and
+`eta_lt_gam_iff-owner-eval.json`. SourceSHA256`770a6ff1cb79679adfd37cdf765f475e33e1300497537ccd2fb3ae1508f6c26d`;current695lines.
+All worker/compiler/native/profile ownership drained before publication.
+Source/audit publication hash follows in central checkpoint history via metadata child.
+MainLemma6/27 originals,overall222/264,10/14fullycompletedfiles;nextsqrt_lt_floor.
+Filewide final phases remain pending.

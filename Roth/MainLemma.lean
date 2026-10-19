@@ -84,11 +84,12 @@ theorem exists_delta_bound {n m : ℕ} (hm : 16 * n ^ 2 < m) : ∃ δ₀ : ℝ, 
 
 /-- Inequality (30) is equivalent to `η < γ`.
 
+Apply `.mp` to (30), then `sub_pos.mpr` to obtain positivity of the gap `γ - η`.
+
 Source: §6, eq. (38) ("Inequality (30) is equivalent to `η < γ`"). -/
-theorem eta_lt_gam_iff (δ : ℝ) (n m : ℕ) :
-    eta δ m + 2 * (1 + 3 * δ) * n * √(m : ℝ) < m / 2 ↔ eta δ m < gam δ n m := by
-  rw [gam, lam]
-  constructor <;> intro h <;> linarith
+theorem eta_lt_gam_iff (δ : ℝ) (n m : ℕ) : eta δ m + 2 * (1 + 3 * δ) * n * √(m : ℝ) < m / 2 ↔
+    eta δ m < gam δ n m := by
+  grind [gam, lam]
 
 /-- If `X > 4` then `√X < ⌊X⌋ ≤ X`.
 
