@@ -104,7 +104,10 @@ removals. No unselected row may be inferred from that probe's successful compile
 - Performance revisit 27, sum_max_sub_le_index_det (second performance repair): Only the assigned public proof changes; exact signature, all surrounding source and entire direct index29 caller byte-identical.
   Independent original adapter, actual axioms/metadata/caller, complete LSP, profile and frozen
   full/LeanEval gates pass.
-- Next: mandatory mapped_det_ne_zero_aux performance repair, then fresh independent filewide review and final gates. Counts remain unchanged on validated revisits.
+- Performance revisit 29, mapped_det_ne_zero_aux performance repair: Only mapped private proof changes; exact signature, all surrounding source and entire direct index_le_lem6 plus additional index_det_le check remain byte-identical.
+  Independent original adapter, actual axioms/metadata/caller, complete LSP, profile and frozen
+  full/LeanEval gates pass.
+- Next: fresh independent filewide simplify/quality review, then final original/caller/allactual/native/all-declaration performance/full+LeanEval gates. Counts remain unchanged on validated revisits.
 
 The evidence and proposal descriptions below were prepared before this decision. Their historic
 unapplied status is superseded only by the exact selected scope above and subsequent checkpoint

@@ -784,3 +784,15 @@ mandatory1004.335 failure and1131.027/1065.136 failures preserved; all24 histori
 Frozen owner full build (70.803 s), then separate LeanEval (38.034 s),
 both pass on identical SHA. [Dedicated revisit audit](Theta-sum_max_sub_le_index_det-performance-second.md).
 Original counts unchanged: Theta 35/35, overall 216/264, 9/14 files. Next: mandatory mapped_det_ne_zero_aux performance repair, then fresh independent filewide review and final gates.
+
+
+## Performance revisit of original 29 — mapped_det_ne_zero_aux performance repair
+
+Replaced three placeholder-heavy nonzero-map refinements with goal-directed map_eq_zero_iff rewrites and merged consecutive rewrites. Original determinant rw/congr/ext certificate retained; exact private contract unchanged, proof14→12, no helper or caller edits. Heartbeats3266→3283; actual timing, rather than deterministic work, establishes improvement.
+
+Fresh24audit/42golf/every effective binder and weakening/generic/counterexample probes, five actual searches, explicit private-literature exemption/inversion, packing/inequality and11steps completed. Five clean anonymous automation errors located; partial apply? followed by global timeout is inconclusive. Exact qualified/private-suffix absence plus preceding controls passes; no import-self search contamination. Exact immutable FIRST declaration and full old adapter, current metadata/opaque values/standard axioms/nonself and entire actual direct index29 caller pass. All29 old public recoveries,five definition values and whole old/current MainLemma proofs reexecute unchanged. Full806-check cumulative semantics preserves all627371 bytes of the preceding727-check scaffold and four canonical blocks. Seventy-nine independent FIRST/current/full-caller checks pass, including actual mapped→index_le_lem6 positive dependency. Complete native Theta/MainLemma0errors8/3warnings. Module and complete unfiltered final LSP pass with
+0 errors and 8 warnings. Accepted actual scoped first capture and required identical-final-source repeat:
+mandatory1049.976 failure despite829.583 repeat; rejected earlier consolidated-simp1010.205 history also preserved → mapped837.283/861.675; entire direct index_le_lem6 520.369/621.220; additional index_det_le780.766/754.760 ms; no whole-file performance claim.
+Frozen owner full build (75.708 s), then separate LeanEval (52.572 s),
+both pass on identical SHA. [Dedicated revisit audit](Theta-mapped_det_ne_zero_aux-performance.md).
+Original counts unchanged: Theta 35/35, overall 216/264, 9/14 files. Next: fresh independent filewide simplify/quality review, then final original/caller/allactual/native/all-declaration performance/full+LeanEval gates.

@@ -517,13 +517,11 @@ private lemma mapped_det_ne_zero_aux {R : MvPolynomial (Option τ) ℤ} {l : ℕ
     rw [RingHom.map_det]
     congr 1
     exact Matrix.ext fun μ ν ↦ by simp [hasseDeriv_map]
-  rw [← hmapdet]
-  refine (map_ne_zero_iff _ (map_injective _ Int.cast_injective)).2 ?_
-  rw [hF]
-  refine mul_ne_zero ((map_ne_zero_iff _ (rename_injective _ (Option.some_injective _))).2 hU) ?_
-  rw [aeval_X_eq_rename]
-  refine (map_ne_zero_iff _ (rename_injective _ fun a b _ ↦ Subsingleton.elim a b)).2 ?_
-  rwa [ne_eq, map_eq_zero_iff _ (uniqueAlgEquiv ℤ Unit).symm.injective]
+  rw [← hmapdet, ne_eq, map_eq_zero_iff _ (map_injective _ Int.cast_injective), hF,
+    mul_eq_zero, not_or, map_eq_zero_iff _ (rename_injective _ (Option.some_injective _))]
+  refine ⟨hU, ?_⟩
+  rw [aeval_X_eq_rename, map_eq_zero_iff _ (rename_injective _ fun a b _ ↦ Subsingleton.elim a b)]
+  rwa [map_eq_zero_iff _ (uniqueAlgEquiv ℤ Unit).symm.injective]
 
 private lemma index_numeric_bound_aux {θ Φ δ rp l : ℝ} (hΦ : 0 ≤ Φ) (hδ1 : δ ≤ 1) (hrp : 3 ≤ rp)
     (hl : 0 < l) (hl' : l ≤ rp + 1) (hmin : min (l * θ / 2) (rp * θ ^ 2 / 3) ≤ l * (Φ + δ)) :
