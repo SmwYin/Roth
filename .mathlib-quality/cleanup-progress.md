@@ -2593,3 +2593,13 @@ Frozen Theta SHA256 `3631ff20d25efdec5d9a846640a8c5a4f5efcac876a37dfee83e39c638f
 This belongs to original28 batch; original counts remainTheta35/35,
 overall216/264,9/14files. No count inflation from helper/revisit audits.
 Next:fresh dedicated index_numeric_bound_aux performance revisit, then sum_max, lem7_Φ_bound and lem7_numeric plus the mandatory second theta_prefix_lt_aux repair, followed by independent filewide review/final gates. Four older performance repairs and the historical prefix1047.277ms failure remain mandatory. The rejected intermediate1001.920ms sample is preserved with its own source, and a substantive second repair passed on a new source; no third unchanged-source sample. No whole-file performance pass. MainLemma finite actual caller timing remains unmeasured before main_lemma.
+
+
+## Validated Theta revisit — index_numeric_bound_aux
+
+Replaced three nonlinear arithmetic searches with explicit coefficient, multiplication and square certificates. The exact private contract still permits negative δ; the entire public index29 caller and all surrounding source stay byte-identical. No new helper/API/import. Heartbeats4206→1954; proof remains16 lines. [Dedicated audit](cleanup/Theta-index_numeric_bound_aux-performance.md).
+Revisit source/audit commit `305442a9a0daef17dcfc800333a63a669ad5cc21`: [GitHub checkpoint](https://github.com/SmwYin/Roth/commit/305442a9a0daef17dcfc800333a63a669ad5cc21).
+Frozen Theta SHA256 `f458cf85b2746b8d155074c3aaaccd8e8c0708bd2d7fa78787184d76ae008875`. All owner gates passed as recorded in the audit.
+This belongs to original29 batch; original counts remainTheta35/35,
+overall216/264,9/14files. No count inflation from helper/revisit audits.
+Next:fresh dedicated sum_max_sub_le_index_det performance revisit, then lem7_Φ_bound and lem7_numeric plus the mandatory second theta_prefix_lt_aux repair, followed by independent filewide review/final gates. Three older repairs and the historical prefix1047.277ms failure remain mandatory; no whole-file performance pass. MainLemma finite actual caller timing remains unmeasured before main_lemma.
