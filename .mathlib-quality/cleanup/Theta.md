@@ -820,3 +820,10 @@ inherited Θ_unique_le66.189; scaledcaller652.177; basecaller616.343 → Θ_uniq
 Frozen owner full build (78.682 s), then separate LeanEval (50.523 s),
 both pass on identical SHA. [Dedicated revisit audit](Theta-Theta_unique_le-technical-hr.md).
 Original counts unchanged: Theta 35/35, overall 216/264, 9/14 files. Next: fresh final independent filewide assessment of both resolved hr recommendations, then owner finalcumulative/allactual/native/all-declaration profile/full+LeanEval gates.
+
+
+## Final file phases — completed
+
+All35originals and22introduced-helper histories audited;50retained declarations(32originals+18newprivate),981→991lines. Fresh independent final review PASS-THROUGH; both recommended technicalhr removals separately validated/published. Fresh owner1223cumulative semantic checks/all29original contracts/fivevalues/fullcaller proofs and all50actual opaque-value/type/standard-axiom sets pass. Complete unfiltered native5 zeroerrors; warnings6/3/4/0/0 are fully retained. Affectedmodulebuild exit04.802s; fullbuild exit06.695s THEN separateLeanEval exit03.353s; all17source/config pins immutable. Actual final whole50 profile maxima 778.325, 907.046ms, every required sample<1000; one identical-source borderline repeat passed. No unchanged-source third sampling or limit raises. Historical failed measurements remain preserved.
+
+[Final file report](Theta-final.md);[fresh independent review](Theta-final-simplify-final.md). Counts216/264originals,10/14files complete after successful finalpublication; nextMainLemma. Header metadata and explicitΘhB/hr/hq/wrapper/domain choices preserved. MainLemma actualcaller timing remains unavailable after bounded60spretarget cutoff5/27, reserved for its own fresh file cleanup; no wholeprojectperformancepass. AuthorizedIndexrename remains coordinatorprojectendqueue.

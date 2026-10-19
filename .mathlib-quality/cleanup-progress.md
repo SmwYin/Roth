@@ -25,16 +25,27 @@ Started: 2026-10-14 (America/Chicago).
 
 ## Current status
 
-Latest completed file after successful final publication: Separation. Theta originals 35/35
-completed; overall 216/264 original declarations, 9/14 files. Recommended technical hypothesis revisit of original 20,
-Θ_unique_le technical hr removal, completed without increasing counts. Only selected public Θ_unique_le.hr and two necessary private caller repairs; every other public contract/definition/domain/conclusion and explicit protected choice retained.
-Immutable original20 full proof/10-binder oldadapter and actualnew8-binder telescope/value/stdaxes/ASTabsence plus actualzeroWeights pass. Prior current9-binder drops onlyhr; previous DecEq removal preserved. Historicalcompatibility contexts distinct from new actualRoot checks. Module and complete unfiltered LSP (0 errors,
-6 warnings), Accepted single actual scoped capture; all50 declarations below750 so no repeat required (Θ_unique_le75.070; scaledcaller519.579; basecaller482.899 ms), frozen full build
-(78.682 s), then separate LeanEval (50.523 s), all pass.
-[Latest audit](cleanup/Theta-Theta_unique_le-technical-hr.md). Next: fresh final independent filewide assessment of both resolved hr recommendations, then owner finalcumulative/allactual/native/all-declaration profile/full+LeanEval gates.
-[Exact contract decision](cleanup/Theta-contract-proposal.md): selected A/B/C applies;
-hq and D/E/F's extra hB/hr assumptions remain per user choice. Whole-Theta profiling, 0 remaining
-originals and final phases are outstanding; no whole-module performance pass is claimed. Definitions, domains and conclusions remain unchanged. All50 below750 in this scoped capture, but final filewide assessment/ownergates pending. MainLemma actualtiming remains unavailable after prior60s pretargetcutoff; unchanged MainLemma has no direct Θ_unique_le call and that timeout was not gratuitously repeated.
+Latest completed file after successful final publication: Theta. All 35/35 Theta originals
+are complete; overall 216/264 original declarations and 10/14 files. The 50 retained
+declarations comprise 32 originals and 18 new private helpers; all 22 introduced helper
+histories received separate fresh audits. The final independent review is PASS-THROUGH.
+Fresh owner gates pass all 1,223 cumulative semantic checks, all 29 original public
+contracts, five definition values, whole original/current caller proofs, and all 50 actual
+opaque proof-body/type/standard-axiom checks. Complete unfiltered diagnostics have zero
+errors; Theta/MainLemma/Main/LeanEval/root warnings are 6/3/4/0/0.
+Affected-module build 4.802 s, full build 6.695 s THEN separate
+LeanEval 3.353 s all exit 0, with all 17 source/configuration pins unchanged.
+Final actual profiling covers all 50 declarations, every sample below 1,000 ms; maxima
+778.325, 907.046 ms. The required repeat on identical source also passed.
+All historical failures remain preserved. [Final report](cleanup/Theta-final.md),
+[independent review](cleanup/Theta-final-simplify-final.md), and
+[contract ledger](cleanup/Theta-contract-proposal.md) provide the evidence.
+Both technical hr findings have separate validated checkpoints. Explicit choices about
+Theta hB/hr, hq, headers, wrappers and domains remain preserved. Next: MainLemma, then
+Main, LeanEval and Roth.lean. MainLemma actual caller timing remains unavailable after the
+bounded 60 s cutoff before its target (5/27); no whole-project performance pass is claimed.
+The authorized Index rename remains queued for the project-end global pass. The final audit
+publication hash is recorded in the appended history below.
 
 Build/tool setup completed; GitHub browser authentication and branch publication succeeded.
 The first file, `Roth/HasseDeriv.lean`, has completed all declaration and final review,
@@ -2683,3 +2694,8 @@ Frozen Theta SHA256 `ff85b7f132cf83c980323449b38558699e7e39d5a1b8bd895ac3374d783
 This belongs to original20 batch; original counts remainTheta35/35,
 overall216/264,9/14files. No count inflation from helper/revisit audits.
 Next:fresh final independent filewide assessment of both resolved hr recommendations, then owner finalcumulative/allactual/native/all-declaration profile/full+LeanEval gates. All50 below750 in this scoped capture, but final filewide assessment/ownergates pending. MainLemma actualtiming remains unavailable after prior60s pretargetcutoff; unchanged MainLemma has no direct Θ_unique_le call and that timeout was not gratuitously repeated.
+
+
+### Theta final file phases — immutable source ff85b7f1
+
+Fresh final independent review and owner cumulative/allactual/native/affectedmodule/whole50profile/fullTHENseparateEval gates pass; all17pins remain exact. See[Theta-final.md](cleanup/Theta-final.md) for actual commands/timings/all50table, warnings and evidence hashes. Original counts unchanged216/264; completed files advance9→10after successful finalpublication. Standing implementrecommended authorization and explicit retained choices remain. NextMainLemma; actualcaller timing limitation and single authorized globalIndexrename carried honestly. Finalaudit commit hash is recorded in the following publication entry.
