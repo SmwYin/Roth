@@ -748,3 +748,15 @@ latest1223.083/1190.696 failure pair; supplied historical Phi captures preserved
 Frozen owner full build (68.328 s), then separate LeanEval (43.778 s),
 both pass on identical SHA. [Dedicated revisit audit](Theta-lem7_Phi_bound-performance.md).
 Original counts unchanged: Theta 35/35, overall 216/264, 9/14 files. Next: fresh dedicated lem7_numeric repair, then mandatory second prefix and second summax repairs, independent filewide review and final gates.
+
+
+## Performance revisit of original 34 — lem7_numeric
+
+Replaced general arithmetic solvers with exact product/order terms and a fixed2+2+2 weighted certificate, and narrowed the measured terminal power simplification. Public contract/docstring and entire private phi caller unchanged; proof29 lines, no helper/API change.
+
+Fresh full24-item audit,42 golf rules,every-binder probes,literature/inversion,packing,inequality/verification completed. Five search methods attempted; remote DNS failures retained with local/source fallback. Eleven clean anonymous current-prefix trials leave located errors/bounded5000HB apply? timeout, honestly inconclusive; nine binder trial ranges, positive counterexamples and inversion pass. Qualified/suffix absence with present control passes. All29 old public recoveries,5 definition value equalities and entire old/current MainLemma independent proofs freshly reexecuted; exact original34 eight-binder adapter retained while current negativePhi/closed upper ranges preserved. All640 cumulative semantic checks preserve the complete592-check prefix and four canonical blocks.36 independent current public/direct-private-caller checks and48 new cumulative checks pass; original8/current7/private15 binder rows, actual opaque values/types/standard axioms and positive dependencies verified. Complete native Theta/MainLemma0errors8/3warnings. Module and complete unfiltered final LSP pass with
+0 errors and 8 warnings. Accepted actual whole-source scoped profile pair:
+latest1254.575/1129.895 failure pair; first changed-source1112.496 failed and preserved; all20historical numeric rows independently verified → numeric755.351/771.888; direct theta_phi_lt_aux724.566/629.133; successor692.683/643.483; publicΘlt370.395/353.338 ms; no whole-file performance claim.
+Frozen owner full build (86.052 s), then separate LeanEval (40.867 s),
+both pass on identical SHA. [Dedicated revisit audit](Theta-lem7_numeric-performance.md).
+Original counts unchanged: Theta 35/35, overall 216/264, 9/14 files. Next: mandatory second theta_prefix_lt_aux performance repair, then mandatory second sum_max_sub_le_index_det repair, independent filewide review and final gates.

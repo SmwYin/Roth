@@ -95,7 +95,10 @@ removals. No unselected row may be inferred from that probe's successful compile
 - Performance revisit 33, lem7_Φ_bound: Only assigned public proof changes; exact public signature/docstring and entire direct private caller byte-identical.
   Independent original adapter, actual axioms/metadata/caller, complete LSP, profile and frozen
   full/LeanEval gates pass.
-- Next: fresh dedicated lem7_numeric repair, then mandatory second prefix and second summax repairs, independent filewide review and final gates. Counts remain unchanged on validated revisits.
+- Performance revisit 34, lem7_numeric: Only assigned public proof changes; exact public signature/docstring and entire direct private caller byte-identical.
+  Independent original adapter, actual axioms/metadata/caller, complete LSP, profile and frozen
+  full/LeanEval gates pass.
+- Next: mandatory second theta_prefix_lt_aux performance repair, then mandatory second sum_max_sub_le_index_det repair, independent filewide review and final gates. Counts remain unchanged on validated revisits.
 
 The evidence and proposal descriptions below were prepared before this decision. Their historic
 unapplied status is superseded only by the exact selected scope above and subsequent checkpoint

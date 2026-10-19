@@ -723,21 +723,21 @@ theorem lem7_numeric {p : ℕ} (hp : 2 ≤ p) {δ : ℝ} (hδ0 : 0 < δ) (hδ1 :
     rw [Real.sqrt_eq_rpow, ha]
     refine Real.rpow_le_rpow_of_exponent_ge hδ0 hδ1 ?_
     rw [pow_succ]
-    linarith only [(pow_le_one₀ (by norm_num) (by norm_num) : (1 / 2 : ℝ) ^ k ≤ 1)]
+    exact mul_le_of_le_one_left (by norm_num) (pow_le_one₀ (by norm_num) (by norm_num))
   have hT10 : (10 : ℝ) ≤ T := le_self_pow₀ (by norm_num) (by lia)
   rw [← ha2] at hΦ
   have hsΦ : √Φ < T * a := by
     refine (Real.sqrt_lt' (by positivity)).2 (hΦ.trans_lt ?_)
-    nlinarith only [mul_lt_mul_of_pos_right
-      (mul_lt_mul_of_pos_left (by linarith only [hT10] : (3 : ℝ) < T)
-        (by positivity : 0 < T)) (sq_pos_of_pos ha0)]
+    rw [mul_pow, pow_two T]
+    exact mul_lt_mul_of_pos_right (mul_lt_mul_of_pos_right
+      ((by norm_num : (3 : ℝ) < 10).trans_le hT10) (by positivity)) (sq_pos_of_pos ha0)
   have haa : a ^ 2 ≤ a := by
-    simpa [pow_two] using mul_le_mul_of_nonneg_left
-      (Real.rpow_le_one hδ0.le hδ1 (by positivity)) ha0.le
+    simpa only [pow_two, mul_one] using mul_le_mul_of_nonneg_left
+      (Real.rpow_le_one hδ0.le hδ1 (pow_nonneg (by norm_num) _)) ha0.le
   rw [pow_succ, ← hT, mul_comm T]
-  linarith only [hΦ.trans (mul_le_mul_of_nonneg_left haa (by positivity : 0 ≤ 3 * T)), hsΦ,
-    hsqrt.trans
-    (le_mul_of_one_le_left ha0.le (by linarith only [hT10] : 1 ≤ T))]
+  linear_combination 2 * hΦ.trans
+    (mul_le_mul_of_nonneg_left haa (by positivity : 0 ≤ 3 * T)) + 2 * hsΦ +
+    2 * hsqrt.trans (le_mul_of_one_le_left ha0.le ((by norm_num : (1 : ℝ) ≤ 10).trans hT10))
 
 private lemma theta_scaled_unique_le_aux {δ M : ℝ} {q₁ q₂ r₁ r₂ l : ℕ} (hq₁ : 1 < q₁) (hr₁ : 0 < r₁)
     (hl : 0 < l) (hqr : (r₁ : ℝ) * Real.log q₁ ≤ r₂ * Real.log q₂) (hM1 : 1 ≤ M)
