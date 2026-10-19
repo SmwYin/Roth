@@ -421,11 +421,15 @@ private lemma index_separated_mul_le_aux {r : Option τ → ℕ} (hr0 : ∀ j, 0
       exact hVc _
   have hinjV : Function.Injective (fun _ : Unit ↦ (none : Option τ)) :=
     fun a b _ ↦ Subsingleton.elim a b
+  have hmU : map (Int.castRingHom ℝ) U ≠ 0 := fun h0 ↦
+    hU.1 (map_injective _ Int.cast_injective (h0.trans (map_zero _).symm))
+  have hmV : map (Int.castRingHom ℝ) V' ≠ 0 := fun h0 ↦
+    hV'0 (map_injective _ Int.cast_injective (h0.trans (map_zero _).symm))
   rw [aeval_X_eq_rename, _root_.map_mul, map_rename, map_rename,
-    index_mul ((map_ne_zero_iff _ (rename_injective _ (Option.some_injective _))).2
-      ((map_ne_zero_iff _ (map_injective _ Int.cast_injective)).2 hU.1))
-      ((map_ne_zero_iff _ (rename_injective _ hinjV)).2
-        ((map_ne_zero_iff _ (map_injective _ Int.cast_injective)).2 hV'0)) _ hr0,
+    index_mul ((map_ne_zero_iff (rename (R := ℝ) some)
+      (rename_injective _ (Option.some_injective _))).2 hmU)
+      ((map_ne_zero_iff (rename (R := ℝ) (fun _ : Unit ↦ (none : Option τ)))
+        (rename_injective _ hinjV)).2 hmV) _ hr0,
     index_rename (Option.some_injective _), index_rename hinjV]
   have hUΘ := index_le_Θ (fun j ↦ Nat.mul_pos hl (hr0 _)) hU (h := h ∘ some)
     fun j ↦ hh (some j)
@@ -433,8 +437,8 @@ private lemma index_separated_mul_le_aux {r : Option τ → ℕ} (hr0 : ∀ j, 0
     (q := fun _ : Unit ↦ q none) (h := fun _ ↦ h none) fun _ ↦ hh none
   rw [index_mul_left_weights] at hUΘ hVΘ
   have hlR : (0 : ℝ) < l := by exact_mod_cast hl
-  simpa only [lem6Φ, mul_add, Function.comp_def, mul_comm _ (l : ℝ), add_comm] using
-    add_le_add ((div_le_iff₀ hlR).1 hUΘ) ((div_le_iff₀ hlR).1 hVΘ)
+  rw [lem6Φ, mul_add, add_comm]
+  exact add_le_add ((div_le_iff₀' hlR).1 hVΘ) ((div_le_iff₀' hlR).1 hUΘ)
 
 omit [DecidableEq τ] in
 /-- If the determinant `F = det (∂_{D_μ} ∂_{x_p}^ν R)_{μ,ν}` factors as
