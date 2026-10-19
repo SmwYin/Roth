@@ -2653,3 +2653,13 @@ Frozen Theta SHA256 `2a41e042e8a363fd01a5038dadd04e3ddbd5d6e9ff57d788aa418e389ff
 This belongs to original27 batch; original counts remainTheta35/35,
 overall216/264,9/14files. No count inflation from helper/revisit audits.
 Next:mandatory mapped_det_ne_zero_aux performance repair, then fresh independent filewide review and final gates. New mapped_det_ne_zero_aux failure1049.976ms remains mandatory despite829.583ms repeat. MainLemma finite actual timing remains unmeasured before main_lemma; no whole-file/project performance pass.
+
+
+## Validated Theta revisit — mapped_det_ne_zero_aux performance repair
+
+Replaced three placeholder-heavy nonzero-map refinements with goal-directed map_eq_zero_iff rewrites and merged consecutive rewrites. Original determinant rw/congr/ext certificate retained; exact private contract unchanged, proof14→12, no helper or caller edits. Heartbeats3266→3283; actual timing, rather than deterministic work, establishes improvement. [Dedicated audit](cleanup/Theta-mapped_det_ne_zero_aux-performance.md).
+Revisit source/audit commit `4b9fdf66fa1162e87d50883d1c650ab44b5865c8`: [GitHub checkpoint](https://github.com/SmwYin/Roth/commit/4b9fdf66fa1162e87d50883d1c650ab44b5865c8).
+Frozen Theta SHA256 `1b62c7dd177609e4cf6544e8c06b9ead761506122391e2345fd5db35fa46b4cc`. All owner gates passed as recorded in the audit.
+This belongs to original29 batch; original counts remainTheta35/35,
+overall216/264,9/14files. No count inflation from helper/revisit audits.
+Next:fresh independent filewide simplify/quality review, then final original/caller/allactual/native/all-declaration performance/full+LeanEval gates. All50 rows in both scoped captures are below1000, but whole-file final phases remain pending. MainLemma actual finite timing remains unmeasured before main_lemma; no whole-project timing claim.
