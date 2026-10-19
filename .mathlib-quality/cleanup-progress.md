@@ -2778,3 +2778,19 @@ current709lines. Owner rehash/review and sourcefreeze checks pass. All owned pro
 and native requests drained before publication;nextoriginalB₁ remains unedited.
 MainLemma finalfile/simplify/completeprofile phases pending. Metadata child changes only
 this checkpoint record,not source or verification inputs.
+
+
+### MainLemma original4 checkpoint — B₁
+
+Source/audit commit `4169f41db8fbbe28fc2146e037493816a062ce85`; the following metadata child records and publishes this
+exact checkpoint before the next original edit. MainLemma4/27,overall220/264,
+10/14fullycompletedfiles. [Dedicated audit](cleanup/MainLemma-B₁.md) contains all
+24audit/42golf/5search/11verification steps,exact independent original reimplementation/
+effectivecontract/universe/binder/type/value/standard-axiom evidence,actual affectedmodule/
+fullfile and complete unfiltered native successes. Actual anchored profile29.417ms;
+raw evidence and required repeat/failure history are preserved. Formula and domains unchanged; queued B₁→mainCoeffBound for the final project-wide rename pass,with the prior Index entry preserved.
+Owner fullbuild5.439s THEN separateLeanEval5.054s,both exit0,all17pins immutable;sourceSHA256`0236435831af553f54e04569caadb7b985e0a556dbebf51d454e53abf3ea2abb`,
+current709lines. Owner rehash/review and sourcefreeze checks pass. All owned processes
+and native requests drained before publication;nextoriginalexists_delta_bound remains unedited.
+MainLemma finalfile/simplify/completeprofile phases pending. Metadata child changes only
+this checkpoint record,not source or verification inputs.
