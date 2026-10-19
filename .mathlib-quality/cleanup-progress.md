@@ -2516,3 +2516,7 @@ Accepted real prefix profile:lem6M_lt675.914, factorial_coefficient_le_two_pow_a
 separate LeanEval31.678s both exit0; all17project/pin/source hashes stable.
 Two substantive private estimates have separate fresh completed audits: coefficient proof9lines with l≤2^r₁, exponential proof21lines with q≥0. Helper audits and supported revisits do not inflate original counts. After successful publication:Theta32/35,overall213/264,9/14files.
 Next:original33 lem7_Φ_bound, then34/35 and every final file phase. Actual whole-Theta profiling and final file phases remain outstanding.
+
+Original32 validated source/audit checkpoint: [ceaef4d](https://github.com/SmwYin/Roth/commit/ceaef4d11cd4ab4d007e48c865ca1d0a40bc0d2e).
+The following central-log metadata commit changes no Lean source; both commits publish
+together before original33 edits. Counts remain 213/264, Theta 32/35, 9/14 files.
