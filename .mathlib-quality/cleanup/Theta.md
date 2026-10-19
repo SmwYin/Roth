@@ -796,3 +796,15 @@ mandatory1049.976 failure despite829.583 repeat; rejected earlier consolidated-s
 Frozen owner full build (75.708 s), then separate LeanEval (52.572 s),
 both pass on identical SHA. [Dedicated revisit audit](Theta-mapped_det_ne_zero_aux-performance.md).
 Original counts unchanged: Theta 35/35, overall 216/264, 9/14 files. Next: fresh independent filewide simplify/quality review, then final original/caller/allactual/native/all-declaration performance/full+LeanEval gates.
+
+
+## Recommended technical hypothesis revisit of original 9 — index_le_Θ technical hr removal
+
+Removed only unused index_le_Θ.hr, exposing zero weights and removing three caller obligations. Original one-line proof unchanged; two internal index_separated calls and one MainLemma call delete exactly that argument. Fresh filewide review recommended this under standing authorization; Θ_unique_le.hr remains for its next checkpoint.
+
+Fresh24audit/42golf/fiveactualsearches/everybinder/weakening/generic/zero-weight/publicliterature/inversion/packing/inequality/11steps complete. Seven literal-current anonymous errors located; boundedexact?/apply? inconclusive. Successful qualified/private-suffix absence with precedingcontrols; no importselfsearch. Immutable original proof/full11-binder oldadapter and actualnew9-binder telescope/value/stdaxes/ASTabsence plus actualzero-weight application pass; only oldDecEq and selectedtechnicalhr removed. Historicalcompatibility probes distinct from newactualRoot semantics. Whole actualupdated MainLemma26/internalconsumer16 contracts/proofs/opaquevalues/stdaxes/nonself/dependencies pass.1055checks retain806old categories through four labelled historicalcontexts; inverse recovers every692893prior byte/fourcanonicalblocks. All29old adapters/five definition values pass. Complete native0errors7/3warnings. Module and complete unfiltered final LSP pass with
+0 errors and 7 warnings. Accepted single actual scoped capture; target/directlocalconsumer below750 so no scopedrepeat:
+inherited target51.095/39.828 and directlocalconsumer654.400/679.144 → index_le_Θ38.121; entire directlocal index_separated_mul_le_aux679.595 ms; no whole-file performance claim.
+Frozen owner full build (78.617 s), then separate LeanEval (56.394 s),
+both pass on identical SHA. [Dedicated revisit audit](Theta-index_le_Theta-technical-hr.md).
+Original counts unchanged: Theta 35/35, overall 216/264, 9/14 files. Next: dedicated Θ_unique_le.hr checkpoint, then fresh final independent filewide review and owner finalgates.

@@ -673,7 +673,7 @@ theorem main_lemma {α : ℝ} {f : Polynomial ℤ} (hf : f.Monic) (hfα : Polyno
     (fun i ↦ by
       simpa [mul_comm] using ((div_lt_iff₀ hδ0).1 (h31b _ _ (by simp))).le)
     (by exact_mod_cast (lem7_hyp_of_h32 hδ0 hδm hA1 h32).le) h33
-  have hidx := index_le_Θ hr0 hWX hh
+  have hidx := index_le_Θ hWX hh
   obtain ⟨k, hkw, hkev⟩ := exists_hasseDeriv_eval_ne_zero hmap0 (fun j => (h j : ℝ) / q j) r
     (hidx.trans_lt hΘ)
   have hmapQ : map (Int.castRingHom ℝ) (hasseDeriv k (W' - W'')) =

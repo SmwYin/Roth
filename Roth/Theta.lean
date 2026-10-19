@@ -90,8 +90,8 @@ omit [DecidableEq σ] in
 /-- The index of any `R ∈ ℛ_m(B; r)` at a point `(h_j / q_j)_j` with each `h_j` coprime to `q_j`
 is at most `Θ_m(B; q; r)`. Source: §5, definition of `Θ_m` as a supremum, and the Lean note
 ("lemmas for bounding an individual index"). -/
-theorem index_le_Θ {B : ℝ} {q r : σ → ℕ} (hr : ∀ j, 0 < r j) {R : MvPolynomial σ ℤ}
-    (hR : R ∈ RSet B r) {h : σ → ℤ} (hh : ∀ j, IsCoprime (h j) (q j : ℤ)) :
+theorem index_le_Θ {B : ℝ} {q r : σ → ℕ} {R : MvPolynomial σ ℤ} (hR : R ∈ RSet B r) {h : σ → ℤ}
+    (hh : ∀ j, IsCoprime (h j) (q j : ℤ)) :
     index (map (Int.castRingHom ℝ) R) (fun j ↦ (h j : ℝ) / q j) r ≤ Θ B q r :=
   le_csSup (indexSet_bddAbove B q) ⟨R, hR, h, hh, rfl⟩
 
@@ -435,9 +435,9 @@ private lemma index_separated_mul_le_aux {r : Option τ → ℕ} (hr0 : ∀ j, 0
       ((map_ne_zero_iff (rename (R := ℝ) (fun _ : Unit ↦ (none : Option τ)))
         (rename_injective _ hinjV)).2 hmV) _ hr0,
     index_rename (Option.some_injective _), index_rename hinjV]
-  have hUΘ := index_le_Θ (fun j ↦ Nat.mul_pos hl (hr0 _)) hU (h := h ∘ some)
+  have hUΘ := index_le_Θ hU (h := h ∘ some)
     fun j ↦ hh (some j)
-  have hVΘ := index_le_Θ (fun _ ↦ Nat.mul_pos hl (hr0 none)) hVmem
+  have hVΘ := index_le_Θ hVmem
     (q := fun _ : Unit ↦ q none) (h := fun _ ↦ h none) fun _ ↦ hh none
   rw [index_mul_left_weights] at hUΘ hVΘ
   have hlR : (0 : ℝ) < l := by exact_mod_cast hl
