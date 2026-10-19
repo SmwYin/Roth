@@ -74,7 +74,7 @@ removals. No unselected row may be inferred from that probe's successful compile
 - Supported revisit 29, index_le_lem6 arithmetic boundary: K weakens hδ0/hδ1 to nonstrict bounds and hrp to3≤(rnone:ℝ); removes only index_le_lem6.hr0/hB. Domains, exact conclusion, hq and protected globalΘ hB/hr hypotheses remain..
   Independent original adapter, actual axioms/metadata/caller, complete LSP, profile and frozen
   full/LeanEval gates pass.
-- Next: original33 lem7_Φ_bound, then34/35 and every final file phase. Published originals now Theta 32/35, overall 213/264; approved revisits themselves do not increase counts.
+- Next: original34 lem7_numeric, then35 Θ_lt and all final file phases. Published originals now Theta 33/35, overall 214/264; approved revisits themselves do not increase counts.
 
 The evidence and proposal descriptions below were prepared before this decision. Their historic
 unapplied status is superseded only by the exact selected scope above and subsequent checkpoint
@@ -568,3 +568,36 @@ are recorded with this original32 checkpoint; helpers/revisits add no original c
 Original32 frozen owner full91.810s THEN separateLeanEval31.678s pass; all17 source/pin hashes
 stable. Successful publication yieldsTheta32/35,overall213/264,ninefiles. Exact source/audit commit
 is recorded in central cleanup-progress; no original inflation from the two fresh helper audits.
+
+
+## N. lem7_Φ_bound closed upper endpoint (original33)
+
+Under standing implementation authority, `δ < 1` becomes `δ ≤ 1`, with the strict conclusion
+preserved. All other public binders, domains and conclusion remain. The sole current Θ_lt
+application forwards its old strict bound by.le; that caller's entire effective public type and
+independently re-elaborated proof/value/standard axioms are checked. The paper's strict range
+remains accurately quoted; the extra endpoint is this compiled proof's strengthening.
+
+The dedicated full original33 audit proved the concrete candidate and exact immutable old33
+adapter before application, then checked the actual built ROOT adapter, independent old/current
+proof values, standard axioms, complete unfiltered native diagnostics0errors8samewarnings, and
+ENTIRE original/current Θ_lt proof/type/value/dependency. No helper/import/header/definition
+change. Dead locals and one-use facts were removed, direct product bounds replaced one broad
+nonlinear step, and terminal arithmetic is restricted to the supplied scaled bounds. Proof22→20.
+
+Actual baseline1489.059ms improved to876.021ms; required same-source repeat757.251ms also passes,
+with all raw traces retained and no third cherry-picked run. These are scoped prefix measurements;
+previous numeric/index29 failed repeats and whole Θ_lt stalled profiles remain mandatory final
+repair. SourceSHAfc354913a6695d434020810dd37299614daa2bd7ca345b0e8bac489492679337,947lines.
+
+Owner regenerated cumulative recovery passes all29 original-public adapters, all5 definition
+values,87opaque body-type checks and87actual standard-axiom sets in51.807s; both entire original
+proof blocks remain unchanged. Exact archived input `/private/tmp/ThetaApprovedOriginalFinalProbe-d33-values.lean`,
+SHA6d7fc49401e480f2e681a733ccabf9c5dae1d1f3f764410205738fcc57ffed10.
+[Detailed original33 audit](Theta-lem7_Phi_bound.md). Frozen owner build/publication gates are
+recorded with this checkpoint; no new helper or revisit count.
+
+
+Original33 frozen owner full105.519s THEN separateLeanEval38.323s pass, all17 source/pin hashes
+stable. Successful publication yieldsTheta33/35,overall214/264,ninefiles; exact source/audit hash
+is recorded in central progress. Original34/35 and every file-final phase remain.

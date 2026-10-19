@@ -72,7 +72,7 @@ ordinary baseline builds passing does not imply any all-file profile pass.
 | 30 | `Θ_option_le` | 623 | 6 | Complete;[audit](Theta-Theta_option_le.md) |
 | 31 | `one_lt_of_log_pos` | 640 | 5 | Complete;[audit](Theta-one_lt_of_log_pos.md) |
 | 32 | `lem6M_lt` | 650 | 53 | Complete;[audit](Theta-lem6M_lt.md) |
-| 33 | `lem7_Φ_bound` | 711 | 22 | Pending dedicated audit |
+| 33 | `lem7_Φ_bound` | 711 | 22 | Complete;[audit](Theta-lem7_Phi_bound.md) |
 | 34 | `lem7_numeric` | 741 | 25 | Pending dedicated audit |
 | 35 | `Θ_lt` | 774 | 198 | Pending dedicated audit |
 
@@ -626,3 +626,14 @@ Accepted uncontended exact-prefix profile: lem6M_lt675.914, factorial_coefficien
 Frozen owner full (91.810 s) then separate LeanEval (31.678 s) pass.
 [Dedicated audit](Theta-lem6M_lt.md). Theta 32/35, overall 213/264 originals;9/14 files complete.
 Two substantive private estimates have separate fresh completed audits: coefficient proof9lines with l≤2^r₁, exponential proof21lines with q≥0. Helper audits and supported revisits do not inflate original counts. Next: original33 lem7_Φ_bound, then34/35 and every final file phase.
+
+
+## Published checkpoint33 — lem7_Φ_bound
+
+Extended lem7_Φ_bound to the closed upper boundary δ≤1 while preserving its strict conclusion. Replaced broad nonlinear arithmetic with direct scaled bounds and restricted arithmetic, removed dead locals and one-use bounds, and forwarded the Θ_lt caller by.le. Proof22→20lines; no new helper.
+
+Fresh24/42/five actual searches/every-binder/certified-counterexample/public-literature/inversion/packing/inequality/11-step gates pass. Exact immutable independent old33 proof, actual ROOT old-contract adapter and ENTIRE original/current Θ_lt independent proof/type/value/standard axioms pass. Final real target first/repeat876.021/757.251ms pass versus baseline1489.059ms. Owner final-state cumulative verification passed51.807s: all29 original-public adapters, all5 definition values,87 opaque body-type checks and87 actual standard-axiom sets, with both complete original proof blocks byte-identical. Module and complete unfiltered final LSP pass with 0 errors / 8 warnings.
+Accepted uncontended exact-prefix profile: 876.021 / 757.251 (required same-source repeat passed; baseline1489.059) ms; no whole-file performance claim.
+Frozen owner full (105.519 s) then separate LeanEval (38.323 s) pass.
+[Dedicated audit](Theta-lem7_Phi_bound.md). Theta 33/35, overall 214/264 originals;9/14 files complete.
+No new helper; existing separately audited private helpers are unchanged. Next: original34 lem7_numeric, then35 Θ_lt and all final file phases.

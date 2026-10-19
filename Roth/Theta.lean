@@ -665,35 +665,33 @@ theorem lem6M_lt {p : ℕ} (hp : 0 < p) {δ : ℝ} (hδ0 : 0 < δ) {r₁ q₁ : 
       congr 1
       ring
 
-/-- For `p ≥ 2` and `0 < δ < 1`, with `δ_1 = δ (1 + 1/p)`,
+/-- For `p ≥ 2` and `0 < δ ≤ 1`, with `δ_1 = δ (1 + 1/p)`,
 `δ_1 + 10^{p-1} δ_1^{(1/2)^{p-1}} < 3 · 10^{p-1} δ^{(1/2)^{p-1}}`.
 Source: §5, proof of Lemma 7 ("`Φ < δ_1 + 10^{p-1} δ_1^{(1/2)^{p-1}} < 2δ + 2 · 10^{p-1}
 δ^{(1/2)^{p-1}} < 3 · 10^{p-1} δ^{(1/2)^{p-1}}`"). -/
-theorem lem7_Φ_bound {p : ℕ} (hp : 2 ≤ p) {δ : ℝ} (hδ0 : 0 < δ) (hδ1 : δ < 1) :
+theorem lem7_Φ_bound {p : ℕ} (hp : 2 ≤ p) {δ : ℝ} (hδ0 : 0 < δ) (hδ1 : δ ≤ 1) :
     δ * (1 + 1 / p) + 10 ^ (p - 1) * (δ * (1 + 1 / p)) ^ ((1 / 2 : ℝ) ^ (p - 1)) <
       3 * 10 ^ (p - 1) * δ ^ ((1 / 2 : ℝ) ^ (p - 1)) := by
-  set e : ℝ := (1 / 2 : ℝ) ^ (p - 1) with he
-  have he0 : 0 < e := by positivity
+  set e : ℝ := (1 / 2 : ℝ) ^ (p - 1)
   have he1 : e ≤ 1 := pow_le_one₀ (by norm_num) (by norm_num)
   have hp : (2 : ℝ) ≤ p := by exact_mod_cast hp
   have hc1 : 1 ≤ 1 + 1 / (p : ℝ) := le_add_of_nonneg_right (by positivity)
   have hc2 : 1 + 1 / (p : ℝ) ≤ 3 / 2 := by
     have : 1 / (p : ℝ) ≤ 1 / 2 := one_div_le_one_div_of_le (by norm_num) hp
-    linarith
+    linarith only [this]
   have hδe : δ ≤ δ ^ e := by
-    simpa using Real.rpow_le_rpow_of_exponent_ge hδ0 hδ1.le he1
+    simpa using Real.rpow_le_rpow_of_exponent_ge hδ0 hδ1 he1
   have hde0 : 0 < δ ^ e := Real.rpow_pos_of_pos hδ0 e
   have hmul : (δ * (1 + 1 / p)) ^ e ≤ δ ^ e * (3 / 2) := by
     rw [Real.mul_rpow hδ0.le (by positivity)]
     refine mul_le_mul_of_nonneg_left ?_ hde0.le
     calc (1 + 1 / (p : ℝ)) ^ e ≤ (1 + 1 / (p : ℝ)) ^ (1 : ℝ) :=
           Real.rpow_le_rpow_of_exponent_le hc1 he1
-      _ ≤ 3 / 2 := by rw [Real.rpow_one]; exact hc2
-  have hT : (10 : ℝ) ≤ 10 ^ (p - 1) := le_self_pow₀ (by norm_num) (by omega)
-  have h1 : δ * (1 + 1 / p) ≤ δ ^ e * (3 / 2) := by nlinarith
-  have h2 : (10 : ℝ) ^ (p - 1) * (δ * (1 + 1 / p)) ^ e ≤ 10 ^ (p - 1) * (δ ^ e * (3 / 2)) :=
-    mul_le_mul_of_nonneg_left hmul (by positivity)
-  nlinarith
+      _ ≤ 3 / 2 := by simpa using hc2
+  nlinarith only [mul_le_mul hδe hc2 (zero_le_one.trans hc1) hde0.le,
+    mul_le_mul_of_nonneg_left hmul (by positivity : (0 : ℝ) ≤ 10 ^ (p - 1)),
+    mul_le_mul_of_nonneg_right
+      (le_self_pow₀ (by norm_num : (1 : ℝ) ≤ 10) (by lia : p - 1 ≠ 0)) hde0.le, hde0]
 
 /-- If `0 ≤ Φ < 3 · 10^{p-1} δ^{(1/2)^{p-1}}` with `p ≥ 2` and `0 < δ < 1`, then
 `2(Φ + Φ^{1/2} + δ^{1/2}) < 10^p δ^{(1/2)^p}`.
@@ -934,7 +932,7 @@ theorem Θ_lt (n : ℕ) {δ : ℝ} (hδ0 : 0 < δ) (hδ : δ < 1 / ((n : ℝ) + 
       rw [lem6Φ]
       exact add_nonneg (Θ_nonneg hM1 _ fun _ => Nat.mul_pos hl1 (hr'0 _))
         (Θ_nonneg hM1 _ fun _ => Nat.mul_pos hl1 (hr'0 _))
-    have hb := lem7_Φ_bound (p := n + 1 + 1) (by omega) hδ0 hδ1
+    have hb := lem7_Φ_bound (p := n + 1 + 1) (by omega) hδ0 hδ1.le
     simp only [Nat.add_sub_cancel] at hb
     have hΦlt : lem6Φ q' r' M l <
         3 * 10 ^ (n + 1 + 1 - 1) * δ ^ ((1 / 2 : ℝ) ^ (n + 1 + 1 - 1)) := by
