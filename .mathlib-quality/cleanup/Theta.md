@@ -711,3 +711,16 @@ published1298.995/1133.509 failed pair; rejected intermediate831.865/1001.920 pa
 Frozen owner full build (83.979 s), then separate LeanEval (35.554 s),
 both pass on identical SHA. [Dedicated revisit audit](Theta-index_separated_mul_le_aux-performance.md).
 Original counts unchanged: Theta 35/35, overall 216/264, 9/14 files. Next: fresh dedicated index_numeric_bound_aux performance revisit, then sum_max, lem7_Φ_bound and lem7_numeric plus the mandatory second theta_prefix_lt_aux repair, followed by independent filewide review/final gates.
+
+
+## Performance revisit of original 29 — index_numeric_bound_aux
+
+Replaced three nonlinear arithmetic searches with explicit coefficient, multiplication and square certificates. The exact private contract still permits negative δ; the entire public index29 caller and all surrounding source stay byte-identical. No new helper/API/import. Heartbeats4206→1954; proof remains16 lines.
+
+Fresh dedicated full 24-item audit, 42 golf rules, five actual searches, every-binder probes,
+literature/inversion, packing, inequality scan and 11-step checklist pass. Exact independent FIRST/context proof and explicit independent plus actual original-telescope adapters preserve all original hypotheses; current11-binder arbitrary-negative-δ contract and entire direct public index29 type/value/metadata/standard axioms pass. No public signature, definition or domain change. The entire513-check semantic scaffold preserves all444 preceding checks and four full canonical proof blocks.69 fresh independent FIRST-context/current helper/whole index29 checks, both explicit old-contract adapters, full metadata/opaque values/standard axioms/nonself/positive dependencies and a negative-δ instance pass. Complete native Theta/MainLemma responses pass with0errors/8+3warnings. Module and complete unfiltered final LSP pass with
+0 errors and 8 warnings. Accepted actual whole-source scoped profile:
+latest1097.018 and1286.394 whole-source failures; four earlier failures preserved → numeric592.602; direct index29 480.114 (both below750; no repeat required) ms; no whole-file performance claim.
+Frozen owner full build (87.943 s), then separate LeanEval (35.135 s),
+both pass on identical SHA. [Dedicated revisit audit](Theta-index_numeric_bound_aux-performance.md).
+Original counts unchanged: Theta 35/35, overall 216/264, 9/14 files. Next: fresh dedicated sum_max_sub_le_index_det performance revisit, then lem7_Φ_bound and lem7_numeric plus the mandatory second theta_prefix_lt_aux repair, followed by independent filewide review/final gates.
