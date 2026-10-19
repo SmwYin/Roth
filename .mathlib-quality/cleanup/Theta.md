@@ -760,3 +760,15 @@ latest1254.575/1129.895 failure pair; first changed-source1112.496 failed and pr
 Frozen owner full build (86.052 s), then separate LeanEval (40.867 s),
 both pass on identical SHA. [Dedicated revisit audit](Theta-lem7_numeric-performance.md).
 Original counts unchanged: Theta 35/35, overall 216/264, 9/14 files. Next: mandatory second theta_prefix_lt_aux performance repair, then mandatory second sum_max_sub_le_index_det repair, independent filewide review and final gates.
+
+
+## Performance revisit of original 35 — theta_prefix_lt_aux (second performance repair)
+
+Replaced two measured nonnegativity searches with direct certificates and a multiplication ring search with mul_left_comm. Exact private contract and entire phi caller unchanged; proof30 lines/branch8, no helper. Heartbeats2886→2463.
+
+Fresh24audit/42golf/every18binder+fourweakening probes in five bounded batches,private literature exemption/inversion,packing,inequality and11steps completed. Five searches actually ran: native Finder/Loogle/LeanSearch succeeded with unrelated/generic results, earlier fallback DNS errors preserved; no global absence claim. Ten anonymous errors located plus apply? partial incomplete-proof warning explicitly rejected as positive evidence. Clean private/public absence with present controls passes. Full immutable FIRST18 independent proof/adapter and current18/private caller15 effective metadata pass. All29 old public recoveries,5 definition values and entire old/current MainLemma independent proofs reexecuted unchanged. Full687-check cumulative semantics preserves the entire640-check byte prefix and four canonical blocks. Independent immutable FIRST batch2 executes with62 PASS, exact old Antitone eighteen-binder adapter/current localized minimum-bound metadata/opaque values/standard axioms/nonself and entire private phi consumer validated. Complete native Theta/MainLemma0errors8/3warnings. Module and complete unfiltered final LSP pass with
+0 errors and 8 warnings. Accepted actual scoped first capture plus one additional same-source confirmation (first scope below750; repeat not threshold-required):
+mandatory1047.277 failure despite721.307 repeat; all38historical captures/five failed rows independently verified → prefix718.309/758.076; direct theta_phi_lt_aux731.235/754.888 ms; no whole-file performance claim.
+Frozen owner full build (79.459 s), then separate LeanEval (49.955 s),
+both pass on identical SHA. [Dedicated revisit audit](Theta-theta_prefix_lt_aux-performance-second.md).
+Original counts unchanged: Theta 35/35, overall 216/264, 9/14 files. Next: mandatory second sum_max_sub_le_index_det performance repair, then fresh independent filewide review and final gates.

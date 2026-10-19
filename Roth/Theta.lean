@@ -795,8 +795,10 @@ private lemma theta_prefix_lt_aux {n : ℕ} {δ ε M : ℝ} (hδ0 : 0 < δ) (hδ
       (q (Fin.castSucc 0) : ℝ) ^ (ε * ((l * r (Fin.castSucc 0) : ℕ) : ℝ)) := by
     simp [Nat.cast_mul]
   rw [hCeq]
+  have hn : (0 : ℝ) ≤ n + 1 + 1 :=
+    add_nonneg (add_nonneg (Nat.cast_nonneg _) zero_le_one) zero_le_one
   refine ih (r := fun j ↦ l * r j.castSucc) (q := fun j ↦ q j.castSucc) ?_ ?_
-    ((div_le_div₀ (by positivity) (by
+    ((div_le_div₀ (mul_nonneg hn (add_nonneg (mul_nonneg (by norm_num) hn) zero_le_one)) (by
       linarith only [Nat.cast_nonneg (α := ℝ) n]) hδ0 hδε).trans hq1) ?_
   · have h2 : (r (Fin.last (n + 1)) : ℝ) ≤ r (Fin.castSucc (Fin.last n)) := by
       exact_mod_cast hanti _
@@ -808,9 +810,9 @@ private lemma theta_prefix_lt_aux {n : ℕ} {δ ε M : ℝ} (hδ0 : 0 < δ) (hδ
     calc
       (l : ℝ) * r (Fin.castSucc i.succ) ≤ l * (δ * r (Fin.castSucc (Fin.castSucc i))) :=
         mul_le_mul_of_nonneg_left (hratio (Fin.castSucc i)) (Nat.cast_nonneg l)
-      _ = δ * (l * r (Fin.castSucc (Fin.castSucc i))) := by ring
+      _ = δ * (l * r (Fin.castSucc (Fin.castSucc i))) := mul_left_comm _ _ _
       _ ≤ ε * (l * r (Fin.castSucc (Fin.castSucc i))) :=
-        mul_le_mul_of_nonneg_right hδε (by positivity)
+        mul_le_mul_of_nonneg_right hδε (mul_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _))
   · intro j
     push_cast
     simpa only [mul_assoc, Fin.castSucc_zero] using
