@@ -2823,3 +2823,19 @@ four budget results remain passes. Raw evidence and both old/new sums are retain
 no earlier checkpoint history was silently rewritten. Owner evidence:
 `/private/tmp/roth-mainlemma-owner/prior-profile-root-reaudit.json`. Future workers and
 final whole-file gates must use exact anchored Elab.command/Elab.async roots.
+
+
+### MainLemma original6 checkpoint — eta_lt_gam_iff
+
+Source/audit commit `d97cd6390b032895db2bd9e7d995a82626eb03e8`; the following metadata child records and publishes this
+exact checkpoint before the next original edit. MainLemma6/27,overall222/264,
+10/14fullycompletedfiles. [Dedicated audit](cleanup/MainLemma-eta_lt_gam_iff.md) contains all
+24audit/42golf/5search/11verification steps,exact independent original reimplementation/
+effectivecontract/universe/binder/type/value/standard-axiom evidence,actual affectedmodule/
+fullfile and complete unfiltered native successes. Actual anchored profile208.229ms;
+raw evidence and required repeat/failure history are preserved. Packed signature93/29chars and replaced two-line proof with one grind[gam,lam]; added application guidance,preserved source quote. Exact API/three effective binders/imports/callers unchanged;0helpers. Profile281.175→208.229ms;heartbeats1588→1055. Actual rebuilt-module opaque body/full independent original/type AST/universe/binder/standard-axiom gates pass. Owner independently froze/rehashed54UTF8 artifacts and verified exact prefixes/root timings;fresh full root/LeanEval native closure returns zero messages/errors.
+Owner fullbuild55.789s THEN separateLeanEval43.154s,both exit0,all17pins immutable;sourceSHA256`770a6ff1cb79679adfd37cdf765f475e33e1300497537ccd2fb3ae1508f6c26d`,
+current695lines. Owner rehash/review and sourcefreeze checks pass. All owned processes
+and native requests drained before publication;nextoriginalsqrt_lt_floor remains unedited.
+MainLemma finalfile/simplify/completeprofile phases pending. Metadata child changes only
+this checkpoint record,not source or verification inputs.
