@@ -2613,3 +2613,13 @@ Frozen Theta SHA256 `c0e8edc37192227f56814c674480b56143e2923e588a750dca5d7f3ecf0
 This belongs to original27 batch; original counts remainTheta35/35,
 overall216/264,9/14files. No count inflation from helper/revisit audits.
 Next:fresh dedicated lem7_Φ_bound performance revisit, then lem7_numeric and the mandatory second theta_prefix_lt_aux repair, followed by independent filewide review/final gates. Two older Lemma7 repairs and historical prefix1047.277ms failure remain mandatory; no whole-file performance pass. MainLemma finite actual caller timing remains unmeasured before main_lemma.
+
+
+## Validated Theta revisit — lem7_Φ_bound
+
+Replaced nonlinear closure with the explicit weighted scalar certificate and direct reciprocal order transport. Full public contract/docstring and entire private phi caller unchanged; no helper or API change. Ordinary proof22 lines. [Dedicated audit](cleanup/Theta-lem7_Phi_bound-performance.md).
+Revisit source/audit commit `a51d377bbeaa9cf4c11eef90b414a01777f5e2a1`: [GitHub checkpoint](https://github.com/SmwYin/Roth/commit/a51d377bbeaa9cf4c11eef90b414a01777f5e2a1).
+Frozen Theta SHA256 `ff96424900db697abbba3c3a4b6fe6356abf774b55c08d2b582dc31a21b1e629`. All owner gates passed as recorded in the audit.
+This belongs to original33 batch; original counts remainTheta35/35,
+overall216/264,9/14files. No count inflation from helper/revisit audits.
+Next:fresh dedicated lem7_numeric repair, then mandatory second prefix and second summax repairs, independent filewide review and final gates. Numeric1254.575/1129.895 remains; historical prefix1047.277 and fresh summax1004.335/809.108 require separate repairs. No whole-file pass; MainLemma finite actual timing remains unmeasured before main_lemma.
