@@ -25,26 +25,29 @@ Started: 2026-10-14 (America/Chicago).
 
 ## Current status
 
-Latest completed file after successful final publication: Separation. Theta originals 30/35
-completed; overall 211/264 original declarations, 9/14 files. Latest original: `Θ_option_le`.
-Its five-line proof supports closed δ bounds, `3 ≤ r none` and weak coordinate ratios;
-selected DecidableEq and derived hr0 inputs are removed, while hq and hB remain. The entire
-Θ_lt caller contract and all three private helpers are preserved.
+Latest completed file: Separation. Theta originals **31/35** completed; overall
+**212/264** original declarations, **9/14** files. Latest: `one_lt_of_log_pos`.
+The private wrapper was deleted and its three `Θ_lt` calls now use `Real.log_pos_iff`
+directly. All public contracts and other helpers remain unchanged.
 
-Fresh declaration audit, module build and complete unfiltered native LSP pass (0 errors,
-8 warnings). Both real prefix-through30 sweeps pass for all five related declarations:
-Θ_option_le 158.615/144.368 ms; maximum across the five is 925.763 ms. Owner cumulative
-recovery passes all 29 original public contracts and five definition values, with 29 entire
-old adapters, 87 explicit opaque body-type checks and 87 actual standard axiom checks.
-Both independent original proof blocks remain byte-identical. Frozen full build 113.288 s
-THEN separate LeanEval 37.676 s pass; all 17 source/pin hashes remain unchanged.
-[Latest audit](cleanup/Theta-Theta_option_le.md).
+The complete private audit, independent first proof, exact old caller contract/proof/value,
+actual standard axioms, removed-name absence and three direct AST applications pass.
+Module and complete unfiltered native LSP pass (0 errors, 8 existing warnings).
+Owner full build (103.738 s), then separate LeanEval (34.051 s), pass with all17 source/pin
+hashes stable. The scoped direct replacement certificate profiles at86.921 ms; a deleted
+production declaration has no timing. [Latest audit](cleanup/Theta-one_lt_of_log_pos.md).
 
-[Contract decisions](cleanup/Theta-contract-proposal.md): selected A/B/C and supported G–L
-applications are complete; prior hq/globalΘ hB/hr/domain/header preservation choices remain.
-Five originals and all final file phases, including whole-Theta profiling, are outstanding.
-Earlier diagnostic baseline overages remain recorded; no whole-module performance pass is
-claimed. Next: original31 private `one_lt_of_log_pos`, then originals32–35.
+Mandatory final performance repair remains: unchanged `index_numeric_bound_aux` and
+`index_le_lem6` failed the required repeat at1068.193/1115.157 ms (first876.997/935.661 ms).
+Baseline/final whole `Θ_lt` profiles stalled at218726572/217743378 raw bytes; only their own
+sessions were interrupted130. No explicit Lean error or finite caller time was observed.
+No all-five, whole-file, or caller performance pass is claimed. Fresh original35 and final
+file profiling must resolve these obligations; no third cherry-picked sweep was used.
+
+Next: original32 `lem6M_lt`, then the remaining three originals and every file-final phase.
+Each new private helper requires a separate fresh audit; helpers/revisits do not increase counts.
+[Contract decisions](cleanup/Theta-contract-proposal.md) and standing implementation authority
+remain in force, including the earlier explicit hq and extra hB/hr preservation choices.
 
 Build/tool setup completed; GitHub browser authentication and branch publication succeeded.
 The first file, `Roth/HasseDeriv.lean`, has completed all declaration and final review,
@@ -2483,3 +2486,15 @@ Next:original31 private one_lt_of_log_pos (assess direct existing Real.log_pos_i
 Original30 validated source/audit checkpoint: [b2e29b5](https://github.com/SmwYin/Roth/commit/b2e29b589e54b42db53803b718a9c4b71249bb9a).
 The following central-log metadata commit changes no Lean source; both commits publish
 together before original31 edits. Counts remain 211/264, Theta 30/35, 9/14 files.
+
+
+## Theta original31 checkpoint — one_lt_of_log_pos
+
+Deleted the five-line private `one_lt_of_log_pos` wrapper and used `Real.log_pos_iff` with the direct cast at its three `Θ_lt` call sites. All public contracts and every other helper remain unchanged.
+
+Fresh private24/42/five actual searches/every-binder/counterexample/inversion/packing/inequality/11-step checks and exact independent FIRST/replacement/value/standard-axiom gates pass. The built wrapper is absent; the entire original Θ_lt type/value/standard axioms and exactly three direct log_pos_iff proof uses are checked. The bounded final actual-caller attempt stalled and was interrupted130 after four identical-output checks; no explicit Lean error or finite caller timing was observed. [Dedicated audit](cleanup/Theta-one_lt_of_log_pos.md).
+Final Theta SHA256 `30a8d16687baacb2c21383934dcbb22cb0e8458da0392504d81acf9eadf6b0d7`. Module and complete unfiltered LSP:0 errors/8 warnings;
+Scoped direct-replacement certificate:86.921 (real exact old-contract certificate; the deleted production declaration has no timing) ms. Frozen full build103.738s then
+separate LeanEval34.051s both exit0; all17project/pin/source hashes stable.
+Deleted one original private wrapper; no new helper. This still reviews one original declaration and adds no count from helpers/revisits. After successful publication:Theta31/35,overall212/264,9/14files.
+Next:original32 lem6M_lt (ordinary proof≤30; every new helper requires a separate fresh audit). Actual whole-Theta profiling and final file phases remain outstanding.

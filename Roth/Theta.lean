@@ -600,13 +600,6 @@ end Lemma6
 
 section Lemma7
 
-private lemma one_lt_of_log_pos {x : ℕ} (h : 0 < Real.log x) : 1 < x := by
-  by_contra hc
-  push Not at hc
-  have hx : (x : ℝ) ≤ 1 := by exact_mod_cast hc
-  have := Real.log_nonpos (Nat.cast_nonneg x) hx
-  linarith
-
 /-- For `log q_1 > p (2p + 1) / δ`, the constant `M` of Lemma 6 with `B = q_1^{δ r_1}` satisfies
 `M < q_1^{δ (1 + 1/p) l r_1}`. Source: §5, proof of Lemma 7 ("`M < q_1^{δ_1 l r_1}` with
 `δ_1 = δ(1 + p⁻¹)`"). -/
@@ -744,7 +737,8 @@ theorem Θ_lt (n : ℕ) {δ : ℝ} (hδ0 : 0 < δ) (hδ : δ < 1 / ((n : ℝ) + 
   | zero =>
     have : Unique (Fin (0 + 1)) := inferInstanceAs (Unique (Fin 1))
     have hL : 0 < Real.log (q 0) := lt_trans (by positivity) hq1
-    have hq : 1 < q 0 := one_lt_of_log_pos hL
+    have hq : 1 < q 0 := by
+      exact_mod_cast (Real.log_pos_iff (Nat.cast_nonneg (q 0))).1 hL
     have hB : (1 : ℝ) ≤ (q 0 : ℝ) ^ (δ * r 0) :=
       Real.one_le_rpow (by exact_mod_cast hq.le) (by positivity)
     have h := Θ_unique_le (q := q) (r := r) hB (by convert hq; exact Subsingleton.elim _ _) (hr0 _)
@@ -767,7 +761,8 @@ theorem Θ_lt (n : ℕ) {δ : ℝ} (hδ0 : 0 < δ) (hδ : δ < 1 / ((n : ℝ) + 
     linarith
   | succ n ih =>
     have hL : 0 < Real.log (q 0) := lt_trans (by positivity) hq1
-    have hq0' : 1 < q 0 := one_lt_of_log_pos hL
+    have hq0' : 1 < q 0 := by
+      exact_mod_cast (Real.log_pos_iff (Nat.cast_nonneg (q 0))).1 hL
     set B : ℝ := (q 0 : ℝ) ^ (δ * r 0)
     have hB : 1 ≤ B := Real.one_le_rpow (by exact_mod_cast hq0'.le) (by positivity)
     have hn2 : (0 : ℝ) < (n : ℝ) + 1 + 1 := by positivity
@@ -856,7 +851,8 @@ theorem Θ_lt (n : ℕ) {δ : ℝ} (hδ0 : 0 < δ) (hδ : δ < 1 / ((n : ℝ) + 
         by_contra hc
         push Not at hc
         nlinarith
-      have hql : 1 < q (Fin.last (n + 1)) := one_lt_of_log_pos hLl
+      have hql : 1 < q (Fin.last (n + 1)) := by
+        exact_mod_cast (Real.log_pos_iff (Nat.cast_nonneg (q (Fin.last (n + 1))))).1 hLl
       calc Θ M (fun _ : Unit => q (Fin.last (n + 1))) (fun _ => l * r (Fin.last (n + 1)))
           ≤ Θ C (fun _ : Unit => q (Fin.last (n + 1))) (fun _ => l * r (Fin.last (n + 1))) :=
             Θ_mono hM1 hMlt.le _ fun _ => Nat.mul_pos hl1 (hr0 _)

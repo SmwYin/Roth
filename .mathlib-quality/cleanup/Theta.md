@@ -70,7 +70,7 @@ ordinary baseline builds passing does not imply any all-file profile pass.
 | 28 | `index_det_le` | 410 | 94 | Complete;[audit](Theta-index_det_le.md) |
 | 29 | `index_le_lem6` | 521 | 89 | Complete;[audit](Theta-index_le_lem6.md) |
 | 30 | `Θ_option_le` | 623 | 6 | Complete;[audit](Theta-Theta_option_le.md) |
-| 31 | `one_lt_of_log_pos` | 640 | 5 | Pending dedicated audit |
+| 31 | `one_lt_of_log_pos` | 640 | 5 | Complete;[audit](Theta-one_lt_of_log_pos.md) |
 | 32 | `lem6M_lt` | 650 | 53 | Pending dedicated audit |
 | 33 | `lem7_Φ_bound` | 711 | 22 | Pending dedicated audit |
 | 34 | `lem7_numeric` | 741 | 25 | Pending dedicated audit |
@@ -594,3 +594,24 @@ Accepted uncontended exact-prefix profile: Θ_option158.615/144.368; public29 90
 Frozen owner full (113.288 s) then separate LeanEval (37.676 s) pass.
 [Dedicated audit](Theta-Theta_option_le.md). Theta 30/35, overall 211/264 originals;9/14 files complete.
 No new private helper; all three previously audited helpers unchanged. Original counts exclude revisits and helper audits. Next: original31 private one_lt_of_log_pos (assess direct existing Real.log_pos_iff replacement and actual deleted-wrapper absence/caller proofs).
+
+
+## Published checkpoint31 — one_lt_of_log_pos
+
+Deleted the five-line private `one_lt_of_log_pos` wrapper and used `Real.log_pos_iff` with the direct cast at its three `Θ_lt` call sites. All public contracts and every other helper remain unchanged.
+
+Fresh private24/42/five actual searches/every-binder/counterexample/inversion/packing/inequality/11-step checks and exact independent FIRST/replacement/value/standard-axiom gates pass. The built wrapper is absent; the entire original Θ_lt type/value/standard axioms and exactly three direct log_pos_iff proof uses are checked. The bounded final actual-caller attempt stalled and was interrupted130 after four identical-output checks; no explicit Lean error or finite caller timing was observed. Module and complete unfiltered final LSP pass with 0 errors / 8 warnings.
+Scoped direct-replacement certificate: 86.921 (real exact old-contract certificate; the deleted production declaration has no timing) ms; no whole-file performance claim. This is NOT an all-five performance pass: unchanged numeric/index29 failed the retained-prefix repeat at1068.193/1115.157ms after first876.997/935.661ms. Coordinator explicitly queues these independent prior proofs for mandatory final whole-file repair; no rollback or cherry-picked third sweep.
+Frozen owner full (103.738 s) then separate LeanEval (34.051 s) pass.
+[Dedicated audit](Theta-one_lt_of_log_pos.md). Theta 31/35, overall 212/264 originals;9/14 files complete.
+Deleted one original private wrapper; no new helper. This still reviews one original declaration and adds no count from helpers/revisits. Next: original32 lem6M_lt (ordinary proof≤30; every new helper requires a separate fresh audit).
+
+
+### Mandatory final performance repair queue after checkpoint31
+
+The unchanged numeric/index29 required repeat failed at1068.193/1115.157 ms after
+first876.997/935.661 ms. Both exact same-source traces are retained in the scoped31 report.
+Baseline/final actual `Θ_lt` whole-source attempts stalled and only their own sessions were
+interrupted130; neither produced a finite caller time or explicit Lean error. Original35 and
+file-final profiling must resolve these obligations. Scoped31 certificate PASS does not establish
+all-five or whole-file performance PASS. No third cherry-picked sweep was used.
