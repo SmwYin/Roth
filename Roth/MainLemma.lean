@@ -91,17 +91,19 @@ theorem eta_lt_gam_iff (δ : ℝ) (n m : ℕ) : eta δ m + 2 * (1 + 3 * δ) * n 
     eta δ m < gam δ n m := by
   grind [gam, lam]
 
-/-- If `X > 4` then `√X < ⌊X⌋ ≤ X`.
+private lemma sqrt_lt_nat_floor_aux {X : ℝ} (hX : 2 ≤ X) : √X < ⌊X⌋₊ :=
+  have hfloor : (2 : ℝ) ≤ ⌊X⌋₊ := by exact_mod_cast Nat.le_floor hX
+  (Real.sqrt_lt' (by positivity)).2 (by nlinarith only [Nat.lt_floor_add_one X, hfloor])
+
+/-- If `X ≥ 2` then `√X < ⌊X⌋ ≤ X`.
+
+The natural floor gives an integer coefficient bound; use `.1` for its square-root lower
+bound and `.2` for its non-strict upper bound.
 
 Source: §6 ("writing `X = q_1^{δ r_1}`, we have `X > 4`, whence `B_1 = ⌊X⌋ > X - 1 > √X`"
 and the Lean note "Retain the non-strict upper bound `B_1 ≤ X`"). -/
-theorem sqrt_lt_floor {X : ℝ} (hX : 4 < X) : √X < ⌊X⌋₊ ∧ (⌊X⌋₊ : ℝ) ≤ X := by
-  refine ⟨?_, Nat.floor_le (by linarith)⟩
-  have h1 := Nat.sub_one_lt_floor X
-  have hs := Real.sq_sqrt (by linarith : (0 : ℝ) ≤ X)
-  have hs0 := Real.sqrt_nonneg X
-  have hs2 : 2 < √X := by nlinarith
-  nlinarith
+theorem sqrt_lt_floor {X : ℝ} (hX : 2 ≤ X) : √X < ⌊X⌋₊ ∧ (⌊X⌋₊ : ℝ) ≤ X :=
+  ⟨sqrt_lt_nat_floor_aux hX, Nat.floor_le (by positivity)⟩
 
 /-- Under (29) and (the consequence `2m + 1 < δ² log q_1` of) (32), `q_1^{δ r_1} > 4`.
 
@@ -138,7 +140,7 @@ theorem log_B₁_gt {δ : ℝ} (hδ0 : 0 < δ) {q₁ r₁ : ℕ} (hq₁ : 1 < q�
     δ * r₁ * Real.log q₁ / 2 < Real.log (B₁ δ q₁ r₁) := by
   have hq : (0 : ℝ) < q₁ := by exact_mod_cast (by omega : 0 < q₁)
   have hX0 : (0 : ℝ) ≤ (q₁ : ℝ) ^ (δ * r₁) := by positivity
-  have h := (sqrt_lt_floor hX).1
+  have h := (sqrt_lt_floor (hX.le.trans' (by norm_num))).1
   have hs : 0 < √((q₁ : ℝ) ^ (δ * r₁)) := Real.sqrt_pos.2 (by linarith)
   have := Real.log_lt_log hs h
   rwa [Real.log_sqrt hX0, Real.log_rpow hq] at this
@@ -161,7 +163,7 @@ theorem three_small_factors {δ : ℝ} (hδ0 : 0 < δ) {m : ℕ} (hm : 1 ≤ m) 
   have hX := four_lt_rpow hδ0 hm hδm hr₁ h2m
   have hlogB := log_B₁_gt hδ0 hq₁ hr₁ hX
   have hB0 : (0 : ℝ) < B₁ δ q₁ r₁ :=
-    lt_of_le_of_lt (Real.sqrt_nonneg _) (sqrt_lt_floor hX).1
+    lt_of_le_of_lt (Real.sqrt_nonneg _) (sqrt_lt_floor (hX.le.trans' (by norm_num))).1
   have hr : (0 : ℝ) < r₁ := by exact_mod_cast hr₁
   -- `t^{m r₁} < B₁^δ` as soon as `2 m log t < δ² log q₁`
   have key : ∀ t : ℝ, 0 < t → 2 * m * Real.log t < δ ^ 2 * Real.log q₁ →
@@ -547,7 +549,7 @@ theorem main_lemma {α : ℝ} {f : Polynomial ℤ} (hf : f.Monic) (hfα : Polyno
   have hlogα : 0 ≤ Real.log (1 + |α|) := Real.log_nonneg (by linarith [abs_nonneg α])
   have h32' : (2 * ((m' + 1 : ℕ) : ℝ) + 1) < δ ^ 2 * Real.log (q 0) := by nlinarith
   have hX : 4 < X := four_lt_rpow hδ0 hm1 hδm (hr0 0) h32'
-  obtain ⟨hsqB, hBX⟩ := sqrt_lt_floor hX
+  obtain ⟨hsqB, hBX⟩ := sqrt_lt_floor (hX.le.trans' (by norm_num))
   change √X < (B : ℝ) at hsqB
   change (B : ℝ) ≤ X at hBX
   have hsX : 2 < √X := by

@@ -193,3 +193,20 @@ All worker/compiler/native/profile ownership drained before publication.
 Source/audit publication hash follows in central checkpoint history via metadata child.
 MainLemma6/27 originals,overall222/264,10/14fullycompletedfiles;nextsqrt_lt_floor.
 Filewide final phases remain pending.
+
+
+### Original7: `sqrt_lt_floor`
+
+[Fresh dedicated full audit](MainLemma-sqrt_lt_floor.md):all24audit/42golf/5search/11checklist
+artifacts reviewed by owner. Sharp2≤X replaces4<X; both conclusions and historical quote retained, exactly four caller repairs. Public body6→1 plus one separately fresh-audited private helper2bodylines (not original-count credit). Matched GLOBAL public+helper127.982/104.364ms versus178.143/178.631ms; own public22.373/16.945ms. All90 ML/Main timing rows complete. Valid foreign FAILs including exists_delta_bound11188.775ms (preexisting full-file controls11594.369/12164.962) and pigeonhole1000.235ms remain mandatory final-file repairs; Main failures stay in its next-file queue, no Main audit credit. Earlier prefix passes do not certify whole-file performance. Owner verified275 frozen UTF8 artifacts, exact old/current proof/contracts and generated-hygiene-only normalization; fresh root/LeanEval native closure complete with zero messages/errors.
+Independent original reimplementation,exact old/current effective contract metadata/value
+and standard-axiom evidence reviewed; complete unfiltered livefile/affectedcaller diagnostics
+and actual affected-module/fullfile validation pass. Actual anchored profile16.945ms;
+required repeats/failed evidence,if any,remain in the dedicated report. Owner verified frozen
+source/evidence and ran fullbuild37.145s THEN separateLeanEval37.339s,both exit0 with all17pins immutable.
+Owner logs:`/private/tmp/roth-mainlemma-owner/sqrt_lt_floor-owner-full.json` and
+`sqrt_lt_floor-owner-eval.json`. SourceSHA256`85af4993b70decb29489013593420d99644a93e2ac6891cecfa7cad5fb2b55f8`;current697lines.
+All worker/compiler/native/profile ownership drained before publication.
+Source/audit publication hash follows in central checkpoint history via metadata child.
+MainLemma7/27 originals,overall223/264,10/14fullycompletedfiles;nextfour_lt_rpow.
+Filewide final phases remain pending.
