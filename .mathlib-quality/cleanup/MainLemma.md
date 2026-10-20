@@ -210,3 +210,20 @@ All worker/compiler/native/profile ownership drained before publication.
 Source/audit publication hash follows in central checkpoint history via metadata child.
 MainLemma7/27 originals,overall223/264,10/14fullycompletedfiles;nextfour_lt_rpow.
 Filewide final phases remain pending.
+
+
+### Original8: `four_lt_rpow`
+
+[Fresh dedicated full audit](MainLemma-four_lt_rpow.md):all24audit/42golf/5search/11checklist
+artifacts reviewed by owner. Stronger constant3 API removes m/hm/hδm and weakens sign to0≤δ, preserves strict conclusion and all3foreign full caller contracts; proof21→18lines,0newhelpers (existing separately audited helpercount1). Exact old/current opaque-value/fulltype/name/order/BI/universe/stdaxioms and independent original/caller closures pass. Matched scoped target774.351/862.510→367.057/430.308ms. All8captures/16complete rows independently owner-reparsed; missing beforeMain repeat recovered EXACT old689f540c olean in closed isolated library, actual pair2997.107/2993.523ms. All failed imports/probes and slow foreign samples including MLmain7871.827ms retained; actual argument overhead13–34ms and broad unchanged-subtree variation disclosed, no foreign budget/global certification. Fresh root/Eval native both complete0messages/errors. Owner verified338artifacts/1.177GB, all17pins and40PGIDdrains. New true unused three.hδm warning remains original10 drop-test; globalδ/three/pigeon/main repair queues and Main-own-file queue remain mandatory.
+Independent original reimplementation,exact old/current effective contract metadata/value
+and standard-axiom evidence reviewed; complete unfiltered livefile/affectedcaller diagnostics
+and actual affected-module/fullfile validation pass. Actual anchored profile430.308ms;
+required repeats/failed evidence,if any,remain in the dedicated report. Owner verified frozen
+source/evidence and ran fullbuild44.709s THEN separateLeanEval81.649s,both exit0 with all17pins immutable.
+Owner logs:`/private/tmp/roth-mainlemma-owner/four_lt_rpow-owner-full.json` and
+`four_lt_rpow-owner-eval.json`. SourceSHA256`2b8a5cab541e92ba56eb71142867bb3f562461682ccada4c07e7ea4fcfcd87a4`;current696lines.
+All worker/compiler/native/profile ownership drained before publication.
+Source/audit publication hash follows in central checkpoint history via metadata child.
+MainLemma8/27 originals,overall224/264,10/14fullycompletedfiles;nextlog_B₁_gt.
+Filewide final phases remain pending.

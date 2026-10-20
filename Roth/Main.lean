@@ -581,7 +581,8 @@ theorem roth_of_isIntegral {α : ℝ} (hα : Irrational α) (hint : IsIntegral �
     have := mul_nonneg hmR' hlogA
     have := mul_nonneg hmR' hlogα
     linarith
-  have hX := four_lt_rpow hδ0 hm1 hδm (hr0 0) h32'
+  have hX := four_lt_rpow hδ0.le (hr0 0) (by
+    linarith only [h32', show (1 : ℝ) ≤ m by exact_mod_cast hm1])
   obtain ⟨hsqB, hBX⟩ := sqrt_lt_floor (hX.le.trans' (by norm_num))
   change √((q 0 : ℝ) ^ (δ * r 0)) < (B : ℝ) at hsqB
   change (B : ℝ) ≤ (q 0 : ℝ) ^ (δ * r 0) at hBX

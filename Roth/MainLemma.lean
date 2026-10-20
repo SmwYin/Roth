@@ -105,32 +105,30 @@ and the Lean note "Retain the non-strict upper bound `B_1 ≤ X`"). -/
 theorem sqrt_lt_floor {X : ℝ} (hX : 2 ≤ X) : √X < ⌊X⌋₊ ∧ (⌊X⌋₊ : ℝ) ≤ X :=
   ⟨sqrt_lt_nat_floor_aux hX, Nat.floor_le (by positivity)⟩
 
-/-- Under (29) and (the consequence `2m + 1 < δ² log q_1` of) (32), `q_1^{δ r_1} > 4`.
+/-- The bound `3 ≤ δ² log q_1`, with `δ ≥ 0` and positive natural `r_1`, gives
+`q_1^{δ r_1} > 4`. In the original setting, `1 ≤ m` and (32) imply this bound.
 
 Source: §6 ("`X > 4`", from (32) and (29): `δ r_1 log q_1 > m(2m+1) r_1`). -/
-theorem four_lt_rpow {δ : ℝ} (hδ0 : 0 < δ) {m : ℕ} (hm : 1 ≤ m) (hδm : δ < 1 / m) {q₁ r₁ : ℕ}
-    (hr₁ : 0 < r₁) (hq₁ : (2 * m + 1 : ℝ) < δ ^ 2 * Real.log q₁) : 4 < (q₁ : ℝ) ^ (δ * r₁) := by
-  have hm' : (1 : ℝ) ≤ m := by exact_mod_cast hm
-  have hδ1 : δ < 1 := hδm.trans_le (by rw [div_le_one (by linarith)]; exact hm')
-  have hL : 0 < Real.log q₁ := by
-    by_contra h
-    push Not at h
-    nlinarith [sq_nonneg δ]
-  have hq : (0 : ℝ) < q₁ := by
-    rcases Nat.eq_zero_or_pos q₁ with h | h
-    · simp [h] at hL
-    · exact_mod_cast h
+theorem four_lt_rpow {δ : ℝ} (hδ0 : 0 ≤ δ) {q₁ r₁ : ℕ} (hr₁ : 0 < r₁)
+    (hq₁ : 3 ≤ δ ^ 2 * Real.log q₁) : 4 < (q₁ : ℝ) ^ (δ * r₁) := by
+  have hL : 0 < Real.log q₁ :=
+    pos_of_mul_pos_right (lt_of_lt_of_le (by norm_num) hq₁) (sq_nonneg δ)
+  have hq : 2 ≤ q₁ := by exact_mod_cast (Real.log_pos_iff (by positivity)).1 hL
+  have hlog2 : Real.log 2 < 3 / 4 := by
+    apply (Real.log_lt_iff_lt_exp (by norm_num)).2
+    nlinarith only [Real.quadratic_le_exp_of_nonneg (by norm_num : (0 : ℝ) ≤ 3 / 4)]
   have hr : (1 : ℝ) ≤ r₁ := by exact_mod_cast hr₁
-  have hlog4 : Real.log 4 < 3 := by
-    have := Real.log_lt_sub_one_of_pos (by norm_num : (0 : ℝ) < 4) (by norm_num)
-    linarith
-  have hkey : Real.log 4 < Real.log q₁ * (δ * r₁) := by
-    have h1 : δ ^ 2 * Real.log q₁ < δ * Real.log q₁ := by nlinarith
-    have h2 : δ * Real.log q₁ ≤ δ * Real.log q₁ * r₁ := le_mul_of_one_le_right (by positivity) hr
-    nlinarith
-  rw [Real.rpow_def_of_pos hq]
-  calc (4 : ℝ) = Real.exp (Real.log 4) := (Real.exp_log (by norm_num)).symm
-    _ < _ := Real.exp_lt_exp.2 hkey
+  apply Real.lt_rpow_of_log_lt <| lt_trans zero_lt_one ((Real.log_pos_iff (by positivity)).1 hL)
+  have hkey : Real.log 4 < δ * Real.log q₁ := by
+    rw [show (4 : ℝ) = 2 ^ 2 by norm_num, Real.log_pow]
+    by_contra! h
+    norm_num at h
+    nlinarith only [mul_self_le_mul_self (mul_nonneg hδ0 hL.le) h,
+      mul_le_mul_of_nonneg_right hq₁ hL.le,
+      Real.log_le_log (by norm_num : (0 : ℝ) < 2) (by exact_mod_cast hq : (2 : ℝ) ≤ q₁),
+      mul_pos (Real.log_pos (by norm_num : (1 : ℝ) < 2))
+        (by linarith only [hlog2] : 0 < 3 - 4 * Real.log 2)]
+  nlinarith only [hkey, le_mul_of_one_le_right (mul_nonneg hδ0 hL.le) hr]
 
 /-- If `q_1^{δ r_1} > 4` then `log B_1 > ½ δ r_1 log q_1`.
 
@@ -160,7 +158,8 @@ theorem three_small_factors {δ : ℝ} (hδ0 : 0 < δ) {m : ℕ} (hm : 1 ≤ m) 
   have hlogα : 0 ≤ Real.log (1 + |α|) := Real.log_nonneg (by linarith [abs_nonneg α])
   have hm' : (0 : ℝ) ≤ m := Nat.cast_nonneg m
   have h2m : (2 * m + 1 : ℝ) < δ ^ 2 * Real.log q₁ := by nlinarith
-  have hX := four_lt_rpow hδ0 hm hδm hr₁ h2m
+  have hX := four_lt_rpow hδ0.le hr₁ (by
+    linarith only [h2m, show (1 : ℝ) ≤ m by exact_mod_cast hm])
   have hlogB := log_B₁_gt hδ0 hq₁ hr₁ hX
   have hB0 : (0 : ℝ) < B₁ δ q₁ r₁ :=
     lt_of_le_of_lt (Real.sqrt_nonneg _) (sqrt_lt_floor (hX.le.trans' (by norm_num))).1
@@ -548,7 +547,7 @@ theorem main_lemma {α : ℝ} {f : Polynomial ℤ} (hf : f.Monic) (hfα : Polyno
   have hlogA : 0 ≤ Real.log (1 + A) := Real.log_nonneg (by linarith)
   have hlogα : 0 ≤ Real.log (1 + |α|) := Real.log_nonneg (by linarith [abs_nonneg α])
   have h32' : (2 * ((m' + 1 : ℕ) : ℝ) + 1) < δ ^ 2 * Real.log (q 0) := by nlinarith
-  have hX : 4 < X := four_lt_rpow hδ0 hm1 hδm (hr0 0) h32'
+  have hX : 4 < X := four_lt_rpow hδ0.le (hr0 0) (by linarith only [h32', hmR])
   obtain ⟨hsqB, hBX⟩ := sqrt_lt_floor (hX.le.trans' (by norm_num))
   change √X < (B : ℝ) at hsqB
   change (B : ℝ) ≤ X at hBX

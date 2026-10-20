@@ -25,14 +25,14 @@ Started: 2026-10-14 (America/Chicago).
 
 ## Current status
 
-MainLemma is active:7/27originals complete at the latest published checkpoint;
-overall223/264originals,10/14fullycompletedfiles. Latest:`sqrt_lt_floor` after fresh full
+MainLemma is active:8/27originals complete at the latest published checkpoint;
+overall224/264originals,10/14fullycompletedfiles. Latest:`four_lt_rpow` after fresh full
 24-item/42-rule/5-method/11-step audit,independent original/type/binder/value/standard-axiom
-checks,complete unfiltered affected diagnostics and actual anchored profile16.945ms.
-Owner fullbuild37.145s THEN separateLeanEval37.339s,both exit0 on immutable17pins.
-Sharp2≤X replaces4<X; both conclusions and historical quote retained, exactly four caller repairs. Public body6→1 plus one separately fresh-audited private helper2bodylines (not original-count credit). Matched GLOBAL public+helper127.982/104.364ms versus178.143/178.631ms; own public22.373/16.945ms. All90 ML/Main timing rows complete. Valid foreign FAILs including exists_delta_bound11188.775ms (preexisting full-file controls11594.369/12164.962) and pigeonhole1000.235ms remain mandatory final-file repairs; Main failures stay in its next-file queue, no Main audit credit. Earlier prefix passes do not certify whole-file performance. Owner verified275 frozen UTF8 artifacts, exact old/current proof/contracts and generated-hygiene-only normalization; fresh root/LeanEval native closure complete with zero messages/errors. Entry708→current697lines. Next:four_lt_rpow. MainLemma filewide final,
+checks,complete unfiltered affected diagnostics and actual anchored profile430.308ms.
+Owner fullbuild44.709s THEN separateLeanEval81.649s,both exit0 on immutable17pins.
+Stronger constant3 API removes m/hm/hδm and weakens sign to0≤δ, preserves strict conclusion and all3foreign full caller contracts; proof21→18lines,0newhelpers (existing separately audited helpercount1). Exact old/current opaque-value/fulltype/name/order/BI/universe/stdaxioms and independent original/caller closures pass. Matched scoped target774.351/862.510→367.057/430.308ms. All8captures/16complete rows independently owner-reparsed; missing beforeMain repeat recovered EXACT old689f540c olean in closed isolated library, actual pair2997.107/2993.523ms. All failed imports/probes and slow foreign samples including MLmain7871.827ms retained; actual argument overhead13–34ms and broad unchanged-subtree variation disclosed, no foreign budget/global certification. Fresh root/Eval native both complete0messages/errors. Owner verified338artifacts/1.177GB, all17pins and40PGIDdrains. New true unused three.hδm warning remains original10 drop-test; globalδ/three/pigeon/main repair queues and Main-own-file queue remain mandatory. Entry708→current696lines. Next:log_B₁_gt. MainLemma filewide final,
 independent simplify and complete performance phases remain pending. See
-[MainLemma ledger](cleanup/MainLemma.md) and [latest audit](cleanup/MainLemma-sqrt_lt_floor.md).
+[MainLemma ledger](cleanup/MainLemma.md) and [latest audit](cleanup/MainLemma-four_lt_rpow.md).
 The exact source/audit commit is recorded in appended checkpoint history by its metadata
 child. Prior fullycompleted-file handoff is preserved below.
 
@@ -167,7 +167,7 @@ Files will be processed in dependency order; declarations within each file are s
 | `Roth/Index.lean` | 275 | All cleanup phases complete;21/21 originals audited; user-approved hypothesis groups applied and validated |
 | `Roth/Separation.lean` | 618 | Complete;30/30 originals and all final phases;source556lines27retained;all12 approved instance amendments validated |
 | `Roth/Theta.lean` | 981 | Complete;35/35 originals and all final file phases;source991lines,50retained |
-| `Roth/MainLemma.lean` | 704 | Active;7/27 originals audited/published;final file phases pending |
+| `Roth/MainLemma.lean` | 704 | Active;8/27 originals audited/published;final file phases pending |
 | `Roth/Main.lean` | 684 | Awaiting cleanup |
 | `Roth/LeanEval.lean` | 60 | Awaiting cleanup |
 | `Roth.lean` | 14 | Awaiting cleanup |
@@ -2858,62 +2858,62 @@ this checkpoint record,not source or verification inputs.
 
 
 <!-- takeover-original8-start -->
-### Safe takeover reference during original8 (source remains unvalidated)
+### Current resumable cleanup handoff (supersedes the partial-original8 snapshot)
 
-Read **Current status and the latest appended checkpoint first**; a later completed
-checkpoint supersedes this fallback. Last validated source/audit checkpoint:
-`9bebcd06f79f643d43b6c1154c14a381ba400bf9`, published through
-`d95ec1897782455a1fab4c81b58631f704838567`:223/264 originals,MainLemma7/27,
-10/14files; one separately audited introduced helper does not increase264.
-The current `four_lt_rpow` original8 edits are **not published or complete**.
+Read **Current status and the latest appended checkpoint first**. The frozen
+original8 worker report predates its owner's publication; source/audit hashes in
+appended checkpoint history and the following metadata child are authoritative.
+MainLemma8/27, overall224/264;10/14fully completed files. Next original9:
+`Roth.log_B₁_gt`, not yet edited or delegated at this publication boundary.
 
-- Sole file/Git/progress owner:`/root/cleanup_continuation/mainlemma_file`;
-  exclusive original8 source/compiler/native/profile worker:
-  `/root/cleanup_continuation/mainlemma_file/four_lt_rpow`.
-  User has **not paused or transferred ownership**. Continue the existing worker;
-  do not create duplicate owners. An actual takeover must first revoke/drain the old
-  owner and all its compiler/native/profile operations.
-- Exact saved partial source/report/config hashes and unvalidated diff:
-  `/private/tmp/roth-mainlemma-owner/takeover-original8-f09b07f8/state.json`.
-  Leaf safe-gap state (including oleans/process sample/pending gates):
-  `/private/tmp/roth-mainlemma-four-rpow/checkpoint1-partial-handoff-state.json`.
-  Live evidence:`/private/tmp/roth-mainlemma-four-rpow/`; detailed owner state:
-  `/private/tmp/roth-mainlemma-owner/resume-state-current.json`.
-  Copy these directories before changing machines/accounts. These partial copies
-  are recovery evidence, **not a validated Git checkpoint**.
-- Selected, probe-validated API: `δ≥0`, natural `q₁,r₁`, `r₁>0`, and
-  `3≤δ² log q₁` imply strict `4<q₁^(δ r₁)`; no `m`,reciprocal-bound premise,
-  new helper or import. Actual final-source affected ML/Main build passed80.538s,
-  with17pins immutable and its process group absent; unfiltered native,
-  independent original/current types/binders/opaque values/standard axioms/all3caller
-  recovery, matched after-profiles/repeats and complete report/drain. Then owner runs
-  **full `lake build` followed by separate `lake build Roth.LeanEval`**, fresh root/Eval
-  diagnostics, exact-path stage/review, source/audit commit plus actual-hash metadata
-  child and push/clean verification **before original9 `log_B₁_gt`**. Never ship the
-  partial Lean edits merely because allowance ends.
-- Remaining:original8 closure, original9–27 in inventory order, final MainLemma
-  cumulative project-original public contracts/data/ALL retained axioms, full affected
-  builds/LSP/static/import/docs/comments/reference checks, fresh independent file-wide
-  simplify review and actual whole-file all-row profiling. Then Main17,LeanEval3,
-  rootRoth1. Project-original scaffold candidate remains uncompiled/unaccepted:
-  `/private/tmp/roth-mainlemma-owner/ProjectOriginalMainQualifiedScaffold.lean`.
-- Mandatory performance repairs:MainLemma `exists_delta_bound` valid whole-file11–12s
-  (earlier prefix pass does not certify whole-file performance),`three_small_factors`
-  ~1.7–1.9s,`pigeonhole_count`>1000ms,`main_lemma`~5s; Main `exists_m`,`exists_delta`,
-  `exists_degrees`,`roth_of_isIntegral` also fail, with soft rows recorded in original7
-  report/90-row board. Fresh original10 must test dropping newly unused `hδm`;
-  preserve/report its warning meanwhile. All failed evidence remains retained.
-- Final project-wide rename queue:`.mathlib-quality/renames.jsonl`, currently
-  `Roth.index_hasseDeriv_ge→Roth.index_sub_weight_le_index_hasseDeriv` and
-  `Roth.B₁→Roth.mainCoeffBound`; apply together at project end, preserving later entries.
-- Standing authorization: “From now on implement all changes that you recommend.
-  Only ask me if you can't decide.” All fresh workers:`gpt-6.1-sol`,reasoning`medium`,
-  `fork_turns=none`; serialized compilers/native/profilers, full saved854-line worker
-  prompt and24/42/5/11 audits, fresh audit for EVERY new helper. Preserve earlier
-  explicit Hasse/Separation/Theta retention choices and unknown metadata. No sorry,
-  new axioms,weaker conclusions or Lean-limit raises. Keep `ramin-cleanup`;
-  **no main/merge/force-push**. Lean`v4.34.0`,mathlib
-  `5ed2965256430c3649e86755f9576b54eca72435` and all17source/config pins protected.
-  Canonical exact-token/root parsers and closed-TYPE+VALUE/standard-axiom probe guards:
-  `/private/tmp/roth-mainlemma-owner/future-profiler-scope-instructions.md`.
+Sole file/source/shared-progress/Git owner remains
+`/root/cleanup_continuation/mainlemma_file`; parent is
+`/root/cleanup_continuation`, root `/root`. Original8 worker has explicitly
+released ALL source/compiler/native/profile/report leases; all40 owned groups
+and both owner build groups are absent, no native request pending. Do not create
+a duplicate owner. Continue the same active worker if a later usage interruption
+requires recovery; fresh per-original/helper workers use `gpt-6.1-sol`, **medium**,
+`fork_turns=none`, with complete mandatory cleanup context. One leaf slot only;
+serialize every compiler/native/profile. File owner publishes each completed
+original before the next edit; parent handles remaining Main/LeanEval/Roth files.
+
+Validated original8 source: MainLemma SHA256
+`2b8a5cab541e92ba56eb71142867bb3f562461682ccada4c07e7ea4fcfcd87a4` (696lines),
+Main SHA256
+`eb1a6650385707134c1be22b01707f2e5371340a1817188ad7b803cf2a7aa1cc` (685lines).
+No partial original9 source exists at this boundary. Current private recovery
+state: `/private/tmp/roth-mainlemma-owner/resume-state-current.json`;
+original8 complete frozen evidence/hashes and actual40-group drain:
+`/private/tmp/roth-mainlemma-four-rpow/final-handoff-state.json`.
+[Original8 audit](cleanup/MainLemma-four_lt_rpow.md),338artifact manifest
+SHA256`1e18771c09468da1c5b912b37fd30e3da197de1bc32985347c9a42dede8218d9`.
+Owner FULL44.709s→separateEval81.649s and fresh root/Eval complete native0messages
+passed on immutable17pins; target367.057/430.308ms,0newhelpers. Original8 allold/
+new contracts/proofs and three foreigncaller contracts validated. New unused
+three.hδm warning is original10's mandatory drop-test, no fakeuse/suppression.
+
+Remaining mandatory work: originals9–27 in inventory order, separate fresh audit
+of EACH introduced helper, fresh independent whole-file simplify review, actual
+whole-file all-retained-row profiling and repairs, cumulative independent
+project-original public contracts/data/ALLretained standard axioms, imports/docs/
+comments/reference/static checks, final module/allaffected/full/separateEval/native/
+report/commit/push/clean/release gates. Valid whole-file failures δ11188.775ms
+(prefix pass is insufficient),three1699.293,pigeonhole1000.235,main4880.648 remain
+repair obligations; preserve all scoped slow samples including main7871.827ms.
+Main's own consumer performance queue stays its later fullfile audit, no credit here.
+Final allrow profiling must use exact declaration-token anchoring, only complete
+disjoint column0 command/async roots, separate UTF8 streams and immutable hashes;
+never add nested Meta/kernel/end events or compare unmatched scopes.
+
+Project-end SINGLE rename pass: exact `.mathlib-quality/renames.jsonl` queue
+contains `Roth.index_hasseDeriv_ge`→`Roth.index_sub_weight_le_index_hasseDeriv`
+and `Roth.B₁`→`Roth.mainCoeffBound`; no in-place rename during declaration audits.
+Standing user authorization: **implement all recommended changes; ask only if
+undecidable**. Retention preferences remain authoritative; no invented metadata,
+sorry/newaxioms/weaker conclusions/Lean-limit raises. Branch `ramin-cleanup` only;
+**no changes to Git branch `main`, no merge or force-push**. Pins: Lean `leanprover/lean4:v4.34.0`, mathlib
+`5ed2965256430c3649e86755f9576b54eca72435`; no pin changes. A prior usage limit
+interrupted the same worker; user explicitly resumed on2026-10-20 and fresh usage
+allowed work. No pause or takeover was requested. Preserve future partial work
+and logs; never publish it without its required validation.
 <!-- takeover-original8-end -->
