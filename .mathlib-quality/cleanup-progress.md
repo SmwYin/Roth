@@ -2917,3 +2917,19 @@ interrupted the same worker; user explicitly resumed on2026-10-20 and fresh usag
 allowed work. No pause or takeover was requested. Preserve future partial work
 and logs; never publish it without its required validation.
 <!-- takeover-original8-end -->
+
+
+### MainLemma original8 checkpoint — four_lt_rpow
+
+Source/audit commit `0b218f807856f836170b20cdf5f17822f08aae50`; the following metadata child records and publishes this
+exact checkpoint before the next original edit. MainLemma8/27,overall224/264,
+10/14fullycompletedfiles. [Dedicated audit](cleanup/MainLemma-four_lt_rpow.md) contains all
+24audit/42golf/5search/11verification steps,exact independent original reimplementation/
+effectivecontract/universe/binder/type/value/standard-axiom evidence,actual affectedmodule/
+fullfile and complete unfiltered native successes. Actual anchored profile430.308ms;
+raw evidence and required repeat/failure history are preserved. Stronger constant3 API removes m/hm/hδm and weakens sign to0≤δ, preserves strict conclusion and all3foreign full caller contracts; proof21→18lines,0newhelpers (existing separately audited helpercount1). Exact old/current opaque-value/fulltype/name/order/BI/universe/stdaxioms and independent original/caller closures pass. Matched scoped target774.351/862.510→367.057/430.308ms. All8captures/16complete rows independently owner-reparsed; missing beforeMain repeat recovered EXACT old689f540c olean in closed isolated library, actual pair2997.107/2993.523ms. All failed imports/probes and slow foreign samples including MLmain7871.827ms retained; actual argument overhead13–34ms and broad unchanged-subtree variation disclosed, no foreign budget/global certification. Fresh root/Eval native both complete0messages/errors. Owner verified338artifacts/1.177GB, all17pins and40PGIDdrains. New true unused three.hδm warning remains original10 drop-test; globalδ/three/pigeon/main repair queues and Main-own-file queue remain mandatory.
+Owner fullbuild44.709s THEN separateLeanEval81.649s,both exit0,all17pins immutable;sourceSHA256`2b8a5cab541e92ba56eb71142867bb3f562461682ccada4c07e7ea4fcfcd87a4`,
+current696lines. Owner rehash/review and sourcefreeze checks pass. All owned processes
+and native requests drained before publication;nextoriginallog_B₁_gt remains unedited.
+MainLemma finalfile/simplify/completeprofile phases pending. Metadata child changes only
+this checkpoint record,not source or verification inputs.
