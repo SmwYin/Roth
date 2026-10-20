@@ -3103,3 +3103,19 @@ current702lines. Owner rehash/review and sourcefreeze checks pass. All owned pro
 and native requests drained before publication;nextoriginalboxPoly_injective remains unedited.
 MainLemma finalfile/simplify/completeprofile phases pending. Metadata child changes only
 this checkpoint record,not source or verification inputs.
+
+
+### MainLemma original15 checkpoint — boxPoly_injective
+
+Source/audit commit `1fc499cf21fc91ab2cdb7aecb6fa394036200ca5`; the following metadata child records and publishes this
+exact checkpoint before the next original edit. MainLemma15/27,overall231/264,
+10/14fullycompletedfiles. [Dedicated audit](cleanup/MainLemma-boxPoly_injective.md) contains all
+24audit/42golf/5search/11verification steps,exact independent original reimplementation/
+effectivecontract/universe/binder/type/value/standard-axiom evidence,actual affectedmodule/
+fullfile and complete unfiltered native successes. Actual anchored profile46.624ms;
+raw evidence and required repeat/failure history are preserved. Private box polynomial injectivity generalized from Fin m to arbitrary universe-polymorphic finite sigma with explicit Fintype/DecidableEq, preserving exact original bounded integer-array DATA and old Fin-m contract. Composed function and Fin extensionality with terminal coefficient congruence simplifies declaration6 to3lines, ML702 to699; no helper/caller/Main/queue edits. Genuine project-original constructor/coefficient/injectivity proofs and entire entryML independently reelaborated:9exactcontracts/25closedTYPE+actualVALUE+inferredTYPE/std3/7nonselfoldclosures,4actualtargetboundaryproperties,sole directTYPEVALUEconsumer ncard,plus expanded effective-array/equality-binder AST/isDefEq/std3 supplement pass. Matched target27.752 to46.624ms and ncard16.982 to19.117ms, honest increases/allbelow750/no repeats or aggregate speedupclaim. Owner verified432artifacts80763349bytes26binary/all12201imports1803557376bytes/17pins104before-final-currentcache/4exactprofile rows, savedPATH resolves pinned4.34Lake;18leafgroups absent. FreshcompleteML/Main/Evalnative0errors1/4/0oldwarnings; ownerroot/Evalnative0messages and cache unchanged. Allfile GLOBAL/simplify/cumulative gates remain pending.
+Owner fullbuild5.600s THEN separateLeanEval5.074s,both exit0,all17pins immutable;sourceSHA256`817016b9057fbbbedaa9c6db38280bffb9cdbfcdb063b88cba4704c75f89ed48`,
+current699lines. Owner rehash/review and sourcefreeze checks pass. All owned processes
+and native requests drained before publication;nextoriginalrange_boxPoly remains unedited.
+MainLemma finalfile/simplify/completeprofile phases pending. Metadata child changes only
+this checkpoint record,not source or verification inputs.
