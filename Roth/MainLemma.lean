@@ -143,42 +143,60 @@ theorem log_B₁_gt {δ : ℝ} {q₁ r₁ : ℕ} (hX : 2 ≤ (q₁ : ℝ) ^ (δ 
       (lt_of_lt_of_le (by norm_num) hX)).elim (fun h ↦ zero_lt_one.trans h.1) And.left)] using
     Real.log_lt_log (Real.sqrt_pos.2 (lt_of_lt_of_le (by norm_num) hX)) (sqrt_lt_floor hX).1
 
-/-- Under (29) and (32), each of `2^{m r_1}`, `(1 + A)^{m r_1}` and `(1 + |α|)^{m r_1}` is
-less than `B_1^δ`.
+private lemma two_lt_rpow_aux {δ : ℝ} (hδ0 : 0 ≤ δ) {q₁ r₁ : ℕ} (hr₁ : 0 < r₁)
+    (h1 : Real.log 2 < δ ^ 2 * Real.log q₁) : 2 < (q₁ : ℝ) ^ (δ * r₁) := by
+  have hlog2 : 0 < Real.log 2 := Real.log_pos (by norm_num)
+  have hL : 0 < Real.log q₁ := pos_of_mul_pos_right (hlog2.trans h1) (sq_nonneg δ)
+  have hq : 2 ≤ q₁ := by exact_mod_cast (Real.log_pos_iff (by positivity)).1 hL
+  have hr : (1 : ℝ) ≤ r₁ := by exact_mod_cast hr₁
+  have hprod : Real.log 2 < δ * Real.log q₁ := by
+    by_contra! h
+    nlinarith only [mul_self_le_mul_self (mul_nonneg hδ0 hL.le) h,
+      mul_lt_mul_of_pos_right h1 hL,
+      mul_le_mul_of_nonneg_left
+        (Real.log_le_log (by norm_num : (0 : ℝ) < 2) (by exact_mod_cast hq : (2 : ℝ) ≤ q₁))
+        hlog2.le]
+  apply Real.lt_rpow_of_log_lt (by positivity)
+  nlinarith only [hprod, le_mul_of_one_le_right (mul_nonneg hδ0 hL.le) hr]
+
+/-- For positive `r_1`, the non-strict form of (32), with `δ ≥ 0` and `A ≥ 0`, makes each of
+`2^{m r_1}`, `(1 + A)^{m r_1}` and `(1 + |α|)^{m r_1}` less than `B_1^δ`.
+
+Destructure the result to obtain all three bounds; the conclusions remain strict on the
+hypothesis boundary and also hold with zero variables.
 
 Source: §6, eq. `three-small-factors` ("`2^{m r_1} < B_1^δ`, `(1+A)^{m r_1} < B_1^δ`,
 `(1+|α|)^{m r_1} < B_1^δ`"). -/
-theorem three_small_factors {δ : ℝ} (hδ0 : 0 < δ) {m : ℕ} (hm : 1 ≤ m) (hδm : δ < 1 / m)
-    {q₁ r₁ : ℕ} (hq₁ : 1 < q₁) (hr₁ : 0 < r₁) {A α : ℝ} (hA : 1 ≤ A)
-    (h32 : 2 * m + 1 + 2 * m * Real.log (1 + A) + 2 * m * Real.log (1 + |α|) <
-      δ ^ 2 * Real.log q₁) :
-    (2 : ℝ) ^ (m * r₁) < (B₁ δ q₁ r₁ : ℝ) ^ δ ∧ (1 + A) ^ (m * r₁) < (B₁ δ q₁ r₁ : ℝ) ^ δ ∧
-      (1 + |α|) ^ (m * r₁) < (B₁ δ q₁ r₁ : ℝ) ^ δ := by
-  have hlogA : 0 ≤ Real.log (1 + A) := Real.log_nonneg (by linarith)
-  have hlogα : 0 ≤ Real.log (1 + |α|) := Real.log_nonneg (by linarith [abs_nonneg α])
-  have hm' : (0 : ℝ) ≤ m := Nat.cast_nonneg m
-  have h2m : (2 * m + 1 : ℝ) < δ ^ 2 * Real.log q₁ := by nlinarith
-  have hX := four_lt_rpow hδ0.le hr₁ (by
-    linarith only [h2m, show (1 : ℝ) ≤ m by exact_mod_cast hm])
-  have hlogB := log_B₁_gt (hX.le.trans' (by norm_num))
-  have hB0 : (0 : ℝ) < B₁ δ q₁ r₁ :=
-    lt_of_le_of_lt (Real.sqrt_nonneg _) (sqrt_lt_floor (hX.le.trans' (by norm_num))).1
-  have hr : (0 : ℝ) < r₁ := by exact_mod_cast hr₁
-  -- `t^{m r₁} < B₁^δ` as soon as `2 m log t < δ² log q₁`
-  have key : ∀ t : ℝ, 0 < t → 2 * m * Real.log t < δ ^ 2 * Real.log q₁ →
-      t ^ (m * r₁) < (B₁ δ q₁ r₁ : ℝ) ^ δ := fun t ht h => by
-    rw [← Real.exp_log (pow_pos ht _), ← Real.exp_log (Real.rpow_pos_of_pos hB0 δ),
-      Real.exp_lt_exp, Real.log_pow, Real.log_rpow hB0]
-    push_cast
-    calc (m : ℝ) * r₁ * Real.log t = r₁ * (2 * m * Real.log t) / 2 := by ring
-      _ < r₁ * (δ ^ 2 * Real.log q₁) / 2 := by gcongr
-      _ = δ * (δ * r₁ * Real.log q₁ / 2) := by ring
-      _ < δ * Real.log (B₁ δ q₁ r₁) := mul_lt_mul_of_pos_left hlogB hδ0
+theorem three_small_factors {δ : ℝ} (hδ0 : 0 ≤ δ) {m q₁ r₁ : ℕ} (hr₁ : 0 < r₁) {A α : ℝ}
+    (hA : 0 ≤ A) (h32 : 2 * m + 1 + 2 * m * Real.log (1 + A) + 2 * m * Real.log (1 + |α|) ≤
+      δ ^ 2 * Real.log q₁) : (2 : ℝ) ^ (m * r₁) < (B₁ δ q₁ r₁ : ℝ) ^ δ ∧
+    (1 + A) ^ (m * r₁) < (B₁ δ q₁ r₁ : ℝ) ^ δ ∧ (1 + |α|) ^ (m * r₁) < (B₁ δ q₁ r₁ : ℝ) ^ δ := by
+  have hm0 : (0 : ℝ) ≤ m := Nat.cast_nonneg m
+  have hlogA : 0 ≤ Real.log (1 + A) := Real.log_nonneg (le_add_of_nonneg_right hA)
+  have hlogα : 0 ≤ Real.log (1 + |α|) :=
+    Real.log_nonneg (le_add_of_nonneg_right (abs_nonneg α))
+  have h1 : 1 ≤ δ ^ 2 * Real.log q₁ := by
+    nlinarith only [h32, hm0, mul_nonneg hm0 hlogA, mul_nonneg hm0 hlogα]
   have hlog2 : Real.log 2 < 1 := by
-    have := Real.log_lt_sub_one_of_pos (by norm_num : (0 : ℝ) < 2) (by norm_num)
-    linarith
-  refine ⟨key 2 (by norm_num) (by nlinarith), key _ (by linarith) (by nlinarith),
-    key _ (by linarith [abs_nonneg α]) (by nlinarith)⟩
+    linarith only [Real.log_lt_sub_one_of_pos (by norm_num : (0 : ℝ) < 2) (by norm_num)]
+  have hX := (two_lt_rpow_aux hδ0 hr₁ (hlog2.trans_le h1)).le
+  have hδ : 0 < δ := lt_of_le_of_ne hδ0 (by
+    rintro rfl
+    norm_num at h1)
+  -- `t^{m r₁} < B₁^δ` as soon as `2 m log t < δ² log q₁`
+  have key (t : ℝ) (h : 2 * m * Real.log t ≤ δ ^ 2 * Real.log q₁) :
+      t ^ (m * r₁) < (B₁ δ q₁ r₁ : ℝ) ^ δ := by
+    apply Real.lt_rpow_of_log_lt (y := B₁ δ q₁ r₁) <|
+      (Real.sqrt_nonneg _).trans_lt (sqrt_lt_floor hX).1
+    rw [Real.log_pow]
+    push_cast
+    nlinarith only [mul_le_mul_of_nonneg_left h (Nat.cast_nonneg r₁),
+      mul_lt_mul_of_pos_left (log_B₁_gt hX) hδ]
+  refine ⟨key 2 ?_, key _ ?_, key _ ?_⟩
+  · nlinarith only [h32, hm0, mul_nonneg hm0 hlogA, mul_nonneg hm0 hlogα,
+      mul_nonneg hm0 (sub_nonneg.mpr hlog2.le)]
+  · nlinarith only [h32, hm0, mul_nonneg hm0 hlogα]
+  · nlinarith only [h32, hm0, mul_nonneg hm0 hlogA]
 
 /-- If `f` is monic with coefficients bounded by `A` and `P` has degree `≤ s` and coefficients
 bounded by `C`, then the coefficients of `P mod f` are bounded by `(1 + A)^{s + 1 - deg f} C`.
@@ -557,7 +575,7 @@ theorem main_lemma {α : ℝ} {f : Polynomial ℤ} (hf : f.Monic) (hfα : Polyno
   have hB2 : (2 : ℝ) < B := hsX.trans hsqB
   have hB1 : 1 < B := by exact_mod_cast (by linarith : (1 : ℝ) < B)
   have hBpos : (0 : ℝ) < B := by linarith
-  obtain ⟨hT2, hTA, hTα⟩ := three_small_factors hδ0 hm1 hδm hq1 (hr0 0) hA1 h32
+  obtain ⟨hT2, hTA, hTα⟩ := three_small_factors hδ0.le (hr0 0) (zero_le_one.trans hA1) h32.le
   set β : ℝ := (B : ℝ) ^ δ with hβ
   have hβ1 : 1 ≤ β := Real.one_le_rpow (by linarith) hδ0.le
   have hBpow : (B : ℝ) ^ (1 + 3 * δ) = B * β ^ 3 := by

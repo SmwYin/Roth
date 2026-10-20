@@ -587,7 +587,7 @@ theorem roth_of_isIntegral {α : ℝ} (hα : Irrational α) (hint : IsIntegral �
   change √((q 0 : ℝ) ^ (δ * r 0)) < (B : ℝ) at hsqB
   change (B : ℝ) ≤ (q 0 : ℝ) ^ (δ * r 0) at hBX
   have hBpos : (0 : ℝ) < B := lt_of_le_of_lt (Real.sqrt_nonneg _) hsqB
-  obtain ⟨hT2, -, -⟩ := three_small_factors hδ0 hm1 hδm (hq1 0) (hr0 0) hA1 h32
+  obtain ⟨hT2, -, -⟩ := three_small_factors hδ0.le (hr0 0) (zero_le_one.trans hA1) h32.le
   have hstep : ∀ i j : Fin m, i.val + 1 = j.val → r j ≤ r i := fun i j hij => by
     exact_mod_cast (le_div_self (Nat.cast_nonneg _) hδ0 hδ1.le).trans (h31b i j hij).le
   have hr0max : ∀ j, r j ≤ r 0 := by
