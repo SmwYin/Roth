@@ -3082,3 +3082,19 @@ current707lines. Owner rehash/review and sourcefreeze checks pass. All owned pro
 and native requests drained before publication;nextoriginalcoeff_boxPoly remains unedited.
 MainLemma finalfile/simplify/completeprofile phases pending. Metadata child changes only
 this checkpoint record,not source or verification inputs.
+
+
+### MainLemma original14 checkpoint — coeff_boxPoly
+
+Source/audit commit `7363ffd707344839aeba9dd84c227292e43ec6bd`; the following metadata child records and publishes this
+exact checkpoint before the next original edit. MainLemma14/27,overall230/264,
+10/14fullycompletedfiles. [Dedicated audit](cleanup/MainLemma-coeff_boxPoly.md) contains all
+24audit/42golf/5search/11verification steps,exact independent original reimplementation/
+effectivecontract/universe/binder/type/value/standard-axiom evidence,actual affectedmodule/
+fullfile and complete unfiltered native successes. Actual anchored profile78.976ms;
+raw evidence and required repeat/failure history are preserved. Private coefficient lookup generalized from Fin m to arbitrary universe-polymorphic finite sigma with explicit Fintype/DecidableEq; exact old dependent integer formula and full Fin-m contract recovered. Proof11 to6lines, target14 to9, ML707 to702; narrow redundant Nat ascription omitted only after exactTYPE AST/isDefEq guard. No helpers/caller/Main/queue changes. Independent8contracts/16closedTYPE+actualVALUE+inferredTYPE/std3guards/6nonselfoldclosures plus4actualtargetboundary properties and exact2directusers pass. Material compact-proof627.915ms cost retained and repaired by measured explicit-rule simplification; final matched target77.199 to78.976ms, callers22.669 to24.520 and101.289 to105.891, all below750/no repeats. Owner verified578artifacts166265072bytes39binaryexceptions/all12201imports1803555232bytes/17pins104before-final-currentcache/6selected exactrows and preserved395ref costly revision; all27leafgroups absent. CompleteML/Main/Evalnative0errors1/4/0oldwarnings and freshroot/Evalnative0messages. Finalfile GLOBAL/simplify/cumulative remain pending.
+Owner fullbuild6.346s THEN separateLeanEval5.512s,both exit0,all17pins immutable;sourceSHA256`a2f7c750073759a03b09f9400705f87ade7c5c18aa568fc3d72a6cf0451a15c8`,
+current702lines. Owner rehash/review and sourcefreeze checks pass. All owned processes
+and native requests drained before publication;nextoriginalboxPoly_injective remains unedited.
+MainLemma finalfile/simplify/completeprofile phases pending. Metadata child changes only
+this checkpoint record,not source or verification inputs.
