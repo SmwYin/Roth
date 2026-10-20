@@ -360,3 +360,20 @@ All worker/compiler/native/profile ownership drained before publication.
 Source/audit publication hash follows in central checkpoint history via metadata child.
 MainLemma14/27 originals,overall230/264,10/14fullycompletedfiles;nextboxPoly_injective.
 Filewide final phases remain pending.
+
+
+### Original15: `boxPoly_injective`
+
+[Fresh dedicated full audit](MainLemma-boxPoly_injective.md):all24audit/42golf/5search/11checklist
+artifacts reviewed by owner. Private box polynomial injectivity generalized from Fin m to arbitrary universe-polymorphic finite sigma with explicit Fintype/DecidableEq, preserving exact original bounded integer-array DATA and old Fin-m contract. Composed function and Fin extensionality with terminal coefficient congruence simplifies declaration6 to3lines, ML702 to699; no helper/caller/Main/queue edits. Genuine project-original constructor/coefficient/injectivity proofs and entire entryML independently reelaborated:9exactcontracts/25closedTYPE+actualVALUE+inferredTYPE/std3/7nonselfoldclosures,4actualtargetboundaryproperties,sole directTYPEVALUEconsumer ncard,plus expanded effective-array/equality-binder AST/isDefEq/std3 supplement pass. Matched target27.752 to46.624ms and ncard16.982 to19.117ms, honest increases/allbelow750/no repeats or aggregate speedupclaim. Owner verified432artifacts80763349bytes26binary/all12201imports1803557376bytes/17pins104before-final-currentcache/4exactprofile rows, savedPATH resolves pinned4.34Lake;18leafgroups absent. FreshcompleteML/Main/Evalnative0errors1/4/0oldwarnings; ownerroot/Evalnative0messages and cache unchanged. Allfile GLOBAL/simplify/cumulative gates remain pending.
+Independent original reimplementation,exact old/current effective contract metadata/value
+and standard-axiom evidence reviewed; complete unfiltered livefile/affectedcaller diagnostics
+and actual affected-module/fullfile validation pass. Actual anchored profile46.624ms;
+required repeats/failed evidence,if any,remain in the dedicated report. Owner verified frozen
+source/evidence and ran fullbuild5.600s THEN separateLeanEval5.074s,both exit0 with all17pins immutable.
+Owner logs:`/private/tmp/roth-mainlemma-owner/boxPoly_injective-owner-full.json` and
+`boxPoly_injective-owner-eval.json`. SourceSHA256`817016b9057fbbbedaa9c6db38280bffb9cdbfcdb063b88cba4704c75f89ed48`;current699lines.
+All worker/compiler/native/profile ownership drained before publication.
+Source/audit publication hash follows in central checkpoint history via metadata child.
+MainLemma15/27 originals,overall231/264,10/14fullycompletedfiles;nextrange_boxPoly.
+Filewide final phases remain pending.

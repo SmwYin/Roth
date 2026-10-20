@@ -279,12 +279,9 @@ private lemma coeff_boxPoly {σ : Type*} [Fintype σ] [DecidableEq σ] (r : σ �
   · simp only [coeff_monomial, dite_eq_right h, show ∀ d : box r, (d : σ →₀ ℕ) ≠ e from
       fun d he ↦ h (he ▸ d.2), ite_false, Finset.sum_const_zero]
 
-private lemma boxPoly_injective {m : ℕ} (r : Fin m → ℕ) (B : ℕ) :
-    Function.Injective (boxPoly r B) := fun c c' hcc' => by
-  funext d
-  have h := congrArg (fun W => W.coeff (d : Fin m →₀ ℕ)) hcc'
-  simp only [coeff_boxPoly, d.2, ↓reduceDIte] at h
-  exact Fin.ext (by exact_mod_cast h)
+private lemma boxPoly_injective {σ : Type*} [Fintype σ] [DecidableEq σ] (r : σ → ℕ) (B : ℕ) :
+    Function.Injective (boxPoly r B) := fun c c' hcc' ↦ funext fun d ↦ Fin.ext <| by
+  simpa [coeff_boxPoly, d.2] using congrArg (fun W ↦ W.coeff d) hcc'
 
 private lemma range_boxPoly {m : ℕ} (r : Fin m → ℕ) (B : ℕ) :
     Set.range (boxPoly r B) = boxFamily r B := by
