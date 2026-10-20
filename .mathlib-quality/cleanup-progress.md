@@ -3134,3 +3134,19 @@ current694lines. Owner rehash/review and sourcefreeze checks pass. All owned pro
 and native requests drained before publication;nextoriginalboxFamily_finite remains unedited.
 MainLemma finalfile/simplify/completeprofile phases pending. Metadata child changes only
 this checkpoint record,not source or verification inputs.
+
+
+### MainLemma original17 checkpoint — boxFamily_finite
+
+Source/audit commit `31c57488def636dbf5865d773cc56aead3928c80`; the following metadata child records and publishes this
+exact checkpoint before the next original edit. MainLemma17/27,overall233/264,
+10/14fullycompletedfiles. [Dedicated audit](cleanup/MainLemma-boxFamily_finite.md) contains all
+24audit/42golf/5search/11verification steps,exact independent original reimplementation/
+effectivecontract/universe/binder/type/value/standard-axiom evidence,actual affectedmodule/
+fullfile and complete unfiltered native successes. Actual anchored profile38.964ms;
+raw evidence and required repeat/failure history are preserved. boxFamily_finite now accepts arbitrary-universe sigma with only Finite(Function.support r), admitting infinite ambient indices with finite degree-bound support while automatically preserving finite-index r/B calls. Two standard Finset.finsupp enumerations and image AddMonoidAlgebra.ofCoeff give13proof/15declarationlines,3to15decl/ML694to708; nohelper/caller/Main/queue edit. Necessary direct Finset.Finsupp import was already transitive; actual setup/options/importArts bytes unchanged. Only ownpublicdoc and authorized added12sentence changed. Genuine original family/ctor/coeff/injective/range/finite/ncard/direct-consumer proofs plus entire entryML independently reelaborated:14exactcontracts/42closedTYPE+actualVALUE+inferredTYPE/std3/14nonselfoldclosures/8actualtargetproperties including infiniteNat finite-support cases. Owner verified423refs106151004bytes26binary and24793actual external refs3929186304bytes, with package/setup union12201/1803563080bytes and installed pinned-toolchain compiled SUPERSET12592/2125623224bytes explicitly separate. Neither catalog is claimed exact loaded closure; historical core-beforeAPI omission disclosed, initial package-only sample retained, exactoldBEFORE replay under observed samecore matches AFTER. Accepted target17.129to38.964ms/directconsumer320.078to260.369ms,4exactrows reanchored/allbelow750/no repeats/aggregateclaim. Exact709line intermediate source reconstructed/hashbound; final708SHAff29cc40. Missingthirdliteraturequery completed honestly later in separate addendum+8ref supplementarymanifest without altering original frozen report/evidence. All22leafgroups absent; freshML/Main/Evalnativecomplete0errors1/4/0oldwarnings; ownerrootEvalnative0messages/17pins104cacheNOdelta and freshpost-gate24793external hashes unchanged. Allfile GLOBAL/simplify/cumulative gates remain pending. Remote CI run39497338608 at predecessor d953155 failed before code checking while Elan downloaded pinned Lean4.34 on Linux (SSL connect error35); prior1dd1abd workflow succeeded. Root reran failed jobs, outcome pending; no source/version/workflow edit. https://github.com/SmwYin/Roth/actions/runs/39497338608
+Owner fullbuild5.894s THEN separateLeanEval2.951s,both exit0,all17pins immutable;sourceSHA256`ff29cc40cece7f7432c7a2ddc64fd9cc73ceafd995b37b6927b7f3d2897bbac7`,
+current708lines. Owner rehash/review and sourcefreeze checks pass. All owned processes
+and native requests drained before publication;nextoriginalncard_boxFamily remains unedited.
+MainLemma finalfile/simplify/completeprofile phases pending. Metadata child changes only
+this checkpoint record,not source or verification inputs.
