@@ -25,14 +25,14 @@ Started: 2026-10-14 (America/Chicago).
 
 ## Current status
 
-MainLemma is active:10/27originals complete at the latest published checkpoint;
-overall226/264originals,10/14fullycompletedfiles. Latest:`three_small_factors` after fresh full
+MainLemma is active:11/27originals complete at the latest published checkpoint;
+overall227/264originals,10/14fullycompletedfiles. Latest:`abs_coeff_modByMonic_le` after fresh full
 24-item/42-rule/5-method/11-step audit,independent original/type/binder/value/standard-axiom
-checks,complete unfiltered affected diagnostics and actual anchored profile685.688ms.
-Owner fullbuild5.798s THEN separateLeanEval37.183s,both exit0 on immutable17pins.
-Stronger API removes hm/hδm/hq₁, allows nonnegative δ/A and non-strict h32, preserving all three strict conclusions; 26-line public proof plus separately freshly audited 13-line private two_lt_rpow_aux helper (helper total2, no original-count inflation). Two narrow caller applications updated with old written contracts preserved. Matched target before1812.331/1737.768ms; final helper+public681.890/685.688ms. All14 timing rows independently re-anchored; ML consumer5093.245/4954.639 versus5210.167/4831.233 and Main2971.147/3031.316 versus2958.421/3009.772 retained, including small adapter overhead; foreign slow totals remain later obligations. Verified bounded custom heartbeat raw24868514→7910547 corroborates; historical optional6/9builtin counts remain withdrawn. Owner verified490artifacts/3703515405bytes/26binary exceptions, all12201actual import hashes, exact original proofs/type/value/standard axioms,17pins and104cache; only Eval.trace metadata changed in owner builds. Fresh root/Eval native complete0messages; ML/Main complete0errors. MainLemma714/Main685lines. Entry708→current714lines. Next:abs_coeff_modByMonic_le. MainLemma filewide final,
+checks,complete unfiltered affected diagnostics and actual anchored profile781.456ms.
+Owner fullbuild46.731s THEN separateLeanEval43.641s,both exit0 on immutable17pins.
+Generalizes integer absolute coefficients to norms over arbitrary SeminormedRing, removing hf/hA/hC and requiring no commutativity/separation/Nontrivial/NormOneClass. Public proof58→15lines, branch10; one separately freshly audited27line helper, helper total3 without original-count inflation. Exact entire project-original proof, old integer adapter and complete entry ML/Main caller proof bodies pass5full rawAST/binder/order/universe/closedTYPE+actualVALUE/standard3axiom pairs and4nonself closures;12boundary/countercertificates include Quaternion and zero-seminorm nontrivialℤ. Final combined helper+public699.676/781.456ms versus745.518/701.298, both<1000 with no aggregate speedup claim; MLmain4914.491/5012.854 versus5129.205/4906.795 stays in baseline range, changed-call101.651/102.334 versus182.301/179.507 is nested diagnostic only. SupersededV1 source/scaffold/streams/runner/cache preserved, no unchangedthirdcapture; no finalV2 optionalheartbeat claim. Owner independently re-anchored13actual profile rows, verified740artifacts941217592bytes52binary exceptions andALL12201setup import artifacts1803534984bytes,17pins104actualsavedcache, exact helper8036cf and all23originalworker+35helper groups drained. Fresh ML/Mainnative complete0errors with1/4existingwarnings; ownerroot/Evalnative complete0messages. MainLemma714→706, Main685unchanged. Fourth rename Roth.abs_coeff_modByMonic_le→Roth.norm_coeff_modByMonic_le queued; all4 deferred to project-end SINGLEpass. MainLemma finalglobalδ/pigeon/main/simplify/cumulative stages remain mandatory. Entry708→current706lines. Next:boxFamily. MainLemma filewide final,
 independent simplify and complete performance phases remain pending. See
-[MainLemma ledger](cleanup/MainLemma.md) and [latest audit](cleanup/MainLemma-three_small_factors.md).
+[MainLemma ledger](cleanup/MainLemma.md) and [latest audit](cleanup/MainLemma-abs_coeff_modByMonic_le.md).
 The exact source/audit commit is recorded in appended checkpoint history by its metadata
 child. Prior fullycompleted-file handoff is preserved below.
 
@@ -167,7 +167,7 @@ Files will be processed in dependency order; declarations within each file are s
 | `Roth/Index.lean` | 275 | All cleanup phases complete;21/21 originals audited; user-approved hypothesis groups applied and validated |
 | `Roth/Separation.lean` | 618 | Complete;30/30 originals and all final phases;source556lines27retained;all12 approved instance amendments validated |
 | `Roth/Theta.lean` | 981 | Complete;35/35 originals and all final file phases;source991lines,50retained |
-| `Roth/MainLemma.lean` | 704 | Active;10/27 originals audited/published;final file phases pending |
+| `Roth/MainLemma.lean` | 704 | Active;11/27 originals audited/published;final file phases pending |
 | `Roth/Main.lean` | 684 | Awaiting cleanup |
 | `Roth/LeanEval.lean` | 60 | Awaiting cleanup |
 | `Roth.lean` | 14 | Awaiting cleanup |
@@ -2858,58 +2858,66 @@ this checkpoint record,not source or verification inputs.
 
 
 <!-- takeover-original8-start -->
-### Current resumable cleanup handoff (supersedes original10)
+### Current resumable cleanup handoff (supersedes original11)
 
-Read Current status and the latest appended actual-hash checkpoint first.
-MainLemma10/27, overall226/264,10/14fully completed files. Next original11:
-`Roth.abs_coeff_modByMonic_le`, unedited and not delegated at this publication boundary.
-Sole file/source/shared-progress/Git owner `/root/cleanup_continuation/mainlemma_file`;
-parent `/root/cleanup_continuation`, root `/root`. Original10 and helper2 workers
-released ALL leases;29+21owned PGIDs and both owner build groups absent, no native
-request pending. Fresh per-original/helper workers: gpt-6.1-sol,medium,fork_none;
-one leaf slot, serialized compiler/native/profile. Recover SAME interrupted owner,
-no duplicates. Private current state: `/private/tmp/roth-mainlemma-owner/resume-state-current.json`.
+Read Current status and latest appended actual-hash checkpoint first. MainLemma11/27,
+overall227/264,10/14fully completed files. Next original12 `Roth.boxFamily`, unedited
+and not delegated at this publication boundary. Sole file/source/shared-progress/Git
+owner `/root/cleanup_continuation/mainlemma_file`; parent `/root/cleanup_continuation`,
+root `/root`. Original11 and helper3 ALLleases released;23+35owned PGIDs and both owner
+build groups absent; no native/compiler/profile pending. Fresh per-original/helper
+workers gpt-6.1-sol,medium,fork_none; one leaf slot; serialize all compiler/native/profile.
+Recover SAME interrupted worker, no duplicate owners. Private current-state record:
+`/private/tmp/roth-mainlemma-owner/resume-state-current.json`. Parent handles Main,
+LeanEval,Roth only after complete MainLemma release. Publish every original before nextedit.
 
-Validated ML714lines SHA8a90958369a5f7fc9357169270737fb0c6473b1d4fd8d2d3a8d6defd95119791;
-Main685lines SHA5f384557dccacaec469699cc7d32bd5666c9d525267e00433b7ae401fee98d09.
-Original10 report SHA cf22d4bc503cdae4ca6cd6487676a6f48948fa813754da9aaa0ce54c8fa4c852;
-`/private/tmp/roth-mainlemma-three-factors/final-manifest.json` SHA
-5250bad27477a24954c3d9ad2d8a86ceedc7f53d005755d0acd4fc481e6d2388.
-490artifacts/3703515405bytes/26binary exceptions,12201actual imported artifacts,
-all17pins/104savedcache independently verified. Exact source reconstruction and
-full immutable original proofs, raw contracts/binders/universes/closed TYPE+VALUE/
-standard axioms pass. Fresh helper2 audit separately accepted, helper total2.
-Owner FULL5.798s THEN separateEval37.183s pass; fresh complete unfiltered root/Eval
-native0messages, ML/Main0errors. Only Eval.trace cache metadata changed.
-Combined helper+public681.890/685.688ms versus old1812.331/1737.768ms;
-all14roots independently re-anchored. Foreign slow consumer totals and minor
-adapter costs disclosed in report; no foreign audit credit. No partial11 exists.
+Validated ML706lines SHAc1a4c252c37d2f2eb7399a556aaf67adab471fd44da859607d178c64877e5735;
+Main685unchanged SHA5f384557dccacaec469699cc7d32bd5666c9d525267e00433b7ae401fee98d09.
+Original11 report SHAa6f56e1542b00b19bc18496586297952b3c425837a34ac7fccf6972d64c66691;
+`/private/tmp/roth-mainlemma-abs-coeff/final11-artifact-manifest.json` SHA
+57abd0ffde1d8a4cae9b1c8ee8586ba7906ceada23cc4ea4448a2d0acd3f6a4e.
+Owner verified740artifacts941217592bytes52binary exceptions, ALL12201setup-resolved
+imports1803534984bytes,17source/config pins104current/savedcache, exact original
+proof+entryML/Main bodies, rawAST/binders/order/universe/closedTYPE+opaqueVALUE/standard3
+axioms and4nonself closures. Owner13profile rows independently re-anchored. V1diagnostic
+and report-only path correction evidence preserved, no unchangedthirdcherrypick.
+FULL46.731s THEN separateEval43.641s passed; fresh complete root/Evalnative0messages,
+ML/Mainnative0errors with1/4existingwarnings. Only Eval.trace cache metadata changed.
 
-Remaining originals11–27, each new helper separately fresh audited, then fresh
-independent whole-file simplify, actual GLOBAL all-retained-row performance and
-repairs, cumulative all project-original public contracts/data/ALLretained axioms,
-imports/docs/comments/static/reference audit, final affected/full/separateEval/
-native/reports/pushclean/release. Actual GLOBAL δ11188.775ms (prefix insufficient),
-pigeonhole1000.235,main4880.648 remain failed gates; original10 scoped improvement
-still needs final GLOBAL confirmation. δ continuity hotspot~96% proof cost is
-preserved in final-file-delta-actual-hc-hotspot-diagnosis.json; candidate UNCOMPILED.
-Main's own slow queue belongs to its later full audit. No cherry-picked samples.
-Exact token+separator anchoring; ONLY complete column0 disjoint command/async roots,
-exact qualified public/private proof names, separate strictUTF8 streams and hashes;
-no nested Meta/trailing-end doublecount, no unmatched-scope numerical comparison.
-Optional original6/9 builtin heartbeat corroboration WITHDRAWN (internally max0);
-raw evidence and errata preserved, required correctness/wall-clock gates unchanged.
-Prospectively verified bounded custom counter only; no historic optional reruns.
+Public norm coefficient bound over arbitrary SeminormedRing removes monic/sign premises,
+with no commutativity/separation/Nontrivial/NormOneClass, old integer contract recovered.
+Public58→15body/10branch plus freshly audited helper27body/8branch; helper total3,
+no original264 inflation. Exact helper declaration SHA8036cf617651d096e302d8f52d4589051c5a213d2ef93c10ee5813de73956a44.
+Final combined helper+public699.676/781.456ms versus745.518/701.298; both<1000 but no
+aggregate speedup claim. Mainlemma4914.491/5012.854 stays within baseline4906.795–5129.205;
+changed-call101.651/102.334 versus182.301/179.507 is nested diagnostic only. No foreign
+slow-queue completion credit. Helper-audit optional boundedHB figures are historical
+source05967520 evidence, not finalV2 heartbeat counts; none invented or rerun.
 
-Project-end SINGLE rename queue exactly3: Roth.index_hasseDeriv_ge→
-Roth.index_sub_weight_le_index_hasseDeriv; Roth.B₁→Roth.mainCoeffBound;
-Roth.log_B₁_gt→Roth.mul_log_div_two_lt_log_mainCoeffBound. No in-place renames.
-Standing authorization: implement all recommended changes, ask only if undecidable.
-Preserve explicit retention preferences/math; no invented metadata/sorry/newaxioms/
-weaker conclusions/limit raises. Branch ramin-cleanup; protect main, no merge/forcepush.
-Pins leanprover/lean4:v4.34.0 and mathlib5ed2965256430c3649e86755f9576b54eca72435.
-Parent handles Main/LeanEval/Roth after complete MainLemma release. Preserve partial
-source/logs through interruptions; never publish before mandatory validation.
+Remaining originals12–27, each new helper separately fresh audited, then fresh independent
+whole-file simplify, actual GLOBAL ALLretained-row profiling+repairs, cumulative ALL
+project-original public contracts/data/ALLretained axioms, imports/docs/comments/static/
+references, final affected/full/separateEval/native/reports/commit/pushclean/release.
+Valid GLOBAL δ11188.775ms (prefix pass insufficient), pigeonhole1000.235,main4880.648
+remain failed finalfile gates; all scoped improvements still need GLOBAL confirmation.
+δ~96% continuity hotspot diagnosis preserved; explicit continuity candidate UNCOMPILED.
+Next12 possible Finm→arbitraryσ data generalization requires actual independent original
+DATAvalue and arity-correct specialization/rawAST migration, not bare namespace renaming;
+planning prompt next-original12-dispatch-DRAFT.txt is NOT yet an accepted result.
+Exact token+separator spans, complete qualified private/public column0 disjoint command/
+async roots, separate strictUTF8streams and immutable hashes; no nestedMeta/trailingend
+counts or unmatched-scope comparisons. Optional historical6/9builtin max0HB withdrawn;
+raw evidence/errata preserved, required correctness/wallclock gates unaffected. Future
+verified bounded custom counter only; no optional historic reruns/limit raises.
+
+Project-end SINGLE rename queue now4: Roth.index_hasseDeriv_ge→Roth.index_sub_weight_le_index_hasseDeriv;
+Roth.B₁→Roth.mainCoeffBound; Roth.log_B₁_gt→Roth.mul_log_div_two_lt_log_mainCoeffBound;
+Roth.abs_coeff_modByMonic_le→Roth.norm_coeff_modByMonic_le. No in-place renames.
+Standing authorization: implement all recommendations, ask only if undecidable. Retention
+preferences binding; preserve math/no invented metadata/sorry/newaxioms/weakerconclusions/
+limitraises. Branch ramin-cleanup only; protect main/no merge/forcepush. Pins unchanged:
+leanprover/lean4:v4.34.0, mathlib5ed2965256430c3649e86755f9576b54eca72435. Preserve partial
+source/logs on interruption; never publish before required validation.
 <!-- takeover-original8-end -->
 
 

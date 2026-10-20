@@ -30,8 +30,8 @@ and Lemma 7 then gives a low-order derivative `Q` of `W^*` not vanishing at `(h_
 ## Main results
 
 * `Roth.exists_delta_bound`: Lemma `m-δ`, for fixed `m > 16 n²`.
-* `Roth.abs_coeff_modByMonic_le`: coefficient bound for the remainder upon division by a monic
-  polynomial.
+* `Roth.abs_coeff_modByMonic_le`: coefficient norm bound for monic remainders over seminormed
+  rings, including the integer coefficient estimate.
 * `Roth.ncard_boxFamily`, `Roth.pigeonhole_count`, `Roth.exists_ne_modByMonic_eq`: the
   pigeonhole step.
 * `Roth.main_lemma`: Roth's Lemma 9.
@@ -198,73 +198,64 @@ theorem three_small_factors {δ : ℝ} (hδ0 : 0 ≤ δ) {m q₁ r₁ : ℕ} (hr
   · nlinarith only [h32, hm0, mul_nonneg hm0 hlogα]
   · nlinarith only [h32, hm0, mul_nonneg hm0 hlogA]
 
-/-- If `f` is monic with coefficients bounded by `A` and `P` has degree `≤ s` and coefficients
-bounded by `C`, then the coefficients of `P mod f` are bounded by `(1 + A)^{s + 1 - deg f} C`.
+private lemma exists_norm_coeff_reduction_aux {R : Type*} [SeminormedRing R] {f P : Polynomial R}
+    {A C : ℝ} (hfA : ∀ i, ‖f.coeff i‖ ≤ A) (hP : ∀ i, ‖P.coeff i‖ ≤ C) {s : ℕ}
+    (hs : P.natDegree ≤ s) (hf1 : f ≠ 1) (hself : P %ₘ f ≠ P) : 0 < f.natDegree ∧ f.natDegree ≤ s ∧
+    ∃ Q : Polynomial R, Q.natDegree ≤ s - 1 ∧ (∀ i, ‖Q.coeff i‖ ≤ (1 + A) * C) ∧
+    P %ₘ f = Q %ₘ f := by
+  have : Nontrivial R := Polynomial.Nontrivial.of_polynomial_ne hself
+  have hf : f.Monic := by
+    by_contra hf
+    exact hself (Polynomial.modByMonic_eq_of_not_monic P hf)
+  have hP0 : P ≠ 0 := fun h ↦ hself (by simp [h])
+  have hdeg : f.degree ≤ P.degree := le_of_not_gt fun h ↦
+    hself ((Polynomial.modByMonic_eq_self_iff hf).2 h)
+  let Q := P - f * (Polynomial.C P.leadingCoeff * Polynomial.X ^ (P.natDegree - f.natDegree))
+  have hmod : P %ₘ f = Q %ₘ f := by
+    conv_lhs =>
+      rw [Polynomial.modByMonic, dite_eq_left hf, Polynomial.divModByMonicAux,
+        dite_eq_left ⟨hdeg, hP0⟩]
+    rw [Polynomial.modByMonic, dite_eq_left hf]
+  refine ⟨Nat.pos_of_ne_zero (fun hn ↦ hf1 (Polynomial.eq_one_of_monic_natDegree_zero hf hn)),
+    (Polynomial.natDegree_le_natDegree hdeg).trans hs, Q, ?_, ?_, hmod⟩
+  · by_cases hQ0 : Q = 0
+    · simp [hQ0]
+    · exact Nat.le_sub_one_of_lt ((Polynomial.natDegree_lt_natDegree hQ0
+        (Polynomial.div_wf_lemma ⟨hdeg, hP0⟩ hf)).trans_le hs)
+  · intro i
+    rw [Polynomial.coeff_sub, ← mul_assoc, Polynomial.coeff_mul_X_pow', add_mul, one_mul]
+    refine (norm_sub_le _ _).trans (add_le_add (hP i) ?_)
+    split_ifs
+    · rw [Polynomial.coeff_mul_C]
+      exact (norm_mul_le _ _).trans (mul_le_mul (hfA _) (hP _) (norm_nonneg _)
+        ((norm_nonneg _).trans (hfA 0)))
+    · simpa using mul_nonneg ((norm_nonneg _).trans (hfA 0)) ((norm_nonneg _).trans (hP 0))
+
+/-- For polynomials over a seminormed ring with coefficient norm bounds `A` and `C` and
+`P.natDegree ≤ s`, the coefficients of `P %ₘ f` are bounded by `(1 + A)^{s + 1 - deg f} C`.
+
+No sign or monicity premises are needed; for a nonmonic divisor, `modByMonic` returns `P`.
 
 Source: §6, proof of Lemma 9 ("each leading-term elimination multiplies the bound by at most
 `1 + A` and lowers the degree ... `abc(T) ≤ (1+A)^{max(0, s-n+1)} B_1^{1+2δ}`"). -/
-theorem abs_coeff_modByMonic_le {f : Polynomial ℤ} (hf : f.Monic) {A : ℝ} (hA : 0 ≤ A)
-    (hfA : ∀ i, |((f.coeff i : ℤ) : ℝ)| ≤ A) (P : Polynomial ℤ) {C : ℝ} (hC : 0 ≤ C)
-    (hP : ∀ i, |((P.coeff i : ℤ) : ℝ)| ≤ C) {s : ℕ} (hs : P.natDegree ≤ s) (i : ℕ) :
-    |(((P %ₘ f).coeff i : ℤ) : ℝ)| ≤ (1 + A) ^ (s + 1 - f.natDegree) * C := by
+theorem abs_coeff_modByMonic_le {R : Type*} [SeminormedRing R] {f : Polynomial R} {A : ℝ}
+    (hfA : ∀ i, ‖f.coeff i‖ ≤ A) (P : Polynomial R) {C : ℝ} (hP : ∀ i, ‖P.coeff i‖ ≤ C) {s : ℕ}
+    (hs : P.natDegree ≤ s) (i : ℕ) : ‖(P %ₘ f).coeff i‖ ≤ (1 + A) ^ (s + 1 - f.natDegree) * C := by
+  have hA : 1 ≤ 1 + A := le_add_of_nonneg_right ((norm_nonneg _).trans (hfA 0))
+  by_cases hf1 : f = 1
+  · simpa [hf1] using mul_nonneg (pow_nonneg (zero_le_one.trans hA) (s + 1))
+      ((norm_nonneg _).trans (hP 0))
   induction s using Nat.strong_induction_on generalizing P C with
   | _ s ih =>
-  have hA1 : (1 : ℝ) ≤ 1 + A := by linarith
-  by_cases hlt : P.natDegree < f.natDegree
-  · rw [(Polynomial.modByMonic_eq_self_iff hf).2 (Polynomial.degree_lt_degree hlt)]
-    exact (hP i).trans (le_mul_of_one_le_left hC (one_le_pow₀ hA1))
-  push Not at hlt
-  rcases Nat.eq_zero_or_pos f.natDegree with hn | hn
-  · rw [Polynomial.eq_one_of_monic_natDegree_zero hf hn, Polynomial.modByMonic_one,
-      Polynomial.coeff_zero, Int.cast_zero, abs_zero]
-    exact mul_nonneg (pow_nonneg (by linarith) _) hC
-  have hP0 : P ≠ 0 := by
-    rintro rfl
-    simp at hlt
-    omega
-  have ha0 : P.leadingCoeff ≠ 0 := Polynomial.leadingCoeff_ne_zero.2 hP0
-  set Q := Polynomial.C P.leadingCoeff * Polynomial.X ^ (P.natDegree - f.natDegree) * f with hQ
-  have hQdeg : Q.degree = P.degree := by
-    rw [hQ, Polynomial.degree_mul, Polynomial.degree_C_mul_X_pow _ ha0,
-      Polynomial.degree_eq_natDegree hf.ne_zero, Polynomial.degree_eq_natDegree hP0,
-      ← Nat.cast_add, Nat.sub_add_cancel hlt]
-  have hQlc : Q.leadingCoeff = P.leadingCoeff := by
-    rw [hQ, Polynomial.leadingCoeff_mul, Polynomial.leadingCoeff_C_mul_X_pow, hf.leadingCoeff,
-      mul_one]
-  have hdeg : (P - Q).degree < P.degree := Polynomial.degree_sub_lt_left hQdeg.symm hP0 hQlc.symm
-  have hP'deg : (P - Q).natDegree ≤ s - 1 := by
-    by_cases hP'0 : P - Q = 0
-    · simp [hP'0]
-    · have := Polynomial.natDegree_lt_natDegree hP'0 hdeg
-      omega
-  have hP'c : ∀ i, |(((P - Q).coeff i : ℤ) : ℝ)| ≤ (1 + A) * C := fun i => by
-    rw [Polynomial.coeff_sub, hQ, mul_assoc, Polynomial.coeff_C_mul, Polynomial.coeff_X_pow_mul',
-      Int.cast_sub, Int.cast_mul]
-    have hac : |((P.leadingCoeff : ℤ) : ℝ)| ≤ C := hP _
-    have hfc : |(((if P.natDegree - f.natDegree ≤ i then
-        f.coeff (i - (P.natDegree - f.natDegree)) else 0 : ℤ)) : ℝ)| ≤ A := by
-      split_ifs
-      · exact hfA _
-      · simpa using hA
-    calc _ ≤ |((P.coeff i : ℤ) : ℝ)| + |((P.leadingCoeff : ℤ) : ℝ)| *
-          |(((if P.natDegree - f.natDegree ≤ i then
-            f.coeff (i - (P.natDegree - f.natDegree)) else 0 : ℤ)) : ℝ)| := by
-          rw [← abs_mul]
-          exact abs_sub _ _
-      _ ≤ C + C * A := by
-          gcongr
-          exact hP i
-      _ = (1 + A) * C := by ring
-  have hmod : P %ₘ f = (P - Q) %ₘ f :=
-    Polynomial.modByMonic_eq_of_dvd_sub hf
-      ⟨Polynomial.C P.leadingCoeff * Polynomial.X ^ (P.natDegree - f.natDegree), by
-        rw [hQ]
-        ring⟩
+  by_cases hself : P %ₘ f = P
+  · simpa [hself] using (hP i).trans
+      (le_mul_of_one_le_left ((norm_nonneg _).trans (hP 0)) (one_le_pow₀ hA))
+  obtain ⟨hn, hfs, Q, hQdeg, hQc, hmod⟩ := exists_norm_coeff_reduction_aux hfA hP hs hf1 hself
   rw [hmod]
-  refine (ih (s - 1) (by omega) (P - Q) (mul_nonneg (by linarith) hC) hP'c hP'deg).trans_eq ?_
+  refine (ih (s - 1) (by lia) Q hQc hQdeg).trans_eq ?_
   rw [← mul_assoc, ← pow_succ]
   congr 2
-  omega
+  lia
 
 /-- The family `𝒲` of polynomials with coefficients `0 ≤ c ≤ B` on the monomials of the box.
 Source: §6, proof of Lemma 9 ("Consider the set `𝒲` of all polynomials
@@ -625,8 +616,9 @@ theorem main_lemma {α : ℝ} {f : Polynomial ℤ} (hf : f.Monic) (hfα : Polyno
     have hcD' : ∀ k, |(((diag (hasseDeriv j W)).coeff k : ℤ) : ℝ)| ≤
         N * (2 ^ (∑ j, r j) * B) := fun k =>
       (abs_coeff_diag_le _ hcP k).trans (mul_le_mul_of_nonneg_right hsupp (by positivity))
-    have hrem := abs_coeff_modByMonic_le hf (by linarith : (0 : ℝ) ≤ A) hA _ (by positivity)
-      hcD' (natDegree_diag_le _ hdP) i
+    have hrem := abs_coeff_modByMonic_le (by simpa [Int.norm_eq_abs] using hA) _
+      (by simpa [Int.norm_eq_abs] using hcD') (natDegree_diag_le _ hdP) i
+    rw [Int.norm_eq_abs] at hrem
     have e1 : (1 + A) ^ (∑ j, r j + 1 - n) ≤ (1 + A) ^ ((m' + 1) * r 0) :=
       pow_le_pow_right₀ (by linarith) (by omega)
     have hreal : |(((diag (hasseDeriv j W) %ₘ f).coeff i : ℤ) : ℝ)| < (B : ℝ) ^ (1 + 3 * δ) := by

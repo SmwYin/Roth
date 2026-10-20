@@ -292,3 +292,20 @@ All worker/compiler/native/profile ownership drained before publication.
 Source/audit publication hash follows in central checkpoint history via metadata child.
 MainLemma10/27 originals,overall226/264,10/14fullycompletedfiles;nextabs_coeff_modByMonic_le.
 Filewide final phases remain pending.
+
+
+### Original11: `abs_coeff_modByMonic_le`
+
+[Fresh dedicated full audit](MainLemma-abs_coeff_modByMonic_le.md):all24audit/42golf/5search/11checklist
+artifacts reviewed by owner. Generalizes integer absolute coefficients to norms over arbitrary SeminormedRing, removing hf/hA/hC and requiring no commutativity/separation/Nontrivial/NormOneClass. Public proof58→15lines, branch10; one separately freshly audited27line helper, helper total3 without original-count inflation. Exact entire project-original proof, old integer adapter and complete entry ML/Main caller proof bodies pass5full rawAST/binder/order/universe/closedTYPE+actualVALUE/standard3axiom pairs and4nonself closures;12boundary/countercertificates include Quaternion and zero-seminorm nontrivialℤ. Final combined helper+public699.676/781.456ms versus745.518/701.298, both<1000 with no aggregate speedup claim; MLmain4914.491/5012.854 versus5129.205/4906.795 stays in baseline range, changed-call101.651/102.334 versus182.301/179.507 is nested diagnostic only. SupersededV1 source/scaffold/streams/runner/cache preserved, no unchangedthirdcapture; no finalV2 optionalheartbeat claim. Owner independently re-anchored13actual profile rows, verified740artifacts941217592bytes52binary exceptions andALL12201setup import artifacts1803534984bytes,17pins104actualsavedcache, exact helper8036cf and all23originalworker+35helper groups drained. Fresh ML/Mainnative complete0errors with1/4existingwarnings; ownerroot/Evalnative complete0messages. MainLemma714→706, Main685unchanged. Fourth rename Roth.abs_coeff_modByMonic_le→Roth.norm_coeff_modByMonic_le queued; all4 deferred to project-end SINGLEpass. MainLemma finalglobalδ/pigeon/main/simplify/cumulative stages remain mandatory.
+Independent original reimplementation,exact old/current effective contract metadata/value
+and standard-axiom evidence reviewed; complete unfiltered livefile/affectedcaller diagnostics
+and actual affected-module/fullfile validation pass. Actual anchored profile781.456ms;
+required repeats/failed evidence,if any,remain in the dedicated report. Owner verified frozen
+source/evidence and ran fullbuild46.731s THEN separateLeanEval43.641s,both exit0 with all17pins immutable.
+Owner logs:`/private/tmp/roth-mainlemma-owner/abs_coeff_modByMonic_le-owner-full.json` and
+`abs_coeff_modByMonic_le-owner-eval.json`. SourceSHA256`c1a4c252c37d2f2eb7399a556aaf67adab471fd44da859607d178c64877e5735`;current706lines.
+All worker/compiler/native/profile ownership drained before publication.
+Source/audit publication hash follows in central checkpoint history via metadata child.
+MainLemma11/27 originals,overall227/264,10/14fullycompletedfiles;nextboxFamily.
+Filewide final phases remain pending.
