@@ -3017,3 +3017,12 @@ all resource limits unchanged. No optional compiler reruns, source changes, or c
 Original10 source/reports stay unvalidated and excluded from this metadata-only publication.
 Counts225/264,MainLemma9/27,10/14files; future optional counters must be verified bounded.
 Actual erratum commit will be recorded by metadata child.
+
+
+### Original6 heartbeat metadata-only erratum publication
+
+Erratum audit/progress commit `8ee8e25c35bab6439aafc9ceb41cc6a97d7d97e0` withdraws optional builtin-counter figures1588→1055.
+Required bounded wall-clock/correctness/native/build gates and source/audit original6
+commit`d97cd6390b032895db2bd9e7d995a82626eb03e8` remain unchanged. This metadata
+child records the actual erratum hash. Counts225/264,MainLemma9/27,10/14files;
+no unvalidated original10 source or report was staged.
