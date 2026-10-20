@@ -269,20 +269,15 @@ private noncomputable def boxPoly {σ : Type*} [Fintype σ] [DecidableEq σ] (r 
     (c : box r → Fin (B + 1)) : MvPolynomial σ ℤ :=
   ∑ d : box r, monomial d (c d)
 
-private lemma coeff_boxPoly {m : ℕ} (r : Fin m → ℕ) (B : ℕ) (c : box r → Fin (B + 1))
-    (e : Fin m →₀ ℕ) :
-    (boxPoly r B c).coeff e = if h : e ∈ box r then ((c ⟨e, h⟩ : ℕ) : ℤ) else 0 := by
+private lemma coeff_boxPoly {σ : Type*} [Fintype σ] [DecidableEq σ] (r : σ → ℕ) (B : ℕ)
+    (c : box r → Fin (B + 1)) (e : σ →₀ ℕ) :
+    (boxPoly r B c).coeff e = if h : e ∈ box r then (c ⟨e, h⟩ : ℤ) else 0 := by
   rw [boxPoly, MvPolynomial.coeff_sum]
-  split_ifs with h
-  · rw [Fintype.sum_eq_single ⟨e, h⟩]
-    · simp [coeff_monomial]
-    · intro d hd
-      rw [coeff_monomial, ite_eq_right_iff]
-      exact fun hde => absurd (Subtype.ext hde) hd
-  · refine Fintype.sum_eq_zero _ fun d => ?_
-    rw [coeff_monomial, ite_eq_right_iff]
-    rintro rfl
-    exact absurd d.2 h
+  by_cases h : e ∈ box r
+  · simpa only [coeff_monomial, dite_eq_left h, Subtype.ext_iff] using
+      Fintype.sum_ite_eq' ⟨e, h⟩ (fun d : box r ↦ (c d : ℤ))
+  · simp only [coeff_monomial, dite_eq_right h, show ∀ d : box r, (d : σ →₀ ℕ) ≠ e from
+      fun d he ↦ h (he ▸ d.2), ite_false, Finset.sum_const_zero]
 
 private lemma boxPoly_injective {m : ℕ} (r : Fin m → ℕ) (B : ℕ) :
     Function.Injective (boxPoly r B) := fun c c' hcc' => by
