@@ -3038,3 +3038,19 @@ current706lines. Owner rehash/review and sourcefreeze checks pass. All owned pro
 and native requests drained before publication;nextoriginalboxFamily remains unedited.
 MainLemma finalfile/simplify/completeprofile phases pending. Metadata child changes only
 this checkpoint record,not source or verification inputs.
+
+
+### MainLemma original12 checkpoint — boxFamily
+
+Source/audit commit `e6d8c4cbed6c39639fbc4253ca18582641207640`; the following metadata child records and publishes this
+exact checkpoint before the next original edit. MainLemma12/27,overall228/264,
+10/14fullycompletedfiles. [Dedicated audit](cleanup/MainLemma-boxFamily.md) contains all
+24audit/42golf/5search/11verification steps,exact independent original reimplementation/
+effectivecontract/universe/binder/type/value/standard-axiom evidence,actual affectedmodule/
+fullfile and complete unfiltered native successes. Actual anchored profile17.191ms;
+raw evidence and required repeat/failure history are preserved. Generic arbitrary-index DATA retains integer predicate and exact old Fin-m specialization. Ten exact contracts,20 closed TYPE+VALUE/standard-axiom validations,nine nonself old-value closures and seven imported boundary certificates pass. All six caller/Main source bodies,three audited helpers and four-entry rename queue preserved. Target AFTER17.191/17.009ms; bounded unchanged main caller AFTER4925.516/5016.532ms remains original27 queue. Owner actual410artifact/12201import rehash,28-row independent root reparse,17pins104cache,fullML/Main/Evalnative0errors and freshroot/Evalnative0messages all pass; finalfile GLOBAL/simplify/cumulative and nextoriginal13 remain pending.
+Owner fullbuild5.542s THEN separateLeanEval5.528s,both exit0,all17pins immutable;sourceSHA256`eebbee905ea9d8083437e050614060841c8414a42c3aef00fc547aa0737e26df`,
+current707lines. Owner rehash/review and sourcefreeze checks pass. All owned processes
+and native requests drained before publication;nextoriginalboxPoly remains unedited.
+MainLemma finalfile/simplify/completeprofile phases pending. Metadata child changes only
+this checkpoint record,not source or verification inputs.
