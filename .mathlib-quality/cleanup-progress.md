@@ -25,6 +25,9 @@ Started: 2026-10-14 (America/Chicago).
 
 ## Current status
 
+Original9 optional heartbeat corroboration is withdrawn by the2026-10-20 erratum below;
+accepted bounded wall-clock/correctness/build gates remain valid. No source/count change.
+
 MainLemma is active:9/27originals complete at the latest published checkpoint;
 overall225/264originals,10/14fullycompletedfiles. Latest:`log_B₁_gt` after fresh full
 24-item/42-rule/5-method/11-step audit,independent original/type/binder/value/standard-axiom
@@ -2923,6 +2926,24 @@ or force-push**. Pins Lean `leanprover/lean4:v4.34.0`, mathlib
 `5ed2965256430c3649e86755f9576b54eca72435`; no pin changes. User explicitly resumed
 2026-10-20 after earlier allowance interruption; no pause or takeover requested.
 Preserve future partial source/logs; never publish without required validation.
+
+Current work after that original9 publication boundary: original10 has saved
+UNPUBLISHED local source and partial report. The SAME original10 worker
+`/root/cleanup_continuation/mainlemma_file/three_small_factors` ended its partial
+turn and released all11owned PGIDs; fresh helper#2 auditor
+`/root/cleanup_continuation/mainlemma_file/two_lt_rpow_helper` currently owns
+helper/necessaryapplication/compiler/native/profile/helperreport, exclusively.
+After its full release resume SAMEoriginal10, no duplicate owner/model switch.
+Last reported draft ML SHA1a0c73dd30f82ef9c684b80262314cc1c449dd92ecf680fc25f76cf8dc370a94;
+Main5f384557dccacaec469699cc7d32bd5666c9d525267e00433b7ae401fee98d09.
+Helperfirstdraft/context/release: `/private/tmp/roth-mainlemma-three-factors/`;
+helperaudit `/private/tmp/roth-mainlemma-two-rpow-helper/`. Exact current status
+and ownership: owner `resume-state-current.json`. Original10 stronger candidate
+removes hm/hδm/hq₁, weakensδ/A/h32, retains3strictconclusions; helperthreshold
+log2<δ²logq is independently proved. Final original10 oldprojectproof/callers/
+boundaries/afterpairs/native/build/report/ownerclosure remain pending. This
+metadata-only heartbeat erratum stages NO original10source or partialreports.
+No optional historic HB rerun; verified bounded custom wrapper prospectively.
 <!-- takeover-original8-end -->
 
 
@@ -2956,3 +2977,18 @@ current696lines. Owner rehash/review and sourcefreeze checks pass. All owned pro
 and native requests drained before publication;nextoriginalthree_small_factors remains unedited.
 MainLemma finalfile/simplify/completeprofile phases pending. Metadata child changes only
 this checkpoint record,not source or verification inputs.
+
+
+### Original9 optional-heartbeat erratum (2026-10-20)
+
+The optional original9 target836→872 / consumer24607→24930 heartbeat figures, and
+historical v6 heartbeat figures, are withdrawn from accepted corroboration. Actual runner
+inputs use builtin `#count_heartbeats in`; pinned CountHeartbeats.lean143 internally sets
+`maxHeartbeats 0`. The earlier bounded/no-limit-raise description was incorrect. Original
+raw evidence and published report are preserved; see the [corrected audit](cleanup/MainLemma-log_B₁_gt.md).
+The required actual bounded wall-clock table83.057/81.675ms, exact complete-root accounting,
+independent old/current type/value/standard-axiom checks, native diagnostics, and production
+builds remain valid. No source or required timing result changes; counts stay225/264,
+MainLemma9/27,10/14files. Original10 draft is unvalidated and excluded from this metadata-only
+publication. Future optional heartbeat checks require a verified bounded custom wrapper;
+no historical optional rerun is needed. The actual erratum commit follows via metadata child.

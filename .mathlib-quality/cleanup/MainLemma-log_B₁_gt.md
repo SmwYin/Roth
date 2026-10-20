@@ -347,10 +347,24 @@ runner with owned process-group drain. Helpers introduced:0, so no hidden helper
 |log_B₁_gt|103.207 / 113.451|83.057 / 81.675|target <1000ms|
 |three_small_factors|1780.845 / 1832.483|1810.373 / 1847.068|foreign pre-existing >1s queue retained|
 
-Deterministic cross-check uses the same logical namespace/declaration names on complete actual
-bodies with the appropriate actual old/current imported module: target 836→872
-heartbeats; direct consumer 24607→24930. This is a separate heartbeat check, not an
-unmatched wall-clock sample or a limit raise. All raw wrappers remain only in /private/tmp.
+**Owner erratum (2026-10-20): optional heartbeat corroboration withdrawn.**
+The historical target836→872 and consumer24607→24930 figures were measured using
+Mathlib's builtin `#count_heartbeats in`. Pinned `Mathlib/Util/CountHeartbeats.lean:143`
+elaborates its command under `set_option maxHeartbeats 0`; therefore the report's earlier
+claim that this was a bounded cross-check without a limit raise was incorrect. These figures
+are **not accepted corroboration** and are not needed for the required performance gate.
+Associated historical v6 heartbeat figures are likewise excluded.
+
+The accepted wall-clock table above uses the actual recorded bounded profiling CLI, with
+no heartbeat-limit option changes. Its immutable complete roots, actual exits, source/type/
+opaque-value/standard-axiom checks, native diagnostics and production builds remain valid.
+No production source or profiling result was changed for this correction. The original
+published report (SHA256`b6aeca806e84a6371dc05bd596520cda94417ce8e1133df2ca7d2f4037285ec7`)
+is preserved at `/private/tmp/roth-mainlemma-owner/original9-published-report-before-heartbeat-erratum.md`
+and in source/audit commit`d274aa6f0e361169811481b6a442f230fe719170`. The frozen leaf manifest's
+report hash identifies that historical report; its other artifact hashes are unchanged.
+Future heartbeat corroboration must use a verified bounded custom command that preserves
+all limits. Historical optional heartbeat probes will not be rerun.
 
 Selected v7 bounded diagnosis: the changed hlogB application costs4.762/6.190ms; the
 unchanged final arithmetic refine costs1193.467/1216.540ms. Before application0.576/0.594ms
@@ -408,7 +422,7 @@ Main-own-file queue remain explicit. This worker does not certify whole-file per
 |line_packing_gate|pass|all final signature lines measured70/58, no repack|
 |inequality_orientation_gate|pass|no ≥/> Lean occurrences; required table and name queue present|
 |cumulative_no_unintended_breakage|pass in affected scope|full actual ML/Main build + complete native checks + independent old/current full consumer contracts/values/axioms|
-|no-limit-raise / no-scaffolding|pass|no production options/imports/wrappers added; all profiling/heartbeat code stays in temp artifacts|
+|production no-limit-raise / no-scaffolding|pass; optional HB excluded|no production options/imports/wrappers added; builtin scratch HB internally disables its limit and is withdrawn above|
 |target performance|pass|both selected v7 complete root captures under1000ms; foreign slow queue disclosed|
 
 Source reconstruction and queue-prefix proof: source-protection9-v7.json. All source outside the

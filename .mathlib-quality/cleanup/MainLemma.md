@@ -244,3 +244,18 @@ All worker/compiler/native/profile ownership drained before publication.
 Source/audit publication hash follows in central checkpoint history via metadata child.
 MainLemma9/27 originals,overall225/264,10/14fullycompletedfiles;nextthree_small_factors.
 Filewide final phases remain pending.
+
+
+### Original9 optional-heartbeat erratum (2026-10-20)
+
+The optional original9 target836→872 / consumer24607→24930 heartbeat figures, and
+historical v6 heartbeat figures, are withdrawn from accepted corroboration. Actual runner
+inputs use builtin `#count_heartbeats in`; pinned CountHeartbeats.lean143 internally sets
+`maxHeartbeats 0`. The earlier bounded/no-limit-raise description was incorrect. Original
+raw evidence and published report are preserved; see the [corrected audit](MainLemma-log_B₁_gt.md).
+The required actual bounded wall-clock table83.057/81.675ms, exact complete-root accounting,
+independent old/current type/value/standard-axiom checks, native diagnostics, and production
+builds remain valid. No source or required timing result changes; counts stay225/264,
+MainLemma9/27,10/14files. Original10 draft is unvalidated and excluded from this metadata-only
+publication. Future optional heartbeat checks require a verified bounded custom wrapper;
+no historical optional rerun is needed. The actual erratum commit follows via metadata child.
