@@ -3065,3 +3065,19 @@ current707lines. Owner rehash/review and sourcefreeze checks pass. All owned pro
 and native requests drained before publication;nextoriginalboxPoly remains unedited.
 MainLemma finalfile/simplify/completeprofile phases pending. Metadata child changes only
 this checkpoint record,not source or verification inputs.
+
+
+### MainLemma original13 checkpoint — boxPoly
+
+Source/audit commit `021d1b7256849f905204c44039d0f0e8bcc426eb`; the following metadata child records and publishes this
+exact checkpoint before the next original edit. MainLemma13/27,overall229/264,
+10/14fullycompletedfiles. [Dedicated audit](cleanup/MainLemma-boxPoly.md) contains all
+24audit/42golf/5search/11verification steps,exact independent original reimplementation/
+effectivecontract/universe/binder/type/value/standard-axiom evidence,actual affectedmodule/
+fullfile and complete unfiltered native successes. Actual anchored profile48.922ms;
+raw evidence and required repeat/failure history are preserved. Generic private finite-index DATA retains exact original Fin-m TYPE/VALUE and integer-array meaning; three written ascriptions removed with identical elaborated value, private comment prose preserved. All five actual direct consumers unchanged, generated equation guarded/counts kept in coeff command. Nine contracts/19 closed TYPE+VALUE standard-axiom guards/seven nonself closures, four closed actual-target application cases/finaledge inventory pass. Owner383artifact/12201import rehash,12-row independent exactroot reparse/noncomputable zero-codegen metadata and pin-source validation,17pins104before/finalcache and all16leafgroups pass. Allsource/helper/Main/queue bytes outside target/doc unchanged; helpercount3. Fresh ML/Main/Evalnative0errors and root/Evalnative0messages; finalfile GLOBAL/simplify/cumulative and next14 remain pending.
+Owner fullbuild5.618s THEN separateLeanEval3.019s,both exit0,all17pins immutable;sourceSHA256`8812f171cfb7b6bcb4103e09f0c20cc261d5fc8e39a39ebd3b85d10f5dd41ae0`,
+current707lines. Owner rehash/review and sourcefreeze checks pass. All owned processes
+and native requests drained before publication;nextoriginalcoeff_boxPoly remains unedited.
+MainLemma finalfile/simplify/completeprofile phases pending. Metadata child changes only
+this checkpoint record,not source or verification inputs.
