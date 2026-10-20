@@ -3115,3 +3115,19 @@ current699lines. Owner rehash/review and sourcefreeze checks pass. All owned pro
 and native requests drained before publication;nextoriginalrange_boxPoly remains unedited.
 MainLemma finalfile/simplify/completeprofile phases pending. Metadata child changes only
 this checkpoint record,not source or verification inputs.
+
+
+### MainLemma original16 checkpoint — range_boxPoly
+
+Source/audit commit `60df3814193002bbea8376494bee9f2e3a7f9865`; the following metadata child records and publishes this
+exact checkpoint before the next original edit. MainLemma16/27,overall232/264,
+10/14fullycompletedfiles. [Dedicated audit](cleanup/MainLemma-range_boxPoly.md) contains all
+24audit/42golf/5search/11verification steps,exact independent original reimplementation/
+effectivecontract/universe/binder/type/value/standard-axiom evidence,actual affectedmodule/
+fullfile and complete unfiltered native successes. Actual anchored profile89.367ms;
+raw evidence and required repeat/failure history are preserved. Private range_boxPoly generalized from Fin m to arbitrary universe-polymorphic finite sigma with exact Fintype/DecidableEq constructor instances. Direct Int.toNat_le and supported-exponent box membership preserve one common bounded coefficient-array witness while reducing declaration28 to23/file699 to694; no helper/caller/Main/queue edit. Genuine project-original family DATA, constructor DATA, coefficient/range proofs and entire entryML independently reelaborated:12exactcontracts/34closedTYPE+actualVALUE+inferredTYPE/std3/10nonself oldclosures/5actualtarget properties including common-array existential. SIX named DATA unfolds include genuine old/original/current family and constructor, restricted spine beta only; no changed-arity Name map. Matched target109.494 to89.367ms, finite8.715 to10.640 and ncard16.962 to20.568, all below750/no repeat/aggregate speedupclaim. Owner verified415artifacts80985775bytes26binary/all12201imports1803538672bytes/17pins104cache/6exactprofile rows and15leafgroups absent; actual environment byte-identical. Fresh complete ML/Main/Evalnative0errors1/4/0oldwarnings; ownerroot/Evalnative0messages, ownercache unchanged. All file GLOBAL/simplify/cumulative gates remain pending.
+Owner fullbuild5.474s THEN separateLeanEval5.155s,both exit0,all17pins immutable;sourceSHA256`6808b77320c176564d9d60b450f59ddff6b7b319cc9a03da01dbf2a159a111eb`,
+current694lines. Owner rehash/review and sourcefreeze checks pass. All owned processes
+and native requests drained before publication;nextoriginalboxFamily_finite remains unedited.
+MainLemma finalfile/simplify/completeprofile phases pending. Metadata child changes only
+this checkpoint record,not source or verification inputs.
