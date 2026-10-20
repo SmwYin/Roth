@@ -25,16 +25,18 @@ Started: 2026-10-14 (America/Chicago).
 
 ## Current status
 
-MainLemma is active:16/27originals complete at the latest published checkpoint;
-overall232/264originals,10/14fullycompletedfiles. Latest:`range_boxPoly` after fresh full
+MainLemma is active:17/27originals complete at the latest published checkpoint;
+overall233/264originals,10/14fullycompletedfiles. Latest:`boxFamily_finite` after fresh full
 24-item/42-rule/5-method/11-step audit,independent original/type/binder/value/standard-axiom
-checks,complete unfiltered affected diagnostics and actual anchored profile89.367ms.
-Owner fullbuild5.474s THEN separateLeanEval5.155s,both exit0 on immutable17pins.
-Private range_boxPoly generalized from Fin m to arbitrary universe-polymorphic finite sigma with exact Fintype/DecidableEq constructor instances. Direct Int.toNat_le and supported-exponent box membership preserve one common bounded coefficient-array witness while reducing declaration28 to23/file699 to694; no helper/caller/Main/queue edit. Genuine project-original family DATA, constructor DATA, coefficient/range proofs and entire entryML independently reelaborated:12exactcontracts/34closedTYPE+actualVALUE+inferredTYPE/std3/10nonself oldclosures/5actualtarget properties including common-array existential. SIX named DATA unfolds include genuine old/original/current family and constructor, restricted spine beta only; no changed-arity Name map. Matched target109.494 to89.367ms, finite8.715 to10.640 and ncard16.962 to20.568, all below750/no repeat/aggregate speedupclaim. Owner verified415artifacts80985775bytes26binary/all12201imports1803538672bytes/17pins104cache/6exactprofile rows and15leafgroups absent; actual environment byte-identical. Fresh complete ML/Main/Evalnative0errors1/4/0oldwarnings; ownerroot/Evalnative0messages, ownercache unchanged. All file GLOBAL/simplify/cumulative gates remain pending. Entry708→current694lines. Next:boxFamily_finite. MainLemma filewide final,
+checks,complete unfiltered affected diagnostics and actual anchored profile38.964ms.
+Owner fullbuild5.894s THEN separateLeanEval2.951s,both exit0 on immutable17pins.
+boxFamily_finite now accepts arbitrary-universe sigma with only Finite(Function.support r), admitting infinite ambient indices with finite degree-bound support while automatically preserving finite-index r/B calls. Two standard Finset.finsupp enumerations and image AddMonoidAlgebra.ofCoeff give13proof/15declarationlines,3to15decl/ML694to708; nohelper/caller/Main/queue edit. Necessary direct Finset.Finsupp import was already transitive; actual setup/options/importArts bytes unchanged. Only ownpublicdoc and authorized added12sentence changed. Genuine original family/ctor/coeff/injective/range/finite/ncard/direct-consumer proofs plus entire entryML independently reelaborated:14exactcontracts/42closedTYPE+actualVALUE+inferredTYPE/std3/14nonselfoldclosures/8actualtargetproperties including infiniteNat finite-support cases. Owner verified423refs106151004bytes26binary and24793actual external refs3929186304bytes, with package/setup union12201/1803563080bytes and installed pinned-toolchain compiled SUPERSET12592/2125623224bytes explicitly separate. Neither catalog is claimed exact loaded closure; historical core-beforeAPI omission disclosed, initial package-only sample retained, exactoldBEFORE replay under observed samecore matches AFTER. Accepted target17.129to38.964ms/directconsumer320.078to260.369ms,4exactrows reanchored/allbelow750/no repeats/aggregateclaim. Exact709line intermediate source reconstructed/hashbound; final708SHAff29cc40. Missingthirdliteraturequery completed honestly later in separate addendum+8ref supplementarymanifest without altering original frozen report/evidence. All22leafgroups absent; freshML/Main/Evalnativecomplete0errors1/4/0oldwarnings; ownerrootEvalnative0messages/17pins104cacheNOdelta and freshpost-gate24793external hashes unchanged. Allfile GLOBAL/simplify/cumulative gates remain pending. Entry708→current708lines. Next:ncard_boxFamily. MainLemma filewide final,
 independent simplify and complete performance phases remain pending. See
-[MainLemma ledger](cleanup/MainLemma.md) and [latest audit](cleanup/MainLemma-range_boxPoly.md).
+[MainLemma ledger](cleanup/MainLemma.md) and [latest audit](cleanup/MainLemma-boxFamily_finite.md).
 The exact source/audit commit is recorded in appended checkpoint history by its metadata
 child. Prior fullycompleted-file handoff is preserved below.
+
+Remote CI at predecessor `d953155`: [run39497338608](https://github.com/SmwYin/Roth/actions/runs/39497338608) failed before code checking during pinned Lean4.34 Linux download (Elan SSL connect error35). Prior `1dd1abd` workflow succeeded. Root reran failed jobs; outcome pending. Local checkpoint gates above pass; no source/version/workflow change was made for this infrastructure failure.
 
 ### Previous completed-file handoff (Theta)
 
@@ -167,7 +169,7 @@ Files will be processed in dependency order; declarations within each file are s
 | `Roth/Index.lean` | 275 | All cleanup phases complete;21/21 originals audited; user-approved hypothesis groups applied and validated |
 | `Roth/Separation.lean` | 618 | Complete;30/30 originals and all final phases;source556lines27retained;all12 approved instance amendments validated |
 | `Roth/Theta.lean` | 981 | Complete;35/35 originals and all final file phases;source991lines,50retained |
-| `Roth/MainLemma.lean` | 704 | Active;16/27 originals audited/published;final file phases pending |
+| `Roth/MainLemma.lean` | 704 | Active;17/27 originals audited/published;final file phases pending |
 | `Roth/Main.lean` | 684 | Awaiting cleanup |
 | `Roth/LeanEval.lean` | 60 | Awaiting cleanup |
 | `Roth.lean` | 14 | Awaiting cleanup |
@@ -2858,85 +2860,86 @@ this checkpoint record,not source or verification inputs.
 
 
 <!-- takeover-original8-start -->
-### Current resumable cleanup handoff (supersedes original16)
+### Current resumable cleanup handoff (supersedes original17)
 
-Read Current status and latest appended actual-hash checkpoint first. MainLemma16/27,
-overall232/264,10/14 fully completed files. Next original17 public `boxFamily_finite`,
+Read Current status and latest appended actual-hash checkpoint first. MainLemma17/27,
+overall233/264,10/14fully completed files. Next original18 public `ncard_boxFamily`,
 unedited/notdelegated at this publication boundary. Sole file/source/shared-progress/Git
 owner `/root/cleanup_continuation/mainlemma_file`; parent `/root/cleanup_continuation`,root `/root`.
-Original16 ALLleases released;15leafgroups and owner85396/85425 absent; native complete,
-no compiler/native/profile pending. NEW per-original/helper workers gpt-6.1-sol,medium,
-fork_none; oneleafslot; serialize compiler/native/profile. Recover SAME interruptedworker,
-no duplicateowners. Private actualstate `/private/tmp/roth-mainlemma-owner/resume-state-current.json`.
+Original17 ALLsource/compiler/native/profile/report AND latermetadata leases released;
+22leafgroups and owner87696/87719 absent, allnative complete, no compiler/native/profile pending.
+NEW per-original/helperworkers gpt-6.1-sol,medium,fork_none; oneleafslot; serialize allcompiler/
+native/profile; recover SAME interruptedworker/no duplicateowners or modelchange.
+Private actualstate `/private/tmp/roth-mainlemma-owner/resume-state-current.json`.
 Parent handles Main,LeanEval,Roth only after complete MainLemma release. Publish everyoriginal
-before nextedit. Next17 prompt next-original17-dispatch-DRAFT.txt prospective/noauditcredit.
+before nextedit. Next18 prompt next-original18-dispatch-DRAFT.txt prospective/noauditcredit.
 
-Validated ML694lines SHA6808b77320c176564d9d60b450f59ddff6b7b319cc9a03da01dbf2a159a111eb;
+Validated ML708lines SHAff29cc40cece7f7432c7a2ddc64fd9cc73ceafd995b37b6927b7f3d2897bbac7;
 Main685unchanged SHA5f384557dccacaec469699cc7d32bd5666c9d525267e00433b7ae401fee98d09.
-Original16 report SHA9ef325aff5a472eacdd7a3acbfcc93861b8c779f6a5d83d2c15ccbe904ac9675;
-`/private/tmp/roth-mainlemma-range-box-poly/final16-artifact-manifest.json` SHA
-208be064024f5bdeb2fc93babc137da6e5e286fd710f605854fd2ce3216e8559.
-Owner checked415artifacts80985775bytes26binaryexceptions/ALL12201imports1803538672bytes/
-17pins104before-final-currentcache/all15leafgroups/6matchedrows; sourceonlytargetchanged.
-Fresh independent inputSHA7157646366e76666c67158f8944ba93566e1942bcab0566faa219b9e22ad62fc
-passes12contracts/34closedTYPE+actualVALUE+inferredTYPE/std3/10bannedcurrentoldclosures;
-entireentryML and genuineprojectoriginal family+ctor+coeff+range bytes independentlycopied.
-ExplicitoldFinm DATA/targetadapters, completeoldfinite+ncardproofs,5actualtargetPROPERTY
-cases including common-array existential and finalexact2DIRECTTYPEVALUEusers pass.
-OwnerFULL5.474s THEN separateEval5.155s/freshrootEvalnative0messages; ML/Main/Evalnative
-0errors/1-4-0inheritedwarnings;17pins104cacheunchangedafterownergates. Nohelper/caller/Main/queueedit.
+Original17 report SHA3f3e0396144e8977d3dcb5bd6dc9cf3127ee8ce770d748dc05fc76d31236b1b4;
+`/private/tmp/roth-mainlemma-box-family-finite/final17-artifact-manifest.json` SHA
+2b54049b3486079f1d7121c9d2572c7b9e880364c049c5c7076154d1571a0781.
+Owner checked423refs106151004bytes26binaryexceptions/24793actualexternalrefs3929186304bytes/
+17pins104cache/22leafgroups/4matchedrows. Fresh independent input4c958f75b7bf3d79da4ab8bf18a5272a8fbef986f4c6ac2dbf3c9d085d6e1ae3
+passes14contracts/42closedTYPE+actualVALUE+inferredTYPE/std3/14oldclosures/8actualtargetproperties.
+EntireentryML plus genuineprojectoriginal family/ctor/coeff/injective/range/finite/ncard/
+consumer bytes independentlycopied; originalfinite explicitlyuses genuineoriginalrange.
+Currentfamily/ctor/coeff/inj/range/finite/ncard/consumer/all3helpers bannedoldTYPEVALUEclosures.
+SIXnamedDATAunfolds original/Entry/currentctor ANDfamily, restrictedspinebeta only;
+onlyBOTHsidegeneratedmacroScopes normalize, writtennames/order/BI/universes/rawAST+isDefEq exact.
+No changedarityName map/proofirrelevance shortcut; actualDATAvalues checked, theoremthmInfo.
+Eightproperties include infiniteNat single-support/zero-degree; Finiteσ automaticallysupplies
+Finite(support r). Publictarget3→15/13prooflines, finite-supportgenericity, nohelper/callerchange.
+Necessary directMathlib.Data.Finset.Finsupp import alreadytransitive; observedsetup/importArts/
+options/envbytesunchanged. Onlyownpublicdoc+authorizedadded12sentence changed; originalquotes exact.
+OwnerFULL5.894s THEN separateEval2.951s/freshrootEvalnative0messages; ML/Main/Evalnative0errors
+1-4-0oldwarnings,17pins104cacheNOdelta; freshpostownerexternalhashesunchanged.
 
-Private range now genericσ[Fintype][DecidableEq], matching ctor+lookup+injectivity.
-Declaration28→23,file699→694; Int.toNat_le replaces omega; direct supported-exponent
-box-membership contradiction removes bad-coordinate detour; ONE common coefficientarray.
-Matched target109.494→89.367ms, finite8.715→10.640,ncard16.962→20.568; all<750/no repeats/
-no aggregate speedupclaim. Classical/Finite body alternatives pass, directoldFinm adapters
-actualTYPE MISMATCH from constructorDATAinstances; NOT heartbeat/walltimeouts/counterexamples.
+Provenance CORRECTION: inherited12201setup.importArts catalog is PACKAGE/SETUPunion, not
+exactfullcompilerloadedclosure; implicitInit/toolchain modules omitted. All oldexplicit
+imports frozen/exact. Newlyobserved installedpinnedtoolchain compiledartifact SUPERSET
+12592files2125623224bytes is separate, notexactloadedclosure or historicalbeforeAPIcapture.
+ExactoldBEFOREscopereplay importsunchangedLattice/Theta/mathlib, neverchangedML; underobserved
+samecore matched17.129→38.964ms target,320.078→260.369consumer,all<750/norepeat/noaggregateclaim.
+Historicalfirst16.149/314.735 package-only sample retained, neverretroactivelycore-certified.
+Finalpackageunion12201/1803563080bytes; core+package24793currentactualrefs. Bothpre/postmatched
+corecatalogs and rawenvbytes equal. Future18+BEFORE/fullGLOBALmustcapture bothcatalog scopes,
+actualLean/Lake resolution and directdeps honestlybeforeAPI; sourceimportchangeslegitimate
+setup/uniondeltas, neverforcepreviouscardinality/equality. Generatedconsumer_proof_1_1 counts
+withcompleteexists_ne_modByMonic_eq command once; allroots column0disjoint/noMeta/nested/end.
+
+Laterliteraturemetadataaddendum completesmissingthirdquery+targetedfourth; originalreport/
+manifestbytesexact, no sourcechange. Addendum SHAb55eaf75ee047dad043a3edae371b8b23695c0a4e6c8f8cc6e6e171d882471c4,
+supplementarymanifestSHA2e0da098eec42667f1be920f7dd1a3b9a9cc5a0b1364a7ff53399642960a1d6d (8refs).
+[Later literature addendum](cleanup/MainLemma-boxFamily_finite-literature-addendum.md).
+IndependentV1 genericEntryrange-vs-Finmadapter mismatch wholeexit1/192.672s, ALLpartialPASS
+rejected; V2corrected/208.324sexit0. Ownedtargetedsignaldenied, boundedV1naturallydrained.
+Prepacking709lineSHA bce0fb555349b2ba06638f17053ee0b63eb30336786b5ce40949c1102ad085c7
+exactsource/reversiblediff bound; finalgates all708byteversion. Intascriptiondrop failed,
+necessarycastretained. apply?can syntheticadmitdespite0goals; actualclosedTYPEVALUE/std3/whole0 required.
+
 3freshlyauditedhelpers/30retainedsource,no264inflation; helper3 exact
 8036cf617651d096e302d8f52d4589051c5a213d2ef93c10ee5813de73956a44.
+Helper FIRSTDRAFT/fullcontextSHA BEFOREgolf→partialEND/drain→FRESHhelperaudit→SAMEoriginalresume
+beforeAFTER captures mandatory. Only6moduleheadlineproof≤15,ordinary≤30/branch≤10.
+Remaining18–27 thenfreshindependentwholefilesimplify/actualGLOBAL ALLretainedrows+meaningful
+helpercombined groups/cumulativeALL22projectoriginalpublicDATA+ALLretainedaxioms/imports/docs/
+comments7signposts+23docblocks/static/reference/allaffected/full/separateEval/native/report/
+commitpushclean/release. ValidGLOBALdelta11188.775,pigeon1000.235,main4880.648 remainFAILED;
+scopedpassesinsufficient. Delta~96%hc/fun_prophotspot/uncompiledcontinuitycandidate preserved.
+Optional6/9builtinmax0heartbeat figureswithdrawn/rawerrataretained; requiredgatesunaffected,
+futureverifiedpositiveboundedcustomonly/nooptionalhistoricalrerun. OldIntnorm11/generatedeq13/
+oldFinmDATAadaptersrequiredfinalcumulative. Genuineoriginal source704SHAa3d09825fb878c5d512cfdd3feca517465e0a8215807b1261b988f664915f3a8.
+Refsactualroot /Users/ramin/.local/share/roth-mathlib-quality/skills/mathlib-quality/references/.
 
-AllactualTYPEVALUEdirectedges mandatory alongside source/LSP. Profile flags bracket ENTIRE
-commands including attached docs; canonicalrecovery exact. Actual16 literal absoluteelanshim
-CLI/savedPATHpinned4.34Lake/options/setups/imports exact; actualrawenvbyte-identical.
-InitialBEFOREsummaryenvironment_equal tautology withdrawn/preserved; actualcrossphase
-comparison separate. Exacttoken+separator/qualifiedproof/column0disjointcommand+asyncroots,
-separateUTF8streams; no Meta/nested/next/enddoublecount. NoncompDATAzeroCompileDecls requires
-actualmetadata+pinnedsource, computationalDATA differs. GeneratedboxPoly.eq_1kernel counted
-once under actualcoeffcommand. Scopedpasses NOTfinalGLOBAL acceptance.
-
-SIX named DATA unfolds: original/Entry/current boxPoly AND boxFamily, restrictedspinebeta.
-Genuineoriginalrange must include genuineoriginalfamily RHS, not current unqualifiedDATA.
-Currentfamily/target/callers/ctor/coeff/injective/all3helpers banned fromoldTYPEVALUEclosures.
-No changedarityName maps/proofirrelevance shortcut; onlyBOTHsidegeneratedmacroScopes erased,
-all writtennames/order/BI/universes/rawAST+actualisDefEq checked. TrueprivateName objects/fresh
-levels, notrawnumeric.0; termmacro notsimp-unfold, typedDATA→sumwithIntcodomain ifneeded.
-ALLfailedscratchpartialPASS rejected; apply?can syntheticadmitdespite0goals. Canonicaldisplay
-format.width100, notpp.width. Old14classadapters heartbeat-exhausted/unverified;15/16 actual
-TYPE mismatch distinct. Optional6/9 builtinmax0 heartbeat figures withdrawn/rawerrata retained;
-requiredgates valid, futureverifiedpositiveboundedcustomonly/nooptionalhistoricalrerun.
-
-Historical14 broadcompact627.915ms correctnesspass notselected for materialcost; causal
-simpa376.643/simp210.203 repaired by explicitcoeff_sum+canonicaldite_eq_left/dite_eq_right/
-ite_false boundedterminalsimponly. Immutablecostrevision395refs121900633bytes retained;
-selected14matched78.976ms. Measuredterminal-simp exception/no automatic squeeze/no unchanged
-thirdcherrypick. OldIntnorm11/generatedequation13/oldFinmDATA adapters requiredfinalcumulative.
-
-Remaining originals17–27, everynewhelper separatelyfreshaudited, then freshindependentwhole-file
-simplify/actualGLOBAL ALLretained-row profiling+repairs/cumulativeALL22projectoriginalpublic/
-DATA/ALLretainedaxioms/imports/docs/comments7signposts+23docblocks/static/references/finalaffected/
-full/separateEval/native/reports/commit/pushclean/release. ValidGLOBALdelta11188.775ms,
-pigeonhole1000.235,main4880.648 remain FAILEDfinalfilegates; scopedpasses insufficient.
-Delta~96%continuityhotspot and UNCOMPILEDexplicitcontinuitycandidate preserved. References
-actualroot /Users/ramin/.local/share/roth-mathlib-quality/skills/mathlib-quality/references/.
-
-Project-end SINGLErenamequeue4: Roth.index_hasseDeriv_ge→Roth.index_sub_weight_le_index_hasseDeriv;
+ProjectendSINGLErenamequeue4: Roth.index_hasseDeriv_ge→Roth.index_sub_weight_le_index_hasseDeriv;
 Roth.B₁→Roth.mainCoeffBound; Roth.log_B₁_gt→Roth.mul_log_div_two_lt_log_mainCoeffBound;
-Roth.abs_coeff_modByMonic_le→Roth.norm_coeff_modByMonic_le. No in-place renames.
-Standingauthorization implementallrecommendations/askonlyundecidable; earlierretentionpreferences
-binding; preserve math/no inventedmetadata/sorry/newaxioms/weakerconclusions/limitraises.
-Branch ramin-cleanup only; protectmain/no merge/forcepush. Pins leanprover/lean4:v4.34.0,
-mathlib5ed2965256430c3649e86755f9576b54eca72435 unchanged. Preservepartialsource/logs on
-interruption; never publish before requiredvalidation.
+Roth.abs_coeff_modByMonic_le→Roth.norm_coeff_modByMonic_le. No inplace renames.
+Standingauthorization implementallrecommendations/askonlyundecidable; earlierHasse/Separation/
+Theta retentionpreferencesbinding; preserve math/no inventedmetadata/sorry/newaxioms/weaker
+conclusions/limitraises. Branchramin-cleanup/protectmain/no mergeforcepush/pinchanges.
+Pins leanprover/lean4:v4.34.0,mathlib5ed2965256430c3649e86755f9576b54eca72435 unchanged.
+Preservepartialsource/logs oninterruption; neverpublishunvalidatedsource.
 <!-- takeover-original8-end -->
 
 

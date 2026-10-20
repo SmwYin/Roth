@@ -394,3 +394,24 @@ All worker/compiler/native/profile ownership drained before publication.
 Source/audit publication hash follows in central checkpoint history via metadata child.
 MainLemma16/27 originals,overall232/264,10/14fullycompletedfiles;nextboxFamily_finite.
 Filewide final phases remain pending.
+
+
+### Original17: `boxFamily_finite`
+
+[Fresh dedicated full audit](MainLemma-boxFamily_finite.md):all24audit/42golf/5search/11checklist
+artifacts reviewed by owner. boxFamily_finite now accepts arbitrary-universe sigma with only Finite(Function.support r), admitting infinite ambient indices with finite degree-bound support while automatically preserving finite-index r/B calls. Two standard Finset.finsupp enumerations and image AddMonoidAlgebra.ofCoeff give13proof/15declarationlines,3to15decl/ML694to708; nohelper/caller/Main/queue edit. Necessary direct Finset.Finsupp import was already transitive; actual setup/options/importArts bytes unchanged. Only ownpublicdoc and authorized added12sentence changed. Genuine original family/ctor/coeff/injective/range/finite/ncard/direct-consumer proofs plus entire entryML independently reelaborated:14exactcontracts/42closedTYPE+actualVALUE+inferredTYPE/std3/14nonselfoldclosures/8actualtargetproperties including infiniteNat finite-support cases. Owner verified423refs106151004bytes26binary and24793actual external refs3929186304bytes, with package/setup union12201/1803563080bytes and installed pinned-toolchain compiled SUPERSET12592/2125623224bytes explicitly separate. Neither catalog is claimed exact loaded closure; historical core-beforeAPI omission disclosed, initial package-only sample retained, exactoldBEFORE replay under observed samecore matches AFTER. Accepted target17.129to38.964ms/directconsumer320.078to260.369ms,4exactrows reanchored/allbelow750/no repeats/aggregateclaim. Exact709line intermediate source reconstructed/hashbound; final708SHAff29cc40. Missingthirdliteraturequery completed honestly later in separate addendum+8ref supplementarymanifest without altering original frozen report/evidence. All22leafgroups absent; freshML/Main/Evalnativecomplete0errors1/4/0oldwarnings; ownerrootEvalnative0messages/17pins104cacheNOdelta and freshpost-gate24793external hashes unchanged. Allfile GLOBAL/simplify/cumulative gates remain pending.
+Independent original reimplementation,exact old/current effective contract metadata/value
+and standard-axiom evidence reviewed; complete unfiltered livefile/affectedcaller diagnostics
+and actual affected-module/fullfile validation pass. Actual anchored profile38.964ms;
+required repeats/failed evidence,if any,remain in the dedicated report. Owner verified frozen
+source/evidence and ran fullbuild5.894s THEN separateLeanEval2.951s,both exit0 with all17pins immutable.
+Owner logs:`/private/tmp/roth-mainlemma-owner/boxFamily_finite-owner-full.json` and
+`boxFamily_finite-owner-eval.json`. SourceSHA256`ff29cc40cece7f7432c7a2ddc64fd9cc73ceafd995b37b6927b7f3d2897bbac7`;current708lines.
+All worker/compiler/native/profile ownership drained before publication.
+Source/audit publication hash follows in central checkpoint history via metadata child.
+MainLemma17/27 originals,overall233/264,10/14fullycompletedfiles;nextncard_boxFamily.
+Filewide final phases remain pending.
+
+[Later literature addendum](MainLemma-boxFamily_finite-literature-addendum.md) preserves the frozen original report; missing third query and an additional targeted query were completed after END, with no source change.
+
+Remote predecessor CI [39497338608](https://github.com/SmwYin/Roth/actions/runs/39497338608) failed before code checking on pinned Lean4.34 Linux download SSL error35; root rerun pending, no source/version/workflow edit.

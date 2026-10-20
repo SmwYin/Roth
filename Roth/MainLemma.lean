@@ -1,6 +1,7 @@
 import Mathlib.Algebra.Polynomial.Div
 import Mathlib.Analysis.MeanInequalitiesPow
 import Mathlib.Analysis.SpecialFunctions.Pow.Continuity
+import Mathlib.Data.Finset.Finsupp
 import Mathlib.Data.Fintype.Pigeonhole
 
 import Roth.Lattice
@@ -258,7 +259,7 @@ theorem abs_coeff_modByMonic_le {R : Type*} [SeminormedRing R] {f : Polynomial R
   lia
 
 /-- Integer polynomials with coordinate degrees bounded by `r` and coefficients in `[0, B]`.
-The index type may be infinite; the finiteness and counting results specialize to `Fin m`.
+Finiteness below needs only finitely supported bounds; counting specializes to `Fin m`.
 Source: §6, proof of Lemma 9 ("Consider the set `𝒲` of all polynomials
 `W = ∑ c(s_1, …, s_m) x^s` where ... `0 ≤ c(s_1, …, s_m) ≤ B_1`"). -/
 def boxFamily {σ : Type*} (r : σ → ℕ) (B : ℕ) : Set (MvPolynomial σ ℤ) :=
@@ -307,10 +308,23 @@ private lemma range_boxPoly {σ : Type*} [Fintype σ] [DecidableEq σ] (r : σ �
       exact h (mem_box.2 fun j ↦
         (monomial_le_degreeOf j (mem_support_iff.2 (Ne.symm hne))).trans (hdeg j))
 
-/-- The family `𝒲` of box polynomials with coefficients in `[0, B]` is finite. -/
-theorem boxFamily_finite {m : ℕ} (r : Fin m → ℕ) (B : ℕ) : (boxFamily r B).Finite := by
-  rw [← range_boxPoly]
-  exact Set.finite_range _
+/-- The family `𝒲` is finite when only finitely many variables have positive degree bounds.
+The ambient index type may be infinite; finite index types supply the instance automatically. -/
+theorem boxFamily_finite {σ : Type*} (r : σ → ℕ) [Finite (Function.support r)] (B : ℕ) :
+    (boxFamily r B).Finite := by
+  classical
+  let s := (Set.toFinite (Function.support r)).toFinset.finsupp fun j ↦ Finset.Iic (r j)
+  refine ((s.finsupp fun _ ↦ Finset.Icc (0 : ℤ) B).finite_toSet.image
+    AddMonoidAlgebra.ofCoeff).subset ?_
+  intro W hW
+  refine ⟨W.coeff, ?_, rfl⟩
+  rw [Finset.mem_coe, Finset.mem_finsupp_iff]
+  refine ⟨fun d hd ↦ ?_, fun d _ ↦ Finset.mem_Icc.2 (hW.2 d)⟩
+  rw [Finset.mem_finsupp_iff]
+  refine ⟨fun j hj ↦ ?_, fun j _ ↦ Finset.mem_Iic.2 ((monomial_le_degreeOf j hd).trans (hW.1 j))⟩
+  rw [Set.Finite.mem_toFinset]
+  exact fun h ↦ (Finsupp.mem_support_iff.1 hj)
+    (Nat.eq_zero_of_le_zero (h ▸ (monomial_le_degreeOf j hd).trans (hW.1 j)))
 
 /-- The family `𝒲` has exactly `(B + 1)^N` elements, where `N = ∏ j, (r j + 1)` is the
 number of monomials in the box.
