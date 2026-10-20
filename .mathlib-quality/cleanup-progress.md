@@ -2940,3 +2940,19 @@ current696lines. Owner rehash/review and sourcefreeze checks pass. All owned pro
 and native requests drained before publication;nextoriginallog_B₁_gt remains unedited.
 MainLemma finalfile/simplify/completeprofile phases pending. Metadata child changes only
 this checkpoint record,not source or verification inputs.
+
+
+### MainLemma original9 checkpoint — log_B₁_gt
+
+Source/audit commit `d274aa6f0e361169811481b6a442f230fe719170`; the following metadata child records and publishes this
+exact checkpoint before the next original edit. MainLemma9/27,overall225/264,
+10/14fullycompletedfiles. [Dedicated audit](cleanup/MainLemma-log_B₁_gt.md) contains all
+24audit/42golf/5search/11verification steps,exact independent original reimplementation/
+effectivecontract/universe/binder/type/value/standard-axiom evidence,actual affectedmodule/
+fullfile and complete unfiltered native successes. Actual anchored profile83.057ms;
+raw evidence and required repeat/failure history are preserved. Authorized stronger API removes hδ0/hq₁/hr₁ and weakens4<power to sharp2≤power, retaining the identical strict logarithmic conclusion;4prooflines versus6,0newhelpers. Exact entire project-original target/old paired sqrt proof and old actual callers independently recovered; complete closedTYPE/actualopaqueVALUE/fullAST/writtennames/order/BinderInfo/universes/standardaxioms pass. One necessary three_small_factors call repair; Main byte-unchanged. Final matched target83.057/81.675ms versus103.207/113.451; deterministic heartbeats836→872 are disclosed. Foreign pre-existing three_small_factors1810.373/1847.068ms versus1780.845/1832.483 and heartbeats24607→24930 remain original10 repair obligations, with all samples and bounded call/arithmetic diagnosis retained. Fresh complete unfiltered ML/Main and owner root/Eval native gates pass without errors or partial/timeout; hδm and hq₁ warnings require original10 drop-tests. Owner independently rehashed302artifacts/310104299bytes (13explicitbinarycache exceptions),17source/configpins/104productioncache artifacts, actual27workerPGIDs drained, and canonically reparsed all8 accepted exact-token column0 command/async rows. One public log_B₁_gt rename appended; queue now3, reserved for project-end single pass. Filewide global performance/simplify/cumulative/final gates remain pending.
+Owner fullbuild49.267s THEN separateLeanEval46.714s,both exit0,all17pins immutable;sourceSHA256`2bfa8a61e85ead5ff702d57ff6a28ddda85c39a0d1faf960d27cb3cdede319cd`,
+current696lines. Owner rehash/review and sourcefreeze checks pass. All owned processes
+and native requests drained before publication;nextoriginalthree_small_factors remains unedited.
+MainLemma finalfile/simplify/completeprofile phases pending. Metadata child changes only
+this checkpoint record,not source or verification inputs.
