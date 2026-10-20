@@ -257,10 +257,11 @@ theorem abs_coeff_modByMonic_le {R : Type*} [SeminormedRing R] {f : Polynomial R
   congr 2
   lia
 
-/-- The family `𝒲` of polynomials with coefficients `0 ≤ c ≤ B` on the monomials of the box.
+/-- Integer polynomials with coordinate degrees bounded by `r` and coefficients in `[0, B]`.
+The index type may be infinite; the finiteness and counting results specialize to `Fin m`.
 Source: §6, proof of Lemma 9 ("Consider the set `𝒲` of all polynomials
 `W = ∑ c(s_1, …, s_m) x^s` where ... `0 ≤ c(s_1, …, s_m) ≤ B_1`"). -/
-def boxFamily {m : ℕ} (r : Fin m → ℕ) (B : ℕ) : Set (MvPolynomial (Fin m) ℤ) :=
+def boxFamily {σ : Type*} (r : σ → ℕ) (B : ℕ) : Set (MvPolynomial σ ℤ) :=
   {W | (∀ j, degreeOf j W ≤ r j) ∧ ∀ d, 0 ≤ W.coeff d ∧ W.coeff d ≤ B}
 
 /-- The polynomial with coefficient `c d` at each monomial `d` of the box. -/

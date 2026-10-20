@@ -309,3 +309,20 @@ All worker/compiler/native/profile ownership drained before publication.
 Source/audit publication hash follows in central checkpoint history via metadata child.
 MainLemma11/27 originals,overall227/264,10/14fullycompletedfiles;nextboxFamily.
 Filewide final phases remain pending.
+
+
+### Original12: `boxFamily`
+
+[Fresh dedicated full audit](MainLemma-boxFamily.md):all24audit/42golf/5search/11checklist
+artifacts reviewed by owner. Generalized Fin-indexed DATA to arbitrary universe-polymorphic index type without finite or DecidableEq premises; integer predicate unchanged, all six callers/Main/queue/helper bytes preserved. Actual old DATA values and generic expected value, 10 exact contracts/20 closed TYPE+VALUE standard-axiom guards/9 nonself closures and seven boundary certificates pass. Before20.007/16.163ms to after17.191/17.009ms; main4925.516/5016.532ms remains preexisting original27 queue. Owner independently rehashed410artifacts690794734bytes26binary exceptions plus all12201imports1803535736bytes, validated28 exact profile rows,17pins104cache, fresh full ML/Main/Eval native0errors and root/Evalnative0messages; helpercount3, no original-count inflation. Full finalfile GLOBAL/simplify/cumulative gates remain pending.
+Independent original reimplementation,exact old/current effective contract metadata/value
+and standard-axiom evidence reviewed; complete unfiltered livefile/affectedcaller diagnostics
+and actual affected-module/fullfile validation pass. Actual anchored profile17.191ms;
+required repeats/failed evidence,if any,remain in the dedicated report. Owner verified frozen
+source/evidence and ran fullbuild5.542s THEN separateLeanEval5.528s,both exit0 with all17pins immutable.
+Owner logs:`/private/tmp/roth-mainlemma-owner/boxFamily-owner-full.json` and
+`boxFamily-owner-eval.json`. SourceSHA256`eebbee905ea9d8083437e050614060841c8414a42c3aef00fc547aa0737e26df`;current707lines.
+All worker/compiler/native/profile ownership drained before publication.
+Source/audit publication hash follows in central checkpoint history via metadata child.
+MainLemma12/27 originals,overall228/264,10/14fullycompletedfiles;nextboxPoly.
+Filewide final phases remain pending.
