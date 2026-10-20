@@ -25,14 +25,14 @@ Started: 2026-10-14 (America/Chicago).
 
 ## Current status
 
-MainLemma is active:15/27originals complete at the latest published checkpoint;
-overall231/264originals,10/14fullycompletedfiles. Latest:`boxPoly_injective` after fresh full
+MainLemma is active:16/27originals complete at the latest published checkpoint;
+overall232/264originals,10/14fullycompletedfiles. Latest:`range_boxPoly` after fresh full
 24-item/42-rule/5-method/11-step audit,independent original/type/binder/value/standard-axiom
-checks,complete unfiltered affected diagnostics and actual anchored profile46.624ms.
-Owner fullbuild5.600s THEN separateLeanEval5.074s,both exit0 on immutable17pins.
-Private box polynomial injectivity generalized from Fin m to arbitrary universe-polymorphic finite sigma with explicit Fintype/DecidableEq, preserving exact original bounded integer-array DATA and old Fin-m contract. Composed function and Fin extensionality with terminal coefficient congruence simplifies declaration6 to3lines, ML702 to699; no helper/caller/Main/queue edits. Genuine project-original constructor/coefficient/injectivity proofs and entire entryML independently reelaborated:9exactcontracts/25closedTYPE+actualVALUE+inferredTYPE/std3/7nonselfoldclosures,4actualtargetboundaryproperties,sole directTYPEVALUEconsumer ncard,plus expanded effective-array/equality-binder AST/isDefEq/std3 supplement pass. Matched target27.752 to46.624ms and ncard16.982 to19.117ms, honest increases/allbelow750/no repeats or aggregate speedupclaim. Owner verified432artifacts80763349bytes26binary/all12201imports1803557376bytes/17pins104before-final-currentcache/4exactprofile rows, savedPATH resolves pinned4.34Lake;18leafgroups absent. FreshcompleteML/Main/Evalnative0errors1/4/0oldwarnings; ownerroot/Evalnative0messages and cache unchanged. Allfile GLOBAL/simplify/cumulative gates remain pending. Entry708→current699lines. Next:range_boxPoly. MainLemma filewide final,
+checks,complete unfiltered affected diagnostics and actual anchored profile89.367ms.
+Owner fullbuild5.474s THEN separateLeanEval5.155s,both exit0 on immutable17pins.
+Private range_boxPoly generalized from Fin m to arbitrary universe-polymorphic finite sigma with exact Fintype/DecidableEq constructor instances. Direct Int.toNat_le and supported-exponent box membership preserve one common bounded coefficient-array witness while reducing declaration28 to23/file699 to694; no helper/caller/Main/queue edit. Genuine project-original family DATA, constructor DATA, coefficient/range proofs and entire entryML independently reelaborated:12exactcontracts/34closedTYPE+actualVALUE+inferredTYPE/std3/10nonself oldclosures/5actualtarget properties including common-array existential. SIX named DATA unfolds include genuine old/original/current family and constructor, restricted spine beta only; no changed-arity Name map. Matched target109.494 to89.367ms, finite8.715 to10.640 and ncard16.962 to20.568, all below750/no repeat/aggregate speedupclaim. Owner verified415artifacts80985775bytes26binary/all12201imports1803538672bytes/17pins104cache/6exactprofile rows and15leafgroups absent; actual environment byte-identical. Fresh complete ML/Main/Evalnative0errors1/4/0oldwarnings; ownerroot/Evalnative0messages, ownercache unchanged. All file GLOBAL/simplify/cumulative gates remain pending. Entry708→current694lines. Next:boxFamily_finite. MainLemma filewide final,
 independent simplify and complete performance phases remain pending. See
-[MainLemma ledger](cleanup/MainLemma.md) and [latest audit](cleanup/MainLemma-boxPoly_injective.md).
+[MainLemma ledger](cleanup/MainLemma.md) and [latest audit](cleanup/MainLemma-range_boxPoly.md).
 The exact source/audit commit is recorded in appended checkpoint history by its metadata
 child. Prior fullycompleted-file handoff is preserved below.
 
@@ -167,7 +167,7 @@ Files will be processed in dependency order; declarations within each file are s
 | `Roth/Index.lean` | 275 | All cleanup phases complete;21/21 originals audited; user-approved hypothesis groups applied and validated |
 | `Roth/Separation.lean` | 618 | Complete;30/30 originals and all final phases;source556lines27retained;all12 approved instance amendments validated |
 | `Roth/Theta.lean` | 981 | Complete;35/35 originals and all final file phases;source991lines,50retained |
-| `Roth/MainLemma.lean` | 704 | Active;15/27 originals audited/published;final file phases pending |
+| `Roth/MainLemma.lean` | 704 | Active;16/27 originals audited/published;final file phases pending |
 | `Roth/Main.lean` | 684 | Awaiting cleanup |
 | `Roth/LeanEval.lean` | 60 | Awaiting cleanup |
 | `Roth.lean` | 14 | Awaiting cleanup |
@@ -2858,80 +2858,76 @@ this checkpoint record,not source or verification inputs.
 
 
 <!-- takeover-original8-start -->
-### Current resumable cleanup handoff (supersedes original15)
+### Current resumable cleanup handoff (supersedes original16)
 
-Read Current status and latest appended actual-hash checkpoint first. MainLemma15/27,
-overall231/264,10/14fully completed files. Next original16 private lemma `range_boxPoly`,
+Read Current status and latest appended actual-hash checkpoint first. MainLemma16/27,
+overall232/264,10/14 fully completed files. Next original17 public `boxFamily_finite`,
 unedited/notdelegated at this publication boundary. Sole file/source/shared-progress/Git
 owner `/root/cleanup_continuation/mainlemma_file`; parent `/root/cleanup_continuation`,root `/root`.
-Original15 ALLleases released;18leafgroups and owner83716/83741 absent; all native complete,
-no compiler/native/profile pending. NEW per-original/helperworkers gpt-6.1-sol,medium,
+Original16 ALLleases released;15leafgroups and owner85396/85425 absent; native complete,
+no compiler/native/profile pending. NEW per-original/helper workers gpt-6.1-sol,medium,
 fork_none; oneleafslot; serialize compiler/native/profile. Recover SAME interruptedworker,
 no duplicateowners. Private actualstate `/private/tmp/roth-mainlemma-owner/resume-state-current.json`.
 Parent handles Main,LeanEval,Roth only after complete MainLemma release. Publish everyoriginal
-before nextedit. Next16 prompt next-original16-dispatch-DRAFT.txt prospective/noauditcredit.
+before nextedit. Next17 prompt next-original17-dispatch-DRAFT.txt prospective/noauditcredit.
 
-Validated ML699lines SHA817016b9057fbbbedaa9c6db38280bffb9cdbfcdb063b88cba4704c75f89ed48;
+Validated ML694lines SHA6808b77320c176564d9d60b450f59ddff6b7b319cc9a03da01dbf2a159a111eb;
 Main685unchanged SHA5f384557dccacaec469699cc7d32bd5666c9d525267e00433b7ae401fee98d09.
-Original15 report SHA7e84c4857e9bc034f4690e90f209a8978bf4114142cf24e6514e727de58f95b8;
-`/private/tmp/roth-mainlemma-box-poly-injective/final15-artifact-manifest.json` SHA
-83c38a5393fbc9c7992909166ef3772ed7b3adac7a45c68d008b135dd4e1034c.
-Owner checked432artifacts80763349bytes26binaryexceptions/ALL12201imports1803557376bytes/
-17pins104before-final-currentcache/all18leafgroups/4matchedrows; sourceonlytargetchanged.
-Fresh independent inputSHA070b88d0a472234f742a402911cf6df8535e62139808dcb3bec58925f999c31e
-passes9contracts/25closedTYPE+actualVALUE+inferredTYPE/std3/7bannedcurrentoldclosures;
-entireentryML and genuineprojectoriginal ctor+coeff+injectivity bytes independentlycopied.
-ExplicitoldFinm target/DATAadapters, completeoldncardproof,4actualtargetPROPERTYboundary
-cases and finalactualsoleDIRECTTYPEVALUEuser Roth.ncard_boxFamily pass. Expanded effective
-Function.Injective array/equality binders exactAST/isDefEq/std3 supplement inputSHA
-b1efa132d0a9aa44754968343e81ddc0044e85705377eb46f1e4a3be177f12bd passes.
-OwnerFULL5.600s THEN separateEval5.074s/freshrootEvalnative0messages; ML/Main/Evalnative
+Original16 report SHA9ef325aff5a472eacdd7a3acbfcc93861b8c779f6a5d83d2c15ccbe904ac9675;
+`/private/tmp/roth-mainlemma-range-box-poly/final16-artifact-manifest.json` SHA
+208be064024f5bdeb2fc93babc137da6e5e286fd710f605854fd2ce3216e8559.
+Owner checked415artifacts80985775bytes26binaryexceptions/ALL12201imports1803538672bytes/
+17pins104before-final-currentcache/all15leafgroups/6matchedrows; sourceonlytargetchanged.
+Fresh independent inputSHA7157646366e76666c67158f8944ba93566e1942bcab0566faa219b9e22ad62fc
+passes12contracts/34closedTYPE+actualVALUE+inferredTYPE/std3/10bannedcurrentoldclosures;
+entireentryML and genuineprojectoriginal family+ctor+coeff+range bytes independentlycopied.
+ExplicitoldFinm DATA/targetadapters, completeoldfinite+ncardproofs,5actualtargetPROPERTY
+cases including common-array existential and finalexact2DIRECTTYPEVALUEusers pass.
+OwnerFULL5.474s THEN separateEval5.155s/freshrootEvalnative0messages; ML/Main/Evalnative
 0errors/1-4-0inheritedwarnings;17pins104cacheunchangedafterownergates. Nohelper/caller/Main/queueedit.
 
-Privateinjectivitynow genericσ[Fintype][DecidableEq], matching ctor+lookup. Declaration6→3,
-file702→699; composedfunext/Fin.ext+one terminalsimpa[coeff_boxPoly,d.2] usingcoefficient
-congruence, redundant dcoercionannotation omitted. Actual matched target27.752→46.624ms,
-ncard16.982→19.117; honestincreases/all<750/no repeats/no aggregate speedupclaim.
-Classical/Finite alternatives elaborate but directoldFinm adapters actualTYPE MISMATCH from
-constructorDATAinstances; NOT heartbeat/walltimeouts/counterexamples/impossibilityclaims.
-ExplicitclassesretainexactcanonicalDATAcontract.3freshlyauditedhelpers/30retainedsource,
-no264inflation; helper3 exact8036cf617651d096e302d8f52d4589051c5a213d2ef93c10ee5813de73956a44.
+Private range now genericσ[Fintype][DecidableEq], matching ctor+lookup+injectivity.
+Declaration28→23,file699→694; Int.toNat_le replaces omega; direct supported-exponent
+box-membership contradiction removes bad-coordinate detour; ONE common coefficientarray.
+Matched target109.494→89.367ms, finite8.715→10.640,ncard16.962→20.568; all<750/no repeats/
+no aggregate speedupclaim. Classical/Finite body alternatives pass, directoldFinm adapters
+actualTYPE MISMATCH from constructorDATAinstances; NOT heartbeat/walltimeouts/counterexamples.
+3freshlyauditedhelpers/30retainedsource,no264inflation; helper3 exact
+8036cf617651d096e302d8f52d4589051c5a213d2ef93c10ee5813de73956a44.
 
-AllactualTYPEVALUEdirectedges mandatory alongside source/LSP. Profiling flags must bracket
-ENTIREcommands including attacheddocblock; neverinsertbetweendocandtheorem. Initial15
-misattachedflagscaffold actualexit1 fullyrejected; docpreservingv2passed/exactcanonicalrecovery.
-Actual15CLI begins literal lake; savedmatchedPATH resolves pinned toolchain4.34bin/lake,
-ownerrecordsbinaryhash. Fullflags/options/setups/imports/hashessame. EnvironmentSHLVL1→2only,
-PATH/LEAN_PATHsame; no falsebyteidentityclaim. Exacttoken+separator/actualqualifiedproof/
-column0disjointcommand+async roots/separateUTF8streams; no Meta/nested/next/enddoublecount.
-NoncomputableDATAzeroCompileDecls/sourceproof requirespinnedsource+actualmetadata; computational
-DATA differs. GeneratedboxPoly.eq_1kernel countedONCEunderactualcoeffcommand.
+AllactualTYPEVALUEdirectedges mandatory alongside source/LSP. Profile flags bracket ENTIRE
+commands including attached docs; canonicalrecovery exact. Actual16 literal absoluteelanshim
+CLI/savedPATHpinned4.34Lake/options/setups/imports exact; actualrawenvbyte-identical.
+InitialBEFOREsummaryenvironment_equal tautology withdrawn/preserved; actualcrossphase
+comparison separate. Exacttoken+separator/qualifiedproof/column0disjointcommand+asyncroots,
+separateUTF8streams; no Meta/nested/next/enddoublecount. NoncompDATAzeroCompileDecls requires
+actualmetadata+pinnedsource, computationalDATA differs. GeneratedboxPoly.eq_1kernel counted
+once under actualcoeffcommand. Scopedpasses NOTfinalGLOBAL acceptance.
 
-CurrentprivatectorDATA13 andlookup14 genericσ preserveoldFinm DATA/TYPE/values. FIVE named
-DATA bodies unfold(old/original/currentboxPoly+old/currentboxFamily), restrictedspinebeta;
-no changedarityName maps/proofirrelevance shortcut, onlyBOTHsidesgeneratedmacroScopes erased.
-TrueprivateName numericcomponents viaactualNameobjects+freshlevels; rawdotted.0invalidterm;
-termMacros validasterms NOT simp-unfold, use typedDATA→sum equality with explicitRHSIntcast.
-ALL failedscratch partialPASS rejected by actualTYPE+VALUE/std3/wholeexit guards. apply?can
-syntheticadmitdespite0goals. Canonicaldisplayformat.width100, notinvalidpp.width.
-Old14Classical/Finite adapters hit200000heartbeats UNVERIFIED/timed_outfalse;15actualTYPE
-mismatch is different and separatelyreported. No limitraises/builtinmax0heartbeat acceptance.
+SIX named DATA unfolds: original/Entry/current boxPoly AND boxFamily, restrictedspinebeta.
+Genuineoriginalrange must include genuineoriginalfamily RHS, not current unqualifiedDATA.
+Currentfamily/target/callers/ctor/coeff/injective/all3helpers banned fromoldTYPEVALUEclosures.
+No changedarityName maps/proofirrelevance shortcut; onlyBOTHsidegeneratedmacroScopes erased,
+all writtennames/order/BI/universes/rawAST+actualisDefEq checked. TrueprivateName objects/fresh
+levels, notrawnumeric.0; termmacro notsimp-unfold, typedDATA→sumwithIntcodomain ifneeded.
+ALLfailedscratchpartialPASS rejected; apply?can syntheticadmitdespite0goals. Canonicaldisplay
+format.width100, notpp.width. Old14classadapters heartbeat-exhausted/unverified;15/16 actual
+TYPE mismatch distinct. Optional6/9 builtinmax0 heartbeat figures withdrawn/rawerrata retained;
+requiredgates valid, futureverifiedpositiveboundedcustomonly/nooptionalhistoricalrerun.
 
 Historical14 broadcompact627.915ms correctnesspass notselected for materialcost; causal
 simpa376.643/simp210.203 repaired by explicitcoeff_sum+canonicaldite_eq_left/dite_eq_right/
-ite_false boundedterminalsimponly.395ref/121900633byte immutablecostrevision verified in
-`/private/tmp/roth-mainlemma-coeff-box-poly-revision1-cost-rejected`; selected14matched78.976ms.
-Measuredterminal-simp exception, no automatic squeeze; no unchanged-source third/cherrypick.
-OldInt normboundadapter11 and generatedequationadapter13 remain requiredfinalcumulative.
+ite_false boundedterminalsimponly. Immutablecostrevision395refs121900633bytes retained;
+selected14matched78.976ms. Measuredterminal-simp exception/no automatic squeeze/no unchanged
+thirdcherrypick. OldIntnorm11/generatedequation13/oldFinmDATA adapters requiredfinalcumulative.
 
-Remaining originals16–27, everynewhelper separatelyfreshaudited, then freshindependentwhole-file
-simplify/actualGLOBAL ALLretained-row profiling+repairs/cumulativeALLprojectoriginalpublic/
-DATA/ALLretainedaxioms/imports/docs/comments/static/references/finalaffected/full/separateEval/
-native/reports/commit/pushclean/release. ValidGLOBALdelta11188.775ms,pigeonhole1000.235,
-main4880.648 remain FAILEDfinalfilegates; scopedpasses insufficient. Delta~96%continuityhotspot
-and UNCOMPILEDexplicitcontinuitycandidate preserved. Optional6/9 builtinmax0heartbeat figures
-withdrawn/rawerrataretained/requiredgatesunaffected; futureverifiedboundedcustomonly, nooptional
-historicalrerun. Referencesactualroot /Users/ramin/.local/share/roth-mathlib-quality/skills/mathlib-quality/references/.
+Remaining originals17–27, everynewhelper separatelyfreshaudited, then freshindependentwhole-file
+simplify/actualGLOBAL ALLretained-row profiling+repairs/cumulativeALL22projectoriginalpublic/
+DATA/ALLretainedaxioms/imports/docs/comments7signposts+23docblocks/static/references/finalaffected/
+full/separateEval/native/reports/commit/pushclean/release. ValidGLOBALdelta11188.775ms,
+pigeonhole1000.235,main4880.648 remain FAILEDfinalfilegates; scopedpasses insufficient.
+Delta~96%continuityhotspot and UNCOMPILEDexplicitcontinuitycandidate preserved. References
+actualroot /Users/ramin/.local/share/roth-mathlib-quality/skills/mathlib-quality/references/.
 
 Project-end SINGLErenamequeue4: Roth.index_hasseDeriv_ge→Roth.index_sub_weight_le_index_hasseDeriv;
 Roth.B₁→Roth.mainCoeffBound; Roth.log_B₁_gt→Roth.mul_log_div_two_lt_log_mainCoeffBound;

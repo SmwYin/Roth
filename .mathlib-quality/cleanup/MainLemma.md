@@ -377,3 +377,20 @@ All worker/compiler/native/profile ownership drained before publication.
 Source/audit publication hash follows in central checkpoint history via metadata child.
 MainLemma15/27 originals,overall231/264,10/14fullycompletedfiles;nextrange_boxPoly.
 Filewide final phases remain pending.
+
+
+### Original16: `range_boxPoly`
+
+[Fresh dedicated full audit](MainLemma-range_boxPoly.md):all24audit/42golf/5search/11checklist
+artifacts reviewed by owner. Private range_boxPoly generalized from Fin m to arbitrary universe-polymorphic finite sigma with exact Fintype/DecidableEq constructor instances. Direct Int.toNat_le and supported-exponent box membership preserve one common bounded coefficient-array witness while reducing declaration28 to23/file699 to694; no helper/caller/Main/queue edit. Genuine project-original family DATA, constructor DATA, coefficient/range proofs and entire entryML independently reelaborated:12exactcontracts/34closedTYPE+actualVALUE+inferredTYPE/std3/10nonself oldclosures/5actualtarget properties including common-array existential. SIX named DATA unfolds include genuine old/original/current family and constructor, restricted spine beta only; no changed-arity Name map. Matched target109.494 to89.367ms, finite8.715 to10.640 and ncard16.962 to20.568, all below750/no repeat/aggregate speedupclaim. Owner verified415artifacts80985775bytes26binary/all12201imports1803538672bytes/17pins104cache/6exactprofile rows and15leafgroups absent; actual environment byte-identical. Fresh complete ML/Main/Evalnative0errors1/4/0oldwarnings; ownerroot/Evalnative0messages, ownercache unchanged. All file GLOBAL/simplify/cumulative gates remain pending.
+Independent original reimplementation,exact old/current effective contract metadata/value
+and standard-axiom evidence reviewed; complete unfiltered livefile/affectedcaller diagnostics
+and actual affected-module/fullfile validation pass. Actual anchored profile89.367ms;
+required repeats/failed evidence,if any,remain in the dedicated report. Owner verified frozen
+source/evidence and ran fullbuild5.474s THEN separateLeanEval5.155s,both exit0 with all17pins immutable.
+Owner logs:`/private/tmp/roth-mainlemma-owner/range_boxPoly-owner-full.json` and
+`range_boxPoly-owner-eval.json`. SourceSHA256`6808b77320c176564d9d60b450f59ddff6b7b319cc9a03da01dbf2a159a111eb`;current694lines.
+All worker/compiler/native/profile ownership drained before publication.
+Source/audit publication hash follows in central checkpoint history via metadata child.
+MainLemma16/27 originals,overall232/264,10/14fullycompletedfiles;nextboxFamily_finite.
+Filewide final phases remain pending.

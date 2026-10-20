@@ -283,12 +283,12 @@ private lemma boxPoly_injective {σ : Type*} [Fintype σ] [DecidableEq σ] (r : 
     Function.Injective (boxPoly r B) := fun c c' hcc' ↦ funext fun d ↦ Fin.ext <| by
   simpa [coeff_boxPoly, d.2] using congrArg (fun W ↦ W.coeff d) hcc'
 
-private lemma range_boxPoly {m : ℕ} (r : Fin m → ℕ) (B : ℕ) :
+private lemma range_boxPoly {σ : Type*} [Fintype σ] [DecidableEq σ] (r : σ → ℕ) (B : ℕ) :
     Set.range (boxPoly r B) = boxFamily r B := by
   ext W
   constructor
   · rintro ⟨c, rfl⟩
-    refine ⟨fun j => degreeOf_le_iff.2 fun e he => ?_, fun d => ?_⟩
+    refine ⟨fun j ↦ degreeOf_le_iff.2 fun e he ↦ ?_, fun d ↦ ?_⟩
     · rw [mem_support_iff, coeff_boxPoly] at he
       split_ifs at he with h
       · exact mem_box.1 h j
@@ -298,19 +298,14 @@ private lemma range_boxPoly {m : ℕ} (r : Fin m → ℕ) (B : ℕ) :
       · exact ⟨by positivity, by exact_mod_cast Nat.lt_succ_iff.1 (c ⟨d, h⟩).2⟩
       · exact ⟨le_rfl, by positivity⟩
   · rintro ⟨hdeg, hcoeff⟩
-    refine ⟨fun d => ⟨(W.coeff (d : Fin m →₀ ℕ)).toNat, Nat.lt_succ_iff.2 ?_⟩, ?_⟩
-    · have := (hcoeff d).2
-      omega
-    · ext e
-      rw [coeff_boxPoly]
-      split_ifs with h
-      · exact Int.toNat_of_nonneg (hcoeff e).1
-      · by_contra hne
-        rw [mem_box] at h
-        push Not at h
-        obtain ⟨j, hj⟩ := h
-        have := monomial_le_degreeOf j (mem_support_iff.2 (Ne.symm hne))
-        exact absurd ((this.trans (hdeg j)).trans_lt hj) (lt_irrefl _)
+    refine ⟨fun d ↦ ⟨(W.coeff d).toNat, Nat.lt_succ_of_le (Int.toNat_le.2 (hcoeff d).2)⟩, ?_⟩
+    ext e
+    rw [coeff_boxPoly]
+    split_ifs with h
+    · exact Int.toNat_of_nonneg (hcoeff e).1
+    · by_contra hne
+      exact h (mem_box.2 fun j ↦
+        (monomial_le_degreeOf j (mem_support_iff.2 (Ne.symm hne))).trans (hdeg j))
 
 /-- The family `𝒲` of box polynomials with coefficients in `[0, B]` is finite. -/
 theorem boxFamily_finite {m : ℕ} (r : Fin m → ℕ) (B : ℕ) : (boxFamily r B).Finite := by
