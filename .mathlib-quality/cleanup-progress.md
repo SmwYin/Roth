@@ -25,14 +25,14 @@ Started: 2026-10-14 (America/Chicago).
 
 ## Current status
 
-MainLemma is active:8/27originals complete at the latest published checkpoint;
-overall224/264originals,10/14fullycompletedfiles. Latest:`four_lt_rpow` after fresh full
+MainLemma is active:9/27originals complete at the latest published checkpoint;
+overall225/264originals,10/14fullycompletedfiles. Latest:`log_B₁_gt` after fresh full
 24-item/42-rule/5-method/11-step audit,independent original/type/binder/value/standard-axiom
-checks,complete unfiltered affected diagnostics and actual anchored profile430.308ms.
-Owner fullbuild44.709s THEN separateLeanEval81.649s,both exit0 on immutable17pins.
-Stronger constant3 API removes m/hm/hδm and weakens sign to0≤δ, preserves strict conclusion and all3foreign full caller contracts; proof21→18lines,0newhelpers (existing separately audited helpercount1). Exact old/current opaque-value/fulltype/name/order/BI/universe/stdaxioms and independent original/caller closures pass. Matched scoped target774.351/862.510→367.057/430.308ms. All8captures/16complete rows independently owner-reparsed; missing beforeMain repeat recovered EXACT old689f540c olean in closed isolated library, actual pair2997.107/2993.523ms. All failed imports/probes and slow foreign samples including MLmain7871.827ms retained; actual argument overhead13–34ms and broad unchanged-subtree variation disclosed, no foreign budget/global certification. Fresh root/Eval native both complete0messages/errors. Owner verified338artifacts/1.177GB, all17pins and40PGIDdrains. New true unused three.hδm warning remains original10 drop-test; globalδ/three/pigeon/main repair queues and Main-own-file queue remain mandatory. Entry708→current696lines. Next:log_B₁_gt. MainLemma filewide final,
+checks,complete unfiltered affected diagnostics and actual anchored profile83.057ms.
+Owner fullbuild49.267s THEN separateLeanEval46.714s,both exit0 on immutable17pins.
+Authorized stronger API removes hδ0/hq₁/hr₁ and weakens4<power to sharp2≤power, retaining the identical strict logarithmic conclusion;4prooflines versus6,0newhelpers. Exact entire project-original target/old paired sqrt proof and old actual callers independently recovered; complete closedTYPE/actualopaqueVALUE/fullAST/writtennames/order/BinderInfo/universes/standardaxioms pass. One necessary three_small_factors call repair; Main byte-unchanged. Final matched target83.057/81.675ms versus103.207/113.451; deterministic heartbeats836→872 are disclosed. Foreign pre-existing three_small_factors1810.373/1847.068ms versus1780.845/1832.483 and heartbeats24607→24930 remain original10 repair obligations, with all samples and bounded call/arithmetic diagnosis retained. Fresh complete unfiltered ML/Main and owner root/Eval native gates pass without errors or partial/timeout; hδm and hq₁ warnings require original10 drop-tests. Owner independently rehashed302artifacts/310104299bytes (13explicitbinarycache exceptions),17source/configpins/104productioncache artifacts, actual27workerPGIDs drained, and canonically reparsed all8 accepted exact-token column0 command/async rows. One public log_B₁_gt rename appended; queue now3, reserved for project-end single pass. Filewide global performance/simplify/cumulative/final gates remain pending. Entry708→current696lines. Next:three_small_factors. MainLemma filewide final,
 independent simplify and complete performance phases remain pending. See
-[MainLemma ledger](cleanup/MainLemma.md) and [latest audit](cleanup/MainLemma-four_lt_rpow.md).
+[MainLemma ledger](cleanup/MainLemma.md) and [latest audit](cleanup/MainLemma-log_B₁_gt.md).
 The exact source/audit commit is recorded in appended checkpoint history by its metadata
 child. Prior fullycompleted-file handoff is preserved below.
 
@@ -167,7 +167,7 @@ Files will be processed in dependency order; declarations within each file are s
 | `Roth/Index.lean` | 275 | All cleanup phases complete;21/21 originals audited; user-approved hypothesis groups applied and validated |
 | `Roth/Separation.lean` | 618 | Complete;30/30 originals and all final phases;source556lines27retained;all12 approved instance amendments validated |
 | `Roth/Theta.lean` | 981 | Complete;35/35 originals and all final file phases;source991lines,50retained |
-| `Roth/MainLemma.lean` | 704 | Active;8/27 originals audited/published;final file phases pending |
+| `Roth/MainLemma.lean` | 704 | Active;9/27 originals audited/published;final file phases pending |
 | `Roth/Main.lean` | 684 | Awaiting cleanup |
 | `Roth/LeanEval.lean` | 60 | Awaiting cleanup |
 | `Roth.lean` | 14 | Awaiting cleanup |
@@ -2858,64 +2858,71 @@ this checkpoint record,not source or verification inputs.
 
 
 <!-- takeover-original8-start -->
-### Current resumable cleanup handoff (supersedes the partial-original8 snapshot)
+### Current resumable cleanup handoff (supersedes original8)
 
-Read **Current status and the latest appended checkpoint first**. The frozen
-original8 worker report predates its owner's publication; source/audit hashes in
-appended checkpoint history and the following metadata child are authoritative.
-MainLemma8/27, overall224/264;10/14fully completed files. Next original9:
-`Roth.log_B₁_gt`, not yet edited or delegated at this publication boundary.
+Read **Current status and the latest appended checkpoint first**. MainLemma9/27,
+overall225/264;10/14fully completed files. Next original10:
+`Roth.three_small_factors`, not yet edited or delegated at this publication boundary.
+The worker report predates owner publication; appended actual source/audit hash and
+its following metadata child identify the published checkpoint.
 
 Sole file/source/shared-progress/Git owner remains
-`/root/cleanup_continuation/mainlemma_file`; parent is
-`/root/cleanup_continuation`, root `/root`. Original8 worker has explicitly
-released ALL source/compiler/native/profile/report leases; all40 owned groups
-and both owner build groups are absent, no native request pending. Do not create
-a duplicate owner. Continue the same active worker if a later usage interruption
-requires recovery; fresh per-original/helper workers use `gpt-6.1-sol`, **medium**,
-`fork_turns=none`, with complete mandatory cleanup context. One leaf slot only;
-serialize every compiler/native/profile. File owner publishes each completed
-original before the next edit; parent handles remaining Main/LeanEval/Roth files.
+`/root/cleanup_continuation/mainlemma_file`; parent `/root/cleanup_continuation`,
+root `/root`. Original9 worker explicitly released ALL source/compiler/native/
+profile/report leases; all27 actual worker PGIDs and both owner build groups are
+absent, no native request pending. No duplicate owners. Recover the SAME active
+worker after an interruption; fresh per-original/helper workers use `gpt-6.1-sol`,
+**medium**, `fork_turns=none`, with complete mandatory cleanup context. One leaf
+slot only; serialize all compiler/native/profile operations. Publish each completed
+original before the next edit; parent handles Main/LeanEval/Roth after this file.
 
-Validated original8 source: MainLemma SHA256
-`2b8a5cab541e92ba56eb71142867bb3f562461682ccada4c07e7ea4fcfcd87a4` (696lines),
-Main SHA256
+Validated original9 source: MainLemma SHA256
+`2bfa8a61e85ead5ff702d57ff6a28ddda85c39a0d1faf960d27cb3cdede319cd` (696lines);
+Main unchanged SHA256
 `eb1a6650385707134c1be22b01707f2e5371340a1817188ad7b803cf2a7aa1cc` (685lines).
-No partial original9 source exists at this boundary. Current private recovery
-state: `/private/tmp/roth-mainlemma-owner/resume-state-current.json`;
-original8 complete frozen evidence/hashes and actual40-group drain:
-`/private/tmp/roth-mainlemma-four-rpow/final-handoff-state.json`.
-[Original8 audit](cleanup/MainLemma-four_lt_rpow.md),338artifact manifest
-SHA256`1e18771c09468da1c5b912b37fd30e3da197de1bc32985347c9a42dede8218d9`.
-Owner FULL44.709s→separateEval81.649s and fresh root/Eval complete native0messages
-passed on immutable17pins; target367.057/430.308ms,0newhelpers. Original8 allold/
-new contracts/proofs and three foreigncaller contracts validated. New unused
-three.hδm warning is original10's mandatory drop-test, no fakeuse/suppression.
+No partial original10 source exists at this boundary. Private recovery state:
+`/private/tmp/roth-mainlemma-owner/resume-state-current.json`. Original9 frozen
+[complete audit](cleanup/MainLemma-log_B₁_gt.md) and302-artifact manifest:
+`/private/tmp/roth-mainlemma-log-b1/evidence-manifest9.json`, SHA256
+`e271c14bd8324532c91b37a7620ea8420827d7a9fe368426b4f4c90cd509d3bd`.
+Owner rehashed310104299bytes/13explicitbinaryexceptions, all17source/config pins
+and104productioncache artifacts before owner builds; canonical8profile rows and
+source protection verified independently. Owner FULL49.267s→separateEval46.714s,
+fresh root/Eval complete unfiltered native0messages, immutable17pins, all pass.
+Only LeanEval.trace cache metadata changed during required owner builds; no
+source or binary rollback. Owner evidence-review/final-closure JSONs preserve it.
+Target83.057/81.675ms,4prooflines,0newhelpers; stronger2≤power contract drops all
+three redundant signs, strict conclusion retained. Existing helper total1.
+Original10 MUST drop-test newly unused hδm and hq₁, audit all remaining effective
+binders, and repair its actual pre-existing~1.8s cost; no fakeuses/suppression.
 
-Remaining mandatory work: originals9–27 in inventory order, separate fresh audit
-of EACH introduced helper, fresh independent whole-file simplify review, actual
-whole-file all-retained-row profiling and repairs, cumulative independent
-project-original public contracts/data/ALLretained standard axioms, imports/docs/
-comments/reference/static checks, final module/allaffected/full/separateEval/native/
-report/commit/push/clean/release gates. Valid whole-file failures δ11188.775ms
-(prefix pass is insufficient),three1699.293,pigeonhole1000.235,main4880.648 remain
-repair obligations; preserve all scoped slow samples including main7871.827ms.
-Main's own consumer performance queue stays its later fullfile audit, no credit here.
-Final allrow profiling must use exact declaration-token anchoring, only complete
-disjoint column0 command/async roots, separate UTF8 streams and immutable hashes;
-never add nested Meta/kernel/end events or compare unmatched scopes.
+Remaining mandatory work: originals10–27 sequentially, each introduced helper's
+separate fresh audit, fresh independent whole-file simplify review, actual global
+all-retained-row profiling and repairs, cumulative independent project-original
+public contracts/data/ALLretained standard axioms, imports/docs/comments/reference/
+static checks, final module/allaffected/full/separateEval/native/report/commit/
+push/clean/release. Valid global failures δ11188.775ms (prefix pass insufficient),
+three1699.293,pigeonhole1000.235,main4880.648 remain repair obligations. All slow
+samples retained, including earlier main7871.827 and original9consumer1847.068.
+Actual δ continuity hotspot diagnosis (~96% proof time) is preserved in owner
+`final-file-delta-actual-hc-hotspot-diagnosis.json`; candidate repair is UNCOMPILED.
+Main's own slow consumer queue remains its later fullfile audit; no credit here.
+Final allrow profiling requires exact declaration-token anchoring, complete
+column0 disjoint command/async roots, separate strictUTF8 streams, immutable
+hashes; no nested Meta/kernel/end doublecount or unmatched-scope comparisons.
 
-Project-end SINGLE rename pass: exact `.mathlib-quality/renames.jsonl` queue
-contains `Roth.index_hasseDeriv_ge`→`Roth.index_sub_weight_le_index_hasseDeriv`
-and `Roth.B₁`→`Roth.mainCoeffBound`; no in-place rename during declaration audits.
-Standing user authorization: **implement all recommended changes; ask only if
-undecidable**. Retention preferences remain authoritative; no invented metadata,
-sorry/newaxioms/weaker conclusions/Lean-limit raises. Branch `ramin-cleanup` only;
-**no changes to Git branch `main`, no merge or force-push**. Pins: Lean `leanprover/lean4:v4.34.0`, mathlib
-`5ed2965256430c3649e86755f9576b54eca72435`; no pin changes. A prior usage limit
-interrupted the same worker; user explicitly resumed on2026-10-20 and fresh usage
-allowed work. No pause or takeover was requested. Preserve future partial work
-and logs; never publish it without its required validation.
+Project-end SINGLE rename pass: exact `.mathlib-quality/renames.jsonl` now3:
+`Roth.index_hasseDeriv_ge`→`Roth.index_sub_weight_le_index_hasseDeriv`,
+`Roth.B₁`→`Roth.mainCoeffBound`, and
+`Roth.log_B₁_gt`→`Roth.mul_log_div_two_lt_log_mainCoeffBound`.
+No in-place rename during declaration audits. Standing user authorization:
+**implement all recommended changes; ask only if undecidable**. Retention
+preferences authoritative; no invented metadata/sorry/newaxioms/weaker conclusions/
+Lean-limit raises. Branch `ramin-cleanup` only; **protect Git branch main, no merge
+or force-push**. Pins Lean `leanprover/lean4:v4.34.0`, mathlib
+`5ed2965256430c3649e86755f9576b54eca72435`; no pin changes. User explicitly resumed
+2026-10-20 after earlier allowance interruption; no pause or takeover requested.
+Preserve future partial source/logs; never publish without required validation.
 <!-- takeover-original8-end -->
 
 

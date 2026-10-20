@@ -227,3 +227,20 @@ All worker/compiler/native/profile ownership drained before publication.
 Source/audit publication hash follows in central checkpoint history via metadata child.
 MainLemma8/27 originals,overall224/264,10/14fullycompletedfiles;nextlog_B₁_gt.
 Filewide final phases remain pending.
+
+
+### Original9: `log_B₁_gt`
+
+[Fresh dedicated full audit](MainLemma-log_B₁_gt.md):all24audit/42golf/5search/11checklist
+artifacts reviewed by owner. Authorized stronger API removes hδ0/hq₁/hr₁ and weakens4<power to sharp2≤power, retaining the identical strict logarithmic conclusion;4prooflines versus6,0newhelpers. Exact entire project-original target/old paired sqrt proof and old actual callers independently recovered; complete closedTYPE/actualopaqueVALUE/fullAST/writtennames/order/BinderInfo/universes/standardaxioms pass. One necessary three_small_factors call repair; Main byte-unchanged. Final matched target83.057/81.675ms versus103.207/113.451; deterministic heartbeats836→872 are disclosed. Foreign pre-existing three_small_factors1810.373/1847.068ms versus1780.845/1832.483 and heartbeats24607→24930 remain original10 repair obligations, with all samples and bounded call/arithmetic diagnosis retained. Fresh complete unfiltered ML/Main and owner root/Eval native gates pass without errors or partial/timeout; hδm and hq₁ warnings require original10 drop-tests. Owner independently rehashed302artifacts/310104299bytes (13explicitbinarycache exceptions),17source/configpins/104productioncache artifacts, actual27workerPGIDs drained, and canonically reparsed all8 accepted exact-token column0 command/async rows. One public log_B₁_gt rename appended; queue now3, reserved for project-end single pass. Filewide global performance/simplify/cumulative/final gates remain pending.
+Independent original reimplementation,exact old/current effective contract metadata/value
+and standard-axiom evidence reviewed; complete unfiltered livefile/affectedcaller diagnostics
+and actual affected-module/fullfile validation pass. Actual anchored profile83.057ms;
+required repeats/failed evidence,if any,remain in the dedicated report. Owner verified frozen
+source/evidence and ran fullbuild49.267s THEN separateLeanEval46.714s,both exit0 with all17pins immutable.
+Owner logs:`/private/tmp/roth-mainlemma-owner/log_B₁_gt-owner-full.json` and
+`log_B₁_gt-owner-eval.json`. SourceSHA256`2bfa8a61e85ead5ff702d57ff6a28ddda85c39a0d1faf960d27cb3cdede319cd`;current696lines.
+All worker/compiler/native/profile ownership drained before publication.
+Source/audit publication hash follows in central checkpoint history via metadata child.
+MainLemma9/27 originals,overall225/264,10/14fullycompletedfiles;nextthree_small_factors.
+Filewide final phases remain pending.

@@ -130,18 +130,18 @@ theorem four_lt_rpow {δ : ℝ} (hδ0 : 0 ≤ δ) {q₁ r₁ : ℕ} (hr₁ : 0 <
         (by linarith only [hlog2] : 0 < 3 - 4 * Real.log 2)]
   nlinarith only [hkey, le_mul_of_one_le_right (mul_nonneg hδ0 hL.le) hr]
 
-/-- If `q_1^{δ r_1} > 4` then `log B_1 > ½ δ r_1 log q_1`.
+/-- If `2 ≤ q_1^{δ r_1}`, then `½ δ r_1 log q_1 < log B_1`.
+
+The power bound supplies positivity; use this estimate to turn bounds on `B_1` into
+exponential bounds without supplying separate sign assumptions.
 
 Source: §6 ("Thus `log B_1 > ½ δ r_1 log q_1`"). -/
-theorem log_B₁_gt {δ : ℝ} (hδ0 : 0 < δ) {q₁ r₁ : ℕ} (hq₁ : 1 < q₁) (hr₁ : 0 < r₁)
-    (hX : 4 < (q₁ : ℝ) ^ (δ * r₁)) :
+theorem log_B₁_gt {δ : ℝ} {q₁ r₁ : ℕ} (hX : 2 ≤ (q₁ : ℝ) ^ (δ * r₁)) :
     δ * r₁ * Real.log q₁ / 2 < Real.log (B₁ δ q₁ r₁) := by
-  have hq : (0 : ℝ) < q₁ := by exact_mod_cast (by omega : 0 < q₁)
-  have hX0 : (0 : ℝ) ≤ (q₁ : ℝ) ^ (δ * r₁) := by positivity
-  have h := (sqrt_lt_floor (hX.le.trans' (by norm_num))).1
-  have hs : 0 < √((q₁ : ℝ) ^ (δ * r₁)) := Real.sqrt_pos.2 (by linarith)
-  have := Real.log_lt_log hs h
-  rwa [Real.log_sqrt hX0, Real.log_rpow hq] at this
+  simpa [B₁, Real.log_sqrt (by positivity), Real.log_rpow
+    (((Real.one_lt_rpow_iff (Nat.cast_nonneg q₁)).1
+      (lt_of_lt_of_le (by norm_num) hX)).elim (fun h ↦ zero_lt_one.trans h.1) And.left)] using
+    Real.log_lt_log (Real.sqrt_pos.2 (lt_of_lt_of_le (by norm_num) hX)) (sqrt_lt_floor hX).1
 
 /-- Under (29) and (32), each of `2^{m r_1}`, `(1 + A)^{m r_1}` and `(1 + |α|)^{m r_1}` is
 less than `B_1^δ`.
@@ -160,7 +160,7 @@ theorem three_small_factors {δ : ℝ} (hδ0 : 0 < δ) {m : ℕ} (hm : 1 ≤ m) 
   have h2m : (2 * m + 1 : ℝ) < δ ^ 2 * Real.log q₁ := by nlinarith
   have hX := four_lt_rpow hδ0.le hr₁ (by
     linarith only [h2m, show (1 : ℝ) ≤ m by exact_mod_cast hm])
-  have hlogB := log_B₁_gt hδ0 hq₁ hr₁ hX
+  have hlogB := log_B₁_gt (hX.le.trans' (by norm_num))
   have hB0 : (0 : ℝ) < B₁ δ q₁ r₁ :=
     lt_of_le_of_lt (Real.sqrt_nonneg _) (sqrt_lt_floor (hX.le.trans' (by norm_num))).1
   have hr : (0 : ℝ) < r₁ := by exact_mod_cast hr₁
