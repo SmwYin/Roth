@@ -259,3 +259,19 @@ builds remain valid. No source or required timing result changes; counts stay225
 MainLemma9/27,10/14files. Original10 draft is unvalidated and excluded from this metadata-only
 publication. Future optional heartbeat checks require a verified bounded custom wrapper;
 no historical optional rerun is needed. The actual erratum commit follows via metadata child.
+
+
+### Original6 optional-heartbeat erratum (2026-10-20)
+
+Readonly follow-through on the original9 reporting issue confirms original6's actual
+heartbeats-final.json invokes heartbeats.lean with builtin `#count_heartbeats in` at86/92.
+Pinned CountHeartbeats.lean143 internally sets maxHeartbeats0; optional1588→1055 figures
+are withdrawn. The default-limit description in the [corrected original6 audit](MainLemma-eta_lt_gam_iff.md)
+was incorrect. Original report SHA256c48aad9c6d1ed69049829f37538b35d390bd36f3681d574deb69f6ce74187995
+and raw evidence are preserved. Required bounded wall-clock281.175/208.229ms and all
+correctness/native/production build gates remain valid. Original7/8 bounded custom counters
+are unaffected; original8's actual strong3-hb-v1 wrapper only disables Elab.async and leaves
+all resource limits unchanged. No optional compiler reruns, source changes, or count changes.
+Original10 source/reports stay unvalidated and excluded from this metadata-only publication.
+Counts225/264,MainLemma9/27,10/14files; future optional counters must be verified bounded.
+Actual erratum commit will be recorded by metadata child.

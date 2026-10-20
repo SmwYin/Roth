@@ -298,10 +298,19 @@ Both measured totals <750ms; no repeat or slow-sample repair is required.
 Before raw SHA256: `af8e49c6f1357e138b60fda9e6fa031fd98139c8b9419005e9a1d75d7296ad99`.
 After raw SHA256: `f5030250f0205a11a527112fbdcfa1631aef708c400e162b8feff2bba6f8c1b8`.
 Source hashes and full commands/status/timing/drain metadata are retained alongside.
-Corrected independent heartbeat check: original 1588, revised 1055 heartbeats,
-both below the default 200000; `heartbeats-final.log/.json`, compiler exit 0.
-maxHeartbeats raises removed 0; added 0. Deferrals: none. No consumer source change
-or import change; the owner’s pre-existing Main performance queue is unaffected.
+**Owner erratum (2026-10-20): optional heartbeat corroboration withdrawn.**
+The historical1588→1055 heartbeat figures used builtin `#count_heartbeats in` in
+`/private/tmp/roth-mainlemma-eta-iff/heartbeats.lean` (actual runner: heartbeats-final.json).
+Pinned `Mathlib/Util/CountHeartbeats.lean:143` internally sets `maxHeartbeats 0`, so these
+figures are excluded from accepted bounded corroboration. The earlier default-limit claim
+was incorrect. Required actual bounded wall-clock roots281.175/208.229ms, immutable source,
+independent type/value/axiom checks, native diagnostics and production builds remain valid.
+No source or required timing result changes, and no optional historical rerun is needed.
+The exact original report SHA256`c48aad9c6d1ed69049829f37538b35d390bd36f3681d574deb69f6ce74187995`
+is preserved in the source/audit commit`d97cd6390b032895db2bd9e7d995a82626eb03e8` and at
+`/private/tmp/roth-mainlemma-owner/original6-published-report-before-heartbeat-erratum.md`.
+Its historical evidence hashes identify that earlier report; all raw artifacts are retained.
+Future optional counters must use a verified bounded custom command preserving all limits.
 
 ## Final gates and completion
 
