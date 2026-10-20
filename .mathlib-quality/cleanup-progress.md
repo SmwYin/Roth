@@ -2855,3 +2855,65 @@ current697lines. Owner rehash/review and sourcefreeze checks pass. All owned pro
 and native requests drained before publication;nextoriginalfour_lt_rpow remains unedited.
 MainLemma finalfile/simplify/completeprofile phases pending. Metadata child changes only
 this checkpoint record,not source or verification inputs.
+
+
+<!-- takeover-original8-start -->
+### Safe takeover reference during original8 (source remains unvalidated)
+
+Read **Current status and the latest appended checkpoint first**; a later completed
+checkpoint supersedes this fallback. Last validated source/audit checkpoint:
+`9bebcd06f79f643d43b6c1154c14a381ba400bf9`, published through
+`d95ec1897782455a1fab4c81b58631f704838567`:223/264 originals,MainLemma7/27,
+10/14files; one separately audited introduced helper does not increase264.
+The current `four_lt_rpow` original8 edits are **not published or complete**.
+
+- Sole file/Git/progress owner:`/root/cleanup_continuation/mainlemma_file`;
+  exclusive original8 source/compiler/native/profile worker:
+  `/root/cleanup_continuation/mainlemma_file/four_lt_rpow`.
+  User has **not paused or transferred ownership**. Continue the existing worker;
+  do not create duplicate owners. An actual takeover must first revoke/drain the old
+  owner and all its compiler/native/profile operations.
+- Exact saved partial source/report/config hashes and unvalidated diff:
+  `/private/tmp/roth-mainlemma-owner/takeover-original8-f09b07f8/state.json`.
+  Leaf safe-gap state (including oleans/process sample/pending gates):
+  `/private/tmp/roth-mainlemma-four-rpow/checkpoint1-partial-handoff-state.json`.
+  Live evidence:`/private/tmp/roth-mainlemma-four-rpow/`; detailed owner state:
+  `/private/tmp/roth-mainlemma-owner/resume-state-current.json`.
+  Copy these directories before changing machines/accounts. These partial copies
+  are recovery evidence, **not a validated Git checkpoint**.
+- Selected, probe-validated API: `δ≥0`, natural `q₁,r₁`, `r₁>0`, and
+  `3≤δ² log q₁` imply strict `4<q₁^(δ r₁)`; no `m`,reciprocal-bound premise,
+  new helper or import. Actual final-source affected ML/Main build passed80.538s,
+  with17pins immutable and its process group absent; unfiltered native,
+  independent original/current types/binders/opaque values/standard axioms/all3caller
+  recovery, matched after-profiles/repeats and complete report/drain. Then owner runs
+  **full `lake build` followed by separate `lake build Roth.LeanEval`**, fresh root/Eval
+  diagnostics, exact-path stage/review, source/audit commit plus actual-hash metadata
+  child and push/clean verification **before original9 `log_B₁_gt`**. Never ship the
+  partial Lean edits merely because allowance ends.
+- Remaining:original8 closure, original9–27 in inventory order, final MainLemma
+  cumulative project-original public contracts/data/ALL retained axioms, full affected
+  builds/LSP/static/import/docs/comments/reference checks, fresh independent file-wide
+  simplify review and actual whole-file all-row profiling. Then Main17,LeanEval3,
+  rootRoth1. Project-original scaffold candidate remains uncompiled/unaccepted:
+  `/private/tmp/roth-mainlemma-owner/ProjectOriginalMainQualifiedScaffold.lean`.
+- Mandatory performance repairs:MainLemma `exists_delta_bound` valid whole-file11–12s
+  (earlier prefix pass does not certify whole-file performance),`three_small_factors`
+  ~1.7–1.9s,`pigeonhole_count`>1000ms,`main_lemma`~5s; Main `exists_m`,`exists_delta`,
+  `exists_degrees`,`roth_of_isIntegral` also fail, with soft rows recorded in original7
+  report/90-row board. Fresh original10 must test dropping newly unused `hδm`;
+  preserve/report its warning meanwhile. All failed evidence remains retained.
+- Final project-wide rename queue:`.mathlib-quality/renames.jsonl`, currently
+  `Roth.index_hasseDeriv_ge→Roth.index_sub_weight_le_index_hasseDeriv` and
+  `Roth.B₁→Roth.mainCoeffBound`; apply together at project end, preserving later entries.
+- Standing authorization: “From now on implement all changes that you recommend.
+  Only ask me if you can't decide.” All fresh workers:`gpt-6.1-sol`,reasoning`medium`,
+  `fork_turns=none`; serialized compilers/native/profilers, full saved854-line worker
+  prompt and24/42/5/11 audits, fresh audit for EVERY new helper. Preserve earlier
+  explicit Hasse/Separation/Theta retention choices and unknown metadata. No sorry,
+  new axioms,weaker conclusions or Lean-limit raises. Keep `ramin-cleanup`;
+  **no main/merge/force-push**. Lean`v4.34.0`,mathlib
+  `5ed2965256430c3649e86755f9576b54eca72435` and all17source/config pins protected.
+  Canonical exact-token/root parsers and closed-TYPE+VALUE/standard-axiom probe guards:
+  `/private/tmp/roth-mainlemma-owner/future-profiler-scope-instructions.md`.
+<!-- takeover-original8-end -->
