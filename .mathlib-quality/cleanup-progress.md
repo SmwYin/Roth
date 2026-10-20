@@ -2992,3 +2992,12 @@ builds remain valid. No source or required timing result changes; counts stay225
 MainLemma9/27,10/14files. Original10 draft is unvalidated and excluded from this metadata-only
 publication. Future optional heartbeat checks require a verified bounded custom wrapper;
 no historical optional rerun is needed. The actual erratum commit follows via metadata child.
+
+
+### Original9 heartbeat metadata-only erratum publication
+
+Erratum audit/progress commit `c246b7ab1025989dcce2c214c84ec3c938130e88` withdraws the optional builtin-heartbeat
+corroboration; required bounded wall-clock/correctness/build gates and original9
+source/audit commit`d274aa6f0e361169811481b6a442f230fe719170` remain unchanged.
+This metadata child records the actual erratum hash. Counts225/264,MainLemma9/27,
+10/14files. No unvalidated original10 source or partialreport was staged.
