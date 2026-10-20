@@ -2992,3 +2992,19 @@ Required bounded wall-clock/correctness/native/build gates and source/audit orig
 commit`d97cd6390b032895db2bd9e7d995a82626eb03e8` remain unchanged. This metadata
 child records the actual erratum hash. Counts225/264,MainLemma9/27,10/14files;
 no unvalidated original10 source or report was staged.
+
+
+### MainLemma original10 checkpoint — three_small_factors
+
+Source/audit commit `1a431eb916aa0d9f9a3ccce9e4d7667d8e35e255`; the following metadata child records and publishes this
+exact checkpoint before the next original edit. MainLemma10/27,overall226/264,
+10/14fullycompletedfiles. [Dedicated audit](cleanup/MainLemma-three_small_factors.md) contains all
+24audit/42golf/5search/11verification steps,exact independent original reimplementation/
+effectivecontract/universe/binder/type/value/standard-axiom evidence,actual affectedmodule/
+fullfile and complete unfiltered native successes. Actual anchored profile685.688ms;
+raw evidence and required repeat/failure history are preserved. Stronger API removes hm/hδm/hq₁, allows nonnegative δ/A and non-strict h32, preserving all three strict conclusions; 26-line public proof plus separately freshly audited 13-line private two_lt_rpow_aux helper (helper total2, no original-count inflation). Two narrow caller applications updated with old written contracts preserved. Matched target before1812.331/1737.768ms; final helper+public681.890/685.688ms. All14 timing rows independently re-anchored; ML consumer5093.245/4954.639 versus5210.167/4831.233 and Main2971.147/3031.316 versus2958.421/3009.772 retained, including small adapter overhead; foreign slow totals remain later obligations. Verified bounded custom heartbeat raw24868514→7910547 corroborates; historical optional6/9builtin counts remain withdrawn. Owner verified490artifacts/3703515405bytes/26binary exceptions, all12201actual import hashes, exact original proofs/type/value/standard axioms,17pins and104cache; only Eval.trace metadata changed in owner builds. Fresh root/Eval native complete0messages; ML/Main complete0errors. MainLemma714/Main685lines.
+Owner fullbuild5.798s THEN separateLeanEval37.183s,both exit0,all17pins immutable;sourceSHA256`8a90958369a5f7fc9357169270737fb0c6473b1d4fd8d2d3a8d6defd95119791`,
+current714lines. Owner rehash/review and sourcefreeze checks pass. All owned processes
+and native requests drained before publication;nextoriginalabs_coeff_modByMonic_le remains unedited.
+MainLemma finalfile/simplify/completeprofile phases pending. Metadata child changes only
+this checkpoint record,not source or verification inputs.
