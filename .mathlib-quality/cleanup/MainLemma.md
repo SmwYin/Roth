@@ -326,3 +326,20 @@ All worker/compiler/native/profile ownership drained before publication.
 Source/audit publication hash follows in central checkpoint history via metadata child.
 MainLemma12/27 originals,overall228/264,10/14fullycompletedfiles;nextboxPoly.
 Filewide final phases remain pending.
+
+
+### Original13: `boxPoly`
+
+[Fresh dedicated full audit](MainLemma-boxPoly.md):all24audit/42golf/5search/11checklist
+artifacts reviewed by owner. Private DATA generalized from Fin m to arbitrary universe-polymorphic finite sigma with explicit Fintype and DecidableEq; bounded integer-array semantics and exact old Fin-m TYPE/VALUE recovered. Three redundant written ascriptions removed with identical raw elaborated value; private comment exact prose retained. All five actual TYPE/VALUE direct consumers include inferred finite/cardinality uses and remain source-byte-identical; associated generated equation checked separately and its kernel cost counted once in coeff command. Nine contracts/19 closed TYPE+actualVALUE standard-axiom guards/seven independent old closures, four closed actual-target application cases and exact actual edge inventory pass. Target40.490 to48.922ms, all five consumers below114ms, no repeats required. Owner verified383artifacts116564478bytes26binary/all12201imports1803540728bytes/17pins104before-and-finalcache/12 exact profile rows plus noncomputable pinned-source zero-codegen root rule; completeML/Main/Eval native0errors1/4/0warnings and freshroot/Evalnative0messages. No helpers/caller edits/queue changes; finalfile GLOBAL/simplify/cumulative remain pending.
+Independent original reimplementation,exact old/current effective contract metadata/value
+and standard-axiom evidence reviewed; complete unfiltered livefile/affectedcaller diagnostics
+and actual affected-module/fullfile validation pass. Actual anchored profile48.922ms;
+required repeats/failed evidence,if any,remain in the dedicated report. Owner verified frozen
+source/evidence and ran fullbuild5.618s THEN separateLeanEval3.019s,both exit0 with all17pins immutable.
+Owner logs:`/private/tmp/roth-mainlemma-owner/boxPoly-owner-full.json` and
+`boxPoly-owner-eval.json`. SourceSHA256`8812f171cfb7b6bcb4103e09f0c20cc261d5fc8e39a39ebd3b85d10f5dd41ae0`;current707lines.
+All worker/compiler/native/profile ownership drained before publication.
+Source/audit publication hash follows in central checkpoint history via metadata child.
+MainLemma13/27 originals,overall229/264,10/14fullycompletedfiles;nextcoeff_boxPoly.
+Filewide final phases remain pending.

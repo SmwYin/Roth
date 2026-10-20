@@ -264,10 +264,10 @@ Source: §6, proof of Lemma 9 ("Consider the set `𝒲` of all polynomials
 def boxFamily {σ : Type*} (r : σ → ℕ) (B : ℕ) : Set (MvPolynomial σ ℤ) :=
   {W | (∀ j, degreeOf j W ≤ r j) ∧ ∀ d, 0 ≤ W.coeff d ∧ W.coeff d ≤ B}
 
-/-- The polynomial with coefficient `c d` at each monomial `d` of the box. -/
-private noncomputable def boxPoly {m : ℕ} (r : Fin m → ℕ) (B : ℕ) (c : box r → Fin (B + 1)) :
-    MvPolynomial (Fin m) ℤ :=
-  ∑ d : box r, monomial (d : Fin m →₀ ℕ) ((c d : ℕ) : ℤ)
+/- The polynomial with coefficient `c d` at each monomial `d` of the box. -/
+private noncomputable def boxPoly {σ : Type*} [Fintype σ] [DecidableEq σ] (r : σ → ℕ) (B : ℕ)
+    (c : box r → Fin (B + 1)) : MvPolynomial σ ℤ :=
+  ∑ d : box r, monomial d (c d)
 
 private lemma coeff_boxPoly {m : ℕ} (r : Fin m → ℕ) (B : ℕ) (c : box r → Fin (B + 1))
     (e : Fin m →₀ ℕ) :
