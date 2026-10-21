@@ -2860,7 +2860,7 @@ this checkpoint record,not source or verification inputs.
 <!-- takeover-original8-start -->
 ### Exact continuation checkpoint
 
-MainLemma sole file/source/shared-progress/Git/compiler owner is `/root/cleanup_continuation/mainlemma_file`; original25 leaf `/root/cleanup_continuation/mainlemma_file/exists_deriv_ne_zero` has explicitly released all seven leases and completed. Original25 source is694lines/SHA256`2a8aa8abb74ff479e0dae3b2885a89e8a2bc8471e2a6a8950f284d94460074ac`. All required declaration/owner gates pass; source/audit commit and live remote publication must be recorded before the next original edit. Next untouched original26 is private `degreeOf_map_intCast_real`, then original27 `main_lemma`; parent handles Main, LeanEval and Roth.lean after full MainLemma completion.
+MainLemma sole file/source/shared-progress/Git/compiler owner is `/root/cleanup_continuation/mainlemma_file`; original25 leaf `/root/cleanup_continuation/mainlemma_file/exists_deriv_ne_zero` has explicitly released all seven leases and completed. Original25 source is694lines/SHA256`2a8aa8abb74ff479e0dae3b2885a89e8a2bc8471e2a6a8950f284d94460074ac`. All required declaration/owner gates pass; exact source/audit commit `8a27fa9badc795f8c24d3392bfbb5d4561559c82` is recorded in appended checkpoint history. This metadata child must be pushed and HEAD/origin/fresh live remote equality+CLEAN verified before the next original edit. Next untouched original26 is private `degreeOf_map_intCast_real`, then original27 `main_lemma`; parent handles Main, LeanEval and Roth.lean after full MainLemma completion.
 
 Private exact owner state/receipts: `/private/tmp/roth-mainlemma-owner/active_original25_current.json`, `original25-owner-evidence-review.json`, `original25-owner-final-closure.json`, `original25-owner-post-gates-input-closure.json`; full sealed leaf evidence `/private/tmp/roth-mainlemma-exists-deriv-ne-zero`. Target32.566/29.031ms passes; main5175.935/5047.346ms is unresolved original27/global failure (changed derivative call mean−0.086ms, whole caller+156.7525ms retained). Final-file pending failures also include actual delta continuity aggregate and public19 pigeonhole aggregate; scoped/prefix passes do not certify global whole-file timing. Fresh independent final-file simplify reviewer, cumulative all original public contracts/DATA values and all retained axioms/import/docs/reference audits, actual global all-row profiling/repeats/repairs, builds/native/report/push/clean/release remain required.
 
@@ -3188,5 +3188,21 @@ raw evidence and required repeat/failure history are preserved. Authorized order
 Owner fullbuild5.756s THEN separateLeanEval4.306s,both exit0,all17pins immutable;sourceSHA256`cb59bb4129cbf7e353b272f05615b0cfd2193c67177b82100590c3fa84afd056`,
 current692lines. Owner rehash/review and sourcefreeze checks pass. All owned processes
 and native requests drained before publication;nextoriginalexists_hasseDeriv_eval_ne_zero remains unedited.
+MainLemma finalfile/simplify/completeprofile phases pending. Metadata child changes only
+this checkpoint record,not source or verification inputs.
+
+
+### MainLemma original25 checkpoint — exists_hasseDeriv_eval_ne_zero
+
+Source/audit commit `8a27fa9badc795f8c24d3392bfbb5d4561559c82`; the following metadata child records and publishes this
+exact checkpoint before the next original edit. MainLemma25/27,overall241/264,
+10/14fullycompletedfiles. [Dedicated audit](cleanup/MainLemma-exists_hasseDeriv_eval_ne_zero.md) contains all
+24audit/42golf/5search/11verification steps,exact independent original reimplementation/
+effectivecontract/universe/binder/type/value/standard-axiom evidence,actual affectedmodule/
+fullfile and complete unfiltered native successes. Actual anchored profile32.566ms;
+raw evidence and required repeat/failure history are preserved. Generalized Fin m to arbitrary universe-polymorphic finite variable types; proof2→1, source692→694,0helpers/0caller edits. Full oldFin contract/nonself original/current/61retained actual TYPE+opaqueVALUE/std3/property8/consumer/native/immutable-input gates pass. Target19.220/19.031→32.566/29.031ms; main5023.870/4885.906→5175.935/5047.346ms remains original27/global failure, mean+156.7525ms; exact changed call mean−0.086ms. Independent sealed26055artifact/5040577762B/39group/15native/39reference review passes;41leaf+owner groups freshly absent, all17pins/104cache/24782strict external inputs/four binaries stable. No new rename; five-item queue retained.
+Owner fullbuild4.877s THEN separateLeanEval4.811s,both exit0,all17pins immutable;sourceSHA256`2a8aa8abb74ff479e0dae3b2885a89e8a2bc8471e2a6a8950f284d94460074ac`,
+current694lines. Owner rehash/review and sourcefreeze checks pass. All owned processes
+and native requests drained before publication;nextoriginaldegreeOf_map_intCast_real remains unedited.
 MainLemma finalfile/simplify/completeprofile phases pending. Metadata child changes only
 this checkpoint record,not source or verification inputs.
