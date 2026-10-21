@@ -1,3 +1,4 @@
+import Mathlib.Algebra.BigOperators.Finprod
 import Mathlib.Algebra.Polynomial.Div
 import Mathlib.Analysis.MeanInequalitiesPow
 import Mathlib.Analysis.SpecialFunctions.Pow.Continuity
@@ -259,7 +260,7 @@ theorem abs_coeff_modByMonic_le {R : Type*} [SeminormedRing R] {f : Polynomial R
   lia
 
 /-- Integer polynomials with coordinate degrees bounded by `r` and coefficients in `[0, B]`.
-Finiteness below needs only finitely supported bounds; counting specializes to `Fin m`.
+Finiteness and counting below need only finitely supported bounds.
 Source: §6, proof of Lemma 9 ("Consider the set `𝒲` of all polynomials
 `W = ∑ c(s_1, …, s_m) x^s` where ... `0 ≤ c(s_1, …, s_m) ≤ B_1`"). -/
 def boxFamily {σ : Type*} (r : σ → ℕ) (B : ℕ) : Set (MvPolynomial σ ℤ) :=
@@ -326,14 +327,38 @@ theorem boxFamily_finite {σ : Type*} (r : σ → ℕ) [Finite (Function.support
   exact fun h ↦ (Finsupp.mem_support_iff.1 hj)
     (Nat.eq_zero_of_le_zero (h ▸ (monomial_le_degreeOf j hd).trans (hW.1 j)))
 
-/-- The family `𝒲` has exactly `(B + 1)^N` elements, where `N = ∏ j, (r j + 1)` is the
-number of monomials in the box.
+open scoped Classical in
+private lemma boxFamily_eq_image_finsupp_aux {σ : Type*} (r : σ → ℕ) [Finite (Function.support r)]
+    (B : ℕ) : boxFamily r B = AddMonoidAlgebra.ofCoeff ''
+      (↑((Finset.Iic (Finsupp.ofSupportFinite r (Set.toFinite _))).finsupp
+        fun _ ↦ Finset.Icc (0 : ℤ) B) : Set ((σ →₀ ℕ) →₀ ℤ)) := by
+  classical
+  ext W
+  constructor
+  · intro hW
+    refine ⟨W.coeff, ?_, rfl⟩
+    rw [Finset.mem_coe, Finset.mem_finsupp_iff]
+    refine ⟨fun d hd ↦ ?_, fun d _ ↦ Finset.mem_Icc.2 (hW.2 d)⟩
+    exact Finset.mem_Iic.2 fun j ↦ (monomial_le_degreeOf j hd).trans (hW.1 j)
+  · rintro ⟨c, hc, rfl⟩
+    obtain ⟨hs, hc⟩ := Finset.mem_finsupp_iff.1 hc
+    refine ⟨fun j ↦ degreeOf_le_iff.2 fun d hd ↦ (Finset.mem_Iic.1 (hs hd)) j, fun d ↦ ?_⟩
+    by_cases hd : d ∈ Finset.Iic (Finsupp.ofSupportFinite r (Set.toFinite _))
+    · exact Finset.mem_Icc.1 (hc d hd)
+    · simp [Finsupp.notMem_support_iff.1 (fun h ↦ hd (hs h))]
+
+/-- For finitely supported degree bounds, `𝒲` has `(B + 1)^N` elements with `N = ∏ᶠ j, (r j + 1)`.
+On finite index types, `finprod_eq_prod_of_fintype` recovers the usual product formula.
 
 Source: §6, proof of Lemma 9 ("The number of such polynomials is `|𝒲| = (B_1 + 1)^r`"). -/
-theorem ncard_boxFamily {m : ℕ} (r : Fin m → ℕ) (B : ℕ) :
-    (boxFamily r B).ncard = (B + 1) ^ ∏ j, (r j + 1) := by
-  rw [← range_boxPoly, Set.ncard_range_of_injective (boxPoly_injective r B),
-    Nat.card_eq_fintype_card, Fintype.card_fun, Fintype.card_fin, Fintype.card_coe, card_box]
+theorem ncard_boxFamily {σ : Type*} (r : σ → ℕ) [Finite (Function.support r)] (B : ℕ) :
+    (boxFamily r B).ncard = (B + 1) ^ ∏ᶠ j, (r j + 1) := by
+  rw [boxFamily_eq_image_finsupp_aux, Set.ncard_image_of_injective _
+    AddMonoidAlgebra.ofCoeff_injective, Set.ncard_coe_finset, Finset.card_finsupp]
+  simp only [Int.card_Icc, sub_zero, Finset.prod_const, Finsupp.card_Iic, Nat.card_Iic]
+  congr 1
+  exact (finprod_eq_prod_of_mulSupport_subset _ fun j hj ↦ by
+    simpa [Finsupp.ofSupportFinite_support, Function.support, Function.mulSupport] using hj).symm
 
 /-- If `B > 1`, `c > 1` and `c n D ≤ N / 2`, then `(2⌊B^c⌋ + 1)^{nD} < (B + 1)^N`.
 
@@ -398,7 +423,8 @@ theorem exists_ne_modByMonic_eq {m : ℕ} (r : Fin m → ℕ) (B : ℕ) {f : Pol
   set t : Finset (J × Fin f.natDegree → ℤ) :=
     Fintype.piFinset fun _ => Finset.Icc (-(C : ℤ)) C with ht
   have hscard : s.card = (B + 1) ^ ∏ j, (r j + 1) := by
-    rw [hs, ← Set.ncard_eq_toFinset_card _ (boxFamily_finite r B), ncard_boxFamily]
+    rw [hs, ← Set.ncard_eq_toFinset_card _ (boxFamily_finite r B), ncard_boxFamily,
+      finprod_eq_prod_of_fintype]
   have htcard : t.card = (2 * C + 1) ^ (f.natDegree * J.card) := by
     rw [ht, Fintype.card_piFinset, Finset.prod_const, Finset.card_univ, Fintype.card_prod,
       Fintype.card_coe, Fintype.card_fin, Int.card_Icc, mul_comm]

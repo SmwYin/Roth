@@ -415,3 +415,22 @@ Filewide final phases remain pending.
 [Later literature addendum](MainLemma-boxFamily_finite-literature-addendum.md) preserves the frozen original report; missing third query and an additional targeted query were completed after END, with no source change.
 
 Remote predecessor CI [39497338608](https://github.com/SmwYin/Roth/actions/runs/39497338608) failed before code checking on pinned Lean4.34 Linux download SSL error35; root rerun pending, no source/version/workflow edit.
+
+
+### Original18: `ncard_boxFamily`
+
+[Fresh dedicated full audit](MainLemma-ncard_boxFamily.md):all24audit/42golf/5search/11checklist
+artifacts reviewed by owner. ncard_boxFamily now counts arbitrary-universe variable types with Finite(Function.support r), using the standard finprod formula; an exact old Finm-product adapter and unchanged whole caller contract pass. Public proof2→6lines/8declarationlines; separately fresh-audited helper4 has14proof/19declarationlines and exact8e541df5 hash. Only own public doc, authorized added12sentence, defining Finprod import and necessary caller specialization rewrite change alongside that helper; Main685lines and old3helpers/queue/7signposts/prose remain exact. Genuine original eight declarations plus entire published17 entry and audited final helper are byte-exact independent clones: wholeV3 exit0/335.618s,19full rawAST/binder/order/BI/universe contracts,54closedTYPE+actualopaqueVALUE/inferredTYPE/std3 checks,16oldnonselfclosures,10actualproperty/countercertificates and helpernonself5729 pass. V1/V2 verification-harness failures remain wholly rejected/preserved. Matched count20.499→55.913ms; helper166.314→159.934, consumer280.309→269.328, helper+count186.813→215.847, entire467.122→485.175ms, allbelow750/no repeats/no speedupclaim. Owner independently reanchored all6rows using full outer Classical wrapper and excluding2inclusive expansion commands; actual same-source/config/CLI roots preserved. Owner checked1625files516725560bytes117binaryexceptions and all24793actual package/core refs3929236352bytes, separating package/setupunion12201/1803613128 from pinned-core compiledSUPERSET12592/2125623224; neither is exactloadedclosure. Actual distinct pinnedLake/Lean and Elan proxies agree across3observations. Raw environment differs only capture-context SHLVL1→2, explicitly disclosed without byte-equalclaim. All46initial/helper/resumed groups and owner7091/7113 absent; fresh fullML/Main/Evalnative0errors1/4/0oldwarnings and ownerroot/Evalnative0messages. Owner17pins104cacheNOdelta and fresh post-gate external/binary hashes exact. Four freshly audited helpers/31retained written declarations, no264inflation. Final-fresh-review queue: compiled3line17finite proof needs helper-order move; unused private injectivity/range and internal constructor chain remain unpruned. GLOBALdelta/pigeon/main failures, cumulative22originalpublic+ALLretainedaxioms and all final file phases remain pending. All4renames stay for project-end SINGLEpass. RootCI39497338608@d953155 failed before codecheck on pinnedLean Linux download SSL35; root rerun remains pending per supplied status, with no source/version/workflow edit.
+Independent original reimplementation,exact old/current effective contract metadata/value
+and standard-axiom evidence reviewed; complete unfiltered livefile/affectedcaller diagnostics
+and actual affected-module/fullfile validation pass. Actual anchored profile55.913ms;
+required repeats/failed evidence,if any,remain in the dedicated report. Owner verified frozen
+source/evidence and ran fullbuild5.583s THEN separateLeanEval2.788s,both exit0 with all17pins immutable.
+Owner logs:`/private/tmp/roth-mainlemma-owner/original18-owner-full.json` and
+`original18-owner-eval.json`. SourceSHA256`45dba9b58a75de21900d1100d8eb255c9449d68162739b63b58d8607258657dc`;current734lines.
+All worker/compiler/native/profile ownership drained before publication.
+Source/audit publication hash follows in central checkpoint history via metadata child.
+MainLemma18/27 originals,overall234/264,10/14fullycompletedfiles;nextpigeonhole_count.
+Filewide final phases remain pending.
+
+[Separate fresh helper4 audit](MainLemma-helper-boxFamily_eq_image_finsupp_aux.md) preserves its initial/final contract, raw failures and provenance recovery. The introduced helper does not change the264-original count.
