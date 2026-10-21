@@ -3219,3 +3219,19 @@ current699lines. Owner rehash/review and sourcefreeze checks pass. All owned pro
 and native requests drained before publication;nextoriginalle_index_of_forall_eval_eq_zero remains unedited.
 MainLemma finalfile/simplify/completeprofile phases pending. Metadata child changes only
 this checkpoint record,not source or verification inputs.
+
+
+### MainLemma original23 checkpoint — le_index_of_forall_eval_eq_zero
+
+Source/audit commit `21b71744b691e5759f70f152ad939991f0680e65`; the following metadata child records and publishes this
+exact checkpoint before the next original edit. MainLemma23/27,overall239/264,
+10/14fullycompletedfiles. [Dedicated audit](cleanup/MainLemma-le_index_of_forall_eval_eq_zero.md) contains all
+24audit/42golf/5search/11verification steps,exact independent original reimplementation/
+effectivecontract/universe/binder/type/value/standard-axiom evidence,actual affectedmodule/
+fullfile and complete unfiltered native successes. Actual anchored profile41.817ms;
+raw evidence and required repeat/failure history are preserved. Arbitrary finite variables/strict cutoff/coordinate box remove DecEq; exact old Finm contracts and full callers recovered, target12→7decl/9→3proof/doc+1/onecallerbridge+1, source699→696,0helpers. Owner read282report lines/rehashed1073artifacts3463043054B/65actualbinaryexceptions/29runs23inputs;28contracts70closedTYPEopaqueVALUEstd3/6nonselfclosures/all32written+21generated/11properties+2children pass. Stronger exactName descendant guard fixes disclosedv1privatechildgap; latehonestdeps10lines9paths allalreadygenuinelypreedithashed/importsconfigenvexact. Boundlocalindexwarming versus exploratoryerror clarified in owneraddendum. Fourcaptures target55.106/48.374→41.038/41.817ms4roots; main5124.358/4955.099→5058.397/5949.8909roots,mean+464.415ms/+9.21508% remainsoriginal27FAIL;hγmean+13.921 retained/no causal dismissal/thirdsample/globalpass. Owner Root/Evalnative completeunfiltered0messages/post17pins104cacheNOdelta/24793availability+4binariesexact/strict24782external unchanged/all31groupsabsent.
+Owner fullbuild5.861s THEN separateLeanEval3.051s,both exit0,all17pins immutable;sourceSHA256`e35102a497c66d1d28ba37f4c73afb4a873946c3dde85cb1cb04a86d1bdb8fd7`,
+current696lines. Owner rehash/review and sourcefreeze checks pass. All owned processes
+and native requests drained before publication;nextoriginallem7_hyp_of_h32 remains unedited.
+MainLemma finalfile/simplify/completeprofile phases pending. Metadata child changes only
+this checkpoint record,not source or verification inputs.
