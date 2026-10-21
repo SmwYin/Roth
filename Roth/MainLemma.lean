@@ -488,14 +488,16 @@ theorem lem7_hyp_of_h32 {K : Type*} [Semifield K] [LinearOrder K] [IsStrictOrder
 /-- If the index of `P ≠ 0` at `α` is less than `c`, then some Hasse derivative `Δ_k P` of
 weight `< c` does not vanish at `α`.
 
+Use this to select a derivative below a strict cutoff on any finite variable type;
+the weight bounds may include zero.
+
 Source: §6, proof of Lemma 9 ("By Lemma 7 the index of `W^*` at `(h_1/q_1, …)` is less than
 `η`. Hence `W^*` has some derivative `Q = Δ_k W^*` with `∑ k_j/r_j < η` such that
 `Q(h/q) ≠ 0`"). -/
-theorem exists_hasseDeriv_eval_ne_zero {m : ℕ} {P : MvPolynomial (Fin m) ℝ} (hP : P ≠ 0)
-    (α : Fin m → ℝ) (r : Fin m → ℕ) {c : ℝ} (hc : index P α r < c) :
-    ∃ k : Fin m →₀ ℕ, weight r k < c ∧ eval α (hasseDeriv k P) ≠ 0 := by
-  obtain ⟨d, hd, hw⟩ := exists_weight_eq_index hP α r
-  exact ⟨d, hw ▸ hc, hd⟩
+theorem exists_hasseDeriv_eval_ne_zero {σ : Type*} [Fintype σ] {P : MvPolynomial σ ℝ} (hP : P ≠ 0)
+    (α : σ → ℝ) (r : σ → ℕ) {c : ℝ} (hc : index P α r < c) : ∃ k : σ →₀ ℕ,
+    weight r k < c ∧ eval α (hasseDeriv k P) ≠ 0 :=
+  (exists_weight_eq_index hP α r).imp fun _ ⟨hd, hw⟩ ↦ ⟨hw ▸ hc, hd⟩
 
 private lemma degreeOf_map_intCast_real {σ : Type*} (R : MvPolynomial σ ℤ) (j : σ) :
     degreeOf j (map (Int.castRingHom ℝ) R) = degreeOf j R := by

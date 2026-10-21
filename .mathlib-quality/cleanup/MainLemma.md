@@ -538,3 +538,20 @@ All worker/compiler/native/profile ownership drained before publication.
 Source/audit publication hash follows in central checkpoint history via metadata child.
 MainLemma24/27 originals,overall240/264,10/14fullycompletedfiles;nextexists_hasseDeriv_eval_ne_zero.
 Filewide final phases remain pending.
+
+
+### Original25: `exists_hasseDeriv_eval_ne_zero`
+
+[Fresh dedicated full audit](MainLemma-exists_hasseDeriv_eval_ne_zero.md):all24audit/42golf/5search/11checklist
+artifacts reviewed by owner. Generalized Fin m to arbitrary universe-polymorphic finite variable types; proof2→1, source692→694,0helpers/0caller edits. Full oldFin contract/nonself original/current/61retained actual TYPE+opaqueVALUE/std3/property8/consumer/native/immutable-input gates pass. Target19.220/19.031→32.566/29.031ms; main5023.870/4885.906→5175.935/5047.346ms remains original27/global failure, mean+156.7525ms; exact changed call mean−0.086ms. Independent sealed26055artifact/5040577762B/39group/15native/39reference review passes;41leaf+owner groups freshly absent, all17pins/104cache/24782strict external inputs/four binaries stable. No new rename; five-item queue retained.
+Independent original reimplementation,exact old/current effective contract metadata/value
+and standard-axiom evidence reviewed; complete unfiltered livefile/affectedcaller diagnostics
+and actual affected-module/fullfile validation pass. Actual anchored profile32.566ms;
+required repeats/failed evidence,if any,remain in the dedicated report. Owner verified frozen
+source/evidence and ran fullbuild4.877s THEN separateLeanEval4.811s,both exit0 with all17pins immutable.
+Owner logs:`/private/tmp/roth-mainlemma-owner/original25-owner-full.json` and
+`original25-owner-eval.json`. SourceSHA256`2a8aa8abb74ff479e0dae3b2885a89e8a2bc8471e2a6a8950f284d94460074ac`;current694lines.
+All worker/compiler/native/profile ownership drained before publication.
+Source/audit publication hash follows in central checkpoint history via metadata child.
+MainLemma25/27 originals,overall241/264,10/14fullycompletedfiles;nextdegreeOf_map_intCast_real.
+Filewide final phases remain pending.
