@@ -453,23 +453,19 @@ theorem eval_hasseDeriv_sub_eq_zero {σ : Type*} {S : Type*} [CommRing S] {f : P
     MvPolynomial.comp_aeval_apply, Polynomial.aeval_X] using
     Polynomial.aeval_eq_zero_of_dvd_aeval_eq_zero hdvd hfα
 
-/-- If every Hasse derivative `Δ_d P` with `d` in the box and weight `≤ c` vanishes at `α`,
-then the index of `P` at `α` is at least `c`.
+/-- Vanishing of box Hasse derivatives of weight `< c` gives the lower bound `c` on the index.
+Only derivatives strictly below the cutoff need checking; coordinate degree bounds restrict
+the check to the box, including when some bounds are zero.
 
 Source: §6, proof of Lemma 9 ("Hence the index of `W^*` at the point `(α, …, α)` relative
 to `r_1, …, r_m` is at least `γ`"). -/
-theorem le_index_of_forall_eval_eq_zero {m : ℕ} {P : MvPolynomial (Fin m) ℝ} (hP : P ≠ 0)
-    {r : Fin m → ℕ} (hd : ∀ j, degreeOf j P ≤ r j) (α : Fin m → ℝ) {c : ℝ}
-    (hvan : ∀ d ∈ box r, weight r d ≤ c → eval α (hasseDeriv d P) = 0) : c ≤ index P α r := by
-  refine (le_index_iff hP).2 fun d he => ?_
-  by_cases hdb : d ∈ box r
-  · by_contra hlt
-    push Not at hlt
-    exact he (hvan d hdb hlt.le)
-  · rw [mem_box] at hdb
-    push Not at hdb
-    obtain ⟨j, hj⟩ := hdb
-    exact absurd (by rw [hasseDeriv_eq_zero_of_degreeOf_lt ((hd j).trans_lt hj), map_zero]) he
+theorem le_index_of_forall_eval_eq_zero {σ : Type*} [Fintype σ] {P : MvPolynomial σ ℝ} (hP : P ≠ 0)
+    {r : σ → ℕ} (hd : ∀ j, degreeOf j P ≤ r j) (α : σ → ℝ) {c : ℝ}
+    (hvan : ∀ d, (∀ j, d j ≤ r j) → weight r d < c → eval α (hasseDeriv d P) = 0) :
+    c ≤ index P α r := by
+  refine (le_index_iff hP).2 fun d he ↦ le_of_not_gt fun hw ↦ he (hvan d (fun j ↦ ?_) hw)
+  by_contra! hj
+  exact he <| by rw [hasseDeriv_eq_zero_of_degreeOf_lt ((hd j).trans_lt hj), map_zero]
 
 /-- Under (29) and (32), `m(2m + 1)/δ < log q_1`, the hypothesis of Lemma 7.
 
@@ -656,7 +652,8 @@ theorem main_lemma {α : ℝ} {f : Polynomial ℤ} (hf : f.Monic) (hfα : Polyno
   have hγ : gam δ n (m' + 1) ≤ index (map (Int.castRingHom ℝ) (W' - W'')) (fun _ => α) r :=
     le_index_of_forall_eval_eq_zero hmap0
       (fun j => (degreeOf_map_intCast_real _ j).trans_le (hWR.2.1 j)) (fun _ => α)
-      fun d hd hw => eval_hasseDeriv_sub_eq_zero hfα (hWeq d (Finset.mem_filter.2 ⟨hd, hw⟩))
+      fun d hd hw => eval_hasseDeriv_sub_eq_zero hfα
+        (hWeq d (Finset.mem_filter.2 ⟨mem_box.2 hd, hw.le⟩))
   -- Lemma 7
   have hΘ := Θ_lt m' hδ0
     ((by norm_num : (3 : ℝ) ≤ 10).trans

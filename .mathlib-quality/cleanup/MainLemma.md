@@ -504,3 +504,20 @@ All worker/compiler/native/profile ownership drained before publication.
 Source/audit publication hash follows in central checkpoint history via metadata child.
 MainLemma22/27 originals,overall238/264,10/14fullycompletedfiles;nextle_index_of_forall_eval_eq_zero.
 Filewide final phases remain pending.
+
+
+### Original23: `le_index_of_forall_eval_eq_zero`
+
+[Fresh dedicated full audit](MainLemma-le_index_of_forall_eval_eq_zero.md):all24audit/42golf/5search/11checklist
+artifacts reviewed by owner. Arbitrary finite variables/strict cutoff/coordinate box remove DecEq; exact old Finm contracts and full callers recovered, target12→7decl/9→3proof/doc+1/onecallerbridge+1, source699→696,0helpers. Owner read282report lines/rehashed1073artifacts3463043054B/65actualbinaryexceptions/29runs23inputs;28contracts70closedTYPEopaqueVALUEstd3/6nonselfclosures/all32written+21generated/11properties+2children pass. Stronger exactName descendant guard fixes disclosedv1privatechildgap; latehonestdeps10lines9paths allalreadygenuinelypreedithashed/importsconfigenvexact. Boundlocalindexwarming versus exploratoryerror clarified in owneraddendum. Fourcaptures target55.106/48.374→41.038/41.817ms4roots; main5124.358/4955.099→5058.397/5949.8909roots,mean+464.415ms/+9.21508% remainsoriginal27FAIL;hγmean+13.921 retained/no causal dismissal/thirdsample/globalpass. Owner Root/Evalnative completeunfiltered0messages/post17pins104cacheNOdelta/24793availability+4binariesexact/strict24782external unchanged/all31groupsabsent.
+Independent original reimplementation,exact old/current effective contract metadata/value
+and standard-axiom evidence reviewed; complete unfiltered livefile/affectedcaller diagnostics
+and actual affected-module/fullfile validation pass. Actual anchored profile41.817ms;
+required repeats/failed evidence,if any,remain in the dedicated report. Owner verified frozen
+source/evidence and ran fullbuild5.861s THEN separateLeanEval3.051s,both exit0 with all17pins immutable.
+Owner logs:`/private/tmp/roth-mainlemma-owner/original23-owner-full.json` and
+`original23-owner-eval.json`. SourceSHA256`e35102a497c66d1d28ba37f4c73afb4a873946c3dde85cb1cb04a86d1bdb8fd7`;current696lines.
+All worker/compiler/native/profile ownership drained before publication.
+Source/audit publication hash follows in central checkpoint history via metadata child.
+MainLemma23/27 originals,overall239/264,10/14fullycompletedfiles;nextlem7_hyp_of_h32.
+Filewide final phases remain pending.
