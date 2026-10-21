@@ -467,31 +467,23 @@ theorem le_index_of_forall_eval_eq_zero {σ : Type*} [Fintype σ] {P : MvPolynom
   by_contra! hj
   exact he <| by rw [hasseDeriv_eq_zero_of_degreeOf_lt ((hd j).trans_lt hj), map_zero]
 
-/-- Under (29) and (32), `m(2m + 1)/δ < log q_1`, the hypothesis of Lemma 7.
+/-- The bound `m(2m + 1)/δ < L` from `0 < 2m + 1 ≤ δ²L` and `δm < 1`.
+
+With `L = log q₁`, this gives the hypothesis of Lemma 7 under (29) and (32).
 
 Source: §6, Lemma `lem:lem7-satisfied` ("We just need to verify `δ log q_1 > m(2m+1)` but
 this is immediate from (29) and (32)"). -/
-theorem lem7_hyp_of_h32 {δ : ℝ} (hδ0 : 0 < δ) {m : ℕ} (hδm : δ < 1 / m) {q₁ : ℕ} {A α : ℝ}
-    (hA : 1 ≤ A) (h32 : 2 * m + 1 + 2 * m * Real.log (1 + A) + 2 * m * Real.log (1 + |α|) <
-      δ ^ 2 * Real.log q₁) :
-    (m : ℝ) * (2 * m + 1) / δ < Real.log q₁ := by
-  have hlogA : 0 ≤ Real.log (1 + A) := Real.log_nonneg (by linarith)
-  have hlogα : 0 ≤ Real.log (1 + |α|) := Real.log_nonneg (by linarith [abs_nonneg α])
-  have hm : (0 : ℝ) < m := by
-    rcases Nat.eq_zero_or_pos m with h | h
-    · simp [h] at hδm
-      linarith
-    · exact_mod_cast h
-  have hδm' : δ * m < 1 := by rwa [lt_div_iff₀ hm] at hδm
-  have h2m : (2 * m + 1 : ℝ) < δ ^ 2 * Real.log q₁ := by nlinarith
-  have hL : 0 < Real.log q₁ := by nlinarith [sq_nonneg δ]
-  rw [div_lt_iff₀ hδ0]
-  have h1 : (m : ℝ) * (2 * m + 1) < m * (δ ^ 2 * Real.log q₁) := mul_lt_mul_of_pos_left h2m hm
-  have h2 : (m : ℝ) * (δ ^ 2 * Real.log q₁) = (δ * m) * (δ * Real.log q₁) := by ring
-  have h3 : (δ * m) * (δ * Real.log q₁) < δ * Real.log q₁ := by
-    have : 0 < δ * Real.log q₁ := by positivity
-    nlinarith
-  linarith
+theorem lem7_hyp_of_h32 {K : Type*} [Semifield K] [LinearOrder K] [IsStrictOrderedRing K]
+    [ExistsAddOfLE K] {δ m L : K} (hm : 0 < 2 * m + 1) (hδm : δ * m < 1)
+    (h32 : 2 * m + 1 ≤ δ ^ 2 * L) : m * (2 * m + 1) / δ < L := by
+  have hδ : δ ≠ 0 := by
+    rintro rfl
+    simpa using hm.trans_le h32
+  apply (mul_lt_mul_iff_of_pos_right (sq_pos_of_ne_zero hδ)).1
+  calc
+    _ = (δ * m) * (2 * m + 1) := by field_simp
+    _ < 2 * m + 1 := mul_lt_of_lt_one_left hm hδm
+    _ ≤ L * δ ^ 2 := h32.trans_eq (mul_comm _ _)
 
 /-- If the index of `P ≠ 0` at `α` is less than `c`, then some Hasse derivative `Δ_k P` of
 weight `< c` does not vanish at `α`.
@@ -660,7 +652,11 @@ theorem main_lemma {α : ℝ} {f : Polynomial ℤ} (hf : f.Monic) (hfα : Polyno
       ((le_div_self (by norm_num) hδ0 hδ1.le).trans (h31a _).le))
     (fun i ↦ by
       simpa [mul_comm] using ((div_lt_iff₀ hδ0).1 (h31b _ _ (by simp))).le)
-    (by exact_mod_cast (lem7_hyp_of_h32 hδ0 hδm hA1 h32).le) h33
+    (by
+      simpa only [Nat.cast_add, Nat.cast_one] using
+        (lem7_hyp_of_h32 (K := ℝ)
+          (add_pos (mul_pos zero_lt_two (zero_lt_one.trans_le hmR)) zero_lt_one)
+          ((lt_div_iff₀ (zero_lt_one.trans_le hmR)).1 hδm) h32'.le).le) h33
   have hidx := index_le_Θ hWX hh
   obtain ⟨k, hkw, hkev⟩ := exists_hasseDeriv_eval_ne_zero hmap0 (fun j => (h j : ℝ) / q j) r
     (hidx.trans_lt hΘ)

@@ -25,14 +25,14 @@ Started: 2026-10-14 (America/Chicago).
 
 ## Current status
 
-MainLemma is active:23/27originals complete at the latest published checkpoint;
-overall239/264originals,10/14fullycompletedfiles. Latest:`le_index_of_forall_eval_eq_zero` after fresh full
+MainLemma is active:24/27originals complete at the latest published checkpoint;
+overall240/264originals,10/14fullycompletedfiles. Latest:`lem7_hyp_of_h32` after fresh full
 24-item/42-rule/5-method/11-step audit,independent original/type/binder/value/standard-axiom
-checks,complete unfiltered affected diagnostics and actual anchored profile41.817ms.
-Owner fullbuild5.861s THEN separateLeanEval3.051s,both exit0 on immutable17pins.
-Arbitrary finite variables/strict cutoff/coordinate box remove DecEq; exact old Finm contracts and full callers recovered, target12→7decl/9→3proof/doc+1/onecallerbridge+1, source699→696,0helpers. Owner read282report lines/rehashed1073artifacts3463043054B/65actualbinaryexceptions/29runs23inputs;28contracts70closedTYPEopaqueVALUEstd3/6nonselfclosures/all32written+21generated/11properties+2children pass. Stronger exactName descendant guard fixes disclosedv1privatechildgap; latehonestdeps10lines9paths allalreadygenuinelypreedithashed/importsconfigenvexact. Boundlocalindexwarming versus exploratoryerror clarified in owneraddendum. Fourcaptures target55.106/48.374→41.038/41.817ms4roots; main5124.358/4955.099→5058.397/5949.8909roots,mean+464.415ms/+9.21508% remainsoriginal27FAIL;hγmean+13.921 retained/no causal dismissal/thirdsample/globalpass. Owner Root/Evalnative completeunfiltered0messages/post17pins104cacheNOdelta/24793availability+4binariesexact/strict24782external unchanged/all31groupsabsent. Current source696lines. Next:lem7_hyp_of_h32. MainLemma filewide final,
+checks,complete unfiltered affected diagnostics and actual anchored profile204.755ms.
+Owner fullbuild5.756s THEN separateLeanEval4.306s,both exit0 on immutable17pins.
+Authorized ordered-semifield scalar API removes denominator-sign/log/Nat boilerplate while exact complete original contract is recovered; proof17→8,0newhelpers,5existing helpers byteexact. Owner verified28contracts70closedTYPE+opaqueVALUE/std3,6nonselfclosures,all60actualretained32written28generated/defaults,17properties/NNReal/fullpremisecounters,completeunfilterednative. Matched target719.805/720.953→204.320/204.755ms(−71.60696%mean). Completeforeignmain4964.514/5094.045→5381.177/5157.626(+240.122ms/+4.77448%) remains explicitoriginal27/globalFAIL; changedhΘ+28.110msmean residual,failed4bd/d1/105matchedcontrols/9roots preserved,nozerooverhead/noisedismissal/thirdsample. Manifest28553files7197405397B/26420actualcompiledbinaryexceptions; all57leaf+2owner groups absent. OwnerRoot/Evalnative0messages,current17pins104cacheNOdelta,24793availability+4binaries+790extra/159sources stable,strict24782external3918200888B exact. FifthcontentrenamequeuedafteractualEND; exactpaperquote/7signposts preserved. Allfinalfile/cumulative/simplify/globalperformance phases remain pending. Current source692lines. Next:exists_hasseDeriv_eval_ne_zero. MainLemma filewide final,
 independent simplify and complete performance phases remain pending. See
-[MainLemma ledger](cleanup/MainLemma.md) and [latest audit](cleanup/MainLemma-le_index_of_forall_eval_eq_zero.md).
+[MainLemma ledger](cleanup/MainLemma.md) and [latest audit](cleanup/MainLemma-lem7_hyp_of_h32.md).
 The exact source/audit commit is recorded in appended checkpoint history by its metadata
 child. Prior fullycompleted-file handoff is preserved below.
 
@@ -167,7 +167,7 @@ Files will be processed in dependency order; declarations within each file are s
 | `Roth/Index.lean` | 275 | All cleanup phases complete;21/21 originals audited; user-approved hypothesis groups applied and validated |
 | `Roth/Separation.lean` | 618 | Complete;30/30 originals and all final phases;source556lines27retained;all12 approved instance amendments validated |
 | `Roth/Theta.lean` | 981 | Complete;35/35 originals and all final file phases;source991lines,50retained |
-| `Roth/MainLemma.lean` | 704 | Active;23/27 originals audited/published;final file phases pending |
+| `Roth/MainLemma.lean` | 704 | Active;24/27 originals audited/published;final file phases pending |
 | `Roth/Main.lean` | 684 | Awaiting cleanup |
 | `Roth/LeanEval.lean` | 60 | Awaiting cleanup |
 | `Roth.lean` | 14 | Awaiting cleanup |
@@ -2858,52 +2858,61 @@ this checkpoint record,not source or verification inputs.
 
 
 <!-- takeover-original8-start -->
-### Current resumable cleanup handoff (original23 fully validated; publication checkpoint)
+### Current resumable cleanup handoff — original24 audited, original25 next
 
-Sole ALL MainLemma source/shared-progress/Git/compiler/native/profile owner remains
-/root/cleanup_continuation/mainlemma_file. Original23 leaf le_index_vanishing completed and
-explicitly released all seven leases; no native/compiler/profile work pending. Current source
-696lines SHAe35102a497c66d1d28ba37f4c73afb4a873946c3dde85cb1cb04a86d1bdb8fd7.
-Main685 unchangedSHA5f384557dccacaec469699cc7d32bd5666c9d525267e00433b7ae401fee98d09;
-32written(6defs/26theorems),5separatelyauditedhelpers,0newhelpersthischeckpoint.
-Counts239/264, ML23/27 and10/14completedfiles only with this checkpoint publication;
-actual source/audit commit is recorded in appended history by metadata child. Before24 edits,
-owner must verify HEAD=origin=live remote and CLEAN. Next original24 lem7_hyp_of_h32 remains
-unedited; then25exists_hasseDeriv_eval_ne_zero,26private degreeOf_map_intCast_real,27main_lemma.
-No fresh24 worker dispatched yet. Same selected NEW worker6.1SolMedium/fork_none/oneleafslot;
-no duplicate owners/model switch. Mandatory fresh original/helper/final independent reviewers,
-all24audit42golf5actualsearch11checks/everyouter+inner2.6a–e/3queriesTop3 and full source-dependent
-gates remain. Full854prompt/112profilerinstruction/46actualpayloadbinding note under
-/private/tmp/roth-mainlemma-owner/. Actual current private state/resume JSONs there; actual23
-sealed bundle /private/tmp/roth-mainlemma-le-index-vanishing/manifest23.json, report282lines and
-owneraddendum linked in ledger. No leaf END23.json exists; actual collaboration END receipt
-original23-leaf-END-received.json records release honestly. All1073artifacts3463043054B/
-65actualbinaryexceptions/29runs23launchinputs rehashed; actual31leaf+ownerPGIDs absent.
-All target/caller semantics/oldcontracts/28fullcontracts70closedvalues6nonselfclosures/
-all32written+21dynamicgenerated/11properties+2children std3/defaults passed. V1privatechild
-coveragegap preserved/superseded by actual exactName53descendant v2. MissingpreeditdepsCLI
-remediated by explicitly LATE frozenbefore/final10lines9paths (Initduplicate), everyhashalready
-genuinelypreedit, configimportsenvresolutionexact, neverexactloadedclosure. Localindexbound
-warming/exploratoryerror clarified without alteringsealedreport. Target55.106/48.374→41.038/
-41.817ms; main5124.358/4955.099→5058.397/5949.890 remains validoriginal27/globalFAIL,
-mean+464.415ms(+9.21508%),hγ+13.921mean,105matchedcontrols/9roots/no nestedaddition/no
-causaldismissal/thirdsample. LeafFULL62.335→Eval73.134/nativeMLMainEval0errors,warnings1/4/0;
-ownerFULL5.861296792→Eval3.051323250 then freshRoot/Evalnative0messages,17pinsimmutable,
-104cacheNOdelta,24793availability3929110456B+fourbinaries currentexact/strict24782external
-3918200888B unchanged. All frozen parent/raw8env+END match; freeparentMANPATHdelta preserved.
-Standing user: implement all recommended changes, ask only undecidable preference/fact.
-Preserve explicit earlier Hasse/Separation/Theta API choices, math/quotes/7signposts/pins,
-unknowncopyright metadata, no sorry/axioms/weakening/limitraises/mainmergeforcepush.
-Oneleaf/allcompiler-native-profile SERIAL. Newhelper FIRSTUNGOLFEDdraft+contextSHA→partialEND/
-release/drain→NEWfreshhelperaudit→SAMEoriginalresume. Only6moduleheadlines≤15; ordinary≤30,
-branches≤10. Actual profiles -j1/threshold0 exactcompletecanonicalpayload/disjointqualifiedroots,
-allactualgeneratedsiblings metadata/std3/sourceabsence; excludeMetaeven0/nested/inclusive/next/end.
-≥750repeat samefrozeninput; valid>1000 target/group failrepair, no unchangedthirdsample.
-Each original: save/actualaffected/fullfreshunfilterednative/independentoldnewTYPEBIuniverses/
-actualopaqueVALUE/std3/oldcallerrecovery/profile/inputclosure→explicitrelease/drain→ownerFULL
-THENseparateEval→freshRootEvalnative/posthash→exactpaths sourceA+actualhashmetadataB→push
-originHEAD:ramin-cleanup/live remoteroundtripCLEAN BEFORE nextedit. Main account sharedallowance;
-preserve partialwork/currenttakeover if capacityends. No paused/takeover request.
+Sole MainLemma source/shared-progress/Git/compiler/native/profile owner remains
+/root/cleanup_continuation/mainlemma_file. Original24 leaf lem7_hyp explicitly END/RELEASED
+all7leases/nochildren/noactivecalls. Do not resume it or spawn duplicate owners. Next fresh
+original25 exists_hasseDeriv_eval_ne_zero; then26private degreeOf_map_intCast_real,27main_lemma.
+No next original source edit until checkpoint sourceA+metadataB push and fresh HEAD/origin/live
+remote equality+CLEAN are verified; actual sourceA is in appended checkpoint history/private
+original24-publication receipt. MainLemma24/27,overall240/264,10/14completedfiles at this checkpoint.
+Source692 SHA cb59bb4129cbf7e353b272f05615b0cfd2193c67177b82100590c3fa84afd056;
+Main685/5f384557dccacaec469699cc7d32bd5666c9d525267e00433b7ae401fee98d09 unchanged.
+Five separately audited helpers retained; no original24 helper. Full authoritative report
+cleanup/MainLemma-lem7_hyp_of_h32.md292lines/02aae874b287a8d49bc5867bfab90f17717e0a2906f839d63810bb2b0d5e89a0;
+owner-addendum records actual independent gates/errata/publication prerequisites.
+Raw bundle /private/tmp/roth-mainlemma-lem7-hyp/manifest24.json ccbd7af3fae9b0a9870816e91ed403cc3d55c201d7c9b17cc32b1e8652324532,
+28553files/7197405397bytes/26420actualcompiledbinaryexceptions; separatefullsecondrehash
+c59fd2381be7ce2be4f1a7da4c3983eb8ce5b021892cfe9f6cd824078627c0e7. Actual57leafgroups absent,
+57wrapped+159nestedparsercommands,16completednative(15regular+1honestlyrejectedbookkeepinggap),
+interrupted36952childexit/timeNULL preserved. All candidate/4bd/d1/combinedHB/native/codegen
+failures retained; no partial success/backdating/thirdsample.
+Owner independent wholeoriginal/entry/selected bodies/28contracts/70closedactualTYPEVALUEstd3/
+6nonselftarget+callerclosures/4literalpairs/H5clone PASS; all60retained32written28generated/
+7target_simp actual freshNameinventory/default200000/20000/512 PASS; sole actualconsumer main_lemma.
+17properties/NNReal/oldcompletecontract/counters,790extra artifacts159wholeparsed sources fresh
+beforeafterend stable; historical159parsergraph context not relabeled current. All24references
+actual+saved hashchecked. CompleteunfilteredML/Main/Evalnative allsuccess/nonpartial/nontimeout,
+0errors/warnings1/4/0exactbaseline; actualreturn/savebeforepostpins chronology observed.
+Target719.805/720.953→204.320/204.755ms(−71.60696%mean); foreignmain4964.514/5094.045→
+5381.177/5157.626(+240.122ms/+4.77448%) remains actual original27/globalFAIL. Changed hΘ
+118.893/117.320→149.449/142.984(+28.110mean),nestedconversion16.185/15.626→41.087/38.714.
+Owner complete8rowpayload/root/kernel/CLI/env reanchor+all105events/order9roots PASS, precise
+single mul_lt_of_lt_one_left parentheses exception only; no broadnormalization/nestedaddition/
+causaldismissal/noise/zerooverhead/globalpass. Failed4bd/d1 profiles preserved separately.
+After7leaseEND ownerFULL5.755531125s45146absent THEN separateEval4.306383375s45186absent,
+all17pinsimmutable; freshRoot/Evalnative complete0messages. Post-owner104cacheNOdelta,
+24793availability3929053440B+4binaries exact; strict24782external3918200888B exclude11project
+cache paths. Extra790/159 currentexact, all59leaf+ownerbuildgroups absent. Availability≠loadedclosure.
+Private /private/tmp/roth-mainlemma-owner/{active_original24_current,resume-state-current}.json,
+original24-owner-*.json/scripts/ENDreceipt/sourceinverse/reports retain exact recovery facts.
+
+Standing user: implement all recommended changes; ask only undecidable preference/fact.
+Preserve explicit Hasse optional companions declined, Separation wrappers/coefficient domains,
+Theta hq/optionalD/E/F APIs, math/quotes/7signposts/pins/unknownmetadata. No sorry/newaxioms/
+weakerconclusions/limitraises/mainmergeforcepush. New workers gpt-6.1-sol/medium/fork_none,
+oneleafslot; ALLcompiler/native/profile SERIAL. Mandatory fresh original/helper/final reviewers,
+all24audit42golf5actualsearch11checks/everyouter+inner2.6a–e/3queriesTop3. Full854prompt,
+112profilerinstructions,46actualpayloadbinding note under owner directory. Each new meaningful
+helper FIRSTUNGOLFEDdraft+contextSHA→partialEND/release/drain→NEWhelperaudit→SAMEoriginalresume.
+Only6moduleheadlines≤15; ordinary≤30/branches≤10. Actual -j1/threshold0 profiles use exactcomplete
+canonicalpayload/disjointqualifiedcommand+asyncroots and ALLactualsiblings; excludeMeta/nested/
+inclusive/next/end. ≥750samefrozenrepeat; valid>1000target/group repair, no unchangedthirdsample.
+Each checkpoint sourceimmutable→fresh fullnative/semantics/properties/callers/profiles/inputclosure
+→END/drain→ownerFULL THEN separateEval→RootEvalnative/posthash→exactpaths sourceA+actualhash
+metadataB→pushoriginHEAD:ramin-cleanup/liveCLEAN BEFORE nextedit. Preserve partials if capacityends;
+no pause/takeover requested. Coordinator handles next Main/LeanEval/Roth files after fullMLrelease.
 
 After27: FRESH independent whole-file simplify review; assess compiled3line17finiteproof(H4ordermove)
 and actuallyunused private13–16constructor/coeff/inj/range chain only after fullTYPEVALUE/refaudit.
@@ -2919,9 +2928,10 @@ Optional6/9builtinmax0heartbeat figures withdrawn/rawerrata retained; futureveri
 custom only/no optionalhistorical reruns. No Lean limitraises. Finalpipeline details in owner private
 final-file-gates-required.txt and future-audit-notes.md (prospects explicitlyUNCOMPILED).
 
-Project-end SINGLErenames4: Roth.index_hasseDeriv_ge→Roth.index_sub_weight_le_index_hasseDeriv;
+Project-end SINGLErenames5: Roth.index_hasseDeriv_ge→Roth.index_sub_weight_le_index_hasseDeriv;
 Roth.B₁→Roth.mainCoeffBound; Roth.log_B₁_gt→Roth.mul_log_div_two_lt_log_mainCoeffBound;
-Roth.abs_coeff_modByMonic_le→Roth.norm_coeff_modByMonic_le. No inplace renames.
+Roth.abs_coeff_modByMonic_le→Roth.norm_coeff_modByMonic_le;
+Roth.lem7_hyp_of_h32→Roth.mul_two_mul_add_one_div_lt_of_le_sq_mul. No inplace renames.
 Standing user authorization implementallrecommendedchanges/askonlyundecidable; preserve explicit
 Hasse/Separation/Theta choices. Branchramin-cleanup/protectmain/no mergeforcepush/pinchange/sorry/
 newaxioms/weakerconclusions/inventedmetadata. Lean4.34.0/mathlib5ed2965256430c3649e86755f9576b54eca72435.

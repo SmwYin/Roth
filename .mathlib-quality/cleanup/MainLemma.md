@@ -521,3 +521,20 @@ All worker/compiler/native/profile ownership drained before publication.
 Source/audit publication hash follows in central checkpoint history via metadata child.
 MainLemma23/27 originals,overall239/264,10/14fullycompletedfiles;nextlem7_hyp_of_h32.
 Filewide final phases remain pending.
+
+
+### Original24: `lem7_hyp_of_h32`
+
+[Fresh dedicated full audit](MainLemma-lem7_hyp_of_h32.md):all24audit/42golf/5search/11checklist
+artifacts reviewed by owner. Authorized ordered-semifield scalar API removes denominator-sign/log/Nat boilerplate while exact complete original contract is recovered; proof17→8,0newhelpers,5existing helpers byteexact. Owner verified28contracts70closedTYPE+opaqueVALUE/std3,6nonselfclosures,all60actualretained32written28generated/defaults,17properties/NNReal/fullpremisecounters,completeunfilterednative. Matched target719.805/720.953→204.320/204.755ms(−71.60696%mean). Completeforeignmain4964.514/5094.045→5381.177/5157.626(+240.122ms/+4.77448%) remains explicitoriginal27/globalFAIL; changedhΘ+28.110msmean residual,failed4bd/d1/105matchedcontrols/9roots preserved,nozerooverhead/noisedismissal/thirdsample. Manifest28553files7197405397B/26420actualcompiledbinaryexceptions; all57leaf+2owner groups absent. OwnerRoot/Evalnative0messages,current17pins104cacheNOdelta,24793availability+4binaries+790extra/159sources stable,strict24782external3918200888B exact. FifthcontentrenamequeuedafteractualEND; exactpaperquote/7signposts preserved. Allfinalfile/cumulative/simplify/globalperformance phases remain pending.
+Independent original reimplementation,exact old/current effective contract metadata/value
+and standard-axiom evidence reviewed; complete unfiltered livefile/affectedcaller diagnostics
+and actual affected-module/fullfile validation pass. Actual anchored profile204.755ms;
+required repeats/failed evidence,if any,remain in the dedicated report. Owner verified frozen
+source/evidence and ran fullbuild5.756s THEN separateLeanEval4.306s,both exit0 with all17pins immutable.
+Owner logs:`/private/tmp/roth-mainlemma-owner/original24-owner-full.json` and
+`original24-owner-eval.json`. SourceSHA256`cb59bb4129cbf7e353b272f05615b0cfd2193c67177b82100590c3fa84afd056`;current692lines.
+All worker/compiler/native/profile ownership drained before publication.
+Source/audit publication hash follows in central checkpoint history via metadata child.
+MainLemma24/27 originals,overall240/264,10/14fullycompletedfiles;nextexists_hasseDeriv_eval_ne_zero.
+Filewide final phases remain pending.
