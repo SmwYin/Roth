@@ -3185,3 +3185,19 @@ current721lines. Owner rehash/review and sourcefreeze checks pass. All owned pro
 and native requests drained before publication;nextoriginalexists_ne_modByMonic_eq remains unedited.
 MainLemma finalfile/simplify/completeprofile phases pending. Metadata child changes only
 this checkpoint record,not source or verification inputs.
+
+
+### MainLemma original20 checkpoint — exists_ne_modByMonic_eq
+
+Source/audit commit `dc1aef59a6ed522c289544dfa5fca91f78c9744f`; the following metadata child records and publishes this
+exact checkpoint before the next original edit. MainLemma20/27,overall236/264,
+10/14fullycompletedfiles. [Dedicated audit](cleanup/MainLemma-exists_ne_modByMonic_eq.md) contains all
+24audit/42golf/5search/11verification steps,exact independent original reimplementation/
+effectivecontract/universe/binder/type/value/standard-axiom evidence,actual affectedmodule/
+fullfile and complete unfiltered native successes. Actual anchored profile322.983ms;
+raw evidence and required repeat/failure history are preserved. Arbitrary variable types with finite-support degree bounds and a finite product replace the finite-index restriction; low-degree-only coefficient bounds are equivalent under monicity/C:Nat, with the common distinct pair preserved. Public proof35→14/declaration41→21; published721→704source lines, no new helper, five separately audited helpers/32written declarations. Only the necessary main call changes; reversing target/doc/call recovers entire entry source. Final2476-line genuine independent replay0/133.210s checks28fullcontracts/70closedTYPE+actualopaqueVALUE+inferredTYPE/std3/6nonselfclosures/4exactliteralpairs/8DATArefs/H5clone16966/5positiveproperties/3full-premise countercertificates at default limits. Before274.340/265.281ms; valid rejected2ba1125.758/1428.514ms preserved and repaired by explicit cardinality simp rules; final322.983/305.703ms. Owner independently binds all6captures/12rows by complete actual printed-command payloads to unique canonical commands, exact proof/kernel names, excluding Meta/inclusive wrappers/nested/next/end. Foreign main5121.505/5000.879ms remains original27/final-file failure; mean+115.1755ms/+2.328652%, necessary-call9.467/9.957→32.271/33.620ms and stablehC/hγ disclosed. These scoped passes are not final GLOBAL certification. Owner reviewed952records4919395725bytes52binaryexceptions plus944historical references/explicit aliases; sameworker report-only recovery adds mandatory7Gate/6bResult artifacts without source/compiler/native/profile changes. Finalreport6c7faab5/manifest02c613d4/END392256cb; all raw failures preserved. Actual nativeML/Main/Eval0errors1/4/0warnings, ownerroot/Eval0messages; owner17pins104cacheNOdelta, all38leaf+2ownerbuildgroups freshabsent. Fresh postowner24793compiled availability paths3929104384bytes+4binarypaths match; PACKAGE/setupunion12201 and COREcompiledSUPERSET12592 are separate/notexactloadedclosure. Exact11projectcacheintersection leaves strict24782externalpaths3918200888bytes before/afterequal; prior19 external-label correction is disclosed, no missing hash gate. All7signposts/paperquotes/unknownmetadata/fivehelpers/Main685/4renamequeue unchanged. Owner addendum MainLemma-exists_ne_modByMonic_eq-owner-addendum.md records exact scope/report-artifact/query-label clarifications. Remaining21–27 and all final simplify/cumulative22public+ALLretainedaxioms/import/docs/comments/static/reference/GLOBALallrows+actualrepairs pending.
+Owner fullbuild6.384s THEN separateLeanEval4.959s,both exit0,all17pins immutable;sourceSHA256`0b204a8c710990afeaca6151e06cc381c94a1b7f071ab717a189cfa22cf69e4b`,
+current704lines. Owner rehash/review and sourcefreeze checks pass. All owned processes
+and native requests drained before publication;nextoriginalsub_mem_RSet remains unedited.
+MainLemma finalfile/simplify/completeprofile phases pending. Metadata child changes only
+this checkpoint record,not source or verification inputs.
