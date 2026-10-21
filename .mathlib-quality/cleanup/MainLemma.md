@@ -487,3 +487,20 @@ All worker/compiler/native/profile ownership drained before publication.
 Source/audit publication hash follows in central checkpoint history via metadata child.
 MainLemma21/27 originals,overall237/264,10/14fullycompletedfiles;nexteval_hasseDeriv_sub_eq_zero.
 Filewide final phases remain pending.
+
+
+### Original22: `eval_hasseDeriv_sub_eq_zero`
+
+[Fresh dedicated full audit](MainLemma-eval_hasseDeriv_sub_eq_zero.md):all24audit/42golf/5search/11checklist
+artifacts reviewed by owner. Generalized arbitrary independent-universe variables/CommRing target, same explicit root/congruence order; original finite-real contract/wholeproof recovered. Target11→10decl/7→6proof plus doc1, source699 unchanged;0helpers/callers. Owner read207report lines/821artifacts3.278GB/30runs26inputs; independent28contracts70closedTYPE+opaqueVALUE/std3/6nonselfclosures/4literalpairs/10properties/all32retained and2generatedsimp siblings pass. Exact four-capture/eight-row payload reanchor target138.752/129.650→379.299/343.294ms(4→6roots); foreignmain4907.788/5019.497→5254.537/4981.138, changedhγmean+25.8795ms/mainmean+154.195ms(3.10649%) retained, no thirdsample/globalpass. Owner fresh Root/Eval native complete0messages; post17pins/104cacheNOdelta/24793availability+4binaries exact/strict24782external unchanged; all30leaf+2owner groups absent. Sourcehistory/schema/verifier qualifications and finalfile queues preserved in owner addendum.
+Independent original reimplementation,exact old/current effective contract metadata/value
+and standard-axiom evidence reviewed; complete unfiltered livefile/affectedcaller diagnostics
+and actual affected-module/fullfile validation pass. Actual anchored profile379.299ms;
+required repeats/failed evidence,if any,remain in the dedicated report. Owner verified frozen
+source/evidence and ran fullbuild6.064s THEN separateLeanEval3.044s,both exit0 with all17pins immutable.
+Owner logs:`/private/tmp/roth-mainlemma-owner/original22-owner-full.json` and
+`original22-owner-eval.json`. SourceSHA256`e3c8e950614bc5701b2c82691e7faac9513ff7692c9051da80911a85fc42e37f`;current699lines.
+All worker/compiler/native/profile ownership drained before publication.
+Source/audit publication hash follows in central checkpoint history via metadata child.
+MainLemma22/27 originals,overall238/264,10/14fullycompletedfiles;nextle_index_of_forall_eval_eq_zero.
+Filewide final phases remain pending.

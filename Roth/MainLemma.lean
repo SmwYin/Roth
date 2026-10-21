@@ -438,20 +438,20 @@ theorem sub_mem_RSet {σ : Type*} {r : σ → ℕ} {B : ℕ} {W' W'' : MvPolynom
 
 /-- If `Δ_j W'(x, …, x) ≡ Δ_j W''(x, …, x) mod f` and `f(α) = 0`, then `Δ_j (W' - W'')`
 vanishes at `(α, …, α)`.
+The variables may be arbitrary, and evaluation may take values in any commutative ring.
 
 Source: §6, proof of Lemma 9 ("For all `j` satisfying (44), `Δ_j W^*(x_1, …, x_m)` are zero
 when `x_1 = ⋯ = x_m = α`"). -/
-theorem eval_hasseDeriv_sub_eq_zero {m : ℕ} {f : Polynomial ℤ} {α : ℝ}
-    (hfα : Polynomial.aeval α f = 0) {W' W'' : MvPolynomial (Fin m) ℤ} {j : Fin m →₀ ℕ}
+theorem eval_hasseDeriv_sub_eq_zero {σ : Type*} {S : Type*} [CommRing S] {f : Polynomial ℤ} {α : S}
+    (hfα : Polynomial.aeval α f = 0) {W' W'' : MvPolynomial σ ℤ} {j : σ →₀ ℕ}
     (h : diag (hasseDeriv j W') %ₘ f = diag (hasseDeriv j W'') %ₘ f) :
-    eval (fun _ => α) (hasseDeriv j (map (Int.castRingHom ℝ) (W' - W''))) = 0 := by
+    eval (fun _ ↦ α) (hasseDeriv j (map (Int.castRingHom S) (W' - W''))) = 0 := by
   have hdvd : f ∣ diag (hasseDeriv j (W' - W'')) := by
-    have h1 : diag (hasseDeriv j (W' - W'')) %ₘ f = 0 := by
-      rw [map_sub, diag_sub, Polynomial.sub_modByMonic, h, sub_self]
-    have h2 := Polynomial.dvd_modByMonic_sub (diag (hasseDeriv j (W' - W''))) f
-    rwa [h1, zero_sub, dvd_neg] at h2
-  have h0 := Polynomial.aeval_eq_zero_of_dvd_aeval_eq_zero hdvd hfα
-  rwa [hasseDeriv_map, ← eval_diag, ← algebraMap_int_eq, Polynomial.eval_map_algebraMap]
+    apply Polynomial.dvd_modByMonic_iff_dvd.mp
+    simp [map_sub, diag_sub, Polynomial.sub_modByMonic, h]
+  simpa [hasseDeriv_map, eval_map, ← algebraMap_int_eq, ← aeval_def, diag,
+    MvPolynomial.comp_aeval_apply, Polynomial.aeval_X] using
+    Polynomial.aeval_eq_zero_of_dvd_aeval_eq_zero hdvd hfα
 
 /-- If every Hasse derivative `Δ_d P` with `d` in the box and weight `≤ c` vanishes at `α`,
 then the index of `P` at `α` is at least `c`.

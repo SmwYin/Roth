@@ -25,14 +25,14 @@ Started: 2026-10-14 (America/Chicago).
 
 ## Current status
 
-MainLemma is active:21/27originals complete at the latest published checkpoint;
-overall237/264originals,10/14fullycompletedfiles. Latest:`sub_mem_RSet` after fresh full
+MainLemma is active:22/27originals complete at the latest published checkpoint;
+overall238/264originals,10/14fullycompletedfiles. Latest:`eval_hasseDeriv_sub_eq_zero` after fresh full
 24-item/42-rule/5-method/11-step audit,independent original/type/binder/value/standard-axiom
-checks,complete unfiltered affected diagnostics and actual anchored profile72.239ms.
-Owner fullbuild6.387s THEN separateLeanEval3.234s,both exit0 on immutable17pins.
-Generalized to arbitrary universe variables without finiteness or finite-support assumptions; direct integer bound reduces proof10→4/declaration13→7, source704→699, zero helpers/caller edits. Owner independently verified899artifacts/894historical aliases, actual independent28contracts70closed TYPE+opaqueVALUE/std3 and13properties, all32retained values, four matched payload-bound captures. Target157.313/174.000→68.228/72.239ms; foreignmain4938.174/4901.969→5100.308/5161.856 remains original27/final-file failure, diagnosed without causal claim or thirdsample. Fresh owner Root/Eval unfiltered native complete0messages; post17pins/104cacheNOdelta/24793availability+4binaries exact, strict24782external unchanged; all37leaf+2owner groups absent. Dedicated owner addendum records provenance qualifications and report-only errata; finalfile phases pending. Current source699lines. Next:eval_hasseDeriv_sub_eq_zero. MainLemma filewide final,
+checks,complete unfiltered affected diagnostics and actual anchored profile379.299ms.
+Owner fullbuild6.064s THEN separateLeanEval3.044s,both exit0 on immutable17pins.
+Generalized arbitrary independent-universe variables/CommRing target, same explicit root/congruence order; original finite-real contract/wholeproof recovered. Target11→10decl/7→6proof plus doc1, source699 unchanged;0helpers/callers. Owner read207report lines/821artifacts3.278GB/30runs26inputs; independent28contracts70closedTYPE+opaqueVALUE/std3/6nonselfclosures/4literalpairs/10properties/all32retained and2generatedsimp siblings pass. Exact four-capture/eight-row payload reanchor target138.752/129.650→379.299/343.294ms(4→6roots); foreignmain4907.788/5019.497→5254.537/4981.138, changedhγmean+25.8795ms/mainmean+154.195ms(3.10649%) retained, no thirdsample/globalpass. Owner fresh Root/Eval native complete0messages; post17pins/104cacheNOdelta/24793availability+4binaries exact/strict24782external unchanged; all30leaf+2owner groups absent. Sourcehistory/schema/verifier qualifications and finalfile queues preserved in owner addendum. Current source699lines. Next:le_index_of_forall_eval_eq_zero. MainLemma filewide final,
 independent simplify and complete performance phases remain pending. See
-[MainLemma ledger](cleanup/MainLemma.md) and [latest audit](cleanup/MainLemma-sub_mem_RSet.md).
+[MainLemma ledger](cleanup/MainLemma.md) and [latest audit](cleanup/MainLemma-eval_hasseDeriv_sub_eq_zero.md).
 The exact source/audit commit is recorded in appended checkpoint history by its metadata
 child. Prior fullycompleted-file handoff is preserved below.
 
@@ -167,7 +167,7 @@ Files will be processed in dependency order; declarations within each file are s
 | `Roth/Index.lean` | 275 | All cleanup phases complete;21/21 originals audited; user-approved hypothesis groups applied and validated |
 | `Roth/Separation.lean` | 618 | Complete;30/30 originals and all final phases;source556lines27retained;all12 approved instance amendments validated |
 | `Roth/Theta.lean` | 981 | Complete;35/35 originals and all final file phases;source991lines,50retained |
-| `Roth/MainLemma.lean` | 704 | Active;21/27 originals audited/published;final file phases pending |
+| `Roth/MainLemma.lean` | 704 | Active;22/27 originals audited/published;final file phases pending |
 | `Roth/Main.lean` | 684 | Awaiting cleanup |
 | `Roth/LeanEval.lean` | 60 | Awaiting cleanup |
 | `Roth.lean` | 14 | Awaiting cleanup |
@@ -2858,48 +2858,58 @@ this checkpoint record,not source or verification inputs.
 
 
 <!-- takeover-original8-start -->
-### Current resumable cleanup handoff (original21 publication; original22 next)
+### Current resumable cleanup handoff (original22 publication; original23 next)
 
-MainLemma21/27,overall237/264,10/14completedfiles at this checkpoint. Source/audit actual
-hash is appended by the metadata child below; it is published before22 edits. Source699lines
-SHA78693d6e1c2fe5520fda8825a55224aac0e74ececaa3485fd597a82bd71c9ae0.
-Original21 `sub_mem_RSet` complete: arbitrary variable type/no finiteness condition, proof10→4,
-declaration13→7, no helper/caller edits. All5helpers/32retained declarations, Main685 and queue
-unchanged. Owner reviewed899finalartifacts/894historical aliases,28contracts70closed TYPE+opaque
-VALUE/std3/sixnonselfclosures/13properties/all32retainedvalues, complete actualconsumer inventory,
-all24audit42golf5actualsearch11checks/outer+inner/threeactualqueriesTop3/sevenGate+6b passes.
-Target157.313/174.000→68.228/72.239ms; foreignmain4938.174/4901.969→5100.308/5161.856 remains
-original27/final-file failure. Actual distributed diagnosis retained, no causal claim/thirdsample.
-Owner FULL6.387s THENseparateEval3.234s both0; fresh Root/Evalnative actualargs60 complete
-unfiltered0messages and17pins unchanged. Post104cacheNOdelta/24793actualavailability+4binaries
-exact; strict24782external excludes11projectcachepaths. ALL37leaf+2owner groups freshabsent.
-Report11098c80/manifest a1dff5f9/END24cd14a8, owner addendum and exact private evidence retained.
-MANPATH-only normalAPI delta and actual frozen-parent raw equality, report-only errata aliases,
-39actualnonUTF8files versus312cachecompanion exception-scope labels are explicitly qualified.
+MainLemma22/27,overall238/264,10/14completedfiles at this checkpoint. Actual source/audit
+hash appended by metadata child below, published before23edits. Source699 SHA256
+e3c8e950614bc5701b2c82691e7faac9513ff7692c9051da80911a85fc42e37f.
+Original22 eval_hasseDeriv_sub_eq_zero complete: independent-universe arbitraryσ/CommRingS,
+exactoldFiniteRealcontracts/wholeproofs recovered, samehfα/horder; proof7→6/decl11→10/doc+1,
+0newhelpers/callers/otheredits. All5helpers/32written/Main685/paperquotes/7signpostblocks/queueexact.
+Owner read207report lines/rehashed821artifacts3277587563B/39actualbinaryexceptions/30runs26inputs;
+28contracts70closedTYPE+opaqueVALUE/std3/sixnonselfclosures/fourliteralpregates/eightrefs/10properties/
+all32retained+twoactualgeneratedsimp siblings, all24/42/5/11/everyouterinner/threequeriesTop3/
+sevenGateOverall+6bResult pass. Fourcaptures/eightrows independentfullpayloadreanchor correct;
+target138.752/129.650→379.299/343.294ms(4→6roots), main4907.788/5019.497→5254.537/4981.138(9roots).
+Actual105nestedstepstrings/order match; hγ13.976/13.396→40.647/38.484(+25.8795msmean), mainmean
++154.195ms/+3.10649%; retain change-relatedoverhead and allsamples, no causal dismissal/thirdsample/
+GLOBALmainpass. Generatedsimp/twoindexproof exactqualifiedroots validated, failedinheritedparser
+assumptions retained; allnumeric roots alreadyincluded/no numericalchange. No writtennewhelper.
+Owner FULL6.063723s THENseparateEval3.043506s both0/17pinsimmutable; Root/Eval fresh actualtool/
+filepath/timeout60requests savedbeforecall+actualcompletion/percall17pins, completeunfiltered0messages.
+Post104cacheNOdelta/24793availability3929111696B+fourbinaries exact; strict24782external3918200888B
+excludes11projectcachepaths/beforefinalend exact. All30leaf+2owner groups freshabsent/nativecomplete.
+Report23c61c6b/manifest9b2ae719/END3e9f8290, fullowneraddendum and privateevidence retained.
+Interim7006dc9source is disclosed laterexactreconstruction against actualpriorpins/statichash,
+notbackdated savedsource/performance API. Actualfrozenparentd3e5/all8actualenvs+END699b byteequal;
+freeparentMANPATH-onlydelta raws unequalpreserved. ENDenvcodecheck=True/controlflow verified,
+no syntheticmissinghistoricalexit/toolfields. Ownerfalse schema/float/table parserassumptions
+were rejected/preserved and fixed againstactualsource; no source/proof/timingacceptance shortcut.
 
 Sole file/source/sharedcentral/Git owner `/root/cleanup_continuation/mainlemma_file`; parent
-`/root/cleanup_continuation`, root `/root`. Original21 SAMEleaf sub_mem_rset completed with ALL
-leases explicitly released/drained. Owner retains ALLfile/source/docs/report/sharedlog/Git/
-compiler/native/profile until file completion. No active compiler/native/profile at checkpoint.
-Private recovery `/private/tmp/roth-mainlemma-owner/active_original21_current.json`, owner review
-JSONs and `/private/tmp/roth-mainlemma-sub-mem-rset/`; immutable originals and failed evidence
-preserved. Do not rerun completed gates just because an old handoff field said pending.
+`/root/cleanup_continuation`, root `/root`. Original22leaf eval_hasse_sub completed ALLleases
+explicitlyreleased/drained. Owner retains ALLfile/source/docs/report/sharedlog/Git/compiler/
+native/profile until file completion. No compiler/native/profile pending at this checkpoint.
+Private recovery active_original22_current.json/resume-state-current.json under
+/private/tmp/roth-mainlemma-owner and /private/tmp/roth-mainlemma-eval-hasse-sub/.
 
-NEXT22 `eval_hasseDeriv_sub_eq_zero` remains UNEDITED/UNAUDITED. After sourceA/actualhashmetadataB
-push+freshHEAD=origin=liveremote/CLEAN, dispatch NEWfresh6.1SolMediumfork_none leaf. Read full854
-workerprompt/full112profilerinstructions/46line actual-command-payload-binding20-note underowner,
-and target-specific new context. One leaf only; all compiler/native/profile SERIAL. General sigma/
-commring evaluation are UNCOMPILED prospects in future-audit-notes.md; no accepted22change.
-Current old contract remains Real/Finm. No unnecessary re-audit of completed CoeffNorm API.
-For all new helpers FIRSTUNGOLFEDexactdraft+SHA→partialEND/revoke/drain→NEWfreshhelperaudit→SAME
-originalresume. Ordinaryproof≤30/branches≤10, only6module headlines≤15. Every declaration gets
-all24/42/5/11, outer+everyinner2.6a–e, actual3queriesTop3, immutable genuine original proof+exact
-binder/universe/type/value/axioms/caller recovery, actual fullaffected/full/Eval/native/input and
-matched profile gates. No apply? success accepted without actual opaqueVALUE/std3 check.
-Profiles actual-j1/threshold0 and≥750samefrozenrepeat beforeedits/after; anyvalid>1000target/group
-retained/repaired. Exactqualified command/async/kernel roots and COMPLETEactualpayloadbinding;
-excludeMetaeven0/inclusiveprivatewrappers/nested/next/end, never add nested hotspots. Keep actual
-stdout/stderr separately, rawUTF8/source/config/cache/exe/env hashes; no backdated provenance.
+NEXT23 le_index_of_forall_eval_eq_zero remains UNEDITED/UNAUDITED. After exactsourceA/actualhash
+metadataB push+HEAD=origin=freshliveremote/CLEAN, dispatch NEWfresh6.1SolMediumfork_none leaf.
+Full854workerprompt/full112profilerinstruction/46lineactual-command-payload-binding20-note +
+newtargetcontext/fullskillscommandsrefs required. Oneleaf only; allcompiler/native/profile SERIAL.
+All24audit42golf5ACTUALsearch11checks/everyouter+inner2.6a–e/threeACTUALqueriesTop3 mandatory;
+genuineentireimmutableoriginalproof+effectivebinder/universe/type/value/axiom/caller recovery,
+actualbefore/after17pins104cacheavailability+core/executable/envclosure/fullaffected/fullEval/
+freshunfilterednative, fullreports/seal/drain thenownerreview/build/native/publication eachoriginal.
+NewhelperFIRSTUNGOLFEDdraft+exactcontextSHA→partialEND/revoke/drain→NEWfreshhelperaudit→SAMEoriginal.
+Only6moduleheadlines≤15,ordinary≤30/branches≤10. Futureactualprofiles-j1/threshold0, exactcomplete
+canonicalpayload/disjointqualifiedcommand/async/kernel/lintroots; includeactualgeneratedsimp/
+twoindexproofsiblings once withactualmetadata/sourceabsence checks. ExcludeMetaeven0/inclusive
+wrappers/nested/next/end; no nestedtotals. ≥750samefrozenrepeat BEFOREedits/after; valid>1000own/
+meaningfulgroupfail repair/no unchangedthirdsample. Foreignmain remains27, matchcontrols/diagnose
+realchangedcalloverhead without expanding thatfullaudit. PreservehB1/precountcontext/7signposts.
+No apply? success accepted without actualopaqueVALUE/std3; no NameMap/proofirrelevance/aritymap.
+Allfailedraws/actualUTF8/binaryexceptions/sourcehistories retained, no backdatedprovenance.
 
 After27: FRESH independent whole-file simplify review; assess compiled3line17finiteproof(H4ordermove)
 and actuallyunused private13–16constructor/coeff/inj/range chain only after fullTYPEVALUE/refaudit.
