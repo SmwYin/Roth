@@ -3245,3 +3245,19 @@ current696lines. Owner rehash/review and sourcefreeze checks pass. All owned pro
 and native requests drained before publication;nextoriginallem7_hyp_of_h32 remains unedited.
 MainLemma finalfile/simplify/completeprofile phases pending. Metadata child changes only
 this checkpoint record,not source or verification inputs.
+
+
+### MainLemma original24 checkpoint — lem7_hyp_of_h32
+
+Source/audit commit `6ec43a4d8331975e79bbf0450674974c9b68ff9a`; the following metadata child records and publishes this
+exact checkpoint before the next original edit. MainLemma24/27,overall240/264,
+10/14fullycompletedfiles. [Dedicated audit](cleanup/MainLemma-lem7_hyp_of_h32.md) contains all
+24audit/42golf/5search/11verification steps,exact independent original reimplementation/
+effectivecontract/universe/binder/type/value/standard-axiom evidence,actual affectedmodule/
+fullfile and complete unfiltered native successes. Actual anchored profile204.755ms;
+raw evidence and required repeat/failure history are preserved. Authorized ordered-semifield scalar API removes denominator-sign/log/Nat boilerplate while exact complete original contract is recovered; proof17→8,0newhelpers,5existing helpers byteexact. Owner verified28contracts70closedTYPE+opaqueVALUE/std3,6nonselfclosures,all60actualretained32written28generated/defaults,17properties/NNReal/fullpremisecounters,completeunfilterednative. Matched target719.805/720.953→204.320/204.755ms(−71.60696%mean). Completeforeignmain4964.514/5094.045→5381.177/5157.626(+240.122ms/+4.77448%) remains explicitoriginal27/globalFAIL; changedhΘ+28.110msmean residual,failed4bd/d1/105matchedcontrols/9roots preserved,nozerooverhead/noisedismissal/thirdsample. Manifest28553files7197405397B/26420actualcompiledbinaryexceptions; all57leaf+2owner groups absent. OwnerRoot/Evalnative0messages,current17pins104cacheNOdelta,24793availability+4binaries+790extra/159sources stable,strict24782external3918200888B exact. FifthcontentrenamequeuedafteractualEND; exactpaperquote/7signposts preserved. Allfinalfile/cumulative/simplify/globalperformance phases remain pending.
+Owner fullbuild5.756s THEN separateLeanEval4.306s,both exit0,all17pins immutable;sourceSHA256`cb59bb4129cbf7e353b272f05615b0cfd2193c67177b82100590c3fa84afd056`,
+current692lines. Owner rehash/review and sourcefreeze checks pass. All owned processes
+and native requests drained before publication;nextoriginalexists_hasseDeriv_eval_ne_zero remains unedited.
+MainLemma finalfile/simplify/completeprofile phases pending. Metadata child changes only
+this checkpoint record,not source or verification inputs.
