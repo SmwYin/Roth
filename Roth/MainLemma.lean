@@ -423,23 +423,18 @@ theorem exists_ne_modByMonic_eq {σ : Type*} (r : σ → ℕ) [Finite (Function.
 
 /-- The difference of two distinct members of `𝒲` is a nonzero box polynomial with
 coefficients bounded by `B` in absolute value.
+No finiteness assumption on the variables or the support of the degree bounds is needed.
 
 Source: §6, proof of Lemma 9 ("Also `W^*` is not identically zero, and its coefficients in
 absolute value do not exceed `B_1`"; "Distinct arrays give a nonzero difference with coefficient
 bound `B_1`, not `2 B_1`"). -/
-theorem sub_mem_RSet {m : ℕ} {r : Fin m → ℕ} {B : ℕ} {W' W'' : MvPolynomial (Fin m) ℤ}
+theorem sub_mem_RSet {σ : Type*} {r : σ → ℕ} {B : ℕ} {W' W'' : MvPolynomial σ ℤ}
     (h' : W' ∈ boxFamily r B) (h'' : W'' ∈ boxFamily r B) (hne : W' ≠ W'') :
-    W' - W'' ∈ RSet (B : ℝ) r := by
-  refine ⟨sub_ne_zero.2 hne, fun j => (degreeOf_sub_le j W' W'').trans
-    (max_le (h'.1 j) (h''.1 j)), fun d => ?_⟩
-  obtain ⟨a0, aB⟩ := h'.2 d
-  obtain ⟨b0, bB⟩ := h''.2 d
-  rw [coeff_sub, Int.cast_sub]
-  have a0' : (0 : ℝ) ≤ (W'.coeff d : ℝ) := by exact_mod_cast a0
-  have b0' : (0 : ℝ) ≤ (W''.coeff d : ℝ) := by exact_mod_cast b0
-  have aB' : (W'.coeff d : ℝ) ≤ B := by exact_mod_cast aB
-  have bB' : (W''.coeff d : ℝ) ≤ B := by exact_mod_cast bB
-  exact abs_sub_le_iff.2 ⟨by linarith, by linarith⟩
+    W' - W'' ∈ RSet B r := by
+  refine ⟨sub_ne_zero.2 hne, fun j ↦ (degreeOf_sub_le j W' W'').trans
+    (max_le (h'.1 j) (h''.1 j)), fun d ↦ ?_⟩
+  rw [coeff_sub, ← Int.cast_abs]
+  exact_mod_cast abs_sub_le_of_nonneg_of_le (h'.2 d).1 (h'.2 d).2 (h''.2 d).1 (h''.2 d).2
 
 /-- If `Δ_j W'(x, …, x) ≡ Δ_j W''(x, …, x) mod f` and `f(α) = 0`, then `Δ_j (W' - W'')`
 vanishes at `(α, …, α)`.

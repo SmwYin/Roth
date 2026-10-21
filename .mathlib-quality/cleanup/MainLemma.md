@@ -470,3 +470,20 @@ All worker/compiler/native/profile ownership drained before publication.
 Source/audit publication hash follows in central checkpoint history via metadata child.
 MainLemma20/27 originals,overall236/264,10/14fullycompletedfiles;nextsub_mem_RSet.
 Filewide final phases remain pending.
+
+
+### Original21: `sub_mem_RSet`
+
+[Fresh dedicated full audit](MainLemma-sub_mem_RSet.md):all24audit/42golf/5search/11checklist
+artifacts reviewed by owner. Generalized to arbitrary universe variables without finiteness or finite-support assumptions; direct integer bound reduces proof10→4/declaration13→7, source704→699, zero helpers/caller edits. Owner independently verified899artifacts/894historical aliases, actual independent28contracts70closed TYPE+opaqueVALUE/std3 and13properties, all32retained values, four matched payload-bound captures. Target157.313/174.000→68.228/72.239ms; foreignmain4938.174/4901.969→5100.308/5161.856 remains original27/final-file failure, diagnosed without causal claim or thirdsample. Fresh owner Root/Eval unfiltered native complete0messages; post17pins/104cacheNOdelta/24793availability+4binaries exact, strict24782external unchanged; all37leaf+2owner groups absent. Dedicated owner addendum records provenance qualifications and report-only errata; finalfile phases pending.
+Independent original reimplementation,exact old/current effective contract metadata/value
+and standard-axiom evidence reviewed; complete unfiltered livefile/affectedcaller diagnostics
+and actual affected-module/fullfile validation pass. Actual anchored profile72.239ms;
+required repeats/failed evidence,if any,remain in the dedicated report. Owner verified frozen
+source/evidence and ran fullbuild6.387s THEN separateLeanEval3.234s,both exit0 with all17pins immutable.
+Owner logs:`/private/tmp/roth-mainlemma-owner/original21-owner-full.json` and
+`original21-owner-eval.json`. SourceSHA256`78693d6e1c2fe5520fda8825a55224aac0e74ececaa3485fd597a82bd71c9ae0`;current699lines.
+All worker/compiler/native/profile ownership drained before publication.
+Source/audit publication hash follows in central checkpoint history via metadata child.
+MainLemma21/27 originals,overall237/264,10/14fullycompletedfiles;nexteval_hasseDeriv_sub_eq_zero.
+Filewide final phases remain pending.

@@ -25,14 +25,14 @@ Started: 2026-10-14 (America/Chicago).
 
 ## Current status
 
-MainLemma is active:20/27originals complete at the latest published checkpoint;
-overall236/264originals,10/14fullycompletedfiles. Latest:`exists_ne_modByMonic_eq` after fresh full
+MainLemma is active:21/27originals complete at the latest published checkpoint;
+overall237/264originals,10/14fullycompletedfiles. Latest:`sub_mem_RSet` after fresh full
 24-item/42-rule/5-method/11-step audit,independent original/type/binder/value/standard-axiom
-checks,complete unfiltered affected diagnostics and actual anchored profile322.983ms.
-Owner fullbuild6.384s THEN separateLeanEval4.959s,both exit0 on immutable17pins.
-Arbitrary variable types with finite-support degree bounds and a finite product replace the finite-index restriction; low-degree-only coefficient bounds are equivalent under monicity/C:Nat, with the common distinct pair preserved. Public proof35→14/declaration41→21; published721→704source lines, no new helper, five separately audited helpers/32written declarations. Only the necessary main call changes; reversing target/doc/call recovers entire entry source. Final2476-line genuine independent replay0/133.210s checks28fullcontracts/70closedTYPE+actualopaqueVALUE+inferredTYPE/std3/6nonselfclosures/4exactliteralpairs/8DATArefs/H5clone16966/5positiveproperties/3full-premise countercertificates at default limits. Before274.340/265.281ms; valid rejected2ba1125.758/1428.514ms preserved and repaired by explicit cardinality simp rules; final322.983/305.703ms. Owner independently binds all6captures/12rows by complete actual printed-command payloads to unique canonical commands, exact proof/kernel names, excluding Meta/inclusive wrappers/nested/next/end. Foreign main5121.505/5000.879ms remains original27/final-file failure; mean+115.1755ms/+2.328652%, necessary-call9.467/9.957→32.271/33.620ms and stablehC/hγ disclosed. These scoped passes are not final GLOBAL certification. Owner reviewed952records4919395725bytes52binaryexceptions plus944historical references/explicit aliases; sameworker report-only recovery adds mandatory7Gate/6bResult artifacts without source/compiler/native/profile changes. Finalreport6c7faab5/manifest02c613d4/END392256cb; all raw failures preserved. Actual nativeML/Main/Eval0errors1/4/0warnings, ownerroot/Eval0messages; owner17pins104cacheNOdelta, all38leaf+2ownerbuildgroups freshabsent. Fresh postowner24793compiled availability paths3929104384bytes+4binarypaths match; PACKAGE/setupunion12201 and COREcompiledSUPERSET12592 are separate/notexactloadedclosure. Exact11projectcacheintersection leaves strict24782externalpaths3918200888bytes before/afterequal; prior19 external-label correction is disclosed, no missing hash gate. All7signposts/paperquotes/unknownmetadata/fivehelpers/Main685/4renamequeue unchanged. Owner addendum MainLemma-exists_ne_modByMonic_eq-owner-addendum.md records exact scope/report-artifact/query-label clarifications. Remaining21–27 and all final simplify/cumulative22public+ALLretainedaxioms/import/docs/comments/static/reference/GLOBALallrows+actualrepairs pending. Current source704lines. Next:sub_mem_RSet. MainLemma filewide final,
+checks,complete unfiltered affected diagnostics and actual anchored profile72.239ms.
+Owner fullbuild6.387s THEN separateLeanEval3.234s,both exit0 on immutable17pins.
+Generalized to arbitrary universe variables without finiteness or finite-support assumptions; direct integer bound reduces proof10→4/declaration13→7, source704→699, zero helpers/caller edits. Owner independently verified899artifacts/894historical aliases, actual independent28contracts70closed TYPE+opaqueVALUE/std3 and13properties, all32retained values, four matched payload-bound captures. Target157.313/174.000→68.228/72.239ms; foreignmain4938.174/4901.969→5100.308/5161.856 remains original27/final-file failure, diagnosed without causal claim or thirdsample. Fresh owner Root/Eval unfiltered native complete0messages; post17pins/104cacheNOdelta/24793availability+4binaries exact, strict24782external unchanged; all37leaf+2owner groups absent. Dedicated owner addendum records provenance qualifications and report-only errata; finalfile phases pending. Current source699lines. Next:eval_hasseDeriv_sub_eq_zero. MainLemma filewide final,
 independent simplify and complete performance phases remain pending. See
-[MainLemma ledger](cleanup/MainLemma.md) and [latest audit](cleanup/MainLemma-exists_ne_modByMonic_eq.md).
+[MainLemma ledger](cleanup/MainLemma.md) and [latest audit](cleanup/MainLemma-sub_mem_RSet.md).
 The exact source/audit commit is recorded in appended checkpoint history by its metadata
 child. Prior fullycompleted-file handoff is preserved below.
 
@@ -167,7 +167,7 @@ Files will be processed in dependency order; declarations within each file are s
 | `Roth/Index.lean` | 275 | All cleanup phases complete;21/21 originals audited; user-approved hypothesis groups applied and validated |
 | `Roth/Separation.lean` | 618 | Complete;30/30 originals and all final phases;source556lines27retained;all12 approved instance amendments validated |
 | `Roth/Theta.lean` | 981 | Complete;35/35 originals and all final file phases;source991lines,50retained |
-| `Roth/MainLemma.lean` | 704 | Active;20/27 originals audited/published;final file phases pending |
+| `Roth/MainLemma.lean` | 704 | Active;21/27 originals audited/published;final file phases pending |
 | `Roth/Main.lean` | 684 | Awaiting cleanup |
 | `Roth/LeanEval.lean` | 60 | Awaiting cleanup |
 | `Roth.lean` | 14 | Awaiting cleanup |
@@ -2858,66 +2858,48 @@ this checkpoint record,not source or verification inputs.
 
 
 <!-- takeover-original8-start -->
-### Current resumable cleanup handoff (original20 checkpoint boundary)
+### Current resumable cleanup handoff (original21 publication; original22 next)
 
-Read Current status and latest appended actual source/audit hash first. Prepared checkpoint:
-MainLemma20/27, overall236/264,10/14fullycompletedfiles; actual source/audit publication is
-recorded by its metadata child before original21. Next21 `sub_mem_RSet` is unedited/not
-delegated at this boundary. Sole file/source/shared-progress/Git owner
-`/root/cleanup_continuation/mainlemma_file`, parent `/root/cleanup_continuation`, root `/root`.
-Original20 leaf explicitly END/all source/doc/caller/report/compiler/native/profile leases
-released. All38 leaf plus2owner builds freshly absent; every native request complete.
-Owner retains full unfinished-file ownership. Parent handles Main/Eval/root only after ALL
-MainLemma final gates and explicit release. Private current state:
-`/private/tmp/roth-mainlemma-owner/active_original20_current.json`; older fields/history remain.
+MainLemma21/27,overall237/264,10/14completedfiles at this checkpoint. Source/audit actual
+hash is appended by the metadata child below; it is published before22 edits. Source699lines
+SHA78693d6e1c2fe5520fda8825a55224aac0e74ececaa3485fd597a82bd71c9ae0.
+Original21 `sub_mem_RSet` complete: arbitrary variable type/no finiteness condition, proof10→4,
+declaration13→7, no helper/caller edits. All5helpers/32retained declarations, Main685 and queue
+unchanged. Owner reviewed899finalartifacts/894historical aliases,28contracts70closed TYPE+opaque
+VALUE/std3/sixnonselfclosures/13properties/all32retainedvalues, complete actualconsumer inventory,
+all24audit42golf5actualsearch11checks/outer+inner/threeactualqueriesTop3/sevenGate+6b passes.
+Target157.313/174.000→68.228/72.239ms; foreignmain4938.174/4901.969→5100.308/5161.856 remains
+original27/final-file failure. Actual distributed diagnosis retained, no causal claim/thirdsample.
+Owner FULL6.387s THENseparateEval3.234s both0; fresh Root/Evalnative actualargs60 complete
+unfiltered0messages and17pins unchanged. Post104cacheNOdelta/24793actualavailability+4binaries
+exact; strict24782external excludes11projectcachepaths. ALL37leaf+2owner groups freshabsent.
+Report11098c80/manifest a1dff5f9/END24cd14a8, owner addendum and exact private evidence retained.
+MANPATH-only normalAPI delta and actual frozen-parent raw equality, report-only errata aliases,
+39actualnonUTF8files versus312cachecompanion exception-scope labels are explicitly qualified.
 
-Current ML704lines SHA0b204a8c710990afeaca6151e06cc381c94a1b7f071ab717a189cfa22cf69e4b;
-Main685unchanged5f384557dccacaec469699cc7d32bd5666c9d525267e00433b7ae401fee98d09.
-Original20 arbitraryσ/finite-support degree bounds/finprod and low-degree coefficient premise;
-that premise equivalent under monicity/C:Nat, not a strict logical weakening. Common pair
-preserved. Proof35→14/decl41→21/source721→704, no helper. Five separately freshly audited
-helpers/32written declarations, no264inflation. Only necessary maincall changed; reverse target/
-doc/call recovers entire entry721source exact. Preserve hB1/order/precountcontext, all7signposts,
-paperquotes/unknownmetadata/fivehelpers/Main/fourrenamequeue. H5exact98c198fa remains unchanged.
-[Original20 report](cleanup/MainLemma-exists_ne_modByMonic_eq.md)6c7faab5;
-[owner addendum](cleanup/MainLemma-exists_ne_modByMonic_eq-owner-addendum.md)6f4f2630.
-Finalmanifest02c613d4:952records4919395725bytes52binaryexceptions; END392256cb.
-Sameworker report-only recovery supplied mandatory7Gate/6bResult artifacts; old8ac/7ac/7ec
-sealedbundle and944actualhistoricalreferences via explicit aliases retained. No source/compiler/
-native/profile reruns in recovery. Actual30inputhashrefs/38runners/foursourcephases/seven17pin
-snapshotroots reviewed. Query1actual “lemma 9” spacing differs humanlabel only; raw3queries/9URLs
-verified. Finalactual2476lineindependent eea73d7c whole0/133.210s:28fullcontracts/70closedTYPE+
-actualopaqueVALUE/inferredTYPE/std3/6genuinenonselfclosures/4exactliteralTYPE+VALUEpregates/8DATArefs/
-H5clone16966/5positive/3full-premise counters. Whole original704/entry721/selected704 bodies exact.
-OnlynamedDATA/restrictedspineβ/bothgeneratedhygiene; no writtenbinder normalization, proofirrelevance
-or NameMap. Default200000/20000/512. apply? can admit despite0goals: actualopaqueVALUE/std3 required.
+Sole file/source/sharedcentral/Git owner `/root/cleanup_continuation/mainlemma_file`; parent
+`/root/cleanup_continuation`, root `/root`. Original21 SAMEleaf sub_mem_rset completed with ALL
+leases explicitly released/drained. Owner retains ALLfile/source/docs/report/sharedlog/Git/
+compiler/native/profile until file completion. No active compiler/native/profile at checkpoint.
+Private recovery `/private/tmp/roth-mainlemma-owner/active_original21_current.json`, owner review
+JSONs and `/private/tmp/roth-mainlemma-sub-mem-rset/`; immutable originals and failed evidence
+preserved. Do not rerun completed gates just because an old handoff field said pending.
 
-Before274.340/265.281ms; validrejected2ba1125.758/1428.514ms preserved/repaired, no unchangedthird.
-Final322.983/305.703ms after explicitcardinality simp repair. Foreign main5121.505/5000.879ms remains
-original27FAIL (mean+115.1755ms/+2.328652%); call9.467/9.957→32.271/33.620ms, hC662/644,hγ13.475/13.431.
-Owner reanchored6captures/12rows: completeactualprintedpayload uniquely matches immutablecanonical
-command after actual layout/commentprettyprintingexceptions only; exactqualifiedproof/kernelnames,
-excludeMetaeven0/inclusiveprivatewrappers/nested/next/end. Preserve rawpayloads/hashes; nestedhotspot
-costs notadded. Scope is declaration-scoped, NOT finalwhole-fileGLOBAL certification.
-OwnerFULL6.384248708s THEN separateEval4.958792209s0; freshunfilteredroot/Eval0messages; ML/Main/Eval
-0errors1/4/0preservedwarnings.17pins104cacheNOdelta; all40groupsabsent. Freshpostowneractual24793
-compiledavailabilitypaths3929104384bytes+4binarypaths match. PACKAGE/setupunion12201 and COREsuperset
-12592 separate/notexactloadedclosure; exact11projectcacheintersection leaves strict24782external/
-3918200888bytes unchangedbeforeafter. Prior19“external24793” labeloverbroad, actualallhashes passed.
-PinnedLake/Lean executables separate from Elanproxies. ActualrawLakeenvpairs byteequalA016.
-
-Remaining21–27 NEWdedicated gpt-6.1-sol/medium/fork_none originals AND introducedhelpers, oneleaf;
-recover SAME interruptedworker, no duplicates/modelchange. Serialize ALL compiler/native/profile.
-FULL installedskills/cleanup.md/cleanup-all.md/buzz.md/mandatoryrefs plus FULL854prompt/FULL112scope
-instructions AND46line actual-command-payload-binding20-note.md required. All24audit/42golf/5ACTUAL
-search/11checks/outer+inner2.6a–e/3queriesTOP3each; report MUSTinclude7GateStatus+6bResultSummary.
-Helper FIRSTUNGOLFEDdraft+fullcontextSHA beforegolf→partialEND/drain→FRESHhelperaudit→SAMEoriginal
-resume beforefinalAFTER. Only6moduleheadlineproofs≤15;ordinary≤30/branches≤10. CLI-j1 --profile
--Dtrace.profiler=true -Dtrace.profiler.threshold=0 samefrozencanonical/scope/options, actualsource/
-scaffold/fullpayloadmatching;≥750repeatBEFOREedits andafter, anyvalid>1000repair/nothirdcherrypick.
-BeforeAPI/profile fresh17pins104cache+copies/setup/directdeps/PACKAGE+CORE/actualLake+Lean+proxies;
-actualTYPE+opaqueVALUE consumeraudit. Each original freeze/drain→ownerFULL THEN separateEval→fresh
-unfilterednative→actualsourceA+metadataB/pushHEADoriginfreshremoteclean BEFOREnextoriginal.
+NEXT22 `eval_hasseDeriv_sub_eq_zero` remains UNEDITED/UNAUDITED. After sourceA/actualhashmetadataB
+push+freshHEAD=origin=liveremote/CLEAN, dispatch NEWfresh6.1SolMediumfork_none leaf. Read full854
+workerprompt/full112profilerinstructions/46line actual-command-payload-binding20-note underowner,
+and target-specific new context. One leaf only; all compiler/native/profile SERIAL. General sigma/
+commring evaluation are UNCOMPILED prospects in future-audit-notes.md; no accepted22change.
+Current old contract remains Real/Finm. No unnecessary re-audit of completed CoeffNorm API.
+For all new helpers FIRSTUNGOLFEDexactdraft+SHA→partialEND/revoke/drain→NEWfreshhelperaudit→SAME
+originalresume. Ordinaryproof≤30/branches≤10, only6module headlines≤15. Every declaration gets
+all24/42/5/11, outer+everyinner2.6a–e, actual3queriesTop3, immutable genuine original proof+exact
+binder/universe/type/value/axioms/caller recovery, actual fullaffected/full/Eval/native/input and
+matched profile gates. No apply? success accepted without actual opaqueVALUE/std3 check.
+Profiles actual-j1/threshold0 and≥750samefrozenrepeat beforeedits/after; anyvalid>1000target/group
+retained/repaired. Exactqualified command/async/kernel roots and COMPLETEactualpayloadbinding;
+excludeMetaeven0/inclusiveprivatewrappers/nested/next/end, never add nested hotspots. Keep actual
+stdout/stderr separately, rawUTF8/source/config/cache/exe/env hashes; no backdated provenance.
 
 After27: FRESH independent whole-file simplify review; assess compiled3line17finiteproof(H4ordermove)
 and actuallyunused private13–16constructor/coeff/inj/range chain only after fullTYPEVALUE/refaudit.
