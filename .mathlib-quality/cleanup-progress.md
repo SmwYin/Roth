@@ -3183,3 +3183,19 @@ current704lines. Owner rehash/review and sourcefreeze checks pass. All owned pro
 and native requests drained before publication;nextoriginalsub_mem_RSet remains unedited.
 MainLemma finalfile/simplify/completeprofile phases pending. Metadata child changes only
 this checkpoint record,not source or verification inputs.
+
+
+### MainLemma original21 checkpoint — sub_mem_RSet
+
+Source/audit commit `dbda728e537311ba08046fb76c62a1ce6e42102e`; the following metadata child records and publishes this
+exact checkpoint before the next original edit. MainLemma21/27,overall237/264,
+10/14fullycompletedfiles. [Dedicated audit](cleanup/MainLemma-sub_mem_RSet.md) contains all
+24audit/42golf/5search/11verification steps,exact independent original reimplementation/
+effectivecontract/universe/binder/type/value/standard-axiom evidence,actual affectedmodule/
+fullfile and complete unfiltered native successes. Actual anchored profile72.239ms;
+raw evidence and required repeat/failure history are preserved. Arbitrary variable type without finiteness/support assumptions; target proof10→4/declaration13→7, source704→699, no helper/caller edits. Full owner evidence review899artifacts/894historical references,28contracts70closed TYPE+opaqueVALUE/std3/sixnonselfclosures/13properties/all32retainedvalues. Matched target157.313/174.000→68.228/72.239ms. Foreignmain4938.174/4901.969→5100.308/5161.856 remains original27/final-file failure, distributed diagnosis retained/no causal claim or thirdsample. Owner fresh Root/Eval native complete unfiltered0messages;104cacheNOdelta/24793availability+4binaries exact/strict24782external unchanged; all39groups absent. Report-only errata and actual provenance qualifications documented in owner addendum. Original22 and all final file phases pending.
+Owner fullbuild6.387s THEN separateLeanEval3.234s,both exit0,all17pins immutable;sourceSHA256`78693d6e1c2fe5520fda8825a55224aac0e74ececaa3485fd597a82bd71c9ae0`,
+current699lines. Owner rehash/review and sourcefreeze checks pass. All owned processes
+and native requests drained before publication;nextoriginaleval_hasseDeriv_sub_eq_zero remains unedited.
+MainLemma finalfile/simplify/completeprofile phases pending. Metadata child changes only
+this checkpoint record,not source or verification inputs.
