@@ -360,50 +360,36 @@ theorem ncard_boxFamily {σ : Type*} (r : σ → ℕ) [Finite (Function.support 
   exact (finprod_eq_prod_of_mulSupport_subset _ fun j hj ↦ by
     simpa [Finsupp.ofSupportFinite_support, Function.support, Function.mulSupport] using hj).symm
 
-/-- If `B > 1`, `c > 1` and `c n D ≤ N / 2`, then `(2⌊B^c⌋ + 1)^{nD} < (B + 1)^N`.
+private lemma floor_rpow_count_lt_aux {x c : ℝ} (hx : 0 < x) (hc : 1 ≤ c) :
+    ((2 * ⌊x ^ c⌋₊ + 1 : ℕ) : ℝ) < (x + 1) ^ (2 * c) := by
+  have hu : 0 < x ^ c := Real.rpow_pos_of_pos hx c
+  have hsum : x ^ c + 1 ≤ (x + 1) ^ c := by
+    simpa using Real.add_rpow_le_rpow_add hx.le zero_le_one hc
+  rw [mul_comm 2 c, Real.rpow_mul (by positivity), Real.rpow_two]
+  push_cast
+  nlinarith only [pow_le_pow_left₀ (by positivity) hsum 2, sq_pos_of_pos hu, Nat.floor_le hu.le]
+
+/-- For positive real `B`, positive `N`, `1 ≤ c` and `c n D ≤ N / 2`, the remainder count is
+below `(B + 1)^N`. Natural coefficient bounds specialize by coercion.
 
 Source: §6, proof of Lemma 9 ("`1 + 2B_1^c < [2(1+B_1)]^c` ... `(1 + 2B_1^c)^{nD} <
 (1+B_1)^r`"). -/
-theorem pigeonhole_count {B : ℕ} (hB : 1 < B) {c : ℝ} (hc : 1 < c) {n D N : ℕ} (hN : 0 < N)
-    (hD : c * n * D ≤ N / 2) :
-    ((2 * ⌊(B : ℝ) ^ c⌋₊ + 1 : ℕ) : ℝ) ^ (n * D) < ((B : ℝ) + 1) ^ N := by
-  have hB1 : (1 : ℝ) < B := by exact_mod_cast hB
-  have hB0 : (0 : ℝ) ≤ B := by linarith
-  set Y : ℝ := 2 * (1 + B) with hY
-  have hY1 : 1 ≤ Y := by linarith
-  have hBc : (0 : ℝ) ≤ (B : ℝ) ^ c := by positivity
+theorem pigeonhole_count {B : ℝ} (hB : 0 < B) {c : ℝ} (hc : 1 ≤ c) {n D N : ℕ} (hN : 0 < N)
+    (hD : c * n * D ≤ N / 2) : ((2 * ⌊B ^ c⌋₊ + 1 : ℕ) : ℝ) ^ (n * D) < (B + 1) ^ N := by
+  -- The source sets Y = 2(1+B) and uses the intermediate estimate
   -- `2⌊B^c⌋ + 1 < Y^c`
-  have hK : ((2 * ⌊(B : ℝ) ^ c⌋₊ + 1 : ℕ) : ℝ) ≤ Y ^ c := by
-    have h1 : ((2 * ⌊(B : ℝ) ^ c⌋₊ + 1 : ℕ) : ℝ) ≤ 1 + 2 * (B : ℝ) ^ c := by
+  -- The helper instead bounds the count directly by `(B + 1)^(2c)`.
+  by_cases hk : n * D = 0
+  · simpa [hk] using one_lt_pow₀ (by linarith) hN.ne'
+  calc
+    _ < ((B + 1) ^ (2 * c)) ^ (n * D) :=
+      pow_lt_pow_left₀ (floor_rpow_count_lt_aux hB hc) (Nat.cast_nonneg _) hk
+    _ = (B + 1) ^ (2 * c * (n * D : ℕ)) := (Real.rpow_mul_natCast (by positivity) _ _).symm
+    _ ≤ (B + 1) ^ N := by
+      rw [← Real.rpow_natCast]
+      apply Real.rpow_le_rpow_of_exponent_le (by linarith)
       push_cast
-      linarith [Nat.floor_le hBc]
-    have h2 : (1 : ℝ) + (B : ℝ) ^ c ≤ (1 + B) ^ c := by
-      have := Real.add_rpow_le_rpow_add zero_le_one hB0 hc.le
-      rwa [Real.one_rpow] at this
-    have h3 : (2 : ℝ) ≤ 2 ^ c := by
-      have := Real.rpow_le_rpow_of_exponent_le (by norm_num : (1 : ℝ) ≤ 2) hc.le
-      rwa [Real.rpow_one] at this
-    have h4 : (0 : ℝ) ≤ (1 + B) ^ c := by positivity
-    rw [hY, Real.mul_rpow (by norm_num) (by linarith)]
-    nlinarith
-  have hK0 : (0 : ℝ) ≤ ((2 * ⌊(B : ℝ) ^ c⌋₊ + 1 : ℕ) : ℝ) := Nat.cast_nonneg _
-  have hN : (0 : ℝ) < N := by exact_mod_cast hN
-  calc ((2 * ⌊(B : ℝ) ^ c⌋₊ + 1 : ℕ) : ℝ) ^ (n * D) ≤ (Y ^ c) ^ (n * D) :=
-        pow_le_pow_left₀ hK0 hK _
-    _ = Y ^ (c * (n * D : ℕ)) := (Real.rpow_mul_natCast (by linarith) _ _).symm
-    _ ≤ Y ^ ((N : ℝ) / 2) := by
-        apply Real.rpow_le_rpow_of_exponent_le hY1
-        push_cast
-        linarith
-    _ < (((B : ℝ) + 1) ^ 2) ^ ((N : ℝ) / 2) := by
-        apply Real.rpow_lt_rpow (by linarith) _ (by positivity)
-        nlinarith
-    _ = ((B : ℝ) + 1) ^ N := by
-        rw [← Real.rpow_natCast ((B : ℝ) + 1) 2, ← Real.rpow_mul (by linarith),
-          ← Real.rpow_natCast ((B : ℝ) + 1) N]
-        congr 1
-        push_cast
-        ring
+      linarith only [hD]
 
 /-- Pigeonhole: if the remainders mod `f` of the diagonal Hasse derivatives `Δ_j W(x, …, x)`,
 `j ∈ J`, have coefficients bounded by `C` and `(2C + 1)^{(deg f) |J|} < (B + 1)^N`, then two
@@ -681,7 +667,8 @@ theorem main_lemma {α : ℝ} {f : Polynomial ℤ} (hf : f.Monic) (hfα : Polyno
           rw [lam]
           field_simp
           ring
-  have hcount := pigeonhole_count hB1 (by linarith : (1 : ℝ) < 1 + 3 * δ) hNpos hD
+  have hcount := pigeonhole_count (Nat.cast_pos.2 (Nat.zero_lt_one.trans hB1))
+    (by linarith : 1 ≤ 1 + 3 * δ) hNpos hD
   obtain ⟨W', hW', W'', hW'', hne, hWeq⟩ := exists_ne_modByMonic_eq r B hf J Cn hC hcount
   -- `W* = W' - W''`
   have hWR := sub_mem_RSet hW' hW'' hne

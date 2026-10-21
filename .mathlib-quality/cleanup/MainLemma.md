@@ -434,3 +434,22 @@ MainLemma18/27 originals,overall234/264,10/14fullycompletedfiles;nextpigeonhole_
 Filewide final phases remain pending.
 
 [Separate fresh helper4 audit](MainLemma-helper-boxFamily_eq_image_finsupp_aux.md) preserves its initial/final contract, raw failures and provenance recovery. The introduced helper does not change the264-original count.
+
+
+### Original19: `pigeonhole_count`
+
+[Fresh dedicated full audit](MainLemma-pigeonhole_count.md):all24audit/42golf/5search/11checklist
+artifacts reviewed by owner. The strict counting bound now permits positive real B and c≥1; exact original natural-B/c>1 contract recovery and the entire genuine original/current main caller passed. Public proof37→14lines/declaration40→16; published734→721source lines, with separately freshly audited helper5 (8declaration/6prooflines, exact98c198fa) and only a necessary two-line caller update. Original hB1/order/entire pre-count context, all7signposts/paper quote/Main685/old4helpers/renamequeue remain exact. Five separately audited helpers/32retained written declarations add no264credit. Final2485-line independent replay exit0/226.389s checks28fullcontracts/70closedTYPE+actualopaqueVALUE+inferredTYPE/std3/50distinctconstants/6old-entry-selectednonselfclosures/13publicproperties/5full-premise countercertificates/exactfinalH5clone16966 at default limits. Four inventoried compiler-literal pairs receive exact TYPE+VALUE AST pregates before namedDATA-only expansion; all failed harness/cast/automation/partial-sorry evidence remains rejected/preserved. Matched declaration-scoped public1034.480/1014.405→179.463/176.595ms; meaningful helper/public1181.112/1158.710→344.114/330.658ms. Superseded hB1-removal caller regression was repaired by restoring exact context; hC661.532/653.008 and hγ13.672/13.800 recovered. Whole foreign main5146.495/4950.274ms remains the original27budget failure; mean+109.3625ms/+2.214254% and every sample are disclosed. Scoped passes are not final whole-file GLOBAL certification. Owner checked1418 original19records1600735625bytes78binaryexceptions36externaltexts plus historical helper915records with an explicit old3fdsource snapshot alias; allactual24793compiled inputs3929168768bytes+4binarypaths/postownerhashes match. PACKAGE/setupunion12201 and COREcompiledSUPERSET12592 are separate scopes, neither exactloadedclosure. Fresh unfiltered ML/Main/Eval0errors1/4/0preservedwarnings; owner root/Eval0messages. Owner17pins104cacheNOdelta; all75historical/helper/original19groups+2ownerbuildgroups absent. Owner addendum MainLemma-pigeonhole_count-owner-addendum.md preserves scope/historical-input clarifications and independent evidence. Remaining20–27 and all final simplify/cumulative22public+ALLretainedaxioms/import/docs/comments/static/reference/GLOBALallrows+repairs remain pending; four project-end renames unchanged. Root supplied CI39497338608@d953155 retry SUCCESS after preserved initialElanSSL35 failure, historical evidence only, no latest-source CI claim or version/workflow edits.
+Independent original reimplementation,exact old/current effective contract metadata/value
+and standard-axiom evidence reviewed; complete unfiltered livefile/affectedcaller diagnostics
+and actual affected-module/fullfile validation pass. Actual anchored profile179.463ms;
+required repeats/failed evidence,if any,remain in the dedicated report. Owner verified frozen
+source/evidence and ran fullbuild6.004s THEN separateLeanEval3.077s,both exit0 with all17pins immutable.
+Owner logs:`/private/tmp/roth-mainlemma-owner/original19-owner-full.json` and
+`original19-owner-eval.json`. SourceSHA256`5622adfc4372f9e84ee0239f2c14a1b810649a8a83fd7c3fe6b6691a44e18731`;current721lines.
+All worker/compiler/native/profile ownership drained before publication.
+Source/audit publication hash follows in central checkpoint history via metadata child.
+MainLemma19/27 originals,overall235/264,10/14fullycompletedfiles;nextexists_ne_modByMonic_eq.
+Filewide final phases remain pending.
+
+[Owner review and publication addendum](MainLemma-pigeonhole_count-owner-addendum.md) preserves scoped-profile and historical-input clarifications.

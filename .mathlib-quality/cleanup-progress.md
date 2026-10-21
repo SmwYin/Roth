@@ -25,14 +25,14 @@ Started: 2026-10-14 (America/Chicago).
 
 ## Current status
 
-MainLemma is active:18/27originals complete at the latest published checkpoint;
-overall234/264originals,10/14fullycompletedfiles. Latest:`ncard_boxFamily` after fresh full
+MainLemma is active:19/27originals complete at the latest published checkpoint;
+overall235/264originals,10/14fullycompletedfiles. Latest:`pigeonhole_count` after fresh full
 24-item/42-rule/5-method/11-step audit,independent original/type/binder/value/standard-axiom
-checks,complete unfiltered affected diagnostics and actual anchored profile55.913ms.
-Owner fullbuild5.583s THEN separateLeanEval2.788s,both exit0 on immutable17pins.
-ncard_boxFamily now counts arbitrary-universe variable types with Finite(Function.support r), using the standard finprod formula; an exact old Finm-product adapter and unchanged whole caller contract pass. Public proof2→6lines/8declarationlines; separately fresh-audited helper4 has14proof/19declarationlines and exact8e541df5 hash. Only own public doc, authorized added12sentence, defining Finprod import and necessary caller specialization rewrite change alongside that helper; Main685lines and old3helpers/queue/7signposts/prose remain exact. Genuine original eight declarations plus entire published17 entry and audited final helper are byte-exact independent clones: wholeV3 exit0/335.618s,19full rawAST/binder/order/BI/universe contracts,54closedTYPE+actualopaqueVALUE/inferredTYPE/std3 checks,16oldnonselfclosures,10actualproperty/countercertificates and helpernonself5729 pass. V1/V2 verification-harness failures remain wholly rejected/preserved. Matched count20.499→55.913ms; helper166.314→159.934, consumer280.309→269.328, helper+count186.813→215.847, entire467.122→485.175ms, allbelow750/no repeats/no speedupclaim. Owner independently reanchored all6rows using full outer Classical wrapper and excluding2inclusive expansion commands; actual same-source/config/CLI roots preserved. Owner checked1625files516725560bytes117binaryexceptions and all24793actual package/core refs3929236352bytes, separating package/setupunion12201/1803613128 from pinned-core compiledSUPERSET12592/2125623224; neither is exactloadedclosure. Actual distinct pinnedLake/Lean and Elan proxies agree across3observations. Raw environment differs only capture-context SHLVL1→2, explicitly disclosed without byte-equalclaim. All46initial/helper/resumed groups and owner7091/7113 absent; fresh fullML/Main/Evalnative0errors1/4/0oldwarnings and ownerroot/Evalnative0messages. Owner17pins104cacheNOdelta and fresh post-gate external/binary hashes exact. Four freshly audited helpers/31retained written declarations, no264inflation. Final-fresh-review queue: compiled3line17finite proof needs helper-order move; unused private injectivity/range and internal constructor chain remain unpruned. GLOBALdelta/pigeon/main failures, cumulative22originalpublic+ALLretainedaxioms and all final file phases remain pending. All4renames stay for project-end SINGLEpass. RootCI39497338608@d953155 failed before codecheck on pinnedLean Linux download SSL35; root rerun remains pending per supplied status, with no source/version/workflow edit. Entry708→current734lines. Next:pigeonhole_count. MainLemma filewide final,
+checks,complete unfiltered affected diagnostics and actual anchored profile179.463ms.
+Owner fullbuild6.004s THEN separateLeanEval3.077s,both exit0 on immutable17pins.
+The strict counting bound now permits positive real B and c≥1; exact original natural-B/c>1 contract recovery and the entire genuine original/current main caller passed. Public proof37→14lines/declaration40→16; published734→721source lines, with separately freshly audited helper5 (8declaration/6prooflines, exact98c198fa) and only a necessary two-line caller update. Original hB1/order/entire pre-count context, all7signposts/paper quote/Main685/old4helpers/renamequeue remain exact. Five separately audited helpers/32retained written declarations add no264credit. Final2485-line independent replay exit0/226.389s checks28fullcontracts/70closedTYPE+actualopaqueVALUE+inferredTYPE/std3/50distinctconstants/6old-entry-selectednonselfclosures/13publicproperties/5full-premise countercertificates/exactfinalH5clone16966 at default limits. Four inventoried compiler-literal pairs receive exact TYPE+VALUE AST pregates before namedDATA-only expansion; all failed harness/cast/automation/partial-sorry evidence remains rejected/preserved. Matched declaration-scoped public1034.480/1014.405→179.463/176.595ms; meaningful helper/public1181.112/1158.710→344.114/330.658ms. Superseded hB1-removal caller regression was repaired by restoring exact context; hC661.532/653.008 and hγ13.672/13.800 recovered. Whole foreign main5146.495/4950.274ms remains the original27budget failure; mean+109.3625ms/+2.214254% and every sample are disclosed. Scoped passes are not final whole-file GLOBAL certification. Owner checked1418 original19records1600735625bytes78binaryexceptions36externaltexts plus historical helper915records with an explicit old3fdsource snapshot alias; allactual24793compiled inputs3929168768bytes+4binarypaths/postownerhashes match. PACKAGE/setupunion12201 and COREcompiledSUPERSET12592 are separate scopes, neither exactloadedclosure. Fresh unfiltered ML/Main/Eval0errors1/4/0preservedwarnings; owner root/Eval0messages. Owner17pins104cacheNOdelta; all75historical/helper/original19groups+2ownerbuildgroups absent. Owner addendum MainLemma-pigeonhole_count-owner-addendum.md preserves scope/historical-input clarifications and independent evidence. Remaining20–27 and all final simplify/cumulative22public+ALLretainedaxioms/import/docs/comments/static/reference/GLOBALallrows+repairs remain pending; four project-end renames unchanged. Root supplied CI39497338608@d953155 retry SUCCESS after preserved initialElanSSL35 failure, historical evidence only, no latest-source CI claim or version/workflow edits. Current source721lines. Next:exists_ne_modByMonic_eq. MainLemma filewide final,
 independent simplify and complete performance phases remain pending. See
-[MainLemma ledger](cleanup/MainLemma.md) and [latest audit](cleanup/MainLemma-ncard_boxFamily.md).
+[MainLemma ledger](cleanup/MainLemma.md) and [latest audit](cleanup/MainLemma-pigeonhole_count.md).
 The exact source/audit commit is recorded in appended checkpoint history by its metadata
 child. Prior fullycompleted-file handoff is preserved below.
 
@@ -167,7 +167,7 @@ Files will be processed in dependency order; declarations within each file are s
 | `Roth/Index.lean` | 275 | All cleanup phases complete;21/21 originals audited; user-approved hypothesis groups applied and validated |
 | `Roth/Separation.lean` | 618 | Complete;30/30 originals and all final phases;source556lines27retained;all12 approved instance amendments validated |
 | `Roth/Theta.lean` | 981 | Complete;35/35 originals and all final file phases;source991lines,50retained |
-| `Roth/MainLemma.lean` | 704 | Active;18/27 originals audited/published;final file phases pending |
+| `Roth/MainLemma.lean` | 704 | Active;19/27 originals audited/published;final file phases pending |
 | `Roth/Main.lean` | 684 | Awaiting cleanup |
 | `Roth/LeanEval.lean` | 60 | Awaiting cleanup |
 | `Roth.lean` | 14 | Awaiting cleanup |
@@ -2858,91 +2858,90 @@ this checkpoint record,not source or verification inputs.
 
 
 <!-- takeover-original8-start -->
-### Current resumable cleanup handoff (original18 checkpoint boundary)
+### Current resumable cleanup handoff (original19 checkpoint boundary)
 
-Read Current status and latest appended actual source/audit hash first. MainLemma18/27,
-overall234/264,10/14fullycompletedfiles at this prepared checkpoint; source/audit commit
-and actual publication are recorded by the following metadata child before original19.
-Next19 public `pigeonhole_count` remains unedited and not delegated at this boundary.
-Sole file/source/shared-progress/Git owner `/root/cleanup_continuation/mainlemma_file`;
-parent `/root/cleanup_continuation`, root `/root`. Original18 ALLleases explicitly END;
-46initial/helper/resumed groups and owner7091/7113 absent; allnative complete, no pending
-compiler/native/profile operation. Owner retains file/log/Git ownership for the full file.
-NEW per-original/helperworkers gpt-6.1-sol,medium,fork_none; oneleafslot; serialize ALL
-compiler/native/profile. Recover SAME interruptedworker/no duplicateowners/modelchange.
-Private actualstate `/private/tmp/roth-mainlemma-owner/resume-state-current.json`;
-next19 dispatch DRAFT is prospective until actual sourceA+metadataB pushclean is verified.
-Parent handles Main/LeanEval/Roth only after complete MainLemma release.
+Read Current status and latest appended actual source/audit hash first. Prepared checkpoint:
+MainLemma19/27, overall235/264,10/14fullycompletedfiles; actual source/audit publication is
+recorded by the following metadata child before original20. Next20 `exists_ne_modByMonic_eq`
+is unedited/not delegated at this boundary. Sole file/source/shared-progress/Git owner
+`/root/cleanup_continuation/mainlemma_file`, parent `/root/cleanup_continuation`, root `/root`.
+Original19 leaf explicitly END/all source/doc/caller/report/compiler/native/profile leases
+released. All75 historical/helper/original19 groups plus2owner builds absent; every native
+request complete. Owner retains full unfinished-file ownership. Parent handles Main/Eval/root
+only after ALL MainLemma final gates and explicit release. Private authoritative current state:
+`/private/tmp/roth-mainlemma-owner/resume-state-current.json`, active_original19_current;
+older fields are history. Next20 DRAFT remains prospective until actualpushclean verification.
 
-Current ML734lines SHA45dba9b58a75de21900d1100d8eb255c9449d68162739b63b58d8607258657dc;
-Main685unchanged SHA5f384557dccacaec469699cc7d32bd5666c9d525267e00433b7ae401fee98d09.
-Public18 now arbitrary-universe sigma with Finite(Function.support r), standardfinprod;
-oldFinmformula recovered via actualadapter, wholecaller TYPE preserved. Proof2→6lines,
-declaration8≤15, necessarycallerrewrite/Finprodimport/owndoc/ONLYauthorizedadded12sentence.
-Exact original7signposts/quotes/unknownmetadata/old3helpers/queue remain protected.
-Helper4 wrapper+declaration+finalnewline SHA8e541df58adf5f5cdbaebda0098baff81e8e0286fa24e69b936e727ca4932d9f,
-19declaration/14prooflines. Fourseparatelyfreshlyauditedhelpers/31retained written declarations;
-no264count inflation. Helper3 SHA8036cf617651d096e302d8f52d4589051c5a213d2ef93c10ee5813de73956a44.
-[Original18 audit](cleanup/MainLemma-ncard_boxFamily.md) SHA05c7d450c0e791ff52a0da0839af3bdf7adbcd2456c3545b5f8e15ba76054053;
-[separate helper4 audit](cleanup/MainLemma-helper-boxFamily_eq_image_finsupp_aux.md)
-SHA65d494ae41d5b76fd188c188b217fd707678ac3b358495522ec66970ffded3cd.
-Resumed evidence `/private/tmp/roth-mainlemma-ncard-box-family-resumed/artifact-manifest.json`
-SHAa9e91c06d518cdfbe882553400e3b24c0852cd66e5cb31bcff37823bd02fdbfa:
-1625files516725560bytes117binaryexceptions, includes intact initial353 and helper853 files.
-All ownerbyte/hash/source/guard/native/profile/drain records under original18-owner-*.json.
+Current ML721lines SHA5622adfc4372f9e84ee0239f2c14a1b810649a8a83fd7c3fe6b6691a44e18731;
+Main685unchanged5f384557dccacaec469699cc7d32bd5666c9d525267e00433b7ae401fee98d09.
+Public19 now positiveRealB/c≥1, exact oldNat/c>1 contract recovered; proof37→14/decl40→16.
+Five separately freshly audited helpers/32written declarations, no264inflation. H5exact8decl/
+6proof98c198fa18f8f315d95f8fbebd01a907a221d0076b31c99d819ce64c2e6e45f5. All7signposts,
+paperquotes/unknownmetadata/old4helpers/Main/4renamequeue unchanged. Original hB1/order/entire
+pre-count main context restored BYTEEXACT after removal regressed unchangedhC644/628→877/896;
+final hC662/653,hγ13.672/13.800. Preserve context during20 except evidenced necessary callrepair.
+[Original19 report](cleanup/MainLemma-pigeonhole_count.md) c3f582b0;
+[owner addendum](cleanup/MainLemma-pigeonhole_count-owner-addendum.md) f7b99187;
+[H5 audit](cleanup/MainLemma-helper-floor_rpow_count_lt_aux.md)0dbb1d90 and owneraddendum1dd33c12.
+Resumed artifactmanifest6f126db9:1418records1600735625bytes78binaryexceptions36externaltexts;
+ENDcbf02a45. H5historical915records preserve old3fdsource via immutable743canonical snapshot.
+Historical8camap has10runner-linked+7supplemental snapshots; allactualinputdigests retained.
 
-WholeindependentV3 inputSHA847087a9f3a65b531815da50a0bb68985b9ee586ff8ee1faa3c1640d942eee0a
-passedexit0/335.618s:19fullcontracts/54closedTYPE+actualopaqueVALUE+inferredTYPE/std3/
-16genuineoldnonselfclosures/10actualproperties/helpernonself5729/soleactualcountconsumer.
-Entirepublished17entry,8genuineprojectoriginaldeclarations and exactauditedhelper cloned;
-oldcaller usesoldcount, oldfinite usesoldrange. V1/V2harnesswholefailures103.562/245.018s
-rejectedincludingALLpartialPASS. V3onlyfixesreservedprefixidentifier, allguardsretained.
-OnlysixnamedDATAunfolds/restrictedspinebeta; bothgeneratedmacroScopesonly; ALLwrittennames,
-order/BI/universes/fullTYPEAST+actualisDefEq and DATAactualVALUE checked. NoarityName map/
-proofirrelevance shortcut. apply?can syntheticadmitdespite0goals; whole0/actualVALUE/std3 required.
-Matchedexpandedhelper/count/completeconsumer BEFORE→AFTER166.314→159.934/20.499→55.913/
-280.309→269.328ms; helper+count215.847/all485.175ms, all<750/no repeat/no speedupclaim.
-FullouterClassicalwrapper exactroot excludesTWOinclusiveflatmacroexpansion commands;
-noMeta/nested/next/end doublecount. Carry this into future/finalGLOBALallretainedrow parsers.
+Final actual2485line independent2dbacb7a whole0/226.389s:28fullcontracts/70closedTYPE+actualopaque
+VALUE/inferredTYPE/std3/50distinctconstants/6nonselfclosures/13publicproperties/5full-retained-
+premise countercerts/finalH5clone16966/default200000_20000_512. Whole original704,entry743,
+selected721 namespace bodies byteexact. Only namedDATA/restrictedspineβ/bothgeneratedhygiene;
+4inventoried compiler-literal pairs require exact fullTYPE+VALUE AST pregates before namedDATA-
+only expansion. No proofirrelevance/NameMap/written-name normalization; future inventories dynamic.
+apply? can admit despite0goals: whole0/actualVALUE/std3 mandatory, allfailedpartials rejected.
+Final public179.463/176.595ms; meaningful H5+public344.114/330.658 versus1181.112/1158.710BEFORE.
+Foreignmain5146.495/4950.274ms remains original27FAIL; allsamples/mean+2.214254% retained.
+Owner independently reanchored all6captures/18unique rows with exactfullcanonical command and
+qualifiedproof/kernel names; excludes inclusive private expansion/Meta(including0)/nested/next/end.
+These are declaration-scoped captures, NOT finalwhole-fileGLOBAL certification.
 
-OwnerFULL5.583s THEN separateEval2.788s, both0/drained/immutable17pins; freshrootEvalnative
-0messages, ML/Main/Evalnativecomplete0errors1/4/0oldwarnings.104cacheNOdelta and freshpostgate
-actual24793artifacthashes3929236352bytes equal. PACKAGE/SETUPunion12201/1803613128bytes
-is separate from installedpinned-core compiledSUPERSET12592/2125623224bytes; neither is
-exactloadedclosure. ActualdistinctpinnedLake/Lean plus Elanproxies/PATH are freshlyhashed
-BEFORE18API and3observations agree. Historicalhelper4proxy-onlyLakegap is disclosed and
-recoveredbyfreshmatchedpair164.135/164.965; never backdatehashes. Directdeps retainInitduplicate,
-9rows8unique→10rows9unique exactlyFinprod; directlistisNOTtransitivecatalog. Rawprintenv differs
-onlycapture-contextSHLVL1→2, disclosed; no byte-equalenvclaim. Never infer import availability
-from package/setupcatalog membership; finalactualminimal-import gate stillrequired.
+OwnerFULL6.004067167s THEN separateEval3.077356333s0/drained/17pins immutable; freshunfiltered
+root/Evalnative0messages; ML/Main/Evalnative0errors1/4/0oldwarnings.104cacheNOdelta; freshpostowner
+actual24793compiledinputs3929168768bytes+4actualbinarypaths exact. PACKAGE/setupunion12201 and
+COREcompiledSUPERSET12592 separate/notexactloadedclosure; actual distinct pinnedLake/Lean hashes
+separate from Elanproxies. All6controlledrawenvpairs byteequalA016; oldordinarySHLVLdifference
+retained/disclosed. Never backdate omitted hashes or infer import availability from catalogmembership.
 
-Remaining19–27, eachfreshfull24/42/5/11+outer/inner2.6a–e/THREEliteraturequeriesTOP3each.
-Helper FIRSTDRAFT/fullcontextSHA BEFOREgolf→partialEND/drain→FRESHhelperaudit→SAMEoriginalresume
-BEFOREfinalAFTER mandatory. Only6moduleheadlineproofs≤15;ordinary≤30/branches≤10.
-KnownvalidGLOBAL failures delta11188.775,pigeon1000.235,main4880.648ms remainRED; prefix/scoped
-passes nevercertifywholefile. Delta~96%hc/fun_prophotspot/uncompiledcontinuitycandidate saved.
-Finalfreshindependentwholefilesimplify mustassess compiled3line17finiteproof(helperordermove)
-and actualunusedprivateinjectivity/range/internalctorchain; no such earlier17/prune edit here.
-ThenactualGLOBALALLdynamicretainedrows+meaningfulgroups/requiredrepeats+repairs, cumulativeALL22
-originalpublicDATA+ALLretainedaxioms/oldIntnorm11+FinmDATAadapters/imports/docs/comments7signposts+
-23originaldoc-proses/static/reference/allaffected/full/separateEval/native/report/commitpushclean.
-No fixedsixDATA whitelist/currentprivate lookup if dead oldprivatechain is actuallyremoved.
-Originalsource704SHAa3d09825fb878c5d512cfdd3feca517465e0a8215807b1261b988f664915f3a8;
-oldMainqualifiedscaffoldSHA21b51e24948ac8887a7ff0444a25db6035761379cf428126683e3ef001c730f4
-is UNCOMPILED planning, not a gatepass. Optional6/9builtinmax0heartbeatfigureswithdrawn/rawerrata
-preserved; futureverifiedpositiveboundedcustomonly/nooptionalhistoricalrerun. No limitraises.
-Refsactualroot /Users/ramin/.local/share/roth-mathlib-quality/skills/mathlib-quality/references/.
+Remaining20–27: NEWdedicated gpt-6.1-sol/medium/fork_none originals AND introducedhelpers, oneleaf;
+recover SAME interruptedworker, no duplicates/modelchange. Serialize ALL compiler/native/profile.
+FULL installedskills/cleanup.md/cleanup-all.md/buzz.md/mandatoryrefs plus FULL854prompt and112scope
+instructions required. All24audit/42golf/5ACTUALsearch/11checks/outer+inner2.6a–e/3queriesTOP3each.
+Helper FIRSTUNGOLFEDdraft+fullcontextSHA beforegolf→partialEND/drain→FRESHhelperaudit→SAMEoriginal
+resume beforefinalAFTER. Only6moduleheadlineproofs≤15;ordinary≤30/branches≤10. Actual CLI-j1
+--profile -Dtrace.profiler=true -Dtrace.profiler.threshold=0, samefrozencanonical/scope/options;
+≥750repeat bothsides, anyvalid>1000repair, no unchanged thirdcherrypick; meaningfulhelpergroups.
+BeforeAPI/profile fresh17pins104cache+copies/setup/directdeps/PACKAGE+CORE/actualLake+Lean+proxies.
+Each completed original freeze/drain→ownerFULL THEN separateEval→fullunfilterednative→actualsourceA+
+metadataB/pushHEADoriginfreshremoteclean BEFOREnextoriginal. Metadata-only changes never certifysource.
 
-Project-end SINGLErenamequeue4: Roth.index_hasseDeriv_ge→Roth.index_sub_weight_le_index_hasseDeriv;
+After27: FRESH independent whole-file simplify review; assess compiled3line17finiteproof(H4ordermove)
+and actuallyunused private13–16constructor/coeff/inj/range chain only after fullTYPEVALUE/refaudit.
+Actual GLOBAL ALLdynamicretainedrows+meaningfulgroups/repeats/repairs mandatory: validdelta
+12408.373/11188.775 and main5216.969/4880.648FAIL remainRED; oldpigeon1018.335/1000.235 remains
+historicalGLOBALfailure until actual finalallrow capture. Delta~96%hc/fun_prop; saved directcontinuity
+CANDIDATE is UNCOMPILED/no pass. CumulativeALL22originalpublic contracts+DATAvalues+ALLretainedaxioms/
+genuineoldproofs/callers/oldIntnorm11+Finm adapters; actualminimalimports/docs/quotes/7signposts/
+accurateupdatedpublicprose/static/reference/allaffected/FULL/Eval/native/report/pushclean. Do not
+blindly retain fixedsixDATA/private-name guards after actualprivatechain pruning. Original704a3d09825
+source retained; oldMainqualifiedscaffold21b51e24 remains UNCOMPILEDplanning/no gatecredit.
+Optional6/9builtinmax0heartbeat figures withdrawn/rawerrata retained; futureverifiedboundedpositive
+custom only/no optionalhistorical reruns. No Lean limitraises. Finalpipeline details in owner private
+final-file-gates-required.txt and future-audit-notes.md (prospects explicitlyUNCOMPILED).
+
+Project-end SINGLErenames4: Roth.index_hasseDeriv_ge→Roth.index_sub_weight_le_index_hasseDeriv;
 Roth.B₁→Roth.mainCoeffBound; Roth.log_B₁_gt→Roth.mul_log_div_two_lt_log_mainCoeffBound;
 Roth.abs_coeff_modByMonic_le→Roth.norm_coeff_modByMonic_le. No inplace renames.
-Standingauthorization implementallrecommendedchanges/askonlyundecidable; retainexplicitHasse/
-Separation/Theta preferences; no inventedmetadata/sorry/newaxioms/weakerconclusions/limitraises.
-Branchramin-cleanup/protectmain/no mergeforcepush/pinchanges. Lean4.34.0 andmathlib
-5ed2965256430c3649e86755f9576b54eca72435 pinned. Preservepartialsource/logs oninterruption;
-neverpublishunvalidatedsource. RootCI39497338608@d953155 infraSSL35 beforecodecheck, rootrerun
-pendingpersuppliedstatus; noGitHubprobes/sourceversionworkfloweditsforinfrastructurefailure.
-OnlyafterALLfinalfilegates releaseALLfile/source/sharedlog/Git/compiler/native/profileownership.
+Standing user authorization implementallrecommendedchanges/askonlyundecidable; preserve explicit
+Hasse/Separation/Theta choices. Branchramin-cleanup/protectmain/no mergeforcepush/pinchange/sorry/
+newaxioms/weakerconclusions/inventedmetadata. Lean4.34.0/mathlib5ed2965256430c3649e86755f9576b54eca72435.
+RootCI39497338608@d953155 retry SUCCESS after preserved SSL35pre-codecheck failure; no CIclaim on
+newsource/noGitHub/sourceversionworkflowprobes. Preservepartialsource/logs ifinterrupted. Release
+ALLfile/source/sharedlog/Git/compiler/native/profile ownership only after ALL finalfilegates.
 <!-- takeover-original8-end -->
 
 
