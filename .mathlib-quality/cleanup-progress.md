@@ -3209,3 +3209,19 @@ current699lines. Owner rehash/review and sourcefreeze checks pass. All owned pro
 and native requests drained before publication;nextoriginaleval_hasseDeriv_sub_eq_zero remains unedited.
 MainLemma finalfile/simplify/completeprofile phases pending. Metadata child changes only
 this checkpoint record,not source or verification inputs.
+
+
+### MainLemma original22 checkpoint — eval_hasseDeriv_sub_eq_zero
+
+Source/audit commit `96928fde286b16ffb05e89362323e4f97a124332`; the following metadata child records and publishes this
+exact checkpoint before the next original edit. MainLemma22/27,overall238/264,
+10/14fullycompletedfiles. [Dedicated audit](cleanup/MainLemma-eval_hasseDeriv_sub_eq_zero.md) contains all
+24audit/42golf/5search/11verification steps,exact independent original reimplementation/
+effectivecontract/universe/binder/type/value/standard-axiom evidence,actual affectedmodule/
+fullfile and complete unfiltered native successes. Actual anchored profile379.299ms;
+raw evidence and required repeat/failure history are preserved. Arbitrary independent-universe variables/CommRing target, exact finite-real contracts/wholeproofs recovered, same explicit premise order; target11→10decl/7→6proof/doc+1, source699, no helpers/callers. Owner read207report lines/rehashed821artifacts3277587563B/30runs26inputs;28contracts70closedTYPE+opaqueVALUE/std3/sixnonselfclosures/10properties/all32retained+2actualgeneratedsimp siblings pass. Exactmatchedtarget138.752/129.650→379.299/343.294ms; foreignmain4907.788/5019.497→5254.537/4981.138, hγmean+25.8795ms/mainmean+154.195ms(3.10649%) retained, no thirdsample/globalpass. FreshownerRoot/Evalnative complete unfiltered0messages/17pinsimmutable;104cacheNOdelta/24793availability3929111696B+4binaries exact/strict24782external unchanged/all32groupsabsent. All actual schema/history/parser/environment qualifications and remaining finalfile queues preserved in owner addendum. Original23 unedited.
+Owner fullbuild6.064s THEN separateLeanEval3.044s,both exit0,all17pins immutable;sourceSHA256`e3c8e950614bc5701b2c82691e7faac9513ff7692c9051da80911a85fc42e37f`,
+current699lines. Owner rehash/review and sourcefreeze checks pass. All owned processes
+and native requests drained before publication;nextoriginalle_index_of_forall_eval_eq_zero remains unedited.
+MainLemma finalfile/simplify/completeprofile phases pending. Metadata child changes only
+this checkpoint record,not source or verification inputs.
