@@ -38,6 +38,8 @@ and Lemma 7 then gives a low-order derivative `Q` of `W^*` not vanishing at `(h_
   pigeonhole step.
 * `Roth.main_lemma`: Roth's Lemma 9.
 
+The coordinate-degree argument uses `MvPolynomial.degrees_map_of_injective` directly.
+
 ## References
 
 * R. Takloo-Bighash, S. Yin, *Formalizing Roth's theorem*, §6 "The main lemma: Roth's Lemma 9"
@@ -499,10 +501,6 @@ theorem exists_hasseDeriv_eval_ne_zero {σ : Type*} [Fintype σ] {P : MvPolynomi
     weight r k < c ∧ eval α (hasseDeriv k P) ≠ 0 :=
   (exists_weight_eq_index hP α r).imp fun _ ⟨hd, hw⟩ ↦ ⟨hw ▸ hc, hd⟩
 
-private lemma degreeOf_map_intCast_real {σ : Type*} (R : MvPolynomial σ ℤ) (j : σ) :
-    degreeOf j (map (Int.castRingHom ℝ) R) = degreeOf j R := by
-  rw [degreeOf_eq_sup, degreeOf_eq_sup, support_map_of_injective _ Int.cast_injective]
-
 /-- **Roth's main lemma** (Lemma 9). Under (29)–(33) there is a nonzero integer polynomial `Q`
 of degree `≤ r_j` in `X j`, with index `≥ γ - η` at `(α, …, α)`, not vanishing at
 `(h_j / q_j)_j`, all of whose Hasse derivatives at `(α, …, α)` are bounded by `B_1^{1 + 3δ}`.
@@ -645,7 +643,9 @@ theorem main_lemma {α : ℝ} {f : Polynomial ℤ} (hf : f.Monic) (hfα : Polyno
     hWR.1 (MvPolynomial.map_injective _ Int.cast_injective (h0.trans (map_zero _).symm))
   have hγ : gam δ n (m' + 1) ≤ index (map (Int.castRingHom ℝ) (W' - W'')) (fun _ => α) r :=
     le_index_of_forall_eval_eq_zero hmap0
-      (fun j => (degreeOf_map_intCast_real _ j).trans_le (hWR.2.1 j)) (fun _ => α)
+      (by simpa only [degreeOf,
+            degrees_map_of_injective _ (f := Int.castRingHom ℝ) Int.cast_injective]
+          using hWR.2.1) (fun _ => α)
       fun d hd hw => eval_hasseDeriv_sub_eq_zero hfα
         (hWeq d (Finset.mem_filter.2 ⟨mem_box.2 hd, hw.le⟩))
   -- Lemma 7

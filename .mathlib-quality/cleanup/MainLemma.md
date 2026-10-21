@@ -555,3 +555,20 @@ All worker/compiler/native/profile ownership drained before publication.
 Source/audit publication hash follows in central checkpoint history via metadata child.
 MainLemma25/27 originals,overall241/264,10/14fullycompletedfiles;nextdegreeOf_map_intCast_real.
 Filewide final phases remain pending.
+
+
+### Original26: `degreeOf_map_intCast_real`
+
+[Fresh dedicated full audit](MainLemma-degreeOf_map_intCast_real.md):all24audit/42golf/5search/11checklist
+artifacts reviewed by owner. Retired redundant private degree mapper via existing generic mathlib degrees_map_of_injective; repaired sole hγ argument with controlled simpa only and added two-line mathlib-use prose. Zero new helpers, target3→0 lines, full file694→694; all other16pins and public main type/header unchanged. Genuine704-line original,694-line entry/current whole source clones verified;27exact contracts/68closed TYPE+opaqueVALUE/std3/6nonself closures/4literal proof pairs/H5/defaults pass. Fresh exhaustive MainLemma defining-module inventory60=31written29generated matches independent deny and ordinary per-declaration retained validation; fullproject457→456 includes all5Eval-origin declarations, oldtargetabsent/no TYPE+opaqueVALUE consumers, actual main usesgeneric. Noninjective counter and generic/dropSigma probes pass. Full entry24/42/a–e/five searches/three actual queries Top3 each/linepacking/orientation/reflection/11verification reviewed. All failed source/harness/search attempts and first-draft audit-order lapse preserved; restored-entry full audit precedes corrected final implementation, no backdating. Complete final native ML/Main/Eval warnings1/4/0 and owner Root/Eval zero diagnostics, explicit actual request→return→response-save→postpins. Sealed manifest25938paths/4874372738B independently rehashed by leaf twice and owner,24814 actual-provenance nonUTF8 exceptions; report306lines SHA900bec902967fb6fc0d826193e19cee95fb6e85aa43e6eac2561e6f55178b0ad. Manifest29fae21459aa7350ff99ce1989a42e60e44017f1e3b750b25b3382aa112e4948; secondc2fee1be72ac7654d5997c146f6dc67cfa76e70d2903550f5cabe31bec26d396; seala99dcebed5ef504bd038bd1a1748eb68d1690c4a678ce0c7e4d77620b4a02949. Seven explicit leafEND scopes,33leaf+2ownerbuild groups freshly absent;7leaf+2ownernative complete. Post-owner source17/project104/root8/rootsetup12202/core12592/package12201/fourbinary unchanged; strict external24782/3918200888B, baseavailability24793/3929051200B, rootextended24794/3931375440B (extraMain.olean already104cache), no exact-loaded-closure claim. Owner evidence/closure/postgate receipts original26-owner-{evidence-review,final-closure,post-gates-input-closure}.json preserved under /private/tmp/roth-mainlemma-owner. No source27 edit/filecompletion credit; all finalfile performance/cumulative/simplify gates pending.
+Independent original reimplementation,exact old/current effective contract metadata/value
+and standard-axiom evidence reviewed; complete unfiltered livefile/affectedcaller diagnostics
+and actual affected-module/fullfile validation pass. Before private target27.151/23.466ms; retired target afterN/A (absent, not zero). Matched whole main5259.317/5341.435→5374.323/5468.422ms remains original27/globalFAIL; mean+120.9965ms preserved, changed inclusive hγ+33.0295ms, no noise/causal dismissal or third sample.;
+required repeats/failed evidence,if any,remain in the dedicated report. Owner verified frozen
+source/evidence and ran fullbuild4.915s THEN separateLeanEval4.824s,both exit0 with all17pins immutable.
+Owner logs:`/private/tmp/roth-mainlemma-owner/original26-owner-full.json` and
+`original26-owner-eval.json`. SourceSHA256`5c20368a17b4a1e2f5c48bfb79acc6f25995ea69f66d69837defa835d504eda7`;current694lines.
+All worker/compiler/native/profile ownership drained before publication.
+Source/audit publication hash follows in central checkpoint history via metadata child.
+MainLemma26/27 originals,overall242/264,10/14fullycompletedfiles;nextmain_lemma.
+Filewide final phases remain pending.
