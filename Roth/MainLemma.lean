@@ -391,54 +391,35 @@ theorem pigeonhole_count {B : ℝ} (hB : 0 < B) {c : ℝ} (hc : 1 ≤ c) {n D N 
       push_cast
       linarith only [hD]
 
-/-- Pigeonhole: if the remainders mod `f` of the diagonal Hasse derivatives `Δ_j W(x, …, x)`,
-`j ∈ J`, have coefficients bounded by `C` and `(2C + 1)^{(deg f) |J|} < (B + 1)^N`, then two
-distinct `W', W'' ∈ 𝒲` have the same remainders for all `j ∈ J`.
+/-- Finitely supported degree bounds and a strict remainder count give one common pair of
+distinct box polynomials for all selected diagonal Hasse remainders.
+Only coefficients below `f.natDegree` need bounding; finite index types supply the support
+instance, and `finprod_eq_prod_of_fintype` recovers the usual product count.
 
 Source: §6, proof of Lemma 9 ("By the pigeonhole principle, there are two distinct
 polynomials `W', W'' ∈ 𝒲` such that `Δ_j W'(x, …, x) - Δ_j W''(x, …, x)` is divisible by `f(x)`
 for all `j` satisfying (44)"). -/
-theorem exists_ne_modByMonic_eq {m : ℕ} (r : Fin m → ℕ) (B : ℕ) {f : Polynomial ℤ} (hf : f.Monic)
-    (J : Finset (Fin m →₀ ℕ)) (C : ℕ)
-    (hC : ∀ W ∈ boxFamily r B, ∀ j ∈ J, ∀ i, |(diag (hasseDeriv j W) %ₘ f).coeff i| ≤ C)
-    (hcount : ((2 * C + 1 : ℕ) : ℝ) ^ (f.natDegree * J.card) < ((B : ℝ) + 1) ^ ∏ j, (r j + 1)) :
+theorem exists_ne_modByMonic_eq {σ : Type*} (r : σ → ℕ) [Finite (Function.support r)] (B : ℕ)
+    {f : Polynomial ℤ} (hf : f.Monic) (J : Finset (σ →₀ ℕ)) (C : ℕ)
+    (hC : ∀ W ∈ boxFamily r B, ∀ j ∈ J, ∀ i < f.natDegree,
+      |(diag (hasseDeriv j W) %ₘ f).coeff i| ≤ C)
+    (hcount : ((2 * C + 1 : ℕ) : ℝ) ^ (f.natDegree * J.card) < ((B : ℝ) + 1) ^ ∏ᶠ j, (r j + 1)) :
     ∃ W' ∈ boxFamily r B, ∃ W'' ∈ boxFamily r B, W' ≠ W'' ∧
       ∀ j ∈ J, diag (hasseDeriv j W') %ₘ f = diag (hasseDeriv j W'') %ₘ f := by
   classical
-  set s := (boxFamily_finite r B).toFinset with hs
-  set t : Finset (J × Fin f.natDegree → ℤ) :=
-    Fintype.piFinset fun _ => Finset.Icc (-(C : ℤ)) C with ht
-  have hscard : s.card = (B + 1) ^ ∏ j, (r j + 1) := by
-    rw [hs, ← Set.ncard_eq_toFinset_card _ (boxFamily_finite r B), ncard_boxFamily,
-      finprod_eq_prod_of_fintype]
-  have htcard : t.card = (2 * C + 1) ^ (f.natDegree * J.card) := by
-    rw [ht, Fintype.card_piFinset, Finset.prod_const, Finset.card_univ, Fintype.card_prod,
-      Fintype.card_coe, Fintype.card_fin, Int.card_Icc, mul_comm]
-    congr 1
-    omega
-  have hlt : t.card < s.card := by
-    rw [hscard, htcard]
-    exact_mod_cast hcount
-  set F : MvPolynomial (Fin m) ℤ → (J × Fin f.natDegree → ℤ) := fun W p =>
-    (diag (hasseDeriv (p.1 : Fin m →₀ ℕ) W) %ₘ f).coeff p.2 with hF
-  have hmaps : Set.MapsTo F s t := fun W hW => by
-    rw [Finset.mem_coe, hs, Set.Finite.mem_toFinset] at hW
-    rw [Finset.mem_coe, ht, Fintype.mem_piFinset]
-    intro p
-    rw [Finset.mem_Icc, ← abs_le]
-    exact hC W hW p.1 p.1.2 p.2
-  obtain ⟨W', hW', W'', hW'', hne, hFeq⟩ := Finset.exists_ne_map_eq_of_card_lt_of_maps_to hlt hmaps
-  rw [hs, Set.Finite.mem_toFinset] at hW' hW''
-  refine ⟨W', hW', W'', hW'', hne, fun j hj => Polynomial.ext fun i => ?_⟩
-  by_cases hi : i < f.natDegree
-  · exact congrFun hFeq (⟨j, hj⟩, ⟨i, hi⟩)
-  · push Not at hi
-    have hdegf : f.degree ≤ (i : WithBot ℕ) := by
-      rw [Polynomial.degree_eq_natDegree hf.ne_zero]
-      exact_mod_cast hi
-    have h0 (P : Polynomial ℤ) : (P %ₘ f).coeff i = 0 :=
-      Polynomial.coeff_eq_zero_of_degree_lt ((Polynomial.degree_modByMonic_lt _ hf).trans_le hdegf)
-    rw [h0, h0]
+  let : Fintype (boxFamily r B) := (boxFamily_finite r B).fintype
+  let F (W : boxFamily r B) (p : J × Fin f.natDegree) : Set.Icc (-(C : ℤ)) C :=
+    ⟨(diag (hasseDeriv p.1.1 W.1) %ₘ f).coeff p.2, abs_le.1 (hC W.1 W.2 p.1.1 p.1.2 p.2.1 p.2.2)⟩
+  obtain ⟨W', W'', hne, h⟩ := Fintype.exists_ne_map_eq_of_card_lt F <| by
+    simpa only [Fintype.card_fun, Fintype.card_ofFinset, Int.card_Icc, sub_neg_eq_add,
+      Fintype.card_prod, Fintype.card_coe, Fintype.card_fin, mul_comm, Set.fintypeCard_eq_ncard,
+      ncard_boxFamily, show ((C : ℤ) + 1 + C).toNat = 2 * C + 1 by lia] using
+      (show (2 * C + 1) ^ (f.natDegree * J.card) < (B + 1) ^ ∏ᶠ j, (r j + 1) by
+        exact_mod_cast hcount)
+  refine ⟨W', W'.2, W'', W''.2, Subtype.coe_ne_coe.2 hne, fun j hj ↦ ?_⟩
+  simpa [F, Polynomial.sum_modByMonic_coeff hf Polynomial.degree_le_natDegree] using
+    congrArg (fun g ↦ ∑ i : Fin f.natDegree, Polynomial.monomial (i : ℕ)
+      (g (⟨j, hj⟩, i) : ℤ)) h
 
 /-- The difference of two distinct members of `𝒲` is a nonzero box polynomial with
 coefficients bounded by `B` in absolute value.
@@ -669,7 +650,9 @@ theorem main_lemma {α : ℝ} {f : Polynomial ℤ} (hf : f.Monic) (hfα : Polyno
           ring
   have hcount := pigeonhole_count (Nat.cast_pos.2 (Nat.zero_lt_one.trans hB1))
     (by linarith : 1 ≤ 1 + 3 * δ) hNpos hD
-  obtain ⟨W', hW', W'', hW'', hne, hWeq⟩ := exists_ne_modByMonic_eq r B hf J Cn hC hcount
+  obtain ⟨W', hW', W'', hW'', hne, hWeq⟩ := exists_ne_modByMonic_eq r B hf J Cn
+    (fun W hW j hj i _ ↦ hC W hW j hj i)
+    (by simpa only [finprod_eq_prod_of_fintype] using hcount)
   -- `W* = W' - W''`
   have hWR := sub_mem_RSet hW' hW'' hne
   have hWX : W' - W'' ∈ RSet X r := ⟨hWR.1, hWR.2.1, fun d => (hWR.2.2 d).trans hBX⟩

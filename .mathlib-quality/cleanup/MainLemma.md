@@ -453,3 +453,20 @@ MainLemma19/27 originals,overall235/264,10/14fullycompletedfiles;nextexists_ne_m
 Filewide final phases remain pending.
 
 [Owner review and publication addendum](MainLemma-pigeonhole_count-owner-addendum.md) preserves scoped-profile and historical-input clarifications.
+
+
+### Original20: `exists_ne_modByMonic_eq`
+
+[Fresh dedicated full audit](MainLemma-exists_ne_modByMonic_eq.md):all24audit/42golf/5search/11checklist
+artifacts reviewed by owner. Arbitrary variable types with finite-support degree bounds and a finite product replace the finite-index restriction; low-degree-only coefficient bounds are equivalent under monicity/C:Nat, with the common distinct pair preserved. Public proof35→14/declaration41→21; published721→704source lines, no new helper, five separately audited helpers/32written declarations. Only the necessary main call changes; reversing target/doc/call recovers entire entry source. Final2476-line genuine independent replay0/133.210s checks28fullcontracts/70closedTYPE+actualopaqueVALUE+inferredTYPE/std3/6nonselfclosures/4exactliteralpairs/8DATArefs/H5clone16966/5positiveproperties/3full-premise countercertificates at default limits. Before274.340/265.281ms; valid rejected2ba1125.758/1428.514ms preserved and repaired by explicit cardinality simp rules; final322.983/305.703ms. Owner independently binds all6captures/12rows by complete actual printed-command payloads to unique canonical commands, exact proof/kernel names, excluding Meta/inclusive wrappers/nested/next/end. Foreign main5121.505/5000.879ms remains original27/final-file failure; mean+115.1755ms/+2.328652%, necessary-call9.467/9.957→32.271/33.620ms and stablehC/hγ disclosed. These scoped passes are not final GLOBAL certification. Owner reviewed952records4919395725bytes52binaryexceptions plus944historical references/explicit aliases; sameworker report-only recovery adds mandatory7Gate/6bResult artifacts without source/compiler/native/profile changes. Finalreport6c7faab5/manifest02c613d4/END392256cb; all raw failures preserved. Actual nativeML/Main/Eval0errors1/4/0warnings, ownerroot/Eval0messages; owner17pins104cacheNOdelta, all38leaf+2ownerbuildgroups freshabsent. Fresh postowner24793compiled availability paths3929104384bytes+4binarypaths match; PACKAGE/setupunion12201 and COREcompiledSUPERSET12592 are separate/notexactloadedclosure. Exact11projectcacheintersection leaves strict24782externalpaths3918200888bytes before/afterequal; prior19 external-label correction is disclosed, no missing hash gate. All7signposts/paperquotes/unknownmetadata/fivehelpers/Main685/4renamequeue unchanged. Owner addendum MainLemma-exists_ne_modByMonic_eq-owner-addendum.md records exact scope/report-artifact/query-label clarifications. Remaining21–27 and all final simplify/cumulative22public+ALLretainedaxioms/import/docs/comments/static/reference/GLOBALallrows+actualrepairs pending.
+Independent original reimplementation,exact old/current effective contract metadata/value
+and standard-axiom evidence reviewed; complete unfiltered livefile/affectedcaller diagnostics
+and actual affected-module/fullfile validation pass. Actual anchored profile322.983ms;
+required repeats/failed evidence,if any,remain in the dedicated report. Owner verified frozen
+source/evidence and ran fullbuild6.384s THEN separateLeanEval4.959s,both exit0 with all17pins immutable.
+Owner logs:`/private/tmp/roth-mainlemma-owner/original20-owner-full.json` and
+`original20-owner-eval.json`. SourceSHA256`0b204a8c710990afeaca6151e06cc381c94a1b7f071ab717a189cfa22cf69e4b`;current704lines.
+All worker/compiler/native/profile ownership drained before publication.
+Source/audit publication hash follows in central checkpoint history via metadata child.
+MainLemma20/27 originals,overall236/264,10/14fullycompletedfiles;nextsub_mem_RSet.
+Filewide final phases remain pending.
