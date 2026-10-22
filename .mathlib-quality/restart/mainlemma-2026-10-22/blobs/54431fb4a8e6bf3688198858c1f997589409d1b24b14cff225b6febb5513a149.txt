@@ -1,0 +1,44 @@
+from pathlib import Path
+import hashlib,json,re,time,collections
+p=Path('/private/tmp/roth-mainlemma-helper8-diag-rem');h=lambda s:hashlib.sha256(s.encode()).hexdigest()
+receipt=json.loads((p/'v4-after-pairs.json').read_text());assert receipt['exit']==0 and receipt['drained'] and receipt['immutable']
+inventory=json.loads((p/'v4-after-inventory-data.json').read_text())
+old={r['name']:r for r in json.loads((p/'before-pair-index.json').read_text())['rows']}
+source=(p/'v4-selected-source.lean').read_text()
+written=set(re.findall(r'^(?:private )?(?:noncomputable )?(?:lemma|theorem|def|abbrev)\s+([^\s:{(]+)',source,re.M))
+before_full={}
+with (p/'before-pairs.log').open() as stream:
+    for line in stream:
+        if line.startswith('PAIR_JSON='):
+            oldpair=json.loads(line.removeprefix('PAIR_JSON='));before_full[oldpair['name']]=oldpair
+rows=[];target=None;all_names=[]
+with (p/'v4-after-pairs.log').open() as stream:
+    for line in stream:
+        if not line.startswith('PAIR_JSON='):continue
+        x=json.loads(line.removeprefix('PAIR_JSON='));name=x['name'];all_names.append(name)
+        assert x['defaults']==[200000,20000,512] and set(x['axioms'])<={'propext','Classical.choice','Quot.sound'}
+        if not name.endswith('.Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux'):
+            assert x==before_full[name], ('Protected full raw field changed',name)
+        stem=name.split('.Roth.')[-1] if '.Roth.' in name else name.removeprefix('Roth.')
+        generated=stem not in written
+        row={k:v for k,v in x.items() if k not in ['TYPE','VALUE','typeCode']}
+        row.update({'TYPE_sha256':h(x['TYPE']),'VALUE_sha256':h(x['VALUE']),'TYPE_chars':len(x['TYPE']),'VALUE_chars':len(x['VALUE']),'actual_generated_source_absent':generated,'optional_type_code_supported':'ERROR_' not in x['typeCode']})
+        if name.endswith('.Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux'):
+            target=x;(p/'v4-after-target-pair.json').write_text(json.dumps(x,indent=2)+'\n')
+        rows.append(row)
+assert sorted(all_names)==sorted(n[0] for n in inventory['names']) and len(all_names)==len(set(all_names))
+assert set(all_names)==set(old)
+type_changes=[r['name'] for r in rows if r['TYPE_sha256']!=old[r['name']]['TYPE_sha256']]
+value_changes=[r['name'] for r in rows if r['VALUE_sha256']!=old[r['name']]['VALUE_sha256']]
+assert target is not None
+name=target['name'];assert value_changes==[name] or set(value_changes)=={name}
+assert not type_changes,('Raw type changes need exact generated-binder comparator',type_changes)
+assert all(r['kind']==old[r['name']]['kind'] and r['levels']==old[r['name']]['levels'] and r['rawName']==old[r['name']]['rawName'] for r in rows)
+current=json.loads((p/'v4-independent-current-actual-pair.json').read_text())
+original=json.loads((p/'independent-original-accepted.json').read_text())
+assert current['VALUE']!=target['VALUE']
+out={'observed_unix':time.time(),'actual_whole_exit':receipt['exit'],'actual_count':len(rows),'raw_sha256':receipt['raw_sha256'],'full_raw_ast_location':str(p/'v4-after-pairs.log'),'rows':rows,'generated_sourceabsent':[r['name'] for r in rows if r['actual_generated_source_absent']],'all_full_raw_TYPE_VALUE_closed_inferred_std3_default_guarded':True,'optional_typeCode_is_not_raw_AST_substitute':True}
+(p/'v4-after-pair-index.json').write_text(json.dumps(out,indent=2)+'\n')
+families={base:[r['name'] for r in rows if r['name']==base or r['name'].startswith(base+'.')] for base in [name,'Roth.main_lemma']}
+summary={'observed_unix':time.time(),'actual_project_count':len(inventory['project']),'actual_Eval_count':len(inventory['eval']),'actual_MainLemma_count':len(rows),'source_declarations':sum(not r['actual_generated_source_absent'] for r in rows),'generated_sourceabsent':sum(r['actual_generated_source_absent'] for r in rows),'actual_kinds':dict(collections.Counter(r['kind'] for r in rows)),'all_raw_TYPE_exact_unchanged':not type_changes,'changed_actual_VALUE_names':value_changes,'all_other_actual_VALUE_exact_unchanged':True,'all_other_complete_raw_fields_exact_unchanged':True,'actual_families':families,'direct_consumers':inventory['consumers'],'independent_current_VALUE_differs_imported':True,'independent_original_and_current_exact_oldTYPE_and_recursive_nonself_guards':'See whole0 independent-original-v3 and independent-current-v1, literal full expected TYPE/comparator; no AST constant renaming.'}
+(p/'v4-final-metadata-comparison.json').write_text(json.dumps(summary,indent=2)+'\n');print(summary)

@@ -1,0 +1,31 @@
+from pathlib import Path
+import re,json,hashlib,sys,time
+p=Path('/private/tmp/roth-mainlemma-helper8-diag-rem');label,phase=sys.argv[1:];h=lambda b:hashlib.sha256(b).hexdigest();r=json.loads((p/(label+'.json')).read_text());scope=json.loads((p/(phase+'-scope.json')).read_text());raw=(p/(label+'.log')).read_bytes();s=raw.decode('utf8','strict');err=(p/(label+'.stderr.log')).read_bytes();err.decode('utf8','strict')
+assert r['exit']==0 and not r['timed_out'] and all(r[x] for x in ['immutable','drained','strict_utf8','inputs_immutable','raw_lake_environment_equal','group_absent_at_exit'])
+assert h(raw)==r['raw_sha256'] and h(err)==r['stderr_sha256'];c=Path(scope['canonical']).read_bytes();b=Path(scope['scaffold']).read_bytes();assert h(c)==scope['canonical_sha256']==r['source_pins_before']['Roth/MainLemma.lean'];assert h(b)==scope['scaffold_sha256']==r['input_sha256'][scope['scaffold']]
+assert b.decode().replace('set_option trace.profiler false\n\n','').replace('set_option trace.profiler true\n\n','').replace('\n\nset_option trace.profiler false','')==c.decode()
+assert r['command']==['/Users/ramin/.elan/bin/lake','env','lean','-j1','--profile','-Dtrace.profiler=true','-Dtrace.profiler.threshold=0',scope['scaffold']]
+commands=list(re.finditer(r'^\[Elab.command\] \[([0-9.]+)\] (.*)$',s,re.M));norm=lambda t:re.sub(r'\s+','',re.sub(r'^\s*--[^\n]*(?:\n|$)','',t,flags=re.M));results=[]
+for item in scope['commands']:
+ marker=item['written_marker'];canonical=Path(item['canonical']).read_text();assert c.decode().count(canonical)==1 and canonical.count(marker)==1;hits=[]
+ for i,m in enumerate(commands):
+  end=commands[i+1].start() if i+1<len(commands) else len(s)
+  if marker in s[m.start():end]:hits.append((m,end))
+ assert len(hits)==1,(marker,len(hits));m,end=hits[0];span=s[m.start():end];boundary=re.search(r'\n(?:[ ]*\[[A-Za-z0-9_.]+\] \[[0-9.]+\] [✅❌]|[ ]*elaboration took [0-9.]+(?:ms|s)(?:\n|$))',span);assert boundary
+ printed=span[:boundary.start()].split('✅️ ',1)[1];(p/(label+'-framing-v2-'+marker.split()[-1]+'-actual-printed-command.txt')).write_bytes(printed.encode());assert norm(printed)==norm(canonical),(label,marker,'actual payload mismatch')
+ proof=re.findall(r'^\[Elab.async\] \[[0-9.]+\] ✅️ elaborating proof of (.+)$',span,re.M);assert proof==[item['runtime_name']],proof;name=proof[0];roots=[];excluded=[];kernels=[];compilers=[]
+ for z in re.finditer(r'^\[(Elab.command|Elab.async)\] \[([0-9.]+)\] (.*)$',span,re.M):
+  a=z[3];assert '✅' in a and '❌' not in a;row={'tag':z[1],'seconds':float(z[2]),'anchor':a,'line':s.count('\n',0,m.start()+z.start())+1}
+  if 'Lean.Meta.' in a:excluded.append(row);continue
+  if z[1]=='Elab.async':
+   if 'elaborating proof of ' in a:assert a.split('elaborating proof of ',1)[1]==name
+   elif 'addDeclCore' in a:
+    match=re.match(r'\n  \[Kernel\] \[[0-9.]+\] ✅[^\n]*typechecking declarations \[([^\]]+)\]',span[z.end():]);assert match;ns=match[1].split(', ');assert all(n==name or n.startswith(name+'.') for n in ns);kernels.append({'root_line':row['line'],'actual_full_names':ns})
+   elif a.endswith('Lean.compileDecls'):
+    match=re.match(r'\n  \[Compiler\] \[[0-9.]+\] ✅[^\n]*compiling: \[([^\]]+)\]',span[z.end():]);assert match;ns=match[1].split(', ');assert all(n==name or n.startswith(name+'.') for n in ns);compilers.append({'root_line':row['line'],'actual_full_names':ns})
+   else:assert 'Lean.Elab.Command.runLintersAsync' in a,a
+  roots.append(row)
+ assert sum(x['tag']=='Elab.command' for x in roots)==1 and sum('elaborating proof of ' in x['anchor'] for x in roots)==1 and sum('runLintersAsync' in x['anchor'] for x in roots)==1 and kernels
+ actual={n for row in kernels for n in row['actual_full_names']};assert name in actual
+ results.append({'marker':marker,'runtime_name':name,'canonical_command_sha256':h(canonical.encode()),'actual_printed_command_sha256':h(printed.encode()),'completepayload_whitespace_standalonecomments_only_equal':True,'attached_docstring_retained':canonical.startswith('/--'),'roots':roots,'excluded_Meta':excluded,'kernel_roots':kernels,'compiler_roots':compilers,'actual_kernel_names':sorted(actual),'sum_ms':sum(x['seconds'] for x in roots)*1000})
+(p/(label+'-framing-v2-binding.json')).write_text(json.dumps({'observed_unix':time.time(),'source_sha256':h(c),'scaffold_sha256':h(b),'raw_sha256':h(raw),'rows':results},indent=2)+'\n');print([(x['runtime_name'],x['sum_ms']) for x in results])

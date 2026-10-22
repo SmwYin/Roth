@@ -1,0 +1,50 @@
+# All 42 golfing rules and actual reflection
+
+Statuses refer only to helper8. `n/a` means the stated syntax/goal is absent, not an unrun successful tactic.
+
+|Rule|Status and evidence|
+|---|---|
+|1.1 by exact|n/a, no wrapper.|
+|1.2 by rfl|n/a, no reflexivity proof.|
+|1.3 rw+exact|n/a, no rw chain.|
+|1.4 simp+exact|n/a, no separate simp/closing pair.|
+|1.5 trailing rfl|n/a, none.|
+|1.6 constructor|n/a, inequality conclusion.|
+|1.7 apply+exact|n/a, none.|
+|1.8 by_contra!|n/a, no contradiction proof.|
+|1.9 eta reduction|Existing lambdas use their argument in dependent/composed proofs; no fun x ↦ f x remains.|
+|1.10 single-use have|Applied to hcP and hrem. hcD inlining actually failed at underconstrained k in candidateV2; its explicit type retained. hdP has two uses. hB supplies positivity. hsupp has a substantive cast proof.|
+|1.11 apply+intro|n/a, none.|
+|1.12 show|n/a, none.|
+|1.13 projection have|n/a, none.|
+|1.14 consecutive rw|n/a, none.|
+|1.15 terminal simp only|Applied: terminal simpa now uses ordinary simp with the proven necessary cast normalizers. CandidateV3 whole0.|
+|1.16 nonterminal simp|n/a, no nonterminal bare simp.|
+|1.17 dot notation|Already uses .trans, .trans; no applicable namespaced f proof combination.|
+|1.18 trailing parentheses|Remaining parentheses occur in arguments followed by further arguments or projection compositions; removing them changes parsing.|
+|1.19 push Not|n/a, no push_neg.|
+|1.20 trivial existential|n/a, nonexistential quantitative estimate.|
+|2.1 grind|Actual isolated guarded negative attempt, no replacement.|
+|2.2 preceding grind|n/a, no grind in selected proof.|
+|2.3 simpa consolidation|Applied by using the remainder estimate directly under the final simpa.|
+|2.4 fun_prop|n/a, no function-property goal.|
+|2.5 positivity|Retained actual successful positivity for product nonnegativity in selected candidate. hB is a direct proof of the needed sign.|
+|2.6 gcongr|Actual whole-goal guarded negative attempt. Existing precise mul_le_mul_of_nonneg_right retained.|
+|2.7 lia/omega|n/a, no Nat/Int linear arithmetic subgoal; coefficients are real absolute values and nonlinear powers.|
+|2.8 aesop|Actual isolated guarded negative attempt.|
+|2.9 norm_num/norm_cast|Actual exact_mod_cast proves the finite-cardinality inequality; retained. No concrete numeric subgoal requiring norm_num.|
+|2.10 decide|n/a, universally quantified arbitrary real coefficient estimate is not finite decidable computation.|
+|2.11 field_simp/ring|n/a, no denominator identity.|
+|2.12 linear_combination|n/a, no terminal ring/ring_nf or polynomial equality goal.|
+|2.13 wlog|n/a, no symmetric branches.|
+|2.14 calc term|Already composed term proofs; no calc block.|
+|2.15 parallel goals|n/a, no repeated refined goals.|
+|3.1 erw|n/a, none.|
+|3.2 legacy continuity|n/a, none.|
+|3.3 omega→lia|n/a, neither appears.|
+|3.4 rcases rfl|n/a, none.|
+|3.5 automation registration|Not appropriate for a private one-use combined quantitative estimate; no stable simp/ext normal form proposed.|
+|3.6 simp_all|n/a, no simp_all only.|
+|3.7 limit options|None in production; all actual ordinary guards enforce defaults200000/20000/512.|
+
+Manual reflection (actual, not a fabricated Skill(simplify) invocation): the estimate needs derivative size, support cardinality, diagonal aggregation/degree, and remainder growth. Replacing this structure by one tactic was actually unsuccessful for grind/simp/aesop/gcongr. The exact?/apply? searches timed out under defaults, so they establish no library absence. A fully nested term lost the expected type for a coefficient index; keeping the typed hcD boundary is clearer and has actual compilation evidence. Removing the two remaining single-use aliases leaves the mathematical stage visible. A larger domain/weight API is outside the user's retained scope and is not needed for the only actual direct consumer. No different source-level strategy has been justified by the searches. Later independent whole-file simplify review remains the owner's separate mandatory gate.

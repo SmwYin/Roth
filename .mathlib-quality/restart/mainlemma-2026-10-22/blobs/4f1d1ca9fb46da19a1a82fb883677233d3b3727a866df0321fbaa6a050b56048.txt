@@ -1,0 +1,25 @@
+from pathlib import Path
+import json,re,hashlib,difflib
+p=Path('/private/tmp/roth-mainlemma-helper7-index-eval');root=Path('/Users/ramin/LEAN/Roth');out={}
+def firstblock(s):
+ s=s.strip()
+ if s[0] in '({[':
+  stack=[];close={')':'(',']':'[','}':'{'}
+  for i,c in enumerate(s):
+   if c in '([{':stack.append(c)
+   elif c in ')]}':
+    assert stack.pop()==close[c]
+    if not stack:return s[:i+1]
+ if s.startswith('∀ ') or s.startswith('∃ '):return s.split(',',1)[0]+','
+ return s
+for phase in ['before','after']:
+ s=(p/(phase+'-helper-command.lean')).read_text();sig=s[s.index('private lemma'):s.index(':= by')+5];lines=sig.splitlines();table=[]
+ for i,l in enumerate(lines):
+  nxt=firstblock(lines[i+1]) if i+1<len(lines) else None;n=len(nxt) if nxt else 0;total=len(l)+1+n if nxt else None
+  table.append({'signature_line':i+1,'codepoints':len(l),'text':l,'next_indivisible_block':nxt,'next_block_codepoints':n,'current_plus_1_plus_next':total,'action':'end' if nxt is None else 'ok' if total>100 else 'repack'})
+ out[phase]={'packing':table,'signature':sig,'inequalities':[{'signature_line':i+1,'column':m.start()+1,'operator':m[0],'action':'already canonical < or ≤; retained'} for i,l in enumerate(lines) for m in re.finditer('[≤≥<>]',l)]}
+assert all(r['action'] in ['ok','end'] and r['codepoints']<=100 for r in out['after']['packing'])
+assert not re.search('[≥>]',out['after']['signature'])
+a=(p/'entry-MainLemma.lean').read_text();b=(root/'Roth/MainLemma.lean').read_text();assert b==(p/'after-MainLemma.lean').read_text();comments=lambda s:re.findall(r'^\s*--[^\n]*',s,re.M);assert comments(a)==comments(b);assert len(comments(b))==9
+out.update({'comments_preserved_exact':len(comments(b)),'original_filewide_comments':7,'original_main_comments':5,'no_new_def_abbrev_imports':True,'helper_proof_lines_before':19,'helper_proof_lines_after':13,'helper_command_lines_before':31,'helper_command_lines_after':21,'no_FORBIDDEN_source':not re.search(r'\bsorry\b|\badmit\b|\baxiom\b|set_option maxHeartbeats|set_option maxRecDepth|λ|push_neg|\$|-- FIXME|-- TODO',b),'max_source_line_codepoints':max(map(len,b.splitlines())),'entire_inverse_matches_entry':(p/'final-selected-inverse.lean').read_text()==a,'external_Main_exact_sha256':hashlib.sha256((root/'Roth/Main.lean').read_bytes()).hexdigest()})
+(p/'static-audit.json').write_text(json.dumps(out,indent=2)+'\n');print('Packing',[(r['codepoints'],r['current_plus_1_plus_next'],r['action']) for r in out['after']['packing']]);print('orientation occurrences',len(out['after']['inequalities']),'comments',out['comments_preserved_exact'])

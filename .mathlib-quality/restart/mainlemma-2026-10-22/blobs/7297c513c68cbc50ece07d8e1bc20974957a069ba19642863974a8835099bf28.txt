@@ -1,0 +1,17 @@
+from pathlib import Path
+import json,hashlib
+p=Path('/private/tmp/roth-mainlemma-helper9-rem-floor');before='''      _ ≤ β * (β * (β * B)) :=
+        mul_le_mul he (mul_le_mul hNR (mul_le_mul_of_nonneg_right h2' hB0)
+          (by positivity) hβ0) (by positivity) hβ0''';after='''      _ ≤ β * (β * (β * B)) :=
+        (mul_le_mul he (mul_le_mul hNR (mul_le_mul_of_nonneg_right h2' hB0)
+          (by positivity) hβ0) (by positivity) hβ0)'''
+for old,new in [('candidate-helper-v4.lean','candidate-helper-v5.lean'),('candidate-source-v4.lean','candidate-source-v5.lean'),('candidate-independent-v4-fixture-v2.lean','candidate-independent-v5.lean'),('pilot-source-family-v4.lean','pilot-source-family-v5.lean')]:
+ s=(p/old).read_text();assert s.count(before)==1;s=s.replace(before,after,1)
+ with (p/new).open('x') as f:f.write(s)
+scope=json.loads((p/'pilot-v4-scope.json').read_text());source=(p/'candidate-source-v5.lean').read_text();i=source.index('private lemma abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux');e=source.index('/-- **Roth',i);rows={'pilot-v5-helper-command.lean':source[i:e].rstrip()+'\n','pilot-v5-main-command.lean':source[e:source.index('\nend Roth',e)].rstrip()+'\n','pilot-v5-scoped.lean':source[:source.index('namespace Roth')]+'set_option trace.profiler false\n'+source[source.index('namespace Roth'):i]+'set_option trace.profiler true\n'+source[i:source.index('\nend Roth')]+'\nset_option trace.profiler false\nend Roth\n'}
+for n,b in rows.items():
+ with (p/n).open('x') as f:f.write(b)
+scope['canonical']=str(p/'candidate-source-v5.lean');scope['canonical_sha256']=hashlib.sha256(source.encode()).hexdigest();scope['scaffold']=str(p/'pilot-v5-scoped.lean');scope['scaffold_sha256']=hashlib.sha256(rows['pilot-v5-scoped.lean'].encode()).hexdigest();scope['qualification']+=' V5 writes exact formatter parentheses; rejected V4 pilot retained without timing acceptance.'
+for c in scope['commands']:c['canonical']=c['canonical'].replace('/pilot-v4-','/pilot-v5-')
+with (p/'pilot-v5-scope.json').open('x') as f:json.dump(scope,f,indent=2)
+print({'canonical':scope['canonical_sha256'],'scaffold':scope['scaffold_sha256'],'proof_lines':29,'production_unchanged':'df236227/732'})

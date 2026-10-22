@@ -1,0 +1,72 @@
+from pathlib import Path
+import hashlib,json,codecs,subprocess,time,os,sys
+p=Path('/private/tmp/roth-mainlemma-helper7-index-eval');root=Path('/Users/ramin/LEAN/Roth');start=time.time()
+manifest=json.loads((p/'manifest.json').read_text());rows=manifest['entries'];known=set()
+old=json.loads(Path('/private/tmp/roth-mainlemma-main-lemma-resume1/manifest.json').read_text())['entries']
+for n,v in old.items():
+ if not v['strict_utf8']:known.add((n,v['sha256'],v['bytes']))
+for f in p.glob('*-all14-*.json'):
+ for n,v in json.loads(f.read_text()).get('artifacts',{}).items():known.add((n,v['sha256'],v['bytes']))
+for f in p.glob('*-binaries.json'):
+ for n,v in json.loads(f.read_text())['binaries'].items():
+  for a in [n,v['resolved_realpath']]:known.add((a,v['sha256'],v['bytes']))
+for pattern,key in [('*-cache.json',None),('*-root-extra.json','root_outputs')]:
+ for f in p.glob(pattern):
+  j=json.loads(f.read_text());j=j[key] if key else j
+  for n,v in j.items():
+   for a in [n,v['saved']]:known.add((a,v['sha256'],v['bytes']))
+observed={};binary=0
+for n,want in sorted(rows.items()):
+ d=hashlib.sha256();size=0;decoder=codecs.getincrementaldecoder('utf-8')('strict');utf=True
+ with open(n,'rb') as f:
+  while True:
+   b=f.read(1048576)
+   if not b:break
+   d.update(b);size+=len(b)
+   if utf:
+    try:decoder.decode(b,False)
+    except UnicodeDecodeError:utf=False
+ if utf:
+  try:decoder.decode(b'',True)
+  except UnicodeDecodeError:utf=False
+ actual=(d.hexdigest(),size,utf);assert actual==(want['sha256'],want['bytes'],want['strict_utf8']),(n,actual,want)
+ if not utf:assert (n,d.hexdigest(),size) in known,('Unqualified actual binary',n);binary+=1
+ observed[n]={'sha256':d.hexdigest(),'bytes':size,'strict_utf8':utf}
+req=json.loads((p/'searched-source-inventory.json').read_text());listing=subprocess.run(req['command'],capture_output=True);assert listing.returncode==0
+listing.stdout.decode('utf8','strict');listing.stderr.decode('utf8','strict');assert sorted(listing.stdout.decode().splitlines())==sorted((p/'searched-source-inventory.stdout').read_text().splitlines())==sorted((p/'final-source-inventory.stdout').read_text().splitlines())
+second={'observed_start':start,'observed_end':time.time(),'independent_full_stream_rehash':True,'count':len(observed),'bytes':sum(v['bytes'] for v in observed.values()),'binary_exceptions_actual_catalog_tuple_rechecked':binary,'manifest_sha256':hashlib.sha256((p/'manifest.json').read_bytes()).hexdigest(),'sorted_paths':list(observed),'all_match':True,'source_universe_command':req['command'],'source_universe_actual_stdout':listing.stdout.decode(),'source_universe_actual_stderr':listing.stderr.decode(),'source_universe_matches':True}
+(p/'second-rehash.json').write_text(json.dumps(second,indent=2)+'\n')
+# The following observations are fresh, after the second pass. Never fill old unknown states.
+groups=json.loads(Path('/private/tmp/roth-mainlemma-main-lemma-resume1/final-drain-owned-process-inventory.json').read_text())['known_owned_groups']
+for f in sorted(p.glob('*launch.json')):
+ j=json.loads(f.read_text());g=j.get('pgid');
+ if g:groups[str(g)]={'launch_file':str(f),'pid':j.get('pid'),'command':j.get('command')}
+cmd=['/bin/ps','-axo','pid,ppid,pgid,lstart,command'];ds=time.time();proc=subprocess.run(cmd,capture_output=True);assert proc.returncode==0,(proc.returncode,proc.stderr)
+raw=proc.stdout.decode('utf8','strict');err=proc.stderr.decode('utf8','strict');parsed=[]
+for line in raw.splitlines()[1:]:
+ a=line.split(None,8)
+ if len(a)==9:parsed.append({'pid':int(a[0]),'ppid':int(a[1]),'pgid':int(a[2]),'start':' '.join(a[3:8]),'argv':a[8]})
+parents={r['pid']:r['ppid'] for r in parsed};administrative={os.getpid()};k=os.getpid()
+while k in parents and parents[k]>1:k=parents[k];administrative.add(k)
+owned=[]
+for r in parsed:
+ a=r['argv'];scratch=any(x in a for x in ['/private/tmp/roth-mainlemma-helper7-index-eval','/private/tmp/roth-mainlemma-main-lemma-resume1','/private/tmp/roth-mainlemma-helper6-double-hasse'])
+ envform=a=='printenv' or a=='/usr/bin/printenv' or a.endswith('/lake env printenv') or a.endswith('lake env printenv')
+ if (scratch or envform) and r['pid'] not in administrative:owned.append(r)
+for g,v in groups.items():
+ v['ps_absence']=not any(r['pgid']==int(g) for r in parsed)
+ try:
+  os.killpg(int(g),0);v['killpg0']='present'
+ except ProcessLookupError:v['killpg0']='absent'
+ except PermissionError as e:v['killpg0']='UNKNOWN';v['errno']=e.errno
+ v['operation']='killpg(pgid,0)';v['observed_unix']=time.time();v['absence']=v['ps_absence'] and v['killpg0']=='absent'
+
+drain={'observed_start_unix':ds,'observed_end_unix':time.time(),'command':cmd,'exit':proc.returncode,'strict_utf8':True,'known_owned_groups':groups,'known_owned_group_count':len(groups),'all_known_groups_absent':all(v['absence'] for v in groups.values()),'scope':'Fresh full ps inventory, all predecessor/current actual PGIDs, exact three owned scratch argv and bare/resolved/lake-env printenv forms. Only explicitly listed current finalizer/ancestor administrative processes excluded; no historical observations reconstructed.','administrative_current_finalizer_ancestor_pids':sorted(administrative),'owned_rows':owned,'stderr':err}
+(p/'final-drain-owned-process-inventory.json').write_text(json.dumps(drain,indent=2)+'\n')
+assert all(v['absence'] for v in groups.values()) and not owned,('Not drained',owned)
+pins={str(f.relative_to(root)):hashlib.sha256(f.read_bytes()).hexdigest() for f in sorted(list(root.glob('Roth/*.lean'))+[root/'Roth.lean',root/'lean-toolchain',root/'lakefile.toml',root/'lake-manifest.json'])}
+for n,h in pins.items():assert rows[str(root/n)]['sha256']==h
+report=root/'.mathlib-quality/cleanup/MainLemma-exists_hasseDeriv_index_eval_bound_aux-helper.md'
+seal={'observed_unix':time.time(),'ALL7':'END','leases':{k:'END' for k in ['helper7','necessary_narrow_main_application','new_helper7_report','new_scratch','compiler','native','profile']},'source_frozen':True,'source17':pins,'zero_active_compiler_native_profile_calls':True,'no_children_spawned':True,'no_calls_or_mutations_after_this_seal_until_owner_resume':True,'file_or_original27_completion_credit':False,'self_reference_exclusions':manifest['exact_self_reference_exclusions'],'manifest_sha256':hashlib.sha256((p/'manifest.json').read_bytes()).hexdigest(),'second_rehash_sha256':hashlib.sha256((p/'second-rehash.json').read_bytes()).hexdigest(),'drain_sha256':hashlib.sha256((p/'final-drain-owned-process-inventory.json').read_bytes()).hexdigest(),'report_sha256':hashlib.sha256(report.read_bytes()).hexdigest(),'count':len(rows),'bytes':second['bytes'],'binary_exceptions':binary,'owned_group_count':len(groups)}
+(p/'final-seal.json').write_text(json.dumps(seal,indent=2)+'\n')
+print(json.dumps({'ALL7':'END','seal_sha256':hashlib.sha256((p/'final-seal.json').read_bytes()).hexdigest(),**seal},indent=2))

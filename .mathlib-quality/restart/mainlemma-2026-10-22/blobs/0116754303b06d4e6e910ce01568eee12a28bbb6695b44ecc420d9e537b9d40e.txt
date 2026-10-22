@@ -1,0 +1,20 @@
+from pathlib import Path
+import subprocess,json,sys,time
+p=Path('/private/tmp/roth-mainlemma-helper8-diag-rem')
+def run(label,args):
+    subprocess.run(['python3',str(p/'observe.py'),label+'-prelaunch'],check=True)
+    subprocess.run(['python3',str(p/'runner.py'),'--frozen-env',str(p/'parent-environment.json'),'--timeout','425',label,'--','/Users/ramin/.elan/bin/lake']+args,check=True)
+    print('GATE-DRAINED '+label,flush=True)
+run('final-eval',['build','Roth.LeanEval'])
+run('independent-current-v1',['env','lean','-j1',str(p/'independent-current-v1.lean')])
+run('after-inventory',['env','lean','-j1',str(p/'after-inventory.lean')])
+data=[json.loads(l.removeprefix('INVENTORY_JSON=')) for l in (p/'after-inventory.log').read_text().splitlines() if l.startswith('INVENTORY_JSON=')]
+assert len(data)==1
+old=json.loads((p/'before-inventory-data.json').read_text())
+assert sorted(data[0]['names'])==sorted(old['names']), 'Changed actual inventory requires fresh guard generation'
+(p/'after-inventory-data.json').write_text(json.dumps(data[0],indent=2)+'\n')
+# Reuse identical ordinary per-declaration guards only after actual dynamic names agree.
+(p/'after-pairs.lean').write_bytes((p/'before-pairs.lean').read_bytes())
+run('after-pairs',['env','lean','-j1',str(p/'after-pairs.lean')])
+run('final-affected',['build','Roth.MainLemma','Roth.Main'])
+print('SEMANTICS-ALL-DRAINED',flush=True)

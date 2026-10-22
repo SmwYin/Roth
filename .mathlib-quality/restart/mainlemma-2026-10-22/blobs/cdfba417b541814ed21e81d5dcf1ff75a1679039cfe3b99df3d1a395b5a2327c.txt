@@ -1,0 +1,38 @@
+from pathlib import Path
+import json,hashlib,time
+p=Path('/private/tmp/roth-mainlemma-helper8-diag-rem');o=Path('/private/tmp/roth-mainlemma-owner');load=lambda n:json.loads((p/n).read_text());sha=lambda b:hashlib.sha256(b).hexdigest();rows=[];start=time.time()
+parent=sha((p/'parent-environment.json').read_bytes());pins=None;prior=None
+for label,cmd in [('final-affected',['/Users/ramin/.elan/bin/lake','build','Roth.MainLemma','Roth.Main'])]:
+ d=load(label+'.json');t=load(label+'-terminal.json');raw=(p/(label+'.log')).read_bytes();err=(p/(label+'.stderr.log')).read_bytes();raw.decode('utf8','strict');err.decode('utf8','strict')
+ assert d['exit']==0 and not d['timed_out'] and all(d[k] for k in ['drained','group_absent_at_exit','immutable','inputs_immutable','raw_lake_environment_equal','strict_utf8'])
+ assert d['command']==t['command']==cmd and t['exit']==0 and not t['timed_out'] and t['recorded_before_group_probe_postenv_hashing']
+ assert d['pid']==d['pgid']==t['pid']==t['pgid'] and d['started_unix']<=t['observed_immediately_after_wait_unix']<=d['completed_unix']
+ assert sha(raw)==d['raw_sha256'] and sha(err)==d['stderr_sha256'] and d['source_pins_before']==d['source_pins_after'] and len(d['source_pins_before'])==17
+ if pins is None:pins=d['source_pins_before']
+ assert d['source_pins_before']==pins and d['frozen_observed_parent_environment_sha256']==parent
+ assert d['actual_lake_environment_before']==d['actual_lake_environment_after']
+ for side in ['before','after']:
+  e=(p/(label+'-'+side+'-env.log')).read_bytes();ee=(p/(label+'-'+side+'-env.stderr.log')).read_bytes();e.decode('utf8','strict');ee.decode('utf8','strict');assert sha(e)==d['actual_lake_environment_'+side]['stdout_sha256'] and sha(ee)==d['actual_lake_environment_'+side]['stderr_sha256']
+ if prior is not None:assert prior['completed_unix']<=d['started_unix']
+ prior=d;rows.append({'gate':label,'exit':0,'seconds_receipt':d['seconds'],'seconds_through_actual_wait':t['seconds_through_wait'],'raw_sha256':sha(raw),'terminal_sha256':sha((p/(label+'-terminal.json')).read_bytes())})
+assert pins['Roth/MainLemma.lean']==sha(Path('/Users/ramin/LEAN/Roth/Roth/MainLemma.lean').read_bytes())=='85c2f4f9d7bab17b49a2b676559e7506403ba855db1b4e41c0931ec0b0746c8a'
+assert pins['Roth/Main.lean']==sha((p/'entry-source/Roth/Main.lean').read_bytes())=='6668ff83a7e7b156f6f29b8f2d0163e699da002b70338d5ee0715065ade9b25f'
+entry=json.loads((p/'entry-pins.json').read_text());assert {k:v for k,v in pins.items() if k!='Roth/MainLemma.lean'}=={k:v for k,v in entry.items() if k!='Roth/MainLemma.lean'}
+prior_ms=load('final-affected.json')['completed_unix']*1000
+for name,warnings in [('MainLemma',1),('Main',4),('LeanEval',0)]:
+ label='final-native-'+name;req=load(label+'-request.json');d=load(label+'-raw.json');sv=load(label+'-saved.json');pre=load(label+'-pre.json');post=load(label+'-post.json');expected={'file_path':'/Users/ramin/LEAN/Roth/Roth/'+name+'.lean'}
+ assert req['request']==d['request']==expected and req['request_observed_ms']==d['request_observed_ms']
+ r=d['raw_result'];assert not r['isError'];v=r['structuredContent']['result'];assert [json.loads(x['text']) for x in r['content'] if x['type']=='text']==[v]
+ assert v['success'] and not v['partial'] and not v['timed_out'] and v['still_elaborating_lines'] is None and not v['failed_dependencies']
+ assert not [x for x in v['items'] if x['severity']=='error'] and len([x for x in v['items'] if x['severity']=='warning'])==warnings
+ assert pre['rows']==post['rows'] and len(pre['rows'])==17 and {k:x['sha256'] for k,x in pre['rows'].items()}==pins
+ assert prior_ms<=pre['observation_started_unix']*1000<=pre['observation_completed_unix']*1000<=req['request_observed_ms']<=d['immediate_return_observed_ms']==sv['immediate_return_observed_ms']<=sv['full_response_save_observed_ms']<=post['observation_started_unix']*1000<=post['observation_completed_unix']*1000
+ assert sv['no_post_source_hash_before_save'];prior_ms=post['observation_completed_unix']*1000
+ rows.append({'gate':label,'complete_unfiltered':True,'errors':0,'warnings':warnings,'request_ms':req['request_observed_ms'],'immediate_return_ms':d['immediate_return_observed_ms'],'save_observation_ms':sv['full_response_save_observed_ms'],'individual_source17_pre_post_equal':True,'raw_response_sha256':sha((p/(label+'-raw.json')).read_bytes())})
+# Direct full raw crossmatch uses no AST normalization.
+target=load('after-target-pair.json');old=load('before-target-pair.json');oc=(p/'independent-original-v3.log').read_text();ov=[json.loads(l[len('INDEPENDENT_JSON='):]) for l in oc.splitlines() if l.startswith('INDEPENDENT_JSON=')][0];cv=load('independent-current-actual-pair.json');assert ov['VALUE']!=target['VALUE'] and cv['VALUE']!=target['VALUE'] and old['TYPE']==target['TYPE'];cross=load('independent-final-imported-crossmatch.json');assert cross['actual_imported_VALUE_sha256']==sha(target['VALUE'].encode()) and cross['old_independent_VALUE_sha256']==sha(ov['VALUE'].encode()) and cross['current_independent_VALUE_sha256']==sha(cv['VALUE'].encode())
+# Preserve the transient orchestrator edit without attributing an unexecuted check.
+disc=load('active-orchestrator-edit-disclosure.json');orig=(p/'final-semantics-original-launch-copy.py').read_bytes();trans=(p/'final-semantics-transient-added-affected.py').read_bytes();assert sha(orig)==disc['original_sha256'] and sha(trans)==disc['transient_sha256'] and (p/'final-semantics.py').read_bytes()==orig
+extra=b"run('final-affected',['build','Roth.MainLemma','Roth.Main'])\n";assert trans.count(extra)==1 and trans.replace(extra,b'',1)==orig
+assert load('after-pairs.json')['completed_unix']<=load('final-affected.json')['started_unix']
+out={'status':'PASS owner independently reviewed helper8 affected build, all3 FINAL complete unfiltered native per-call source17/return/save chronology and imported nonself VALUE crossmatch','observed_start_unix':start,'observed_end_unix':time.time(),'source17_pins':pins,'rows':rows,'native_scope':'Each of three calls has own prospective pre17pin observation, file_path-only request, immediate return, complete raw save, save observation, then post17pin observation; all pre/post SHA+byte tuples equal. No suppressed/partial/timeout result.','old_and_current_independent_values_differ_imported':True,'all62_rawTYPE_before_after_exact':True,'orchestrator_disclosure':'Original/current file and transient copy SHA verified; only transient added line is a future affected build. CPython already-loaded execution qualification retained, compiler inputs unchanged. Acceptance uses actual separate final-affected whole0 terminal/raw receipt after after-pairs drain, never unexecuted line.','scope':'Local helper final gates only; matched after timing/source/report/fullclosure/END and original27/file publication remain pending.'};(o/'original27-helper8-owner-final-affected-native-review.json').write_text(json.dumps(out,indent=2)+'\n');print(json.dumps({'status':out['status'],'gates':len(rows)}))

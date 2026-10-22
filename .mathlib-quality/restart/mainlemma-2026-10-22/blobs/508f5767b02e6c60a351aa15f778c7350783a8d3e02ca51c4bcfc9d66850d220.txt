@@ -1,0 +1,51 @@
+from pathlib import Path
+import json,re,time,hashlib
+p=Path('/private/tmp/roth-mainlemma-helper7-index-eval');root=Path('/Users/ramin/LEAN/Roth');load=lambda n:json.loads((p/n).read_text())
+for label in ['final-full','final-eval','drop-trials','after-inventory','after-pairs','independent-current','after-profile-a','after-profile-b']:
+ j=load(label+'.json');assert j['exit']==0 and all(j[x] for x in ['drained','immutable','inputs_immutable','raw_lake_environment_equal']) and not j['timed_out']
+st=load('static-audit.json');md=load('metadata-review.json');ind=load('independent-current-accepted.json');assert ind['nonidentical_current_VALUE'] and ind['whole_exit']==0
+native=load('final-native-acceptance.json');assert len(native['rows'])==3
+text='# Fresh helper7 completed local Mode B /cleanup review\n\n'
+text+='Final source ML716 SHA `'+load('selection-final7.json')['source_sha256']+'`; external Main689 `'+st['external_Main_exact_sha256']+'`. Report generated '+str(time.time())+'. Original first draft c93/before commands and all historical failures remain immutable in the dedicated scratch.\n\n'
+text+=(p/'report-final-notes.md').read_text()
+text+='\n## Concrete execution receipts\n\n|Run|Whole exit|Seconds|Raw SHA256|\n|---|---:|---:|---|\n'
+for label in ['baseline-full','baseline-eval','before-profile-a','before-profile-b','before-pairs-v2','independent-original-v2','candidate-boundaries-v4','after-full','final-full','final-eval','drop-trials','after-inventory','after-pairs','independent-current','after-profile-a','after-profile-b']:
+ j=load(label+'.json');text+=f"|{label}|{j['exit']}|{j['seconds']:.6f}|`{j['raw_sha256']}`|\n"
+text+='\nEvery listed accepted run has actual whole exit0/default guards/source17 and input immutability/raw environment equality, strictUTF8 separate streams, terminal-state-first receipt, drain and actual group absence. The earlier failures are separate artifacts and earn no partial proof credit.\n'
+text+='\n## Outer/inner binding catalogue\n\n'
+entry=(p/'entry-audit.md').read_text();tab=entry[entry.index('|Binder|Class/use|'):entry.index('\n\n2.6b pending')]
+tab=tab.replace('Drop trial required:','Actual cleared-premise search did not close;').replace('Probe drop;','Actual cleared-premise search did not close;').replace('Probe drop.','Actual cleared-premise search did not close.').replace('Drop trial;','Actual cleared-premise search did not close;').replace('Actual certificate required.','Actual whole0/full guarded generic-Q boundary certificate retained.').replace('No caller benefit. Probe drop.','No caller benefit; actual cleared-premise search did not close.')
+text+=tab+'\n\nAll rows resolved by the final a–e discussion above; no failed search is a proof of logical necessity.\n'
+text+='\n## Every signature line: codepoint packing\n\n'
+for phase in ['before','after']:
+ text+=f'### {phase}\n\n|Line|Current|Next indivisible block|Next width|Current+1+next|Action|\n|---|---:|---|---:|---:|---|\n'
+ for r in st[phase]['packing']:
+  block=(r['next_indivisible_block'] or 'end').replace('|','\\|');text+=f"|{r['signature_line']}|{r['codepoints']}|`{block}`|{r['next_block_codepoints']}|{r['current_plus_1_plus_next'] if r['current_plus_1_plus_next'] is not None else '—'}|{r['action']}|\n"
+text+='\nThe last after line ends `:= by`; no next block. Full actual private-name command-macro #check output rendered with format.width100 is saved in after-pairs.log. All current widths≤100, next-indivisible-block sums>100; no wide-hyp escape used.\n'
+text+='\nActual reference command: command macro elaborates `#check @` with the fresh exact canonical private Name under `set_option format.width 100 in`. Lean may print indivisible pretty-printer groups wider than100; the source packing gate above measures codepoints independently. No ?m term macro used.\n\n```text\n'+(p/'after-actual-private-check-width100.txt').read_text()+'```\n'
+text+='\n## Every inequality occurrence\n\n|After signature line|Column|Operator|Action|\n|---|---:|---|---|\n'
+for r in st['after']['inequalities']:text+=f"|{r['signature_line']}|{r['column']}|{r['operator']}|Already canonical; retained|\n"
+text+='\n## Actual Top3 for each actual web query\n\n'
+for q in load('literature-top3.json'):
+ text+='Query: '+q['query']+'\n\n'
+ for i,(title,ref) in enumerate(q['actual_first3'],1):
+  m=re.match(r'^(.*) \((https?://.*)\)$',title);assert m
+  label,url=m.groups();words=label.split();label=' '.join(words[:16])+(' … [search title truncated]' if len(words)>16 else '')
+  text+=f'{i}. [{label}]({url})\n'
+ text+='\n'
+text+='## Actual metadata, independence and native diagnostics\n\n'
+text+=f"Fresh actual defining MainLemma module declarations: before{md['before_count']}/after{md['after_count']}; actual source-declared roots{md['source_declared_roots']}, generated{md['generated_count']}. {md['foreign_unchanged_raw_pairs']} foreign pairs are exact raw TYPE+opaqueVALUE/levels/deps/std3/default matches. Full before/after raw pairs and dynamic module/project/Eval inventories, generated kinds/sourceabsence/directed family edges are retained; counts were observed, not forced.\n\n"
+text+='Independent original closure12197 names; exact old TYPE/universes/BinderInfo/written binders/order guard and VALUE different from firstdraft. Independent current closure'+str(ind['closure_count'])+' names; exact current TYPE guard, VALUE different from actual selected imported target; both recursive TYPE+opaqueVALUE closures deny helper7/main+descendants and sorryAx. V4 exact old-contract recovery and all4 boundary pairs full closed/inferred/std3/default; all8 actual cleared-premise searches have whole0 full guarded restored-context fallbacks and no deletion accepted.\n\n'
+text+='|Full unfiltered native file|Errors|Warnings|Raw=structured|\n|---|---:|---:|---|\n'
+for r in native['rows']:text+=f"|{r['label']}|{r['errors']}|{r['warnings']}|true|\n"
+text+='\nEach file_path-only request precedes the awaited call; immediate return observation precedes full raw response save, save observation precedes post source17 pins. All responses success/nonpartial/nontimeout/0failed deps/0errors; only inherited warnings.\n'
+text+='\n## Matched local performance /buzz\n\nCLI: `/Users/ramin/.elan/bin/lake env lean -j1 --profile -Dtrace.profiler=true -Dtrace.profiler.threshold=0 FILE`. Own frozen parent env8dfa8143/rawLakeenvc8727e26; before and after same exact helper+meaningful main scope/options/CLI/env. Full canonical+actual printed payloads uniquely bound, only whitespace/standalone --comment normalization; before attached docstring preserved. Disjoint column0 command/async proof/kernel/compiler/lint roots only, exclude Meta/nested/trailing/next commands. Actual runtime families crossmatched to imported actual metadata, no TYPE/VALUE Name mapping. No unmatched numeric P6/R1 comparison.\n\n|Sample|Helper ms|Main ms|Combined ms|Status|\n|---|---:|---:|---:|---|\n'
+vals={}
+for phase in ['before','after']:
+ vals[phase]=[]
+ for sample in ['a','b']:
+  j=load(phase+'-profile-'+sample+'-binding.json');v=[r['sum_ms'] for r in j['rows']];assert len(v)==2;vals[phase].append(v);text+=f'|{phase} {sample.upper()}|{v[0]:.3f}|{v[1]:.3f}|{sum(v):.3f}|helper '+('PASS' if v[0]<1000 else 'VALIDFAIL')+', main/group '+('VALIDFAIL' if v[1]>=1000 or sum(v)>=1000 else 'PASS')+'|\n'
+means={k:[sum(v[i] for v in vs)/len(vs) for i in range(2)] for k,vs in vals.items()};delta=[means['after'][i]-means['before'][i] for i in range(2)]
+text+=f"\nMatched mean after−before: helper{delta[0]:+.3f}ms/main{delta[1]:+.3f}ms/combined{sum(delta):+.3f}ms. All ≥750 required repetitions retained; no unchanged third, selective samples, noise/causal discounts or nested-time budget subtraction. Normal-form/caller benefit assessed on both actual pairs; all foreign main/group budget failures remain VALIDFAIL and original27 obligations.\n"
+text+='\nFinal self-excluded seal supplies report/manifest/second/drain hashes and counts after full independent second streamed rehash and fresh process drain. No later tool call or artifact mutation is authorized before owner resume.\n'
+report=root/'.mathlib-quality/cleanup/MainLemma-exists_hasseDeriv_index_eval_bound_aux-helper.md';report.write_text(text);print('Wrote final report',len(text.splitlines()),'lines',hashlib.sha256(report.read_bytes()).hexdigest())

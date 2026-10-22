@@ -1,0 +1,12 @@
+from pathlib import Path
+import json,time
+p=Path('/private/tmp/roth-mainlemma-helper7-index-eval');load=lambda n:json.loads((p/n).read_text());rows=load('after-pairs-accepted.json')['rows'];allnames={r['name'] for r in rows};tg=next(n for n in allnames if n.endswith('.Roth.exists_hasseDeriv_index_eval_bound_aux'));semantic=load('after-pairs.json');out=[]
+for label in ['after-profile-clean-a','after-profile-clean-b']:
+ binding=load(label+'-binding.json');run=load(label+'.json');assert run['source_pins_before']==semantic['source_pins_before'] and run['frozen_observed_parent_environment_sha256']==semantic['frozen_observed_parent_environment_sha256'] and run['actual_lake_environment_before']==semantic['actual_lake_environment_before']
+ cache=load(label+'-prelaunch-cache.json');cache0=load('after-pairs-prelaunch-cache.json');assert {n:(v['sha256'],v['bytes']) for n,v in cache.items()}=={n:(v['sha256'],v['bytes']) for n,v in cache0.items()}
+ root=load(label+'-prelaunch-root-extra.json')['root_outputs'];root0=load('after-pairs-prelaunch-root-extra.json')['root_outputs'];assert {n:(v['sha256'],v['bytes']) for n,v in root.items()}=={n:(v['sha256'],v['bytes']) for n,v in root0.items()}
+ for row in binding['rows']:
+  imported=tg if row['marker'].startswith('private') else 'Roth.main_lemma';runtime=row['runtime_name'];expected={n for n in allnames if n==imported or n.startswith(imported+'.')};actual=set(row['actual_kernel_names']);assert {imported+n[len(runtime):] for n in actual}==expected
+  out.append({'label':label,'actual_runtime_name':runtime,'actual_imported_name':imported,'actual_runtime_kernel_names':sorted(actual),'actual_imported_family':sorted(expected),'sum_ms':row['sum_ms'],'source_payload_family_identity_only_no_AST_Name_mapping':True,'all104cache_and8root_companions_frozen_match_semantic':True})
+before=load('before-family-profile-crossmatch.json');assert len(before['profiles'])==2
+(p/'after-family-profile-crossmatch.json').write_text(json.dumps({'observed_unix':time.time(),'actual_whole0_semantic':True,'rows':out,'scope_and_environment_match_before':True,'qualification':'Private source-unit _stdin and canonical module root refer to exact bound full written command; correspondence only for actual runtime family origins, never arbitrary TYPE/VALUE Name rewriting.'},indent=2)+'\n');print('Accepted both exact after payload and dynamic imported runtime families; source17/env/cache104/root8 immutable.')

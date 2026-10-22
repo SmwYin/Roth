@@ -1,0 +1,48 @@
+from pathlib import Path
+import re,json,hashlib,time
+p=Path('/private/tmp/roth-mainlemma-helper8-diag-rem');o=Path('/private/tmp/roth-mainlemma-owner');load=lambda n:json.loads((p/n).read_text());sha=lambda b:hashlib.sha256(b).hexdigest();start=time.time();allrows=[];envs=set();parents=set();phasepins={};phasecache={};scopeids={}
+norm=lambda t:re.sub(r'\s+','',re.sub(r'^\s*--[^\n]*(?:\n|$)','',t,flags=re.M))
+for phase,meta_stem,captures in [('before','before-pairs',['before-profile-a','before-profile-b'])]:
+ meta=load(meta_stem+'.json');mr=(p/(meta_stem+'.log')).read_bytes();assert meta['exit']==0 and not meta['timed_out'] and all(meta[k] for k in ['drained','immutable','inputs_immutable','strict_utf8','raw_lake_environment_equal','group_absent_at_exit']);assert sha(mr)==meta['raw_sha256'];pairs=[json.loads(l[len('PAIR_JSON='):]) for l in mr.decode('utf8','strict').splitlines() if l.startswith('PAIR_JSON=')];inv=load(phase+'-inventory-data.json');names={x[0] for x in inv['names']};assert len(pairs)==len(names)==62 and {x['name'] for x in pairs}==names
+ assert all(x['defaults']==[200000,20000,512] and set(x['axioms'])<={'propext','Classical.choice','Quot.sound'} and x['module']=='Roth.MainLemma' and x['TYPE'].startswith('Lean.Expr.') and x['VALUE'].startswith('Lean.Expr.') for x in pairs)
+ target=next(n for n in names if n.endswith('.Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux'));family={root:{n for n in names if n==root or n.startswith(root+'.')} for root in [target,'Roth.main_lemma']};assert len(family[target])==1 and len(family['Roth.main_lemma'])==5
+ scope=load(phase+'-scope.json');canonical=Path(scope['canonical']).read_bytes();scaffold=Path(scope['scaffold']).read_bytes();assert sha(canonical)==scope['canonical_sha256'] and sha(scaffold)==scope['scaffold_sha256'];unscoped=scaffold.decode().replace('set_option trace.profiler false\n\n','').replace('set_option trace.profiler true\n\n','').replace('\n\nset_option trace.profiler false','');assert unscoped==canonical.decode();assert len(scope['commands'])==2;scopeids[phase]=[(x['written_marker'],x['runtime_name']) for x in scope['commands']]
+ for stem in captures:
+  d=load(stem+'.json');t=load(stem+'-terminal.json');raw=(p/(stem+'.log')).read_bytes();err=(p/(stem+'.stderr.log')).read_bytes();text=raw.decode('utf8','strict');err.decode('utf8','strict')
+  assert d['exit']==t['exit']==0 and not d['timed_out'] and not t['timed_out'] and all(d[k] for k in ['drained','immutable','inputs_immutable','strict_utf8','raw_lake_environment_equal','group_absent_at_exit']);assert sha(raw)==d['raw_sha256'] and sha(err)==d['stderr_sha256']
+  assert d['pid']==d['pgid']==t['pid']==t['pgid'] and t['recorded_before_group_probe_postenv_hashing'] and d['started_unix']<=t['observed_immediately_after_wait_unix']<=d['completed_unix'];assert d['command']==t['command']==['/Users/ramin/.elan/bin/lake','env','lean','-j1','--profile','-Dtrace.profiler=true','-Dtrace.profiler.threshold=0',scope['scaffold']]
+  assert d['input_sha256']==d['input_sha256_after']=={scope['scaffold']:scope['scaffold_sha256']};assert d['source_pins_before']==d['source_pins_after']==meta['source_pins_before']==meta['source_pins_after'] and len(d['source_pins_before'])==17 and d['source_pins_before']['Roth/MainLemma.lean']==sha(canonical);phasepins[phase]=d['source_pins_before']
+  parent=sha(Path(d['frozen_observed_parent_environment_file']).read_bytes());assert parent==d['frozen_observed_parent_environment_sha256']==meta['frozen_observed_parent_environment_sha256'];parents.add(parent);assert d['actual_lake_environment_before']==d['actual_lake_environment_after']==meta['actual_lake_environment_before']==meta['actual_lake_environment_after']
+  for side in ['before','after']:
+   for stream,suffix in [('stdout','log'),('stderr','stderr.log')]:
+    b=(p/(stem+'-'+side+'-env.'+suffix)).read_bytes();b.decode('utf8','strict');assert sha(b)==d['actual_lake_environment_'+side][stream+'_sha256']
+    if stream=='stdout':envs.add(sha(b))
+  cache=load(stem+'-prelaunch-cache.json');mc=load(meta_stem+'-prelaunch-cache.json');assert len(cache)==len(mc)==104;assert {k:(v['sha256'],v['bytes']) for k,v in cache.items()}=={k:(v['sha256'],v['bytes']) for k,v in mc.items()};phasecache[phase]=cache
+  rootsnap=load(stem+'-prelaunch-root-extra.json');metaroot=load(meta_stem+'-prelaunch-root-extra.json');assert len(rootsnap['root_outputs'])==len(metaroot['root_outputs'])==8;assert {k:(v['sha256'],v['bytes']) for k,v in rootsnap['root_outputs'].items()}=={k:(v['sha256'],v['bytes']) for k,v in metaroot['root_outputs'].items()}
+  heads=list(re.finditer(r'^\[Elab.command\] \[([0-9.]+)\] (.*)$',text,re.M));binding=load(stem+'-framing-v2-binding.json');assert binding['raw_sha256']==sha(raw) and len(binding['rows'])==2;capturerows=[]
+  for item in scope['commands']:
+   marker=item['written_marker'];body=Path(item['canonical']).read_text();assert canonical.decode().count(body)==1 and body.count(marker)==1;hits=[]
+   for j,h in enumerate(heads):
+    end=heads[j+1].start() if j+1<len(heads) else len(text)
+    if marker in text[h.start():end]:hits.append((h,end))
+   assert len(hits)==1;h,end=hits[0];span=text[h.start():end]
+   boundary=re.search(r'\n(?:[ ]*\[[A-Za-z0-9_.]+\] \[[0-9.]+\] [✅❌]|[ ]*elaboration took [0-9.]+(?:ms|s)(?:\n|$))',span);assert boundary;printed=span[:boundary.start()].split('✅️ ',1)[1];assert norm(printed)==norm(body),(stem,marker,'complete canonical command payload mismatch')
+   runtime=item['runtime_name'];imported=target if marker.startswith('private lemma') else 'Roth.main_lemma';disjoint=[];excluded=[];ks=[];cs=[]
+   for z in re.finditer(r'^\[(Elab.command|Elab.async)\] \[([0-9.]+)\] (.*)$',span,re.M):
+    anchor=z[3];assert '✅' in anchor and '❌' not in anchor;row={'tag':z[1],'seconds':float(z[2]),'anchor':anchor,'raw_line':text.count('\n',0,h.start()+z.start())+1}
+    if 'Lean.Meta.' in anchor:excluded.append(row);continue
+    if z[1]=='Elab.async':
+     if 'elaborating proof of ' in anchor:assert anchor.split('elaborating proof of ',1)[1]==runtime
+     elif 'addDeclCore' in anchor or anchor.endswith('Lean.compileDecls'):
+      typ='Kernel' if 'addDeclCore' in anchor else 'Compiler';m=re.match(r'\n  \['+typ+r'\] \[[0-9.]+\] ✅[^\n]*(?:typechecking declarations|compiling:) \[([^\]]+)\]',span[z.end():]);assert m;ns=m[1].split(', ');assert all(n==runtime or n.startswith(runtime+'.') for n in ns);(ks if typ=='Kernel' else cs).append({'root_raw_line':row['raw_line'],'actual_names':ns})
+     else:assert 'Lean.Elab.Command.runLintersAsync' in anchor
+    disjoint.append(row)
+   assert sum(r['tag']=='Elab.command' for r in disjoint)==sum('elaborating proof of ' in r['anchor'] for r in disjoint)==sum('runLintersAsync' in r['anchor'] for r in disjoint)==1 and ks
+   kn={n for k in ks for n in k['actual_names']};cn={n for k in cs for n in k['actual_names']};assert {imported+n[len(runtime):] for n in kn}==family[imported] and {imported+n[len(runtime):] for n in cn}<=family[imported]
+   total=sum(r['seconds'] for r in disjoint)*1000;brow=next(x for x in binding['rows'] if x['marker']==marker);assert abs(total-brow['sum_ms'])<1e-8
+   capturerows.append({'actual_runtime_name':runtime,'actual_imported_origin_name':imported,'sum_ms':total,'result':'PASS <1000ms' if total<1000 else 'VALIDFAIL >=1000ms','complete_command_sha256':sha(body.encode()),'actual_printed_command_sha256':sha(printed.encode()),'strict_payload_equal_except_whitespace_standalonecomments':True,'disjoint_command_async_proof_kernel_compiler_lint_roots':disjoint,'all_Meta_excluded':excluded,'actual_kernel_names':ks,'actual_compiler_names':cs})
+  allrows.append({'capture':stem,'phase':phase,'whole_exit':0,'raw_sha256':sha(raw),'stderr_sha256':sha(err),'source_sha256':sha(canonical),'scaffold_sha256':sha(scaffold),'rows':capturerows})
+  del raw,text,span
+assert len(parents)==len(envs)==1
+means={kind:sum(c['rows'][i]['sum_ms'] for c in allrows)/2 for i,kind in enumerate(['helper','main'])}
+out={'status':'PASS owner independently reanchored helper8 exact BEFORE A+B pair; helper PASS, main+combined VALIDFAIL retained','observed_start_unix':start,'observed_end_unix':time.time(),'same_parent_environment_sha256':next(iter(parents)),'same_actual_raw_lake_environment_sha256':next(iter(envs)),'104cache_and8root_companions_match_fresh_metadata':True,'actual_runtime_families_bound_from_fresh_all62TYPEVALUE_rows':True,'Name_correspondence_scope':'Only source-unit private defining-module origin for full command runtime family; never TYPE/VALUE AST constant renaming.','serialization':'Both terminal/drain/postfreeze receipts existed before raw extraction; owner deferred all host tools and leaf reported no compiler/native/profile/raw parsing overlap.','framing_qualification':'Accept exact profiler node or standalone CLI elaboration took <number>ms/s boundary; complete command payload strict equality except whitespace/standalone comments. Original parser outcomes preserved; this parser does not broaden declaration matching or double count Meta/nested/trailing end roots.','means_ms':means,'rows':allrows,'pending':'Prospective full all14 setup/package/core/binary equality independent owner check; independent old/current proof and all after/final helper/original27/file gates.'};(o/'original27-helper8-owner-before-profile-reanchor.json').write_text(json.dumps(out,indent=2)+'\n');print(json.dumps({'status':out['status'],'means_ms':means}))

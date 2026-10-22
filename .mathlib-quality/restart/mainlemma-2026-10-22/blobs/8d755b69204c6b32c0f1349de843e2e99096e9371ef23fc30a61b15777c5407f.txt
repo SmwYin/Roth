@@ -1,0 +1,5 @@
+from pathlib import Path
+import subprocess,sys
+p=Path('/private/tmp/roth-mainlemma-helper9-rem-floor');label=sys.argv[1];args=sys.argv[2:]
+subprocess.run(['python3',str(p/'observe.py'),label+'-prelaunch'],check=True)
+subprocess.run(['python3',str(p/'runner.py'),'--frozen-env',str(p/'parent-environment.json'),'--timeout','420',label,'--','/Users/ramin/.elan/bin/lake']+args,check=True)

@@ -1,0 +1,19 @@
+from pathlib import Path
+import json,hashlib,sys,re
+p=Path('/private/tmp/roth-mainlemma-helper6-double-hasse'); stem=sys.argv[1]
+r=json.loads((p/(stem+'.json')).read_text()); raw=(p/(stem+'.log')).read_bytes(); log=raw.decode('utf8','strict')
+assert r['exit']==0 and not r['timed_out'] and r['drained'] and r['group_absent_at_exit']
+assert r['immutable'] and r['inputs_immutable'] and r['raw_lake_environment_equal'] and r['strict_utf8']
+assert hashlib.sha256(raw).hexdigest()==r['raw_sha256']
+assert ': error:' not in log and 'declaration uses' not in log
+pairs=re.findall(r'(?ms)^FULL PAIR NAME=.*?LIMITS=200000/20000/512',log)
+retained=re.findall(r'(?ms)^ALL RETAINED PASS NAME=.*?LIMITS=200000/20000/512',log)
+closure=[s for s in log.splitlines() if s.startswith('INDEPENDENT ORIGINAL FULL CONTRACT PASS DENIED=')]
+assert len(pairs)==12 and len(retained)==61 and len(closure)==1
+for s in pairs+retained:
+ assert 'TYPE=' in s and 'ACTUALOPAQUEVALUE=' in s and 'AXIOMS=' in s and 'LIMITS=200000/20000/512' in s
+old=pairs[0].split('ACTUALOPAQUEVALUE=',1)[1].split(' AXIOMS=',1)[0]
+new=pairs[1].split('ACTUALOPAQUEVALUE=',1)[1].split(' AXIOMS=',1)[0]
+assert old != new
+out={'actual_whole_run_exit_zero':True,'run':stem,'raw_sha256':r['raw_sha256'],'full_pairs':len(pairs),'actual_retained_written_and_generated_pairs':len(retained),'exact_original_type_names_order_binderinfo_universes':'PASS, only generated binder macro scopes normalized, raw AST preserved','independent_original_and_candidates_and_boundary_certificates':'PASS','type_and_actual_opaque_values_closed_inferred_type_std3_defaults':'PASS','type_and_value_transitive_denied_closure':'PASS, complete closure in raw log','original_value_sha256':hashlib.sha256(old.encode()).hexdigest(),'independent_value_sha256':hashlib.sha256(new.encode()).hexdigest(),'actual_nonidentical_proof_value':True,'failures_preserved':['independent-original-v1','independent-original-v2','independent-original-v3']}
+(p/(stem+'-acceptance.json')).write_text(json.dumps(out,indent=2)+'\n');print(json.dumps(out))

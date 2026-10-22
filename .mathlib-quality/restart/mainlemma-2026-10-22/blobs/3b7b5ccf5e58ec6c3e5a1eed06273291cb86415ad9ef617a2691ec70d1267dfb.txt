@@ -1,0 +1,23 @@
+from pathlib import Path
+import json,hashlib,codecs,time,subprocess
+p=Path('/private/tmp/roth-mainlemma-helper6-double-hasse');start=time.time();manifest=json.loads((p/'manifest.json').read_text());bad=[];count=0;size=0
+# Fresh independent streamed read of every entry; no hash field copied as evidence.
+for name,expected in manifest['entries'].items():
+ f=Path(name);h=hashlib.sha256();dec=codecs.getincrementaldecoder('utf8')('strict');text=True;n=0
+ with f.open('rb') as file:
+  for block in iter(lambda:file.read(2*1024*1024),b''):
+   n+=len(block);h.update(block)
+   if text:
+    try:dec.decode(block,False)
+    except UnicodeDecodeError:text=False
+ if text:
+  try:dec.decode(b'',True)
+  except UnicodeDecodeError:text=False
+ actual={'sha256':h.hexdigest(),'bytes':n,'strict_utf8':text,'binary_exception':None if text else expected['binary_exception']}
+ if actual!=expected:bad.append({'path':name,'actual':actual,'expected':expected})
+ count+=1;size+=n
+ex=set(manifest['exact_self_reference_exclusions']);own={str(f) for f in p.rglob('*') if f.is_file() and str(f) not in ex};assert own<=set(manifest['entries']),sorted(own-set(manifest['entries']))
+req=json.loads((p/'searched-source-inventory.json').read_text());r=subprocess.run(req['command'],capture_output=True);r.stdout.decode('utf8','strict');r.stderr.decode('utf8','strict');listing_equal=r.returncode==0 and sorted(r.stdout.decode().splitlines())==sorted((p/'searched-source-inventory.stdout').read_text().splitlines()) and r.stderr==(p/'searched-source-inventory.stderr').read_bytes()
+assert count==manifest['count'] and size==manifest['bytes'] and not bad and listing_equal,bad
+out={'observed_start':start,'observed_end':time.time(),'independent_fresh_streamed_read':True,'all_entries_match':True,'count':count,'bytes':size,'mismatches':bad,'all_own_artifacts_included_except_exact_self_receipts':True,'fresh_generic_rg_source_file_universe_exact_equal':True,'source_listing_order_qualification':'rg traversal order is not a source-file-universe invariant; exact sorted full paths compared, full actual fresh raw listing saved in this receipt. Earlier raw-order-only assertion failed, no pass credited.','actual_fresh_source_listing_stdout':r.stdout.decode(),'actual_fresh_source_listing_stderr':r.stderr.decode(),'actual_fresh_listing_stdout_sha256':hashlib.sha256(r.stdout).hexdigest(),'manifest_sha256':hashlib.sha256((p/'manifest.json').read_bytes()).hexdigest(),'binary_exceptions':'Every nonUTF8 actual observed compiled/executable artifact provenance retained exactly; all raw text decoded strict UTF8 again.'}
+(p/'second-rehash.json').write_text(json.dumps(out,indent=2)+'\n');print({k:v for k,v in out.items() if k not in ['actual_fresh_source_listing_stdout','actual_fresh_source_listing_stderr']})

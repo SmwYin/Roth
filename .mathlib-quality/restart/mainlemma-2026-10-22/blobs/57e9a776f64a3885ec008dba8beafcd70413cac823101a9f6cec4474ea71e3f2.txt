@@ -1,0 +1,9 @@
+from pathlib import Path
+import json,re
+p=Path('/private/tmp/roth-mainlemma-helper9-rem-floor');q=Path('/private/tmp/roth-mainlemma-helper8-diag-rem')
+items=[json.loads(l.removeprefix('INVENTORY_JSON=')) for l in (p/'before-inventory.log').read_text().splitlines() if l.startswith('INVENTORY_JSON=')];assert len(items)==1;j=items[0]
+s=(q/'before-pairs.lean').read_text();blocks=s.split('run_cmd Lean.Elab.Command.liftTermElabM do\n');pre=blocks[0];template=blocks[1];line=template.splitlines()[0];assert line.startswith('  let n := ')
+# Every actual defining-module entry gets a distinct ordinary command, including DATA and generated declarations.
+result=pre+''.join('run_cmd Lean.Elab.Command.liftTermElabM do\n'+template.replace(line,'  let n := '+code,1) for name,(code,raw) in j['names'])
+(p/'before-pairs.lean').write_text(result)
+print({'actual_project':len(j['project']),'eval':len(j['eval']),'ML_actual_entries':len(j['names']),'consumers':j['consumers'],'target':j['target']})

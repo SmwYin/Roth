@@ -1,0 +1,22 @@
+from pathlib import Path
+import json,hashlib,time,subprocess,os
+p=Path('/private/tmp/roth-mainlemma-helper7-index-eval');o=Path('/private/tmp/roth-mainlemma-owner');root=Path('/Users/ramin/LEAN/Roth');load=lambda f:json.loads(Path(f).read_text());sha=lambda f:hashlib.sha256(Path(f).read_bytes()).hexdigest();start=time.time();s=load(p/'final-seal.json');m=load(p/'manifest.json');r=load(p/'second-rehash.json');d=load(p/'final-drain-owned-process-inventory.json')
+assert s['ALL7']=='END' and len(s['leases'])==7 and all(v=='END' for v in s['leases'].values()) and s['zero_active_compiler_native_profile_calls'] and s['no_children_spawned'] and s['no_calls_or_mutations_after_this_seal_until_owner_resume'] and not s['file_or_original27_completion_credit']
+for n,k in [('manifest.json','manifest_sha256'),('second-rehash.json','second_rehash_sha256'),('final-drain-owned-process-inventory.json','drain_sha256')]:assert sha(p/n)==s[k]
+report=root/'.mathlib-quality/cleanup/MainLemma-exists_hasseDeriv_index_eval_bound_aux-helper.md';assert sha(report)==s['report_sha256']=='268671fa59ef7583215f1d8cd9b607737f941bab75c73990990600eac856c602'
+assert s['count']==m['count']==r['count']==40008 and s['bytes']==m['bytes']==r['bytes']==9970143227 and s['binary_exceptions']==25234
+assert d['known_owned_group_count']==s['owned_group_count']==len(d['known_owned_groups'])==191 and d['all_known_groups_absent'] and not d['owned_rows'] and d['exit']==0 and d['observed_end_unix']<=s['observed_unix']
+pins={str(f.relative_to(root)):sha(f) for f in sorted(list(root.glob('Roth/*.lean'))+[root/'Roth.lean',root/'lean-toolchain',root/'lakefile.toml',root/'lake-manifest.json'])};assert pins==s['source17'] and len(pins)==17
+obs={}
+for g,v in d['known_owned_groups'].items():
+ launch=load(v['launch_file']);assert launch['pgid']==int(g) and launch['pid']==v['pid'] and launch['command']==v['command'] and v['absence'] is True and v['ps_absence'] is True
+ try:os.killpg(int(g),0);obs[g]='PRESENT'
+ except ProcessLookupError:obs[g]='ABSENT'
+ except PermissionError as e:obs[g]={'state':'UNKNOWN','errno':e.errno,'operation':'killpg(pgid,0)','observed_unix':time.time()}
+assert all(x=='ABSENT' for x in obs.values()),obs
+cmd=['/bin/ps','-axo','pid,ppid,pgid,lstart,command'];q=subprocess.run(cmd,capture_output=True,timeout=15);stdout=q.stdout.decode('utf8','strict');stderr=q.stderr.decode('utf8','strict');assert q.returncode==0 and not stderr;rows=[]
+for line in stdout.splitlines()[1:]:
+ a=line.split(None,8);argv=a[8] if len(a)>8 else '';first=argv.split()[0] if argv.split() else ''
+ if any(x in argv for x in [str(p),'/private/tmp/roth-mainlemma-main-lemma-resume1/','/private/tmp/roth-mainlemma-helper6-double-hasse/','/private/tmp/roth-mainlemma-main-lemma/']) or 'lake env printenv' in argv or Path(first).name=='printenv':rows.append(line)
+assert not rows,rows
+out={'status':'PASS owner independent helper7 final seal/source17/fresh191 known-group and exact-task-printenv argv drain','observed_start_unix':start,'observed_end_unix':time.time(),'seal_sha256':sha(p/'final-seal.json'),'manifest_sha256':sha(p/'manifest.json'),'second_rehash_sha256':sha(p/'second-rehash.json'),'drain_sha256':sha(p/'final-drain-owned-process-inventory.json'),'report_sha256':sha(report),'all7_END':s['leases'],'191_actual_groups_fresh_absent':True,'actual_group_observations':obs,'fresh_ps_command':cmd,'fresh_ps_exit':q.returncode,'fresh_exact_owned_and_printenv_rows':rows,'all17_current_source_pins_exact':True,'source_pins':pins,'leases_explicitly_revoked_by_owner':True,'scope':'Local helper7 release only; no original27/file completion/publication credit. No compiler/native/profile launched.'};(o/'original27-helper7-owner-final-seal-drain-review.json').write_text(json.dumps(out,indent=2)+'\n');print(json.dumps({k:v for k,v in out.items() if k not in ['actual_group_observations','source_pins']}))

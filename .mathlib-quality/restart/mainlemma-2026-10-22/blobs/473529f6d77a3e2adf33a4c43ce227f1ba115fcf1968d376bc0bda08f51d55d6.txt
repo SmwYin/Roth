@@ -1,0 +1,41 @@
+from pathlib import Path
+import hashlib,json,codecs,time,subprocess,sys
+p=Path('/private/tmp/roth-mainlemma-helper6-double-hasse');root=Path('/Users/ramin/LEAN/Roth');start=time.time()
+exclude={p/n for n in ['manifest.json','second-rehash.json','final-seal.json','final-drain-owned-process-inventory.json']}
+oldp=Path('/private/tmp/roth-mainlemma-main-lemma/manifest27.json');old=json.loads(oldp.read_text())['entries'];paths={Path(n) for n in old};provenance={n:v['binary_exception'] for n,v in old.items() if not v['strict_utf8']}
+# Actual full source scope of the generic rg search, not merely matching hit files.
+r=subprocess.run(['rg','--files',str(root/'.lake/packages/mathlib/Mathlib')],capture_output=True,check=True);r.stdout.decode('utf8','strict');r.stderr.decode('utf8','strict');names=r.stdout.decode().splitlines();paths.update(map(Path,names));(p/'searched-source-inventory.stdout').write_bytes(r.stdout);(p/'searched-source-inventory.stderr').write_bytes(r.stderr);(p/'searched-source-inventory.json').write_text(json.dumps({'command':['rg','--files',str(root/'.lake/packages/mathlib/Mathlib')],'exit':0,'count':len(names),'strict_utf8':True,'raw_stdout_sha256':hashlib.sha256(r.stdout).hexdigest(),'raw_stderr_sha256':hashlib.sha256(r.stderr).hexdigest(),'scope':'Every actual file in the generic mathlib rg source search scope, not only positive hits.'},indent=2)+'\n')
+for f in [p/'after-package-catalog.json',p/'after-core-availability.json']:
+ for n,v in json.loads(f.read_text())['artifacts'].items():paths.add(Path(n));provenance[n]='Fresh actual pinned package/setup/core compiled artifact availability, not exact runtime-loaded closure.'
+for n,v in json.loads((p/'after-executables.json').read_text())['binaries'].items():
+ paths.add(Path(n));paths.add(Path(v['resolved_realpath']));provenance[n]='Fresh actual Elan proxy or pinned Lean/Lake executable bytes at recorded path.';provenance[v['resolved_realpath']]='Actual resolved executable bytes, including proxy symlink target.'
+for label in ['before','after']:
+ for n,v in json.loads((p/(label+'-built-imports-complete.json')).read_text())['entries'].items():
+  paths.add(Path(n));paths.add(Path(v['copy']));provenance[n]='Fresh actually observed project/root compiled output or setup';provenance[v['copy']]='Exact saved bytes of actual observed project/root compiled output, source stage explicitly recorded.'
+for base in [Path('/Users/ramin/.codex/skills/mathlib-quality'),Path('/Users/ramin/.codex/skills/lean4')]:paths.update(base.rglob('*.md'))
+for name in ['cleanup.md','cleanup-all.md','buzz.md']:paths.add(Path('/Users/ramin/.local/share/roth-mathlib-quality/commands')/name)
+o=Path('/private/tmp/roth-mainlemma-owner')
+for name in ['original27-helper6-dispatch.txt','verbatim-worker-prompt.txt','future-profiler-scope-instructions.md','actual-command-payload-binding20-note.md','original27-comment-scope-erratum.json','original27-owner-partial-helper-handoff-review.json','original27-helper6-owner-before-profile-reanchor.json','original27-helper6-owner-independent-v4-review.json','original27-helper6-owner-after-semantic-review.json']:paths.add(o/name)
+paths.add(oldp);paths.add(Path('/private/tmp/roth-mainlemma-main-lemma/second-rehash27.json'));paths.add(Path('/private/tmp/roth-mainlemma-main-lemma/partial-seal27.json'))
+paths.update(list(root.glob('Roth/*.lean'))+[root/'Roth.lean',root/'lean-toolchain',root/'lakefile.toml',root/'lake-manifest.json']);paths.add(root/'.mathlib-quality/cleanup/MainLemma-abs_eval_iterated_hasseDeriv_lt_aux-helper.md');paths.add(root/'.mathlib-quality/references/clean.tex')
+# Include every own artifact after creating the source inventory; explicit exact self-reference exclusions only.
+paths.update(f for f in p.rglob('*') if f.is_file() and f not in exclude)
+rows={}
+for f in sorted(paths):
+ if not f.is_file():raise RuntimeError('Missing actual input '+str(f))
+ digest=hashlib.sha256();decoder=codecs.getincrementaldecoder('utf8')('strict');u=True;size=0
+ with f.open('rb') as stream:
+  while True:
+   b=stream.read(1024*1024)
+   if not b:break
+   digest.update(b);size+=len(b)
+   if u:
+    try:decoder.decode(b,False)
+    except UnicodeDecodeError:u=False
+ if u:
+  try:decoder.decode(b'',True)
+  except UnicodeDecodeError:u=False
+ why=None if u else provenance.get(str(f));assert u or why,('Unqualified non-UTF8 artifact',str(f))
+ rows[str(f)]={'sha256':digest.hexdigest(),'bytes':size,'strict_utf8':u,'binary_exception':why}
+out={'observed_start':start,'observed_end':time.time(),'entries':rows,'count':len(rows),'bytes':sum(x['bytes'] for x in rows.values()),'exact_self_reference_exclusions':sorted(map(str,exclude)),'scope':'All own artifacts including failures/full raw APIs/profiles; every read instruction/reference/template, source/config/report; full actual generic mathlib rg source scope; saved before/after project104/root8 and actual setup/core/package/executable availability; raw env/CLI. Availability is a superset, not exact runtime loaded closure. Other declarations/files and final original27 review remain pending.'}
+(p/'manifest.json').write_text(json.dumps(out,indent=2)+'\n');print({'count':out['count'],'bytes':out['bytes'],'seconds':time.time()-start})

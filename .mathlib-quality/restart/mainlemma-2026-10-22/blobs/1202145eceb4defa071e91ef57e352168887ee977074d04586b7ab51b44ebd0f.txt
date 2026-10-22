@@ -1,0 +1,36 @@
+from pathlib import Path
+import re,json,time
+p=Path('/private/tmp/roth-mainlemma-helper9-rem-floor');labs=['before-profile-a','before-profile-b','after-profile-a','after-profile-b'];out={}
+for lab in labs:
+ lines=(p/(lab+'.log')).read_text().splitlines();groups={}
+ for key,needle in [('helper','elaborating proof of _private._stdin.0.Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux'),('main','elaborating proof of Roth.main_lemma')]:
+  start=next(i for i,l in enumerate(lines) if l.startswith('[Elab.async]') and l.endswith(needle));end=next(i for i in range(start+1,len(lines)) if lines[i].startswith('[Elab.async]'));trace=[]
+  for i in range(start+1,end):
+   m=re.match(r'^( *)\[([^]]+)\] \[([0-9.]+)\] ✅️ (.*)',lines[i])
+   if not m:continue
+   stop=i+1
+   while stop<end and not re.match(r'^ *\[[^]]+\] \[[0-9.]+\] ',lines[stop]):stop+=1
+   if m[2]=='Elab.step' and (len(m[1])==8 or m[4].startswith('simpa only [← hBpow]') or m[4].startswith('gcongr') or m[4].startswith('simpa [Int.natCast_floor') or m[4].startswith('by_cases hn') or m[4].startswith('by_cases hf')):
+    trace.append({'line':i+1,'end_line':stop,'indent':len(m[1]),'tag':m[2],'ms':float(m[3])*1000,'anchor':m[4],'complete_immediate_payload':'\n'.join(lines[i:stop]),'source_payload':'\n'.join([m[4]]+lines[i+1:stop])})
+  groups[key]={'proof_root_line':start+1,'proof_root_header':lines[start],'regions':trace}
+ out[lab]=groups
+mainrows=[]
+base=[r for r in out[labs[0]]['main']['regions'] if r['indent']==8];keys=[r['anchor'] for r in base];assert len(keys)==len(set(keys))
+for anchor in keys:
+ match=[]
+ for lab in labs:
+  rs=[r for r in out[lab]['main']['regions'] if r['indent']==8 and r['anchor']==anchor];assert len(rs)==1,(lab,anchor,len(rs));match.append(rs[0])
+ changed=anchor=='have hC :';norm=lambda s:re.sub(r'\s+','',s)
+ payloads=[norm(r['source_payload']) for r in match]
+ if changed:assert payloads[0]==payloads[1] and payloads[2]==payloads[3] and payloads[0].replace('hAhdeghW.1','hAhW.1')==payloads[2]
+ else:assert len(set(payloads))==1,anchor
+ mainrows.append({'anchor':anchor,'actual_source_region_changed':changed,'actual_payloads_equal_except_whitespace':not changed,'authorized_hdeg_removal_only_if_changed':changed,'ms_by_sample':{lab:r['ms'] for lab,r in zip(labs,match)},'trace_lines':{lab:r['line'] for lab,r in zip(labs,match)}})
+result={'observed_unix':time.time(),'raw_region_records':out,'main_disjoint_top_level_tactic_regions':mainrows,'interpretation':'Nested diagnostic regions are NOT added to top-level roots, NOT subtracted for acceptance and do not establish causation. Full actual raw roots remain the only budget totals. Every unchanged main region matched its entire source payload modulo whitespace; changed hC differs only authorized hdeg argument deletion. All samples retained.','no_noise_discount_no_unchanged_third':True}
+with (p/'profile-region-diagnosis-v1.json').open('x') as f:json.dump(result,f,indent=2,ensure_ascii=False)
+print('MAIN')
+for r in mainrows:
+ if r['actual_source_region_changed'] or max(r['ms_by_sample'].values())>=100:print(r['anchor'],r['ms_by_sample'])
+print('HELPER')
+for lab in labs:print(lab,[(r['anchor'][:100],round(r['ms'],3),r['line']) for r in out[lab]['helper']['regions']])
+print('CALLS')
+for lab in labs:print(lab,[(r['anchor'],round(r['ms'],3),r['line']) for r in out[lab]['main']['regions'] if r['anchor'].startswith('simpa only [← hBpow]')])

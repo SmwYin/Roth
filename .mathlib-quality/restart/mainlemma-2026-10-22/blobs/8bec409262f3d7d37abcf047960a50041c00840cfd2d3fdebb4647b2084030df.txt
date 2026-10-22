@@ -1,0 +1,49 @@
+from pathlib import Path
+import json,hashlib,re,time
+p=Path('/private/tmp/roth-mainlemma-helper8-diag-rem');o=Path('/private/tmp/roth-mainlemma-owner');load=lambda n:json.loads((p/n).read_text());sha=lambda b:hashlib.sha256(b).hexdigest();start=time.time()
+def receipt(stem):
+ d=load(stem+'.json');t=load(stem+'-terminal.json');inp=p/(stem+'.lean');raw=(p/(stem+'.log')).read_bytes();err=(p/(stem+'.stderr.log')).read_bytes();raw.decode('utf8','strict');err.decode('utf8','strict')
+ assert d['exit']==t['exit']==0 and not d['timed_out'] and not t['timed_out'] and all(d[k] for k in ['drained','group_absent_at_exit','immutable','inputs_immutable','strict_utf8','raw_lake_environment_equal'])
+ assert d['pid']==d['pgid']==t['pid']==t['pgid'] and t['recorded_before_group_probe_postenv_hashing'] and d['started_unix']<=t['observed_immediately_after_wait_unix']<=d['completed_unix']
+ assert d['raw_sha256']==sha(raw) and d['stderr_sha256']==sha(err) and d['source_pins_before']==d['source_pins_after'] and len(d['source_pins_before'])==17 and d['input_sha256']==d['input_sha256_after']=={str(inp):sha(inp.read_bytes())}
+ assert d['frozen_observed_parent_environment_sha256']==sha((p/'parent-environment.json').read_bytes()) and d['actual_lake_environment_before']==d['actual_lake_environment_after']
+ for side in ['before','after']:
+  for stream,suffix in [('stdout','log'),('stderr','stderr.log')]:
+   b=(p/(stem+'-'+side+'-env.'+suffix)).read_bytes();b.decode('utf8','strict');assert sha(b)==d['actual_lake_environment_'+side][stream+'_sha256']
+ return d,inp.read_text(),raw.decode('utf8')
+d,s,raw=receipt('v4-after-pairs');rows=[json.loads(l[len('PAIR_JSON='):]) for l in raw.splitlines() if l.startswith('PAIR_JSON=')];idx=load('v4-after-pair-index.json');assert idx['actual_whole_exit']==0 and idx['raw_sha256']==d['raw_sha256']
+i=load('v4-after-inventory-data.json');names={x[0] for x in i['names']};assert {x['name'] for x in rows}==names and len(rows)==len(names)==62 and len(i['project'])==458 and len(i['eval'])==5 and i['consumers']==['Roth.main_lemma']
+assert len(idx['rows'])==62 and len(idx['generated_sourceabsent'])==28
+blocks=s.split('run_cmd Lean.Elab.Command.liftTermElabM do\n')[1:];assert len(blocks)==len(rows)
+common=None
+for b,x,y in zip(blocks,rows,idx['rows']):
+ line='  let n := '+x['nameTerm']+'\n';assert b.startswith(line);rest=b[len(line):].rstrip('\n')
+ if common is None:common=rest
+ assert rest==common and x['module']=='Roth.MainLemma' and x['defaults']==[200000,20000,512] and set(x['axioms'])<={'propext','Classical.choice','Quot.sound'} and all(x[k].startswith('Lean.Expr.') for k in ['TYPE','VALUE'])
+ for k,v in x.items():
+  if k in ['TYPE','VALUE']:assert y[k+'_sha256']==sha(v.encode()) and y[k+'_chars']==len(v)
+  elif k=='typeCode':assert y['optional_type_code_supported']==('ERROR_' not in v)
+  else:assert y[k]==v
+ assert y['actual_generated_source_absent']==(x['name'] in idx['generated_sourceabsent'])
+for frag in ['let v := c.value! true','for e in [c.type,v] do','e.hasMVar || e.hasLevelMVar || e.hasFVar || e.hasLooseBVars','Lean.Meta.isDefEq (← Lean.Meta.inferType v) c.type','Lean.collectAxioms n','Lean.maxHeartbeats.get opts == 200000','Lean.Meta.synthInstance.maxHeartbeats.get opts == 20000','Lean.maxRecDepth.get opts == 512','(repr c.type).pretty 1000000','(repr v).pretty 1000000']:
+ assert frag in common,frag
+assert 'set_option' not in s and 'sorry' not in s.replace('``sorryAx','')
+roots={x['name'] for x in rows if x['name']=='Roth.main_lemma' or x['name'].endswith('.Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux')};assert len(roots)==2
+for x in rows:
+ if x['name'] in roots:assert 'ERROR_' not in x['typeCode']
+assert load('v4-after-target-pair.json')==next(x for x in rows if x['name'].endswith('.Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux'))
+# Independent source-root discovery includes private/noncomputable DATA modifiers.
+source=(p/'entry-source/Roth/MainLemma.lean').read_text();written=re.findall(r'(?m)^(?:(?:private|noncomputable|protected)\s+)*(?:lemma|theorem|def|abbrev)\s+([^\s:{(]+)',source);srcnames={'Roth.'+n for n in written};assert len(srcnames)==34
+actualroots={n for n in names if n in srcnames or any(n.endswith('.'+z) for z in srcnames)};generated=names-actualroots
+assert len(actualroots)==34 and len(generated)==28 and generated==set(idx['generated_sourceabsent'])
+kinds={k:sum(x['kind']==k for x in rows) for k in sorted({x['kind'] for x in rows})};assert kinds=={'defn':7,'thm':55}
+families={root:sorted(n for n in names if n==root or n.startswith(root+'.')) for root in roots}
+br=(p/'before-pairs.log').read_bytes();bd=load('before-pairs.json');assert sha(br)==bd['raw_sha256'];oldrows=[json.loads(l[len('PAIR_JSON='):]) for l in br.decode('utf8','strict').splitlines() if l.startswith('PAIR_JSON=')];old={x['name']:x for x in oldrows};new={x['name']:x for x in rows};assert old.keys()==new.keys()
+changed=[]
+for n,x in new.items():
+ assert x['TYPE']==old[n]['TYPE']
+ if x['VALUE']!=old[n]['VALUE']:changed.append(n)
+ if not n.endswith('.Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux'):assert x==old[n]
+assert changed==[next(n for n in names if n.endswith('.Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux'))]
+cur=load('v4-independent-current-actual-pair.json');assert cur['VALUE']!=new[changed[0]]['VALUE']
+out={'status':'PASS owner independently reviewed all62 ordinary v4 after TYPE+actual opaque VALUE executions, dynamic module inventory, DATA kinds and generated-source classification','observed_start_unix':start,'observed_end_unix':time.time(),'input_sha256':sha((p/'v4-after-pairs.lean').read_bytes()),'raw_sha256':d['raw_sha256'],'actual_defining_module_inventory':sorted(names),'project_count':458,'Eval_count':5,'actual_direct_consumers':i['consumers'],'source_roots':sorted(actualroots),'generated_source_absent':sorted(generated),'kinds':kinds,'actual_root_families':families,'all62fullraw_pairs_fingerprint':sha(json.dumps(rows,sort_keys=True).encode()),'serializer_qualification':'All62 complete raw TYPE/VALUE ASTs including generated MData retained and independently matched hash/length/index; optional typeCode required complete only for helper/main roots, never substituted for raw AST. Per-declaration closed/inferred/std3/default guards identical except actual Name.','summary_label_erratum':'Leaf v4 metadata summary V1 generic current-proof path label corrected in separate V2; no raw/input/comparison mutation. This review uses actual v4 receipt/input/pair files directly, never that generic label.','all62_raw_TYPE_exact':True,'only_changed_raw_VALUE':changed,'all61_other_raw_fields_values_exact':True,'current_independent_VALUE_differs_imported_target':True,'scope':'Imported selected helper metadata only; independent old/current reviews passed separately, final after profile/native/closure/original27/file acceptance pending. No compiler/native calls.'};(o/'original27-helper8-owner-v4-after-metadata-review.json').write_text(json.dumps(out,indent=2)+'\n');print(json.dumps({'status':out['status'],'rootfamilies':{k:len(v) for k,v in families.items()},'kinds':kinds}))

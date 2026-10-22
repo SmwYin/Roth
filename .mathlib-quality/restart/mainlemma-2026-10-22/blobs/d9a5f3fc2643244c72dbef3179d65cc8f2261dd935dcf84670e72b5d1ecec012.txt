@@ -1,0 +1,23 @@
+from pathlib import Path
+import json,hashlib,re,time
+p=Path('/private/tmp/roth-mainlemma-helper8-diag-rem');o=Path('/private/tmp/roth-mainlemma-owner');load=lambda n:json.loads((p/n).read_text());sha=lambda b:hashlib.sha256(b).hexdigest();start=time.time()
+def receipt(stem):
+ d=load(stem+'.json');t=load(stem+'-terminal.json');inp=p/(stem+'.lean');raw=(p/(stem+'.log')).read_bytes();err=(p/(stem+'.stderr.log')).read_bytes();raw.decode('utf8','strict');err.decode('utf8','strict')
+ assert d['exit']==t['exit']==0 and not d['timed_out'] and not t['timed_out'] and all(d[k] for k in ['drained','group_absent_at_exit','immutable','inputs_immutable','strict_utf8','raw_lake_environment_equal'])
+ assert d['pid']==d['pgid']==t['pid']==t['pgid'] and t['recorded_before_group_probe_postenv_hashing'] and d['started_unix']<=t['observed_immediately_after_wait_unix']<=d['completed_unix']
+ assert d['raw_sha256']==sha(raw) and d['stderr_sha256']==sha(err) and d['source_pins_before']==d['source_pins_after'] and len(d['source_pins_before'])==17 and d['input_sha256']==d['input_sha256_after']=={str(inp):sha(inp.read_bytes())}
+ assert d['frozen_observed_parent_environment_sha256']==sha((p/'parent-environment.json').read_bytes()) and d['actual_lake_environment_before']==d['actual_lake_environment_after']
+ for side in ['before','after']:
+  for stream,suffix in [('stdout','log'),('stderr','stderr.log')]:
+   b=(p/(stem+'-'+side+'-env.'+suffix)).read_bytes();b.decode('utf8','strict');assert sha(b)==d['actual_lake_environment_'+side][stream+'_sha256']
+ return d,inp.read_text(),raw.decode('utf8')
+d,s,raw=receipt('candidate-v3');rows=[json.loads(l[len('CANDIDATE_JSON='):]) for l in raw.splitlines() if l.startswith('CANDIDATE_JSON=')];assert len(rows)==1;v=rows[0];assert load('candidate-v3-actual-pair.json')==v
+old=load('before-target-pair.json');assert v['name']=='_private._stdin.0.Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux' and v['levels']==old['levels']=='[`u_1]' and v['defaults']==[200000,20000,512] and v['exact_full_old_type']
+assert all(v[k].startswith('Lean.Expr.') for k in ['TYPE','VALUE']) and set(v['axioms'])<={'propext','Classical.choice','Quot.sound'} and v['VALUE']!=old['VALUE']
+comparator=(p/'type-pair-eq.lean.txt').read_text();assert comparator in s and 'let expected : Lean.Expr := '+old['typeCode'] in s
+source=Path('/Users/ramin/LEAN/Roth/Roth/MainLemma.lean').read_text();prefix=source[:source.index('/-- **Roth\'s main lemma**')];assert s.startswith('import Lean.Util.FindExpr\n'+prefix)
+for fragment in ['let v := c.value! true','sameTypeExceptBothGeneratedBinders c.type expected','e.hasMVar || e.hasLevelMVar || e.hasFVar || e.hasLooseBVars','Lean.Meta.isDefEq (← Lean.Meta.inferType v) c.type','Lean.collectAxioms n','Lean.maxHeartbeats.get opts == 200000','Lean.Meta.synthInstance.maxHeartbeats.get opts == 20000','Lean.maxRecDepth.get opts == 512']:
+ assert fragment in s,fragment
+options=[l for l in s.splitlines() if 'set_option' in l];assert options==['set_option format.width 100 in']
+check=(p/'candidate-v3-check-width100.txt').read_text();assert check.startswith('@abs_coeff_diag_hasseDeriv_modByMonic_le_aux :') and check.rstrip() in raw
+out={'status':'PASS owner independently reviewed selected helper8 candidateV3 actual source-unit TYPE+opaqueVALUE/default/std3/closed/inferred/exact old contract and format.width100 check','observed_start_unix':start,'observed_end_unix':time.time(),'input_sha256':sha((p/'candidate-v3.lean').read_bytes()),'raw_sha256':d['raw_sha256'],'whole_exit':0,'actual_TYPE_sha256':sha(v['TYPE'].encode()),'actual_VALUE_sha256':sha(v['VALUE'].encode()),'selected_source_sha256':sha(source.encode()),'levels':v['levels'],'axioms':v['axioms'],'defaults':v['defaults'],'normalization_scope':'Only BOTH generated binder macro scopes; all raw names retained, no constant renaming/unfolding.','reference_check_sha256':sha(check.encode()),'failure_history':'CandidateV2 typed hcD inference failure and unsupported pp.width option retained, no partial credit; V3 keeps typed hcD and uses actual format.width100 only.','scope':'Selected actual target proof only; independent current nonself reconstruction and final imported metadata/build/native/timing/closure pending.'};(o/'original27-helper8-owner-candidate-v3-review.json').write_text(json.dumps(out,indent=2)+'\n');print(json.dumps({'status':out['status'],'source':out['selected_source_sha256']}))

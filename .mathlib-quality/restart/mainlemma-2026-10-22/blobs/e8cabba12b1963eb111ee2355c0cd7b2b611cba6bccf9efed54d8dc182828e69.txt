@@ -1,0 +1,29 @@
+from pathlib import Path
+import hashlib,json,time,codecs
+p=Path('/private/tmp/roth-mainlemma-helper8-diag-rem');r=Path('/Users/ramin/LEAN/Roth');start=time.time()
+def flat(x):
+ if isinstance(x,str):yield x
+ elif isinstance(x,list):
+  for y in x:yield from flat(y)
+ elif isinstance(x,dict):
+  for y in x.values():yield from flat(y)
+def row(f):
+ b=f.read_bytes()
+ try:b.decode('utf8','strict');u=True
+ except UnicodeDecodeError:u=False
+ return {'sha256':hashlib.sha256(b).hexdigest(),'bytes':len(b),'strict_utf8':u,'binary_exception':None if u else 'Actual compiled artifact availability at fresh pinned package/core path; not an exact runtime loaded closure.'}
+arts=set();setups={}
+for f in sorted((r/'.lake/build/ir').rglob('*.setup.json')):
+ if f.name!='Roth.setup.json' and f.parent!=r/'.lake/build/ir/Roth':continue
+ j=json.loads(f.read_text());paths=set()
+ for raw in flat(j['importArts']):
+  q=Path(raw);assert q.is_file(),q
+  for c in [q,Path(str(q)+'.server'),Path(str(q)+'.private'),q.with_suffix('.ir.sig'),q.with_suffix('.ir')]:
+   if c.is_file():paths.add(c)
+ setups[str(f)]={'sha256':hashlib.sha256(f.read_bytes()).hexdigest(),'setup':j,'available_paths':sorted(map(str,paths))};arts|=paths
+assert len(setups)==14 and any('LeanEval.setup.json' in x for x in setups)
+pack={str(f):row(f) for f in sorted(arts)}
+(p/'v4-profile-pair-after-all14-package-catalog.json').write_text(json.dumps({'observed_start':start,'observed_end':time.time(),'scope':'Fresh all14 actual project/root setup importArts plus existing companions, including explicit Eval setup. Availability not exact loaded closure.','setups':setups,'artifacts':pack},indent=2)+'\n')
+core=Path('/Users/ramin/.elan/toolchains/leanprover--lean4---v4.34.0/lib/lean');start2=time.time();cs={str(f):row(f) for f in sorted(core.rglob('*')) if f.is_file() and f.name.endswith(('.olean','.olean.server','.olean.private','.ir','.ir.sig'))};assert str(core/'Init.olean') in cs
+(p/'v4-profile-pair-after-all14-core-availability.json').write_text(json.dumps({'observed_start':start2,'observed_end':time.time(),'scope':'Full installed pinned Lean4.34 lib/lean compiled-artifact availability SUPERSET, not exact runtime loaded closure.','artifacts':cs,'count':len(cs)},indent=2)+'\n')
+print({'actual_setups':len(setups),'package_setup_availability':len(pack),'core_superset_availability':len(cs),'seconds':time.time()-start})

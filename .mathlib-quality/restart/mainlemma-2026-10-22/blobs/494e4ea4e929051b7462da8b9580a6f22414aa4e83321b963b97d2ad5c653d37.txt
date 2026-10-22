@@ -1,0 +1,25 @@
+private lemma abs_eval_iterated_hasseDeriv_lt_aux {σ : Type*} [Fintype σ]
+    {P : MvPolynomial σ ℤ} {r : σ → ℕ} {B α β : ℝ} {s : ℕ}
+    (hP : ∀ j, degreeOf j P ≤ r j) (hB : 0 < B) (hs : ∑ j, r j ≤ s)
+    (h2 : (2 : ℝ) ^ s < β) (hα : (1 + |α|) ^ s < β)
+    (hc : ∀ d, |((P.coeff d : ℤ) : ℝ)| ≤ B) (i k : σ →₀ ℕ) :
+    |eval (fun _ ↦ α) (map (Int.castRingHom ℝ) (hasseDeriv i (hasseDeriv k P)))| <
+      β * (β * B) * β := by
+  have hdQ : ∀ j, degreeOf j (hasseDeriv k P) ≤ r j := fun j ↦
+    (degreeOf_hasseDeriv_le j k P).trans (hP j)
+  have hcQ := abs_coeff_hasseDeriv_le k P hP hc
+  have hcQ2 := abs_coeff_hasseDeriv_le i _ hdQ hcQ
+  have heval := abs_eval_le (hasseDeriv i (hasseDeriv k P))
+    (fun j ↦ (degreeOf_hasseDeriv_le j i _).trans (hdQ j)) hcQ2 (fun _ ↦ α)
+  rw [Finset.prod_pow_eq_pow_sum] at heval
+  have e2 : (2 : ℝ) ^ (∑ j, r j) ≤ 2 ^ s := pow_le_pow_right₀ (by norm_num) hs
+  have hT2pos : (0 : ℝ) ≤ 2 ^ s := by positivity
+  have e3 : (1 + |α|) ^ (∑ j, r j) ≤ (1 + |α|) ^ s :=
+    pow_le_pow_right₀ (by linarith [abs_nonneg α]) hs
+  calc _ ≤ _ := heval
+    _ ≤ 2 ^ s * (2 ^ s * B) * (1 + |α|) ^ s := by
+        refine mul_le_mul (mul_le_mul e2 (mul_le_mul_of_nonneg_right e2 hB.le)
+          (by positivity) hT2pos) e3 (by positivity) (by positivity)
+    _ < β * (β * B) * β := by
+        refine mul_lt_mul'' (mul_lt_mul'' h2 (mul_lt_mul_of_pos_right h2 hB) hT2pos
+          (by positivity)) hα (by positivity) (by positivity)

@@ -1,0 +1,27 @@
+from pathlib import Path
+import json,hashlib,time
+p=Path('/private/tmp/roth-mainlemma-helper7-index-eval');o=Path('/private/tmp/roth-mainlemma-owner');load=lambda n:json.loads((p/n).read_text());sha=lambda b:hashlib.sha256(b).hexdigest();rows=[];start=time.time()
+parent=sha((p/'parent-environment.json').read_bytes());pins=None;prior=None
+for label,cmd in [('final-full',['/Users/ramin/.elan/bin/lake','build']),('final-eval',['/Users/ramin/.elan/bin/lake','build','Roth.LeanEval'])]:
+ d=load(label+'.json');t=load(label+'-terminal.json');raw=(p/(label+'.log')).read_bytes();err=(p/(label+'.stderr.log')).read_bytes();raw.decode('utf8','strict');err.decode('utf8','strict')
+ assert d['exit']==0 and not d['timed_out'] and all(d[k] for k in ['drained','group_absent_at_exit','immutable','inputs_immutable','raw_lake_environment_equal','strict_utf8'])
+ assert d['command']==t['command']==cmd and t['exit']==0 and not t['timed_out'] and t['recorded_before_group_probe_postenv_hashing']
+ assert d['pid']==d['pgid']==t['pid']==t['pgid'] and d['started_unix']<=t['observed_immediately_after_wait_unix']<=d['completed_unix']
+ assert sha(raw)==d['raw_sha256'] and sha(err)==d['stderr_sha256'] and d['source_pins_before']==d['source_pins_after'] and len(d['source_pins_before'])==17
+ if pins is None:pins=d['source_pins_before']
+ assert d['source_pins_before']==pins and d['frozen_observed_parent_environment_sha256']==parent
+ assert d['actual_lake_environment_before']==d['actual_lake_environment_after']
+ for side in ['before','after']:
+  e=(p/(label+'-'+side+'-env.log')).read_bytes();ee=(p/(label+'-'+side+'-env.stderr.log')).read_bytes();e.decode('utf8','strict');ee.decode('utf8','strict');assert sha(e)==d['actual_lake_environment_'+side]['stdout_sha256'] and sha(ee)==d['actual_lake_environment_'+side]['stderr_sha256']
+ if prior is not None:assert prior['completed_unix']<=d['started_unix']
+ prior=d;rows.append({'gate':label,'exit':0,'seconds_receipt':d['seconds'],'seconds_through_actual_wait':t['seconds_through_wait'],'raw_sha256':sha(raw),'terminal_sha256':sha((p/(label+'-terminal.json')).read_bytes())})
+assert pins['Roth/MainLemma.lean']==sha((p/'after-MainLemma.lean').read_bytes())=='0caffff6ea88d694ef0a14fb19b5fc4d0b3a013c57cf32ce840f054d25003106'
+assert pins['Roth/Main.lean']==sha((p/'entry-Main.lean').read_bytes())=='6668ff83a7e7b156f6f29b8f2d0163e699da002b70338d5ee0715065ade9b25f'
+for label,file,warning_count in [('final-native-ML','MainLemma',1),('final-native-Main','Main',4),('final-native-Eval','LeanEval',0)]:
+ req=load(label+'-request.json');d=load(label+'-response.json');b=load(label+'-before-pins.json');a=load(label+'-after-pins.json');sv=load(label+'-save-observation.json');assert req=={'file_path':'/Users/ramin/LEAN/Roth/Roth/'+file+'.lean'}
+ r=d['response'];assert not r['isError'];s=r['structuredContent']['result'];texts=[json.loads(x['text']) for x in r['content'] if x['type']=='text'];assert texts==[s]
+ assert s['success'] and not s['partial'] and not s['timed_out'] and s['still_elaborating_lines'] is None and not s['failed_dependencies']
+ assert not [x for x in s['items'] if x['severity']=='error'];assert len([x for x in s['items'] if x['severity']=='warning'])==warning_count
+ assert b['pins']==a['pins']==pins and b['observed_unix']*1000<=d['returned_immediately_ms']<=sv['response_fully_saved_observed_ms']<=a['observed_unix']*1000
+ rows.append({'gate':label,'complete_unfiltered':True,'errors':0,'warnings':warning_count,'immediate_return_ms':d['returned_immediately_ms'],'save_observation_ms':sv['response_fully_saved_observed_ms'],'raw_response_sha256':sha((p/(label+'-response.json')).read_bytes())})
+out={'status':'PASS owner independently reviewed fresh helper7 frozen final FULL then separate Eval and three complete unfiltered native receipts','observed_start_unix':start,'observed_end_unix':time.time(),'source17_pins':pins,'parent_environment_sha256':parent,'rows':rows,'scope':'Final helper7 local build/native only; independent source/migration/property/closure aggregation and original27/file publication remain pending. No new compiler or native calls.'};(o/'original27-helper7-owner-final-build-native-review.json').write_text(json.dumps(out,indent=2)+'\n');print(json.dumps({'status':out['status'],'gates':len(rows)}))

@@ -1,0 +1,35 @@
+from pathlib import Path
+import json,hashlib,re,time
+p=Path('/private/tmp/roth-mainlemma-helper7-index-eval');o=Path('/private/tmp/roth-mainlemma-owner');load=lambda n:json.loads((p/n).read_text());sha=lambda b:hashlib.sha256(b).hexdigest();start=time.time()
+def receipt(stem):
+ d=load(stem+'.json');t=load(stem+'-terminal.json');inp=p/(stem+'.lean');raw=(p/(stem+'.log')).read_bytes();err=(p/(stem+'.stderr.log')).read_bytes();raw.decode('utf8','strict');err.decode('utf8','strict')
+ assert d['exit']==t['exit']==0 and not d['timed_out'] and not t['timed_out'] and all(d[k] for k in ['drained','group_absent_at_exit','immutable','inputs_immutable','strict_utf8','raw_lake_environment_equal'])
+ assert d['pid']==d['pgid']==t['pid']==t['pgid'] and t['recorded_before_group_probe_postenv_hashing'] and d['started_unix']<=t['observed_immediately_after_wait_unix']<=d['completed_unix']
+ assert d['raw_sha256']==sha(raw) and d['stderr_sha256']==sha(err) and d['source_pins_before']==d['source_pins_after'] and len(d['source_pins_before'])==17 and d['input_sha256']==d['input_sha256_after']=={str(inp):sha(inp.read_bytes())}
+ assert d['frozen_observed_parent_environment_sha256']==sha((p/'parent-environment.json').read_bytes()) and d['actual_lake_environment_before']==d['actual_lake_environment_after']
+ for side in ['before','after']:
+  for stream,suffix in [('stdout','log'),('stderr','stderr.log')]:
+   b=(p/(stem+'-'+side+'-env.'+suffix)).read_bytes();b.decode('utf8','strict');assert sha(b)==d['actual_lake_environment_'+side][stream+'_sha256']
+ return d,inp.read_text(),raw.decode('utf8')
+d,s,raw=receipt('after-pairs');rows=[json.loads(l[len('PAIR_JSON='):]) for l in raw.splitlines() if l.startswith('PAIR_JSON=')];accepted=load('after-pairs-accepted.json');assert rows==accepted['rows'] and accepted['actual_whole_exit']==0 and accepted['raw_sha256']==d['raw_sha256']
+i=load('after-inventory-inventory.json');names={x[0] for x in i['names']};assert {x['name'] for x in rows}==names and len(rows)==len(names)==61 and len(i['project'])==457 and len(i['eval'])==5 and i['consumers']==['Roth.main_lemma']
+allblocks=s.split('run_cmd Lean.Elab.Command.liftTermElabM do\n')[1:];assert len(allblocks)==len(rows)+1;blocks=allblocks[:len(rows)]
+common=None
+for b,x in zip(blocks,rows):
+ line='  let n := '+x['nameTerm']+'\n';assert b.startswith(line);rest=b[len(line):].split('  Lean.Core.liftIOCore <| IO.println (\"PAIR_JSON=\" ++ info.compress)',1)[0]
+ if common is None:common=rest
+ assert rest==common and x['module']=='Roth.MainLemma' and x['defaults']==[200000,20000,512] and set(x['axioms'])<={'propext','Classical.choice','Quot.sound'} and all(x[k].startswith('Lean.Expr.') for k in ['TYPE','VALUE'])
+for frag in ['let v := c.value! true','for e in [c.type,v] do','e.hasMVar || e.hasLevelMVar || e.hasFVar || e.hasLooseBVars','Lean.Meta.isDefEq (← Lean.Meta.inferType v) c.type','Lean.collectAxioms n','Lean.maxHeartbeats.get opts == 200000','Lean.Meta.synthInstance.maxHeartbeats.get opts == 20000','Lean.maxRecDepth.get opts == 512','(repr c.type).pretty 1000000','(repr v).pretty 1000000']:
+ assert frag in common,frag
+assert 'sorry' not in s.replace('``sorryAx','')
+old=load('before-pairs-accepted.json');before={x['name']:x for x in old['rows']};after={x['name']:x for x in rows}
+leased={n for n in names if n.endswith('.Roth.exists_hasseDeriv_index_eval_bound_aux') or n=='Roth.main_lemma' or n.startswith('Roth.main_lemma.')};foreign=names-leased;assert len(foreign)==55
+assert all(set(after[n])-set(before[n])=={'kind'} and set(before[n])<=set(after[n]) and all(before[n][k]==after[n][k] for k in before[n]) for n in foreign)
+assert all(x['kind']==('theorem' if x['theorem'] else 'definition') for x in rows)
+assert 'PUBLIC_MAIN_EXACT_TYPE=PASS' in raw and 'unless sameTypeExceptBothGeneratedBinders c.type old do throwError "Public main TYPE changed"' in s
+oldmain=before['Roth.main_lemma'];assert 'let old : Lean.Expr := '+oldmain['typeCode'] in s
+roots={x['name'] for x in rows if x['name']=='Roth.main_lemma' or x['name'].endswith('.Roth.exists_hasseDeriv_index_eval_bound_aux')};assert len(roots)==2
+for x in rows:
+ if x['name'] in roots:assert 'ERROR_' not in x['typeCode']
+families={root:sorted(n for n in names if n==root or n.startswith(root+'.')) for root in roots}
+out={'status':'PASS owner independently reviewed all61 ordinary after TYPE+actual opaque VALUE guard executions/full raw inventory and precise serializer qualification','observed_start_unix':start,'observed_end_unix':time.time(),'input_sha256':sha((p/'after-pairs.lean').read_bytes()),'raw_sha256':d['raw_sha256'],'actual_defining_module_inventory':sorted(names),'project_count':457,'Eval_count':5,'actual_direct_consumers':i['consumers'],'actual_root_families':families,'all61fullraw_pairs_fingerprint':sha(json.dumps(rows,sort_keys=True).encode()),'generated_TYPE_serializer_qualification':'Only root constructor encodings required complete for exact old contract. All61 raw TYPE/VALUE ASTs including generated MData retained; all61 actual closed/inferred/std3/default guards identical except exact actual Name. No metadata erased.','failure_history':'Grouped default-HB timeout and V1 extra generated constructor serializer failure preserved whole failures, no partial credit.','all55_foreign_common_fullraw_fields_byteexact':True,'after_added_kind_field':'Seven definitions and54theorems; actual kind field added only after, consistent with earlier actual theorem bool. No raw AST/default/level/dependency field normalized.','public_main_TYPE_guard_scope':'Exact helper-entry selected public API and universes, not original704-line public contract; original27 genuine original recovery still pending.','scope':'After runtime metadata and unchanged foreign declarations only; full helper lifecycle closure and original27/file acceptance pending. No compiler/native calls.'};(o/'original27-helper7-owner-after-metadata-review.json').write_text(json.dumps(out,indent=2)+'\n');print(json.dumps({'status':out['status'],'rootfamilies':{k:len(v) for k,v in families.items()}}))

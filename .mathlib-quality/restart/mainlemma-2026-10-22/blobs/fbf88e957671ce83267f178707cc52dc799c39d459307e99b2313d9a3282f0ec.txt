@@ -1,0 +1,16 @@
+from pathlib import Path
+import json,re,time
+p=Path('/private/tmp/roth-mainlemma-helper7-index-eval');before=json.loads((p/'before-pairs-accepted.json').read_text())['rows'];after=json.loads((p/'after-pairs-accepted.json').read_text())['rows'];src=(p/'after-MainLemma.lean').read_text();decls=re.findall(r'^(?:(?:private|noncomputable|unsafe|partial|protected) )*(?:lemma|theorem|def|abbrev) ([^\s{:(]+)',src,re.M)
+tg=next(r['name'] for r in after if r['name'].endswith('.Roth.exists_hasseDeriv_index_eval_bound_aux'));roots=[r for r in after if any(r['name']=='Roth.'+d or r['name'].endswith('.Roth.'+d) for d in decls)];generated=[r for r in after if r not in roots]
+families={}
+for root in [tg,'Roth.main_lemma']:
+ names={r['name'] for r in after if r['name']==root or r['name'].startswith(root+'.')};edges=[{'from':r['name'],'to':d,'field':field} for r in after if r['name'] in names for field in ['typeDeps','valueDeps'] for d in r[field] if d in names];families[root]={'all_actual_names':sorted(names),'actual_directed_edges':edges,'no_universal_reachability_claim':True}
+old={r['name']:r for r in before};new={r['name']:r for r in after};foreign=set(old)|set(new);foreign={n for n in foreign if not any(n==x or n.startswith(x+'.') for x in [tg,'Roth.main_lemma'])};diff=[]
+for n in sorted(foreign):
+ assert n in old and n in new,('Foreign inventory drift',n)
+ for field in ['TYPE','VALUE','levels','theorem','typeDeps','valueDeps','axioms','defaults']:
+  if old[n][field]!=new[n][field]:diff.append({'name':n,'field':field})
+assert not diff,('Foreign raw proof drift',diff)
+out={'observed_unix':time.time(),'before_count':len(before),'after_count':len(after),'source_declared_roots':len(roots),'generated_count':len(generated),'actual_generated':[{'name':r['name'],'rawName':r['rawName'],'kind':r['kind'],'written_leaf_absent_in_source':r['name'].split('.')[-1] not in src,'full_raw_TYPE_VALUE_retained':True} for r in generated],'families':families,'foreign_unchanged_raw_pairs':len(foreign),'foreign_raw_differences':diff,'inventory_qualification':'Counts/names dynamically discovered; generated metadata AST preserved. No forced suffix cap/count or universal root reachability claim.'}
+assert all(r['written_leaf_absent_in_source'] for r in out['actual_generated'])
+(p/'metadata-review.json').write_text(json.dumps(out,indent=2)+'\n');print({k:out[k] for k in ['before_count','after_count','source_declared_roots','generated_count','foreign_unchanged_raw_pairs']})

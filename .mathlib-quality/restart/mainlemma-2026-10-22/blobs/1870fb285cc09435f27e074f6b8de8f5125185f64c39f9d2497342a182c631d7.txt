@@ -1,0 +1,22 @@
+from pathlib import Path
+import json
+p=Path('/private/tmp/roth-mainlemma-helper7-index-eval');rr=json.loads((p/'after-inventory.json').read_text());assert rr['exit']==0 and rr['drained']
+j=json.loads(next(x[15:] for x in (p/'after-inventory.log').read_text().splitlines() if x.startswith('INVENTORY_JSON=')))
+(p/'after-inventory-inventory.json').write_text(json.dumps(j,indent=2)+'\n')
+template=(p/'before-pairs-v2.lean').read_text();prefix=template[:template.index('run_cmd Lean.Elab.Command.liftTermElabM do')]
+one=template[template.index('run_cmd Lean.Elab.Command.liftTermElabM do'):];one=one[:one.index('\nrun_cmd Lean.Elab.Command.liftTermElabM do')]
+start=one.index('  let n := ');end=one.index('\n',start);one=one[:start]+'  let n := ACTUAL_TERM'+one[end:]
+one=one.replace("  let tc := actualExprTerm c.type","  let kind := match c with\n    | .thmInfo _ => \"theorem\"\n    | .defnInfo _ => \"definition\"\n    | .opaqueInfo _ => \"opaque\"\n    | .axiomInfo _ => \"axiom\"\n    | .ctorInfo _ => \"constructor\"\n    | .inductInfo _ => \"inductive\"\n    | .recInfo _ => \"recursor\"\n    | .quotInfo _ => \"quotient\"\n  let tc := actualExprTerm c.type").replace("(\"theorem\",Lean.toJson c.isTheorem),","(\"kind\",Lean.toJson kind),(\"theorem\",Lean.toJson c.isTheorem),")
+out=prefix+'\n'.join(one.replace('ACTUAL_TERM',r[1][0]) for r in j['names'])
+target=next(r for r in j['names'] if r[0].endswith('.Roth.exists_hasseDeriv_index_eval_bound_aux'))
+out+='\nelab "check_helper7_actual" : command => do\n  Lean.Elab.Command.elabCommand (← `(#check @$(Lean.mkIdent '+target[1][0]+')))\nset_option format.width 100 in\ncheck_helper7_actual\n'
+oldmain=next(r for r in json.loads((p/'before-pairs-accepted.json').read_text())['rows'] if r['name']=='Roth.main_lemma')
+out+=(p/'type-pair-eq7.lean.txt').read_text()+'''\nrun_cmd Lean.Elab.Command.liftTermElabM do
+  let c ← Lean.getConstInfo ``Roth.main_lemma
+  let old : Lean.Expr := '''+oldmain['typeCode']+'''
+  unless sameTypeExceptBothGeneratedBinders c.type old do throwError "Public main TYPE changed"
+  unless (repr c.levelParams).pretty == '''+json.dumps(oldmain['levels'])+''' do throwError "Public main universes changed"
+  Lean.Core.liftIOCore <| IO.println "PUBLIC_MAIN_EXACT_TYPE=PASS"
+'''
+(p/'after-pairs.lean').write_text(out)
+print('Prepared',len(j['names']),'actual independent declaration guards, actual private #check command and exact public main TYPE guard.')

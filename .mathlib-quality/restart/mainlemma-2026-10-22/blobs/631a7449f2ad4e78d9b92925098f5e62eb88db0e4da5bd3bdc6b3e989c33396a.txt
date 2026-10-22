@@ -1,0 +1,12 @@
+from pathlib import Path
+import json,hashlib
+p=Path('/private/tmp/roth-mainlemma-helper9-rem-floor');source=(p/'candidate-source-v4.lean').read_text();oldsource=(p/'selected-source.lean').read_text();fixture=(p/'after-source-family-v1.lean').read_text();assert fixture.count(oldsource)==1;fixture=fixture.replace(oldsource,source,1);(p/'pilot-source-family-v4.lean').write_text(fixture)
+i=source.index('private lemma abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux');e=source.index('/-- **Roth',i);rows={'pilot-v4-helper-command.lean':source[i:e].rstrip()+'\n','pilot-v4-main-command.lean':source[e:source.index('\nend Roth',e)].rstrip()+'\n','pilot-v4-scoped.lean':source[:source.index('namespace Roth')]+'set_option trace.profiler false\n'+source[source.index('namespace Roth'):i]+'set_option trace.profiler true\n'+source[i:source.index('\nend Roth')]+'\nset_option trace.profiler false\nend Roth\n'}
+for n,b in rows.items():
+ with (p/n).open('x') as f:f.write(b)
+scope=json.loads((p/'after-scope.json').read_text());scope['canonical']=str(p/'candidate-source-v4.lean');scope['canonical_sha256']=hashlib.sha256(source.encode()).hexdigest();scope['scaffold']=str(p/'pilot-v4-scoped.lean');scope['scaffold_sha256']=hashlib.sha256(rows['pilot-v4-scoped.lean'].encode()).hexdigest();scope['canonical_live_expected_sha256']=hashlib.sha256(oldsource.encode()).hexdigest();scope['qualification']='PILOT ONLY. Live source17 remains V3 df236227; candidate canonical V4 c479bc8a is separately immutable and fully recovered from actual scaffold. Actual live source/cache/setup pins are not candidate production pins. Same full source unit/helper and directmain scope and CLI, only explicit multiplication proof replaces gcongr.'
+for c in scope['commands']:c['canonical']=c['canonical'].replace('/after-','/pilot-v4-')
+with (p/'pilot-v4-scope.json').open('x') as f:json.dump(scope,f,indent=2)
+# Root framing policy remains exact. Only the explicitly recorded shadow-canonical versus actual live-source distinction changes; no name/root broadening.
+s=(p/'bind-profile-v1.py').read_text().replace("h(c)==scope['canonical_sha256']==r['source_pins_before']['Roth/MainLemma.lean']","h(c)==scope['canonical_sha256'] and scope.get('canonical_live_expected_sha256',scope['canonical_sha256'])==r['source_pins_before']['Roth/MainLemma.lean']");(p/'bind-profile-shadow-v2.py').write_text(s)
+print(scope)

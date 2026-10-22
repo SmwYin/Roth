@@ -1,0 +1,16 @@
+from pathlib import Path
+import json
+p=Path('/private/tmp/roth-mainlemma-helper9-rem-floor');q=Path('/private/tmp/roth-mainlemma-helper8-diag-rem')
+pairs=json.loads((p/'before-pairs-data.json').read_text());target=next(x for x in pairs if x['name'].endswith('.Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux'))
+old=(q/'independent-original-v3.lean').read_text();guard=old[old.index('private def sameBinderName'):];a=guard.index('  let expected : Lean.Expr := ');b=guard.index('\n',a);guard=guard[:a]+'  let expected : Lean.Expr := '+target['typeCode']+guard[b:];guard=guard.replace('abs_coeff_diag_hasseDeriv_modByMonic_le_aux','abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux')
+(p/'independent-guard-template.lean').write_text(guard)
+helper=(p/'entry-helper.lean').read_text().replace('private lemma abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux','theorem audit_original',1)
+(p/'independent-original-v1.lean').write_text('import Lean.Util.FindExpr\n'+(p/'entry-prefix.lean').read_text()+helper+'\n'+guard)
+# Unified entry point makes all compiler launches serial, prospectively observed and independently terminal/drained.
+(p/'run-observed.py').write_text('''from pathlib import Path
+import subprocess,sys
+p=Path('/private/tmp/roth-mainlemma-helper9-rem-floor');label=sys.argv[1];args=sys.argv[2:]
+subprocess.run(['python3',str(p/'observe.py'),label+'-prelaunch'],check=True)
+subprocess.run(['python3',str(p/'runner.py'),'--frozen-env',str(p/'parent-environment.json'),'--timeout','420',label,'--','/Users/ramin/.elan/bin/lake']+args,check=True)
+''')
+print('Independent original contains exact26line first ungolfed proof; no target9/main declaration exists in its source context')

@@ -1,0 +1,12 @@
+from pathlib import Path
+import json,hashlib,time,subprocess,sys,shutil
+p=Path('/private/tmp/roth-mainlemma-helper8-diag-rem');label=sys.argv[1]
+assert not (p/(label+'-binaries.json')).exists()
+rows={}
+for n in ['/Users/ramin/.elan/bin/lake','/Users/ramin/.elan/bin/lean','/Users/ramin/.elan/toolchains/leanprover--lean4---v4.34.0/bin/lake','/Users/ramin/.elan/toolchains/leanprover--lean4---v4.34.0/bin/lean']:
+ f=Path(n);b=f.read_bytes();rows[n]={'sha256':hashlib.sha256(b).hexdigest(),'bytes':len(b),'resolved_realpath':str(f.resolve())}
+(p/(label+'-binaries.json')).write_text(json.dumps({'observed_unix':time.time(),'binaries':rows},indent=2)+'\n')
+for script in ['freeze27.py','root-extra27.py']:
+ subprocess.run(['python3',str(p/script),label],check=True)
+s=(p/'all14-availability.py').read_text().replace("p/'entry-all14-package-catalog.json'","p/"+repr(label+'-all14-package-catalog.json')).replace("p/'entry-all14-core-availability.json'","p/"+repr(label+'-all14-core-availability.json'))
+f=p/(label+'-all14-observe.py');f.write_text(s);subprocess.run(['python3',str(f)],check=True)

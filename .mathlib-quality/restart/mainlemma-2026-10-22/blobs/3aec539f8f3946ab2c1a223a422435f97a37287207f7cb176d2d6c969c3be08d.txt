@@ -1,0 +1,17 @@
+from pathlib import Path
+import re,json,hashlib,time
+p=Path('/private/tmp/roth-mainlemma-helper9-rem-floor');o=Path('/private/tmp/roth-mainlemma-owner');sha=lambda b:hashlib.sha256(b).hexdigest()
+norm=lambda s:re.sub(r'\s+','',re.sub(r'^\s*--[^\n]*(?:\n|$)','',s,flags=re.M))
+source=(p/'pilot-v4-helper-command.lean').read_text();canonical=norm(source)
+term="mul_le_mul he (mul_le_mul hNR (mul_le_mul_of_nonneg_right h2' hB0)\n          (by positivity) hβ0) (by positivity) hβ0"
+assert source.count(term)==1 and canonical.count(norm(term))==1
+expected=norm(source.replace(term,'('+term+')',1));rows=[]
+assert len(canonical)==1457 and len(expected)==1459
+for sample in ['a','b']:
+ path=p/f'pilot-v4-profile-{sample}-framing-v2-abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux-actual-printed-command.txt';printed=path.read_text();actual=norm(printed)
+ assert actual==expected
+ assert expected==canonical[:870]+'('+canonical[870:965]+')'+canonical[965:]
+ rows.append({'sample':sample,'printed_path':str(path),'printed_sha256':sha(path.read_bytes()),'full_normalized_printed_sha256':sha(actual.encode()),'full_normalized_canonical_sha256':sha(canonical.encode()),'exact_insertions_at_canonical_codepoint_offsets':[{'offset':870,'text':'('},{'offset':965,'text':')'}]})
+out={'status':'PASS independent owner exact uniquely identified printer-parenthesis difference only','observed_unix':time.time(),'canonical_path':str(p/'pilot-v4-helper-command.lean'),'canonical_sha256':sha(source.encode()),'exact_enclosed_complete_term':term,'rows':rows,'allowance':'Only this exact pair enclosing this whole calc RHS mul_le_mul application in these two retained V4 printed payloads. All remaining normalized characters exact. Whitespace and standalone-comment normalization remains as previously accepted; no generic parenthesis deletion, no AST/name/root normalization.','failed_strict_parser_preserved':'pilot-v4-binding-v2-failure.json','scope':'Payload framing exception alone; no timing acceptance until complete exact-root/family/input/terminal validation. Candidate V4 semantic proof and live V3 production remain distinct; no source or proof gate waiver.'}
+with (o/'original27-helper9-owner-v4-printer-parentheses-review-v1.json').open('x')as f:json.dump(out,f,indent=2);f.write('\n')
+print(json.dumps({'status':out['status'],'rows':len(rows),'receipt_sha256':sha((o/'original27-helper9-owner-v4-printer-parentheses-review-v1.json').read_bytes())}))

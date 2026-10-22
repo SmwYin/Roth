@@ -1,0 +1,23 @@
+from pathlib import Path
+import json,hashlib
+p=Path('/private/tmp/roth-mainlemma-helper9-rem-floor')
+jj=[json.loads(l.split('=',1)[1]) for l in (p/'after-inventory.log').read_text().splitlines() if l.startswith('INVENTORY_JSON=')];assert len(jj)==1;j=jj[0];(p/'after-inventory-data.json').write_text(json.dumps(j,indent=2,ensure_ascii=False)+'\n')
+blocks=(p/'before-pairs.lean').read_text().split('run_cmd Lean.Elab.Command.liftTermElabM do\n');pre=blocks[0];template=blocks[1];line=template.splitlines()[0]
+result=pre+''.join('run_cmd Lean.Elab.Command.liftTermElabM do\n'+template.replace(line,'  let n := '+code,1) for name,(code,raw) in j['names'])
+sel=(p/'selected-independent-v1.lean').read_text();defs=sel[sel.index('private def bothGeneratedBinderName'):sel.index('run_cmd Lean.Elab.Command.liftTermElabM do') ] if 'private def bothGeneratedBinderName' in sel else sel[sel.index('private def generatedBinder'):sel.index('run_cmd Lean.Elab.Command.liftTermElabM do')]
+expected=next(l for l in sel.splitlines() if l.startswith('  let expected : Lean.Expr := '))
+root=j['target'];code=dict(j['names'])[root][0]
+result+=defs+'\nrun_cmd Lean.Elab.Command.liftTermElabM do\n  let c ← Lean.getConstInfo '+code+'\n'+expected+'\n  unless sameTypeExceptBothGeneratedBinders c.type (eraseOnlyOldHn expected) do throwError "Actual imported current TYPE differs from exact original minus hn"\n  Lean.Core.liftIOCore <| IO.println "ACTUAL_CURRENT_CONTRACT=exact original minus unused hn only"\n'
+(p/'after-pairs.lean').write_text(result)
+fam=[name for name,_ in j['names'] if name==root or name.startswith(root+'.') or name=='Roth.main_lemma' or name.startswith('Roth.main_lemma.')]
+source=(p/'selected-source.lean').read_text();assert source==Path('/Users/ramin/LEAN/Roth/Roth/MainLemma.lean').read_text()
+localpre='\n'.join(l for l in pre.splitlines() if not l.startswith('import '))+'\n';localtemplate=template.replace('env.header.moduleNames[(env.getModuleIdxFor? n).get!]!.toString','(match env.getModuleIdxFor? n with | some idx => env.header.moduleNames[idx]!.toString | none => "local-source")')
+parts=[]
+for name in fam:
+ runtime=name.replace('_private.Roth.MainLemma.0.','_private._stdin.0.')
+ choose='  let all := (← Lean.getEnv).constants.fold (init := #[]) fun ns n _ ↦\n    if n.toString == '+json.dumps(runtime)+' then ns.push n else ns\n  unless all.size == 1 do throwError "Unique actual source family name"\n  let n := all[0]!'
+ parts.append('run_cmd Lean.Elab.Command.liftTermElabM do\n'+localtemplate.replace(line,choose,1))
+width=(p/'before-source-family-v3.lean').read_text().split('set_option format.width 100 in\n')[-1]
+(p/'after-source-family-v1.lean').write_text('import Lean.Util.FindExpr\n'+source+'\n'+localpre+'\n'+''.join(parts)+'\nset_option format.width 100 in\n'+width)
+(p/'after-expected-source-family.json').write_text(json.dumps({'imported_names':fam,'runtime_names':[n.replace('_private.Roth.MainLemma.0.','_private._stdin.0.') for n in fam]},indent=2)+'\n')
+print({'project':len(j['project']),'eval':len(j['eval']),'ML':len(j['names']),'families':fam,'consumers':j['consumers']})

@@ -1,0 +1,9 @@
+from pathlib import Path
+import json,time
+p=Path('/private/tmp/roth-mainlemma-helper9-rem-floor');source=(p/'entry-MainLemma.lean').read_text();idx=source.index('private lemma abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux');end=source.index('/-- **Roth',idx)
+helper=source[idx:end];assert helper.encode()==(p/'entry-helper.lean').read_bytes()
+rows={'entry-prefix.lean':source[:idx],'entry-main-doc-signature.lean':source[end:source.index(':= by',end)+5],'entry-main-proof.lean':source[source.index(':= by',end)+5:],'before-helper-command.lean':helper.rstrip()+'\n','before-main-command.lean':source[end:source.index('\nend Roth',end)].rstrip()+'\n','before-scoped.lean':source[:source.index('namespace Roth')]+'set_option trace.profiler false\n'+source[source.index('namespace Roth'):idx]+'set_option trace.profiler true\n'+source[idx:source.index('\nend Roth')]+'\nset_option trace.profiler false\nend Roth\n'}
+for n,s in rows.items():
+ with (p/n).open('x') as f:f.write(s)
+(p/'prepare-before-v1-failure.json').write_text(json.dumps({'observed_unix':time.time(),'failed_assertion':'rstrip()+newline changed snapshot double trailing newline','production_source_changed':False,'recovery':'V2 exact segment comparison; normalized profile command written separately'},indent=2)+'\n')
+print('exact immutable source partitions and before scopes saved')

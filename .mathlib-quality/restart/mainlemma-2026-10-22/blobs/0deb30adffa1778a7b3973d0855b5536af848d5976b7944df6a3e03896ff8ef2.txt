@@ -1,0 +1,34 @@
+from pathlib import Path
+import subprocess,time,json,sys,os,errno,hashlib
+p=Path('/private/tmp/roth-mainlemma-helper9-rem-floor');p8=Path('/private/tmp/roth-mainlemma-main-lemma-resume3');label=sys.argv[1];outpath=p/(label+'-owned-process-inventory.json');assert not outpath.exists();start=time.time()
+known={int(n) for n in json.loads((p8/'final-drain-owned-process-inventory.json').read_text())['known_owned_groups']}
+manifest=json.loads((p8/'manifest.json').read_text())['entries']
+launches={Path(n) for n in manifest if n.endswith('-launch.json')}|set(p8.glob('*-launch.json'))|set(p.glob('*-launch.json'))
+for f in launches:
+ j=json.loads(f.read_text())
+ if isinstance(j,dict) and isinstance(j.get('pgid'),int):known.add(j['pgid'])
+states={}
+for g in sorted(known):
+ row={'operation':'killpg(signal=0)','observed_unix':time.time()}
+ try:os.killpg(g,0);row['status']='present'
+ except ProcessLookupError as e:row.update(status='absent',errno=e.errno)
+ except PermissionError as e:row.update(status='UNKNOWN',errno=e.errno,error=str(e))
+ states[str(g)]=row
+cmd=['/bin/ps','-axo','pid,ppid,pgid,lstart,command']
+try:r=subprocess.run(cmd,capture_output=True,timeout=15)
+except BaseException as e:
+ with (p/(label+'-process-observation-error.json')).open('x') as f:json.dump({'observed_unix':time.time(),'operation':'read-only /bin/ps inventory','exception':type(e).__name__,'errno':getattr(e,'errno',None),'error':str(e),'actual_known_group_observations':states,'inventory_status':'UNKNOWN, no drain credited'},f,indent=2)
+ raise
+txt=r.stdout.decode('utf8','strict');err=r.stderr.decode('utf8','strict');rows=[]
+needles=['/private/tmp/roth-mainlemma-helper9-rem-floor/','/private/tmp/roth-mainlemma-main-lemma-resume3/','/private/tmp/roth-mainlemma-helper8-diag-rem/','/private/tmp/roth-mainlemma-main-lemma-resume2/','/private/tmp/roth-mainlemma-main-lemma-resume1/','/private/tmp/roth-mainlemma-helper7-index-eval/','/private/tmp/roth-mainlemma-helper6-double-hasse/','/private/tmp/roth-mainlemma-main-lemma/']
+for line in txt.splitlines()[1:]:
+ fields=line.split(None,8)
+ if len(fields)<9:continue
+ if int(fields[0])==os.getpid():continue
+ command=fields[8];first=command.split()[0] if command.split() else ''
+ if any(n in command for n in needles) or Path(first).name=='printenv' or 'lake env printenv' in command:rows.append(line)
+root=Path('/Users/ramin/LEAN/Roth');pins={str(f.relative_to(root)):hashlib.sha256(f.read_bytes()).hexdigest() for f in sorted(list(root.glob('Roth/*.lean'))+[root/'Roth.lean',root/'lean-toolchain',root/'lakefile.toml',root/'lake-manifest.json'])}
+out={'observed_start_unix':start,'observed_end_unix':time.time(),'command':cmd,'exit':r.returncode,'strict_utf8':True,'known_owned_groups':states,'known_owned_group_count':len(states),'all_known_groups_absent':all(v['status']=='absent' for v in states.values()),'owned_rows':rows,'stderr':err,'source17':pins,'scope':'Actual recorded predecessor and current PGIDs checked read-only; exact task scratch argv and bare/resolved printenv forms. Only observer own exact PID omitted. No unrelated rows/env values retained, no kill beyond signal0. Historical unknown PGIDs/terminal/native return observations remain UNKNOWN, never reconstructed.'}
+with outpath.open('x') as o:json.dump(out,o,indent=2)
+assert r.returncode==0 and out['all_known_groups_absent'] and not rows,out
+print({'known_groups':len(states),'all_absent':True,'owned_rows':0})

@@ -1,0 +1,11 @@
+from pathlib import Path
+import json
+p=Path('/private/tmp/roth-mainlemma-helper7-index-eval');rr=json.loads((p/'after-pairs.json').read_text());assert rr['exit']==0 and rr['drained'];rows=[json.loads(l[10:]) for l in (p/'after-pairs.log').read_text().splitlines() if l.startswith('PAIR_JSON=')];inv=json.loads((p/'after-inventory-inventory.json').read_text());assert {r['name'] for r in rows}=={r[0] for r in inv['names']};tg=next(r for r in rows if r['name'].endswith('.Roth.exists_hasseDeriv_index_eval_bound_aux'));assert 'ERROR_' not in tg['typeCode'];(p/'after-pairs-accepted.json').write_text(json.dumps({'rows':rows,'inventory':inv,'actual_whole_exit':0,'raw_sha256':rr['raw_sha256']},indent=2)+'\n')
+s=(p/'independent-original-v2.lean').read_text();s=s[:-len('end Roth\n')];head=(p/'candidate-packed-helper.lean').read_text().split(':= by',1)[0].replace('private lemma exists_hasseDeriv_index_eval_bound_aux','theorem audit_current')+':= by'
+s+='\n'+head+'''\n  obtain ⟨Q, hQ0, hQd, hQi, hQev, hQc⟩ :=
+    audit_original hP hd hc hs h2 hα hγ hz
+  exact ⟨Q, hQ0, hQd, hQi, hQev, fun i ↦ (hQc i).trans_eq (by ring)⟩
+'''
+old=(p/'independent-original-v2.lean').read_text();g=old[old.index('run_cmd Lean.Elab.Command.liftTermElabM do\n  let n := ``audit_original'):];g=g[:g.rindex('end Roth')];a=g.index('  let expected : Lean.Expr := ');b=g.index('\n',a);g=g[:a]+'  let expected : Lean.Expr := '+tg['typeCode']+g[b:];g=g.replace('``audit_original','``audit_current').replace('INDEPENDENT_JSON=','INDEPENDENT_CURRENT_JSON=')
+s+=g+'\nend Roth\n';(p/'independent-current.lean').write_text(s)
+print('Prepared genuine nonself current proof via independently checked old proof; exact current TYPE + full closure guards.')

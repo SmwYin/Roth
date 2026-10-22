@@ -1,0 +1,44 @@
+# Fresh helper8 pre-edit audit (unfinished gates; no acceptance claim)
+
+Target: `Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux`, working ML544–562, 12 proof lines. Source SHA87b9879e47747825a161570e56e62da382a53b37d04b4cda581910d9a72771e5. Scope excludes whole main cleanup, Main source, Git and existing reports. Counts242/264 unchanged.
+
+The proof first bounds the derivative coefficients and coordinate degrees. Its support lies in the coordinate box, so at most the product of `(r k + 1)` monomials can merge under diagonal substitution. The diagonal degree is at most the sum of coordinate bounds. Applying the already proved remainder estimate gives exactly the displayed exponent and coefficient factor. This is a substantive algebraic stage (five separate estimate APIs), independent of root, parameter, count, or approximation assumptions.
+
+## Full 24-item pre-edit audit
+
+|#|Item|Actual finding and action|
+|---:|---|---|
+|1|Lint|Fresh full unfiltered native MainLemma returned success/nonpartial/nontimeout, zero errors/dependency failures; preserved header warning at1 only. No warning in helper.|
+|2|Have scan|hB: proof term, used by positivity; retain sign fact. hdP: used in hsupp and natDegree; retain. hcP: one explicit use in hcD; test inline. hsupp: proved by exact_mod_cast; retain proof content. hcD: one explicit use in hrem; test inline with expected-type annotation if necessary. hrem: one use in terminal simpa; test direct using.|
+|3|Set_option|None in helper or production source; no limit changes authorized.|
+|4|Simp|Two terminal `simpa [Int.norm_eq_abs]` subproofs and final explicit `simpa only` cast normalization. Test terminal unsqueeze, preserve the necessary Nat-product cast repair. No nonterminal bare simp.|
+|5|Naming|Private `_aux`, operation names exactly match existing `diag`, `hasseDeriv`, `modByMonic`; no forbidden abbreviation/scheme/numeric pattern. No rename needed.|
+|6|Line packing|Actual codepoint signature widths81/67/68/60/50/48/65; first line can take `{f : Polynomial ℤ}` (18 codepoints):81+1+18=100. Must repack after preserved before pair. Complete before/after arithmetic table pending.|
+|7|By placement|`:= by` at end of final signature line; correct.|
+|8|Format|Two-space proof indentation, no empty proof lines, lambdas use↦, no haveI/letI. Preserve this.|
+|9|Comments|Helper has no narrative comments. All9 file standalone comments protected and all7 original literals including5main remain unchanged.|
+|10|Docstring|No helper/private docstring, appropriate; publicmain doc immutable.|
+|11|Visibility|Private helper with `_aux`, one intended internal main caller.|
+|12|Structure|12 proof lines≤30 ordinary helper threshold, no conjunction conclusion or >10-line branches. No thin whole-theorem wrapper.|
+|13|Mathlib|Five actual methods attempted: Finder/LeanSearch gave coefficient-submodule/division or univariate degree partial matches; corrected Loogle returned no hits; full generic rg and exact-name rg retained; local search found coefficient-submodule lemma with index unavailable. No absence credit from unavailable index. Compile generic exact?/apply? routes still pending. Existing project estimates are the appropriate partial building blocks.|
+|14|Junk def|n/a: lemma with new combined quantitative estimate, not a def.|
+|15|Exists lemma|n/a: coefficient inequality, no existential witness.|
+|16|Show/change|No show/change in helper.|
+|17|Push_neg|None.|
+|18|Generalise|Already arbitrary universe-polymorphic finiteσ; no monic/root/sign premises. All outer/inner binder candidate and actual drop/localisation probes pending. No optional domain/function-weight companion authorized.|
+|19|Inequality|Full signature scan zero≥ and zero>; all three assumptions and conclusion use≤. Name uses_le_. Complete occurrence table to be included.|
+|20|Normal form|Coefficient absolute-value form agrees with integer estimate caller, casts bridge ℤ→ℝ and ℕ→ℝ; remainder `%ₘ` handles nonmonic divisors by its API. No equivalent-form lemma needed.|
+|21|Syntax generality|All derivatives j and coefficients i explicit. Finite variable type avoids needless Fin-m specialization. Existing global bounds suit hC; any proposed localisation must cover zero-polynomial/Bnegative edge.|
+|22|Import fanout|No new import proposed or needed; preserve all imports for final file review.|
+|23|Casts|Explicit coefficient casts are actual ℤ→ℝ, product cast actual ℕ→ℝ; Nat product type annotation controls product domain. Proposed removal must compile and preserve full exact TYPE. No redundant cast removal accepted yet.|
+|24|Instance name|n/a: no instance declaration. `[Fintype σ]` is an unnamed binder.|
+
+## Preliminary generalisation, outer and inner a–e
+
+All outer binders: σ, Fintypeσ, f, P, r, A, B, hA, hd, hc, j, i. All dependent names/order/BinderInfo/universes are protected by exact TYPE guard. σ is Type*, finite sums/products require actual finite enumeration in the written conclusion; using Finite without supplying Fintype changes the written expression/API. f/P/r/A/B/j/i occur in conclusion and cannot simply be deleted. hA,hd,hc need actual clear/drop tests. No strict hypotheses to weaken. No decidability binder exists. Concrete integer coefficient domain and real bounds match intended caller and standing scope; no extra domain companion/API proposed.
+
+Inner binders: hA.i (every divisor coefficient enters reduction); hd.k (all coordinates enter sum/support box); hc.d (all coefficients, including zero at d0, force nonnegative B even for P0). Localisation/weakening must be genuinely weaker and recover exact old contract. Source-only counterexample ideas (UNCOMPILED): dropping hc permits P1,B0; dropping hd permits P=X²,r0,j1,B1; dropping hA permits f=X+largeconstant,P=X,A0. These are prospects, not certified necessity claims. Actual probes and any result-driven safe changes are still required.
+
+Literature: three separate actual queries and full raw retrievals retained. Query1 top3 are mathlib Hasse documentation mirror, JACM multipoint evaluation, ECCC Hasse-derivative research; query2 top3 are UB proof chapter, Milojevic exposition, an unrelated additive polynomial Roth paper; query3 top3 are Vaia division exercise, Androma monic-division entry, arXiv divisor-height paper. These retrieval ranks are not proof authority or claims of relevance. The authoritative local clean.tex1390–1510 remains source for this algebraic stage. No additional mathematical result is imported from web search. Exact optional ask_chatgpt_math tool unavailable in actual tools inventory; no invocation invented.
+
+Required first-working-before-pair, fresh actual metadata, all42 attempted golf statuses, independent nonselfproof, seven gates, affected/FULL→Eval/native, matched profiles and seal remain pending. This document does not claim helper completion.

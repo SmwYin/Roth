@@ -1,0 +1,9 @@
+from pathlib import Path
+import json,time,hashlib
+p=Path('/private/tmp/roth-mainlemma-helper7-index-eval');out=[]
+for short in ['ML','Main','Eval']:
+ label='final-native-'+short;j=json.loads((p/(label+'-response.json')).read_text());r=j['response'];assert not r.get('isError',False);textrows=[json.loads(c['text']) for c in r['content'] if c['type']=='text'];assert len(textrows)==1;raw=textrows[0];structured=r['structuredContent']['result'];assert raw==structured and raw['success'] and not raw['partial'] and not raw['timed_out'] and not raw['still_elaborating_lines'] and not raw['failed_dependencies'];assert not any(x['severity']=='error' or x.get('category')=='sorry' for x in raw['items'])
+ a=json.loads((p/(label+'-before-pins.json')).read_text());b=json.loads((p/(label+'-after-pins.json')).read_text());save=json.loads((p/(label+'-save-observation.json')).read_text());assert a['pins']==b['pins'];assert a['observed_unix']*1000<=j['returned_immediately_ms']<=save['response_fully_saved_observed_ms']<=b['observed_unix']*1000
+ baseline=json.loads((p/('baseline-native-'+short+'-response.json')).read_text())['response']['structuredContent']['result'];assert raw['items']==baseline['items'],('New diagnostic',short,raw['items'])
+ out.append({'label':label,'errors':0,'warnings':sum(x['severity']=='warning' for x in raw['items']),'full_content_structured_agree':True,'pins_equal':True,'same_inherited_diagnostics_as_baseline':True,'file_path_only_request':json.loads((p/(label+'-request.json')).read_text()),'immediate_return_ms':j['returned_immediately_ms'],'full_save_observed_ms':save['response_fully_saved_observed_ms'],'postpins_unix':b['observed_unix'],'response_file_sha256':hashlib.sha256((p/(label+'-response.json')).read_bytes()).hexdigest()})
+(p/'final-native-acceptance.json').write_text(json.dumps({'observed_unix':time.time(),'rows':out},indent=2)+'\n');print([(r['label'],r['errors'],r['warnings']) for r in out])

@@ -1,0 +1,259 @@
+# Helper8 cleanup: abs_coeff_diag_hasseDeriv_modByMonic_le_aux
+
+Local helper lifecycle only. Original27, whole-file cleanup, publication, and counts242/264 remain pending. No Git action or child agent was used.
+
+Selected ML724 SHA `42ad7abb8eea62ec2bbc4fb4646cc5a8feb3f049bf22eb02b34111ae3121548f`. Entry ML726 SHA87b9879e47747825a161570e56e62da382a53b37d04b4cda581910d9a72771e5. Only the helper region changed; exact inverse recovers entry. Public main TYPE/doc, all9 standalone comments, other7 accepted helpers, all other source bytes and Main689 remain exact.
+
+## Recovery and baseline
+
+The first author V1 (6c2415… context/d567754… helper) failed because real casts of the Nat product did not normalize; no proof credit. Only the necessary Nat.cast_prod/add/one repair produced the corrected first-working V2 (87b987…/bdca453…). That working proof, with no author golf, supplied this fresh audit baseline. Entry compiled cache was still accepted P7ML716; fresh baseline FULL then separate Eval preceded imported metadata/native/profile. Prior sealed artifacts were not rewritten.
+
+Full dispatch12lines16933B, both installed skills and mandated cleanup/fullcleanup/buzz/reference/verbatim854/futureprofil112/payload46 and context were recovered. Initial truncated combined skill read was recovered by complete bounded reads; no truncated-read credit. The independent inherited-entry check streamed41595files/11342715364B and matched all25374 actual binary provenance rows. Full source search universe8542files was retained. Administrative observer unknown PGID/terminal was not reconstructed.
+
+## All24 audit items
+
+|#|Audit|Result|
+|---:|---|---|
+|1|Lint|Final full unfiltered native ML/Main/Eval success;0errors/dependency failures. Retain inherited ML header warning/Main4unused/Eval0; no suppression or invented metadata.|
+|2|Have|Inline hcP/hrem; retain hB positivity, twice-used hdP, substantive hsupp and typed hcD (failed full inline demonstrated the missing expected type).|
+|3|Options|No production limit/options changes; actual ordinary guards enforce200000/20000/512.|
+|4|Simp|Broad terminal simpa was actually attempted, passed, and measured slower. V4 restores explicit simpa only as an evidenced performance exception; necessary casts retained.|
+|5|Naming|Private operation-based _aux name, no forbidden scheme/abbreviation or rename.|
+|6|Packing|All5 signature lines measured below; no repack row.|
+|7|By placement|:= by at end of final signature line.|
+|8|Formatting|Two-space body, ↦ lambdas, no blank body line or tactical separators.|
+|9|Comments|No helper comments; all9 file signposts and all original quotations exact.|
+|10|Doc|No new private docstring; public main documentation exact.|
+|11|Visibility|Private helper, actual sole direct consumer main_lemma.|
+|12|Structure|12prooflines≤30 ordinary helper threshold, no conjunction/long branch; substantive five-estimate algebraic stage. Main136/headline15 remains pending.|
+|13|Mathlib|All5 actual methods below; partial thematic matches only; exact?/apply? default timeouts have no absence credit.|
+|14|Junk def|n/a, inequality theorem rather than definition.|
+|15|Existential|n/a, coefficient inequality.|
+|16|Show/change|None.|
+|17|Push Not|No push_neg.|
+|18|Generality|All12 outer and3 inner binders reviewed below; exact old contract retained; no unverified weakening selected.|
+|19|Inequalities|Every signature occurrence listed below; zero≥/>; name uses_le_.|
+|20|Normal form|Integer coefficient absolute value with real bounds matches caller; no equivalent-form companion needed.|
+|21|Syntax generality|Arbitrary finite universe-polymorphic σ, allj/i, arbitraryf inclzero/nonmonic, no root/δ/q/sign premises.|
+|22|Imports|No import change or new fanout.|
+|23|Casts|Actual ℤ→ℝ coefficient casts and ℕ→ℝ product domain retained; original failure proves terminal product cast repair necessary.|
+|24|Instance name|n/a, no instance declaration; unnamed Fintype binder.|
+
+## Actual five-method mathlib search
+
+|Method|Actual result|
+|---|---|
+|A LeanFinder|Raw search-leanfinder.json: quantitative Hasse/remainder query gave coefficient-submodule division partial matches; no exact replacement.|
+|B Loogle|Initial identifiernorm query failed; corrected quoted norm query returned[]; both raws retained.|
+|C LeanSearch|Raw search-leansearch.json: thematic division/degree facts, no adopted exact replacement.|
+|D rg|Full8542-file Mathlib universe, coefficient-bound and exact-helper searches had no hits; auxiliary variants had3hits, complete stdout/stderr retained.|
+|E local_search|Actual coefficient-modByMonic span fact found; index unavailable means no absence credit. Existing partial estimate APIs retained.|
+
+The standalone helper composes Hasse coefficient size, Hasse/coordinate degree, support-box cardinality, diagonal coefficient/degree and univariate remainder growth. It is independent of the main theorem’s floor/growth/count/index/root work. `clean.tex`1390–1510 and actual CoeffNorm/Hasse source were read; no external theorem was adopted. New external identifiers introduced by this change:0 (actual set comparison). Successful bounded candidate and final builds verify all reused names.
+
+# Outer and inner generalisation, steps2.6a–e
+
+|Outer binder|Class/use|Mechanical candidates and actual result|
+|---|---|---|
+|σ : Type*|type variable, variable index of P/r/j|Already universe polymorphic. Type→Type* already satisfied; no fixed finite cardinality. Drop would leave dependent types unbound.|
+|[Fintype σ]|typeclass, finite sum/product and support box|Dropping leaves the literal sum/product without instances. Finite supplies existence rather than the enumeration in this written contract and would require choosing Fintype; no weaker enumeration parent preserves this expression. No decidability binder to remove.|
+|f : Polynomial ℤ|structure value, divisor/natDegree|Occurs in conclusion; cannot drop. Integer coefficient domain retained by user.|
+|P : MvPolynomial σ ℤ|structure value, differentiated numerator|Occurs in conclusion; cannot drop. Domain companion declined.|
+|r : σ → ℕ|structure value, degree-box/product/exponent|Occurs in conclusion and hd; cannot drop. Function-valued weight/API expansion declined.|
+|A : ℝ|structure value, remainder factor|Occurs in conclusion/hA; cannot drop or substitute an arbitrary fixed bound without changing the statement. Real bound domain retained.|
+|B : ℝ|structure value, coefficient factor|Occurs in conclusion/hc; cannot drop. Real domain retained.|
+|hA|proposition, passed to remainder coefficient estimate|Actual clear hA; exact? trial reached default heartbeat, inconclusive and no absence credit. No strict inequality to weaken. Bounded-degree localisation discussed below is equivalent under zero extension, not increased mathematical generality. Retained.|
+|hd|proposition, derivative degree/support box/diagonal degree|Actual clear hd; exact? trial reached default heartbeat, inconclusive. No strict inequality. All coordinates occur in the written bound; localisation to a chosen coordinate would not give support cardinality. Retained.|
+|hc|proposition, Hasse coefficients and B nonnegative at0|Actual clear hc; exact? trial reached default heartbeat, inconclusive. No strict inequality. Restricting to nonzero support alone loses the B≥0 fact for P0. Retained.|
+|j : σ →₀ ℕ|structure value, arbitrary derivative|Occurs in conclusion; cannot drop or replace by0. No hidden support/order premise.|
+|i : ℕ|structure value, arbitrary output coefficient|Occurs in conclusion; cannot drop or replace by0.|
+
+2.6b actual candidate verification: all selected statement tokens/order/universes/BinderInfo remain unchanged. No hypothetical weakening is marked compile-verified. The three clear/drop attempts timed out and their resulting open/admitted fallbacks were explicitly rejected. Exact full old TYPE is checked on the successful selected candidate, independently reconstructed original, and reconstructed current proof. Nothing is accepted on timeout.
+
+Outer mathematical necessity observations, not claimed as separately Lean-checked counterexample declarations: for σ=Unit, dropping hc allows P1,f0,r0,A0,B0,j0,i0, asking1≤0; dropping hd allows P=X²,f0,r0,A0,B1,j1,i1, asking2≤1; dropping hA allows P=X,f=X−5,r1,A0,B1,j0,i0, asking5≤4. These explain why inconclusive automation is not a recommendation to delete the hypotheses.
+
+|Inner binder|2.6a class/use/localisation/drop analysis|2.6b verification status|
+|---|---|---|
+|hA.i : ℕ|All divisor coefficients enter reduction. Restriction i≤f.natDegree is equivalent after zero extension: i0 lies in range and forces A≥0, coefficients above degree are zero. Nonzero-support restriction alone loses A≥0 for f0. No strict→weak change; the original weak inequality is already weakest of that pair.|No changed contract selected; bounded localisation would restate an equivalent predicate and require rebuilding the supplied remainder API premise, without weakening the mathematical assumptions. Not claimed compiler-tested.|
+|hd.k : σ|Every coordinate contributes to the degree sum and box product. Removing the binder would only give one coordinate; allσ including emptyσ already covered. Restricting to P's variable support would still need bounds on r and zero-degree coordinates, whose existing natural bounds are automatic.|No changed contract selected; no extra finiteness/decidability premise to remove.|
+|hc.d : σ→₀ℕ|All coefficients are passed to the Hasse bound. A box-only predicate under hd including d0 recovers all coefficients by zero extension and B≥0. Restriction only to support fails to constrain B for P0; adding B≥0 separately merely repackages the current fact.|No changed contract selected; global predicate matches the existing quantitative Hasse API and only actual caller.|
+
+Inner2.6c: no evidenced strictly more general contract within retained domains/weight API. Inner2.6d: the same three actual literature queries, exact Top3 and raw results retained for this private helper by explicit dispatch requirement; no new result or generalisation adopted. Optional exact ask_chatgpt_math tool unavailable. Inner2.6e: no safe strictly weaker predicate was established; retain the exact old contract. Outer2.6c–e: same conclusion, no big-change flag, no optional domain/weight companion, no decision requested.
+
+
+## Actual literature searches (retrieval ranks, not proof authority)
+
+1. “Hasse derivative coefficient bound diagonal substitution polynomial height remainder monic polynomial”: Top3 https://math.iisc.ac.in/~gadgil/proofs-and-programs-2023/doc/Mathlib/Data/Polynomial/HasseDeriv.html ; https://doi.org/10.1145/3652025 ; https://eccc.weizmann.ac.il/report/2023/182/download/ .
+2. “Roth theorem auxiliary polynomial Hasse derivative coefficient bound monic remainder”: Top3 https://diposit.ub.edu/bitstreams/8cfc8916-c376-44d7-8822-14f9fed3aa15/download ; https://aleksa-milojevic.github.io/expository/roth.pdf ; https://www.pure.ed.ac.uk/ws/portalfiles/portal/163715275/1704.01546.pdf (unrelated additive Roth).
+3. “polynomial remainder monic divisor coefficient bound height (1+A) degree”: Top3 https://www.vaia.com/en-us/textbooks/computer-science/modern-computer-algebra-3-edition/chapter-6/problem-2-let-aq-br-be-a-division-with-remainder-with-a-b-q-/ ; https://androma.org/theorems/2613 ; https://arxiv.org/abs/1111.5404 .
+Individual actual raws helper8_lit1/2/3.json preserved. Initial merged retrieval is separately qualified, not substituted for per-query ranks. Optional exact ask_chatgpt_math unavailable; no invocation invented.
+
+## Packing and orientation
+
+Actual successful `set_option format.width 100 in #check @abs_coeff_diag_hasseDeriv_modByMonic_le_aux`:
+```lean
+@abs_coeff_diag_hasseDeriv_modByMonic_le_aux : ∀ {σ : Type u_1} [inst : Fintype σ] {f : Polynomial ℤ}
+  {P : MvPolynomial σ ℤ} {r : σ → ℕ} {A B : ℝ},
+  (∀ (i : ℕ), |↑(f.coeff i)| ≤ A) →
+    (∀ (k : σ), degreeOf k P ≤ r k) →
+      (∀ (d : σ →₀ ℕ), |↑(P.coeff d)| ≤ B) →
+        ∀ (j : σ →₀ ℕ) (i : ℕ),
+          |↑((diag ((hasseDeriv j) P) %ₘ f).coeff i)| ≤
+            (1 + A) ^ (∑ k, r k + 1 - f.natDegree) * (↑(∏ k, (r k + 1)) * ((2 ^ ∑ k, r k) * B))
+```
+
+|Signature line|Codepoints|Next complete signature unit|Arithmetic|Action|
+|---:|---:|---|---|---|
+|544|100|{P : MvPolynomial σ ℤ}|100 + 1 + 22 = 123 > 100|ok|
+|545|82|(hd : ∀ k, degreeOf k P ≤ r k)|82 + 1 + 30 = 113 > 100|ok|
+|546|91|\|((diag (hasseDeriv j P) %ₘ f).coeff i : ℝ)\| ≤|91 + 1 + 46 = 138 > 100|ok|
+|547|93|(((∏ k, (r k + 1) : ℕ) : ℝ) * (2 ^ (∑ k, r k) * B)) := by|93 + 1 + 57 = 151 > 100|ok|
+|548|63|end of signature|n/a|ok|
+
+|Occurrence|Location|Orientation|Action|
+|---|---|---|---|
+|hA coefficient bound|545|≤|keep|
+|hd degree bound|546|≤|keep|
+|hc coefficient bound|546|≤|keep|
+|conclusion coefficient bound|547|≤|keep|
+
+# All 42 golfing rules and actual reflection
+
+Statuses refer only to helper8. `n/a` means the stated syntax/goal is absent, not an unrun successful tactic.
+
+|Rule|Status and evidence|
+|---|---|
+|1.1 by exact|n/a, no wrapper.|
+|1.2 by rfl|n/a, no reflexivity proof.|
+|1.3 rw+exact|n/a, no rw chain.|
+|1.4 simp+exact|n/a, no separate simp/closing pair.|
+|1.5 trailing rfl|n/a, none.|
+|1.6 constructor|n/a, inequality conclusion.|
+|1.7 apply+exact|n/a, none.|
+|1.8 by_contra!|n/a, no contradiction proof.|
+|1.9 eta reduction|Existing lambdas use their argument in dependent/composed proofs; no fun x ↦ f x remains.|
+|1.10 single-use have|Applied to hcP and hrem. hcD inlining actually failed at underconstrained k in candidateV2; its explicit type retained. hdP has two uses. hB supplies positivity. hsupp has a substantive cast proof.|
+|1.11 apply+intro|n/a, none.|
+|1.12 show|n/a, none.|
+|1.13 projection have|n/a, none.|
+|1.14 consecutive rw|n/a, none.|
+|1.15 terminal simp only|Actual broad simpa attempt whole0 but slower396.845/383.775ms; V4 restores simpa only as evidenced performance exception. No omitted attempt or noise discount.|
+|1.16 nonterminal simp|n/a, no nonterminal bare simp.|
+|1.17 dot notation|Already uses .trans, .trans; no applicable namespaced f proof combination.|
+|1.18 trailing parentheses|Remaining parentheses occur in arguments followed by further arguments or projection compositions; removing them changes parsing.|
+|1.19 push Not|n/a, no push_neg.|
+|1.20 trivial existential|n/a, nonexistential quantitative estimate.|
+|2.1 grind|Actual isolated guarded negative attempt, no replacement.|
+|2.2 preceding grind|n/a, no grind in selected proof.|
+|2.3 simpa consolidation|Applied by using the remainder estimate directly under the final simpa.|
+|2.4 fun_prop|n/a, no function-property goal.|
+|2.5 positivity|Retained actual successful positivity for product nonnegativity in selected candidate. hB is a direct proof of the needed sign.|
+|2.6 gcongr|Actual whole-goal guarded negative attempt. Existing precise mul_le_mul_of_nonneg_right retained.|
+|2.7 lia/omega|n/a, no Nat/Int linear arithmetic subgoal; coefficients are real absolute values and nonlinear powers.|
+|2.8 aesop|Actual isolated guarded negative attempt.|
+|2.9 norm_num/norm_cast|Actual exact_mod_cast proves the finite-cardinality inequality; retained. No concrete numeric subgoal requiring norm_num.|
+|2.10 decide|n/a, universally quantified arbitrary real coefficient estimate is not finite decidable computation.|
+|2.11 field_simp/ring|n/a, no denominator identity.|
+|2.12 linear_combination|n/a, no terminal ring/ring_nf or polynomial equality goal.|
+|2.13 wlog|n/a, no symmetric branches.|
+|2.14 calc term|Already composed term proofs; no calc block.|
+|2.15 parallel goals|n/a, no repeated refined goals.|
+|3.1 erw|n/a, none.|
+|3.2 legacy continuity|n/a, none.|
+|3.3 omega→lia|n/a, neither appears.|
+|3.4 rcases rfl|n/a, none.|
+|3.5 automation registration|Not appropriate for a private one-use combined quantitative estimate; no stable simp/ext normal form proposed.|
+|3.6 simp_all|n/a, no simp_all only.|
+|3.7 limit options|None in production; all actual ordinary guards enforce defaults200000/20000/512.|
+
+Manual reflection (actual, not a fabricated Skill(simplify) invocation): the estimate needs derivative size, support cardinality, diagonal aggregation/degree, and remainder growth. Replacing this structure by one tactic was actually unsuccessful for grind/simp/aesop/gcongr. The exact?/apply? searches timed out under defaults, so they establish no library absence. A fully nested term lost the expected type for a coefficient index; keeping the typed hcD boundary is clearer and has actual compilation evidence. Removing the two remaining single-use aliases leaves the mathematical stage visible. A larger domain/weight API is outside the user's retained scope and is not needed for the only actual direct consumer. No different source-level strategy has been justified by the searches. Later independent whole-file simplify review remains the owner's separate mandatory gate.
+
+
+## Genuine proof and retained DATA checks
+
+Fresh independent original V3 and V4 current V1 both whole0/drained, each exact old literal full TYPE/levels/BinderInfo/written names (only BOTH generated binder macro scopes may erase), closed/inferred/std3/default. Each recursive TYPE+actualopaqueVALUE closure has14591names and denies helper/main/all descendants. Both actual values differ from the target; original’s final trans(le_refl_) and current’s analogous variation are retained. No AST constant mapping, unfolding, ProofIR surrogate or self-proof accepted.
+Final dynamic inventory: 458project/5Eval/62MainLemma; 34source+28actual source-absent generated declarations, kinds{'defn': 7, 'thm': 55}. Every actual retained declaration has full raw TYPE+opaqueVALUE, actual name/kind/module/levels/dependencies and separate ordinary closed/inferred/std3/default guard in v4-after-pairs.log. All TYPE raw bytes and every other VALUE raw byte remain exact; only this helper VALUE changes. All7 DATA definitions and generated values are covered, not TYPE-only. Fresh exact helper family1/main family5 come from actual metadata. Actual direct consumer main_lemma only.
+
+## Actual verification invocations
+
+|Gate/run|Exact lake arguments (proxy /Users/ramin/.elan/bin/lake)|Whole result|Seconds|Raw stdout SHA|
+|---|---|---|---:|---|
+|baseline-full|build|0/drained|129.308802958|516e7740c0f74ff46176d5b697aa6f7592a2213d70a7f2bd6ecdc9744c308ab4|
+|baseline-eval|build Roth.LeanEval|0/drained|67.281400834|278df66cd4c2cd9655b7d4166a5135d73116e92f3b3c7b7534528dc6b2f72c05|
+|independent-original-v3|env lean -j1 /private/tmp/roth-mainlemma-helper8-diag-rem/independent-original-v3.lean|0/drained|68.701857500|7cbe1c4e0e3a13cf27cadaffc9994835f12a9596d854556e068e7957b2a75cef|
+|candidate-v3|env lean -j1 /private/tmp/roth-mainlemma-helper8-diag-rem/candidate-v3.lean|0/drained|74.958321334|d955560116183acf9dcfd324ab942c48451983a19840e0e929b9e9aa9e11681b|
+|candidate-v4|env lean -j1 /private/tmp/roth-mainlemma-helper8-diag-rem/candidate-v4.lean|0/drained|56.092287666|6e521705c0748ed8b63dd7066d6436357ca93a0d4ee71e4160c15f667bca6cb1|
+|v4-final-full|build|0/drained|165.646907584|5b33b56a44ef212519198949041f52c0af1d221e197e376ff20a08f59a14434f|
+|v4-final-eval|build Roth.LeanEval|0/drained|69.088588416|6a747c1ab394ccfda32a63f99e740a316939b6834f9425375a958edd0f8552d9|
+|v4-independent-current-v1|env lean -j1 /private/tmp/roth-mainlemma-helper8-diag-rem/v4-independent-current-v1.lean|0/drained|52.150322417|17a816d87c9b24ad25c3db5051288b1fbcb471197ff2cba0f1b56f2bd7d6f18a|
+|v4-after-inventory|env lean -j1 /private/tmp/roth-mainlemma-helper8-diag-rem/v4-after-inventory.lean|0/drained|88.805130792|63bab4630869abf58956a54bdaa8b9d8d13fff92347b56cb1947a5848f47db0e|
+|v4-after-pairs|env lean -j1 /private/tmp/roth-mainlemma-helper8-diag-rem/v4-after-pairs.lean|0/drained|83.126506250|da2d7e68cb5786642c70fb0690cf0247dc0c68f70535b0f0af53004edb2f7f4f|
+|v4-final-affected|build Roth.MainLemma Roth.Main|0/drained|5.751146125|2f90a87c01ec12a5b466260a559ce593d81a7c6409b86fb13f94360a529e7761|
+
+Final native file_path-only calls each have their own prospectively saved source17 pre → request → immediate await-return timestamp → full raw save → save-observation → source17 post. All17 tuples equal per call; rawcontent JSON equals actual structuredresult; no partial/timeout/errors/failed dependencies. Baseline native used a common pre/post source17 bracket, not per-call brackets; retain that limitation without historical rerun/backfill.
+
+|Final native|Warnings retained|Request ms|Immediate return ms|Full save observation ms|
+|---|---:|---:|---:|---:|
+|MainLemma|1|1792628954582|1792628959317|1792628959364|
+|Main|4|1792628959630|1792629021841|1792629022511|
+|LeanEval|0|1792629022866|1792629072110|1792629073429|
+
+## Matched scoped performance
+
+V4 final narrow helper262.289/242.072ms (mean252.1805), baseline254.543/250.316(mean252.4295), broad V3 valid passing-but-slower396.845/383.775(mean390.310). Restoring the explicit cast simplifier set recovered the prior practical cost; no numeric improvement/noise claim. V4 main2352.648/2305.466 and combined2614.937/2547.538 remain VALIDFAIL and original27 work.
+No compiler/native/otherprofile/raw parsing during A or B of any of the three pairs; all binding/parsing after each pair BOTH drained. Owner explicitly deferred heavy review. Actual CLI: lake env lean -j1 --profile -Dtrace.profiler=true -Dtrace.profiler.threshold=0 phase-scoped.lean. Threshold is Nat milliseconds. Complete canonical/printed command payload equality allows only whitespace/standalone--comment normalization; main doc retained. Standalone CLI elaboration delimiter used. Disjoint column0 command/proof/kernel/compiler/lint roots only; Meta/nested/trailing rows excluded. Runtime/canonical name correspondence binds actual command family origins only, never rewrites TYPE/VALUE constants.
+
+|Phase/sample|Helper ms|Direct main ms|Combined ms|
+|---|---:|---:|---:|
+|beforea|254.543|2333.937|2588.480|
+|beforeb|250.316|2283.039|2533.355|
+|aftera|396.845|2729.430|3126.275|
+|afterb|383.775|2443.570|2827.345|
+|v4a|262.289|2352.648|2614.937|
+|v4b|242.072|2305.466|2547.538|
+
+Helper samples pass<1000. Every main/combined valid failure is retained. Mandatory repeat occurred because direct consumer≥750; no unchanged third sample or numeric comparison to foreign environment baselines. Each pair Apre/Bpre/post has exactsource17/cache104/root8/fullall14setups/package12202/core12592/fourbinary/PATH/rawLake equality. Compiled availability is a superset, not an exact runtime loaded closure. Parent env12e324…/rawLakeb0601f… differ legitimately from predecessor captures. Caller TYPE/VALUE/payload are exact unchanged; phase root deltas are retained in v4-profile-root-diagnosis.json. Main’s existing multi-second cost and main136/headline15 remain original27 failures, not a local/file acceptance.
+
+Observed slowdown is retained: helper396.845/383.775ms versus254.543/250.316ms. The changed final direct simpa stage (including inlined remainder construction) is251.818ms in A versus the old hrem113.356ms and terminal6.482ms stages. All helper samples still pass<1000; no timing improvement is claimed. Caller hC diagnostic nodes397.314/394.018→403.516/388.624ms, while main proof roots2064.881/2038.749→2437.191/2120.475ms and unchanged hΘ nodes197.478/200.533→285.697/255.017ms. Nested diagnostic nodes are never added to or subtracted from budgets. Exact caller source/payload/TYPE/VALUE does not justify a numeric noise or causal dismissal; main and combined failures stay open for original27.
+
+## V4 narrow performance repair
+
+The owner requested restoring only the explicit final cast simplifier set, retaining the packed signature, typed hcD and inlining. Prospective source/helper/context hashes were saved before guarded test. All V3 source/canonical/scaffold/metadata/native/profile/build receipts remain unchanged, including the valid passing-but-slower pair; v3-slower-stage-report.md preserves the prior UNSEALED historical draft report (239lines/SHA13c5b93a735ea98bf9642cbe4593db5f5f39e9506b5bd70fd8997beff2a06882). Its generic seal/END paragraph was prospective text: no85c manifest/seal/END existed. Every source-dependent final guard/build/current-nonself/metadata/native/profile was rerun under NEW v4 filenames. The timing table includes baseline, V3 slower pair, and changed-source V4 pair; no unchanged third or invalidation of slower evidence.
+
+## Failure and observation history
+
+Inherited first V1 cast failure preserved. Own independent V1 misplaced Lean import failed; V2 aggregated search exhausted defaults and open/admitted guard rejected; corrected independent V3 passed. CandidateV2 fully inlining hcD failed k inference and unsupported pp.width; temporary V3 selection retained typed hcD and actual format.width100, then V4 restored the explicit final cast set after measured slowdown. Isolated grind/simp/aesop/gcongr negative guarded attempts; exact?/apply?/three drop attempts exhausted defaults and got no absence or partial-proof credit. All whole1 raw/terminal/input/env receipts retained. No sorry/newaxiom/limitraise/pin change accepted. The V4 metadata summary V1 copied an unversioned current-proof label; separately preserved V2 corrects only that reference to v4-independent-current-v1, with no raw proof or comparison change.
+Initial administrative runner-argv assertion failed before compiler/env launch; corrected options-before-label. Initial observer PGID/terminal unknown remains unknown. CandidateV3 full administrative observer finished after compiler runner start; source/cache/root snapshots preceded it, but no complete-catalog-prelaunch claim. Active orchestrator transient addition was restored immediately and actual affected build executed separately; no compiler input/source changed and no credit for unexecuted call. Minor read-only schema failures, truncated locator/inventory displays and their recovery/limits are explicitly retained in initial-administrative-failures.json, continuation-observation-qualifications.json and active-orchestrator-edit-disclosure.json. No timestamp or drain history reconstructed.
+
+## Seven local gates
+
+|Gate|Result|Evidence|
+|---|---|---|
+|lake_build_file|PASS|Actual v4-final-affected invocation lake build Roth.MainLemma Roth.Main whole0/drained; v4-final-full and separate v4-final-eval also pass.|
+|definition_protected|PASS|No definition changed; all7 actual DATA values retained.|
+|theorem_statement_protected|PASS|Signature tokens and complete raw TYPE exact; genuine old/current proofs.|
+|structure_gate|PASS|12ordinaryprooflines≤30, no conjunction or long branch.|
+|naming_gate|PASS|Operation-based private _aux, no forbidden pattern; no rename.|
+|line_packing_gate|PASS|All5 measured rows actionok, actual #checkwidth100.|
+|inequality_orientation_gate|PASS|All4 occurrences≤; zero≥/>.|
+Overall: PASS for this local helper. Whole-file original27/headline/performance/global cumulative gates remain pending.
+
+## Result and all11 phase checklist
+
+Before19command/12proof lines; after17command/12proof lines; saved2signature lines (ML726→724). Audit issues: sparse packing and removable aliases fixed. Terminal unsqueeze actually tested and reverted for measured cost; explicit performance exception. Rules applied1.10/2.3;1.15 attempted and reverted. Renames queued:none. Helper comments:none present; file9of9 exact re-anchored, none removed/relocated. Refactoring needed for this helper:none. Main136→headline15, global timing failures, full704original public/caller recovery, all22public cumulative audit and new independent whole-file simplify reviewer remain owner/original27 scope.
+
+- [x] Step1 reference docs read/recovered fully.
+- [x] Step2 all24 audit items printed.
+- [x] Step2.5 all5 actual search methods with limitations.
+- [x] Step2.6 allouter/inner a–e, actual hypotheses attempts and literature.
+- [x] Step2.7 allsignaturelines arithmetic/referencecheck.
+- [x] Step2.8 everyinequality occurrence.
+- [x] Step3 all42 statuses.
+- [x] Step4 actual manual reflection, no fabricated Skill invocation.
+- [x] Step5a final unfiltered native checks clean of errors; inherited warnings retained.
+- [x] Step5b seven local gates and Overall.
+- [x] Step6a no renames needed; no sidecar mutation.
+
+## Seal/release scope
+
+This final lifecycle belongs to V4 source42ad7abb…, not the unsealed85c draft. Actual V4 semantic/native/profile receipts use v4-* names (v4-after-pair-index.json, v4-final-metadata-comparison-v2.json, v4-final-native-verified.json, v4-profile-final-binding.json). Final manifest.count/bytes and independent second-rehash.count/bytes carry the actual dynamic final file/byte counts; the41595 inherited-entry count is not the final count. Final manifest binds all inherited sealed evidence, all own instructions/reads/source universe/source17/cache/root/all14setups/package/core/four executable actual tuples/rawenv/CLI/native/fullrawmetadata/profiles/failures/report. Independent second full streaming rehash and sorted source-universe check, fresh knownPGID/exacttask/printenv drain and explicit ALL7END are in manifest.json/second-rehash.json/final-drain.json/seal.json. Historical changed live source/cache aliases map to actual saved stage bytes. These four exact self-reference receipts alone are excluded; no required artifact omitted. No local helper completion changes242/264 or certifies MainLemma/project cleanup/publication. Owner independently reviews this complete lifecycle before the same original27 worker resumes.

@@ -1,0 +1,42 @@
+from pathlib import Path
+import hashlib,json,time,os
+p=Path('/private/tmp/roth-mainlemma-helper9-rem-floor');r=Path('/Users/ramin/LEAN/Roth');q=Path('/private/tmp/roth-mainlemma-main-lemma-resume3');o=Path('/private/tmp/roth-mainlemma-owner')
+h=lambda b:hashlib.sha256(b).hexdigest()
+start=time.time()
+source=(r/'Roth/MainLemma.lean').read_bytes();main=(r/'Roth/Main.lean').read_bytes();report=(r/'.mathlib-quality/cleanup/MainLemma-main_lemma.md').read_bytes()
+assert h(source)=='f6be490cdeb83fd40b3c08b58f15e1c15b166f878cc5002c35fbf7a40cdee230' and len(source.splitlines())==733
+assert h(main)=='6668ff83a7e7b156f6f29b8f2d0163e699da002b70338d5ee0715065ade9b25f' and len(main.splitlines())==689
+assert h(report)=='5e03ca866f6ab2bff0d0cd4b26c4fe8e139de3f52015bcfdbee81d1c98916dd6'
+for name,b in [('entry-MainLemma.lean',source),('entry-Main.lean',main),('entry-original27-report.md',report),('entry-helper.lean',(q/'helper9-first-ungolfed-v1.lean').read_bytes())]:
+ with (p/name).open('xb') as f:f.write(b)
+assert source==(q/'helper9-first-context-v1.lean').read_bytes()
+# Actual frozen parent environment is observed now; this is a fresh worker, not historical reuse.
+with (p/'parent-environment.json').open('x') as f:f.write(json.dumps(dict(os.environ),indent=2,sort_keys=True)+'\n')
+# Read each complete accepted handoff JSON and recursively inspect every field; bulky per-file rows are streamed below.
+reads={}
+for f,expected in [(q/'partial-seal.json','75065999f84666e25ac49f7bdcb5a2c0cc7cbf9db55a0753d0d97aef0e4ea148'),(q/'manifest.json','67b574187e1fea93f2dcb3c5f7260fdf56584d8562fd04ac0ee8d3e46f606b11'),(q/'second-rehash.json','dbfb2c1246ff078edbc9d41cff9945576e22eaa9b244a6a67dbd61534609e52a'),(q/'final-drain-owned-process-inventory.json','63dd85ea949e027ee71f1fb69ffe1ed7b9f541037028981252d0d2cc1fd0f64d'),(o/'original27-helper9-owner-partial-handoff-review-v1.json','055b8cf1830036738e4535a1b8ab7943c0d4b0763087c05659ff44e2c3f6b8f7'),(o/'original27-helper8-END-overwrite-erratum-v1.json','9eee5f67923f027ba21dbfe4442c77f15aacd5dd4ff70c32253b282796091c2c')]:
+ b=f.read_bytes();assert h(b)==expected;obj=json.loads(b);count=[0]
+ def walk(x):
+  if isinstance(x,dict):
+   for k,v in x.items():assert isinstance(k,str);walk(v)
+  elif isinstance(x,list):
+   for v in x:walk(v)
+  else:assert isinstance(x,(str,bool,int,float,type(None)));count[0]+=1
+ walk(obj);reads[str(f)]={'sha256':h(b),'bytes':len(b),'all_recursive_leaves_inspected':count[0]}
+# Rehash EVERY current R3 row, with exact saved-stage resolution only if live paths legitimately changed later.
+m=json.loads((q/'manifest.json').read_text());bad=[];total=0;binary=0
+for n,row in m['entries'].items():
+ b=Path(n).read_bytes();actual=h(b);total+=len(b)
+ if actual!=row['sha256'] or len(b)!=row['bytes']:bad.append({'path':n,'expected':row,'actual':{'sha256':actual,'bytes':len(b)}})
+ if not row['strict_utf8']:
+  assert row['binary_provenance'];binary+=1
+ else:b.decode('utf8','strict')
+assert not bad,bad
+bins={}
+for n,old in json.loads((q/'entry-binaries.json').read_text())['binaries'].items():
+ f=Path(n);b=f.read_bytes();s=f.stat();assert h(b)==old['sha256'];bins[n]={'sha256':h(b),'bytes':len(b),'resolved_realpath':str(f.resolve()),'mtime_ns':s.st_mtime_ns,'inode':s.st_ino}
+(p/'entry-binaries.json').write_text(json.dumps({'observed_unix':time.time(),'binaries':bins,'scope':'Actual fresh four executable observations before first helper9 compiler/native/profile/build/edit.'},indent=2)+'\n')
+for name in ['runner.py','freeze27.py','root-extra27.py','all14-availability.py','toolchain27.py']:
+ s=(q/name).read_text().replace(str(q),str(p));(p/name).write_text(s)
+result={'observed_start':start,'observed_end':time.time(),'entry_source_sha256':h(source),'entry_Main_sha256':h(main),'entry_report_sha256':h(report),'accepted_reads':reads,'R3_all_current_rows_stream_reverified':len(m['entries']),'R3_current_bytes':total,'R3_actual_binary_provenance_rows':binary,'historical_administrative_exception':m['historical_administrative_lost_row_exception'],'no_complete_old_P8_manifest_rehash_claim':True,'parent_environment_sha256':h((p/'parent-environment.json').read_bytes()),'no_Lean_edit_native_profile_before_this_observation':True,'no_children':True}
+(p/'entry-recovery-v1.json').write_text(json.dumps(result,indent=2)+'\n');print({k:v for k,v in result.items() if not isinstance(v,(dict,list))})

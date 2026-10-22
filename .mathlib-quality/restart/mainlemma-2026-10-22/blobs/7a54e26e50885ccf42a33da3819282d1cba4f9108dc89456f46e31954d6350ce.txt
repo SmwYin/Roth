@@ -1,0 +1,13 @@
+from pathlib import Path
+import hashlib,json
+p=Path('/private/tmp/roth-mainlemma-helper9-rem-floor');old='      _ ≤ β * (β * (β * B)) := by gcongr';new='''      _ ≤ β * (β * (β * B)) :=
+        mul_le_mul he (mul_le_mul hNR (mul_le_mul_of_nonneg_right h2' hB0)
+          (by positivity) hβ0) (by positivity) hβ0'''
+h=(p/'selected-helper.lean').read_text();assert h.count(old)==1;h=h.replace(old,new,1);(p/'candidate-helper-v4.lean').write_text(h);s=(p/'selected-independent-v1.lean').read_text();assert s.count(old)==1;s=s.replace(old,new,1)
+# Runtime actual family enumeration: discover ALL local audit_current generated declarations, no suffix cap.
+s+='''\nrun_cmd do
+  let ns := (← Lean.getEnv).constants.fold (init := #[]) fun ns n _ ↦
+    if n.toString == "Roth.audit_current" || n.toString.startsWith "Roth.audit_current." then ns.push n.toString else ns
+  Lean.Core.liftIOCore <| IO.println ("CANDIDATE_FAMILY_JSON=" ++ (Lean.toJson ns).compress)
+'''
+(p/'candidate-independent-v4.lean').write_text(s);cur=(p/'selected-source.lean').read_text();assert cur.count((p/'selected-helper.lean').read_text())==1;source=cur.replace((p/'selected-helper.lean').read_text(),h,1);(p/'candidate-source-v4.lean').write_text(source);print({'helper_proof_lines':len([l for l in h.split(':= by',1)[1].splitlines() if l.strip()]),'source_lines':len(source.splitlines()),'source_sha256':hashlib.sha256(source.encode()).hexdigest()})

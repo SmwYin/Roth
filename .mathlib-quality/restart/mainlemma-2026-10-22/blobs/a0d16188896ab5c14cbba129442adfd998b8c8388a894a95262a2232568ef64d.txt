@@ -1,0 +1,46 @@
+import json,re,hashlib,argparse
+from pathlib import Path
+p=Path('/private/tmp/roth-mainlemma-helper6-double-hasse');a=argparse.ArgumentParser();a.add_argument('stem');a.add_argument('canonical');a.add_argument('scaffold');a.add_argument('discovery');a=a.parse_args()
+sha=lambda b:hashlib.sha256(b).hexdigest()
+canonical=Path(a.canonical).read_bytes(); scaffold=Path(a.scaffold).read_bytes(); c=canonical.decode('utf8');s=scaffold.decode('utf8')
+assert scaffold.replace(b'set_option trace.profiler false\n\n',b'').replace(b'set_option trace.profiler true\n\n',b'')==canonical
+r=json.loads((p/(a.stem+'.json')).read_text());raw=(p/(a.stem+'.log')).read_bytes();text=raw.decode('utf8','strict');err=(p/(a.stem+'.stderr.log')).read_bytes();err.decode('utf8','strict')
+assert r['exit']==0 and not r['timed_out'] and r['immutable'] and r['inputs_immutable'] and r['drained'] and r['group_absent_at_exit'] and r['strict_utf8'] and r['raw_lake_environment_equal']
+assert sha(raw)==r['raw_sha256'] and sha(err)==r['stderr_sha256'];assert len(r['source_pins_before'])==17 and r['source_pins_before']==r['source_pins_after']
+assert sha(canonical)==r['source_pins_before']['Roth/MainLemma.lean'];assert sha(scaffold)==r['input_sha256'][a.scaffold]
+assert r['command']==['/Users/ramin/.elan/bin/lake','env','lean','-j1','--profile','-Dtrace.profiler=true','-Dtrace.profiler.threshold=0',a.scaffold]
+dlog=Path(a.discovery).read_text();names=re.search(r'ACTUAL EXHAUSTIVE DEFINING MODULE MAINLEMMA \[(.*?)\]\n',dlog,re.S)[1].replace('\n','').split(', ')
+assert len(names)==len(set(names));helper=[n for n in names if n.endswith('.Roth.abs_eval_iterated_hasseDeriv_lt_aux')];assert len(helper)==1
+starts=[c.index('private lemma abs_eval_iterated_hasseDeriv_lt_aux '),c.index('/-- **Roth\'s main lemma**')];ends=[starts[1],c.rindex('\nend Roth')]
+commands=list(re.finditer(r'^\[Elab.command\] \[([0-9.]+)\] (.*)$',text,re.M));out=[]
+norm=lambda x:re.sub(r'\s+','',re.sub(r'^\s*--[^\n]*(?:\n|$)','',x,flags=re.M))
+for kind,marker,root,start,stop in zip(['helper','main'],['private lemma abs_eval_iterated_hasseDeriv_lt_aux ','theorem main_lemma '],[helper[0],'Roth.main_lemma'],starts,ends):
+ source=c[start:stop].rstrip();assert source.count(marker)==1;hits=[]
+ for i,m in enumerate(commands):
+  end=commands[i+1].start() if i+1<len(commands) else len(text)
+  if marker in text[m.start():end]:hits.append((m,end))
+ assert len(hits)==1,(kind,'nonunique exact marker',len(hits));m,end=hits[0];span=text[m.start():end];boundary=re.search(r'\n  \[',span);assert boundary
+ printed=span[:boundary.start()].split('✅️ ',1)[1];assert norm(printed)==norm(source),(kind,'complete payload differs')
+ (p/(a.stem+'-'+kind+'-complete-printed-command.txt')).write_text(printed+'\n')
+ (p/(a.stem+'-'+kind+'-complete-canonical-command.lean')).write_text(source+'\n')
+ rows=[];kernel=[];proof=[]
+ for z in re.finditer(r'^\[(Elab.command|Elab.async)\] \[([0-9.]+)\] (.*)$',span,re.M):
+  assert '✅' in z[3] and '❌' not in z[3]
+  if z[1]=='Elab.async' and 'Lean.Meta.' in z[3]:continue
+  rec={'tag':z[1],'seconds':float(z[2]),'anchor':z[3],'line':text.count('\n',0,m.start()+z.start())+1}
+  if z[1]=='Elab.async':
+   if 'elaborating proof of ' in z[3]:proof.append(z[3].split('elaborating proof of ',1)[1])
+   elif 'addDeclCore' in z[3]:
+    tail=text[m.start()+z.end():end];km=re.match(r'\n  \[Kernel\] \[[0-9.]+\] ✅[^\n]*typechecking declarations \[([^\]]+)\]',tail);assert km,(kind,'unbound kernel')
+    kernel+=km[1].split(', ')
+   else:assert 'Lean.Elab.Command.runLintersAsync' in z[3],(kind,'foreign async',z[3])
+  rows.append(rec)
+ assert sum(x['tag']=='Elab.command' for x in rows)==1 and len(proof)==1 and sum('runLintersAsync' in x['anchor'] for x in rows)==1
+ source_root=root.replace('_private.Roth.MainLemma.0.','_private._stdin.0.')
+ assert proof==[source_root]
+ imported_kernel=[n.replace('_private._stdin.0.','_private.Roth.MainLemma.0.') for n in kernel]
+ expected=[n for n in names if n==root or n.startswith(root+'.')]
+ assert set(imported_kernel)==set(expected) and len(imported_kernel)==len(set(imported_kernel)),(kind,'generated family differs',kernel,expected)
+ out.append({'kind':kind,'actual_sourceunit_root':source_root,'actual_imported_root':root,'full_fresh_imported_exact_family':expected,'actual_kernel_names':kernel,'roots':rows,'sum_ms':sum(x['seconds'] for x in rows)*1000,'full_payload_equal_ignoring_only_whitespace_and_standalone_comments':True,'canonical_command_sha256':sha(source.encode()),'printed_command_sha256':sha(printed.encode()),'source_start_line':c.count('\n',0,start)+1,'next_exact_command_boundary_line':text.count('\n',0,end)+1})
+result={'status':'PASS complete commands and fresh imported exact dynamic generated family crossmatch; final semantic TYPE/value guards separately required','capture':a.stem,'canonical_sha256':sha(canonical),'scaffold_sha256':sha(scaffold),'raw_stdout_sha256':sha(raw),'raw_stderr_sha256':sha(err),'rows':out,'no_fixed_suffix_cap':True,'no_nested_Meta_trailing_end_or_inclusive_wrapper_timing':True,'no_forced_kernel_count':True}
+(p/(a.stem+'-complete-reanchor.json')).write_text(json.dumps(result,indent=2)+'\n');print(json.dumps([{'kind':x['kind'],'sum_ms':x['sum_ms'],'actual_kernel_names':x['actual_kernel_names']} for x in out]))

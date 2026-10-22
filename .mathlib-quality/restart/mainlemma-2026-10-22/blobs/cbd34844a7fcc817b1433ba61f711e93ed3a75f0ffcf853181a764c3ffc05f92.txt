@@ -1,0 +1,18 @@
+from pathlib import Path
+import json,re,hashlib
+p=Path('/private/tmp/roth-mainlemma-helper6-double-hasse');out=[]
+for lab,canon in [('before-profile-a','entry.lean'),('before-profile-b','entry.lean'),('after-profile-a','after-source.lean'),('after-profile-b','after-source.lean')]:
+ source=(p/canon).read_text();cmd=source[source.rindex('  · rw [hasseDeriv_map]'):source.rindex('\nend Roth')].strip(); exact=cmd.split('\n',1)[1].strip()
+ raw=(p/(lab+'.log')).read_bytes();text=raw.decode('utf8','strict');run=json.loads((p/(lab+'.json')).read_text());assert hashlib.sha256(raw).hexdigest()==run['raw_sha256']
+ norm=lambda t:re.sub(r'\s+','',t)
+ trace=list(re.finditer(r'(?m)^ *\[[A-Za-z0-9_.]+\] \[[0-9.]+\] [✅❌][^\n]*',text));stages=[]
+ for kind,expected in [('entire_final_branch',cmd),('exact_application_and_ring',exact)]:
+  hits=[]
+  for i,m in enumerate(trace):
+   if '[Elab.step]' not in m.group() or '✅' not in m.group():continue
+   e=trace[i+1].start() if i+1<len(trace) else len(text)
+   payload=text[m.start():e].split('✅️ ',1)[1]
+   if norm(payload)==norm(expected):hits.append((m,payload,e))
+  assert len(hits)==1,(lab,kind,len(hits));m,payload,e=hits[0];sec=float(re.search(r'\[Elab.step\] \[([0-9.]+)\]',m.group())[1]);name=lab+'-'+kind+'-actual-payload.txt';(p/name).write_text(payload+'\n');stages.append({'kind':kind,'actual_Elab_step_seconds':sec,'actual_raw_line':text.count('\n',0,m.start())+1,'complete_actual_payload_file':name,'actual_payload_sha256':hashlib.sha256(payload.encode()).hexdigest(),'canonical_exact_tactic_sha256':hashlib.sha256(expected.encode()).hexdigest(),'complete_payload_equals_canonical_ignoring_only_whitespace':True})
+ out.append({'capture':lab,'raw_stdout_sha256':run['raw_sha256'],'canonical_source_sha256':hashlib.sha256(source.encode()).hexdigest(),'stages':stages})
+(p/'changed-caller-stage-diagnosis.json').write_text(json.dumps({'qualification':'Nested inclusive Elab.step durations are diagnosis ONLY, never added to or subtracted from disjoint command/async budget totals; no Meta timings. Both source blocks contain the entire actual caller branch or exact tactic, uniquely matched to complete canonical tokens. All main failures retained; no third sample.','captures':out},indent=2)+'\n');print([{'capture':x['capture'],'stages_ms':[(s['kind'],s['actual_Elab_step_seconds']*1000) for s in x['stages']]} for x in out])

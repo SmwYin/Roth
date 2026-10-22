@@ -1,0 +1,14 @@
+from pathlib import Path
+import json,hashlib,time
+p=Path('/private/tmp/roth-mainlemma-helper7-index-eval');r=Path('/Users/ramin/LEAN/Roth')
+s=(r/'Roth/MainLemma.lean').read_text();(p/'after-MainLemma.lean').write_text(s)
+start=s.index('private lemma exists_hasseDeriv_index_eval_bound_aux');main=s.index('/-- **Roth\'s main lemma**',start);end=s.index('\n\nend Roth',main)
+h=lambda b:hashlib.sha256(b).hexdigest()
+(p/'after-helper-command.lean').write_text(s[start:main].rstrip());(p/'after-main-command.lean').write_text(s[main:end])
+sc=s[:start]+'set_option trace.profiler true\n\n'+s[start:end]+'\n\nset_option trace.profiler false'+s[end:]
+a=sc.index('namespace Roth');sc=sc[:a]+'set_option trace.profiler false\n\n'+sc[a:]
+assert sc.replace('set_option trace.profiler false\n\n','').replace('set_option trace.profiler true\n\n','').replace('\n\nset_option trace.profiler false','')==s
+(p/'after-scoped.lean').write_text(sc)
+(p/'after-scope.json').write_text(json.dumps({'canonical':str(p/'after-MainLemma.lean'),'canonical_relative':'Roth/MainLemma.lean','canonical_sha256':h(s.encode()),'scaffold':str(p/'after-scoped.lean'),'scaffold_sha256':h(sc.encode()),'commands':[{'written_marker':'private lemma exists_hasseDeriv_index_eval_bound_aux ','canonical':str(p/'after-helper-command.lean'),'runtime_name':'_private._stdin.0.Roth.exists_hasseDeriv_index_eval_bound_aux'},{'written_marker':'theorem main_lemma ','canonical':str(p/'after-main-command.lean'),'runtime_name':'Roth.main_lemma'}],'trace_options_inserted_only':3,'saved_before_profile_unix':time.time()},indent=2)+'\n')
+(p/'after-inventory.lean').write_text((p/'metadata-inventory-v2.lean').read_text())
+print('Captured exact current helper/main commands and only-three-options scoped source.')

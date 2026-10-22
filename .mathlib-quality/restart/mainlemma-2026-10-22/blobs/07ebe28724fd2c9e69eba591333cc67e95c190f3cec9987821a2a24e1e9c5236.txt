@@ -1,0 +1,11 @@
+from pathlib import Path
+import os,json,hashlib,shutil,time,sys
+p=Path('/private/tmp/roth-mainlemma-helper9-rem-floor');r=Path('/Users/ramin/LEAN/Roth');label=sys.argv[1];pins={}
+for f in sorted(list(r.glob('Roth/*.lean'))+[r/'Roth.lean',r/'lean-toolchain',r/'lakefile.toml',r/'lake-manifest.json']):
+ b=f.read_bytes();q=p/(label+'-source')/f.relative_to(r);q.parent.mkdir(parents=True,exist_ok=True);q.write_bytes(b);pins[str(f.relative_to(r))]=hashlib.sha256(b).hexdigest()
+cache={}
+for parent in ['lib/lean/Roth','ir/Roth']:
+ for f in (r/'.lake/build'/parent).glob('*'):
+  if f.is_file():
+   b=f.read_bytes();d=p/(label+'-cache')/f.relative_to(r/'.lake/build');d.parent.mkdir(parents=True,exist_ok=True);d.write_bytes(b);cache[str(f)]={'sha256':hashlib.sha256(b).hexdigest(),'saved':str(d),'bytes':len(b)}
+(p/(label+'-cache.json')).write_text(json.dumps(cache,indent=2));(p/(label+'-pins.json')).write_text(json.dumps(pins,indent=2));(p/(label+'-freeze-observation.json')).write_text(json.dumps({'observed_unix':time.time(),'pins':len(pins),'cache':len(cache)},indent=2));print(len(pins),len(cache),pins['Roth/MainLemma.lean'])

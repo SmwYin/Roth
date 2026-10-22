@@ -1,0 +1,50 @@
+from pathlib import Path
+import json,hashlib
+p=Path('/private/tmp/roth-mainlemma-helper7-index-eval');r=json.loads((p/'before-pairs-v2.json').read_text());assert r['exit']==0 and all(r[x] for x in ['immutable','inputs_immutable','strict_utf8','drained','raw_lake_environment_equal']) and not r['timed_out']
+rows=[json.loads(x[10:]) for x in (p/'before-pairs-v2.log').read_text().splitlines() if x.startswith('PAIR_JSON=')];inv=json.loads((p/'before-inventory-v2-inventory.json').read_text());assert {x['name'] for x in rows}=={x[0] for x in inv['names']};tg=next(x for x in rows if x['name'].endswith('.Roth.exists_hasseDeriv_index_eval_bound_aux'));main=next(x for x in rows if x['name']=='Roth.main_lemma');assert 'ERROR_' not in tg['typeCode']+main['typeCode'];(p/'before-pairs-accepted.json').write_text(json.dumps({'rows':rows,'all_actual_names':inv['names'],'raw_sha256':r['raw_sha256'],'actual_whole_exit':0,'generated_typeCode_qualification':'Optional constructor code is not used for generated types. Their full raw AST including MData is retained and closed/inferred/std3/defaults guarded individually.'},indent=2)+'\n')
+s=(p/'independent-original-unchecked.lean').read_text();assert s.endswith('end Roth\n');s=s[:-len('end Roth\n')]+(p/'type-pair-eq7.lean.txt').read_text()
+guard='''
+run_cmd Lean.Elab.Command.liftTermElabM do
+  let n := ``audit_original
+  let c ← Lean.getConstInfo n
+  let v := c.value! true
+  let expected : Lean.Expr := EXPECTED
+  unless sameTypeExceptBothGeneratedBinders c.type expected do throwError "Original full TYPE differs"
+  unless (repr c.levelParams).pretty == LEVELS do throwError "Universe names/order differ"
+  let opts ← Lean.getOptions
+  unless Lean.maxHeartbeats.get opts == 200000 && Lean.Meta.synthInstance.maxHeartbeats.get opts == 20000 && Lean.maxRecDepth.get opts == 512 do throwError "Limits changed"
+  for e in [c.type,v] do
+    if e.hasMVar || e.hasLevelMVar || e.hasFVar || e.hasLooseBVars || e.getUsedConstants.contains ``sorryAx then throwError "Open/admitted type or value"
+  unless ← Lean.Meta.isDefEq (← Lean.Meta.inferType v) c.type do throwError "Value inferred TYPE differs"
+  let axs ← Lean.collectAxioms n
+  unless axs.all ([``propext, ``Classical.choice, ``Quot.sound].contains ·) do throwError "Nonstandard axioms"
+  let mut pending := #[n]
+  let mut seen : Lean.NameSet := {}
+  while !pending.isEmpty do
+    let k := pending.back!
+    pending := pending.pop
+    unless seen.contains k do
+      seen := seen.insert k
+      if (`Roth.main_lemma).isPrefixOf k || k == ``sorryAx ||
+          k.toString.contains \'e\' && (k.toString.splitOn "exists_hasseDeriv_index_eval_bound_aux").length > 1 then
+        throwError "Denied target/main dependency {k}"
+      let ci ← Lean.getConstInfo k
+      pending := pending ++ ci.type.getUsedConstants
+      if let some value := ci.value? true then pending := pending ++ value.getUsedConstants
+  let info := Lean.Json.mkObj [("name",Lean.toJson n.toString),("TYPE",Lean.toJson ((repr c.type).pretty 1000000)),
+    ("VALUE",Lean.toJson ((repr v).pretty 1000000)),("levels",Lean.toJson (repr c.levelParams).pretty),
+    ("axioms",Lean.toJson (axs.map toString)),("closure",Lean.toJson (seen.toList.map toString)),
+    ("exact_original_type_except_both_generated_binder_scopes",Lean.toJson true),
+    ("default_limits",Lean.toJson ([200000,20000,512] : List Nat))]
+  Lean.Core.liftIOCore <| IO.println ("INDEPENDENT_JSON=" ++ info.compress)
+'''.replace('EXPECTED',tg['typeCode']).replace('LEVELS',json.dumps(tg['levels']))
+s+=guard+'\nend Roth\n';(p/'independent-original.lean').write_text(s)
+# Fresh profile-family crossmatch: actual imported families versus actual runtime roots only.
+family={x['name'] for x in rows};target=tg['name'];out=[]
+for label in ['before-profile-a','before-profile-b']:
+ b=json.loads((p/(label+'-binding.json')).read_text());rr=json.loads((p/(label+'.json')).read_text());assert rr['source_pins_before']==r['source_pins_before'] and rr['frozen_observed_parent_environment_sha256']==r['frozen_observed_parent_environment_sha256'] and rr['actual_lake_environment_before']==r['actual_lake_environment_before'];rowout=[]
+ for row in b['rows']:
+  imported=target if row['marker'].startswith('private') else 'Roth.main_lemma';expected={n for n in family if n==imported or n.startswith(imported+'.')};runtime=row['runtime_name'];actual=set(row['actual_kernel_names']);translated={imported+n[len(runtime):] for n in actual};assert translated==expected,(label,actual,expected)
+  rowout.append({'runtime_actual_name':runtime,'imported_actual_name':imported,'actual_runtime_kernel_names':sorted(actual),'actual_imported_full_family':sorted(expected),'private_module_identity_note':'Fresh full source payload+actual defining-module metadata bind the same written declaration; source-unit _stdin differs from canonical module private root. This family-origin correspondence never rewrites TYPE/VALUE constant Names.','sum_ms':row['sum_ms']})
+ out.append({'label':label,'rows':rowout})
+(p/'before-family-profile-crossmatch.json').write_text(json.dumps({'whole_semantic_exit0':True,'source_env_import_cache_frozen':True,'profiles':out},indent=2)+'\n');print('Accepted',len(rows),'actual full raw pairs; prepared independent original, exact root TYPE code; both before profile families crossmatch.')

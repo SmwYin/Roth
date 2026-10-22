@@ -1,0 +1,19 @@
+from pathlib import Path
+import json,hashlib,time
+p=Path('/private/tmp/roth-mainlemma-helper8-diag-rem');o=Path('/private/tmp/roth-mainlemma-owner');load=lambda n:json.loads((p/n).read_text());sha=lambda b:hashlib.sha256(b).hexdigest();start=time.time();rows=[]
+pins=load('entry-pins.json');b=load('before-inventory-prelaunch-freeze-observation.json');assert load('before-inventory-prelaunch-pins.json')==pins
+end=load('before-pairs-launch.json');assert end['source_pins_before']==pins and len(pins)==17
+prior=b['observed_unix']*1000
+for name,warnings in [('MainLemma',1),('Main',4),('LeanEval',0)]:
+ label='baseline-native-'+name; req=load(label+'-request.json');d=load(label+'-raw.json');sv=load(label+'-saved.json');expected={'file_path':'/Users/ramin/LEAN/Roth/Roth/'+name+'.lean'}
+ assert req['request']==d['request']==expected and req['request_observed_ms']==d['request_observed_ms']
+ r=d['raw_result'];assert not r['isError'];s=r['structuredContent']['result'];texts=[json.loads(x['text']) for x in r['content'] if x['type']=='text'];assert texts==[s]
+ assert s['success'] and not s['partial'] and not s['timed_out'] and s['still_elaborating_lines'] is None and not s['failed_dependencies']
+ assert not [x for x in s['items'] if x['severity']=='error'];assert len([x for x in s['items'] if x['severity']=='warning'])==warnings
+ assert prior<=req['request_observed_ms']<=d['immediate_return_observed_ms']==sv['immediate_return_observed_ms']<=sv['full_response_save_observed_ms']<=end['actual_started_unix']*1000
+ assert sv['no_post_source_hash_before_save'];prior=sv['full_response_save_observed_ms']
+ rows.append({'gate':label,'complete_unfiltered':True,'errors':0,'warnings':warnings,'request_ms':req['request_observed_ms'],'immediate_return_ms':d['immediate_return_observed_ms'],'save_observation_ms':sv['full_response_save_observed_ms'],'raw_response_sha256':sha((p/(label+'-raw.json')).read_bytes())})
+# Actual inventory compiler lies between nativeML and nativeMain; next compiler begins after Eval save.
+i=load('before-inventory.json');assert rows[0]['save_observation_ms']<=i['started_unix']*1000<=i['completed_unix']*1000<=rows[1]['request_ms'];assert rows[2]['save_observation_ms']<=end['actual_started_unix']*1000
+assert load('before-pairs-prelaunch-pins.json')==pins
+out={'status':'PASS baseline complete unfiltered native results with explicit COMMON source17 bracket; no per-call source17 snapshot claim','observed_start_unix':start,'observed_end_unix':time.time(),'source17_pins':pins,'common_source17_pre_observation_unix':b['observed_unix'],'common_source17_after_actual_launch_unix':end['actual_started_unix'],'common_after_source_pins_file':str(p/'before-pairs-launch.json'),'rows':rows,'qualification':'Per-call raw request/immediate-return/save chronology exists. Source17 snapshots bracket the three-call series, with intermediate snapshots, rather than separate pre/post snapshots for each call. Production unchanged; already-required final natives must have prospective per-call pre/return-save/post source17 receipts. No backfilled timestamps or optional historical rerun.','scope':'Baseline only; fresh final semantic, timing, native, source closure and original27/file publication remain pending.'};(o/'original27-helper8-owner-baseline-native-review.json').write_text(json.dumps(out,indent=2)+'\n');print(json.dumps({'status':out['status'],'gates':len(rows)}))

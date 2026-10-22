@@ -1,0 +1,52 @@
+## Step 3: all 42 golfing rules
+
+| Rule | Status and evidence |
+|---|---|
+| 1.1 by exact wrapper | n/a; no standalone wrapper. Final proof has genuine intermediate estimates. |
+| 1.2 by rfl | n/a; none. |
+| 1.3 rw + exact | Keep `rw ... at heval`: rewrites a hypothesis before a distinct strict comparison, not rw-goal + exact. |
+| 1.4 simp + exact → simpa | n/a; no such sequence. |
+| 1.5 trailing rfl after simp | n/a; none. |
+| 1.6 constructor + exact | n/a; no conjunction/product goal. |
+| 1.7 apply + exact | n/a; no such sequence. |
+| 1.8 by_contra + push_neg | n/a; direct estimate. |
+| 1.9 eta reduction | Degree lambda has a genuine j-dependent `.trans (hP j)`; evaluation lambda is constant, not eta-expanded application. |
+| 1.10 inline single-use have | Applied: hcQ/hcQ2/e3 folded into coefficient/evaluation/monotonicity expressions. Keep hdQ (2 uses), heval (rewrite + terminal), h2' (3 uses). |
+| 1.11 apply + intro | n/a; none. |
+| 1.12 redundant show | n/a; none. |
+| 1.13 have + projections → obtain | n/a; no conjunction extraction. |
+| 1.14 merge rw | n/a; one rewrite of a hypothesis. |
+| 1.15 terminal simp only | n/a; none. |
+| 1.16 nonterminal bare simp | n/a; none. |
+| 1.17 dot notation | Retained/applied `.trans`, `.trans_lt`; degree and coefficient estimates compose directly. |
+| 1.18 `<|` over parentheses | Applied to `heval.trans_lt <| ...`. |
+| 1.19 push_neg | n/a; none. |
+| 1.20 single-use trivial exists helper | n/a; genuine universal estimate, no existential. |
+| 2.1 whole-proof grind | Actual complete-command negative solve probe passed, target module absent; fallback genuine proof closed/std3/defaults. Earlier native line-replacement probe syntax failures are not credited. |
+| 2.2 delete before grind | n/a; no grind retained. |
+| 2.3 simpa consolidation | n/a; no adjacent simp/exact sequence. |
+| 2.4 fun_prop | n/a; no continuity/measurability/differentiability proposition. |
+| 2.5 positivity | Retained for three elementary nonnegative-product premises; whole-proof solve probe failed as recorded. |
+| 2.6 gcongr | Actual whole-proof complete-command solve probe failed. Keep the shorter explicit product comparison; power thresholds require the two supplied monotonicity steps. |
+| 2.7 lia / omega | Removed original real `linarith` base justification in favor of `le_add_of_nonneg_right (abs_nonneg α)`; no remaining Presburger goal or arithmetic tactic to replace. |
+| 2.8 aesop | Actual complete-command whole-proof negative probe passed. |
+| 2.9 norm_num / norm_cast | Two numerical base proofs use norm_num; redundant inner Int ascription removed and actual full TYPE equality checked. No cast-normalization round trip. |
+| 2.10 decide / decide +kernel | n/a; arbitrary-polynomial real inequalities are not a closed decidable numerical proposition. |
+| 2.11 field_simp; ring | n/a helper proof has no denominator algebra/normalization goal. Existing caller `ring` remains outside the rewritten helper. |
+| 2.12 linear_combination | n/a; exponential/degree/coefficient estimates need multiplicative monotonicity, not a linear identity of supplied equalities. Actual whole-proof linarith/nlinarith negative probes also passed. |
+| 2.13 wlog | n/a; i/k symmetric-looking derivatives need no case split and no symmetric case duplication. |
+| 2.14 collapse 2-step calc | Applied structurally: original weak-then-strict calc replaced by `heval.trans_lt` and early strict threshold at total degree. |
+| 2.15 `<;>` multiple goals | n/a; proof is composed term-mode estimates with individually distinct positivity slots. |
+| 3.1 erw → rw | n/a; no erw. |
+| 3.2 continuity/measurability → fun_prop | n/a; none. |
+| 3.3 omega → lia | n/a; neither retained; see 2.7. |
+| 3.4 rcases with rfl | n/a; no substitutions/destructuring. |
+| 3.5 register automation lemmas | n/a; one private stage, existing monotonicity APIs suffice; no new automation attribute. |
+| 3.6 simp_all over simp_all only | n/a; neither occurs. |
+| 3.7 remove maxHeartbeats | n/a; none introduced/present in target; actual 200000/20000/512 verified. |
+
+## Step 4: manual reflection, distinct from independent review
+
+The whole proof cannot be one tested standard tactic in the full target-free context. The stage genuinely combines two coefficient bounds, two degree bounds, evaluation, finite-product conversion, two power comparisons, and strict positive multiplication. The final composed term avoids all single-use intermediate coefficient bounds and the original real-arithmetic automation. Folding hdQ, heval, or h2' would duplicate substantive expressions or obscure the rewrite/strictness step. A different proof using a sharper multinomial estimate would require a new Hasse companion API; that optional expansion remains explicitly declined. No new helper or wrapper is warranted. The weaker evaluation-power premise is actually proved and has a nontrivial equality-boundary example; the independently proved alternative weaker-two premise is not also applied, because weakening both is false.
+
+This reflection is manual self-review. It is not the unavailable Claude-Code `Skill(skill="simplify")` invocation and is not the mandatory future fresh independent whole-file simplify review.

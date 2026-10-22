@@ -1,0 +1,12 @@
+from pathlib import Path
+import json,hashlib,time
+p=Path('/private/tmp/roth-mainlemma-helper8-diag-rem')
+r=json.loads((p/'v4-independent-current-v1.json').read_text());assert r['exit']==0 and r['drained'] and r['immutable']
+xs=[json.loads(s.removeprefix('V4_CURRENT_INDEPENDENT_JSON=')) for s in (p/'v4-independent-current-v1.log').read_text().splitlines() if s.startswith('V4_CURRENT_INDEPENDENT_JSON=')]
+assert len(xs)==1;x=xs[0]
+assert x['same_full_type_except_both_generated_binders'] and x['default_limits']==[200000,20000,512]
+assert not any('abs_coeff_diag_hasseDeriv_modByMonic_le_aux' in n or n.startswith('Roth.main_lemma') or n=='sorryAx' for n in x['closure'])
+assert x['VALUE']!=json.loads((p/'candidate-v4-actual-pair.json').read_text())['VALUE']
+(p/'v4-independent-current-actual-pair.json').write_text(json.dumps(x,indent=2)+'\n')
+out={'observed_unix':time.time(),'whole_exit':0,'drained':True,'raw_sha256':r['raw_sha256'],'seconds':r['seconds'],'TYPE_sha256':hashlib.sha256(x['TYPE'].encode()).hexdigest(),'VALUE_sha256':hashlib.sha256(x['VALUE'].encode()).hexdigest(),'closure_count':len(x['closure']),'recursive_TYPE_VALUE_helper_main_descendants_denied':True,'std3_default_closed_inferred_exact_old_TYPE':True,'different_actual_VALUE_from_sourceunit_candidate':True,'literal_current_helper_body_with_final_trans_le_refl_variation':True,'actual_marker':'V4_CURRENT_INDEPENDENT_JSON','actual_root':'Roth.audit_current','scope':'Fresh independent V4 exact unchanged entry prefix plus selected body; imported-target crossmatch follows actual metadata.'}
+(p/'v4-independent-current-accepted.json').write_text(json.dumps(out,indent=2)+'\n');print(out)

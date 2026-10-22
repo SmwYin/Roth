@@ -1,0 +1,10 @@
+from pathlib import Path
+import json,hashlib,time
+p=Path('/private/tmp/roth-mainlemma-helper9-rem-floor');root=Path('/Users/ramin/LEAN/Roth');old=(p/'entry-MainLemma.lean').read_text();cur=(root/'Roth/MainLemma.lean').read_text();sel=(p/'selected-source.lean').read_text();assert cur==sel;oldhelper=(p/'entry-helper.lean').read_text();newhelper=(p/'selected-helper.lean').read_text()
+assert cur.count(newhelper)==1;inverse=cur.replace(newhelper,oldhelper,1).replace('hA hW.1 hcW hsumr hT2.le hTA.le j i','hA hdeg hW.1 hcW hsumr hT2.le hTA.le j i',1);assert inverse==old
+assert (root/'Roth/Main.lean').read_bytes()==(p/'entry-Main.lean').read_bytes();assert (root/'.mathlib-quality/cleanup/MainLemma-main_lemma.md').read_bytes()==(p/'entry-original27-report.md').read_bytes()
+assert [l for l in old.splitlines() if l.lstrip().startswith('--')]==[l for l in cur.splitlines() if l.lstrip().startswith('--')]
+a=old.index('/-- **Roth');b=old.index(':= by',a)+5;c=cur.index('/-- **Roth');d=cur.index(':= by',c)+5;assert old[a:b]==cur[c:d]
+(p/'final-context-inverse.lean').write_text(inverse)
+res={'observed_unix':time.time(),'source_lines':len(cur.splitlines()),'source_sha256':hashlib.sha256(cur.encode()).hexdigest(),'inverse_entry_sha256':hashlib.sha256(inverse.encode()).hexdigest(),'entire_prefix_all8acceptedhelpers_identical':cur.split(newhelper)[0]==old.split(oldhelper)[0],'Main689_entire_bytes_unchanged':True,'original27_report530_entire_bytes_unchanged':True,'main_TYPEdoc_bytes_unchanged':True,'only_main_body_edit':'removed hdeg at helper9 call; exact inverse restores entire entry','standalone_comments_all_preserved':len([l for l in old.splitlines() if l.lstrip().startswith('--')]),'helper_proof_lines':27,'helper_signature_lines':5,'main_proof_lines':111,'original_counts_unchanged':'242/264;ML26/27;10/14files','no_Git_centralwrites':True}
+(p/'final-source-inverse.json').write_text(json.dumps(res,indent=2)+'\n');print(res)

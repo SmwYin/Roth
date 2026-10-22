@@ -1,0 +1,28 @@
+import Roth
+import Roth.LeanEval
+import Lean.Util.FindExpr
+private def actualNameTerm : Lean.Name → String
+  | .anonymous => "Lean.Name.anonymous"
+  | .str n s => "(Lean.Name.str " ++ actualNameTerm n ++ " " ++ (repr s).pretty ++ ")"
+  | .num n i => "(Lean.Name.num " ++ actualNameTerm n ++ " " ++ toString i ++ ")"
+
+run_cmd Lean.Elab.Command.liftTermElabM do
+  let env ← Lean.getEnv
+  let project := env.constants.fold (init := #[]) fun ns n _ ↦
+    match env.getModuleIdxFor? n with
+    | some idx => if (`Roth).isPrefixOf env.header.moduleNames[idx]! then ns.push n else ns
+    | none => ns
+  let ev := project.filter fun n ↦ env.header.moduleNames[(env.getModuleIdxFor? n).get!]! == `Roth.LeanEval
+  unless ev.contains ``LeanEval.NumberTheory.ThueSiegelRothProblem.thueSiegelRoth do throwError "Eval inventory"
+  let ns := project.filter fun n ↦ env.header.moduleNames[(env.getModuleIdxFor? n).get!]! == `Roth.MainLemma
+  let tg := ns.filter fun n ↦ n.toString.endsWith ".Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux"
+  unless tg.size == 1 do throwError "Target unique"
+  let mut consumers : Array Lean.Name := #[]
+  for n in project do
+    let c ← Lean.getConstInfo n
+    if (c.type.getUsedConstants ++ (c.value! true).getUsedConstants).any tg[0]!.isPrefixOf then
+      consumers := consumers.push n
+  let info := Lean.Json.mkObj [("project",Lean.toJson (project.map toString)),("eval",Lean.toJson (ev.map toString)),
+    ("target",Lean.toJson (repr tg[0]!).pretty), ("consumers",Lean.toJson (consumers.map toString)),
+    ("names",Lean.toJson (ns.map fun n ↦ (n.toString,actualNameTerm n,(repr n).pretty 1000000)))]
+  Lean.Core.liftIOCore <| IO.println ("INVENTORY_JSON=" ++ info.compress)

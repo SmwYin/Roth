@@ -1,0 +1,61 @@
+from pathlib import Path
+import hashlib,json,codecs,time,subprocess
+p=Path('/private/tmp/roth-mainlemma-helper9-rem-floor');root=Path('/Users/ramin/LEAN/Roth');prior=Path('/private/tmp/roth-mainlemma-main-lemma-resume3');o=Path('/private/tmp/roth-mainlemma-owner');start=time.time()
+exclude={p/n for n in ['manifest.json','second-rehash.json','final-seal.json','final-drain-owned-process-inventory.json']}
+assert not (p/'manifest.json').exists();oldraw=(prior/'manifest.json').read_bytes();oldm=json.loads(oldraw);old=oldm['entries'];paths={Path(n) for n in old};paths.update(f for f in prior.rglob('*') if f.is_file());provenance={n:v.get('binary_provenance',[]) for n,v in old.items() if not v['strict_utf8']}
+def addprov(n,v,obs,scope):
+ paths.add(Path(n));provenance.setdefault(str(n),[]);row={'sha256':v['sha256'],'bytes':v['bytes'],'actual_observation':str(obs),'scope':scope}
+ if row not in provenance[str(n)]:provenance[str(n)].append(row)
+for f in sorted(p.glob('*-all14-package-catalog.json')):
+ for n,v in json.loads(f.read_text())['artifacts'].items():addprov(n,v,f,'Actual all14 setup/package availability superset, not exact loaded closure.')
+for f in sorted(p.glob('*-all14-core-availability.json')):
+ for n,v in json.loads(f.read_text())['artifacts'].items():addprov(n,v,f,'Actual installed pinned core availability superset, not exact loaded closure.')
+for f in sorted(p.glob('*-binaries.json')):
+ for n,v in json.loads(f.read_text())['binaries'].items():
+  for name in {n,v['resolved_realpath']}:addprov(name,v,f,'Actually observed proxy/pinned/resolved Lean/Lake binary exact tuple.')
+for f in sorted(p.glob('*-cache.json')):
+ for n,v in json.loads(f.read_text()).items():
+  for name in [n,v['saved']]:addprov(name,v,f,'Actual live/saved exact stage compiled cache bytes.')
+for f in sorted(p.glob('*-root-extra.json')):
+ for n,v in json.loads(f.read_text())['root_outputs'].items():
+  for name in [n,v['saved']]:addprov(name,v,f,'Actual root output or saved exact stage.')
+for glob in ['original27-helper9*','review_original27_helper9*']:
+ paths.update(f for f in o.glob(glob) if f.is_file())
+for base in [Path('/Users/ramin/.codex/skills/lean4'),Path('/Users/ramin/.codex/skills/mathlib-quality')]:paths.update(base.rglob('*.md'))
+paths.update(list(root.glob('Roth/*.lean'))+[root/'Roth.lean',root/'lean-toolchain',root/'lakefile.toml',root/'lake-manifest.json',root/'.mathlib-quality/cleanup/MainLemma-main_lemma.md',root/'.mathlib-quality/cleanup/MainLemma-abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux-helper.md'])
+cmd=['rg','--files',str(root/'.lake/packages/mathlib/Mathlib')];r=subprocess.run(cmd,capture_output=True,check=True);r.stdout.decode('utf8','strict');r.stderr.decode('utf8','strict');listing='\n'.join(sorted(r.stdout.decode().splitlines()))+'\n'
+for n,b in [('source-universe.stdout',listing.encode()),('source-universe.stderr',r.stderr)]:
+ with (p/n).open('xb') as f:f.write(b)
+with (p/'source-universe.json').open('x') as f:json.dump({'command':cmd,'exit':r.returncode,'strict_utf8':True,'sorted':True,'count':len(listing.splitlines()),'scope':'Actual full generic Mathlib source universe, not only hits.'},f,indent=2)
+paths.update(map(Path,listing.splitlines()));paths.update(f for f in p.rglob('*') if f.is_file() and f not in exclude)
+def readrow(f):
+ h=hashlib.sha256();dec=codecs.getincrementaldecoder('utf8')('strict');u=True;size=0
+ with f.open('rb') as st:
+  for b in iter(lambda:st.read(1024*1024),b''):
+   h.update(b);size+=len(b)
+   if u:
+    try:dec.decode(b,False)
+    except UnicodeDecodeError:u=False
+ if u:
+  try:dec.decode(b'',True)
+  except UnicodeDecodeError:u=False
+ prov=[] if u else [v for v in provenance.get(str(f),[]) if v['sha256']==h.hexdigest() and v['bytes']==size and Path(v['actual_observation']).is_file()]
+ assert u or prov,('Unqualified nonUTF8 exact tuple',str(f),h.hexdigest(),size)
+ return {'sha256':h.hexdigest(),'bytes':size,'strict_utf8':u,'binary_provenance':prov}
+rows={str(f):readrow(f) for f in sorted(paths)};byhash={}
+for n,v in rows.items():
+ if n.startswith('/private/tmp/roth-mainlemma-'):byhash.setdefault((v['sha256'],v['bytes']),[]).append(n)
+aliases=[]
+for n,v in old.items():
+ actual=rows[n]
+ if (actual['sha256'],actual['bytes'])==(v['sha256'],v['bytes']):continue
+ assert n.startswith(str(root)+'/'),('Sealed non-live artifact changed',n)
+ candidates=byhash.get((v['sha256'],v['bytes']),[]);assert candidates,('Missing exact old live stage',n,v)
+ saved=next((a for a in candidates if a.startswith(str(p)+'/') and ('entry' in a or 'baseline-full-prelaunch' in a)),candidates[0]);aliases.append({'historical_live_path':n,'R3_expected_sha256':v['sha256'],'R3_expected_bytes':v['bytes'],'current_actual_sha256':actual['sha256'],'actual_saved_historical_stage':saved,'saved_sha256':rows[saved]['sha256'],'saved_bytes':rows[saved]['bytes'],'qualification':'Legitimate later build/source stage, exact historical bytes retained; no immutable sealed artifact rewritten.'})
+exc=oldm['historical_administrative_lost_row_exception'];assert exc['exact_old_bytes_unrecoverable'] and exc['no_reconstruction'];assert rows[exc['path']]['sha256']==exc['current_actual_sha256'];assert rows[exc['erratum_path']]['sha256']==exc['erratum_sha256']
+q=p/'historical-live-aliases.json'
+with q.open('x') as f:json.dump({'observed_unix':time.time(),'aliases':aliases,'count':len(aliases),'historical_administrative_lost_row_exception':exc,'complete_old_P8_manifest_rehash_claim':False},f,indent=2)
+rows[str(q)]=readrow(q)
+out={'observed_start':start,'observed_end':time.time(),'predecessor_manifest_sha256':hashlib.sha256(oldraw).hexdigest(),'entries':rows,'count':len(rows),'bytes':sum(v['bytes'] for v in rows.values()),'exact_self_reference_exclusions':sorted(map(str,exclude)),'historical_administrative_lost_row_exception':exc,'complete_old_P8_manifest_rehash_claim':False,'scope':'Every current helper9 artifact/failure/raw/fixture/observation/report, complete R3 inherited historical sealed closure and new owner reviews, instructions/references/full sorted Mathlib universe/source17/cache104/root8/all14 setups/packages/core/binaries. Actual current rows freshly streamed; old R3 live tuples separately mapped to exact saved aliases. Availability is a superset, not exact runtime loaded closure. One inherited administrative lost old P8 row explicitly remains unrecoverable; current row exact.'}
+with (p/'manifest.json').open('x') as f:json.dump(out,f,indent=2)
+print({'count':out['count'],'bytes':out['bytes'],'binary_rows':sum(not v['strict_utf8'] for v in rows.values()),'old_live_aliases':len(aliases),'seconds':time.time()-start})

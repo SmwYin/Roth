@@ -1,0 +1,23 @@
+from pathlib import Path
+import json,hashlib,time,subprocess,os
+p=Path('/private/tmp/roth-mainlemma-main-lemma-resume3');o=Path('/private/tmp/roth-mainlemma-owner');root=Path('/Users/ramin/LEAN/Roth');load=lambda f:json.loads(Path(f).read_text());sha=lambda f:hashlib.sha256(Path(f).read_bytes()).hexdigest();start=time.time()
+s=load(p/'partial-seal.json');m=load(p/'manifest.json');r=load(p/'second-rehash.json');d=load(p/'final-drain-owned-process-inventory.json');assert len(s['all7_END'])==7 and all(v=='END, released' for v in s['all7_END'].values());assert s['active_compiler_native_profile_calls']==s['child_agents_created']==0
+for f,key in [('manifest.json','manifest_sha256'),('second-rehash.json','second_rehash_sha256'),('final-drain-owned-process-inventory.json','final_fresh_drain_sha256')]:assert sha(p/f)==s[key]
+assert s['report_sha256']==sha(s['report'])=='5e03ca866f6ab2bff0d0cd4b26c4fe8e139de3f52015bcfdbee81d1c98916dd6'
+assert s['manifest_count']==m['count']==r['count']==48090 and s['manifest_bytes']==m['bytes']==r['bytes']==15745839808
+assert d['known_owned_group_count']==s['known_owned_process_groups']==319 and d['all_known_groups_absent'] and not d['owned_rows'] and d['exit']==0 and d['observed_end_unix']<=s['sealed_unix']
+pins={str(f.relative_to(root)):sha(f) for f in sorted(list(root.glob('Roth/*.lean'))+[root/'Roth.lean',root/'lean-toolchain',root/'lakefile.toml',root/'lake-manifest.json'])};assert pins==s['all_source17_pins'] and len(pins)==17
+observations={}
+for g,v in d['known_owned_groups'].items():
+ launch=load(v['launch_file']);assert v['launch_file'] in m['entries'] and sha(v['launch_file'])==m['entries'][v['launch_file']]['sha256'];assert launch['pgid']==int(g) and launch['pid']==v['pid'] and launch['command']==v['command'];assert v['absence'] is True
+ try:os.killpg(int(g),0);observations[g]='PRESENT'
+ except ProcessLookupError:observations[g]='ABSENT'
+ except PermissionError as e:observations[g]={'state':'UNKNOWN','errno':e.errno,'operation':'killpg(0)','observed_unix':time.time()}
+assert all(v=='ABSENT' for v in observations.values()),observations
+z=subprocess.run(['/bin/ps','-axo','pid,ppid,pgid,lstart,command'],capture_output=True,timeout=15);stdout=z.stdout.decode('utf8','strict');stderr=z.stderr.decode('utf8','strict');assert z.returncode==0 and not stderr;rows=[]
+for line in stdout.splitlines()[1:]:
+ a=line.split(None,8);cmd=a[8] if len(a)>8 else '';first=cmd.split()[0] if cmd.split() else ''
+ if any(x in cmd for x in [str(p),'/private/tmp/roth-mainlemma-helper8-diag-rem/','/private/tmp/roth-mainlemma-main-lemma-resume2/','/private/tmp/roth-mainlemma-main-lemma-resume1/','/private/tmp/roth-mainlemma-helper7-index-eval/','/private/tmp/roth-mainlemma-helper6-double-hasse','/private/tmp/roth-mainlemma-main-lemma/']) or 'lake env printenv' in cmd or Path(first).name=='printenv' or (Path(first).name=='rg' and '--files' in cmd and '/Users/ramin' in cmd and 'AGENTS' in cmd):rows.append(line)
+assert not rows,rows
+out={'status':'PASS owner independent PARTIAL helper9 sealed handoff/source17/native-terminal counts/fresh exact task-and-printenv argv/process319 drain; artifact-byte/provenance and semantic/native/profile reviews separate','observed_start_unix':start,'observed_end_unix':time.time(),'seal_sha256':sha(p/'partial-seal.json'),'manifest_sha256':sha(p/'manifest.json'),'second_rehash_sha256':sha(p/'second-rehash.json'),'report_sha256':sha(s['report']),'source_sha256':pins['Roth/MainLemma.lean'],'all7_END':s['all7_END'],'319_actual_groups_fresh_absent':True,'group_observations':observations,'fresh_exact_task_printenv_rows':rows,'ps_command':['/bin/ps','-axo','pid,ppid,pgid,lstart,command'],'historical_administrative_lost_row_exception':s['historical_administrative_lost_row_exception'],'complete_old_manifest_rehash_claim':False,'all319_actual_launch_receipts_manifest_bound':True,'all17_current_source_pins_exact':True,'no_source_or_compiler_work_authorized_after_partial_seal_to_original27_until_resume':True}
+(o/'original27-helper9-owner-partial-seal-drain-review.json').write_text(json.dumps(out,indent=2)+'\n');print(json.dumps({k:v for k,v in out.items() if k!='group_observations'}))

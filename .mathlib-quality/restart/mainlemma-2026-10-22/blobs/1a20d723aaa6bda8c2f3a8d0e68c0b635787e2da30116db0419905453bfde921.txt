@@ -1,0 +1,32 @@
+from pathlib import Path
+import hashlib,json,codecs,subprocess,time
+p=Path('/private/tmp/roth-mainlemma-helper8-diag-rem');start=time.time()
+raw=(p/'manifest.json').read_bytes();m=json.loads(raw);bad=[];binary=0;total=0
+for n,wanted in m['entries'].items():
+    sha=hashlib.sha256();decoder=codecs.getincrementaldecoder('utf8')('strict');utf8=True;size=0
+    with Path(n).open('rb') as stream:
+        while True:
+            b=stream.read(768*1024)
+            if not b:break
+            sha.update(b);size+=len(b)
+            if utf8:
+                try:decoder.decode(b,False)
+                except UnicodeDecodeError:utf8=False
+    if utf8:
+        try:decoder.decode(b'',True)
+        except UnicodeDecodeError:utf8=False
+    if (sha.hexdigest(),size,utf8)!=(wanted['sha256'],wanted['bytes'],wanted['strict_utf8']):bad.append(n)
+    if not utf8:
+        binary+=1
+        assert wanted['binary_provenance']
+        assert any(v['sha256']==sha.hexdigest() and v['bytes']==size and Path(v['actual_observation']).is_file() for v in wanted['binary_provenance'])
+    total+=size
+excluded=set(m['exact_self_reference_exclusions'])
+missing=[str(f) for f in p.rglob('*') if f.is_file() and str(f) not in m['entries'] and str(f) not in excluded]
+cmd=['rg','--files','/Users/ramin/LEAN/Roth/.lake/packages/mathlib/Mathlib']
+r=subprocess.run(cmd,capture_output=True,check=True);r.stdout.decode('utf8','strict');r.stderr.decode('utf8','strict')
+equal=sorted(r.stdout.decode().splitlines())==sorted((p/'source-universe.stdout').read_text().splitlines())==sorted((p/'final-source-universe.stdout').read_text().splitlines())
+out={'observed_start':start,'observed_end':time.time(),'independent_fresh_streamed_read':True,'all_entries_match':not bad,'count':len(m['entries']),'bytes':total,'mismatches':bad,'binary_exceptions_with_exact_observed_tuple':binary,'all_own_artifacts_included_except_exact_self_receipts':not missing,'unmanifested_own':missing,'fresh_generic_rg_source_file_universe_exact_equal':equal,'actual_fresh_listing_stdout':r.stdout.decode(),'actual_fresh_listing_stderr':r.stderr.decode(),'manifest_sha256':hashlib.sha256(raw).hexdigest()}
+(p/'second-rehash.json').write_text(json.dumps(out,indent=2)+'\n')
+assert not bad and not missing and equal
+print({k:out[k] for k in ['count','bytes','all_entries_match','all_own_artifacts_included_except_exact_self_receipts','fresh_generic_rg_source_file_universe_exact_equal']})

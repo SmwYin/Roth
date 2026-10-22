@@ -1,0 +1,23 @@
+from pathlib import Path
+import json,hashlib,re,time
+p=Path('/private/tmp/roth-mainlemma-main-lemma');o=Path('/private/tmp/roth-mainlemma-owner');r=Path('/Users/ramin/LEAN/Roth');f=p/'before-family-metadata-v3.lean';b=f.read_bytes();s=b.decode();h=lambda x:hashlib.sha256(x).hexdigest();launch=json.loads((p/'before-family-metadata-v4-launch.json').read_text());assert h(b)==launch['input_sha256'][str(f)]=='2fbd8bda0e697ccc5ac34e5ae083671c8c35977dcbaae4fd0666677568ea4bcf';assert (p/'launched-inputs'/h(b)/f.name).read_bytes()==b
+blocks=s.split('run_cmd Lean.Elab.Command.liftTermElabM do\n')[1:];expected=re.findall(r'``(Roth\.[\w.]+)',blocks[0].split('let expected := #[',1)[1].split(']',1)[0]);assert len(set(expected))==len(expected)==13;names=[];generated=[];common=[]
+for block in blocks[1:]:
+ m=re.match(r'  let n := ``(Roth\.[\w.]+)\n',block);assert m;name=m[1];names.append(name)
+ for token in ['let c ← Lean.getConstInfo n','let v := c.value! true','for e in [c.type, v]','e.hasMVar || e.hasLevelMVar || e.hasFVar || e.hasLooseBVars || e.getUsedConstants.contains ``sorryAx','Lean.Meta.isDefEq (← Lean.Meta.inferType v) c.type','Lean.collectAxioms n','[``propext, ``Classical.choice, ``Quot.sound].contains ax','Lean.maxHeartbeats.get opts == 200000','Lean.Meta.synthInstance.maxHeartbeats.get opts == 20000','Lean.maxRecDepth.get opts == 512']:
+  assert block.count(token)==1,(name,token)
+ assert 'Lean.Core.liftIOCore <| IO.println' in block and 'TYPE={(repr c.type).pretty 1000000}' in block
+ public=name in ['Roth.main_lemma','Roth.roth_of_isIntegral']
+ assert ('ACTUALOPAQUEVALUE={(repr v).pretty 1000000}' in block)==(not public)
+ assert ('let src ← Lean.Core.liftIOCore <| IO.FS.readFile' in block)==(not public)
+ if not public:
+  generated.append(name);source=r/('Roth/MainLemma.lean' if name.startswith('Roth.main_lemma.') else 'Roth/Main.lean');short=name.removeprefix('Roth.');assert short in block and name not in source.read_text() and short not in source.read_text()
+  assert not re.search(r'^\s*(?:private )?(?:lemma|theorem|def)\s+_proof',source.read_text(),re.M)
+ common.append(block.split('  let src ←',1)[0].replace('  let n := ``'+name,'  let n := ``<actualName>',1))
+assert set(names)==set(expected) and len(names)==13 and len(generated)==11 and len(set(common))==1
+for token in ['if roots.any (·.isPrefixOf n)','actual.size == expected.size && actual.all expected.contains && expected.all actual.contains','env.getModuleIdxFor? n','env.header.moduleNames[idx]! == `Roth.Main','[`Roth.MainLemma, `Roth.Main].contains env.header.moduleNames[idx]!']:
+ assert token in blocks[0],token
+assert 'set_option' not in s and 'setHeartbeats' not in s and 'withIncRecDepth' not in s and 'normalize' not in s
+pins=json.loads((o/'original27-owner-entry-binding.json').read_text())['source_config_pins'];assert all(h((r/n).read_bytes())==v for n,v in pins.items())
+d={'status':'PASS static beforefamily directIO fixture/guards/fullgeneratedrepr/sourceabsence; actual V4 runtime outcome STILL PENDING, NO runtime acceptance','observed_unix':time.time(),'input_sha256':h(b),'actual_runner_label':'before-family-metadata-v4','actual_fixture_filename':f.name,'ordinary_validation_commands':13,'public_roots':2,'generated_fullAST_commands':11,'actual_expected_names_from_profile_candidates_checked_against_exhaustive_runtime_descendants':expected,'all13_guards_identical_except_exactName_and_generatedoutput':True,'format_change_only':'Lean.Core.liftIOCore IO.println with (repr actualExpr).pretty1000000 preserves actual full AST tokens; no semantic normalization, no Leanresource option change.','public_root_VALUE_output':'Actual opaque value is fully validated; prints hash+usedconstants instead of giant duplicate VALUE AST. All generated actual VALUE ASTs fully printed.','all17_current_entrypins_exact':True}
+(o/'original27-owner-before-family-static-review.json').write_text(json.dumps(d,indent=2)+'\n');print({k:v for k,v in d.items() if k!='actual_expected_names_from_profile_candidates_checked_against_exhaustive_runtime_descendants'})

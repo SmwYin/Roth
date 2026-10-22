@@ -1,0 +1,21 @@
+from pathlib import Path
+import json,hashlib,time
+p=Path('/private/tmp/roth-mainlemma-helper9-rem-floor');o=Path('/private/tmp/roth-mainlemma-owner')
+load=lambda n:json.loads((p/n).read_text());sha=lambda b:hashlib.sha256(b).hexdigest();start=time.time();rows=[]
+expectedpins=load('after-pairs.json')['source_pins_before']
+assert len(expectedpins)==17 and expectedpins['Roth/MainLemma.lean']=='df2362276b03240daaabfb1fd09fd23faf0ea2174e6bb30ebbcb1c466a6089c7'
+prior=0
+for suffix,name,warnings in [('ml','MainLemma',1),('main','Main',4),('eval','LeanEval',0)]:
+ label='final-native-'+suffix;req=load(label+'-request.json');d=load(label+'-response.json');sv=load(label+'-save-observation.json');pre=load(label+'-before-pins.json');post=load(label+'-after-pins.json');end=load(label+'-completion.json')
+ expected={'file_path':'/Users/ramin/LEAN/Roth/Roth/'+name+'.lean'}
+ assert req['tool']==end['tool']=='lean_diagnostic_messages' and req['actual_args']==end['actual_args']==d['request']==expected
+ r=d['response'];assert not r['isError'];v=r['structuredContent']['result'];assert [json.loads(x['text']) for x in r['content'] if x['type']=='text']==[v]
+ assert v['success'] and not v['partial'] and not v['timed_out'] and v['still_elaborating_lines'] is None and not v['failed_dependencies']
+ assert not [x for x in v['items'] if x['severity']=='error'] and len([x for x in v['items'] if x['severity']=='warning'])==warnings
+ assert pre['pins']==post['pins']==req['before_pins']==end['before_pins']==end['after_pins']==expectedpins and end['pins_unchanged']
+ assert prior<=pre['observed_unix']<=req['started_unix']<=d['actual_return_observed_ms']/1000==sv['actual_return_observed_ms']/1000<=sv['raw_save_observed_ms']/1000<=post['observed_unix']<=end['completed_unix']
+ assert sv['save_before_postpins'] and sv['raw_file']==str(p/(label+'-response.json'));prior=end['completed_unix']
+ rows.append({'gate':label,'source17_exact':True,'whole_complete_unfiltered':True,'errors':0,'warnings':warnings,'request_unix':req['started_unix'],'immediate_return_ms':d['actual_return_observed_ms'],'full_raw_save_ms':sv['raw_save_observed_ms'],'post_pin_unix':post['observed_unix'],'response_sha256':sha((p/(label+'-response.json')).read_bytes()),'warning_items':[x for x in v['items'] if x['severity']=='warning']})
+out={'status':'PASS independent owner full V3 ML/Main/Eval native response and per-call chronology review','observed_start_unix':start,'observed_end_unix':time.time(),'source17':expectedpins,'rows':rows,'scope':'V3 production only; V4 pilot is distinct and any promotion requires fresh versioned production gates. No proof/timing/final-file acceptance follows from these diagnostic calls.'}
+with (o/'original27-helper9-owner-v3-final-native-review-v1.json').open('x') as f:json.dump(out,f,indent=2);f.write('\n')
+print(json.dumps({'status':out['status'],'rows':len(rows),'warnings':[x['warnings']for x in rows]}))

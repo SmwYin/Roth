@@ -1,0 +1,27 @@
+from pathlib import Path
+p=Path('/private/tmp/roth-mainlemma-helper7-index-eval');s=(p/'independent-original-v2.lean').read_text();s=s[:-len('end Roth\n')];old=(p/'before-helper-command.lean').read_text();head=old[old.index('private lemma'):old.index(':= by')+5]
+for h in ['hP','hd','hc','hs','h2','hα','hγ','hz']:
+ n='audit_drop_'+{'hα':'halpha','hγ':'hgamma'}.get(h,h);s+='\n'+head.replace('private lemma exists_hasseDeriv_index_eval_bound_aux','theorem '+n)+'''\n  fail_if_success
+    clear '''+h+'''
+    solve | exact?
+  exact audit_original hP hd hc hs h2 hα hγ hz
+'''
+ s+='''\nrun_cmd Lean.Elab.Command.liftTermElabM do
+  let n := ``'''+n+'''
+  let c ← Lean.getConstInfo n
+  let v := c.value! true
+  let opts ← Lean.getOptions
+  unless Lean.maxHeartbeats.get opts == 200000 && Lean.Meta.synthInstance.maxHeartbeats.get opts == 20000 && Lean.maxRecDepth.get opts == 512 do throwError "Changed limits"
+  for e in [c.type,v] do
+    if e.hasMVar || e.hasLevelMVar || e.hasFVar || e.hasLooseBVars || e.getUsedConstants.contains ``sorryAx then throwError "Open/admitted proof"
+  unless ← Lean.Meta.isDefEq (← Lean.Meta.inferType v) c.type do throwError "Inferred TYPE differs"
+  let axs ← Lean.collectAxioms n
+  unless axs.all ([``propext, ``Classical.choice, ``Quot.sound].contains ·) do throwError "Nonstandard axioms"
+  Lean.Core.liftIOCore <| IO.println ("DROP_TRIAL_JSON=" ++ (Lean.Json.mkObj [
+    ("name",Lean.toJson n.toString),("removed_for_search",Lean.toJson "'''+h+'''"),
+    ("search",Lean.toJson "exact? on unchanged conclusion with this premise cleared"),
+    ("result",Lean.toJson "did not close; no logical necessity inference; restored-context fallback genuine original proof"),
+    ("TYPE",Lean.toJson ((repr c.type).pretty 1000000)),("VALUE",Lean.toJson ((repr v).pretty 1000000)),
+    ("axioms",Lean.toJson (axs.map toString))]).compress)
+'''
+(p/'drop-trials.lean').write_text(s+'\nend Roth\n')

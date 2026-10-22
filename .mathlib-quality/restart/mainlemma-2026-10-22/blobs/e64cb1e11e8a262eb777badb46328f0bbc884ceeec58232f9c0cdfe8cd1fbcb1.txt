@@ -1,0 +1,39 @@
+from pathlib import Path
+import json,hashlib,codecs,time,subprocess
+p=Path('/private/tmp/roth-mainlemma-helper7-index-eval');o=Path('/private/tmp/roth-mainlemma-owner');root=Path('/Users/ramin/LEAN/Roth');load=lambda f:json.loads(Path(f).read_text());sha=lambda f:hashlib.sha256(Path(f).read_bytes()).hexdigest();start=time.time();m=load(p/'manifest.json');old=load('/private/tmp/roth-mainlemma-main-lemma-resume1/manifest.json')['entries'];known={}
+def add(n,v,why):known.setdefault((str(n),v['sha256'],v['bytes']),[]).append(why)
+for n,v in old.items():
+ if not v['strict_utf8']:add(n,v,'Actual predecessor R1 sealed tuple, independently owner-accepted')
+for f in list(p.glob('*-all14-*-catalog.json'))+list(p.glob('*-all14-core-availability.json')):
+ for n,v in load(f)['artifacts'].items():add(n,v,'Actual fresh '+str(f)+' compiled availability superset, not exact loaded closure')
+for f in p.glob('*-cache.json'):
+ for n,v in load(f).items():add(n,v,'Actual compiled cache '+str(f));add(v['saved'],v,'Actual saved cache '+str(f))
+for f in p.glob('*-root-extra.json'):
+ for n,v in load(f)['root_outputs'].items():add(n,v,'Actual root output '+str(f));add(v['saved'],v,'Actual saved root output '+str(f))
+for f in p.glob('*-binaries.json'):
+ for n,v in load(f)['binaries'].items():add(n,v,'Actual executable '+str(f));add(v['resolved_realpath'],v,'Actual resolved executable '+str(f))
+binary=[];nbtotal=0
+for n,v in m['entries'].items():
+ h=hashlib.sha256();dec=codecs.getincrementaldecoder('utf8')('strict');u=True;nb=0
+ with Path(n).open('rb') as stream:
+  for b in iter(lambda:stream.read(2*1024*1024),b''):
+   h.update(b);nb+=len(b)
+   if u:
+    try:dec.decode(b,False)
+    except UnicodeDecodeError:u=False
+ if u:
+  try:dec.decode(b'',True)
+  except UnicodeDecodeError:u=False
+ assert (h.hexdigest(),nb,u)==(v['sha256'],v['bytes'],v['strict_utf8']),('Changed bytes/UTF8',n)
+ if not u:
+  key=(n,v['sha256'],v['bytes']);assert v['binary_exception'] and key in known,('No actual binary path/SHA/size provenance',n);binary.append({'path':n,'sha256':v['sha256'],'bytes':nb,'actual_provenance':known[key]})
+ else:assert v['binary_exception'] is None,n
+ nbtotal+=nb
+assert len(m['entries'])==m['count']==40008 and nbtotal==m['bytes']==9970143227 and len(binary)==25234
+second=load(p/'second-rehash.json');assert second['independent_full_stream_rehash'] and second['all_match'] and second['source_universe_matches'] and second['manifest_sha256']==sha(p/'manifest.json') and second['count']==40008 and second['bytes']==nbtotal and second['binary_exceptions_actual_catalog_tuple_rechecked']==len(binary) and second['sorted_paths']==sorted(m['entries'])
+assert sorted(second['source_universe_actual_stdout'].splitlines())==sorted((p/'searched-source-inventory.stdout').read_text().splitlines()) and not second['source_universe_actual_stderr'];req=load(p/'searched-source-inventory.json');q=subprocess.run(req['command'],cwd=root,capture_output=True);assert q.returncode==0;q.stdout.decode('utf8','strict');q.stderr.decode('utf8','strict');assert not q.stderr and sorted(q.stdout.decode().splitlines())==sorted(second['source_universe_actual_stdout'].splitlines());(o/'original27-helper7-owner-final-source-universe.stdout').write_bytes(q.stdout);(o/'original27-helper7-owner-final-source-universe.stderr').write_bytes(q.stderr)
+ex=set(m['exact_self_reference_exclusions']);assert len(ex)==4 and {str(f) for f in p.rglob('*') if f.is_file() and str(f) not in ex}<=set(m['entries']);aliases=load(p/'historical-live-aliases.json')['aliases'];changed={n for n,v in old.items() if m['entries'][n]['sha256']!=v['sha256']};assert changed=={a['historical_live_path'] for a in aliases} and len(changed)==len(aliases)==9
+for a in aliases:
+ n=a['historical_live_path'];saved=a['actual_saved_historical_stage'];assert n.startswith(str(root)+'/');assert old[n]['sha256']==a['historical_expected_sha256']==m['entries'][saved]['sha256']==sha(saved) and old[n]['bytes']==a['historical_expected_bytes']==m['entries'][saved]['bytes'];assert m['entries'][n]['sha256']==a['current_actual_sha256']
+report=root/'.mathlib-quality/cleanup/MainLemma-exists_hasseDeriv_index_eval_bound_aux-helper.md';assert len(report.read_text().splitlines())==341 and sha(report)=='268671fa59ef7583215f1d8cd9b607737f941bab75c73990990600eac856c602';assert sha(root/'Roth/MainLemma.lean')=='0caffff6ea88d694ef0a14fb19b5fc4d0b3a013c57cf32ce840f054d25003106' and sha(root/'Roth/Main.lean')=='6668ff83a7e7b156f6f29b8f2d0163e699da002b70338d5ee0715065ade9b25f'
+out={'status':'PASS owner independent THIRD full streamed helper7 final byte/UTF8/actual-provenance/historical-stage/source-universe review','observed_start_unix':start,'observed_end_unix':time.time(),'manifest_sha256':sha(p/'manifest.json'),'second_rehash_sha256':sha(p/'second-rehash.json'),'files':40008,'bytes':nbtotal,'actual_binary_exceptions_count':len(binary),'actual_binary_provenance':binary,'all9_changed_historical_live_aliases_exact_saved_bytes':True,'no_sealed_R1_scratch_mutated':all(n.startswith(str(root)+'/') for n in changed),'all_own_artifacts_included_except_exact4self_receipts':True,'fresh_owner_sorted_source_universe_exact':True,'fresh_owner_source_universe_command':req['command'],'fresh_owner_source_universe_exit':q.returncode,'fresh_owner_source_universe_stdout_sha256':hashlib.sha256(q.stdout).hexdigest(),'full_report_read_by_owner':True,'report_lines':341,'report_sha256':sha(report),'scope':'Actual compiled availability and source supersets, never exact runtime-loaded closure. Final process/seal/native/source-inverse/migration/property and owner aggregate acceptance remain separate required reviews.'};(o/'original27-helper7-owner-final-byte-provenance-review.json').write_text(json.dumps(out,indent=2)+'\n');print(json.dumps({k:v for k,v in out.items() if k!='actual_binary_provenance'}))

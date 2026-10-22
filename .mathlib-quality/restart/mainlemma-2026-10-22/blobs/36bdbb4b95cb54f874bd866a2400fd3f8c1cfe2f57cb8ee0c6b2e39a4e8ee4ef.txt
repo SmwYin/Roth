@@ -1,0 +1,20 @@
+from pathlib import Path
+import json,hashlib,time
+p=Path('/private/tmp/roth-mainlemma-helper8-diag-rem');o=Path('/private/tmp/roth-mainlemma-owner');load=lambda n:json.loads((p/n).read_text());sha=lambda b:hashlib.sha256(b).hexdigest();rows=[];start=time.time()
+parent=sha((p/'parent-environment.json').read_bytes());pins=None;prior=None
+for label,cmd in [('baseline-full',['/Users/ramin/.elan/bin/lake','build']),('baseline-eval',['/Users/ramin/.elan/bin/lake','build','Roth.LeanEval'])]:
+ d=load(label+'.json');t=load(label+'-terminal.json');raw=(p/(label+'.log')).read_bytes();err=(p/(label+'.stderr.log')).read_bytes();raw.decode('utf8','strict');err.decode('utf8','strict')
+ assert d['exit']==0 and not d['timed_out'] and all(d[k] for k in ['drained','group_absent_at_exit','immutable','inputs_immutable','raw_lake_environment_equal','strict_utf8'])
+ assert d['command']==t['command']==cmd and t['exit']==0 and not t['timed_out'] and t['recorded_before_group_probe_postenv_hashing']
+ assert d['pid']==d['pgid']==t['pid']==t['pgid'] and d['started_unix']<=t['observed_immediately_after_wait_unix']<=d['completed_unix']
+ assert sha(raw)==d['raw_sha256'] and sha(err)==d['stderr_sha256'] and d['source_pins_before']==d['source_pins_after'] and len(d['source_pins_before'])==17
+ if pins is None:pins=d['source_pins_before']
+ assert d['source_pins_before']==pins and d['frozen_observed_parent_environment_sha256']==parent
+ assert d['actual_lake_environment_before']==d['actual_lake_environment_after']
+ for side in ['before','after']:
+  e=(p/(label+'-'+side+'-env.log')).read_bytes();ee=(p/(label+'-'+side+'-env.stderr.log')).read_bytes();e.decode('utf8','strict');ee.decode('utf8','strict');assert sha(e)==d['actual_lake_environment_'+side]['stdout_sha256'] and sha(ee)==d['actual_lake_environment_'+side]['stderr_sha256']
+ if prior is not None:assert prior['completed_unix']<=d['started_unix']
+ prior=d;rows.append({'gate':label,'exit':0,'seconds_receipt':d['seconds'],'seconds_through_actual_wait':t['seconds_through_wait'],'raw_sha256':sha(raw),'terminal_sha256':sha((p/(label+'-terminal.json')).read_bytes())})
+assert pins['Roth/MainLemma.lean']==sha((p/'entry-source/Roth/MainLemma.lean').read_bytes())=='87b9879e47747825a161570e56e62da382a53b37d04b4cda581910d9a72771e5'
+assert pins['Roth/Main.lean']==sha((p/'entry-source/Roth/Main.lean').read_bytes())=='6668ff83a7e7b156f6f29b8f2d0163e699da002b70338d5ee0715065ade9b25f'
+out={'status':'PASS owner independently reviewed helper8 baseline FULL then separate Eval; native review remains pending','observed_start_unix':start,'observed_end_unix':time.time(),'source17_pins':pins,'parent_environment_sha256':parent,'rows':rows,'scope':'Build baseline only; no compiler/native calls and no source changes.'};(o/'original27-helper8-owner-baseline-build-review.json').write_text(json.dumps(out,indent=2)+'\n');print(json.dumps({'status':out['status'],'gates':len(rows)}))

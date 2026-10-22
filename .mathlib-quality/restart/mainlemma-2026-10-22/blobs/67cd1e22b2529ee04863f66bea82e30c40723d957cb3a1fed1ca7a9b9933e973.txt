@@ -1,0 +1,24 @@
+from pathlib import Path
+import hashlib,json,time,re
+p=Path('/private/tmp/roth-mainlemma-helper7-index-eval');s=(p/'entry-MainLemma.lean').read_text();h=lambda b:hashlib.sha256(b).hexdigest()
+start=s.index('/-- Select a nonvanishing Hasse derivative');main=s.index('/-- **Roth\'s main lemma**',start);end=s.index('\n\nend Roth',main)
+helper=s[start:main].rstrip();consumer=s[main:end];(p/'before-helper-command.lean').write_text(helper);(p/'before-main-command.lean').write_text(consumer)
+sc=s[:start]+'set_option trace.profiler true\n\n'+s[start:end]+'\n\nset_option trace.profiler false'+s[end:]
+a=sc.index('namespace Roth');sc=sc[:a]+'set_option trace.profiler false\n\n'+sc[a:]
+# helper and main are adjacent: one true window preserves two full commands.
+assert sc.replace('set_option trace.profiler false\n\n','').replace('set_option trace.profiler true\n\n','').replace('\n\nset_option trace.profiler false','')==s
+(p/'before-scoped.lean').write_text(sc)
+(p/'before-scope.json').write_text(json.dumps({'canonical':str(p/'entry-MainLemma.lean'),'canonical_relative':'Roth/MainLemma.lean','canonical_sha256':h(s.encode()),'scaffold':str(p/'before-scoped.lean'),'scaffold_sha256':h(sc.encode()),'commands':[{'written_marker':'private lemma exists_hasseDeriv_index_eval_bound_aux ','canonical':str(p/'before-helper-command.lean'),'runtime_name':'_private._stdin.0.Roth.exists_hasseDeriv_index_eval_bound_aux'},{'written_marker':'theorem main_lemma ','canonical':str(p/'before-main-command.lean'),'runtime_name':'Roth.main_lemma'}],'trace_options_inserted_only':3,'saved_before_edit_unix':time.time()},indent=2)+'\n')
+old=Path('/private/tmp/roth-mainlemma-helper6-double-hasse/discovery.lean').read_text();old=old.replace('abs_eval_iterated_hasseDeriv_lt_aux','exists_hasseDeriv_index_eval_bound_aux');line='  roots := roots.push (← findPrivate ".Roth.exists_hasseDeriv_index_eval_bound_aux")';old=old.replace(line,line+'\n  roots := roots.push (← findPrivate ".Roth.abs_eval_iterated_hasseDeriv_lt_aux")')
+# Dynamic inventory and every actual retained TYPE + opaque VALUE checked individually, emitted in one command.
+old=old.replace('    Lean.logInfo m!"INVENTORY {repr n} levels={c.levelParams} theorem={c.isTheorem} TYPEhash={c.type.hash} VALUEhash={(c.value! true).hash}"','''    let v := c.value! true
+    let opts ← Lean.getOptions
+    unless Lean.maxHeartbeats.get opts == 200000 && Lean.Meta.synthInstance.maxHeartbeats.get opts == 20000 && Lean.maxRecDepth.get opts == 512 do throwError "Limits changed"
+    for e in [c.type,v] do
+      if e.hasMVar || e.hasLevelMVar || e.hasFVar || e.hasLooseBVars || e.getUsedConstants.contains ``sorryAx then throwError "Open/admitted pair"
+    unless ← Lean.Meta.isDefEq (← Lean.Meta.inferType v) c.type do throwError "Type mismatch"
+    let axs ← Lean.collectAxioms n
+    unless axs.all ([``propext, ``Classical.choice, ``Quot.sound].contains ·) do throwError "Axioms"
+    Lean.Core.liftIOCore <| IO.println s!"RETAINED NAME={(repr n).pretty 1000000} LEVELS={c.levelParams} THEOREM={c.isTheorem} TYPE={(repr c.type).pretty 1000000} VALUE={(repr v).pretty 1000000} AXIOMS={axs} DEFAULTS=200000/20000/512"''')
+(p/'before-discovery.lean').write_text(old)
+print('Prepared exact helper/main before commands + scoped source; imported discovery pending fresh full/Eval baseline.')

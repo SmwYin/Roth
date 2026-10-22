@@ -1,0 +1,25 @@
+from pathlib import Path
+import subprocess,time,json,sys,os
+p=Path('/private/tmp/roth-mainlemma-helper6-double-hasse');label=sys.argv[1];observed=time.time();groups={}
+for f in sorted(p.glob('*-launch.json')):
+ j=json.loads(f.read_text())
+ if 'pgid' in j:groups[str(j['pgid'])]={'launch_file':str(f),'pid':j.get('pid'),'command':j.get('command')}
+for g,v in groups.items():
+ try:os.killpg(int(g),0);v['absence']=False
+ except ProcessLookupError:v['absence']=True
+ except PermissionError as e:v['absence']=None;v['error']={'errno':e.errno,'operation':'killpg(signal=0)','observed_unix':time.time(),'error':str(e),'qualification':'UNKNOWN; neither alive nor absent inferred'}
+try:r=subprocess.run(['/bin/ps','-axo','pid,ppid,pgid,lstart,command'],capture_output=True,timeout=15)
+except BaseException as e:
+ (p/(label+'-process-observation-error.json')).write_text(json.dumps({'observed_unix':time.time(),'exception':type(e).__name__,'errno':getattr(e,'errno',None),'operation':'execute /bin/ps read-only','error':str(e),'known_group_observations':groups,'inventory_status':'UNKNOWN, no drain credited'},indent=2)+'\n');raise
+r.stdout.decode('utf8','strict');r.stderr.decode('utf8','strict');rows=[]
+for x in r.stdout.decode().splitlines()[1:]:
+ fields=x.split(None,8);command=fields[8] if len(fields)>8 else '';first=command.split()[0] if command.split() else ''
+ # Exclude only this exact inventory/seal invocation and its shell ancestors; retain no unrelated rows.
+ if any(n in command for n in ['inspect-owned.py','final-seal.py']):continue
+ exact_task=str(p) in command
+ env_form='lake env printenv' in command or Path(first).name=='printenv'
+ legacy_rg=(Path(first).name=='rg' and '--files' in command and '/Users/ramin' in command and 'AGENTS' in command)
+ if exact_task or env_form or legacy_rg:rows.append(x)
+out={'observed_start_unix':observed,'observed_end_unix':time.time(),'command':['/bin/ps','-axo','pid,ppid,pgid,lstart,command'],'exit':r.returncode,'strict_utf8':True,'known_owned_groups':groups,'known_owned_group_count':len(groups),'all_known_groups_absent':all(x['absence'] is True for x in groups.values()),'scope':'Exact current task scratch argv; literal Lake env printenv and bare/resolved printenv command forms; exact initial administrative rg form when visible. No unrelated process rows retained, no signals sent beyond read-only killpg(0). Initial rg PGID unrecorded, never reconstructed; exact unified session exited130.','owned_rows':rows,'stderr':r.stderr.decode()}
+(p/(label+'-owned-process-inventory.json')).write_text(json.dumps(out,indent=2)+'\n');assert r.returncode==0 and out['all_known_groups_absent'] and not rows,out
+print(json.dumps({'known_owned_groups':len(groups),'all_absent':True,'owned_rows':[]}))

@@ -1,0 +1,18 @@
+from pathlib import Path
+import json,hashlib,time,shutil,subprocess
+p=Path('/private/tmp/roth-mainlemma-helper9-rem-floor');o=Path('/private/tmp/roth-mainlemma-owner');root=Path('/Users/ramin/LEAN/Roth');load=lambda n:json.loads((p/n).read_text());sha=lambda b:hashlib.sha256(b).hexdigest();start=time.time();summaries=[]
+def tup(d):return {k:(v['sha256'],v['bytes']) for k,v in d.items()}
+for kind in ['profile']:
+ phases=[f'after-{kind}-a-prelaunch',f'after-{kind}-b-prelaunch',f'after-{kind}-pair-after'];items=[];seen=[]
+ for j,label in enumerate(phases):
+  pins=load(label+'-pins.json');cache=load(label+'-cache.json');rr=load(label+'-root-extra.json');pkg=load(label+'-all14-package-catalog.json');core=load(label+'-all14-core-availability.json');bins=load(label+'-binaries.json');obs=load(label+'-freeze-observation.json');assert len(pins)==17 and len(cache)==104 and len(rr['root_outputs'])==8 and len(pkg['setups'])==14 and len(pkg['artifacts'])==12202 and len(core['artifacts'])==core['count']==12592 and len(bins['binaries'])==4
+  for n,v in pkg['setups'].items():assert sha(Path(n).read_bytes())==v['sha256'] and json.loads(Path(n).read_text())==v['setup']
+  for n,v in bins['binaries'].items():
+   for q in {n,v['resolved_realpath']}:assert (sha(Path(q).read_bytes()),Path(q).stat().st_size)==(v['sha256'],v['bytes'])
+  times=[obs['observed_unix'],bins['observed_unix'],rr['observed_end'],pkg['observed_end'],core['observed_end']]
+  if j<2:
+   stem=f'after-{kind}-'+['a','b'][j];launch=load(stem+'-launch.json');run=load(stem+'.json');assert launch['recorded_immediately_after_spawn_before_wait'] and max(times)<=launch['actual_started_unix'] and launch['pid']==launch['pgid']==run['pgid'] and pins==run['source_pins_before'];raw=(p/(stem+'-after-env.log')).read_bytes();paths=[l[5:] for l in raw.decode('utf8','strict').splitlines() if l.startswith('PATH=')];assert len(paths)==1;resolved={n:str(Path(shutil.which(n,path=paths[0])).resolve()) for n in ['lean','lake']};assert all(q in bins['binaries'] or any(q==v['resolved_realpath'] for v in bins['binaries'].values()) for q in resolved.values());items.append({'capture':stem,'all_prospective_observations_completed_before_actual_spawn':True,'PATH_sha256':sha(paths[0].encode()),'actual_PATH_resolved_executables':resolved})
+  else:assert min(times)>=load(f'after-{kind}-b.json')['completed_unix']
+  seen.append({'pins':pins,'cache':tup(cache),'root':tup(rr['root_outputs']),'package':tup(pkg['artifacts']),'core':tup(core['artifacts']),'binaries':tup(bins['binaries']),'setup':pkg['setups']})
+ assert seen[0]==seen[1]==seen[2];summaries.append({'pair':kind,'phases':phases,'exact_all_three_phase_tuples_and14setup_fields_equal':True,'prospective_and_PATH':items})
+out={'status':'PASS independent helper9 AFTER input/PATH Apre/Bpre/post exact-tuple comparison and actual14setup/fourbinary byte audit','observed_start_unix':start,'observed_end_unix':time.time(),'counts':{'source_pins':17,'project_cache':104,'root_outputs':8,'setups':14,'package_availability':12202,'core_availability':12592,'actual_executable_paths':4},'pairs':summaries,'compiled_stage':'Fresh helper9 ML732/Main689 FULL baseline and separateEval compiled.','availability_scope':'Observed availability superset, not exact runtime-loaded closure.','scope':'Full catalog raw-byte/provenance binding will be independently checked against final sealed manifest; no premature complete file/helper credit.'};(o/'original27-helper9-owner-after-input-review.json').write_text(json.dumps(out,indent=2)+'\n');print(json.dumps({'status':out['status'],'counts':out['counts']}))

@@ -1,0 +1,18 @@
+from pathlib import Path
+import re,json,hashlib
+p=Path('/private/tmp/roth-mainlemma-helper6-double-hasse');r=json.loads((p/'after-semantics-v2.json').read_text());s=(p/'after-semantics-v2.log').read_text();assert r['exit']==0 and r['immutable'] and r['inputs_immutable'] and r['drained'] and not r['timed_out'] and r['raw_lake_environment_equal'] and r['strict_utf8'];assert hashlib.sha256(s.encode()).hexdigest()==r['raw_sha256'];assert ': error:' not in s
+assert s.count('FULL PAIR NAME=')==12 and s.count('ALL RETAINED PASS NAME=')==61 and s.count('INDEPENDENT ORIGINAL FULL CONTRACT PASS DENIED=')==1 and s.count('OLD CONTRACT MIGRATION AND EXACT MAIN PUBLIC TYPE PASS')==1
+rx=r'(?ms)^ALL RETAINED PASS NAME=(.*?) MODULE=(.*?) LEVELS=(.*?) TYPE=(.*?) ACTUALOPAQUEVALUE=(.*?) AXIOMS=(.*?) LIMITS=200000/20000/512'
+def rows(text):
+ out={n:{'module':m,'levels':l,'type':t,'value':v,'axioms':a} for n,m,l,t,v,a in re.findall(rx,text)};assert len(out)==61;return out
+old=rows((p/'independent-original-v4.log').read_text());new=rows(s);assert old.keys()==new.keys()
+oldInv=(p/'discovery.log').read_text();data=re.findall(r'INVENTORY (.*?) levels=.*? theorem=false ',oldInv);assert data
+for n in data:assert old[n]['type']==new[n]['type'] and old[n]['value']==new[n]['value'] and old[n]['levels']==new[n]['levels'],n
+# All upstream retained declarations occur before the leased helper and remain exact full TYPE/value ASTs.
+changed=[n for n in old if old[n]!=new[n]]
+allowed=[n for n in old if n=='`Roth.main_lemma' or 'abs_eval_iterated_hasseDeriv_lt_aux' in n or n.startswith('Lean.Name.mkStr `Roth.main_lemma ')]
+assert all(n in allowed for n in changed),(changed,allowed)
+assert old['`Roth.main_lemma']['levels']==new['`Roth.main_lemma']['levels']
+pairs=re.findall(r'(?ms)^FULL PAIR NAME=.*?LIMITS=200000/20000/512',s);values=[x.split('ACTUALOPAQUEVALUE=',1)[1].split(' AXIOMS=',1)[0] for x in pairs];assert values[0]!=values[2]
+out={'whole_actual_exit_zero':True,'seconds':r['seconds'],'current_stronger_type_exact_to_independent_alpha_weak_type':'PASS only generated binder macro scopes normalized; universes/order/BinderInfo/full raw preserved','original_independent_proof_and_all_boundary_certificates':'PASS; original proof prefix exact retained from V4','transitive_denied_TYPE_and_actual_VALUE_closure':'PASS current/original helper Name and all descendants, main and descendants, sorryAx denied','original_contract_migration':'PASS actual current target application hα.le; exact full original TYPE and genuine VALUE checked','main_public_type':'PASS exact saved-before full AST, normalize ONLY generated binder macro scopes; exact universe parameters unchanged','all_retained_actual_module_names':61,'all_retained_full_TYPE_and_opaque_VALUE_std3_defaults_closed_inferred':'PASS','public_and_private_data_exact_before_after_TYPE_VALUE':data,'exact_unchanged_nonleased_ast_count':61-len(allowed),'changed_name_reprs':changed,'current_vs_independent_stronger_proof_values_nonidentical':True,'generated_name_full_semantics':'Fresh exhaustive defining-module inventory matched each exact retained name, no fixed numeric suffix cap','failed_v1_no_partial_credit':True}
+(p/'after-semantics-acceptance.json').write_text(json.dumps(out,indent=2)+'\n');print(out)

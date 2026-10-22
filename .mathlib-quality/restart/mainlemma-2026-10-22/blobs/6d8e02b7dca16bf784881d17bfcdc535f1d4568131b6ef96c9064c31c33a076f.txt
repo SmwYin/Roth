@@ -1,0 +1,5 @@
+from pathlib import Path
+import json,time,hashlib,sys
+p=Path('/private/tmp/roth-mainlemma-helper7-index-eval');r=Path('/Users/ramin/LEAN/Roth');label,stage=sys.argv[1:]
+pins={str(f.relative_to(r)):hashlib.sha256(f.read_bytes()).hexdigest() for f in sorted(list(r.glob('Roth/*.lean'))+[r/'Roth.lean',r/'lean-toolchain',r/'lakefile.toml',r/'lake-manifest.json'])}
+(p/(label+'-'+stage+'-pins.json')).write_text(json.dumps({'observed_unix':time.time(),'pins':pins},indent=2)+'\n')

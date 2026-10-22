@@ -1,0 +1,16 @@
+from pathlib import Path
+import json,hashlib,os,time
+p=Path('/private/tmp/roth-mainlemma-main-lemma');o=Path('/private/tmp/roth-mainlemma-owner');root=Path('/Users/ramin/LEAN/Roth');h=lambda f:hashlib.sha256(Path(f).read_bytes()).hexdigest();load=lambda n:json.loads((p/n).read_text());entry=json.loads((o/'original27-owner-entry-binding.json').read_text())['source_config_pins'];rows=[];last=0
+for name,args in [('baseline-affected',['build','Roth.MainLemma','Roth.Main']),('baseline-full',['build']),('baseline-eval',['build','Roth.LeanEval'])]:
+ x=load(name+'.json');assert x['exit']==0 and not x['timed_out'] and x['drained'] and x['immutable'] and x['strict_utf8'] and x['raw_lake_environment_equal'] and x['group_absent_at_exit'];assert x['source_pins_before']==x['source_pins_after']==entry;assert x['command']==['/Users/ramin/.elan/bin/lake']+args
+ for suffix,key in [('.log','raw_sha256'),('.stderr.log','stderr_sha256')]:assert h(p/(name+suffix))==x[key];(p/(name+suffix)).read_text(encoding='utf8',errors='strict')
+ assert h(x['frozen_observed_parent_environment_file'])==x['frozen_observed_parent_environment_sha256']=='d408e34abec7c9a2aacd64f9e92377566e7b072274bef85f5aa0a559a8937daf'
+ for side in ['before','after']:assert h(p/(name+'-'+side+'-env.log'))==x['actual_lake_environment_'+side]['stdout_sha256']=='d6dce3c1a90b155c5ddc240d54e52bb20b978ca7b9a4ac0fa0b7d40173f1a352'
+ assert x['started_unix']>last;last=x['completed_unix']
+ try:os.killpg(x['pgid'],0)
+ except ProcessLookupError:pass
+ else:raise AssertionError('Group active')
+ rows.append({'name':name,'exit':x['exit'],'seconds':x['seconds'],'pgid':x['pgid'],'explicit_frozen_rawenvironment_verified':True})
+assert all(h(root/n)==v for n,v in entry.items())
+rec={'status':'PASS actual original27 baseline frozen affected then FULL then separateEval whole0/drained/source17/env/raw verified; native/profiles/audit pending','observed_unix':time.time(),'builds':rows,'source17':entry}
+(o/'original27-owner-baseline-build-review.json').write_text(json.dumps(rec,indent=2)+'\n');print(json.dumps({'status':'PASS','builds':rows}))

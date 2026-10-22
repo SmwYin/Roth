@@ -1,0 +1,87 @@
+import Roth
+import Roth.LeanEval
+import Lean.Util.FindExpr
+run_cmd Lean.Elab.Command.liftTermElabM do
+  let env ← Lean.getEnv
+  let project := env.constants.fold (init := #[]) fun ns n _ ↦
+    match env.getModuleIdxFor? n with
+    | some idx => if (`Roth).isPrefixOf env.header.moduleNames[idx]! then ns.push n else ns
+    | none => ns
+  let evalOrigin := project.filter fun n ↦
+    match env.getModuleIdxFor? n with
+    | some idx => env.header.moduleNames[idx]! == `Roth.LeanEval
+    | none => false
+  unless evalOrigin.size == 5 && evalOrigin.contains ``LeanEval.NumberTheory.ThueSiegelRothProblem.thueSiegelRoth do
+    throwError "Separate Eval public declaration excluded by project discovery"
+  Lean.logInfo m!"ACTUAL ALL EVAL MODULE ORIGIN NAMES {evalOrigin}"
+  let findPrivate (suffix : String) : Lean.MetaM Lean.Name := do
+    let ns := project.filter fun n ↦ n.toString.endsWith suffix
+    unless ns.size == 1 do throwError "Nonunique private {suffix} {ns}"
+    pure ns[0]!
+  let mut roots : Array Lean.Name := #[]
+  roots := roots.push ``Roth.lam
+  roots := roots.push ``Roth.gam
+  roots := roots.push ``Roth.eta
+  roots := roots.push ``Roth.B₁
+  roots := roots.push ``Roth.exists_delta_bound
+  roots := roots.push ``Roth.eta_lt_gam_iff
+  roots := roots.push (← findPrivate ".Roth.sqrt_lt_nat_floor_aux")
+  roots := roots.push ``Roth.sqrt_lt_floor
+  roots := roots.push ``Roth.four_lt_rpow
+  roots := roots.push ``Roth.log_B₁_gt
+  roots := roots.push (← findPrivate ".Roth.two_lt_rpow_aux")
+  roots := roots.push ``Roth.three_small_factors
+  roots := roots.push (← findPrivate ".Roth.exists_norm_coeff_reduction_aux")
+  roots := roots.push ``Roth.abs_coeff_modByMonic_le
+  roots := roots.push ``Roth.boxFamily
+  roots := roots.push (← findPrivate ".Roth.boxPoly")
+  roots := roots.push (← findPrivate ".Roth.coeff_boxPoly")
+  roots := roots.push (← findPrivate ".Roth.boxPoly_injective")
+  roots := roots.push (← findPrivate ".Roth.range_boxPoly")
+  roots := roots.push ``Roth.boxFamily_finite
+  roots := roots.push (← findPrivate ".Roth.boxFamily_eq_image_finsupp_aux")
+  roots := roots.push ``Roth.ncard_boxFamily
+  roots := roots.push (← findPrivate ".Roth.floor_rpow_count_lt_aux")
+  roots := roots.push ``Roth.pigeonhole_count
+  roots := roots.push ``Roth.exists_ne_modByMonic_eq
+  roots := roots.push ``Roth.sub_mem_RSet
+  roots := roots.push ``Roth.eval_hasseDeriv_sub_eq_zero
+  roots := roots.push ``Roth.le_index_of_forall_eval_eq_zero
+  roots := roots.push ``Roth.lem7_hyp_of_h32
+  roots := roots.push ``Roth.exists_hasseDeriv_eval_ne_zero
+  roots := roots.push ``Roth.main_lemma
+  roots := roots.push (← findPrivate ".Roth.exists_hasseDeriv_index_eval_bound_aux")
+  roots := roots.push (← findPrivate ".Roth.abs_eval_iterated_hasseDeriv_lt_aux")
+  let target ← findPrivate ".Roth.exists_hasseDeriv_index_eval_bound_aux"
+  Lean.logInfo m!"TARGET {repr target}"
+  Lean.logInfo m!"ROOTS {roots}"
+  let descendants := env.constants.fold (init := #[]) fun ns n _ ↦
+    if roots.any (fun root ↦ root.isPrefixOf n) then ns.push n else ns
+  Lean.logInfo m!"DESCENDANTS {descendants}"
+  let moduleAll := project.filter fun n ↦
+    match env.getModuleIdxFor? n with
+    | some idx => env.header.moduleNames[idx]! == `Roth.MainLemma
+    | none => false
+  unless moduleAll.size == descendants.size && moduleAll.all descendants.contains && descendants.all moduleAll.contains do
+    throwError "Defining-module retained set differs from all exact root descendants: {moduleAll}"
+  Lean.logInfo m!"ACTUAL EXHAUSTIVE DEFINING MODULE MAINLEMMA {moduleAll}"
+  for n in descendants do
+    let c ← Lean.getConstInfo n
+    let v := c.value! true
+    let opts ← Lean.getOptions
+    unless Lean.maxHeartbeats.get opts == 200000 && Lean.Meta.synthInstance.maxHeartbeats.get opts == 20000 && Lean.maxRecDepth.get opts == 512 do throwError "Limits changed"
+    for e in [c.type,v] do
+      if e.hasMVar || e.hasLevelMVar || e.hasFVar || e.hasLooseBVars || e.getUsedConstants.contains ``sorryAx then throwError "Open/admitted pair"
+    unless ← Lean.Meta.isDefEq (← Lean.Meta.inferType v) c.type do throwError "Type mismatch"
+    let axs ← Lean.collectAxioms n
+    unless axs.all ([``propext, ``Classical.choice, ``Quot.sound].contains ·) do throwError "Axioms"
+    Lean.Core.liftIOCore <| IO.println s!"RETAINED NAME={(repr n).pretty 1000000} LEVELS={c.levelParams} THEOREM={c.isTheorem} TYPE={(repr c.type).pretty 1000000} VALUE={(repr v).pretty 1000000} AXIOMS={axs} DEFAULTS=200000/20000/512"
+  let mut consumers : Array Lean.Name := #[]
+  for n in project do
+    let c ← Lean.getConstInfo n
+    let t := c.type.getUsedConstants
+    let v := (c.value! true).getUsedConstants
+    if t.any (fun k ↦ target.isPrefixOf k) || v.any (fun k ↦ target.isPrefixOf k) then
+      consumers := consumers.push n
+      Lean.logInfo m!"DIRECT CONSUMER {repr n} TYPEdeps={t} OPAQUEVALUEdeps={v}"
+  Lean.logInfo m!"ACTUAL PROJECT INCLUDING SEPARATE EVAL project={project.size} TARGET={target} DIRECT={consumers}"

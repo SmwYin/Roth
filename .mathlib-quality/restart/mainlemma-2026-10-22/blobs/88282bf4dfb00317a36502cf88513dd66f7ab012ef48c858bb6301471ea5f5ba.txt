@@ -1,0 +1,22 @@
+from pathlib import Path
+import json
+p=Path('/private/tmp/roth-mainlemma-helper7-index-eval')
+s=(p/'candidate-v2-unchecked.lean').read_text();s=s[:-len('end Roth\n')]
+old=(p/'before-helper-command.lean').read_text();head=old[old.index('private lemma'):old.index(':= by')+5].replace('private lemma exists_hasseDeriv_index_eval_bound_aux','theorem audit_recovery')
+s+='\n'+head+'''\n  obtain ⟨Q, hQ0, hQd, hQi, hQev, hQc⟩ :=
+    exists_hasseDeriv_index_eval_bound_aux hP hd hc hs h2 hα hγ hz
+  exact ⟨Q, hQ0, hQd, hQi, hQev, fun i ↦ (hQc i).trans_eq (by ring)⟩
+'''
+s+=(p/'type-pair-eq7.lean.txt').read_text()
+original=(p/'independent-original.lean').read_text();g=original[original.index('run_cmd Lean.Elab.Command.liftTermElabM do\n  let n := ``audit_original'):]
+g=g[:g.index('  let mut pending')]+'''  let info := Lean.Json.mkObj [("name",Lean.toJson n.toString),
+    ("TYPE",Lean.toJson ((repr c.type).pretty 1000000)),("VALUE",Lean.toJson ((repr v).pretty 1000000)),
+    ("axioms",Lean.toJson (axs.map toString)),("levels",Lean.toJson (repr c.levelParams).pretty)]
+  Lean.Core.liftIOCore <| IO.println ("CANDIDATE_JSON=" ++ info.compress)
+'''
+s+=g.replace('``audit_original','``audit_recovery')
+cg=g.replace('``audit_original','``exists_hasseDeriv_index_eval_bound_aux')
+cg='\n'.join(line for line in cg.splitlines() if not line.startswith('  let expected :') and 'sameTypeExceptBothGeneratedBinders c.type expected' not in line)+'\n'
+s+=cg+'\nend Roth\n'
+(p/'candidate-bounded.lean').write_text(s)
+print('Prepared target-free candidate and exact original-contract recovery guards.')

@@ -1,0 +1,65 @@
+# Fresh helper6 entry audit (pre-edit, incomplete gates)
+
+Entry source SHA256: 0e1db65fbdf99d91baea2e9371a6c5022d177f1ca84916f55af6af417aab02b6.
+The full first ungolfed helper is 25 declaration lines, 18 proof lines. MainLemma remains 707 lines.
+The first-draft helper/wholecontext exact hashes and all25539 sealed manifest entries were independently read and rehashed at entry. No mismatches. This is source binding, not a substitute for fresh semantic gates.
+
+## Mathematics before golf
+
+For S=∑j rj, differentiation by k preserves each coordinate degree and bounds each coefficient by 2^S B. A further derivative i preserves degree again and bounds coefficients by 2^S(2^S B). Evaluating on the diagonal at α multiplies by at most ∏j(1+|α|)^rj=(1+|α|)^S. Since S≤s and both bases are at least1, the original bound is at most 2^s(2^s B)(1+|α|)^s. The two strict upper bounds by β and B>0 yield the advertised strict β(βB)β. No irrationality, algebraicity, nonzero P, nonempty variables, positive s, positive rj, or sign assumption on α is needed.
+
+Source clean.tex1537–1559 separately estimates Q coefficients, its further derivative, and evaluation. The helper represents exactly that final mathematical stage and is more general than Fin m. It does not encapsulate counting, common witnesses, index, or Lemma7. No cost-hiding permission follows from its private visibility.
+
+## Full24 audit (entry observations; tests/gates pending)
+
+1. LINT: fresh unfiltered native pending; inherited metadata cannot establish helper lint status.
+2. HAVE: hdQ no by used twice (hcQ2 and heval degree); hcQ no by used once in hcQ2 → candidate inline; hcQ2 no by used once in heval → candidate inline; heval no by used in rewrite and calc → keep; e2 no by used twice → keep or replace early threshold; hT2pos has by used twice → keep pending alternative proof; e3 no by used once → candidate inline.
+3. SET_OPTION: no options in helper. Defaults must be checked in actual compiled metadata.
+4. SIMP: none in first draft; no squeeze applicable.
+5. NAMING: abs/eval/iterated/hasseDeriv/lt describe the mathematical conclusion; `_aux` is unnumbered and private; contains no forbidden pattern/abbreviation. No helper rename required; existing five global renames remain owner queued.
+6. LINE PACKING: entry signature widths73,58,67,51,60,82,27 codepoints. Several full binder groups fit preceding lines, so concrete repack required after before captures.
+7. BY: := by at end of signature line; all inner by at end of their containing expression.
+8. FORMAT: no blank line inside helper; calc indentation can be simplified with proof rewrite; no haveI/letI or semicolon sequence.
+9. COMMENTS: none in helper. All9 entry standalone source comments and all7 genuine original filewide comments must remain byte-exact; main has5, not7.
+10. DOCSTRING: none, correct for private helper. No docstring will be introduced.
+11. VISIBILITY: classic dialect (no module keyword); helper private and direct main consumer only, subject to full runtime references verification.
+12. STRUCTURE:18 proof physical lines, no conjunction conclusion, no case split/branch>10. No new helper warranted; ordinary≤30 criterion holds.
+13. MATHLIB: actual five-method search and automation probe pending. Existing project CoeffNorm abs_coeff_hasseDeriv_le and abs_eval_le are genuine building blocks; source search results saved untruncated.
+14. JUNK DEF: n/a theorem has no data definition.
+15. EXISTS: n/a nonexistential bound.
+16. SHOW: no show/change in helper.
+17. PUSH_NEG: no push_neg or push Not.
+18. GENERALISE: full parameter and inner binder audit below; test strict→weak separately, never assume unused from caller.
+19. INEQUALITY: all signature inequalities already ≤/<, zero ≥/> code occurrences. No ge/gt name.
+20. NORMAL-FORM: polynomial coefficients/evaluation use existing map and Hasse API; β*(β*B)*β matches actual three estimate factors. β^3*B is algebraically equivalent but does not ease this application (caller already ring-normalizes).
+21. SYNTAX-GEN: arbitrary finite σ, arbitrary r including zeros, arbitrary s, i/k and α. Weakening one power hypothesis may make boundary applications easier; retain written argument order and common evaluation point.
+22. IMPORT-FANOUT: n/a no added imports proposed; imported classical helpers already available.
+23. CASTS: Int→Real coercion genuine; `(2 : ℝ)` sets power base; redundant inner `(P.coeff d : ℤ)` candidate probe; no removal without effective TYPE/value check.
+24. INSTANCE-NAME: n/a no declared instance; Fintype anonymous binder must remain actual input to sums/products.
+
+## Outer hypothesis/typeclass/conclusion audit 2.6a–e
+
+| Parameter | Class/use | Candidates and expected obligation |
+|---|---|---|
+| σ:Type* | universe/type variable; polynomial variables | Already universe-polymorphic; specializing to Fin m loses generality. Removing σ cannot preserve type. |
+| Fintype σ | class used in all sums/products and coefficient/eval APIs | Drop fails well-formed sum; Finite requires explicitly chosen enumeration and full reformulation of hs. No sign/localization analogue. |
+| P:MvPolynomial σ ℤ | structure value appears in actual evaluation | Drop cannot preserve conclusion; ℤ retained to match integer coefficient API, optional Hasse companion widening previously declined. |
+| r:σ→ℕ | degree vector; participates in hP and hs | Drop cannot preserve hypotheses; allow zeros already, no positive r assumptions. |
+| B:ℝ | coefficient and conclusion scale | Cross-type generality would restate coefficient norm APIs. No specific numerical assumption beyond hB/hc. |
+| α:ℝ | real diagonal evaluation point | No sign assumption to weaken; negative α and zero α are allowed. Function-valued evaluation is different API and previously optional Hasse companions are preserved declined. |
+| β:ℝ | target three-factor upper bound | Positivity follows from2^s<β; no independent positivity premise. Drop changes target. |
+| s:ℕ | total degree cap | Natural s0 included, no positive-s hypothesis; drop changes hs and both powers. |
+| hP:∀j degreeOf j P≤rj | proposition; coefficient bounds and preserved degrees | Drop-test and concrete countercertificate required; localizing only to relevant support is potential different syntactic API without actual caller benefit. |
+| hB:0<B | proposition; strict multiplication | Probe weak0≤B; zero P/B0 gives failure0<0, proving strictness needed with current conclusion. |
+| hs:∑j rj≤s | proposition; two monotonic power steps | Already weak; drop concrete countercertificate needed. |
+| h2:2^s<β | proposition; strict coefficient factors | Drop, weak2^s≤β. Weak individually appears sufficient using hα strict, but both weak cannot hold as general strict theorem. Must compile full effective candidate contract. |
+| hα:(1+abs α)^s<β | proposition; evaluation factor | Drop, weak≤β. Weak individually appears sufficient using h2 strict and B>0. Candidate expected beneficial, requires actual verified proof before API edit. |
+| hc:∀d abs(coeff P d)≤B | proposition; all coefficients | Drop concrete countercertificate; restricting to support changes expected input but has no current application benefit. Already weak numerical bound. |
+| i:σ→₀ℕ | structure value; arbitrary final differentiation | No restriction, including0; cannot drop without specializing conclusion. |
+| k:σ→₀ℕ | structure value; arbitrary initial differentiation | No restriction, including0; cannot drop without specializing conclusion. |
+
+Inner binders: hP's j ranges over everyσ and has no hypothesis; hs's j is bound by finite sum and needs same Fintype; hc's d ranges over allσ→₀ℕ and has no extra premise; conclusion evaluates every variable at same α (lambda binder `_` has no assumption); inner proof hdQ j is universally established using degreeOf_hasseDeriv_le, not inherited from caller; e2/e3 carry only hs plus bases≥1. All inner degree/coefficient inequalities are weak. Conclusion is a single strict absolute value bound, with factorsβ,βB,β; cannot replace < by≤ (weaker conclusion prohibited), delete absolute value, omit derivative, or assume nonzero derivative.
+
+2.6b actual candidate verification pending. 2.6c real/complex arbitrary normed-ring restatement not selected: earlier optional Hasse APIs declined and primitive coefficient lemma is integer-specific. 2.6d three actual literature queries saved in literature-search.json; separate Top3 capture to complete. 2.6e no candidate applied before verification.
+
+All final phase gates remain PENDING. No cleanup completion claimed.

@@ -1,0 +1,28 @@
+# Outer and inner generalisation, steps2.6a–e
+
+|Outer binder|Class/use|Mechanical candidates and actual result|
+|---|---|---|
+|σ : Type*|type variable, variable index of P/r/j|Already universe polymorphic. Type→Type* already satisfied; no fixed finite cardinality. Drop would leave dependent types unbound.|
+|[Fintype σ]|typeclass, finite sum/product and support box|Dropping leaves the literal sum/product without instances. Finite supplies existence rather than the enumeration in this written contract and would require choosing Fintype; no weaker enumeration parent preserves this expression. No decidability binder to remove.|
+|f : Polynomial ℤ|structure value, divisor/natDegree|Occurs in conclusion; cannot drop. Integer coefficient domain retained by user.|
+|P : MvPolynomial σ ℤ|structure value, differentiated numerator|Occurs in conclusion; cannot drop. Domain companion declined.|
+|r : σ → ℕ|structure value, degree-box/product/exponent|Occurs in conclusion and hd; cannot drop. Function-valued weight/API expansion declined.|
+|A : ℝ|structure value, remainder factor|Occurs in conclusion/hA; cannot drop or substitute an arbitrary fixed bound without changing the statement. Real bound domain retained.|
+|B : ℝ|structure value, coefficient factor|Occurs in conclusion/hc; cannot drop. Real domain retained.|
+|hA|proposition, passed to remainder coefficient estimate|Actual clear hA; exact? trial reached default heartbeat, inconclusive and no absence credit. No strict inequality to weaken. Bounded-degree localisation discussed below is equivalent under zero extension, not increased mathematical generality. Retained.|
+|hd|proposition, derivative degree/support box/diagonal degree|Actual clear hd; exact? trial reached default heartbeat, inconclusive. No strict inequality. All coordinates occur in the written bound; localisation to a chosen coordinate would not give support cardinality. Retained.|
+|hc|proposition, Hasse coefficients and B nonnegative at0|Actual clear hc; exact? trial reached default heartbeat, inconclusive. No strict inequality. Restricting to nonzero support alone loses the B≥0 fact for P0. Retained.|
+|j : σ →₀ ℕ|structure value, arbitrary derivative|Occurs in conclusion; cannot drop or replace by0. No hidden support/order premise.|
+|i : ℕ|structure value, arbitrary output coefficient|Occurs in conclusion; cannot drop or replace by0.|
+
+2.6b actual candidate verification: all selected statement tokens/order/universes/BinderInfo remain unchanged. No hypothetical weakening is marked compile-verified. The three clear/drop attempts timed out and their resulting open/admitted fallbacks were explicitly rejected. Exact full old TYPE is checked on the successful selected candidate, independently reconstructed original, and reconstructed current proof. Nothing is accepted on timeout.
+
+Outer mathematical necessity observations, not claimed as separately Lean-checked counterexample declarations: for σ=Unit, dropping hc allows P1,f0,r0,A0,B0,j0,i0, asking1≤0; dropping hd allows P=X²,f0,r0,A0,B1,j1,i1, asking2≤1; dropping hA allows P=X,f=X−5,r1,A0,B1,j0,i0, asking5≤4. These explain why inconclusive automation is not a recommendation to delete the hypotheses.
+
+|Inner binder|2.6a class/use/localisation/drop analysis|2.6b verification status|
+|---|---|---|
+|hA.i : ℕ|All divisor coefficients enter reduction. Restriction i≤f.natDegree is equivalent after zero extension: i0 lies in range and forces A≥0, coefficients above degree are zero. Nonzero-support restriction alone loses A≥0 for f0. No strict→weak change; the original weak inequality is already weakest of that pair.|No changed contract selected; bounded localisation would restate an equivalent predicate and require rebuilding the supplied remainder API premise, without weakening the mathematical assumptions. Not claimed compiler-tested.|
+|hd.k : σ|Every coordinate contributes to the degree sum and box product. Removing the binder would only give one coordinate; allσ including emptyσ already covered. Restricting to P's variable support would still need bounds on r and zero-degree coordinates, whose existing natural bounds are automatic.|No changed contract selected; no extra finiteness/decidability premise to remove.|
+|hc.d : σ→₀ℕ|All coefficients are passed to the Hasse bound. A box-only predicate under hd including d0 recovers all coefficients by zero extension and B≥0. Restriction only to support fails to constrain B for P0; adding B≥0 separately merely repackages the current fact.|No changed contract selected; global predicate matches the existing quantitative Hasse API and only actual caller.|
+
+Inner2.6c: no evidenced strictly more general contract within retained domains/weight API. Inner2.6d: the same three actual literature queries, exact Top3 and raw results retained for this private helper by explicit dispatch requirement; no new result or generalisation adopted. Optional exact ask_chatgpt_math tool unavailable. Inner2.6e: no safe strictly weaker predicate was established; retain the exact old contract. Outer2.6c–e: same conclusion, no big-change flag, no optional domain/weight companion, no decision requested.

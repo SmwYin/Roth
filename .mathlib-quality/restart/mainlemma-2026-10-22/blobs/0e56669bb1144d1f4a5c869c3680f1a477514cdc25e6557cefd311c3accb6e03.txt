@@ -1,0 +1,21 @@
+from pathlib import Path
+import json,hashlib,time
+p=Path('/private/tmp/roth-mainlemma-helper9-rem-floor');o=Path('/private/tmp/roth-mainlemma-owner');load=lambda n:json.loads((p/n).read_text());sha=lambda b:hashlib.sha256(b).hexdigest();rows=[];start=time.time()
+parent=sha((p/'parent-environment.json').read_bytes());pins=None;prior=None
+for label,cmd in [('production-v5-full',['/Users/ramin/.elan/bin/lake','build']),('production-v5-eval',['/Users/ramin/.elan/bin/lake','build','Roth.LeanEval'])]:
+ d=load(label+'.json');t=load(label+'-terminal.json');raw=(p/(label+'.log')).read_bytes();err=(p/(label+'.stderr.log')).read_bytes();raw.decode('utf8','strict');err.decode('utf8','strict')
+ assert d['exit']==0 and not d['timed_out'] and all(d[k] for k in ['drained','group_absent_at_exit','immutable','inputs_immutable','raw_lake_environment_equal','strict_utf8'])
+ assert d['command']==t['command']==cmd and t['exit']==0 and not t['timed_out'] and t['recorded_before_group_probe_postenv_hashing']
+ assert d['pid']==d['pgid']==t['pid']==t['pgid'] and d['started_unix']<=t['observed_immediately_after_wait_unix']<=d['completed_unix']
+ assert sha(raw)==d['raw_sha256'] and sha(err)==d['stderr_sha256'] and d['source_pins_before']==d['source_pins_after'] and len(d['source_pins_before'])==17
+ if pins is None:pins=d['source_pins_before']
+ assert d['source_pins_before']==pins and d['frozen_observed_parent_environment_sha256']==parent
+ assert d['actual_lake_environment_before']==d['actual_lake_environment_after']
+ for side in ['before','after']:
+  e=(p/(label+'-'+side+'-env.log')).read_bytes();ee=(p/(label+'-'+side+'-env.stderr.log')).read_bytes();e.decode('utf8','strict');ee.decode('utf8','strict');assert sha(e)==d['actual_lake_environment_'+side]['stdout_sha256'] and sha(ee)==d['actual_lake_environment_'+side]['stderr_sha256']
+ if prior is not None:assert prior['completed_unix']<=d['started_unix']
+ prior=d;rows.append({'gate':label,'exit':0,'seconds_receipt':d['seconds'],'seconds_through_actual_wait':t['seconds_through_wait'],'raw_sha256':sha(raw),'terminal_sha256':sha((p/(label+'-terminal.json')).read_bytes())})
+assert pins['Roth/MainLemma.lean']==sha(Path('/Users/ramin/LEAN/Roth/Roth/MainLemma.lean').read_bytes())=='fd03dd6324e75b3ab07865dff1258a352d30403e893716f6e813c738dbd647c2'
+assert pins['Roth/Main.lean']==sha(Path('/Users/ramin/LEAN/Roth/Roth/Main.lean').read_bytes())=='6668ff83a7e7b156f6f29b8f2d0163e699da002b70338d5ee0715065ade9b25f'
+entry=load('before-pairs.json')['source_pins_before'];assert {k:v for k,v in pins.items() if k!='Roth/MainLemma.lean'}=={k:v for k,v in entry.items() if k!='Roth/MainLemma.lean'}
+out={'status':'PASS owner independently reviewed helper9 V5 actual production FULL then separate Eval; other final gates remain pending','observed_start_unix':start,'observed_end_unix':time.time(),'source17_pins':pins,'parent_environment_sha256':parent,'rows':rows,'scope':'Selected helper final builds only; no compiler/native calls and no source changes.'};(o/'original27-helper9-owner-v5-production-build-review-v1.json').open('x').write(json.dumps(out,indent=2)+'\n');print(json.dumps({'status':out['status'],'gates':len(rows)}))

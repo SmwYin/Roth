@@ -1,0 +1,21 @@
+from pathlib import Path
+import json
+p=Path('/private/tmp/roth-mainlemma-helper9-rem-floor');helper=(p/'entry-helper.lean').read_text();sig,body=helper.split(':= by',1);prefix='import Lean.Util.FindExpr\n'+(p/'entry-prefix.lean').read_text();name='private lemma abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux';parts=[]
+for label,tactic in [('rfl','rfl'),('grind','grind'),('simp_all','simp_all'),('aesop','aesop'),('exact_search','exact?'),('apply_search','apply?')]:
+ parts.append(sig.replace(name,'theorem probe_'+label,1)+':= by\n  '+tactic+'\n')
+for label,binder in [('fintype',' [Fintype σ]'),('hA','(hA : ∀ i, |(f.coeff i : ℝ)| ≤ A)'),('hn','(hn : 1 ≤ f.natDegree)'),('hd','(hd : ∀ k, degreeOf k P ≤ r k)'),('hc','(hc : ∀ d, |(P.coeff d : ℝ)| ≤ B)'),('hs','(hs : ∑ k, r k ≤ s)'),('h2','(h2 : (2 : ℝ) ^ s ≤ β)'),('hpow','(hpow : (1 + A) ^ s ≤ β)')]:
+ assert binder in sig;parts.append(sig.replace(name,'theorem probe_drop_'+label,1).replace(binder,'',1)+':= by'+body+'\n')
+parts += ['''theorem probe_lia (x s n : ℕ) (hs : x ≤ s) (hn : 1 ≤ n) : x + 1 - n ≤ s := by lia
+''','''theorem probe_positivity (B β : ℝ) (hB : 0 ≤ B) (hβ : 0 ≤ β) : 0 ≤ B * β ^ 3 := by positivity
+''','''theorem probe_gcongr (x y z B β : ℝ) (hB : 0 ≤ B) (hβ : 0 ≤ β) (hx : x ≤ β)
+    (hy : y ≤ β) (hz : z ≤ β) (hx0 : 0 ≤ x) (hy0 : 0 ≤ y) (hz0 : 0 ≤ z) :
+    x * (y * (z * B)) ≤ β * (β * (β * B)) := by gcongr
+''','''theorem probe_linear_combination (B β : ℝ) : β * (β * (β * B)) = B * β ^ 3 := by
+  linear_combination
+''','''theorem probe_floor_unsqueezed (z : ℤ) (b : ℝ) (h : |(z : ℝ)| ≤ b) : |z| ≤ (⌊b⌋₊ : ℤ) := by
+  simpa [Int.natCast_floor_eq_floor ((abs_nonneg _).trans h), Int.le_floor, Int.cast_abs] using h
+''','''theorem probe_norm_cast (z : ℤ) : (z.natAbs : ℝ) = |(z : ℝ)| := by norm_cast
+''']
+# No successful search is accepted from this mixed expected-failure unit; final independent guards will certify selected proof.
+(p/'isolated-probes-v1.lean').write_text(prefix+'\n'.join(parts)+'\nend Roth\n')
+(p/'isolated-probes-v1-index.json').write_text(json.dumps({'whole_proof_trials':['rfl','grind','simp_all','aesop','exact?','apply?'],'drops':['Fintype','hA','hn','hd','hc','hs','h2','hpow'],'local_trials':['lia','positivity','gcongr','linear_combination','floor unsqueezed simpa','norm_cast'],'expected_whole_failure':True,'no_selected_proof_credit_from_partial_success':True},indent=2)+'\n')

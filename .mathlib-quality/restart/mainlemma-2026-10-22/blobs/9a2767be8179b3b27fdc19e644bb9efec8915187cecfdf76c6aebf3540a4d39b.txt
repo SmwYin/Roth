@@ -1,0 +1,16 @@
+from pathlib import Path
+p=Path('/private/tmp/roth-mainlemma-helper9-rem-floor');s=(p/'bind-profile-shadow-v2.py').read_text();needle="assert norm(printed)==norm(canonical),(label,marker,'actual payload mismatch')"
+replacement='''payload_strict_equal = norm(printed)==norm(canonical)
+ if not payload_strict_equal:
+  owner=Path('/private/tmp/roth-mainlemma-owner/original27-helper9-owner-v4-printer-parentheses-review-v1.json')
+  assert h(owner.read_bytes())=='abe442dbb4ed187158dc3be3c4b3fa288597cdd964316a7406c091d8475cae17'
+  assert phase=='pilot-v4' and label in ['pilot-v4-profile-a','pilot-v4-profile-b']
+  assert marker=='private lemma abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux'
+  assert h(canonical.encode())=='9b770153854262e32d53ede943191f1b00c3015e9bbbfeb7fcbb72a658acd36e'
+  assert h(printed.encode())=='ae98148cab964572b0c180f919dc8f3b47ba90b0ffddd2746f08cfcc66340bd6'
+  ca=norm(canonical);term=norm(json.loads(owner.read_text())['exact_enclosed_complete_term'])
+  assert len(ca)==1457 and ca.count(term)==1 and ca[870:965]==term
+  assert norm(printed)==ca[:870]+'('+ca[870:965]+')'+ca[965:]
+'''
+assert needle in s;s=s.replace(needle,replacement);s=s.replace('-framing-v2-','-framing-v3-');s=s.replace("'completepayload_whitespace_standalonecomments_only_equal':True","'completepayload_whitespace_standalonecomments_only_equal':payload_strict_equal,'exact_owner_one_pair_printer_allowance':not payload_strict_equal");s=s.replace("'raw_sha256':h(raw),'rows':results","'raw_sha256':h(raw),'candidate_live_distinction':scope.get('qualification'),'canonical_live_expected_sha256':scope.get('canonical_live_expected_sha256'),'rows':results");(p/'bind-profile-pilot-v4-v3.py').write_text(s)
+s=(p/'validate-pilot-v4.py').read_text().replace('-framing-v2-binding.json','-framing-v3-binding.json').replace('pilot-v4-profile-acceptance-v1.json','pilot-v4-profile-acceptance-v2.json');(p/'validate-pilot-v4-v2.py').write_text(s)

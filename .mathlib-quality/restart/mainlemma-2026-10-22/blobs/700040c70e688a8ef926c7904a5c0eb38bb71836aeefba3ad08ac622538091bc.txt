@@ -1,0 +1,57 @@
+from pathlib import Path
+import hashlib,json,codecs,time,subprocess
+p=Path('/private/tmp/roth-mainlemma-helper7-index-eval');root=Path('/Users/ramin/LEAN/Roth');oldp=Path('/private/tmp/roth-mainlemma-main-lemma-resume1');owner=Path('/private/tmp/roth-mainlemma-owner');start=time.time();ex={p/n for n in ['manifest.json','second-rehash.json','final-drain-owned-process-inventory.json','final-seal.json']}
+old=json.loads((oldp/'manifest.json').read_text())['entries'];paths=set(map(Path,old));known={}
+def add(n,v,why):known.setdefault((str(n),v['sha256'],v['bytes']),[]).append(why)
+for n,v in old.items():
+ if not v['strict_utf8']:add(n,v,'Accepted predecessor actual binary bytes; exact path/SHA/size checked again, prior actual provenance retained in predecessor manifest and owner third-stream review')
+for f in p.glob('*-all14-*.json'):
+ j=json.loads(f.read_text())
+ for n,v in j.get('artifacts',{}).items():paths.add(Path(n));add(n,v,str(f)+' actual compiled availability; not runtime-loaded closure')
+for f in p.glob('*-binaries.json'):
+ for n,v in json.loads(f.read_text())['binaries'].items():
+  for a in {n,v['resolved_realpath']}:paths.add(Path(a));add(a,v,str(f)+' actual executable')
+for f in p.glob('*-cache.json'):
+ for n,v in json.loads(f.read_text()).items():
+  for a in [n,v['saved']]:paths.add(Path(a));add(a,v,str(f)+' actual saved project cache stage, original path '+n)
+for f in p.glob('*-root-extra.json'):
+ for n,v in json.loads(f.read_text())['root_outputs'].items():
+  for a in [n,v['saved']]:paths.add(Path(a));add(a,v,str(f)+' actual root cache stage, original path '+n)
+for f in oldp.rglob('*'):
+ if f.is_file():paths.add(f)
+for n in ['original27-helper7-dispatch.txt','original27-helper7-owner-partial-handoff-review.json','original27-helper7-owner-partial-byte-provenance-review.json','original27-helper7-owner-firstdraft-bounded-review.json','original27-helper7-owner-partial-seal-drain-review.json','original27-helper7-owner-selected-api-build-native-review.json','original27-resume1-owner-before-profile-reanchor.json']:
+ paths.add(owner/n)
+paths.update(owner.glob('original27-helper7-owner-*.json'))
+for base in [Path('/Users/ramin/.codex/skills/mathlib-quality'),Path('/Users/ramin/.codex/skills/lean4')]:
+ paths.add(base/'SKILL.md')
+base=Path('/Users/ramin/.local/share/roth-mathlib-quality');paths.update(base/'commands'/n for n in ['cleanup.md','cleanup-all.md','buzz.md']);paths.update((base/'skills/mathlib-quality/references').glob('*.md'))
+paths.update(root/n for n in ['Roth.lean','lean-toolchain','lakefile.toml','lake-manifest.json','.mathlib-quality/references/clean.tex','.mathlib-quality/cleanup/MainLemma-main_lemma.md','.mathlib-quality/cleanup/MainLemma-abs_eval_iterated_hasseDeriv_lt_aux-helper.md','.mathlib-quality/cleanup/MainLemma-exists_hasseDeriv_index_eval_bound_aux-helper.md']);paths.update(root.glob('Roth/*.lean'))
+req=json.loads((p/'searched-source-inventory.json').read_text());r=subprocess.run(req['command'],capture_output=True);assert r.returncode==0;r.stdout.decode('utf8','strict');r.stderr.decode('utf8','strict');assert sorted(r.stdout.decode().splitlines())==sorted((p/'searched-source-inventory.stdout').read_text().splitlines());(p/'final-source-inventory.stdout').write_bytes(r.stdout);(p/'final-source-inventory.stderr').write_bytes(r.stderr);paths.update(map(Path,r.stdout.decode().splitlines()))
+paths.update(f for f in p.rglob('*') if f.is_file() and f not in ex)
+def readrow(f):
+ h=hashlib.sha256();dec=codecs.getincrementaldecoder('utf8')('strict');u=True;size=0
+ with f.open('rb') as stream:
+  for b in iter(lambda:stream.read(2*1024*1024),b''):
+   h.update(b);size+=len(b)
+   if u:
+    try:dec.decode(b,False)
+    except UnicodeDecodeError:u=False
+ if u:
+  try:dec.decode(b'',True)
+  except UnicodeDecodeError:u=False
+ k=(str(f),h.hexdigest(),size);why=None
+ if not u:
+  assert k in known,('Unqualified nonUTF8 actual tuple',k)
+  why='; '.join(known[k])
+ return {'sha256':h.hexdigest(),'bytes':size,'strict_utf8':u,'binary_exception':why}
+rows={str(f):readrow(f) for f in sorted(paths)};byhash={}
+for n,v in rows.items():
+ if n.startswith('/private/tmp/roth-mainlemma-'):byhash.setdefault((v['sha256'],v['bytes']),[]).append(n)
+alias=[]
+for n,v in old.items():
+ if rows[n]['sha256']!=v['sha256']:
+  assert n.startswith(str(root)+'/'),('Sealed historical artifact changed',n)
+  matches=byhash.get((v['sha256'],v['bytes']),[]);assert matches,('Missing actual historical saved bytes',n)
+  selected=next((a for a in matches if a.startswith(str(p)+'/entry-')),matches[0]);alias.append({'historical_live_path':n,'historical_expected_sha256':v['sha256'],'historical_expected_bytes':v['bytes'],'current_actual_sha256':rows[n]['sha256'],'actual_saved_historical_stage':selected,'qualification':'Historical receipt untouched; current live source/cache alias legitimately changed by fresh helper7 lifecycle.'})
+f=p/'historical-live-aliases.json';f.write_text(json.dumps({'observed_unix':time.time(),'aliases':alias},indent=2)+'\n');rows[str(f)]=readrow(f)
+out={'observed_start':start,'observed_end':time.time(),'entries':rows,'count':len(rows),'bytes':sum(v['bytes'] for v in rows.values()),'exact_self_reference_exclusions':sorted(map(str,ex)),'scope':'All actual helper7 artifacts/raws/failures/reads/source17/full source-universe/current+saved cache104/root8/all14setup/package/core/fourbinary/env/CLI/native/semantic/profile and full predecessor closure. Availability superset, not exact runtime-loaded closure. Historical live aliases explicitly map actual saved stage bytes.'};(p/'manifest.json').write_text(json.dumps(out,indent=2)+'\n');print({'count':out['count'],'bytes':out['bytes'],'historical_aliases':len(alias),'seconds':time.time()-start})

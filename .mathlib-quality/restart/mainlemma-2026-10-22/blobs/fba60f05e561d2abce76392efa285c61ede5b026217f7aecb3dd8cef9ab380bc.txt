@@ -1,0 +1,13 @@
+from pathlib import Path
+import hashlib,json,time,sys
+p=Path('/private/tmp/roth-mainlemma-helper8-diag-rem')
+root=Path('/Users/ramin/LEAN/Roth')
+names=json.loads((p/'entry-pins.json').read_text())
+start=time.time();rows={}
+for name in names:
+    data=(root/name).read_bytes()
+    data.decode('utf8','strict')
+    rows[name]={'sha256':hashlib.sha256(data).hexdigest(),'bytes':len(data)}
+out={'observation_started_unix':start,'observation_completed_unix':time.time(),'rows':rows}
+(p/(sys.argv[1]+'.json')).write_text(json.dumps(out,indent=2)+'\n')
+print(sys.argv[1],len(rows))

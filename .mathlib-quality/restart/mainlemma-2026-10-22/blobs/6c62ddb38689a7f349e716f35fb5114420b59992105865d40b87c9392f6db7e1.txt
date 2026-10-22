@@ -1,0 +1,20 @@
+from pathlib import Path
+import json,hashlib,time
+p=Path('/private/tmp/roth-mainlemma-helper9-rem-floor');labels=['pilot-v4-profile-a-prelaunch','pilot-v4-profile-b-prelaunch','pilot-v4-profile-pair-after'];snap={}
+for lab in labels:
+ src=json.loads((p/(lab+'-pins.json')).read_text());sources={n:{'sha256':h,'bytes':(p/(lab+'-source')/n).stat().st_size} for n,h in src.items()}
+ cache=json.loads((p/(lab+'-cache.json')).read_text());cache={n:{k:v[k] for k in ['sha256','bytes']} for n,v in cache.items()}
+ root=json.loads((p/(lab+'-root-extra.json')).read_text());rootout={n:{k:v[k] for k in ['sha256','bytes']} for n,v in root['root_outputs'].items()}
+ pkg=json.loads((p/(lab+'-all14-package-catalog.json')).read_text());core=json.loads((p/(lab+'-all14-core-availability.json')).read_text());bins=json.loads((p/(lab+'-binaries.json')).read_text())['binaries']
+ snap[lab]={'source17':sources,'cache104':cache,'root8':rootout,'all14setups':pkg['setups'],'package':pkg['artifacts'],'core':core['artifacts'],'fourbinaries':bins}
+assert snap[labels[0]]==snap[labels[1]]==snap[labels[2]]
+families=json.loads((p/'pilot-v4-source-family-data.json').read_text());family_names={r['name'] for r in families};totals=[]
+for letter in ['a','b']:
+ label='pilot-v4-profile-'+letter;j=json.loads((p/(label+'-framing-v3-binding.json')).read_text());r=json.loads((p/(label+'.json')).read_text());assert r['actual_lake_environment_before']==r['actual_lake_environment_after']
+ for row in j['rows']:
+  expected={n for n in family_names if n==row['runtime_name'] or n.startswith(row['runtime_name']+'.')}
+  assert set(row['actual_kernel_names'])==expected,(expected,row['actual_kernel_names'])
+  for root in row['compiler_roots']:assert set(root['actual_full_names'])<=expected
+ totals.append({'sample':letter,'helper_ms':j['rows'][0]['sum_ms'],'main_ms':j['rows'][1]['sum_ms'],'combined_ms':sum(row['sum_ms'] for row in j['rows']),'all_full_payloads_and_actual_disjoint_roots_families':True,'helper_budget':('PASS <1000; >=750 observed in prospective sample B, BOTH fixed captures retained; no unchanged third' if j['rows'][0]['sum_ms']>=750 else 'PASS <750; both fixed prospective captures retained'),'main_budget':'VALID FAIL >1000; original27 repair pending'})
+result={'observed_unix':time.time(),'all_Apre_Bpre_post_exact_tuples_equal':True,'counts':{'sources':17,'cache':104,'root':8,'setups':14,'package':12202,'core':12592,'binaries':4},'availability_superset_not_exact_runtime_loaded_closure':True,'selected_source_sha256':snap[labels[0]]['source17']['Roth/MainLemma.lean']['sha256'],'totals':totals,'no_unmatched_prior_environment_comparison':True,'all_samples_retained':True}
+(p/'pilot-v4-profile-acceptance-v2.json').write_text(json.dumps(result,indent=2)+'\n');print(totals)

@@ -1,0 +1,29 @@
+from pathlib import Path
+import hashlib,json,os,stat,time
+P=Path('/private/tmp/roth-mainlemma-helper9-rem-floor')
+def save_at_immutable(dest,b):
+ dest=Path(dest);dest.parent.mkdir(parents=True,exist_ok=True)
+ if dest.exists():
+  actual=dest.read_bytes();assert len(actual)==len(b) and actual==b and hashlib.sha256(actual).digest()==hashlib.sha256(b).digest(),('Existing immutable snapshot differs',str(dest))
+  return {'saved':str(dest),'reused':True,'actual_full_existing_bytes_verified_unix':time.time(),'mode':stat.S_IMODE(dest.stat().st_mode)}
+ with dest.open('xb') as f:f.write(b)
+ assert dest.read_bytes()==b
+ return {'saved':str(dest),'reused':False,'actual_full_existing_bytes_verified_unix':time.time(),'mode':stat.S_IMODE(dest.stat().st_mode)}
+_index=None
+def save_compiled(b):
+ global _index
+ sha=hashlib.sha256(b).hexdigest();key=(sha,len(b))
+ if _index is None:
+  _index={}
+  for pat,field in [('*-cache.json',None),('*-root-extra.json','root_outputs')]:
+   for f in sorted(P.glob(pat)):
+    j=json.loads(f.read_text());j=j if field is None else j[field]
+    for v in j.values():
+     q=Path(v['saved'])
+     if str(q).startswith(str(P)+'/'):_index.setdefault((v['sha256'],v['bytes']),[]).append(q)
+ for q in _index.get(key,[]):
+  if q.is_file():
+   actual=q.read_bytes()
+   if len(actual)==len(b) and actual==b and hashlib.sha256(actual).hexdigest()==sha:
+    return {'saved':str(q),'reused':True,'actual_full_existing_bytes_verified_unix':time.time(),'mode':stat.S_IMODE(q.stat().st_mode)}
+ return save_at_immutable(P/'immutable-compiled-blobs-v1'/sha,b)

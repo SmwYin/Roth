@@ -1,0 +1,31 @@
+from pathlib import Path
+import json,hashlib,time,subprocess,os,errno
+p=Path('/private/tmp/roth-mainlemma-helper8-diag-rem');o=Path('/private/tmp/roth-mainlemma-owner');root=Path('/Users/ramin/LEAN/Roth');load=lambda f:json.loads(Path(f).read_text());sha=lambda f:hashlib.sha256(Path(f).read_bytes()).hexdigest();start=time.time();s=load(p/'seal.json');m=load(p/'manifest.json');r=load(p/'second-rehash.json');d=load(p/'final-drain.json')
+assert len(s['all7_END'])==7 and all(v.startswith('END') for v in s['all7_END'].values()) and s['active_compiler_native_profile_calls']==s['child_agents_created']==0 and s['no_calls_or_mutations_after_this_seal_until_owner_resume'] and s['no_Git_or_publication']
+for n,k in [('manifest.json','manifest_sha256'),('second-rehash.json','second_rehash_sha256'),('final-drain.json','final_drain_sha256')]:assert sha(p/n)==s[k]
+report=root/'.mathlib-quality/cleanup/MainLemma-abs_coeff_diag_hasseDeriv_modByMonic_le_aux-helper.md';assert sha(report)==s['report_sha256']=='61020c575813abb2cd781b32417e760fe0c04a9d9303d0f6378ffa3d617ecc2d'
+assert s['manifest_count']==m['count']==r['count']==46632 and s['manifest_bytes']==m['bytes']==r['bytes']==14653161496 and r['binary_exceptions_with_exact_observed_tuple']==25808
+assert m['observed_end']<=r['observed_start']<=r['observed_end']<=d['observed_start_unix']<=d['observed_end_unix']<=s['sealed_unix']
+assert d['known_owned_group_count']==s['known_owned_process_groups']==len(d['known_owned_groups'])==299 and d['all_known_groups_absent'] and not d['owned_rows'] and not d['unknown_groups'] and not d['present_groups'] and d['exit']==0
+pins={str(f.relative_to(root)):sha(f) for f in sorted(list(root.glob('Roth/*.lean'))+[root/'Roth.lean',root/'lean-toolchain',root/'lakefile.toml',root/'lake-manifest.json'])};assert pins==s['all_source17_pins']==d['source17'] and len(pins)==17
+oldfile=Path('/private/tmp/roth-mainlemma-main-lemma-resume2/final-drain-owned-process-inventory.json');old=load(oldfile)['known_owned_groups'];assert len(old)==212 and str(oldfile) in m['entries'] and sha(oldfile)==m['entries'][str(oldfile)]['sha256']
+launches={}
+for f in p.glob('*-launch.json'):
+ x=load(f)
+ if isinstance(x,dict) and isinstance(x.get('pgid'),int):
+  assert x['pid']==x['pgid'] and isinstance(x['command'],list) and x['command'];assert str(f) in m['entries'] and sha(f)==m['entries'][str(f)]['sha256'];launches.setdefault(str(x['pgid']),[]).append(str(f))
+assert len(launches)==87 and set(old)|set(launches)==set(d['known_owned_groups'])
+obs={}
+for g,v in d['known_owned_groups'].items():
+ assert v['status']=='absent' and v['errno']==errno.ESRCH
+ try:os.killpg(int(g),0);obs[g]={'state':'PRESENT','observed_unix':time.time()}
+ except ProcessLookupError:obs[g]={'state':'ABSENT','errno':errno.ESRCH,'observed_unix':time.time()}
+ except PermissionError as e:obs[g]={'state':'UNKNOWN','errno':e.errno,'observed_unix':time.time()}
+assert all(x['state']=='ABSENT' for x in obs.values())
+cmd=['/bin/ps','-axo','pid,ppid,pgid,lstart,command'];q=subprocess.run(cmd,capture_output=True,timeout=15);stdout=q.stdout.decode('utf8','strict');stderr=q.stderr.decode('utf8','strict');assert q.returncode==0 and not stderr;rows=[]
+needles=[str(p)+'/', '/private/tmp/roth-mainlemma-main-lemma-resume2/','/private/tmp/roth-mainlemma-main-lemma-resume1/','/private/tmp/roth-mainlemma-helper7-index-eval/','/private/tmp/roth-mainlemma-helper6-double-hasse/','/private/tmp/roth-mainlemma-main-lemma/']
+for line in stdout.splitlines()[1:]:
+ a=line.split(None,8);argv=a[8] if len(a)>8 else '';first=argv.split()[0] if argv.split() else ''
+ if any(n in argv for n in needles) or 'lake env printenv' in argv or Path(first).name=='printenv':rows.append(line)
+assert not rows,rows
+out={'status':'PASS owner independent helper8 final seal/source17/fresh299 actual known-group and exact-task/bare-resolved-printenv argv drain','observed_start_unix':start,'observed_end_unix':time.time(),'seal_sha256':sha(p/'seal.json'),'manifest_sha256':sha(p/'manifest.json'),'second_rehash_sha256':sha(p/'second-rehash.json'),'drain_sha256':sha(p/'final-drain.json'),'report_sha256':sha(report),'all7_END':s['all7_END'],'299_actual_groups_fresh_absent':True,'actual_group_observations':obs,'known_group_provenance':{'inherited_R2_groups':212,'fresh_own_actual_launch_receipt_groups':87,'actual_launch_files':launches},'fresh_ps_command':cmd,'fresh_ps_exit':q.returncode,'fresh_ps_stdout_sha256':hashlib.sha256(q.stdout).hexdigest(),'fresh_exact_owned_and_printenv_rows':rows,'all17_current_source_pins_exact':True,'source_pins':pins,'leases_explicitly_revoked_by_owner':True,'historical_unknown_admin_PGID':'Remains explicitly unknown; fresh exact owned-argv inventory is current evidence, not reconstructed historical descendant drain.','scope':'Local helper8 release only, no original27/file/publication credit. No compiler/native/profile launched.'};(o/'original27-helper8-owner-final-seal-drain-review.json').write_text(json.dumps(out,indent=2)+'\n');print(json.dumps({k:v for k,v in out.items() if k not in ['actual_group_observations','source_pins','known_group_provenance']}))

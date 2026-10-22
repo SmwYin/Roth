@@ -1,0 +1,11 @@
+from pathlib import Path
+import json,hashlib
+p=Path('/private/tmp/roth-mainlemma-helper9-rem-floor');s=(p/'selected-source.lean').read_text();assert s==Path('/Users/ramin/LEAN/Roth/Roth/MainLemma.lean').read_text();i=s.index('private lemma abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux');e=s.index('/-- **Roth',i)
+rows={'after-helper-command.lean':s[i:e].rstrip()+'\n','after-main-command.lean':s[e:s.index('\nend Roth',e)].rstrip()+'\n','after-scoped.lean':s[:s.index('namespace Roth')]+'set_option trace.profiler false\n'+s[s.index('namespace Roth'):i]+'set_option trace.profiler true\n'+s[i:s.index('\nend Roth')]+'\nset_option trace.profiler false\nend Roth\n'}
+for n,b in rows.items():
+ with (p/n).open('x') as f:f.write(b)
+assert ''.join(l for l in rows['after-scoped.lean'].splitlines(keepends=True) if l.rstrip('\n') not in ['set_option trace.profiler false','set_option trace.profiler true'])==s
+scope=json.loads((p/'before-scope.json').read_text());scope['canonical']=str(p/'selected-source.lean');scope['canonical_sha256']=hashlib.sha256(s.encode()).hexdigest();scope['scaffold']=str(p/'after-scoped.lean');scope['scaffold_sha256']=hashlib.sha256(rows['after-scoped.lean'].encode()).hexdigest()
+for c in scope['commands']:c['canonical']=c['canonical'].replace('/before-','/after-')
+with (p/'after-scope.json').open('x') as f:f.write(json.dumps(scope,indent=2)+'\n')
+print(scope)

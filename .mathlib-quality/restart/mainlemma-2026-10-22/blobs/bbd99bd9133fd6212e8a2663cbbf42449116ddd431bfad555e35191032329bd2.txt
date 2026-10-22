@@ -1,0 +1,41 @@
+from pathlib import Path
+import json,hashlib,codecs,time
+p=Path('/private/tmp/roth-mainlemma-main-lemma-resume3');o=Path('/private/tmp/roth-mainlemma-owner');root=Path('/Users/ramin/LEAN/Roth');start=time.time();load=lambda f:json.loads(Path(f).read_text());sha=lambda f:hashlib.sha256(Path(f).read_bytes()).hexdigest();m=load(p/'manifest.json');old=load('/private/tmp/roth-mainlemma-helper8-diag-rem/manifest.json')['entries'];known={}
+def add(n,v,why):known.setdefault((str(n),v['sha256'],v['bytes']),[]).append(why)
+for n,v in old.items():
+ if not v['strict_utf8']:add(n,v,'Actual unchanged prior P8 sealed binary, independently owner-accepted')
+for f in list(p.glob('*-all14-*-catalog.json'))+list(p.glob('*-all14-core-availability.json')):
+ for n,v in load(f)['artifacts'].items():add(n,v,'Actual fresh '+f.name+' compiled availability superset, not exact loaded closure')
+for f in p.glob('*-cache.json'):
+ for n,v in load(f).items():
+  add(n,v,'Actually observed compiled path '+f.name);add(v['saved'],v,'Exact saved actually observed compiled bytes '+f.name)
+for f in p.glob('*-root-extra.json'):
+ for n,v in load(f)['root_outputs'].items():add(n,v,'Actual root compiled output '+f.name);add(v['saved'],v,'Exact saved root output '+f.name)
+for f in p.glob('*-binaries.json'):
+ for n,v in load(f)['binaries'].items():add(n,v,'Actual Elan proxy/pinned executable '+f.name);add(v['resolved_realpath'],v,'Actual resolved executable '+f.name)
+binary=[];size=0
+for n,v in m['entries'].items():
+ digest=hashlib.sha256();dec=codecs.getincrementaldecoder('utf8')('strict');u=True;nb=0
+ with Path(n).open('rb') as file:
+  for b in iter(lambda:file.read(2*1024*1024),b''):
+   digest.update(b);nb+=len(b)
+   if u:
+    try:dec.decode(b,False)
+    except UnicodeDecodeError:u=False
+ if u:
+  try:dec.decode(b'',True)
+  except UnicodeDecodeError:u=False
+ assert (digest.hexdigest(),nb,u)==(v['sha256'],v['bytes'],v['strict_utf8']),('Byte/UTF8 change',n)
+ if not u:
+  k=(n,v['sha256'],v['bytes']);assert v['binary_exception'] and k in known,('No actual binary path/SHA/bytes provenance',n)
+  binary.append({'path':n,'sha256':v['sha256'],'bytes':nb,'actual_provenance':known[k]})
+ else:assert v['binary_exception'] is None,n
+ size+=nb
+assert len(m['entries'])==m['count']==48090 and size==m['bytes']==15745839808 and len(binary)==25934
+second=load(p/'second-rehash.json');assert second['all_entries_match'] and second['independent_fresh_streamed_read'] and second['count']==m['count'] and second['bytes']==size and second['manifest_sha256']==sha(p/'manifest.json');assert second['all_own_artifacts_included_except_exact_self_receipts'] and second['fresh_generic_rg_source_file_universe_exact_equal'];assert sorted(second['actual_fresh_listing_stdout'].splitlines())==sorted((p/'source-universe-v2.stdout').read_text().splitlines()) and not second['actual_fresh_listing_stderr']
+ex=set(m['exact_self_reference_exclusions']);assert {str(f) for f in p.rglob('*') if f.is_file() and str(f) not in ex}<=set(m['entries'])
+alias=load(p/'historical-live-aliases-v1.json');lost='/private/tmp/roth-mainlemma-owner/original27-helper8-END-received.json';changed={n for n,v in old.items() if m['entries'][n]['sha256']!=v['sha256'] and n!=lost};assert m['historical_administrative_lost_row_exception']['old_expected_sha256']==old[lost]['sha256']=='9533ba7212592c8f39d3f8aaa0093dec4c5b04218760a33ac33dbb5c373cd167';assert m['entries'][lost]['sha256']=='ed9f4ec26d76527ceea83aab9e7e620040efe064ee4e7bdbf1932175228de271';assert not m['complete_old_manifest_rehash_claim'];assert len(changed)==alias['count']==len(alias['aliases'])==2 and changed=={r['historical_live_path'] for r in alias['aliases']}
+for a in alias['aliases']:
+ n=a['historical_live_path'];saved=a['actual_saved_historical_stage'];assert n.startswith(str(root)+'/');assert old[n]['sha256']==a['P8_expected_sha256']==a['saved_sha256']==m['entries'][saved]['sha256'] and old[n]['bytes']==m['entries'][saved]['bytes'];assert m['entries'][n]['sha256']==a['current_actual_sha256'];assert sha(saved)==old[n]['sha256']
+report=root/'.mathlib-quality/cleanup/MainLemma-main_lemma.md';prior=(p/'prior-original27-report.md').read_bytes();assert hashlib.sha256(prior).hexdigest()=='203c5d50e25d17f035b7ce495d5f2fae1d58cad73a90cd4ee2d4b4d5c1d6b117' and report.read_bytes().startswith(prior);assert len(report.read_text().splitlines())==530 and sha(report)==m['entries'][str(report)]['sha256']=='5e03ca866f6ab2bff0d0cd4b26c4fe8e139de3f52015bcfdbee81d1c98916dd6';assert sha(root/'Roth/MainLemma.lean')=='f6be490cdeb83fd40b3c08b58f15e1c15b166f878cc5002c35fbf7a40cdee230';assert sha(root/'Roth/Main.lean')=='6668ff83a7e7b156f6f29b8f2d0163e699da002b70338d5ee0715065ade9b25f'
+out={'status':'PASS owner independent third streamed partial helper9 byte/UTF8/provenance/historical-stage-alias verification ONLY; semantics/firstdraft/sourceinverse/freshseal-drain separately required','observed_start_unix':start,'observed_end_unix':time.time(),'manifest_sha256':sha(p/'manifest.json'),'second_rehash_sha256':sha(p/'second-rehash.json'),'files':m['count'],'bytes':size,'actual_binary_exceptions_count':len(binary),'actual_binary_provenance':binary,'all2_changed_historical_live_paths_bound_to_exact_actual_saved_bytes':True,'no_sealed_P8_scratch_artifact_changed_except_explicit_lost_row':all(n.startswith(str(root)+'/') for n in changed),'source_sha256':sha(root/'Roth/MainLemma.lean'),'Main_source_sha256':sha(root/'Roth/Main.lean'),'report_sha256':sha(report),'report_lines':530,'full_report_read_by_owner':True,'report_read_scope':'Prior503line report previously read; complete new27lines read in owner tail80, exact prior prefix verified.','compiled_stage_qualification':'Project cache accepted helper8 ML724/Main689; helper9 draft ML733 direct-source check only; fresh helper9 worker must rebuild before imported metadata/native/profile','historical_administrative_lost_row_exception':m['historical_administrative_lost_row_exception'],'complete_old_manifest_rehash_claim':False,'all_own_artifacts_included':True,'full_sorted_rg_source_universe_equal':True};(o/'original27-helper9-owner-partial-byte-provenance-review.json').write_text(json.dumps(out,indent=2)+'\n');print(json.dumps({k:v for k,v in out.items() if k!='actual_binary_provenance'}))

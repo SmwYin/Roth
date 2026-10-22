@@ -1,0 +1,47 @@
+from pathlib import Path
+import json,hashlib,time
+p=Path('/private/tmp/roth-mainlemma-helper9-rem-floor');o=Path('/private/tmp/roth-mainlemma-owner');sha=lambda b:hashlib.sha256(b).hexdigest()
+pairs=json.loads((p/'before-pairs-data.json').read_text());old=next(x for x in pairs if x['name'].endswith('.Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux'));code=old['typeCode']
+def split(s):
+ out=[];start=None;depth=0;quoted=False;escaped=False
+ for i,c in enumerate(s):
+  if start is None:
+   if c.isspace():continue
+   start=i
+  if quoted:
+   if escaped:escaped=False
+   elif c=='\\':escaped=True
+   elif c=='"':quoted=False
+  elif c=='"':quoted=True
+  elif c in '([{':depth+=1
+  elif c in ')]}':depth-=1;assert depth>=0
+  elif c.isspace() and depth==0:out.append(s[start:i]);start=None
+ assert depth==0 and not quoted
+ if start is not None:out.append(s[start:])
+ return out
+def node(s):
+ assert s.startswith('(') and s.endswith(')'),s[:100]
+ z=split(s[1:-1]);assert z[0].startswith('Lean.Expr.');return z[0][10:],z[1:]
+visited=0
+def occurrence(s,depth=0):
+ global visited
+ visited+=1;k,a=node(s)
+ if k=='bvar':assert len(a)==1;return [depth] if int(a[0])==depth else []
+ if k in ['forallE','lam']:
+  assert len(a)==4;return occurrence(a[1],depth)+occurrence(a[2],depth+1)
+ if k=='letE':assert len(a)==5;return occurrence(a[1],depth)+occurrence(a[2],depth)+occurrence(a[3],depth+1)
+ if k=='app':assert len(a)==2;return occurrence(a[0],depth)+occurrence(a[1],depth)
+ if k=='proj':assert len(a)==3;return occurrence(a[2],depth)
+ if k=='mdata':assert len(a)==2;return occurrence(a[1],depth)
+ assert k in ['sort','const','lit'],k
+ return []
+spine=[];cur=code;hits=[]
+while True:
+ k,a=node(cur)
+ if k!='forallE':break
+ assert len(a)==4;spine.append({'name_constructor':a[0],'BinderInfo':a[3]})
+ if a[0]=='(Lean.Name.str Lean.Name.anonymous "hn")':hits.append(a)
+ cur=a[2]
+assert len(hits)==1;assert hits[0][3]=='Lean.BinderInfo.default';found=occurrence(hits[0][2]);assert not found
+out={'status':'PASS owner independent exact constructor-AST audit: one outer hn binder, zero occurrences of its de Bruijn variable in its dependent body','observed_now_unix':time.time(),'original_pair_name':old['name'],'original_typeCode_sha256':sha(code.encode()),'original_full_TYPE_sha256':sha(old['TYPE'].encode()),'outer_binder_spine_raw_names_BinderInfo':spine,'hn_outer_count':1,'hn_free_bvar0_occurrences_under_binders':0,'body_Expr_nodes_visited':visited,'interpretation':'eraseOnlyOldHn instantiate1(True.intro) cannot insert True.intro into this body: hn has zero uses. It solely performs required de Bruijn index adjustment for the removed unused binder. This independently corroborates the actual Lean selected-current comparison and old-contract recovery; no AST constant renaming, unfolding or user-written name normalization.','no_Lean_compiler_native_profile_probe':True}
+f=o/'original27-helper9-owner-hn-unused-constructor-audit-v1.json';assert not f.exists();f.write_text(json.dumps(out,indent=2)+'\n');print({k:v for k,v in out.items()if k!='outer_binder_spine_raw_names_BinderInfo'})

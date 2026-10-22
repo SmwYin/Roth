@@ -1,0 +1,27 @@
+from pathlib import Path
+import re,json,hashlib
+p=Path('/private/tmp/roth-mainlemma-helper6-double-hasse');d=(p/'discovery-after.log').read_text();s=(p/'after-source.lean').read_text()
+def arr(label):return [x.strip() for x in re.search(re.escape(label)+r' \[(.*?)\]\n',d,re.S)[1].replace('\n','').split(',')]
+roots=arr('ROOTS');names=arr('DESCENDANTS');assert set(names)==set(arr('ACTUAL EXHAUSTIVE DEFINING MODULE MAINLEMMA'))
+inv=re.findall(r'INVENTORY (.*?) levels=.*? theorem=(true|false) TYPEhash=',d,re.S);assert len(inv)==len(names)==61
+reprs={name:n for name,(n,t) in zip(names,inv)};kind={name:t=='true' for name,(n,t) in zip(names,inv)}
+written=re.findall(r'(?m)^(?:(?:private|noncomputable) +)*(?:lemma|theorem|def|abbrev) +([^\s({:]+)',s);assert len(written)==len(set(written))==len(roots),(written,roots)
+assert {x.rsplit('.',1)[-1] for x in roots}==set(written)
+text=(p/'after-semantics-v2.log').read_text();rx=r'(?ms)^ALL RETAINED PASS NAME=(.*?) MODULE=(.*?) LEVELS=(.*?) TYPE=(.*?) ACTUALOPAQUEVALUE=(.*?) AXIOMS=(.*?) LIMITS=200000/20000/512';pairs={n:(t,v) for n,m,l,t,v,a in re.findall(rx,text)};assert set(pairs)==set(reprs.values())
+normalize=lambda t:re.sub(r'\s+','',t)
+full={n:normalize(pairs[reprs[n]][0]+pairs[reprs[n]][1]) for n in names}
+def uses(src,dst):
+ target=normalize(reprs[dst]);return 'Lean.Expr.const'+target+'[' in full[src] or 'Lean.Expr.const('+target+')[' in full[src]
+code=re.sub(r'/\-.*?\-/','',s,flags=re.S);code=re.sub(r'--[^\n]*','',code)
+rows=[]
+for root in roots:
+ fam=[n for n in names if n==root or n.startswith(root+'.')];gen=[n for n in fam if n!=root];pending=[root];seen=set()
+ while pending:
+  n=pending.pop()
+  if n in seen:continue
+  seen.add(n);pending.extend(x for x in fam if x not in seen and (uses(n,x) or uses(x,n)))
+ for n in gen:
+  suffix=n[len(root)+1:];assert not re.search(r'(?<![\w.])'+re.escape(suffix)+r'(?![\w.])',code),(n,'explicit generated suffix in source')
+  # Generated simp/discharger declarations may be inlined and unused in the final root proof; retain actual graph facts, do not assert a false connectivity property.
+ rows.append({'actual_root':root,'written_source_name':root.rsplit('.',1)[-1],'all_actual_family':[{'actual_name':n,'repr_name':reprs[n],'actual_is_theorem':kind[n],'semantic_pair_type_value_closed_inferred_std3_defaults':True,'generated':n!=root,'actual_family_AST_root_connected':n in seen,'actual_type_sha256':hashlib.sha256(pairs[reprs[n]][0].encode()).hexdigest(),'actual_opaque_value_sha256':hashlib.sha256(pairs[reprs[n]][1].encode()).hexdigest(),'actual_direct_family_dependencies':[x for x in fam if uses(n,x)]} for n in fam],'generated_source_absence':True})
+(p/'generated-family-source-ast.json').write_text(json.dumps({'source_sha256':hashlib.sha256(s.encode()).hexdigest(),'fresh_actual_written_roots':len(roots),'fresh_actual_module_names':len(names),'generated_names':len(names)-len(roots),'source_written_names_exact_root_match':True,'all_generated_source_absent_actual_TYPE_VALUE_pairs_checked':True,'scope':'Fresh exhaustive defining-module names, every retained full actual TYPE+opaqueVALUE pair already independently kernel/std3/default checked. Direct const dependencies are matched as complete Expr.const actualName constructors in raw ASTs; whitespace ignored only for constructor-token matching, never for TYPE/value equality. Actual dependency directions and connectivity are recorded, not assumed: equation lemmas may reference their data root, while generated simp/discharger constants can be unused or inlined in the final root proof. Full actual TYPE+VALUE hashes/pairs and semantic guards bind every member even when not root-connected. No false dependency claim is made. No fixed generated suffix cap.','families':rows},indent=2)+'\n');print({'written_roots':len(roots),'actual_module_names':len(names),'generated':len(names)-len(roots),'all_source_absent_and_actual_AST_pairs_checked':True})

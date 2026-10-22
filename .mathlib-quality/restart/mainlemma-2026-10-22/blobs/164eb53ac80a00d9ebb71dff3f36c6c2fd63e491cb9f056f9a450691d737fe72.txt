@@ -1,0 +1,21 @@
+private lemma exists_hasseDeriv_index_eval_bound_aux {σ : Type*} [Fintype σ] {P : MvPolynomial σ ℤ}
+    {r : σ → ℕ} {B α β γ c : ℝ} {s : ℕ} {z : σ → ℝ} (hP : P ≠ 0) (hd : ∀ j, degreeOf j P ≤ r j)
+    (hc : ∀ d, |(P.coeff d : ℝ)| ≤ B) (hs : ∑ j, r j ≤ s) (h2 : (2 : ℝ) ^ s < β)
+    (hα : (1 + |α|) ^ s ≤ β) (hγ : γ ≤ index (map (Int.castRingHom ℝ) P) (fun _ ↦ α) r)
+    (hz : index (map (Int.castRingHom ℝ) P) z r < c) : ∃ Q : MvPolynomial σ ℤ, Q ≠ 0 ∧
+      (∀ j, degreeOf j Q ≤ r j) ∧ γ - c < index (map (Int.castRingHom ℝ) Q) (fun _ ↦ α) r ∧
+      eval z (map (Int.castRingHom ℝ) Q) ≠ 0 ∧ ∀ i : σ →₀ ℕ,
+        |eval (fun _ ↦ α) (hasseDeriv i (map (Int.castRingHom ℝ) Q))| < B * β ^ 3 := by
+  obtain ⟨d, hdne⟩ := MvPolynomial.exists_coeff_ne_zero hP
+  obtain ⟨k, hkw, hkev⟩ := exists_hasseDeriv_eval_ne_zero
+    ((map_ne_zero_iff _ (MvPolynomial.map_injective _ Int.cast_injective)).2 hP) z r hz
+  have hQev : eval z (map (Int.castRingHom ℝ) (hasseDeriv k P)) ≠ 0 := by
+    simpa [hasseDeriv_map] using hkev
+  refine ⟨hasseDeriv k P, fun h0 ↦ hQev (by rw [h0, map_zero, map_zero]),
+    fun j ↦ (degreeOf_hasseDeriv_le j k P).trans (hd j), ?_, hQev, fun i ↦ ?_⟩
+  · rw [← hasseDeriv_map]
+    exact ((sub_lt_sub_left hkw γ).trans_le (sub_le_sub_right hγ _)).trans_le
+      (index_hasseDeriv_ge (fun h0 ↦ hkev (by rw [h0, map_zero])) (fun _ ↦ α) r)
+  · rw [hasseDeriv_map]
+    exact (abs_eval_iterated_hasseDeriv_lt_aux hd
+      ((abs_pos.mpr (Int.cast_ne_zero.2 hdne)).trans_le (hc d)) hs h2 hα hc i k).trans_eq (by ring)

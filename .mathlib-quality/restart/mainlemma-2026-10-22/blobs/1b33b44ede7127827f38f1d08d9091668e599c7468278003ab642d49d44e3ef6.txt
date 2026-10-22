@@ -1,0 +1,35 @@
+from pathlib import Path
+import json,time,subprocess,collections
+p=Path('/private/tmp/roth-mainlemma-helper8-diag-rem')
+assert json.loads((p/'after-profile-pair-drained.json').read_text())['both_runner_calls_completed']
+for letter in ['a','b']:
+    subprocess.run(['python3',str(p/'bind-profile.py'),'after-profile-'+letter,'after'],check=True)
+meta=json.loads((p/'final-metadata-comparison.json').read_text());phases=['after-profile-a-prelaunch','after-profile-b-prelaunch','after-profile-pair-after']
+def load(phase,suffix):return json.loads((p/(phase+'-'+suffix)).read_text())
+tests=[]
+for suffix,field in [('pins.json',None),('cache.json',None),('root-extra.json','root_outputs'),('all14-package-catalog.json','artifacts'),('all14-core-availability.json','artifacts'),('binaries.json','binaries')]:
+    arrays=[]
+    for phase in phases:
+        x=load(phase,suffix);x=x[field] if field else x
+        arrays.append(x if suffix=='pins.json' else {k:(v['sha256'],v['bytes']) for k,v in x.items()})
+    assert arrays[0]==arrays[1]==arrays[2],suffix
+    tests.append({'suffix':suffix,'entries':len(arrays[0]),'all_three_actual_tuples_equal':True})
+setups=[load(phase,'all14-package-catalog.json')['setups'] for phase in phases]
+assert setups[0]==setups[1]==setups[2]
+rootsetups=[load(phase,'root-extra.json')['setup'] for phase in phases];assert rootsetups[0]==rootsetups[1]==rootsetups[2]
+rows=[];combined=[]
+for letter in ['a','b']:
+    label='after-profile-'+letter;x=json.loads((p/(label+'-framing-v2-binding.json')).read_text());sums=[]
+    for item in x['rows']:
+        runtime=item['runtime_name'];canonical=runtime.replace('_private._stdin.0.Roth.','_private.Roth.MainLemma.0.Roth.',1) if runtime.startswith('_private._stdin.0.Roth.') else runtime
+        actual=meta['actual_families'][canonical]
+        mapped=[n.replace('_private._stdin.0.Roth.','_private.Roth.MainLemma.0.Roth.',1) if n.startswith('_private._stdin.0.Roth.') else n for n in item['actual_kernel_names']]
+        assert sorted(mapped)==sorted(actual)
+        # This correspondence binds command origins/families only. No TYPE/VALUE AST is rewritten.
+        rows.append({'label':label,'runtime_name':runtime,'imported_name':canonical,'actual_family':actual,'sum_ms':item['sum_ms'],'result':'PASS <1000' if item['sum_ms']<1000 else 'VALID FAIL >=1000','family_origin_correspondence_only_no_AST_constant_name_rewrite':True})
+        sums.append(item['sum_ms'])
+    combined.append(sum(sums))
+out={'observed_unix':time.time(),'rows':rows,'phases':phases,'full_exact_source_cache_root_all14setup_package_core_fourbinary_equality':tests,'all14_fullsetup_fields_equal':True,'scope':'Observed availability superset, not exact loaded closure','combined_helper_main_ms':combined,'combined_result':'VALID FAIL retained; original27 main performance remains pending' if any(x>=1000 for x in combined) else 'PASS <1000'}
+(p/'after-profile-final-binding.json').write_text(json.dumps(out,indent=2)+'\n')
+assert all(r['sum_ms']<1000 for r in rows if 'abs_coeff_diag_hasseDeriv_modByMonic_le_aux' in r['runtime_name'])
+print([(r['runtime_name'],r['sum_ms'],r['result']) for r in rows])

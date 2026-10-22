@@ -1,0 +1,73 @@
+from pathlib import Path
+import hashlib,json,codecs,time,subprocess
+p=Path('/private/tmp/roth-mainlemma-helper8-diag-rem')
+root=Path('/Users/ramin/LEAN/Roth');owner=Path('/private/tmp/roth-mainlemma-owner')
+start=time.time();exclude={p/n for n in ['manifest.json','second-rehash.json','seal.json','final-drain.json']}
+prior=Path('/private/tmp/roth-mainlemma-main-lemma-resume2/manifest.json')
+old=json.loads(prior.read_text())['entries']
+paths={Path(n) for n in old};actual={}
+def add(n,sha,size,source,why):
+    paths.add(Path(n));actual.setdefault(str(n),[]).append({'sha256':sha,'bytes':size,'actual_observation':str(source),'scope':why})
+bulk=owner/'original27-helper8-owner-partial-byte-provenance-review.json'
+brows=json.loads(bulk.read_text())['actual_binary_provenance']
+for v in brows:
+    assert v['actual_provenance']
+    add(v['path'],v['sha256'],v['bytes'],bulk,'Independently rechecked actual inherited tuple/provenance; sealed historical stage.')
+for f in p.glob('*-all14-*-catalog.json'):
+    for n,v in json.loads(f.read_text())['artifacts'].items():
+        add(n,v['sha256'],v['bytes'],f,'Actual all14 setup compiled availability superset; not exact loaded closure.')
+for f in p.glob('*-all14-core-availability.json'):
+    for n,v in json.loads(f.read_text())['artifacts'].items():
+        add(n,v['sha256'],v['bytes'],f,'Actual pinned core availability superset; not exact loaded closure.')
+for f in p.glob('*-binaries.json'):
+    for n,v in json.loads(f.read_text())['binaries'].items():
+        for name in {n,v['resolved_realpath']}:
+            add(name,v['sha256'],v['bytes'],f,'Actual proxy/pinned executable and resolved path.')
+for f in p.glob('*-cache.json'):
+    for n,v in json.loads(f.read_text()).items():
+        for name in [n,v['saved']]:add(name,v['sha256'],v['bytes'],f,'Actual project cache output/saved stage bytes.')
+for f in p.glob('*-root-extra.json'):
+    for n,v in json.loads(f.read_text())['root_outputs'].items():
+        for name in [n,v['saved']]:add(name,v['sha256'],v['bytes'],f,'Actual root cache output/saved stage bytes.')
+paths.update(x for x in owner.glob('*helper8*') if x.is_file())
+paths.add(owner/'verbatim-worker-prompt.txt')
+paths.update(root/n for n in json.loads((p/'entry-pins.json').read_text()))
+paths.add(root/'.mathlib-quality/cleanup/MainLemma-abs_coeff_diag_hasseDeriv_modByMonic_le_aux-helper.md')
+cmd=['rg','--files',str(root/'.lake/packages/mathlib/Mathlib')]
+r=subprocess.run(cmd,capture_output=True,check=True)
+r.stdout.decode('utf8','strict');r.stderr.decode('utf8','strict')
+(p/'final-source-universe.stdout').write_bytes(r.stdout);(p/'final-source-universe.stderr').write_bytes(r.stderr)
+assert sorted(r.stdout.decode().splitlines())==sorted((p/'source-universe.stdout').read_text().splitlines())
+(p/'final-source-universe.json').write_text(json.dumps({'observed_unix':time.time(),'command':cmd,'exit':r.returncode,'count':len(r.stdout.decode().splitlines()),'sorted_entry_universe_equal':True},indent=2)+'\n')
+paths.update(map(Path,r.stdout.decode().splitlines()))
+paths.update(f for f in p.rglob('*') if f.is_file() and f not in exclude)
+def readrow(f):
+    h=hashlib.sha256();d=codecs.getincrementaldecoder('utf8')('strict');ok=True;size=0
+    with f.open('rb') as stream:
+        for b in iter(lambda:stream.read(1024*1024),b''):
+            h.update(b);size+=len(b)
+            if ok:
+                try:d.decode(b,False)
+                except UnicodeDecodeError:ok=False
+    if ok:
+        try:d.decode(b'',True)
+        except UnicodeDecodeError:ok=False
+    sha=h.hexdigest();matches=[x for x in actual.get(str(f),[]) if x['sha256']==sha and x['bytes']==size]
+    if not ok:assert matches,('Unmatched actual binary tuple',str(f),sha,size)
+    return {'sha256':sha,'bytes':size,'strict_utf8':ok,'binary_provenance':matches[:1] if not ok else []}
+rows={str(f):readrow(f) for f in sorted(paths)}
+byhash={}
+for n,v in rows.items():
+    if n.startswith('/private/tmp/roth-mainlemma-'):byhash.setdefault((v['sha256'],v['bytes']),[]).append(n)
+aliases=[]
+for n,v in old.items():
+    now=rows[n]
+    if (now['sha256'],now['bytes'])!=(v['sha256'],v['bytes']):
+        assert n.startswith(str(root)+'/'),('Sealed artifact changed',n)
+        saved=byhash.get((v['sha256'],v['bytes']),[]);assert saved,('Missing actual old-stage alias',n)
+        chosen=next((n for n in saved if n.startswith(str(p)+'/entry-')),saved[0])
+        aliases.append({'historical_live_path':n,'R2_expected_sha256':v['sha256'],'R2_expected_bytes':v['bytes'],'current_sha256':now['sha256'],'actual_saved_stage':chosen,'saved_sha256':rows[chosen]['sha256'],'qualification':'Legitimate fresh rebuild/helper source change; inherited live observation preserved, no sealed artifact changed.'})
+q=p/'historical-live-aliases.json';q.write_text(json.dumps({'observed_unix':time.time(),'aliases':aliases,'count':len(aliases)},indent=2)+'\n');rows[str(q)]=readrow(q)
+out={'observed_start':start,'observed_end':time.time(),'entries':rows,'count':len(rows),'bytes':sum(v['bytes'] for v in rows.values()),'exact_self_reference_exclusions':sorted(map(str,exclude)),'scope':'All inherited sealed paths, all own artifacts/failures/actual raw profiles/native/inputs/instructions/reads, full generic Mathlib search universe, current source17/report/cache104/root8/all14 setups/package/core availability/four executable binaries/raw env and commands. Actual binary tuples independently matched to actual saved catalogs or inherited independently matched tuple review. Availability supersets are not exact loaded closure. Historical live aliases preserve old actual bytes.'}
+(p/'manifest.json').write_text(json.dumps(out,indent=2)+'\n')
+print({'count':out['count'],'bytes':out['bytes'],'aliases':len(aliases),'binary_rows':sum(not v['strict_utf8'] for v in rows.values()),'seconds':time.time()-start})

@@ -1,0 +1,29 @@
+from pathlib import Path
+import json,hashlib,os,time,codecs
+p=Path('/private/tmp/roth-mainlemma-helper7-index-eval');r=Path('/Users/ramin/LEAN/Roth');old=Path('/private/tmp/roth-mainlemma-main-lemma-resume1');sha=lambda b:hashlib.sha256(b).hexdigest()
+assert sha((r/'Roth/MainLemma.lean').read_bytes())=='c93a9ef0193acd5707886b485163b3e94449346afbae8c3c4bdf5b344f5693df'
+assert sha((r/'Roth/Main.lean').read_bytes())=='6668ff83a7e7b156f6f29b8f2d0163e699da002b70338d5ee0715065ade9b25f'
+for n in ['MainLemma','Main']:(p/('entry-'+n+'.lean')).write_bytes((r/('Roth/'+n+'.lean')).read_bytes())
+(p/'parent-environment.json').write_text(json.dumps(dict(os.environ),indent=2)+'\n')
+manifest=json.loads((old/'manifest.json').read_text());assert sha((old/'manifest.json').read_bytes())=='3fed2128e27cfddeea5e795b2ca5f4abccf5a4abece18ed5ed68f052f7d8813e'
+aliases=json.loads((old/'historical-live-aliases.json').read_text())['aliases'];amap={(x['historical_live_path'],x['P6_expected_sha256']):x['actual_saved_historical_stage'] for x in aliases}
+start=time.time();bad=[];nbytes=0;binary=0;applied=[]
+for name,e in manifest['entries'].items():
+ actual=Path(amap.get((name,e['sha256']),name));h=hashlib.sha256();d=codecs.getincrementaldecoder('utf8')('strict');utf=True;size=0
+ with actual.open('rb') as f:
+  for b in iter(lambda:f.read(2*1024*1024),b''):
+   size+=len(b);h.update(b)
+   if utf:
+    try:d.decode(b,False)
+    except UnicodeDecodeError:utf=False
+ if utf:
+  try:d.decode(b'',True)
+  except UnicodeDecodeError:utf=False
+ if (h.hexdigest(),size,utf)!=(e['sha256'],e['bytes'],e['strict_utf8']):bad.append({'path':name,'actual_path':str(actual),'actual_sha':h.hexdigest(),'expected':e})
+ if str(actual)!=name:applied.append({'historical_path':name,'actual_saved':str(actual),'sha256':h.hexdigest()})
+ binary+=not utf;nbytes+=size
+out={'observed_start':start,'observed_end':time.time(),'count':len(manifest['entries']),'bytes':nbytes,'binary_count':binary,'mismatches':bad,'historical_aliases_applied':applied,'source_unchanged':sha((r/'Roth/MainLemma.lean').read_bytes())==sha((p/'entry-MainLemma.lean').read_bytes()),'not_runtime_loaded_closure':True}
+(p/'entry-predecessor-full-rehash.json').write_text(json.dumps(out,indent=2)+'\n');assert not bad,bad
+for n in ['runner.py','freeze27.py','root-extra27.py','all14-availability.py']:
+ s=(old/n).read_text().replace(str(old),str(p));(p/n).write_text(s)
+print({k:v for k,v in out.items() if k not in ['historical_aliases_applied','mismatches']})

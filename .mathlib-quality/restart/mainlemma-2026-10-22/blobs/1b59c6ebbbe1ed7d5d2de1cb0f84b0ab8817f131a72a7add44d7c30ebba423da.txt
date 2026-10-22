@@ -1,0 +1,12 @@
+from pathlib import Path
+import subprocess,sys,json,time,hashlib
+p=Path('/private/tmp/roth-mainlemma-helper9-rem-floor');phase=sys.argv[1]
+# Human owner ACK is a saved actual message, never invented by this script.
+ack=p/(phase+'-owner-ACK.txt');assert ack.is_file() and ack.stat().st_size>0
+for letter in ['a','b']:
+ label=phase+'-profile-'+letter
+ subprocess.run(['python3',str(p/'observe.py'),label+'-prelaunch'],check=True)
+ subprocess.run(['python3',str(p/'runner.py'),'--frozen-env',str(p/'parent-environment.json'),'--timeout','420',label,'--','/Users/ramin/.elan/bin/lake','env','lean','-j1','--profile','-Dtrace.profiler=true','-Dtrace.profiler.threshold=0',str(p/(phase+'-scoped.lean'))],check=True)
+subprocess.run(['python3',str(p/'observe.py'),phase+'-profile-pair-after'],check=True)
+with (p/(phase+'-profile-pair-drained.json')).open('x') as f:f.write(json.dumps({'observed_unix':time.time(),'both_runner_calls_completed':True,'postfreeze_completed':True,'no_raw_trace_parsing_during_all_declared_captures':True,'owner_ACK_path':str(ack),'owner_ACK_sha256':hashlib.sha256(ack.read_bytes()).hexdigest()},indent=2)+'\n')
+print('ALL-DECLARED-CAPTURES-AND-POSTFREEZE-DRAINED '+phase,flush=True)

@@ -1,0 +1,30 @@
+from pathlib import Path
+import json,sys
+p=Path('/private/tmp/roth-mainlemma-helper7-index-eval');label=sys.argv[1];run=json.loads((p/(label+'.json')).read_text());assert run['exit']==0 and run['drained'] and not run['timed_out'];raw=(p/(label+'.log')).read_text();j=json.loads(next(x[len('INVENTORY_JSON='):] for x in raw.splitlines() if x.startswith('INVENTORY_JSON=')));(p/(label+'-inventory.json')).write_text(json.dumps(j,indent=2)+'\n');names=j['names'];print('name row',names[0]);out='import Roth\nimport Roth.LeanEval\nimport Lean.Util.FindExpr\n'+(p/'encode7.lean.txt').read_text()+'\n'
+for row in names:
+ name,term,rawrepr=row[0],row[1][0],row[1][1]
+ code='''run_cmd Lean.Elab.Command.liftTermElabM do
+  let n := TERM
+  let c ← Lean.getConstInfo n
+  let v := c.value! true
+  let env ← Lean.getEnv
+  let opts ← Lean.getOptions
+  unless Lean.maxHeartbeats.get opts == 200000 && Lean.Meta.synthInstance.maxHeartbeats.get opts == 20000 && Lean.maxRecDepth.get opts == 512 do throwError "Changed defaults"
+  for e in [c.type,v] do
+    if e.hasMVar || e.hasLevelMVar || e.hasFVar || e.hasLooseBVars || e.getUsedConstants.contains ``sorryAx then throwError "Open/admitted pair"
+  unless ← Lean.Meta.isDefEq (← Lean.Meta.inferType v) c.type do throwError "Inferred type mismatch"
+  let axs ← Lean.collectAxioms n
+  unless axs.all ([``propext, ``Classical.choice, ``Quot.sound].contains ·) do throwError "Nonstandard axioms"
+  let tc := actualExprTerm c.type
+  if tc.contains 'E' && (tc.splitOn "ERROR_").length > 1 then throwError "Unsupported type encoding"
+  let info := Lean.Json.mkObj [("name",Lean.toJson n.toString),("rawName",Lean.toJson (repr n).pretty),
+    ("nameTerm",Lean.toJson (actualNameTerm n)),("levels",Lean.toJson (repr c.levelParams).pretty),
+    ("theorem",Lean.toJson c.isTheorem),("module",Lean.toJson env.header.moduleNames[(env.getModuleIdxFor? n).get!]!.toString),
+    ("TYPE",Lean.toJson ((repr c.type).pretty 1000000)),("VALUE",Lean.toJson ((repr v).pretty 1000000)),
+    ("typeCode",Lean.toJson tc),("typeDeps",Lean.toJson (c.type.getUsedConstants.map toString)),
+    ("valueDeps",Lean.toJson (v.getUsedConstants.map toString)),("axioms",Lean.toJson (axs.map toString)),
+    ("defaults",Lean.toJson ([200000,20000,512] : List Nat))]
+  Lean.Core.liftIOCore <| IO.println ("PAIR_JSON=" ++ info.compress)
+'''.replace('TERM',term)
+ out+='\n'+code
+(p/'before-pairs.lean').write_text(out)

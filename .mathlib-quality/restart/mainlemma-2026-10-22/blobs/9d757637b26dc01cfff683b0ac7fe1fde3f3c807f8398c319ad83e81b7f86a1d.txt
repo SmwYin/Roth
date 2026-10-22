@@ -1,0 +1,38 @@
+from pathlib import Path
+import os,json,time,subprocess,hashlib,errno
+p=Path('/private/tmp/roth-mainlemma-helper8-diag-rem');start=time.time()
+old=Path('/private/tmp/roth-mainlemma-main-lemma-resume2/final-drain-owned-process-inventory.json')
+known={int(n) for n in json.loads(old.read_text())['known_owned_groups']}
+for f in p.glob('*.json'):
+    if f.name in ['manifest.json','second-rehash.json','final-drain.json','seal.json']:continue
+    try:
+        x=json.loads(f.read_text())
+        if isinstance(x,dict) and isinstance(x.get('pgid'),int):known.add(x['pgid'])
+    except (ValueError,UnicodeError):pass
+states={}
+for group in sorted(known):
+    observed=time.time()
+    try:os.killpg(group,0);status={'status':'present','operation':'killpg0','observed_unix':observed}
+    except ProcessLookupError:status={'status':'absent','operation':'killpg0','observed_unix':observed,'errno':errno.ESRCH}
+    except PermissionError as e:status={'status':'UNKNOWN','operation':'killpg0','observed_unix':observed,'errno':e.errno}
+    states[str(group)]=status
+cmd=['/bin/ps','-axo','pid,ppid,pgid,lstart,command']
+r=subprocess.run(cmd,capture_output=True);r.stdout.decode('utf8','strict');r.stderr.decode('utf8','strict')
+needles=['/private/tmp/roth-mainlemma-helper8-diag-rem/','/private/tmp/roth-mainlemma-main-lemma-resume2/','/private/tmp/roth-mainlemma-main-lemma-resume1/','/private/tmp/roth-mainlemma-helper7-index-eval/','/private/tmp/roth-mainlemma-helper6-double-hasse/','/private/tmp/roth-mainlemma-main-lemma/']
+ownpid=os.getpid();rows=[]
+for line in r.stdout.decode().splitlines()[1:]:
+    parts=line.split(None,8)
+    if len(parts)<9:continue
+    pid,ppid,pgid=map(int,parts[:3]);command=parts[8]
+    if pid==ownpid:continue
+    matching=any(n in command for n in needles) or command in ['printenv','/usr/bin/printenv'] or ('lake env printenv' in command)
+    if matching:rows.append(line)
+pins={}
+root=Path('/Users/ramin/LEAN/Roth')
+for n in json.loads((p/'entry-pins.json').read_text()):pins[n]=hashlib.sha256((root/n).read_bytes()).hexdigest()
+unknown=[n for n,v in states.items() if v['status']=='UNKNOWN']
+present=[n for n,v in states.items() if v['status']=='present']
+out={'observed_start_unix':start,'observed_end_unix':time.time(),'command':cmd,'exit':r.returncode,'strict_utf8':True,'known_owned_groups':states,'known_owned_group_count':len(states),'all_known_groups_absent':not unknown and not present,'unknown_groups':unknown,'present_groups':present,'owned_rows':rows,'stderr':r.stderr.decode(),'source17':pins,'scope':'Fresh exact task/known groups plus bare/resolved printenv inventory. Initial administrative observer PGID was never recorded; no historical PGID or descendant-drain reconstruction. This Python observer itself is omitted by its exact current PID only.'}
+(p/'final-drain.json').write_text(json.dumps(out,indent=2)+'\n')
+assert r.returncode==0 and not unknown and not present and not rows
+print({'groups':len(states),'all_absent':True,'owned_rows':0})

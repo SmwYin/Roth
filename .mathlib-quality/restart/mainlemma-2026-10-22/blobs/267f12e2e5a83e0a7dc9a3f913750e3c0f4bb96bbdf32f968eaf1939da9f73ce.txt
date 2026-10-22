@@ -1,0 +1,35 @@
+private lemma abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux {σ : Type*} [Fintype σ]
+    {f : Polynomial ℤ} {P : MvPolynomial σ ℤ} {r : σ → ℕ} {A B β : ℝ} {s : ℕ}
+    (hA : ∀ i, |(f.coeff i : ℝ)| ≤ A) (hd : ∀ k, degreeOf k P ≤ r k)
+    (hc : ∀ d, |(P.coeff d : ℝ)| ≤ B) (hs : ∑ k, r k ≤ s) (h2 : 2 ^ s ≤ β) (hpow : (1 + A) ^ s ≤ β)
+    (j : σ →₀ ℕ) (i : ℕ) : |(diag (hasseDeriv j P) %ₘ f).coeff i| ≤ (⌊B * β ^ 3⌋₊ : ℤ) := by
+  have hB0 : 0 ≤ B := (abs_nonneg _).trans (hc 0)
+  have hβ1 : 1 ≤ β := (one_le_pow₀ (by norm_num)).trans h2
+  have hβ0 : 0 ≤ β := zero_le_one.trans hβ1
+  have h2' : (2 : ℝ) ^ (∑ k, r k) ≤ β :=
+    (pow_le_pow_right₀ (by norm_num) hs).trans h2
+  have hNR : ((∏ k, (r k + 1) : ℕ) : ℝ) ≤ β := by
+    refine le_trans ?_ h2'
+    exact_mod_cast (show (∏ k, (r k + 1) : ℕ) ≤ 2 ^ (∑ k, r k) by
+      rw [← Finset.prod_pow_eq_pow_sum]
+      exact Finset.prod_le_prod fun k _ ↦ Nat.lt_two_pow_self)
+  have bound {g : Polynomial ℤ} {C : ℝ} (hC : ∀ i, |(g.coeff i : ℝ)| ≤ C)
+      (he : (1 + C) ^ ((∑ k, r k) + 1 - g.natDegree) ≤ β) :
+      |((diag (hasseDeriv j P) %ₘ g).coeff i : ℝ)| ≤ B * β ^ 3 := by
+    calc _ ≤ _ := abs_coeff_diag_hasseDeriv_modByMonic_le_aux hC hd hc j i
+      _ ≤ β * (β * (β * B)) :=
+        (mul_le_mul he (mul_le_mul hNR (mul_le_mul_of_nonneg_right h2' hB0)
+          (by positivity) hβ0) (by positivity) hβ0)
+      _ = B * β ^ 3 := by ring
+  have hreal : |((diag (hasseDeriv j P) %ₘ f).coeff i : ℝ)| ≤ B * β ^ 3 := by
+    by_cases hn : f.natDegree = 0
+    · by_cases hf : f.Monic
+      · simpa [Polynomial.eq_one_of_monic_natDegree_zero hf hn] using
+          mul_nonneg hB0 (pow_nonneg hβ0 3)
+      · simpa [Polynomial.modByMonic_eq_of_not_monic _ hf] using
+          bound (g := 0) (C := 0) (by simp) (by simpa using hβ1)
+    · exact bound hA ((pow_le_pow_right₀ (le_add_of_nonneg_right
+        ((abs_nonneg _).trans (hA 0))) (by lia)).trans hpow)
+  simpa [Int.natCast_floor_eq_floor ((abs_nonneg _).trans hreal), Int.le_floor,
+    Int.cast_abs] using hreal
+

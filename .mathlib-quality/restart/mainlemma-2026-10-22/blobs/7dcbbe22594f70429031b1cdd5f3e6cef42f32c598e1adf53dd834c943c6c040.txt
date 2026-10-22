@@ -1,0 +1,50 @@
+from pathlib import Path
+import json,re,hashlib
+p=Path('/private/tmp/roth-mainlemma-helper6-double-hasse')
+s=(p/'discovery-after.log').read_text();r=json.loads((p/'discovery-after.json').read_text());assert r['exit']==0 and r['immutable'] and r['drained']
+ns=re.findall(r'INVENTORY (.*?) levels=',s,re.S);ns=[x.strip() for x in ns];assert ns and len(ns)==len(set(ns))
+# INVENTORY messages have one complete repr Name before levels; no suffix-cap discovery.
+assert all(x.startswith(('`','Lean.Name.')) and 'INVENTORY' not in x for x in ns)
+target=re.search(r'TARGET (.*?)\n',s).group(1).strip();assert target in ns
+(p/'retained-after-names.json').write_text(json.dumps(ns,indent=2)+'\n')
+old=(p/'independent-original-v4.lean').read_text();prefix,rest=old.split('run_cmd Lean.Elab.Command.liftTermElabM do',1)
+oldhead=prefix[prefix.index('theorem audit_original_firstdraft'):prefix.index('  have hd :')]
+migration=oldhead.replace('theorem audit_original_firstdraft','theorem audit_migration')+'  exact auditedCurrentHelper hP hB hs h2 hα.le hc i k\n'
+firstguard=rest.split('\n\n\nrun_cmd',1)[0]
+firstguard=firstguard.replace('let own := ``audit_original_firstdraft','let own := ``audit_weaker_alpha').replace('[old, own, ``audit_weaker_alpha','[old, ``audit_original_firstdraft, ``audit_weaker_alpha').replace('#[own, ``audit_weaker_alpha','#[``audit_original_firstdraft, ``audit_weaker_alpha')
+firstguard=firstguard.replace('Full TYPE differs beyond generated binder macro scopes','Current stronger TYPE differs from independent weaker-alpha TYPE beyond generated binder macro scopes')
+fragment=(p/'retained-metadata.fragment').read_text().lstrip(); template=fragment.split('\n\nrun_cmd',1)[0]
+assert template.startswith('run_cmd')
+frags=[]
+for n in ns:
+ t=re.sub(r'(?m)^  let n := .*$',lambda _: '  let n := '+n,template,count=1);frags.append(t)
+before=(p/'independent-original-v4.log').read_text(); rows=re.findall(r'(?ms)^ALL RETAINED PASS NAME=.*?LIMITS=200000/20000/512',before)
+main=[x for x in rows if x.startswith('ALL RETAINED PASS NAME=`Roth.main_lemma MODULE=')];assert len(main)==1
+mainType=main[0].split(' TYPE=',1)[1].split(' ACTUALOPAQUEVALUE=',1)[0];(p/'before-main-full-type.expr').write_text(mainType+'\n')
+extra='''\nrun_cmd Lean.Elab.Command.liftTermElabM do
+  let expectedMain : Lean.Expr := MAINEXPR
+  let main ← Lean.getConstInfo ``Roth.main_lemma
+  unless (repr (normalizeGeneratedBinders expectedMain)).pretty 1000000 ==
+      (repr (normalizeGeneratedBinders main.type)).pretty 1000000 do throwError "Changed actual main public TYPE"
+  let m ← Lean.getConstInfo ``audit_migration
+  let o ← Lean.getConstInfo ``audit_original_firstdraft
+  unless m.levelParams == o.levelParams &&
+      (repr (normalizeGeneratedBinders m.type)).pretty 1000000 ==
+      (repr (normalizeGeneratedBinders o.type)).pretty 1000000 do throwError "Migration changed full original TYPE"
+  let v := m.value! true
+  for e in [m.type, v] do
+    if e.hasMVar || e.hasLevelMVar || e.hasFVar || e.hasLooseBVars || e.getUsedConstants.contains ``sorryAx then throwError "Open/admitted migration"
+  unless ← Lean.Meta.isDefEq (← Lean.Meta.inferType v) m.type do throwError "Migration inferred TYPE differs"
+  unless v.getUsedConstants.contains CURRENTNAME do throwError "Migration does not use actual current target"
+  let axs ← Lean.collectAxioms ``audit_migration
+  unless axs.all ([``propext, ``Classical.choice, ``Quot.sound].contains ·) do throwError "Migration nonstandard axiom"
+  Lean.Core.liftIOCore <| IO.println s!"OLD CONTRACT MIGRATION AND EXACT MAIN PUBLIC TYPE PASS TYPE={(repr m.type).pretty 1000000} ACTUALOPAQUEVALUE={(repr v).pretty 1000000} AXIOMS={axs}"
+'''.replace('MAINEXPR',mainType).replace('CURRENTNAME','('+target+')')
+text=prefix+'\nmacro "auditedCurrentHelper" : term => pure (Lean.mkIdent ('+target+'))\n'+migration+'\nrun_cmd Lean.Elab.Command.liftTermElabM do'+firstguard+'\n\n'+'\n\n'.join(frags)+extra
+(p/'after-semantics.lean').write_text(text)
+# Three exact standalone option insertions, matching before scope, applied to frozen after source.
+b=(p/'after-source.lean').read_text();assert Path('/Users/ramin/LEAN/Roth/Roth/MainLemma.lean').read_text()==b
+sc=b.replace('namespace Roth\n','set_option trace.profiler false\n\nnamespace Roth\n',1).replace('private lemma abs_eval_iterated_hasseDeriv_lt_aux','set_option trace.profiler true\n\nprivate lemma abs_eval_iterated_hasseDeriv_lt_aux',1).replace('\nend Roth\n','\nset_option trace.profiler false\n\nend Roth\n',1)
+assert sc.count('set_option trace.profiler')==3
+(p/'after-scoped.lean').write_text(sc)
+print({'fresh_names':len(ns),'semantic_source_sha256':hashlib.sha256(text.encode()).hexdigest(),'profile_source_sha256':hashlib.sha256(sc.encode()).hexdigest(),'actual_target':target})
