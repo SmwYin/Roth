@@ -59,3 +59,5 @@ Declaration4 complete: removed the unnecessary positive-M hypothesis using exist
 Declaration4 source/audit published327987a to origin ramin-cleanup (push exit0). Current Main4/17, project247/263; no source changes after accepted gates.
 
 Declaration5 reduction complete: full contract preserved, product-map injectivity replaces manual pair injection; standard rewrites replace ring identity, single-use locals removed. Declaration24→17, tacticbody21→14, source669→663 with exponent-loss doc tip. Actual FULL60.783572→separate Eval31.990705, fresh native Main/Eval/root and complete Main LSP pass. Genuine original proof reused via exact source binding; fresh alternate exponent independent proof and strict TYPE/actual in-memory opaque VALUE/default/std/closed/inferred/acyclic upstream checks pass. Final focused331.730ms, old genuine605.368ms separate/no ratio; full canonical/actualsingleton/41 frozeninputs pass. No new helpers/API/imports/renames. [Audit](Main-reduction.md).
+
+Declaration5 source/audit published9ab25af to origin ramin-cleanup (push exit0). Current Main5/17, project248/263.
