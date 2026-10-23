@@ -63,3 +63,5 @@ Declaration5 reduction complete: full contract preserved, product-map injectivit
 Declaration5 source/audit published9ab25af to origin ramin-cleanup (push exit0). Current Main5/17, project248/263.
 
 Declaration6 complete: every algebraic integer has a monic root polynomial of degree≥2, using f*X²; unnecessary irrationality removed, sole caller argument repaired. Code11→6/body9→4/source663→658. Independent f² proof, exact old-contract recovery, caller fullTYPE/actualopaqueVALUE-in-memory/std/default/closed/inferred and original family reuse pass. FULL61.798→separateEval33.389 preceded an exact doc-only wording clarification; final native Main/Eval/root, LSP, semantics and profile bind final source. Final focused116.741ms; genuine historical310.152ms separate/no ratio. First timing attempt sandbox ps failure launched nothing/no credit; new ACK/retry/drain/release passed. No new helpers/imports/renames. [Audit](Main-exists_monic_aeval_eq_zero.md).
+
+Declaration6 source/audit published69c40c0 to origin ramin-cleanup (push exit0). Current Main6/17/project249/263.
