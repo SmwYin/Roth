@@ -1,4 +1,4 @@
-# MainLemma cleanup ledger (active)
+# MainLemma cleanup ledger (final validation complete)
 
 Baseline HEAD `4d7445c6dd8fe1dd0abfd6edbd5c73f3bc5ccec6`. Entry source708 lines;
 original project inventory704 lines,27 original declarations. Prior Theta caller adjustments
@@ -572,3 +572,10 @@ All worker/compiler/native/profile ownership drained before publication.
 Source/audit publication hash follows in central checkpoint history via metadata child.
 MainLemma26/27 originals,overall242/264,10/14fullycompletedfiles;nextmain_lemma.
 Filewide final phases remain pending.
+
+
+## Final whole-file result — 2026-10-23
+
+All27 original audits and18 introduced-helper lifecycles complete;16 helpers retained,22originalpublic declarations retained and all5originalprivate declarations retired. Fresh independent whole-file simplify review and owner review PASS. [Final report](MainLemma-final.md) records all38actual finalprofile rows, all131retained generated/DATA/proof fullTYPE+opaqueVALUE/default/axiom checks, preserved publiccontracts/docs/comments/imports/paperreferences, actualFULL→separateEval and completeML/Main/Eval diagnostics. Finalsource753lines/45275B SHA5040fe7a37bd847cf2f502e405d3b04e2be3460c50cd3e245ea48572e8089467; entry708→753(+45), finalbatch818→753(−65). Main14physicalprooflines. Bothallrowprofile samples pass<750ms (max527.653/494.661ms); no unchangedthirdcapture/cross-runtime numericcausalclaim.
+
+Allsource/report/compiler/native/profile leaf leases ended; owner exactpublication and cleanremote identity recorded in centralprogress. Globalrenamequeue remains projectEND work: index_hasseDeriv_ge→index_sub_weight_le_index_hasseDeriv; B₁→mainCoeffBound; log_B₁_gt→mul_log_div_two_lt_log_mainCoeffBound; abs_coeff_modByMonic_le→norm_coeff_modByMonic_le; lem7_hyp_of_h32→mul_two_mul_add_one_div_lt_of_le_sq_mul. Nextfile Main,thenLeanEval andRoth.lean; foreignMainperformanceFAIL remains its own later obligation.

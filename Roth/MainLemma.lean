@@ -76,8 +76,8 @@ theorem exists_delta_bound {n m : ℕ} (hm : 16 * n ^ 2 < m) : ∃ δ₀ : ℝ, 
   have hgap : 2 * (n : ℝ) * √(m : ℝ) < m / 2 := by
     nlinarith only [Real.sq_sqrt hm0.le,
       mul_lt_mul_of_pos_right h4n (Real.sqrt_pos.mpr hm0)]
-  have hc : ContinuousAt (fun δ ↦ eta δ m + 2 * (1 + 3 * δ) * n * √(m : ℝ)) 0 := by
-    fun_prop (disch := positivity) [eta]
+  have hc : ContinuousAt (fun δ ↦ eta δ m + 2 * (1 + 3 * δ) * n * √(m : ℝ)) 0 :=
+    (Real.continuousAt_rpow_const 0 _ (.inr (by positivity))).const_mul _ |>.add (by fun_prop)
   obtain ⟨ε, hε, hbound⟩ := Metric.eventually_nhds_iff.mp
     (hc.eventually_lt continuousAt_const (by
       simpa [eta, Real.zero_rpow (by positivity : (1 / 2 : ℝ) ^ m ≠ 0)] using hgap))
@@ -269,66 +269,6 @@ def boxFamily {σ : Type*} (r : σ → ℕ) (B : ℕ) : Set (MvPolynomial σ ℤ
   {W | (∀ j, degreeOf j W ≤ r j) ∧ ∀ d, 0 ≤ W.coeff d ∧ W.coeff d ≤ B}
 
 /- The polynomial with coefficient `c d` at each monomial `d` of the box. -/
-private noncomputable def boxPoly {σ : Type*} [Fintype σ] [DecidableEq σ] (r : σ → ℕ) (B : ℕ)
-    (c : box r → Fin (B + 1)) : MvPolynomial σ ℤ :=
-  ∑ d : box r, monomial d (c d)
-
-private lemma coeff_boxPoly {σ : Type*} [Fintype σ] [DecidableEq σ] (r : σ → ℕ) (B : ℕ)
-    (c : box r → Fin (B + 1)) (e : σ →₀ ℕ) :
-    (boxPoly r B c).coeff e = if h : e ∈ box r then (c ⟨e, h⟩ : ℤ) else 0 := by
-  rw [boxPoly, MvPolynomial.coeff_sum]
-  by_cases h : e ∈ box r
-  · simpa only [coeff_monomial, dite_eq_left h, Subtype.ext_iff] using
-      Fintype.sum_ite_eq' ⟨e, h⟩ (fun d : box r ↦ (c d : ℤ))
-  · simp only [coeff_monomial, dite_eq_right h, show ∀ d : box r, (d : σ →₀ ℕ) ≠ e from
-      fun d he ↦ h (he ▸ d.2), ite_false, Finset.sum_const_zero]
-
-private lemma boxPoly_injective {σ : Type*} [Fintype σ] [DecidableEq σ] (r : σ → ℕ) (B : ℕ) :
-    Function.Injective (boxPoly r B) := fun c c' hcc' ↦ funext fun d ↦ Fin.ext <| by
-  simpa [coeff_boxPoly, d.2] using congrArg (fun W ↦ W.coeff d) hcc'
-
-private lemma range_boxPoly {σ : Type*} [Fintype σ] [DecidableEq σ] (r : σ → ℕ) (B : ℕ) :
-    Set.range (boxPoly r B) = boxFamily r B := by
-  ext W
-  constructor
-  · rintro ⟨c, rfl⟩
-    refine ⟨fun j ↦ degreeOf_le_iff.2 fun e he ↦ ?_, fun d ↦ ?_⟩
-    · rw [mem_support_iff, coeff_boxPoly] at he
-      split_ifs at he with h
-      · exact mem_box.1 h j
-      · exact absurd rfl he
-    · rw [coeff_boxPoly]
-      split_ifs with h
-      · exact ⟨by positivity, by exact_mod_cast Nat.lt_succ_iff.1 (c ⟨d, h⟩).2⟩
-      · exact ⟨le_rfl, by positivity⟩
-  · rintro ⟨hdeg, hcoeff⟩
-    refine ⟨fun d ↦ ⟨(W.coeff d).toNat, Nat.lt_succ_of_le (Int.toNat_le.2 (hcoeff d).2)⟩, ?_⟩
-    ext e
-    rw [coeff_boxPoly]
-    split_ifs with h
-    · exact Int.toNat_of_nonneg (hcoeff e).1
-    · by_contra hne
-      exact h (mem_box.2 fun j ↦
-        (monomial_le_degreeOf j (mem_support_iff.2 (Ne.symm hne))).trans (hdeg j))
-
-/-- The family `𝒲` is finite when only finitely many variables have positive degree bounds.
-The ambient index type may be infinite; finite index types supply the instance automatically. -/
-theorem boxFamily_finite {σ : Type*} (r : σ → ℕ) [Finite (Function.support r)] (B : ℕ) :
-    (boxFamily r B).Finite := by
-  classical
-  let s := (Set.toFinite (Function.support r)).toFinset.finsupp fun j ↦ Finset.Iic (r j)
-  refine ((s.finsupp fun _ ↦ Finset.Icc (0 : ℤ) B).finite_toSet.image
-    AddMonoidAlgebra.ofCoeff).subset ?_
-  intro W hW
-  refine ⟨W.coeff, ?_, rfl⟩
-  rw [Finset.mem_coe, Finset.mem_finsupp_iff]
-  refine ⟨fun d hd ↦ ?_, fun d _ ↦ Finset.mem_Icc.2 (hW.2 d)⟩
-  rw [Finset.mem_finsupp_iff]
-  refine ⟨fun j hj ↦ ?_, fun j _ ↦ Finset.mem_Iic.2 ((monomial_le_degreeOf j hd).trans (hW.1 j))⟩
-  rw [Set.Finite.mem_toFinset]
-  exact fun h ↦ (Finsupp.mem_support_iff.1 hj)
-    (Nat.eq_zero_of_le_zero (h ▸ (monomial_le_degreeOf j hd).trans (hW.1 j)))
-
 open scoped Classical in
 private lemma boxFamily_eq_image_finsupp_aux {σ : Type*} (r : σ → ℕ) [Finite (Function.support r)]
     (B : ℕ) : boxFamily r B = AddMonoidAlgebra.ofCoeff ''
@@ -348,6 +288,14 @@ private lemma boxFamily_eq_image_finsupp_aux {σ : Type*} (r : σ → ℕ) [Fini
     by_cases hd : d ∈ Finset.Iic (Finsupp.ofSupportFinite r (Set.toFinite _))
     · exact Finset.mem_Icc.1 (hc d hd)
     · simp [Finsupp.notMem_support_iff.1 (fun h ↦ hd (hs h))]
+
+/-- The family `𝒲` is finite when only finitely many variables have positive degree bounds.
+The ambient index type may be infinite; finite index types supply the instance automatically. -/
+theorem boxFamily_finite {σ : Type*} (r : σ → ℕ) [Finite (Function.support r)] (B : ℕ) :
+    (boxFamily r B).Finite := by
+  classical
+  rw [boxFamily_eq_image_finsupp_aux]
+  exact (Finset.finite_toSet _).image _
 
 /-- For finitely supported degree bounds, `𝒲` has `(B + 1)^N` elements with `N = ∏ᶠ j, (r j + 1)`.
 On finite index types, `finprod_eq_prod_of_fintype` recovers the usual product formula.
@@ -623,18 +571,6 @@ private lemma mul_card_filter_weight_le_aux {m : ℕ} (hm : 0 < m) (r : Fin m �
   · exact (mul_nonpos_of_nonpos_of_nonneg (le_of_not_gt ha) (Nat.cast_nonneg _)).trans
       (by positivity)
 
-private lemma mul_div_lt_of_mul_le_one_of_lt_sq_mul_aux {K : Type*} [Semifield K] [LinearOrder K]
-    [IsStrictOrderedRing K] [ExistsAddOfLE K] {δ m C L : K} (hδm : δ * m ≤ 1) (hC : 0 ≤ C)
-    (hCL : C < δ ^ 2 * L) : m * C / δ < L := by
-  have hδ : δ ≠ 0 := by
-    rintro rfl
-    simpa using hC.trans_lt hCL
-  apply (mul_lt_mul_iff_of_pos_right (sq_pos_of_ne_zero hδ)).1
-  calc
-    _ = (δ * m) * C := by field_simp
-    _ ≤ C := (mul_le_mul_of_nonneg_right hδm hC).trans_eq (one_mul C)
-    _ < L * δ ^ 2 := hCL.trans_eq (mul_comm _ _)
-
 private lemma exists_mem_RSet_le_index_of_rpow_bound_aux {f : Polynomial ℤ} {α A : ℝ} (hf : f.Monic)
     (hfα : Polynomial.aeval α f = 0) (hA : ∀ i, |(f.coeff i : ℝ)| ≤ A) {m : ℕ} (hm : 0 < m)
     (r : Fin m → ℕ) (hr : ∀ j, 0 < r j) {c β : ℝ} {B s : ℕ} (hB : 0 < B) (hs : ∑ j, r j ≤ s)
@@ -668,7 +604,6 @@ private lemma exists_mem_RSet_le_index_of_rpow_bound_aux {f : Polynomial ℤ} {�
   have hD : c * f.natDegree * J.card ≤ ((∏ j, (r j + 1) : ℕ) : ℝ) / 2 := by
     simpa [J, mul_assoc] using mul_card_filter_weight_le_aux hm r hr (c * f.natDegree)
   exact exists_mem_RSet_le_index_aux hf hfα r B Cn J
-    (γ := ((m : ℝ) - 4 * c * f.natDegree * √(m : ℝ)) / 2)
     (fun W hW j _ i _ ↦ hC W hW j i)
     (pigeonhole_count (Nat.cast_pos.2 hB) hc (Finset.prod_pos fun j _ ↦ Nat.succ_pos _) hD)
     (fun d hd hw ↦ Finset.mem_filter.2 ⟨mem_box.2 hd, hw.le⟩)
