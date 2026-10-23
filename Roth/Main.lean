@@ -183,34 +183,31 @@ theorem exists_reduced_approx {α : ℝ} (hα : Irrational α) {κ : ℝ} (hκ :
   exact hinf (Set.Finite.of_finite_fibers ρ hV hfib)
 
 /-- For `κ > 2` there is a positive integer `m > 16 n²` with `4 n √m < m` and
-`2m / (m - 4 n √m) < κ`.
+`2m / (m - 4 n √m) < κ`. The parameter `n` may be zero.
 
 Source: §7, eq. (47) ("We choose a positive integer `m` large enough that `m > 4n m^{1/2}`
 and `2m/(m - 4n m^{1/2}) < κ`, which is possible as `κ > 2`"), together with `m > 16n²`. -/
-theorem exists_m {n : ℕ} (hn : 0 < n) {κ : ℝ} (hκ : 2 < κ) :
-    ∃ m : ℕ, 16 * n ^ 2 < m ∧ 4 * n * √(m : ℝ) < m ∧ 2 * m / (m - 4 * n * √(m : ℝ)) < κ := by
-  have hκ2 : 0 < κ - 2 := by linarith
-  set s := ⌈4 * κ * n / (κ - 2)⌉₊ + 4 * n + 1 with hs
-  have hs4 : 4 * n < s := by omega
-  have hsR : (s : ℝ) = ⌈4 * κ * n / (κ - 2)⌉₊ + 4 * n + 1 := by rw [hs]; push_cast; ring
-  have hceil := Nat.le_ceil (4 * κ * n / (κ - 2))
-  have hn' : (0 : ℝ) ≤ n := Nat.cast_nonneg n
-  have hs4R : (4 * n : ℝ) < s := by
-    rw [hsR]; linarith [Nat.cast_nonneg (α := ℝ) ⌈4 * κ * n / (κ - 2)⌉₊]
-  have hkey : 4 * κ * n < (κ - 2) * s := by
-    have : 4 * κ * n / (κ - 2) < s := by rw [hsR]; linarith
-    rw [div_lt_iff₀ hκ2] at this
-    linarith
-  have hsq : √((s ^ 2 : ℕ) : ℝ) = s := by push_cast; exact Real.sqrt_sq (Nat.cast_nonneg _)
-  have hspos : (0 : ℝ) < s := by linarith
-  refine ⟨s ^ 2, by nlinarith, ?_, ?_⟩
-  · rw [hsq]
-    push_cast
-    nlinarith
-  · rw [hsq]
-    push_cast
-    rw [div_lt_iff₀ (by nlinarith)]
-    nlinarith
+theorem exists_m {n : ℕ} {κ : ℝ} (hκ : 2 < κ) : ∃ m : ℕ, 16 * n ^ 2 < m ∧ 4 * n * √(m : ℝ) < m ∧
+    2 * m / (m - 4 * n * √(m : ℝ)) < κ := by
+  let s := ⌈4 * κ * n / (κ - 2)⌉₊ + 4 * n + 1
+  have hs4 : 4 * n < s := by
+    dsimp [s]
+    lia
+  have hs4R : (4 * n : ℝ) < s := by exact_mod_cast hs4
+  have hspos : (0 : ℝ) < s := lt_of_le_of_lt (by positivity) hs4R
+  have hkey : 4 * κ * n < (s : ℝ) * (κ - 2) := by
+    apply (div_lt_iff₀ (sub_pos.mpr hκ)).mp
+    refine (Nat.le_ceil _).trans_lt ?_
+    exact_mod_cast (show ⌈4 * κ * n / (κ - 2)⌉₊ < s by
+      dsimp [s]
+      lia)
+  have hmul : 4 * n * (s : ℝ) < (s : ℝ) ^ 2 := by
+    simpa [pow_two] using mul_lt_mul_of_pos_right hs4R hspos
+  refine ⟨s ^ 2, by nlinarith only [hs4], ?_, ?_⟩
+  · simpa using hmul
+  · push_cast
+    rw [Real.sqrt_sq (Nat.cast_nonneg _), div_lt_iff₀ (sub_pos.mpr hmul)]
+    nlinarith only [mul_lt_mul_of_pos_right hkey hspos]
 
 /-- If `δ < c ^ 2 ^ m`, then `η(δ, m) < 10 ^ m * c`. -/
 private lemma eta_lt_of_lt {δ c : ℝ} (hδ0 : 0 < δ) (hc : 0 < c) (m : ℕ) (h : δ < c ^ (2 ^ m)) :
@@ -493,7 +490,7 @@ theorem roth_of_isIntegral {α : ℝ} (hα : Irrational α) (hint : IsIntegral �
         (fun _ _ => abs_nonneg _) hi]
     · simpa [Polynomial.notMem_support_iff.1 hi] using zero_le_one.trans hA1
   -- choice of `m` and `δ`
-  obtain ⟨m, hm, h47, h47'⟩ := exists_m (by omega : 0 < n) hκ
+  obtain ⟨m, hm, h47, h47'⟩ := exists_m (n := n) hκ
   obtain ⟨δ, hδ0, hδm, h30, h49⟩ := exists_delta (by omega : 0 < n) hm h47 h47'
   have hm2 : 2 ≤ m := by
     have : 4 ≤ n ^ 2 := by nlinarith
