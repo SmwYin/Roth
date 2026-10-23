@@ -89,27 +89,19 @@ theorem approxSet_den_le_finite (α κ : ℝ) (Q₀ : ℕ) : {hq ∈ approxSet �
   simp only [Finset.coe_product, Set.mem_prod, Finset.coe_Icc, Set.mem_Icc]
   exact ⟨abs_le.1 hK', hq0, hqQ⟩
 
-/-- If `κ' < κ` and `M > 0`, then `M / q^κ < 1 / q^κ'` for all sufficiently large natural
-numbers `q`.
+/-- If `κ' < κ`, then any fixed real factor `M` can be absorbed into the exponent gap:
+`M / q^κ < 1 / q^κ'` for all sufficiently large natural numbers `q`.
 
 Source: §6 ("Pick any `κ'` such that `2 < κ' < κ`. Then for `q` large enough,
 `M/q^κ < 1/q^{κ'}`"). -/
-theorem eventually_div_rpow_lt {M : ℝ} (hM : 0 < M) {κ κ' : ℝ} (hκ : κ' < κ) :
+theorem eventually_div_rpow_lt {M κ κ' : ℝ} (hκ : κ' < κ) :
     ∃ Q₀ : ℕ, ∀ q : ℕ, Q₀ < q → M / (q : ℝ) ^ κ < 1 / (q : ℝ) ^ κ' := by
-  have he0 : 0 < κ - κ' := by linarith
-  refine ⟨⌈M ^ (1 / (κ - κ'))⌉₊, fun q hq => ?_⟩
-  have hq1 : M ^ (1 / (κ - κ')) < q := (Nat.le_ceil _).trans_lt (by exact_mod_cast hq)
-  have hqpos : (0 : ℝ) < q := lt_of_le_of_lt (by positivity) hq1
-  have hMq : M < (q : ℝ) ^ (κ - κ') := by
-    have := Real.rpow_lt_rpow (by positivity) hq1 he0
-    rwa [← Real.rpow_mul hM.le, one_div_mul_cancel he0.ne', Real.rpow_one] at this
-  have hsplit : (q : ℝ) ^ κ = (q : ℝ) ^ (κ - κ') * (q : ℝ) ^ κ' := by
-    rw [← Real.rpow_add hqpos]
-    congr 1
-    ring
-  rw [div_lt_div_iff₀ (Real.rpow_pos_of_pos hqpos κ) (Real.rpow_pos_of_pos hqpos κ'), one_mul,
-    hsplit]
-  exact mul_lt_mul_of_pos_right hMq (Real.rpow_pos_of_pos hqpos κ')
+  obtain ⟨N, hN⟩ := Filter.eventually_atTop.1
+    (((tendsto_rpow_atTop (sub_pos.2 hκ)).comp tendsto_natCast_atTop_atTop).eventually_gt_atTop M)
+  refine ⟨N, fun q hq ↦ ?_⟩
+  have hq0 : (0 : ℝ) < q := by exact_mod_cast (Nat.zero_le N).trans_lt hq
+  rw [div_lt_iff₀ (Real.rpow_pos_of_pos hq0 κ), one_div_mul_eq_div, ← Real.rpow_sub hq0]
+  exact hN q hq.le
 
 /-- A counterexample to Roth's theorem for an irrational real algebraic number yields one for an
 irrational real algebraic integer.
@@ -121,7 +113,7 @@ theorem reduction {α : ℝ} (hα : Irrational α) (halg : IsAlgebraic ℚ α) {
     ∃ (α' κ' : ℝ), Irrational α' ∧ IsIntegral ℤ α' ∧ 2 < κ' ∧ (approxSet α' κ').Infinite := by
   obtain ⟨M, hM0, hMint⟩ := exists_nat_mul_isIntegral halg
   have hMR : (0 : ℝ) < M := by exact_mod_cast hM0
-  obtain ⟨Q₀, hQ₀⟩ := eventually_div_rpow_lt hMR (show (κ + 2) / 2 < κ by linarith)
+  obtain ⟨Q₀, hQ₀⟩ := eventually_div_rpow_lt (M := M) (show (κ + 2) / 2 < κ by linarith)
   refine ⟨M * α, (κ + 2) / 2, hα.natCast_mul hM0.ne', hMint, by linarith, ?_⟩
   have hS := hinf.sdiff (approxSet_den_le_finite α κ Q₀)
   set g : ℤ × ℕ → ℤ × ℕ := fun hq => ((M : ℤ) * hq.1, hq.2) with hg

@@ -19,7 +19,7 @@ theorem isDiophantine_iff {x : ℝ} (hx : Irrational x) :
   · intro h κ hinf
     by_contra! hκ
     obtain ⟨C, hC, hbound⟩ := h ((κ - 2) / 2) (by linarith)
-    obtain ⟨Q, hQ⟩ := Roth.eventually_div_rpow_lt (one_div_pos.mpr hC)
+    obtain ⟨Q, hQ⟩ := Roth.eventually_div_rpow_lt (M := 1 / C)
       (by linarith : 2 + (κ - 2) / 2 < κ)
     obtain ⟨⟨p, q⟩, hpq, hq⟩ :=
       (hinf.sdiff (Roth.approxSet_den_le_finite x κ Q)).nonempty
