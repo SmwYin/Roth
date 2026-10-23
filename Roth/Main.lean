@@ -105,33 +105,27 @@ theorem eventually_div_rpow_lt {M κ κ' : ℝ} (hκ : κ' < κ) :
 
 /-- A counterexample to Roth's theorem for an irrational real algebraic number yields one for an
 irrational real algebraic integer.
+The returned exponent may be smaller than the original one.
 
 Source: §6, Lemma ("If the theorem fails, then it also fails for an irrational real algebraic
 integer"). -/
 theorem reduction {α : ℝ} (hα : Irrational α) (halg : IsAlgebraic ℚ α) {κ : ℝ} (hκ : 2 < κ)
-    (hinf : (approxSet α κ).Infinite) :
-    ∃ (α' κ' : ℝ), Irrational α' ∧ IsIntegral ℤ α' ∧ 2 < κ' ∧ (approxSet α' κ').Infinite := by
+    (hinf : (approxSet α κ).Infinite) : ∃ (α' κ' : ℝ), Irrational α' ∧ IsIntegral ℤ α' ∧ 2 < κ' ∧
+    (approxSet α' κ').Infinite := by
   obtain ⟨M, hM0, hMint⟩ := exists_nat_mul_isIntegral halg
-  have hMR : (0 : ℝ) < M := by exact_mod_cast hM0
   obtain ⟨Q₀, hQ₀⟩ := eventually_div_rpow_lt (M := M) (show (κ + 2) / 2 < κ by linarith)
   refine ⟨M * α, (κ + 2) / 2, hα.natCast_mul hM0.ne', hMint, by linarith, ?_⟩
-  have hS := hinf.sdiff (approxSet_den_le_finite α κ Q₀)
-  set g : ℤ × ℕ → ℤ × ℕ := fun hq => ((M : ℤ) * hq.1, hq.2) with hg
-  have hginj : Function.Injective g := fun a b hab => by
-    simp only [hg, Prod.mk.injEq] at hab
-    exact Prod.ext (mul_left_cancel₀ (by exact_mod_cast hM0.ne') hab.1) hab.2
-  refine (hS.image hginj.injOn).mono ?_
+  refine ((hinf.sdiff (approxSet_den_le_finite α κ Q₀)).image
+    ((mul_right_injective₀ (by exact_mod_cast hM0.ne' : (M : ℤ) ≠ 0)).prodMap
+      Function.injective_id).injOn).mono ?_
   rintro _ ⟨⟨h, q⟩, ⟨⟨hq0, happ⟩, hnot⟩, rfl⟩
-  have hqQ : Q₀ < q := not_le.1 fun hc => hnot ⟨⟨hq0, happ⟩, hc⟩
   refine ⟨hq0, ?_⟩
-  simp only [hg]
-  have : (M : ℝ) * α - (((M : ℤ) * h : ℤ) : ℝ) / q = M * (α - h / q) := by
-    push_cast
-    ring
-  rw [this, abs_mul, Nat.abs_cast]
-  calc (M : ℝ) * |α - h / q| < M * (1 / (q : ℝ) ^ κ) := mul_lt_mul_of_pos_left happ hMR
-    _ = M / (q : ℝ) ^ κ := by ring
-    _ < 1 / (q : ℝ) ^ ((κ + 2) / 2) := hQ₀ q hqQ
+  dsimp only [Prod.map, id]
+  push_cast
+  rw [mul_div_assoc, ← mul_sub, abs_mul, Nat.abs_cast]
+  calc (M : ℝ) * |α - h / q| < M / (q : ℝ) ^ κ := by
+        simpa only [mul_one_div] using mul_lt_mul_of_pos_left happ (by positivity : (0 : ℝ) < M)
+    _ < 1 / (q : ℝ) ^ ((κ + 2) / 2) := hQ₀ q (not_le.1 fun hc ↦ hnot ⟨⟨hq0, happ⟩, hc⟩)
 
 /-- An irrational algebraic integer is a root of a monic integer polynomial of degree at least
 `2`.
