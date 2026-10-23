@@ -1,6 +1,7 @@
-import Roth.MainLemma
-import Mathlib.RingTheory.Algebraic.Integral
 import Mathlib.NumberTheory.Real.Irrational
+import Mathlib.RingTheory.Algebraic.Integral
+
+import Roth.MainLemma
 
 /-!
 # Roth's theorem
@@ -54,16 +55,9 @@ Source: §6, Lemma ("If `α` is an algebraic number, there is an integer `M > 0`
 is an algebraic integer"). -/
 theorem exists_nat_mul_isIntegral {α : ℝ} (hα : IsAlgebraic ℚ α) :
     ∃ M : ℕ, 0 < M ∧ IsIntegral ℤ ((M : ℝ) * α) := by
-  have hZ : IsAlgebraic ℤ α := (IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).2 hα
-  obtain ⟨y, hy, hint⟩ := hZ.exists_integral_multiple
+  obtain ⟨y, hy, hint⟩ := ((IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).2 hα).exists_integral_multiple
   refine ⟨y.natAbs, Int.natAbs_pos.2 hy, ?_⟩
-  rw [zsmul_eq_mul] at hint
-  rcases le_or_gt 0 y with h | h
-  · have : ((y.natAbs : ℕ) : ℝ) = (y : ℝ) := by rw [Nat.cast_natAbs, abs_of_nonneg h]
-    rwa [this]
-  · have : ((y.natAbs : ℕ) : ℝ) = -(y : ℝ) := by rw [Nat.cast_natAbs, abs_of_neg h, Int.cast_neg]
-    rw [this, neg_mul]
-    exact hint.neg
+  simpa [zsmul_eq_mul, ← mul_assoc, ← Int.cast_mul, Int.sign_mul_self] using hint.zsmul y.sign
 
 /-- There are only finitely many approximations `(h, q) ∈ approxSet α κ` with bounded
 denominator `q ≤ Q₀`.

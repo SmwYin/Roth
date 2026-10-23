@@ -13,7 +13,7 @@ Entry:689 lines, SHA6668ff83a7e7b156f6f29b8f2d0163e699da002b70338d5ee0715065ade9
 
 A1 Copyright/license absent: preserved by standing user instruction; invent no metadata.
 A2 Module docstring present, subject/main results/proof outline/references present.
-A3 Classic imports currently project before Mathlib, Mathlib not alphabetical: reorder at first safe source checkpoint or final review, then affected validation.
+A3 Classic imports reordered with declaration2: Mathlib alphabetical, blankline, project import. Final full/Eval builds and natives passed.
 A4 No contentless section headers.
 A5 File689lines<1000; no split required.
 A6 No file-level heartbeat/recursion/debug options.
@@ -50,4 +50,4 @@ Initial semantic count263, not historical264. Initial CoeffNorm line12 starts `l
 
 ## Phase3 and later status
 
-No source changes yet. Header preserved; module docs present; import reorder pending safe checkpoint. Individual audit1 complete, approxSet unchanged;47.516ms/fullTYPE+VALUE/independentconstruction/natives/defaultstd3 PASS. [Audit](Main-approxSet.md). Published1/17 at auditcommit60051f3, origin ramin-cleanup push exit0. Full cumulative/fresh independent file-final gates pending. Five existing end-project renames remain queued and are not applied in Main entry.
+Header preserved; module docs present; authorized import reorder applied and validated with declaration2. Individual audit1 complete, approxSet unchanged;47.516ms/fullTYPE+VALUE/independentconstruction/natives/defaultstd3 PASS. [Audit](Main-approxSet.md). Published1/17 at auditcommit60051f3, origin ramin-cleanup push exit0. Declaration2 complete12→5, fulloriginalTYPE/docs unchanged; sameactualfull/Eval/build/natives/independentproof/defaultstd3 gates pass, finalexactprefix152.974ms. [Audit](Main-exists_nat_mul_isIntegral.md). Current683lines/bcc3896029a2;2/17 originals validated. Full cumulative/fresh independent file-final gates pending. Five existing end-project renames remain queued and are not applied in Main entry.
