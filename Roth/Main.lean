@@ -127,23 +127,18 @@ theorem reduction {α : ℝ} (hα : Irrational α) (halg : IsAlgebraic ℚ α) {
         simpa only [mul_one_div] using mul_lt_mul_of_pos_left happ (by positivity : (0 : ℝ) < M)
     _ < 1 / (q : ℝ) ^ ((κ + 2) / 2) := hQ₀ q (not_le.1 fun hc ↦ hnot ⟨⟨hq0, happ⟩, hc⟩)
 
-/-- An irrational algebraic integer is a root of a monic integer polynomial of degree at least
-`2`.
+/-- An algebraic integer is a root of a monic integer polynomial of degree at least `2`.
+The witness may be reducible and have larger degree than the minimal polynomial.
 
 Source: §6 ("Since `α` is an algebraic integer, by definition, there is a polynomial
 `f(x) = x^n + a_1 x^{n-1} + ⋯ + a_n` with integral coefficients such that `f(α) = 0`. Its degree
 `n` is at least `2`, since `α` is irrational"). -/
-theorem exists_monic_aeval_eq_zero {α : ℝ} (hα : Irrational α) (hint : IsIntegral ℤ α) :
+theorem exists_monic_aeval_eq_zero {α : ℝ} (hint : IsIntegral ℤ α) :
     ∃ f : Polynomial ℤ, f.Monic ∧ Polynomial.aeval α f = 0 ∧ 2 ≤ f.natDegree := by
   obtain ⟨f, hf, hf0⟩ := hint
-  refine ⟨f, hf, by rwa [Polynomial.aeval_def], ?_⟩
-  by_contra! hlt
-  rcases Nat.le_one_iff_eq_zero_or_eq_one.1 (by omega : f.natDegree ≤ 1) with h0 | h1
-  · rw [Polynomial.eq_one_of_monic_natDegree_zero hf h0, Polynomial.eval₂_one] at hf0
-    exact one_ne_zero hf0
-  · rw [Polynomial.Monic.eq_X_add_C hf h1, Polynomial.eval₂_add, Polynomial.eval₂_X,
-      Polynomial.eval₂_C, algebraMap_int_eq, eq_intCast] at hf0
-    exact hα.ne_int (-(f.coeff 0)) (by push_cast; linarith)
+  refine ⟨f * Polynomial.X ^ 2, hf.mul (Polynomial.monic_X_pow 2), ?_, ?_⟩
+  · rw [map_mul, Polynomial.aeval_def, hf0, zero_mul]
+  · simp [hf.ne_zero]
 
 /-- If `α` is irrational and `approxSet α κ` is infinite (with `κ > 0`), then it contains reduced
 approximations `h / q` with arbitrarily large denominators.
@@ -505,7 +500,7 @@ theorem roth_of_isIntegral {α : ℝ} (hα : Irrational α) (hint : IsIntegral �
     (hinf : (approxSet α κ).Infinite) : κ ≤ 2 := by
   by_contra! hκ
   have hκ0 : 0 < κ := by linarith
-  obtain ⟨f, hf, hfα, hdeg⟩ := exists_monic_aeval_eq_zero hα hint
+  obtain ⟨f, hf, hfα, hdeg⟩ := exists_monic_aeval_eq_zero hint
   set n := f.natDegree
   -- a bound for the coefficients of `f`
   set A : ℝ := 1 + ∑ i ∈ f.support, |((f.coeff i : ℤ) : ℝ)| with hAdef
