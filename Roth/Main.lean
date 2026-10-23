@@ -140,67 +140,47 @@ theorem exists_monic_aeval_eq_zero {α : ℝ} (hint : IsIntegral ℤ α) :
   · rw [map_mul, Polynomial.aeval_def, hf0, zero_mul]
   · simp [hf.ne_zero]
 
+private theorem approxSet_num_den_mem_aux {α κ : ℝ} (hκ : 0 ≤ κ) {h : ℤ} {q : ℕ}
+    (hq : (h, q) ∈ approxSet α κ) : (((h : ℚ) / q).num, ((h : ℚ) / q).den) ∈ approxSet α κ := by
+  set x : ℚ := (h : ℚ) / q
+  have hden : x.den ≤ q := Nat.le_of_dvd hq.1 <| Int.natCast_dvd_natCast.1 <| by
+    simpa [x, Rat.divInt_eq_div] using Rat.den_dvd h q
+  refine ⟨x.den_pos, ?_⟩
+  rw [← Rat.cast_def, Rat.cast_div, Rat.cast_intCast, Rat.cast_natCast]
+  exact hq.2.trans_le (by gcongr)
+
 /-- If `α` is irrational and `approxSet α κ` is infinite (with `κ > 0`), then it contains reduced
-approximations `h / q` with arbitrarily large denominators.
+approximations `h / q` with arbitrarily large denominators, supplying coprimality for choosing
+successive approximants rather than merely bounding unreduced pairs.
 
 Source: §7, first paragraph ("There are therefore infinitely many distinct reduced solutions
 ... the reduced denominators are unbounded as well"). -/
 theorem exists_reduced_approx {α : ℝ} (hα : Irrational α) {κ : ℝ} (hκ : 0 < κ)
-    (hinf : (approxSet α κ).Infinite) (Q₀ : ℕ) :
-    ∃ hq ∈ approxSet α κ, Q₀ < hq.2 ∧ IsCoprime hq.1 (hq.2 : ℤ) := by
+    (hinf : (approxSet α κ).Infinite) (Q₀ : ℕ) : ∃ hq ∈ approxSet α κ, Q₀ < hq.2 ∧
+    IsCoprime hq.1 (hq.2 : ℤ) := by
   by_contra! hcon
-  set ρ : ℤ × ℕ → ℚ := fun hq => (hq.1 : ℚ) / hq.2 with hρ
-  -- the reduced form of a solution is a reduced solution
-  have hred : ∀ hq ∈ approxSet α κ, ((ρ hq).num, (ρ hq).den) ∈ approxSet α κ ∧
-      IsCoprime (ρ hq).num ((ρ hq).den : ℤ) := by
-    rintro ⟨h, q⟩ ⟨hq0, happ⟩
-    simp only at hq0 happ
-    set x := ρ (h, q) with hx
-    have hxR : (x : ℝ) = (h : ℝ) / q := by rw [hx, hρ]; push_cast; rfl
-    have hxdiv : x = Rat.divInt h q := by rw [hx, hρ, Rat.divInt_eq_div]; push_cast; rfl
-    have hden : x.den ≤ q := by
-      have h1 := Rat.den_dvd h q
-      rw [← hxdiv] at h1
-      exact Nat.le_of_dvd hq0 (Int.natCast_dvd_natCast.1 h1)
-    have hdenR : (0 : ℝ) < x.den := by exact_mod_cast x.den_pos
-    refine ⟨⟨x.den_pos, ?_⟩, Int.isCoprime_iff_gcd_eq_one.2 x.reduced⟩
-    simp only
-    rw [← Rat.cast_def, hxR]
-    calc |α - h / q| < 1 / (q : ℝ) ^ κ := happ
-      _ ≤ 1 / (x.den : ℝ) ^ κ :=
-          one_div_le_one_div_of_le (Real.rpow_pos_of_pos hdenR κ)
-            (Real.rpow_le_rpow hdenR.le (by exact_mod_cast hden) hκ.le)
+  set ρ : ℤ × ℕ → ℚ := fun hq ↦ (hq.1 : ℚ) / hq.2
   have hV : (ρ '' approxSet α κ).Finite := by
     refine ((approxSet_den_le_finite α κ Q₀).image ρ).subset ?_
     rintro _ ⟨hq, hmem, rfl⟩
-    obtain ⟨hm, hcop⟩ := hred hq hmem
+    -- the reduced form of a solution is a reduced solution
+    have hm : ((ρ hq).num, (ρ hq).den) ∈ approxSet α κ :=
+      approxSet_num_den_mem_aux hκ.le hmem
     refine ⟨((ρ hq).num, (ρ hq).den), ⟨hm, ?_⟩, ?_⟩
     · by_contra! hc
-      exact hcon _ hm hc hcop
+      exact hcon _ hm hc (Int.isCoprime_iff_gcd_eq_one.2 (ρ hq).reduced)
     · exact Rat.num_div_den (ρ hq)
   have hfib : ∀ x ∈ ρ '' approxSet α κ, {hq ∈ approxSet α κ | ρ hq = x}.Finite := by
     intro x _
-    have hε : 0 < |α - (x : ℝ)| := abs_pos.2 (sub_ne_zero.2 (hα.ne_rat x))
-    refine (approxSet_den_le_finite α κ ⌈(1 / |α - (x : ℝ)|) ^ (1 / κ)⌉₊).subset ?_
-    rintro ⟨h, q⟩ ⟨⟨hq0, happ⟩, hρx⟩
-    refine ⟨⟨hq0, happ⟩, ?_⟩
-    simp only at hq0 happ hρx ⊢
-    have hxR : (h : ℝ) / q = x := by rw [← hρx, hρ]; push_cast; rfl
-    rw [hxR] at happ
-    have hqpos : (0 : ℝ) < q := by exact_mod_cast hq0
-    have hpow : (0 : ℝ) < (q : ℝ) ^ κ := Real.rpow_pos_of_pos hqpos κ
-    have h1 : (q : ℝ) ^ κ < 1 / |α - (x : ℝ)| := by
-      rw [lt_div_iff₀ hε]
-      rw [lt_div_iff₀ hpow] at happ
-      linarith
-    by_contra! hc
-    have h2 : (1 / |α - (x : ℝ)|) ^ (1 / κ) < q := (Nat.le_ceil _).trans_lt (by exact_mod_cast hc)
-    have h3 := Real.rpow_lt_rpow (by positivity) h2 hκ
-    rw [← Real.rpow_mul (by positivity), one_div_mul_cancel hκ.ne', Real.rpow_one] at h3
-    linarith
-  have hsub : approxSet α κ ⊆ ⋃ x ∈ ρ '' approxSet α κ, {hq ∈ approxSet α κ | ρ hq = x} :=
-    fun hq hm => Set.mem_biUnion (Set.mem_image_of_mem ρ hm) ⟨hm, rfl⟩
-  exact hinf ((hV.biUnion hfib).subset hsub)
+    obtain ⟨N, hN⟩ := eventually_div_rpow_lt (M := 1 / |α - (x : ℝ)|) hκ
+    refine (approxSet_den_le_finite α κ N).subset ?_
+    rintro ⟨h, q⟩ ⟨hm, hρx⟩
+    refine ⟨hm, le_of_not_gt fun hq ↦ ?_⟩
+    have hbound := hN q hq
+    rw [Real.rpow_zero, div_one, div_right_comm,
+      div_lt_iff₀ (abs_pos.2 (sub_ne_zero.2 (hα.ne_rat x))), one_mul] at hbound
+    exact not_lt_of_gt hbound <| by simpa [← hρx, ρ] using hm.2
+  exact hinf (Set.Finite.of_finite_fibers ρ hV hfib)
 
 /-- For `κ > 2` there is a positive integer `m > 16 n²` with `4 n √m < m` and
 `2m / (m - 4 n √m) < κ`.
