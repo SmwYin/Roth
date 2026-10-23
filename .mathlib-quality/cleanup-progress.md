@@ -251,7 +251,7 @@ Files will be processed in dependency order; declarations within each file are s
 | `Roth/Index.lean` | 275 | All cleanup phases complete;21/21 originals audited; user-approved hypothesis groups applied and validated |
 | `Roth/Separation.lean` | 618 | Complete;30/30 originals and all final phases;source556lines27retained;all12 approved instance amendments validated |
 | `Roth/Theta.lean` | 981 | Complete;35/35 originals and all final file phases;source991lines,50retained |
-| `Roth/MainLemma.lean` | 704 | Active;27/27 originals audited in original27 source checkpoint;final file phases pending |
+| `Roth/MainLemma.lean` | 704 | Complete;27/27 original audits and all final file phases;source753lines,22public+16introducedprivate retained;18helperlifecycles audited |
 | `Roth/Main.lean` | 684 | Awaiting cleanup |
 | `Roth/LeanEval.lean` | 60 | Awaiting cleanup |
 | `Roth.lean` | 14 | Awaiting cleanup |
@@ -3555,3 +3555,6 @@ All required independent simplify/cumulative22public/retainedactualVALUE/stdaxio
 ## MainLemma file-final publication — source/audit1ddbccf6ddf462a7c2110468c9a41ff56888645b
 
 Actual source/audit commit1ddbccf6ddf462a7c2110468c9a41ff56888645b pushed origin HEAD:ramin-cleanup exit0, ed4c509..1ddbccf. Exact4stagedpaths MainLemma.lean, MainLemma-final.md, MainLemma.md, cleanup-progress.md; staged diffcheck and source5040fe7a immutable PASS. MainLemma now COMPLETE,243/264originals unchanged/11of14files complete; all27originals/18helperlifecycles audited,16helpersretained/22publicretained/5originalprivate retired. All phase and owner gates described above pass; no remaining MainLemma recommendation besides already queued globalENDnames. Finalreport131/17500B/13131417, source753/45275B/5040fe7a, entry708→753+45 and genuine704→753+49, finalbatch818→753−65. ActualleafEND/drain40groupsabsent/current34identitiesexact; owner smallreceipts preserve qualifications. After this metadata child push and cleanremote check, ALL MainLemma source/report/sharedlog/Git/compiler/native/profile ownership released to coordinator. Next Main (including retained foreignperformanceFAIL),LeanEval,Roth.lean,then projectEND all5renames and cumulativeprojectgates. Standing implement-all authorization/selected6.1SolMedium/freshworkers/pins/main protection/userretentions preserved.
+
+
+MainLemma metadata publication checkpoint: source/audit1ddbccf6ddf462a7c2110468c9a41ff56888645b and first completion metadata03384c1 pushed origin ramin-cleanup exit0. This small follow-up synchronizes the File queue row with the actual COMPLETE currentstatus; no source or validation changes. Cleanremote identity and ownership release returned directly to coordinator.
