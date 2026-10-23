@@ -64,29 +64,23 @@ denominator `q ≤ Q₀`.
 
 Source: §6 ("For a fixed upper bound on `q`, there are only finitely many possible integers
 `h` satisfying the approximation inequality"). -/
-theorem approxSet_den_le_finite (α κ : ℝ) (Q₀ : ℕ) :
-    {hq ∈ approxSet α κ | hq.2 ≤ Q₀}.Finite := by
+theorem approxSet_den_le_finite (α κ : ℝ) (Q₀ : ℕ) : {hq ∈ approxSet α κ | hq.2 ≤ Q₀}.Finite := by
   set S : ℝ := ∑ q ∈ Finset.Icc 1 Q₀, 1 / (q : ℝ) ^ κ
   set K : ℤ := ⌈(Q₀ : ℝ) * (|α| + S)⌉
   refine (Finset.finite_toSet (Finset.Icc (-K) K ×ˢ Finset.Icc 1 Q₀)).subset ?_
   rintro ⟨h, q⟩ ⟨⟨hq0, happ⟩, hqQ⟩
   simp only at hq0 happ hqQ
-  have hqmem : q ∈ Finset.Icc 1 Q₀ := Finset.mem_Icc.2 ⟨hq0, hqQ⟩
   have hqR : (0 : ℝ) < q := by exact_mod_cast hq0
-  have hterm : 1 / (q : ℝ) ^ κ ≤ S :=
-    Finset.single_le_sum (f := fun q : ℕ => 1 / (q : ℝ) ^ κ) (fun i _ => by positivity) hqmem
   have hdiv : |(h : ℝ) / q| ≤ |α| + S := by
-    have := abs_sub_abs_le_abs_sub ((h : ℝ) / q) α
-    rw [abs_sub_comm] at this
-    linarith
+    rw [abs_sub_comm] at happ
+    linarith only [happ, abs_sub_abs_le_abs_sub ((h : ℝ) / q) α,
+      Finset.single_le_sum (f := fun q : ℕ ↦ 1 / (q : ℝ) ^ κ) (fun i _ ↦ by positivity)
+        (Finset.mem_Icc.2 ⟨hq0, hqQ⟩)]
   have habs : |(h : ℝ)| ≤ Q₀ * (|α| + S) := by
-    have : |(h : ℝ)| = q * |(h : ℝ) / q| := by
-      rw [abs_div, Nat.abs_cast]
-      field_simp
-    rw [this]
     have hqQR : (q : ℝ) ≤ Q₀ := by exact_mod_cast hqQ
-    have : 0 ≤ |α| + S := le_trans (abs_nonneg _) hdiv
-    nlinarith [abs_nonneg ((h : ℝ) / q)]
+    have hh : |(h : ℝ)| / q ≤ |α| + S := by simpa [abs_div] using hdiv
+    simpa [mul_comm] using ((div_le_iff₀ hqR).1 hh).trans
+      (mul_le_mul_of_nonneg_left hqQR ((abs_nonneg _).trans hdiv))
   have hK' : |h| ≤ K := by
     have : ((|h| : ℤ) : ℝ) ≤ K := by
       rw [Int.cast_abs]

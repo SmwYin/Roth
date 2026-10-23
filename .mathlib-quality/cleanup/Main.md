@@ -28,7 +28,7 @@ All public declarations have docstrings. Public contracts and docs are reviewed 
 |---:|---|---:|---|
 |1|approxSet|48|Definition, domain-specific named set/API necessity/generalisation|
 |2|exists_nat_mul_isIntegral|55|Single-use hZ; cast/sign alternatives|
-|3|approxSet_den_le_finite|73|Proof>30; bounded numerator/denominator reasoning|
+|3|approxSet_den_le_finite|73|Actual28-line proof; bounded numerator/denominator reasoning; signature98chars can pack|
 |4|eventually_div_rpow_lt|109|Generality and real-power algebra|
 |5|reduction|131|Correlated algebraic-integer/infinite approximants witness|
 |6|exists_monic_aeval_eq_zero|162|Existing polynomial/integrality API|
@@ -50,4 +50,6 @@ Initial semantic count263, not historical264. Initial CoeffNorm line12 starts `l
 
 ## Phase3 and later status
 
-Header preserved; module docs present; authorized import reorder applied and validated with declaration2. Individual audit1 complete, approxSet unchanged;47.516ms/fullTYPE+VALUE/independentconstruction/natives/defaultstd3 PASS. [Audit](Main-approxSet.md). Published1/17 at auditcommit60051f3, origin ramin-cleanup push exit0. Declaration2 complete12→5, fulloriginalTYPE/docs unchanged; sameactualfull/Eval/build/natives/independentproof/defaultstd3 gates pass, finalexactprefix152.974ms. [Audit](Main-exists_nat_mul_isIntegral.md). Current683lines/bcc3896029a2;2/17 originals validated. Full cumulative/fresh independent file-final gates pending. Five existing end-project renames remain queued and are not applied in Main entry.
+Header preserved; module docs present; authorized import reorder applied and validated with declaration2. Individual audit1 complete, approxSet unchanged;47.516ms/fullTYPE+VALUE/independentconstruction/natives/defaultstd3 PASS. [Audit](Main-approxSet.md). Published1/17 at auditcommit60051f3, origin ramin-cleanup push exit0. Declaration2 complete12→5, fulloriginalTYPE/docs unchanged; sameactualfull/Eval/build/natives/independentproof/defaultstd3 gates pass, finalexactprefix152.974ms. [Audit](Main-exists_nat_mul_isIntegral.md). Current677lines/999255051da3;3/17 originals validated. Full cumulative/fresh independent file-final gates pending. Five existing end-project renames remain queued and are not applied in Main entry.
+
+Declaration3 entry measurement correction: inherited31/>30 estimate was wrong. Fresh worker measured28 physical proof lines fromactualsource; no decomposition obligation. Currentexactprefix baseline657.420ms (actualfamily target+9simp), no>=750repeat. PriorwholeMain1399.455ms staysseparate valid diagnostic atitsownsource/context; no speedup/causalclaim. Signature52+1+45=98 packs toone line; minimaldirectbound cleanup completed body28→23/signature98, final430.129ms. ActualFULL64.762984→separateEval32.880271s/freshcompleteMain-Eval-rootnatives/independentproof/fullTYPE+VALUE/std3/defaults passed; ownerreviewacceptedafterleafFINAL/drain19known groups. [Audit](Main-approxSet_den_le_finite.md).
