@@ -11,11 +11,11 @@ import Roth.Theta
 /-!
 # Roth's main lemma (Lemma 9)
 
-Given an irrational real algebraic integer `α` with monic minimal-type equation `f`, parameters
-`m, δ` as in Lemma `m-δ`, degrees `r_j`, denominators `q_j` and numerators `h_j` satisfying
-(29)–(33), there is a nonzero integer polynomial `Q` in `m` variables of degree `≤ r_j` in `X j`
-with index at least `γ - η` at `(α, …, α)`, not vanishing at `(h_j / q_j)_j`, and with all Hasse
-derivatives at `(α, …, α)` bounded by `B_1^{1 + 3δ}`.
+For a real root `α` of a monic integer polynomial `f`, a nonzero dimension `m`, and the
+parameter, degree and logarithmic bounds in `Roth.main_lemma`, there is a nonzero integer
+polynomial `Q` of degree `≤ r_j` in `X j`, with index greater than `γ - η` at `(α, …, α)`, not
+vanishing at `(h_j / q_j)_j`, and with all Hasse derivatives at `(α, …, α)` bounded by
+`B_1^{1 + 3δ}`.
 
 The proof is the classical one: a pigeonhole argument over the family `𝒲` of box polynomials
 with coefficients in `[0, B_1]` produces two distinct `W', W''` whose relevant Hasse derivatives
@@ -501,194 +501,318 @@ theorem exists_hasseDeriv_eval_ne_zero {σ : Type*} [Fintype σ] {P : MvPolynomi
     weight r k < c ∧ eval α (hasseDeriv k P) ≠ 0 :=
   (exists_weight_eq_index hP α r).imp fun _ ⟨hd, hw⟩ ↦ ⟨hw ▸ hc, hd⟩
 
-/-- **Roth's main lemma** (Lemma 9). Under (29)–(33) there is a nonzero integer polynomial `Q`
-of degree `≤ r_j` in `X j`, with index `≥ γ - η` at `(α, …, α)`, not vanishing at
-`(h_j / q_j)_j`, all of whose Hasse derivatives at `(α, …, α)` are bounded by `B_1^{1 + 3δ}`.
+private lemma abs_eval_iterated_hasseDeriv_lt_aux {σ : Type*} [Fintype σ] {P : MvPolynomial σ ℤ}
+    {r : σ → ℕ} {B α β : ℝ} {s : ℕ} (hP : ∀ j, degreeOf j P ≤ r j) (hB : 0 < B) (hs : ∑ j, r j ≤ s)
+    (h2 : (2 : ℝ) ^ s < β) (hα : (1 + |α|) ^ s ≤ β) (hc : ∀ d, |(P.coeff d : ℝ)| ≤ B) (i k : σ →₀ ℕ)
+    : |eval (fun _ ↦ α) (map (Int.castRingHom ℝ) (hasseDeriv i (hasseDeriv k P)))| <
+      β * (β * B) * β := by
+  have hdQ : ∀ j, degreeOf j (hasseDeriv k P) ≤ r j := fun j ↦
+    (degreeOf_hasseDeriv_le j k P).trans (hP j)
+  have heval := abs_eval_le (hasseDeriv i (hasseDeriv k P))
+    (fun j ↦ (degreeOf_hasseDeriv_le j i _).trans (hdQ j))
+    (abs_coeff_hasseDeriv_le i _ hdQ (abs_coeff_hasseDeriv_le k P hP hc)) (fun _ ↦ α)
+  rw [Finset.prod_pow_eq_pow_sum] at heval
+  have h2' : (2 : ℝ) ^ (∑ j, r j) < β :=
+    (pow_le_pow_right₀ (by norm_num) hs).trans_lt h2
+  exact heval.trans_lt <| mul_lt_mul_of_nonneg_of_pos
+    (mul_lt_mul'' h2' (mul_lt_mul_of_pos_right h2' hB) (by positivity) (by positivity))
+    ((pow_le_pow_right₀ (le_add_of_nonneg_right (abs_nonneg α)) hs).trans hα)
+    (by positivity) ((pow_pos (by norm_num) _).trans h2')
+
+private lemma exists_hasseDeriv_index_eval_bound_aux {σ : Type*} [Fintype σ] {P : MvPolynomial σ ℤ}
+    {r : σ → ℕ} {α z : σ → ℝ} {C γ c : ℝ} (hP : P ≠ 0) (hd : ∀ j, degreeOf j P ≤ r j)
+    (hbound : ∀ i k : σ →₀ ℕ,
+      |eval α (map (Int.castRingHom ℝ) (hasseDeriv i (hasseDeriv k P)))| < C)
+    (hγ : γ ≤ index (map (Int.castRingHom ℝ) P) α r)
+    (hz : index (map (Int.castRingHom ℝ) P) z r < c) : ∃ Q : MvPolynomial σ ℤ, Q ≠ 0 ∧
+      (∀ j, degreeOf j Q ≤ r j) ∧ γ - c < index (map (Int.castRingHom ℝ) Q) α r ∧
+      eval z (map (Int.castRingHom ℝ) Q) ≠ 0 ∧ ∀ i : σ →₀ ℕ,
+        |eval α (hasseDeriv i (map (Int.castRingHom ℝ) Q))| < C := by
+  obtain ⟨k, hkw, hkev⟩ := exists_hasseDeriv_eval_ne_zero
+    ((map_ne_zero_iff _ (MvPolynomial.map_injective _ Int.cast_injective)).2 hP) z r hz
+  have hQev : eval z (map (Int.castRingHom ℝ) (hasseDeriv k P)) ≠ 0 := by
+    simpa [hasseDeriv_map] using hkev
+  refine ⟨hasseDeriv k P, fun h0 ↦ hQev (by rw [h0, map_zero, map_zero]),
+    fun j ↦ (degreeOf_hasseDeriv_le j k P).trans (hd j), ?_, hQev, fun i ↦ ?_⟩
+  · rw [← hasseDeriv_map]
+    exact ((sub_lt_sub_left hkw γ).trans_le (sub_le_sub_right hγ _)).trans_le
+      (index_hasseDeriv_ge (fun h0 ↦ hkev (by rw [h0, map_zero])) α r)
+  · simpa [hasseDeriv_map] using hbound i k
+
+private lemma abs_coeff_diag_hasseDeriv_modByMonic_le_aux {σ : Type*} [Fintype σ] {f : Polynomial ℤ}
+    {P : MvPolynomial σ ℤ} {r : σ → ℕ} {A B : ℝ} (hA : ∀ i, |(f.coeff i : ℝ)| ≤ A)
+    (hd : ∀ k, degreeOf k P ≤ r k) (hc : ∀ d, |(P.coeff d : ℝ)| ≤ B) (j : σ →₀ ℕ) (i : ℕ) :
+    |((diag (hasseDeriv j P) %ₘ f).coeff i : ℝ)| ≤ (1 + A) ^ ((∑ k, r k) + 1 - f.natDegree) *
+      (((∏ k, (r k + 1) : ℕ) : ℝ) * (2 ^ (∑ k, r k) * B)) := by
+  have hB : 0 ≤ B := (abs_nonneg _).trans (hc 0)
+  have hdP : ∀ k, degreeOf k (hasseDeriv j P) ≤ r k := fun k ↦
+    (degreeOf_hasseDeriv_le k j P).trans (hd k)
+  have hsupp : ((hasseDeriv j P).support.card : ℝ) ≤ ((∏ k, (r k + 1) : ℕ) : ℝ) := by
+    exact_mod_cast card_le_card_box fun d he k ↦ (monomial_le_degreeOf k he).trans (hdP k)
+  have hcD : ∀ k, |((diag (hasseDeriv j P)).coeff k : ℝ)| ≤
+      ((∏ k, (r k + 1) : ℕ) : ℝ) * (2 ^ (∑ k, r k) * B) := fun k ↦
+    (abs_coeff_diag_le _ (abs_coeff_hasseDeriv_le j P hd hc) k).trans
+      (mul_le_mul_of_nonneg_right hsupp (by positivity))
+  simpa only [Int.norm_eq_abs, Nat.cast_prod, Nat.cast_add, Nat.cast_one] using
+    abs_coeff_modByMonic_le (by simpa [Int.norm_eq_abs] using hA) _
+      (by simpa [Int.norm_eq_abs] using hcD) (natDegree_diag_le _ hdP) i
+
+private lemma abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux {σ : Type*} [Fintype σ]
+    {f : Polynomial ℤ} {P : MvPolynomial σ ℤ} {r : σ → ℕ} {A B β : ℝ} {s : ℕ}
+    (hA : ∀ i, |(f.coeff i : ℝ)| ≤ A) (hd : ∀ k, degreeOf k P ≤ r k)
+    (hc : ∀ d, |(P.coeff d : ℝ)| ≤ B) (hs : ∑ k, r k ≤ s) (h2 : 2 ^ s ≤ β) (hpow : (1 + A) ^ s ≤ β)
+    (j : σ →₀ ℕ) (i : ℕ) : |(diag (hasseDeriv j P) %ₘ f).coeff i| ≤ (⌊B * β ^ 3⌋₊ : ℤ) := by
+  have hB0 : 0 ≤ B := (abs_nonneg _).trans (hc 0)
+  have hβ1 : 1 ≤ β := (one_le_pow₀ (by norm_num)).trans h2
+  have hβ0 : 0 ≤ β := zero_le_one.trans hβ1
+  have h2' : (2 : ℝ) ^ (∑ k, r k) ≤ β :=
+    (pow_le_pow_right₀ (by norm_num) hs).trans h2
+  have hNR : ((∏ k, (r k + 1) : ℕ) : ℝ) ≤ β := by
+    refine le_trans ?_ h2'
+    exact_mod_cast (show (∏ k, (r k + 1) : ℕ) ≤ 2 ^ (∑ k, r k) by
+      rw [← Finset.prod_pow_eq_pow_sum]
+      exact Finset.prod_le_prod fun k _ ↦ Nat.lt_two_pow_self)
+  have bound {g : Polynomial ℤ} {C : ℝ} (hC : ∀ i, |(g.coeff i : ℝ)| ≤ C)
+      (he : (1 + C) ^ ((∑ k, r k) + 1 - g.natDegree) ≤ β) :
+      |((diag (hasseDeriv j P) %ₘ g).coeff i : ℝ)| ≤ B * β ^ 3 := by
+    calc _ ≤ _ := abs_coeff_diag_hasseDeriv_modByMonic_le_aux hC hd hc j i
+      _ ≤ β * (β * (β * B)) :=
+        (mul_le_mul he (mul_le_mul hNR (mul_le_mul_of_nonneg_right h2' hB0)
+          (by positivity) hβ0) (by positivity) hβ0)
+      _ = B * β ^ 3 := by ring
+  have hreal : |((diag (hasseDeriv j P) %ₘ f).coeff i : ℝ)| ≤ B * β ^ 3 := by
+    by_cases hn : f.natDegree = 0
+    · by_cases hf : f.Monic
+      · simpa [Polynomial.eq_one_of_monic_natDegree_zero hf hn] using
+          mul_nonneg hB0 (pow_nonneg hβ0 3)
+      · simpa [Polynomial.modByMonic_eq_of_not_monic _ hf] using
+          bound (g := 0) (C := 0) (by simp) (by simpa using hβ1)
+    · exact bound hA ((pow_le_pow_right₀ (le_add_of_nonneg_right
+        ((abs_nonneg _).trans (hA 0))) (by lia)).trans hpow)
+  simpa [Int.natCast_floor_eq_floor ((abs_nonneg _).trans hreal), Int.le_floor,
+    Int.cast_abs] using hreal
+
+private lemma exists_mem_RSet_le_index_aux {σ : Type*} [Fintype σ] {f : Polynomial ℤ} {α : ℝ}
+    (hf : f.Monic) (hfα : Polynomial.aeval α f = 0) (r : σ → ℕ) (B C : ℕ) (J : Finset (σ →₀ ℕ))
+    {γ : ℝ} (hC : ∀ W ∈ boxFamily r B, ∀ j ∈ J, ∀ i < f.natDegree,
+      |(diag (hasseDeriv j W) %ₘ f).coeff i| ≤ (C : ℤ))
+    (hcount : ((2 * C + 1 : ℕ) : ℝ) ^ (f.natDegree * J.card) < ((B : ℝ) + 1) ^ (∏ k, (r k + 1) : ℕ))
+    (hJ : ∀ d, (∀ k, d k ≤ r k) → weight r d < γ → d ∈ J) : ∃ P : MvPolynomial σ ℤ, P ∈ RSet B r ∧
+      γ ≤ index (map (Int.castRingHom ℝ) P) (fun _ ↦ α) r := by
+  obtain ⟨W', hW', W'', hW'', hne, hWeq⟩ := exists_ne_modByMonic_eq r B hf J C hC
+    (by simpa [finprod_eq_prod_of_fintype] using hcount)
+  -- `W* = W' - W''`
+  have hP := sub_mem_RSet hW' hW'' hne
+  refine ⟨W' - W'', hP, ?_⟩
+  exact le_index_of_forall_eval_eq_zero
+    ((map_ne_zero_iff _ (MvPolynomial.map_injective _ Int.cast_injective)).2 hP.1)
+    (by simpa only [degreeOf,
+          degrees_map_of_injective _ (f := Int.castRingHom ℝ) Int.cast_injective]
+        using hP.2.1) (fun _ ↦ α)
+    fun d hd hw ↦ eval_hasseDeriv_sub_eq_zero hfα (hWeq d (hJ d hd hw))
+
+private lemma mul_card_filter_weight_le_aux {m : ℕ} (hm : 0 < m) (r : Fin m → ℕ) (hr : ∀ j, 0 < r j)
+    (a : ℝ) : a * (((box r).filter fun d ↦ weight r d ≤ ((m : ℝ) - 4 * a * √(m : ℝ)) / 2).card : ℝ)
+      ≤ ((∏ j, (r j + 1) : ℕ) : ℝ) / 2 := by
+  by_cases ha : 0 < a
+  · refine (mul_le_mul_of_nonneg_left
+      (card_filter_weight_le m r hr (by positivity)) ha.le).trans_eq ?_
+    push_cast
+    field_simp [ha.ne', (Real.sqrt_pos.2 (Nat.cast_pos.2 hm)).ne']
+    ring
+  · exact (mul_nonpos_of_nonpos_of_nonneg (le_of_not_gt ha) (Nat.cast_nonneg _)).trans
+      (by positivity)
+
+private lemma mul_div_lt_of_mul_le_one_of_lt_sq_mul_aux {K : Type*} [Semifield K] [LinearOrder K]
+    [IsStrictOrderedRing K] [ExistsAddOfLE K] {δ m C L : K} (hδm : δ * m ≤ 1) (hC : 0 ≤ C)
+    (hCL : C < δ ^ 2 * L) : m * C / δ < L := by
+  have hδ : δ ≠ 0 := by
+    rintro rfl
+    simpa using hC.trans_lt hCL
+  apply (mul_lt_mul_iff_of_pos_right (sq_pos_of_ne_zero hδ)).1
+  calc
+    _ = (δ * m) * C := by field_simp
+    _ ≤ C := (mul_le_mul_of_nonneg_right hδm hC).trans_eq (one_mul C)
+    _ < L * δ ^ 2 := hCL.trans_eq (mul_comm _ _)
+
+private lemma exists_mem_RSet_le_index_of_rpow_bound_aux {f : Polynomial ℤ} {α A : ℝ} (hf : f.Monic)
+    (hfα : Polynomial.aeval α f = 0) (hA : ∀ i, |(f.coeff i : ℝ)| ≤ A) {m : ℕ} (hm : 0 < m)
+    (r : Fin m → ℕ) (hr : ∀ j, 0 < r j) {c β : ℝ} {B s : ℕ} (hB : 0 < B) (hs : ∑ j, r j ≤ s)
+    (hAβ : (1 + A) ^ s ≤ β) (hpow : (B : ℝ) * β ^ 3 ≤ (B : ℝ) ^ c) : ∃ P : MvPolynomial (Fin m) ℤ,
+      P ∈ RSet B r ∧ ((m : ℝ) - 4 * c * f.natDegree * √(m : ℝ)) / 2 ≤
+        index (map (Int.castRingHom ℝ) P) (fun _ ↦ α) r := by
+  have hA1 : 1 ≤ A := by simpa [hf.coeff_natDegree] using hA f.natDegree
+  have h2 : (2 : ℝ) ^ s ≤ β :=
+    (pow_le_pow_left₀ (by norm_num) (by linarith : (2 : ℝ) ≤ 1 + A) s).trans hAβ
+  have hc : 1 ≤ c := by
+    by_contra! hc
+    have hBc : (B : ℝ) ^ c ≤ B := by
+      simpa using Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast hB) hc.le
+    have hs0 : 0 < s := (hr ⟨0, hm⟩).trans_le
+      ((Finset.single_le_sum (fun j _ ↦ Nat.zero_le (r j)) (Finset.mem_univ _)).trans hs)
+    have hβ : 1 < β := (one_lt_pow₀ (by norm_num : (1 : ℝ) < 2) hs0.ne').trans_le h2
+    exact (not_lt_of_ge hBc) ((lt_mul_of_one_lt_right (Nat.cast_pos.2 hB)
+      (one_lt_pow₀ hβ (by decide : 3 ≠ 0))).trans_le hpow)
+  -- the bound `C` for the remainders
+  let Cn := ⌊(B : ℝ) ^ c⌋₊
+  have hC : ∀ W ∈ boxFamily r B, ∀ j i,
+      |(diag (hasseDeriv j W) %ₘ f).coeff i| ≤ (Cn : ℤ) := by
+    intro W hW j i
+    have hcW : ∀ e, |(W.coeff e : ℝ)| ≤ B := fun e ↦ by
+      exact_mod_cast (abs_of_nonneg (hW.2 e).1).trans_le (hW.2 e).2
+    exact (abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux
+      hA hW.1 hcW hs h2 hAβ j i).trans (by exact_mod_cast Nat.floor_mono hpow)
+  let J := (box r).filter fun d ↦
+    weight r d ≤ ((m : ℝ) - 4 * c * f.natDegree * √(m : ℝ)) / 2
+  -- the counting inequality
+  have hD : c * f.natDegree * J.card ≤ ((∏ j, (r j + 1) : ℕ) : ℝ) / 2 := by
+    simpa [J, mul_assoc] using mul_card_filter_weight_le_aux hm r hr (c * f.natDegree)
+  exact exists_mem_RSet_le_index_aux hf hfα r B Cn J
+    (γ := ((m : ℝ) - 4 * c * f.natDegree * √(m : ℝ)) / 2)
+    (fun W hW j _ i _ ↦ hC W hW j i)
+    (pigeonhole_count (Nat.cast_pos.2 hB) hc (Finset.prod_pos fun j _ ↦ Nat.succ_pos _) hD)
+    (fun d hd hw ↦ Finset.mem_filter.2 ⟨mem_box.2 hd, hw.le⟩)
+
+private lemma exists_mem_RSet_le_index_of_log_bound_aux {f : Polynomial ℤ} {α A : ℝ} (hf : f.Monic)
+    (hfα : Polynomial.aeval α f = 0) (hA : ∀ i, |(f.coeff i : ℝ)| ≤ A) {m q₁ r₁ : ℕ} (hm : 0 < m)
+    (r : Fin m → ℕ) (hr : ∀ j, 0 < r j) (hs : ∑ j, r j ≤ m * r₁) {δ : ℝ} (hδ0 : 0 ≤ δ)
+    (hL : 2 * m + 1 + 2 * m * Real.log (1 + A) ≤ δ ^ 2 * Real.log q₁) :
+    ∃ P : MvPolynomial (Fin m) ℤ, P ∈ RSet (B₁ δ q₁ r₁) r ∧
+      gam δ f.natDegree m ≤ index (map (Int.castRingHom ℝ) P) (fun _ ↦ α) r := by
+  have hA1 : 1 ≤ A := by simpa [hf.coeff_natDegree] using hA f.natDegree
+  have hr₁ : 0 < r₁ := Nat.pos_of_mul_pos_left <| (hr ⟨0, hm⟩).trans_le
+    ((Finset.single_le_sum (fun j _ ↦ Nat.zero_le (r j)) (Finset.mem_univ _)).trans hs)
+  have hq : 3 ≤ δ ^ 2 * Real.log q₁ := by
+    have hmR : (1 : ℝ) ≤ m := by exact_mod_cast hm
+    nlinarith only [hL, hmR, mul_nonneg (by positivity : (0 : ℝ) ≤ 2 * m)
+      (Real.log_nonneg (by linarith : 1 ≤ 1 + A))]
+  obtain ⟨_, hTA, _⟩ := three_small_factors (m := m) (q₁ := q₁) (α := 0)
+    hδ0 hr₁ (zero_le_one.trans hA1) (by simpa using hL)
+  have hpow : (B₁ δ q₁ r₁ : ℝ) ^ (1 + 3 * δ) = B₁ δ q₁ r₁ * ((B₁ δ q₁ r₁ : ℝ) ^ δ) ^ 3 := by
+    rw [Real.rpow_add_of_nonneg (by positivity) zero_le_one (by positivity), Real.rpow_one,
+      ← Real.rpow_mul_natCast (by positivity)]
+    simp [mul_comm]
+  simpa only [gam, lam] using exists_mem_RSet_le_index_of_rpow_bound_aux (B := B₁ δ q₁ r₁) hf hfα hA
+    hm r hr (Nat.floor_pos.2 <| (by norm_num : (1 : ℝ) ≤ 4).trans
+      (four_lt_rpow hδ0 hr₁ hq).le) hs hTA.le hpow.ge
+
+private lemma exists_auxiliary_polynomial_of_log_bound_aux {f : Polynomial ℤ} {α A : ℝ}
+    (hf : f.Monic) (hfα : Polynomial.aeval α f = 0) (hA : ∀ i, |(f.coeff i : ℝ)| ≤ A) {m q₁ r₁ : ℕ}
+    (hm : 0 < m) (r : Fin m → ℕ) (hr : ∀ j, 0 < r j) (hs : ∑ j, r j ≤ m * r₁) {δ : ℝ} (hδ0 : 0 ≤ δ)
+    (hL : 2 * m + 1 + 2 * m * Real.log (1 + A) + 2 * m * Real.log (1 + |α|) ≤ δ ^ 2 * Real.log q₁) :
+    ∃ P : MvPolynomial (Fin m) ℤ, P ∈ RSet ((q₁ : ℝ) ^ (δ * r₁)) r ∧
+      gam δ f.natDegree m ≤ index (map (Int.castRingHom ℝ) P) (fun _ ↦ α) r ∧ ∀ i k : Fin m →₀ ℕ,
+      |eval (fun _ ↦ α) (map (Int.castRingHom ℝ) (hasseDeriv i (hasseDeriv k P)))| <
+        (B₁ δ q₁ r₁ : ℝ) ^ (1 + 3 * δ) := by
+  let B := B₁ δ q₁ r₁
+  let β : ℝ := (B : ℝ) ^ δ
+  obtain ⟨P, hPR, hγ⟩ := exists_mem_RSet_le_index_of_log_bound_aux hf hfα hA hm r hr hs hδ0
+    ((le_add_of_nonneg_right (mul_nonneg (by positivity)
+      (Real.log_nonneg (le_add_of_nonneg_right (abs_nonneg α))))).trans hL)
+  obtain ⟨h2, _, hα⟩ := three_small_factors hδ0 (Nat.pos_of_mul_pos_left <|
+    (hr ⟨0, hm⟩).trans_le ((Finset.single_le_sum (fun j _ ↦ Nat.zero_le (r j))
+      (Finset.mem_univ _)).trans hs)) ((abs_nonneg _).trans (hA 0)) hL
+  obtain ⟨d, hdne⟩ := MvPolynomial.exists_coeff_ne_zero hPR.1
+  have hBpos : 0 < (B : ℝ) :=
+    (abs_pos.mpr (Int.cast_ne_zero.2 hdne)).trans_le (hPR.2.2 d)
+  have hpow : (B : ℝ) ^ (1 + 3 * δ) = B * β ^ 3 := by
+    rw [Real.rpow_add_of_nonneg hBpos.le zero_le_one (by positivity), Real.rpow_one,
+      ← Real.rpow_mul_natCast hBpos.le]
+    simp [mul_comm]
+  refine ⟨P, ⟨hPR.1, hPR.2.1, fun d ↦ (hPR.2.2 d).trans (Nat.floor_le (by positivity))⟩,
+    hγ, fun i k ↦
+      (abs_eval_iterated_hasseDeriv_lt_aux hPR.2.1 hBpos hs h2 hα.le hPR.2.2 i k).trans_eq ?_⟩
+  linear_combination -hpow
+
+private lemma theta_lt_eta_of_sq_log_bound_aux {m : ℕ} [NeZero m] {δ : ℝ} (hδ0 : 0 ≤ δ)
+    (hδm : δ * (m : ℝ) ≤ 1) {r q : Fin m → ℕ} (hrlast : 3 ≤ r (Fin.rev 0))
+    (hratio : ∀ i j : Fin m, i.val + 1 = j.val → (r j : ℝ) / δ ≤ r i)
+    (hL : 2 * (m : ℝ) + 1 ≤ δ ^ 2 * Real.log (q 0))
+    (hqr : ∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j)) :
+    Θ ((q 0 : ℝ) ^ (δ * r 0)) q r < eta δ m := by
+  obtain ⟨n, rfl⟩ := Nat.exists_eq_succ_of_ne_zero (NeZero.ne m)
+  let M : ℝ := (n + 1 : ℕ)
+  have hδpos : 0 < δ := lt_of_le_of_ne hδ0 fun he ↦ by
+    simpa [← he] using ((by positivity : 0 < 2 * M + 1).trans_le hL)
+  have hq : M * (2 * M + 1) / δ ≤ Real.log (q 0) := by
+    apply (mul_le_mul_iff_of_pos_right (sq_pos_of_pos hδpos)).1
+    convert ((mul_le_mul_of_nonneg_right hδm (by positivity : 0 ≤ 2 * M + 1)).trans_eq
+      (one_mul _)).trans hL using 1
+    all_goals field_simp
+    all_goals ring
+  simpa [eta] using Θ_lt n hδpos
+    (by simpa only [Fin.rev_zero, Nat.cast_ofNat] using (Nat.cast_le (α := ℝ)).2 hrlast)
+    (fun i ↦ by simpa [mul_comm] using ((div_le_iff₀ hδpos).1 (hratio _ _ (by simp))))
+    (by simpa [M] using hq) hqr
+
+private lemma exists_auxiliary_polynomial_with_index_gap_aux {α : ℝ} {f : Polynomial ℤ}
+    (hf : f.Monic) (hfα : Polynomial.aeval α f = 0) {A : ℝ} (hA : ∀ i, |(f.coeff i : ℝ)| ≤ A)
+    {m : ℕ} [NeZero m] {δ : ℝ} (hδ0 : 0 ≤ δ) (hδm : δ ≤ 1 / m) {r : Fin m → ℕ}
+    (hrlast : 3 ≤ r (Fin.rev 0)) (h31b : ∀ i j : Fin m, i.val + 1 = j.val → (r j : ℝ) / δ ≤ r i)
+    {q : Fin m → ℕ} (h32 : 2 * m + 1 + 2 * m * Real.log (1 + A) + 2 * m * Real.log (1 + |α|) ≤
+      δ ^ 2 * Real.log (q 0)) (h33 : ∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j)) :
+    ∃ W : MvPolynomial (Fin m) ℤ, W ∈ RSet ((q 0 : ℝ) ^ (δ * r 0)) r ∧
+      gam δ f.natDegree m - eta δ m + Θ ((q 0 : ℝ) ^ (δ * r 0)) q r <
+        index (map (Int.castRingHom ℝ) W) (fun _ ↦ α) r ∧ ∀ i k : Fin m →₀ ℕ,
+        |eval (fun _ ↦ α) (map (Int.castRingHom ℝ) (hasseDeriv i (hasseDeriv k W)))| <
+          (B₁ δ (q 0) (r 0) : ℝ) ^ (1 + 3 * δ) := by
+  obtain ⟨m', rfl⟩ := Nat.exists_eq_succ_of_ne_zero (NeZero.ne m)
+  have h32' : 2 * ((m' + 1 : ℕ) : ℝ) + 1 ≤ δ ^ 2 * Real.log (q 0) :=
+    (le_add_of_nonneg_right (mul_nonneg (by positivity)
+      (Real.log_nonneg (le_add_of_nonneg_right ((abs_nonneg _).trans (hA 0)))))).trans
+      ((le_add_of_nonneg_right (mul_nonneg (by positivity)
+        (Real.log_nonneg (le_add_of_nonneg_right (abs_nonneg α))))).trans h32)
+  have hδ0 : 0 < δ := lt_of_le_of_ne hδ0 fun he ↦ by
+    simpa [← he] using ((by positivity : 0 < 2 * ((m' + 1 : ℕ) : ℝ) + 1).trans_le h32')
+  have hmR : (1 : ℝ) ≤ ((m' + 1 : ℕ) : ℝ) := by
+    exact_mod_cast (Nat.succ_le_succ (Nat.zero_le m'))
+  -- `r` is decreasing, so `r j ≤ r 0`
+  have hanti : Antitone r := Fin.antitone_iff_succ_le.2 fun i ↦ by
+    exact_mod_cast (le_div_self (Nat.cast_nonneg _) hδ0
+      (hδm.trans ((div_le_one (by positivity)).2 hmR))).trans (h31b i.castSucc i.succ rfl)
+  have hsumr : ∑ j, r j ≤ (m' + 1) * r 0 := by
+    simpa using Finset.sum_le_card_nsmul Finset.univ r (r 0) (fun j _ ↦ hanti (Fin.zero_le j))
+  obtain ⟨W, hWR, hγ, hWbound⟩ := exists_auxiliary_polynomial_of_log_bound_aux hf hfα hA
+    (Nat.succ_pos m') r (fun j ↦ (by decide : 0 < 3).trans_le
+      (hrlast.trans (hanti (by simpa using Fin.le_last j)))) hsumr hδ0.le h32
+  -- Lemma 7
+  refine ⟨W, hWR, ?_, hWbound⟩
+  linarith only [hγ, theta_lt_eta_of_sq_log_bound_aux hδ0.le
+    ((le_div_iff₀ (by positivity)).1 hδm) hrlast h31b h32' h33]
+
+/-- **Roth's main lemma** (Lemma 9), with weaker numerical hypotheses and a strict index bound.
+For `m ≥ 1`, a monic integer equation for `α`, `0 ≤ δ ≤ 1/m`, last degree at least `3`, and the
+displayed weak ratio and logarithmic bounds give a nonzero integer polynomial `Q` of degree
+`≤ r_j` in `X j`, with index greater than `γ - η` at `(α, …, α)`, not vanishing at `(h_j/q_j)_j`.
+Every Hasse derivative at `(α, …, α)` is bounded by `B_1^{1 + 3δ}`.
 
 Source: §6, Lemma `roth:lem9` (for `m ≥ 1` variables indexed by `Fin m`; the chain conditions
 (31) are stated for consecutive indices). -/
 theorem main_lemma {α : ℝ} {f : Polynomial ℤ} (hf : f.Monic) (hfα : Polynomial.aeval α f = 0)
-    (hdeg : 2 ≤ f.natDegree) {A : ℝ} (hA1 : 1 ≤ A) (hA : ∀ i, |((f.coeff i : ℤ) : ℝ)| ≤ A) {m : ℕ}
-    [NeZero m] (hm : 16 * f.natDegree ^ 2 < m) {δ : ℝ} (hδ0 : 0 < δ) (hδm : δ < 1 / m)
-    (h30 : eta δ m + 2 * (1 + 3 * δ) * f.natDegree * √(m : ℝ) < m / 2) {r : Fin m → ℕ}
-    (hr0 : ∀ j, 0 < r j) (h31a : ∀ j, 10 / δ < r j)
-    (h31b : ∀ i j : Fin m, i.val + 1 = j.val → (r j : ℝ) / δ < r i) {q : Fin m → ℕ}
-    (hq0 : ∀ j, 0 < q j) (hq1 : 1 < q 0)
-    (h32 : 2 * m + 1 + 2 * m * Real.log (1 + A) + 2 * m * Real.log (1 + |α|) <
-      δ ^ 2 * Real.log (q 0))
-    (h33 : ∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j)) {h : Fin m → ℤ}
-    (hh : ∀ j, IsCoprime (h j) (q j : ℤ)) :
-    ∃ Q : MvPolynomial (Fin m) ℤ, Q ≠ 0 ∧ (∀ j, degreeOf j Q ≤ r j) ∧
-      gam δ f.natDegree m - eta δ m ≤ index (map (Int.castRingHom ℝ) Q) (fun _ => α) r ∧
-      eval (fun j => (h j : ℝ) / q j) (map (Int.castRingHom ℝ) Q) ≠ 0 ∧
-      ∀ i : Fin m →₀ ℕ, |eval (fun _ => α) (hasseDeriv i (map (Int.castRingHom ℝ) Q))| <
+    {A : ℝ} (hA : ∀ i, |(f.coeff i : ℝ)| ≤ A) {m : ℕ} [NeZero m] {δ : ℝ} (hδ0 : 0 ≤ δ)
+    (hδm : δ ≤ 1 / m) {r : Fin m → ℕ} (hrlast : 3 ≤ r (Fin.rev 0))
+    (h31b : ∀ i j : Fin m, i.val + 1 = j.val → (r j : ℝ) / δ ≤ r i) {q : Fin m → ℕ}
+    (h32 : 2 * m + 1 + 2 * m * Real.log (1 + A) + 2 * m * Real.log (1 + |α|) ≤
+      δ ^ 2 * Real.log (q 0)) (h33 : ∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j))
+    {h : Fin m → ℤ} (hh : ∀ j, IsCoprime (h j) (q j : ℤ)) : ∃ Q : MvPolynomial (Fin m) ℤ, Q ≠ 0 ∧
+      (∀ j, degreeOf j Q ≤ r j) ∧
+      gam δ f.natDegree m - eta δ m < index (map (Int.castRingHom ℝ) Q) (fun _ ↦ α) r ∧
+      eval (fun j ↦ (h j : ℝ) / q j) (map (Int.castRingHom ℝ) Q) ≠ 0 ∧
+      ∀ i : Fin m →₀ ℕ, |eval (fun _ ↦ α) (hasseDeriv i (map (Int.castRingHom ℝ) Q))| <
         (B₁ δ (q 0) (r 0) : ℝ) ^ (1 + 3 * δ) := by
-  obtain ⟨m', rfl⟩ : ∃ m', m = m' + 1 := ⟨m - 1, by have := NeZero.ne m; omega⟩
-  set n := f.natDegree with hn
-  set N := ∏ j, (r j + 1) with hNdef
-  set X : ℝ := (q 0 : ℝ) ^ (δ * r 0) with hXdef
-  set B := B₁ δ (q 0) (r 0) with hBdef
-  have hm1 : 1 ≤ m' + 1 := by omega
-  have hmR : (1 : ℝ) ≤ ((m' + 1 : ℕ) : ℝ) := by exact_mod_cast hm1
-  have hδ1 : δ < 1 := hδm.trans_le (by rw [div_le_one (by linarith)]; exact hmR)
-  have hlogA : 0 ≤ Real.log (1 + A) := Real.log_nonneg (by linarith)
-  have hlogα : 0 ≤ Real.log (1 + |α|) := Real.log_nonneg (by linarith [abs_nonneg α])
-  have h32' : (2 * ((m' + 1 : ℕ) : ℝ) + 1) < δ ^ 2 * Real.log (q 0) := by nlinarith
-  have hX : 4 < X := four_lt_rpow hδ0.le (hr0 0) (by linarith only [h32', hmR])
-  obtain ⟨hsqB, hBX⟩ := sqrt_lt_floor (hX.le.trans' (by norm_num))
-  change √X < (B : ℝ) at hsqB
-  change (B : ℝ) ≤ X at hBX
-  have hsX : 2 < √X := by
-    have := Real.sq_sqrt (by linarith : (0 : ℝ) ≤ X)
-    nlinarith [Real.sqrt_nonneg X]
-  have hB2 : (2 : ℝ) < B := hsX.trans hsqB
-  have hB1 : 1 < B := by exact_mod_cast (by linarith : (1 : ℝ) < B)
-  have hBpos : (0 : ℝ) < B := by linarith
-  obtain ⟨hT2, hTA, hTα⟩ := three_small_factors hδ0.le (hr0 0) (zero_le_one.trans hA1) h32.le
-  set β : ℝ := (B : ℝ) ^ δ with hβ
-  have hβ1 : 1 ≤ β := Real.one_le_rpow (by linarith) hδ0.le
-  have hBpow : (B : ℝ) ^ (1 + 3 * δ) = B * β ^ 3 := by
-    rw [Real.rpow_add hBpos, Real.rpow_one, hβ, ← Real.rpow_mul_natCast hBpos.le]
-    congr 2
-    push_cast
-    ring
-  -- `r` is decreasing, so `r j ≤ r 0`
-  have hstep : ∀ i j : Fin (m' + 1), i.val + 1 = j.val → r j ≤ r i := fun i j hij => by
-    have h1 := h31b i j hij
-    have h2 : (r j : ℝ) ≤ r j / δ := le_div_self (Nat.cast_nonneg _) hδ0 hδ1.le
-    exact_mod_cast h2.trans h1.le
-  have hr0max : ∀ j, r j ≤ r 0 := by
-    have key : ∀ k (hk : k < m' + 1), r ⟨k, hk⟩ ≤ r 0 := by
-      intro k
-      induction k with
-      | zero => exact fun _ => le_rfl
-      | succ k ih => intro hk; exact (hstep ⟨k, by omega⟩ ⟨k + 1, hk⟩ rfl).trans (ih (by omega))
-    exact fun j => key j.val j.isLt
-  have hsumr : ∑ j, r j ≤ (m' + 1) * r 0 := by
-    calc ∑ j, r j ≤ ∑ _j : Fin (m' + 1), r 0 := Finset.sum_le_sum fun j _ => hr0max j
-      _ = (m' + 1) * r 0 := by simp
-  have hNle : N ≤ 2 ^ (∑ j, r j) := by
-    rw [hNdef, ← Finset.prod_pow_eq_pow_sum]
-    exact Finset.prod_le_prod fun j _ => Nat.lt_two_pow_self
-  have hNR : (N : ℝ) ≤ 2 ^ (∑ j, r j) := by exact_mod_cast hNle
-  have hNpos : 0 < N := Finset.prod_pos fun j _ => Nat.succ_pos _
-  have e2 : (2 : ℝ) ^ (∑ j, r j) ≤ 2 ^ ((m' + 1) * r 0) :=
-    pow_le_pow_right₀ (by norm_num) hsumr
-  have hT2pos : (0 : ℝ) ≤ 2 ^ ((m' + 1) * r 0) := by positivity
-  -- the bound `C` for the remainders
-  set Cn := ⌊(B : ℝ) ^ (1 + 3 * δ)⌋₊ with hCn
-  set J := (box r).filter fun d => weight r d ≤ (((m' + 1 : ℕ) : ℝ) - lam δ n (m' + 1)) / 2
-    with hJ
-  have hC : ∀ W ∈ boxFamily r B, ∀ j ∈ J, ∀ i,
-      |(diag (hasseDeriv j W) %ₘ f).coeff i| ≤ (Cn : ℤ) := by
-    intro W hW j _ i
-    have hcW : ∀ e, |((W.coeff e : ℤ) : ℝ)| ≤ B := fun e => by
-      obtain ⟨h0, h1⟩ := hW.2 e
-      rw [abs_of_nonneg (by exact_mod_cast h0)]
-      exact_mod_cast h1
-    have hdP : ∀ k, degreeOf k (hasseDeriv j W) ≤ r k := fun k =>
-      (degreeOf_hasseDeriv_le k j W).trans (hW.1 k)
-    have hcP := abs_coeff_hasseDeriv_le j W hW.1 hcW
-    have hsupp : ((hasseDeriv j W).support.card : ℝ) ≤ N := by
-      exact_mod_cast card_le_card_box fun d hd k => (monomial_le_degreeOf k hd).trans (hdP k)
-    have hcD' : ∀ k, |(((diag (hasseDeriv j W)).coeff k : ℤ) : ℝ)| ≤
-        N * (2 ^ (∑ j, r j) * B) := fun k =>
-      (abs_coeff_diag_le _ hcP k).trans (mul_le_mul_of_nonneg_right hsupp (by positivity))
-    have hrem := abs_coeff_modByMonic_le (by simpa [Int.norm_eq_abs] using hA) _
-      (by simpa [Int.norm_eq_abs] using hcD') (natDegree_diag_le _ hdP) i
-    rw [Int.norm_eq_abs] at hrem
-    have e1 : (1 + A) ^ (∑ j, r j + 1 - n) ≤ (1 + A) ^ ((m' + 1) * r 0) :=
-      pow_le_pow_right₀ (by linarith) (by omega)
-    have hreal : |(((diag (hasseDeriv j W) %ₘ f).coeff i : ℤ) : ℝ)| < (B : ℝ) ^ (1 + 3 * δ) := by
-      have hTA0 : (0 : ℝ) ≤ (1 + A) ^ ((m' + 1) * r 0) := by positivity
-      calc _ ≤ _ := hrem
-        _ ≤ (1 + A) ^ ((m' + 1) * r 0) * (2 ^ ((m' + 1) * r 0) *
-              (2 ^ ((m' + 1) * r 0) * B)) := by
-            refine mul_le_mul e1 ?_ (by positivity) hTA0
-            exact mul_le_mul (hNR.trans e2) (mul_le_mul_of_nonneg_right e2 hBpos.le)
-              (by positivity) hT2pos
-        _ < β * (β * (β * B)) := by
-            refine mul_lt_mul'' hTA (mul_lt_mul'' hT2 (mul_lt_mul_of_pos_right hT2 hBpos)
-              hT2pos (by positivity)) (by positivity) (by positivity)
-        _ = (B : ℝ) ^ (1 + 3 * δ) := by rw [hBpow]; ring
-    rw [Int.abs_eq_natAbs]
-    have hc : (((diag (hasseDeriv j W) %ₘ f).coeff i).natAbs : ℝ) =
-        |(((diag (hasseDeriv j W) %ₘ f).coeff i : ℤ) : ℝ)| := by
-      rw [Nat.cast_natAbs, Int.cast_abs]
-    exact_mod_cast Nat.le_floor (by rw [hc]; exact hreal.le)
-  -- the counting inequality
-  have hnpos : (0 : ℝ) < n := Nat.cast_pos.2 (by omega)
-  have hsm : 0 < √((m' + 1 : ℕ) : ℝ) := Real.sqrt_pos.2 (by linarith)
-  have hlam : 0 < lam δ n (m' + 1) := by rw [lam]; positivity
-  have hcard := card_filter_weight_le (m' + 1) r hr0 hlam
-  have hD : (1 + 3 * δ) * n * J.card ≤ (N : ℝ) / 2 := by
-    have hNR' : ∏ j, ((r j : ℝ) + 1) = N := by rw [hNdef]; push_cast; rfl
-    rw [hNR'] at hcard
-    calc (1 + 3 * δ) * n * J.card ≤ (1 + 3 * δ) * n *
-          (2 * √((m' + 1 : ℕ) : ℝ) / lam δ n (m' + 1) * N) :=
-          mul_le_mul_of_nonneg_left hcard (by positivity)
-      _ = (N : ℝ) / 2 := by
-          rw [lam]
-          field_simp
-          ring
-  have hcount := pigeonhole_count (Nat.cast_pos.2 (Nat.zero_lt_one.trans hB1))
-    (by linarith : 1 ≤ 1 + 3 * δ) hNpos hD
-  obtain ⟨W', hW', W'', hW'', hne, hWeq⟩ := exists_ne_modByMonic_eq r B hf J Cn
-    (fun W hW j hj i _ ↦ hC W hW j hj i)
-    (by simpa only [finprod_eq_prod_of_fintype] using hcount)
-  -- `W* = W' - W''`
-  have hWR := sub_mem_RSet hW' hW'' hne
-  have hWX : W' - W'' ∈ RSet X r := ⟨hWR.1, hWR.2.1, fun d => (hWR.2.2 d).trans hBX⟩
-  have hmap0 : map (Int.castRingHom ℝ) (W' - W'') ≠ 0 := fun h0 =>
-    hWR.1 (MvPolynomial.map_injective _ Int.cast_injective (h0.trans (map_zero _).symm))
-  have hγ : gam δ n (m' + 1) ≤ index (map (Int.castRingHom ℝ) (W' - W'')) (fun _ => α) r :=
-    le_index_of_forall_eval_eq_zero hmap0
-      (by simpa only [degreeOf,
-            degrees_map_of_injective _ (f := Int.castRingHom ℝ) Int.cast_injective]
-          using hWR.2.1) (fun _ => α)
-      fun d hd hw => eval_hasseDeriv_sub_eq_zero hfα
-        (hWeq d (Finset.mem_filter.2 ⟨mem_box.2 hd, hw.le⟩))
-  -- Lemma 7
-  have hΘ := Θ_lt m' hδ0
-    ((by norm_num : (3 : ℝ) ≤ 10).trans
-      ((le_div_self (by norm_num) hδ0 hδ1.le).trans (h31a _).le))
-    (fun i ↦ by
-      simpa [mul_comm] using ((div_lt_iff₀ hδ0).1 (h31b _ _ (by simp))).le)
-    (by
-      simpa only [Nat.cast_add, Nat.cast_one] using
-        (lem7_hyp_of_h32 (K := ℝ)
-          (add_pos (mul_pos zero_lt_two (zero_lt_one.trans_le hmR)) zero_lt_one)
-          ((lt_div_iff₀ (zero_lt_one.trans_le hmR)).1 hδm) h32'.le).le) h33
-  have hidx := index_le_Θ hWX hh
-  obtain ⟨k, hkw, hkev⟩ := exists_hasseDeriv_eval_ne_zero hmap0 (fun j => (h j : ℝ) / q j) r
-    (hidx.trans_lt hΘ)
-  have hmapQ : map (Int.castRingHom ℝ) (hasseDeriv k (W' - W'')) =
-      hasseDeriv k (map (Int.castRingHom ℝ) (W' - W'')) := (hasseDeriv_map _ k _).symm
-  have hdQ : ∀ j, degreeOf j (hasseDeriv k (W' - W'')) ≤ r j := fun j =>
-    (degreeOf_hasseDeriv_le j k _).trans (hWR.2.1 j)
-  refine ⟨hasseDeriv k (W' - W''), fun hQ0 => hkev ?_, hdQ, ?_, by rw [hmapQ]; exact hkev,
-    fun i => ?_⟩
-  · rw [← hmapQ, hQ0, map_zero, map_zero]
-  · have hk0 : hasseDeriv k (map (Int.castRingHom ℝ) (W' - W'')) ≠ 0 := fun h0 =>
-      hkev (by rw [h0, map_zero])
-    have := index_hasseDeriv_ge hk0 (fun _ => α) r
-    rw [hmapQ, eta]
-    linarith
-  · rw [hasseDeriv_map]
-    have hcQ := abs_coeff_hasseDeriv_le k (W' - W'') hWR.2.1 hWR.2.2
-    have hcQ2 := abs_coeff_hasseDeriv_le i _ hdQ hcQ
-    have heval := abs_eval_le (hasseDeriv i (hasseDeriv k (W' - W'')))
-      (fun j => (degreeOf_hasseDeriv_le j i _).trans (hdQ j)) hcQ2 (fun _ => α)
-    rw [Finset.prod_pow_eq_pow_sum] at heval
-    have e3 : (1 + |α|) ^ (∑ j, r j) ≤ (1 + |α|) ^ ((m' + 1) * r 0) :=
-      pow_le_pow_right₀ (by linarith [abs_nonneg α]) hsumr
-    calc _ ≤ _ := heval
-      _ ≤ 2 ^ ((m' + 1) * r 0) * (2 ^ ((m' + 1) * r 0) * B) * (1 + |α|) ^ ((m' + 1) * r 0) := by
-          refine mul_le_mul (mul_le_mul e2 (mul_le_mul_of_nonneg_right e2 hBpos.le)
-            (by positivity) hT2pos) e3 (by positivity) (by positivity)
-      _ < β * (β * B) * β := by
-          refine mul_lt_mul'' (mul_lt_mul'' hT2 (mul_lt_mul_of_pos_right hT2 hBpos) hT2pos
-            (by positivity)) hTα (by positivity) (by positivity)
-      _ = (B : ℝ) ^ (1 + 3 * δ) := by rw [hBpow]; ring
+  obtain ⟨W, hW, hgap, hbound⟩ := exists_auxiliary_polynomial_with_index_gap_aux hf hfα hA hδ0 hδm
+    hrlast h31b h32 h33
+  let c := (index (map (Int.castRingHom ℝ) W) (fun _ ↦ α) r -
+    (gam δ f.natDegree m - eta δ m) + Θ ((q 0 : ℝ) ^ (δ * r 0)) q r) / 2
+  simpa only [add_sub_cancel_right] using
+    exists_hasseDeriv_index_eval_bound_aux hW.1 hW.2.1 hbound
+      (γ := gam δ f.natDegree m - eta δ m + c) (c := c)
+      (z := fun j ↦ (h j : ℝ) / q j)
+      (by
+        dsimp only [c]
+        linarith only [hgap])
+      (by
+        dsimp only [c]
+        linarith only [hgap, index_le_Θ hW hh])
 
 end Roth

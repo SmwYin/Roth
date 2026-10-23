@@ -562,8 +562,12 @@ theorem roth_of_isIntegral {α : ℝ} (hα : Irrational α) (hint : IsIntegral �
   obtain ⟨r, hr0, h31a, h31b, h33, h53⟩ := exists_degrees hδ0 hδ1 hq1 h50
   have hq0 : ∀ j, 0 < q j := fun j => lt_trans zero_lt_one (hq1 j)
   -- Lemma 9
-  obtain ⟨Q, hQ0, hQd, hidx, hne, hC⟩ := main_lemma hf hfα hdeg hA1 hA hm hδ0 hδm h30 hr0 h31a
-    h31b hq0 (hq1 0) h32 h33 hcop
+  obtain ⟨Q, hQ0, hQd, hidx_strict, hne, hC⟩ := main_lemma hf hfα hA hδ0.le hδm.le (by
+      have hj : (3 : ℝ) ≤ r (Fin.rev 0) := (by norm_num : (3 : ℝ) ≤ 10).trans
+        ((le_div_self (by norm_num) hδ0 hδ1.le).trans (h31a (Fin.rev 0)).le)
+      exact_mod_cast hj)
+    (fun i j hij ↦ (h31b i j hij).le) h32.le h33 hcop
+  have hidx := hidx_strict.le
   set G := gam δ n m - eta δ m
   have hG0 : 0 < G := by
     have := (eta_lt_gam_iff δ n m).1 h30
