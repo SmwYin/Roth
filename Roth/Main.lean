@@ -574,9 +574,8 @@ theorem roth {α : ℝ} (hα : Irrational α) (halg : IsAlgebraic ℚ α) {κ : 
 rationals `x`, where `α` is an irrational real algebraic number, then `κ ≤ 2`. -/
 theorem roth_rat {α : ℝ} (hα : Irrational α) (halg : IsAlgebraic ℚ α) {κ : ℝ}
     (hinf : {x : ℚ | |α - x| < 1 / (x.den : ℝ) ^ κ}.Infinite) : κ ≤ 2 := by
-  have hinj : Function.Injective fun x : ℚ => (x.num, x.den) := fun x y hxy =>
-    Rat.ext (congrArg Prod.fst hxy) (congrArg Prod.snd hxy)
-  refine roth hα halg ((hinf.image hinj.injOn).mono ?_)
+  refine roth hα halg ((hinf.image (f := fun x : ℚ ↦ (x.num, x.den))
+    (fun _ _ _ _ hxy ↦ Rat.ext (congrArg Prod.fst hxy) (congrArg Prod.snd hxy))).mono ?_)
   rintro _ ⟨x, hx, rfl⟩
   exact ⟨x.den_pos, by rwa [← Rat.cast_def]⟩
 
