@@ -1,5 +1,13 @@
 # Theta — completed file cleanup
 
+**Approved follow-up, 2026-10-24: PASS.** The subsequent
+[Theta warning amendment](Theta-warning-amendment.md) supersedes this historical report's
+five retained binder warnings and earlier source identity/line count. Current Theta has 979
+lines and only its existing header warning. All four authorized changes, old-contract and
+independent-proof checks, downstream builds and two whole-file performance samples pass;
+all other preservation choices and the original declaration count remain unchanged.
+The original completed file audit follows.
+
 Baseline 2b64544bf9f77a8ff957bf1bcaf693ac72217ff6; current frozen source SHA256
 ff85b7f132cf83c980323449b38558699e7e39d5a1b8bd895ac3374d78310207.
 Original 981 → final 991 lines (+10); 35 originals audited (29 public, 6 private).

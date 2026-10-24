@@ -25,18 +25,24 @@ Started: 2026-10-14 (America/Chicago).
 
 ## Current status
 
-**APPROVED THETA WARNING FOLLOW-UP ACTIVE (2026-10-24).** The user explicitly approved
-removing `Θ_nonneg.hB/hr`, `Θ_le_card.hB`, and `Θ_mono.hr`, while retaining `Θ_mono.hB`
-and retaining `index_le_lem6`'s positive-denominator premise under the binder name `_hq`.
-This overrides the earlier retention choice only for these five warnings. Four declarations
-are being amended and published sequentially; no other public domain, Fintype or metadata
-change is authorized by this follow-up. Baseline is clean published `7c49350`.
-`Θ_nonneg` and `Θ_le_card` were validated and published as `e2c4ef4` and `0d8f16f`.
-`Θ_mono` and its necessary caller updates now pass the full downstream build and cumulative
-actual original-contract/new-proof/body/axiom checks; complete Theta diagnostics show two
-warnings and no errors. Checkpoint 3 is ready for publication; one theorem and the final
-file-wide gates remain. [Follow-up report](cleanup/Theta-warning-amendment.md).
-The earlier completed cleanup remains complete; this newly approved amendment is in progress.
+**APPROVED THETA WARNING FOLLOW-UP COMPLETE (2026-10-24).** All four authorized
+amendments and their necessary callers are validated. `Θ_nonneg` loses `hB/hr`, `Θ_le_card`
+loses `hB`, and `Θ_mono` loses only `hr`; its used `hB` stays. `index_le_lem6` retains its
+positive-denominator premise in the same position as `_hq`, with a paper-setting comment.
+This overrides the earlier retention choice only for those five binder warnings.
+
+Checkpoints 1–3 were validated and published as `e2c4ef4`, `0d8f16f`, and `508f930`;
+the fourth checkpoint records the final amendment and completed project gates. Actual old
+contracts, independent new proofs, opaque bodies and standard axioms pass. Fresh independent
+Astra HIGH review passes. Both whole-Theta profiles cover all 50 written declarations and
+71 actual constants, with every row below 1 s (maxima 795.574 / 822.148 ms).
+Full project build and the subsequent separate LeanEval build pass (26.202 / 4.045 s);
+complete final diagnostics have zero errors. Actual warning count is **14**, down from 19:
+twelve metadata warnings and two retained Fintype assumptions. All five targeted Theta
+warnings are resolved. Only Theta source changed; other sources and pinned versions remain
+exactly unchanged. [Complete follow-up report](cleanup/Theta-warning-amendment.md).
+The original **263/263 declarations and 14/14 files** remain complete; no new original credit
+or broader audit was introduced. No required change or validation remains.
 
 ### Previous completed cleanup (before the approved warning follow-up)
 

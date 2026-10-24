@@ -9,6 +9,22 @@ The thirteen accepted mathematical file audits remain authoritative. This final 
 the zero-declaration umbrella module, applies the five queued names, and checks the resulting
 project. It does not repeat accepted per-declaration work or add optional API changes.
 
+## Approved warning follow-up (2026-10-24)
+
+**PASS:** the subsequent user-approved four-theorem Theta amendment removes all five
+previously retained binder warnings. The [amendment report](Theta-warning-amendment.md)
+records sequential checkpoints, exact old-contract adapters, independent new proofs,
+actual bodies/axioms, fresh independent review and both required whole-file profiles.
+All 50 profile rows pass below 1 s in both samples (maxima 795.574 / 822.148 ms).
+
+The amended project passes full `lake build` (26.202 s), followed by the separate
+`lake build Roth.LeanEval` (4.045 s), with zero errors and **14 warnings**: twelve metadata
+warnings and two retained public `Fintype` assumptions. Complete final affected-file/root
+diagnostics also pass. Only Theta source changed; all other sources, imports and pins are
+preserved. These results supersede the historical nineteen-warning inventory below and
+only the five Theta binder-retention choices expressly overridden by the user. The original
+263-declaration/14-file cleanup counts and all other accepted choices remain unchanged.
+
 ## File completion
 
 Final reports: [HasseDeriv](HasseDeriv-final.md), [Box](Box-final.md),
@@ -95,9 +111,10 @@ No new proof or performance defect was found that warrants restarting those audi
 ## Preserved choices and limitations
 
 Lean remains `v4.34.0`; mathlib remains
-`5ed2965256430c3649e86755f9576b54eca72435`. The full build reports 19 existing warnings:
+`5ed2965256430c3649e86755f9576b54eca72435`. The original completion build reported 19 existing warnings:
 twelve missing-authoritative-metadata warnings, two deliberately retained public `Fintype`
-assumptions, and five explicitly preserved Theta binder warnings. None is suppressed;
+assumptions, and five then-preserved Theta binder warnings. The approved follow-up above resolves those five.
+None is suppressed;
 LeanEval and root diagnostics are clean. No license/year/author metadata was invented.
 Previously accepted wrapper/domain/denominator/bound assumptions and declined optional
 companions remain as instructed. All required cleanup work is validated; no pending rename,
