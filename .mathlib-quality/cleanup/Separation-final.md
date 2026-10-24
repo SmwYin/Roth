@@ -1,5 +1,13 @@
 # Separation — completed file cleanup
 
+**Approved Finite and header follow-ups, 2026-10-24: PASS.** The
+[Finite amendment](Finite-warning-amendment.md) resolves the retained public Fintype warning;
+the [header amendment](Header-warning-amendment.md) resolves the copyright warning.
+Current Separation has 561 lines and no warnings. Old-contract/independent-proof checks,
+downstream builds, review and required performance samples pass; the subsequent header-only
+addition preserves all mathematical code. Final full project and separate LeanEval builds
+pass without warnings. The original completed audit and counts below remain accepted.
+
 Baseline a39317e; final source SHA256 df4193795f1618f8f5cdbd71869583fc45d20a0a45c21f4b5eaf5f824133f37a.
 Original 618 → final 556 lines (−62, −10.0%). All 30 originals audited by distinct fresh
 Sol Medium declaration workers. 27 retained declarations: one definition, 19 public

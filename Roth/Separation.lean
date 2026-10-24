@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2026 Ramin Takloo-Bighash, Samuel Yin. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Ramin Takloo-Bighash, Samuel Yin
+-/
+
 import Mathlib.Algebra.GCDMonoid.Finset
 import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
 import Mathlib.Algebra.MvPolynomial.Polynomial
@@ -527,13 +533,13 @@ private lemma exists_rat_factors_det_hasseDeriv_aux [Finite τ] {P : MvPolynomia
       hasseDeriv_map]
   exact ⟨l, hl1, hl2, D, hD, _, _, hG, wronskian_ne_zero_of_linearIndependent hφ, hFmap⟩
 
-omit [DecidableEq τ] in
+omit [Fintype τ] [DecidableEq τ] in
 /-- Lemma 2. Source: §2, Lemma `roth:lem2` ("there is an integer `l` satisfying `1 ≤ l ≤ r_p + 1`
 and there are differential operators `Δ_0, …, Δ_{l-1}` on the variables `x_1, …, x_{p-1}` of
 orders at most `0, …, l-1` such that ... `F = U(x_1, …, x_{p-1}) V(x_p)` where `U, V` are nonzero,
 have integral coefficients, `U` is of degree at most `l r_j` in `x_j` ... and `V` is of degree
 at most `l r_p`"). -/
-theorem exists_det_eq_mul {P : MvPolynomial (Option τ) ℤ} (hP : P ≠ 0) {r : Option τ → ℕ}
+theorem exists_det_eq_mul [Finite τ] {P : MvPolynomial (Option τ) ℤ} (hP : P ≠ 0) {r : Option τ → ℕ}
     (hr : ∀ j, degreeOf j P ≤ r j) : ∃ l, 1 ≤ l ∧ l ≤ r none + 1 ∧ ∃ D : Fin l → (τ →₀ ℕ),
       (∀ μ, (D μ).degree ≤ μ) ∧ ∃ (U : MvPolynomial τ ℤ) (V : Polynomial ℤ), U ≠ 0 ∧ V ≠ 0 ∧
         (∀ j, degreeOf j U ≤ l * r (some j)) ∧ V.natDegree ≤ l * r none ∧

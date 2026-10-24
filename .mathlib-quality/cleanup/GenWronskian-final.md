@@ -1,5 +1,13 @@
 # GenWronskian final file-level cleanup report
 
+**Approved Finite and header follow-ups, 2026-10-24: PASS.** The
+[Finite amendment](Finite-warning-amendment.md) resolves the retained public Fintype warning;
+the [header amendment](Header-warning-amendment.md) resolves the copyright warning.
+Current GenWronskian has 272 lines and no warnings. Old-contract/independent-proof checks,
+downstream builds, review and required performance samples pass; the subsequent header-only
+addition preserves all mathematical code. Final full project and separate LeanEval builds
+pass without warnings. The original completed audit and counts below remain accepted.
+
 Current status — approved amendment, 2026-10-16: unused `[Fintype σ]` is omitted only
 from `genWronskian_eq_zero_of_not_linearIndependent`, and unused `[DecidableEq ι]`
 is removed from `det_sum_rows`, with explicit user approval. Other arguments, names,

@@ -9,6 +9,32 @@ The thirteen accepted mathematical file audits remain authoritative. This final 
 the zero-declaration umbrella module, applies the five queued names, and checks the resulting
 project. It does not repeat accepted per-declaration work or add optional API changes.
 
+## Final Apache-2.0 header amendment (2026-10-24)
+
+**PASS: zero warnings and zero errors.** The user-approved copyright/author headers and
+repository LICENSE are complete. Full lake build (2,467 jobs) and the subsequent separate
+LeanEval build (2,466 jobs) pass without warnings. Independent review confirms exact header
+prefixes and unchanged mathematical code. [Header report](Header-warning-amendment.md).
+This supersedes every earlier warning inventory and retained-metadata note below and in
+individual file reports. Both Finite changes are also complete and validated. No required
+work remains; the final checkpoint contains the pending second Finite change and licensing.
+
+## Approved Finite follow-up (2026-10-24)
+
+**PASS.** Both
+`exists_genWronskian_ne_zero` and `exists_det_eq_mul` now require `Finite`, with enumeration
+constructed inside the GenWronskian proof where needed. Their conclusions, other hypotheses
+and documentation remain unchanged. The [Finite amendment report](Finite-warning-amendment.md)
+records exact old-contract recovery, independent proofs, actual bodies/axioms, fresh review,
+complete diagnostics and both required file-profile pairs (all 46 rows below 1 s).
+
+Full `lake build` passes (152.422 s), followed by separate `lake build Roth.LeanEval`
+(29.314 s). Before the subsequent header amendment, the warning count was **12**, all header metadata warnings; both
+Fintype warnings are resolved. These results supersede the earlier fourteen-warning inventory
+below. Checkpoint 1 is published as `0bd9ce1`; the final checkpoint includes the validated
+second theorem together with the separately approved header amendment. Original cleanup
+counts and pinned versions remain unchanged.
+
 ## Approved warning follow-up (2026-10-24)
 
 **PASS:** the subsequent user-approved four-theorem Theta amendment removes all five

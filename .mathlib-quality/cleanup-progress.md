@@ -25,16 +25,22 @@ Started: 2026-10-14 (America/Chicago).
 
 ## Current status
 
-**APPROVED FINITE FOLLOW-UP ACTIVE (2026-10-24).** The user explicitly approved replacing
-public `Fintype` requirements with `Finite` for `exists_genWronskian_ne_zero` and
-`exists_det_eq_mul`, retaining finiteness, all conclusions and all other hypotheses.
-Baseline is clean published `49e593d`. Work proceeds in two sequential validated/published
-checkpoints; original exhaustive audits remain accepted. No metadata or pin change is in scope.
-Checkpoint 1 is validated for publication: GenWronskian and its necessary private caller
-pass full/separate LeanEval builds, exact old/new proof-contract checks, native diagnostics,
-fresh independent review and both required 19-row profiles (maxima 877.750 / 943.543 ms).
-The second theorem and final gates remain pending.
-[Follow-up report](cleanup/Finite-warning-amendment.md).
+**COMPLETE: FINITE AND APACHE-2.0 FOLLOW-UPS (2026-10-24).** Both public theorems now
+require only Finite. The user-approved 2026 Ramin Takloo-Bighash / Samuel Yin headers and
+Apache-2.0 LICENSE are added. All **19 previously reported warnings are resolved** through
+the Theta, Finite and header amendments; no linter was disabled.
+
+Final full project build and subsequent separate LeanEval build pass with **zero warnings
+and zero errors**. All Finite proof/contract/axiom checks, independent reviews and required
+performance checks pass. Header additions preserve the validated mathematical source bytes.
+Original completion remains **263/263 declarations and 14/14 files**. Checkpoint 1 of the
+Finite amendment was published as `0bd9ce1`; the final checkpoint combines its validated
+second theorem with the approved headers, LICENSE and completed reports. No required work
+or user input remains. Main was not changed, merged or pushed.
+
+[Finite report](cleanup/Finite-warning-amendment.md) ·
+[Header report](cleanup/Header-warning-amendment.md) ·
+[Final project report](cleanup/Project-final.md).
 
 ### Previous completed Theta warning follow-up
 
