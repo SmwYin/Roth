@@ -382,7 +382,7 @@ theorem sum_max_sub_le_index_det {R : MvPolynomial (Option τ) ℝ} {l : ℕ} (D
   have hterm : ∀ μ ν : Fin l, E μ ν ≠ 0 →
       max 0 (index R α r - ν / r none) - δ ≤ index (E μ ν) α r := by
     intro μ ν hE
-    have h1 := index_hasseDeriv_ge hE α r
+    have h1 := index_sub_weight_le_index_hasseDeriv hE α r
     rw [weight_add, weight_mapDomain (Option.some_injective _), weight_single] at h1
     have h2 := hδ (D μ) ((hD μ).trans (Nat.le_sub_one_of_lt μ.isLt))
     rw [← sub_sub, sub_right_comm] at h1

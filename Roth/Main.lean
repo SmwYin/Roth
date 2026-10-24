@@ -452,7 +452,8 @@ private lemma one_lt_roth_eval_bound_aux {α κ : ℝ} {f : Polynomial ℤ} (hf 
     (happ : ∀ j, |α - (h j : ℝ) / q j| ≤ 1 / (q j : ℝ) ^ κ) (hcop : ∀ j, IsCoprime (h j) (q j : ℤ))
     (h32 : 2 * m + 1 + 2 * m * Real.log (1 + A) + 2 * m * Real.log (1 + |α|) ≤
       δ ^ 2 * Real.log (q 0)) (h33 : ∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j)) :
-    1 < (∏ j, (q j : ℝ) ^ r j) * ((∏ j, ((r j : ℝ) + 1)) * (B₁ δ (q 0) (r 0) : ℝ) ^ (1 + 3 * δ) *
+    1 < (∏ j, (q j : ℝ) ^ r j) * ((∏ j, ((r j : ℝ) + 1)) *
+      (mainCoeffBound δ (q 0) (r 0) : ℝ) ^ (1 + 3 * δ) *
       (q 0 : ℝ) ^ (-(r 0 : ℝ) * (gam δ f.natDegree m - eta δ m) * κ)) := by
   -- Lemma 9
   obtain ⟨Q, -, hQd, hidx_strict, hne, hC⟩ :=
@@ -474,9 +475,9 @@ private lemma one_lt_roth_eval_bound_aux {α κ : ℝ} {f : Polynomial ℤ} (hf 
 private lemma roth_product_bound_aux {m : ℕ} [NeZero m] {α A δ : ℝ} (hδ0 : 0 ≤ δ) (hA : 0 ≤ A)
     {q r : Fin m → ℕ} (hr0 : 0 < r 0) (hr0max : ∀ j, r j ≤ r 0)
     (h32 : 2 * m + 1 + 2 * m * Real.log (1 + A) + 2 * m * Real.log (1 + |α|) ≤
-      δ ^ 2 * Real.log (q 0)) : 0 < (B₁ δ (q 0) (r 0) : ℝ) ∧
-      (B₁ δ (q 0) (r 0) : ℝ) ≤ (q 0 : ℝ) ^ (δ * r 0) ∧
-      (∏ j, ((r j : ℝ) + 1)) < (B₁ δ (q 0) (r 0) : ℝ) ^ δ := by
+      δ ^ 2 * Real.log (q 0)) : 0 < (mainCoeffBound δ (q 0) (r 0) : ℝ) ∧
+      (mainCoeffBound δ (q 0) (r 0) : ℝ) ≤ (q 0 : ℝ) ^ (δ * r 0) ∧
+      (∏ j, ((r j : ℝ) + 1)) < (mainCoeffBound δ (q 0) (r 0) : ℝ) ^ δ := by
   -- `B` is at most `q_0^{δ r_0}` and `∏ (r_j + 1) < B^δ`
   have hm1 : (1 : ℝ) ≤ m := by exact_mod_cast Nat.one_le_iff_ne_zero.2 (NeZero.ne m)
   have h32' : 3 ≤ δ ^ 2 * Real.log (q 0) := by

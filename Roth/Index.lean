@@ -26,7 +26,8 @@ is how the convention is used in the source).
 
 * `Roth.le_index_iff`: lower bounds for the index of a nonzero polynomial.
 * `Roth.index_eq_zero_iff`: the index vanishes iff `P(α) ≠ 0`.
-* `Roth.index_hasseDeriv_ge`: differentiating lowers the index by at most the weight.
+* `Roth.index_sub_weight_le_index_hasseDeriv`: differentiating lowers the index by at most
+  the weight.
 * `Roth.le_index_sum`, `Roth.index_mul`, `Roth.index_prod`: the index of sums and products.
 * `Roth.index_eq_weightedOrder_div`: the index as a weighted order of a power series.
 * `Roth.index_rename`, `Roth.index_unique`: the index under renaming and in one variable.
@@ -99,8 +100,9 @@ theorem index_eq_zero_iff {P : MvPolynomial σ ℝ} (hP : P ≠ 0) {r : σ → �
 
 /-- Applying `Δ_k` lowers the index by at most the weight of `k`.
 Source: §4, Lemma `lem:index-of-derivative` ("`ind(Δ_k P) ≥ ind(P) - ∑ k_j / r_j`"). -/
-theorem index_hasseDeriv_ge {P : MvPolynomial σ ℝ} {k : σ →₀ ℕ} (hk : hasseDeriv k P ≠ 0)
-    (α : σ → ℝ) (r : σ → ℕ) : index P α r - weight r k ≤ index (hasseDeriv k P) α r := by
+theorem index_sub_weight_le_index_hasseDeriv {P : MvPolynomial σ ℝ} {k : σ →₀ ℕ}
+    (hk : hasseDeriv k P ≠ 0) (α : σ → ℝ) (r : σ → ℕ) :
+    index P α r - weight r k ≤ index (hasseDeriv k P) α r := by
   obtain ⟨i, hi, hiw⟩ := exists_weight_eq_index hk α r
   rw [hasseDeriv_hasseDeriv, smul_eq_C_mul, map_mul, eval_C, mul_ne_zero_iff] at hi
   exact sub_le_iff_le_add.2 (by simpa [weight_add, hiw] using index_le_weight (r := r) hi.2)

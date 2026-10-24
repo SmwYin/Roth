@@ -25,14 +25,14 @@ and Lemma 7 then gives a low-order derivative `Q` of `W^*` not vanishing at `(h_
 ## Main definitions
 
 * `Roth.lam`, `Roth.gam`, `Roth.eta`: the parameters `λ`, `γ`, `η` of §6, eqs. (34)–(36).
-* `Roth.B₁`: the coefficient bound `B_1 = ⌊q_1^{δ r_1}⌋`, eq. (37).
+* `Roth.mainCoeffBound`: the coefficient bound `B_1 = ⌊q_1^{δ r_1}⌋`, eq. (37).
 * `Roth.boxFamily`: the family `𝒲` of polynomials supported on the box with coefficients
   in `[0, B]`.
 
 ## Main results
 
 * `Roth.exists_delta_bound`: Lemma `m-δ`, for fixed `m > 16 n²`.
-* `Roth.abs_coeff_modByMonic_le`: coefficient norm bound for monic remainders over seminormed
+* `Roth.norm_coeff_modByMonic_le`: coefficient norm bound for monic remainders over seminormed
   rings, including the integer coefficient estimate.
 * `Roth.ncard_boxFamily`, `Roth.pigeonhole_count`, `Roth.exists_ne_modByMonic_eq`: the
   pigeonhole step.
@@ -60,7 +60,7 @@ noncomputable def gam (δ : ℝ) (n m : ℕ) : ℝ := ((m : ℝ) - lam δ n m) /
 noncomputable def eta (δ : ℝ) (m : ℕ) : ℝ := 10 ^ m * δ ^ ((1 / 2 : ℝ) ^ m)
 
 /-- The coefficient bound `B_1 = ⌊q_1^{δ r_1}⌋`. Source: §6, eq. (37). -/
-noncomputable def B₁ (δ : ℝ) (q₁ r₁ : ℕ) : ℕ := ⌊(q₁ : ℝ) ^ (δ * r₁)⌋₊
+noncomputable def mainCoeffBound (δ : ℝ) (q₁ r₁ : ℕ) : ℕ := ⌊(q₁ : ℝ) ^ (δ * r₁)⌋₊
 
 /-- For fixed `m > 16 n²` there is `δ₀ > 0` such that every `0 ≤ δ ≤ δ₀` satisfies
 `δ < 1/m` (29) and `η + 2(1 + 3δ) n √m < m/2` (30).
@@ -140,9 +140,9 @@ The power bound supplies positivity; use this estimate to turn bounds on `B_1` i
 exponential bounds without supplying separate sign assumptions.
 
 Source: §6 ("Thus `log B_1 > ½ δ r_1 log q_1`"). -/
-theorem log_B₁_gt {δ : ℝ} {q₁ r₁ : ℕ} (hX : 2 ≤ (q₁ : ℝ) ^ (δ * r₁)) :
-    δ * r₁ * Real.log q₁ / 2 < Real.log (B₁ δ q₁ r₁) := by
-  simpa [B₁, Real.log_sqrt (by positivity), Real.log_rpow
+theorem mul_log_div_two_lt_log_mainCoeffBound {δ : ℝ} {q₁ r₁ : ℕ} (hX : 2 ≤ (q₁ : ℝ) ^ (δ * r₁)) :
+    δ * r₁ * Real.log q₁ / 2 < Real.log (mainCoeffBound δ q₁ r₁) := by
+  simpa [mainCoeffBound, Real.log_sqrt (by positivity), Real.log_rpow
     (((Real.one_lt_rpow_iff (Nat.cast_nonneg q₁)).1
       (lt_of_lt_of_le (by norm_num) hX)).elim (fun h ↦ zero_lt_one.trans h.1) And.left)] using
     Real.log_lt_log (Real.sqrt_pos.2 (lt_of_lt_of_le (by norm_num) hX)) (sqrt_lt_floor hX).1
@@ -173,8 +173,9 @@ Source: §6, eq. `three-small-factors` ("`2^{m r_1} < B_1^δ`, `(1+A)^{m r_1} < 
 `(1+|α|)^{m r_1} < B_1^δ`"). -/
 theorem three_small_factors {δ : ℝ} (hδ0 : 0 ≤ δ) {m q₁ r₁ : ℕ} (hr₁ : 0 < r₁) {A α : ℝ}
     (hA : 0 ≤ A) (h32 : 2 * m + 1 + 2 * m * Real.log (1 + A) + 2 * m * Real.log (1 + |α|) ≤
-      δ ^ 2 * Real.log q₁) : (2 : ℝ) ^ (m * r₁) < (B₁ δ q₁ r₁ : ℝ) ^ δ ∧
-    (1 + A) ^ (m * r₁) < (B₁ δ q₁ r₁ : ℝ) ^ δ ∧ (1 + |α|) ^ (m * r₁) < (B₁ δ q₁ r₁ : ℝ) ^ δ := by
+      δ ^ 2 * Real.log q₁) : (2 : ℝ) ^ (m * r₁) < (mainCoeffBound δ q₁ r₁ : ℝ) ^ δ ∧
+    (1 + A) ^ (m * r₁) < (mainCoeffBound δ q₁ r₁ : ℝ) ^ δ ∧
+    (1 + |α|) ^ (m * r₁) < (mainCoeffBound δ q₁ r₁ : ℝ) ^ δ := by
   have hm0 : (0 : ℝ) ≤ m := Nat.cast_nonneg m
   have hlogA : 0 ≤ Real.log (1 + A) := Real.log_nonneg (le_add_of_nonneg_right hA)
   have hlogα : 0 ≤ Real.log (1 + |α|) :=
@@ -187,15 +188,15 @@ theorem three_small_factors {δ : ℝ} (hδ0 : 0 ≤ δ) {m q₁ r₁ : ℕ} (hr
   have hδ : 0 < δ := lt_of_le_of_ne hδ0 (by
     rintro rfl
     norm_num at h1)
-  -- `t^{m r₁} < B₁^δ` as soon as `2 m log t < δ² log q₁`
+  -- `t^{m r₁} < mainCoeffBound^δ` as soon as `2 m log t < δ² log q₁`
   have key (t : ℝ) (h : 2 * m * Real.log t ≤ δ ^ 2 * Real.log q₁) :
-      t ^ (m * r₁) < (B₁ δ q₁ r₁ : ℝ) ^ δ := by
-    apply Real.lt_rpow_of_log_lt (y := B₁ δ q₁ r₁) <|
+      t ^ (m * r₁) < (mainCoeffBound δ q₁ r₁ : ℝ) ^ δ := by
+    apply Real.lt_rpow_of_log_lt (y := mainCoeffBound δ q₁ r₁) <|
       (Real.sqrt_nonneg _).trans_lt (sqrt_lt_floor hX).1
     rw [Real.log_pow]
     push_cast
     nlinarith only [mul_le_mul_of_nonneg_left h (Nat.cast_nonneg r₁),
-      mul_lt_mul_of_pos_left (log_B₁_gt hX) hδ]
+      mul_lt_mul_of_pos_left (mul_log_div_two_lt_log_mainCoeffBound hX) hδ]
   refine ⟨key 2 ?_, key _ ?_, key _ ?_⟩
   · nlinarith only [h32, hm0, mul_nonneg hm0 hlogA, mul_nonneg hm0 hlogα,
       mul_nonneg hm0 (sub_nonneg.mpr hlog2.le)]
@@ -242,7 +243,7 @@ No sign or monicity premises are needed; for a nonmonic divisor, `modByMonic` re
 
 Source: §6, proof of Lemma 9 ("each leading-term elimination multiplies the bound by at most
 `1 + A` and lowers the degree ... `abc(T) ≤ (1+A)^{max(0, s-n+1)} B_1^{1+2δ}`"). -/
-theorem abs_coeff_modByMonic_le {R : Type*} [SeminormedRing R] {f : Polynomial R} {A : ℝ}
+theorem norm_coeff_modByMonic_le {R : Type*} [SeminormedRing R] {f : Polynomial R} {A : ℝ}
     (hfA : ∀ i, ‖f.coeff i‖ ≤ A) (P : Polynomial R) {C : ℝ} (hP : ∀ i, ‖P.coeff i‖ ≤ C) {s : ℕ}
     (hs : P.natDegree ≤ s) (i : ℕ) : ‖(P %ₘ f).coeff i‖ ≤ (1 + A) ^ (s + 1 - f.natDegree) * C := by
   have hA : 1 ≤ 1 + A := le_add_of_nonneg_right ((norm_nonneg _).trans (hfA 0))
@@ -423,8 +424,8 @@ With `L = log q₁`, this gives the hypothesis of Lemma 7 under (29) and (32).
 
 Source: §6, Lemma `lem:lem7-satisfied` ("We just need to verify `δ log q_1 > m(2m+1)` but
 this is immediate from (29) and (32)"). -/
-theorem lem7_hyp_of_h32 {K : Type*} [Semifield K] [LinearOrder K] [IsStrictOrderedRing K]
-    [ExistsAddOfLE K] {δ m L : K} (hm : 0 < 2 * m + 1) (hδm : δ * m < 1)
+theorem mul_two_mul_add_one_div_lt_of_le_sq_mul {K : Type*} [Semifield K] [LinearOrder K]
+    [IsStrictOrderedRing K] [ExistsAddOfLE K] {δ m L : K} (hm : 0 < 2 * m + 1) (hδm : δ * m < 1)
     (h32 : 2 * m + 1 ≤ δ ^ 2 * L) : m * (2 * m + 1) / δ < L := by
   have hδ : δ ≠ 0 := by
     rintro rfl
@@ -484,7 +485,7 @@ private lemma exists_hasseDeriv_index_eval_bound_aux {σ : Type*} [Fintype σ] {
     fun j ↦ (degreeOf_hasseDeriv_le j k P).trans (hd j), ?_, hQev, fun i ↦ ?_⟩
   · rw [← hasseDeriv_map]
     exact ((sub_lt_sub_left hkw γ).trans_le (sub_le_sub_right hγ _)).trans_le
-      (index_hasseDeriv_ge (fun h0 ↦ hkev (by rw [h0, map_zero])) α r)
+      (index_sub_weight_le_index_hasseDeriv (fun h0 ↦ hkev (by rw [h0, map_zero])) α r)
   · simpa [hasseDeriv_map] using hbound i k
 
 private lemma abs_coeff_diag_hasseDeriv_modByMonic_le_aux {σ : Type*} [Fintype σ] {f : Polynomial ℤ}
@@ -502,7 +503,7 @@ private lemma abs_coeff_diag_hasseDeriv_modByMonic_le_aux {σ : Type*} [Fintype 
     (abs_coeff_diag_le _ (abs_coeff_hasseDeriv_le j P hd hc) k).trans
       (mul_le_mul_of_nonneg_right hsupp (by positivity))
   simpa only [Int.norm_eq_abs, Nat.cast_prod, Nat.cast_add, Nat.cast_one] using
-    abs_coeff_modByMonic_le (by simpa [Int.norm_eq_abs] using hA) _
+    norm_coeff_modByMonic_le (by simpa [Int.norm_eq_abs] using hA) _
       (by simpa [Int.norm_eq_abs] using hcD) (natDegree_diag_le _ hdP) i
 
 private lemma abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux {σ : Type*} [Fintype σ]
@@ -612,7 +613,7 @@ private lemma exists_mem_RSet_le_index_of_log_bound_aux {f : Polynomial ℤ} {α
     (hfα : Polynomial.aeval α f = 0) (hA : ∀ i, |(f.coeff i : ℝ)| ≤ A) {m q₁ r₁ : ℕ} (hm : 0 < m)
     (r : Fin m → ℕ) (hr : ∀ j, 0 < r j) (hs : ∑ j, r j ≤ m * r₁) {δ : ℝ} (hδ0 : 0 ≤ δ)
     (hL : 2 * m + 1 + 2 * m * Real.log (1 + A) ≤ δ ^ 2 * Real.log q₁) :
-    ∃ P : MvPolynomial (Fin m) ℤ, P ∈ RSet (B₁ δ q₁ r₁) r ∧
+    ∃ P : MvPolynomial (Fin m) ℤ, P ∈ RSet (mainCoeffBound δ q₁ r₁) r ∧
       gam δ f.natDegree m ≤ index (map (Int.castRingHom ℝ) P) (fun _ ↦ α) r := by
   have hA1 : 1 ≤ A := by simpa [hf.coeff_natDegree] using hA f.natDegree
   have hr₁ : 0 < r₁ := Nat.pos_of_mul_pos_left <| (hr ⟨0, hm⟩).trans_le
@@ -623,11 +624,13 @@ private lemma exists_mem_RSet_le_index_of_log_bound_aux {f : Polynomial ℤ} {α
       (Real.log_nonneg (by linarith : 1 ≤ 1 + A))]
   obtain ⟨_, hTA, _⟩ := three_small_factors (m := m) (q₁ := q₁) (α := 0)
     hδ0 hr₁ (zero_le_one.trans hA1) (by simpa using hL)
-  have hpow : (B₁ δ q₁ r₁ : ℝ) ^ (1 + 3 * δ) = B₁ δ q₁ r₁ * ((B₁ δ q₁ r₁ : ℝ) ^ δ) ^ 3 := by
+  have hpow : (mainCoeffBound δ q₁ r₁ : ℝ) ^ (1 + 3 * δ) =
+      mainCoeffBound δ q₁ r₁ * ((mainCoeffBound δ q₁ r₁ : ℝ) ^ δ) ^ 3 := by
     rw [Real.rpow_add_of_nonneg (by positivity) zero_le_one (by positivity), Real.rpow_one,
       ← Real.rpow_mul_natCast (by positivity)]
     simp [mul_comm]
-  simpa only [gam, lam] using exists_mem_RSet_le_index_of_rpow_bound_aux (B := B₁ δ q₁ r₁) hf hfα hA
+  simpa only [gam, lam] using
+    exists_mem_RSet_le_index_of_rpow_bound_aux (B := mainCoeffBound δ q₁ r₁) hf hfα hA
     hm r hr (Nat.floor_pos.2 <| (by norm_num : (1 : ℝ) ≤ 4).trans
       (four_lt_rpow hδ0 hr₁ hq).le) hs hTA.le hpow.ge
 
@@ -638,8 +641,8 @@ private lemma exists_auxiliary_polynomial_of_log_bound_aux {f : Polynomial ℤ} 
     ∃ P : MvPolynomial (Fin m) ℤ, P ∈ RSet ((q₁ : ℝ) ^ (δ * r₁)) r ∧
       gam δ f.natDegree m ≤ index (map (Int.castRingHom ℝ) P) (fun _ ↦ α) r ∧ ∀ i k : Fin m →₀ ℕ,
       |eval (fun _ ↦ α) (map (Int.castRingHom ℝ) (hasseDeriv i (hasseDeriv k P)))| <
-        (B₁ δ q₁ r₁ : ℝ) ^ (1 + 3 * δ) := by
-  let B := B₁ δ q₁ r₁
+        (mainCoeffBound δ q₁ r₁ : ℝ) ^ (1 + 3 * δ) := by
+  let B := mainCoeffBound δ q₁ r₁
   let β : ℝ := (B : ℝ) ^ δ
   obtain ⟨P, hPR, hγ⟩ := exists_mem_RSet_le_index_of_log_bound_aux hf hfα hA hm r hr hs hδ0
     ((le_add_of_nonneg_right (mul_nonneg (by positivity)
@@ -690,7 +693,7 @@ private lemma exists_auxiliary_polynomial_with_index_gap_aux {α : ℝ} {f : Pol
       gam δ f.natDegree m - eta δ m + Θ ((q 0 : ℝ) ^ (δ * r 0)) q r <
         index (map (Int.castRingHom ℝ) W) (fun _ ↦ α) r ∧ ∀ i k : Fin m →₀ ℕ,
         |eval (fun _ ↦ α) (map (Int.castRingHom ℝ) (hasseDeriv i (hasseDeriv k W)))| <
-          (B₁ δ (q 0) (r 0) : ℝ) ^ (1 + 3 * δ) := by
+          (mainCoeffBound δ (q 0) (r 0) : ℝ) ^ (1 + 3 * δ) := by
   obtain ⟨m', rfl⟩ := Nat.exists_eq_succ_of_ne_zero (NeZero.ne m)
   have h32' : 2 * ((m' + 1 : ℕ) : ℝ) + 1 ≤ δ ^ 2 * Real.log (q 0) :=
     (le_add_of_nonneg_right (mul_nonneg (by positivity)
@@ -734,7 +737,7 @@ theorem main_lemma {α : ℝ} {f : Polynomial ℤ} (hf : f.Monic) (hfα : Polyno
       gam δ f.natDegree m - eta δ m < index (map (Int.castRingHom ℝ) Q) (fun _ ↦ α) r ∧
       eval (fun j ↦ (h j : ℝ) / q j) (map (Int.castRingHom ℝ) Q) ≠ 0 ∧
       ∀ i : Fin m →₀ ℕ, |eval (fun _ ↦ α) (hasseDeriv i (map (Int.castRingHom ℝ) Q))| <
-        (B₁ δ (q 0) (r 0) : ℝ) ^ (1 + 3 * δ) := by
+        (mainCoeffBound δ (q 0) (r 0) : ℝ) ^ (1 + 3 * δ) := by
   obtain ⟨W, hW, hgap, hbound⟩ := exists_auxiliary_polynomial_with_index_gap_aux hf hfα hA hδ0 hδm
     hrlast h31b h32 h33
   let c := (index (map (Int.castRingHom ℝ) W) (fun _ ↦ α) r -
