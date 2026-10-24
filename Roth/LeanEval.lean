@@ -8,6 +8,8 @@ namespace LeanEval.NumberTheory.ThueSiegelRothProblem
 
 open Real
 
+/-- For every positive `ε`, the rational-approximation error times `q ^ (2 + ε)` has a uniform
+positive lower bound over integer numerators and positive integer denominators. -/
 def IsDiophantine (x : ℝ) : Prop :=
   ∀ ε : ℝ, 0 < ε → ∃ C : ℝ, 0 < C ∧
     ∀ (p q : ℤ), 0 < q → C / (q : ℝ) ^ ((2 : ℝ) + ε) < |x - (p : ℝ) / (q : ℝ)|
