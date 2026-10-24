@@ -25,12 +25,15 @@ Started: 2026-10-14 (America/Chicago).
 
 ## Current status
 
-**Final validation PASS (2026-10-24); final publication pending.** All **263/263 genuine
-original declarations and 14/14 files** are validated. The zero-declaration root module
+**COMPLETE AND PUBLISHED (2026-10-24).** All **263/263 genuine original declarations
+and 14/14 files** are validated and published. The zero-declaration root module
 received its independent final review and documentation correction. All five queued global
 renames were applied sequentially across every live Lean use; the queue is empty. Historical
 264 counts included CoeffNorm comment prose and remain historical. No original audit was
-reopened, no optional API work added, and no completion/publication claim is made before push.
+reopened and no optional API work added. Final source/audit commit
+`846f8f2b4522ae6e75994c508fc7a5c1098d18da` was pushed successfully to origin `ramin-cleanup`
+(`76ea84c..846f8f2`) and verified clean with HEAD equal to origin/ramin-cleanup. This small
+completion metadata record follows that verified publication.
 
 Actual final full `lake build` exited0 in92.751s, followed by separate
 `lake build Roth.LeanEval` exited0 in30.822s. All445 actual project constants pass closedness
@@ -45,8 +48,8 @@ as instructed; zero errors, admissions, new axioms, trust shortcuts or resource 
 
 [Project final report](cleanup/Project-final.md) records the five-name map, actual gates,
 source/semantic comparison qualifications and preserved choices; [root final report](cleanup/Roth-final.md)
-completes the file ledger. Source/audit publication next on `ramin-cleanup` only, followed by
-clean HEAD=origin verification. No merge, main push or force push.
+completes the file ledger. No required cleanup, rename, review or validation gate remains.
+Publication is on `ramin-cleanup` only; no merge, main push or force push.
 
 ### Previous file completion (historical denominator)
 
