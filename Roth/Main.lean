@@ -275,71 +275,42 @@ with `r_j > 10 / δ`, `r_{j+1} / δ < r_j`, and `r_1 log q_1 ≤ r_j log q_j < (
 
 Source: §7, eqs. (51)–(53) and the Lean note ("define `r_j = ⌈r_1 log q_1 / log q_j⌉` for
 `j ≥ 2`, and collect positivity, (31), (33) and (53) in one rounding lemma"). -/
-theorem exists_degrees {m : ℕ} [NeZero m] {δ : ℝ} (hδ0 : 0 < δ) (hδ1 : δ < 1) {q : Fin m → ℕ}
-    (hq : ∀ j, 1 < q j)
-    (h50 : ∀ i j : Fin m, i.val + 1 = j.val → 2 / δ * Real.log (q i) < Real.log (q j)) :
-    ∃ r : Fin m → ℕ, (∀ j, 0 < r j) ∧ (∀ j, 10 / δ < r j) ∧
-      (∀ i j : Fin m, i.val + 1 = j.val → (r j : ℝ) / δ < r i) ∧
-      (∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j)) ∧
-      ∀ j, (r j : ℝ) * Real.log (q j) < (1 + δ / 10) * (r 0 * Real.log (q 0)) := by
-  have hℓ : ∀ j, 0 < Real.log (q j) := fun j => Real.log_pos (by exact_mod_cast hq j)
-  set ℓmax := Finset.univ.sup' Finset.univ_nonempty fun j => Real.log (q j)
-  have hle : ∀ j, Real.log (q j) ≤ ℓmax := fun j =>
-    Finset.le_sup' (fun j => Real.log (q j)) (Finset.mem_univ j)
-  set r₀ : ℕ := ⌈10 * ℓmax / (δ * Real.log (q 0))⌉₊ + 1 with hr₀
-  have hr₀R : 10 * ℓmax / (δ * Real.log (q 0)) < r₀ := by
-    rw [hr₀]
-    push_cast
-    linarith [Nat.le_ceil (10 * ℓmax / (δ * Real.log (q 0)))]
-  have hr₀' : 10 * ℓmax < δ * (r₀ * Real.log (q 0)) := by
-    rw [div_lt_iff₀ (mul_pos hδ0 (hℓ 0))] at hr₀R
-    linarith
-  set r : Fin m → ℕ := fun j => ⌈r₀ * Real.log (q 0) / Real.log (q j)⌉₊ with hr
-  have hr0 : r 0 = r₀ := by
-    simp only [hr]
-    rw [mul_div_assoc, div_self (hℓ 0).ne', mul_one, Nat.ceil_natCast]
-  have hlow : ∀ j, (r₀ : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j) := fun j => by
-    rw [← div_le_iff₀ (hℓ j)]
-    exact Nat.le_ceil _
-  have hup : ∀ j, (r j : ℝ) * Real.log (q j) < r₀ * Real.log (q 0) + Real.log (q j) := fun j => by
-    have := Nat.ceil_lt_add_one (by positivity : (0 : ℝ) ≤ r₀ * Real.log (q 0) / Real.log (q j))
-    have h2 := mul_lt_mul_of_pos_right this (hℓ j)
-    rwa [add_mul, one_mul, div_mul_cancel₀ _ (hℓ j).ne'] at h2
-  have h53 : ∀ j, (r j : ℝ) * Real.log (q j) < (1 + δ / 10) * (r₀ * Real.log (q 0)) := fun j => by
-    have := hup j
-    have := hle j
-    linarith
-  have h31a : ∀ j, 10 / δ < r j := fun j => by
-    rw [div_lt_iff₀ hδ0]
-    have h1 := hlow j
-    have h2 := hle j
-    have h3 : (0 : ℝ) ≤ r j := Nat.cast_nonneg _
-    by_contra! hc
-    have h4 : (r j : ℝ) * Real.log (q j) ≤ r j * ℓmax := mul_le_mul_of_nonneg_left h2 h3
-    have hℓm : 0 ≤ ℓmax := (hℓ 0).le.trans (hle 0)
-    have h5 := mul_le_mul_of_nonneg_right hc hℓm
-    have h6 := mul_le_mul_of_nonneg_left (h1.trans h4) hδ0.le
-    nlinarith
-  refine ⟨r, fun j => ?_, h31a, fun i j hij => ?_, fun j => by rw [hr0]; exact hlow j,
-    fun j => by rw [hr0]; exact h53 j⟩
-  · have := h31a j
-    have : (0 : ℝ) < r j := lt_trans (by positivity) this
-    exact_mod_cast this
-  · have A := h53 j
-    have B := hlow i
-    have C := h50 i j hij
-    have hrj : (0 : ℝ) ≤ r j := Nat.cast_nonneg _
-    have hri : (0 : ℝ) ≤ r i := Nat.cast_nonneg _
-    have D : 2 * ((r j : ℝ) / δ) * Real.log (q i) ≤ r j * Real.log (q j) := by
-      have : 2 * ((r j : ℝ) / δ) * Real.log (q i) = r j * (2 / δ * Real.log (q i)) := by
-        field_simp
-      rw [this]
-      exact mul_le_mul_of_nonneg_left C.le hrj
-    have E : 2 * ((r j : ℝ) / δ) < (1 + δ / 10) * r i := by
-      by_contra! hc
-      have := mul_le_mul_of_nonneg_right hc (hℓ i).le
-      nlinarith
-    nlinarith
+theorem exists_degrees {m : ℕ} [NeZero m] {δ : ℝ} (hδ0 : 0 < δ) (hδ1 : δ ≤ 1) {q : Fin m → ℕ}
+    (hq : ∀ j, 1 < q j) (h50 : ∀ i j : Fin m, i.val + 1 = j.val →
+      2 / δ * Real.log (q i) ≤ Real.log (q j)) : ∃ r : Fin m → ℕ, (∀ j, 0 < r j) ∧
+      (∀ j, 10 / δ < r j) ∧ (∀ i j : Fin m, i.val + 1 = j.val → (r j : ℝ) / δ < r i) ∧
+      (∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j)) ∧ ∀ j,
+      (r j : ℝ) * Real.log (q j) < (1 + δ / 10) * (r 0 * Real.log (q 0)) := by
+  have hℓ : ∀ j, 0 < Real.log (q j) := fun j ↦ Real.log_pos (by exact_mod_cast hq j)
+  let M := Finset.univ.sup' Finset.univ_nonempty fun j ↦ Real.log (q j)
+  have hle (j) : Real.log (q j) ≤ M := Finset.le_sup' (fun j ↦ Real.log (q j)) (Finset.mem_univ j)
+  obtain ⟨s, hs⟩ := exists_nat_gt (10 * M / (δ * Real.log (q 0)))
+  have hS : 10 * M < δ * (s * Real.log (q 0)) := by
+    linarith only [(div_lt_iff₀ (mul_pos hδ0 (hℓ 0))).1 hs]
+  let r : Fin m → ℕ := fun j ↦ ⌈s * Real.log (q 0) / Real.log (q j)⌉₊
+  have hr0 : r 0 = s := by simp [r, mul_div_assoc, (hℓ 0).ne']
+  have hlow (j) : (s : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j) :=
+    (div_le_iff₀ (hℓ j)).1 (Nat.le_ceil _)
+  have hup (j) : (r j : ℝ) * Real.log (q j) < (1 + δ / 10) * (s * Real.log (q 0)) := by
+    have hceil := mul_lt_mul_of_pos_right
+      (Nat.ceil_lt_add_one (by positivity : (0 : ℝ) ≤ s * Real.log (q 0) / Real.log (q j))) (hℓ j)
+    rw [add_mul, one_mul, div_mul_cancel₀ _ (hℓ j).ne'] at hceil
+    linarith only [hceil, hle j, hS]
+  have hlarge (j) : 10 / δ < r j := by
+    apply (div_lt_iff₀ hδ0).2
+    apply (mul_lt_mul_iff_right₀ (hℓ j)).1
+    linarith only [hS, hle j, mul_le_mul_of_nonneg_left (hlow j) hδ0.le]
+  refine ⟨r, fun j ↦ ?_, hlarge, fun i j hij ↦ ?_, ?_, ?_⟩
+  · exact_mod_cast (div_pos (by norm_num : (0 : ℝ) < 10) hδ0).trans (hlarge j)
+  · have h : (r j : ℝ) * (2 / δ) < (1 + δ / 10) * r i := by
+      apply (mul_lt_mul_iff_left₀ (hℓ i)).1
+      simpa only [mul_assoc] using
+        (mul_le_mul_of_nonneg_left (h50 i j hij) (Nat.cast_nonneg (r j))).trans_lt
+          ((hup j).trans_le (mul_le_mul_of_nonneg_left (hlow i) (by positivity)))
+    simp only [div_eq_mul_inv] at h ⊢
+    linarith only [h, mul_le_mul_of_nonneg_right hδ1 (Nat.cast_nonneg (r i))]
+  · simpa only [hr0] using hlow
+  · simpa only [hr0] using hup
 
 /-- If an integer polynomial `Q` of multidegree at most `r` does not vanish at `h / q`, then
 `∏ q_j^{r_j} |Q(h/q)| ≥ 1`.
@@ -471,7 +442,8 @@ theorem roth_of_isIntegral {α : ℝ} (hα : Irrational α) (hint : IsIntegral �
       δ ^ 2 * Real.log (q 0) := by
     rw [div_lt_iff₀ (by positivity)] at hL
     linarith
-  obtain ⟨r, hr0, h31a, h31b, h33, h53⟩ := exists_degrees hδ0 hδ1 hq1 h50
+  obtain ⟨r, hr0, h31a, h31b, h33, h53⟩ := exists_degrees hδ0 hδ1.le hq1
+    (fun i j hij ↦ (h50 i j hij).le)
   have hq0 : ∀ j, 0 < q j := fun j => lt_trans zero_lt_one (hq1 j)
   -- Lemma 9
   obtain ⟨Q, hQ0, hQd, hidx_strict, hne, hC⟩ := main_lemma hf hfα hA hδ0.le hδm.le (by
