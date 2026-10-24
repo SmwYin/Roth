@@ -25,7 +25,7 @@ Started: 2026-10-14 (America/Chicago).
 
 ## Current status
 
-**LeanEval original3 owner ACCEPTED; source/audit publication pending (2026-10-24).** Published262/263 originals,12/14 files; this validated checkpoint will complete263 original audits on push. Sole Eval owner `/root/cleanup_continuation/leaneval_file`; fresh third worker FINAL-END received, all compiler/native/LSP/profile jobs and driver groups drained, all leases returned. No project completion claim.
+**LeanEval original3 source/audit PUSHED a84d8fa12aed491e473d7e24af48d8babf61799f (2026-10-24).** **263/263 original declarations published;12/14 files complete.** Clean HEAD=origin verified after actual push exit0. Sole Eval owner `/root/cleanup_continuation/leaneval_file`; fresh third worker FINAL-END received, all compiler/native/LSP/profile jobs and driver groups drained, all leases returned. No project completion claim.
 
 Headline `thueSiegelRoth` now uses direct `IsAlgebraic.extendScalars` transport and a composed term; external name, public binder names/order, TYPE/universes and docstring preserved. All non-target bytes equal original2 entry. Eval63/3344B SHA4c77924b46d4b6559c8fc6118710e89c92fe07b0a49eaff90011e76edb2429d0. Actual6 families enumerated; all old5 raw TYPE/universes exact. Current headline opaque VALUE9234B/hash6990197182669633896 passes default200000/20000/512, closure, std3 and upstream/no-self; independent helper-plus-Roth recovery bypasses iff/target and preserves exact TYPE. Hashlen receipts do not claim fullraw VALUE identity.
 
@@ -33,7 +33,7 @@ Actual ordered FULL5.474s→separateEval27.406s→nativeEval28.373s/complete unf
 
 Previous publications: original1 source/audit8b0ce78/metadata c2cd54a; original2 joint helper/parent8ddaa96/metadata f2dff0c. Necessary private helper independently audited before SAME original2 author resumed; no extra original credit. Predicate42.616ms, helper291.597ms, equivalence321.509ms accepted, all passing samples<750. All public contracts preserved; historical failed timing contexts remain documented. Main17/17/file-final remains accepted-exact at581/35653B SHA6bc428c62fb96296fc155ece49cfa2c1929199f4582fae4c7ecc6c2223df83a8; source/audit17c84112. Denominator263 correction preserved: initial264 counted CoeffNorm comment prose; no phantom credit.
 
-**98% and99% coordinator notifications SENT once** at258/fb1c6aa and261/8b0ce78; root owns delivery. Remaining: publish original3, NEW independent Eval file-final, rootRoth zero-declaration file-final, five queued global renames, final project checks/clean push/report.263 originals alone does not mean COMPLETE. No sixth rename for the externally required headline.
+**98% and99% coordinator notifications SENT once** at258/fb1c6aa and261/8b0ce78; root owns delivery. Remaining: NEW independent Eval file-final, rootRoth zero-declaration file-final, five queued global renames, final project checks/clean push/report.263 originals alone does not mean COMPLETE. No sixth rename for the externally required headline.
 
 ### Previous file completion (historical denominator)
 
