@@ -55,9 +55,9 @@ theorem isDiophantine_iff {x : ℝ} (hx : Irrational x) :
 /-- **Thue–Siegel–Roth theorem** (Klaus Roth, 1955). Every irrational
 algebraic real is Diophantine: its irrationality measure is at most
 `2`. -/
-theorem thueSiegelRoth (x : ℝ) (_h_irr : Irrational x)
-    (_h_alg : IsAlgebraic ℤ x) : IsDiophantine x := by
-  exact (isDiophantine_iff _h_irr).mpr
-    (Roth.roth _h_irr ((IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).mp _h_alg))
+theorem thueSiegelRoth (x : ℝ) (_h_irr : Irrational x) (_h_alg : IsAlgebraic ℤ x) :
+    IsDiophantine x :=
+  (isDiophantine_iff _h_irr).mpr
+    (Roth.roth _h_irr (_h_alg.extendScalars (FaithfulSMul.algebraMap_injective ℤ ℚ)))
 
 end LeanEval.NumberTheory.ThueSiegelRothProblem
