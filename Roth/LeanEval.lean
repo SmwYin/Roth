@@ -1,6 +1,9 @@
 import Roth.Main
 
-/-! The exact statement from `LeanEval/NumberTheory/ThueSiegelRoth.lean`
+/-!
+# LeanEval Thue–Siegel–Roth theorem
+
+The exact statement from `LeanEval/NumberTheory/ThueSiegelRoth.lean`
 (https://github.com/leanprover/lean-eval/blob/main/LeanEval/NumberTheory/ThueSiegelRoth.lean),
 proved using `Roth.roth`. -/
 
