@@ -238,16 +238,18 @@ private lemma wronskian_kronecker_eq_sum_aux (k : ℕ) (φ : Fin l → MvPolynom
   simpa [wronskian, wronskianMatrix, hc, genWronskian, AlgHom.map_det, Matrix.map] using
     det_sum_rows s c (fun μ d ν ↦ kronecker k (hasseDeriv d (φ ν)))
 
+omit [Fintype σ] in
 /-- **Lemma 1**: a linearly independent family of polynomials has a generalized Wronskian (with
 Hasse operators of orders `|D μ| ≤ μ`) that is not identically zero.
 
 Source: §2, Lemma `roth:lem1` ("If `φ_0, …, φ_{l-1}` are `l` linearly independent
 polynomials in `p` variables with rational coefficients, then at least one of their generalized
 Wronskians is not identically zero"). -/
-theorem exists_genWronskian_ne_zero [CharZero K] {φ : Fin l → MvPolynomial σ K}
+theorem exists_genWronskian_ne_zero [Finite σ] [CharZero K] {φ : Fin l → MvPolynomial σ K}
     (h : LinearIndependent K φ) :
     ∃ D : Fin l → (σ →₀ ℕ), (∀ μ, (D μ).degree ≤ μ) ∧ genWronskian D φ ≠ 0 := by
   classical
+  let := Fintype.ofFinite σ
   let k := 2 + ∑ ν, ∑ j, degreeOf j (φ ν)
   choose s c hs hc using fun μ : Fin l ↦ exists_hasseDeriv_kronecker_eq_sum (K := K) (σ := σ) k μ
   by_contra! hcon

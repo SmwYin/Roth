@@ -25,6 +25,19 @@ Started: 2026-10-14 (America/Chicago).
 
 ## Current status
 
+**APPROVED FINITE FOLLOW-UP ACTIVE (2026-10-24).** The user explicitly approved replacing
+public `Fintype` requirements with `Finite` for `exists_genWronskian_ne_zero` and
+`exists_det_eq_mul`, retaining finiteness, all conclusions and all other hypotheses.
+Baseline is clean published `49e593d`. Work proceeds in two sequential validated/published
+checkpoints; original exhaustive audits remain accepted. No metadata or pin change is in scope.
+Checkpoint 1 is validated for publication: GenWronskian and its necessary private caller
+pass full/separate LeanEval builds, exact old/new proof-contract checks, native diagnostics,
+fresh independent review and both required 19-row profiles (maxima 877.750 / 943.543 ms).
+The second theorem and final gates remain pending.
+[Follow-up report](cleanup/Finite-warning-amendment.md).
+
+### Previous completed Theta warning follow-up
+
 **APPROVED THETA WARNING FOLLOW-UP COMPLETE (2026-10-24).** All four authorized
 amendments and their necessary callers are validated. `Θ_nonneg` loses `hB/hr`, `Θ_le_card`
 loses `hB`, and `Θ_mono` loses only `hr`; its used `hB` stays. `index_le_lem6` retains its

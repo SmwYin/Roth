@@ -508,7 +508,6 @@ private lemma exists_rat_factors_det_hasseDeriv_aux [Finite τ] {P : MvPolynomia
           hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) P).det = rename some U *
           Polynomial.aeval (X none : MvPolynomial (Option τ) ℚ) V := by
   classical
-  let := Fintype.ofFinite τ
   set PQ := map (Int.castRingHom ℚ) P with hPQdef
   have hdeg : degreeOf none PQ ≤ n := by
     simpa [degreeOf_def, hPQdef,
