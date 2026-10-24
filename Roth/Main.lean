@@ -218,54 +218,31 @@ private lemma eta_lt_of_lt {δ c : ℝ} (hδ0 : 0 ≤ δ) (hc : 0 ≤ c) (m : �
 
 /-- Given `m` as in `Roth.exists_m`, there is `δ ∈ (0, 1/m)` with
 `η(δ, m) + 2 (1 + 3δ) n √m < m / 2` and `m (1 + 4δ) / (γ - η) < κ`.
+The parameter `n` may be zero.
 
 Source: §7, eqs. (29), (30), (48), (49) ("For `δ` small enough ... Decreasing `δ` further if
 necessary, we also arrange that `2m(1+4δ)/(m - 4(1+3δ) n m^{1/2} - 2η) < κ` ... equivalent to
 `m(1+4δ)/(γ - η) < κ`"). -/
-theorem exists_delta {n m : ℕ} (hn : 0 < n) (hm : 16 * n ^ 2 < m) {κ : ℝ}
-    (h47 : 4 * n * √(m : ℝ) < m)
-    (h47' : 2 * m / (m - 4 * n * √(m : ℝ)) < κ) :
-    ∃ δ : ℝ, 0 < δ ∧ δ < 1 / m ∧ eta δ m + 2 * (1 + 3 * δ) * n * √(m : ℝ) < m / 2 ∧
-      (m : ℝ) * (1 + 4 * δ) / (gam δ n m - eta δ m) < κ := by
-  have hm0 : 0 < m := by
-    have : 0 < 16 * n ^ 2 := by positivity
-    omega
-  have hmR : (0 : ℝ) < m := by exact_mod_cast hm0
-  have hn' : (0 : ℝ) < n := by exact_mod_cast hn
-  have hsm : 0 < √(m : ℝ) := Real.sqrt_pos.2 hmR
-  have hG : 0 < (m : ℝ) - 4 * n * √(m : ℝ) := by linarith
-  have hκ0 : 0 < κ := lt_trans (by positivity) h47'
-  set E := κ * (((m : ℝ) - 4 * n * √(m : ℝ)) / 2) - m with hEdef
-  have hE : 0 < E := by
-    rw [div_lt_iff₀ hG] at h47'
-    rw [hEdef]
-    linarith
+theorem exists_delta {n m : ℕ} (hm : 16 * n ^ 2 < m) {κ : ℝ}
+    (h47' : 2 * m / (m - 4 * n * √(m : ℝ)) < κ) : ∃ δ : ℝ, 0 < δ ∧ δ < 1 / m ∧
+    eta δ m + 2 * (1 + 3 * δ) * n * √(m : ℝ) < m / 2 ∧
+    (m : ℝ) * (1 + 4 * δ) / (gam δ n m - eta δ m) < κ := by
   obtain ⟨δ₀, hδ₀, hδ₀'⟩ := exists_delta_bound hm
-  set c : ℝ := E / (3 * κ * 10 ^ m) with hc
-  have hc0 : 0 < c := by positivity
-  set μ := min δ₀ (min (E / (12 * m)) (min (E / (18 * κ * n * √(m : ℝ))) (c ^ (2 ^ m))))
-    with hμ
-  have hμ0 : 0 < μ := by
-    simp only [hμ, lt_min_iff]
-    exact ⟨hδ₀, by positivity, by positivity, by positivity⟩
-  have hδ0 : 0 < μ / 2 := by positivity
-  have hδlt : μ / 2 < μ := by linarith
-  have hδlt' := hδlt
-  simp only [hμ, lt_min_iff] at hδlt'
-  obtain ⟨h1, h2, h3, h4⟩ := hδlt'
-  obtain ⟨h29, h30⟩ := hδ₀' (μ / 2) hδ0.le h1.le
-  refine ⟨μ / 2, hδ0, h29, h30, ?_⟩
-  set δ := μ / 2
-  have hgam := (eta_lt_gam_iff δ n m).1 h30
-  have hceq : (10 : ℝ) ^ m * c = E / (3 * κ) := by rw [hc]; field_simp
-  have heta := (eta_lt_of_lt hδ0.le hc0.le m h4).trans_eq hceq
-  have a1 : 12 * m * δ < E := by rwa [lt_div_iff₀ (by positivity), mul_comm] at h2
-  have a2 : 18 * κ * n * √(m : ℝ) * δ < E := by rwa [lt_div_iff₀ (by positivity), mul_comm] at h3
-  have a3 : eta δ m * (3 * κ) < E := by rwa [lt_div_iff₀ (by positivity)] at heta
-  rw [div_lt_iff₀ (by linarith)]
-  rw [gam, lam]
-  rw [hEdef] at a1 a2 a3
-  linarith only [a1, a2, a3]
+  have hc : ContinuousAt (fun δ ↦
+      (m : ℝ) * (1 + 4 * δ) / (gam δ n m - eta δ m)) 0 :=
+    (show ContinuousAt (fun δ : ℝ ↦ (m : ℝ) * (1 + 4 * δ)) 0 by fun_prop).div
+      ((show ContinuousAt (fun δ ↦ gam δ n m) 0 by
+        unfold gam lam
+        fun_prop).sub ((Real.continuousAt_rpow_const 0 _ (.inr (by positivity))).const_mul _))
+      (sub_pos.mpr ((eta_lt_gam_iff 0 n m).mp (hδ₀' 0 le_rfl hδ₀.le).2)).ne'
+  obtain ⟨ε, hε, hbound⟩ := Metric.eventually_nhds_iff.mp
+    (hc.eventually_lt continuousAt_const (by
+      simpa [gam, lam, eta, Real.zero_rpow (by positivity : (1 / 2 : ℝ) ^ m ≠ 0),
+        div_div_eq_mul_div, mul_comm] using h47'))
+  obtain ⟨δ, hδ, hlt⟩ := exists_between (lt_min hδ₀ hε)
+  obtain ⟨h29, h30⟩ := hδ₀' δ hδ.le (hlt.trans_le (min_le_left _ _)).le
+  exact ⟨δ, hδ, h29, h30,
+    hbound (y := δ) (by simpa [Real.dist_eq, abs_of_pos hδ] using hlt.trans_le (min_le_right _ _))⟩
 
 /-- One can choose `m` reduced approximations `h_j / q_j ∈ approxSet α κ` with `q_j > 1`,
 `log q_1 > L` and `log q_{j+1} > (2 / δ) log q_j`.
@@ -488,7 +465,7 @@ theorem roth_of_isIntegral {α : ℝ} (hα : Irrational α) (hint : IsIntegral �
     · simpa [Polynomial.notMem_support_iff.1 hi] using zero_le_one.trans hA1
   -- choice of `m` and `δ`
   obtain ⟨m, hm, h47, h47'⟩ := exists_m (n := n) hκ
-  obtain ⟨δ, hδ0, hδm, h30, h49⟩ := exists_delta (by omega : 0 < n) hm h47 h47'
+  obtain ⟨δ, hδ0, hδm, h30, h49⟩ := exists_delta hm h47'
   have hm2 : 2 ≤ m := by
     have : 4 ≤ n ^ 2 := by nlinarith
     omega
