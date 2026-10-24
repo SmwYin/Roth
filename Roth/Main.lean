@@ -194,7 +194,7 @@ theorem exists_m {n : ℕ} {κ : ℝ} (hκ : 2 < κ) : ∃ m : ℕ, 16 * n ^ 2 <
     dsimp [s]
     lia
   have hs4R : (4 * n : ℝ) < s := by exact_mod_cast hs4
-  have hspos : (0 : ℝ) < s := lt_of_le_of_lt (by positivity) hs4R
+  have hspos : (0 : ℝ) < s := (mul_nonneg (by norm_num) (Nat.cast_nonneg n)).trans_lt hs4R
   have hkey : 4 * κ * n < (s : ℝ) * (κ - 2) := by
     apply (div_lt_iff₀ (sub_pos.mpr hκ)).mp
     refine (Nat.le_ceil _).trans_lt ?_
@@ -202,19 +202,14 @@ theorem exists_m {n : ℕ} {κ : ℝ} (hκ : 2 < κ) : ∃ m : ℕ, 16 * n ^ 2 <
       dsimp [s]
       lia)
   have hmul : 4 * n * (s : ℝ) < (s : ℝ) ^ 2 := by
-    simpa [pow_two] using mul_lt_mul_of_pos_right hs4R hspos
-  refine ⟨s ^ 2, by nlinarith only [hs4], ?_, ?_⟩
-  · simpa using hmul
+    simpa only [pow_two] using mul_lt_mul_of_pos_right hs4R hspos
+  refine ⟨s ^ 2, ?_, ?_, ?_⟩
+  · simpa only [mul_pow, show (4 : ℕ) ^ 2 = 16 from rfl] using
+      Nat.pow_lt_pow_left hs4 (by decide : 2 ≠ 0)
+  · simpa only [Nat.cast_pow, Real.sqrt_sq (Nat.cast_nonneg s)] using hmul
   · push_cast
     rw [Real.sqrt_sq (Nat.cast_nonneg _), div_lt_iff₀ (sub_pos.mpr hmul)]
     nlinarith only [mul_lt_mul_of_pos_right hkey hspos]
-
-/- If `δ < c ^ 2 ^ m`, then `η(δ, m) < 10 ^ m * c`. -/
-private lemma eta_lt_of_lt {δ c : ℝ} (hδ0 : 0 ≤ δ) (hc : 0 ≤ c) (m : ℕ) (h : δ < c ^ (2 ^ m)) :
-    eta δ m < 10 ^ m * c := by
-  simpa [eta, Nat.cast_pow] using
-    (Real.rpow_inv_lt_iff_of_pos hδ0 hc (show (0 : ℝ) < (2 ^ m : ℕ) by positivity)).2
-      (by simpa only [Real.rpow_natCast] using h)
 
 /-- Given `m` as in `Roth.exists_m`, there is `δ ∈ (0, 1/m)` with
 `η(δ, m) + 2 (1 + 3δ) n √m < m / 2` and `m (1 + 4δ) / (γ - η) < κ`.
@@ -230,10 +225,13 @@ theorem exists_delta {n m : ℕ} (hm : 16 * n ^ 2 < m) {κ : ℝ}
   obtain ⟨δ₀, hδ₀, hδ₀'⟩ := exists_delta_bound hm
   have hc : ContinuousAt (fun δ ↦
       (m : ℝ) * (1 + 4 * δ) / (gam δ n m - eta δ m)) 0 :=
-    (show ContinuousAt (fun δ : ℝ ↦ (m : ℝ) * (1 + 4 * δ)) 0 by fun_prop).div
-      ((show ContinuousAt (fun δ ↦ gam δ n m) 0 by
-        unfold gam lam
-        fun_prop).sub ((Real.continuousAt_rpow_const 0 _ (.inr (by positivity))).const_mul _))
+    (show ContinuousAt (fun δ : ℝ ↦ (m : ℝ) * (1 + 4 * δ)) 0 from
+      continuousAt_const.mul (continuousAt_const.add (continuousAt_const.mul continuousAt_id))).div
+      ((show ContinuousAt (fun δ ↦ gam δ n m) 0 from
+        (continuousAt_const.sub (((continuousAt_const.mul
+          (continuousAt_const.add (continuousAt_const.mul continuousAt_id))).mul
+            continuousAt_const).mul continuousAt_const)).div_const 2).sub
+        ((Real.continuousAt_rpow_const 0 _ (.inr (by positivity))).const_mul _))
       (sub_pos.mpr ((eta_lt_gam_iff 0 n m).mp (hδ₀' 0 le_rfl hδ₀.le).2)).ne'
   obtain ⟨ε, hε, hbound⟩ := Metric.eventually_nhds_iff.mp
     (hc.eventually_lt continuousAt_const (by
@@ -281,36 +279,36 @@ theorem exists_degrees {m : ℕ} [NeZero m] {δ : ℝ} (hδ0 : 0 < δ) (hδ1 : �
       (∀ j, 10 / δ < r j) ∧ (∀ i j : Fin m, i.val + 1 = j.val → (r j : ℝ) / δ < r i) ∧
       (∀ j, (r 0 : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j)) ∧ ∀ j,
       (r j : ℝ) * Real.log (q j) < (1 + δ / 10) * (r 0 * Real.log (q 0)) := by
-  have hℓ : ∀ j, 0 < Real.log (q j) := fun j ↦ Real.log_pos (by exact_mod_cast hq j)
-  let M := Finset.univ.sup' Finset.univ_nonempty fun j ↦ Real.log (q j)
-  have hle (j) : Real.log (q j) ≤ M := Finset.le_sup' (fun j ↦ Real.log (q j)) (Finset.mem_univ j)
-  obtain ⟨s, hs⟩ := exists_nat_gt (10 * M / (δ * Real.log (q 0)))
-  have hS : 10 * M < δ * (s * Real.log (q 0)) := by
-    linarith only [(div_lt_iff₀ (mul_pos hδ0 (hℓ 0))).1 hs]
-  let r : Fin m → ℕ := fun j ↦ ⌈s * Real.log (q 0) / Real.log (q j)⌉₊
-  have hr0 : r 0 = s := by simp [r, mul_div_assoc, (hℓ 0).ne']
-  have hlow (j) : (s : ℝ) * Real.log (q 0) ≤ r j * Real.log (q j) :=
-    (div_le_iff₀ (hℓ j)).1 (Nat.le_ceil _)
-  have hup (j) : (r j : ℝ) * Real.log (q j) < (1 + δ / 10) * (s * Real.log (q 0)) := by
-    have hceil := mul_lt_mul_of_pos_right
-      (Nat.ceil_lt_add_one (by positivity : (0 : ℝ) ≤ s * Real.log (q 0) / Real.log (q j))) (hℓ j)
-    rw [add_mul, one_mul, div_mul_cancel₀ _ (hℓ j).ne'] at hceil
-    linarith only [hceil, hle j, hS]
+  let ℓ (j) := Real.log (q j)
+  have hℓ : ∀ j, 0 < ℓ j := fun j ↦ Real.log_pos (by exact_mod_cast hq j)
+  obtain ⟨s, hs⟩ := exists_nat_gt (Finset.univ.sup' Finset.univ_nonempty (10 * ℓ · / (δ * ℓ 0)))
+  have hS (j) : 10 * ℓ j < ((s : ℝ) * ℓ 0) * δ := by
+    simpa only [mul_assoc, mul_comm δ] using (div_lt_iff₀ (mul_pos hδ0 (hℓ 0))).1
+      ((Finset.le_sup' _ (Finset.mem_univ j)).trans_lt hs)
+  let r : Fin m → ℕ := fun j ↦ ⌈s * ℓ 0 / ℓ j⌉₊
+  have hr0 : r 0 = s := by simp only [r, mul_div_cancel_right₀ _ (hℓ 0).ne', Nat.ceil_natCast]
+  have hlow (j) := (div_le_iff₀ (hℓ j)).1 (Nat.le_ceil (s * ℓ 0 / ℓ j))
+  have hup (j) : (r j : ℝ) * ℓ j < (1 + δ / 10) * (s * ℓ 0) := by
+    refine (mul_lt_mul_of_pos_right (Nat.ceil_lt_add_one (by positivity)) (hℓ j)).trans_le ?_
+    rw [add_mul, one_mul, div_mul_cancel₀ _ (hℓ j).ne', add_mul, one_mul]
+    refine add_le_add le_rfl ?_
+    rw [div_mul_eq_mul_div, le_div_iff₀ (by norm_num : (0 : ℝ) < 10)]
+    simpa only [mul_comm] using (hS j).le
   have hlarge (j) : 10 / δ < r j := by
-    apply (div_lt_iff₀ hδ0).2
-    apply (mul_lt_mul_iff_right₀ (hℓ j)).1
-    linarith only [hS, hle j, mul_le_mul_of_nonneg_left (hlow j) hδ0.le]
-  refine ⟨r, fun j ↦ ?_, hlarge, fun i j hij ↦ ?_, ?_, ?_⟩
+    refine (div_lt_iff₀ hδ0).2 ((mul_lt_mul_iff_left₀ (hℓ j)).1 ?_)
+    simpa only [mul_right_comm] using (hS j).trans_le (mul_le_mul_of_nonneg_right (hlow j) hδ0.le)
+  refine ⟨r, fun j ↦ ?_, hlarge, fun i j hij ↦ ?_, ?_⟩
   · exact_mod_cast (div_pos (by norm_num : (0 : ℝ) < 10) hδ0).trans (hlarge j)
   · have h : (r j : ℝ) * (2 / δ) < (1 + δ / 10) * r i := by
       apply (mul_lt_mul_iff_left₀ (hℓ i)).1
       simpa only [mul_assoc] using
         (mul_le_mul_of_nonneg_left (h50 i j hij) (Nat.cast_nonneg (r j))).trans_lt
           ((hup j).trans_le (mul_le_mul_of_nonneg_left (hlow i) (by positivity)))
-    simp only [div_eq_mul_inv] at h ⊢
-    linarith only [h, mul_le_mul_of_nonneg_right hδ1 (Nat.cast_nonneg (r i))]
-  · simpa only [hr0] using hlow
-  · simpa only [hr0] using hup
+    rw [← mul_div_assoc, mul_comm (r j : ℝ) 2, mul_div_assoc] at h
+    exact (mul_lt_mul_iff_right₀ (by norm_num : (0 : ℝ) < 2)).1 <| h.trans_le
+      (mul_le_mul_of_nonneg_right ((add_le_add le_rfl
+        (div_le_div_of_nonneg_right hδ1 (by norm_num))).trans (by norm_num)) (Nat.cast_nonneg _))
+  · simpa only [hr0] using And.intro hlow hup
 
 /-- If an integer polynomial `Q` of multidegree at most `r` does not vanish at `h / q`, then
 `∏ q_j^{r_j} |Q(h/q)| ≥ 1`.
@@ -333,7 +331,7 @@ theorem one_le_prod_pow_mul_abs_eval {m : ℕ} (Q : MvPolynomial (Fin m) ℤ) {r
     congr 1
     refine Finset.prod_congr rfl fun j _ ↦ ?_
     rw [← pow_sub_mul_pow (q j : ℝ) ((monomial_le_degreeOf j hd).trans (hQ j)), div_pow]
-    field_simp [(hqR j).ne']
+    rw [mul_assoc, mul_div_cancel₀ _ (pow_ne_zero _ (hqR j).ne'), mul_comm]
   have h1 : (1 : ℝ) ≤ |(N : ℝ)| := by
     rw [← Int.cast_abs]
     exact_mod_cast Int.one_le_abs (Int.cast_ne_zero.mp (hNeq.symm ▸ mul_ne_zero hP.ne' hne))
@@ -523,15 +521,16 @@ private lemma roth_log_bound_aux {m : ℕ} [NeZero m] (hm2 : 2 ≤ m) {δ G κ B
   have hlogP : Real.log (∏ j, (q j : ℝ) ^ r j) <
       m * ((1 + δ / 10) * (r 0 * Real.log (q 0))) := by
     simp_rw [Real.log_prod (fun j _ ↦ (pow_pos (hqR j) _).ne'), Real.log_pow]
-    exact (Finset.sum_lt_sum_of_nonempty Finset.univ_nonempty fun j _ ↦ h53 j).trans_eq
-      (by simp)
+    simpa only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul] using
+      Finset.sum_lt_sum_of_nonempty Finset.univ_nonempty (fun j _ ↦ h53 j)
   have hpos : 0 < m * (1 + δ / 10) + (1 + 4 * δ) * δ - G * κ :=
     (mul_pos_iff_of_pos_left hK0).mp <| by
       linarith only [hlog, hlogP, (Real.log_lt_log hN0 hN).trans_eq (Real.log_rpow hBpos δ),
         mul_le_mul_of_nonneg_left (a := 1 + 4 * δ)
           ((Real.log_le_log hBpos hBX).trans_eq (Real.log_rpow (hqR 0) _)) (by positivity)]
   have hmR : (2 : ℝ) ≤ m := by exact_mod_cast hm2
-  linarith only [hpos, mul_le_mul_of_nonneg_right
+  apply (sub_pos.mp hpos).trans_le
+  linarith only [mul_le_mul_of_nonneg_right
     (by linarith only [hδ1, hmR] : 1 + 4 * δ ≤ (39 / 10) * m) hδ0]
 
 /-- Roth's theorem for irrational real algebraic integers: if `approxSet α κ` is infinite,
