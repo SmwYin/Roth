@@ -319,32 +319,24 @@ Source: §7, eq. (54) ("the number `(∏ q_j^{r_j}) Q(h_1/q_1, …, h_m/q_m)` is
 integer ... Its absolute value is at least `1`"). -/
 theorem one_le_prod_pow_mul_abs_eval {m : ℕ} (Q : MvPolynomial (Fin m) ℤ) {r : Fin m → ℕ}
     (hQ : ∀ j, degreeOf j Q ≤ r j) (h : Fin m → ℤ) {q : Fin m → ℕ} (hq : ∀ j, 0 < q j)
-    (hne : eval (fun j => (h j : ℝ) / q j) (map (Int.castRingHom ℝ) Q) ≠ 0) :
-    1 ≤ (∏ j, (q j : ℝ) ^ r j) * |eval (fun j => (h j : ℝ) / q j) (map (Int.castRingHom ℝ) Q)| := by
-  have hqR : ∀ j, (0 : ℝ) < q j := fun j => by exact_mod_cast hq j
-  have hP : (0 : ℝ) < ∏ j, (q j : ℝ) ^ r j := Finset.prod_pos fun j _ => pow_pos (hqR j) _
+    (hne : eval (fun j ↦ (h j : ℝ) / q j) (map (Int.castRingHom ℝ) Q) ≠ 0) :
+    1 ≤ (∏ j, (q j : ℝ) ^ r j) * |eval (fun j ↦ (h j : ℝ) / q j) (map (Int.castRingHom ℝ) Q)| := by
+  have hqR : ∀ j, (0 : ℝ) < q j := fun j ↦ by exact_mod_cast hq j
+  have hP : (0 : ℝ) < ∏ j, (q j : ℝ) ^ r j := Finset.prod_pos fun j _ ↦ pow_pos (hqR j) _
   set N : ℤ := ∑ d ∈ Q.support, Q.coeff d * ∏ j, h j ^ d j * (q j : ℤ) ^ (r j - d j) with hN
   have hNeq : (N : ℝ) = (∏ j, (q j : ℝ) ^ r j) *
-      eval (fun j => (h j : ℝ) / q j) (map (Int.castRingHom ℝ) Q) := by
+      eval (fun j ↦ (h j : ℝ) / q j) (map (Int.castRingHom ℝ) Q) := by
     rw [eval_eq', support_map_of_injective _ Int.cast_injective, Finset.mul_sum, hN]
     push_cast
-    refine Finset.sum_congr rfl fun d hd => ?_
+    refine Finset.sum_congr rfl fun d hd ↦ ?_
     rw [coeff_map, mul_left_comm, ← Finset.prod_mul_distrib]
     congr 1
-    refine Finset.prod_congr rfl fun j _ => ?_
-    have hdj : d j ≤ r j := (monomial_le_degreeOf j hd).trans (hQ j)
-    rw [← pow_sub_mul_pow (q j : ℝ) hdj, div_pow]
-    have := (hqR j).ne'
-    field_simp
-  have hN0 : N ≠ 0 := by
-    intro h0
-    rw [h0, Int.cast_zero, eq_comm, mul_eq_zero] at hNeq
-    rcases hNeq with h1 | h1
-    · exact hP.ne' h1
-    · exact hne h1
+    refine Finset.prod_congr rfl fun j _ ↦ ?_
+    rw [← pow_sub_mul_pow (q j : ℝ) ((monomial_le_degreeOf j hd).trans (hQ j)), div_pow]
+    field_simp [(hqR j).ne']
   have h1 : (1 : ℝ) ≤ |(N : ℝ)| := by
     rw [← Int.cast_abs]
-    exact_mod_cast Int.one_le_abs hN0
+    exact_mod_cast Int.one_le_abs (Int.cast_ne_zero.mp (hNeq.symm ▸ mul_ne_zero hP.ne' hne))
   rwa [hNeq, abs_mul, abs_of_pos hP] at h1
 
 /-- If `Q` has index at least `c` at `(α, …, α)`, its Hasse derivatives there are bounded by `C`,
