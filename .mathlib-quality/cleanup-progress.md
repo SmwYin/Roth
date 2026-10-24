@@ -31,12 +31,11 @@ and retaining `index_le_lem6`'s positive-denominator premise under the binder na
 This overrides the earlier retention choice only for these five warnings. Four declarations
 are being amended and published sequentially; no other public domain, Fintype or metadata
 change is authorized by this follow-up. Baseline is clean published `7c49350`.
-`Θ_nonneg` and both internal callers are validated: full downstream targets build, complete
-Theta diagnostics drop from six to four warnings, and actual original-contract/new-proof/
-body/axiom checks pass. First checkpoint was published as `e2c4ef4`. `Θ_le_card` and its necessary private
-caller simplification also pass all downstream builds and cumulative contract/proof checks;
-Theta now has three warnings. Checkpoint 2 is ready for publication; two theorems and the
-final file-wide gates remain. [Follow-up report](cleanup/Theta-warning-amendment.md).
+`Θ_nonneg` and `Θ_le_card` were validated and published as `e2c4ef4` and `0d8f16f`.
+`Θ_mono` and its necessary caller updates now pass the full downstream build and cumulative
+actual original-contract/new-proof/body/axiom checks; complete Theta diagnostics show two
+warnings and no errors. Checkpoint 3 is ready for publication; one theorem and the final
+file-wide gates remain. [Follow-up report](cleanup/Theta-warning-amendment.md).
 The earlier completed cleanup remains complete; this newly approved amendment is in progress.
 
 ### Previous completed cleanup (before the approved warning follow-up)

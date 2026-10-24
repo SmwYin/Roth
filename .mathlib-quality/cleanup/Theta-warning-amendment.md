@@ -30,8 +30,14 @@ amendment; the original exhaustive audits remain accepted and their count stays 
    remaining warnings. Full downstream target build: exit 0, 117.753 s. Cumulative actual
    old-contract/new-independent/opaque-body checks: exit 0, 40.084 s.
 
-Checkpoint 1 was published as `e2c4ef4`. The last two checkpoints and final file-wide
-profile/build gates are pending.
+3. **Θ_mono: PASS.** Removed only unused `hr`; the used `hB` and proof remain. Both
+   internal calls drop the obsolete argument, and the prefix caller drops its now-dead
+   local positivity proof. Complete Theta diagnostics: zero errors, two remaining warnings.
+   Full downstream target build: exit 0, 114.300 s. Cumulative actual old-contract/
+   new-independent/opaque-body checks: exit 0, 42.535 s.
+
+Checkpoints 1 and 2 were published as `e2c4ef4` and `0d8f16f`. Checkpoint 3 is validated
+for publication. The last checkpoint and final file-wide profile/build gates are pending.
 
 ## Evidence
 

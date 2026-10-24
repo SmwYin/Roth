@@ -125,7 +125,7 @@ theorem Θ_le_of_forall_index_le {B : ℝ} (hB : 1 ≤ B) {q r : σ → ℕ} {c 
 omit [DecidableEq σ] in
 /-- `Θ_m(B; q; r)` is monotone in `B`. Source: §5 ("`Θ_m` is nondecreasing in `B`, since
 increasing `B` enlarges the set of allowed polynomials"). -/
-theorem Θ_mono {B B' : ℝ} (hB : 1 ≤ B) (hBB' : B ≤ B') (q : σ → ℕ) {r : σ → ℕ} (hr : ∀ j, 0 < r j) :
+theorem Θ_mono {B B' : ℝ} (hB : 1 ≤ B) (hBB' : B ≤ B') (q : σ → ℕ) {r : σ → ℕ} :
     Θ B q r ≤ Θ B' q r := by
   refine csSup_le_csSup (indexSet_bddAbove B' q) (indexSet_nonempty hB q r) ?_
   rintro _ ⟨R, ⟨hR0, hRd, hRc⟩, h, hh, rfl⟩
@@ -748,7 +748,7 @@ private lemma theta_scaled_unique_le_aux {δ M : ℝ} {q₁ q₂ r₁ r₂ l : �
   have hr₂ : 0 < r₂ := by exact_mod_cast pos_of_mul_pos_left hL hL₂.le
   have hq₂ : 1 < q₂ := by
     exact_mod_cast (Real.log_pos_iff (Nat.cast_nonneg q₂)).1 hL₂
-  refine (Θ_mono hM1 hM _ fun _ ↦ Nat.mul_pos hl hr₂).trans
+  refine (Θ_mono hM1 hM _).trans
     ((Θ_unique_le (q := fun _ : Unit ↦ q₂) (r := fun _ ↦ l * r₂)
       (hM1.trans hM) hq₂).trans ?_)
   rw [Real.log_rpow (by positivity), div_le_iff₀ (by
@@ -780,10 +780,7 @@ private lemma theta_prefix_lt_aux {n : ℕ} {δ ε M : ℝ} (hδ0 : 0 < δ) (hδ
       Θ ((q 0 : ℝ) ^ (ε * r 0)) q r < 10 ^ (n + 1) * ε ^ ((1 / 2 : ℝ) ^ (n + 1))) :
     Θ M (fun j : Fin (n + 1) ↦ q j.castSucc) (fun j ↦ l * r j.castSucc) <
       10 ^ (n + 1) * ε ^ ((1 / 2 : ℝ) ^ (n + 1)) := by
-  have hr0 : ∀ j, 0 < r j := fun j ↦ by
-    exact_mod_cast (lt_of_lt_of_le (by norm_num : (0 : ℝ) < 3)
-      (hrlast.trans (by exact_mod_cast hanti j) : (3 : ℝ) ≤ r j))
-  refine (Θ_mono hM1 hM _ fun j ↦ Nat.mul_pos hl (hr0 _)).trans_lt ?_
+  refine (Θ_mono hM1 hM _).trans_lt ?_
   have hCeq : (q 0 : ℝ) ^ (ε * (l * r 0)) =
       (q (Fin.castSucc 0) : ℝ) ^ (ε * ((l * r (Fin.castSucc 0) : ℕ) : ℝ)) := by
     simp [Nat.cast_mul]
