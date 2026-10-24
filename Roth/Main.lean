@@ -339,6 +339,33 @@ theorem one_le_prod_pow_mul_abs_eval {m : ℕ} (Q : MvPolynomial (Fin m) ℤ) {r
     exact_mod_cast Int.one_le_abs (Int.cast_ne_zero.mp (hNeq.symm ▸ mul_ne_zero hP.ne' hne))
   rwa [hNeq, abs_mul, abs_of_pos hP] at h1
 
+-- Denominator growth converts coordinate bounds into decay governed by the monomial weight.
+private lemma abs_prod_pow_le_rpow_of_le_weight {m : ℕ} [NeZero m] {r q : Fin m → ℕ}
+    (hq : ∀ j, 0 < q j) {κ : ℝ} (hκ : 0 ≤ κ) {x : Fin m → ℝ} (hx : ∀ j, |x j| ≤ 1 / (q j : ℝ) ^ κ)
+    (hqr : ∀ j, (q 0 : ℝ) ^ ((r 0 : ℝ) / r j) ≤ q j) (d : Fin m →₀ ℕ) {c : ℝ} (hw : c ≤ weight r d)
+    : |∏ j, x j ^ d j| ≤ (q 0 : ℝ) ^ (-(r 0 : ℝ) * c * κ) := by
+  have hqR : ∀ j, (0 : ℝ) < q j := fun j ↦ by exact_mod_cast hq j
+  have hq1 : (1 : ℝ) ≤ q 0 := by exact_mod_cast hq 0
+  rw [Finset.abs_prod]
+  calc ∏ j, |x j ^ d j|
+      ≤ ∏ j, (q j : ℝ) ^ (-κ * d j) := by
+        refine Finset.prod_le_prod₀ (fun j _ ↦ abs_nonneg _) fun j _ ↦ ?_
+        rw [abs_pow, Real.rpow_mul (hqR j).le, Real.rpow_natCast,
+          Real.rpow_neg (hqR j).le, ← one_div]
+        exact pow_le_pow_left₀ (abs_nonneg _) (hx j) _
+    _ ≤ ∏ j, ((q 0 : ℝ) ^ ((r 0 : ℝ) / r j)) ^ (-κ * d j) := by
+        refine Finset.prod_le_prod₀ (fun j _ ↦ by positivity) fun j _ ↦ ?_
+        exact Real.rpow_le_rpow_of_nonpos (by positivity) (hqr j)
+          (mul_nonpos_of_nonpos_of_nonneg (neg_nonpos.2 hκ) (Nat.cast_nonneg _))
+    _ = (q 0 : ℝ) ^ (-(r 0 : ℝ) * κ * weight r d) := by
+        simp_rw [← Real.rpow_mul (hqR 0).le]
+        rw [← Real.rpow_sum_of_pos (hqR 0), weight, Finset.mul_sum]
+        exact congrArg _ (Finset.sum_congr rfl fun j _ ↦ by ring)
+    _ ≤ (q 0 : ℝ) ^ (-(r 0 : ℝ) * c * κ) := by
+        apply Real.rpow_le_rpow_of_exponent_le hq1
+        convert mul_le_mul_of_nonpos_left hw
+          (neg_nonpos.2 (mul_nonneg (Nat.cast_nonneg (r 0)) hκ)) using 1 <;> ring
+
 /-- If `Q` has index at least `c` at `(α, …, α)`, its Hasse derivatives there are bounded by `C`,
 and each `h_j / q_j` approximates `α` to order `κ`, then
 `|Q(h/q)| < ∏ (r_j + 1) · C · q_1^{-r_1 c κ}`.
@@ -346,57 +373,34 @@ and each `h_j / q_j` approximates `α` to order `κ`, then
 Source: §7 ("By (1) of Lemma 9 the terms with `∑ i_j/r_j < γ - η` vanish. In every other
 term ... `|∏ (h_j/q_j - α)^{i_j}| < q_1^{-r_1 (γ-η) κ}` ... By using (3) of Lemma 9 we have
 `|Q(h/q)| < (r_1+1) ⋯ (r_m+1) B_1^{1+3δ} q_1^{-r_1(γ-η)κ}`"). -/
-theorem abs_eval_lt_of_le_index {m : ℕ} [NeZero m] {Q : MvPolynomial (Fin m) ℝ} (hQ : Q ≠ 0)
-    {r : Fin m → ℕ} (hr : ∀ j, 0 < r j) (hd : ∀ j, degreeOf j Q ≤ r j) {α : ℝ} {c : ℝ} (hc : 0 < c)
-    (hidx : c ≤ index Q (fun _ => α) r) {h : Fin m → ℤ} {q : Fin m → ℕ} (hq : ∀ j, 0 < q j)
-    {κ : ℝ} (hκ : 0 < κ) (happ : ∀ j, |α - (h j : ℝ) / q j| < 1 / (q j : ℝ) ^ κ)
+theorem abs_eval_lt_of_le_index {m : ℕ} [NeZero m] {Q : MvPolynomial (Fin m) ℝ} {r : Fin m → ℕ}
+    (hd : ∀ j, degreeOf j Q ≤ r j) {α c : ℝ} (hidx : c ≤ index Q (fun _ ↦ α) r) {h : Fin m → ℤ}
+    {q : Fin m → ℕ} (hq : ∀ j, 0 < q j) {κ : ℝ} (hκ : 0 ≤ κ)
+    (happ : ∀ j, |α - (h j : ℝ) / q j| ≤ 1 / (q j : ℝ) ^ κ)
     (hqr : ∀ j, (q 0 : ℝ) ^ ((r 0 : ℝ) / r j) ≤ q j) {C : ℝ}
-    (hC : ∀ i : Fin m →₀ ℕ, |eval (fun _ => α) (hasseDeriv i Q)| < C) :
-    |eval (fun j => (h j : ℝ) / q j) Q| <
-      (∏ j, ((r j : ℝ) + 1)) * C * (q 0 : ℝ) ^ (-(r 0 : ℝ) * c * κ) := by
-  have hqR : ∀ j, (0 : ℝ) < q j := fun j => by exact_mod_cast hq j
-  have hq1 : (1 : ℝ) ≤ q 0 := by exact_mod_cast hq 0
-  have hT : 0 < (q 0 : ℝ) ^ (-(r 0 : ℝ) * c * κ) := Real.rpow_pos_of_pos (hqR 0) _
-  rw [eval_eq_sum_box (fun _ => α) (fun j => (h j : ℝ) / q j) r Q hd]
+    (hC : ∀ i : Fin m →₀ ℕ, |eval (fun _ ↦ α) (hasseDeriv i Q)| < C) :
+    |eval (fun j ↦ (h j : ℝ) / q j) Q| < (∏ j, ((r j : ℝ) + 1)) * C *
+      (q 0 : ℝ) ^ (-(r 0 : ℝ) * c * κ) := by
+  have hT : 0 < (q 0 : ℝ) ^ (-(r 0 : ℝ) * c * κ) :=
+    Real.rpow_pos_of_pos (by exact_mod_cast hq 0) _
+  rw [eval_eq_sum_box (fun _ ↦ α) (fun j ↦ (h j : ℝ) / q j) r Q hd]
   -- each term of the Taylor expansion is small
-  have hterm : ∀ d ∈ box r, |eval (fun _ => α) (hasseDeriv d Q) *
+  have hterm : ∀ d ∈ box r, |eval (fun _ ↦ α) (hasseDeriv d Q) *
       ∏ j, ((h j : ℝ) / q j - α) ^ d j| < C * (q 0 : ℝ) ^ (-(r 0 : ℝ) * c * κ) := by
     intro d _
-    by_cases h0 : eval (fun _ => α) (hasseDeriv d Q) = 0
+    by_cases h0 : eval (fun _ ↦ α) (hasseDeriv d Q) = 0
     · rw [h0, zero_mul, abs_zero]
       exact mul_pos (lt_of_le_of_lt (abs_nonneg _) (hC 0)) hT
-    have hw : c ≤ weight r d := hidx.trans (index_le_weight h0)
-    rw [abs_mul, Finset.abs_prod]
-    refine mul_lt_mul_of_lt_of_le_of_nonneg_of_pos (hC d) ?_ (abs_nonneg _) hT
-    calc ∏ j, |((h j : ℝ) / q j - α) ^ d j|
-        ≤ ∏ j, (q j : ℝ) ^ (-κ * d j) := by
-          refine Finset.prod_le_prod₀ (fun j _ => abs_nonneg _) fun j _ => ?_
-          rw [abs_pow, abs_sub_comm, Real.rpow_mul (hqR j).le, Real.rpow_natCast,
-            Real.rpow_neg (hqR j).le, ← one_div]
-          exact pow_le_pow_left₀ (abs_nonneg _) (happ j).le _
-      _ ≤ ∏ j, ((q 0 : ℝ) ^ ((r 0 : ℝ) / r j)) ^ (-κ * d j) := by
-          refine Finset.prod_le_prod₀ (fun j _ => by positivity) fun j _ => ?_
-          exact Real.rpow_le_rpow_of_nonpos (by positivity) (hqr j)
-            (by nlinarith [(Nat.cast_nonneg (d j) : (0 : ℝ) ≤ d j)])
-      _ = (q 0 : ℝ) ^ (-(r 0 : ℝ) * κ * weight r d) := by
-          have hr' : ∀ j, (0 : ℝ) < r j := fun j => by exact_mod_cast hr j
-          simp_rw [← Real.rpow_mul (hqR 0).le]
-          rw [← Real.rpow_sum_of_pos (hqR 0), weight, Finset.mul_sum]
-          refine congrArg _ (Finset.sum_congr rfl fun j _ => ?_)
-          field_simp
-      _ ≤ (q 0 : ℝ) ^ (-(r 0 : ℝ) * c * κ) := by
-          apply Real.rpow_le_rpow_of_exponent_le hq1
-          have : (0 : ℝ) ≤ r 0 * κ := by positivity
-          nlinarith
-  calc |∑ d ∈ box r, eval (fun _ => α) (hasseDeriv d Q) * ∏ j, ((h j : ℝ) / q j - α) ^ d j|
-      ≤ ∑ d ∈ box r, |eval (fun _ => α) (hasseDeriv d Q) * ∏ j, ((h j : ℝ) / q j - α) ^ d j| :=
-        Finset.abs_sum_le_sum_abs _ _
-    _ < ∑ _d ∈ box r, C * (q 0 : ℝ) ^ (-(r 0 : ℝ) * c * κ) :=
-        Finset.sum_lt_sum_of_nonempty ⟨0, mem_box.2 fun j => Nat.zero_le _⟩ hterm
-    _ = (∏ j, ((r j : ℝ) + 1)) * C * (q 0 : ℝ) ^ (-(r 0 : ℝ) * c * κ) := by
-        rw [Finset.sum_const, card_box, nsmul_eq_mul]
-        push_cast
-        ring
+    rw [abs_mul]
+    exact mul_lt_mul_of_lt_of_le_of_nonneg_of_pos (hC d)
+      (abs_prod_pow_le_rpow_of_le_weight hq hκ (fun j ↦ by
+        simpa only [abs_sub_comm] using happ j) hqr d (hidx.trans (index_le_weight h0)))
+      (abs_nonneg _) hT
+  refine (Finset.abs_sum_le_sum_abs _ _).trans_lt ?_
+  convert Finset.sum_lt_sum_of_nonempty ⟨0, mem_box.2 fun j ↦ Nat.zero_le _⟩ hterm using 1
+  rw [Finset.sum_const, card_box, nsmul_eq_mul]
+  push_cast
+  ring
 
 /-- Roth's theorem for irrational real algebraic integers: if `approxSet α κ` is infinite,
 then `κ ≤ 2`.
@@ -497,8 +501,8 @@ theorem roth_of_isIntegral {α : ℝ} (hα : Irrational α) (hint : IsIntegral �
     rw [← Real.exp_log (hqR j), Real.rpow_def_of_pos (hqR 0), Real.exp_le_exp, mul_div_assoc',
       div_le_iff₀ hrj]
     linarith [h33 j]
-  have hupper := abs_eval_lt_of_le_index hmapQ hr0 hdmap hG0 hidx hq0 hκ0
-    (fun j => (happ j).2) hqr hC
+  have hupper := abs_eval_lt_of_le_index hdmap hidx hq0 hκ0.le
+    (fun j ↦ (happ j).2.le) hqr hC
   have hlower := one_le_prod_pow_mul_abs_eval Q hQd h hq0 hne
   -- take logarithms
   set P := ∏ j, (q j : ℝ) ^ r j with hP
