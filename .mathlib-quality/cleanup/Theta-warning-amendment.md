@@ -23,7 +23,15 @@ amendment; the original exhaustive audits remain accepted and their count stays 
    The initial scratch checker rejected an unescaped generated `_@` Name; quoting was fixed
    without changing production code, and the complete checker was rerun successfully.
 
-The remaining three checkpoints and final file-wide profile/build gates are pending.
+2. **Θ_le_card: PASS.** Removed only its unused `hB`; the proof and conclusion remain
+   unchanged. Its private large-delta caller drops the now-dead `q > 1` derivation and the
+   two premises used only to supply that discarded argument; both private-helper calls are
+   updated. Public `Θ_lt` is unchanged. Complete Theta diagnostics: zero errors, three
+   remaining warnings. Full downstream target build: exit 0, 117.753 s. Cumulative actual
+   old-contract/new-independent/opaque-body checks: exit 0, 40.084 s.
+
+Checkpoint 1 was published as `e2c4ef4`. The last two checkpoints and final file-wide
+profile/build gates are pending.
 
 ## Evidence
 

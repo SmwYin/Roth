@@ -105,7 +105,7 @@ theorem Θ_nonneg {B : ℝ} (q : σ → ℕ) {r : σ → ℕ} : 0 ≤ Θ B q r :
 
 omit [DecidableEq σ] in
 /-- `Θ_m(B; q; r)` is at most the number `m` of variables. Source: §5 ("`Θ_m ≤ m`"). -/
-theorem Θ_le_card {B : ℝ} (hB : 1 ≤ B) (q : σ → ℕ) {r : σ → ℕ} : Θ B q r ≤ Fintype.card σ := by
+theorem Θ_le_card {B : ℝ} (q : σ → ℕ) {r : σ → ℕ} : Θ B q r ≤ Fintype.card σ := by
   refine Real.sSup_le ?_ (Nat.cast_nonneg _)
   rintro _ ⟨R, ⟨hR0, hRd, -⟩, h, -, rfl⟩
   exact index_le_card ((map_ne_zero_iff _ (map_injective _ Int.cast_injective)).2 hR0)
@@ -925,18 +925,14 @@ private lemma theta_lt_succ_aux {n : ℕ} {δ : ℝ} (hδ0 : 0 < δ) (hδ : δ �
   rw [← lt_div_iff₀' (by norm_num : (0 : ℝ) < 2), Finset.sup'_lt_iff]
   exact fun l hl ↦ theta_phi_lt_aux hδ0 hδ hδ1 hanti hrlast hratio hq1 hqr ih hl
 
-private lemma theta_lt_of_large_delta_aux {n : ℕ} {δ : ℝ} (hδ0 : 0 < δ) (hδ : 1 / ((n : ℝ) + 1) ≤ δ)
-    {r q : Fin (n + 1) → ℕ} (hq1 : ((n : ℝ) + 1) * (2 * ((n : ℝ) + 1) + 1) / δ ≤ Real.log (q 0)) :
+private lemma theta_lt_of_large_delta_aux {n : ℕ} {δ : ℝ} (hδ : 1 / ((n : ℝ) + 1) ≤ δ)
+    {r q : Fin (n + 1) → ℕ} :
     Θ ((q 0 : ℝ) ^ (δ * r 0)) q r < 10 ^ (n + 1) * δ ^ ((1 / 2 : ℝ) ^ (n + 1)) := by
   have hp : (0 : ℝ) < n + 1 := by positivity
-  have hq : 1 < q 0 := by
-    exact_mod_cast (Real.log_pos_iff (Nat.cast_nonneg (q 0))).1
-      (lt_of_lt_of_le (by positivity) hq1)
   have hp2 : (n : ℝ) + 1 < (2 : ℝ) ^ (n + 1) := by exact_mod_cast Nat.lt_two_pow_self
   calc
     Θ ((q 0 : ℝ) ^ (δ * r 0)) q r ≤ (n : ℝ) + 1 := by
-      simpa using Θ_le_card (r := r)
-        (Real.one_le_rpow (by exact_mod_cast hq.le) (by positivity)) q
+      simpa using Θ_le_card (r := r) q
     _ < 10 ^ (n + 1) / ((n : ℝ) + 1) :=
       (lt_div_iff₀ hp).2 <| calc
         ((n : ℝ) + 1) * ((n : ℝ) + 1) < (2 : ℝ) ^ (n + 1) * 2 ^ (n + 1) :=
@@ -972,13 +968,13 @@ theorem Θ_lt (n : ℕ) {δ : ℝ} (hδ0 : 0 < δ) {r q : Fin (n + 1) → ℕ}
     by_cases hδ : δ ≤ 1
     · exact theta_lt_base_aux hδ0 hδ hr
         (theta_denominators_one_lt_aux hr (lt_of_lt_of_le (by positivity) hq1) hqr 0)
-    · exact theta_lt_of_large_delta_aux hδ0 (by simpa using (not_le.mp hδ).le) hq1
+    · exact theta_lt_of_large_delta_aux (by simpa using (not_le.mp hδ).le)
   | succ n ih =>
     by_cases hδ : δ ≤ 1 / ((n : ℝ) + 1 + 1)
     · exact theta_lt_succ_aux hδ0 hδ hrlast hratio
         (by simpa only [Nat.cast_add, Nat.cast_one] using hq1) hqr (fun {δ} hδ0 _ ↦ ih hδ0)
-    · exact theta_lt_of_large_delta_aux hδ0
-        (by simpa only [Nat.cast_add, Nat.cast_one] using (not_le.mp hδ).le) hq1
+    · exact theta_lt_of_large_delta_aux
+        (by simpa only [Nat.cast_add, Nat.cast_one] using (not_le.mp hδ).le)
 
 end Lemma7
 

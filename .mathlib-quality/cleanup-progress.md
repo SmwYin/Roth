@@ -33,7 +33,9 @@ are being amended and published sequentially; no other public domain, Fintype or
 change is authorized by this follow-up. Baseline is clean published `7c49350`.
 `Θ_nonneg` and both internal callers are validated: full downstream targets build, complete
 Theta diagnostics drop from six to four warnings, and actual original-contract/new-proof/
-body/axiom checks pass. First checkpoint is ready for publication; three theorems and the
+body/axiom checks pass. First checkpoint was published as `e2c4ef4`. `Θ_le_card` and its necessary private
+caller simplification also pass all downstream builds and cumulative contract/proof checks;
+Theta now has three warnings. Checkpoint 2 is ready for publication; two theorems and the
 final file-wide gates remain. [Follow-up report](cleanup/Theta-warning-amendment.md).
 The earlier completed cleanup remains complete; this newly approved amendment is in progress.
 
