@@ -209,15 +209,12 @@ theorem exists_m {n : ℕ} {κ : ℝ} (hκ : 2 < κ) : ∃ m : ℕ, 16 * n ^ 2 <
     rw [Real.sqrt_sq (Nat.cast_nonneg _), div_lt_iff₀ (sub_pos.mpr hmul)]
     nlinarith only [mul_lt_mul_of_pos_right hkey hspos]
 
-/-- If `δ < c ^ 2 ^ m`, then `η(δ, m) < 10 ^ m * c`. -/
-private lemma eta_lt_of_lt {δ c : ℝ} (hδ0 : 0 < δ) (hc : 0 < c) (m : ℕ) (h : δ < c ^ (2 ^ m)) :
+/- If `δ < c ^ 2 ^ m`, then `η(δ, m) < 10 ^ m * c`. -/
+private lemma eta_lt_of_lt {δ c : ℝ} (hδ0 : 0 ≤ δ) (hc : 0 ≤ c) (m : ℕ) (h : δ < c ^ (2 ^ m)) :
     eta δ m < 10 ^ m * c := by
-  have hz : (0 : ℝ) < (1 / 2 : ℝ) ^ m := by positivity
-  have hpow := Real.rpow_lt_rpow hδ0.le h hz
-  rw [← Real.rpow_natCast c (2 ^ m), ← Real.rpow_mul hc.le, Nat.cast_pow, Nat.cast_ofNat,
-    ← mul_pow, show (2 : ℝ) * (1 / 2) = 1 by norm_num, one_pow, Real.rpow_one] at hpow
-  rw [eta]
-  exact mul_lt_mul_of_pos_left hpow (by positivity)
+  simpa [eta, Nat.cast_pow] using
+    (Real.rpow_inv_lt_iff_of_pos hδ0 hc (show (0 : ℝ) < (2 ^ m : ℕ) by positivity)).2
+      (by simpa only [Real.rpow_natCast] using h)
 
 /-- Given `m` as in `Roth.exists_m`, there is `δ ∈ (0, 1/m)` with
 `η(δ, m) + 2 (1 + 3δ) n √m < m / 2` and `m (1 + 4δ) / (γ - η) < κ`.
@@ -261,7 +258,7 @@ theorem exists_delta {n m : ℕ} (hn : 0 < n) (hm : 16 * n ^ 2 < m) {κ : ℝ}
   set δ := μ / 2
   have hgam := (eta_lt_gam_iff δ n m).1 h30
   have hceq : (10 : ℝ) ^ m * c = E / (3 * κ) := by rw [hc]; field_simp
-  have heta := (eta_lt_of_lt hδ0 hc0 m h4).trans_eq hceq
+  have heta := (eta_lt_of_lt hδ0.le hc0.le m h4).trans_eq hceq
   have a1 : 12 * m * δ < E := by rwa [lt_div_iff₀ (by positivity), mul_comm] at h2
   have a2 : 18 * κ * n * √(m : ℝ) * δ < E := by rwa [lt_div_iff₀ (by positivity), mul_comm] at h3
   have a3 : eta δ m * (3 * κ) < E := by rwa [lt_div_iff₀ (by positivity)] at heta
