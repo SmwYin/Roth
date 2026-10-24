@@ -96,10 +96,9 @@ theorem index_le_Θ {B : ℝ} {q r : σ → ℕ} {R : MvPolynomial σ ℤ} (hR :
   le_csSup (indexSet_bddAbove B q) ⟨R, hR, h, hh, rfl⟩
 
 omit [DecidableEq σ] in
-/-- `Θ_m(B; q; r)` is nonnegative when `1 ≤ B` and every `r j` is positive. Source: §5
+/-- `Θ_m(B; q; r)` is nonnegative for every coefficient bound and weight vector. Source: §5
 ("`0 ≤ Θ_m`"). -/
-theorem Θ_nonneg {B : ℝ} (hB : 1 ≤ B) (q : σ → ℕ) {r : σ → ℕ} (hr : ∀ j, 0 < r j) :
-    0 ≤ Θ B q r := by
+theorem Θ_nonneg {B : ℝ} (q : σ → ℕ) {r : σ → ℕ} : 0 ≤ Θ B q r := by
   apply Real.sSup_nonneg
   rintro _ ⟨R, _, h, _, rfl⟩
   exact index_nonneg _ _ _
@@ -562,24 +561,19 @@ theorem index_le_lem6 {δ : ℝ} (hδ0 : 0 ≤ δ) (hδ1 : δ ≤ 1) {r : Option
     cases j with
     | none => exact_mod_cast hrp0
     | some j => exact_mod_cast pos_of_mul_pos_right (hrp0.trans_le (hratio j)) hδ0
-  have hB : 1 ≤ B := by
-    obtain ⟨d, hd⟩ := MvPolynomial.ne_zero_iff.1 hR.1
-    exact (by exact_mod_cast Int.one_le_abs hd : (1 : ℝ) ≤ |(R.coeff d : ℝ)|).trans (hR.2.2 d)
   obtain ⟨l, hl, hl', D, hD, U, V, hU, hV, hUd, hVd, hF⟩ := exists_det_eq_mul hR.1 hR.2.1
   refine ⟨l, hl, hl', ?_⟩
   let α : Option τ → ℝ := fun j ↦ (h j : ℝ) / q j
   let Φ := lem6Φ q r (lem6M (Fintype.card τ + 1) r₁ B l) l
-  -- `1 ≤ M` and `0 ≤ Φ`.
-  have hM1 := one_le_lem6M (Fintype.card τ + 1) r₁ hB l
   -- The two bounds for the index of `F`.
   have hlower := sum_max_sub_le_index_det D hD (mapped_det_ne_zero_aux hU hV hF) α hr0
     (fun d hd ↦ weight_le_delta_aux hδ0 hratio (hd.trans (Nat.sub_le_iff_le_add.2 hl')))
   have hupper := index_det_le hr0 hr₁ hR hh hl hU hV hUd hVd hF
   simp only [RingHom.map_det, RingHom.mapMatrix_apply, Matrix.map, Matrix.of_apply] at hupper
   simp only [hasseDeriv_map] at hlower
+  -- Both summands of `Φ` are nonnegative.
   apply index_numeric_bound_aux (Φ := Φ) (l := (l : ℝ))
-    (add_nonneg (Θ_nonneg hM1 _ fun _ ↦ Nat.mul_pos hl (hr0 _))
-      (Θ_nonneg hM1 _ fun _ ↦ Nat.mul_pos hl (hr0 _))) hδ1 hrp
+    (add_nonneg (Θ_nonneg _) (Θ_nonneg _)) hδ1 hrp
     (by exact_mod_cast (show 0 < l from hl))
     (by exact_mod_cast hl')
   exact (min_le_sum_max (θ := index (map (Int.castRingHom ℝ) R) α r) (rp := r none) l).trans

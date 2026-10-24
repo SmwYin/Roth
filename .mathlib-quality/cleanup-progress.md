@@ -25,6 +25,20 @@ Started: 2026-10-14 (America/Chicago).
 
 ## Current status
 
+**APPROVED THETA WARNING FOLLOW-UP ACTIVE (2026-10-24).** The user explicitly approved
+removing `Θ_nonneg.hB/hr`, `Θ_le_card.hB`, and `Θ_mono.hr`, while retaining `Θ_mono.hB`
+and retaining `index_le_lem6`'s positive-denominator premise under the binder name `_hq`.
+This overrides the earlier retention choice only for these five warnings. Four declarations
+are being amended and published sequentially; no other public domain, Fintype or metadata
+change is authorized by this follow-up. Baseline is clean published `7c49350`.
+`Θ_nonneg` and both internal callers are validated: full downstream targets build, complete
+Theta diagnostics drop from six to four warnings, and actual original-contract/new-proof/
+body/axiom checks pass. First checkpoint is ready for publication; three theorems and the
+final file-wide gates remain. [Follow-up report](cleanup/Theta-warning-amendment.md).
+The earlier completed cleanup remains complete; this newly approved amendment is in progress.
+
+### Previous completed cleanup (before the approved warning follow-up)
+
 **COMPLETE AND PUBLISHED (2026-10-24).** All **263/263 genuine original declarations
 and 14/14 files** are validated and published. The zero-declaration root module
 received its independent final review and documentation correction. All five queued global
