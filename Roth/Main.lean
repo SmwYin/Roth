@@ -250,33 +250,25 @@ theorem exists_delta {n m : ℕ} (hm : 16 * n ^ 2 < m) {κ : ℝ}
 Source: §7 ("pick a reduced solution `h_1, q_1` ... such that `q_1` satisfies (32) ... We then
 choose solutions `h_2, q_2; …; h_m, q_m` with `gcd(h_j, q_j) = 1` to satisfy (50)"). -/
 theorem exists_approximants {α : ℝ} (hα : Irrational α) {κ : ℝ} (hκ : 0 < κ)
-    (hinf : (approxSet α κ).Infinite) (m : ℕ) [NeZero m] {δ : ℝ} (hδ : 0 < δ) (L : ℝ) :
+    (hinf : (approxSet α κ).Infinite) (m : ℕ) [NeZero m] {δ : ℝ} (L : ℝ) :
     ∃ (h : Fin m → ℤ) (q : Fin m → ℕ), (∀ j, (h j, q j) ∈ approxSet α κ) ∧
-      (∀ j, IsCoprime (h j) (q j : ℤ)) ∧ (∀ j, 1 < q j) ∧ L < Real.log (q 0) ∧
-      ∀ i j : Fin m, i.val + 1 = j.val → 2 / δ * Real.log (q i) < Real.log (q j) := by
-  choose g hgmem hglt hgcop using fun Q₀ : ℕ => exists_reduced_approx hα hκ hinf Q₀
-  let s : ℕ → ℤ × ℕ := fun k => Nat.rec (g (max ⌈Real.exp L⌉₊ 1))
-    (fun _ p => g (max ⌈((p.2 : ℕ) : ℝ) ^ (2 / δ)⌉₊ 1)) k
-  have hs0 : s 0 = g (max ⌈Real.exp L⌉₊ 1) := rfl
-  have hsS : ∀ k, s (k + 1) = g (max ⌈((s k).2 : ℝ) ^ (2 / δ)⌉₊ 1) := fun k => rfl
+      (∀ j, IsCoprime (h j) (q j : ℤ)) ∧ (∀ j, 1 < q j) ∧ L < Real.log (q 0) ∧ ∀ i j : Fin m,
+      i.val + 1 = j.val → 2 / δ * Real.log (q i) < Real.log (q j) := by
+  choose g hgmem hglt hgcop using fun Q₀ : ℕ ↦ exists_reduced_approx hα hκ hinf Q₀
+  let s : ℕ → ℤ × ℕ := Nat.rec (g (max ⌈Real.exp L⌉₊ 1))
+    (fun _ p ↦ g (max ⌈(p.2 : ℝ) ^ (2 / δ)⌉₊ 1))
   have hmem : ∀ k, s k ∈ approxSet α κ ∧ IsCoprime (s k).1 ((s k).2 : ℤ) ∧ 1 < (s k).2 := by
     rintro (_ | k) <;> exact ⟨hgmem _, hgcop _, (le_max_right _ _).trans_lt (hglt _)⟩
-  refine ⟨fun j => (s j).1, fun j => (s j).2, fun j => (hmem j).1, fun j => (hmem j).2.1,
-    fun j => (hmem j).2.2, ?_, ?_⟩
-  · have hlt : Real.exp L < ((s 0).2 : ℝ) := by
-      rw [hs0]
-      exact (Nat.le_ceil _).trans_lt (by exact_mod_cast (le_max_left _ _).trans_lt (hglt _))
-    have hpos : (0 : ℝ) < ((s 0).2 : ℝ) := lt_trans (Real.exp_pos L) hlt
-    exact (Real.lt_log_iff_exp_lt hpos).2 hlt
-  · intro i j hij
-    simp only
-    have hj : (j : ℕ) = (i : ℕ) + 1 := hij.symm
-    rw [hj, hsS]
-    have hqi : (1 : ℝ) < ((s i).2 : ℝ) := by exact_mod_cast (hmem i).2.2
-    have hlt : ((s i).2 : ℝ) ^ (2 / δ) < ((g (max ⌈((s i).2 : ℝ) ^ (2 / δ)⌉₊ 1)).2 : ℝ) :=
+  refine ⟨fun j ↦ (s j).1, fun j ↦ (s j).2, fun j ↦ (hmem j).1, fun j ↦ (hmem j).2.1,
+    fun j ↦ (hmem j).2.2, ?_, ?_⟩
+  · have hlt : Real.exp L < ((g (max ⌈Real.exp L⌉₊ 1)).2 : ℝ) :=
       (Nat.le_ceil _).trans_lt (by exact_mod_cast (le_max_left _ _).trans_lt (hglt _))
-    have h1 := Real.log_lt_log (by positivity) hlt
-    rwa [Real.log_rpow (by linarith)] at h1
+    exact (Real.lt_log_iff_exp_lt ((Real.exp_pos L).trans hlt)).2 hlt
+  · intro i j hij
+    change 2 / δ * Real.log ((s i).2) < Real.log ((s j).2)
+    rw [hij.symm]
+    apply Real.lt_log_of_rpow_lt (by exact_mod_cast zero_lt_one.trans (hmem i).2.2)
+    exact (Nat.le_ceil _).trans_lt (by exact_mod_cast (le_max_left _ _).trans_lt (hglt _))
 
 /-- Given denominators `q_j` with rapidly increasing logarithms, there are positive degrees `r_j`
 with `r_j > 10 / δ`, `r_{j+1} / δ < r_j`, and `r_1 log q_1 ≤ r_j log q_j < (1 + δ/10) r_1 log q_1`.
@@ -473,7 +465,7 @@ theorem roth_of_isIntegral {α : ℝ} (hα : Irrational α) (hint : IsIntegral �
   have hmR : (2 : ℝ) ≤ m := by exact_mod_cast hm2
   have hδ1 : δ < 1 := hδm.trans_le (by rw [div_le_one (by linarith)]; linarith)
   -- the approximants and the degrees
-  obtain ⟨h, q, happ, hcop, hq1, hL, h50⟩ := exists_approximants hα hκ0 hinf m hδ0
+  obtain ⟨h, q, happ, hcop, hq1, hL, h50⟩ := exists_approximants hα hκ0 hinf m
     ((2 * m + 1 + 2 * m * Real.log (1 + A) + 2 * m * Real.log (1 + |α|)) / δ ^ 2)
   have h32 : 2 * m + 1 + 2 * m * Real.log (1 + A) + 2 * m * Real.log (1 + |α|) <
       δ ^ 2 * Real.log (q 0) := by
