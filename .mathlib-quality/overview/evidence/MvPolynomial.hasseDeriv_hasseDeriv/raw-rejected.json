@@ -1,0 +1,131 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MvPolynomial.PDeriv\nimport Mathlib.Algebra.Polynomial.HasseDeriv\nimport Mathlib.Data.Nat.Choose.Bounds\n\n/-! Persistent mathlib-only assessment session control. -/\n#check_failure MvPolynomial.hasseDeriv\n#check Finsupp.lsum_apply\n#check Finsupp.lsum_single\n\n#check_failure MvPolynomial.coeff_hasseDeriv\n#check_failure MvPolynomial.hasseDeriv_hasseDeriv\nexample (P : Prop) (h : P) : P := by exact?\n\n/-! Isolated iterativity assessment: raw coefficient and cocycle witnesses, no project import. -/\nopen MvPolynomial\nnamespace CoeffAssessment\nvariable {σ R : Type*} [CommSemiring R]\nnoncomputable def delta (d : σ →₀ ℕ) : MvPolynomial σ R →ₗ[R] MvPolynomial σ R :=\n  Finsupp.lsum R (fun k : σ →₀ ℕ ↦\n    (monomial (k - d)).comp (LinearMap.lsmul R R ((d.prod (fun j ↦ (k j).choose) : ℕ) : R))) ∘ₗ\n      (AddMonoidAlgebra.coeffLinearEquiv R).toLinearMap\n\n-- Coefficient formula is independently proved below.\ntheorem independent (d e : σ →₀ ℕ) (P : MvPolynomial σ R) :\n    (delta d P).coeff e = ((d.prod (fun j ↦ ((e + d) j).choose) : ℕ) : R) * P.coeff (e + d) := by\n  classical\n  have hz (k : σ →₀ ℕ) : d.prod (fun j ↦ (k j).choose) = 0 ↔ ¬d ≤ k := by\n    simp [Finsupp.prod, Finset.prod_eq_zero_iff, Nat.choose_eq_zero_iff, Finsupp.le_iff,\n      not_forall]\n  induction P using MvPolynomial.induction_on' with\n  | monomial k a =>\n    rw [show delta d (monomial k a) =\n      monomial (k - d) (((d.prod (fun j ↦ (k j).choose) : ℕ) : R) * a) by simp [delta],\n      coeff_monomial, coeff_monomial]\n    by_cases hk : k = e + d\n    · simp [hk]\n    by_cases hdk : d ≤ k\n    · simp [hk, tsub_eq_iff_eq_add_of_le hdk]\n    · simp [hk, (hz k).2 hdk]\n  | add p q hp hq => simp [hp, hq, mul_add]\n\ndef factor (d k : σ →₀ ℕ) : ℕ := d.prod fun j ↦ (k j).choose\n\ntheorem cocycle (f d e : σ →₀ ℕ) :\n    factor d (f + d) * factor e (f + d + e) =\n      factor d (d + e) * factor (d + e) (f + (d + e)) := by\n  classical\n  simp only [factor]\n  have hd : d.support ⊆ d.support ∪ e.support := Finset.subset_union_left\n  rw [Finsupp.prod_of_support_subset _ hd _ fun _ _ ↦ Nat.choose_zero_right _,\n    Finsupp.prod_of_support_subset _ Finset.subset_union_right _\n      fun _ _ ↦ Nat.choose_zero_right _,\n    Finsupp.prod_of_support_subset _ hd _ fun _ _ ↦ Nat.choose_zero_right _,\n    Finsupp.prod_of_support_subset _ Finsupp.support_add _ fun _ _ ↦ Nat.choose_zero_right _,\n    ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]\n  exact Finset.prod_congr rfl fun i _ ↦ by\n    simpa [← add_assoc, mul_comm, ← Nat.choose_symm_add (a := d i) (b := e i)] using\n      (Nat.choose_mul (n := f i + d i + e i) (k := d i + e i) (s := e i)\n        (Nat.le_add_left (e i) (d i))).symm\n\ntheorem iterativity (d e : σ →₀ ℕ) (P : MvPolynomial σ R) :\n    delta d (delta e P) = (factor d (d + e) : R) • delta (d + e) P := by\n  apply MvPolynomial.ext\n  intro f\n  change (delta d (delta e P)).coeff f = _\n  rw [coeff_smul, independent, independent, independent, smul_eq_mul,\n    ← mul_assoc, ← mul_assoc, ← Nat.cast_mul, ← Nat.cast_mul]\n  change ((factor d (f + d) * factor e (f + d + e) : ℕ) : R) * _ = _\n  rw [cocycle, add_assoc]\n\nexample (d e : σ →₀ ℕ) :\n    (delta (R := R) d).comp (delta e) = (factor d (d + e) : R) • delta (d + e) := by\n  apply LinearMap.ext\n  intro P\n  exact iterativity d e P\n\nsection\nvariable {S : Type*} [Semiring S]\n#check_failure MvPolynomial σ S\nend\n#check @Polynomial.hasseDeriv_comp\n#print axioms independent\n#print axioms cocycle\n#print axioms iterativity\nend CoeffAssessment\n"
+  },
+  "elapsed_ms": 1394,
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": false,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown constant `MvPolynomial.hasseDeriv`\",\n      \"line\": 6,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Finsupp.lsum_apply.{u_1, u_2, u_3, u_4, u_5, u_6} {α : Type u_1} {M : Type u_2} {N : Type u_3} {R : Type u_4}\\n  {R₂ : Type u_5} (S : Type u_6) [Semiring R] [Semiring R₂] [Semiring S] [AddCommMonoid M] [Module R M]\\n  [AddCommMonoid N] [Module R₂ N] {σ : R →+* R₂} [Module S N] [SMulCommClass R₂ S N] (f : α → M →ₛₗ[σ] N) (l : α →₀ M) :\\n  ((Finsupp.lsum S) f) l = l.sum fun b ↦ ⇑(f b)\",\n      \"line\": 7,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Finsupp.lsum_single.{u_1, u_2, u_3, u_4, u_5, u_6} {α : Type u_1} {M : Type u_2} {N : Type u_3} {R : Type u_4}\\n  {R₂ : Type u_5} (S : Type u_6) [Semiring R] [Semiring R₂] [Semiring S] [AddCommMonoid M] [Module R M]\\n  [AddCommMonoid N] [Module R₂ N] {σ : R →+* R₂} [Module S N] [SMulCommClass R₂ S N] (f : α → M →ₛₗ[σ] N) (i : α)\\n  (m : M) : ((Finsupp.lsum S) f) (Finsupp.single i m) = (f i) m\",\n      \"line\": 8,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown constant `MvPolynomial.coeff_hasseDeriv`\",\n      \"line\": 10,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown constant `MvPolynomial.hasseDeriv_hasseDeriv`\",\n      \"line\": 11,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Try this:\\n  [apply] exact ((fun a ↦ h) ∘ fun a ↦ P) P\",\n      \"line\": 12,\n      \"column\": 38,\n      \"lean_tags\": null,\n      \"category\": \"suggestion\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"failed to synthesize instance of type class\\n  CommSemiring S\\n\\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.\",\n      \"line\": 79,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.hasseDeriv_comp : ∀ {R : Type u_3} [inst : Semiring R] (k l : ℕ),\\n  Polynomial.hasseDeriv k ∘ₗ Polynomial.hasseDeriv l = (k + l).choose k • Polynomial.hasseDeriv (k + l)\",\n      \"line\": 81,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"unsolved goals\\nσ : Type u_1\\nR : Type u_2\\ninst✝ : CommSemiring R\\nd e : σ →₀ ℕ\\nP : MvPolynomial σ R\\nf : σ →₀ ℕ\\n⊢ ↑(factor d (d + e) * factor (d + e) (f + (d + e))) * P.coeff (f + (d + e)) =\\n    ↑(factor d (d + e) * (d + e).prod fun j ↦ ((f + (d + e)) j).choose) * P.coeff (f + (d + e))\",\n      \"line\": 62,\n      \"column\": 71,\n      \"lean_tags\": [\n        \"unsolvedGoals\"\n      ],\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'CoeffAssessment.independent' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 82,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'CoeffAssessment.cocycle' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 83,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'CoeffAssessment.iterativity' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 84,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": false,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown constant `MvPolynomial.hasseDeriv`",
+          "line": 6,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Finsupp.lsum_apply.{u_1, u_2, u_3, u_4, u_5, u_6} {α : Type u_1} {M : Type u_2} {N : Type u_3} {R : Type u_4}\n  {R₂ : Type u_5} (S : Type u_6) [Semiring R] [Semiring R₂] [Semiring S] [AddCommMonoid M] [Module R M]\n  [AddCommMonoid N] [Module R₂ N] {σ : R →+* R₂} [Module S N] [SMulCommClass R₂ S N] (f : α → M →ₛₗ[σ] N) (l : α →₀ M) :\n  ((Finsupp.lsum S) f) l = l.sum fun b ↦ ⇑(f b)",
+          "line": 7,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Finsupp.lsum_single.{u_1, u_2, u_3, u_4, u_5, u_6} {α : Type u_1} {M : Type u_2} {N : Type u_3} {R : Type u_4}\n  {R₂ : Type u_5} (S : Type u_6) [Semiring R] [Semiring R₂] [Semiring S] [AddCommMonoid M] [Module R M]\n  [AddCommMonoid N] [Module R₂ N] {σ : R →+* R₂} [Module S N] [SMulCommClass R₂ S N] (f : α → M →ₛₗ[σ] N) (i : α)\n  (m : M) : ((Finsupp.lsum S) f) (Finsupp.single i m) = (f i) m",
+          "line": 8,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown constant `MvPolynomial.coeff_hasseDeriv`",
+          "line": 10,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown constant `MvPolynomial.hasseDeriv_hasseDeriv`",
+          "line": 11,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Try this:\n  [apply] exact ((fun a ↦ h) ∘ fun a ↦ P) P",
+          "line": 12,
+          "column": 38,
+          "lean_tags": null,
+          "category": "suggestion",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "failed to synthesize instance of type class\n  CommSemiring S\n\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.",
+          "line": 79,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.hasseDeriv_comp : ∀ {R : Type u_3} [inst : Semiring R] (k l : ℕ),\n  Polynomial.hasseDeriv k ∘ₗ Polynomial.hasseDeriv l = (k + l).choose k • Polynomial.hasseDeriv (k + l)",
+          "line": 81,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "unsolved goals\nσ : Type u_1\nR : Type u_2\ninst✝ : CommSemiring R\nd e : σ →₀ ℕ\nP : MvPolynomial σ R\nf : σ →₀ ℕ\n⊢ ↑(factor d (d + e) * factor (d + e) (f + (d + e))) * P.coeff (f + (d + e)) =\n    ↑(factor d (d + e) * (d + e).prod fun j ↦ ((f + (d + e)) j).choose) * P.coeff (f + (d + e))",
+          "line": 62,
+          "column": 71,
+          "lean_tags": [
+            "unsolvedGoals"
+          ],
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'CoeffAssessment.independent' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 82,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'CoeffAssessment.cocycle' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 83,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'CoeffAssessment.iterativity' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 84,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  }
+}

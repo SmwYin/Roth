@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 13/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 14/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 13; remaining: 280.
-- Verdicts: 4 NO-composable-from-mathlib, 4 YES-add-as-is, 0 YES-but-generalise-first, 0 NO-mathlib-has-it, 4 BORDERLINE-needs-human, 1 SKIP.
+- Completed applicable assessments: 14; remaining: 279.
+- Verdicts: 4 NO-composable-from-mathlib, 5 YES-add-as-is, 0 YES-but-generalise-first, 0 NO-mathlib-has-it, 4 BORDERLINE-needs-human, 1 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -172,6 +172,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: Two explicit same-file callers: hasseDeriv_hasseDeriv at179 and hasseCoeff_mul_succ at195. No explicit external source references; source-level scope only.
 - Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/MvPolynomial.hasseCoeff_mul_hasseCoeff.md).
 
+### Completed: `MvPolynomial.hasseDeriv_hasseDeriv`
+
+- Type: `∀ {σ R : Type*} [CommSemiring R] (d e : σ →₀ ℕ) (P : MvPolynomial σ R), hasseDeriv d (hasseDeriv e P) = (hasseCoeff d (d + e) : R) • hasseDeriv (d + e) P`
+- What: Composing Hasse derivatives adds orders with product-binomial scalar.
+- How: Coefficient comparison plus finite-support product Nat.choose_mul cocycle.
+- Hypotheses: MAXIMALLY GENERAL for pinned canonical interface: CommSemiring, arbitrary variable types, indices and polynomial; literal Semiring parent fails.
+- Project dependencies: MvPolynomial.hasseDeriv, MvPolynomial.hasseCoeff, MvPolynomial.coeff_hasseDeriv, private hasseCoeff_mul_hasseCoeff
+- Caller summary: Two explicit invocations: HasseDeriv187 and Index113; both scoped algebra contexts verified, not full Index rebuild or implicit dependency closure.
+- Verdict: YES-add-as-is; [complete report](.mathlib-quality/overview/mathlibable/MvPolynomial.hasseDeriv_hasseDeriv.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -224,6 +234,8 @@ Completed `MvPolynomial.hasseDeriv_rename`: Pinned pderiv_rename is first-order 
 
 Completed `MvPolynomial.hasseCoeff_mul_hasseCoeff`: Applicable private-helper triage: existing Nat.choose_mul/choose_symm_add and Finsupp support-product extension supply the scalar proof. Exact native replay validated. Full public mathlibable search n/a by private prefilter.
 
+Completed `MvPolynomial.hasseDeriv_hasseDeriv`: Five actual search methods: univariate Polynomial.hasseDeriv_comp analogue is not arbitrary-variable replacement.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -251,6 +263,8 @@ Completed `MvPolynomial.hasseDeriv_map`: No verified replacement; analogous univ
 Completed `MvPolynomial.hasseDeriv_rename`: No verified direct replacement; standard all-order extension of first-order injective renaming law.
 
 Completed `MvPolynomial.hasseCoeff_mul_hasseCoeff`: Shared coordinatewise binomial cocycle used twice, no duplicated downstream scalar proof identified in source search.
+
+Completed `MvPolynomial.hasseDeriv_hasseDeriv`: Divided-derivative iteration extends univariate composition; not automatic for arbitrary HS families.
 
 ## Part 5: Generalization opportunities
 
@@ -283,6 +297,8 @@ Completed `MvPolynomial.hasseDeriv_rename`: Actual collision counterexample prov
 
 Completed `MvPolynomial.hasseCoeff_mul_hasseCoeff`: Arbitrary variable type and natural multi-indices; no R/CommSemiring argument in actual replay type; no unverified wider cocycle claim.
 
+Completed `MvPolynomial.hasseDeriv_hasseDeriv`: MAXIMALLY GENERAL for pinned canonical interface: CommSemiring, arbitrary variable types, indices and polynomial; literal Semiring parent fails.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -311,6 +327,8 @@ Completed `MvPolynomial.hasseDeriv_map`: Multivariate all-order divided derivati
 Completed `MvPolynomial.hasseDeriv_rename`: Injective-renaming naturality for all multivariate divided derivative orders.
 
 Completed `MvPolynomial.hasseCoeff_mul_hasseCoeff`: No missing generic finite-product API needed here; public Hasse composition assessed separately.
+
+Completed `MvPolynomial.hasseDeriv_hasseDeriv`: Canonical multivariate polynomial Hasse iterativity, analogous to Polynomial.hasseDeriv_comp but for finitely supported multi-orders.
 
 ## Part 7: Junk / removable
 
@@ -343,6 +361,8 @@ Completed `MvPolynomial.hasseDeriv_rename`: False
 
 Completed `MvPolynomial.hasseCoeff_mul_hasseCoeff`: Retain shared private helper, two real uses; no deletion/export recommended.
 
+Completed `MvPolynomial.hasseDeriv_hasseDeriv`: No: canonical normalization used by disjoint law and index inequality.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -360,6 +380,7 @@ Completed `MvPolynomial.hasseCoeff_mul_hasseCoeff`: Retain shared private helper
 | 11 | `MvPolynomial.hasseDeriv_map` | YES-add-as-is | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.hasseDeriv_map.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_map/root-acceptance.json) |
 | 12 | `MvPolynomial.hasseDeriv_rename` | YES-add-as-is | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.hasseDeriv_rename.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_rename/root-acceptance.json) |
 | 13 | `MvPolynomial.hasseCoeff_mul_hasseCoeff` | SKIP | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.hasseCoeff_mul_hasseCoeff.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.hasseCoeff_mul_hasseCoeff/root-acceptance.json) |
+| 14 | `MvPolynomial.hasseDeriv_hasseDeriv` | YES-add-as-is | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.hasseDeriv_hasseDeriv.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_hasseDeriv/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -385,11 +406,13 @@ Completed `MvPolynomial.hasseDeriv_rename` action: YES-add-as-is; group with acc
 
 Completed `MvPolynomial.hasseCoeff_mul_hasseCoeff` action: SKIP-private under overview Step9a; completed inventory/structural triage and verification, no full public-contribution verdict. Keep production sources unchanged and continue next canonical declaration.
 
+Completed `MvPolynomial.hasseDeriv_hasseDeriv` action: YES-add-as-is grouped in Mathlib/Algebra/MvPolynomial/HasseDeriv.lean; run generalise/cleanup; private cocycle remains overview SKIP.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `MvPolynomial.hasseDeriv_hasseDeriv` next. Supporting identities receive their own applicable checks.
+   `MvPolynomial.hasseDeriv_hasseDeriv_of_disjoint` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.

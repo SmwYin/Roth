@@ -1,0 +1,27 @@
+import Roth.Taylor
+namespace HasseCompositionExtra
+open MvPolynomial
+variable {σ R : Type*} [CommSemiring R]
+theorem weighted (L : (σ →₀ ℕ) → MvPolynomial σ R →ₗ[R] MvPolynomial σ R)
+    (w : (σ →₀ ℕ) → (σ →₀ ℕ) → R) (c : (σ →₀ ℕ) → (σ →₀ ℕ) → R)
+    (hL : ∀ d f P, (L d P).coeff f = w d (f + d) * P.coeff (f + d))
+    (hc : ∀ f d e, w d (f + d) * w e (f + d + e) =
+      c d e * w (d + e) (f + (d + e))) (d e : σ →₀ ℕ) (P : MvPolynomial σ R) :
+    L d (L e P) = c d e • L (d + e) P := by
+  apply MvPolynomial.ext
+  intro f
+  rw [coeff_smul, hL, hL, hL, smul_eq_mul, ← mul_assoc, ← mul_assoc, hc, add_assoc]
+example (d e : σ →₀ ℕ) :
+    (hasseDeriv (R := R) d).comp (hasseDeriv e) =
+      (hasseCoeff d (d + e) : R) • hasseDeriv (d + e) := by
+  apply LinearMap.ext
+  intro P
+  exact hasseDeriv_hasseDeriv d e P
+example : hasseDeriv (Finsupp.single () 1)
+    (hasseDeriv (Finsupp.single () 1) (monomial (Finsupp.single () 2) (1 : ℕ))) ≠
+      hasseDeriv (Finsupp.single () 2) (monomial (Finsupp.single () 2) (1 : ℕ)) := by
+  intro h
+  have hh := congrArg (coeff (0 : Unit →₀ ℕ)) h
+  norm_num [hasseDeriv_monomial, hasseCoeff, Finsupp.single_tsub, coeff_monomial] at hh
+#print axioms weighted
+end HasseCompositionExtra

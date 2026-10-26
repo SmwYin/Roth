@@ -1,0 +1,40 @@
+import Roth.Taylor
+
+/-! Verification replay of a private helper selected by the documented overview prefilter. -/
+namespace PrivateScalarAssessment
+open MvPolynomial
+variable {σ : Type*}
+theorem replay (f d e : σ →₀ ℕ) :
+    hasseCoeff d (f + d) * hasseCoeff e (f + d + e) =
+      hasseCoeff d (d + e) * hasseCoeff (d + e) (f + (d + e)) := by
+  classical
+  simp only [hasseCoeff]
+  have hd : d.support ⊆ d.support ∪ e.support := Finset.subset_union_left
+  rw [Finsupp.prod_of_support_subset _ hd _ fun _ _ ↦ Nat.choose_zero_right _,
+    Finsupp.prod_of_support_subset _ Finset.subset_union_right _
+      fun _ _ ↦ Nat.choose_zero_right _,
+    Finsupp.prod_of_support_subset _ hd _ fun _ _ ↦ Nat.choose_zero_right _,
+    Finsupp.prod_of_support_subset _ Finsupp.support_add _ fun _ _ ↦ Nat.choose_zero_right _,
+    ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]
+  exact Finset.prod_congr rfl fun i _ ↦ by
+    simpa [← add_assoc, mul_comm, ← Nat.choose_symm_add (a := d i) (b := e i)] using
+      (Nat.choose_mul (n := f i + d i + e i) (k := d i + e i) (s := e i)
+        (Nat.le_add_left (e i) (d i))).symm
+#check @replay
+#print axioms replay
+end PrivateScalarAssessment
+
+namespace HasseCompositionAssessment
+open MvPolynomial
+variable {σ R : Type*} [CommSemiring R]
+#check @MvPolynomial.hasseDeriv_hasseDeriv
+#print axioms MvPolynomial.hasseDeriv_hasseDeriv
+theorem replay (d e : σ →₀ ℕ) (P : MvPolynomial σ R) :
+    hasseDeriv d (hasseDeriv e P) = (hasseCoeff d (d + e) : R) • hasseDeriv (d + e) P := by
+  apply MvPolynomial.ext
+  intro f
+  rw [coeff_smul, coeff_hasseDeriv, coeff_hasseDeriv, coeff_hasseDeriv, smul_eq_mul,
+    ← mul_assoc, ← mul_assoc, ← Nat.cast_mul, ← Nat.cast_mul,
+    PrivateScalarAssessment.replay, add_assoc]
+#print axioms replay
+end HasseCompositionAssessment
