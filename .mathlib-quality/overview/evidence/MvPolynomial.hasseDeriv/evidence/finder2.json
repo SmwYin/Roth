@@ -1,0 +1,77 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv\",\n      \"informal_name\": \"Hasse Derivative of Order k on Polynomial Ring\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : Semiring R] → ℕ → Polynomial R →ₗ[R] Polynomial R\",\n      \"informal_description\": \"For a semiring $ R $, the Hasse derivative of order $ k $ is an $ R $-linear map $ D^{(k)} : R[X] \\to R[X] $ defined by $ D^{(k)}(a_i X^i) = \\binom{i}{k} a_i X^{i - k} $ on monomials and extended linearly. This operation generalizes the usual derivative by scaling each coefficient $ a_i $ by the binomial coefficient $ \\binom{i}{k} $ and reducing the degree by $ k $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv_apply\",\n      \"informal_name\": \"Hasse Derivative of Order k Applied to a Polynomial\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f : Polynomial R),\\n  (Polynomial.hasseDeriv k) f = f.sum fun i r => (Polynomial.monomial (i - k)) (↑(i.choose k) * r)\",\n      \"informal_description\": \"For a semiring $ R $ and a polynomial $ f \\\\in R[X] $, the Hasse derivative of order $ k $ applied to $ f $ is given by $ D^{(k)}(f) = \\\\sum_{i} \\\\binom{i}{k} \\\\cdot a_i \\\\cdot X^{i - k} $, where $ a_i $ is the coefficient of $ X^i $ in $ f $. This expression sums over all monomials in $ f $, scaling each by the binomial coefficient $ \\\\binom{i}{k} $ and reducing the exponent by $ k $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.derivativeFinsupp\",\n      \"informal_name\": \"Derivative as Finite Support Function\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} → [inst : Semiring R] → Polynomial R →ₗ[R] ℕ →₀ Polynomial R\",\n      \"informal_description\": \"The linear map that sends each polynomial $ p $ to the finitely supported function $ \\\\mathbb{N} \\\\to_0 R[X] $ assigning to each $ i $ the $ i $-th derivative of $ p $. This function has finite support because all derivatives of $ p $ beyond its natural degree are zero.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Derivative\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv_coeff\",\n      \"informal_name\": \"Coefficient Formula for Hasse Derivative of Order k\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f : Polynomial R) (n : ℕ),\\n  ((Polynomial.hasseDeriv k) f).coeff n = ↑((n + k).choose k) * f.coeff (n + k)\",\n      \"informal_description\": \"For any natural number $ n $, the coefficient of $ X^n $ in the $ k $-th Hasse derivative of a polynomial $ f $ over a semiring $ R $ is equal to $ \\\\binom{n + k}{k} $ multiplied by the coefficient of $ X^{n + k} $ in $ f $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.mkDerivationₗ\",\n      \"informal_name\": \"Derivation on Multivariate Polynomials Induced by a Function\",\n      \"kind\": \"definition\",\n      \"type\": \"{σ : Type u_1} →\\n  (R : Type u_2) →\\n    {A : Type u_3} →\\n      [inst : CommSemiring R] →\\n        [inst_1 : AddCommMonoid A] →\\n          [inst_2 : Module R A] → [Module (MvPolynomial σ R) A] → (σ → A) → MvPolynomial σ R →ₗ[R] A\",\n      \"informal_description\": \"The linear map that sends a multivariate polynomial to the sum over its variables of the coefficient multiplied by $ f $ evaluated at the variable, times the monomial with the exponent of that variable reduced by one. This construction defines a derivation, satisfying the Leibniz rule with respect to polynomial multiplication.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Derivation\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv_comp\",\n      \"informal_name\": \"Hasse Derivative Composition Formula with Binomial Coefficient\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k l : ℕ),\\n  Polynomial.hasseDeriv k ∘ₗ Polynomial.hasseDeriv l = (k + l).choose k • Polynomial.hasseDeriv (k + l)\",\n      \"informal_description\": \"For any semiring $ R $ and natural numbers $ k, l $, the composition of the $ k $-th and $ l $-th Hasse derivatives on the polynomial ring $ R[X] $ equals $ \\\\binom{k + l}{k} $ times the $ (k + l) $-th Hasse derivative, i.e., $ D^{(k)} \\\\circ D^{(l)} = \\\\binom{k + l}{k} D^{(k + l)} $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv_monomial\",\n      \"informal_name\": \"Hasse Derivative of Monomial in Polynomial Ring\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k n : ℕ) (r : R),\\n  (Polynomial.hasseDeriv k) ((Polynomial.monomial n) r) = (Polynomial.monomial (n - k)) (↑(n.choose k) * r)\",\n      \"informal_description\": \"For a semiring $ R $, the $ k $-th Hasse derivative of the monomial $ rX^n $ in the polynomial ring $ R[X] $ is given by $ \\\\binom{n}{k} r X^{n - k} $. This expresses how the Hasse derivative acts on monomials by scaling the coefficient by the binomial coefficient $ \\\\binom{n}{k} $ and reducing the degree by $ k $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.sumIDeriv\",\n      \"informal_name\": \"Sum of Iterated Derivatives of a Polynomial\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : Semiring R] → Polynomial R →ₗ[R] Polynomial R\",\n      \"informal_description\": \"The linear map that sends each polynomial $ p $ to the sum of its iterated derivatives, i.e., $ \\\\sum_{i=0}^{\\\\infty} \\\\frac{d^i p}{dx^i} $, where all but finitely many terms vanish since derivatives beyond the polynomial's degree are zero.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.SumIteratedDerivative\"\n    }\n  ]\n}"
+    }
+  ],
+  "structuredContent": {
+    "items": [
+      {
+        "formal_name": "Polynomial.hasseDeriv",
+        "informal_name": "Hasse Derivative of Order k on Polynomial Ring",
+        "kind": "definition",
+        "type": "{R : Type u_1} → [inst : Semiring R] → ℕ → Polynomial R →ₗ[R] Polynomial R",
+        "informal_description": "For a semiring $ R $, the Hasse derivative of order $ k $ is an $ R $-linear map $ D^{(k)} : R[X] \to R[X] $ defined by $ D^{(k)}(a_i X^i) = \binom{i}{k} a_i X^{i - k} $ on monomials and extended linearly. This operation generalizes the usual derivative by scaling each coefficient $ a_i $ by the binomial coefficient $ \binom{i}{k} $ and reducing the degree by $ k $.",
+        "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+      },
+      {
+        "formal_name": "Polynomial.hasseDeriv_apply",
+        "informal_name": "Hasse Derivative of Order k Applied to a Polynomial",
+        "kind": "theorem",
+        "type": "∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f : Polynomial R),\n  (Polynomial.hasseDeriv k) f = f.sum fun i r => (Polynomial.monomial (i - k)) (↑(i.choose k) * r)",
+        "informal_description": "For a semiring $ R $ and a polynomial $ f \\in R[X] $, the Hasse derivative of order $ k $ applied to $ f $ is given by $ D^{(k)}(f) = \\sum_{i} \\binom{i}{k} \\cdot a_i \\cdot X^{i - k} $, where $ a_i $ is the coefficient of $ X^i $ in $ f $. This expression sums over all monomials in $ f $, scaling each by the binomial coefficient $ \\binom{i}{k} $ and reducing the exponent by $ k $.",
+        "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+      },
+      {
+        "formal_name": "Polynomial.derivativeFinsupp",
+        "informal_name": "Derivative as Finite Support Function",
+        "kind": "definition",
+        "type": "{R : Type u} → [inst : Semiring R] → Polynomial R →ₗ[R] ℕ →₀ Polynomial R",
+        "informal_description": "The linear map that sends each polynomial $ p $ to the finitely supported function $ \\mathbb{N} \\to_0 R[X] $ assigning to each $ i $ the $ i $-th derivative of $ p $. This function has finite support because all derivatives of $ p $ beyond its natural degree are zero.",
+        "path": "Mathlib.Algebra.Polynomial.Derivative"
+      },
+      {
+        "formal_name": "Polynomial.hasseDeriv_coeff",
+        "informal_name": "Coefficient Formula for Hasse Derivative of Order k",
+        "kind": "theorem",
+        "type": "∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f : Polynomial R) (n : ℕ),\n  ((Polynomial.hasseDeriv k) f).coeff n = ↑((n + k).choose k) * f.coeff (n + k)",
+        "informal_description": "For any natural number $ n $, the coefficient of $ X^n $ in the $ k $-th Hasse derivative of a polynomial $ f $ over a semiring $ R $ is equal to $ \\binom{n + k}{k} $ multiplied by the coefficient of $ X^{n + k} $ in $ f $.",
+        "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+      },
+      {
+        "formal_name": "MvPolynomial.mkDerivationₗ",
+        "informal_name": "Derivation on Multivariate Polynomials Induced by a Function",
+        "kind": "definition",
+        "type": "{σ : Type u_1} →\n  (R : Type u_2) →\n    {A : Type u_3} →\n      [inst : CommSemiring R] →\n        [inst_1 : AddCommMonoid A] →\n          [inst_2 : Module R A] → [Module (MvPolynomial σ R) A] → (σ → A) → MvPolynomial σ R →ₗ[R] A",
+        "informal_description": "The linear map that sends a multivariate polynomial to the sum over its variables of the coefficient multiplied by $ f $ evaluated at the variable, times the monomial with the exponent of that variable reduced by one. This construction defines a derivation, satisfying the Leibniz rule with respect to polynomial multiplication.",
+        "path": "Mathlib.Algebra.MvPolynomial.Derivation"
+      },
+      {
+        "formal_name": "Polynomial.hasseDeriv_comp",
+        "informal_name": "Hasse Derivative Composition Formula with Binomial Coefficient",
+        "kind": "theorem",
+        "type": "∀ {R : Type u_1} [inst : Semiring R] (k l : ℕ),\n  Polynomial.hasseDeriv k ∘ₗ Polynomial.hasseDeriv l = (k + l).choose k • Polynomial.hasseDeriv (k + l)",
+        "informal_description": "For any semiring $ R $ and natural numbers $ k, l $, the composition of the $ k $-th and $ l $-th Hasse derivatives on the polynomial ring $ R[X] $ equals $ \\binom{k + l}{k} $ times the $ (k + l) $-th Hasse derivative, i.e., $ D^{(k)} \\circ D^{(l)} = \\binom{k + l}{k} D^{(k + l)} $.",
+        "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+      },
+      {
+        "formal_name": "Polynomial.hasseDeriv_monomial",
+        "informal_name": "Hasse Derivative of Monomial in Polynomial Ring",
+        "kind": "theorem",
+        "type": "∀ {R : Type u_1} [inst : Semiring R] (k n : ℕ) (r : R),\n  (Polynomial.hasseDeriv k) ((Polynomial.monomial n) r) = (Polynomial.monomial (n - k)) (↑(n.choose k) * r)",
+        "informal_description": "For a semiring $ R $, the $ k $-th Hasse derivative of the monomial $ rX^n $ in the polynomial ring $ R[X] $ is given by $ \\binom{n}{k} r X^{n - k} $. This expresses how the Hasse derivative acts on monomials by scaling the coefficient by the binomial coefficient $ \\binom{n}{k} $ and reducing the degree by $ k $.",
+        "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+      },
+      {
+        "formal_name": "Polynomial.sumIDeriv",
+        "informal_name": "Sum of Iterated Derivatives of a Polynomial",
+        "kind": "definition",
+        "type": "{R : Type u_1} → [inst : Semiring R] → Polynomial R →ₗ[R] Polynomial R",
+        "informal_description": "The linear map that sends each polynomial $ p $ to the sum of its iterated derivatives, i.e., $ \\sum_{i=0}^{\\infty} \\frac{d^i p}{dx^i} $, where all but finitely many terms vanish since derivatives beyond the polynomial's degree are zero.",
+        "path": "Mathlib.Algebra.Polynomial.SumIteratedDerivative"
+      }
+    ]
+  },
+  "isError": false
+}

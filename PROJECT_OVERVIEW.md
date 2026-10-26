@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 1/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 2/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -14,6 +14,11 @@ useful locally; this result gives no verdict on the substantive multivariate Has
 The report records all required literature channels, mathlib searches, generality/risk/
 strategy/shape checks, actual compiler proofs and every source caller.
 
+The second complete assessment recommends `MvPolynomial.hasseDeriv` as a mathlib addition:
+its arbitrary-variable, characteristic-free linear operator fills the gap between ordinary
+multivariate partial derivatives and univariate Hasse derivatives. A mathlib-only scratch
+construction and monomial characterization compiled, and all required assessment gates passed.
+
 This document includes only completed declaration findings. The source roadmap is not
 a partial assessment of the remaining declarations. See the completed-only
 [progress record](.mathlib-quality/overview/progress.md) and
@@ -23,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 1; remaining: 292.
-- Verdicts:1 NO-composable,0 YES-add-as-is,0 YES-but-generalise-first,0 NO-mathlib-has-it,0 BORDERLINE,0 SKIP.
+- Completed applicable assessments: 2; remaining: 291.
+- Verdicts:1 NO-composable,1 YES-add-as-is,0 YES-but-generalise-first,0 NO-mathlib-has-it,0 BORDERLINE,0 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -43,6 +48,17 @@ entries are published only after the corresponding full applicable workflow is c
 - Callers:16 same-file declarations plus2 external declarations on3 external code lines.
 - Full signatures, all caller excerpts, source hashes, verification and notes:
   [complete report](.mathlib-quality/overview/mathlibable/MvPolynomial.hasseCoeff.md).
+
+### Completed: `MvPolynomial.hasseDeriv`
+
+- Type: `{σ : Type u} → {R : Type v} → [CommSemiring R] → (σ →₀ ℕ) → MvPolynomial σ R →ₗ[R] MvPolynomial σ R`.
+- What: the normalized multivariate Hasse differential operator of finite multiorder.
+- How: linear extension of the binomial-weighted monomial rule through `Finsupp.lsum`.
+- Hypotheses: arbitrary variables and independent coefficient universe; commutative semiring.
+- Uses from project: `MvPolynomial.hasseCoeff`; public; source: Roth/HasseDeriv.lean:57.
+- Callers: 59 declarations on 92 code lines, including 41 declarations outside its file.
+- Recommendation: YES-add-as-is, as a coherent multivariate differential API.
+- [Complete report](.mathlib-quality/overview/mathlibable/MvPolynomial.hasseDeriv.md) records full evidence.
 
 ## Part 2: Cross-file dependencies
 
@@ -69,6 +85,11 @@ Completed finding: hasseCoeff uses the existing finite-support product and natur
 operations. `Finsupp.multinomial` is a different operation and is not a replacement. The
 mathlib-only construction compiled without importing the project target.
 
+Completed derivative finding: pinned mathlib has ordinary multivariate `pderiv` and
+univariate `Polynomial.hasseDeriv`, but no verified arbitrary-multiindex normalized
+operator. Generic coefficient-linear extension constructs it; this is distinct from
+a ready-made differential API replacement.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -81,10 +102,14 @@ The completed assessment compiled an optional extension accepting an arbitrary u
 function instead of a Finsupp. It is not needed for the standard monomial API and does not
 create independent upstream content. No production change is recommended during this review.
 
+The derivative already uses arbitrary variable types and commutative-semiring coefficients.
+The rejected `Semiring` experiment fails at `MvPolynomial` itself; no weakening is proposed.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
-That packaging decision awaits the substantive declarations’ own assessments; it is not
+The derivative assessment supports a coherent upstream operator API; its supporting
+identities still await their own assessments. This is not
 a reason for a separate PR consisting only of this two-operation alias.
 
 ## Part 7: Junk / removable
@@ -93,11 +118,15 @@ hasseCoeff is live API, not dead code. Keep it locally during this read-only ove
 The detailed report provides an optional all-callers inlining plan for a later authorized
 refactor; it has not been executed or falsely reported as validated.
 
+The derivative is live API across Taylor expansions, multiplicities and generalized
+Wronskians; retain it. No production removal or refactor was performed.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
 |---|---|---|---|
 | 1 | `MvPolynomial.hasseCoeff` | NO-composable-from-mathlib (standalone def) | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.hasseCoeff.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.hasseCoeff/root-acceptance.json) |
+| 2 | `MvPolynomial.hasseDeriv` | YES-add-as-is | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.hasseDeriv.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -105,6 +134,7 @@ All remaining declarations are unfinished; none has an assigned final verdict he
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
-3. Assess `MvPolynomial.hasseDeriv` next, without inheriting a NO verdict from its helper.
+3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
+   `MvPolynomial.hasseDeriv_monomial` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
