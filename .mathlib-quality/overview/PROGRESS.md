@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-26
 
-- Declarations completed: **14/293**
-- Next declaration: **#15 `MvPolynomial.hasseDeriv_hasseDeriv_of_disjoint`** (Roth/HasseDeriv.lean:185)
+- Declarations completed: **15/293**
+- Next declaration: **#16 `MvPolynomial.hasseCoeff_mul_succ`** (Roth/HasseDeriv.lean:191)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -33,10 +33,10 @@ Last regenerated: 2026-10-26
 | 12 | `MvPolynomial.hasseDeriv_rename` | Roth/HasseDeriv.lean:143 | YES-add-as-is | [report](mathlibable/MvPolynomial.hasseDeriv_rename.md) |
 | 13 | `MvPolynomial.hasseCoeff_mul_hasseCoeff` | Roth/HasseDeriv.lean:153 | SKIP | [report](mathlibable/MvPolynomial.hasseCoeff_mul_hasseCoeff.md) |
 | 14 | `MvPolynomial.hasseDeriv_hasseDeriv` | Roth/HasseDeriv.lean:175 | YES-but-generalise-first | [report](mathlibable/MvPolynomial.hasseDeriv_hasseDeriv.md) |
+| 15 | `MvPolynomial.hasseDeriv_hasseDeriv_of_disjoint` | Roth/HasseDeriv.lean:185 | YES-but-generalise-first | [report](mathlibable/MvPolynomial.hasseDeriv_hasseDeriv_of_disjoint.md) |
 
 ## Remaining declarations (in processing order)
 
-- #15 `MvPolynomial.hasseDeriv_hasseDeriv_of_disjoint` (Roth/HasseDeriv.lean:185, public theorem)
 - #16 `MvPolynomial.hasseCoeff_mul_succ` (Roth/HasseDeriv.lean:191, private lemma)
 - #17 `MvPolynomial.pderiv_hasseDeriv` (Roth/HasseDeriv.lean:200, public theorem)
 - #18 `MvPolynomial.degreeOf_hasseDeriv_le` (Roth/HasseDeriv.lean:210, public theorem)
