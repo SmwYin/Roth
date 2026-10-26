@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-26
 
-- Declarations completed: **21/293**
-- Next declaration: **#22 `MvPolynomial.hasseDeriv_single_aeval_X`** (Roth/HasseDeriv.lean:253)
+- Declarations completed: **22/293**
+- Next declaration: **#23 `MvPolynomial.uniqueAlgEquiv_hasseDeriv`** (Roth/HasseDeriv.lean:266)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -40,10 +40,10 @@ Last regenerated: 2026-10-26
 | 19 | `MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt` | Roth/HasseDeriv.lean:219 | YES-but-generalise-first | [report](mathlibable/MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt.md) |
 | 20 | `MvPolynomial.hasseDeriv_monomial_mul` | Roth/HasseDeriv.lean:225 | SKIP | [report](mathlibable/MvPolynomial.hasseDeriv_monomial_mul.md) |
 | 21 | `MvPolynomial.hasseDeriv_mul_of_degreeOf_eq_zero` | Roth/HasseDeriv.lean:243 | YES-but-generalise-first | [report](mathlibable/MvPolynomial.hasseDeriv_mul_of_degreeOf_eq_zero.md) |
+| 22 | `MvPolynomial.hasseDeriv_single_aeval_X` | Roth/HasseDeriv.lean:253 | YES-but-generalise-first | [report](mathlibable/MvPolynomial.hasseDeriv_single_aeval_X.md) |
 
 ## Remaining declarations (in processing order)
 
-- #22 `MvPolynomial.hasseDeriv_single_aeval_X` (Roth/HasseDeriv.lean:253, public theorem)
 - #23 `MvPolynomial.uniqueAlgEquiv_hasseDeriv` (Roth/HasseDeriv.lean:266, public theorem)
 - #24 `MvPolynomial.hasseCoeff_le_two_pow` (Roth/HasseDeriv.lean:276, public theorem)
 - #25 `MvPolynomial.factorial_smul_hasseDeriv_single` (Roth/HasseDeriv.lean:286, public theorem)
