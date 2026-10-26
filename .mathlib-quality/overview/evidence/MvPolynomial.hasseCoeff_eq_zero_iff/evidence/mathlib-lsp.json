@@ -1,0 +1,219 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MvPolynomial.PDeriv\nimport Mathlib.Algebra.Polynomial.HasseDeriv\n\n/-! Persistent mathlib-only assessment session control. -/\n#check_failure MvPolynomial.hasseDeriv\n#check Finsupp.lsum_apply\n#check Finsupp.lsum_single\n\n#check_failure MvPolynomial.hasseCoeff_eq_zero_iff\n#check_failure MvPolynomial.hasseCoeff\n#check @Finsupp.prod_eq_zero_iff\n#check @Finsupp.prod_ne_zero_iff\nnamespace HasseZeroSearchAudit\nvariable {σ : Type*}\nexample (d k : σ →₀ ℕ) : d.prod (fun j ↦ (k j).choose) = 0 ↔ ¬d ≤ k := by\n  first | exact? | simp [Nat.choose_eq_zero_iff, Finsupp.le_iff, not_forall]\nexample {α β ι : Type*} [Zero α] [CommMonoidWithZero β]\n    [Nontrivial β] [NoZeroDivisors β] (f : ι →₀ α) (g : ι → α → β) :\n    f.prod g = 0 ↔ ∃ i ∈ f.support, g i (f i) = 0 := by\n  exact?\nend HasseZeroSearchAudit\n\n\n#check @Finsupp.prod_eq_zero_iff\n#check @Finsupp.prod_ne_zero_iff\n#check @Finsupp.le_iff\n#check @Nat.choose_eq_zero_iff\n#check @Nat.choose_ne_zero_iff\n#check @Finset.prod_eq_zero_iff\n#check @Finset.prod_ne_zero_iff\n\nnamespace HasseZeroAudit\nvariable {σ : Type*}\n-- Exact source form expanded, no target or project definitions in scope.\ntheorem expanded (d k : σ →₀ ℕ) :\n    d.prod (fun j ↦ (k j).choose) = 0 ↔ ¬d ≤ k := by\n  simp [Finsupp.prod, Finset.prod_eq_zero_iff, Nat.choose_eq_zero_iff,\n    Finsupp.le_iff, not_forall]\n-- Generic Finsupp product route: direct generic-product theorem plus scalar vanishing and order.\ntheorem generic (d k : σ →₀ ℕ) :\n    d.prod (fun j ↦ (k j).choose) = 0 ↔ ¬d ≤ k := by\n  simp [Finsupp.prod_eq_zero_iff, Nat.choose_eq_zero_iff, Finsupp.le_iff, not_forall]\n-- Equivalent nonvanishing and positivity shapes; arbitrary type, no Fintype/DecidableEq/R.\ntheorem nonzero (d k : σ →₀ ℕ) :\n    d.prod (fun j ↦ (k j).choose) ≠ 0 ↔ d ≤ k := by\n  simpa using not_congr (generic d k)\ntheorem positive (d k : σ →₀ ℕ) :\n    0 < d.prod (fun j ↦ (k j).choose) ↔ d ≤ k := by\n  simpa only [Nat.pos_iff_ne_zero] using nonzero d k\n-- Existing scalar finite-support generic API, not a new mathematical abstraction.\ntheorem product_route {α β ι : Type*} [Zero α] [CommMonoidWithZero β]\n    [Nontrivial β] [NoZeroDivisors β] (f : ι →₀ α) (g : ι → α → β) :\n    f.prod g = 0 ↔ ∃ i ∈ f.support, g i (f i) = 0 := by\n  exact Finsupp.prod_eq_zero_iff\n#print axioms expanded\n#print axioms generic\n#print axioms nonzero\n#print axioms positive\n#print axioms product_route\nend HasseZeroAudit\n\nnamespace HasseZeroDirectAudit\nvariable {σ : Type*}\n-- Short simp composition, using prod_eq_zero_iff from the default simp set.\ntheorem short (d k : σ →₀ ℕ) :\n    d.prod (fun j ↦ (k j).choose) = 0 ↔ ¬d ≤ k := by\n  simp [Nat.choose_eq_zero_iff, Finsupp.le_iff, not_forall]\n-- Nonvanishing generic route avoids existential witness reasoning.\ntheorem via_nonzero (d k : σ →₀ ℕ) :\n    d.prod (fun j ↦ (k j).choose) = 0 ↔ ¬d ≤ k := by\n  simpa only [Nat.choose_ne_zero_iff, ← Finsupp.le_iff, not_not] using\n    not_congr (Finsupp.prod_ne_zero_iff (f := d) (g := fun j ↦ (k j).choose))\nend HasseZeroDirectAudit\n#print axioms HasseZeroDirectAudit.short\n#print axioms HasseZeroDirectAudit.via_nonzero\n"
+  },
+  "elapsed_ms": 4568,
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown constant `MvPolynomial.hasseDeriv`\",\n      \"line\": 5,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Finsupp.lsum_apply.{u_1, u_2, u_3, u_4, u_5, u_6} {α : Type u_1} {M : Type u_2} {N : Type u_3} {R : Type u_4}\\n  {R₂ : Type u_5} (S : Type u_6) [Semiring R] [Semiring R₂] [Semiring S] [AddCommMonoid M] [Module R M]\\n  [AddCommMonoid N] [Module R₂ N] {σ : R →+* R₂} [Module S N] [SMulCommClass R₂ S N] (f : α → M →ₛₗ[σ] N) (l : α →₀ M) :\\n  ((Finsupp.lsum S) f) l = l.sum fun b ↦ ⇑(f b)\",\n      \"line\": 6,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Finsupp.lsum_single.{u_1, u_2, u_3, u_4, u_5, u_6} {α : Type u_1} {M : Type u_2} {N : Type u_3} {R : Type u_4}\\n  {R₂ : Type u_5} (S : Type u_6) [Semiring R] [Semiring R₂] [Semiring S] [AddCommMonoid M] [Module R M]\\n  [AddCommMonoid N] [Module R₂ N] {σ : R →+* R₂} [Module S N] [SMulCommClass R₂ S N] (f : α → M →ₛₗ[σ] N) (i : α)\\n  (m : M) : ((Finsupp.lsum S) f) (Finsupp.single i m) = (f i) m\",\n      \"line\": 7,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown constant `MvPolynomial.hasseCoeff_eq_zero_iff`\",\n      \"line\": 9,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown constant `MvPolynomial.hasseCoeff`\",\n      \"line\": 10,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finsupp.prod_eq_zero_iff : ∀ {α : Type u_1} {ι : Type u_2} {β : Type u_3} [inst : Zero α]\\n  [inst_1 : CommMonoidWithZero β] [Nontrivial β] [NoZeroDivisors β] {f : ι →₀ α} {g : ι → α → β},\\n  f.prod g = 0 ↔ ∃ i ∈ f.support, g i (f i) = 0\",\n      \"line\": 11,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finsupp.prod_ne_zero_iff : ∀ {α : Type u_1} {ι : Type u_2} {β : Type u_3} [inst : Zero α]\\n  [inst_1 : CommMonoidWithZero β] [Nontrivial β] [NoZeroDivisors β] {f : ι →₀ α} {g : ι → α → β},\\n  f.prod g ≠ 0 ↔ ∀ i ∈ f.support, g i (f i) ≠ 0\",\n      \"line\": 12,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Try this:\\n  [apply] exact Finsupp.prod_eq_zero_iff\",\n      \"line\": 20,\n      \"column\": 3,\n      \"lean_tags\": null,\n      \"category\": \"suggestion\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finsupp.prod_eq_zero_iff : ∀ {α : Type u_1} {ι : Type u_2} {β : Type u_3} [inst : Zero α]\\n  [inst_1 : CommMonoidWithZero β] [Nontrivial β] [NoZeroDivisors β] {f : ι →₀ α} {g : ι → α → β},\\n  f.prod g = 0 ↔ ∃ i ∈ f.support, g i (f i) = 0\",\n      \"line\": 24,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finsupp.prod_ne_zero_iff : ∀ {α : Type u_1} {ι : Type u_2} {β : Type u_3} [inst : Zero α]\\n  [inst_1 : CommMonoidWithZero β] [Nontrivial β] [NoZeroDivisors β] {f : ι →₀ α} {g : ι → α → β},\\n  f.prod g ≠ 0 ↔ ∀ i ∈ f.support, g i (f i) ≠ 0\",\n      \"line\": 25,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finsupp.le_iff : ∀ {ι : Type u_1} {α : Type u_2} [inst : AddCommMonoid α] [inst_1 : PartialOrder α]\\n  [CanonicallyOrderedAdd α] (f g : ι →₀ α), f ≤ g ↔ ∀ i ∈ f.support, f i ≤ g i\",\n      \"line\": 26,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Nat.choose_eq_zero_iff : ∀ {n k : ℕ}, n.choose k = 0 ↔ n < k\",\n      \"line\": 27,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Nat.choose_ne_zero_iff : ∀ {n k : ℕ}, n.choose k ≠ 0 ↔ k ≤ n\",\n      \"line\": 28,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finset.prod_eq_zero_iff : ∀ {ι : Type u_1} {M₀ : Type u_2} [inst : CommMonoidWithZero M₀] {f : ι → M₀} {s : Finset ι}\\n  [Nontrivial M₀] [NoZeroDivisors M₀], ∏ x ∈ s, f x = 0 ↔ ∃ a ∈ s, f a = 0\",\n      \"line\": 29,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finset.prod_ne_zero_iff : ∀ {ι : Type u_1} {M₀ : Type u_2} [inst : CommMonoidWithZero M₀] {f : ι → M₀} {s : Finset ι}\\n  [Nontrivial M₀] [NoZeroDivisors M₀], ∏ x ∈ s, f x ≠ 0 ↔ ∀ a ∈ s, f a ≠ 0\",\n      \"line\": 30,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'HasseZeroAudit.expanded' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 55,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'HasseZeroAudit.generic' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 56,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'HasseZeroAudit.nonzero' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 57,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'HasseZeroAudit.positive' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 58,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'HasseZeroAudit.product_route' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 59,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'HasseZeroDirectAudit.short' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 74,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'HasseZeroDirectAudit.via_nonzero' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 75,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown constant `MvPolynomial.hasseDeriv`",
+          "line": 5,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Finsupp.lsum_apply.{u_1, u_2, u_3, u_4, u_5, u_6} {α : Type u_1} {M : Type u_2} {N : Type u_3} {R : Type u_4}\n  {R₂ : Type u_5} (S : Type u_6) [Semiring R] [Semiring R₂] [Semiring S] [AddCommMonoid M] [Module R M]\n  [AddCommMonoid N] [Module R₂ N] {σ : R →+* R₂} [Module S N] [SMulCommClass R₂ S N] (f : α → M →ₛₗ[σ] N) (l : α →₀ M) :\n  ((Finsupp.lsum S) f) l = l.sum fun b ↦ ⇑(f b)",
+          "line": 6,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Finsupp.lsum_single.{u_1, u_2, u_3, u_4, u_5, u_6} {α : Type u_1} {M : Type u_2} {N : Type u_3} {R : Type u_4}\n  {R₂ : Type u_5} (S : Type u_6) [Semiring R] [Semiring R₂] [Semiring S] [AddCommMonoid M] [Module R M]\n  [AddCommMonoid N] [Module R₂ N] {σ : R →+* R₂} [Module S N] [SMulCommClass R₂ S N] (f : α → M →ₛₗ[σ] N) (i : α)\n  (m : M) : ((Finsupp.lsum S) f) (Finsupp.single i m) = (f i) m",
+          "line": 7,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown constant `MvPolynomial.hasseCoeff_eq_zero_iff`",
+          "line": 9,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown constant `MvPolynomial.hasseCoeff`",
+          "line": 10,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finsupp.prod_eq_zero_iff : ∀ {α : Type u_1} {ι : Type u_2} {β : Type u_3} [inst : Zero α]\n  [inst_1 : CommMonoidWithZero β] [Nontrivial β] [NoZeroDivisors β] {f : ι →₀ α} {g : ι → α → β},\n  f.prod g = 0 ↔ ∃ i ∈ f.support, g i (f i) = 0",
+          "line": 11,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finsupp.prod_ne_zero_iff : ∀ {α : Type u_1} {ι : Type u_2} {β : Type u_3} [inst : Zero α]\n  [inst_1 : CommMonoidWithZero β] [Nontrivial β] [NoZeroDivisors β] {f : ι →₀ α} {g : ι → α → β},\n  f.prod g ≠ 0 ↔ ∀ i ∈ f.support, g i (f i) ≠ 0",
+          "line": 12,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Try this:\n  [apply] exact Finsupp.prod_eq_zero_iff",
+          "line": 20,
+          "column": 3,
+          "lean_tags": null,
+          "category": "suggestion",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finsupp.prod_eq_zero_iff : ∀ {α : Type u_1} {ι : Type u_2} {β : Type u_3} [inst : Zero α]\n  [inst_1 : CommMonoidWithZero β] [Nontrivial β] [NoZeroDivisors β] {f : ι →₀ α} {g : ι → α → β},\n  f.prod g = 0 ↔ ∃ i ∈ f.support, g i (f i) = 0",
+          "line": 24,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finsupp.prod_ne_zero_iff : ∀ {α : Type u_1} {ι : Type u_2} {β : Type u_3} [inst : Zero α]\n  [inst_1 : CommMonoidWithZero β] [Nontrivial β] [NoZeroDivisors β] {f : ι →₀ α} {g : ι → α → β},\n  f.prod g ≠ 0 ↔ ∀ i ∈ f.support, g i (f i) ≠ 0",
+          "line": 25,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finsupp.le_iff : ∀ {ι : Type u_1} {α : Type u_2} [inst : AddCommMonoid α] [inst_1 : PartialOrder α]\n  [CanonicallyOrderedAdd α] (f g : ι →₀ α), f ≤ g ↔ ∀ i ∈ f.support, f i ≤ g i",
+          "line": 26,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Nat.choose_eq_zero_iff : ∀ {n k : ℕ}, n.choose k = 0 ↔ n < k",
+          "line": 27,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Nat.choose_ne_zero_iff : ∀ {n k : ℕ}, n.choose k ≠ 0 ↔ k ≤ n",
+          "line": 28,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finset.prod_eq_zero_iff : ∀ {ι : Type u_1} {M₀ : Type u_2} [inst : CommMonoidWithZero M₀] {f : ι → M₀} {s : Finset ι}\n  [Nontrivial M₀] [NoZeroDivisors M₀], ∏ x ∈ s, f x = 0 ↔ ∃ a ∈ s, f a = 0",
+          "line": 29,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finset.prod_ne_zero_iff : ∀ {ι : Type u_1} {M₀ : Type u_2} [inst : CommMonoidWithZero M₀] {f : ι → M₀} {s : Finset ι}\n  [Nontrivial M₀] [NoZeroDivisors M₀], ∏ x ∈ s, f x ≠ 0 ↔ ∀ a ∈ s, f a ≠ 0",
+          "line": 30,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'HasseZeroAudit.expanded' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 55,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'HasseZeroAudit.generic' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 56,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'HasseZeroAudit.nonzero' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 57,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'HasseZeroAudit.positive' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 58,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'HasseZeroAudit.product_route' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 59,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'HasseZeroDirectAudit.short' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 74,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'HasseZeroDirectAudit.via_nonzero' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 75,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  }
+}

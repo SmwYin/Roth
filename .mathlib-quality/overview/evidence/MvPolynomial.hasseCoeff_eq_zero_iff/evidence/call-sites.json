@@ -1,0 +1,40 @@
+{
+  "direct_caller_count": 3,
+  "reference_occurrences": 3,
+  "internal_use_count": 2,
+  "external_file_use_count": 1,
+  "qualified_callers": [
+    {
+      "name": "MvPolynomial.coeff_hasseDeriv",
+      "file": "Roth/HasseDeriv.lean",
+      "line": 89,
+      "call_lines": [
+        99
+      ],
+      "source": "theorem coeff_hasseDeriv (d e : \u03c3 \u2192\u2080 \u2115) (P : MvPolynomial \u03c3 R) :\n    (hasseDeriv d P).coeff e = (hasseCoeff d (e + d) : R) * P.coeff (e + d) := by\n  classical\n  induction P using MvPolynomial.induction_on' with\n  | monomial k a =>\n    rw [hasseDeriv_monomial, coeff_monomial, coeff_monomial]\n    by_cases hk : k = e + d\n    \u00b7 simp [hk]\n    by_cases hdk : d \u2264 k\n    \u00b7 simp [hk, tsub_eq_iff_eq_add_of_le hdk]\n    \u00b7 simp [hk, (hasseCoeff_eq_zero_iff d k).2 hdk]\n  | add p q hp hq => simp [hp, hq, mul_add]",
+      "scope": "public"
+    },
+    {
+      "name": "MvPolynomial.hasseDeriv_C",
+      "file": "Roth/HasseDeriv.lean",
+      "line": 126,
+      "call_lines": [
+        127
+      ],
+      "source": "theorem hasseDeriv_C {d : \u03c3 \u2192\u2080 \u2115} (hd : d \u2260 0) (a : R) : hasseDeriv d (C a) = 0 := by\n  rw [C_apply, hasseDeriv_monomial, (hasseCoeff_eq_zero_iff d 0).2 (by simpa using hd)]\n  simp",
+      "scope": "public"
+    },
+    {
+      "name": "MvPolynomial.coeff_taylor_monomial_single_add_aux",
+      "file": "Roth/Taylor.lean",
+      "line": 101,
+      "call_lines": [
+        113
+      ],
+      "source": "private lemma coeff_taylor_monomial_single_add_aux (\u03b1 : \u03c3 \u2192 R) (a : R) {i : \u03c3} (n : \u2115) {k : \u03c3 \u2192\u2080 \u2115}\n    (hi : k i = 0)\n    (ih : \u2200 d, (taylor \u03b1 (monomial k a)).coeff d = eval \u03b1 (hasseDeriv d (monomial k a)))\n    (d : \u03c3 \u2192\u2080 \u2115) : (taylor \u03b1 (monomial (Finsupp.single i n + k) a)).coeff d =\n      eval \u03b1 (hasseDeriv d (monomial (Finsupp.single i n + k) a)) := by\n  have hXC : (X i + C (\u03b1 i) : MvPolynomial \u03c3 R) ^ n =\n      Polynomial.aeval (X i) ((Polynomial.X + Polynomial.C (\u03b1 i)) ^ n) := by\n    simp\n  have hsupp : \u2200 e \u2208 (taylor \u03b1 (monomial k a)).support, e i = 0 := by\n    intro e he\n    rw [mem_support_iff, ih e, hasseDeriv_monomial] at he\n    by_contra h\n    simp [(hasseCoeff_eq_zero_iff e k).2 fun hle \u21a6 h (le_zero_iff.1 (hi \u25b8 hle i))] at he\n  rw [monomial_single_add, map_mul, map_pow, taylor_X, hXC,\n    coeff_aeval_X_mul i _ _ hsupp, ih, Polynomial.coeff_X_add_C_pow,\n    \u2190 monomial_single_add, hasseDeriv_monomial, hasseDeriv_monomial, eval_monomial,\n    eval_monomial, hasseCoeff_single_add_eq hi, prod_pow_single_add_tsub \u03b1 hi]\n  simp [mul_assoc, mul_comm, mul_left_comm]",
+      "scope": "private"
+    }
+  ],
+  "scope": "Explicit source references only; no opaque kernel/simp closure claimed.",
+  "inline_derivation_findings": "Only target proof composes choose/product zero criteria; Wronskian, Index, Theta product-vanishing mentions have different statements, not duplicate Hasse iff derivations."
+}
