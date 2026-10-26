@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-26
 
-- Declarations completed: **32/293**
-- Next declaration: **#33 `Roth.weight_add`** (Roth/Box.lean:85)
+- Declarations completed: **33/293**
+- Next declaration: **#34 `Roth.weight_eq_zero_iff`** (Roth/Box.lean:91)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -51,10 +51,10 @@ Last regenerated: 2026-10-26
 | 30 | `Roth.weight` | Roth/Box.lean:71 | NO-mathlib-has-it | [report](mathlibable/Roth.weight.md) |
 | 31 | `Roth.weight_nonneg` | Roth/Box.lean:75 | NO-composable-from-mathlib | [report](mathlibable/Roth.weight_nonneg.md) |
 | 32 | `Roth.weight_zero` | Roth/Box.lean:80 | NO-mathlib-has-it | [report](mathlibable/Roth.weight_zero.md) |
+| 33 | `Roth.weight_add` | Roth/Box.lean:85 | NO-mathlib-has-it | [report](mathlibable/Roth.weight_add.md) |
 
 ## Remaining declarations (in processing order)
 
-- #33 `Roth.weight_add` (Roth/Box.lean:85, public theorem)
 - #34 `Roth.weight_eq_zero_iff` (Roth/Box.lean:91, public theorem)
 - #35 `Roth.weight_single` (Roth/Box.lean:96, public theorem)
 - #36 `Roth.weight_le_card` (Roth/Box.lean:103, public theorem)
