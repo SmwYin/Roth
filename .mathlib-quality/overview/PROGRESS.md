@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-26
 
-- Declarations completed: **3/293**
-- Next declaration: **#4 `MvPolynomial.hasseDeriv_apply`** (Roth/HasseDeriv.lean:73)
+- Declarations completed: **4/293**
+- Next declaration: **#5 `MvPolynomial.hasseCoeff_eq_zero_iff`** (Roth/HasseDeriv.lean:80)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -22,10 +22,10 @@ Last regenerated: 2026-10-26
 | 1 | `MvPolynomial.hasseCoeff` | Roth/HasseDeriv.lean:50 | YES-but-generalise-first | [report](mathlibable/MvPolynomial.hasseCoeff.md) |
 | 2 | `MvPolynomial.hasseDeriv` | Roth/HasseDeriv.lean:57 | YES-but-generalise-first | [report](mathlibable/MvPolynomial.hasseDeriv.md) |
 | 3 | `MvPolynomial.hasseDeriv_monomial` | Roth/HasseDeriv.lean:66 | INHERITED-YES-but-generalise-first | [report](mathlibable/MvPolynomial.hasseDeriv_monomial.md) |
+| 4 | `MvPolynomial.hasseDeriv_apply` | Roth/HasseDeriv.lean:73 | INHERITED-YES-but-generalise-first | [report](mathlibable/MvPolynomial.hasseDeriv_apply.md) |
 
 ## Remaining declarations (in processing order)
 
-- #4 `MvPolynomial.hasseDeriv_apply` (Roth/HasseDeriv.lean:73, public theorem)
 - #5 `MvPolynomial.hasseCoeff_eq_zero_iff` (Roth/HasseDeriv.lean:80, public theorem)
 - #6 `MvPolynomial.coeff_hasseDeriv` (Roth/HasseDeriv.lean:89, public theorem)
 - #7 `MvPolynomial.hasseCoeff_eq_prod` (Roth/HasseDeriv.lean:106, public theorem)
