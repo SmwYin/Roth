@@ -1,0 +1,660 @@
+[
+  {
+    "method": "Finder",
+    "form": "current",
+    "request": {
+      "query": "Hasse derivatives multi indices with disjoint supports compose to derivative of sum",
+      "num_results": 5
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv_comp\",\n      \"informal_name\": \"Hasse Derivative Composition Formula with Binomial Coefficient\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k l : ℕ),\\n  Polynomial.hasseDeriv k ∘ₗ Polynomial.hasseDeriv l = (k + l).choose k • Polynomial.hasseDeriv (k + l)\",\n      \"informal_description\": \"For any semiring $ R $ and natural numbers $ k, l $, the composition of the $ k $-th and $ l $-th Hasse derivatives on the polynomial ring $ R[X] $ equals $ \\\\binom{k + l}{k} $ times the $ (k + l) $-th Hasse derivative, i.e., $ D^{(k)} \\\\circ D^{(l)} = \\\\binom{k + l}{k} D^{(k + l)} $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"LaurentSeries.hasseDeriv_comp\",\n      \"informal_name\": \"Composition of Hasse Derivatives on Laurent Series\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] {V : Type u_2} [inst_1 : AddCommGroup V] [inst_2 : Module R V] (k l : ℕ)\\n  (f : LaurentSeries V),\\n  (LaurentSeries.hasseDeriv R k) ((LaurentSeries.hasseDeriv R l) f) =\\n    (k + l).choose k • (LaurentSeries.hasseDeriv R (k + l)) f\",\n      \"informal_description\": \"For any natural numbers $k$ and $l$, and any Laurent series $f$ with coefficients in an $R$-module $V$, the composition of the Hasse derivatives of orders $k$ and $l$ applied to $f$ equals $\\\\binom{k + l}{k} \\\\cdot \\\\text{hasseDeriv}_{k + l}(f)$, where $\\\\text{hasseDeriv}_n(f)$ denotes the Hasse derivative of order $n$.\",\n      \"path\": \"Mathlib.RingTheory.LaurentSeries\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv_mul\",\n      \"informal_name\": \"Product Rule for Hasse Derivatives in Polynomial Rings\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f g : Polynomial R),\\n  (Polynomial.hasseDeriv k) (f * g) =\\n    ∑ ij ∈ Finset.antidiagonal k, (Polynomial.hasseDeriv ij.1) f * (Polynomial.hasseDeriv ij.2) g\",\n      \"informal_description\": \"For any polynomials $ f, g \\\\in R[X] $, the $ k $-th Hasse derivative of the product $ f \\\\cdot g $ satisfies $$ D^{(k)}(f \\\\cdot g) = \\\\sum_{\\\\substack{i + j = k}} D^{(i)}(f) \\\\cdot D^{(j)}(g), $$ where the sum is taken over all pairs $ (i, j) $ of natural numbers such that $ i + j = k $. This expresses the Hasse derivative of a product as a sum over the antidiagonal decomposition of $ k $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.sumIDeriv_derivative\",\n      \"informal_name\": \"Commutativity of Derivative and Sum of Iterated Derivatives for Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (p : Polynomial R),\\n  Polynomial.sumIDeriv (Polynomial.derivative p) = Polynomial.derivative (Polynomial.sumIDeriv p)\",\n      \"informal_description\": \"For any polynomial $ p \\\\in R[X] $, the sum of the iterated derivatives of its derivative equals the derivative of the sum of its iterated derivatives. Symbolically, $ \\\\sum_{i=0}^{\\\\infty} \\\\frac{d^i}{dx^i}(p') = \\\\frac{d}{dx}\\\\left( \\\\sum_{i=0}^{\\\\infty} \\\\frac{d^i p}{dx^i} \\\\right) $, where all sums terminate finitely due to polynomial degree constraints.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.SumIteratedDerivative\"\n    },\n    {\n      \"formal_name\": \"LaurentSeries.hasseDeriv_comp_coeff\",\n      \"informal_name\": \"Composition of Hasse Derivatives and Binomial Coefficients in Laurent Series\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] {V : Type u_2} [inst_1 : AddCommGroup V] [inst_2 : Module R V] (k l : ℕ)\\n  (f : LaurentSeries V) (n : ℤ),\\n  ((LaurentSeries.hasseDeriv R k) ((LaurentSeries.hasseDeriv R l) f)).coeff n =\\n    ((k + l).choose k • (LaurentSeries.hasseDeriv R (k + l)) f).coeff n\",\n      \"informal_description\": \"For any natural numbers $k, l$ and Laurent series $f$ with coefficients in an $R$-module $V$, the composition of the $k$-th and $l$-th Hasse derivatives satisfies $\\\\text{hasseDeriv}_k(\\\\text{hasseDeriv}_l f) = \\\\binom{k + l}{k} \\\\cdot \\\\text{hasseDeriv}_{k + l} f$. Specifically, for any integer exponent $n$, the coefficient of $n$ in the composed derivative equals $\\\\binom{k + l}{k}$ multiplied by the coefficient of $n$ in the $(k + l)$-th Hasse derivative of $f$.\",\n      \"path\": \"Mathlib.RingTheory.LaurentSeries\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Polynomial.hasseDeriv_comp",
+            "informal_name": "Hasse Derivative Composition Formula with Binomial Coefficient",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (k l : ℕ),\n  Polynomial.hasseDeriv k ∘ₗ Polynomial.hasseDeriv l = (k + l).choose k • Polynomial.hasseDeriv (k + l)",
+            "informal_description": "For any semiring $ R $ and natural numbers $ k, l $, the composition of the $ k $-th and $ l $-th Hasse derivatives on the polynomial ring $ R[X] $ equals $ \\binom{k + l}{k} $ times the $ (k + l) $-th Hasse derivative, i.e., $ D^{(k)} \\circ D^{(l)} = \\binom{k + l}{k} D^{(k + l)} $.",
+            "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          },
+          {
+            "formal_name": "LaurentSeries.hasseDeriv_comp",
+            "informal_name": "Composition of Hasse Derivatives on Laurent Series",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] {V : Type u_2} [inst_1 : AddCommGroup V] [inst_2 : Module R V] (k l : ℕ)\n  (f : LaurentSeries V),\n  (LaurentSeries.hasseDeriv R k) ((LaurentSeries.hasseDeriv R l) f) =\n    (k + l).choose k • (LaurentSeries.hasseDeriv R (k + l)) f",
+            "informal_description": "For any natural numbers $k$ and $l$, and any Laurent series $f$ with coefficients in an $R$-module $V$, the composition of the Hasse derivatives of orders $k$ and $l$ applied to $f$ equals $\\binom{k + l}{k} \\cdot \\text{hasseDeriv}_{k + l}(f)$, where $\\text{hasseDeriv}_n(f)$ denotes the Hasse derivative of order $n$.",
+            "path": "Mathlib.RingTheory.LaurentSeries"
+          },
+          {
+            "formal_name": "Polynomial.hasseDeriv_mul",
+            "informal_name": "Product Rule for Hasse Derivatives in Polynomial Rings",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f g : Polynomial R),\n  (Polynomial.hasseDeriv k) (f * g) =\n    ∑ ij ∈ Finset.antidiagonal k, (Polynomial.hasseDeriv ij.1) f * (Polynomial.hasseDeriv ij.2) g",
+            "informal_description": "For any polynomials $ f, g \\in R[X] $, the $ k $-th Hasse derivative of the product $ f \\cdot g $ satisfies $$ D^{(k)}(f \\cdot g) = \\sum_{\\substack{i + j = k}} D^{(i)}(f) \\cdot D^{(j)}(g), $$ where the sum is taken over all pairs $ (i, j) $ of natural numbers such that $ i + j = k $. This expresses the Hasse derivative of a product as a sum over the antidiagonal decomposition of $ k $.",
+            "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          },
+          {
+            "formal_name": "Polynomial.sumIDeriv_derivative",
+            "informal_name": "Commutativity of Derivative and Sum of Iterated Derivatives for Polynomials",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (p : Polynomial R),\n  Polynomial.sumIDeriv (Polynomial.derivative p) = Polynomial.derivative (Polynomial.sumIDeriv p)",
+            "informal_description": "For any polynomial $ p \\in R[X] $, the sum of the iterated derivatives of its derivative equals the derivative of the sum of its iterated derivatives. Symbolically, $ \\sum_{i=0}^{\\infty} \\frac{d^i}{dx^i}(p') = \\frac{d}{dx}\\left( \\sum_{i=0}^{\\infty} \\frac{d^i p}{dx^i} \\right) $, where all sums terminate finitely due to polynomial degree constraints.",
+            "path": "Mathlib.Algebra.Polynomial.SumIteratedDerivative"
+          },
+          {
+            "formal_name": "LaurentSeries.hasseDeriv_comp_coeff",
+            "informal_name": "Composition of Hasse Derivatives and Binomial Coefficients in Laurent Series",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] {V : Type u_2} [inst_1 : AddCommGroup V] [inst_2 : Module R V] (k l : ℕ)\n  (f : LaurentSeries V) (n : ℤ),\n  ((LaurentSeries.hasseDeriv R k) ((LaurentSeries.hasseDeriv R l) f)).coeff n =\n    ((k + l).choose k • (LaurentSeries.hasseDeriv R (k + l)) f).coeff n",
+            "informal_description": "For any natural numbers $k, l$ and Laurent series $f$ with coefficients in an $R$-module $V$, the composition of the $k$-th and $l$-th Hasse derivatives satisfies $\\text{hasseDeriv}_k(\\text{hasseDeriv}_l f) = \\binom{k + l}{k} \\cdot \\text{hasseDeriv}_{k + l} f$. Specifically, for any integer exponent $n$, the coefficient of $n$ in the composed derivative equals $\\binom{k + l}{k}$ multiplied by the coefficient of $n$ in the $(k + l)$-th Hasse derivative of $f$.",
+            "path": "Mathlib.RingTheory.LaurentSeries"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "LeanSearch",
+    "form": "current",
+    "request": {
+      "query": "Hasse derivatives multi indices with disjoint supports compose to derivative of sum",
+      "num_results": 5
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.derivative_sum\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Derivative\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {ι : Type y} [inst : Semiring R] {s : Finset ι} {f : ι → Polynomial R},\\n  Polynomial.derivative (∑ b ∈ s, f b) = ∑ b ∈ s, Polynomial.derivative (f b)\"\n    },\n    {\n      \"name\": \"Polynomial.iterate_derivative_sum\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Derivative\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {ι : Type y} [inst : Semiring R] (k : ℕ) (s : Finset ι) (f : ι → Polynomial R),\\n  (⇑Polynomial.derivative)^[k] (∑ b ∈ s, f b) = ∑ b ∈ s, (⇑Polynomial.derivative)^[k] (f b)\"\n    },\n    {\n      \"name\": \"HasDerivAt.fun_sum\",\n      \"module_name\": \"Mathlib.Analysis.Calculus.Deriv.Add\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {𝕜 : Type u} [inst : NontriviallyNormedField 𝕜] {F : Type v} [inst_1 : NormedAddCommGroup F]\\n  [inst_2 : NormedSpace 𝕜 F] {x : 𝕜} {ι : Type u_1} {u : Finset ι} {A : ι → 𝕜 → F} {A' : ι → F},\\n  (∀ i ∈ u, HasDerivAt (A i) (A' i) x) → HasDerivAt (fun y => ∑ i ∈ u, A i y) (∑ i ∈ u, A' i) x\"\n    },\n    {\n      \"name\": \"HasStrictDerivAt.sum\",\n      \"module_name\": \"Mathlib.Analysis.Calculus.Deriv.Add\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {𝕜 : Type u} [inst : NontriviallyNormedField 𝕜] {F : Type v} [inst_1 : NormedAddCommGroup F]\\n  [inst_2 : NormedSpace 𝕜 F] {x : 𝕜} {ι : Type u_1} {u : Finset ι} {A : ι → 𝕜 → F} {A' : ι → F},\\n  (∀ i ∈ u, HasStrictDerivAt (A i) (A' i) x) → HasStrictDerivAt (∑ i ∈ u, A i) (∑ i ∈ u, A' i) x\"\n    },\n    {\n      \"name\": \"derivWithin_fun_sum\",\n      \"module_name\": \"Mathlib.Analysis.Calculus.Deriv.Add\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {𝕜 : Type u} [inst : NontriviallyNormedField 𝕜] {F : Type v} [inst_1 : NormedAddCommGroup F]\\n  [inst_2 : NormedSpace 𝕜 F] {x : 𝕜} {s : Set 𝕜} {ι : Type u_1} {u : Finset ι} {A : ι → 𝕜 → F},\\n  (∀ i ∈ u, DifferentiableWithinAt 𝕜 (A i) s x) →\\n    derivWithin (fun y => ∑ i ∈ u, A i y) s x = ∑ i ∈ u, derivWithin (A i) s x\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.derivative_sum",
+            "module_name": "Mathlib.Algebra.Polynomial.Derivative",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {ι : Type y} [inst : Semiring R] {s : Finset ι} {f : ι → Polynomial R},\n  Polynomial.derivative (∑ b ∈ s, f b) = ∑ b ∈ s, Polynomial.derivative (f b)"
+          },
+          {
+            "name": "Polynomial.iterate_derivative_sum",
+            "module_name": "Mathlib.Algebra.Polynomial.Derivative",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {ι : Type y} [inst : Semiring R] (k : ℕ) (s : Finset ι) (f : ι → Polynomial R),\n  (⇑Polynomial.derivative)^[k] (∑ b ∈ s, f b) = ∑ b ∈ s, (⇑Polynomial.derivative)^[k] (f b)"
+          },
+          {
+            "name": "HasDerivAt.fun_sum",
+            "module_name": "Mathlib.Analysis.Calculus.Deriv.Add",
+            "kind": "theorem",
+            "type": "∀ {𝕜 : Type u} [inst : NontriviallyNormedField 𝕜] {F : Type v} [inst_1 : NormedAddCommGroup F]\n  [inst_2 : NormedSpace 𝕜 F] {x : 𝕜} {ι : Type u_1} {u : Finset ι} {A : ι → 𝕜 → F} {A' : ι → F},\n  (∀ i ∈ u, HasDerivAt (A i) (A' i) x) → HasDerivAt (fun y => ∑ i ∈ u, A i y) (∑ i ∈ u, A' i) x"
+          },
+          {
+            "name": "HasStrictDerivAt.sum",
+            "module_name": "Mathlib.Analysis.Calculus.Deriv.Add",
+            "kind": "theorem",
+            "type": "∀ {𝕜 : Type u} [inst : NontriviallyNormedField 𝕜] {F : Type v} [inst_1 : NormedAddCommGroup F]\n  [inst_2 : NormedSpace 𝕜 F] {x : 𝕜} {ι : Type u_1} {u : Finset ι} {A : ι → 𝕜 → F} {A' : ι → F},\n  (∀ i ∈ u, HasStrictDerivAt (A i) (A' i) x) → HasStrictDerivAt (∑ i ∈ u, A i) (∑ i ∈ u, A' i) x"
+          },
+          {
+            "name": "derivWithin_fun_sum",
+            "module_name": "Mathlib.Analysis.Calculus.Deriv.Add",
+            "kind": "theorem",
+            "type": "∀ {𝕜 : Type u} [inst : NontriviallyNormedField 𝕜] {F : Type v} [inst_1 : NormedAddCommGroup F]\n  [inst_2 : NormedSpace 𝕜 F] {x : 𝕜} {s : Set 𝕜} {ι : Type u_1} {u : Finset ι} {A : ι → 𝕜 → F},\n  (∀ i ∈ u, DifferentiableWithinAt 𝕜 (A i) s x) →\n    derivWithin (fun y => ∑ i ∈ u, A i y) s x = ∑ i ∈ u, derivWithin (A i) s x"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "Finder",
+    "form": "literature",
+    "request": {
+      "query": "iterative higher divided partial derivatives independent variables compose",
+      "num_results": 5
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"SchwartzMap.iteratedPDeriv_succ_right\",\n      \"informal_name\": \"Successor Case for Iterated Partial Derivatives in Schwartz Maps\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {V : Type u_14} {E : Type u_15} [inst : LineDeriv V E E] {n : ℕ} (m : Fin (n + 1) → V) (f : E),\\n  LineDeriv.iteratedLineDerivOp m f =\\n    LineDeriv.iteratedLineDerivOp (Fin.init m) (LineDeriv.lineDerivOp (m (Fin.last n)) f)\",\n      \"informal_description\": \"For any natural number $n$, function $m : \\\\mathrm{Fin}(n+1) \\\\to V$, and element $f \\\\in E$, the $(n+1)$-th iterated linear derivative of $m$ evaluated at $f$ equals the composition of the linear derivative operation applied to the last component $m(\\\\mathrm{Fin.last}(n))$ and $f$, followed by the $n$-th iterated derivative of the restricted function $\\\\mathrm{Fin.init}(m)$.\",\n      \"path\": \"Mathlib.Analysis.Distribution.SchwartzSpace.Deriv\"\n    },\n    {\n      \"formal_name\": \"iteratedFDeriv_succ_apply_right\",\n      \"informal_name\": \"Recursive Formula for Iterated Fréchet Derivatives\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {𝕜 : Type u} [inst : NontriviallyNormedField 𝕜] {E : Type uE} [inst_1 : NormedAddCommGroup E]\\n  [inst_2 : NormedSpace 𝕜 E] {F : Type uF} [inst_3 : NormedAddCommGroup F] [inst_4 : NormedSpace 𝕜 F] {f : E → F}\\n  {x : E} {n : ℕ} (m : Fin (n + 1) → E),\\n  (iteratedFDeriv 𝕜 (n + 1) f x) m = ((iteratedFDeriv 𝕜 n (fun y => fderiv 𝕜 f y) x) (Fin.init m)) (m (Fin.last n))\",\n      \"informal_description\": \"For any natural number $n$ and function $m : \\\\mathrm{Fin}(n+1) \\\\to E$, the $(n+1)$th Fréchet derivative of $f$ at $x$ evaluated at $m$ equals the $n$th Fréchet derivative of the derivative function $Df$ at $x$, applied to the restriction of $m$ to $\\\\mathrm{Fin}(n)$ and the last element $m(n)$. Formally, $$D^{n+1}f(x)(m) = D^n(Df)(x)(\\\\mathrm{init}(m), m(\\\\mathrm{last}(n))).$$\",\n      \"path\": \"Mathlib.Analysis.Calculus.ContDiff.FTaylorSeries\"\n    },\n    {\n      \"formal_name\": \"SchwartzMap.iteratedPDeriv_succ_left\",\n      \"informal_name\": \"Successor Case for Iterated Partial Derivatives in Schwartz Space\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {V : Type u_14} {E : Type u_15} [inst : LineDeriv V E E] {n : ℕ} (m : Fin (n + 1) → V) (f : E),\\n  LineDeriv.iteratedLineDerivOp m f = LineDeriv.lineDerivOp (m 0) (LineDeriv.iteratedLineDerivOp (Fin.tail m) f)\",\n      \"informal_description\": \"For any natural number $n$, a map $m : \\\\mathrm{Fin}(n+1) \\\\to V$, and $f \\\\in E$, the $(n+1)$-th iterated linear derivative $\\\\mathrm{LineDeriv.iteratedLineDerivOp}(m, f)$ equals the composition of the first derivative $\\\\mathrm{LineDeriv.lineDerivOp}(m(0), \\\\cdot)$ with the $n$-th iterated derivative $\\\\mathrm{LineDeriv.iteratedLineDerivOp}(\\\\mathrm{Fin.tail}(m), f)$. This expresses the recursive structure of iterated derivatives in Schwartz space.\",\n      \"path\": \"Mathlib.Analysis.Distribution.SchwartzSpace.Deriv\"\n    },\n    {\n      \"formal_name\": \"iteratedFDeriv_succ_apply_left\",\n      \"informal_name\": \"Iterated Fréchet Derivative Successor Formula\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {𝕜 : Type u} [inst : NontriviallyNormedField 𝕜] {E : Type uE} [inst_1 : NormedAddCommGroup E]\\n  [inst_2 : NormedSpace 𝕜 E] {F : Type uF} [inst_3 : NormedAddCommGroup F] [inst_4 : NormedSpace 𝕜 F] {f : E → F}\\n  {x : E} {n : ℕ} (m : Fin (n + 1) → E),\\n  (iteratedFDeriv 𝕜 (n + 1) f x) m = ((fderiv 𝕜 (iteratedFDeriv 𝕜 n f) x) (m 0)) (Fin.tail m)\",\n      \"informal_description\": \"For a function $ f : E → F $ over a nontrivially normed field $ 𝕜 $, the $(n+1)$-th iterated Fréchet derivative at $ x $ evaluated on vectors $ m_0, m_1, \\\\dots, m_n $ equals the Fréchet derivative of the $ n $-th iterated derivative of $ f $ at $ x $, evaluated on $ m_0 $ and the $ n $-th iterated derivative of $ f $ at $ x $ evaluated on $ m_1, \\\\dots, m_n $. Formally: $$ D^{(n+1)}f(x)(m) = D(D^{(n)}f(x))(m_0, D^{(n)}f(x)(m_1, \\\\dots, m_n)) $$ where $ m : \\\\mathrm{Fin}(n+1) → E $ and $ \\\\mathrm{tail}(m) $ denotes the subsequence $ (m_1, \\\\dots, m_n) $.\",\n      \"path\": \"Mathlib.Analysis.Calculus.ContDiff.FTaylorSeries\"\n    },\n    {\n      \"formal_name\": \"LineDeriv.iteratedLineDerivOp_succ_left\",\n      \"informal_name\": \"Successor Case for Iterated Linear Derivatives\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {V : Type u_14} {E : Type u_15} [inst : LineDeriv V E E] {n : ℕ} (m : Fin (n + 1) → V) (f : E),\\n  LineDeriv.iteratedLineDerivOp m f = LineDeriv.lineDerivOp (m 0) (LineDeriv.iteratedLineDerivOp (Fin.tail m) f)\",\n      \"informal_description\": \"For any natural number $n$, function $m : \\\\mathrm{Fin}(n+1) \\\\to V$, and element $f \\\\in E$, the $n$-th iterated linear derivative $\\\\partial^{m} f$ equals the linear derivative $\\\\partial_{m(0)}$ applied to the $(n-1)$-th iterated derivative $\\\\partial^{\\\\mathrm{tail}(m)} f$, where $\\\\mathrm{tail}(m)$ discards the first element of $m$.\",\n      \"path\": \"Mathlib.Analysis.Distribution.DerivNotation\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "SchwartzMap.iteratedPDeriv_succ_right",
+            "informal_name": "Successor Case for Iterated Partial Derivatives in Schwartz Maps",
+            "kind": "theorem",
+            "type": "∀ {V : Type u_14} {E : Type u_15} [inst : LineDeriv V E E] {n : ℕ} (m : Fin (n + 1) → V) (f : E),\n  LineDeriv.iteratedLineDerivOp m f =\n    LineDeriv.iteratedLineDerivOp (Fin.init m) (LineDeriv.lineDerivOp (m (Fin.last n)) f)",
+            "informal_description": "For any natural number $n$, function $m : \\mathrm{Fin}(n+1) \\to V$, and element $f \\in E$, the $(n+1)$-th iterated linear derivative of $m$ evaluated at $f$ equals the composition of the linear derivative operation applied to the last component $m(\\mathrm{Fin.last}(n))$ and $f$, followed by the $n$-th iterated derivative of the restricted function $\\mathrm{Fin.init}(m)$.",
+            "path": "Mathlib.Analysis.Distribution.SchwartzSpace.Deriv"
+          },
+          {
+            "formal_name": "iteratedFDeriv_succ_apply_right",
+            "informal_name": "Recursive Formula for Iterated Fréchet Derivatives",
+            "kind": "theorem",
+            "type": "∀ {𝕜 : Type u} [inst : NontriviallyNormedField 𝕜] {E : Type uE} [inst_1 : NormedAddCommGroup E]\n  [inst_2 : NormedSpace 𝕜 E] {F : Type uF} [inst_3 : NormedAddCommGroup F] [inst_4 : NormedSpace 𝕜 F] {f : E → F}\n  {x : E} {n : ℕ} (m : Fin (n + 1) → E),\n  (iteratedFDeriv 𝕜 (n + 1) f x) m = ((iteratedFDeriv 𝕜 n (fun y => fderiv 𝕜 f y) x) (Fin.init m)) (m (Fin.last n))",
+            "informal_description": "For any natural number $n$ and function $m : \\mathrm{Fin}(n+1) \\to E$, the $(n+1)$th Fréchet derivative of $f$ at $x$ evaluated at $m$ equals the $n$th Fréchet derivative of the derivative function $Df$ at $x$, applied to the restriction of $m$ to $\\mathrm{Fin}(n)$ and the last element $m(n)$. Formally, $$D^{n+1}f(x)(m) = D^n(Df)(x)(\\mathrm{init}(m), m(\\mathrm{last}(n))).$$",
+            "path": "Mathlib.Analysis.Calculus.ContDiff.FTaylorSeries"
+          },
+          {
+            "formal_name": "SchwartzMap.iteratedPDeriv_succ_left",
+            "informal_name": "Successor Case for Iterated Partial Derivatives in Schwartz Space",
+            "kind": "theorem",
+            "type": "∀ {V : Type u_14} {E : Type u_15} [inst : LineDeriv V E E] {n : ℕ} (m : Fin (n + 1) → V) (f : E),\n  LineDeriv.iteratedLineDerivOp m f = LineDeriv.lineDerivOp (m 0) (LineDeriv.iteratedLineDerivOp (Fin.tail m) f)",
+            "informal_description": "For any natural number $n$, a map $m : \\mathrm{Fin}(n+1) \\to V$, and $f \\in E$, the $(n+1)$-th iterated linear derivative $\\mathrm{LineDeriv.iteratedLineDerivOp}(m, f)$ equals the composition of the first derivative $\\mathrm{LineDeriv.lineDerivOp}(m(0), \\cdot)$ with the $n$-th iterated derivative $\\mathrm{LineDeriv.iteratedLineDerivOp}(\\mathrm{Fin.tail}(m), f)$. This expresses the recursive structure of iterated derivatives in Schwartz space.",
+            "path": "Mathlib.Analysis.Distribution.SchwartzSpace.Deriv"
+          },
+          {
+            "formal_name": "iteratedFDeriv_succ_apply_left",
+            "informal_name": "Iterated Fréchet Derivative Successor Formula",
+            "kind": "theorem",
+            "type": "∀ {𝕜 : Type u} [inst : NontriviallyNormedField 𝕜] {E : Type uE} [inst_1 : NormedAddCommGroup E]\n  [inst_2 : NormedSpace 𝕜 E] {F : Type uF} [inst_3 : NormedAddCommGroup F] [inst_4 : NormedSpace 𝕜 F] {f : E → F}\n  {x : E} {n : ℕ} (m : Fin (n + 1) → E),\n  (iteratedFDeriv 𝕜 (n + 1) f x) m = ((fderiv 𝕜 (iteratedFDeriv 𝕜 n f) x) (m 0)) (Fin.tail m)",
+            "informal_description": "For a function $ f : E → F $ over a nontrivially normed field $ 𝕜 $, the $(n+1)$-th iterated Fréchet derivative at $ x $ evaluated on vectors $ m_0, m_1, \\dots, m_n $ equals the Fréchet derivative of the $ n $-th iterated derivative of $ f $ at $ x $, evaluated on $ m_0 $ and the $ n $-th iterated derivative of $ f $ at $ x $ evaluated on $ m_1, \\dots, m_n $. Formally: $$ D^{(n+1)}f(x)(m) = D(D^{(n)}f(x))(m_0, D^{(n)}f(x)(m_1, \\dots, m_n)) $$ where $ m : \\mathrm{Fin}(n+1) → E $ and $ \\mathrm{tail}(m) $ denotes the subsequence $ (m_1, \\dots, m_n) $.",
+            "path": "Mathlib.Analysis.Calculus.ContDiff.FTaylorSeries"
+          },
+          {
+            "formal_name": "LineDeriv.iteratedLineDerivOp_succ_left",
+            "informal_name": "Successor Case for Iterated Linear Derivatives",
+            "kind": "theorem",
+            "type": "∀ {V : Type u_14} {E : Type u_15} [inst : LineDeriv V E E] {n : ℕ} (m : Fin (n + 1) → V) (f : E),\n  LineDeriv.iteratedLineDerivOp m f = LineDeriv.lineDerivOp (m 0) (LineDeriv.iteratedLineDerivOp (Fin.tail m) f)",
+            "informal_description": "For any natural number $n$, function $m : \\mathrm{Fin}(n+1) \\to V$, and element $f \\in E$, the $n$-th iterated linear derivative $\\partial^{m} f$ equals the linear derivative $\\partial_{m(0)}$ applied to the $(n-1)$-th iterated derivative $\\partial^{\\mathrm{tail}(m)} f$, where $\\mathrm{tail}(m)$ discards the first element of $m$.",
+            "path": "Mathlib.Analysis.Distribution.DerivNotation"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "LeanSearch",
+    "form": "literature",
+    "request": {
+      "query": "iterative higher divided partial derivatives independent variables compose",
+      "num_results": 5
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"iteratedFDerivWithin_succ_eq_comp_right\",\n      \"module_name\": \"Mathlib.Analysis.Calculus.ContDiff.FTaylorSeries\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {𝕜 : Type u} [inst : NontriviallyNormedField 𝕜] {E : Type uE} [inst_1 : NormedAddCommGroup E]\\n  [inst_2 : NormedSpace 𝕜 E] {F : Type uF} [inst_3 : NormedAddCommGroup F] [inst_4 : NormedSpace 𝕜 F] {s : Set E}\\n  {f : E → F} {x : E} {n : ℕ},\\n  UniqueDiffOn 𝕜 s →\\n    x ∈ s →\\n      iteratedFDerivWithin 𝕜 (n + 1) f s x =\\n        (⇑(continuousMultilinearCurryRightEquiv' 𝕜 n E F).symm ∘\\n            iteratedFDerivWithin 𝕜 n (fun y => fderivWithin 𝕜 f s y) s)\\n          x\"\n    },\n    {\n      \"name\": \"iteratedDerivWithin_scomp_eq_sum_orderedFinpartition\",\n      \"module_name\": \"Mathlib.Analysis.Calculus.IteratedDeriv.FaaDiBruno\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {𝕜 : Type u_1} {E : Type u_2} [inst : NontriviallyNormedField 𝕜] [inst_1 : NormedAddCommGroup E]\\n  [inst_2 : NormedSpace 𝕜 E] {g : 𝕜 → E} {f : 𝕜 → 𝕜} {s t : Set 𝕜} {x : 𝕜} {n : WithTop ℕ∞} {i : ℕ},\\n  ContDiffWithinAt 𝕜 n g t (f x) →\\n    ContDiffWithinAt 𝕜 n f s x →\\n      UniqueDiffOn 𝕜 t →\\n        UniqueDiffOn 𝕜 s →\\n          x ∈ s →\\n            Set.MapsTo f s t →\\n              ↑i ≤ n →\\n                iteratedDerivWithin i (g ∘ f) s x =\\n                  ∑ c, (∏ j, iteratedDerivWithin (c.p...\"\n    },\n    {\n      \"name\": \"iteratedDeriv_scomp_eq_sum_orderedFinpartition\",\n      \"module_name\": \"Mathlib.Analysis.Calculus.IteratedDeriv.FaaDiBruno\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {𝕜 : Type u_1} {E : Type u_2} [inst : NontriviallyNormedField 𝕜] [inst_1 : NormedAddCommGroup E]\\n  [inst_2 : NormedSpace 𝕜 E] {g : 𝕜 → E} {f : 𝕜 → 𝕜} {x : 𝕜} {n : WithTop ℕ∞} {i : ℕ},\\n  ContDiffAt 𝕜 n g (f x) →\\n    ContDiffAt 𝕜 n f x →\\n      ↑i ≤ n → iteratedDeriv i (g ∘ f) x = ∑ c, (∏ j, iteratedDeriv (c.partSize j) f x) • iteratedDeriv c.length g (f x)\"\n    },\n    {\n      \"name\": \"iteratedDeriv_comp_eq_sum_orderedFinpartition\",\n      \"module_name\": \"Mathlib.Analysis.Calculus.IteratedDeriv.FaaDiBruno\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {𝕜 : Type u_1} [inst : NontriviallyNormedField 𝕜] {g f : 𝕜 → 𝕜} {x : 𝕜} {n : WithTop ℕ∞} {i : ℕ},\\n  ContDiffAt 𝕜 n g (f x) →\\n    ContDiffAt 𝕜 n f x →\\n      ↑i ≤ n → iteratedDeriv i (g ∘ f) x = ∑ c, iteratedDeriv c.length g (f x) * ∏ j, iteratedDeriv (c.partSize j) f x\"\n    },\n    {\n      \"name\": \"iteratedDerivWithin_vcomp_eq_sum_orderedFinpartition\",\n      \"module_name\": \"Mathlib.Analysis.Calculus.IteratedDeriv.FaaDiBruno\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {𝕜 : Type u_1} {E : Type u_2} {F : Type u_3} [inst : NontriviallyNormedField 𝕜] [inst_1 : NormedAddCommGroup E]\\n  [inst_2 : NormedSpace 𝕜 E] [inst_3 : NormedAddCommGroup F] [inst_4 : NormedSpace 𝕜 F] {g : E → F} {f : 𝕜 → E}\\n  {s : Set 𝕜} {t : Set E} {x : 𝕜} {n : WithTop ℕ∞} {i : ℕ},\\n  ContDiffWithinAt 𝕜 n g t (f x) →\\n    ContDiffWithinAt 𝕜 n f s x →\\n      UniqueDiffOn 𝕜 t →\\n        UniqueDiffOn 𝕜 s →\\n          x ∈ s →\\n            Set.MapsTo f s t →\\n              ↑i ≤ n →\\n                ite...\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "iteratedFDerivWithin_succ_eq_comp_right",
+            "module_name": "Mathlib.Analysis.Calculus.ContDiff.FTaylorSeries",
+            "kind": "theorem",
+            "type": "∀ {𝕜 : Type u} [inst : NontriviallyNormedField 𝕜] {E : Type uE} [inst_1 : NormedAddCommGroup E]\n  [inst_2 : NormedSpace 𝕜 E] {F : Type uF} [inst_3 : NormedAddCommGroup F] [inst_4 : NormedSpace 𝕜 F] {s : Set E}\n  {f : E → F} {x : E} {n : ℕ},\n  UniqueDiffOn 𝕜 s →\n    x ∈ s →\n      iteratedFDerivWithin 𝕜 (n + 1) f s x =\n        (⇑(continuousMultilinearCurryRightEquiv' 𝕜 n E F).symm ∘\n            iteratedFDerivWithin 𝕜 n (fun y => fderivWithin 𝕜 f s y) s)\n          x"
+          },
+          {
+            "name": "iteratedDerivWithin_scomp_eq_sum_orderedFinpartition",
+            "module_name": "Mathlib.Analysis.Calculus.IteratedDeriv.FaaDiBruno",
+            "kind": "theorem",
+            "type": "∀ {𝕜 : Type u_1} {E : Type u_2} [inst : NontriviallyNormedField 𝕜] [inst_1 : NormedAddCommGroup E]\n  [inst_2 : NormedSpace 𝕜 E] {g : 𝕜 → E} {f : 𝕜 → 𝕜} {s t : Set 𝕜} {x : 𝕜} {n : WithTop ℕ∞} {i : ℕ},\n  ContDiffWithinAt 𝕜 n g t (f x) →\n    ContDiffWithinAt 𝕜 n f s x →\n      UniqueDiffOn 𝕜 t →\n        UniqueDiffOn 𝕜 s →\n          x ∈ s →\n            Set.MapsTo f s t →\n              ↑i ≤ n →\n                iteratedDerivWithin i (g ∘ f) s x =\n                  ∑ c, (∏ j, iteratedDerivWithin (c.p..."
+          },
+          {
+            "name": "iteratedDeriv_scomp_eq_sum_orderedFinpartition",
+            "module_name": "Mathlib.Analysis.Calculus.IteratedDeriv.FaaDiBruno",
+            "kind": "theorem",
+            "type": "∀ {𝕜 : Type u_1} {E : Type u_2} [inst : NontriviallyNormedField 𝕜] [inst_1 : NormedAddCommGroup E]\n  [inst_2 : NormedSpace 𝕜 E] {g : 𝕜 → E} {f : 𝕜 → 𝕜} {x : 𝕜} {n : WithTop ℕ∞} {i : ℕ},\n  ContDiffAt 𝕜 n g (f x) →\n    ContDiffAt 𝕜 n f x →\n      ↑i ≤ n → iteratedDeriv i (g ∘ f) x = ∑ c, (∏ j, iteratedDeriv (c.partSize j) f x) • iteratedDeriv c.length g (f x)"
+          },
+          {
+            "name": "iteratedDeriv_comp_eq_sum_orderedFinpartition",
+            "module_name": "Mathlib.Analysis.Calculus.IteratedDeriv.FaaDiBruno",
+            "kind": "theorem",
+            "type": "∀ {𝕜 : Type u_1} [inst : NontriviallyNormedField 𝕜] {g f : 𝕜 → 𝕜} {x : 𝕜} {n : WithTop ℕ∞} {i : ℕ},\n  ContDiffAt 𝕜 n g (f x) →\n    ContDiffAt 𝕜 n f x →\n      ↑i ≤ n → iteratedDeriv i (g ∘ f) x = ∑ c, iteratedDeriv c.length g (f x) * ∏ j, iteratedDeriv (c.partSize j) f x"
+          },
+          {
+            "name": "iteratedDerivWithin_vcomp_eq_sum_orderedFinpartition",
+            "module_name": "Mathlib.Analysis.Calculus.IteratedDeriv.FaaDiBruno",
+            "kind": "theorem",
+            "type": "∀ {𝕜 : Type u_1} {E : Type u_2} {F : Type u_3} [inst : NontriviallyNormedField 𝕜] [inst_1 : NormedAddCommGroup E]\n  [inst_2 : NormedSpace 𝕜 E] [inst_3 : NormedAddCommGroup F] [inst_4 : NormedSpace 𝕜 F] {g : E → F} {f : 𝕜 → E}\n  {s : Set 𝕜} {t : Set E} {x : 𝕜} {n : WithTop ℕ∞} {i : ℕ},\n  ContDiffWithinAt 𝕜 n g t (f x) →\n    ContDiffWithinAt 𝕜 n f s x →\n      UniqueDiffOn 𝕜 t →\n        UniqueDiffOn 𝕜 s →\n          x ∈ s →\n            Set.MapsTo f s t →\n              ↑i ≤ n →\n                ite..."
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "Finder",
+    "form": "abstract",
+    "request": {
+      "query": "LinearMap composition coefficient shift operators disjoint Finsupp support binomial product equals one",
+      "num_results": 5
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"HVertexOperator.coeff_comp\",\n      \"informal_name\": \"Composition of H-Vertex Operators\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {Γ : Type u_5} {Γ' : Type u_6} [inst : PartialOrder Γ] [inst_1 : PartialOrder Γ'] {R : Type u_7} [inst_2 : CommRing R]\\n  {U : Type u_8} {V : Type u_9} {W : Type u_10} [inst_3 : AddCommGroup U] [inst_4 : Module R U]\\n  [inst_5 : AddCommGroup V] [inst_6 : Module R V] [inst_7 : AddCommGroup W] [inst_8 : Module R W]\\n  (A : HVertexOperator Γ R V W) (B : HVertexOperator Γ' R U V) (g : Lex (Γ' × Γ)),\\n  HVertexOperator.coeff (A.comp B) g = HVertexOperator.coeff A (ofLex g).2 ∘ₗ HVertexOperator.coeff...\",\n      \"informal_description\": \"For H-vertex operators $ A: V\\\\llbracket \\\\Gamma \\\\rrbracket \\\\to W\\\\llbracket \\\\Gamma \\\\rrbracket $ and $ B: U\\\\llbracket \\\\Gamma' \\\\rrbracket \\\\to V\\\\llbracket \\\\Gamma' \\\\rrbracket $, the coefficient of their composition $ A \\\\circ B $ at position $ g \\\\in \\\\Gamma' \\\\times_\\\\ell \\\\Gamma $ equals the composition of $ A $'s coefficient at $ (\\\\mathrm{ofLex}\\\\, g)_2 $ with $ B $'s coefficient at $ (\\\\mathrm{ofLex}\\\\, g)_1 $, i.e., $ (A \\\\circ B)_g = A_{(\\\\mathrm{ofLex}\\\\, g)_2} \\\\circ B_{(\\\\mathrm{ofLex}\\\\, g)_1} $.\",\n      \"path\": \"Mathlib.Algebra.Vertex.HVertexOperator\"\n    },\n    {\n      \"formal_name\": \"MvPowerSeries.coeff_comp_monomial\",\n      \"informal_name\": \"Composition of Coefficient and Monomial Maps is Identity\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (n : σ →₀ ℕ),\\n  MvPowerSeries.coeff n ∘ₗ MvPowerSeries.monomial n = LinearMap.id\",\n      \"informal_description\": \"For each monomial index $ n $, the composition of the linear map extracting the coefficient at $ n $ with the linear map inserting a coefficient at $ n $ equals the identity map on the coefficient space. Formally, $ \\\\text{coeff}_n \\\\circ \\\\text{monomial}_n = \\\\text{id} $.\",\n      \"path\": \"Mathlib.RingTheory.MvPowerSeries.Basic\"\n    },\n    {\n      \"formal_name\": \"PowerSeries.coeff_comp_monomial\",\n      \"informal_name\": \"Composition of Coefficient and Monomial Maps Equals Identity\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (n : ℕ), PowerSeries.coeff n ∘ₗ PowerSeries.monomial n = LinearMap.id\",\n      \"informal_description\": \"For each natural number $ n $, the composition of the linear map that extracts the coefficient at exponent $ n $ from a univariate power series and the linear map that constructs the monomial with exponent $ n $ results in the identity linear map on the semiring $ R $. In symbols, $ \\\\text{coeff}_n \\\\circ \\\\text{monomial}_n = \\\\text{id}_R $.\",\n      \"path\": \"Mathlib.RingTheory.PowerSeries.Basic\"\n    },\n    {\n      \"formal_name\": \"LinearMap.prodOfFinsuppNat\",\n      \"informal_name\": \"Linear map from finite support functions to product module $ P \\\\times M $\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} →\\n  {M : Type u_2} →\\n    {P : Type u_4} →\\n      [inst : Semiring R] →\\n        [inst_1 : AddCommMonoid M] →\\n          [inst_2 : Module R M] →\\n            [inst_3 : AddCommMonoid P] → [inst_4 : Module R P] → (P × M →ₗ[R] M) → (ℕ →₀ P) →ₗ[R] P × M\",\n      \"informal_description\": \"The linear map sends each finite support function $ \\\\mathbb{N} \\\\to_0 P $ to a pair in $ P \\\\times M $, where the first component is the sum of the function's values in $ P $ and the second component is the sum of $ n \\\\cdot f(p_n) $ for each $ n $ in the support, with $ f: P \\\\to M $ being a given linear map and $ \\\\cdot $ denoting scalar multiplication.\",\n      \"path\": \"Mathlib.LinearAlgebra.Finsupp.Pi\"\n    },\n    {\n      \"formal_name\": \"HVertexOperator.of_coeff_coeff\",\n      \"informal_name\": \"Reconstruction of HVertexOperator from Coefficients and Partially Well-Ordered Support\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {Γ : Type u_1} [inst : PartialOrder Γ] {R : Type u_2} {V : Type u_3} {W : Type u_4} [inst_1 : CommRing R]\\n  [inst_2 : AddCommGroup V] [inst_3 : Module R V] [inst_4 : AddCommGroup W] [inst_5 : Module R W]\\n  (A : HVertexOperator Γ R V W), HVertexOperator.of_coeff (HVertexOperator.coeff A) ⋯ = A\",\n      \"informal_description\": \"For any Hahn vertex operator $ A $ with exponents in a partially ordered type $ \\\\Gamma $, coefficients in an $ R $-module $ V $, and target module $ W $, applying the vertex operator construction to the coefficients of $ A $ and its partially well-ordered support yields $ A $ itself.\",\n      \"path\": \"Mathlib.Algebra.Vertex.HVertexOperator\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "HVertexOperator.coeff_comp",
+            "informal_name": "Composition of H-Vertex Operators",
+            "kind": "theorem",
+            "type": "∀ {Γ : Type u_5} {Γ' : Type u_6} [inst : PartialOrder Γ] [inst_1 : PartialOrder Γ'] {R : Type u_7} [inst_2 : CommRing R]\n  {U : Type u_8} {V : Type u_9} {W : Type u_10} [inst_3 : AddCommGroup U] [inst_4 : Module R U]\n  [inst_5 : AddCommGroup V] [inst_6 : Module R V] [inst_7 : AddCommGroup W] [inst_8 : Module R W]\n  (A : HVertexOperator Γ R V W) (B : HVertexOperator Γ' R U V) (g : Lex (Γ' × Γ)),\n  HVertexOperator.coeff (A.comp B) g = HVertexOperator.coeff A (ofLex g).2 ∘ₗ HVertexOperator.coeff...",
+            "informal_description": "For H-vertex operators $ A: V\\llbracket \\Gamma \\rrbracket \\to W\\llbracket \\Gamma \\rrbracket $ and $ B: U\\llbracket \\Gamma' \\rrbracket \\to V\\llbracket \\Gamma' \\rrbracket $, the coefficient of their composition $ A \\circ B $ at position $ g \\in \\Gamma' \\times_\\ell \\Gamma $ equals the composition of $ A $'s coefficient at $ (\\mathrm{ofLex}\\, g)_2 $ with $ B $'s coefficient at $ (\\mathrm{ofLex}\\, g)_1 $, i.e., $ (A \\circ B)_g = A_{(\\mathrm{ofLex}\\, g)_2} \\circ B_{(\\mathrm{ofLex}\\, g)_1} $.",
+            "path": "Mathlib.Algebra.Vertex.HVertexOperator"
+          },
+          {
+            "formal_name": "MvPowerSeries.coeff_comp_monomial",
+            "informal_name": "Composition of Coefficient and Monomial Maps is Identity",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (n : σ →₀ ℕ),\n  MvPowerSeries.coeff n ∘ₗ MvPowerSeries.monomial n = LinearMap.id",
+            "informal_description": "For each monomial index $ n $, the composition of the linear map extracting the coefficient at $ n $ with the linear map inserting a coefficient at $ n $ equals the identity map on the coefficient space. Formally, $ \\text{coeff}_n \\circ \\text{monomial}_n = \\text{id} $.",
+            "path": "Mathlib.RingTheory.MvPowerSeries.Basic"
+          },
+          {
+            "formal_name": "PowerSeries.coeff_comp_monomial",
+            "informal_name": "Composition of Coefficient and Monomial Maps Equals Identity",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (n : ℕ), PowerSeries.coeff n ∘ₗ PowerSeries.monomial n = LinearMap.id",
+            "informal_description": "For each natural number $ n $, the composition of the linear map that extracts the coefficient at exponent $ n $ from a univariate power series and the linear map that constructs the monomial with exponent $ n $ results in the identity linear map on the semiring $ R $. In symbols, $ \\text{coeff}_n \\circ \\text{monomial}_n = \\text{id}_R $.",
+            "path": "Mathlib.RingTheory.PowerSeries.Basic"
+          },
+          {
+            "formal_name": "LinearMap.prodOfFinsuppNat",
+            "informal_name": "Linear map from finite support functions to product module $ P \\times M $",
+            "kind": "definition",
+            "type": "{R : Type u_1} →\n  {M : Type u_2} →\n    {P : Type u_4} →\n      [inst : Semiring R] →\n        [inst_1 : AddCommMonoid M] →\n          [inst_2 : Module R M] →\n            [inst_3 : AddCommMonoid P] → [inst_4 : Module R P] → (P × M →ₗ[R] M) → (ℕ →₀ P) →ₗ[R] P × M",
+            "informal_description": "The linear map sends each finite support function $ \\mathbb{N} \\to_0 P $ to a pair in $ P \\times M $, where the first component is the sum of the function's values in $ P $ and the second component is the sum of $ n \\cdot f(p_n) $ for each $ n $ in the support, with $ f: P \\to M $ being a given linear map and $ \\cdot $ denoting scalar multiplication.",
+            "path": "Mathlib.LinearAlgebra.Finsupp.Pi"
+          },
+          {
+            "formal_name": "HVertexOperator.of_coeff_coeff",
+            "informal_name": "Reconstruction of HVertexOperator from Coefficients and Partially Well-Ordered Support",
+            "kind": "theorem",
+            "type": "∀ {Γ : Type u_1} [inst : PartialOrder Γ] {R : Type u_2} {V : Type u_3} {W : Type u_4} [inst_1 : CommRing R]\n  [inst_2 : AddCommGroup V] [inst_3 : Module R V] [inst_4 : AddCommGroup W] [inst_5 : Module R W]\n  (A : HVertexOperator Γ R V W), HVertexOperator.of_coeff (HVertexOperator.coeff A) ⋯ = A",
+            "informal_description": "For any Hahn vertex operator $ A $ with exponents in a partially ordered type $ \\Gamma $, coefficients in an $ R $-module $ V $, and target module $ W $, applying the vertex operator construction to the coefficients of $ A $ and its partially well-ordered support yields $ A $ itself.",
+            "path": "Mathlib.Algebra.Vertex.HVertexOperator"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "LeanSearch",
+    "form": "abstract",
+    "request": {
+      "query": "LinearMap composition coefficient shift operators disjoint Finsupp support binomial product equals one",
+      "num_results": 5
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"LinearMap.term_∘ₛₗ_\",\n      \"module_name\": \"Mathlib.Algebra.Module.LinearMap.Defs\",\n      \"kind\": \"definition\",\n      \"type\": \"Lean.TrailingParserDescr\"\n    },\n    {\n      \"name\": \"DFinsupp.mapRange.linearMap_comp\",\n      \"module_name\": \"Mathlib.LinearAlgebra.DFinsupp\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {R : Type u_3} [inst : Semiring R] {β : ι → Type u_7} {β₁ : ι → Type u_8} {β₂ : ι → Type u_9}\\n  [inst_1 : (i : ι) → AddCommMonoid (β i)] [inst_2 : (i : ι) → AddCommMonoid (β₁ i)]\\n  [inst_3 : (i : ι) → AddCommMonoid (β₂ i)] [inst_4 : (i : ι) → Module R (β i)] [inst_5 : (i : ι) → Module R (β₁ i)]\\n  [inst_6 : (i : ι) → Module R (β₂ i)] (f : (i : ι) → β₁ i →ₗ[R] β₂ i) (f₂ : (i : ι) → β i →ₗ[R] β₁ i),\\n  (DFinsupp.mapRange.linearMap fun i => f i ∘ₗ f₂ i) = DFinsupp.mapRange.linearM...\"\n    },\n    {\n      \"name\": \"Finsupp.lmapDomain_comp\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Finsupp.Defs\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} (M : Type u_2) (R : Type u_5) [inst : Semiring R] [inst_1 : AddCommMonoid M] [inst_2 : Module R M]\\n  {α' : Type u_9} {α'' : Type u_10} (f : α → α') (g : α' → α''),\\n  Finsupp.lmapDomain M R (g ∘ f) = Finsupp.lmapDomain M R g ∘ₗ Finsupp.lmapDomain M R f\"\n    },\n    {\n      \"name\": \"MvPowerSeries.coeff_comp_monomial\",\n      \"module_name\": \"Mathlib.RingTheory.MvPowerSeries.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (n : σ →₀ ℕ),\\n  MvPowerSeries.coeff n ∘ₗ MvPowerSeries.monomial n = LinearMap.id\"\n    },\n    {\n      \"name\": \"DFinsupp.sum_mapRange_index.linearMap\",\n      \"module_name\": \"Mathlib.LinearAlgebra.DFinsupp\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {R : Type u_3} {N : Type u_6} [inst : Semiring R] [inst_1 : AddCommMonoid N] [inst_2 : Module R N]\\n  {β₁ : ι → Type u_8} {β₂ : ι → Type u_9} [inst_3 : (i : ι) → AddCommMonoid (β₁ i)]\\n  [inst_4 : (i : ι) → AddCommMonoid (β₂ i)] [inst_5 : (i : ι) → Module R (β₁ i)] [inst_6 : (i : ι) → Module R (β₂ i)]\\n  [inst_7 : DecidableEq ι] {f : (i : ι) → β₁ i →ₗ[R] β₂ i} {h : (i : ι) → β₂ i →ₗ[R] N} {l : Π₀ (i : ι), β₁ i},\\n  ((DFinsupp.lsum ℕ) h) ((DFinsupp.mapRange.linearMap f) l) = ((DFi...\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "LinearMap.term_∘ₛₗ_",
+            "module_name": "Mathlib.Algebra.Module.LinearMap.Defs",
+            "kind": "definition",
+            "type": "Lean.TrailingParserDescr"
+          },
+          {
+            "name": "DFinsupp.mapRange.linearMap_comp",
+            "module_name": "Mathlib.LinearAlgebra.DFinsupp",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_1} {R : Type u_3} [inst : Semiring R] {β : ι → Type u_7} {β₁ : ι → Type u_8} {β₂ : ι → Type u_9}\n  [inst_1 : (i : ι) → AddCommMonoid (β i)] [inst_2 : (i : ι) → AddCommMonoid (β₁ i)]\n  [inst_3 : (i : ι) → AddCommMonoid (β₂ i)] [inst_4 : (i : ι) → Module R (β i)] [inst_5 : (i : ι) → Module R (β₁ i)]\n  [inst_6 : (i : ι) → Module R (β₂ i)] (f : (i : ι) → β₁ i →ₗ[R] β₂ i) (f₂ : (i : ι) → β i →ₗ[R] β₁ i),\n  (DFinsupp.mapRange.linearMap fun i => f i ∘ₗ f₂ i) = DFinsupp.mapRange.linearM..."
+          },
+          {
+            "name": "Finsupp.lmapDomain_comp",
+            "module_name": "Mathlib.LinearAlgebra.Finsupp.Defs",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} (M : Type u_2) (R : Type u_5) [inst : Semiring R] [inst_1 : AddCommMonoid M] [inst_2 : Module R M]\n  {α' : Type u_9} {α'' : Type u_10} (f : α → α') (g : α' → α''),\n  Finsupp.lmapDomain M R (g ∘ f) = Finsupp.lmapDomain M R g ∘ₗ Finsupp.lmapDomain M R f"
+          },
+          {
+            "name": "MvPowerSeries.coeff_comp_monomial",
+            "module_name": "Mathlib.RingTheory.MvPowerSeries.Basic",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (n : σ →₀ ℕ),\n  MvPowerSeries.coeff n ∘ₗ MvPowerSeries.monomial n = LinearMap.id"
+          },
+          {
+            "name": "DFinsupp.sum_mapRange_index.linearMap",
+            "module_name": "Mathlib.LinearAlgebra.DFinsupp",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_1} {R : Type u_3} {N : Type u_6} [inst : Semiring R] [inst_1 : AddCommMonoid N] [inst_2 : Module R N]\n  {β₁ : ι → Type u_8} {β₂ : ι → Type u_9} [inst_3 : (i : ι) → AddCommMonoid (β₁ i)]\n  [inst_4 : (i : ι) → AddCommMonoid (β₂ i)] [inst_5 : (i : ι) → Module R (β₁ i)] [inst_6 : (i : ι) → Module R (β₂ i)]\n  [inst_7 : DecidableEq ι] {f : (i : ι) → β₁ i →ₗ[R] β₂ i} {h : (i : ι) → β₂ i →ₗ[R] N} {l : Π₀ (i : ι), β₁ i},\n  ((DFinsupp.lsum ℕ) h) ((DFinsupp.mapRange.linearMap f) l) = ((DFi..."
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "Loogle",
+    "form": "current",
+    "request": {
+      "query": "\"hasseDeriv\", \"disjoint\"",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": []\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": []
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "local",
+    "form": "current",
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.hasseDeriv_hasseDeriv_of_disjoint\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/HasseDeriv.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.hasseDeriv_hasseDeriv_of_disjoint",
+            "kind": "theorem",
+            "file": "Roth/HasseDeriv.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    },
+    "request": {
+      "query": "hasseDeriv_hasseDeriv_of_disjoint",
+      "project_root": "/Users/ramin/LEAN/Roth",
+      "limit": 8
+    }
+  },
+  {
+    "method": "Loogle",
+    "form": "literature",
+    "request": {
+      "query": "Polynomial.hasseDeriv (_), Polynomial.hasseDeriv (_)",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.hasseDeriv_one\",\n      \"type\": \" {R : Type u_1} [Semiring R] : Polynomial.hasseDeriv 1 = Polynomial.derivative\",\n      \"module\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"name\": \"Polynomial.hasseDeriv_zero\",\n      \"type\": \" {R : Type u_1} [Semiring R] : Polynomial.hasseDeriv 0 = LinearMap.id\",\n      \"module\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"name\": \"Polynomial.hasseDeriv_zero'\",\n      \"type\": \" {R : Type u_1} [Semiring R] (f : Polynomial R) : (Polynomial.hasseDeriv 0) f = f\",\n      \"module\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"name\": \"Polynomial.natDegree_hasseDeriv_le\",\n      \"type\": \" {R : Type u_1} [Semiring R] (p : Polynomial R) (n : ℕ) : ((Polynomial.hasseDeriv n) p).natDegree ≤ p.natDegree - n\",\n      \"module\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"name\": \"Polynomial.hasseDeriv_X\",\n      \"type\": \" {R : Type u_1} [Semiring R] (k : ℕ) (hk : 1 < k) : (Polynomial.hasseDeriv k) Polynomial.X = 0\",\n      \"module\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"name\": \"Polynomial.hasseDeriv_eq_zero_of_lt_natDegree\",\n      \"type\": \" {R : Type u_1} [Semiring R] (p : Polynomial R) (n : ℕ) (h : p.natDegree < n) : (Polynomial.hasseDeriv n) p = 0\",\n      \"module\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"name\": \"Polynomial.natDegree_hasseDeriv\",\n      \"type\": \" {R : Type u_1} [Semiring R] [HasUniqueDiv R] (p : Polynomial R) (n : ℕ) : ((Polynomial.hasseDeriv n) p).natDegree = p.natDegree - n\",\n      \"module\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"name\": \"Polynomial.hasseDeriv_apply_one\",\n      \"type\": \" {R : Type u_1} [Semiring R] (k : ℕ) (hk : 0 < k) : (Polynomial.hasseDeriv k) 1 = 0\",\n      \"module\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.hasseDeriv_one",
+            "type": " {R : Type u_1} [Semiring R] : Polynomial.hasseDeriv 1 = Polynomial.derivative",
+            "module": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          },
+          {
+            "name": "Polynomial.hasseDeriv_zero",
+            "type": " {R : Type u_1} [Semiring R] : Polynomial.hasseDeriv 0 = LinearMap.id",
+            "module": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          },
+          {
+            "name": "Polynomial.hasseDeriv_zero'",
+            "type": " {R : Type u_1} [Semiring R] (f : Polynomial R) : (Polynomial.hasseDeriv 0) f = f",
+            "module": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          },
+          {
+            "name": "Polynomial.natDegree_hasseDeriv_le",
+            "type": " {R : Type u_1} [Semiring R] (p : Polynomial R) (n : ℕ) : ((Polynomial.hasseDeriv n) p).natDegree ≤ p.natDegree - n",
+            "module": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          },
+          {
+            "name": "Polynomial.hasseDeriv_X",
+            "type": " {R : Type u_1} [Semiring R] (k : ℕ) (hk : 1 < k) : (Polynomial.hasseDeriv k) Polynomial.X = 0",
+            "module": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          },
+          {
+            "name": "Polynomial.hasseDeriv_eq_zero_of_lt_natDegree",
+            "type": " {R : Type u_1} [Semiring R] (p : Polynomial R) (n : ℕ) (h : p.natDegree < n) : (Polynomial.hasseDeriv n) p = 0",
+            "module": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          },
+          {
+            "name": "Polynomial.natDegree_hasseDeriv",
+            "type": " {R : Type u_1} [Semiring R] [HasUniqueDiv R] (p : Polynomial R) (n : ℕ) : ((Polynomial.hasseDeriv n) p).natDegree = p.natDegree - n",
+            "module": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          },
+          {
+            "name": "Polynomial.hasseDeriv_apply_one",
+            "type": " {R : Type u_1} [Semiring R] (k : ℕ) (hk : 0 < k) : (Polynomial.hasseDeriv k) 1 = 0",
+            "module": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "local",
+    "form": "literature",
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"LaurentSeries.hasseDeriv_comp\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/LaurentSeries.lean\"\n    },\n    {\n      \"name\": \"Polynomial.hasseDeriv_comp\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/HasseDeriv.lean\"\n    },\n    {\n      \"name\": \"LaurentSeries.hasseDeriv_comp_coeff\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/LaurentSeries.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "LaurentSeries.hasseDeriv_comp",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/RingTheory/LaurentSeries.lean"
+          },
+          {
+            "name": "Polynomial.hasseDeriv_comp",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/HasseDeriv.lean"
+          },
+          {
+            "name": "LaurentSeries.hasseDeriv_comp_coeff",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/RingTheory/LaurentSeries.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    },
+    "request": {
+      "query": "hasseDeriv_comp",
+      "project_root": "/Users/ramin/LEAN/Roth",
+      "limit": 8
+    }
+  },
+  {
+    "method": "Loogle",
+    "form": "abstract",
+    "request": {
+      "query": "Finset.Disjoint, Finsupp.prod",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "Error executing tool lean_loogle: loogle query error: unknown identifier 'Finset.Disjoint' Suggestions: \"Finset.Disjoint\", Finsupp.prod"
+        }
+      ],
+      "isError": true
+    }
+  },
+  {
+    "method": "local",
+    "form": "abstract",
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"DFinsupp.prod_eq_one\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Data/DFinsupp/BigOperators.lean\"\n    },\n    {\n      \"name\": \"Finset.prod_eq_one\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/BigOperators/Group/Finset/Basic.lean\"\n    },\n    {\n      \"name\": \"Fintype.prod_eq_one\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Data/Fintype/BigOperators.lean\"\n    },\n    {\n      \"name\": \"List.prod_eq_one\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/BigOperators/Group/List/Basic.lean\"\n    },\n    {\n      \"name\": \"Multiset.prod_eq_one\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/BigOperators/Group/Multiset/Basic.lean\"\n    },\n    {\n      \"name\": \"Associates.prod_eq_one_iff\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/BigOperators/Associated.lean\"\n    },\n    {\n      \"name\": \"Finset.prod_eq_one_iff\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/BigOperators/Group/Finset/Basic.lean\"\n    },\n    {\n      \"name\": \"List.prod_eq_one_iff\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Order/BigOperators/Group/List.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "DFinsupp.prod_eq_one",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Data/DFinsupp/BigOperators.lean"
+          },
+          {
+            "name": "Finset.prod_eq_one",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/BigOperators/Group/Finset/Basic.lean"
+          },
+          {
+            "name": "Fintype.prod_eq_one",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Data/Fintype/BigOperators.lean"
+          },
+          {
+            "name": "List.prod_eq_one",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/BigOperators/Group/List/Basic.lean"
+          },
+          {
+            "name": "Multiset.prod_eq_one",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/BigOperators/Group/Multiset/Basic.lean"
+          },
+          {
+            "name": "Associates.prod_eq_one_iff",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/BigOperators/Associated.lean"
+          },
+          {
+            "name": "Finset.prod_eq_one_iff",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/BigOperators/Group/Finset/Basic.lean"
+          },
+          {
+            "name": "List.prod_eq_one_iff",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Order/BigOperators/Group/List.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    },
+    "request": {
+      "query": "prod_eq_one",
+      "project_root": "/Users/ramin/LEAN/Roth",
+      "limit": 8
+    }
+  },
+  {
+    "method": "Loogle",
+    "form": "abstract corrected",
+    "request": {
+      "query": "Disjoint, Finsupp.support",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "Error executing tool lean_loogle: Rate limit exceeded: 3 requests per 30s. Use --loogle-local to avoid limits."
+        }
+      ],
+      "isError": true
+    }
+  },
+  {
+    "method": "Loogle",
+    "form": "abstract retry",
+    "request": {
+      "query": "Disjoint, Finsupp.support",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "Error executing tool lean_loogle: Rate limit exceeded: 3 requests per 30s. Use --loogle-local to avoid limits."
+        }
+      ],
+      "isError": true
+    }
+  },
+  {
+    "method": "Loogle",
+    "form": "abstract corrected successful retry request",
+    "request": {
+      "query": "Disjoint, Finsupp.support",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finsupp.support_single_disjoint\",\n      \"type\": \" {α : Type u_1} {M : Type u_4} [Zero M] {b b' : M} (hb : b ≠ 0) (hb' : b' ≠ 0) {i j : α} : Disjoint (fun₀ | i => b).support (fun₀ | j => b').support ↔ i ≠ j\",\n      \"module\": \"Mathlib.Data.Finsupp.Single\"\n    },\n    {\n      \"name\": \"Finsupp.addCommute_of_disjoint\",\n      \"type\": \" {ι : Type u_1} {M : Type u_3} [AddZeroClass M] {f g : ι →₀ M} (h : Disjoint f.support g.support) : AddCommute f g\",\n      \"module\": \"Mathlib.Algebra.Group.Finsupp\"\n    },\n    {\n      \"name\": \"Finsupp.support_add_eq\",\n      \"type\": \" {ι : Type u_1} {M : Type u_3} [AddZeroClass M] {g₁ g₂ : ι →₀ M} [DecidableEq ι] (h : Disjoint g₁.support g₂.support) : (g₁ + g₂).support = g₁.support ∪ g₂.support\",\n      \"module\": \"Mathlib.Algebra.Group.Finsupp\"\n    },\n    {\n      \"name\": \"Finsupp.support_sum_eq_biUnion\",\n      \"type\": \" {α : Type u_16} {ι : Type u_17} {M : Type u_18} [DecidableEq α] [AddCommMonoid M] {g : ι → α →₀ M} (s : Finset ι) (h : ∀ (i₁ i₂ : ι), i₁ ≠ i₂ → Disjoint (g i₁).support (g i₂).support) : (∑ i ∈ s, g i).support = s.biUnion fun i => (g i).support\",\n      \"module\": \"Mathlib.Algebra.BigOperators.Finsupp.Basic\"\n    },\n    {\n      \"name\": \"Finsupp.prod_add_index_of_disjoint\",\n      \"type\": \" {α : Type u_1} {M : Type u_8} [AddCommMonoid M] {f1 f2 : α →₀ M} (hd : Disjoint f1.support f2.support) {β : Type u_16} [CommMonoid β] (g : α → M → β) : (f1 + f2).prod g = f1.prod g * f2.prod g\",\n      \"module\": \"Mathlib.Algebra.BigOperators.Finsupp.Basic\"\n    },\n    {\n      \"name\": \"Finsupp.sum_add_index_of_disjoint\",\n      \"type\": \" {α : Type u_1} {M : Type u_8} [AddCommMonoid M] {f1 f2 : α →₀ M} (hd : Disjoint f1.support f2.support) {β : Type u_16} [AddCommMonoid β] (g : α → M → β) : (f1 + f2).sum g = f1.sum g + f2.sum g\",\n      \"module\": \"Mathlib.Algebra.BigOperators.Finsupp.Basic\"\n    },\n    {\n      \"name\": \"Finsupp.disjoint_iff\",\n      \"type\": \" {ι : Type u_1} {α : Type u_3} [AddCommMonoid α] [LinearOrder α] [IsBotZeroClass α] {f g : ι →₀ α} : Disjoint f g ↔ Disjoint f.support g.support\",\n      \"module\": \"Mathlib.Data.Finsupp.Order\"\n    },\n    {\n      \"name\": \"List.support_sum_eq\",\n      \"type\": \" {ι : Type u_1} {M : Type u_2} [DecidableEq ι] [AddZeroClass M] (l : List (ι →₀ M)) (hl : List.Pairwise (Function.onFun Disjoint Finsupp.support) l) : l.sum.support = List.foldr (fun x1 x2 => x1.support ⊔ x2) ∅ l\",\n      \"module\": \"Mathlib.Data.Finsupp.BigOperators\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Finsupp.support_single_disjoint",
+            "type": " {α : Type u_1} {M : Type u_4} [Zero M] {b b' : M} (hb : b ≠ 0) (hb' : b' ≠ 0) {i j : α} : Disjoint (fun₀ | i => b).support (fun₀ | j => b').support ↔ i ≠ j",
+            "module": "Mathlib.Data.Finsupp.Single"
+          },
+          {
+            "name": "Finsupp.addCommute_of_disjoint",
+            "type": " {ι : Type u_1} {M : Type u_3} [AddZeroClass M] {f g : ι →₀ M} (h : Disjoint f.support g.support) : AddCommute f g",
+            "module": "Mathlib.Algebra.Group.Finsupp"
+          },
+          {
+            "name": "Finsupp.support_add_eq",
+            "type": " {ι : Type u_1} {M : Type u_3} [AddZeroClass M] {g₁ g₂ : ι →₀ M} [DecidableEq ι] (h : Disjoint g₁.support g₂.support) : (g₁ + g₂).support = g₁.support ∪ g₂.support",
+            "module": "Mathlib.Algebra.Group.Finsupp"
+          },
+          {
+            "name": "Finsupp.support_sum_eq_biUnion",
+            "type": " {α : Type u_16} {ι : Type u_17} {M : Type u_18} [DecidableEq α] [AddCommMonoid M] {g : ι → α →₀ M} (s : Finset ι) (h : ∀ (i₁ i₂ : ι), i₁ ≠ i₂ → Disjoint (g i₁).support (g i₂).support) : (∑ i ∈ s, g i).support = s.biUnion fun i => (g i).support",
+            "module": "Mathlib.Algebra.BigOperators.Finsupp.Basic"
+          },
+          {
+            "name": "Finsupp.prod_add_index_of_disjoint",
+            "type": " {α : Type u_1} {M : Type u_8} [AddCommMonoid M] {f1 f2 : α →₀ M} (hd : Disjoint f1.support f2.support) {β : Type u_16} [CommMonoid β] (g : α → M → β) : (f1 + f2).prod g = f1.prod g * f2.prod g",
+            "module": "Mathlib.Algebra.BigOperators.Finsupp.Basic"
+          },
+          {
+            "name": "Finsupp.sum_add_index_of_disjoint",
+            "type": " {α : Type u_1} {M : Type u_8} [AddCommMonoid M] {f1 f2 : α →₀ M} (hd : Disjoint f1.support f2.support) {β : Type u_16} [AddCommMonoid β] (g : α → M → β) : (f1 + f2).sum g = f1.sum g + f2.sum g",
+            "module": "Mathlib.Algebra.BigOperators.Finsupp.Basic"
+          },
+          {
+            "name": "Finsupp.disjoint_iff",
+            "type": " {ι : Type u_1} {α : Type u_3} [AddCommMonoid α] [LinearOrder α] [IsBotZeroClass α] {f g : ι →₀ α} : Disjoint f g ↔ Disjoint f.support g.support",
+            "module": "Mathlib.Data.Finsupp.Order"
+          },
+          {
+            "name": "List.support_sum_eq",
+            "type": " {ι : Type u_1} {M : Type u_2} [DecidableEq ι] [AddZeroClass M] (l : List (ι →₀ M)) (hl : List.Pairwise (Function.onFun Disjoint Finsupp.support) l) : l.sum.support = List.foldr (fun x1 x2 => x1.support ⊔ x2) ∅ l",
+            "module": "Mathlib.Data.Finsupp.BigOperators"
+          }
+        ]
+      },
+      "isError": false
+    }
+  }
+]
