@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 11/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 12/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 11; remaining: 282.
-- Verdicts: 4 NO-composable-from-mathlib, 3 YES-add-as-is, 0 YES-but-generalise-first, 0 NO-mathlib-has-it, 4 BORDERLINE-needs-human, 0 SKIP.
+- Completed applicable assessments: 12; remaining: 281.
+- Verdicts: 4 NO-composable-from-mathlib, 4 YES-add-as-is, 0 YES-but-generalise-first, 0 NO-mathlib-has-it, 4 BORDERLINE-needs-human, 0 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -150,6 +150,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: Seven explicit uses in five declarations: Separation533; Theta524/580; MainLemma409/489/492/495. Scoped context/nesting experiments only.
 - Verdict: YES-add-as-is; [complete report](.mathlib-quality/overview/mathlibable/MvPolynomial.hasseDeriv_map.md).
 
+### Completed: `MvPolynomial.hasseDeriv_rename`
+
+- Type: `theorem: ∀ hf : Function.Injective f, ∀ d P, hasseDeriv (d.mapDomain f) (rename f P) = rename f (hasseDeriv d P)`
+- What: Hasse derivatives commute with injective variable renaming when the multi-index is transported along the same injection.
+- How: Monomial/additive induction; binomial product transport and mapDomain truncated subtraction compatibility.
+- Hypotheses: Independent arbitrary variable types σ/τ, CommSemiring R, any injective f, finite multi-index d and polynomial P.
+- Project dependencies: MvPolynomial.hasseDeriv, MvPolynomial.hasseDeriv_monomial, MvPolynomial.hasseCoeff
+- Caller summary: One explicit call in Roth.hasseDeriv_rename_mul_aeval, Separation165; no internal uses; indirect Separation365 not counted.
+- Verdict: YES-add-as-is; [complete report](.mathlib-quality/overview/mathlibable/MvPolynomial.hasseDeriv_rename.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -198,6 +208,8 @@ Completed `MvPolynomial.hasseDeriv_C`: All five actual methods on current/litera
 
 Completed `MvPolynomial.hasseDeriv_map`: Pinned Polynomial.hasseDeriv_map and MvPolynomial.pderiv_map are analogues, not all-multiorder arbitrary-variable replacements. Actual raw construction needs monomial calculation and additive induction.
 
+Completed `MvPolynomial.hasseDeriv_rename`: Pinned pderiv_rename is first-order analogue; Finsupp.prod_mapDomain_index_inj/mapDomain_apply_of_injective/mapDomain_tsub supply individual monomial transports, not full Hasse identity.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -221,6 +233,8 @@ Completed `MvPolynomial.hasseDeriv_zero`: Mirrors Polynomial.hasseDeriv_zero and
 Completed `MvPolynomial.hasseDeriv_C`: Mirrors Polynomial.hasseDeriv_C; generic C/monomial/lsum normalization exists but does not supply concrete nonzero-order binomial vanishing premise.
 
 Completed `MvPolynomial.hasseDeriv_map`: No verified replacement; analogous univariate and first-order naturality patterns.
+
+Completed `MvPolynomial.hasseDeriv_rename`: No verified direct replacement; standard all-order extension of first-order injective renaming law.
 
 ## Part 5: Generalization opportunities
 
@@ -249,6 +263,8 @@ Completed `MvPolynomial.hasseDeriv_C`: Already arbitrary-variable commutative-se
 
 Completed `MvPolynomial.hasseDeriv_map`: Optional additive coefficient-map companion verified with AddMonoidAlgebra.map. Fixed RingHom map interface remains canonical and literature-compatible.
 
+Completed `MvPolynomial.hasseDeriv_rename`: Actual collision counterexample proves global injectivity cannot simply be dropped; support-local injectivity plausible but no verified weakening. Embedding/square variants equivalent; literal Semiring interfaces fail.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -273,6 +289,8 @@ Completed `MvPolynomial.hasseDeriv_zero`: Concrete multivariate Hasse definition
 Completed `MvPolynomial.hasseDeriv_C`: Multivariate Hasse parent and coefficient/monomial interface are needed upstream context. Named scalar constant normalization/simp policy remains a design choice; no missing generic lsum-single helper.
 
 Completed `MvPolynomial.hasseDeriv_map`: Multivariate all-order divided derivative coefficient-change law beside the parent Hasse operator.
+
+Completed `MvPolynomial.hasseDeriv_rename`: Injective-renaming naturality for all multivariate divided derivative orders.
 
 ## Part 7: Junk / removable
 
@@ -301,6 +319,8 @@ Completed `MvPolynomial.hasseDeriv_C`: Not junk: one real Taylor induction calle
 
 Completed `MvPolynomial.hasseDeriv_map`: False
 
+Completed `MvPolynomial.hasseDeriv_rename`: False
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -316,6 +336,7 @@ Completed `MvPolynomial.hasseDeriv_map`: False
 | 9 | `MvPolynomial.hasseDeriv_zero` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.hasseDeriv_zero.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_zero/root-acceptance.json) |
 | 10 | `MvPolynomial.hasseDeriv_C` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.hasseDeriv_C.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_C/root-acceptance.json) |
 | 11 | `MvPolynomial.hasseDeriv_map` | YES-add-as-is | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.hasseDeriv_map.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_map/root-acceptance.json) |
+| 12 | `MvPolynomial.hasseDeriv_rename` | YES-add-as-is | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.hasseDeriv_rename.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_rename/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -337,11 +358,13 @@ Completed `MvPolynomial.hasseDeriv_C` action: BORDERLINE-needs-human under closi
 
 Completed `MvPolynomial.hasseDeriv_map` action: YES-add-as-is; group with hasseDeriv and coeff_hasseDeriv in Mathlib/Algebra/MvPolynomial/HasseDeriv.lean; generalise/cleanup and current-pin duplicate check before PR.
 
+Completed `MvPolynomial.hasseDeriv_rename` action: YES-add-as-is; group with accepted multivariate Hasse parent/coefficient/map API in Mathlib/Algebra/MvPolynomial/HasseDeriv.lean; generalise/cleanup and fresh duplicate check before PR.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `MvPolynomial.hasseDeriv_rename` next. Supporting identities receive their own applicable checks.
+   `MvPolynomial.hasseCoeff_mul_hasseCoeff` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.

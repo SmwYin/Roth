@@ -1,0 +1,111 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MvPolynomial.PDeriv\nimport Mathlib.Algebra.Polynomial.HasseDeriv\nimport Mathlib.Data.Nat.Choose.Bounds\n#check_failure MvPolynomial.hasseDeriv_rename\n#check_failure MvPolynomial.hasseDeriv\n#check @MvPolynomial.pderiv_rename\n#check @MvPolynomial.rename_monomial\n#check @MvPolynomial.coeff_rename_mapDomain\n#check @Finsupp.prod_mapDomain_index_inj\n#check @Finsupp.mapDomain_apply_of_injective\n#check @Finsupp.mapDomain_tsub\n#check @Finsupp.lsum_single\nnamespace AssessHasseRenameAbstract\nopen MvPolynomial\nvariable {σ τ R : Type*} [CommSemiring R]\ntheorem natural_monomial (f : σ → τ)\n    (D : MvPolynomial σ R →ₗ[R] MvPolynomial σ R)\n    (E : MvPolynomial τ R →ₗ[R] MvPolynomial τ R)\n    (h : ∀ k a, E (monomial (k.mapDomain f) a) = rename f (D (monomial k a)))\n    (P : MvPolynomial σ R) : E (rename f P) = rename f (D P) := by\n  induction P using MvPolynomial.induction_on' with\n  | monomial k a => simpa only [rename_monomial] using h k a\n  | add p q hp hq => simp only [map_add, hp, hq]\n#print axioms natural_monomial\nend AssessHasseRenameAbstract\n"
+  },
+  "elapsed_ms": 171,
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown constant `MvPolynomial.hasseDeriv_rename`\",\n      \"line\": 4,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown constant `MvPolynomial.hasseDeriv`\",\n      \"line\": 5,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPolynomial.pderiv_rename : ∀ {R : Type u_1} {σ : Type u_2} [inst : CommSemiring R] {τ : Type u_3} {f : σ → τ},\\n  Function.Injective f →\\n    ∀ (x : σ) (p : MvPolynomial σ R),\\n      (MvPolynomial.pderiv (f x)) ((MvPolynomial.rename f) p) = (MvPolynomial.rename f) ((MvPolynomial.pderiv x) p)\",\n      \"line\": 6,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPolynomial.rename_monomial : ∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_3} [inst : CommSemiring R] (f : σ → τ)\\n  (d : σ →₀ ℕ) (r : R),\\n  (MvPolynomial.rename f) ((MvPolynomial.monomial d) r) = (MvPolynomial.monomial (Finsupp.mapDomain f d)) r\",\n      \"line\": 7,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPolynomial.coeff_rename_mapDomain : ∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_3} [inst : CommSemiring R]\\n  (f : σ → τ),\\n  Function.Injective f →\\n    ∀ (φ : MvPolynomial σ R) (d : σ →₀ ℕ), ((MvPolynomial.rename f) φ).coeff (Finsupp.mapDomain f d) = φ.coeff d\",\n      \"line\": 8,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finsupp.prod_mapDomain_index_inj : ∀ {α : Type u_1} {β : Type u_2} {M : Type u_3} {N : Type u_4}\\n  [inst : AddCommMonoid M] [inst_1 : CommMonoid N] {f : α → β} {s : α →₀ M} {h : β → M → N},\\n  Function.Injective f → (Finsupp.mapDomain f s).prod h = s.prod fun a b ↦ h (f a) b\",\n      \"line\": 9,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finsupp.mapDomain_apply_of_injective : ∀ {α : Type u_1} {β : Type u_2} {M : Type u_3} [inst : AddCommMonoid M]\\n  {f : α → β}, Function.Injective f → ∀ (x : α →₀ M) (a : α), (Finsupp.mapDomain f x) (f a) = x a\",\n      \"line\": 10,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finsupp.mapDomain_tsub : ∀ {ι : Type u_1} {κ : Type u_2} {α : Type u_3} [inst : AddCommMonoid α]\\n  [inst_1 : PartialOrder α] [inst_2 : CanonicallyOrderedAdd α] [inst_3 : Sub α] [inst_4 : OrderedSub α] {f : ι → κ},\\n  Function.Injective f →\\n    ∀ (f1 f2 : ι →₀ α), Finsupp.mapDomain f (f1 - f2) = Finsupp.mapDomain f f1 - Finsupp.mapDomain f f2\",\n      \"line\": 11,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finsupp.lsum_single : ∀ {α : Type u_1} {M : Type u_2} {N : Type u_3} {R : Type u_4} {R₂ : Type u_5} (S : Type u_6)\\n  [inst : Semiring R] [inst_1 : Semiring R₂] [inst_2 : Semiring S] [inst_3 : AddCommMonoid M] [inst_4 : Module R M]\\n  [inst_5 : AddCommMonoid N] [inst_6 : Module R₂ N] {σ : R →+* R₂} [inst_7 : Module S N] [inst_8 : SMulCommClass R₂ S N]\\n  (f : α → M →ₛₗ[σ] N) (i : α) (m : M), ((Finsupp.lsum S) f) (Finsupp.single i m) = (f i) m\",\n      \"line\": 12,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'AssessHasseRenameAbstract.natural_monomial' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 24,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown constant `MvPolynomial.hasseDeriv_rename`",
+          "line": 4,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown constant `MvPolynomial.hasseDeriv`",
+          "line": 5,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPolynomial.pderiv_rename : ∀ {R : Type u_1} {σ : Type u_2} [inst : CommSemiring R] {τ : Type u_3} {f : σ → τ},\n  Function.Injective f →\n    ∀ (x : σ) (p : MvPolynomial σ R),\n      (MvPolynomial.pderiv (f x)) ((MvPolynomial.rename f) p) = (MvPolynomial.rename f) ((MvPolynomial.pderiv x) p)",
+          "line": 6,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPolynomial.rename_monomial : ∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_3} [inst : CommSemiring R] (f : σ → τ)\n  (d : σ →₀ ℕ) (r : R),\n  (MvPolynomial.rename f) ((MvPolynomial.monomial d) r) = (MvPolynomial.monomial (Finsupp.mapDomain f d)) r",
+          "line": 7,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPolynomial.coeff_rename_mapDomain : ∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_3} [inst : CommSemiring R]\n  (f : σ → τ),\n  Function.Injective f →\n    ∀ (φ : MvPolynomial σ R) (d : σ →₀ ℕ), ((MvPolynomial.rename f) φ).coeff (Finsupp.mapDomain f d) = φ.coeff d",
+          "line": 8,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finsupp.prod_mapDomain_index_inj : ∀ {α : Type u_1} {β : Type u_2} {M : Type u_3} {N : Type u_4}\n  [inst : AddCommMonoid M] [inst_1 : CommMonoid N] {f : α → β} {s : α →₀ M} {h : β → M → N},\n  Function.Injective f → (Finsupp.mapDomain f s).prod h = s.prod fun a b ↦ h (f a) b",
+          "line": 9,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finsupp.mapDomain_apply_of_injective : ∀ {α : Type u_1} {β : Type u_2} {M : Type u_3} [inst : AddCommMonoid M]\n  {f : α → β}, Function.Injective f → ∀ (x : α →₀ M) (a : α), (Finsupp.mapDomain f x) (f a) = x a",
+          "line": 10,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finsupp.mapDomain_tsub : ∀ {ι : Type u_1} {κ : Type u_2} {α : Type u_3} [inst : AddCommMonoid α]\n  [inst_1 : PartialOrder α] [inst_2 : CanonicallyOrderedAdd α] [inst_3 : Sub α] [inst_4 : OrderedSub α] {f : ι → κ},\n  Function.Injective f →\n    ∀ (f1 f2 : ι →₀ α), Finsupp.mapDomain f (f1 - f2) = Finsupp.mapDomain f f1 - Finsupp.mapDomain f f2",
+          "line": 11,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finsupp.lsum_single : ∀ {α : Type u_1} {M : Type u_2} {N : Type u_3} {R : Type u_4} {R₂ : Type u_5} (S : Type u_6)\n  [inst : Semiring R] [inst_1 : Semiring R₂] [inst_2 : Semiring S] [inst_3 : AddCommMonoid M] [inst_4 : Module R M]\n  [inst_5 : AddCommMonoid N] [inst_6 : Module R₂ N] {σ : R →+* R₂} [inst_7 : Module S N] [inst_8 : SMulCommClass R₂ S N]\n  (f : α → M →ₛₗ[σ] N) (i : α) (m : M), ((Finsupp.lsum S) f) (Finsupp.single i m) = (f i) m",
+          "line": 12,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'AssessHasseRenameAbstract.natural_monomial' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 24,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  }
+}

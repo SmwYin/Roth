@@ -1,0 +1,42 @@
+{
+  "file": "Roth/HasseDeriv.lean",
+  "line": 143,
+  "name": "MvPolynomial.hasseDeriv_rename",
+  "short": "hasseDeriv_rename",
+  "kind": "theorem",
+  "visibility": "public",
+  "end_line": 151,
+  "source": "theorem hasseDeriv_rename {\u03c4 : Type*} {f : \u03c3 \u2192 \u03c4} (hf : Function.Injective f) (d : \u03c3 \u2192\u2080 \u2115)\n    (P : MvPolynomial \u03c3 R) :\n    hasseDeriv (d.mapDomain f) (rename f P) = rename f (hasseDeriv d P) := by\n  classical\n  induction P using MvPolynomial.induction_on' with\n  | monomial k a =>\n    simp [rename_monomial, hasseCoeff, Finsupp.prod_mapDomain_index_inj hf,\n      Finsupp.mapDomain_apply_of_injective hf, \u2190 Finsupp.mapDomain_tsub hf]\n  | add p q hp hq => simp [hp, hq]",
+  "signature": "theorem hasseDeriv_rename {\u03c4 : Type*} {f : \u03c3 \u2192 \u03c4} (hf : Function.Injective f) (d : \u03c3 \u2192\u2080 \u2115)\n    (P : MvPolynomial \u03c3 R) :\n    hasseDeriv (d.mapDomain f) (rename f P) = rename f (hasseDeriv d P)",
+  "body": "by\n  classical\n  induction P using MvPolynomial.induction_on' with\n  | monomial k a =>\n    simp [rename_monomial, hasseCoeff, Finsupp.prod_mapDomain_index_inj hf,\n      Finsupp.mapDomain_apply_of_injective hf, \u2190 Finsupp.mapDomain_tsub hf]\n  | add p q hp hq => simp [hp, hq]",
+  "proof_lines": 7,
+  "sha256": "d0ab6bfdc27bed1e1c8014d9d0374b1c966901b0a253d75fbca5579699c01373",
+  "what": "Injectively renaming variables commutes with differentiation when the multi-index is transported by the same renaming.",
+  "how": "Additive monomial induction uses Finsupp.prod_mapDomain_index_inj for the binomial factors and Finsupp.mapDomain_tsub for the lowered exponent; rename_monomial transports the monomial.",
+  "hypotheses": "Commutative coefficients and an injective variable map; injectivity prevents collisions between differentiation coordinates.",
+  "uses_from_project": [
+    "MvPolynomial.hasseCoeff"
+  ],
+  "used_by_in_file": [],
+  "project_callers": [
+    {
+      "name": "Roth.hasseDeriv_rename_mul_aeval",
+      "file": "Roth/Separation.lean",
+      "line": 146
+    }
+  ],
+  "type_context": "{\u03c3 R : Type*} [CommSemiring R]",
+  "type_provenance": "Exact written signature with section binders made explicit from source; not claimed as a fresh #check output. Minimal hasseCoeff #check succeeded; full Meta inspector timed out.",
+  "reference_provenance": "Manually disambiguated source-level direct project references in declaration bodies; callers include signature and body occurrences. Includes explicit references only, not an exhaustive kernel/simp dependency closure.",
+  "notes": [
+    "No set_option, sorry, TODO, or proof over 30 lines in declaration."
+  ],
+  "assignment_offset": 192,
+  "project_body_refs": [
+    "MvPolynomial.hasseCoeff"
+  ],
+  "project_type_refs": [
+    "MvPolynomial.hasseDeriv"
+  ],
+  "section_context": "{\u03c3 R : Type*} [CommSemiring R]"
+}
