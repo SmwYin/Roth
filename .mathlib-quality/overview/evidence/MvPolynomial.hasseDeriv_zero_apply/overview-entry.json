@@ -1,0 +1,19 @@
+{
+  "declaration": "MvPolynomial.hasseDeriv_zero_apply",
+  "type": "For arbitrary types σ,R with CommSemiring R and P:MvPolynomial σ R, MvPolynomial.hasseDeriv 0 P = P.",
+  "what": "The multivariate Hasse derivative of order zero fixes every polynomial.",
+  "how": "Coefficient extensionality and coeff_hasseDeriv reduce to zero-index support product one; independently verified expanded lsum normalization also works.",
+  "hypotheses": "Arbitrary universe-polymorphic variable/coefficient types, CommSemiring coefficients, arbitrary polynomial; no finiteness, characteristic, domain, nonzero or decidable equality assumptions.",
+  "project_dependencies": [
+    "MvPolynomial.hasseDeriv",
+    "MvPolynomial.coeff_hasseDeriv",
+    "MvPolynomial.hasseCoeff"
+  ],
+  "caller_summary": "Three explicit source uses in two declarations: LinearMap.ext in hasseDeriv_zero at HasseDeriv.lean:121, and two simp mentions in Roth.index_eq_zero_iff at Index.lean:104–105. Both caller alternatives formally replayed; explicit source scope only.",
+  "mathlib_api_audit": "All five methods actually searched current/literature and abstract forms. Polynomial zero laws are univariate analogues, generic reconstruction/lsum laws supply normalization machinery. Guarded mathlib-only reconstruction plus exact?/apply? positive controls and positive candidate signatures verified in pin. Local index unavailable.",
+  "moral_duplications": "Mirrors univariate pointwise/map zero laws. Generic coefficient preservation implies identity via extensionality, but normalization for the concrete Hasse family remains content; new local abstraction is not an existing replacement.",
+  "generalization": "Current interface already arbitrary σ and CommSemiring. Unnormalized arbitrary linear maps, general zero-order differential operators, or general-codomain HS zero homomorphisms need not be identity; counterexample compiled.",
+  "missing_api": "No separate generic helper gap established. Whether this pointwise normalization deserves its own exported corollary in the new multivariate Hasse API is an upstream design question.",
+  "junk": "Used at three explicit sites and semantically standard; not dead code or rfl/unfold glue. It may be API-redundant if only bundled normalization is exported.",
+  "action": "BORDERLINE-needs-human: decide pointwise versus map-only zero API, naming, and dependency direction. If retaining, group with Hasse definition/coefficient API upstream work; if removing, independently prove bundled equality and migrate both Index simp sites. All formal checks complete; no production edits or decision needed to finish read-only overview."
+}

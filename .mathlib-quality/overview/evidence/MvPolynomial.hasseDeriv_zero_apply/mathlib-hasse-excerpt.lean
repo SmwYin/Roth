@@ -1,0 +1,49 @@
+https://math.fontein.de/2009/08/12/the-hasse-derivative/
+
+-/
+
+@[expose] public section
+
+
+noncomputable section
+
+namespace Polynomial
+
+open Nat Polynomial
+
+open Function
+
+variable {R : Type*} [Semiring R] (k : ℕ) (f : R[X])
+
+/-- The `k`th Hasse derivative of a polynomial `∑ a_i X^i` is `∑ (i.choose k) a_i X^(i-k)`.
+It satisfies `k! * (hasse_deriv k f) = derivative^[k] f`. -/
+def hasseDeriv (k : ℕ) : R[X] →ₗ[R] R[X] :=
+  lsum fun i => monomial (i - k) ∘ₗ DistribSMul.toLinearMap R R (i.choose k)
+
+theorem hasseDeriv_apply :
+    hasseDeriv k f = f.sum fun i r => monomial (i - k) (↑(i.choose k) * r) := by
+  dsimp [hasseDeriv]
+  simp
+
+theorem hasseDeriv_coeff (n : ℕ) :
+    (hasseDeriv k f).coeff n = (n + k).choose k * f.coeff (n + k) := by
+  rw [hasseDeriv_apply, coeff_sum, sum_def, Finset.sum_eq_single (n + k), coeff_monomial]
+  · simp
+  · #adaptation_note
+    /-- Prior to nightly-2025-08-14, this was working as
+    `grind [coeff_monomial, Nat.choose_eq_zero_of_lt, Nat.cast_zero, zero_mul]` -/
+    intro i _hi hink
+    rw [coeff_monomial]
+    by_cases hik : i < k
+    · simp only [Nat.choose_eq_zero_of_lt hik, ite_self, Nat.cast_zero, zero_mul]
+    · grind
+  · intro h
+    simp only [notMem_support_iff.mp h, monomial_zero_right, mul_zero, coeff_zero]
+
+theorem hasseDeriv_zero' : hasseDeriv 0 f = f := by
+  simp only [hasseDeriv_apply, Nat.sub_zero, choose_zero_right, cast_one, one_mul, sum_monomial_eq]
+
+@[simp]
+theorem hasseDeriv_zero : @hasseDeriv R _ 0 = LinearMap.id :=
+  LinearMap.ext <| hasseDeriv_zero'
+

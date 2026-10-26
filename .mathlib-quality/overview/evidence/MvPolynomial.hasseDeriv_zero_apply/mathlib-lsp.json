@@ -1,0 +1,165 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MvPolynomial.PDeriv\nimport Mathlib.Algebra.Polynomial.HasseDeriv\nimport Mathlib.Data.Nat.Choose.Bounds\n\n#check_failure MvPolynomial.hasseDeriv_zero_apply\nnamespace ZeroApplyAssessment\nopen MvPolynomial\nvariable {σ R : Type*} [CommSemiring R]\nnoncomputable def delta (d : σ →₀ ℕ) : MvPolynomial σ R →ₗ[R] MvPolynomial σ R :=\n  Finsupp.lsum R (fun k : σ →₀ ℕ ↦\n      (monomial (k - d)).comp (LinearMap.lsmul R R ((d.prod fun j ↦ (k j).choose : ℕ) : R))) ∘ₗ\n    (AddMonoidAlgebra.coeffLinearEquiv R).toLinearMap\n\n-- Underlying identity: local reconstruction, no project alias or project theorem.\nexample (P : Prop) (h : P) : P := by exact?\nexample (P : Prop) (h : P) : P := by apply?\n#check @MvPolynomial.support_sum_monomial_coeff\n#check @AddMonoidAlgebra.sum_coeff_single\ntheorem normalized (P : MvPolynomial σ R) : delta 0 P = P := by\n  simp [delta, Function.comp_def, LinearMap.lsmul_apply, sum_def]\n\n-- Existing univariate analogue and linear-map pointwise routes are distinct.\n#check @Polynomial.hasseDeriv_zero'\n#check @Polynomial.hasseDeriv_zero\n#check @Finsupp.lsum_single\n#check @Finsupp.lsum_comp_lsingle\n#check @MvPolynomial.sum_monomial_eq\n#check @LinearMap.congr_fun\n#check @LinearMap.ext\ntheorem univariate (f : Polynomial R) : Polynomial.hasseDeriv 0 f = f :=\n  Polynomial.hasseDeriv_zero' f\n\n-- Abstract coefficient-preserving maps: content retained by an explicit normalization law.\ntheorem coefficient_preserving (T : MvPolynomial σ R →ₗ[R] MvPolynomial σ R)\n    (h : ∀ e P, (T P).coeff e = P.coeff e) (P : MvPolynomial σ R) : T P = P := by\n  ext e\n  exact h e P\ntheorem false_unnormalized : ¬ ∀ T : MvPolynomial Unit ℕ →ₗ[ℕ] MvPolynomial Unit ℕ,\n    ∀ P, T P = P := by\n  intro h\n  have hh := h 0 1\n  simp at hh\n#print axioms normalized\n#print axioms univariate\n#print axioms coefficient_preserving\n#print axioms false_unnormalized\nend ZeroApplyAssessment\n"
+  },
+  "elapsed_ms": 1115,
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown constant `MvPolynomial.hasseDeriv_zero_apply`\",\n      \"line\": 5,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Try this:\\n  [apply] exact ((fun a ↦ h) ∘ fun a ↦ σ) σ\",\n      \"line\": 15,\n      \"column\": 38,\n      \"lean_tags\": null,\n      \"category\": \"suggestion\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Try this:\\n  [apply] exact ((fun a ↦ h) ∘ fun a ↦ σ) σ\",\n      \"line\": 16,\n      \"column\": 38,\n      \"lean_tags\": null,\n      \"category\": \"suggestion\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@support_sum_monomial_coeff : ∀ {R : Type u_3} {σ : Type u_4} [inst : CommSemiring R] (p : MvPolynomial σ R),\\n  ∑ v ∈ p.support, (monomial v) (p.coeff v) = p\",\n      \"line\": 17,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@AddMonoidAlgebra.sum_coeff_single : ∀ {R : Type u_3} {M : Type u_4} [inst : Semiring R] (f : AddMonoidAlgebra R M),\\n  f.coeff.sum AddMonoidAlgebra.single = f\",\n      \"line\": 18,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.hasseDeriv_zero' : ∀ {R : Type u_3} [inst : Semiring R] (f : Polynomial R), (Polynomial.hasseDeriv 0) f = f\",\n      \"line\": 23,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.hasseDeriv_zero : ∀ {R : Type u_3} [inst : Semiring R], Polynomial.hasseDeriv 0 = LinearMap.id\",\n      \"line\": 24,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finsupp.lsum_single : ∀ {α : Type u_3} {M : Type u_4} {N : Type u_5} {R : Type u_6} {R₂ : Type u_7} (S : Type u_8)\\n  [inst : Semiring R] [inst_1 : Semiring R₂] [inst_2 : Semiring S] [inst_3 : AddCommMonoid M] [inst_4 : Module R M]\\n  [inst_5 : AddCommMonoid N] [inst_6 : Module R₂ N] {σ : R →+* R₂} [inst_7 : Module S N] [inst_8 : SMulCommClass R₂ S N]\\n  (f : α → M →ₛₗ[σ] N) (i : α) (m : M), ((Finsupp.lsum S) f) (Finsupp.single i m) = (f i) m\",\n      \"line\": 25,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finsupp.lsum_comp_lsingle : ∀ {α : Type u_3} {M : Type u_4} {N : Type u_5} {R : Type u_6} {R₂ : Type u_7}\\n  (S : Type u_8) [inst : Semiring R] [inst_1 : Semiring R₂] [inst_2 : Semiring S] [inst_3 : AddCommMonoid M]\\n  [inst_4 : Module R M] [inst_5 : AddCommMonoid N] [inst_6 : Module R₂ N] {σ : R →+* R₂} [inst_7 : Module S N]\\n  [inst_8 : SMulCommClass R₂ S N] (f : α → M →ₛₗ[σ] N) (i : α), (Finsupp.lsum S) f ∘ₛₗ Finsupp.lsingle i = f i\",\n      \"line\": 26,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@sum_monomial_eq : ∀ {R : Type u_3} {σ : Type u_4} [inst : CommSemiring R] {A : Type u_5} [inst_1 : AddCommMonoid A]\\n  {u : σ →₀ ℕ} {r : R} {b : (σ →₀ ℕ) → R → A}, b u 0 = 0 → ((monomial u) r).coeff.sum b = b u r\",\n      \"line\": 27,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@LinearMap.congr_fun : ∀ {R : Type u_3} {S : Type u_4} {M : Type u_5} {M₃ : Type u_6} [inst : Semiring R]\\n  [inst_1 : Semiring S] [inst_2 : AddCommMonoid M] [inst_3 : AddCommMonoid M₃] [inst_4 : Module R M]\\n  [inst_5 : Module S M₃] {σ : R →+* S} {f g : M →ₛₗ[σ] M₃}, f = g → ∀ (x : M), f x = g x\",\n      \"line\": 28,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@LinearMap.ext : ∀ {R : Type u_3} {S : Type u_4} {M : Type u_5} {M₃ : Type u_6} [inst : Semiring R]\\n  [inst_1 : Semiring S] [inst_2 : AddCommMonoid M] [inst_3 : AddCommMonoid M₃] [inst_4 : Module R M]\\n  [inst_5 : Module S M₃] {σ : R →+* S} {f g : M →ₛₗ[σ] M₃}, (∀ (x : M), f x = g x) → f = g\",\n      \"line\": 29,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'ZeroApplyAssessment.normalized' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 43,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'ZeroApplyAssessment.univariate' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 44,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'ZeroApplyAssessment.coefficient_preserving' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 45,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'ZeroApplyAssessment.false_unnormalized' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 46,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown constant `MvPolynomial.hasseDeriv_zero_apply`",
+          "line": 5,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Try this:\n  [apply] exact ((fun a ↦ h) ∘ fun a ↦ σ) σ",
+          "line": 15,
+          "column": 38,
+          "lean_tags": null,
+          "category": "suggestion",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Try this:\n  [apply] exact ((fun a ↦ h) ∘ fun a ↦ σ) σ",
+          "line": 16,
+          "column": 38,
+          "lean_tags": null,
+          "category": "suggestion",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@support_sum_monomial_coeff : ∀ {R : Type u_3} {σ : Type u_4} [inst : CommSemiring R] (p : MvPolynomial σ R),\n  ∑ v ∈ p.support, (monomial v) (p.coeff v) = p",
+          "line": 17,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@AddMonoidAlgebra.sum_coeff_single : ∀ {R : Type u_3} {M : Type u_4} [inst : Semiring R] (f : AddMonoidAlgebra R M),\n  f.coeff.sum AddMonoidAlgebra.single = f",
+          "line": 18,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.hasseDeriv_zero' : ∀ {R : Type u_3} [inst : Semiring R] (f : Polynomial R), (Polynomial.hasseDeriv 0) f = f",
+          "line": 23,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.hasseDeriv_zero : ∀ {R : Type u_3} [inst : Semiring R], Polynomial.hasseDeriv 0 = LinearMap.id",
+          "line": 24,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finsupp.lsum_single : ∀ {α : Type u_3} {M : Type u_4} {N : Type u_5} {R : Type u_6} {R₂ : Type u_7} (S : Type u_8)\n  [inst : Semiring R] [inst_1 : Semiring R₂] [inst_2 : Semiring S] [inst_3 : AddCommMonoid M] [inst_4 : Module R M]\n  [inst_5 : AddCommMonoid N] [inst_6 : Module R₂ N] {σ : R →+* R₂} [inst_7 : Module S N] [inst_8 : SMulCommClass R₂ S N]\n  (f : α → M →ₛₗ[σ] N) (i : α) (m : M), ((Finsupp.lsum S) f) (Finsupp.single i m) = (f i) m",
+          "line": 25,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finsupp.lsum_comp_lsingle : ∀ {α : Type u_3} {M : Type u_4} {N : Type u_5} {R : Type u_6} {R₂ : Type u_7}\n  (S : Type u_8) [inst : Semiring R] [inst_1 : Semiring R₂] [inst_2 : Semiring S] [inst_3 : AddCommMonoid M]\n  [inst_4 : Module R M] [inst_5 : AddCommMonoid N] [inst_6 : Module R₂ N] {σ : R →+* R₂} [inst_7 : Module S N]\n  [inst_8 : SMulCommClass R₂ S N] (f : α → M →ₛₗ[σ] N) (i : α), (Finsupp.lsum S) f ∘ₛₗ Finsupp.lsingle i = f i",
+          "line": 26,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@sum_monomial_eq : ∀ {R : Type u_3} {σ : Type u_4} [inst : CommSemiring R] {A : Type u_5} [inst_1 : AddCommMonoid A]\n  {u : σ →₀ ℕ} {r : R} {b : (σ →₀ ℕ) → R → A}, b u 0 = 0 → ((monomial u) r).coeff.sum b = b u r",
+          "line": 27,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@LinearMap.congr_fun : ∀ {R : Type u_3} {S : Type u_4} {M : Type u_5} {M₃ : Type u_6} [inst : Semiring R]\n  [inst_1 : Semiring S] [inst_2 : AddCommMonoid M] [inst_3 : AddCommMonoid M₃] [inst_4 : Module R M]\n  [inst_5 : Module S M₃] {σ : R →+* S} {f g : M →ₛₗ[σ] M₃}, f = g → ∀ (x : M), f x = g x",
+          "line": 28,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@LinearMap.ext : ∀ {R : Type u_3} {S : Type u_4} {M : Type u_5} {M₃ : Type u_6} [inst : Semiring R]\n  [inst_1 : Semiring S] [inst_2 : AddCommMonoid M] [inst_3 : AddCommMonoid M₃] [inst_4 : Module R M]\n  [inst_5 : Module S M₃] {σ : R →+* S} {f g : M →ₛₗ[σ] M₃}, (∀ (x : M), f x = g x) → f = g",
+          "line": 29,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'ZeroApplyAssessment.normalized' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 43,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'ZeroApplyAssessment.univariate' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 44,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'ZeroApplyAssessment.coefficient_preserving' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 45,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'ZeroApplyAssessment.false_unnormalized' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 46,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  }
+}
