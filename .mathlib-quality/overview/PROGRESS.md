@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-26
 
-- Declarations completed: **61/293**
-- Next declaration: **#62 `MvPolynomial.coeff_taylor_monomial_aux`** (Roth/Taylor.lean:120)
+- Declarations completed: **62/293**
+- Next declaration: **#63 `MvPolynomial.coeff_taylor`** (Roth/Taylor.lean:134)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -80,10 +80,10 @@ Last regenerated: 2026-10-26
 | 59 | `MvPolynomial.hasseCoeff_single_add_eq` | Roth/Taylor.lean:82 | SKIP | [report](mathlibable/MvPolynomial.hasseCoeff_single_add_eq.md) |
 | 60 | `MvPolynomial.prod_pow_single_add_tsub` | Roth/Taylor.lean:92 | SKIP | [report](mathlibable/MvPolynomial.prod_pow_single_add_tsub.md) |
 | 61 | `MvPolynomial.coeff_taylor_monomial_single_add_aux` | Roth/Taylor.lean:101 | SKIP | [report](mathlibable/MvPolynomial.coeff_taylor_monomial_single_add_aux.md) |
+| 62 | `MvPolynomial.coeff_taylor_monomial_aux` | Roth/Taylor.lean:120 | SKIP | [report](mathlibable/MvPolynomial.coeff_taylor_monomial_aux.md) |
 
 ## Remaining declarations (in processing order)
 
-- #62 `MvPolynomial.coeff_taylor_monomial_aux` (Roth/Taylor.lean:120, private lemma)
 - #63 `MvPolynomial.coeff_taylor` (Roth/Taylor.lean:134, public theorem)
 - #64 `MvPolynomial.eval_taylor` (Roth/Taylor.lean:141, public theorem)
 - #65 `MvPolynomial.taylor_taylor` (Roth/Taylor.lean:146, public theorem)
