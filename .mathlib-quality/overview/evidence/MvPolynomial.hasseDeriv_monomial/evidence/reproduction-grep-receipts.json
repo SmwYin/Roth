@@ -1,0 +1,39 @@
+[
+  {
+    "request": [
+      "rg",
+      "--pcre2",
+      "-n",
+      "(?<![\\w.])(?:MvPolynomial\\.)?hasseDeriv_monomial\\b",
+      "Roth.lean",
+      "Roth"
+    ],
+    "exit": 0,
+    "stdout": "Roth/HasseDeriv.lean:53:`monomial (k - d) (hasseCoeff d k * a)` (see `hasseDeriv_monomial`). The coefficient\nRoth/HasseDeriv.lean:66:theorem hasseDeriv_monomial (d k : \u03c3 \u2192\u2080 \u2115) (a : R) :\nRoth/HasseDeriv.lean:94:    rw [hasseDeriv_monomial, coeff_monomial, coeff_monomial]\nRoth/HasseDeriv.lean:127:  rw [C_apply, hasseDeriv_monomial, (hasseCoeff_eq_zero_iff d 0).2 (by simpa using hd)]\nRoth/HasseDeriv.lean:233:    rw [monomial_mul_monomial, hasseDeriv_monomial, hasseDeriv_monomial,\nRoth/Taylor.lean:111:    rw [mem_support_iff, ih e, hasseDeriv_monomial] at he\nRoth/Taylor.lean:116:    \u2190 monomial_single_add, hasseDeriv_monomial, hasseDeriv_monomial, eval_monomial,\n",
+    "stderr": ""
+  },
+  {
+    "request": [
+      "rg",
+      "--pcre2",
+      "-n",
+      "hasseDeriv_monomial|Hasse|hasseDeriv|hyperderiv",
+      ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial"
+    ],
+    "exit": 1,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "request": [
+      "rg",
+      "--pcre2",
+      "-n",
+      "simp.*hasseDeriv|lsum_single|prod.*choose|choose.*prod",
+      "Roth"
+    ],
+    "exit": 0,
+    "stdout": "Roth/Wronskian.lean:28:* `Roth.det_choose_eq`: the determinant of `(d \u03bd choose \u03bc)_{\u03bc, \u03bd}` is a Vandermonde product\nRoth/Wronskian.lean:74:/-- The determinant of the binomial matrix `(d \u03bd choose \u03bc)_{\u03bc, \u03bd}` is the Vandermonde product\nRoth/Wronskian.lean:138:      exact (Finset.prod_eq_zero (Finset.mem_univ i) (by simp [Nat.choose_eq_zero_of_lt hi])).symm\nRoth/Wronskian.lean:151:  simpa [h0, det_choose_eq, eq_comm (a := 0), Finset.prod_eq_zero_iff, sub_eq_zero, h\u03c6,\nRoth/HasseDeriv.lean:49:/-- The binomial factor `\u220f j, (k j).choose (d j)` (a product over the support of `d`). -/\nRoth/HasseDeriv.lean:50:def hasseCoeff (d k : \u03c3 \u2192\u2080 \u2115) : \u2115 := d.prod fun j \u21a6 (k j).choose\nRoth/HasseDeriv.lean:68:  simp [hasseDeriv]\nRoth/HasseDeriv.lean:75:  simp [hasseDeriv, sum_def]\nRoth/HasseDeriv.lean:81:  simp [hasseCoeff, Finsupp.prod, Finset.prod_eq_zero_iff, Nat.choose_eq_zero_iff, Finsupp.le_iff,\nRoth/HasseDeriv.lean:106:theorem hasseCoeff_eq_prod [Fintype \u03c3] (d k : \u03c3 \u2192\u2080 \u2115) : hasseCoeff d k = \u220f j, (k j).choose (d j) :=\nRoth/HasseDeriv.lean:107:  d.prod_fintype _ fun _ \u21a6 Nat.choose_zero_right _\nRoth/HasseDeriv.lean:114:  simp [coeff_hasseDeriv, hasseCoeff]\nRoth/HasseDeriv.lean:137:  simp [coeff_hasseDeriv, coeff_map]\nRoth/HasseDeriv.lean:159:  rw [Finsupp.prod_of_support_subset _ hd _ fun _ _ \u21a6 Nat.choose_zero_right _,\nRoth/HasseDeriv.lean:162:    Finsupp.prod_of_support_subset _ hd _ fun _ _ \u21a6 Nat.choose_zero_right _,\nRoth/HasseDeriv.lean:163:    Finsupp.prod_of_support_subset _ Finsupp.support_add _ fun _ _ \u21a6 Nat.choose_zero_right _,\nRoth/HasseDeriv.lean:222:  simp [coeff_hasseDeriv, notMem_support_iff.1\nRoth/Taylor.lean:127:    \u00b7 simp [\u2190 C_apply, hasseDeriv_C hd, hd.symm]\nRoth/Taylor.lean:173:  simp [mem_support_iff, coeff_taylor, hasseDeriv_eq_zero_of_degreeOf_lt h] at he\nRoth/Taylor.lean:220:  simpa using congrArg (eval x) (eq_sum_box_hasseDeriv \u03b1 r P hP)\nRoth/Index.lean:104:    simpa [hasseDeriv_zero_apply] using hd\nRoth/Index.lean:105:  \u00b7 simpa using index_le_weight (r := r) (d := 0) (by simpa [hasseDeriv_zero_apply] using h)\nRoth/GenWronskian.lean:159:  simp [kronHasse, kronecker, derivative_aeval, pderiv_hasseDeriv, map_smul,\nRoth/MainLemma.lean:409:  simpa [hasseDeriv_map, eval_map, \u2190 algebraMap_int_eq, \u2190 aeval_def, diag,\nRoth/MainLemma.lean:489:    simpa [hasseDeriv_map] using hkev\nRoth/MainLemma.lean:495:  \u00b7 simpa [hasseDeriv_map] using hbound i k\nRoth/Theta.lean:524:    exact Matrix.ext fun \u03bc \u03bd \u21a6 by simp [hasseDeriv_map]\nRoth/Theta.lean:580:  simp only [hasseDeriv_map] at hlower\n",
+    "stderr": ""
+  }
+]

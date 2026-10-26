@@ -1,0 +1,25 @@
+45: namespace MvPolynomial
+46: 
+47: variable {σ R : Type*} [CommSemiring R]
+48: 
+49: /-- The binomial factor `∏ j, (k j).choose (d j)` (a product over the support of `d`). -/
+50: def hasseCoeff (d k : σ →₀ ℕ) : ℕ := d.prod fun j ↦ (k j).choose
+51: 
+52: /-- The multivariate Hasse derivative `Δ_d`: the `R`-linear map sending `monomial k a` to
+53: `monomial (k - d) (hasseCoeff d k * a)` (see `hasseDeriv_monomial`). The coefficient
+54: `hasseCoeff d k` vanishes unless `d ≤ k`, so the truncated subtraction `k - d` is harmless.
+55: 
+56: Source: §1, definition of `Δ_i` on monomials. -/
+57: noncomputable def hasseDeriv (d : σ →₀ ℕ) : MvPolynomial σ R →ₗ[R] MvPolynomial σ R :=
+58:   Finsupp.lsum R (fun k : σ →₀ ℕ ↦
+59:       (monomial (k - d)).comp (LinearMap.lsmul R R (hasseCoeff d k : R))) ∘ₗ
+60:     (AddMonoidAlgebra.coeffLinearEquiv R).toLinearMap
+61: 
+62: /-- `Δ_d (a X^k) = hasseCoeff d k * a X^(k - d)`.
+63: 
+64: Source: §1, definition of `Δ_i` on monomials. -/
+65: @[simp]
+66: theorem hasseDeriv_monomial (d k : σ →₀ ℕ) (a : R) :
+67:     hasseDeriv d (monomial k a) = monomial (k - d) ((hasseCoeff d k : R) * a) := by
+68:   simp [hasseDeriv]
+69: 

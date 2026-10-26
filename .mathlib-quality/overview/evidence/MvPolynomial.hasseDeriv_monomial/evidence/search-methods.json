@@ -1,0 +1,405 @@
+{
+  "finder": {
+    "request": {
+      "query": "Multivariate Hasse derivative of a monomial equals product of binomial coefficients times monomial with exponents subtracted",
+      "num_results": 10
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv_monomial\",\n      \"informal_name\": \"Hasse Derivative of Monomial in Polynomial Ring\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k n : ℕ) (r : R),\\n  (Polynomial.hasseDeriv k) ((Polynomial.monomial n) r) = (Polynomial.monomial (n - k)) (↑(n.choose k) * r)\",\n      \"informal_description\": \"For a semiring $ R $, the $ k $-th Hasse derivative of the monomial $ rX^n $ in the polynomial ring $ R[X] $ is given by $ \\\\binom{n}{k} r X^{n - k} $. This expresses how the Hasse derivative acts on monomials by scaling the coefficient by the binomial coefficient $ \\\\binom{n}{k} $ and reducing the degree by $ k $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.pderiv_monomial\",\n      \"informal_name\": \"Partial Derivative of Monomial: $\\\\partial_i (a X^s) = a s_i X^{s - e_i}$\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type v} {a : R} {s : σ →₀ ℕ} [inst : CommSemiring R] {i : σ},\\n  (MvPolynomial.pderiv i) ((MvPolynomial.monomial s) a) = (MvPolynomial.monomial (s - Finsupp.single i 1)) (a * ↑(s i))\",\n      \"informal_description\": \"For a commutative semiring $ R $, a type $ \\\\sigma $, and a monomial $ a X^s $ in the multivariate polynomial ring $ R[\\\\sigma] $, the partial derivative with respect to the variable indexed by $ i \\\\in \\\\sigma $ is the monomial with coefficient $ a \\\\cdot s(i) $ and exponent vector $ s - \\\\mathbf{e}_i $, where $ \\\\mathbf{e}_i $ denotes the standard basis vector with 1 at position $ i $ and 0 elsewhere.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.PDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv_apply\",\n      \"informal_name\": \"Hasse Derivative of Order k Applied to a Polynomial\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f : Polynomial R),\\n  (Polynomial.hasseDeriv k) f = f.sum fun i r => (Polynomial.monomial (i - k)) (↑(i.choose k) * r)\",\n      \"informal_description\": \"For a semiring $ R $ and a polynomial $ f \\\\in R[X] $, the Hasse derivative of order $ k $ applied to $ f $ is given by $ D^{(k)}(f) = \\\\sum_{i} \\\\binom{i}{k} \\\\cdot a_i \\\\cdot X^{i - k} $, where $ a_i $ is the coefficient of $ X^i $ in $ f $. This expression sums over all monomials in $ f $, scaling each by the binomial coefficient $ \\\\binom{i}{k} $ and reducing the exponent by $ k $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.mkDerivation_monomial\",\n      \"informal_name\": \"Derivation of Monomials in Multivariate Polynomial Ring\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} (R : Type u_2) {A : Type u_3} [inst : CommSemiring R] [inst_1 : AddCommMonoid A] [inst_2 : Module R A]\\n  [inst_3 : Module (MvPolynomial σ R) A] [inst_4 : IsScalarTower R (MvPolynomial σ R) A] (f : σ → A) (s : σ →₀ ℕ)\\n  (r : R),\\n  (MvPolynomial.mkDerivation R f) ((MvPolynomial.monomial s) r) =\\n    r • s.sum fun i k => (MvPolynomial.monomial (s - Finsupp.single i 1)) ↑k • f i\",\n      \"informal_description\": \"For a commutative semiring $ R $, type $ \\\\sigma $, $ R $-module $ A $, and function $ f : \\\\sigma \\\\to A $, the derivation $ D_f $ applied to the monomial $ r \\\\cdot \\\\mathbf{X}^s $ (where $ s : \\\\sigma \\\\to_0 \\\\mathbb{N} $ and $ r \\\\in R $) yields $ r \\\\cdot \\\\sum_{i \\\\in \\\\text{supp}(s)} \\\\mathbf{X}^{s - \\\\mathbf{e}_i} \\\\cdot f(i) $. Here, $ \\\\mathbf{e}_i $ denotes the basis vector with 1 at position $ i $, and $ \\\\mathbf{X}^{s - \\\\mathbf{e}_i} $ represents the monomial obtained by reducing the exponent of variable $ i $ by 1.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Derivation\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.mkDerivationₗ_monomial\",\n      \"informal_name\": \"Derivation on Multivariate Polynomial Monomials Induced by Function f\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_2} {A : Type u_3} [inst : CommSemiring R] [inst_1 : AddCommMonoid A] [inst_2 : Module R A]\\n  [inst_3 : Module (MvPolynomial σ R) A] (f : σ → A) (s : σ →₀ ℕ) (r : R),\\n  (MvPolynomial.mkDerivationₗ R f) ((MvPolynomial.monomial s) r) =\\n    r • s.sum fun i k => (MvPolynomial.monomial (s - Finsupp.single i 1)) ↑k • f i\",\n      \"informal_description\": \"For a commutative semiring $ R $, a type $ \\\\sigma $ of variables, and a function $ f : \\\\sigma \\\\to A $, the derivation $ D $ induced by $ f $ acts on the monomial $ r \\\\cdot X^s $ (where $ s : \\\\sigma \\\\to_0 \\\\mathbb{N} $ and $ r \\\\in R $) by producing the sum $ \\\\sum_{i \\\\in \\\\text{supp}(s)} r \\\\cdot f(i) \\\\cdot X^{s - \\\\mathbf{e}_i} $, where $ \\\\mathbf{e}_i $ denotes the unit vector at $ i $. This satisfies the Leibniz rule for derivations.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Derivation\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.pderiv_monomial_single\",\n      \"informal_name\": \"Partial Derivative of Monomial with Respect to Variable i Follows Power Rule\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type v} {a : R} [inst : CommSemiring R] {i : σ} {n : ℕ},\\n  (MvPolynomial.pderiv i) ((MvPolynomial.monomial (Finsupp.single i n)) a) =\\n    (MvPolynomial.monomial (Finsupp.single i (n - 1))) (a * ↑n)\",\n      \"informal_description\": \"For a commutative semiring $ R $, type $ \\\\sigma $, variable $ i \\\\in \\\\sigma $, natural number $ n $, and coefficient $ a \\\\in R $, the partial derivative of the monomial $ a \\\\cdot X_i^n $ with respect to $ X_i $ is $ a \\\\cdot n \\\\cdot X_i^{n-1} $. This follows the standard power rule for differentiation in multivariate polynomial rings.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.PDeriv\"\n    },\n    {\n      \"formal_name\": \"LaurentSeries.hasseDeriv_single\",\n      \"informal_name\": \"Hasse Derivative of Order $ k $ Applied to Single-Term Laurent Series: $ \\\\text{hasseDeriv}_k(\\\\text{single}_n(x)) = \\\\text{single}_{n - k}\\\\left( \\\\binom{n}{k} \\\\cdot x \\\\right) $\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] {V : Type u_2} [inst_1 : AddCommGroup V] [inst_2 : Module R V] (k : ℕ) (n : ℤ)\\n  (x : V), (LaurentSeries.hasseDeriv R k) ((HahnSeries.single n) x) = (HahnSeries.single (n - ↑k)) (Ring.choose n k • x)\",\n      \"informal_description\": \"The Hasse derivative of order $ k $ applied to the Laurent series with a single non-zero term at exponent $ n $ and coefficient $ x $ results in a Laurent series with a single non-zero term at exponent $ n - k $, scaled by the binomial coefficient $ \\\\binom{n}{k} $. Formally, $ \\\\text{hasseDeriv}_k(\\\\text{single}_n(x)) = \\\\text{single}_{n - k}\\\\left( \\\\binom{n}{k} \\\\cdot x \\\\right) $.\",\n      \"path\": \"Mathlib.RingTheory.LaurentSeries\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv_coeff\",\n      \"informal_name\": \"Coefficient Formula for Hasse Derivative of Order k\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f : Polynomial R) (n : ℕ),\\n  ((Polynomial.hasseDeriv k) f).coeff n = ↑((n + k).choose k) * f.coeff (n + k)\",\n      \"informal_description\": \"For any natural number $ n $, the coefficient of $ X^n $ in the $ k $-th Hasse derivative of a polynomial $ f $ over a semiring $ R $ is equal to $ \\\\binom{n + k}{k} $ multiplied by the coefficient of $ X^{n + k} $ in $ f $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"LaurentSeries.hasseDeriv_single_add\",\n      \"informal_name\": \"Hasse Derivative of a Single Laurent Series Term\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] {V : Type u_2} [inst_1 : AddCommGroup V] [inst_2 : Module R V] (k : ℕ) (n : ℤ)\\n  (x : V),\\n  (LaurentSeries.hasseDeriv R k) ((HahnSeries.single (n + ↑k)) x) = (HahnSeries.single n) (Ring.choose (n + ↑k) k • x)\",\n      \"informal_description\": \"The Hasse derivative of order $k$ applied to the Laurent series with a single non-zero term at exponent $n + k$ and coefficient $x$ results in the Laurent series with a single non-zero term at exponent $n$ and coefficient $\\\\binom{n + k}{k} \\\\cdot x$, where $\\\\binom{n + k}{k}$ denotes the binomial coefficient in the ring $R$.\",\n      \"path\": \"Mathlib.RingTheory.LaurentSeries\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv\",\n      \"informal_name\": \"Hasse Derivative of Order k on Polynomial Ring\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : Semiring R] → ℕ → Polynomial R →ₗ[R] Polynomial R\",\n      \"informal_description\": \"For a semiring $ R $, the Hasse derivative of order $ k $ is an $ R $-linear map $ D^{(k)} : R[X] \\to R[X] $ defined by $ D^{(k)}(a_i X^i) = \\binom{i}{k} a_i X^{i - k} $ on monomials and extended linearly. This operation generalizes the usual derivative by scaling each coefficient $ a_i $ by the binomial coefficient $ \\binom{i}{k} $ and reducing the degree by $ k $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Polynomial.hasseDeriv_monomial",
+            "informal_name": "Hasse Derivative of Monomial in Polynomial Ring",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (k n : ℕ) (r : R),\n  (Polynomial.hasseDeriv k) ((Polynomial.monomial n) r) = (Polynomial.monomial (n - k)) (↑(n.choose k) * r)",
+            "informal_description": "For a semiring $ R $, the $ k $-th Hasse derivative of the monomial $ rX^n $ in the polynomial ring $ R[X] $ is given by $ \\binom{n}{k} r X^{n - k} $. This expresses how the Hasse derivative acts on monomials by scaling the coefficient by the binomial coefficient $ \\binom{n}{k} $ and reducing the degree by $ k $.",
+            "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          },
+          {
+            "formal_name": "MvPolynomial.pderiv_monomial",
+            "informal_name": "Partial Derivative of Monomial: $\\partial_i (a X^s) = a s_i X^{s - e_i}$",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type v} {a : R} {s : σ →₀ ℕ} [inst : CommSemiring R] {i : σ},\n  (MvPolynomial.pderiv i) ((MvPolynomial.monomial s) a) = (MvPolynomial.monomial (s - Finsupp.single i 1)) (a * ↑(s i))",
+            "informal_description": "For a commutative semiring $ R $, a type $ \\sigma $, and a monomial $ a X^s $ in the multivariate polynomial ring $ R[\\sigma] $, the partial derivative with respect to the variable indexed by $ i \\in \\sigma $ is the monomial with coefficient $ a \\cdot s(i) $ and exponent vector $ s - \\mathbf{e}_i $, where $ \\mathbf{e}_i $ denotes the standard basis vector with 1 at position $ i $ and 0 elsewhere.",
+            "path": "Mathlib.Algebra.MvPolynomial.PDeriv"
+          },
+          {
+            "formal_name": "Polynomial.hasseDeriv_apply",
+            "informal_name": "Hasse Derivative of Order k Applied to a Polynomial",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f : Polynomial R),\n  (Polynomial.hasseDeriv k) f = f.sum fun i r => (Polynomial.monomial (i - k)) (↑(i.choose k) * r)",
+            "informal_description": "For a semiring $ R $ and a polynomial $ f \\in R[X] $, the Hasse derivative of order $ k $ applied to $ f $ is given by $ D^{(k)}(f) = \\sum_{i} \\binom{i}{k} \\cdot a_i \\cdot X^{i - k} $, where $ a_i $ is the coefficient of $ X^i $ in $ f $. This expression sums over all monomials in $ f $, scaling each by the binomial coefficient $ \\binom{i}{k} $ and reducing the exponent by $ k $.",
+            "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          },
+          {
+            "formal_name": "MvPolynomial.mkDerivation_monomial",
+            "informal_name": "Derivation of Monomials in Multivariate Polynomial Ring",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} (R : Type u_2) {A : Type u_3} [inst : CommSemiring R] [inst_1 : AddCommMonoid A] [inst_2 : Module R A]\n  [inst_3 : Module (MvPolynomial σ R) A] [inst_4 : IsScalarTower R (MvPolynomial σ R) A] (f : σ → A) (s : σ →₀ ℕ)\n  (r : R),\n  (MvPolynomial.mkDerivation R f) ((MvPolynomial.monomial s) r) =\n    r • s.sum fun i k => (MvPolynomial.monomial (s - Finsupp.single i 1)) ↑k • f i",
+            "informal_description": "For a commutative semiring $ R $, type $ \\sigma $, $ R $-module $ A $, and function $ f : \\sigma \\to A $, the derivation $ D_f $ applied to the monomial $ r \\cdot \\mathbf{X}^s $ (where $ s : \\sigma \\to_0 \\mathbb{N} $ and $ r \\in R $) yields $ r \\cdot \\sum_{i \\in \\text{supp}(s)} \\mathbf{X}^{s - \\mathbf{e}_i} \\cdot f(i) $. Here, $ \\mathbf{e}_i $ denotes the basis vector with 1 at position $ i $, and $ \\mathbf{X}^{s - \\mathbf{e}_i} $ represents the monomial obtained by reducing the exponent of variable $ i $ by 1.",
+            "path": "Mathlib.Algebra.MvPolynomial.Derivation"
+          },
+          {
+            "formal_name": "MvPolynomial.mkDerivationₗ_monomial",
+            "informal_name": "Derivation on Multivariate Polynomial Monomials Induced by Function f",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {R : Type u_2} {A : Type u_3} [inst : CommSemiring R] [inst_1 : AddCommMonoid A] [inst_2 : Module R A]\n  [inst_3 : Module (MvPolynomial σ R) A] (f : σ → A) (s : σ →₀ ℕ) (r : R),\n  (MvPolynomial.mkDerivationₗ R f) ((MvPolynomial.monomial s) r) =\n    r • s.sum fun i k => (MvPolynomial.monomial (s - Finsupp.single i 1)) ↑k • f i",
+            "informal_description": "For a commutative semiring $ R $, a type $ \\sigma $ of variables, and a function $ f : \\sigma \\to A $, the derivation $ D $ induced by $ f $ acts on the monomial $ r \\cdot X^s $ (where $ s : \\sigma \\to_0 \\mathbb{N} $ and $ r \\in R $) by producing the sum $ \\sum_{i \\in \\text{supp}(s)} r \\cdot f(i) \\cdot X^{s - \\mathbf{e}_i} $, where $ \\mathbf{e}_i $ denotes the unit vector at $ i $. This satisfies the Leibniz rule for derivations.",
+            "path": "Mathlib.Algebra.MvPolynomial.Derivation"
+          },
+          {
+            "formal_name": "MvPolynomial.pderiv_monomial_single",
+            "informal_name": "Partial Derivative of Monomial with Respect to Variable i Follows Power Rule",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type v} {a : R} [inst : CommSemiring R] {i : σ} {n : ℕ},\n  (MvPolynomial.pderiv i) ((MvPolynomial.monomial (Finsupp.single i n)) a) =\n    (MvPolynomial.monomial (Finsupp.single i (n - 1))) (a * ↑n)",
+            "informal_description": "For a commutative semiring $ R $, type $ \\sigma $, variable $ i \\in \\sigma $, natural number $ n $, and coefficient $ a \\in R $, the partial derivative of the monomial $ a \\cdot X_i^n $ with respect to $ X_i $ is $ a \\cdot n \\cdot X_i^{n-1} $. This follows the standard power rule for differentiation in multivariate polynomial rings.",
+            "path": "Mathlib.Algebra.MvPolynomial.PDeriv"
+          },
+          {
+            "formal_name": "LaurentSeries.hasseDeriv_single",
+            "informal_name": "Hasse Derivative of Order $ k $ Applied to Single-Term Laurent Series: $ \\text{hasseDeriv}_k(\\text{single}_n(x)) = \\text{single}_{n - k}\\left( \\binom{n}{k} \\cdot x \\right) $",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] {V : Type u_2} [inst_1 : AddCommGroup V] [inst_2 : Module R V] (k : ℕ) (n : ℤ)\n  (x : V), (LaurentSeries.hasseDeriv R k) ((HahnSeries.single n) x) = (HahnSeries.single (n - ↑k)) (Ring.choose n k • x)",
+            "informal_description": "The Hasse derivative of order $ k $ applied to the Laurent series with a single non-zero term at exponent $ n $ and coefficient $ x $ results in a Laurent series with a single non-zero term at exponent $ n - k $, scaled by the binomial coefficient $ \\binom{n}{k} $. Formally, $ \\text{hasseDeriv}_k(\\text{single}_n(x)) = \\text{single}_{n - k}\\left( \\binom{n}{k} \\cdot x \\right) $.",
+            "path": "Mathlib.RingTheory.LaurentSeries"
+          },
+          {
+            "formal_name": "Polynomial.hasseDeriv_coeff",
+            "informal_name": "Coefficient Formula for Hasse Derivative of Order k",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f : Polynomial R) (n : ℕ),\n  ((Polynomial.hasseDeriv k) f).coeff n = ↑((n + k).choose k) * f.coeff (n + k)",
+            "informal_description": "For any natural number $ n $, the coefficient of $ X^n $ in the $ k $-th Hasse derivative of a polynomial $ f $ over a semiring $ R $ is equal to $ \\binom{n + k}{k} $ multiplied by the coefficient of $ X^{n + k} $ in $ f $.",
+            "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          },
+          {
+            "formal_name": "LaurentSeries.hasseDeriv_single_add",
+            "informal_name": "Hasse Derivative of a Single Laurent Series Term",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] {V : Type u_2} [inst_1 : AddCommGroup V] [inst_2 : Module R V] (k : ℕ) (n : ℤ)\n  (x : V),\n  (LaurentSeries.hasseDeriv R k) ((HahnSeries.single (n + ↑k)) x) = (HahnSeries.single n) (Ring.choose (n + ↑k) k • x)",
+            "informal_description": "The Hasse derivative of order $k$ applied to the Laurent series with a single non-zero term at exponent $n + k$ and coefficient $x$ results in the Laurent series with a single non-zero term at exponent $n$ and coefficient $\\binom{n + k}{k} \\cdot x$, where $\\binom{n + k}{k}$ denotes the binomial coefficient in the ring $R$.",
+            "path": "Mathlib.RingTheory.LaurentSeries"
+          },
+          {
+            "formal_name": "Polynomial.hasseDeriv",
+            "informal_name": "Hasse Derivative of Order k on Polynomial Ring",
+            "kind": "definition",
+            "type": "{R : Type u_1} → [inst : Semiring R] → ℕ → Polynomial R →ₗ[R] Polynomial R",
+            "informal_description": "For a semiring $ R $, the Hasse derivative of order $ k $ is an $ R $-linear map $ D^{(k)} : R[X] \to R[X] $ defined by $ D^{(k)}(a_i X^i) = \binom{i}{k} a_i X^{i - k} $ on monomials and extended linearly. This operation generalizes the usual derivative by scaling each coefficient $ a_i $ by the binomial coefficient $ \binom{i}{k} $ and reducing the degree by $ k $.",
+            "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  "loogle": {
+    "request": {
+      "query": "\"hasseDeriv\", \"monomial\"",
+      "num_results": 20
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.hasseDeriv_monomial\",\n      \"type\": \" {R : Type u_1} [Semiring R] (k n : ℕ) (r : R) : (Polynomial.hasseDeriv k) ((Polynomial.monomial n) r) = (Polynomial.monomial (n - k)) (↑(n.choose k) * r)\",\n      \"module\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.hasseDeriv_monomial",
+            "type": " {R : Type u_1} [Semiring R] (k n : ℕ) (r : R) : (Polynomial.hasseDeriv k) ((Polynomial.monomial n) r) = (Polynomial.monomial (n - k)) (↑(n.choose k) * r)",
+            "module": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  "leansearch": {
+    "request": {
+      "query": "Hasse derivative multivariate polynomial monomial binomial coefficient",
+      "num_results": 10
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.hasseDeriv\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.HasseDeriv\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : Semiring R] → ℕ → Polynomial R →ₗ[R] Polynomial R\"\n    },\n    {\n      \"name\": \"Polynomial.hasseDeriv_monomial\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.HasseDeriv\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k n : ℕ) (r : R),\\n  (Polynomial.hasseDeriv k) ((Polynomial.monomial n) r) = (Polynomial.monomial (n - k)) (↑(n.choose k) * r)\"\n    },\n    {\n      \"name\": \"Polynomial.hasseDeriv_apply\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.HasseDeriv\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f : Polynomial R),\\n  (Polynomial.hasseDeriv k) f = f.sum fun i r => (Polynomial.monomial (i - k)) (↑(i.choose k) * r)\"\n    },\n    {\n      \"name\": \"Polynomial.hasseDeriv_comp\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.HasseDeriv\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k l : ℕ),\\n  Polynomial.hasseDeriv k ∘ₗ Polynomial.hasseDeriv l = (k + l).choose k • Polynomial.hasseDeriv (k + l)\"\n    },\n    {\n      \"name\": \"Polynomial.hasseDeriv_coeff\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.HasseDeriv\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f : Polynomial R) (n : ℕ),\\n  ((Polynomial.hasseDeriv k) f).coeff n = ↑((n + k).choose k) * f.coeff (n + k)\"\n    },\n    {\n      \"name\": \"LaurentSeries.hasseDeriv_single\",\n      \"module_name\": \"Mathlib.RingTheory.LaurentSeries\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] {V : Type u_2} [inst_1 : AddCommGroup V] [inst_2 : Module R V] (k : ℕ) (n : ℤ)\\n  (x : V), (LaurentSeries.hasseDeriv R k) ((HahnSeries.single n) x) = (HahnSeries.single (n - ↑k)) (Ring.choose n k • x)\"\n    },\n    {\n      \"name\": \"MvPolynomial.pderiv_monomial\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.PDeriv\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type v} {a : R} {s : σ →₀ ℕ} [inst : CommSemiring R] {i : σ},\\n  (MvPolynomial.pderiv i) ((MvPolynomial.monomial s) a) = (MvPolynomial.monomial (s - Finsupp.single i 1)) (a * ↑(s i))\"\n    },\n    {\n      \"name\": \"MvPolynomial.mkDerivation_monomial\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Derivation\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} (R : Type u_2) {A : Type u_3} [inst : CommSemiring R] [inst_1 : AddCommMonoid A] [inst_2 : Module R A]\\n  [inst_3 : Module (MvPolynomial σ R) A] [inst_4 : IsScalarTower R (MvPolynomial σ R) A] (f : σ → A) (s : σ →₀ ℕ)\\n  (r : R),\\n  (MvPolynomial.mkDerivation R f) ((MvPolynomial.monomial s) r) =\\n    r • s.sum fun i k => (MvPolynomial.monomial (s - Finsupp.single i 1)) ↑k • f i\"\n    },\n    {\n      \"name\": \"Polynomial.taylor_coeff\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Taylor\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R) (n : ℕ),\\n  ((Polynomial.taylor r) f).coeff n = Polynomial.eval r ((Polynomial.hasseDeriv n) f)\"\n    },\n    {\n      \"name\": \"MvPolynomial.pderiv\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.PDeriv\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} → {σ : Type v} → [inst : CommSemiring R] → σ → Derivation R (MvPolynomial σ R) (MvPolynomial σ R)\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.hasseDeriv",
+            "module_name": "Mathlib.Algebra.Polynomial.HasseDeriv",
+            "kind": "definition",
+            "type": "{R : Type u_1} → [inst : Semiring R] → ℕ → Polynomial R →ₗ[R] Polynomial R"
+          },
+          {
+            "name": "Polynomial.hasseDeriv_monomial",
+            "module_name": "Mathlib.Algebra.Polynomial.HasseDeriv",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (k n : ℕ) (r : R),\n  (Polynomial.hasseDeriv k) ((Polynomial.monomial n) r) = (Polynomial.monomial (n - k)) (↑(n.choose k) * r)"
+          },
+          {
+            "name": "Polynomial.hasseDeriv_apply",
+            "module_name": "Mathlib.Algebra.Polynomial.HasseDeriv",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f : Polynomial R),\n  (Polynomial.hasseDeriv k) f = f.sum fun i r => (Polynomial.monomial (i - k)) (↑(i.choose k) * r)"
+          },
+          {
+            "name": "Polynomial.hasseDeriv_comp",
+            "module_name": "Mathlib.Algebra.Polynomial.HasseDeriv",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (k l : ℕ),\n  Polynomial.hasseDeriv k ∘ₗ Polynomial.hasseDeriv l = (k + l).choose k • Polynomial.hasseDeriv (k + l)"
+          },
+          {
+            "name": "Polynomial.hasseDeriv_coeff",
+            "module_name": "Mathlib.Algebra.Polynomial.HasseDeriv",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f : Polynomial R) (n : ℕ),\n  ((Polynomial.hasseDeriv k) f).coeff n = ↑((n + k).choose k) * f.coeff (n + k)"
+          },
+          {
+            "name": "LaurentSeries.hasseDeriv_single",
+            "module_name": "Mathlib.RingTheory.LaurentSeries",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] {V : Type u_2} [inst_1 : AddCommGroup V] [inst_2 : Module R V] (k : ℕ) (n : ℤ)\n  (x : V), (LaurentSeries.hasseDeriv R k) ((HahnSeries.single n) x) = (HahnSeries.single (n - ↑k)) (Ring.choose n k • x)"
+          },
+          {
+            "name": "MvPolynomial.pderiv_monomial",
+            "module_name": "Mathlib.Algebra.MvPolynomial.PDeriv",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type v} {a : R} {s : σ →₀ ℕ} [inst : CommSemiring R] {i : σ},\n  (MvPolynomial.pderiv i) ((MvPolynomial.monomial s) a) = (MvPolynomial.monomial (s - Finsupp.single i 1)) (a * ↑(s i))"
+          },
+          {
+            "name": "MvPolynomial.mkDerivation_monomial",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Derivation",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} (R : Type u_2) {A : Type u_3} [inst : CommSemiring R] [inst_1 : AddCommMonoid A] [inst_2 : Module R A]\n  [inst_3 : Module (MvPolynomial σ R) A] [inst_4 : IsScalarTower R (MvPolynomial σ R) A] (f : σ → A) (s : σ →₀ ℕ)\n  (r : R),\n  (MvPolynomial.mkDerivation R f) ((MvPolynomial.monomial s) r) =\n    r • s.sum fun i k => (MvPolynomial.monomial (s - Finsupp.single i 1)) ↑k • f i"
+          },
+          {
+            "name": "Polynomial.taylor_coeff",
+            "module_name": "Mathlib.Algebra.Polynomial.Taylor",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R) (n : ℕ),\n  ((Polynomial.taylor r) f).coeff n = Polynomial.eval r ((Polynomial.hasseDeriv n) f)"
+          },
+          {
+            "name": "MvPolynomial.pderiv",
+            "module_name": "Mathlib.Algebra.MvPolynomial.PDeriv",
+            "kind": "definition",
+            "type": "{R : Type u} → {σ : Type v} → [inst : CommSemiring R] → σ → Derivation R (MvPolynomial σ R) (MvPolynomial σ R)"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  "local": {
+    "request": {
+      "query": "hasseDeriv_monomial",
+      "limit": 20
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.hasseDeriv_monomial\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/HasseDeriv.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.hasseDeriv_monomial\",\n      \"kind\": \"theorem\",\n      \"file\": \".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv/evidence/target-excerpt.lean\"\n    },\n    {\n      \"name\": \"Polynomial.hasseDeriv_monomial\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/HasseDeriv.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.hasseDeriv_monomial_mul\",\n      \"kind\": \"lemma\",\n      \"file\": \"Roth/HasseDeriv.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.hasseDeriv_monomial",
+            "kind": "theorem",
+            "file": "Roth/HasseDeriv.lean"
+          },
+          {
+            "name": "MvPolynomial.hasseDeriv_monomial",
+            "kind": "theorem",
+            "file": ".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv/evidence/target-excerpt.lean"
+          },
+          {
+            "name": "Polynomial.hasseDeriv_monomial",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/HasseDeriv.lean"
+          },
+          {
+            "name": "MvPolynomial.hasseDeriv_monomial_mul",
+            "kind": "lemma",
+            "file": "Roth/HasseDeriv.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  "finder-abstract": {
+    "request": {
+      "query": "Finitely supported sum linear map applied to single supported coefficient evaluates its indexed component",
+      "num_results": 5
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Finsupp.lsum_single\",\n      \"informal_name\": \"Linear Sum Identity for Single-Nonzero Finite Support Functions\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {M : Type u_2} {N : Type u_3} {R : Type u_5} {R₂ : Type u_6} (S : Type u_8) [inst : Semiring R]\\n  [inst_1 : Semiring R₂] [inst_2 : Semiring S] [inst_3 : AddCommMonoid M] [inst_4 : Module R M]\\n  [inst_5 : AddCommMonoid N] [inst_6 : Module R₂ N] {σ : R →+* R₂} [inst_7 : Module S N] [inst_8 : SMulCommClass R₂ S N]\\n  (f : α → M →ₛₗ[σ] N) (i : α) (m : M), ((Finsupp.lsum S) f) (Finsupp.single i m) = (f i) m\",\n      \"informal_description\": \"For any family of $\\\\sigma$-linear maps $f : \\\\alpha \\\\to M \\\\to_\\\\sigma N$, index $i \\\\in \\\\alpha$, and element $m \\\\in M$, the linear sum $\\\\text{lsum} \\\\, f$ evaluated at the finite support function $\\\\text{single}_i(m)$ equals $f(i)(m)$.\",\n      \"path\": \"Mathlib.LinearAlgebra.Finsupp.LSum\"\n    },\n    {\n      \"formal_name\": \"DFinsupp.lsum_single\",\n      \"informal_name\": \"Linear Sum Evaluates to Component Map on Single-Element Insertion\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {R : Type u_3} (S : Type u_4) {M : ι → Type u_5} {N : Type u_6} [inst : Semiring R]\\n  [inst_1 : (i : ι) → AddCommMonoid (M i)] [inst_2 : (i : ι) → Module R (M i)] [inst_3 : AddCommMonoid N]\\n  [inst_4 : Module R N] [inst_5 : DecidableEq ι] [inst_6 : Semiring S] [inst_7 : Module S N]\\n  [inst_8 : SMulCommClass R S N] (F : (i : ι) → M i →ₗ[R] N) (i : ι) (x : M i),\\n  ((DFinsupp.lsum S) F) (DFinsupp.single i x) = (F i) x\",\n      \"informal_description\": \"For a semiring $ S $, family of $ S $-modules $ \\\\{M(i)\\\\}_{i \\\\in \\\\iota} $, and another $ S $-module $ N $, given a family of $ S $-linear maps $ F_i : M(i) \\\\to N $, the linear map $ \\\\Phi $ constructed by $ \\\\mathrm{lsum} $ satisfies $ \\\\Phi(\\\\mathrm{single}_i(x)) = F_i(x) $ for any $ x \\\\in M(i) $. This states that applying the linear sum map to a function with a single non-zero element $ x $ at index $ i $ yields the result of the $ i $-th component map applied to $ x $.\",\n      \"path\": \"Mathlib.LinearAlgebra.DFinsupp\"\n    },\n    {\n      \"formal_name\": \"Finsupp.lsum_comp_lsingle\",\n      \"informal_name\": \"Composition of Finsupp.lsum and lsingle Recovers Original Map\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {M : Type u_2} {N : Type u_3} {R : Type u_5} {R₂ : Type u_6} (S : Type u_8) [inst : Semiring R]\\n  [inst_1 : Semiring R₂] [inst_2 : Semiring S] [inst_3 : AddCommMonoid M] [inst_4 : Module R M]\\n  [inst_5 : AddCommMonoid N] [inst_6 : Module R₂ N] {σ : R →+* R₂} [inst_7 : Module S N] [inst_8 : SMulCommClass R₂ S N]\\n  (f : α → M →ₛₗ[σ] N) (i : α), (Finsupp.lsum S) f ∘ₛₗ Finsupp.lsingle i = f i\",\n      \"informal_description\": \"For any family of σ-linear maps $ f: \\\\alpha \\\\to M \\\\to_\\\\sigma N $ and any index $ i \\\\in \\\\alpha $, the composition of the linear equivalence $ \\\\text{Finsupp.lsum} \\\\, f $ with the single-index embedding $ \\\\text{lsingle}_i $ equals the map $ f(i) $. This establishes that applying the linear sum equivalence followed by the single-index embedding reconstructs the original map at index $ i $.\",\n      \"path\": \"Mathlib.LinearAlgebra.Finsupp.LSum\"\n    },\n    {\n      \"formal_name\": \"Finsupp.linearCombination_single_index\",\n      \"informal_name\": \"Linear Combination of Single Index Vector\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (α : Type u_1) (M : Type u_2) (R : Type u_5) [inst : Semiring R] [inst_1 : AddCommMonoid M] [inst_2 : Module R M]\\n  (c : M) (a : α) (f : α →₀ R) [inst_3 : DecidableEq α], (Finsupp.linearCombination R (Pi.single a c)) f = f a • c\",\n      \"informal_description\": \"For any element $c$ in the module $M$, index $a$ in $\\\\alpha$, and finite support function $f : \\\\alpha \\\\to_0 R$ with decidable equality on $\\\\alpha$, the linear combination map evaluated at the function $\\\\mathrm{single}_a(c)$ (which is $c$ at index $a$ and zero elsewhere) and $f$ yields the scalar multiplication of $f(a)$ with $c$, i.e., $\\\\mathrm{linearCombination}_R(\\\\mathrm{single}_a(c), f) = f(a) \\\\cdot c$.\",\n      \"path\": \"Mathlib.LinearAlgebra.Finsupp.LinearCombination\"\n    },\n    {\n      \"formal_name\": \"Finsupp.linearCombination_single\",\n      \"informal_name\": \"Linear Combination of Single Term Equals Scalar Multiple\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {M : Type u_2} (R : Type u_5) [inst : Semiring R] [inst_1 : AddCommMonoid M] [inst_2 : Module R M]\\n  {v : α → M} (c : R) (a : α), (Finsupp.linearCombination R v) (Finsupp.single a c) = c • v a\",\n      \"informal_description\": \"For any semiring $R$, index type $\\\\alpha$, $R$-module $M$, and function $v : \\\\alpha \\\\to M$, the linear combination map applied to the finite support function with a single non-zero coefficient $c$ at index $a$ equals $c \\\\cdot v(a)$.\",\n      \"path\": \"Mathlib.LinearAlgebra.Finsupp.LinearCombination\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Finsupp.lsum_single",
+            "informal_name": "Linear Sum Identity for Single-Nonzero Finite Support Functions",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {M : Type u_2} {N : Type u_3} {R : Type u_5} {R₂ : Type u_6} (S : Type u_8) [inst : Semiring R]\n  [inst_1 : Semiring R₂] [inst_2 : Semiring S] [inst_3 : AddCommMonoid M] [inst_4 : Module R M]\n  [inst_5 : AddCommMonoid N] [inst_6 : Module R₂ N] {σ : R →+* R₂} [inst_7 : Module S N] [inst_8 : SMulCommClass R₂ S N]\n  (f : α → M →ₛₗ[σ] N) (i : α) (m : M), ((Finsupp.lsum S) f) (Finsupp.single i m) = (f i) m",
+            "informal_description": "For any family of $\\sigma$-linear maps $f : \\alpha \\to M \\to_\\sigma N$, index $i \\in \\alpha$, and element $m \\in M$, the linear sum $\\text{lsum} \\, f$ evaluated at the finite support function $\\text{single}_i(m)$ equals $f(i)(m)$.",
+            "path": "Mathlib.LinearAlgebra.Finsupp.LSum"
+          },
+          {
+            "formal_name": "DFinsupp.lsum_single",
+            "informal_name": "Linear Sum Evaluates to Component Map on Single-Element Insertion",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_1} {R : Type u_3} (S : Type u_4) {M : ι → Type u_5} {N : Type u_6} [inst : Semiring R]\n  [inst_1 : (i : ι) → AddCommMonoid (M i)] [inst_2 : (i : ι) → Module R (M i)] [inst_3 : AddCommMonoid N]\n  [inst_4 : Module R N] [inst_5 : DecidableEq ι] [inst_6 : Semiring S] [inst_7 : Module S N]\n  [inst_8 : SMulCommClass R S N] (F : (i : ι) → M i →ₗ[R] N) (i : ι) (x : M i),\n  ((DFinsupp.lsum S) F) (DFinsupp.single i x) = (F i) x",
+            "informal_description": "For a semiring $ S $, family of $ S $-modules $ \\{M(i)\\}_{i \\in \\iota} $, and another $ S $-module $ N $, given a family of $ S $-linear maps $ F_i : M(i) \\to N $, the linear map $ \\Phi $ constructed by $ \\mathrm{lsum} $ satisfies $ \\Phi(\\mathrm{single}_i(x)) = F_i(x) $ for any $ x \\in M(i) $. This states that applying the linear sum map to a function with a single non-zero element $ x $ at index $ i $ yields the result of the $ i $-th component map applied to $ x $.",
+            "path": "Mathlib.LinearAlgebra.DFinsupp"
+          },
+          {
+            "formal_name": "Finsupp.lsum_comp_lsingle",
+            "informal_name": "Composition of Finsupp.lsum and lsingle Recovers Original Map",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {M : Type u_2} {N : Type u_3} {R : Type u_5} {R₂ : Type u_6} (S : Type u_8) [inst : Semiring R]\n  [inst_1 : Semiring R₂] [inst_2 : Semiring S] [inst_3 : AddCommMonoid M] [inst_4 : Module R M]\n  [inst_5 : AddCommMonoid N] [inst_6 : Module R₂ N] {σ : R →+* R₂} [inst_7 : Module S N] [inst_8 : SMulCommClass R₂ S N]\n  (f : α → M →ₛₗ[σ] N) (i : α), (Finsupp.lsum S) f ∘ₛₗ Finsupp.lsingle i = f i",
+            "informal_description": "For any family of σ-linear maps $ f: \\alpha \\to M \\to_\\sigma N $ and any index $ i \\in \\alpha $, the composition of the linear equivalence $ \\text{Finsupp.lsum} \\, f $ with the single-index embedding $ \\text{lsingle}_i $ equals the map $ f(i) $. This establishes that applying the linear sum equivalence followed by the single-index embedding reconstructs the original map at index $ i $.",
+            "path": "Mathlib.LinearAlgebra.Finsupp.LSum"
+          },
+          {
+            "formal_name": "Finsupp.linearCombination_single_index",
+            "informal_name": "Linear Combination of Single Index Vector",
+            "kind": "theorem",
+            "type": "∀ (α : Type u_1) (M : Type u_2) (R : Type u_5) [inst : Semiring R] [inst_1 : AddCommMonoid M] [inst_2 : Module R M]\n  (c : M) (a : α) (f : α →₀ R) [inst_3 : DecidableEq α], (Finsupp.linearCombination R (Pi.single a c)) f = f a • c",
+            "informal_description": "For any element $c$ in the module $M$, index $a$ in $\\alpha$, and finite support function $f : \\alpha \\to_0 R$ with decidable equality on $\\alpha$, the linear combination map evaluated at the function $\\mathrm{single}_a(c)$ (which is $c$ at index $a$ and zero elsewhere) and $f$ yields the scalar multiplication of $f(a)$ with $c$, i.e., $\\mathrm{linearCombination}_R(\\mathrm{single}_a(c), f) = f(a) \\cdot c$.",
+            "path": "Mathlib.LinearAlgebra.Finsupp.LinearCombination"
+          },
+          {
+            "formal_name": "Finsupp.linearCombination_single",
+            "informal_name": "Linear Combination of Single Term Equals Scalar Multiple",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {M : Type u_2} (R : Type u_5) [inst : Semiring R] [inst_1 : AddCommMonoid M] [inst_2 : Module R M]\n  {v : α → M} (c : R) (a : α), (Finsupp.linearCombination R v) (Finsupp.single a c) = c • v a",
+            "informal_description": "For any semiring $R$, index type $\\alpha$, $R$-module $M$, and function $v : \\alpha \\to M$, the linear combination map applied to the finite support function with a single non-zero coefficient $c$ at index $a$ equals $c \\cdot v(a)$.",
+            "path": "Mathlib.LinearAlgebra.Finsupp.LinearCombination"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  "loogle-abstract": {
+    "request": {
+      "query": "Finsupp.lsum _ _ (Finsupp.single _ _) = _",
+      "num_results": 10
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": []\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": []
+      },
+      "isError": false
+    }
+  },
+  "leansearch-abstract": {
+    "request": {
+      "query": "linear extension of a family of linear maps on finitely supported functions evaluated at a single",
+      "num_results": 5
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finsupp.lapply\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Finsupp.Defs\",\n      \"kind\": \"definition\",\n      \"type\": \"{α : Type u_1} →\\n  {M : Type u_2} →\\n    {R : Type u_5} → [inst : Semiring R] → [inst_1 : AddCommMonoid M] → [inst_2 : Module R M] → α → (α →₀ M) →ₗ[R] M\"\n    },\n    {\n      \"name\": \"Finsupp.lhom_ext\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Finsupp.Defs\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {M : Type u_2} {N : Type u_3} {R : Type u_5} {R₂ : Type u_6} [inst : Semiring R] [inst_1 : Semiring R₂]\\n  [inst_2 : AddCommMonoid M] [inst_3 : Module R M] [inst_4 : AddCommMonoid N] [inst_5 : Module R₂ N] {σ₁₂ : R →+* R₂}\\n  ⦃φ ψ : (α →₀ M) →ₛₗ[σ₁₂] N⦄, (∀ (a : α) (b : M), φ (Finsupp.single a b) = ψ (Finsupp.single a b)) → φ = ψ\"\n    },\n    {\n      \"name\": \"Finsupp.lsum_comp_lsingle\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Finsupp.LSum\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {M : Type u_2} {N : Type u_3} {R : Type u_5} {R₂ : Type u_6} (S : Type u_8) [inst : Semiring R]\\n  [inst_1 : Semiring R₂] [inst_2 : Semiring S] [inst_3 : AddCommMonoid M] [inst_4 : Module R M]\\n  [inst_5 : AddCommMonoid N] [inst_6 : Module R₂ N] {σ : R →+* R₂} [inst_7 : Module S N] [inst_8 : SMulCommClass R₂ S N]\\n  (f : α → M →ₛₗ[σ] N) (i : α), (Finsupp.lsum S) f ∘ₛₗ Finsupp.lsingle i = f i\"\n    },\n    {\n      \"name\": \"DFinsupp.lmk\",\n      \"module_name\": \"Mathlib.LinearAlgebra.DFinsupp\",\n      \"kind\": \"definition\",\n      \"type\": \"{ι : Type u_1} →\\n  {R : Type u_3} →\\n    {M : ι → Type u_5} →\\n      [inst : Semiring R] →\\n        [inst_1 : (i : ι) → AddCommMonoid (M i)] →\\n          [inst_2 : (i : ι) → Module R (M i)] →\\n            [DecidableEq ι] → (s : Finset ι) → ((i : ↑↑s) → M ↑i) →ₗ[R] Π₀ (i : ι), M i\"\n    },\n    {\n      \"name\": \"DFinsupp.lsum_single\",\n      \"module_name\": \"Mathlib.LinearAlgebra.DFinsupp\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {R : Type u_3} (S : Type u_4) {M : ι → Type u_5} {N : Type u_6} [inst : Semiring R]\\n  [inst_1 : (i : ι) → AddCommMonoid (M i)] [inst_2 : (i : ι) → Module R (M i)] [inst_3 : AddCommMonoid N]\\n  [inst_4 : Module R N] [inst_5 : DecidableEq ι] [inst_6 : Semiring S] [inst_7 : Module S N]\\n  [inst_8 : SMulCommClass R S N] (F : (i : ι) → M i →ₗ[R] N) (i : ι) (x : M i),\\n  ((DFinsupp.lsum S) F) (DFinsupp.single i x) = (F i) x\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Finsupp.lapply",
+            "module_name": "Mathlib.LinearAlgebra.Finsupp.Defs",
+            "kind": "definition",
+            "type": "{α : Type u_1} →\n  {M : Type u_2} →\n    {R : Type u_5} → [inst : Semiring R] → [inst_1 : AddCommMonoid M] → [inst_2 : Module R M] → α → (α →₀ M) →ₗ[R] M"
+          },
+          {
+            "name": "Finsupp.lhom_ext",
+            "module_name": "Mathlib.LinearAlgebra.Finsupp.Defs",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {M : Type u_2} {N : Type u_3} {R : Type u_5} {R₂ : Type u_6} [inst : Semiring R] [inst_1 : Semiring R₂]\n  [inst_2 : AddCommMonoid M] [inst_3 : Module R M] [inst_4 : AddCommMonoid N] [inst_5 : Module R₂ N] {σ₁₂ : R →+* R₂}\n  ⦃φ ψ : (α →₀ M) →ₛₗ[σ₁₂] N⦄, (∀ (a : α) (b : M), φ (Finsupp.single a b) = ψ (Finsupp.single a b)) → φ = ψ"
+          },
+          {
+            "name": "Finsupp.lsum_comp_lsingle",
+            "module_name": "Mathlib.LinearAlgebra.Finsupp.LSum",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {M : Type u_2} {N : Type u_3} {R : Type u_5} {R₂ : Type u_6} (S : Type u_8) [inst : Semiring R]\n  [inst_1 : Semiring R₂] [inst_2 : Semiring S] [inst_3 : AddCommMonoid M] [inst_4 : Module R M]\n  [inst_5 : AddCommMonoid N] [inst_6 : Module R₂ N] {σ : R →+* R₂} [inst_7 : Module S N] [inst_8 : SMulCommClass R₂ S N]\n  (f : α → M →ₛₗ[σ] N) (i : α), (Finsupp.lsum S) f ∘ₛₗ Finsupp.lsingle i = f i"
+          },
+          {
+            "name": "DFinsupp.lmk",
+            "module_name": "Mathlib.LinearAlgebra.DFinsupp",
+            "kind": "definition",
+            "type": "{ι : Type u_1} →\n  {R : Type u_3} →\n    {M : ι → Type u_5} →\n      [inst : Semiring R] →\n        [inst_1 : (i : ι) → AddCommMonoid (M i)] →\n          [inst_2 : (i : ι) → Module R (M i)] →\n            [DecidableEq ι] → (s : Finset ι) → ((i : ↑↑s) → M ↑i) →ₗ[R] Π₀ (i : ι), M i"
+          },
+          {
+            "name": "DFinsupp.lsum_single",
+            "module_name": "Mathlib.LinearAlgebra.DFinsupp",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_1} {R : Type u_3} (S : Type u_4) {M : ι → Type u_5} {N : Type u_6} [inst : Semiring R]\n  [inst_1 : (i : ι) → AddCommMonoid (M i)] [inst_2 : (i : ι) → Module R (M i)] [inst_3 : AddCommMonoid N]\n  [inst_4 : Module R N] [inst_5 : DecidableEq ι] [inst_6 : Semiring S] [inst_7 : Module S N]\n  [inst_8 : SMulCommClass R S N] (F : (i : ι) → M i →ₗ[R] N) (i : ι) (x : M i),\n  ((DFinsupp.lsum S) F) (DFinsupp.single i x) = (F i) x"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  "local-abstract": {
+    "request": {
+      "query": "lsum_single",
+      "limit": 20
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"DFinsupp.lsum_single\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/DFinsupp.lean\"\n    },\n    {\n      \"name\": \"Finsupp.lsum_single\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/Finsupp/LSum.lean\"\n    },\n    {\n      \"name\": \"LinearMap.lsum_single\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/Pi.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "DFinsupp.lsum_single",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/DFinsupp.lean"
+          },
+          {
+            "name": "Finsupp.lsum_single",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/Finsupp/LSum.lean"
+          },
+          {
+            "name": "LinearMap.lsum_single",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/Pi.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "file": "Roth/HasseDeriv.lean",
+  "line": 66,
+  "kind": "theorem",
+  "visibility": "public",
+  "what": "Computes the Hasse derivative of a scalar monomial.",
+  "how": "Evaluates the Finsupp.lsum defining hasseDeriv on the single coefficient supported at the input exponent.",
+  "hypotheses": "A commutative coefficient semiring, any differentiation and monomial indices, and any scalar.",
+  "declaration": "MvPolynomial.hasseDeriv_monomial",
+  "type": "{\u03c3 R : Type*} [CommSemiring R] (d k : \u03c3 \u2192\u2080 \u2115) (a : R) : hasseDeriv d (monomial k a) = monomial (k-d) ((hasseCoeff d k : R)*a)",
+  "type_provenance": "Native #check in evidence/target-lsp.json",
+  "project_dependencies": [
+    "MvPolynomial.hasseDeriv",
+    "MvPolynomial.hasseCoeff"
+  ],
+  "caller_summary": {
+    "whole_project": {
+      "lines": 5,
+      "occurrences": 7,
+      "distinct_callers": 4
+    },
+    "outside_defining_file": {
+      "lines": 2,
+      "occurrences": 3,
+      "distinct_callers": 1,
+      "files": 1
+    },
+    "same_file": {
+      "lines": 3,
+      "occurrences": 4,
+      "distinct_callers": 3
+    }
+  },
+  "mathlib_api_audit": "Existing Finsupp.lsum_single generic evaluation; univariate Polynomial.hasseDeriv_monomial and order-one MvPolynomial.pderiv_monomial are partial analogues, not arbitrary-multiindex replacements.",
+  "moral_duplications": "Proof is generic linear-extension evaluation; no independent rederivation of exact monomial law found in written production code.",
+  "generalization": "No verified hypothesis weakening; CommSemiring floor confirmed. Natural-index/Laurent widening changes domains. Q8 points to already-existing abstract evaluation theorem.",
+  "missing_api": "No new generic evaluation API needed: existing Finsupp.lsum_single directly proves the law after definitional transport. Exact coordinate operator name absent in mathlib-only environment is not a mathematical absence proof.",
+  "junk": "Not junk: seven explicit uses across four caller declarations, including Taylor interface.",
+  "action": "Retain local semantic simp helper during read-only overview; no standalone upstream addition. If future authorized wrapper removal, inline direct generic evaluation at seven explicit uses on five lines, update parent docstring, audit implicit simp use and rebuild.",
+  "category": "NO-composable-from-mathlib",
+  "completed": true
+}
