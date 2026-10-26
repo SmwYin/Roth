@@ -37,6 +37,17 @@ compiler process at a time. Use direct CLI as fallback with real command/log rec
 Reuse a successful baseline only when all source/pin hashes match. Re-downloading the
 already present cache is not a remedy for session startup/loading overhead.
 
+For isolated mathlib-only probes, prefer the native `lean_run_code` serial virtual
+scratch pool with a stable minimal import prefix. The installed connector conservatively
+marks other disk documents stale after disk edits; its virtual pool avoids that cross-file
+invalidation. Keep target checks in one disk document and isolated probes in the virtual
+pool. Never add a Roth import to an isolated probe; expected name-resolution failure is a
+useful control, not a mathematical absence proof. Warmup may still be needed after restart.
+The actual controls in evidence/shared/virtual-session-{prime,repeat}.json passed:
+first load 55,478 ms, same-prefix additional inspection 995 ms. These are session controls,
+not a promised duration for arbitrary proofs. Save each executed code string and raw
+complete native response as that declaration's evidence.
+
 Current structural inventory has 293 written declarations (215 public, 78 private),
 28 definitions,191 theorems,74 lemmas across14 production files. Source signatures and direct
 references were manually reviewed; an independent parser review repaired named-assignment/

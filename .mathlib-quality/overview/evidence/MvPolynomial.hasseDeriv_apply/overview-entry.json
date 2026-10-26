@@ -1,0 +1,43 @@
+{
+  "declaration": "MvPolynomial.hasseDeriv_apply",
+  "file": "Roth/HasseDeriv.lean",
+  "line": 73,
+  "kind": "theorem",
+  "visibility": "public",
+  "type": "{σ : Type u} {R : Type v} [CommSemiring R] (d : σ →₀ ℕ) (P : MvPolynomial σ R) : hasseDeriv d P = ∑ k ∈ P.support, monomial (k-d) ((hasseCoeff d k : R) * P.coeff k)",
+  "type_provenance": "Native #check in evidence/target-lsp.json",
+  "what": "Expands a multivariate Hasse derivative as the finite sum of the differentiated monomials of its input.",
+  "how": "Evaluates the defining Finsupp.lsum on the coefficient vector and exposes the polynomial support sum.",
+  "hypotheses": "A commutative coefficient semiring, arbitrary variable type, differentiation multiindex and polynomial; no proposition hypotheses.",
+  "project_dependencies": [
+    "MvPolynomial.hasseDeriv",
+    "MvPolynomial.hasseCoeff"
+  ],
+  "caller_summary": {
+    "whole_project": {
+      "lines": 1,
+      "occurrences": 1,
+      "distinct_callers": 1
+    },
+    "outside_defining_file": {
+      "lines": 1,
+      "occurrences": 1,
+      "distinct_callers": 1,
+      "files": 1
+    },
+    "same_file": {
+      "lines": 0,
+      "occurrences": 0,
+      "distinct_callers": 0
+    },
+    "caller": "Roth.normOne_hasseDeriv_le at Roth/CoeffNorm.lean:151"
+  },
+  "mathlib_api_audit": "Direct Finsupp.lsum_apply term accepted for original target. MvPolynomial.sum_def is existing support-sum bridge; Polynomial.hasseDeriv_apply is only univariate analogue.",
+  "moral_duplications": "Generic finite-support linear-extension evaluation instantiated with defining component maps; no independent exact inline rederivation found in canonical production sources.",
+  "generalization": "No verified hypothesis weakening; Semiring floor cannot form current operator. Q8 identifies existing arbitrary-family lsum_apply abstraction; unrelated higher derivations are not this fixed coordinate operator.",
+  "missing_api": "No new generic evaluation API needed. Mathlib-only exact qualified name check does not establish absence of all equivalent mathematics.",
+  "junk": "Not junk: one explicit caller uses the support expansion to bound normOne.",
+  "action": "Retain production API during read-only overview. No standalone upstream theorem; if future wrapper removal authorized, inline the verified generic equality at the sole normOne caller, remove theorem and rebuild; package-level semantic API review remains separate.",
+  "category": "NO-composable-from-mathlib",
+  "completed": true
+}

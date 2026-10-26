@@ -1,0 +1,259 @@
+{
+  "method": "Lean-Finder",
+  "requests": [
+    {
+      "query": "multivariate Hasse derivative expansion as finite sum of monomials over polynomial support",
+      "num_results": 8
+    },
+    {
+      "query": "Hasse Schmidt higher derivation polynomial coefficient Taylor expansion over commutative ring",
+      "num_results": 8
+    },
+    {
+      "query": "Finsupp linear sum apply equals sum over support of coefficient linear maps",
+      "num_results": 8
+    }
+  ],
+  "responses": [
+    {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv_apply\",\n      \"informal_name\": \"Hasse Derivative of Order k Applied to a Polynomial\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f : Polynomial R),\\n  (Polynomial.hasseDeriv k) f = f.sum fun i r => (Polynomial.monomial (i - k)) (↑(i.choose k) * r)\",\n      \"informal_description\": \"For a semiring $ R $ and a polynomial $ f \\\\in R[X] $, the Hasse derivative of order $ k $ applied to $ f $ is given by $ D^{(k)}(f) = \\\\sum_{i} \\\\binom{i}{k} \\\\cdot a_i \\\\cdot X^{i - k} $, where $ a_i $ is the coefficient of $ X^i $ in $ f $. This expression sums over all monomials in $ f $, scaling each by the binomial coefficient $ \\\\binom{i}{k} $ and reducing the exponent by $ k $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv\",\n      \"informal_name\": \"Hasse Derivative of Order k on Polynomial Ring\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : Semiring R] → ℕ → Polynomial R →ₗ[R] Polynomial R\",\n      \"informal_description\": \"For a semiring $ R $, the Hasse derivative of order $ k $ is an $ R $-linear map $ D^{(k)} : R[X] \\to R[X] $ defined by $ D^{(k)}(a_i X^i) = \\binom{i}{k} a_i X^{i - k} $ on monomials and extended linearly. This operation generalizes the usual derivative by scaling each coefficient $ a_i $ by the binomial coefficient $ \\binom{i}{k} $ and reducing the degree by $ k $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv_mul\",\n      \"informal_name\": \"Product Rule for Hasse Derivatives in Polynomial Rings\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f g : Polynomial R),\\n  (Polynomial.hasseDeriv k) (f * g) =\\n    ∑ ij ∈ Finset.antidiagonal k, (Polynomial.hasseDeriv ij.1) f * (Polynomial.hasseDeriv ij.2) g\",\n      \"informal_description\": \"For any polynomials $ f, g \\\\in R[X] $, the $ k $-th Hasse derivative of the product $ f \\\\cdot g $ satisfies $$ D^{(k)}(f \\\\cdot g) = \\\\sum_{\\\\substack{i + j = k}} D^{(i)}(f) \\\\cdot D^{(j)}(g), $$ where the sum is taken over all pairs $ (i, j) $ of natural numbers such that $ i + j = k $. This expresses the Hasse derivative of a product as a sum over the antidiagonal decomposition of $ k $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv_coeff\",\n      \"informal_name\": \"Coefficient Formula for Hasse Derivative of Order k\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f : Polynomial R) (n : ℕ),\\n  ((Polynomial.hasseDeriv k) f).coeff n = ↑((n + k).choose k) * f.coeff (n + k)\",\n      \"informal_description\": \"For any natural number $ n $, the coefficient of $ X^n $ in the $ k $-th Hasse derivative of a polynomial $ f $ over a semiring $ R $ is equal to $ \\\\binom{n + k}{k} $ multiplied by the coefficient of $ X^{n + k} $ in $ f $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv_monomial\",\n      \"informal_name\": \"Hasse Derivative of Monomial in Polynomial Ring\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k n : ℕ) (r : R),\\n  (Polynomial.hasseDeriv k) ((Polynomial.monomial n) r) = (Polynomial.monomial (n - k)) (↑(n.choose k) * r)\",\n      \"informal_description\": \"For a semiring $ R $, the $ k $-th Hasse derivative of the monomial $ rX^n $ in the polynomial ring $ R[X] $ is given by $ \\\\binom{n}{k} r X^{n - k} $. This expresses how the Hasse derivative acts on monomials by scaling the coefficient by the binomial coefficient $ \\\\binom{n}{k} $ and reducing the degree by $ k $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hilbertPoly_succ\",\n      \"informal_name\": \"Hilbert Polynomial Successor Formula\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {F : Type u_1} [inst : Field F] (p : Polynomial F) (d : ℕ),\\n  p.hilbertPoly (d + 1) = ∑ i ∈ p.support, p.coeff i • Polynomial.preHilbertPoly F d i\",\n      \"informal_description\": \"For any polynomial $ p $ over a field $ F $ and natural number $ d $, the Hilbert polynomial of $ p $ at $ d + 1 $ is equal to the sum over the support of $ p $ of the product of the coefficient of $ p $ at exponent $ i $ and the pre-Hilbert polynomial of degree $ d $ evaluated at $ i $. Formally, $ \\\\text{hilbertPoly}(p, d + 1) = \\\\sum_{i \\\\in \\\\text{support}(p)} (\\\\text{coeff}_i(p)) \\\\cdot \\\\text{preHilbertPoly}_F(d, i) $.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.HilbertPoly\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv_comp\",\n      \"informal_name\": \"Hasse Derivative Composition Formula with Binomial Coefficient\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k l : ℕ),\\n  Polynomial.hasseDeriv k ∘ₗ Polynomial.hasseDeriv l = (k + l).choose k • Polynomial.hasseDeriv (k + l)\",\n      \"informal_description\": \"For any semiring $ R $ and natural numbers $ k, l $, the composition of the $ k $-th and $ l $-th Hasse derivatives on the polynomial ring $ R[X] $ equals $ \\\\binom{k + l}{k} $ times the $ (k + l) $-th Hasse derivative, i.e., $ D^{(k)} \\\\circ D^{(l)} = \\\\binom{k + l}{k} D^{(k + l)} $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.factorial_smul_hasseDeriv\",\n      \"informal_name\": \"Factorial Scaling of Hasse Derivative Equals Iterated Derivative\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k : ℕ), ⇑(k.factorial • Polynomial.hasseDeriv k) = (⇑Polynomial.derivative)^[k]\",\n      \"informal_description\": \"For any semiring $ R $, the $ k $-th Hasse derivative operator on the polynomial ring $ R[X] $, when multiplied by $ k! $, equals the $ k $-th iterate of the standard derivative operator. Formally, $ k! \\\\cdot D^{(k)} = (\\\\frac{d}{dX})^k $, where $ D^{(k)} $ denotes the Hasse derivative of order $ k $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "formal_name": "Polynomial.hasseDeriv_apply",
+              "informal_name": "Hasse Derivative of Order k Applied to a Polynomial",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f : Polynomial R),\n  (Polynomial.hasseDeriv k) f = f.sum fun i r => (Polynomial.monomial (i - k)) (↑(i.choose k) * r)",
+              "informal_description": "For a semiring $ R $ and a polynomial $ f \\in R[X] $, the Hasse derivative of order $ k $ applied to $ f $ is given by $ D^{(k)}(f) = \\sum_{i} \\binom{i}{k} \\cdot a_i \\cdot X^{i - k} $, where $ a_i $ is the coefficient of $ X^i $ in $ f $. This expression sums over all monomials in $ f $, scaling each by the binomial coefficient $ \\binom{i}{k} $ and reducing the exponent by $ k $.",
+              "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+            },
+            {
+              "formal_name": "Polynomial.hasseDeriv",
+              "informal_name": "Hasse Derivative of Order k on Polynomial Ring",
+              "kind": "definition",
+              "type": "{R : Type u_1} → [inst : Semiring R] → ℕ → Polynomial R →ₗ[R] Polynomial R",
+              "informal_description": "For a semiring $ R $, the Hasse derivative of order $ k $ is an $ R $-linear map $ D^{(k)} : R[X] \to R[X] $ defined by $ D^{(k)}(a_i X^i) = \binom{i}{k} a_i X^{i - k} $ on monomials and extended linearly. This operation generalizes the usual derivative by scaling each coefficient $ a_i $ by the binomial coefficient $ \binom{i}{k} $ and reducing the degree by $ k $.",
+              "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+            },
+            {
+              "formal_name": "Polynomial.hasseDeriv_mul",
+              "informal_name": "Product Rule for Hasse Derivatives in Polynomial Rings",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f g : Polynomial R),\n  (Polynomial.hasseDeriv k) (f * g) =\n    ∑ ij ∈ Finset.antidiagonal k, (Polynomial.hasseDeriv ij.1) f * (Polynomial.hasseDeriv ij.2) g",
+              "informal_description": "For any polynomials $ f, g \\in R[X] $, the $ k $-th Hasse derivative of the product $ f \\cdot g $ satisfies $$ D^{(k)}(f \\cdot g) = \\sum_{\\substack{i + j = k}} D^{(i)}(f) \\cdot D^{(j)}(g), $$ where the sum is taken over all pairs $ (i, j) $ of natural numbers such that $ i + j = k $. This expresses the Hasse derivative of a product as a sum over the antidiagonal decomposition of $ k $.",
+              "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+            },
+            {
+              "formal_name": "Polynomial.hasseDeriv_coeff",
+              "informal_name": "Coefficient Formula for Hasse Derivative of Order k",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f : Polynomial R) (n : ℕ),\n  ((Polynomial.hasseDeriv k) f).coeff n = ↑((n + k).choose k) * f.coeff (n + k)",
+              "informal_description": "For any natural number $ n $, the coefficient of $ X^n $ in the $ k $-th Hasse derivative of a polynomial $ f $ over a semiring $ R $ is equal to $ \\binom{n + k}{k} $ multiplied by the coefficient of $ X^{n + k} $ in $ f $.",
+              "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+            },
+            {
+              "formal_name": "Polynomial.hasseDeriv_monomial",
+              "informal_name": "Hasse Derivative of Monomial in Polynomial Ring",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} [inst : Semiring R] (k n : ℕ) (r : R),\n  (Polynomial.hasseDeriv k) ((Polynomial.monomial n) r) = (Polynomial.monomial (n - k)) (↑(n.choose k) * r)",
+              "informal_description": "For a semiring $ R $, the $ k $-th Hasse derivative of the monomial $ rX^n $ in the polynomial ring $ R[X] $ is given by $ \\binom{n}{k} r X^{n - k} $. This expresses how the Hasse derivative acts on monomials by scaling the coefficient by the binomial coefficient $ \\binom{n}{k} $ and reducing the degree by $ k $.",
+              "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+            },
+            {
+              "formal_name": "Polynomial.hilbertPoly_succ",
+              "informal_name": "Hilbert Polynomial Successor Formula",
+              "kind": "theorem",
+              "type": "∀ {F : Type u_1} [inst : Field F] (p : Polynomial F) (d : ℕ),\n  p.hilbertPoly (d + 1) = ∑ i ∈ p.support, p.coeff i • Polynomial.preHilbertPoly F d i",
+              "informal_description": "For any polynomial $ p $ over a field $ F $ and natural number $ d $, the Hilbert polynomial of $ p $ at $ d + 1 $ is equal to the sum over the support of $ p $ of the product of the coefficient of $ p $ at exponent $ i $ and the pre-Hilbert polynomial of degree $ d $ evaluated at $ i $. Formally, $ \\text{hilbertPoly}(p, d + 1) = \\sum_{i \\in \\text{support}(p)} (\\text{coeff}_i(p)) \\cdot \\text{preHilbertPoly}_F(d, i) $.",
+              "path": "Mathlib.RingTheory.Polynomial.HilbertPoly"
+            },
+            {
+              "formal_name": "Polynomial.hasseDeriv_comp",
+              "informal_name": "Hasse Derivative Composition Formula with Binomial Coefficient",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} [inst : Semiring R] (k l : ℕ),\n  Polynomial.hasseDeriv k ∘ₗ Polynomial.hasseDeriv l = (k + l).choose k • Polynomial.hasseDeriv (k + l)",
+              "informal_description": "For any semiring $ R $ and natural numbers $ k, l $, the composition of the $ k $-th and $ l $-th Hasse derivatives on the polynomial ring $ R[X] $ equals $ \\binom{k + l}{k} $ times the $ (k + l) $-th Hasse derivative, i.e., $ D^{(k)} \\circ D^{(l)} = \\binom{k + l}{k} D^{(k + l)} $.",
+              "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+            },
+            {
+              "formal_name": "Polynomial.factorial_smul_hasseDeriv",
+              "informal_name": "Factorial Scaling of Hasse Derivative Equals Iterated Derivative",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} [inst : Semiring R] (k : ℕ), ⇑(k.factorial • Polynomial.hasseDeriv k) = (⇑Polynomial.derivative)^[k]",
+              "informal_description": "For any semiring $ R $, the $ k $-th Hasse derivative operator on the polynomial ring $ R[X] $, when multiplied by $ k! $, equals the $ k $-th iterate of the standard derivative operator. Formally, $ k! \\cdot D^{(k)} = (\\frac{d}{dX})^k $, where $ D^{(k)} $ denotes the Hasse derivative of order $ k $.",
+              "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+            }
+          ]
+        },
+        "isError": false
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.taylor_coeff\",\n      \"informal_name\": \"Coefficient of Taylor Expansion at $ r $: $ \\\\text{coeff}_n(f(X + r)) = D^{(n)}f(r) $\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R) (n : ℕ),\\n  ((Polynomial.taylor r) f).coeff n = Polynomial.eval r ((Polynomial.hasseDeriv n) f)\",\n      \"informal_description\": \"For any polynomial $ f $ over a semiring $ R $, natural number $ n $, and element $ r \\\\in R $, the coefficient of $ X^n $ in the Taylor expansion $ f(X + r) $ equals the evaluation of the $ n $-th Hasse derivative of $ f $ at $ r $. The Hasse derivative $ D^{(n)} $ scales monomials $ a_i X^i $ by $ \\\\binom{i}{n} a_i X^{i - n} $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv_coeff\",\n      \"informal_name\": \"Coefficient Formula for Hasse Derivative of Order k\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f : Polynomial R) (n : ℕ),\\n  ((Polynomial.hasseDeriv k) f).coeff n = ↑((n + k).choose k) * f.coeff (n + k)\",\n      \"informal_description\": \"For any natural number $ n $, the coefficient of $ X^n $ in the $ k $-th Hasse derivative of a polynomial $ f $ over a semiring $ R $ is equal to $ \\\\binom{n + k}{k} $ multiplied by the coefficient of $ X^{n + k} $ in $ f $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv_apply\",\n      \"informal_name\": \"Hasse Derivative of Order k Applied to a Polynomial\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f : Polynomial R),\\n  (Polynomial.hasseDeriv k) f = f.sum fun i r => (Polynomial.monomial (i - k)) (↑(i.choose k) * r)\",\n      \"informal_description\": \"For a semiring $ R $ and a polynomial $ f \\\\in R[X] $, the Hasse derivative of order $ k $ applied to $ f $ is given by $ D^{(k)}(f) = \\\\sum_{i} \\\\binom{i}{k} \\\\cdot a_i \\\\cdot X^{i - k} $, where $ a_i $ is the coefficient of $ X^i $ in $ f $. This expression sums over all monomials in $ f $, scaling each by the binomial coefficient $ \\\\binom{i}{k} $ and reducing the exponent by $ k $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv\",\n      \"informal_name\": \"Hasse Derivative of Order k on Polynomial Ring\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : Semiring R] → ℕ → Polynomial R →ₗ[R] Polynomial R\",\n      \"informal_description\": \"For a semiring $ R $, the Hasse derivative of order $ k $ is an $ R $-linear map $ D^{(k)} : R[X] \\to R[X] $ defined by $ D^{(k)}(a_i X^i) = \\binom{i}{k} a_i X^{i - k} $ on monomials and extended linearly. This operation generalizes the usual derivative by scaling each coefficient $ a_i $ by the binomial coefficient $ \\binom{i}{k} $ and reducing the degree by $ k $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv_monomial\",\n      \"informal_name\": \"Hasse Derivative of Monomial in Polynomial Ring\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k n : ℕ) (r : R),\\n  (Polynomial.hasseDeriv k) ((Polynomial.monomial n) r) = (Polynomial.monomial (n - k)) (↑(n.choose k) * r)\",\n      \"informal_description\": \"For a semiring $ R $, the $ k $-th Hasse derivative of the monomial $ rX^n $ in the polynomial ring $ R[X] $ is given by $ \\\\binom{n}{k} r X^{n - k} $. This expresses how the Hasse derivative acts on monomials by scaling the coefficient by the binomial coefficient $ \\\\binom{n}{k} $ and reducing the degree by $ k $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.factorial_smul_hasseDeriv\",\n      \"informal_name\": \"Factorial Scaling of Hasse Derivative Equals Iterated Derivative\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k : ℕ), ⇑(k.factorial • Polynomial.hasseDeriv k) = (⇑Polynomial.derivative)^[k]\",\n      \"informal_description\": \"For any semiring $ R $, the $ k $-th Hasse derivative operator on the polynomial ring $ R[X] $, when multiplied by $ k! $, equals the $ k $-th iterate of the standard derivative operator. Formally, $ k! \\\\cdot D^{(k)} = (\\\\frac{d}{dX})^k $, where $ D^{(k)} $ denotes the Hasse derivative of order $ k $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"Differential.implicitDeriv\",\n      \"informal_name\": \"Coefficient-wise Derivation on Polynomial Ring $ A[X] $\",\n      \"kind\": \"definition\",\n      \"type\": \"{A : Type u_1} → [inst : CommRing A] → [Differential A] → Polynomial A → Derivation ℤ (Polynomial A) (Polynomial A)\",\n      \"informal_description\": \"The derivation from the polynomial ring $ A[X] $ to itself over the integers $ \\\\mathbb{Z} $, constructed by applying a given derivation $ d: A \\\\to A[X] $ coefficient-wise via the canonical $ R[X] $-module isomorphism between polynomial modules and $ A[X] $. This derivation acts on each coefficient of a polynomial through $ d $, preserving the module structure and satisfying the Leibniz rule through pointwise operations on polynomial coefficients.\",\n      \"path\": \"Mathlib.RingTheory.Derivation.MapCoeffs\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv_comp\",\n      \"informal_name\": \"Hasse Derivative Composition Formula with Binomial Coefficient\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k l : ℕ),\\n  Polynomial.hasseDeriv k ∘ₗ Polynomial.hasseDeriv l = (k + l).choose k • Polynomial.hasseDeriv (k + l)\",\n      \"informal_description\": \"For any semiring $ R $ and natural numbers $ k, l $, the composition of the $ k $-th and $ l $-th Hasse derivatives on the polynomial ring $ R[X] $ equals $ \\\\binom{k + l}{k} $ times the $ (k + l) $-th Hasse derivative, i.e., $ D^{(k)} \\\\circ D^{(l)} = \\\\binom{k + l}{k} D^{(k + l)} $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "formal_name": "Polynomial.taylor_coeff",
+              "informal_name": "Coefficient of Taylor Expansion at $ r $: $ \\text{coeff}_n(f(X + r)) = D^{(n)}f(r) $",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R) (n : ℕ),\n  ((Polynomial.taylor r) f).coeff n = Polynomial.eval r ((Polynomial.hasseDeriv n) f)",
+              "informal_description": "For any polynomial $ f $ over a semiring $ R $, natural number $ n $, and element $ r \\in R $, the coefficient of $ X^n $ in the Taylor expansion $ f(X + r) $ equals the evaluation of the $ n $-th Hasse derivative of $ f $ at $ r $. The Hasse derivative $ D^{(n)} $ scales monomials $ a_i X^i $ by $ \\binom{i}{n} a_i X^{i - n} $.",
+              "path": "Mathlib.Algebra.Polynomial.Taylor"
+            },
+            {
+              "formal_name": "Polynomial.hasseDeriv_coeff",
+              "informal_name": "Coefficient Formula for Hasse Derivative of Order k",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f : Polynomial R) (n : ℕ),\n  ((Polynomial.hasseDeriv k) f).coeff n = ↑((n + k).choose k) * f.coeff (n + k)",
+              "informal_description": "For any natural number $ n $, the coefficient of $ X^n $ in the $ k $-th Hasse derivative of a polynomial $ f $ over a semiring $ R $ is equal to $ \\binom{n + k}{k} $ multiplied by the coefficient of $ X^{n + k} $ in $ f $.",
+              "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+            },
+            {
+              "formal_name": "Polynomial.hasseDeriv_apply",
+              "informal_name": "Hasse Derivative of Order k Applied to a Polynomial",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f : Polynomial R),\n  (Polynomial.hasseDeriv k) f = f.sum fun i r => (Polynomial.monomial (i - k)) (↑(i.choose k) * r)",
+              "informal_description": "For a semiring $ R $ and a polynomial $ f \\in R[X] $, the Hasse derivative of order $ k $ applied to $ f $ is given by $ D^{(k)}(f) = \\sum_{i} \\binom{i}{k} \\cdot a_i \\cdot X^{i - k} $, where $ a_i $ is the coefficient of $ X^i $ in $ f $. This expression sums over all monomials in $ f $, scaling each by the binomial coefficient $ \\binom{i}{k} $ and reducing the exponent by $ k $.",
+              "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+            },
+            {
+              "formal_name": "Polynomial.hasseDeriv",
+              "informal_name": "Hasse Derivative of Order k on Polynomial Ring",
+              "kind": "definition",
+              "type": "{R : Type u_1} → [inst : Semiring R] → ℕ → Polynomial R →ₗ[R] Polynomial R",
+              "informal_description": "For a semiring $ R $, the Hasse derivative of order $ k $ is an $ R $-linear map $ D^{(k)} : R[X] \to R[X] $ defined by $ D^{(k)}(a_i X^i) = \binom{i}{k} a_i X^{i - k} $ on monomials and extended linearly. This operation generalizes the usual derivative by scaling each coefficient $ a_i $ by the binomial coefficient $ \binom{i}{k} $ and reducing the degree by $ k $.",
+              "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+            },
+            {
+              "formal_name": "Polynomial.hasseDeriv_monomial",
+              "informal_name": "Hasse Derivative of Monomial in Polynomial Ring",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} [inst : Semiring R] (k n : ℕ) (r : R),\n  (Polynomial.hasseDeriv k) ((Polynomial.monomial n) r) = (Polynomial.monomial (n - k)) (↑(n.choose k) * r)",
+              "informal_description": "For a semiring $ R $, the $ k $-th Hasse derivative of the monomial $ rX^n $ in the polynomial ring $ R[X] $ is given by $ \\binom{n}{k} r X^{n - k} $. This expresses how the Hasse derivative acts on monomials by scaling the coefficient by the binomial coefficient $ \\binom{n}{k} $ and reducing the degree by $ k $.",
+              "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+            },
+            {
+              "formal_name": "Polynomial.factorial_smul_hasseDeriv",
+              "informal_name": "Factorial Scaling of Hasse Derivative Equals Iterated Derivative",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} [inst : Semiring R] (k : ℕ), ⇑(k.factorial • Polynomial.hasseDeriv k) = (⇑Polynomial.derivative)^[k]",
+              "informal_description": "For any semiring $ R $, the $ k $-th Hasse derivative operator on the polynomial ring $ R[X] $, when multiplied by $ k! $, equals the $ k $-th iterate of the standard derivative operator. Formally, $ k! \\cdot D^{(k)} = (\\frac{d}{dX})^k $, where $ D^{(k)} $ denotes the Hasse derivative of order $ k $.",
+              "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+            },
+            {
+              "formal_name": "Differential.implicitDeriv",
+              "informal_name": "Coefficient-wise Derivation on Polynomial Ring $ A[X] $",
+              "kind": "definition",
+              "type": "{A : Type u_1} → [inst : CommRing A] → [Differential A] → Polynomial A → Derivation ℤ (Polynomial A) (Polynomial A)",
+              "informal_description": "The derivation from the polynomial ring $ A[X] $ to itself over the integers $ \\mathbb{Z} $, constructed by applying a given derivation $ d: A \\to A[X] $ coefficient-wise via the canonical $ R[X] $-module isomorphism between polynomial modules and $ A[X] $. This derivation acts on each coefficient of a polynomial through $ d $, preserving the module structure and satisfying the Leibniz rule through pointwise operations on polynomial coefficients.",
+              "path": "Mathlib.RingTheory.Derivation.MapCoeffs"
+            },
+            {
+              "formal_name": "Polynomial.hasseDeriv_comp",
+              "informal_name": "Hasse Derivative Composition Formula with Binomial Coefficient",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} [inst : Semiring R] (k l : ℕ),\n  Polynomial.hasseDeriv k ∘ₗ Polynomial.hasseDeriv l = (k + l).choose k • Polynomial.hasseDeriv (k + l)",
+              "informal_description": "For any semiring $ R $ and natural numbers $ k, l $, the composition of the $ k $-th and $ l $-th Hasse derivatives on the polynomial ring $ R[X] $ equals $ \\binom{k + l}{k} $ times the $ (k + l) $-th Hasse derivative, i.e., $ D^{(k)} \\circ D^{(l)} = \\binom{k + l}{k} D^{(k + l)} $.",
+              "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+            }
+          ]
+        },
+        "isError": false
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Finsupp.lsum_apply\",\n      \"informal_name\": \"Linear Equivalence Between Family of Linear Maps and Linear Maps on Finite Support Functions\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {M : Type u_2} {N : Type u_3} {R : Type u_5} {R₂ : Type u_6} (S : Type u_8) [inst : Semiring R]\\n  [inst_1 : Semiring R₂] [inst_2 : Semiring S] [inst_3 : AddCommMonoid M] [inst_4 : Module R M]\\n  [inst_5 : AddCommMonoid N] [inst_6 : Module R₂ N] {σ : R →+* R₂} [inst_7 : Module S N] [inst_8 : SMulCommClass R₂ S N]\\n  (f : α → M →ₛₗ[σ] N) (l : α →₀ M), ((Finsupp.lsum S) f) l = l.sum fun b => ⇑(f b)\",\n      \"informal_description\": \"The linear equivalence $\\\\text{Finsupp.lsum}$ establishes a bijection between families of $\\\\sigma$-linear maps $\\\\alpha \\\\to M \\\\to_\\\\sigma N$ and $\\\\sigma$-linear maps on finite support functions $\\\\alpha \\\\to_0 M \\\\to_\\\\sigma N$. For a family $F$, the forward direction maps a finite support function $d$ to the sum $\\\\sum_{i \\\\in \\\\text{support } d} F(i)(d(i))$, while the inverse direction composes a linear map $F$ with the single-index embedding $\\\\text{lsingle}_i$. The equivalence is proven by verifying additivity, scalar multiplication compatibility, and bijectivity via $\\\\text{lsingle}$ composition.\",\n      \"path\": \"Mathlib.LinearAlgebra.Finsupp.LSum\"\n    },\n    {\n      \"formal_name\": \"Finsupp.linearCombination_apply\",\n      \"informal_name\": \"Linear Combination of Vectors Indexed by α over R\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {M : Type u_2} (R : Type u_5) [inst : Semiring R] [inst_1 : AddCommMonoid M] [inst_2 : Module R M]\\n  {v : α → M} (l : α →₀ R), (Finsupp.linearCombination R v) l = l.sum fun i a => a • v i\",\n      \"informal_description\": \"The linear map from the space of finite support functions $ \\\\alpha \\\\to_0 R $ to the module $ M $, which sends each finite support function $ l $ to the sum $ \\\\sum_{i \\\\in \\\\text{support } l} l(i) \\\\cdot v_i $, where $ v_i $ denotes the vector associated with index $ i $. This map is constructed using the linear equivalence of summing scalar multiples of individual vectors embedded via the right scalar multiplication operation.\",\n      \"path\": \"Mathlib.LinearAlgebra.Finsupp.LinearCombination\"\n    },\n    {\n      \"formal_name\": \"LinearMap.finsupp_sum_apply\",\n      \"informal_name\": \"Application of Finitely Supported Sum of Linear Maps\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_4} {R₂ : Type u_5} {M : Type u_6} {M₂ : Type u_7} {ι : Type u_8} [inst : Semiring R]\\n  [inst_1 : Semiring R₂] [inst_2 : AddCommMonoid M] [inst_3 : AddCommMonoid M₂] {σ₁₂ : R →+* R₂} [inst_4 : Module R M]\\n  [inst_5 : Module R₂ M₂] {γ : Type u_9} [inst_6 : Zero γ] (t : ι →₀ γ) (g : ι → γ → M →ₛₗ[σ₁₂] M₂) (b : M),\\n  (t.sum g) b = t.sum fun i d => (g i d) b\",\n      \"informal_description\": \"For semirings $ R $ and $ S $ with a ring homomorphism $ \\\\sigma: R \\\\to S $, an $ R $-module $ M $, and an $ S $-module $ M_2 $, given a finite support function $ t: \\\\iota \\\\to \\\\gamma $ and a function $ g: \\\\iota \\\\to \\\\gamma \\\\to M \\\\to M_2 $ producing $ \\\\sigma $-linear maps, the application of the finitely supported sum $ \\\\sum_{t} g(i, d) $ to a vector $ b \\\\in M $ equals the sum over $ t $'s support of $ g(i, d)(b) $. Formally, $ (\\\\sum_{t} g)(b) = \\\\sum_{t} g(i, d)(b) $.\",\n      \"path\": \"Mathlib.LinearAlgebra.Finsupp.LSum\"\n    },\n    {\n      \"formal_name\": \"Finsupp.coe_lsum\",\n      \"informal_name\": \"Linear Equivalence Between Families of Linear Maps and Linear Maps on Finite Support Functions\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {M : Type u_2} {N : Type u_3} {R : Type u_5} {R₂ : Type u_6} (S : Type u_8) [inst : Semiring R]\\n  [inst_1 : Semiring R₂] [inst_2 : Semiring S] [inst_3 : AddCommMonoid M] [inst_4 : Module R M]\\n  [inst_5 : AddCommMonoid N] [inst_6 : Module R₂ N] {σ : R →+* R₂} [inst_7 : Module S N] [inst_8 : SMulCommClass R₂ S N]\\n  (f : α → M →ₛₗ[σ] N), ⇑((Finsupp.lsum S) f) = fun d => d.sum fun i => ⇑(f i)\",\n      \"informal_description\": \"The linear equivalence $\\\\text{Finsupp.lsum}$ establishes a bijection between families of $\\\\sigma$-linear maps $\\\\alpha \\\\to M \\\\to_\\\\sigma N$ and $\\\\sigma$-linear maps on finite support functions $\\\\alpha \\\\to_0 M \\\\to_\\\\sigma N$. For a family $F$, the forward direction maps a finite support function $d$ to the sum $\\\\sum_{i \\\\in \\\\text{support } d} F(i)(d(i))$, while the inverse direction composes a linear map $F$ with the single-index embedding $\\\\text{lsingle}_i$. This equivalence preserves additivity and scalar multiplication compatibility.\",\n      \"path\": \"Mathlib.LinearAlgebra.Finsupp.LSum\"\n    },\n    {\n      \"formal_name\": \"LinearMap.coe_finsupp_sum\",\n      \"informal_name\": \"Evaluation of a finitely supported sum of linear maps\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_4} {R₂ : Type u_5} {M : Type u_6} {M₂ : Type u_7} {ι : Type u_8} [inst : Semiring R]\\n  [inst_1 : Semiring R₂] [inst_2 : AddCommMonoid M] [inst_3 : AddCommMonoid M₂] {σ₁₂ : R →+* R₂} [inst_4 : Module R M]\\n  [inst_5 : Module R₂ M₂] {γ : Type u_9} [inst_6 : Zero γ] (t : ι →₀ γ) (g : ι → γ → M →ₛₗ[σ₁₂] M₂),\\n  ⇑(t.sum g) = ⇑(t.sum fun i d => g i d)\",\n      \"informal_description\": \"Let $t: \\\\iota \\\\to_0 \\\\gamma$ be a function with finite support, and let $g$ be a function that maps a pair $(i, d) \\\\in \\\\iota \\\\times \\\\gamma$ to a semilinear map $g(i, d): M \\\\to M_2$. The theorem states that the coercion from linear maps to functions commutes with this sum. In other words, for any element $x$ in the domain module $M$, the action of the sum of the linear maps on $x$ is the sum of the actions of each linear map on $x$:\\n$$ \\\\left(\\\\sum_{i \\\\in \\\\text{supp}(t)} g(i, t(i))\\\\right)(x) = \\\\sum_{i \\\\in \\\\text{supp}(t)} \\\\left(g(i, t(i))(x)\\\\right) $$\\nwhere $\\\\text{supp}(t)$ is the finite support of $t$.\",\n      \"path\": \"Mathlib.LinearAlgebra.Finsupp.LSum\"\n    },\n    {\n      \"formal_name\": \"LinearMap.dfinsuppSum_apply\",\n      \"informal_name\": \"Application of Sum of Linear Maps as Sum of Applications\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_7} {R₂ : Type u_8} {M : Type u_9} {M₂ : Type u_10} {ι : Type u_11} [inst : Semiring R]\\n  [inst_1 : Semiring R₂] [inst_2 : AddCommMonoid M] [inst_3 : AddCommMonoid M₂] {σ₁₂ : R →+* R₂} [inst_4 : Module R M]\\n  [inst_5 : Module R₂ M₂] {γ : ι → Type u_12} [inst_6 : DecidableEq ι] [inst_7 : (i : ι) → Zero (γ i)]\\n  [inst_8 : (i : ι) → (x : γ i) → Decidable (x ≠ 0)] (t : Π₀ (i : ι), γ i) (g : (i : ι) → γ i → M →ₛₗ[σ₁₂] M₂) (b : M),\\n  (t.sum g) b = t.sum fun i d => (g i d) b\",\n      \"informal_description\": \"For a dependent finite support function $ t $ and a family of linear maps $ g $, applying the sum of $ g(i, t(i)) $ to an element $ b $ is equal to the sum over the support of $ t $ of $ g(i, t(i))(b) $.\",\n      \"path\": \"Mathlib.LinearAlgebra.DFinsupp\"\n    },\n    {\n      \"formal_name\": \"Finsupp.apply_linearCombination_id\",\n      \"informal_name\": \"Linear Map Applied to Linear Combination Distributes Over the Combination\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {M : Type u_2} (R : Type u_5) [inst : Semiring R] [inst_1 : AddCommMonoid M] [inst_2 : Module R M] {M' : Type u_8}\\n  [inst_3 : AddCommMonoid M'] [inst_4 : Module R M'] (f : M →ₗ[R] M') (l : M →₀ R),\\n  f ((Finsupp.linearCombination R id) l) = (Finsupp.linearCombination R ⇑f) l\",\n      \"informal_description\": \"For any linear map $ f : M \\\\to M' $ between $ R $-modules and any finite support function $ l : M \\\\to_0 R $, applying $ f $ to the linear combination $ \\\\sum_{m \\\\in \\\\text{support } l} l(m) \\\\cdot m $ yields the linear combination $ \\\\sum_{m \\\\in \\\\text{support } l} l(m) \\\\cdot f(m) $. In symbols: $ f\\\\left(\\\\sum_{m} l(m) \\\\cdot m\\\\right) = \\\\sum_{m} l(m) \\\\cdot f(m) $.\",\n      \"path\": \"Mathlib.LinearAlgebra.Finsupp.LinearCombination\"\n    },\n    {\n      \"formal_name\": \"DFinsupp.lsum_apply_apply\",\n      \"informal_name\": \"Application of Linear Equivalence for Dependent Finite Support Functions via Summation\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {R : Type u_3} (S : Type u_4) {M : ι → Type u_5} {N : Type u_6} [inst : Semiring R]\\n  [inst_1 : (i : ι) → AddCommMonoid (M i)] [inst_2 : (i : ι) → Module R (M i)] [inst_3 : AddCommMonoid N]\\n  [inst_4 : Module R N] [inst_5 : DecidableEq ι] [inst_6 : Semiring S] [inst_7 : Module S N]\\n  [inst_8 : SMulCommClass R S N] (F : (i : ι) → M i →ₗ[R] N) (a : Π₀ (i : ι), M i),\\n  ((DFinsupp.lsum S) F) a = (DFinsupp.sumAddHom fun i => (F i).toAddMonoidHom) a\",\n      \"informal_description\": \"For a semiring $ R $, index type $ \\\\iota $, family of $ R $-modules $ \\\\{M(i)\\\\}_{i \\\\in \\\\iota} $, and another $ R $-module $ N $, applying the linear equivalence $ \\\\mathrm{lsum} $ to a family of linear maps $ \\\\{F_i : M(i) \\\\to_R N\\\\} $ results in a linear map $ \\\\Phi $ such that for any dependent finite support function $ a $, $ \\\\Phi(a) $ equals the sum over the support of $ a $ of $ F_i(a(i)) $. This equivalence is defined using component-wise summation of the images under $ F_i $.\",\n      \"path\": \"Mathlib.LinearAlgebra.DFinsupp\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "formal_name": "Finsupp.lsum_apply",
+              "informal_name": "Linear Equivalence Between Family of Linear Maps and Linear Maps on Finite Support Functions",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} {M : Type u_2} {N : Type u_3} {R : Type u_5} {R₂ : Type u_6} (S : Type u_8) [inst : Semiring R]\n  [inst_1 : Semiring R₂] [inst_2 : Semiring S] [inst_3 : AddCommMonoid M] [inst_4 : Module R M]\n  [inst_5 : AddCommMonoid N] [inst_6 : Module R₂ N] {σ : R →+* R₂} [inst_7 : Module S N] [inst_8 : SMulCommClass R₂ S N]\n  (f : α → M →ₛₗ[σ] N) (l : α →₀ M), ((Finsupp.lsum S) f) l = l.sum fun b => ⇑(f b)",
+              "informal_description": "The linear equivalence $\\text{Finsupp.lsum}$ establishes a bijection between families of $\\sigma$-linear maps $\\alpha \\to M \\to_\\sigma N$ and $\\sigma$-linear maps on finite support functions $\\alpha \\to_0 M \\to_\\sigma N$. For a family $F$, the forward direction maps a finite support function $d$ to the sum $\\sum_{i \\in \\text{support } d} F(i)(d(i))$, while the inverse direction composes a linear map $F$ with the single-index embedding $\\text{lsingle}_i$. The equivalence is proven by verifying additivity, scalar multiplication compatibility, and bijectivity via $\\text{lsingle}$ composition.",
+              "path": "Mathlib.LinearAlgebra.Finsupp.LSum"
+            },
+            {
+              "formal_name": "Finsupp.linearCombination_apply",
+              "informal_name": "Linear Combination of Vectors Indexed by α over R",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} {M : Type u_2} (R : Type u_5) [inst : Semiring R] [inst_1 : AddCommMonoid M] [inst_2 : Module R M]\n  {v : α → M} (l : α →₀ R), (Finsupp.linearCombination R v) l = l.sum fun i a => a • v i",
+              "informal_description": "The linear map from the space of finite support functions $ \\alpha \\to_0 R $ to the module $ M $, which sends each finite support function $ l $ to the sum $ \\sum_{i \\in \\text{support } l} l(i) \\cdot v_i $, where $ v_i $ denotes the vector associated with index $ i $. This map is constructed using the linear equivalence of summing scalar multiples of individual vectors embedded via the right scalar multiplication operation.",
+              "path": "Mathlib.LinearAlgebra.Finsupp.LinearCombination"
+            },
+            {
+              "formal_name": "LinearMap.finsupp_sum_apply",
+              "informal_name": "Application of Finitely Supported Sum of Linear Maps",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_4} {R₂ : Type u_5} {M : Type u_6} {M₂ : Type u_7} {ι : Type u_8} [inst : Semiring R]\n  [inst_1 : Semiring R₂] [inst_2 : AddCommMonoid M] [inst_3 : AddCommMonoid M₂] {σ₁₂ : R →+* R₂} [inst_4 : Module R M]\n  [inst_5 : Module R₂ M₂] {γ : Type u_9} [inst_6 : Zero γ] (t : ι →₀ γ) (g : ι → γ → M →ₛₗ[σ₁₂] M₂) (b : M),\n  (t.sum g) b = t.sum fun i d => (g i d) b",
+              "informal_description": "For semirings $ R $ and $ S $ with a ring homomorphism $ \\sigma: R \\to S $, an $ R $-module $ M $, and an $ S $-module $ M_2 $, given a finite support function $ t: \\iota \\to \\gamma $ and a function $ g: \\iota \\to \\gamma \\to M \\to M_2 $ producing $ \\sigma $-linear maps, the application of the finitely supported sum $ \\sum_{t} g(i, d) $ to a vector $ b \\in M $ equals the sum over $ t $'s support of $ g(i, d)(b) $. Formally, $ (\\sum_{t} g)(b) = \\sum_{t} g(i, d)(b) $.",
+              "path": "Mathlib.LinearAlgebra.Finsupp.LSum"
+            },
+            {
+              "formal_name": "Finsupp.coe_lsum",
+              "informal_name": "Linear Equivalence Between Families of Linear Maps and Linear Maps on Finite Support Functions",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} {M : Type u_2} {N : Type u_3} {R : Type u_5} {R₂ : Type u_6} (S : Type u_8) [inst : Semiring R]\n  [inst_1 : Semiring R₂] [inst_2 : Semiring S] [inst_3 : AddCommMonoid M] [inst_4 : Module R M]\n  [inst_5 : AddCommMonoid N] [inst_6 : Module R₂ N] {σ : R →+* R₂} [inst_7 : Module S N] [inst_8 : SMulCommClass R₂ S N]\n  (f : α → M →ₛₗ[σ] N), ⇑((Finsupp.lsum S) f) = fun d => d.sum fun i => ⇑(f i)",
+              "informal_description": "The linear equivalence $\\text{Finsupp.lsum}$ establishes a bijection between families of $\\sigma$-linear maps $\\alpha \\to M \\to_\\sigma N$ and $\\sigma$-linear maps on finite support functions $\\alpha \\to_0 M \\to_\\sigma N$. For a family $F$, the forward direction maps a finite support function $d$ to the sum $\\sum_{i \\in \\text{support } d} F(i)(d(i))$, while the inverse direction composes a linear map $F$ with the single-index embedding $\\text{lsingle}_i$. This equivalence preserves additivity and scalar multiplication compatibility.",
+              "path": "Mathlib.LinearAlgebra.Finsupp.LSum"
+            },
+            {
+              "formal_name": "LinearMap.coe_finsupp_sum",
+              "informal_name": "Evaluation of a finitely supported sum of linear maps",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_4} {R₂ : Type u_5} {M : Type u_6} {M₂ : Type u_7} {ι : Type u_8} [inst : Semiring R]\n  [inst_1 : Semiring R₂] [inst_2 : AddCommMonoid M] [inst_3 : AddCommMonoid M₂] {σ₁₂ : R →+* R₂} [inst_4 : Module R M]\n  [inst_5 : Module R₂ M₂] {γ : Type u_9} [inst_6 : Zero γ] (t : ι →₀ γ) (g : ι → γ → M →ₛₗ[σ₁₂] M₂),\n  ⇑(t.sum g) = ⇑(t.sum fun i d => g i d)",
+              "informal_description": "Let $t: \\iota \\to_0 \\gamma$ be a function with finite support, and let $g$ be a function that maps a pair $(i, d) \\in \\iota \\times \\gamma$ to a semilinear map $g(i, d): M \\to M_2$. The theorem states that the coercion from linear maps to functions commutes with this sum. In other words, for any element $x$ in the domain module $M$, the action of the sum of the linear maps on $x$ is the sum of the actions of each linear map on $x$:\n$$ \\left(\\sum_{i \\in \\text{supp}(t)} g(i, t(i))\\right)(x) = \\sum_{i \\in \\text{supp}(t)} \\left(g(i, t(i))(x)\\right) $$\nwhere $\\text{supp}(t)$ is the finite support of $t$.",
+              "path": "Mathlib.LinearAlgebra.Finsupp.LSum"
+            },
+            {
+              "formal_name": "LinearMap.dfinsuppSum_apply",
+              "informal_name": "Application of Sum of Linear Maps as Sum of Applications",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_7} {R₂ : Type u_8} {M : Type u_9} {M₂ : Type u_10} {ι : Type u_11} [inst : Semiring R]\n  [inst_1 : Semiring R₂] [inst_2 : AddCommMonoid M] [inst_3 : AddCommMonoid M₂] {σ₁₂ : R →+* R₂} [inst_4 : Module R M]\n  [inst_5 : Module R₂ M₂] {γ : ι → Type u_12} [inst_6 : DecidableEq ι] [inst_7 : (i : ι) → Zero (γ i)]\n  [inst_8 : (i : ι) → (x : γ i) → Decidable (x ≠ 0)] (t : Π₀ (i : ι), γ i) (g : (i : ι) → γ i → M →ₛₗ[σ₁₂] M₂) (b : M),\n  (t.sum g) b = t.sum fun i d => (g i d) b",
+              "informal_description": "For a dependent finite support function $ t $ and a family of linear maps $ g $, applying the sum of $ g(i, t(i)) $ to an element $ b $ is equal to the sum over the support of $ t $ of $ g(i, t(i))(b) $.",
+              "path": "Mathlib.LinearAlgebra.DFinsupp"
+            },
+            {
+              "formal_name": "Finsupp.apply_linearCombination_id",
+              "informal_name": "Linear Map Applied to Linear Combination Distributes Over the Combination",
+              "kind": "theorem",
+              "type": "∀ {M : Type u_2} (R : Type u_5) [inst : Semiring R] [inst_1 : AddCommMonoid M] [inst_2 : Module R M] {M' : Type u_8}\n  [inst_3 : AddCommMonoid M'] [inst_4 : Module R M'] (f : M →ₗ[R] M') (l : M →₀ R),\n  f ((Finsupp.linearCombination R id) l) = (Finsupp.linearCombination R ⇑f) l",
+              "informal_description": "For any linear map $ f : M \\to M' $ between $ R $-modules and any finite support function $ l : M \\to_0 R $, applying $ f $ to the linear combination $ \\sum_{m \\in \\text{support } l} l(m) \\cdot m $ yields the linear combination $ \\sum_{m \\in \\text{support } l} l(m) \\cdot f(m) $. In symbols: $ f\\left(\\sum_{m} l(m) \\cdot m\\right) = \\sum_{m} l(m) \\cdot f(m) $.",
+              "path": "Mathlib.LinearAlgebra.Finsupp.LinearCombination"
+            },
+            {
+              "formal_name": "DFinsupp.lsum_apply_apply",
+              "informal_name": "Application of Linear Equivalence for Dependent Finite Support Functions via Summation",
+              "kind": "theorem",
+              "type": "∀ {ι : Type u_1} {R : Type u_3} (S : Type u_4) {M : ι → Type u_5} {N : Type u_6} [inst : Semiring R]\n  [inst_1 : (i : ι) → AddCommMonoid (M i)] [inst_2 : (i : ι) → Module R (M i)] [inst_3 : AddCommMonoid N]\n  [inst_4 : Module R N] [inst_5 : DecidableEq ι] [inst_6 : Semiring S] [inst_7 : Module S N]\n  [inst_8 : SMulCommClass R S N] (F : (i : ι) → M i →ₗ[R] N) (a : Π₀ (i : ι), M i),\n  ((DFinsupp.lsum S) F) a = (DFinsupp.sumAddHom fun i => (F i).toAddMonoidHom) a",
+              "informal_description": "For a semiring $ R $, index type $ \\iota $, family of $ R $-modules $ \\{M(i)\\}_{i \\in \\iota} $, and another $ R $-module $ N $, applying the linear equivalence $ \\mathrm{lsum} $ to a family of linear maps $ \\{F_i : M(i) \\to_R N\\} $ results in a linear map $ \\Phi $ such that for any dependent finite support function $ a $, $ \\Phi(a) $ equals the sum over the support of $ a $ of $ F_i(a(i)) $. This equivalence is defined using component-wise summation of the images under $ F_i $.",
+              "path": "Mathlib.LinearAlgebra.DFinsupp"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  ]
+}
