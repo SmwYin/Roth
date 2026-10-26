@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-26
 
-- Declarations completed: **40/293**
-- Next declaration: **#41 `Roth.wronskian`** (Roth/Wronskian.lean:60)
+- Declarations completed: **41/293**
+- Next declaration: **#42 `Roth.wronskian_eq_zero_of_not_linearIndependent`** (Roth/Wronskian.lean:65)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -59,10 +59,10 @@ Last regenerated: 2026-10-26
 | 38 | `Roth.weight_le_degree_div` | Roth/Box.lean:118 | SKIP | [report](mathlibable/Roth.weight_le_degree_div.md) |
 | 39 | `Roth.weight_mapDomain` | Roth/Box.lean:127 | NO-mathlib-has-it | [report](mathlibable/Roth.weight_mapDomain.md) |
 | 40 | `Roth.wronskianMatrix` | Roth/Wronskian.lean:56 | YES-but-generalise-first | [report](mathlibable/Roth.wronskianMatrix.md) |
+| 41 | `Roth.wronskian` | Roth/Wronskian.lean:60 | YES-but-generalise-first | [report](mathlibable/Roth.wronskian.md) |
 
 ## Remaining declarations (in processing order)
 
-- #41 `Roth.wronskian` (Roth/Wronskian.lean:60, public def)
 - #42 `Roth.wronskian_eq_zero_of_not_linearIndependent` (Roth/Wronskian.lean:65, public theorem)
 - #43 `Roth.det_choose_eq` (Roth/Wronskian.lean:79, public theorem)
 - #44 `Roth.coeff_prod_of_natDegree_le'` (Roth/Wronskian.lean:93, private lemma)
