@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-26
 
-- Declarations completed: **74/293**
-- Next declaration: **#75 `Roth.normOne`** (Roth/CoeffNorm.lean:47)
+- Declarations completed: **75/293**
+- Next declaration: **#76 `Roth.normOne_nonneg`** (Roth/CoeffNorm.lean:50)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -93,10 +93,10 @@ Last regenerated: 2026-10-26
 | 72 | `MvPolynomial.taylor_eq_zero_iff` | Roth/Taylor.lean:192 | YES-but-generalise-first | [report](mathlibable/MvPolynomial.taylor_eq_zero_iff.md) |
 | 73 | `MvPolynomial.eq_sum_box_hasseDeriv` | Roth/Taylor.lean:197 | YES-but-generalise-first | [report](mathlibable/MvPolynomial.eq_sum_box_hasseDeriv.md) |
 | 74 | `MvPolynomial.eval_eq_sum_box` | Roth/Taylor.lean:217 | YES-but-generalise-first | [report](mathlibable/MvPolynomial.eval_eq_sum_box.md) |
+| 75 | `Roth.normOne` | Roth/CoeffNorm.lean:47 | YES-but-generalise-first | [report](mathlibable/Roth.normOne.md) |
 
 ## Remaining declarations (in processing order)
 
-- #75 `Roth.normOne` (Roth/CoeffNorm.lean:47, public def)
 - #76 `Roth.normOne_nonneg` (Roth/CoeffNorm.lean:50, public theorem)
 - #77 `Roth.normOne_eq_sum_of_support_subset` (Roth/CoeffNorm.lean:54, public theorem)
 - #78 `Roth.normOne_monomial` (Roth/CoeffNorm.lean:59, public theorem)
