@@ -1,0 +1,50 @@
+{
+  "file": "Roth/HasseDeriv.lean",
+  "line": 153,
+  "name": "MvPolynomial.hasseCoeff_mul_hasseCoeff",
+  "short": "hasseCoeff_mul_hasseCoeff",
+  "kind": "lemma",
+  "visibility": "private",
+  "end_line": 168,
+  "source": "private lemma hasseCoeff_mul_hasseCoeff (f d e : σ →₀ ℕ) :\n    hasseCoeff d (f + d) * hasseCoeff e (f + d + e) =\n      hasseCoeff d (d + e) * hasseCoeff (d + e) (f + (d + e)) := by\n  classical\n  simp only [hasseCoeff]\n  have hd : d.support ⊆ d.support ∪ e.support := Finset.subset_union_left\n  rw [Finsupp.prod_of_support_subset _ hd _ fun _ _ ↦ Nat.choose_zero_right _,\n    Finsupp.prod_of_support_subset _ Finset.subset_union_right _\n      fun _ _ ↦ Nat.choose_zero_right _,\n    Finsupp.prod_of_support_subset _ hd _ fun _ _ ↦ Nat.choose_zero_right _,\n    Finsupp.prod_of_support_subset _ Finsupp.support_add _ fun _ _ ↦ Nat.choose_zero_right _,\n    ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]\n  exact Finset.prod_congr rfl fun i _ ↦ by\n    simpa [← add_assoc, mul_comm, ← Nat.choose_symm_add (a := d i) (b := e i)] using\n      (Nat.choose_mul (n := f i + d i + e i) (k := d i + e i) (s := e i)\n        (Nat.le_add_left (e i) (d i))).symm",
+  "signature": "private lemma hasseCoeff_mul_hasseCoeff (f d e : σ →₀ ℕ) :\n    hasseCoeff d (f + d) * hasseCoeff e (f + d + e) =\n      hasseCoeff d (d + e) * hasseCoeff (d + e) (f + (d + e))",
+  "body": "by\n  classical\n  simp only [hasseCoeff]\n  have hd : d.support ⊆ d.support ∪ e.support := Finset.subset_union_left\n  rw [Finsupp.prod_of_support_subset _ hd _ fun _ _ ↦ Nat.choose_zero_right _,\n    Finsupp.prod_of_support_subset _ Finset.subset_union_right _\n      fun _ _ ↦ Nat.choose_zero_right _,\n    Finsupp.prod_of_support_subset _ hd _ fun _ _ ↦ Nat.choose_zero_right _,\n    Finsupp.prod_of_support_subset _ Finsupp.support_add _ fun _ _ ↦ Nat.choose_zero_right _,\n    ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]\n  exact Finset.prod_congr rfl fun i _ ↦ by\n    simpa [← add_assoc, mul_comm, ← Nat.choose_symm_add (a := d i) (b := e i)] using\n      (Nat.choose_mul (n := f i + d i + e i) (k := d i + e i) (s := e i)\n        (Nat.le_add_left (e i) (d i))).symm",
+  "proof_lines": 14,
+  "sha256": "4d875e3c34bcf34370bb2898b1db8bb98f34720d3e24444186787fd64309833d",
+  "what": "Proves the multiplicative binomial identity underlying composition of divided derivatives.",
+  "how": "Enlarges four Finsupp products to the union of the two differentiation supports using Finsupp.prod_of_support_subset, distributes products, then applies Nat.choose_mul coordinatewise and Nat.choose_symm_add.",
+  "hypotheses": "Three natural finitely supported multi-indices; no coefficient-ring assumption.",
+  "uses_from_project": [
+    "MvPolynomial.hasseCoeff"
+  ],
+  "used_by_in_file": [
+    "MvPolynomial.hasseDeriv_hasseDeriv",
+    "MvPolynomial.hasseCoeff_mul_succ"
+  ],
+  "project_callers": [
+    {
+      "name": "MvPolynomial.hasseDeriv_hasseDeriv",
+      "file": "Roth/HasseDeriv.lean",
+      "line": 175
+    },
+    {
+      "name": "MvPolynomial.hasseCoeff_mul_succ",
+      "file": "Roth/HasseDeriv.lean",
+      "line": 191
+    }
+  ],
+  "type_context": "{σ : Type*}",
+  "type_provenance": "Exact written signature with section binders made explicit from source; not claimed as a fresh #check output. Minimal hasseCoeff #check succeeded; full Meta inspector timed out.",
+  "reference_provenance": "Manually disambiguated source-level direct project references in declaration bodies; callers include signature and body occurrences. Includes explicit references only, not an exhaustive kernel/simp dependency closure.",
+  "notes": [
+    "No set_option, sorry, TODO, or proof over 30 lines in declaration."
+  ],
+  "assignment_offset": 175,
+  "project_body_refs": [
+    "MvPolynomial.hasseCoeff"
+  ],
+  "project_type_refs": [
+    "MvPolynomial.hasseCoeff"
+  ],
+  "section_context": "{σ : Type*}"
+}

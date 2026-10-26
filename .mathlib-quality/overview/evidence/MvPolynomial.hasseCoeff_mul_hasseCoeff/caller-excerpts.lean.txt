@@ -1,0 +1,28 @@
+`hasseCoeff d (d + e) = ∏ j, (d j + e j).choose (d j)`. See
+`hasseDeriv_hasseDeriv_of_disjoint` for the case where the factor is `1`.
+
+Source: §4, proof of Lemma `index-of-derivative`. -/
+theorem hasseDeriv_hasseDeriv (d e : σ →₀ ℕ) (P : MvPolynomial σ R) :
+    hasseDeriv d (hasseDeriv e P) = (hasseCoeff d (d + e) : R) • hasseDeriv (d + e) P := by
+  ext f
+  rw [coeff_smul, coeff_hasseDeriv, coeff_hasseDeriv, coeff_hasseDeriv, smul_eq_mul, ← mul_assoc,
+    ← mul_assoc, ← Nat.cast_mul, ← Nat.cast_mul, hasseCoeff_mul_hasseCoeff, add_assoc]
+
+/-- The composition rule `Δ_d Δ_e = Δ_{d + e}` when `d` and `e` have disjoint supports, so that
+the binomial factor in `hasseDeriv_hasseDeriv` is `1`.
+
+Source: §4, proof of Lemma `index-of-derivative`. -/
+theorem hasseDeriv_hasseDeriv_of_disjoint {d e : σ →₀ ℕ} (h : Disjoint d.support e.support)
+    (P : MvPolynomial σ R) : hasseDeriv d (hasseDeriv e P) = hasseDeriv (d + e) P := by
+  rw [hasseDeriv_hasseDeriv, show hasseCoeff d (d + e) = 1 from
+    Finset.prod_eq_one fun i hi ↦ by
+      simp [Finsupp.notMem_support_iff.1 (Finset.disjoint_left.1 h hi)], Nat.cast_one, one_smul]
+
+private lemma hasseCoeff_mul_succ (j : σ) (d e : σ →₀ ℕ) :
+    hasseCoeff d (e + Finsupp.single j 1 + d) * (e j + 1) =
+      (d j + 1) * hasseCoeff (d + Finsupp.single j 1) (e + Finsupp.single j 1 + d) := by
+  simpa [hasseCoeff, add_comm, add_left_comm, add_assoc, mul_comm] using
+    hasseCoeff_mul_hasseCoeff e (Finsupp.single j 1) d
+
+/-- A partial derivative of a Hasse derivative: `∂_j Δ_d = (d j + 1) • Δ_{d + e_j}`.
+
