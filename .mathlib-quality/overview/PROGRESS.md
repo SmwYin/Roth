@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-26
 
-- Declarations completed: **46/293**
-- Next declaration: **#47 `Roth.wronskian_ne_zero_of_natDegree_injective`** (Roth/Wronskian.lean:148)
+- Declarations completed: **47/293**
+- Next declaration: **#48 `Roth.wronskian_update_sub_smul`** (Roth/Wronskian.lean:158)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -65,10 +65,10 @@ Last regenerated: 2026-10-26
 | 44 | `Roth.coeff_prod_of_natDegree_le'` | Roth/Wronskian.lean:93 | SKIP | [report](mathlibable/Roth.coeff_prod_of_natDegree_le'.md) |
 | 45 | `Roth.sum_range_le_sum_of_injective` | Roth/Wronskian.lean:107 | SKIP | [report](mathlibable/Roth.sum_range_le_sum_of_injective.md) |
 | 46 | `Roth.coeff_wronskian_of_natDegree_injective` | Roth/Wronskian.lean:122 | YES-but-generalise-first | [report](mathlibable/Roth.coeff_wronskian_of_natDegree_injective.md) |
+| 47 | `Roth.wronskian_ne_zero_of_natDegree_injective` | Roth/Wronskian.lean:148 | YES-but-generalise-first | [report](mathlibable/Roth.wronskian_ne_zero_of_natDegree_injective.md) |
 
 ## Remaining declarations (in processing order)
 
-- #47 `Roth.wronskian_ne_zero_of_natDegree_injective` (Roth/Wronskian.lean:148, public theorem)
 - #48 `Roth.wronskian_update_sub_smul` (Roth/Wronskian.lean:158, public theorem)
 - #49 `Roth.linearIndependent_update_sub_smul` (Roth/Wronskian.lean:170, public theorem)
 - #50 `Roth.sum_natDegree_update_lt` (Roth/Wronskian.lean:182, public theorem)
