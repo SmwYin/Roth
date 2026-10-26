@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-26
 
-- Declarations completed: **37/293**
-- Next declaration: **#38 `Roth.weight_le_degree_div`** (Roth/Box.lean:118)
+- Declarations completed: **38/293**
+- Next declaration: **#39 `Roth.weight_mapDomain`** (Roth/Box.lean:127)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -56,10 +56,10 @@ Last regenerated: 2026-10-26
 | 35 | `Roth.weight_single` | Roth/Box.lean:96 | NO-mathlib-has-it | [report](mathlibable/Roth.weight_single.md) |
 | 36 | `Roth.weight_le_card` | Roth/Box.lean:103 | NO-composable-from-mathlib | [report](mathlibable/Roth.weight_le_card.md) |
 | 37 | `Roth.weight_mul_left` | Roth/Box.lean:110 | NO-composable-from-mathlib | [report](mathlibable/Roth.weight_mul_left.md) |
+| 38 | `Roth.weight_le_degree_div` | Roth/Box.lean:118 | SKIP | [report](mathlibable/Roth.weight_le_degree_div.md) |
 
 ## Remaining declarations (in processing order)
 
-- #38 `Roth.weight_le_degree_div` (Roth/Box.lean:118, public theorem)
 - #39 `Roth.weight_mapDomain` (Roth/Box.lean:127, public theorem)
 - #40 `Roth.wronskianMatrix` (Roth/Wronskian.lean:56, public def)
 - #41 `Roth.wronskian` (Roth/Wronskian.lean:60, public def)
