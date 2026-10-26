@@ -1,0 +1,48 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MvPolynomial.PDeriv\nimport Mathlib.Algebra.Polynomial.HasseDeriv\nimport Mathlib.Data.Nat.Choose.Bounds\n#check_failure MvPolynomial.hasseDeriv_map\nnamespace AssessHasseMapRaw\nopen MvPolynomial\nvariable {σ R S : Type*} [CommSemiring R] [CommSemiring S]\ndef factor (d k : σ →₀ ℕ) : ℕ := d.prod fun j ↦ (k j).choose\nnoncomputable def delta (d : σ →₀ ℕ) : MvPolynomial σ R →ₗ[R] MvPolynomial σ R :=\n  Finsupp.lsum R (fun k : σ →₀ ℕ ↦\n      (monomial (k - d)).comp (LinearMap.lsmul R R (factor d k : R))) ∘ₗ\n    (AddMonoidAlgebra.coeffLinearEquiv R).toLinearMap\ntheorem delta_monomial (d k : σ →₀ ℕ) (a : R) :\n    delta d (monomial k a) = monomial (k - d) ((factor d k : R) * a) :=\n  Finsupp.lsum_single R (fun k : σ →₀ ℕ ↦\n    (monomial (k - d)).comp (LinearMap.lsmul R R (factor d k : R))) k a\ntheorem natural (f : R →+* S) (d : σ →₀ ℕ) (P : MvPolynomial σ R) :\n    delta d (map f P) = map f (delta d P) := by\n  induction P using MvPolynomial.induction_on' with\n  | monomial k a =>\n    simp only [map_monomial, delta_monomial, map_mul, map_natCast]\n  | add p q hp hq => simp only [map_add, hp, hq]\n#print axioms delta_monomial\n#print axioms natural\nend AssessHasseMapRaw\n"
+  },
+  "elapsed_ms": 496,
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown constant `MvPolynomial.hasseDeriv_map`\",\n      \"line\": 4,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'AssessHasseMapRaw.delta_monomial' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 23,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'AssessHasseMapRaw.natural' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 24,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown constant `MvPolynomial.hasseDeriv_map`",
+          "line": 4,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'AssessHasseMapRaw.delta_monomial' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 23,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'AssessHasseMapRaw.natural' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 24,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  }
+}

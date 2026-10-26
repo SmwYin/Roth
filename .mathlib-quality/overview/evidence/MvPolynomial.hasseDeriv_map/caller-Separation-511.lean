@@ -1,0 +1,27 @@
+    (hP : P ≠ 0) {n : ℕ} (hn : degreeOf none P ≤ n) : ∃ l, 1 ≤ l ∧ l ≤ n + 1 ∧
+      ∃ D : Fin l → (τ →₀ ℕ), (∀ μ, (D μ).degree ≤ μ) ∧ ∃ (U : MvPolynomial τ ℚ) (V : Polynomial ℚ),
+        U ≠ 0 ∧ V ≠ 0 ∧ map (Int.castRingHom ℚ) (Matrix.of fun μ ν : Fin l ↦
+          hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) P).det = rename some U *
+          Polynomial.aeval (X none : MvPolynomial (Option τ) ℚ) V := by
+  classical
+  set PQ := map (Int.castRingHom ℚ) P with hPQdef
+  have hdeg : degreeOf none PQ ≤ n := by
+    simpa [degreeOf_def, hPQdef,
+      degrees_map_of_injective P (f := Int.castRingHom ℚ) Int.cast_injective] using hn
+  obtain ⟨l, hl1, hl2, φ, ψ, hφ, hψ, -, -, hPQ⟩ :=
+    exists_separated_representation (fun h ↦
+      hP (MvPolynomial.map_injective _ Int.cast_injective (h.trans (map_zero _).symm))) hdeg
+  obtain ⟨D, hD, hG⟩ := exists_genWronskian_ne_zero hψ
+  set F := (Matrix.of fun μ ν : Fin l ↦
+    hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) P).det with hFdef
+  have hFmap : map (Int.castRingHom ℚ) F = rename some (genWronskian D ψ) *
+      Polynomial.aeval (X none : MvPolynomial (Option τ) ℚ) (wronskian φ) := by
+    rw [hFdef, RingHom.map_det, ← det_hasseDeriv_separated D φ ψ, ← hPQ]
+    congr 1
+    refine Matrix.ext fun μ ν ↦ ?_
+    rw [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, Matrix.of_apply,
+      hasseDeriv_map]
+  exact ⟨l, hl1, hl2, D, hD, _, _, hG, wronskian_ne_zero_of_linearIndependent hφ, hFmap⟩
+
+omit [Fintype τ] [DecidableEq τ] in
+/-- Lemma 2. Source: §2, Lemma `roth:lem2` ("there is an integer `l` satisfying `1 ≤ l ≤ r_p + 1`

@@ -1,0 +1,83 @@
+{
+  "request": {
+    "query": "A natural-number weighted reindexing of finitely supported coefficients commutes with additive homomorphisms",
+    "num_results": 8
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Finsupp.sum_mapDomain_index_addMonoidHom\",\n      \"informal_name\": \"Sum over Mapped Domain and Additive Monoid Homomorphism\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_2} {M : Type u_5} {N : Type u_6} [inst : AddCommMonoid M] [inst_1 : AddCommMonoid N]\\n  {f : α → β} {s : α →₀ M} (h : β → M →+ N),\\n  ((Finsupp.mapDomain f s).sum fun b m => (h b) m) = s.sum fun a m => (h (f a)) m\",\n      \"informal_description\": \"For any additive commutative monoid $N$, function $f : \\\\alpha \\\\to \\\\beta$, finite support function $s : \\\\alpha \\\\to_0 M$, and family of additive monoid homomorphisms $h : \\\\beta \\\\to (M \\\\to^+ N)$, the sum of $h(b)(m)$ over the domain-mapped function $\\\\mathrm{mapDomain}(f,s)$ equals the sum of $h(f(a))(m)$ over the original function $s$. Formally: $$\\\\left(\\\\sum_{b \\\\in \\\\mathrm{mapDomain}(f,s)} h(b)(m)\\\\right) = \\\\left(\\\\sum_{a \\\\in s} h(f(a))(m)\\\\right).$$\",\n      \"path\": \"Mathlib.Data.Finsupp.Basic\"\n    },\n    {\n      \"formal_name\": \"Finsupp.mapDomain_mapRange\",\n      \"informal_name\": \"Commutativity of Domain and Range Mapping for Finite Support Functions\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_2} {M : Type u_5} {N : Type u_6} [inst : AddCommMonoid M] [inst_1 : AddCommMonoid N]\\n  (f : α → β) (v : α →₀ M) (g : M → N) (h0 : g 0 = 0),\\n  (∀ (x y : M), g (x + y) = g x + g y) →\\n    Finsupp.mapDomain f (Finsupp.mapRange g h0 v) = Finsupp.mapRange g h0 (Finsupp.mapDomain f v)\",\n      \"informal_description\": \"For finite support functions $\\\\alpha \\\\to_0 M$, if $g : M \\\\to N$ is an additive zero-preserving map (i.e., $g(0) = 0$ and $g(x + y) = g(x) + g(y)$), then applying domain mapping followed by range mapping is equivalent to applying range mapping followed by domain mapping: $\\\\text{mapDomain}_f(\\\\text{mapRange}_g(v)) = \\\\text{mapRange}_g(\\\\text{mapDomain}_f(v))$ for any function $f : \\\\alpha \\\\to \\\\beta$ and finite support function $v$.\",\n      \"path\": \"Mathlib.Data.Finsupp.Basic\"\n    },\n    {\n      \"formal_name\": \"Finsupp.linearCombination_mapDomain\",\n      \"informal_name\": \"Linear Combination Commutes with Domain Mapping\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} (R : Type u_5) [inst : Semiring R] {α' : Type u_7} {M' : Type u_8} [inst_1 : AddCommMonoid M']\\n  [inst_2 : Module R M'] {v' : α' → M'} (f : α → α') (l : α →₀ R),\\n  (Finsupp.linearCombination R v') (Finsupp.mapDomain f l) = (Finsupp.linearCombination R (v' ∘ f)) l\",\n      \"informal_description\": \"For a function $ f : \\\\alpha \\\\to \\\\alpha' $ and a finite support function $ l : \\\\alpha \\\\to_0 R $, the linear combination of the domain-mapped function $ \\\\text{mapDomain } f \\\\, l $ with vectors $ v' : \\\\alpha' \\\\to M $ equals the linear combination of $ l $ with the composed vectors $ v' \\\\circ f $. Formally, $ \\\\sum_{i \\\\in \\\\text{support } (\\\\text{mapDomain } f \\\\, l)} (\\\\text{mapDomain } f \\\\, l)(i) \\\\cdot v'(i) = \\\\sum_{i \\\\in \\\\text{support } l} l(i) \\\\cdot v'(f(i)) $.\",\n      \"path\": \"Mathlib.LinearAlgebra.Finsupp.LinearCombination\"\n    },\n    {\n      \"formal_name\": \"Finsupp.mapDomain.addMonoidHom_apply\",\n      \"informal_name\": \"Additive Monoid Homomorphism from Domain Mapping Equals Direct Application on Finite Support Functions\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_2} {M : Type u_5} [inst : AddCommMonoid M] (f : α → β) (v : α →₀ M),\\n  (Finsupp.mapDomain.addMonoidHom f) v = Finsupp.mapDomain f v\",\n      \"informal_description\": \"For any function $ f : \\\\alpha \\\\to \\\\beta $ and finite support function $ v : \\\\alpha \\\\to_0 M $, the additive monoid homomorphism induced by $ f $ applied to $ v $ is equal to the result of mapping the domain of $ v $ via $ f $. Formally, $ \\\\text{mapDomain}_{f}(v) = \\\\text{mapDomain}(f, v) $.\",\n      \"path\": \"Mathlib.Data.Finsupp.Basic\"\n    },\n    {\n      \"formal_name\": \"Finsupp.mapDomain.addMonoidHom_comp_mapRange\",\n      \"informal_name\": \"Commutativity of Domain and Range Mapping Homomorphisms in Finite Support Functions\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_2} {M : Type u_5} {N : Type u_6} [inst : AddCommMonoid M] [inst_1 : AddCommMonoid N]\\n  (f : α → β) (g : M →+ N),\\n  (Finsupp.mapDomain.addMonoidHom f).comp (Finsupp.mapRange.addMonoidHom g) =\\n    (Finsupp.mapRange.addMonoidHom g).comp (Finsupp.mapDomain.addMonoidHom f)\",\n      \"informal_description\": \"For functions $ f : \\\\alpha \\\\to \\\\beta $ and $ g : M \\\\to^+ N $, the composition of the additive monoid homomorphism induced by domain mapping $ f $ followed by range mapping $ g $ equals the composition of range mapping $ g $ followed by domain mapping $ f $. That is, $ \\\\text{mapDomain}_f \\\\circ \\\\text{mapRange}_g = \\\\text{mapRange}_g \\\\circ \\\\text{mapDomain}_f $ as additive monoid homomorphisms on finite support functions.\",\n      \"path\": \"Mathlib.Data.Finsupp.Basic\"\n    },\n    {\n      \"formal_name\": \"Finsupp.sum_mapDomain_index\",\n      \"informal_name\": \"Sum Preservation under Domain Mapping for Additive Homomorphisms\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_2} {M : Type u_5} {N : Type u_6} [inst : AddCommMonoid M] [inst_1 : AddCommMonoid N]\\n  {f : α → β} {s : α →₀ M} {h : β → M → N},\\n  (∀ (b : β), h b 0 = 0) →\\n    (∀ (b : β) (m₁ m₂ : M), h b (m₁ + m₂) = h b m₁ + h b m₂) →\\n      (Finsupp.mapDomain f s).sum h = s.sum fun a m => h (f a) m\",\n      \"informal_description\": \"For any function $f : \\\\alpha \\\\to \\\\beta$, finite support function $s : \\\\alpha \\\\to_0 M$, and function $h : \\\\beta \\\\times M \\\\to N$ satisfying $h(b, 0) = 0$ and $h(b, m_1 + m_2) = h(b, m_1) + h(b, m_2)$ for all $b \\\\in \\\\beta$ and $m_1, m_2 \\\\in M$, the sum over $\\\\beta$ of $h(b, (\\\\text{mapDomain } f \\\\, s)(b))$ equals the sum over $\\\\alpha$ of $h(f(a), s(a))$.\",\n      \"path\": \"Mathlib.Data.Finsupp.Basic\"\n    },\n    {\n      \"formal_name\": \"Finsupp.weight\",\n      \"informal_name\": \"Weighted sum of vectors indexed by σ over R\",\n      \"kind\": \"definition\",\n      \"type\": \"{σ : Type u_1} →\\n  {M : Type u_2} →\\n    {R : Type u_3} → [inst : Semiring R] → (σ → M) → [inst_1 : AddCommMonoid M] → [Module R M] → (σ →₀ R) →+ M\",\n      \"informal_description\": \"The additive homomorphism from the space of finite support functions $ \\\\sigma \\\\to_0 R $ to the module $ M $, which maps each finite support function $ d $ to the sum $ \\\\sum_{i \\\\in \\\\text{support } d} d(i) \\\\cdot v_i $, where $ v_i $ denotes the vector associated with index $ i $.\",\n      \"path\": \"Mathlib.Data.Finsupp.Weight\"\n    },\n    {\n      \"formal_name\": \"Finsupp.linearCombination_comp_lmapDomain\",\n      \"informal_name\": \"Composition of Linear Combination Map with Domain Transformation\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} (R : Type u_5) [inst : Semiring R] {α' : Type u_7} {M' : Type u_8} [inst_1 : AddCommMonoid M']\\n  [inst_2 : Module R M'] {v' : α' → M'} (f : α → α'),\\n  Finsupp.linearCombination R v' ∘ₗ Finsupp.lmapDomain R R f = Finsupp.linearCombination R (v' ∘ f)\",\n      \"informal_description\": \"For any function $ f : \\\\alpha \\\\to \\\\alpha' $, the composition of the linear combination map $ \\\\text{linearCombination}_R(v') $ with the domain transformation map $ \\\\text{Finsupp.lmapDomain}_R(f) $ equals the linear combination map $ \\\\text{linearCombination}_R(v' \\\\circ f) $. This establishes that transforming the domain of finite support functions via $ f $ and then taking linear combinations is equivalent to directly taking linear combinations with coefficients composed with $ f $.\",\n      \"path\": \"Mathlib.LinearAlgebra.Finsupp.LinearCombination\"\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "items": [
+        {
+          "formal_name": "Finsupp.sum_mapDomain_index_addMonoidHom",
+          "informal_name": "Sum over Mapped Domain and Additive Monoid Homomorphism",
+          "kind": "theorem",
+          "type": "∀ {α : Type u_1} {β : Type u_2} {M : Type u_5} {N : Type u_6} [inst : AddCommMonoid M] [inst_1 : AddCommMonoid N]\n  {f : α → β} {s : α →₀ M} (h : β → M →+ N),\n  ((Finsupp.mapDomain f s).sum fun b m => (h b) m) = s.sum fun a m => (h (f a)) m",
+          "informal_description": "For any additive commutative monoid $N$, function $f : \\alpha \\to \\beta$, finite support function $s : \\alpha \\to_0 M$, and family of additive monoid homomorphisms $h : \\beta \\to (M \\to^+ N)$, the sum of $h(b)(m)$ over the domain-mapped function $\\mathrm{mapDomain}(f,s)$ equals the sum of $h(f(a))(m)$ over the original function $s$. Formally: $$\\left(\\sum_{b \\in \\mathrm{mapDomain}(f,s)} h(b)(m)\\right) = \\left(\\sum_{a \\in s} h(f(a))(m)\\right).$$",
+          "path": "Mathlib.Data.Finsupp.Basic"
+        },
+        {
+          "formal_name": "Finsupp.mapDomain_mapRange",
+          "informal_name": "Commutativity of Domain and Range Mapping for Finite Support Functions",
+          "kind": "theorem",
+          "type": "∀ {α : Type u_1} {β : Type u_2} {M : Type u_5} {N : Type u_6} [inst : AddCommMonoid M] [inst_1 : AddCommMonoid N]\n  (f : α → β) (v : α →₀ M) (g : M → N) (h0 : g 0 = 0),\n  (∀ (x y : M), g (x + y) = g x + g y) →\n    Finsupp.mapDomain f (Finsupp.mapRange g h0 v) = Finsupp.mapRange g h0 (Finsupp.mapDomain f v)",
+          "informal_description": "For finite support functions $\\alpha \\to_0 M$, if $g : M \\to N$ is an additive zero-preserving map (i.e., $g(0) = 0$ and $g(x + y) = g(x) + g(y)$), then applying domain mapping followed by range mapping is equivalent to applying range mapping followed by domain mapping: $\\text{mapDomain}_f(\\text{mapRange}_g(v)) = \\text{mapRange}_g(\\text{mapDomain}_f(v))$ for any function $f : \\alpha \\to \\beta$ and finite support function $v$.",
+          "path": "Mathlib.Data.Finsupp.Basic"
+        },
+        {
+          "formal_name": "Finsupp.linearCombination_mapDomain",
+          "informal_name": "Linear Combination Commutes with Domain Mapping",
+          "kind": "theorem",
+          "type": "∀ {α : Type u_1} (R : Type u_5) [inst : Semiring R] {α' : Type u_7} {M' : Type u_8} [inst_1 : AddCommMonoid M']\n  [inst_2 : Module R M'] {v' : α' → M'} (f : α → α') (l : α →₀ R),\n  (Finsupp.linearCombination R v') (Finsupp.mapDomain f l) = (Finsupp.linearCombination R (v' ∘ f)) l",
+          "informal_description": "For a function $ f : \\alpha \\to \\alpha' $ and a finite support function $ l : \\alpha \\to_0 R $, the linear combination of the domain-mapped function $ \\text{mapDomain } f \\, l $ with vectors $ v' : \\alpha' \\to M $ equals the linear combination of $ l $ with the composed vectors $ v' \\circ f $. Formally, $ \\sum_{i \\in \\text{support } (\\text{mapDomain } f \\, l)} (\\text{mapDomain } f \\, l)(i) \\cdot v'(i) = \\sum_{i \\in \\text{support } l} l(i) \\cdot v'(f(i)) $.",
+          "path": "Mathlib.LinearAlgebra.Finsupp.LinearCombination"
+        },
+        {
+          "formal_name": "Finsupp.mapDomain.addMonoidHom_apply",
+          "informal_name": "Additive Monoid Homomorphism from Domain Mapping Equals Direct Application on Finite Support Functions",
+          "kind": "theorem",
+          "type": "∀ {α : Type u_1} {β : Type u_2} {M : Type u_5} [inst : AddCommMonoid M] (f : α → β) (v : α →₀ M),\n  (Finsupp.mapDomain.addMonoidHom f) v = Finsupp.mapDomain f v",
+          "informal_description": "For any function $ f : \\alpha \\to \\beta $ and finite support function $ v : \\alpha \\to_0 M $, the additive monoid homomorphism induced by $ f $ applied to $ v $ is equal to the result of mapping the domain of $ v $ via $ f $. Formally, $ \\text{mapDomain}_{f}(v) = \\text{mapDomain}(f, v) $.",
+          "path": "Mathlib.Data.Finsupp.Basic"
+        },
+        {
+          "formal_name": "Finsupp.mapDomain.addMonoidHom_comp_mapRange",
+          "informal_name": "Commutativity of Domain and Range Mapping Homomorphisms in Finite Support Functions",
+          "kind": "theorem",
+          "type": "∀ {α : Type u_1} {β : Type u_2} {M : Type u_5} {N : Type u_6} [inst : AddCommMonoid M] [inst_1 : AddCommMonoid N]\n  (f : α → β) (g : M →+ N),\n  (Finsupp.mapDomain.addMonoidHom f).comp (Finsupp.mapRange.addMonoidHom g) =\n    (Finsupp.mapRange.addMonoidHom g).comp (Finsupp.mapDomain.addMonoidHom f)",
+          "informal_description": "For functions $ f : \\alpha \\to \\beta $ and $ g : M \\to^+ N $, the composition of the additive monoid homomorphism induced by domain mapping $ f $ followed by range mapping $ g $ equals the composition of range mapping $ g $ followed by domain mapping $ f $. That is, $ \\text{mapDomain}_f \\circ \\text{mapRange}_g = \\text{mapRange}_g \\circ \\text{mapDomain}_f $ as additive monoid homomorphisms on finite support functions.",
+          "path": "Mathlib.Data.Finsupp.Basic"
+        },
+        {
+          "formal_name": "Finsupp.sum_mapDomain_index",
+          "informal_name": "Sum Preservation under Domain Mapping for Additive Homomorphisms",
+          "kind": "theorem",
+          "type": "∀ {α : Type u_1} {β : Type u_2} {M : Type u_5} {N : Type u_6} [inst : AddCommMonoid M] [inst_1 : AddCommMonoid N]\n  {f : α → β} {s : α →₀ M} {h : β → M → N},\n  (∀ (b : β), h b 0 = 0) →\n    (∀ (b : β) (m₁ m₂ : M), h b (m₁ + m₂) = h b m₁ + h b m₂) →\n      (Finsupp.mapDomain f s).sum h = s.sum fun a m => h (f a) m",
+          "informal_description": "For any function $f : \\alpha \\to \\beta$, finite support function $s : \\alpha \\to_0 M$, and function $h : \\beta \\times M \\to N$ satisfying $h(b, 0) = 0$ and $h(b, m_1 + m_2) = h(b, m_1) + h(b, m_2)$ for all $b \\in \\beta$ and $m_1, m_2 \\in M$, the sum over $\\beta$ of $h(b, (\\text{mapDomain } f \\, s)(b))$ equals the sum over $\\alpha$ of $h(f(a), s(a))$.",
+          "path": "Mathlib.Data.Finsupp.Basic"
+        },
+        {
+          "formal_name": "Finsupp.weight",
+          "informal_name": "Weighted sum of vectors indexed by σ over R",
+          "kind": "definition",
+          "type": "{σ : Type u_1} →\n  {M : Type u_2} →\n    {R : Type u_3} → [inst : Semiring R] → (σ → M) → [inst_1 : AddCommMonoid M] → [Module R M] → (σ →₀ R) →+ M",
+          "informal_description": "The additive homomorphism from the space of finite support functions $ \\sigma \\to_0 R $ to the module $ M $, which maps each finite support function $ d $ to the sum $ \\sum_{i \\in \\text{support } d} d(i) \\cdot v_i $, where $ v_i $ denotes the vector associated with index $ i $.",
+          "path": "Mathlib.Data.Finsupp.Weight"
+        },
+        {
+          "formal_name": "Finsupp.linearCombination_comp_lmapDomain",
+          "informal_name": "Composition of Linear Combination Map with Domain Transformation",
+          "kind": "theorem",
+          "type": "∀ {α : Type u_1} (R : Type u_5) [inst : Semiring R] {α' : Type u_7} {M' : Type u_8} [inst_1 : AddCommMonoid M']\n  [inst_2 : Module R M'] {v' : α' → M'} (f : α → α'),\n  Finsupp.linearCombination R v' ∘ₗ Finsupp.lmapDomain R R f = Finsupp.linearCombination R (v' ∘ f)",
+          "informal_description": "For any function $ f : \\alpha \\to \\alpha' $, the composition of the linear combination map $ \\text{linearCombination}_R(v') $ with the domain transformation map $ \\text{Finsupp.lmapDomain}_R(f) $ equals the linear combination map $ \\text{linearCombination}_R(v' \\circ f) $. This establishes that transforming the domain of finite support functions via $ f $ and then taking linear combinations is equivalent to directly taking linear combinations with coefficients composed with $ f $.",
+          "path": "Mathlib.LinearAlgebra.Finsupp.LinearCombination"
+        }
+      ]
+    },
+    "isError": false
+  }
+}

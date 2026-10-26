@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 10/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 11/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 10; remaining: 283.
-- Verdicts: 4 NO-composable-from-mathlib, 2 YES-add-as-is, 0 YES-but-generalise-first, 0 NO-mathlib-has-it, 4 BORDERLINE-needs-human, 0 SKIP.
+- Completed applicable assessments: 11; remaining: 282.
+- Verdicts: 4 NO-composable-from-mathlib, 3 YES-add-as-is, 0 YES-but-generalise-first, 0 NO-mathlib-has-it, 4 BORDERLINE-needs-human, 0 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -140,6 +140,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: One explicit source call in private MvPolynomial.coeff_taylor_monomial_aux, Roth/Taylor.lean:127. Original and possible inline affected zero branch native-verified. Not a global simp rule; explicit simp argument. No opaque/implicit closure claim.
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/MvPolynomial.hasseDeriv_C.md).
 
+### Completed: `MvPolynomial.hasseDeriv_map`
+
+- Type: `theorem: ∀ f : R →+* S, ∀ d P, hasseDeriv d (map f P) = map f (hasseDeriv d P)`
+- What: Hasse derivatives commute with arbitrary coefficient ring homomorphisms.
+- How: Coefficient extensionality, coefficient Hasse/map formulas, preservation of natural-number casts and multiplication.
+- Hypotheses: Arbitrary variable type; independent commutative semirings R/S; any ring hom, multi-index and polynomial.
+- Project dependencies: MvPolynomial.hasseDeriv, MvPolynomial.coeff_hasseDeriv
+- Caller summary: Seven explicit uses in five declarations: Separation533; Theta524/580; MainLemma409/489/492/495. Scoped context/nesting experiments only.
+- Verdict: YES-add-as-is; [complete report](.mathlib-quality/overview/mathlibable/MvPolynomial.hasseDeriv_map.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -186,6 +196,8 @@ Completed `MvPolynomial.hasseDeriv_zero`: All five methods actually searched cur
 
 Completed `MvPolynomial.hasseDeriv_C`: All five actual methods on current/literature/abstract forms. Polynomial.hasseDeriv_C is univariate analogue, pderiv_C ordinary first derivative only. C_apply and lsum_single genuine generic normalization blocks; local factor-zero is new proof, not existing replacement.
 
+Completed `MvPolynomial.hasseDeriv_map`: Pinned Polynomial.hasseDeriv_map and MvPolynomial.pderiv_map are analogues, not all-multiorder arbitrary-variable replacements. Actual raw construction needs monomial calculation and additive induction.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -207,6 +219,8 @@ Completed `MvPolynomial.hasseDeriv_zero_apply`: Mirrors univariate pointwise/map
 Completed `MvPolynomial.hasseDeriv_zero`: Mirrors Polynomial.hasseDeriv_zero and neighboring pointwise normalization. Generic LinearMap.ext only packages a premise and is not unconditional concrete operator normalization.
 
 Completed `MvPolynomial.hasseDeriv_C`: Mirrors Polynomial.hasseDeriv_C; generic C/monomial/lsum normalization exists but does not supply concrete nonzero-order binomial vanishing premise.
+
+Completed `MvPolynomial.hasseDeriv_map`: No verified replacement; analogous univariate and first-order naturality patterns.
 
 ## Part 5: Generalization opportunities
 
@@ -233,6 +247,8 @@ Completed `MvPolynomial.hasseDeriv_zero`: Current operator interface already arb
 
 Completed `MvPolynomial.hasseDeriv_C`: Already arbitrary-variable commutative-semiring interface. Abstract HS-system packaging would require parent redevelopment. No verified mechanical weakening; d=0,C1 formal counterexample.
 
+Completed `MvPolynomial.hasseDeriv_map`: Optional additive coefficient-map companion verified with AddMonoidAlgebra.map. Fixed RingHom map interface remains canonical and literature-compatible.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -255,6 +271,8 @@ Completed `MvPolynomial.hasseDeriv_zero_apply`: No separate generic helper gap e
 Completed `MvPolynomial.hasseDeriv_zero`: Concrete multivariate Hasse definition and coefficient interface form the upstream context; no distinct missing generic extensionality helper. Exporting one or both zero-law forms is an API design question.
 
 Completed `MvPolynomial.hasseDeriv_C`: Multivariate Hasse parent and coefficient/monomial interface are needed upstream context. Named scalar constant normalization/simp policy remains a design choice; no missing generic lsum-single helper.
+
+Completed `MvPolynomial.hasseDeriv_map`: Multivariate all-order divided derivative coefficient-change law beside the parent Hasse operator.
 
 ## Part 7: Junk / removable
 
@@ -281,6 +299,8 @@ Completed `MvPolynomial.hasseDeriv_zero`: No explicit callers, but a registered 
 
 Completed `MvPolynomial.hasseDeriv_C`: Not junk: one real Taylor induction caller, standard positive-order law, no inherited glue classification.
 
+Completed `MvPolynomial.hasseDeriv_map`: False
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -295,6 +315,7 @@ Completed `MvPolynomial.hasseDeriv_C`: Not junk: one real Taylor induction calle
 | 8 | `MvPolynomial.hasseDeriv_zero_apply` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.hasseDeriv_zero_apply.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_zero_apply/root-acceptance.json) |
 | 9 | `MvPolynomial.hasseDeriv_zero` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.hasseDeriv_zero.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_zero/root-acceptance.json) |
 | 10 | `MvPolynomial.hasseDeriv_C` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.hasseDeriv_C.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_C/root-acceptance.json) |
+| 11 | `MvPolynomial.hasseDeriv_map` | YES-add-as-is | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.hasseDeriv_map.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_map/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -314,11 +335,13 @@ Completed `MvPolynomial.hasseDeriv_zero` action: BORDERLINE-needs-human: closing
 
 Completed `MvPolynomial.hasseDeriv_C` action: BORDERLINE-needs-human under closing-simp composition policy. Keep project-local pending named normalization/API choice. Potential Mathlib/Algebra/MvPolynomial/HasseDeriv.lean grouping with accepted parent; if omitted upstream, inline verified affected branch using local scalar-zero proof.
 
+Completed `MvPolynomial.hasseDeriv_map` action: YES-add-as-is; group with hasseDeriv and coeff_hasseDeriv in Mathlib/Algebra/MvPolynomial/HasseDeriv.lean; generalise/cleanup and current-pin duplicate check before PR.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `MvPolynomial.hasseDeriv_map` next. Supporting identities receive their own applicable checks.
+   `MvPolynomial.hasseDeriv_rename` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.

@@ -1,0 +1,138 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MvPolynomial.PDeriv\nimport Mathlib.Algebra.Polynomial.HasseDeriv\nimport Mathlib.Data.Nat.Choose.Bounds\n#check_failure MvPolynomial.hasseDeriv_map\n#check_failure MvPolynomial.hasseDeriv\n#check @Polynomial.hasseDeriv_map\n#check @MvPolynomial.pderiv_map\n#check @Finsupp.mapDomain_mapRange\n#check @Finsupp.mapRange_smul\n#check @MvPolynomial.coeff_map\n#check @MvPolynomial.coeff_addMonoidAlgebraMap\nnamespace AssessHasseMapIsolated\nvariable {R S : Type*} [Semiring R] [Semiring S]\ntheorem cast_preserved (f : R →+* S) (n : ℕ) : f (n : R) = (n : S) := map_natCast f n\ntheorem cast_weight (f : R →+* S) (n : ℕ) (a : R) :\n    f ((n : R) * a) = (n : S) * f a := by\n  rw [map_mul, map_natCast]\ntheorem additive_weight (f : R →+ S) (n : ℕ) (a : R) :\n    f ((n : R) * a) = (n : S) * f a := by\n  simpa only [nsmul_eq_mul] using f.map_nsmul n a\nend AssessHasseMapIsolated\nnamespace AssessHasseMapGeneric\nopen MvPolynomial\nvariable {σ R S : Type*} [CommSemiring R] [CommSemiring S]\ntheorem natural (s : (σ →₀ ℕ) → (σ →₀ ℕ)) (w : (σ →₀ ℕ) → ℕ)\n    (DR : MvPolynomial σ R → MvPolynomial σ R) (DS : MvPolynomial σ S → MvPolynomial σ S)\n    (hR : ∀ P e, (DR P).coeff e = (w e : R) * P.coeff (s e))\n    (hS : ∀ P e, (DS P).coeff e = (w e : S) * P.coeff (s e))\n    (f : R →+ S) (P : MvPolynomial σ R) :\n    DS (AddMonoidAlgebra.map f P) = AddMonoidAlgebra.map f (DR P) := by\n  apply MvPolynomial.ext\n  intro e\n  simp only [hR, hS, coeff_addMonoidAlgebraMap, ← nsmul_eq_mul, map_nsmul]\ntheorem zero_not_ringhom : (0 : ℕ →+ ℕ) 1 ≠ 1 := by decide\n#print axioms natural\n#print axioms zero_not_ringhom\n#print axioms AssessHasseMapIsolated.cast_preserved\n#print axioms AssessHasseMapIsolated.cast_weight\n#print axioms AssessHasseMapIsolated.additive_weight\nend AssessHasseMapGeneric\n"
+  },
+  "elapsed_ms": 232,
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown constant `MvPolynomial.hasseDeriv_map`\",\n      \"line\": 4,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown constant `MvPolynomial.hasseDeriv`\",\n      \"line\": 5,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.hasseDeriv_map : ∀ {R : Type u_1} [inst : Semiring R] {S : Type u_2} [inst_1 : Semiring S] (f : R →+* S)\\n  (k : ℕ) (p : Polynomial R),\\n  (Polynomial.hasseDeriv k) (Polynomial.map f p) = Polynomial.map f ((Polynomial.hasseDeriv k) p)\",\n      \"line\": 6,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPolynomial.pderiv_map : ∀ {R : Type u_1} {σ : Type u_2} [inst : CommSemiring R] {S : Type u_3}\\n  [inst_1 : CommSemiring S] {φ : R →+* S} {f : MvPolynomial σ R} {i : σ},\\n  (MvPolynomial.pderiv i) ((MvPolynomial.map φ) f) = (MvPolynomial.map φ) ((MvPolynomial.pderiv i) f)\",\n      \"line\": 7,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finsupp.mapDomain_mapRange : ∀ {α : Type u_1} {β : Type u_2} {M : Type u_3} {N : Type u_4} [inst : AddCommMonoid M]\\n  [inst_1 : AddCommMonoid N] (f : α → β) (v : α →₀ M) (g : M → N) (h0 : g 0 = 0),\\n  (∀ (x y : M), g (x + y) = g x + g y) →\\n    Finsupp.mapDomain f (Finsupp.mapRange g h0 v) = Finsupp.mapRange g h0 (Finsupp.mapDomain f v)\",\n      \"line\": 8,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finsupp.mapRange_smul : ∀ {α : Type u_1} {M : Type u_2} {N : Type u_3} {R : Type u_4} [inst : Zero M]\\n  [inst_1 : SMulZeroClass R M] [inst_2 : Zero N] [inst_3 : SMulZeroClass R N] {f : M → N} {hf : f 0 = 0} (c : R)\\n  (v : α →₀ M), (∀ (x : M), f (c • x) = c • f x) → Finsupp.mapRange f hf (c • v) = c • Finsupp.mapRange f hf v\",\n      \"line\": 9,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPolynomial.coeff_map : ∀ {R : Type u_1} {S₁ : Type u_2} {σ : Type u_3} [inst : CommSemiring R]\\n  [inst_1 : CommSemiring S₁] (f : R →+* S₁) (p : MvPolynomial σ R) (m : σ →₀ ℕ),\\n  ((MvPolynomial.map f) p).coeff m = f (p.coeff m)\",\n      \"line\": 10,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPolynomial.coeff_addMonoidAlgebraMap : ∀ {R : Type u_1} {S₁ : Type u_2} {σ : Type u_3} [inst : CommSemiring R]\\n  [inst_1 : CommSemiring S₁] (g : S₁ →+ R) (φ : MvPolynomial σ S₁) (m : σ →₀ ℕ),\\n  (AddMonoidAlgebra.map g φ).coeff m = g (φ.coeff m)\",\n      \"line\": 11,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'AssessHasseMapGeneric.natural' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 35,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'AssessHasseMapGeneric.zero_not_ringhom' depends on axioms: [propext]\",\n      \"line\": 36,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'AssessHasseMapIsolated.cast_preserved' depends on axioms: [propext, Quot.sound]\",\n      \"line\": 37,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'AssessHasseMapIsolated.cast_weight' depends on axioms: [propext, Quot.sound]\",\n      \"line\": 38,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'AssessHasseMapIsolated.additive_weight' does not depend on any axioms\",\n      \"line\": 39,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown constant `MvPolynomial.hasseDeriv_map`",
+          "line": 4,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown constant `MvPolynomial.hasseDeriv`",
+          "line": 5,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.hasseDeriv_map : ∀ {R : Type u_1} [inst : Semiring R] {S : Type u_2} [inst_1 : Semiring S] (f : R →+* S)\n  (k : ℕ) (p : Polynomial R),\n  (Polynomial.hasseDeriv k) (Polynomial.map f p) = Polynomial.map f ((Polynomial.hasseDeriv k) p)",
+          "line": 6,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPolynomial.pderiv_map : ∀ {R : Type u_1} {σ : Type u_2} [inst : CommSemiring R] {S : Type u_3}\n  [inst_1 : CommSemiring S] {φ : R →+* S} {f : MvPolynomial σ R} {i : σ},\n  (MvPolynomial.pderiv i) ((MvPolynomial.map φ) f) = (MvPolynomial.map φ) ((MvPolynomial.pderiv i) f)",
+          "line": 7,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finsupp.mapDomain_mapRange : ∀ {α : Type u_1} {β : Type u_2} {M : Type u_3} {N : Type u_4} [inst : AddCommMonoid M]\n  [inst_1 : AddCommMonoid N] (f : α → β) (v : α →₀ M) (g : M → N) (h0 : g 0 = 0),\n  (∀ (x y : M), g (x + y) = g x + g y) →\n    Finsupp.mapDomain f (Finsupp.mapRange g h0 v) = Finsupp.mapRange g h0 (Finsupp.mapDomain f v)",
+          "line": 8,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finsupp.mapRange_smul : ∀ {α : Type u_1} {M : Type u_2} {N : Type u_3} {R : Type u_4} [inst : Zero M]\n  [inst_1 : SMulZeroClass R M] [inst_2 : Zero N] [inst_3 : SMulZeroClass R N] {f : M → N} {hf : f 0 = 0} (c : R)\n  (v : α →₀ M), (∀ (x : M), f (c • x) = c • f x) → Finsupp.mapRange f hf (c • v) = c • Finsupp.mapRange f hf v",
+          "line": 9,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPolynomial.coeff_map : ∀ {R : Type u_1} {S₁ : Type u_2} {σ : Type u_3} [inst : CommSemiring R]\n  [inst_1 : CommSemiring S₁] (f : R →+* S₁) (p : MvPolynomial σ R) (m : σ →₀ ℕ),\n  ((MvPolynomial.map f) p).coeff m = f (p.coeff m)",
+          "line": 10,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPolynomial.coeff_addMonoidAlgebraMap : ∀ {R : Type u_1} {S₁ : Type u_2} {σ : Type u_3} [inst : CommSemiring R]\n  [inst_1 : CommSemiring S₁] (g : S₁ →+ R) (φ : MvPolynomial σ S₁) (m : σ →₀ ℕ),\n  (AddMonoidAlgebra.map g φ).coeff m = g (φ.coeff m)",
+          "line": 11,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'AssessHasseMapGeneric.natural' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 35,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'AssessHasseMapGeneric.zero_not_ringhom' depends on axioms: [propext]",
+          "line": 36,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'AssessHasseMapIsolated.cast_preserved' depends on axioms: [propext, Quot.sound]",
+          "line": 37,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'AssessHasseMapIsolated.cast_weight' depends on axioms: [propext, Quot.sound]",
+          "line": 38,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'AssessHasseMapIsolated.additive_weight' does not depend on any axioms",
+          "line": 39,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  }
+}
