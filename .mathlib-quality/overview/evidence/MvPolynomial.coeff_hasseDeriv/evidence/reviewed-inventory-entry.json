@@ -1,0 +1,88 @@
+{
+  "file": "Roth/HasseDeriv.lean",
+  "line": 89,
+  "name": "MvPolynomial.coeff_hasseDeriv",
+  "short": "coeff_hasseDeriv",
+  "kind": "theorem",
+  "visibility": "public",
+  "end_line": 100,
+  "source": "theorem coeff_hasseDeriv (d e : \u03c3 \u2192\u2080 \u2115) (P : MvPolynomial \u03c3 R) :\n    (hasseDeriv d P).coeff e = (hasseCoeff d (e + d) : R) * P.coeff (e + d) := by\n  classical\n  induction P using MvPolynomial.induction_on' with\n  | monomial k a =>\n    rw [hasseDeriv_monomial, coeff_monomial, coeff_monomial]\n    by_cases hk : k = e + d\n    \u00b7 simp [hk]\n    by_cases hdk : d \u2264 k\n    \u00b7 simp [hk, tsub_eq_iff_eq_add_of_le hdk]\n    \u00b7 simp [hk, (hasseCoeff_eq_zero_iff d k).2 hdk]\n  | add p q hp hq => simp [hp, hq, mul_add]",
+  "signature": "theorem coeff_hasseDeriv (d e : \u03c3 \u2192\u2080 \u2115) (P : MvPolynomial \u03c3 R) :\n    (hasseDeriv d P).coeff e = (hasseCoeff d (e + d) : R) * P.coeff (e + d)",
+  "body": "by\n  classical\n  induction P using MvPolynomial.induction_on' with\n  | monomial k a =>\n    rw [hasseDeriv_monomial, coeff_monomial, coeff_monomial]\n    by_cases hk : k = e + d\n    \u00b7 simp [hk]\n    by_cases hdk : d \u2264 k\n    \u00b7 simp [hk, tsub_eq_iff_eq_add_of_le hdk]\n    \u00b7 simp [hk, (hasseCoeff_eq_zero_iff d k).2 hdk]\n  | add p q hp hq => simp [hp, hq, mul_add]",
+  "proof_lines": 11,
+  "sha256": "77c7d7fdd909c88bf67d92b14da37b28fda8de047d0af5bb2b205fe64e709c70",
+  "what": "The coefficient at exponent e of the d-th Hasse derivative is the coefficient at e+d times the associated multivariate binomial factor.",
+  "how": "Polynomial additive induction reduces to hasseDeriv_monomial; the monomial case separates the exponent equality and coordinatewise bound, using hasseCoeff_eq_zero_iff when the bound fails.",
+  "hypotheses": "Any commutative coefficient semiring and arbitrary multi-indices; additive cancellation in natural multi-indices, not ring subtraction, handles exponent reconstruction.",
+  "uses_from_project": [
+    "MvPolynomial.hasseCoeff_eq_zero_iff",
+    "MvPolynomial.hasseDeriv_monomial"
+  ],
+  "used_by_in_file": [
+    "MvPolynomial.hasseDeriv_zero_apply",
+    "MvPolynomial.hasseDeriv_map",
+    "MvPolynomial.hasseDeriv_hasseDeriv",
+    "MvPolynomial.pderiv_hasseDeriv",
+    "MvPolynomial.degreeOf_hasseDeriv_le",
+    "MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt",
+    "MvPolynomial.uniqueAlgEquiv_hasseDeriv"
+  ],
+  "project_callers": [
+    {
+      "name": "Roth.abs_coeff_hasseDeriv_le",
+      "file": "Roth/CoeffNorm.lean",
+      "line": 134
+    },
+    {
+      "name": "MvPolynomial.hasseDeriv_zero_apply",
+      "file": "Roth/HasseDeriv.lean",
+      "line": 112
+    },
+    {
+      "name": "MvPolynomial.hasseDeriv_map",
+      "file": "Roth/HasseDeriv.lean",
+      "line": 134
+    },
+    {
+      "name": "MvPolynomial.hasseDeriv_hasseDeriv",
+      "file": "Roth/HasseDeriv.lean",
+      "line": 175
+    },
+    {
+      "name": "MvPolynomial.pderiv_hasseDeriv",
+      "file": "Roth/HasseDeriv.lean",
+      "line": 200
+    },
+    {
+      "name": "MvPolynomial.degreeOf_hasseDeriv_le",
+      "file": "Roth/HasseDeriv.lean",
+      "line": 210
+    },
+    {
+      "name": "MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt",
+      "file": "Roth/HasseDeriv.lean",
+      "line": 219
+    },
+    {
+      "name": "MvPolynomial.uniqueAlgEquiv_hasseDeriv",
+      "file": "Roth/HasseDeriv.lean",
+      "line": 266
+    }
+  ],
+  "type_context": "{\u03c3 R : Type*} [CommSemiring R]",
+  "type_provenance": "Exact written signature with section binders made explicit from source; not claimed as a fresh #check output. Minimal hasseCoeff #check succeeded; full Meta inspector timed out.",
+  "reference_provenance": "Manually disambiguated source-level direct project references in declaration bodies; callers include signature and body occurrences. Includes explicit references only, not an exhaustive kernel/simp dependency closure.",
+  "notes": [
+    "No set_option, sorry, TODO, or proof over 30 lines in declaration."
+  ],
+  "assignment_offset": 141,
+  "project_body_refs": [
+    "MvPolynomial.hasseCoeff_eq_zero_iff",
+    "MvPolynomial.hasseDeriv_monomial"
+  ],
+  "project_type_refs": [
+    "MvPolynomial.hasseCoeff",
+    "MvPolynomial.hasseDeriv"
+  ],
+  "section_context": "{\u03c3 R : Type*} [CommSemiring R]"
+}

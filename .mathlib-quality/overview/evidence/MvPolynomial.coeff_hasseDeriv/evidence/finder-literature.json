@@ -1,0 +1,85 @@
+{
+  "label": "finder-literature",
+  "tool": "mcp__lean_lsp__lean_leanfinder",
+  "args": {
+    "query": "Taylor coefficient multivariate polynomial divided higher derivative arbitrary characteristic",
+    "num_results": 8
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.taylor_coeff\",\n      \"informal_name\": \"Coefficient of Taylor Expansion at $ r $: $ \\\\text{coeff}_n(f(X + r)) = D^{(n)}f(r) $\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R) (n : ℕ),\\n  ((Polynomial.taylor r) f).coeff n = Polynomial.eval r ((Polynomial.hasseDeriv n) f)\",\n      \"informal_description\": \"For any polynomial $ f $ over a semiring $ R $, natural number $ n $, and element $ r \\\\in R $, the coefficient of $ X^n $ in the Taylor expansion $ f(X + r) $ equals the evaluation of the $ n $-th Hasse derivative of $ f $ at $ r $. The Hasse derivative $ D^{(n)} $ scales monomials $ a_i X^i $ by $ \\\\binom{i}{n} a_i X^{i - n} $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    },\n    {\n      \"formal_name\": \"Polynomial.taylor_coeff_one\",\n      \"informal_name\": \"First Coefficient of Taylor Expansion Equals Derivative\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R),\\n  ((Polynomial.taylor r) f).coeff 1 = Polynomial.eval r (Polynomial.derivative f)\",\n      \"informal_description\": \"The coefficient of $ X $ in the Taylor expansion of a polynomial $ f $ at a point $ r $ in a semiring $ R $ is equal to the derivative of $ f $ evaluated at $ r $, i.e., $ \\\\text{coeff}_1(\\\\text{Taylor}_r(f)) = f'(r) $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    },\n    {\n      \"formal_name\": \"taylorCoeffWithin\",\n      \"informal_name\": \"Taylor Coefficient Within a Set\",\n      \"kind\": \"definition\",\n      \"type\": \"{E : Type u_2} → [inst : NormedAddCommGroup E] → [NormedSpace ℝ E] → (ℝ → E) → ℕ → Set ℝ → ℝ → E\",\n      \"informal_description\": \"For a function $ f : \\\\mathbb{R} \\\\to E $, a natural number $ k $, a set $ s \\\\subseteq \\\\mathbb{R} $, and a point $ x_0 \\\\in \\\\mathbb{R} $, the Taylor coefficient of order $ k $ within $ s $ at $ x_0 $ is defined as $ \\\\frac{1}{k!} $ multiplied by the $ k $-th iterated derivative of $ f $ (restricted to $ s $) evaluated at $ x_0 $. This represents the scaled $ k $-th derivative contribution to the Taylor expansion of $ f $ at $ x_0 $ within the domain $ s $.\",\n      \"path\": \"Mathlib.Analysis.Calculus.Taylor\"\n    },\n    {\n      \"formal_name\": \"taylorWithin\",\n      \"informal_name\": \"Taylor Polynomial Within a Set\",\n      \"kind\": \"definition\",\n      \"type\": \"{E : Type u_2} →\\n  [inst : NormedAddCommGroup E] → [inst_1 : NormedSpace ℝ E] → (ℝ → E) → ℕ → Set ℝ → ℝ → PolynomialModule ℝ E\",\n      \"informal_description\": \"For a function $ f : \\\\mathbb{R} \\\\to E $, natural number $ n $, subset $ s \\\\subseteq \\\\mathbb{R} $, and point $ x_0 \\\\in \\\\mathbb{R} $, the Taylor polynomial of degree $ n $ within $ s $ at $ x_0 $ is defined as the finite sum $ \\\\sum_{k=0}^n \\\\left(\\\\frac{f^{(k)}(x_0)}{k!} \\\\cdot (X - x_0)^k\\\\right) $, where each coefficient $ \\\\frac{f^{(k)}(x_0)}{k!} $ is computed using the $ k $-th iterated derivative of $ f $ restricted to $ s $. This represents the polynomial approximation of $ f $ near $ x_0 $ within the domain $ s $.\",\n      \"path\": \"Mathlib.Analysis.Calculus.Taylor\"\n    },\n    {\n      \"formal_name\": \"Polynomial.aeval_iterate_derivative_of_ge\",\n      \"informal_name\": \"Factorial Scaling Identity for k-th Derivatives of Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommSemiring R] (A : Type u_3) [inst_1 : CommRing A] [inst_2 : Algebra R A] (p : Polynomial R)\\n  (q : ℕ) {k : ℕ},\\n  q ≤ k →\\n    ∃ gp,\\n      gp.natDegree ≤ p.natDegree - k ∧\\n        ∀ (r : A), (Polynomial.aeval r) ((⇑Polynomial.derivative)^[k] p) = q.factorial • (Polynomial.aeval r) gp\",\n      \"informal_description\": \"For any polynomial $ p \\\\in R[X] $, natural numbers $ q $ and $ k $ with $ q \\\\leq k $, there exists a polynomial $ g_p $ with $ \\\\deg(g_p) \\\\leq \\\\deg(p) - k $ such that for every $ r \\\\in A $, the evaluation of the $ k $-th derivative of $ p $ at $ r $ equals $ q! \\\\cdot \\\\text{aeval}_r(g_p) $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.SumIteratedDerivative\"\n    },\n    {\n      \"formal_name\": \"taylorWithin_succ\",\n      \"informal_name\": \"Successor Taylor Polynomial Within a Set\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {E : Type u_2} [inst : NormedAddCommGroup E] [inst_1 : NormedSpace ℝ E] (f : ℝ → E) (n : ℕ) (s : Set ℝ) (x₀ : ℝ),\\n  taylorWithin f (n + 1) s x₀ =\\n    taylorWithin f n s x₀ +\\n      (PolynomialModule.comp (Polynomial.X - Polynomial.C x₀))\\n        ((PolynomialModule.single ℝ (n + 1)) (taylorCoeffWithin f (n + 1) s x₀))\",\n      \"informal_description\": \"For a function $ f : \\\\mathbb{R} \\\\to E $, natural number $ n $, subset $ s \\\\subseteq \\\\mathbb{R} $, and point $ x_0 \\\\in \\\\mathbb{R} $, the Taylor polynomial of degree $ n+1 $ within $ s $ at $ x_0 $ is equal to the Taylor polynomial of degree $ n $ plus the term $ \\\\frac{f^{(n+1)}(x_0)}{(n+1)!} \\\\cdot (X - x_0)^{n+1} $. This expresses the recursive construction of Taylor polynomials by adding the next-order term involving the $(n+1)$-th derivative.\",\n      \"path\": \"Mathlib.Analysis.Calculus.Taylor\"\n    },\n    {\n      \"formal_name\": \"Polynomial.coeff_taylor_natDegree\",\n      \"informal_name\": \"Coefficient of Natural Degree in Taylor Expansion Equals Leading Coefficient\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R),\\n  ((Polynomial.taylor r) f).coeff f.natDegree = f.leadingCoeff\",\n      \"informal_description\": \"For a polynomial $ f $ over a semiring $ R $ and an element $ r \\\\in R $, the coefficient of the natural degree term in the Taylor expansion of $ f $ at $ r $ (i.e., the polynomial $ f(X + r) $) is equal to the leading coefficient of $ f $. This holds because the highest-degree term in $ f(X + r) $ retains the leading coefficient of $ f $ after binomial expansion.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    },\n    {\n      \"formal_name\": \"HasFTaylorSeriesUpTo.fderiv\",\n      \"informal_name\": \"Derivative of Taylor Series Terms for Functions with Finite Taylor Expansions\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {𝕜 : Type u} [inst : NontriviallyNormedField 𝕜] {E : Type uE} [inst_1 : NormedAddCommGroup E]\\n  [inst_2 : NormedSpace 𝕜 E] {F : Type uF} [inst_3 : NormedAddCommGroup F] [inst_4 : NormedSpace 𝕜 F] {n : WithTop ℕ∞}\\n  {f : E → F} {p : E → FormalMultilinearSeries 𝕜 E F},\\n  HasFTaylorSeriesUpTo n f p → ∀ (m : ℕ), ↑m < n → ∀ (x : E), HasFDerivAt (fun y => p y m) (p x m.succ).curryLeft x\",\n      \"informal_description\": \"If a function $ f $ has a Taylor series expansion up to order $ n $ given by a formal multilinear series $ p $, then for every natural number $ m $ less than $ n $, the derivative of the $ m $-th term of the series at any point $ x $ is equal to the $ (m+1) $-th term of the series evaluated at $ x $ with the first argument curried. This holds in the context of a non-trivially normed field $ \\\\mathbb{K} $, normed vector spaces $ E $ and $ F $ over $ \\\\mathbb{K} $, and an extended natural number $ n $.\",\n      \"path\": \"Mathlib.Analysis.Calculus.ContDiff.FTaylorSeries\"\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "items": [
+        {
+          "formal_name": "Polynomial.taylor_coeff",
+          "informal_name": "Coefficient of Taylor Expansion at $ r $: $ \\text{coeff}_n(f(X + r)) = D^{(n)}f(r) $",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R) (n : ℕ),\n  ((Polynomial.taylor r) f).coeff n = Polynomial.eval r ((Polynomial.hasseDeriv n) f)",
+          "informal_description": "For any polynomial $ f $ over a semiring $ R $, natural number $ n $, and element $ r \\in R $, the coefficient of $ X^n $ in the Taylor expansion $ f(X + r) $ equals the evaluation of the $ n $-th Hasse derivative of $ f $ at $ r $. The Hasse derivative $ D^{(n)} $ scales monomials $ a_i X^i $ by $ \\binom{i}{n} a_i X^{i - n} $.",
+          "path": "Mathlib.Algebra.Polynomial.Taylor"
+        },
+        {
+          "formal_name": "Polynomial.taylor_coeff_one",
+          "informal_name": "First Coefficient of Taylor Expansion Equals Derivative",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R),\n  ((Polynomial.taylor r) f).coeff 1 = Polynomial.eval r (Polynomial.derivative f)",
+          "informal_description": "The coefficient of $ X $ in the Taylor expansion of a polynomial $ f $ at a point $ r $ in a semiring $ R $ is equal to the derivative of $ f $ evaluated at $ r $, i.e., $ \\text{coeff}_1(\\text{Taylor}_r(f)) = f'(r) $.",
+          "path": "Mathlib.Algebra.Polynomial.Taylor"
+        },
+        {
+          "formal_name": "taylorCoeffWithin",
+          "informal_name": "Taylor Coefficient Within a Set",
+          "kind": "definition",
+          "type": "{E : Type u_2} → [inst : NormedAddCommGroup E] → [NormedSpace ℝ E] → (ℝ → E) → ℕ → Set ℝ → ℝ → E",
+          "informal_description": "For a function $ f : \\mathbb{R} \\to E $, a natural number $ k $, a set $ s \\subseteq \\mathbb{R} $, and a point $ x_0 \\in \\mathbb{R} $, the Taylor coefficient of order $ k $ within $ s $ at $ x_0 $ is defined as $ \\frac{1}{k!} $ multiplied by the $ k $-th iterated derivative of $ f $ (restricted to $ s $) evaluated at $ x_0 $. This represents the scaled $ k $-th derivative contribution to the Taylor expansion of $ f $ at $ x_0 $ within the domain $ s $.",
+          "path": "Mathlib.Analysis.Calculus.Taylor"
+        },
+        {
+          "formal_name": "taylorWithin",
+          "informal_name": "Taylor Polynomial Within a Set",
+          "kind": "definition",
+          "type": "{E : Type u_2} →\n  [inst : NormedAddCommGroup E] → [inst_1 : NormedSpace ℝ E] → (ℝ → E) → ℕ → Set ℝ → ℝ → PolynomialModule ℝ E",
+          "informal_description": "For a function $ f : \\mathbb{R} \\to E $, natural number $ n $, subset $ s \\subseteq \\mathbb{R} $, and point $ x_0 \\in \\mathbb{R} $, the Taylor polynomial of degree $ n $ within $ s $ at $ x_0 $ is defined as the finite sum $ \\sum_{k=0}^n \\left(\\frac{f^{(k)}(x_0)}{k!} \\cdot (X - x_0)^k\\right) $, where each coefficient $ \\frac{f^{(k)}(x_0)}{k!} $ is computed using the $ k $-th iterated derivative of $ f $ restricted to $ s $. This represents the polynomial approximation of $ f $ near $ x_0 $ within the domain $ s $.",
+          "path": "Mathlib.Analysis.Calculus.Taylor"
+        },
+        {
+          "formal_name": "Polynomial.aeval_iterate_derivative_of_ge",
+          "informal_name": "Factorial Scaling Identity for k-th Derivatives of Polynomials",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} [inst : CommSemiring R] (A : Type u_3) [inst_1 : CommRing A] [inst_2 : Algebra R A] (p : Polynomial R)\n  (q : ℕ) {k : ℕ},\n  q ≤ k →\n    ∃ gp,\n      gp.natDegree ≤ p.natDegree - k ∧\n        ∀ (r : A), (Polynomial.aeval r) ((⇑Polynomial.derivative)^[k] p) = q.factorial • (Polynomial.aeval r) gp",
+          "informal_description": "For any polynomial $ p \\in R[X] $, natural numbers $ q $ and $ k $ with $ q \\leq k $, there exists a polynomial $ g_p $ with $ \\deg(g_p) \\leq \\deg(p) - k $ such that for every $ r \\in A $, the evaluation of the $ k $-th derivative of $ p $ at $ r $ equals $ q! \\cdot \\text{aeval}_r(g_p) $.",
+          "path": "Mathlib.Algebra.Polynomial.SumIteratedDerivative"
+        },
+        {
+          "formal_name": "taylorWithin_succ",
+          "informal_name": "Successor Taylor Polynomial Within a Set",
+          "kind": "theorem",
+          "type": "∀ {E : Type u_2} [inst : NormedAddCommGroup E] [inst_1 : NormedSpace ℝ E] (f : ℝ → E) (n : ℕ) (s : Set ℝ) (x₀ : ℝ),\n  taylorWithin f (n + 1) s x₀ =\n    taylorWithin f n s x₀ +\n      (PolynomialModule.comp (Polynomial.X - Polynomial.C x₀))\n        ((PolynomialModule.single ℝ (n + 1)) (taylorCoeffWithin f (n + 1) s x₀))",
+          "informal_description": "For a function $ f : \\mathbb{R} \\to E $, natural number $ n $, subset $ s \\subseteq \\mathbb{R} $, and point $ x_0 \\in \\mathbb{R} $, the Taylor polynomial of degree $ n+1 $ within $ s $ at $ x_0 $ is equal to the Taylor polynomial of degree $ n $ plus the term $ \\frac{f^{(n+1)}(x_0)}{(n+1)!} \\cdot (X - x_0)^{n+1} $. This expresses the recursive construction of Taylor polynomials by adding the next-order term involving the $(n+1)$-th derivative.",
+          "path": "Mathlib.Analysis.Calculus.Taylor"
+        },
+        {
+          "formal_name": "Polynomial.coeff_taylor_natDegree",
+          "informal_name": "Coefficient of Natural Degree in Taylor Expansion Equals Leading Coefficient",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R),\n  ((Polynomial.taylor r) f).coeff f.natDegree = f.leadingCoeff",
+          "informal_description": "For a polynomial $ f $ over a semiring $ R $ and an element $ r \\in R $, the coefficient of the natural degree term in the Taylor expansion of $ f $ at $ r $ (i.e., the polynomial $ f(X + r) $) is equal to the leading coefficient of $ f $. This holds because the highest-degree term in $ f(X + r) $ retains the leading coefficient of $ f $ after binomial expansion.",
+          "path": "Mathlib.Algebra.Polynomial.Taylor"
+        },
+        {
+          "formal_name": "HasFTaylorSeriesUpTo.fderiv",
+          "informal_name": "Derivative of Taylor Series Terms for Functions with Finite Taylor Expansions",
+          "kind": "theorem",
+          "type": "∀ {𝕜 : Type u} [inst : NontriviallyNormedField 𝕜] {E : Type uE} [inst_1 : NormedAddCommGroup E]\n  [inst_2 : NormedSpace 𝕜 E] {F : Type uF} [inst_3 : NormedAddCommGroup F] [inst_4 : NormedSpace 𝕜 F] {n : WithTop ℕ∞}\n  {f : E → F} {p : E → FormalMultilinearSeries 𝕜 E F},\n  HasFTaylorSeriesUpTo n f p → ∀ (m : ℕ), ↑m < n → ∀ (x : E), HasFDerivAt (fun y => p y m) (p x m.succ).curryLeft x",
+          "informal_description": "If a function $ f $ has a Taylor series expansion up to order $ n $ given by a formal multilinear series $ p $, then for every natural number $ m $ less than $ n $, the derivative of the $ m $-th term of the series at any point $ x $ is equal to the $ (m+1) $-th term of the series evaluated at $ x $ with the first argument curried. This holds in the context of a non-trivially normed field $ \\mathbb{K} $, normed vector spaces $ E $ and $ F $ over $ \\mathbb{K} $, and an extended natural number $ n $.",
+          "path": "Mathlib.Analysis.Calculus.ContDiff.FTaylorSeries"
+        }
+      ]
+    },
+    "isError": false
+  }
+}

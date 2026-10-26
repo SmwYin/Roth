@@ -1,0 +1,84 @@
+{
+  "tool": "mcp__lean_lsp__lean_leanfinder",
+  "args": {
+    "query": "finitely supported sum linear map coefficient formula injective shift with zero weights outside upper set",
+    "num_results": 8
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Finsupp.linearCombination\",\n      \"informal_name\": \"Linear combination of vectors indexed by α over R\",\n      \"kind\": \"definition\",\n      \"type\": \"{α : Type u_1} →\\n  {M : Type u_2} →\\n    (R : Type u_5) →\\n      [inst : Semiring R] → [inst_1 : AddCommMonoid M] → [inst_2 : Module R M] → (α → M) → (α →₀ R) →ₗ[R] M\",\n      \"informal_description\": \"The linear map from the space of finite support functions $ \\\\alpha \\\\to_0 R $ to the module $ M $, which sends each finite support function $ d $ to the sum $ \\\\sum_{i \\\\in \\\\text{support } d} d(i) \\\\cdot v_i $, where $ v_i $ denotes the vector associated with index $ i $. This map is constructed using the linear equivalence of summing scalar multiples of individual vectors embedded via the right scalar multiplication operation.\",\n      \"path\": \"Mathlib.LinearAlgebra.Finsupp.LinearCombination\"\n    },\n    {\n      \"formal_name\": \"Finsupp.weight\",\n      \"informal_name\": \"Weighted sum of vectors indexed by σ over R\",\n      \"kind\": \"definition\",\n      \"type\": \"{σ : Type u_1} →\\n  {M : Type u_2} →\\n    {R : Type u_3} → [inst : Semiring R] → (σ → M) → [inst_1 : AddCommMonoid M] → [Module R M] → (σ →₀ R) →+ M\",\n      \"informal_description\": \"The additive homomorphism from the space of finite support functions $ \\\\sigma \\\\to_0 R $ to the module $ M $, which maps each finite support function $ d $ to the sum $ \\\\sum_{i \\\\in \\\\text{support } d} d(i) \\\\cdot v_i $, where $ v_i $ denotes the vector associated with index $ i $.\",\n      \"path\": \"Mathlib.Data.Finsupp.Weight\"\n    },\n    {\n      \"formal_name\": \"Finsupp.weight_apply\",\n      \"informal_name\": \"Weighted Sum Evaluation: $ \\\\text{weight } w f = \\\\sum_{i \\\\in \\\\text{support } f} c_i \\\\cdot w(i) $\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {M : Type u_2} {R : Type u_3} [inst : Semiring R] (w : σ → M) [inst_1 : AddCommMonoid M]\\n  [inst_2 : Module R M] (f : σ →₀ R), (Finsupp.weight w) f = f.sum fun i c => c • w i\",\n      \"informal_description\": \"For any finite support function $ f : \\\\sigma \\\\to_0 R $, the weight function applied to $ f $ is equal to the sum over all $ i $ in the support of $ f $ of $ c \\\\cdot w(i) $, where $ c $ is the coefficient of $ i $ in $ f $ and $ w : \\\\sigma \\\\to M $ is a function assigning vectors to indices.\",\n      \"path\": \"Mathlib.Data.Finsupp.Weight\"\n    },\n    {\n      \"formal_name\": \"FunOnFinite.linearMap_apply_apply\",\n      \"informal_name\": \"Linear Map Induced by Function Between Finite Sets Acts by Summing Over Preimages\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (R : Type u_5) (M : Type u_6) [inst : Semiring R] [inst_1 : AddCommMonoid M] [inst_2 : Module R M] {X : Type u_7}\\n  {Y : Type u_8} [inst_3 : Fintype X] [inst_4 : Finite Y] [inst_5 : DecidableEq Y] (f : X → Y) (s : X → M) (y : Y),\\n  (FunOnFinite.linearMap R M f) s y = {x | f x = y}.sum s\",\n      \"informal_description\": \"For finite sets $X$ and $Y$, a function $f : X \\\\to Y$, and a function $s : X \\\\to M$ where $M$ is an $R$-module, the evaluation of the linear map induced by $f$ at $s$ and $y \\\\in Y$ equals the sum of $s(x)$ for all $x \\\\in X$ satisfying $f(x) = y$. Formally, $(\\\\mathrm{linearMap}\\\\, f\\\\, s)(y) = \\\\sum_{x \\\\in f^{-1}(y)} s(x)$.\",\n      \"path\": \"Mathlib.LinearAlgebra.Finsupp.Pi\"\n    },\n    {\n      \"formal_name\": \"LinearMap.pi_apply_eq_sum_univ\",\n      \"informal_name\": \"Linear Map Application as Basis Vector Sum\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {M₂ : Type w} {ι : Type x} [inst : Semiring R] [inst_1 : AddCommMonoid M₂] [inst_2 : Module R M₂]\\n  [inst_3 : DecidableEq ι] [inst_4 : Fintype ι] (f : (ι → R) →ₗ[R] M₂) (x : ι → R),\\n  f x = ∑ i, x i • f fun j => if i = j then 1 else 0\",\n      \"informal_description\": \"For any finite index set $\\\\iota$, a linear map $f : (\\\\iota \\\\to R) \\\\to M_2$ between an $R$-module product space and another $R$-module $M_2$, and for any element $x : \\\\iota \\\\to R$, the evaluation $f(x)$ equals the finite sum $\\\\sum_{i \\\\in \\\\iota} x_i \\\\cdot f(e_i)$, where $e_i$ denotes the basis vector in $\\\\iota \\\\to R$ with $1$ at index $i$ and $0$ elsewhere.\",\n      \"path\": \"Mathlib.LinearAlgebra.Pi\"\n    },\n    {\n      \"formal_name\": \"Finsupp.linearCombination_comapDomain\",\n      \"informal_name\": \"Linear Combination Compatibility with Domain Comap under Injectivity\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {M : Type u_2} (R : Type u_5) [inst : Semiring R] [inst_1 : AddCommMonoid M] [inst_2 : Module R M]\\n  {α' : Type u_7} {v : α → M} (f : α → α') (l : α' →₀ R) (hf : Set.InjOn f (f ⁻¹' ↑l.support)),\\n  (Finsupp.linearCombination R v) (Finsupp.comapDomain f l hf) = ∑ i ∈ l.support.preimage f hf, l (f i) • v i\",\n      \"informal_description\": \"For an injective function $ f : \\\\alpha \\\\to \\\\alpha' $ on the preimage of the support of a finite support function $ l : \\\\alpha' \\\\to_0 R $, the linear combination of the comapped function $ \\\\text{comapDomain } f \\\\, l $ equals the sum over $ i \\\\in f^{-1}(\\\\text{support } l) $ of $ l(f(i)) \\\\cdot v_i $. Formally, $ \\\\text{linearCombination } R \\\\, v (\\\\text{comapDomain } f \\\\, l) = \\\\sum_{i \\\\in f^{-1}(\\\\text{support } l)} l(f(i)) \\\\cdot v_i $.\",\n      \"path\": \"Mathlib.LinearAlgebra.Finsupp.LinearCombination\"\n    },\n    {\n      \"formal_name\": \"Finsupp.linearCombination_onFinset\",\n      \"informal_name\": \"Linear Combination over Finite Set Equals Sum\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {M : Type u_2} (R : Type u_5) [inst : Semiring R] [inst_1 : AddCommMonoid M] [inst_2 : Module R M]\\n  {s : Finset α} {f : α → R} (g : α → M) (hf : ∀ (a : α), f a ≠ 0 → a ∈ s),\\n  (Finsupp.linearCombination R g) (Finsupp.onFinset s f hf) = ∑ x ∈ s, f x • g x\",\n      \"informal_description\": \"For any finite set $s$ of indices, scalar function $f : \\\\alpha \\\\to R$, and vector function $g : \\\\alpha \\\\to M$, if $f$ is non-zero only on $s$, then the linear combination of $g$ using the finite support function derived from $f$ equals the sum over $s$ of $f(x) \\\\cdot g(x)$. Formally, $\\\\text{linearCombination}_R(g)(\\\\text{onFinset}(s,f)) = \\\\sum_{x \\\\in s} f(x) \\\\cdot g(x)$.\",\n      \"path\": \"Mathlib.LinearAlgebra.Finsupp.LinearCombination\"\n    },\n    {\n      \"formal_name\": \"Finsupp.linearCombination_comp_addSingleEquiv\",\n      \"informal_name\": \"Linear Combination Composition with AddSingleEquiv\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_4} {M : Type u_5} {ι : Type u_6} [inst : Ring R] [inst_1 : AddCommGroup M] [inst_2 : Module R M] (i : ι)\\n  (c : ι → R) (h₀ : c i = 0) (v : ι → M),\\n  Finsupp.linearCombination R v ∘ₗ ↑(Finsupp.addSingleEquiv i c h₀) =\\n    Finsupp.linearCombination R (v + fun x => c x • v i)\",\n      \"informal_description\": \"Composing the linear combination map with the addSingleEquiv at index $i$ and scalar $c$ results in the linear combination of the function obtained by adding $c$ times the vector at index $i$ to the original function $v$. Formally, $\\\\text{linearCombination}_R(v + c \\\\cdot v_i) = \\\\text{linearCombination}_R(v) \\\\circ \\\\text{addSingleEquiv}(i, c)$.\",\n      \"path\": \"Mathlib.LinearAlgebra.Finsupp.LinearCombination\"\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "items": [
+        {
+          "formal_name": "Finsupp.linearCombination",
+          "informal_name": "Linear combination of vectors indexed by α over R",
+          "kind": "definition",
+          "type": "{α : Type u_1} →\n  {M : Type u_2} →\n    (R : Type u_5) →\n      [inst : Semiring R] → [inst_1 : AddCommMonoid M] → [inst_2 : Module R M] → (α → M) → (α →₀ R) →ₗ[R] M",
+          "informal_description": "The linear map from the space of finite support functions $ \\alpha \\to_0 R $ to the module $ M $, which sends each finite support function $ d $ to the sum $ \\sum_{i \\in \\text{support } d} d(i) \\cdot v_i $, where $ v_i $ denotes the vector associated with index $ i $. This map is constructed using the linear equivalence of summing scalar multiples of individual vectors embedded via the right scalar multiplication operation.",
+          "path": "Mathlib.LinearAlgebra.Finsupp.LinearCombination"
+        },
+        {
+          "formal_name": "Finsupp.weight",
+          "informal_name": "Weighted sum of vectors indexed by σ over R",
+          "kind": "definition",
+          "type": "{σ : Type u_1} →\n  {M : Type u_2} →\n    {R : Type u_3} → [inst : Semiring R] → (σ → M) → [inst_1 : AddCommMonoid M] → [Module R M] → (σ →₀ R) →+ M",
+          "informal_description": "The additive homomorphism from the space of finite support functions $ \\sigma \\to_0 R $ to the module $ M $, which maps each finite support function $ d $ to the sum $ \\sum_{i \\in \\text{support } d} d(i) \\cdot v_i $, where $ v_i $ denotes the vector associated with index $ i $.",
+          "path": "Mathlib.Data.Finsupp.Weight"
+        },
+        {
+          "formal_name": "Finsupp.weight_apply",
+          "informal_name": "Weighted Sum Evaluation: $ \\text{weight } w f = \\sum_{i \\in \\text{support } f} c_i \\cdot w(i) $",
+          "kind": "theorem",
+          "type": "∀ {σ : Type u_1} {M : Type u_2} {R : Type u_3} [inst : Semiring R] (w : σ → M) [inst_1 : AddCommMonoid M]\n  [inst_2 : Module R M] (f : σ →₀ R), (Finsupp.weight w) f = f.sum fun i c => c • w i",
+          "informal_description": "For any finite support function $ f : \\sigma \\to_0 R $, the weight function applied to $ f $ is equal to the sum over all $ i $ in the support of $ f $ of $ c \\cdot w(i) $, where $ c $ is the coefficient of $ i $ in $ f $ and $ w : \\sigma \\to M $ is a function assigning vectors to indices.",
+          "path": "Mathlib.Data.Finsupp.Weight"
+        },
+        {
+          "formal_name": "FunOnFinite.linearMap_apply_apply",
+          "informal_name": "Linear Map Induced by Function Between Finite Sets Acts by Summing Over Preimages",
+          "kind": "theorem",
+          "type": "∀ (R : Type u_5) (M : Type u_6) [inst : Semiring R] [inst_1 : AddCommMonoid M] [inst_2 : Module R M] {X : Type u_7}\n  {Y : Type u_8} [inst_3 : Fintype X] [inst_4 : Finite Y] [inst_5 : DecidableEq Y] (f : X → Y) (s : X → M) (y : Y),\n  (FunOnFinite.linearMap R M f) s y = {x | f x = y}.sum s",
+          "informal_description": "For finite sets $X$ and $Y$, a function $f : X \\to Y$, and a function $s : X \\to M$ where $M$ is an $R$-module, the evaluation of the linear map induced by $f$ at $s$ and $y \\in Y$ equals the sum of $s(x)$ for all $x \\in X$ satisfying $f(x) = y$. Formally, $(\\mathrm{linearMap}\\, f\\, s)(y) = \\sum_{x \\in f^{-1}(y)} s(x)$.",
+          "path": "Mathlib.LinearAlgebra.Finsupp.Pi"
+        },
+        {
+          "formal_name": "LinearMap.pi_apply_eq_sum_univ",
+          "informal_name": "Linear Map Application as Basis Vector Sum",
+          "kind": "theorem",
+          "type": "∀ {R : Type u} {M₂ : Type w} {ι : Type x} [inst : Semiring R] [inst_1 : AddCommMonoid M₂] [inst_2 : Module R M₂]\n  [inst_3 : DecidableEq ι] [inst_4 : Fintype ι] (f : (ι → R) →ₗ[R] M₂) (x : ι → R),\n  f x = ∑ i, x i • f fun j => if i = j then 1 else 0",
+          "informal_description": "For any finite index set $\\iota$, a linear map $f : (\\iota \\to R) \\to M_2$ between an $R$-module product space and another $R$-module $M_2$, and for any element $x : \\iota \\to R$, the evaluation $f(x)$ equals the finite sum $\\sum_{i \\in \\iota} x_i \\cdot f(e_i)$, where $e_i$ denotes the basis vector in $\\iota \\to R$ with $1$ at index $i$ and $0$ elsewhere.",
+          "path": "Mathlib.LinearAlgebra.Pi"
+        },
+        {
+          "formal_name": "Finsupp.linearCombination_comapDomain",
+          "informal_name": "Linear Combination Compatibility with Domain Comap under Injectivity",
+          "kind": "theorem",
+          "type": "∀ {α : Type u_1} {M : Type u_2} (R : Type u_5) [inst : Semiring R] [inst_1 : AddCommMonoid M] [inst_2 : Module R M]\n  {α' : Type u_7} {v : α → M} (f : α → α') (l : α' →₀ R) (hf : Set.InjOn f (f ⁻¹' ↑l.support)),\n  (Finsupp.linearCombination R v) (Finsupp.comapDomain f l hf) = ∑ i ∈ l.support.preimage f hf, l (f i) • v i",
+          "informal_description": "For an injective function $ f : \\alpha \\to \\alpha' $ on the preimage of the support of a finite support function $ l : \\alpha' \\to_0 R $, the linear combination of the comapped function $ \\text{comapDomain } f \\, l $ equals the sum over $ i \\in f^{-1}(\\text{support } l) $ of $ l(f(i)) \\cdot v_i $. Formally, $ \\text{linearCombination } R \\, v (\\text{comapDomain } f \\, l) = \\sum_{i \\in f^{-1}(\\text{support } l)} l(f(i)) \\cdot v_i $.",
+          "path": "Mathlib.LinearAlgebra.Finsupp.LinearCombination"
+        },
+        {
+          "formal_name": "Finsupp.linearCombination_onFinset",
+          "informal_name": "Linear Combination over Finite Set Equals Sum",
+          "kind": "theorem",
+          "type": "∀ {α : Type u_1} {M : Type u_2} (R : Type u_5) [inst : Semiring R] [inst_1 : AddCommMonoid M] [inst_2 : Module R M]\n  {s : Finset α} {f : α → R} (g : α → M) (hf : ∀ (a : α), f a ≠ 0 → a ∈ s),\n  (Finsupp.linearCombination R g) (Finsupp.onFinset s f hf) = ∑ x ∈ s, f x • g x",
+          "informal_description": "For any finite set $s$ of indices, scalar function $f : \\alpha \\to R$, and vector function $g : \\alpha \\to M$, if $f$ is non-zero only on $s$, then the linear combination of $g$ using the finite support function derived from $f$ equals the sum over $s$ of $f(x) \\cdot g(x)$. Formally, $\\text{linearCombination}_R(g)(\\text{onFinset}(s,f)) = \\sum_{x \\in s} f(x) \\cdot g(x)$.",
+          "path": "Mathlib.LinearAlgebra.Finsupp.LinearCombination"
+        },
+        {
+          "formal_name": "Finsupp.linearCombination_comp_addSingleEquiv",
+          "informal_name": "Linear Combination Composition with AddSingleEquiv",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_4} {M : Type u_5} {ι : Type u_6} [inst : Ring R] [inst_1 : AddCommGroup M] [inst_2 : Module R M] (i : ι)\n  (c : ι → R) (h₀ : c i = 0) (v : ι → M),\n  Finsupp.linearCombination R v ∘ₗ ↑(Finsupp.addSingleEquiv i c h₀) =\n    Finsupp.linearCombination R (v + fun x => c x • v i)",
+          "informal_description": "Composing the linear combination map with the addSingleEquiv at index $i$ and scalar $c$ results in the linear combination of the function obtained by adding $c$ times the vector at index $i$ to the original function $v$. Formally, $\\text{linearCombination}_R(v + c \\cdot v_i) = \\text{linearCombination}_R(v) \\circ \\text{addSingleEquiv}(i, c)$.",
+          "path": "Mathlib.LinearAlgebra.Finsupp.LinearCombination"
+        }
+      ]
+    },
+    "isError": false
+  }
+}

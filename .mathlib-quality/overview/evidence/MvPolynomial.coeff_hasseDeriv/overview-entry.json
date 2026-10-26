@@ -1,0 +1,20 @@
+{
+  "declaration": "MvPolynomial.coeff_hasseDeriv",
+  "type": "For arbitrary variable/coefficient types and CommSemiring R, d,e:\u03c3\u2192\u2080\u2115, P:MvPolynomial \u03c3 R: coeff e (hasseDeriv d P) = (hasseCoeff d (e+d):R) * coeff (e+d) P.",
+  "what": "Computes each coefficient of a multivariate Hasse derivative as one shifted input coefficient multiplied by its natural binomial factor.",
+  "how": "Additive polynomial induction; monomial coefficient evaluation; distinguish reconstructed exponent, dominating order and vanishing binomial cases.",
+  "hypotheses": "Arbitrary variable type and commutative coefficient semiring, finite natural derivative/output multiindices and arbitrary polynomial; no finite-variable, field, characteristic, domain or nontriviality hypotheses.",
+  "project_dependencies": [
+    "MvPolynomial.hasseDeriv",
+    "MvPolynomial.hasseCoeff",
+    "MvPolynomial.hasseDeriv_monomial",
+    "MvPolynomial.hasseCoeff_eq_zero_iff"
+  ],
+  "caller_summary": "Eight explicit caller declarations (seven internal, one in CoeffNorm), eleven invocation tokens. Supplies zero/map/composition/pderiv/degree/vanishing/univariate-compatibility and absolute coefficient bound proofs. No identical inlined duplicate found in reviewed source; no opaque dependency closure claimed.",
+  "mathlib_api_audit": "Univariate Polynomial.hasseDeriv_coeff is the direct analogue, not an arbitrary-variable replacement. LaurentSeries coefficient API, coeff_pderiv, lsum and comapDomain building blocks do not alone prove the truncated-subtraction collision/vanishing identity. All five search methods and isolated exact? guard executed; local symbol index unavailable.",
+  "moral_duplications": "Natural multivariate extension of Polynomial.hasseDeriv_coeff; generic lowering characterization and weighted-pullback implementation are new alternatives rather than existing API duplicates.",
+  "generalization": "Maximal for pinned MvPolynomial CommSemiring domain. A Semiring-only domain is compile-rejected. Generic weighted L helper verified but optional; bundled lcoeff/function forms verified and less convenient at current rewrite callers.",
+  "missing_api": "Arbitrary-variable characteristic-free Hasse derivative coefficient interface, next to MvPolynomial.PDeriv and the multivariate Hasse operator.",
+  "junk": "None: substantial coefficient interface, not glue, unused code or a three-call wrapper.",
+  "action": "YES-add-as-is: include with multivariate Hasse operator in a focused upstream module; inline scalar alias in statement if hasseCoeff is omitted, retain shifted coefficient normal form."
+}

@@ -1,0 +1,160 @@
+[
+  {
+    "path": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/PDeriv.lean",
+    "sha256": "86fad42ffca71f9ffd94f59d1e6486977de3c79d14385e1c462afeaf59c09fc5",
+    "needle": "coeff_pderiv",
+    "snippets": [
+      {
+        "line": 121,
+        "source": "  rw [C_mul', Derivation.map_smul, C_mul']\n\ntheorem coeff_pderiv {i : \u03c3} (p : MvPolynomial \u03c3 R) (m : \u03c3 \u2192\u2080 \u2115) :\n    (pderiv i p).coeff m = p.coeff (m + single i 1) * (m i + 1) := by\n  classical\n  induction p using MvPolynomial.induction_on' with\n  | add p q hp hq => simp [hp, hq, add_mul]\n  | monomial n a =>\n    rw [pderiv_monomial, coeff_monomial, coeff_monomial]\n    by_cases h : n = m + single i 1\n    \u00b7 simp [h]\n    simp only [h, \u2193reduceIte, zero_mul]\n    by_cases hn : n i = 0\n    \u00b7 simp [hn]\n    apply ite_eq_right\n    rwa [tsub_eq_iff_eq_add_of_le (fun _ \u21a6 by grind)]"
+      }
+    ]
+  },
+  {
+    "path": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Taylor.lean",
+    "sha256": "f2e00e9e019758d44ff9dc496a578942fee22a0c2c15cbf8c78d97e9509e56cd",
+    "needle": "taylor_coeff",
+    "snippets": [
+      {
+        "line": 19,
+        "source": "\n* `Polynomial.taylor`: the Taylor expansion of the polynomial `f` at `r`\n* `Polynomial.taylor_coeff`: the `k`th coefficient of `taylor r f` is\n  `(Polynomial.hasseDeriv k f).eval r`\n* `Polynomial.eq_zero_of_hasseDeriv_eq_zero`:\n  the identity principle: a polynomial is 0 iff all its Hasse derivatives are zero\n\n-/\n\n@[expose] public section\n\n\nnoncomputable section\n\nnamespace Polynomial\n"
+      },
+      {
+        "line": 68,
+        "source": "\n/-- The `k`th coefficient of `Polynomial.taylor r f` is `(Polynomial.hasseDeriv k f).eval r`. -/\ntheorem taylor_coeff (n : \u2115) : (taylor r f).coeff n = (hasseDeriv n f).eval r :=\n  show (lcoeff R n).comp (taylor r) f = (leval r).comp (hasseDeriv n) f by\n    congr 1; clear! f; ext i\n    simp only [leval_apply, mul_one, one_mul, eval_monomial, LinearMap.comp_apply, map_sum,\n      hasseDeriv_monomial, taylor_apply, monomial_comp, C_1, (commute_X (C r)).add_pow i]\n    simp only [lcoeff_apply, \u2190 C_eq_natCast, mul_assoc, \u2190 C_pow, \u2190 C_mul, coeff_mul_C,\n      (Nat.cast_commute _ _).eq, coeff_X_pow, boole_mul, Finset.sum_ite_eq, Finset.mem_range]\n    split_ifs with h; \u00b7 rfl\n    push Not at h; rw [Nat.choose_eq_zero_of_lt h, Nat.cast_zero, mul_zero]\n\n@[simp]\ntheorem taylor_coeff_zero : (taylor r f).coeff 0 = f.eval r := by\n  rw [taylor_coeff, hasseDeriv_zero, LinearMap.id_apply]\n"
+      },
+      {
+        "line": 79,
+        "source": "\n@[simp]\ntheorem taylor_coeff_zero : (taylor r f).coeff 0 = f.eval r := by\n  rw [taylor_coeff, hasseDeriv_zero, LinearMap.id_apply]\n\n@[simp]\ntheorem taylor_coeff_one : (taylor r f).coeff 1 = f.derivative.eval r := by\n  rw [taylor_coeff, hasseDeriv_one]\n\n@[simp]\ntheorem coeff_taylor_natDegree : (taylor r f).coeff f.natDegree = f.leadingCoeff := by\n  by_cases hf : f = 0\n  \u00b7 rw [hf, map_zero, coeff_natDegree]\n  \u00b7 rw [taylor_coeff, hasseDeriv_natDegree_eq_C, eval_C]\n\n@[simp]"
+      },
+      {
+        "line": 80,
+        "source": "@[simp]\ntheorem taylor_coeff_zero : (taylor r f).coeff 0 = f.eval r := by\n  rw [taylor_coeff, hasseDeriv_zero, LinearMap.id_apply]\n\n@[simp]\ntheorem taylor_coeff_one : (taylor r f).coeff 1 = f.derivative.eval r := by\n  rw [taylor_coeff, hasseDeriv_one]\n\n@[simp]\ntheorem coeff_taylor_natDegree : (taylor r f).coeff f.natDegree = f.leadingCoeff := by\n  by_cases hf : f = 0\n  \u00b7 rw [hf, map_zero, coeff_natDegree]\n  \u00b7 rw [taylor_coeff, hasseDeriv_natDegree_eq_C, eval_C]\n\n@[simp]\ntheorem natDegree_taylor (p : R[X]) (r : R) : natDegree (taylor r p) = natDegree p := by"
+      },
+      {
+        "line": 83,
+        "source": "\n@[simp]\ntheorem taylor_coeff_one : (taylor r f).coeff 1 = f.derivative.eval r := by\n  rw [taylor_coeff, hasseDeriv_one]\n\n@[simp]\ntheorem coeff_taylor_natDegree : (taylor r f).coeff f.natDegree = f.leadingCoeff := by\n  by_cases hf : f = 0\n  \u00b7 rw [hf, map_zero, coeff_natDegree]\n  \u00b7 rw [taylor_coeff, hasseDeriv_natDegree_eq_C, eval_C]\n\n@[simp]\ntheorem natDegree_taylor (p : R[X]) (r : R) : natDegree (taylor r p) = natDegree p := by\n  refine map_natDegree_eq_natDegree _ ?_\n  nontriviality R\n  intro n c c0"
+      },
+      {
+        "line": 84,
+        "source": "@[simp]\ntheorem taylor_coeff_one : (taylor r f).coeff 1 = f.derivative.eval r := by\n  rw [taylor_coeff, hasseDeriv_one]\n\n@[simp]\ntheorem coeff_taylor_natDegree : (taylor r f).coeff f.natDegree = f.leadingCoeff := by\n  by_cases hf : f = 0\n  \u00b7 rw [hf, map_zero, coeff_natDegree]\n  \u00b7 rw [taylor_coeff, hasseDeriv_natDegree_eq_C, eval_C]\n\n@[simp]\ntheorem natDegree_taylor (p : R[X]) (r : R) : natDegree (taylor r p) = natDegree p := by\n  refine map_natDegree_eq_natDegree _ ?_\n  nontriviality R\n  intro n c c0\n  simp [taylor_monomial, natDegree_C_mul_of_mul_ne_zero, natDegree_pow_X_add_C, c0]"
+      },
+      {
+        "line": 90,
+        "source": "  by_cases hf : f = 0\n  \u00b7 rw [hf, map_zero, coeff_natDegree]\n  \u00b7 rw [taylor_coeff, hasseDeriv_natDegree_eq_C, eval_C]\n\n@[simp]\ntheorem natDegree_taylor (p : R[X]) (r : R) : natDegree (taylor r p) = natDegree p := by\n  refine map_natDegree_eq_natDegree _ ?_\n  nontriviality R\n  intro n c c0\n  simp [taylor_monomial, natDegree_C_mul_of_mul_ne_zero, natDegree_pow_X_add_C, c0]\n\n@[simp]\ntheorem leadingCoeff_taylor : (taylor r f).leadingCoeff = f.leadingCoeff := by\n  rw [leadingCoeff, leadingCoeff, natDegree_taylor, coeff_taylor_natDegree, leadingCoeff]\n\n@[simp]"
+      },
+      {
+        "line": 118,
+        "source": "  rw [\u2190 taylor_eq_zero r]\n  ext k\n  rw [taylor_coeff, h, coeff_zero]\n\n@[simp] lemma map_taylor {R S : Type*} [Semiring R] [Semiring S] (p : R[X]) (r : R) (f : R \u2192+* S) :\n    (p.taylor r).map f = (p.map f).taylor (f r) := by\n  simp [taylor_apply, Polynomial.map_comp]\n\nend Semiring\n\nsection Ring\n\nvariable {R : Type*} [Ring R]\n\ntheorem taylor_injective (r : R) : Function.Injective (taylor r) :=\n  (injective_iff_map_eq_zero' _).2 (taylor_eq_zero r)"
+      }
+    ]
+  },
+  {
+    "path": ".lake/packages/mathlib/Mathlib/RingTheory/LaurentSeries.lean",
+    "sha256": "dc23d8c6ba668df50051223d9099a8f0ce0e7a12385cfeb250bf2cc88f403ad9",
+    "needle": "hasseDeriv_coeff",
+    "snippets": [
+      {
+        "line": 134,
+        "source": "\n@[simp]\ntheorem hasseDeriv_coeff (k : \u2115) (f : LaurentSeries V) (n : \u2124) :\n    (hasseDeriv R k f).coeff n = Ring.choose (n + k) k \u2022 f.coeff (n + k) :=\n  rfl\n\n@[simp]\ntheorem hasseDeriv_zero : hasseDeriv R 0 = LinearMap.id (M := LaurentSeries V) := by\n  ext f n\n  simp\n\ntheorem hasseDeriv_single_add (k : \u2115) (n : \u2124) (x : V) :\n    hasseDeriv R k (single (n + k) x) = single n ((Ring.choose (n + k) k) \u2022 x) := by\n  ext m\n  dsimp only [hasseDeriv_coeff]\n  by_cases h : m = n"
+      },
+      {
+        "line": 146,
+        "source": "    hasseDeriv R k (single (n + k) x) = single n ((Ring.choose (n + k) k) \u2022 x) := by\n  ext m\n  dsimp only [hasseDeriv_coeff]\n  by_cases h : m = n\n  \u00b7 simp [h]\n  \u00b7 simp [h, show m + k \u2260 n + k by lia]\n\n@[simp]\ntheorem hasseDeriv_single (k : \u2115) (n : \u2124) (x : V) :\n    hasseDeriv R k (single n x) = single (n - k) ((Ring.choose n k) \u2022 x) := by\n  rw [\u2190 Int.sub_add_cancel n k, hasseDeriv_single_add, Int.sub_add_cancel n k]\n\ntheorem hasseDeriv_comp_coeff (k l : \u2115) (f : LaurentSeries V) (n : \u2124) :\n    (hasseDeriv R k (hasseDeriv R l f)).coeff n =\n      ((Nat.choose (k + l) k) \u2022 hasseDeriv R (k + l) f).coeff n := by\n  rw [coeff_nsmul]"
+      },
+      {
+        "line": 160,
+        "source": "      ((Nat.choose (k + l) k) \u2022 hasseDeriv R (k + l) f).coeff n := by\n  rw [coeff_nsmul]\n  simp only [hasseDeriv_coeff, Pi.smul_apply, Nat.cast_add]\n  rw [smul_smul, mul_comm, \u2190 Ring.choose_add_smul_choose (n + k), add_assoc, Nat.choose_symm_add,\n    smul_assoc]\n\n@[simp]\ntheorem hasseDeriv_comp (k l : \u2115) (f : LaurentSeries V) :\n    hasseDeriv R k (hasseDeriv R l f) = (k + l).choose k \u2022 hasseDeriv R (k + l) f := by\n  ext n\n  simp [hasseDeriv_comp_coeff k l f n]\n\n@[simp]\ntheorem hasseDeriv_map {W : Type*} [AddCommGroup W] [Module R W]\n    (g : V \u2192\u2097[R] W) (k : \u2115) (f : LaurentSeries V) :\n    hasseDeriv R k (f.map g) = (hasseDeriv R k f).map g := by"
+      },
+      {
+        "line": 212,
+        "source": "theorem derivative_iterate_coeff (k : \u2115) (f : LaurentSeries V) (n : \u2124) :\n    ((derivative R)^[k] f).coeff n = (descPochhammer \u2124 k).smeval (n + k) \u2022 f.coeff (n + k) := by\n  rw [derivative_iterate, coeff_nsmul, Pi.smul_apply, hasseDeriv_coeff,\n    Ring.descPochhammer_eq_factorial_smul_choose, smul_assoc]\n\nend HasseDeriv\n\nsection Semiring\n\nvariable [Semiring R]\n\ninstance : Coe R\u27e6X\u27e7 R\u2e28X\u2e29 :=\n  \u27e8HahnSeries.ofPowerSeries \u2124 R\u27e9\n\n@[simp]\ntheorem coeff_coe_powerSeries (x : R\u27e6X\u27e7) (n : \u2115) :"
+      }
+    ]
+  },
+  {
+    "path": ".lake/packages/mathlib/Mathlib/LinearAlgebra/Finsupp/Defs.lean",
+    "sha256": "443e643dfcf77a3c2eae25f7fd94fca37fc7f71424abc9a958c16eb186e99504",
+    "needle": "lcomapDomain",
+    "snippets": [
+      {
+        "line": 194,
+        "source": "variable {\u03b2 : Type*}\n\n/-- Given `f : \u03b1 \u2192 \u03b2` and a proof `hf` that `f` is injective, `lcomapDomain f hf` is the linear map\nsending `l : \u03b2 \u2192\u2080 M` to the finitely supported function from `\u03b1` to `M` given by composing\n`l` with `f`.\n\nThis is the linear version of `Finsupp.comapDomain`. -/\n@[simps]\ndef lcomapDomain (f : \u03b1 \u2192 \u03b2) (hf : Function.Injective f) : (\u03b2 \u2192\u2080 M) \u2192\u2097[R] \u03b1 \u2192\u2080 M where\n  toFun l := Finsupp.comapDomain f l hf.injOn\n  map_add' x y := by ext; simp\n  map_smul' c x := by ext; simp\n\ntheorem leftInverse_lcomapDomain_mapDomain (f : \u03b1 \u2192 \u03b2) (hf : Function.Injective f) :\n    Function.LeftInverse (lcomapDomain (R := R) (M := M) f hf) (mapDomain f) :=\n  comapDomain_mapDomain f hf"
+      },
+      {
+        "line": 200,
+        "source": "This is the linear version of `Finsupp.comapDomain`. -/\n@[simps]\ndef lcomapDomain (f : \u03b1 \u2192 \u03b2) (hf : Function.Injective f) : (\u03b2 \u2192\u2080 M) \u2192\u2097[R] \u03b1 \u2192\u2080 M where\n  toFun l := Finsupp.comapDomain f l hf.injOn\n  map_add' x y := by ext; simp\n  map_smul' c x := by ext; simp\n\ntheorem leftInverse_lcomapDomain_mapDomain (f : \u03b1 \u2192 \u03b2) (hf : Function.Injective f) :\n    Function.LeftInverse (lcomapDomain (R := R) (M := M) f hf) (mapDomain f) :=\n  comapDomain_mapDomain f hf\n\nend LComapDomain\n\n/-- `Finsupp.mapRange` as a `LinearMap`. -/\n@[simps apply]\ndef mapRange.linearMap (f : M \u2192\u209b\u2097[\u03c3\u2081\u2082] N) : (\u03b1 \u2192\u2080 M) \u2192\u209b\u2097[\u03c3\u2081\u2082] \u03b1 \u2192\u2080 N :="
+      },
+      {
+        "line": 205,
+        "source": "  map_smul' c x := by ext; simp\n\ntheorem leftInverse_lcomapDomain_mapDomain (f : \u03b1 \u2192 \u03b2) (hf : Function.Injective f) :\n    Function.LeftInverse (lcomapDomain (R := R) (M := M) f hf) (mapDomain f) :=\n  comapDomain_mapDomain f hf\n\nend LComapDomain\n\n/-- `Finsupp.mapRange` as a `LinearMap`. -/\n@[simps apply]\ndef mapRange.linearMap (f : M \u2192\u209b\u2097[\u03c3\u2081\u2082] N) : (\u03b1 \u2192\u2080 M) \u2192\u209b\u2097[\u03c3\u2081\u2082] \u03b1 \u2192\u2080 N :=\n  { mapRange.addMonoidHom f.toAddMonoidHom with\n    toFun := (mapRange f f.map_zero : (\u03b1 \u2192\u2080 M) \u2192 \u03b1 \u2192\u2080 N)\n    map_smul' := fun c v => mapRange_smul' c (\u03c3\u2081\u2082 c) v (f.map_smul\u209b\u2097 c) }\n\n@[simp]"
+      },
+      {
+        "line": 206,
+        "source": "\ntheorem leftInverse_lcomapDomain_mapDomain (f : \u03b1 \u2192 \u03b2) (hf : Function.Injective f) :\n    Function.LeftInverse (lcomapDomain (R := R) (M := M) f hf) (mapDomain f) :=\n  comapDomain_mapDomain f hf\n\nend LComapDomain\n\n/-- `Finsupp.mapRange` as a `LinearMap`. -/\n@[simps apply]\ndef mapRange.linearMap (f : M \u2192\u209b\u2097[\u03c3\u2081\u2082] N) : (\u03b1 \u2192\u2080 M) \u2192\u209b\u2097[\u03c3\u2081\u2082] \u03b1 \u2192\u2080 N :=\n  { mapRange.addMonoidHom f.toAddMonoidHom with\n    toFun := (mapRange f f.map_zero : (\u03b1 \u2192\u2080 M) \u2192 \u03b1 \u2192\u2080 N)\n    map_smul' := fun c v => mapRange_smul' c (\u03c3\u2081\u2082 c) v (f.map_smul\u209b\u2097 c) }\n\n@[simp]\ntheorem mapRange.linearMap_id :"
+      }
+    ]
+  },
+  {
+    "path": ".lake/packages/mathlib/Mathlib/RingTheory/MvPolynomial/WeightedHomogeneous.lean",
+    "sha256": "2e6a01a2f03ae1d91348a8af28ee7df250f91cacd37f9089e616d875edd198fb",
+    "needle": "coeff_weightedHomogeneousComponent",
+    "snippets": [
+      {
+        "line": 390,
+        "source": "variable {w : \u03c3 \u2192 M} (n : M) (\u03c6 : MvPolynomial \u03c3 R)\n\ntheorem coeff_weightedHomogeneousComponent [DecidableEq M] (d : \u03c3 \u2192\u2080 \u2115) :\n    (weightedHomogeneousComponent w n \u03c6).coeff d =\n      if weight w d = n then \u03c6.coeff d else 0 := by\n  simp [weightedHomogeneousComponent, MvPolynomial, Finsupp.filter_apply]\n\ntheorem weightedHomogeneousComponent_apply [DecidableEq M] :\n    weightedHomogeneousComponent w n \u03c6 =\n      \u2211 d \u2208 \u03c6.support with weight w d = n, monomial d (\u03c6.coeff d) := by\n  simp [weightedHomogeneousComponent, MvPolynomial, Finsupp.filter_eq_sum, support, monomial]\n  congr\n\n/-- The `n` weighted homogeneous component of a polynomial is weighted homogeneous of\nweighted degree `n`. -/\ntheorem weightedHomogeneousComponent_isWeightedHomogeneous :"
+      },
+      {
+        "line": 408,
+        "source": "  intro d hd\n  contrapose! hd\n  rw [coeff_weightedHomogeneousComponent, ite_eq_right hd]\n\ntheorem weightedHomogeneousComponent_mem (w : \u03c3 \u2192 M) (\u03c6 : MvPolynomial \u03c3 R) (m : M) :\n    weightedHomogeneousComponent w m \u03c6 \u2208 weightedHomogeneousSubmodule R w m := by\n  rw [mem_weightedHomogeneousSubmodule]\n  exact weightedHomogeneousComponent_isWeightedHomogeneous m \u03c6\n\n@[simp]\ntheorem weightedHomogeneousComponent_C_mul (n : M) (r : R) :\n    weightedHomogeneousComponent w n (C r * \u03c6) = C r * weightedHomogeneousComponent w n \u03c6 := by\n  simp only [C_mul', map_smul]\n\ntheorem weightedHomogeneousComponent_eq_zero'\n    (h : \u2200 d : \u03c3 \u2192\u2080 \u2115, d \u2208 \u03c6.support \u2192 weight w d \u2260 n) :"
+      },
+      {
+        "line": 456,
+        "source": "  rw [finsum_eq_sum _ (weightedHomogeneousComponent_finsupp \u03c6)]\n  ext1 d\n  simp only [coeff_sum, coeff_weightedHomogeneousComponent]\n  rw [Finset.sum_eq_single (weight w d)]\n  \u00b7 rw [ite_eq_left rfl]\n  \u00b7 intro m _ hm'\n    rw [ite_eq_right hm'.symm]\n  \u00b7 intro hm\n    rw [ite_eq_left rfl]\n    simp only [Finite.mem_toFinset, mem_support, Ne, Classical.not_not] at hm\n    have := coeff_weightedHomogeneousComponent (w := w) (weight w d) \u03c6 d\n    rw [hm, ite_eq_left rfl, coeff_zero] at this\n    exact this.symm\n\ntheorem finsum_weightedHomogeneousComponent :\n    (finsum fun m => weightedHomogeneousComponent w m \u03c6) = \u03c6 := by"
+      },
+      {
+        "line": 464,
+        "source": "    rw [ite_eq_left rfl]\n    simp only [Finite.mem_toFinset, mem_support, Ne, Classical.not_not] at hm\n    have := coeff_weightedHomogeneousComponent (w := w) (weight w d) \u03c6 d\n    rw [hm, ite_eq_left rfl, coeff_zero] at this\n    exact this.symm\n\ntheorem finsum_weightedHomogeneousComponent :\n    (finsum fun m => weightedHomogeneousComponent w m \u03c6) = \u03c6 := by\n  rw [sum_weightedHomogeneousComponent]\n\nvariable {w}\n\ntheorem IsWeightedHomogeneous.weightedHomogeneousComponent_same {m : M} {p : MvPolynomial \u03c3 R}\n    (hp : IsWeightedHomogeneous w p m) :\n    weightedHomogeneousComponent w m p = p := by\n  classical"
+      },
+      {
+        "line": 479,
+        "source": "  classical\n  ext x\n  rw [coeff_weightedHomogeneousComponent]\n  by_cases zero_coeff : p.coeff x = 0\n  \u00b7 split_ifs\n    \u00b7 rfl\n    rw [zero_coeff]\n  \u00b7 rw [hp zero_coeff, ite_eq_left rfl]\n\ntheorem IsWeightedHomogeneous.weightedHomogeneousComponent_ne {m : M} (n : M)\n    {p : MvPolynomial \u03c3 R} (hp : IsWeightedHomogeneous w p m) :\n    n \u2260 m \u2192 weightedHomogeneousComponent w n p = 0 := by\n  classical\n  intro hn\n  ext x\n  rw [coeff_weightedHomogeneousComponent]"
+      },
+      {
+        "line": 492,
+        "source": "  intro hn\n  ext x\n  rw [coeff_weightedHomogeneousComponent]\n  by_cases zero_coeff : p.coeff x = 0\n  \u00b7 simp [zero_coeff]\n  \u00b7 rw [ite_eq_right]\n    \u00b7 simp\n    \u00b7 rw [hp zero_coeff]; exact Ne.symm hn\n\n/-- The weighted homogeneous components of a weighted homogeneous polynomial. -/\ntheorem weightedHomogeneousComponent_of_mem [DecidableEq M] {m n : M}\n    {p : MvPolynomial \u03c3 R} (h : p \u2208 weightedHomogeneousSubmodule R w n) :\n    weightedHomogeneousComponent w m p = if m = n then p else 0 := by\n  simp only [mem_weightedHomogeneousSubmodule] at h\n  ext x\n  rw [coeff_weightedHomogeneousComponent]"
+      },
+      {
+        "line": 505,
+        "source": "  simp only [mem_weightedHomogeneousSubmodule] at h\n  ext x\n  rw [coeff_weightedHomogeneousComponent]\n  by_cases zero_coeff : p.coeff x = 0\n  \u00b7 split_ifs <;>\n    simp [zero_coeff]\n  \u00b7 rw [h zero_coeff]\n    simp only [show n = m \u2194 m = n from eq_comm]\n    split_ifs with h1\n    \u00b7 rfl\n    \u00b7 simp\n\nlemma weightedHomogeneousComponent_eq_self {n : M} {p : MvPolynomial \u03c3 R}\n    (hp : p.IsWeightedHomogeneous w n) : weightedHomogeneousComponent w n p = p := by\n  classical simp [weightedHomogeneousComponent_of_mem hp]\n"
+      },
+      {
+        "line": 522,
+        "source": "    (weightedHomogeneousComponent w n p).support = {c \u2208 p.support | (weight w) c = n} := by\n  ext c\n  simp [coeff_weightedHomogeneousComponent, And.comm]\n\nvariable (R w)\n\nopen DirectSum\n\ntheorem DirectSum.coeLinearMap_eq_dfinsuppSum [DecidableEq \u03c3] [DecidableEq R] [DecidableEq M]\n    (x : DirectSum M fun i : M => \u21a5(weightedHomogeneousSubmodule R w i)) :\n    (coeLinearMap fun i : M => weightedHomogeneousSubmodule R w i) x =\n      DFinsupp.sum x (fun _ x => \u2191x) := by\n  rw [_root_.DirectSum.coeLinearMap_eq_dfinsuppSum]\n\ntheorem DirectSum.coeAddMonoidHom_eq_support_sum [DecidableEq \u03c3] [DecidableEq R] [DecidableEq M]\n    (x : DirectSum M fun i : M => \u21a5(weightedHomogeneousSubmodule R w i)) :"
+      },
+      {
+        "line": 579,
+        "source": "  ext1 d\n  rcases Classical.em (d = 0) with (rfl | hd)\n  \u00b7 simp only [coeff_weightedHomogeneousComponent, ite_eq_left, map_zero, coeff_zero_C]\n  \u00b7 rw [coeff_weightedHomogeneousComponent, ite_eq_right, coeff_C, ite_eq_right (Ne.symm hd)]\n    simp only [weight, LinearMap.toAddMonoidHom_coe, Finsupp.linearCombination_apply, Finsupp.sum,\n      sum_eq_zero_iff, Finsupp.mem_support_iff, Ne, smul_eq_zero, not_forall, not_or,\n      and_self_left, exists_prop]\n    simp only [DFunLike.ext_iff, Finsupp.coe_zero, Pi.zero_apply, not_forall] at hd\n    obtain \u27e8i, hi\u27e9 := hd\n    exact \u27e8i, hi, hw i\u27e9\n\n/-- A weight function is nontorsion if its values are not torsion. -/\ndef NonTorsionWeight (w : \u03c3 \u2192 M) :=\n  \u2200 n x, n \u2022 w x = (0 : M) \u2192 n = 0\n\nomit [PartialOrder M] in"
+      },
+      {
+        "line": 580,
+        "source": "  rcases Classical.em (d = 0) with (rfl | hd)\n  \u00b7 simp only [coeff_weightedHomogeneousComponent, ite_eq_left, map_zero, coeff_zero_C]\n  \u00b7 rw [coeff_weightedHomogeneousComponent, ite_eq_right, coeff_C, ite_eq_right (Ne.symm hd)]\n    simp only [weight, LinearMap.toAddMonoidHom_coe, Finsupp.linearCombination_apply, Finsupp.sum,\n      sum_eq_zero_iff, Finsupp.mem_support_iff, Ne, smul_eq_zero, not_forall, not_or,\n      and_self_left, exists_prop]\n    simp only [DFunLike.ext_iff, Finsupp.coe_zero, Pi.zero_apply, not_forall] at hd\n    obtain \u27e8i, hi\u27e9 := hd\n    exact \u27e8i, hi, hw i\u27e9\n\n/-- A weight function is nontorsion if its values are not torsion. -/\ndef NonTorsionWeight (w : \u03c3 \u2192 M) :=\n  \u2200 n x, n \u2022 w x = (0 : M) \u2192 n = 0\n\nomit [PartialOrder M] in\ntheorem nonTorsionWeight_of [IsAddTorsionFree M] (hw : \u2200 i : \u03c3, w i \u2260 0) :"
+      }
+    ]
+  },
+  {
+    "path": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Rename.lean",
+    "sha256": "8b13bd16753f7de4cbd5fa7dd6b9ef0ade42ff563fca27e798885e31628477b8",
+    "needle": "coeff_rename_mapDomain",
+    "snippets": [
+      {
+        "line": 334,
+        "source": "\n@[simp]\ntheorem coeff_rename_mapDomain (f : \u03c3 \u2192 \u03c4) (hf : Injective f) (\u03c6 : MvPolynomial \u03c3 R) (d : \u03c3 \u2192\u2080 \u2115) :\n    (rename f \u03c6).coeff (d.mapDomain f) = \u03c6.coeff d := by\n  classical\n  induction \u03c6 using MvPolynomial.induction_on' with\n  | monomial u r =>\n    rw [rename_monomial, coeff_monomial, coeff_monomial]\n    simp only [(Finsupp.mapDomain_injective hf).eq_iff]\n  | add =>\n    simp only [*, map_add, coeff_add, Finsupp.add_apply]\n\n@[simp]\ntheorem coeff_rename_embDomain (f : \u03c3 \u21aa \u03c4) (\u03c6 : MvPolynomial \u03c3 R) (d : \u03c3 \u2192\u2080 \u2115) :\n    (rename f \u03c6).coeff (d.embDomain f) = \u03c6.coeff d := by\n  rw [Finsupp.embDomain_eq_mapDomain f, coeff_rename_mapDomain f f.injective]"
+      },
+      {
+        "line": 347,
+        "source": "theorem coeff_rename_embDomain (f : \u03c3 \u21aa \u03c4) (\u03c6 : MvPolynomial \u03c3 R) (d : \u03c3 \u2192\u2080 \u2115) :\n    (rename f \u03c6).coeff (d.embDomain f) = \u03c6.coeff d := by\n  rw [Finsupp.embDomain_eq_mapDomain f, coeff_rename_mapDomain f f.injective]\n\ntheorem coeff_rename_eq_zero (f : \u03c3 \u2192 \u03c4) (\u03c6 : MvPolynomial \u03c3 R) (d : \u03c4 \u2192\u2080 \u2115)\n    (h : \u2200 u : \u03c3 \u2192\u2080 \u2115, u.mapDomain f = d \u2192 \u03c6.coeff u = 0) : (rename f \u03c6).coeff d = 0 := by\n  classical\n  rw [\u2190 notMem_support_iff]\n  intro H\n  replace H := mapDomain_support H\n  rw [Finset.mem_image] at H\n  obtain \u27e8u, hu, rfl\u27e9 := H\n  specialize h u rfl\n  rw [Finsupp.mem_support_iff] at hu\n  contradiction\n"
+      }
+    ]
+  }
+]
