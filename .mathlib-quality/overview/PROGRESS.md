@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-26
 
-- Declarations completed: **54/293**
-- Next declaration: **#55 `MvPolynomial.taylor_X`** (Roth/Taylor.lean:51)
+- Declarations completed: **55/293**
+- Next declaration: **#56 `MvPolynomial.taylor_C`** (Roth/Taylor.lean:55)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -73,10 +73,10 @@ Last regenerated: 2026-10-26
 | 52 | `Roth.wronskian_eq_zero_iff` | Roth/Wronskian.lean:219 | YES-but-generalise-first | [report](mathlibable/Roth.wronskian_eq_zero_iff.md) |
 | 53 | `MvPolynomial.taylor` | Roth/Taylor.lean:42 | YES-add-as-is | [report](mathlibable/MvPolynomial.taylor.md) |
 | 54 | `MvPolynomial.taylor_apply` | Roth/Taylor.lean:46 | INHERITED-YES-add-as-is | [report](mathlibable/MvPolynomial.taylor_apply.md) |
+| 55 | `MvPolynomial.taylor_X` | Roth/Taylor.lean:51 | INHERITED-YES-add-as-is | [report](mathlibable/MvPolynomial.taylor_X.md) |
 
 ## Remaining declarations (in processing order)
 
-- #55 `MvPolynomial.taylor_X` (Roth/Taylor.lean:51, public theorem)
 - #56 `MvPolynomial.taylor_C` (Roth/Taylor.lean:55, public theorem)
 - #57 `MvPolynomial.taylor_monomial` (Roth/Taylor.lean:59, public theorem)
 - #58 `MvPolynomial.coeff_aeval_X_mul` (Roth/Taylor.lean:63, private lemma)
