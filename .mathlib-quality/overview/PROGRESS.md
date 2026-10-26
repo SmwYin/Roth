@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-26
 
-- Declarations completed: **26/293**
-- Next declaration: **#27 `Roth.mem_box`** (Roth/Box.lean:51)
+- Declarations completed: **27/293**
+- Next declaration: **#28 `Roth.card_box`** (Roth/Box.lean:57)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -45,10 +45,10 @@ Last regenerated: 2026-10-26
 | 24 | `MvPolynomial.hasseCoeff_le_two_pow` | Roth/HasseDeriv.lean:276 | YES-but-generalise-first | [report](mathlibable/MvPolynomial.hasseCoeff_le_two_pow.md) |
 | 25 | `MvPolynomial.factorial_smul_hasseDeriv_single` | Roth/HasseDeriv.lean:286 | YES-but-generalise-first | [report](mathlibable/MvPolynomial.factorial_smul_hasseDeriv_single.md) |
 | 26 | `Roth.box` | Roth/Box.lean:47 | NO-mathlib-has-it | [report](mathlibable/Roth.box.md) |
+| 27 | `Roth.mem_box` | Roth/Box.lean:51 | NO-mathlib-has-it | [report](mathlibable/Roth.mem_box.md) |
 
 ## Remaining declarations (in processing order)
 
-- #27 `Roth.mem_box` (Roth/Box.lean:51, public theorem)
 - #28 `Roth.card_box` (Roth/Box.lean:57, public theorem)
 - #29 `Roth.card_le_card_box` (Roth/Box.lean:65, public theorem)
 - #30 `Roth.weight` (Roth/Box.lean:71, public def)
