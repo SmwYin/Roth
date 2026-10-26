@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-26
 
-- Declarations completed: **72/293**
-- Next declaration: **#73 `MvPolynomial.eq_sum_box_hasseDeriv`** (Roth/Taylor.lean:197)
+- Declarations completed: **73/293**
+- Next declaration: **#74 `MvPolynomial.eval_eq_sum_box`** (Roth/Taylor.lean:217)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -91,10 +91,10 @@ Last regenerated: 2026-10-26
 | 70 | `MvPolynomial.taylor_neg_taylor` | Roth/Taylor.lean:182 | YES-but-generalise-first | [report](mathlibable/MvPolynomial.taylor_neg_taylor.md) |
 | 71 | `MvPolynomial.taylor_injective` | Roth/Taylor.lean:187 | YES-add-as-is | [report](mathlibable/MvPolynomial.taylor_injective.md) |
 | 72 | `MvPolynomial.taylor_eq_zero_iff` | Roth/Taylor.lean:192 | YES-but-generalise-first | [report](mathlibable/MvPolynomial.taylor_eq_zero_iff.md) |
+| 73 | `MvPolynomial.eq_sum_box_hasseDeriv` | Roth/Taylor.lean:197 | YES-but-generalise-first | [report](mathlibable/MvPolynomial.eq_sum_box_hasseDeriv.md) |
 
 ## Remaining declarations (in processing order)
 
-- #73 `MvPolynomial.eq_sum_box_hasseDeriv` (Roth/Taylor.lean:197, public theorem)
 - #74 `MvPolynomial.eval_eq_sum_box` (Roth/Taylor.lean:217, public theorem)
 - #75 `Roth.normOne` (Roth/CoeffNorm.lean:47, public def)
 - #76 `Roth.normOne_nonneg` (Roth/CoeffNorm.lean:50, public theorem)
