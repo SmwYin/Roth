@@ -19,6 +19,13 @@ are available (load them with ToolSearch, e.g. `select:mcp__lean-lsp__lean_hover
   `lake env lean <file>` or checked with `lean_run_code`. Keep every experiment file you
   rely on (they are tracked as evidence) and record its outcome in the report. Do not
   leave files that fail to compile unless the report states the failure is the evidence.
+- Lean start-up is expensive on this 8 GB machine (a cold `lake env lean` of a one-line
+  file takes 70–110 s). Keep Lean runs few: put ALL experiments for your declaration in
+  ONE evidence file where possible, import only the module you need (e.g.
+  `import Roth.HasseDeriv`, not `import Roth`), prefer the persistent lean-lsp tools
+  (`lean_hover_info`, `lean_local_search`, `lean_diagnostic_messages` on your evidence
+  file, re-checked in place after edits) over repeated `lake env lean` invocations, and
+  never run two Lean processes at once.
 - Do not mark anything complete that you did not do. If a channel/tool is unavailable,
   record `n/a` with the concrete reason (e.g. `ask_chatgpt_math` MCP not configured in
   this session).
