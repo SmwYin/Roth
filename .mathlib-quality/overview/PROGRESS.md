@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-26
 
-- Declarations completed: **80/293**
-- Next declaration: **#81 `Roth.normOne_add_le`** (Roth/CoeffNorm.lean:77)
+- Declarations completed: **81/293**
+- Next declaration: **#82 `Roth.normOne_neg`** (Roth/CoeffNorm.lean:86)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -99,10 +99,10 @@ Last regenerated: 2026-10-26
 | 78 | `Roth.normOne_monomial` | Roth/CoeffNorm.lean:59 | YES-but-generalise-first | [report](mathlibable/Roth.normOne_monomial.md) |
 | 79 | `Roth.normOne_zero` | Roth/CoeffNorm.lean:66 | YES-but-generalise-first | [report](mathlibable/Roth.normOne_zero.md) |
 | 80 | `Roth.abs_coeff_le_normOne` | Roth/CoeffNorm.lean:71 | YES-but-generalise-first | [report](mathlibable/Roth.abs_coeff_le_normOne.md) |
+| 81 | `Roth.normOne_add_le` | Roth/CoeffNorm.lean:77 | YES-but-generalise-first | [report](mathlibable/Roth.normOne_add_le.md) |
 
 ## Remaining declarations (in processing order)
 
-- #81 `Roth.normOne_add_le` (Roth/CoeffNorm.lean:77, public theorem)
 - #82 `Roth.normOne_neg` (Roth/CoeffNorm.lean:86, public theorem)
 - #83 `Roth.normOne_sum_le` (Roth/CoeffNorm.lean:90, public theorem)
 - #84 `Roth.normOne_mul_le` (Roth/CoeffNorm.lean:96, public theorem)
