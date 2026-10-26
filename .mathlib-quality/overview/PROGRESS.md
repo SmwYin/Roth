@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-26
 
-- Declarations completed: **51/293**
-- Next declaration: **#52 `Roth.wronskian_eq_zero_iff`** (Roth/Wronskian.lean:219)
+- Declarations completed: **52/293**
+- Next declaration: **#53 `MvPolynomial.taylor`** (Roth/Taylor.lean:42)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -70,10 +70,10 @@ Last regenerated: 2026-10-26
 | 49 | `Roth.linearIndependent_update_sub_smul` | Roth/Wronskian.lean:170 | YES-but-generalise-first | [report](mathlibable/Roth.linearIndependent_update_sub_smul.md) |
 | 50 | `Roth.sum_natDegree_update_lt` | Roth/Wronskian.lean:182 | NO-composable-from-mathlib | [report](mathlibable/Roth.sum_natDegree_update_lt.md) |
 | 51 | `Roth.wronskian_ne_zero_of_linearIndependent` | Roth/Wronskian.lean:205 | YES-but-generalise-first | [report](mathlibable/Roth.wronskian_ne_zero_of_linearIndependent.md) |
+| 52 | `Roth.wronskian_eq_zero_iff` | Roth/Wronskian.lean:219 | YES-but-generalise-first | [report](mathlibable/Roth.wronskian_eq_zero_iff.md) |
 
 ## Remaining declarations (in processing order)
 
-- #52 `Roth.wronskian_eq_zero_iff` (Roth/Wronskian.lean:219, public theorem)
 - #53 `MvPolynomial.taylor` (Roth/Taylor.lean:42, public def)
 - #54 `MvPolynomial.taylor_apply` (Roth/Taylor.lean:46, public theorem)
 - #55 `MvPolynomial.taylor_X` (Roth/Taylor.lean:51, public theorem)
