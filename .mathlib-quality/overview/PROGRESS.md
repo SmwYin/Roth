@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-26
 
-- Declarations completed: **66/293**
-- Next declaration: **#67 `MvPolynomial.taylor_map`** (Roth/Taylor.lean:157)
+- Declarations completed: **67/293**
+- Next declaration: **#68 `MvPolynomial.taylor_rename`** (Roth/Taylor.lean:164)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -85,10 +85,10 @@ Last regenerated: 2026-10-26
 | 64 | `MvPolynomial.eval_taylor` | Roth/Taylor.lean:141 | YES-but-generalise-first | [report](mathlibable/MvPolynomial.eval_taylor.md) |
 | 65 | `MvPolynomial.taylor_taylor` | Roth/Taylor.lean:146 | YES-add-as-is | [report](mathlibable/MvPolynomial.taylor_taylor.md) |
 | 66 | `MvPolynomial.taylor_zero` | Roth/Taylor.lean:152 | INHERITED-YES-add-as-is | [report](mathlibable/MvPolynomial.taylor_zero.md) |
+| 67 | `MvPolynomial.taylor_map` | Roth/Taylor.lean:157 | YES-add-as-is | [report](mathlibable/MvPolynomial.taylor_map.md) |
 
 ## Remaining declarations (in processing order)
 
-- #67 `MvPolynomial.taylor_map` (Roth/Taylor.lean:157, public theorem)
 - #68 `MvPolynomial.taylor_rename` (Roth/Taylor.lean:164, public theorem)
 - #69 `MvPolynomial.degreeOf_taylor_le` (Roth/Taylor.lean:170, public theorem)
 - #70 `MvPolynomial.taylor_neg_taylor` (Roth/Taylor.lean:182, public theorem)
