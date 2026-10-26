@@ -1,0 +1,64 @@
+{
+  "accepted": [
+    {
+      "kind": "target",
+      "receipt": "target-lsp.json",
+      "source": "target-executed.lean",
+      "source_sha256": "07be749c9ad7fa9b0b079863176e4079ce6fab8b4716136bb6d9d845c9415159",
+      "observed": {
+        "success": true,
+        "partial": false,
+        "timed_out": false,
+        "errors": 0,
+        "warnings": 2,
+        "failed_dependencies": 0
+      }
+    },
+    {
+      "kind": "mathlib",
+      "receipt": "mathlib-lsp.json",
+      "source": "probes.lean",
+      "source_sha256": "30c1d54cfcf81db38428e2109c952de1a696b0958779a90bfe8b95f1a64ddb93",
+      "observed": {
+        "success": true,
+        "partial": false,
+        "timed_out": false,
+        "errors": 0,
+        "warnings": 0,
+        "failed_dependencies": 0
+      }
+    },
+    {
+      "kind": "caller",
+      "receipt": "caller-lsp.json",
+      "source": "caller-executed.lean",
+      "source_sha256": "802a7eac44c68ee63be026cf0ee5caf35b93d84f719e346dc8b2bd438644b57c",
+      "observed": {
+        "success": true,
+        "partial": false,
+        "timed_out": false,
+        "errors": 0,
+        "warnings": 2,
+        "failed_dependencies": 0
+      }
+    }
+  ],
+  "rejected": [
+    {
+      "receipt": "rejected-initial.json",
+      "source": "rejected-initial.lean",
+      "reason": "Minimal imports lacked Mathlib.Data.Nat.Choose.Bounds for whole caller; Unknown constant Nat.choose_le_two_pow, recovered caller contains sorryAx. Rejected entire run; no accepted witness relies on recovery.",
+      "resolution": "Final mathlib-only source adds existing production Choose.Bounds import; all five witnesses succeed with standard axioms."
+    }
+  ],
+  "axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "notes": [
+    "Persistent target disk includes earlier unrelated diagnostics and two historical style warnings. Current block resolves correct target and has no error.",
+    "Mathlib-only source has no Roth import; check_failure controls confirm project symbols unavailable, not mathematical absence.",
+    "No negative automation claim is used in verdict; positive existing composition establishes result."
+  ]
+}
