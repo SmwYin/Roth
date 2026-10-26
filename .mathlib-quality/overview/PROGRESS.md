@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-26
 
-- Declarations completed: **49/293**
-- Next declaration: **#50 `Roth.sum_natDegree_update_lt`** (Roth/Wronskian.lean:182)
+- Declarations completed: **50/293**
+- Next declaration: **#51 `Roth.wronskian_ne_zero_of_linearIndependent`** (Roth/Wronskian.lean:205)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -68,10 +68,10 @@ Last regenerated: 2026-10-26
 | 47 | `Roth.wronskian_ne_zero_of_natDegree_injective` | Roth/Wronskian.lean:148 | YES-but-generalise-first | [report](mathlibable/Roth.wronskian_ne_zero_of_natDegree_injective.md) |
 | 48 | `Roth.wronskian_update_sub_smul` | Roth/Wronskian.lean:158 | YES-but-generalise-first | [report](mathlibable/Roth.wronskian_update_sub_smul.md) |
 | 49 | `Roth.linearIndependent_update_sub_smul` | Roth/Wronskian.lean:170 | YES-but-generalise-first | [report](mathlibable/Roth.linearIndependent_update_sub_smul.md) |
+| 50 | `Roth.sum_natDegree_update_lt` | Roth/Wronskian.lean:182 | NO-composable-from-mathlib | [report](mathlibable/Roth.sum_natDegree_update_lt.md) |
 
 ## Remaining declarations (in processing order)
 
-- #50 `Roth.sum_natDegree_update_lt` (Roth/Wronskian.lean:182, public theorem)
 - #51 `Roth.wronskian_ne_zero_of_linearIndependent` (Roth/Wronskian.lean:205, public theorem)
 - #52 `Roth.wronskian_eq_zero_iff` (Roth/Wronskian.lean:219, public theorem)
 - #53 `MvPolynomial.taylor` (Roth/Taylor.lean:42, public def)
