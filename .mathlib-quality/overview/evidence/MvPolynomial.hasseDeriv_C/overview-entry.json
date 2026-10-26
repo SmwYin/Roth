@@ -1,0 +1,20 @@
+{
+  "declaration": "MvPolynomial.hasseDeriv_C",
+  "type": "∀ {σ R : Type*} [CommSemiring R] {d : σ →₀ ℕ}, d ≠ 0 → ∀ a : R, MvPolynomial.hasseDeriv d (MvPolynomial.C a) = 0",
+  "what": "Every nonzero-order multivariate Hasse derivative annihilates scalar constant polynomials.",
+  "how": "Rewrite constant as exponent-zero monomial, apply project Hasse monomial rule, kill binomial factor by nonzero order and simplify. Independent raw construction proof verified using typed Finsupp.lsum_single.",
+  "hypotheses": "Arbitrary universes/variables; CommSemiring fixed parent floor; implicit finite natural multi-index d, essential d ≠ 0, arbitrary scalar a. No characteristic or nontriviality assumptions.",
+  "project_dependencies": [
+    "MvPolynomial.hasseDeriv",
+    "MvPolynomial.hasseCoeff",
+    "MvPolynomial.hasseDeriv_monomial",
+    "MvPolynomial.hasseCoeff_eq_zero_iff"
+  ],
+  "caller_summary": "One explicit source call in private MvPolynomial.coeff_taylor_monomial_aux, Roth/Taylor.lean:127. Original and possible inline affected zero branch native-verified. Not a global simp rule; explicit simp argument. No opaque/implicit closure claim.",
+  "mathlib_api_audit": "All five actual methods on current/literature/abstract forms. Polynomial.hasseDeriv_C is univariate analogue, pderiv_C ordinary first derivative only. C_apply and lsum_single genuine generic normalization blocks; local factor-zero is new proof, not existing replacement.",
+  "moral_duplications": "Mirrors Polynomial.hasseDeriv_C; generic C/monomial/lsum normalization exists but does not supply concrete nonzero-order binomial vanishing premise.",
+  "generalization": "Already arbitrary-variable commutative-semiring interface. Abstract HS-system packaging would require parent redevelopment. No verified mechanical weakening; d=0,C1 formal counterexample.",
+  "missing_api": "Multivariate Hasse parent and coefficient/monomial interface are needed upstream context. Named scalar constant normalization/simp policy remains a design choice; no missing generic lsum-single helper.",
+  "junk": "Not junk: one real Taylor induction caller, standard positive-order law, no inherited glue classification.",
+  "action": "BORDERLINE-needs-human under closing-simp composition policy. Keep project-local pending named normalization/API choice. Potential Mathlib/Algebra/MvPolynomial/HasseDeriv.lean grouping with accepted parent; if omitted upstream, inline verified affected branch using local scalar-zero proof."
+}

@@ -1,0 +1,59 @@
+{
+  "request": {
+    "query": "Finsupp.lsum linear extension applied to monomial at zero, coefficientLinearEquiv and C constants",
+    "num_results": 5
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Finsupp.lsum_single\",\n      \"informal_name\": \"Linear Sum Identity for Single-Nonzero Finite Support Functions\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {M : Type u_2} {N : Type u_3} {R : Type u_5} {R₂ : Type u_6} (S : Type u_8) [inst : Semiring R]\\n  [inst_1 : Semiring R₂] [inst_2 : Semiring S] [inst_3 : AddCommMonoid M] [inst_4 : Module R M]\\n  [inst_5 : AddCommMonoid N] [inst_6 : Module R₂ N] {σ : R →+* R₂} [inst_7 : Module S N] [inst_8 : SMulCommClass R₂ S N]\\n  (f : α → M →ₛₗ[σ] N) (i : α) (m : M), ((Finsupp.lsum S) f) (Finsupp.single i m) = (f i) m\",\n      \"informal_description\": \"For any family of $\\\\sigma$-linear maps $f : \\\\alpha \\\\to M \\\\to_\\\\sigma N$, index $i \\\\in \\\\alpha$, and element $m \\\\in M$, the linear sum $\\\\text{lsum} \\\\, f$ evaluated at the finite support function $\\\\text{single}_i(m)$ equals $f(i)(m)$.\",\n      \"path\": \"Mathlib.LinearAlgebra.Finsupp.LSum\"\n    },\n    {\n      \"formal_name\": \"Finsupp.lsingle\",\n      \"informal_name\": \"Linear map from elements to single-index finite support functions\",\n      \"kind\": \"definition\",\n      \"type\": \"{α : Type u_1} →\\n  {M : Type u_2} →\\n    {R : Type u_5} → [inst : Semiring R] → [inst_1 : AddCommMonoid M] → [inst_2 : Module R M] → α → M →ₗ[R] α →₀ M\",\n      \"informal_description\": \"For a fixed index $a$, this is the linear map from $M$ to the finite support functions $\\\\alpha \\\\to_0 M$ that sends each element $m \\\\in M$ to the function taking value $m$ at $a$ and zero elsewhere. It satisfies $\\\\text{lsingle}_a(r \\\\cdot m) = r \\\\cdot \\\\text{lsingle}_a(m)$ for all $r \\\\in R$ and $m \\\\in M$, extending the additive homomorphism $\\\\text{single}_a$ by linearity.\",\n      \"path\": \"Mathlib.LinearAlgebra.Finsupp.Defs\"\n    },\n    {\n      \"formal_name\": \"Finsupp.lsum_comp_lsingle\",\n      \"informal_name\": \"Composition of Finsupp.lsum and lsingle Recovers Original Map\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {M : Type u_2} {N : Type u_3} {R : Type u_5} {R₂ : Type u_6} (S : Type u_8) [inst : Semiring R]\\n  [inst_1 : Semiring R₂] [inst_2 : Semiring S] [inst_3 : AddCommMonoid M] [inst_4 : Module R M]\\n  [inst_5 : AddCommMonoid N] [inst_6 : Module R₂ N] {σ : R →+* R₂} [inst_7 : Module S N] [inst_8 : SMulCommClass R₂ S N]\\n  (f : α → M →ₛₗ[σ] N) (i : α), (Finsupp.lsum S) f ∘ₛₗ Finsupp.lsingle i = f i\",\n      \"informal_description\": \"For any family of σ-linear maps $ f: \\\\alpha \\\\to M \\\\to_\\\\sigma N $ and any index $ i \\\\in \\\\alpha $, the composition of the linear equivalence $ \\\\text{Finsupp.lsum} \\\\, f $ with the single-index embedding $ \\\\text{lsingle}_i $ equals the map $ f(i) $. This establishes that applying the linear sum equivalence followed by the single-index embedding reconstructs the original map at index $ i $.\",\n      \"path\": \"Mathlib.LinearAlgebra.Finsupp.LSum\"\n    },\n    {\n      \"formal_name\": \"DFinsupp.lsum_single\",\n      \"informal_name\": \"Linear Sum Evaluates to Component Map on Single-Element Insertion\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {R : Type u_3} (S : Type u_4) {M : ι → Type u_5} {N : Type u_6} [inst : Semiring R]\\n  [inst_1 : (i : ι) → AddCommMonoid (M i)] [inst_2 : (i : ι) → Module R (M i)] [inst_3 : AddCommMonoid N]\\n  [inst_4 : Module R N] [inst_5 : DecidableEq ι] [inst_6 : Semiring S] [inst_7 : Module S N]\\n  [inst_8 : SMulCommClass R S N] (F : (i : ι) → M i →ₗ[R] N) (i : ι) (x : M i),\\n  ((DFinsupp.lsum S) F) (DFinsupp.single i x) = (F i) x\",\n      \"informal_description\": \"For a semiring $ S $, family of $ S $-modules $ \\\\{M(i)\\\\}_{i \\\\in \\\\iota} $, and another $ S $-module $ N $, given a family of $ S $-linear maps $ F_i : M(i) \\\\to N $, the linear map $ \\\\Phi $ constructed by $ \\\\mathrm{lsum} $ satisfies $ \\\\Phi(\\\\mathrm{single}_i(x)) = F_i(x) $ for any $ x \\\\in M(i) $. This states that applying the linear sum map to a function with a single non-zero element $ x $ at index $ i $ yields the result of the $ i $-th component map applied to $ x $.\",\n      \"path\": \"Mathlib.LinearAlgebra.DFinsupp\"\n    },\n    {\n      \"formal_name\": \"Finsupp.lsum\",\n      \"informal_name\": \"Linear equivalence between family of linear maps and linear maps on finite support functions\",\n      \"kind\": \"definition\",\n      \"type\": \"{α : Type u_1} →\\n  {M : Type u_2} →\\n    {N : Type u_3} →\\n      {R : Type u_5} →\\n        {R₂ : Type u_6} →\\n          (S : Type u_8) →\\n            [inst : Semiring R] →\\n              [inst_1 : Semiring R₂] →\\n                [inst_2 : Semiring S] →\\n                  [inst_3 : AddCommMonoid M] →\\n                    [inst_4 : Module R M] →\\n                      [inst_5 : AddCommMonoid N] →\\n                        [inst_6 : Module R₂ N] →\\n                          {σ : R →+* R₂} →\\n                 ...\",\n      \"informal_description\": \"The linear equivalence $\\\\text{Finsupp.lsum}$ establishes a bijection between families of $\\\\sigma$-linear maps $\\\\alpha \\\\to M \\\\to_\\\\sigma N$ and $\\\\sigma$-linear maps on finite support functions $\\\\alpha \\\\to_0 M \\\\to_\\\\sigma N$. For a family $F$, the forward direction maps a finite support function $d$ to the sum $\\\\sum_{i \\\\in \\\\text{support } d} F(i)(d(i))$. The inverse direction composes a linear map $F$ with the single-index embedding $\\\\text{lsingle}_i$. The equivalence is proven by verifying additivity, scalar multiplication compatibility, and bijectivity via $\\\\text{lsingle}$ composition.\",\n      \"path\": \"Mathlib.LinearAlgebra.Finsupp.LSum\"\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "items": [
+        {
+          "formal_name": "Finsupp.lsum_single",
+          "informal_name": "Linear Sum Identity for Single-Nonzero Finite Support Functions",
+          "kind": "theorem",
+          "type": "∀ {α : Type u_1} {M : Type u_2} {N : Type u_3} {R : Type u_5} {R₂ : Type u_6} (S : Type u_8) [inst : Semiring R]\n  [inst_1 : Semiring R₂] [inst_2 : Semiring S] [inst_3 : AddCommMonoid M] [inst_4 : Module R M]\n  [inst_5 : AddCommMonoid N] [inst_6 : Module R₂ N] {σ : R →+* R₂} [inst_7 : Module S N] [inst_8 : SMulCommClass R₂ S N]\n  (f : α → M →ₛₗ[σ] N) (i : α) (m : M), ((Finsupp.lsum S) f) (Finsupp.single i m) = (f i) m",
+          "informal_description": "For any family of $\\sigma$-linear maps $f : \\alpha \\to M \\to_\\sigma N$, index $i \\in \\alpha$, and element $m \\in M$, the linear sum $\\text{lsum} \\, f$ evaluated at the finite support function $\\text{single}_i(m)$ equals $f(i)(m)$.",
+          "path": "Mathlib.LinearAlgebra.Finsupp.LSum"
+        },
+        {
+          "formal_name": "Finsupp.lsingle",
+          "informal_name": "Linear map from elements to single-index finite support functions",
+          "kind": "definition",
+          "type": "{α : Type u_1} →\n  {M : Type u_2} →\n    {R : Type u_5} → [inst : Semiring R] → [inst_1 : AddCommMonoid M] → [inst_2 : Module R M] → α → M →ₗ[R] α →₀ M",
+          "informal_description": "For a fixed index $a$, this is the linear map from $M$ to the finite support functions $\\alpha \\to_0 M$ that sends each element $m \\in M$ to the function taking value $m$ at $a$ and zero elsewhere. It satisfies $\\text{lsingle}_a(r \\cdot m) = r \\cdot \\text{lsingle}_a(m)$ for all $r \\in R$ and $m \\in M$, extending the additive homomorphism $\\text{single}_a$ by linearity.",
+          "path": "Mathlib.LinearAlgebra.Finsupp.Defs"
+        },
+        {
+          "formal_name": "Finsupp.lsum_comp_lsingle",
+          "informal_name": "Composition of Finsupp.lsum and lsingle Recovers Original Map",
+          "kind": "theorem",
+          "type": "∀ {α : Type u_1} {M : Type u_2} {N : Type u_3} {R : Type u_5} {R₂ : Type u_6} (S : Type u_8) [inst : Semiring R]\n  [inst_1 : Semiring R₂] [inst_2 : Semiring S] [inst_3 : AddCommMonoid M] [inst_4 : Module R M]\n  [inst_5 : AddCommMonoid N] [inst_6 : Module R₂ N] {σ : R →+* R₂} [inst_7 : Module S N] [inst_8 : SMulCommClass R₂ S N]\n  (f : α → M →ₛₗ[σ] N) (i : α), (Finsupp.lsum S) f ∘ₛₗ Finsupp.lsingle i = f i",
+          "informal_description": "For any family of σ-linear maps $ f: \\alpha \\to M \\to_\\sigma N $ and any index $ i \\in \\alpha $, the composition of the linear equivalence $ \\text{Finsupp.lsum} \\, f $ with the single-index embedding $ \\text{lsingle}_i $ equals the map $ f(i) $. This establishes that applying the linear sum equivalence followed by the single-index embedding reconstructs the original map at index $ i $.",
+          "path": "Mathlib.LinearAlgebra.Finsupp.LSum"
+        },
+        {
+          "formal_name": "DFinsupp.lsum_single",
+          "informal_name": "Linear Sum Evaluates to Component Map on Single-Element Insertion",
+          "kind": "theorem",
+          "type": "∀ {ι : Type u_1} {R : Type u_3} (S : Type u_4) {M : ι → Type u_5} {N : Type u_6} [inst : Semiring R]\n  [inst_1 : (i : ι) → AddCommMonoid (M i)] [inst_2 : (i : ι) → Module R (M i)] [inst_3 : AddCommMonoid N]\n  [inst_4 : Module R N] [inst_5 : DecidableEq ι] [inst_6 : Semiring S] [inst_7 : Module S N]\n  [inst_8 : SMulCommClass R S N] (F : (i : ι) → M i →ₗ[R] N) (i : ι) (x : M i),\n  ((DFinsupp.lsum S) F) (DFinsupp.single i x) = (F i) x",
+          "informal_description": "For a semiring $ S $, family of $ S $-modules $ \\{M(i)\\}_{i \\in \\iota} $, and another $ S $-module $ N $, given a family of $ S $-linear maps $ F_i : M(i) \\to N $, the linear map $ \\Phi $ constructed by $ \\mathrm{lsum} $ satisfies $ \\Phi(\\mathrm{single}_i(x)) = F_i(x) $ for any $ x \\in M(i) $. This states that applying the linear sum map to a function with a single non-zero element $ x $ at index $ i $ yields the result of the $ i $-th component map applied to $ x $.",
+          "path": "Mathlib.LinearAlgebra.DFinsupp"
+        },
+        {
+          "formal_name": "Finsupp.lsum",
+          "informal_name": "Linear equivalence between family of linear maps and linear maps on finite support functions",
+          "kind": "definition",
+          "type": "{α : Type u_1} →\n  {M : Type u_2} →\n    {N : Type u_3} →\n      {R : Type u_5} →\n        {R₂ : Type u_6} →\n          (S : Type u_8) →\n            [inst : Semiring R] →\n              [inst_1 : Semiring R₂] →\n                [inst_2 : Semiring S] →\n                  [inst_3 : AddCommMonoid M] →\n                    [inst_4 : Module R M] →\n                      [inst_5 : AddCommMonoid N] →\n                        [inst_6 : Module R₂ N] →\n                          {σ : R →+* R₂} →\n                 ...",
+          "informal_description": "The linear equivalence $\\text{Finsupp.lsum}$ establishes a bijection between families of $\\sigma$-linear maps $\\alpha \\to M \\to_\\sigma N$ and $\\sigma$-linear maps on finite support functions $\\alpha \\to_0 M \\to_\\sigma N$. For a family $F$, the forward direction maps a finite support function $d$ to the sum $\\sum_{i \\in \\text{support } d} F(i)(d(i))$. The inverse direction composes a linear map $F$ with the single-index embedding $\\text{lsingle}_i$. The equivalence is proven by verifying additivity, scalar multiplication compatibility, and bijectivity via $\\text{lsingle}$ composition.",
+          "path": "Mathlib.LinearAlgebra.Finsupp.LSum"
+        }
+      ]
+    },
+    "isError": false
+  }
+}

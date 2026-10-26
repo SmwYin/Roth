@@ -1,0 +1,185 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MvPolynomial.PDeriv\nimport Mathlib.Algebra.Polynomial.HasseDeriv\nimport Mathlib.Data.Nat.Choose.Bounds\n#check_failure MvPolynomial.hasseDeriv_C\n#check @Polynomial.hasseDeriv_C\n#check @MvPolynomial.C_apply\n#check @MvPolynomial.pderiv_C\n#check @Finsupp.lsum_apply\nnamespace HasseCProbe\nopen MvPolynomial\nvariable {σ R : Type*} [CommSemiring R]\ndef factor (d k : σ →₀ ℕ) : ℕ := d.prod fun j ↦ (k j).choose\nnoncomputable def delta (d : σ →₀ ℕ) : MvPolynomial σ R →ₗ[R] MvPolynomial σ R :=\n  Finsupp.lsum R (fun k : σ →₀ ℕ ↦\n      (monomial (k - d)).comp (LinearMap.lsmul R R (factor d k : R))) ∘ₗ\n    (AddMonoidAlgebra.coeffLinearEquiv R).toLinearMap\n theorem factor_zero {d : σ →₀ ℕ} (hd : d ≠ 0) : factor d 0 = 0 := by\n  have h : ¬d ≤ 0 := by simpa using hd\n  simpa [factor, Finsupp.prod, Finset.prod_eq_zero_iff, Nat.choose_eq_zero_iff,\n    Finsupp.le_iff, not_forall] using h\n theorem constant {d : σ →₀ ℕ} (hd : d ≠ 0) (a : R) : delta d (C a) = 0 := by\n  simp [delta, C_apply, factor_zero hd]\n theorem zero_constant (a : R) : delta (0 : σ →₀ ℕ) (C a) = C a := by\n  simp [delta, C_apply, factor]\n theorem necessity : delta (0 : Unit →₀ ℕ) (C (1 : ℕ)) ≠ 0 := by\n  simp [zero_constant]\n theorem abstract_constant (L : MvPolynomial σ R →ₗ[R] MvPolynomial σ R)\n    (hL : ∀ a, L (monomial 0 a) = 0) (a : R) : L (C a) = 0 :=\n  hL a\n theorem abstract_monomial (b : (σ →₀ ℕ) → R) (s : (σ →₀ ℕ) → (σ →₀ ℕ))\n    (hb : b 0 = 0) (a : R) :\n    (Finsupp.lsum R (fun k ↦ (monomial (s k)).comp (LinearMap.lsmul R R (b k)))\n      ((AddMonoidAlgebra.coeffLinearEquiv R) (C a))) = 0 := by\n  simp [C_apply, hb]\n#print axioms constant\n#print axioms necessity\n#print axioms abstract_monomial\nend HasseCProbe\n"
+  },
+  "elapsed_ms": 1057,
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": false,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown constant `MvPolynomial.hasseDeriv_C`\",\n      \"line\": 4,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.hasseDeriv_C : ∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (r : R),\\n  0 < k → (Polynomial.hasseDeriv k) (Polynomial.C r) = 0\",\n      \"line\": 5,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPolynomial.C_apply : ∀ {R : Type u_1} {σ : Type u_2} {a : R} [inst : CommSemiring R],\\n  MvPolynomial.C a = (MvPolynomial.monomial 0) a\",\n      \"line\": 6,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPolynomial.pderiv_C : ∀ {R : Type u_1} {σ : Type u_2} {a : R} [inst : CommSemiring R] {i : σ},\\n  (MvPolynomial.pderiv i) (MvPolynomial.C a) = 0\",\n      \"line\": 7,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finsupp.lsum_apply : ∀ {α : Type u_1} {M : Type u_2} {N : Type u_3} {R : Type u_4} {R₂ : Type u_5} (S : Type u_6)\\n  [inst : Semiring R] [inst_1 : Semiring R₂] [inst_2 : Semiring S] [inst_3 : AddCommMonoid M] [inst_4 : Module R M]\\n  [inst_5 : AddCommMonoid N] [inst_6 : Module R₂ N] {σ : R →+* R₂} [inst_7 : Module S N] [inst_8 : SMulCommClass R₂ S N]\\n  (f : α → M →ₛₗ[σ] N) (l : α →₀ M), ((Finsupp.lsum S) f) l = l.sum fun b ↦ ⇑(f b)\",\n      \"line\": 8,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"unsolved goals\\n⊢ ¬(delta 0) 1 = 0\",\n      \"line\": 25,\n      \"column\": 63,\n      \"lean_tags\": [\n        \"unsolvedGoals\"\n      ],\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"Type mismatch: After simplification, term\\n  h\\n has type\\n  ¬d = 0\\nbut is expected to have type\\n  ∃ a, ¬d a = 0 ∧ 0 < d a\",\n      \"line\": 19,\n      \"column\": 3,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"warning\",\n      \"message\": \"Possibly looping simp theorem: `C_apply`\\n\\nNote: Possibly caused by: `monomial_zero'`\\n\\nHint: You can disable a simp theorem from the default simp set by passing `- theoremName` to `simp`.\",\n      \"line\": 34,\n      \"column\": 9,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"Tactic `simp` failed with a nested error:\\nmaximum recursion depth has been reached\\nuse `set_option maxRecDepth <num>` to increase limit\\nuse `set_option diagnostics true` to get diagnostic information\",\n      \"line\": 34,\n      \"column\": 3,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"warning\",\n      \"message\": \"Possibly looping simp theorem: `C_apply`\\n\\nNote: Possibly caused by: `monomial_zero'`\\n\\nHint: You can disable a simp theorem from the default simp set by passing `- theoremName` to `simp`.\",\n      \"line\": 22,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"Tactic `simp` failed with a nested error:\\nmaximum recursion depth has been reached\\nuse `set_option maxRecDepth <num>` to increase limit\\nuse `set_option diagnostics true` to get diagnostic information\",\n      \"line\": 22,\n      \"column\": 3,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"warning\",\n      \"message\": \"Possibly looping simp theorem: `C_apply`\\n\\nNote: Possibly caused by: `monomial_zero'`\\n\\nHint: You can disable a simp theorem from the default simp set by passing `- theoremName` to `simp`.\",\n      \"line\": 24,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"Tactic `simp` failed with a nested error:\\nmaximum recursion depth has been reached\\nuse `set_option maxRecDepth <num>` to increase limit\\nuse `set_option diagnostics true` to get diagnostic information\",\n      \"line\": 24,\n      \"column\": 3,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"warning\",\n      \"message\": \"This simp argument is unused:\\n  zero_constant\\n\\nHint: Omit it from the simp argument list.\\n  [apply] simp\\n\\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`\",\n      \"line\": 26,\n      \"column\": 9,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"warning\",\n      \"message\": \"'theorem abstract_constant (L : MvPolynomial σ R →ₗ[R] MvPolynomial σ R) (hL : ∀ a, L (monomial 0 a) = 0) (a : R) :\\n    L (C a) = 0 :=\\n  hL a' starts on column 1, but all commands should start at the beginning of the line.\\n\\nNote: This linter can be disabled with `set_option linter.style.whitespace false`\",\n      \"line\": 27,\n      \"column\": 2,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'HasseCProbe.constant' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 35,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'HasseCProbe.necessity' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 36,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'HasseCProbe.abstract_monomial' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 37,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": false,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown constant `MvPolynomial.hasseDeriv_C`",
+          "line": 4,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.hasseDeriv_C : ∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (r : R),\n  0 < k → (Polynomial.hasseDeriv k) (Polynomial.C r) = 0",
+          "line": 5,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPolynomial.C_apply : ∀ {R : Type u_1} {σ : Type u_2} {a : R} [inst : CommSemiring R],\n  MvPolynomial.C a = (MvPolynomial.monomial 0) a",
+          "line": 6,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPolynomial.pderiv_C : ∀ {R : Type u_1} {σ : Type u_2} {a : R} [inst : CommSemiring R] {i : σ},\n  (MvPolynomial.pderiv i) (MvPolynomial.C a) = 0",
+          "line": 7,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finsupp.lsum_apply : ∀ {α : Type u_1} {M : Type u_2} {N : Type u_3} {R : Type u_4} {R₂ : Type u_5} (S : Type u_6)\n  [inst : Semiring R] [inst_1 : Semiring R₂] [inst_2 : Semiring S] [inst_3 : AddCommMonoid M] [inst_4 : Module R M]\n  [inst_5 : AddCommMonoid N] [inst_6 : Module R₂ N] {σ : R →+* R₂} [inst_7 : Module S N] [inst_8 : SMulCommClass R₂ S N]\n  (f : α → M →ₛₗ[σ] N) (l : α →₀ M), ((Finsupp.lsum S) f) l = l.sum fun b ↦ ⇑(f b)",
+          "line": 8,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "unsolved goals\n⊢ ¬(delta 0) 1 = 0",
+          "line": 25,
+          "column": 63,
+          "lean_tags": [
+            "unsolvedGoals"
+          ],
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "Type mismatch: After simplification, term\n  h\n has type\n  ¬d = 0\nbut is expected to have type\n  ∃ a, ¬d a = 0 ∧ 0 < d a",
+          "line": 19,
+          "column": 3,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "warning",
+          "message": "Possibly looping simp theorem: `C_apply`\n\nNote: Possibly caused by: `monomial_zero'`\n\nHint: You can disable a simp theorem from the default simp set by passing `- theoremName` to `simp`.",
+          "line": 34,
+          "column": 9,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "Tactic `simp` failed with a nested error:\nmaximum recursion depth has been reached\nuse `set_option maxRecDepth <num>` to increase limit\nuse `set_option diagnostics true` to get diagnostic information",
+          "line": 34,
+          "column": 3,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "warning",
+          "message": "Possibly looping simp theorem: `C_apply`\n\nNote: Possibly caused by: `monomial_zero'`\n\nHint: You can disable a simp theorem from the default simp set by passing `- theoremName` to `simp`.",
+          "line": 22,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "Tactic `simp` failed with a nested error:\nmaximum recursion depth has been reached\nuse `set_option maxRecDepth <num>` to increase limit\nuse `set_option diagnostics true` to get diagnostic information",
+          "line": 22,
+          "column": 3,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "warning",
+          "message": "Possibly looping simp theorem: `C_apply`\n\nNote: Possibly caused by: `monomial_zero'`\n\nHint: You can disable a simp theorem from the default simp set by passing `- theoremName` to `simp`.",
+          "line": 24,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "Tactic `simp` failed with a nested error:\nmaximum recursion depth has been reached\nuse `set_option maxRecDepth <num>` to increase limit\nuse `set_option diagnostics true` to get diagnostic information",
+          "line": 24,
+          "column": 3,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "warning",
+          "message": "This simp argument is unused:\n  zero_constant\n\nHint: Omit it from the simp argument list.\n  [apply] simp\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`",
+          "line": 26,
+          "column": 9,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "warning",
+          "message": "'theorem abstract_constant (L : MvPolynomial σ R →ₗ[R] MvPolynomial σ R) (hL : ∀ a, L (monomial 0 a) = 0) (a : R) :\n    L (C a) = 0 :=\n  hL a' starts on column 1, but all commands should start at the beginning of the line.\n\nNote: This linter can be disabled with `set_option linter.style.whitespace false`",
+          "line": 27,
+          "column": 2,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'HasseCProbe.constant' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 35,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'HasseCProbe.necessity' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 36,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'HasseCProbe.abstract_monomial' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 37,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  }
+}
