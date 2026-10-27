@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-27
 
-- Declarations completed: **275/293**
-- Next declaration: **#276 `Roth.exists_delta`** (Roth/Main.lean:227)
+- Declarations completed: **276/293**
+- Next declaration: **#277 `Roth.exists_approximants`** (Roth/Main.lean:256)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -294,10 +294,10 @@ Last regenerated: 2026-10-27
 | 273 | `Roth.approxSet_num_den_mem_aux` | Roth/Main.lean:149 | SKIP | [report](mathlibable/Roth.approxSet_num_den_mem_aux.md) |
 | 274 | `Roth.exists_reduced_approx` | Roth/Main.lean:164 | BORDERLINE-needs-human | [report](mathlibable/Roth.exists_reduced_approx.md) |
 | 275 | `Roth.exists_m` | Roth/Main.lean:196 | BORDERLINE-needs-human | [report](mathlibable/Roth.exists_m.md) |
+| 276 | `Roth.exists_delta` | Roth/Main.lean:227 | BORDERLINE-needs-human | [report](mathlibable/Roth.exists_delta.md) |
 
 ## Remaining declarations (in processing order)
 
-- #276 `Roth.exists_delta` (Roth/Main.lean:227, public theorem)
 - #277 `Roth.exists_approximants` (Roth/Main.lean:256, public theorem)
 - #278 `Roth.exists_degrees` (Roth/Main.lean:282, public theorem)
 - #279 `Roth.one_le_prod_pow_mul_abs_eval` (Roth/Main.lean:324, public theorem)
