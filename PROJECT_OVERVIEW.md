@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 127/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 128/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 127; remaining: 166.
-- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 17 YES-but-generalise-first, 21 NO-mathlib-has-it, 41 BORDERLINE-needs-human, 21 SKIP.
+- Completed applicable assessments: 128; remaining: 165.
+- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 17 YES-but-generalise-first, 21 NO-mathlib-has-it, 41 BORDERLINE-needs-human, 22 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -1394,6 +1394,17 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: One same-file explicit caller at Lattice175: private card_filter_weight_le_succ_aux; same one canonical direct value consumer. Actual caller body replayed with fresh target and actual private other helper.
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.card_filter_box_last.md).
 
+### Completed: `Roth.filter_weight_le_eq_empty`
+
+- Type: `∀ {m : ℕ} (r : Fin m → ℕ) {lam : ℝ},
+  ↑m < lam → {d ∈ Roth.box r | Roth.weight r d ≤ (↑m - lam) / 2} = ∅`
+- What: The weighted filtered box is empty when lambda is greater than the dimension.
+- How: Combines weight_nonneg with the strictly negative threshold to contradict membership.
+- Hypotheses: Natural rectangular bounds and λ greater than the dimension; no positivity of coordinate bounds. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.
+- Project dependencies: Roth.weight_nonneg, Roth.box, Roth.weight
+- Caller summary: 1 explicit source caller declarations, all in Lattice.lean; 1 direct original value consumers. Exact separate lists retained. Entire module proof bodies replay successfully with fresh target name.
+- Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.filter_weight_le_eq_empty.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -1674,6 +1685,8 @@ Completed `Roth.card_filter_box_fiber_aux`: Finset.card_bij compares the smaller
 
 Completed `Roth.card_filter_box_last`: Generic fibre theorem exact; filtered-product law closes by card_filter/sum_product simp. Existing snoc cardinality restricts predicate to init, so not exact arbitrary-p duplicate. All5methods on3forms retained.
 
+Completed `Roth.filter_weight_le_eq_empty`: The threshold (m-lambda)/2 is strictly negative when lambda exceeds the dimension. Every natural exponent vector has nonnegative weight, even if some coordinate bounds vanish. Finset.filter_eq_empty_iff and weight_nonneg reduce each hypothetical member to an arithmetic contradiction. This handles the empty tail regime in the main lattice estimate; it is distinct from its small-lambda cardinality bound and inductive step.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -1929,6 +1942,8 @@ Completed `Roth.extend_apply_last`: The helper has a distinct role in the lattic
 Completed `Roth.card_filter_box_fiber_aux`: The helper has a distinct role in the lattice proof as described in the structural review; no duplicate full construction is introduced.
 
 Completed `Roth.card_filter_box_last`: Abstract counting is Finset.card_eq_sum_card_fiberwise; geometric Finsupp identification is real project proof.
+
+Completed `Roth.filter_weight_le_eq_empty`: The helper has a distinct role in the lattice proof as described in the structural review; no duplicate full construction is introduced.
 
 ## Part 5: Generalization opportunities
 
@@ -2189,6 +2204,8 @@ Completed `Roth.card_filter_box_fiber_aux`: No public generality claim under the
 
 Completed `Roth.card_filter_box_last`: Native generic finite α/β fibre map, arbitrary filtered product, dependent finite tuple sections and scoped classical predicate-decision removal. Independent tuple theorem does not claim complete recovery of original spelling.
 
+Completed `Roth.filter_weight_le_eq_empty`: No public generality claim under the private prefilter; preserve the existing definition and interface.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -2445,6 +2462,8 @@ Completed `Roth.extend_apply_last`: No new primitive is needed for this internal
 Completed `Roth.card_filter_box_fiber_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 Completed `Roth.card_filter_box_last`: Design question: named arbitrary dependent tuple sections/cardinality law and binary filtered-product wrapper; no categorical structure required.
+
+Completed `Roth.filter_weight_le_eq_empty`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 ## Part 7: Junk / removable
 
@@ -2705,6 +2724,8 @@ Completed `Roth.card_filter_box_fiber_aux`: Retain a live private proof interfac
 
 Completed `Roth.card_filter_box_last`: No: sole live induction consumer. Public visibility could become private if current source API suffices.
 
+Completed `Roth.filter_weight_le_eq_empty`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -2836,6 +2857,7 @@ Completed `Roth.card_filter_box_last`: No: sole live induction consumer. Public 
 | 125 | `Roth.extend_apply_last` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.extend_apply_last.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.extend_apply_last/root-acceptance.json) |
 | 126 | `Roth.card_filter_box_fiber_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.card_filter_box_fiber_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.card_filter_box_fiber_aux/root-acceptance.json) |
 | 127 | `Roth.card_filter_box_last` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.card_filter_box_last.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.card_filter_box_last/root-acceptance.json) |
+| 128 | `Roth.filter_weight_le_eq_empty` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.filter_weight_le_eq_empty.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.filter_weight_le_eq_empty/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -3089,12 +3111,14 @@ Completed `Roth.card_filter_box_fiber_aux` action: Keep unchanged; complete priv
 
 Completed `Roth.card_filter_box_last` action: Retain project-local Lattice theorem pending three concrete upstream API choices; no automatic NO via parent or new helper counted as existing mathlib.
 
+Completed `Roth.filter_weight_le_eq_empty` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.filter_weight_le_eq_empty` next. Supporting identities receive their own applicable checks.
+   `Roth.card_filter_fiber_eq` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 
