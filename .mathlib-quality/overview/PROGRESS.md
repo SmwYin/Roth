@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-27
 
-- Declarations completed: **233/293**
-- Next declaration: **#234 `Roth.eta_lt_gam_iff`** (Roth/MainLemma.lean:100)
+- Declarations completed: **234/293**
+- Next declaration: **#235 `Roth.sqrt_lt_nat_floor_aux`** (Roth/MainLemma.lean:104)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -252,10 +252,10 @@ Last regenerated: 2026-10-27
 | 231 | `Roth.eta` | Roth/MainLemma.lean:66 | NO-composable-from-mathlib | [report](mathlibable/Roth.eta.md) |
 | 232 | `Roth.mainCoeffBound` | Roth/MainLemma.lean:69 | NO-composable-from-mathlib | [report](mathlibable/Roth.mainCoeffBound.md) |
 | 233 | `Roth.exists_delta_bound` | Roth/MainLemma.lean:77 | BORDERLINE-needs-human | [report](mathlibable/Roth.exists_delta_bound.md) |
+| 234 | `Roth.eta_lt_gam_iff` | Roth/MainLemma.lean:100 | NO-composable-from-mathlib | [report](mathlibable/Roth.eta_lt_gam_iff.md) |
 
 ## Remaining declarations (in processing order)
 
-- #234 `Roth.eta_lt_gam_iff` (Roth/MainLemma.lean:100, public theorem)
 - #235 `Roth.sqrt_lt_nat_floor_aux` (Roth/MainLemma.lean:104, private lemma)
 - #236 `Roth.sqrt_lt_floor` (Roth/MainLemma.lean:115, public theorem)
 - #237 `Roth.four_lt_rpow` (Roth/MainLemma.lean:122, public theorem)
