@@ -6,10 +6,10 @@ cd "$(dirname "$0")/../../.."
 decl="$1"; verdict="$2"
 python3 -I .mathlib-quality/overview/scripts/assemble.py check "$decl"
 # production sources must be untouched
-if [ -n "$(git status --porcelain -- Roth Roth.lean lakefile.toml lake-manifest.json lean-toolchain)" ]; then
+if [ -n "$(git -c core.quotePath=false status --porcelain -- Roth Roth.lean lakefile.toml lake-manifest.json lean-toolchain)" ]; then
   echo "production files modified — refusing to commit" >&2; exit 1
 fi
-stray=$(git status --porcelain --untracked-files=all | grep -vE '^.. (\.mathlib-quality/overview/|PROJECT_OVERVIEW\.md$)' || true)
+stray=$(git -c core.quotePath=false status --porcelain --untracked-files=all | grep -vE '^.. (\.mathlib-quality/overview/|PROJECT_OVERVIEW\.md$)' || true)
 if [ -n "$stray" ]; then echo "unexpected changes outside overview:"; echo "$stray"; exit 1; fi
 python3 -I .mathlib-quality/overview/scripts/assemble.py build
 grep -q "\`$decl\`" .mathlib-quality/overview/PROGRESS.md

@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-27
 
-- Declarations completed: **180/293**
-- Next declaration: **#181 `Roth.Θ`** (Roth/Theta.lean:68)
+- Declarations completed: **181/293**
+- Next declaration: **#182 `Roth.one_mem_RSet`** (Roth/Theta.lean:73)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -199,10 +199,10 @@ Last regenerated: 2026-10-27
 | 178 | `Roth.exists_det_eq_mul` | Roth/Separation.lean:542 | BORDERLINE-needs-human | [report](mathlibable/Roth.exists_det_eq_mul.md) |
 | 179 | `Roth.RSet` | Roth/Theta.lean:56 | NO-composable-from-mathlib | [report](mathlibable/Roth.RSet.md) |
 | 180 | `Roth.indexSet` | Roth/Theta.lean:62 | NO-composable-from-mathlib | [report](mathlibable/Roth.indexSet.md) |
+| 181 | `Roth.Θ` | Roth/Theta.lean:68 | NO-composable-from-mathlib | [report](mathlibable/Roth.Θ.md) |
 
 ## Remaining declarations (in processing order)
 
-- #181 `Roth.Θ` (Roth/Theta.lean:68, public def)
 - #182 `Roth.one_mem_RSet` (Roth/Theta.lean:73, public theorem)
 - #183 `Roth.indexSet_nonempty` (Roth/Theta.lean:80, public theorem)
 - #184 `Roth.indexSet_bddAbove` (Roth/Theta.lean:87, public theorem)
