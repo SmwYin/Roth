@@ -1,0 +1,47 @@
+[
+  {
+    "declaration": "Roth.le_index_sum",
+    "file": "Roth/Index.lean",
+    "reference_lines": [
+      121,
+      125
+    ],
+    "identifier_occurrences": 2,
+    "source_sha256": "e22ab0acd820d9ae765e6f70279edbc0d626052372611806c4d5464ca3d377f1",
+    "source_fragment": "theorem le_index_sum {\u03b9 : Type*} {s : Finset \u03b9} {f : \u03b9 \u2192 MvPolynomial \u03c3 \u211d} {\u03b1 : \u03c3 \u2192 \u211d} {r : \u03c3 \u2192 \u2115}\n    (hs : \u2211 i \u2208 s, f i \u2260 0) {c : \u211d} (hf : \u2200 i \u2208 s, f i \u2260 0 \u2192 c \u2264 index (f i) \u03b1 r) :\n    c \u2264 index (\u2211 i \u2208 s, f i) \u03b1 r := by\n  refine (le_index_iff hs).2 fun d hd \u21a6 ?_\n  rw [map_sum, map_sum] at hd\n  obtain \u27e8i, hi, hid\u27e9 := Finset.exists_ne_zero_of_sum_ne_zero hd\n  have hfi : f i \u2260 0 := fun h0 \u21a6 hid (by rw [h0, map_zero, map_zero])\n  exact (le_index_iff hfi).1 (hf i hi hfi) d hid",
+    "plan": "Use generic lower-bound iff on the translated sum for .2; on the chosen nonzero summand for .1. Keep map_sum, witness selection and nonzero argument."
+  },
+  {
+    "declaration": "Roth.index_eq_weightedOrder_div",
+    "file": "Roth/Index.lean",
+    "reference_lines": [
+      154
+    ],
+    "identifier_occurrences": 1,
+    "source_sha256": "e22ab0acd820d9ae765e6f70279edbc0d626052372611806c4d5464ca3d377f1",
+    "source_fragment": "theorem index_eq_weightedOrder_div {P : MvPolynomial \u03c3 \u211d} (hP : P \u2260 0) {r : \u03c3 \u2192 \u2115}\n    (hr : \u2200 j, 0 < r j) (\u03b1 : \u03c3 \u2192 \u211d) : index P \u03b1 r =\n      (((taylor \u03b1 P : MvPowerSeries \u03c3 \u211d).weightedOrder fun j \u21a6 (\u220f i, r i) / r j).toNat : \u211d) /\n        \u220f i, r i := by\n  set w : \u03c3 \u2192 \u2115 := fun j \u21a6 (\u220f i, r i) / r j\n  set F : MvPowerSeries \u03c3 \u211d := \u2191(taylor \u03b1 P)\n  obtain \u27e8d, hd, hdw\u27e9 := MvPowerSeries.exists_coeff_ne_zero_and_weightedOrder w (f := F)\n    ((MvPowerSeries.ne_zero_iff_weightedOrder_finite w).1 (by simpa [F] using hP))\n  apply le_antisymm\n  \u00b7 rw [\u2190 hdw, ENat.toNat_natCast, \u2190 weight_eq_finsuppWeight_div hr]\n    exact index_le_weight (by simpa [F, MvPolynomial.coeff_coe, coeff_taylor] using hd)\n  \u00b7 refine (le_index_iff hP).2 fun e he \u21a6 ?_\n    rw [weight_eq_finsuppWeight_div hr]\n    refine div_le_div_of_nonneg_right ?_ (Nat.cast_nonneg _)\n    exact_mod_cast ENat.toNat_le_toNat (MvPowerSeries.weightedOrder_le w (f := F) (d := e)\n      (by simpa [F, MvPolynomial.coeff_coe, coeff_taylor] using he)) (by simp)",
+    "plan": "Apply generic lower-bound iff .2 to Taylor support and retain the weight denominator rewrite and weightedOrder_le estimate."
+  },
+  {
+    "declaration": "Roth.index_unique",
+    "file": "Roth/Index.lean",
+    "reference_lines": [
+      248
+    ],
+    "identifier_occurrences": 1,
+    "source_sha256": "e22ab0acd820d9ae765e6f70279edbc0d626052372611806c4d5464ca3d377f1",
+    "source_fragment": "theorem index_unique [Unique \u03c3] {P : MvPolynomial \u03c3 \u211d} (hP : P \u2260 0) (\u03b1 : \u03c3 \u2192 \u211d) (r : \u03c3 \u2192 \u2115) :\n    index P \u03b1 r =\n      (Polynomial.rootMultiplicity (\u03b1 default) (uniqueAlgEquiv \u211d \u03c3 P) : \u211d) / r default := by\n  set q := Polynomial.taylor (\u03b1 default) (uniqueAlgEquiv \u211d \u03c3 P) with hqdef\n  have key (d : \u03c3 \u2192\u2080 \u2115) : eval \u03b1 (hasseDeriv d P) = q.coeff (d default) := by\n    rw [Polynomial.taylor_coeff, \u2190 uniqueAlgEquiv_hasseDeriv, \u2190 Finsupp.unique_single d]\n    exact (eval\u2082_uniqueAlgEquiv (f := hasseDeriv d P) (\u03c6 := RingHom.id \u211d) (a := \u03b1)).symm\n  have hq : q \u2260 0 := by\n    rwa [hqdef, Ne, Polynomial.taylor_eq_zero, map_eq_zero_iff _ (uniqueAlgEquiv \u211d \u03c3).injective]\n  rw [Polynomial.rootMultiplicity_eq_natTrailingDegree, \u2190 Polynomial.taylor_apply]\n  apply le_antisymm\n  \u00b7 simpa [weight, hqdef] using index_le_weight (P := P) (\u03b1 := \u03b1) (r := r)\n      (d := Finsupp.single default q.natTrailingDegree)\n      (by simpa [key] using Polynomial.trailingCoeff_nonzero_iff_nonzero.2 hq)\n  \u00b7 refine (le_index_iff hP).2 fun d hd \u21a6 ?_\n    simpa [weight, hqdef] using div_le_div_of_nonneg_right\n      (by exact_mod_cast Polynomial.natTrailingDegree_le_of_ne_zero (key d \u25b8 hd))\n      (Nat.cast_nonneg (r default))\n\nend Roth",
+    "plan": "Apply generic lower-bound iff .2; retain univariate coefficient key, natTrailingDegree bound and division inequality."
+  },
+  {
+    "declaration": "Roth.le_index_of_forall_eval_eq_zero",
+    "file": "Roth/MainLemma.lean",
+    "reference_lines": [
+      423
+    ],
+    "identifier_occurrences": 1,
+    "source_sha256": "4f7c7fee1bbceaffc79da9ca9d806a1e4b62a8b4a7534c996a1c58ea48a4b90d",
+    "source_fragment": "theorem le_index_of_forall_eval_eq_zero {\u03c3 : Type*} [Fintype \u03c3] {P : MvPolynomial \u03c3 \u211d} (hP : P \u2260 0)\n    {r : \u03c3 \u2192 \u2115} (hd : \u2200 j, degreeOf j P \u2264 r j) (\u03b1 : \u03c3 \u2192 \u211d) {c : \u211d}\n    (hvan : \u2200 d, (\u2200 j, d j \u2264 r j) \u2192 weight r d < c \u2192 eval \u03b1 (hasseDeriv d P) = 0) :\n    c \u2264 index P \u03b1 r := by\n  refine (le_index_iff hP).2 fun d he \u21a6 le_of_not_gt fun hw \u21a6 he (hvan d (fun j \u21a6 ?_) hw)\n  by_contra! hj\n  exact he <| by rw [hasseDeriv_eq_zero_of_degreeOf_lt ((hd j).trans_lt hj), map_zero]",
+    "plan": "Apply generic lower-bound iff .2; retain contradiction from sub-cutoff vanishing, box restriction and degree-bound zero derivative."
+  }
+]

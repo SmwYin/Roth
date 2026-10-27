@@ -1,0 +1,93 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\n#check_failure Roth.le_index_iff\nnamespace LeIndexIff137\nuniverse u v w\n#check @Finset.le_inf_iff\n#check @Finset.le_inf'_iff\n#check @le_csInf_iff\n#check @MvPowerSeries.le_weightedOrder\n\ntheorem abstractLaw {A : Type u} {R : Type v} {T : Type w} [Semiring R]\n    [SemilatticeInf T] [OrderTop T] (D : A → T) (P : AddMonoidAlgebra R A) (c : T) :\n    c ≤ AddMonoidAlgebra.infDegree D P ↔ ∀ d ∈ P.coeff.support, c ≤ D d :=\n  Finset.le_inf_iff\n\ntheorem projectedLaw {A : Type u} {R : Type v} [Semiring R]\n    (D : A → ℝ) (P : AddMonoidAlgebra R A) (hP : P.coeff.support.Nonempty) (c : ℝ) :\n    c ≤ (AddMonoidAlgebra.infDegree (fun d ↦ (D d : WithTop ℝ)) P).untopD 0 ↔\n      ∀ d, P.coeff d ≠ 0 → c ≤ D d := by\n  change c ≤ (P.coeff.support.inf (WithTop.some ∘ D)).untopD 0 ↔ _\n  rw [← Finset.coe_inf' hP D]\n  simp only [WithTop.untopD_coe]\n  simpa only [Finsupp.mem_support_iff] using\n    (show c ≤ P.coeff.support.inf' hP D ↔ ∀ d ∈ P.coeff.support, c ≤ D d from\n      Finset.le_inf'_iff)\n#print axioms abstractLaw\n#print axioms projectedLaw\nend LeIndexIff137\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": false,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.le_index_iff`\",\n      \"line\": 8,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finset.le_inf_iff : ∀ {α : Type u_1} {β : Type u_2} [inst : SemilatticeInf α] [inst_1 : OrderTop α] {s : Finset β}\\n  {f : β → α} {a : α}, a ≤ s.inf f ↔ ∀ b ∈ s, a ≤ f b\",\n      \"line\": 11,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finset.le_inf'_iff : ∀ {α : Type u_1} {β : Type u_2} [inst : SemilatticeInf α] {s : Finset β} (H : s.Nonempty)\\n  (f : β → α) {a : α}, a ≤ s.inf' H f ↔ ∀ b ∈ s, a ≤ f b\",\n      \"line\": 12,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@le_csInf_iff : ∀ {α : Type u_1} [inst : ConditionallyCompleteLattice α] {s : Set α} {a : α},\\n  BddBelow s → s.Nonempty → (a ≤ sInf s ↔ ∀ b ∈ s, a ≤ b)\",\n      \"line\": 13,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPowerSeries.le_weightedOrder : ∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ)\\n  {f : MvPowerSeries σ R} {n : ℕ∞},\\n  (∀ (d : σ →₀ ℕ), ↑((Finsupp.weight w) d) < n → (MvPowerSeries.coeff d) f = 0) → n ≤ MvPowerSeries.weightedOrder w f\",\n      \"line\": 14,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"Type mismatch\\n  Finset.le_inf'_iff\\nhas type\\n  ∀ (H : Finset.Nonempty ?m.86) (f : ?m.84 → ?m.83) {a : ?m.83}, a ≤ Finset.inf' ?m.86 H f ↔ ∀ b ∈ ?m.86, a ≤ f b\\nbut is expected to have type\\n  c ≤ P.coeff.support.inf' hP D ↔ ∀ d ∈ P.coeff.support, c ≤ D d\",\n      \"line\": 30,\n      \"column\": 7,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LeIndexIff137.abstractLaw' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 31,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LeIndexIff137.projectedLaw' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 32,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": false,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.le_index_iff`",
+          "line": 8,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finset.le_inf_iff : ∀ {α : Type u_1} {β : Type u_2} [inst : SemilatticeInf α] [inst_1 : OrderTop α] {s : Finset β}\n  {f : β → α} {a : α}, a ≤ s.inf f ↔ ∀ b ∈ s, a ≤ f b",
+          "line": 11,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finset.le_inf'_iff : ∀ {α : Type u_1} {β : Type u_2} [inst : SemilatticeInf α] {s : Finset β} (H : s.Nonempty)\n  (f : β → α) {a : α}, a ≤ s.inf' H f ↔ ∀ b ∈ s, a ≤ f b",
+          "line": 12,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@le_csInf_iff : ∀ {α : Type u_1} [inst : ConditionallyCompleteLattice α] {s : Set α} {a : α},\n  BddBelow s → s.Nonempty → (a ≤ sInf s ↔ ∀ b ∈ s, a ≤ b)",
+          "line": 13,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPowerSeries.le_weightedOrder : ∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ)\n  {f : MvPowerSeries σ R} {n : ℕ∞},\n  (∀ (d : σ →₀ ℕ), ↑((Finsupp.weight w) d) < n → (MvPowerSeries.coeff d) f = 0) → n ≤ MvPowerSeries.weightedOrder w f",
+          "line": 14,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "Type mismatch\n  Finset.le_inf'_iff\nhas type\n  ∀ (H : Finset.Nonempty ?m.86) (f : ?m.84 → ?m.83) {a : ?m.83}, a ≤ Finset.inf' ?m.86 H f ↔ ∀ b ∈ ?m.86, a ≤ f b\nbut is expected to have type\n  c ≤ P.coeff.support.inf' hP D ↔ ∀ d ∈ P.coeff.support, c ≤ D d",
+          "line": 30,
+          "column": 7,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'LeIndexIff137.abstractLaw' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 31,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'LeIndexIff137.projectedLaw' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 32,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 2027
+}

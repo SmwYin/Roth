@@ -1,0 +1,33 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+#check_failure Roth.le_index_iff
+namespace LeIndexIff137
+universe u v w
+#check @Finset.le_inf_iff
+#check @Finset.le_inf'_iff
+#check @le_csInf_iff
+#check @MvPowerSeries.le_weightedOrder
+
+theorem abstractLaw {A : Type u} {R : Type v} {T : Type w} [Semiring R]
+    [SemilatticeInf T] [OrderTop T] (D : A → T) (P : AddMonoidAlgebra R A) (c : T) :
+    c ≤ AddMonoidAlgebra.infDegree D P ↔ ∀ d ∈ P.coeff.support, c ≤ D d :=
+  Finset.le_inf_iff
+
+theorem projectedLaw {A : Type u} {R : Type v} [Semiring R]
+    (D : A → ℝ) (P : AddMonoidAlgebra R A) (hP : P.coeff.support.Nonempty) (c : ℝ) :
+    c ≤ (AddMonoidAlgebra.infDegree (fun d ↦ (D d : WithTop ℝ)) P).untopD 0 ↔
+      ∀ d, P.coeff d ≠ 0 → c ≤ D d := by
+  change c ≤ (P.coeff.support.inf (WithTop.some ∘ D)).untopD 0 ↔ _
+  rw [← Finset.coe_inf' hP D]
+  simp only [WithTop.untopD_coe]
+  simpa only [Finsupp.mem_support_iff] using
+    (show c ≤ P.coeff.support.inf' hP D ↔ ∀ d ∈ P.coeff.support, c ≤ D d from
+      Finset.le_inf'_iff)
+#print axioms abstractLaw
+#print axioms projectedLaw
+end LeIndexIff137

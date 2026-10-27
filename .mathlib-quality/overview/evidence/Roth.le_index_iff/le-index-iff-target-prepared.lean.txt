@@ -1,0 +1,17 @@
+namespace LeIndexIff137
+open MvPolynomial
+universe u
+theorem originalReplacement {σ : Type u} [Fintype σ] {P : MvPolynomial σ ℝ}
+    (hP : P ≠ 0) {α : σ → ℝ} {r : σ → ℕ} {c : ℝ} :
+    c ≤ Roth.index P α r ↔ ∀ d, eval α (hasseDeriv d P) ≠ 0 → c ≤ Roth.weight r d := by
+  have hs : (taylor α P).support.Nonempty := by simpa using hP
+  rw [IndexConsumers133.targetBridge]
+  change c ≤ ((taylor α P).support.inf
+    (WithTop.some ∘ Roth.weight r)).untopD 0 ↔ _
+  rw [← Finset.coe_inf' hs (Roth.weight r)]
+  simp only [WithTop.untopD_coe]
+  simpa only [mem_support_iff, coeff_taylor] using
+    (show c ≤ (taylor α P).support.inf' hs (Roth.weight r) ↔
+      ∀ d ∈ (taylor α P).support, c ≤ Roth.weight r d from Finset.le_inf'_iff)
+#print axioms originalReplacement
+end LeIndexIff137

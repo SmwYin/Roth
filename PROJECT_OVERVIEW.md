@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 136/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 137/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 136; remaining: 157.
-- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 17 YES-but-generalise-first, 24 NO-mathlib-has-it, 42 BORDERLINE-needs-human, 26 SKIP.
+- Completed applicable assessments: 137; remaining: 156.
+- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 17 YES-but-generalise-first, 25 NO-mathlib-has-it, 42 BORDERLINE-needs-human, 26 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -1507,6 +1507,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: explicit declarations: 4; occurrences: 4; within module: 3; outside module: 1; kernel direct consumers: 4; files: Roth/Index.lean, Roth/MainLemma.lean
 - Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/Roth.exists_weight_eq_index.md).
 
+### Completed: `Roth.le_index_iff`
+
+- Type: `Roth.le_index_iff.{u_1} : ∀ {σ : Type u_1} [inst : Fintype σ] {P : MvPolynomial σ ℝ}, P ≠ 0 → ∀ {α : σ → ℝ} {r : σ → ℕ} {c : ℝ}, c ≤ Roth.index P α r ↔ ∀ (d : σ →₀ ℕ), (MvPolynomial.eval α) ((MvPolynomial.hasseDeriv d) P) ≠ 0 → c ≤ Roth.weight r d`
+- What: A lower bound for a nonzero polynomial's weighted index at a point is equivalent to a common lower bound for all nonvanishing Hasse-derivative weights.
+- How: Forward transitivity with index_le_weight; reverse conditional infimum introduction on translated support using coeff_taylor.
+- Hypotheses: Fintype variables and real coefficients fixed by parent index/weight; P nonzero needed for zero-default real projection; no positive-r assumption.
+- Project dependencies: Roth.index, Roth.weight, Roth.index_le_weight, Roth.mem_support_taylor_iff, MvPolynomial.taylor, MvPolynomial.hasseDeriv, MvPolynomial.coeff_taylor, MvPolynomial.taylor_eq_zero_iff
+- Caller summary: Five explicit applications in four callers: le_index_sum twice, index_eq_weightedOrder_div, index_unique, le_index_of_forall_eval_eq_zero; one external module MainLemma. Fresh canonical audit four direct kernel-value consumers.
+- Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/Roth.le_index_iff.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -1805,6 +1815,8 @@ Completed `Roth.index_le_weight`: verdict: NO-mathlib-has-it; reaim parent: AddM
 
 Completed `Roth.exists_weight_eq_index`: verdict: NO-mathlib-has-it; reaim parent: AddMonoidAlgebra.infDegree; analogous law: Finset.exists_mem_eq_inf; premise: nonempty coefficient support; verified native: True
 
+Completed `Roth.le_index_iff`: Finset.le_inf_iff, generated dual at Data/Finset/Lattice/Fold.lean:99, is the exact analogous law for infDegree; Finset.le_inf'_iff at557, coe_inf', untopD_coe and coeff_taylor bridge the old spelling.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -2078,6 +2090,8 @@ Completed `Roth.mem_support_taylor_iff`: The helper has a distinct role in the i
 Completed `Roth.index_le_weight`: Finite infimum is bounded by each member, independently of the degree map; already Finset.inf_le.
 
 Completed `Roth.exists_weight_eq_index`: Attainment of a finite nonempty support infimum in a linear order is already Finset.exists_mem_eq_inf., MvPowerSeries.exists_coeff_ne_zero_and_weightedOrder provides the standard natural-weight analogue.
+
+Completed `Roth.le_index_iff`: Finite meet lower-bound universal property, not a new theorem about derivatives.
 
 ## Part 5: Generalization opportunities
 
@@ -2356,6 +2370,8 @@ Completed `Roth.index_le_weight`: Compiled abstract Semiring/any support-degree 
 
 Completed `Roth.exists_weight_eq_index`: Verified Semiring coefficients, arbitrary ambient support type with no Fintype, arbitrary degree map into any LinearOrder/OrderTop target with independent universes; separately verified real default-zero projection.
 
+Completed `Roth.le_index_iff`: Verified arbitrary Semiring coefficients, arbitrary degree map and ambient support index type, arbitrary SemilatticeInf+OrderTop codomain; no nonzero hypothesis in unprojected law.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -2630,6 +2646,8 @@ Completed `Roth.mem_support_taylor_iff`: No new primitive is needed for this int
 Completed `Roth.index_le_weight`: No missing generic upper-bound law. Parent finite-sInf/infDegree projection bridge is normalization glue; coeff_taylor is separate project API.
 
 Completed `Roth.exists_weight_eq_index`: No missing generic attained-minimum law. Parent finite-sInf/infDegree bridge and Taylor coefficient conversion are real normalization and separately justified project API.
+
+Completed `Roth.le_index_iff`: No missing lower-bound law on infDegree. Parent coefficient/translation and real-default bridge are normalization API separately assessed.
 
 ## Part 7: Junk / removable
 
@@ -2908,6 +2926,8 @@ Completed `Roth.index_le_weight`: False
 
 Completed `Roth.exists_weight_eq_index`: False
 
+Completed `Roth.le_index_iff`: Not dead: four consumers/five uses; not simp. Specialized wrapper need not be upstream.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -3048,6 +3068,7 @@ Completed `Roth.exists_weight_eq_index`: False
 | 134 | `Roth.mem_support_taylor_iff` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.mem_support_taylor_iff.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.mem_support_taylor_iff/root-acceptance.json) |
 | 135 | `Roth.index_le_weight` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.index_le_weight.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.index_le_weight/root-acceptance.json) |
 | 136 | `Roth.exists_weight_eq_index` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_weight_eq_index.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_weight_eq_index/root-acceptance.json) |
+| 137 | `Roth.le_index_iff` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.le_index_iff.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.le_index_iff/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -3319,12 +3340,14 @@ Completed `Roth.index_le_weight` action: Keep as a local manuscript convenience,
 
 Completed `Roth.exists_weight_eq_index` action: Retain locally for manuscript vocabulary or migrate parent to projected infDegree and replace all four applications using existing Finset attainment. Delete this wrapper after replacing those calls; complete consumer replay verified. No upstream PR.
 
+Completed `Roth.le_index_iff` action: NO-mathlib-has-it via parent re-aim. Migrate parent to projected infDegree, apply Finset.le_inf_iff (or le_inf'_iff after projection) at all five uses and retain caller arithmetic; otherwise keep local manuscript convenience in Roth/Index.lean.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.le_index_iff` next. Supporting identities receive their own applicable checks.
+   `Roth.index_nonneg` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

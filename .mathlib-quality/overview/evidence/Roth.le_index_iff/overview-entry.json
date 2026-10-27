@@ -1,0 +1,25 @@
+{
+  "declaration": "Roth.le_index_iff",
+  "kind": "theorem",
+  "type": "Roth.le_index_iff.{u_1} : \u2200 {\u03c3 : Type u_1} [inst : Fintype \u03c3] {P : MvPolynomial \u03c3 \u211d}, P \u2260 0 \u2192 \u2200 {\u03b1 : \u03c3 \u2192 \u211d} {r : \u03c3 \u2192 \u2115} {c : \u211d}, c \u2264 Roth.index P \u03b1 r \u2194 \u2200 (d : \u03c3 \u2192\u2080 \u2115), (MvPolynomial.eval \u03b1) ((MvPolynomial.hasseDeriv d) P) \u2260 0 \u2192 c \u2264 Roth.weight r d",
+  "what": "A lower bound for a nonzero polynomial's weighted index at a point is equivalent to a common lower bound for all nonvanishing Hasse-derivative weights.",
+  "how": "Forward transitivity with index_le_weight; reverse conditional infimum introduction on translated support using coeff_taylor.",
+  "hypotheses": "Fintype variables and real coefficients fixed by parent index/weight; P nonzero needed for zero-default real projection; no positive-r assumption.",
+  "project_dependencies": [
+    "Roth.index",
+    "Roth.weight",
+    "Roth.index_le_weight",
+    "Roth.mem_support_taylor_iff",
+    "MvPolynomial.taylor",
+    "MvPolynomial.hasseDeriv",
+    "MvPolynomial.coeff_taylor",
+    "MvPolynomial.taylor_eq_zero_iff"
+  ],
+  "caller_summary": "Five explicit applications in four callers: le_index_sum twice, index_eq_weightedOrder_div, index_unique, le_index_of_forall_eval_eq_zero; one external module MainLemma. Fresh canonical audit four direct kernel-value consumers.",
+  "mathlib_api_audit": "Finset.le_inf_iff, generated dual at Data/Finset/Lattice/Fold.lean:99, is the exact analogous law for infDegree; Finset.le_inf'_iff at557, coe_inf', untopD_coe and coeff_taylor bridge the old spelling.",
+  "moral_duplications": "Finite meet lower-bound universal property, not a new theorem about derivatives.",
+  "generalization": "Verified arbitrary Semiring coefficients, arbitrary degree map and ambient support index type, arbitrary SemilatticeInf+OrderTop codomain; no nonzero hypothesis in unprojected law.",
+  "missing_api": "No missing lower-bound law on infDegree. Parent coefficient/translation and real-default bridge are normalization API separately assessed.",
+  "junk": "Not dead: four consumers/five uses; not simp. Specialized wrapper need not be upstream.",
+  "action": "NO-mathlib-has-it via parent re-aim. Migrate parent to projected infDegree, apply Finset.le_inf_iff (or le_inf'_iff after projection) at all five uses and retain caller arithmetic; otherwise keep local manuscript convenience in Roth/Index.lean."
+}
