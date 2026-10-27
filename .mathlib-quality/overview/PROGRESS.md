@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-27
 
-- Declarations completed: **272/293**
-- Next declaration: **#273 `Roth.approxSet_num_den_mem_aux`** (Roth/Main.lean:149)
+- Declarations completed: **273/293**
+- Next declaration: **#274 `Roth.exists_reduced_approx`** (Roth/Main.lean:164)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -291,10 +291,10 @@ Last regenerated: 2026-10-27
 | 270 | `Roth.eventually_div_rpow_lt` | Roth/Main.lean:103 | NO-composable-from-mathlib | [report](mathlibable/Roth.eventually_div_rpow_lt.md) |
 | 271 | `Roth.reduction` | Roth/Main.lean:118 | NO-composable-from-mathlib | [report](mathlibable/Roth.reduction.md) |
 | 272 | `Roth.exists_monic_aeval_eq_zero` | Roth/Main.lean:142 | NO-composable-from-mathlib | [report](mathlibable/Roth.exists_monic_aeval_eq_zero.md) |
+| 273 | `Roth.approxSet_num_den_mem_aux` | Roth/Main.lean:149 | SKIP | [report](mathlibable/Roth.approxSet_num_den_mem_aux.md) |
 
 ## Remaining declarations (in processing order)
 
-- #273 `Roth.approxSet_num_den_mem_aux` (Roth/Main.lean:149, private theorem)
 - #274 `Roth.exists_reduced_approx` (Roth/Main.lean:164, public theorem)
 - #275 `Roth.exists_m` (Roth/Main.lean:196, public theorem)
 - #276 `Roth.exists_delta` (Roth/Main.lean:227, public theorem)
