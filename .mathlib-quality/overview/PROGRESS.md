@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-26
 
-- Declarations completed: **140/293**
-- Next declaration: **#141 `Roth.le_index_sum`** (Roth/Index.lean:118)
+- Declarations completed: **141/293**
+- Next declaration: **#142 `Roth.weight_eq_finsuppWeight_div`** (Roth/Index.lean:130)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -159,10 +159,10 @@ Last regenerated: 2026-10-26
 | 138 | `Roth.index_nonneg` | Roth/Index.lean:93 | NO-composable-from-mathlib | [report](mathlibable/Roth.index_nonneg.md) |
 | 139 | `Roth.index_eq_zero_iff` | Roth/Index.lean:98 | NO-composable-from-mathlib | [report](mathlibable/Roth.index_eq_zero_iff.md) |
 | 140 | `Roth.index_sub_weight_le_index_hasseDeriv` | Roth/Index.lean:109 | NO-composable-from-mathlib | [report](mathlibable/Roth.index_sub_weight_le_index_hasseDeriv.md) |
+| 141 | `Roth.le_index_sum` | Roth/Index.lean:118 | NO-composable-from-mathlib | [report](mathlibable/Roth.le_index_sum.md) |
 
 ## Remaining declarations (in processing order)
 
-- #141 `Roth.le_index_sum` (Roth/Index.lean:118, public theorem)
 - #142 `Roth.weight_eq_finsuppWeight_div` (Roth/Index.lean:130, public theorem)
 - #143 `Roth.index_eq_weightedOrder_div` (Roth/Index.lean:143, public theorem)
 - #144 `Roth.index_mul` (Roth/Index.lean:162, public theorem)
