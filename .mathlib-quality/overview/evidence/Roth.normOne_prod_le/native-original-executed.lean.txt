@@ -1,0 +1,12 @@
+namespace MvPolynomial.NormProdAssessment
+variable {σ : Type*}
+#check @Roth.normOne_prod_le
+#print Roth.normOne_prod_le
+#print axioms Roth.normOne_prod_le
+#check @Finset.le_prod_of_submultiplicative_of_nonneg
+theorem replay {ι : Type*} (s : Finset ι) (f : ι → MvPolynomial σ ℤ) :
+    Roth.normOne (∏ i ∈ s, f i) ≤ ∏ i ∈ s, Roth.normOne (f i) :=
+  Finset.le_prod_of_submultiplicative_of_nonneg Roth.normOne Roth.normOne_nonneg
+    (by simpa using (Roth.normOne_monomial (0 : σ →₀ ℕ) 1).le) Roth.normOne_mul_le s f
+#print axioms replay
+end MvPolynomial.NormProdAssessment

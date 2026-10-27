@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 85/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 86/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 85; remaining: 208.
-- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 6 YES-but-generalise-first, 15 NO-mathlib-has-it, 28 BORDERLINE-needs-human, 9 SKIP.
+- Completed applicable assessments: 86; remaining: 207.
+- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 6 YES-but-generalise-first, 15 NO-mathlib-has-it, 29 BORDERLINE-needs-human, 9 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -909,6 +909,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: One explicit use in normOne_prod_le; full caller replay and direct proof-value audit of293 canonical declarations agree.
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.normOne_mul_le.md).
 
+### Completed: `Roth.normOne_prod_le`
+
+- Type: `∀ {σ : Type u_1} {ι : Type u_2} (s : Finset ι) (f : ι → MvPolynomial σ ℤ), Roth.normOne (∏ i ∈ s, f i) ≤ ∏ i ∈ s, Roth.normOne (f i)`
+- What: Coefficient L1 of a finite product is bounded by the product of coefficient L1 sizes.
+- How: Existing Finset nonnegative submultiplicative-map induction, using project nonnegative/unit/binary witnesses.
+- Hypotheses: Arbitrary variable and index types σ,ι; any finite s and polynomial family f; ℤ/ℝ fixed by normOne.
+- Project dependencies: Roth.normOne, Roth.normOne_nonneg, Roth.normOne_monomial, Roth.normOne_mul_le
+- Caller summary: One explicit caller normOne_det_le in same module; full caller replay and exact293 direct proof audit agree.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.normOne_prod_le.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -1105,6 +1115,8 @@ Completed `Roth.normOne_sum_le`: Existing Finset.le_sum_of_subadditive supplies 
 
 Completed `Roth.normOne_mul_le`: Existing convolution expansion, finite sums and scalar size identities; norm_mul_le needs an L1-compatible seminormed multiplication structure absent from tested environment.
 
+Completed `Roth.normOne_prod_le`: Finset.le_prod_of_submultiplicative_of_nonneg already supplies all finite induction. Finset.norm_prod_le requires compatible NormedCommRing and NormOneClass; no raw instance in tested environment.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -1276,6 +1288,8 @@ Completed `Roth.normOne_neg`: Standard norm sign invariance; existing Finsupp co
 Completed `Roth.normOne_sum_le`: Abstract subadditive finite-sum bound and norm_sum_le; direct existing theorem specializes once the project zero/triangle witnesses are supplied.
 
 Completed `Roth.normOne_mul_le`: Discrete Young L1 convolution inequality; standard normed-ring law is analogous but no verified representation bridge.
+
+Completed `Roth.normOne_prod_le`: Finite iteration of discrete Young coefficient L1 convolution bound; generic finite submultiplicative map bound already in mathlib.
 
 ## Part 5: Generalization opportunities
 
@@ -1452,6 +1466,8 @@ Completed `Roth.normOne_sum_le`: Fixed normOne interface maximal; expanded gener
 
 Completed `Roth.normOne_mul_le`: Verified expanded CommSemiring coefficient size with zero/subadditivity/submultiplicativity; parent fixed interface has no droppable hypotheses.
 
+Completed `Roth.normOne_prod_le`: Expanded genericProd verified over CommSemiring with nonnegative coefficient size, size1≤1 and zero/subadditive/submultiplicative laws; abstractProd verified arbitrary CommMonoid.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -1624,6 +1640,8 @@ Completed `Roth.normOne_neg`: None required for the verified replacement; new as
 Completed `Roth.normOne_sum_le`: Potential generic Finsupp sum subadditivity/coefficient-size bridge; existing finite induction itself has no gap.
 
 Completed `Roth.normOne_mul_le`: Candidate shared coefficient-size convolution/RingSeminorm API; broad AddMonoidAlgebra endpoint is a future design question.
+
+Completed `Roth.normOne_prod_le`: Substantive coefficient-size binary convolution/representation bridge, not finite-product induction.
 
 ## Part 7: Junk / removable
 
@@ -1800,6 +1818,8 @@ Completed `Roth.normOne_sum_le`: Not dead:4 occurrences in3 consumers. One-call 
 
 Completed `Roth.normOne_mul_le`: Live main-result helper; not dead or junk.
 
+Completed `Roth.normOne_prod_le`: Live helper for determinant norm estimate; no dead-code conclusion.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -1889,6 +1909,7 @@ Completed `Roth.normOne_mul_le`: Live main-result helper; not dead or junk.
 | 83 | `Roth.normOne_neg` | NO-composable-from-mathlib | [Report](.mathlib-quality/overview/mathlibable/Roth.normOne_neg.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.normOne_neg/root-acceptance.json) |
 | 84 | `Roth.normOne_sum_le` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.normOne_sum_le.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.normOne_sum_le/root-acceptance.json) |
 | 85 | `Roth.normOne_mul_le` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.normOne_mul_le.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.normOne_mul_le/root-acceptance.json) |
+| 86 | `Roth.normOne_prod_le` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.normOne_prod_le.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.normOne_prod_le/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -2058,12 +2079,14 @@ Completed `Roth.normOne_sum_le` action: BORDERLINE-needs-human: retain local fin
 
 Completed `Roth.normOne_mul_le` action: BORDERLINE: retain local API pending generic coefficient-size convolution/representation design; no production edit.
 
+Completed `Roth.normOne_prod_le` action: BORDERLINE: retain local wrapper pending shared coefficient-size API; inline existing finite induction in sole determinant caller if removing locally.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.normOne_prod_le` next. Supporting identities receive their own applicable checks.
+   `Roth.normOne_le_card_mul` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

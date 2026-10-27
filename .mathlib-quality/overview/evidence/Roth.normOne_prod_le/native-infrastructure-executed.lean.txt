@@ -1,0 +1,15 @@
+namespace MvPolynomial.NormProdInfrastructure
+variable {σ : Type*}
+#check @Finset.norm_prod_le
+#check @Finset.norm_prod_le'
+#check @Finset.le_prod_of_submultiplicative_of_nonneg
+#check_failure (inferInstance : Norm (MvPolynomial σ ℤ))
+#check_failure (inferInstance : NormedCommRing (MvPolynomial σ ℤ))
+theorem abstractProd {M : Type*} [CommMonoid M] (p : M → ℝ)
+    (hnonneg : ∀ a, 0 ≤ p a) (hone : p 1 ≤ 1)
+    (hmul : ∀ a b, p (a * b) ≤ p a * p b)
+    {ι : Type*} (s : Finset ι) (f : ι → M) :
+    p (∏ i ∈ s, f i) ≤ ∏ i ∈ s, p (f i) :=
+  Finset.le_prod_of_submultiplicative_of_nonneg p hnonneg hone hmul s f
+#print axioms abstractProd
+end MvPolynomial.NormProdInfrastructure

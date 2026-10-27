@@ -1,0 +1,83 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+import Mathlib.Algebra.Polynomial.CancelLeads
+import Mathlib.Algebra.MvPolynomial.PDeriv
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+import Mathlib.Algebra.MvPolynomial.Equiv
+#check_failure Roth.normOne_prod_le
+namespace NormProdRaw
+open MvPolynomial
+variable {σ R : Type*} [CommSemiring R]
+noncomputable def sizeSum (size : R → ℝ) (P : MvPolynomial σ R) : ℝ :=
+  P.coeff.sum fun _ r ↦ size r
+theorem triangle (size : R → ℝ) (hzero : size 0 = 0)
+    (hadd : ∀ a b, size (a + b) ≤ size a + size b) (P Q : MvPolynomial σ R) :
+    sizeSum size (P + Q) ≤ sizeSum size P + sizeSum size Q := by
+  classical
+  change (P.coeff + Q.coeff).sum (fun _ r ↦ size r) ≤
+    P.coeff.sum (fun _ r ↦ size r) + Q.coeff.sum (fun _ r ↦ size r)
+  rw [Finsupp.sum_of_support_subset _ Finsupp.support_add _ (fun _ _ ↦ hzero),
+    Finsupp.sum_of_support_subset _ Finset.subset_union_left _ (fun _ _ ↦ hzero),
+    Finsupp.sum_of_support_subset _ Finset.subset_union_right _ (fun _ _ ↦ hzero),
+    ← Finset.sum_add_distrib]
+  exact Finset.sum_le_sum fun i _ ↦ hadd _ _
+theorem finiteTriangle (size : R → ℝ) (hzero : size 0 = 0)
+    (hadd : ∀ a b, size (a + b) ≤ size a + size b)
+    {ι : Type*} (s : Finset ι) (f : ι → MvPolynomial σ R) :
+    sizeSum size (∑ i ∈ s, f i) ≤ ∑ i ∈ s, sizeSum size (f i) :=
+  Finset.le_sum_of_subadditive (sizeSum size) (by simp [sizeSum])
+    (triangle size hzero hadd) s f
+theorem monomialSize (size : R → ℝ) (hzero : size 0 = 0) (e : σ →₀ ℕ) (c : R) :
+    sizeSum size (monomial e c) = size c := by
+  change (Finsupp.single e c).sum (fun _ r ↦ size r) = size c
+  exact Finsupp.sum_single_index hzero
+theorem genericMul (size : R → ℝ) (hzero : size 0 = 0)
+    (hadd : ∀ a b, size (a + b) ≤ size a + size b)
+    (hmul : ∀ a b, size (a * b) ≤ size a * size b) (P Q : MvPolynomial σ R) :
+    sizeSum size (P * Q) ≤ sizeSum size P * sizeSum size Q := by
+  classical
+  rw [MvPolynomial.mul_def]
+  refine (finiteTriangle size hzero hadd _ _).trans ?_
+  rw [sizeSum, sizeSum, Finsupp.sum, Finsupp.sum, Finset.sum_mul_sum]
+  exact Finset.sum_le_sum fun a _ ↦ (finiteTriangle size hzero hadd _ _).trans <|
+    Finset.sum_le_sum fun b _ ↦ by
+      rw [monomialSize size hzero]
+      exact hmul _ _
+noncomputable def replacement (P : MvPolynomial σ ℤ) : ℝ :=
+  ∑ d ∈ P.support, |((P.coeff d : ℤ) : ℝ)|
+theorem direct (P Q : MvPolynomial σ ℤ) :
+    replacement (P * Q) ≤ replacement P * replacement Q := by
+  exact genericMul (fun z : ℤ ↦ |(z : ℝ)|) (by simp)
+    (fun a b ↦ by simpa using abs_add_le (a : ℝ) (b : ℝ))
+    (fun a b ↦ by simp [abs_mul]) P Q
+theorem genericProd (size : R → ℝ) (hzero : size 0 = 0)
+    (hnonneg : ∀ a, 0 ≤ size a) (hone : size 1 ≤ 1)
+    (hadd : ∀ a b, size (a + b) ≤ size a + size b)
+    (hmul : ∀ a b, size (a * b) ≤ size a * size b)
+    {ι : Type*} (s : Finset ι) (f : ι → MvPolynomial σ R) :
+    sizeSum size (∏ i ∈ s, f i) ≤ ∏ i ∈ s, sizeSum size (f i) := by
+  apply Finset.le_prod_of_submultiplicative_of_nonneg (sizeSum size)
+    (fun P ↦ Finset.sum_nonneg fun _ _ ↦ hnonneg _) _
+    (genericMul size hzero hadd hmul) s f
+  simpa only [← MvPolynomial.monomial_zero_one, monomialSize size hzero] using hone
+theorem directProd {ι : Type*} (s : Finset ι) (f : ι → MvPolynomial σ ℤ) :
+    replacement (∏ i ∈ s, f i) ≤ ∏ i ∈ s, replacement (f i) := by
+  exact genericProd (fun z : ℤ ↦ |(z : ℝ)|) (by simp) (fun _ ↦ abs_nonneg _)
+    (by simp) (fun a b ↦ by simpa using abs_add_le (a : ℝ) (b : ℝ))
+    (fun a b ↦ by simp [abs_mul]) s f
+#check @Finset.le_prod_of_submultiplicative_of_nonneg
+#print axioms triangle
+#print axioms finiteTriangle
+#print axioms monomialSize
+#print axioms genericMul
+#print axioms direct
+#print axioms genericProd
+#print axioms directProd
+end NormProdRaw

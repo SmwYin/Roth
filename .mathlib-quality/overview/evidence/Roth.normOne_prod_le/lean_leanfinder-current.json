@@ -1,0 +1,85 @@
+{
+  "method": "lean_leanfinder",
+  "form": "current",
+  "request": {
+    "query": "The sum of absolute values of coefficients of a finite product of multivariate integer polynomials is at most the product of their coefficient sums",
+    "num_results": 8
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"MvPolynomial.degrees_prod_le\",\n      \"informal_name\": \"Product Degrees Inequality in Multivariate Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] {ι : Type u_3} {s : Finset ι} {f : ι → MvPolynomial σ R},\\n  (∏ i ∈ s, f i).degrees ≤ ∑ i ∈ s, (f i).degrees\",\n      \"informal_description\": \"For any finite set $ s $ of indices and a family of multivariate polynomials $ f_i $ over $ \\\\sigma $ with coefficients in a commutative semiring $ R $, the multiset of variables in the product $ \\\\prod_{i \\\\in s} f_i $ is less than or equal to the sum of the variable multisets of each $ f_i $. This partial order denotes submultiset inclusion, meaning every variable in the product's multiset appears with multiplicity no greater than its total multiplicity in the summed multisets.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Degrees\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.totalDegree_list_prod\",\n      \"informal_name\": \"Total Degree of Product of Multivariate Polynomials ≤ Sum of Total Degrees\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] (l : List (MvPolynomial σ R)),\\n  l.prod.totalDegree ≤ (List.map MvPolynomial.totalDegree l).sum\",\n      \"informal_description\": \"For any list of multivariate polynomials $ l $, the total degree of their product is less than or equal to the sum of their individual total degrees, i.e., $\\\\deg_{\\\\text{total}}\\\\left(\\\\prod_{p \\\\in l} p\\\\right) \\\\leq \\\\sum_{p \\\\in l} \\\\deg_{\\\\text{total}}(p)$.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Degrees\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.totalDegree_finset_prod\",\n      \"informal_name\": \"Total Degree of Product of Multivariate Polynomials is at Most Sum of Total Degrees\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] {ι : Type u_3} (s : Finset ι) (f : ι → MvPolynomial σ R),\\n  (s.prod f).totalDegree ≤ ∑ i ∈ s, (f i).totalDegree\",\n      \"informal_description\": \"For any finite set $ s $ of indices and any function $ f $ assigning a multivariate polynomial $ f(i) $ in variables $ \\\\sigma $ over a commutative semiring $ R $ to each index $ i \\\\in s $, the total degree of the product $ \\\\prod_{i \\\\in s} f(i) $ is less than or equal to the sum $ \\\\sum_{i \\\\in s} \\\\deg(f(i)) $, where $ \\\\deg(f(i)) $ denotes the total degree of $ f(i) $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Degrees\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.degreeOf_prod_le\",\n      \"informal_name\": \"Degree of Product of Polynomials in a Variable is Bounded by Sum of Degrees\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] {ι : Type u_3} (i : σ) (s : Finset ι) (f : ι → MvPolynomial σ R),\\n  MvPolynomial.degreeOf i (∏ j ∈ s, f j) ≤ ∑ j ∈ s, MvPolynomial.degreeOf i (f j)\",\n      \"informal_description\": \"For any variable $ i $, finite set $ s $, and family of polynomials $ f $, the total degree of the product $ \\\\prod_{j \\\\in s} f(j) $ in $ i $ is less than or equal to the sum of the total degrees of each $ f(j) $ in $ i $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Degrees\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.totalDegree_multiset_prod\",\n      \"informal_name\": \"Total Degree of Multiset Product of Multivariate Polynomials is Bounded by Sum of Degrees\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] (s : Multiset (MvPolynomial σ R)),\\n  s.prod.totalDegree ≤ (Multiset.map MvPolynomial.totalDegree s).sum\",\n      \"informal_description\": \"For any multiset $ s $ of multivariate polynomials over a commutative semiring $ R $ with variables indexed by $ \\\\sigma $, the total degree of the product of all elements in $ s $ is less than or equal to the sum of the total degrees of the individual polynomials in $ s $. Formally, $ \\\\deg\\\\left(\\\\prod_{p \\\\in s} p\\\\right) \\\\leq \\\\sum_{p \\\\in s} \\\\deg(p) $, where $ \\\\deg $ denotes the total degree.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Degrees\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.schwartz_zippel_sup_sum\",\n      \"informal_name\": \"Schwartz-Zippel Lemma: Root Bound via Supremum of Exponent Ratios\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] [IsDomain R] [inst_2 : DecidableEq R] {n : ℕ} {p : MvPolynomial (Fin n) R},\\n  p ≠ 0 →\\n    ∀ (S : Fin n → Finset R),\\n      ↑{x ∈ Fintype.piFinset fun i => S i | (MvPolynomial.eval x) p = 0}.card / ∏ i, ↑(S i).card ≤\\n        p.support.sup fun s => ∑ i, ↑(s i) / ↑(S i).card\",\n      \"informal_description\": \"For any non-zero multivariate polynomial $ p $ in $ n $ variables over a commutative semiring $ R $, and for any finite subsets $ S_i \\\\subseteq R $ for each variable, the ratio of the number of roots of $ p $ in the product set $ S_1 \\\\times \\\\cdots \\\\times S_n $ to the product of the cardinalities $ \\\\prod_{i=1}^n |S_i| $ is at most the supremum over all monomials $ s $ in the support of $ p $ of the sum $ \\\\sum_{i=1}^n \\\\frac{s_i}{|S_i|} $, where $ s_i $ denotes the exponent of the $ i $-th variable in the monomial $ s $. All divisions are performed in the non-negative rational numbers $ \\\\mathbb{Q}_{\\\\geq 0} $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.SchwartzZippel\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.schwartz_zippel_sum_degreeOf\",\n      \"informal_name\": \"Schwartz-Zippel Inequality for Multivariate Polynomials with Sum of Degrees\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] [IsDomain R] [inst_2 : DecidableEq R] {n : ℕ} {p : MvPolynomial (Fin n) R},\\n  p ≠ 0 →\\n    ∀ (S : Fin n → Finset R),\\n      ↑{x ∈ Fintype.piFinset fun i => S i | (MvPolynomial.eval x) p = 0}.card / ∏ i, ↑(S i).card ≤\\n        ∑ i, ↑(MvPolynomial.degreeOf i p) / ↑(S i).card\",\n      \"informal_description\": \"For a non-zero multivariate polynomial $ p $ in $ n $ variables over a commutative semiring $ R $, and finite sets $ S_i \\\\subseteq R $ for each variable $ i $, the ratio of the number of roots of $ p $ in the Cartesian product $ S_1 \\\\times \\\\cdots \\\\times S_n $ to the product of the sizes $ \\\\prod_{i=1}^n |S_i| $ is at most the sum of the degrees of $ p $ in each variable divided by the corresponding $ |S_i| $. Formally, $$\\\\frac{\\\\#\\\\{x \\\\in S_1 \\\\times \\\\cdots \\\\times S_n \\\\mid p(x) = 0\\\\}}{\\\\prod_{i=1}^n |S_i|} \\\\leq \\\\sum_{i=1}^n \\\\frac{\\\\deg_i(p)}{|S_i|},$$ where $ \\\\deg_i(p) $ denotes the total degree of $ p $ in variable $ i $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.SchwartzZippel\"\n    },\n    {\n      \"formal_name\": \"Polynomial.natDegree_prod_le\",\n      \"informal_name\": \"Natural Degree of Polynomial Product Inequality: $\\\\operatorname{nat-degree}(\\\\prod_{i \\\\in s} f(i)) \\\\leq \\\\sum_{i \\\\in s} \\\\operatorname{nat-degree}(f(i))$\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {ι : Type w} (s : Finset ι) [inst : CommSemiring R] (f : ι → Polynomial R),\\n  (∏ i ∈ s, f i).natDegree ≤ ∑ i ∈ s, (f i).natDegree\",\n      \"informal_description\": \"For any commutative semiring $ R $, and for any finite set $ s $ and function $ f : s \\\\to R[X] $, the natural degree of the product of the polynomials $ f(i) $ for $ i \\\\in s $ is less than or equal to the sum of the natural degrees of each $ f(i) $. Symbolically, $ \\\\operatorname{nat-degree}\\\\left( \\\\prod_{i \\\\in s} f(i) \\\\right) \\\\leq \\\\sum_{i \\\\in s} \\\\operatorname{nat-degree}(f(i)) $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.BigOperators\"\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "items": [
+        {
+          "formal_name": "MvPolynomial.degrees_prod_le",
+          "informal_name": "Product Degrees Inequality in Multivariate Polynomials",
+          "kind": "theorem",
+          "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] {ι : Type u_3} {s : Finset ι} {f : ι → MvPolynomial σ R},\n  (∏ i ∈ s, f i).degrees ≤ ∑ i ∈ s, (f i).degrees",
+          "informal_description": "For any finite set $ s $ of indices and a family of multivariate polynomials $ f_i $ over $ \\sigma $ with coefficients in a commutative semiring $ R $, the multiset of variables in the product $ \\prod_{i \\in s} f_i $ is less than or equal to the sum of the variable multisets of each $ f_i $. This partial order denotes submultiset inclusion, meaning every variable in the product's multiset appears with multiplicity no greater than its total multiplicity in the summed multisets.",
+          "path": "Mathlib.Algebra.MvPolynomial.Degrees"
+        },
+        {
+          "formal_name": "MvPolynomial.totalDegree_list_prod",
+          "informal_name": "Total Degree of Product of Multivariate Polynomials ≤ Sum of Total Degrees",
+          "kind": "theorem",
+          "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] (l : List (MvPolynomial σ R)),\n  l.prod.totalDegree ≤ (List.map MvPolynomial.totalDegree l).sum",
+          "informal_description": "For any list of multivariate polynomials $ l $, the total degree of their product is less than or equal to the sum of their individual total degrees, i.e., $\\deg_{\\text{total}}\\left(\\prod_{p \\in l} p\\right) \\leq \\sum_{p \\in l} \\deg_{\\text{total}}(p)$.",
+          "path": "Mathlib.Algebra.MvPolynomial.Degrees"
+        },
+        {
+          "formal_name": "MvPolynomial.totalDegree_finset_prod",
+          "informal_name": "Total Degree of Product of Multivariate Polynomials is at Most Sum of Total Degrees",
+          "kind": "theorem",
+          "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] {ι : Type u_3} (s : Finset ι) (f : ι → MvPolynomial σ R),\n  (s.prod f).totalDegree ≤ ∑ i ∈ s, (f i).totalDegree",
+          "informal_description": "For any finite set $ s $ of indices and any function $ f $ assigning a multivariate polynomial $ f(i) $ in variables $ \\sigma $ over a commutative semiring $ R $ to each index $ i \\in s $, the total degree of the product $ \\prod_{i \\in s} f(i) $ is less than or equal to the sum $ \\sum_{i \\in s} \\deg(f(i)) $, where $ \\deg(f(i)) $ denotes the total degree of $ f(i) $.",
+          "path": "Mathlib.Algebra.MvPolynomial.Degrees"
+        },
+        {
+          "formal_name": "MvPolynomial.degreeOf_prod_le",
+          "informal_name": "Degree of Product of Polynomials in a Variable is Bounded by Sum of Degrees",
+          "kind": "theorem",
+          "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] {ι : Type u_3} (i : σ) (s : Finset ι) (f : ι → MvPolynomial σ R),\n  MvPolynomial.degreeOf i (∏ j ∈ s, f j) ≤ ∑ j ∈ s, MvPolynomial.degreeOf i (f j)",
+          "informal_description": "For any variable $ i $, finite set $ s $, and family of polynomials $ f $, the total degree of the product $ \\prod_{j \\in s} f(j) $ in $ i $ is less than or equal to the sum of the total degrees of each $ f(j) $ in $ i $.",
+          "path": "Mathlib.Algebra.MvPolynomial.Degrees"
+        },
+        {
+          "formal_name": "MvPolynomial.totalDegree_multiset_prod",
+          "informal_name": "Total Degree of Multiset Product of Multivariate Polynomials is Bounded by Sum of Degrees",
+          "kind": "theorem",
+          "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] (s : Multiset (MvPolynomial σ R)),\n  s.prod.totalDegree ≤ (Multiset.map MvPolynomial.totalDegree s).sum",
+          "informal_description": "For any multiset $ s $ of multivariate polynomials over a commutative semiring $ R $ with variables indexed by $ \\sigma $, the total degree of the product of all elements in $ s $ is less than or equal to the sum of the total degrees of the individual polynomials in $ s $. Formally, $ \\deg\\left(\\prod_{p \\in s} p\\right) \\leq \\sum_{p \\in s} \\deg(p) $, where $ \\deg $ denotes the total degree.",
+          "path": "Mathlib.Algebra.MvPolynomial.Degrees"
+        },
+        {
+          "formal_name": "MvPolynomial.schwartz_zippel_sup_sum",
+          "informal_name": "Schwartz-Zippel Lemma: Root Bound via Supremum of Exponent Ratios",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} [inst : CommRing R] [IsDomain R] [inst_2 : DecidableEq R] {n : ℕ} {p : MvPolynomial (Fin n) R},\n  p ≠ 0 →\n    ∀ (S : Fin n → Finset R),\n      ↑{x ∈ Fintype.piFinset fun i => S i | (MvPolynomial.eval x) p = 0}.card / ∏ i, ↑(S i).card ≤\n        p.support.sup fun s => ∑ i, ↑(s i) / ↑(S i).card",
+          "informal_description": "For any non-zero multivariate polynomial $ p $ in $ n $ variables over a commutative semiring $ R $, and for any finite subsets $ S_i \\subseteq R $ for each variable, the ratio of the number of roots of $ p $ in the product set $ S_1 \\times \\cdots \\times S_n $ to the product of the cardinalities $ \\prod_{i=1}^n |S_i| $ is at most the supremum over all monomials $ s $ in the support of $ p $ of the sum $ \\sum_{i=1}^n \\frac{s_i}{|S_i|} $, where $ s_i $ denotes the exponent of the $ i $-th variable in the monomial $ s $. All divisions are performed in the non-negative rational numbers $ \\mathbb{Q}_{\\geq 0} $.",
+          "path": "Mathlib.Algebra.MvPolynomial.SchwartzZippel"
+        },
+        {
+          "formal_name": "MvPolynomial.schwartz_zippel_sum_degreeOf",
+          "informal_name": "Schwartz-Zippel Inequality for Multivariate Polynomials with Sum of Degrees",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} [inst : CommRing R] [IsDomain R] [inst_2 : DecidableEq R] {n : ℕ} {p : MvPolynomial (Fin n) R},\n  p ≠ 0 →\n    ∀ (S : Fin n → Finset R),\n      ↑{x ∈ Fintype.piFinset fun i => S i | (MvPolynomial.eval x) p = 0}.card / ∏ i, ↑(S i).card ≤\n        ∑ i, ↑(MvPolynomial.degreeOf i p) / ↑(S i).card",
+          "informal_description": "For a non-zero multivariate polynomial $ p $ in $ n $ variables over a commutative semiring $ R $, and finite sets $ S_i \\subseteq R $ for each variable $ i $, the ratio of the number of roots of $ p $ in the Cartesian product $ S_1 \\times \\cdots \\times S_n $ to the product of the sizes $ \\prod_{i=1}^n |S_i| $ is at most the sum of the degrees of $ p $ in each variable divided by the corresponding $ |S_i| $. Formally, $$\\frac{\\#\\{x \\in S_1 \\times \\cdots \\times S_n \\mid p(x) = 0\\}}{\\prod_{i=1}^n |S_i|} \\leq \\sum_{i=1}^n \\frac{\\deg_i(p)}{|S_i|},$$ where $ \\deg_i(p) $ denotes the total degree of $ p $ in variable $ i $.",
+          "path": "Mathlib.Algebra.MvPolynomial.SchwartzZippel"
+        },
+        {
+          "formal_name": "Polynomial.natDegree_prod_le",
+          "informal_name": "Natural Degree of Polynomial Product Inequality: $\\operatorname{nat-degree}(\\prod_{i \\in s} f(i)) \\leq \\sum_{i \\in s} \\operatorname{nat-degree}(f(i))$",
+          "kind": "theorem",
+          "type": "∀ {R : Type u} {ι : Type w} (s : Finset ι) [inst : CommSemiring R] (f : ι → Polynomial R),\n  (∏ i ∈ s, f i).natDegree ≤ ∑ i ∈ s, (f i).natDegree",
+          "informal_description": "For any commutative semiring $ R $, and for any finite set $ s $ and function $ f : s \\to R[X] $, the natural degree of the product of the polynomials $ f(i) $ for $ i \\in s $ is less than or equal to the sum of the natural degrees of each $ f(i) $. Symbolically, $ \\operatorname{nat-degree}\\left( \\prod_{i \\in s} f(i) \\right) \\leq \\sum_{i \\in s} \\operatorname{nat-degree}(f(i)) $.",
+          "path": "Mathlib.Algebra.Polynomial.BigOperators"
+        }
+      ]
+    },
+    "isError": false
+  }
+}

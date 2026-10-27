@@ -1,0 +1,21 @@
+{
+  "declaration": "Roth.normOne_prod_le",
+  "kind": "theorem",
+  "type": "∀ {σ : Type u_1} {ι : Type u_2} (s : Finset ι) (f : ι → MvPolynomial σ ℤ), Roth.normOne (∏ i ∈ s, f i) ≤ ∏ i ∈ s, Roth.normOne (f i)",
+  "what": "Coefficient L1 of a finite product is bounded by the product of coefficient L1 sizes.",
+  "how": "Existing Finset nonnegative submultiplicative-map induction, using project nonnegative/unit/binary witnesses.",
+  "hypotheses": "Arbitrary variable and index types σ,ι; any finite s and polynomial family f; ℤ/ℝ fixed by normOne.",
+  "project_dependencies": [
+    "Roth.normOne",
+    "Roth.normOne_nonneg",
+    "Roth.normOne_monomial",
+    "Roth.normOne_mul_le"
+  ],
+  "caller_summary": "One explicit caller normOne_det_le in same module; full caller replay and exact293 direct proof audit agree.",
+  "mathlib_api_audit": "Finset.le_prod_of_submultiplicative_of_nonneg already supplies all finite induction. Finset.norm_prod_le requires compatible NormedCommRing and NormOneClass; no raw instance in tested environment.",
+  "moral_duplications": "Finite iteration of discrete Young coefficient L1 convolution bound; generic finite submultiplicative map bound already in mathlib.",
+  "generalization": "Expanded genericProd verified over CommSemiring with nonnegative coefficient size, size1≤1 and zero/subadditive/submultiplicative laws; abstractProd verified arbitrary CommMonoid.",
+  "missing_api": "Substantive coefficient-size binary convolution/representation bridge, not finite-product induction.",
+  "junk": "Live helper for determinant norm estimate; no dead-code conclusion.",
+  "action": "BORDERLINE: retain local wrapper pending shared coefficient-size API; inline existing finite induction in sole determinant caller if removing locally."
+}
