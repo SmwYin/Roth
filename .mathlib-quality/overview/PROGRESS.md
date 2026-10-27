@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-27
 
-- Declarations completed: **245/293**
-- Next declaration: **#246 `Roth.ncard_boxFamily`** (Roth/MainLemma.lean:311)
+- Declarations completed: **246/293**
+- Next declaration: **#247 `Roth.floor_rpow_count_lt_aux`** (Roth/MainLemma.lean:320)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -264,10 +264,10 @@ Last regenerated: 2026-10-27
 | 243 | `Roth.boxFamily` | Roth/MainLemma.lean:275 | NO-composable-from-mathlib | [report](mathlibable/Roth.boxFamily.md) |
 | 244 | `Roth.boxFamily_eq_image_finsupp_aux` | Roth/MainLemma.lean:280 | SKIP | [report](mathlibable/Roth.boxFamily_eq_image_finsupp_aux.md) |
 | 245 | `Roth.boxFamily_finite` | Roth/MainLemma.lean:301 | YES-but-generalise-first | [report](mathlibable/Roth.boxFamily_finite.md) |
+| 246 | `Roth.ncard_boxFamily` | Roth/MainLemma.lean:311 | YES-but-generalise-first | [report](mathlibable/Roth.ncard_boxFamily.md) |
 
 ## Remaining declarations (in processing order)
 
-- #246 `Roth.ncard_boxFamily` (Roth/MainLemma.lean:311, public theorem)
 - #247 `Roth.floor_rpow_count_lt_aux` (Roth/MainLemma.lean:320, private lemma)
 - #248 `Roth.pigeonhole_count` (Roth/MainLemma.lean:334, public theorem)
 - #249 `Roth.exists_ne_modByMonic_eq` (Roth/MainLemma.lean:359, public theorem)
