@@ -1,0 +1,36 @@
+namespace IndexEqZero139
+universe u v
+theorem nonnegativeBridge {A : Type u} {R : Type v} [Semiring R]
+    (D : A → ℝ) (P : AddMonoidAlgebra R A) (hD : ∀ a, 0 ≤ D a) :
+    (AddMonoidAlgebra.infDegree (fun a ↦ (D a : WithTop ℝ)) P).untopD 0 =
+      (((AddMonoidAlgebra.infDegree
+        (fun a ↦ WithTop.some (NNReal.mk (D a) (hD a))) P).untopD 0 : NNReal) : ℝ) := by
+  classical
+  rcases P.coeff.support.eq_empty_or_nonempty with hs | hs
+  · simp only [AddMonoidAlgebra.infDegree, hs, Finset.inf_empty, WithTop.untopD_top,
+      NNReal.coe_zero]
+  · change (P.coeff.support.inf (WithTop.some ∘ D)).untopD 0 =
+      (((P.coeff.support.inf
+        (WithTop.some ∘ (fun a ↦ NNReal.mk (D a) (hD a)))).untopD 0 : NNReal) : ℝ)
+    rw [← Finset.coe_inf' hs D,
+      ← Finset.coe_inf' hs (fun a ↦ NNReal.mk (D a) (hD a)), WithTop.untopD_coe,
+      WithTop.untopD_coe]
+    exact (Finset.apply_inf'_eq_inf'_comp hs (fun x : NNReal ↦ (x : ℝ))
+      (fun _ _ ↦ rfl)).symm
+
+theorem nonnegativeZeroBridge {A : Type u} {R : Type v} [Semiring R]
+    (D : A → ℝ) (P : AddMonoidAlgebra R A) (hD : ∀ a, 0 ≤ D a)
+    (hs : P.coeff.support.Nonempty) :
+    (AddMonoidAlgebra.infDegree (fun a ↦ (D a : WithTop ℝ)) P).untopD 0 = 0 ↔
+      AddMonoidAlgebra.infDegree
+        (fun a ↦ WithTop.some (NNReal.mk (D a) (hD a))) P = ⊥ := by
+  rw [nonnegativeBridge D P hD]
+  change (((P.coeff.support.inf
+    (WithTop.some ∘ (fun a ↦ NNReal.mk (D a) (hD a)))).untopD 0 : NNReal) : ℝ) = 0 ↔ _
+  rw [← Finset.coe_inf' hs (fun a ↦ NNReal.mk (D a) (hD a)), WithTop.untopD_coe]
+  change _ ↔ P.coeff.support.inf (WithTop.some ∘ (fun a ↦ NNReal.mk (D a) (hD a))) = 0
+  rw [← Finset.coe_inf' hs (fun a ↦ NNReal.mk (D a) (hD a))]
+  simp only [WithTop.coe_eq_zero, NNReal.coe_eq_zero]
+#print axioms nonnegativeBridge
+#print axioms nonnegativeZeroBridge
+end IndexEqZero139

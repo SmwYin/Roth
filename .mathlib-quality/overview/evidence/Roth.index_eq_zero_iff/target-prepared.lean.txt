@@ -1,0 +1,35 @@
+namespace IndexEqZeroTarget139
+open MvPolynomial Roth
+universe u
+theorem originalReplacement {σ : Type u} [Fintype σ] {P : MvPolynomial σ ℝ}
+    (hP : P ≠ 0) {r : σ → ℕ} (hr : ∀ j, 0 < r j) (α : σ → ℝ) :
+    Roth.index P α r = 0 ↔ eval α P ≠ 0 := by
+  rw [IndexConsumers133.targetBridge]
+  have hs : (taylor α P).coeff.support.Nonempty := by simpa using hP
+  have h := IndexEqZero139.projectedLaw (Roth.weight r) (taylor α P) 0 hs
+    (Roth.weight_nonneg r) (fun d ↦ Roth.weight_eq_zero_iff hr)
+  change _ = 0 ↔ coeff 0 (taylor α P) ≠ 0 at h
+  simpa only [coeff_taylor, hasseDeriv_zero_apply] using h
+
+theorem zeroPolynomialGuard :
+    Roth.index (0 : MvPolynomial Unit ℝ) (fun _ ↦ 0) (fun _ ↦ 1) = 0 ∧
+      eval (fun _ ↦ 0) (0 : MvPolynomial Unit ℝ) = 0 := by
+  simp [Roth.index]
+
+theorem zeroWeightGuard :
+    Roth.index (X () : MvPolynomial Unit ℝ) (fun _ ↦ 0) (fun _ ↦ 0) = 0 ∧
+      eval (fun _ ↦ 0) (X () : MvPolynomial Unit ℝ) = 0 ∧
+      (X () : MvPolynomial Unit ℝ) ≠ 0 := by
+  simp [Roth.index, Roth.weight]
+
+theorem mixedZeroWeightGuard :
+    Roth.index (X false : MvPolynomial Bool ℝ) (fun _ ↦ 0)
+      (fun b ↦ if b then 1 else 0) = 0 ∧
+      eval (fun _ ↦ 0) (X false : MvPolynomial Bool ℝ) = 0 ∧
+      (X false : MvPolynomial Bool ℝ) ≠ 0 := by
+  simp [Roth.index, Roth.weight, taylor_X]
+#print axioms originalReplacement
+#print axioms zeroPolynomialGuard
+#print axioms zeroWeightGuard
+#print axioms mixedZeroWeightGuard
+end IndexEqZeroTarget139

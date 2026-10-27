@@ -1,0 +1,41 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+#check_failure Roth.index_eq_zero_iff
+namespace IndexEqZero139
+universe u v w
+#check @Finset.inf_eq_bot_iff
+#check @Finset.inf_le_iff
+#check @Finset.le_inf_iff
+#check @Finset.coe_inf'
+theorem abstractLaw {A : Type u} {R : Type v} {T : Type w} [Semiring R]
+    [LinearOrder T] [BoundedOrder T] [Nontrivial T] (D : A → T)
+    (P : AddMonoidAlgebra R A) (a₀ : A) (hD : ∀ a, D a = ⊥ ↔ a = a₀) :
+    AddMonoidAlgebra.infDegree D P = ⊥ ↔ P.coeff a₀ ≠ 0 := by
+  simpa only [AddMonoidAlgebra.infDegree, hD, exists_eq_right, Finsupp.mem_support_iff]
+    using (Finset.inf_eq_bot_iff (s := P.coeff.support) (f := D))
+theorem projectedLaw {A : Type u} {R : Type v} [Semiring R]
+    (D : A → ℝ) (P : AddMonoidAlgebra R A) (a₀ : A)
+    (hs : P.coeff.support.Nonempty) (hD : ∀ a, 0 ≤ D a)
+    (hz : ∀ a, D a = 0 ↔ a = a₀) :
+    (AddMonoidAlgebra.infDegree (fun a ↦ (D a : WithTop ℝ)) P).untopD 0 = 0 ↔
+      P.coeff a₀ ≠ 0 := by
+  classical
+  change (P.coeff.support.inf (WithTop.some ∘ D)).untopD 0 = 0 ↔ _
+  rw [← Finset.coe_inf' hs D, WithTop.untopD_coe]
+  have hn : 0 ≤ P.coeff.support.inf' hs D :=
+    (Finset.le_inf'_iff hs D).mpr fun a _ ↦ hD a
+  rw [show P.coeff.support.inf' hs D = 0 ↔ P.coeff.support.inf' hs D ≤ 0 from
+    ⟨fun h ↦ h.le, fun h ↦ h.antisymm hn⟩]
+  simpa only [le_antisymm_iff, hz, exists_eq_right, Finsupp.mem_support_iff] using
+    (show P.coeff.support.inf' hs D ≤ 0 ↔ ∃ a ∈ P.coeff.support, D a = 0 from by
+      rw [Finset.inf'_le_iff]
+      exact exists_congr fun a ↦ and_congr_right fun _ ↦
+        ⟨fun h ↦ h.antisymm (hD a), fun h ↦ h.le⟩)
+#print axioms abstractLaw
+#print axioms projectedLaw
+end IndexEqZero139

@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 138/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 139/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 138; remaining: 155.
-- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 17 YES-but-generalise-first, 26 NO-mathlib-has-it, 42 BORDERLINE-needs-human, 26 SKIP.
+- Completed applicable assessments: 139; remaining: 154.
+- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 17 YES-but-generalise-first, 27 NO-mathlib-has-it, 42 BORDERLINE-needs-human, 26 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -1527,6 +1527,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: Three applications in three declarations: Index.index_eq_zero_iff, Theta.Θ_nonneg and Theta.sum_max_sub_le_index_det; K=2 external-to-file applications in one module. Canonical kernel-value audit independently finds the same three direct consumers.
 - Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/Roth.index_nonneg.md).
 
+### Completed: `Roth.index_eq_zero_iff`
+
+- Type: `Roth.index_eq_zero_iff.{u_1} {σ : Type u_1} [Fintype σ] {P : MvPolynomial σ ℝ} (hP : P ≠ 0) {r : σ → ℕ} (hr : ∀ j, 0 < r j) (α : σ → ℝ) : Roth.index P α r = 0 ↔ (MvPolynomial.eval α) P ≠ 0`
+- What: A nonzero polynomial has weighted index0 at a point iff its evaluation there is nonzero, for positive natural denominator parameters.
+- How: Attain the support minimum; nonnegative positive weights have zero only at exponent0; Hasse derivative0 is identity. Converse uses weight0 and nonnegativity.
+- Hypotheses: Fintype σ: fixed parent global sum; hP: essential under default0; actual zero-polynomial counterexample; hr: essential for uniform iff; actual Unit X and Bool mixedzero polynomial counterexamples; α: arbitrary center; empty σ allowed
+- Project dependencies: Roth.exists_weight_eq_index, Roth.weight_eq_zero_iff, Roth.index_nonneg, Roth.index_le_weight, MvPolynomial.hasseDeriv_zero_apply, Roth.index, Roth.weight, MvPolynomial.taylor
+- Caller summary: explicit applications: 1; declarations: Roth.index_prod; external to declaring file: 0; direct kernel value consumers: 1; simp: False; scope: source inventory and direct kernel values, not opaque/transitive/simp closure
+- Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/Roth.index_eq_zero_iff.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -1829,6 +1839,8 @@ Completed `Roth.le_index_iff`: Finset.le_inf_iff, generated dual at Data/Finset/
 
 Completed `Roth.index_nonneg`: Finite-inf lower-bound introduction Finset.le_inf_iff.mpr already supplies the analogous nonnegativity law on infDegree under support-local nonnegative degrees; Real.sInf_nonneg is exact order-theoretic engine of old proof. Finset.le_inf′_iff, coe_inf′ and WithTop.untopD_coe/top preserve zero-default projection.
 
+Completed `Roth.index_eq_zero_iff`: existing: Finset.inf_eq_bot_iff on AddMonoidAlgebra.infDegree; native: isolated abstract/general real laws; actual parent bridge; nonnegative NNReal recoding; bounded actual replacement; full Index consumer replay; old form call count: more than3 including normalization and project API; not claimed mathlib-only one-call; abstract call count: one finite-inf criterion plus exists_eq_right and Finsupp.mem_support_iff normalization
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -2106,6 +2118,8 @@ Completed `Roth.exists_weight_eq_index`: Attainment of a finite nonempty support
 Completed `Roth.le_index_iff`: Finite meet lower-bound universal property, not a new theorem about derivatives.
 
 Completed `Roth.index_nonneg`: Finite infimum preserves a common lower bound. Polynomial and point data select the finite support but add no order-theoretic content.
+
+Completed `Roth.index_eq_zero_iff`: Finite support minimum equals bottom iff a supported degree is bottom, Taylor constant coefficient is evaluation at center
 
 ## Part 5: Generalization opportunities
 
@@ -2388,6 +2402,8 @@ Completed `Roth.le_index_iff`: Verified arbitrary Semiring coefficients, arbitra
 
 Completed `Roth.index_nonneg`: Verified Semiring coefficient carrier with arbitrary support index type, arbitrary degree map to SemilatticeInf+OrderTop and arbitrary lower bound c. Projected real nonnegative law verified for all P with support-local nonnegative D.
 
+Completed `Roth.index_eq_zero_iff`: Expanded arbitrary Semiring coefficients/support carrier/distinguished exponent/bounded linear target; degree bottom iff distinguished exponent. Real degrees need nonnegativity and zero-fiber control; no unchanged-parent mechanical drop.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -2666,6 +2682,8 @@ Completed `Roth.exists_weight_eq_index`: No missing generic attained-minimum law
 Completed `Roth.le_index_iff`: No missing lower-bound law on infDegree. Parent coefficient/translation and real-default bridge are normalization API separately assessed.
 
 Completed `Roth.index_nonneg`: No missing nonnegative-support lower-bound law on infDegree; project normalization bridge is actual new proof, not an existing mathlib call.
+
+Completed `Roth.index_eq_zero_iff`: No missing generic finite-infimum bottom criterion; real/NNReal/Taylor bridges are new normalization proofs.
 
 ## Part 7: Junk / removable
 
@@ -2948,6 +2966,8 @@ Completed `Roth.le_index_iff`: Not dead: four consumers/five uses; not simp. Spe
 
 Completed `Roth.index_nonneg`: Not dead; three consumers, not a simp theorem. Useful manuscript-facing local convenience, no upstream theorem gap.
 
+Completed `Roth.index_eq_zero_iff`: Used local manuscript convenience API, not dead code; redundant upstream after parent re-aim.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -3090,6 +3110,7 @@ Completed `Roth.index_nonneg`: Not dead; three consumers, not a simp theorem. Us
 | 136 | `Roth.exists_weight_eq_index` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_weight_eq_index.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_weight_eq_index/root-acceptance.json) |
 | 137 | `Roth.le_index_iff` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.le_index_iff.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.le_index_iff/root-acceptance.json) |
 | 138 | `Roth.index_nonneg` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.index_nonneg.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.index_nonneg/root-acceptance.json) |
+| 139 | `Roth.index_eq_zero_iff` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.index_eq_zero_iff.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.index_eq_zero_iff/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -3365,12 +3386,14 @@ Completed `Roth.le_index_iff` action: NO-mathlib-has-it via parent re-aim. Migra
 
 Completed `Roth.index_nonneg` action: NO-mathlib-has-it via independently verified parent re-aim. Migrate parent/shared projection bridge; use existing finite-inf lower-bound law at each of three applications and preserve surrounding antisymmetry, supremum and determinant arithmetic. Alternative destination Roth/Index.lean local convenience API.
 
+Completed `Roth.index_eq_zero_iff` action: After sharing parent projection and NNReal recoding bridges replace index_prod empty-product iff .2 application with existing finite-inf criterion and evaluation1 normalization; delete wrapper or retain project-local in Roth/Index.lean.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.index_eq_zero_iff` next. Supporting identities receive their own applicable checks.
+   `Roth.index_sub_weight_le_index_hasseDeriv` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

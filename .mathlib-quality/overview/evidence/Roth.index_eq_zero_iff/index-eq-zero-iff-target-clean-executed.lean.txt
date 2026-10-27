@@ -1,0 +1,69 @@
+namespace IndexEqZero139
+universe u v w
+#check @Finset.inf_eq_bot_iff
+#check @Finset.inf_le_iff
+#check @Finset.le_inf_iff
+#check @Finset.coe_inf'
+theorem abstractLaw {A : Type u} {R : Type v} {T : Type w} [Semiring R]
+    [LinearOrder T] [BoundedOrder T] [Nontrivial T] (D : A → T)
+    (P : AddMonoidAlgebra R A) (a₀ : A) (hD : ∀ a, D a = ⊥ ↔ a = a₀) :
+    AddMonoidAlgebra.infDegree D P = ⊥ ↔ P.coeff a₀ ≠ 0 := by
+  simpa only [AddMonoidAlgebra.infDegree, hD, exists_eq_right, Finsupp.mem_support_iff]
+    using (Finset.inf_eq_bot_iff (s := P.coeff.support) (f := D))
+theorem projectedLaw {A : Type u} {R : Type v} [Semiring R]
+    (D : A → ℝ) (P : AddMonoidAlgebra R A) (a₀ : A)
+    (hs : P.coeff.support.Nonempty) (hD : ∀ a, 0 ≤ D a)
+    (hz : ∀ a, D a = 0 ↔ a = a₀) :
+    (AddMonoidAlgebra.infDegree (fun a ↦ (D a : WithTop ℝ)) P).untopD 0 = 0 ↔
+      P.coeff a₀ ≠ 0 := by
+  classical
+  change (P.coeff.support.inf (WithTop.some ∘ D)).untopD 0 = 0 ↔ _
+  rw [← Finset.coe_inf' hs D, WithTop.untopD_coe]
+  have hn : 0 ≤ P.coeff.support.inf' hs D :=
+    (Finset.le_inf'_iff hs D).mpr fun a _ ↦ hD a
+  rw [show P.coeff.support.inf' hs D = 0 ↔ P.coeff.support.inf' hs D ≤ 0 from
+    ⟨fun h ↦ h.le, fun h ↦ h.antisymm hn⟩]
+  simpa only [hz, exists_eq_right, Finsupp.mem_support_iff] using
+    (show P.coeff.support.inf' hs D ≤ 0 ↔ ∃ a ∈ P.coeff.support, D a = 0 from by
+      rw [Finset.inf'_le_iff]
+      exact exists_congr fun a ↦ and_congr_right fun _ ↦
+        ⟨fun h ↦ h.antisymm (hD a), fun h ↦ h.le⟩)
+#print axioms abstractLaw
+#print axioms projectedLaw
+end IndexEqZero139
+
+namespace IndexEqZeroTarget139
+open MvPolynomial Roth
+universe u
+theorem originalReplacement {σ : Type u} [Fintype σ] {P : MvPolynomial σ ℝ}
+    (hP : P ≠ 0) {r : σ → ℕ} (hr : ∀ j, 0 < r j) (α : σ → ℝ) :
+    Roth.index P α r = 0 ↔ eval α P ≠ 0 := by
+  rw [IndexConsumers133.targetBridge]
+  have hs : (taylor α P).coeff.support.Nonempty := by simpa using hP
+  have h := IndexEqZero139.projectedLaw (Roth.weight r) (taylor α P) 0 hs
+    (Roth.weight_nonneg r) (fun d ↦ Roth.weight_eq_zero_iff hr)
+  change _ = 0 ↔ (taylor α P).coeff 0 ≠ 0 at h
+  simpa only [coeff_taylor, hasseDeriv_zero_apply] using h
+
+theorem zeroPolynomialGuard :
+    Roth.index (0 : MvPolynomial Unit ℝ) (fun _ ↦ 0) (fun _ ↦ 1) = 0 ∧
+      eval (fun _ ↦ 0) (0 : MvPolynomial Unit ℝ) = 0 := by
+  simp [Roth.index]
+
+theorem zeroWeightGuard :
+    Roth.index (X () : MvPolynomial Unit ℝ) (fun _ ↦ 0) (fun _ ↦ 0) = 0 ∧
+      eval (fun _ ↦ 0) (X () : MvPolynomial Unit ℝ) = 0 ∧
+      (X () : MvPolynomial Unit ℝ) ≠ 0 := by
+  simp [Roth.index, Roth.weight, support_X]
+
+theorem mixedZeroWeightGuard :
+    Roth.index (X false : MvPolynomial Bool ℝ) (fun _ ↦ 0)
+      (fun b ↦ if b then 1 else 0) = 0 ∧
+      eval (fun _ ↦ 0) (X false : MvPolynomial Bool ℝ) = 0 ∧
+      (X false : MvPolynomial Bool ℝ) ≠ 0 := by
+  simp [Roth.index, Roth.weight, taylor_X, support_X]
+#print axioms originalReplacement
+#print axioms zeroPolynomialGuard
+#print axioms zeroWeightGuard
+#print axioms mixedZeroWeightGuard
+end IndexEqZeroTarget139

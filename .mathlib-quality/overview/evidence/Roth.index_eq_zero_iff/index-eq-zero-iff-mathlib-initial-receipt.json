@@ -1,0 +1,93 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\n#check_failure Roth.index_eq_zero_iff\nnamespace IndexEqZero139\nuniverse u v w\n#check @Finset.inf_eq_bot_iff\n#check @Finset.inf_le_iff\n#check @Finset.le_inf_iff\n#check @Finset.coe_inf'\ntheorem abstractLaw {A : Type u} {R : Type v} {T : Type w} [Semiring R]\n    [LinearOrder T] [BoundedOrder T] [Nontrivial T] (D : A → T)\n    (P : AddMonoidAlgebra R A) (a₀ : A) (hD : ∀ a, D a = ⊥ ↔ a = a₀) :\n    AddMonoidAlgebra.infDegree D P = ⊥ ↔ P.coeff a₀ ≠ 0 := by\n  simpa only [AddMonoidAlgebra.infDegree, hD, exists_eq_right, Finsupp.mem_support_iff]\n    using (Finset.inf_eq_bot_iff (s := P.coeff.support) (f := D))\ntheorem projectedLaw {A : Type u} {R : Type v} [Semiring R]\n    (D : A → ℝ) (P : AddMonoidAlgebra R A) (a₀ : A)\n    (hs : P.coeff.support.Nonempty) (hD : ∀ a, 0 ≤ D a)\n    (hz : ∀ a, D a = 0 ↔ a = a₀) :\n    (AddMonoidAlgebra.infDegree (fun a ↦ (D a : WithTop ℝ)) P).untopD 0 = 0 ↔\n      P.coeff a₀ ≠ 0 := by\n  classical\n  change (P.coeff.support.inf (WithTop.some ∘ D)).untopD 0 = 0 ↔ _\n  rw [← Finset.coe_inf' hs D, WithTop.untopD_coe]\n  have hn : 0 ≤ P.coeff.support.inf' hs D :=\n    (Finset.le_inf'_iff hs D).mpr fun a _ ↦ hD a\n  rw [show P.coeff.support.inf' hs D = 0 ↔ P.coeff.support.inf' hs D ≤ 0 from\n    ⟨fun h ↦ h.le, fun h ↦ h.antisymm hn⟩]\n  simpa only [le_antisymm_iff, hz, exists_eq_right, Finsupp.mem_support_iff] using\n    (show P.coeff.support.inf' hs D ≤ 0 ↔ ∃ a ∈ P.coeff.support, D a = 0 from by\n      rw [Finset.inf'_le_iff]\n      exact exists_congr fun a ↦ and_congr_right fun _ ↦\n        ⟨fun h ↦ h.antisymm (hD a), fun h ↦ h.le⟩)\n#print axioms abstractLaw\n#print axioms projectedLaw\nend IndexEqZero139\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": false,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.index_eq_zero_iff`\",\n      \"line\": 8,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finset.inf_eq_bot_iff : ∀ {ι : Type u_1} {α : Type u_2} [inst : LinearOrder α] [inst_1 : BoundedOrder α] [Nontrivial α]\\n  {s : Finset ι} {f : ι → α}, s.inf f = ⊥ ↔ ∃ b ∈ s, f b = ⊥\",\n      \"line\": 11,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finset.inf_le_iff : ∀ {α : Type u_1} {ι : Type u_2} [inst : LinearOrder α] [inst_1 : OrderTop α] {s : Finset ι}\\n  {f : ι → α} {a : α}, a < ⊤ → (s.inf f ≤ a ↔ ∃ b ∈ s, f b ≤ a)\",\n      \"line\": 12,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finset.le_inf_iff : ∀ {α : Type u_1} {β : Type u_2} [inst : SemilatticeInf α] [inst_1 : OrderTop α] {s : Finset β}\\n  {f : β → α} {a : α}, a ≤ s.inf f ↔ ∀ b ∈ s, a ≤ f b\",\n      \"line\": 13,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finset.coe_inf' : ∀ {α : Type u_1} {β : Type u_2} [inst : SemilatticeInf α] {s : Finset β} (H : s.Nonempty)\\n  (f : β → α), ↑(s.inf' H f) = s.inf (WithTop.some ∘ f)\",\n      \"line\": 14,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"Type mismatch: After simplification, term\\n  have this :=\\n    Eq.mpr (id (congrArg (fun _a ↦ _a ↔ ∃ a ∈ P.coeff.support, D a = 0) (propext (Finset.inf'_le_iff hs))))\\n      (exists_congr fun a ↦ and_congr_right fun x ↦ { mp := fun h ↦ LE.le.antisymm h (hD a), mpr := fun h ↦ Eq.le h });\\n  this\\n has type\\n  P.coeff.support.inf' hs D ≤ 0 ↔ ∃ a, P.coeff a ≠ 0 ∧ D a ≤ 0 ∧ 0 ≤ D a\\nbut is expected to have type\\n  P.coeff.support.inf' hs D ≤ 0 ↔ P.coeff a₀ ≠ 0\",\n      \"line\": 34,\n      \"column\": 3,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'IndexEqZero139.abstractLaw' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 39,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'IndexEqZero139.projectedLaw' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 40,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": false,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.index_eq_zero_iff`",
+          "line": 8,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finset.inf_eq_bot_iff : ∀ {ι : Type u_1} {α : Type u_2} [inst : LinearOrder α] [inst_1 : BoundedOrder α] [Nontrivial α]\n  {s : Finset ι} {f : ι → α}, s.inf f = ⊥ ↔ ∃ b ∈ s, f b = ⊥",
+          "line": 11,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finset.inf_le_iff : ∀ {α : Type u_1} {ι : Type u_2} [inst : LinearOrder α] [inst_1 : OrderTop α] {s : Finset ι}\n  {f : ι → α} {a : α}, a < ⊤ → (s.inf f ≤ a ↔ ∃ b ∈ s, f b ≤ a)",
+          "line": 12,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finset.le_inf_iff : ∀ {α : Type u_1} {β : Type u_2} [inst : SemilatticeInf α] [inst_1 : OrderTop α] {s : Finset β}\n  {f : β → α} {a : α}, a ≤ s.inf f ↔ ∀ b ∈ s, a ≤ f b",
+          "line": 13,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finset.coe_inf' : ∀ {α : Type u_1} {β : Type u_2} [inst : SemilatticeInf α] {s : Finset β} (H : s.Nonempty)\n  (f : β → α), ↑(s.inf' H f) = s.inf (WithTop.some ∘ f)",
+          "line": 14,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "Type mismatch: After simplification, term\n  have this :=\n    Eq.mpr (id (congrArg (fun _a ↦ _a ↔ ∃ a ∈ P.coeff.support, D a = 0) (propext (Finset.inf'_le_iff hs))))\n      (exists_congr fun a ↦ and_congr_right fun x ↦ { mp := fun h ↦ LE.le.antisymm h (hD a), mpr := fun h ↦ Eq.le h });\n  this\n has type\n  P.coeff.support.inf' hs D ≤ 0 ↔ ∃ a, P.coeff a ≠ 0 ∧ D a ≤ 0 ∧ 0 ≤ D a\nbut is expected to have type\n  P.coeff.support.inf' hs D ≤ 0 ↔ P.coeff a₀ ≠ 0",
+          "line": 34,
+          "column": 3,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'IndexEqZero139.abstractLaw' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 39,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'IndexEqZero139.projectedLaw' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 40,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 1411
+}

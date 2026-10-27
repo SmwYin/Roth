@@ -1,0 +1,24 @@
+namespace IndexEqZeroTarget139
+open MvPolynomial Roth
+open scoped NNReal
+universe u
+theorem boundedReplacement {σ : Type u} [Fintype σ] {P : MvPolynomial σ ℝ}
+    (hP : P ≠ 0) {r : σ → ℕ} (hr : ∀ j, 0 < r j) (α : σ → ℝ) :
+    Roth.index P α r = 0 ↔ eval α P ≠ 0 := by
+  rw [IndexConsumers133.targetBridge]
+  have hs : (taylor α P).coeff.support.Nonempty := by simpa using hP
+  rw [IndexEqZero139.nonnegativeZeroBridge (Roth.weight r) (taylor α P)
+    (Roth.weight_nonneg r) hs]
+  have hz (d : σ →₀ ℕ) :
+      ((⟨Roth.weight r d, Roth.weight_nonneg r d⟩ : ℝ≥0) : WithTop ℝ≥0) = ⊥ ↔ d = 0 := by
+    change ((⟨Roth.weight r d, Roth.weight_nonneg r d⟩ : ℝ≥0) : WithTop ℝ≥0) = 0 ↔ d = 0
+    rw [WithTop.coe_eq_zero]
+    exact (show (⟨Roth.weight r d, Roth.weight_nonneg r d⟩ : ℝ≥0) = 0 ↔
+      Roth.weight r d = 0 from Subtype.ext_iff).trans (Roth.weight_eq_zero_iff hr)
+  have h := IndexEqZero139.abstractLaw
+    (fun d ↦ ((⟨Roth.weight r d, Roth.weight_nonneg r d⟩ : ℝ≥0) : WithTop ℝ≥0))
+    (taylor α P) 0 hz
+  change _ = ⊥ ↔ (taylor α P).coeff 0 ≠ 0 at h
+  simpa only [coeff_taylor, hasseDeriv_zero_apply] using h
+#print axioms boundedReplacement
+end IndexEqZeroTarget139

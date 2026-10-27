@@ -1,0 +1,13 @@
+[
+  {
+    "file": "Roth/Index.lean",
+    "declaration": "Roth.index_prod",
+    "reference_lines": [
+      182
+    ],
+    "identifier_occurrences": 1,
+    "source_sha256": "e22ab0acd820d9ae765e6f70279edbc0d626052372611806c4d5464ca3d377f1",
+    "source_fragment": "theorem index_prod {\u03b9 : Type*} (s : Finset \u03b9) {f : \u03b9 \u2192 MvPolynomial \u03c3 \u211d} (hf : \u2200 i \u2208 s, f i \u2260 0)\n    (\u03b1 : \u03c3 \u2192 \u211d) {r : \u03c3 \u2192 \u2115} (hr : \u2200 j, 0 < r j) :\n    index (\u220f i \u2208 s, f i) \u03b1 r = \u2211 i \u2208 s, index (f i) \u03b1 r := by\n  classical\n  induction s using Finset.induction_on with\n  | empty =>\n    rw [Finset.prod_empty, Finset.sum_empty]\n    exact (index_eq_zero_iff one_ne_zero hr \u03b1).2 (by simp)\n  | insert a s has ih =>\n    rw [Finset.prod_insert has, Finset.sum_insert has,\n      index_mul (hf a (Finset.mem_insert_self a s))\n        (Finset.prod_ne_zero_iff.2 fun i hi \u21a6 hf i (Finset.mem_insert_of_mem hi)) \u03b1 hr,\n      ih fun i hi \u21a6 hf i (Finset.mem_insert_of_mem hi)]\n\n",
+    "plan": "In the empty-product base case replace the iff .2 application with originalReplacement or, after shared parent/nonnegative recoding bridges, Finset.inf_eq_bot_iff using degree zero only at exponent0; the evaluation of1 remains simp. The nonempty inductive branch is unchanged."
+  }
+]
