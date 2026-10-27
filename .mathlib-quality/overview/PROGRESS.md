@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-26
 
-- Declarations completed: **152/293**
-- Next declaration: **#153 `Roth.coeff_X_none_pow_mul_rename`** (Roth/Separation.lean:64)
+- Declarations completed: **153/293**
+- Next declaration: **#154 `Roth.coeffNone`** (Roth/Separation.lean:80)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -171,10 +171,10 @@ Last regenerated: 2026-10-26
 | 150 | `Roth.index_le_card` | Roth/Index.lean:224 | NO-composable-from-mathlib | [report](mathlibable/Roth.index_le_card.md) |
 | 151 | `Roth.index_unique` | Roth/Index.lean:234 | NO-composable-from-mathlib | [report](mathlibable/Roth.index_unique.md) |
 | 152 | `Roth.eq_mapDomain_some_add_single` | Roth/Separation.lean:57 | NO-composable-from-mathlib | [report](mathlibable/Roth.eq_mapDomain_some_add_single.md) |
+| 153 | `Roth.coeff_X_none_pow_mul_rename` | Roth/Separation.lean:64 | SKIP | [report](mathlibable/Roth.coeff_X_none_pow_mul_rename.md) |
 
 ## Remaining declarations (in processing order)
 
-- #153 `Roth.coeff_X_none_pow_mul_rename` (Roth/Separation.lean:64, private lemma)
 - #154 `Roth.coeffNone` (Roth/Separation.lean:80, public def)
 - #155 `Roth.coeff_coeffNone` (Roth/Separation.lean:85, public theorem)
 - #156 `Roth.eq_sum_X_none_pow_mul_coeffNone` (Roth/Separation.lean:98, public theorem)
