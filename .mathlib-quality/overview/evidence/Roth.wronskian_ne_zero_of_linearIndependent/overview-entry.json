@@ -1,0 +1,37 @@
+{
+  "declaration": "Roth.wronskian_ne_zero_of_linearIndependent",
+  "kind": "theorem",
+  "type": "∀ {K : Type u_2} [inst : Field K] {l : ℕ} [CharZero K] {φ : Fin l → K[X]}, LinearIndependent K φ → Roth.wronskian φ ≠ 0",
+  "what": "The hard implication of the characteristic-zero polynomial Wronskian criterion: a linearly independent finite family has nonzero consecutive Hasse determinant.",
+  "how": "Strong induction on total natural degree; repeated degrees are removed by constant column shears, reducing to Vandermonde nonvanishing for distinct degrees.",
+  "hypotheses": [
+    "Field K",
+    "CharZero K",
+    "φ : Fin l → K[X]",
+    "LinearIndependent K φ"
+  ],
+  "project_dependencies": [
+    "Roth.wronskian",
+    "Roth.wronskian_ne_zero_of_natDegree_injective",
+    "Roth.wronskian_update_sub_smul",
+    "Roth.sum_natDegree_update_lt",
+    "Roth.linearIndependent_update_sub_smul"
+  ],
+  "caller_summary": {
+    "external_to_file_count": 2,
+    "all_explicit_calls": 3,
+    "locations": [
+      "Roth/Wronskian.lean:221",
+      "Roth/GenWronskian.lean:262",
+      "Roth/Separation.lean:534"
+    ],
+    "scope": "Explicit production source references; not opaque kernel/simp dependency closure"
+  },
+  "mathlib_api_audit": "Pinned binary Polynomial.wronskian and IsCoprime criterion do not cover arbitrary families. Generic determinant independence changes scalars and does not supply jet-column independence. Wronskian.lean has an explicit n-tuple TODO. All five actual search methods on four forms; isolated exact? failed without timeout.",
+  "moral_duplications": "The existing general elementary-shear independence law replaces one helper, not the Wronskian criterion. Downstream iff and generalized Wronskian theorem are circular replacements.",
+  "generalization": "Expanded CommRing+IsDomain+CharZero determinant theorem completely verified by fraction-field descent using explicit Field proof replay. Current Roth.wronskian is Field-bound, so this is a new theorem/interface decision rather than mechanical hypothesis weakening. CharZero drop refuted by compiled independent [1,X²] over ZMod2 with zero determinant.",
+  "missing_api": "N-ary polynomial Hasse Wronskian criterion, coherent binary/n-ary naming bridge, potentially reusable polynomial echelon basis.",
+  "junk": "No: same-module iff plus two independent external consumers.",
+  "action": "BORDERLINE-needs-human: retain locally; decide CommRing parent/Domain theorem and naming/echelon API before upstream submission.",
+  "verdict": "BORDERLINE-needs-human"
+}

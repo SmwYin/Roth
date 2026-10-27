@@ -1,0 +1,16 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+import Mathlib.Algebra.Polynomial.CancelLeads
+open Polynomial
+#check_failure Roth.wronskian_ne_zero_of_linearIndependent
+example {K : Type*} [Field K] [CharZero K] {l : ℕ} {φ : Fin l → K[X]}
+    (h : LinearIndependent K φ) :
+    (Matrix.of fun μ ν : Fin l ↦ hasseDeriv (μ : ℕ) (φ ν)).det ≠ 0 := by
+  exact?

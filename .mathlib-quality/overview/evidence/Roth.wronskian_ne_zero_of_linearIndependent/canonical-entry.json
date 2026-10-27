@@ -1,0 +1,60 @@
+{
+  "file": "Roth/Wronskian.lean",
+  "line": 205,
+  "name": "Roth.wronskian_ne_zero_of_linearIndependent",
+  "short": "wronskian_ne_zero_of_linearIndependent",
+  "kind": "theorem",
+  "visibility": "public",
+  "end_line": 214,
+  "source": "theorem wronskian_ne_zero_of_linearIndependent [CharZero K] {φ : Fin l → K[X]}\n    (h : LinearIndependent K φ) : wronskian φ ≠ 0 := by\n  classical\n  induction hN : ∑ ρ, (φ ρ).natDegree using Nat.strong_induction_on generalizing φ with | _ N ih =>\n    by_cases hinj : Function.Injective fun ν ↦ (φ ν).natDegree\n    · exact wronskian_ne_zero_of_natDegree_injective h.ne_zero hinj\n    obtain ⟨ν, ν', hdeg, hne⟩ := Function.not_injective_iff.1 hinj\n    rw [← wronskian_update_sub_smul hne ((φ ν').leadingCoeff / (φ ν).leadingCoeff)]\n    exact ih _ (hN ▸ sum_natDegree_update_lt h hne hdeg)\n      (linearIndependent_update_sub_smul hne _ h) rfl",
+  "signature": "theorem wronskian_ne_zero_of_linearIndependent [CharZero K] {φ : Fin l → K[X]}\n    (h : LinearIndependent K φ) : wronskian φ ≠ 0",
+  "body": "by\n  classical\n  induction hN : ∑ ρ, (φ ρ).natDegree using Nat.strong_induction_on generalizing φ with | _ N ih =>\n    by_cases hinj : Function.Injective fun ν ↦ (φ ν).natDegree\n    · exact wronskian_ne_zero_of_natDegree_injective h.ne_zero hinj\n    obtain ⟨ν, ν', hdeg, hne⟩ := Function.not_injective_iff.1 hinj\n    rw [← wronskian_update_sub_smul hne ((φ ν').leadingCoeff / (φ ν).leadingCoeff)]\n    exact ih _ (hN ▸ sum_natDegree_update_lt h hne hdeg)\n      (linearIndependent_update_sub_smul hne _ h) rfl",
+  "proof_lines": 9,
+  "sha256": "4cfd667240b448deb4a4cefc1913b7e4fb9aecc70cf5013e9cfbcedbdf404098",
+  "what": "In characteristic zero every linearly independent finite polynomial family has nonzero divided Wronskian.",
+  "how": "Strong induction on total natural degree repeatedly cancels equal leading degrees using sum_natDegree_update_lt, preserving independence and Wronskian via the update lemmas; the distinct-degree case uses wronskian_ne_zero_of_natDegree_injective.",
+  "hypotheses": "A characteristic-zero coefficient field and linear independence of the family.",
+  "uses_from_project": [
+    "Roth.linearIndependent_update_sub_smul",
+    "Roth.sum_natDegree_update_lt",
+    "Roth.wronskian_ne_zero_of_natDegree_injective",
+    "Roth.wronskian_update_sub_smul"
+  ],
+  "used_by_in_file": [
+    "Roth.wronskian_eq_zero_iff"
+  ],
+  "project_callers": [
+    {
+      "name": "Roth.exists_genWronskian_ne_zero",
+      "file": "Roth/GenWronskian.lean",
+      "line": 254
+    },
+    {
+      "name": "Roth.exists_rat_factors_det_hasseDeriv_aux",
+      "file": "Roth/Separation.lean",
+      "line": 510
+    },
+    {
+      "name": "Roth.wronskian_eq_zero_iff",
+      "file": "Roth/Wronskian.lean",
+      "line": 219
+    }
+  ],
+  "type_context": "{K : Type*} [Field K] {l : ℕ}",
+  "type_provenance": "Exact written signature with section binders made explicit from source; not claimed as a fresh #check output. Minimal hasseCoeff #check succeeded; full Meta inspector timed out.",
+  "reference_provenance": "Manually disambiguated source-level direct project references in declaration bodies; callers include signature and body occurrences. Includes explicit references only, not an exhaustive kernel/simp dependency closure.",
+  "notes": [
+    "No set_option, sorry, TODO, or proof over 30 lines in declaration."
+  ],
+  "assignment_offset": 129,
+  "project_body_refs": [
+    "Roth.linearIndependent_update_sub_smul",
+    "Roth.sum_natDegree_update_lt",
+    "Roth.wronskian_ne_zero_of_natDegree_injective",
+    "Roth.wronskian_update_sub_smul"
+  ],
+  "project_type_refs": [
+    "Roth.wronskian"
+  ],
+  "section_context": "{K : Type*} [Field K] {l : ℕ}"
+}

@@ -1,9 +1,9 @@
 # Completed-only overview progress
 
-Status: **in_progress**, 2026-10-26. Branch: `ramin-cleanup`.
+Status: **in_progress**, 2026-10-27. Branch: `ramin-cleanup`.
 Production Lean files and all pins match baseline `99f19fd`.
 
-**Completed: 50 / 293 written declarations.**
+**Completed: 51 / 293 written declarations.**
 This counts the current overview assessments, separately from the earlier code cleanup.
 
 | # | Completed declaration | Applicable workflow | Verdict | Report |
@@ -58,8 +58,9 @@ This counts the current overview assessments, separately from the earlier code c
 | 48 | `Roth.wronskian_update_sub_smul` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.wronskian_update_sub_smul.md) |
 | 49 | `Roth.linearIndependent_update_sub_smul` | full-mathlibable; accepted complete | NO-mathlib-has-it | [Detailed report](mathlibable/Roth.linearIndependent_update_sub_smul.md) |
 | 50 | `Roth.sum_natDegree_update_lt` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.sum_natDegree_update_lt.md) |
+| 51 | `Roth.wronskian_ne_zero_of_linearIndependent` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.wronskian_ne_zero_of_linearIndependent.md) |
 
-**Next declaration: `Roth.wronskian_ne_zero_of_linearIndependent`**, `Roth/Wronskian.lean:205`.
+**Next declaration: `Roth.wronskian_eq_zero_iff`**, `Roth/Wronskian.lean:219`.
 Only the listed assessments are complete. No partial assessment was committed.
 
 On restart: read [README](README.md), [machine progress](progress.json), and

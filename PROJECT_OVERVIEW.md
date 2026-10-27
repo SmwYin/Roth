@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 50/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 51/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 50; remaining: 243.
-- Verdicts: 8 NO-composable-from-mathlib, 11 YES-add-as-is, 3 YES-but-generalise-first, 8 NO-mathlib-has-it, 16 BORDERLINE-needs-human, 4 SKIP.
+- Completed applicable assessments: 51; remaining: 242.
+- Verdicts: 8 NO-composable-from-mathlib, 11 YES-add-as-is, 3 YES-but-generalise-first, 8 NO-mathlib-has-it, 17 BORDERLINE-needs-human, 4 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -546,6 +546,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: One explicit executable caller at Roth/Wronskian.lean:213; full strong-induction caller rebuilt noncircularly.
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.sum_natDegree_update_lt.md).
 
+### Completed: `Roth.wronskian_ne_zero_of_linearIndependent`
+
+- Type: `∀ {K : Type u_2} [inst : Field K] {l : ℕ} [CharZero K] {φ : Fin l → K[X]}, LinearIndependent K φ → Roth.wronskian φ ≠ 0`
+- What: The hard implication of the characteristic-zero polynomial Wronskian criterion: a linearly independent finite family has nonzero consecutive Hasse determinant.
+- How: Strong induction on total natural degree; repeated degrees are removed by constant column shears, reducing to Vandermonde nonvanishing for distinct degrees.
+- Hypotheses: Field K, CharZero K, φ : Fin l → K[X], LinearIndependent K φ
+- Project dependencies: Roth.wronskian, Roth.wronskian_ne_zero_of_natDegree_injective, Roth.wronskian_update_sub_smul, Roth.sum_natDegree_update_lt, Roth.linearIndependent_update_sub_smul
+- Caller summary: external to file count: 2; all explicit calls: 3; locations: Roth/Wronskian.lean:221, Roth/GenWronskian.lean:262, Roth/Separation.lean:534; scope: Explicit production source references; not opaque kernel/simp dependency closure
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.wronskian_ne_zero_of_linearIndependent.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -672,6 +682,8 @@ Completed `Roth.linearIndependent_update_sub_smul`: More-general existing linear
 
 Completed `Roth.sum_natDegree_update_lt`: Existing degree_sub_lt_left, cancelLeads natural-degree law, natDegree_lt_natDegree, Finset.sum_lt_sum and sum_update_of_mem. No verified ≤3-call entire original proof.
 
+Completed `Roth.wronskian_ne_zero_of_linearIndependent`: Pinned binary Polynomial.wronskian and IsCoprime criterion do not cover arbitrary families. Generic determinant independence changes scalars and does not supply jet-column independence. Wronskian.lean has an explicit n-tuple TODO. All five actual search methods on four forms; isolated exact? failed without timeout.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -773,6 +785,8 @@ Completed `Roth.wronskian_update_sub_smul`: Elementary determinant transvection,
 Completed `Roth.linearIndependent_update_sub_smul`: linearIndependent_add_smul_iff, Mathlib/LinearAlgebra/LinearIndependent/Defs.lean:751
 
 Completed `Roth.sum_natDegree_update_lt`: Standard leading-term cancellation plus generic finite-sum comparison; normalized cancelLeads bridge is compiled, not definitional.
+
+Completed `Roth.wronskian_ne_zero_of_linearIndependent`: The existing general elementary-shear independence law replaces one helper, not the Wronskian criterion. Downstream iff and generalized Wronskian theorem are circular replacements.
 
 ## Part 5: Generalization opportunities
 
@@ -879,6 +893,8 @@ Completed `Roth.linearIndependent_update_sub_smul`: Ring R; arbitrary AddCommGro
 
 Completed `Roth.sum_natDegree_update_lt`: Compiled Field→DivisionRing, arbitrary Fintype index, replace global LI and distinctness by local nonzero difference or positive common degree.
 
+Completed `Roth.wronskian_ne_zero_of_linearIndependent`: Expanded CommRing+IsDomain+CharZero determinant theorem completely verified by fraction-field descent using explicit Field proof replay. Current Roth.wronskian is Field-bound, so this is a new theorem/interface decision rather than mechanical hypothesis weakening. CharZero drop refuted by compiled independent [1,X²] over ZMod2 with zero determinant.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -981,6 +997,8 @@ Completed `Roth.wronskian_update_sub_smul`: Conditional on parent acceptance: fi
 Completed `Roth.linearIndependent_update_sub_smul`: No mathematical gap; generic update spelling is optional convenience.
 
 Completed `Roth.sum_natDegree_update_lt`: Potential normalized quotient cancellation corollary and relation to cancelLeads; generic finite-update wrapper is optional design question.
+
+Completed `Roth.wronskian_ne_zero_of_linearIndependent`: N-ary polynomial Hasse Wronskian criterion, coherent binary/n-ary naming bridge, potentially reusable polynomial echelon basis.
 
 ## Part 7: Junk / removable
 
@@ -1087,6 +1105,8 @@ Completed `Roth.linearIndependent_update_sub_smul`: Used twice; not dead code, b
 
 Completed `Roth.sum_natDegree_update_lt`: Live induction-measure helper, not junk.
 
+Completed `Roth.wronskian_ne_zero_of_linearIndependent`: No: same-module iff plus two independent external consumers.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -1141,6 +1161,7 @@ Completed `Roth.sum_natDegree_update_lt`: Live induction-measure helper, not jun
 | 48 | `Roth.wronskian_update_sub_smul` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.wronskian_update_sub_smul.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.wronskian_update_sub_smul/root-acceptance.json) |
 | 49 | `Roth.linearIndependent_update_sub_smul` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.linearIndependent_update_sub_smul.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.linearIndependent_update_sub_smul/root-acceptance.json) |
 | 50 | `Roth.sum_natDegree_update_lt` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.sum_natDegree_update_lt.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.sum_natDegree_update_lt/root-acceptance.json) |
+| 51 | `Roth.wronskian_ne_zero_of_linearIndependent` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.wronskian_ne_zero_of_linearIndependent.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.wronskian_ne_zero_of_linearIndependent/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -1240,11 +1261,13 @@ Completed `Roth.linearIndependent_update_sub_smul` action: Delete public special
 
 Completed `Roth.sum_natDegree_update_lt` action: BORDERLINE-needs-human: resolve three concrete upstream API questions; retain project-local measure helper meanwhile.
 
+Completed `Roth.wronskian_ne_zero_of_linearIndependent` action: BORDERLINE-needs-human: retain locally; decide CommRing parent/Domain theorem and naming/echelon API before upstream submission.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.wronskian_ne_zero_of_linearIndependent` next. Supporting identities receive their own applicable checks.
+   `Roth.wronskian_eq_zero_iff` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
