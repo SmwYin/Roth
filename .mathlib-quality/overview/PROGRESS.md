@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-27
 
-- Declarations completed: **252/293**
-- Next declaration: **#253 `Roth.mul_two_mul_add_one_div_lt_of_le_sq_mul`** (Roth/MainLemma.lean:433)
+- Declarations completed: **253/293**
+- Next declaration: **#254 `Roth.exists_hasseDeriv_eval_ne_zero`** (Roth/MainLemma.lean:454)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -271,10 +271,10 @@ Last regenerated: 2026-10-27
 | 250 | `Roth.sub_mem_RSet` | Roth/MainLemma.lean:388 | NO-composable-from-mathlib | [report](mathlibable/Roth.sub_mem_RSet.md) |
 | 251 | `Roth.eval_hasseDeriv_sub_eq_zero` | Roth/MainLemma.lean:402 | NO-composable-from-mathlib | [report](mathlibable/Roth.eval_hasseDeriv_sub_eq_zero.md) |
 | 252 | `Roth.le_index_of_forall_eval_eq_zero` | Roth/MainLemma.lean:419 | NO-composable-from-mathlib | [report](mathlibable/Roth.le_index_of_forall_eval_eq_zero.md) |
+| 253 | `Roth.mul_two_mul_add_one_div_lt_of_le_sq_mul` | Roth/MainLemma.lean:433 | SKIP | [report](mathlibable/Roth.mul_two_mul_add_one_div_lt_of_le_sq_mul.md) |
 
 ## Remaining declarations (in processing order)
 
-- #253 `Roth.mul_two_mul_add_one_div_lt_of_le_sq_mul` (Roth/MainLemma.lean:433, public theorem)
 - #254 `Roth.exists_hasseDeriv_eval_ne_zero` (Roth/MainLemma.lean:454, public theorem)
 - #255 `Roth.abs_eval_iterated_hasseDeriv_lt_aux` (Roth/MainLemma.lean:459, private lemma)
 - #256 `Roth.exists_hasseDeriv_index_eval_bound_aux` (Roth/MainLemma.lean:477, private lemma)
