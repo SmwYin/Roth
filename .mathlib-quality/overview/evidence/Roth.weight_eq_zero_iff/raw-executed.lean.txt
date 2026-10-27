@@ -1,0 +1,82 @@
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.Basic.Real.Basic
+#check_failure Roth.weight_eq_zero_iff
+#check @Finsupp.weight_eq_zero_iff_eq_zero
+#check @Finsupp.le_weight_of_ne_zero
+#check @Finset.sum_eq_zero_iff_of_nonneg
+#check @Finsupp.sum_fintype
+namespace RawWeightZeroAssessment
+variable {σ : Type*}
+theorem original [Fintype σ] {r : σ → ℕ} (hr : ∀ j, 0 < r j) {d : σ →₀ ℕ} :
+    (∑ j, (d j : ℝ) / r j) = 0 ↔ d = 0 := by
+  simp [Finset.sum_eq_zero_iff_of_nonneg, div_nonneg, (hr _).ne', Finsupp.ext_iff]
+theorem support_local [Fintype σ] {r : σ → ℕ} {d : σ →₀ ℕ}
+    (hr : ∀ j ∈ d.support, 0 < r j) : (∑ j, (d j : ℝ) / r j) = 0 ↔ d = 0 := by
+  constructor
+  · intro h
+    ext j
+    by_cases hd : d j = 0
+    · exact hd
+    · have hrj := hr j (Finsupp.mem_support_iff.mpr hd)
+      have hz := (Finset.sum_eq_zero_iff_of_nonneg
+        (fun k (_ : k ∈ Finset.univ) ↦
+          div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _))).mp h j (Finset.mem_univ j)
+      simp [div_eq_zero_iff, hrj.ne', hd] at hz
+  · rintro rfl
+    simp
+theorem positive_real_weight {w : σ → ℝ} (hw : ∀ j, 0 < w j) {d : σ →₀ ℕ} :
+    Finsupp.weight w d = 0 ↔ d = 0 := by
+  constructor
+  · intro h
+    ext j
+    by_contra hd
+    have hle := Finsupp.le_weight_of_ne_zero (fun j ↦ (hw j).le) (f := d) hd
+    rw [h] at hle
+    exact (not_le_of_gt (hw j)) hle
+  · rintro rfl
+    exact map_zero _
+theorem positive_weight {M : Type*} [AddCommMonoid M] [PartialOrder M]
+    [IsOrderedAddMonoid M] {w : σ → M} (hw : ∀ j, 0 < w j) {d : σ →₀ ℕ} :
+    Finsupp.weight w d = 0 ↔ d = 0 := by
+  constructor
+  · intro h
+    ext j
+    by_contra hd
+    have hle := Finsupp.le_weight_of_ne_zero (fun j ↦ (hw j).le) (f := d) hd
+    rw [h] at hle
+    exact (not_le_of_gt (hw j)) hle
+  · rintro rfl
+    exact map_zero _
+#print axioms positive_weight
+example : (∑ j : Unit, ((Finsupp.single () 1 : Unit →₀ ℕ) j : ℝ) / (0 : ℕ)) = 0 ∧
+    (Finsupp.single () 1 : Unit →₀ ℕ) ≠ 0 := by simp
+example : Finsupp.weight (fun b : Bool ↦ if b then (1 : ℝ) else -1)
+    (Finsupp.single true 1 + Finsupp.single false 1) = 0 ∧
+    (Finsupp.single true 1 + Finsupp.single false 1 : Bool →₀ ℕ) ≠ 0 := by
+  simp [map_add, Finsupp.weight_single]
+example : (∀ j ∈ (Finsupp.single false 1 : Bool →₀ ℕ).support,
+    0 < (if j then 0 else 1 : ℕ)) ∧ ¬ (∀ j : Bool, 0 < (if j then 0 else 1 : ℕ)) := by
+  simp [Bool.forall_bool]
+theorem ordered_field [Fintype σ] {K : Type*} [Field K] [LinearOrder K]
+    [IsStrictOrderedRing K] {r : σ → K} {d : σ →₀ ℕ}
+    (hr : ∀ j ∈ d.support, 0 < r j) : (∑ j, (d j : K) / r j) = 0 ↔ d = 0 := by
+  constructor
+  · intro h
+    have hz := (Finset.sum_eq_zero_iff_of_nonneg
+      (fun j (_ : j ∈ (Finset.univ : Finset σ)) ↦ by
+        by_cases hj : j ∈ d.support
+        · exact div_nonneg (Nat.cast_nonneg (d j)) (hr j hj).le
+        · simp [Finsupp.notMem_support_iff.mp hj])).mp h
+    ext j
+    by_cases hj : j ∈ d.support
+    · have hq := hz j (Finset.mem_univ j)
+      have hn : (d j : K) = 0 := (div_eq_zero_iff).mp hq |>.resolve_right (hr j hj).ne'
+      exact_mod_cast hn
+    · exact Finsupp.notMem_support_iff.mp hj
+  · rintro rfl
+    simp
+#print axioms ordered_field
+#print axioms original
+#print axioms support_local
+#print axioms positive_real_weight
+end RawWeightZeroAssessment

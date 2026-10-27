@@ -1,0 +1,47 @@
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.Basic.Real.Basic
+import Mathlib.Algebra.Order.BigOperators.Ring.Finset
+#check_failure Roth.weight_eq_zero_iff
+#check @Finsupp.weight_eq_zero_iff_eq_zero
+#check @Finsupp.le_weight_of_ne_zero
+#check @Finset.sum_eq_zero_iff_of_nonneg
+#check @Finsupp.sum_fintype
+namespace RawWeightZeroAssessment
+variable {σ : Type*}
+theorem original [Fintype σ] {r : σ → ℕ} (hr : ∀ j, 0 < r j) {d : σ →₀ ℕ} :
+    (∑ j, (d j : ℝ) / r j) = 0 ↔ d = 0 := by
+  simp [Finset.sum_eq_zero_iff_of_nonneg, div_nonneg, (hr _).ne', Finsupp.ext_iff]
+theorem support_local [Fintype σ] {r : σ → ℕ} {d : σ →₀ ℕ}
+    (hr : ∀ j ∈ d.support, 0 < r j) : (∑ j, (d j : ℝ) / r j) = 0 ↔ d = 0 := by
+  constructor
+  · intro h
+    ext j
+    by_cases hd : d j = 0
+    · exact hd
+    · have hrj := hr j (Finsupp.mem_support_iff.mpr hd)
+      have hz := (Finset.sum_eq_zero_iff_of_nonneg
+        (fun k (_ : k ∈ Finset.univ) ↦ div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _))).mp h j (Finset.mem_univ j)
+      simpa [div_eq_zero_iff, hrj.ne', hd] using hz
+  · rintro rfl
+    simp
+theorem positive_real_weight {w : σ → ℝ} (hw : ∀ j, 0 < w j) {d : σ →₀ ℕ} :
+    Finsupp.weight w d = 0 ↔ d = 0 := by
+  constructor
+  · intro h
+    ext j
+    by_contra hd
+    have hle := Finsupp.le_weight_of_ne_zero (fun j ↦ (hw j).le) (f := d) hd
+    rw [h] at hle
+    exact (not_le_of_gt (hw j)) hle
+  · rintro rfl
+    exact map_zero _
+example : (∑ j : Unit, ((Finsupp.single () 1 : Unit →₀ ℕ) j : ℝ) / (0 : ℕ)) = 0 ∧
+    (Finsupp.single () 1 : Unit →₀ ℕ) ≠ 0 := by simp
+example : Finsupp.weight (fun b : Bool ↦ if b then (1 : ℝ) else -1)
+    (Finsupp.single true 1 + Finsupp.single false 1) = 0 ∧
+    (Finsupp.single true 1 + Finsupp.single false 1 : Bool →₀ ℕ) ≠ 0 := by
+  simp [map_add, Finsupp.weight_single]
+#print axioms original
+#print axioms support_local
+#print axioms positive_real_weight
+end RawWeightZeroAssessment
