@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-26
 
-- Declarations completed: **166/293**
-- Next declaration: **#167 `Roth.exists_coeffNone_basis_aux`** (Roth/Separation.lean:291)
+- Declarations completed: **167/293**
+- Next declaration: **#168 `Roth.exists_separated_representation`** (Roth/Separation.lean:325)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -185,10 +185,10 @@ Last regenerated: 2026-10-26
 | 164 | `Roth.degreeOf_none_rename_mul_aeval` | Roth/Separation.lean:213 | YES-but-generalise-first | [report](mathlibable/Roth.degreeOf_none_rename_mul_aeval.md) |
 | 165 | `Roth.linearIndependent_coordinate_polynomials_aux` | Roth/Separation.lean:235 | SKIP | [report](mathlibable/Roth.linearIndependent_coordinate_polynomials_aux.md) |
 | 166 | `Roth.eq_sum_aeval_basis_coeffNone_aux` | Roth/Separation.lean:265 | SKIP | [report](mathlibable/Roth.eq_sum_aeval_basis_coeffNone_aux.md) |
+| 167 | `Roth.exists_coeffNone_basis_aux` | Roth/Separation.lean:291 | SKIP | [report](mathlibable/Roth.exists_coeffNone_basis_aux.md) |
 
 ## Remaining declarations (in processing order)
 
-- #167 `Roth.exists_coeffNone_basis_aux` (Roth/Separation.lean:291, private lemma)
 - #168 `Roth.exists_separated_representation` (Roth/Separation.lean:325, public theorem)
 - #169 `Roth.det_hasseDeriv_separated` (Roth/Separation.lean:351, public theorem)
 - #170 `Roth.exists_sum_mul_eq_gcd` (Roth/Separation.lean:374, public theorem)
