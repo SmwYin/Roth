@@ -1,0 +1,120 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.Polynomial.HasseDeriv\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.LinearAlgebra.Matrix.ToLinearEquiv\nimport Mathlib.RingTheory.Polynomial.Wronskian\nimport Mathlib.LinearAlgebra.Vandermonde\nimport Mathlib.Data.ZMod.Defs\nimport Mathlib.Algebra.Field.ZMod\nimport Mathlib.Algebra.Order.Group.Int.Sum\nimport Mathlib.LinearAlgebra.Matrix.Polynomial\nimport Mathlib.Algebra.Polynomial.CancelLeads\nimport Mathlib.Algebra.MvPolynomial.PDeriv\nimport Mathlib.RingTheory.Polynomial.Basic\n#check_failure MvPolynomial.degreeOf_taylor_le\n#check @MvPolynomial.degreeOf_le_iff\n#check @MvPolynomial.degreeOf_add_le\n#check @MvPolynomial.degreeOf_prod_le\n#check @MvPolynomial.degreeOf_pow_le\n#check @MvPolynomial.aeval_natDegree_le\n#print MvPolynomial.aeval_natDegree_le\n#check @Polynomial.natDegree_taylor\nnoncomputable section\nnamespace MvPolynomial.DegreeTaylorRaw\nvariable {σ R : Type*} [CommSemiring R]\ndef shift (α : σ → R) : MvPolynomial σ R →ₐ[R] MvPolynomial σ R :=\n  aeval fun j ↦ X j + C (α j)\ntheorem coefficientCriterion (Q : MvPolynomial σ R) (j : σ) (n : ℕ)\n    (h : ∀ d : σ →₀ ℕ, n < d j → Q.coeff d = 0) : degreeOf j Q ≤ n :=\n  degreeOf_le_iff.mpr fun d hd ↦ not_lt.mp fun hlt ↦\n    (mem_support_iff.mp hd) (h d hlt)\ntheorem shiftCriterion (α : σ → R) (j : σ) (P : MvPolynomial σ R)\n    (h : ∀ d : σ →₀ ℕ, degreeOf j P < d j → (shift α P).coeff d = 0) :\n    degreeOf j (shift α P) ≤ degreeOf j P :=\n  coefficientCriterion (shift α P) j (degreeOf j P) h\nexample (Q : Polynomial R) (r : R) : (Polynomial.taylor r Q).natDegree = Q.natDegree :=\n  Polynomial.natDegree_taylor Q r\n#print axioms coefficientCriterion\n#print axioms shiftCriterion\nend MvPolynomial.DegreeTaylorRaw\nnamespace MvPolynomial.DegreeTaylorCompositionAttempt\nvariable {σ R : Type*} [CommSemiring R]\nexample (α : σ → R) (j : σ) (P : MvPolynomial σ R) :\n    degreeOf j (DegreeTaylorRaw.shift α P) ≤ degreeOf j P := by\n  exact?\nend MvPolynomial.DegreeTaylorCompositionAttempt\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": false,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown constant `MvPolynomial.degreeOf_taylor_le`\",\n      \"line\": 13,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPolynomial.degreeOf_le_iff : ∀ {R : Type u_1} {σ : Type u_2} [inst : CommSemiring R] {n : σ} {f : MvPolynomial σ R}\\n  {d : ℕ}, MvPolynomial.degreeOf n f ≤ d ↔ ∀ m ∈ f.support, m n ≤ d\",\n      \"line\": 14,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPolynomial.degreeOf_add_le : ∀ {R : Type u_1} {σ : Type u_2} [inst : CommSemiring R] (n : σ)\\n  (f g : MvPolynomial σ R),\\n  MvPolynomial.degreeOf n (f + g) ≤ max (MvPolynomial.degreeOf n f) (MvPolynomial.degreeOf n g)\",\n      \"line\": 15,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPolynomial.degreeOf_prod_le : ∀ {R : Type u_1} {σ : Type u_2} [inst : CommSemiring R] {ι : Type u_3} (i : σ)\\n  (s : Finset ι) (f : ι → MvPolynomial σ R),\\n  MvPolynomial.degreeOf i (∏ j ∈ s, f j) ≤ ∑ j ∈ s, MvPolynomial.degreeOf i (f j)\",\n      \"line\": 16,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPolynomial.degreeOf_pow_le : ∀ {R : Type u_1} {σ : Type u_2} [inst : CommSemiring R] (i : σ) (p : MvPolynomial σ R)\\n  (n : ℕ), MvPolynomial.degreeOf i (p ^ n) ≤ n * MvPolynomial.degreeOf i p\",\n      \"line\": 17,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPolynomial.aeval_natDegree_le : ∀ {σ : Type u_1} {R : Type u_2} [inst : CommSemiring R] {m n : ℕ}\\n  (F : MvPolynomial σ R),\\n  F.totalDegree ≤ m →\\n    ∀ (f : σ → Polynomial R), (∀ (i : σ), (f i).natDegree ≤ n) → ((MvPolynomial.aeval f) F).natDegree ≤ m * n\",\n      \"line\": 18,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"theorem MvPolynomial.aeval_natDegree_le.{v, u_2} : ∀ {σ : Type v} {R : Type u_2} [inst : CommSemiring R] {m n : ℕ}\\n  (F : MvPolynomial σ R),\\n  F.totalDegree ≤ m →\\n    ∀ (f : σ → Polynomial R), (∀ (i : σ), (f i).natDegree ≤ n) → ((MvPolynomial.aeval f) F).natDegree ≤ m * n :=\\nfun {σ} {R} [CommSemiring R] {m n} F hF f hf ↦\\n  Eq.mpr (id (congrArg (fun _a ↦ _a.natDegree ≤ m * n) (MvPolynomial.aeval_def f F)))\\n    (Eq.mpr (id (congrArg (fun _a ↦ _a.natDegree ≤ m * n) (MvPolynomial.eval₂.eq_1 (algebraMap R (Polynomial R)) f F)))\\n      (LE.le.trans\\n        (Polynomial.natDegree_sum_le F.coeff.support fun i ↦\\n          (fun s a ↦ (algebraMap R (Polynomial R)) a * s.prod fun n e ↦ f n ^ e) i (F.coeff i))\\n        (Finset.sup_le fun d hd ↦\\n          id\\n            (id\\n              (id\\n                (LE.le.trans (Polynomial.natDegree_C_mul_le (F.coeff d) (d.prod fun n e ↦ f n ^ e))\\n                  (LE.le.trans (Polynomial.natDegree_prod_le d.support fun i ↦ (fun n e ↦ f n ^ e) i (d i))\\n                    (have this :=\\n                      Eq.mpr (id (congrArg (fun _a ↦ _a ≤ m * n) (Eq.symm (Finset.sum_mul d.support (⇑d) n))))\\n                        (mul_le_mul'\\n                          (LE.le.trans\\n                            (Eq.mpr\\n                              (id (congrArg (fun _a ↦ ∑ i ∈ d.support, d i ≤ _a) (MvPolynomial.totalDegree.eq_1 F)))\\n                              (Finset.le_sup_of_le hd le_rfl))\\n                            hF)\\n                          le_rfl);\\n                    LE.le.trans\\n                      (Finset.sum_le_sum fun i a ↦ LE.le.trans Polynomial.natDegree_pow_le (mul_le_mul' le_rfl (hf i)))\\n                      this))))))))\",\n      \"line\": 19,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.natDegree_taylor : ∀ {R : Type u_1} [inst : Semiring R] (p : Polynomial R) (r : R),\\n  ((Polynomial.taylor r) p).natDegree = p.natDegree\",\n      \"line\": 20,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'MvPolynomial.DegreeTaylorRaw.coefficientCriterion' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 36,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'MvPolynomial.DegreeTaylorRaw.shiftCriterion' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 37,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"`exact?` could not close the goal. Try `apply?` to see partial suggestions.\",\n      \"line\": 43,\n      \"column\": 3,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": false,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown constant `MvPolynomial.degreeOf_taylor_le`",
+          "line": 13,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPolynomial.degreeOf_le_iff : ∀ {R : Type u_1} {σ : Type u_2} [inst : CommSemiring R] {n : σ} {f : MvPolynomial σ R}\n  {d : ℕ}, MvPolynomial.degreeOf n f ≤ d ↔ ∀ m ∈ f.support, m n ≤ d",
+          "line": 14,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPolynomial.degreeOf_add_le : ∀ {R : Type u_1} {σ : Type u_2} [inst : CommSemiring R] (n : σ)\n  (f g : MvPolynomial σ R),\n  MvPolynomial.degreeOf n (f + g) ≤ max (MvPolynomial.degreeOf n f) (MvPolynomial.degreeOf n g)",
+          "line": 15,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPolynomial.degreeOf_prod_le : ∀ {R : Type u_1} {σ : Type u_2} [inst : CommSemiring R] {ι : Type u_3} (i : σ)\n  (s : Finset ι) (f : ι → MvPolynomial σ R),\n  MvPolynomial.degreeOf i (∏ j ∈ s, f j) ≤ ∑ j ∈ s, MvPolynomial.degreeOf i (f j)",
+          "line": 16,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPolynomial.degreeOf_pow_le : ∀ {R : Type u_1} {σ : Type u_2} [inst : CommSemiring R] (i : σ) (p : MvPolynomial σ R)\n  (n : ℕ), MvPolynomial.degreeOf i (p ^ n) ≤ n * MvPolynomial.degreeOf i p",
+          "line": 17,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPolynomial.aeval_natDegree_le : ∀ {σ : Type u_1} {R : Type u_2} [inst : CommSemiring R] {m n : ℕ}\n  (F : MvPolynomial σ R),\n  F.totalDegree ≤ m →\n    ∀ (f : σ → Polynomial R), (∀ (i : σ), (f i).natDegree ≤ n) → ((MvPolynomial.aeval f) F).natDegree ≤ m * n",
+          "line": 18,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "theorem MvPolynomial.aeval_natDegree_le.{v, u_2} : ∀ {σ : Type v} {R : Type u_2} [inst : CommSemiring R] {m n : ℕ}\n  (F : MvPolynomial σ R),\n  F.totalDegree ≤ m →\n    ∀ (f : σ → Polynomial R), (∀ (i : σ), (f i).natDegree ≤ n) → ((MvPolynomial.aeval f) F).natDegree ≤ m * n :=\nfun {σ} {R} [CommSemiring R] {m n} F hF f hf ↦\n  Eq.mpr (id (congrArg (fun _a ↦ _a.natDegree ≤ m * n) (MvPolynomial.aeval_def f F)))\n    (Eq.mpr (id (congrArg (fun _a ↦ _a.natDegree ≤ m * n) (MvPolynomial.eval₂.eq_1 (algebraMap R (Polynomial R)) f F)))\n      (LE.le.trans\n        (Polynomial.natDegree_sum_le F.coeff.support fun i ↦\n          (fun s a ↦ (algebraMap R (Polynomial R)) a * s.prod fun n e ↦ f n ^ e) i (F.coeff i))\n        (Finset.sup_le fun d hd ↦\n          id\n            (id\n              (id\n                (LE.le.trans (Polynomial.natDegree_C_mul_le (F.coeff d) (d.prod fun n e ↦ f n ^ e))\n                  (LE.le.trans (Polynomial.natDegree_prod_le d.support fun i ↦ (fun n e ↦ f n ^ e) i (d i))\n                    (have this :=\n                      Eq.mpr (id (congrArg (fun _a ↦ _a ≤ m * n) (Eq.symm (Finset.sum_mul d.support (⇑d) n))))\n                        (mul_le_mul'\n                          (LE.le.trans\n                            (Eq.mpr\n                              (id (congrArg (fun _a ↦ ∑ i ∈ d.support, d i ≤ _a) (MvPolynomial.totalDegree.eq_1 F)))\n                              (Finset.le_sup_of_le hd le_rfl))\n                            hF)\n                          le_rfl);\n                    LE.le.trans\n                      (Finset.sum_le_sum fun i a ↦ LE.le.trans Polynomial.natDegree_pow_le (mul_le_mul' le_rfl (hf i)))\n                      this))))))))",
+          "line": 19,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.natDegree_taylor : ∀ {R : Type u_1} [inst : Semiring R] (p : Polynomial R) (r : R),\n  ((Polynomial.taylor r) p).natDegree = p.natDegree",
+          "line": 20,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'MvPolynomial.DegreeTaylorRaw.coefficientCriterion' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 36,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'MvPolynomial.DegreeTaylorRaw.shiftCriterion' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 37,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "`exact?` could not close the goal. Try `apply?` to see partial suggestions.",
+          "line": 43,
+          "column": 3,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 10770
+}

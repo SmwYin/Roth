@@ -1,0 +1,37 @@
+namespace MvPolynomial.DegreeTaylorExtra
+variable {σ A : Type*} [CommRing A]
+theorem equality (α : σ → A) (j : σ) (P : MvPolynomial σ A) :
+    degreeOf j (taylor α P) = degreeOf j P := by
+  apply le_antisymm (DegreeTaylorAssessment.replay α j P)
+  have h := DegreeTaylorAssessment.replay (fun j ↦ -α j) j (taylor α P)
+  simpa only [taylor_neg_taylor] using h
+#print axioms equality
+#check @Polynomial.natDegree_taylor
+#check @MvPolynomial.degreeOf_eq_natDegree
+end MvPolynomial.DegreeTaylorExtra
+namespace Roth.DegreeTaylorCaller
+open MvPolynomial
+variable {σ : Type*} [Fintype σ]
+omit [Fintype σ] in
+theorem supportBridge {P : MvPolynomial σ ℝ} {α : σ → ℝ} {d : σ →₀ ℕ} :
+    d ∈ (taylor α P).support ↔ eval α (hasseDeriv d P) ≠ 0 := by
+  rw [MvPolynomial.mem_support_iff, coeff_taylor]
+theorem replay {P : MvPolynomial σ ℝ} (hP : P ≠ 0) {r : σ → ℕ}
+    (hd : ∀ j, degreeOf j P ≤ r j) (α : σ → ℝ) : index P α r ≤ Fintype.card σ := by
+  obtain ⟨d, hd0, hdw⟩ := exists_weight_eq_index hP α r
+  exact hdw ▸ weight_le_card fun j ↦
+    (monomial_le_degreeOf j (supportBridge.2 hd0)).trans
+      ((DegreeTaylorAssessment.replay α j P).trans (hd j))
+#print axioms supportBridge
+#print axioms replay
+end Roth.DegreeTaylorCaller
+namespace MvPolynomial.DegreeTaylorShape
+variable {σ R : Type*} [CommSemiring R]
+theorem expanded (α : σ → R) (j : σ) (P : MvPolynomial σ R) :
+    degreeOf j (aeval (fun i ↦ X i + C (α i)) P) ≤ degreeOf j P :=
+  DegreeTaylorAssessment.replay α j P
+example {T : Type*} [Semiring T] : True := by
+  fail_if_success let _ := (MvPolynomial.taylor (σ := σ) (R := T))
+  trivial
+#print axioms expanded
+end MvPolynomial.DegreeTaylorShape

@@ -1,0 +1,15 @@
+#check @MvPolynomial.degreeOf_taylor_le
+#print MvPolynomial.degreeOf_taylor_le
+#print axioms MvPolynomial.degreeOf_taylor_le
+namespace MvPolynomial.DegreeTaylorAssessment
+variable {σ R : Type*} [CommSemiring R]
+theorem replay (α : σ → R) (j : σ) (P : MvPolynomial σ R) :
+    degreeOf j (taylor α P) ≤ degreeOf j P := by
+  refine degreeOf_le_iff.2 fun e he ↦ not_lt.1 fun h ↦ ?_
+  simp [mem_support_iff, coeff_taylor, hasseDeriv_eq_zero_of_degreeOf_lt h] at he
+#print axioms replay
+end MvPolynomial.DegreeTaylorAssessment
+run_cmd do
+  let ci ← Lean.getConstInfo `MvPolynomial.DegreeTaylorAssessment.replay
+  let constants := (ci.value! (allowOpaque := true)).getUsedConstants
+  Lean.logInfo m!"DEGREE_TAYLOR_REPLAY_CONSTANTS: {constants}"

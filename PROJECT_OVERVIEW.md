@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 68/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 69/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 68; remaining: 225.
-- Verdicts: 10 NO-composable-from-mathlib, 12 YES-add-as-is, 3 YES-but-generalise-first, 11 NO-mathlib-has-it, 23 BORDERLINE-needs-human, 9 SKIP.
+- Completed applicable assessments: 69; remaining: 224.
+- Verdicts: 10 NO-composable-from-mathlib, 13 YES-add-as-is, 3 YES-but-generalise-first, 11 NO-mathlib-has-it, 23 BORDERLINE-needs-human, 9 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -739,6 +739,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: One explicit source caller Roth.index_rename at Index216; full native caller replay succeeds using fresh target replay. Its injectivity assumption belongs to support/weight transport.
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor_rename.md).
 
+### Completed: `MvPolynomial.degreeOf_taylor_le`
+
+- Type: `∀ {σ : Type u_1} {R : Type u_2} [CommSemiring R] (α : σ → R) (j : σ) (P : MvPolynomial σ R), MvPolynomial.degreeOf j (MvPolynomial.taylor α P) ≤ MvPolynomial.degreeOf j P`
+- What: Constant coordinate translation does not increase degree in any chosen variable.
+- How: An exponent above the original coordinate degree has zero Hasse derivative, hence zero translated coefficient; apply the support characterization of degree.
+- Hypotheses: Arbitrary independent-universe σ,R; CommSemiring R; arbitrary shift, variable and polynomial. No finiteness, nonzero, domain or characteristic restriction.
+- Project dependencies: MvPolynomial.taylor, MvPolynomial.coeff_taylor, MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt
+- Caller summary: One explicit caller Roth.index_le_card Index229; full copied proof verified using fresh target replay.
+- Verdict: YES-add-as-is; [complete report](.mathlib-quality/overview/mathlibable/MvPolynomial.degreeOf_taylor_le.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -901,6 +911,8 @@ Completed `MvPolynomial.taylor_map`: map_eval₂ is exact generic substitution l
 
 Completed `MvPolynomial.taylor_rename`: aeval_rename and comp_aeval_apply are exact abstract compatibility laws. Original normalized translation square requires five mathematical facts; not a one-call defeq replacement.
 
+Completed `MvPolynomial.degreeOf_taylor_le`: Existing degreeOf_le_iff and degree bounds on sums/products do not prove the essential translated coefficient vanishing. Polynomial.natDegree_taylor is univariate; aeval_natDegree_le uses total degree and a univariate target.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -1038,6 +1050,8 @@ Completed `MvPolynomial.taylor_zero`: Elementary identity-assignment law after z
 Completed `MvPolynomial.taylor_map`: Naturality of substitution specialized to translations; no distinct new mathematical argument.
 
 Completed `MvPolynomial.taylor_rename`: Generic substitution naturality specialized to shifted generators; close analogue rename_expand, not same substitution.
+
+Completed `MvPolynomial.degreeOf_taylor_le`: Univariate Taylor degree invariance is analogous but not direct replacement. Direct aeval spelling is definitionally equivalent.
 
 ## Part 5: Generalization opportunities
 
@@ -1180,6 +1194,8 @@ Completed `MvPolynomial.taylor_map`: Maximal within fixed parent CommSemiring in
 
 Completed `MvPolynomial.taylor_rename`: Maximal within parent CommSemiring interface; bundled AlgHom square and arbitrary target-algebra evaluation verified. No mechanical weakening established.
 
+Completed `MvPolynomial.degreeOf_taylor_le`: Maximal within CommSemiring parent interface; CommRing equality via inverse is a separately verified stronger specialization, not assumption weakening.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -1318,6 +1334,8 @@ Completed `MvPolynomial.taylor_zero`: No mathematical API gap; parent translatio
 Completed `MvPolynomial.taylor_map`: Design choice whether a named multivariate translation API merits coefficient-map convenience law; no generic substitution gap.
 
 Completed `MvPolynomial.taylor_rename`: No generic substitution gap; decision whether named multivariate translation API merits explicit rename convenience law.
+
+Completed `MvPolynomial.degreeOf_taylor_le`: Coordinate-degree control under multivariate constant-shift substitution, with arbitrary variable type and commutative-semiring coefficients.
 
 ## Part 7: Junk / removable
 
@@ -1460,6 +1478,8 @@ Completed `MvPolynomial.taylor_map`: Unused by explicit project source reference
 
 Completed `MvPolynomial.taylor_rename`: Used in index invariance, not dead code. One source use and generic derivation do not by themselves force deletion.
 
+Completed `MvPolynomial.degreeOf_taylor_le`: Used by index/cardinality bound; not dead code. Short proof relies on genuine new Hasse/Taylor content.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -1532,6 +1552,7 @@ Completed `MvPolynomial.taylor_rename`: Used in index invariance, not dead code.
 | 66 | `MvPolynomial.taylor_zero` | NO-composable-from-mathlib | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor_zero.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.taylor_zero/root-acceptance.json) |
 | 67 | `MvPolynomial.taylor_map` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor_map.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.taylor_map/root-acceptance.json) |
 | 68 | `MvPolynomial.taylor_rename` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor_rename.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.taylor_rename/root-acceptance.json) |
+| 69 | `MvPolynomial.degreeOf_taylor_le` | YES-add-as-is | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.degreeOf_taylor_le.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.degreeOf_taylor_le/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -1667,11 +1688,13 @@ Completed `MvPolynomial.taylor_map` action: BORDERLINE: decide translation conve
 
 Completed `MvPolynomial.taylor_rename` action: BORDERLINE: choose named convenience law versus generic substitution API, bundled square and naming/orientation. Read-only assessment complete; production unchanged.
 
+Completed `MvPolynomial.degreeOf_taylor_le` action: Propose in Mathlib/Algebra/MvPolynomial/Taylor.lean with coefficient Taylor and Hasse degree/vanishing API; direct aeval statement if named translation is declined.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `MvPolynomial.degreeOf_taylor_le` next. Supporting identities receive their own applicable checks.
+   `MvPolynomial.taylor_neg_taylor` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.

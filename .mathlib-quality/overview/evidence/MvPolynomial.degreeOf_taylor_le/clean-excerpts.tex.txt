@@ -1,0 +1,68 @@
+We start with the Taylor expansion of a polynomial in several variables.
+\begin{thm}[Taylor's expansion for polynomials in several variables]
+    Let $P(x_1, \dots, x_p)$ be a polynomial with real coefficients in the variables $x_1, \dots, x_p$ of degree at most $r_i$ in $x_i$ for $1 \leq i \leq p$. For each $1 \leq i \leq p$, pick a natural number $d_i \geq r_i$. Let $(\alpha_1, \dots, \alpha_p) \in \R^p$. Then
+    $$
+    P(x_1, \dots, x_p) = \sum_{i_1=0}^{d_1} \cdots \sum_{i_p=0}^{d_p} (\Delta_{i_1, \dots, i_p} P)(\alpha_1, \dots, \alpha_p) \prod_{j=1}^p ( x_j - \alpha_j)^{i_j}.
+    $$
+\end{thm}
+\begin{proof}
+    For a polynomial $P$ let
+    $$
+    T_{d_1, \dots, d_p} P(x_1, \dots, x_p) = \sum_{i_1=0}^{d_1} \cdots \sum_{i_p=0}^{d_p} (\Delta_{i_1, \dots, i_p} P)(\alpha_1, \dots, \alpha_p) \prod_{j=1}^p ( x_j - \alpha_j)^{i_j}
+    $$
+It is clear that
+$$
+T_{d_1, \dots, d_p} (P_1 + P_2) = T_{d_1, \dots, d_p} (P_1) + T_{d_1, \dots, d_p}(P_2)
+$$
+and for any constant $c$,
+$$
+T_{d_1, \dots, d_p}(c P) = c T_{d_1, \dots, d_p}(P).
+$$
+So it suffices to prove the theorem for monomials. For any tuple
+$0\leq s_i\leq r_i\leq d_i$, distribution gives
+$$
+T_{d_1,\dots,d_p}(x_1^{s_1}\cdots x_p^{s_p})
+ =\prod_{i=1}^pT_{d_i}(x_i^{s_i})=\prod_{i=1}^px_i^{s_i}
+$$
+by the one-variable binomial expansion $x_i^{s_i}=((x_i-\alpha_i)+\alpha_i)^{s_i}$.
+\end{proof}
+
+Let $P(x_1, \dots, x_p)$ be a nonzero polynomial with real coefficients in $p$ variables. Let $\alpha_1, \dots, \alpha_p$ be any real numbers. Let $r_1, \dots, r_p$ be any positive numbers. We define the {\it index} $\theta$ of $P$ at the point $(\alpha_1, \dots, \alpha_p)$ relative to $r_1, \dots, r_p$ as follows: We define $\theta$ to be the minimum of all numbers of the form
+$$
+\frac{i_1}{r_1} + \cdots + \frac{i_p}{r_p}
+$$
+where the minimum is over all tuples $(i_1, \dots, i_p)$ such that
+$$
+\Delta_{i_1, \dots, i_p} P(\alpha_1, \dots, \alpha_p) \ne 0.
+$$
+When we want to keep track of all data we write
+$$
+\ind(P; \alpha_1, \dots, \alpha_p; r_1, \dots, r_p).
+$$
+When there is no confusion about the data, we simply write $\ind(P)$.
+Taylor's theorem shows that at least one derivative at the chosen point is
+nonzero; only finitely many derivative multi-indices can be nonzero. Thus
+this is an attained minimum. We additionally set $\ind(0)=+\infty$.
+All comparisons involving zero polynomials below use this convention.
+\lean{Let $P_\alpha(X)=P(X+\alpha)$, whose coefficient at $d$ is
+$(\Delta_dP)(\alpha)$. Define the index as the minimum of
+$\sum_jd_j/r_j$ over its nonzero coefficients, with values in
+\begin{enumerate}
+    \item $R$ has integral coefficients and is not identically zero;
+    \item $R$ has degree at most $r_j$ in $x_j$ for $1 \leq j \leq m$;
+    \item the coefficients of $R$ have absolute values not exceeding $B$.
+\end{enumerate}
+
+Let $q_1, \dots, q_m$ denote positive integers. We define
+$$
+\Theta_m(B; q_1, \dots, q_m; r_1, \dots, r_m)
+$$
+to be the supremum of the numbers
+$$
+\ind (R; \frac{h_1}{q_1}, \dots, \frac{h_m}{q_m}; r_1, \dots, r_m)
+$$
+over all $R \in \mathcal R_m(B; r_1, \dots, r_m)$ and integers $h_i$, $1 \leq i \leq m$, with $\gcd(h_i, q_i)=1$.
+This supremum is well-defined and satisfies $0\leq\Theta_m\leq m$:
+the constant polynomial $1$ with every $h_i=1$ is allowed, and Taylor's theorem gives a nonzero
+derivative with $0\leq i_j\leq r_j$, of weight at most $m$.
+Also, $\Theta_m$ is nondecreasing in $B$, since increasing $B$ enlarges the

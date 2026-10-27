@@ -1,0 +1,21 @@
+{
+  "declaration": "MvPolynomial.degreeOf_taylor_le",
+  "kind": "theorem",
+  "type": "∀ {σ : Type u_1} {R : Type u_2} [CommSemiring R] (α : σ → R) (j : σ) (P : MvPolynomial σ R), MvPolynomial.degreeOf j (MvPolynomial.taylor α P) ≤ MvPolynomial.degreeOf j P",
+  "what": "Constant coordinate translation does not increase degree in any chosen variable.",
+  "how": "An exponent above the original coordinate degree has zero Hasse derivative, hence zero translated coefficient; apply the support characterization of degree.",
+  "hypotheses": "Arbitrary independent-universe σ,R; CommSemiring R; arbitrary shift, variable and polynomial. No finiteness, nonzero, domain or characteristic restriction.",
+  "project_dependencies": [
+    "MvPolynomial.taylor",
+    "MvPolynomial.coeff_taylor",
+    "MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt"
+  ],
+  "caller_summary": "One explicit caller Roth.index_le_card Index229; full copied proof verified using fresh target replay.",
+  "mathlib_api_audit": "Existing degreeOf_le_iff and degree bounds on sums/products do not prove the essential translated coefficient vanishing. Polynomial.natDegree_taylor is univariate; aeval_natDegree_le uses total degree and a univariate target.",
+  "moral_duplications": "Univariate Taylor degree invariance is analogous but not direct replacement. Direct aeval spelling is definitionally equivalent.",
+  "generalization": "Maximal within CommSemiring parent interface; CommRing equality via inverse is a separately verified stronger specialization, not assumption weakening.",
+  "missing_api": "Coordinate-degree control under multivariate constant-shift substitution, with arbitrary variable type and commutative-semiring coefficients.",
+  "junk": "Used by index/cardinality bound; not dead code. Short proof relies on genuine new Hasse/Taylor content.",
+  "action": "Propose in Mathlib/Algebra/MvPolynomial/Taylor.lean with coefficient Taylor and Hasse degree/vanishing API; direct aeval statement if named translation is declined.",
+  "verdict": "YES-add-as-is"
+}

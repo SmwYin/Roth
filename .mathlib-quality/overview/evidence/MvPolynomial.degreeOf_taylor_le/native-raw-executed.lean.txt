@@ -1,0 +1,38 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+import Mathlib.Algebra.Polynomial.CancelLeads
+import Mathlib.Algebra.MvPolynomial.PDeriv
+import Mathlib.RingTheory.Polynomial.Basic
+#check_failure MvPolynomial.degreeOf_taylor_le
+#check @MvPolynomial.degreeOf_le_iff
+#check @MvPolynomial.degreeOf_add_le
+#check @MvPolynomial.degreeOf_prod_le
+#check @MvPolynomial.degreeOf_pow_le
+#check @MvPolynomial.aeval_natDegree_le
+#print MvPolynomial.aeval_natDegree_le
+#check @Polynomial.natDegree_taylor
+noncomputable section
+namespace MvPolynomial.DegreeTaylorRaw
+variable {σ R : Type*} [CommSemiring R]
+def shift (α : σ → R) : MvPolynomial σ R →ₐ[R] MvPolynomial σ R :=
+  aeval fun j ↦ X j + C (α j)
+theorem coefficientCriterion (Q : MvPolynomial σ R) (j : σ) (n : ℕ)
+    (h : ∀ d : σ →₀ ℕ, n < d j → Q.coeff d = 0) : degreeOf j Q ≤ n :=
+  degreeOf_le_iff.mpr fun d hd ↦ not_lt.mp fun hlt ↦
+    (mem_support_iff.mp hd) (h d hlt)
+theorem shiftCriterion (α : σ → R) (j : σ) (P : MvPolynomial σ R)
+    (h : ∀ d : σ →₀ ℕ, degreeOf j P < d j → (shift α P).coeff d = 0) :
+    degreeOf j (shift α P) ≤ degreeOf j P :=
+  coefficientCriterion (shift α P) j (degreeOf j P) h
+example (Q : Polynomial R) (r : R) : (Polynomial.taylor r Q).natDegree = Q.natDegree :=
+  Polynomial.natDegree_taylor Q r
+#print axioms coefficientCriterion
+#print axioms shiftCriterion
+end MvPolynomial.DegreeTaylorRaw
