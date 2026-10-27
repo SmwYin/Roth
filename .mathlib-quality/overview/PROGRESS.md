@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-27
 
-- Declarations completed: **189/293**
-- Next declaration: **#190 `Roth.indexSet_comp_subset`** (Roth/Theta.lean:141)
+- Declarations completed: **190/293**
+- Next declaration: **#191 `Roth.Θ_equiv`** (Roth/Theta.lean:159)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -208,10 +208,10 @@ Last regenerated: 2026-10-27
 | 187 | `Roth.Θ_le_card` | Roth/Theta.lean:114 | NO-composable-from-mathlib | [report](mathlibable/Roth.Θ_le_card.md) |
 | 188 | `Roth.Θ_le_of_forall_index_le` | Roth/Theta.lean:124 | NO-composable-from-mathlib | [report](mathlibable/Roth.Θ_le_of_forall_index_le.md) |
 | 189 | `Roth.Θ_mono` | Roth/Theta.lean:134 | NO-composable-from-mathlib | [report](mathlibable/Roth.Θ_mono.md) |
+| 190 | `Roth.indexSet_comp_subset` | Roth/Theta.lean:141 | SKIP | [report](mathlibable/Roth.indexSet_comp_subset.md) |
 
 ## Remaining declarations (in processing order)
 
-- #190 `Roth.indexSet_comp_subset` (Roth/Theta.lean:141, private lemma)
 - #191 `Roth.Θ_equiv` (Roth/Theta.lean:159, public theorem)
 - #192 `Roth.isPrimitive_linear` (Roth/Theta.lean:167, private lemma)
 - #193 `Roth.isPrimitive_pow` (Roth/Theta.lean:175, private lemma)
