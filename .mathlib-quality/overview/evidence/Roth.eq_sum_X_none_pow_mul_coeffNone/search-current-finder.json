@@ -1,0 +1,58 @@
+{
+  "request": {
+    "query": "Expand a multivariate polynomial P in Option variables of degreeOf none at most n as sum range n+1 of X none powers times rename some coefficient polynomials"
+  },
+  "response": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"MvPolynomial.expand\",\n      \"informal_name\": \"Expansion Homomorphism for Multivariate Polynomials\",\n      \"kind\": \"definition\",\n      \"type\": \"{σ : Type u_1} → {R : Type u_3} → [inst : CommSemiring R] → ℕ → MvPolynomial σ R →ₐ[R] MvPolynomial σ R\",\n      \"informal_description\": \"The algebra homomorphism over $ R $ that substitutes each variable $ X_i $ in the multivariate polynomial ring $ R[\\\\sigma] $ with $ X_i^p $, effectively expanding the polynomial by raising each variable to the $ p $-th power. This is defined using the variable substitution homomorphism $ \\\\text{bind}_1 $, mapping $ X_i $ to $ X_i^p $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Expand\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.coe_expand\",\n      \"informal_name\": \"Expansion Homomorphism for Multivariate Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_3} [inst : CommSemiring R] (p : ℕ),\\n  ⇑(MvPolynomial.expand p) = MvPolynomial.eval₂ MvPolynomial.C ((fun s => MvPolynomial.X s) ^ p)\",\n      \"informal_description\": \"The algebra homomorphism over $ R $ that substitutes each variable $ X_i $ in the multivariate polynomial ring $ R[\\\\sigma] $ with $ X_i^p $, effectively expanding the polynomial by raising each variable to the $ p $-th power.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Expand\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.optionEquivLeft_symm_apply\",\n      \"informal_name\": \"Inverse of Algebra Equivalence Between Multivariate Polynomials over $\\\\sigma \\\\sqcup \\\\{\\\\ast\\\\}$ and Polynomials in One Variable with Multivariate Coefficients\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (R : Type u) (S₁ : Type v) [inst : CommSemiring R] (a : Polynomial (MvPolynomial S₁ R)),\\n  (MvPolynomial.optionEquivLeft R S₁).symm a =\\n    (Polynomial.aevalTower (MvPolynomial.rename some) (MvPolynomial.X none)) a\",\n      \"informal_description\": \"For any commutative semiring $R$ and type $\\\\sigma$, the inverse of the algebra equivalence between the multivariate polynomial ring $R[\\\\sigma \\\\sqcup \\\\{\\\\ast\\\\}]$ and the polynomial ring $R[\\\\sigma][X]$ evaluates a polynomial $a \\\\in R[\\\\sigma][X]$ by substituting the indeterminate $X$ with the additional variable $X_\\\\ast$ in $R[\\\\sigma \\\\sqcup \\\\{\\\\ast\\\\}]$ and renaming the original $\\\\sigma$-variables via the canonical injection $\\\\sigma \\\\to \\\\sigma \\\\sqcup \\\\{\\\\ast\\\\}$. This is expressed as $(\\\\phi^{-1}(a))(X_\\\\ast) = \\\\mathrm{aeval}_{R[\\\\sigma]}(X_\\\\ast)(a)$, where $\\\\phi$ denotes the original equivalence.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.optionEquivRight_apply\",\n      \"informal_name\": \"Algebra Equivalence: $ R[\\\\text{Option } S] \\\\cong R[X][S] $\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (R : Type u) (S₁ : Type v) [inst : CommSemiring R] (a : MvPolynomial (Option S₁) R),\\n  (MvPolynomial.optionEquivRight R S₁) a =\\n    (MvPolynomial.aeval fun o => o.elim (MvPolynomial.C Polynomial.X) MvPolynomial.X) a\",\n      \"informal_description\": \"For any commutative semiring $ R $ and type $ S $, there exists an algebra equivalence between the multivariate polynomial ring $ R[\\\\text{Option } S] $ and the multivariate polynomial ring $ R[X][S] $. This equivalence is constructed by interpreting the 'none' variable as the indeterminate $ X $ in $ R[X] $, while mapping 'some $ i $' variables to the corresponding variables in $ S $. The equivalence preserves addition, multiplication, and scalar multiplication by $ R $, establishing a bijective correspondence between these two algebraic structures.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.optionEquivLeft_coeff_some_coeff_none\",\n      \"informal_name\": \"Coefficient correspondence in algebra equivalence between multivariate polynomials over Option σ and polynomials in one variable with multivariate coefficients\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (R : Type u) (S₁ : Type v) [inst : CommSemiring R] (n : Option S₁ →₀ ℕ) (f : MvPolynomial (Option S₁) R),\\n  MvPolynomial.coeff n.some (((MvPolynomial.optionEquivLeft R S₁) f).coeff (n none)) = MvPolynomial.coeff n f\",\n      \"informal_description\": \"For any finite support function $ n : \\\\text{Option } \\\\sigma \\\\to₀ \\\\mathbb{N} $ and polynomial $ f \\\\in R[\\\\text{Option } \\\\sigma] $, the coefficient of the monomial corresponding to $ n $ restricted to $ \\\\sigma $ in the polynomial obtained by evaluating the algebra equivalence at the variable corresponding to 'none' equals the coefficient of $ n $ in $ f $. Formally, $ \\\\text{coeff}_{n.\\\\text{some}}(\\\\text{Polynomial.coeff}(\\\\text{optionEquivLeft}(f), n(\\\\text{none}))) = \\\\text{coeff}_n(f) $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "items": [
+        {
+          "formal_name": "MvPolynomial.expand",
+          "informal_name": "Expansion Homomorphism for Multivariate Polynomials",
+          "kind": "definition",
+          "type": "{σ : Type u_1} → {R : Type u_3} → [inst : CommSemiring R] → ℕ → MvPolynomial σ R →ₐ[R] MvPolynomial σ R",
+          "informal_description": "The algebra homomorphism over $ R $ that substitutes each variable $ X_i $ in the multivariate polynomial ring $ R[\\sigma] $ with $ X_i^p $, effectively expanding the polynomial by raising each variable to the $ p $-th power. This is defined using the variable substitution homomorphism $ \\text{bind}_1 $, mapping $ X_i $ to $ X_i^p $.",
+          "path": "Mathlib.Algebra.MvPolynomial.Expand"
+        },
+        {
+          "formal_name": "MvPolynomial.coe_expand",
+          "informal_name": "Expansion Homomorphism for Multivariate Polynomials",
+          "kind": "theorem",
+          "type": "∀ {σ : Type u_1} {R : Type u_3} [inst : CommSemiring R] (p : ℕ),\n  ⇑(MvPolynomial.expand p) = MvPolynomial.eval₂ MvPolynomial.C ((fun s => MvPolynomial.X s) ^ p)",
+          "informal_description": "The algebra homomorphism over $ R $ that substitutes each variable $ X_i $ in the multivariate polynomial ring $ R[\\sigma] $ with $ X_i^p $, effectively expanding the polynomial by raising each variable to the $ p $-th power.",
+          "path": "Mathlib.Algebra.MvPolynomial.Expand"
+        },
+        {
+          "formal_name": "MvPolynomial.optionEquivLeft_symm_apply",
+          "informal_name": "Inverse of Algebra Equivalence Between Multivariate Polynomials over $\\sigma \\sqcup \\{\\ast\\}$ and Polynomials in One Variable with Multivariate Coefficients",
+          "kind": "theorem",
+          "type": "∀ (R : Type u) (S₁ : Type v) [inst : CommSemiring R] (a : Polynomial (MvPolynomial S₁ R)),\n  (MvPolynomial.optionEquivLeft R S₁).symm a =\n    (Polynomial.aevalTower (MvPolynomial.rename some) (MvPolynomial.X none)) a",
+          "informal_description": "For any commutative semiring $R$ and type $\\sigma$, the inverse of the algebra equivalence between the multivariate polynomial ring $R[\\sigma \\sqcup \\{\\ast\\}]$ and the polynomial ring $R[\\sigma][X]$ evaluates a polynomial $a \\in R[\\sigma][X]$ by substituting the indeterminate $X$ with the additional variable $X_\\ast$ in $R[\\sigma \\sqcup \\{\\ast\\}]$ and renaming the original $\\sigma$-variables via the canonical injection $\\sigma \\to \\sigma \\sqcup \\{\\ast\\}$. This is expressed as $(\\phi^{-1}(a))(X_\\ast) = \\mathrm{aeval}_{R[\\sigma]}(X_\\ast)(a)$, where $\\phi$ denotes the original equivalence.",
+          "path": "Mathlib.Algebra.MvPolynomial.Equiv"
+        },
+        {
+          "formal_name": "MvPolynomial.optionEquivRight_apply",
+          "informal_name": "Algebra Equivalence: $ R[\\text{Option } S] \\cong R[X][S] $",
+          "kind": "theorem",
+          "type": "∀ (R : Type u) (S₁ : Type v) [inst : CommSemiring R] (a : MvPolynomial (Option S₁) R),\n  (MvPolynomial.optionEquivRight R S₁) a =\n    (MvPolynomial.aeval fun o => o.elim (MvPolynomial.C Polynomial.X) MvPolynomial.X) a",
+          "informal_description": "For any commutative semiring $ R $ and type $ S $, there exists an algebra equivalence between the multivariate polynomial ring $ R[\\text{Option } S] $ and the multivariate polynomial ring $ R[X][S] $. This equivalence is constructed by interpreting the 'none' variable as the indeterminate $ X $ in $ R[X] $, while mapping 'some $ i $' variables to the corresponding variables in $ S $. The equivalence preserves addition, multiplication, and scalar multiplication by $ R $, establishing a bijective correspondence between these two algebraic structures.",
+          "path": "Mathlib.Algebra.MvPolynomial.Equiv"
+        },
+        {
+          "formal_name": "MvPolynomial.optionEquivLeft_coeff_some_coeff_none",
+          "informal_name": "Coefficient correspondence in algebra equivalence between multivariate polynomials over Option σ and polynomials in one variable with multivariate coefficients",
+          "kind": "theorem",
+          "type": "∀ (R : Type u) (S₁ : Type v) [inst : CommSemiring R] (n : Option S₁ →₀ ℕ) (f : MvPolynomial (Option S₁) R),\n  MvPolynomial.coeff n.some (((MvPolynomial.optionEquivLeft R S₁) f).coeff (n none)) = MvPolynomial.coeff n f",
+          "informal_description": "For any finite support function $ n : \\text{Option } \\sigma \\to₀ \\mathbb{N} $ and polynomial $ f \\in R[\\text{Option } \\sigma] $, the coefficient of the monomial corresponding to $ n $ restricted to $ \\sigma $ in the polynomial obtained by evaluating the algebra equivalence at the variable corresponding to 'none' equals the coefficient of $ n $ in $ f $. Formally, $ \\text{coeff}_{n.\\text{some}}(\\text{Polynomial.coeff}(\\text{optionEquivLeft}(f), n(\\text{none}))) = \\text{coeff}_n(f) $.",
+          "path": "Mathlib.Algebra.MvPolynomial.Equiv"
+        }
+      ]
+    },
+    "isError": false
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "kind": "theorem",
+  "type": "@Roth.eq_sum_X_none_pow_mul_coeffNone : ∀ {τ : Type u_1} {R : Type u_2} [inst : CommSemiring R]\n  (P : MvPolynomial (Option τ) R) {n : ℕ},\n  MvPolynomial.degreeOf none P ≤ n →\n    P = ∑ ν ∈ Finset.range (n + 1), MvPolynomial.X none ^ ν * (MvPolynomial.rename some) (Roth.coeffNone P ν)",
+  "what": "Expand an Option-variable polynomial with distinguished-variable degree at most n into powers0 through n with polynomial coefficients in the remaining variables.",
+  "how": "Source proof compares monomial coefficients, separates the matching distinguished exponent, and uses hn to kill out-of-range coefficients. Canonical refactor transports existing polynomial finite expansion through optionEquivLeft.",
+  "hypotheses": [
+    "τ : Type u_1, R : Type u_2",
+    "CommSemiring R",
+    "P : MvPolynomial (Option τ) R; n : ℕ",
+    "degreeOf none P ≤ n",
+    "No Fintype τ or DecidableEq τ"
+  ],
+  "project_dependencies": [
+    "Roth.coeffNone",
+    "Roth.coeff_coeffNone",
+    "Roth.eq_mapDomain_some_add_single",
+    "private Roth.coeff_X_none_pow_mul_rename"
+  ],
+  "caller_summary": {
+    "explicit_call_sites": [
+      {
+        "file": "Roth/Separation.lean",
+        "line": 335,
+        "caller": "Roth.exists_separated_representation"
+      }
+    ],
+    "internal_use_count_excluding_declaring_file": 0,
+    "same_file_count": 1,
+    "direct_kernel_value_consumers": [
+      "Roth.exists_separated_representation"
+    ],
+    "inline_derivations": "Private basis/reconstruction helpers consume an expansion equality premise; no independent full derivation found."
+  },
+  "mathlib_api_audit": {
+    "canonical": "Polynomial.as_sum_range_C_mul_X_pow'",
+    "canonical_path": "Mathlib/Algebra/Polynomial/Degree/Support.lean:93",
+    "canonical_existing_calls": 1,
+    "degree_bridge": "MvPolynomial.natDegree_optionEquivLeft",
+    "old_form_existing_calls": ">3 named ingredients plus genuine normalization proof; not NO-composable",
+    "old_form_ingredients": [
+      "Polynomial.as_sum_range_C_mul_X_pow'",
+      "MvPolynomial.natDegree_optionEquivLeft",
+      "MvPolynomial.optionEquivLeft",
+      "MvPolynomial.optionEquivLeft_symm_X",
+      "Polynomial.aevalTower_C",
+      "map_sum",
+      "map_mul",
+      "map_pow",
+      "mul_comm"
+    ],
+    "representation": "Inverse C/rename and finite sum transport are actual checked proofs, not definitional old-form equality."
+  },
+  "moral_duplications": [
+    "Polynomial coefficient reconstruction under the existing iterated polynomial-ring algebra equivalence."
+  ],
+  "generalization": {
+    "status": "MAXIMALLY GENERAL for fixed parent interface",
+    "canonical_surface": "Existing finite Polynomial expansion over Semiring A with natDegree p < m.",
+    "expanded_representation": "Generic Semiring A reconstruction actually compiled. Setting A=MvPolynomial τ R gives canonical Option expansion; does not weaken CommSemiring required by fixed parent."
+  },
+  "missing_api": "No missing reconstruction theorem. A named inverse-C/rename bridge is optional convenience API; scratch bridge is new proof, not a counted mathlib call.",
+  "junk": "Useful: one source caller and one direct kernel-value consumer.",
+  "action": "Refactor sole full caller exists_separated_representation using existing Polynomial expansion, degree identity and verified inverse-equivalence bridge; delete wrapper only after caller update. Optional explanatory local destination Roth/Separation.lean."
+}

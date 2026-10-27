@@ -1,0 +1,45 @@
+#check_failure Roth.eq_sum_X_none_pow_mul_coeffNone
+#check @Polynomial.as_sum_range_C_mul_X_pow'
+#check @MvPolynomial.natDegree_optionEquivLeft
+#check @MvPolynomial.optionEquivLeft_symm_apply
+namespace Expansion156
+open MvPolynomial
+variable {τ R : Type*} [CommSemiring R]
+theorem canonical (P : MvPolynomial (Option τ) R) {n : ℕ}
+    (hn : degreeOf none P ≤ n) :
+    optionEquivLeft R τ P = ∑ ν ∈ Finset.range (n + 1),
+      Polynomial.C ((optionEquivLeft R τ P).coeff ν) * Polynomial.X ^ ν :=
+  Polynomial.as_sum_range_C_mul_X_pow' _
+    (Nat.lt_succ_of_le ((natDegree_optionEquivLeft R P).trans_le hn))
+theorem inverse_C (Q : MvPolynomial τ R) :
+    (optionEquivLeft R τ).symm (Polynomial.C Q) = rename some Q := by
+  change Polynomial.aevalTower (rename some) (X none) (Polynomial.C Q) = _
+  simp
+theorem expanded (P : MvPolynomial (Option τ) R) {n : ℕ}
+    (hn : degreeOf none P ≤ n) :
+    P = ∑ ν ∈ Finset.range (n + 1),
+      X none ^ ν * rename some ((optionEquivLeft R τ P).coeff ν) := by
+  have h := congrArg (optionEquivLeft R τ).symm (canonical P hn)
+  simpa only [AlgEquiv.symm_apply_apply, map_sum, map_mul, map_pow,
+    optionEquivLeft_symm_X, inverse_C, mul_comm] using h
+theorem semiring_expansion {A : Type*} [Semiring A] (p : Polynomial A) {n : ℕ}
+    (hn : p.natDegree < n) :
+    p = ∑ ν ∈ Finset.range n, Polynomial.C (p.coeff ν) * Polynomial.X ^ ν :=
+  p.as_sum_range_C_mul_X_pow' hn
+theorem bound_guard :
+    (Polynomial.X : Polynomial ℕ) ≠
+      ∑ ν ∈ Finset.range 1, Polynomial.C ((Polynomial.X : Polynomial ℕ).coeff ν) *
+        Polynomial.X ^ ν := by
+  simp
+theorem endpoint_guard :
+    (Polynomial.C 1 : Polynomial ℕ) ≠
+      ∑ ν ∈ Finset.range 0, Polynomial.C ((Polynomial.C 1 : Polynomial ℕ).coeff ν) *
+        Polynomial.X ^ ν := by
+  simp
+#print axioms semiring_expansion
+#print axioms bound_guard
+#print axioms endpoint_guard
+#print axioms canonical
+#print axioms inverse_C
+#print axioms expanded
+end Expansion156

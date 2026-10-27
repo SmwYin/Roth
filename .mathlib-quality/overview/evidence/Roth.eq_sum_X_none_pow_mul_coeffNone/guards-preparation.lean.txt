@@ -1,0 +1,20 @@
+#check_failure Roth.eq_sum_X_none_pow_mul_coeffNone
+namespace Expansion156Guards
+theorem semiring_expansion {A : Type*} [Semiring A] (p : Polynomial A) {n : ℕ}
+    (hn : p.natDegree < n) :
+    p = ∑ ν ∈ Finset.range n, Polynomial.C (p.coeff ν) * Polynomial.X ^ ν :=
+  p.as_sum_range_C_mul_X_pow' hn
+theorem bound_guard :
+    (Polynomial.X : Polynomial ℕ) ≠
+      ∑ ν ∈ Finset.range 1, Polynomial.C ((Polynomial.X : Polynomial ℕ).coeff ν) *
+        Polynomial.X ^ ν := by
+  simp
+theorem endpoint_guard :
+    (Polynomial.C 1 : Polynomial ℕ) ≠
+      ∑ ν ∈ Finset.range 0, Polynomial.C ((Polynomial.C 1 : Polynomial ℕ).coeff ν) *
+        Polynomial.X ^ ν := by
+  simp
+#print axioms semiring_expansion
+#print axioms bound_guard
+#print axioms endpoint_guard
+end Expansion156Guards

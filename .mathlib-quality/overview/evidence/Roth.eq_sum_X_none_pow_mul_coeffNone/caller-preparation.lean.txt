@@ -1,0 +1,38 @@
+namespace Expansion156Caller
+open MvPolynomial
+variable {τ K : Type*} [Field K]
+open Lean Elab Term in
+elab "originalBasis156" : term => do
+  return ← Lean.Meta.mkConstWithFreshMVarLevels
+    (Lean.mkPrivateNameCore `Roth.Separation `Roth.exists_coeffNone_basis_aux)
+open Lean Elab Term in
+elab "originalIndependent156" : term => do
+  return ← Lean.Meta.mkConstWithFreshMVarLevels
+    (Lean.mkPrivateNameCore `Roth.Separation `Roth.linearIndependent_coordinate_polynomials_aux)
+open Lean Elab Term in
+elab "originalSumBasis156" : term => do
+  return ← Lean.Meta.mkConstWithFreshMVarLevels
+    (Lean.mkPrivateNameCore `Roth.Separation `Roth.eq_sum_aeval_basis_coeffNone_aux)
+theorem exists_separated_representation {P : MvPolynomial (Option τ) K} (hP : P ≠ 0) {n : ℕ}
+    (hn : degreeOf none P ≤ n) :
+    ∃ l, 1 ≤ l ∧ l ≤ n + 1 ∧ ∃ (φ : Fin l → Polynomial K) (ψ : Fin l → MvPolynomial τ K),
+      LinearIndependent K φ ∧ LinearIndependent K ψ ∧ (∀ ν, (φ ν).natDegree ≤ n) ∧
+      (∀ ν j, degreeOf j (ψ ν) ≤ degreeOf (some j) P) ∧
+      P = ∑ ν, Polynomial.aeval (X none : MvPolynomial (Option τ) K) (φ ν) * rename some (ψ ν) := by
+  classical
+  let v : Fin (n + 1) → MvPolynomial τ K := fun ν ↦ Roth.coeffNone P ν
+  have hP' : P = ∑ ν : Fin (n + 1), X none ^ (ν : ℕ) * rename some (v ν) := by
+    rw [Fin.sum_univ_eq_sum_range (fun ν ↦ X none ^ ν * rename some (Roth.coeffNone P ν))]
+    exact Expansion156.expanded P hn
+  obtain ⟨l, b, hl1, hl2, hdegree⟩ := originalBasis156 hP hP'
+  refine ⟨l, hl1, hl2, fun ρ ↦ ∑ ν : Fin (n + 1),
+      Polynomial.C (b.repr ⟨v ν, Submodule.subset_span ⟨ν, rfl⟩⟩ ρ) * Polynomial.X ^ (ν : ℕ),
+    fun ρ ↦ (b ρ : MvPolynomial τ K), originalIndependent156 v b,
+    b.linearIndependent.map' (Submodule.span K (Set.range v)).subtype
+      (Submodule.ker_subtype _), ?_, hdegree,
+    originalSumBasis156 hP' b⟩
+  exact fun ρ ↦ Polynomial.natDegree_sum_le_of_forall_le _ _ fun ν _ ↦
+    (Polynomial.natDegree_C_mul_X_pow_le _ _).trans (Nat.lt_succ_iff.1 ν.2)
+
+#print axioms exists_separated_representation
+end Expansion156Caller
