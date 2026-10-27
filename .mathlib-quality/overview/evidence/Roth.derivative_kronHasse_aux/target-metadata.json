@@ -1,0 +1,53 @@
+{
+  "file": "Roth/GenWronskian.lean",
+  "line": 153,
+  "name": "Roth.derivative_kronHasse_aux",
+  "short": "derivative_kronHasse_aux",
+  "kind": "lemma",
+  "visibility": "private",
+  "end_line": 160,
+  "source": "private lemma derivative_kronHasse_aux (k : ℕ) (d : σ →₀ ℕ) :\n    (fun P ↦ Polynomial.derivative (kronHasse (K := K) k d P)) =\n      ∑ j, (Polynomial.derivative (Polynomial.X ^ k ^ (Fintype.equivFin σ j : ℕ)) *\n        Polynomial.C ((d j + 1 : ℕ) : K)) • kronHasse k (d + Finsupp.single j 1) := by\n  classical\n  funext P\n  simp [kronHasse, kronecker, derivative_aeval, pderiv_hasseDeriv, map_smul,\n    Polynomial.smul_eq_C_mul, mul_assoc, mul_comm, mul_left_comm]",
+  "signature": "private lemma derivative_kronHasse_aux (k : ℕ) (d : σ →₀ ℕ) :\n    (fun P ↦ Polynomial.derivative (kronHasse (K := K) k d P)) =\n      ∑ j, (Polynomial.derivative (Polynomial.X ^ k ^ (Fintype.equivFin σ j : ℕ)) *\n        Polynomial.C ((d j + 1 : ℕ) : K)) • kronHasse k (d + Finsupp.single j 1)",
+  "body": "by\n  classical\n  funext P\n  simp [kronHasse, kronecker, derivative_aeval, pderiv_hasseDeriv, map_smul,\n    Polynomial.smul_eq_C_mul, mul_assoc, mul_comm, mul_left_comm]",
+  "proof_lines": 5,
+  "sha256": "707f851f98b54fdf65c13b1bc28794ed5a97c867582c3abe88ad3ac9cc8a19ae",
+  "source_body_project_refs": [
+    "MvPolynomial.pderiv_hasseDeriv",
+    "Roth.derivative_aeval",
+    "Roth.kronHasse",
+    "Roth.kronecker"
+  ],
+  "source_type_project_refs": [
+    "Roth.kronHasse"
+  ],
+  "what": "Differentiating a substituted Hasse operator is a sum of next-order substituted Hasse operators with polynomial coefficients.",
+  "how": "Combines derivative_aeval with pderiv_hasseDeriv, moving the scalar coefficient through kronecker.",
+  "hypotheses": "A field, finite variable enumeration, and arbitrary base and derivative exponent.",
+  "source_used_by_project": [
+    "Roth.derivative_mem_kronSpan"
+  ],
+  "source_used_by_file": [
+    "Roth.derivative_mem_kronSpan"
+  ],
+  "section_binders": "{K : Type*} [Field K] {σ : Type*} [Fintype σ]",
+  "type_provenance": "Exact written signature plus manually identified captured section binders. Root cached full build succeeds; global opaque/type inspector timed out, so no kernel dump is claimed.",
+  "notes": "No sorry, TODO, or set_option in this declaration.",
+  "assignment_offset": 292,
+  "project_body_refs": [
+    "MvPolynomial.pderiv_hasseDeriv",
+    "Roth.derivative_aeval",
+    "Roth.kronHasse",
+    "Roth.kronecker"
+  ],
+  "project_type_refs": [
+    "Roth.kronHasse"
+  ],
+  "project_callers": [
+    {
+      "name": "Roth.derivative_mem_kronSpan",
+      "file": "Roth/GenWronskian.lean",
+      "line": 162
+    }
+  ],
+  "section_context": "{K : Type*} [Field K] {σ : Type*} [Fintype σ]"
+}

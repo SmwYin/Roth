@@ -1,0 +1,21 @@
+{
+  "declaration": "Roth.derivative_kronHasse_aux",
+  "kind": "lemma",
+  "type": "∀ {K : Type u_1} [inst : Field K] {σ : Type u_2}\n  [inst_1 : Fintype σ] (k : ℕ) (d : σ →₀ ℕ),\n  (fun P ↦ Polynomial.derivative (Roth.kronHasse✝ k d P)) =\n    ∑ j,\n      (Polynomial.derivative (Polynomial.X ^ k ^ ↑((Fintype.equivFin σ) j)) * Polynomial.C ↑(d j + 1)) •\n        Roth.kronHasse✝ k (d + Finsupp.single j 1)",
+  "what": "Differentiating a substituted Hasse operator is a polynomial-coefficient sum of next-order substituted Hasse operators.",
+  "how": "Combines derivative_aeval with pderiv_hasseDeriv, moving the scalar coefficient through kronecker.",
+  "hypotheses": "A field, finite variable enumeration, and arbitrary base and derivative exponent. Actual kernel type retains Field and Fintype sigma; no characteristic-zero, positive-base or positive-order premise.",
+  "project_dependencies": [
+    "Roth.derivative_aeval",
+    "MvPolynomial.pderiv_hasseDeriv",
+    "Roth.kronHasse",
+    "Roth.kronecker"
+  ],
+  "caller_summary": "1 explicit source caller declarations, all in GenWronskian.lean; 1 direct original value consumers. Exact separate lists retained. Entire module proof bodies replay successfully with fresh target name.",
+  "mathlib_api_audit": "This function-valued derivative identity follows pointwise from the project chain rule and the partial/Hasse commutation identity. It supplies the next-order generators in the bounded-span induction. Existing function extensionality and pointwise sums/scalars express the interface; there is no new definition, instance or coercion. It is a live internal recurrence, not a duplicate of the scalar chain rule. The public contribution verdicts of its ingredients remain separate.",
+  "moral_duplications": "Private operator composition and bounded module span are different stages of the same derivative expansion, not duplicate full constructions.",
+  "generalization": "No public generality claim under the private prefilter; preserve the existing definition and interface.",
+  "missing_api": "No new primitive is needed for this internal organization; full public contribution search is explicitly not run.",
+  "junk": "Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.",
+  "action": "Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration."
+}
