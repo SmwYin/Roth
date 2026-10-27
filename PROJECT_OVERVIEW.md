@@ -2020,3 +2020,8 @@ Completed `Roth.normOne_neg` action: NO-composable-from-mathlib: recommended fut
    `Roth.normOne_sum_le` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
+
+Evidence correction 2026-10-27: the full-canonical caller audits for
+`Roth.normOne_add_le` and `Roth.normOne_neg` were rerun against the exact 293
+unique names after detecting duplicated entries in their earlier enumerators.
+Their reports contain corrected receipts; callers, verdicts and completed count are unchanged.

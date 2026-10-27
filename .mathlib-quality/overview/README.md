@@ -56,3 +56,13 @@ associated declaration assessments are complete, respecting completed-only publi
 Full fresh Lean.Meta metadata extraction timed out; no opaque dependency audit is claimed.
 
 Before publishing evidence, run `python3 .mathlib-quality/overview/evidence/shared/scan_evidence_secrets.py <incoming-package-directory>`. Returned signed or credential-bearing URLs must have their query removed and the redaction documented. [Correction record](evidence/shared/web-evidence-redaction-2026-10-26.md).
+
+## Canonical audit integrity
+
+All full-repository native caller audits must build the exact names array from
+`declaration-order.json`, preserve private-name construction, and check both
+293 entries and 293 unique names. Count alone is insufficient. Declarations 82
+and 83 had an enumerator substitution defect; fresh corrected audits match the
+exact order and find unchanged callers. Their reports and `audit-correction.json`
+records retain the history and supersede the earlier coverage claims.
+The shared `validate_canonical_audit.py` checks corrected evidence independently.

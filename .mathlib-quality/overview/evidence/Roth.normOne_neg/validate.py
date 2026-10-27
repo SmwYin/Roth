@@ -87,4 +87,5 @@ for link in re.findall(r'\]\(([^)]+)\)',s):
  prefix='../evidence/'+N+'/';assert link.startswith(prefix),link
  assert (D/link[len(prefix):]).is_file(),link
 subprocess.run([sys.executable,str(R/'.mathlib-quality/overview/evidence/shared/scan_evidence_secrets.py'),str(D)],check=True)
+subprocess.run([sys.executable,str(R/'.mathlib-quality/overview/evidence/shared/validate_canonical_audit.py'),str(D)],check=True)
 print('PASS: complete declaration83,current manifest,17inputs,3fresh native sets,14formal calls,all literature channels,sole caller293audit,links,secrets')

@@ -98,3 +98,6 @@ Only the listed assessments are complete. No partial assessment was committed.
 On restart: read [README](README.md), [machine progress](progress.json), and
 [declaration order](declaration-order.json); verify source/pin hashes and accepted evidence,
 then continue with the first unfinished declaration. Reports and evidence are tracked.
+
+Evidence correction 2026-10-27: declarations 82/83 canonical audits rerun against
+exactly 293 unique names. Caller lists and verdicts unchanged; see their correction records.
