@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-26
 
-- Declarations completed: **111/293**
-- Next declaration: **#112 `Roth.kronSpan`** (Roth/GenWronskian.lean:149)
+- Declarations completed: **112/293**
+- Next declaration: **#113 `Roth.derivative_kronHasse_aux`** (Roth/GenWronskian.lean:153)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -130,10 +130,10 @@ Last regenerated: 2026-10-26
 | 109 | `Roth.linearIndependent_kronecker` | Roth/GenWronskian.lean:117 | NO-composable-from-mathlib | [report](mathlibable/Roth.linearIndependent_kronecker.md) |
 | 110 | `Roth.derivative_aeval` | Roth/GenWronskian.lean:133 | YES-but-generalise-first | [report](mathlibable/Roth.derivative_aeval.md) |
 | 111 | `Roth.kronHasse` | Roth/GenWronskian.lean:145 | SKIP | [report](mathlibable/Roth.kronHasse.md) |
+| 112 | `Roth.kronSpan` | Roth/GenWronskian.lean:149 | SKIP | [report](mathlibable/Roth.kronSpan.md) |
 
 ## Remaining declarations (in processing order)
 
-- #112 `Roth.kronSpan` (Roth/GenWronskian.lean:149, private def)
 - #113 `Roth.derivative_kronHasse_aux` (Roth/GenWronskian.lean:153, private lemma)
 - #114 `Roth.derivative_mem_kronSpan` (Roth/GenWronskian.lean:162, private lemma)
 - #115 `Roth.hasseDeriv_kronecker_mem` (Roth/GenWronskian.lean:190, private lemma)
