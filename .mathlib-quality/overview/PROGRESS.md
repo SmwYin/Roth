@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-26
 
-- Declarations completed: **135/293**
-- Next declaration: **#136 `Roth.exists_weight_eq_index`** (Roth/Index.lean:76)
+- Declarations completed: **136/293**
+- Next declaration: **#137 `Roth.le_index_iff`** (Roth/Index.lean:85)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -154,10 +154,10 @@ Last regenerated: 2026-10-26
 | 133 | `Roth.index` | Roth/Index.lean:58 | BORDERLINE-needs-human | [report](mathlibable/Roth.index.md) |
 | 134 | `Roth.mem_support_taylor_iff` | Roth/Index.lean:62 | SKIP | [report](mathlibable/Roth.mem_support_taylor_iff.md) |
 | 135 | `Roth.index_le_weight` | Roth/Index.lean:69 | NO-composable-from-mathlib | [report](mathlibable/Roth.index_le_weight.md) |
+| 136 | `Roth.exists_weight_eq_index` | Roth/Index.lean:76 | NO-composable-from-mathlib | [report](mathlibable/Roth.exists_weight_eq_index.md) |
 
 ## Remaining declarations (in processing order)
 
-- #136 `Roth.exists_weight_eq_index` (Roth/Index.lean:76, public theorem)
 - #137 `Roth.le_index_iff` (Roth/Index.lean:85, public theorem)
 - #138 `Roth.index_nonneg` (Roth/Index.lean:93, public theorem)
 - #139 `Roth.index_eq_zero_iff` (Roth/Index.lean:98, public theorem)
