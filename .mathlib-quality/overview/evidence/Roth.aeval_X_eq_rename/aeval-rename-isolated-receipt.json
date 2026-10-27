@@ -1,0 +1,102 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nopen MvPolynomial\nnamespace AevalRename159\nvariable {R σ : Type*} [CommSemiring R]\n#check_failure Roth.aeval_X_eq_rename\n#check @Polynomial.toMvPolynomial_eq_rename_comp\n#print Polynomial.toMvPolynomial_eq_rename_comp\n#check @MvPolynomial.uniqueAlgEquiv\n#check @MvPolynomial.rename_polynomial_aeval_X\ntheorem oldForm (i : σ) (f : Polynomial R) :\n    Polynomial.aeval (X i : MvPolynomial σ R) f =\n      rename (fun _ : Unit ↦ i) ((uniqueAlgEquiv R Unit).symm f) :=\n  AlgHom.congr_fun (Polynomial.toMvPolynomial_eq_rename_comp i) f\n-- A bundled equality supports rewriting all inputs simultaneously.\ntheorem bundled (i : σ) : Polynomial.toMvPolynomial (R := R) i =\n    (rename (fun _ : Unit ↦ i)).comp (uniqueAlgEquiv R Unit).symm :=\n  Polynomial.toMvPolynomial_eq_rename_comp i\n-- Arbitrary one-element representations are valid, without finiteness assumptions.\ntheorem uniqueForm {ι : Type*} [Unique ι] (i : σ) (f : Polynomial R) :\n    Polynomial.aeval (X i : MvPolynomial σ R) f =\n      rename (fun _ : ι ↦ i) ((uniqueAlgEquiv R ι).symm f) := by\n  have h : Polynomial.aeval (X i : MvPolynomial σ R) =\n      (rename (fun _ : ι ↦ i)).comp (uniqueAlgEquiv R ι).symm := by\n    apply Polynomial.algHom_ext\n    simp\n  exact AlgHom.congr_fun h f\n-- Replacing the named coordinate by an arbitrary element changes the meaning.\ntheorem falseGeneralization :\n    ¬ (∀ f : Polynomial ℕ, Polynomial.aeval (0 : MvPolynomial Unit ℕ) f =\n      rename (fun _ : Unit ↦ ()) ((uniqueAlgEquiv ℕ Unit).symm f)) := by\n  intro h\n  have hh := h Polynomial.X\n  have hc := congrArg (fun P : MvPolynomial Unit ℕ ↦ P.coeff (Finsupp.single () 1)) hh\n  norm_num at hc\n#print axioms oldForm\n#print axioms bundled\n#print axioms uniqueForm\n#print axioms falseGeneralization\nend AevalRename159\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.aeval_X_eq_rename`\",\n      \"line\": 13,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.toMvPolynomial_eq_rename_comp : ∀ {R : Type u_3} {σ : Type u_4} [inst : CommSemiring R] (i : σ),\\n  Polynomial.toMvPolynomial i = (rename fun x ↦ i).comp ↑(uniqueAlgEquiv R Unit).symm\",\n      \"line\": 14,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"theorem Polynomial.toMvPolynomial_eq_rename_comp.{u_1, u_3} : ∀ {R : Type u_1} {σ : Type u_3} [inst : CommSemiring R]\\n  (i : σ), Polynomial.toMvPolynomial i = (rename fun x ↦ i).comp ↑(uniqueAlgEquiv R Unit).symm :=\\nfun {R} {σ} [CommSemiring R] i ↦\\n  Polynomial.algHom_ext\\n    (ext ((Polynomial.toMvPolynomial i) Polynomial.X)\\n      (((rename fun x ↦ i).comp ↑(uniqueAlgEquiv R Unit).symm) Polynomial.X) fun m ↦\\n      of_eq_true\\n        (Eq.trans\\n          (congr\\n            (congrArg Eq\\n              (congrFun' (congrArg DFunLike.coe (congrArg AddMonoidAlgebra.coeff (Polynomial.toMvPolynomial_X i))) m))\\n            (congrFun'\\n              (congrArg DFunLike.coe\\n                (congrArg AddMonoidAlgebra.coeff\\n                  (Eq.trans\\n                    (congrArg (⇑(rename fun x ↦ i))\\n                      (Eq.trans (uniqueAlgEquiv_symm_apply R Unit Polynomial.X) (Polynomial.eval₂_X C (X PUnit.unit))))\\n                    (rename_X (fun x ↦ i) PUnit.unit))))\\n              m))\\n          (eq_self ((X i).coeff m))))\",\n      \"line\": 15,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"uniqueAlgEquiv : (R : Type u_3) →\\n  [inst : CommSemiring R] → (σ : Type u_4) → [Unique σ] → MvPolynomial σ R ≃ₐ[R] Polynomial R\",\n      \"line\": 16,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"rename_polynomial_aeval_X : ∀ (R : Type u_3) [inst : CommSemiring R] {σ : Type u_4} {τ : Type u_5} (f : σ → τ) (i : σ)\\n  (p : Polynomial R), (rename f) ((Polynomial.aeval (X i)) p) = (Polynomial.aeval (X (f i))) p\",\n      \"line\": 17,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'AevalRename159.oldForm' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 43,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'AevalRename159.bundled' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 44,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'AevalRename159.uniqueForm' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 45,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'AevalRename159.falseGeneralization' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 46,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.aeval_X_eq_rename`",
+          "line": 13,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.toMvPolynomial_eq_rename_comp : ∀ {R : Type u_3} {σ : Type u_4} [inst : CommSemiring R] (i : σ),\n  Polynomial.toMvPolynomial i = (rename fun x ↦ i).comp ↑(uniqueAlgEquiv R Unit).symm",
+          "line": 14,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "theorem Polynomial.toMvPolynomial_eq_rename_comp.{u_1, u_3} : ∀ {R : Type u_1} {σ : Type u_3} [inst : CommSemiring R]\n  (i : σ), Polynomial.toMvPolynomial i = (rename fun x ↦ i).comp ↑(uniqueAlgEquiv R Unit).symm :=\nfun {R} {σ} [CommSemiring R] i ↦\n  Polynomial.algHom_ext\n    (ext ((Polynomial.toMvPolynomial i) Polynomial.X)\n      (((rename fun x ↦ i).comp ↑(uniqueAlgEquiv R Unit).symm) Polynomial.X) fun m ↦\n      of_eq_true\n        (Eq.trans\n          (congr\n            (congrArg Eq\n              (congrFun' (congrArg DFunLike.coe (congrArg AddMonoidAlgebra.coeff (Polynomial.toMvPolynomial_X i))) m))\n            (congrFun'\n              (congrArg DFunLike.coe\n                (congrArg AddMonoidAlgebra.coeff\n                  (Eq.trans\n                    (congrArg (⇑(rename fun x ↦ i))\n                      (Eq.trans (uniqueAlgEquiv_symm_apply R Unit Polynomial.X) (Polynomial.eval₂_X C (X PUnit.unit))))\n                    (rename_X (fun x ↦ i) PUnit.unit))))\n              m))\n          (eq_self ((X i).coeff m))))",
+          "line": 15,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "uniqueAlgEquiv : (R : Type u_3) →\n  [inst : CommSemiring R] → (σ : Type u_4) → [Unique σ] → MvPolynomial σ R ≃ₐ[R] Polynomial R",
+          "line": 16,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "rename_polynomial_aeval_X : ∀ (R : Type u_3) [inst : CommSemiring R] {σ : Type u_4} {τ : Type u_5} (f : σ → τ) (i : σ)\n  (p : Polynomial R), (rename f) ((Polynomial.aeval (X i)) p) = (Polynomial.aeval (X (f i))) p",
+          "line": 17,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'AevalRename159.oldForm' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 43,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'AevalRename159.bundled' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 44,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'AevalRename159.uniqueForm' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 45,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'AevalRename159.falseGeneralization' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 46,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 799
+}

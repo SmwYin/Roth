@@ -1,0 +1,85 @@
+{
+  "declaration": "Roth.aeval_X_eq_rename",
+  "kind": "theorem",
+  "type": "Roth.aeval_X_eq_rename : \u2200 {R : Type u_1} [inst : CommSemiring R] {\u03c3 : Type u_2} (i : \u03c3) (f : Polynomial R),\n  (Polynomial.aeval (MvPolynomial.X i)) f =\n    (MvPolynomial.rename fun x \u21a6 i) ((MvPolynomial.uniqueAlgEquiv R Unit).symm f)",
+  "what": "Embedding a univariate polynomial at a selected multivariate coordinate equals renaming its Unit-variable presentation.",
+  "how": "Applies AlgHom.congr_fun to existing Polynomial.toMvPolynomial_eq_rename_comp; no project proof dependencies.",
+  "hypotheses": [
+    "R : Type u_1",
+    "CommSemiring R",
+    "sigma : Type u_2",
+    "i : sigma",
+    "f : Polynomial R; no finiteness/DecidableEq/domain assumptions"
+  ],
+  "project_dependencies": [],
+  "caller_summary": {
+    "explicit_call_sites": [
+      {
+        "caller": "Roth.hasseDeriv_rename_mul_aeval",
+        "file": "Roth/Separation.lean",
+        "line": 162,
+        "refactor": "Replace public wrapper with local specialization AlgHom.congr_fun (Polynomial.toMvPolynomial_eq_rename_comp i) f; full body replay succeeded."
+      },
+      {
+        "caller": "Roth.degreeOf_rename_mul_aeval",
+        "file": "Roth/Separation.lean",
+        "line": 207,
+        "refactor": "Replace public wrapper with local specialization AlgHom.congr_fun (Polynomial.toMvPolynomial_eq_rename_comp i) f; full body replay succeeded."
+      },
+      {
+        "caller": "Roth.degreeOf_none_rename_mul_aeval",
+        "file": "Roth/Separation.lean",
+        "line": 224,
+        "refactor": "Replace public wrapper with local specialization AlgHom.congr_fun (Polynomial.toMvPolynomial_eq_rename_comp i) f; full body replay succeeded."
+      },
+      {
+        "caller": "_private.Roth.Theta.0.Roth.index_separated_mul_le_aux",
+        "file": "Roth/Theta.lean",
+        "line": 437,
+        "refactor": "Replace public wrapper with local specialization AlgHom.congr_fun (Polynomial.toMvPolynomial_eq_rename_comp i) f; full body replay succeeded."
+      },
+      {
+        "caller": "_private.Roth.Theta.0.Roth.mapped_det_ne_zero_aux",
+        "file": "Roth/Theta.lean",
+        "line": 528,
+        "refactor": "Replace public wrapper with local specialization AlgHom.congr_fun (Polynomial.toMvPolynomial_eq_rename_comp i) f; full body replay succeeded."
+      }
+    ],
+    "direct_kernel_value_consumers": [
+      "Roth.hasseDeriv_rename_mul_aeval",
+      "Roth.degreeOf_rename_mul_aeval",
+      "Roth.degreeOf_none_rename_mul_aeval",
+      "_private.Roth.Theta.0.Roth.index_separated_mul_le_aux",
+      "_private.Roth.Theta.0.Roth.mapped_det_ne_zero_aux"
+    ],
+    "total_explicit_uses": 5,
+    "same_file_uses": 3,
+    "external_to_file_uses": 2,
+    "external_files": 1,
+    "internal_use_count_excluding_declaring_file": 2,
+    "inline_derivations": [],
+    "scope": "Fresh lexical inventory, no-ignore rg, git grep and exact ordered canonical293 direct kernel-value audit; not opaque/simp closure."
+  },
+  "mathlib_api_audit": {
+    "verdict": "NO-mathlib-has-it",
+    "existing": "Polynomial.toMvPolynomial_eq_rename_comp",
+    "path": "Mathlib/Algebra/MvPolynomial/Equiv.lean:891",
+    "proof": "AlgHom.congr_fun (Polynomial.toMvPolynomial_eq_rename_comp i) f",
+    "five_methods_all_three_forms": true,
+    "local_index": "unavailable; positive lexical fallback, not absence",
+    "pinned_native_positive": true
+  },
+  "moral_duplications": [
+    "Pointwise specialization of existing equality of the same R-algebra homomorphisms; no new mathematical law."
+  ],
+  "generalization": {
+    "fixed_interface": "MAXIMALLY GENERAL",
+    "verified_weakenings": [],
+    "representation_extension": "Arbitrary Unique index verified by a new hom-ext proof; not counted as existing-call API.",
+    "modern_idiom": "Existing bundled equality already supplies canonical abstract form.",
+    "false_generalization": "Arbitrary replacement of X_i while keeping the chosen-coordinate rename is false; concrete coefficient guard verified."
+  },
+  "missing_api": "None needed for exact target or five complete callers.",
+  "junk": "Useful in five callers, hence not dead code; public wrapper duplicates existing bundled Mathlib API.",
+  "action": "Delete public wrapper and update all five caller uses to existing-law specialization; retain only local/private project rewrite helper if preferred. Read-only assessment made no production edits."
+}

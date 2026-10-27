@@ -1,0 +1,47 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+open MvPolynomial
+namespace AevalRename159
+variable {R σ : Type*} [CommSemiring R]
+#check_failure Roth.aeval_X_eq_rename
+#check @Polynomial.toMvPolynomial_eq_rename_comp
+#print Polynomial.toMvPolynomial_eq_rename_comp
+#check @MvPolynomial.uniqueAlgEquiv
+#check @MvPolynomial.rename_polynomial_aeval_X
+theorem oldForm (i : σ) (f : Polynomial R) :
+    Polynomial.aeval (X i : MvPolynomial σ R) f =
+      rename (fun _ : Unit ↦ i) ((uniqueAlgEquiv R Unit).symm f) :=
+  AlgHom.congr_fun (Polynomial.toMvPolynomial_eq_rename_comp i) f
+-- A bundled equality supports rewriting all inputs simultaneously.
+theorem bundled (i : σ) : Polynomial.toMvPolynomial (R := R) i =
+    (rename (fun _ : Unit ↦ i)).comp (uniqueAlgEquiv R Unit).symm :=
+  Polynomial.toMvPolynomial_eq_rename_comp i
+-- Arbitrary one-element representations are valid, without finiteness assumptions.
+theorem uniqueForm {ι : Type*} [Unique ι] (i : σ) (f : Polynomial R) :
+    Polynomial.aeval (X i : MvPolynomial σ R) f =
+      rename (fun _ : ι ↦ i) ((uniqueAlgEquiv R ι).symm f) := by
+  have h : Polynomial.aeval (X i : MvPolynomial σ R) =
+      (rename (fun _ : ι ↦ i)).comp (uniqueAlgEquiv R ι).symm := by
+    apply Polynomial.algHom_ext
+    simp
+  exact AlgHom.congr_fun h f
+-- Replacing the named coordinate by an arbitrary element changes the meaning.
+theorem falseGeneralization :
+    ¬ (∀ f : Polynomial ℕ, Polynomial.aeval (0 : MvPolynomial Unit ℕ) f =
+      rename (fun _ : Unit ↦ ()) ((uniqueAlgEquiv ℕ Unit).symm f)) := by
+  intro h
+  have hh := h Polynomial.X
+  have hc := congrArg (fun P : MvPolynomial Unit ℕ ↦ P.coeff (Finsupp.single () 1)) hh
+  norm_num at hc
+#print axioms oldForm
+#print axioms bundled
+#print axioms uniqueForm
+#print axioms falseGeneralization
+end AevalRename159

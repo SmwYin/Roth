@@ -3,7 +3,7 @@
 Status: **in_progress**, 2026-10-27. Branch: `ramin-cleanup`.
 Production Lean files and all pins match baseline `99f19fd`.
 
-**Completed: 158 / 293 written declarations.**
+**Completed: 159 / 293 written declarations.**
 This counts the current overview assessments, separately from the earlier code cleanup.
 
 | # | Completed declaration | Applicable workflow | Verdict | Report |
@@ -166,8 +166,9 @@ This counts the current overview assessments, separately from the earlier code c
 | 156 | `Roth.eq_sum_X_none_pow_mul_coeffNone` | full-mathlibable; accepted complete | NO-mathlib-has-it | [Detailed report](mathlibable/Roth.eq_sum_X_none_pow_mul_coeffNone.md) |
 | 157 | `Roth.degreeOf_coeffNone_le` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.degreeOf_coeffNone_le.md) |
 | 158 | `Roth.coeff_rename_mul_aeval` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.coeff_rename_mul_aeval.md) |
+| 159 | `Roth.aeval_X_eq_rename` | full-mathlibable; accepted complete | NO-mathlib-has-it | [Detailed report](mathlibable/Roth.aeval_X_eq_rename.md) |
 
-**Next declaration: `Roth.aeval_X_eq_rename`**, `Roth/Separation.lean:137`.
+**Next declaration: `Roth.hasseDeriv_rename_mul_aeval`**, `Roth/Separation.lean:146`.
 Only the listed assessments are complete. No partial assessment was committed.
 
 On restart: read [README](README.md), [machine progress](progress.json), and

@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 158/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 159/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 158; remaining: 135.
-- Verdicts: 18 NO-composable-from-mathlib, 13 YES-add-as-is, 19 YES-but-generalise-first, 34 NO-mathlib-has-it, 47 BORDERLINE-needs-human, 27 SKIP.
+- Completed applicable assessments: 159; remaining: 134.
+- Verdicts: 18 NO-composable-from-mathlib, 13 YES-add-as-is, 19 YES-but-generalise-first, 35 NO-mathlib-has-it, 47 BORDERLINE-needs-human, 27 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -1750,6 +1750,18 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: explicit call sites: {'file': 'Roth/Separation.lean', 'line': 476, 'caller': 'Roth.exists_int_polynomial_of_primitive_factor_aux', 'visibility': 'private'}, {'file': 'Roth/Theta.lean', 'line': 480, 'caller': 'Roth.index_det_le'}, {'file': 'Roth/Theta.lean', 'line': 486, 'caller': 'Roth.index_det_le'}; direct kernel value consumers: _private.Roth.Separation.0.Roth.exists_int_polynomial_of_primitive_factor_aux, Roth.index_det_le; inline derivations: None; notes: Three source uses, two full callers; two external-to-declaring-file uses in one file. Both full callers replayed without assessed target or parent coefficient bridge.
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.coeff_rename_mul_aeval.md).
 
+### Completed: `Roth.aeval_X_eq_rename`
+
+- Type: `Roth.aeval_X_eq_rename : ∀ {R : Type u_1} [inst : CommSemiring R] {σ : Type u_2} (i : σ) (f : Polynomial R),
+  (Polynomial.aeval (MvPolynomial.X i)) f =
+    (MvPolynomial.rename fun x ↦ i) ((MvPolynomial.uniqueAlgEquiv R Unit).symm f)`
+- What: Embedding a univariate polynomial at a selected multivariate coordinate equals renaming its Unit-variable presentation.
+- How: Applies AlgHom.congr_fun to existing Polynomial.toMvPolynomial_eq_rename_comp; no project proof dependencies.
+- Hypotheses: R : Type u_1, CommSemiring R, sigma : Type u_2, i : sigma, f : Polynomial R; no finiteness/DecidableEq/domain assumptions
+- Project dependencies: None
+- Caller summary: explicit call sites: {'caller': 'Roth.hasseDeriv_rename_mul_aeval', 'file': 'Roth/Separation.lean', 'line': 162, 'refactor': 'Replace public wrapper with local specialization AlgHom.congr_fun (Polynomial.toMvPolynomial_eq_rename_comp i) f; full body replay succeeded.'}, {'caller': 'Roth.degreeOf_rename_mul_aeval', 'file': 'Roth/Separation.lean', 'line': 207, 'refactor': 'Replace public wrapper with local specialization AlgHom.congr_fun (Polynomial.toMvPolynomial_eq_rename_comp i) f; full body replay succeeded.'}, {'caller': 'Roth.degreeOf_none_rename_mul_aeval', 'file': 'Roth/Separation.lean', 'line': 224, 'refactor': 'Replace public wrapper with local specialization AlgHom.congr_fun (Polynomial.toMvPolynomial_eq_rename_comp i) f; full body replay succeeded.'}, {'caller': '_private.Roth.Theta.0.Roth.index_separated_mul_le_aux', 'file': 'Roth/Theta.lean', 'line': 437, 'refactor': 'Replace public wrapper with local specialization AlgHom.congr_fun (Polynomial.toMvPolynomial_eq_rename_comp i) f; full body replay succeeded.'}, {'caller': '_private.Roth.Theta.0.Roth.mapped_det_ne_zero_aux', 'file': 'Roth/Theta.lean', 'line': 528, 'refactor': 'Replace public wrapper with local specialization AlgHom.congr_fun (Polynomial.toMvPolynomial_eq_rename_comp i) f; full body replay succeeded.'}; direct kernel value consumers: Roth.hasseDeriv_rename_mul_aeval, Roth.degreeOf_rename_mul_aeval, Roth.degreeOf_none_rename_mul_aeval, _private.Roth.Theta.0.Roth.index_separated_mul_le_aux, _private.Roth.Theta.0.Roth.mapped_det_ne_zero_aux; total explicit uses: 5; same file uses: 3; external to file uses: 2; external files: 1; internal use count excluding declaring file: 2; inline derivations: None; scope: Fresh lexical inventory, no-ignore rg, git grep and exact ordered canonical293 direct kernel-value audit; not opaque/simp closure.
+- Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/Roth.aeval_X_eq_rename.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -2092,6 +2104,8 @@ Completed `Roth.degreeOf_coeffNone_le`: structural building blocks: MvPolynomial
 
 Completed `Roth.coeff_rename_mul_aeval`: existing core: Polynomial.coeff_C_mul, Polynomial.coeff_map, AddMonoidAlgebra.coeff_mul_single_zero; coordinate transport: MvPolynomial.optionEquivLeft_coeff_coeff, Finsupp.update_eq_add_single, Finsupp.embDomain_some_none, Finsupp.embDomain_eq_mapDomain, MvPolynomial.optionEquivLeft_X_none, Polynomial.aeval_algHom_apply, Polynomial.aeval_X_left_eq_map; methods: Finder, Loogle, LeanSearch, rg, local; forms: current, standard, abstract; limits: Initial current Loogle query rejected unknown MvPolynomial.coeff; successful quoted-coeff retry empty. Local index unavailable with source fallback hits, no absence claim. External revisions differ from pinned source.
 
+Completed `Roth.aeval_X_eq_rename`: verdict: NO-mathlib-has-it; existing: Polynomial.toMvPolynomial_eq_rename_comp; path: Mathlib/Algebra/MvPolynomial/Equiv.lean:891; proof: AlgHom.congr_fun (Polynomial.toMvPolynomial_eq_rename_comp i) f; five methods all three forms: True; local index: unavailable; positive lexical fallback, not absence; pinned native positive: True
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -2409,6 +2423,8 @@ Completed `Roth.eq_sum_X_none_pow_mul_coeffNone`: Polynomial coefficient reconst
 Completed `Roth.degreeOf_coeffNone_le`: Arbitrary Option analogue of existing finite degreeOf_coeff_finSuccEquiv., Support insertion preserves remaining coordinate bounds; abstract finite supremum proof verified as a component, not existing full replacement.
 
 Completed `Roth.coeff_rename_mul_aeval`: Canonical double coefficient law is exactly three existing calls; first-coefficient-only law is insufficient for the full theorem., No exact original Option/aeval law was verified as a single existing theorem.
+
+Completed `Roth.aeval_X_eq_rename`: Pointwise specialization of existing equality of the same R-algebra homomorphisms; no new mathematical law.
 
 ## Part 5: Generalization opportunities
 
@@ -2731,6 +2747,8 @@ Completed `Roth.degreeOf_coeffNone_le`: status: MAXIMALLY GENERAL for fixed inte
 
 Completed `Roth.coeff_rename_mul_aeval`: status: MAXIMALLY GENERAL for fixed polynomial representation; verified: Underlying coefficient-times-singleton law holds for arbitrary Semiring S and AddZeroClass M, not just natural multidegrees.; boundary: CommSemiring R is required by existing MvPolynomial interface; abstract AddMonoidAlgebra restatement changes representation. Variable-disjointness cannot be removed, as collision_guard proves.
 
+Completed `Roth.aeval_X_eq_rename`: fixed interface: MAXIMALLY GENERAL; verified weakenings: None; representation extension: Arbitrary Unique index verified by a new hom-ext proof; not counted as existing-call API.; modern idiom: Existing bundled equality already supplies canonical abstract form.; false generalization: Arbitrary replacement of X_i while keeping the chosen-coordinate rename is false; concrete coefficient guard verified.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -3049,6 +3067,8 @@ Completed `Roth.eq_sum_X_none_pow_mul_coeffNone`: No missing reconstruction theo
 Completed `Roth.degreeOf_coeffNone_le`: Candidate Option-variable coordinate-degree coefficient law beside existing Fin analogue; whether to expose it directly or via a more general support-degree transport API is an upstream design question.
 
 Completed `Roth.coeff_rename_mul_aeval`: Potential MvPolynomial coefficient adapter for separated Option-variable product, or reusable optionEquivLeft rename/aeval transport law; upstream API design question, not an absence theorem.
+
+Completed `Roth.aeval_X_eq_rename`: None needed for exact target or five complete callers.
 
 ## Part 7: Junk / removable
 
@@ -3371,6 +3391,8 @@ Completed `Roth.degreeOf_coeffNone_le`: Zero explicit/kernel callers; one mathem
 
 Completed `Roth.coeff_rename_mul_aeval`: Useful local adapter: three uses in two callers; not junk.
 
+Completed `Roth.aeval_X_eq_rename`: Useful in five callers, hence not dead code; public wrapper duplicates existing bundled Mathlib API.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -3533,6 +3555,7 @@ Completed `Roth.coeff_rename_mul_aeval`: Useful local adapter: three uses in two
 | 156 | `Roth.eq_sum_X_none_pow_mul_coeffNone` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.eq_sum_X_none_pow_mul_coeffNone.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.eq_sum_X_none_pow_mul_coeffNone/root-acceptance.json) |
 | 157 | `Roth.degreeOf_coeffNone_le` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.degreeOf_coeffNone_le.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.degreeOf_coeffNone_le/root-acceptance.json) |
 | 158 | `Roth.coeff_rename_mul_aeval` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.coeff_rename_mul_aeval.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.coeff_rename_mul_aeval/root-acceptance.json) |
+| 159 | `Roth.aeval_X_eq_rename` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.aeval_X_eq_rename.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.aeval_X_eq_rename/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -3848,12 +3871,14 @@ Completed `Roth.degreeOf_coeffNone_le` action: Keep local pending the two docume
 
 Completed `Roth.coeff_rename_mul_aeval` action: verdict: BORDERLINE-needs-human; local: Keep current theorem in Roth/Separation.lean while deciding reusable coordinate bridge API. No production changes made.; future questions: Should mathlib expose a coefficient theorem for separated products in Option variables, despite its three-call iterated-polynomial core?, Should upstream instead expose the optionEquivLeft rename/aeval transport law and have users derive scalar coefficients through existing coefficient APIs?; possible home: Mathlib/Algebra/MvPolynomial/Equiv.lean, subject to import-layer review; no PR yet; caller refactor: If adapter is added, replace the simp/rw lemma at all three call sites; full caller replay demonstrates original signatures can be preserved.
 
+Completed `Roth.aeval_X_eq_rename` action: Delete public wrapper and update all five caller uses to existing-law specialization; retain only local/private project rewrite helper if preferred. Read-only assessment made no production edits.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.aeval_X_eq_rename` next. Supporting identities receive their own applicable checks.
+   `Roth.hasseDeriv_rename_mul_aeval` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

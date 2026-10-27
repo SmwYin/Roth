@@ -1,0 +1,124 @@
+namespace AevalReplay159
+open Roth MvPolynomial
+variable {R : Type*} [CommSemiring R]
+theorem oldForm {σ : Type*} (i : σ) (f : Polynomial R) :
+    Polynomial.aeval (X i : MvPolynomial σ R) f =
+      rename (fun _ : Unit ↦ i) ((uniqueAlgEquiv R Unit).symm f) :=
+  AlgHom.congr_fun (Polynomial.toMvPolynomial_eq_rename_comp i) f
+variable {τ : Type*}
+theorem hasseDeriv_rename_mul_aeval (d : τ →₀ ℕ) (ν : ℕ) (U : MvPolynomial τ R) (V : Polynomial R) :
+    hasseDeriv (d.mapDomain some + Finsupp.single none ν) (rename some U * Polynomial.aeval
+      (X none : MvPolynomial (Option τ) R) V) = rename some (hasseDeriv d U) * Polynomial.aeval
+      (X none : MvPolynomial (Option τ) R) (Polynomial.hasseDeriv ν V) := by
+  classical
+  have hnone : ∀ {o : Option τ}, o ∈ (d.mapDomain some).support → o ≠ none := by
+    simp
+  have hdisj : Disjoint (d.mapDomain some).support (Finsupp.single none ν).support :=
+    Finset.disjoint_left.2 fun _ ho ho' ↦
+      hnone ho (Finset.mem_singleton.1 (Finsupp.support_single_subset ho'))
+  rw [← hasseDeriv_hasseDeriv_of_disjoint hdisj,
+    hasseDeriv_mul_of_degreeOf_eq_zero fun j hj ↦ by
+      rw [Finset.mem_singleton.1 (Finsupp.support_single_subset hj)]
+      simp [degreeOf, degrees_rename_of_injective (Option.some_injective τ)],
+    hasseDeriv_single_aeval_X, mul_comm,
+    hasseDeriv_mul_of_degreeOf_eq_zero fun j hj ↦ by
+      simp [oldForm, degreeOf,
+        degrees_rename_of_injective (Function.injective_of_subsingleton _), Multiset.mem_replicate,
+        hnone hj],
+    hasseDeriv_rename (Option.some_injective τ), mul_comm]
+
+variable [CommRing R] [IsDomain R]
+theorem degreeOf_rename_mul_aeval (U : MvPolynomial τ R) {V : Polynomial R} (hV : V ≠ 0) (j : τ) :
+    degreeOf (some j) (rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) R) V) =
+      degreeOf j U := by
+  classical
+  by_cases hU : U = 0
+  · simp [hU]
+  rw [degreeOf_mul_eq ((rename_eq_zero_iff_of_injective U (Option.some_injective τ)).not.mpr hU)
+      ((map_ne_zero_iff (Polynomial.aeval (X none))
+        (Polynomial.toMvPolynomial_injective none)).2 hV),
+    degreeOf_rename_of_injective (Option.some_injective τ)]
+  simp [oldForm, degreeOf,
+    degrees_rename_of_injective (Function.injective_of_subsingleton _), Multiset.mem_replicate]
+
+theorem degreeOf_none_rename_mul_aeval {U : MvPolynomial τ R} (hU : U ≠ 0) (V : Polynomial R) :
+    degreeOf none (rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) R) V) =
+      V.natDegree := by
+  classical
+  by_cases hV : V = 0
+  · simp [hV]
+  rw [degreeOf_mul_eq ((rename_eq_zero_iff_of_injective U (Option.some_injective τ)).not.mpr hU)
+      ((map_ne_zero_iff (Polynomial.aeval (X none))
+        (Polynomial.toMvPolynomial_injective none)).2 hV),
+    (show degreeOf none (rename some U) = 0 by
+      simp [degreeOf, degrees_rename_of_injective (Option.some_injective τ)]),
+    zero_add, oldForm]
+  exact (degreeOf_rename_of_injective (f := fun _ : Unit ↦ (none : Option τ))
+    (fun _ _ _ ↦ rfl) ()).trans (degreeOf_uniqueAlgEquiv_symm V)
+
+variable [Fintype τ] [DecidableEq τ]
+theorem index_separated_mul_le_aux {r : Option τ → ℕ} (hr0 : ∀ j, 0 < r j) {q : Option τ → ℕ}
+    {h : Option τ → ℤ} (hh : ∀ j, IsCoprime (h j) (q j : ℤ)) {M : ℝ} {l : ℕ} (hl : 0 < l)
+    {U : MvPolynomial τ ℤ} (hU : U ∈ RSet M (fun j ↦ l * r (some j))) {V : Polynomial ℤ}
+    (hV : V ≠ 0) (hVd : V.natDegree ≤ l * r none) (hVc : ∀ b, |(V.coeff b : ℝ)| ≤ M) :
+    index (map (Int.castRingHom ℝ)
+        (rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) ℤ) V))
+      (fun j ↦ (h j : ℝ) / q j) r ≤ l * lem6Φ q r M l := by
+  classical
+  set V' : MvPolynomial Unit ℤ := (uniqueAlgEquiv ℤ Unit).symm V with hV'
+  have hV'0 : V' ≠ 0 := by
+    rwa [hV', ne_eq, map_eq_zero_iff _ (uniqueAlgEquiv ℤ Unit).symm.injective]
+  have hVmem : V' ∈ RSet M (fun _ : Unit ↦ l * r none) := by
+    refine ⟨hV'0, fun j ↦ ?_, fun d ↦ ?_⟩
+    · rw [Subsingleton.elim j default, hV', degreeOf_uniqueAlgEquiv_symm]
+      exact hVd
+    · rw [hV', MvPolynomial.coeff_uniqueAlgEquiv_symm]
+      exact hVc _
+  have hinjV : Function.Injective (fun _ : Unit ↦ (none : Option τ)) :=
+    fun a b _ ↦ Subsingleton.elim a b
+  have hmU : map (Int.castRingHom ℝ) U ≠ 0 := fun h0 ↦
+    hU.1 (map_injective _ Int.cast_injective (h0.trans (map_zero _).symm))
+  have hmV : map (Int.castRingHom ℝ) V' ≠ 0 := fun h0 ↦
+    hV'0 (map_injective _ Int.cast_injective (h0.trans (map_zero _).symm))
+  rw [oldForm, _root_.map_mul, map_rename, map_rename,
+    index_mul ((map_ne_zero_iff (rename (R := ℝ) some)
+      (rename_injective _ (Option.some_injective _))).2 hmU)
+      ((map_ne_zero_iff (rename (R := ℝ) (fun _ : Unit ↦ (none : Option τ)))
+        (rename_injective _ hinjV)).2 hmV) _ hr0,
+    index_rename (Option.some_injective _), index_rename hinjV]
+  have hUΘ := index_le_Θ hU (h := h ∘ some)
+    fun j ↦ hh (some j)
+  have hVΘ := index_le_Θ hVmem
+    (q := fun _ : Unit ↦ q none) (h := fun _ ↦ h none) fun _ ↦ hh none
+  rw [index_mul_left_weights] at hUΘ hVΘ
+  have hlR : (0 : ℝ) < l := by exact_mod_cast hl
+  rw [lem6Φ, mul_add, add_comm]
+  exact add_le_add ((div_le_iff₀' hlR).1 hVΘ) ((div_le_iff₀' hlR).1 hUΘ)
+
+theorem mapped_det_ne_zero_aux {R : MvPolynomial (Option τ) ℤ} {l : ℕ} {D : Fin l → (τ →₀ ℕ)}
+    {U : MvPolynomial τ ℤ} {V : Polynomial ℤ} (hU : U ≠ 0) (hV : V ≠ 0)
+    (hF : (Matrix.of fun μ ν : Fin l ↦
+      hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) R).det =
+        rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) ℤ) V) :
+    (Matrix.of fun μ ν : Fin l ↦ hasseDeriv ((D μ).mapDomain some +
+      Finsupp.single none (ν : ℕ)) (map (Int.castRingHom ℝ) R)).det ≠ 0 := by
+  have hmapdet : map (Int.castRingHom ℝ) (Matrix.of fun μ ν : Fin l ↦
+      hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) R).det =
+      (Matrix.of fun μ ν : Fin l ↦ hasseDeriv ((D μ).mapDomain some +
+        Finsupp.single none (ν : ℕ)) (map (Int.castRingHom ℝ) R)).det := by
+    rw [RingHom.map_det]
+    congr 1
+    exact Matrix.ext fun μ ν ↦ by simp [hasseDeriv_map]
+  rw [← hmapdet, ne_eq, map_eq_zero_iff _ (map_injective _ Int.cast_injective), hF,
+    mul_eq_zero, not_or, map_eq_zero_iff _ (rename_injective _ (Option.some_injective _))]
+  refine ⟨hU, ?_⟩
+  rw [oldForm, map_eq_zero_iff _ (rename_injective _ fun a b _ ↦ Subsingleton.elim a b)]
+  rwa [map_eq_zero_iff _ (uniqueAlgEquiv ℤ Unit).symm.injective]
+
+#print axioms oldForm
+#print axioms hasseDeriv_rename_mul_aeval
+#print axioms degreeOf_rename_mul_aeval
+#print axioms degreeOf_none_rename_mul_aeval
+#print axioms index_separated_mul_le_aux
+#print axioms mapped_det_ne_zero_aux
+end AevalReplay159
