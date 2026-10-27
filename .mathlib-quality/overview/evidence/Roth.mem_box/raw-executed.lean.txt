@@ -1,0 +1,53 @@
+import Mathlib.Data.Finsupp.Interval
+import Mathlib.Algebra.BigOperators.Ring.Finset
+import Mathlib.Order.Interval.Finset.Nat
+
+namespace RawMemBoxAssessment
+variable {σ : Type*}
+noncomputable def mapped_box [Fintype σ] [DecidableEq σ] (r : σ → ℕ) : Finset (σ →₀ ℕ) :=
+  (Fintype.piFinset fun j ↦ Finset.range (r j + 1)).map
+    Finsupp.equivFunOnFinite.symm.toEmbedding
+theorem original_three_facts [Fintype σ] [DecidableEq σ] {r : σ → ℕ} {d : σ →₀ ℕ} :
+    d ∈ mapped_box r ↔ ∀ j, d j ≤ r j :=
+  Finset.mem_map_equiv.trans (Fintype.mem_piFinset.trans
+    (forall_congr' fun _ ↦ Finset.mem_range_succ_iff))
+theorem interval [Finite σ] [DecidableEq σ] {r : σ → ℕ} {d : σ →₀ ℕ} :
+    d ∈ Finset.Iic (Finsupp.equivFunOnFinite.symm r) ↔ ∀ j, d j ≤ r j :=
+  Finset.mem_Iic.trans Finsupp.le_def
+theorem arbitrary_bound [DecidableEq σ] {r : σ →₀ ℕ} {d : σ →₀ ℕ} :
+    d ∈ Finset.Iic r ↔ ∀ j, d j ≤ r j :=
+  Finset.mem_Iic.trans Finsupp.le_def
+theorem finite_support_bound [DecidableEq σ] (r : σ → ℕ) [Finite (Function.support r)]
+    (d : σ →₀ ℕ) :
+    d ∈ Finset.Iic (Finsupp.ofSupportFinite r (Set.toFinite _)) ↔ ∀ j, d j ≤ r j :=
+  Finset.mem_Iic.trans Finsupp.le_def
+noncomputable def finite_box [Finite σ] (r : σ → ℕ) : Finset (σ →₀ ℕ) := by
+  classical
+  let : Fintype σ := Fintype.ofFinite σ
+  exact mapped_box r
+theorem finite_box_membership [Finite σ] (r : σ → ℕ) (d : σ →₀ ℕ) :
+    d ∈ finite_box r ↔ ∀ j, d j ≤ r j := by
+  classical
+  let : Fintype σ := Fintype.ofFinite σ
+  change d ∈ mapped_box r ↔ _
+  exact original_three_facts
+theorem subset_consumer [Fintype σ] [DecidableEq σ] (r : σ → ℕ) (s : Finset (σ →₀ ℕ))
+    (hs : ∀ d ∈ s, ∀ j, d j ≤ r j) : s ⊆ mapped_box r :=
+  fun _ hd ↦ original_three_facts.mpr (hs _ hd)
+theorem zero_consumer [Fintype σ] [DecidableEq σ] (r : σ → ℕ) :
+    (0 : σ →₀ ℕ) ∈ mapped_box r :=
+  original_three_facts.mpr fun _ ↦ Nat.zero_le _
+#check @Finset.mem_map_equiv
+#check @Fintype.mem_piFinset
+#check @Finset.mem_range_succ_iff
+#check @Finset.mem_Iic
+#check @Finsupp.le_def
+#check_failure Roth.mem_box
+#print axioms original_three_facts
+#print axioms interval
+#print axioms arbitrary_bound
+#print axioms finite_support_bound
+#print axioms finite_box_membership
+#print axioms subset_consumer
+#print axioms zero_consumer
+end RawMemBoxAssessment

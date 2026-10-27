@@ -1,0 +1,138 @@
+{
+  "request": {
+    "code": "import Mathlib.Data.Finsupp.Interval\nimport Mathlib.Algebra.BigOperators.Ring.Finset\nimport Mathlib.Order.Interval.Finset.Nat\n\nnamespace RawMemBoxAssessment\nvariable {σ : Type*}\nnoncomputable def mapped_box [Fintype σ] [DecidableEq σ] (r : σ → ℕ) : Finset (σ →₀ ℕ) :=\n  (Fintype.piFinset fun j ↦ Finset.range (r j + 1)).map\n    Finsupp.equivFunOnFinite.symm.toEmbedding\ntheorem original_three_facts [Fintype σ] [DecidableEq σ] {r : σ → ℕ} {d : σ →₀ ℕ} :\n    d ∈ mapped_box r ↔ ∀ j, d j ≤ r j :=\n  Finset.mem_map_equiv.trans (Fintype.mem_piFinset.trans\n    (forall_congr' fun _ ↦ Finset.mem_range_succ_iff))\ntheorem interval [Finite σ] [DecidableEq σ] {r : σ → ℕ} {d : σ →₀ ℕ} :\n    d ∈ Finset.Iic (Finsupp.equivFunOnFinite.symm r) ↔ ∀ j, d j ≤ r j :=\n  Finset.mem_Iic.trans Finsupp.le_def\ntheorem arbitrary_bound [DecidableEq σ] {r : σ →₀ ℕ} {d : σ →₀ ℕ} :\n    d ∈ Finset.Iic r ↔ ∀ j, d j ≤ r j :=\n  Finset.mem_Iic.trans Finsupp.le_def\ntheorem finite_support_bound [DecidableEq σ] (r : σ → ℕ) [Finite (Function.support r)]\n    (d : σ →₀ ℕ) :\n    d ∈ Finset.Iic (Finsupp.ofSupportFinite r (Set.toFinite _)) ↔ ∀ j, d j ≤ r j :=\n  Finset.mem_Iic.trans Finsupp.le_def\nnoncomputable def finite_box [Finite σ] (r : σ → ℕ) : Finset (σ →₀ ℕ) := by\n  classical\n  let : Fintype σ := Fintype.ofFinite σ\n  exact mapped_box r\ntheorem finite_box_membership [Finite σ] (r : σ → ℕ) (d : σ →₀ ℕ) :\n    d ∈ finite_box r ↔ ∀ j, d j ≤ r j := by\n  classical\n  let : Fintype σ := Fintype.ofFinite σ\n  change d ∈ mapped_box r ↔ _\n  exact original_three_facts\ntheorem subset_consumer [Fintype σ] [DecidableEq σ] (r : σ → ℕ) (s : Finset (σ →₀ ℕ))\n    (hs : ∀ d ∈ s, ∀ j, d j ≤ r j) : s ⊆ mapped_box r :=\n  fun _ hd ↦ original_three_facts.mpr (hs _ hd)\ntheorem zero_consumer [Fintype σ] [DecidableEq σ] (r : σ → ℕ) :\n    (0 : σ →₀ ℕ) ∈ mapped_box r :=\n  original_three_facts.mpr fun _ ↦ Nat.zero_le _\n#check @Finset.mem_map_equiv\n#check @Fintype.mem_piFinset\n#check @Finset.mem_range_succ_iff\n#check @Finset.mem_Iic\n#check @Finsupp.le_def\n#check_failure Roth.mem_box\n#print axioms original_three_facts\n#print axioms interval\n#print axioms arbitrary_bound\n#print axioms finite_support_bound\n#print axioms finite_box_membership\n#print axioms subset_consumer\n#print axioms zero_consumer\nend RawMemBoxAssessment\n"
+  },
+  "elapsed_ms": 13455,
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finset.mem_map_equiv : ∀ {α : Type u_2} {β : Type u_3} {s : Finset α} {f : α ≃ β} {b : β},\\n  b ∈ Finset.map f.toEmbedding s ↔ f.symm b ∈ s\",\n      \"line\": 40,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Fintype.mem_piFinset : ∀ {α : Type u_2} [inst : DecidableEq α] [inst_1 : Fintype α] {δ : α → Type u_3}\\n  {t : (a : α) → Finset (δ a)} {f : (a : α) → δ a}, f ∈ Fintype.piFinset t ↔ ∀ (a : α), f a ∈ t a\",\n      \"line\": 41,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finset.mem_range_succ_iff : ∀ {a b : ℕ}, a ∈ Finset.range b.succ ↔ a ≤ b\",\n      \"line\": 42,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finset.mem_Iic : ∀ {α : Type u_2} [inst : Preorder α] [inst_1 : LocallyFiniteOrderBot α] {a x : α},\\n  x ∈ Finset.Iic a ↔ x ≤ a\",\n      \"line\": 43,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finsupp.le_def : ∀ {ι : Type u_2} {M : Type u_3} [inst : Zero M] [inst_1 : LE M] {f g : ι →₀ M},\\n  f ≤ g ↔ ∀ (i : ι), f i ≤ g i\",\n      \"line\": 44,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.mem_box`\",\n      \"line\": 45,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'RawMemBoxAssessment.original_three_facts' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 46,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'RawMemBoxAssessment.interval' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 47,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'RawMemBoxAssessment.arbitrary_bound' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 48,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'RawMemBoxAssessment.finite_support_bound' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 49,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'RawMemBoxAssessment.finite_box_membership' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 50,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'RawMemBoxAssessment.subset_consumer' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 51,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'RawMemBoxAssessment.zero_consumer' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 52,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "@Finset.mem_map_equiv : ∀ {α : Type u_2} {β : Type u_3} {s : Finset α} {f : α ≃ β} {b : β},\n  b ∈ Finset.map f.toEmbedding s ↔ f.symm b ∈ s",
+          "line": 40,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Fintype.mem_piFinset : ∀ {α : Type u_2} [inst : DecidableEq α] [inst_1 : Fintype α] {δ : α → Type u_3}\n  {t : (a : α) → Finset (δ a)} {f : (a : α) → δ a}, f ∈ Fintype.piFinset t ↔ ∀ (a : α), f a ∈ t a",
+          "line": 41,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finset.mem_range_succ_iff : ∀ {a b : ℕ}, a ∈ Finset.range b.succ ↔ a ≤ b",
+          "line": 42,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finset.mem_Iic : ∀ {α : Type u_2} [inst : Preorder α] [inst_1 : LocallyFiniteOrderBot α] {a x : α},\n  x ∈ Finset.Iic a ↔ x ≤ a",
+          "line": 43,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finsupp.le_def : ∀ {ι : Type u_2} {M : Type u_3} [inst : Zero M] [inst_1 : LE M] {f g : ι →₀ M},\n  f ≤ g ↔ ∀ (i : ι), f i ≤ g i",
+          "line": 44,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.mem_box`",
+          "line": 45,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'RawMemBoxAssessment.original_three_facts' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 46,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'RawMemBoxAssessment.interval' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 47,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'RawMemBoxAssessment.arbitrary_bound' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 48,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'RawMemBoxAssessment.finite_support_bound' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 49,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'RawMemBoxAssessment.finite_box_membership' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 50,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'RawMemBoxAssessment.subset_consumer' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 51,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'RawMemBoxAssessment.zero_consumer' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 52,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  }
+}
