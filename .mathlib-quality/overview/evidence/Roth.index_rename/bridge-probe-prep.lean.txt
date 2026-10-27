@@ -1,0 +1,16 @@
+namespace IndexRenameBridge149
+open MvPolynomial
+universe u v
+-- Old interface proof intentionally avoids the target and parent taylor_rename/weight_mapDomain.
+theorem replacement {σ : Type u} [Fintype σ] {τ : Type v} [Fintype τ]
+    {f : σ → τ} (hf : Function.Injective f) (P : MvPolynomial σ ℝ)
+    (α : τ → ℝ) (r : τ → ℕ) :
+    Roth.index (rename f P) α r = Roth.index P (α ∘ f) (r ∘ f) := by
+  rw [IndexExpanded133.fullyExpandedBridge, IndexExpanded133.fullyExpandedBridge]
+  rw [IndexRenameMathlib149.centerTransport, IndexRenameMathlib149.transport hf]
+  congr 2
+  funext d
+  exact congrArg WithTop.some
+    (IndexRenameMathlib149.weightTransport f (fun j ↦ (r j : ℝ)⁻¹) d)
+#print axioms replacement
+end IndexRenameBridge149

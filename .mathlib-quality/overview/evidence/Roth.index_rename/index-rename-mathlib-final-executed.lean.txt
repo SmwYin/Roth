@@ -1,0 +1,42 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+namespace IndexRenameMathlib149
+open MvPolynomial
+universe u v w z
+#check_failure Roth.index_rename
+#check @Finset.inf_image
+#check @MvPolynomial.support_rename_of_injective
+#check @Finsupp.linearCombination_mapDomain
+#check @MvPolynomial.rename_eq_aeval
+#check @MvPolynomial.comp_aeval_apply
+-- Exact generic finite-support law; all variable and coefficient types arbitrary.
+theorem transport {σ : Type u} {τ : Type v} {R : Type w} {T : Type z}
+    [CommSemiring R] [SemilatticeInf T] [OrderTop T] {f : σ → τ}
+    (hf : Function.Injective f) (D : (τ →₀ ℕ) → T) (P : MvPolynomial σ R) :
+    AddMonoidAlgebra.infDegree D (rename f P) =
+      AddMonoidAlgebra.infDegree (D ∘ Finsupp.mapDomain f) P := by
+  classical
+  exact (congrArg (fun s : Finset (τ →₀ ℕ) ↦ s.inf D)
+    (support_rename_of_injective (p := P) hf)).trans
+      (Finset.inf_image P.support (Finsupp.mapDomain f) D)
+-- No injectivity is needed for transporting the weight alone.
+theorem weightTransport {σ : Type u} {τ : Type v} {M : Type w}
+    [AddCommMonoid M] (f : σ → τ) (w : τ → M) (d : σ →₀ ℕ) :
+    Finsupp.weight w (d.mapDomain f) = Finsupp.weight (w ∘ f) d :=
+  Finsupp.linearCombination_mapDomain ℕ (v' := w) f d
+-- The center substitution is natural for every map; no project taylor theorem used.
+theorem centerTransport {σ : Type u} {τ : Type v} {R : Type w}
+    [CommSemiring R] (f : σ → τ) (α : τ → R) (P : MvPolynomial σ R) :
+    aeval (fun j ↦ X j + C (α j)) (rename f P) =
+      rename f (aeval (fun j ↦ X j + C ((α ∘ f) j)) P) := by
+  simp only [rename_eq_aeval, comp_aeval_apply, Function.comp_apply,
+    map_add, aeval_X, algHom_C, algebraMap_eq]
+#print axioms transport
+#print axioms weightTransport
+#print axioms centerTransport
+end IndexRenameMathlib149

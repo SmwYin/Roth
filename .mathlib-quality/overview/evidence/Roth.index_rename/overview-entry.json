@@ -1,0 +1,22 @@
+{
+  "declaration": "Roth.index_rename",
+  "kind": "theorem",
+  "type": "Roth.index_rename.{u_1, u_2} {\u03c3 : Type u_1} [Fintype \u03c3] {\u03c4 : Type u_2} [Fintype \u03c4] {f : \u03c3 \u2192 \u03c4}\n  (hf : Function.Injective f) (P : MvPolynomial \u03c3 \u211d) (\u03b1 : \u03c4 \u2192 \u211d) (r : \u03c4 \u2192 \u2115) :\n  Roth.index ((MvPolynomial.rename f) P) \u03b1 r = Roth.index P (\u03b1 \u2218 f) (r \u2218 f)",
+  "what": "Injective variable renaming preserves the centered weighted polynomial index after pulling back center and denominator weights.",
+  "how": "Commute translation with rename, identify support image under mapDomain, preserve weights and take the same finite-support minimum.",
+  "hypotheses": "Finite \u03c3,\u03c4 in current parent interface; f injective; arbitrary P, \u03b1, r with zero polynomial/denominators allowed. Injection prevents cancellation; all other constraints are parent formation.",
+  "project_dependencies": [
+    "Roth.index",
+    "MvPolynomial.taylor",
+    "Roth.weight",
+    "MvPolynomial.taylor_rename",
+    "Roth.weight_mapDomain"
+  ],
+  "caller_summary": "Two direct private Theta consumers, three proof applications on two source lines; full old-target-free replacement caller replays compile.",
+  "mathlib_api_audit": "NO-composable-from-mathlib on canonical parent infDegree: exact two-call composition support_rename_of_injective + Finset.inf_image; weight normalization via linearCombination_mapDomain and centers via aeval composition. Bridge is not definitional.",
+  "moral_duplications": "Underlying finite-support transport duplicates generic lattice image functoriality; weightedTotalDegree rename is a related maximum law, not the exact minimum.",
+  "generalization": "Verified expanded law has arbitrary variable types without Fintype, CommSemiring coefficients, additive direct weights into SemilatticeInf AddCommMonoid, WithTop and untopD0. Fixed original parent cannot simply drop its Fintype binders. hf remains essential, verified collision guard.",
+  "missing_api": "No essential mathematical gap. A discoverability-only infDegree rename wrapper is a separate API design choice; composition already uses two existing calls.",
+  "junk": "Useful transport API, not dead code: equivalence and separate-variable embeddings are genuine consumers.",
+  "action": "Do not upstream Roth-specific theorem. With parent migration inline generic two-call support-inf transport at both Theta consumers; retain explicit center/weight adapter at current boundary, local in Roth/Index.lean or private near callers. No production mutation in this assessment."
+}

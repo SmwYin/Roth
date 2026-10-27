@@ -1,0 +1,29 @@
+namespace IndexRenameGuards149
+open MvPolynomial
+-- A noninjective map can cancel a nonzero polynomial; even positive weights do not help.
+theorem collision :
+    Roth.index (rename (fun _ : Fin 2 ↦ ()) (X 0 - X 1 : MvPolynomial (Fin 2) ℝ))
+        (fun _ ↦ 0) (fun _ ↦ 1) ≠
+      Roth.index (X 0 - X 1 : MvPolynomial (Fin 2) ℝ) (fun _ ↦ 0) (fun _ ↦ 1) := by
+  have hP : (X 0 - X 1 : MvPolynomial (Fin 2) ℝ) ≠ 0 := by
+    intro h
+    have hcoeff := congrArg (fun P : MvPolynomial (Fin 2) ℝ ↦ P.coeff (Finsupp.single 0 1)) h
+    simpa using hcoeff
+  have heval : eval (fun _ : Fin 2 ↦ (0 : ℝ)) (X 0 - X 1) = 0 := by simp
+  have hn := (Roth.index_eq_zero_iff hP (fun _ ↦ by norm_num)
+    (fun _ ↦ (0 : ℝ))).not.mpr (by simpa using heval)
+  simpa [Roth.index] using hn.symm
+-- Empty support and zero denominators require no extra assumptions in the actual old interface.
+theorem zeroPolynomial {σ τ : Type*} [Fintype σ] [Fintype τ] {f : σ → τ}
+    (hf : Function.Injective f) (α : τ → ℝ) (r : τ → ℕ) :
+    Roth.index (rename f (0 : MvPolynomial σ ℝ)) α r =
+      Roth.index (0 : MvPolynomial σ ℝ) (α ∘ f) (r ∘ f) :=
+  IndexRenameBridge149.replacement hf 0 α r
+theorem zeroWeights {σ τ : Type*} [Fintype σ] [Fintype τ] {f : σ → τ}
+    (hf : Function.Injective f) (P : MvPolynomial σ ℝ) (α : τ → ℝ) :
+    Roth.index (rename f P) α (fun _ ↦ 0) = Roth.index P (α ∘ f) (fun _ ↦ 0) :=
+  IndexRenameBridge149.replacement hf P α (fun _ ↦ 0)
+#print axioms collision
+#print axioms zeroPolynomial
+#print axioms zeroWeights
+end IndexRenameGuards149

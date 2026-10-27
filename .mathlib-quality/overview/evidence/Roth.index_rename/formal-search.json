@@ -1,0 +1,482 @@
+[
+  {
+    "form": "current",
+    "methods": [
+      {
+        "method": "finder",
+        "request": {
+          "query": "Roth index invariant under injective variable renaming polynomial Taylor expansion weighted minimum"
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"MvPolynomial.weightedTotalDegree_rename_of_injective\",\n      \"informal_name\": \"Weighted Total Degree is Preserved Under Injective Renaming of Variables\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_3} [inst : CommSemiring R] {σ : Type u_5} {τ : Type u_6} {e : σ → τ} {w : τ → ℕ} {P : MvPolynomial σ R},\\n  Function.Injective e →\\n    MvPolynomial.weightedTotalDegree w ((MvPolynomial.rename e) P) = MvPolynomial.weightedTotalDegree (w ∘ e) P\",\n      \"informal_description\": \"For any injective function $ e : \\\\sigma \\\\to \\\\tau $, weighting function $ w : \\\\tau \\\\to \\\\mathbb{N} $, and multivariate polynomial $ P \\\\in R[\\\\sigma] $, the weighted total degree of the renamed polynomial $ \\\\text{rename}(e, P) $ with respect to $ w $ equals the weighted total degree of $ P $ with respect to the composed weighting function $ w \\\\circ e $. Formally, $ \\\\text{weightedTotalDegree}_w(\\\\text{rename}(e, P)) = \\\\text{weightedTotalDegree}_{w \\\\circ e}(P) $.\",\n      \"path\": \"Mathlib.RingTheory.MvPolynomial.Homogeneous\"\n    },\n    {\n      \"formal_name\": \"Dioph.inject_dummies\",\n      \"informal_name\": \"Injective Dummy Variable Replacement in Diophantine Equations\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α β γ : Type u} {S : Set (α → ℕ)} (f : β → γ) (g : γ → Option β),\\n  (∀ (x : β), g (f x) = some x) →\\n    ∀ (p : Poly (α ⊕ β)),\\n      (∀ (v : α → ℕ), S v ↔ ∃ t, p (Sum.elim v t) = 0) → ∃ q, ∀ (v : α → ℕ), S v ↔ ∃ t, q (Sum.elim v t) = 0\",\n      \"informal_description\": \"Given an injective function $f : \\\\beta \\\\to \\\\gamma$ with partial inverse $g : \\\\gamma \\\\to \\\\text{Option } \\\\beta$ satisfying $g(f(x)) = \\\\text{some } x$, and a polynomial $p$ in variables $\\\\alpha \\\\oplus \\\\beta$ such that $S(v)$ holds iff there exists $t$ with $p(v \\\\oplus t) = 0$, there exists a polynomial $q$ in variables $\\\\alpha \\\\oplus \\\\gamma$ such that $S(v)$ holds iff there exists $t'$ with $q(v \\\\oplus t') = 0$. This establishes equivalence preservation under injective variable substitution in Diophantine equations.\",\n      \"path\": \"Mathlib.NumberTheory.Dioph\"\n    },\n    {\n      \"formal_name\": \"wittStructureInt_rename\",\n      \"informal_name\": \"Witt Structure Polynomial Compatibility with Renaming\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (p : ℕ) {idx : Type u_2} [hp : Fact (Nat.Prime p)] {σ : Type u_3} (Φ : MvPolynomial idx ℤ) (f : idx → σ) (n : ℕ),\\n  wittStructureInt p ((MvPolynomial.rename f) Φ) n = (MvPolynomial.rename (Prod.map f id)) (wittStructureInt p Φ n)\",\n      \"informal_description\": \"For any multivariate polynomial $\\\\Phi$ over $\\\\mathbb{Z}$ with variables indexed by $\\\\text{idx}$, any function $f : \\\\text{idx} \\\\to \\\\sigma$, and natural number $n$, applying the Witt structure polynomial construction to the renamed polynomial $\\\\Phi$ (via $f$) at level $n$ is equivalent to renaming the variables in the Witt structure polynomial of $\\\\Phi$ at level $n$ using the map $\\\\text{Prod.map } f \\\\, \\\\text{id} : \\\\text{idx} \\\\times \\\\mathbb{N} \\\\to \\\\sigma \\\\times \\\\mathbb{N}$. Formally, $\\\\text{wittStructureInt}_p(\\\\text{rename}_f(\\\\Phi), n) = \\\\text{rename}_{\\\\text{Prod.map } f \\\\, \\\\text{id}}(\\\\text{wittStructureInt}_p(\\\\Phi, n))$.\",\n      \"path\": \"Mathlib.RingTheory.WittVector.StructurePolynomial\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.degreeOf_rename_of_injective\",\n      \"informal_name\": \"Injective Renaming Preserves Variable Degree in Multivariate Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} {τ : Type u_2} [inst : CommSemiring R] {p : MvPolynomial σ R} {f : σ → τ},\\n  Function.Injective f → ∀ (i : σ), MvPolynomial.degreeOf (f i) ((MvPolynomial.rename f) p) = MvPolynomial.degreeOf i p\",\n      \"informal_description\": \"For any multivariate polynomial $ p $ over a commutative semiring $ R $ with variables indexed by $ \\\\sigma $, and for any injective function $ f : \\\\sigma \\\\to \\\\tau $, the total degree of the variable $ f(i) $ in the renamed polynomial $ \\\\operatorname{rename}(f, p) $ equals the total degree of the variable $ i $ in the original polynomial $ p $. Symbolically, $ \\\\deg_{f(i)}(\\\\operatorname{rename}(f, p)) = \\\\deg_i(p) $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Degrees\"\n    },\n    {\n      \"formal_name\": \"Dioph.inject_dummies_lem\",\n      \"informal_name\": \"Injectivity Lemma for Polynomial Solutions with Dummy Variables\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α β γ : Type u} (f : β → γ) (g : γ → Option β),\\n  (∀ (x : β), g (f x) = some x) →\\n    ∀ (p : Poly (α ⊕ β)) (v : α → ℕ),\\n      (∃ t, p (Sum.elim v t) = 0) ↔ ∃ t, (Poly.map (Sum.elim Sum.inl (Sum.inr ∘ f)) p) (Sum.elim v t) = 0\",\n      \"informal_description\": \"Given an injective function $ f : \\\\beta \\\\to \\\\gamma $ with a partial inverse $ g : \\\\gamma \\\\to \\\\text{Option } \\\\beta $ satisfying $ g(f(x)) = \\\\text{some } x $ for all $ x $, and a polynomial $ p $ in variables indexed by $ \\\\alpha \\\\oplus \\\\beta $ with integer coefficients, the existence of a solution $ t $ such that $ p(v \\\\otimes t) = 0 $ is equivalent to the existence of a solution $ t $ such that the substituted polynomial $ p.\\\\text{map}(\\\\text{inl} \\\\oplus \\\\text{inr} \\\\circ f)(v \\\\otimes t) = 0 $. This substitution preserves solvability under the injectivity condition.\",\n      \"path\": \"Mathlib.NumberTheory.Dioph\"\n    }\n  ]\n}"
+            }
+          ],
+          "structuredContent": {
+            "items": [
+              {
+                "formal_name": "MvPolynomial.weightedTotalDegree_rename_of_injective",
+                "informal_name": "Weighted Total Degree is Preserved Under Injective Renaming of Variables",
+                "kind": "theorem",
+                "type": "∀ {R : Type u_3} [inst : CommSemiring R] {σ : Type u_5} {τ : Type u_6} {e : σ → τ} {w : τ → ℕ} {P : MvPolynomial σ R},\n  Function.Injective e →\n    MvPolynomial.weightedTotalDegree w ((MvPolynomial.rename e) P) = MvPolynomial.weightedTotalDegree (w ∘ e) P",
+                "informal_description": "For any injective function $ e : \\sigma \\to \\tau $, weighting function $ w : \\tau \\to \\mathbb{N} $, and multivariate polynomial $ P \\in R[\\sigma] $, the weighted total degree of the renamed polynomial $ \\text{rename}(e, P) $ with respect to $ w $ equals the weighted total degree of $ P $ with respect to the composed weighting function $ w \\circ e $. Formally, $ \\text{weightedTotalDegree}_w(\\text{rename}(e, P)) = \\text{weightedTotalDegree}_{w \\circ e}(P) $.",
+                "path": "Mathlib.RingTheory.MvPolynomial.Homogeneous"
+              },
+              {
+                "formal_name": "Dioph.inject_dummies",
+                "informal_name": "Injective Dummy Variable Replacement in Diophantine Equations",
+                "kind": "theorem",
+                "type": "∀ {α β γ : Type u} {S : Set (α → ℕ)} (f : β → γ) (g : γ → Option β),\n  (∀ (x : β), g (f x) = some x) →\n    ∀ (p : Poly (α ⊕ β)),\n      (∀ (v : α → ℕ), S v ↔ ∃ t, p (Sum.elim v t) = 0) → ∃ q, ∀ (v : α → ℕ), S v ↔ ∃ t, q (Sum.elim v t) = 0",
+                "informal_description": "Given an injective function $f : \\beta \\to \\gamma$ with partial inverse $g : \\gamma \\to \\text{Option } \\beta$ satisfying $g(f(x)) = \\text{some } x$, and a polynomial $p$ in variables $\\alpha \\oplus \\beta$ such that $S(v)$ holds iff there exists $t$ with $p(v \\oplus t) = 0$, there exists a polynomial $q$ in variables $\\alpha \\oplus \\gamma$ such that $S(v)$ holds iff there exists $t'$ with $q(v \\oplus t') = 0$. This establishes equivalence preservation under injective variable substitution in Diophantine equations.",
+                "path": "Mathlib.NumberTheory.Dioph"
+              },
+              {
+                "formal_name": "wittStructureInt_rename",
+                "informal_name": "Witt Structure Polynomial Compatibility with Renaming",
+                "kind": "theorem",
+                "type": "∀ (p : ℕ) {idx : Type u_2} [hp : Fact (Nat.Prime p)] {σ : Type u_3} (Φ : MvPolynomial idx ℤ) (f : idx → σ) (n : ℕ),\n  wittStructureInt p ((MvPolynomial.rename f) Φ) n = (MvPolynomial.rename (Prod.map f id)) (wittStructureInt p Φ n)",
+                "informal_description": "For any multivariate polynomial $\\Phi$ over $\\mathbb{Z}$ with variables indexed by $\\text{idx}$, any function $f : \\text{idx} \\to \\sigma$, and natural number $n$, applying the Witt structure polynomial construction to the renamed polynomial $\\Phi$ (via $f$) at level $n$ is equivalent to renaming the variables in the Witt structure polynomial of $\\Phi$ at level $n$ using the map $\\text{Prod.map } f \\, \\text{id} : \\text{idx} \\times \\mathbb{N} \\to \\sigma \\times \\mathbb{N}$. Formally, $\\text{wittStructureInt}_p(\\text{rename}_f(\\Phi), n) = \\text{rename}_{\\text{Prod.map } f \\, \\text{id}}(\\text{wittStructureInt}_p(\\Phi, n))$.",
+                "path": "Mathlib.RingTheory.WittVector.StructurePolynomial"
+              },
+              {
+                "formal_name": "MvPolynomial.degreeOf_rename_of_injective",
+                "informal_name": "Injective Renaming Preserves Variable Degree in Multivariate Polynomials",
+                "kind": "theorem",
+                "type": "∀ {R : Type u} {σ : Type u_1} {τ : Type u_2} [inst : CommSemiring R] {p : MvPolynomial σ R} {f : σ → τ},\n  Function.Injective f → ∀ (i : σ), MvPolynomial.degreeOf (f i) ((MvPolynomial.rename f) p) = MvPolynomial.degreeOf i p",
+                "informal_description": "For any multivariate polynomial $ p $ over a commutative semiring $ R $ with variables indexed by $ \\sigma $, and for any injective function $ f : \\sigma \\to \\tau $, the total degree of the variable $ f(i) $ in the renamed polynomial $ \\operatorname{rename}(f, p) $ equals the total degree of the variable $ i $ in the original polynomial $ p $. Symbolically, $ \\deg_{f(i)}(\\operatorname{rename}(f, p)) = \\deg_i(p) $.",
+                "path": "Mathlib.Algebra.MvPolynomial.Degrees"
+              },
+              {
+                "formal_name": "Dioph.inject_dummies_lem",
+                "informal_name": "Injectivity Lemma for Polynomial Solutions with Dummy Variables",
+                "kind": "theorem",
+                "type": "∀ {α β γ : Type u} (f : β → γ) (g : γ → Option β),\n  (∀ (x : β), g (f x) = some x) →\n    ∀ (p : Poly (α ⊕ β)) (v : α → ℕ),\n      (∃ t, p (Sum.elim v t) = 0) ↔ ∃ t, (Poly.map (Sum.elim Sum.inl (Sum.inr ∘ f)) p) (Sum.elim v t) = 0",
+                "informal_description": "Given an injective function $ f : \\beta \\to \\gamma $ with a partial inverse $ g : \\gamma \\to \\text{Option } \\beta $ satisfying $ g(f(x)) = \\text{some } x $ for all $ x $, and a polynomial $ p $ in variables indexed by $ \\alpha \\oplus \\beta $ with integer coefficients, the existence of a solution $ t $ such that $ p(v \\otimes t) = 0 $ is equivalent to the existence of a solution $ t $ such that the substituted polynomial $ p.\\text{map}(\\text{inl} \\oplus \\text{inr} \\circ f)(v \\otimes t) = 0 $. This substitution preserves solvability under the injectivity condition.",
+                "path": "Mathlib.NumberTheory.Dioph"
+              }
+            ]
+          },
+          "isError": false
+        }
+      },
+      {
+        "method": "loogle",
+        "request": {
+          "query": "MvPolynomial.support_rename_of_injective"
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.support_rename_of_injective\",\n      \"type\": \" {σ : Type u_1} {τ : Type u_2} {R : Type u_4} [CommSemiring R] {p : MvPolynomial σ R} {f : σ → τ} [DecidableEq τ] (h : Function.Injective f) : ((MvPolynomial.rename f) p).support = Finset.image (Finsupp.mapDomain f) p.support\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Rename\"\n    }\n  ]\n}"
+            }
+          ],
+          "structuredContent": {
+            "items": [
+              {
+                "name": "MvPolynomial.support_rename_of_injective",
+                "type": " {σ : Type u_1} {τ : Type u_2} {R : Type u_4} [CommSemiring R] {p : MvPolynomial σ R} {f : σ → τ} [DecidableEq τ] (h : Function.Injective f) : ((MvPolynomial.rename f) p).support = Finset.image (Finsupp.mapDomain f) p.support",
+                "module": "Mathlib.Algebra.MvPolynomial.Rename"
+              }
+            ]
+          },
+          "isError": false
+        }
+      },
+      {
+        "method": "leansearch",
+        "request": {
+          "query": "Roth index invariant under injective variable renaming polynomial Taylor expansion weighted minimum"
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.rename_comp_expand\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Expand\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_3} [inst : CommSemiring R] (p : ℕ) (f : σ → τ),\\n  (MvPolynomial.rename f).comp (MvPolynomial.expand p) = (MvPolynomial.expand p).comp (MvPolynomial.rename f)\"\n    },\n    {\n      \"name\": \"Polynomial.taylor_injective\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Taylor\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Ring R] (r : R), Function.Injective ⇑(Polynomial.taylor r)\"\n    },\n    {\n      \"name\": \"MvPolynomial.rename_polynomial_aeval_X\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Equiv\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (R : Type u) [inst : CommSemiring R] {σ : Type u_2} {τ : Type u_3} (f : σ → τ) (i : σ) (p : Polynomial R),\\n  (MvPolynomial.rename f) ((Polynomial.aeval (MvPolynomial.X i)) p) = (Polynomial.aeval (MvPolynomial.X (f i))) p\"\n    },\n    {\n      \"name\": \"MvPolynomial.rename_X\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Rename\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_4} [inst : CommSemiring R] (f : σ → τ) (i : σ),\\n  (MvPolynomial.rename f) (MvPolynomial.X i) = MvPolynomial.X (f i)\"\n    },\n    {\n      \"name\": \"MvPolynomial.rename_expand\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Expand\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_3} [inst : CommSemiring R] (p : ℕ) (f : σ → τ) (φ : MvPolynomial σ R),\\n  (MvPolynomial.rename f) ((MvPolynomial.expand p) φ) = (MvPolynomial.expand p) ((MvPolynomial.rename f) φ)\"\n    }\n  ]\n}"
+            }
+          ],
+          "structuredContent": {
+            "items": [
+              {
+                "name": "MvPolynomial.rename_comp_expand",
+                "module_name": "Mathlib.Algebra.MvPolynomial.Expand",
+                "kind": "theorem",
+                "type": "∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_3} [inst : CommSemiring R] (p : ℕ) (f : σ → τ),\n  (MvPolynomial.rename f).comp (MvPolynomial.expand p) = (MvPolynomial.expand p).comp (MvPolynomial.rename f)"
+              },
+              {
+                "name": "Polynomial.taylor_injective",
+                "module_name": "Mathlib.Algebra.Polynomial.Taylor",
+                "kind": "theorem",
+                "type": "∀ {R : Type u_1} [inst : Ring R] (r : R), Function.Injective ⇑(Polynomial.taylor r)"
+              },
+              {
+                "name": "MvPolynomial.rename_polynomial_aeval_X",
+                "module_name": "Mathlib.Algebra.MvPolynomial.Equiv",
+                "kind": "theorem",
+                "type": "∀ (R : Type u) [inst : CommSemiring R] {σ : Type u_2} {τ : Type u_3} (f : σ → τ) (i : σ) (p : Polynomial R),\n  (MvPolynomial.rename f) ((Polynomial.aeval (MvPolynomial.X i)) p) = (Polynomial.aeval (MvPolynomial.X (f i))) p"
+              },
+              {
+                "name": "MvPolynomial.rename_X",
+                "module_name": "Mathlib.Algebra.MvPolynomial.Rename",
+                "kind": "theorem",
+                "type": "∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_4} [inst : CommSemiring R] (f : σ → τ) (i : σ),\n  (MvPolynomial.rename f) (MvPolynomial.X i) = MvPolynomial.X (f i)"
+              },
+              {
+                "name": "MvPolynomial.rename_expand",
+                "module_name": "Mathlib.Algebra.MvPolynomial.Expand",
+                "kind": "theorem",
+                "type": "∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_3} [inst : CommSemiring R] (p : ℕ) (f : σ → τ) (φ : MvPolynomial σ R),\n  (MvPolynomial.rename f) ((MvPolynomial.expand p) φ) = (MvPolynomial.expand p) ((MvPolynomial.rename f) φ)"
+              }
+            ]
+          },
+          "isError": false
+        }
+      },
+      {
+        "method": "local",
+        "request": {
+          "query": "support_rename_of_injective"
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.support_rename_of_injective\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Rename.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+            }
+          ],
+          "structuredContent": {
+            "items": [
+              {
+                "name": "MvPolynomial.support_rename_of_injective",
+                "kind": "theorem",
+                "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Rename.lean"
+              }
+            ],
+            "index": "unavailable"
+          },
+          "isError": false
+        }
+      }
+    ]
+  },
+  {
+    "form": "literature",
+    "methods": [
+      {
+        "method": "finder",
+        "request": {
+          "query": "weighted order of polynomial invariant under embedding variables and pullback weights"
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"MvPolynomial.weightedTotalDegree_rename_of_injective\",\n      \"informal_name\": \"Weighted Total Degree is Preserved Under Injective Renaming of Variables\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_3} [inst : CommSemiring R] {σ : Type u_5} {τ : Type u_6} {e : σ → τ} {w : τ → ℕ} {P : MvPolynomial σ R},\\n  Function.Injective e →\\n    MvPolynomial.weightedTotalDegree w ((MvPolynomial.rename e) P) = MvPolynomial.weightedTotalDegree (w ∘ e) P\",\n      \"informal_description\": \"For any injective function $ e : \\\\sigma \\\\to \\\\tau $, weighting function $ w : \\\\tau \\\\to \\\\mathbb{N} $, and multivariate polynomial $ P \\\\in R[\\\\sigma] $, the weighted total degree of the renamed polynomial $ \\\\text{rename}(e, P) $ with respect to $ w $ equals the weighted total degree of $ P $ with respect to the composed weighting function $ w \\\\circ e $. Formally, $ \\\\text{weightedTotalDegree}_w(\\\\text{rename}(e, P)) = \\\\text{weightedTotalDegree}_{w \\\\circ e}(P) $.\",\n      \"path\": \"Mathlib.RingTheory.MvPolynomial.Homogeneous\"\n    },\n    {\n      \"formal_name\": \"MvPowerSeries.le_weightedOrder_subst_of_forall_ne_zero\",\n      \"informal_name\": \"Weighted Order Non-Increasing Under Substitution in Multivariate Power Series\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_3} [inst : CommRing R] {τ : Type u_4} {S : Type u_5} [inst_1 : CommRing S]\\n  [inst_2 : Algebra R S] {a : σ → MvPowerSeries τ S} (w : τ → ℕ),\\n  MvPowerSeries.HasSubst a →\\n    (∀ (i : σ), a i ≠ 0) →\\n      ∀ (f : MvPowerSeries σ R),\\n        MvPowerSeries.weightedOrder (ENat.toNat ∘ MvPowerSeries.weightedOrder w ∘ a) f ≤\\n          MvPowerSeries.weightedOrder w (MvPowerSeries.subst a f)\",\n      \"informal_description\": \"For any multivariate power series $ f $ over a commutative ring $ R $ with variables indexed by $ \\\\sigma $, and for any substitution $ a : \\\\sigma \\\\to \\\\mathrm{MvPowerSeries}(\\\\tau, S) $ satisfying the substitution condition and with each $ a(i) \\\\neq 0 $, the weighted order of $ f $ with respect to the weight function $ \\\\mathbb{N}^{\\\\top} \\\\to \\\\mathbb{N} $ composed with the weighted orders of $ a(i) $ is less than or equal to the weighted order of the substituted power series $ f(a) $ with respect to the original weight function $ w $.\",\n      \"path\": \"Mathlib.RingTheory.MvPowerSeries.Substitution\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.weightedTotalDegree_coe\",\n      \"informal_name\": \"Equality of Weighted Total Degrees via Coercion for Non-zero Multivariate Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {M : Type u_2} [inst : CommSemiring R] {σ : Type u_3} [inst_1 : AddCommMonoid M]\\n  [inst_2 : SemilatticeSup M] [inst_3 : OrderBot M] (w : σ → M) (p : MvPolynomial σ R),\\n  p ≠ 0 → MvPolynomial.weightedTotalDegree' w p = ↑(MvPolynomial.weightedTotalDegree w p)\",\n      \"informal_description\": \"For a non-zero multivariate polynomial $ p $ over a commutative semiring $ R $, with variables indexed by $ \\\\sigma $ and a weight function $ w : \\\\sigma \\\\to M $ where $ M $ is a sup-semilattice, the weighted total degree $ \\\\text{weightedTotalDegree}'(w, p) $ (taking values in $ \\\\text{WithBot} \\\\, M $) equals the canonical embedding $ \\\\uparrow $ of the weighted total degree $ \\\\text{weightedTotalDegree}(w, p) $ (taking values in $ M $) into $ \\\\text{WithBot} \\\\, M $. This holds because the zero polynomial is the only case where $ \\\\text{weightedTotalDegree}' $ differs from the embedded $ \\\\text{weightedTotalDegree} $.\",\n      \"path\": \"Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous\"\n    },\n    {\n      \"formal_name\": \"MvPowerSeries.le_weightedOrder_subst\",\n      \"informal_name\": \"Weighted Order Lower Bound for Substituted Multivariate Power Series\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_3} [inst : CommRing R] {τ : Type u_4} {S : Type u_5} [inst_1 : CommRing S]\\n  [inst_2 : Algebra R S] {a : σ → MvPowerSeries τ S} (w : τ → ℕ),\\n  MvPowerSeries.HasSubst a →\\n    ∀ (f : MvPowerSeries σ R),\\n      ⨅ d, ⨅ (_ : (MvPowerSeries.coeff d) f ≠ 0), (Finsupp.weight (MvPowerSeries.weightedOrder w ∘ a)) d ≤\\n        MvPowerSeries.weightedOrder w (MvPowerSeries.subst a f)\",\n      \"informal_description\": \"For a multivariate power series $ f $ over a commutative ring $ R $ with variables indexed by $ \\\\sigma $, and a substitution map $ a: \\\\sigma \\\\to \\\\mathrm{MvPowerSeries}(\\\\tau, S) $ satisfying the substitution condition, the weighted order of the substituted series $ f[a] $ with respect to a weight function $ w: \\\\tau \\\\to \\\\mathbb{N} $ is greater than or equal to the infimum of the weighted orders of the individual substitutions $ a(x) $ (composed with $ w $) over all non-zero coefficients of $ f $. Formally, $ \\\\inf_{\\\\substack{d \\\\in \\\\sigma \\\\to_0 \\\\mathbb{N} \\\\\\\\ \\\\mathrm{coeff}_d(f) \\\\neq 0}} \\\\mathrm{weightedOrder}(w \\\\circ a, d) \\\\leq \\\\mathrm{weightedOrder}(w, f[a]) $. This establishes a lower bound on the weighted order after substitution in terms of the substitution maps' weighted orders.\",\n      \"path\": \"Mathlib.RingTheory.MvPowerSeries.Substitution\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.IsWeightedHomogeneous\",\n      \"informal_name\": \"Weighted homogeneous polynomial condition\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} →\\n  {M : Type u_2} → [inst : CommSemiring R] → {σ : Type u_3} → [AddCommMonoid M] → (σ → M) → MvPolynomial σ R → M → Prop\",\n      \"informal_description\": \"A multivariate polynomial $\\\\varphi$ is weighted homogeneous of weight $m$ with respect to the weight function $w : \\\\sigma \\\\to M$ if every monomial $d$ with nonzero coefficient in $\\\\varphi$ satisfies $\\\\sum_{i \\\\in \\\\text{support } d} d(i) \\\\cdot w(i) = m$, where $d(i)$ denotes the exponent of variable $i$ in the monomial.\",\n      \"path\": \"Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous\"\n    }\n  ]\n}"
+            }
+          ],
+          "structuredContent": {
+            "items": [
+              {
+                "formal_name": "MvPolynomial.weightedTotalDegree_rename_of_injective",
+                "informal_name": "Weighted Total Degree is Preserved Under Injective Renaming of Variables",
+                "kind": "theorem",
+                "type": "∀ {R : Type u_3} [inst : CommSemiring R] {σ : Type u_5} {τ : Type u_6} {e : σ → τ} {w : τ → ℕ} {P : MvPolynomial σ R},\n  Function.Injective e →\n    MvPolynomial.weightedTotalDegree w ((MvPolynomial.rename e) P) = MvPolynomial.weightedTotalDegree (w ∘ e) P",
+                "informal_description": "For any injective function $ e : \\sigma \\to \\tau $, weighting function $ w : \\tau \\to \\mathbb{N} $, and multivariate polynomial $ P \\in R[\\sigma] $, the weighted total degree of the renamed polynomial $ \\text{rename}(e, P) $ with respect to $ w $ equals the weighted total degree of $ P $ with respect to the composed weighting function $ w \\circ e $. Formally, $ \\text{weightedTotalDegree}_w(\\text{rename}(e, P)) = \\text{weightedTotalDegree}_{w \\circ e}(P) $.",
+                "path": "Mathlib.RingTheory.MvPolynomial.Homogeneous"
+              },
+              {
+                "formal_name": "MvPowerSeries.le_weightedOrder_subst_of_forall_ne_zero",
+                "informal_name": "Weighted Order Non-Increasing Under Substitution in Multivariate Power Series",
+                "kind": "theorem",
+                "type": "∀ {σ : Type u_1} {R : Type u_3} [inst : CommRing R] {τ : Type u_4} {S : Type u_5} [inst_1 : CommRing S]\n  [inst_2 : Algebra R S] {a : σ → MvPowerSeries τ S} (w : τ → ℕ),\n  MvPowerSeries.HasSubst a →\n    (∀ (i : σ), a i ≠ 0) →\n      ∀ (f : MvPowerSeries σ R),\n        MvPowerSeries.weightedOrder (ENat.toNat ∘ MvPowerSeries.weightedOrder w ∘ a) f ≤\n          MvPowerSeries.weightedOrder w (MvPowerSeries.subst a f)",
+                "informal_description": "For any multivariate power series $ f $ over a commutative ring $ R $ with variables indexed by $ \\sigma $, and for any substitution $ a : \\sigma \\to \\mathrm{MvPowerSeries}(\\tau, S) $ satisfying the substitution condition and with each $ a(i) \\neq 0 $, the weighted order of $ f $ with respect to the weight function $ \\mathbb{N}^{\\top} \\to \\mathbb{N} $ composed with the weighted orders of $ a(i) $ is less than or equal to the weighted order of the substituted power series $ f(a) $ with respect to the original weight function $ w $.",
+                "path": "Mathlib.RingTheory.MvPowerSeries.Substitution"
+              },
+              {
+                "formal_name": "MvPolynomial.weightedTotalDegree_coe",
+                "informal_name": "Equality of Weighted Total Degrees via Coercion for Non-zero Multivariate Polynomials",
+                "kind": "theorem",
+                "type": "∀ {R : Type u_1} {M : Type u_2} [inst : CommSemiring R] {σ : Type u_3} [inst_1 : AddCommMonoid M]\n  [inst_2 : SemilatticeSup M] [inst_3 : OrderBot M] (w : σ → M) (p : MvPolynomial σ R),\n  p ≠ 0 → MvPolynomial.weightedTotalDegree' w p = ↑(MvPolynomial.weightedTotalDegree w p)",
+                "informal_description": "For a non-zero multivariate polynomial $ p $ over a commutative semiring $ R $, with variables indexed by $ \\sigma $ and a weight function $ w : \\sigma \\to M $ where $ M $ is a sup-semilattice, the weighted total degree $ \\text{weightedTotalDegree}'(w, p) $ (taking values in $ \\text{WithBot} \\, M $) equals the canonical embedding $ \\uparrow $ of the weighted total degree $ \\text{weightedTotalDegree}(w, p) $ (taking values in $ M $) into $ \\text{WithBot} \\, M $. This holds because the zero polynomial is the only case where $ \\text{weightedTotalDegree}' $ differs from the embedded $ \\text{weightedTotalDegree} $.",
+                "path": "Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous"
+              },
+              {
+                "formal_name": "MvPowerSeries.le_weightedOrder_subst",
+                "informal_name": "Weighted Order Lower Bound for Substituted Multivariate Power Series",
+                "kind": "theorem",
+                "type": "∀ {σ : Type u_1} {R : Type u_3} [inst : CommRing R] {τ : Type u_4} {S : Type u_5} [inst_1 : CommRing S]\n  [inst_2 : Algebra R S] {a : σ → MvPowerSeries τ S} (w : τ → ℕ),\n  MvPowerSeries.HasSubst a →\n    ∀ (f : MvPowerSeries σ R),\n      ⨅ d, ⨅ (_ : (MvPowerSeries.coeff d) f ≠ 0), (Finsupp.weight (MvPowerSeries.weightedOrder w ∘ a)) d ≤\n        MvPowerSeries.weightedOrder w (MvPowerSeries.subst a f)",
+                "informal_description": "For a multivariate power series $ f $ over a commutative ring $ R $ with variables indexed by $ \\sigma $, and a substitution map $ a: \\sigma \\to \\mathrm{MvPowerSeries}(\\tau, S) $ satisfying the substitution condition, the weighted order of the substituted series $ f[a] $ with respect to a weight function $ w: \\tau \\to \\mathbb{N} $ is greater than or equal to the infimum of the weighted orders of the individual substitutions $ a(x) $ (composed with $ w $) over all non-zero coefficients of $ f $. Formally, $ \\inf_{\\substack{d \\in \\sigma \\to_0 \\mathbb{N} \\\\ \\mathrm{coeff}_d(f) \\neq 0}} \\mathrm{weightedOrder}(w \\circ a, d) \\leq \\mathrm{weightedOrder}(w, f[a]) $. This establishes a lower bound on the weighted order after substitution in terms of the substitution maps' weighted orders.",
+                "path": "Mathlib.RingTheory.MvPowerSeries.Substitution"
+              },
+              {
+                "formal_name": "MvPolynomial.IsWeightedHomogeneous",
+                "informal_name": "Weighted homogeneous polynomial condition",
+                "kind": "definition",
+                "type": "{R : Type u_1} →\n  {M : Type u_2} → [inst : CommSemiring R] → {σ : Type u_3} → [AddCommMonoid M] → (σ → M) → MvPolynomial σ R → M → Prop",
+                "informal_description": "A multivariate polynomial $\\varphi$ is weighted homogeneous of weight $m$ with respect to the weight function $w : \\sigma \\to M$ if every monomial $d$ with nonzero coefficient in $\\varphi$ satisfies $\\sum_{i \\in \\text{support } d} d(i) \\cdot w(i) = m$, where $d(i)$ denotes the exponent of variable $i$ in the monomial.",
+                "path": "Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous"
+              }
+            ]
+          },
+          "isError": false
+        }
+      },
+      {
+        "method": "loogle",
+        "request": {
+          "query": "Finsupp.linearCombination_mapDomain"
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finsupp.linearCombination_mapDomain\",\n      \"type\": \" {α : Type u_1} (R : Type u_3) [Semiring R] {α' : Type u_5} {M' : Type u_6} [AddCommMonoid M'] [Module R M'] {v' : α' → M'} (f : α → α') (l : α →₀ R) : (Finsupp.linearCombination R v') (Finsupp.mapDomain f l) = (Finsupp.linearCombination R (v' ∘ f)) l\",\n      \"module\": \"Mathlib.LinearAlgebra.Finsupp.LinearCombination\"\n    }\n  ]\n}"
+            }
+          ],
+          "structuredContent": {
+            "items": [
+              {
+                "name": "Finsupp.linearCombination_mapDomain",
+                "type": " {α : Type u_1} (R : Type u_3) [Semiring R] {α' : Type u_5} {M' : Type u_6} [AddCommMonoid M'] [Module R M'] {v' : α' → M'} (f : α → α') (l : α →₀ R) : (Finsupp.linearCombination R v') (Finsupp.mapDomain f l) = (Finsupp.linearCombination R (v' ∘ f)) l",
+                "module": "Mathlib.LinearAlgebra.Finsupp.LinearCombination"
+              }
+            ]
+          },
+          "isError": false
+        }
+      },
+      {
+        "method": "leansearch",
+        "request": {
+          "query": "weighted order of polynomial invariant under embedding variables and pullback weights"
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPowerSeries.weightedOrder\",\n      \"module_name\": \"Mathlib.RingTheory.MvPowerSeries.Order\",\n      \"kind\": \"definition\",\n      \"type\": \"{σ : Type u_1} → {R : Type u_2} → [Semiring R] → (σ → ℕ) → MvPowerSeries σ R → ℕ∞\"\n    },\n    {\n      \"name\": \"MvPolynomial.IsWeightedHomogeneous\",\n      \"module_name\": \"Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} →\\n  {M : Type u_2} → [inst : CommSemiring R] → {σ : Type u_3} → [AddCommMonoid M] → (σ → M) → MvPolynomial σ R → M → Prop\"\n    },\n    {\n      \"name\": \"MvPolynomial.weightedTotalDegree_rename_of_injective\",\n      \"module_name\": \"Mathlib.RingTheory.MvPolynomial.Homogeneous\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_3} [inst : CommSemiring R] {σ : Type u_5} {τ : Type u_6} {e : σ → τ} {w : τ → ℕ} {P : MvPolynomial σ R},\\n  Function.Injective e →\\n    MvPolynomial.weightedTotalDegree w ((MvPolynomial.rename e) P) = MvPolynomial.weightedTotalDegree (w ∘ e) P\"\n    },\n    {\n      \"name\": \"MvPolynomial.isWeightedHomogeneous_X\",\n      \"module_name\": \"Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (R : Type u_1) {M : Type u_2} [inst : CommSemiring R] {σ : Type u_3} [inst_1 : AddCommMonoid M] (w : σ → M) (i : σ),\\n  MvPolynomial.IsWeightedHomogeneous w (MvPolynomial.X i) (w i)\"\n    },\n    {\n      \"name\": \"MvPolynomial.IsWeightedHomogeneous.pow\",\n      \"module_name\": \"Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {M : Type u_2} [inst : CommSemiring R] {σ : Type u_3} [inst_1 : AddCommMonoid M] {φ : MvPolynomial σ R}\\n  {m : M} {w : σ → M},\\n  MvPolynomial.IsWeightedHomogeneous w φ m → ∀ (n : ℕ), MvPolynomial.IsWeightedHomogeneous w (φ ^ n) (n • m)\"\n    }\n  ]\n}"
+            }
+          ],
+          "structuredContent": {
+            "items": [
+              {
+                "name": "MvPowerSeries.weightedOrder",
+                "module_name": "Mathlib.RingTheory.MvPowerSeries.Order",
+                "kind": "definition",
+                "type": "{σ : Type u_1} → {R : Type u_2} → [Semiring R] → (σ → ℕ) → MvPowerSeries σ R → ℕ∞"
+              },
+              {
+                "name": "MvPolynomial.IsWeightedHomogeneous",
+                "module_name": "Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous",
+                "kind": "definition",
+                "type": "{R : Type u_1} →\n  {M : Type u_2} → [inst : CommSemiring R] → {σ : Type u_3} → [AddCommMonoid M] → (σ → M) → MvPolynomial σ R → M → Prop"
+              },
+              {
+                "name": "MvPolynomial.weightedTotalDegree_rename_of_injective",
+                "module_name": "Mathlib.RingTheory.MvPolynomial.Homogeneous",
+                "kind": "theorem",
+                "type": "∀ {R : Type u_3} [inst : CommSemiring R] {σ : Type u_5} {τ : Type u_6} {e : σ → τ} {w : τ → ℕ} {P : MvPolynomial σ R},\n  Function.Injective e →\n    MvPolynomial.weightedTotalDegree w ((MvPolynomial.rename e) P) = MvPolynomial.weightedTotalDegree (w ∘ e) P"
+              },
+              {
+                "name": "MvPolynomial.isWeightedHomogeneous_X",
+                "module_name": "Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous",
+                "kind": "theorem",
+                "type": "∀ (R : Type u_1) {M : Type u_2} [inst : CommSemiring R] {σ : Type u_3} [inst_1 : AddCommMonoid M] (w : σ → M) (i : σ),\n  MvPolynomial.IsWeightedHomogeneous w (MvPolynomial.X i) (w i)"
+              },
+              {
+                "name": "MvPolynomial.IsWeightedHomogeneous.pow",
+                "module_name": "Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous",
+                "kind": "theorem",
+                "type": "∀ {R : Type u_1} {M : Type u_2} [inst : CommSemiring R] {σ : Type u_3} [inst_1 : AddCommMonoid M] {φ : MvPolynomial σ R}\n  {m : M} {w : σ → M},\n  MvPolynomial.IsWeightedHomogeneous w φ m → ∀ (n : ℕ), MvPolynomial.IsWeightedHomogeneous w (φ ^ n) (n • m)"
+              }
+            ]
+          },
+          "isError": false
+        }
+      },
+      {
+        "method": "local",
+        "request": {
+          "query": "linearCombination_mapDomain"
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finsupp.linearCombination_mapDomain\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/Finsupp/LinearCombination.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+            }
+          ],
+          "structuredContent": {
+            "items": [
+              {
+                "name": "Finsupp.linearCombination_mapDomain",
+                "kind": "theorem",
+                "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/Finsupp/LinearCombination.lean"
+              }
+            ],
+            "index": "unavailable"
+          },
+          "isError": false
+        }
+      }
+    ]
+  },
+  {
+    "form": "abstract",
+    "methods": [
+      {
+        "method": "finder",
+        "request": {
+          "query": "finite infimum over image equals infimum of composition Finset inf_image"
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Finset.iInf_finset_image\",\n      \"informal_name\": \"Infimum over Image Set Equals Infimum over Original Set\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_2} {β : Type u_3} {γ : Type u_4} [inst : CompleteLattice β] [inst_1 : DecidableEq α] {f : γ → α}\\n  {g : α → β} {s : Finset γ}, ⨅ x ∈ Finset.image f s, g x = ⨅ y ∈ s, g (f y)\",\n      \"informal_description\": \"For any finite set $ s $ of type $ \\\\gamma $, functions $ f : \\\\gamma \\\\to \\\\alpha $ and $ g : \\\\alpha \\\\to \\\\beta $, the infimum of $ g(x) $ over the image $ f(s) $ is equal to the infimum of $ g(f(y)) $ over the original set $ s $. Symbolically, $ \\\\bigwedge_{x \\\\in s.image\\\\ f} g(x) = \\\\bigwedge_{y \\\\in s} g(f(y)) $.\",\n      \"path\": \"Mathlib.Order.CompleteLattice.Finset\"\n    },\n    {\n      \"formal_name\": \"Finset.inf_image\",\n      \"informal_name\": \"Infimum Equality: $\\\\bigwedge_{b \\\\in f(s)} g(b) = \\\\bigwedge_{x \\\\in s} g(f(x))$\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_2} {β : Type u_3} {γ : Type u_4} [inst : SemilatticeInf α] [inst_1 : OrderTop α] [inst_2 : DecidableEq β]\\n  (s : Finset γ) (f : γ → β) (g : β → α), (Finset.image f s).inf g = s.inf (g ∘ f)\",\n      \"informal_description\": \"Let $ s $ be a finite set of elements of type $ \\\\gamma $, $ f : \\\\gamma \\\\to \\\\beta $ a function, and $ g : \\\\beta \\\\to \\\\alpha $ where $ \\\\alpha $ is an infimum semilattice with a top element $ \\\\top $, and $ \\\\beta $ has decidable equality. Then, the infimum of $ g $ over the image of $ s $ under $ f $ is equal to the infimum of the composition $ g \\\\circ f $ over $ s $. Formally, this is expressed as $ \\\\bigwedge_{b \\\\in f(s)} g(b) = \\\\bigwedge_{x \\\\in s} g(f(x)) $.\",\n      \"path\": \"Mathlib.Data.Finset.Lattice.Fold\"\n    },\n    {\n      \"formal_name\": \"Finset.inf'_image\",\n      \"informal_name\": \"Infimum Preservation under Image Composition for Finite Sets\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_2} {β : Type u_3} {γ : Type u_4} [inst : SemilatticeInf α] [inst_1 : DecidableEq β] {s : Finset γ}\\n  {f : γ → β} (hs : (Finset.image f s).Nonempty) (g : β → α), (Finset.image f s).inf' hs g = s.inf' ⋯ (g ∘ f)\",\n      \"informal_description\": \"For a non-empty finite set $ s $ over $ \\\\gamma $, a function $ f : \\\\gamma \\\\to \\\\beta $, and a function $ g : \\\\beta \\\\to \\\\alpha $ where $ \\\\alpha $ is an infimum semilattice and $ \\\\beta $ has decidable equality, the infimum of $ g $ applied to the image $ f(s) $ equals the infimum of the composition $ g \\\\circ f $ applied directly to $ s $. Formally, $ \\\\inf_{b \\\\in f(s)} g(b) = \\\\inf_{c \\\\in s} g(f(c)) $.\",\n      \"path\": \"Mathlib.Data.Finset.Lattice.Fold\"\n    },\n    {\n      \"formal_name\": \"Finset.inf'_comp_eq_image\",\n      \"informal_name\": \"Infimum of Composed Function Over Finite Set Equals Infimum Over Image\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_2} {β : Type u_3} {γ : Type u_4} [inst : SemilatticeInf α] [inst_1 : DecidableEq β] {s : Finset γ}\\n  {f : γ → β} (hs : s.Nonempty) (g : β → α), s.inf' hs (g ∘ f) = (Finset.image f s).inf' ⋯ g\",\n      \"informal_description\": \"For a non-empty finite set $ s $ of elements in $ γ $, a function $ f : γ → β $, and a function $ g : β → α $ where $ α $ is an infimum semilattice with top element, the infimum of the composition $ g ∘ f $ over $ s $ equals the infimum of $ g $ over the image $ f(s) $. Symbolically, $\\\\inf_{x ∈ s} g(f(x)) = \\\\inf_{y ∈ f(s)} g(y)$.\",\n      \"path\": \"Mathlib.Data.Finset.Lattice.Fold\"\n    },\n    {\n      \"formal_name\": \"Finset.inf_eq_sInf_image\",\n      \"informal_name\": \"Infimum Equality for Finite Sets in Complete Lattices\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_2} {β : Type u_3} [inst : CompleteLattice β] (s : Finset α) (f : α → β), s.inf f = sInf (f '' ↑s)\",\n      \"informal_description\": \"For any finite set $ s $ of type $ \\\\alpha $ and function $ f : \\\\alpha \\\\to \\\\beta $ where $ \\\\beta $ is a complete lattice, the infimum of $ f $ over $ s $ (computed iteratively from the top element) equals the infimum of the image set $ f(s) $ in $ \\\\beta $, i.e., $ \\\\bigwedge_{b \\\\in s} f(b) = \\\\inf (f(s)) $.\",\n      \"path\": \"Mathlib.Data.Finset.Lattice.Fold\"\n    }\n  ]\n}"
+            }
+          ],
+          "structuredContent": {
+            "items": [
+              {
+                "formal_name": "Finset.iInf_finset_image",
+                "informal_name": "Infimum over Image Set Equals Infimum over Original Set",
+                "kind": "theorem",
+                "type": "∀ {α : Type u_2} {β : Type u_3} {γ : Type u_4} [inst : CompleteLattice β] [inst_1 : DecidableEq α] {f : γ → α}\n  {g : α → β} {s : Finset γ}, ⨅ x ∈ Finset.image f s, g x = ⨅ y ∈ s, g (f y)",
+                "informal_description": "For any finite set $ s $ of type $ \\gamma $, functions $ f : \\gamma \\to \\alpha $ and $ g : \\alpha \\to \\beta $, the infimum of $ g(x) $ over the image $ f(s) $ is equal to the infimum of $ g(f(y)) $ over the original set $ s $. Symbolically, $ \\bigwedge_{x \\in s.image\\ f} g(x) = \\bigwedge_{y \\in s} g(f(y)) $.",
+                "path": "Mathlib.Order.CompleteLattice.Finset"
+              },
+              {
+                "formal_name": "Finset.inf_image",
+                "informal_name": "Infimum Equality: $\\bigwedge_{b \\in f(s)} g(b) = \\bigwedge_{x \\in s} g(f(x))$",
+                "kind": "theorem",
+                "type": "∀ {α : Type u_2} {β : Type u_3} {γ : Type u_4} [inst : SemilatticeInf α] [inst_1 : OrderTop α] [inst_2 : DecidableEq β]\n  (s : Finset γ) (f : γ → β) (g : β → α), (Finset.image f s).inf g = s.inf (g ∘ f)",
+                "informal_description": "Let $ s $ be a finite set of elements of type $ \\gamma $, $ f : \\gamma \\to \\beta $ a function, and $ g : \\beta \\to \\alpha $ where $ \\alpha $ is an infimum semilattice with a top element $ \\top $, and $ \\beta $ has decidable equality. Then, the infimum of $ g $ over the image of $ s $ under $ f $ is equal to the infimum of the composition $ g \\circ f $ over $ s $. Formally, this is expressed as $ \\bigwedge_{b \\in f(s)} g(b) = \\bigwedge_{x \\in s} g(f(x)) $.",
+                "path": "Mathlib.Data.Finset.Lattice.Fold"
+              },
+              {
+                "formal_name": "Finset.inf'_image",
+                "informal_name": "Infimum Preservation under Image Composition for Finite Sets",
+                "kind": "theorem",
+                "type": "∀ {α : Type u_2} {β : Type u_3} {γ : Type u_4} [inst : SemilatticeInf α] [inst_1 : DecidableEq β] {s : Finset γ}\n  {f : γ → β} (hs : (Finset.image f s).Nonempty) (g : β → α), (Finset.image f s).inf' hs g = s.inf' ⋯ (g ∘ f)",
+                "informal_description": "For a non-empty finite set $ s $ over $ \\gamma $, a function $ f : \\gamma \\to \\beta $, and a function $ g : \\beta \\to \\alpha $ where $ \\alpha $ is an infimum semilattice and $ \\beta $ has decidable equality, the infimum of $ g $ applied to the image $ f(s) $ equals the infimum of the composition $ g \\circ f $ applied directly to $ s $. Formally, $ \\inf_{b \\in f(s)} g(b) = \\inf_{c \\in s} g(f(c)) $.",
+                "path": "Mathlib.Data.Finset.Lattice.Fold"
+              },
+              {
+                "formal_name": "Finset.inf'_comp_eq_image",
+                "informal_name": "Infimum of Composed Function Over Finite Set Equals Infimum Over Image",
+                "kind": "theorem",
+                "type": "∀ {α : Type u_2} {β : Type u_3} {γ : Type u_4} [inst : SemilatticeInf α] [inst_1 : DecidableEq β] {s : Finset γ}\n  {f : γ → β} (hs : s.Nonempty) (g : β → α), s.inf' hs (g ∘ f) = (Finset.image f s).inf' ⋯ g",
+                "informal_description": "For a non-empty finite set $ s $ of elements in $ γ $, a function $ f : γ → β $, and a function $ g : β → α $ where $ α $ is an infimum semilattice with top element, the infimum of the composition $ g ∘ f $ over $ s $ equals the infimum of $ g $ over the image $ f(s) $. Symbolically, $\\inf_{x ∈ s} g(f(x)) = \\inf_{y ∈ f(s)} g(y)$.",
+                "path": "Mathlib.Data.Finset.Lattice.Fold"
+              },
+              {
+                "formal_name": "Finset.inf_eq_sInf_image",
+                "informal_name": "Infimum Equality for Finite Sets in Complete Lattices",
+                "kind": "theorem",
+                "type": "∀ {α : Type u_2} {β : Type u_3} [inst : CompleteLattice β] (s : Finset α) (f : α → β), s.inf f = sInf (f '' ↑s)",
+                "informal_description": "For any finite set $ s $ of type $ \\alpha $ and function $ f : \\alpha \\to \\beta $ where $ \\beta $ is a complete lattice, the infimum of $ f $ over $ s $ (computed iteratively from the top element) equals the infimum of the image set $ f(s) $ in $ \\beta $, i.e., $ \\bigwedge_{b \\in s} f(b) = \\inf (f(s)) $.",
+                "path": "Mathlib.Data.Finset.Lattice.Fold"
+              }
+            ]
+          },
+          "isError": false
+        }
+      },
+      {
+        "method": "loogle",
+        "request": {
+          "query": "Finset.inf_image"
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finset.inf_image\",\n      \"type\": \" {α : Type u_2} {β : Type u_3} {γ : Type u_4} [SemilatticeInf α] [OrderTop α] [DecidableEq β] (s : Finset γ) (f : γ → β) (g : β → α) : (Finset.image f s).inf g = s.inf (g ∘ f)\",\n      \"module\": \"Mathlib.Data.Finset.Lattice.Fold\"\n    }\n  ]\n}"
+            }
+          ],
+          "structuredContent": {
+            "items": [
+              {
+                "name": "Finset.inf_image",
+                "type": " {α : Type u_2} {β : Type u_3} {γ : Type u_4} [SemilatticeInf α] [OrderTop α] [DecidableEq β] (s : Finset γ) (f : γ → β) (g : β → α) : (Finset.image f s).inf g = s.inf (g ∘ f)",
+                "module": "Mathlib.Data.Finset.Lattice.Fold"
+              }
+            ]
+          },
+          "isError": false
+        }
+      },
+      {
+        "method": "leansearch",
+        "request": {
+          "query": "finite infimum over image equals infimum of composition Finset inf_image"
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finset.inf_image\",\n      \"module_name\": \"Mathlib.Data.Finset.Lattice.Fold\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_2} {β : Type u_3} {γ : Type u_4} [inst : SemilatticeInf α] [inst_1 : OrderTop α] [inst_2 : DecidableEq β]\\n  (s : Finset γ) (f : γ → β) (g : β → α), (Finset.image f s).inf g = s.inf (g ∘ f)\"\n    },\n    {\n      \"name\": \"Finset.inf'_comp_eq_image\",\n      \"module_name\": \"Mathlib.Data.Finset.Lattice.Fold\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_2} {β : Type u_3} {γ : Type u_4} [inst : SemilatticeInf α] [inst_1 : DecidableEq β] {s : Finset γ}\\n  {f : γ → β} (hs : s.Nonempty) (g : β → α), s.inf' hs (g ∘ f) = (Finset.image f s).inf' ⋯ g\"\n    },\n    {\n      \"name\": \"Finset.inf'_image\",\n      \"module_name\": \"Mathlib.Data.Finset.Lattice.Fold\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_2} {β : Type u_3} {γ : Type u_4} [inst : SemilatticeInf α] [inst_1 : DecidableEq β] {s : Finset γ}\\n  {f : γ → β} (hs : (Finset.image f s).Nonempty) (g : β → α), (Finset.image f s).inf' hs g = s.inf' ⋯ (g ∘ f)\"\n    },\n    {\n      \"name\": \"Finset.inf_map\",\n      \"module_name\": \"Mathlib.Data.Finset.Lattice.Fold\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_2} {β : Type u_3} {γ : Type u_4} [inst : SemilatticeInf α] [inst_1 : OrderTop α] (s : Finset γ)\\n  (f : γ ↪ β) (g : β → α), (Finset.map f s).inf g = s.inf (g ∘ ⇑f)\"\n    },\n    {\n      \"name\": \"Finset.inf\",\n      \"module_name\": \"Mathlib.Data.Finset.Lattice.Fold\",\n      \"kind\": \"definition\",\n      \"type\": \"{α : Type u_2} → {β : Type u_3} → [inst : SemilatticeInf α] → [OrderTop α] → Finset β → (β → α) → α\"\n    }\n  ]\n}"
+            }
+          ],
+          "structuredContent": {
+            "items": [
+              {
+                "name": "Finset.inf_image",
+                "module_name": "Mathlib.Data.Finset.Lattice.Fold",
+                "kind": "theorem",
+                "type": "∀ {α : Type u_2} {β : Type u_3} {γ : Type u_4} [inst : SemilatticeInf α] [inst_1 : OrderTop α] [inst_2 : DecidableEq β]\n  (s : Finset γ) (f : γ → β) (g : β → α), (Finset.image f s).inf g = s.inf (g ∘ f)"
+              },
+              {
+                "name": "Finset.inf'_comp_eq_image",
+                "module_name": "Mathlib.Data.Finset.Lattice.Fold",
+                "kind": "theorem",
+                "type": "∀ {α : Type u_2} {β : Type u_3} {γ : Type u_4} [inst : SemilatticeInf α] [inst_1 : DecidableEq β] {s : Finset γ}\n  {f : γ → β} (hs : s.Nonempty) (g : β → α), s.inf' hs (g ∘ f) = (Finset.image f s).inf' ⋯ g"
+              },
+              {
+                "name": "Finset.inf'_image",
+                "module_name": "Mathlib.Data.Finset.Lattice.Fold",
+                "kind": "theorem",
+                "type": "∀ {α : Type u_2} {β : Type u_3} {γ : Type u_4} [inst : SemilatticeInf α] [inst_1 : DecidableEq β] {s : Finset γ}\n  {f : γ → β} (hs : (Finset.image f s).Nonempty) (g : β → α), (Finset.image f s).inf' hs g = s.inf' ⋯ (g ∘ f)"
+              },
+              {
+                "name": "Finset.inf_map",
+                "module_name": "Mathlib.Data.Finset.Lattice.Fold",
+                "kind": "theorem",
+                "type": "∀ {α : Type u_2} {β : Type u_3} {γ : Type u_4} [inst : SemilatticeInf α] [inst_1 : OrderTop α] (s : Finset γ)\n  (f : γ ↪ β) (g : β → α), (Finset.map f s).inf g = s.inf (g ∘ ⇑f)"
+              },
+              {
+                "name": "Finset.inf",
+                "module_name": "Mathlib.Data.Finset.Lattice.Fold",
+                "kind": "definition",
+                "type": "{α : Type u_2} → {β : Type u_3} → [inst : SemilatticeInf α] → [OrderTop α] → Finset β → (β → α) → α"
+              }
+            ]
+          },
+          "isError": false
+        }
+      },
+      {
+        "method": "local",
+        "request": {
+          "query": "inf_image"
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\n  \"items\": [],\n  \"index\": \"unavailable\"\n}"
+            }
+          ],
+          "structuredContent": {
+            "items": [],
+            "index": "unavailable"
+          },
+          "isError": false
+        }
+      }
+    ]
+  }
+]

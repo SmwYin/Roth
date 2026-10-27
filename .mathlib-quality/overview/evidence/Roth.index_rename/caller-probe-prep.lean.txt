@@ -1,0 +1,64 @@
+namespace Roth
+namespace IndexRenameCallers149
+open MvPolynomial
+variable {σ : Type*} [Fintype σ]
+theorem equivCallerReplay {τ : Type*} [Fintype τ] (e : σ ≃ τ) (B : ℝ) (q r : τ → ℕ) :
+    indexSet B (q ∘ e) (r ∘ e) ⊆ indexSet B q r := by
+  rintro _ ⟨R, ⟨hR0, hRd, hRc⟩, h, hh, rfl⟩
+  refine ⟨rename e R, ⟨?_, ?_, ?_⟩, h ∘ e.symm, ?_, ?_⟩
+  · simpa [rename_eq_zero_iff_of_injective R e.injective] using hR0
+  · intro j
+    obtain ⟨i, rfl⟩ := e.surjective j
+    simpa [degreeOf_rename_of_injective e.injective] using hRd i
+  · intro d
+    obtain ⟨d, rfl⟩ := Finsupp.mapDomain_surjective e.surjective d
+    simpa [coeff_rename_mapDomain _ e.injective] using hRc d
+  · intro j
+    simpa using hh (e.symm j)
+  · simp [map_rename, IndexRenameBridge149.replacement e.injective, Function.comp_def]
+
+section
+variable {τ : Type*} [Fintype τ]
+theorem separatedCallerReplay {r : Option τ → ℕ} (hr0 : ∀ j, 0 < r j) {q : Option τ → ℕ}
+    {h : Option τ → ℤ} (hh : ∀ j, IsCoprime (h j) (q j : ℤ)) {M : ℝ} {l : ℕ} (hl : 0 < l)
+    {U : MvPolynomial τ ℤ} (hU : U ∈ RSet M (fun j ↦ l * r (some j))) {V : Polynomial ℤ}
+    (hV : V ≠ 0) (hVd : V.natDegree ≤ l * r none) (hVc : ∀ b, |(V.coeff b : ℝ)| ≤ M) :
+    index (map (Int.castRingHom ℝ)
+        (rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) ℤ) V))
+      (fun j ↦ (h j : ℝ) / q j) r ≤ l * lem6Φ q r M l := by
+  classical
+  set V' : MvPolynomial Unit ℤ := (uniqueAlgEquiv ℤ Unit).symm V with hV'
+  have hV'0 : V' ≠ 0 := by
+    rwa [hV', ne_eq, map_eq_zero_iff _ (uniqueAlgEquiv ℤ Unit).symm.injective]
+  have hVmem : V' ∈ RSet M (fun _ : Unit ↦ l * r none) := by
+    refine ⟨hV'0, fun j ↦ ?_, fun d ↦ ?_⟩
+    · rw [Subsingleton.elim j default, hV', degreeOf_uniqueAlgEquiv_symm]
+      exact hVd
+    · rw [hV', MvPolynomial.coeff_uniqueAlgEquiv_symm]
+      exact hVc _
+  have hinjV : Function.Injective (fun _ : Unit ↦ (none : Option τ)) :=
+    fun a b _ ↦ Subsingleton.elim a b
+  have hmU : map (Int.castRingHom ℝ) U ≠ 0 := fun h0 ↦
+    hU.1 (map_injective _ Int.cast_injective (h0.trans (map_zero _).symm))
+  have hmV : map (Int.castRingHom ℝ) V' ≠ 0 := fun h0 ↦
+    hV'0 (map_injective _ Int.cast_injective (h0.trans (map_zero _).symm))
+  rw [aeval_X_eq_rename, _root_.map_mul, map_rename, map_rename,
+    index_mul ((map_ne_zero_iff (rename (R := ℝ) some)
+      (rename_injective _ (Option.some_injective _))).2 hmU)
+      ((map_ne_zero_iff (rename (R := ℝ) (fun _ : Unit ↦ (none : Option τ)))
+        (rename_injective _ hinjV)).2 hmV) _ hr0,
+    IndexRenameBridge149.replacement (Option.some_injective _), IndexRenameBridge149.replacement hinjV]
+  have hUΘ := index_le_Θ hU (h := h ∘ some)
+    fun j ↦ hh (some j)
+  have hVΘ := index_le_Θ hVmem
+    (q := fun _ : Unit ↦ q none) (h := fun _ ↦ h none) fun _ ↦ hh none
+  rw [index_mul_left_weights] at hUΘ hVΘ
+  have hlR : (0 : ℝ) < l := by exact_mod_cast hl
+  rw [lem6Φ, mul_add, add_comm]
+  exact add_le_add ((div_le_iff₀' hlR).1 hVΘ) ((div_le_iff₀' hlR).1 hUΘ)
+
+end
+#print axioms equivCallerReplay
+#print axioms separatedCallerReplay
+end IndexRenameCallers149
+end Roth

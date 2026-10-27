@@ -1,0 +1,111 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nnamespace IndexRenameMathlib149\nopen MvPolynomial\nuniverse u v w z\n#check_failure Roth.index_rename\n#check @Finset.inf_image\n#check @MvPolynomial.support_rename_of_injective\n#check @Finsupp.linearCombination_mapDomain\n#check @MvPolynomial.rename_eq_aeval\n#check @MvPolynomial.comp_aeval_apply\n-- Exact generic finite-support law; all variable and coefficient types arbitrary.\ntheorem transport {σ : Type u} {τ : Type v} {R : Type w} {T : Type z}\n    [CommSemiring R] [SemilatticeInf T] [OrderTop T] {f : σ → τ}\n    (hf : Function.Injective f) (D : (τ →₀ ℕ) → T) (P : MvPolynomial σ R) :\n    AddMonoidAlgebra.infDegree D (rename f P) =\n      AddMonoidAlgebra.infDegree (D ∘ Finsupp.mapDomain f) P := by\n  classical\n  exact (congrArg (fun s : Finset (τ →₀ ℕ) ↦ s.inf D)\n    (support_rename_of_injective (p := P) hf)).trans\n      (Finset.inf_image P.support (Finsupp.mapDomain f) D)\n-- No injectivity is needed for transporting the weight alone.\ntheorem weightTransport {σ : Type u} {τ : Type v} {M : Type w}\n    [AddCommMonoid M] (f : σ → τ) (w : τ → M) (d : σ →₀ ℕ) :\n    Finsupp.weight w (d.mapDomain f) = Finsupp.weight (w ∘ f) d :=\n  Finsupp.linearCombination_mapDomain ℕ (v' := w) f d\n-- The center substitution is natural for every map; no project taylor theorem used.\ntheorem centerTransport {σ : Type u} {τ : Type v} {R : Type w}\n    [CommSemiring R] (f : σ → τ) (α : τ → R) (P : MvPolynomial σ R) :\n    aeval (fun j ↦ X j + C (α j)) (rename f P) =\n      rename f (aeval (fun j ↦ X j + C ((α ∘ f) j)) P) := by\n  simp only [rename_eq_aeval, comp_aeval_apply, Function.comp_apply, map_add, aeval_X, algHom_C, algebraMap_eq]\n#print axioms transport\n#print axioms weightTransport\n#print axioms centerTransport\nend IndexRenameMathlib149\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.index_rename`\",\n      \"line\": 11,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finset.inf_image : ∀ {α : Type u_1} {β : Type u_2} {γ : Type u_3} [inst : SemilatticeInf α] [inst_1 : OrderTop α]\\n  [inst_2 : DecidableEq β] (s : Finset γ) (f : γ → β) (g : β → α), (Finset.image f s).inf g = s.inf (g ∘ f)\",\n      \"line\": 12,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@support_rename_of_injective : ∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_3} [inst : CommSemiring R]\\n  {p : MvPolynomial σ R} {f : σ → τ} [inst_1 : DecidableEq τ],\\n  Function.Injective f → ((rename f) p).support = Finset.image (Finsupp.mapDomain f) p.support\",\n      \"line\": 13,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finsupp.linearCombination_mapDomain : ∀ {α : Type u_1} (R : Type u_2) [inst : Semiring R] {α' : Type u_3}\\n  {M' : Type u_4} [inst_1 : AddCommMonoid M'] [inst_2 : Module R M'] {v' : α' → M'} (f : α → α') (l : α →₀ R),\\n  (Finsupp.linearCombination R v') (Finsupp.mapDomain f l) = (Finsupp.linearCombination R (v' ∘ f)) l\",\n      \"line\": 14,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@rename_eq_aeval : ∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_3} [inst : CommSemiring R] (f : σ → τ),\\n  rename f = aeval (X ∘ f)\",\n      \"line\": 15,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@comp_aeval_apply : ∀ {R : Type u_1} {S₁ : Type u_2} {σ : Type u_3} [inst : CommSemiring R] [inst_1 : CommSemiring S₁]\\n  [inst_2 : Algebra R S₁] (f : σ → S₁) {B : Type u_4} [inst_3 : CommSemiring B] [inst_4 : Algebra R B] (φ : S₁ →ₐ[R] B)\\n  (p : MvPolynomial σ R), φ ((aeval f) p) = (aeval fun i ↦ φ (f i)) p\",\n      \"line\": 16,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'IndexRenameMathlib149.transport' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 38,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'IndexRenameMathlib149.weightTransport' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 39,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'IndexRenameMathlib149.centerTransport' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 40,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"warning\",\n      \"message\": \"This line exceeds the 100 character limit, please shorten it!\\n\\nNote: This linter can be disabled with `set_option linter.style.longLine false`\",\n      \"line\": 37,\n      \"column\": 101,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.index_rename`",
+          "line": 11,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finset.inf_image : ∀ {α : Type u_1} {β : Type u_2} {γ : Type u_3} [inst : SemilatticeInf α] [inst_1 : OrderTop α]\n  [inst_2 : DecidableEq β] (s : Finset γ) (f : γ → β) (g : β → α), (Finset.image f s).inf g = s.inf (g ∘ f)",
+          "line": 12,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@support_rename_of_injective : ∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_3} [inst : CommSemiring R]\n  {p : MvPolynomial σ R} {f : σ → τ} [inst_1 : DecidableEq τ],\n  Function.Injective f → ((rename f) p).support = Finset.image (Finsupp.mapDomain f) p.support",
+          "line": 13,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finsupp.linearCombination_mapDomain : ∀ {α : Type u_1} (R : Type u_2) [inst : Semiring R] {α' : Type u_3}\n  {M' : Type u_4} [inst_1 : AddCommMonoid M'] [inst_2 : Module R M'] {v' : α' → M'} (f : α → α') (l : α →₀ R),\n  (Finsupp.linearCombination R v') (Finsupp.mapDomain f l) = (Finsupp.linearCombination R (v' ∘ f)) l",
+          "line": 14,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@rename_eq_aeval : ∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_3} [inst : CommSemiring R] (f : σ → τ),\n  rename f = aeval (X ∘ f)",
+          "line": 15,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@comp_aeval_apply : ∀ {R : Type u_1} {S₁ : Type u_2} {σ : Type u_3} [inst : CommSemiring R] [inst_1 : CommSemiring S₁]\n  [inst_2 : Algebra R S₁] (f : σ → S₁) {B : Type u_4} [inst_3 : CommSemiring B] [inst_4 : Algebra R B] (φ : S₁ →ₐ[R] B)\n  (p : MvPolynomial σ R), φ ((aeval f) p) = (aeval fun i ↦ φ (f i)) p",
+          "line": 16,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'IndexRenameMathlib149.transport' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 38,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'IndexRenameMathlib149.weightTransport' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 39,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'IndexRenameMathlib149.centerTransport' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 40,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "warning",
+          "message": "This line exceeds the 100 character limit, please shorten it!\n\nNote: This linter can be disabled with `set_option linter.style.longLine false`",
+          "line": 37,
+          "column": 101,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 542
+}

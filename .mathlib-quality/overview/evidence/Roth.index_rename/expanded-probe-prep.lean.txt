@@ -1,0 +1,18 @@
+namespace IndexRenameExpanded149
+open MvPolynomial
+universe u v w z
+theorem weighted {σ : Type u} {τ : Type v} {R : Type w} {M : Type z}
+    [CommSemiring R] [AddCommMonoid M] [SemilatticeInf M] {f : σ → τ}
+    (hf : Function.Injective f) (P : MvPolynomial σ R) (α : τ → R) (w : τ → M) :
+    (AddMonoidAlgebra.infDegree
+      (fun d ↦ (Finsupp.weight w d : WithTop M))
+      (aeval (fun j ↦ X j + C (α j)) (rename f P))).untopD 0 =
+    (AddMonoidAlgebra.infDegree
+      (fun d ↦ (Finsupp.weight (w ∘ f) d : WithTop M))
+      (aeval (fun j ↦ X j + C ((α ∘ f) j)) P)).untopD 0 := by
+  rw [IndexRenameMathlib149.centerTransport, IndexRenameMathlib149.transport hf]
+  congr 2
+  funext d
+  exact congrArg WithTop.some (IndexRenameMathlib149.weightTransport f w d)
+#print axioms weighted
+end IndexRenameExpanded149

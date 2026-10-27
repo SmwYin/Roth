@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 148/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 149/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 148; remaining: 145.
-- Verdicts: 15 NO-composable-from-mathlib, 13 YES-add-as-is, 19 YES-but-generalise-first, 31 NO-mathlib-has-it, 44 BORDERLINE-needs-human, 26 SKIP.
+- Completed applicable assessments: 149; remaining: 144.
+- Verdicts: 16 NO-composable-from-mathlib, 13 YES-add-as-is, 19 YES-but-generalise-first, 31 NO-mathlib-has-it, 44 BORDERLINE-needs-human, 26 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -1636,6 +1636,18 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: One private caller Roth.index_separated_mul_le_aux, Roth/Theta.lean:447, applies twice at hUΘ/hVΘ; full caller replay accepted. One direct canonical kernel consumer.
 - Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/Roth.index_mul_left_weights.md).
 
+### Completed: `Roth.index_rename`
+
+- Type: `Roth.index_rename.{u_1, u_2} {σ : Type u_1} [Fintype σ] {τ : Type u_2} [Fintype τ] {f : σ → τ}
+  (hf : Function.Injective f) (P : MvPolynomial σ ℝ) (α : τ → ℝ) (r : τ → ℕ) :
+  Roth.index ((MvPolynomial.rename f) P) α r = Roth.index P (α ∘ f) (r ∘ f)`
+- What: Injective variable renaming preserves the centered weighted polynomial index after pulling back center and denominator weights.
+- How: Commute translation with rename, identify support image under mapDomain, preserve weights and take the same finite-support minimum.
+- Hypotheses: Finite σ,τ in current parent interface; f injective; arbitrary P, α, r with zero polynomial/denominators allowed. Injection prevents cancellation; all other constraints are parent formation.
+- Project dependencies: Roth.index, MvPolynomial.taylor, Roth.weight, MvPolynomial.taylor_rename, Roth.weight_mapDomain
+- Caller summary: Two direct private Theta consumers, three proof applications on two source lines; full old-target-free replacement caller replays compile.
+- Verdict: NO-composable-from-mathlib; [complete report](.mathlib-quality/overview/mathlibable/Roth.index_rename.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -1958,6 +1970,8 @@ Completed `Roth.index_C_mul`: Reaimed infDegree scalar law is core congrArg appl
 
 Completed `Roth.index_mul_left_weights`: map_finset_inf (Data/Finset/Lattice/Fold.lean:93 generated dual) on generic infDegree; Real.sInf_smul_of_nonneg (Basic/Real/Pointwise.lean:41); complete five methods on three forms.
 
+Completed `Roth.index_rename`: NO-composable-from-mathlib on canonical parent infDegree: exact two-call composition support_rename_of_injective + Finset.inf_image; weight normalization via linearCombination_mapDomain and centers via aeval composition. Bridge is not definitional.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -2255,6 +2269,8 @@ Completed `Roth.index_neg`: Degree support-negation law; weightedOrder_neg/order
 Completed `Roth.index_C_mul`: Scalar support invariance; related weightedOrder inequality/multiplication and negation API.
 
 Completed `Roth.index_mul_left_weights`: Homogeneous scaling of a finite support minimum is existing finite-inf hom transport. Original representation bridge is genuine normalization, not definitional or a preexisting theorem.
+
+Completed `Roth.index_rename`: Underlying finite-support transport duplicates generic lattice image functoriality; weightedTotalDegree rename is a related maximum law, not the exact minimum.
 
 ## Part 5: Generalization opportunities
 
@@ -2557,6 +2573,8 @@ Completed `Roth.index_C_mul`: Verified arbitrary exponent/degree semilatticeinf/
 
 Completed `Roth.index_mul_left_weights`: No mechanically droppable hypotheses in fixed Roth interface. Verified expanded law for arbitrary semiring coefficients/A/degree targets and zero-preserving monotone maps; scalar specialization arbitrary ordered semiring and c≥0. Fintype/ℝ changes require parent restatement.
 
+Completed `Roth.index_rename`: Verified expanded law has arbitrary variable types without Fintype, CommSemiring coefficients, additive direct weights into SemilatticeInf AddCommMonoid, WithTop and untopD0. Fixed original parent cannot simply drop its Fintype binders. hf remains essential, verified collision guard.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -2855,6 +2873,8 @@ Completed `Roth.index_neg`: No essential gap; infDegree_neg name absent in loade
 Completed `Roth.index_C_mul`: No essential mathematical gap. Named degree_smul convenience not identified; explicit congruence composition sufficient.
 
 Completed `Roth.index_mul_left_weights`: No missing generic law: map_finset_inf. Project zero-default and reciprocal-weight adapters verified as new normalization proofs; not counted as existing mathlib primitives.
+
+Completed `Roth.index_rename`: No essential mathematical gap. A discoverability-only infDegree rename wrapper is a separate API design choice; composition already uses two existing calls.
 
 ## Part 7: Junk / removable
 
@@ -3157,6 +3177,8 @@ Completed `Roth.index_C_mul`: Used compatibility adapter; not dead code. No proo
 
 Completed `Roth.index_mul_left_weights`: Not junk: two proof applications in sole private caller. Not a simp theorem; no external use inferred.
 
+Completed `Roth.index_rename`: Useful transport API, not dead code: equivalence and separate-variable embeddings are genuine consumers.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -3309,6 +3331,7 @@ Completed `Roth.index_mul_left_weights`: Not junk: two proof applications in sol
 | 146 | `Roth.index_neg` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.index_neg.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.index_neg/root-acceptance.json) |
 | 147 | `Roth.index_C_mul` | NO-composable-from-mathlib | [Report](.mathlib-quality/overview/mathlibable/Roth.index_C_mul.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.index_C_mul/root-acceptance.json) |
 | 148 | `Roth.index_mul_left_weights` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.index_mul_left_weights.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.index_mul_left_weights/root-acceptance.json) |
+| 149 | `Roth.index_rename` | NO-composable-from-mathlib | [Report](.mathlib-quality/overview/mathlibable/Roth.index_rename.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.index_rename/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -3604,12 +3627,14 @@ Completed `Roth.index_C_mul` action: NO-composable-from-mathlib on generic paren
 
 Completed `Roth.index_mul_left_weights` action: NO-mathlib-has-it via parent re-aim. Migrate minimum to infDegree and transport by map_finset_inf through checked zero-preserving projection. Replace both caller applications with identical-type bridge. Retain convention-bearing adapter locally in Roth/Index.lean if old index API retained; do not substitute raw map_finset_inf in old rw.
 
+Completed `Roth.index_rename` action: Do not upstream Roth-specific theorem. With parent migration inline generic two-call support-inf transport at both Theta consumers; retain explicit center/weight adapter at current boundary, local in Roth/Index.lean or private near callers. No production mutation in this assessment.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.index_rename` next. Supporting identities receive their own applicable checks.
+   `Roth.index_le_card` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 
