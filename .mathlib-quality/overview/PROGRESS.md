@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-26
 
-- Declarations completed: **104/293**
-- Next declaration: **#105 `Roth.kronecker_monomial`** (Roth/GenWronskian.lean:60)
+- Declarations completed: **105/293**
+- Next declaration: **#106 `Roth.kroneckerExp_injOn`** (Roth/GenWronskian.lean:69)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -123,10 +123,10 @@ Last regenerated: 2026-10-26
 | 102 | `Roth.genWronskian_eq_zero_of_not_linearIndependent` | Roth/GenWronskian.lean:41 | YES-but-generalise-first | [report](mathlibable/Roth.genWronskian_eq_zero_of_not_linearIndependent.md) |
 | 103 | `Roth.kronecker` | Roth/GenWronskian.lean:53 | YES-but-generalise-first | [report](mathlibable/Roth.kronecker.md) |
 | 104 | `Roth.kroneckerExp` | Roth/GenWronskian.lean:57 | NO-mathlib-has-it | [report](mathlibable/Roth.kroneckerExp.md) |
+| 105 | `Roth.kronecker_monomial` | Roth/GenWronskian.lean:60 | YES-but-generalise-first | [report](mathlibable/Roth.kronecker_monomial.md) |
 
 ## Remaining declarations (in processing order)
 
-- #105 `Roth.kronecker_monomial` (Roth/GenWronskian.lean:60, public theorem)
 - #106 `Roth.kroneckerExp_injOn` (Roth/GenWronskian.lean:69, public theorem)
 - #107 `Roth.coeff_kronecker` (Roth/GenWronskian.lean:88, public theorem)
 - #108 `Roth.kronecker_eq_zero_iff` (Roth/GenWronskian.lean:106, public theorem)
