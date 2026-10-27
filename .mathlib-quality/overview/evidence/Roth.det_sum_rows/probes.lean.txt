@@ -1,0 +1,23 @@
+import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
+#check_failure Roth.det_sum_rows
+namespace DetSumRowsProbe
+variable {A J I : Type*} [CommRing A] [Fintype J] [DecidableEq J]
+theorem finiteIndex (s : J → Finset I) (c : J → I → A) (N : J → I → J → A) :
+    (Matrix.of fun μ ν ↦ ∑ i ∈ s μ, c μ i * N μ i ν).det =
+      ∑ f ∈ Fintype.piFinset s, (∏ μ, c μ (f μ)) * (Matrix.of fun μ ν ↦ N μ (f μ) ν).det := by
+  have h := (Matrix.detRowAlternating (R := A) (n := J)).toMultilinearMap.map_sum_finset
+    (fun μ i ↦ c μ i • N μ i) s
+  simp_rw [MultilinearMap.map_smul_univ, smul_eq_mul] at h
+  simp only [Matrix.det, Finset.sum_fn, Pi.smul_def, smul_eq_mul] at h ⊢
+  exact h
+theorem unweighted (s : J → Finset I) (N : J → I → J → A) :
+    (Matrix.of fun μ ν ↦ ∑ i ∈ s μ, N μ i ν).det =
+      ∑ f ∈ Fintype.piFinset s, (Matrix.of fun μ ν ↦ N μ (f μ) ν).det := by
+  simpa only [Matrix.det, Finset.sum_fn] using
+    (Matrix.detRowAlternating (R := A) (n := J)).toMultilinearMap.map_sum_finset N s
+#check @MultilinearMap.map_sum_finset
+#check @MultilinearMap.map_smul_univ
+#check @Matrix.detRowAlternating
+#print axioms finiteIndex
+#print axioms unweighted
+end DetSumRowsProbe

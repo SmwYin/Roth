@@ -1,0 +1,75 @@
+{
+  "request": {
+    "code": "import Mathlib.LinearAlgebra.Matrix.Determinant.Basic\n#check_failure Roth.det_sum_rows\nnamespace DetSumRowsDependent\nvariable {A J : Type*} {I : J → Type*} [CommRing A] [Fintype J] [DecidableEq J]\ntheorem finiteIndex (s : ∀ μ, Finset (I μ)) (c : ∀ μ, I μ → A)\n    (N : ∀ μ, I μ → J → A) :\n    (Matrix.of fun μ ν ↦ ∑ i ∈ s μ, c μ i * N μ i ν).det =\n      ∑ f ∈ Fintype.piFinset s, (∏ μ, c μ (f μ)) * (Matrix.of fun μ ν ↦ N μ (f μ) ν).det := by\n  have h := (Matrix.detRowAlternating (R := A) (n := J)).toMultilinearMap.map_sum_finset\n    (fun μ i ↦ c μ i • N μ i) s\n  simp_rw [MultilinearMap.map_smul_univ, smul_eq_mul] at h\n  simp only [Matrix.det, Finset.sum_fn, Pi.smul_def, smul_eq_mul] at h ⊢\n  exact h\n#check @MultilinearMap.map_sum_finset\n#check @MultilinearMap.map_smul_univ\n#check @Matrix.detRowAlternating\n#print axioms finiteIndex\nend DetSumRowsDependent\n\nnamespace DetSumRowsRecovery\ntheorem original {l : ℕ} {A I : Type*} [CommRing A]\n    (s : Fin l → Finset I) (c : Fin l → I → A) (N : Fin l → I → Fin l → A) :\n    (Matrix.of fun μ ν ↦ ∑ i ∈ s μ, c μ i * N μ i ν).det =\n      ∑ f ∈ Fintype.piFinset s, (∏ μ, c μ (f μ)) *\n        (Matrix.of fun μ ν ↦ N μ (f μ) ν).det :=\n  DetSumRowsDependent.finiteIndex s c N\n#print axioms original\nend DetSumRowsRecovery\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.det_sum_rows`\",\n      \"line\": 2,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MultilinearMap.map_sum_finset : ∀ {R : Type u_4} {ι : Type u_5} {M₁ : ι → Type u_6} {M₂ : Type u_7} [inst : Semiring R]\\n  [inst_1 : (i : ι) → AddCommMonoid (M₁ i)] [inst_2 : AddCommMonoid M₂] [inst_3 : (i : ι) → Module R (M₁ i)]\\n  [inst_4 : Module R M₂] (f : MultilinearMap R M₁ M₂) {α : ι → Type u_8} (g : (i : ι) → α i → M₁ i)\\n  (A : (i : ι) → Finset (α i)) [inst_5 : DecidableEq ι] [inst_6 : Fintype ι],\\n  (f fun i ↦ ∑ j ∈ A i, g i j) = ∑ r ∈ Fintype.piFinset A, f fun i ↦ g i (r i)\",\n      \"line\": 14,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MultilinearMap.map_smul_univ : ∀ {R : Type u_4} {ι : Type u_5} {M₁ : ι → Type u_6} {M₂ : Type u_7}\\n  [inst : CommSemiring R] [inst_1 : (i : ι) → AddCommMonoid (M₁ i)] [inst_2 : AddCommMonoid M₂]\\n  [inst_3 : (i : ι) → Module R (M₁ i)] [inst_4 : Module R M₂] (f : MultilinearMap R M₁ M₂) [inst_5 : Fintype ι]\\n  (c : ι → R) (m : (i : ι) → M₁ i), (f fun i ↦ c i • m i) = (∏ i, c i) • f m\",\n      \"line\": 15,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Matrix.detRowAlternating : {n : Type u_5} →\\n  [DecidableEq n] → [Fintype n] → {R : Type u_4} → [inst : CommRing R] → (n → R) [⋀^n]→ₗ[R] R\",\n      \"line\": 16,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'DetSumRowsDependent.finiteIndex' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 17,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'DetSumRowsRecovery.original' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 27,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.det_sum_rows`",
+          "line": 2,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MultilinearMap.map_sum_finset : ∀ {R : Type u_4} {ι : Type u_5} {M₁ : ι → Type u_6} {M₂ : Type u_7} [inst : Semiring R]\n  [inst_1 : (i : ι) → AddCommMonoid (M₁ i)] [inst_2 : AddCommMonoid M₂] [inst_3 : (i : ι) → Module R (M₁ i)]\n  [inst_4 : Module R M₂] (f : MultilinearMap R M₁ M₂) {α : ι → Type u_8} (g : (i : ι) → α i → M₁ i)\n  (A : (i : ι) → Finset (α i)) [inst_5 : DecidableEq ι] [inst_6 : Fintype ι],\n  (f fun i ↦ ∑ j ∈ A i, g i j) = ∑ r ∈ Fintype.piFinset A, f fun i ↦ g i (r i)",
+          "line": 14,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MultilinearMap.map_smul_univ : ∀ {R : Type u_4} {ι : Type u_5} {M₁ : ι → Type u_6} {M₂ : Type u_7}\n  [inst : CommSemiring R] [inst_1 : (i : ι) → AddCommMonoid (M₁ i)] [inst_2 : AddCommMonoid M₂]\n  [inst_3 : (i : ι) → Module R (M₁ i)] [inst_4 : Module R M₂] (f : MultilinearMap R M₁ M₂) [inst_5 : Fintype ι]\n  (c : ι → R) (m : (i : ι) → M₁ i), (f fun i ↦ c i • m i) = (∏ i, c i) • f m",
+          "line": 15,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Matrix.detRowAlternating : {n : Type u_5} →\n  [DecidableEq n] → [Fintype n] → {R : Type u_4} → [inst : CommRing R] → (n → R) [⋀^n]→ₗ[R] R",
+          "line": 16,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'DetSumRowsDependent.finiteIndex' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 17,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'DetSumRowsRecovery.original' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 27,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 122
+}

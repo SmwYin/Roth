@@ -1,0 +1,19 @@
+namespace Roth.DetSumRowsConsumer
+open MvPolynomial
+variable {K σ : Type*} [Field K] [Fintype σ] {l : ℕ}
+theorem caller (k : ℕ) (φ : Fin l → MvPolynomial σ K)
+    (s : Fin l → Finset (σ →₀ ℕ)) (c : Fin l → (σ →₀ ℕ) → Polynomial K)
+    (hc : ∀ μ ν : Fin l, Polynomial.hasseDeriv μ (kronecker k (φ ν)) =
+      ∑ d ∈ s μ, c μ d * kronecker k (hasseDeriv d (φ ν))) :
+    wronskian (fun ν ↦ kronecker k (φ ν)) =
+      ∑ f ∈ Fintype.piFinset s, (∏ μ, c μ (f μ)) * kronecker k (genWronskian f φ) := by
+  classical
+  have h := (Matrix.detRowAlternating (R := Polynomial K)
+    (n := Fin l)).toMultilinearMap.map_sum_finset
+      (fun μ d ↦ c μ d • fun ν ↦ kronecker k (hasseDeriv d (φ ν))) s
+  simp_rw [MultilinearMap.map_smul_univ, smul_eq_mul] at h
+  simp only [Matrix.det, Finset.sum_fn, Pi.smul_def, smul_eq_mul] at h
+  simpa [wronskian, wronskianMatrix, hc, genWronskian, AlgHom.map_det, Matrix.map,
+    Matrix.det] using h
+#print axioms caller
+end Roth.DetSumRowsConsumer

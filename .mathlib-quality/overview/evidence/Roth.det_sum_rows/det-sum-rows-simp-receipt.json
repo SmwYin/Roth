@@ -1,0 +1,48 @@
+{
+  "request": {
+    "code": "import Mathlib.LinearAlgebra.Matrix.Determinant.Basic\n#check_failure Roth.det_sum_rows\nnamespace DetSumRowsSimp\nvariable {A J : Type*} [CommRing A] [Fintype J] [DecidableEq J] {I : J → Type*}\ntheorem weighted (s : ∀ μ, Finset (I μ)) (c : ∀ μ, I μ → A)\n    (N : ∀ μ, I μ → J → A) :\n    (Matrix.of fun μ ν ↦ ∑ i ∈ s μ, c μ i * N μ i ν).det =\n      ∑ f ∈ Fintype.piFinset s, (∏ μ, c μ (f μ)) * (Matrix.of fun μ ν ↦ N μ (f μ) ν).det := by\n  simpa only [MultilinearMap.map_smul_univ, smul_eq_mul, Matrix.det, Finset.sum_fn,\n    Pi.smul_def] using\n    (Matrix.detRowAlternating (R := A) (n := J)).toMultilinearMap.map_sum_finset\n      (fun μ i ↦ c μ i • N μ i) s\n#print axioms weighted\nend DetSumRowsSimp\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": false,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.det_sum_rows`\",\n      \"line\": 2,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"Type mismatch: After simplification, term\\n  MultilinearMap.map_sum_finset (↑Matrix.detRowAlternating) (fun μ i ↦ c μ i • N μ i) s\\n has type\\n  (↑Matrix.detRowAlternating fun i a ↦ ∑ c_1 ∈ s i, c i c_1 * N i c_1 a) =\\n    ∑ x ∈ Fintype.piFinset s, ↑Matrix.detRowAlternating fun i i_1 ↦ c i (x i) * N i (x i) i_1\\nbut is expected to have type\\n  Matrix.detRowAlternating (Matrix.of fun μ ν ↦ ∑ i ∈ s μ, c μ i * N μ i ν) =\\n    ∑ f ∈ Fintype.piFinset s, (∏ μ, c μ (f μ)) * Matrix.detRowAlternating (Matrix.of fun μ ν ↦ N μ (f μ) ν)\",\n      \"line\": 9,\n      \"column\": 3,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'DetSumRowsSimp.weighted' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 13,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": false,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.det_sum_rows`",
+          "line": 2,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "Type mismatch: After simplification, term\n  MultilinearMap.map_sum_finset (↑Matrix.detRowAlternating) (fun μ i ↦ c μ i • N μ i) s\n has type\n  (↑Matrix.detRowAlternating fun i a ↦ ∑ c_1 ∈ s i, c i c_1 * N i c_1 a) =\n    ∑ x ∈ Fintype.piFinset s, ↑Matrix.detRowAlternating fun i i_1 ↦ c i (x i) * N i (x i) i_1\nbut is expected to have type\n  Matrix.detRowAlternating (Matrix.of fun μ ν ↦ ∑ i ∈ s μ, c μ i * N μ i ν) =\n    ∑ f ∈ Fintype.piFinset s, (∏ μ, c μ (f μ)) * Matrix.detRowAlternating (Matrix.of fun μ ν ↦ N μ (f μ) ν)",
+          "line": 9,
+          "column": 3,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'DetSumRowsSimp.weighted' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 13,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 312
+}

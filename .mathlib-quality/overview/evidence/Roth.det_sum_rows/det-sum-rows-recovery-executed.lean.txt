@@ -1,0 +1,28 @@
+import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
+#check_failure Roth.det_sum_rows
+namespace DetSumRowsDependent
+variable {A J : Type*} {I : J → Type*} [CommRing A] [Fintype J] [DecidableEq J]
+theorem finiteIndex (s : ∀ μ, Finset (I μ)) (c : ∀ μ, I μ → A)
+    (N : ∀ μ, I μ → J → A) :
+    (Matrix.of fun μ ν ↦ ∑ i ∈ s μ, c μ i * N μ i ν).det =
+      ∑ f ∈ Fintype.piFinset s, (∏ μ, c μ (f μ)) * (Matrix.of fun μ ν ↦ N μ (f μ) ν).det := by
+  have h := (Matrix.detRowAlternating (R := A) (n := J)).toMultilinearMap.map_sum_finset
+    (fun μ i ↦ c μ i • N μ i) s
+  simp_rw [MultilinearMap.map_smul_univ, smul_eq_mul] at h
+  simp only [Matrix.det, Finset.sum_fn, Pi.smul_def, smul_eq_mul] at h ⊢
+  exact h
+#check @MultilinearMap.map_sum_finset
+#check @MultilinearMap.map_smul_univ
+#check @Matrix.detRowAlternating
+#print axioms finiteIndex
+end DetSumRowsDependent
+
+namespace DetSumRowsRecovery
+theorem original {l : ℕ} {A I : Type*} [CommRing A]
+    (s : Fin l → Finset I) (c : Fin l → I → A) (N : Fin l → I → Fin l → A) :
+    (Matrix.of fun μ ν ↦ ∑ i ∈ s μ, c μ i * N μ i ν).det =
+      ∑ f ∈ Fintype.piFinset s, (∏ μ, c μ (f μ)) *
+        (Matrix.of fun μ ν ↦ N μ (f μ) ν).det :=
+  DetSumRowsDependent.finiteIndex s c N
+#print axioms original
+end DetSumRowsRecovery

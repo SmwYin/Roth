@@ -1,0 +1,14 @@
+import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
+#check_failure Roth.det_sum_rows
+namespace DetSumRowsAbstract
+variable {R J : Type*} [CommSemiring R] [Fintype J] [DecidableEq J]
+variable {M : J → Type*} [∀ j, AddCommMonoid (M j)] [∀ j, Module R (M j)]
+variable {T : Type*} [AddCommMonoid T] [Module R T] {I : J → Type*}
+theorem weighted (F : MultilinearMap R M T) (s : ∀ j, Finset (I j))
+    (c : ∀ j, I j → R) (N : ∀ j, I j → M j) :
+    F (fun j ↦ ∑ i ∈ s j, c j i • N j i) =
+      ∑ f ∈ Fintype.piFinset s, (∏ j, c j (f j)) • F (fun j ↦ N j (f j)) := by
+  simpa only [MultilinearMap.map_smul_univ] using
+    F.map_sum_finset (fun j i ↦ c j i • N j i) s
+#print axioms weighted
+end DetSumRowsAbstract

@@ -1,0 +1,165 @@
+{
+  "declaration": "Roth.det_sum_rows",
+  "accepted": [
+    {
+      "label": "original",
+      "source": "det-sum-rows-original-executed.lean.txt",
+      "source_sha256": "1d8867364a881269f30e7c21be52d15e06448879ea1741f8fdc4ed64dd624137",
+      "receipt": "det-sum-rows-original-receipt.json",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "execution_kind": "persistent-disk",
+      "native_region_start_line": 8218,
+      "expected_axiom_declarations": [
+        "Roth.det_sum_rows"
+      ]
+    },
+    {
+      "label": "audit",
+      "source": "det-sum-rows-audit-executed.lean.txt",
+      "source_sha256": "2ee42794df5153323f8e035376e684eb9e9b652c3768278c348d5bc92d856ac7",
+      "receipt": "det-sum-rows-audit-receipt.json",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "execution_kind": "persistent-disk",
+      "native_region_start_line": 8222,
+      "expected_axiom_declarations": []
+    },
+    {
+      "label": "raw-clean",
+      "source": "det-sum-rows-raw-clean-executed.lean.txt",
+      "source_sha256": "0b09abc32af75936b64215cc142e8b3e8cea51b9d93225dbc7bb4e64ca12166c",
+      "receipt": "det-sum-rows-raw-clean-receipt.json",
+      "original_execution_request": {
+        "code": "import Mathlib.LinearAlgebra.Matrix.Determinant.Basic\n#check_failure Roth.det_sum_rows\nnamespace DetSumRowsProbe\nvariable {A J I : Type*} [CommRing A] [Fintype J] [DecidableEq J]\ntheorem finiteIndex (s : J \u2192 Finset I) (c : J \u2192 I \u2192 A) (N : J \u2192 I \u2192 J \u2192 A) :\n    (Matrix.of fun \u03bc \u03bd \u21a6 \u2211 i \u2208 s \u03bc, c \u03bc i * N \u03bc i \u03bd).det =\n      \u2211 f \u2208 Fintype.piFinset s, (\u220f \u03bc, c \u03bc (f \u03bc)) * (Matrix.of fun \u03bc \u03bd \u21a6 N \u03bc (f \u03bc) \u03bd).det := by\n  have h := (Matrix.detRowAlternating (R := A) (n := J)).toMultilinearMap.map_sum_finset\n    (fun \u03bc i \u21a6 c \u03bc i \u2022 N \u03bc i) s\n  simp_rw [MultilinearMap.map_smul_univ, smul_eq_mul] at h\n  simp only [Matrix.det, Finset.sum_fn, Pi.smul_def, smul_eq_mul] at h \u22a2\n  exact h\ntheorem unweighted (s : J \u2192 Finset I) (N : J \u2192 I \u2192 J \u2192 A) :\n    (Matrix.of fun \u03bc \u03bd \u21a6 \u2211 i \u2208 s \u03bc, N \u03bc i \u03bd).det =\n      \u2211 f \u2208 Fintype.piFinset s, (Matrix.of fun \u03bc \u03bd \u21a6 N \u03bc (f \u03bc) \u03bd).det := by\n  have h := (Matrix.detRowAlternating (R := A) (n := J)).toMultilinearMap.map_sum_finset N s\n  simp only [Matrix.det, Finset.sum_fn] at h \u22a2\n  exact h\n#check @MultilinearMap.map_sum_finset\n#check @MultilinearMap.map_smul_univ\n#check @Matrix.detRowAlternating\n#print axioms finiteIndex\n#print axioms unweighted\nend DetSumRowsProbe\n"
+      },
+      "execution_kind": "run-code",
+      "native_region_start_line": 1,
+      "expected_axiom_declarations": [
+        "DetSumRowsProbe.finiteIndex",
+        "DetSumRowsProbe.unweighted"
+      ]
+    },
+    {
+      "label": "dependent",
+      "source": "det-sum-rows-dependent-executed.lean.txt",
+      "source_sha256": "96ca835515ccb9af6a5d368b592be56eff5c76a464a4cb76f0950a154e922c8e",
+      "receipt": "det-sum-rows-dependent-receipt.json",
+      "original_execution_request": {
+        "code": "import Mathlib.LinearAlgebra.Matrix.Determinant.Basic\n#check_failure Roth.det_sum_rows\nnamespace DetSumRowsDependent\nvariable {A J : Type*} {I : J \u2192 Type*} [CommRing A] [Fintype J] [DecidableEq J]\ntheorem finiteIndex (s : \u2200 \u03bc, Finset (I \u03bc)) (c : \u2200 \u03bc, I \u03bc \u2192 A)\n    (N : \u2200 \u03bc, I \u03bc \u2192 J \u2192 A) :\n    (Matrix.of fun \u03bc \u03bd \u21a6 \u2211 i \u2208 s \u03bc, c \u03bc i * N \u03bc i \u03bd).det =\n      \u2211 f \u2208 Fintype.piFinset s, (\u220f \u03bc, c \u03bc (f \u03bc)) * (Matrix.of fun \u03bc \u03bd \u21a6 N \u03bc (f \u03bc) \u03bd).det := by\n  have h := (Matrix.detRowAlternating (R := A) (n := J)).toMultilinearMap.map_sum_finset\n    (fun \u03bc i \u21a6 c \u03bc i \u2022 N \u03bc i) s\n  simp_rw [MultilinearMap.map_smul_univ, smul_eq_mul] at h\n  simp only [Matrix.det, Finset.sum_fn, Pi.smul_def, smul_eq_mul] at h \u22a2\n  exact h\n#check @MultilinearMap.map_sum_finset\n#check @MultilinearMap.map_smul_univ\n#check @Matrix.detRowAlternating\n#print axioms finiteIndex\nend DetSumRowsDependent\n"
+      },
+      "execution_kind": "run-code",
+      "native_region_start_line": 1,
+      "expected_axiom_declarations": [
+        "DetSumRowsDependent.finiteIndex"
+      ]
+    },
+    {
+      "label": "abstract",
+      "source": "det-sum-rows-abstract-executed.lean.txt",
+      "source_sha256": "5c9bf1fe613400868c20068f0df5fd968bb09d0c97553b6bb858a23d1b291524",
+      "receipt": "det-sum-rows-abstract-receipt.json",
+      "original_execution_request": {
+        "code": "import Mathlib.LinearAlgebra.Matrix.Determinant.Basic\n#check_failure Roth.det_sum_rows\nnamespace DetSumRowsAbstract\nvariable {R J : Type*} [CommSemiring R] [Fintype J] [DecidableEq J]\nvariable {M : J \u2192 Type*} [\u2200 j, AddCommMonoid (M j)] [\u2200 j, Module R (M j)]\nvariable {T : Type*} [AddCommMonoid T] [Module R T] {I : J \u2192 Type*}\ntheorem weighted (F : MultilinearMap R M T) (s : \u2200 j, Finset (I j))\n    (c : \u2200 j, I j \u2192 R) (N : \u2200 j, I j \u2192 M j) :\n    F (fun j \u21a6 \u2211 i \u2208 s j, c j i \u2022 N j i) =\n      \u2211 f \u2208 Fintype.piFinset s, (\u220f j, c j (f j)) \u2022 F (fun j \u21a6 N j (f j)) := by\n  simpa only [MultilinearMap.map_smul_univ] using\n    F.map_sum_finset (fun j i \u21a6 c j i \u2022 N j i) s\n#print axioms weighted\nend DetSumRowsAbstract\n"
+      },
+      "execution_kind": "run-code",
+      "native_region_start_line": 1,
+      "expected_axiom_declarations": [
+        "DetSumRowsAbstract.weighted"
+      ]
+    },
+    {
+      "label": "drop",
+      "source": "det-sum-rows-drop-executed.lean.txt",
+      "source_sha256": "96935cc908c85449397d43d0a621355b772244c65c0ea907e79a0c4f94bedb97",
+      "receipt": "det-sum-rows-drop-receipt.json",
+      "original_execution_request": {
+        "code": "import Mathlib.LinearAlgebra.Matrix.Determinant.Basic\n#check_failure Roth.det_sum_rows\nsection\nvariable {A : Type*} [CommSemiring A]\n#check_failure (Matrix.det : Matrix (Fin 2) (Fin 2) A \u2192 A)\nend\nsection\nvariable {A : Type*} [Ring A]\n#check_failure (Matrix.det : Matrix (Fin 2) (Fin 2) A \u2192 A)\nend\nsection\nvariable {J A : Type*} [CommRing A] [DecidableEq J]\n#check_failure (Matrix.det : Matrix J J A \u2192 A)\nend\n"
+      },
+      "execution_kind": "run-code",
+      "native_region_start_line": 1,
+      "expected_axiom_declarations": []
+    },
+    {
+      "label": "consumer-clean",
+      "source": "det-sum-rows-consumer-clean-executed.lean.txt",
+      "source_sha256": "a2380c91537180b285bba853340cb40baf4f1d7cd9a93b0b8369c5a54b021880",
+      "receipt": "det-sum-rows-consumer-clean-receipt.json",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "execution_kind": "persistent-disk",
+      "native_region_start_line": 8541,
+      "expected_axiom_declarations": [
+        "Roth.DetSumRowsConsumer.caller"
+      ]
+    },
+    {
+      "label": "recovery",
+      "source": "det-sum-rows-recovery-executed.lean.txt",
+      "source_sha256": "79bf182098d0537c6577dc347003c5c76d6050f396f4909edbe4791bcde5cb70",
+      "receipt": "det-sum-rows-recovery-receipt.json",
+      "original_execution_request": {
+        "code": "import Mathlib.LinearAlgebra.Matrix.Determinant.Basic\n#check_failure Roth.det_sum_rows\nnamespace DetSumRowsDependent\nvariable {A J : Type*} {I : J \u2192 Type*} [CommRing A] [Fintype J] [DecidableEq J]\ntheorem finiteIndex (s : \u2200 \u03bc, Finset (I \u03bc)) (c : \u2200 \u03bc, I \u03bc \u2192 A)\n    (N : \u2200 \u03bc, I \u03bc \u2192 J \u2192 A) :\n    (Matrix.of fun \u03bc \u03bd \u21a6 \u2211 i \u2208 s \u03bc, c \u03bc i * N \u03bc i \u03bd).det =\n      \u2211 f \u2208 Fintype.piFinset s, (\u220f \u03bc, c \u03bc (f \u03bc)) * (Matrix.of fun \u03bc \u03bd \u21a6 N \u03bc (f \u03bc) \u03bd).det := by\n  have h := (Matrix.detRowAlternating (R := A) (n := J)).toMultilinearMap.map_sum_finset\n    (fun \u03bc i \u21a6 c \u03bc i \u2022 N \u03bc i) s\n  simp_rw [MultilinearMap.map_smul_univ, smul_eq_mul] at h\n  simp only [Matrix.det, Finset.sum_fn, Pi.smul_def, smul_eq_mul] at h \u22a2\n  exact h\n#check @MultilinearMap.map_sum_finset\n#check @MultilinearMap.map_smul_univ\n#check @Matrix.detRowAlternating\n#print axioms finiteIndex\nend DetSumRowsDependent\n\nnamespace DetSumRowsRecovery\ntheorem original {l : \u2115} {A I : Type*} [CommRing A]\n    (s : Fin l \u2192 Finset I) (c : Fin l \u2192 I \u2192 A) (N : Fin l \u2192 I \u2192 Fin l \u2192 A) :\n    (Matrix.of fun \u03bc \u03bd \u21a6 \u2211 i \u2208 s \u03bc, c \u03bc i * N \u03bc i \u03bd).det =\n      \u2211 f \u2208 Fintype.piFinset s, (\u220f \u03bc, c \u03bc (f \u03bc)) *\n        (Matrix.of fun \u03bc \u03bd \u21a6 N \u03bc (f \u03bc) \u03bd).det :=\n  DetSumRowsDependent.finiteIndex s c N\n#print axioms original\nend DetSumRowsRecovery\n"
+      },
+      "execution_kind": "run-code",
+      "native_region_start_line": 1,
+      "expected_axiom_declarations": [
+        "DetSumRowsDependent.finiteIndex",
+        "DetSumRowsRecovery.original"
+      ]
+    }
+  ],
+  "rejected": [
+    {
+      "label": "raw",
+      "source": "det-sum-rows-raw-executed.lean.txt",
+      "receipt": "det-sum-rows-raw-receipt.json",
+      "reason": "Type mismatch: After simplification, term\n  MultilinearMap.map_sum_finset (\u2191Matrix.detRowAlternating) N s\n has type\n  @Eq A (\u2191Matrix.detRowAlternating fun i a \u21a6 \u2211 c \u2208 s i, N i c a)\n    (\u2211 r \u2208 Fintype.piFinset s, \u2191Matrix.detRowAlternating fun i \u21a6 N i (r i))\nbut is expected to have type\n  @Eq A (Matrix.detRowAlternating (Matrix.of fun \u03bc \u03bd \u21a6 \u2211 i \u2208 s \u03bc, N \u03bc i \u03bd))\n    (\u2211 f \u2208 Fintype.piFinset s, Matrix.detRowAlternating (Matrix.of fun \u03bc \u03bd \u21a6 N \u03bc (f \u03bc) \u03bd))",
+      "original_execution_request": {
+        "code": "import Mathlib.LinearAlgebra.Matrix.Determinant.Basic\n#check_failure Roth.det_sum_rows\nnamespace DetSumRowsProbe\nvariable {A J I : Type*} [CommRing A] [Fintype J] [DecidableEq J]\ntheorem finiteIndex (s : J \u2192 Finset I) (c : J \u2192 I \u2192 A) (N : J \u2192 I \u2192 J \u2192 A) :\n    (Matrix.of fun \u03bc \u03bd \u21a6 \u2211 i \u2208 s \u03bc, c \u03bc i * N \u03bc i \u03bd).det =\n      \u2211 f \u2208 Fintype.piFinset s, (\u220f \u03bc, c \u03bc (f \u03bc)) * (Matrix.of fun \u03bc \u03bd \u21a6 N \u03bc (f \u03bc) \u03bd).det := by\n  have h := (Matrix.detRowAlternating (R := A) (n := J)).toMultilinearMap.map_sum_finset\n    (fun \u03bc i \u21a6 c \u03bc i \u2022 N \u03bc i) s\n  simp_rw [MultilinearMap.map_smul_univ, smul_eq_mul] at h\n  simp only [Matrix.det, Finset.sum_fn, Pi.smul_def, smul_eq_mul] at h \u22a2\n  exact h\ntheorem unweighted (s : J \u2192 Finset I) (N : J \u2192 I \u2192 J \u2192 A) :\n    (Matrix.of fun \u03bc \u03bd \u21a6 \u2211 i \u2208 s \u03bc, N \u03bc i \u03bd).det =\n      \u2211 f \u2208 Fintype.piFinset s, (Matrix.of fun \u03bc \u03bd \u21a6 N \u03bc (f \u03bc) \u03bd).det := by\n  simpa only [Matrix.det, Finset.sum_fn] using\n    (Matrix.detRowAlternating (R := A) (n := J)).toMultilinearMap.map_sum_finset N s\n#check @MultilinearMap.map_sum_finset\n#check @MultilinearMap.map_smul_univ\n#check @Matrix.detRowAlternating\n#print axioms finiteIndex\n#print axioms unweighted\nend DetSumRowsProbe\n"
+      }
+    },
+    {
+      "label": "simp",
+      "source": "det-sum-rows-simp-executed.lean.txt",
+      "receipt": "det-sum-rows-simp-receipt.json",
+      "reason": "Type mismatch: After simplification, term\n  MultilinearMap.map_sum_finset (\u2191Matrix.detRowAlternating) (fun \u03bc i \u21a6 c \u03bc i \u2022 N \u03bc i) s\n has type\n  (\u2191Matrix.detRowAlternating fun i a \u21a6 \u2211 c_1 \u2208 s i, c i c_1 * N i c_1 a) =\n    \u2211 x \u2208 Fintype.piFinset s, \u2191Matrix.detRowAlternating fun i i_1 \u21a6 c i (x i) * N i (x i) i_1\nbut is expected to have type\n  Matrix.detRowAlternating (Matrix.of fun \u03bc \u03bd \u21a6 \u2211 i \u2208 s \u03bc, c \u03bc i * N \u03bc i \u03bd) =\n    \u2211 f \u2208 Fintype.piFinset s, (\u220f \u03bc, c \u03bc (f \u03bc)) * Matrix.detRowAlternating (Matrix.of fun \u03bc \u03bd \u21a6 N \u03bc (f \u03bc) \u03bd)",
+      "original_execution_request": {
+        "code": "import Mathlib.LinearAlgebra.Matrix.Determinant.Basic\n#check_failure Roth.det_sum_rows\nnamespace DetSumRowsSimp\nvariable {A J : Type*} [CommRing A] [Fintype J] [DecidableEq J] {I : J \u2192 Type*}\ntheorem weighted (s : \u2200 \u03bc, Finset (I \u03bc)) (c : \u2200 \u03bc, I \u03bc \u2192 A)\n    (N : \u2200 \u03bc, I \u03bc \u2192 J \u2192 A) :\n    (Matrix.of fun \u03bc \u03bd \u21a6 \u2211 i \u2208 s \u03bc, c \u03bc i * N \u03bc i \u03bd).det =\n      \u2211 f \u2208 Fintype.piFinset s, (\u220f \u03bc, c \u03bc (f \u03bc)) * (Matrix.of fun \u03bc \u03bd \u21a6 N \u03bc (f \u03bc) \u03bd).det := by\n  simpa only [MultilinearMap.map_smul_univ, smul_eq_mul, Matrix.det, Finset.sum_fn,\n    Pi.smul_def] using\n    (Matrix.detRowAlternating (R := A) (n := J)).toMultilinearMap.map_sum_finset\n      (fun \u03bc i \u21a6 c \u03bc i \u2022 N \u03bc i) s\n#print axioms weighted\nend DetSumRowsSimp\n"
+      }
+    },
+    {
+      "label": "consumer",
+      "source": "det-sum-rows-consumer-executed.lean.txt",
+      "receipt": "det-sum-rows-consumer-receipt.json",
+      "reason": "Type mismatch: After simplification, term\n  h\n has type\n  (Matrix.detRowAlternating fun i a \u21a6 \u2211 c_1 \u2208 s i, c i c_1 * (kronecker k) ((hasseDeriv c_1) (\u03c6 a))) =\n    \u2211 x \u2208 Fintype.piFinset s,\n      (\u220f i, c i (x i)) *\n        DFunLike.coe.{max (u_1 + 1) 1, max (u_1 + 1) 1, u_1 + 1} Matrix.detRowAlternating fun i \u03bd \u21a6\n          (kronecker k) ((hasseDeriv (x i)) (\u03c6 \u03bd))\nbut is expected to have type\n  Matrix.detRowAlternating (Matrix.of fun \u03bc \u03bd \u21a6 \u2211 d \u2208 s \u03bc, c \u03bc d * (kronecker k) ((hasseDeriv d) (\u03c6 \u03bd))) =\n    \u2211 f \u2208 Fintype.piFinset s,\n      (\u220f \u03bc, c \u03bc (f \u03bc)) *\n        DFunLike.coe.{max (u_2 + 1) (u_1 + 1), max (u_2 + 1) (u_1 + 1), u_1 + 1} (kronecker k)\n          (Matrix.detRowAlternating (Matrix.of fun \u03bc \u03bd \u21a6 (hasseDeriv (f \u03bc)) (\u03c6 \u03bd))); This simp argument is unused:\n  Matrix.det\n\nHint: Omit it from the simp argument list.\n  [apply] simp only [Finset.sum_fn, Pi.smul_def, smul_eq_mul] at h\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      }
+    }
+  ],
+  "unresolved": [],
+  "production_unchanged": true,
+  "standard_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "canonical_direct_consumers": [
+    "_private.Roth.GenWronskian.0.Roth.wronskian_kronecker_eq_sum_aux"
+  ],
+  "notes": [
+    "Persistent disk full receipts have historical info; proof assertions scoped to fresh target regions. All-file errors/warnings/axioms checked.",
+    "Run-code has diagnostics and no partial field; guarded #check_failure expected failures are informational diagnostics.",
+    "Rejected raw/simp/caller drafts retain sorryAx and are excluded from accepted proof evidence.",
+    "Exact abstract weighted simpa succeeds; exact weighted determinant one-shot simpa fails. Explicit representation bridge is separately clean.",
+    "Exact strongest dependent theorem recovers original Fin l type in mathlib-only isolation; actual Wronskian caller replay is separately verified."
+  ]
+}
