@@ -1,0 +1,20 @@
+namespace IndexScaleGuards148
+universe u v w
+theorem scaleGeneral {A : Type u} {R : Type v} {K : Type w}
+    [Semiring R] [Semiring K] [LinearOrder K] [IsOrderedRing K]
+    (c : K) (hc : 0 ≤ c) (D : A → K) (f : AddMonoidAlgebra R A) :
+    (AddMonoidAlgebra.infDegree (fun a ↦ (c * D a : WithTop K)) f).untopD 0 =
+      c * (AddMonoidAlgebra.infDegree (fun a ↦ (D a : WithTop K)) f).untopD 0 :=
+  IndexScaleMathlib148.projectedTransport (c * ·)
+    (fun _ _ h ↦ mul_le_mul_of_nonneg_left h hc) (mul_zero c) D f
+theorem zeroFixingNecessary :
+    (WithTop.map (fun x : ℝ ↦ x + 1) (⊤ : WithTop ℝ)).untopD 0 ≠
+      (⊤ : WithTop ℝ).untopD 0 + 1 := by
+  norm_num
+theorem negativeScalingGuard :
+    min ((-1 : ℝ) * 1) ((-1 : ℝ) * 2) ≠ (-1 : ℝ) * min 1 2 := by
+  norm_num
+#print axioms scaleGeneral
+#print axioms zeroFixingNecessary
+#print axioms negativeScalingGuard
+end IndexScaleGuards148

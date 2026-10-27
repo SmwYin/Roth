@@ -1,0 +1,519 @@
+[
+  {
+    "form": "current",
+    "methods": [
+      {
+        "form": "current",
+        "method": "finder",
+        "request": {
+          "query": "Roth polynomial index scaling denominator weights l r index divided by l"
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"spectralValueTerms\",\n      \"informal_name\": \"Spectral value terms sequence\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : SeminormedRing R] → Polynomial R → ℕ → ℝ\",\n      \"informal_description\": \"For a polynomial $ p $ over a seminormed ring $ R $, this function returns a sequence indexed by $ \\\\mathbb{N} $ where each term is defined as $ \\\\|p_n\\\\|^{1/(d - n)} $ if $ n < d $, and $ 0 $ otherwise. Here, $ p_n $ denotes the coefficient of $ X^n $ in $ p $, $ d $ is the natural degree of $ p $, and $ \\\\|\\\\cdot\\\\| $ is the seminorm on $ R $. This sequence captures the normed coefficients' growth rates relative to their distance from the polynomial's degree.\",\n      \"path\": \"Mathlib.Analysis.Normed.Unbundled.SpectralNorm\"\n    },\n    {\n      \"formal_name\": \"rothNumberNat_def\",\n      \"informal_name\": \"Definition of Roth Number Function on Natural Numbers\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (n : ℕ), rothNumberNat n = addRothNumber (Finset.range n)\",\n      \"informal_description\": \"For any natural number $ n $, the Roth number function $ \\\\text{rothNumberNat}(n) $, which gives the maximum size of a subset of $ \\\\{0, 1, \\\\ldots, n-1\\\\} $ containing no three distinct elements forming an arithmetic progression, is equal to $ \\\\text{addRothNumber}(\\\\text{range } n) $.\",\n      \"path\": \"Mathlib.Combinatorics.Additive.AP.Three.Defs\"\n    },\n    {\n      \"formal_name\": \"xInTermsOfW\",\n      \"informal_name\": \"Witt Polynomial Expressing Xₙ in Terms of W\",\n      \"kind\": \"definition\",\n      \"type\": \"(p : ℕ) → (R : Type u_1) → [inst : CommRing R] → [Invertible ↑p] → ℕ → MvPolynomial ℕ R\",\n      \"informal_description\": \"For each natural number $n$, the polynomial $X_n$ is defined recursively as $\\\\left(X_n - \\\\sum_{i=0}^{n-1} p^i \\\\cdot \\\\text{W}_i^{p^{n-i}}\\\\right) \\\\cdot p^{-n}$, where $\\\\text{W}_i$ denotes the Witt polynomial for index $i$, $p$ is an invertible element of the commutative ring $R$, and $p^{-n}$ is its inverse raised to the $n$-th power. This expresses the variable $X_n$ in the polynomial ring $\\\\mathbb{N} \\\\to R[\\\\mathbb{N}]$ as a combination of lower-index Witt polynomials scaled by powers of $p$ and its inverse.\",\n      \"path\": \"Mathlib.RingTheory.WittVector.WittPolynomial\"\n    },\n    {\n      \"formal_name\": \"Lagrange.nodalWeight\",\n      \"informal_name\": \"Nodal weight in Lagrange interpolation\",\n      \"kind\": \"definition\",\n      \"type\": \"{F : Type u_1} → [Field F] → {ι : Type u_2} → [DecidableEq ι] → Finset ι → (ι → F) → ι → F\",\n      \"informal_description\": \"The nodal weight for index $ i $ is defined as the product $\\\\prod_{j \\\\in s \\\\setminus \\\\{i\\\\}} (v_i - v_j)^{-1} $, where $ s $ is a finite set, $ v : \\\\iota \\\\to F $ is a function to a field $ F $, and $ s \\\\setminus \\\\{i\\\\} $ denotes the set $ s $ with element $ i $ removed. Each term in the product is the multiplicative inverse of the difference between $ v_i $ and $ v_j $.\",\n      \"path\": \"Mathlib.LinearAlgebra.Lagrange\"\n    },\n    {\n      \"formal_name\": \"WittVector.remainder\",\n      \"informal_name\": \"Witt Vector Remainder Term\",\n      \"kind\": \"definition\",\n      \"type\": \"ℕ → ℕ → MvPolynomial (Fin 2 × ℕ) ℤ\",\n      \"informal_description\": \"The function constructs an element of the Witt vector ring $\\\\mathbb{W}$ by multiplying two sums over $x \\\\in \\\\{0, 1, \\\\dots, n\\\\}$. Each sum involves monomials with coefficients $p^x$ and $p^{n+1 - x}$, where $p$ is a prime, and the terms are combined using variable renaming operations that separate the components of the Witt vector. This defines a remainder term in the recursive construction of Witt vectors.\",\n      \"path\": \"Mathlib.RingTheory.WittVector.MulCoeff\"\n    }\n  ]\n}"
+            }
+          ],
+          "structuredContent": {
+            "items": [
+              {
+                "formal_name": "spectralValueTerms",
+                "informal_name": "Spectral value terms sequence",
+                "kind": "definition",
+                "type": "{R : Type u_1} → [inst : SeminormedRing R] → Polynomial R → ℕ → ℝ",
+                "informal_description": "For a polynomial $ p $ over a seminormed ring $ R $, this function returns a sequence indexed by $ \\mathbb{N} $ where each term is defined as $ \\|p_n\\|^{1/(d - n)} $ if $ n < d $, and $ 0 $ otherwise. Here, $ p_n $ denotes the coefficient of $ X^n $ in $ p $, $ d $ is the natural degree of $ p $, and $ \\|\\cdot\\| $ is the seminorm on $ R $. This sequence captures the normed coefficients' growth rates relative to their distance from the polynomial's degree.",
+                "path": "Mathlib.Analysis.Normed.Unbundled.SpectralNorm"
+              },
+              {
+                "formal_name": "rothNumberNat_def",
+                "informal_name": "Definition of Roth Number Function on Natural Numbers",
+                "kind": "theorem",
+                "type": "∀ (n : ℕ), rothNumberNat n = addRothNumber (Finset.range n)",
+                "informal_description": "For any natural number $ n $, the Roth number function $ \\text{rothNumberNat}(n) $, which gives the maximum size of a subset of $ \\{0, 1, \\ldots, n-1\\} $ containing no three distinct elements forming an arithmetic progression, is equal to $ \\text{addRothNumber}(\\text{range } n) $.",
+                "path": "Mathlib.Combinatorics.Additive.AP.Three.Defs"
+              },
+              {
+                "formal_name": "xInTermsOfW",
+                "informal_name": "Witt Polynomial Expressing Xₙ in Terms of W",
+                "kind": "definition",
+                "type": "(p : ℕ) → (R : Type u_1) → [inst : CommRing R] → [Invertible ↑p] → ℕ → MvPolynomial ℕ R",
+                "informal_description": "For each natural number $n$, the polynomial $X_n$ is defined recursively as $\\left(X_n - \\sum_{i=0}^{n-1} p^i \\cdot \\text{W}_i^{p^{n-i}}\\right) \\cdot p^{-n}$, where $\\text{W}_i$ denotes the Witt polynomial for index $i$, $p$ is an invertible element of the commutative ring $R$, and $p^{-n}$ is its inverse raised to the $n$-th power. This expresses the variable $X_n$ in the polynomial ring $\\mathbb{N} \\to R[\\mathbb{N}]$ as a combination of lower-index Witt polynomials scaled by powers of $p$ and its inverse.",
+                "path": "Mathlib.RingTheory.WittVector.WittPolynomial"
+              },
+              {
+                "formal_name": "Lagrange.nodalWeight",
+                "informal_name": "Nodal weight in Lagrange interpolation",
+                "kind": "definition",
+                "type": "{F : Type u_1} → [Field F] → {ι : Type u_2} → [DecidableEq ι] → Finset ι → (ι → F) → ι → F",
+                "informal_description": "The nodal weight for index $ i $ is defined as the product $\\prod_{j \\in s \\setminus \\{i\\}} (v_i - v_j)^{-1} $, where $ s $ is a finite set, $ v : \\iota \\to F $ is a function to a field $ F $, and $ s \\setminus \\{i\\} $ denotes the set $ s $ with element $ i $ removed. Each term in the product is the multiplicative inverse of the difference between $ v_i $ and $ v_j $.",
+                "path": "Mathlib.LinearAlgebra.Lagrange"
+              },
+              {
+                "formal_name": "WittVector.remainder",
+                "informal_name": "Witt Vector Remainder Term",
+                "kind": "definition",
+                "type": "ℕ → ℕ → MvPolynomial (Fin 2 × ℕ) ℤ",
+                "informal_description": "The function constructs an element of the Witt vector ring $\\mathbb{W}$ by multiplying two sums over $x \\in \\{0, 1, \\dots, n\\}$. Each sum involves monomials with coefficients $p^x$ and $p^{n+1 - x}$, where $p$ is a prime, and the terms are combined using variable renaming operations that separate the components of the Witt vector. This defines a remainder term in the recursive construction of Witt vectors.",
+                "path": "Mathlib.RingTheory.WittVector.MulCoeff"
+              }
+            ]
+          },
+          "isError": false
+        }
+      },
+      {
+        "form": "current",
+        "method": "leansearch",
+        "request": {
+          "query": "Roth polynomial index scaling denominator weights l r index divided by l"
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.roots_scaleRoots\",\n      \"module_name\": \"Mathlib.RingTheory.Polynomial.ScaleRoots\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] [inst_1 : IsDomain R] (p : Polynomial R) {r : R},\\n  IsUnit r → (p.scaleRoots r).roots = Multiset.map (fun x => r * x) p.roots\"\n    },\n    {\n      \"name\": \"Dvd.dvd.scaleRoots\",\n      \"module_name\": \"Mathlib.RingTheory.Polynomial.ScaleRoots\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommSemiring R] (p q : Polynomial R) {r : R} [NoZeroDivisors R],\\n  p ∣ q → p.scaleRoots r ∣ q.scaleRoots r\"\n    },\n    {\n      \"name\": \"Polynomial.coeff_scaleRoots\",\n      \"module_name\": \"Mathlib.RingTheory.Polynomial.ScaleRoots\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (p : Polynomial R) (s : R) (i : ℕ),\\n  (p.scaleRoots s).coeff i = p.coeff i * s ^ (p.natDegree - i)\"\n    },\n    {\n      \"name\": \"Polynomial.monic_scaleRoots_iff\",\n      \"module_name\": \"Mathlib.RingTheory.Polynomial.ScaleRoots\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] {p : Polynomial R} (s : R), (p.scaleRoots s).Monic ↔ p.Monic\"\n    },\n    {\n      \"name\": \"Polynomial.degree_scaleRoots\",\n      \"module_name\": \"Mathlib.RingTheory.Polynomial.ScaleRoots\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (p : Polynomial R) {s : R}, (p.scaleRoots s).degree = p.degree\"\n    }\n  ]\n}"
+            }
+          ],
+          "structuredContent": {
+            "items": [
+              {
+                "name": "Polynomial.roots_scaleRoots",
+                "module_name": "Mathlib.RingTheory.Polynomial.ScaleRoots",
+                "kind": "theorem",
+                "type": "∀ {R : Type u_1} [inst : CommRing R] [inst_1 : IsDomain R] (p : Polynomial R) {r : R},\n  IsUnit r → (p.scaleRoots r).roots = Multiset.map (fun x => r * x) p.roots"
+              },
+              {
+                "name": "Dvd.dvd.scaleRoots",
+                "module_name": "Mathlib.RingTheory.Polynomial.ScaleRoots",
+                "kind": "theorem",
+                "type": "∀ {R : Type u_1} [inst : CommSemiring R] (p q : Polynomial R) {r : R} [NoZeroDivisors R],\n  p ∣ q → p.scaleRoots r ∣ q.scaleRoots r"
+              },
+              {
+                "name": "Polynomial.coeff_scaleRoots",
+                "module_name": "Mathlib.RingTheory.Polynomial.ScaleRoots",
+                "kind": "theorem",
+                "type": "∀ {R : Type u_1} [inst : Semiring R] (p : Polynomial R) (s : R) (i : ℕ),\n  (p.scaleRoots s).coeff i = p.coeff i * s ^ (p.natDegree - i)"
+              },
+              {
+                "name": "Polynomial.monic_scaleRoots_iff",
+                "module_name": "Mathlib.RingTheory.Polynomial.ScaleRoots",
+                "kind": "theorem",
+                "type": "∀ {R : Type u_1} [inst : Semiring R] {p : Polynomial R} (s : R), (p.scaleRoots s).Monic ↔ p.Monic"
+              },
+              {
+                "name": "Polynomial.degree_scaleRoots",
+                "module_name": "Mathlib.RingTheory.Polynomial.ScaleRoots",
+                "kind": "theorem",
+                "type": "∀ {R : Type u_1} [inst : Semiring R] (p : Polynomial R) {s : R}, (p.scaleRoots s).degree = p.degree"
+              }
+            ]
+          },
+          "isError": false
+        }
+      },
+      {
+        "form": "current",
+        "method": "loogle",
+        "request": {
+          "query": "MvPolynomial, (_ / _)"
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\n  \"items\": [\n    {\n      \"name\": \"IntermediateField.mem_adjoin_range_iff\",\n      \"type\": \" (F : Type u_1) [Field F] {E : Type u_2} [Field E] [Algebra F E] {ι : Type u_3} (i : ι → E) (x : E) : x ∈ IntermediateField.adjoin F (Set.range i) ↔ ∃ r s, x = (MvPolynomial.aeval i) r / (MvPolynomial.aeval i) s\",\n      \"module\": \"Mathlib.FieldTheory.IntermediateField.Adjoin.Basic\"\n    },\n    {\n      \"name\": \"IntermediateField.mem_adjoin_iff\",\n      \"type\": \" (F : Type u_1) [Field F] {E : Type u_2} [Field E] [Algebra F E] {S : Set E} (x : E) : x ∈ IntermediateField.adjoin F S ↔ ∃ r s, x = (MvPolynomial.aeval Subtype.val) r / (MvPolynomial.aeval Subtype.val) s\",\n      \"module\": \"Mathlib.FieldTheory.IntermediateField.Adjoin.Basic\"\n    },\n    {\n      \"name\": \"MvPolynomial.schwartz_zippel_totalDegree\",\n      \"type\": \" {R : Type u_1} [CommRing R] [IsDomain R] [DecidableEq R] {n : ℕ} {p : MvPolynomial (Fin n) R} (hp : p ≠ 0) (S : Finset R) : ↑{f ∈ Fintype.piFinset fun x => S | (MvPolynomial.eval f) p = 0}.card / ↑S.card ^ n ≤ ↑p.totalDegree / ↑S.card\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.SchwartzZippel\"\n    },\n    {\n      \"name\": \"MvPolynomial.schwartz_zippel_sum_degreeOf\",\n      \"type\": \" {R : Type u_1} [CommRing R] [IsDomain R] [DecidableEq R] {n : ℕ} {p : MvPolynomial (Fin n) R} (hp : p ≠ 0) (S : Fin n → Finset R) : ↑{x ∈ Fintype.piFinset fun i => S i | (MvPolynomial.eval x) p = 0}.card / ∏ i, ↑(S i).card ≤ ∑ i, ↑(MvPolynomial.degreeOf i p) / ↑(S i).card\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.SchwartzZippel\"\n    },\n    {\n      \"name\": \"MvPolynomial.schwartz_zippel_sup_sum\",\n      \"type\": \" {R : Type u_1} [CommRing R] [IsDomain R] [DecidableEq R] {n : ℕ} {p : MvPolynomial (Fin n) R} (hp : p ≠ 0) (S : Fin n → Finset R) : ↑{x ∈ Fintype.piFinset fun i => S i | (MvPolynomial.eval x) p = 0}.card / ∏ i, ↑(S i).card ≤ p.support.sup fun s => ∑ i, ↑(s i) / ↑(S i).card\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.SchwartzZippel\"\n    },\n    {\n      \"name\": \"Polynomial.eval_homogenize\",\n      \"type\": \" {K : Type u_1} [Semifield K] {p : Polynomial K} {n : ℕ} (hn : p.natDegree ≤ n) (x : Fin 2 → K) (hx : x 1 ≠ 0) : (MvPolynomial.eval x) (p.homogenize n) = Polynomial.eval (x 0 / x 1) p * x 1 ^ n\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Homogenize\"\n    },\n    {\n      \"name\": \"Polynomial.eval_eq_div_eval_toTupleMvPolynomial\",\n      \"type\": \" {R : Type u_2} [Field R] (p : Polynomial R) (x : R) : Polynomial.eval x p = (MvPolynomial.eval ![x, 1]) (p.toTupleMvPolynomial 0) / (MvPolynomial.eval ![x, 1]) (p.toTupleMvPolynomial 1)\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Homogenize\"\n    },\n    {\n      \"name\": \"WeierstrassCurve.Jacobian.eval_polynomialX_of_Z_ne_zero\",\n      \"type\": \" {F : Type u} [Field F] {W : WeierstrassCurve.Jacobian F} {P : Fin 3 → F} (hPz : P 2 ≠ 0) : (MvPolynomial.eval P) W.polynomialX / P 2 ^ 4 = Polynomial.evalEval (P 0 / P 2 ^ 2) (P 1 / P 2 ^ 3) W.toAffine.polynomialX\",\n      \"module\": \"Mathlib.AlgebraicGeometry.EllipticCurve.Jacobian.Basic\"\n    }\n  ]\n}"
+            }
+          ],
+          "structuredContent": {
+            "items": [
+              {
+                "name": "IntermediateField.mem_adjoin_range_iff",
+                "type": " (F : Type u_1) [Field F] {E : Type u_2} [Field E] [Algebra F E] {ι : Type u_3} (i : ι → E) (x : E) : x ∈ IntermediateField.adjoin F (Set.range i) ↔ ∃ r s, x = (MvPolynomial.aeval i) r / (MvPolynomial.aeval i) s",
+                "module": "Mathlib.FieldTheory.IntermediateField.Adjoin.Basic"
+              },
+              {
+                "name": "IntermediateField.mem_adjoin_iff",
+                "type": " (F : Type u_1) [Field F] {E : Type u_2} [Field E] [Algebra F E] {S : Set E} (x : E) : x ∈ IntermediateField.adjoin F S ↔ ∃ r s, x = (MvPolynomial.aeval Subtype.val) r / (MvPolynomial.aeval Subtype.val) s",
+                "module": "Mathlib.FieldTheory.IntermediateField.Adjoin.Basic"
+              },
+              {
+                "name": "MvPolynomial.schwartz_zippel_totalDegree",
+                "type": " {R : Type u_1} [CommRing R] [IsDomain R] [DecidableEq R] {n : ℕ} {p : MvPolynomial (Fin n) R} (hp : p ≠ 0) (S : Finset R) : ↑{f ∈ Fintype.piFinset fun x => S | (MvPolynomial.eval f) p = 0}.card / ↑S.card ^ n ≤ ↑p.totalDegree / ↑S.card",
+                "module": "Mathlib.Algebra.MvPolynomial.SchwartzZippel"
+              },
+              {
+                "name": "MvPolynomial.schwartz_zippel_sum_degreeOf",
+                "type": " {R : Type u_1} [CommRing R] [IsDomain R] [DecidableEq R] {n : ℕ} {p : MvPolynomial (Fin n) R} (hp : p ≠ 0) (S : Fin n → Finset R) : ↑{x ∈ Fintype.piFinset fun i => S i | (MvPolynomial.eval x) p = 0}.card / ∏ i, ↑(S i).card ≤ ∑ i, ↑(MvPolynomial.degreeOf i p) / ↑(S i).card",
+                "module": "Mathlib.Algebra.MvPolynomial.SchwartzZippel"
+              },
+              {
+                "name": "MvPolynomial.schwartz_zippel_sup_sum",
+                "type": " {R : Type u_1} [CommRing R] [IsDomain R] [DecidableEq R] {n : ℕ} {p : MvPolynomial (Fin n) R} (hp : p ≠ 0) (S : Fin n → Finset R) : ↑{x ∈ Fintype.piFinset fun i => S i | (MvPolynomial.eval x) p = 0}.card / ∏ i, ↑(S i).card ≤ p.support.sup fun s => ∑ i, ↑(s i) / ↑(S i).card",
+                "module": "Mathlib.Algebra.MvPolynomial.SchwartzZippel"
+              },
+              {
+                "name": "Polynomial.eval_homogenize",
+                "type": " {K : Type u_1} [Semifield K] {p : Polynomial K} {n : ℕ} (hn : p.natDegree ≤ n) (x : Fin 2 → K) (hx : x 1 ≠ 0) : (MvPolynomial.eval x) (p.homogenize n) = Polynomial.eval (x 0 / x 1) p * x 1 ^ n",
+                "module": "Mathlib.Algebra.Polynomial.Homogenize"
+              },
+              {
+                "name": "Polynomial.eval_eq_div_eval_toTupleMvPolynomial",
+                "type": " {R : Type u_2} [Field R] (p : Polynomial R) (x : R) : Polynomial.eval x p = (MvPolynomial.eval ![x, 1]) (p.toTupleMvPolynomial 0) / (MvPolynomial.eval ![x, 1]) (p.toTupleMvPolynomial 1)",
+                "module": "Mathlib.Algebra.Polynomial.Homogenize"
+              },
+              {
+                "name": "WeierstrassCurve.Jacobian.eval_polynomialX_of_Z_ne_zero",
+                "type": " {F : Type u} [Field F] {W : WeierstrassCurve.Jacobian F} {P : Fin 3 → F} (hPz : P 2 ≠ 0) : (MvPolynomial.eval P) W.polynomialX / P 2 ^ 4 = Polynomial.evalEval (P 0 / P 2 ^ 2) (P 1 / P 2 ^ 3) W.toAffine.polynomialX",
+                "module": "Mathlib.AlgebraicGeometry.EllipticCurve.Jacobian.Basic"
+              }
+            ]
+          },
+          "isError": false
+        }
+      },
+      {
+        "form": "current",
+        "method": "local",
+        "request": {
+          "query": "index_mul_left_weights"
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\n  \"items\": [\n    {\n      \"name\": \"Roth.index_mul_left_weights\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/Index.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+            }
+          ],
+          "structuredContent": {
+            "items": [
+              {
+                "name": "Roth.index_mul_left_weights",
+                "kind": "theorem",
+                "file": "Roth/Index.lean"
+              }
+            ],
+            "index": "unavailable"
+          },
+          "isError": false
+        }
+      }
+    ]
+  },
+  {
+    "form": "literature",
+    "methods": [
+      {
+        "form": "literature",
+        "method": "finder",
+        "request": {
+          "query": "weighted order of vanishing scaling all weights by a nonnegative scalar scales minimum weighted degree"
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"MvPowerSeries.le_weightedOrder_smul\",\n      \"informal_name\": \"Weighted Order is Non-Increasing under Scalar Multiplication\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ) {f : MvPowerSeries σ R} {a : R},\\n  MvPowerSeries.weightedOrder w f ≤ MvPowerSeries.weightedOrder w (a • f)\",\n      \"informal_description\": \"For any scalar $ a $ in the semiring $ R $, the weighted order of a multivariate power series $ f $ with respect to a weight function $ w $ satisfies $ \\\\operatorname{ord}_w(f) \\\\leq \\\\operatorname{ord}_w(a \\\\cdot f) $, where $ \\\\operatorname{ord}_w $ denotes the minimal weighted degree of non-zero monomials in the series.\",\n      \"path\": \"Mathlib.RingTheory.MvPowerSeries.Order\"\n    },\n    {\n      \"formal_name\": \"MvPowerSeries.le_weightedOrder_pow\",\n      \"informal_name\": \"Weighted Order Inequality for Powers: $n \\\\cdot \\\\text{ord}_w(f) \\\\leq \\\\text{ord}_w(f^n)$\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ) {f : MvPowerSeries σ R} (n : ℕ),\\n  n • MvPowerSeries.weightedOrder w f ≤ MvPowerSeries.weightedOrder w (f ^ n)\",\n      \"informal_description\": \"For any natural number $n$, the weighted order of the $n$-th power of a multivariate power series $f$ with respect to a weight function $w$ is greater than or equal to $n$ times the weighted order of $f$ with respect to $w$. The weighted order $\\\\text{ord}_w(f)$ is the minimal natural number $n$ such that there exists a monomial in $f$ with non-zero coefficient where the weighted sum of exponents equals $n$, or $\\\\top$ if $f$ is the zero series.\",\n      \"path\": \"Mathlib.RingTheory.MvPowerSeries.Order\"\n    },\n    {\n      \"formal_name\": \"MvPowerSeries.weightedOrder_le\",\n      \"informal_name\": \"Weighted Order Upper Bound for Multivariate Power Series\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ) {f : MvPowerSeries σ R} {d : σ →₀ ℕ},\\n  (MvPowerSeries.coeff d) f ≠ 0 → MvPowerSeries.weightedOrder w f ≤ ↑((Finsupp.weight w) d)\",\n      \"informal_description\": \"For a multivariate power series $ f $ over a semiring $ R $ with variables indexed by $ \\\\sigma $ and a weight function $ w : \\\\sigma \\\\to \\\\mathbb{N} $, if the coefficient of a monomial $ d $ in $ f $ is non-zero, then the weighted order of $ f $ is less than or equal to the weight of $ d $, i.e., $ \\\\operatorname{weightedOrder}_w(f) \\\\leq \\\\sum_{i \\\\in \\\\operatorname{support} d} w(i) \\\\cdot d(i) $.\",\n      \"path\": \"Mathlib.RingTheory.MvPowerSeries.Order\"\n    },\n    {\n      \"formal_name\": \"MvPowerSeries.weightedOrder_monomial_of_ne_zero\",\n      \"informal_name\": \"Weighted Order of a Monomial in Multivariate Power Series with Non-Zero Coefficient\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ) {d : σ →₀ ℕ} {a : R},\\n  a ≠ 0 → MvPowerSeries.weightedOrder w ((MvPowerSeries.monomial d) a) = ↑((Finsupp.weight w) d)\",\n      \"informal_description\": \"For a multivariate power series $ f $ over a semiring $ R $ with variables indexed by $ \\\\sigma $, if $ f $ is a monomial $ \\\\text{monomial}(d, a) $ where $ a \\\\neq 0 $, then the weighted order of $ f $ with respect to a weight function $ w: \\\\sigma \\\\to \\\\mathbb{N} $ is equal to the weighted sum $ \\\\sum_{i \\\\in \\\\text{support } d} w(i) \\\\cdot d(i) $. In symbols, $ \\\\text{weightedOrder}_w(\\\\text{monomial}(d, a)) = \\\\text{weight}_w(d) $.\",\n      \"path\": \"Mathlib.RingTheory.MvPowerSeries.Order\"\n    },\n    {\n      \"formal_name\": \"MvPowerSeries.weightedOrder_monomial\",\n      \"informal_name\": \"Weighted Order of a Monomial Equals Its Weight for Non-zero Coefficients\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ) {d : σ →₀ ℕ} {a : R} [inst_1 : Decidable (a = 0)],\\n  MvPowerSeries.weightedOrder w ((MvPowerSeries.monomial d) a) = if a = 0 then ⊤ else ↑((Finsupp.weight w) d)\",\n      \"informal_description\": \"For a multivariate power series over a semiring $ R $ with variables indexed by $ \\\\sigma $, and a weight function $ w : \\\\sigma \\\\to \\\\mathbb{N} $, the weighted order of the monomial with coefficient $ a $ and exponent $ d $ is equal to the weight $ \\\\sum_{i \\\\in \\\\text{support } d} w(i) \\\\cdot d(i) $ if $ a \\\\neq 0 $, and $ \\\\infty $ otherwise.\",\n      \"path\": \"Mathlib.RingTheory.MvPowerSeries.Order\"\n    }\n  ]\n}"
+            }
+          ],
+          "structuredContent": {
+            "items": [
+              {
+                "formal_name": "MvPowerSeries.le_weightedOrder_smul",
+                "informal_name": "Weighted Order is Non-Increasing under Scalar Multiplication",
+                "kind": "theorem",
+                "type": "∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ) {f : MvPowerSeries σ R} {a : R},\n  MvPowerSeries.weightedOrder w f ≤ MvPowerSeries.weightedOrder w (a • f)",
+                "informal_description": "For any scalar $ a $ in the semiring $ R $, the weighted order of a multivariate power series $ f $ with respect to a weight function $ w $ satisfies $ \\operatorname{ord}_w(f) \\leq \\operatorname{ord}_w(a \\cdot f) $, where $ \\operatorname{ord}_w $ denotes the minimal weighted degree of non-zero monomials in the series.",
+                "path": "Mathlib.RingTheory.MvPowerSeries.Order"
+              },
+              {
+                "formal_name": "MvPowerSeries.le_weightedOrder_pow",
+                "informal_name": "Weighted Order Inequality for Powers: $n \\cdot \\text{ord}_w(f) \\leq \\text{ord}_w(f^n)$",
+                "kind": "theorem",
+                "type": "∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ) {f : MvPowerSeries σ R} (n : ℕ),\n  n • MvPowerSeries.weightedOrder w f ≤ MvPowerSeries.weightedOrder w (f ^ n)",
+                "informal_description": "For any natural number $n$, the weighted order of the $n$-th power of a multivariate power series $f$ with respect to a weight function $w$ is greater than or equal to $n$ times the weighted order of $f$ with respect to $w$. The weighted order $\\text{ord}_w(f)$ is the minimal natural number $n$ such that there exists a monomial in $f$ with non-zero coefficient where the weighted sum of exponents equals $n$, or $\\top$ if $f$ is the zero series.",
+                "path": "Mathlib.RingTheory.MvPowerSeries.Order"
+              },
+              {
+                "formal_name": "MvPowerSeries.weightedOrder_le",
+                "informal_name": "Weighted Order Upper Bound for Multivariate Power Series",
+                "kind": "theorem",
+                "type": "∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ) {f : MvPowerSeries σ R} {d : σ →₀ ℕ},\n  (MvPowerSeries.coeff d) f ≠ 0 → MvPowerSeries.weightedOrder w f ≤ ↑((Finsupp.weight w) d)",
+                "informal_description": "For a multivariate power series $ f $ over a semiring $ R $ with variables indexed by $ \\sigma $ and a weight function $ w : \\sigma \\to \\mathbb{N} $, if the coefficient of a monomial $ d $ in $ f $ is non-zero, then the weighted order of $ f $ is less than or equal to the weight of $ d $, i.e., $ \\operatorname{weightedOrder}_w(f) \\leq \\sum_{i \\in \\operatorname{support} d} w(i) \\cdot d(i) $.",
+                "path": "Mathlib.RingTheory.MvPowerSeries.Order"
+              },
+              {
+                "formal_name": "MvPowerSeries.weightedOrder_monomial_of_ne_zero",
+                "informal_name": "Weighted Order of a Monomial in Multivariate Power Series with Non-Zero Coefficient",
+                "kind": "theorem",
+                "type": "∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ) {d : σ →₀ ℕ} {a : R},\n  a ≠ 0 → MvPowerSeries.weightedOrder w ((MvPowerSeries.monomial d) a) = ↑((Finsupp.weight w) d)",
+                "informal_description": "For a multivariate power series $ f $ over a semiring $ R $ with variables indexed by $ \\sigma $, if $ f $ is a monomial $ \\text{monomial}(d, a) $ where $ a \\neq 0 $, then the weighted order of $ f $ with respect to a weight function $ w: \\sigma \\to \\mathbb{N} $ is equal to the weighted sum $ \\sum_{i \\in \\text{support } d} w(i) \\cdot d(i) $. In symbols, $ \\text{weightedOrder}_w(\\text{monomial}(d, a)) = \\text{weight}_w(d) $.",
+                "path": "Mathlib.RingTheory.MvPowerSeries.Order"
+              },
+              {
+                "formal_name": "MvPowerSeries.weightedOrder_monomial",
+                "informal_name": "Weighted Order of a Monomial Equals Its Weight for Non-zero Coefficients",
+                "kind": "theorem",
+                "type": "∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ) {d : σ →₀ ℕ} {a : R} [inst_1 : Decidable (a = 0)],\n  MvPowerSeries.weightedOrder w ((MvPowerSeries.monomial d) a) = if a = 0 then ⊤ else ↑((Finsupp.weight w) d)",
+                "informal_description": "For a multivariate power series over a semiring $ R $ with variables indexed by $ \\sigma $, and a weight function $ w : \\sigma \\to \\mathbb{N} $, the weighted order of the monomial with coefficient $ a $ and exponent $ d $ is equal to the weight $ \\sum_{i \\in \\text{support } d} w(i) \\cdot d(i) $ if $ a \\neq 0 $, and $ \\infty $ otherwise.",
+                "path": "Mathlib.RingTheory.MvPowerSeries.Order"
+              }
+            ]
+          },
+          "isError": false
+        }
+      },
+      {
+        "form": "literature",
+        "method": "leansearch",
+        "request": {
+          "query": "weighted order of vanishing scaling all weights by a nonnegative scalar scales minimum weighted degree"
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPowerSeries.le_weightedOrder_smul\",\n      \"module_name\": \"Mathlib.RingTheory.MvPowerSeries.Order\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ) {f : MvPowerSeries σ R} {a : R},\\n  MvPowerSeries.weightedOrder w f ≤ MvPowerSeries.weightedOrder w (a • f)\"\n    },\n    {\n      \"name\": \"MvPowerSeries.weightedOrder\",\n      \"module_name\": \"Mathlib.RingTheory.MvPowerSeries.Order\",\n      \"kind\": \"definition\",\n      \"type\": \"{σ : Type u_1} → {R : Type u_2} → [Semiring R] → (σ → ℕ) → MvPowerSeries σ R → ℕ∞\"\n    },\n    {\n      \"name\": \"MvPowerSeries.order\",\n      \"module_name\": \"Mathlib.RingTheory.MvPowerSeries.Order\",\n      \"kind\": \"definition\",\n      \"type\": \"{σ : Type u_1} → {R : Type u_2} → [Semiring R] → MvPowerSeries σ R → ℕ∞\"\n    },\n    {\n      \"name\": \"MonomialOrder.degree_pow\",\n      \"module_name\": \"Mathlib.RingTheory.MvPolynomial.MonomialOrder\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {m : MonomialOrder σ} {R : Type u_2} [inst : CommSemiring R] [IsReduced R] (f : MvPolynomial σ R)\\n  (n : ℕ), m.degree (f ^ n) = n • m.degree f\"\n    },\n    {\n      \"name\": \"MvPolynomial.IsWeightedHomogeneous.C_mul\",\n      \"module_name\": \"Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {M : Type u_2} [inst : CommSemiring R] {σ : Type u_3} [inst_1 : AddCommMonoid M] {φ : MvPolynomial σ R}\\n  {m : M} {w : σ → M},\\n  MvPolynomial.IsWeightedHomogeneous w φ m → ∀ (r : R), MvPolynomial.IsWeightedHomogeneous w (MvPolynomial.C r * φ) m\"\n    }\n  ]\n}"
+            }
+          ],
+          "structuredContent": {
+            "items": [
+              {
+                "name": "MvPowerSeries.le_weightedOrder_smul",
+                "module_name": "Mathlib.RingTheory.MvPowerSeries.Order",
+                "kind": "theorem",
+                "type": "∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ) {f : MvPowerSeries σ R} {a : R},\n  MvPowerSeries.weightedOrder w f ≤ MvPowerSeries.weightedOrder w (a • f)"
+              },
+              {
+                "name": "MvPowerSeries.weightedOrder",
+                "module_name": "Mathlib.RingTheory.MvPowerSeries.Order",
+                "kind": "definition",
+                "type": "{σ : Type u_1} → {R : Type u_2} → [Semiring R] → (σ → ℕ) → MvPowerSeries σ R → ℕ∞"
+              },
+              {
+                "name": "MvPowerSeries.order",
+                "module_name": "Mathlib.RingTheory.MvPowerSeries.Order",
+                "kind": "definition",
+                "type": "{σ : Type u_1} → {R : Type u_2} → [Semiring R] → MvPowerSeries σ R → ℕ∞"
+              },
+              {
+                "name": "MonomialOrder.degree_pow",
+                "module_name": "Mathlib.RingTheory.MvPolynomial.MonomialOrder",
+                "kind": "theorem",
+                "type": "∀ {σ : Type u_1} {m : MonomialOrder σ} {R : Type u_2} [inst : CommSemiring R] [IsReduced R] (f : MvPolynomial σ R)\n  (n : ℕ), m.degree (f ^ n) = n • m.degree f"
+              },
+              {
+                "name": "MvPolynomial.IsWeightedHomogeneous.C_mul",
+                "module_name": "Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous",
+                "kind": "theorem",
+                "type": "∀ {R : Type u_1} {M : Type u_2} [inst : CommSemiring R] {σ : Type u_3} [inst_1 : AddCommMonoid M] {φ : MvPolynomial σ R}\n  {m : M} {w : σ → M},\n  MvPolynomial.IsWeightedHomogeneous w φ m → ∀ (r : R), MvPolynomial.IsWeightedHomogeneous w (MvPolynomial.C r * φ) m"
+              }
+            ]
+          },
+          "isError": false
+        }
+      },
+      {
+        "form": "literature",
+        "method": "loogle",
+        "request": {
+          "query": "sInf, (_ • _)"
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "Error executing tool lean_loogle: loogle query error: unknown identifier 'sInf' Suggestions: \"sInf\", (_ • _), InfSet.sInf, (_ • _), Antitone.sInf, (_ • _), Monotone.sInf, (_ • _), Filter.sInf, (_ • _)"
+            }
+          ],
+          "isError": true
+        }
+      },
+      {
+        "form": "literature",
+        "method": "local",
+        "request": {
+          "query": "sInf_smul"
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\n  \"items\": [\n    {\n      \"name\": \"Real.sInf_smul_of_nonneg\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Basic/Real/Pointwise.lean\"\n    },\n    {\n      \"name\": \"Real.sInf_smul_of_nonpos\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Basic/Real/Pointwise.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+            }
+          ],
+          "structuredContent": {
+            "items": [
+              {
+                "name": "Real.sInf_smul_of_nonneg",
+                "kind": "theorem",
+                "file": ".lake/packages/mathlib/Mathlib/Basic/Real/Pointwise.lean"
+              },
+              {
+                "name": "Real.sInf_smul_of_nonpos",
+                "kind": "theorem",
+                "file": ".lake/packages/mathlib/Mathlib/Basic/Real/Pointwise.lean"
+              }
+            ],
+            "index": "unavailable"
+          },
+          "isError": false
+        }
+      }
+    ]
+  },
+  {
+    "form": "abstract",
+    "methods": [
+      {
+        "form": "abstract",
+        "method": "finder",
+        "request": {
+          "query": "finite infimum commutes with infimum top preserving homomorphism infDegree map monotone WithTop"
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Set.map_finite_iInf\",\n      \"informal_name\": \"Preservation of Finite Infima by Infimum- and Top-Preserving Maps\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u} {β : Type v} {F : Type u_1} {ι : Type u_2} [inst : CompleteLattice α] [inst_1 : CompleteLattice β]\\n  [inst_2 : FunLike F α β] [InfTopHomClass F α β] [Finite ι] (f : F) (g : ι → α), f (⨅ i, g i) = ⨅ i, f (g i)\",\n      \"informal_description\": \"Let $\\\\alpha$ and $\\\\beta$ be complete lattices, and let $\\\\iota$ be a finite type. For any function $f : \\\\alpha \\\\to \\\\beta$ that preserves infima and top elements (i.e., $f$ is an $\\\\inf$- and $\\\\top$-homomorphism), and for any indexed family $g : \\\\iota \\\\to \\\\alpha$, the following equality holds: $$ f\\\\left(\\\\bigwedge_{i \\\\in \\\\iota} g(i)\\\\right) = \\\\bigwedge_{i \\\\in \\\\iota} f(g(i)). $$\",\n      \"path\": \"Mathlib.Data.Set.Finite.Lattice\"\n    },\n    {\n      \"formal_name\": \"AddMonoidAlgebra.infDegree_withTop_some_comp\",\n      \"informal_name\": \"Infimum Degree Invariance under WithTop Embedding\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {A : Type u_3} {T : Type u_4} [inst : Semiring R] [inst_1 : SemilatticeInf T] [inst_2 : OrderTop T]\\n  {D : A → T} {s : AddMonoidAlgebra R A},\\n  s.support.Nonempty → AddMonoidAlgebra.infDegree (WithTop.some ∘ D) s = ↑(AddMonoidAlgebra.infDegree D s)\",\n      \"informal_description\": \"For a non-empty finite support element $ s $ in the additive monoid algebra $ R[A] $, the infimum degree computed using the degree function $ D $ composed with the $ \\\\text{WithTop} $ embedding equals the infimum degree computed directly with $ D $. Formally, $ \\\\infdegree (\\\\top \\\\circ D) s = \\\\infdegree D s $, where $ \\\\top $ denotes the canonical embedding of $ A $ into $ \\\\text{WithTop}(A) $.\",\n      \"path\": \"Mathlib.Algebra.MonoidAlgebra.Degree\"\n    },\n    {\n      \"formal_name\": \"Finset.comp_inf_eq_inf_comp\",\n      \"informal_name\": \"Compatibility of Infimum with Infimum-Preserving Functions\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_2} {β : Type u_3} {γ : Type u_4} [inst : SemilatticeInf α] [inst_1 : OrderTop α]\\n  [inst_2 : SemilatticeInf γ] [inst_3 : OrderTop γ] {s : Finset β} {f : β → α} (g : α → γ),\\n  (∀ (x y : α), g (x ⊓ y) = g x ⊓ g y) → g ⊤ = ⊤ → g (s.inf f) = s.inf (g ∘ f)\",\n      \"informal_description\": \"Let $\\\\gamma$ be an infimum semilattice with top element $\\\\top$. For any finite set $s \\\\subseteq \\\\beta$, function $f : \\\\beta \\\\to \\\\alpha$, and function $g : \\\\alpha \\\\to \\\\gamma$ that preserves infima ($g(x \\\\sqcap y) = g(x) \\\\sqcap g(y)$) and the top element ($g(\\\\top) = \\\\top$), it holds that $g$ applied to the infimum of $f(s)$ equals the infimum of $g \\\\circ f(s)$. Symbolically: $g\\\\left(\\\\bigwedge_{b \\\\in s} f(b)\\\\right) = \\\\bigwedge_{b \\\\in s} g(f(b))$.\",\n      \"path\": \"Mathlib.Data.Finset.Lattice.Fold\"\n    },\n    {\n      \"formal_name\": \"Set.map_finite_biInf\",\n      \"informal_name\": \"Preservation of Infimum under Function Mapping for Finite Sets\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u} {β : Type v} {F : Type u_1} {ι : Type u_2} [inst : CompleteLattice α] [inst_1 : CompleteLattice β]\\n  [inst_2 : FunLike F α β] [InfTopHomClass F α β] {s : Set ι},\\n  s.Finite → ∀ (f : F) (g : ι → α), f (⨅ x ∈ s, g x) = ⨅ x ∈ s, f (g x)\",\n      \"informal_description\": \"For any finite set $ s $, if $ f $ is an infimum and top-preserving homomorphism between complete lattices $ \\\\alpha $ and $ \\\\beta $, then $ f $ applied to the infimum of $ g(x) $ over $ s $ equals the infimum of $ f(g(x)) $ over $ s $. Symbolically: $ f\\\\left(\\\\bigwedge_{x \\\\in s} g(x)\\\\right) = \\\\bigwedge_{x \\\\in s} f(g(x)) $.\",\n      \"path\": \"Mathlib.Data.Set.Finite.Lattice\"\n    },\n    {\n      \"formal_name\": \"map_finset_inf\",\n      \"informal_name\": \"Infimum-Top Homomorphism Preserves Infimum over Finite Sets\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {F : Type u_1} {α : Type u_2} {β : Type u_3} {ι : Type u_5} [inst : SemilatticeInf α] [inst_1 : OrderTop α]\\n  [inst_2 : SemilatticeInf β] [inst_3 : OrderTop β] [inst_4 : FunLike F α β] [InfTopHomClass F α β] (f : F)\\n  (s : Finset ι) (g : ι → α), f (s.inf g) = s.inf (⇑f ∘ g)\",\n      \"informal_description\": \"For a function $ f $ preserving infima and the top element, the image of the infimum of a finite set $ s $ under $ f $ is equal to the infimum of the images of the elements of $ s $ under $ f $, i.e., $ f\\\\left(\\\\bigwedge_{b \\\\in s} g(b)\\\\right) = \\\\bigwedge_{b \\\\in s} f(g(b)) $.\",\n      \"path\": \"Mathlib.Data.Finset.Lattice.Fold\"\n    }\n  ]\n}"
+            }
+          ],
+          "structuredContent": {
+            "items": [
+              {
+                "formal_name": "Set.map_finite_iInf",
+                "informal_name": "Preservation of Finite Infima by Infimum- and Top-Preserving Maps",
+                "kind": "theorem",
+                "type": "∀ {α : Type u} {β : Type v} {F : Type u_1} {ι : Type u_2} [inst : CompleteLattice α] [inst_1 : CompleteLattice β]\n  [inst_2 : FunLike F α β] [InfTopHomClass F α β] [Finite ι] (f : F) (g : ι → α), f (⨅ i, g i) = ⨅ i, f (g i)",
+                "informal_description": "Let $\\alpha$ and $\\beta$ be complete lattices, and let $\\iota$ be a finite type. For any function $f : \\alpha \\to \\beta$ that preserves infima and top elements (i.e., $f$ is an $\\inf$- and $\\top$-homomorphism), and for any indexed family $g : \\iota \\to \\alpha$, the following equality holds: $$ f\\left(\\bigwedge_{i \\in \\iota} g(i)\\right) = \\bigwedge_{i \\in \\iota} f(g(i)). $$",
+                "path": "Mathlib.Data.Set.Finite.Lattice"
+              },
+              {
+                "formal_name": "AddMonoidAlgebra.infDegree_withTop_some_comp",
+                "informal_name": "Infimum Degree Invariance under WithTop Embedding",
+                "kind": "theorem",
+                "type": "∀ {R : Type u_1} {A : Type u_3} {T : Type u_4} [inst : Semiring R] [inst_1 : SemilatticeInf T] [inst_2 : OrderTop T]\n  {D : A → T} {s : AddMonoidAlgebra R A},\n  s.support.Nonempty → AddMonoidAlgebra.infDegree (WithTop.some ∘ D) s = ↑(AddMonoidAlgebra.infDegree D s)",
+                "informal_description": "For a non-empty finite support element $ s $ in the additive monoid algebra $ R[A] $, the infimum degree computed using the degree function $ D $ composed with the $ \\text{WithTop} $ embedding equals the infimum degree computed directly with $ D $. Formally, $ \\infdegree (\\top \\circ D) s = \\infdegree D s $, where $ \\top $ denotes the canonical embedding of $ A $ into $ \\text{WithTop}(A) $.",
+                "path": "Mathlib.Algebra.MonoidAlgebra.Degree"
+              },
+              {
+                "formal_name": "Finset.comp_inf_eq_inf_comp",
+                "informal_name": "Compatibility of Infimum with Infimum-Preserving Functions",
+                "kind": "theorem",
+                "type": "∀ {α : Type u_2} {β : Type u_3} {γ : Type u_4} [inst : SemilatticeInf α] [inst_1 : OrderTop α]\n  [inst_2 : SemilatticeInf γ] [inst_3 : OrderTop γ] {s : Finset β} {f : β → α} (g : α → γ),\n  (∀ (x y : α), g (x ⊓ y) = g x ⊓ g y) → g ⊤ = ⊤ → g (s.inf f) = s.inf (g ∘ f)",
+                "informal_description": "Let $\\gamma$ be an infimum semilattice with top element $\\top$. For any finite set $s \\subseteq \\beta$, function $f : \\beta \\to \\alpha$, and function $g : \\alpha \\to \\gamma$ that preserves infima ($g(x \\sqcap y) = g(x) \\sqcap g(y)$) and the top element ($g(\\top) = \\top$), it holds that $g$ applied to the infimum of $f(s)$ equals the infimum of $g \\circ f(s)$. Symbolically: $g\\left(\\bigwedge_{b \\in s} f(b)\\right) = \\bigwedge_{b \\in s} g(f(b))$.",
+                "path": "Mathlib.Data.Finset.Lattice.Fold"
+              },
+              {
+                "formal_name": "Set.map_finite_biInf",
+                "informal_name": "Preservation of Infimum under Function Mapping for Finite Sets",
+                "kind": "theorem",
+                "type": "∀ {α : Type u} {β : Type v} {F : Type u_1} {ι : Type u_2} [inst : CompleteLattice α] [inst_1 : CompleteLattice β]\n  [inst_2 : FunLike F α β] [InfTopHomClass F α β] {s : Set ι},\n  s.Finite → ∀ (f : F) (g : ι → α), f (⨅ x ∈ s, g x) = ⨅ x ∈ s, f (g x)",
+                "informal_description": "For any finite set $ s $, if $ f $ is an infimum and top-preserving homomorphism between complete lattices $ \\alpha $ and $ \\beta $, then $ f $ applied to the infimum of $ g(x) $ over $ s $ equals the infimum of $ f(g(x)) $ over $ s $. Symbolically: $ f\\left(\\bigwedge_{x \\in s} g(x)\\right) = \\bigwedge_{x \\in s} f(g(x)) $.",
+                "path": "Mathlib.Data.Set.Finite.Lattice"
+              },
+              {
+                "formal_name": "map_finset_inf",
+                "informal_name": "Infimum-Top Homomorphism Preserves Infimum over Finite Sets",
+                "kind": "theorem",
+                "type": "∀ {F : Type u_1} {α : Type u_2} {β : Type u_3} {ι : Type u_5} [inst : SemilatticeInf α] [inst_1 : OrderTop α]\n  [inst_2 : SemilatticeInf β] [inst_3 : OrderTop β] [inst_4 : FunLike F α β] [InfTopHomClass F α β] (f : F)\n  (s : Finset ι) (g : ι → α), f (s.inf g) = s.inf (⇑f ∘ g)",
+                "informal_description": "For a function $ f $ preserving infima and the top element, the image of the infimum of a finite set $ s $ under $ f $ is equal to the infimum of the images of the elements of $ s $ under $ f $, i.e., $ f\\left(\\bigwedge_{b \\in s} g(b)\\right) = \\bigwedge_{b \\in s} f(g(b)) $.",
+                "path": "Mathlib.Data.Finset.Lattice.Fold"
+              }
+            ]
+          },
+          "isError": false
+        }
+      },
+      {
+        "form": "abstract",
+        "method": "leansearch",
+        "request": {
+          "query": "finite infimum commutes with infimum top preserving homomorphism infDegree map monotone WithTop"
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\n  \"items\": [\n    {\n      \"name\": \"map_finset_inf\",\n      \"module_name\": \"Mathlib.Data.Finset.Lattice.Fold\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {F : Type u_1} {α : Type u_2} {β : Type u_3} {ι : Type u_5} [inst : SemilatticeInf α] [inst_1 : OrderTop α]\\n  [inst_2 : SemilatticeInf β] [inst_3 : OrderTop β] [inst_4 : FunLike F α β] [InfTopHomClass F α β] (f : F)\\n  (s : Finset ι) (g : ι → α), f (s.inf g) = s.inf (⇑f ∘ g)\"\n    },\n    {\n      \"name\": \"Finset.comp_inf_eq_inf_comp_of_is_total\",\n      \"module_name\": \"Mathlib.Data.Finset.Lattice.Fold\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_2} {β : Type u_3} {ι : Type u_5} [inst : LinearOrder α] [inst_1 : OrderTop α] {s : Finset ι} {f : ι → α}\\n  [inst_2 : SemilatticeInf β] [inst_3 : OrderTop β] (g : α → β), Monotone g → g ⊤ = ⊤ → g (s.inf f) = s.inf (g ∘ f)\"\n    },\n    {\n      \"name\": \"Set.map_finite_biInf\",\n      \"module_name\": \"Mathlib.Data.Set.Finite.Lattice\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u} {β : Type v} {F : Type u_1} {ι : Type u_2} [inst : CompleteLattice α] [inst_1 : CompleteLattice β]\\n  [inst_2 : FunLike F α β] [InfTopHomClass F α β] {s : Set ι},\\n  s.Finite → ∀ (f : F) (g : ι → α), f (⨅ x ∈ s, g x) = ⨅ x ∈ s, f (g x)\"\n    },\n    {\n      \"name\": \"InfHom.withTop\",\n      \"module_name\": \"Mathlib.Order.Hom.WithTopBot\",\n      \"kind\": \"definition\",\n      \"type\": \"{α : Type u_1} →\\n  {β : Type u_2} →\\n    [inst : SemilatticeInf α] → [inst_1 : SemilatticeInf β] → InfHom α β → InfTopHom (WithTop α) (WithTop β)\"\n    },\n    {\n      \"name\": \"Set.map_finite_iInf\",\n      \"module_name\": \"Mathlib.Data.Set.Finite.Lattice\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u} {β : Type v} {F : Type u_1} {ι : Type u_2} [inst : CompleteLattice α] [inst_1 : CompleteLattice β]\\n  [inst_2 : FunLike F α β] [InfTopHomClass F α β] [Finite ι] (f : F) (g : ι → α), f (⨅ i, g i) = ⨅ i, f (g i)\"\n    }\n  ]\n}"
+            }
+          ],
+          "structuredContent": {
+            "items": [
+              {
+                "name": "map_finset_inf",
+                "module_name": "Mathlib.Data.Finset.Lattice.Fold",
+                "kind": "theorem",
+                "type": "∀ {F : Type u_1} {α : Type u_2} {β : Type u_3} {ι : Type u_5} [inst : SemilatticeInf α] [inst_1 : OrderTop α]\n  [inst_2 : SemilatticeInf β] [inst_3 : OrderTop β] [inst_4 : FunLike F α β] [InfTopHomClass F α β] (f : F)\n  (s : Finset ι) (g : ι → α), f (s.inf g) = s.inf (⇑f ∘ g)"
+              },
+              {
+                "name": "Finset.comp_inf_eq_inf_comp_of_is_total",
+                "module_name": "Mathlib.Data.Finset.Lattice.Fold",
+                "kind": "theorem",
+                "type": "∀ {α : Type u_2} {β : Type u_3} {ι : Type u_5} [inst : LinearOrder α] [inst_1 : OrderTop α] {s : Finset ι} {f : ι → α}\n  [inst_2 : SemilatticeInf β] [inst_3 : OrderTop β] (g : α → β), Monotone g → g ⊤ = ⊤ → g (s.inf f) = s.inf (g ∘ f)"
+              },
+              {
+                "name": "Set.map_finite_biInf",
+                "module_name": "Mathlib.Data.Set.Finite.Lattice",
+                "kind": "theorem",
+                "type": "∀ {α : Type u} {β : Type v} {F : Type u_1} {ι : Type u_2} [inst : CompleteLattice α] [inst_1 : CompleteLattice β]\n  [inst_2 : FunLike F α β] [InfTopHomClass F α β] {s : Set ι},\n  s.Finite → ∀ (f : F) (g : ι → α), f (⨅ x ∈ s, g x) = ⨅ x ∈ s, f (g x)"
+              },
+              {
+                "name": "InfHom.withTop",
+                "module_name": "Mathlib.Order.Hom.WithTopBot",
+                "kind": "definition",
+                "type": "{α : Type u_1} →\n  {β : Type u_2} →\n    [inst : SemilatticeInf α] → [inst_1 : SemilatticeInf β] → InfHom α β → InfTopHom (WithTop α) (WithTop β)"
+              },
+              {
+                "name": "Set.map_finite_iInf",
+                "module_name": "Mathlib.Data.Set.Finite.Lattice",
+                "kind": "theorem",
+                "type": "∀ {α : Type u} {β : Type v} {F : Type u_1} {ι : Type u_2} [inst : CompleteLattice α] [inst_1 : CompleteLattice β]\n  [inst_2 : FunLike F α β] [InfTopHomClass F α β] [Finite ι] (f : F) (g : ι → α), f (⨅ i, g i) = ⨅ i, f (g i)"
+              }
+            ]
+          },
+          "isError": false
+        }
+      },
+      {
+        "form": "abstract",
+        "method": "loogle",
+        "request": {
+          "query": "Finset.inf, InfTopHom"
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\n  \"items\": []\n}"
+            }
+          ],
+          "structuredContent": {
+            "items": []
+          },
+          "isError": false
+        }
+      },
+      {
+        "form": "abstract",
+        "method": "local",
+        "request": {
+          "query": "map_finset_inf"
+        },
+        "response": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\n  \"items\": [],\n  \"index\": \"unavailable\"\n}"
+            }
+          ],
+          "structuredContent": {
+            "items": [],
+            "index": "unavailable"
+          },
+          "isError": false
+        }
+      }
+    ]
+  }
+]

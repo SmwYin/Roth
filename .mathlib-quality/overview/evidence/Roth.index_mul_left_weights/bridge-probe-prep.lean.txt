@@ -1,0 +1,14 @@
+namespace IndexScaleBridge148
+open MvPolynomial Roth
+variable {σ : Type*} [Fintype σ]
+theorem replacement {l : ℕ} (P : MvPolynomial σ ℝ) (α : σ → ℝ) (r : σ → ℕ) :
+    index P α (fun j ↦ l * r j) = index P α r / l := by
+  rw [IndexConsumers133.targetBridge, IndexConsumers133.targetBridge, div_eq_inv_mul]
+  have hw : (fun d : σ →₀ ℕ ↦ (weight (fun j ↦ l * r j) d : WithTop ℝ)) =
+      fun d ↦ ((l : ℝ)⁻¹ * weight r d : WithTop ℝ) := by
+    funext d
+    rw [weight_mul_left, div_eq_inv_mul]
+  rw [hw]
+  exact IndexScaleMathlib148.scale (l : ℝ)⁻¹ (by positivity) (weight r) (taylor α P)
+#print axioms replacement
+end IndexScaleBridge148

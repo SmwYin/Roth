@@ -1,0 +1,111 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\n#check_failure Roth.index_mul_left_weights\n#check @map_finset_inf\n#check @Finset.apply_inf'_eq_inf'_comp\n#check @Monotone.withTop_map\n#check @Monotone.map_min\nnamespace IndexScaleMathlib148\nuniverse u v w z\ntheorem transport {A : Type u} {R : Type v} {T : Type w} {U : Type z}\n    [Semiring R] [SemilatticeInf T] [OrderTop T] [SemilatticeInf U] [OrderTop U]\n    (h : InfTopHom T U) (D : A → T) (f : AddMonoidAlgebra R A) :\n    h (AddMonoidAlgebra.infDegree D f) = AddMonoidAlgebra.infDegree (h ∘ D) f :=\n  map_finset_inf h f.coeff.support D\ndef liftMonotone {K : Type w} {L : Type z} [LinearOrder K] [LinearOrder L]\n    (φ : K → L) (hφ : Monotone φ) : InfTopHom (WithTop K) (WithTop L) where\n  toFun := WithTop.map φ\n  map_top' := rfl\n  map_inf' a b := hφ.withTop_map.map_min (a := a) (b := b)\ntheorem projection {K : Type w} {L : Type z} [Zero K] [Zero L]\n    (φ : K → L) (h0 : φ 0 = 0) (x : WithTop K) :\n    (WithTop.map φ x).untopD 0 = φ (x.untopD 0) := by\n  cases x <;> simp [h0]\ntheorem projectedTransport {A : Type u} {R : Type v} {K : Type w} {L : Type z}\n    [Semiring R] [LinearOrder K] [Zero K] [LinearOrder L] [Zero L]\n    (φ : K → L) (hφ : Monotone φ) (h0 : φ 0 = 0) (D : A → K)\n    (f : AddMonoidAlgebra R A) :\n    (AddMonoidAlgebra.infDegree (fun a ↦ (φ (D a) : WithTop L)) f).untopD 0 =\n      φ ((AddMonoidAlgebra.infDegree (fun a ↦ (D a : WithTop K)) f).untopD 0) := by\n  have h := congrArg (WithTop.untopD 0)\n    (transport (liftMonotone φ hφ) (fun a ↦ (D a : WithTop K)) f)\n  exact h.symm.trans (projection φ h0 _)\ntheorem scale {A : Type u} {R : Type v} [Semiring R] (c : ℝ) (hc : 0 ≤ c)\n    (D : A → ℝ) (f : AddMonoidAlgebra R A) :\n    (AddMonoidAlgebra.infDegree (fun a ↦ (c * D a : WithTop ℝ)) f).untopD 0 =\n      c * (AddMonoidAlgebra.infDegree (fun a ↦ (D a : WithTop ℝ)) f).untopD 0 :=\n  projectedTransport (c * ·) (fun _ _ h ↦ mul_le_mul_of_nonneg_left h hc) (mul_zero c) D f\n#print axioms transport\n#print axioms liftMonotone\n#print axioms projection\n#print axioms projectedTransport\n#print axioms scale\nend IndexScaleMathlib148\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.index_mul_left_weights`\",\n      \"line\": 8,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@map_finset_inf : ∀ {F : Type u_1} {α : Type u_2} {β : Type u_3} {ι : Type u_4} [inst : SemilatticeInf α]\\n  [inst_1 : OrderTop α] [inst_2 : SemilatticeInf β] [inst_3 : OrderTop β] [inst_4 : FunLike F α β]\\n  [InfTopHomClass F α β] (f : F) (s : Finset ι) (g : ι → α), f (s.inf g) = s.inf (⇑f ∘ g)\",\n      \"line\": 9,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finset.apply_inf'_eq_inf'_comp : ∀ {α : Type u_1} {β : Type u_2} {γ : Type u_3} [inst : SemilatticeInf α]\\n  [inst_1 : SemilatticeInf γ] {s : Finset β} (H : s.Nonempty) {f : β → α} (g : α → γ),\\n  (∀ (x y : α), g (x ⊓ y) = g x ⊓ g y) → g (s.inf' H f) = s.inf' H (g ∘ f)\",\n      \"line\": 10,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Monotone.withTop_map : ∀ {α : Type u_1} {β : Type u_2} [inst : Preorder α] [inst_1 : Preorder β] {f : α → β},\\n  Monotone f → Monotone (WithTop.map f)\",\n      \"line\": 11,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Monotone.map_min : ∀ {α : Type u_1} {β : Type u_2} [inst : LinearOrder α] [inst_1 : LinearOrder β] {f : α → β}\\n  {a b : α}, Monotone f → f (min a b) = min (f a) (f b)\",\n      \"line\": 12,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'IndexScaleMathlib148.transport' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 43,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'IndexScaleMathlib148.liftMonotone' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 44,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'IndexScaleMathlib148.projection' depends on axioms: [propext]\",\n      \"line\": 45,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'IndexScaleMathlib148.projectedTransport' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 46,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'IndexScaleMathlib148.scale' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 47,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.index_mul_left_weights`",
+          "line": 8,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@map_finset_inf : ∀ {F : Type u_1} {α : Type u_2} {β : Type u_3} {ι : Type u_4} [inst : SemilatticeInf α]\n  [inst_1 : OrderTop α] [inst_2 : SemilatticeInf β] [inst_3 : OrderTop β] [inst_4 : FunLike F α β]\n  [InfTopHomClass F α β] (f : F) (s : Finset ι) (g : ι → α), f (s.inf g) = s.inf (⇑f ∘ g)",
+          "line": 9,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finset.apply_inf'_eq_inf'_comp : ∀ {α : Type u_1} {β : Type u_2} {γ : Type u_3} [inst : SemilatticeInf α]\n  [inst_1 : SemilatticeInf γ] {s : Finset β} (H : s.Nonempty) {f : β → α} (g : α → γ),\n  (∀ (x y : α), g (x ⊓ y) = g x ⊓ g y) → g (s.inf' H f) = s.inf' H (g ∘ f)",
+          "line": 10,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Monotone.withTop_map : ∀ {α : Type u_1} {β : Type u_2} [inst : Preorder α] [inst_1 : Preorder β] {f : α → β},\n  Monotone f → Monotone (WithTop.map f)",
+          "line": 11,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Monotone.map_min : ∀ {α : Type u_1} {β : Type u_2} [inst : LinearOrder α] [inst_1 : LinearOrder β] {f : α → β}\n  {a b : α}, Monotone f → f (min a b) = min (f a) (f b)",
+          "line": 12,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'IndexScaleMathlib148.transport' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 43,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'IndexScaleMathlib148.liftMonotone' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 44,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'IndexScaleMathlib148.projection' depends on axioms: [propext]",
+          "line": 45,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'IndexScaleMathlib148.projectedTransport' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 46,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'IndexScaleMathlib148.scale' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 47,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 1885
+}

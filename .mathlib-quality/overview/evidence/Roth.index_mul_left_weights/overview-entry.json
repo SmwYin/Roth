@@ -1,0 +1,20 @@
+{
+  "type": "Roth.index_mul_left_weights.{u_1} {\u03c3 : Type u_1} [Fintype \u03c3] {l : \u2115} (P : MvPolynomial \u03c3 \u211d) (\u03b1 : \u03c3 \u2192 \u211d) (r : \u03c3 \u2192 \u2115) :\n  (Roth.index P \u03b1 fun j \u21a6 l * r j) = Roth.index P \u03b1 r / \u2191l",
+  "kind": "theorem",
+  "what": "Scaling all natural denominator parameters by l divides the polynomial index by l, including l=0.",
+  "how": "Normalize the image of weighted Taylor support by weight_mul_left, then Real.sInf_smul_of_nonneg. Generic re-aim is map_finset_inf on infDegree.",
+  "hypotheses": "Arbitrary \u03c3 : Type u with Fintype, real polynomial P and center \u03b1, r : \u03c3\u2192\u2115, l : \u2115. No positivity/nonzero premises.",
+  "project_dependencies": [
+    "Roth.index",
+    "Roth.weight",
+    "Roth.weight_mul_left",
+    "MvPolynomial.taylor"
+  ],
+  "caller_summary": "One private caller Roth.index_separated_mul_le_aux, Roth/Theta.lean:447, applies twice at hU\u0398/hV\u0398; full caller replay accepted. One direct canonical kernel consumer.",
+  "mathlib_api_audit": "map_finset_inf (Data/Finset/Lattice/Fold.lean:93 generated dual) on generic infDegree; Real.sInf_smul_of_nonneg (Basic/Real/Pointwise.lean:41); complete five methods on three forms.",
+  "moral_duplications": "Homogeneous scaling of a finite support minimum is existing finite-inf hom transport. Original representation bridge is genuine normalization, not definitional or a preexisting theorem.",
+  "generalization": "No mechanically droppable hypotheses in fixed Roth interface. Verified expanded law for arbitrary semiring coefficients/A/degree targets and zero-preserving monotone maps; scalar specialization arbitrary ordered semiring and c\u22650. Fintype/\u211d changes require parent restatement.",
+  "missing_api": "No missing generic law: map_finset_inf. Project zero-default and reciprocal-weight adapters verified as new normalization proofs; not counted as existing mathlib primitives.",
+  "junk": "Not junk: two proof applications in sole private caller. Not a simp theorem; no external use inferred.",
+  "action": "NO-mathlib-has-it via parent re-aim. Migrate minimum to infDegree and transport by map_finset_inf through checked zero-preserving projection. Replace both caller applications with identical-type bridge. Retain convention-bearing adapter locally in Roth/Index.lean if old index API retained; do not substitute raw map_finset_inf in old rw."
+}

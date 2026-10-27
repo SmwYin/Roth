@@ -1,0 +1,43 @@
+namespace IndexScaleCaller148
+open MvPolynomial Roth
+variable {τ : Type*} [Fintype τ]
+theorem callerReplay {r : Option τ → ℕ} (hr0 : ∀ j, 0 < r j) {q : Option τ → ℕ}
+    {h : Option τ → ℤ} (hh : ∀ j, IsCoprime (h j) (q j : ℤ)) {M : ℝ} {l : ℕ} (hl : 0 < l)
+    {U : MvPolynomial τ ℤ} (hU : U ∈ RSet M (fun j ↦ l * r (some j))) {V : Polynomial ℤ}
+    (hV : V ≠ 0) (hVd : V.natDegree ≤ l * r none) (hVc : ∀ b, |(V.coeff b : ℝ)| ≤ M) :
+    index (map (Int.castRingHom ℝ)
+        (rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) ℤ) V))
+      (fun j ↦ (h j : ℝ) / q j) r ≤ l * lem6Φ q r M l := by
+  classical
+  set V' : MvPolynomial Unit ℤ := (uniqueAlgEquiv ℤ Unit).symm V with hV'
+  have hV'0 : V' ≠ 0 := by
+    rwa [hV', ne_eq, map_eq_zero_iff _ (uniqueAlgEquiv ℤ Unit).symm.injective]
+  have hVmem : V' ∈ RSet M (fun _ : Unit ↦ l * r none) := by
+    refine ⟨hV'0, fun j ↦ ?_, fun d ↦ ?_⟩
+    · rw [Subsingleton.elim j default, hV', degreeOf_uniqueAlgEquiv_symm]
+      exact hVd
+    · rw [hV', MvPolynomial.coeff_uniqueAlgEquiv_symm]
+      exact hVc _
+  have hinjV : Function.Injective (fun _ : Unit ↦ (none : Option τ)) :=
+    fun a b _ ↦ Subsingleton.elim a b
+  have hmU : map (Int.castRingHom ℝ) U ≠ 0 := fun h0 ↦
+    hU.1 (map_injective _ Int.cast_injective (h0.trans (map_zero _).symm))
+  have hmV : map (Int.castRingHom ℝ) V' ≠ 0 := fun h0 ↦
+    hV'0 (map_injective _ Int.cast_injective (h0.trans (map_zero _).symm))
+  rw [aeval_X_eq_rename, _root_.map_mul, map_rename, map_rename,
+    index_mul ((map_ne_zero_iff (rename (R := ℝ) some)
+      (rename_injective _ (Option.some_injective _))).2 hmU)
+      ((map_ne_zero_iff (rename (R := ℝ) (fun _ : Unit ↦ (none : Option τ)))
+        (rename_injective _ hinjV)).2 hmV) _ hr0,
+    index_rename (Option.some_injective _), index_rename hinjV]
+  have hUΘ := index_le_Θ hU (h := h ∘ some)
+    fun j ↦ hh (some j)
+  have hVΘ := index_le_Θ hVmem
+    (q := fun _ : Unit ↦ q none) (h := fun _ ↦ h none) fun _ ↦ hh none
+  rw [IndexScale148.replacement] at hUΘ hVΘ
+  have hlR : (0 : ℝ) < l := by exact_mod_cast hl
+  rw [lem6Φ, mul_add, add_comm]
+  exact add_le_add ((div_le_iff₀' hlR).1 hVΘ) ((div_le_iff₀' hlR).1 hUΘ)
+
+#print axioms callerReplay
+end IndexScaleCaller148

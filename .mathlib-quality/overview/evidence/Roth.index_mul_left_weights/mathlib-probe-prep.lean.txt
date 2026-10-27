@@ -1,0 +1,49 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+#check_failure Roth.index_mul_left_weights
+#check @map_finset_inf
+#check @Finset.apply_inf'_eq_inf'_comp
+#check @Monotone.withTop_map
+#check @Monotone.map_min
+namespace IndexScaleMathlib148
+universe u v w z
+ theorem transport {A : Type u} {R : Type v} {T : Type w} {U : Type z}
+    [Semiring R] [SemilatticeInf T] [OrderTop T] [SemilatticeInf U] [OrderTop U]
+    (h : InfTopHom T U) (D : A → T) (f : AddMonoidAlgebra R A) :
+    h (AddMonoidAlgebra.infDegree D f) = AddMonoidAlgebra.infDegree (h ∘ D) f :=
+  map_finset_inf h f.coeff.support D
+ def liftMonotone {K : Type w} {L : Type z} [LinearOrder K] [LinearOrder L]
+    (φ : K → L) (hφ : Monotone φ) : InfTopHom (WithTop K) (WithTop L) where
+  toFun := WithTop.map φ
+  map_top' := rfl
+  map_inf' a b := by
+    simpa only [inf_eq_min] using hφ.withTop_map.map_min a b
+ theorem projection {K : Type w} {L : Type z} [Zero K] [Zero L]
+    (φ : K → L) (h0 : φ 0 = 0) (x : WithTop K) :
+    (WithTop.map φ x).untopD 0 = φ (x.untopD 0) := by
+  cases x <;> simp [h0]
+ theorem projectedTransport {A : Type u} {R : Type v} {K : Type w} {L : Type z}
+    [Semiring R] [LinearOrder K] [Zero K] [LinearOrder L] [Zero L]
+    (φ : K → L) (hφ : Monotone φ) (h0 : φ 0 = 0) (D : A → K)
+    (f : AddMonoidAlgebra R A) :
+    (AddMonoidAlgebra.infDegree (fun a ↦ (φ (D a) : WithTop L)) f).untopD 0 =
+      φ ((AddMonoidAlgebra.infDegree (fun a ↦ (D a : WithTop K)) f).untopD 0) := by
+  have h := congrArg (WithTop.untopD 0)
+    (transport (liftMonotone φ hφ) (fun a ↦ (D a : WithTop K)) f)
+  exact h.symm.trans (projection φ h0 _)
+ theorem scale {A : Type u} {R : Type v} [Semiring R] (c : ℝ) (hc : 0 ≤ c)
+    (D : A → ℝ) (f : AddMonoidAlgebra R A) :
+    (AddMonoidAlgebra.infDegree (fun a ↦ (c * D a : WithTop ℝ)) f).untopD 0 =
+      c * (AddMonoidAlgebra.infDegree (fun a ↦ (D a : WithTop ℝ)) f).untopD 0 :=
+  projectedTransport (c * ·) (fun _ _ h ↦ mul_le_mul_of_nonneg_left h hc) (mul_zero c) D f
+#print axioms transport
+#print axioms liftMonotone
+#print axioms projection
+#print axioms projectedTransport
+#print axioms scale
+end IndexScaleMathlib148
