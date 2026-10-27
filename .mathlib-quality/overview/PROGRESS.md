@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-26
 
-- Declarations completed: **168/293**
-- Next declaration: **#169 `Roth.det_hasseDeriv_separated`** (Roth/Separation.lean:351)
+- Declarations completed: **169/293**
+- Next declaration: **#170 `Roth.exists_sum_mul_eq_gcd`** (Roth/Separation.lean:374)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -187,10 +187,10 @@ Last regenerated: 2026-10-26
 | 166 | `Roth.eq_sum_aeval_basis_coeffNone_aux` | Roth/Separation.lean:265 | SKIP | [report](mathlibable/Roth.eq_sum_aeval_basis_coeffNone_aux.md) |
 | 167 | `Roth.exists_coeffNone_basis_aux` | Roth/Separation.lean:291 | SKIP | [report](mathlibable/Roth.exists_coeffNone_basis_aux.md) |
 | 168 | `Roth.exists_separated_representation` | Roth/Separation.lean:325 | BORDERLINE-needs-human | [report](mathlibable/Roth.exists_separated_representation.md) |
+| 169 | `Roth.det_hasseDeriv_separated` | Roth/Separation.lean:351 | YES-but-generalise-first | [report](mathlibable/Roth.det_hasseDeriv_separated.md) |
 
 ## Remaining declarations (in processing order)
 
-- #169 `Roth.det_hasseDeriv_separated` (Roth/Separation.lean:351, public theorem)
 - #170 `Roth.exists_sum_mul_eq_gcd` (Roth/Separation.lean:374, public theorem)
 - #171 `Roth.exists_nat_smul_eq_map` (Roth/Separation.lean:380, public theorem)
 - #172 `Roth.exists_primitive_smul_eq` (Roth/Separation.lean:406, public theorem)
