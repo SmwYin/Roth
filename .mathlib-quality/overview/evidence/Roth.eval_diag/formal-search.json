@@ -1,0 +1,609 @@
+[
+  {
+    "tool": "mcp__lean_lsp__lean_leanfinder",
+    "request": {
+      "query": "Evaluating the diagonal substitution P(X,...,X) at x equals evaluating P at (x,...,x), after mapping coefficients"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.eval_C_X_eval₂_map_C_X\",\n      \"informal_name\": \"Evaluation of Bivariate Polynomial at X Recovers Original Polynomial\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommSemiring R] {p : Polynomial (Polynomial R)},\\n  Polynomial.eval (Polynomial.C Polynomial.X)\\n      (Polynomial.eval₂ (Polynomial.mapRingHom (algebraMap R (Polynomial (Polynomial R)))) (Polynomial.C Polynomial.X)\\n        p) =\\n    p\",\n      \"informal_description\": \"For any polynomial $ p $ in $ R[X][Y] $, evaluating $ p $ at $ Y = X $ (considered as a constant polynomial in $ R[X] $) results in $ p $ itself. This identity demonstrates that substituting the variable $ Y $ with the indeterminate $ X $ in the polynomial ring $ R[X][Y] $ preserves the original polynomial.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Bivariate\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.eval_toMvPolynomial\",\n      \"informal_name\": \"Evaluation After Substitution Equals Evaluation at Substituted Value\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {σ : Type u_3} [inst : CommSemiring R] (f : σ → R) (i : σ) (p : Polynomial R),\\n  (MvPolynomial.eval f) ((Polynomial.toMvPolynomial i) p) = Polynomial.eval (f i) p\",\n      \"informal_description\": \"For any function $ f : \\\\sigma \\\\to R $, any $ i \\\\in \\\\sigma $, and any polynomial $ p \\\\in R[X] $, the evaluation of the multivariate polynomial obtained by substituting the variable $ X $ with $ X_i $ in $ p $, using $ f $, equals the evaluation of $ p $ at $ f(i) $. Formally, $ \\\\text{eval}(f, p.\\\\text{toMvPolynomial}(i)) = \\\\text{eval}(f(i), p) $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.eval₂Hom_X\",\n      \"informal_name\": \"Eval₂ Coincides with Ring Homomorphism on Multivariate Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {S : Type v} [inst : CommRing S] {R : Type u} (c : ℤ →+* S) (f : MvPolynomial R ℤ →+* S) (x : MvPolynomial R ℤ),\\n  MvPolynomial.eval₂ c (⇑f ∘ MvPolynomial.X) x = f x\",\n      \"informal_description\": \"For any ring homomorphism $ f : R[\\\\sigma] \\\\to S $, coefficient map $ c : \\\\mathbb{Z} \\\\to S $, and polynomial $ x \\\\in R[\\\\sigma] $, evaluating $ x $ using the `eval₂` function with coefficient map $ c $ and variable map $ f \\\\circ X $ yields the same result as applying $ f $ directly to $ x $, i.e., $ \\\\text{eval}_2(c, f \\\\circ X, x) = f(x) $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.CommRing\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.eval_polynomial_eval_finSuccEquiv\",\n      \"informal_name\": \"Evaluation Compatibility with Fin(n+1) to Fin(n) Equivalence\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {n : ℕ} {x : Fin n → R} [inst : CommSemiring R] (f : MvPolynomial (Fin (n + 1)) R)\\n  (q : MvPolynomial (Fin n) R),\\n  (MvPolynomial.eval x) (Polynomial.eval q ((MvPolynomial.finSuccEquiv R n) f)) =\\n    (MvPolynomial.eval fun i => Fin.cases ((MvPolynomial.eval x) q) x i) f\",\n      \"informal_description\": \"For any commutative semiring $ R $, natural number $ n $, evaluation map $ x : \\\\text{Fin}(n) \\\\to R $, multivariate polynomial $ f \\\\in R[\\\\text{Fin}(n+1)] $, and coefficient polynomial $ q \\\\in R[\\\\text{Fin}(n)] $, evaluating $ f $ after applying the $ \\\\text{Fin}(n+1) $-to-\\\\text{Fin}(n) algebra equivalence with outer variable substitution $ q $ is equivalent to directly evaluating $ f $ with the first variable replaced by $ q $ and other variables evaluated via $ x $. This establishes consistency between nested polynomial evaluations and direct evaluation under variable renaming.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Polynomial\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.eval_eq_eval_mv_eval'\",\n      \"informal_name\": \"Evaluation Equivalence for Multivariate Polynomials over Fin(n+1) and Univariate Polynomials with Coefficients in Fin(n) Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : CommSemiring R] {n : ℕ} (s : Fin n → R) (y : R) (f : MvPolynomial (Fin (n + 1)) R),\\n  (MvPolynomial.eval (Fin.cons y s)) f =\\n    Polynomial.eval y (Polynomial.map (MvPolynomial.eval s) ((MvPolynomial.finSuccEquiv R n) f))\",\n      \"informal_description\": \"Evaluating a multivariate polynomial $ f $ in $ n+1 $ variables at a tuple $ (y, s_0, s_1, \\\\ldots, s_n) $ is equivalent to first applying the $ \\\\text{Fin}(n+1) \\\\simeq \\\\text{Option}(\\\\text{Fin}(n)) $ variable equivalence to express $ f $ as a univariate polynomial in $ y $ with coefficients in $ n $-variable polynomials, then evaluating this outer polynomial at $ y $ after evaluating its coefficients using $ s $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Polynomial.eval_C_X_eval₂_map_C_X",
+            "informal_name": "Evaluation of Bivariate Polynomial at X Recovers Original Polynomial",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommSemiring R] {p : Polynomial (Polynomial R)},\n  Polynomial.eval (Polynomial.C Polynomial.X)\n      (Polynomial.eval₂ (Polynomial.mapRingHom (algebraMap R (Polynomial (Polynomial R)))) (Polynomial.C Polynomial.X)\n        p) =\n    p",
+            "informal_description": "For any polynomial $ p $ in $ R[X][Y] $, evaluating $ p $ at $ Y = X $ (considered as a constant polynomial in $ R[X] $) results in $ p $ itself. This identity demonstrates that substituting the variable $ Y $ with the indeterminate $ X $ in the polynomial ring $ R[X][Y] $ preserves the original polynomial.",
+            "path": "Mathlib.Algebra.Polynomial.Bivariate"
+          },
+          {
+            "formal_name": "MvPolynomial.eval_toMvPolynomial",
+            "informal_name": "Evaluation After Substitution Equals Evaluation at Substituted Value",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {σ : Type u_3} [inst : CommSemiring R] (f : σ → R) (i : σ) (p : Polynomial R),\n  (MvPolynomial.eval f) ((Polynomial.toMvPolynomial i) p) = Polynomial.eval (f i) p",
+            "informal_description": "For any function $ f : \\sigma \\to R $, any $ i \\in \\sigma $, and any polynomial $ p \\in R[X] $, the evaluation of the multivariate polynomial obtained by substituting the variable $ X $ with $ X_i $ in $ p $, using $ f $, equals the evaluation of $ p $ at $ f(i) $. Formally, $ \\text{eval}(f, p.\\text{toMvPolynomial}(i)) = \\text{eval}(f(i), p) $.",
+            "path": "Mathlib.Algebra.MvPolynomial.Equiv"
+          },
+          {
+            "formal_name": "MvPolynomial.eval₂Hom_X",
+            "informal_name": "Eval₂ Coincides with Ring Homomorphism on Multivariate Polynomials",
+            "kind": "theorem",
+            "type": "∀ {S : Type v} [inst : CommRing S] {R : Type u} (c : ℤ →+* S) (f : MvPolynomial R ℤ →+* S) (x : MvPolynomial R ℤ),\n  MvPolynomial.eval₂ c (⇑f ∘ MvPolynomial.X) x = f x",
+            "informal_description": "For any ring homomorphism $ f : R[\\sigma] \\to S $, coefficient map $ c : \\mathbb{Z} \\to S $, and polynomial $ x \\in R[\\sigma] $, evaluating $ x $ using the `eval₂` function with coefficient map $ c $ and variable map $ f \\circ X $ yields the same result as applying $ f $ directly to $ x $, i.e., $ \\text{eval}_2(c, f \\circ X, x) = f(x) $.",
+            "path": "Mathlib.Algebra.MvPolynomial.CommRing"
+          },
+          {
+            "formal_name": "MvPolynomial.eval_polynomial_eval_finSuccEquiv",
+            "informal_name": "Evaluation Compatibility with Fin(n+1) to Fin(n) Equivalence",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {n : ℕ} {x : Fin n → R} [inst : CommSemiring R] (f : MvPolynomial (Fin (n + 1)) R)\n  (q : MvPolynomial (Fin n) R),\n  (MvPolynomial.eval x) (Polynomial.eval q ((MvPolynomial.finSuccEquiv R n) f)) =\n    (MvPolynomial.eval fun i => Fin.cases ((MvPolynomial.eval x) q) x i) f",
+            "informal_description": "For any commutative semiring $ R $, natural number $ n $, evaluation map $ x : \\text{Fin}(n) \\to R $, multivariate polynomial $ f \\in R[\\text{Fin}(n+1)] $, and coefficient polynomial $ q \\in R[\\text{Fin}(n)] $, evaluating $ f $ after applying the $ \\text{Fin}(n+1) $-to-\\text{Fin}(n) algebra equivalence with outer variable substitution $ q $ is equivalent to directly evaluating $ f $ with the first variable replaced by $ q $ and other variables evaluated via $ x $. This establishes consistency between nested polynomial evaluations and direct evaluation under variable renaming.",
+            "path": "Mathlib.Algebra.MvPolynomial.Polynomial"
+          },
+          {
+            "formal_name": "MvPolynomial.eval_eq_eval_mv_eval'",
+            "informal_name": "Evaluation Equivalence for Multivariate Polynomials over Fin(n+1) and Univariate Polynomials with Coefficients in Fin(n) Polynomials",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : CommSemiring R] {n : ℕ} (s : Fin n → R) (y : R) (f : MvPolynomial (Fin (n + 1)) R),\n  (MvPolynomial.eval (Fin.cons y s)) f =\n    Polynomial.eval y (Polynomial.map (MvPolynomial.eval s) ((MvPolynomial.finSuccEquiv R n) f))",
+            "informal_description": "Evaluating a multivariate polynomial $ f $ in $ n+1 $ variables at a tuple $ (y, s_0, s_1, \\ldots, s_n) $ is equivalent to first applying the $ \\text{Fin}(n+1) \\simeq \\text{Option}(\\text{Fin}(n)) $ variable equivalence to express $ f $ as a univariate polynomial in $ y $ with coefficients in $ n $-variable polynomials, then evaluating this outer polynomial at $ y $ after evaluating its coefficients using $ s $.",
+            "path": "Mathlib.Algebra.MvPolynomial.Equiv"
+          }
+        ]
+      },
+      "isError": false
+    },
+    "form": "current"
+  },
+  {
+    "tool": "mcp__lean_lsp__lean_leanfinder",
+    "request": {
+      "query": "A ring homomorphism applied to multivariate polynomial evaluation equals evaluation with the composed coefficient homomorphism and mapped variable values"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"MvPolynomial.map_eval₂Hom\",\n      \"informal_name\": \"Compatibility of Multivariate Polynomial Evaluation with Ring Homomorphism Composition\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S₁ : Type v} {S₂ : Type w} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁]\\n  [inst_2 : CommSemiring S₂] (f : R →+* S₁) (g : σ → S₁) (φ : S₁ →+* S₂) (p : MvPolynomial σ R),\\n  φ ((MvPolynomial.eval₂Hom f g) p) = (MvPolynomial.eval₂Hom (φ.comp f) fun i => φ (g i)) p\",\n      \"informal_description\": \"For any commutative semiring $R$, type $\\\\sigma$, and ring homomorphisms $f : R \\\\to S_1$, $g : \\\\sigma \\\\to S_1$, and $\\\\phi : S_1 \\\\to S_2$, the evaluation of a polynomial $p \\\\in R[\\\\sigma]$ satisfies $\\\\phi(\\\\mathrm{eval}_2(f, g, p)) = \\\\mathrm{eval}_2(\\\\phi \\\\circ f, \\\\phi \\\\circ g, p)$. This expresses that applying $\\\\phi$ after evaluation is equivalent to composing $\\\\phi$ with the coefficient map and variable assignment before evaluation.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.eval₂Hom_map_hom\",\n      \"informal_name\": \"Compatibility of Evaluation and Coefficient Mapping in Multivariate Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S₁ : Type v} {S₂ : Type w} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁]\\n  [inst_2 : CommSemiring S₂] (f : R →+* S₁) (g : σ → S₂) (φ : S₁ →+* S₂) (p : MvPolynomial σ R),\\n  (MvPolynomial.eval₂Hom φ g) ((MvPolynomial.map f) p) = (MvPolynomial.eval₂Hom (φ.comp f) g) p\",\n      \"informal_description\": \"For commutative semirings $R$, $S_1$, $S_2$, a type $\\\\sigma$, ring homomorphism $f : R \\\\to S_1$, variable assignment $g : \\\\sigma \\\\to S_2$, and ring homomorphism $\\\\phi : S_1 \\\\to S_2$, the evaluation of the polynomial $\\\\mathrm{map}\\\\,f\\\\,p$ using $\\\\phi$ and $g$ equals the evaluation of $p$ using the composed homomorphism $\\\\phi \\\\circ f$ and $g$. Formally, $\\\\mathrm{eval}_2\\\\,\\\\phi\\\\,g\\\\, (\\\\mathrm{map}\\\\,f\\\\,p) = \\\\mathrm{eval}_2\\\\, (\\\\phi \\\\circ f)\\\\,g\\\\,p$ for all $p \\\\in R[\\\\sigma]$.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.eval₂_map\",\n      \"informal_name\": \"Compatibility of Multivariate Polynomial Evaluation with Coefficient Mapping\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S₁ : Type v} {S₂ : Type w} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁]\\n  [inst_2 : CommSemiring S₂] (f : R →+* S₁) (g : σ → S₂) (φ : S₁ →+* S₂) (p : MvPolynomial σ R),\\n  MvPolynomial.eval₂ φ g ((MvPolynomial.map f) p) = MvPolynomial.eval₂ (φ.comp f) g p\",\n      \"informal_description\": \"For any commutative semiring $R$, type $\\\\sigma$, and commutative semirings $S_1, S_2$, given a ring homomorphism $f : R \\\\to S_1$, a variable assignment $g : \\\\sigma \\\\to S_2$, and a ring homomorphism $\\\\phi : S_1 \\\\to S_2$, the evaluation of the polynomial $\\\\mathrm{map}\\\\, f\\\\, p$ using coefficient map $\\\\phi$ and variable map $g$ equals the evaluation of $p$ using the composed coefficient map $\\\\phi \\\\circ f$ and variable map $g$. Formally, $\\\\mathrm{eval}_2(\\\\phi, g, \\\\mathrm{map}\\\\, f\\\\, p) = \\\\mathrm{eval}_2(\\\\phi \\\\circ f, g, p)$ for all $p \\\\in R[\\\\sigma]$.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.eval₂_comp_right\",\n      \"informal_name\": \"Compatibility of Multivariate Polynomial Evaluation with Composed Ring Homomorphisms\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] {S₂ : Type u_2}\\n  [inst_2 : CommSemiring S₂] (k : S₁ →+* S₂) (f : R →+* S₁) (g : σ → S₁) (p : MvPolynomial σ R),\\n  k (MvPolynomial.eval₂ f g p) = MvPolynomial.eval₂ k (⇑k ∘ g) ((MvPolynomial.map f) p)\",\n      \"informal_description\": \"For any commutative semiring $S_2$, ring homomorphism $k : S_1 \\\\to S_2$, ring homomorphism $f : R \\\\to S_1$, variable assignment $g : \\\\sigma \\\\to S_1$, and polynomial $p$, applying $k$ to the evaluation of $p$ using $f$ on coefficients and $g$ on variables equals evaluating the polynomial $\\\\mathrm{map}\\\\,f\\\\,p$ using $k \\\\circ g$ on variables and $k$ on coefficients. Formally: $k(\\\\mathrm{eval}_2\\\\,f\\\\,g\\\\,p) = \\\\mathrm{eval}_2\\\\,k\\\\,(k \\\\circ g)\\\\,(\\\\mathrm{map}\\\\,f\\\\,p)$.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.eval₂_comp\",\n      \"informal_name\": \"Evaluation of Multivariate Polynomials Composes with Ring Homomorphisms\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] (f : R →+* S₁)\\n  (g : σ → R) (p : MvPolynomial σ R), f ((MvPolynomial.eval g) p) = MvPolynomial.eval₂ f (⇑f ∘ g) p\",\n      \"informal_description\": \"For any ring homomorphism $ f : R \\\\to S_1 $, any map $ g : \\\\sigma \\\\to R $, and any polynomial $ p \\\\in R[\\\\sigma] $, it holds that $ f(\\\\mathrm{eval}_g(p)) = \\\\mathrm{eval}_{f, f \\\\circ g}(p) $, where $ \\\\mathrm{eval}_g $ denotes evaluation using variable map $ g $ and identity coefficient map, and $ \\\\mathrm{eval}_{f, f \\\\circ g} $ denotes evaluation using coefficient map $ f $ and variable map $ f \\\\circ g $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "MvPolynomial.map_eval₂Hom",
+            "informal_name": "Compatibility of Multivariate Polynomial Evaluation with Ring Homomorphism Composition",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {S₁ : Type v} {S₂ : Type w} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁]\n  [inst_2 : CommSemiring S₂] (f : R →+* S₁) (g : σ → S₁) (φ : S₁ →+* S₂) (p : MvPolynomial σ R),\n  φ ((MvPolynomial.eval₂Hom f g) p) = (MvPolynomial.eval₂Hom (φ.comp f) fun i => φ (g i)) p",
+            "informal_description": "For any commutative semiring $R$, type $\\sigma$, and ring homomorphisms $f : R \\to S_1$, $g : \\sigma \\to S_1$, and $\\phi : S_1 \\to S_2$, the evaluation of a polynomial $p \\in R[\\sigma]$ satisfies $\\phi(\\mathrm{eval}_2(f, g, p)) = \\mathrm{eval}_2(\\phi \\circ f, \\phi \\circ g, p)$. This expresses that applying $\\phi$ after evaluation is equivalent to composing $\\phi$ with the coefficient map and variable assignment before evaluation.",
+            "path": "Mathlib.Algebra.MvPolynomial.Eval"
+          },
+          {
+            "formal_name": "MvPolynomial.eval₂Hom_map_hom",
+            "informal_name": "Compatibility of Evaluation and Coefficient Mapping in Multivariate Polynomials",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {S₁ : Type v} {S₂ : Type w} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁]\n  [inst_2 : CommSemiring S₂] (f : R →+* S₁) (g : σ → S₂) (φ : S₁ →+* S₂) (p : MvPolynomial σ R),\n  (MvPolynomial.eval₂Hom φ g) ((MvPolynomial.map f) p) = (MvPolynomial.eval₂Hom (φ.comp f) g) p",
+            "informal_description": "For commutative semirings $R$, $S_1$, $S_2$, a type $\\sigma$, ring homomorphism $f : R \\to S_1$, variable assignment $g : \\sigma \\to S_2$, and ring homomorphism $\\phi : S_1 \\to S_2$, the evaluation of the polynomial $\\mathrm{map}\\,f\\,p$ using $\\phi$ and $g$ equals the evaluation of $p$ using the composed homomorphism $\\phi \\circ f$ and $g$. Formally, $\\mathrm{eval}_2\\,\\phi\\,g\\, (\\mathrm{map}\\,f\\,p) = \\mathrm{eval}_2\\, (\\phi \\circ f)\\,g\\,p$ for all $p \\in R[\\sigma]$.",
+            "path": "Mathlib.Algebra.MvPolynomial.Eval"
+          },
+          {
+            "formal_name": "MvPolynomial.eval₂_map",
+            "informal_name": "Compatibility of Multivariate Polynomial Evaluation with Coefficient Mapping",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {S₁ : Type v} {S₂ : Type w} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁]\n  [inst_2 : CommSemiring S₂] (f : R →+* S₁) (g : σ → S₂) (φ : S₁ →+* S₂) (p : MvPolynomial σ R),\n  MvPolynomial.eval₂ φ g ((MvPolynomial.map f) p) = MvPolynomial.eval₂ (φ.comp f) g p",
+            "informal_description": "For any commutative semiring $R$, type $\\sigma$, and commutative semirings $S_1, S_2$, given a ring homomorphism $f : R \\to S_1$, a variable assignment $g : \\sigma \\to S_2$, and a ring homomorphism $\\phi : S_1 \\to S_2$, the evaluation of the polynomial $\\mathrm{map}\\, f\\, p$ using coefficient map $\\phi$ and variable map $g$ equals the evaluation of $p$ using the composed coefficient map $\\phi \\circ f$ and variable map $g$. Formally, $\\mathrm{eval}_2(\\phi, g, \\mathrm{map}\\, f\\, p) = \\mathrm{eval}_2(\\phi \\circ f, g, p)$ for all $p \\in R[\\sigma]$.",
+            "path": "Mathlib.Algebra.MvPolynomial.Eval"
+          },
+          {
+            "formal_name": "MvPolynomial.eval₂_comp_right",
+            "informal_name": "Compatibility of Multivariate Polynomial Evaluation with Composed Ring Homomorphisms",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] {S₂ : Type u_2}\n  [inst_2 : CommSemiring S₂] (k : S₁ →+* S₂) (f : R →+* S₁) (g : σ → S₁) (p : MvPolynomial σ R),\n  k (MvPolynomial.eval₂ f g p) = MvPolynomial.eval₂ k (⇑k ∘ g) ((MvPolynomial.map f) p)",
+            "informal_description": "For any commutative semiring $S_2$, ring homomorphism $k : S_1 \\to S_2$, ring homomorphism $f : R \\to S_1$, variable assignment $g : \\sigma \\to S_1$, and polynomial $p$, applying $k$ to the evaluation of $p$ using $f$ on coefficients and $g$ on variables equals evaluating the polynomial $\\mathrm{map}\\,f\\,p$ using $k \\circ g$ on variables and $k$ on coefficients. Formally: $k(\\mathrm{eval}_2\\,f\\,g\\,p) = \\mathrm{eval}_2\\,k\\,(k \\circ g)\\,(\\mathrm{map}\\,f\\,p)$.",
+            "path": "Mathlib.Algebra.MvPolynomial.Eval"
+          },
+          {
+            "formal_name": "MvPolynomial.eval₂_comp",
+            "informal_name": "Evaluation of Multivariate Polynomials Composes with Ring Homomorphisms",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] (f : R →+* S₁)\n  (g : σ → R) (p : MvPolynomial σ R), f ((MvPolynomial.eval g) p) = MvPolynomial.eval₂ f (⇑f ∘ g) p",
+            "informal_description": "For any ring homomorphism $ f : R \\to S_1 $, any map $ g : \\sigma \\to R $, and any polynomial $ p \\in R[\\sigma] $, it holds that $ f(\\mathrm{eval}_g(p)) = \\mathrm{eval}_{f, f \\circ g}(p) $, where $ \\mathrm{eval}_g $ denotes evaluation using variable map $ g $ and identity coefficient map, and $ \\mathrm{eval}_{f, f \\circ g} $ denotes evaluation using coefficient map $ f $ and variable map $ f \\circ g $.",
+            "path": "Mathlib.Algebra.MvPolynomial.Eval"
+          }
+        ]
+      },
+      "isError": false
+    },
+    "form": "standard"
+  },
+  {
+    "tool": "mcp__lean_lsp__lean_leanfinder",
+    "request": {
+      "query": "Composition of algebra homomorphism with multivariate polynomial aeval is aeval of images of variables"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"MvPolynomial.comp_aeval\",\n      \"informal_name\": \"Compatibility of Composition with Algebra Evaluation Homomorphism\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁]\\n  (f : σ → S₁) {B : Type u_2} [inst_3 : CommSemiring B] [inst_4 : Algebra R B] (φ : S₁ →ₐ[R] B),\\n  φ.comp (MvPolynomial.aeval f) = MvPolynomial.aeval fun i => φ (f i)\",\n      \"informal_description\": \"For any commutative semiring $B$ equipped with an $R$-algebra structure and any algebra homomorphism $\\\\phi : S_1 \\\\to B$ over $R$, the composition of $\\\\phi$ with the multivariate polynomial evaluation homomorphism $\\\\text{aeval}_f$ equals the evaluation homomorphism $\\\\text{aeval}_{\\\\phi \\\\circ f}$, where $f : \\\\sigma \\\\to S_1$ is a variable assignment. This expresses that applying $\\\\phi$ after polynomial evaluation is equivalent to first composing $\\\\phi$ with the variable assignment and then evaluating.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.comp_aeval_apply\",\n      \"informal_name\": \"Compatibility of Composition with Multivariate Polynomial Evaluation\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁]\\n  (f : σ → S₁) {B : Type u_2} [inst_3 : CommSemiring B] [inst_4 : Algebra R B] (φ : S₁ →ₐ[R] B) (p : MvPolynomial σ R),\\n  φ ((MvPolynomial.aeval f) p) = (MvPolynomial.aeval fun i => φ (f i)) p\",\n      \"informal_description\": \"For any $ R $-algebra homomorphism $ \\\\varphi : S_1 \\\\to B $ and polynomial $ p \\\\in R[\\\\sigma] $, applying $ \\\\varphi $ to the evaluation of $ p $ at a variable assignment $ f : \\\\sigma \\\\to S_1 $ equals the evaluation of $ p $ at the composed assignment $ \\\\varphi \\\\circ f $, i.e., $ \\\\varphi(\\\\text{aeval}_f(p)) = \\\\text{aeval}_{\\\\varphi \\\\circ f}(p) $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.aevalTower_comp_algebraMap\",\n      \"informal_name\": \"Composition of Algebra Map and Evaluation Equals Original Homomorphism\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] {S : Type u_2} {A : Type u_3} [inst_1 : CommSemiring S]\\n  [inst_2 : CommSemiring A] [inst_3 : Algebra S R] [inst_4 : Algebra S A] (g : R →ₐ[S] A) (y : σ → A),\\n  (↑(MvPolynomial.aevalTower g y)).comp (algebraMap R (MvPolynomial σ R)) = ↑g\",\n      \"informal_description\": \"The composition of the evaluation homomorphism $\\\\text{aevalTower}_g(y)$ with the canonical algebra map from $R$ to the multivariate polynomial ring $R[\\\\sigma]$ equals the original ring homomorphism $g$ from $R$ to $A$. This means that evaluating a polynomial whose coefficients are embedded via the algebra structure recovers the original homomorphism $g$.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.map_aeval\",\n      \"informal_name\": \"Compatibility of Multivariate Polynomial Evaluation with Ring Homomorphisms\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁]\\n  {B : Type u_2} [inst_3 : CommSemiring B] (g : σ → S₁) (φ : S₁ →+* B) (p : MvPolynomial σ R),\\n  φ ((MvPolynomial.aeval g) p) = (MvPolynomial.eval₂Hom (φ.comp (algebraMap R S₁)) fun i => φ (g i)) p\",\n      \"informal_description\": \"For any commutative semiring $ R $, type $ \\\\sigma $, commutative semiring $ S_1 $ with an $ R $-algebra structure, and commutative semiring $ B $, given a variable assignment $ g : \\\\sigma \\\\to S_1 $, a ring homomorphism $ \\\\varphi : S_1 \\\\to B $, and a polynomial $ p \\\\in R[\\\\sigma] $, applying $ \\\\varphi $ to the algebra evaluation $ \\\\mathrm{aeval}_g(p) $ equals evaluating $ p $ using the composed ring homomorphism $ \\\\varphi \\\\circ \\\\mathrm{algebraMap}_{R \\\\to S_1} $ on coefficients and $ \\\\varphi \\\\circ g $ on variables. Symbolically, $ \\\\varphi(\\\\mathrm{aeval}_g(p)) = \\\\mathrm{eval}_2^{\\\\varphi \\\\circ \\\\mathrm{algebraMap}, \\\\varphi \\\\circ g}(p) $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.aeval_comp_toMvPolynomial\",\n      \"informal_name\": \"Compatibility of Multivariate Evaluation with Univariate Embedding\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {S : Type u_2} {σ : Type u_3} [inst : CommSemiring R] [inst_1 : CommSemiring S] [inst_2 : Algebra R S]\\n  (f : σ → S) (i : σ), (MvPolynomial.aeval f).comp (Polynomial.toMvPolynomial i) = Polynomial.aeval (f i)\",\n      \"informal_description\": \"For any function $ f : \\\\sigma \\\\to S $ and any index $ i \\\\in \\\\sigma $, the composition of the multivariate polynomial evaluation homomorphism $ \\\\operatorname{aeval}_f $ with the univariate embedding $ \\\\operatorname{toMvPolynomial}_i $ is equal to the univariate polynomial evaluation homomorphism at $ f(i) $. Formally, $ \\\\operatorname{aeval}_f \\\\circ \\\\operatorname{toMvPolynomial}_i = \\\\operatorname{aeval}(f(i)) $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "MvPolynomial.comp_aeval",
+            "informal_name": "Compatibility of Composition with Algebra Evaluation Homomorphism",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁]\n  (f : σ → S₁) {B : Type u_2} [inst_3 : CommSemiring B] [inst_4 : Algebra R B] (φ : S₁ →ₐ[R] B),\n  φ.comp (MvPolynomial.aeval f) = MvPolynomial.aeval fun i => φ (f i)",
+            "informal_description": "For any commutative semiring $B$ equipped with an $R$-algebra structure and any algebra homomorphism $\\phi : S_1 \\to B$ over $R$, the composition of $\\phi$ with the multivariate polynomial evaluation homomorphism $\\text{aeval}_f$ equals the evaluation homomorphism $\\text{aeval}_{\\phi \\circ f}$, where $f : \\sigma \\to S_1$ is a variable assignment. This expresses that applying $\\phi$ after polynomial evaluation is equivalent to first composing $\\phi$ with the variable assignment and then evaluating.",
+            "path": "Mathlib.Algebra.MvPolynomial.Eval"
+          },
+          {
+            "formal_name": "MvPolynomial.comp_aeval_apply",
+            "informal_name": "Compatibility of Composition with Multivariate Polynomial Evaluation",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁]\n  (f : σ → S₁) {B : Type u_2} [inst_3 : CommSemiring B] [inst_4 : Algebra R B] (φ : S₁ →ₐ[R] B) (p : MvPolynomial σ R),\n  φ ((MvPolynomial.aeval f) p) = (MvPolynomial.aeval fun i => φ (f i)) p",
+            "informal_description": "For any $ R $-algebra homomorphism $ \\varphi : S_1 \\to B $ and polynomial $ p \\in R[\\sigma] $, applying $ \\varphi $ to the evaluation of $ p $ at a variable assignment $ f : \\sigma \\to S_1 $ equals the evaluation of $ p $ at the composed assignment $ \\varphi \\circ f $, i.e., $ \\varphi(\\text{aeval}_f(p)) = \\text{aeval}_{\\varphi \\circ f}(p) $.",
+            "path": "Mathlib.Algebra.MvPolynomial.Eval"
+          },
+          {
+            "formal_name": "MvPolynomial.aevalTower_comp_algebraMap",
+            "informal_name": "Composition of Algebra Map and Evaluation Equals Original Homomorphism",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] {S : Type u_2} {A : Type u_3} [inst_1 : CommSemiring S]\n  [inst_2 : CommSemiring A] [inst_3 : Algebra S R] [inst_4 : Algebra S A] (g : R →ₐ[S] A) (y : σ → A),\n  (↑(MvPolynomial.aevalTower g y)).comp (algebraMap R (MvPolynomial σ R)) = ↑g",
+            "informal_description": "The composition of the evaluation homomorphism $\\text{aevalTower}_g(y)$ with the canonical algebra map from $R$ to the multivariate polynomial ring $R[\\sigma]$ equals the original ring homomorphism $g$ from $R$ to $A$. This means that evaluating a polynomial whose coefficients are embedded via the algebra structure recovers the original homomorphism $g$.",
+            "path": "Mathlib.Algebra.MvPolynomial.Eval"
+          },
+          {
+            "formal_name": "MvPolynomial.map_aeval",
+            "informal_name": "Compatibility of Multivariate Polynomial Evaluation with Ring Homomorphisms",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁]\n  {B : Type u_2} [inst_3 : CommSemiring B] (g : σ → S₁) (φ : S₁ →+* B) (p : MvPolynomial σ R),\n  φ ((MvPolynomial.aeval g) p) = (MvPolynomial.eval₂Hom (φ.comp (algebraMap R S₁)) fun i => φ (g i)) p",
+            "informal_description": "For any commutative semiring $ R $, type $ \\sigma $, commutative semiring $ S_1 $ with an $ R $-algebra structure, and commutative semiring $ B $, given a variable assignment $ g : \\sigma \\to S_1 $, a ring homomorphism $ \\varphi : S_1 \\to B $, and a polynomial $ p \\in R[\\sigma] $, applying $ \\varphi $ to the algebra evaluation $ \\mathrm{aeval}_g(p) $ equals evaluating $ p $ using the composed ring homomorphism $ \\varphi \\circ \\mathrm{algebraMap}_{R \\to S_1} $ on coefficients and $ \\varphi \\circ g $ on variables. Symbolically, $ \\varphi(\\mathrm{aeval}_g(p)) = \\mathrm{eval}_2^{\\varphi \\circ \\mathrm{algebraMap}, \\varphi \\circ g}(p) $.",
+            "path": "Mathlib.Algebra.MvPolynomial.Eval"
+          },
+          {
+            "formal_name": "MvPolynomial.aeval_comp_toMvPolynomial",
+            "informal_name": "Compatibility of Multivariate Evaluation with Univariate Embedding",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {S : Type u_2} {σ : Type u_3} [inst : CommSemiring R] [inst_1 : CommSemiring S] [inst_2 : Algebra R S]\n  (f : σ → S) (i : σ), (MvPolynomial.aeval f).comp (Polynomial.toMvPolynomial i) = Polynomial.aeval (f i)",
+            "informal_description": "For any function $ f : \\sigma \\to S $ and any index $ i \\in \\sigma $, the composition of the multivariate polynomial evaluation homomorphism $ \\operatorname{aeval}_f $ with the univariate embedding $ \\operatorname{toMvPolynomial}_i $ is equal to the univariate polynomial evaluation homomorphism at $ f(i) $. Formally, $ \\operatorname{aeval}_f \\circ \\operatorname{toMvPolynomial}_i = \\operatorname{aeval}(f(i)) $.",
+            "path": "Mathlib.Algebra.MvPolynomial.Equiv"
+          }
+        ]
+      },
+      "isError": false
+    },
+    "form": "abstract"
+  },
+  {
+    "tool": "mcp__lean_lsp__lean_leansearch",
+    "request": {
+      "query": "Evaluating the diagonal specialization of a multivariate polynomial at x equals evaluating the original polynomial with every variable equal to x"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.eval_toMvPolynomial\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Equiv\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {σ : Type u_3} [inst : CommSemiring R] (f : σ → R) (i : σ) (p : Polynomial R),\\n  (MvPolynomial.eval f) ((Polynomial.toMvPolynomial i) p) = Polynomial.eval (f i) p\"\n    },\n    {\n      \"name\": \"Polynomial.eval_C_X_eval₂_map_C_X\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Bivariate\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommSemiring R] {p : Polynomial (Polynomial R)},\\n  Polynomial.eval (Polynomial.C Polynomial.X)\\n      (Polynomial.eval₂ (Polynomial.mapRingHom (algebraMap R (Polynomial (Polynomial R)))) (Polynomial.C Polynomial.X)\\n        p) =\\n    p\"\n    },\n    {\n      \"name\": \"MvPolynomial.evalₗ\",\n      \"module_name\": \"Mathlib.FieldTheory.Finite.Polynomial\",\n      \"kind\": \"definition\",\n      \"type\": \"(K : Type u_1) → (σ : Type u_2) → [inst : CommSemiring K] → MvPolynomial σ K →ₗ[K] (σ → K) → K\"\n    },\n    {\n      \"name\": \"Polynomial.eval\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Eval.Defs\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} → [inst : Semiring R] → R → Polynomial R → R\"\n    },\n    {\n      \"name\": \"MvPolynomial.eval_comp_toMvPolynomial\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Equiv\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {σ : Type u_3} [inst : CommSemiring R] (f : σ → R) (i : σ),\\n  (MvPolynomial.eval f).comp ↑(Polynomial.toMvPolynomial i) = Polynomial.evalRingHom (f i)\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.eval_toMvPolynomial",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Equiv",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {σ : Type u_3} [inst : CommSemiring R] (f : σ → R) (i : σ) (p : Polynomial R),\n  (MvPolynomial.eval f) ((Polynomial.toMvPolynomial i) p) = Polynomial.eval (f i) p"
+          },
+          {
+            "name": "Polynomial.eval_C_X_eval₂_map_C_X",
+            "module_name": "Mathlib.Algebra.Polynomial.Bivariate",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommSemiring R] {p : Polynomial (Polynomial R)},\n  Polynomial.eval (Polynomial.C Polynomial.X)\n      (Polynomial.eval₂ (Polynomial.mapRingHom (algebraMap R (Polynomial (Polynomial R)))) (Polynomial.C Polynomial.X)\n        p) =\n    p"
+          },
+          {
+            "name": "MvPolynomial.evalₗ",
+            "module_name": "Mathlib.FieldTheory.Finite.Polynomial",
+            "kind": "definition",
+            "type": "(K : Type u_1) → (σ : Type u_2) → [inst : CommSemiring K] → MvPolynomial σ K →ₗ[K] (σ → K) → K"
+          },
+          {
+            "name": "Polynomial.eval",
+            "module_name": "Mathlib.Algebra.Polynomial.Eval.Defs",
+            "kind": "definition",
+            "type": "{R : Type u} → [inst : Semiring R] → R → Polynomial R → R"
+          },
+          {
+            "name": "MvPolynomial.eval_comp_toMvPolynomial",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Equiv",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {σ : Type u_3} [inst : CommSemiring R] (f : σ → R) (i : σ),\n  (MvPolynomial.eval f).comp ↑(Polynomial.toMvPolynomial i) = Polynomial.evalRingHom (f i)"
+          }
+        ]
+      },
+      "isError": false
+    },
+    "form": "current"
+  },
+  {
+    "tool": "mcp__lean_lsp__lean_leansearch",
+    "request": {
+      "query": "A ring homomorphism commutes with multivariate polynomial evaluation, mapping coefficients and variables"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.eval₂Hom\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Eval\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} →\\n  {S₁ : Type v} →\\n    {σ : Type u_1} →\\n      [inst : CommSemiring R] → [inst_1 : CommSemiring S₁] → (R →+* S₁) → (σ → S₁) → MvPolynomial σ R →+* S₁\"\n    },\n    {\n      \"name\": \"MvPolynomial.eval_map\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Eval\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] (f : R →+* S₁)\\n  (g : σ → S₁) (p : MvPolynomial σ R), (MvPolynomial.eval g) ((MvPolynomial.map f) p) = MvPolynomial.eval₂ f g p\"\n    },\n    {\n      \"name\": \"MvPolynomial.map_eval₂\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Eval\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S₁ : Type v} {S₂ : Type w} {S₃ : Type x} [inst : CommSemiring R] [inst_1 : CommSemiring S₁]\\n  (f : R →+* S₁) (g : S₂ → MvPolynomial S₃ R) (p : MvPolynomial S₂ R),\\n  (MvPolynomial.map f) (MvPolynomial.eval₂ MvPolynomial.C g p) =\\n    MvPolynomial.eval₂ MvPolynomial.C (⇑(MvPolynomial.map f) ∘ g) ((MvPolynomial.map f) p)\"\n    },\n    {\n      \"name\": \"MvPolynomial.map_aeval\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Eval\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁]\\n  {B : Type u_2} [inst_3 : CommSemiring B] (g : σ → S₁) (φ : S₁ →+* B) (p : MvPolynomial σ R),\\n  φ ((MvPolynomial.aeval g) p) = (MvPolynomial.eval₂Hom (φ.comp (algebraMap R S₁)) fun i => φ (g i)) p\"\n    },\n    {\n      \"name\": \"Polynomial.eval₂RingHom'\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Eval.Defs\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} →\\n  {S : Type v} →\\n    [inst : Semiring R] →\\n      [inst_1 : Semiring S] → (f : R →+* S) → (x : S) → (∀ (a : R), Commute (f a) x) → Polynomial R →+* S\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.eval₂Hom",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Eval",
+            "kind": "definition",
+            "type": "{R : Type u} →\n  {S₁ : Type v} →\n    {σ : Type u_1} →\n      [inst : CommSemiring R] → [inst_1 : CommSemiring S₁] → (R →+* S₁) → (σ → S₁) → MvPolynomial σ R →+* S₁"
+          },
+          {
+            "name": "MvPolynomial.eval_map",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Eval",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] (f : R →+* S₁)\n  (g : σ → S₁) (p : MvPolynomial σ R), (MvPolynomial.eval g) ((MvPolynomial.map f) p) = MvPolynomial.eval₂ f g p"
+          },
+          {
+            "name": "MvPolynomial.map_eval₂",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Eval",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {S₁ : Type v} {S₂ : Type w} {S₃ : Type x} [inst : CommSemiring R] [inst_1 : CommSemiring S₁]\n  (f : R →+* S₁) (g : S₂ → MvPolynomial S₃ R) (p : MvPolynomial S₂ R),\n  (MvPolynomial.map f) (MvPolynomial.eval₂ MvPolynomial.C g p) =\n    MvPolynomial.eval₂ MvPolynomial.C (⇑(MvPolynomial.map f) ∘ g) ((MvPolynomial.map f) p)"
+          },
+          {
+            "name": "MvPolynomial.map_aeval",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Eval",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁]\n  {B : Type u_2} [inst_3 : CommSemiring B] (g : σ → S₁) (φ : S₁ →+* B) (p : MvPolynomial σ R),\n  φ ((MvPolynomial.aeval g) p) = (MvPolynomial.eval₂Hom (φ.comp (algebraMap R S₁)) fun i => φ (g i)) p"
+          },
+          {
+            "name": "Polynomial.eval₂RingHom'",
+            "module_name": "Mathlib.Algebra.Polynomial.Eval.Defs",
+            "kind": "definition",
+            "type": "{R : Type u} →\n  {S : Type v} →\n    [inst : Semiring R] →\n      [inst_1 : Semiring S] → (f : R →+* S) → (x : S) → (∀ (a : R), Commute (f a) x) → Polynomial R →+* S"
+          }
+        ]
+      },
+      "isError": false
+    },
+    "form": "standard"
+  },
+  {
+    "tool": "mcp__lean_lsp__lean_leansearch",
+    "request": {
+      "query": "Composition of an algebra homomorphism with MvPolynomial.aeval equals aeval of the images"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.comp_aeval\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Eval\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁]\\n  (f : σ → S₁) {B : Type u_2} [inst_3 : CommSemiring B] [inst_4 : Algebra R B] (φ : S₁ →ₐ[R] B),\\n  φ.comp (MvPolynomial.aeval f) = MvPolynomial.aeval fun i => φ (f i)\"\n    },\n    {\n      \"name\": \"MvPolynomial.comp_aeval_apply\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Eval\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁]\\n  (f : σ → S₁) {B : Type u_2} [inst_3 : CommSemiring B] [inst_4 : Algebra R B] (φ : S₁ →ₐ[R] B) (p : MvPolynomial σ R),\\n  φ ((MvPolynomial.aeval f) p) = (MvPolynomial.aeval fun i => φ (f i)) p\"\n    },\n    {\n      \"name\": \"MvPolynomial.map_aeval\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Eval\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁]\\n  {B : Type u_2} [inst_3 : CommSemiring B] (g : σ → S₁) (φ : S₁ →+* B) (p : MvPolynomial σ R),\\n  φ ((MvPolynomial.aeval g) p) = (MvPolynomial.eval₂Hom (φ.comp (algebraMap R S₁)) fun i => φ (g i)) p\"\n    },\n    {\n      \"name\": \"MvPolynomial.aeval_algebraMap_apply\",\n      \"module_name\": \"Mathlib.RingTheory.MvPolynomial.Tower\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {A : Type u_2} (B : Type u_3) {σ : Type u_4} [inst : CommSemiring R] [inst_1 : CommSemiring A]\\n  [inst_2 : CommSemiring B] [inst_3 : Algebra R A] [inst_4 : Algebra A B] [inst_5 : Algebra R B] [IsScalarTower R A B]\\n  (x : σ → A) (p : MvPolynomial σ R),\\n  (MvPolynomial.aeval (⇑(algebraMap A B) ∘ x)) p = (algebraMap A B) ((MvPolynomial.aeval x) p)\"\n    },\n    {\n      \"name\": \"MvPowerSeries.comp_aeval\",\n      \"module_name\": \"Mathlib.RingTheory.MvPowerSeries.Evaluation\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_2} [inst : CommRing R] [inst_1 : UniformSpace R] {S : Type u_3} [inst_2 : CommRing S]\\n  [inst_3 : UniformSpace S] {a : σ → S} [inst_4 : IsTopologicalSemiring R] [inst_5 : IsUniformAddGroup R]\\n  [inst_6 : IsUniformAddGroup S] [inst_7 : CompleteSpace S] [inst_8 : T2Space S] [inst_9 : IsTopologicalRing S]\\n  [inst_10 : IsLinearTopology S S] [inst_11 : Algebra R S] [inst_12 : ContinuousSMul R S] (ha : MvPowerSeries.HasEval a)\\n  {T : Type u_4} [inst_13 : CommRing T] [in...\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.comp_aeval",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Eval",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁]\n  (f : σ → S₁) {B : Type u_2} [inst_3 : CommSemiring B] [inst_4 : Algebra R B] (φ : S₁ →ₐ[R] B),\n  φ.comp (MvPolynomial.aeval f) = MvPolynomial.aeval fun i => φ (f i)"
+          },
+          {
+            "name": "MvPolynomial.comp_aeval_apply",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Eval",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁]\n  (f : σ → S₁) {B : Type u_2} [inst_3 : CommSemiring B] [inst_4 : Algebra R B] (φ : S₁ →ₐ[R] B) (p : MvPolynomial σ R),\n  φ ((MvPolynomial.aeval f) p) = (MvPolynomial.aeval fun i => φ (f i)) p"
+          },
+          {
+            "name": "MvPolynomial.map_aeval",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Eval",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁]\n  {B : Type u_2} [inst_3 : CommSemiring B] (g : σ → S₁) (φ : S₁ →+* B) (p : MvPolynomial σ R),\n  φ ((MvPolynomial.aeval g) p) = (MvPolynomial.eval₂Hom (φ.comp (algebraMap R S₁)) fun i => φ (g i)) p"
+          },
+          {
+            "name": "MvPolynomial.aeval_algebraMap_apply",
+            "module_name": "Mathlib.RingTheory.MvPolynomial.Tower",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {A : Type u_2} (B : Type u_3) {σ : Type u_4} [inst : CommSemiring R] [inst_1 : CommSemiring A]\n  [inst_2 : CommSemiring B] [inst_3 : Algebra R A] [inst_4 : Algebra A B] [inst_5 : Algebra R B] [IsScalarTower R A B]\n  (x : σ → A) (p : MvPolynomial σ R),\n  (MvPolynomial.aeval (⇑(algebraMap A B) ∘ x)) p = (algebraMap A B) ((MvPolynomial.aeval x) p)"
+          },
+          {
+            "name": "MvPowerSeries.comp_aeval",
+            "module_name": "Mathlib.RingTheory.MvPowerSeries.Evaluation",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {R : Type u_2} [inst : CommRing R] [inst_1 : UniformSpace R] {S : Type u_3} [inst_2 : CommRing S]\n  [inst_3 : UniformSpace S] {a : σ → S} [inst_4 : IsTopologicalSemiring R] [inst_5 : IsUniformAddGroup R]\n  [inst_6 : IsUniformAddGroup S] [inst_7 : CompleteSpace S] [inst_8 : T2Space S] [inst_9 : IsTopologicalRing S]\n  [inst_10 : IsLinearTopology S S] [inst_11 : Algebra R S] [inst_12 : ContinuousSMul R S] (ha : MvPowerSeries.HasEval a)\n  {T : Type u_4} [inst_13 : CommRing T] [in..."
+          }
+        ]
+      },
+      "isError": false
+    },
+    "form": "abstract"
+  },
+  {
+    "tool": "mcp__lean_lsp__lean_loogle",
+    "request": {
+      "query": "MvPolynomial.eval, Polynomial.eval"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.eval_toMvPolynomial\",\n      \"type\": \" {R : Type u_1} {σ : Type u_3} [CommSemiring R] (f : σ → R) (i : σ) (p : Polynomial R) : (MvPolynomial.eval f) ((Polynomial.toMvPolynomial i) p) = Polynomial.eval (f i) p\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    },\n    {\n      \"name\": \"MvPolynomial.optionEquivLeft_elim_eval\",\n      \"type\": \" (R : Type u) (S₁ : Type v) [CommSemiring R] (s : S₁ → R) (y : R) (f : MvPolynomial (Option S₁) R) : (MvPolynomial.eval fun x => x.elim y s) f = Polynomial.eval y (Polynomial.map (MvPolynomial.eval s) ((MvPolynomial.optionEquivLeft R S₁) f))\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    },\n    {\n      \"name\": \"MvPolynomial.eval_eq_eval_mv_eval'\",\n      \"type\": \" {R : Type u} [CommSemiring R] {n : ℕ} (s : Fin n → R) (y : R) (f : MvPolynomial (Fin (n + 1)) R) : (MvPolynomial.eval (Fin.cons y s)) f = Polynomial.eval y (Polynomial.map (MvPolynomial.eval s) ((MvPolynomial.finSuccEquiv R n) f))\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    },\n    {\n      \"name\": \"MvPolynomial.eval_polynomial_eval_finSuccEquiv\",\n      \"type\": \" {R : Type u_1} {n : ℕ} {x : Fin n → R} [CommSemiring R] (f : MvPolynomial (Fin (n + 1)) R) (q : MvPolynomial (Fin n) R) : (MvPolynomial.eval x) (Polynomial.eval q ((MvPolynomial.finSuccEquiv R n) f)) = (MvPolynomial.eval fun i => Fin.cases ((MvPolynomial.eval x) q) x i) f\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Polynomial\"\n    },\n    {\n      \"name\": \"Polynomial.eval_homogenize\",\n      \"type\": \" {K : Type u_1} [Semifield K] {p : Polynomial K} {n : ℕ} (hn : p.natDegree ≤ n) (x : Fin 2 → K) (hx : x 1 ≠ 0) : (MvPolynomial.eval x) (p.homogenize n) = Polynomial.eval (x 0 / x 1) p * x 1 ^ n\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Homogenize\"\n    },\n    {\n      \"name\": \"Polynomial.eval_eq_div_eval_toTupleMvPolynomial\",\n      \"type\": \" {R : Type u_2} [Field R] (p : Polynomial R) (x : R) : Polynomial.eval x p = (MvPolynomial.eval ![x, 1]) (p.toTupleMvPolynomial 0) / (MvPolynomial.eval ![x, 1]) (p.toTupleMvPolynomial 1)\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Homogenize\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.eval_toMvPolynomial",
+            "type": " {R : Type u_1} {σ : Type u_3} [CommSemiring R] (f : σ → R) (i : σ) (p : Polynomial R) : (MvPolynomial.eval f) ((Polynomial.toMvPolynomial i) p) = Polynomial.eval (f i) p",
+            "module": "Mathlib.Algebra.MvPolynomial.Equiv"
+          },
+          {
+            "name": "MvPolynomial.optionEquivLeft_elim_eval",
+            "type": " (R : Type u) (S₁ : Type v) [CommSemiring R] (s : S₁ → R) (y : R) (f : MvPolynomial (Option S₁) R) : (MvPolynomial.eval fun x => x.elim y s) f = Polynomial.eval y (Polynomial.map (MvPolynomial.eval s) ((MvPolynomial.optionEquivLeft R S₁) f))",
+            "module": "Mathlib.Algebra.MvPolynomial.Equiv"
+          },
+          {
+            "name": "MvPolynomial.eval_eq_eval_mv_eval'",
+            "type": " {R : Type u} [CommSemiring R] {n : ℕ} (s : Fin n → R) (y : R) (f : MvPolynomial (Fin (n + 1)) R) : (MvPolynomial.eval (Fin.cons y s)) f = Polynomial.eval y (Polynomial.map (MvPolynomial.eval s) ((MvPolynomial.finSuccEquiv R n) f))",
+            "module": "Mathlib.Algebra.MvPolynomial.Equiv"
+          },
+          {
+            "name": "MvPolynomial.eval_polynomial_eval_finSuccEquiv",
+            "type": " {R : Type u_1} {n : ℕ} {x : Fin n → R} [CommSemiring R] (f : MvPolynomial (Fin (n + 1)) R) (q : MvPolynomial (Fin n) R) : (MvPolynomial.eval x) (Polynomial.eval q ((MvPolynomial.finSuccEquiv R n) f)) = (MvPolynomial.eval fun i => Fin.cases ((MvPolynomial.eval x) q) x i) f",
+            "module": "Mathlib.Algebra.MvPolynomial.Polynomial"
+          },
+          {
+            "name": "Polynomial.eval_homogenize",
+            "type": " {K : Type u_1} [Semifield K] {p : Polynomial K} {n : ℕ} (hn : p.natDegree ≤ n) (x : Fin 2 → K) (hx : x 1 ≠ 0) : (MvPolynomial.eval x) (p.homogenize n) = Polynomial.eval (x 0 / x 1) p * x 1 ^ n",
+            "module": "Mathlib.Algebra.Polynomial.Homogenize"
+          },
+          {
+            "name": "Polynomial.eval_eq_div_eval_toTupleMvPolynomial",
+            "type": " {R : Type u_2} [Field R] (p : Polynomial R) (x : R) : Polynomial.eval x p = (MvPolynomial.eval ![x, 1]) (p.toTupleMvPolynomial 0) / (MvPolynomial.eval ![x, 1]) (p.toTupleMvPolynomial 1)",
+            "module": "Mathlib.Algebra.Polynomial.Homogenize"
+          }
+        ]
+      },
+      "isError": false
+    },
+    "form": "current"
+  },
+  {
+    "tool": "mcp__lean_lsp__lean_loogle",
+    "request": {
+      "query": "MvPolynomial.eval₂, _ (_ _) = _"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "Error executing tool lean_loogle: loogle query error: A placeholder `_` cannot be used where a function is expected"
+        }
+      ],
+      "isError": true
+    },
+    "form": "standard"
+  },
+  {
+    "tool": "mcp__lean_lsp__lean_loogle",
+    "request": {
+      "query": "MvPolynomial.aeval, AlgHom.comp"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.comp_aeval\",\n      \"type\": \" {R : Type u} {S₁ : Type v} {σ : Type u_1} [CommSemiring R] [CommSemiring S₁] [Algebra R S₁] (f : σ → S₁) {B : Type u_2} [CommSemiring B] [Algebra R B] (φ : S₁ →ₐ[R] B) : φ.comp (MvPolynomial.aeval f) = MvPolynomial.aeval fun i => φ (f i)\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"name\": \"MvPolynomial.aeval_comp_rename\",\n      \"type\": \" {σ : Type u_1} {τ : Type u_2} {R : Type u_4} {S : Type u_5} [CommSemiring R] [CommSemiring S] (k : σ → τ) (g : τ → S) [Algebra R S] : (MvPolynomial.aeval g).comp (MvPolynomial.rename k) = MvPolynomial.aeval (g ∘ k)\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Rename\"\n    },\n    {\n      \"name\": \"MvPolynomial.aeval_comp_toMvPolynomial\",\n      \"type\": \" {R : Type u_1} {S : Type u_2} {σ : Type u_3} [CommSemiring R] [CommSemiring S] [Algebra R S] (f : σ → S) (i : σ) : (MvPolynomial.aeval f).comp (Polynomial.toMvPolynomial i) = Polynomial.aeval (f i)\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    },\n    {\n      \"name\": \"MvPolynomial.aeval_comp_bind₁\",\n      \"type\": \" {σ : Type u_1} {τ : Type u_2} {R : Type u_3} {S : Type u_4} [CommSemiring R] [CommSemiring S] [Algebra R S] (f : τ → S) (g : σ → MvPolynomial τ R) : (MvPolynomial.aeval f).comp (MvPolynomial.bind₁ g) = MvPolynomial.aeval fun i => (MvPolynomial.aeval f) (g i)\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Monad\"\n    },\n    {\n      \"name\": \"AlgebraicIndependent.aeval_comp_repr\",\n      \"type\": \" {ι : Type u_1} {R : Type u_3} {A : Type u_4} {x : ι → A} [CommRing R] [CommRing A] [Algebra R A] (hx : AlgebraicIndependent R x) : (MvPolynomial.aeval x).comp hx.repr = (Algebra.adjoin R (Set.range x)).val\",\n      \"module\": \"Mathlib.RingTheory.AlgebraicIndependent.Defs\"\n    },\n    {\n      \"name\": \"AlgebraicIndependent.liftAlgHom_comp_reprField\",\n      \"type\": \" {ι : Type u_1} {F : Type u_2} {E : Type u_3} {x : ι → E} [Field F] [Field E] [Algebra F E] (hx : AlgebraicIndependent F x) : (IsFractionRing.liftAlgHom ⋯).comp hx.reprField = (IntermediateField.adjoin F (Set.range x)).val\",\n      \"module\": \"Mathlib.RingTheory.AlgebraicIndependent.Adjoin\"\n    },\n    {\n      \"name\": \"AlgebraicIndependent.aeval_comp_mvPolynomialOptionEquivPolynomialAdjoin\",\n      \"type\": \" {ι : Type u} {R : Type u_2} {A : Type v} {x : ι → A} [CommRing R] [CommRing A] [Algebra R A] (hx : AlgebraicIndependent R x) (a : A) : (AlgHom.restrictScalars R (Polynomial.aeval a)).comp ↑hx.mvPolynomialOptionEquivPolynomialAdjoin = MvPolynomial.aeval fun o => o.elim a x\",\n      \"module\": \"Mathlib.RingTheory.AlgebraicIndependent.Basic\"\n    },\n    {\n      \"name\": \"MvPolynomial.aeval_comp_expand\",\n      \"type\": \" {σ : Type u_1} {R : Type u_3} [CommSemiring R] (p : ℕ) {A : Type u_5} [CommSemiring A] [Algebra R A] (f : σ → A) : (MvPolynomial.aeval f).comp (MvPolynomial.expand p) = MvPolynomial.aeval (f ^ p)\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Expand\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.comp_aeval",
+            "type": " {R : Type u} {S₁ : Type v} {σ : Type u_1} [CommSemiring R] [CommSemiring S₁] [Algebra R S₁] (f : σ → S₁) {B : Type u_2} [CommSemiring B] [Algebra R B] (φ : S₁ →ₐ[R] B) : φ.comp (MvPolynomial.aeval f) = MvPolynomial.aeval fun i => φ (f i)",
+            "module": "Mathlib.Algebra.MvPolynomial.Eval"
+          },
+          {
+            "name": "MvPolynomial.aeval_comp_rename",
+            "type": " {σ : Type u_1} {τ : Type u_2} {R : Type u_4} {S : Type u_5} [CommSemiring R] [CommSemiring S] (k : σ → τ) (g : τ → S) [Algebra R S] : (MvPolynomial.aeval g).comp (MvPolynomial.rename k) = MvPolynomial.aeval (g ∘ k)",
+            "module": "Mathlib.Algebra.MvPolynomial.Rename"
+          },
+          {
+            "name": "MvPolynomial.aeval_comp_toMvPolynomial",
+            "type": " {R : Type u_1} {S : Type u_2} {σ : Type u_3} [CommSemiring R] [CommSemiring S] [Algebra R S] (f : σ → S) (i : σ) : (MvPolynomial.aeval f).comp (Polynomial.toMvPolynomial i) = Polynomial.aeval (f i)",
+            "module": "Mathlib.Algebra.MvPolynomial.Equiv"
+          },
+          {
+            "name": "MvPolynomial.aeval_comp_bind₁",
+            "type": " {σ : Type u_1} {τ : Type u_2} {R : Type u_3} {S : Type u_4} [CommSemiring R] [CommSemiring S] [Algebra R S] (f : τ → S) (g : σ → MvPolynomial τ R) : (MvPolynomial.aeval f).comp (MvPolynomial.bind₁ g) = MvPolynomial.aeval fun i => (MvPolynomial.aeval f) (g i)",
+            "module": "Mathlib.Algebra.MvPolynomial.Monad"
+          },
+          {
+            "name": "AlgebraicIndependent.aeval_comp_repr",
+            "type": " {ι : Type u_1} {R : Type u_3} {A : Type u_4} {x : ι → A} [CommRing R] [CommRing A] [Algebra R A] (hx : AlgebraicIndependent R x) : (MvPolynomial.aeval x).comp hx.repr = (Algebra.adjoin R (Set.range x)).val",
+            "module": "Mathlib.RingTheory.AlgebraicIndependent.Defs"
+          },
+          {
+            "name": "AlgebraicIndependent.liftAlgHom_comp_reprField",
+            "type": " {ι : Type u_1} {F : Type u_2} {E : Type u_3} {x : ι → E} [Field F] [Field E] [Algebra F E] (hx : AlgebraicIndependent F x) : (IsFractionRing.liftAlgHom ⋯).comp hx.reprField = (IntermediateField.adjoin F (Set.range x)).val",
+            "module": "Mathlib.RingTheory.AlgebraicIndependent.Adjoin"
+          },
+          {
+            "name": "AlgebraicIndependent.aeval_comp_mvPolynomialOptionEquivPolynomialAdjoin",
+            "type": " {ι : Type u} {R : Type u_2} {A : Type v} {x : ι → A} [CommRing R] [CommRing A] [Algebra R A] (hx : AlgebraicIndependent R x) (a : A) : (AlgHom.restrictScalars R (Polynomial.aeval a)).comp ↑hx.mvPolynomialOptionEquivPolynomialAdjoin = MvPolynomial.aeval fun o => o.elim a x",
+            "module": "Mathlib.RingTheory.AlgebraicIndependent.Basic"
+          },
+          {
+            "name": "MvPolynomial.aeval_comp_expand",
+            "type": " {σ : Type u_1} {R : Type u_3} [CommSemiring R] (p : ℕ) {A : Type u_5} [CommSemiring A] [Algebra R A] (f : σ → A) : (MvPolynomial.aeval f).comp (MvPolynomial.expand p) = MvPolynomial.aeval (f ^ p)",
+            "module": "Mathlib.Algebra.MvPolynomial.Expand"
+          }
+        ]
+      },
+      "isError": false
+    },
+    "form": "abstract"
+  },
+  {
+    "tool": "mcp__lean_lsp__lean_local_search",
+    "request": {
+      "query": "eval_diag"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Roth.eval_diag\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/CoeffNorm.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Roth.eval_diag",
+            "kind": "theorem",
+            "file": "Roth/CoeffNorm.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    },
+    "form": "current"
+  },
+  {
+    "tool": "mcp__lean_lsp__lean_local_search",
+    "request": {
+      "query": "hom_eval₂"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.hom_eval\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Eval.lean\"\n    },\n    {\n      \"name\": \"Polynomial.hom_eval\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Eval/Coeff.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.hom_eval",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Eval.lean"
+          },
+          {
+            "name": "Polynomial.hom_eval",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Eval/Coeff.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    },
+    "form": "standard"
+  },
+  {
+    "tool": "mcp__lean_lsp__lean_local_search",
+    "request": {
+      "query": "comp_aeval"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.comp_aeval\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Eval.lean\"\n    },\n    {\n      \"name\": \"MvPowerSeries.comp_aeval\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Evaluation.lean\"\n    },\n    {\n      \"name\": \"PowerSeries.comp_aeval\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/PowerSeries/Evaluation.lean\"\n    },\n    {\n      \"name\": \"Derivation.comp_aeval_eq\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Derivation.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.comp_aeval_apply\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Eval.lean\"\n    },\n    {\n      \"name\": \"Algebra.Presentation.comp_aeval_relation_inl\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/Extension/Presentation/Basic.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.comp_aeval",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Eval.lean"
+          },
+          {
+            "name": "MvPowerSeries.comp_aeval",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Evaluation.lean"
+          },
+          {
+            "name": "PowerSeries.comp_aeval",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/RingTheory/PowerSeries/Evaluation.lean"
+          },
+          {
+            "name": "Derivation.comp_aeval_eq",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Derivation.lean"
+          },
+          {
+            "name": "MvPolynomial.comp_aeval_apply",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Eval.lean"
+          },
+          {
+            "name": "Algebra.Presentation.comp_aeval_relation_inl",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/RingTheory/Extension/Presentation/Basic.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    },
+    "form": "abstract"
+  },
+  {
+    "tool": "mcp__lean_lsp__lean_loogle",
+    "request": {
+      "query": "MvPolynomial.eval₂, \"hom_eval₂\""
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "Error executing tool lean_loogle: Rate limit exceeded: 3 requests per 30s. Use --loogle-local to avoid limits."
+        }
+      ],
+      "isError": true
+    },
+    "form": "standard",
+    "retry": "rate-limit"
+  },
+  {
+    "tool": "mcp__lean_lsp__lean_loogle",
+    "request": {
+      "query": "MvPolynomial.eval₂, \"hom_eval₂\""
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.hom_eval₂\",\n      \"type\": \" {R : Type u} {S₁ : Type v} {S₂ : Type w} {σ : Type u_1} [CommSemiring R] [CommSemiring S₁] [CommSemiring S₂] (p : MvPolynomial σ R) (f : R →+* S₁) (φ : S₁ →+* S₂) (g : σ → S₁) : φ (MvPolynomial.eval₂ f g p) = MvPolynomial.eval₂ (φ.comp f) (fun i => φ (g i)) p\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.hom_eval₂",
+            "type": " {R : Type u} {S₁ : Type v} {S₂ : Type w} {σ : Type u_1} [CommSemiring R] [CommSemiring S₁] [CommSemiring S₂] (p : MvPolynomial σ R) (f : R →+* S₁) (φ : S₁ →+* S₂) (g : σ → S₁) : φ (MvPolynomial.eval₂ f g p) = MvPolynomial.eval₂ (φ.comp f) (fun i => φ (g i)) p",
+            "module": "Mathlib.Algebra.MvPolynomial.Eval"
+          }
+        ]
+      },
+      "isError": false
+    },
+    "form": "standard",
+    "retry": "successful-correction"
+  }
+]

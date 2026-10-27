@@ -1,0 +1,15 @@
+namespace Roth.EvalDiagInline
+open MvPolynomial
+theorem inline_replay {σ : Type*} {S : Type*} [CommRing S] {f : Polynomial ℤ} {α : S}
+    (hfα : Polynomial.aeval α f = 0) {W' W'' : MvPolynomial σ ℤ} {j : σ →₀ ℕ}
+    (h : diag (hasseDeriv j W') %ₘ f = diag (hasseDeriv j W'') %ₘ f) :
+    eval (fun _ ↦ α) (hasseDeriv j (map (Int.castRingHom S) (W' - W''))) = 0 := by
+  have hdvd : f ∣ diag (hasseDeriv j (W' - W'')) := by
+    apply Polynomial.dvd_modByMonic_iff_dvd.mp
+    simp [map_sub, diag_sub, Polynomial.sub_modByMonic, h]
+  simpa [hasseDeriv_map, eval_map, ← algebraMap_int_eq, ← aeval_def, diag,
+    MvPolynomial.comp_aeval_apply, Polynomial.aeval_X] using
+    Polynomial.aeval_eq_zero_of_dvd_aeval_eq_zero hdvd hfα
+
+#print axioms inline_replay
+end Roth.EvalDiagInline

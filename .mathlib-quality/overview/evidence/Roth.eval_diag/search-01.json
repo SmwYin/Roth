@@ -1,0 +1,59 @@
+{
+  "tool": "mcp__lean_lsp__lean_leanfinder",
+  "request": {
+    "query": "Evaluating the diagonal substitution P(X,...,X) at x equals evaluating P at (x,...,x), after mapping coefficients"
+  },
+  "response": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.eval_C_X_eval₂_map_C_X\",\n      \"informal_name\": \"Evaluation of Bivariate Polynomial at X Recovers Original Polynomial\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommSemiring R] {p : Polynomial (Polynomial R)},\\n  Polynomial.eval (Polynomial.C Polynomial.X)\\n      (Polynomial.eval₂ (Polynomial.mapRingHom (algebraMap R (Polynomial (Polynomial R)))) (Polynomial.C Polynomial.X)\\n        p) =\\n    p\",\n      \"informal_description\": \"For any polynomial $ p $ in $ R[X][Y] $, evaluating $ p $ at $ Y = X $ (considered as a constant polynomial in $ R[X] $) results in $ p $ itself. This identity demonstrates that substituting the variable $ Y $ with the indeterminate $ X $ in the polynomial ring $ R[X][Y] $ preserves the original polynomial.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Bivariate\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.eval_toMvPolynomial\",\n      \"informal_name\": \"Evaluation After Substitution Equals Evaluation at Substituted Value\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {σ : Type u_3} [inst : CommSemiring R] (f : σ → R) (i : σ) (p : Polynomial R),\\n  (MvPolynomial.eval f) ((Polynomial.toMvPolynomial i) p) = Polynomial.eval (f i) p\",\n      \"informal_description\": \"For any function $ f : \\\\sigma \\\\to R $, any $ i \\\\in \\\\sigma $, and any polynomial $ p \\\\in R[X] $, the evaluation of the multivariate polynomial obtained by substituting the variable $ X $ with $ X_i $ in $ p $, using $ f $, equals the evaluation of $ p $ at $ f(i) $. Formally, $ \\\\text{eval}(f, p.\\\\text{toMvPolynomial}(i)) = \\\\text{eval}(f(i), p) $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.eval₂Hom_X\",\n      \"informal_name\": \"Eval₂ Coincides with Ring Homomorphism on Multivariate Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {S : Type v} [inst : CommRing S] {R : Type u} (c : ℤ →+* S) (f : MvPolynomial R ℤ →+* S) (x : MvPolynomial R ℤ),\\n  MvPolynomial.eval₂ c (⇑f ∘ MvPolynomial.X) x = f x\",\n      \"informal_description\": \"For any ring homomorphism $ f : R[\\\\sigma] \\\\to S $, coefficient map $ c : \\\\mathbb{Z} \\\\to S $, and polynomial $ x \\\\in R[\\\\sigma] $, evaluating $ x $ using the `eval₂` function with coefficient map $ c $ and variable map $ f \\\\circ X $ yields the same result as applying $ f $ directly to $ x $, i.e., $ \\\\text{eval}_2(c, f \\\\circ X, x) = f(x) $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.CommRing\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.eval_polynomial_eval_finSuccEquiv\",\n      \"informal_name\": \"Evaluation Compatibility with Fin(n+1) to Fin(n) Equivalence\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {n : ℕ} {x : Fin n → R} [inst : CommSemiring R] (f : MvPolynomial (Fin (n + 1)) R)\\n  (q : MvPolynomial (Fin n) R),\\n  (MvPolynomial.eval x) (Polynomial.eval q ((MvPolynomial.finSuccEquiv R n) f)) =\\n    (MvPolynomial.eval fun i => Fin.cases ((MvPolynomial.eval x) q) x i) f\",\n      \"informal_description\": \"For any commutative semiring $ R $, natural number $ n $, evaluation map $ x : \\\\text{Fin}(n) \\\\to R $, multivariate polynomial $ f \\\\in R[\\\\text{Fin}(n+1)] $, and coefficient polynomial $ q \\\\in R[\\\\text{Fin}(n)] $, evaluating $ f $ after applying the $ \\\\text{Fin}(n+1) $-to-\\\\text{Fin}(n) algebra equivalence with outer variable substitution $ q $ is equivalent to directly evaluating $ f $ with the first variable replaced by $ q $ and other variables evaluated via $ x $. This establishes consistency between nested polynomial evaluations and direct evaluation under variable renaming.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Polynomial\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.eval_eq_eval_mv_eval'\",\n      \"informal_name\": \"Evaluation Equivalence for Multivariate Polynomials over Fin(n+1) and Univariate Polynomials with Coefficients in Fin(n) Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : CommSemiring R] {n : ℕ} (s : Fin n → R) (y : R) (f : MvPolynomial (Fin (n + 1)) R),\\n  (MvPolynomial.eval (Fin.cons y s)) f =\\n    Polynomial.eval y (Polynomial.map (MvPolynomial.eval s) ((MvPolynomial.finSuccEquiv R n) f))\",\n      \"informal_description\": \"Evaluating a multivariate polynomial $ f $ in $ n+1 $ variables at a tuple $ (y, s_0, s_1, \\\\ldots, s_n) $ is equivalent to first applying the $ \\\\text{Fin}(n+1) \\\\simeq \\\\text{Option}(\\\\text{Fin}(n)) $ variable equivalence to express $ f $ as a univariate polynomial in $ y $ with coefficients in $ n $-variable polynomials, then evaluating this outer polynomial at $ y $ after evaluating its coefficients using $ s $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "items": [
+        {
+          "formal_name": "Polynomial.eval_C_X_eval₂_map_C_X",
+          "informal_name": "Evaluation of Bivariate Polynomial at X Recovers Original Polynomial",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} [inst : CommSemiring R] {p : Polynomial (Polynomial R)},\n  Polynomial.eval (Polynomial.C Polynomial.X)\n      (Polynomial.eval₂ (Polynomial.mapRingHom (algebraMap R (Polynomial (Polynomial R)))) (Polynomial.C Polynomial.X)\n        p) =\n    p",
+          "informal_description": "For any polynomial $ p $ in $ R[X][Y] $, evaluating $ p $ at $ Y = X $ (considered as a constant polynomial in $ R[X] $) results in $ p $ itself. This identity demonstrates that substituting the variable $ Y $ with the indeterminate $ X $ in the polynomial ring $ R[X][Y] $ preserves the original polynomial.",
+          "path": "Mathlib.Algebra.Polynomial.Bivariate"
+        },
+        {
+          "formal_name": "MvPolynomial.eval_toMvPolynomial",
+          "informal_name": "Evaluation After Substitution Equals Evaluation at Substituted Value",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} {σ : Type u_3} [inst : CommSemiring R] (f : σ → R) (i : σ) (p : Polynomial R),\n  (MvPolynomial.eval f) ((Polynomial.toMvPolynomial i) p) = Polynomial.eval (f i) p",
+          "informal_description": "For any function $ f : \\sigma \\to R $, any $ i \\in \\sigma $, and any polynomial $ p \\in R[X] $, the evaluation of the multivariate polynomial obtained by substituting the variable $ X $ with $ X_i $ in $ p $, using $ f $, equals the evaluation of $ p $ at $ f(i) $. Formally, $ \\text{eval}(f, p.\\text{toMvPolynomial}(i)) = \\text{eval}(f(i), p) $.",
+          "path": "Mathlib.Algebra.MvPolynomial.Equiv"
+        },
+        {
+          "formal_name": "MvPolynomial.eval₂Hom_X",
+          "informal_name": "Eval₂ Coincides with Ring Homomorphism on Multivariate Polynomials",
+          "kind": "theorem",
+          "type": "∀ {S : Type v} [inst : CommRing S] {R : Type u} (c : ℤ →+* S) (f : MvPolynomial R ℤ →+* S) (x : MvPolynomial R ℤ),\n  MvPolynomial.eval₂ c (⇑f ∘ MvPolynomial.X) x = f x",
+          "informal_description": "For any ring homomorphism $ f : R[\\sigma] \\to S $, coefficient map $ c : \\mathbb{Z} \\to S $, and polynomial $ x \\in R[\\sigma] $, evaluating $ x $ using the `eval₂` function with coefficient map $ c $ and variable map $ f \\circ X $ yields the same result as applying $ f $ directly to $ x $, i.e., $ \\text{eval}_2(c, f \\circ X, x) = f(x) $.",
+          "path": "Mathlib.Algebra.MvPolynomial.CommRing"
+        },
+        {
+          "formal_name": "MvPolynomial.eval_polynomial_eval_finSuccEquiv",
+          "informal_name": "Evaluation Compatibility with Fin(n+1) to Fin(n) Equivalence",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} {n : ℕ} {x : Fin n → R} [inst : CommSemiring R] (f : MvPolynomial (Fin (n + 1)) R)\n  (q : MvPolynomial (Fin n) R),\n  (MvPolynomial.eval x) (Polynomial.eval q ((MvPolynomial.finSuccEquiv R n) f)) =\n    (MvPolynomial.eval fun i => Fin.cases ((MvPolynomial.eval x) q) x i) f",
+          "informal_description": "For any commutative semiring $ R $, natural number $ n $, evaluation map $ x : \\text{Fin}(n) \\to R $, multivariate polynomial $ f \\in R[\\text{Fin}(n+1)] $, and coefficient polynomial $ q \\in R[\\text{Fin}(n)] $, evaluating $ f $ after applying the $ \\text{Fin}(n+1) $-to-\\text{Fin}(n) algebra equivalence with outer variable substitution $ q $ is equivalent to directly evaluating $ f $ with the first variable replaced by $ q $ and other variables evaluated via $ x $. This establishes consistency between nested polynomial evaluations and direct evaluation under variable renaming.",
+          "path": "Mathlib.Algebra.MvPolynomial.Polynomial"
+        },
+        {
+          "formal_name": "MvPolynomial.eval_eq_eval_mv_eval'",
+          "informal_name": "Evaluation Equivalence for Multivariate Polynomials over Fin(n+1) and Univariate Polynomials with Coefficients in Fin(n) Polynomials",
+          "kind": "theorem",
+          "type": "∀ {R : Type u} [inst : CommSemiring R] {n : ℕ} (s : Fin n → R) (y : R) (f : MvPolynomial (Fin (n + 1)) R),\n  (MvPolynomial.eval (Fin.cons y s)) f =\n    Polynomial.eval y (Polynomial.map (MvPolynomial.eval s) ((MvPolynomial.finSuccEquiv R n) f))",
+          "informal_description": "Evaluating a multivariate polynomial $ f $ in $ n+1 $ variables at a tuple $ (y, s_0, s_1, \\ldots, s_n) $ is equivalent to first applying the $ \\text{Fin}(n+1) \\simeq \\text{Option}(\\text{Fin}(n)) $ variable equivalence to express $ f $ as a univariate polynomial in $ y $ with coefficients in $ n $-variable polynomials, then evaluating this outer polynomial at $ y $ after evaluating its coefficients using $ s $.",
+          "path": "Mathlib.Algebra.MvPolynomial.Equiv"
+        }
+      ]
+    },
+    "isError": false
+  }
+}

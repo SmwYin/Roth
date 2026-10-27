@@ -1,0 +1,40 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+import Mathlib.Algebra.Polynomial.CancelLeads
+import Mathlib.Algebra.MvPolynomial.PDeriv
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+import Mathlib.Algebra.MvPolynomial.Equiv
+import Mathlib.Analysis.Normed.Unbundled.RingSeminorm
+import Mathlib.LinearAlgebra.Matrix.AbsoluteValue
+import Mathlib.Data.Nat.Choose.Bounds
+import Mathlib.RingTheory.Polynomial.Basic
+#check_failure Roth.eval_diag
+#check_failure Roth.diag
+namespace MvPolynomial.EvalDiagRaw
+variable {σ R S : Type*} [CommSemiring R] [CommSemiring S]
+theorem generic (P : MvPolynomial σ R) (f : R →+* S) (x : S) :
+    Polynomial.eval x (Polynomial.map f (aeval (fun _ ↦ Polynomial.X) P)) =
+      eval (fun _ ↦ x) (map f P) := by
+  rw [Polynomial.eval_map, aeval_def, ← eval₂_eq_eval_map]
+  change (Polynomial.eval₂RingHom f x) (eval₂ Polynomial.C (fun _ ↦ Polynomial.X) P) = _
+  rw [hom_eval₂, Polynomial.eval₂RingHom_comp_C]
+  simp only [Polynomial.coe_eval₂RingHom, Polynomial.eval₂_X]
+theorem algebraic [Algebra R S] (P : MvPolynomial σ R) (x : S) :
+    Polynomial.aeval x (aeval (fun _ ↦ Polynomial.X) P) = aeval (fun _ ↦ x) P := by
+  simpa only [Polynomial.aeval_X] using
+    (comp_aeval_apply (fun _ ↦ (Polynomial.X : Polynomial R))
+      (Polynomial.aeval x : Polynomial R →ₐ[R] S) P)
+#check @MvPolynomial.hom_eval₂
+#check @MvPolynomial.eval_map
+#check @MvPolynomial.comp_aeval_apply
+#check @Polynomial.eval₂RingHom_comp_C
+#print axioms generic
+#print axioms algebraic
+end MvPolynomial.EvalDiagRaw

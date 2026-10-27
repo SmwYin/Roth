@@ -1,0 +1,59 @@
+{
+  "tool": "mcp__lean_lsp__lean_leanfinder",
+  "request": {
+    "query": "Composition of algebra homomorphism with multivariate polynomial aeval is aeval of images of variables"
+  },
+  "response": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"MvPolynomial.comp_aeval\",\n      \"informal_name\": \"Compatibility of Composition with Algebra Evaluation Homomorphism\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁]\\n  (f : σ → S₁) {B : Type u_2} [inst_3 : CommSemiring B] [inst_4 : Algebra R B] (φ : S₁ →ₐ[R] B),\\n  φ.comp (MvPolynomial.aeval f) = MvPolynomial.aeval fun i => φ (f i)\",\n      \"informal_description\": \"For any commutative semiring $B$ equipped with an $R$-algebra structure and any algebra homomorphism $\\\\phi : S_1 \\\\to B$ over $R$, the composition of $\\\\phi$ with the multivariate polynomial evaluation homomorphism $\\\\text{aeval}_f$ equals the evaluation homomorphism $\\\\text{aeval}_{\\\\phi \\\\circ f}$, where $f : \\\\sigma \\\\to S_1$ is a variable assignment. This expresses that applying $\\\\phi$ after polynomial evaluation is equivalent to first composing $\\\\phi$ with the variable assignment and then evaluating.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.comp_aeval_apply\",\n      \"informal_name\": \"Compatibility of Composition with Multivariate Polynomial Evaluation\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁]\\n  (f : σ → S₁) {B : Type u_2} [inst_3 : CommSemiring B] [inst_4 : Algebra R B] (φ : S₁ →ₐ[R] B) (p : MvPolynomial σ R),\\n  φ ((MvPolynomial.aeval f) p) = (MvPolynomial.aeval fun i => φ (f i)) p\",\n      \"informal_description\": \"For any $ R $-algebra homomorphism $ \\\\varphi : S_1 \\\\to B $ and polynomial $ p \\\\in R[\\\\sigma] $, applying $ \\\\varphi $ to the evaluation of $ p $ at a variable assignment $ f : \\\\sigma \\\\to S_1 $ equals the evaluation of $ p $ at the composed assignment $ \\\\varphi \\\\circ f $, i.e., $ \\\\varphi(\\\\text{aeval}_f(p)) = \\\\text{aeval}_{\\\\varphi \\\\circ f}(p) $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.aevalTower_comp_algebraMap\",\n      \"informal_name\": \"Composition of Algebra Map and Evaluation Equals Original Homomorphism\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] {S : Type u_2} {A : Type u_3} [inst_1 : CommSemiring S]\\n  [inst_2 : CommSemiring A] [inst_3 : Algebra S R] [inst_4 : Algebra S A] (g : R →ₐ[S] A) (y : σ → A),\\n  (↑(MvPolynomial.aevalTower g y)).comp (algebraMap R (MvPolynomial σ R)) = ↑g\",\n      \"informal_description\": \"The composition of the evaluation homomorphism $\\\\text{aevalTower}_g(y)$ with the canonical algebra map from $R$ to the multivariate polynomial ring $R[\\\\sigma]$ equals the original ring homomorphism $g$ from $R$ to $A$. This means that evaluating a polynomial whose coefficients are embedded via the algebra structure recovers the original homomorphism $g$.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.map_aeval\",\n      \"informal_name\": \"Compatibility of Multivariate Polynomial Evaluation with Ring Homomorphisms\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁]\\n  {B : Type u_2} [inst_3 : CommSemiring B] (g : σ → S₁) (φ : S₁ →+* B) (p : MvPolynomial σ R),\\n  φ ((MvPolynomial.aeval g) p) = (MvPolynomial.eval₂Hom (φ.comp (algebraMap R S₁)) fun i => φ (g i)) p\",\n      \"informal_description\": \"For any commutative semiring $ R $, type $ \\\\sigma $, commutative semiring $ S_1 $ with an $ R $-algebra structure, and commutative semiring $ B $, given a variable assignment $ g : \\\\sigma \\\\to S_1 $, a ring homomorphism $ \\\\varphi : S_1 \\\\to B $, and a polynomial $ p \\\\in R[\\\\sigma] $, applying $ \\\\varphi $ to the algebra evaluation $ \\\\mathrm{aeval}_g(p) $ equals evaluating $ p $ using the composed ring homomorphism $ \\\\varphi \\\\circ \\\\mathrm{algebraMap}_{R \\\\to S_1} $ on coefficients and $ \\\\varphi \\\\circ g $ on variables. Symbolically, $ \\\\varphi(\\\\mathrm{aeval}_g(p)) = \\\\mathrm{eval}_2^{\\\\varphi \\\\circ \\\\mathrm{algebraMap}, \\\\varphi \\\\circ g}(p) $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.aeval_comp_toMvPolynomial\",\n      \"informal_name\": \"Compatibility of Multivariate Evaluation with Univariate Embedding\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {S : Type u_2} {σ : Type u_3} [inst : CommSemiring R] [inst_1 : CommSemiring S] [inst_2 : Algebra R S]\\n  (f : σ → S) (i : σ), (MvPolynomial.aeval f).comp (Polynomial.toMvPolynomial i) = Polynomial.aeval (f i)\",\n      \"informal_description\": \"For any function $ f : \\\\sigma \\\\to S $ and any index $ i \\\\in \\\\sigma $, the composition of the multivariate polynomial evaluation homomorphism $ \\\\operatorname{aeval}_f $ with the univariate embedding $ \\\\operatorname{toMvPolynomial}_i $ is equal to the univariate polynomial evaluation homomorphism at $ f(i) $. Formally, $ \\\\operatorname{aeval}_f \\\\circ \\\\operatorname{toMvPolynomial}_i = \\\\operatorname{aeval}(f(i)) $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "items": [
+        {
+          "formal_name": "MvPolynomial.comp_aeval",
+          "informal_name": "Compatibility of Composition with Algebra Evaluation Homomorphism",
+          "kind": "theorem",
+          "type": "∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁]\n  (f : σ → S₁) {B : Type u_2} [inst_3 : CommSemiring B] [inst_4 : Algebra R B] (φ : S₁ →ₐ[R] B),\n  φ.comp (MvPolynomial.aeval f) = MvPolynomial.aeval fun i => φ (f i)",
+          "informal_description": "For any commutative semiring $B$ equipped with an $R$-algebra structure and any algebra homomorphism $\\phi : S_1 \\to B$ over $R$, the composition of $\\phi$ with the multivariate polynomial evaluation homomorphism $\\text{aeval}_f$ equals the evaluation homomorphism $\\text{aeval}_{\\phi \\circ f}$, where $f : \\sigma \\to S_1$ is a variable assignment. This expresses that applying $\\phi$ after polynomial evaluation is equivalent to first composing $\\phi$ with the variable assignment and then evaluating.",
+          "path": "Mathlib.Algebra.MvPolynomial.Eval"
+        },
+        {
+          "formal_name": "MvPolynomial.comp_aeval_apply",
+          "informal_name": "Compatibility of Composition with Multivariate Polynomial Evaluation",
+          "kind": "theorem",
+          "type": "∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁]\n  (f : σ → S₁) {B : Type u_2} [inst_3 : CommSemiring B] [inst_4 : Algebra R B] (φ : S₁ →ₐ[R] B) (p : MvPolynomial σ R),\n  φ ((MvPolynomial.aeval f) p) = (MvPolynomial.aeval fun i => φ (f i)) p",
+          "informal_description": "For any $ R $-algebra homomorphism $ \\varphi : S_1 \\to B $ and polynomial $ p \\in R[\\sigma] $, applying $ \\varphi $ to the evaluation of $ p $ at a variable assignment $ f : \\sigma \\to S_1 $ equals the evaluation of $ p $ at the composed assignment $ \\varphi \\circ f $, i.e., $ \\varphi(\\text{aeval}_f(p)) = \\text{aeval}_{\\varphi \\circ f}(p) $.",
+          "path": "Mathlib.Algebra.MvPolynomial.Eval"
+        },
+        {
+          "formal_name": "MvPolynomial.aevalTower_comp_algebraMap",
+          "informal_name": "Composition of Algebra Map and Evaluation Equals Original Homomorphism",
+          "kind": "theorem",
+          "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] {S : Type u_2} {A : Type u_3} [inst_1 : CommSemiring S]\n  [inst_2 : CommSemiring A] [inst_3 : Algebra S R] [inst_4 : Algebra S A] (g : R →ₐ[S] A) (y : σ → A),\n  (↑(MvPolynomial.aevalTower g y)).comp (algebraMap R (MvPolynomial σ R)) = ↑g",
+          "informal_description": "The composition of the evaluation homomorphism $\\text{aevalTower}_g(y)$ with the canonical algebra map from $R$ to the multivariate polynomial ring $R[\\sigma]$ equals the original ring homomorphism $g$ from $R$ to $A$. This means that evaluating a polynomial whose coefficients are embedded via the algebra structure recovers the original homomorphism $g$.",
+          "path": "Mathlib.Algebra.MvPolynomial.Eval"
+        },
+        {
+          "formal_name": "MvPolynomial.map_aeval",
+          "informal_name": "Compatibility of Multivariate Polynomial Evaluation with Ring Homomorphisms",
+          "kind": "theorem",
+          "type": "∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁]\n  {B : Type u_2} [inst_3 : CommSemiring B] (g : σ → S₁) (φ : S₁ →+* B) (p : MvPolynomial σ R),\n  φ ((MvPolynomial.aeval g) p) = (MvPolynomial.eval₂Hom (φ.comp (algebraMap R S₁)) fun i => φ (g i)) p",
+          "informal_description": "For any commutative semiring $ R $, type $ \\sigma $, commutative semiring $ S_1 $ with an $ R $-algebra structure, and commutative semiring $ B $, given a variable assignment $ g : \\sigma \\to S_1 $, a ring homomorphism $ \\varphi : S_1 \\to B $, and a polynomial $ p \\in R[\\sigma] $, applying $ \\varphi $ to the algebra evaluation $ \\mathrm{aeval}_g(p) $ equals evaluating $ p $ using the composed ring homomorphism $ \\varphi \\circ \\mathrm{algebraMap}_{R \\to S_1} $ on coefficients and $ \\varphi \\circ g $ on variables. Symbolically, $ \\varphi(\\mathrm{aeval}_g(p)) = \\mathrm{eval}_2^{\\varphi \\circ \\mathrm{algebraMap}, \\varphi \\circ g}(p) $.",
+          "path": "Mathlib.Algebra.MvPolynomial.Eval"
+        },
+        {
+          "formal_name": "MvPolynomial.aeval_comp_toMvPolynomial",
+          "informal_name": "Compatibility of Multivariate Evaluation with Univariate Embedding",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} {S : Type u_2} {σ : Type u_3} [inst : CommSemiring R] [inst_1 : CommSemiring S] [inst_2 : Algebra R S]\n  (f : σ → S) (i : σ), (MvPolynomial.aeval f).comp (Polynomial.toMvPolynomial i) = Polynomial.aeval (f i)",
+          "informal_description": "For any function $ f : \\sigma \\to S $ and any index $ i \\in \\sigma $, the composition of the multivariate polynomial evaluation homomorphism $ \\operatorname{aeval}_f $ with the univariate embedding $ \\operatorname{toMvPolynomial}_i $ is equal to the univariate polynomial evaluation homomorphism at $ f(i) $. Formally, $ \\operatorname{aeval}_f \\circ \\operatorname{toMvPolynomial}_i = \\operatorname{aeval}(f(i)) $.",
+          "path": "Mathlib.Algebra.MvPolynomial.Equiv"
+        }
+      ]
+    },
+    "isError": false
+  }
+}

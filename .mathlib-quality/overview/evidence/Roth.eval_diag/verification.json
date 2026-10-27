@@ -1,0 +1,78 @@
+{
+  "declaration": "Roth.eval_diag",
+  "production_unchanged": true,
+  "unresolved": [],
+  "standard_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "accepted": [
+    {
+      "label": "original",
+      "source": "native-original-executed.lean.txt",
+      "source_sha256": "ef86a38663339bff040af8a83998f991e835c6aac169b6dcbb084265eef11eb8",
+      "receipt": "native-original-success.json",
+      "expected_axiom_declarations": [
+        "Roth.eval_diag"
+      ]
+    },
+    {
+      "label": "raw",
+      "source": "native-raw-executed.lean.txt",
+      "source_sha256": "8ed26840121a8d28f5450e26bf36f465cc435dab84f74264386fd89b2c5e4f49",
+      "receipt": "native-raw-success.json",
+      "expected_axiom_declarations": [
+        "MvPolynomial.EvalDiagRaw.generic",
+        "MvPolynomial.EvalDiagRaw.algebraic"
+      ]
+    },
+    {
+      "label": "consumers",
+      "source": "native-consumers-executed.lean.txt",
+      "source_sha256": "9e64494aeddaa7b0e4b2302bc55a3348b5a335c802b77ab54dde88b0634f0181",
+      "receipt": "native-consumers-success.json",
+      "expected_axiom_declarations": [
+        "MvPolynomial.EvalDiagConsumers.direct",
+        "MvPolynomial.EvalDiagConsumers.specialization",
+        "MvPolynomial.EvalDiagInline.inline_replay"
+      ]
+    }
+  ],
+  "rejected": [
+    {
+      "label": "rejected-raw",
+      "source": "rejected-raw-executed.lean.txt",
+      "receipt": "rejected-raw-receipt.json",
+      "reason": "Raw algebraic statement unresolved Semiring metavariables: missing Polynomial R annotation.",
+      "accepted": false
+    },
+    {
+      "label": "rejected-raw-accepted",
+      "source": "rejected-raw-accepted-executed.lean.txt",
+      "receipt": "rejected-raw-accepted-receipt.json",
+      "reason": "Raw algebraic statement still unresolved after proof-only annotation; entire batch rejected.",
+      "accepted": false
+    },
+    {
+      "label": "rejected-consumers",
+      "source": "rejected-consumers-executed.lean.txt",
+      "receipt": "rejected-consumers-receipt.json",
+      "reason": "Direct existing-law specialization forward aeval normalization left generator and cast mismatches.",
+      "accepted": false
+    },
+    {
+      "label": "rejected-consumers-clean",
+      "source": "rejected-consumers-clean-executed.lean.txt",
+      "receipt": "rejected-consumers-clean-receipt.json",
+      "reason": "Direct specialization added eval₂_X normalization but retained cast mismatch.",
+      "accepted": false
+    }
+  ],
+  "note": "Raw probe was executed unchanged as first rejected raw batch; other preparation snippets were adjusted/combined into executed consumer sources. Accepted exact sources and original execution paths are explicit. Filename raw-accepted on rejected receipt is historical, not a success designation.",
+  "preparation_sources": [
+    "probe-raw.lean.txt",
+    "probe-consumers.lean.txt",
+    "probe-inline.lean.txt"
+  ]
+}

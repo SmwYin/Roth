@@ -1,0 +1,59 @@
+{
+  "tool": "mcp__lean_lsp__lean_leanfinder",
+  "request": {
+    "query": "A ring homomorphism applied to multivariate polynomial evaluation equals evaluation with the composed coefficient homomorphism and mapped variable values"
+  },
+  "response": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"MvPolynomial.map_eval₂Hom\",\n      \"informal_name\": \"Compatibility of Multivariate Polynomial Evaluation with Ring Homomorphism Composition\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S₁ : Type v} {S₂ : Type w} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁]\\n  [inst_2 : CommSemiring S₂] (f : R →+* S₁) (g : σ → S₁) (φ : S₁ →+* S₂) (p : MvPolynomial σ R),\\n  φ ((MvPolynomial.eval₂Hom f g) p) = (MvPolynomial.eval₂Hom (φ.comp f) fun i => φ (g i)) p\",\n      \"informal_description\": \"For any commutative semiring $R$, type $\\\\sigma$, and ring homomorphisms $f : R \\\\to S_1$, $g : \\\\sigma \\\\to S_1$, and $\\\\phi : S_1 \\\\to S_2$, the evaluation of a polynomial $p \\\\in R[\\\\sigma]$ satisfies $\\\\phi(\\\\mathrm{eval}_2(f, g, p)) = \\\\mathrm{eval}_2(\\\\phi \\\\circ f, \\\\phi \\\\circ g, p)$. This expresses that applying $\\\\phi$ after evaluation is equivalent to composing $\\\\phi$ with the coefficient map and variable assignment before evaluation.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.eval₂Hom_map_hom\",\n      \"informal_name\": \"Compatibility of Evaluation and Coefficient Mapping in Multivariate Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S₁ : Type v} {S₂ : Type w} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁]\\n  [inst_2 : CommSemiring S₂] (f : R →+* S₁) (g : σ → S₂) (φ : S₁ →+* S₂) (p : MvPolynomial σ R),\\n  (MvPolynomial.eval₂Hom φ g) ((MvPolynomial.map f) p) = (MvPolynomial.eval₂Hom (φ.comp f) g) p\",\n      \"informal_description\": \"For commutative semirings $R$, $S_1$, $S_2$, a type $\\\\sigma$, ring homomorphism $f : R \\\\to S_1$, variable assignment $g : \\\\sigma \\\\to S_2$, and ring homomorphism $\\\\phi : S_1 \\\\to S_2$, the evaluation of the polynomial $\\\\mathrm{map}\\\\,f\\\\,p$ using $\\\\phi$ and $g$ equals the evaluation of $p$ using the composed homomorphism $\\\\phi \\\\circ f$ and $g$. Formally, $\\\\mathrm{eval}_2\\\\,\\\\phi\\\\,g\\\\, (\\\\mathrm{map}\\\\,f\\\\,p) = \\\\mathrm{eval}_2\\\\, (\\\\phi \\\\circ f)\\\\,g\\\\,p$ for all $p \\\\in R[\\\\sigma]$.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.eval₂_map\",\n      \"informal_name\": \"Compatibility of Multivariate Polynomial Evaluation with Coefficient Mapping\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S₁ : Type v} {S₂ : Type w} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁]\\n  [inst_2 : CommSemiring S₂] (f : R →+* S₁) (g : σ → S₂) (φ : S₁ →+* S₂) (p : MvPolynomial σ R),\\n  MvPolynomial.eval₂ φ g ((MvPolynomial.map f) p) = MvPolynomial.eval₂ (φ.comp f) g p\",\n      \"informal_description\": \"For any commutative semiring $R$, type $\\\\sigma$, and commutative semirings $S_1, S_2$, given a ring homomorphism $f : R \\\\to S_1$, a variable assignment $g : \\\\sigma \\\\to S_2$, and a ring homomorphism $\\\\phi : S_1 \\\\to S_2$, the evaluation of the polynomial $\\\\mathrm{map}\\\\, f\\\\, p$ using coefficient map $\\\\phi$ and variable map $g$ equals the evaluation of $p$ using the composed coefficient map $\\\\phi \\\\circ f$ and variable map $g$. Formally, $\\\\mathrm{eval}_2(\\\\phi, g, \\\\mathrm{map}\\\\, f\\\\, p) = \\\\mathrm{eval}_2(\\\\phi \\\\circ f, g, p)$ for all $p \\\\in R[\\\\sigma]$.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.eval₂_comp_right\",\n      \"informal_name\": \"Compatibility of Multivariate Polynomial Evaluation with Composed Ring Homomorphisms\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] {S₂ : Type u_2}\\n  [inst_2 : CommSemiring S₂] (k : S₁ →+* S₂) (f : R →+* S₁) (g : σ → S₁) (p : MvPolynomial σ R),\\n  k (MvPolynomial.eval₂ f g p) = MvPolynomial.eval₂ k (⇑k ∘ g) ((MvPolynomial.map f) p)\",\n      \"informal_description\": \"For any commutative semiring $S_2$, ring homomorphism $k : S_1 \\\\to S_2$, ring homomorphism $f : R \\\\to S_1$, variable assignment $g : \\\\sigma \\\\to S_1$, and polynomial $p$, applying $k$ to the evaluation of $p$ using $f$ on coefficients and $g$ on variables equals evaluating the polynomial $\\\\mathrm{map}\\\\,f\\\\,p$ using $k \\\\circ g$ on variables and $k$ on coefficients. Formally: $k(\\\\mathrm{eval}_2\\\\,f\\\\,g\\\\,p) = \\\\mathrm{eval}_2\\\\,k\\\\,(k \\\\circ g)\\\\,(\\\\mathrm{map}\\\\,f\\\\,p)$.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.eval₂_comp\",\n      \"informal_name\": \"Evaluation of Multivariate Polynomials Composes with Ring Homomorphisms\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] (f : R →+* S₁)\\n  (g : σ → R) (p : MvPolynomial σ R), f ((MvPolynomial.eval g) p) = MvPolynomial.eval₂ f (⇑f ∘ g) p\",\n      \"informal_description\": \"For any ring homomorphism $ f : R \\\\to S_1 $, any map $ g : \\\\sigma \\\\to R $, and any polynomial $ p \\\\in R[\\\\sigma] $, it holds that $ f(\\\\mathrm{eval}_g(p)) = \\\\mathrm{eval}_{f, f \\\\circ g}(p) $, where $ \\\\mathrm{eval}_g $ denotes evaluation using variable map $ g $ and identity coefficient map, and $ \\\\mathrm{eval}_{f, f \\\\circ g} $ denotes evaluation using coefficient map $ f $ and variable map $ f \\\\circ g $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "items": [
+        {
+          "formal_name": "MvPolynomial.map_eval₂Hom",
+          "informal_name": "Compatibility of Multivariate Polynomial Evaluation with Ring Homomorphism Composition",
+          "kind": "theorem",
+          "type": "∀ {R : Type u} {S₁ : Type v} {S₂ : Type w} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁]\n  [inst_2 : CommSemiring S₂] (f : R →+* S₁) (g : σ → S₁) (φ : S₁ →+* S₂) (p : MvPolynomial σ R),\n  φ ((MvPolynomial.eval₂Hom f g) p) = (MvPolynomial.eval₂Hom (φ.comp f) fun i => φ (g i)) p",
+          "informal_description": "For any commutative semiring $R$, type $\\sigma$, and ring homomorphisms $f : R \\to S_1$, $g : \\sigma \\to S_1$, and $\\phi : S_1 \\to S_2$, the evaluation of a polynomial $p \\in R[\\sigma]$ satisfies $\\phi(\\mathrm{eval}_2(f, g, p)) = \\mathrm{eval}_2(\\phi \\circ f, \\phi \\circ g, p)$. This expresses that applying $\\phi$ after evaluation is equivalent to composing $\\phi$ with the coefficient map and variable assignment before evaluation.",
+          "path": "Mathlib.Algebra.MvPolynomial.Eval"
+        },
+        {
+          "formal_name": "MvPolynomial.eval₂Hom_map_hom",
+          "informal_name": "Compatibility of Evaluation and Coefficient Mapping in Multivariate Polynomials",
+          "kind": "theorem",
+          "type": "∀ {R : Type u} {S₁ : Type v} {S₂ : Type w} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁]\n  [inst_2 : CommSemiring S₂] (f : R →+* S₁) (g : σ → S₂) (φ : S₁ →+* S₂) (p : MvPolynomial σ R),\n  (MvPolynomial.eval₂Hom φ g) ((MvPolynomial.map f) p) = (MvPolynomial.eval₂Hom (φ.comp f) g) p",
+          "informal_description": "For commutative semirings $R$, $S_1$, $S_2$, a type $\\sigma$, ring homomorphism $f : R \\to S_1$, variable assignment $g : \\sigma \\to S_2$, and ring homomorphism $\\phi : S_1 \\to S_2$, the evaluation of the polynomial $\\mathrm{map}\\,f\\,p$ using $\\phi$ and $g$ equals the evaluation of $p$ using the composed homomorphism $\\phi \\circ f$ and $g$. Formally, $\\mathrm{eval}_2\\,\\phi\\,g\\, (\\mathrm{map}\\,f\\,p) = \\mathrm{eval}_2\\, (\\phi \\circ f)\\,g\\,p$ for all $p \\in R[\\sigma]$.",
+          "path": "Mathlib.Algebra.MvPolynomial.Eval"
+        },
+        {
+          "formal_name": "MvPolynomial.eval₂_map",
+          "informal_name": "Compatibility of Multivariate Polynomial Evaluation with Coefficient Mapping",
+          "kind": "theorem",
+          "type": "∀ {R : Type u} {S₁ : Type v} {S₂ : Type w} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁]\n  [inst_2 : CommSemiring S₂] (f : R →+* S₁) (g : σ → S₂) (φ : S₁ →+* S₂) (p : MvPolynomial σ R),\n  MvPolynomial.eval₂ φ g ((MvPolynomial.map f) p) = MvPolynomial.eval₂ (φ.comp f) g p",
+          "informal_description": "For any commutative semiring $R$, type $\\sigma$, and commutative semirings $S_1, S_2$, given a ring homomorphism $f : R \\to S_1$, a variable assignment $g : \\sigma \\to S_2$, and a ring homomorphism $\\phi : S_1 \\to S_2$, the evaluation of the polynomial $\\mathrm{map}\\, f\\, p$ using coefficient map $\\phi$ and variable map $g$ equals the evaluation of $p$ using the composed coefficient map $\\phi \\circ f$ and variable map $g$. Formally, $\\mathrm{eval}_2(\\phi, g, \\mathrm{map}\\, f\\, p) = \\mathrm{eval}_2(\\phi \\circ f, g, p)$ for all $p \\in R[\\sigma]$.",
+          "path": "Mathlib.Algebra.MvPolynomial.Eval"
+        },
+        {
+          "formal_name": "MvPolynomial.eval₂_comp_right",
+          "informal_name": "Compatibility of Multivariate Polynomial Evaluation with Composed Ring Homomorphisms",
+          "kind": "theorem",
+          "type": "∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] {S₂ : Type u_2}\n  [inst_2 : CommSemiring S₂] (k : S₁ →+* S₂) (f : R →+* S₁) (g : σ → S₁) (p : MvPolynomial σ R),\n  k (MvPolynomial.eval₂ f g p) = MvPolynomial.eval₂ k (⇑k ∘ g) ((MvPolynomial.map f) p)",
+          "informal_description": "For any commutative semiring $S_2$, ring homomorphism $k : S_1 \\to S_2$, ring homomorphism $f : R \\to S_1$, variable assignment $g : \\sigma \\to S_1$, and polynomial $p$, applying $k$ to the evaluation of $p$ using $f$ on coefficients and $g$ on variables equals evaluating the polynomial $\\mathrm{map}\\,f\\,p$ using $k \\circ g$ on variables and $k$ on coefficients. Formally: $k(\\mathrm{eval}_2\\,f\\,g\\,p) = \\mathrm{eval}_2\\,k\\,(k \\circ g)\\,(\\mathrm{map}\\,f\\,p)$.",
+          "path": "Mathlib.Algebra.MvPolynomial.Eval"
+        },
+        {
+          "formal_name": "MvPolynomial.eval₂_comp",
+          "informal_name": "Evaluation of Multivariate Polynomials Composes with Ring Homomorphisms",
+          "kind": "theorem",
+          "type": "∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] (f : R →+* S₁)\n  (g : σ → R) (p : MvPolynomial σ R), f ((MvPolynomial.eval g) p) = MvPolynomial.eval₂ f (⇑f ∘ g) p",
+          "informal_description": "For any ring homomorphism $ f : R \\to S_1 $, any map $ g : \\sigma \\to R $, and any polynomial $ p \\in R[\\sigma] $, it holds that $ f(\\mathrm{eval}_g(p)) = \\mathrm{eval}_{f, f \\circ g}(p) $, where $ \\mathrm{eval}_g $ denotes evaluation using variable map $ g $ and identity coefficient map, and $ \\mathrm{eval}_{f, f \\circ g} $ denotes evaluation using coefficient map $ f $ and variable map $ f \\circ g $.",
+          "path": "Mathlib.Algebra.MvPolynomial.Eval"
+        }
+      ]
+    },
+    "isError": false
+  }
+}
