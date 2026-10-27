@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-27
 
-- Declarations completed: **175/293**
-- Next declaration: **#176 `Roth.exists_int_factors`** (Roth/Separation.lean:485)
+- Declarations completed: **176/293**
+- Next declaration: **#177 `Roth.exists_rat_factors_det_hasseDeriv_aux`** (Roth/Separation.lean:510)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -194,10 +194,10 @@ Last regenerated: 2026-10-27
 | 173 | `Roth.exists_int_eq_of_gcd_eq_one` | Roth/Separation.lean:443 | NO-composable-from-mathlib | [report](mathlibable/Roth.exists_int_eq_of_gcd_eq_one.md) |
 | 174 | `Roth.rescale_separated_factor_aux` | Roth/Separation.lean:457 | SKIP | [report](mathlibable/Roth.rescale_separated_factor_aux.md) |
 | 175 | `Roth.exists_int_polynomial_of_primitive_factor_aux` | Roth/Separation.lean:466 | SKIP | [report](mathlibable/Roth.exists_int_polynomial_of_primitive_factor_aux.md) |
+| 176 | `Roth.exists_int_factors` | Roth/Separation.lean:485 | BORDERLINE-needs-human | [report](mathlibable/Roth.exists_int_factors.md) |
 
 ## Remaining declarations (in processing order)
 
-- #176 `Roth.exists_int_factors` (Roth/Separation.lean:485, public theorem)
 - #177 `Roth.exists_rat_factors_det_hasseDeriv_aux` (Roth/Separation.lean:510, private lemma)
 - #178 `Roth.exists_det_eq_mul` (Roth/Separation.lean:542, public theorem)
 - #179 `Roth.RSet` (Roth/Theta.lean:56, public def)
