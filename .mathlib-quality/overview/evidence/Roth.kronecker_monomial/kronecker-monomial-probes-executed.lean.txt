@@ -1,0 +1,14 @@
+namespace KroneckerMonomialAssessment
+open MvPolynomial
+#check @MvPolynomial.aeval_monomial
+#check @MvPolynomial.eval₂_monomial
+#check @Finsupp.weight_eq_sum
+#check @Finset.prod_pow_eq_pow_sum
+variable {K σ : Type*} [Field K] [Fintype σ]
+theorem target (k : ℕ) (d : σ →₀ ℕ) (a : K) :
+    Roth.kronecker k (monomial d a) = Polynomial.C a * Polynomial.X ^ Roth.kroneckerExp k d := by
+  simp [Roth.kronecker, Roth.kroneckerExp, aeval_monomial,
+    Finsupp.prod_fintype, ← pow_mul, mul_comm,
+    ← Finset.prod_pow_eq_pow_sum]
+#print axioms target
+end KroneckerMonomialAssessment

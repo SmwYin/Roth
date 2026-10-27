@@ -1,0 +1,23 @@
+{
+  "declaration": "Roth.kronecker_monomial",
+  "kind": "theorem",
+  "type": "∀ {K : Type u_1} [Field K] {σ : Type u_2} [Fintype σ] (k : ℕ) (d : σ →₀ ℕ) (a : K), Roth.kronecker k (MvPolynomial.monomial d a) = Polynomial.C a * Polynomial.X ^ Roth.kroneckerExp k d",
+  "what": "Computes the image of a coefficient-bearing monomial under geometric-power Kronecker substitution.",
+  "how": "Specializes MvPolynomial.aeval_monomial and normalizes product of powers to a power with weighted-sum exponent.",
+  "hypotheses": [
+    "Field K and Fintype σ belong to fixed parent interfaces",
+    "Arbitrary natural k and finitely supported natural d; arbitrary a",
+    "No lower-base bound, digit bound, CharZero or l parameter"
+  ],
+  "project_dependencies": [
+    "Roth.kronecker",
+    "Roth.kroneckerExp"
+  ],
+  "caller_summary": "One explicit internal caller Roth.coeff_kronecker at GenWronskian.lean93; no external explicit references. Canonical293 exact-order value audit has same sole direct consumer. Full caller replay without target passes.",
+  "mathlib_api_audit": "All five actual methods on current/standard/abstract forms; pinned aeval_monomial Eval.lean681 is the analogous law for re-aimed parent aeval. Independent map_eq/exp_eq bridges and original-form proof pass.",
+  "moral_duplications": "Redundant specialization of existing generic monomial evaluation under parent re-aim. Old spelling requires genuine finite-product normalization; not definitional and not a one-call old-form proof.",
+  "generalization": "Compiled arbitrary-σ CommSemiring weighted theorem and arbitrary commutative target algebra evaluation; fixed geometric enumeration remains a project representation choice.",
+  "missing_api": "No missing evaluation infrastructure established; new weighted helper probe is not counted as an existing mathlib theorem.",
+  "junk": "Useful single-caller local coefficient calculation; no simp attribute, not dead code or an independent upstream contribution.",
+  "action": "NO-mathlib-has-it. Delete exported specialization during parent refactor; sole caller uses verified local hmon normalization from aeval_monomial then coeff_C_mul_X_pow. Alternative destination private/local helper in Roth/GenWronskian.lean."
+}

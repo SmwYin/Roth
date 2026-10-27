@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 106/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 107/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 106; remaining: 187.
-- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 14 YES-but-generalise-first, 20 NO-mathlib-has-it, 33 BORDERLINE-needs-human, 12 SKIP.
+- Completed applicable assessments: 107; remaining: 186.
+- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 14 YES-but-generalise-first, 21 NO-mathlib-has-it, 33 BORDERLINE-needs-human, 12 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -1138,6 +1138,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: Zero source callers; canonical293 native audit found zero direct proof consumers. Analogous univariate easy direction is separate, not caller.
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.genWronskian_eq_zero_of_not_linearIndependent.md).
 
+### Completed: `Roth.kronecker_monomial`
+
+- Type: `∀ {K : Type u_1} [Field K] {σ : Type u_2} [Fintype σ] (k : ℕ) (d : σ →₀ ℕ) (a : K), Roth.kronecker k (MvPolynomial.monomial d a) = Polynomial.C a * Polynomial.X ^ Roth.kroneckerExp k d`
+- What: Computes the image of a coefficient-bearing monomial under geometric-power Kronecker substitution.
+- How: Specializes MvPolynomial.aeval_monomial and normalizes product of powers to a power with weighted-sum exponent.
+- Hypotheses: Field K and Fintype σ belong to fixed parent interfaces, Arbitrary natural k and finitely supported natural d; arbitrary a, No lower-base bound, digit bound, CharZero or l parameter
+- Project dependencies: Roth.kronecker, Roth.kroneckerExp
+- Caller summary: One explicit internal caller Roth.coeff_kronecker at GenWronskian.lean93; no external explicit references. Canonical293 exact-order value audit has same sole direct consumer. Full caller replay without target passes.
+- Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/Roth.kronecker_monomial.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -1376,6 +1386,8 @@ Completed `Roth.kronSpan`: Existing Submodule.span takes the image of the privat
 
 Completed `Roth.genWronskian_eq_zero_of_not_linearIndependent`: det_eq_zero_of_not_linearIndependent_cols + restrict_scalars' + of_comp + LinearMap.pi gives a checked four-call bridge; prebundled map needs three.
 
+Completed `Roth.kronecker_monomial`: All five actual methods on current/standard/abstract forms; pinned aeval_monomial Eval.lean681 is the analogous law for re-aimed parent aeval. Independent map_eq/exp_eq bridges and original-form proof pass.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -1589,6 +1601,8 @@ Completed `Roth.kronHasse`: Private operator composition and bounded module span
 Completed `Roth.kronSpan`: Private operator composition and bounded module span are different stages of the same derivative expansion, not duplicate full constructions.
 
 Completed `Roth.genWronskian_eq_zero_of_not_linearIndependent`: Roth.wronskian_eq_zero_of_not_linearIndependent has analogous coefficient-witness proof
+
+Completed `Roth.kronecker_monomial`: Redundant specialization of existing generic monomial evaluation under parent re-aim. Old spelling requires genuine finite-product normalization; not definitional and not a one-call old-form proof.
 
 ## Part 5: Generalization opportunities
 
@@ -1807,6 +1821,8 @@ Completed `Roth.kronSpan`: No public generality claim under the private prefilte
 
 Completed `Roth.genWronskian_eq_zero_of_not_linearIndependent`: Verified arbitrary finite index, CommRing+NoZeroDivisors polynomial coefficients; semiring base/module source abstract operator family with domain target/faithful scalar action. Plain ring false via ℤ×ℤ singleton.
 
+Completed `Roth.kronecker_monomial`: Compiled arbitrary-σ CommSemiring weighted theorem and arbitrary commutative target algebra evaluation; fixed geometric enumeration remains a project representation choice.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -2021,6 +2037,8 @@ Completed `Roth.kronHasse`: No new primitive is needed for this internal organiz
 Completed `Roth.kronSpan`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 Completed `Roth.genWronskian_eq_zero_of_not_linearIndependent`: Design choice: shared scalar-linear determinant family lemma versus alternating generalized-Wronskian representation.
+
+Completed `Roth.kronecker_monomial`: No missing evaluation infrastructure established; new weighted helper probe is not counted as an existing mathlib theorem.
 
 ## Part 7: Junk / removable
 
@@ -2239,6 +2257,8 @@ Completed `Roth.kronSpan`: Retain a live private proof interface. No placeholder
 
 Completed `Roth.genWronskian_eq_zero_of_not_linearIndependent`: No present named callers; mathematically standard paper lemma, not automatically junk.
 
+Completed `Roth.kronecker_monomial`: Useful single-caller local coefficient calculation; no simp attribute, not dead code or an independent upstream contribution.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -2349,6 +2369,7 @@ Completed `Roth.genWronskian_eq_zero_of_not_linearIndependent`: No present named
 | 104 | `Roth.kronHasse` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.kronHasse.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.kronHasse/root-acceptance.json) |
 | 105 | `Roth.kronSpan` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.kronSpan.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.kronSpan/root-acceptance.json) |
 | 106 | `Roth.genWronskian_eq_zero_of_not_linearIndependent` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.genWronskian_eq_zero_of_not_linearIndependent.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.genWronskian_eq_zero_of_not_linearIndependent/root-acceptance.json) |
+| 107 | `Roth.kronecker_monomial` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.kronecker_monomial.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.kronecker_monomial/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -2560,12 +2581,14 @@ Completed `Roth.kronSpan` action: Keep unchanged; complete private-prefilter SKI
 
 Completed `Roth.genWronskian_eq_zero_of_not_linearIndependent` action: BORDERLINE-needs-human: retain project-local until shared/alternating API chosen; optional verified four-call cleanup; no source callers to rewrite.
 
+Completed `Roth.kronecker_monomial` action: NO-mathlib-has-it. Delete exported specialization during parent refactor; sole caller uses verified local hmon normalization from aeval_monomial then coeff_C_mul_X_pow. Alternative destination private/local helper in Roth/GenWronskian.lean.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.kronecker_monomial` next. Supporting identities receive their own applicable checks.
+   `Roth.kroneckerExp_injOn` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

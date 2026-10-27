@@ -1,0 +1,684 @@
+[
+  {
+    "form": "current",
+    "method": "lean_leanfinder",
+    "request": {
+      "query": "Kronecker substitution sends a multivariate monomial to a univariate monomial with exponent sum d j times k power j",
+      "num_results": 6
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"MvPolynomial.expand_monomial\",\n      \"informal_name\": \"Expansion Homomorphism Scales Monomial Exponents by $ p $\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_3} [inst : CommSemiring R] (p : ℕ) (d : σ →₀ ℕ) (r : R),\\n  (MvPolynomial.expand p) ((MvPolynomial.monomial d) r) = (MvPolynomial.monomial (p • d)) r\",\n      \"informal_description\": \"For any exponent vector $ d $ and coefficient $ r $, applying the expansion homomorphism $ \\\\text{expand}_p $ to the monomial with exponent $ d $ and coefficient $ r $ results in the monomial with exponent $ p \\\\cdot d $ and coefficient $ r $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Expand\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.bind₁_monomial\",\n      \"informal_name\": \"bind₁ Applied to a Monomial Yields Product of Substitutions\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_3} [inst : CommSemiring R] (f : σ → MvPolynomial τ R) (d : σ →₀ ℕ) (r : R),\\n  (MvPolynomial.bind₁ f) ((MvPolynomial.monomial d) r) = MvPolynomial.C r * ∏ i ∈ d.support, f i ^ d i\",\n      \"informal_description\": \"For any substitution function $ f : \\\\sigma \\\\to R[\\\\tau] $, finite exponent vector $ d : \\\\sigma \\\\to_0 \\\\mathbb{N} $, and coefficient $ r \\\\in R $, applying the variable substitution homomorphism $ \\\\text{bind}_1 $ to the monomial $ \\\\text{monomial}(d, r) $ results in the product of the constant polynomial $ C(r) $ and the product over $ f(i)^{d(i)} $ for all $ i $ in the support of $ d $. Formally, $ \\\\text{bind}_1(f)(\\\\text{monomial}(d, r)) = C(r) \\\\cdot \\\\prod_{i \\\\in \\\\text{support}(d)} f(i)^{d(i)} $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Monad\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.bind₂_monomial\",\n      \"informal_name\": \"Bind₂ of Monomial: $ \\\\text{bind₂}(f)(r X^d) = f(r) X^d $\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_3} {S : Type u_4} [inst : CommSemiring R] [inst_1 : CommSemiring S]\\n  (f : R →+* MvPolynomial σ S) (d : σ →₀ ℕ) (r : R),\\n  (MvPolynomial.bind₂ f) ((MvPolynomial.monomial d) r) = f r * (MvPolynomial.monomial d) 1\",\n      \"informal_description\": \"For any ring homomorphism $ f : R \\\\to R[\\\\sigma] $, finite support function $ d : \\\\sigma \\\\to₀ \\\\mathbb{N} $, and coefficient $ r \\\\in R $, applying the bind₂ operation to the monomial $ r X^d $ yields $ f(r) X^d $, where $ X^d $ denotes the monomial with exponents specified by $ d $ and coefficient 1.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Monad\"\n    },\n    {\n      \"formal_name\": \"Polynomial.expand_monomial\",\n      \"informal_name\": \"Expansion of Monomial: $ rX^q \\\\mapsto rX^{q \\\\cdot p} $\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : CommSemiring R] (p q : ℕ) (r : R),\\n  (Polynomial.expand R p) ((Polynomial.monomial q) r) = (Polynomial.monomial (q * p)) r\",\n      \"informal_description\": \"Applying the polynomial expansion operation with parameter $ p $ to the monomial $ rX^q $ results in the monomial $ rX^{q \\\\cdot p} $. This operation scales the exponent $ q $ by $ p $ while preserving the coefficient $ r $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Expand\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.monomial_sum_index\",\n      \"informal_name\": \"Monomial with Summed Exponents Equals Product of Monomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] {α : Type u_2} (s : Finset α) (f : α → σ →₀ ℕ) (a : R),\\n  (MvPolynomial.monomial (∑ i ∈ s, f i)) a = MvPolynomial.C a * ∏ i ∈ s, (MvPolynomial.monomial (f i)) 1\",\n      \"informal_description\": \"For any finite set $s$, function $f : \\\\alpha \\\\to \\\\sigma \\\\to_0 \\\\mathbb{N}$, and coefficient $a \\\\in R$, the monomial with exponent $\\\\sum_{i \\\\in s} f(i)$ and coefficient $a$ is equal to the product of the constant polynomial $C(a)$ and the product of monomials $\\\\prod_{i \\\\in s} \\\\text{monomial}(f(i), 1)$.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Basic\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.rTensor_apply_monomial_tmul\",\n      \"informal_name\": \"Tensor Product of Multivariate Polynomial Ring with Module Evaluates Monomials as Basis Tensors\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {N : Type v} [inst : CommSemiring R] {σ : Type u_1} {S : Type u_3} [inst_1 : CommSemiring S]\\n  [inst_2 : Algebra R S] [inst_3 : DecidableEq σ] [inst_4 : AddCommMonoid N] [inst_5 : Module R N] (e : σ →₀ ℕ) (s : S)\\n  (n : N) (d : σ →₀ ℕ), (MvPolynomial.rTensor ((MvPolynomial.monomial e) s ⊗ₜ[R] n)) d = if e = d then s ⊗ₜ[R] n else 0\",\n      \"informal_description\": \"For monomials with exponents $ e $ and $ d $, the tensor product of the multivariate polynomial ring $ S[\\\\sigma] $ with an $ R $-module $ N $, when evaluated at $ d $, applied to the monomial with exponent $ e $ and coefficient $ s $ tensored with $ n $, equals $ s \\\\otimes_R n $ if $ e = d $, and zero otherwise.\",\n      \"path\": \"Mathlib.RingTheory.TensorProduct.MvPolynomial\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "MvPolynomial.expand_monomial",
+            "informal_name": "Expansion Homomorphism Scales Monomial Exponents by $ p $",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {R : Type u_3} [inst : CommSemiring R] (p : ℕ) (d : σ →₀ ℕ) (r : R),\n  (MvPolynomial.expand p) ((MvPolynomial.monomial d) r) = (MvPolynomial.monomial (p • d)) r",
+            "informal_description": "For any exponent vector $ d $ and coefficient $ r $, applying the expansion homomorphism $ \\text{expand}_p $ to the monomial with exponent $ d $ and coefficient $ r $ results in the monomial with exponent $ p \\cdot d $ and coefficient $ r $.",
+            "path": "Mathlib.Algebra.MvPolynomial.Expand"
+          },
+          {
+            "formal_name": "MvPolynomial.bind₁_monomial",
+            "informal_name": "bind₁ Applied to a Monomial Yields Product of Substitutions",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_3} [inst : CommSemiring R] (f : σ → MvPolynomial τ R) (d : σ →₀ ℕ) (r : R),\n  (MvPolynomial.bind₁ f) ((MvPolynomial.monomial d) r) = MvPolynomial.C r * ∏ i ∈ d.support, f i ^ d i",
+            "informal_description": "For any substitution function $ f : \\sigma \\to R[\\tau] $, finite exponent vector $ d : \\sigma \\to_0 \\mathbb{N} $, and coefficient $ r \\in R $, applying the variable substitution homomorphism $ \\text{bind}_1 $ to the monomial $ \\text{monomial}(d, r) $ results in the product of the constant polynomial $ C(r) $ and the product over $ f(i)^{d(i)} $ for all $ i $ in the support of $ d $. Formally, $ \\text{bind}_1(f)(\\text{monomial}(d, r)) = C(r) \\cdot \\prod_{i \\in \\text{support}(d)} f(i)^{d(i)} $.",
+            "path": "Mathlib.Algebra.MvPolynomial.Monad"
+          },
+          {
+            "formal_name": "MvPolynomial.bind₂_monomial",
+            "informal_name": "Bind₂ of Monomial: $ \\text{bind₂}(f)(r X^d) = f(r) X^d $",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {R : Type u_3} {S : Type u_4} [inst : CommSemiring R] [inst_1 : CommSemiring S]\n  (f : R →+* MvPolynomial σ S) (d : σ →₀ ℕ) (r : R),\n  (MvPolynomial.bind₂ f) ((MvPolynomial.monomial d) r) = f r * (MvPolynomial.monomial d) 1",
+            "informal_description": "For any ring homomorphism $ f : R \\to R[\\sigma] $, finite support function $ d : \\sigma \\to₀ \\mathbb{N} $, and coefficient $ r \\in R $, applying the bind₂ operation to the monomial $ r X^d $ yields $ f(r) X^d $, where $ X^d $ denotes the monomial with exponents specified by $ d $ and coefficient 1.",
+            "path": "Mathlib.Algebra.MvPolynomial.Monad"
+          },
+          {
+            "formal_name": "Polynomial.expand_monomial",
+            "informal_name": "Expansion of Monomial: $ rX^q \\mapsto rX^{q \\cdot p} $",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : CommSemiring R] (p q : ℕ) (r : R),\n  (Polynomial.expand R p) ((Polynomial.monomial q) r) = (Polynomial.monomial (q * p)) r",
+            "informal_description": "Applying the polynomial expansion operation with parameter $ p $ to the monomial $ rX^q $ results in the monomial $ rX^{q \\cdot p} $. This operation scales the exponent $ q $ by $ p $ while preserving the coefficient $ r $.",
+            "path": "Mathlib.Algebra.Polynomial.Expand"
+          },
+          {
+            "formal_name": "MvPolynomial.monomial_sum_index",
+            "informal_name": "Monomial with Summed Exponents Equals Product of Monomials",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] {α : Type u_2} (s : Finset α) (f : α → σ →₀ ℕ) (a : R),\n  (MvPolynomial.monomial (∑ i ∈ s, f i)) a = MvPolynomial.C a * ∏ i ∈ s, (MvPolynomial.monomial (f i)) 1",
+            "informal_description": "For any finite set $s$, function $f : \\alpha \\to \\sigma \\to_0 \\mathbb{N}$, and coefficient $a \\in R$, the monomial with exponent $\\sum_{i \\in s} f(i)$ and coefficient $a$ is equal to the product of the constant polynomial $C(a)$ and the product of monomials $\\prod_{i \\in s} \\text{monomial}(f(i), 1)$.",
+            "path": "Mathlib.Algebra.MvPolynomial.Basic"
+          },
+          {
+            "formal_name": "MvPolynomial.rTensor_apply_monomial_tmul",
+            "informal_name": "Tensor Product of Multivariate Polynomial Ring with Module Evaluates Monomials as Basis Tensors",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {N : Type v} [inst : CommSemiring R] {σ : Type u_1} {S : Type u_3} [inst_1 : CommSemiring S]\n  [inst_2 : Algebra R S] [inst_3 : DecidableEq σ] [inst_4 : AddCommMonoid N] [inst_5 : Module R N] (e : σ →₀ ℕ) (s : S)\n  (n : N) (d : σ →₀ ℕ), (MvPolynomial.rTensor ((MvPolynomial.monomial e) s ⊗ₜ[R] n)) d = if e = d then s ⊗ₜ[R] n else 0",
+            "informal_description": "For monomials with exponents $ e $ and $ d $, the tensor product of the multivariate polynomial ring $ S[\\sigma] $ with an $ R $-module $ N $, when evaluated at $ d $, applied to the monomial with exponent $ e $ and coefficient $ s $ tensored with $ n $, equals $ s \\otimes_R n $ if $ e = d $, and zero otherwise.",
+            "path": "Mathlib.RingTheory.TensorProduct.MvPolynomial"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "current",
+    "method": "lean_loogle",
+    "request": {
+      "query": "MvPolynomial.aeval, MvPolynomial.monomial",
+      "num_results": 6
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.aeval_monomial\",\n      \"type\": \" {R : Type u} {S₁ : Type v} {σ : Type u_1} [CommSemiring R] [CommSemiring S₁] [Algebra R S₁] (g : σ → S₁) (d : σ →₀ ℕ) (r : R) : (MvPolynomial.aeval g) ((MvPolynomial.monomial d) r) = (algebraMap R S₁) r * d.prod fun i k => g i ^ k\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"name\": \"MvPolynomial.aeval_ite_mem_eq\",\n      \"type\": \" {R : Type u} {σ : Type u_1} [CommSemiring R] (q : MvPolynomial σ R) (s : Set σ) [DecidablePred fun x => x ∈ s] [DecidablePred fun x => ↑x.support ⊆ s] : (MvPolynomial.aeval fun i => if i ∈ s then MvPolynomial.X i else 0) q = ∑ x ∈ q.support, if ↑x.support ⊆ s then (MvPolynomial.monomial x) (q.coeff x) else 0\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Variables\"\n    },\n    {\n      \"name\": \"Algebra.Generators.ofComp_toAlgHom_monomial_sumElim\",\n      \"type\": \" {R : Type u} {S : Type v} {ι : Type w} [CommRing R] [CommRing S] [Algebra R S] {ι' : Type u_3} {T : Type u_7} [CommRing T] [Algebra R T] [Algebra S T] [IsScalarTower R S T] (Q : Algebra.Generators S T ι') (P : Algebra.Generators R S ι) (v₁ : ι' →₀ ℕ) (v₂ : ι →₀ ℕ) (a : R) : (Q.ofComp P).toAlgHom ((MvPolynomial.monomial (v₁.sumElim v₂)) a) = (MvPolynomial.monomial v₁) ((MvPolynomial.aeval P.val) ((MvPolynomial.monomial v₂) a))\",\n      \"module\": \"Mathlib.RingTheory.Extension.Generators\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.aeval_monomial",
+            "type": " {R : Type u} {S₁ : Type v} {σ : Type u_1} [CommSemiring R] [CommSemiring S₁] [Algebra R S₁] (g : σ → S₁) (d : σ →₀ ℕ) (r : R) : (MvPolynomial.aeval g) ((MvPolynomial.monomial d) r) = (algebraMap R S₁) r * d.prod fun i k => g i ^ k",
+            "module": "Mathlib.Algebra.MvPolynomial.Eval"
+          },
+          {
+            "name": "MvPolynomial.aeval_ite_mem_eq",
+            "type": " {R : Type u} {σ : Type u_1} [CommSemiring R] (q : MvPolynomial σ R) (s : Set σ) [DecidablePred fun x => x ∈ s] [DecidablePred fun x => ↑x.support ⊆ s] : (MvPolynomial.aeval fun i => if i ∈ s then MvPolynomial.X i else 0) q = ∑ x ∈ q.support, if ↑x.support ⊆ s then (MvPolynomial.monomial x) (q.coeff x) else 0",
+            "module": "Mathlib.Algebra.MvPolynomial.Variables"
+          },
+          {
+            "name": "Algebra.Generators.ofComp_toAlgHom_monomial_sumElim",
+            "type": " {R : Type u} {S : Type v} {ι : Type w} [CommRing R] [CommRing S] [Algebra R S] {ι' : Type u_3} {T : Type u_7} [CommRing T] [Algebra R T] [Algebra S T] [IsScalarTower R S T] (Q : Algebra.Generators S T ι') (P : Algebra.Generators R S ι) (v₁ : ι' →₀ ℕ) (v₂ : ι →₀ ℕ) (a : R) : (Q.ofComp P).toAlgHom ((MvPolynomial.monomial (v₁.sumElim v₂)) a) = (MvPolynomial.monomial v₁) ((MvPolynomial.aeval P.val) ((MvPolynomial.monomial v₂) a))",
+            "module": "Mathlib.RingTheory.Extension.Generators"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "current",
+    "method": "lean_leansearch",
+    "request": {
+      "query": "Evaluate a multivariate monomial under Kronecker substitution",
+      "num_results": 6
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.eval_monomial\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Eval\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} {a : R} {s : σ →₀ ℕ} [inst : CommSemiring R] {f : σ → R},\\n  (MvPolynomial.eval f) ((MvPolynomial.monomial s) a) = a * s.prod fun n e => f n ^ e\"\n    },\n    {\n      \"name\": \"MvPolynomial.eval₂_monomial\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Eval\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} {a : R} {s : σ →₀ ℕ} [inst : CommSemiring R] [inst_1 : CommSemiring S₁]\\n  (f : R →+* S₁) (g : σ → S₁), MvPolynomial.eval₂ f g ((MvPolynomial.monomial s) a) = f a * s.prod fun n e => g n ^ e\"\n    },\n    {\n      \"name\": \"MvPowerSeries.subst_monomial\",\n      \"module_name\": \"Mathlib.RingTheory.MvPowerSeries.Substitution\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_3} [inst : CommRing R] {τ : Type u_4} {S : Type u_5} [inst_1 : CommRing S]\\n  [inst_2 : Algebra R S] {a : σ → MvPowerSeries τ S},\\n  MvPowerSeries.HasSubst a →\\n    ∀ (e : σ →₀ ℕ) (r : R),\\n      MvPowerSeries.subst a ((MvPowerSeries.monomial e) r) =\\n        (algebraMap R (MvPowerSeries τ S)) r * e.prod fun s n => a s ^ n\"\n    },\n    {\n      \"name\": \"MvPowerSeries.substAlgHom_monomial\",\n      \"module_name\": \"Mathlib.RingTheory.MvPowerSeries.Substitution\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_3} [inst : CommRing R] {τ : Type u_4} {S : Type u_5} [inst_1 : CommRing S]\\n  [inst_2 : Algebra R S] {a : σ → MvPowerSeries τ S} (ha : MvPowerSeries.HasSubst a) (e : σ →₀ ℕ) (r : R),\\n  (MvPowerSeries.substAlgHom ha) ((MvPowerSeries.monomial e) r) =\\n    (algebraMap R (MvPowerSeries τ S)) r * e.prod fun s n => a s ^ n\"\n    },\n    {\n      \"name\": \"MvPolynomial.aeval_monomial\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Eval\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁]\\n  (g : σ → S₁) (d : σ →₀ ℕ) (r : R),\\n  (MvPolynomial.aeval g) ((MvPolynomial.monomial d) r) = (algebraMap R S₁) r * d.prod fun i k => g i ^ k\"\n    },\n    {\n      \"name\": \"MvPolynomial.bind₁_monomial\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Monad\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_3} [inst : CommSemiring R] (f : σ → MvPolynomial τ R) (d : σ →₀ ℕ) (r : R),\\n  (MvPolynomial.bind₁ f) ((MvPolynomial.monomial d) r) = MvPolynomial.C r * ∏ i ∈ d.support, f i ^ d i\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.eval_monomial",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Eval",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type u_1} {a : R} {s : σ →₀ ℕ} [inst : CommSemiring R] {f : σ → R},\n  (MvPolynomial.eval f) ((MvPolynomial.monomial s) a) = a * s.prod fun n e => f n ^ e"
+          },
+          {
+            "name": "MvPolynomial.eval₂_monomial",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Eval",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} {a : R} {s : σ →₀ ℕ} [inst : CommSemiring R] [inst_1 : CommSemiring S₁]\n  (f : R →+* S₁) (g : σ → S₁), MvPolynomial.eval₂ f g ((MvPolynomial.monomial s) a) = f a * s.prod fun n e => g n ^ e"
+          },
+          {
+            "name": "MvPowerSeries.subst_monomial",
+            "module_name": "Mathlib.RingTheory.MvPowerSeries.Substitution",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {R : Type u_3} [inst : CommRing R] {τ : Type u_4} {S : Type u_5} [inst_1 : CommRing S]\n  [inst_2 : Algebra R S] {a : σ → MvPowerSeries τ S},\n  MvPowerSeries.HasSubst a →\n    ∀ (e : σ →₀ ℕ) (r : R),\n      MvPowerSeries.subst a ((MvPowerSeries.monomial e) r) =\n        (algebraMap R (MvPowerSeries τ S)) r * e.prod fun s n => a s ^ n"
+          },
+          {
+            "name": "MvPowerSeries.substAlgHom_monomial",
+            "module_name": "Mathlib.RingTheory.MvPowerSeries.Substitution",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {R : Type u_3} [inst : CommRing R] {τ : Type u_4} {S : Type u_5} [inst_1 : CommRing S]\n  [inst_2 : Algebra R S] {a : σ → MvPowerSeries τ S} (ha : MvPowerSeries.HasSubst a) (e : σ →₀ ℕ) (r : R),\n  (MvPowerSeries.substAlgHom ha) ((MvPowerSeries.monomial e) r) =\n    (algebraMap R (MvPowerSeries τ S)) r * e.prod fun s n => a s ^ n"
+          },
+          {
+            "name": "MvPolynomial.aeval_monomial",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Eval",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁]\n  (g : σ → S₁) (d : σ →₀ ℕ) (r : R),\n  (MvPolynomial.aeval g) ((MvPolynomial.monomial d) r) = (algebraMap R S₁) r * d.prod fun i k => g i ^ k"
+          },
+          {
+            "name": "MvPolynomial.bind₁_monomial",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Monad",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_3} [inst : CommSemiring R] (f : σ → MvPolynomial τ R) (d : σ →₀ ℕ) (r : R),\n  (MvPolynomial.bind₁ f) ((MvPolynomial.monomial d) r) = MvPolynomial.C r * ∏ i ∈ d.support, f i ^ d i"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "current",
+    "method": "lean_local_search",
+    "request": {
+      "query": "kronecker",
+      "limit": 20
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"PrivateKronHasseAssessment.kronecker\",\n      \"kind\": \"def\",\n      \"file\": \".lake/roth-overview-session/GenWronskianChecks.lean\"\n    },\n    {\n      \"name\": \"PrivateKronSpanAssessment.kronecker\",\n      \"kind\": \"def\",\n      \"file\": \".lake/roth-overview-session/GenWronskianChecks.lean\"\n    },\n    {\n      \"name\": \"Roth.KroneckerExpConsumers.kronecker\",\n      \"kind\": \"def\",\n      \"file\": \".lake/roth-overview-session/GenWronskianChecks.lean\"\n    },\n    {\n      \"name\": \"Roth.kronecker\",\n      \"kind\": \"def\",\n      \"file\": \"Roth/GenWronskian.lean\"\n    },\n    {\n      \"name\": \"Matrix.GeneralLinearGroup._root_.Matrix.IsUnit.kronecker\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/GeneralLinearGroup/Defs.lean\"\n    },\n    {\n      \"name\": \"Matrix.GeneralLinearGroup.kronecker\",\n      \"kind\": \"def\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/GeneralLinearGroup/Defs.lean\"\n    },\n    {\n      \"name\": \"Matrix.IsDiag.kronecker\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/IsDiag.lean\"\n    },\n    {\n      \"name\": \"Matrix.IsHadamard.kronecker\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/HadamardMatrix.lean\"\n    },\n    {\n      \"name\": \"Matrix.PosDef.kronecker\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Analysis/Matrix/Order.lean\"\n    },\n    {\n      \"name\": \"Matrix.PosSemidef.kronecker\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Analysis/Matrix/Order.lean\"\n    },\n    {\n      \"name\": \"Matrix.kronecker\",\n      \"kind\": \"def\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/Kronecker.lean\"\n    },\n    {\n      \"name\": \"KroneckerConsumers.kroneckerExp\",\n      \"kind\": \"def\",\n      \"file\": \".lake/roth-overview-session/GenWronskianChecks.lean\"\n    },\n    {\n      \"name\": \"PrivateKronHasseAssessment.kroneckerExp\",\n      \"kind\": \"def\",\n      \"file\": \".lake/roth-overview-session/GenWronskianChecks.lean\"\n    },\n    {\n      \"name\": \"PrivateKronSpanAssessment.kroneckerExp\",\n      \"kind\": \"def\",\n      \"file\": \".lake/roth-overview-session/GenWronskianChecks.lean\"\n    },\n    {\n      \"name\": \"Roth.kroneckerExp\",\n      \"kind\": \"def\",\n      \"file\": \"Roth/GenWronskian.lean\"\n    },\n    {\n      \"name\": \"KroneckerConsumers.kroneckerExp_injOn\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/roth-overview-session/GenWronskianChecks.lean\"\n    },\n    {\n      \"name\": \"PrivateKronHasseAssessment.kroneckerExp_injOn\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/roth-overview-session/GenWronskianChecks.lean\"\n    },\n    {\n      \"name\": \"PrivateKronSpanAssessment.kroneckerExp_injOn\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/roth-overview-session/GenWronskianChecks.lean\"\n    },\n    {\n      \"name\": \"Roth.KroneckerExpConsumers.kroneckerExp_injOn\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/roth-overview-session/GenWronskianChecks.lean\"\n    },\n    {\n      \"name\": \"Roth.kroneckerExp_injOn\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/GenWronskian.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "PrivateKronHasseAssessment.kronecker",
+            "kind": "def",
+            "file": ".lake/roth-overview-session/GenWronskianChecks.lean"
+          },
+          {
+            "name": "PrivateKronSpanAssessment.kronecker",
+            "kind": "def",
+            "file": ".lake/roth-overview-session/GenWronskianChecks.lean"
+          },
+          {
+            "name": "Roth.KroneckerExpConsumers.kronecker",
+            "kind": "def",
+            "file": ".lake/roth-overview-session/GenWronskianChecks.lean"
+          },
+          {
+            "name": "Roth.kronecker",
+            "kind": "def",
+            "file": "Roth/GenWronskian.lean"
+          },
+          {
+            "name": "Matrix.GeneralLinearGroup._root_.Matrix.IsUnit.kronecker",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/GeneralLinearGroup/Defs.lean"
+          },
+          {
+            "name": "Matrix.GeneralLinearGroup.kronecker",
+            "kind": "def",
+            "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/GeneralLinearGroup/Defs.lean"
+          },
+          {
+            "name": "Matrix.IsDiag.kronecker",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/IsDiag.lean"
+          },
+          {
+            "name": "Matrix.IsHadamard.kronecker",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/HadamardMatrix.lean"
+          },
+          {
+            "name": "Matrix.PosDef.kronecker",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Analysis/Matrix/Order.lean"
+          },
+          {
+            "name": "Matrix.PosSemidef.kronecker",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Analysis/Matrix/Order.lean"
+          },
+          {
+            "name": "Matrix.kronecker",
+            "kind": "def",
+            "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/Kronecker.lean"
+          },
+          {
+            "name": "KroneckerConsumers.kroneckerExp",
+            "kind": "def",
+            "file": ".lake/roth-overview-session/GenWronskianChecks.lean"
+          },
+          {
+            "name": "PrivateKronHasseAssessment.kroneckerExp",
+            "kind": "def",
+            "file": ".lake/roth-overview-session/GenWronskianChecks.lean"
+          },
+          {
+            "name": "PrivateKronSpanAssessment.kroneckerExp",
+            "kind": "def",
+            "file": ".lake/roth-overview-session/GenWronskianChecks.lean"
+          },
+          {
+            "name": "Roth.kroneckerExp",
+            "kind": "def",
+            "file": "Roth/GenWronskian.lean"
+          },
+          {
+            "name": "KroneckerConsumers.kroneckerExp_injOn",
+            "kind": "theorem",
+            "file": ".lake/roth-overview-session/GenWronskianChecks.lean"
+          },
+          {
+            "name": "PrivateKronHasseAssessment.kroneckerExp_injOn",
+            "kind": "theorem",
+            "file": ".lake/roth-overview-session/GenWronskianChecks.lean"
+          },
+          {
+            "name": "PrivateKronSpanAssessment.kroneckerExp_injOn",
+            "kind": "theorem",
+            "file": ".lake/roth-overview-session/GenWronskianChecks.lean"
+          },
+          {
+            "name": "Roth.KroneckerExpConsumers.kroneckerExp_injOn",
+            "kind": "theorem",
+            "file": ".lake/roth-overview-session/GenWronskianChecks.lean"
+          },
+          {
+            "name": "Roth.kroneckerExp_injOn",
+            "kind": "theorem",
+            "file": "Roth/GenWronskian.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "standard",
+    "method": "lean_leanfinder",
+    "request": {
+      "query": "Evaluation of monomial under polynomial substitution equals coefficient times product of substituted variables raised to exponents",
+      "num_results": 6
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"MvPolynomial.eval₂_monomial\",\n      \"informal_name\": \"Evaluation of Monomial in Multivariate Polynomial Ring\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} {a : R} {s : σ →₀ ℕ} [inst : CommSemiring R] [inst_1 : CommSemiring S₁]\\n  (f : R →+* S₁) (g : σ → S₁), MvPolynomial.eval₂ f g ((MvPolynomial.monomial s) a) = f a * s.prod fun n e => g n ^ e\",\n      \"informal_description\": \"For a commutative semiring $ R $, type $ \\\\sigma $, and functions $ f : R \\\\to S $ and $ g : \\\\sigma \\\\to S $, evaluating the monomial $ a \\\\cdot \\\\prod_{n \\\\in \\\\sigma} X_n^{s(n)} $ via $ \\\\text{eval}_2 $ yields $ f(a) \\\\cdot \\\\prod_{n \\\\in \\\\text{support}(s)} g(n)^{s(n)} $, where $ s $ is a finite support function representing exponents.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.eval₂Hom_monomial\",\n      \"informal_name\": \"Evaluation of Multivariate Polynomial Monomials via Homomorphism\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] (f : R →+* S₁)\\n  (g : σ → S₁) (d : σ →₀ ℕ) (r : R),\\n  (MvPolynomial.eval₂Hom f g) ((MvPolynomial.monomial d) r) = f r * d.prod fun i k => g i ^ k\",\n      \"informal_description\": \"For a commutative semiring $ R $, a type $ \\\\sigma $ of variables, and a ring homomorphism $ f : R \\\\to S_1 $ with variable assignment $ g : \\\\sigma \\\\to S_1 $, the evaluation of the monomial $ X^d \\\\cdot r $ (where $ d : \\\\sigma \\\\to_0 \\\\mathbb{N} $ is a finite exponent vector and $ r \\\\in R $) under the evaluation homomorphism $ \\\\mathrm{eval}_2 $ satisfies: $ \\\\mathrm{eval}_2(f, g)(X^d \\\\cdot r) = f(r) \\\\cdot \\\\prod_{i \\\\in \\\\mathrm{support}(d)} g(i)^{d(i)} $. This expresses that monomials are evaluated by applying $ f $ to coefficients and $ g $ to variables, then multiplying the results according to the monomial's structure.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.eval_monomial\",\n      \"informal_name\": \"Evaluation of a Monomial in a Multivariate Polynomial Ring\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} {a : R} {s : σ →₀ ℕ} [inst : CommSemiring R] {f : σ → R},\\n  (MvPolynomial.eval f) ((MvPolynomial.monomial s) a) = a * s.prod fun n e => f n ^ e\",\n      \"informal_description\": \"For a monomial with coefficient $ a $ and exponents specified by a finite support function $ s $, the evaluation under a substitution map $ f : \\\\sigma \\\\to R $ is equal to $ a $ multiplied by the product of $ f(n)^{e} $ for each variable $ n $ with exponent $ e $ in $ s $. Formally, $ \\\\operatorname{eval}_f(\\\\operatorname{monomial}(s, a)) = a \\\\cdot \\\\prod_{n \\\\in \\\\operatorname{support}(s)} f(n)^{s(n)} $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.aeval_monomial\",\n      \"informal_name\": \"Evaluation of Monomials in Multivariate Polynomial Rings\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁]\\n  (g : σ → S₁) (d : σ →₀ ℕ) (r : R),\\n  (MvPolynomial.aeval g) ((MvPolynomial.monomial d) r) = (algebraMap R S₁) r * d.prod fun i k => g i ^ k\",\n      \"informal_description\": \"For any commutative semiring $ R $, type $ \\\\sigma $, and $ R $-algebra $ S_1 $, given a monomial in $ R[\\\\sigma] $ with coefficient $ r \\\\in R $ and exponent vector $ d : \\\\sigma \\\\to_0 \\\\mathbb{N} $, the algebra evaluation homomorphism $ \\\\text{aeval}_g $ at a variable assignment $ g : \\\\sigma \\\\to S_1 $ satisfies $ \\\\text{aeval}_g(\\\\text{monomial}(d, r)) = \\\\text{algebraMap}(r) \\\\cdot \\\\prod_{i \\\\in \\\\text{support}(d)} (g(i))^{d(i)} $. This expresses that evaluating a monomial replaces each variable $ X_i $ with $ g(i) $, raises it to the power of its exponent $ d(i) $, multiplies these values together, and scales by the algebra-mapped coefficient $ \\\\text{algebraMap}(r) $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.bind₁_monomial\",\n      \"informal_name\": \"bind₁ Applied to a Monomial Yields Product of Substitutions\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_3} [inst : CommSemiring R] (f : σ → MvPolynomial τ R) (d : σ →₀ ℕ) (r : R),\\n  (MvPolynomial.bind₁ f) ((MvPolynomial.monomial d) r) = MvPolynomial.C r * ∏ i ∈ d.support, f i ^ d i\",\n      \"informal_description\": \"For any substitution function $ f : \\\\sigma \\\\to R[\\\\tau] $, finite exponent vector $ d : \\\\sigma \\\\to_0 \\\\mathbb{N} $, and coefficient $ r \\\\in R $, applying the variable substitution homomorphism $ \\\\text{bind}_1 $ to the monomial $ \\\\text{monomial}(d, r) $ results in the product of the constant polynomial $ C(r) $ and the product over $ f(i)^{d(i)} $ for all $ i $ in the support of $ d $. Formally, $ \\\\text{bind}_1(f)(\\\\text{monomial}(d, r)) = C(r) \\\\cdot \\\\prod_{i \\\\in \\\\text{support}(d)} f(i)^{d(i)} $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Monad\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.eval₂_mul_monomial\",\n      \"informal_name\": \"Multiplicative Evaluation of Polynomial-Monomial Product in Multivariate Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] {p : MvPolynomial σ R}\\n  (f : R →+* S₁) (g : σ → S₁) {s : σ →₀ ℕ} {a : R},\\n  MvPolynomial.eval₂ f g (p * (MvPolynomial.monomial s) a) = MvPolynomial.eval₂ f g p * f a * s.prod fun n e => g n ^ e\",\n      \"informal_description\": \"For any commutative semiring $ R $, type $ \\\\sigma $, and semiring $ S_1 $, given a polynomial $ p \\\\in R[\\\\sigma] $, a monomial with exponents $ s : \\\\sigma \\\\to \\\\mathbb{N} $ (finite support) and coefficient $ a \\\\in R $, the evaluation of the product $ p \\\\cdot \\\\text{monomial}(s, a) $ using coefficient map $ f : R \\\\to S_1 $ and variable map $ g : \\\\sigma \\\\to S_1 $ is equal to the product of the evaluation of $ p $, $ f(a) $, and the product over all $ n \\\\in \\\\text{support}(s) $ of $ g(n)^{s(n)} $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "MvPolynomial.eval₂_monomial",
+            "informal_name": "Evaluation of Monomial in Multivariate Polynomial Ring",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} {a : R} {s : σ →₀ ℕ} [inst : CommSemiring R] [inst_1 : CommSemiring S₁]\n  (f : R →+* S₁) (g : σ → S₁), MvPolynomial.eval₂ f g ((MvPolynomial.monomial s) a) = f a * s.prod fun n e => g n ^ e",
+            "informal_description": "For a commutative semiring $ R $, type $ \\sigma $, and functions $ f : R \\to S $ and $ g : \\sigma \\to S $, evaluating the monomial $ a \\cdot \\prod_{n \\in \\sigma} X_n^{s(n)} $ via $ \\text{eval}_2 $ yields $ f(a) \\cdot \\prod_{n \\in \\text{support}(s)} g(n)^{s(n)} $, where $ s $ is a finite support function representing exponents.",
+            "path": "Mathlib.Algebra.MvPolynomial.Eval"
+          },
+          {
+            "formal_name": "MvPolynomial.eval₂Hom_monomial",
+            "informal_name": "Evaluation of Multivariate Polynomial Monomials via Homomorphism",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] (f : R →+* S₁)\n  (g : σ → S₁) (d : σ →₀ ℕ) (r : R),\n  (MvPolynomial.eval₂Hom f g) ((MvPolynomial.monomial d) r) = f r * d.prod fun i k => g i ^ k",
+            "informal_description": "For a commutative semiring $ R $, a type $ \\sigma $ of variables, and a ring homomorphism $ f : R \\to S_1 $ with variable assignment $ g : \\sigma \\to S_1 $, the evaluation of the monomial $ X^d \\cdot r $ (where $ d : \\sigma \\to_0 \\mathbb{N} $ is a finite exponent vector and $ r \\in R $) under the evaluation homomorphism $ \\mathrm{eval}_2 $ satisfies: $ \\mathrm{eval}_2(f, g)(X^d \\cdot r) = f(r) \\cdot \\prod_{i \\in \\mathrm{support}(d)} g(i)^{d(i)} $. This expresses that monomials are evaluated by applying $ f $ to coefficients and $ g $ to variables, then multiplying the results according to the monomial's structure.",
+            "path": "Mathlib.Algebra.MvPolynomial.Eval"
+          },
+          {
+            "formal_name": "MvPolynomial.eval_monomial",
+            "informal_name": "Evaluation of a Monomial in a Multivariate Polynomial Ring",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type u_1} {a : R} {s : σ →₀ ℕ} [inst : CommSemiring R] {f : σ → R},\n  (MvPolynomial.eval f) ((MvPolynomial.monomial s) a) = a * s.prod fun n e => f n ^ e",
+            "informal_description": "For a monomial with coefficient $ a $ and exponents specified by a finite support function $ s $, the evaluation under a substitution map $ f : \\sigma \\to R $ is equal to $ a $ multiplied by the product of $ f(n)^{e} $ for each variable $ n $ with exponent $ e $ in $ s $. Formally, $ \\operatorname{eval}_f(\\operatorname{monomial}(s, a)) = a \\cdot \\prod_{n \\in \\operatorname{support}(s)} f(n)^{s(n)} $.",
+            "path": "Mathlib.Algebra.MvPolynomial.Eval"
+          },
+          {
+            "formal_name": "MvPolynomial.aeval_monomial",
+            "informal_name": "Evaluation of Monomials in Multivariate Polynomial Rings",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁]\n  (g : σ → S₁) (d : σ →₀ ℕ) (r : R),\n  (MvPolynomial.aeval g) ((MvPolynomial.monomial d) r) = (algebraMap R S₁) r * d.prod fun i k => g i ^ k",
+            "informal_description": "For any commutative semiring $ R $, type $ \\sigma $, and $ R $-algebra $ S_1 $, given a monomial in $ R[\\sigma] $ with coefficient $ r \\in R $ and exponent vector $ d : \\sigma \\to_0 \\mathbb{N} $, the algebra evaluation homomorphism $ \\text{aeval}_g $ at a variable assignment $ g : \\sigma \\to S_1 $ satisfies $ \\text{aeval}_g(\\text{monomial}(d, r)) = \\text{algebraMap}(r) \\cdot \\prod_{i \\in \\text{support}(d)} (g(i))^{d(i)} $. This expresses that evaluating a monomial replaces each variable $ X_i $ with $ g(i) $, raises it to the power of its exponent $ d(i) $, multiplies these values together, and scales by the algebra-mapped coefficient $ \\text{algebraMap}(r) $.",
+            "path": "Mathlib.Algebra.MvPolynomial.Eval"
+          },
+          {
+            "formal_name": "MvPolynomial.bind₁_monomial",
+            "informal_name": "bind₁ Applied to a Monomial Yields Product of Substitutions",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_3} [inst : CommSemiring R] (f : σ → MvPolynomial τ R) (d : σ →₀ ℕ) (r : R),\n  (MvPolynomial.bind₁ f) ((MvPolynomial.monomial d) r) = MvPolynomial.C r * ∏ i ∈ d.support, f i ^ d i",
+            "informal_description": "For any substitution function $ f : \\sigma \\to R[\\tau] $, finite exponent vector $ d : \\sigma \\to_0 \\mathbb{N} $, and coefficient $ r \\in R $, applying the variable substitution homomorphism $ \\text{bind}_1 $ to the monomial $ \\text{monomial}(d, r) $ results in the product of the constant polynomial $ C(r) $ and the product over $ f(i)^{d(i)} $ for all $ i $ in the support of $ d $. Formally, $ \\text{bind}_1(f)(\\text{monomial}(d, r)) = C(r) \\cdot \\prod_{i \\in \\text{support}(d)} f(i)^{d(i)} $.",
+            "path": "Mathlib.Algebra.MvPolynomial.Monad"
+          },
+          {
+            "formal_name": "MvPolynomial.eval₂_mul_monomial",
+            "informal_name": "Multiplicative Evaluation of Polynomial-Monomial Product in Multivariate Polynomials",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] {p : MvPolynomial σ R}\n  (f : R →+* S₁) (g : σ → S₁) {s : σ →₀ ℕ} {a : R},\n  MvPolynomial.eval₂ f g (p * (MvPolynomial.monomial s) a) = MvPolynomial.eval₂ f g p * f a * s.prod fun n e => g n ^ e",
+            "informal_description": "For any commutative semiring $ R $, type $ \\sigma $, and semiring $ S_1 $, given a polynomial $ p \\in R[\\sigma] $, a monomial with exponents $ s : \\sigma \\to \\mathbb{N} $ (finite support) and coefficient $ a \\in R $, the evaluation of the product $ p \\cdot \\text{monomial}(s, a) $ using coefficient map $ f : R \\to S_1 $ and variable map $ g : \\sigma \\to S_1 $ is equal to the product of the evaluation of $ p $, $ f(a) $, and the product over all $ n \\in \\text{support}(s) $ of $ g(n)^{s(n)} $.",
+            "path": "Mathlib.Algebra.MvPolynomial.Eval"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "standard",
+    "method": "lean_loogle",
+    "request": {
+      "query": "MvPolynomial.eval₂, MvPolynomial.monomial",
+      "num_results": 6
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.eval₂_monomial\",\n      \"type\": \" {R : Type u} {S₁ : Type v} {σ : Type u_1} {a : R} {s : σ →₀ ℕ} [CommSemiring R] [CommSemiring S₁] (f : R →+* S₁) (g : σ → S₁) : MvPolynomial.eval₂ f g ((MvPolynomial.monomial s) a) = f a * s.prod fun n e => g n ^ e\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"name\": \"MvPolynomial.eval₂_mul_monomial\",\n      \"type\": \" {R : Type u} {S₁ : Type v} {σ : Type u_1} [CommSemiring R] [CommSemiring S₁] {p : MvPolynomial σ R} (f : R →+* S₁) (g : σ → S₁) {s : σ →₀ ℕ} {a : R} : MvPolynomial.eval₂ f g (p * (MvPolynomial.monomial s) a) = MvPolynomial.eval₂ f g p * f a * s.prod fun n e => g n ^ e\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.eval₂_monomial",
+            "type": " {R : Type u} {S₁ : Type v} {σ : Type u_1} {a : R} {s : σ →₀ ℕ} [CommSemiring R] [CommSemiring S₁] (f : R →+* S₁) (g : σ → S₁) : MvPolynomial.eval₂ f g ((MvPolynomial.monomial s) a) = f a * s.prod fun n e => g n ^ e",
+            "module": "Mathlib.Algebra.MvPolynomial.Eval"
+          },
+          {
+            "name": "MvPolynomial.eval₂_mul_monomial",
+            "type": " {R : Type u} {S₁ : Type v} {σ : Type u_1} [CommSemiring R] [CommSemiring S₁] {p : MvPolynomial σ R} (f : R →+* S₁) (g : σ → S₁) {s : σ →₀ ℕ} {a : R} : MvPolynomial.eval₂ f g (p * (MvPolynomial.monomial s) a) = MvPolynomial.eval₂ f g p * f a * s.prod fun n e => g n ^ e",
+            "module": "Mathlib.Algebra.MvPolynomial.Eval"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "standard",
+    "method": "lean_leansearch",
+    "request": {
+      "query": "Multivariate polynomial evaluation monomial coefficient product powers",
+      "num_results": 6
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.eval₂_mul_monomial\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Eval\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] {p : MvPolynomial σ R}\\n  (f : R →+* S₁) (g : σ → S₁) {s : σ →₀ ℕ} {a : R},\\n  MvPolynomial.eval₂ f g (p * (MvPolynomial.monomial s) a) = MvPolynomial.eval₂ f g p * f a * s.prod fun n e => g n ^ e\"\n    },\n    {\n      \"name\": \"MvPolynomial.eval_monomial\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Eval\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} {a : R} {s : σ →₀ ℕ} [inst : CommSemiring R] {f : σ → R},\\n  (MvPolynomial.eval f) ((MvPolynomial.monomial s) a) = a * s.prod fun n e => f n ^ e\"\n    },\n    {\n      \"name\": \"MvPolynomial.aeval_monomial\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Eval\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁]\\n  (g : σ → S₁) (d : σ →₀ ℕ) (r : R),\\n  (MvPolynomial.aeval g) ((MvPolynomial.monomial d) r) = (algebraMap R S₁) r * d.prod fun i k => g i ^ k\"\n    },\n    {\n      \"name\": \"MvPolynomial.eval_eq\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Eval\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] (X : σ → R) (f : MvPolynomial σ R),\\n  (MvPolynomial.eval X) f = ∑ d ∈ f.support, MvPolynomial.coeff d f * ∏ i ∈ d.support, X i ^ d i\"\n    },\n    {\n      \"name\": \"MvPolynomial.eval₂_eq\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Eval\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] (g : R →+* S₁)\\n  (X : σ → S₁) (f : MvPolynomial σ R),\\n  MvPolynomial.eval₂ g X f = ∑ d ∈ f.support, g (MvPolynomial.coeff d f) * ∏ i ∈ d.support, X i ^ d i\"\n    },\n    {\n      \"name\": \"MvPowerSeries.aeval_eq_sum\",\n      \"module_name\": \"Mathlib.RingTheory.MvPowerSeries.Evaluation\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_2} [inst : CommRing R] [inst_1 : UniformSpace R] {S : Type u_3} [inst_2 : CommRing S]\\n  [inst_3 : UniformSpace S] {a : σ → S} [inst_4 : IsTopologicalSemiring R] [inst_5 : IsUniformAddGroup R]\\n  [inst_6 : IsUniformAddGroup S] [inst_7 : CompleteSpace S] [inst_8 : T2Space S] [inst_9 : IsTopologicalRing S]\\n  [inst_10 : IsLinearTopology S S] [inst_11 : Algebra R S] [inst_12 : ContinuousSMul R S] (ha : MvPowerSeries.HasEval a)\\n  (f : MvPowerSeries σ R),\\n  (MvPowerSeries...\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.eval₂_mul_monomial",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Eval",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] {p : MvPolynomial σ R}\n  (f : R →+* S₁) (g : σ → S₁) {s : σ →₀ ℕ} {a : R},\n  MvPolynomial.eval₂ f g (p * (MvPolynomial.monomial s) a) = MvPolynomial.eval₂ f g p * f a * s.prod fun n e => g n ^ e"
+          },
+          {
+            "name": "MvPolynomial.eval_monomial",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Eval",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type u_1} {a : R} {s : σ →₀ ℕ} [inst : CommSemiring R] {f : σ → R},\n  (MvPolynomial.eval f) ((MvPolynomial.monomial s) a) = a * s.prod fun n e => f n ^ e"
+          },
+          {
+            "name": "MvPolynomial.aeval_monomial",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Eval",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁]\n  (g : σ → S₁) (d : σ →₀ ℕ) (r : R),\n  (MvPolynomial.aeval g) ((MvPolynomial.monomial d) r) = (algebraMap R S₁) r * d.prod fun i k => g i ^ k"
+          },
+          {
+            "name": "MvPolynomial.eval_eq",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Eval",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] (X : σ → R) (f : MvPolynomial σ R),\n  (MvPolynomial.eval X) f = ∑ d ∈ f.support, MvPolynomial.coeff d f * ∏ i ∈ d.support, X i ^ d i"
+          },
+          {
+            "name": "MvPolynomial.eval₂_eq",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Eval",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] (g : R →+* S₁)\n  (X : σ → S₁) (f : MvPolynomial σ R),\n  MvPolynomial.eval₂ g X f = ∑ d ∈ f.support, g (MvPolynomial.coeff d f) * ∏ i ∈ d.support, X i ^ d i"
+          },
+          {
+            "name": "MvPowerSeries.aeval_eq_sum",
+            "module_name": "Mathlib.RingTheory.MvPowerSeries.Evaluation",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {R : Type u_2} [inst : CommRing R] [inst_1 : UniformSpace R] {S : Type u_3} [inst_2 : CommRing S]\n  [inst_3 : UniformSpace S] {a : σ → S} [inst_4 : IsTopologicalSemiring R] [inst_5 : IsUniformAddGroup R]\n  [inst_6 : IsUniformAddGroup S] [inst_7 : CompleteSpace S] [inst_8 : T2Space S] [inst_9 : IsTopologicalRing S]\n  [inst_10 : IsLinearTopology S S] [inst_11 : Algebra R S] [inst_12 : ContinuousSMul R S] (ha : MvPowerSeries.HasEval a)\n  (f : MvPowerSeries σ R),\n  (MvPowerSeries..."
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "standard",
+    "method": "lean_local_search",
+    "request": {
+      "query": "aeval_monomial",
+      "limit": 20
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.aeval_monomial\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Eval.lean\"\n    },\n    {\n      \"name\": \"Polynomial.aeval_monomial\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/AlgebraMap.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.aeval_monomial",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Eval.lean"
+          },
+          {
+            "name": "Polynomial.aeval_monomial",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/AlgebraMap.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "lean_leanfinder",
+    "request": {
+      "query": "Algebra hom evaluation monomial universal property commutative semiring",
+      "num_results": 6
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Algebra.Generators.Hom.toAlgHom_monomial\",\n      \"informal_name\": \"Algebra Homomorphism on Monomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S : Type v} {ι : Type w} [inst : CommRing R] [inst_1 : CommRing S] [inst_2 : Algebra R S]\\n  {P : Algebra.Generators R S ι} {R' : Type u_1} {S' : Type u_2} {ι' : Type u_3} [inst_3 : CommRing R']\\n  [inst_4 : CommRing S'] [inst_5 : Algebra R' S'] {P' : Algebra.Generators R' S' ι'} [inst_6 : Algebra R R']\\n  [inst_7 : Algebra S S'] (f : P.Hom P') (v : ι →₀ ℕ) (r : R),\\n  f.toAlgHom ((MvPolynomial.monomial v) r) = r • v.prod fun x1 x2 => f.val x1 ^ x2\",\n      \"informal_description\": \"For any homomorphism $ f $ between algebras with generators, the image of the monomial with coefficient $ r $ and exponent vector $ v $ under the induced algebra homomorphism is $ r $ multiplied by the product of $ f $ applied to each generator in $ v $.\",\n      \"path\": \"Mathlib.RingTheory.Extension.Generators\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.aeval_monomial\",\n      \"informal_name\": \"Evaluation of Monomials in Multivariate Polynomial Rings\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁]\\n  (g : σ → S₁) (d : σ →₀ ℕ) (r : R),\\n  (MvPolynomial.aeval g) ((MvPolynomial.monomial d) r) = (algebraMap R S₁) r * d.prod fun i k => g i ^ k\",\n      \"informal_description\": \"For any commutative semiring $ R $, type $ \\\\sigma $, and $ R $-algebra $ S_1 $, given a monomial in $ R[\\\\sigma] $ with coefficient $ r \\\\in R $ and exponent vector $ d : \\\\sigma \\\\to_0 \\\\mathbb{N} $, the algebra evaluation homomorphism $ \\\\text{aeval}_g $ at a variable assignment $ g : \\\\sigma \\\\to S_1 $ satisfies $ \\\\text{aeval}_g(\\\\text{monomial}(d, r)) = \\\\text{algebraMap}(r) \\\\cdot \\\\prod_{i \\\\in \\\\text{support}(d)} (g(i))^{d(i)} $. This expresses that evaluating a monomial replaces each variable $ X_i $ with $ g(i) $, raises it to the power of its exponent $ d(i) $, multiplies these values together, and scales by the algebra-mapped coefficient $ \\\\text{algebraMap}(r) $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"formal_name\": \"Polynomial.aeval_monomial\",\n      \"informal_name\": \"Evaluation of Monomial Polynomial: $\\\\text{aeval}_x(rX^n) = \\\\phi(r) \\\\cdot x^n$\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {A : Type z} [inst : CommSemiring R] [inst_1 : Semiring A] [inst_2 : Algebra R A] (x : A) {n : ℕ}\\n  {r : R}, (Polynomial.aeval x) ((Polynomial.monomial n) r) = (algebraMap R A) r * x ^ n\",\n      \"informal_description\": \"For any natural number $n$ and element $r$ in the semiring $R$, evaluating the monomial polynomial $rX^n$ at an element $x$ in the $R$-algebra $A$ yields $\\\\phi(r) \\\\cdot x^n$, where $\\\\phi : R \\\\to A$ denotes the canonical algebra homomorphism from $R$ to $A$.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.AlgebraMap\"\n    },\n    {\n      \"formal_name\": \"Algebra.Generators.ofComp_toAlgHom_monomial_sumElim\",\n      \"informal_name\": \"Composition of Algebra Homomorphisms Preserves Monomials via Sum Elimination\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S : Type v} {ι : Type w} [inst : CommRing R] [inst_1 : CommRing S] [inst_2 : Algebra R S]\\n  {ι' : Type u_3} {T : Type u_7} [inst_3 : CommRing T] [inst_4 : Algebra R T] [inst_5 : Algebra S T]\\n  [inst_6 : IsScalarTower R S T] (Q : Algebra.Generators S T ι') (P : Algebra.Generators R S ι) (v₁ : ι' →₀ ℕ)\\n  (v₂ : ι →₀ ℕ) (a : R),\\n  (Q.ofComp P).toAlgHom ((MvPolynomial.monomial (v₁.sumElim v₂)) a) =\\n    (MvPolynomial.monomial v₁) ((MvPolynomial.aeval P.val) ((MvPolynomial.monomial v...\",\n      \"informal_description\": \"For algebra generators $P$ and $Q$, the composed algebra homomorphism $Q \\\\circ P$ satisfies $(Q \\\\circ P).\\\\text{toAlgHom}(\\\\text{monomial}(v_1 + v_2, a)) = \\\\text{monomial}(v_1, P.\\\\text{aeval}(\\\\text{monomial}(v_2, a)))$, where $v_1 + v_2$ denotes the disjoint union of finite support functions and $\\\\text{aeval}$ evaluates polynomials using generator mappings.\",\n      \"path\": \"Mathlib.RingTheory.Extension.Generators\"\n    },\n    {\n      \"formal_name\": \"Algebra.Generators.toComp_toAlgHom_monomial\",\n      \"informal_name\": \"Monomial Preservation under Composed Algebra Homomorphism via Sum Elimination\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S : Type v} {ι : Type w} [inst : CommRing R] [inst_1 : CommRing S] [inst_2 : Algebra R S]\\n  {ι' : Type u_3} {T : Type u_7} [inst_3 : CommRing T] [inst_4 : Algebra R T] [inst_5 : Algebra S T]\\n  [inst_6 : IsScalarTower R S T] (Q : Algebra.Generators S T ι') (P : Algebra.Generators R S ι) (j : ι →₀ ℕ) (a : R),\\n  (Q.toComp P).toAlgHom ((MvPolynomial.monomial j) a) = (MvPolynomial.monomial (Finsupp.sumElim 0 j)) a\",\n      \"informal_description\": \"Given algebra generators $P : R → S$ with index set $\\\\iota$ and $Q : S → T$ with index set $\\\\iota'$, the composed homomorphism $Q \\\\circ P$ maps each monomial $\\\\text{monomial}(j, a)$ in the polynomial ring to $\\\\text{monomial}(\\\\text{Finsupp.sumElim}(0, j), a)$, where $\\\\text{Finsupp.sumElim}$ combines the supports of the generators via disjoint union.\",\n      \"path\": \"Mathlib.RingTheory.Extension.Generators\"\n    },\n    {\n      \"formal_name\": \"Polynomial.mapAlgHom_monomial\",\n      \"informal_name\": \"Induced Algebra Homomorphism Preserves Monomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {A : Type z} {B : Type u_2} [inst : CommSemiring R] [inst_1 : Semiring A] [inst_2 : Semiring B]\\n  [inst_3 : Algebra R A] [inst_4 : Algebra R B] (f : A →ₐ[R] B) (n : ℕ) (a : A),\\n  (Polynomial.mapAlgHom f) ((Polynomial.monomial n) a) = (Polynomial.monomial n) (f a)\",\n      \"informal_description\": \"For any $ R $-algebra homomorphism $ f : A \\\\to B $, natural number $ n $, and element $ a \\\\in A $, the induced $ R $-algebra homomorphism $ \\\\operatorname{mapAlgHom}(f) : A[X] \\\\to B[X] $ satisfies $ \\\\operatorname{mapAlgHom}(f)(aX^n) = (f(a))X^n $. This shows that applying the induced homomorphism to the monomial $ aX^n $ corresponds to applying $ f $ to the coefficient $ a $ while preserving the monomial structure.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.AlgebraMap\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Algebra.Generators.Hom.toAlgHom_monomial",
+            "informal_name": "Algebra Homomorphism on Monomials",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {S : Type v} {ι : Type w} [inst : CommRing R] [inst_1 : CommRing S] [inst_2 : Algebra R S]\n  {P : Algebra.Generators R S ι} {R' : Type u_1} {S' : Type u_2} {ι' : Type u_3} [inst_3 : CommRing R']\n  [inst_4 : CommRing S'] [inst_5 : Algebra R' S'] {P' : Algebra.Generators R' S' ι'} [inst_6 : Algebra R R']\n  [inst_7 : Algebra S S'] (f : P.Hom P') (v : ι →₀ ℕ) (r : R),\n  f.toAlgHom ((MvPolynomial.monomial v) r) = r • v.prod fun x1 x2 => f.val x1 ^ x2",
+            "informal_description": "For any homomorphism $ f $ between algebras with generators, the image of the monomial with coefficient $ r $ and exponent vector $ v $ under the induced algebra homomorphism is $ r $ multiplied by the product of $ f $ applied to each generator in $ v $.",
+            "path": "Mathlib.RingTheory.Extension.Generators"
+          },
+          {
+            "formal_name": "MvPolynomial.aeval_monomial",
+            "informal_name": "Evaluation of Monomials in Multivariate Polynomial Rings",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁]\n  (g : σ → S₁) (d : σ →₀ ℕ) (r : R),\n  (MvPolynomial.aeval g) ((MvPolynomial.monomial d) r) = (algebraMap R S₁) r * d.prod fun i k => g i ^ k",
+            "informal_description": "For any commutative semiring $ R $, type $ \\sigma $, and $ R $-algebra $ S_1 $, given a monomial in $ R[\\sigma] $ with coefficient $ r \\in R $ and exponent vector $ d : \\sigma \\to_0 \\mathbb{N} $, the algebra evaluation homomorphism $ \\text{aeval}_g $ at a variable assignment $ g : \\sigma \\to S_1 $ satisfies $ \\text{aeval}_g(\\text{monomial}(d, r)) = \\text{algebraMap}(r) \\cdot \\prod_{i \\in \\text{support}(d)} (g(i))^{d(i)} $. This expresses that evaluating a monomial replaces each variable $ X_i $ with $ g(i) $, raises it to the power of its exponent $ d(i) $, multiplies these values together, and scales by the algebra-mapped coefficient $ \\text{algebraMap}(r) $.",
+            "path": "Mathlib.Algebra.MvPolynomial.Eval"
+          },
+          {
+            "formal_name": "Polynomial.aeval_monomial",
+            "informal_name": "Evaluation of Monomial Polynomial: $\\text{aeval}_x(rX^n) = \\phi(r) \\cdot x^n$",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {A : Type z} [inst : CommSemiring R] [inst_1 : Semiring A] [inst_2 : Algebra R A] (x : A) {n : ℕ}\n  {r : R}, (Polynomial.aeval x) ((Polynomial.monomial n) r) = (algebraMap R A) r * x ^ n",
+            "informal_description": "For any natural number $n$ and element $r$ in the semiring $R$, evaluating the monomial polynomial $rX^n$ at an element $x$ in the $R$-algebra $A$ yields $\\phi(r) \\cdot x^n$, where $\\phi : R \\to A$ denotes the canonical algebra homomorphism from $R$ to $A$.",
+            "path": "Mathlib.Algebra.Polynomial.AlgebraMap"
+          },
+          {
+            "formal_name": "Algebra.Generators.ofComp_toAlgHom_monomial_sumElim",
+            "informal_name": "Composition of Algebra Homomorphisms Preserves Monomials via Sum Elimination",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {S : Type v} {ι : Type w} [inst : CommRing R] [inst_1 : CommRing S] [inst_2 : Algebra R S]\n  {ι' : Type u_3} {T : Type u_7} [inst_3 : CommRing T] [inst_4 : Algebra R T] [inst_5 : Algebra S T]\n  [inst_6 : IsScalarTower R S T] (Q : Algebra.Generators S T ι') (P : Algebra.Generators R S ι) (v₁ : ι' →₀ ℕ)\n  (v₂ : ι →₀ ℕ) (a : R),\n  (Q.ofComp P).toAlgHom ((MvPolynomial.monomial (v₁.sumElim v₂)) a) =\n    (MvPolynomial.monomial v₁) ((MvPolynomial.aeval P.val) ((MvPolynomial.monomial v...",
+            "informal_description": "For algebra generators $P$ and $Q$, the composed algebra homomorphism $Q \\circ P$ satisfies $(Q \\circ P).\\text{toAlgHom}(\\text{monomial}(v_1 + v_2, a)) = \\text{monomial}(v_1, P.\\text{aeval}(\\text{monomial}(v_2, a)))$, where $v_1 + v_2$ denotes the disjoint union of finite support functions and $\\text{aeval}$ evaluates polynomials using generator mappings.",
+            "path": "Mathlib.RingTheory.Extension.Generators"
+          },
+          {
+            "formal_name": "Algebra.Generators.toComp_toAlgHom_monomial",
+            "informal_name": "Monomial Preservation under Composed Algebra Homomorphism via Sum Elimination",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {S : Type v} {ι : Type w} [inst : CommRing R] [inst_1 : CommRing S] [inst_2 : Algebra R S]\n  {ι' : Type u_3} {T : Type u_7} [inst_3 : CommRing T] [inst_4 : Algebra R T] [inst_5 : Algebra S T]\n  [inst_6 : IsScalarTower R S T] (Q : Algebra.Generators S T ι') (P : Algebra.Generators R S ι) (j : ι →₀ ℕ) (a : R),\n  (Q.toComp P).toAlgHom ((MvPolynomial.monomial j) a) = (MvPolynomial.monomial (Finsupp.sumElim 0 j)) a",
+            "informal_description": "Given algebra generators $P : R → S$ with index set $\\iota$ and $Q : S → T$ with index set $\\iota'$, the composed homomorphism $Q \\circ P$ maps each monomial $\\text{monomial}(j, a)$ in the polynomial ring to $\\text{monomial}(\\text{Finsupp.sumElim}(0, j), a)$, where $\\text{Finsupp.sumElim}$ combines the supports of the generators via disjoint union.",
+            "path": "Mathlib.RingTheory.Extension.Generators"
+          },
+          {
+            "formal_name": "Polynomial.mapAlgHom_monomial",
+            "informal_name": "Induced Algebra Homomorphism Preserves Monomials",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {A : Type z} {B : Type u_2} [inst : CommSemiring R] [inst_1 : Semiring A] [inst_2 : Semiring B]\n  [inst_3 : Algebra R A] [inst_4 : Algebra R B] (f : A →ₐ[R] B) (n : ℕ) (a : A),\n  (Polynomial.mapAlgHom f) ((Polynomial.monomial n) a) = (Polynomial.monomial n) (f a)",
+            "informal_description": "For any $ R $-algebra homomorphism $ f : A \\to B $, natural number $ n $, and element $ a \\in A $, the induced $ R $-algebra homomorphism $ \\operatorname{mapAlgHom}(f) : A[X] \\to B[X] $ satisfies $ \\operatorname{mapAlgHom}(f)(aX^n) = (f(a))X^n $. This shows that applying the induced homomorphism to the monomial $ aX^n $ corresponds to applying $ f $ to the coefficient $ a $ while preserving the monomial structure.",
+            "path": "Mathlib.Algebra.Polynomial.AlgebraMap"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "lean_loogle",
+    "request": {
+      "query": "MvPolynomial.aeval, _ = _ * _",
+      "num_results": 6
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.aeval_monomial\",\n      \"type\": \" {R : Type u} {S₁ : Type v} {σ : Type u_1} [CommSemiring R] [CommSemiring S₁] [Algebra R S₁] (g : σ → S₁) (d : σ →₀ ℕ) (r : R) : (MvPolynomial.aeval g) ((MvPolynomial.monomial d) r) = (algebraMap R S₁) r * d.prod fun i k => g i ^ k\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"name\": \"Algebra.Generators.self_algebra_smul\",\n      \"type\": \" (R : Type u) (S : Type v) [CommRing R] [CommRing S] [Algebra R S] (c : MvPolynomial S R) (x : S) : SMul.smul c x = (MvPolynomial.aeval id).toRingHom c * x\",\n      \"module\": \"Mathlib.RingTheory.Extension.Generators\"\n    },\n    {\n      \"name\": \"Algebra.Generators.cotangentSpaceBasis_repr_tmul\",\n      \"type\": \" {R : Type u} {S : Type v} [CommRing R] [CommRing S] [Algebra R S] {ι : Type w} (P : Algebra.Generators R S ι) (r : S) (x : P.Ring) (i : ι) : (P.cotangentSpaceBasis.repr (r ⊗ₜ[P.Ring] (KaehlerDifferential.D R P.Ring) x)) i = r * (MvPolynomial.aeval P.val) ((MvPolynomial.pderiv i) x)\",\n      \"module\": \"Mathlib.RingTheory.Extension.Cotangent.Basic\"\n    },\n    {\n      \"name\": \"Polynomial.eval_X_toTupleMvPolynomial_zero_eq\",\n      \"type\": \" {R : Type u_1} [CommSemiring R] (p : Polynomial R) : (MvPolynomial.aeval ![Polynomial.X, 1]) (p.toTupleMvPolynomial 0) = p * (MvPolynomial.aeval ![Polynomial.X, 1]) (p.toTupleMvPolynomial 1)\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Homogenize\"\n    },\n    {\n      \"name\": \"Algebra.SubmersivePresentation.ofSubsingleton_algebra_smul\",\n      \"type\": \" (R : Type u) (S : Type v) [CommRing R] [CommRing S] [Algebra R S] [Subsingleton S] (c : MvPolynomial PUnit.{u_2 + 1} R) (x : S) : SMul.smul c x = (MvPolynomial.aeval fun x => 1).toRingHom c * x\",\n      \"module\": \"Mathlib.RingTheory.Extension.Presentation.Submersive\"\n    },\n    {\n      \"name\": \"Algebra.Presentation.tensorModelOfHasCoeffsEquiv_tmul\",\n      \"type\": \" {R : Type u_1} {S : Type u_2} {ι : Type u_3} {σ : Type u_4} [CommRing R] [CommRing S] [Algebra R S] {P : Algebra.Presentation R S ι σ} (R₀ : Type u_5) [CommRing R₀] [Algebra R₀ R] [Algebra R₀ S] [IsScalarTower R₀ R S] [P.HasCoeffs R₀] (x : R) (y : MvPolynomial ι R₀) : (Algebra.Presentation.tensorModelOfHasCoeffsEquiv R₀) (x ⊗ₜ[R₀] (Ideal.Quotient.mk (Ideal.span (Set.range (Algebra.Presentation.relationOfHasCoeffs R₀)))) y) = (algebraMap R S) x * (MvPolynomial.aeval P.val) y\",\n      \"module\": \"Mathlib.RingTheory.Extension.Presentation.Core\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.aeval_monomial",
+            "type": " {R : Type u} {S₁ : Type v} {σ : Type u_1} [CommSemiring R] [CommSemiring S₁] [Algebra R S₁] (g : σ → S₁) (d : σ →₀ ℕ) (r : R) : (MvPolynomial.aeval g) ((MvPolynomial.monomial d) r) = (algebraMap R S₁) r * d.prod fun i k => g i ^ k",
+            "module": "Mathlib.Algebra.MvPolynomial.Eval"
+          },
+          {
+            "name": "Algebra.Generators.self_algebra_smul",
+            "type": " (R : Type u) (S : Type v) [CommRing R] [CommRing S] [Algebra R S] (c : MvPolynomial S R) (x : S) : SMul.smul c x = (MvPolynomial.aeval id).toRingHom c * x",
+            "module": "Mathlib.RingTheory.Extension.Generators"
+          },
+          {
+            "name": "Algebra.Generators.cotangentSpaceBasis_repr_tmul",
+            "type": " {R : Type u} {S : Type v} [CommRing R] [CommRing S] [Algebra R S] {ι : Type w} (P : Algebra.Generators R S ι) (r : S) (x : P.Ring) (i : ι) : (P.cotangentSpaceBasis.repr (r ⊗ₜ[P.Ring] (KaehlerDifferential.D R P.Ring) x)) i = r * (MvPolynomial.aeval P.val) ((MvPolynomial.pderiv i) x)",
+            "module": "Mathlib.RingTheory.Extension.Cotangent.Basic"
+          },
+          {
+            "name": "Polynomial.eval_X_toTupleMvPolynomial_zero_eq",
+            "type": " {R : Type u_1} [CommSemiring R] (p : Polynomial R) : (MvPolynomial.aeval ![Polynomial.X, 1]) (p.toTupleMvPolynomial 0) = p * (MvPolynomial.aeval ![Polynomial.X, 1]) (p.toTupleMvPolynomial 1)",
+            "module": "Mathlib.Algebra.Polynomial.Homogenize"
+          },
+          {
+            "name": "Algebra.SubmersivePresentation.ofSubsingleton_algebra_smul",
+            "type": " (R : Type u) (S : Type v) [CommRing R] [CommRing S] [Algebra R S] [Subsingleton S] (c : MvPolynomial PUnit.{u_2 + 1} R) (x : S) : SMul.smul c x = (MvPolynomial.aeval fun x => 1).toRingHom c * x",
+            "module": "Mathlib.RingTheory.Extension.Presentation.Submersive"
+          },
+          {
+            "name": "Algebra.Presentation.tensorModelOfHasCoeffsEquiv_tmul",
+            "type": " {R : Type u_1} {S : Type u_2} {ι : Type u_3} {σ : Type u_4} [CommRing R] [CommRing S] [Algebra R S] {P : Algebra.Presentation R S ι σ} (R₀ : Type u_5) [CommRing R₀] [Algebra R₀ R] [Algebra R₀ S] [IsScalarTower R₀ R S] [P.HasCoeffs R₀] (x : R) (y : MvPolynomial ι R₀) : (Algebra.Presentation.tensorModelOfHasCoeffsEquiv R₀) (x ⊗ₜ[R₀] (Ideal.Quotient.mk (Ideal.span (Set.range (Algebra.Presentation.relationOfHasCoeffs R₀)))) y) = (algebraMap R S) x * (MvPolynomial.aeval P.val) y",
+            "module": "Mathlib.RingTheory.Extension.Presentation.Core"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "lean_leansearch",
+    "request": {
+      "query": "algebra evaluation monomial arbitrary commutative semiring",
+      "num_results": 6
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.aeval_monomial\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Eval\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁]\\n  (g : σ → S₁) (d : σ →₀ ℕ) (r : R),\\n  (MvPolynomial.aeval g) ((MvPolynomial.monomial d) r) = (algebraMap R S₁) r * d.prod fun i k => g i ^ k\"\n    },\n    {\n      \"name\": \"MvPolynomial.eval₂_monomial\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Eval\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} {a : R} {s : σ →₀ ℕ} [inst : CommSemiring R] [inst_1 : CommSemiring S₁]\\n  (f : R →+* S₁) (g : σ → S₁), MvPolynomial.eval₂ f g ((MvPolynomial.monomial s) a) = f a * s.prod fun n e => g n ^ e\"\n    },\n    {\n      \"name\": \"MvPolynomial.eval_monomial\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Eval\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} {a : R} {s : σ →₀ ℕ} [inst : CommSemiring R] {f : σ → R},\\n  (MvPolynomial.eval f) ((MvPolynomial.monomial s) a) = a * s.prod fun n e => f n ^ e\"\n    },\n    {\n      \"name\": \"Polynomial.smeval_monomial\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Smeval\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (r : R) {S : Type u_2} [inst_1 : AddCommMonoid S] [inst_2 : Pow S ℕ]\\n  [inst_3 : MulActionWithZero R S] (x : S) (n : ℕ), ((Polynomial.monomial n) r).smeval x = r • x ^ n\"\n    },\n    {\n      \"name\": \"Polynomial.aeval_monomial\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.AlgebraMap\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {A : Type z} [inst : CommSemiring R] [inst_1 : Semiring A] [inst_2 : Algebra R A] (x : A) {n : ℕ}\\n  {r : R}, (Polynomial.aeval x) ((Polynomial.monomial n) r) = (algebraMap R A) r * x ^ n\"\n    },\n    {\n      \"name\": \"MvPolynomial.eval_eq\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Eval\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] (X : σ → R) (f : MvPolynomial σ R),\\n  (MvPolynomial.eval X) f = ∑ d ∈ f.support, MvPolynomial.coeff d f * ∏ i ∈ d.support, X i ^ d i\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.aeval_monomial",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Eval",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁]\n  (g : σ → S₁) (d : σ →₀ ℕ) (r : R),\n  (MvPolynomial.aeval g) ((MvPolynomial.monomial d) r) = (algebraMap R S₁) r * d.prod fun i k => g i ^ k"
+          },
+          {
+            "name": "MvPolynomial.eval₂_monomial",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Eval",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} {a : R} {s : σ →₀ ℕ} [inst : CommSemiring R] [inst_1 : CommSemiring S₁]\n  (f : R →+* S₁) (g : σ → S₁), MvPolynomial.eval₂ f g ((MvPolynomial.monomial s) a) = f a * s.prod fun n e => g n ^ e"
+          },
+          {
+            "name": "MvPolynomial.eval_monomial",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Eval",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type u_1} {a : R} {s : σ →₀ ℕ} [inst : CommSemiring R] {f : σ → R},\n  (MvPolynomial.eval f) ((MvPolynomial.monomial s) a) = a * s.prod fun n e => f n ^ e"
+          },
+          {
+            "name": "Polynomial.smeval_monomial",
+            "module_name": "Mathlib.Algebra.Polynomial.Smeval",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (r : R) {S : Type u_2} [inst_1 : AddCommMonoid S] [inst_2 : Pow S ℕ]\n  [inst_3 : MulActionWithZero R S] (x : S) (n : ℕ), ((Polynomial.monomial n) r).smeval x = r • x ^ n"
+          },
+          {
+            "name": "Polynomial.aeval_monomial",
+            "module_name": "Mathlib.Algebra.Polynomial.AlgebraMap",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {A : Type z} [inst : CommSemiring R] [inst_1 : Semiring A] [inst_2 : Algebra R A] (x : A) {n : ℕ}\n  {r : R}, (Polynomial.aeval x) ((Polynomial.monomial n) r) = (algebraMap R A) r * x ^ n"
+          },
+          {
+            "name": "MvPolynomial.eval_eq",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Eval",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] (X : σ → R) (f : MvPolynomial σ R),\n  (MvPolynomial.eval X) f = ∑ d ∈ f.support, MvPolynomial.coeff d f * ∏ i ∈ d.support, X i ^ d i"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "lean_local_search",
+    "request": {
+      "query": "eval₂_monomial",
+      "limit": 20
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.eval\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Eval.lean\"\n    },\n    {\n      \"name\": \"Polynomial.eval\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Eval/Defs.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.eval",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Eval.lean"
+          },
+          {
+            "name": "Polynomial.eval",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Eval/Defs.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  }
+]

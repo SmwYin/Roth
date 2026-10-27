@@ -1,0 +1,35 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+import Mathlib.Algebra.Polynomial.CancelLeads
+import Mathlib.Algebra.MvPolynomial.PDeriv
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+import Mathlib.Algebra.MvPolynomial.Equiv
+import Mathlib.Analysis.Normed.Unbundled.RingSeminorm
+import Mathlib.LinearAlgebra.Matrix.AbsoluteValue
+import Mathlib.Data.Nat.Choose.Bounds
+import Mathlib.RingTheory.Polynomial.Basic
+import Mathlib.Data.Finsupp.Weight
+#check_failure Roth.kronecker_monomial
+namespace KroneckerMonomialRaw
+open MvPolynomial
+ theorem abstract_monomial {R A σ : Type*} [CommSemiring R] [CommSemiring A]
+    [Algebra R A] (g : σ → A) (d : σ →₀ ℕ) (a : R) :
+    aeval g (monomial d a) = algebraMap R A a * d.prod (fun i n ↦ g i ^ n) :=
+  aeval_monomial g d a
+ theorem weighted_monomial {R σ : Type*} [CommSemiring R] (w : σ → ℕ)
+    (d : σ →₀ ℕ) (a : R) :
+    aeval (fun j ↦ (Polynomial.X : Polynomial R) ^ w j) (monomial d a) =
+      Polynomial.C a * Polynomial.X ^ Finsupp.weight w d := by
+  classical
+  simp only [aeval_monomial, Polynomial.algebraMap_eq, Finsupp.prod, Finsupp.weight_apply,
+    Finsupp.sum, smul_eq_mul, ← pow_mul, mul_comm, ← Finset.prod_pow_eq_pow_sum]
+#print axioms abstract_monomial
+#print axioms weighted_monomial
+end KroneckerMonomialRaw

@@ -1,0 +1,11 @@
+namespace KroneckerMonomialBridge
+variable {K σ : Type*} [Field K] [Fintype σ]
+theorem exp_eq (k : ℕ) (d : σ →₀ ℕ) :
+    Roth.kroneckerExp k d = Finsupp.weight (fun j ↦ k ^ (Fintype.equivFin σ j : ℕ)) d := by
+  simpa only [Roth.kroneckerExp, smul_eq_mul] using
+    (Finsupp.weight_eq_sum (fun j ↦ k ^ (Fintype.equivFin σ j : ℕ)) d).symm
+theorem map_eq (k : ℕ) : Roth.kronecker (K := K) (σ := σ) k =
+    MvPolynomial.aeval (fun j ↦ Polynomial.X ^ k ^ (Fintype.equivFin σ j : ℕ)) := rfl
+#print axioms exp_eq
+#print axioms map_eq
+end KroneckerMonomialBridge
