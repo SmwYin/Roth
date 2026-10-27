@@ -1,0 +1,71 @@
+[
+  {
+    "artifact": "native-original-receipt.json",
+    "request": {
+      "file_path": ".lake/roth-overview-session/NextHasseChecks.lean",
+      "timeout_s": 45
+    },
+    "original_root_path": "/private/tmp/roth-overview/abs-eval-original-receipt.json",
+    "sha256": "59cd7b2a72bf2c3fed4b00f300eb23f25780c5dcf46cb1556f68f307e48473a1",
+    "bytes": 624643
+  },
+  {
+    "artifact": "native-generic-receipt.json",
+    "request": {
+      "file_path": ".lake/roth-overview-session/NextHasseChecks.lean",
+      "timeout_s": 45
+    },
+    "original_root_path": "/private/tmp/roth-overview/abs-eval-generic-receipt.json",
+    "sha256": "a67211cb81da7f9a546c0518186b367142c498d830727a085c09c3c1811e71f6",
+    "bytes": 628222
+  },
+  {
+    "artifact": "native-homclass-consumers-receipt.json",
+    "request": {
+      "file_path": ".lake/roth-overview-session/NextHasseChecks.lean",
+      "timeout_s": 45
+    },
+    "original_root_path": "/private/tmp/roth-overview/abs-eval-homclass-consumers-receipt.json",
+    "sha256": "0180fcbc7c5e901940be2f5d9951ebd77038c913352295e27dd46345b16e1f7e",
+    "bytes": 739568
+  },
+  {
+    "artifact": "native-homclass-consumers-clean-receipt.json",
+    "request": {
+      "file_path": ".lake/roth-overview-session/NextHasseChecks.lean",
+      "timeout_s": 45
+    },
+    "original_root_path": "/private/tmp/roth-overview/abs-eval-homclass-consumers-clean-receipt.json",
+    "sha256": "837618c95e9f34a5dafdcd99c1201f1390c24bdd175c716a4724264e9f690441",
+    "bytes": 737904
+  },
+  {
+    "artifact": "native-generic-clean-receipt.json",
+    "request": {
+      "file_path": ".lake/roth-overview-session/NextHasseChecks.lean",
+      "timeout_s": 45
+    },
+    "original_root_path": "/private/tmp/roth-overview/abs-eval-generic-clean-receipt.json",
+    "sha256": "183918cfed94ef4610d80b40e361b733cf94751c9bd0d86c5ff76433cd55b5b8",
+    "bytes": 626192
+  },
+  {
+    "artifact": "native-ordered-consumers-receipt.json",
+    "request": {
+      "file_path": ".lake/roth-overview-session/NextHasseChecks.lean",
+      "timeout_s": 45
+    },
+    "original_root_path": "/private/tmp/roth-overview/abs-eval-ordered-consumers-receipt.json",
+    "sha256": "34d7c780b2af554183cb19169276d323b3adccc743167c2b2d454559ac16e570",
+    "bytes": 742273
+  },
+  {
+    "artifact": "native-ordered-raw-receipt.json",
+    "request": {
+      "code": "import Mathlib.Algebra.Polynomial.HasseDeriv\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.LinearAlgebra.Matrix.ToLinearEquiv\nimport Mathlib.RingTheory.Polynomial.Wronskian\nimport Mathlib.LinearAlgebra.Vandermonde\nimport Mathlib.Data.ZMod.Defs\nimport Mathlib.Algebra.Field.ZMod\nimport Mathlib.Algebra.Order.Group.Int.Sum\nimport Mathlib.LinearAlgebra.Matrix.Polynomial\nimport Mathlib.Algebra.Polynomial.CancelLeads\nimport Mathlib.Algebra.MvPolynomial.PDeriv\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\nimport Mathlib.Algebra.MvPolynomial.Equiv\nimport Mathlib.Analysis.Normed.Unbundled.RingSeminorm\nimport Mathlib.LinearAlgebra.Matrix.AbsoluteValue\nimport Mathlib.Data.Nat.Choose.Bounds\nimport Mathlib.RingTheory.Polynomial.Basic\nimport Mathlib.NumberTheory.Height.MvPolynomial\nrun_cmd do\n  let env ← Lean.getEnv\n  if env.contains `Roth.abs_eval_le || env.contains `Roth.box then\n    throwError \"Project declarations unexpectedly loaded\"\nnamespace MvPolynomial.GeomSumConsumers\ntheorem generic [Semiring R] [PartialOrder R] [IsOrderedRing R]\n    {t : R} (ht : 0 ≤ t) (r : ℕ) :\n    ∑ s ∈ Finset.range (r + 1), t ^ s ≤ (1 + t) ^ r := by\n  rw [add_comm (1 : R) t, (Commute.one_right t).add_pow]\n  refine Finset.sum_le_sum fun m hm ↦ ?_\n  rw [one_pow, mul_one]\n  refine le_mul_of_one_le_right (pow_nonneg ht m) ?_\n  simpa only [Nat.cast_one] using\n    (Nat.mono_cast (α := R) (Nat.choose_pos (Finset.mem_range_succ_iff.1 hm)))\nend MvPolynomial.GeomSumConsumers\nnamespace MvPolynomial.AbsEvalOrdered\nopen scoped BigOperators\nvariable {σ R S T : Type*} [CommSemiring R] [CommSemiring S]\nvariable [CommSemiring T] [PartialOrder T] [IsOrderedRing T]\nvariable {F : Type*} [FunLike F S T] [NonnegHomClass F S T]\n  [SubmultiplicativeHomClass F S T]\n\n-- Coefficient anchoring avoids any hypothesis on p(1).\ntheorem mul_pow_le (p : F) (a b : S) (n : ℕ) :\n    p (a * b ^ n) ≤ p a * p b ^ n := by\n  induction n with\n  | zero => simp\n  | succ n ih =>\n    rw [pow_succ, ← mul_assoc, pow_succ, ← mul_assoc]\n    exact (map_mul_le_mul p _ _).trans (mul_le_mul_of_nonneg_right ih (apply_nonneg p b))\n\ntheorem mul_prod_pow_le (p : F) (a : S) (x : σ → S) (k : σ → ℕ)\n    (s : Finset σ) : p (a * ∏ j ∈ s, x j ^ k j) ≤ p a * ∏ j ∈ s, p (x j) ^ k j := by\n  classical\n  induction s using Finset.induction_on generalizing a with\n  | empty => simp\n  | @insert i s hi ih =>\n    rw [Finset.prod_insert hi, Finset.prod_insert hi, ← mul_assoc]\n    exact (ih (a * x i ^ k i)).trans <| by\n      rw [← mul_assoc]\n      exact mul_le_mul_of_nonneg_right (mul_pow_le p a (x i) (k i))\n        (Finset.prod_nonneg fun j _ ↦ pow_nonneg (apply_nonneg p _) _)\n\nvariable [ZeroHomClass F S T] [SubadditiveHomClass F S T]\n\ntheorem eval₂_le [Fintype σ] (p : F) (f : R →+* S) (P : MvPolynomial σ R)\n    {r : σ → ℕ} (hP : ∀ j, degreeOf j P ≤ r j) {B : T}\n    (hB : ∀ d, p (f (P.coeff d)) ≤ B) (x : σ → S) :\n    p (eval₂ f x P) ≤ B * ∏ j, (1 + p (x j)) ^ r j := by\n  classical\n  let box : Finset (σ →₀ ℕ) :=\n    (Fintype.piFinset fun j ↦ Finset.range (r j + 1)).map Finsupp.equivFunOnFinite.symm.toEmbedding\n  have hB0 : 0 ≤ B := (apply_nonneg p _).trans (hB 0)\n  rw [eval₂_eq']\n  calc\n    p (∑ k ∈ P.support, f (P.coeff k) * ∏ j, x j ^ k j)\n        ≤ ∑ k ∈ P.support, p (f (P.coeff k) * ∏ j, x j ^ k j) :=\n      Finset.le_sum_of_subadditive p (map_zero p).le (map_add_le_add p) _ _\n    _ ≤ ∑ k ∈ P.support, B * ∏ j, p (x j) ^ k j :=\n      Finset.sum_le_sum fun k _ ↦ (mul_prod_pow_le p _ x k Finset.univ).trans\n        (mul_le_mul_of_nonneg_right (hB k) (by positivity))\n    _ ≤ ∑ k ∈ box, B * ∏ j, p (x j) ^ k j :=\n      Finset.sum_le_sum_of_subset_of_nonneg\n        (fun k hk ↦ by\n          simp only [box, Finset.mem_map, Fintype.mem_piFinset, Finset.mem_range]\n          exact ⟨Finsupp.equivFunOnFinite k, fun j ↦\n            Nat.lt_succ_of_le ((monomial_le_degreeOf j hk).trans (hP j)), by simp⟩)\n        (fun _ _ _ ↦ by positivity)\n    _ ≤ B * ∏ j, (1 + p (x j)) ^ r j := by\n      simpa [← Finset.mul_sum, box, Finset.prod_univ_sum] using\n        mul_le_mul_of_nonneg_left\n          (Finset.prod_le_prod₀ (s := Finset.univ) (fun _ _ ↦ by positivity)\n            fun j _ ↦ MvPolynomial.GeomSumConsumers.generic (apply_nonneg p (x j)) (r j)) hB0\n#print axioms mul_pow_le\n#print axioms mul_prod_pow_le\n#print axioms eval₂_le\nend MvPolynomial.AbsEvalOrdered\nnamespace MvPolynomial.AbsEvalAssessment\n#check @AbsoluteValue.sum_le\n#check @AbsoluteValue.eval_mvPolynomial_le\n#check @map_pow_le_pow'\n#check @Finset.le_sum_of_subadditive\n#check @map_nonneg\n#check @apply_nonneg\n#check @map_mul_le_mul\n#check @map_add_le_add\n#check @Finset.prod_univ_sum\n#check @MvPolynomial.eval₂_eq'\n#check @MvPolynomial.monomial_le_degreeOf\n#check @MvPolynomial.GeomSumConsumers.generic\nend MvPolynomial.AbsEvalAssessment\n"
+    },
+    "original_root_path": "/private/tmp/roth-overview/abs-eval-ordered-raw-receipt.json",
+    "sha256": "b194315e5da44ae9c1ff1fb5515ce3b208b773f001195540c2ebcc8cf214ad2f",
+    "bytes": 18244
+  }
+]

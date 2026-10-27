@@ -1,0 +1,334 @@
+{
+  "methods": [
+    "Finder",
+    "LeanSearch",
+    "Loogle",
+    "local"
+  ],
+  "queries": [
+    "Submultiplicative ring seminorm applied to evaluation of a multivariate polynomial bounded in terms of coefficients and coordinate degree bounds; absolute values Gauss norm MonoidAlgebra lift",
+    "RingSeminorm polynomial evaluation bound submultiplicative seminorm coefficient sum monomial product",
+    "MvPolynomial.eval₂, _ ≤ _",
+    "gaussNorm"
+  ],
+  "results": [
+    {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.le_gaussNorm\",\n      \"informal_name\": \"Gauss Norm Upper Bound for Coefficient Terms\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {F : Type u_2} [inst : Semiring R] [inst_1 : FunLike F R ℝ] (v : F) {c : ℝ} (p : Polynomial R)\\n  [ZeroHomClass F R ℝ] [NonnegHomClass F R ℝ], 0 ≤ c → ∀ (i : ℕ), v (p.coeff i) * c ^ i ≤ Polynomial.gaussNorm v c p\",\n      \"informal_description\": \"For any polynomial $ p $ over a semiring $ R $, valuation $ v $ (preserving zero and non-negative), non-negative real number $ c $, and natural number $ i $, the product $ v(a_i) \\\\cdot c^i $ (where $ a_i $ is the coefficient of $ X^i $ in $ p $) satisfies $ v(a_i) \\\\cdot c^i \\\\leq \\\\|p\\\\|_{v,c} $, where $ \\\\|p\\\\|_{v,c} $ denotes the Gauss norm of $ p $ with respect to $ v $ and $ c $.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.GaussNorm\"\n    },\n    {\n      \"formal_name\": \"Polynomial.gaussNorm\",\n      \"informal_name\": \"Gauss norm of a polynomial\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → {F : Type u_2} → [inst : Semiring R] → [FunLike F R ℝ] → F → ℝ → Polynomial R → ℝ\",\n      \"informal_description\": \"The Gauss norm of a polynomial $ p $ is defined as the supremum of $ v(a_i) \\\\cdot c^i $ over all exponents $ i $ in the support of $ p $, where $ a_i $ is the coefficient of $ X^i $ in $ p $. If $ p $ is the zero polynomial (with empty support), the Gauss norm is defined to be $ 0 $. Here, $ v $ denotes a valuation and $ c $ is a real number parameter.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.GaussNorm\"\n    },\n    {\n      \"formal_name\": \"Polynomial.exists_eq_gaussNorm\",\n      \"informal_name\": \"Existence of a Coefficient Realizing the Gauss Norm\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {F : Type u_2} [inst : Semiring R] [inst_1 : FunLike F R ℝ] (v : F) (c : ℝ) (p : Polynomial R)\\n  [ZeroHomClass F R ℝ], ∃ i, Polynomial.gaussNorm v c p = v (p.coeff i) * c ^ i\",\n      \"informal_description\": \"For any polynomial $ p $, there exists an index $ i $ such that the Gauss norm of $ p $ with respect to valuation $ v $ and parameter $ c $ is equal to $ v(a_i) \\\\cdot c^i $, where $ a_i $ is the coefficient of $ X^i $ in $ p $.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.GaussNorm\"\n    },\n    {\n      \"formal_name\": \"Polynomial.gaussNorm_nonneg\",\n      \"informal_name\": \"Non-Negativity of the Gauss Norm\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {F : Type u_2} [inst : Semiring R] [inst_1 : FunLike F R ℝ] (v : F) {c : ℝ} (p : Polynomial R),\\n  0 ≤ c → ∀ [NonnegHomClass F R ℝ], 0 ≤ Polynomial.gaussNorm v c p\",\n      \"informal_description\": \"For a polynomial $ p $ over a semiring $ R $, if $ c \\\\geq 0 $ and $ v $ is a non-negative valuation (i.e., $ v(a) \\\\geq 0 $ for all $ a \\\\in R $), then the Gauss norm $ \\\\|p\\\\|_v^c $ satisfies $ 0 \\\\leq \\\\|p\\\\|_v^c $. The Gauss norm is defined as the supremum of $ v(a_i) \\\\cdot c^i $ over all coefficients $ a_i $ of $ p $, with $ \\\\|p\\\\|_v^c = 0 $ when $ p $ is the zero polynomial.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.GaussNorm\"\n    },\n    {\n      \"formal_name\": \"spectralValueTerms\",\n      \"informal_name\": \"Spectral value terms sequence\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : SeminormedRing R] → Polynomial R → ℕ → ℝ\",\n      \"informal_description\": \"For a polynomial $ p $ over a seminormed ring $ R $, this function returns a sequence indexed by $ \\\\mathbb{N} $ where each term is defined as $ \\\\|p_n\\\\|^{1/(d - n)} $ if $ n < d $, and $ 0 $ otherwise. Here, $ p_n $ denotes the coefficient of $ X^n $ in $ p $, $ d $ is the natural degree of $ p $, and $ \\\\|\\\\cdot\\\\| $ is the seminorm on $ R $. This sequence captures the normed coefficients' growth rates relative to their distance from the polynomial's degree.\",\n      \"path\": \"Mathlib.Analysis.Normed.Unbundled.SpectralNorm\"\n    },\n    {\n      \"formal_name\": \"Polynomial.gaussNorm_monomial\",\n      \"informal_name\": \"Gauss Norm of Monomial Polynomial\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {F : Type u_2} [inst : Semiring R] [inst_1 : FunLike F R ℝ] (v : F) (c : ℝ) [ZeroHomClass F R ℝ]\\n  (n : ℕ) (r : R), Polynomial.gaussNorm v c ((Polynomial.monomial n) r) = v r * c ^ n\",\n      \"informal_description\": \"The Gauss norm of the monomial polynomial $ rX^n $ is equal to $ v(r) \\\\cdot c^n $, where $ v $ is a valuation on the semiring $ R $ and $ c $ is a real number parameter.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.GaussNorm\"\n    },\n    {\n      \"formal_name\": \"Polynomial.gaussNorm_intAdicAbv_le_one\",\n      \"informal_name\": \"Gauss Norm of Polynomial with Adic Absolute Value ≤ 1\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] [inst_1 : IsDedekindDomain R] (v : IsDedekindDomain.HeightOneSpectrum R)\\n  {b : NNReal} (hb : 1 < b) (p : Polynomial R), Polynomial.gaussNorm (v.intAdicAbv hb) 1 p ≤ 1\",\n      \"informal_description\": \"For any polynomial $ p $ over a Dedekind domain, the Gauss norm of $ p $ with respect to the adic absolute value associated to a height one prime ideal and a real base $ b > 1 $, evaluated at $ 1 $, is less than or equal to $ 1 $. That is, $ \\\\sup_{i} |a_i|_{\\\\mathfrak{p},b} \\\\cdot 1^i \\\\leq 1 $, where $ |\\\\cdot|_{\\\\mathfrak{p},b} $ denotes the adic absolute value.\",\n      \"path\": \"Mathlib.RingTheory.DedekindDomain.GaussLemma\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "formal_name": "Polynomial.le_gaussNorm",
+              "informal_name": "Gauss Norm Upper Bound for Coefficient Terms",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} {F : Type u_2} [inst : Semiring R] [inst_1 : FunLike F R ℝ] (v : F) {c : ℝ} (p : Polynomial R)\n  [ZeroHomClass F R ℝ] [NonnegHomClass F R ℝ], 0 ≤ c → ∀ (i : ℕ), v (p.coeff i) * c ^ i ≤ Polynomial.gaussNorm v c p",
+              "informal_description": "For any polynomial $ p $ over a semiring $ R $, valuation $ v $ (preserving zero and non-negative), non-negative real number $ c $, and natural number $ i $, the product $ v(a_i) \\cdot c^i $ (where $ a_i $ is the coefficient of $ X^i $ in $ p $) satisfies $ v(a_i) \\cdot c^i \\leq \\|p\\|_{v,c} $, where $ \\|p\\|_{v,c} $ denotes the Gauss norm of $ p $ with respect to $ v $ and $ c $.",
+              "path": "Mathlib.RingTheory.Polynomial.GaussNorm"
+            },
+            {
+              "formal_name": "Polynomial.gaussNorm",
+              "informal_name": "Gauss norm of a polynomial",
+              "kind": "definition",
+              "type": "{R : Type u_1} → {F : Type u_2} → [inst : Semiring R] → [FunLike F R ℝ] → F → ℝ → Polynomial R → ℝ",
+              "informal_description": "The Gauss norm of a polynomial $ p $ is defined as the supremum of $ v(a_i) \\cdot c^i $ over all exponents $ i $ in the support of $ p $, where $ a_i $ is the coefficient of $ X^i $ in $ p $. If $ p $ is the zero polynomial (with empty support), the Gauss norm is defined to be $ 0 $. Here, $ v $ denotes a valuation and $ c $ is a real number parameter.",
+              "path": "Mathlib.RingTheory.Polynomial.GaussNorm"
+            },
+            {
+              "formal_name": "Polynomial.exists_eq_gaussNorm",
+              "informal_name": "Existence of a Coefficient Realizing the Gauss Norm",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} {F : Type u_2} [inst : Semiring R] [inst_1 : FunLike F R ℝ] (v : F) (c : ℝ) (p : Polynomial R)\n  [ZeroHomClass F R ℝ], ∃ i, Polynomial.gaussNorm v c p = v (p.coeff i) * c ^ i",
+              "informal_description": "For any polynomial $ p $, there exists an index $ i $ such that the Gauss norm of $ p $ with respect to valuation $ v $ and parameter $ c $ is equal to $ v(a_i) \\cdot c^i $, where $ a_i $ is the coefficient of $ X^i $ in $ p $.",
+              "path": "Mathlib.RingTheory.Polynomial.GaussNorm"
+            },
+            {
+              "formal_name": "Polynomial.gaussNorm_nonneg",
+              "informal_name": "Non-Negativity of the Gauss Norm",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} {F : Type u_2} [inst : Semiring R] [inst_1 : FunLike F R ℝ] (v : F) {c : ℝ} (p : Polynomial R),\n  0 ≤ c → ∀ [NonnegHomClass F R ℝ], 0 ≤ Polynomial.gaussNorm v c p",
+              "informal_description": "For a polynomial $ p $ over a semiring $ R $, if $ c \\geq 0 $ and $ v $ is a non-negative valuation (i.e., $ v(a) \\geq 0 $ for all $ a \\in R $), then the Gauss norm $ \\|p\\|_v^c $ satisfies $ 0 \\leq \\|p\\|_v^c $. The Gauss norm is defined as the supremum of $ v(a_i) \\cdot c^i $ over all coefficients $ a_i $ of $ p $, with $ \\|p\\|_v^c = 0 $ when $ p $ is the zero polynomial.",
+              "path": "Mathlib.RingTheory.Polynomial.GaussNorm"
+            },
+            {
+              "formal_name": "spectralValueTerms",
+              "informal_name": "Spectral value terms sequence",
+              "kind": "definition",
+              "type": "{R : Type u_1} → [inst : SeminormedRing R] → Polynomial R → ℕ → ℝ",
+              "informal_description": "For a polynomial $ p $ over a seminormed ring $ R $, this function returns a sequence indexed by $ \\mathbb{N} $ where each term is defined as $ \\|p_n\\|^{1/(d - n)} $ if $ n < d $, and $ 0 $ otherwise. Here, $ p_n $ denotes the coefficient of $ X^n $ in $ p $, $ d $ is the natural degree of $ p $, and $ \\|\\cdot\\| $ is the seminorm on $ R $. This sequence captures the normed coefficients' growth rates relative to their distance from the polynomial's degree.",
+              "path": "Mathlib.Analysis.Normed.Unbundled.SpectralNorm"
+            },
+            {
+              "formal_name": "Polynomial.gaussNorm_monomial",
+              "informal_name": "Gauss Norm of Monomial Polynomial",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} {F : Type u_2} [inst : Semiring R] [inst_1 : FunLike F R ℝ] (v : F) (c : ℝ) [ZeroHomClass F R ℝ]\n  (n : ℕ) (r : R), Polynomial.gaussNorm v c ((Polynomial.monomial n) r) = v r * c ^ n",
+              "informal_description": "The Gauss norm of the monomial polynomial $ rX^n $ is equal to $ v(r) \\cdot c^n $, where $ v $ is a valuation on the semiring $ R $ and $ c $ is a real number parameter.",
+              "path": "Mathlib.RingTheory.Polynomial.GaussNorm"
+            },
+            {
+              "formal_name": "Polynomial.gaussNorm_intAdicAbv_le_one",
+              "informal_name": "Gauss Norm of Polynomial with Adic Absolute Value ≤ 1",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} [inst : CommRing R] [inst_1 : IsDedekindDomain R] (v : IsDedekindDomain.HeightOneSpectrum R)\n  {b : NNReal} (hb : 1 < b) (p : Polynomial R), Polynomial.gaussNorm (v.intAdicAbv hb) 1 p ≤ 1",
+              "informal_description": "For any polynomial $ p $ over a Dedekind domain, the Gauss norm of $ p $ with respect to the adic absolute value associated to a height one prime ideal and a real base $ b > 1 $, evaluated at $ 1 $, is less than or equal to $ 1 $. That is, $ \\sup_{i} |a_i|_{\\mathfrak{p},b} \\cdot 1^i \\leq 1 $, where $ |\\cdot|_{\\mathfrak{p},b} $ denotes the adic absolute value.",
+              "path": "Mathlib.RingTheory.DedekindDomain.GaussLemma"
+            }
+          ]
+        },
+        "isError": false
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"RingSeminorm.mul_le'\",\n      \"module_name\": \"Mathlib.Analysis.Normed.Unbundled.RingSeminorm\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_2} [inst : NonUnitalNonAssocRing R] (self : RingSeminorm R) (x y : R),\\n  self.toFun (x * y) ≤ self.toFun x * self.toFun y\"\n    },\n    {\n      \"name\": \"MvPolynomial.eval_eq\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Eval\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] (X : σ → R) (f : MvPolynomial σ R),\\n  (MvPolynomial.eval X) f = ∑ d ∈ f.support, MvPolynomial.coeff d f * ∏ i ∈ d.support, X i ^ d i\"\n    },\n    {\n      \"name\": \"Polynomial.eval₂_eq_sum_range'\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Eval.Degree\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S : Type v} [inst : Semiring R] [inst_1 : Semiring S] (f : R →+* S) {p : Polynomial R} {n : ℕ},\\n  p.natDegree < n → ∀ (x : S), Polynomial.eval₂ f x p = ∑ i ∈ Finset.range n, f (p.coeff i) * x ^ i\"\n    },\n    {\n      \"name\": \"Polynomial.eval_eq_sum_range'\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Eval.Degree\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Semiring R] {p : Polynomial R} {n : ℕ},\\n  p.natDegree < n → ∀ (x : R), Polynomial.eval x p = ∑ i ∈ Finset.range n, p.coeff i * x ^ i\"\n    },\n    {\n      \"name\": \"seminormFromBounded_ge\",\n      \"module_name\": \"Mathlib.Analysis.Normed.Unbundled.SeminormFromBounded\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] {f : R → ℝ} {c : ℝ},\\n  0 ≤ f → (∀ (x y : R), f (x * y) ≤ c * f x * f y) → ∀ (x : R), f x ≤ f 1 * seminormFromBounded' f x\"\n    },\n    {\n      \"name\": \"seminormFromBounded_mul\",\n      \"module_name\": \"Mathlib.Analysis.Normed.Unbundled.SeminormFromBounded\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] {f : R → ℝ} {c : ℝ},\\n  0 ≤ f →\\n    (∀ (x y : R), f (x * y) ≤ c * f x * f y) →\\n      ∀ (x y : R), seminormFromBounded' f (x * y) ≤ seminormFromBounded' f x * seminormFromBounded' f y\"\n    },\n    {\n      \"name\": \"MulRingSeminorm.map_mul'\",\n      \"module_name\": \"Mathlib.Analysis.Normed.Unbundled.RingSeminorm\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_2} [inst : NonAssocRing R] (self : MulRingSeminorm R) (x y : R),\\n  self.toFun (x * y) = self.toFun x * self.toFun y\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "RingSeminorm.mul_le'",
+              "module_name": "Mathlib.Analysis.Normed.Unbundled.RingSeminorm",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_2} [inst : NonUnitalNonAssocRing R] (self : RingSeminorm R) (x y : R),\n  self.toFun (x * y) ≤ self.toFun x * self.toFun y"
+            },
+            {
+              "name": "MvPolynomial.eval_eq",
+              "module_name": "Mathlib.Algebra.MvPolynomial.Eval",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] (X : σ → R) (f : MvPolynomial σ R),\n  (MvPolynomial.eval X) f = ∑ d ∈ f.support, MvPolynomial.coeff d f * ∏ i ∈ d.support, X i ^ d i"
+            },
+            {
+              "name": "Polynomial.eval₂_eq_sum_range'",
+              "module_name": "Mathlib.Algebra.Polynomial.Eval.Degree",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} {S : Type v} [inst : Semiring R] [inst_1 : Semiring S] (f : R →+* S) {p : Polynomial R} {n : ℕ},\n  p.natDegree < n → ∀ (x : S), Polynomial.eval₂ f x p = ∑ i ∈ Finset.range n, f (p.coeff i) * x ^ i"
+            },
+            {
+              "name": "Polynomial.eval_eq_sum_range'",
+              "module_name": "Mathlib.Algebra.Polynomial.Eval.Degree",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} [inst : Semiring R] {p : Polynomial R} {n : ℕ},\n  p.natDegree < n → ∀ (x : R), Polynomial.eval x p = ∑ i ∈ Finset.range n, p.coeff i * x ^ i"
+            },
+            {
+              "name": "seminormFromBounded_ge",
+              "module_name": "Mathlib.Analysis.Normed.Unbundled.SeminormFromBounded",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} [inst : CommRing R] {f : R → ℝ} {c : ℝ},\n  0 ≤ f → (∀ (x y : R), f (x * y) ≤ c * f x * f y) → ∀ (x : R), f x ≤ f 1 * seminormFromBounded' f x"
+            },
+            {
+              "name": "seminormFromBounded_mul",
+              "module_name": "Mathlib.Analysis.Normed.Unbundled.SeminormFromBounded",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} [inst : CommRing R] {f : R → ℝ} {c : ℝ},\n  0 ≤ f →\n    (∀ (x y : R), f (x * y) ≤ c * f x * f y) →\n      ∀ (x y : R), seminormFromBounded' f (x * y) ≤ seminormFromBounded' f x * seminormFromBounded' f y"
+            },
+            {
+              "name": "MulRingSeminorm.map_mul'",
+              "module_name": "Mathlib.Analysis.Normed.Unbundled.RingSeminorm",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_2} [inst : NonAssocRing R] (self : MulRingSeminorm R) (x y : R),\n  self.toFun (x * y) = self.toFun x * self.toFun y"
+            }
+          ]
+        },
+        "isError": false
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.eval₂_homogenize_of_eq_one\",\n      \"type\": \" {R : Type u_1} [CommSemiring R] {S : Type u_2} [CommSemiring S] {p : Polynomial R} {n : ℕ} (hn : p.natDegree ≤ n) (f : R →+* S) (g : Fin 2 → S) (hg : g 1 = 1) : MvPolynomial.eval₂ f g (p.homogenize n) = Polynomial.eval₂ f (g 0) p\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Homogenize\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "Polynomial.eval₂_homogenize_of_eq_one",
+              "type": " {R : Type u_1} [CommSemiring R] {S : Type u_2} [CommSemiring S] {p : Polynomial R} {n : ℕ} (hn : p.natDegree ≤ n) (f : R →+* S) (g : Fin 2 → S) (hg : g 1 = 1) : MvPolynomial.eval₂ f g (p.homogenize n) = Polynomial.eval₂ f (g 0) p",
+              "module": "Mathlib.Algebra.Polynomial.Homogenize"
+            }
+          ]
+        },
+        "isError": false
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPowerSeries.gaussNorm\",\n      \"kind\": \"def\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/GaussNorm.lean\"\n    },\n    {\n      \"name\": \"Polynomial.gaussNorm\",\n      \"kind\": \"def\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/Polynomial/GaussNorm.lean\"\n    },\n    {\n      \"name\": \"PowerSeries.gaussNorm\",\n      \"kind\": \"abbrev\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/PowerSeries/GaussNorm.lean\"\n    },\n    {\n      \"name\": \"Polynomial.gaussNorm_C\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/Polynomial/GaussNorm.lean\"\n    },\n    {\n      \"name\": \"PowerSeries.gaussNorm_C\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/Polynomial/GaussNorm.lean\"\n    },\n    {\n      \"name\": \"PowerSeries.gaussNorm_eq\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/PowerSeries/GaussNorm.lean\"\n    },\n    {\n      \"name\": \"Polynomial.gaussNorm_mul\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/Polynomial/GaussNorm.lean\"\n    },\n    {\n      \"name\": \"MvPowerSeries.gaussNorm_neg\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/GaussNorm.lean\"\n    },\n    {\n      \"name\": \"MvPowerSeries.gaussNorm_zero\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/GaussNorm.lean\"\n    },\n    {\n      \"name\": \"Polynomial.gaussNorm_zero\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/Polynomial/GaussNorm.lean\"\n    },\n    {\n      \"name\": \"PowerSeries.gaussNorm_zero\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/PowerSeries/GaussNorm.lean\"\n    },\n    {\n      \"name\": \"MvPowerSeries.gaussNorm_le_mul\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/GaussNorm.lean\"\n    },\n    {\n      \"name\": \"MvPowerSeries.gaussNorm_mul_le\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/GaussNorm.lean\"\n    },\n    {\n      \"name\": \"Polynomial.gaussNorm_mul_le\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/Polynomial/GaussNorm.lean\"\n    },\n    {\n      \"name\": \"MvPowerSeries.gaussNorm_nonneg\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/GaussNorm.lean\"\n    },\n    {\n      \"name\": \"Polynomial.gaussNorm_nonneg\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/Polynomial/GaussNorm.lean\"\n    },\n    {\n      \"name\": \"PowerSeries.gaussNorm_nonneg\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/PowerSeries/GaussNorm.lean\"\n    },\n    {\n      \"name\": \"Polynomial.gaussNorm_monomial\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/Polynomial/GaussNorm.lean\"\n    },\n    {\n      \"name\": \"PowerSeries.gaussNorm_monomial\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/Polynomial/GaussNorm.lean\"\n    },\n    {\n      \"name\": \"MvPowerSeries.gaussNorm_add_le_max\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/GaussNorm.lean\"\n    },\n    {\n      \"name\": \"PowerSeries.gaussNorm_add_le_max\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/PowerSeries/GaussNorm.lean\"\n    },\n    {\n      \"name\": \"MvPowerSeries.gaussNorm_mul_eq_mul\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/GaussNorm.lean\"\n    },\n    {\n      \"name\": \"Polynomial.gaussNorm_zero_right\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/Polynomial/GaussNorm.lean\"\n    },\n    {\n      \"name\": \"MvPowerSeries.gaussNorm_eq_zero_iff\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/GaussNorm.lean\"\n    },\n    {\n      \"name\": \"Polynomial.gaussNorm_eq_zero_iff\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/Polynomial/GaussNorm.lean\"\n    },\n    {\n      \"name\": \"PowerSeries.gaussNorm_eq_zero_iff\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/PowerSeries/GaussNorm.lean\"\n    },\n    {\n      \"name\": \"Polynomial.gaussNorm_coe_powerSeries\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/Polynomial/GaussNorm.lean\"\n    },\n    {\n      \"name\": \"Polynomial.gaussNorm_isAbsoluteValue\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/Polynomial/GaussNorm.lean\"\n    },\n    {\n      \"name\": \"Polynomial.gaussNorm_intAdicAbv_le_one\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/DedekindDomain/GaussLemma.lean\"\n    },\n    {\n      \"name\": \"Polynomial.gaussNorm_lt_one_iff_contentIdeal_le\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/DedekindDomain/GaussLemma.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "MvPowerSeries.gaussNorm",
+              "kind": "def",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/GaussNorm.lean"
+            },
+            {
+              "name": "Polynomial.gaussNorm",
+              "kind": "def",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/Polynomial/GaussNorm.lean"
+            },
+            {
+              "name": "PowerSeries.gaussNorm",
+              "kind": "abbrev",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/PowerSeries/GaussNorm.lean"
+            },
+            {
+              "name": "Polynomial.gaussNorm_C",
+              "kind": "lemma",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/Polynomial/GaussNorm.lean"
+            },
+            {
+              "name": "PowerSeries.gaussNorm_C",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/Polynomial/GaussNorm.lean"
+            },
+            {
+              "name": "PowerSeries.gaussNorm_eq",
+              "kind": "lemma",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/PowerSeries/GaussNorm.lean"
+            },
+            {
+              "name": "Polynomial.gaussNorm_mul",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/Polynomial/GaussNorm.lean"
+            },
+            {
+              "name": "MvPowerSeries.gaussNorm_neg",
+              "kind": "lemma",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/GaussNorm.lean"
+            },
+            {
+              "name": "MvPowerSeries.gaussNorm_zero",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/GaussNorm.lean"
+            },
+            {
+              "name": "Polynomial.gaussNorm_zero",
+              "kind": "lemma",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/Polynomial/GaussNorm.lean"
+            },
+            {
+              "name": "PowerSeries.gaussNorm_zero",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/PowerSeries/GaussNorm.lean"
+            },
+            {
+              "name": "MvPowerSeries.gaussNorm_le_mul",
+              "kind": "lemma",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/GaussNorm.lean"
+            },
+            {
+              "name": "MvPowerSeries.gaussNorm_mul_le",
+              "kind": "lemma",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/GaussNorm.lean"
+            },
+            {
+              "name": "Polynomial.gaussNorm_mul_le",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/Polynomial/GaussNorm.lean"
+            },
+            {
+              "name": "MvPowerSeries.gaussNorm_nonneg",
+              "kind": "lemma",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/GaussNorm.lean"
+            },
+            {
+              "name": "Polynomial.gaussNorm_nonneg",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/Polynomial/GaussNorm.lean"
+            },
+            {
+              "name": "PowerSeries.gaussNorm_nonneg",
+              "kind": "lemma",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/PowerSeries/GaussNorm.lean"
+            },
+            {
+              "name": "Polynomial.gaussNorm_monomial",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/Polynomial/GaussNorm.lean"
+            },
+            {
+              "name": "PowerSeries.gaussNorm_monomial",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/Polynomial/GaussNorm.lean"
+            },
+            {
+              "name": "MvPowerSeries.gaussNorm_add_le_max",
+              "kind": "lemma",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/GaussNorm.lean"
+            },
+            {
+              "name": "PowerSeries.gaussNorm_add_le_max",
+              "kind": "lemma",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/PowerSeries/GaussNorm.lean"
+            },
+            {
+              "name": "MvPowerSeries.gaussNorm_mul_eq_mul",
+              "kind": "lemma",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/GaussNorm.lean"
+            },
+            {
+              "name": "Polynomial.gaussNorm_zero_right",
+              "kind": "lemma",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/Polynomial/GaussNorm.lean"
+            },
+            {
+              "name": "MvPowerSeries.gaussNorm_eq_zero_iff",
+              "kind": "lemma",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/GaussNorm.lean"
+            },
+            {
+              "name": "Polynomial.gaussNorm_eq_zero_iff",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/Polynomial/GaussNorm.lean"
+            },
+            {
+              "name": "PowerSeries.gaussNorm_eq_zero_iff",
+              "kind": "lemma",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/PowerSeries/GaussNorm.lean"
+            },
+            {
+              "name": "Polynomial.gaussNorm_coe_powerSeries",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/Polynomial/GaussNorm.lean"
+            },
+            {
+              "name": "Polynomial.gaussNorm_isAbsoluteValue",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/Polynomial/GaussNorm.lean"
+            },
+            {
+              "name": "Polynomial.gaussNorm_intAdicAbv_le_one",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/DedekindDomain/GaussLemma.lean"
+            },
+            {
+              "name": "Polynomial.gaussNorm_lt_one_iff_contentIdeal_le",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/DedekindDomain/GaussLemma.lean"
+            }
+          ],
+          "index": "unavailable"
+        },
+        "isError": false
+      }
+    }
+  ]
+}

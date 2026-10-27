@@ -1,0 +1,156 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.Polynomial.HasseDeriv\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.LinearAlgebra.Matrix.ToLinearEquiv\nimport Mathlib.RingTheory.Polynomial.Wronskian\nimport Mathlib.LinearAlgebra.Vandermonde\nimport Mathlib.Data.ZMod.Defs\nimport Mathlib.Algebra.Field.ZMod\nimport Mathlib.Algebra.Order.Group.Int.Sum\nimport Mathlib.LinearAlgebra.Matrix.Polynomial\nimport Mathlib.Algebra.Polynomial.CancelLeads\nimport Mathlib.Algebra.MvPolynomial.PDeriv\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\nimport Mathlib.Algebra.MvPolynomial.Equiv\nimport Mathlib.Analysis.Normed.Unbundled.RingSeminorm\nimport Mathlib.LinearAlgebra.Matrix.AbsoluteValue\nimport Mathlib.Data.Nat.Choose.Bounds\nimport Mathlib.RingTheory.Polynomial.Basic\nimport Mathlib.NumberTheory.Height.MvPolynomial\nrun_cmd do\n  let env ← Lean.getEnv\n  if env.contains `Roth.abs_eval_le || env.contains `Roth.box then\n    throwError \"Project declarations unexpectedly loaded\"\nnamespace MvPolynomial.GeomSumConsumers\ntheorem generic [Semiring R] [PartialOrder R] [IsOrderedRing R]\n    {t : R} (ht : 0 ≤ t) (r : ℕ) :\n    ∑ s ∈ Finset.range (r + 1), t ^ s ≤ (1 + t) ^ r := by\n  rw [add_comm (1 : R) t, (Commute.one_right t).add_pow]\n  refine Finset.sum_le_sum fun m hm ↦ ?_\n  rw [one_pow, mul_one]\n  refine le_mul_of_one_le_right (pow_nonneg ht m) ?_\n  simpa only [Nat.cast_one] using\n    (Nat.mono_cast (α := R) (Nat.choose_pos (Finset.mem_range_succ_iff.1 hm)))\nend MvPolynomial.GeomSumConsumers\nnamespace MvPolynomial.AbsEvalOrdered\nopen scoped BigOperators\nvariable {σ R S T : Type*} [CommSemiring R] [CommSemiring S]\nvariable [CommSemiring T] [PartialOrder T] [IsOrderedRing T]\nvariable {F : Type*} [FunLike F S T] [NonnegHomClass F S T]\n  [SubmultiplicativeHomClass F S T]\n\n-- Coefficient anchoring avoids any hypothesis on p(1).\ntheorem mul_pow_le (p : F) (a b : S) (n : ℕ) :\n    p (a * b ^ n) ≤ p a * p b ^ n := by\n  induction n with\n  | zero => simp\n  | succ n ih =>\n    rw [pow_succ, ← mul_assoc, pow_succ, ← mul_assoc]\n    exact (map_mul_le_mul p _ _).trans (mul_le_mul_of_nonneg_right ih (apply_nonneg p b))\n\ntheorem mul_prod_pow_le (p : F) (a : S) (x : σ → S) (k : σ → ℕ)\n    (s : Finset σ) : p (a * ∏ j ∈ s, x j ^ k j) ≤ p a * ∏ j ∈ s, p (x j) ^ k j := by\n  classical\n  induction s using Finset.induction_on generalizing a with\n  | empty => simp\n  | @insert i s hi ih =>\n    rw [Finset.prod_insert hi, Finset.prod_insert hi, ← mul_assoc]\n    exact (ih (a * x i ^ k i)).trans <| by\n      rw [← mul_assoc]\n      exact mul_le_mul_of_nonneg_right (mul_pow_le p a (x i) (k i))\n        (Finset.prod_nonneg fun j _ ↦ pow_nonneg (apply_nonneg p _) _)\n\nvariable [ZeroHomClass F S T] [SubadditiveHomClass F S T]\n\ntheorem eval₂_le [Fintype σ] (p : F) (f : R →+* S) (P : MvPolynomial σ R)\n    {r : σ → ℕ} (hP : ∀ j, degreeOf j P ≤ r j) {B : T}\n    (hB : ∀ d, p (f (P.coeff d)) ≤ B) (x : σ → S) :\n    p (eval₂ f x P) ≤ B * ∏ j, (1 + p (x j)) ^ r j := by\n  classical\n  let box : Finset (σ →₀ ℕ) :=\n    (Fintype.piFinset fun j ↦ Finset.range (r j + 1)).map Finsupp.equivFunOnFinite.symm.toEmbedding\n  have hB0 : 0 ≤ B := (apply_nonneg p _).trans (hB 0)\n  rw [eval₂_eq']\n  calc\n    p (∑ k ∈ P.support, f (P.coeff k) * ∏ j, x j ^ k j)\n        ≤ ∑ k ∈ P.support, p (f (P.coeff k) * ∏ j, x j ^ k j) :=\n      Finset.le_sum_of_subadditive p (map_zero p).le (map_add_le_add p) _ _\n    _ ≤ ∑ k ∈ P.support, B * ∏ j, p (x j) ^ k j :=\n      Finset.sum_le_sum fun k _ ↦ (mul_prod_pow_le p _ x k Finset.univ).trans\n        (mul_le_mul_of_nonneg_right (hB k) (by positivity))\n    _ ≤ ∑ k ∈ box, B * ∏ j, p (x j) ^ k j :=\n      Finset.sum_le_sum_of_subset_of_nonneg\n        (fun k hk ↦ by\n          simp only [box, Finset.mem_map, Fintype.mem_piFinset, Finset.mem_range]\n          exact ⟨Finsupp.equivFunOnFinite k, fun j ↦\n            Nat.lt_succ_of_le ((monomial_le_degreeOf j hk).trans (hP j)), by simp⟩)\n        (fun _ _ _ ↦ by positivity)\n    _ ≤ B * ∏ j, (1 + p (x j)) ^ r j := by\n      simpa [← Finset.mul_sum, box, Finset.prod_univ_sum] using\n        mul_le_mul_of_nonneg_left\n          (Finset.prod_le_prod₀ (s := Finset.univ) (fun _ _ ↦ by positivity)\n            fun j _ ↦ MvPolynomial.GeomSumConsumers.generic (apply_nonneg p (x j)) (r j)) hB0\n#print axioms mul_pow_le\n#print axioms mul_prod_pow_le\n#print axioms eval₂_le\nend MvPolynomial.AbsEvalOrdered\nnamespace MvPolynomial.AbsEvalAssessment\n#check @AbsoluteValue.sum_le\n#check @AbsoluteValue.eval_mvPolynomial_le\n#check @map_pow_le_pow'\n#check @Finset.le_sum_of_subadditive\n#check @map_nonneg\n#check @apply_nonneg\n#check @map_mul_le_mul\n#check @map_add_le_add\n#check @Finset.prod_univ_sum\n#check @MvPolynomial.eval₂_eq'\n#check @MvPolynomial.monomial_le_degreeOf\n#check @MvPolynomial.GeomSumConsumers.generic\nend MvPolynomial.AbsEvalAssessment\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"'MvPolynomial.AbsEvalOrdered.mul_pow_le' depends on axioms: [propext]\",\n      \"line\": 92,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'MvPolynomial.AbsEvalOrdered.mul_prod_pow_le' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 93,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'MvPolynomial.AbsEvalOrdered.eval₂_le' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 94,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@AbsoluteValue.sum_le : ∀ {ι : Type u_1} {R : Type u_2} {S : Type u_3} [inst : Semiring R] [inst_1 : Semiring S]\\n  [inst_2 : PartialOrder S] [IsOrderedRing S] (abv : AbsoluteValue R S) (s : Finset ι) (f : ι → R),\\n  abv (∑ i ∈ s, f i) ≤ ∑ i ∈ s, abv (f i)\",\n      \"line\": 97,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@AbsoluteValue.eval_mvPolynomial_le : ∀ {K : Type u_1} [inst : Field K] {ι : Type u_2} [Finite ι]\\n  (v : AbsoluteValue K ℝ) {p : MvPolynomial ι K} {N : ℕ},\\n  p.IsHomogeneous N → ∀ (x : ι → K), v ((eval x) p) ≤ (p.coeff.sum fun x c ↦ v c) * (⨆ i, v (x i)) ^ N\",\n      \"line\": 98,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@map_pow_le_pow' : ∀ {F : Type u_1} {α : Type u_2} [inst : Ring α] [inst_1 : FunLike F α ℝ] [RingSeminormClass F α ℝ]\\n  {f : F}, f 1 ≤ 1 → ∀ (a : α) (n : ℕ), f (a ^ n) ≤ f a ^ n\",\n      \"line\": 99,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finset.le_sum_of_subadditive : ∀ {ι : Type u_1} {M : Type u_2} {N : Type u_3} [inst : AddCommMonoid M]\\n  [inst_1 : AddCommMonoid N] [inst_2 : Preorder N] [IsOrderedAddMonoid N] (f : M → N),\\n  f 0 ≤ 0 → (∀ (x y : M), f (x + y) ≤ f x + f y) → ∀ (s : Finset ι) (g : ι → M), f (∑ i ∈ s, g i) ≤ ∑ i ∈ s, f (g i)\",\n      \"line\": 100,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@map_nonneg : ∀ {F : Type u_1} {α : Type u_2} {β : Type u_3} [inst : FunLike F α β] [inst_1 : Preorder α]\\n  [inst_2 : Zero α] [inst_3 : Preorder β] [inst_4 : Zero β] [OrderHomClass F α β] [ZeroHomClass F α β] (f : F) {a : α},\\n  0 ≤ a → 0 ≤ f a\",\n      \"line\": 101,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@apply_nonneg : ∀ {F : Type u_1} {α : outParam (Type u_2)} {β : outParam (Type u_3)} {inst : Zero β} {inst_1 : LE β}\\n  {inst_2 : FunLike F α β} [self : NonnegHomClass F α β] (f : F) (a : α), 0 ≤ f a\",\n      \"line\": 102,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@map_mul_le_mul : ∀ {F : Type u_1} {α : outParam (Type u_2)} {β : outParam (Type u_3)} {inst : Mul α} {inst_1 : Mul β}\\n  {inst_2 : LE β} {inst_3 : FunLike F α β} [self : SubmultiplicativeHomClass F α β] (f : F) (a b : α),\\n  f (a * b) ≤ f a * f b\",\n      \"line\": 103,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@map_add_le_add : ∀ {F : Type u_1} {α : outParam (Type u_2)} {β : outParam (Type u_3)} {inst : Add α} {inst_1 : Add β}\\n  {inst_2 : LE β} {inst_3 : FunLike F α β} [self : SubadditiveHomClass F α β] (f : F) (a b : α), f (a + b) ≤ f a + f b\",\n      \"line\": 104,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finset.prod_univ_sum : ∀ {ι : Type u_1} {R : Type u_2} [inst : CommSemiring R] [inst_1 : DecidableEq ι]\\n  {κ : ι → Type u_3} [inst_2 : Fintype ι] (t : (i : ι) → Finset (κ i)) (f : (i : ι) → κ i → R),\\n  ∏ i, ∑ j ∈ t i, f i j = ∑ x ∈ Fintype.piFinset t, ∏ i, f i (x i)\",\n      \"line\": 105,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@eval₂_eq' : ∀ {R : Type u_1} {S₁ : Type u_2} {σ : Type u_3} [inst : CommSemiring R] [inst_1 : CommSemiring S₁]\\n  [inst_2 : Fintype σ] (g : R →+* S₁) (X : σ → S₁) (f : MvPolynomial σ R),\\n  eval₂ g X f = ∑ d ∈ f.support, g (f.coeff d) * ∏ i, X i ^ d i\",\n      \"line\": 106,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@monomial_le_degreeOf : ∀ {R : Type u_1} {σ : Type u_2} [inst : CommSemiring R] (i : σ) {f : MvPolynomial σ R}\\n  {m : σ →₀ ℕ}, m ∈ f.support → m i ≤ degreeOf i f\",\n      \"line\": 107,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@GeomSumConsumers.generic : ∀ {R : Type u_1} [inst : Semiring R] [inst_1 : PartialOrder R] [IsOrderedRing R] {t : R},\\n  0 ≤ t → ∀ (r : ℕ), ∑ s ∈ Finset.range (r + 1), t ^ s ≤ (1 + t) ^ r\",\n      \"line\": 108,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "'MvPolynomial.AbsEvalOrdered.mul_pow_le' depends on axioms: [propext]",
+          "line": 92,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'MvPolynomial.AbsEvalOrdered.mul_prod_pow_le' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 93,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'MvPolynomial.AbsEvalOrdered.eval₂_le' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 94,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@AbsoluteValue.sum_le : ∀ {ι : Type u_1} {R : Type u_2} {S : Type u_3} [inst : Semiring R] [inst_1 : Semiring S]\n  [inst_2 : PartialOrder S] [IsOrderedRing S] (abv : AbsoluteValue R S) (s : Finset ι) (f : ι → R),\n  abv (∑ i ∈ s, f i) ≤ ∑ i ∈ s, abv (f i)",
+          "line": 97,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@AbsoluteValue.eval_mvPolynomial_le : ∀ {K : Type u_1} [inst : Field K] {ι : Type u_2} [Finite ι]\n  (v : AbsoluteValue K ℝ) {p : MvPolynomial ι K} {N : ℕ},\n  p.IsHomogeneous N → ∀ (x : ι → K), v ((eval x) p) ≤ (p.coeff.sum fun x c ↦ v c) * (⨆ i, v (x i)) ^ N",
+          "line": 98,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@map_pow_le_pow' : ∀ {F : Type u_1} {α : Type u_2} [inst : Ring α] [inst_1 : FunLike F α ℝ] [RingSeminormClass F α ℝ]\n  {f : F}, f 1 ≤ 1 → ∀ (a : α) (n : ℕ), f (a ^ n) ≤ f a ^ n",
+          "line": 99,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finset.le_sum_of_subadditive : ∀ {ι : Type u_1} {M : Type u_2} {N : Type u_3} [inst : AddCommMonoid M]\n  [inst_1 : AddCommMonoid N] [inst_2 : Preorder N] [IsOrderedAddMonoid N] (f : M → N),\n  f 0 ≤ 0 → (∀ (x y : M), f (x + y) ≤ f x + f y) → ∀ (s : Finset ι) (g : ι → M), f (∑ i ∈ s, g i) ≤ ∑ i ∈ s, f (g i)",
+          "line": 100,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@map_nonneg : ∀ {F : Type u_1} {α : Type u_2} {β : Type u_3} [inst : FunLike F α β] [inst_1 : Preorder α]\n  [inst_2 : Zero α] [inst_3 : Preorder β] [inst_4 : Zero β] [OrderHomClass F α β] [ZeroHomClass F α β] (f : F) {a : α},\n  0 ≤ a → 0 ≤ f a",
+          "line": 101,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@apply_nonneg : ∀ {F : Type u_1} {α : outParam (Type u_2)} {β : outParam (Type u_3)} {inst : Zero β} {inst_1 : LE β}\n  {inst_2 : FunLike F α β} [self : NonnegHomClass F α β] (f : F) (a : α), 0 ≤ f a",
+          "line": 102,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@map_mul_le_mul : ∀ {F : Type u_1} {α : outParam (Type u_2)} {β : outParam (Type u_3)} {inst : Mul α} {inst_1 : Mul β}\n  {inst_2 : LE β} {inst_3 : FunLike F α β} [self : SubmultiplicativeHomClass F α β] (f : F) (a b : α),\n  f (a * b) ≤ f a * f b",
+          "line": 103,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@map_add_le_add : ∀ {F : Type u_1} {α : outParam (Type u_2)} {β : outParam (Type u_3)} {inst : Add α} {inst_1 : Add β}\n  {inst_2 : LE β} {inst_3 : FunLike F α β} [self : SubadditiveHomClass F α β] (f : F) (a b : α), f (a + b) ≤ f a + f b",
+          "line": 104,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finset.prod_univ_sum : ∀ {ι : Type u_1} {R : Type u_2} [inst : CommSemiring R] [inst_1 : DecidableEq ι]\n  {κ : ι → Type u_3} [inst_2 : Fintype ι] (t : (i : ι) → Finset (κ i)) (f : (i : ι) → κ i → R),\n  ∏ i, ∑ j ∈ t i, f i j = ∑ x ∈ Fintype.piFinset t, ∏ i, f i (x i)",
+          "line": 105,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@eval₂_eq' : ∀ {R : Type u_1} {S₁ : Type u_2} {σ : Type u_3} [inst : CommSemiring R] [inst_1 : CommSemiring S₁]\n  [inst_2 : Fintype σ] (g : R →+* S₁) (X : σ → S₁) (f : MvPolynomial σ R),\n  eval₂ g X f = ∑ d ∈ f.support, g (f.coeff d) * ∏ i, X i ^ d i",
+          "line": 106,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@monomial_le_degreeOf : ∀ {R : Type u_1} {σ : Type u_2} [inst : CommSemiring R] (i : σ) {f : MvPolynomial σ R}\n  {m : σ →₀ ℕ}, m ∈ f.support → m i ≤ degreeOf i f",
+          "line": 107,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@GeomSumConsumers.generic : ∀ {R : Type u_1} [inst : Semiring R] [inst_1 : PartialOrder R] [IsOrderedRing R] {t : R},\n  0 ≤ t → ∀ (r : ℕ), ∑ s ∈ Finset.range (r + 1), t ^ s ≤ (1 + t) ^ r",
+          "line": 108,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 36062
+}

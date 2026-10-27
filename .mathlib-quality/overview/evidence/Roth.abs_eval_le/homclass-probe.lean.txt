@@ -1,0 +1,59 @@
+namespace MvPolynomial.AbsEvalHomClass
+open scoped BigOperators
+variable {σ R S : Type*} [CommSemiring R] [CommSemiring S]
+variable {F : Type*} [FunLike F S ℝ] [ZeroHomClass F S ℝ] [NonnegHomClass F S ℝ]
+  [SubadditiveHomClass F S ℝ] [SubmultiplicativeHomClass F S ℝ]
+
+-- Coefficient anchoring avoids any hypothesis on p(1).
+theorem mul_pow_le (p : F) (a b : S) (n : ℕ) :
+    p (a * b ^ n) ≤ p a * p b ^ n := by
+  induction n with
+  | zero => simp
+  | succ n ih =>
+    rw [pow_succ, ← mul_assoc, pow_succ, ← mul_assoc]
+    exact (map_mul_le_mul p _ _).trans (mul_le_mul_of_nonneg_right ih (apply_nonneg p b))
+
+theorem mul_prod_pow_le (p : F) (a : S) (x : σ → S) (k : σ → ℕ)
+    (s : Finset σ) : p (a * ∏ j ∈ s, x j ^ k j) ≤ p a * ∏ j ∈ s, p (x j) ^ k j := by
+  classical
+  induction s using Finset.induction_on generalizing a with
+  | empty => simp
+  | @insert i s hi ih =>
+    rw [Finset.prod_insert hi, Finset.prod_insert hi, ← mul_assoc]
+    exact (ih (a * x i ^ k i)).trans <| by
+      rw [← mul_assoc]
+      exact mul_le_mul_of_nonneg_right (mul_pow_le p a (x i) (k i))
+        (Finset.prod_nonneg fun j _ ↦ pow_nonneg (apply_nonneg p _) _)
+
+theorem eval₂_le [Fintype σ] (p : F) (f : R →+* S) (P : MvPolynomial σ R)
+    {r : σ → ℕ} (hP : ∀ j, degreeOf j P ≤ r j) {B : ℝ}
+    (hB : ∀ d, p (f (P.coeff d)) ≤ B) (x : σ → S) :
+    p (eval₂ f x P) ≤ B * ∏ j, (1 + p (x j)) ^ r j := by
+  classical
+  let box : Finset (σ →₀ ℕ) :=
+    (Fintype.piFinset fun j ↦ Finset.range (r j + 1)).map Finsupp.equivFunOnFinite.symm.toEmbedding
+  have hB0 : 0 ≤ B := (apply_nonneg p _).trans (hB 0)
+  rw [eval₂_eq']
+  calc
+    p (∑ k ∈ P.support, f (P.coeff k) * ∏ j, x j ^ k j)
+        ≤ ∑ k ∈ P.support, p (f (P.coeff k) * ∏ j, x j ^ k j) :=
+      Finset.le_sum_of_subadditive p (map_zero p).le (map_add_le_add p) _ _
+    _ ≤ ∑ k ∈ P.support, B * ∏ j, p (x j) ^ k j :=
+      Finset.sum_le_sum fun k _ ↦ (mul_prod_pow_le p _ x k Finset.univ).trans
+        (mul_le_mul_of_nonneg_right (hB k) (by positivity))
+    _ ≤ ∑ k ∈ box, B * ∏ j, p (x j) ^ k j :=
+      Finset.sum_le_sum_of_subset_of_nonneg
+        (fun k hk ↦ by
+          simp only [box, Finset.mem_map, Fintype.mem_piFinset, Finset.mem_range]
+          exact ⟨Finsupp.equivFunOnFinite k, fun j ↦
+            Nat.lt_succ_of_le ((monomial_le_degreeOf j hk).trans (hP j)), by simp⟩)
+        (fun _ _ _ ↦ by positivity)
+    _ ≤ B * ∏ j, (1 + p (x j)) ^ r j := by
+      simpa [← Finset.mul_sum, box, Finset.prod_univ_sum] using
+        mul_le_mul_of_nonneg_left
+          (Finset.prod_le_prod₀ (s := Finset.univ) (fun _ _ ↦ by positivity)
+            fun j _ ↦ MvPolynomial.GeomSumConsumers.generic (apply_nonneg p (x j)) (r j)) hB0
+#print axioms mul_pow_le
+#print axioms mul_prod_pow_le
+#print axioms eval₂_le
+end MvPolynomial.AbsEvalHomClass

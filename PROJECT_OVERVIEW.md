@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 97/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 98/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 97; remaining: 196.
-- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 10 YES-but-generalise-first, 18 NO-mathlib-has-it, 32 BORDERLINE-needs-human, 10 SKIP.
+- Completed applicable assessments: 98; remaining: 195.
+- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 11 YES-but-generalise-first, 18 NO-mathlib-has-it, 32 BORDERLINE-needs-human, 10 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -1033,6 +1033,20 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: Exactly one explicit and canonical direct proof consumer Roth.abs_eval_le at CoeffNorm239; complete caller replay uses fresh exact private-helper replay.
 - Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.sum_box_prod_pow_le_aux.md).
 
+### Completed: `Roth.abs_eval_le`
+
+- Type: `∀ {σ : Type u_1} [inst : Fintype σ] (P : MvPolynomial σ ℤ) {r : σ → ℕ},
+  (∀ (j : σ), MvPolynomial.degreeOf j P ≤ r j) →
+    ∀ {B : ℝ},
+      (∀ (d : σ →₀ ℕ), |↑(P.coeff d)| ≤ B) →
+        ∀ (x : σ → ℝ), |(MvPolynomial.eval x) ((MvPolynomial.map (Int.castRingHom ℝ)) P)| ≤ B * ∏ j, (1 + |x j|) ^ r j`
+- What: An integer multivariate polynomial with common absolute coefficient bound B and coordinate degrees at most r has value at x at most B times the product of (1+|x_j|)^r_j.
+- How: Expand evaluation, take the finite-sum triangle inequality, enlarge support to Roth.box using monomial_le_degreeOf and Roth.mem_box, and apply private Roth.sum_box_prod_pow_le_aux to factor the geometric majorant.
+- Hypotheses: A finite variable type, an integer polynomial, coordinate natural degree bounds, a common real absolute coefficient bound, and any real evaluation point; B≥0 follows from hB at zero.
+- Project dependencies: Roth.box, Roth.mem_box, _private.Roth.CoeffNorm.0.Roth.sum_box_prod_pow_le_aux
+- Caller summary: source calls: 1; files: Roth/MainLemma.lean; explicit callers: _private.Roth.MainLemma.0.Roth.abs_eval_iterated_hasseDeriv_lt_aux; canonical audit: 293 requested, unique, present and values; the same sole direct proof consumer; inline rederivations: None
+- Verdict: YES-but-generalise-first; [complete report](.mathlib-quality/overview/mathlibable/Roth.abs_eval_le.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -1253,6 +1267,8 @@ Completed `Roth.geom_sum_le_one_add_pow`: Five actual methods on three forms; po
 
 Completed `Roth.sum_box_prod_pow_le_aux`: Finset.prod_univ_sum factors the rectangular sum; ordered finite product and nonnegative scalar monotonicity combine the separately assessed geometric bound. Full public contribution search n/a under private prefilter.
 
+Completed `Roth.abs_eval_le`: Prefer eval₂ and existing size-hom classes. AbsoluteValue.eval_mvPolynomial_le is a homogeneous/coefficient-l1/sup bound, not the rectangular common-coefficient bound. GaussNorm estimates concern weighted coefficient suprema, not arbitrary real evaluation.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -1448,6 +1464,8 @@ Completed `Roth.diag_sub`: Wrapper of map_sub; no independent algebraic content.
 Completed `Roth.geom_sum_le_one_add_pow`: No project duplicate or inspected exact existing replacement; binomial expansion is mathematical source, not a direct replacement.
 
 Completed `Roth.sum_box_prod_pow_le_aux`: Finite-box product estimate is an internal factorization stage, distinct from scalar geometric sum and polynomial support/evaluation bound. No duplicate full argument found in this source review.
+
+Completed `Roth.abs_eval_le`: No duplicate: abs_coeff_diag_le handles coefficient collisions; normOne_le_card_mul is unweighted; Main.abs_eval_lt_of_le_index is a Taylor/index estimate. A future weighted-support majorant can share proof stages with the homogeneous bound.
 
 ## Part 5: Generalization opportunities
 
@@ -1648,6 +1666,8 @@ Completed `Roth.geom_sum_le_one_add_pow`: Verified noncommutative ordered semiri
 
 Completed `Roth.sum_box_prod_pow_le_aux`: Finite variable enumeration, natural coordinate bounds, nonnegative real B and arbitrary real coordinates are explicit. No assumption weakening or broader public contribution is claimed under private triage.
 
+Completed `Roth.abs_eval_le`: Verified strongest primary form: arbitrary CommSemiring R coefficients, CommSemiring S evaluation, ordered CommSemiring T output with PartialOrder and IsOrderedRing, FunLike F S T and existing Zero/Nonneg/Subadditive/Submultiplicative hom classes. Original ℤ/ℝ map input and full private caller specialize cleanly. No unit-size bound, injectivity, domain, total order, strict order or negation premise.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -1844,6 +1864,8 @@ Completed `Roth.diag_sub`: None needed for subtraction preservation.
 Completed `Roth.geom_sum_le_one_add_pow`: Finite geometric/binomial unweighted comparison without t<1 restriction.
 
 Completed `Roth.sum_box_prod_pow_le_aux`: Existing finite-product, finite-sum and order primitives support the decomposition; prospective public geometric bound is independently assessed at96.
+
+Completed `Roth.abs_eval_le`: Nonhomogeneous rectangular coordinate-degree polynomial evaluation majorant; generic geometric-sum bound from declaration96 is a separate new prerequisite.
 
 ## Part 7: Junk / removable
 
@@ -2044,6 +2066,8 @@ Completed `Roth.geom_sum_le_one_add_pow`: Used by private helper; not dead code.
 
 Completed `Roth.sum_box_prod_pow_le_aux`: Retain this four-line private proof boundary with its single public caller. No sorry, new axiom, TODO or raised resource limit.
 
+Completed `Roth.abs_eval_le`: Not junk: live main-lemma dependency and nontrivial finite weighted-support reasoning.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -2145,6 +2169,7 @@ Completed `Roth.sum_box_prod_pow_le_aux`: Retain this four-line private proof bo
 | 95 | `Roth.diag_sub` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.diag_sub.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.diag_sub/root-acceptance.json) |
 | 96 | `Roth.geom_sum_le_one_add_pow` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.geom_sum_le_one_add_pow.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.geom_sum_le_one_add_pow/root-acceptance.json) |
 | 97 | `Roth.sum_box_prod_pow_le_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.sum_box_prod_pow_le_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.sum_box_prod_pow_le_aux/root-acceptance.json) |
+| 98 | `Roth.abs_eval_le` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.abs_eval_le.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.abs_eval_le/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -2338,12 +2363,14 @@ Completed `Roth.geom_sum_le_one_add_pow` action: Generalize, clean and propose M
 
 Completed `Roth.sum_box_prod_pow_le_aux` action: Keep unchanged; completed private-prefilter SKIP with all applicable structural/native evidence. Continue full public assessment of Roth.abs_eval_le.
 
+Completed `Roth.abs_eval_le` action: YES-but-generalise-first (MODERN-IDIOM); contribute a generic size-hom eval₂ theorem in Mathlib/Analysis/Polynomial/MvPolynomial.lean, then specialize the sole project caller.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.abs_eval_le` next. Supporting identities receive their own applicable checks.
+   `Roth.degreeOf_det_hasseDeriv_le` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

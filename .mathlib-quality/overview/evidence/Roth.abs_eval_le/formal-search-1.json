@@ -1,0 +1,236 @@
+{
+  "methods": [
+    "Finder",
+    "LeanSearch",
+    "Loogle",
+    "local"
+  ],
+  "queries": [
+    "Multivariate polynomial evaluated at a point bounded by coefficient absolute value bound times product (1 + absolute value coordinate) to degree in each variable",
+    "AbsoluteValue multivariate polynomial evaluation upper bound coefficients coordinate degrees",
+    "MvPolynomial.eval, _ ≤ _",
+    "eval_mvPolynomial_le"
+  ],
+  "results": [
+    {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.numBound\",\n      \"informal_name\": \"Numerical Bound for Multivariate Polynomials in Chevalley's Theorem\",\n      \"kind\": \"definition\",\n      \"type\": \"ℕ → (ℕ → ℕ) → ℕ → ℕ\",\n      \"informal_description\": \"A function that takes a natural number $n$, a function $f : \\\\mathbb{N} \\\\to \\\\mathbb{N}$, and another natural number $m$, returning a natural number used to establish well-founded recursion in the context of multivariate polynomials and Chevalley's theorem. It computes bounds by recursively applying $f$ to $n$ and decrementing $m$.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.degBound\",\n      \"informal_name\": \"Degree Bound for Multivariate Polynomials in Chevalley's Theorem\",\n      \"kind\": \"definition\",\n      \"type\": \"ℕ → (ℕ → ℕ) → ℕ → ℕ\",\n      \"informal_description\": \"A function that computes a degree bound for multivariate polynomials, taking a natural number $n$, a function $f : \\\\mathbb{N} \\\\to \\\\mathbb{N}$, and an element of the sum type $\\\\mathbb{N} \\\\oplus \\\\mathbb{N}$. For left components, it applies $f$ to $n$, and for right components, it returns $n$ directly. This is used in the proof of Chevalley's theorem to establish well-founded recursion for multivariate polynomial constructions.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.numBound_succ\",\n      \"informal_name\": \"Successor Case of Numerical Bound in Chevalley's Theorem\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (k : ℕ) (D : ℕ → ℕ) (n : ℕ),\\n  ChevalleyThm.MvPolynomialC.numBound k D (n + 1) =\\n    ChevalleyThm.MvPolynomialC.numBound k D n * ChevalleyThm.MvPolynomialC.degBound k D n * D n\",\n      \"informal_description\": \"For natural numbers $k, n$ and function $D : \\\\mathbb{N} \\\\to \\\\mathbb{N}$, the numerical bound at $n+1$ satisfies $\\\\text{numBound}(k, D, n+1) = \\\\text{numBound}(k, D, n) \\\\cdot \\\\text{degBound}(k, D, n) \\\\cdot D(n)$, establishing a recursive relationship used in well-founded recursion for multivariate polynomials in Chevalley's theorem.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.degBound_succ\",\n      \"informal_name\": \"Recursive Successor Formula for Degree Bound in Chevalley's Theorem\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (k : ℕ) (D : ℕ → ℕ) (n : ℕ),\\n  ChevalleyThm.MvPolynomialC.degBound k D (n + 1) =\\n    ChevalleyThm.MvPolynomialC.numBound k D (n + 1) ^ ChevalleyThm.MvPolynomialC.numBound k D (n + 1) *\\n      ChevalleyThm.MvPolynomialC.degBound k D n\",\n      \"informal_description\": \"For natural numbers $k$, $D$, and $n$, the degree bound $\\\\operatorname{degBound}(k, D, n+1)$ satisfies the recursive relation $\\\\operatorname{degBound}(k, D, n+1) = \\\\operatorname{numBound}(k, D, n+1)^{\\\\operatorname{numBound}(k, D, n+1)} \\\\cdot \\\\operatorname{degBound}(k, D, n)$, where $\\\\operatorname{numBound}$ computes numerical bounds for multivariate polynomials in the context of Chevalley's theorem.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.aeval_natDegree_le\",\n      \"informal_name\": \"Natural Degree Bound for Evaluated Multivariate Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type v} {R : Type u_2} [inst : CommSemiring R] {m n : ℕ} (F : MvPolynomial σ R),\\n  F.totalDegree ≤ m →\\n    ∀ (f : σ → Polynomial R), (∀ (i : σ), (f i).natDegree ≤ n) → ((MvPolynomial.aeval f) F).natDegree ≤ m * n\",\n      \"informal_description\": \"Let $ R $ be a commutative semiring, $ \\\\sigma $ an index type, and $ F \\\\in R[\\\\sigma] $ a multivariate polynomial with total degree $ \\\\leq m $. If each variable in $ F $ is substituted by a univariate polynomial $ f_i \\\\in R[X] $ with natural degree $ \\\\leq n $, then the natural degree of the evaluated polynomial $ \\\\text{aeval}(f)(F) $ is at most $ m \\\\cdot n $. Formally, if $ F.\\\\text{totalDegree} \\\\leq m $ and $ \\\\forall i, (f_i.\\\\text{natDegree} \\\\leq n) $, then $ (\\\\text{aeval}\\\\, f\\\\, F).\\\\text{natDegree} \\\\leq m \\\\cdot n $.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.Basic\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "formal_name": "ChevalleyThm.MvPolynomialC.numBound",
+              "informal_name": "Numerical Bound for Multivariate Polynomials in Chevalley's Theorem",
+              "kind": "definition",
+              "type": "ℕ → (ℕ → ℕ) → ℕ → ℕ",
+              "informal_description": "A function that takes a natural number $n$, a function $f : \\mathbb{N} \\to \\mathbb{N}$, and another natural number $m$, returning a natural number used to establish well-founded recursion in the context of multivariate polynomials and Chevalley's theorem. It computes bounds by recursively applying $f$ to $n$ and decrementing $m$.",
+              "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+            },
+            {
+              "formal_name": "ChevalleyThm.MvPolynomialC.degBound",
+              "informal_name": "Degree Bound for Multivariate Polynomials in Chevalley's Theorem",
+              "kind": "definition",
+              "type": "ℕ → (ℕ → ℕ) → ℕ → ℕ",
+              "informal_description": "A function that computes a degree bound for multivariate polynomials, taking a natural number $n$, a function $f : \\mathbb{N} \\to \\mathbb{N}$, and an element of the sum type $\\mathbb{N} \\oplus \\mathbb{N}$. For left components, it applies $f$ to $n$, and for right components, it returns $n$ directly. This is used in the proof of Chevalley's theorem to establish well-founded recursion for multivariate polynomial constructions.",
+              "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+            },
+            {
+              "formal_name": "ChevalleyThm.MvPolynomialC.numBound_succ",
+              "informal_name": "Successor Case of Numerical Bound in Chevalley's Theorem",
+              "kind": "theorem",
+              "type": "∀ (k : ℕ) (D : ℕ → ℕ) (n : ℕ),\n  ChevalleyThm.MvPolynomialC.numBound k D (n + 1) =\n    ChevalleyThm.MvPolynomialC.numBound k D n * ChevalleyThm.MvPolynomialC.degBound k D n * D n",
+              "informal_description": "For natural numbers $k, n$ and function $D : \\mathbb{N} \\to \\mathbb{N}$, the numerical bound at $n+1$ satisfies $\\text{numBound}(k, D, n+1) = \\text{numBound}(k, D, n) \\cdot \\text{degBound}(k, D, n) \\cdot D(n)$, establishing a recursive relationship used in well-founded recursion for multivariate polynomials in Chevalley's theorem.",
+              "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+            },
+            {
+              "formal_name": "ChevalleyThm.MvPolynomialC.degBound_succ",
+              "informal_name": "Recursive Successor Formula for Degree Bound in Chevalley's Theorem",
+              "kind": "theorem",
+              "type": "∀ (k : ℕ) (D : ℕ → ℕ) (n : ℕ),\n  ChevalleyThm.MvPolynomialC.degBound k D (n + 1) =\n    ChevalleyThm.MvPolynomialC.numBound k D (n + 1) ^ ChevalleyThm.MvPolynomialC.numBound k D (n + 1) *\n      ChevalleyThm.MvPolynomialC.degBound k D n",
+              "informal_description": "For natural numbers $k$, $D$, and $n$, the degree bound $\\operatorname{degBound}(k, D, n+1)$ satisfies the recursive relation $\\operatorname{degBound}(k, D, n+1) = \\operatorname{numBound}(k, D, n+1)^{\\operatorname{numBound}(k, D, n+1)} \\cdot \\operatorname{degBound}(k, D, n)$, where $\\operatorname{numBound}$ computes numerical bounds for multivariate polynomials in the context of Chevalley's theorem.",
+              "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+            },
+            {
+              "formal_name": "MvPolynomial.aeval_natDegree_le",
+              "informal_name": "Natural Degree Bound for Evaluated Multivariate Polynomials",
+              "kind": "theorem",
+              "type": "∀ {σ : Type v} {R : Type u_2} [inst : CommSemiring R] {m n : ℕ} (F : MvPolynomial σ R),\n  F.totalDegree ≤ m →\n    ∀ (f : σ → Polynomial R), (∀ (i : σ), (f i).natDegree ≤ n) → ((MvPolynomial.aeval f) F).natDegree ≤ m * n",
+              "informal_description": "Let $ R $ be a commutative semiring, $ \\sigma $ an index type, and $ F \\in R[\\sigma] $ a multivariate polynomial with total degree $ \\leq m $. If each variable in $ F $ is substituted by a univariate polynomial $ f_i \\in R[X] $ with natural degree $ \\leq n $, then the natural degree of the evaluated polynomial $ \\text{aeval}(f)(F) $ is at most $ m \\cdot n $. Formally, if $ F.\\text{totalDegree} \\leq m $ and $ \\forall i, (f_i.\\text{natDegree} \\leq n) $, then $ (\\text{aeval}\\, f\\, F).\\text{natDegree} \\leq m \\cdot n $.",
+              "path": "Mathlib.RingTheory.Polynomial.Basic"
+            }
+          ]
+        },
+        "isError": false
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.aeval_natDegree_le\",\n      \"module_name\": \"Mathlib.RingTheory.Polynomial.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type v} {R : Type u_2} [inst : CommSemiring R] {m n : ℕ} (F : MvPolynomial σ R),\\n  F.totalDegree ≤ m →\\n    ∀ (f : σ → Polynomial R), (∀ (i : σ), (f i).natDegree ≤ n) → ((MvPolynomial.aeval f) F).natDegree ≤ m * n\"\n    },\n    {\n      \"name\": \"Polynomial.abs_isBoundedUnder_iff\",\n      \"module_name\": \"Mathlib.Analysis.Polynomial.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {𝕜 : Type u_1} [inst : NormedField 𝕜] [inst_1 : LinearOrder 𝕜] [IsStrictOrderedRing 𝕜] (P : Polynomial 𝕜)\\n  [OrderTopology 𝕜],\\n  (Filter.IsBoundedUnder (fun x1 x2 => x1 ≤ x2) Filter.atTop fun x => |Polynomial.eval x P|) ↔ P.degree ≤ 0\"\n    },\n    {\n      \"name\": \"Polynomial.tendsto_abv_aeval_atTop\",\n      \"module_name\": \"Mathlib.Topology.Algebra.Polynomial\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {A : Type u_2} {k : Type u_3} {α : Type u_4} [inst : CommSemiring R] [inst_1 : Ring A]\\n  [inst_2 : Algebra R A] [inst_3 : Field k] [inst_4 : LinearOrder k] [IsStrictOrderedRing k] (abv : A → k)\\n  [IsAbsoluteValue abv] (p : Polynomial R),\\n  0 < p.degree →\\n    (algebraMap R A) p.leadingCoeff ≠ 0 →\\n      ∀ {l : Filter α} {z : α → A},\\n        Filter.Tendsto (abv ∘ z) l Filter.atTop →\\n          Filter.Tendsto (fun x => abv ((Polynomial.aeval (z x)) p)) l Filter.atTop\"\n    },\n    {\n      \"name\": \"MvPolynomial.eval₂\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Eval\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} →\\n  {S₁ : Type v} →\\n    {σ : Type u_1} →\\n      [inst : CommSemiring R] → [inst_1 : CommSemiring S₁] → (R →+* S₁) → (σ → S₁) → MvPolynomial σ R → S₁\"\n    },\n    {\n      \"name\": \"Polynomial.le_gaussNorm\",\n      \"module_name\": \"Mathlib.RingTheory.Polynomial.GaussNorm\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {F : Type u_2} [inst : Semiring R] [inst_1 : FunLike F R ℝ] (v : F) {c : ℝ} (p : Polynomial R)\\n  [ZeroHomClass F R ℝ] [NonnegHomClass F R ℝ], 0 ≤ c → ∀ (i : ℕ), v (p.coeff i) * c ^ i ≤ Polynomial.gaussNorm v c p\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "MvPolynomial.aeval_natDegree_le",
+              "module_name": "Mathlib.RingTheory.Polynomial.Basic",
+              "kind": "theorem",
+              "type": "∀ {σ : Type v} {R : Type u_2} [inst : CommSemiring R] {m n : ℕ} (F : MvPolynomial σ R),\n  F.totalDegree ≤ m →\n    ∀ (f : σ → Polynomial R), (∀ (i : σ), (f i).natDegree ≤ n) → ((MvPolynomial.aeval f) F).natDegree ≤ m * n"
+            },
+            {
+              "name": "Polynomial.abs_isBoundedUnder_iff",
+              "module_name": "Mathlib.Analysis.Polynomial.Basic",
+              "kind": "theorem",
+              "type": "∀ {𝕜 : Type u_1} [inst : NormedField 𝕜] [inst_1 : LinearOrder 𝕜] [IsStrictOrderedRing 𝕜] (P : Polynomial 𝕜)\n  [OrderTopology 𝕜],\n  (Filter.IsBoundedUnder (fun x1 x2 => x1 ≤ x2) Filter.atTop fun x => |Polynomial.eval x P|) ↔ P.degree ≤ 0"
+            },
+            {
+              "name": "Polynomial.tendsto_abv_aeval_atTop",
+              "module_name": "Mathlib.Topology.Algebra.Polynomial",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} {A : Type u_2} {k : Type u_3} {α : Type u_4} [inst : CommSemiring R] [inst_1 : Ring A]\n  [inst_2 : Algebra R A] [inst_3 : Field k] [inst_4 : LinearOrder k] [IsStrictOrderedRing k] (abv : A → k)\n  [IsAbsoluteValue abv] (p : Polynomial R),\n  0 < p.degree →\n    (algebraMap R A) p.leadingCoeff ≠ 0 →\n      ∀ {l : Filter α} {z : α → A},\n        Filter.Tendsto (abv ∘ z) l Filter.atTop →\n          Filter.Tendsto (fun x => abv ((Polynomial.aeval (z x)) p)) l Filter.atTop"
+            },
+            {
+              "name": "MvPolynomial.eval₂",
+              "module_name": "Mathlib.Algebra.MvPolynomial.Eval",
+              "kind": "definition",
+              "type": "{R : Type u} →\n  {S₁ : Type v} →\n    {σ : Type u_1} →\n      [inst : CommSemiring R] → [inst_1 : CommSemiring S₁] → (R →+* S₁) → (σ → S₁) → MvPolynomial σ R → S₁"
+            },
+            {
+              "name": "Polynomial.le_gaussNorm",
+              "module_name": "Mathlib.RingTheory.Polynomial.GaussNorm",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} {F : Type u_2} [inst : Semiring R] [inst_1 : FunLike F R ℝ] (v : F) {c : ℝ} (p : Polynomial R)\n  [ZeroHomClass F R ℝ] [NonnegHomClass F R ℝ], 0 ≤ c → ∀ (i : ℕ), v (p.coeff i) * c ^ i ≤ Polynomial.gaussNorm v c p"
+            }
+          ]
+        },
+        "isError": false
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.IsHomogeneous.eq_zero_of_forall_eval_eq_zero_of_le_card\",\n      \"type\": \" {R : Type u_5} {σ : Type u_6} [CommRing R] [IsDomain R] {F : MvPolynomial σ R} {n : ℕ} (hF : F.IsHomogeneous n) (h : ∀ (r : σ → R), (MvPolynomial.eval r) F = 0) (hnR : ↑n ≤ Cardinal.mk R) : F = 0\",\n      \"module\": \"Mathlib.RingTheory.MvPolynomial.Homogeneous\"\n    },\n    {\n      \"name\": \"MvPolynomial.IsHomogeneous.funext_of_le_card\",\n      \"type\": \" {R : Type u_5} {σ : Type u_6} [CommRing R] [IsDomain R] {F G : MvPolynomial σ R} {n : ℕ} (hF : F.IsHomogeneous n) (hG : G.IsHomogeneous n) (h : ∀ (r : σ → R), (MvPolynomial.eval r) F = (MvPolynomial.eval r) G) (hnR : ↑n ≤ Cardinal.mk R) : F = G\",\n      \"module\": \"Mathlib.RingTheory.MvPolynomial.Homogeneous\"\n    },\n    {\n      \"name\": \"MvPolynomial.schwartz_zippel_totalDegree\",\n      \"type\": \" {R : Type u_1} [CommRing R] [IsDomain R] [DecidableEq R] {n : ℕ} {p : MvPolynomial (Fin n) R} (hp : p ≠ 0) (S : Finset R) : ↑{f ∈ Fintype.piFinset fun x => S | (MvPolynomial.eval f) p = 0}.card / ↑S.card ^ n ≤ ↑p.totalDegree / ↑S.card\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.SchwartzZippel\"\n    },\n    {\n      \"name\": \"MvPolynomial.schwartz_zippel_sum_degreeOf\",\n      \"type\": \" {R : Type u_1} [CommRing R] [IsDomain R] [DecidableEq R] {n : ℕ} {p : MvPolynomial (Fin n) R} (hp : p ≠ 0) (S : Fin n → Finset R) : ↑{x ∈ Fintype.piFinset fun i => S i | (MvPolynomial.eval x) p = 0}.card / ∏ i, ↑(S i).card ≤ ∑ i, ↑(MvPolynomial.degreeOf i p) / ↑(S i).card\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.SchwartzZippel\"\n    },\n    {\n      \"name\": \"MvPolynomial.schwartz_zippel_sup_sum\",\n      \"type\": \" {R : Type u_1} [CommRing R] [IsDomain R] [DecidableEq R] {n : ℕ} {p : MvPolynomial (Fin n) R} (hp : p ≠ 0) (S : Fin n → Finset R) : ↑{x ∈ Fintype.piFinset fun i => S i | (MvPolynomial.eval x) p = 0}.card / ∏ i, ↑(S i).card ≤ p.support.sup fun s => ∑ i, ↑(s i) / ↑(S i).card\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.SchwartzZippel\"\n    },\n    {\n      \"name\": \"Polynomial.eval_homogenize\",\n      \"type\": \" {K : Type u_1} [Semifield K] {p : Polynomial K} {n : ℕ} (hn : p.natDegree ≤ n) (x : Fin 2 → K) (hx : x 1 ≠ 0) : (MvPolynomial.eval x) (p.homogenize n) = Polynomial.eval (x 0 / x 1) p * x 1 ^ n\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Homogenize\"\n    },\n    {\n      \"name\": \"MvPolynomial.combinatorial_nullstellensatz_exists_linearCombination\",\n      \"type\": \" {R : Type u_1} [CommRing R] {σ : Type u_2} [Finite σ] [IsDomain R] (S : σ → Finset R) (Sne : ∀ (i : σ), (S i).Nonempty) (f : MvPolynomial σ R) (Heval : ∀ (x : σ → R), (∀ (i : σ), x i ∈ S i) → (MvPolynomial.eval x) f = 0) : ∃ h, (∀ (i : σ), ((∏ s ∈ S i, (MvPolynomial.X i - MvPolynomial.C s)) * h i).totalDegree ≤ f.totalDegree) ∧ f = (Finsupp.linearCombination (MvPolynomial σ R) fun i => ∏ r ∈ S i, (MvPolynomial.X i - MvPolynomial.C r)) h\",\n      \"module\": \"Mathlib.Combinatorics.Nullstellensatz\"\n    },\n    {\n      \"name\": \"FirstOrder.Ring.lift_genericPolyMap\",\n      \"type\": \" {ι : Type u_1} {κ : Type u_2} {R : Type u_3} [DecidableEq κ] [CommRing R] [DecidableEq R] (monoms : ι → Finset (κ →₀ ℕ)) (f : (i : ι) × ↥(monoms i) ⊕ κ → R) (i : ι) : (FreeCommRing.lift f) (FirstOrder.Ring.genericPolyMap monoms i) = (MvPolynomial.eval (f ∘ Sum.inr)) (↑((FirstOrder.Ring.mvPolynomialSupportLEEquiv monoms).symm (f ∘ Sum.inl)) i)\",\n      \"module\": \"Mathlib.RingTheory.MvPolynomial.FreeCommRing\"\n    },\n    {\n      \"name\": \"FirstOrder.realize_genericPolyMapSurjOnOfInjOn\",\n      \"type\": \" {ι : Type u_1} {α : Type u_2} [Finite α] {K : Type u_3} [Field K] [FirstOrder.Ring.CompatibleRing K] [Finite ι] (φ : FirstOrder.Language.ring.Formula (α ⊕ ι)) (mons : ι → Finset (ι →₀ ℕ)) :\\n  K ⊨ FirstOrder.genericPolyMapSurjOnOfInjOn φ mons ↔\\n    ∀ (v : α → K) (p : { p // ∀ (i : ι), (p i).support ⊆ mons i }),\\n      have f := fun v i => (MvPolynomial.eval v) (↑p i);\\n      have S := {x | φ.Realize (Sum.elim v x)};\\n      Set.MapsTo f S S → Set.InjOn f S → Set.SurjOn f S S\",\n      \"module\": \"Mathlib.FieldTheory.AxGrothendieck\"\n    },\n    {\n      \"name\": \"Height.logHeight_eval_le'\",\n      \"type\": \" {K : Type u_4} [Field K] {ι : Type u_5} {ι' : Type u_6} [Height.AdmissibleAbsValues K] [Finite ι'] [Finite ι] {N : ℕ} {p : ι' → MvPolynomial ι K} (hp : ∀ (i : ι'), (p i).IsHomogeneous N) : ∃ C, ∀ (x : ι → K), (Height.logHeight fun j => (MvPolynomial.eval x) (p j)) ≤ C + ↑N * Height.logHeight x\",\n      \"module\": \"Mathlib.NumberTheory.Height.MvPolynomial\"\n    },\n    {\n      \"name\": \"Height.logHeight_eval_le\",\n      \"type\": \" {K : Type u_4} [Field K] {ι : Type u_5} {ι' : Type u_6} [Height.AdmissibleAbsValues K] [Finite ι'] [Finite ι] {N : ℕ} {p : ι' → MvPolynomial ι K} (hp : ∀ (i : ι'), (p i).IsHomogeneous N) (x : ι → K) : (Height.logHeight fun j => (MvPolynomial.eval x) (p j)) ≤ Real.log (max (Height.mulHeightBound p) 1) + ↑N * Height.logHeight x\",\n      \"module\": \"Mathlib.NumberTheory.Height.MvPolynomial\"\n    },\n    {\n      \"name\": \"Height.mulHeight_eval_le'\",\n      \"type\": \" {K : Type u_4} [Field K] {ι : Type u_5} {ι' : Type u_6} [Height.AdmissibleAbsValues K] [Finite ι'] [Finite ι] {N : ℕ} {p : ι' → MvPolynomial ι K} (hp : ∀ (i : ι'), (p i).IsHomogeneous N) : ∃ C > 0, ∀ (x : ι → K), (Height.mulHeight fun j => (MvPolynomial.eval x) (p j)) ≤ C * Height.mulHeight x ^ N\",\n      \"module\": \"Mathlib.NumberTheory.Height.MvPolynomial\"\n    },\n    {\n      \"name\": \"Height.mulHeight_eval_le\",\n      \"type\": \" {K : Type u_4} [Field K] {ι : Type u_5} {ι' : Type u_6} [Height.AdmissibleAbsValues K] [Finite ι'] [Finite ι] {N : ℕ} {p : ι' → MvPolynomial ι K} (hp : ∀ (i : ι'), (p i).IsHomogeneous N) (x : ι → K) : (Height.mulHeight fun j => (MvPolynomial.eval x) (p j)) ≤ max (Height.mulHeightBound p) 1 * Height.mulHeight x ^ N\",\n      \"module\": \"Mathlib.NumberTheory.Height.MvPolynomial\"\n    },\n    {\n      \"name\": \"AbsoluteValue.eval_mvPolynomial_le\",\n      \"type\": \" {K : Type u_4} [Field K] {ι : Type u_5} [Finite ι] (v : AbsoluteValue K ℝ) {p : MvPolynomial ι K} {N : ℕ} (hp : p.IsHomogeneous N) (x : ι → K) : v ((MvPolynomial.eval x) p) ≤ (p.coeff.sum fun x c => v c) * (⨆ i, v (x i)) ^ N\",\n      \"module\": \"Mathlib.NumberTheory.Height.MvPolynomial\"\n    },\n    {\n      \"name\": \"Height.logHeight_eval_ge'\",\n      \"type\": \" {K : Type u_6} [Field K] {ι : Type u_7} {ι' : Type u_8} [Fintype ι'] [Height.AdmissibleAbsValues K] [Finite ι] {M N : ℕ} {q : ι × ι' → MvPolynomial ι K} (hq : ∀ (a : ι × ι'), (q a).IsHomogeneous M) : ∃ C, ∀ (p : ι' → MvPolynomial ι K) {x : ι → K}, (∀ (k : ι), ∑ j, (MvPolynomial.eval x) (q (k, j)) * (MvPolynomial.eval x) (p j) = x k ^ (M + N)) → C + ↑N * Height.logHeight x ≤ Height.logHeight fun j => (MvPolynomial.eval x) (p j)\",\n      \"module\": \"Mathlib.NumberTheory.Height.MvPolynomial\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "MvPolynomial.IsHomogeneous.eq_zero_of_forall_eval_eq_zero_of_le_card",
+              "type": " {R : Type u_5} {σ : Type u_6} [CommRing R] [IsDomain R] {F : MvPolynomial σ R} {n : ℕ} (hF : F.IsHomogeneous n) (h : ∀ (r : σ → R), (MvPolynomial.eval r) F = 0) (hnR : ↑n ≤ Cardinal.mk R) : F = 0",
+              "module": "Mathlib.RingTheory.MvPolynomial.Homogeneous"
+            },
+            {
+              "name": "MvPolynomial.IsHomogeneous.funext_of_le_card",
+              "type": " {R : Type u_5} {σ : Type u_6} [CommRing R] [IsDomain R] {F G : MvPolynomial σ R} {n : ℕ} (hF : F.IsHomogeneous n) (hG : G.IsHomogeneous n) (h : ∀ (r : σ → R), (MvPolynomial.eval r) F = (MvPolynomial.eval r) G) (hnR : ↑n ≤ Cardinal.mk R) : F = G",
+              "module": "Mathlib.RingTheory.MvPolynomial.Homogeneous"
+            },
+            {
+              "name": "MvPolynomial.schwartz_zippel_totalDegree",
+              "type": " {R : Type u_1} [CommRing R] [IsDomain R] [DecidableEq R] {n : ℕ} {p : MvPolynomial (Fin n) R} (hp : p ≠ 0) (S : Finset R) : ↑{f ∈ Fintype.piFinset fun x => S | (MvPolynomial.eval f) p = 0}.card / ↑S.card ^ n ≤ ↑p.totalDegree / ↑S.card",
+              "module": "Mathlib.Algebra.MvPolynomial.SchwartzZippel"
+            },
+            {
+              "name": "MvPolynomial.schwartz_zippel_sum_degreeOf",
+              "type": " {R : Type u_1} [CommRing R] [IsDomain R] [DecidableEq R] {n : ℕ} {p : MvPolynomial (Fin n) R} (hp : p ≠ 0) (S : Fin n → Finset R) : ↑{x ∈ Fintype.piFinset fun i => S i | (MvPolynomial.eval x) p = 0}.card / ∏ i, ↑(S i).card ≤ ∑ i, ↑(MvPolynomial.degreeOf i p) / ↑(S i).card",
+              "module": "Mathlib.Algebra.MvPolynomial.SchwartzZippel"
+            },
+            {
+              "name": "MvPolynomial.schwartz_zippel_sup_sum",
+              "type": " {R : Type u_1} [CommRing R] [IsDomain R] [DecidableEq R] {n : ℕ} {p : MvPolynomial (Fin n) R} (hp : p ≠ 0) (S : Fin n → Finset R) : ↑{x ∈ Fintype.piFinset fun i => S i | (MvPolynomial.eval x) p = 0}.card / ∏ i, ↑(S i).card ≤ p.support.sup fun s => ∑ i, ↑(s i) / ↑(S i).card",
+              "module": "Mathlib.Algebra.MvPolynomial.SchwartzZippel"
+            },
+            {
+              "name": "Polynomial.eval_homogenize",
+              "type": " {K : Type u_1} [Semifield K] {p : Polynomial K} {n : ℕ} (hn : p.natDegree ≤ n) (x : Fin 2 → K) (hx : x 1 ≠ 0) : (MvPolynomial.eval x) (p.homogenize n) = Polynomial.eval (x 0 / x 1) p * x 1 ^ n",
+              "module": "Mathlib.Algebra.Polynomial.Homogenize"
+            },
+            {
+              "name": "MvPolynomial.combinatorial_nullstellensatz_exists_linearCombination",
+              "type": " {R : Type u_1} [CommRing R] {σ : Type u_2} [Finite σ] [IsDomain R] (S : σ → Finset R) (Sne : ∀ (i : σ), (S i).Nonempty) (f : MvPolynomial σ R) (Heval : ∀ (x : σ → R), (∀ (i : σ), x i ∈ S i) → (MvPolynomial.eval x) f = 0) : ∃ h, (∀ (i : σ), ((∏ s ∈ S i, (MvPolynomial.X i - MvPolynomial.C s)) * h i).totalDegree ≤ f.totalDegree) ∧ f = (Finsupp.linearCombination (MvPolynomial σ R) fun i => ∏ r ∈ S i, (MvPolynomial.X i - MvPolynomial.C r)) h",
+              "module": "Mathlib.Combinatorics.Nullstellensatz"
+            },
+            {
+              "name": "FirstOrder.Ring.lift_genericPolyMap",
+              "type": " {ι : Type u_1} {κ : Type u_2} {R : Type u_3} [DecidableEq κ] [CommRing R] [DecidableEq R] (monoms : ι → Finset (κ →₀ ℕ)) (f : (i : ι) × ↥(monoms i) ⊕ κ → R) (i : ι) : (FreeCommRing.lift f) (FirstOrder.Ring.genericPolyMap monoms i) = (MvPolynomial.eval (f ∘ Sum.inr)) (↑((FirstOrder.Ring.mvPolynomialSupportLEEquiv monoms).symm (f ∘ Sum.inl)) i)",
+              "module": "Mathlib.RingTheory.MvPolynomial.FreeCommRing"
+            },
+            {
+              "name": "FirstOrder.realize_genericPolyMapSurjOnOfInjOn",
+              "type": " {ι : Type u_1} {α : Type u_2} [Finite α] {K : Type u_3} [Field K] [FirstOrder.Ring.CompatibleRing K] [Finite ι] (φ : FirstOrder.Language.ring.Formula (α ⊕ ι)) (mons : ι → Finset (ι →₀ ℕ)) :\n  K ⊨ FirstOrder.genericPolyMapSurjOnOfInjOn φ mons ↔\n    ∀ (v : α → K) (p : { p // ∀ (i : ι), (p i).support ⊆ mons i }),\n      have f := fun v i => (MvPolynomial.eval v) (↑p i);\n      have S := {x | φ.Realize (Sum.elim v x)};\n      Set.MapsTo f S S → Set.InjOn f S → Set.SurjOn f S S",
+              "module": "Mathlib.FieldTheory.AxGrothendieck"
+            },
+            {
+              "name": "Height.logHeight_eval_le'",
+              "type": " {K : Type u_4} [Field K] {ι : Type u_5} {ι' : Type u_6} [Height.AdmissibleAbsValues K] [Finite ι'] [Finite ι] {N : ℕ} {p : ι' → MvPolynomial ι K} (hp : ∀ (i : ι'), (p i).IsHomogeneous N) : ∃ C, ∀ (x : ι → K), (Height.logHeight fun j => (MvPolynomial.eval x) (p j)) ≤ C + ↑N * Height.logHeight x",
+              "module": "Mathlib.NumberTheory.Height.MvPolynomial"
+            },
+            {
+              "name": "Height.logHeight_eval_le",
+              "type": " {K : Type u_4} [Field K] {ι : Type u_5} {ι' : Type u_6} [Height.AdmissibleAbsValues K] [Finite ι'] [Finite ι] {N : ℕ} {p : ι' → MvPolynomial ι K} (hp : ∀ (i : ι'), (p i).IsHomogeneous N) (x : ι → K) : (Height.logHeight fun j => (MvPolynomial.eval x) (p j)) ≤ Real.log (max (Height.mulHeightBound p) 1) + ↑N * Height.logHeight x",
+              "module": "Mathlib.NumberTheory.Height.MvPolynomial"
+            },
+            {
+              "name": "Height.mulHeight_eval_le'",
+              "type": " {K : Type u_4} [Field K] {ι : Type u_5} {ι' : Type u_6} [Height.AdmissibleAbsValues K] [Finite ι'] [Finite ι] {N : ℕ} {p : ι' → MvPolynomial ι K} (hp : ∀ (i : ι'), (p i).IsHomogeneous N) : ∃ C > 0, ∀ (x : ι → K), (Height.mulHeight fun j => (MvPolynomial.eval x) (p j)) ≤ C * Height.mulHeight x ^ N",
+              "module": "Mathlib.NumberTheory.Height.MvPolynomial"
+            },
+            {
+              "name": "Height.mulHeight_eval_le",
+              "type": " {K : Type u_4} [Field K] {ι : Type u_5} {ι' : Type u_6} [Height.AdmissibleAbsValues K] [Finite ι'] [Finite ι] {N : ℕ} {p : ι' → MvPolynomial ι K} (hp : ∀ (i : ι'), (p i).IsHomogeneous N) (x : ι → K) : (Height.mulHeight fun j => (MvPolynomial.eval x) (p j)) ≤ max (Height.mulHeightBound p) 1 * Height.mulHeight x ^ N",
+              "module": "Mathlib.NumberTheory.Height.MvPolynomial"
+            },
+            {
+              "name": "AbsoluteValue.eval_mvPolynomial_le",
+              "type": " {K : Type u_4} [Field K] {ι : Type u_5} [Finite ι] (v : AbsoluteValue K ℝ) {p : MvPolynomial ι K} {N : ℕ} (hp : p.IsHomogeneous N) (x : ι → K) : v ((MvPolynomial.eval x) p) ≤ (p.coeff.sum fun x c => v c) * (⨆ i, v (x i)) ^ N",
+              "module": "Mathlib.NumberTheory.Height.MvPolynomial"
+            },
+            {
+              "name": "Height.logHeight_eval_ge'",
+              "type": " {K : Type u_6} [Field K] {ι : Type u_7} {ι' : Type u_8} [Fintype ι'] [Height.AdmissibleAbsValues K] [Finite ι] {M N : ℕ} {q : ι × ι' → MvPolynomial ι K} (hq : ∀ (a : ι × ι'), (q a).IsHomogeneous M) : ∃ C, ∀ (p : ι' → MvPolynomial ι K) {x : ι → K}, (∀ (k : ι), ∑ j, (MvPolynomial.eval x) (q (k, j)) * (MvPolynomial.eval x) (p j) = x k ^ (M + N)) → C + ↑N * Height.logHeight x ≤ Height.logHeight fun j => (MvPolynomial.eval x) (p j)",
+              "module": "Mathlib.NumberTheory.Height.MvPolynomial"
+            }
+          ]
+        },
+        "isError": false
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"AbsoluteValue.eval_mvPolynomial_le\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/NumberTheory/Height/MvPolynomial.lean\"\n    },\n    {\n      \"name\": \"IsNonarchimedean.eval_mvPolynomial_le\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/NumberTheory/Height/MvPolynomial.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "AbsoluteValue.eval_mvPolynomial_le",
+              "kind": "lemma",
+              "file": ".lake/packages/mathlib/Mathlib/NumberTheory/Height/MvPolynomial.lean"
+            },
+            {
+              "name": "IsNonarchimedean.eval_mvPolynomial_le",
+              "kind": "lemma",
+              "file": ".lake/packages/mathlib/Mathlib/NumberTheory/Height/MvPolynomial.lean"
+            }
+          ],
+          "index": "unavailable"
+        },
+        "isError": false
+      }
+    }
+  ]
+}

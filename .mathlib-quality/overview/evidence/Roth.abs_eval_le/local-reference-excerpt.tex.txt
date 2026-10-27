@@ -1,0 +1,61 @@
+are zero when $x_1 = \dots = x_m = \alpha$. Multi-indices outside the degree box give identically zero derivatives as well. Hence the index of $W^*$ at the point $(\alpha, \dots, \alpha)$ relative to $r_1, \dots, r_m$ is at least $\gamma$. Also $W^*$ is not identically zero, and its coefficients in absolute value do not exceed $B_1$.
+
+\lean{Represent each $W$ by a coefficient array on the finite monomial
+box, with entries in $\{0,\ldots,B_1\}$, and map it to the $nD$ integer
+coefficients of its remainder tuple. Apply
+finite pigeonhole\footnote{\url{https://leanprover-community.github.io/mathlib4_docs/Mathlib/Combinatorics/Pigeonhole.html}}
+using the strict cardinality estimate above. Distinct arrays give a
+nonzero difference with coefficient bound $B_1$, not $2B_1$, because both
+arrays lie in $[0,B_1]$ coordinatewise; equality of remainders then forces
+the required low-weight derivatives to vanish at $\alpha$.}
+
+This means that
+$$
+W^* (x_1, \dots, x_m) \in \mathcal R_m(q_1^{\delta r_1}; r_1, \dots, r_m).
+$$
+We noted in Lemma \ref{lem:lem7-satisfied} that the conditions of Lemma \ref{roth:lem7} are satisfied. By Lemma \ref{roth:lem7} the index of $W^*$ at $(h_1/q_1, \dots, h_m/q_m)$ relative to $r_1, \dots, r_m$ is less than $\eta$ defined in \eqref{roth:eq36}. Hence $W^*$ has some derivative
+$$
+Q(x_1, \dots, x_m) = \Delta_{k_1, \dots, k_m} W^*
+$$
+with $$
+\frac{k_1}{r_1}+ \cdots + \frac{k_m}{r_m} < \eta
+$$
+such that
+$$
+Q(h_1/q_1, \dots, h_m/q_m) \ne 0.
+$$
+By Lemma \ref{lem:index-of-derivative} the index of $Q$ at the point $(\alpha, \dots, \alpha)$ relative to $r_1, \dots, r_m$ is at least $\gamma - \eta$. This $Q$ has properties (1) and (2) of Lemma \ref{roth:lem9}. Since the coefficients of $W^*$ have absolute value at most $B_1$, the coefficients of $Q$ have absolute value at most
+$$
+2^{r_1 + \dots + r_m} B_1 \leq 2^{mr_1} B_1 < B_1^{1 + \delta}.
+$$
+Hence the coefficients of any further derivative of $Q$ have absolute value at most
+$$
+2^{r_1 + \dots + r_m}B_1^{1+ \delta} <B_1^{1+ 2 \delta}.
+$$
+To justify evaluation, for every $t\geq0$ and integer $r\geq0$,
+$\sum_{j=0}^rt^j\leq(1+t)^r$, since each binomial coefficient
+$\binom rj$ is at least $1$. Thus the coefficient bound gives
+\[
+|(\Delta_iQ)(\alpha,\dots,\alpha)|
+ \leq abc(\Delta_iQ)\prod_{j=1}^m\sum_{s=0}^{r_j}|\alpha|^s.
+\]
+For a zero derivative the desired estimate is immediate; otherwise the
+strict coefficient bound yields
+$$
+|\Delta_{i_1, \dots, i_m} Q(\alpha, \dots, \alpha)| < B_1^{1+ 2 \delta} (1 + |\alpha|)^{r_1 + \dots + r_m},
+$$
+and this implies (3), since \eqref{roth:three-small-factors} gives
+$$
+(1 + |\alpha|)^{mr_1} < B_1^\delta.
+$$
+This completes the proof of Lemma \ref{roth:lem9}.
+\lean{Keep differentiation, diagonal substitution and point evaluation
+as three separate estimates. A fixed Hasse derivative has no coefficient
+collisions; diagonal substitution may merge monomials and needs the
+factor $\prod_j(r_j+1)$. For evaluation, sum the absolute coefficients
+against powers of $|\alpha|$ and use
+$\sum_{s=0}^r t^s\leq(1+t)^r$ for $t\geq0$; this absorbs the monomial
+sum without an additional box-cardinality factor.}
+
+\end{proof}
+\section{The proof of Roth's theorem}

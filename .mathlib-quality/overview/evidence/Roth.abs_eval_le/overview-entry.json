@@ -1,0 +1,34 @@
+{
+  "declaration": "Roth.abs_eval_le",
+  "kind": "theorem",
+  "type": "∀ {σ : Type u_1} [inst : Fintype σ] (P : MvPolynomial σ ℤ) {r : σ → ℕ},\n  (∀ (j : σ), MvPolynomial.degreeOf j P ≤ r j) →\n    ∀ {B : ℝ},\n      (∀ (d : σ →₀ ℕ), |↑(P.coeff d)| ≤ B) →\n        ∀ (x : σ → ℝ), |(MvPolynomial.eval x) ((MvPolynomial.map (Int.castRingHom ℝ)) P)| ≤ B * ∏ j, (1 + |x j|) ^ r j",
+  "type_provenance": "Full actual native #check @Roth.abs_eval_le, clean receipt, standard axioms",
+  "source": "Roth/CoeffNorm.lean:223",
+  "visibility": "public",
+  "proof_lines": 15,
+  "what": "An integer multivariate polynomial with common absolute coefficient bound B and coordinate degrees at most r has value at x at most B times the product of (1+|x_j|)^r_j.",
+  "how": "Expand evaluation, take the finite-sum triangle inequality, enlarge support to Roth.box using monomial_le_degreeOf and Roth.mem_box, and apply private Roth.sum_box_prod_pow_le_aux to factor the geometric majorant.",
+  "hypotheses": "A finite variable type, an integer polynomial, coordinate natural degree bounds, a common real absolute coefficient bound, and any real evaluation point; B≥0 follows from hB at zero.",
+  "project_dependencies": [
+    "Roth.box",
+    "Roth.mem_box",
+    "_private.Roth.CoeffNorm.0.Roth.sum_box_prod_pow_le_aux"
+  ],
+  "caller_summary": {
+    "source_calls": 1,
+    "files": [
+      "Roth/MainLemma.lean"
+    ],
+    "explicit_callers": [
+      "_private.Roth.MainLemma.0.Roth.abs_eval_iterated_hasseDeriv_lt_aux"
+    ],
+    "canonical_audit": "293 requested, unique, present and values; the same sole direct proof consumer",
+    "inline_rederivations": []
+  },
+  "mathlib_api_audit": "Prefer eval₂ and existing size-hom classes. AbsoluteValue.eval_mvPolynomial_le is a homogeneous/coefficient-l1/sup bound, not the rectangular common-coefficient bound. GaussNorm estimates concern weighted coefficient suprema, not arbitrary real evaluation.",
+  "moral_duplications": "No duplicate: abs_coeff_diag_le handles coefficient collisions; normOne_le_card_mul is unweighted; Main.abs_eval_lt_of_le_index is a Taylor/index estimate. A future weighted-support majorant can share proof stages with the homogeneous bound.",
+  "generalization": "Verified strongest primary form: arbitrary CommSemiring R coefficients, CommSemiring S evaluation, ordered CommSemiring T output with PartialOrder and IsOrderedRing, FunLike F S T and existing Zero/Nonneg/Subadditive/Submultiplicative hom classes. Original ℤ/ℝ map input and full private caller specialize cleanly. No unit-size bound, injectivity, domain, total order, strict order or negation premise.",
+  "missing_api": "Nonhomogeneous rectangular coordinate-degree polynomial evaluation majorant; generic geometric-sum bound from declaration96 is a separate new prerequisite.",
+  "junk": "Not junk: live main-lemma dependency and nontrivial finite weighted-support reasoning.",
+  "action": "YES-but-generalise-first (MODERN-IDIOM); contribute a generic size-hom eval₂ theorem in Mathlib/Analysis/Polynomial/MvPolynomial.lean, then specialize the sole project caller."
+}
