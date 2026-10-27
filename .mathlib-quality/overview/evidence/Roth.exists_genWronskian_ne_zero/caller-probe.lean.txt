@@ -1,0 +1,9 @@
+namespace Roth
+open MvPolynomial
+theorem existsGenCaller {K : Type*} [Field K] [CharZero K] {σ : Type*} [Finite σ]
+    {l : ℕ} {ψ : Fin l → MvPolynomial σ K} (hψ : LinearIndependent K ψ) :
+    ∃ D : Fin l → (σ →₀ ℕ), (∀ μ, (D μ).degree ≤ μ) ∧ genWronskian D ψ ≠ 0 := by
+  obtain ⟨D, hD, hG⟩ := exists_genWronskian_ne_zero hψ
+  exact ⟨D, hD, hG⟩
+#print axioms existsGenCaller
+end Roth

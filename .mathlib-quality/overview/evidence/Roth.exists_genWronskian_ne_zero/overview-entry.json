@@ -1,0 +1,27 @@
+{
+  "declaration": "Roth.exists_genWronskian_ne_zero",
+  "kind": "theorem",
+  "type": "@Roth.exists_genWronskian_ne_zero.{u_1, u_2} {K : Type u_1} [Field K] {\u03c3 : Type u_2} {l : \u2115} [Finite \u03c3] [CharZero K]\n  {\u03c6 : Fin l \u2192 MvPolynomial \u03c3 K} (h : LinearIndependent K \u03c6) :\n  \u2203 D, (\u2200 (\u03bc : Fin l), Finsupp.degree (D \u03bc) \u2264 \u2191\u03bc) \u2227 Roth.genWronskian D \u03c6 \u2260 0",
+  "what": "A linearly independent finite family of multivariate polynomials has a nonzero Hasse Wronskian with total derivative order at most each row index.",
+  "how": "Choose bounded injective Kronecker substitution, use univariate nonvanishing, expand higher substituted derivatives and determinant, contradict simultaneous vanishing.",
+  "hypotheses": [
+    "Field K",
+    "CharZero K: essential for bounded row-order theorem",
+    "Finite \u03c3: removable by verified finite-support restriction/rename proof",
+    "\u03c6 : Fin l \u2192 MvPolynomial \u03c3 K; LinearIndependent K \u03c6; no positive l or nonempty \u03c3 assumption"
+  ],
+  "project_dependencies": [
+    "Roth.genWronskian",
+    "Roth.exists_hasseDeriv_kronecker_eq_sum",
+    "Roth.wronskian_ne_zero_of_linearIndependent",
+    "Roth.linearIndependent_kronecker",
+    "private Roth.wronskian_kronecker_eq_sum_aux"
+  ],
+  "caller_summary": "One explicit external-to-file caller: private Roth.exists_rat_factors_det_hasseDeriv_aux, Separation:524; exact293 canonical direct-consumer audit agrees; full caller replay with stronger theorem passes.",
+  "mathlib_api_audit": "Pinned pairwise Polynomial.Wronskian TODO explicitly requests n-tuples. Generic matrix determinant nonvanishing and Jacobian criteria do not select bounded derivative rows from coefficient-field independence. All five search methods executed on three forms.",
+  "moral_duplications": "Classical Bostan\u2013Dumas Theorem3 polynomial specialization, with Hasse normalization; not duplicated by existing two-polynomial Wronskian API.",
+  "generalization": "Verified deletion of Finite \u03c3, using finite union of vars, LI.of_comp, derivative rename, degree_mapDomain and determinant rename. Direct one-edit replay fails at Fintype.ofFinite. Domain/fraction-field and formal-series extensions remain distinct unverified proposals.",
+  "missing_api": "Bounded generalized Hasse-Wronskian nonvanishing criterion for independent finite polynomial families; finite-family univariate criterion and multivariate Hasse interface are prerequisite API.",
+  "junk": "Live module main theorem, substantive classical result; not junk despite a single direct consumer.",
+  "action": "YES-but-generalise-first: remove global variable finiteness with accepted support bridge, prepare new Mathlib/RingTheory/MvPolynomial/Wronskian.lean beside accepted parent proposal; retain CharZero/Field/row bounds; independently develop any domain or power-series extension."
+}

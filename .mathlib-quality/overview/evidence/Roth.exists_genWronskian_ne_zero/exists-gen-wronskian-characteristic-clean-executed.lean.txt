@@ -1,0 +1,15 @@
+import Mathlib.Algebra.MvPolynomial.PDeriv
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.LinearAlgebra.Matrix.MvPolynomial
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.Data.ZMod.Defs
+#check_failure Roth.exists_genWronskian_ne_zero
+namespace ExistsGenCharacteristicGuard
+theorem square_mod_two :
+    Polynomial.hasseDeriv 1 ((Polynomial.X : Polynomial (ZMod 2)) ^ 2) = 0 := by
+  rw [Polynomial.hasseDeriv_one, Polynomial.derivative_pow]
+  simp
+  decide
+#print axioms square_mod_two
+end ExistsGenCharacteristicGuard

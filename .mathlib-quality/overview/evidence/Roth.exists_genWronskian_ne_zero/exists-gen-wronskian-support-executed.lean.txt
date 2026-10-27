@@ -1,0 +1,34 @@
+namespace ExistsGenSupportProbe
+open MvPolynomial
+variable {K σ : Type*} [Field K] [CharZero K] {l : ℕ}
+theorem arbitrary_variables {φ : Fin l → MvPolynomial σ K}
+    (h : LinearIndependent K φ) :
+    ∃ D : Fin l → (σ →₀ ℕ), (∀ μ, (D μ).degree ≤ μ) ∧ Roth.genWronskian D φ ≠ 0 := by
+  classical
+  let S := Finset.univ.biUnion fun ν ↦ (φ ν).vars
+  have hex (ν : Fin l) : ∃ Q : MvPolynomial S K, rename Subtype.val Q = φ ν := by
+    apply exists_rename_eq_of_vars_subset_range (φ ν) Subtype.val Subtype.val_injective
+    intro j hj
+    exact ⟨⟨j, Finset.mem_biUnion.mpr ⟨ν, Finset.mem_univ ν, hj⟩⟩, rfl⟩
+  choose ψ hψ using hex
+  have hψli : LinearIndependent K ψ := by
+    apply LinearIndependent.of_comp (rename (R := K) (Subtype.val : S → σ)).toLinearMap
+    simpa only [Function.comp_apply, AlgHom.toLinearMap_apply, hψ] using h
+  obtain ⟨D, hD, hne⟩ := Roth.exists_genWronskian_ne_zero hψli
+  refine ⟨fun μ ↦ (D μ).mapDomain Subtype.val, ?_, ?_⟩
+  · intro μ
+    simpa only [Finsupp.degree_mapDomain] using hD μ
+  · have hrename :
+        rename (Subtype.val : S → σ) (Roth.genWronskian D ψ) =
+          Roth.genWronskian (fun μ ↦ (D μ).mapDomain Subtype.val) φ := by
+      unfold Roth.genWronskian
+      rw [AlgHom.map_det]
+      congr 1
+      ext μ ν
+      simp only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply]
+      rw [← hasseDeriv_rename Subtype.val_injective, hψ]
+    rw [← hrename]
+    exact fun hz ↦ hne ((rename_injective (R := K) Subtype.val Subtype.val_injective)
+      (hz.trans (map_zero _).symm))
+#print axioms arbitrary_variables
+end ExistsGenSupportProbe

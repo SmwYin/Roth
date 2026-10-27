@@ -1,0 +1,146 @@
+Source .mathlib-quality/references/clean.tex, lines205–349
+205: 
+206: Suppose $l\geq1$ and $\phi_0(x_1, \dots, x_p), \phi_1(x_1, \dots, x_p), \dots, \phi_{l-1}(x_1, \dots, x_p)$ are $l$ polynomials in the $p$ variables $x_1, \dots, x_p$. Also suppose $\Delta_0, \Delta_1, \dots, \Delta_{l-1}$ are $l$ differential operators such that for each $i$, $0 \leq i \leq l-1$, the order of $\Delta_i$ is at most $i$. We call the determinant
+207: $$
+208: W(\phi_0, \dots, \phi_{l-1}; \Delta_0, \dots, \Delta_{l-1}) = \det \left(\Delta_\mu \phi_\nu (x_1, \dots, x_p) \right)_{ 0 \leq \mu \leq l-1 \atop 0 \leq \nu \leq l-1}
+209: $$
+210: a generalized Wronskian. This is understood as a polynomial in the variables $x_1, \dots, x_p$.  If $p > 1$ and $l >1$ we have more than one generalized Wronskian.
+211: 
+212: \begin{lem}
+213:     If $\phi_0, \dots, \phi_{l-1}$ are polynomials over a characteristic-zero field and are linearly dependent over that field, then all of their generalized Wronskians are identically zero.
+214: \end{lem}
+215: \begin{proof}
+216:     Let $\sum_\nu c_\nu\phi_\nu=0$ be a nontrivial dependence relation
+217:     over the coefficient field. Applying each $\Delta_\mu$ gives
+218:     $\sum_\nu c_\nu\Delta_\mu\phi_\nu=0$. Choose $\nu_0$ with
+219:     $c_{\nu_0}\ne0$ and express that column as a linear combination of the
+220:     other columns. Multilinearity and alternation of the determinant then
+221:     give zero.
+222: \end{proof}
+223: 
+224: \begin{lem}\label{roth:lem1}
+225:     If $\phi_0(x_1, \dots, x_p), \dots, \phi_{l-1}(x_1, \dots, x_p)$ are $l$ linearly independent polynomials in $p$ variables with rational coefficients, then at least one of their generalized Wronskians is not identically zero.
+226: \end{lem}
+227: \begin{proof}
+228:     Let $k\geq2$ be an integer which is bigger than the degrees of the polynomials
+229:     $\phi_0, \phi_1, \dots, \phi_{l-1}$ in each of the variables $x_1, \dots, x_p$. We will fix $k$ throughout this argument so we will often suppress the dependence of our objects on $k$. For each $\nu$, $0 \leq \nu \leq l-1$, let
+230:     $$
+231:     h_\nu(t) = \phi_\nu(t, t^k, t^{k^2}, \dots, t^{k^{p-1}})
+232:     $$
+233:     as polynomials of the variable $t$. We claim that these polynomials are linearly independent. For each $\nu$ write
+234:     $$
+235:     \phi_\nu(x_1, \dots, x_p) = \sum_{s_1=0}^{k-1} \dots \sum_{s_p = 0}^{k-1} b^{(\nu)}(s_1, \dots, s_p) x_1^{s_1} \cdots x_p^{s_p}.
+236:     $$
+237:     Suppose we have a linear dependence relation of the form
+238:     $$
+239:     \sum_{\nu=0}^{l-1} c_\nu h_\nu(t) = 0.
+240:     $$
+241:     We have
+242:     $$
+243:     \sum_{\nu=0}^{l-1} c_\nu \sum_{s_1=0}^{k-1} \dots \sum_{s_p = 0}^{k-1} b^{(\nu)}(s_1, \dots, s_p) t^{s_1 + k s_2 + \dots + k^{p-1} s_p} = 0.
+244:     $$
+245: 
+246: FACT: Since each $s_i$ is strictly smaller than $k$, the representation of any natural number in the form
+247: $$
+248: s_1 + k s_2 + \dots + k^{p-1} s_p
+249: $$
+250: is unique.
+251: 
+252: Comparing the coefficient of $t^{s_1+ks_2+\cdots+k^{p-1}s_p}$ gives
+253: \[
+254: \sum_{\nu=0}^{l-1}c_\nu b^{(\nu)}(s_1,\dots,s_p)=0
+255: \qquad(0\leq s_j<k).
+256: \]
+257: It follows, by collecting coefficients of the multivariable monomials, that
+258: \[
+259: \sum_{\nu=0}^{l-1}c_\nu\phi_\nu
+260:  =\sum_{0\leq s_1,\dots,s_p<k}
+261:    \left(\sum_{\nu=0}^{l-1}c_\nu b^{(\nu)}(s_1,\dots,s_p)\right)
+262:    x_1^{s_1}\cdots x_p^{s_p}=0.
+263: \]
+264: The linear independence of the $\phi_\nu$ implies that every $c_\nu$ is zero.
+265: 
+266: \lean{Define Kronecker substitution as the algebra homomorphism
+267: $x_j\mapsto t^{k^{j-1}}$, and prove injectivity only on the subspace where
+268: every individual exponent is less than $k$. This restriction is essential:
+269: when $p\geq2$, the nonzero polynomial $x_2-x_1^k$ maps to zero. Uniqueness
+270: of base-$k$ expansions gives the restricted coefficient comparison, which
+271: then transports the required linear independence.}
+272: 
+273: We conclude that the Wronskian
+274: $$
+275: W(h_0, \dots, h_{l-1})
+276: $$
+277: is not identically zero. We now relate this Wronskian to the Wronskians of the multivariable polynomials $\phi_\nu$.
+278: 
+279: Set
+280: $$
+281: \gamma(t) = (t, t^k, t^{k^2}, \dots, t^{k^{p-1}}).
+282: $$
+283: For a polynomial $f$ in $x_1, \dots, x_p$, the composite $f(\gamma(t))$ is a polynomial in the single variable $t$. We now relate its derivatives to the partial derivatives of $f$.
+284: 
+285: FACT: For each $\nu$,
+286: $$
+287: \frac{d}{dt}h_\nu(t) = \frac{\partial \phi_\nu} {\partial x_1 } (\gamma(t)) + k t^{k-1} \frac{\partial \phi_\nu} {\partial x_2 } (\gamma(t)) + \dots + k^{p-1}t^{k^{p-1}-1}\frac{\partial \phi_\nu} {\partial x_p } (\gamma(t)).
+288: $$
+289: 
+290: This is the algebraic chain rule for polynomial substitution. The higher derivatives are handled by the uniform expansion below.
+291: 
+292: Then for each $\mu$, there is a natural number $r(\mu)$ depending only on $\mu$, polynomials $f^\mu_1(t), \dots, f^\mu_{r(\mu)}(t)$ with rational coefficients, and differential operators $\Delta_\mu^{(1)}, \dots, \Delta_\mu^{({r(\mu)})}$ of order less than or equal to $\mu$ such that for all $\nu$
+293: $$
+294: \frac{d^\mu}{dt^\mu} h_\nu(t) = f^\mu_1(t) (\Delta_\mu^{(1)}\phi_\nu)(\gamma(t)) + \dots + f^\mu_{r(\mu)}(t) (\Delta_\mu^{({r(\mu)})}\phi_\nu)(\gamma(t)).
+295: $$
+296: 
+297: For completeness, this follows by induction on $\mu$, uniformly for all
+298: input polynomials. For $\mu=0$, use the identity operator with coefficient $1$.
+299: If a term at stage $\mu$ is $a(t)(\Delta_d\phi)(\gamma(t))$, its derivative is
+300: \[
+301: a'(t)(\Delta_d\phi)(\gamma(t))+
+302:  a(t)\sum_{j=1}^p\gamma'_j(t)(d_j+1)
+303:                  (\Delta_{d+e_j}\phi)(\gamma(t)).
+304: \]
+305: Here $\partial_j\Delta_d=(d_j+1)\Delta_{d+e_j}$ follows directly on
+306: monomials. The orders are at most $\mu+1$, and all coefficients are rational
+307: polynomials independent of $\phi$. Thus the same finite list works for every
+308: $\phi_\nu$; $p$ and $k$ remain fixed throughout.
+309: \lean{Treat $\phi\mapsto\phi(\gamma(t))$ as an algebra homomorphism and
+310: prove the first-order chain rule using
+311: algebraic partial derivatives\footnote{\url{https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/MvPolynomial/PDeriv.html}}
+312: and polynomial induction, rather than analytic differentiation.
+313: Represent the higher-order expansion by a finitely supported family of
+314: coefficient polynomials indexed by $d$ with $|d|\leq\mu$; the recurrence
+315: above makes these coefficients independent of $\phi$. Convert ordinary
+316: iterated derivatives to Hasse derivatives by factorial scaling only over
+317: $\Q$.}
+318: 
+319: Let
+320: $$
+321: \mathcal S = \prod_{\mu = 0}^{l-1} \{1, \dots, r(\mu)\}
+322: $$
+323: For each
+324: $$\underline{i} = (i_0, \dots, i_{l-1}) \in
+325: \mathcal S,
+326: $$
+327: set
+328: $$
+329: f_{\underline{i}}(t) = \prod_{\mu = 0}^{l-1} \frac{1}{\mu !} f^\mu_{i_\mu}(t).
+330: $$
+331: Then multilinearity of the determinant in each row gives
+332: $$
+333: W(h_0, \dots, h_{l-1}) = \det \left(\frac{1}{\mu !} \frac{d^\mu}{d t^\mu} h_\nu(t)\right)_{0 \leq \mu \leq l-1 \atop 0 \leq \nu \leq l-1}
+334: $$
+335: $$
+336: =\det \left(\frac{1}{\mu !} f^\mu_1(t) (\Delta_\mu^{(1)}\phi_\nu)(\gamma(t)) + \dots + \frac{1}{\mu !}f^\mu_{r(\mu)}(t) (\Delta_\mu^{({r(\mu)})}\phi_\nu)(\gamma(t))\right)_{0 \leq \mu \leq l-1 \atop 0 \leq \nu \leq l-1}.
+337: $$
+338: $$
+339: = \sum_{\underline i = (i_0, \dots, i_{l-1}) \in \mathcal S} f_{\underline{i}}(t) \det \left(\Delta_\mu^{(i_\mu)}\phi_\nu(\gamma(t)) \right)_{0 \leq \mu \leq l-1 \atop 0 \leq \nu \leq l-1}
+340: $$
+341: $$
+342: = \sum_{\underline i = (i_0, \dots, i_{l-1}) \in \mathcal S} f_{\underline{i}}(t) W(\phi_0, \dots, \phi_{l-1}; \Delta_0^{(i_0)}, \Delta_1^{(i_1)}, \dots, \Delta_{l-1}^{(i_{l-1})})(\gamma(t)).
+343: $$
+344: Since $W(h_0, \dots, h_{l-1})$ is non-vanishing, this means there is a choice of differential operators such that $W(\phi_0, \dots, \phi_{l-1}; \Delta_0^{(i_0)}, \Delta_1^{(i_1)}, \dots, \Delta_{l-1}^{(i_{l-1})})$ is non-vanishing.
+345: \end{proof}
+346: 
+347: \begin{lem}\label{roth:lem2}
+348:     Let $R(x_1, \dots, x_p)$ be a polynomial in $p \geq 2$ variables with integral coefficients which is not identically zero. Let $R$ be of degree at most $r_j$ in $x_j$ for $j = 1, \dots, p$. Then there is an integer $l$ satisfying
+349:     $$

@@ -1,0 +1,13 @@
+import Mathlib.Algebra.MvPolynomial.PDeriv
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Data.Nat.Choose.Bounds
+import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
+import Mathlib.LinearAlgebra.LinearIndependent.Defs
+import Mathlib.Tactic
+#check_failure Roth.exists_genWronskian_ne_zero
+example {K : Type*} [Field K] [CharZero K] {σ : Type*} [Finite σ]
+    {l : ℕ} {φ : Fin l → MvPolynomial σ K} (h : LinearIndependent K φ) :
+    ∃ D : Fin l → (σ →₀ ℕ), (∀ μ, (D μ).degree ≤ μ) ∧
+      (Matrix.of fun μ ν ↦ (∑ k ∈ (φ ν).support, MvPolynomial.monomial (k - D μ)
+        (((D μ).prod (fun j ↦ (k j).choose (D μ j)) : K) * (φ ν).coeff k))).det ≠ 0 := by
+  exact?

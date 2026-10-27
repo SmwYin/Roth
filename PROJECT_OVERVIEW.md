@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 118/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 119/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 118; remaining: 175.
-- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 16 YES-but-generalise-first, 21 NO-mathlib-has-it, 38 BORDERLINE-needs-human, 16 SKIP.
+- Completed applicable assessments: 119; remaining: 174.
+- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 17 YES-but-generalise-first, 21 NO-mathlib-has-it, 38 BORDERLINE-needs-human, 16 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -1289,6 +1289,18 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: 1 explicit source caller declarations, all in GenWronskian.lean; 1 direct original value consumers. Exact separate lists retained. Entire module proof bodies replay successfully with fresh target name.
 - Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.wronskian_kronecker_eq_sum_aux.md).
 
+### Completed: `Roth.exists_genWronskian_ne_zero`
+
+- Type: `@Roth.exists_genWronskian_ne_zero.{u_1, u_2} {K : Type u_1} [Field K] {σ : Type u_2} {l : ℕ} [Finite σ] [CharZero K]
+  {φ : Fin l → MvPolynomial σ K} (h : LinearIndependent K φ) :
+  ∃ D, (∀ (μ : Fin l), Finsupp.degree (D μ) ≤ ↑μ) ∧ Roth.genWronskian D φ ≠ 0`
+- What: A linearly independent finite family of multivariate polynomials has a nonzero Hasse Wronskian with total derivative order at most each row index.
+- How: Choose bounded injective Kronecker substitution, use univariate nonvanishing, expand higher substituted derivatives and determinant, contradict simultaneous vanishing.
+- Hypotheses: Field K, CharZero K: essential for bounded row-order theorem, Finite σ: removable by verified finite-support restriction/rename proof, φ : Fin l → MvPolynomial σ K; LinearIndependent K φ; no positive l or nonempty σ assumption
+- Project dependencies: Roth.genWronskian, Roth.exists_hasseDeriv_kronecker_eq_sum, Roth.wronskian_ne_zero_of_linearIndependent, Roth.linearIndependent_kronecker, private Roth.wronskian_kronecker_eq_sum_aux
+- Caller summary: One explicit external-to-file caller: private Roth.exists_rat_factors_det_hasseDeriv_aux, Separation:524; exact293 canonical direct-consumer audit agrees; full caller replay with stronger theorem passes.
+- Verdict: YES-but-generalise-first; [complete report](.mathlib-quality/overview/mathlibable/Roth.exists_genWronskian_ne_zero.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -1551,6 +1563,8 @@ Completed `Roth.det_sum_rows`: MultilinearMap.map_sum_finset and map_smul_univ p
 
 Completed `Roth.wronskian_kronecker_eq_sum_aux`: The supplied uniform derivative-row expansions substitute into the Wronskian matrix. The existing project det_sum_rows helper expands its determinant by row multilinearity, while AlgHom.map_det transports each chosen generalized Wronskian through Kronecker substitution. This is a live application bridge, distinct from the standalone determinant identity and the final nonvanishing theorem. It adds no structure or instance; its private status is appropriate to the project-specific transport.
 
+Completed `Roth.exists_genWronskian_ne_zero`: Pinned pairwise Polynomial.Wronskian TODO explicitly requests n-tuples. Generic matrix determinant nonvanishing and Jacobian criteria do not select bounded derivative rows from coefficient-field independence. All five search methods executed on three forms.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -1788,6 +1802,8 @@ Completed `Roth.exists_hasseDeriv_kronecker_eq_sum`: Final extraction is generic
 Completed `Roth.det_sum_rows`: Standard multilinearity, already represented by two generic mathlib laws; convenience wrapper inclusion is a Phase6b taste decision.
 
 Completed `Roth.wronskian_kronecker_eq_sum_aux`: The determinant transport is distinct from the standalone row-multilinearity expansion and from the final nonvanishing implication; no duplicate full construction.
+
+Completed `Roth.exists_genWronskian_ne_zero`: Classical Bostan–Dumas Theorem3 polynomial specialization, with Hasse normalization; not duplicated by existing two-polynomial Wronskian API.
 
 ## Part 5: Generalization opportunities
 
@@ -2030,6 +2046,8 @@ Completed `Roth.det_sum_rows`: Verified arbitrary finite square J and dependent 
 
 Completed `Roth.wronskian_kronecker_eq_sum_aux`: No public generality claim under the private prefilter; preserve the existing definition and interface.
 
+Completed `Roth.exists_genWronskian_ne_zero`: Verified deletion of Finite σ, using finite union of vars, LI.of_comp, derivative rename, degree_mapDomain and determinant rename. Direct one-edit replay fails at Fintype.ofFinite. Domain/fraction-field and formal-series extensions remain distinct unverified proposals.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -2268,6 +2286,8 @@ Completed `Roth.exists_hasseDeriv_kronecker_eq_sum`: Higher polynomial-substitut
 Completed `Roth.det_sum_rows`: Possible named weighted multilinear finite-sum convenience law or determinant-specific row-expansion corollary, not a claimed missing mathematical theorem.
 
 Completed `Roth.wronskian_kronecker_eq_sum_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
+
+Completed `Roth.exists_genWronskian_ne_zero`: Bounded generalized Hasse-Wronskian nonvanishing criterion for independent finite polynomial families; finite-family univariate criterion and multivariate Hasse interface are prerequisite API.
 
 ## Part 7: Junk / removable
 
@@ -2510,6 +2530,8 @@ Completed `Roth.det_sum_rows`: Live single-use helper; private local lemma or in
 
 Completed `Roth.wronskian_kronecker_eq_sum_aux`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
 
+Completed `Roth.exists_genWronskian_ne_zero`: Live module main theorem, substantive classical result; not junk despite a single direct consumer.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -2632,6 +2654,7 @@ Completed `Roth.wronskian_kronecker_eq_sum_aux`: Retain a live private proof int
 | 116 | `Roth.exists_hasseDeriv_kronecker_eq_sum` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_hasseDeriv_kronecker_eq_sum.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_hasseDeriv_kronecker_eq_sum/root-acceptance.json) |
 | 117 | `Roth.det_sum_rows` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.det_sum_rows.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.det_sum_rows/root-acceptance.json) |
 | 118 | `Roth.wronskian_kronecker_eq_sum_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.wronskian_kronecker_eq_sum_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.wronskian_kronecker_eq_sum_aux/root-acceptance.json) |
+| 119 | `Roth.exists_genWronskian_ne_zero` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_genWronskian_ne_zero.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_genWronskian_ne_zero/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -2867,12 +2890,14 @@ Completed `Roth.det_sum_rows` action: BORDERLINE-needs-human: choose determinant
 
 Completed `Roth.wronskian_kronecker_eq_sum_aux` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
 
+Completed `Roth.exists_genWronskian_ne_zero` action: YES-but-generalise-first: remove global variable finiteness with accepted support bridge, prepare new Mathlib/RingTheory/MvPolynomial/Wronskian.lean beside accepted parent proposal; retain CharZero/Field/row bounds; independently develop any domain or power-series extension.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.exists_genWronskian_ne_zero` next. Supporting identities receive their own applicable checks.
+   `Roth.sqrt_one_sub_inv_lt` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 
