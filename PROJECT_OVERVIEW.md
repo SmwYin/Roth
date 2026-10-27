@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 107/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 108/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 107; remaining: 186.
-- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 14 YES-but-generalise-first, 21 NO-mathlib-has-it, 33 BORDERLINE-needs-human, 12 SKIP.
+- Completed applicable assessments: 108; remaining: 185.
+- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 15 YES-but-generalise-first, 21 NO-mathlib-has-it, 33 BORDERLINE-needs-human, 12 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -1148,6 +1148,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: One explicit internal caller Roth.coeff_kronecker at GenWronskian.lean93; no external explicit references. Canonical293 exact-order value audit has same sole direct consumer. Full caller replay without target passes.
 - Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/Roth.kronecker_monomial.md).
 
+### Completed: `Roth.kroneckerExp_injOn`
+
+- Type: `∀ {σ : Type u} [Fintype σ] {k : ℕ}, 1 < k → Set.InjOn (Roth.kroneckerExp k) {d | ∀ j : σ, d j < k}`
+- What: Uniqueness of bounded positional natural exponent vectors under Kronecker weighted sum.
+- How: Convert enumerated Finsupp digits to List.ofFn, identify weighted sum with Nat.ofDigits, apply equal-length digit uniqueness, and transport list equality back.
+- Hypotheses: Arbitrary universe σ, Fintype σ supplies canonical enumeration, Natural k and 1<k; hk verified removable even at original interface, Coordinate digits strictly less than k; no coefficient field or family-size parameter
+- Project dependencies: Roth.kroneckerExp
+- Caller summary: One explicit same-file caller Roth.coeff_kronecker97; exact canonical293 direct-consumer audit agrees. Full caller replay using new bridge passes, additionally dropping unused hk. No actual production change or completed next assessment.
+- Verdict: YES-but-generalise-first; [complete report](.mathlib-quality/overview/mathlibable/Roth.kroneckerExp_injOn.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -1388,6 +1398,8 @@ Completed `Roth.genWronskian_eq_zero_of_not_linearIndependent`: det_eq_zero_of_n
 
 Completed `Roth.kronecker_monomial`: All five actual methods on current/standard/abstract forms; pinned aeval_monomial Eval.lean681 is the analogous law for re-aimed parent aeval. Independent map_eq/exp_eq bridges and original-form proof pass.
 
+Completed `Roth.kroneckerExp_injOn`: All5 actual methods on current, standard and weight forms. Nat.injOn_ofDigits is existing list theorem, not the analogous weight theorem. Fresh weighted exact? fails without timeout; searches do not prove absence.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -1603,6 +1615,8 @@ Completed `Roth.kronSpan`: Private operator composition and bounded module span 
 Completed `Roth.genWronskian_eq_zero_of_not_linearIndependent`: Roth.wronskian_eq_zero_of_not_linearIndependent has analogous coefficient-witness proof
 
 Completed `Roth.kronecker_monomial`: Redundant specialization of existing generic monomial evaluation under parent re-aim. Old spelling requires genuine finite-product normalization; not definitional and not a one-call old-form proof.
+
+Completed `Roth.kroneckerExp_injOn`: Private NoetherNormalization.sum_r_mul_ne90–98 independently performs essentially same positional conversion. Its expanded statement replays using generalized weight helper; not a public exact replacement or actual source caller.
 
 ## Part 5: Generalization opportunities
 
@@ -1823,6 +1837,8 @@ Completed `Roth.genWronskian_eq_zero_of_not_linearIndependent`: Verified arbitra
 
 Completed `Roth.kronecker_monomial`: Compiled arbitrary-σ CommSemiring weighted theorem and arbitrary commutative target algebra evaluation; fixed geometric enumeration remains a project representation choice.
 
+Completed `Roth.kroneckerExp_injOn`: Checked explicit e:σ≃Fin n with proof-local Fintype and arbitrary k (no hk). Fixed original-interface no-hk bridge checked. Infinite-position injective maps and mixed radix considered but not claimed compiled.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -2039,6 +2055,8 @@ Completed `Roth.kronSpan`: No new primitive is needed for this internal organiza
 Completed `Roth.genWronskian_eq_zero_of_not_linearIndependent`: Design choice: shared scalar-linear determinant family lemma versus alternating generalized-Wronskian representation.
 
 Completed `Roth.kronecker_monomial`: No missing evaluation infrastructure established; new weighted helper probe is not counted as an existing mathlib theorem.
+
+Completed `Roth.kroneckerExp_injOn`: Public Finsupp geometric-weight injectivity on bounded digits; concrete recurring list conversion in Roth and pinned NoetherNormalization private helper.
 
 ## Part 7: Junk / removable
 
@@ -2259,6 +2277,8 @@ Completed `Roth.genWronskian_eq_zero_of_not_linearIndependent`: No present named
 
 Completed `Roth.kronecker_monomial`: Useful single-caller local coefficient calculation; no simp attribute, not dead code or an independent upstream contribution.
 
+Completed `Roth.kroneckerExp_injOn`: Useful non-simp arithmetic helper, not dead; project alias should be replaced by general upstream law.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -2370,6 +2390,7 @@ Completed `Roth.kronecker_monomial`: Useful single-caller local coefficient calc
 | 105 | `Roth.kronSpan` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.kronSpan.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.kronSpan/root-acceptance.json) |
 | 106 | `Roth.genWronskian_eq_zero_of_not_linearIndependent` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.genWronskian_eq_zero_of_not_linearIndependent.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.genWronskian_eq_zero_of_not_linearIndependent/root-acceptance.json) |
 | 107 | `Roth.kronecker_monomial` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.kronecker_monomial.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.kronecker_monomial/root-acceptance.json) |
+| 108 | `Roth.kroneckerExp_injOn` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.kroneckerExp_injOn.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.kroneckerExp_injOn/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -2583,12 +2604,14 @@ Completed `Roth.genWronskian_eq_zero_of_not_linearIndependent` action: BORDERLIN
 
 Completed `Roth.kronecker_monomial` action: NO-mathlib-has-it. Delete exported specialization during parent refactor; sole caller uses verified local hmon normalization from aeval_monomial then coeff_C_mul_X_pow. Alternative destination private/local helper in Roth/GenWronskian.lean.
 
+Completed `Roth.kroneckerExp_injOn` action: YES-but-generalise-first. Propose Finsupp.weight_pow_injOn in Mathlib/Data/Nat/Digits/Finsupp.lean; independent foundational PR, then reuse in NoetherNormalization and generalized Wronskian development. Run /generalise and /cleanup before PR.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.kroneckerExp_injOn` next. Supporting identities receive their own applicable checks.
+   `Roth.coeff_kronecker` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

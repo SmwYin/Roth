@@ -1,0 +1,19 @@
+namespace KroneckerExpInjOnConsumer
+open Roth MvPolynomial
+variable {K σ : Type*} [Field K] [Fintype σ]
+theorem replay {k : ℕ} (hk : 1 < k) {P : MvPolynomial σ K} (hP : ∀ j, degreeOf j P < k)
+    {d : σ →₀ ℕ} (hd : ∀ j, d j < k) : (kronecker k P).coeff (kroneckerExp k d) = P.coeff d := by
+  classical
+  conv_lhs => rw [P.as_sum]
+  rw [map_sum, Polynomial.finsetSum_coeff]
+  simp_rw [kronecker_monomial, Polynomial.coeff_C_mul_X_pow]
+  rw [Finset.sum_eq_single d]
+  · simp
+  · intro e he hed
+    exact ite_eq_right fun h ↦ hed (KroneckerExpInjOnBridge.fixed_no_base k
+      (fun j ↦ (monomial_le_degreeOf j he).trans_lt (hP j)) hd h.symm)
+  · intro hdP
+    simp [notMem_support_iff.1 hdP]
+
+#print axioms replay
+end KroneckerExpInjOnConsumer

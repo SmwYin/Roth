@@ -1,0 +1,84 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.Polynomial.HasseDeriv\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.LinearAlgebra.Matrix.ToLinearEquiv\nimport Mathlib.RingTheory.Polynomial.Wronskian\nimport Mathlib.LinearAlgebra.Vandermonde\nimport Mathlib.Data.ZMod.Defs\nimport Mathlib.Algebra.Field.ZMod\nimport Mathlib.Algebra.Order.Group.Int.Sum\nimport Mathlib.LinearAlgebra.Matrix.Polynomial\nimport Mathlib.Algebra.Polynomial.CancelLeads\nimport Mathlib.Algebra.MvPolynomial.PDeriv\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\nimport Mathlib.Algebra.MvPolynomial.Equiv\nimport Mathlib.Analysis.Normed.Unbundled.RingSeminorm\nimport Mathlib.LinearAlgebra.Matrix.AbsoluteValue\nimport Mathlib.Data.Nat.Choose.Bounds\nimport Mathlib.RingTheory.Polynomial.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.Data.List.Indexes\n#check_failure Roth.kroneckerExp_injOn\nnamespace KroneckerExpInjOnRaw\n#check @Nat.ofDigits_inj_of_len_eq\n#check @Nat.injOn_ofDigits\n#check @Nat.bijOn_ofDigits\n#check @Finsupp.weight_eq_sum\ntheorem digits_law {k : ℕ} (hk : 1 < k) (n : ℕ) :\n    Set.InjOn (Nat.ofDigits k) {L : List ℕ | L.length = n ∧ ∀ x ∈ L, x < k} :=\n  Nat.injOn_ofDigits hk n\ntheorem weighted_law {σ : Type*} {n k : ℕ} (e : σ ≃ Fin n) (hk : 1 < k) :\n    Set.InjOn (Finsupp.weight (fun j ↦ k ^ (e j : ℕ))) {d : σ →₀ ℕ | ∀ j, d j < k} := by\n  let := Fintype.ofEquiv (Fin n) e.symm\n  intro d hd d' hd' h\n  have hsum (d : σ →₀ ℕ) : Nat.ofDigits k (List.ofFn fun i ↦ d (e.symm i)) =\n      Finsupp.weight (fun j ↦ k ^ (e j : ℕ)) d := by\n    simp only [Nat.ofDigits_eq_sum_mapIdx, List.mapIdx_eq_ofFn, Fin.sum_ofFn,\n      Finsupp.weight_eq_sum, smul_eq_mul, ← e.symm.sum_comp, List.get_eq_getElem,\n      List.getElem_ofFn, List.length_ofFn, Equiv.apply_symm_apply, Fin.val_cast, Fin.eta]\n  apply DFunLike.coe_injective\n  apply e.symm.surjective.injective_comp_right\n  refine List.ofFn_injective (Nat.ofDigits_inj_of_len_eq hk (by simp)\n    (List.forall_mem_ofFn_iff.2 fun i ↦ hd (e.symm i))\n    (List.forall_mem_ofFn_iff.2 fun i ↦ hd' (e.symm i)) ?_)\n  simpa only [Function.comp_def, hsum] using h\n#print axioms digits_law\n#print axioms weighted_law\nend KroneckerExpInjOnRaw\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.kroneckerExp_injOn`\",\n      \"line\": 20,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Nat.ofDigits_inj_of_len_eq : ∀ {b : ℕ},\\n  1 < b →\\n    ∀ {L1 L2 : List ℕ},\\n      L1.length = L2.length → (∀ l ∈ L1, l < b) → (∀ l ∈ L2, l < b) → Nat.ofDigits b L1 = Nat.ofDigits b L2 → L1 = L2\",\n      \"line\": 22,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Nat.injOn_ofDigits : ∀ {b : ℕ}, 1 < b → ∀ (l : ℕ), Set.InjOn (Nat.ofDigits b) {L | L.length = l ∧ ∀ x ∈ L, x < b}\",\n      \"line\": 23,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Nat.bijOn_ofDigits : ∀ {b : ℕ},\\n  1 < b → ∀ (l : ℕ), Set.BijOn (Nat.ofDigits b) {L | L.length = l ∧ ∀ x ∈ L, x < b} {n | n < b ^ l}\",\n      \"line\": 24,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finsupp.weight_eq_sum : ∀ {σ : Type u_1} {M : Type u_2} {R : Type u_3} [inst : Semiring R] (w : σ → M)\\n  [inst_1 : AddCommMonoid M] [inst_2 : Module R M] [inst_3 : Fintype σ] (f : σ →₀ R),\\n  (Finsupp.weight w) f = ∑ i, f i • w i\",\n      \"line\": 25,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'KroneckerExpInjOnRaw.digits_law' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 44,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'KroneckerExpInjOnRaw.weighted_law' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 45,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.kroneckerExp_injOn`",
+          "line": 20,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Nat.ofDigits_inj_of_len_eq : ∀ {b : ℕ},\n  1 < b →\n    ∀ {L1 L2 : List ℕ},\n      L1.length = L2.length → (∀ l ∈ L1, l < b) → (∀ l ∈ L2, l < b) → Nat.ofDigits b L1 = Nat.ofDigits b L2 → L1 = L2",
+          "line": 22,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Nat.injOn_ofDigits : ∀ {b : ℕ}, 1 < b → ∀ (l : ℕ), Set.InjOn (Nat.ofDigits b) {L | L.length = l ∧ ∀ x ∈ L, x < b}",
+          "line": 23,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Nat.bijOn_ofDigits : ∀ {b : ℕ},\n  1 < b → ∀ (l : ℕ), Set.BijOn (Nat.ofDigits b) {L | L.length = l ∧ ∀ x ∈ L, x < b} {n | n < b ^ l}",
+          "line": 24,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finsupp.weight_eq_sum : ∀ {σ : Type u_1} {M : Type u_2} {R : Type u_3} [inst : Semiring R] (w : σ → M)\n  [inst_1 : AddCommMonoid M] [inst_2 : Module R M] [inst_3 : Fintype σ] (f : σ →₀ R),\n  (Finsupp.weight w) f = ∑ i, f i • w i",
+          "line": 25,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'KroneckerExpInjOnRaw.digits_law' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 44,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'KroneckerExpInjOnRaw.weighted_law' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 45,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 493
+}

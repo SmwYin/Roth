@@ -1,0 +1,7 @@
+namespace KroneckerExpInjOnBridge
+ theorem fixed_no_base {σ : Type*} [Fintype σ] (k : ℕ) :
+    Set.InjOn (Roth.kroneckerExp (σ := σ) k) {d | ∀ j, d j < k} := by
+  have h := KroneckerExpInjOnNoBase.no_base (Fintype.equivFin σ) k
+  simpa only [Finsupp.weight_eq_sum, smul_eq_mul, Roth.kroneckerExp] using h
+#print axioms fixed_no_base
+end KroneckerExpInjOnBridge

@@ -1,0 +1,13 @@
+namespace KroneckerExpInjOnNoBase
+ theorem no_base {σ : Type*} [Fintype σ] {n : ℕ} (e : σ ≃ Fin n) (k : ℕ) :
+    Set.InjOn (Finsupp.weight (fun j ↦ k ^ (e j : ℕ))) {d : σ →₀ ℕ | ∀ j, d j < k} := by
+  by_cases hk : 1 < k
+  · exact KroneckerExpInjOnRaw.weighted_law e hk
+  · intro d hd d' hd' _
+    apply Finsupp.ext
+    intro j
+    have h1 := hd j
+    have h2 := hd' j
+    omega
+#print axioms no_base
+end KroneckerExpInjOnNoBase

@@ -1,0 +1,22 @@
+{
+  "declaration": "Roth.kroneckerExp_injOn",
+  "kind": "theorem",
+  "type": "∀ {σ : Type u} [Fintype σ] {k : ℕ}, 1 < k → Set.InjOn (Roth.kroneckerExp k) {d | ∀ j : σ, d j < k}",
+  "what": "Uniqueness of bounded positional natural exponent vectors under Kronecker weighted sum.",
+  "how": "Convert enumerated Finsupp digits to List.ofFn, identify weighted sum with Nat.ofDigits, apply equal-length digit uniqueness, and transport list equality back.",
+  "hypotheses": [
+    "Arbitrary universe σ, Fintype σ supplies canonical enumeration",
+    "Natural k and 1<k; hk verified removable even at original interface",
+    "Coordinate digits strictly less than k; no coefficient field or family-size parameter"
+  ],
+  "project_dependencies": [
+    "Roth.kroneckerExp"
+  ],
+  "caller_summary": "One explicit same-file caller Roth.coeff_kronecker97; exact canonical293 direct-consumer audit agrees. Full caller replay using new bridge passes, additionally dropping unused hk. No actual production change or completed next assessment.",
+  "mathlib_api_audit": "All5 actual methods on current, standard and weight forms. Nat.injOn_ofDigits is existing list theorem, not the analogous weight theorem. Fresh weighted exact? fails without timeout; searches do not prove absence.",
+  "moral_duplications": "Private NoetherNormalization.sum_r_mul_ne90–98 independently performs essentially same positional conversion. Its expanded statement replays using generalized weight helper; not a public exact replacement or actual source caller.",
+  "generalization": "Checked explicit e:σ≃Fin n with proof-local Fintype and arbitrary k (no hk). Fixed original-interface no-hk bridge checked. Infinite-position injective maps and mixed radix considered but not claimed compiled.",
+  "missing_api": "Public Finsupp geometric-weight injectivity on bounded digits; concrete recurring list conversion in Roth and pinned NoetherNormalization private helper.",
+  "junk": "Useful non-simp arithmetic helper, not dead; project alias should be replaced by general upstream law.",
+  "action": "YES-but-generalise-first. Propose Finsupp.weight_pow_injOn in Mathlib/Data/Nat/Digits/Finsupp.lean; independent foundational PR, then reuse in NoetherNormalization and generalized Wronskian development. Run /generalise and /cleanup before PR."
+}

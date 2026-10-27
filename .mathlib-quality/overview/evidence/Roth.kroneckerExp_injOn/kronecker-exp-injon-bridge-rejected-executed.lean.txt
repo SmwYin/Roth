@@ -1,0 +1,48 @@
+namespace KroneckerExpInjOnRaw
+#check @Nat.ofDigits_inj_of_len_eq
+#check @Nat.injOn_ofDigits
+#check @Nat.bijOn_ofDigits
+#check @Finsupp.weight_eq_sum
+theorem digits_law {k : ℕ} (hk : 1 < k) (n : ℕ) :
+    Set.InjOn (Nat.ofDigits k) {L : List ℕ | L.length = n ∧ ∀ x ∈ L, x < k} :=
+  Nat.injOn_ofDigits hk n
+theorem weighted_law {σ : Type*} {n k : ℕ} (e : σ ≃ Fin n) (hk : 1 < k) :
+    Set.InjOn (Finsupp.weight (fun j ↦ k ^ (e j : ℕ))) {d : σ →₀ ℕ | ∀ j, d j < k} := by
+  let := Fintype.ofEquiv (Fin n) e.symm
+  intro d hd d' hd' h
+  have hsum (d : σ →₀ ℕ) : Nat.ofDigits k (List.ofFn fun i ↦ d (e.symm i)) =
+      Finsupp.weight (fun j ↦ k ^ (e j : ℕ)) d := by
+    simp only [Nat.ofDigits_eq_sum_mapIdx, List.mapIdx_eq_ofFn, Fin.sum_ofFn,
+      Finsupp.weight_eq_sum, smul_eq_mul, ← e.symm.sum_comp, List.get_eq_getElem,
+      List.getElem_ofFn, List.length_ofFn, Equiv.apply_symm_apply, Fin.val_cast, Fin.eta]
+  apply DFunLike.coe_injective
+  apply e.symm.surjective.injective_comp_right
+  refine List.ofFn_injective (Nat.ofDigits_inj_of_len_eq hk (by simp)
+    (List.forall_mem_ofFn_iff.2 fun i ↦ hd (e.symm i))
+    (List.forall_mem_ofFn_iff.2 fun i ↦ hd' (e.symm i)) ?_)
+  simpa only [Function.comp_def, hsum] using h
+#print axioms digits_law
+#print axioms weighted_law
+end KroneckerExpInjOnRaw
+
+namespace KroneckerExpInjOnNoBase
+theorem no_base {σ : Type*} {n : ℕ} (e : σ ≃ Fin n) (k : ℕ) :
+    Set.InjOn (Finsupp.weight (fun j ↦ k ^ (e j : ℕ))) {d : σ →₀ ℕ | ∀ j, d j < k} := by
+  by_cases hk : 1 < k
+  · exact KroneckerExpInjOnRaw.weighted_law e hk
+  · intro d hd d' hd' _
+    apply Finsupp.ext
+    intro j
+    have h1 := hd j
+    have h2 := hd' j
+    omega
+#print axioms no_base
+end KroneckerExpInjOnNoBase
+
+namespace KroneckerExpInjOnBridge
+theorem fixed_no_base {σ : Type*} [Fintype σ] (k : ℕ) :
+    Set.InjOn (Roth.kroneckerExp (σ := σ) k) {d | ∀ j, d j < k} := by
+  have h := KroneckerExpInjOnNoBase.no_base (Fintype.equivFin σ) k
+  simpa only [Finsupp.weight_eq_sum, smul_eq_mul, Roth.kroneckerExp] using h
+#print axioms fixed_no_base
+end KroneckerExpInjOnBridge

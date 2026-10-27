@@ -1,0 +1,15 @@
+namespace KroneckerExpInjOnNoetherConsumer
+open MvPolynomial
+theorem replay {R : Type*} [CommSemiring R] {n : ℕ}
+    (f : MvPolynomial (Fin (n + 1)) R) {v w : Fin (n + 1) →₀ ℕ}
+    (vlt : ∀ i, v i < 2 + f.totalDegree) (wlt : ∀ i, w i < 2 + f.totalDegree)
+    (hne : v ≠ w) :
+    ∑ x : Fin (n + 1), (2 + f.totalDegree) ^ x.val * v x ≠
+      ∑ x : Fin (n + 1), (2 + f.totalDegree) ^ x.val * w x := by
+  intro h
+  apply hne
+  apply KroneckerExpInjOnNoBase.no_base (Equiv.refl (Fin (n + 1)))
+    (2 + f.totalDegree) vlt wlt
+  simpa only [Finsupp.weight_eq_sum, smul_eq_mul, Equiv.refl_apply, mul_comm] using h
+#print axioms replay
+end KroneckerExpInjOnNoetherConsumer
