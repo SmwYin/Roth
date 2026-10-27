@@ -1,0 +1,48 @@
+{
+  "file": "Roth/Wronskian.lean",
+  "line": 122,
+  "name": "Roth.coeff_wronskian_of_natDegree_injective",
+  "short": "coeff_wronskian_of_natDegree_injective",
+  "kind": "theorem",
+  "visibility": "public",
+  "end_line": 142,
+  "source": "theorem coeff_wronskian_of_natDegree_injective {\u03c6 : Fin l \u2192 K[X]} :\n    (wronskian \u03c6).coeff (\u2211 \u03bd, (\u03c6 \u03bd).natDegree - \u2211 \u03bd : Fin l, (\u03bd : \u2115)) = (\u220f \u03bd, (\u03c6 \u03bd).leadingCoeff) *\n      (Matrix.of fun \u03bc \u03bd : Fin l \u21a6 ((\u03c6 \u03bd).natDegree.choose \u03bc : K)).det := by\n  classical\n  have key (\u03c3 : Equiv.Perm (Fin l)) : (\u220f i, hasseDeriv (\u03c3 i : \u2115) (\u03c6 i)).coeff\n      (\u2211 \u03bd, (\u03c6 \u03bd).natDegree - \u2211 \u03bd : Fin l, (\u03bd : \u2115)) =\n      \u220f i, ((\u03c6 i).natDegree.choose (\u03c3 i) : K) * (\u03c6 i).leadingCoeff := by\n    by_cases h : \u2200 i, (\u03c3 i : \u2115) \u2264 (\u03c6 i).natDegree\n    \u00b7 rw [\u2190 Equiv.sum_comp \u03c3 (fun i : Fin l \u21a6 (i : \u2115)), \u2190 Finset.sum_tsub_distrib _ fun i _ \u21a6 h i,\n        coeff_prod_of_natDegree_le' _ _ _ fun i _ \u21a6 natDegree_hasseDeriv_le _ _]\n      refine Finset.prod_congr rfl fun i _ \u21a6 ?_\n      rw [hasseDeriv_coeff, Nat.sub_add_cancel (h i), leadingCoeff]\n    \u00b7 push Not at h\n      obtain \u27e8i, hi\u27e9 := h\n      rw [Finset.prod_eq_zero (Finset.mem_univ i) (hasseDeriv_eq_zero_of_lt_natDegree _ _ hi),\n        coeff_zero]\n      exact (Finset.prod_eq_zero (Finset.mem_univ i) (by simp [Nat.choose_eq_zero_of_lt hi])).symm\n  rw [wronskian, wronskianMatrix, Matrix.det_apply', Matrix.det_apply', finsetSum_coeff,\n    Finset.mul_sum]\n  refine Finset.sum_congr rfl fun \u03c3 _ \u21a6 ?_\n  simp [coeff_intCast_mul, key, Finset.prod_mul_distrib, mul_comm, mul_assoc]",
+  "signature": "theorem coeff_wronskian_of_natDegree_injective {\u03c6 : Fin l \u2192 K[X]} :\n    (wronskian \u03c6).coeff (\u2211 \u03bd, (\u03c6 \u03bd).natDegree - \u2211 \u03bd : Fin l, (\u03bd : \u2115)) = (\u220f \u03bd, (\u03c6 \u03bd).leadingCoeff) *\n      (Matrix.of fun \u03bc \u03bd : Fin l \u21a6 ((\u03c6 \u03bd).natDegree.choose \u03bc : K)).det",
+  "body": "by\n  classical\n  have key (\u03c3 : Equiv.Perm (Fin l)) : (\u220f i, hasseDeriv (\u03c3 i : \u2115) (\u03c6 i)).coeff\n      (\u2211 \u03bd, (\u03c6 \u03bd).natDegree - \u2211 \u03bd : Fin l, (\u03bd : \u2115)) =\n      \u220f i, ((\u03c6 i).natDegree.choose (\u03c3 i) : K) * (\u03c6 i).leadingCoeff := by\n    by_cases h : \u2200 i, (\u03c3 i : \u2115) \u2264 (\u03c6 i).natDegree\n    \u00b7 rw [\u2190 Equiv.sum_comp \u03c3 (fun i : Fin l \u21a6 (i : \u2115)), \u2190 Finset.sum_tsub_distrib _ fun i _ \u21a6 h i,\n        coeff_prod_of_natDegree_le' _ _ _ fun i _ \u21a6 natDegree_hasseDeriv_le _ _]\n      refine Finset.prod_congr rfl fun i _ \u21a6 ?_\n      rw [hasseDeriv_coeff, Nat.sub_add_cancel (h i), leadingCoeff]\n    \u00b7 push Not at h\n      obtain \u27e8i, hi\u27e9 := h\n      rw [Finset.prod_eq_zero (Finset.mem_univ i) (hasseDeriv_eq_zero_of_lt_natDegree _ _ hi),\n        coeff_zero]\n      exact (Finset.prod_eq_zero (Finset.mem_univ i) (by simp [Nat.choose_eq_zero_of_lt hi])).symm\n  rw [wronskian, wronskianMatrix, Matrix.det_apply', Matrix.det_apply', finsetSum_coeff,\n    Finset.mul_sum]\n  refine Finset.sum_congr rfl fun \u03c3 _ \u21a6 ?_\n  simp [coeff_intCast_mul, key, Finset.prod_mul_distrib, mul_comm, mul_assoc]",
+  "proof_lines": 19,
+  "sha256": "84f34a334d0c2b7faed40936d44b4bc43e0bba71b1db92317badd81937fcd831",
+  "what": "Computes the Wronskian coefficient at the sum of polynomial degrees minus the sum of derivative orders, without assuming distinct degrees.",
+  "how": "Expands both determinants by Matrix.det_apply'. For each permutation, coeff_prod_of_natDegree_le' and Polynomial.hasseDeriv_coeff compute the extremal product coefficient; if any derivative exceeds its polynomial degree, both its factor and binomial coefficient vanish.",
+  "hypotheses": "A coefficient field and arbitrary finite polynomial family; neither nonzero polynomials nor pairwise-distinct degrees is required despite the legacy theorem name.",
+  "uses_from_project": [
+    "Roth.coeff_prod_of_natDegree_le'",
+    "Roth.wronskian",
+    "Roth.wronskianMatrix"
+  ],
+  "used_by_in_file": [
+    "Roth.wronskian_ne_zero_of_natDegree_injective"
+  ],
+  "project_callers": [
+    {
+      "name": "Roth.wronskian_ne_zero_of_natDegree_injective",
+      "file": "Roth/Wronskian.lean",
+      "line": 148
+    }
+  ],
+  "type_context": "{K : Type*} [Field K] {l : \u2115}",
+  "type_provenance": "Exact written signature with section binders made explicit from source; not claimed as a fresh #check output. Minimal hasseCoeff #check succeeded; full Meta inspector timed out.",
+  "reference_provenance": "Manually disambiguated source-level direct project references in declaration bodies; callers include signature and body occurrences. Includes explicit references only, not an exhaustive kernel/simp dependency closure.",
+  "notes": [
+    "No set_option, sorry, TODO, or proof over 30 lines in declaration."
+  ],
+  "assignment_offset": 239,
+  "project_body_refs": [
+    "Roth.coeff_prod_of_natDegree_le'",
+    "Roth.wronskian",
+    "Roth.wronskianMatrix"
+  ],
+  "project_type_refs": [
+    "Roth.wronskian"
+  ],
+  "section_context": "{K : Type*} [Field K] {l : \u2115}"
+}

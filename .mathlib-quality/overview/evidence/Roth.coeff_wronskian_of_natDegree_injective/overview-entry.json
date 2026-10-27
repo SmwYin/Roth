@@ -1,0 +1,20 @@
+{
+  "declaration": "Roth.coeff_wronskian_of_natDegree_injective",
+  "kind": "theorem",
+  "type": "\u2200 {K : Type u} [Field K] {l : \u2115} {\u03c6 : Fin l \u2192 K[X]}, (Roth.wronskian \u03c6).coeff (\u2211 \u03bd, (\u03c6 \u03bd).natDegree - \u2211 \u03bd : Fin l, (\u03bd : \u2115)) = (\u220f \u03bd, (\u03c6 \u03bd).leadingCoeff) * (Matrix.of fun \u03bc \u03bd : Fin l \u21a6 ((\u03c6 \u03bd).natDegree.choose \u03bc : K)).det",
+  "what": "Computes the coefficient at the top possible degree of a finite polynomial Hasse Wronskian as product of leading coefficients times a binomial determinant.",
+  "how": "Computes each permutation-product coefficient using individual Hasse degree bounds; excessive derivative orders make both sides zero; sums the signed determinant expansions.",
+  "hypotheses": "Arbitrary polynomial family over a field; no nonzero, distinct-degree, CharZero, independence, or positive-size premise.",
+  "project_dependencies": [
+    "Roth.wronskian",
+    "Roth.wronskianMatrix",
+    "Roth.coeff_prod_of_natDegree_le'"
+  ],
+  "caller_summary": "One explicit same-file proof caller: Wronskian.lean:152 in wronskian_ne_zero_of_natDegree_injective; no external-file callers; implementation-note prose excluded; not a kernel/simp dependency closure.",
+  "mathlib_api_audit": "Five actual methods on current/literature/abstract forms. Binary Wronskian and affine/triangular determinant coefficient candidates are partial matches. Native exact? and simp attempts fail with residual mathematical work.",
+  "moral_duplications": "Classical leading-monomial/Vandermonde calculation; existing common-bound product coefficient theorem does not directly give varying bounds. No exact pinned replacement found.",
+  "generalization": "Native verified expanded CommRing identity for arbitrary finite \u03b9 and arbitrary r : \u03b9 \u2192 \u2115; original Field form and sole caller recovered. Does not claim literal Field deletion through project parent interface.",
+  "missing_api": "Coefficient of determinant of arbitrary finite Hasse derivative matrix at sum degrees minus sum orders; varying-bound coefficient-product helper supports its proof.",
+  "junk": "No: sole local caller supplies nonvanishing induction base. Historical name can be improved.",
+  "action": "YES-but-generalise-first MODERN-IDIOM: upstream raw coefficient determinant formula to Mathlib/RingTheory/Polynomial/Wronskian.lean with det_choose_eq; keep parent interfaces unchanged during local specialization."
+}

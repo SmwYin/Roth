@@ -1,0 +1,74 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+#check_failure Roth.coeff_wronskian_of_natDegree_injective
+namespace PrivateCoeffProductAssessment
+open Polynomial
+theorem replay {R : Type*} [CommSemiring R] {ι : Type*}
+    (s : Finset ι) (f : ι → R[X]) (n : ι → ℕ)
+    (h : ∀ i ∈ s, (f i).natDegree ≤ n i) :
+    (∏ i ∈ s, f i).coeff (∑ i ∈ s, n i) = ∏ i ∈ s, (f i).coeff (n i) := by
+  classical
+  induction s using Finset.induction_on with
+  | empty => simp
+  | insert a s has ih =>
+    simp only [Finset.forall_mem_insert] at h
+    rw [Finset.prod_insert has, Finset.sum_insert has, Finset.prod_insert has,
+      coeff_mul_add_eq_of_natDegree_le h.1 ((natDegree_prod_le _ _).trans (Finset.sum_le_sum h.2)),
+      ih h.2]
+#check @replay
+#print axioms replay
+#check @Polynomial.coeff_prod_of_natDegree_le
+end PrivateCoeffProductAssessment
+namespace CoeffWronskianFiniteProbe
+open Polynomial
+noncomputable def W {K : Type*} [CommRing K] {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (r : ι → ℕ) (φ : ι → K[X]) : K[X] :=
+  (Matrix.of fun μ ν : ι ↦ hasseDeriv (r μ) (φ ν)).det
+theorem replay {K : Type*} [CommRing K] {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (r : ι → ℕ) {φ : ι → K[X]} :
+    (W r φ).coeff (∑ ν, (φ ν).natDegree - ∑ ν : ι, r ν) =
+      (∏ ν, (φ ν).leadingCoeff) *
+        (Matrix.of fun μ ν : ι ↦ ((φ ν).natDegree.choose (r μ) : K)).det := by
+  classical
+  have key (σ : Equiv.Perm (ι)) : (∏ i, hasseDeriv (r (σ i)) (φ i)).coeff
+      (∑ ν, (φ ν).natDegree - ∑ ν : ι, r ν) =
+      ∏ i, ((φ i).natDegree.choose (r (σ i)) : K) * (φ i).leadingCoeff := by
+    by_cases h : ∀ i, r (σ i) ≤ (φ i).natDegree
+    · rw [← Equiv.sum_comp σ r,
+        ← Finset.sum_tsub_distrib _ fun i _ ↦ h i,
+        PrivateCoeffProductAssessment.replay _ _ _ fun i _ ↦ natDegree_hasseDeriv_le _ _]
+      refine Finset.prod_congr rfl fun i _ ↦ ?_
+      rw [hasseDeriv_coeff, Nat.sub_add_cancel (h i), leadingCoeff]
+    · push Not at h
+      obtain ⟨i, hi⟩ := h
+      rw [Finset.prod_eq_zero (Finset.mem_univ i) (hasseDeriv_eq_zero_of_lt_natDegree _ _ hi),
+        coeff_zero]
+      exact (Finset.prod_eq_zero (Finset.mem_univ i)
+        (by simp [Nat.choose_eq_zero_of_lt hi])).symm
+  rw [W, Matrix.det_apply', Matrix.det_apply', finsetSum_coeff,
+    Finset.mul_sum]
+  refine Finset.sum_congr rfl fun σ _ ↦ ?_
+  simp [coeff_intCast_mul, key, Finset.prod_mul_distrib, mul_comm, mul_assoc]
+#check @replay
+#print axioms replay
+
+theorem expanded {K : Type*} [CommRing K] {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (r : ι → ℕ) {φ : ι → K[X]} :
+    (Matrix.of fun μ ν : ι ↦ hasseDeriv (r μ) (φ ν)).det.coeff
+        (∑ ν, (φ ν).natDegree - ∑ ν, r ν) =
+      (∏ ν, (φ ν).leadingCoeff) *
+        (Matrix.of fun μ ν : ι ↦ ((φ ν).natDegree.choose (r μ) : K)).det := by
+  simpa only [W] using (replay (φ := φ) r)
+#print axioms expanded
+end CoeffWronskianFiniteProbe
+
+#check @Polynomial.coeff_det_X_add_C_card
+#check @Polynomial.coeff_det_X_add_C_zero
+#check @Matrix.det_matrixOfPolynomials

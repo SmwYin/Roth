@@ -1,0 +1,48 @@
+\section{Wronskians}
+
+If $l\geq1$ and $\phi_0(t), \dots, \phi_{l-1}(t)$ are $l$ polynomials in the variable $t$, we call the determinant
+$$
+W(\phi_0, \dots, \phi_{l-1})(t) = \det \left(\frac{1}{\mu !} \frac{d^\mu}{d t^\mu} \phi_\nu(t)\right)_{0 \leq \mu \leq l-1 \atop 0 \leq \nu \leq l-1}
+$$
+the Wronskian of the polynomials.
+
+\begin{lem}
+    If $\phi_0(t), \dots, \phi_{l-1}(t)$ have rational coefficients, then the Wronskian vanishes if and only if they are linearly dependent, i.e., there are rational constants $c_0, \dots, c_{l-1}$, not all of which are zero, such that
+    $$
+    c_0 \phi_0(t) + \dots + c_{l-1} \phi_{l-1}(t) = 0.
+    $$
+\end{lem}
+\begin{proof}
+    Linear dependence gives a nontrivial constant linear relation between
+    the columns, so the determinant vanishes.
+    Conversely, suppose the polynomials are linearly independent. By invertible
+    column operations over $\Q$, replace them by a basis $g_0,\dots,g_{l-1}$ of
+    their span having distinct degrees $d_0<\cdots<d_{l-1}$.
+    Such a basis is obtained by eliminating equal leading degrees: the
+    successive quotients of the degree filtration have dimension at most one.
+    If $A\in\mathrm{GL}_l(\Q)$ is this change-of-basis matrix, then
+    $W(g_0,\dots,g_{l-1})=W(\phi_0,\dots,\phi_{l-1})\det A$.
+
+    Write $a_\nu\ne0$ for the leading coefficient of $g_\nu$ and set
+    $D=\sum_\nu d_\nu-l(l-1)/2\geq0$. The coefficient of $t^D$ in the new
+    Wronskian is
+    \[
+    \left(\prod_{\nu=0}^{l-1}a_\nu\right)
+    \det\left({d_\nu\choose\mu}\right)_{\mu,\nu=0}^{l-1}
+    =\left(\prod_{\nu=0}^{l-1}a_\nu\right)
+      \frac{\prod_{0\leq i<j<l}(d_j-d_i)}{\prod_{\mu=0}^{l-1}\mu!}\ne0.
+    \]
+    Indeed, $\binom{X}{\mu}$ has degree $\mu$ and leading coefficient
+    $1/\mu!$, so its evaluation determinant is the Vandermonde determinant
+    multiplied by $\prod_\mu1/\mu!$. All other contributions have lower total
+    degree. Thus the new Wronskian, and hence the original one, is nonzero.
+\end{proof}
+
+\lean{Index both rows and columns by \texttt{Fin l}, the type of integers
+$0,\ldots,l-1$, and take the determinant of the matrix with entries
+$\Delta_\mu\phi_\nu$ in $\Q[t]$. Using the
+matrix determinant API\footnote{\url{https://leanprover-community.github.io/mathlib4_docs/Mathlib/LinearAlgebra/Matrix/Determinant/Basic.html}},
+split the independence criterion into change of basis, construction of a
+basis with distinct degrees, and the Vandermonde leading-coefficient
+calculation. This keeps the construction valid for arbitrary finite
+families, rather than just two polynomials.}

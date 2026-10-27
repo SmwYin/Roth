@@ -1,0 +1,24 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+#check_failure Roth.coeff_wronskian_of_natDegree_injective
+namespace CoeffWronskianComposition
+open Polynomial
+noncomputable def W {K : Type*} [CommRing K] {l : ℕ} (φ : Fin l → K[X]) : K[X] :=
+  (Matrix.of fun μ ν : Fin l ↦ hasseDeriv μ (φ ν)).det
+example {K : Type*} [CommRing K] {l : ℕ} {φ : Fin l → K[X]} :
+    (W φ).coeff (∑ ν, (φ ν).natDegree - ∑ ν : Fin l, (ν : ℕ)) =
+      (∏ ν, (φ ν).leadingCoeff) *
+        (Matrix.of fun μ ν : Fin l ↦ ((φ ν).natDegree.choose μ : K)).det := by
+  exact?
+example {K : Type*} [CommRing K] {l : ℕ} {φ : Fin l → K[X]} :
+    (W φ).coeff (∑ ν, (φ ν).natDegree - ∑ ν : Fin l, (ν : ℕ)) =
+      (∏ ν, (φ ν).leadingCoeff) *
+        (Matrix.of fun μ ν : Fin l ↦ ((φ ν).natDegree.choose μ : K)).det := by
+  simp [W, Matrix.det_apply', finsetSum_coeff]
+end CoeffWronskianComposition

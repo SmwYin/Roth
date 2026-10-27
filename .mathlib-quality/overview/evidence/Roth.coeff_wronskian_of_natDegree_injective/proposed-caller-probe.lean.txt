@@ -1,0 +1,17 @@
+
+namespace CoeffWronskianRecover
+open Polynomial
+theorem recovered {K : Type*} [Field K] {l : ℕ} {φ : Fin l → K[X]} :
+    (Roth.wronskian φ).coeff (∑ ν, (φ ν).natDegree - ∑ ν : Fin l, (ν : ℕ)) =
+      (∏ ν, (φ ν).leadingCoeff) *
+        (Matrix.of fun μ ν : Fin l ↦ ((φ ν).natDegree.choose μ : K)).det :=
+  CoeffWronskianFiniteProbe.replay (fun μ : Fin l ↦ (μ : ℕ))
+theorem caller_rebuilt {K : Type*} [Field K] [CharZero K] {l : ℕ} {φ : Fin l → K[X]}
+    (hφ : ∀ ν, φ ν ≠ 0) (hd : Function.Injective fun ν ↦ (φ ν).natDegree) :
+    Roth.wronskian φ ≠ 0 := by
+  intro h0
+  simpa [h0, Roth.det_choose_eq, eq_comm (a := 0), Finset.prod_eq_zero_iff, sub_eq_zero, hφ,
+    Nat.factorial_ne_zero, hd.eq_iff] using recovered (φ := φ)
+#print axioms recovered
+#print axioms caller_rebuilt
+end CoeffWronskianRecover

@@ -1,0 +1,238 @@
+{
+  "query": "coefficient of polynomial Wronskian determinant at sum of natural degrees minus sum of row orders equals product of leading coefficients times determinant of binomial coefficients",
+  "Finder": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.wronskian\",\n      \"informal_name\": \"Wronskian of two polynomials\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} \u2192 [inst : CommRing R] \u2192 Polynomial R \u2192 Polynomial R \u2192 Polynomial R\",\n      \"informal_description\": \"The Wronskian of two polynomials $ a $ and $ b $ is defined as $ a \\\\cdot b' - a' \\\\cdot b $, where $ b' $ and $ a' $ denote the formal derivatives of $ b $ and $ a $, respectively. This results in a polynomial in $ R[X] $.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.Wronskian\"\n    },\n    {\n      \"formal_name\": \"Polynomial.wronskianBilin_apply\",\n      \"informal_name\": \"Wronskian Bilinear Form Evaluation Equals Wronskian\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u_1} [inst : CommRing R] (a b : Polynomial R), ((Polynomial.wronskianBilin R) a) b = a.wronskian b\",\n      \"informal_description\": \"For any commutative ring $ R $ and polynomials $ a, b \\\\in R[X] $, the Wronskian bilinear form evaluated at $ (a, b) $ is equal to the Wronskian of $ a $ and $ b $, i.e., $ \\\\text{wronskianBilin}_R(a, b) = a \\\\cdot b' - a' \\\\cdot b $.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.Wronskian\"\n    },\n    {\n      \"formal_name\": \"Polynomial.isAlt_wronskianBilin\",\n      \"informal_name\": \"Alternating Wronskian Bilinear Form on Polynomial Rings\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u_1} [inst : CommRing R], (Polynomial.wronskianBilin R).IsAlt\",\n      \"informal_description\": \"For any commutative ring $ R $, the Wronskian bilinear form on the polynomial ring $ R[X] $ is alternating, meaning that the Wronskian of any polynomial $ f $ with itself satisfies $ W(f, f) = f'f - ff' = 0 $. This follows from the antisymmetry of the derivative terms in the Wronskian definition.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.Wronskian\"\n    },\n    {\n      \"formal_name\": \"Polynomial.wronskianBilin\",\n      \"informal_name\": \"Wronskian Bilinear Form on Polynomial Rings\",\n      \"kind\": \"definition\",\n      \"type\": \"(R : Type u_1) \u2192 [inst : CommRing R] \u2192 Polynomial R \u2192\u2097[R] Polynomial R \u2192\u2097[R] Polynomial R\",\n      \"informal_description\": \"For any commutative ring $ R $, this bilinear form on the polynomial ring $ R[X] $ maps a pair of polynomials $ (f, g) $ to their Wronskian $ f'g - fg' $, where $ f' $ and $ g' $ denote the formal derivatives of $ f $ and $ g $, respectively. It is defined as the difference between the composition of left multiplication by the derivative and the flipped composition of derivative with left multiplication.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.Wronskian\"\n    },\n    {\n      \"formal_name\": \"Polynomial.natDegree_wronskian_lt_add\",\n      \"informal_name\": \"Degree of Wronskian is Less Than Sum of Polynomial Degrees\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u_1} [inst : CommRing R] {a b : Polynomial R},\\n  a.wronskian b \u2260 0 \u2192 (a.wronskian b).natDegree < a.natDegree + b.natDegree\",\n      \"informal_description\": \"For any two polynomials $ a $ and $ b $ over a commutative ring $ R $, if their Wronskian $ ab' - a'b $ is non-zero, then the natural degree of the Wronskian is strictly less than the sum of the natural degrees of $ a $ and $ b $.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.Wronskian\"\n    },\n    {\n      \"formal_name\": \"Matrix.det_matrixOfPolynomials\",\n      \"informal_name\": \"Determinant of a Matrix of Monic Polynomials with Degree Conditions Equals One\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type v} [inst : CommRing R] {n : \u2115} (p : Fin n \u2192 Polynomial R),\\n  (\u2200 (i : Fin n), (p i).natDegree = \u2191i) \u2192 (\u2200 (i : Fin n), (p i).Monic) \u2192 (Matrix.of fun i j => (p j).coeff \u2191i).det = 1\",\n      \"informal_description\": \"For a commutative ring $ R $ and natural number $ n $, consider monic polynomials $ p_0, p_1, \\\\ldots, p_{n-1} $ in $ R[X] $ where each $ p_i $ has degree $ i $. Construct an $ n \\\\times n $ matrix $ M $ such that the entry in row $ i $ and column $ j $ is the coefficient of $ X^i $ in $ p_j $. Then the determinant of $ M $ is equal to 1.\",\n      \"path\": \"Mathlib.LinearAlgebra.Matrix.Block\"\n    },\n    {\n      \"formal_name\": \"Polynomial.wronskian_self_eq_zero\",\n      \"informal_name\": \"Wronskian of a Polynomial with Itself is Zero\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u_1} [inst : CommRing R] (a : Polynomial R), a.wronskian a = 0\",\n      \"informal_description\": \"For any polynomial $ a $ in the polynomial ring $ R[X] $ over a commutative ring $ R $, the Wronskian of $ a $ with itself is zero, i.e., $ \\\\operatorname{Wronskian}(a, a) = 0 $. The Wronskian is defined as $ a \\\\cdot a' - a' \\\\cdot a $, where $ a' $ denotes the formal derivative of $ a $. This simplifies to zero due to the anti-commutative nature of the subtraction.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.Wronskian\"\n    },\n    {\n      \"formal_name\": \"Polynomial.sylvester\",\n      \"informal_name\": \"Sylvester matrix of two polynomials\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} \u2192 [inst : Semiring R] \u2192 Polynomial R \u2192 Polynomial R \u2192 (m n : \u2115) \u2192 Matrix (Fin (m + n)) (Fin (m + n)) R\",\n      \"informal_description\": \"The Sylvester matrix of two polynomials $ f $ and $ g $ of degrees $ m $ and $ n $, respectively, is a square matrix of size $ (m + n) \\times (m + n) $. It is constructed by arranging the coefficients of $ f $ and $ g $ in staggered rows: the first $ n $ rows contain the coefficients of $ f $ shifted left by increasing amounts, and the next $ m $ rows contain the coefficients of $ g $ similarly shifted, with zeros filling the remaining entries where the indices exceed the degree of the respective polynomial.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.Resultant.Basic\"\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "items": [
+        {
+          "formal_name": "Polynomial.wronskian",
+          "informal_name": "Wronskian of two polynomials",
+          "kind": "definition",
+          "type": "{R : Type u_1} \u2192 [inst : CommRing R] \u2192 Polynomial R \u2192 Polynomial R \u2192 Polynomial R",
+          "informal_description": "The Wronskian of two polynomials $ a $ and $ b $ is defined as $ a \\cdot b' - a' \\cdot b $, where $ b' $ and $ a' $ denote the formal derivatives of $ b $ and $ a $, respectively. This results in a polynomial in $ R[X] $.",
+          "path": "Mathlib.RingTheory.Polynomial.Wronskian"
+        },
+        {
+          "formal_name": "Polynomial.wronskianBilin_apply",
+          "informal_name": "Wronskian Bilinear Form Evaluation Equals Wronskian",
+          "kind": "theorem",
+          "type": "\u2200 {R : Type u_1} [inst : CommRing R] (a b : Polynomial R), ((Polynomial.wronskianBilin R) a) b = a.wronskian b",
+          "informal_description": "For any commutative ring $ R $ and polynomials $ a, b \\in R[X] $, the Wronskian bilinear form evaluated at $ (a, b) $ is equal to the Wronskian of $ a $ and $ b $, i.e., $ \\text{wronskianBilin}_R(a, b) = a \\cdot b' - a' \\cdot b $.",
+          "path": "Mathlib.RingTheory.Polynomial.Wronskian"
+        },
+        {
+          "formal_name": "Polynomial.isAlt_wronskianBilin",
+          "informal_name": "Alternating Wronskian Bilinear Form on Polynomial Rings",
+          "kind": "theorem",
+          "type": "\u2200 {R : Type u_1} [inst : CommRing R], (Polynomial.wronskianBilin R).IsAlt",
+          "informal_description": "For any commutative ring $ R $, the Wronskian bilinear form on the polynomial ring $ R[X] $ is alternating, meaning that the Wronskian of any polynomial $ f $ with itself satisfies $ W(f, f) = f'f - ff' = 0 $. This follows from the antisymmetry of the derivative terms in the Wronskian definition.",
+          "path": "Mathlib.RingTheory.Polynomial.Wronskian"
+        },
+        {
+          "formal_name": "Polynomial.wronskianBilin",
+          "informal_name": "Wronskian Bilinear Form on Polynomial Rings",
+          "kind": "definition",
+          "type": "(R : Type u_1) \u2192 [inst : CommRing R] \u2192 Polynomial R \u2192\u2097[R] Polynomial R \u2192\u2097[R] Polynomial R",
+          "informal_description": "For any commutative ring $ R $, this bilinear form on the polynomial ring $ R[X] $ maps a pair of polynomials $ (f, g) $ to their Wronskian $ f'g - fg' $, where $ f' $ and $ g' $ denote the formal derivatives of $ f $ and $ g $, respectively. It is defined as the difference between the composition of left multiplication by the derivative and the flipped composition of derivative with left multiplication.",
+          "path": "Mathlib.RingTheory.Polynomial.Wronskian"
+        },
+        {
+          "formal_name": "Polynomial.natDegree_wronskian_lt_add",
+          "informal_name": "Degree of Wronskian is Less Than Sum of Polynomial Degrees",
+          "kind": "theorem",
+          "type": "\u2200 {R : Type u_1} [inst : CommRing R] {a b : Polynomial R},\n  a.wronskian b \u2260 0 \u2192 (a.wronskian b).natDegree < a.natDegree + b.natDegree",
+          "informal_description": "For any two polynomials $ a $ and $ b $ over a commutative ring $ R $, if their Wronskian $ ab' - a'b $ is non-zero, then the natural degree of the Wronskian is strictly less than the sum of the natural degrees of $ a $ and $ b $.",
+          "path": "Mathlib.RingTheory.Polynomial.Wronskian"
+        },
+        {
+          "formal_name": "Matrix.det_matrixOfPolynomials",
+          "informal_name": "Determinant of a Matrix of Monic Polynomials with Degree Conditions Equals One",
+          "kind": "theorem",
+          "type": "\u2200 {R : Type v} [inst : CommRing R] {n : \u2115} (p : Fin n \u2192 Polynomial R),\n  (\u2200 (i : Fin n), (p i).natDegree = \u2191i) \u2192 (\u2200 (i : Fin n), (p i).Monic) \u2192 (Matrix.of fun i j => (p j).coeff \u2191i).det = 1",
+          "informal_description": "For a commutative ring $ R $ and natural number $ n $, consider monic polynomials $ p_0, p_1, \\ldots, p_{n-1} $ in $ R[X] $ where each $ p_i $ has degree $ i $. Construct an $ n \\times n $ matrix $ M $ such that the entry in row $ i $ and column $ j $ is the coefficient of $ X^i $ in $ p_j $. Then the determinant of $ M $ is equal to 1.",
+          "path": "Mathlib.LinearAlgebra.Matrix.Block"
+        },
+        {
+          "formal_name": "Polynomial.wronskian_self_eq_zero",
+          "informal_name": "Wronskian of a Polynomial with Itself is Zero",
+          "kind": "theorem",
+          "type": "\u2200 {R : Type u_1} [inst : CommRing R] (a : Polynomial R), a.wronskian a = 0",
+          "informal_description": "For any polynomial $ a $ in the polynomial ring $ R[X] $ over a commutative ring $ R $, the Wronskian of $ a $ with itself is zero, i.e., $ \\operatorname{Wronskian}(a, a) = 0 $. The Wronskian is defined as $ a \\cdot a' - a' \\cdot a $, where $ a' $ denotes the formal derivative of $ a $. This simplifies to zero due to the anti-commutative nature of the subtraction.",
+          "path": "Mathlib.RingTheory.Polynomial.Wronskian"
+        },
+        {
+          "formal_name": "Polynomial.sylvester",
+          "informal_name": "Sylvester matrix of two polynomials",
+          "kind": "definition",
+          "type": "{R : Type u_1} \u2192 [inst : Semiring R] \u2192 Polynomial R \u2192 Polynomial R \u2192 (m n : \u2115) \u2192 Matrix (Fin (m + n)) (Fin (m + n)) R",
+          "informal_description": "The Sylvester matrix of two polynomials $ f $ and $ g $ of degrees $ m $ and $ n $, respectively, is a square matrix of size $ (m + n) \times (m + n) $. It is constructed by arranging the coefficients of $ f $ and $ g $ in staggered rows: the first $ n $ rows contain the coefficients of $ f $ shifted left by increasing amounts, and the next $ m $ rows contain the coefficients of $ g $ similarly shifted, with zeros filling the remaining entries where the indices exceed the degree of the respective polynomial.",
+          "path": "Mathlib.RingTheory.Polynomial.Resultant.Basic"
+        }
+      ]
+    },
+    "isError": false
+  },
+  "Loogle": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.coeff_det_X_add_C_card\",\n      \"type\": \" {n : Type u_1} {\u03b1 : Type u_2} [DecidableEq n] [Fintype n] [CommRing \u03b1] (A B : Matrix n n \u03b1) : (Polynomial.X \u2022 A.map \u21d1Polynomial.C + B.map \u21d1Polynomial.C).det.coeff (Fintype.card n) = A.det\",\n      \"module\": \"Mathlib.LinearAlgebra.Matrix.Polynomial\"\n    },\n    {\n      \"name\": \"Polynomial.coeff_det_X_add_C_zero\",\n      \"type\": \" {n : Type u_1} {\u03b1 : Type u_2} [DecidableEq n] [Fintype n] [CommRing \u03b1] (A B : Matrix n n \u03b1) : (Polynomial.X \u2022 A.map \u21d1Polynomial.C + B.map \u21d1Polynomial.C).det.coeff 0 = B.det\",\n      \"module\": \"Mathlib.LinearAlgebra.Matrix.Polynomial\"\n    },\n    {\n      \"name\": \"Matrix.det_matrixOfPolynomials\",\n      \"type\": \" {R : Type v} [CommRing R] {n : \u2115} (p : Fin n \u2192 Polynomial R) (h_deg : \u2200 (i : Fin n), (p i).natDegree = \u2191i) (h_monic : \u2200 (i : Fin n), (p i).Monic) : (Matrix.of fun i j => (p j).coeff \u2191i).det = 1\",\n      \"module\": \"Mathlib.LinearAlgebra.Matrix.Block\"\n    },\n    {\n      \"name\": \"Matrix.det_eq_sign_charpoly_coeff\",\n      \"type\": \" {R : Type u} [CommRing R] {n : Type v} [DecidableEq n] [Fintype n] (M : Matrix n n R) : M.det = (-1) ^ Fintype.card n * M.charpoly.coeff 0\",\n      \"module\": \"Mathlib.LinearAlgebra.Matrix.Charpoly.Coeff\"\n    },\n    {\n      \"name\": \"Matrix.charpoly_coeff_eq_sum_minors\",\n      \"type\": \" {R : Type u} [CommRing R] {n : Type v} [DecidableEq n] [Fintype n] (M : Matrix n n R) (k : \u2115) (hk : k \u2264 Fintype.card n) : M.charpoly.coeff (Fintype.card n - k) = (-1) ^ k * \u2211 s \u2208 Finset.powersetCard k Finset.univ, (M.submatrix Subtype.val Subtype.val).det\",\n      \"module\": \"Mathlib.LinearAlgebra.Matrix.Charpoly.Coeff\"\n    },\n    {\n      \"name\": \"Matrix.coeff_det_one_add_X_smul_one\",\n      \"type\": \" {R : Type u} [CommRing R] {n : Type v} [DecidableEq n] [Fintype n] (M : Matrix n n R) : (1 + Polynomial.X \u2022 M.map \u21d1Polynomial.C).det.coeff 1 = M.trace\",\n      \"module\": \"Mathlib.LinearAlgebra.Matrix.Charpoly.Coeff\"\n    },\n    {\n      \"name\": \"Matrix.coeff_det_one_add_X_smul_eq_sum_minors\",\n      \"type\": \" {R : Type u} [CommRing R] {n : Type v} [DecidableEq n] [Fintype n] (M : Matrix n n R) (k : \u2115) : (1 + Polynomial.X \u2022 M.map \u21d1Polynomial.C).det.coeff k = \u2211 s \u2208 Finset.powersetCard k Finset.univ, (M.submatrix Subtype.val Subtype.val).det\",\n      \"module\": \"Mathlib.LinearAlgebra.Matrix.Charpoly.Coeff\"\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "items": [
+        {
+          "name": "Polynomial.coeff_det_X_add_C_card",
+          "type": " {n : Type u_1} {\u03b1 : Type u_2} [DecidableEq n] [Fintype n] [CommRing \u03b1] (A B : Matrix n n \u03b1) : (Polynomial.X \u2022 A.map \u21d1Polynomial.C + B.map \u21d1Polynomial.C).det.coeff (Fintype.card n) = A.det",
+          "module": "Mathlib.LinearAlgebra.Matrix.Polynomial"
+        },
+        {
+          "name": "Polynomial.coeff_det_X_add_C_zero",
+          "type": " {n : Type u_1} {\u03b1 : Type u_2} [DecidableEq n] [Fintype n] [CommRing \u03b1] (A B : Matrix n n \u03b1) : (Polynomial.X \u2022 A.map \u21d1Polynomial.C + B.map \u21d1Polynomial.C).det.coeff 0 = B.det",
+          "module": "Mathlib.LinearAlgebra.Matrix.Polynomial"
+        },
+        {
+          "name": "Matrix.det_matrixOfPolynomials",
+          "type": " {R : Type v} [CommRing R] {n : \u2115} (p : Fin n \u2192 Polynomial R) (h_deg : \u2200 (i : Fin n), (p i).natDegree = \u2191i) (h_monic : \u2200 (i : Fin n), (p i).Monic) : (Matrix.of fun i j => (p j).coeff \u2191i).det = 1",
+          "module": "Mathlib.LinearAlgebra.Matrix.Block"
+        },
+        {
+          "name": "Matrix.det_eq_sign_charpoly_coeff",
+          "type": " {R : Type u} [CommRing R] {n : Type v} [DecidableEq n] [Fintype n] (M : Matrix n n R) : M.det = (-1) ^ Fintype.card n * M.charpoly.coeff 0",
+          "module": "Mathlib.LinearAlgebra.Matrix.Charpoly.Coeff"
+        },
+        {
+          "name": "Matrix.charpoly_coeff_eq_sum_minors",
+          "type": " {R : Type u} [CommRing R] {n : Type v} [DecidableEq n] [Fintype n] (M : Matrix n n R) (k : \u2115) (hk : k \u2264 Fintype.card n) : M.charpoly.coeff (Fintype.card n - k) = (-1) ^ k * \u2211 s \u2208 Finset.powersetCard k Finset.univ, (M.submatrix Subtype.val Subtype.val).det",
+          "module": "Mathlib.LinearAlgebra.Matrix.Charpoly.Coeff"
+        },
+        {
+          "name": "Matrix.coeff_det_one_add_X_smul_one",
+          "type": " {R : Type u} [CommRing R] {n : Type v} [DecidableEq n] [Fintype n] (M : Matrix n n R) : (1 + Polynomial.X \u2022 M.map \u21d1Polynomial.C).det.coeff 1 = M.trace",
+          "module": "Mathlib.LinearAlgebra.Matrix.Charpoly.Coeff"
+        },
+        {
+          "name": "Matrix.coeff_det_one_add_X_smul_eq_sum_minors",
+          "type": " {R : Type u} [CommRing R] {n : Type v} [DecidableEq n] [Fintype n] (M : Matrix n n R) (k : \u2115) : (1 + Polynomial.X \u2022 M.map \u21d1Polynomial.C).det.coeff k = \u2211 s \u2208 Finset.powersetCard k Finset.univ, (M.submatrix Subtype.val Subtype.val).det",
+          "module": "Mathlib.LinearAlgebra.Matrix.Charpoly.Coeff"
+        }
+      ]
+    },
+    "isError": false
+  },
+  "LeanSearch": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.wronskian\",\n      \"module_name\": \"Mathlib.RingTheory.Polynomial.Wronskian\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} \u2192 [inst : CommRing R] \u2192 Polynomial R \u2192 Polynomial R \u2192 Polynomial R\"\n    },\n    {\n      \"name\": \"Polynomial.coeff_natDegree\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Degree.Definitions\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u} [inst : Semiring R] {p : Polynomial R}, p.coeff p.natDegree = p.leadingCoeff\"\n    },\n    {\n      \"name\": \"MonomialOrder.coeff_prod_sum_degree\",\n      \"module_name\": \"Mathlib.RingTheory.MvPolynomial.MonomialOrder\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {\u03c3 : Type u_1} {m : MonomialOrder \u03c3} {R : Type u_2} [inst : CommSemiring R] {\u03b9 : Type u_3} (P : \u03b9 \u2192 MvPolynomial \u03c3 R)\\n  (s : Finset \u03b9), MvPolynomial.coeff (\u2211 i \u2208 s, m.degree (P i)) (\u220f i \u2208 s, P i) = \u220f i \u2208 s, m.leadingCoeff (P i)\"\n    },\n    {\n      \"name\": \"Matrix.det_matrixOfPolynomials\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Matrix.Block\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type v} [inst : CommRing R] {n : \u2115} (p : Fin n \u2192 Polynomial R),\\n  (\u2200 (i : Fin n), (p i).natDegree = \u2191i) \u2192 (\u2200 (i : Fin n), (p i).Monic) \u2192 (Matrix.of fun i j => (p j).coeff \u2191i).det = 1\"\n    },\n    {\n      \"name\": \"Polynomial.leadingCoeff_sum_of_degree_eq\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.BigOperators\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {\u03b9 : Type w} {S : Type u_1} [inst : Semiring S] {f : \u03b9 \u2192 Polynomial S} {s : Finset \u03b9} {d : WithBot \u2115},\\n  (\u2200 k \u2208 s, (f k).degree = d) \u2192\\n    \u2211 k \u2208 s, (f k).leadingCoeff \u2260 0 \u2192 (\u2211 k \u2208 s, f k).leadingCoeff = \u2211 k \u2208 s, (f k).leadingCoeff\"\n    },\n    {\n      \"name\": \"Polynomial.wronskian_add_right\",\n      \"module_name\": \"Mathlib.RingTheory.Polynomial.Wronskian\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u_1} [inst : CommRing R] (a b c : Polynomial R), a.wronskian (b + c) = a.wronskian b + a.wronskian c\"\n    },\n    {\n      \"name\": \"MonomialOrder.leadingCoeff\",\n      \"module_name\": \"Mathlib.RingTheory.MvPolynomial.MonomialOrder\",\n      \"kind\": \"definition\",\n      \"type\": \"{\u03c3 : Type u_1} \u2192 MonomialOrder \u03c3 \u2192 {R : Type u_2} \u2192 [inst : CommSemiring R] \u2192 MvPolynomial \u03c3 R \u2192 R\"\n    },\n    {\n      \"name\": \"Polynomial.wronskian_neg_eq\",\n      \"module_name\": \"Mathlib.RingTheory.Polynomial.Wronskian\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u_1} [inst : CommRing R] (a b : Polynomial R), -a.wronskian b = b.wronskian a\"\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "items": [
+        {
+          "name": "Polynomial.wronskian",
+          "module_name": "Mathlib.RingTheory.Polynomial.Wronskian",
+          "kind": "definition",
+          "type": "{R : Type u_1} \u2192 [inst : CommRing R] \u2192 Polynomial R \u2192 Polynomial R \u2192 Polynomial R"
+        },
+        {
+          "name": "Polynomial.coeff_natDegree",
+          "module_name": "Mathlib.Algebra.Polynomial.Degree.Definitions",
+          "kind": "theorem",
+          "type": "\u2200 {R : Type u} [inst : Semiring R] {p : Polynomial R}, p.coeff p.natDegree = p.leadingCoeff"
+        },
+        {
+          "name": "MonomialOrder.coeff_prod_sum_degree",
+          "module_name": "Mathlib.RingTheory.MvPolynomial.MonomialOrder",
+          "kind": "theorem",
+          "type": "\u2200 {\u03c3 : Type u_1} {m : MonomialOrder \u03c3} {R : Type u_2} [inst : CommSemiring R] {\u03b9 : Type u_3} (P : \u03b9 \u2192 MvPolynomial \u03c3 R)\n  (s : Finset \u03b9), MvPolynomial.coeff (\u2211 i \u2208 s, m.degree (P i)) (\u220f i \u2208 s, P i) = \u220f i \u2208 s, m.leadingCoeff (P i)"
+        },
+        {
+          "name": "Matrix.det_matrixOfPolynomials",
+          "module_name": "Mathlib.LinearAlgebra.Matrix.Block",
+          "kind": "theorem",
+          "type": "\u2200 {R : Type v} [inst : CommRing R] {n : \u2115} (p : Fin n \u2192 Polynomial R),\n  (\u2200 (i : Fin n), (p i).natDegree = \u2191i) \u2192 (\u2200 (i : Fin n), (p i).Monic) \u2192 (Matrix.of fun i j => (p j).coeff \u2191i).det = 1"
+        },
+        {
+          "name": "Polynomial.leadingCoeff_sum_of_degree_eq",
+          "module_name": "Mathlib.Algebra.Polynomial.BigOperators",
+          "kind": "theorem",
+          "type": "\u2200 {\u03b9 : Type w} {S : Type u_1} [inst : Semiring S] {f : \u03b9 \u2192 Polynomial S} {s : Finset \u03b9} {d : WithBot \u2115},\n  (\u2200 k \u2208 s, (f k).degree = d) \u2192\n    \u2211 k \u2208 s, (f k).leadingCoeff \u2260 0 \u2192 (\u2211 k \u2208 s, f k).leadingCoeff = \u2211 k \u2208 s, (f k).leadingCoeff"
+        },
+        {
+          "name": "Polynomial.wronskian_add_right",
+          "module_name": "Mathlib.RingTheory.Polynomial.Wronskian",
+          "kind": "theorem",
+          "type": "\u2200 {R : Type u_1} [inst : CommRing R] (a b c : Polynomial R), a.wronskian (b + c) = a.wronskian b + a.wronskian c"
+        },
+        {
+          "name": "MonomialOrder.leadingCoeff",
+          "module_name": "Mathlib.RingTheory.MvPolynomial.MonomialOrder",
+          "kind": "definition",
+          "type": "{\u03c3 : Type u_1} \u2192 MonomialOrder \u03c3 \u2192 {R : Type u_2} \u2192 [inst : CommSemiring R] \u2192 MvPolynomial \u03c3 R \u2192 R"
+        },
+        {
+          "name": "Polynomial.wronskian_neg_eq",
+          "module_name": "Mathlib.RingTheory.Polynomial.Wronskian",
+          "kind": "theorem",
+          "type": "\u2200 {R : Type u_1} [inst : CommRing R] (a b : Polynomial R), -a.wronskian b = b.wronskian a"
+        }
+      ]
+    },
+    "isError": false
+  },
+  "local": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"items\": [\n    {\n      \"name\": \"Roth.coeff_wronskian_of_natDegree_injective\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/Wronskian.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+      }
+    ],
+    "structuredContent": {
+      "items": [
+        {
+          "name": "Roth.coeff_wronskian_of_natDegree_injective",
+          "kind": "theorem",
+          "file": "Roth/Wronskian.lean"
+        }
+      ],
+      "index": "unavailable"
+    },
+    "isError": false
+  },
+  "requests": [
+    {
+      "tool": "lean_leanfinder",
+      "arguments": {
+        "query": "coefficient of polynomial Wronskian determinant at sum of natural degrees minus sum of row orders equals product of leading coefficients times determinant of binomial coefficients",
+        "num_results": 8
+      }
+    },
+    {
+      "tool": "lean_loogle",
+      "arguments": {
+        "query": "Polynomial.coeff, Matrix.det",
+        "num_results": 12
+      }
+    },
+    {
+      "tool": "lean_leansearch",
+      "arguments": {
+        "query": "coefficient of polynomial Wronskian determinant at sum of natural degrees minus sum of row orders equals product of leading coefficients times determinant of binomial coefficients",
+        "num_results": 8
+      }
+    },
+    {
+      "tool": "lean_local_search",
+      "arguments": {
+        "query": "coeff_wronskian",
+        "limit": 20
+      }
+    }
+  ]
+}

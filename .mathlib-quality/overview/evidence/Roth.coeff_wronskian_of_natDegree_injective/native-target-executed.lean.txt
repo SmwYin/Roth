@@ -1,0 +1,1743 @@
+import Roth.Taylor
+import Roth.Wronskian
+import Mathlib.Basic.Real.Basic
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Data.ZMod.Defs
+
+/-! Verification replay of a private helper selected by the documented overview prefilter. -/
+namespace PrivateScalarAssessment
+open MvPolynomial
+variable {σ : Type*}
+theorem replay (f d e : σ →₀ ℕ) :
+    hasseCoeff d (f + d) * hasseCoeff e (f + d + e) =
+      hasseCoeff d (d + e) * hasseCoeff (d + e) (f + (d + e)) := by
+  classical
+  simp only [hasseCoeff]
+  have hd : d.support ⊆ d.support ∪ e.support := Finset.subset_union_left
+  rw [Finsupp.prod_of_support_subset _ hd _ fun _ _ ↦ Nat.choose_zero_right _,
+    Finsupp.prod_of_support_subset _ Finset.subset_union_right _
+      fun _ _ ↦ Nat.choose_zero_right _,
+    Finsupp.prod_of_support_subset _ hd _ fun _ _ ↦ Nat.choose_zero_right _,
+    Finsupp.prod_of_support_subset _ Finsupp.support_add _ fun _ _ ↦ Nat.choose_zero_right _,
+    ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]
+  exact Finset.prod_congr rfl fun i _ ↦ by
+    simpa [← add_assoc, mul_comm, ← Nat.choose_symm_add (a := d i) (b := e i)] using
+      (Nat.choose_mul (n := f i + d i + e i) (k := d i + e i) (s := e i)
+        (Nat.le_add_left (e i) (d i))).symm
+#check @replay
+#print axioms replay
+end PrivateScalarAssessment
+
+namespace HasseCompositionAssessment
+open MvPolynomial
+variable {σ R : Type*} [CommSemiring R]
+#check @MvPolynomial.hasseDeriv_hasseDeriv
+#print axioms MvPolynomial.hasseDeriv_hasseDeriv
+theorem replay (d e : σ →₀ ℕ) (P : MvPolynomial σ R) :
+    hasseDeriv d (hasseDeriv e P) = (hasseCoeff d (d + e) : R) • hasseDeriv (d + e) P := by
+  apply MvPolynomial.ext
+  intro f
+  rw [coeff_smul, coeff_hasseDeriv, coeff_hasseDeriv, coeff_hasseDeriv, smul_eq_mul,
+    ← mul_assoc, ← mul_assoc, ← Nat.cast_mul, ← Nat.cast_mul,
+    PrivateScalarAssessment.replay, add_assoc]
+#print axioms replay
+end HasseCompositionAssessment
+
+namespace HasseCompositionExtra
+open MvPolynomial
+variable {σ R : Type*} [CommSemiring R]
+theorem weighted (L : (σ →₀ ℕ) → MvPolynomial σ R →ₗ[R] MvPolynomial σ R)
+    (w : (σ →₀ ℕ) → (σ →₀ ℕ) → R) (c : (σ →₀ ℕ) → (σ →₀ ℕ) → R)
+    (hL : ∀ d f P, (L d P).coeff f = w d (f + d) * P.coeff (f + d))
+    (hc : ∀ f d e, w d (f + d) * w e (f + d + e) =
+      c d e * w (d + e) (f + (d + e))) (d e : σ →₀ ℕ) (P : MvPolynomial σ R) :
+    L d (L e P) = c d e • L (d + e) P := by
+  apply MvPolynomial.ext
+  intro f
+  rw [coeff_smul, hL, hL, hL, smul_eq_mul, ← mul_assoc, ← mul_assoc, hc, add_assoc]
+theorem bundled (d e : σ →₀ ℕ) :
+    (hasseDeriv (R := R) d).comp (hasseDeriv e) =
+      (hasseCoeff d (d + e) : R) • hasseDeriv (d + e) := by
+  apply LinearMap.ext
+  intro P
+  exact HasseCompositionAssessment.replay d e P
+theorem factor_necessary : hasseDeriv (Finsupp.single () 1)
+    (hasseDeriv (Finsupp.single () 1) (monomial (Finsupp.single () 2) (1 : ℕ))) ≠
+      hasseDeriv (Finsupp.single () 2) (monomial (Finsupp.single () 2) (1 : ℕ)) := by
+  intro h
+  have hh := congrArg (fun P : MvPolynomial Unit ℕ ↦ P.coeff 0) h
+  have hz : (Finsupp.single () 2 - Finsupp.single () 1 - Finsupp.single () 1 : Unit →₀ ℕ) = 0 := by
+    apply Finsupp.ext
+    intro i
+    cases i
+    norm_num
+  norm_num [hz, hasseDeriv_monomial, hasseCoeff, Finsupp.single_tsub, coeff_monomial] at hh
+theorem disjoint_caller (d e : σ →₀ ℕ) (P : MvPolynomial σ R)
+    (h : Disjoint d.support e.support) :
+    hasseDeriv d (hasseDeriv e P) = hasseDeriv (d + e) P := by
+  rw [HasseCompositionAssessment.replay,
+    show hasseCoeff d (d + e) = 1 from
+      Finset.prod_eq_one fun i hi ↦ by
+        simp [Finsupp.notMem_support_iff.1 (Finset.disjoint_left.1 h hi)],
+    Nat.cast_one, one_smul]
+theorem eval_nonzero_caller (α : σ → R) (d e : σ →₀ ℕ) (P : MvPolynomial σ R)
+    (hi : eval α (hasseDeriv d (hasseDeriv e P)) ≠ 0) :
+    eval α (hasseDeriv (d + e) P) ≠ 0 := by
+  intro hzero
+  apply hi
+  rw [HasseCompositionAssessment.replay, smul_eq_C_mul, map_mul, eval_C, hzero, mul_zero]
+#print axioms weighted
+#print axioms bundled
+#print axioms factor_necessary
+#print axioms disjoint_caller
+#print axioms eval_nonzero_caller
+end HasseCompositionExtra
+
+namespace HasseDisjointAssessment
+open MvPolynomial
+variable {σ R : Type*} [CommSemiring R]
+#check @MvPolynomial.hasseDeriv_hasseDeriv_of_disjoint
+#print axioms MvPolynomial.hasseDeriv_hasseDeriv_of_disjoint
+-- Replay uses the independently verified composition proof, not the target itself.
+theorem replay {d e : σ →₀ ℕ} (h : Disjoint d.support e.support)
+    (P : MvPolynomial σ R) : hasseDeriv d (hasseDeriv e P) = hasseDeriv (d + e) P := by
+  rw [HasseCompositionAssessment.replay, show hasseCoeff d (d + e) = 1 from
+    Finset.prod_eq_one fun i hi ↦ by
+      simp [Finsupp.notMem_support_iff.1 (Finset.disjoint_left.1 h hi)], Nat.cast_one, one_smul]
+#print axioms replay
+-- A scalar-one hypothesis is sufficient, without a support condition.
+theorem scalar_one {d e : σ →₀ ℕ} (h : (hasseCoeff d (d + e) : R) = 1)
+    (P : MvPolynomial σ R) : hasseDeriv d (hasseDeriv e P) = hasseDeriv (d + e) P := by
+  rw [HasseCompositionAssessment.replay, h, one_smul]
+#print axioms scalar_one
+-- Operator equality is the equivalent bundled shape.
+theorem bundled {d e : σ →₀ ℕ} (h : Disjoint d.support e.support) :
+    (hasseDeriv (R := R) d).comp (hasseDeriv e) = hasseDeriv (d + e) := by
+  apply LinearMap.ext
+  intro P
+  exact replay h P
+#print axioms bundled
+-- Scoped first rewrite from the sole external caller, with arbitrary Option-indexed input.
+theorem separated_caller {τ : Type*} (d : τ →₀ ℕ) (ν : ℕ)
+    (P : MvPolynomial (Option τ) R) :
+    hasseDeriv (d.mapDomain some + Finsupp.single none ν) P =
+      hasseDeriv (d.mapDomain some) (hasseDeriv (Finsupp.single none ν) P) := by
+  classical
+  have hnone : ∀ {o : Option τ}, o ∈ (d.mapDomain some).support → o ≠ none := by simp
+  have hdisj : Disjoint (d.mapDomain some).support (Finsupp.single none ν).support :=
+    Finset.disjoint_left.2 fun _ ho ho' ↦
+      hnone ho (Finset.mem_singleton.1 (Finsupp.support_single_subset ho'))
+  exact (replay hdisj P).symm
+#print axioms separated_caller
+end HasseDisjointAssessment
+
+namespace HasseDisjointExtra
+open MvPolynomial
+variable {σ R : Type*} [CommSemiring R]
+theorem nat_factor_one {d e : σ →₀ ℕ} (h : hasseCoeff d (d + e) = 1)
+    (P : MvPolynomial σ R) : hasseDeriv d (hasseDeriv e P) = hasseDeriv (d + e) P := by
+  rw [HasseCompositionAssessment.replay, h, Nat.cast_one, one_smul]
+theorem swapped {d e : σ →₀ ℕ} (h : Disjoint d.support e.support)
+    (P : MvPolynomial σ R) : hasseDeriv e (hasseDeriv d P) = hasseDeriv (d + e) P := by
+  simpa only [add_comm] using HasseDisjointAssessment.replay h.symm P
+-- Dropping support disjointness outright is false.
+theorem overlap_counterexample :
+    hasseDeriv (Finsupp.single () 1)
+      (hasseDeriv (Finsupp.single () 1) (monomial (Finsupp.single () 2) (1 : ℕ))) ≠
+    hasseDeriv (Finsupp.single () 1 + Finsupp.single () 1)
+      (monomial (Finsupp.single () 2) (1 : ℕ)) := by
+  simpa only [← Finsupp.single_add] using HasseCompositionExtra.factor_necessary
+-- In positive characteristic the cast-one criterion permits overlapping supports.
+theorem overlap_support :
+    ¬Disjoint (Finsupp.single () 1 : Unit →₀ ℕ).support
+      (Finsupp.single () 2 : Unit →₀ ℕ).support := by simp
+theorem overlap_cast_one :
+    (hasseCoeff (Finsupp.single () 1)
+      (Finsupp.single () 1 + Finsupp.single () 2) : ZMod 2) = 1 := by
+  norm_num [hasseCoeff, ← Finsupp.single_add]
+  decide
+theorem overlap_char_two (P : MvPolynomial Unit (ZMod 2)) :
+    hasseDeriv (Finsupp.single () 1) (hasseDeriv (Finsupp.single () 2) P) =
+      hasseDeriv (Finsupp.single () 1 + Finsupp.single () 2) P :=
+  HasseDisjointAssessment.scalar_one overlap_cast_one P
+#print axioms nat_factor_one
+#print axioms swapped
+#print axioms overlap_counterexample
+#print axioms overlap_support
+#print axioms overlap_cast_one
+#print axioms overlap_char_two
+end HasseDisjointExtra
+
+namespace HasseDisjointOrderShape
+open MvPolynomial
+variable {σ R : Type*} [CommSemiring R]
+#check @Finsupp.disjoint_iff
+theorem lattice_shape {d e : σ →₀ ℕ} (h : Disjoint d e)
+    (P : MvPolynomial σ R) : hasseDeriv d (hasseDeriv e P) = hasseDeriv (d + e) P :=
+  HasseDisjointAssessment.replay (Finsupp.disjoint_iff.mp h) P
+#print axioms lattice_shape
+end HasseDisjointOrderShape
+
+namespace PrivateSuccessorAssessment
+open MvPolynomial
+variable {σ : Type*}
+theorem replay (j : σ) (d e : σ →₀ ℕ) :
+    hasseCoeff d (e + Finsupp.single j 1 + d) * (e j + 1) =
+      (d j + 1) * hasseCoeff (d + Finsupp.single j 1) (e + Finsupp.single j 1 + d) := by
+  simpa [hasseCoeff, add_comm, add_left_comm, add_assoc, mul_comm] using
+    PrivateScalarAssessment.replay e (Finsupp.single j 1) d
+#check @replay
+#print axioms replay
+end PrivateSuccessorAssessment
+
+namespace PDerivHasseAssessment
+open MvPolynomial
+variable {σ R : Type*} [CommSemiring R]
+#check @MvPolynomial.pderiv_hasseDeriv
+#print axioms MvPolynomial.pderiv_hasseDeriv
+theorem replay (j : σ) (d : σ →₀ ℕ) (P : MvPolynomial σ R) :
+    pderiv j (hasseDeriv d P) = ((d j + 1 : ℕ) : R) • hasseDeriv (d + Finsupp.single j 1) P := by
+  apply MvPolynomial.ext
+  intro e
+  rw [coeff_pderiv, coeff_smul, coeff_hasseDeriv, coeff_hasseDeriv, smul_eq_mul,
+    ← add_assoc e d, add_right_comm e d, mul_right_comm, ← Nat.cast_add_one, ← Nat.cast_mul,
+    PrivateSuccessorAssessment.replay, Nat.cast_mul, mul_assoc]
+#print axioms replay
+end PDerivHasseAssessment
+
+namespace PDerivHasseExtra
+open MvPolynomial
+variable {σ R : Type*} [CommSemiring R]
+theorem bundled (j : σ) (d : σ →₀ ℕ) :
+    (pderiv (R := R) j).toLinearMap.comp (hasseDeriv d) =
+      ((d j + 1 : ℕ) : R) • hasseDeriv (d + Finsupp.single j 1) := by
+  apply LinearMap.ext
+  intro P
+  exact PDerivHasseAssessment.replay j d P
+theorem order_zero (j : σ) (P : MvPolynomial σ R) :
+    pderiv j P = hasseDeriv (Finsupp.single j 1) P := by
+  simpa using PDerivHasseAssessment.replay j 0 P
+theorem factorial_caller (j : σ) (n : ℕ) (P : MvPolynomial σ R) :
+    (n.factorial : R) • hasseDeriv (Finsupp.single j n) P =
+      (⇑(pderiv (R := R) j))^[n] P := by
+  induction n with
+  | zero => simp
+  | succ n ih =>
+    rw [Function.iterate_succ_apply', ← ih, Derivation.map_smul,
+      PDerivHasseAssessment.replay, smul_smul, Finsupp.single_eq_same,
+      ← Finsupp.single_add, Nat.factorial_succ, Nat.cast_mul, mul_comm]
+theorem aeval_caller (γ : σ → Polynomial R) (j : σ) (d : σ →₀ ℕ)
+    (P : MvPolynomial σ R) :
+    aeval γ (pderiv j (hasseDeriv d P)) =
+      Polynomial.C ((d j + 1 : ℕ) : R) * aeval γ (hasseDeriv (d + Finsupp.single j 1) P) := by
+  rw [PDerivHasseAssessment.replay, map_smul, Polynomial.smul_eq_C_mul]
+theorem factor_necessary :
+    pderiv () (hasseDeriv (Finsupp.single () 1)
+      (monomial (Finsupp.single () 2) (1 : ℕ))) ≠
+      hasseDeriv (Finsupp.single () 1 + Finsupp.single () 1)
+        (monomial (Finsupp.single () 2) (1 : ℕ)) := by
+  rw [order_zero]
+  exact HasseDisjointExtra.overlap_counterexample
+#print axioms bundled
+#print axioms order_zero
+#print axioms factorial_caller
+#print axioms aeval_caller
+#print axioms factor_necessary
+end PDerivHasseExtra
+
+namespace PDerivWeightedAssessment
+open MvPolynomial
+variable {σ R : Type*} [CommSemiring R]
+theorem weighted (L : (σ →₀ ℕ) → MvPolynomial σ R →ₗ[R] MvPolynomial σ R)
+    (w : (σ →₀ ℕ) → (σ →₀ ℕ) → R)
+    (hL : ∀ d e P, (L d P).coeff e = w d (e + d) * P.coeff (e + d))
+    (j : σ) (d : σ →₀ ℕ)
+    (hs : ∀ e, w d (e + Finsupp.single j 1 + d) * ((e j : R) + 1) =
+      ((d j : R) + 1) * w (d + Finsupp.single j 1) (e + Finsupp.single j 1 + d))
+    (P : MvPolynomial σ R) :
+    pderiv j (L d P) = ((d j : R) + 1) • L (d + Finsupp.single j 1) P := by
+  apply MvPolynomial.ext
+  intro e
+  rw [coeff_pderiv, coeff_smul, hL, hL, smul_eq_mul,
+    ← add_assoc e d, add_right_comm e d, mul_right_comm, ← mul_assoc, hs, mul_assoc]
+#print axioms weighted
+end PDerivWeightedAssessment
+
+namespace HasseDegreeAssessment
+open MvPolynomial
+variable {σ R : Type*} [CommSemiring R]
+#check @MvPolynomial.degreeOf_hasseDeriv_le
+#print axioms MvPolynomial.degreeOf_hasseDeriv_le
+theorem replay (j : σ) (d : σ →₀ ℕ) (P : MvPolynomial σ R) :
+    degreeOf j (hasseDeriv d P) ≤ degreeOf j P := by
+  refine degreeOf_le_iff.2 fun m hm ↦ ?_
+  rw [mem_support_iff, coeff_hasseDeriv] at hm
+  exact (monomial_le_degreeOf j (mem_support_iff.2 (right_ne_zero_of_mul hm))).trans'
+    (by simp)
+theorem strengthened (j : σ) (d : σ →₀ ℕ) (P : MvPolynomial σ R) :
+    degreeOf j (hasseDeriv d P) ≤ degreeOf j P - d j := by
+  refine degreeOf_le_iff.2 fun m hm ↦ ?_
+  rw [mem_support_iff, coeff_hasseDeriv] at hm
+  have h := monomial_le_degreeOf j (mem_support_iff.2 (right_ne_zero_of_mul hm))
+  exact Nat.le_sub_of_add_le (by simpa using h)
+#print axioms replay
+#print axioms strengthened
+end HasseDegreeAssessment
+
+namespace HasseDegreeExtra
+open MvPolynomial
+variable {σ R : Type*} [CommSemiring R]
+theorem support_shift (j : σ) (d : σ →₀ ℕ) (P Q : MvPolynomial σ R)
+    (hshift : ∀ m, Q.coeff m ≠ 0 → P.coeff (m + d) ≠ 0) :
+    degreeOf j Q ≤ degreeOf j P - d j := by
+  refine degreeOf_le_iff.2 fun m hm ↦ ?_
+  have h := monomial_le_degreeOf j (mem_support_iff.2 (hshift m (mem_support_iff.1 hm)))
+  exact Nat.le_sub_of_add_le (by simpa using h)
+theorem caller_bound (j : σ) (d : σ →₀ ℕ) (P : MvPolynomial σ R) (r : ℕ)
+    (hP : degreeOf j P ≤ r) : degreeOf j (hasseDeriv d P) ≤ r :=
+  (HasseDegreeAssessment.strengthened j d P).trans ((Nat.sub_le _ _).trans hP)
+theorem additive_without_nonzero_false :
+    ¬(degreeOf () (hasseDeriv (Finsupp.single () 1) (0 : MvPolynomial Unit ℕ)) + 1 ≤
+      degreeOf () (0 : MvPolynomial Unit ℕ)) := by simp
+#print axioms support_shift
+#print axioms caller_bound
+#print axioms additive_without_nonzero_false
+end HasseDegreeExtra
+
+namespace HasseDegreeGenerality
+open MvPolynomial
+variable {σ R S : Type*} [CommSemiring R] [CommSemiring S]
+theorem support_shift_cross (j : σ) (d : σ →₀ ℕ)
+    (P : MvPolynomial σ R) (Q : MvPolynomial σ S)
+    (hshift : ∀ m, Q.coeff m ≠ 0 → P.coeff (m + d) ≠ 0) :
+    degreeOf j Q ≤ degreeOf j P - d j := by
+  refine degreeOf_le_iff.2 fun m hm ↦ ?_
+  have h := monomial_le_degreeOf j (mem_support_iff.2 (hshift m (mem_support_iff.1 hm)))
+  exact Nat.le_sub_of_add_le (by simpa using h)
+theorem map_consumer (j : σ) (f : R →+* S) (P : MvPolynomial σ R) :
+    degreeOf j (MvPolynomial.map f P) ≤ degreeOf j P := by
+  apply le_trans (support_shift_cross j 0 P (MvPolynomial.map f P) ?_)
+  · simp
+  · intro m hm
+    simp only [coeff_map] at hm
+    simpa using (fun hzero ↦ hm (by rw [hzero, map_zero]) : P.coeff m ≠ 0)
+theorem truncated_consumer (j : σ) (P Q : MvPolynomial σ R)
+    (h : Q.support ⊆ P.support) : degreeOf j Q ≤ degreeOf j P := by
+  apply le_trans (support_shift_cross j 0 P Q ?_)
+  · simp
+  · intro m hm
+    simpa using (mem_support_iff.1 (h (mem_support_iff.2 hm)))
+theorem strict_improvement :
+    degreeOf () (hasseDeriv (Finsupp.single () 1)
+      (monomial (Finsupp.single () 3) (1 : ℕ))) = 2 ∧
+      degreeOf () (monomial (Finsupp.single () 3) (1 : ℕ)) = 3 := by
+  have hs : (Finsupp.single () 3 - Finsupp.single () 1 : Unit →₀ ℕ) = Finsupp.single () 2 := by
+    apply Finsupp.ext
+    intro i
+    cases i
+    norm_num
+  norm_num [hasseDeriv_monomial, hasseCoeff, hs, degreeOf_monomial_eq]
+#print axioms support_shift_cross
+#print axioms map_consumer
+#print axioms truncated_consumer
+#print axioms strict_improvement
+end HasseDegreeGenerality
+
+namespace HasseZeroDegreeAssessment
+open MvPolynomial
+variable {σ R : Type*} [CommSemiring R]
+#check @MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt
+#print axioms MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt
+theorem replay {j : σ} {d : σ →₀ ℕ} {P : MvPolynomial σ R}
+    (h : degreeOf j P < d j) : hasseDeriv d P = 0 := by
+  apply MvPolynomial.ext
+  intro e
+  simp [coeff_hasseDeriv, notMem_support_iff.1
+    (notMem_support_of_degreeOf_lt j (s := e + d) (h.trans_le (by simp)))]
+theorem support_criterion {d : σ →₀ ℕ} {P : MvPolynomial σ R}
+    (h : ∀ k ∈ P.support, ¬d ≤ k) : hasseDeriv d P = 0 := by
+  apply MvPolynomial.ext
+  intro e
+  rw [coeff_hasseDeriv]
+  change (hasseCoeff d (e + d) : R) * P.coeff (e + d) = 0
+  by_cases hc : P.coeff (e + d) = 0
+  · simp [hc]
+  · exact (h _ (mem_support_iff.2 hc) (by simp)).elim
+theorem coefficient_iff (d : σ →₀ ℕ) (P : MvPolynomial σ R) :
+    hasseDeriv d P = 0 ↔
+      ∀ e, (hasseCoeff d (e + d) : R) * P.coeff (e + d) = 0 := by
+  simp only [MvPolynomial.ext_iff, coeff_hasseDeriv,
+    AddMonoidAlgebra.coeff_zero, Finsupp.zero_apply]
+theorem existential {d : σ →₀ ℕ} {P : MvPolynomial σ R}
+    (h : ∃ j, degreeOf j P < d j) : hasseDeriv d P = 0 := by
+  obtain ⟨j, hj⟩ := h
+  exact replay hj
+theorem strict_needed :
+    degreeOf () (monomial (Finsupp.single () 1) (1 : ℕ)) = 1 ∧
+      hasseDeriv (Finsupp.single () 1) (monomial (Finsupp.single () 1) (1 : ℕ)) ≠ 0 := by
+  norm_num [degreeOf_monomial_eq, hasseDeriv_monomial, hasseCoeff]
+theorem converse_false :
+    hasseDeriv (Finsupp.single () 1) (monomial (Finsupp.single () 2) (1 : ZMod 2)) = 0 ∧
+      degreeOf () (monomial (Finsupp.single () 2) (1 : ZMod 2)) = 2 := by
+  have hb : (hasseCoeff (Finsupp.single () 1) (Finsupp.single () 2) : ZMod 2) = 0 := by
+    norm_num [hasseCoeff]
+    decide
+  constructor
+  · rw [hasseDeriv_monomial, hb]
+    simp
+  · rw [degreeOf_monomial_eq _ _ (by decide : (1 : ZMod 2) ≠ 0)]
+    simp
+#print axioms replay
+#print axioms support_criterion
+#print axioms coefficient_iff
+#print axioms existential
+#print axioms strict_needed
+#print axioms converse_false
+end HasseZeroDegreeAssessment
+
+namespace HasseZeroDegreeCallers
+open MvPolynomial
+variable {σ R : Type*} [CommSemiring R]
+theorem taylor_degree_replay (α : σ → R) (j : σ) (P : MvPolynomial σ R) :
+    degreeOf j (taylor α P) ≤ degreeOf j P := by
+  refine degreeOf_le_iff.2 fun e he ↦ not_lt.1 fun h ↦ ?_
+  simp [mem_support_iff, coeff_taylor, HasseZeroDegreeAssessment.replay h] at he
+theorem outside_box (α : σ → R) (r : σ → ℕ) (P : MvPolynomial σ R)
+    (hP : ∀ j, degreeOf j P ≤ r j) (j : σ) (d : σ →₀ ℕ) (hj : r j < d j) :
+    eval α (hasseDeriv d P) = 0 := by
+  rw [HasseZeroDegreeAssessment.replay ((hP j).trans_lt hj), map_zero]
+theorem eval_ne_zero_bound (α : σ → R) (r : σ → ℕ) (P : MvPolynomial σ R)
+    (hP : ∀ j, degreeOf j P ≤ r j) (j : σ) (d : σ →₀ ℕ)
+    (he : eval α (hasseDeriv d P) ≠ 0) : d j ≤ r j := by
+  by_contra! hj
+  exact he (outside_box α r P hP j d hj)
+theorem weighted_zero (P Q : MvPolynomial σ R) (d : σ →₀ ℕ)
+    (w : (σ →₀ ℕ) → R) (hcoeff : ∀ e, Q.coeff e = w e * P.coeff (e + d))
+    (havoid : ∀ k ∈ P.support, ¬d ≤ k) : Q = 0 := by
+  apply MvPolynomial.ext
+  intro e
+  rw [hcoeff]
+  change w e * P.coeff (e + d) = 0
+  by_cases hzero : P.coeff (e + d) = 0
+  · simp [hzero]
+  · exact (havoid _ (mem_support_iff.2 hzero) (by simp)).elim
+#print axioms taylor_degree_replay
+#print axioms outside_box
+#print axioms eval_ne_zero_bound
+#print axioms weighted_zero
+end HasseZeroDegreeCallers
+
+namespace HasseZeroShiftedInput
+open MvPolynomial
+variable {σ R : Type*} [CommSemiring R]
+theorem shifted_input_zero (d : σ →₀ ℕ) (P : MvPolynomial σ R)
+    (h : ∀ e, P.coeff (e + d) = 0) : hasseDeriv d P = 0 := by
+  apply MvPolynomial.ext
+  intro e
+  simp [coeff_hasseDeriv, h]
+theorem weighted (P Q : MvPolynomial σ R) (d : σ →₀ ℕ)
+    (w : (σ →₀ ℕ) → R) (hcoeff : ∀ e, Q.coeff e = w e * P.coeff (e + d))
+    (h : ∀ e, P.coeff (e + d) = 0) : Q = 0 := by
+  apply MvPolynomial.ext
+  intro e
+  rw [hcoeff, h, mul_zero]
+  rfl
+#print axioms shifted_input_zero
+#print axioms weighted
+end HasseZeroShiftedInput
+
+namespace PrivateMonomialFactorAssessment
+open MvPolynomial
+variable {σ R : Type*} [CommSemiring R]
+theorem replay {d a : σ →₀ ℕ} (ha : ∀ j ∈ d.support, a j = 0) (c : R)
+    (g : MvPolynomial σ R) : hasseDeriv d (monomial a c * g) = monomial a c * hasseDeriv d g := by
+  classical
+  induction g using MvPolynomial.induction_on' with
+  | monomial b c' =>
+    have hs : a + b - d = a + (b - d) := by
+      ext j
+      by_cases hj : j ∈ d.support <;> simp_all
+    rw [monomial_mul_monomial, hasseDeriv_monomial, hasseDeriv_monomial,
+      show hasseCoeff d (a + b) = hasseCoeff d b from
+        Finset.prod_congr rfl fun j hj ↦ by simp [ha j hj]]
+    simp [monomial_mul_monomial, hs, mul_left_comm]
+  | add p q hp hq => simp [mul_add, hp, hq]
+#check @replay
+#print axioms replay
+end PrivateMonomialFactorAssessment
+
+namespace HasseSeparatedFactorAssessment
+open MvPolynomial
+variable {σ R : Type*} [CommSemiring R]
+#check @MvPolynomial.hasseDeriv_mul_of_degreeOf_eq_zero
+#print axioms MvPolynomial.hasseDeriv_mul_of_degreeOf_eq_zero
+theorem replay {d : σ →₀ ℕ} {f g : MvPolynomial σ R}
+    (hf : ∀ j ∈ d.support, degreeOf j f = 0) :
+    hasseDeriv d (f * g) = f * hasseDeriv d g := by
+  classical
+  rw [f.as_sum, Finset.sum_mul, Finset.sum_mul, map_sum]
+  exact Finset.sum_congr rfl fun a haf ↦ PrivateMonomialFactorAssessment.replay
+    (fun j hj ↦ Nat.eq_zero_of_le_zero (hf j hj ▸ monomial_le_degreeOf j haf)) _ g
+#print axioms replay
+end HasseSeparatedFactorAssessment
+
+namespace HasseSeparatedFactorExtra
+open MvPolynomial
+variable {σ R : Type*} [CommSemiring R]
+#check @MvPolynomial.mem_vars_iff_degreeOf_ne_zero
+theorem vars_iff (d : σ →₀ ℕ) (f : MvPolynomial σ R) :
+    (∀ j ∈ d.support, degreeOf j f = 0) ↔ Disjoint d.support f.vars := by
+  classical
+  simp [Finset.disjoint_left, mem_vars_iff_degreeOf_ne_zero]
+theorem right_factor {d : σ →₀ ℕ} {f g : MvPolynomial σ R}
+    (hf : ∀ j ∈ d.support, degreeOf j f = 0) :
+    hasseDeriv d (g * f) = hasseDeriv d g * f := by
+  simpa only [mul_comm] using HasseSeparatedFactorAssessment.replay (g := g) hf
+theorem ordinary_derivative_guard :
+    pderiv () (monomial (Finsupp.single () 2) (1 : ZMod 2)) = 0 ∧
+      hasseDeriv (Finsupp.single () 2)
+        (monomial (Finsupp.single () 2) (1 : ZMod 2) * 1) ≠
+      monomial (Finsupp.single () 2) (1 : ZMod 2) * hasseDeriv (Finsupp.single () 2) 1 := by
+  constructor
+  · rw [PDerivHasseExtra.order_zero]
+    exact HasseZeroDegreeAssessment.converse_false.1
+  · rw [mul_one, HasseZeroDegreeAssessment.replay
+      (P := (1 : MvPolynomial Unit (ZMod 2))) (j := ()) (by norm_num)]
+    intro h
+    have hh := congrArg (fun Q : MvPolynomial Unit (ZMod 2) ↦ Q.coeff 0) h
+    norm_num [coeff_hasseDeriv, hasseCoeff] at hh
+#print axioms vars_iff
+#print axioms right_factor
+#print axioms ordinary_derivative_guard
+end HasseSeparatedFactorExtra
+
+namespace HasseSeparatedGeneric
+open MvPolynomial
+variable {σ R : Type*} [CommSemiring R]
+theorem sum_extension (T : MvPolynomial σ R →ₗ[R] MvPolynomial σ R)
+    {f g : MvPolynomial σ R}
+    (h : ∀ a ∈ f.support, T (monomial a (f.coeff a) * g) = monomial a (f.coeff a) * T g) :
+    T (f * g) = f * T g := by
+  rw [f.as_sum, Finset.sum_mul, Finset.sum_mul, map_sum]
+  exact Finset.sum_congr rfl h
+#check @Polynomial.hasseDeriv_mul
+#check @MvPolynomial.pderiv_mul
+#check @LinearMap.map_smul
+#check @MvPolynomial.linearMap_ext
+#print axioms sum_extension
+end HasseSeparatedGeneric
+
+namespace HasseSeparatedCallers
+open MvPolynomial
+variable {τ R : Type*} [CommSemiring R]
+theorem none_block (ν : ℕ) (U : MvPolynomial τ R) (G : MvPolynomial (Option τ) R) :
+    hasseDeriv (Finsupp.single none ν) (rename some U * G) =
+      rename some U * hasseDeriv (Finsupp.single none ν) G := by
+  classical
+  apply HasseSeparatedFactorAssessment.replay
+  intro j hj
+  rw [Finset.mem_singleton.1 (Finsupp.support_single_subset hj)]
+  simp [degreeOf, degrees_rename_of_injective (Option.some_injective τ)]
+theorem some_block (d : τ →₀ ℕ) (Q : MvPolynomial Unit R) (G : MvPolynomial (Option τ) R) :
+    hasseDeriv (d.mapDomain some) (rename (fun _ : Unit ↦ none) Q * G) =
+      rename (fun _ : Unit ↦ none) Q * hasseDeriv (d.mapDomain some) G := by
+  classical
+  have hnone : ∀ {o : Option τ}, o ∈ (d.mapDomain some).support → o ≠ none := by simp
+  apply HasseSeparatedFactorAssessment.replay
+  intro j hj
+  simp [degreeOf, degrees_rename_of_injective (Function.injective_of_subsingleton _),
+    Multiset.mem_replicate, hnone hj]
+#print axioms none_block
+#print axioms some_block
+end HasseSeparatedCallers
+
+namespace HasseSeparatedTopComponentGuard
+open MvPolynomial
+theorem insufficient :
+    hasseDeriv (Finsupp.single () 2) (monomial (Finsupp.single () 1) (1 : ℕ)) = 0 ∧
+      hasseDeriv (Finsupp.single () 2)
+        (monomial (Finsupp.single () 1) (1 : ℕ) * monomial (Finsupp.single () 1) 1) ≠
+      monomial (Finsupp.single () 1) 1 *
+        hasseDeriv (Finsupp.single () 2) (monomial (Finsupp.single () 1) (1 : ℕ)) := by
+  norm_num [monomial_mul_monomial, hasseDeriv_monomial, hasseCoeff, ← Finsupp.single_add]
+#print axioms insufficient
+end HasseSeparatedTopComponentGuard
+
+namespace HasseSingleAevalAssessment
+open MvPolynomial
+variable {σ R : Type*} [CommSemiring R]
+#check @MvPolynomial.hasseDeriv_single_aeval_X
+#print axioms MvPolynomial.hasseDeriv_single_aeval_X
+theorem replay (j : σ) (n : ℕ) (f : Polynomial R) :
+    hasseDeriv (Finsupp.single j n) (Polynomial.aeval (X j : MvPolynomial σ R) f) =
+      Polynomial.aeval (X j : MvPolynomial σ R) (Polynomial.hasseDeriv n f) := by
+  induction f using Polynomial.induction_on' with
+  | add p q hp hq => simp [hp, hq]
+  | monomial m a =>
+    simp [-map_natCast, X_pow_eq_monomial, C_mul_monomial, hasseCoeff, Finsupp.single_tsub,
+      mul_assoc]
+theorem linear_square (j : σ) (n : ℕ) :
+    (hasseDeriv (Finsupp.single j n)).comp
+      (Polynomial.aeval (X j : MvPolynomial σ R)).toLinearMap =
+    (Polynomial.aeval (X j : MvPolynomial σ R)).toLinearMap.comp (Polynomial.hasseDeriv n) := by
+  apply LinearMap.ext
+  intro f
+  exact replay j n f
+theorem option_none_caller {τ : Type*} (n : ℕ) (f : Polynomial R) :
+    hasseDeriv (Finsupp.single none n)
+      (Polynomial.aeval (X none : MvPolynomial (Option τ) R) f) =
+    Polynomial.aeval (X none : MvPolynomial (Option τ) R) (Polynomial.hasseDeriv n f) :=
+  replay none n f
+#print axioms replay
+#print axioms linear_square
+#print axioms option_none_caller
+end HasseSingleAevalAssessment
+
+namespace HasseSingleFalseGenerality
+open MvPolynomial
+theorem arbitrary_image_false :
+    hasseDeriv (Finsupp.single () 1)
+      (Polynomial.aeval (0 : MvPolynomial Unit ℕ) (Polynomial.X : Polynomial ℕ)) ≠
+    Polynomial.aeval (0 : MvPolynomial Unit ℕ)
+      (Polynomial.hasseDeriv 1 (Polynomial.X : Polynomial ℕ)) := by
+  simp
+#print axioms arbitrary_image_false
+end HasseSingleFalseGenerality
+
+namespace HasseSinglePinnedChecks
+#check @Polynomial.lhom_ext'
+#check @Polynomial.hasseDeriv_monomial
+#check @Polynomial.aeval_monomial
+#check @Polynomial.toMvPolynomial
+theorem coordinate_embedding {σ R : Type*} [CommSemiring R] (j : σ) :
+    Polynomial.toMvPolynomial (R := R) j =
+      Polynomial.aeval (MvPolynomial.X j : MvPolynomial σ R) := rfl
+#print axioms coordinate_embedding
+end HasseSinglePinnedChecks
+
+namespace HasseUniqueAssessment
+open MvPolynomial
+variable {σ R : Type*} [CommSemiring R] [Unique σ]
+#check @MvPolynomial.uniqueAlgEquiv_hasseDeriv
+#print axioms MvPolynomial.uniqueAlgEquiv_hasseDeriv
+theorem replay (n : ℕ) (P : MvPolynomial σ R) :
+    uniqueAlgEquiv R σ (hasseDeriv (R := R) (Finsupp.single (default : σ) n) P) =
+      Polynomial.hasseDeriv n (uniqueAlgEquiv R σ P) := by
+  apply Polynomial.ext
+  intro m
+  rw [coeff_uniqueAlgEquiv, coeff_hasseDeriv, Polynomial.hasseDeriv_coeff, coeff_uniqueAlgEquiv]
+  simp [hasseCoeff, Finsupp.single_add]
+theorem linear_square (n : ℕ) :
+    (uniqueAlgEquiv R σ).toLinearMap.comp (hasseDeriv (Finsupp.single (default : σ) n)) =
+      (Polynomial.hasseDeriv n).comp (uniqueAlgEquiv R σ).toLinearMap := by
+  apply LinearMap.ext
+  intro P
+  exact replay n P
+theorem inverse (n : ℕ) (f : Polynomial R) :
+    hasseDeriv (Finsupp.single (default : σ) n) ((uniqueAlgEquiv R σ).symm f) =
+      (uniqueAlgEquiv R σ).symm (Polynomial.hasseDeriv n f) := by
+  apply (uniqueAlgEquiv R σ).injective
+  simpa only [AlgEquiv.apply_symm_apply] using replay n ((uniqueAlgEquiv R σ).symm f)
+#print axioms replay
+#print axioms linear_square
+#print axioms inverse
+end HasseUniqueAssessment
+
+namespace HasseUniqueExtra
+open MvPolynomial
+variable {σ R : Type*} [CommSemiring R] [Unique σ]
+#check @MvPolynomial.coeff_uniqueAlgEquiv
+#check @MvPolynomial.uniqueAlgEquiv_symm_apply
+#check @Polynomial.lhom_ext'
+theorem from_coordinate_bridge (n : ℕ) (P : MvPolynomial σ R) :
+    uniqueAlgEquiv R σ (hasseDeriv (Finsupp.single (default : σ) n) P) =
+      Polynomial.hasseDeriv n (uniqueAlgEquiv R σ P) := by
+  have hinv (f : Polynomial R) :
+      hasseDeriv (Finsupp.single (default : σ) n) ((uniqueAlgEquiv R σ).symm f) =
+        (uniqueAlgEquiv R σ).symm (Polynomial.hasseDeriv n f) := by
+    change hasseDeriv (Finsupp.single (default : σ) n)
+        (Polynomial.aeval (X default : MvPolynomial σ R) f) =
+      Polynomial.aeval (X default : MvPolynomial σ R) (Polynomial.hasseDeriv n f)
+    exact HasseSingleAevalAssessment.replay default n f
+  have h := congrArg (fun Q ↦ uniqueAlgEquiv R σ Q) (hinv (uniqueAlgEquiv R σ P))
+  simpa only [AlgEquiv.symm_apply_apply, AlgEquiv.apply_symm_apply] using h
+theorem index_key_caller (α : σ → R) (d : σ →₀ ℕ) (P : MvPolynomial σ R) :
+    eval α (hasseDeriv d P) =
+      (Polynomial.taylor (α default) (uniqueAlgEquiv R σ P)).coeff (d default) := by
+  rw [Polynomial.taylor_coeff, ← HasseUniqueAssessment.replay, ← Finsupp.unique_single d]
+  exact (eval₂_uniqueAlgEquiv (f := hasseDeriv d P) (φ := RingHom.id R) (a := α)).symm
+#print axioms from_coordinate_bridge
+#print axioms index_key_caller
+end HasseUniqueExtra
+
+namespace HasseUniqueChosen
+open MvPolynomial
+variable {σ R : Type*} [CommSemiring R] [Subsingleton σ]
+theorem chosen (j : σ) (n : ℕ) (P : MvPolynomial σ R) :
+    let : Unique σ := { default := j, uniq := fun x ↦ Subsingleton.elim x j }
+    uniqueAlgEquiv R σ (hasseDeriv (Finsupp.single j n) P) =
+      Polynomial.hasseDeriv n (uniqueAlgEquiv R σ P) := by
+  let : Unique σ := { default := j, uniq := fun x ↦ Subsingleton.elim x j }
+  exact HasseUniqueAssessment.replay n P
+#print axioms chosen
+end HasseUniqueChosen
+
+namespace HasseUniquePinnedAndGuard
+#check @LinearEquiv.conj_apply_apply
+#check_failure MvPolynomial.uniqueAlgEquiv_symm_eq
+section
+variable {σ S : Type*} [Semiring S]
+#check_failure MvPolynomial σ S
+end
+open MvPolynomial
+noncomputable def scale : Polynomial ℚ ≃ₐ[ℚ] Polynomial ℚ :=
+  Polynomial.algEquivOfCompEqX (Polynomial.C 2 * Polynomial.X)
+    (Polynomial.C (1 / 2) * Polynomial.X)
+    (by norm_num [← Polynomial.C_mul, ← mul_assoc])
+    (by norm_num [← Polynomial.C_mul, ← mul_assoc])
+noncomputable def badEquiv : MvPolynomial Unit ℚ ≃ₐ[ℚ] Polynomial ℚ :=
+  (uniqueAlgEquiv ℚ Unit).trans scale
+theorem arbitrary_equiv_false :
+    badEquiv (hasseDeriv (Finsupp.single () 1) (X () : MvPolynomial Unit ℚ)) ≠
+      Polynomial.hasseDeriv 1 (badEquiv (X () : MvPolynomial Unit ℚ)) := by
+  norm_num [badEquiv, scale, Polynomial.algEquivOfCompEqX_apply,
+    Polynomial.hasseDeriv_one', MvPolynomial.X, hasseCoeff]
+  intro h
+  have hh := congrArg (fun f : Polynomial ℚ ↦ f.coeff 0) h
+  norm_num at hh
+#print axioms arbitrary_equiv_false
+end HasseUniquePinnedAndGuard
+
+namespace HasseCoefficientBoundAssessment
+open MvPolynomial
+variable {σ : Type*}
+#check @MvPolynomial.hasseCoeff_le_two_pow
+#print axioms MvPolynomial.hasseCoeff_le_two_pow
+theorem replay [Fintype σ] {d k : σ →₀ ℕ} {r : σ → ℕ} (hk : ∀ j, k j ≤ r j) :
+    hasseCoeff d k ≤ 2 ^ (∑ j, r j) := by
+  rw [hasseCoeff_eq_prod, ← Finset.prod_pow_eq_pow_sum]
+  exact Finset.prod_le_prod fun j _ ↦
+    (Nat.choose_le_two_pow _ _).trans (Nat.pow_le_pow_right two_pos (hk j))
+theorem support_bound {d k : σ →₀ ℕ} {r : σ → ℕ}
+    (hk : ∀ j ∈ d.support, k j ≤ r j) :
+    hasseCoeff d k ≤ 2 ^ (∑ j ∈ d.support, r j) := by
+  classical
+  change (∏ j ∈ d.support, (k j).choose (d j)) ≤ _
+  rw [← Finset.prod_pow_eq_pow_sum]
+  exact Finset.prod_le_prod fun j hj ↦
+    (Nat.choose_le_two_pow _ _).trans (Nat.pow_le_pow_right two_pos (hk j hj))
+theorem weaker_global [Fintype σ] {d k : σ →₀ ℕ} {r : σ → ℕ}
+    (hk : ∀ j ∈ d.support, k j ≤ r j) :
+    hasseCoeff d k ≤ 2 ^ (∑ j, r j) := by
+  refine support_bound hk |>.trans (Nat.pow_le_pow_right two_pos ?_)
+  exact Finset.sum_le_sum_of_subset (Finset.subset_univ _)
+#print axioms replay
+#print axioms support_bound
+#print axioms weaker_global
+end HasseCoefficientBoundAssessment
+
+namespace HasseCoefficientBoundCaller
+open MvPolynomial
+variable {σ : Type*} [Fintype σ]
+theorem cast_caller (d k : σ →₀ ℕ) (P : MvPolynomial σ ℤ) (r : σ → ℕ)
+    (hP : ∀ j, degreeOf j P ≤ r j) (hk : k ∈ P.support) :
+    (hasseCoeff d k : ℝ) ≤ 2 ^ (∑ j, r j) := by
+  exact_mod_cast HasseCoefficientBoundAssessment.weaker_global
+    (fun j _ ↦ (monomial_le_degreeOf j hk).trans (hP j))
+#print axioms cast_caller
+end HasseCoefficientBoundCaller
+
+namespace HasseFactorialAssessment
+open MvPolynomial
+variable {σ R : Type*} [CommSemiring R]
+#check @MvPolynomial.factorial_smul_hasseDeriv_single
+#print axioms MvPolynomial.factorial_smul_hasseDeriv_single
+theorem replay (j : σ) (n : ℕ) (P : MvPolynomial σ R) :
+    (n.factorial : R) • hasseDeriv (Finsupp.single j n) P = (⇑(pderiv (R := R) j))^[n] P := by
+  induction n with
+  | zero => simp
+  | succ n ih =>
+    rw [Function.iterate_succ_apply', ← ih, Derivation.map_smul, pderiv_hasseDeriv, smul_smul,
+      Finsupp.single_eq_same, ← Finsupp.single_add, Nat.factorial_succ, Nat.cast_mul, mul_comm]
+theorem natural_scalar (j : σ) (n : ℕ) (P : MvPolynomial σ R) :
+    n.factorial • hasseDeriv (Finsupp.single j n) P = (⇑(pderiv (R := R) j))^[n] P := by
+  simpa only [Nat.cast_smul_eq_nsmul R] using replay j n P
+theorem function_shape (j : σ) (n : ℕ) :
+    (fun P : MvPolynomial σ R ↦ (n.factorial : R) • hasseDeriv (Finsupp.single j n) P) =
+      (⇑(pderiv (R := R) j))^[n] := funext (replay j n)
+#print axioms replay
+#print axioms natural_scalar
+#print axioms function_shape
+end HasseFactorialAssessment
+
+namespace HasseFactorialExtra
+open MvPolynomial
+variable {σ R : Type*} [CommSemiring R]
+theorem bundled (j : σ) (n : ℕ) :
+    (n.factorial : R) • hasseDeriv (Finsupp.single j n) =
+      (pderiv (R := R) j).toLinearMap ^ n := by
+  apply LinearMap.ext
+  intro P
+  rw [LinearMap.smul_apply, Module.End.pow_apply]
+  have hcoe : ⇑(pderiv (R := R) j).toLinearMap = ⇑(pderiv (R := R) j) := rfl
+  rw [hcoe]
+  exact HasseFactorialAssessment.replay j n P
+theorem different_coordinate {j k : σ} (h : k ≠ j) :
+    hasseDeriv (Finsupp.single j 1) (X k : MvPolynomial σ R) = 0 := by
+  simpa using HasseFactorialAssessment.replay j 1 (X k : MvPolynomial σ R) |>.trans
+    (pderiv_X_of_ne h)
+theorem natural_factor_needed :
+    hasseDeriv (Finsupp.single () 2) (monomial (Finsupp.single () 2) 1 : MvPolynomial Unit ℕ) ≠
+      (⇑(pderiv (R := ℕ) ()))^[2] (monomial (Finsupp.single () 2) 1) := by
+  intro h
+  rw [← HasseFactorialAssessment.replay () 2] at h
+  have hc := congrArg (fun P : MvPolynomial Unit ℕ ↦ P.coeff 0) h
+  simp [hasseCoeff] at hc
+theorem characteristic_two_guard :
+    hasseDeriv (Finsupp.single () 2)
+      (monomial (Finsupp.single () 2) 1 : MvPolynomial Unit (ZMod 2)) = 1 ∧
+      (⇑(pderiv (R := ZMod 2) ()))^[2] (monomial (Finsupp.single () 2) 1) = 0 := by
+  constructor
+  · simp [hasseCoeff]
+  · rw [← HasseFactorialAssessment.replay () 2]
+    have hz : ((2 : ℕ).factorial : ZMod 2) = 0 := by decide
+    rw [hz, zero_smul]
+#print axioms bundled
+#print axioms different_coordinate
+#print axioms natural_factor_needed
+#print axioms characteristic_two_guard
+end HasseFactorialExtra
+
+namespace FactorialRecurrenceAssessment
+variable {M : Type*} [AddCommMonoid M]
+theorem recurrence (D : M →+ M) (H : ℕ → M → M)
+    (hzero : ∀ x, H 0 x = x)
+    (hsucc : ∀ n x, D (H n x) = (n + 1) • H (n + 1) x)
+    (n : ℕ) (x : M) : n.factorial • H n x = (⇑D)^[n] x := by
+  induction n with
+  | zero => simp [hzero]
+  | succ n ih =>
+    rw [Function.iterate_succ_apply', ← ih, map_nsmul, hsucc, smul_smul,
+      Nat.factorial_succ, Nat.mul_comm]
+
+end FactorialRecurrenceAssessment
+
+namespace HasseFactorialGenericConsumer
+open MvPolynomial
+variable {σ R : Type*} [CommSemiring R]
+theorem from_recurrence (j : σ) (n : ℕ) (P : MvPolynomial σ R) :
+    n.factorial • hasseDeriv (Finsupp.single j n) P = (⇑(pderiv (R := R) j))^[n] P := by
+  exact FactorialRecurrenceAssessment.recurrence
+    (pderiv (R := R) j).toLinearMap.toAddMonoidHom
+    (fun m ↦ ⇑(hasseDeriv (R := R) (Finsupp.single j m)))
+    (fun Q ↦ by simp)
+    (fun m Q ↦ by
+      change pderiv j (hasseDeriv (Finsupp.single j m) Q) = _
+      simpa only [Finsupp.single_eq_same, ← Finsupp.single_add, Nat.cast_smul_eq_nsmul R]
+        using pderiv_hasseDeriv j (Finsupp.single j m) Q) n P
+#print axioms from_recurrence
+end HasseFactorialGenericConsumer
+
+namespace BoxAssessment
+variable {σ : Type*} [Fintype σ] [DecidableEq σ]
+#check @Roth.box
+#check @Finsupp.equivFunOnFinite
+#check @Finsupp.card_Iic
+#print axioms Roth.box
+example (r : σ → ℕ) : Roth.box r =
+    (Fintype.piFinset fun j ↦ Finset.range (r j + 1)).map
+      Finsupp.equivFunOnFinite.symm.toEmbedding := rfl
+theorem lower_interval (r : σ → ℕ) :
+    Roth.box r = Finset.Iic (Finsupp.equivFunOnFinite.symm r) := by
+  apply Finset.ext
+  intro d
+  simp only [Roth.mem_box, Finset.mem_Iic, Finsupp.le_def]
+  rfl
+#print axioms lower_interval
+end BoxAssessment
+
+namespace BoxIntervalChecks
+variable {σ : Type*} [Fintype σ] [DecidableEq σ]
+theorem cardinal (r : σ → ℕ) :
+    (Finset.Iic (Finsupp.equivFunOnFinite.symm r)).card = ∏ j, (r j + 1) := by
+  rw [Finsupp.card_Iic]
+  change (Finsupp.equivFunOnFinite.symm r).prod (fun _ n ↦ (Finset.Iic n).card) = _
+  rw [Finsupp.prod_fintype _ _ (fun _ ↦ by simp)]
+  simp
+noncomputable def no_decidable_eq {τ : Type*} [Fintype τ] (r : τ → ℕ) : Finset (τ →₀ ℕ) := by
+  classical
+  exact (Fintype.piFinset fun j ↦ Finset.range (r j + 1)).map
+    Finsupp.equivFunOnFinite.symm.toEmbedding
+#print no_decidable_eq
+theorem same_classical (r : σ → ℕ) : no_decidable_eq r = Roth.box r := by
+  apply Finset.ext
+  intro d
+  simp [no_decidable_eq, Roth.box]
+#print axioms cardinal
+#print axioms no_decidable_eq
+#print axioms same_classical
+end BoxIntervalChecks
+
+namespace BoxFiniteChecks
+noncomputable def finite_only {τ : Type*} [Finite τ] (r : τ → ℕ) : Finset (τ →₀ ℕ) := by
+  classical
+  let : Fintype τ := Fintype.ofFinite τ
+  exact (Fintype.piFinset fun j ↦ Finset.range (r j + 1)).map
+    Finsupp.equivFunOnFinite.symm.toEmbedding
+#check @finite_only
+variable {σ : Type*} [Fintype σ] [DecidableEq σ]
+theorem finite_same (r : σ → ℕ) : finite_only r = Roth.box r := by
+  apply Finset.ext
+  intro d
+  simp [finite_only, Roth.box]
+#print axioms finite_only
+#print axioms finite_same
+end BoxFiniteChecks
+
+namespace BoxGeneralChecks
+noncomputable def support_bound {τ : Type*} (r : τ → ℕ) [Finite (Function.support r)] :
+    Finset (τ →₀ ℕ) := by
+  classical
+  exact Finset.Iic (Finsupp.ofSupportFinite r (Set.toFinite _))
+theorem mem_support_bound {τ : Type*} (r : τ → ℕ) [Finite (Function.support r)] (d : τ →₀ ℕ) :
+    d ∈ support_bound r ↔ ∀ j, d j ≤ r j := by
+  classical
+  simp [support_bound, Finset.mem_Iic, Finsupp.le_def]
+theorem no_unrestricted_infinite_box (s : Finset (ℕ →₀ ℕ)) :
+    ¬ ∀ d, d ∈ s ↔ ∀ j, d j ≤ 1 := by
+  intro h
+  have hi : Function.Injective (fun n : ℕ ↦ Finsupp.single n (1 : ℕ)) :=
+    Finsupp.single_left_injective one_ne_zero
+  have hs : Set.range (fun n : ℕ ↦ Finsupp.single n (1 : ℕ)) ⊆ (s : Set (ℕ →₀ ℕ)) := by
+    rintro _ ⟨n, rfl⟩
+    apply (h _).2
+    intro j
+    simp only [Finsupp.single_apply]
+    split_ifs <;> simp
+  exact (Set.infinite_range_of_injective hi).not_finite (s.finite_toSet.subset hs)
+variable {σ : Type*} [Fintype σ] [DecidableEq σ]
+#synth LocallyFiniteOrder (σ →₀ ℕ)
+#synth LocallyFiniteOrderBot (σ →₀ ℕ)
+#synth DecidableEq (σ →₀ ℕ)
+theorem interval_sum_product {R : Type*} [CommSemiring R] (r : σ → ℕ) (g : σ → ℕ → R) :
+    (∑ d ∈ Finset.Iic (Finsupp.equivFunOnFinite.symm r), ∏ j, g j (d j)) =
+      ∏ j, ∑ n ∈ Finset.range (r j + 1), g j n := by
+  rw [← BoxAssessment.lower_interval]
+  simp [Roth.box, Finset.prod_univ_sum]
+example (r : σ → ℕ) (d : σ →₀ ℕ) :
+    d ∈ (Roth.box r : Set (σ →₀ ℕ)) ↔ ∀ j, d j ≤ r j := Roth.mem_box
+example {τ : Type 1} [Fintype τ] [DecidableEq τ] (r : τ → ℕ) :
+    Roth.box r = Finset.Iic (Finsupp.equivFunOnFinite.symm r) := BoxAssessment.lower_interval r
+#print axioms support_bound
+#print axioms mem_support_bound
+#print axioms no_unrestricted_infinite_box
+#print axioms interval_sum_product
+end BoxGeneralChecks
+
+namespace WeightAssessment
+variable {σ : Type*} [Fintype σ]
+#check @Roth.weight
+#check @Finsupp.weight
+#check @Finsupp.weight_eq_sum
+#print axioms Roth.weight
+example (r : σ → ℕ) (d : σ →₀ ℕ) : Roth.weight r d = ∑ j, (d j : ℝ) / r j := rfl
+theorem existing_weight (r : σ → ℕ) (d : σ →₀ ℕ) :
+    Roth.weight r d = Finsupp.weight (fun j ↦ (r j : ℝ)⁻¹) d := by
+  simpa [Roth.weight, nsmul_eq_mul, div_eq_mul_inv] using
+    (Finsupp.weight_eq_sum (fun j ↦ (r j : ℝ)⁻¹) d).symm
+noncomputable def finite_only {τ : Type*} [Finite τ] (r : τ → ℕ) (d : τ →₀ ℕ) : ℝ := by
+  let : Fintype τ := Fintype.ofFinite τ
+  exact ∑ j, (d j : ℝ) / r j
+theorem finite_same (r : σ → ℕ) (d : σ →₀ ℕ) : finite_only r d = Roth.weight r d := by
+  unfold finite_only
+  rw [show Fintype.ofFinite σ = (inferInstance : Fintype σ) from Subsingleton.elim _ _]
+  rfl
+theorem zero_denominator :
+    Roth.weight (fun _ : Unit ↦ 0) (Finsupp.single () 1) = 0 ∧
+      (Finsupp.single () 1 : Unit →₀ ℕ) ≠ 0 := by
+  constructor
+  · simp [Roth.weight]
+  · exact Finsupp.single_ne_zero.mpr one_ne_zero
+#print axioms existing_weight
+#print axioms finite_only
+#print axioms finite_same
+#print axioms zero_denominator
+end WeightAssessment
+
+namespace WeightConsumerChecks
+variable {σ : Type*} [Fintype σ]
+theorem add_consumer (r : σ → ℕ) (d e : σ →₀ ℕ) :
+    Roth.weight r (d + e) = Roth.weight r d + Roth.weight r e := by
+  simpa only [WeightAssessment.existing_weight] using
+    map_add (Finsupp.weight (fun j ↦ (r j : ℝ)⁻¹)) d e
+theorem zero_consumer (r : σ → ℕ) : Roth.weight r 0 = 0 := by
+  rw [WeightAssessment.existing_weight, map_zero]
+theorem single_consumer (r : σ → ℕ) (j : σ) (n : ℕ) :
+    Roth.weight r (Finsupp.single j n) = n / r j := by
+  rw [WeightAssessment.existing_weight, Finsupp.weight_single]
+  simp only [nsmul_eq_mul, div_eq_mul_inv]
+#synth Module ℕ ℝ
+example {τ : Type 1} [Fintype τ] (r : τ → ℕ) (d : τ →₀ ℕ) :
+    Roth.weight r d = Finsupp.weight (fun j ↦ (r j : ℝ)⁻¹) d :=
+  WeightAssessment.existing_weight r d
+#print axioms add_consumer
+#print axioms zero_consumer
+#print axioms single_consumer
+end WeightConsumerChecks
+
+namespace MemBoxAssessment
+variable {σ : Type*} [Fintype σ] [DecidableEq σ]
+#check @Roth.mem_box
+#check @Finset.mem_Iic
+#check @Finsupp.le_def
+#check @Finsupp.coe_equivFunOnFinite_symm
+#print axioms Roth.mem_box
+theorem replay {r : σ → ℕ} {d : σ →₀ ℕ} : d ∈ Roth.box r ↔ ∀ j, d j ≤ r j := by
+  simp [Roth.box]
+omit [Fintype σ] in
+theorem reaim [Finite σ] {r : σ → ℕ} {d : σ →₀ ℕ} :
+    d ∈ Finset.Iic (Finsupp.equivFunOnFinite.symm r) ↔ ∀ j, d j ≤ r j :=
+  Finset.mem_Iic.trans Finsupp.le_def
+theorem pointwise {r : σ → ℕ} {d : σ →₀ ℕ} :
+    d ∈ Roth.box r ↔ d ≤ Finsupp.equivFunOnFinite.symm r := replay
+theorem negative {r : σ → ℕ} {d : σ →₀ ℕ} :
+    d ∉ Roth.box r ↔ ∃ j, r j < d j := by
+  simp only [replay, not_forall, not_le]
+theorem degree_support_consumer {R : Type*} [CommSemiring R] (P : MvPolynomial σ R)
+    {r : σ → ℕ} (hP : ∀ j, MvPolynomial.degreeOf j P ≤ r j) {k : σ →₀ ℕ}
+    (hk : k ∈ P.support) : k ∈ Roth.box r :=
+  replay.mpr fun j ↦ (MvPolynomial.monomial_le_degreeOf j hk).trans (hP j)
+#print axioms replay
+#print axioms reaim
+#print axioms pointwise
+#print axioms negative
+#print axioms degree_support_consumer
+end MemBoxAssessment
+
+namespace MemBoxStrictComposition
+variable {σ : Type*} [Fintype σ] [DecidableEq σ]
+theorem original_three_facts {r : σ → ℕ} {d : σ →₀ ℕ} :
+    d ∈ Roth.box r ↔ ∀ j, d j ≤ r j :=
+  Finset.mem_map_equiv.trans (Fintype.mem_piFinset.trans
+    (forall_congr' fun _ ↦ Finset.mem_range_succ_iff))
+#print axioms original_three_facts
+end MemBoxStrictComposition
+
+namespace CardBoxAssessment
+variable {σ : Type*} [Fintype σ] [DecidableEq σ]
+#check @Roth.card_box
+#check @Finset.card_map
+#check @Fintype.card_piFinset
+#check @Finset.card_range
+#print axioms Roth.card_box
+theorem replay (r : σ → ℕ) : (Roth.box r).card = ∏ j, (r j + 1) := by
+  simp [Roth.box]
+theorem original_three_facts (r : σ → ℕ) : (Roth.box r).card = ∏ j, (r j + 1) :=
+  (Finset.card_map _).trans ((Fintype.card_piFinset _).trans
+    (congrArg (fun f : σ → ℕ ↦ ∏ j, f j) (funext fun j ↦ Finset.card_range (r j + 1))))
+theorem real_cast_consumer (r : σ → ℕ) :
+    ((Roth.box r).card : ℝ) = ∏ j, ((r j : ℝ) + 1) := by
+  rw [original_three_facts]
+  simp only [Nat.cast_prod, Nat.cast_add, Nat.cast_one]
+theorem constant_sum_consumer {M : Type*} [AddCommMonoid M] (r : σ → ℕ) (x : M) :
+    ∑ _ ∈ Roth.box r, x = (∏ j, (r j + 1)) • x := by
+  rw [Finset.sum_const, original_three_facts]
+#print axioms replay
+#print axioms original_three_facts
+#print axioms real_cast_consumer
+#print axioms constant_sum_consumer
+end CardBoxAssessment
+
+namespace CardBoxExtra
+variable {σ : Type*} [Fintype σ]
+open scoped Classical in
+theorem no_public_decidable (r : σ → ℕ) : (Roth.box r).card = ∏ j, (r j + 1) :=
+  CardBoxAssessment.original_three_facts r
+theorem successor_shape [DecidableEq σ] (r : σ → ℕ) :
+    (Roth.box r).card = ∏ j, (r j).succ := CardBoxAssessment.original_three_facts r
+theorem subtype_card_shape [DecidableEq σ] (r : σ → ℕ) :
+    (Roth.box r).card = ∏ j, Fintype.card (Fin (r j + 1)) := by
+  simpa using CardBoxAssessment.original_three_facts r
+theorem subset_card_consumer (r : σ → ℕ) (s : Finset (σ →₀ ℕ))
+    (hs : ∀ d ∈ s, ∀ j, d j ≤ r j) : s.card ≤ ∏ j, (r j + 1) := by
+  classical
+  exact (Finset.card_le_card fun _ hd ↦
+    MemBoxStrictComposition.original_three_facts.mpr (hs _ hd)).trans_eq
+      (CardBoxAssessment.original_three_facts r)
+example : (Roth.box (fun _ : Unit ↦ 0)).card = 1 := by
+  rw [CardBoxAssessment.original_three_facts]
+  simp
+example (r : Empty → ℕ) : (Roth.box r).card = 1 := by
+  rw [CardBoxAssessment.original_three_facts]
+  simp
+#print no_public_decidable
+#print axioms no_public_decidable
+#print axioms successor_shape
+#print axioms subtype_card_shape
+#print axioms subset_card_consumer
+end CardBoxExtra
+
+namespace CardLeBoxAssessment
+variable {σ : Type*} [Fintype σ]
+#check @Roth.card_le_card_box
+#check @Finset.card_le_card_of_injective
+#check @Fintype.card_pi
+#check @Fintype.card_fin
+#print axioms Roth.card_le_card_box
+theorem replay {r : σ → ℕ} {s : Finset (σ →₀ ℕ)} (hs : ∀ d ∈ s, ∀ j, d j ≤ r j) :
+    s.card ≤ ∏ j, (r j + 1) := by
+  classical
+  exact (Finset.card_le_card fun d hd ↦ Roth.mem_box.mpr (hs d hd)).trans_eq (Roth.card_box r)
+theorem fin_injection {r : σ → ℕ} {s : Finset (σ →₀ ℕ)} (hs : ∀ d ∈ s, ∀ j, d j ≤ r j) :
+    s.card ≤ ∏ j, (r j + 1) := by
+  classical
+  let f : s → (Finset.univ : Finset (∀ j, Fin (r j + 1))) := fun d ↦
+    ⟨fun j ↦ ⟨d.val j, Nat.lt_succ_of_le (hs d.val d.property j)⟩, Finset.mem_univ _⟩
+  have hf : Function.Injective f := by
+    intro d e h
+    apply Subtype.ext
+    apply Finsupp.ext
+    intro j
+    exact congrArg Fin.val (congrFun (congrArg Subtype.val h) j)
+  calc
+    s.card ≤ Fintype.card (∀ j, Fin (r j + 1)) := Finset.card_le_card_of_injective hf
+    _ = ∏ j, (r j + 1) := Fintype.card_pi.trans
+      (congrArg (fun g : σ → ℕ ↦ ∏ j, g j) (funext fun j ↦ Fintype.card_fin (r j + 1)))
+#print axioms replay
+#print axioms fin_injection
+end CardLeBoxAssessment
+
+namespace CardLeBoxExtra
+variable {σ : Type*} [Fintype σ]
+theorem strict_shape {r : σ → ℕ} {s : Finset (σ →₀ ℕ)}
+    (hs : ∀ d ∈ s, ∀ j, d j < r j + 1) : s.card ≤ ∏ j, (r j + 1) :=
+  CardLeBoxAssessment.fin_injection fun d hd j ↦ Nat.lt_succ_iff.mp (hs d hd j)
+theorem support_local_shape {r : σ → ℕ} {s : Finset (σ →₀ ℕ)}
+    (hs : ∀ d ∈ s, ∀ j ∈ d.support, d j ≤ r j) : s.card ≤ ∏ j, (r j + 1) := by
+  classical
+  apply CardLeBoxAssessment.fin_injection
+  intro d hd j
+  by_cases hj : j ∈ d.support
+  · exact hs d hd j hj
+  · rw [Finsupp.notMem_support_iff.mp hj]
+    exact Nat.zero_le _
+theorem real_product_caller {R : Type*} [CommSemiring R] (P : MvPolynomial σ R)
+    {r : σ → ℕ} (hP : ∀ j, MvPolynomial.degreeOf j P ≤ r j) :
+    (P.support.card : ℝ) ≤ ∏ j, ((r j : ℝ) + 1) := by
+  exact_mod_cast CardLeBoxAssessment.fin_injection
+    (fun d hd j ↦ (MvPolynomial.monomial_le_degreeOf j hd).trans (hP j))
+theorem natural_product_caller {R : Type*} [CommSemiring R] (P : MvPolynomial σ R)
+    {r : σ → ℕ} (hP : ∀ j, MvPolynomial.degreeOf j P ≤ r j) :
+    (P.support.card : ℝ) ≤ ((∏ j, (r j + 1) : ℕ) : ℝ) := by
+  exact_mod_cast CardLeBoxAssessment.fin_injection
+    (fun d hd j ↦ (MvPolynomial.monomial_le_degreeOf j hd).trans (hP j))
+example : ¬ ({0, Finsupp.single () 1} : Finset (Unit →₀ ℕ)).card ≤ 1 := by
+  rw [Finset.card_pair (Ne.symm (Finsupp.single_ne_zero.mpr one_ne_zero))]
+  decide
+#print axioms strict_shape
+#print axioms support_local_shape
+#print axioms real_product_caller
+#print axioms natural_product_caller
+end CardLeBoxExtra
+
+namespace WeightNonnegAssessment
+variable {σ : Type*} [Fintype σ]
+#check @Roth.weight_nonneg
+#check @Finset.sum_nonneg
+#check @div_nonneg
+#check @Nat.cast_nonneg
+#print axioms Roth.weight_nonneg
+theorem replay (r : σ → ℕ) (d : σ →₀ ℕ) : 0 ≤ Roth.weight r d :=
+  Fintype.sum_nonneg fun _ ↦ by positivity
+theorem three_named_facts (r : σ → ℕ) (d : σ →₀ ℕ) : 0 ≤ Roth.weight r d := by
+  have hn : ∀ n : ℕ, (0 : ℝ) ≤ n := Nat.cast_nonneg
+  exact Finset.sum_nonneg fun j _ ↦ div_nonneg (hn (d j)) (hn (r j))
+theorem nonpositive_zero_parameters (d : σ →₀ ℕ) : Roth.weight (fun _ ↦ 0) d = 0 := by
+  simp [Roth.weight]
+#print axioms replay
+#print axioms three_named_facts
+#print axioms nonpositive_zero_parameters
+end WeightNonnegAssessment
+
+namespace WeightNonnegCallerChecks
+variable {σ : Type*} [Fintype σ]
+theorem infimum_image (r : σ → ℕ) (s : Finset (σ →₀ ℕ)) :
+    0 ≤ sInf (Roth.weight r '' (s : Set (σ →₀ ℕ))) :=
+  Real.sInf_nonneg (Set.forall_mem_image.mpr fun d _ ↦
+    WeightNonnegAssessment.three_named_facts r d)
+theorem negative_filter (r : σ → ℕ) (s : Finset (σ →₀ ℕ)) {a : ℝ} (ha : a < 0) :
+    s.filter (fun d ↦ Roth.weight r d ≤ a) = ∅ := by
+  classical
+  exact Finset.filter_eq_empty_iff.mpr fun d _ h ↦
+    (not_le_of_gt ha) ((WeightNonnegAssessment.three_named_facts r d).trans h)
+theorem max_caller (r : σ → ℕ) (d : σ →₀ ℕ) {a x δ : ℝ} (ha : 0 ≤ a)
+    (hδ : Roth.weight r d ≤ δ) (hx : x ≤ a + δ) : max 0 x ≤ a + δ :=
+  max_le (add_nonneg ha ((WeightNonnegAssessment.three_named_facts r d).trans hδ)) hx
+#print axioms infimum_image
+#print axioms negative_filter
+#print axioms max_caller
+end WeightNonnegCallerChecks
+
+namespace WeightZeroAssessment
+variable {σ : Type*} [Fintype σ]
+#check @Roth.weight_zero
+#check @Finset.sum_eq_zero
+#check @zero_div
+#print axioms Roth.weight_zero
+theorem replay (r : σ → ℕ) : Roth.weight r 0 = 0 := by
+  simp [Roth.weight]
+theorem three_facts (r : σ → ℕ) : Roth.weight r 0 = 0 :=
+  Finset.sum_eq_zero fun j _ ↦
+    (congrArg (fun x : ℝ ↦ x / (r j : ℝ)) (Nat.cast_zero (R := ℝ))).trans (zero_div _)
+#print axioms replay
+#print axioms three_facts
+end WeightZeroAssessment
+
+namespace WeightZeroConsumerChecks
+variable {σ : Type*} [Fintype σ]
+theorem upper_bound {r : σ → ℕ} {i : ℝ} (hi : i ≤ Roth.weight r 0) : i ≤ 0 := by
+  rw [WeightZeroAssessment.three_facts] at hi
+  exact hi
+theorem reversed (r : σ → ℕ) : (0 : ℝ) = Roth.weight r 0 :=
+  (WeightZeroAssessment.three_facts r).symm
+theorem pointwise : (fun r : σ → ℕ ↦ Roth.weight r 0) = fun _ ↦ (0 : ℝ) :=
+  funext WeightZeroAssessment.three_facts
+#print axioms upper_bound
+#print axioms reversed
+#print axioms pointwise
+end WeightZeroConsumerChecks
+
+namespace WeightAddAssessment
+variable {σ : Type*} [Fintype σ]
+#check @Roth.weight_add
+#check @Nat.cast_add
+#check @add_div
+#check @Finset.sum_add_distrib
+#print axioms Roth.weight_add
+theorem replay (r : σ → ℕ) (d e : σ →₀ ℕ) :
+    Roth.weight r (d + e) = Roth.weight r d + Roth.weight r e := by
+  simp [Roth.weight, add_div, Finset.sum_add_distrib]
+theorem three_named_facts (r : σ → ℕ) (d e : σ →₀ ℕ) :
+    Roth.weight r (d + e) = Roth.weight r d + Roth.weight r e := by
+  exact (congrArg (fun f : σ → ℝ ↦ ∑ j, f j)
+    (funext fun j ↦ (congrArg (fun x : ℝ ↦ x / (r j : ℝ))
+      (Nat.cast_add (d j) (e j))).trans (add_div _ _ _))).trans Finset.sum_add_distrib
+#print axioms replay
+#print axioms three_named_facts
+end WeightAddAssessment
+
+namespace WeightAddConsumerChecks
+variable {σ : Type*} [Fintype σ]
+theorem index_bound (r : σ → ℕ) (d k : σ →₀ ℕ) {i : ℝ}
+    (hi : i ≤ Roth.weight r (d + k)) : i - Roth.weight r k ≤ Roth.weight r d := by
+  rw [WeightAddAssessment.three_named_facts] at hi
+  exact sub_le_iff_le_add.mpr hi
+theorem option_split {τ : Type*} [Fintype τ] (r : Option τ → ℕ) (d : τ →₀ ℕ) (n : ℕ) :
+    Roth.weight r (d.mapDomain some + Finsupp.single none n) =
+      Roth.weight (r ∘ some) d + n / r none := by
+  rw [WeightAddAssessment.three_named_facts,
+    Roth.weight_mapDomain (Option.some_injective _), Roth.weight_single]
+theorem fin_split (n : ℕ) (r : Fin (n + 1) → ℕ) (d : Fin n →₀ ℕ) (i : ℕ) :
+    Roth.weight r (d.mapDomain Fin.castSucc + Finsupp.single (Fin.last n) i) =
+      Roth.weight (r ∘ Fin.castSucc) d + i / r (Fin.last n) := by
+  rw [WeightAddAssessment.three_named_facts,
+    Roth.weight_mapDomain (Fin.castSucc_injective n), Roth.weight_single]
+theorem reversed (r : σ → ℕ) (d e : σ →₀ ℕ) :
+    Roth.weight r d + Roth.weight r e = Roth.weight r (d + e) :=
+  (WeightAddAssessment.three_named_facts r d e).symm
+#print axioms index_bound
+#print axioms option_split
+#print axioms fin_split
+#print axioms reversed
+end WeightAddConsumerChecks
+
+namespace WeightEqZeroAssessment
+variable {σ : Type*} [Fintype σ]
+#check @Roth.weight_eq_zero_iff
+#check @Finset.sum_eq_zero_iff_of_nonneg
+#check @Finsupp.weight_eq_zero_iff_eq_zero
+#print axioms Roth.weight_eq_zero_iff
+theorem replay {r : σ → ℕ} (hr : ∀ j, 0 < r j) {d : σ →₀ ℕ} :
+    Roth.weight r d = 0 ↔ d = 0 := by
+  simp [Roth.weight, Finset.sum_eq_zero_iff_of_nonneg, div_nonneg, (hr _).ne', Finsupp.ext_iff]
+theorem support_positive {r : σ → ℕ} {d : σ →₀ ℕ}
+    (hr : ∀ j ∈ d.support, 0 < r j) : Roth.weight r d = 0 ↔ d = 0 := by
+  constructor
+  · intro h
+    have hz := (Finset.sum_eq_zero_iff_of_nonneg
+      (fun j (_ : j ∈ (Finset.univ : Finset σ)) ↦
+        div_nonneg (Nat.cast_nonneg (d j)) (Nat.cast_nonneg (r j)))).mp h
+    ext j
+    by_cases hj : j ∈ d.support
+    · have hq := hz j (Finset.mem_univ j)
+      have hden : (r j : ℝ) ≠ 0 := by exact_mod_cast (hr j hj).ne'
+      have hn : (d j : ℝ) = 0 := (div_eq_zero_iff).mp hq |>.resolve_right hden
+      exact_mod_cast hn
+    · exact Finsupp.notMem_support_iff.mp hj
+  · rintro rfl
+    exact WeightZeroAssessment.three_facts r
+#print axioms replay
+#print axioms support_positive
+end WeightEqZeroAssessment
+
+namespace WeightEqZeroConsumerChecks
+variable {σ : Type*} [Fintype σ]
+theorem index_zero_step {r : σ → ℕ} (hr : ∀ j, 0 < r j) {d : σ →₀ ℕ} {i : ℝ}
+    (hi : i = 0) (hdw : Roth.weight r d = i) : d = 0 :=
+  (WeightEqZeroAssessment.support_positive (fun j _ ↦ hr j)).mp (hdw.trans hi)
+theorem reversed {r : σ → ℕ} (hr : ∀ j, 0 < r j) {d : σ →₀ ℕ} :
+    d = 0 ↔ Roth.weight r d = 0 :=
+  (WeightEqZeroAssessment.support_positive (fun j _ ↦ hr j)).symm
+#print axioms index_zero_step
+#print axioms reversed
+end WeightEqZeroConsumerChecks
+
+namespace WeightSingleAssessment
+variable {σ : Type*} [Fintype σ]
+#check @Roth.weight_single
+#check @Finsupp.sum_fintype
+#check @Finsupp.sum_single_index
+#check @Finsupp.weight_single
+#print axioms Roth.weight_single
+theorem replay (r : σ → ℕ) (j : σ) (n : ℕ) :
+    Roth.weight r (Finsupp.single j n) = n / r j := by
+  classical
+  simp [Roth.weight, Finsupp.single_apply, ite_div]
+theorem four_named_facts (r : σ → ℕ) (j : σ) (n : ℕ) :
+    Roth.weight r (Finsupp.single j n) = n / r j := by
+  have hzero : ∀ i : σ, ((0 : ℕ) : ℝ) / (r i : ℝ) = 0 := fun i ↦
+    (congrArg (fun x : ℝ ↦ x / (r i : ℝ)) (Nat.cast_zero (R := ℝ))).trans (zero_div _)
+  exact (Finsupp.sum_fintype (Finsupp.single j n)
+    (fun i m ↦ (m : ℝ) / r i) hzero).symm.trans
+      (Finsupp.sum_single_index (hzero j))
+#print axioms replay
+#print axioms four_named_facts
+end WeightSingleAssessment
+
+namespace WeightSingleConsumerChecks
+variable {τ : Type*} [Fintype τ]
+theorem option_split (r : Option τ → ℕ) (d : τ →₀ ℕ) (n : ℕ) :
+    Roth.weight r (d.mapDomain some + Finsupp.single none n) =
+      Roth.weight (r ∘ some) d + n / r none := by
+  rw [Roth.weight_add, Roth.weight_mapDomain (Option.some_injective _),
+    WeightSingleAssessment.four_named_facts]
+theorem fin_split (n : ℕ) (r : Fin (n + 1) → ℕ) (d : Fin n →₀ ℕ) (i : ℕ) :
+    Roth.weight r (d.mapDomain Fin.castSucc + Finsupp.single (Fin.last n) i) =
+      Roth.weight (r ∘ Fin.castSucc) d + i / r (Fin.last n) := by
+  rw [Roth.weight_add, Roth.weight_mapDomain (Fin.castSucc_injective n),
+    WeightSingleAssessment.four_named_facts]
+theorem reversed (r : τ → ℕ) (j : τ) (n : ℕ) :
+    (n : ℝ) / r j = Roth.weight r (Finsupp.single j n) :=
+  (WeightSingleAssessment.four_named_facts r j n).symm
+#print axioms option_split
+#print axioms fin_split
+#print axioms reversed
+end WeightSingleConsumerChecks
+
+namespace WeightLeCardAssessment
+variable {σ : Type*} [Fintype σ]
+#check @Roth.weight_le_card
+#check @div_le_one_of_le₀
+#check @Finset.sum_le_sum
+#print axioms Roth.weight_le_card
+theorem replay {r : σ → ℕ} {d : σ →₀ ℕ} (hd : ∀ j, d j ≤ r j) :
+    Roth.weight r d ≤ Fintype.card σ :=
+  (Finset.sum_le_sum fun j _ ↦
+    div_le_one_of_le₀ (by exact_mod_cast hd j) (by positivity)).trans_eq (by simp)
+#print axioms replay
+end WeightLeCardAssessment
+
+namespace WeightLeCardExtra
+variable {σ : Type*} [Fintype σ]
+theorem support_bound {r : σ → ℕ} {d : σ →₀ ℕ}
+    (hd : ∀ j ∈ d.support, d j ≤ r j) : Roth.weight r d ≤ d.support.card := by
+  rw [Roth.weight, ← d.sum_fintype (fun j n ↦ (n : ℝ) / r j) (fun _ ↦ by simp)]
+  exact (Finset.sum_le_card_nsmul d.support (fun j ↦ (d j : ℝ) / r j) 1
+    (fun j hj ↦ div_le_one_of_le₀ (by exact_mod_cast hd j hj)
+      (Nat.cast_nonneg _))).trans_eq (nsmul_one _)
+omit [Fintype σ] in
+theorem bounds_iff {r : σ → ℕ} {d : σ →₀ ℕ} :
+    (∀ j ∈ d.support, d j ≤ r j) ↔ ∀ j, d j ≤ r j := by
+  constructor
+  · intro h j
+    by_cases hj : j ∈ d.support
+    · exact h j hj
+    · rw [Finsupp.notMem_support_iff.mp hj]
+      exact Nat.zero_le _
+  · intro h j _
+    exact h j
+theorem attained_index {r : σ → ℕ} {d : σ →₀ ℕ} {i : ℝ}
+    (hd : ∀ j, d j ≤ r j) (hi : Roth.weight r d = i) : i ≤ Fintype.card σ :=
+  hi ▸ WeightLeCardAssessment.replay hd
+example : (Finsupp.single false 1 : Bool →₀ ℕ).support.card < Fintype.card Bool := by
+  simp
+#print axioms support_bound
+#print axioms bounds_iff
+#print axioms attained_index
+end WeightLeCardExtra
+
+namespace WeightLeCardWeaker
+variable {σ : Type*} [Fintype σ]
+theorem nonzero_denominator_bounds {r : σ → ℕ} {d : σ →₀ ℕ}
+    (hd : ∀ j, r j ≠ 0 → d j ≤ r j) : Roth.weight r d ≤ Fintype.card σ := by
+  exact (Finset.sum_le_card_nsmul Finset.univ (fun j ↦ (d j : ℝ) / r j) 1
+    (fun j _ ↦ by
+      by_cases hz : r j = 0
+      · simp [hz]
+      · exact div_le_one_of_le₀ (by exact_mod_cast hd j hz)
+          (Nat.cast_nonneg _))).trans_eq (nsmul_one _)
+example : (∀ j : Unit, (0 : ℕ) ≠ 0 → (Finsupp.single () 17 : Unit →₀ ℕ) j ≤ 0) ∧
+    ¬ (∀ j : Unit, (Finsupp.single () 17 : Unit →₀ ℕ) j ≤ 0) := by
+  simp
+theorem attained_weaker {r : σ → ℕ} {d : σ →₀ ℕ} {i : ℝ}
+    (hd : ∀ j, d j ≤ r j) (hi : Roth.weight r d = i) : i ≤ Fintype.card σ :=
+  hi ▸ nonzero_denominator_bounds (fun j _ ↦ hd j)
+#print axioms nonzero_denominator_bounds
+#print axioms attained_weaker
+end WeightLeCardWeaker
+
+namespace WeightScaleAssessment
+variable {σ : Type*} [Fintype σ]
+#check @Roth.weight_mul_left
+#check @Finset.sum_div
+#check @div_div
+#check @Nat.cast_mul
+#print axioms Roth.weight_mul_left
+theorem replay {l : ℕ} (r : σ → ℕ) (d : σ →₀ ℕ) :
+    Roth.weight (fun j ↦ l * r j) d = Roth.weight r d / l := by
+  simp [Roth.weight, Finset.sum_div, div_div, mul_comm]
+#print axioms replay
+end WeightScaleAssessment
+
+namespace WeightScaleConsumerChecks
+open scoped Pointwise
+variable {σ : Type*} [Fintype σ]
+theorem inverse_scalar (l : ℕ) (r : σ → ℕ) (d : σ →₀ ℕ) :
+    Roth.weight (fun j ↦ l * r j) d = (l : ℝ)⁻¹ * Roth.weight r d := by
+  rw [WeightScaleAssessment.replay, div_eq_inv_mul]
+theorem image_scale (l : ℕ) (r : σ → ℕ) (s : Set (σ →₀ ℕ)) :
+    Roth.weight (fun j ↦ l * r j) '' s = (l : ℝ)⁻¹ • (Roth.weight r '' s) := by
+  rw [← Set.image_smul, Set.image_image]
+  refine Set.image_congr fun d _ ↦ ?_
+  rw [WeightScaleAssessment.replay, smul_eq_mul, div_eq_inv_mul]
+example (r : σ → ℕ) (d : σ →₀ ℕ) : Roth.weight (fun j ↦ 0 * r j) d = 0 := by
+  simp [Roth.weight]
+#print axioms inverse_scalar
+#print axioms image_scale
+end WeightScaleConsumerChecks
+
+namespace WeightDegreeBoundAssessment
+variable {σ : Type*} [Fintype σ]
+#check @Roth.weight_le_degree_div
+#check @Finsupp.degree_eq_sum
+#check @div_le_div_of_nonneg_left
+#print axioms Roth.weight_le_degree_div
+theorem replay {r : σ → ℕ} {m : ℕ} (hm : 0 < m) (hr : ∀ j, m ≤ r j)
+    (d : σ →₀ ℕ) : Roth.weight r d ≤ d.degree / m := by
+  rw [Roth.weight, Finsupp.degree_eq_sum, Nat.cast_sum, Finset.sum_div]
+  gcongr with j
+  exact hr j
+#print axioms replay
+end WeightDegreeBoundAssessment
+
+namespace WeightDegreeProjectChecks
+#check @Roth.weight_le_degree_div
+#print axioms Roth.weight_le_degree_div
+theorem same_statement {σ : Type*} [Fintype σ] {r : σ → ℕ} {m : ℕ}
+    (hm : 0 < m) (hr : ∀ j, m ≤ r j) (d : σ →₀ ℕ) :
+    Roth.weight r d ≤ d.degree / m := by
+  rw [Roth.weight, Finsupp.degree_eq_sum, Nat.cast_sum, Finset.sum_div]
+  exact Finset.sum_le_sum fun j _ ↦
+    div_le_div_of_nonneg_left (Nat.cast_nonneg _) (by exact_mod_cast hm) (by exact_mod_cast hr j)
+theorem support_local {σ : Type*} [Fintype σ] {r : σ → ℕ} {m : ℕ}
+    (hm : 0 < m) (d : σ →₀ ℕ) (hr : ∀ j ∈ d.support, m ≤ r j) :
+    Roth.weight r d ≤ d.degree / m := by
+  classical
+  rw [Roth.weight, Finsupp.degree_eq_sum, Nat.cast_sum, Finset.sum_div]
+  refine Finset.sum_le_sum fun j _ ↦ ?_
+  by_cases hj : j ∈ d.support
+  · exact div_le_div_of_nonneg_left (Nat.cast_nonneg _) (by exact_mod_cast hm)
+      (by exact_mod_cast hr j hj)
+  · simp [Finsupp.notMem_support_iff.mp hj]
+#print axioms WeightDegreeProjectChecks.same_statement
+#print axioms WeightDegreeProjectChecks.support_local
+theorem conditional_support {σ : Type*} [Fintype σ] {r : σ → ℕ} {m : ℕ}
+    (hm : 0 < m) (d : σ →₀ ℕ)
+    (hr : ∀ j ∈ d.support, r j ≠ 0 → m ≤ r j) :
+    Roth.weight r d ≤ d.degree / m := by
+  classical
+  rw [Roth.weight, Finsupp.degree_eq_sum, Nat.cast_sum, Finset.sum_div]
+  refine Finset.sum_le_sum fun j _ ↦ ?_
+  by_cases hj : j ∈ d.support
+  · by_cases hz : r j = 0
+    · simp only [hz, Nat.cast_zero, div_zero]
+      exact div_nonneg (Nat.cast_nonneg (d j)) (Nat.cast_nonneg m)
+    · exact div_le_div_of_nonneg_left (Nat.cast_nonneg _) (by exact_mod_cast hm)
+        (by exact_mod_cast hr j hj hz)
+  · simp [Finsupp.notMem_support_iff.mp hj]
+theorem conditional_strictly_weaker :
+    (∀ j ∈ (Finsupp.single () 1 : Unit →₀ ℕ).support,
+      (0 : ℕ) ≠ 0 → 1 ≤ (0 : ℕ)) ∧
+    ¬ (∀ j ∈ (Finsupp.single () 1 : Unit →₀ ℕ).support, 1 ≤ (0 : ℕ)) := by
+  simp
+#print axioms WeightDegreeProjectChecks.conditional_support
+#print axioms WeightDegreeProjectChecks.conditional_strictly_weaker
+end WeightDegreeProjectChecks
+
+namespace WeightMapDomainAssessment
+variable {σ τ : Type*} [Fintype σ] [Fintype τ]
+#check @Roth.weight_mapDomain
+#check @Finsupp.linearCombination_mapDomain
+#print axioms Roth.weight_mapDomain
+theorem replay {f : σ → τ} (hf : Function.Injective f) (r : τ → ℕ) (d : σ →₀ ℕ) :
+    Roth.weight r (d.mapDomain f) = Roth.weight (r ∘ f) d := by
+  simpa [Finsupp.sum_fintype, Roth.weight] using
+    Finsupp.sum_mapDomain_index_inj (s := d) (h := fun j n ↦ (n : ℝ) / r j) hf
+#print axioms replay
+end WeightMapDomainAssessment
+
+namespace WeightMapDomainExtra
+variable {σ τ : Type*} [Fintype σ] [Fintype τ]
+theorem no_injective (f : σ → τ) (r : τ → ℕ) (d : σ →₀ ℕ) :
+    Roth.weight r (d.mapDomain f) = Roth.weight (r ∘ f) d := by
+  have h : Finsupp.weight (fun j ↦ (r j : ℝ)⁻¹) (d.mapDomain f) =
+      Finsupp.weight ((fun j ↦ (r j : ℝ)⁻¹) ∘ f) d :=
+    Finsupp.linearCombination_mapDomain ℕ f d
+  simpa [Finsupp.weight_eq_sum, Roth.weight, nsmul_eq_mul, div_eq_mul_inv] using h
+theorem option_split (r : Option σ → ℕ) (d : σ →₀ ℕ) (n : ℕ) :
+    Roth.weight r (d.mapDomain some + Finsupp.single none n) =
+      Roth.weight (r ∘ some) d + n / r none := by
+  rw [Roth.weight_add, no_injective, Roth.weight_single]
+theorem fin_split (n : ℕ) (r : Fin (n + 1) → ℕ) (d : Fin n →₀ ℕ) (i : ℕ) :
+    Roth.weight r (d.mapDomain Fin.castSucc + Finsupp.single (Fin.last n) i) =
+      Roth.weight (r ∘ Fin.castSucc) d + i / r (Fin.last n) := by
+  rw [Roth.weight_add, no_injective, Roth.weight_single]
+theorem reversed (f : σ → τ) (r : τ → ℕ) (d : σ →₀ ℕ) :
+    Roth.weight (r ∘ f) d = Roth.weight r (d.mapDomain f) :=
+  (no_injective f r d).symm
+example : ¬ Function.Injective (fun _ : Bool ↦ ()) := by
+  intro h
+  have hbad : true = false := h rfl
+  cases hbad
+#print axioms no_injective
+#print axioms option_split
+#print axioms fin_split
+#print axioms reversed
+end WeightMapDomainExtra
+
+
+namespace WronskianMatrixAssessment
+open Polynomial
+#check @Roth.wronskianMatrix
+#print Roth.wronskianMatrix
+#print axioms Roth.wronskianMatrix
+noncomputable def semiringMatrix {R : Type*} [Semiring R] {n : ℕ}
+    (φ : Fin n → R[X]) : Matrix (Fin n) (Fin n) R[X] :=
+  Matrix.of fun i j ↦ Polynomial.hasseDeriv i (φ j)
+theorem exact_bridge {K : Type*} [Field K] {n : ℕ} (φ : Fin n → K[X]) :
+    semiringMatrix φ = Roth.wronskianMatrix φ := rfl
+theorem apply_bridge {K : Type*} [Field K] {n : ℕ} (φ : Fin n → K[X])
+    (i j : Fin n) : Roth.wronskianMatrix φ i j = Polynomial.hasseDeriv i (φ j) := rfl
+#print axioms semiringMatrix
+#print axioms exact_bridge
+#print axioms apply_bridge
+end WronskianMatrixAssessment
+
+
+namespace WronskianAssessment
+open Polynomial
+#check @Roth.wronskian
+#print Roth.wronskian
+#print axioms Roth.wronskian
+noncomputable def commRingWronskian {R : Type*} [CommRing R] {n : ℕ}
+    (φ : Fin n → R[X]) : R[X] :=
+  (Matrix.of fun i j : Fin n ↦ hasseDeriv i (φ j)).det
+theorem exact_bridge {K : Type*} [Field K] {n : ℕ} (φ : Fin n → K[X]) :
+    commRingWronskian φ = Roth.wronskian φ := rfl
+#print axioms commRingWronskian
+#print axioms exact_bridge
+end WronskianAssessment
+
+
+namespace WronskianDependentAssessment
+open Polynomial
+#check @Roth.wronskian_eq_zero_of_not_linearIndependent
+#print axioms Roth.wronskian_eq_zero_of_not_linearIndependent
+#check @AlternatingMap.map_linearDependent
+#check @Matrix.det_eq_zero_of_not_linearIndependent_cols
+theorem replay {K : Type*} [Field K] {l : ℕ} {φ : Fin l → K[X]}
+    (h : ¬ LinearIndependent K φ) : Roth.wronskian φ = 0 := by
+  obtain ⟨g, hg, ν₀, hν₀⟩ := Fintype.not_linearIndependent_iff.1 h
+  refine Matrix.exists_mulVec_eq_zero_iff.1 ⟨fun ν ↦ C (g ν), fun h0 ↦ hν₀ ?_, ?_⟩
+  · simpa using congrFun h0 ν₀
+  · ext1 μ
+    simpa [Roth.wronskianMatrix, Matrix.mulVec, dotProduct, ← smul_eq_C_mul, mul_comm]
+      using congrArg (hasseDeriv μ) hg
+#print axioms replay
+end WronskianDependentAssessment
+
+
+namespace WronskianDependentCaller
+open Polynomial
+theorem iff_rebuilt {K : Type*} [Field K] [CharZero K] {l : ℕ} {φ : Fin l → K[X]} :
+    Roth.wronskian φ = 0 ↔ ¬ LinearIndependent K φ := by
+  refine ⟨imp_not_comm.mp Roth.wronskian_ne_zero_of_linearIndependent, ?_⟩
+  intro h
+  apply Matrix.det_eq_zero_of_not_linearIndependent_cols
+  intro hc
+  exact h ((hc.restrict_scalars' K).of_comp
+    (LinearMap.pi fun μ : Fin l ↦ hasseDeriv (μ : ℕ)))
+#print axioms iff_rebuilt
+end WronskianDependentCaller
+
+
+namespace DetChooseAssessment
+open Polynomial
+#check @Roth.det_choose_eq
+#print axioms Roth.det_choose_eq
+#check @Matrix.det_eval_matrixOfPolynomials_eq_det_vandermonde
+#check @Nat.cast_choose_eq_descPochhammer_div
+theorem replay {K : Type*} [Field K] [CharZero K] {l : ℕ} (d : Fin l → ℕ) :
+    (Matrix.of fun μ ν : Fin l ↦ ((d ν).choose μ : K)).det =
+      (∏ μ : Fin l, ((μ : ℕ).factorial : K)⁻¹) *
+        ∏ i : Fin l, ∏ j ∈ Finset.Ioi i, ((d j : K) - d i) := by
+  have h1 : (Matrix.of fun μ ν : Fin l ↦ ((d ν).choose μ : K)) =
+      Matrix.of fun μ ν : Fin l ↦ ((μ : ℕ).factorial : K)⁻¹ *
+        (Matrix.of fun i j : Fin l ↦ (descPochhammer K j).eval (d i : K)).transpose μ ν := by
+    ext μ ν
+    simp [Nat.cast_choose_eq_descPochhammer_div, div_eq_inv_mul]
+  rw [h1, Matrix.det_mul_column, Matrix.det_transpose,
+    ← Matrix.det_eval_matrixOfPolynomials_eq_det_vandermonde (fun i ↦ (d i : K))
+      (fun j ↦ descPochhammer K j) (fun i ↦ descPochhammer_natDegree K _)
+      (fun i ↦ monic_descPochhammer K _), Matrix.det_vandermonde]
+#print axioms replay
+end DetChooseAssessment
+
+open Polynomial
+namespace DetChooseRingProbe
+theorem factorial_mul_det {R : Type*} [CommRing R] {l : ℕ} (d : Fin l → ℕ) :
+    (∏ μ : Fin l, ((μ : ℕ).factorial : R)) *
+      (Matrix.of fun μ ν : Fin l ↦ ((d ν).choose μ : R)).det =
+        ∏ i : Fin l, ∏ j ∈ Finset.Ioi i, ((d j : R) - d i) := by
+  nontriviality R
+  have hm (n : ℕ) : (descPochhammer R n).Monic := by
+    simpa only [descPochhammer_map] using
+      Polynomial.Monic.map (Int.castRingHom R) (monic_descPochhammer ℤ n)
+  have hd (n : ℕ) : (descPochhammer R n).natDegree = n := by
+    simpa only [descPochhammer_map] using
+      ((monic_descPochhammer ℤ n).natDegree_map (Int.castRingHom R)).trans
+        (descPochhammer_natDegree ℤ n)
+  have h1 : (Matrix.of fun i j : Fin l ↦ (descPochhammer R j).eval (d i : R)) =
+      (Matrix.of fun μ ν : Fin l ↦ ((μ : ℕ).factorial : R) * ((d ν).choose μ : R)).transpose := by
+    ext i j
+    simp only [Matrix.of_apply, Matrix.transpose_apply,
+      descPochhammer_eval_eq_descFactorial, Nat.descFactorial_eq_factorial_mul_choose,
+      Nat.cast_mul]
+  rw [← Matrix.det_mul_column, ← Matrix.det_transpose]
+  simp only [Matrix.of_apply]
+  rw [← h1, ← Matrix.det_eval_matrixOfPolynomials_eq_det_vandermonde (fun i ↦ (d i : R))
+      (fun j ↦ descPochhammer R j) (fun i ↦ hd i)
+      (fun i ↦ hm i), Matrix.det_vandermonde]
+#print axioms factorial_mul_det
+end DetChooseRingProbe
+
+namespace DetChooseRecover
+theorem inverse_from_ring {K : Type*} [Field K] {l : ℕ} (d : Fin l → ℕ)
+    (hf : ∀ μ : Fin l, ((μ : ℕ).factorial : K) ≠ 0) :
+    (Matrix.of fun μ ν : Fin l ↦ ((d ν).choose μ : K)).det =
+      (∏ μ : Fin l, ((μ : ℕ).factorial : K)⁻¹) *
+        ∏ i : Fin l, ∏ j ∈ Finset.Ioi i, ((d j : K) - d i) := by
+  have hP : (∏ μ : Fin l, ((μ : ℕ).factorial : K)) ≠ 0 :=
+    Finset.prod_ne_zero_iff.mpr (fun i _ ↦ hf i)
+  rw [Finset.prod_inv_distrib]
+  exact (eq_inv_mul_iff_mul_eq₀ hP).2 (DetChooseRingProbe.factorial_mul_det d)
+theorem charzero_from_ring {K : Type*} [Field K] [CharZero K] {l : ℕ} (d : Fin l → ℕ) :
+    (Matrix.of fun μ ν : Fin l ↦ ((d ν).choose μ : K)).det =
+      (∏ μ : Fin l, ((μ : ℕ).factorial : K)⁻¹) *
+        ∏ i : Fin l, ∏ j ∈ Finset.Ioi i, ((d j : K) - d i) :=
+  inverse_from_ring d (fun μ ↦ Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero (μ : ℕ)))
+#print axioms inverse_from_ring
+#print axioms charzero_from_ring
+end DetChooseRecover
+
+namespace DetChooseCaller
+open Polynomial
+theorem rebuilt {K : Type*} [Field K] [CharZero K] {l : ℕ} {φ : Fin l → K[X]}
+    (hφ : ∀ ν, φ ν ≠ 0) (hd : Function.Injective fun ν ↦ (φ ν).natDegree) :
+    Roth.wronskian φ ≠ 0 := by
+  intro h0
+  simpa [h0, DetChooseRecover.charzero_from_ring, eq_comm (a := 0),
+    Finset.prod_eq_zero_iff, sub_eq_zero, hφ, Nat.factorial_ne_zero, hd.eq_iff]
+      using Roth.coeff_wronskian_of_natDegree_injective (φ := φ)
+#print axioms rebuilt
+end DetChooseCaller
+
+
+namespace PrivateCoeffProductAssessment
+open Polynomial
+theorem replay {R : Type*} [CommSemiring R] {ι : Type*}
+    (s : Finset ι) (f : ι → R[X]) (n : ι → ℕ)
+    (h : ∀ i ∈ s, (f i).natDegree ≤ n i) :
+    (∏ i ∈ s, f i).coeff (∑ i ∈ s, n i) = ∏ i ∈ s, (f i).coeff (n i) := by
+  classical
+  induction s using Finset.induction_on with
+  | empty => simp
+  | insert a s has ih =>
+    simp only [Finset.forall_mem_insert] at h
+    rw [Finset.prod_insert has, Finset.sum_insert has, Finset.prod_insert has,
+      coeff_mul_add_eq_of_natDegree_le h.1 ((natDegree_prod_le _ _).trans (Finset.sum_le_sum h.2)),
+      ih h.2]
+#check @replay
+#print axioms replay
+#check @Polynomial.coeff_prod_of_natDegree_le
+end PrivateCoeffProductAssessment
+
+
+namespace SumInjectiveAssessment
+#check @Roth.sum_range_le_sum_of_injective
+#print axioms Roth.sum_range_le_sum_of_injective
+#check @Finset.sum_range_le_sum
+#check @Finset.sum_Ico_le_sum
+theorem replay {l : ℕ} (d : Fin l → ℕ) (hd : Function.Injective d) :
+    ∑ ν : Fin l, (ν : ℕ) ≤ ∑ ν, d ν := by
+  exact_mod_cast (show ((∑ ν : Fin l, (ν : ℕ) : ℕ) : ℤ) ≤
+      ((∑ ν, d ν : ℕ) : ℤ) by
+    simpa [Finset.card_image_of_injective _ hd, Finset.sum_image hd.injOn,
+      ← Fin.sum_univ_eq_sum_range, Nat.cast_sum] using
+      Finset.sum_range_le_sum (s := (Finset.univ.image d).map Nat.castEmbedding)
+        (c := 0) (by simp))
+#print axioms replay
+end SumInjectiveAssessment
+
+
+namespace CoeffWronskianAssessment
+open Polynomial
+#check @Roth.coeff_wronskian_of_natDegree_injective
+#print axioms Roth.coeff_wronskian_of_natDegree_injective
+theorem replay {K : Type*} [Field K] {l : ℕ} {φ : Fin l → K[X]} :
+    (Roth.wronskian φ).coeff (∑ ν, (φ ν).natDegree - ∑ ν : Fin l, (ν : ℕ)) =
+      (∏ ν, (φ ν).leadingCoeff) *
+        (Matrix.of fun μ ν : Fin l ↦ ((φ ν).natDegree.choose μ : K)).det := by
+  classical
+  have key (σ : Equiv.Perm (Fin l)) : (∏ i, hasseDeriv (σ i : ℕ) (φ i)).coeff
+      (∑ ν, (φ ν).natDegree - ∑ ν : Fin l, (ν : ℕ)) =
+      ∏ i, ((φ i).natDegree.choose (σ i) : K) * (φ i).leadingCoeff := by
+    by_cases h : ∀ i, (σ i : ℕ) ≤ (φ i).natDegree
+    · rw [← Equiv.sum_comp σ (fun i : Fin l ↦ (i : ℕ)),
+        ← Finset.sum_tsub_distrib _ fun i _ ↦ h i,
+        PrivateCoeffProductAssessment.replay _ _ _ fun i _ ↦ natDegree_hasseDeriv_le _ _]
+      refine Finset.prod_congr rfl fun i _ ↦ ?_
+      rw [hasseDeriv_coeff, Nat.sub_add_cancel (h i), leadingCoeff]
+    · push Not at h
+      obtain ⟨i, hi⟩ := h
+      rw [Finset.prod_eq_zero (Finset.mem_univ i) (hasseDeriv_eq_zero_of_lt_natDegree _ _ hi),
+        coeff_zero]
+      exact (Finset.prod_eq_zero (Finset.mem_univ i)
+        (by simp [Nat.choose_eq_zero_of_lt hi])).symm
+  rw [Roth.wronskian, Roth.wronskianMatrix, Matrix.det_apply', Matrix.det_apply', finsetSum_coeff,
+    Finset.mul_sum]
+  refine Finset.sum_congr rfl fun σ _ ↦ ?_
+  simp [coeff_intCast_mul, key, Finset.prod_mul_distrib, mul_comm, mul_assoc]
+#print axioms replay
+end CoeffWronskianAssessment

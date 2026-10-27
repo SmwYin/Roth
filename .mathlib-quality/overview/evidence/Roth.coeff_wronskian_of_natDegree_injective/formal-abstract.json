@@ -1,0 +1,233 @@
+{
+  "query": "coefficient of determinant of polynomial matrix with degree bounds d j - r i equals determinant of top coefficients",
+  "Finder": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.coeff_det_X_add_C_card\",\n      \"informal_name\": \"Leading Coefficient of Determinant of $ XA + B $ is Determinant of $ A $\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {n : Type u_1} {\u03b1 : Type u_2} [inst : DecidableEq n] [inst_1 : Fintype n] [inst_2 : CommRing \u03b1] (A B : Matrix n n \u03b1),\\n  (Polynomial.X \u2022 A.map \u21d1Polynomial.C + B.map \u21d1Polynomial.C).det.coeff (Fintype.card n) = A.det\",\n      \"informal_description\": \"For square matrices $ A $ and $ B $ over a commutative ring $ \\\\alpha $, the coefficient of $ X^{\\\\#n} $ in the determinant of the matrix $ X \\\\cdot A + B $ (where entries are lifted to polynomials via constant embedding) is equal to the determinant of $ A $. Here $ \\\\#n $ denotes the cardinality of the finite type $ n $.\",\n      \"path\": \"Mathlib.LinearAlgebra.Matrix.Polynomial\"\n    },\n    {\n      \"formal_name\": \"Polynomial.coeff_det_X_add_C_zero\",\n      \"informal_name\": \"Constant Term of Determinant Polynomial for $XA + B$\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {n : Type u_1} {\u03b1 : Type u_2} [inst : DecidableEq n] [inst_1 : Fintype n] [inst_2 : CommRing \u03b1] (A B : Matrix n n \u03b1),\\n  (Polynomial.X \u2022 A.map \u21d1Polynomial.C + B.map \u21d1Polynomial.C).det.coeff 0 = B.det\",\n      \"informal_description\": \"For square matrices $A$ and $B$ over a commutative ring $\\\\alpha$, the constant term (coefficient of $X^0$) of the determinant of the matrix polynomial $X \\\\cdot A + B$ (where entries are treated as constant polynomials) is equal to the determinant of $B$.\",\n      \"path\": \"Mathlib.LinearAlgebra.Matrix.Polynomial\"\n    },\n    {\n      \"formal_name\": \"Matrix.det_matrixOfPolynomials\",\n      \"informal_name\": \"Determinant of a Matrix of Monic Polynomials with Degree Conditions Equals One\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type v} [inst : CommRing R] {n : \u2115} (p : Fin n \u2192 Polynomial R),\\n  (\u2200 (i : Fin n), (p i).natDegree = \u2191i) \u2192 (\u2200 (i : Fin n), (p i).Monic) \u2192 (Matrix.of fun i j => (p j).coeff \u2191i).det = 1\",\n      \"informal_description\": \"For a commutative ring $ R $ and natural number $ n $, consider monic polynomials $ p_0, p_1, \\\\ldots, p_{n-1} $ in $ R[X] $ where each $ p_i $ has degree $ i $. Construct an $ n \\\\times n $ matrix $ M $ such that the entry in row $ i $ and column $ j $ is the coefficient of $ X^i $ in $ p_j $. Then the determinant of $ M $ is equal to 1.\",\n      \"path\": \"Mathlib.LinearAlgebra.Matrix.Block\"\n    },\n    {\n      \"formal_name\": \"Polynomial.leadingCoeff_det_X_one_add_C\",\n      \"informal_name\": \"Leading coefficient of determinant of X\u2022I + A is 1\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {n : Type u_1} {\u03b1 : Type u_2} [inst : DecidableEq n] [inst_1 : Fintype n] [inst_2 : CommRing \u03b1] (A : Matrix n n \u03b1),\\n  (Polynomial.X \u2022 1 + A.map \u21d1Polynomial.C).det.leadingCoeff = 1\",\n      \"informal_description\": \"For an $ n \\\\times n $ matrix $ A $ with entries in a commutative ring $ \\\\alpha $, the leading coefficient of the determinant of the matrix $ X \\\\cdot I + A $ (where $ X $ is the indeterminate, $ I $ is the identity matrix, and entries of $ A $ are embedded as constant polynomials) is equal to 1.\",\n      \"path\": \"Mathlib.LinearAlgebra.Matrix.Polynomial\"\n    },\n    {\n      \"formal_name\": \"eval_det\",\n      \"informal_name\": \"Determinant Evaluation Commutes with Polynomial Evaluation for Matrices\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {n : Type w} [inst : DecidableEq n] [inst_1 : Fintype n] {R : Type u_3} [inst_2 : CommRing R]\\n  (M : Matrix n n (Polynomial R)) (r : R),\\n  Polynomial.eval r M.det = (Polynomial.eval ((Matrix.scalar n) r) (matPolyEquiv M)).det\",\n      \"informal_description\": \"For a commutative ring $ R $, an $ n \\\\times n $ matrix $ M $ with entries in the polynomial ring $ R[X] $, and an element $ r \\\\in R $, evaluating the determinant of $ M $ at $ r $ equals the determinant of the matrix obtained by evaluating each entry of $ M $ at the scalar matrix corresponding to $ r $, under the canonical isomorphism between matrices over $ R[X] $ and polynomials over matrices in $ R $.\",\n      \"path\": \"Mathlib.RingTheory.MatrixPolynomialAlgebra\"\n    },\n    {\n      \"formal_name\": \"Matrix.coeff_det_one_add_X_smul_one\",\n      \"informal_name\": \"Coefficient of $X$ in $\\\\det(I + X M)$ Equals Trace of $M$\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u} [inst : CommRing R] {n : Type v} [inst_1 : DecidableEq n] [inst_2 : Fintype n] (M : Matrix n n R),\\n  (1 + Polynomial.X \u2022 M.map \u21d1Polynomial.C).det.coeff 1 = M.trace\",\n      \"informal_description\": \"For any $n \\\\times n$ matrix $M$ over a commutative ring $R$, the coefficient of $X$ in the determinant of the matrix $I + X M$ (where $X$ is the indeterminate in the polynomial ring $R[X]$) is equal to the trace of $M$. This identity connects the trace of a matrix to the linear term in the determinant expansion of $I + X M$.\",\n      \"path\": \"Mathlib.LinearAlgebra.Matrix.Charpoly.Coeff\"\n    },\n    {\n      \"formal_name\": \"Matrix.det_eval_matrixOfPolynomials_eq_det_vandermonde\",\n      \"informal_name\": \"Vandermonde Determinant Equals Monic Polynomial Evaluation Determinant\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u_1} [inst : CommRing R] {n : \u2115} (v : Fin n \u2192 R) (p : Fin n \u2192 Polynomial R),\\n  (\u2200 (i : Fin n), (p i).natDegree = \u2191i) \u2192\\n    (\u2200 (i : Fin n), (p i).Monic) \u2192 (Matrix.vandermonde v).det = (Matrix.of fun i j => Polynomial.eval (v i) (p j)).det\",\n      \"informal_description\": \"For a commutative ring $ R $, a vector $ v $ of length $ n $ with entries in $ R $, and a sequence of monic polynomials $ p_0, p_1, \\\\ldots, p_{n-1} $ over $ R $ where each $ p_i $ has degree $ i $, the determinant of the $ n \\\\times n $ Vandermonde matrix formed by $ v $ is equal to the determinant of the matrix whose $ (i,j) $-entry is $ p_j(v_i) $, the evaluation of polynomial $ p_j $ at $ v_i $. This equality holds under the conditions that each polynomial is monic and has natural degree equal to its index.\",\n      \"path\": \"Mathlib.LinearAlgebra.Vandermonde\"\n    },\n    {\n      \"formal_name\": \"Matrix.det_eq_sign_charpoly_coeff\",\n      \"informal_name\": \"Determinant-Characteristic Polynomial Coefficient Identity: $\\\\det(M) = (-1)^{\\\\#n} \\\\cdot \\\\text{coeff}_0(\\\\text{charpoly}(M))$\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u} [inst : CommRing R] {n : Type v} [inst_1 : DecidableEq n] [inst_2 : Fintype n] (M : Matrix n n R),\\n  M.det = (-1) ^ Fintype.card n * M.charpoly.coeff 0\",\n      \"informal_description\": \"For an $ n \\\\times n $ matrix $ M $ over a commutative ring $ R $, the determinant of $ M $ equals $ (-1) $ raised to the cardinality of $ n $ multiplied by the constant term of the characteristic polynomial of $ M $. This identity connects the determinant directly to the leading coefficient of the characteristic polynomial, reflecting the relationship between matrix invariants and polynomial coefficients.\",\n      \"path\": \"Mathlib.LinearAlgebra.Matrix.Charpoly.Coeff\"\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "items": [
+        {
+          "formal_name": "Polynomial.coeff_det_X_add_C_card",
+          "informal_name": "Leading Coefficient of Determinant of $ XA + B $ is Determinant of $ A $",
+          "kind": "theorem",
+          "type": "\u2200 {n : Type u_1} {\u03b1 : Type u_2} [inst : DecidableEq n] [inst_1 : Fintype n] [inst_2 : CommRing \u03b1] (A B : Matrix n n \u03b1),\n  (Polynomial.X \u2022 A.map \u21d1Polynomial.C + B.map \u21d1Polynomial.C).det.coeff (Fintype.card n) = A.det",
+          "informal_description": "For square matrices $ A $ and $ B $ over a commutative ring $ \\alpha $, the coefficient of $ X^{\\#n} $ in the determinant of the matrix $ X \\cdot A + B $ (where entries are lifted to polynomials via constant embedding) is equal to the determinant of $ A $. Here $ \\#n $ denotes the cardinality of the finite type $ n $.",
+          "path": "Mathlib.LinearAlgebra.Matrix.Polynomial"
+        },
+        {
+          "formal_name": "Polynomial.coeff_det_X_add_C_zero",
+          "informal_name": "Constant Term of Determinant Polynomial for $XA + B$",
+          "kind": "theorem",
+          "type": "\u2200 {n : Type u_1} {\u03b1 : Type u_2} [inst : DecidableEq n] [inst_1 : Fintype n] [inst_2 : CommRing \u03b1] (A B : Matrix n n \u03b1),\n  (Polynomial.X \u2022 A.map \u21d1Polynomial.C + B.map \u21d1Polynomial.C).det.coeff 0 = B.det",
+          "informal_description": "For square matrices $A$ and $B$ over a commutative ring $\\alpha$, the constant term (coefficient of $X^0$) of the determinant of the matrix polynomial $X \\cdot A + B$ (where entries are treated as constant polynomials) is equal to the determinant of $B$.",
+          "path": "Mathlib.LinearAlgebra.Matrix.Polynomial"
+        },
+        {
+          "formal_name": "Matrix.det_matrixOfPolynomials",
+          "informal_name": "Determinant of a Matrix of Monic Polynomials with Degree Conditions Equals One",
+          "kind": "theorem",
+          "type": "\u2200 {R : Type v} [inst : CommRing R] {n : \u2115} (p : Fin n \u2192 Polynomial R),\n  (\u2200 (i : Fin n), (p i).natDegree = \u2191i) \u2192 (\u2200 (i : Fin n), (p i).Monic) \u2192 (Matrix.of fun i j => (p j).coeff \u2191i).det = 1",
+          "informal_description": "For a commutative ring $ R $ and natural number $ n $, consider monic polynomials $ p_0, p_1, \\ldots, p_{n-1} $ in $ R[X] $ where each $ p_i $ has degree $ i $. Construct an $ n \\times n $ matrix $ M $ such that the entry in row $ i $ and column $ j $ is the coefficient of $ X^i $ in $ p_j $. Then the determinant of $ M $ is equal to 1.",
+          "path": "Mathlib.LinearAlgebra.Matrix.Block"
+        },
+        {
+          "formal_name": "Polynomial.leadingCoeff_det_X_one_add_C",
+          "informal_name": "Leading coefficient of determinant of X\u2022I + A is 1",
+          "kind": "theorem",
+          "type": "\u2200 {n : Type u_1} {\u03b1 : Type u_2} [inst : DecidableEq n] [inst_1 : Fintype n] [inst_2 : CommRing \u03b1] (A : Matrix n n \u03b1),\n  (Polynomial.X \u2022 1 + A.map \u21d1Polynomial.C).det.leadingCoeff = 1",
+          "informal_description": "For an $ n \\times n $ matrix $ A $ with entries in a commutative ring $ \\alpha $, the leading coefficient of the determinant of the matrix $ X \\cdot I + A $ (where $ X $ is the indeterminate, $ I $ is the identity matrix, and entries of $ A $ are embedded as constant polynomials) is equal to 1.",
+          "path": "Mathlib.LinearAlgebra.Matrix.Polynomial"
+        },
+        {
+          "formal_name": "eval_det",
+          "informal_name": "Determinant Evaluation Commutes with Polynomial Evaluation for Matrices",
+          "kind": "theorem",
+          "type": "\u2200 {n : Type w} [inst : DecidableEq n] [inst_1 : Fintype n] {R : Type u_3} [inst_2 : CommRing R]\n  (M : Matrix n n (Polynomial R)) (r : R),\n  Polynomial.eval r M.det = (Polynomial.eval ((Matrix.scalar n) r) (matPolyEquiv M)).det",
+          "informal_description": "For a commutative ring $ R $, an $ n \\times n $ matrix $ M $ with entries in the polynomial ring $ R[X] $, and an element $ r \\in R $, evaluating the determinant of $ M $ at $ r $ equals the determinant of the matrix obtained by evaluating each entry of $ M $ at the scalar matrix corresponding to $ r $, under the canonical isomorphism between matrices over $ R[X] $ and polynomials over matrices in $ R $.",
+          "path": "Mathlib.RingTheory.MatrixPolynomialAlgebra"
+        },
+        {
+          "formal_name": "Matrix.coeff_det_one_add_X_smul_one",
+          "informal_name": "Coefficient of $X$ in $\\det(I + X M)$ Equals Trace of $M$",
+          "kind": "theorem",
+          "type": "\u2200 {R : Type u} [inst : CommRing R] {n : Type v} [inst_1 : DecidableEq n] [inst_2 : Fintype n] (M : Matrix n n R),\n  (1 + Polynomial.X \u2022 M.map \u21d1Polynomial.C).det.coeff 1 = M.trace",
+          "informal_description": "For any $n \\times n$ matrix $M$ over a commutative ring $R$, the coefficient of $X$ in the determinant of the matrix $I + X M$ (where $X$ is the indeterminate in the polynomial ring $R[X]$) is equal to the trace of $M$. This identity connects the trace of a matrix to the linear term in the determinant expansion of $I + X M$.",
+          "path": "Mathlib.LinearAlgebra.Matrix.Charpoly.Coeff"
+        },
+        {
+          "formal_name": "Matrix.det_eval_matrixOfPolynomials_eq_det_vandermonde",
+          "informal_name": "Vandermonde Determinant Equals Monic Polynomial Evaluation Determinant",
+          "kind": "theorem",
+          "type": "\u2200 {R : Type u_1} [inst : CommRing R] {n : \u2115} (v : Fin n \u2192 R) (p : Fin n \u2192 Polynomial R),\n  (\u2200 (i : Fin n), (p i).natDegree = \u2191i) \u2192\n    (\u2200 (i : Fin n), (p i).Monic) \u2192 (Matrix.vandermonde v).det = (Matrix.of fun i j => Polynomial.eval (v i) (p j)).det",
+          "informal_description": "For a commutative ring $ R $, a vector $ v $ of length $ n $ with entries in $ R $, and a sequence of monic polynomials $ p_0, p_1, \\ldots, p_{n-1} $ over $ R $ where each $ p_i $ has degree $ i $, the determinant of the $ n \\times n $ Vandermonde matrix formed by $ v $ is equal to the determinant of the matrix whose $ (i,j) $-entry is $ p_j(v_i) $, the evaluation of polynomial $ p_j $ at $ v_i $. This equality holds under the conditions that each polynomial is monic and has natural degree equal to its index.",
+          "path": "Mathlib.LinearAlgebra.Vandermonde"
+        },
+        {
+          "formal_name": "Matrix.det_eq_sign_charpoly_coeff",
+          "informal_name": "Determinant-Characteristic Polynomial Coefficient Identity: $\\det(M) = (-1)^{\\#n} \\cdot \\text{coeff}_0(\\text{charpoly}(M))$",
+          "kind": "theorem",
+          "type": "\u2200 {R : Type u} [inst : CommRing R] {n : Type v} [inst_1 : DecidableEq n] [inst_2 : Fintype n] (M : Matrix n n R),\n  M.det = (-1) ^ Fintype.card n * M.charpoly.coeff 0",
+          "informal_description": "For an $ n \\times n $ matrix $ M $ over a commutative ring $ R $, the determinant of $ M $ equals $ (-1) $ raised to the cardinality of $ n $ multiplied by the constant term of the characteristic polynomial of $ M $. This identity connects the determinant directly to the leading coefficient of the characteristic polynomial, reflecting the relationship between matrix invariants and polynomial coefficients.",
+          "path": "Mathlib.LinearAlgebra.Matrix.Charpoly.Coeff"
+        }
+      ]
+    },
+    "isError": false
+  },
+  "Loogle": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.natDegree_det_X_add_C_le\",\n      \"type\": \" {n : Type u_1} {\u03b1 : Type u_2} [DecidableEq n] [Fintype n] [CommRing \u03b1] (A B : Matrix n n \u03b1) : (Polynomial.X \u2022 A.map \u21d1Polynomial.C + B.map \u21d1Polynomial.C).det.natDegree \u2264 Fintype.card n\",\n      \"module\": \"Mathlib.LinearAlgebra.Matrix.Polynomial\"\n    },\n    {\n      \"name\": \"Matrix.det_matrixOfPolynomials\",\n      \"type\": \" {R : Type v} [CommRing R] {n : \u2115} (p : Fin n \u2192 Polynomial R) (h_deg : \u2200 (i : Fin n), (p i).natDegree = \u2191i) (h_monic : \u2200 (i : Fin n), (p i).Monic) : (Matrix.of fun i j => (p j).coeff \u2191i).det = 1\",\n      \"module\": \"Mathlib.LinearAlgebra.Matrix.Block\"\n    },\n    {\n      \"name\": \"Matrix.det_eval_matrixOfPolynomials_eq_det_vandermonde\",\n      \"type\": \" {R : Type u_1} [CommRing R] {n : \u2115} (v : Fin n \u2192 R) (p : Fin n \u2192 Polynomial R) (h_deg : \u2200 (i : Fin n), (p i).natDegree = \u2191i) (h_monic : \u2200 (i : Fin n), (p i).Monic) : (Matrix.vandermonde v).det = (Matrix.of fun i j => Polynomial.eval (v i) (p j)).det\",\n      \"module\": \"Mathlib.LinearAlgebra.Vandermonde\"\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "items": [
+        {
+          "name": "Polynomial.natDegree_det_X_add_C_le",
+          "type": " {n : Type u_1} {\u03b1 : Type u_2} [DecidableEq n] [Fintype n] [CommRing \u03b1] (A B : Matrix n n \u03b1) : (Polynomial.X \u2022 A.map \u21d1Polynomial.C + B.map \u21d1Polynomial.C).det.natDegree \u2264 Fintype.card n",
+          "module": "Mathlib.LinearAlgebra.Matrix.Polynomial"
+        },
+        {
+          "name": "Matrix.det_matrixOfPolynomials",
+          "type": " {R : Type v} [CommRing R] {n : \u2115} (p : Fin n \u2192 Polynomial R) (h_deg : \u2200 (i : Fin n), (p i).natDegree = \u2191i) (h_monic : \u2200 (i : Fin n), (p i).Monic) : (Matrix.of fun i j => (p j).coeff \u2191i).det = 1",
+          "module": "Mathlib.LinearAlgebra.Matrix.Block"
+        },
+        {
+          "name": "Matrix.det_eval_matrixOfPolynomials_eq_det_vandermonde",
+          "type": " {R : Type u_1} [CommRing R] {n : \u2115} (v : Fin n \u2192 R) (p : Fin n \u2192 Polynomial R) (h_deg : \u2200 (i : Fin n), (p i).natDegree = \u2191i) (h_monic : \u2200 (i : Fin n), (p i).Monic) : (Matrix.vandermonde v).det = (Matrix.of fun i j => Polynomial.eval (v i) (p j)).det",
+          "module": "Mathlib.LinearAlgebra.Vandermonde"
+        }
+      ]
+    },
+    "isError": false
+  },
+  "LeanSearch": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"items\": [\n    {\n      \"name\": \"Matrix.det_matrixOfPolynomials\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Matrix.Block\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type v} [inst : CommRing R] {n : \u2115} (p : Fin n \u2192 Polynomial R),\\n  (\u2200 (i : Fin n), (p i).natDegree = \u2191i) \u2192 (\u2200 (i : Fin n), (p i).Monic) \u2192 (Matrix.of fun i j => (p j).coeff \u2191i).det = 1\"\n    },\n    {\n      \"name\": \"eval_det\",\n      \"module_name\": \"Mathlib.RingTheory.MatrixPolynomialAlgebra\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {n : Type w} [inst : DecidableEq n] [inst_1 : Fintype n] {R : Type u_3} [inst_2 : CommRing R]\\n  (M : Matrix n n (Polynomial R)) (r : R),\\n  Polynomial.eval r M.det = (Polynomial.eval ((Matrix.scalar n) r) (matPolyEquiv M)).det\"\n    },\n    {\n      \"name\": \"matPolyEquiv_coeff_apply_aux_2\",\n      \"module_name\": \"Mathlib.RingTheory.MatrixPolynomialAlgebra\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u_1} [inst : CommSemiring R] {n : Type w} [inst_1 : DecidableEq n] [inst_2 : Fintype n] (i j : n)\\n  (p : Polynomial R) (k : \u2115), (matPolyEquiv (Matrix.single i j p)).coeff k = Matrix.single i j (p.coeff k)\"\n    },\n    {\n      \"name\": \"Matrix.det_eq_sign_charpoly_coeff\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Matrix.Charpoly.Coeff\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u} [inst : CommRing R] {n : Type v} [inst_1 : DecidableEq n] [inst_2 : Fintype n] (M : Matrix n n R),\\n  M.det = (-1) ^ Fintype.card n * M.charpoly.coeff 0\"\n    },\n    {\n      \"name\": \"matPolyEquiv_coeff_apply\",\n      \"module_name\": \"Mathlib.RingTheory.MatrixPolynomialAlgebra\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u_1} [inst : CommSemiring R] {n : Type w} [inst_1 : DecidableEq n] [inst_2 : Fintype n]\\n  (m : Matrix n n (Polynomial R)) (k : \u2115) (i j : n), (matPolyEquiv m).coeff k i j = (m i j).coeff k\"\n    },\n    {\n      \"name\": \"Polynomial.leadingCoeff_det_X_one_add_C\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Matrix.Polynomial\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {n : Type u_1} {\u03b1 : Type u_2} [inst : DecidableEq n] [inst_1 : Fintype n] [inst_2 : CommRing \u03b1] (A : Matrix n n \u03b1),\\n  (Polynomial.X \u2022 1 + A.map \u21d1Polynomial.C).det.leadingCoeff = 1\"\n    },\n    {\n      \"name\": \"Matrix.charpoly_coeff_eq_prod_coeff_of_le\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Matrix.Charpoly.Coeff\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u} [inst : CommRing R] {n : Type v} [inst_1 : DecidableEq n] [inst_2 : Fintype n] (M : Matrix n n R)\\n  {k : \u2115}, Fintype.card n - 1 \u2264 k \u2192 M.charpoly.coeff k = (\u220f i, (Polynomial.X - Polynomial.C (M i i))).coeff k\"\n    },\n    {\n      \"name\": \"Polynomial.coeff_det_X_add_C_card\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Matrix.Polynomial\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {n : Type u_1} {\u03b1 : Type u_2} [inst : DecidableEq n] [inst_1 : Fintype n] [inst_2 : CommRing \u03b1] (A B : Matrix n n \u03b1),\\n  (Polynomial.X \u2022 A.map \u21d1Polynomial.C + B.map \u21d1Polynomial.C).det.coeff (Fintype.card n) = A.det\"\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "items": [
+        {
+          "name": "Matrix.det_matrixOfPolynomials",
+          "module_name": "Mathlib.LinearAlgebra.Matrix.Block",
+          "kind": "theorem",
+          "type": "\u2200 {R : Type v} [inst : CommRing R] {n : \u2115} (p : Fin n \u2192 Polynomial R),\n  (\u2200 (i : Fin n), (p i).natDegree = \u2191i) \u2192 (\u2200 (i : Fin n), (p i).Monic) \u2192 (Matrix.of fun i j => (p j).coeff \u2191i).det = 1"
+        },
+        {
+          "name": "eval_det",
+          "module_name": "Mathlib.RingTheory.MatrixPolynomialAlgebra",
+          "kind": "theorem",
+          "type": "\u2200 {n : Type w} [inst : DecidableEq n] [inst_1 : Fintype n] {R : Type u_3} [inst_2 : CommRing R]\n  (M : Matrix n n (Polynomial R)) (r : R),\n  Polynomial.eval r M.det = (Polynomial.eval ((Matrix.scalar n) r) (matPolyEquiv M)).det"
+        },
+        {
+          "name": "matPolyEquiv_coeff_apply_aux_2",
+          "module_name": "Mathlib.RingTheory.MatrixPolynomialAlgebra",
+          "kind": "theorem",
+          "type": "\u2200 {R : Type u_1} [inst : CommSemiring R] {n : Type w} [inst_1 : DecidableEq n] [inst_2 : Fintype n] (i j : n)\n  (p : Polynomial R) (k : \u2115), (matPolyEquiv (Matrix.single i j p)).coeff k = Matrix.single i j (p.coeff k)"
+        },
+        {
+          "name": "Matrix.det_eq_sign_charpoly_coeff",
+          "module_name": "Mathlib.LinearAlgebra.Matrix.Charpoly.Coeff",
+          "kind": "theorem",
+          "type": "\u2200 {R : Type u} [inst : CommRing R] {n : Type v} [inst_1 : DecidableEq n] [inst_2 : Fintype n] (M : Matrix n n R),\n  M.det = (-1) ^ Fintype.card n * M.charpoly.coeff 0"
+        },
+        {
+          "name": "matPolyEquiv_coeff_apply",
+          "module_name": "Mathlib.RingTheory.MatrixPolynomialAlgebra",
+          "kind": "theorem",
+          "type": "\u2200 {R : Type u_1} [inst : CommSemiring R] {n : Type w} [inst_1 : DecidableEq n] [inst_2 : Fintype n]\n  (m : Matrix n n (Polynomial R)) (k : \u2115) (i j : n), (matPolyEquiv m).coeff k i j = (m i j).coeff k"
+        },
+        {
+          "name": "Polynomial.leadingCoeff_det_X_one_add_C",
+          "module_name": "Mathlib.LinearAlgebra.Matrix.Polynomial",
+          "kind": "theorem",
+          "type": "\u2200 {n : Type u_1} {\u03b1 : Type u_2} [inst : DecidableEq n] [inst_1 : Fintype n] [inst_2 : CommRing \u03b1] (A : Matrix n n \u03b1),\n  (Polynomial.X \u2022 1 + A.map \u21d1Polynomial.C).det.leadingCoeff = 1"
+        },
+        {
+          "name": "Matrix.charpoly_coeff_eq_prod_coeff_of_le",
+          "module_name": "Mathlib.LinearAlgebra.Matrix.Charpoly.Coeff",
+          "kind": "theorem",
+          "type": "\u2200 {R : Type u} [inst : CommRing R] {n : Type v} [inst_1 : DecidableEq n] [inst_2 : Fintype n] (M : Matrix n n R)\n  {k : \u2115}, Fintype.card n - 1 \u2264 k \u2192 M.charpoly.coeff k = (\u220f i, (Polynomial.X - Polynomial.C (M i i))).coeff k"
+        },
+        {
+          "name": "Polynomial.coeff_det_X_add_C_card",
+          "module_name": "Mathlib.LinearAlgebra.Matrix.Polynomial",
+          "kind": "theorem",
+          "type": "\u2200 {n : Type u_1} {\u03b1 : Type u_2} [inst : DecidableEq n] [inst_1 : Fintype n] [inst_2 : CommRing \u03b1] (A B : Matrix n n \u03b1),\n  (Polynomial.X \u2022 A.map \u21d1Polynomial.C + B.map \u21d1Polynomial.C).det.coeff (Fintype.card n) = A.det"
+        }
+      ]
+    },
+    "isError": false
+  },
+  "local": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.coeff_det_X_add_C_card\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/Polynomial.lean\"\n    },\n    {\n      \"name\": \"Polynomial.coeff_det_X_add_C_zero\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/Polynomial.lean\"\n    },\n    {\n      \"name\": \"Matrix.coeff_det_one_add_X_smul_one\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/Charpoly/Coeff.lean\"\n    },\n    {\n      \"name\": \"Matrix.coeff_det_one_add_X_smul_eq_sum_minors\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/Charpoly/Coeff.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+      }
+    ],
+    "structuredContent": {
+      "items": [
+        {
+          "name": "Polynomial.coeff_det_X_add_C_card",
+          "kind": "theorem",
+          "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/Polynomial.lean"
+        },
+        {
+          "name": "Polynomial.coeff_det_X_add_C_zero",
+          "kind": "theorem",
+          "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/Polynomial.lean"
+        },
+        {
+          "name": "Matrix.coeff_det_one_add_X_smul_one",
+          "kind": "lemma",
+          "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/Charpoly/Coeff.lean"
+        },
+        {
+          "name": "Matrix.coeff_det_one_add_X_smul_eq_sum_minors",
+          "kind": "theorem",
+          "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/Charpoly/Coeff.lean"
+        }
+      ],
+      "index": "unavailable"
+    },
+    "isError": false
+  },
+  "requests": [
+    {
+      "tool": "lean_leanfinder",
+      "arguments": {
+        "query": "coefficient of determinant of polynomial matrix with degree bounds d j - r i equals determinant of top coefficients",
+        "num_results": 8
+      }
+    },
+    {
+      "tool": "lean_loogle",
+      "arguments": {
+        "query": "Matrix.det, Polynomial.natDegree",
+        "num_results": 12
+      }
+    },
+    {
+      "tool": "lean_leansearch",
+      "arguments": {
+        "query": "coefficient of determinant of polynomial matrix with degree bounds d j - r i equals determinant of top coefficients",
+        "num_results": 8
+      }
+    },
+    {
+      "tool": "lean_local_search",
+      "arguments": {
+        "query": "coeff_det",
+        "limit": 20
+      }
+    }
+  ]
+}
