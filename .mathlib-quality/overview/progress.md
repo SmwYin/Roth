@@ -3,7 +3,7 @@
 Status: **in_progress**, 2026-10-27. Branch: `ramin-cleanup`.
 Production Lean files and all pins match baseline `99f19fd`.
 
-**Completed: 164 / 293 written declarations.**
+**Completed: 165 / 293 written declarations.**
 This counts the current overview assessments, separately from the earlier code cleanup.
 
 | # | Completed declaration | Applicable workflow | Verdict | Report |
@@ -172,8 +172,9 @@ This counts the current overview assessments, separately from the earlier code c
 | 162 | `Roth.degreeOf_uniqueAlgEquiv_symm` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.degreeOf_uniqueAlgEquiv_symm.md) |
 | 163 | `Roth.degreeOf_rename_mul_aeval` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.degreeOf_rename_mul_aeval.md) |
 | 164 | `Roth.degreeOf_none_rename_mul_aeval` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.degreeOf_none_rename_mul_aeval.md) |
+| 165 | `Roth.linearIndependent_coordinate_polynomials_aux` | overview-private-prefilter; accepted complete | SKIP | [Detailed report](mathlibable/Roth.linearIndependent_coordinate_polynomials_aux.md) |
 
-**Next declaration: `Roth.linearIndependent_coordinate_polynomials_aux`**, `Roth/Separation.lean:235`.
+**Next declaration: `Roth.eq_sum_aeval_basis_coeffNone_aux`**, `Roth/Separation.lean:265`.
 Only the listed assessments are complete. No partial assessment was committed.
 
 On restart: read [README](README.md), [machine progress](progress.json), and

@@ -1,0 +1,45 @@
+{
+  "file": "Roth/Separation.lean",
+  "line": 235,
+  "name": "Roth.linearIndependent_coordinate_polynomials_aux",
+  "short": "linearIndependent_coordinate_polynomials_aux",
+  "kind": "lemma",
+  "visibility": "private",
+  "end_line": 262,
+  "source": "private lemma linearIndependent_coordinate_polynomials_aux {R M : Type*} [CommRing R]\n    [AddCommMonoid M] [Module R M] {n l : ℕ} (v : Fin (n + 1) → M)\n    (b : Module.Basis (Fin l) R (Submodule.span R (Set.range v))) :\n    LinearIndependent R (fun ρ ↦ ∑ ν : Fin (n + 1),\n      Polynomial.C (b.repr ⟨v ν, Submodule.subset_span ⟨ν, rfl⟩⟩ ρ) * Polynomial.X ^ (ν : ℕ)) := by\n  classical\n  let a := fun ν ρ ↦ b.repr ⟨v ν, Submodule.subset_span ⟨ν, rfl⟩⟩ ρ\n  rw [Fintype.linearIndependent_iff]\n  intro g hg ρ₀\n  have hcoeff : ∀ ν : Fin (n + 1), ∑ ρ, g ρ * a ν ρ = 0 := by\n    intro ν\n    have h1 := congrArg (fun p : Polynomial R ↦ p.coeff ν) hg\n    simp only [Polynomial.finsetSum_coeff, Polynomial.coeff_smul, smul_eq_mul,\n      Polynomial.coeff_C_mul_X_pow, Polynomial.coeff_zero] at h1\n    rw [← h1]\n    refine Finset.sum_congr rfl fun ρ _ ↦ ?_\n    rw [Finset.sum_eq_single ν (fun ν' _ hν' ↦ ite_eq_right fun h ↦ hν' (Fin.ext h).symm)\n      (fun h ↦ absurd (Finset.mem_univ ν) h), ite_eq_left rfl]\n  let f : Submodule.span R (Set.range v) →ₗ[R] R := ∑ ρ, g ρ • b.coord ρ\n  have hf : f = 0 := LinearMap.ext_on Submodule.span_span_coe_preimage fun x hx ↦ by\n    obtain ⟨ν, hν⟩ := hx\n    obtain rfl : x = ⟨v ν, Submodule.subset_span ⟨ν, rfl⟩⟩ := Subtype.ext hν.symm\n    simpa only [f, a, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul,\n      Module.Basis.coord_apply, LinearMap.zero_apply] using hcoeff ν\n  simpa only [f, LinearMap.sum_apply, LinearMap.smul_apply, Module.Basis.coord_apply,\n    Module.Basis.repr_self, Finsupp.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero,\n    Finset.sum_ite_eq, Finset.mem_univ, ite_true, LinearMap.zero_apply] using\n    LinearMap.congr_fun hf (b ρ₀)",
+  "signature": "private lemma linearIndependent_coordinate_polynomials_aux {R M : Type*} [CommRing R]\n    [AddCommMonoid M] [Module R M] {n l : ℕ} (v : Fin (n + 1) → M)\n    (b : Module.Basis (Fin l) R (Submodule.span R (Set.range v))) :\n    LinearIndependent R (fun ρ ↦ ∑ ν : Fin (n + 1),\n      Polynomial.C (b.repr ⟨v ν, Submodule.subset_span ⟨ν, rfl⟩⟩ ρ) * Polynomial.X ^ (ν : ℕ))",
+  "body": "by\n  classical\n  let a := fun ν ρ ↦ b.repr ⟨v ν, Submodule.subset_span ⟨ν, rfl⟩⟩ ρ\n  rw [Fintype.linearIndependent_iff]\n  intro g hg ρ₀\n  have hcoeff : ∀ ν : Fin (n + 1), ∑ ρ, g ρ * a ν ρ = 0 := by\n    intro ν\n    have h1 := congrArg (fun p : Polynomial R ↦ p.coeff ν) hg\n    simp only [Polynomial.finsetSum_coeff, Polynomial.coeff_smul, smul_eq_mul,\n      Polynomial.coeff_C_mul_X_pow, Polynomial.coeff_zero] at h1\n    rw [← h1]\n    refine Finset.sum_congr rfl fun ρ _ ↦ ?_\n    rw [Finset.sum_eq_single ν (fun ν' _ hν' ↦ ite_eq_right fun h ↦ hν' (Fin.ext h).symm)\n      (fun h ↦ absurd (Finset.mem_univ ν) h), ite_eq_left rfl]\n  let f : Submodule.span R (Set.range v) →ₗ[R] R := ∑ ρ, g ρ • b.coord ρ\n  have hf : f = 0 := LinearMap.ext_on Submodule.span_span_coe_preimage fun x hx ↦ by\n    obtain ⟨ν, hν⟩ := hx\n    obtain rfl : x = ⟨v ν, Submodule.subset_span ⟨ν, rfl⟩⟩ := Subtype.ext hν.symm\n    simpa only [f, a, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul,\n      Module.Basis.coord_apply, LinearMap.zero_apply] using hcoeff ν\n  simpa only [f, LinearMap.sum_apply, LinearMap.smul_apply, Module.Basis.coord_apply,\n    Module.Basis.repr_self, Finsupp.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero,\n    Finset.sum_ite_eq, Finset.mem_univ, ite_true, LinearMap.zero_apply] using\n    LinearMap.congr_fun hf (b ρ₀)",
+  "proof_lines": 24,
+  "sha256": "60eeab2999cd18324c56efb41820298d6d096775aca844bd302ac118eac2b771",
+  "what": "Coordinate polynomials obtained from a basis of a span are linearly independent.",
+  "how": "A vanishing polynomial combination gives coefficient identities; form a linear functional and use LinearMap.ext_on on the spanning family, then evaluate it on basis vectors.",
+  "hypotheses": "Module over a commutative ring with a finite indexed spanning family and basis.",
+  "source_body_refs": [],
+  "source_type_refs": [],
+  "source_callers": [
+    {
+      "name": "Roth.exists_separated_representation",
+      "file": "Roth/Separation.lean",
+      "line": 325
+    }
+  ],
+  "notes": [],
+  "input_file_sha256": "4ac885af6c9973d40f68bd2e6c42185f02a9996271ccaa67d4932d27e85a7d0e",
+  "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+  "section_context": "Namespace Roth; open MvPolynomial. Ambient τ : Type*. Field section: K : Type*, [Field K]. Ambient [Fintype τ] and [DecidableEq τ] are explicitly omitted around general declarations; unused section instances are not implicit mathematical hypotheses. Inline binders override/add context. ",
+  "uses_from_project": [],
+  "used_by_in_file": [
+    "Roth.exists_separated_representation"
+  ],
+  "used_by_other_files": [],
+  "assignment_offset": 367,
+  "project_body_refs": [],
+  "project_type_refs": [],
+  "project_callers": [
+    {
+      "name": "Roth.exists_separated_representation",
+      "file": "Roth/Separation.lean",
+      "line": 325
+    }
+  ]
+}

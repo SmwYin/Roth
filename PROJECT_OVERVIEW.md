@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 164/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 165/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 164; remaining: 129.
-- Verdicts: 18 NO-composable-from-mathlib, 13 YES-add-as-is, 20 YES-but-generalise-first, 36 NO-mathlib-has-it, 50 BORDERLINE-needs-human, 27 SKIP.
+- Completed applicable assessments: 165; remaining: 128.
+- Verdicts: 18 NO-composable-from-mathlib, 13 YES-add-as-is, 20 YES-but-generalise-first, 36 NO-mathlib-has-it, 50 BORDERLINE-needs-human, 28 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -1836,6 +1836,19 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: explicit use count: 1; external to file use count: 0; explicit call sites: {'file': 'Roth/Separation.lean', 'line': 557, 'caller': 'Roth.exists_det_eq_mul'}; direct kernel value consumers: Roth.exists_det_eq_mul; inline derivations: None
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.degreeOf_none_rename_mul_aeval.md).
 
+### Completed: `Roth.linearIndependent_coordinate_polynomials_aux`
+
+- Type: `∀ {R : Type u_3} {M : Type u_4}
+  [inst : CommRing R] [inst_1 : AddCommMonoid M] [inst_2 : Module R M] {n l : ℕ} (v : Fin (n + 1) → M)
+  (b : Module.Basis (Fin l) R ↥(Submodule.span R (Set.range v))),
+  LinearIndependent R fun ρ ↦ ∑ ν, Polynomial.C ((b.repr ⟨v ν, ⋯⟩) ρ) * Polynomial.X ^ ↑ν`
+- What: Coordinate polynomials obtained by writing a finite spanning family in an arbitrary finite basis are linearly independent.
+- How: A vanishing polynomial combination gives coefficient identities; form a linear functional and use LinearMap.ext_on on the spanning family, then evaluate it on basis vectors.
+- Hypotheses: Module over a commutative ring with a finite indexed spanning family and basis. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.
+- Project dependencies: None
+- Caller summary: 1 explicit source caller declarations, all in Separation.lean; 1 direct original value consumers. Exact separate lists retained. Entire Separation module proof bodies replay successfully with fresh target name.
+- Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.linearIndependent_coordinate_polynomials_aux.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -2190,6 +2203,8 @@ Completed `Roth.degreeOf_rename_mul_aeval`: verdict: BORDERLINE-needs-human; pos
 
 Completed `Roth.degreeOf_none_rename_mul_aeval`: All15 methods/forms executed; canonical natDegree_optionEquivLeft, Polynomial.natDegree_C_mul, natDegree_C_mul_of_mul_ne_zero and injective coefficient map degree verified.
 
+Completed `Roth.linearIndependent_coordinate_polynomials_aux`: A vanishing linear combination gives one coefficient identity for each member of the spanning family. The corresponding weighted sum of basis coordinate functionals vanishes on that family, hence on its span by LinearMap.ext_on; evaluating on each basis vector forces every scalar coefficient to vanish. This is a live private linear-algebra component of the separated representation, distinct from the basis-existence and polynomial reconstruction helpers.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -2519,6 +2534,8 @@ Completed `Roth.degreeOf_uniqueAlgEquiv_symm`: The selected-variable/natDegree c
 Completed `Roth.degreeOf_rename_mul_aeval`: Product-degree additivity plus injective renaming are existing mathlib facts., Analogous none-variable theorem is distinct because its RHS is V.natDegree.
 
 Completed `Roth.degreeOf_none_rename_mul_aeval`: Canonical constant-multiplication degree law exists, but old separated form needs an actual new AlgHom normalization proof.
+
+Completed `Roth.linearIndependent_coordinate_polynomials_aux`: The helper has a distinct role in the separated polynomial proof as described in the structural review; no duplicate full construction is introduced.
 
 ## Part 5: Generalization opportunities
 
@@ -2853,6 +2870,8 @@ Completed `Roth.degreeOf_rename_mul_aeval`: CommSemiring R + NoZeroDivisors R co
 
 Completed `Roth.degreeOf_none_rename_mul_aeval`: CommSemiring+NoZeroDivisors verified; arbitrary CommSemiring point-local V=0 or U*(V.map C).leadingCoeff≠0 verified. U-nonzero and zero-divisor counterexamples compiled.
 
+Completed `Roth.linearIndependent_coordinate_polynomials_aux`: No public generality claim under the private prefilter; preserve the existing definition and interface.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -3183,6 +3202,8 @@ Completed `Roth.degreeOf_uniqueAlgEquiv_symm`: Potential named uniqueAlgEquiv de
 Completed `Roth.degreeOf_rename_mul_aeval`: Design choice between degree preservation under multiplication by a nonzero zero-degree factor and degree zero outside the range of a renaming. No global absence claim.
 
 Completed `Roth.degreeOf_none_rename_mul_aeval`: Design choice: general optionEquivLeft/rename-some AlgHom normalization bridge versus further separated degree wrapper.
+
+Completed `Roth.linearIndependent_coordinate_polynomials_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 ## Part 7: Junk / removable
 
@@ -3517,6 +3538,8 @@ Completed `Roth.degreeOf_rename_mul_aeval`: Not junk: one explicit project use a
 
 Completed `Roth.degreeOf_none_rename_mul_aeval`: Not dead: one explicit and direct kernel consumer, Roth.exists_det_eq_mul.
 
+Completed `Roth.linearIndependent_coordinate_polynomials_aux`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -3685,6 +3708,7 @@ Completed `Roth.degreeOf_none_rename_mul_aeval`: Not dead: one explicit and dire
 | 162 | `Roth.degreeOf_uniqueAlgEquiv_symm` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.degreeOf_uniqueAlgEquiv_symm.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.degreeOf_uniqueAlgEquiv_symm/root-acceptance.json) |
 | 163 | `Roth.degreeOf_rename_mul_aeval` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.degreeOf_rename_mul_aeval.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.degreeOf_rename_mul_aeval/root-acceptance.json) |
 | 164 | `Roth.degreeOf_none_rename_mul_aeval` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.degreeOf_none_rename_mul_aeval.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.degreeOf_none_rename_mul_aeval/root-acceptance.json) |
+| 165 | `Roth.linearIndependent_coordinate_polynomials_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.linearIndependent_coordinate_polynomials_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.linearIndependent_coordinate_polynomials_aux/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -4012,12 +4036,14 @@ Completed `Roth.degreeOf_rename_mul_aeval` action: Keep local while deciding thr
 
 Completed `Roth.degreeOf_none_rename_mul_aeval` action: BORDERLINE: retain provisionally; decide upstream bridge/wrapper grain; weaken/refactor in separate cleanup. Full caller inline proof verified.
 
+Completed `Roth.linearIndependent_coordinate_polynomials_aux` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.linearIndependent_coordinate_polynomials_aux` next. Supporting identities receive their own applicable checks.
+   `Roth.eq_sum_aeval_basis_coeffNone_aux` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 
