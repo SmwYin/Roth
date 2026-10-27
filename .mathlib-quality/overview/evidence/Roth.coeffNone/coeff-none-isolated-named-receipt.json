@@ -1,0 +1,147 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nnamespace CoeffNone152Named\nopen MvPolynomial\nuniverse u v\nvariable {R : Type u} {τ : Type v} [CommSemiring R]\n#check_failure Roth.coeffNone\n#check @MvPolynomial.optionEquivLeft\n#check @Polynomial.coeff\n#check @Polynomial.lcoeff\nnoncomputable def direct (P : MvPolynomial (Option τ) R) (ν : ℕ) : MvPolynomial τ R :=\n  Polynomial.coeff (MvPolynomial.optionEquivLeft R τ P) ν\nnoncomputable def bundled (ν : ℕ) : MvPolynomial (Option τ) R →ₗ[R] MvPolynomial τ R :=\n  ((Polynomial.lcoeff (MvPolynomial τ R) ν).restrictScalars R).comp\n    (MvPolynomial.optionEquivLeft R τ).toLinearMap\ntheorem bundled_apply (P : MvPolynomial (Option τ) R) (ν : ℕ) : bundled ν P = direct P ν := rfl\ntheorem bundled_add (P Q : MvPolynomial (Option τ) R) (ν : ℕ) :\n    bundled ν (P + Q) = bundled ν P + bundled ν Q := map_add _ _ _\ntheorem bundled_smul (c : R) (P : MvPolynomial (Option τ) R) (ν : ℕ) :\n    bundled ν (c • P) = c • bundled ν P := map_smul _ _ _\n-- Underlying finite-support coefficient slicing requires no multiplication on coefficients.\nnoncomputable def expanded {A : Type u} [AddCommMonoid A]\n    (P : (Option τ →₀ ℕ) →₀ A) (ν : ℕ) : (τ →₀ ℕ) →₀ A :=\n  P.sum fun d a => if d none = ν then Finsupp.single d.some a else 0\ntheorem multiplicativity_guard : direct (R := ℕ) (τ := Unit) (X none * X none) 1 ≠\n    direct (R := ℕ) (τ := Unit) (X none) 1 * direct (R := ℕ) (τ := Unit) (X none) 1 := by\n  simp [direct]\n-- Universes independent: the variable type may live above the coefficients.\n#check direct (R := ℕ) (τ := Type)\n#synth CommSemiring (MvPolynomial τ R)\n#synth Module R (MvPolynomial τ R)\n#print axioms direct\n#print axioms bundled\n#print axioms expanded\n#print axioms bundled_apply\n#print axioms bundled_add\n#print axioms bundled_smul\n#print axioms multiplicativity_guard\nend CoeffNone152Named\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.coeffNone`\",\n      \"line\": 14,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"optionEquivLeft : (R : Type u_1) →\\n  (S₁ : Type u_2) → [inst : CommSemiring R] → MvPolynomial (Option S₁) R ≃ₐ[R] Polynomial (MvPolynomial S₁ R)\",\n      \"line\": 15,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.coeff : {R : Type u_1} → [inst : Semiring R] → Polynomial R → ℕ →₀ R\",\n      \"line\": 16,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Polynomial.lcoeff : (R : Type u_1) → [inst : Semiring R] → ℕ → Polynomial R →ₗ[R] R\",\n      \"line\": 17,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"direct : MvPolynomial (Option Type) ℕ → ℕ → MvPolynomial Type ℕ\",\n      \"line\": 36,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"AddMonoidAlgebra.commSemiring\",\n      \"line\": 37,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"AddMonoidAlgebra.instModule\",\n      \"line\": 38,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'CoeffNone152Named.direct' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 39,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'CoeffNone152Named.bundled' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 40,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'CoeffNone152Named.expanded' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 41,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'CoeffNone152Named.bundled_apply' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 42,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'CoeffNone152Named.bundled_add' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 43,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'CoeffNone152Named.bundled_smul' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 44,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'CoeffNone152Named.multiplicativity_guard' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 45,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.coeffNone`",
+          "line": 14,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "optionEquivLeft : (R : Type u_1) →\n  (S₁ : Type u_2) → [inst : CommSemiring R] → MvPolynomial (Option S₁) R ≃ₐ[R] Polynomial (MvPolynomial S₁ R)",
+          "line": 15,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.coeff : {R : Type u_1} → [inst : Semiring R] → Polynomial R → ℕ →₀ R",
+          "line": 16,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Polynomial.lcoeff : (R : Type u_1) → [inst : Semiring R] → ℕ → Polynomial R →ₗ[R] R",
+          "line": 17,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "direct : MvPolynomial (Option Type) ℕ → ℕ → MvPolynomial Type ℕ",
+          "line": 36,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "AddMonoidAlgebra.commSemiring",
+          "line": 37,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "AddMonoidAlgebra.instModule",
+          "line": 38,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'CoeffNone152Named.direct' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 39,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'CoeffNone152Named.bundled' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 40,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'CoeffNone152Named.expanded' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 41,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'CoeffNone152Named.bundled_apply' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 42,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'CoeffNone152Named.bundled_add' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 43,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'CoeffNone152Named.bundled_smul' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 44,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'CoeffNone152Named.multiplicativity_guard' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 45,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 682
+}

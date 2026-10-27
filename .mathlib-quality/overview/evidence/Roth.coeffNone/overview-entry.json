@@ -1,0 +1,48 @@
+{
+  "kind": "noncomputable def",
+  "type": "Roth.coeffNone.{u_1, u_2} : {τ : Type u_1} → {R : Type u_2} → [CommSemiring R] → MvPolynomial (Option τ) R → ℕ → MvPolynomial τ R",
+  "what": "Extract the coefficient polynomial of a distinguished variable power.",
+  "how": "Apply MvPolynomial.optionEquivLeft, then Polynomial.coeff.",
+  "hypotheses": {
+    "τ": "Arbitrary type, no Fintype/DecidableEq",
+    "R": "CommSemiring, no field/domain/nontriviality",
+    "P": "Arbitrary polynomial",
+    "ν": "Arbitrary natural exponent"
+  },
+  "project_dependencies": [],
+  "caller_summary": {
+    "explicit_consuming_declarations": 7,
+    "external_to_file_callers": 0,
+    "direct_kernel_value_consumers": [
+      "Roth.coeff_coeffNone",
+      "Roth.eq_sum_X_none_pow_mul_coeffNone",
+      "Roth.degreeOf_coeffNone_le",
+      "Roth.coeff_rename_mul_aeval",
+      "_private.Roth.Separation.0.Roth.eq_sum_aeval_basis_coeffNone_aux",
+      "_private.Roth.Separation.0.Roth.exists_coeffNone_basis_aux",
+      "Roth.exists_separated_representation"
+    ],
+    "note": "Seven same-file consumers; coeff_rename_mul_aeval is body-only. Not simp/transitive closure."
+  },
+  "mathlib_api_audit": {
+    "verdict": "NO-composable-from-mathlib",
+    "building_blocks": [
+      "MvPolynomial.optionEquivLeft",
+      "Polynomial.coeff"
+    ],
+    "modern": [
+      "Polynomial.lcoeff",
+      "Finsupp.comapDomain"
+    ],
+    "calls": 2,
+    "formal_methods": "Finder, Loogle, LeanSearch, rg, local; current, literature, modern and supplementary pullback forms"
+  },
+  "moral_duplications": "New plain-function name for existing equivalence followed by coordinate projection; local semantic-name exemption acknowledged.",
+  "generalization": {
+    "fixed_interface": "Already arbitrary CommSemiring and variable universes; no finite/equality classes. MvPolynomial carrier requires CommSemiring.",
+    "expanded_representation": "STRICTLY NARROWER representation level: existing Finsupp.comapDomain slices coefficients over Zero; actual native direct_coeff bridge proved. Fixed MvPolynomial carrier requires CommSemiring. Initial sum-filter remains exploratory."
+  },
+  "missing_api": "None required for the definition. Bundled coefficient map is existing composition; no claim of a preexisting name for whole composite.",
+  "junk": "Useful local helper with seven consumers; not dead code.",
+  "action": "Use direct optionEquivLeft/coeff upstream; optionally retain documented local Roth.coeffNone for readability. All seven refactors verified by entire Separation replay."
+}

@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 151/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 152/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 151; remaining: 142.
-- Verdicts: 16 NO-composable-from-mathlib, 13 YES-add-as-is, 19 YES-but-generalise-first, 32 NO-mathlib-has-it, 45 BORDERLINE-needs-human, 26 SKIP.
+- Completed applicable assessments: 152; remaining: 141.
+- Verdicts: 17 NO-composable-from-mathlib, 13 YES-add-as-is, 19 YES-but-generalise-first, 32 NO-mathlib-has-it, 45 BORDERLINE-needs-human, 26 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -1668,6 +1668,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: explicit applications: 1; proof body: 1; statement: 0; files: Roth/Theta.lean:242; callers: private Roth.index_unique_le_log_div; direct kernel value consumers: _private.Roth.Theta.0.Roth.index_unique_le_log_div; inline rederivations: 0; full native replay: IndexUniqueCallers151.logBoundReplay
 - Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/Roth.index_unique.md).
 
+### Completed: `Roth.coeffNone`
+
+- Type: `Roth.coeffNone.{u_1, u_2} : {τ : Type u_1} → {R : Type u_2} → [CommSemiring R] → MvPolynomial (Option τ) R → ℕ → MvPolynomial τ R`
+- What: Extract the coefficient polynomial of a distinguished variable power.
+- How: Apply MvPolynomial.optionEquivLeft, then Polynomial.coeff.
+- Hypotheses: τ: Arbitrary type, no Fintype/DecidableEq; R: CommSemiring, no field/domain/nontriviality; P: Arbitrary polynomial; ν: Arbitrary natural exponent
+- Project dependencies: None
+- Caller summary: explicit consuming declarations: 7; external to file callers: 0; direct kernel value consumers: Roth.coeff_coeffNone, Roth.eq_sum_X_none_pow_mul_coeffNone, Roth.degreeOf_coeffNone_le, Roth.coeff_rename_mul_aeval, _private.Roth.Separation.0.Roth.eq_sum_aeval_basis_coeffNone_aux, _private.Roth.Separation.0.Roth.exists_coeffNone_basis_aux, Roth.exists_separated_representation; note: Seven same-file consumers; coeff_rename_mul_aeval is body-only. Not simp/transitive closure.
+- Verdict: NO-composable-from-mathlib; [complete report](.mathlib-quality/overview/mathlibable/Roth.coeffNone.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -1996,6 +2006,8 @@ Completed `Roth.index_le_card`: All five actual search methods on current/litera
 
 Completed `Roth.index_unique`: verdict: NO-mathlib-has-it; reaim: Polynomial.rootMultiplicity_eq_natTrailingDegree; path: Mathlib/Algebra/Polynomial/RingDivision.lean:133; methods: Finder, Loogle, LeanSearch, rg, local; old form existing call count: Not <=3; genuine representation normalization required; normalized form existing call count: 1; bridge: Independently checked minimumSupport/taylorMinimum/trailingInf/rootInf/realInfSupport/realRootInf; these are new bridge proofs, not existing declarations.
 
+Completed `Roth.coeffNone`: verdict: NO-composable-from-mathlib; building blocks: MvPolynomial.optionEquivLeft, Polynomial.coeff; modern: Polynomial.lcoeff, Finsupp.comapDomain; calls: 2; formal methods: Finder, Loogle, LeanSearch, rg, local; current, literature, modern and supplementary pullback forms
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -2299,6 +2311,8 @@ Completed `Roth.index_rename`: Underlying finite-support transport duplicates ge
 Completed `Roth.index_le_card`: Canonical support-witness estimate is existing infDegree/Finset.inf_le; coordinate weight bound overlaps weight_le_card. Neither alone is exact full theorem.
 
 Completed `Roth.index_unique`: Existing rootMultiplicity_eq_natTrailingDegree is the analogous univariate law of the parent infDegree abstraction., Existing natTrailingDegree coefficient/support laws express the least nonzero coefficient.
+
+Completed `Roth.coeffNone`: New plain-function name for existing equivalence followed by coordinate projection; local semantic-name exemption acknowledged.
 
 ## Part 5: Generalization opportunities
 
@@ -2607,6 +2621,8 @@ Completed `Roth.index_le_card`: Verified noNonzero drops hP; oneWitness weakens 
 
 Completed `Roth.index_unique`: verified drop: P ≠ 0; finite data: Unique.fintype supplies the Fintype interface; choice independence checked; expanded: Univariate Taylor coefficient minimum over arbitrary CommRing R, real numerical codomain and natural denominators; independently compiled; rejected: Signed scaling without nonnegativity, Unprojected infinite zero order identified with real zero, Arbitrary many-to-one variable collapse
 
+Completed `Roth.coeffNone`: fixed interface: Already arbitrary CommSemiring and variable universes; no finite/equality classes. MvPolynomial carrier requires CommSemiring.; expanded representation: STRICTLY NARROWER representation level: existing Finsupp.comapDomain slices coefficients over Zero; actual native direct_coeff bridge proved. Fixed MvPolynomial carrier requires CommSemiring. Initial sum-filter remains exploratory.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -2911,6 +2927,8 @@ Completed `Roth.index_rename`: No essential mathematical gap. A discoverability-
 Completed `Roth.index_le_card`: Choice of named Taylor coordinate-degree envelope and its cardinality corollary versus generic support-witness use. Mathematical proofs are complete; upstream API questions remain.
 
 Completed `Roth.index_unique`: Potential generic normalization API between finite real support minimum, projected infDegree and polynomial trailingDegree; exact new bridge evidence supplied, no unsupported absence claim.
+
+Completed `Roth.coeffNone`: None required for the definition. Bundled coefficient map is existing composition; no claim of a preexisting name for whole composite.
 
 ## Part 7: Junk / removable
 
@@ -3219,6 +3237,8 @@ Completed `Roth.index_le_card`: No. Two actual callers use the bound. hP is redu
 
 Completed `Roth.index_unique`: False
 
+Completed `Roth.coeffNone`: Useful local helper with seven consumers; not dead code.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -3374,6 +3394,7 @@ Completed `Roth.index_unique`: False
 | 149 | `Roth.index_rename` | NO-composable-from-mathlib | [Report](.mathlib-quality/overview/mathlibable/Roth.index_rename.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.index_rename/root-acceptance.json) |
 | 150 | `Roth.index_le_card` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.index_le_card.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.index_le_card/root-acceptance.json) |
 | 151 | `Roth.index_unique` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.index_unique.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.index_unique/root-acceptance.json) |
+| 152 | `Roth.coeffNone` | NO-composable-from-mathlib | [Report](.mathlib-quality/overview/mathlibable/Roth.coeffNone.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.coeffNone/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -3675,12 +3696,14 @@ Completed `Roth.index_le_card` action: BORDERLINE-needs-human: decide upstream c
 
 Completed `Roth.index_unique` action: Do not upstream project spelling. Keep a documented project-local all-polynomial bridge while retaining index; at Theta242 replace index_unique nonzeroProof by that bridge, retain hR for later coefficient/log estimate. After full parent migration normalize to Polynomial then use existing rootMultiplicity_eq_natTrailingDegree; delete old wrapper only after caller conversion. Read-only assessment makes no production edits.
 
+Completed `Roth.coeffNone` action: Use direct optionEquivLeft/coeff upstream; optionally retain documented local Roth.coeffNone for readability. All seven refactors verified by entire Separation replay.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.coeffNone` next. Supporting identities receive their own applicable checks.
+   `Roth.eq_mapDomain_some_add_single` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

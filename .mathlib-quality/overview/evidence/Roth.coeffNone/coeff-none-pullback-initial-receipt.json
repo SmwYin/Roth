@@ -1,0 +1,84 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nnamespace CoeffNonePullback152\nopen MvPolynomial\nuniverse u v\nvariable {τ : Type u}\n\ntheorem coordinateInjective (ν : ℕ) :\n    Function.Injective (fun d : τ →₀ ℕ ↦ d.optionElim ν) := by\n  intro a b h\n  ext j\n  simpa using congrArg (fun e : Option τ →₀ ℕ ↦ e (some j)) h\n\nnoncomputable def slice {A : Type v} [Zero A]\n    (P : (Option τ →₀ ℕ) →₀ A) (ν : ℕ) : (τ →₀ ℕ) →₀ A :=\n  Finsupp.comapDomain (fun d ↦ d.optionElim ν) P (coordinateInjective ν).injOn\n\ntheorem slice_apply {A : Type v} [Zero A]\n    (P : (Option τ →₀ ℕ) →₀ A) (ν : ℕ) (d : τ →₀ ℕ) :\n    slice P ν d = P (d.optionElim ν) := rfl\n\ntheorem direct_coeff {R : Type v} [CommSemiring R]\n    (P : MvPolynomial (Option τ) R) (ν : ℕ) :\n    ((optionEquivLeft R τ P).coeff ν).coeff = slice P.coeff ν := by\n  ext d\n  exact optionEquivLeft_coeff_coeff P ν d\n\n#check @Finsupp.comapDomain\n#check @MvPolynomial.optionEquivLeft_coeff_coeff\n#print axioms coordinateInjective\n#print axioms slice\n#print axioms slice_apply\n#print axioms direct_coeff\nend CoeffNonePullback152\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": false,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finsupp.comapDomain : {α : Type u_1} →\\n  {β : Type u_2} →\\n    {M : Type u_3} → [inst : Zero M] → (f : α → β) → (l : β →₀ M) → Set.InjOn f (f ⁻¹' ↑l.support) → α →₀ M\",\n      \"line\": 35,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"optionEquivLeft_coeff_coeff : ∀ (R : Type u_1) {σ : Type u_2} [inst : CommSemiring R] (p : MvPolynomial (Option σ) R)\\n  (m : ℕ) (d : σ →₀ ℕ), (((optionEquivLeft R σ) p).coeff m).coeff d = p.coeff (Finsupp.optionElim m d)\",\n      \"line\": 36,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'CoeffNonePullback152.coordinateInjective' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 37,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'CoeffNonePullback152.slice' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 38,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'CoeffNonePullback152.slice_apply' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 39,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'CoeffNonePullback152.direct_coeff' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 40,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"Application type mismatch: The argument\\n  P\\nhas type\\n  MvPolynomial (Option τ) R\\nbut is expected to have type\\n  Type ?u.26\\nin the application\\n  @optionEquivLeft_coeff_coeff P\",\n      \"line\": 33,\n      \"column\": 37,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": false,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "@Finsupp.comapDomain : {α : Type u_1} →\n  {β : Type u_2} →\n    {M : Type u_3} → [inst : Zero M] → (f : α → β) → (l : β →₀ M) → Set.InjOn f (f ⁻¹' ↑l.support) → α →₀ M",
+          "line": 35,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "optionEquivLeft_coeff_coeff : ∀ (R : Type u_1) {σ : Type u_2} [inst : CommSemiring R] (p : MvPolynomial (Option σ) R)\n  (m : ℕ) (d : σ →₀ ℕ), (((optionEquivLeft R σ) p).coeff m).coeff d = p.coeff (Finsupp.optionElim m d)",
+          "line": 36,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'CoeffNonePullback152.coordinateInjective' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 37,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'CoeffNonePullback152.slice' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 38,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'CoeffNonePullback152.slice_apply' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 39,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'CoeffNonePullback152.direct_coeff' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 40,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "Application type mismatch: The argument\n  P\nhas type\n  MvPolynomial (Option τ) R\nbut is expected to have type\n  Type ?u.26\nin the application\n  @optionEquivLeft_coeff_coeff P",
+          "line": 33,
+          "column": 37,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 674
+}

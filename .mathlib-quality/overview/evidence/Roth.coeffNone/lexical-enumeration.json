@@ -1,0 +1,153 @@
+{
+  "files": [
+    {
+      "path": "Roth/Box.lean",
+      "sha256": "17edd9271f429acddc9a851b16abc510774a978f4ffa5c57176cf7ff5b75bad5",
+      "occurrences": []
+    },
+    {
+      "path": "Roth/CoeffNorm.lean",
+      "sha256": "22282ae67696462ac7a3dc775d48a0be6b49f133100dfb31edcab289aada7001",
+      "occurrences": []
+    },
+    {
+      "path": "Roth/GenWronskian.lean",
+      "sha256": "309cdaad33a83081a52ba51c9e2a862ee25ba72e11564b683e0bf59566e8d452",
+      "occurrences": []
+    },
+    {
+      "path": "Roth/HasseDeriv.lean",
+      "sha256": "7673c486d02fa8dd0e1f2095d1f9a5629ff6bb212e7525c84c359fe046d21d31",
+      "occurrences": []
+    },
+    {
+      "path": "Roth/Index.lean",
+      "sha256": "e22ab0acd820d9ae765e6f70279edbc0d626052372611806c4d5464ca3d377f1",
+      "occurrences": []
+    },
+    {
+      "path": "Roth/Lattice.lean",
+      "sha256": "0ad4a883ac053327c2687b904386eaac555b47de378fc4448c5bf88f3276bd8f",
+      "occurrences": []
+    },
+    {
+      "path": "Roth/LeanEval.lean",
+      "sha256": "70a3808e57b5251e725dfe6a93fbb064a2fb1f88b0c5d68659be924447417b65",
+      "occurrences": []
+    },
+    {
+      "path": "Roth/Main.lean",
+      "sha256": "7750d80bac40feb9427f760f9524e30cb633d0a749d36e83e3c1376db4e10e29",
+      "occurrences": []
+    },
+    {
+      "path": "Roth/MainLemma.lean",
+      "sha256": "4f7c7fee1bbceaffc79da9ca9d806a1e4b62a8b4a7534c996a1c58ea48a4b90d",
+      "occurrences": []
+    },
+    {
+      "path": "Roth/Separation.lean",
+      "sha256": "4ac885af6c9973d40f68bd2e6c42185f02a9996271ccaa67d4932d27e85a7d0e",
+      "occurrences": [
+        {
+          "line": 27,
+          "text": "* `Roth.coeffNone P ν`: the coefficient of `X none ^ ν` in `P`, a polynomial in the variables `τ`."
+        },
+        {
+          "line": 80,
+          "text": "noncomputable def coeffNone (P : MvPolynomial (Option τ) R) (ν : ℕ) : MvPolynomial τ R :="
+        },
+        {
+          "line": 84,
+          "text": "/-- The coefficient of `x_τ^d` in `coeffNone P ν` is the coefficient of `x_τ^d x_none^ν` in `P`. -/"
+        },
+        {
+          "line": 86,
+          "text": "    (coeffNone P ν).coeff d = P.coeff (d.mapDomain some + Finsupp.single none ν) := by"
+        },
+        {
+          "line": 87,
+          "text": "  rw [coeffNone, optionEquivLeft_coeff_coeff]"
+        },
+        {
+          "line": 95,
+          "text": "`x_none`, then `P = ∑_{ν ≤ n} x_none^ν · coeffNone P ν`."
+        },
+        {
+          "line": 100,
+          "text": "    P = ∑ ν ∈ Finset.range (n + 1), X none ^ ν * rename some (coeffNone P ν) := by"
+        },
+        {
+          "line": 115,
+          "text": "    degreeOf j (coeffNone P ν) ≤ degreeOf (some j) P := by"
+        },
+        {
+          "line": 129,
+          "text": "  rw [← coeff_coeffNone, coeffNone, map_mul,"
+        },
+        {
+          "line": 267,
+          "text": "    (hP : P = ∑ ν : Fin (n + 1), X none ^ (ν : ℕ) * rename some (coeffNone P ν))"
+        },
+        {
+          "line": 269,
+          "text": "      (Submodule.span R (Set.range (fun ν : Fin (n + 1) ↦ coeffNone P ν)))) :"
+        },
+        {
+          "line": 271,
+          "text": "        Polynomial.C (b.repr ⟨coeffNone P ν, Submodule.subset_span ⟨ν, rfl⟩⟩ ρ) *"
+        },
+        {
+          "line": 273,
+          "text": "  let a := fun (ν : Fin (n + 1)) ρ ↦ b.repr ⟨coeffNone P ν, Submodule.subset_span ⟨ν, rfl⟩⟩ ρ"
+        },
+        {
+          "line": 274,
+          "text": "  have hexp : ∀ ν : Fin (n + 1), coeffNone P ν = ∑ ρ, a ν ρ • (b ρ : MvPolynomial τ R) := fun ν ↦ by"
+        },
+        {
+          "line": 275,
+          "text": "    have h := congrArg Subtype.val (b.sum_repr ⟨coeffNone P ν, Submodule.subset_span ⟨ν, rfl⟩⟩)"
+        },
+        {
+          "line": 292,
+          "text": "    (hP' : P = ∑ ν : Fin (n + 1), X none ^ (ν : ℕ) * rename some (coeffNone P ν)) :"
+        },
+        {
+          "line": 294,
+          "text": "      (Submodule.span K (Set.range (fun ν : Fin (n + 1) ↦ coeffNone P ν))),"
+        },
+        {
+          "line": 297,
+          "text": "  let v : Fin (n + 1) → MvPolynomial τ K := fun ν ↦ coeffNone P ν"
+        },
+        {
+          "line": 332,
+          "text": "  let v : Fin (n + 1) → MvPolynomial τ K := fun ν ↦ coeffNone P ν"
+        },
+        {
+          "line": 334,
+          "text": "    rw [Fin.sum_univ_eq_sum_range (fun ν ↦ X none ^ ν * rename some (coeffNone P ν))]"
+        }
+      ]
+    },
+    {
+      "path": "Roth/Taylor.lean",
+      "sha256": "5936e65c7d78143c5e5b0c7b35371c7631dc121aa8b600637cf7cd31335faaf7",
+      "occurrences": []
+    },
+    {
+      "path": "Roth/Theta.lean",
+      "sha256": "ea447150977f3acf5259cb27889019b9ac32195614f91bc78ed3454c26ca82f5",
+      "occurrences": []
+    },
+    {
+      "path": "Roth/Wronskian.lean",
+      "sha256": "dbf42257055611df366fb2d753933817287cb978b8cc421066040a3de84b79dc",
+      "occurrences": []
+    }
+  ],
+  "explicit_consumer_declarations": 7,
+  "external_to_file_callers": 0,
+  "note": "Whole-word source occurrences include comments/declaration/unfolding; seven consuming declarations, not occurrence count."
+}

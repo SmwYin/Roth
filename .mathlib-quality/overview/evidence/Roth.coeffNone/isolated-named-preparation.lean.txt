@@ -1,0 +1,37 @@
+namespace CoeffNone152Named
+open MvPolynomial
+universe u v
+variable {R : Type u} {τ : Type v} [CommSemiring R]
+#check_failure Roth.coeffNone
+#check @MvPolynomial.optionEquivLeft
+#check @Polynomial.coeff
+#check @Polynomial.lcoeff
+noncomputable def direct (P : MvPolynomial (Option τ) R) (ν : ℕ) : MvPolynomial τ R :=
+  Polynomial.coeff (MvPolynomial.optionEquivLeft R τ P) ν
+noncomputable def bundled (ν : ℕ) : MvPolynomial (Option τ) R →ₗ[R] MvPolynomial τ R :=
+  ((Polynomial.lcoeff (MvPolynomial τ R) ν).restrictScalars R).comp
+    (MvPolynomial.optionEquivLeft R τ).toLinearMap
+theorem bundled_apply (P : MvPolynomial (Option τ) R) (ν : ℕ) : bundled ν P = direct P ν := rfl
+theorem bundled_add (P Q : MvPolynomial (Option τ) R) (ν : ℕ) :
+    bundled ν (P + Q) = bundled ν P + bundled ν Q := map_add _ _ _
+theorem bundled_smul (c : R) (P : MvPolynomial (Option τ) R) (ν : ℕ) :
+    bundled ν (c • P) = c • bundled ν P := map_smul _ _ _
+-- Underlying finite-support coefficient slicing requires no multiplication on coefficients.
+noncomputable def expanded {A : Type u} [AddCommMonoid A]
+    (P : (Option τ →₀ ℕ) →₀ A) (ν : ℕ) : (τ →₀ ℕ) →₀ A :=
+  P.sum fun d a => if d none = ν then Finsupp.single d.some a else 0
+theorem multiplicativity_guard : direct (R := ℕ) (τ := Unit) (X none * X none) 1 ≠
+    direct (R := ℕ) (τ := Unit) (X none) 1 * direct (R := ℕ) (τ := Unit) (X none) 1 := by
+  simp [direct]
+-- Universes independent: the variable type may live above the coefficients.
+#check direct (R := ℕ) (τ := Type)
+#synth CommSemiring (MvPolynomial τ R)
+#synth Module R (MvPolynomial τ R)
+#print axioms direct
+#print axioms bundled
+#print axioms expanded
+#print axioms bundled_apply
+#print axioms bundled_add
+#print axioms bundled_smul
+#print axioms multiplicativity_guard
+end CoeffNone152Named

@@ -1,0 +1,58 @@
+{
+  "request": {
+    "query": "finite support pullback coefficient slice along injective exponent insertion"
+  },
+  "response": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"DFinsupp.comapDomain\",\n      \"informal_name\": \"Pullback of a dependent function with finite support along an injective function\",\n      \"kind\": \"definition\",\n      \"type\": \"{ι : Type u} →\\n  {β : ι → Type v} →\\n    {κ : Type u_1} →\\n      [inst : (i : ι) → Zero (β i)] → (h : κ → ι) → Function.Injective h → (Π₀ (i : ι), β i) → Π₀ (k : κ), β (h k)\",\n      \"informal_description\": \"Let $\\\\iota$ and $\\\\kappa$ be types, and let $\\\\beta$ be a family of types indexed by $\\\\iota$, where each type $\\\\beta(i)$ has a zero element. Given an injective function $h : \\\\kappa \\\\to \\\\iota$ and a dependent function with finite support $f : \\\\Pi_0(i:\\\\iota), \\\\beta(i)$, `DFinsupp.comapDomain` constructs a new dependent function with finite support over the domain $\\\\kappa$. This new function is defined as the pre-composition $f \\\\circ h$, which maps an element $k \\\\in \\\\kappa$ to $f(h(k)) \\\\in \\\\beta(h(k))$. The injectivity of $h$ is required to ensure that the resulting function also has finite support.\",\n      \"path\": \"Mathlib.Data.DFinsupp.Defs\"\n    },\n    {\n      \"formal_name\": \"DFinsupp.comapDomain_apply\",\n      \"informal_name\": \"ComapDomain Application Equality for Dependent Finite Support Functions\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u} {β : ι → Type v} {κ : Type u_1} [inst : (i : ι) → Zero (β i)] (h : κ → ι) (hh : Function.Injective h)\\n  (f : Π₀ (i : ι), β i) (k : κ), (DFinsupp.comapDomain h hh f) k = f (h k)\",\n      \"informal_description\": \"Let $ h : \\\\kappa \\\\to \\\\iota $ be an injective function, and let $ f $ be a dependent finite support function from $ \\\\iota $ to a family of types $ \\\\beta(i) $ (each equipped with a zero element). For any $ k \\\\in \\\\kappa $, the value of the function obtained by reindexing $ f $ via $ h $ at $ k $ is equal to $ f(h(k)) $. In symbols, $ (\\\\text{comapDomain}(h, f))(k) = f(h(k)) $.\",\n      \"path\": \"Mathlib.Data.DFinsupp.Defs\"\n    },\n    {\n      \"formal_name\": \"DFinsupp.comapDomain_single\",\n      \"informal_name\": \"ComapDomain Preserves Single Elements Under Injective Functions\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u} {β : ι → Type v} {κ : Type u_1} [inst : DecidableEq ι] [inst_1 : DecidableEq κ]\\n  [inst_2 : (i : ι) → Zero (β i)] (h : κ → ι) (hh : Function.Injective h) (k : κ) (x : β (h k)),\\n  DFinsupp.comapDomain h hh (DFinsupp.single (h k) x) = DFinsupp.single k x\",\n      \"informal_description\": \"Given an injective function $ h : \\\\kappa \\\\to \\\\iota $ and an element $ x $ in $ \\\\beta(h(k)) $, applying the comapDomain operation to the single non-zero function at index $ h(k) $ yields the single non-zero function at index $ k $. Formally, $ \\\\text{comapDomain}_h(\\\\text{single}_{h(k)}(x)) = \\\\text{single}_k(x) $, where all types have decidable equality and each $ \\\\beta(i) $ contains a zero element.\",\n      \"path\": \"Mathlib.Data.DFinsupp.Defs\"\n    },\n    {\n      \"formal_name\": \"Finsupp.comapDomain\",\n      \"informal_name\": \"Contravariant Map for Finite Support Functions\",\n      \"kind\": \"definition\",\n      \"type\": \"{α : Type u_1} →\\n  {β : Type u_2} →\\n    {M : Type u_5} → [inst : Zero M] → (f : α → β) → (l : β →₀ M) → Set.InjOn f (f ⁻¹' ↑l.support) → α →₀ M\",\n      \"informal_description\": \"Given a function $ f : \\\\alpha \\\\to \\\\beta $, a finite support function $ l : \\\\beta \\\\to_0 M $, and a proof that $ f $ is injective on the preimage of $ \\\\text{support}(l) $, this constructs a finite support function $ \\\\alpha \\\\to_0 M $ whose support is the preimage of $ \\\\text{support}(l) $ under $ f $, and which maps each $ a \\\\in \\\\alpha $ to $ l(f(a)) $. The injectivity condition ensures the preimage remains finite.\",\n      \"path\": \"Mathlib.Data.Finsupp.Basic\"\n    },\n    {\n      \"formal_name\": \"Finsupp.comapDomain_single\",\n      \"informal_name\": \"ComapDomain of a Single Function Under Injectivity\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_2} {M : Type u_5} [inst : Zero M] (f : α → β) (a : α) (m : M)\\n  (hif : Set.InjOn f (f ⁻¹' ↑(Finsupp.single (f a) m).support)),\\n  Finsupp.comapDomain f (Finsupp.single (f a) m) hif = Finsupp.single a m\",\n      \"informal_description\": \"Given a function $ f : \\\\alpha \\\\to \\\\beta $, an element $ a \\\\in \\\\alpha $, and a value $ m \\\\in M $, if $ f $ is injective on the preimage of the support of the finite support function $ \\\\text{single}(f a, m) $, then the contravariant map $ \\\\text{comapDomain} \\\\, f $ applied to $ \\\\text{single}(f a, m) $ yields the finite support function $ \\\\text{single}(a, m) $.\",\n      \"path\": \"Mathlib.Data.Finsupp.Basic\"\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "items": [
+        {
+          "formal_name": "DFinsupp.comapDomain",
+          "informal_name": "Pullback of a dependent function with finite support along an injective function",
+          "kind": "definition",
+          "type": "{ι : Type u} →\n  {β : ι → Type v} →\n    {κ : Type u_1} →\n      [inst : (i : ι) → Zero (β i)] → (h : κ → ι) → Function.Injective h → (Π₀ (i : ι), β i) → Π₀ (k : κ), β (h k)",
+          "informal_description": "Let $\\iota$ and $\\kappa$ be types, and let $\\beta$ be a family of types indexed by $\\iota$, where each type $\\beta(i)$ has a zero element. Given an injective function $h : \\kappa \\to \\iota$ and a dependent function with finite support $f : \\Pi_0(i:\\iota), \\beta(i)$, `DFinsupp.comapDomain` constructs a new dependent function with finite support over the domain $\\kappa$. This new function is defined as the pre-composition $f \\circ h$, which maps an element $k \\in \\kappa$ to $f(h(k)) \\in \\beta(h(k))$. The injectivity of $h$ is required to ensure that the resulting function also has finite support.",
+          "path": "Mathlib.Data.DFinsupp.Defs"
+        },
+        {
+          "formal_name": "DFinsupp.comapDomain_apply",
+          "informal_name": "ComapDomain Application Equality for Dependent Finite Support Functions",
+          "kind": "theorem",
+          "type": "∀ {ι : Type u} {β : ι → Type v} {κ : Type u_1} [inst : (i : ι) → Zero (β i)] (h : κ → ι) (hh : Function.Injective h)\n  (f : Π₀ (i : ι), β i) (k : κ), (DFinsupp.comapDomain h hh f) k = f (h k)",
+          "informal_description": "Let $ h : \\kappa \\to \\iota $ be an injective function, and let $ f $ be a dependent finite support function from $ \\iota $ to a family of types $ \\beta(i) $ (each equipped with a zero element). For any $ k \\in \\kappa $, the value of the function obtained by reindexing $ f $ via $ h $ at $ k $ is equal to $ f(h(k)) $. In symbols, $ (\\text{comapDomain}(h, f))(k) = f(h(k)) $.",
+          "path": "Mathlib.Data.DFinsupp.Defs"
+        },
+        {
+          "formal_name": "DFinsupp.comapDomain_single",
+          "informal_name": "ComapDomain Preserves Single Elements Under Injective Functions",
+          "kind": "theorem",
+          "type": "∀ {ι : Type u} {β : ι → Type v} {κ : Type u_1} [inst : DecidableEq ι] [inst_1 : DecidableEq κ]\n  [inst_2 : (i : ι) → Zero (β i)] (h : κ → ι) (hh : Function.Injective h) (k : κ) (x : β (h k)),\n  DFinsupp.comapDomain h hh (DFinsupp.single (h k) x) = DFinsupp.single k x",
+          "informal_description": "Given an injective function $ h : \\kappa \\to \\iota $ and an element $ x $ in $ \\beta(h(k)) $, applying the comapDomain operation to the single non-zero function at index $ h(k) $ yields the single non-zero function at index $ k $. Formally, $ \\text{comapDomain}_h(\\text{single}_{h(k)}(x)) = \\text{single}_k(x) $, where all types have decidable equality and each $ \\beta(i) $ contains a zero element.",
+          "path": "Mathlib.Data.DFinsupp.Defs"
+        },
+        {
+          "formal_name": "Finsupp.comapDomain",
+          "informal_name": "Contravariant Map for Finite Support Functions",
+          "kind": "definition",
+          "type": "{α : Type u_1} →\n  {β : Type u_2} →\n    {M : Type u_5} → [inst : Zero M] → (f : α → β) → (l : β →₀ M) → Set.InjOn f (f ⁻¹' ↑l.support) → α →₀ M",
+          "informal_description": "Given a function $ f : \\alpha \\to \\beta $, a finite support function $ l : \\beta \\to_0 M $, and a proof that $ f $ is injective on the preimage of $ \\text{support}(l) $, this constructs a finite support function $ \\alpha \\to_0 M $ whose support is the preimage of $ \\text{support}(l) $ under $ f $, and which maps each $ a \\in \\alpha $ to $ l(f(a)) $. The injectivity condition ensures the preimage remains finite.",
+          "path": "Mathlib.Data.Finsupp.Basic"
+        },
+        {
+          "formal_name": "Finsupp.comapDomain_single",
+          "informal_name": "ComapDomain of a Single Function Under Injectivity",
+          "kind": "theorem",
+          "type": "∀ {α : Type u_1} {β : Type u_2} {M : Type u_5} [inst : Zero M] (f : α → β) (a : α) (m : M)\n  (hif : Set.InjOn f (f ⁻¹' ↑(Finsupp.single (f a) m).support)),\n  Finsupp.comapDomain f (Finsupp.single (f a) m) hif = Finsupp.single a m",
+          "informal_description": "Given a function $ f : \\alpha \\to \\beta $, an element $ a \\in \\alpha $, and a value $ m \\in M $, if $ f $ is injective on the preimage of the support of the finite support function $ \\text{single}(f a, m) $, then the contravariant map $ \\text{comapDomain} \\, f $ applied to $ \\text{single}(f a, m) $ yields the finite support function $ \\text{single}(a, m) $.",
+          "path": "Mathlib.Data.Finsupp.Basic"
+        }
+      ]
+    },
+    "isError": false
+  }
+}
