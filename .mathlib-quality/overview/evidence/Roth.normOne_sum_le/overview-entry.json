@@ -1,0 +1,20 @@
+{
+  "declaration": "Roth.normOne_sum_le",
+  "kind": "theorem",
+  "type": "∀ {σ : Type u_1} {ι : Type u_2} (s : Finset ι) (f : ι → MvPolynomial σ ℤ), Roth.normOne (∑ i ∈ s, f i) ≤ ∑ i ∈ s, Roth.normOne (f i)",
+  "what": "The coefficient ℓ1 size of a finite sum of integer multivariate polynomials is bounded by the sum of the coefficient sizes.",
+  "how": "Finset.le_sum_of_subadditive applied to normOne using project normOne_zero and normOne_add_le.",
+  "hypotheses": "Arbitrary variable type σ, family index ι, finite set s and polynomial family f; no Fintype, DecidableEq, degree or coefficient bound assumptions.",
+  "project_dependencies": [
+    "Roth.normOne",
+    "Roth.normOne_zero",
+    "Roth.normOne_add_le"
+  ],
+  "caller_summary": "3 named direct consumers,4 source occurrences, all in CoeffNorm: normOne_mul_le99/101, normOne_det_le123, normOne_hasseDeriv_le152; full293 unique direct-proof audit.",
+  "mathlib_api_audit": "Existing Finset.le_sum_of_subadditive supplies finite induction; norm_sum_le needs a seminormed additive group compatible with this coefficient size. Project triangle is not an existing mathlib building block.",
+  "moral_duplications": "Abstract subadditive finite-sum bound and norm_sum_le; direct existing theorem specializes once the project zero/triangle witnesses are supplied.",
+  "generalization": "Fixed normOne interface maximal; expanded generic Finsupp-weight finite bound verified over arbitrary additive commutative coefficient monoid and ordered additive target.",
+  "missing_api": "Potential generic Finsupp sum subadditivity/coefficient-size bridge; existing finite induction itself has no gap.",
+  "junk": "Not dead:4 occurrences in3 consumers. One-call local convenience whose upstream role follows coefficient-size API design.",
+  "action": "BORDERLINE-needs-human: retain local finite wrapper for now; settle common coefficient-size API and discoverability question. No production change made."
+}

@@ -1,0 +1,11 @@
+namespace MvPolynomial.NormSumAssessment
+variable {σ : Type*}
+#check @Roth.normOne_sum_le
+#print Roth.normOne_sum_le
+#print axioms Roth.normOne_sum_le
+#check @Finset.le_sum_of_subadditive
+theorem replay {ι : Type*} (s : Finset ι) (f : ι → MvPolynomial σ ℤ) :
+    Roth.normOne (∑ i ∈ s, f i) ≤ ∑ i ∈ s, Roth.normOne (f i) :=
+  Finset.le_sum_of_subadditive Roth.normOne Roth.normOne_zero.le Roth.normOne_add_le s f
+#print axioms replay
+end MvPolynomial.NormSumAssessment

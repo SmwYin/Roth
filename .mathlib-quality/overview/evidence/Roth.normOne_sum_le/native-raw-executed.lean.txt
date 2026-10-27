@@ -1,0 +1,57 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+import Mathlib.Algebra.Polynomial.CancelLeads
+import Mathlib.Algebra.MvPolynomial.PDeriv
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+import Mathlib.Algebra.MvPolynomial.Equiv
+#check_failure Roth.normOne_sum_le
+namespace NormSumRaw
+open MvPolynomial
+variable {σ : Type*}
+noncomputable def replacement (P : MvPolynomial σ ℤ) : ℝ :=
+  ∑ d ∈ P.support, |((P.coeff d : ℤ) : ℝ)|
+theorem generic {ι M N : Type*} [AddZeroClass M] [AddCommMonoid N] [Preorder N]
+    [IsOrderedAddMonoid N] (size : ι → M → N)
+    (hzero : ∀ i, size i 0 = 0)
+    (hadd : ∀ i a b, size i (a + b) ≤ size i a + size i b)
+    (f g : ι →₀ M) :
+    (f + g).sum size ≤ f.sum size + g.sum size := by
+  classical
+  rw [Finsupp.sum_of_support_subset _ Finsupp.support_add _ (fun i _ ↦ hzero i),
+    Finsupp.sum_of_support_subset _ Finset.subset_union_left _ (fun i _ ↦ hzero i),
+    Finsupp.sum_of_support_subset _ Finset.subset_union_right _ (fun i _ ↦ hzero i),
+    ← Finset.sum_add_distrib]
+  exact Finset.sum_le_sum fun i _ ↦ hadd i (f i) (g i)
+theorem direct (P Q : MvPolynomial σ ℤ) :
+    replacement (P + Q) ≤ replacement P + replacement Q := by
+  exact generic (fun _ (z : ℤ) ↦ |(z : ℝ)|) (by simp)
+    (fun _ a b ↦ by simpa using abs_add_le (a : ℝ) (b : ℝ)) P.coeff Q.coeff
+theorem finiteTriangle {ι : Type*} (s : Finset ι) (f : ι → MvPolynomial σ ℤ) :
+    replacement (∑ i ∈ s, f i) ≤ ∑ i ∈ s, replacement (f i) :=
+  Finset.le_sum_of_subadditive replacement (by simp [replacement]) direct s f
+#check @Finsupp.sum_of_support_subset
+#check @Finset.sum_le_sum
+#check @abs_add_le
+#print axioms generic
+#print axioms direct
+#print axioms finiteTriangle
+end NormSumRaw
+namespace NormSumRaw
+theorem genericFinite {κ ι M N : Type*} [AddCommMonoid M] [AddCommMonoid N]
+    [Preorder N] [IsOrderedAddMonoid N] (size : κ → M → N)
+    (hzero : ∀ i, size i 0 = 0)
+    (hadd : ∀ i a b, size i (a + b) ≤ size i a + size i b)
+    (s : Finset ι) (f : ι → κ →₀ M) :
+    (∑ i ∈ s, f i).sum size ≤ ∑ i ∈ s, (f i).sum size :=
+  Finset.le_sum_of_subadditive (fun p : κ →₀ M ↦ p.sum size)
+    (by simp) (generic size hzero hadd) s f
+#check @Finset.le_sum_of_subadditive
+#print axioms genericFinite
+end NormSumRaw

@@ -1,0 +1,648 @@
+[
+  {
+    "method": "lean_leanfinder",
+    "form": "abstract",
+    "request": {
+      "query": "A subadditive function nonpositive at zero maps a finite sum to at most the sum of its values",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Finset.le_sum_of_subadditive\",\n      \"informal_name\": \"Subadditive Function Inequality for Finite Sums\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {M : Type u_4} {N : Type u_5} [inst : AddCommMonoid M] [inst_1 : AddCommMonoid N]\\n  [inst_2 : PartialOrder N] [IsOrderedAddMonoid N] (f : M → N),\\n  f 0 ≤ 0 → (∀ (x y : M), f (x + y) ≤ f x + f y) → ∀ (s : Finset ι) (g : ι → M), f (∑ i ∈ s, g i) ≤ ∑ i ∈ s, f (g i)\",\n      \"informal_description\": \"Let $M$ and $N$ be additive commutative monoids, where $N$ is equipped with a partial order compatible with addition. For any subadditive function $f : M \\\\to N$ satisfying $f(0) \\\\leq 0$, and for any finite set $s$ of indices and function $g : s \\\\to M$, it holds that $f\\\\left(\\\\sum_{i \\\\in s} g(i)\\\\right) \\\\leq \\\\sum_{i \\\\in s} f(g(i))$.\",\n      \"path\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    },\n    {\n      \"formal_name\": \"Finset.le_sum_of_subadditive_on_pred\",\n      \"informal_name\": \"Subadditive Function Inequality on Finite Sets\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {M : Type u_4} {N : Type u_5} [inst : AddCommMonoid M] [inst_1 : AddCommMonoid N]\\n  [inst_2 : PartialOrder N] [IsOrderedAddMonoid N] (f : M → N) (p : M → Prop),\\n  f 0 ≤ 0 →\\n    (∀ (x y : M), p x → p y → f (x + y) ≤ f x + f y) →\\n      (∀ (x y : M), p x → p y → p (x + y)) →\\n        ∀ (g : ι → M) {s : Finset ι}, (∀ i ∈ s, p (g i)) → f (∑ i ∈ s, g i) ≤ ∑ i ∈ s, f (g i)\",\n      \"informal_description\": \"Let $ M $ and $ N $ be additive commutative monoids with $ N $ equipped with a partial order compatible with addition. For any function $ f : M → N $ satisfying $ f(0) ≤ 0 $, and predicate $ p : M → \\text{Prop} $ such that:\\n1. $ f $ is subadditive on $ p $-elements: $ p(x) ∧ p(y) ⇒ f(x + y) ≤ f(x) + f(y) $,\\n2. $ p $-elements are closed under addition: $ p(x) ∧ p(y) ⇒ p(x + y) $,\\nthen for any finite set $ s $ and function $ g : ι → M $ with $ p(g(i)) $ for all $ i ∈ s $, we have:\\n$$\\n f\\\\left(\\\\sum_{i ∈ s} g(i)\\\\right) ≤ \\\\sum_{i ∈ s} f(g(i)).\\n$$\",\n      \"path\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    },\n    {\n      \"formal_name\": \"List.le_sum_of_subadditive\",\n      \"informal_name\": \"Subadditive Function Inequality for List Sums\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_5} {β : Type u_6} [inst : AddMonoid α] [inst_1 : AddCommMonoid β] [inst_2 : PartialOrder β]\\n  [IsOrderedAddMonoid β] (f : α → β),\\n  f 0 ≤ 0 → (∀ (a b : α), f (a + b) ≤ f a + f b) → ∀ (l : List α), f l.sum ≤ (List.map f l).sum\",\n      \"informal_description\": \"Let $ \\\\alpha $ be an additive monoid and $ \\\\beta $ an ordered commutative additive monoid. For any function $ f : \\\\alpha \\\\to \\\\beta $ satisfying $ f(0) \\\\leq 0 $ and subadditivity $ f(a + b) \\\\leq f(a) + f(b) $ for all $ a, b \\\\in \\\\alpha $, it holds that $ f(\\\\sum_{x \\\\in l} x) \\\\leq \\\\sum_{x \\\\in l} f(x) $ for any finite list $ l $ of elements in $ \\\\alpha $.\",\n      \"path\": \"Mathlib.Algebra.Order.BigOperators.Group.List\"\n    },\n    {\n      \"formal_name\": \"List.le_sum_of_subadditive_on_pred\",\n      \"informal_name\": \"Subadditive Function Inequality for List Sums\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_5} {β : Type u_6} [inst : AddMonoid α] [inst_1 : AddCommMonoid β] [inst_2 : PartialOrder β]\\n  [IsOrderedAddMonoid β] (f : α → β) (p : α → Prop),\\n  f 0 ≤ 0 →\\n    p 0 →\\n      (∀ (a b : α), p a → p b → f (a + b) ≤ f a + f b) →\\n        (∀ (a b : α), p a → p b → p (a + b)) → ∀ (l : List α), (∀ (a : α), a ∈ l → p a) → f l.sum ≤ (List.map f l).sum\",\n      \"informal_description\": \"Let $ \\\\alpha $ be an additive monoid and $ \\\\beta $ an ordered additive commutative monoid. For a function $ f : \\\\alpha \\\\to \\\\beta $ and predicate $ p : \\\\alpha \\\\to \\\\mathrm{Prop} $, if $ f(0) \\\\leq 0 $, $ p(0) $ holds, $ f $ is subadditive on $ p $-elements (i.e., $ f(a + b) \\\\leq f(a) + f(b) $ whenever $ p(a) $ and $ p(b) $), and $ p $ is closed under addition, then for any list $ l $ of $ \\\\alpha $-elements satisfying $ p $, it holds that $ f(\\\\sum l) \\\\leq \\\\sum_{x \\\\in l} f(x) $.\",\n      \"path\": \"Mathlib.Algebra.Order.BigOperators.Group.List\"\n    },\n    {\n      \"formal_name\": \"Multiset.le_sum_of_subadditive\",\n      \"informal_name\": \"Subadditive Function Inequality for Multiset Sums\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_2} {β : Type u_3} [inst : AddCommMonoid α] [inst_1 : AddCommMonoid β] [inst_2 : PartialOrder β]\\n  [IsOrderedAddMonoid β] (f : α → β),\\n  f 0 ≤ 0 → (∀ (a b : α), f (a + b) ≤ f a + f b) → ∀ (s : Multiset α), f s.sum ≤ (Multiset.map f s).sum\",\n      \"informal_description\": \"Let $\\\\alpha$ and $\\\\beta$ be additive commutative monoids, with $\\\\beta$ equipped with a partial order compatible with addition. For any function $f : \\\\alpha \\\\to \\\\beta$ satisfying $f(0) \\\\leq 0$ and subadditivity $f(a + b) \\\\leq f(a) + f(b)$ for all $a, b \\\\in \\\\alpha$, it holds that $f(\\\\sum s) \\\\leq \\\\sum_{x \\\\in s} f(x)$ for every multiset $s$ over $\\\\alpha$. Here, $\\\\sum s$ denotes the sum of elements in the multiset $s$.\",\n      \"path\": \"Mathlib.Algebra.Order.BigOperators.Group.Multiset\"\n    },\n    {\n      \"formal_name\": \"Finset.le_sum_nonempty_of_subadditive\",\n      \"informal_name\": \"Subadditive Function Inequality for Non-Empty Finite Sums\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {M : Type u_4} {N : Type u_5} [inst : AddCommMonoid M] [inst_1 : AddCommMonoid N]\\n  [inst_2 : PartialOrder N] [IsOrderedAddMonoid N] (f : M → N),\\n  (∀ (x y : M), f (x + y) ≤ f x + f y) →\\n    ∀ {s : Finset ι}, s.Nonempty → ∀ (g : ι → M), f (∑ i ∈ s, g i) ≤ ∑ i ∈ s, f (g i)\",\n      \"informal_description\": \"Let $ M $ and $ N $ be additive commutative monoids, with $ N $ equipped with a partial order compatible with addition. For any subadditive function $ f : M \\\\to N $ (i.e., $ f(x + y) \\\\leq f(x) + f(y) $ for all $ x, y \\\\in M $), any non-empty finite set $ s $, and any function $ g : s \\\\to M $, it holds that $ f\\\\left(\\\\sum_{i \\\\in s} g(i)\\\\right) \\\\leq \\\\sum_{i \\\\in s} f(g(i)) $.\",\n      \"path\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    },\n    {\n      \"formal_name\": \"Finset.le_sum_nonempty_of_subadditive_on_pred\",\n      \"informal_name\": \"Subadditive Function Inequality for Non-Empty Finite Sums\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {M : Type u_4} {N : Type u_5} [inst : AddCommMonoid M] [inst_1 : AddCommMonoid N]\\n  [inst_2 : PartialOrder N] [IsOrderedAddMonoid N] (f : M → N) (p : M → Prop),\\n  (∀ (x y : M), p x → p y → f (x + y) ≤ f x + f y) →\\n    (∀ (x y : M), p x → p y → p (x + y)) →\\n      ∀ (g : ι → M) (s : Finset ι), s.Nonempty → (∀ i ∈ s, p (g i)) → f (∑ i ∈ s, g i) ≤ ∑ i ∈ s, f (g i)\",\n      \"informal_description\": \"Let $ M $ and $ N $ be additive commutative monoids, with $ N $ equipped with a partial order compatible with addition. Suppose $ f : M \\\\to N $ is subadditive on a predicate $ p : M \\\\to \\\\mathrm{Prop} $ (i.e., $ f(x + y) \\\\leq f(x) + f(y) $ whenever $ p(x) $ and $ p(y) $), and $ p $ is closed under addition (i.e., $ p(x) $ and $ p(y) $ imply $ p(x + y) $). Then, for any non-empty finite set $ s $ and function $ g : s \\\\to M $ with $ p(g(i)) $ for all $ i \\\\in s $, it holds that $ f\\\\left(\\\\sum_{i \\\\in s} g(i)\\\\right) \\\\leq \\\\sum_{i \\\\in s} f(g(i)) $.\",\n      \"path\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    },\n    {\n      \"formal_name\": \"List.le_sum_nonempty_of_subadditive_on_pred\",\n      \"informal_name\": \"Subadditive Function Inequality for Predicate-Closed Lists in Additive Monoids\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_5} {β : Type u_6} [inst : AddMonoid α] [inst_1 : AddCommMonoid β] [inst_2 : PartialOrder β]\\n  [IsOrderedAddMonoid β] (f : α → β) (p : α → Prop),\\n  (∀ (a b : α), p a → p b → f (a + b) ≤ f a + f b) →\\n    (∀ (a b : α), p a → p b → p (a + b)) →\\n      ∀ (l : List α), l ≠ [] → (∀ (a : α), a ∈ l → p a) → f l.sum ≤ (List.map f l).sum\",\n      \"informal_description\": \"Given an additive monoid $\\\\alpha$, an ordered commutative additive monoid $\\\\beta$, and a predicate $p : \\\\alpha \\\\to \\\\mathrm{Prop}$ closed under addition, if a function $f : \\\\alpha \\\\to \\\\beta$ is subadditive on elements satisfying $p$ (i.e., $f(a + b) \\\\leq f(a) + f(b)$ whenever $p(a)$ and $p(b)$), then for any non-empty list $l$ of elements in $\\\\alpha$ where all elements satisfy $p$, the inequality $f(\\\\sum l) \\\\leq \\\\sum_{x \\\\in l} f(x)$ holds.\",\n      \"path\": \"Mathlib.Algebra.Order.BigOperators.Group.List\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Finset.le_sum_of_subadditive",
+            "informal_name": "Subadditive Function Inequality for Finite Sums",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_1} {M : Type u_4} {N : Type u_5} [inst : AddCommMonoid M] [inst_1 : AddCommMonoid N]\n  [inst_2 : PartialOrder N] [IsOrderedAddMonoid N] (f : M → N),\n  f 0 ≤ 0 → (∀ (x y : M), f (x + y) ≤ f x + f y) → ∀ (s : Finset ι) (g : ι → M), f (∑ i ∈ s, g i) ≤ ∑ i ∈ s, f (g i)",
+            "informal_description": "Let $M$ and $N$ be additive commutative monoids, where $N$ is equipped with a partial order compatible with addition. For any subadditive function $f : M \\to N$ satisfying $f(0) \\leq 0$, and for any finite set $s$ of indices and function $g : s \\to M$, it holds that $f\\left(\\sum_{i \\in s} g(i)\\right) \\leq \\sum_{i \\in s} f(g(i))$.",
+            "path": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+          },
+          {
+            "formal_name": "Finset.le_sum_of_subadditive_on_pred",
+            "informal_name": "Subadditive Function Inequality on Finite Sets",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_1} {M : Type u_4} {N : Type u_5} [inst : AddCommMonoid M] [inst_1 : AddCommMonoid N]\n  [inst_2 : PartialOrder N] [IsOrderedAddMonoid N] (f : M → N) (p : M → Prop),\n  f 0 ≤ 0 →\n    (∀ (x y : M), p x → p y → f (x + y) ≤ f x + f y) →\n      (∀ (x y : M), p x → p y → p (x + y)) →\n        ∀ (g : ι → M) {s : Finset ι}, (∀ i ∈ s, p (g i)) → f (∑ i ∈ s, g i) ≤ ∑ i ∈ s, f (g i)",
+            "informal_description": "Let $ M $ and $ N $ be additive commutative monoids with $ N $ equipped with a partial order compatible with addition. For any function $ f : M → N $ satisfying $ f(0) ≤ 0 $, and predicate $ p : M → \text{Prop} $ such that:\n1. $ f $ is subadditive on $ p $-elements: $ p(x) ∧ p(y) ⇒ f(x + y) ≤ f(x) + f(y) $,\n2. $ p $-elements are closed under addition: $ p(x) ∧ p(y) ⇒ p(x + y) $,\nthen for any finite set $ s $ and function $ g : ι → M $ with $ p(g(i)) $ for all $ i ∈ s $, we have:\n$$\n f\\left(\\sum_{i ∈ s} g(i)\\right) ≤ \\sum_{i ∈ s} f(g(i)).\n$$",
+            "path": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+          },
+          {
+            "formal_name": "List.le_sum_of_subadditive",
+            "informal_name": "Subadditive Function Inequality for List Sums",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_5} {β : Type u_6} [inst : AddMonoid α] [inst_1 : AddCommMonoid β] [inst_2 : PartialOrder β]\n  [IsOrderedAddMonoid β] (f : α → β),\n  f 0 ≤ 0 → (∀ (a b : α), f (a + b) ≤ f a + f b) → ∀ (l : List α), f l.sum ≤ (List.map f l).sum",
+            "informal_description": "Let $ \\alpha $ be an additive monoid and $ \\beta $ an ordered commutative additive monoid. For any function $ f : \\alpha \\to \\beta $ satisfying $ f(0) \\leq 0 $ and subadditivity $ f(a + b) \\leq f(a) + f(b) $ for all $ a, b \\in \\alpha $, it holds that $ f(\\sum_{x \\in l} x) \\leq \\sum_{x \\in l} f(x) $ for any finite list $ l $ of elements in $ \\alpha $.",
+            "path": "Mathlib.Algebra.Order.BigOperators.Group.List"
+          },
+          {
+            "formal_name": "List.le_sum_of_subadditive_on_pred",
+            "informal_name": "Subadditive Function Inequality for List Sums",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_5} {β : Type u_6} [inst : AddMonoid α] [inst_1 : AddCommMonoid β] [inst_2 : PartialOrder β]\n  [IsOrderedAddMonoid β] (f : α → β) (p : α → Prop),\n  f 0 ≤ 0 →\n    p 0 →\n      (∀ (a b : α), p a → p b → f (a + b) ≤ f a + f b) →\n        (∀ (a b : α), p a → p b → p (a + b)) → ∀ (l : List α), (∀ (a : α), a ∈ l → p a) → f l.sum ≤ (List.map f l).sum",
+            "informal_description": "Let $ \\alpha $ be an additive monoid and $ \\beta $ an ordered additive commutative monoid. For a function $ f : \\alpha \\to \\beta $ and predicate $ p : \\alpha \\to \\mathrm{Prop} $, if $ f(0) \\leq 0 $, $ p(0) $ holds, $ f $ is subadditive on $ p $-elements (i.e., $ f(a + b) \\leq f(a) + f(b) $ whenever $ p(a) $ and $ p(b) $), and $ p $ is closed under addition, then for any list $ l $ of $ \\alpha $-elements satisfying $ p $, it holds that $ f(\\sum l) \\leq \\sum_{x \\in l} f(x) $.",
+            "path": "Mathlib.Algebra.Order.BigOperators.Group.List"
+          },
+          {
+            "formal_name": "Multiset.le_sum_of_subadditive",
+            "informal_name": "Subadditive Function Inequality for Multiset Sums",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_2} {β : Type u_3} [inst : AddCommMonoid α] [inst_1 : AddCommMonoid β] [inst_2 : PartialOrder β]\n  [IsOrderedAddMonoid β] (f : α → β),\n  f 0 ≤ 0 → (∀ (a b : α), f (a + b) ≤ f a + f b) → ∀ (s : Multiset α), f s.sum ≤ (Multiset.map f s).sum",
+            "informal_description": "Let $\\alpha$ and $\\beta$ be additive commutative monoids, with $\\beta$ equipped with a partial order compatible with addition. For any function $f : \\alpha \\to \\beta$ satisfying $f(0) \\leq 0$ and subadditivity $f(a + b) \\leq f(a) + f(b)$ for all $a, b \\in \\alpha$, it holds that $f(\\sum s) \\leq \\sum_{x \\in s} f(x)$ for every multiset $s$ over $\\alpha$. Here, $\\sum s$ denotes the sum of elements in the multiset $s$.",
+            "path": "Mathlib.Algebra.Order.BigOperators.Group.Multiset"
+          },
+          {
+            "formal_name": "Finset.le_sum_nonempty_of_subadditive",
+            "informal_name": "Subadditive Function Inequality for Non-Empty Finite Sums",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_1} {M : Type u_4} {N : Type u_5} [inst : AddCommMonoid M] [inst_1 : AddCommMonoid N]\n  [inst_2 : PartialOrder N] [IsOrderedAddMonoid N] (f : M → N),\n  (∀ (x y : M), f (x + y) ≤ f x + f y) →\n    ∀ {s : Finset ι}, s.Nonempty → ∀ (g : ι → M), f (∑ i ∈ s, g i) ≤ ∑ i ∈ s, f (g i)",
+            "informal_description": "Let $ M $ and $ N $ be additive commutative monoids, with $ N $ equipped with a partial order compatible with addition. For any subadditive function $ f : M \\to N $ (i.e., $ f(x + y) \\leq f(x) + f(y) $ for all $ x, y \\in M $), any non-empty finite set $ s $, and any function $ g : s \\to M $, it holds that $ f\\left(\\sum_{i \\in s} g(i)\\right) \\leq \\sum_{i \\in s} f(g(i)) $.",
+            "path": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+          },
+          {
+            "formal_name": "Finset.le_sum_nonempty_of_subadditive_on_pred",
+            "informal_name": "Subadditive Function Inequality for Non-Empty Finite Sums",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_1} {M : Type u_4} {N : Type u_5} [inst : AddCommMonoid M] [inst_1 : AddCommMonoid N]\n  [inst_2 : PartialOrder N] [IsOrderedAddMonoid N] (f : M → N) (p : M → Prop),\n  (∀ (x y : M), p x → p y → f (x + y) ≤ f x + f y) →\n    (∀ (x y : M), p x → p y → p (x + y)) →\n      ∀ (g : ι → M) (s : Finset ι), s.Nonempty → (∀ i ∈ s, p (g i)) → f (∑ i ∈ s, g i) ≤ ∑ i ∈ s, f (g i)",
+            "informal_description": "Let $ M $ and $ N $ be additive commutative monoids, with $ N $ equipped with a partial order compatible with addition. Suppose $ f : M \\to N $ is subadditive on a predicate $ p : M \\to \\mathrm{Prop} $ (i.e., $ f(x + y) \\leq f(x) + f(y) $ whenever $ p(x) $ and $ p(y) $), and $ p $ is closed under addition (i.e., $ p(x) $ and $ p(y) $ imply $ p(x + y) $). Then, for any non-empty finite set $ s $ and function $ g : s \\to M $ with $ p(g(i)) $ for all $ i \\in s $, it holds that $ f\\left(\\sum_{i \\in s} g(i)\\right) \\leq \\sum_{i \\in s} f(g(i)) $.",
+            "path": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+          },
+          {
+            "formal_name": "List.le_sum_nonempty_of_subadditive_on_pred",
+            "informal_name": "Subadditive Function Inequality for Predicate-Closed Lists in Additive Monoids",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_5} {β : Type u_6} [inst : AddMonoid α] [inst_1 : AddCommMonoid β] [inst_2 : PartialOrder β]\n  [IsOrderedAddMonoid β] (f : α → β) (p : α → Prop),\n  (∀ (a b : α), p a → p b → f (a + b) ≤ f a + f b) →\n    (∀ (a b : α), p a → p b → p (a + b)) →\n      ∀ (l : List α), l ≠ [] → (∀ (a : α), a ∈ l → p a) → f l.sum ≤ (List.map f l).sum",
+            "informal_description": "Given an additive monoid $\\alpha$, an ordered commutative additive monoid $\\beta$, and a predicate $p : \\alpha \\to \\mathrm{Prop}$ closed under addition, if a function $f : \\alpha \\to \\beta$ is subadditive on elements satisfying $p$ (i.e., $f(a + b) \\leq f(a) + f(b)$ whenever $p(a)$ and $p(b)$), then for any non-empty list $l$ of elements in $\\alpha$ where all elements satisfy $p$, the inequality $f(\\sum l) \\leq \\sum_{x \\in l} f(x)$ holds.",
+            "path": "Mathlib.Algebra.Order.BigOperators.Group.List"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_leanfinder",
+    "form": "current",
+    "request": {
+      "query": "coefficient l1 norm multivariate integer polynomial finite sum triangle inequality",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.mahlerMeasure_le_sum_norm_coeff\",\n      \"informal_name\": \"Mahler Measure Upper Bound by Coefficient Norms\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (p : Polynomial ℂ), p.mahlerMeasure ≤ p.sum fun x a => ‖a‖\",\n      \"informal_description\": \"For any complex polynomial $ p $, its Mahler measure satisfies $ \\\\text{Mahler}(p) \\\\leq \\\\sum_{n} \\\\|a_n\\\\| $, where $ a_n $ are the coefficients of $ p $ and $ \\\\|\\\\cdot\\\\| $ denotes the complex norm.\",\n      \"path\": \"Mathlib.Analysis.Polynomial.MahlerMeasure\"\n    },\n    {\n      \"formal_name\": \"Polynomial.finite_mahlerMeasure_le\",\n      \"informal_name\": \"Finiteness of Integer Polynomials with Bounded Degree and Mahler Measure\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (n : ℕ) (B : NNReal), {p | p.natDegree ≤ n ∧ (Polynomial.map (Int.castRingHom ℂ) p).mahlerMeasure ≤ ↑B}.Finite\",\n      \"informal_description\": \"For any natural number $n$ and non-negative real number $B$, the set of integer polynomials $p$ with natural degree $\\\\leq n$ and Mahler measure $\\\\leq B$ is finite. Formally, the set $\\\\{p \\\\in \\\\mathbb{Z}[X] \\\\mid \\\\deg(p) \\\\leq n \\\\text{ and } \\\\mathcal{M}(p) \\\\leq B\\\\}$ has finitely many elements, where $\\\\mathcal{M}(p)$ denotes the Mahler measure of $p$.\",\n      \"path\": \"Mathlib.NumberTheory.MahlerMeasure\"\n    },\n    {\n      \"formal_name\": \"Polynomial.gaussNorm\",\n      \"informal_name\": \"Gauss norm of a polynomial\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → {F : Type u_2} → [inst : Semiring R] → [FunLike F R ℝ] → F → ℝ → Polynomial R → ℝ\",\n      \"informal_description\": \"The Gauss norm of a polynomial $ p $ is defined as the supremum of $ v(a_i) \\\\cdot c^i $ over all exponents $ i $ in the support of $ p $, where $ a_i $ is the coefficient of $ X^i $ in $ p $. If $ p $ is the zero polynomial (with empty support), the Gauss norm is defined to be $ 0 $. Here, $ v $ denotes a valuation and $ c $ is a real number parameter.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.GaussNorm\"\n    },\n    {\n      \"formal_name\": \"Polynomial.cauchyBound\",\n      \"informal_name\": \"Cauchy bound for polynomial roots\",\n      \"kind\": \"definition\",\n      \"type\": \"{K : Type u_1} → [inst : NormedDivisionRing K] → Polynomial K → NNReal\",\n      \"informal_description\": \"The Cauchy bound of a polynomial $ p $ over a normed division ring $ K $ is defined as $ 1 + \\\\frac{\\\\sup_{0 \\\\leq i < \\\\deg p} \\\\|\\\\text{coeff}_i(p)\\\\|}{\\\\|\\\\text{leadingCoeff}(p)\\\\|} $, where $ \\\\sup $ denotes the supremum of the absolute values of the coefficients excluding the leading term, and $ \\\\|\\\\cdot\\\\| $ is the norm on $ K $. This provides an upper bound on the absolute values of the roots of $ p $.\",\n      \"path\": \"Mathlib.Analysis.Polynomial.CauchyBound\"\n    },\n    {\n      \"formal_name\": \"Polynomial.norm_coeff_le_choose_mul_mahlerMeasure\",\n      \"informal_name\": \"Norm of Coefficient Bound via Binomial Coefficient and Mahler Measure\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (n : ℕ) (p : Polynomial ℂ), ‖p.coeff n‖ ≤ ↑(p.natDegree.choose n) * p.mahlerMeasure\",\n      \"informal_description\": \"For any natural number $ n $ and complex polynomial $ p $, the norm of the coefficient of $ X^n $ in $ p $ satisfies $ \\\\|p.coeff\\\\,n\\\\| \\\\leq \\\\binom{d}{n} \\\\cdot p.mahlerMeasure $, where $ d $ denotes the natural degree of $ p $.\",\n      \"path\": \"Mathlib.Analysis.Polynomial.MahlerMeasure\"\n    },\n    {\n      \"formal_name\": \"Polynomial.card_mahlerMeasure_le_prod\",\n      \"informal_name\": \"Cardinality Bound for Integer Polynomials with Bounded Mahler Measure and Degree\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (n : ℕ) (B : NNReal),\\n  {p | p.natDegree ≤ n ∧ (Polynomial.map (Int.castRingHom ℂ) p).mahlerMeasure ≤ ↑B}.ncard ≤\\n    ∏ i, (2 * ⌊↑(n.choose ↑i) * B⌋₊ + 1)\",\n      \"informal_description\": \"For any natural number $ n $ and non-negative real number $ B $, the number of integer polynomials $ p $ with natural degree at most $ n $ and Mahler measure $ \\\\mathcal{M}(p) \\\\leq B $ is at most the product over $ i = 0 $ to $ n $ of $ 2 \\\\left\\\\lfloor \\\\binom{n}{i} B \\\\right\\\\rfloor + 1 $.\",\n      \"path\": \"Mathlib.NumberTheory.MahlerMeasure\"\n    },\n    {\n      \"formal_name\": \"spectralValueTerms\",\n      \"informal_name\": \"Spectral value terms sequence\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : SeminormedRing R] → Polynomial R → ℕ → ℝ\",\n      \"informal_description\": \"For a polynomial $ p $ over a seminormed ring $ R $, this function returns a sequence indexed by $ \\\\mathbb{N} $ where each term is defined as $ \\\\|p_n\\\\|^{1/(d - n)} $ if $ n < d $, and $ 0 $ otherwise. Here, $ p_n $ denotes the coefficient of $ X^n $ in $ p $, $ d $ is the natural degree of $ p $, and $ \\\\|\\\\cdot\\\\| $ is the seminorm on $ R $. This sequence captures the normed coefficients' growth rates relative to their distance from the polynomial's degree.\",\n      \"path\": \"Mathlib.Analysis.Normed.Unbundled.SpectralNorm\"\n    },\n    {\n      \"formal_name\": \"Polynomial.le_gaussNorm\",\n      \"informal_name\": \"Gauss Norm Upper Bound for Coefficient Terms\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {F : Type u_2} [inst : Semiring R] [inst_1 : FunLike F R ℝ] (v : F) {c : ℝ} (p : Polynomial R)\\n  [ZeroHomClass F R ℝ] [NonnegHomClass F R ℝ], 0 ≤ c → ∀ (i : ℕ), v (p.coeff i) * c ^ i ≤ Polynomial.gaussNorm v c p\",\n      \"informal_description\": \"For any polynomial $ p $ over a semiring $ R $, valuation $ v $ (preserving zero and non-negative), non-negative real number $ c $, and natural number $ i $, the product $ v(a_i) \\\\cdot c^i $ (where $ a_i $ is the coefficient of $ X^i $ in $ p $) satisfies $ v(a_i) \\\\cdot c^i \\\\leq \\\\|p\\\\|_{v,c} $, where $ \\\\|p\\\\|_{v,c} $ denotes the Gauss norm of $ p $ with respect to $ v $ and $ c $.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.GaussNorm\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Polynomial.mahlerMeasure_le_sum_norm_coeff",
+            "informal_name": "Mahler Measure Upper Bound by Coefficient Norms",
+            "kind": "theorem",
+            "type": "∀ (p : Polynomial ℂ), p.mahlerMeasure ≤ p.sum fun x a => ‖a‖",
+            "informal_description": "For any complex polynomial $ p $, its Mahler measure satisfies $ \\text{Mahler}(p) \\leq \\sum_{n} \\|a_n\\| $, where $ a_n $ are the coefficients of $ p $ and $ \\|\\cdot\\| $ denotes the complex norm.",
+            "path": "Mathlib.Analysis.Polynomial.MahlerMeasure"
+          },
+          {
+            "formal_name": "Polynomial.finite_mahlerMeasure_le",
+            "informal_name": "Finiteness of Integer Polynomials with Bounded Degree and Mahler Measure",
+            "kind": "theorem",
+            "type": "∀ (n : ℕ) (B : NNReal), {p | p.natDegree ≤ n ∧ (Polynomial.map (Int.castRingHom ℂ) p).mahlerMeasure ≤ ↑B}.Finite",
+            "informal_description": "For any natural number $n$ and non-negative real number $B$, the set of integer polynomials $p$ with natural degree $\\leq n$ and Mahler measure $\\leq B$ is finite. Formally, the set $\\{p \\in \\mathbb{Z}[X] \\mid \\deg(p) \\leq n \\text{ and } \\mathcal{M}(p) \\leq B\\}$ has finitely many elements, where $\\mathcal{M}(p)$ denotes the Mahler measure of $p$.",
+            "path": "Mathlib.NumberTheory.MahlerMeasure"
+          },
+          {
+            "formal_name": "Polynomial.gaussNorm",
+            "informal_name": "Gauss norm of a polynomial",
+            "kind": "definition",
+            "type": "{R : Type u_1} → {F : Type u_2} → [inst : Semiring R] → [FunLike F R ℝ] → F → ℝ → Polynomial R → ℝ",
+            "informal_description": "The Gauss norm of a polynomial $ p $ is defined as the supremum of $ v(a_i) \\cdot c^i $ over all exponents $ i $ in the support of $ p $, where $ a_i $ is the coefficient of $ X^i $ in $ p $. If $ p $ is the zero polynomial (with empty support), the Gauss norm is defined to be $ 0 $. Here, $ v $ denotes a valuation and $ c $ is a real number parameter.",
+            "path": "Mathlib.RingTheory.Polynomial.GaussNorm"
+          },
+          {
+            "formal_name": "Polynomial.cauchyBound",
+            "informal_name": "Cauchy bound for polynomial roots",
+            "kind": "definition",
+            "type": "{K : Type u_1} → [inst : NormedDivisionRing K] → Polynomial K → NNReal",
+            "informal_description": "The Cauchy bound of a polynomial $ p $ over a normed division ring $ K $ is defined as $ 1 + \\frac{\\sup_{0 \\leq i < \\deg p} \\|\\text{coeff}_i(p)\\|}{\\|\\text{leadingCoeff}(p)\\|} $, where $ \\sup $ denotes the supremum of the absolute values of the coefficients excluding the leading term, and $ \\|\\cdot\\| $ is the norm on $ K $. This provides an upper bound on the absolute values of the roots of $ p $.",
+            "path": "Mathlib.Analysis.Polynomial.CauchyBound"
+          },
+          {
+            "formal_name": "Polynomial.norm_coeff_le_choose_mul_mahlerMeasure",
+            "informal_name": "Norm of Coefficient Bound via Binomial Coefficient and Mahler Measure",
+            "kind": "theorem",
+            "type": "∀ (n : ℕ) (p : Polynomial ℂ), ‖p.coeff n‖ ≤ ↑(p.natDegree.choose n) * p.mahlerMeasure",
+            "informal_description": "For any natural number $ n $ and complex polynomial $ p $, the norm of the coefficient of $ X^n $ in $ p $ satisfies $ \\|p.coeff\\,n\\| \\leq \\binom{d}{n} \\cdot p.mahlerMeasure $, where $ d $ denotes the natural degree of $ p $.",
+            "path": "Mathlib.Analysis.Polynomial.MahlerMeasure"
+          },
+          {
+            "formal_name": "Polynomial.card_mahlerMeasure_le_prod",
+            "informal_name": "Cardinality Bound for Integer Polynomials with Bounded Mahler Measure and Degree",
+            "kind": "theorem",
+            "type": "∀ (n : ℕ) (B : NNReal),\n  {p | p.natDegree ≤ n ∧ (Polynomial.map (Int.castRingHom ℂ) p).mahlerMeasure ≤ ↑B}.ncard ≤\n    ∏ i, (2 * ⌊↑(n.choose ↑i) * B⌋₊ + 1)",
+            "informal_description": "For any natural number $ n $ and non-negative real number $ B $, the number of integer polynomials $ p $ with natural degree at most $ n $ and Mahler measure $ \\mathcal{M}(p) \\leq B $ is at most the product over $ i = 0 $ to $ n $ of $ 2 \\left\\lfloor \\binom{n}{i} B \\right\\rfloor + 1 $.",
+            "path": "Mathlib.NumberTheory.MahlerMeasure"
+          },
+          {
+            "formal_name": "spectralValueTerms",
+            "informal_name": "Spectral value terms sequence",
+            "kind": "definition",
+            "type": "{R : Type u_1} → [inst : SeminormedRing R] → Polynomial R → ℕ → ℝ",
+            "informal_description": "For a polynomial $ p $ over a seminormed ring $ R $, this function returns a sequence indexed by $ \\mathbb{N} $ where each term is defined as $ \\|p_n\\|^{1/(d - n)} $ if $ n < d $, and $ 0 $ otherwise. Here, $ p_n $ denotes the coefficient of $ X^n $ in $ p $, $ d $ is the natural degree of $ p $, and $ \\|\\cdot\\| $ is the seminorm on $ R $. This sequence captures the normed coefficients' growth rates relative to their distance from the polynomial's degree.",
+            "path": "Mathlib.Analysis.Normed.Unbundled.SpectralNorm"
+          },
+          {
+            "formal_name": "Polynomial.le_gaussNorm",
+            "informal_name": "Gauss Norm Upper Bound for Coefficient Terms",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {F : Type u_2} [inst : Semiring R] [inst_1 : FunLike F R ℝ] (v : F) {c : ℝ} (p : Polynomial R)\n  [ZeroHomClass F R ℝ] [NonnegHomClass F R ℝ], 0 ≤ c → ∀ (i : ℕ), v (p.coeff i) * c ^ i ≤ Polynomial.gaussNorm v c p",
+            "informal_description": "For any polynomial $ p $ over a semiring $ R $, valuation $ v $ (preserving zero and non-negative), non-negative real number $ c $, and natural number $ i $, the product $ v(a_i) \\cdot c^i $ (where $ a_i $ is the coefficient of $ X^i $ in $ p $) satisfies $ v(a_i) \\cdot c^i \\leq \\|p\\|_{v,c} $, where $ \\|p\\|_{v,c} $ denotes the Gauss norm of $ p $ with respect to $ v $ and $ c $.",
+            "path": "Mathlib.RingTheory.Polynomial.GaussNorm"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_leanfinder",
+    "form": "standard",
+    "request": {
+      "query": "norm of finite sum is at most sum of norms",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"norm_sum_le\",\n      \"informal_name\": \"Triangle Inequality for Finite Sums in Seminormed Abelian Groups\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_3} {E : Type u_9} [inst : SeminormedAddCommGroup E] (s : Finset ι) (f : ι → E),\\n  ‖∑ i ∈ s, f i‖ ≤ ∑ i ∈ s, ‖f i‖\",\n      \"informal_description\": \"For any seminormed additive commutative group $E$, finite set $s$ of indices, and function $f : s \\\\to E$, the norm of the sum of $f(i)$ over $i \\\\in s$ is less than or equal to the sum of the norms of $f(i)$ over $i \\\\in s$. Mathematically, this is expressed as $\\\\left\\\\| \\\\sum_{i \\\\in s} f(i) \\\\right\\\\| \\\\leq \\\\sum_{i \\\\in s} \\\\|f(i)\\\\|$.\",\n      \"path\": \"Mathlib.Analysis.Normed.Group.Basic\"\n    },\n    {\n      \"formal_name\": \"nnnorm_sum_le\",\n      \"informal_name\": \"Triangle Inequality for Finite Sums in Seminormed Additive Commutative Groups\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_3} {E : Type u_5} [inst : SeminormedAddCommGroup E] (s : Finset ι) (f : ι → E),\\n  ‖∑ a ∈ s, f a‖₊ ≤ ∑ a ∈ s, ‖f a‖₊\",\n      \"informal_description\": \"For any finite set $ s $ of type $ \\\\iota $ and any function $ f : \\\\iota \\\\to E $ in a seminormed additive commutative group $ E $, the non-negative norm of the sum $ \\\\sum_{a \\\\in s} f(a) $ is less than or equal to the sum of the non-negative norms of $ f(a) $, i.e., $ \\\\left\\\\| \\\\sum_{a \\\\in s} f(a) \\\\right\\\\|_+ \\\\leq \\\\sum_{a \\\\in s} \\\\| f(a) \\\\|_+ $.\",\n      \"path\": \"Mathlib.Analysis.Normed.Group.Basic\"\n    },\n    {\n      \"formal_name\": \"norm_sum_le_of_le\",\n      \"informal_name\": \"Norm of Sum Bounded by Sum of Bounds in Seminormed Group\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_3} {E : Type u_5} [inst : SeminormedAddCommGroup E] (s : Finset ι) {f : ι → E} {n : ι → ℝ},\\n  (∀ b ∈ s, ‖f b‖ ≤ n b) → ‖∑ b ∈ s, f b‖ ≤ ∑ b ∈ s, n b\",\n      \"informal_description\": \"For any finite set $ s $ of type $ \\\\iota $, functions $ f : \\\\iota \\\\to E $ and $ n : \\\\iota \\\\to \\\\mathbb{R} $, and a seminormed additive commutative group $ E $, if $ \\\\|f(b)\\\\| \\\\leq n(b) $ for all $ b \\\\in s $, then $ \\\\left\\\\| \\\\sum_{b \\\\in s} f(b) \\\\right\\\\| \\\\leq \\\\sum_{b \\\\in s} n(b) $.\",\n      \"path\": \"Mathlib.Analysis.Normed.Group.Basic\"\n    },\n    {\n      \"formal_name\": \"enorm_sum_le\",\n      \"informal_name\": \"Extended Norm Triangle Inequality for Finite Sums\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_3} {ε : Type u_9} [inst : TopologicalSpace ε] [inst_1 : ESeminormedAddCommMonoid ε] (s : Finset ι)\\n  (f : ι → ε), ‖∑ i ∈ s, f i‖ₑ ≤ ∑ i ∈ s, ‖f i‖ₑ\",\n      \"informal_description\": \"In a seminormed additive commutative monoid $\\\\varepsilon$, for any finite set $s \\\\subseteq \\\\iota$ and function $f : \\\\iota \\\\to \\\\varepsilon$, the extended norm of the sum $\\\\left\\\\| \\\\sum_{i \\\\in s} f(i) \\\\right\\\\|_e$ is less than or equal to the sum of the extended norms $\\\\sum_{i \\\\in s} \\\\|f(i)\\\\|_e$.\",\n      \"path\": \"Mathlib.Analysis.Normed.Group.Basic\"\n    },\n    {\n      \"formal_name\": \"nnnorm_sum_le_of_le\",\n      \"informal_name\": \"Triangle Inequality for Finite Sums in Seminormed Additive Commutative Groups\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_3} {E : Type u_5} [inst : SeminormedAddCommGroup E] (s : Finset ι) {f : ι → E} {n : ι → NNReal},\\n  (∀ b ∈ s, ‖f b‖₊ ≤ n b) → ‖∑ b ∈ s, f b‖₊ ≤ ∑ b ∈ s, n b\",\n      \"informal_description\": \"For any finite set $ s $, a function $ f : s \\\\to E $ into a seminormed additive commutative group $ E $, and a function $ n : s \\\\to \\\\mathbb{R}_{\\\\geq 0} $, if $ \\\\|f(b)\\\\|_+ \\\\leq n(b) $ for all $ b \\\\in s $, then $ \\\\left\\\\|\\\\sum_{b \\\\in s} f(b)\\\\right\\\\|_+ \\\\leq \\\\sum_{b \\\\in s} n(b) $.\",\n      \"path\": \"Mathlib.Analysis.Normed.Group.Basic\"\n    },\n    {\n      \"formal_name\": \"enorm_sum_le_of_le\",\n      \"informal_name\": \"Extended Norm of Sum is Bounded by Sum of Extended Norms\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_3} {ε : Type u_8} [inst : TopologicalSpace ε] [inst_1 : ESeminormedAddCommMonoid ε] (s : Finset ι)\\n  {f : ι → ε} {n : ι → ENNReal}, (∀ b ∈ s, ‖f b‖ₑ ≤ n b) → ‖∑ b ∈ s, f b‖ₑ ≤ ∑ b ∈ s, n b\",\n      \"informal_description\": \"For any finite set $ S $, a function $ f : S \\\\to \\\\varepsilon $ where $ \\\\varepsilon $ is a seminormed additive commutative monoid, and a function $ n : S \\\\to [0, \\\\infty] $, if for all $ b \\\\in S $ the extended norm $ \\\\|f(b)\\\\|_e \\\\leq n(b) $, then the extended norm of the sum $ \\\\left\\\\|\\\\sum_{b \\\\in S} f(b)\\\\right\\\\|_e $ is less than or equal to the sum $ \\\\sum_{b \\\\in S} n(b) $.\",\n      \"path\": \"Mathlib.Analysis.Normed.Group.Basic\"\n    },\n    {\n      \"formal_name\": \"norm_multiset_sum_le\",\n      \"informal_name\": \"Norm Inequality for Multiset Sums\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {E : Type u_9} [inst : SeminormedAddCommGroup E] (m : Multiset E), ‖m.sum‖ ≤ (Multiset.map (fun x => ‖x‖) m).sum\",\n      \"informal_description\": \"For any multiset $ m $ in a seminormed additive commutative group $ E $, the norm of the sum of the elements of $ m $ is less than or equal to the sum of the norms of the elements of $ m $, i.e., $\\\\|\\\\sum m\\\\| \\\\leq \\\\sum_{x \\\\in m} \\\\|x\\\\| $.\",\n      \"path\": \"Mathlib.Analysis.Normed.Group.Basic\"\n    },\n    {\n      \"formal_name\": \"enorm_multisetSum_le\",\n      \"informal_name\": \"Extended Norm of Multiset Sum is Less Than or Equal to Sum of Extended Norms\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ε : Type u_9} [inst : TopologicalSpace ε] [inst_1 : ESeminormedAddCommMonoid ε] (m : Multiset ε),\\n  ‖m.sum‖ₑ ≤ (Multiset.map (fun x => ‖x‖ₑ) m).sum\",\n      \"informal_description\": \"For any multiset $ m $ over a seminormed additive commutative monoid $ \\\\varepsilon $, the extended norm of the sum of the elements of $ m $ is less than or equal to the sum of the extended norms of the elements of $ m $, i.e., $ \\\\| \\\\sum m \\\\|_e \\\\leq \\\\sum_{x \\\\in m} \\\\| x \\\\|_e $.\",\n      \"path\": \"Mathlib.Analysis.Normed.Group.Basic\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "norm_sum_le",
+            "informal_name": "Triangle Inequality for Finite Sums in Seminormed Abelian Groups",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_3} {E : Type u_9} [inst : SeminormedAddCommGroup E] (s : Finset ι) (f : ι → E),\n  ‖∑ i ∈ s, f i‖ ≤ ∑ i ∈ s, ‖f i‖",
+            "informal_description": "For any seminormed additive commutative group $E$, finite set $s$ of indices, and function $f : s \\to E$, the norm of the sum of $f(i)$ over $i \\in s$ is less than or equal to the sum of the norms of $f(i)$ over $i \\in s$. Mathematically, this is expressed as $\\left\\| \\sum_{i \\in s} f(i) \\right\\| \\leq \\sum_{i \\in s} \\|f(i)\\|$.",
+            "path": "Mathlib.Analysis.Normed.Group.Basic"
+          },
+          {
+            "formal_name": "nnnorm_sum_le",
+            "informal_name": "Triangle Inequality for Finite Sums in Seminormed Additive Commutative Groups",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_3} {E : Type u_5} [inst : SeminormedAddCommGroup E] (s : Finset ι) (f : ι → E),\n  ‖∑ a ∈ s, f a‖₊ ≤ ∑ a ∈ s, ‖f a‖₊",
+            "informal_description": "For any finite set $ s $ of type $ \\iota $ and any function $ f : \\iota \\to E $ in a seminormed additive commutative group $ E $, the non-negative norm of the sum $ \\sum_{a \\in s} f(a) $ is less than or equal to the sum of the non-negative norms of $ f(a) $, i.e., $ \\left\\| \\sum_{a \\in s} f(a) \\right\\|_+ \\leq \\sum_{a \\in s} \\| f(a) \\|_+ $.",
+            "path": "Mathlib.Analysis.Normed.Group.Basic"
+          },
+          {
+            "formal_name": "norm_sum_le_of_le",
+            "informal_name": "Norm of Sum Bounded by Sum of Bounds in Seminormed Group",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_3} {E : Type u_5} [inst : SeminormedAddCommGroup E] (s : Finset ι) {f : ι → E} {n : ι → ℝ},\n  (∀ b ∈ s, ‖f b‖ ≤ n b) → ‖∑ b ∈ s, f b‖ ≤ ∑ b ∈ s, n b",
+            "informal_description": "For any finite set $ s $ of type $ \\iota $, functions $ f : \\iota \\to E $ and $ n : \\iota \\to \\mathbb{R} $, and a seminormed additive commutative group $ E $, if $ \\|f(b)\\| \\leq n(b) $ for all $ b \\in s $, then $ \\left\\| \\sum_{b \\in s} f(b) \\right\\| \\leq \\sum_{b \\in s} n(b) $.",
+            "path": "Mathlib.Analysis.Normed.Group.Basic"
+          },
+          {
+            "formal_name": "enorm_sum_le",
+            "informal_name": "Extended Norm Triangle Inequality for Finite Sums",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_3} {ε : Type u_9} [inst : TopologicalSpace ε] [inst_1 : ESeminormedAddCommMonoid ε] (s : Finset ι)\n  (f : ι → ε), ‖∑ i ∈ s, f i‖ₑ ≤ ∑ i ∈ s, ‖f i‖ₑ",
+            "informal_description": "In a seminormed additive commutative monoid $\\varepsilon$, for any finite set $s \\subseteq \\iota$ and function $f : \\iota \\to \\varepsilon$, the extended norm of the sum $\\left\\| \\sum_{i \\in s} f(i) \\right\\|_e$ is less than or equal to the sum of the extended norms $\\sum_{i \\in s} \\|f(i)\\|_e$.",
+            "path": "Mathlib.Analysis.Normed.Group.Basic"
+          },
+          {
+            "formal_name": "nnnorm_sum_le_of_le",
+            "informal_name": "Triangle Inequality for Finite Sums in Seminormed Additive Commutative Groups",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_3} {E : Type u_5} [inst : SeminormedAddCommGroup E] (s : Finset ι) {f : ι → E} {n : ι → NNReal},\n  (∀ b ∈ s, ‖f b‖₊ ≤ n b) → ‖∑ b ∈ s, f b‖₊ ≤ ∑ b ∈ s, n b",
+            "informal_description": "For any finite set $ s $, a function $ f : s \\to E $ into a seminormed additive commutative group $ E $, and a function $ n : s \\to \\mathbb{R}_{\\geq 0} $, if $ \\|f(b)\\|_+ \\leq n(b) $ for all $ b \\in s $, then $ \\left\\|\\sum_{b \\in s} f(b)\\right\\|_+ \\leq \\sum_{b \\in s} n(b) $.",
+            "path": "Mathlib.Analysis.Normed.Group.Basic"
+          },
+          {
+            "formal_name": "enorm_sum_le_of_le",
+            "informal_name": "Extended Norm of Sum is Bounded by Sum of Extended Norms",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_3} {ε : Type u_8} [inst : TopologicalSpace ε] [inst_1 : ESeminormedAddCommMonoid ε] (s : Finset ι)\n  {f : ι → ε} {n : ι → ENNReal}, (∀ b ∈ s, ‖f b‖ₑ ≤ n b) → ‖∑ b ∈ s, f b‖ₑ ≤ ∑ b ∈ s, n b",
+            "informal_description": "For any finite set $ S $, a function $ f : S \\to \\varepsilon $ where $ \\varepsilon $ is a seminormed additive commutative monoid, and a function $ n : S \\to [0, \\infty] $, if for all $ b \\in S $ the extended norm $ \\|f(b)\\|_e \\leq n(b) $, then the extended norm of the sum $ \\left\\|\\sum_{b \\in S} f(b)\\right\\|_e $ is less than or equal to the sum $ \\sum_{b \\in S} n(b) $.",
+            "path": "Mathlib.Analysis.Normed.Group.Basic"
+          },
+          {
+            "formal_name": "norm_multiset_sum_le",
+            "informal_name": "Norm Inequality for Multiset Sums",
+            "kind": "theorem",
+            "type": "∀ {E : Type u_9} [inst : SeminormedAddCommGroup E] (m : Multiset E), ‖m.sum‖ ≤ (Multiset.map (fun x => ‖x‖) m).sum",
+            "informal_description": "For any multiset $ m $ in a seminormed additive commutative group $ E $, the norm of the sum of the elements of $ m $ is less than or equal to the sum of the norms of the elements of $ m $, i.e., $\\|\\sum m\\| \\leq \\sum_{x \\in m} \\|x\\| $.",
+            "path": "Mathlib.Analysis.Normed.Group.Basic"
+          },
+          {
+            "formal_name": "enorm_multisetSum_le",
+            "informal_name": "Extended Norm of Multiset Sum is Less Than or Equal to Sum of Extended Norms",
+            "kind": "theorem",
+            "type": "∀ {ε : Type u_9} [inst : TopologicalSpace ε] [inst_1 : ESeminormedAddCommMonoid ε] (m : Multiset ε),\n  ‖m.sum‖ₑ ≤ (Multiset.map (fun x => ‖x‖ₑ) m).sum",
+            "informal_description": "For any multiset $ m $ over a seminormed additive commutative monoid $ \\varepsilon $, the extended norm of the sum of the elements of $ m $ is less than or equal to the sum of the extended norms of the elements of $ m $, i.e., $ \\| \\sum m \\|_e \\leq \\sum_{x \\in m} \\| x \\|_e $.",
+            "path": "Mathlib.Analysis.Normed.Group.Basic"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_leansearch",
+    "form": "abstract",
+    "request": {
+      "query": "A subadditive function nonpositive at zero maps a finite sum to at most the sum of its values",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finset.le_sum_of_subadditive_on_pred\",\n      \"module_name\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {M : Type u_4} {N : Type u_5} [inst : AddCommMonoid M] [inst_1 : AddCommMonoid N]\\n  [inst_2 : PartialOrder N] [IsOrderedAddMonoid N] (f : M → N) (p : M → Prop),\\n  f 0 ≤ 0 →\\n    (∀ (x y : M), p x → p y → f (x + y) ≤ f x + f y) →\\n      (∀ (x y : M), p x → p y → p (x + y)) →\\n        ∀ (g : ι → M) {s : Finset ι}, (∀ i ∈ s, p (g i)) → f (∑ i ∈ s, g i) ≤ ∑ i ∈ s, f (g i)\"\n    },\n    {\n      \"name\": \"Finset.le_sum_of_subadditive\",\n      \"module_name\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {M : Type u_4} {N : Type u_5} [inst : AddCommMonoid M] [inst_1 : AddCommMonoid N]\\n  [inst_2 : PartialOrder N] [IsOrderedAddMonoid N] (f : M → N),\\n  f 0 ≤ 0 → (∀ (x y : M), f (x + y) ≤ f x + f y) → ∀ (s : Finset ι) (g : ι → M), f (∑ i ∈ s, g i) ≤ ∑ i ∈ s, f (g i)\"\n    },\n    {\n      \"name\": \"List.le_sum_of_subadditive_on_pred\",\n      \"module_name\": \"Mathlib.Algebra.Order.BigOperators.Group.List\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_5} {β : Type u_6} [inst : AddMonoid α] [inst_1 : AddCommMonoid β] [inst_2 : PartialOrder β]\\n  [IsOrderedAddMonoid β] (f : α → β) (p : α → Prop),\\n  f 0 ≤ 0 →\\n    p 0 →\\n      (∀ (a b : α), p a → p b → f (a + b) ≤ f a + f b) →\\n        (∀ (a b : α), p a → p b → p (a + b)) → ∀ (l : List α), (∀ (a : α), a ∈ l → p a) → f l.sum ≤ (List.map f l).sum\"\n    },\n    {\n      \"name\": \"Multiset.le_sum_of_subadditive_on_pred\",\n      \"module_name\": \"Mathlib.Algebra.Order.BigOperators.Group.Multiset\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_2} {β : Type u_3} [inst : AddCommMonoid α] [inst_1 : AddCommMonoid β] [inst_2 : PartialOrder β]\\n  [IsOrderedAddMonoid β] (f : α → β) (p : α → Prop),\\n  f 0 ≤ 0 →\\n    p 0 →\\n      (∀ (a b : α), p a → p b → f (a + b) ≤ f a + f b) →\\n        (∀ (a b : α), p a → p b → p (a + b)) →\\n          ∀ (s : Multiset α), (∀ (a : α), a ∈ s → p a) → f s.sum ≤ (Multiset.map f s).sum\"\n    },\n    {\n      \"name\": \"List.le_sum_of_subadditive\",\n      \"module_name\": \"Mathlib.Algebra.Order.BigOperators.Group.List\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_5} {β : Type u_6} [inst : AddMonoid α] [inst_1 : AddCommMonoid β] [inst_2 : PartialOrder β]\\n  [IsOrderedAddMonoid β] (f : α → β),\\n  f 0 ≤ 0 → (∀ (a b : α), f (a + b) ≤ f a + f b) → ∀ (l : List α), f l.sum ≤ (List.map f l).sum\"\n    },\n    {\n      \"name\": \"Multiset.le_sum_of_subadditive\",\n      \"module_name\": \"Mathlib.Algebra.Order.BigOperators.Group.Multiset\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_2} {β : Type u_3} [inst : AddCommMonoid α] [inst_1 : AddCommMonoid β] [inst_2 : PartialOrder β]\\n  [IsOrderedAddMonoid β] (f : α → β),\\n  f 0 ≤ 0 → (∀ (a b : α), f (a + b) ≤ f a + f b) → ∀ (s : Multiset α), f s.sum ≤ (Multiset.map f s).sum\"\n    },\n    {\n      \"name\": \"Finset.le_sum_nonempty_of_subadditive\",\n      \"module_name\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {M : Type u_4} {N : Type u_5} [inst : AddCommMonoid M] [inst_1 : AddCommMonoid N]\\n  [inst_2 : PartialOrder N] [IsOrderedAddMonoid N] (f : M → N),\\n  (∀ (x y : M), f (x + y) ≤ f x + f y) →\\n    ∀ {s : Finset ι}, s.Nonempty → ∀ (g : ι → M), f (∑ i ∈ s, g i) ≤ ∑ i ∈ s, f (g i)\"\n    },\n    {\n      \"name\": \"Finset.apply_union_le_sum\",\n      \"module_name\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {α : Type u_2} {β : Type u_3} [inst : AddCommMonoid β] [inst_1 : PartialOrder β] [AddLeftMono β]\\n  {f : Set α → β},\\n  f ∅ = 0 →\\n    (∀ {s t : Set α}, f (s ∪ t) ≤ f s + f t) → ∀ {s : ι → Set α} (t : Finset ι), f (⋃ i ∈ t, s i) ≤ ∑ i ∈ t, f (s i)\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Finset.le_sum_of_subadditive_on_pred",
+            "module_name": "Mathlib.Algebra.Order.BigOperators.Group.Finset",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_1} {M : Type u_4} {N : Type u_5} [inst : AddCommMonoid M] [inst_1 : AddCommMonoid N]\n  [inst_2 : PartialOrder N] [IsOrderedAddMonoid N] (f : M → N) (p : M → Prop),\n  f 0 ≤ 0 →\n    (∀ (x y : M), p x → p y → f (x + y) ≤ f x + f y) →\n      (∀ (x y : M), p x → p y → p (x + y)) →\n        ∀ (g : ι → M) {s : Finset ι}, (∀ i ∈ s, p (g i)) → f (∑ i ∈ s, g i) ≤ ∑ i ∈ s, f (g i)"
+          },
+          {
+            "name": "Finset.le_sum_of_subadditive",
+            "module_name": "Mathlib.Algebra.Order.BigOperators.Group.Finset",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_1} {M : Type u_4} {N : Type u_5} [inst : AddCommMonoid M] [inst_1 : AddCommMonoid N]\n  [inst_2 : PartialOrder N] [IsOrderedAddMonoid N] (f : M → N),\n  f 0 ≤ 0 → (∀ (x y : M), f (x + y) ≤ f x + f y) → ∀ (s : Finset ι) (g : ι → M), f (∑ i ∈ s, g i) ≤ ∑ i ∈ s, f (g i)"
+          },
+          {
+            "name": "List.le_sum_of_subadditive_on_pred",
+            "module_name": "Mathlib.Algebra.Order.BigOperators.Group.List",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_5} {β : Type u_6} [inst : AddMonoid α] [inst_1 : AddCommMonoid β] [inst_2 : PartialOrder β]\n  [IsOrderedAddMonoid β] (f : α → β) (p : α → Prop),\n  f 0 ≤ 0 →\n    p 0 →\n      (∀ (a b : α), p a → p b → f (a + b) ≤ f a + f b) →\n        (∀ (a b : α), p a → p b → p (a + b)) → ∀ (l : List α), (∀ (a : α), a ∈ l → p a) → f l.sum ≤ (List.map f l).sum"
+          },
+          {
+            "name": "Multiset.le_sum_of_subadditive_on_pred",
+            "module_name": "Mathlib.Algebra.Order.BigOperators.Group.Multiset",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_2} {β : Type u_3} [inst : AddCommMonoid α] [inst_1 : AddCommMonoid β] [inst_2 : PartialOrder β]\n  [IsOrderedAddMonoid β] (f : α → β) (p : α → Prop),\n  f 0 ≤ 0 →\n    p 0 →\n      (∀ (a b : α), p a → p b → f (a + b) ≤ f a + f b) →\n        (∀ (a b : α), p a → p b → p (a + b)) →\n          ∀ (s : Multiset α), (∀ (a : α), a ∈ s → p a) → f s.sum ≤ (Multiset.map f s).sum"
+          },
+          {
+            "name": "List.le_sum_of_subadditive",
+            "module_name": "Mathlib.Algebra.Order.BigOperators.Group.List",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_5} {β : Type u_6} [inst : AddMonoid α] [inst_1 : AddCommMonoid β] [inst_2 : PartialOrder β]\n  [IsOrderedAddMonoid β] (f : α → β),\n  f 0 ≤ 0 → (∀ (a b : α), f (a + b) ≤ f a + f b) → ∀ (l : List α), f l.sum ≤ (List.map f l).sum"
+          },
+          {
+            "name": "Multiset.le_sum_of_subadditive",
+            "module_name": "Mathlib.Algebra.Order.BigOperators.Group.Multiset",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_2} {β : Type u_3} [inst : AddCommMonoid α] [inst_1 : AddCommMonoid β] [inst_2 : PartialOrder β]\n  [IsOrderedAddMonoid β] (f : α → β),\n  f 0 ≤ 0 → (∀ (a b : α), f (a + b) ≤ f a + f b) → ∀ (s : Multiset α), f s.sum ≤ (Multiset.map f s).sum"
+          },
+          {
+            "name": "Finset.le_sum_nonempty_of_subadditive",
+            "module_name": "Mathlib.Algebra.Order.BigOperators.Group.Finset",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_1} {M : Type u_4} {N : Type u_5} [inst : AddCommMonoid M] [inst_1 : AddCommMonoid N]\n  [inst_2 : PartialOrder N] [IsOrderedAddMonoid N] (f : M → N),\n  (∀ (x y : M), f (x + y) ≤ f x + f y) →\n    ∀ {s : Finset ι}, s.Nonempty → ∀ (g : ι → M), f (∑ i ∈ s, g i) ≤ ∑ i ∈ s, f (g i)"
+          },
+          {
+            "name": "Finset.apply_union_le_sum",
+            "module_name": "Mathlib.Algebra.Order.BigOperators.Group.Finset",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_1} {α : Type u_2} {β : Type u_3} [inst : AddCommMonoid β] [inst_1 : PartialOrder β] [AddLeftMono β]\n  {f : Set α → β},\n  f ∅ = 0 →\n    (∀ {s t : Set α}, f (s ∪ t) ≤ f s + f t) → ∀ {s : ι → Set α} (t : Finset ι), f (⋃ i ∈ t, s i) ≤ ∑ i ∈ t, f (s i)"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_leansearch",
+    "form": "current",
+    "request": {
+      "query": "coefficient l1 norm multivariate integer polynomial finite sum triangle inequality",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"nnnorm_sum_le\",\n      \"module_name\": \"Mathlib.Analysis.Normed.Group.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_3} {E : Type u_5} [inst : SeminormedAddCommGroup E] (s : Finset ι) (f : ι → E),\\n  ‖∑ a ∈ s, f a‖₊ ≤ ∑ a ∈ s, ‖f a‖₊\"\n    },\n    {\n      \"name\": \"norm_sum_le\",\n      \"module_name\": \"Mathlib.Analysis.Normed.Group.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_3} {E : Type u_9} [inst : SeminormedAddCommGroup E] (s : Finset ι) (f : ι → E),\\n  ‖∑ i ∈ s, f i‖ ≤ ∑ i ∈ s, ‖f i‖\"\n    },\n    {\n      \"name\": \"nat_abs_sum_le\",\n      \"module_name\": \"Mathlib.Algebra.BigOperators.Group.Finset.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} (s : Finset ι) (f : ι → ℤ), (∑ i ∈ s, f i).natAbs ≤ ∑ i ∈ s, (f i).natAbs\"\n    },\n    {\n      \"name\": \"Real.Lp_add_le\",\n      \"module_name\": \"Mathlib.Analysis.MeanInequalities\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u} (s : Finset ι) (f g : ι → ℝ) {p : ℝ},\\n  1 ≤ p → (∑ i ∈ s, |f i + g i| ^ p) ^ (1 / p) ≤ (∑ i ∈ s, |f i| ^ p) ^ (1 / p) + (∑ i ∈ s, |g i| ^ p) ^ (1 / p)\"\n    },\n    {\n      \"name\": \"MeasureTheory.eLpNorm'_sum_le\",\n      \"module_name\": \"Mathlib.MeasureTheory.Function.LpSeminorm.TriangleInequality\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {ε' : Type u_4} {m : MeasurableSpace α} [inst : TopologicalSpace ε']\\n  [inst_1 : ESeminormedAddCommMonoid ε'] {q : ℝ} {μ : MeasureTheory.Measure α} [ContinuousAdd ε'] {ι : Type u_5}\\n  {f : ι → α → ε'} {s : Finset ι},\\n  (∀ i ∈ s, MeasureTheory.AEStronglyMeasurable (f i) μ) →\\n    1 ≤ q → MeasureTheory.eLpNorm' (∑ i ∈ s, f i) q μ ≤ ∑ i ∈ s, MeasureTheory.eLpNorm' (f i) q μ\"\n    },\n    {\n      \"name\": \"nnnorm_tsum_le\",\n      \"module_name\": \"Mathlib.Analysis.Normed.Group.InfiniteSum\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {E : Type u_3} [inst : SeminormedAddCommGroup E] {f : ι → E},\\n  (Summable fun i => ‖f i‖₊) → ‖∑' (i : ι), f i‖₊ ≤ ∑' (i : ι), ‖f i‖₊\"\n    },\n    {\n      \"name\": \"MeasureTheory.eLpNorm_sum_le\",\n      \"module_name\": \"Mathlib.MeasureTheory.Function.LpSeminorm.TriangleInequality\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {ε' : Type u_4} {m : MeasurableSpace α} [inst : TopologicalSpace ε']\\n  [inst_1 : ESeminormedAddCommMonoid ε'] {p : ENNReal} {μ : MeasureTheory.Measure α} [ContinuousAdd ε'] {ι : Type u_5}\\n  {f : ι → α → ε'} {s : Finset ι},\\n  (∀ i ∈ s, MeasureTheory.AEStronglyMeasurable (f i) μ) →\\n    1 ≤ p → MeasureTheory.eLpNorm (∑ i ∈ s, f i) p μ ≤ ∑ i ∈ s, MeasureTheory.eLpNorm (f i) p μ\"\n    },\n    {\n      \"name\": \"nnnorm_multiset_sum_le\",\n      \"module_name\": \"Mathlib.Analysis.Normed.Group.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {E : Type u_5} [inst : SeminormedAddCommGroup E] (m : Multiset E), ‖m.sum‖₊ ≤ (Multiset.map (fun x => ‖x‖₊) m).sum\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "nnnorm_sum_le",
+            "module_name": "Mathlib.Analysis.Normed.Group.Basic",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_3} {E : Type u_5} [inst : SeminormedAddCommGroup E] (s : Finset ι) (f : ι → E),\n  ‖∑ a ∈ s, f a‖₊ ≤ ∑ a ∈ s, ‖f a‖₊"
+          },
+          {
+            "name": "norm_sum_le",
+            "module_name": "Mathlib.Analysis.Normed.Group.Basic",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_3} {E : Type u_9} [inst : SeminormedAddCommGroup E] (s : Finset ι) (f : ι → E),\n  ‖∑ i ∈ s, f i‖ ≤ ∑ i ∈ s, ‖f i‖"
+          },
+          {
+            "name": "nat_abs_sum_le",
+            "module_name": "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_1} (s : Finset ι) (f : ι → ℤ), (∑ i ∈ s, f i).natAbs ≤ ∑ i ∈ s, (f i).natAbs"
+          },
+          {
+            "name": "Real.Lp_add_le",
+            "module_name": "Mathlib.Analysis.MeanInequalities",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u} (s : Finset ι) (f g : ι → ℝ) {p : ℝ},\n  1 ≤ p → (∑ i ∈ s, |f i + g i| ^ p) ^ (1 / p) ≤ (∑ i ∈ s, |f i| ^ p) ^ (1 / p) + (∑ i ∈ s, |g i| ^ p) ^ (1 / p)"
+          },
+          {
+            "name": "MeasureTheory.eLpNorm'_sum_le",
+            "module_name": "Mathlib.MeasureTheory.Function.LpSeminorm.TriangleInequality",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {ε' : Type u_4} {m : MeasurableSpace α} [inst : TopologicalSpace ε']\n  [inst_1 : ESeminormedAddCommMonoid ε'] {q : ℝ} {μ : MeasureTheory.Measure α} [ContinuousAdd ε'] {ι : Type u_5}\n  {f : ι → α → ε'} {s : Finset ι},\n  (∀ i ∈ s, MeasureTheory.AEStronglyMeasurable (f i) μ) →\n    1 ≤ q → MeasureTheory.eLpNorm' (∑ i ∈ s, f i) q μ ≤ ∑ i ∈ s, MeasureTheory.eLpNorm' (f i) q μ"
+          },
+          {
+            "name": "nnnorm_tsum_le",
+            "module_name": "Mathlib.Analysis.Normed.Group.InfiniteSum",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_1} {E : Type u_3} [inst : SeminormedAddCommGroup E] {f : ι → E},\n  (Summable fun i => ‖f i‖₊) → ‖∑' (i : ι), f i‖₊ ≤ ∑' (i : ι), ‖f i‖₊"
+          },
+          {
+            "name": "MeasureTheory.eLpNorm_sum_le",
+            "module_name": "Mathlib.MeasureTheory.Function.LpSeminorm.TriangleInequality",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {ε' : Type u_4} {m : MeasurableSpace α} [inst : TopologicalSpace ε']\n  [inst_1 : ESeminormedAddCommMonoid ε'] {p : ENNReal} {μ : MeasureTheory.Measure α} [ContinuousAdd ε'] {ι : Type u_5}\n  {f : ι → α → ε'} {s : Finset ι},\n  (∀ i ∈ s, MeasureTheory.AEStronglyMeasurable (f i) μ) →\n    1 ≤ p → MeasureTheory.eLpNorm (∑ i ∈ s, f i) p μ ≤ ∑ i ∈ s, MeasureTheory.eLpNorm (f i) p μ"
+          },
+          {
+            "name": "nnnorm_multiset_sum_le",
+            "module_name": "Mathlib.Analysis.Normed.Group.Basic",
+            "kind": "theorem",
+            "type": "∀ {E : Type u_5} [inst : SeminormedAddCommGroup E] (m : Multiset E), ‖m.sum‖₊ ≤ (Multiset.map (fun x => ‖x‖₊) m).sum"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_leansearch",
+    "form": "standard",
+    "request": {
+      "query": "norm of finite sum is at most sum of norms",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"norm_sum_le\",\n      \"module_name\": \"Mathlib.Analysis.Normed.Group.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_3} {E : Type u_9} [inst : SeminormedAddCommGroup E] (s : Finset ι) (f : ι → E),\\n  ‖∑ i ∈ s, f i‖ ≤ ∑ i ∈ s, ‖f i‖\"\n    },\n    {\n      \"name\": \"norm_sum_le_of_le\",\n      \"module_name\": \"Mathlib.Analysis.Normed.Group.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_3} {E : Type u_5} [inst : SeminormedAddCommGroup E] (s : Finset ι) {f : ι → E} {n : ι → ℝ},\\n  (∀ b ∈ s, ‖f b‖ ≤ n b) → ‖∑ b ∈ s, f b‖ ≤ ∑ b ∈ s, n b\"\n    },\n    {\n      \"name\": \"nnnorm_sum_le_of_le\",\n      \"module_name\": \"Mathlib.Analysis.Normed.Group.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_3} {E : Type u_5} [inst : SeminormedAddCommGroup E] (s : Finset ι) {f : ι → E} {n : ι → NNReal},\\n  (∀ b ∈ s, ‖f b‖₊ ≤ n b) → ‖∑ b ∈ s, f b‖₊ ≤ ∑ b ∈ s, n b\"\n    },\n    {\n      \"name\": \"enorm_sum_le_of_le\",\n      \"module_name\": \"Mathlib.Analysis.Normed.Group.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_3} {ε : Type u_8} [inst : TopologicalSpace ε] [inst_1 : ESeminormedAddCommMonoid ε] (s : Finset ι)\\n  {f : ι → ε} {n : ι → ENNReal}, (∀ b ∈ s, ‖f b‖ₑ ≤ n b) → ‖∑ b ∈ s, f b‖ₑ ≤ ∑ b ∈ s, n b\"\n    },\n    {\n      \"name\": \"nnnorm_sum_le\",\n      \"module_name\": \"Mathlib.Analysis.Normed.Group.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_3} {E : Type u_5} [inst : SeminormedAddCommGroup E] (s : Finset ι) (f : ι → E),\\n  ‖∑ a ∈ s, f a‖₊ ≤ ∑ a ∈ s, ‖f a‖₊\"\n    },\n    {\n      \"name\": \"MeasureTheory.eLpNorm'_sum_le\",\n      \"module_name\": \"Mathlib.MeasureTheory.Function.LpSeminorm.TriangleInequality\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {ε' : Type u_4} {m : MeasurableSpace α} [inst : TopologicalSpace ε']\\n  [inst_1 : ESeminormedAddCommMonoid ε'] {q : ℝ} {μ : MeasureTheory.Measure α} [ContinuousAdd ε'] {ι : Type u_5}\\n  {f : ι → α → ε'} {s : Finset ι},\\n  (∀ i ∈ s, MeasureTheory.AEStronglyMeasurable (f i) μ) →\\n    1 ≤ q → MeasureTheory.eLpNorm' (∑ i ∈ s, f i) q μ ≤ ∑ i ∈ s, MeasureTheory.eLpNorm' (f i) q μ\"\n    },\n    {\n      \"name\": \"enorm_sum_le\",\n      \"module_name\": \"Mathlib.Analysis.Normed.Group.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_3} {ε : Type u_9} [inst : TopologicalSpace ε] [inst_1 : ESeminormedAddCommMonoid ε] (s : Finset ι)\\n  (f : ι → ε), ‖∑ i ∈ s, f i‖ₑ ≤ ∑ i ∈ s, ‖f i‖ₑ\"\n    },\n    {\n      \"name\": \"norm_multiset_sum_le\",\n      \"module_name\": \"Mathlib.Analysis.Normed.Group.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {E : Type u_9} [inst : SeminormedAddCommGroup E] (m : Multiset E), ‖m.sum‖ ≤ (Multiset.map (fun x => ‖x‖) m).sum\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "norm_sum_le",
+            "module_name": "Mathlib.Analysis.Normed.Group.Basic",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_3} {E : Type u_9} [inst : SeminormedAddCommGroup E] (s : Finset ι) (f : ι → E),\n  ‖∑ i ∈ s, f i‖ ≤ ∑ i ∈ s, ‖f i‖"
+          },
+          {
+            "name": "norm_sum_le_of_le",
+            "module_name": "Mathlib.Analysis.Normed.Group.Basic",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_3} {E : Type u_5} [inst : SeminormedAddCommGroup E] (s : Finset ι) {f : ι → E} {n : ι → ℝ},\n  (∀ b ∈ s, ‖f b‖ ≤ n b) → ‖∑ b ∈ s, f b‖ ≤ ∑ b ∈ s, n b"
+          },
+          {
+            "name": "nnnorm_sum_le_of_le",
+            "module_name": "Mathlib.Analysis.Normed.Group.Basic",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_3} {E : Type u_5} [inst : SeminormedAddCommGroup E] (s : Finset ι) {f : ι → E} {n : ι → NNReal},\n  (∀ b ∈ s, ‖f b‖₊ ≤ n b) → ‖∑ b ∈ s, f b‖₊ ≤ ∑ b ∈ s, n b"
+          },
+          {
+            "name": "enorm_sum_le_of_le",
+            "module_name": "Mathlib.Analysis.Normed.Group.Basic",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_3} {ε : Type u_8} [inst : TopologicalSpace ε] [inst_1 : ESeminormedAddCommMonoid ε] (s : Finset ι)\n  {f : ι → ε} {n : ι → ENNReal}, (∀ b ∈ s, ‖f b‖ₑ ≤ n b) → ‖∑ b ∈ s, f b‖ₑ ≤ ∑ b ∈ s, n b"
+          },
+          {
+            "name": "nnnorm_sum_le",
+            "module_name": "Mathlib.Analysis.Normed.Group.Basic",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_3} {E : Type u_5} [inst : SeminormedAddCommGroup E] (s : Finset ι) (f : ι → E),\n  ‖∑ a ∈ s, f a‖₊ ≤ ∑ a ∈ s, ‖f a‖₊"
+          },
+          {
+            "name": "MeasureTheory.eLpNorm'_sum_le",
+            "module_name": "Mathlib.MeasureTheory.Function.LpSeminorm.TriangleInequality",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {ε' : Type u_4} {m : MeasurableSpace α} [inst : TopologicalSpace ε']\n  [inst_1 : ESeminormedAddCommMonoid ε'] {q : ℝ} {μ : MeasureTheory.Measure α} [ContinuousAdd ε'] {ι : Type u_5}\n  {f : ι → α → ε'} {s : Finset ι},\n  (∀ i ∈ s, MeasureTheory.AEStronglyMeasurable (f i) μ) →\n    1 ≤ q → MeasureTheory.eLpNorm' (∑ i ∈ s, f i) q μ ≤ ∑ i ∈ s, MeasureTheory.eLpNorm' (f i) q μ"
+          },
+          {
+            "name": "enorm_sum_le",
+            "module_name": "Mathlib.Analysis.Normed.Group.Basic",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_3} {ε : Type u_9} [inst : TopologicalSpace ε] [inst_1 : ESeminormedAddCommMonoid ε] (s : Finset ι)\n  (f : ι → ε), ‖∑ i ∈ s, f i‖ₑ ≤ ∑ i ∈ s, ‖f i‖ₑ"
+          },
+          {
+            "name": "norm_multiset_sum_le",
+            "module_name": "Mathlib.Analysis.Normed.Group.Basic",
+            "kind": "theorem",
+            "type": "∀ {E : Type u_9} [inst : SeminormedAddCommGroup E] (m : Multiset E), ‖m.sum‖ ≤ (Multiset.map (fun x => ‖x‖) m).sum"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_local_search",
+    "form": "abstract",
+    "request": {
+      "query": "le_sum_of_subadditive",
+      "limit": 15,
+      "project_root": "/Users/ramin/LEAN/Roth"
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_local_search",
+    "form": "current",
+    "request": {
+      "query": "normOne_sum_le",
+      "limit": 15,
+      "project_root": "/Users/ramin/LEAN/Roth"
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Roth.normOne_sum_le\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/CoeffNorm.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Roth.normOne_sum_le",
+            "kind": "theorem",
+            "file": "Roth/CoeffNorm.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_local_search",
+    "form": "standard",
+    "request": {
+      "query": "norm_sum_le",
+      "limit": 15,
+      "project_root": "/Users/ramin/LEAN/Roth"
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"norm_sum_le\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Analysis/Normed/Group/Basic.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "norm_sum_le",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Analysis/Normed/Group/Basic.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_loogle",
+    "form": "abstract-retry",
+    "request": {
+      "query": "Finset.le_sum_of_subadditive",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "Error executing tool lean_loogle: Rate limit exceeded: 3 requests per 30s. Use --loogle-local to avoid limits."
+        }
+      ],
+      "isError": true
+    }
+  },
+  {
+    "method": "lean_loogle",
+    "form": "abstract-retry2",
+    "request": {
+      "query": "Finset.le_sum_of_subadditive",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finset.le_sum_of_subadditive\",\n      \"type\": \" {ι : Type u_1} {M : Type u_4} {N : Type u_5} [AddCommMonoid M] [AddCommMonoid N] [Preorder N] [IsOrderedAddMonoid N] (f : M → N) (h_zero : f 0 ≤ 0) (h_add : ∀ (x y : M), f (x + y) ≤ f x + f y) (s : Finset ι) (g : ι → M) : f (∑ i ∈ s, g i) ≤ ∑ i ∈ s, f (g i)\",\n      \"module\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Finset.le_sum_of_subadditive",
+            "type": " {ι : Type u_1} {M : Type u_4} {N : Type u_5} [AddCommMonoid M] [AddCommMonoid N] [Preorder N] [IsOrderedAddMonoid N] (f : M → N) (h_zero : f 0 ≤ 0) (h_add : ∀ (x y : M), f (x + y) ≤ f x + f y) (s : Finset ι) (g : ι → M) : f (∑ i ∈ s, g i) ≤ ∑ i ∈ s, f (g i)",
+            "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_loogle",
+    "form": "abstract",
+    "request": {
+      "query": "le_sum_of_subadditive",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "Error executing tool lean_loogle: loogle query error: unknown identifier 'le_sum_of_subadditive' Suggestions: \"le_sum_of_subadditive\", List.le_sum_of_subadditive, Multiset.le_sum_of_subadditive, Finset.le_sum_of_subadditive"
+        }
+      ],
+      "isError": true
+    }
+  },
+  {
+    "method": "lean_loogle",
+    "form": "current",
+    "request": {
+      "query": "\"normOne_sum_le\"",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": []\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": []
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_loogle",
+    "form": "standard",
+    "request": {
+      "query": "norm_sum_le",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"norm_sum_le\",\n      \"type\": \" {ι : Type u_3} {E : Type u_8} [SeminormedAddCommGroup E] (s : Finset ι) (f : ι → E) : ‖∑ i ∈ s, f i‖ ≤ ∑ i ∈ s, ‖f i‖\",\n      \"module\": \"Mathlib.Analysis.Normed.Group.Basic\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "norm_sum_le",
+            "type": " {ι : Type u_3} {E : Type u_8} [SeminormedAddCommGroup E] (s : Finset ι) (f : ι → E) : ‖∑ i ∈ s, f i‖ ≤ ∑ i ∈ s, ‖f i‖",
+            "module": "Mathlib.Analysis.Normed.Group.Basic"
+          }
+        ]
+      },
+      "isError": false
+    }
+  }
+]

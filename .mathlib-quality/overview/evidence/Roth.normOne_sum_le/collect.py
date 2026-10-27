@@ -1,0 +1,17 @@
+from pathlib import Path
+import json,hashlib,subprocess,shutil
+D=Path(__file__).resolve().parent;R=Path('/Users/ramin/LEAN/Roth')
+def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+def out(n,x):(D/n).write_text(json.dumps(x,ensure_ascii=False,indent=2)+'\n')
+paths={'mathlib-finset-order.lean.txt':'Algebra/Order/BigOperators/Group/Finset.lean','mathlib-finsupp-basic.lean.txt':'Algebra/BigOperators/Finsupp/Basic.lean','mathlib-finsupp-order.lean.txt':'Data/Finsupp/Order.lean','mathlib-lp-finsupp.lean.txt':'Analysis/Normed/Lp/Finsupp.lean','mathlib-norm.lean.txt':'Analysis/Polynomial/Norm.lean','mathlib-norm-group.lean.txt':'Analysis/Normed/Group/Basic.lean','mathlib-monoid-algebra.lean.txt':'Algebra/MonoidAlgebra/Defs.lean'}
+m=[]
+for dest,p in paths.items():
+ f=R/'.lake/packages/mathlib/Mathlib'/p;shutil.copyfile(f,D/dest);m.append(dict(path=str(f.relative_to(R)),sha256=sha(f),bytes=f.stat().st_size,archive=dest))
+out('mathlib-inputs.json',m)
+searches=[('current',r'normOne_sum_le|norm_one_sum',['.lake/packages/mathlib/Mathlib']),('literature',r'norm_sum_le|sum.*norm|norm.*sum|length',['.lake/packages/mathlib/Mathlib/Analysis/Polynomial/Norm.lean','.lake/packages/mathlib/Mathlib/Analysis/Normed/Lp/Finsupp.lean','.lake/packages/mathlib/Mathlib/Analysis/Normed/Group/Basic.lean']),('abstract',r'le_sum.*subadditive|sum_le_sum|sum.*add',['.lake/packages/mathlib/Mathlib/Algebra/Order/BigOperators/Group/Finset.lean','.lake/packages/mathlib/Mathlib/Algebra/BigOperators/Finsupp/Basic.lean','.lake/packages/mathlib/Mathlib/Data/Finsupp/Order.lean']),('full-name',r'\bnormOne_sum_le\b',['Roth','Roth.lean','.lake/packages/mathlib/Mathlib']),('callers',r'\bnormOne_sum_le\b',['Roth','Roth.lean']),('inline',r'le_sum_of_subadditive|normOne_sum_le|normOne.*∑|∑.*normOne',['Roth','Roth.lean']),('local-literature',r'triangle inequality|norm|\\\|f\+kg',['.mathlib-quality/references/clean.tex'])]
+for tag,pat,ps in searches:
+ args=['rg','-n',pat,*ps];p=subprocess.run(args,cwd=R,text=True,capture_output=True);out('rg-'+tag+'.json',dict(command=args,exit_code=p.returncode,stdout=p.stdout,stderr=p.stderr))
+l=R/'.mathlib-quality/references/clean.tex';lines=l.read_text().splitlines();(D/'local-literature.txt').write_text('\n'.join(f'{i+1}: {lines[i]}' for i in range(436,497))+'\n');out('local-literature-source.json',dict(path=str(l.relative_to(R)),sha256=sha(l),bytes=l.stat().st_size,lines=[437,497]))
+out('formal-search.json',[json.loads(p.read_text()) for p in sorted(D.glob('lean_*.json'))])
+out('callers.json',dict(named_count=3,occurrence_count=4,external_to_declaring_file=0,callers=[dict(name='Roth.normOne_mul_le',file='Roth/CoeffNorm.lean',lines=[99,101],replacement='Finset.le_sum_of_subadditive normOne normOne_zero.le normOne_add_le _ _'),dict(name='Roth.normOne_det_le',file='Roth/CoeffNorm.lean',lines=[123],replacement='Finset.le_sum_of_subadditive normOne normOne_zero.le normOne_add_le _ _'),dict(name='Roth.normOne_hasseDeriv_le',file='Roth/CoeffNorm.lean',lines=[152],replacement='Finset.le_sum_of_subadditive normOne normOne_zero.le normOne_add_le _ _')],inline_audit='Only declaration uses le_sum_of_subadditive; no separate source rederivation. All consumers read in full source module archive.',native_audit=dict(requested=293,unique=293,present=293,values=293,direct_consumers=['Roth.normOne_mul_le','Roth.normOne_det_le','Roth.normOne_hasseDeriv_le'],status='pending native receipt')))
+print('Collected fresh rg and pinned source evidence.')
