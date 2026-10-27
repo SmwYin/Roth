@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 156/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 157/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 156; remaining: 137.
-- Verdicts: 18 NO-composable-from-mathlib, 13 YES-add-as-is, 19 YES-but-generalise-first, 34 NO-mathlib-has-it, 45 BORDERLINE-needs-human, 27 SKIP.
+- Completed applicable assessments: 157; remaining: 136.
+- Verdicts: 18 NO-composable-from-mathlib, 13 YES-add-as-is, 19 YES-but-generalise-first, 34 NO-mathlib-has-it, 46 BORDERLINE-needs-human, 27 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -1725,6 +1725,17 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: explicit call sites: {'file': 'Roth/Separation.lean', 'line': 335, 'caller': 'Roth.exists_separated_representation'}; internal use count excluding declaring file: 0; same file count: 1; direct kernel value consumers: Roth.exists_separated_representation; inline derivations: Private basis/reconstruction helpers consume an expansion equality premise; no independent full derivation found.
 - Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/Roth.eq_sum_X_none_pow_mul_coeffNone.md).
 
+### Completed: `Roth.degreeOf_coeffNone_le`
+
+- Type: `@Roth.degreeOf_coeffNone_le : ∀ {τ : Type u_1} {R : Type u_2} [inst : CommSemiring R] (P : MvPolynomial (Option τ) R)
+  (ν : ℕ) (j : τ), MvPolynomial.degreeOf j (Roth.coeffNone P ν) ≤ MvPolynomial.degreeOf (some j) P`
+- What: Coefficient extraction in one distinguished variable cannot increase the degree in any remaining variable.
+- How: Rewrite the coordinate degree bound as support-wise bounds; insert the distinguished exponent using optionEquivLeft support membership; bound that monomial exponent and normalize its some-coordinate.
+- Hypotheses: τ : Type u_1; R : Type u_2, CommSemiring R, P : MvPolynomial (Option τ) R; ν : ℕ; j : τ, No Fintype, DecidableEq, nonzero, domain, characteristic or exponent bound assumptions
+- Project dependencies: Roth.coeffNone
+- Caller summary: explicit call sites: None; internal use count excluding declaring file: 0; same file count: 0; direct kernel value consumers: None; inline derivations: {'file': 'Roth/Separation.lean', 'line': 310, 'caller': 'private Roth.exists_coeffNone_basis_aux', 'detail': 'Span generator coordinate bound uses the same support insertion/monomial estimate inline at lines312–313. Full auxiliary replay through canonical degree bound checked.'}
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.degreeOf_coeffNone_le.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -2063,6 +2074,8 @@ Completed `Roth.coeff_coeffNone`: canonical: MvPolynomial.optionEquivLeft_coeff_
 
 Completed `Roth.eq_sum_X_none_pow_mul_coeffNone`: canonical: Polynomial.as_sum_range_C_mul_X_pow'; canonical path: Mathlib/Algebra/Polynomial/Degree/Support.lean:93; canonical existing calls: 1; degree bridge: MvPolynomial.natDegree_optionEquivLeft; old form existing calls: >3 named ingredients plus genuine normalization proof; not NO-composable; old form ingredients: Polynomial.as_sum_range_C_mul_X_pow', MvPolynomial.natDegree_optionEquivLeft, MvPolynomial.optionEquivLeft, MvPolynomial.optionEquivLeft_symm_X, Polynomial.aevalTower_C, map_sum, map_mul, map_pow, mul_comm; representation: Inverse C/rename and finite sum transport are actual checked proofs, not definitional old-form equality.
 
+Completed `Roth.degreeOf_coeffNone_le`: structural building blocks: MvPolynomial.degreeOf_le_iff, MvPolynomial.monomial_le_degreeOf, MvPolynomial.mem_support_coeff_optionEquivLeft; normalization: Finsupp.optionElim_apply_eq_elim, Option.elim_some; finite analog: MvPolynomial.degreeOf_coeff_finSuccEquiv; finite analog path: Mathlib/Algebra/MvPolynomial/Equiv.lean:834; old form calls: 3 structural calls plus nondefinitional projection rewrite; >3 named dependencies; canonical form calls: Same proof and normalization after replacing coeffNone with Polynomial.coeff of optionEquivLeft; search limitations: Local source search positive but index unavailable; external snapshots may differ. No absence claim inferred from empty queries.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -2376,6 +2389,8 @@ Completed `Roth.coeff_X_none_pow_mul_rename`: The helper has a distinct role in 
 Completed `Roth.coeff_coeffNone`: The existing canonical coefficient correspondence is the same mathematical law under normalized exponent coordinates.
 
 Completed `Roth.eq_sum_X_none_pow_mul_coeffNone`: Polynomial coefficient reconstruction under the existing iterated polynomial-ring algebra equivalence.
+
+Completed `Roth.degreeOf_coeffNone_le`: Arbitrary Option analogue of existing finite degreeOf_coeff_finSuccEquiv., Support insertion preserves remaining coordinate bounds; abstract finite supremum proof verified as a component, not existing full replacement.
 
 ## Part 5: Generalization opportunities
 
@@ -2694,6 +2709,8 @@ Completed `Roth.coeff_coeffNone`: status: MAXIMALLY GENERAL for fixed parent int
 
 Completed `Roth.eq_sum_X_none_pow_mul_coeffNone`: status: MAXIMALLY GENERAL for fixed parent interface; canonical surface: Existing finite Polynomial expansion over Semiring A with natDegree p < m.; expanded representation: Generic Semiring A reconstruction actually compiled. Setting A=MvPolynomial τ R gives canonical Option expansion; does not weaken CommSemiring required by fixed parent.
 
+Completed `Roth.degreeOf_coeffNone_le`: status: MAXIMALLY GENERAL for fixed interface; canonical surface: degreeOf j ((optionEquivLeft R τ P).coeff ν) ≤ degreeOf (some j) P; abstract component: Finset support transport with pointwise weight bound implies supremum bound; independently compiled without DecidableEq or coefficient algebra. This is an expanded representation, not weakening CommSemiring in the original.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -3008,6 +3025,8 @@ Completed `Roth.coeff_X_none_pow_mul_rename`: No new primitive is needed for thi
 Completed `Roth.coeff_coeffNone`: No missing coefficient law. An optional named Option-index bridge is a separate normal-form API question.
 
 Completed `Roth.eq_sum_X_none_pow_mul_coeffNone`: No missing reconstruction theorem. A named inverse-C/rename bridge is optional convenience API; scratch bridge is new proof, not a counted mathlib call.
+
+Completed `Roth.degreeOf_coeffNone_le`: Candidate Option-variable coordinate-degree coefficient law beside existing Fin analogue; whether to expose it directly or via a more general support-degree transport API is an upstream design question.
 
 ## Part 7: Junk / removable
 
@@ -3326,6 +3345,8 @@ Completed `Roth.coeff_coeffNone`: Useful: two explicit callers and two direct ke
 
 Completed `Roth.eq_sum_X_none_pow_mul_coeffNone`: Useful: one source caller and one direct kernel-value consumer.
 
+Completed `Roth.degreeOf_coeffNone_le`: Zero explicit/kernel callers; one mathematically relevant inline derivation. Not automatically dead or automatically public API.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -3486,6 +3507,7 @@ Completed `Roth.eq_sum_X_none_pow_mul_coeffNone`: Useful: one source caller and 
 | 154 | `Roth.coeff_X_none_pow_mul_rename` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.coeff_X_none_pow_mul_rename.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.coeff_X_none_pow_mul_rename/root-acceptance.json) |
 | 155 | `Roth.coeff_coeffNone` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.coeff_coeffNone.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.coeff_coeffNone/root-acceptance.json) |
 | 156 | `Roth.eq_sum_X_none_pow_mul_coeffNone` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.eq_sum_X_none_pow_mul_coeffNone.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.eq_sum_X_none_pow_mul_coeffNone/root-acceptance.json) |
+| 157 | `Roth.degreeOf_coeffNone_le` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.degreeOf_coeffNone_le.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.degreeOf_coeffNone_le/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -3797,12 +3819,14 @@ Completed `Roth.coeff_coeffNone` action: Delete only after refactoring both call
 
 Completed `Roth.eq_sum_X_none_pow_mul_coeffNone` action: Refactor sole full caller exists_separated_representation using existing Polynomial expansion, degree identity and verified inverse-equivalence bridge; delete wrapper only after caller update. Optional explanatory local destination Roth/Separation.lean.
 
+Completed `Roth.degreeOf_coeffNone_le` action: Keep local pending the two documented upstream API choices; if Option law accepted, rename to MvPolynomial.degreeOf_coeff_optionEquivLeft_le, remove coeffNone alias from statement and use it in private basis auxiliary.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.degreeOf_coeffNone_le` next. Supporting identities receive their own applicable checks.
+   `Roth.coeff_rename_mul_aeval` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

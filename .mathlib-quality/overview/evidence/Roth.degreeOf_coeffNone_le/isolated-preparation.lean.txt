@@ -1,0 +1,27 @@
+#check_failure Roth.degreeOf_coeffNone_le
+open MvPolynomial
+namespace CoefficientDegree157
+variable {τ R : Type*} [CommSemiring R]
+#check @MvPolynomial.degreeOf_le_iff
+#check @MvPolynomial.monomial_le_degreeOf
+#check @MvPolynomial.mem_support_coeff_optionEquivLeft
+#check @MvPolynomial.degreeOf_coeff_finSuccEquiv
+#check @MvPolynomial.optionEquivLeft_coeff_coeff
+ theorem canonical (P : MvPolynomial (Option τ) R) (ν : ℕ) (j : τ) :
+    degreeOf j ((optionEquivLeft R τ P).coeff ν) ≤ degreeOf (some j) P := by
+  refine degreeOf_le_iff.2 fun d hd ↦ ?_
+  simpa using monomial_le_degreeOf (some j) ((mem_support_coeff_optionEquivLeft R).1 hd)
+ theorem support_bound {α β : Type*} [DecidableEq α] [DecidableEq β]
+    (s : Finset α) (t : Finset β) (f : α → β) (a : α → ℕ) (b : β → ℕ)
+    (h : ∀ x ∈ s, f x ∈ t) (hab : ∀ x ∈ s, a x ≤ b (f x)) :
+    s.sup a ≤ t.sup b := by
+  exact Finset.sup_le fun x hx ↦ (hab x hx).trans (Finset.le_sup (h x hx))
+ theorem strict_guard :
+    degreeOf () ((optionEquivLeft ℕ Unit
+      (X (some ()) : MvPolynomial (Option Unit) ℕ)).coeff 1) <
+      degreeOf (some ()) (X (some ()) : MvPolynomial (Option Unit) ℕ) := by
+  simp
+#print axioms canonical
+#print axioms support_bound
+#print axioms strict_guard
+end CoefficientDegree157

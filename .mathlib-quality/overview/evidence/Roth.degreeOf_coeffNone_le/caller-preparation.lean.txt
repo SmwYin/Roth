@@ -1,0 +1,36 @@
+open MvPolynomial Roth
+namespace CoefficientDegree157Caller
+variable {τ : Type*} {K : Type*} [Field K]
+theorem canonical (P : MvPolynomial (Option τ) K) (ν : ℕ) (j : τ) :
+    degreeOf j (coeffNone P ν) ≤ degreeOf (some j) P := by
+  refine degreeOf_le_iff.2 fun d hd ↦ ?_
+  simpa using monomial_le_degreeOf (some j) ((mem_support_coeff_optionEquivLeft K).1 hd)
+theorem exists_coeffNone_basis_aux {P : MvPolynomial (Option τ) K} (hP : P ≠ 0) {n : ℕ}
+    (hP' : P = ∑ ν : Fin (n + 1), X none ^ (ν : ℕ) * rename some (coeffNone P ν)) :
+    ∃ l, ∃ b : Module.Basis (Fin l) K
+      (Submodule.span K (Set.range (fun ν : Fin (n + 1) ↦ coeffNone P ν))),
+      1 ≤ l ∧ l ≤ n + 1 ∧ ∀ ρ j, degreeOf j (b ρ : MvPolynomial τ K) ≤ degreeOf (some j) P := by
+  classical
+  let v : Fin (n + 1) → MvPolynomial τ K := fun ν ↦ coeffNone P ν
+  let V := Submodule.span K (Set.range v)
+  have : FiniteDimensional K V := FiniteDimensional.span_of_finite K (Set.finite_range v)
+  let b := Module.finBasis K V
+  have hl1 : 1 ≤ Module.finrank K V := by
+    obtain ⟨ν, hν⟩ : ∃ ν, v ν ≠ 0 := by
+      by_contra! h
+      apply hP
+      change P = ∑ ν : Fin (n + 1), X none ^ (ν : ℕ) * rename some (v ν) at hP'
+      rw [hP']
+      simp [h]
+    exact Module.finrank_pos_iff_exists_ne_zero.2
+      ⟨⟨v ν, Submodule.subset_span ⟨ν, rfl⟩⟩, fun h ↦ hν (congrArg Subtype.val h)⟩
+  have hdegree : V ≤ restrictSupport K {d | ∀ j, d j ≤ degreeOf (some j) P} :=
+    Submodule.span_le.2 (Set.range_subset_iff.2 fun (ν : Fin (n + 1)) d hd j ↦ by
+      exact degreeOf_le_iff.1 (canonical P ν j) d hd)
+  exact ⟨Module.finrank K V, b, hl1,
+    (finrank_range_le_card (R := K) v).trans_eq (Fintype.card_fin _),
+    fun ρ j ↦ degreeOf_le_iff.2 fun d hd ↦ hdegree (b ρ).2 hd j⟩
+
+#print axioms CoefficientDegree157Caller.canonical
+#print axioms CoefficientDegree157Caller.exists_coeffNone_basis_aux
+end CoefficientDegree157Caller

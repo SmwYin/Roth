@@ -1,0 +1,57 @@
+{
+  "kind": "theorem",
+  "type": "@Roth.degreeOf_coeffNone_le : ∀ {τ : Type u_1} {R : Type u_2} [inst : CommSemiring R] (P : MvPolynomial (Option τ) R)\n  (ν : ℕ) (j : τ), MvPolynomial.degreeOf j (Roth.coeffNone P ν) ≤ MvPolynomial.degreeOf (some j) P",
+  "what": "Coefficient extraction in one distinguished variable cannot increase the degree in any remaining variable.",
+  "how": "Rewrite the coordinate degree bound as support-wise bounds; insert the distinguished exponent using optionEquivLeft support membership; bound that monomial exponent and normalize its some-coordinate.",
+  "hypotheses": [
+    "τ : Type u_1; R : Type u_2",
+    "CommSemiring R",
+    "P : MvPolynomial (Option τ) R; ν : ℕ; j : τ",
+    "No Fintype, DecidableEq, nonzero, domain, characteristic or exponent bound assumptions"
+  ],
+  "project_dependencies": [
+    "Roth.coeffNone"
+  ],
+  "caller_summary": {
+    "explicit_call_sites": [],
+    "internal_use_count_excluding_declaring_file": 0,
+    "same_file_count": 0,
+    "direct_kernel_value_consumers": [],
+    "inline_derivations": [
+      {
+        "file": "Roth/Separation.lean",
+        "line": 310,
+        "caller": "private Roth.exists_coeffNone_basis_aux",
+        "detail": "Span generator coordinate bound uses the same support insertion/monomial estimate inline at lines312–313. Full auxiliary replay through canonical degree bound checked."
+      }
+    ]
+  },
+  "mathlib_api_audit": {
+    "structural_building_blocks": [
+      "MvPolynomial.degreeOf_le_iff",
+      "MvPolynomial.monomial_le_degreeOf",
+      "MvPolynomial.mem_support_coeff_optionEquivLeft"
+    ],
+    "normalization": [
+      "Finsupp.optionElim_apply_eq_elim",
+      "Option.elim_some"
+    ],
+    "finite_analog": "MvPolynomial.degreeOf_coeff_finSuccEquiv",
+    "finite_analog_path": "Mathlib/Algebra/MvPolynomial/Equiv.lean:834",
+    "old_form_calls": "3 structural calls plus nondefinitional projection rewrite; >3 named dependencies",
+    "canonical_form_calls": "Same proof and normalization after replacing coeffNone with Polynomial.coeff of optionEquivLeft",
+    "search_limitations": "Local source search positive but index unavailable; external snapshots may differ. No absence claim inferred from empty queries."
+  },
+  "moral_duplications": [
+    "Arbitrary Option analogue of existing finite degreeOf_coeff_finSuccEquiv.",
+    "Support insertion preserves remaining coordinate bounds; abstract finite supremum proof verified as a component, not existing full replacement."
+  ],
+  "generalization": {
+    "status": "MAXIMALLY GENERAL for fixed interface",
+    "canonical_surface": "degreeOf j ((optionEquivLeft R τ P).coeff ν) ≤ degreeOf (some j) P",
+    "abstract_component": "Finset support transport with pointwise weight bound implies supremum bound; independently compiled without DecidableEq or coefficient algebra. This is an expanded representation, not weakening CommSemiring in the original."
+  },
+  "missing_api": "Candidate Option-variable coordinate-degree coefficient law beside existing Fin analogue; whether to expose it directly or via a more general support-degree transport API is an upstream design question.",
+  "junk": "Zero explicit/kernel callers; one mathematically relevant inline derivation. Not automatically dead or automatically public API.",
+  "action": "Keep local pending the two documented upstream API choices; if Option law accepted, rename to MvPolynomial.degreeOf_coeff_optionEquivLeft_le, remove coeffNone alias from statement and use it in private basis auxiliary."
+}
