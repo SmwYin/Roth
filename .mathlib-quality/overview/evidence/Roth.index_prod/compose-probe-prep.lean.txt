@@ -1,0 +1,13 @@
+namespace IndexProdComposition145
+open MvPolynomial Roth
+variable {σ : Type*} [Fintype σ]
+theorem exactAttempt {ι : Type*} (s : Finset ι) {f : ι → MvPolynomial σ ℝ}
+    (hf : ∀ i ∈ s, f i ≠ 0) (α : σ → ℝ) {r : σ → ℕ} (_hr : ∀ j, 0 < r j) :
+    index (∏ i ∈ s, f i) α r = ∑ i ∈ s, index (f i) α r := by
+  fail_if_success
+    exact MvPowerSeries.weightedOrder_prod
+      (fun j ↦ (∏ i, r i) / r j) (fun i ↦ (taylor α (f i) : MvPowerSeries σ ℝ)) s
+  fail_if_success (solve | simp only [index, map_prod])
+  exact IndexProd145.replacement s hf α r
+#print axioms exactAttempt
+end IndexProdComposition145

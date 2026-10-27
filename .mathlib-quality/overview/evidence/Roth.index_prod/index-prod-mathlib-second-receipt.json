@@ -1,0 +1,113 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\n#check_failure Roth.index_prod\nnamespace IndexProdMathlib145\nuniverse u v\ntheorem modern {σ : Type u} {R : Type v} [CommSemiring R] [NoZeroDivisors R]\n    [Nontrivial R] {ι : Type*} (w : σ → ℕ) (f : ι → MvPowerSeries σ R) (s : Finset ι) :\n    (∏ i ∈ s, f i).weightedOrder w = ∑ i ∈ s, (f i).weightedOrder w :=\n  MvPowerSeries.weightedOrder_prod w f s\ntheorem polynomial {σ : Type u} {R : Type v} [CommSemiring R] [NoZeroDivisors R]\n    [Nontrivial R] {ι : Type*} (w : σ → ℕ) (f : ι → MvPolynomial σ R) (s : Finset ι) :\n    ((∏ i ∈ s, f i : MvPolynomial σ R) : MvPowerSeries σ R).weightedOrder w =\n      ∑ i ∈ s, (f i : MvPowerSeries σ R).weightedOrder w := by\n  change (MvPolynomial.coeToMvPowerSeries.ringHom (∏ i ∈ s, f i)).weightedOrder w = _\n  rw [map_prod, MvPowerSeries.weightedOrder_prod]\n#check @MvPowerSeries.weightedOrder_prod\n#check @MvPowerSeries.order_prod\n#check @MvPowerSeries.weightedOrder_one\n#check @MvPolynomial.coeToMvPowerSeries.ringHom\n#check_failure ENat.toNat_sum\n#check_failure AddMonoidAlgebra.infDegree_prod\n#print axioms modern\n#print axioms polynomial\nend IndexProdMathlib145\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": false,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.index_prod`\",\n      \"line\": 8,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPowerSeries.weightedOrder_prod : ∀ {σ : Type u_1} {R : Type u_2} [inst : CommSemiring R] [NoZeroDivisors R]\\n  [Nontrivial R] {ι : Type u_3} (w : σ → ℕ) (f : ι → MvPowerSeries σ R) (s : Finset ι),\\n  MvPowerSeries.weightedOrder w (∏ i ∈ s, f i) = ∑ i ∈ s, MvPowerSeries.weightedOrder w (f i)\",\n      \"line\": 21,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPowerSeries.order_prod : ∀ {σ : Type u_1} {R : Type u_2} [inst : CommSemiring R] [NoZeroDivisors R] [Nontrivial R]\\n  {ι : Type u_3} (f : ι → MvPowerSeries σ R) (s : Finset ι), (∏ i ∈ s, f i).order = ∑ i ∈ s, (f i).order\",\n      \"line\": 22,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPowerSeries.weightedOrder_one : ∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ) [Nontrivial R],\\n  MvPowerSeries.weightedOrder w 1 = 0\",\n      \"line\": 23,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPolynomial.coeToMvPowerSeries.ringHom : {σ : Type u_1} →\\n  {R : Type u_2} → [inst : CommSemiring R] → MvPolynomial σ R →+* MvPowerSeries σ R\",\n      \"line\": 24,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown constant `ENat.toNat_sum`\",\n      \"line\": 25,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown constant `AddMonoidAlgebra.infDegree_prod`\",\n      \"line\": 26,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'IndexProdMathlib145.modern' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 27,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'IndexProdMathlib145.polynomial' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 28,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"unsolved goals\\nσ : Type u\\nR : Type v\\ninst✝² : CommSemiring R\\ninst✝¹ : NoZeroDivisors R\\ninst✝ : Nontrivial R\\nι : Type u_1\\nw : σ → ℕ\\nf : ι → MvPolynomial σ R\\ns : Finset ι\\n⊢ ∑ i ∈ s, MvPowerSeries.weightedOrder w (MvPolynomial.coeToMvPowerSeries.ringHom (f i)) =\\n    ∑ i ∈ s, MvPowerSeries.weightedOrder w ↑(f i)\",\n      \"line\": 18,\n      \"column\": 61,\n      \"lean_tags\": [\n        \"unsolvedGoals\"\n      ],\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": false,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.index_prod`",
+          "line": 8,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPowerSeries.weightedOrder_prod : ∀ {σ : Type u_1} {R : Type u_2} [inst : CommSemiring R] [NoZeroDivisors R]\n  [Nontrivial R] {ι : Type u_3} (w : σ → ℕ) (f : ι → MvPowerSeries σ R) (s : Finset ι),\n  MvPowerSeries.weightedOrder w (∏ i ∈ s, f i) = ∑ i ∈ s, MvPowerSeries.weightedOrder w (f i)",
+          "line": 21,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPowerSeries.order_prod : ∀ {σ : Type u_1} {R : Type u_2} [inst : CommSemiring R] [NoZeroDivisors R] [Nontrivial R]\n  {ι : Type u_3} (f : ι → MvPowerSeries σ R) (s : Finset ι), (∏ i ∈ s, f i).order = ∑ i ∈ s, (f i).order",
+          "line": 22,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPowerSeries.weightedOrder_one : ∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ) [Nontrivial R],\n  MvPowerSeries.weightedOrder w 1 = 0",
+          "line": 23,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPolynomial.coeToMvPowerSeries.ringHom : {σ : Type u_1} →\n  {R : Type u_2} → [inst : CommSemiring R] → MvPolynomial σ R →+* MvPowerSeries σ R",
+          "line": 24,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown constant `ENat.toNat_sum`",
+          "line": 25,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown constant `AddMonoidAlgebra.infDegree_prod`",
+          "line": 26,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'IndexProdMathlib145.modern' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 27,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'IndexProdMathlib145.polynomial' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 28,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "unsolved goals\nσ : Type u\nR : Type v\ninst✝² : CommSemiring R\ninst✝¹ : NoZeroDivisors R\ninst✝ : Nontrivial R\nι : Type u_1\nw : σ → ℕ\nf : ι → MvPolynomial σ R\ns : Finset ι\n⊢ ∑ i ∈ s, MvPowerSeries.weightedOrder w (MvPolynomial.coeToMvPowerSeries.ringHom (f i)) =\n    ∑ i ∈ s, MvPowerSeries.weightedOrder w ↑(f i)",
+          "line": 18,
+          "column": 61,
+          "lean_tags": [
+            "unsolvedGoals"
+          ],
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 178
+}

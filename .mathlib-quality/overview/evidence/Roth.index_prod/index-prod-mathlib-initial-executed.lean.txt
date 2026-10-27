@@ -1,0 +1,28 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+#check_failure Roth.index_prod
+namespace IndexProdMathlib145
+universe u v
+theorem modern {σ : Type u} {R : Type v} [CommSemiring R] [NoZeroDivisors R]
+    [Nontrivial R] {ι : Type*} (w : σ → ℕ) (f : ι → MvPowerSeries σ R) (s : Finset ι) :
+    (∏ i ∈ s, f i).weightedOrder w = ∑ i ∈ s, (f i).weightedOrder w :=
+  MvPowerSeries.weightedOrder_prod w f s
+theorem polynomial {σ : Type u} {R : Type v} [CommSemiring R] [NoZeroDivisors R]
+    [Nontrivial R] {ι : Type*} (w : σ → ℕ) (f : ι → MvPolynomial σ R) (s : Finset ι) :
+    ((∏ i ∈ s, f i : MvPolynomial σ R) : MvPowerSeries σ R).weightedOrder w =
+      ∑ i ∈ s, (f i : MvPowerSeries σ R).weightedOrder w := by
+  rw [MvPolynomial.coe_prod, MvPowerSeries.weightedOrder_prod]
+#check @MvPowerSeries.weightedOrder_prod
+#check @MvPowerSeries.order_prod
+#check @MvPowerSeries.weightedOrder_one
+#check @MvPolynomial.coe_prod
+#check @ENat.toNat_sum
+#check_failure AddMonoidAlgebra.infDegree_prod
+#print axioms modern
+#print axioms polynomial
+end IndexProdMathlib145

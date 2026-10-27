@@ -1,0 +1,84 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\n#check_failure Roth.index_eq_weightedOrder_div\n#check @Finset.le_inf_iff\n#check @Finset.inf_le\nnamespace IndexWeightedOrder143\nopen MvPolynomial\nuniverse u v\ntheorem weightedOrder_coe {σ : Type u} {R : Type v} [CommSemiring R]\n    (P : MvPolynomial σ R) (w : σ → ℕ) :\n    (P : MvPowerSeries σ R).weightedOrder w =\n      AddMonoidAlgebra.infDegree (fun d ↦ (Finsupp.weight w d : ℕ∞)) P := by\n  classical\n  apply le_antisymm\n  · apply Finset.le_inf_iff.2\n    intro d hd\n    exact MvPowerSeries.weightedOrder_le w (by simpa using mem_support_iff.1 hd)\n  · apply MvPowerSeries.le_weightedOrder\n    intro d hd\n    by_contra hn\n    have hm : d ∈ P.support := mem_support_iff.2 (by simpa using hn)\n    exact (not_lt_of_ge (Finset.inf_le (f := fun e ↦ (Finsupp.weight w e : ℕ∞)) hm)) hd\n#print axioms weightedOrder_coe\nend IndexWeightedOrder143\n\nnamespace IndexWeightedScale143\nopen MvPolynomial\nuniverse u v\ntheorem scaledMinimum {σ : Type u} {R : Type v} [CommSemiring R]\n    (P : MvPolynomial σ R) (w : σ → ℕ) (D : ℝ) (hD : 0 ≤ D) :\n    sInf ((fun d ↦ (Finsupp.weight w d : ℝ) / D) '' (P.support : Set (σ →₀ ℕ))) =\n      (((P : MvPowerSeries σ R).weightedOrder w).toNat : ℝ) / D := by\n  classical\n  by_cases hP : P = 0\n  · subst P\n    simp\n  obtain ⟨d, hd, hdw⟩ := MvPowerSeries.exists_coeff_ne_zero_and_weightedOrder w\n    (f := (P : MvPowerSeries σ R))\n    ((MvPowerSeries.ne_zero_iff_weightedOrder_finite w).1 (by simpa using hP))\n  have hmem : d ∈ P.support := mem_support_iff.2 (by simpa using hd)\n  apply le_antisymm\n  · rw [← hdw, ENat.toNat_natCast]\n    exact csInf_le (P.support.finite_toSet.image _).bddBelow (Set.mem_image_of_mem _ hmem)\n  · refine le_csInf (by simpa using hP) ?_\n    rintro _ ⟨e, he, rfl⟩\n    apply div_le_div_of_nonneg_right _ hD\n    exact_mod_cast ENat.toNat_le_toNat (MvPowerSeries.weightedOrder_le w\n      (f := (P : MvPowerSeries σ R)) (by simpa using mem_support_iff.1 he)) (by simp)\ntheorem finiteProjection {ι : Type u} (s : Finset ι) (v : ι → ℝ) :\n    (s.inf (fun d ↦ (v d : WithTop ℝ))).untopD 0 = sInf (v '' (s : Set ι)) := by\n  classical\n  rcases s.eq_empty_or_nonempty with h | h\n  · subst s\n    simp\n  · change (s.inf (WithTop.some ∘ v)).untopD 0 = _\n    rw [← Finset.coe_inf' h v, Finset.inf'_eq_csInf_image]\n    rfl\ntheorem scaledInfDegree {σ : Type u} {R : Type v} [CommSemiring R]\n    (P : MvPolynomial σ R) (w : σ → ℕ) (D : ℝ) (hD : 0 ≤ D) :\n    (AddMonoidAlgebra.infDegree\n      (fun d ↦ (((Finsupp.weight w d : ℝ) / D) : WithTop ℝ)) P).untopD 0 =\n      (((P : MvPowerSeries σ R).weightedOrder w).toNat : ℝ) / D :=\n  (finiteProjection _ _).trans (scaledMinimum P w D hD)\n#print axioms scaledMinimum\n#print axioms finiteProjection\n#print axioms scaledInfDegree\nend IndexWeightedScale143\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.index_eq_weightedOrder_div`\",\n      \"line\": 8,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finset.le_inf_iff : ∀ {α : Type u_1} {β : Type u_2} [inst : SemilatticeInf α] [inst_1 : OrderTop α] {s : Finset β}\\n  {f : β → α} {a : α}, a ≤ s.inf f ↔ ∀ b ∈ s, a ≤ f b\",\n      \"line\": 9,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finset.inf_le : ∀ {α : Type u_1} {β : Type u_2} [inst : SemilatticeInf α] [inst_1 : OrderTop α] {s : Finset β}\\n  {f : β → α} {b : β}, b ∈ s → s.inf f ≤ f b\",\n      \"line\": 10,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'IndexWeightedOrder143.weightedOrder_coe' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 28,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'IndexWeightedScale143.scaledMinimum' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 69,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'IndexWeightedScale143.finiteProjection' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 70,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'IndexWeightedScale143.scaledInfDegree' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 71,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.index_eq_weightedOrder_div`",
+          "line": 8,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finset.le_inf_iff : ∀ {α : Type u_1} {β : Type u_2} [inst : SemilatticeInf α] [inst_1 : OrderTop α] {s : Finset β}\n  {f : β → α} {a : α}, a ≤ s.inf f ↔ ∀ b ∈ s, a ≤ f b",
+          "line": 9,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finset.inf_le : ∀ {α : Type u_1} {β : Type u_2} [inst : SemilatticeInf α] [inst_1 : OrderTop α] {s : Finset β}\n  {f : β → α} {b : β}, b ∈ s → s.inf f ≤ f b",
+          "line": 10,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'IndexWeightedOrder143.weightedOrder_coe' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 28,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'IndexWeightedScale143.scaledMinimum' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 69,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'IndexWeightedScale143.finiteProjection' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 70,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'IndexWeightedScale143.scaledInfDegree' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 71,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 911
+}

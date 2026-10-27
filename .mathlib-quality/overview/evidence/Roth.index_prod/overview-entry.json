@@ -1,0 +1,28 @@
+{
+  "kind": "theorem",
+  "type": "Roth.index_prod.{u_1, u_2} {σ : Type u_1} [Fintype σ] {ι : Type u_2} (s : Finset ι) {f : ι → MvPolynomial σ ℝ}\n  (hf : ∀ i ∈ s, f i ≠ 0) (α : σ → ℝ) {r : σ → ℕ} (hr : ∀ (j : σ), 0 < r j) :\n  Roth.index (∏ i ∈ s, f i) α r = ∑ i ∈ s, Roth.index (f i) α r",
+  "what": "The index of a finite product of nonzero real multivariate polynomials equals the sum of their indices at a common point and reciprocal weights.",
+  "how": "Finset induction: index of one is zero; apply the binary index_mul law to the inserted factor and remaining nonzero product, then the induction hypothesis.",
+  "hypotheses": "σ/Fintype, ℝ and reciprocal natural r belong to the fixed parent interface. ι is arbitrary and s finite; f unrestricted. hf is necessary uniformly because index zero defaults to zero. hr is removable, verified through the all-r binary law and a direct index-one simplification.",
+  "project_dependencies": [
+    "Roth.index",
+    "Roth.index_mul",
+    "Roth.index_eq_zero_iff"
+  ],
+  "caller_summary": "One explicit proof-body application: Roth.sum_max_sub_le_index_det at Roth/Theta.lean:407. Exact293 canonical kernel audit independently finds this sole direct consumer. Entire caller replay compiled using the hr-free replacement, with hr renamed _hr preserving position/type.",
+  "mathlib_api_audit": "Existing MvPowerSeries.weightedOrder_prod independently verified over arbitrary σ, CommSemiring R, NoZeroDivisors R and Nontrivial R, natural weights, including zero factors. Coercion of polynomial products via coeToMvPowerSeries.ringHom and map_prod verified. Generic infDegree product equality for arbitrary real noninjective weights was not established. Fresh145 isolated IsWeightedHomogeneous.prod signature confirms AddCommMonoid weight target M and CommSemiring coefficients; this closure theorem is not an extremal component identity.",
+  "moral_duplications": "Natural-series finite-product additivity is already mathlib. Old real default-zero form needs genuine normalization, finite projection and casting. Parent local binary law and earlier new bridge proofs are not existing mathlib calls.",
+  "generalization": "Verified deletion of hr while preserving the exact conclusion. Natural-series and polynomial formulations remove finite-variable and real-coefficient restrictions, using infinity at zero. Arbitrary-real ordered polynomial extension is a proposal only.",
+  "missing_api": "Potential polynomial infDegree finite-product equality for real additive weights, likely grouped with binary equality and extremal weighted homogeneous component multiplication. No proof of absence claimed.",
+  "junk": "Not junk: module main result and one determinant caller in another module. No independent inline duplicate found in production.",
+  "action": {
+    "verdict": "BORDERLINE-needs-human",
+    "questions": [
+      "Should the upstream finite-product law target polynomial AddMonoidAlgebra.infDegree for arbitrary real additive weights, alongside the corresponding binary product law?",
+      "Should that law be organized through an extremal weightedHomogeneousComponent product theorem over ordered additive weights?",
+      "Should reciprocal-weight default-zero index_prod remain project-local while natural-weight applications use the existing MvPowerSeries.weightedOrder_prod API?"
+    ],
+    "local_refactor": "Keep hf, replace original induction with hr-free binary induction and direct index-one base; entire determinant caller can invoke the hr-free theorem. Retain the theorem locally until upstream polynomial-order scope is settled.",
+    "upstream_scope": "Do not add a duplicate natural weightedOrder_prod wrapper. Decide the real-weight polynomial initial-form/order API together with its binary law."
+  }
+}

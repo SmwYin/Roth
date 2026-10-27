@@ -1,0 +1,26 @@
+namespace IndexProd145
+open MvPolynomial Roth
+variable {σ : Type*} [Fintype σ]
+theorem one (α : σ → ℝ) (r : σ → ℕ) : index (1 : MvPolynomial σ ℝ) α r = 0 := by
+  simp [index, weight]
+theorem replacement {ι : Type*} (s : Finset ι) {f : ι → MvPolynomial σ ℝ}
+    (hf : ∀ i ∈ s, f i ≠ 0) (α : σ → ℝ) (r : σ → ℕ) :
+    index (∏ i ∈ s, f i) α r = ∑ i ∈ s, index (f i) α r := by
+  classical
+  induction s using Finset.induction_on with
+  | empty => simpa using one α r
+  | insert a s has ih =>
+    rw [Finset.prod_insert has, Finset.sum_insert has,
+      IndexMul144.replacement (hf a (Finset.mem_insert_self a s))
+        (Finset.prod_ne_zero_iff.2 fun i hi ↦ hf i (Finset.mem_insert_of_mem hi)) α r,
+      ih fun i hi ↦ hf i (Finset.mem_insert_of_mem hi)]
+theorem nonzeroGuard :
+    index (∏ i ∈ ({false, true} : Finset Bool),
+      if i then (X () : MvPolynomial Unit ℝ) else 0) (fun _ ↦ 0) (fun _ ↦ 1) ≠
+      ∑ i ∈ ({false, true} : Finset Bool),
+        index (if i then (X () : MvPolynomial Unit ℝ) else 0) (fun _ ↦ 0) (fun _ ↦ 1) := by
+  simp [index, taylor_X, support_X, weight]
+#print axioms one
+#print axioms replacement
+#print axioms nonzeroGuard
+end IndexProd145
