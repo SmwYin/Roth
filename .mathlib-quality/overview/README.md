@@ -54,3 +54,5 @@ references were manually reviewed; an independent parser review repaired named-a
 statement-let delimiter errors. The broader structural drafts stay scratch-only until
 associated declaration assessments are complete, respecting completed-only publication.
 Full fresh Lean.Meta metadata extraction timed out; no opaque dependency audit is claimed.
+
+Before publishing evidence, run `python3 .mathlib-quality/overview/evidence/shared/scan_evidence_secrets.py <incoming-package-directory>`. Returned signed or credential-bearing URLs must have their query removed and the redaction documented. [Correction record](evidence/shared/web-evidence-redaction-2026-10-26.md).

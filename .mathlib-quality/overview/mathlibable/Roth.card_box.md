@@ -139,3 +139,9 @@ No upstream PR, reviewer selection, grouping or cleanup/generalise ticket applie
 ## Phase 8 — evidence completion
 [Verification ledger](../evidence/Roth.card_box/verification.json), [assessment](../evidence/Roth.card_box/assessment.json), [portable validator](../evidence/Roth.card_box/validate.py), [copy manifest](../evidence/Roth.card_box/copy-manifest.json). Native executed exact source and raw receipts are linked by the verification ledger. Accepted evidence has complete success (partial=false), no error/warning/sorry, and only propext, Classical.choice, Quot.sound axioms.
 
+
+## Evidence correction — signed URL
+
+A returned web-search download URL had its credential-bearing query removed after
+a GitHub alert. Search requests, response hashes, Lean verification, and this verdict
+are unchanged. See the [correction record](../evidence/Roth.card_box/web-evidence-correction.md).

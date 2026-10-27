@@ -47,3 +47,5 @@ Only the listed assessments are complete. No partial assessment was committed.
 On restart: read [README](README.md), [machine progress](progress.json), and
 [declaration order](declaration-order.json); verify source/pin hashes and accepted evidence,
 then continue with the first unfinished declaration. Reports and evidence are tracked.
+
+Maintenance: corrected a returned signed web URL; [record](evidence/shared/web-evidence-redaction-2026-10-26.md). Declaration count unchanged.
