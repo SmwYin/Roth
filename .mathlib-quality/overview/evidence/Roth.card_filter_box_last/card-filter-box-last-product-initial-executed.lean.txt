@@ -1,0 +1,15 @@
+import Mathlib.Algebra.BigOperators.Fin
+import Mathlib.Algebra.BigOperators.Group.Finset.Sigma
+import Mathlib.Algebra.BigOperators.Group.Finset.Piecewise
+import Mathlib.Data.Fin.Tuple.Finset
+#check_failure Roth.card_filter_box_last
+namespace CardFilterBoxLastProduct
+open Finset
+theorem filteredProduct {α β : Type*} (s : Finset α) (t : Finset β)
+    (p : α × β → Prop) [DecidablePred p] :
+    ((s ×ˢ t).filter p).card = ∑ a ∈ s, (t.filter fun b ↦ p (a,b)).card := by
+  classical
+  simp only [Finset.card_filter, Finset.sum_product]
+  exact Finset.sum_congr rfl (fun a _ ↦ rfl)
+end CardFilterBoxLastProduct
+#print axioms CardFilterBoxLastProduct.filteredProduct

@@ -1,0 +1,21 @@
+{
+  "declaration": "Roth.card_filter_box_last",
+  "kind": "theorem",
+  "type": "∀ {m : ℕ} (r : Fin (m + 1) → ℕ) (p : (Fin (m + 1) →₀ ℕ) → Prop)\n  [inst : DecidablePred p],\n  (Finset.filter p (Roth.box r)).card =\n    ∑ i ∈ Finset.range (r (Fin.last m) + 1),\n      {d ∈ Roth.box (r ∘ Fin.castSucc) | p (Finsupp.mapDomain Fin.castSucc d + Finsupp.single (Fin.last m) i)}.card",
+  "verdict": "BORDERLINE-needs-human",
+  "what": "Count a filtered bounded natural multi-index box by last-coordinate sections.",
+  "how": "Existing finite fibre cardinality theorem; mem_box range containment; private bijection identifies each smaller filtered box.",
+  "hypotheses": "m natural, arbitrary natural coordinate bounds r, arbitrary full-vector predicate p, DecidablePred p. No positivity or nonempty hypothesis.",
+  "project_dependencies": [
+    "Roth.box",
+    "Roth.mem_box",
+    "Roth.card_filter_box_fiber_aux"
+  ],
+  "caller_summary": "One same-file explicit caller at Lattice175: private card_filter_weight_le_succ_aux; same one canonical direct value consumer. Actual caller body replayed with fresh target and actual private other helper.",
+  "mathlib_api_audit": "Generic fibre theorem exact; filtered-product law closes by card_filter/sum_product simp. Existing snoc cardinality restricts predicate to init, so not exact arbitrary-p duplicate. All5methods on3forms retained.",
+  "moral_duplications": "Abstract counting is Finset.card_eq_sum_card_fiberwise; geometric Finsupp identification is real project proof.",
+  "generalization": "Native generic finite α/β fibre map, arbitrary filtered product, dependent finite tuple sections and scoped classical predicate-decision removal. Independent tuple theorem does not claim complete recovery of original spelling.",
+  "missing_api": "Design question: named arbitrary dependent tuple sections/cardinality law and binary filtered-product wrapper; no categorical structure required.",
+  "junk": "No: sole live induction consumer. Public visibility could become private if current source API suffices.",
+  "action": "Retain project-local Lattice theorem pending three concrete upstream API choices; no automatic NO via parent or new helper counted as existing mathlib."
+}

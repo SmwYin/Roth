@@ -1,0 +1,32 @@
+import Mathlib.Algebra.BigOperators.Fin
+import Mathlib.Algebra.BigOperators.Group.Finset.Sigma
+import Mathlib.Algebra.BigOperators.Group.Finset.Piecewise
+import Mathlib.Data.Fin.Tuple.Finset
+#check_failure Roth.card_filter_box_last
+namespace CardFilterBoxLastTuple
+open Finset
+theorem sections {n : ℕ} {α : Fin (n + 1) → Type*}
+    (S : ∀ i, Finset (α i)) (p : (∀ i, α i) → Prop) [DecidablePred p] :
+    ((Fintype.piFinset S).filter p).card = ∑ a ∈ S (Fin.last n),
+      ((Fintype.piFinset (Fin.init S)).filter fun f ↦ p (Fin.snoc f a)).card := by
+  classical
+  have h : ((Fintype.piFinset S).filter p).card =
+      (((S (Fin.last n)) ×ˢ (Fintype.piFinset (Fin.init S))).filter
+        fun x ↦ p (Fin.snoc x.2 x.1)).card := by
+    refine Finset.card_bij (fun f _ ↦ (f (Fin.last n), Fin.init f)) ?_ ?_ ?_
+    · intro f hf
+      simpa [Fin.mem_piFinset_iff_last_init] using hf
+    · intro f _ g _ hfg
+      have hlast := congrArg Prod.fst hfg
+      have hinit := congrArg Prod.snd hfg
+      calc f = Fin.snoc (Fin.init f) (f (Fin.last n)) := (Fin.snoc_init_self).symm
+        _ = Fin.snoc (Fin.init g) (g (Fin.last n)) := by rw [hinit, hlast]
+        _ = g := Fin.snoc_init_self
+    · intro x hx
+      refine ⟨Fin.snoc x.2 x.1, ?_, ?_⟩
+      · simpa [Fin.mem_piFinset_iff_last_init] using hx
+      · simp
+  rw [h]
+  simp only [Finset.card_filter, Finset.sum_product]
+end CardFilterBoxLastTuple
+#print axioms CardFilterBoxLastTuple.sections

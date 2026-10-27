@@ -1,0 +1,70 @@
+open Lean Elab Term
+elab "lastAssessmentActualFiber" : term => do
+  let n := Lean.mkPrivateNameCore `Roth.Lattice `Roth.card_filter_box_fiber_aux
+  return ← Lean.Meta.mkConstWithFreshMVarLevels n
+elab "lastAssessmentActualFiberEq" : term => do
+  let n := Lean.mkPrivateNameCore `Roth.Lattice `Roth.card_filter_fiber_eq
+  return ← Lean.Meta.mkConstWithFreshMVarLevels n
+namespace CardFilterBoxLastActual
+open Roth Finset
+theorem replay {m : ℕ} (r : Fin (m + 1) → ℕ) (p : (Fin (m + 1) →₀ ℕ) → Prop)
+    [DecidablePred p] : ((box r).filter p).card = ∑ i ∈ range (r (Fin.last m) + 1),
+      ((box (r ∘ Fin.castSucc)).filter fun d ↦
+        p (d.mapDomain Fin.castSucc + Finsupp.single (Fin.last m) i)).card := by
+  classical
+  rw [Finset.card_eq_sum_card_fiberwise (f := fun d ↦ d (Fin.last m))
+    (t := range (r (Fin.last m) + 1)) fun d hd ↦ by
+      simp only [Finset.coe_filter, Set.mem_ofPred_eq, mem_box] at hd
+      simpa [Nat.lt_succ_iff] using hd.1 (Fin.last m)]
+  exact Finset.sum_congr rfl fun i hi ↦
+    (lastAssessmentActualFiber r p (Nat.lt_succ_iff.1 (mem_range.1 hi))).symm
+
+theorem actual_consumer {n : ℕ} (r : Fin (n + 1) → ℕ) (hr : 0 < r (Fin.last n))
+    (hn : 0 < n) {lam : ℝ} (hlam : 2 * √((n + 1 : ℕ) : ℝ) < lam) (ih : ∀ {t : ℝ}, 0 < t →
+      (((box (r ∘ Fin.castSucc)).filter fun d ↦ weight (r ∘ Fin.castSucc) d ≤
+        ((n : ℝ) - t) / 2).card : ℝ) ≤ 2 * √(n : ℝ) / t * ∏ j, (((r ∘ Fin.castSucc) j : ℝ) + 1)) :
+    (((box r).filter fun d ↦ weight r d ≤ (((n + 1 : ℕ) : ℝ) - lam) / 2).card : ℝ) ≤
+      2 * √((n + 1 : ℕ) : ℝ) / lam * ∏ j, ((r j : ℝ) + 1) := by
+  set R := r (Fin.last n)
+  have hs := sum_inv_lt (r := R) (m := n + 1) hr (Nat.succ_le_succ hn) hlam
+  push_cast [add_sub_cancel_right] at hs
+  rw [replay, Nat.cast_sum,
+    Finset.sum_congr rfl fun i _ ↦ lastAssessmentActualFiberEq r lam i]
+  calc ∑ i ∈ range (R + 1), (((box (r ∘ Fin.castSucc)).filter fun d ↦
+          weight (r ∘ Fin.castSucc) d ≤ ((n : ℝ) - (lam - 1 + 2 * (i : ℝ) / R)) / 2).card : ℝ)
+      ≤ ∑ i ∈ range (R + 1), 2 * √(n : ℝ) / (lam - 1 + 2 * (i : ℝ) / R) *
+          ∏ j, (((r ∘ Fin.castSucc) j : ℝ) + 1) := by
+        refine Finset.sum_le_sum fun i _ ↦ ih ?_
+        linarith [Real.one_le_sqrt.2 (by simp : (1 : ℝ) ≤ ((n + 1 : ℕ) : ℝ)),
+          show 0 ≤ 2 * (i : ℝ) / R by positivity]
+    _ = 2 * √(n : ℝ) * (∏ j, (((r ∘ Fin.castSucc) j : ℝ) + 1)) *
+          ∑ i ∈ range (R + 1), (lam - 1 + 2 * (i : ℝ) / R)⁻¹ := by
+        rw [Finset.mul_sum]
+        exact Finset.sum_congr rfl fun i _ ↦ by ring
+    _ ≤ 2 * √(n : ℝ) * (∏ j, (((r ∘ Fin.castSucc) j : ℝ) + 1)) *
+          (lam⁻¹ * (√(n : ℝ))⁻¹ * √((n : ℝ) + 1) * (R + 1)) :=
+        mul_le_mul_of_nonneg_left hs.le (by positivity)
+    _ = 2 * √((n + 1 : ℕ) : ℝ) / lam * ∏ j, ((r j : ℝ) + 1) := by
+        rw [Fin.prod_univ_castSucc]
+        push_cast
+        field_simp
+        simp [R]
+
+theorem no_decidable {m : ℕ} (r : Fin (m + 1) → ℕ) (p : (Fin (m + 1) →₀ ℕ) → Prop)
+    : let _ : DecidablePred p := fun x ↦ Classical.propDecidable (p x);
+      ((box r).filter p).card = ∑ i ∈ range (r (Fin.last m) + 1),
+      ((box (r ∘ Fin.castSucc)).filter fun d ↦
+        p (d.mapDomain Fin.castSucc + Finsupp.single (Fin.last m) i)).card := by
+  classical
+  dsimp only
+  rw [Finset.card_eq_sum_card_fiberwise (f := fun d ↦ d (Fin.last m))
+    (t := range (r (Fin.last m) + 1)) fun d hd ↦ by
+      simp only [Finset.coe_filter, Set.mem_ofPred_eq, mem_box] at hd
+      simpa [Nat.lt_succ_iff] using hd.1 (Fin.last m)]
+  exact Finset.sum_congr rfl fun i hi ↦
+    (lastAssessmentActualFiber r p (Nat.lt_succ_iff.1 (mem_range.1 hi))).symm
+
+end CardFilterBoxLastActual
+#print axioms CardFilterBoxLastActual.replay
+#print axioms CardFilterBoxLastActual.actual_consumer
+#print axioms CardFilterBoxLastActual.no_decidable

@@ -1,0 +1,12 @@
+import Mathlib.Algebra.BigOperators.Fin
+import Mathlib.Algebra.BigOperators.Group.Finset.Sigma
+import Mathlib.Algebra.BigOperators.Group.Finset.Piecewise
+import Mathlib.Data.Fin.Tuple.Finset
+#check_failure Roth.card_filter_box_last
+namespace CardFilterBoxLastGuard
+open Finset
+theorem arbitraryPredicateCannotBeDropped :
+    (((({0} : Finset ℕ) ×ˢ ({0} : Finset ℕ)).filter fun _ ↦ False).card) ≠
+      ({0} : Finset ℕ).card * ({0} : Finset ℕ).card := by decide
+end CardFilterBoxLastGuard
+#print axioms CardFilterBoxLastGuard.arbitraryPredicateCannotBeDropped

@@ -1,0 +1,58 @@
+{
+  "request": {
+    "query": "cardinality filtered Cartesian product equals sum of cardinalities of sections arbitrary predicate"
+  },
+  "response": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Finset.card_snocEquiv_filter_piFinset\",\n      \"informal_name\": \"Cardinality of Filtered Dependent Product via Snoc Equivalence\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {n : ℕ} {α : Fin (n + 1) → Type u_1} (S : (i : Fin (n + 1)) → Finset (α i)) (P : ((i : Fin n) → α i.castSucc) → Prop)\\n  [inst : DecidablePred P],\\n  {r ∈ Fintype.piFinset S | P (Fin.init r)}.card =\\n    (S (Fin.last n)).card * {r ∈ Fintype.piFinset (Fin.init S) | P r}.card\",\n      \"informal_description\": \"The cardinality of the set of functions $ r $ in the dependent product $ \\\\prod_{i} S(i) $ satisfying predicate $ P $ on the initial segment $ \\\\mathrm{init}(r) $ equals the product of the cardinality of the last component $ S(\\\\mathrm{last}) $ and the cardinality of the set of functions in $ \\\\prod_{i < \\\\mathrm{last}} S(i) $ satisfying $ P $. Formally, $ |\\\\{ r \\\\in \\\\prod S \\\\mid P(\\\\mathrm{init}(r)) \\\\}| = |S(\\\\mathrm{last})| \\\\cdot |\\\\{ r \\\\in \\\\prod_{i < \\\\mathrm{last}} S(i) \\\\mid P(r) \\\\}| $.\",\n      \"path\": \"Mathlib.Data.Fin.Tuple.Finset\"\n    },\n    {\n      \"formal_name\": \"Finset.card_consEquiv_filter_piFinset\",\n      \"informal_name\": \"Cardinality of Filtered Dependent Product with Tail Predicate\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {n : ℕ} {α : Fin (n + 1) → Type u_1} (S : (i : Fin (n + 1)) → Finset (α i)) (P : ((i : Fin n) → α i.succ) → Prop)\\n  [inst : DecidablePred P],\\n  {r ∈ Fintype.piFinset S | P (Fin.tail r)}.card = (S 0).card * {r ∈ Fintype.piFinset (Fin.tail S) | P r}.card\",\n      \"informal_description\": \"The cardinality of the set of functions $ r $ in the product of $ S $ over $ \\\\mathrm{Fin}(n+1) $ satisfying predicate $ P $ applied to $ \\\\mathrm{tail}\\\\, r $ equals the product of the cardinality of $ S(0) $ and the cardinality of the set of functions $ r' $ in the product of $ S $ over $ \\\\mathrm{Fin}(n) $ satisfying $ P(r') $.\",\n      \"path\": \"Mathlib.Data.Fin.Tuple.Finset\"\n    },\n    {\n      \"formal_name\": \"Finset.filter_product_card\",\n      \"informal_name\": \"Cardinality of Filtered Cartesian Product by Predicate Agreement\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_2} (s : Finset α) (t : Finset β) (p : α → Prop) (q : β → Prop) [inst : DecidablePred p]\\n  [inst_1 : DecidablePred q],\\n  {x ∈ s ×ˢ t | p x.1 = q x.2}.card =\\n    (Finset.filter p s).card * (Finset.filter q t).card + {x ∈ s | ¬p x}.card * {x ∈ t | ¬q x}.card\",\n      \"informal_description\": \"Given finite sets $ S $ and $ T $, and predicates $ P : S \\\\to \\\\{\\\\text{true}, \\\\text{false}\\\\} $ and $ Q : T \\\\to \\\\{\\\\text{true}, \\\\text{false}\\\\} $, the cardinality of the subset of $ S \\\\times T $ consisting of pairs $ (a, b) $ where $ P(a) = Q(b) $ is equal to the product of the cardinalities of the $ P $-filtered $ S $ and $ Q $-filtered $ T $, plus the product of the cardinalities of the complements of these filtered sets. Formally, $ |\\\\{(a, b) \\\\in S \\\\times T \\\\mid P(a) = Q(b)\\\\}| = |\\\\{a \\\\in S \\\\mid P(a)\\\\}| \\\\cdot |\\\\{b \\\\in T \\\\mid Q(b)\\\\}| + |\\\\{a \\\\in S \\\\mid \\\\neg P(a)\\\\}| \\\\cdot |\\\\{b \\\\in T \\\\mid \\\\neg Q(b)\\\\}| $.\",\n      \"path\": \"Mathlib.Data.Finset.Prod\"\n    },\n    {\n      \"formal_name\": \"Finset.card_insertNthEquiv_filter_piFinset\",\n      \"informal_name\": \"Cardinality of Filtered Product Set After Index Removal\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {n : ℕ} {α : Fin (n + 1) → Type u_1} {p : Fin (n + 1)} (S : (i : Fin (n + 1)) → Finset (α i))\\n  (P : ((i : Fin n) → α (p.succAbove i)) → Prop) [inst : DecidablePred P],\\n  {r ∈ Fintype.piFinset S | P (p.removeNth r)}.card = (S p).card * {r ∈ Fintype.piFinset (p.removeNth S) | P r}.card\",\n      \"informal_description\": \"For a finite type $\\\\alpha = \\\\mathrm{Fin}(n+1)$, a family of finite sets $S : \\\\alpha \\\\to \\\\mathrm{Finset}$, and a decidable predicate $P$ on functions $\\\\mathrm{Fin}(n) \\\\to \\\\bigcup_{i} S_i$, the cardinality of the set $\\\\{ r \\\\in \\\\prod_{i \\\\in \\\\alpha} S_i \\\\mid P(r^{(p)}) \\\\}$ equals $|S_p| \\\\times |\\\\{ r' \\\\in \\\\prod_{i \\\\neq p} S_i \\\\mid P(r') \\\\}|$, where $r^{(p)}$ denotes the function with the $p$-th index removed.\",\n      \"path\": \"Mathlib.Data.Fin.Tuple.Finset\"\n    },\n    {\n      \"formal_name\": \"Fintype.card_filter_piFinset_eq\",\n      \"informal_name\": \"Cardinality of Filtered Dependent Product Set with Fixed Index Value\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_4} {α : ι → Type u_6} [inst : DecidableEq ι] [inst_1 : Fintype ι] [inst_2 : (i : ι) → DecidableEq (α i)]\\n  (s : (i : ι) → Finset (α i)) (i : ι) (a : α i),\\n  {f ∈ Fintype.piFinset s | f i = a}.card = if a ∈ s i then ∏ b ∈ Finset.univ.erase i, (s b).card else 0\",\n      \"informal_description\": \"For a finite index type $\\\\iota$ and a family of finite sets $s(i)$ indexed by $\\\\iota$, the cardinality of the set of functions $f$ in the dependent product $\\\\prod_{i \\\\in \\\\iota} s(i)$ satisfying $f(i) = a$ for a fixed index $i \\\\in \\\\iota$ and element $a \\\\in s(i)$ is equal to the product of the cardinalities of $s(j)$ for all $j \\\\neq i$ if $a \\\\in s(i)$, and zero otherwise. Formally, $\\\\#{\\\\{f \\\\in \\\\prod_{i \\\\in \\\\iota} s(i) \\\\mid f(i) = a\\\\}} = \\\\begin{cases} \\\\prod_{j \\\\neq i} \\\\#s(j), & a \\\\in s(i) \\\\\\\\ 0, & \\\\text{otherwise} \\\\end{cases}$.\",\n      \"path\": \"Mathlib.Data.Fintype.BigOperators\"\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "items": [
+        {
+          "formal_name": "Finset.card_snocEquiv_filter_piFinset",
+          "informal_name": "Cardinality of Filtered Dependent Product via Snoc Equivalence",
+          "kind": "theorem",
+          "type": "∀ {n : ℕ} {α : Fin (n + 1) → Type u_1} (S : (i : Fin (n + 1)) → Finset (α i)) (P : ((i : Fin n) → α i.castSucc) → Prop)\n  [inst : DecidablePred P],\n  {r ∈ Fintype.piFinset S | P (Fin.init r)}.card =\n    (S (Fin.last n)).card * {r ∈ Fintype.piFinset (Fin.init S) | P r}.card",
+          "informal_description": "The cardinality of the set of functions $ r $ in the dependent product $ \\prod_{i} S(i) $ satisfying predicate $ P $ on the initial segment $ \\mathrm{init}(r) $ equals the product of the cardinality of the last component $ S(\\mathrm{last}) $ and the cardinality of the set of functions in $ \\prod_{i < \\mathrm{last}} S(i) $ satisfying $ P $. Formally, $ |\\{ r \\in \\prod S \\mid P(\\mathrm{init}(r)) \\}| = |S(\\mathrm{last})| \\cdot |\\{ r \\in \\prod_{i < \\mathrm{last}} S(i) \\mid P(r) \\}| $.",
+          "path": "Mathlib.Data.Fin.Tuple.Finset"
+        },
+        {
+          "formal_name": "Finset.card_consEquiv_filter_piFinset",
+          "informal_name": "Cardinality of Filtered Dependent Product with Tail Predicate",
+          "kind": "theorem",
+          "type": "∀ {n : ℕ} {α : Fin (n + 1) → Type u_1} (S : (i : Fin (n + 1)) → Finset (α i)) (P : ((i : Fin n) → α i.succ) → Prop)\n  [inst : DecidablePred P],\n  {r ∈ Fintype.piFinset S | P (Fin.tail r)}.card = (S 0).card * {r ∈ Fintype.piFinset (Fin.tail S) | P r}.card",
+          "informal_description": "The cardinality of the set of functions $ r $ in the product of $ S $ over $ \\mathrm{Fin}(n+1) $ satisfying predicate $ P $ applied to $ \\mathrm{tail}\\, r $ equals the product of the cardinality of $ S(0) $ and the cardinality of the set of functions $ r' $ in the product of $ S $ over $ \\mathrm{Fin}(n) $ satisfying $ P(r') $.",
+          "path": "Mathlib.Data.Fin.Tuple.Finset"
+        },
+        {
+          "formal_name": "Finset.filter_product_card",
+          "informal_name": "Cardinality of Filtered Cartesian Product by Predicate Agreement",
+          "kind": "theorem",
+          "type": "∀ {α : Type u_1} {β : Type u_2} (s : Finset α) (t : Finset β) (p : α → Prop) (q : β → Prop) [inst : DecidablePred p]\n  [inst_1 : DecidablePred q],\n  {x ∈ s ×ˢ t | p x.1 = q x.2}.card =\n    (Finset.filter p s).card * (Finset.filter q t).card + {x ∈ s | ¬p x}.card * {x ∈ t | ¬q x}.card",
+          "informal_description": "Given finite sets $ S $ and $ T $, and predicates $ P : S \\to \\{\\text{true}, \\text{false}\\} $ and $ Q : T \\to \\{\\text{true}, \\text{false}\\} $, the cardinality of the subset of $ S \\times T $ consisting of pairs $ (a, b) $ where $ P(a) = Q(b) $ is equal to the product of the cardinalities of the $ P $-filtered $ S $ and $ Q $-filtered $ T $, plus the product of the cardinalities of the complements of these filtered sets. Formally, $ |\\{(a, b) \\in S \\times T \\mid P(a) = Q(b)\\}| = |\\{a \\in S \\mid P(a)\\}| \\cdot |\\{b \\in T \\mid Q(b)\\}| + |\\{a \\in S \\mid \\neg P(a)\\}| \\cdot |\\{b \\in T \\mid \\neg Q(b)\\}| $.",
+          "path": "Mathlib.Data.Finset.Prod"
+        },
+        {
+          "formal_name": "Finset.card_insertNthEquiv_filter_piFinset",
+          "informal_name": "Cardinality of Filtered Product Set After Index Removal",
+          "kind": "theorem",
+          "type": "∀ {n : ℕ} {α : Fin (n + 1) → Type u_1} {p : Fin (n + 1)} (S : (i : Fin (n + 1)) → Finset (α i))\n  (P : ((i : Fin n) → α (p.succAbove i)) → Prop) [inst : DecidablePred P],\n  {r ∈ Fintype.piFinset S | P (p.removeNth r)}.card = (S p).card * {r ∈ Fintype.piFinset (p.removeNth S) | P r}.card",
+          "informal_description": "For a finite type $\\alpha = \\mathrm{Fin}(n+1)$, a family of finite sets $S : \\alpha \\to \\mathrm{Finset}$, and a decidable predicate $P$ on functions $\\mathrm{Fin}(n) \\to \\bigcup_{i} S_i$, the cardinality of the set $\\{ r \\in \\prod_{i \\in \\alpha} S_i \\mid P(r^{(p)}) \\}$ equals $|S_p| \\times |\\{ r' \\in \\prod_{i \\neq p} S_i \\mid P(r') \\}|$, where $r^{(p)}$ denotes the function with the $p$-th index removed.",
+          "path": "Mathlib.Data.Fin.Tuple.Finset"
+        },
+        {
+          "formal_name": "Fintype.card_filter_piFinset_eq",
+          "informal_name": "Cardinality of Filtered Dependent Product Set with Fixed Index Value",
+          "kind": "theorem",
+          "type": "∀ {ι : Type u_4} {α : ι → Type u_6} [inst : DecidableEq ι] [inst_1 : Fintype ι] [inst_2 : (i : ι) → DecidableEq (α i)]\n  (s : (i : ι) → Finset (α i)) (i : ι) (a : α i),\n  {f ∈ Fintype.piFinset s | f i = a}.card = if a ∈ s i then ∏ b ∈ Finset.univ.erase i, (s b).card else 0",
+          "informal_description": "For a finite index type $\\iota$ and a family of finite sets $s(i)$ indexed by $\\iota$, the cardinality of the set of functions $f$ in the dependent product $\\prod_{i \\in \\iota} s(i)$ satisfying $f(i) = a$ for a fixed index $i \\in \\iota$ and element $a \\in s(i)$ is equal to the product of the cardinalities of $s(j)$ for all $j \\neq i$ if $a \\in s(i)$, and zero otherwise. Formally, $\\#{\\{f \\in \\prod_{i \\in \\iota} s(i) \\mid f(i) = a\\}} = \\begin{cases} \\prod_{j \\neq i} \\#s(j), & a \\in s(i) \\\\ 0, & \\text{otherwise} \\end{cases}$.",
+          "path": "Mathlib.Data.Fintype.BigOperators"
+        }
+      ]
+    },
+    "isError": false
+  }
+}

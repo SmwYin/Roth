@@ -1,0 +1,23 @@
+import Mathlib.Algebra.BigOperators.Fin
+import Mathlib.Algebra.BigOperators.Group.Finset.Sigma
+import Mathlib.Algebra.BigOperators.Group.Finset.Piecewise
+import Mathlib.Data.Fin.Tuple.Finset
+#check_failure Roth.card_filter_box_last
+#check @Finset.card_eq_sum_card_fiberwise
+#check @Finset.card_filter
+#check @Finset.card_bij
+#check @Finset.sum_congr
+#check @Finset.card_map
+#check @Finset.filter_map
+#check @Finset.card_product
+#check @Finset.card_sigma
+#check @Fin.snocEquiv
+#check @Finset.card_snocEquiv_filter_piFinset
+namespace CardFilterBoxLastGeneric
+open Finset
+ theorem genericFiber {α β : Type*} [DecidableEq β] (s : Finset α) (t : Finset β)
+    (f : α → β) (h : ∀ x ∈ s, f x ∈ t) :
+    s.card = ∑ b ∈ t, (s.filter fun x ↦ f x = b).card :=
+  Finset.card_eq_sum_card_fiberwise h
+end CardFilterBoxLastGeneric
+#print axioms CardFilterBoxLastGeneric.genericFiber
