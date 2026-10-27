@@ -1,0 +1,739 @@
+{
+  "current": [
+    {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"MvPolynomial.aeval_sumElim_pderiv_inl\",\n      \"informal_name\": \"Commutativity of Partial Derivatives with Evaluation in Multivariate Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type v} [inst : CommSemiring R] {S : Type u_1} {τ : Type u_2} [inst_1 : CommRing S]\\n  [inst_2 : Algebra R S] (p : MvPolynomial (σ ⊕ τ) R) (f : τ → S) (j : σ),\\n  (MvPolynomial.aeval (Sum.elim MvPolynomial.X (⇑MvPolynomial.C ∘ f))) ((MvPolynomial.pderiv (Sum.inl j)) p) =\\n    (MvPolynomial.pderiv j) ((MvPolynomial.aeval (Sum.elim MvPolynomial.X (⇑MvPolynomial.C ∘ f))) p)\",\n      \"informal_description\": \"For a multivariate polynomial $ p $ in variables $ \\\\sigma \\\\oplus \\\\tau $ with coefficients in a commutative ring $ R $, and an $ R $-algebra homomorphism evaluating variables in $ \\\\tau $ via a function $ f : \\\\tau \\\\to S $, the partial derivative of $ p $ with respect to $ j \\\\in \\\\sigma $ commutes with evaluation. Specifically, evaluating the partial derivative $ \\\\partial_{\\\\text{inl}(j)} p $ using the homomorphism that maps $ \\\\sigma $-variables to themselves and $ \\\\tau $-variables via $ f $ is equivalent to first evaluating $ p $ under this homomorphism and then taking the partial derivative with respect to $ j $. This establishes $ \\\\text{aeval}(\\\\partial_{\\\\text{inl}(j)} p) = \\\\partial_j(\\\\text{aeval}(p)) $ in the target algebra $ S $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.PDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.aeval_sumIDeriv_eq_eval\",\n      \"informal_name\": \"Equality of Evaluations for Sum of Iterated Derivatives via Algebra Homomorphism\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommSemiring R] (A : Type u_3) [inst_1 : CommRing A] [inst_2 : Algebra R A] (p : Polynomial R)\\n  (r : A),\\n  (Polynomial.aeval r) (Polynomial.sumIDeriv p) =\\n    Polynomial.eval r (Polynomial.sumIDeriv (Polynomial.map (algebraMap R A) p))\",\n      \"informal_description\": \"For any polynomial $ p $ over a commutative semiring $ R $ and any element $ r $ in an $ R $-algebra $ A $, evaluating the sum of iterated derivatives of $ p $ at $ r $ via the algebra homomorphism equals evaluating the sum of iterated derivatives of the polynomial $ p $ with coefficients mapped through the canonical algebra homomorphism $ R \\\\to A $ at $ r $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.SumIteratedDerivative\"\n    },\n    {\n      \"formal_name\": \"Polynomial.sumIDeriv\",\n      \"informal_name\": \"Sum of Iterated Derivatives of a Polynomial\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : Semiring R] → Polynomial R →ₗ[R] Polynomial R\",\n      \"informal_description\": \"The linear map that sends each polynomial $ p $ to the sum of its iterated derivatives, i.e., $ \\\\sum_{i=0}^{\\\\infty} \\\\frac{d^i p}{dx^i} $, where all but finitely many terms vanish since derivatives beyond the polynomial's degree are zero.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.SumIteratedDerivative\"\n    },\n    {\n      \"formal_name\": \"Polynomial.fderiv_aeval\",\n      \"informal_name\": \"Derivative of Polynomial Evaluation Equals Evaluation of Derivative\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {𝕜 : Type u} [inst : NontriviallyNormedField 𝕜] {x : 𝕜} {R : Type u_1} [inst_1 : CommSemiring R]\\n  [inst_2 : Algebra R 𝕜] (q : Polynomial R),\\n  fderiv 𝕜 (fun x => (Polynomial.aeval x) q) x =\\n    ContinuousLinearMap.smulRight 1 ((Polynomial.aeval x) (Polynomial.derivative q))\",\n      \"informal_description\": \"The Fréchet derivative of the function that evaluates a polynomial $ q $ at a point $ x $ is equal to the evaluation of the derivative of $ q $ at $ x $.\",\n      \"path\": \"Mathlib.Analysis.Calculus.Deriv.Polynomial\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.pderiv_sumToIter\",\n      \"informal_name\": \"Partial Derivative of Sum Iteration Equals Sum of Partial Derivatives in Multivariate Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : CommSemiring R] {σ : Type u_1} {ι : Type u_2} (p : MvPolynomial (σ ⊕ ι) R) (i : σ),\\n  (MvPolynomial.pderiv i) ((MvPolynomial.sumToIter R σ ι) p) =\\n    (MvPolynomial.sumToIter R σ ι) ((MvPolynomial.pderiv (Sum.inl i)) p)\",\n      \"informal_description\": \"For any commutative semiring $ R $, types $ \\\\sigma $ and $ \\\\iota $, and polynomial $ p $, the partial derivative with respect to variable $ i $ of the $ \\\\text{sumToIter} $ representation of $ p $ is equal to the $ \\\\text{sumToIter} $ of the partial derivatives of each term of $ p $ with respect to the left-injected variable $ i $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.PDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.derivative_eval₂_C\",\n      \"informal_name\": \"Chain Rule for Polynomial Derivatives\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : CommSemiring R] (p q : Polynomial R),\\n  Polynomial.derivative (Polynomial.eval₂ Polynomial.C q p) =\\n    Polynomial.eval₂ Polynomial.C q (Polynomial.derivative p) * Polynomial.derivative q\",\n      \"informal_description\": \"For any polynomials $p$ and $q$ over a commutative semiring $R$, the derivative of the composition $p(q)$ satisfies $\\\\frac{d}{dx}p(q(x)) = p'(q(x)) \\\\cdot q'(x)$, where $p'$ and $q'$ denote the formal derivatives of $p$ and $q$, respectively.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Derivative\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "formal_name": "MvPolynomial.aeval_sumElim_pderiv_inl",
+              "informal_name": "Commutativity of Partial Derivatives with Evaluation in Multivariate Polynomials",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} {σ : Type v} [inst : CommSemiring R] {S : Type u_1} {τ : Type u_2} [inst_1 : CommRing S]\n  [inst_2 : Algebra R S] (p : MvPolynomial (σ ⊕ τ) R) (f : τ → S) (j : σ),\n  (MvPolynomial.aeval (Sum.elim MvPolynomial.X (⇑MvPolynomial.C ∘ f))) ((MvPolynomial.pderiv (Sum.inl j)) p) =\n    (MvPolynomial.pderiv j) ((MvPolynomial.aeval (Sum.elim MvPolynomial.X (⇑MvPolynomial.C ∘ f))) p)",
+              "informal_description": "For a multivariate polynomial $ p $ in variables $ \\sigma \\oplus \\tau $ with coefficients in a commutative ring $ R $, and an $ R $-algebra homomorphism evaluating variables in $ \\tau $ via a function $ f : \\tau \\to S $, the partial derivative of $ p $ with respect to $ j \\in \\sigma $ commutes with evaluation. Specifically, evaluating the partial derivative $ \\partial_{\\text{inl}(j)} p $ using the homomorphism that maps $ \\sigma $-variables to themselves and $ \\tau $-variables via $ f $ is equivalent to first evaluating $ p $ under this homomorphism and then taking the partial derivative with respect to $ j $. This establishes $ \\text{aeval}(\\partial_{\\text{inl}(j)} p) = \\partial_j(\\text{aeval}(p)) $ in the target algebra $ S $.",
+              "path": "Mathlib.Algebra.MvPolynomial.PDeriv"
+            },
+            {
+              "formal_name": "Polynomial.aeval_sumIDeriv_eq_eval",
+              "informal_name": "Equality of Evaluations for Sum of Iterated Derivatives via Algebra Homomorphism",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} [inst : CommSemiring R] (A : Type u_3) [inst_1 : CommRing A] [inst_2 : Algebra R A] (p : Polynomial R)\n  (r : A),\n  (Polynomial.aeval r) (Polynomial.sumIDeriv p) =\n    Polynomial.eval r (Polynomial.sumIDeriv (Polynomial.map (algebraMap R A) p))",
+              "informal_description": "For any polynomial $ p $ over a commutative semiring $ R $ and any element $ r $ in an $ R $-algebra $ A $, evaluating the sum of iterated derivatives of $ p $ at $ r $ via the algebra homomorphism equals evaluating the sum of iterated derivatives of the polynomial $ p $ with coefficients mapped through the canonical algebra homomorphism $ R \\to A $ at $ r $.",
+              "path": "Mathlib.Algebra.Polynomial.SumIteratedDerivative"
+            },
+            {
+              "formal_name": "Polynomial.sumIDeriv",
+              "informal_name": "Sum of Iterated Derivatives of a Polynomial",
+              "kind": "definition",
+              "type": "{R : Type u_1} → [inst : Semiring R] → Polynomial R →ₗ[R] Polynomial R",
+              "informal_description": "The linear map that sends each polynomial $ p $ to the sum of its iterated derivatives, i.e., $ \\sum_{i=0}^{\\infty} \\frac{d^i p}{dx^i} $, where all but finitely many terms vanish since derivatives beyond the polynomial's degree are zero.",
+              "path": "Mathlib.Algebra.Polynomial.SumIteratedDerivative"
+            },
+            {
+              "formal_name": "Polynomial.fderiv_aeval",
+              "informal_name": "Derivative of Polynomial Evaluation Equals Evaluation of Derivative",
+              "kind": "theorem",
+              "type": "∀ {𝕜 : Type u} [inst : NontriviallyNormedField 𝕜] {x : 𝕜} {R : Type u_1} [inst_1 : CommSemiring R]\n  [inst_2 : Algebra R 𝕜] (q : Polynomial R),\n  fderiv 𝕜 (fun x => (Polynomial.aeval x) q) x =\n    ContinuousLinearMap.smulRight 1 ((Polynomial.aeval x) (Polynomial.derivative q))",
+              "informal_description": "The Fréchet derivative of the function that evaluates a polynomial $ q $ at a point $ x $ is equal to the evaluation of the derivative of $ q $ at $ x $.",
+              "path": "Mathlib.Analysis.Calculus.Deriv.Polynomial"
+            },
+            {
+              "formal_name": "MvPolynomial.pderiv_sumToIter",
+              "informal_name": "Partial Derivative of Sum Iteration Equals Sum of Partial Derivatives in Multivariate Polynomials",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} [inst : CommSemiring R] {σ : Type u_1} {ι : Type u_2} (p : MvPolynomial (σ ⊕ ι) R) (i : σ),\n  (MvPolynomial.pderiv i) ((MvPolynomial.sumToIter R σ ι) p) =\n    (MvPolynomial.sumToIter R σ ι) ((MvPolynomial.pderiv (Sum.inl i)) p)",
+              "informal_description": "For any commutative semiring $ R $, types $ \\sigma $ and $ \\iota $, and polynomial $ p $, the partial derivative with respect to variable $ i $ of the $ \\text{sumToIter} $ representation of $ p $ is equal to the $ \\text{sumToIter} $ of the partial derivatives of each term of $ p $ with respect to the left-injected variable $ i $.",
+              "path": "Mathlib.Algebra.MvPolynomial.PDeriv"
+            },
+            {
+              "formal_name": "Polynomial.derivative_eval₂_C",
+              "informal_name": "Chain Rule for Polynomial Derivatives",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} [inst : CommSemiring R] (p q : Polynomial R),\n  Polynomial.derivative (Polynomial.eval₂ Polynomial.C q p) =\n    Polynomial.eval₂ Polynomial.C q (Polynomial.derivative p) * Polynomial.derivative q",
+              "informal_description": "For any polynomials $p$ and $q$ over a commutative semiring $R$, the derivative of the composition $p(q)$ satisfies $\\frac{d}{dx}p(q(x)) = p'(q(x)) \\cdot q'(x)$, where $p'$ and $q'$ denote the formal derivatives of $p$ and $q$, respectively.",
+              "path": "Mathlib.Algebra.Polynomial.Derivative"
+            }
+          ]
+        },
+        "isError": false
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.pderiv_sumToIter\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.PDeriv\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : CommSemiring R] {σ : Type u_1} {ι : Type u_2} (p : MvPolynomial (σ ⊕ ι) R) (i : σ),\\n  (MvPolynomial.pderiv i) ((MvPolynomial.sumToIter R σ ι) p) =\\n    (MvPolynomial.sumToIter R σ ι) ((MvPolynomial.pderiv (Sum.inl i)) p)\"\n    },\n    {\n      \"name\": \"MvPolynomial.aeval_sumElim_pderiv_inl\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.PDeriv\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type v} [inst : CommSemiring R] {S : Type u_1} {τ : Type u_2} [inst_1 : CommRing S]\\n  [inst_2 : Algebra R S] (p : MvPolynomial (σ ⊕ τ) R) (f : τ → S) (j : σ),\\n  (MvPolynomial.aeval (Sum.elim MvPolynomial.X (⇑MvPolynomial.C ∘ f))) ((MvPolynomial.pderiv (Sum.inl j)) p) =\\n    (MvPolynomial.pderiv j) ((MvPolynomial.aeval (Sum.elim MvPolynomial.X (⇑MvPolynomial.C ∘ f))) p)\"\n    },\n    {\n      \"name\": \"Polynomial.fderiv_aeval\",\n      \"module_name\": \"Mathlib.Analysis.Calculus.Deriv.Polynomial\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {𝕜 : Type u} [inst : NontriviallyNormedField 𝕜] {x : 𝕜} {R : Type u_1} [inst_1 : CommSemiring R]\\n  [inst_2 : Algebra R 𝕜] (q : Polynomial R),\\n  fderiv 𝕜 (fun x => (Polynomial.aeval x) q) x =\\n    ContinuousLinearMap.smulRight 1 ((Polynomial.aeval x) (Polynomial.derivative q))\"\n    },\n    {\n      \"name\": \"Polynomial.derivative_sum\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Derivative\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {ι : Type y} [inst : Semiring R] {s : Finset ι} {f : ι → Polynomial R},\\n  Polynomial.derivative (∑ b ∈ s, f b) = ∑ b ∈ s, Polynomial.derivative (f b)\"\n    },\n    {\n      \"name\": \"Differential.deriv_aeval_eq_implicitDeriv\",\n      \"module_name\": \"Mathlib.RingTheory.Derivation.MapCoeffs\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {A : Type u_1} [inst : CommRing A] [inst_1 : Differential A] {R : Type u_2} [inst_2 : CommRing R]\\n  [inst_3 : Differential R] [inst_4 : Algebra A R] [DifferentialAlgebra A R] (x : R) (v : Polynomial A),\\n  x′ = (Polynomial.aeval x) v →\\n    ∀ (p : Polynomial A), ((Polynomial.aeval x) p)′ = (Polynomial.aeval x) ((Differential.implicitDeriv v) p)\"\n    },\n    {\n      \"name\": \"MvPolynomial.mkDerivation\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Derivation\",\n      \"kind\": \"definition\",\n      \"type\": \"{σ : Type u_1} →\\n  (R : Type u_2) →\\n    {A : Type u_3} →\\n      [inst : CommSemiring R] →\\n        [inst_1 : AddCommMonoid A] →\\n          [inst_2 : Module R A] →\\n            [inst_3 : Module (MvPolynomial σ R) A] →\\n              [IsScalarTower R (MvPolynomial σ R) A] → (σ → A) → Derivation R (MvPolynomial σ R) A\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "MvPolynomial.pderiv_sumToIter",
+              "module_name": "Mathlib.Algebra.MvPolynomial.PDeriv",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} [inst : CommSemiring R] {σ : Type u_1} {ι : Type u_2} (p : MvPolynomial (σ ⊕ ι) R) (i : σ),\n  (MvPolynomial.pderiv i) ((MvPolynomial.sumToIter R σ ι) p) =\n    (MvPolynomial.sumToIter R σ ι) ((MvPolynomial.pderiv (Sum.inl i)) p)"
+            },
+            {
+              "name": "MvPolynomial.aeval_sumElim_pderiv_inl",
+              "module_name": "Mathlib.Algebra.MvPolynomial.PDeriv",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} {σ : Type v} [inst : CommSemiring R] {S : Type u_1} {τ : Type u_2} [inst_1 : CommRing S]\n  [inst_2 : Algebra R S] (p : MvPolynomial (σ ⊕ τ) R) (f : τ → S) (j : σ),\n  (MvPolynomial.aeval (Sum.elim MvPolynomial.X (⇑MvPolynomial.C ∘ f))) ((MvPolynomial.pderiv (Sum.inl j)) p) =\n    (MvPolynomial.pderiv j) ((MvPolynomial.aeval (Sum.elim MvPolynomial.X (⇑MvPolynomial.C ∘ f))) p)"
+            },
+            {
+              "name": "Polynomial.fderiv_aeval",
+              "module_name": "Mathlib.Analysis.Calculus.Deriv.Polynomial",
+              "kind": "theorem",
+              "type": "∀ {𝕜 : Type u} [inst : NontriviallyNormedField 𝕜] {x : 𝕜} {R : Type u_1} [inst_1 : CommSemiring R]\n  [inst_2 : Algebra R 𝕜] (q : Polynomial R),\n  fderiv 𝕜 (fun x => (Polynomial.aeval x) q) x =\n    ContinuousLinearMap.smulRight 1 ((Polynomial.aeval x) (Polynomial.derivative q))"
+            },
+            {
+              "name": "Polynomial.derivative_sum",
+              "module_name": "Mathlib.Algebra.Polynomial.Derivative",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} {ι : Type y} [inst : Semiring R] {s : Finset ι} {f : ι → Polynomial R},\n  Polynomial.derivative (∑ b ∈ s, f b) = ∑ b ∈ s, Polynomial.derivative (f b)"
+            },
+            {
+              "name": "Differential.deriv_aeval_eq_implicitDeriv",
+              "module_name": "Mathlib.RingTheory.Derivation.MapCoeffs",
+              "kind": "theorem",
+              "type": "∀ {A : Type u_1} [inst : CommRing A] [inst_1 : Differential A] {R : Type u_2} [inst_2 : CommRing R]\n  [inst_3 : Differential R] [inst_4 : Algebra A R] [DifferentialAlgebra A R] (x : R) (v : Polynomial A),\n  x′ = (Polynomial.aeval x) v →\n    ∀ (p : Polynomial A), ((Polynomial.aeval x) p)′ = (Polynomial.aeval x) ((Differential.implicitDeriv v) p)"
+            },
+            {
+              "name": "MvPolynomial.mkDerivation",
+              "module_name": "Mathlib.Algebra.MvPolynomial.Derivation",
+              "kind": "definition",
+              "type": "{σ : Type u_1} →\n  (R : Type u_2) →\n    {A : Type u_3} →\n      [inst : CommSemiring R] →\n        [inst_1 : AddCommMonoid A] →\n          [inst_2 : Module R A] →\n            [inst_3 : Module (MvPolynomial σ R) A] →\n              [IsScalarTower R (MvPolynomial σ R) A] → (σ → A) → Derivation R (MvPolynomial σ R) A"
+            }
+          ]
+        },
+        "isError": false
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": []\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": []
+        },
+        "isError": false
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"KroneckerConsumers.derivative_aeval\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/roth-overview-session/GenWronskianChecks.lean\"\n    },\n    {\n      \"name\": \"PrivateKronHasseAssessment.derivative_aeval\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/roth-overview-session/GenWronskianChecks.lean\"\n    },\n    {\n      \"name\": \"PrivateKronSpanAssessment.derivative_aeval\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/roth-overview-session/GenWronskianChecks.lean\"\n    },\n    {\n      \"name\": \"Roth.KroneckerExpConsumers.derivative_aeval\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/roth-overview-session/GenWronskianChecks.lean\"\n    },\n    {\n      \"name\": \"Roth.derivative_aeval\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/GenWronskian.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "KroneckerConsumers.derivative_aeval",
+              "kind": "theorem",
+              "file": ".lake/roth-overview-session/GenWronskianChecks.lean"
+            },
+            {
+              "name": "PrivateKronHasseAssessment.derivative_aeval",
+              "kind": "theorem",
+              "file": ".lake/roth-overview-session/GenWronskianChecks.lean"
+            },
+            {
+              "name": "PrivateKronSpanAssessment.derivative_aeval",
+              "kind": "theorem",
+              "file": ".lake/roth-overview-session/GenWronskianChecks.lean"
+            },
+            {
+              "name": "Roth.KroneckerExpConsumers.derivative_aeval",
+              "kind": "theorem",
+              "file": ".lake/roth-overview-session/GenWronskianChecks.lean"
+            },
+            {
+              "name": "Roth.derivative_aeval",
+              "kind": "theorem",
+              "file": "Roth/GenWronskian.lean"
+            }
+          ],
+          "index": "unavailable"
+        },
+        "isError": false
+      }
+    }
+  ],
+  "standard": [
+    {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"MvPolynomial.pderiv_mul\",\n      \"informal_name\": \"Product Rule for Partial Derivatives in Multivariate Polynomial Rings\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type v} [inst : CommSemiring R] {i : σ} {f g : MvPolynomial σ R},\\n  (MvPolynomial.pderiv i) (f * g) = (MvPolynomial.pderiv i) f * g + f * (MvPolynomial.pderiv i) g\",\n      \"informal_description\": \"For any commutative semiring $ R $, type $ \\\\sigma $, and variables $ i \\\\in \\\\sigma $, the partial derivative with respect to $ i $ of the product of two multivariate polynomials $ f $ and $ g $ in $ R[\\\\sigma] $ satisfies the Leibniz rule: $ \\\\partial_i(fg) = (\\\\partial_i f) \\\\cdot g + f \\\\cdot (\\\\partial_i g) $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.PDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.derivative_eval₂_C\",\n      \"informal_name\": \"Chain Rule for Polynomial Derivatives\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : CommSemiring R] (p q : Polynomial R),\\n  Polynomial.derivative (Polynomial.eval₂ Polynomial.C q p) =\\n    Polynomial.eval₂ Polynomial.C q (Polynomial.derivative p) * Polynomial.derivative q\",\n      \"informal_description\": \"For any polynomials $p$ and $q$ over a commutative semiring $R$, the derivative of the composition $p(q)$ satisfies $\\\\frac{d}{dx}p(q(x)) = p'(q(x)) \\\\cdot q'(x)$, where $p'$ and $q'$ denote the formal derivatives of $p$ and $q$, respectively.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Derivative\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.pderiv\",\n      \"informal_name\": \"Partial derivative with respect to a variable in multivariate polynomial ring\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} → {σ : Type v} → [inst : CommSemiring R] → σ → Derivation R (MvPolynomial σ R) (MvPolynomial σ R)\",\n      \"informal_description\": \"For a commutative semiring $ R $ and type $ \\\\sigma $, the function $ \\\\text{pderiv}_i $ defines the partial derivative operator on the multivariate polynomial ring $ R[\\\\sigma] $ with respect to the variable indexed by $ i \\\\in \\\\sigma $. This derivation satisfies $ \\\\text{pderiv}_i(1) = 0 $ and the Leibniz rule $ \\\\text{pderiv}_i(pq) = p \\\\cdot \\\\text{pderiv}_i(q) + \\\\text{pderiv}_i(p) \\\\cdot q $ for all polynomials $ p, q \\\\in R[\\\\sigma] $, where $ \\\\text{pderiv}_i(p) $ formally differentiates $ p $ by reducing the exponent of variable $ i $ in each monomial by one.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.PDeriv\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.leibniz_iff_X\",\n      \"informal_name\": \"Leibniz Rule Characterization for Derivations on Multivariate Polynomial Rings via Monomials and Variables\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_2} {A : Type u_3} [inst : CommSemiring R] [inst_1 : AddCommMonoid A] [inst_2 : Module R A]\\n  [inst_3 : Module (MvPolynomial σ R) A] [IsScalarTower R (MvPolynomial σ R) A] (D : MvPolynomial σ R →ₗ[R] A),\\n  D 1 = 0 →\\n    ((∀ (p q : MvPolynomial σ R), D (p * q) = p • D q + q • D p) ↔\\n      ∀ (s : σ →₀ ℕ) (i : σ),\\n        D ((MvPolynomial.monomial s) 1 * MvPolynomial.X i) =\\n          (MvPolynomial.monomial s) 1 • D (MvPolynomial.X i) + MvPolynomial.X i • D ((MvPolynom...\",\n      \"informal_description\": \"A linear map $ D : R[\\\\sigma] \\\\to A $ from the multivariate polynomial ring over a commutative semiring $ R $ to an $ R $-module $ A $, satisfying $ D(1) = 0 $, is a derivation (i.e., satisfies the Leibniz rule $ D(pq) = p \\\\cdot D(q) + q \\\\cdot D(p) $ for all polynomials $ p, q $) if and only if the Leibniz rule holds for all products of monomials $ \\\\text{monomial}(s, 1) $ and variables $ X_i $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Derivation\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.mkDerivation\",\n      \"informal_name\": \"Derivation on Multivariate Polynomials Induced by a Function\",\n      \"kind\": \"definition\",\n      \"type\": \"{σ : Type u_1} →\\n  (R : Type u_2) →\\n    {A : Type u_3} →\\n      [inst : CommSemiring R] →\\n        [inst_1 : AddCommMonoid A] →\\n          [inst_2 : Module R A] →\\n            [inst_3 : Module (MvPolynomial σ R) A] →\\n              [IsScalarTower R (MvPolynomial σ R) A] → (σ → A) → Derivation R (MvPolynomial σ R) A\",\n      \"informal_description\": \"For a commutative semiring $ R $, type $ \\\\sigma $, $ R $-module $ A $, and function $ f : \\\\sigma \\\\to A $, this constructs a derivation $ D_f $ on the multivariate polynomial ring $ R[\\\\sigma] $ defined by $ D_f(p) = \\\\sum_{x \\\\in \\\\sigma} f(x) \\\\cdot \\\\frac{\\\\partial p}{\\\\partial x} $, where $ \\\\frac{\\\\partial p}{\\\\partial x} $ denotes the formal partial derivative reducing the exponent of $ x $ by one. The derivation satisfies $ D_f(1) = 0 $ and the Leibniz rule $ D_f(pq) = p D_f(q) + D_f(p) q $ for all $ p, q \\\\in R[\\\\sigma] $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Derivation\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.aeval_sumElim_pderiv_inl\",\n      \"informal_name\": \"Commutativity of Partial Derivatives with Evaluation in Multivariate Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type v} [inst : CommSemiring R] {S : Type u_1} {τ : Type u_2} [inst_1 : CommRing S]\\n  [inst_2 : Algebra R S] (p : MvPolynomial (σ ⊕ τ) R) (f : τ → S) (j : σ),\\n  (MvPolynomial.aeval (Sum.elim MvPolynomial.X (⇑MvPolynomial.C ∘ f))) ((MvPolynomial.pderiv (Sum.inl j)) p) =\\n    (MvPolynomial.pderiv j) ((MvPolynomial.aeval (Sum.elim MvPolynomial.X (⇑MvPolynomial.C ∘ f))) p)\",\n      \"informal_description\": \"For a multivariate polynomial $ p $ in variables $ \\\\sigma \\\\oplus \\\\tau $ with coefficients in a commutative ring $ R $, and an $ R $-algebra homomorphism evaluating variables in $ \\\\tau $ via a function $ f : \\\\tau \\\\to S $, the partial derivative of $ p $ with respect to $ j \\\\in \\\\sigma $ commutes with evaluation. Specifically, evaluating the partial derivative $ \\\\partial_{\\\\text{inl}(j)} p $ using the homomorphism that maps $ \\\\sigma $-variables to themselves and $ \\\\tau $-variables via $ f $ is equivalent to first evaluating $ p $ under this homomorphism and then taking the partial derivative with respect to $ j $. This establishes $ \\\\text{aeval}(\\\\partial_{\\\\text{inl}(j)} p) = \\\\partial_j(\\\\text{aeval}(p)) $ in the target algebra $ S $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.PDeriv\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "formal_name": "MvPolynomial.pderiv_mul",
+              "informal_name": "Product Rule for Partial Derivatives in Multivariate Polynomial Rings",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} {σ : Type v} [inst : CommSemiring R] {i : σ} {f g : MvPolynomial σ R},\n  (MvPolynomial.pderiv i) (f * g) = (MvPolynomial.pderiv i) f * g + f * (MvPolynomial.pderiv i) g",
+              "informal_description": "For any commutative semiring $ R $, type $ \\sigma $, and variables $ i \\in \\sigma $, the partial derivative with respect to $ i $ of the product of two multivariate polynomials $ f $ and $ g $ in $ R[\\sigma] $ satisfies the Leibniz rule: $ \\partial_i(fg) = (\\partial_i f) \\cdot g + f \\cdot (\\partial_i g) $.",
+              "path": "Mathlib.Algebra.MvPolynomial.PDeriv"
+            },
+            {
+              "formal_name": "Polynomial.derivative_eval₂_C",
+              "informal_name": "Chain Rule for Polynomial Derivatives",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} [inst : CommSemiring R] (p q : Polynomial R),\n  Polynomial.derivative (Polynomial.eval₂ Polynomial.C q p) =\n    Polynomial.eval₂ Polynomial.C q (Polynomial.derivative p) * Polynomial.derivative q",
+              "informal_description": "For any polynomials $p$ and $q$ over a commutative semiring $R$, the derivative of the composition $p(q)$ satisfies $\\frac{d}{dx}p(q(x)) = p'(q(x)) \\cdot q'(x)$, where $p'$ and $q'$ denote the formal derivatives of $p$ and $q$, respectively.",
+              "path": "Mathlib.Algebra.Polynomial.Derivative"
+            },
+            {
+              "formal_name": "MvPolynomial.pderiv",
+              "informal_name": "Partial derivative with respect to a variable in multivariate polynomial ring",
+              "kind": "definition",
+              "type": "{R : Type u} → {σ : Type v} → [inst : CommSemiring R] → σ → Derivation R (MvPolynomial σ R) (MvPolynomial σ R)",
+              "informal_description": "For a commutative semiring $ R $ and type $ \\sigma $, the function $ \\text{pderiv}_i $ defines the partial derivative operator on the multivariate polynomial ring $ R[\\sigma] $ with respect to the variable indexed by $ i \\in \\sigma $. This derivation satisfies $ \\text{pderiv}_i(1) = 0 $ and the Leibniz rule $ \\text{pderiv}_i(pq) = p \\cdot \\text{pderiv}_i(q) + \\text{pderiv}_i(p) \\cdot q $ for all polynomials $ p, q \\in R[\\sigma] $, where $ \\text{pderiv}_i(p) $ formally differentiates $ p $ by reducing the exponent of variable $ i $ in each monomial by one.",
+              "path": "Mathlib.Algebra.MvPolynomial.PDeriv"
+            },
+            {
+              "formal_name": "MvPolynomial.leibniz_iff_X",
+              "informal_name": "Leibniz Rule Characterization for Derivations on Multivariate Polynomial Rings via Monomials and Variables",
+              "kind": "theorem",
+              "type": "∀ {σ : Type u_1} {R : Type u_2} {A : Type u_3} [inst : CommSemiring R] [inst_1 : AddCommMonoid A] [inst_2 : Module R A]\n  [inst_3 : Module (MvPolynomial σ R) A] [IsScalarTower R (MvPolynomial σ R) A] (D : MvPolynomial σ R →ₗ[R] A),\n  D 1 = 0 →\n    ((∀ (p q : MvPolynomial σ R), D (p * q) = p • D q + q • D p) ↔\n      ∀ (s : σ →₀ ℕ) (i : σ),\n        D ((MvPolynomial.monomial s) 1 * MvPolynomial.X i) =\n          (MvPolynomial.monomial s) 1 • D (MvPolynomial.X i) + MvPolynomial.X i • D ((MvPolynom...",
+              "informal_description": "A linear map $ D : R[\\sigma] \\to A $ from the multivariate polynomial ring over a commutative semiring $ R $ to an $ R $-module $ A $, satisfying $ D(1) = 0 $, is a derivation (i.e., satisfies the Leibniz rule $ D(pq) = p \\cdot D(q) + q \\cdot D(p) $ for all polynomials $ p, q $) if and only if the Leibniz rule holds for all products of monomials $ \\text{monomial}(s, 1) $ and variables $ X_i $.",
+              "path": "Mathlib.Algebra.MvPolynomial.Derivation"
+            },
+            {
+              "formal_name": "MvPolynomial.mkDerivation",
+              "informal_name": "Derivation on Multivariate Polynomials Induced by a Function",
+              "kind": "definition",
+              "type": "{σ : Type u_1} →\n  (R : Type u_2) →\n    {A : Type u_3} →\n      [inst : CommSemiring R] →\n        [inst_1 : AddCommMonoid A] →\n          [inst_2 : Module R A] →\n            [inst_3 : Module (MvPolynomial σ R) A] →\n              [IsScalarTower R (MvPolynomial σ R) A] → (σ → A) → Derivation R (MvPolynomial σ R) A",
+              "informal_description": "For a commutative semiring $ R $, type $ \\sigma $, $ R $-module $ A $, and function $ f : \\sigma \\to A $, this constructs a derivation $ D_f $ on the multivariate polynomial ring $ R[\\sigma] $ defined by $ D_f(p) = \\sum_{x \\in \\sigma} f(x) \\cdot \\frac{\\partial p}{\\partial x} $, where $ \\frac{\\partial p}{\\partial x} $ denotes the formal partial derivative reducing the exponent of $ x $ by one. The derivation satisfies $ D_f(1) = 0 $ and the Leibniz rule $ D_f(pq) = p D_f(q) + D_f(p) q $ for all $ p, q \\in R[\\sigma] $.",
+              "path": "Mathlib.Algebra.MvPolynomial.Derivation"
+            },
+            {
+              "formal_name": "MvPolynomial.aeval_sumElim_pderiv_inl",
+              "informal_name": "Commutativity of Partial Derivatives with Evaluation in Multivariate Polynomials",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} {σ : Type v} [inst : CommSemiring R] {S : Type u_1} {τ : Type u_2} [inst_1 : CommRing S]\n  [inst_2 : Algebra R S] (p : MvPolynomial (σ ⊕ τ) R) (f : τ → S) (j : σ),\n  (MvPolynomial.aeval (Sum.elim MvPolynomial.X (⇑MvPolynomial.C ∘ f))) ((MvPolynomial.pderiv (Sum.inl j)) p) =\n    (MvPolynomial.pderiv j) ((MvPolynomial.aeval (Sum.elim MvPolynomial.X (⇑MvPolynomial.C ∘ f))) p)",
+              "informal_description": "For a multivariate polynomial $ p $ in variables $ \\sigma \\oplus \\tau $ with coefficients in a commutative ring $ R $, and an $ R $-algebra homomorphism evaluating variables in $ \\tau $ via a function $ f : \\tau \\to S $, the partial derivative of $ p $ with respect to $ j \\in \\sigma $ commutes with evaluation. Specifically, evaluating the partial derivative $ \\partial_{\\text{inl}(j)} p $ using the homomorphism that maps $ \\sigma $-variables to themselves and $ \\tau $-variables via $ f $ is equivalent to first evaluating $ p $ under this homomorphism and then taking the partial derivative with respect to $ j $. This establishes $ \\text{aeval}(\\partial_{\\text{inl}(j)} p) = \\partial_j(\\text{aeval}(p)) $ in the target algebra $ S $.",
+              "path": "Mathlib.Algebra.MvPolynomial.PDeriv"
+            }
+          ]
+        },
+        "isError": false
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.derivative_eval₂_C\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Derivative\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : CommSemiring R] (p q : Polynomial R),\\n  Polynomial.derivative (Polynomial.eval₂ Polynomial.C q p) =\\n    Polynomial.eval₂ Polynomial.C q (Polynomial.derivative p) * Polynomial.derivative q\"\n    },\n    {\n      \"name\": \"Polynomial.derivative_comp\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Derivative\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : CommSemiring R] (p q : Polynomial R),\\n  Polynomial.derivative (p.comp q) = Polynomial.derivative q * (Polynomial.derivative p).comp q\"\n    },\n    {\n      \"name\": \"MvPolynomial.leibniz_iff_X\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Derivation\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_2} {A : Type u_3} [inst : CommSemiring R] [inst_1 : AddCommMonoid A] [inst_2 : Module R A]\\n  [inst_3 : Module (MvPolynomial σ R) A] [IsScalarTower R (MvPolynomial σ R) A] (D : MvPolynomial σ R →ₗ[R] A),\\n  D 1 = 0 →\\n    ((∀ (p q : MvPolynomial σ R), D (p * q) = p • D q + q • D p) ↔\\n      ∀ (s : σ →₀ ℕ) (i : σ),\\n        D ((MvPolynomial.monomial s) 1 * MvPolynomial.X i) =\\n          (MvPolynomial.monomial s) 1 • D (MvPolynomial.X i) + MvPolynomial.X i • D ((MvPolynom...\"\n    },\n    {\n      \"name\": \"MvPolynomial.mkDerivation\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Derivation\",\n      \"kind\": \"definition\",\n      \"type\": \"{σ : Type u_1} →\\n  (R : Type u_2) →\\n    {A : Type u_3} →\\n      [inst : CommSemiring R] →\\n        [inst_1 : AddCommMonoid A] →\\n          [inst_2 : Module R A] →\\n            [inst_3 : Module (MvPolynomial σ R) A] →\\n              [IsScalarTower R (MvPolynomial σ R) A] → (σ → A) → Derivation R (MvPolynomial σ R) A\"\n    },\n    {\n      \"name\": \"MvPolynomial.pderiv\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.PDeriv\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} → {σ : Type v} → [inst : CommSemiring R] → σ → Derivation R (MvPolynomial σ R) (MvPolynomial σ R)\"\n    },\n    {\n      \"name\": \"Polynomial.derivative'\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Derivation\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : CommSemiring R] → Derivation R (Polynomial R) (Polynomial R)\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "Polynomial.derivative_eval₂_C",
+              "module_name": "Mathlib.Algebra.Polynomial.Derivative",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} [inst : CommSemiring R] (p q : Polynomial R),\n  Polynomial.derivative (Polynomial.eval₂ Polynomial.C q p) =\n    Polynomial.eval₂ Polynomial.C q (Polynomial.derivative p) * Polynomial.derivative q"
+            },
+            {
+              "name": "Polynomial.derivative_comp",
+              "module_name": "Mathlib.Algebra.Polynomial.Derivative",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} [inst : CommSemiring R] (p q : Polynomial R),\n  Polynomial.derivative (p.comp q) = Polynomial.derivative q * (Polynomial.derivative p).comp q"
+            },
+            {
+              "name": "MvPolynomial.leibniz_iff_X",
+              "module_name": "Mathlib.Algebra.MvPolynomial.Derivation",
+              "kind": "theorem",
+              "type": "∀ {σ : Type u_1} {R : Type u_2} {A : Type u_3} [inst : CommSemiring R] [inst_1 : AddCommMonoid A] [inst_2 : Module R A]\n  [inst_3 : Module (MvPolynomial σ R) A] [IsScalarTower R (MvPolynomial σ R) A] (D : MvPolynomial σ R →ₗ[R] A),\n  D 1 = 0 →\n    ((∀ (p q : MvPolynomial σ R), D (p * q) = p • D q + q • D p) ↔\n      ∀ (s : σ →₀ ℕ) (i : σ),\n        D ((MvPolynomial.monomial s) 1 * MvPolynomial.X i) =\n          (MvPolynomial.monomial s) 1 • D (MvPolynomial.X i) + MvPolynomial.X i • D ((MvPolynom..."
+            },
+            {
+              "name": "MvPolynomial.mkDerivation",
+              "module_name": "Mathlib.Algebra.MvPolynomial.Derivation",
+              "kind": "definition",
+              "type": "{σ : Type u_1} →\n  (R : Type u_2) →\n    {A : Type u_3} →\n      [inst : CommSemiring R] →\n        [inst_1 : AddCommMonoid A] →\n          [inst_2 : Module R A] →\n            [inst_3 : Module (MvPolynomial σ R) A] →\n              [IsScalarTower R (MvPolynomial σ R) A] → (σ → A) → Derivation R (MvPolynomial σ R) A"
+            },
+            {
+              "name": "MvPolynomial.pderiv",
+              "module_name": "Mathlib.Algebra.MvPolynomial.PDeriv",
+              "kind": "definition",
+              "type": "{R : Type u} → {σ : Type v} → [inst : CommSemiring R] → σ → Derivation R (MvPolynomial σ R) (MvPolynomial σ R)"
+            },
+            {
+              "name": "Polynomial.derivative'",
+              "module_name": "Mathlib.Algebra.Polynomial.Derivation",
+              "kind": "definition",
+              "type": "{R : Type u_1} → [inst : CommSemiring R] → Derivation R (Polynomial R) (Polynomial R)"
+            }
+          ]
+        },
+        "isError": false
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.aeval_sumElim_pderiv_inl\",\n      \"type\": \" {R : Type u} {σ : Type v} [CommSemiring R] {S : Type u_1} {τ : Type u_2} [CommRing S] [Algebra R S] (p : MvPolynomial (σ ⊕ τ) R) (f : τ → S) (j : σ) : (MvPolynomial.aeval (Sum.elim MvPolynomial.X (⇑MvPolynomial.C ∘ f))) ((MvPolynomial.pderiv (Sum.inl j)) p) = (MvPolynomial.pderiv j) ((MvPolynomial.aeval (Sum.elim MvPolynomial.X (⇑MvPolynomial.C ∘ f))) p)\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.PDeriv\"\n    },\n    {\n      \"name\": \"Algebra.Generators.cotangentRestrict_mk\",\n      \"type\": \" {R : Type u} {S : Type v} [CommRing R] [CommRing S] [Algebra R S] {ι : Type w} (P : Algebra.Generators R S ι) {σ : Type u_1} {u : σ → ι} (hu : Function.Injective u) (x : ↥P.ker) : ⇑((P.cotangentRestrict hu) (Algebra.Extension.Cotangent.mk x)) = fun j => (MvPolynomial.aeval P.val) ((MvPolynomial.pderiv (u j)) ↑x)\",\n      \"module\": \"Mathlib.RingTheory.Extension.Cotangent.Basic\"\n    },\n    {\n      \"name\": \"Algebra.Generators.cotangentSpaceBasis_repr_tmul\",\n      \"type\": \" {R : Type u} {S : Type v} [CommRing R] [CommRing S] [Algebra R S] {ι : Type w} (P : Algebra.Generators R S ι) (r : S) (x : P.Ring) (i : ι) : (P.cotangentSpaceBasis.repr (r ⊗ₜ[P.Ring] (KaehlerDifferential.D R P.Ring) x)) i = r * (MvPolynomial.aeval P.val) ((MvPolynomial.pderiv i) x)\",\n      \"module\": \"Mathlib.RingTheory.Extension.Cotangent.Basic\"\n    },\n    {\n      \"name\": \"Algebra.Generators.cotangentSpaceBasis_repr_one_tmul\",\n      \"type\": \" {R : Type u} {S : Type v} [CommRing R] [CommRing S] [Algebra R S] {ι : Type w} (P : Algebra.Generators R S ι) (x : P.toExtension.Ring) (i : ι) : (P.cotangentSpaceBasis.repr (1 ⊗ₜ[P.toExtension.Ring] (KaehlerDifferential.D R P.toExtension.Ring) x)) i = (MvPolynomial.aeval P.val) ((MvPolynomial.pderiv i) x)\",\n      \"module\": \"Mathlib.RingTheory.Extension.Cotangent.Basic\"\n    },\n    {\n      \"name\": \"Algebra.Generators.repr_CotangentSpaceMap\",\n      \"type\": \" {R : Type u} {S : Type v} [CommRing R] [CommRing S] [Algebra R S] {ι : Type w} {P : Algebra.Generators R S ι} {R' : Type u'} {S' : Type v'} {ι' : Type w'} [CommRing R'] [CommRing S'] [Algebra R' S'] {P' : Algebra.Generators R' S' ι'} [Algebra R R'] [Algebra S S'] [Algebra R S'] [IsScalarTower R R' S'] [IsScalarTower R S S'] (f : P.Hom P') (i : ι) (j : ι') : (P'.cotangentSpaceBasis.repr ((Algebra.Extension.CotangentSpace.map f.toExtensionHom) (P.cotangentSpaceBasis i))) j = (MvPolynomial.aeval P'.val) ((MvPolynomial.pderiv j) (f.val i))\",\n      \"module\": \"Mathlib.RingTheory.Extension.Cotangent.Basic\"\n    },\n    {\n      \"name\": \"Algebra.SubmersivePresentation.linearIndependent_aeval_val_pderiv_relation\",\n      \"type\": \" {R : Type u} {S : Type v} {ι : Type w} {σ : Type t} [CommRing R] [CommRing S] [Algebra R S] [Finite σ] (P : Algebra.SubmersivePresentation R S ι σ) : LinearIndependent S fun i j => (MvPolynomial.aeval P.val) ((MvPolynomial.pderiv (P.map j)) (P.relation i))\",\n      \"module\": \"Mathlib.RingTheory.Extension.Presentation.Submersive\"\n    },\n    {\n      \"name\": \"Algebra.SubmersivePresentation.basisDeriv_apply\",\n      \"type\": \" {R : Type u} {S : Type v} {ι : Type w} {σ : Type t} [CommRing R] [CommRing S] [Algebra R S] [Finite σ] (P : Algebra.SubmersivePresentation R S ι σ) (i j : σ) : P.basisDeriv i j = (MvPolynomial.aeval P.val) ((MvPolynomial.pderiv (P.map j)) (P.relation i))\",\n      \"module\": \"Mathlib.RingTheory.Extension.Presentation.Submersive\"\n    },\n    {\n      \"name\": \"Algebra.PreSubmersivePresentation.aevalDifferential_single\",\n      \"type\": \" {R : Type u} {S : Type v} {ι : Type w} {σ : Type t} [CommRing R] [CommRing S] [Algebra R S] (P : Algebra.PreSubmersivePresentation R S ι σ) [Finite σ] [DecidableEq σ] (i j : σ) : P.aevalDifferential (Pi.single i 1) j = (MvPolynomial.aeval P.val) ((MvPolynomial.pderiv (P.map j)) (P.relation i))\",\n      \"module\": \"Mathlib.RingTheory.Extension.Presentation.Submersive\"\n    },\n    {\n      \"name\": \"Algebra.PreSubmersivePresentation.isUnit_jacobian_of_linearIndependent_of_span_eq_top\",\n      \"type\": \" {R : Type u} {S : Type v} {ι : Type w} {σ : Type t} [CommRing R] [CommRing S] [Algebra R S] (P : Algebra.PreSubmersivePresentation R S ι σ) [Finite σ] (hli : LinearIndependent S fun j i => (MvPolynomial.aeval P.val) ((MvPolynomial.pderiv (P.map i)) (P.relation j))) (hsp : Submodule.span S (Set.range fun j i => (MvPolynomial.aeval P.val) ((MvPolynomial.pderiv (P.map i)) (P.relation j))) = ⊤) : IsUnit P.jacobian\",\n      \"module\": \"Mathlib.RingTheory.Extension.Presentation.Submersive\"\n    },\n    {\n      \"name\": \"Algebra.PreSubmersivePresentation.cotangentComplexAux_apply\",\n      \"type\": \" {R : Type u_1} {S : Type u_2} {ι : Type u_3} {σ : Type u_4} [CommRing R] [CommRing S] [Algebra R S] [Finite σ] (P : Algebra.PreSubmersivePresentation R S ι σ) (x : ↥P.ker) (i : σ) : P.cotangentComplexAux (Algebra.Extension.Cotangent.mk x) i = (MvPolynomial.aeval P.val) ((MvPolynomial.pderiv (P.map i)) ↑x)\",\n      \"module\": \"Mathlib.RingTheory.Smooth.StandardSmoothCotangent\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "MvPolynomial.aeval_sumElim_pderiv_inl",
+              "type": " {R : Type u} {σ : Type v} [CommSemiring R] {S : Type u_1} {τ : Type u_2} [CommRing S] [Algebra R S] (p : MvPolynomial (σ ⊕ τ) R) (f : τ → S) (j : σ) : (MvPolynomial.aeval (Sum.elim MvPolynomial.X (⇑MvPolynomial.C ∘ f))) ((MvPolynomial.pderiv (Sum.inl j)) p) = (MvPolynomial.pderiv j) ((MvPolynomial.aeval (Sum.elim MvPolynomial.X (⇑MvPolynomial.C ∘ f))) p)",
+              "module": "Mathlib.Algebra.MvPolynomial.PDeriv"
+            },
+            {
+              "name": "Algebra.Generators.cotangentRestrict_mk",
+              "type": " {R : Type u} {S : Type v} [CommRing R] [CommRing S] [Algebra R S] {ι : Type w} (P : Algebra.Generators R S ι) {σ : Type u_1} {u : σ → ι} (hu : Function.Injective u) (x : ↥P.ker) : ⇑((P.cotangentRestrict hu) (Algebra.Extension.Cotangent.mk x)) = fun j => (MvPolynomial.aeval P.val) ((MvPolynomial.pderiv (u j)) ↑x)",
+              "module": "Mathlib.RingTheory.Extension.Cotangent.Basic"
+            },
+            {
+              "name": "Algebra.Generators.cotangentSpaceBasis_repr_tmul",
+              "type": " {R : Type u} {S : Type v} [CommRing R] [CommRing S] [Algebra R S] {ι : Type w} (P : Algebra.Generators R S ι) (r : S) (x : P.Ring) (i : ι) : (P.cotangentSpaceBasis.repr (r ⊗ₜ[P.Ring] (KaehlerDifferential.D R P.Ring) x)) i = r * (MvPolynomial.aeval P.val) ((MvPolynomial.pderiv i) x)",
+              "module": "Mathlib.RingTheory.Extension.Cotangent.Basic"
+            },
+            {
+              "name": "Algebra.Generators.cotangentSpaceBasis_repr_one_tmul",
+              "type": " {R : Type u} {S : Type v} [CommRing R] [CommRing S] [Algebra R S] {ι : Type w} (P : Algebra.Generators R S ι) (x : P.toExtension.Ring) (i : ι) : (P.cotangentSpaceBasis.repr (1 ⊗ₜ[P.toExtension.Ring] (KaehlerDifferential.D R P.toExtension.Ring) x)) i = (MvPolynomial.aeval P.val) ((MvPolynomial.pderiv i) x)",
+              "module": "Mathlib.RingTheory.Extension.Cotangent.Basic"
+            },
+            {
+              "name": "Algebra.Generators.repr_CotangentSpaceMap",
+              "type": " {R : Type u} {S : Type v} [CommRing R] [CommRing S] [Algebra R S] {ι : Type w} {P : Algebra.Generators R S ι} {R' : Type u'} {S' : Type v'} {ι' : Type w'} [CommRing R'] [CommRing S'] [Algebra R' S'] {P' : Algebra.Generators R' S' ι'} [Algebra R R'] [Algebra S S'] [Algebra R S'] [IsScalarTower R R' S'] [IsScalarTower R S S'] (f : P.Hom P') (i : ι) (j : ι') : (P'.cotangentSpaceBasis.repr ((Algebra.Extension.CotangentSpace.map f.toExtensionHom) (P.cotangentSpaceBasis i))) j = (MvPolynomial.aeval P'.val) ((MvPolynomial.pderiv j) (f.val i))",
+              "module": "Mathlib.RingTheory.Extension.Cotangent.Basic"
+            },
+            {
+              "name": "Algebra.SubmersivePresentation.linearIndependent_aeval_val_pderiv_relation",
+              "type": " {R : Type u} {S : Type v} {ι : Type w} {σ : Type t} [CommRing R] [CommRing S] [Algebra R S] [Finite σ] (P : Algebra.SubmersivePresentation R S ι σ) : LinearIndependent S fun i j => (MvPolynomial.aeval P.val) ((MvPolynomial.pderiv (P.map j)) (P.relation i))",
+              "module": "Mathlib.RingTheory.Extension.Presentation.Submersive"
+            },
+            {
+              "name": "Algebra.SubmersivePresentation.basisDeriv_apply",
+              "type": " {R : Type u} {S : Type v} {ι : Type w} {σ : Type t} [CommRing R] [CommRing S] [Algebra R S] [Finite σ] (P : Algebra.SubmersivePresentation R S ι σ) (i j : σ) : P.basisDeriv i j = (MvPolynomial.aeval P.val) ((MvPolynomial.pderiv (P.map j)) (P.relation i))",
+              "module": "Mathlib.RingTheory.Extension.Presentation.Submersive"
+            },
+            {
+              "name": "Algebra.PreSubmersivePresentation.aevalDifferential_single",
+              "type": " {R : Type u} {S : Type v} {ι : Type w} {σ : Type t} [CommRing R] [CommRing S] [Algebra R S] (P : Algebra.PreSubmersivePresentation R S ι σ) [Finite σ] [DecidableEq σ] (i j : σ) : P.aevalDifferential (Pi.single i 1) j = (MvPolynomial.aeval P.val) ((MvPolynomial.pderiv (P.map j)) (P.relation i))",
+              "module": "Mathlib.RingTheory.Extension.Presentation.Submersive"
+            },
+            {
+              "name": "Algebra.PreSubmersivePresentation.isUnit_jacobian_of_linearIndependent_of_span_eq_top",
+              "type": " {R : Type u} {S : Type v} {ι : Type w} {σ : Type t} [CommRing R] [CommRing S] [Algebra R S] (P : Algebra.PreSubmersivePresentation R S ι σ) [Finite σ] (hli : LinearIndependent S fun j i => (MvPolynomial.aeval P.val) ((MvPolynomial.pderiv (P.map i)) (P.relation j))) (hsp : Submodule.span S (Set.range fun j i => (MvPolynomial.aeval P.val) ((MvPolynomial.pderiv (P.map i)) (P.relation j))) = ⊤) : IsUnit P.jacobian",
+              "module": "Mathlib.RingTheory.Extension.Presentation.Submersive"
+            },
+            {
+              "name": "Algebra.PreSubmersivePresentation.cotangentComplexAux_apply",
+              "type": " {R : Type u_1} {S : Type u_2} {ι : Type u_3} {σ : Type u_4} [CommRing R] [CommRing S] [Algebra R S] [Finite σ] (P : Algebra.PreSubmersivePresentation R S ι σ) (x : ↥P.ker) (i : σ) : P.cotangentComplexAux (Algebra.Extension.Cotangent.mk x) i = (MvPolynomial.aeval P.val) ((MvPolynomial.pderiv (P.map i)) ↑x)",
+              "module": "Mathlib.RingTheory.Smooth.StandardSmoothCotangent"
+            }
+          ]
+        },
+        "isError": false
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.pderiv\",\n      \"kind\": \"def\",\n      \"file\": \".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv/evidence/pderiv-excerpt.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.IsHomogeneous.pderiv\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/MvPolynomial/EulerIdentity.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.IsWeightedHomogeneous.pderiv\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/MvPolynomial/EulerIdentity.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.pderiv\",\n      \"kind\": \"def\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/PDeriv.lean\"\n    },\n    {\n      \"name\": \"MvPowerSeries.pderiv\",\n      \"kind\": \"def\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Derivative.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.pderiv_def\",\n      \"kind\": \"theorem\",\n      \"file\": \".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv/evidence/pderiv-excerpt.lean\"\n    },\n    {\n      \"name\": \"pderiv_rename\",\n      \"kind\": \"lemma\",\n      \"file\": \".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_rename/mathlib-pderiv-excerpt.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.pderiv_monomial\",\n      \"kind\": \"theorem\",\n      \"file\": \".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv/evidence/pderiv-excerpt.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.pderiv_hasseDeriv\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/HasseDeriv.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.pderiv_C\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/PDeriv.lean\"\n    },\n    {\n      \"name\": \"MvPowerSeries.pderiv_C\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Derivative.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.pderiv_X\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/PDeriv.lean\"\n    },\n    {\n      \"name\": \"MvPowerSeries.pderiv_X\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Derivative.lean\"\n    },\n    {\n      \"name\": \"MvPowerSeries.pderivFun\",\n      \"kind\": \"def\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Derivative.lean\"\n    },\n    {\n      \"name\": \"MvPowerSeries.pderiv_coe\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Derivative.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.pderiv_def\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/PDeriv.lean\"\n    },\n    {\n      \"name\": \"MvPowerSeries.pderiv_inv\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Derivative.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.pderiv_map\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/PDeriv.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.pderiv_mul\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/PDeriv.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.pderiv_one\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/PDeriv.lean\"\n    },\n    {\n      \"name\": \"MvPowerSeries.pderiv_one\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Derivative.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.pderiv_pow\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/PDeriv.lean\"\n    },\n    {\n      \"name\": \"MvPowerSeries.pderiv_pow\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Derivative.lean\"\n    },\n    {\n      \"name\": \"MvPowerSeries.pderivFun_C\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Derivative.lean\"\n    },\n    {\n      \"name\": \"MvPowerSeries.pderiv_inv'\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Derivative.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.pderiv_C_mul\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/PDeriv.lean\"\n    },\n    {\n      \"name\": \"MvPowerSeries.pderiv_invOf\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Derivative.lean\"\n    },\n    {\n      \"name\": \"MvPowerSeries.pderivFun_add\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Derivative.lean\"\n    },\n    {\n      \"name\": \"MvPowerSeries.pderivFun_coe\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Derivative.lean\"\n    },\n    {\n      \"name\": \"MvPowerSeries.pderivFun_mul\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Derivative.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "MvPolynomial.pderiv",
+              "kind": "def",
+              "file": ".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv/evidence/pderiv-excerpt.lean"
+            },
+            {
+              "name": "MvPolynomial.IsHomogeneous.pderiv",
+              "kind": "lemma",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/MvPolynomial/EulerIdentity.lean"
+            },
+            {
+              "name": "MvPolynomial.IsWeightedHomogeneous.pderiv",
+              "kind": "lemma",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/MvPolynomial/EulerIdentity.lean"
+            },
+            {
+              "name": "MvPolynomial.pderiv",
+              "kind": "def",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/PDeriv.lean"
+            },
+            {
+              "name": "MvPowerSeries.pderiv",
+              "kind": "def",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Derivative.lean"
+            },
+            {
+              "name": "MvPolynomial.pderiv_def",
+              "kind": "theorem",
+              "file": ".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv/evidence/pderiv-excerpt.lean"
+            },
+            {
+              "name": "pderiv_rename",
+              "kind": "lemma",
+              "file": ".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_rename/mathlib-pderiv-excerpt.lean"
+            },
+            {
+              "name": "MvPolynomial.pderiv_monomial",
+              "kind": "theorem",
+              "file": ".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv/evidence/pderiv-excerpt.lean"
+            },
+            {
+              "name": "MvPolynomial.pderiv_hasseDeriv",
+              "kind": "theorem",
+              "file": "Roth/HasseDeriv.lean"
+            },
+            {
+              "name": "MvPolynomial.pderiv_C",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/PDeriv.lean"
+            },
+            {
+              "name": "MvPowerSeries.pderiv_C",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Derivative.lean"
+            },
+            {
+              "name": "MvPolynomial.pderiv_X",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/PDeriv.lean"
+            },
+            {
+              "name": "MvPowerSeries.pderiv_X",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Derivative.lean"
+            },
+            {
+              "name": "MvPowerSeries.pderivFun",
+              "kind": "def",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Derivative.lean"
+            },
+            {
+              "name": "MvPowerSeries.pderiv_coe",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Derivative.lean"
+            },
+            {
+              "name": "MvPolynomial.pderiv_def",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/PDeriv.lean"
+            },
+            {
+              "name": "MvPowerSeries.pderiv_inv",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Derivative.lean"
+            },
+            {
+              "name": "MvPolynomial.pderiv_map",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/PDeriv.lean"
+            },
+            {
+              "name": "MvPolynomial.pderiv_mul",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/PDeriv.lean"
+            },
+            {
+              "name": "MvPolynomial.pderiv_one",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/PDeriv.lean"
+            },
+            {
+              "name": "MvPowerSeries.pderiv_one",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Derivative.lean"
+            },
+            {
+              "name": "MvPolynomial.pderiv_pow",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/PDeriv.lean"
+            },
+            {
+              "name": "MvPowerSeries.pderiv_pow",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Derivative.lean"
+            },
+            {
+              "name": "MvPowerSeries.pderivFun_C",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Derivative.lean"
+            },
+            {
+              "name": "MvPowerSeries.pderiv_inv'",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Derivative.lean"
+            },
+            {
+              "name": "MvPolynomial.pderiv_C_mul",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/PDeriv.lean"
+            },
+            {
+              "name": "MvPowerSeries.pderiv_invOf",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Derivative.lean"
+            },
+            {
+              "name": "MvPowerSeries.pderivFun_add",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Derivative.lean"
+            },
+            {
+              "name": "MvPowerSeries.pderivFun_coe",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Derivative.lean"
+            },
+            {
+              "name": "MvPowerSeries.pderivFun_mul",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Derivative.lean"
+            }
+          ],
+          "index": "unavailable"
+        },
+        "isError": false
+      }
+    }
+  ],
+  "abstract": [
+    {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"MvPolynomial.mkDerivation_monomial\",\n      \"informal_name\": \"Derivation of Monomials in Multivariate Polynomial Ring\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} (R : Type u_2) {A : Type u_3} [inst : CommSemiring R] [inst_1 : AddCommMonoid A] [inst_2 : Module R A]\\n  [inst_3 : Module (MvPolynomial σ R) A] [inst_4 : IsScalarTower R (MvPolynomial σ R) A] (f : σ → A) (s : σ →₀ ℕ)\\n  (r : R),\\n  (MvPolynomial.mkDerivation R f) ((MvPolynomial.monomial s) r) =\\n    r • s.sum fun i k => (MvPolynomial.monomial (s - Finsupp.single i 1)) ↑k • f i\",\n      \"informal_description\": \"For a commutative semiring $ R $, type $ \\\\sigma $, $ R $-module $ A $, and function $ f : \\\\sigma \\\\to A $, the derivation $ D_f $ applied to the monomial $ r \\\\cdot \\\\mathbf{X}^s $ (where $ s : \\\\sigma \\\\to_0 \\\\mathbb{N} $ and $ r \\\\in R $) yields $ r \\\\cdot \\\\sum_{i \\\\in \\\\text{supp}(s)} \\\\mathbf{X}^{s - \\\\mathbf{e}_i} \\\\cdot f(i) $. Here, $ \\\\mathbf{e}_i $ denotes the basis vector with 1 at position $ i $, and $ \\\\mathbf{X}^{s - \\\\mathbf{e}_i} $ represents the monomial obtained by reducing the exponent of variable $ i $ by 1.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Derivation\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.mkDerivationₗ_monomial\",\n      \"informal_name\": \"Derivation on Multivariate Polynomial Monomials Induced by Function f\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_2} {A : Type u_3} [inst : CommSemiring R] [inst_1 : AddCommMonoid A] [inst_2 : Module R A]\\n  [inst_3 : Module (MvPolynomial σ R) A] (f : σ → A) (s : σ →₀ ℕ) (r : R),\\n  (MvPolynomial.mkDerivationₗ R f) ((MvPolynomial.monomial s) r) =\\n    r • s.sum fun i k => (MvPolynomial.monomial (s - Finsupp.single i 1)) ↑k • f i\",\n      \"informal_description\": \"For a commutative semiring $ R $, a type $ \\\\sigma $ of variables, and a function $ f : \\\\sigma \\\\to A $, the derivation $ D $ induced by $ f $ acts on the monomial $ r \\\\cdot X^s $ (where $ s : \\\\sigma \\\\to_0 \\\\mathbb{N} $ and $ r \\\\in R $) by producing the sum $ \\\\sum_{i \\\\in \\\\text{supp}(s)} r \\\\cdot f(i) \\\\cdot X^{s - \\\\mathbf{e}_i} $, where $ \\\\mathbf{e}_i $ denotes the unit vector at $ i $. This satisfies the Leibniz rule for derivations.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Derivation\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.mkDerivation\",\n      \"informal_name\": \"Derivation on Multivariate Polynomials Induced by a Function\",\n      \"kind\": \"definition\",\n      \"type\": \"{σ : Type u_1} →\\n  (R : Type u_2) →\\n    {A : Type u_3} →\\n      [inst : CommSemiring R] →\\n        [inst_1 : AddCommMonoid A] →\\n          [inst_2 : Module R A] →\\n            [inst_3 : Module (MvPolynomial σ R) A] →\\n              [IsScalarTower R (MvPolynomial σ R) A] → (σ → A) → Derivation R (MvPolynomial σ R) A\",\n      \"informal_description\": \"For a commutative semiring $ R $, type $ \\\\sigma $, $ R $-module $ A $, and function $ f : \\\\sigma \\\\to A $, this constructs a derivation $ D_f $ on the multivariate polynomial ring $ R[\\\\sigma] $ defined by $ D_f(p) = \\\\sum_{x \\\\in \\\\sigma} f(x) \\\\cdot \\\\frac{\\\\partial p}{\\\\partial x} $, where $ \\\\frac{\\\\partial p}{\\\\partial x} $ denotes the formal partial derivative reducing the exponent of $ x $ by one. The derivation satisfies $ D_f(1) = 0 $ and the Leibniz rule $ D_f(pq) = p D_f(q) + D_f(p) q $ for all $ p, q \\\\in R[\\\\sigma] $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Derivation\"\n    },\n    {\n      \"formal_name\": \"Derivation.apply_eval_eq\",\n      \"informal_name\": \"Coefficient-wise Derivation on Polynomial Modules\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {A : Type u_2} {M : Type u_3} [inst : CommRing R] [inst_1 : CommRing A] [inst_2 : Algebra R A]\\n  [inst_3 : AddCommGroup M] [inst_4 : Module A M] [inst_5 : Module R M] (d : Derivation R A M) (x : A)\\n  (p : Polynomial A),\\n  d (Polynomial.eval x p) =\\n    (PolynomialModule.eval x) (d.mapCoeffs p) + Polynomial.eval x (Polynomial.derivative p) • d x\",\n      \"informal_description\": \"Given a commutative semiring $ R $, an $ R $-algebra $ A $, and an $ R $-module $ M $, any derivation $ d: A \\to M $ extends to a derivation from $ R $ to the polynomial ring $ A[X] $ with values in the polynomial module $ R[x] $ (represented as finite support functions $ \\\\mathbb{N} \\to_0 M $). This extension acts coefficient-wise by applying $ d $ to each coefficient of a polynomial, preserving the module structure and satisfying the Leibniz rule through pointwise operations on polynomial coefficients.\",\n      \"path\": \"Mathlib.RingTheory.Derivation.MapCoeffs\"\n    },\n    {\n      \"formal_name\": \"Derivation.apply_aeval_eq\",\n      \"informal_name\": \"Coefficient-wise Derivation on Polynomial Module\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {A : Type u_2} [inst : CommRing R] [inst_1 : CommRing A] [inst_2 : Algebra R A] {B : Type u_4}\\n  {M' : Type u_5} [inst_3 : CommRing B] [inst_4 : Algebra R B] [inst_5 : Algebra A B] [inst_6 : AddCommGroup M']\\n  [inst_7 : Module B M'] [inst_8 : Module R M'] [inst_9 : Module A M'] [inst_10 : IsScalarTower R A B]\\n  [inst_11 : IsScalarTower A B M'] (d : Derivation R B M') (x : B) (p : Polynomial A),\\n  d ((Polynomial.aeval x) p) =\\n    (PolynomialModule.eval x) ((Derivation.compAlge...\",\n      \"informal_description\": \"Given a derivation $ d : A \\to M $ over a commutative semiring $ R $, there exists a derivation from $ R $ to the polynomial ring $ A[X] $ with values in the polynomial module $ M $, defined by applying $ d $ coefficient-wise to each polynomial. This derivation acts on polynomial coefficients via $ d $, preserves the $ R $-module structure, and satisfies the Leibniz rule through pointwise operations on finite-support functions $ \\\\mathbb{N} \\to_0 M $.\",\n      \"path\": \"Mathlib.RingTheory.Derivation.MapCoeffs\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.mkDerivationₗ\",\n      \"informal_name\": \"Derivation on Multivariate Polynomials Induced by a Function\",\n      \"kind\": \"definition\",\n      \"type\": \"{σ : Type u_1} →\\n  (R : Type u_2) →\\n    {A : Type u_3} →\\n      [inst : CommSemiring R] →\\n        [inst_1 : AddCommMonoid A] →\\n          [inst_2 : Module R A] → [Module (MvPolynomial σ R) A] → (σ → A) → MvPolynomial σ R →ₗ[R] A\",\n      \"informal_description\": \"The linear map that sends a multivariate polynomial to the sum over its variables of the coefficient multiplied by $ f $ evaluated at the variable, times the monomial with the exponent of that variable reduced by one. This construction defines a derivation, satisfying the Leibniz rule with respect to polynomial multiplication.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Derivation\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "formal_name": "MvPolynomial.mkDerivation_monomial",
+              "informal_name": "Derivation of Monomials in Multivariate Polynomial Ring",
+              "kind": "theorem",
+              "type": "∀ {σ : Type u_1} (R : Type u_2) {A : Type u_3} [inst : CommSemiring R] [inst_1 : AddCommMonoid A] [inst_2 : Module R A]\n  [inst_3 : Module (MvPolynomial σ R) A] [inst_4 : IsScalarTower R (MvPolynomial σ R) A] (f : σ → A) (s : σ →₀ ℕ)\n  (r : R),\n  (MvPolynomial.mkDerivation R f) ((MvPolynomial.monomial s) r) =\n    r • s.sum fun i k => (MvPolynomial.monomial (s - Finsupp.single i 1)) ↑k • f i",
+              "informal_description": "For a commutative semiring $ R $, type $ \\sigma $, $ R $-module $ A $, and function $ f : \\sigma \\to A $, the derivation $ D_f $ applied to the monomial $ r \\cdot \\mathbf{X}^s $ (where $ s : \\sigma \\to_0 \\mathbb{N} $ and $ r \\in R $) yields $ r \\cdot \\sum_{i \\in \\text{supp}(s)} \\mathbf{X}^{s - \\mathbf{e}_i} \\cdot f(i) $. Here, $ \\mathbf{e}_i $ denotes the basis vector with 1 at position $ i $, and $ \\mathbf{X}^{s - \\mathbf{e}_i} $ represents the monomial obtained by reducing the exponent of variable $ i $ by 1.",
+              "path": "Mathlib.Algebra.MvPolynomial.Derivation"
+            },
+            {
+              "formal_name": "MvPolynomial.mkDerivationₗ_monomial",
+              "informal_name": "Derivation on Multivariate Polynomial Monomials Induced by Function f",
+              "kind": "theorem",
+              "type": "∀ {σ : Type u_1} {R : Type u_2} {A : Type u_3} [inst : CommSemiring R] [inst_1 : AddCommMonoid A] [inst_2 : Module R A]\n  [inst_3 : Module (MvPolynomial σ R) A] (f : σ → A) (s : σ →₀ ℕ) (r : R),\n  (MvPolynomial.mkDerivationₗ R f) ((MvPolynomial.monomial s) r) =\n    r • s.sum fun i k => (MvPolynomial.monomial (s - Finsupp.single i 1)) ↑k • f i",
+              "informal_description": "For a commutative semiring $ R $, a type $ \\sigma $ of variables, and a function $ f : \\sigma \\to A $, the derivation $ D $ induced by $ f $ acts on the monomial $ r \\cdot X^s $ (where $ s : \\sigma \\to_0 \\mathbb{N} $ and $ r \\in R $) by producing the sum $ \\sum_{i \\in \\text{supp}(s)} r \\cdot f(i) \\cdot X^{s - \\mathbf{e}_i} $, where $ \\mathbf{e}_i $ denotes the unit vector at $ i $. This satisfies the Leibniz rule for derivations.",
+              "path": "Mathlib.Algebra.MvPolynomial.Derivation"
+            },
+            {
+              "formal_name": "MvPolynomial.mkDerivation",
+              "informal_name": "Derivation on Multivariate Polynomials Induced by a Function",
+              "kind": "definition",
+              "type": "{σ : Type u_1} →\n  (R : Type u_2) →\n    {A : Type u_3} →\n      [inst : CommSemiring R] →\n        [inst_1 : AddCommMonoid A] →\n          [inst_2 : Module R A] →\n            [inst_3 : Module (MvPolynomial σ R) A] →\n              [IsScalarTower R (MvPolynomial σ R) A] → (σ → A) → Derivation R (MvPolynomial σ R) A",
+              "informal_description": "For a commutative semiring $ R $, type $ \\sigma $, $ R $-module $ A $, and function $ f : \\sigma \\to A $, this constructs a derivation $ D_f $ on the multivariate polynomial ring $ R[\\sigma] $ defined by $ D_f(p) = \\sum_{x \\in \\sigma} f(x) \\cdot \\frac{\\partial p}{\\partial x} $, where $ \\frac{\\partial p}{\\partial x} $ denotes the formal partial derivative reducing the exponent of $ x $ by one. The derivation satisfies $ D_f(1) = 0 $ and the Leibniz rule $ D_f(pq) = p D_f(q) + D_f(p) q $ for all $ p, q \\in R[\\sigma] $.",
+              "path": "Mathlib.Algebra.MvPolynomial.Derivation"
+            },
+            {
+              "formal_name": "Derivation.apply_eval_eq",
+              "informal_name": "Coefficient-wise Derivation on Polynomial Modules",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} {A : Type u_2} {M : Type u_3} [inst : CommRing R] [inst_1 : CommRing A] [inst_2 : Algebra R A]\n  [inst_3 : AddCommGroup M] [inst_4 : Module A M] [inst_5 : Module R M] (d : Derivation R A M) (x : A)\n  (p : Polynomial A),\n  d (Polynomial.eval x p) =\n    (PolynomialModule.eval x) (d.mapCoeffs p) + Polynomial.eval x (Polynomial.derivative p) • d x",
+              "informal_description": "Given a commutative semiring $ R $, an $ R $-algebra $ A $, and an $ R $-module $ M $, any derivation $ d: A \to M $ extends to a derivation from $ R $ to the polynomial ring $ A[X] $ with values in the polynomial module $ R[x] $ (represented as finite support functions $ \\mathbb{N} \to_0 M $). This extension acts coefficient-wise by applying $ d $ to each coefficient of a polynomial, preserving the module structure and satisfying the Leibniz rule through pointwise operations on polynomial coefficients.",
+              "path": "Mathlib.RingTheory.Derivation.MapCoeffs"
+            },
+            {
+              "formal_name": "Derivation.apply_aeval_eq",
+              "informal_name": "Coefficient-wise Derivation on Polynomial Module",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} {A : Type u_2} [inst : CommRing R] [inst_1 : CommRing A] [inst_2 : Algebra R A] {B : Type u_4}\n  {M' : Type u_5} [inst_3 : CommRing B] [inst_4 : Algebra R B] [inst_5 : Algebra A B] [inst_6 : AddCommGroup M']\n  [inst_7 : Module B M'] [inst_8 : Module R M'] [inst_9 : Module A M'] [inst_10 : IsScalarTower R A B]\n  [inst_11 : IsScalarTower A B M'] (d : Derivation R B M') (x : B) (p : Polynomial A),\n  d ((Polynomial.aeval x) p) =\n    (PolynomialModule.eval x) ((Derivation.compAlge...",
+              "informal_description": "Given a derivation $ d : A \to M $ over a commutative semiring $ R $, there exists a derivation from $ R $ to the polynomial ring $ A[X] $ with values in the polynomial module $ M $, defined by applying $ d $ coefficient-wise to each polynomial. This derivation acts on polynomial coefficients via $ d $, preserves the $ R $-module structure, and satisfies the Leibniz rule through pointwise operations on finite-support functions $ \\mathbb{N} \to_0 M $.",
+              "path": "Mathlib.RingTheory.Derivation.MapCoeffs"
+            },
+            {
+              "formal_name": "MvPolynomial.mkDerivationₗ",
+              "informal_name": "Derivation on Multivariate Polynomials Induced by a Function",
+              "kind": "definition",
+              "type": "{σ : Type u_1} →\n  (R : Type u_2) →\n    {A : Type u_3} →\n      [inst : CommSemiring R] →\n        [inst_1 : AddCommMonoid A] →\n          [inst_2 : Module R A] → [Module (MvPolynomial σ R) A] → (σ → A) → MvPolynomial σ R →ₗ[R] A",
+              "informal_description": "The linear map that sends a multivariate polynomial to the sum over its variables of the coefficient multiplied by $ f $ evaluated at the variable, times the monomial with the exponent of that variable reduced by one. This construction defines a derivation, satisfying the Leibniz rule with respect to polynomial multiplication.",
+              "path": "Mathlib.Algebra.MvPolynomial.Derivation"
+            }
+          ]
+        },
+        "isError": false
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.mkDerivation\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Derivation\",\n      \"kind\": \"definition\",\n      \"type\": \"{σ : Type u_1} →\\n  (R : Type u_2) →\\n    {A : Type u_3} →\\n      [inst : CommSemiring R] →\\n        [inst_1 : AddCommMonoid A] →\\n          [inst_2 : Module R A] →\\n            [inst_3 : Module (MvPolynomial σ R) A] →\\n              [IsScalarTower R (MvPolynomial σ R) A] → (σ → A) → Derivation R (MvPolynomial σ R) A\"\n    },\n    {\n      \"name\": \"MvPolynomial.mkDerivationₗ\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Derivation\",\n      \"kind\": \"definition\",\n      \"type\": \"{σ : Type u_1} →\\n  (R : Type u_2) →\\n    {A : Type u_3} →\\n      [inst : CommSemiring R] →\\n        [inst_1 : AddCommMonoid A] →\\n          [inst_2 : Module R A] → [Module (MvPolynomial σ R) A] → (σ → A) → MvPolynomial σ R →ₗ[R] A\"\n    },\n    {\n      \"name\": \"Polynomial.fderiv\",\n      \"module_name\": \"Mathlib.Analysis.Calculus.Deriv.Polynomial\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {𝕜 : Type u} [inst : NontriviallyNormedField 𝕜] {x : 𝕜} (p : Polynomial 𝕜),\\n  fderiv 𝕜 (fun x => Polynomial.eval x p) x =\\n    ContinuousLinearMap.smulRight 1 (Polynomial.eval x (Polynomial.derivative p))\"\n    },\n    {\n      \"name\": \"MvPolynomial.pderiv_sumToIter\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.PDeriv\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : CommSemiring R] {σ : Type u_1} {ι : Type u_2} (p : MvPolynomial (σ ⊕ ι) R) (i : σ),\\n  (MvPolynomial.pderiv i) ((MvPolynomial.sumToIter R σ ι) p) =\\n    (MvPolynomial.sumToIter R σ ι) ((MvPolynomial.pderiv (Sum.inl i)) p)\"\n    },\n    {\n      \"name\": \"MvPolynomial.pderiv\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.PDeriv\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} → {σ : Type v} → [inst : CommSemiring R] → σ → Derivation R (MvPolynomial σ R) (MvPolynomial σ R)\"\n    },\n    {\n      \"name\": \"Derivation.comp_aeval_eq\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Derivation\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {A : Type u_2} {M : Type u_3} [inst : CommSemiring R] [inst_1 : CommSemiring A] [inst_2 : Algebra R A]\\n  [inst_3 : AddCommMonoid M] [inst_4 : Module A M] [inst_5 : Module R M] [IsScalarTower R A M] (a : A)\\n  (d : Derivation R A M) (f : Polynomial R),\\n  d ((Polynomial.aeval a) f) = (Polynomial.aeval a) (Polynomial.derivative f) • d a\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "MvPolynomial.mkDerivation",
+              "module_name": "Mathlib.Algebra.MvPolynomial.Derivation",
+              "kind": "definition",
+              "type": "{σ : Type u_1} →\n  (R : Type u_2) →\n    {A : Type u_3} →\n      [inst : CommSemiring R] →\n        [inst_1 : AddCommMonoid A] →\n          [inst_2 : Module R A] →\n            [inst_3 : Module (MvPolynomial σ R) A] →\n              [IsScalarTower R (MvPolynomial σ R) A] → (σ → A) → Derivation R (MvPolynomial σ R) A"
+            },
+            {
+              "name": "MvPolynomial.mkDerivationₗ",
+              "module_name": "Mathlib.Algebra.MvPolynomial.Derivation",
+              "kind": "definition",
+              "type": "{σ : Type u_1} →\n  (R : Type u_2) →\n    {A : Type u_3} →\n      [inst : CommSemiring R] →\n        [inst_1 : AddCommMonoid A] →\n          [inst_2 : Module R A] → [Module (MvPolynomial σ R) A] → (σ → A) → MvPolynomial σ R →ₗ[R] A"
+            },
+            {
+              "name": "Polynomial.fderiv",
+              "module_name": "Mathlib.Analysis.Calculus.Deriv.Polynomial",
+              "kind": "theorem",
+              "type": "∀ {𝕜 : Type u} [inst : NontriviallyNormedField 𝕜] {x : 𝕜} (p : Polynomial 𝕜),\n  fderiv 𝕜 (fun x => Polynomial.eval x p) x =\n    ContinuousLinearMap.smulRight 1 (Polynomial.eval x (Polynomial.derivative p))"
+            },
+            {
+              "name": "MvPolynomial.pderiv_sumToIter",
+              "module_name": "Mathlib.Algebra.MvPolynomial.PDeriv",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} [inst : CommSemiring R] {σ : Type u_1} {ι : Type u_2} (p : MvPolynomial (σ ⊕ ι) R) (i : σ),\n  (MvPolynomial.pderiv i) ((MvPolynomial.sumToIter R σ ι) p) =\n    (MvPolynomial.sumToIter R σ ι) ((MvPolynomial.pderiv (Sum.inl i)) p)"
+            },
+            {
+              "name": "MvPolynomial.pderiv",
+              "module_name": "Mathlib.Algebra.MvPolynomial.PDeriv",
+              "kind": "definition",
+              "type": "{R : Type u} → {σ : Type v} → [inst : CommSemiring R] → σ → Derivation R (MvPolynomial σ R) (MvPolynomial σ R)"
+            },
+            {
+              "name": "Derivation.comp_aeval_eq",
+              "module_name": "Mathlib.Algebra.Polynomial.Derivation",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} {A : Type u_2} {M : Type u_3} [inst : CommSemiring R] [inst_1 : CommSemiring A] [inst_2 : Algebra R A]\n  [inst_3 : AddCommMonoid M] [inst_4 : Module A M] [inst_5 : Module R M] [IsScalarTower R A M] (a : A)\n  (d : Derivation R A M) (f : Polynomial R),\n  d ((Polynomial.aeval a) f) = (Polynomial.aeval a) (Polynomial.derivative f) • d a"
+            }
+          ]
+        },
+        "isError": false
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.aeval_sumElim_pderiv_inl\",\n      \"type\": \" {R : Type u} {σ : Type v} [CommSemiring R] {S : Type u_1} {τ : Type u_2} [CommRing S] [Algebra R S] (p : MvPolynomial (σ ⊕ τ) R) (f : τ → S) (j : σ) : (MvPolynomial.aeval (Sum.elim MvPolynomial.X (⇑MvPolynomial.C ∘ f))) ((MvPolynomial.pderiv (Sum.inl j)) p) = (MvPolynomial.pderiv j) ((MvPolynomial.aeval (Sum.elim MvPolynomial.X (⇑MvPolynomial.C ∘ f))) p)\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.PDeriv\"\n    },\n    {\n      \"name\": \"Algebra.Generators.cotangentRestrict_mk\",\n      \"type\": \" {R : Type u} {S : Type v} [CommRing R] [CommRing S] [Algebra R S] {ι : Type w} (P : Algebra.Generators R S ι) {σ : Type u_1} {u : σ → ι} (hu : Function.Injective u) (x : ↥P.ker) : ⇑((P.cotangentRestrict hu) (Algebra.Extension.Cotangent.mk x)) = fun j => (MvPolynomial.aeval P.val) ((MvPolynomial.pderiv (u j)) ↑x)\",\n      \"module\": \"Mathlib.RingTheory.Extension.Cotangent.Basic\"\n    },\n    {\n      \"name\": \"Algebra.Generators.cotangentSpaceBasis_repr_tmul\",\n      \"type\": \" {R : Type u} {S : Type v} [CommRing R] [CommRing S] [Algebra R S] {ι : Type w} (P : Algebra.Generators R S ι) (r : S) (x : P.Ring) (i : ι) : (P.cotangentSpaceBasis.repr (r ⊗ₜ[P.Ring] (KaehlerDifferential.D R P.Ring) x)) i = r * (MvPolynomial.aeval P.val) ((MvPolynomial.pderiv i) x)\",\n      \"module\": \"Mathlib.RingTheory.Extension.Cotangent.Basic\"\n    },\n    {\n      \"name\": \"Algebra.Generators.cotangentSpaceBasis_repr_one_tmul\",\n      \"type\": \" {R : Type u} {S : Type v} [CommRing R] [CommRing S] [Algebra R S] {ι : Type w} (P : Algebra.Generators R S ι) (x : P.toExtension.Ring) (i : ι) : (P.cotangentSpaceBasis.repr (1 ⊗ₜ[P.toExtension.Ring] (KaehlerDifferential.D R P.toExtension.Ring) x)) i = (MvPolynomial.aeval P.val) ((MvPolynomial.pderiv i) x)\",\n      \"module\": \"Mathlib.RingTheory.Extension.Cotangent.Basic\"\n    },\n    {\n      \"name\": \"Algebra.Generators.repr_CotangentSpaceMap\",\n      \"type\": \" {R : Type u} {S : Type v} [CommRing R] [CommRing S] [Algebra R S] {ι : Type w} {P : Algebra.Generators R S ι} {R' : Type u'} {S' : Type v'} {ι' : Type w'} [CommRing R'] [CommRing S'] [Algebra R' S'] {P' : Algebra.Generators R' S' ι'} [Algebra R R'] [Algebra S S'] [Algebra R S'] [IsScalarTower R R' S'] [IsScalarTower R S S'] (f : P.Hom P') (i : ι) (j : ι') : (P'.cotangentSpaceBasis.repr ((Algebra.Extension.CotangentSpace.map f.toExtensionHom) (P.cotangentSpaceBasis i))) j = (MvPolynomial.aeval P'.val) ((MvPolynomial.pderiv j) (f.val i))\",\n      \"module\": \"Mathlib.RingTheory.Extension.Cotangent.Basic\"\n    },\n    {\n      \"name\": \"Algebra.SubmersivePresentation.linearIndependent_aeval_val_pderiv_relation\",\n      \"type\": \" {R : Type u} {S : Type v} {ι : Type w} {σ : Type t} [CommRing R] [CommRing S] [Algebra R S] [Finite σ] (P : Algebra.SubmersivePresentation R S ι σ) : LinearIndependent S fun i j => (MvPolynomial.aeval P.val) ((MvPolynomial.pderiv (P.map j)) (P.relation i))\",\n      \"module\": \"Mathlib.RingTheory.Extension.Presentation.Submersive\"\n    },\n    {\n      \"name\": \"Algebra.SubmersivePresentation.basisDeriv_apply\",\n      \"type\": \" {R : Type u} {S : Type v} {ι : Type w} {σ : Type t} [CommRing R] [CommRing S] [Algebra R S] [Finite σ] (P : Algebra.SubmersivePresentation R S ι σ) (i j : σ) : P.basisDeriv i j = (MvPolynomial.aeval P.val) ((MvPolynomial.pderiv (P.map j)) (P.relation i))\",\n      \"module\": \"Mathlib.RingTheory.Extension.Presentation.Submersive\"\n    },\n    {\n      \"name\": \"Algebra.PreSubmersivePresentation.aevalDifferential_single\",\n      \"type\": \" {R : Type u} {S : Type v} {ι : Type w} {σ : Type t} [CommRing R] [CommRing S] [Algebra R S] (P : Algebra.PreSubmersivePresentation R S ι σ) [Finite σ] [DecidableEq σ] (i j : σ) : P.aevalDifferential (Pi.single i 1) j = (MvPolynomial.aeval P.val) ((MvPolynomial.pderiv (P.map j)) (P.relation i))\",\n      \"module\": \"Mathlib.RingTheory.Extension.Presentation.Submersive\"\n    },\n    {\n      \"name\": \"Algebra.PreSubmersivePresentation.isUnit_jacobian_of_linearIndependent_of_span_eq_top\",\n      \"type\": \" {R : Type u} {S : Type v} {ι : Type w} {σ : Type t} [CommRing R] [CommRing S] [Algebra R S] (P : Algebra.PreSubmersivePresentation R S ι σ) [Finite σ] (hli : LinearIndependent S fun j i => (MvPolynomial.aeval P.val) ((MvPolynomial.pderiv (P.map i)) (P.relation j))) (hsp : Submodule.span S (Set.range fun j i => (MvPolynomial.aeval P.val) ((MvPolynomial.pderiv (P.map i)) (P.relation j))) = ⊤) : IsUnit P.jacobian\",\n      \"module\": \"Mathlib.RingTheory.Extension.Presentation.Submersive\"\n    },\n    {\n      \"name\": \"Algebra.PreSubmersivePresentation.cotangentComplexAux_apply\",\n      \"type\": \" {R : Type u_1} {S : Type u_2} {ι : Type u_3} {σ : Type u_4} [CommRing R] [CommRing S] [Algebra R S] [Finite σ] (P : Algebra.PreSubmersivePresentation R S ι σ) (x : ↥P.ker) (i : σ) : P.cotangentComplexAux (Algebra.Extension.Cotangent.mk x) i = (MvPolynomial.aeval P.val) ((MvPolynomial.pderiv (P.map i)) ↑x)\",\n      \"module\": \"Mathlib.RingTheory.Smooth.StandardSmoothCotangent\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "MvPolynomial.aeval_sumElim_pderiv_inl",
+              "type": " {R : Type u} {σ : Type v} [CommSemiring R] {S : Type u_1} {τ : Type u_2} [CommRing S] [Algebra R S] (p : MvPolynomial (σ ⊕ τ) R) (f : τ → S) (j : σ) : (MvPolynomial.aeval (Sum.elim MvPolynomial.X (⇑MvPolynomial.C ∘ f))) ((MvPolynomial.pderiv (Sum.inl j)) p) = (MvPolynomial.pderiv j) ((MvPolynomial.aeval (Sum.elim MvPolynomial.X (⇑MvPolynomial.C ∘ f))) p)",
+              "module": "Mathlib.Algebra.MvPolynomial.PDeriv"
+            },
+            {
+              "name": "Algebra.Generators.cotangentRestrict_mk",
+              "type": " {R : Type u} {S : Type v} [CommRing R] [CommRing S] [Algebra R S] {ι : Type w} (P : Algebra.Generators R S ι) {σ : Type u_1} {u : σ → ι} (hu : Function.Injective u) (x : ↥P.ker) : ⇑((P.cotangentRestrict hu) (Algebra.Extension.Cotangent.mk x)) = fun j => (MvPolynomial.aeval P.val) ((MvPolynomial.pderiv (u j)) ↑x)",
+              "module": "Mathlib.RingTheory.Extension.Cotangent.Basic"
+            },
+            {
+              "name": "Algebra.Generators.cotangentSpaceBasis_repr_tmul",
+              "type": " {R : Type u} {S : Type v} [CommRing R] [CommRing S] [Algebra R S] {ι : Type w} (P : Algebra.Generators R S ι) (r : S) (x : P.Ring) (i : ι) : (P.cotangentSpaceBasis.repr (r ⊗ₜ[P.Ring] (KaehlerDifferential.D R P.Ring) x)) i = r * (MvPolynomial.aeval P.val) ((MvPolynomial.pderiv i) x)",
+              "module": "Mathlib.RingTheory.Extension.Cotangent.Basic"
+            },
+            {
+              "name": "Algebra.Generators.cotangentSpaceBasis_repr_one_tmul",
+              "type": " {R : Type u} {S : Type v} [CommRing R] [CommRing S] [Algebra R S] {ι : Type w} (P : Algebra.Generators R S ι) (x : P.toExtension.Ring) (i : ι) : (P.cotangentSpaceBasis.repr (1 ⊗ₜ[P.toExtension.Ring] (KaehlerDifferential.D R P.toExtension.Ring) x)) i = (MvPolynomial.aeval P.val) ((MvPolynomial.pderiv i) x)",
+              "module": "Mathlib.RingTheory.Extension.Cotangent.Basic"
+            },
+            {
+              "name": "Algebra.Generators.repr_CotangentSpaceMap",
+              "type": " {R : Type u} {S : Type v} [CommRing R] [CommRing S] [Algebra R S] {ι : Type w} {P : Algebra.Generators R S ι} {R' : Type u'} {S' : Type v'} {ι' : Type w'} [CommRing R'] [CommRing S'] [Algebra R' S'] {P' : Algebra.Generators R' S' ι'} [Algebra R R'] [Algebra S S'] [Algebra R S'] [IsScalarTower R R' S'] [IsScalarTower R S S'] (f : P.Hom P') (i : ι) (j : ι') : (P'.cotangentSpaceBasis.repr ((Algebra.Extension.CotangentSpace.map f.toExtensionHom) (P.cotangentSpaceBasis i))) j = (MvPolynomial.aeval P'.val) ((MvPolynomial.pderiv j) (f.val i))",
+              "module": "Mathlib.RingTheory.Extension.Cotangent.Basic"
+            },
+            {
+              "name": "Algebra.SubmersivePresentation.linearIndependent_aeval_val_pderiv_relation",
+              "type": " {R : Type u} {S : Type v} {ι : Type w} {σ : Type t} [CommRing R] [CommRing S] [Algebra R S] [Finite σ] (P : Algebra.SubmersivePresentation R S ι σ) : LinearIndependent S fun i j => (MvPolynomial.aeval P.val) ((MvPolynomial.pderiv (P.map j)) (P.relation i))",
+              "module": "Mathlib.RingTheory.Extension.Presentation.Submersive"
+            },
+            {
+              "name": "Algebra.SubmersivePresentation.basisDeriv_apply",
+              "type": " {R : Type u} {S : Type v} {ι : Type w} {σ : Type t} [CommRing R] [CommRing S] [Algebra R S] [Finite σ] (P : Algebra.SubmersivePresentation R S ι σ) (i j : σ) : P.basisDeriv i j = (MvPolynomial.aeval P.val) ((MvPolynomial.pderiv (P.map j)) (P.relation i))",
+              "module": "Mathlib.RingTheory.Extension.Presentation.Submersive"
+            },
+            {
+              "name": "Algebra.PreSubmersivePresentation.aevalDifferential_single",
+              "type": " {R : Type u} {S : Type v} {ι : Type w} {σ : Type t} [CommRing R] [CommRing S] [Algebra R S] (P : Algebra.PreSubmersivePresentation R S ι σ) [Finite σ] [DecidableEq σ] (i j : σ) : P.aevalDifferential (Pi.single i 1) j = (MvPolynomial.aeval P.val) ((MvPolynomial.pderiv (P.map j)) (P.relation i))",
+              "module": "Mathlib.RingTheory.Extension.Presentation.Submersive"
+            },
+            {
+              "name": "Algebra.PreSubmersivePresentation.isUnit_jacobian_of_linearIndependent_of_span_eq_top",
+              "type": " {R : Type u} {S : Type v} {ι : Type w} {σ : Type t} [CommRing R] [CommRing S] [Algebra R S] (P : Algebra.PreSubmersivePresentation R S ι σ) [Finite σ] (hli : LinearIndependent S fun j i => (MvPolynomial.aeval P.val) ((MvPolynomial.pderiv (P.map i)) (P.relation j))) (hsp : Submodule.span S (Set.range fun j i => (MvPolynomial.aeval P.val) ((MvPolynomial.pderiv (P.map i)) (P.relation j))) = ⊤) : IsUnit P.jacobian",
+              "module": "Mathlib.RingTheory.Extension.Presentation.Submersive"
+            },
+            {
+              "name": "Algebra.PreSubmersivePresentation.cotangentComplexAux_apply",
+              "type": " {R : Type u_1} {S : Type u_2} {ι : Type u_3} {σ : Type u_4} [CommRing R] [CommRing S] [Algebra R S] [Finite σ] (P : Algebra.PreSubmersivePresentation R S ι σ) (x : ↥P.ker) (i : σ) : P.cotangentComplexAux (Algebra.Extension.Cotangent.mk x) i = (MvPolynomial.aeval P.val) ((MvPolynomial.pderiv (P.map i)) ↑x)",
+              "module": "Mathlib.RingTheory.Smooth.StandardSmoothCotangent"
+            }
+          ]
+        },
+        "isError": false
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"Derivation.compAlgebraMap\",\n      \"kind\": \"def\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/Derivation/Basic.lean\"\n    },\n    {\n      \"name\": \"Derivation.compAlgebraMapL\",\n      \"kind\": \"def\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/Derivation/Basic.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "Derivation.compAlgebraMap",
+              "kind": "def",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/Derivation/Basic.lean"
+            },
+            {
+              "name": "Derivation.compAlgebraMapL",
+              "kind": "def",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/Derivation/Basic.lean"
+            }
+          ],
+          "index": "unavailable"
+        },
+        "isError": false
+      }
+    }
+  ]
+}

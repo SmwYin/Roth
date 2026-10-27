@@ -1,0 +1,37 @@
+import Mathlib.Algebra.MvPolynomial.PDeriv
+import Mathlib.Algebra.Polynomial.Derivation
+open MvPolynomial
+#check_failure Roth.derivative_aeval
+#check @Derivation.map_aeval
+#check @Derivation.comp_aeval_eq
+#check @MvPolynomial.derivation_ext
+#check @MvPolynomial.derivation_eq_of_forall_mem_vars
+#check @MvPolynomial.mkDerivationEquiv
+#check @Derivation.compAlgebraMap
+#check @Polynomial.derivative'
+namespace DerivativeAEvalAssessment
+ theorem semiring {R σ : Type*} [CommSemiring R] [Fintype σ]
+    (γ : σ → Polynomial R) (P : MvPolynomial σ R) :
+    Polynomial.derivative (aeval γ P) =
+      ∑ j, Polynomial.derivative (γ j) * aeval γ (pderiv j P) := by
+  classical
+  induction P using MvPolynomial.induction_on with
+  | C a => simp
+  | add p q hp hq => simp [hp, hq, Finset.sum_add_distrib, mul_add]
+  | mul_X p j hp =>
+    simp [hp, Finset.sum_add_distrib, ← Finset.mul_sum, add_mul, mul_assoc, mul_comm,
+      Pi.single_apply, apply_ite (aeval γ)]
+ theorem abstract {R A M σ : Type*} [CommSemiring R] [CommSemiring A]
+    [Algebra R A] [AddCommMonoid M] [Module R M] [Module A M] [IsScalarTower R A M]
+    [Fintype σ] (D : Derivation R A M) (γ : σ → A) (P : MvPolynomial σ R) :
+    D (aeval γ P) = ∑ j, aeval γ (pderiv j P) • D (γ j) := by
+  classical
+  induction P using MvPolynomial.induction_on with
+  | C a => simp
+  | add p q hp hq => simp [hp, hq, Finset.sum_add_distrib, add_smul]
+  | mul_X p j hp =>
+    simp [hp, Finset.sum_add_distrib, Finset.smul_sum, mul_smul, add_smul,
+      Pi.single_apply, apply_ite (aeval γ), add_comm, smul_comm]
+#print axioms semiring
+#print axioms abstract
+end DerivativeAEvalAssessment

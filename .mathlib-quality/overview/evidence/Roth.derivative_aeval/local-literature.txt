@@ -1,0 +1,32 @@
+Source: .mathlib-quality/references/clean.tex:285-315
+FACT: For each $\nu$,
+$$
+\frac{d}{dt}h_\nu(t) = \frac{\partial \phi_\nu} {\partial x_1 } (\gamma(t)) + k t^{k-1} \frac{\partial \phi_\nu} {\partial x_2 } (\gamma(t)) + \dots + k^{p-1}t^{k^{p-1}-1}\frac{\partial \phi_\nu} {\partial x_p } (\gamma(t)).
+$$
+
+This is the algebraic chain rule for polynomial substitution. The higher derivatives are handled by the uniform expansion below.
+
+Then for each $\mu$, there is a natural number $r(\mu)$ depending only on $\mu$, polynomials $f^\mu_1(t), \dots, f^\mu_{r(\mu)}(t)$ with rational coefficients, and differential operators $\Delta_\mu^{(1)}, \dots, \Delta_\mu^{({r(\mu)})}$ of order less than or equal to $\mu$ such that for all $\nu$
+$$
+\frac{d^\mu}{dt^\mu} h_\nu(t) = f^\mu_1(t) (\Delta_\mu^{(1)}\phi_\nu)(\gamma(t)) + \dots + f^\mu_{r(\mu)}(t) (\Delta_\mu^{({r(\mu)})}\phi_\nu)(\gamma(t)).
+$$
+
+For completeness, this follows by induction on $\mu$, uniformly for all
+input polynomials. For $\mu=0$, use the identity operator with coefficient $1$.
+If a term at stage $\mu$ is $a(t)(\Delta_d\phi)(\gamma(t))$, its derivative is
+\[
+a'(t)(\Delta_d\phi)(\gamma(t))+
+ a(t)\sum_{j=1}^p\gamma'_j(t)(d_j+1)
+                 (\Delta_{d+e_j}\phi)(\gamma(t)).
+\]
+Here $\partial_j\Delta_d=(d_j+1)\Delta_{d+e_j}$ follows directly on
+monomials. The orders are at most $\mu+1$, and all coefficients are rational
+polynomials independent of $\phi$. Thus the same finite list works for every
+$\phi_\nu$; $p$ and $k$ remain fixed throughout.
+\lean{Treat $\phi\mapsto\phi(\gamma(t))$ as an algebra homomorphism and
+prove the first-order chain rule using
+algebraic partial derivatives\footnote{\url{https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/MvPolynomial/PDeriv.html}}
+and polynomial induction, rather than analytic differentiation.
+Represent the higher-order expansion by a finitely supported family of
+coefficient polynomials indexed by $d$ with $|d|\leq\mu$; the recurrence
+above makes these coefficients independent of $\phi$. Convert ordinary

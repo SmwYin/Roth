@@ -1,0 +1,11 @@
+import Mathlib.Algebra.MvPolynomial.PDeriv
+import Mathlib.Algebra.Polynomial.Derivation
+import Mathlib.RingTheory.Kaehler.Polynomial
+#check_failure Roth.derivative_aeval
+#check_failure DerivativeAEvalNoTower.finite_support
+open MvPolynomial
+example {R σ : Type*} [CommSemiring R] [Fintype σ]
+    (γ : σ → Polynomial R) (P : MvPolynomial σ R) :
+    Polynomial.derivative (aeval γ P) =
+      ∑ j, Polynomial.derivative (γ j) * aeval γ (pderiv j P) := by
+  exact?

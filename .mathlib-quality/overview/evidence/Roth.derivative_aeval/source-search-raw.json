@@ -1,0 +1,96 @@
+[
+  {
+    "label": "rg-current",
+    "request": [
+      "rg",
+      "-n",
+      "derivative_aeval|derivative.*aeval|aeval.*derivative",
+      ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial",
+      ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Derivative.lean"
+    ],
+    "returncode": 1,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "label": "rg-standard",
+    "request": [
+      "rg",
+      "-n",
+      "chain|pderiv.*aeval|aeval.*pderiv",
+      ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial"
+    ],
+    "returncode": 0,
+    "stdout": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/PDeriv.lean:155:lemma aeval_sumElim_pderiv_inl {S \u03c4 : Type*} [CommRing S] [Algebra R S]\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/PDeriv.lean:157:    aeval (Sum.elim X (C \u2218 f)) ((pderiv (Sum.inl j)) p) =\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/PDeriv.lean:158:      (pderiv j) ((aeval (Sum.elim X (C \u2218 f))) p) := by\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/PDeriv.lean:164:    simp only [Derivation.leibniz, pderiv_X, smul_eq_mul, map_add, map_mul, aeval_X, h]\n",
+    "stderr": ""
+  },
+  {
+    "label": "rg-abstract",
+    "request": [
+      "rg",
+      "-n",
+      "map_aeval|comp_aeval_eq|mkDerivation|mvPolynomialBasis_repr_apply|compAlgebraMap",
+      ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Derivation.lean",
+      ".lake/packages/mathlib/Mathlib/RingTheory/Derivation",
+      ".lake/packages/mathlib/Mathlib/RingTheory/Kaehler/Polynomial.lean"
+    ],
+    "returncode": 0,
+    "stdout": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Derivation.lean:15:monomials `MvPolynomial.X i`. We also provide a constructor `MvPolynomial.mkDerivation` that\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Derivation.lean:17:`MvPolynomial.mkDerivationEquiv` between `\u03c3 \u2192 A` and `Derivation (MvPolynomial \u03c3 R) A`.\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Derivation.lean:35:Use `MvPolynomial.mkDerivation` instead. -/\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Derivation.lean:36:def mkDerivation\u2097 (f : \u03c3 \u2192 A) : MvPolynomial \u03c3 R \u2192\u2097[R] A :=\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Derivation.lean:44:theorem mkDerivation\u2097_monomial (f : \u03c3 \u2192 A) (s : \u03c3 \u2192\u2080 \u2115) (r : R) :\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Derivation.lean:45:    mkDerivation\u2097 R f (monomial s r) =\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Derivation.lean:49:theorem mkDerivation\u2097_C (f : \u03c3 \u2192 A) (r : R) : mkDerivation\u2097 R f (C r) = 0 :=\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Derivation.lean:50:  (mkDerivation\u2097_monomial f _ _).trans (smul_zero _)\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Derivation.lean:52:theorem mkDerivation\u2097_X (f : \u03c3 \u2192 A) (i : \u03c3) : mkDerivation\u2097 R f (X i) = f i :=\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Derivation.lean:53:  (mkDerivation\u2097_monomial f _ _).trans <| by simp [tsub_self]\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Derivation.lean:111:def mkDerivation (f : \u03c3 \u2192 A) : Derivation R (MvPolynomial \u03c3 R) A where\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Derivation.lean:112:  toLinearMap := mkDerivation\u2097 R f\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Derivation.lean:113:  map_one_eq_zero' := mkDerivation\u2097_C _ 1\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Derivation.lean:115:    (leibniz_iff_X (mkDerivation\u2097 R f) (mkDerivation\u2097_C _ 1)).2 fun s i => by\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Derivation.lean:116:      simp only [mkDerivation\u2097_monomial, X, monomial_mul_monomial, one_smul, one_mul]\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Derivation.lean:127:theorem mkDerivation_X (f : \u03c3 \u2192 A) (i : \u03c3) : mkDerivation R f (X i) = f i :=\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Derivation.lean:128:  mkDerivation\u2097_X f i\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Derivation.lean:130:theorem mkDerivation_monomial (f : \u03c3 \u2192 A) (s : \u03c3 \u2192\u2080 \u2115) (r : R) :\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Derivation.lean:131:    mkDerivation R f (monomial s r) =\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Derivation.lean:133:  mkDerivation\u2097_monomial f s r\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Derivation.lean:135:/-- `MvPolynomial.mkDerivation` as a linear equivalence. -/\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Derivation.lean:136:def mkDerivationEquiv : (\u03c3 \u2192 A) \u2243\u2097[R] Derivation R (MvPolynomial \u03c3 R) A :=\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Derivation.lean:138:    { invFun := mkDerivation R\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Derivation.lean:142:      left_inv := fun _ => derivation_ext <| mkDerivation_X _ _\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Derivation.lean:143:      right_inv := fun _ => funext <| mkDerivation_X _ _ }\n.lake/packages/mathlib/Mathlib/RingTheory/Kaehler/Polynomial.lean:33:  __ := (MvPolynomial.mkDerivation _ (Finsupp.single \u00b7 1)).liftKaehlerDifferential\n.lake/packages/mathlib/Mathlib/RingTheory/Kaehler/Polynomial.lean:66:      MvPolynomial.mkDerivation _ (Finsupp.single \u00b7 1) :=\n.lake/packages/mathlib/Mathlib/RingTheory/Kaehler/Polynomial.lean:71:      MvPolynomial.mkDerivation R (Finsupp.single \u00b7 (1 : MvPolynomial \u03c3 R)) x :=\n.lake/packages/mathlib/Mathlib/RingTheory/Kaehler/Polynomial.lean:80:lemma KaehlerDifferential.mvPolynomialBasis_repr_apply (\u03c3) (x) (i) :\n.lake/packages/mathlib/Mathlib/RingTheory/Kaehler/Polynomial.lean:109:  rw [\u2190 aeval_X_left_apply P, (D R R[X]).map_aeval, aeval_X_left_apply, aeval_X_left_apply]\n.lake/packages/mathlib/Mathlib/RingTheory/Derivation/MapCoeffs.lean:85:      (((d.compAlgebraMap A).mapCoeffs p).map B .id).eval x + aeval x (derivative p) \u2022 d x :=\n.lake/packages/mathlib/Mathlib/RingTheory/Derivation/MapCoeffs.lean:86:  apply_aeval_eq' (d.compAlgebraMap A) d LinearMap.id (fun _a \u21a6 rfl) x p\n.lake/packages/mathlib/Mathlib/RingTheory/Derivation/Basic.lean:151:theorem map_aeval (P : R[X]) (x : A) :\n.lake/packages/mathlib/Mathlib/RingTheory/Derivation/Basic.lean:337:def compAlgebraMap [Algebra A B] [IsScalarTower R A B] [IsScalarTower A B M]\n.lake/packages/mathlib/Mathlib/RingTheory/Derivation/Basic.lean:344:/-- For a tower `R \u2192 A \u2192 B \u2192 M`, the precomposition defined in `compAlgebraMap`\n.lake/packages/mathlib/Mathlib/RingTheory/Derivation/Basic.lean:347:def compAlgebraMapL [Algebra A B] [IsScalarTower R A B] [IsScalarTower A B M]\n.lake/packages/mathlib/Mathlib/RingTheory/Derivation/Basic.lean:350:  toFun d := d.compAlgebraMap A\n.lake/packages/mathlib/Mathlib/RingTheory/Derivation/Lie.lean:83:  carrier := { x | x.fst.compAlgebraMapL R A A' A' = (Algebra.ofId A A').toLinearMap.compDer x.snd }\n",
+    "stderr": ""
+  },
+  {
+    "label": "callers",
+    "request": [
+      "rg",
+      "-n",
+      "derivative_aeval|derivative_kronHasse_aux",
+      "Roth",
+      "Roth.lean"
+    ],
+    "returncode": 0,
+    "stdout": "Roth/GenWronskian.lean:133:theorem derivative_aeval (\u03b3 : \u03c3 \u2192 Polynomial K) (P : MvPolynomial \u03c3 K) :\nRoth/GenWronskian.lean:153:private lemma derivative_kronHasse_aux (k : \u2115) (d : \u03c3 \u2192\u2080 \u2115) :\nRoth/GenWronskian.lean:159:  simp [kronHasse, kronecker, derivative_aeval, pderiv_hasseDeriv, map_smul,\nRoth/GenWronskian.lean:169:    rw [derivative_kronHasse_aux]\n",
+    "stderr": ""
+  },
+  {
+    "label": "inline",
+    "request": [
+      "rg",
+      "-n",
+      "derivative.*aeval|aeval.*pderiv|pderiv.*aeval",
+      "Roth",
+      "Roth.lean"
+    ],
+    "returncode": 0,
+    "stdout": "Roth/GenWronskian.lean:133:theorem derivative_aeval (\u03b3 : \u03c3 \u2192 Polynomial K) (P : MvPolynomial \u03c3 K) :\nRoth/GenWronskian.lean:134:    Polynomial.derivative (aeval \u03b3 P) =\nRoth/GenWronskian.lean:135:      \u2211 j, Polynomial.derivative (\u03b3 j) * aeval \u03b3 (pderiv j P) := by\nRoth/GenWronskian.lean:159:  simp [kronHasse, kronecker, derivative_aeval, pderiv_hasseDeriv, map_smul,\n",
+    "stderr": ""
+  },
+  {
+    "label": "full-names",
+    "request": [
+      "rg",
+      "-n",
+      "theorem (derivative_aeval|map_aeval|comp_aeval_eq)|lemma (derivative_aeval|map_aeval|comp_aeval_eq)",
+      ".lake/packages/mathlib/Mathlib"
+    ],
+    "returncode": 0,
+    "stdout": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Eval.lean:618:theorem map_aeval {B : Type*} [CommSemiring B] (g : \u03c3 \u2192 S\u2081) (\u03c6 : S\u2081 \u2192+* B) (p : MvPolynomial \u03c3 R) :\n.lake/packages/mathlib/Mathlib/Algebra/Polynomial/AlgebraMap.lean:499:theorem map_aeval_eq_aeval_map {S T U : Type*} [Semiring S] [CommSemiring T] [Semiring U]\n.lake/packages/mathlib/Mathlib/Algebra/Polynomial/Derivation.lean:148:theorem comp_aeval_eq (d : Derivation R A M) (f : R[X]) :\n.lake/packages/mathlib/Mathlib/RingTheory/Derivation/Basic.lean:151:theorem map_aeval (P : R[X]) (x : A) :\n",
+    "stderr": ""
+  },
+  {
+    "label": "recent-commits",
+    "request": [
+      "git",
+      "-C",
+      ".lake/packages/mathlib",
+      "log",
+      "-10",
+      "--format=%h %an %s",
+      "--",
+      "Mathlib/Algebra/MvPolynomial/PDeriv.lean",
+      "Mathlib/Algebra/MvPolynomial/Derivation.lean"
+    ],
+    "returncode": 0,
+    "stdout": "631b214f7c Ya\u00ebl Dillies refactor(Algebra/MvPolynomial): delete `coeff` (#41427)\nb0bf9145fc Marcelo Lynch chore: remove unused section variables (#42214)\n026dd116f1 Nathanael Thompson chore: rename MvPolynomial.monomial_mul to monomial_mul_monomial (#42586)\n716cf8a3d2 mathlib-nolints[bot] chore: remove unnecessary set_option lines (#41136)\nf01aa3455a Marcelo Lynch chore: remove unused open declarations (#42235)\nde5ce8a9a6 Garmelon chore: bump toolchain to v4.34.0-rc1 (#42619)\n613038575a Ya\u00ebl Dillies refactor(Algebra): make `MonoidAlgebra` into a one-field structure (#38714)\nd7d52d2a2f Justus Springer feat(Algebra/MvPolynomial/PDeriv): a coefficient formula for `pderiv` (#39624)\nd0a53972ac mathlib-nolints[bot] chore: remove unnecessary set_option lines (#37256)\n2467d5af4a Harald Husum chore(Algebra): fix indentation in markdown lists (#35458)\n",
+    "stderr": ""
+  }
+]

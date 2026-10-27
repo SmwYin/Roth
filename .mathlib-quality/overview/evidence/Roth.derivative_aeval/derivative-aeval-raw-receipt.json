@@ -1,0 +1,111 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MvPolynomial.PDeriv\nimport Mathlib.Algebra.Polynomial.Derivation\nopen MvPolynomial\n#check_failure Roth.derivative_aeval\n#check @Derivation.map_aeval\n#check @Derivation.comp_aeval_eq\n#check @MvPolynomial.derivation_ext\n#check @MvPolynomial.derivation_eq_of_forall_mem_vars\n#check @MvPolynomial.mkDerivationEquiv\n#check @Derivation.compAlgebraMap\n#check @Polynomial.derivative'\nnamespace DerivativeAEvalAssessment\ntheorem semiring {R σ : Type*} [CommSemiring R] [Fintype σ]\n    (γ : σ → Polynomial R) (P : MvPolynomial σ R) :\n    Polynomial.derivative (aeval γ P) =\n      ∑ j, Polynomial.derivative (γ j) * aeval γ (pderiv j P) := by\n  classical\n  induction P using MvPolynomial.induction_on with\n  | C a => simp\n  | add p q hp hq => simp [hp, hq, Finset.sum_add_distrib, mul_add]\n  | mul_X p j hp =>\n    simp [hp, Finset.sum_add_distrib, ← Finset.mul_sum, add_mul, mul_assoc, mul_comm,\n      Pi.single_apply, apply_ite (aeval γ)]\ntheorem abstract {R A M σ : Type*} [CommSemiring R] [CommSemiring A]\n    [Algebra R A] [AddCommMonoid M] [Module R M] [Module A M] [IsScalarTower R A M]\n    [Fintype σ] (D : Derivation R A M) (γ : σ → A) (P : MvPolynomial σ R) :\n    D (aeval γ P) = ∑ j, aeval γ (pderiv j P) • D (γ j) := by\n  classical\n  induction P using MvPolynomial.induction_on with\n  | C a => simp\n  | add p q hp hq => simp [hp, hq, Finset.sum_add_distrib, add_smul]\n  | mul_X p j hp =>\n    simp [hp, Finset.sum_add_distrib, Finset.smul_sum, ← mul_smul, add_smul,\n      Pi.single_apply, apply_ite (aeval γ)]\n#print axioms semiring\n#print axioms abstract\nend DerivativeAEvalAssessment\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.derivative_aeval`\",\n      \"line\": 4,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Derivation.map_aeval : ∀ {R : Type u_1} {A : Type u_2} {M : Type u_3} [inst : CommSemiring R] [inst_1 : CommSemiring A]\\n  [inst_2 : AddCommMonoid M] [inst_3 : Algebra R A] [inst_4 : Module A M] [inst_5 : Module R M] (D : Derivation R A M)\\n  (P : Polynomial R) (x : A), D ((Polynomial.aeval x) P) = (Polynomial.aeval x) (Polynomial.derivative P) • D x\",\n      \"line\": 5,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Derivation.comp_aeval_eq : ∀ {R : Type u_1} {A : Type u_2} {M : Type u_3} [inst : CommSemiring R]\\n  [inst_1 : CommSemiring A] [inst_2 : Algebra R A] [inst_3 : AddCommMonoid M] [inst_4 : Module A M]\\n  [inst_5 : Module R M] [IsScalarTower R A M] (a : A) (d : Derivation R A M) (f : Polynomial R),\\n  d ((Polynomial.aeval a) f) = (Polynomial.aeval a) (Polynomial.derivative f) • d a\",\n      \"line\": 6,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@derivation_ext : ∀ {σ : Type u_1} {R : Type u_2} {A : Type u_3} [inst : CommSemiring R] [inst_1 : AddCommMonoid A]\\n  [inst_2 : Module R A] [inst_3 : Module (MvPolynomial σ R) A] {D₁ D₂ : Derivation R (MvPolynomial σ R) A},\\n  (∀ (i : σ), D₁ (X i) = D₂ (X i)) → D₁ = D₂\",\n      \"line\": 7,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@derivation_eq_of_forall_mem_vars : ∀ {σ : Type u_1} {R : Type u_2} {A : Type u_3} [inst : CommSemiring R]\\n  [inst_1 : AddCommMonoid A] [inst_2 : Module R A] [inst_3 : Module (MvPolynomial σ R) A]\\n  {D₁ D₂ : Derivation R (MvPolynomial σ R) A} {f : MvPolynomial σ R}, (∀ i ∈ f.vars, D₁ (X i) = D₂ (X i)) → D₁ f = D₂ f\",\n      \"line\": 8,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@mkDerivationEquiv : {σ : Type u_1} →\\n  (R : Type u_2) →\\n    {A : Type u_3} →\\n      [inst : CommSemiring R] →\\n        [inst_1 : AddCommMonoid A] →\\n          [inst_2 : Module R A] →\\n            [inst_3 : Module (MvPolynomial σ R) A] →\\n              [inst_4 : IsScalarTower R (MvPolynomial σ R) A] → (σ → A) ≃ₗ[R] Derivation R (MvPolynomial σ R) A\",\n      \"line\": 9,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Derivation.compAlgebraMap : {R : Type u_1} →\\n  (A : Type u_2) →\\n    {B : Type u_3} →\\n      {M : Type u_4} →\\n        [inst : CommSemiring R] →\\n          [inst_1 : CommSemiring A] →\\n            [inst_2 : CommSemiring B] →\\n              [inst_3 : AddCommMonoid M] →\\n                [inst_4 : Algebra R A] →\\n                  [inst_5 : Algebra R B] →\\n                    [inst_6 : Module A M] →\\n                      [inst_7 : Module B M] →\\n                        [inst_8 : Module R M] →\\n                          [inst_9 : Algebra A B] →\\n                            [IsScalarTower R A B] → [IsScalarTower A B M] → Derivation R B M → Derivation R A M\",\n      \"line\": 10,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.derivative' : {R : Type u_1} → [inst : CommSemiring R] → Derivation R (Polynomial R) (Polynomial R)\",\n      \"line\": 11,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'DerivativeAEvalAssessment.semiring' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 35,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'DerivativeAEvalAssessment.abstract' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 36,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.derivative_aeval`",
+          "line": 4,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Derivation.map_aeval : ∀ {R : Type u_1} {A : Type u_2} {M : Type u_3} [inst : CommSemiring R] [inst_1 : CommSemiring A]\n  [inst_2 : AddCommMonoid M] [inst_3 : Algebra R A] [inst_4 : Module A M] [inst_5 : Module R M] (D : Derivation R A M)\n  (P : Polynomial R) (x : A), D ((Polynomial.aeval x) P) = (Polynomial.aeval x) (Polynomial.derivative P) • D x",
+          "line": 5,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Derivation.comp_aeval_eq : ∀ {R : Type u_1} {A : Type u_2} {M : Type u_3} [inst : CommSemiring R]\n  [inst_1 : CommSemiring A] [inst_2 : Algebra R A] [inst_3 : AddCommMonoid M] [inst_4 : Module A M]\n  [inst_5 : Module R M] [IsScalarTower R A M] (a : A) (d : Derivation R A M) (f : Polynomial R),\n  d ((Polynomial.aeval a) f) = (Polynomial.aeval a) (Polynomial.derivative f) • d a",
+          "line": 6,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@derivation_ext : ∀ {σ : Type u_1} {R : Type u_2} {A : Type u_3} [inst : CommSemiring R] [inst_1 : AddCommMonoid A]\n  [inst_2 : Module R A] [inst_3 : Module (MvPolynomial σ R) A] {D₁ D₂ : Derivation R (MvPolynomial σ R) A},\n  (∀ (i : σ), D₁ (X i) = D₂ (X i)) → D₁ = D₂",
+          "line": 7,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@derivation_eq_of_forall_mem_vars : ∀ {σ : Type u_1} {R : Type u_2} {A : Type u_3} [inst : CommSemiring R]\n  [inst_1 : AddCommMonoid A] [inst_2 : Module R A] [inst_3 : Module (MvPolynomial σ R) A]\n  {D₁ D₂ : Derivation R (MvPolynomial σ R) A} {f : MvPolynomial σ R}, (∀ i ∈ f.vars, D₁ (X i) = D₂ (X i)) → D₁ f = D₂ f",
+          "line": 8,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@mkDerivationEquiv : {σ : Type u_1} →\n  (R : Type u_2) →\n    {A : Type u_3} →\n      [inst : CommSemiring R] →\n        [inst_1 : AddCommMonoid A] →\n          [inst_2 : Module R A] →\n            [inst_3 : Module (MvPolynomial σ R) A] →\n              [inst_4 : IsScalarTower R (MvPolynomial σ R) A] → (σ → A) ≃ₗ[R] Derivation R (MvPolynomial σ R) A",
+          "line": 9,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Derivation.compAlgebraMap : {R : Type u_1} →\n  (A : Type u_2) →\n    {B : Type u_3} →\n      {M : Type u_4} →\n        [inst : CommSemiring R] →\n          [inst_1 : CommSemiring A] →\n            [inst_2 : CommSemiring B] →\n              [inst_3 : AddCommMonoid M] →\n                [inst_4 : Algebra R A] →\n                  [inst_5 : Algebra R B] →\n                    [inst_6 : Module A M] →\n                      [inst_7 : Module B M] →\n                        [inst_8 : Module R M] →\n                          [inst_9 : Algebra A B] →\n                            [IsScalarTower R A B] → [IsScalarTower A B M] → Derivation R B M → Derivation R A M",
+          "line": 10,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.derivative' : {R : Type u_1} → [inst : CommSemiring R] → Derivation R (Polynomial R) (Polynomial R)",
+          "line": 11,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'DerivativeAEvalAssessment.semiring' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 35,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'DerivativeAEvalAssessment.abstract' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 36,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 168
+}

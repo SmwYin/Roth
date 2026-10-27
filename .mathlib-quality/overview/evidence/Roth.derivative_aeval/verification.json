@@ -1,0 +1,209 @@
+{
+  "declaration": "Roth.derivative_aeval",
+  "accepted": [
+    {
+      "label": "original",
+      "source": "derivative-aeval-original-executed.lean.txt",
+      "source_sha256": "57c5cc447465aa90ff23ee85b744d6470765905b88d61e6131eabc23dc020aee",
+      "receipt": "derivative-aeval-original-receipt.json",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "execution_kind": "persistent-disk",
+      "native_region_start_line": 5365,
+      "expected_axiom_declarations": [
+        "Roth.derivative_aeval"
+      ]
+    },
+    {
+      "label": "audit",
+      "source": "derivative-aeval-audit-executed.lean.txt",
+      "source_sha256": "5597e31d904d3438d3fc4e8dfce655ff26f05cbeaac611f1faccc6256c83008f",
+      "receipt": "derivative-aeval-audit-receipt.json",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "execution_kind": "persistent-disk",
+      "native_region_start_line": 5369,
+      "expected_axiom_declarations": []
+    },
+    {
+      "label": "raw",
+      "source": "derivative-aeval-raw-executed.lean.txt",
+      "source_sha256": "ed11eabd3826ae71e0d963a3c98d5de2943319e1fa783291fb476ec8497789eb",
+      "receipt": "derivative-aeval-raw-receipt.json",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MvPolynomial.PDeriv\nimport Mathlib.Algebra.Polynomial.Derivation\nopen MvPolynomial\n#check_failure Roth.derivative_aeval\n#check @Derivation.map_aeval\n#check @Derivation.comp_aeval_eq\n#check @MvPolynomial.derivation_ext\n#check @MvPolynomial.derivation_eq_of_forall_mem_vars\n#check @MvPolynomial.mkDerivationEquiv\n#check @Derivation.compAlgebraMap\n#check @Polynomial.derivative'\nnamespace DerivativeAEvalAssessment\ntheorem semiring {R \u03c3 : Type*} [CommSemiring R] [Fintype \u03c3]\n    (\u03b3 : \u03c3 \u2192 Polynomial R) (P : MvPolynomial \u03c3 R) :\n    Polynomial.derivative (aeval \u03b3 P) =\n      \u2211 j, Polynomial.derivative (\u03b3 j) * aeval \u03b3 (pderiv j P) := by\n  classical\n  induction P using MvPolynomial.induction_on with\n  | C a => simp\n  | add p q hp hq => simp [hp, hq, Finset.sum_add_distrib, mul_add]\n  | mul_X p j hp =>\n    simp [hp, Finset.sum_add_distrib, \u2190 Finset.mul_sum, add_mul, mul_assoc, mul_comm,\n      Pi.single_apply, apply_ite (aeval \u03b3)]\ntheorem abstract {R A M \u03c3 : Type*} [CommSemiring R] [CommSemiring A]\n    [Algebra R A] [AddCommMonoid M] [Module R M] [Module A M] [IsScalarTower R A M]\n    [Fintype \u03c3] (D : Derivation R A M) (\u03b3 : \u03c3 \u2192 A) (P : MvPolynomial \u03c3 R) :\n    D (aeval \u03b3 P) = \u2211 j, aeval \u03b3 (pderiv j P) \u2022 D (\u03b3 j) := by\n  classical\n  induction P using MvPolynomial.induction_on with\n  | C a => simp\n  | add p q hp hq => simp [hp, hq, Finset.sum_add_distrib, add_smul]\n  | mul_X p j hp =>\n    simp [hp, Finset.sum_add_distrib, Finset.smul_sum, \u2190 mul_smul, add_smul,\n      Pi.single_apply, apply_ite (aeval \u03b3)]\n#print axioms semiring\n#print axioms abstract\nend DerivativeAEvalAssessment\n"
+      },
+      "execution_kind": "run-code",
+      "native_region_start_line": 1,
+      "expected_axiom_declarations": [
+        "DerivativeAEvalAssessment.semiring",
+        "DerivativeAEvalAssessment.abstract"
+      ]
+    },
+    {
+      "label": "finite-support",
+      "source": "derivative-aeval-finite-support-executed.lean.txt",
+      "source_sha256": "61e9ce06337bda2ed71c972dd4322c776c488ce3ace5f4a1f57a00efdd38983b",
+      "receipt": "derivative-aeval-finite-support-receipt.json",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MvPolynomial.PDeriv\nimport Mathlib.Algebra.Polynomial.Derivation\nopen MvPolynomial\n#check_failure Roth.derivative_aeval\n#check @Derivation.map_aeval\n#check @Derivation.comp_aeval_eq\n#check @MvPolynomial.derivation_ext\n#check @MvPolynomial.derivation_eq_of_forall_mem_vars\n#check @MvPolynomial.mkDerivationEquiv\n#check @Derivation.compAlgebraMap\n#check @Polynomial.derivative'\nnamespace DerivativeAEvalAssessment\ntheorem semiring {R \u03c3 : Type*} [CommSemiring R] [Fintype \u03c3]\n    (\u03b3 : \u03c3 \u2192 Polynomial R) (P : MvPolynomial \u03c3 R) :\n    Polynomial.derivative (aeval \u03b3 P) =\n      \u2211 j, Polynomial.derivative (\u03b3 j) * aeval \u03b3 (pderiv j P) := by\n  classical\n  induction P using MvPolynomial.induction_on with\n  | C a => simp\n  | add p q hp hq => simp [hp, hq, Finset.sum_add_distrib, mul_add]\n  | mul_X p j hp =>\n    simp [hp, Finset.sum_add_distrib, \u2190 Finset.mul_sum, add_mul, mul_assoc, mul_comm,\n      Pi.single_apply, apply_ite (aeval \u03b3)]\ntheorem abstract {R A M \u03c3 : Type*} [CommSemiring R] [CommSemiring A]\n    [Algebra R A] [AddCommMonoid M] [Module R M] [Module A M] [IsScalarTower R A M]\n    [Fintype \u03c3] (D : Derivation R A M) (\u03b3 : \u03c3 \u2192 A) (P : MvPolynomial \u03c3 R) :\n    D (aeval \u03b3 P) = \u2211 j, aeval \u03b3 (pderiv j P) \u2022 D (\u03b3 j) := by\n  classical\n  induction P using MvPolynomial.induction_on with\n  | C a => simp\n  | add p q hp hq => simp [hp, hq, Finset.sum_add_distrib, add_smul]\n  | mul_X p j hp =>\n    simp [hp, Finset.sum_add_distrib, Finset.smul_sum, \u2190 mul_smul, add_smul,\n      Pi.single_apply, apply_ite (aeval \u03b3)]\n#print axioms semiring\n#print axioms abstract\nend DerivativeAEvalAssessment\n\nnamespace DerivativeAEvalAssessment\ntheorem finite_support {R A M \u03c3 : Type*} [CommSemiring R] [CommSemiring A]\n    [Algebra R A] [AddCommMonoid M] [Module R M] [Module A M] [IsScalarTower R A M]\n    (D : Derivation R A M) (\u03b3 : \u03c3 \u2192 A) (P : MvPolynomial \u03c3 R) :\n    D (aeval \u03b3 P) = \u2211 j \u2208 P.vars, aeval \u03b3 (pderiv j P) \u2022 D (\u03b3 j) := by\n  classical\n  obtain \u27e8Q, hQ\u27e9 := exists_rename_coe_vars_eq P\n  have h := abstract D (\u03b3 \u2218 Subtype.val) Q\n  have hleft : aeval (\u03b3 \u2218 Subtype.val) Q = aeval \u03b3 P := by\n    rw [\u2190 aeval_rename, hQ]\n  have hder (j : P.vars) :\n      aeval (\u03b3 \u2218 Subtype.val) (pderiv j Q) = aeval \u03b3 (pderiv (j : \u03c3) P) := by\n    rw [\u2190 aeval_rename, \u2190 pderiv_rename Subtype.val_injective, hQ]\n  calc\n    D (aeval \u03b3 P) = \u2211 j : P.vars, aeval \u03b3 (pderiv (j : \u03c3) P) \u2022 D (\u03b3 j) := by\n      simpa only [hleft, hder, Function.comp_apply] using h\n    _ = \u2211 j \u2208 P.vars, aeval \u03b3 (pderiv j P) \u2022 D (\u03b3 j) :=\n      Finset.sum_coe_sort P.vars (fun j \u21a6 aeval \u03b3 (pderiv j P) \u2022 D (\u03b3 j))\n#print axioms finite_support\nend DerivativeAEvalAssessment\n"
+      },
+      "execution_kind": "run-code",
+      "native_region_start_line": 1,
+      "expected_axiom_declarations": [
+        "DerivativeAEvalAssessment.semiring",
+        "DerivativeAEvalAssessment.abstract",
+        "DerivativeAEvalAssessment.finite_support"
+      ]
+    },
+    {
+      "label": "no-tower",
+      "source": "derivative-aeval-no-tower-executed.lean.txt",
+      "source_sha256": "6597addb5f0f4b82d2b8cdd78753531b3342ca7fc857f132885498bdbce174c3",
+      "receipt": "derivative-aeval-no-tower-receipt.json",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MvPolynomial.PDeriv\nimport Mathlib.Algebra.Polynomial.Derivation\nopen MvPolynomial\n#check_failure Roth.derivative_aeval\n#check @Derivation.map_aeval\n#check @Derivation.comp_aeval_eq\n#check @MvPolynomial.derivation_ext\n#check @MvPolynomial.derivation_eq_of_forall_mem_vars\n#check @MvPolynomial.mkDerivationEquiv\n#check @Derivation.compAlgebraMap\n#check @Polynomial.derivative'\nnamespace DerivativeAEvalNoTower\ntheorem semiring {R \u03c3 : Type*} [CommSemiring R] [Fintype \u03c3]\n    (\u03b3 : \u03c3 \u2192 Polynomial R) (P : MvPolynomial \u03c3 R) :\n    Polynomial.derivative (aeval \u03b3 P) =\n      \u2211 j, Polynomial.derivative (\u03b3 j) * aeval \u03b3 (pderiv j P) := by\n  classical\n  induction P using MvPolynomial.induction_on with\n  | C a => simp\n  | add p q hp hq => simp [hp, hq, Finset.sum_add_distrib, mul_add]\n  | mul_X p j hp =>\n    simp [hp, Finset.sum_add_distrib, \u2190 Finset.mul_sum, add_mul, mul_assoc, mul_comm,\n      Pi.single_apply, apply_ite (aeval \u03b3)]\ntheorem abstract {R A M \u03c3 : Type*} [CommSemiring R] [CommSemiring A]\n    [Algebra R A] [AddCommMonoid M] [Module R M] [Module A M]\n    [Fintype \u03c3] (D : Derivation R A M) (\u03b3 : \u03c3 \u2192 A) (P : MvPolynomial \u03c3 R) :\n    D (aeval \u03b3 P) = \u2211 j, aeval \u03b3 (pderiv j P) \u2022 D (\u03b3 j) := by\n  classical\n  induction P using MvPolynomial.induction_on with\n  | C a => simp\n  | add p q hp hq => simp [hp, hq, Finset.sum_add_distrib, add_smul]\n  | mul_X p j hp =>\n    simp [hp, Finset.sum_add_distrib, Finset.smul_sum, \u2190 mul_smul, add_smul,\n      Pi.single_apply, apply_ite (aeval \u03b3)]\n#print axioms semiring\n#print axioms abstract\nend DerivativeAEvalNoTower\n\nnamespace DerivativeAEvalNoTower\ntheorem finite_support {R A M \u03c3 : Type*} [CommSemiring R] [CommSemiring A]\n    [Algebra R A] [AddCommMonoid M] [Module R M] [Module A M]\n    (D : Derivation R A M) (\u03b3 : \u03c3 \u2192 A) (P : MvPolynomial \u03c3 R) :\n    D (aeval \u03b3 P) = \u2211 j \u2208 P.vars, aeval \u03b3 (pderiv j P) \u2022 D (\u03b3 j) := by\n  classical\n  obtain \u27e8Q, hQ\u27e9 := exists_rename_coe_vars_eq P\n  have h := abstract D (\u03b3 \u2218 Subtype.val) Q\n  have hleft : aeval (\u03b3 \u2218 Subtype.val) Q = aeval \u03b3 P := by\n    rw [\u2190 aeval_rename, hQ]\n  have hder (j : P.vars) :\n      aeval (\u03b3 \u2218 Subtype.val) (pderiv j Q) = aeval \u03b3 (pderiv (j : \u03c3) P) := by\n    rw [\u2190 aeval_rename, \u2190 pderiv_rename Subtype.val_injective, hQ]\n  calc\n    D (aeval \u03b3 P) = \u2211 j : P.vars, aeval \u03b3 (pderiv (j : \u03c3) P) \u2022 D (\u03b3 j) := by\n      simpa only [hleft, hder, Function.comp_apply] using h\n    _ = \u2211 j \u2208 P.vars, aeval \u03b3 (pderiv j P) \u2022 D (\u03b3 j) :=\n      Finset.sum_coe_sort P.vars (fun j \u21a6 aeval \u03b3 (pderiv j P) \u2022 D (\u03b3 j))\n#print axioms finite_support\nend DerivativeAEvalNoTower\n"
+      },
+      "execution_kind": "run-code",
+      "native_region_start_line": 1,
+      "expected_axiom_declarations": [
+        "DerivativeAEvalNoTower.semiring",
+        "DerivativeAEvalNoTower.abstract",
+        "DerivativeAEvalNoTower.finite_support"
+      ]
+    },
+    {
+      "label": "specialization",
+      "source": "derivative-aeval-specialization-executed.lean.txt",
+      "source_sha256": "d5df2845e124f8e0490c102823fd6569fd71460a297a4128783e0438417eb5d5",
+      "receipt": "derivative-aeval-specialization-receipt.json",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MvPolynomial.PDeriv\nimport Mathlib.Algebra.Polynomial.Derivation\nopen MvPolynomial\n#check_failure Roth.derivative_aeval\n#check @Derivation.map_aeval\n#check @Derivation.comp_aeval_eq\n#check @MvPolynomial.derivation_ext\n#check @MvPolynomial.derivation_eq_of_forall_mem_vars\n#check @MvPolynomial.mkDerivationEquiv\n#check @Derivation.compAlgebraMap\n#check @Polynomial.derivative'\nnamespace DerivativeAEvalNoTower\ntheorem semiring {R \u03c3 : Type*} [CommSemiring R] [Fintype \u03c3]\n    (\u03b3 : \u03c3 \u2192 Polynomial R) (P : MvPolynomial \u03c3 R) :\n    Polynomial.derivative (aeval \u03b3 P) =\n      \u2211 j, Polynomial.derivative (\u03b3 j) * aeval \u03b3 (pderiv j P) := by\n  classical\n  induction P using MvPolynomial.induction_on with\n  | C a => simp\n  | add p q hp hq => simp [hp, hq, Finset.sum_add_distrib, mul_add]\n  | mul_X p j hp =>\n    simp [hp, Finset.sum_add_distrib, \u2190 Finset.mul_sum, add_mul, mul_assoc, mul_comm,\n      Pi.single_apply, apply_ite (aeval \u03b3)]\ntheorem abstract {R A M \u03c3 : Type*} [CommSemiring R] [CommSemiring A]\n    [Algebra R A] [AddCommMonoid M] [Module R M] [Module A M]\n    [Fintype \u03c3] (D : Derivation R A M) (\u03b3 : \u03c3 \u2192 A) (P : MvPolynomial \u03c3 R) :\n    D (aeval \u03b3 P) = \u2211 j, aeval \u03b3 (pderiv j P) \u2022 D (\u03b3 j) := by\n  classical\n  induction P using MvPolynomial.induction_on with\n  | C a => simp\n  | add p q hp hq => simp [hp, hq, Finset.sum_add_distrib, add_smul]\n  | mul_X p j hp =>\n    simp [hp, Finset.sum_add_distrib, Finset.smul_sum, \u2190 mul_smul, add_smul,\n      Pi.single_apply, apply_ite (aeval \u03b3)]\n#print axioms semiring\n#print axioms abstract\nend DerivativeAEvalNoTower\n\nnamespace DerivativeAEvalNoTower\ntheorem finite_support {R A M \u03c3 : Type*} [CommSemiring R] [CommSemiring A]\n    [Algebra R A] [AddCommMonoid M] [Module R M] [Module A M]\n    (D : Derivation R A M) (\u03b3 : \u03c3 \u2192 A) (P : MvPolynomial \u03c3 R) :\n    D (aeval \u03b3 P) = \u2211 j \u2208 P.vars, aeval \u03b3 (pderiv j P) \u2022 D (\u03b3 j) := by\n  classical\n  obtain \u27e8Q, hQ\u27e9 := exists_rename_coe_vars_eq P\n  have h := abstract D (\u03b3 \u2218 Subtype.val) Q\n  have hleft : aeval (\u03b3 \u2218 Subtype.val) Q = aeval \u03b3 P := by\n    rw [\u2190 aeval_rename, hQ]\n  have hder (j : P.vars) :\n      aeval (\u03b3 \u2218 Subtype.val) (pderiv j Q) = aeval \u03b3 (pderiv (j : \u03c3) P) := by\n    rw [\u2190 aeval_rename, \u2190 pderiv_rename Subtype.val_injective, hQ]\n  calc\n    D (aeval \u03b3 P) = \u2211 j : P.vars, aeval \u03b3 (pderiv (j : \u03c3) P) \u2022 D (\u03b3 j) := by\n      simpa only [hleft, hder, Function.comp_apply] using h\n    _ = \u2211 j \u2208 P.vars, aeval \u03b3 (pderiv j P) \u2022 D (\u03b3 j) :=\n      Finset.sum_coe_sort P.vars (fun j \u21a6 aeval \u03b3 (pderiv j P) \u2022 D (\u03b3 j))\n#print axioms finite_support\nend DerivativeAEvalNoTower\n\nnamespace DerivativeAEvalFromSupport\nopen MvPolynomial\ntheorem finite {R \u03c3 : Type*} [CommSemiring R] [Fintype \u03c3]\n    (\u03b3 : \u03c3 \u2192 Polynomial R) (P : MvPolynomial \u03c3 R) :\n    Polynomial.derivative (aeval \u03b3 P) =\n      \u2211 j, Polynomial.derivative (\u03b3 j) * aeval \u03b3 (pderiv j P) := by\n  classical\n  calc\n    Polynomial.derivative (aeval \u03b3 P) =\n        \u2211 j \u2208 P.vars, Polynomial.derivative (\u03b3 j) * aeval \u03b3 (pderiv j P) := by\n      simpa only [Polynomial.derivative'_apply, smul_eq_mul, mul_comm] using\n        DerivativeAEvalNoTower.finite_support (Polynomial.derivative' (R := R)) \u03b3 P\n    _ = \u2211 j, Polynomial.derivative (\u03b3 j) * aeval \u03b3 (pderiv j P) :=\n      Finset.sum_subset (Finset.subset_univ _) fun j _ hj \u21a6 by\n        rw [pderiv_eq_zero_of_notMem_vars hj, map_zero, mul_zero]\n#print axioms finite\nend DerivativeAEvalFromSupport\n"
+      },
+      "execution_kind": "run-code",
+      "native_region_start_line": 1,
+      "expected_axiom_declarations": [
+        "DerivativeAEvalNoTower.semiring",
+        "DerivativeAEvalNoTower.abstract",
+        "DerivativeAEvalNoTower.finite_support",
+        "DerivativeAEvalFromSupport.finite"
+      ]
+    },
+    {
+      "label": "consumer",
+      "source": "derivative-aeval-consumer-executed.lean.txt",
+      "source_sha256": "6aaaaf02f8fe7301dcb94d090596d07c2f0cbb63c8ba70a897e096deefff35d5",
+      "receipt": "derivative-aeval-consumer-receipt.json",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "execution_kind": "persistent-disk",
+      "native_region_start_line": 5689,
+      "expected_axiom_declarations": [
+        "DerivativeAEvalNoTower.semiring",
+        "DerivativeAEvalNoTower.abstract",
+        "DerivativeAEvalNoTower.finite_support",
+        "DerivativeAEvalFromSupport.finite",
+        "DerivativeAEvalConsumer.replay"
+      ]
+    },
+    {
+      "label": "kaehler",
+      "source": "derivative-aeval-kaehler-executed.lean.txt",
+      "source_sha256": "6cf2e2cbfb9e7b9fd5a775d9963dd191f1f031a8e7870444029e679550f5db3d",
+      "receipt": "derivative-aeval-kaehler-receipt.json",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MvPolynomial.PDeriv\nimport Mathlib.Algebra.Polynomial.Derivation\nimport Mathlib.RingTheory.Kaehler.Polynomial\n#check_failure Roth.derivative_aeval\n#check @KaehlerDifferential.mvPolynomialBasis_repr_apply\n#print axioms KaehlerDifferential.mvPolynomialBasis_repr_apply\n"
+      },
+      "execution_kind": "run-code",
+      "native_region_start_line": 1,
+      "expected_axiom_declarations": [
+        "KaehlerDifferential.mvPolynomialBasis_repr_apply"
+      ]
+    }
+  ],
+  "rejected": [
+    {
+      "label": "consumer-rejected",
+      "source": "derivative-aeval-consumer-rejected-executed.lean.txt",
+      "receipt": "derivative-aeval-consumer-rejected-receipt.json",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "reason": "Unknown identifier `aeval`\n\nNote: It is not possible to treat `aeval` as an implicitly bound variable here because it has multiple characters while the `relaxedAutoImplicit` option is set to `false`.; Unknown identifier `aeval`\n\nNote: It is not possible to treat `aeval` as an implicitly bound variable here because it has multiple characters while the `relaxedAutoImplicit` option is set to `false`.; Unknown identifier `aeval`\n\nNote: It is not possible to treat `aeval` as an implicitly bound variable here because it has multiple characters while the `relaxedAutoImplicit` option is set to `false`.; Unknown identifier `aeval`\n\nNote: It is not possible to treat `aeval` as an implicitly bound variable here because it has multiple characters while the `relaxedAutoImplicit` option is set to `false`.; unsolved goals\ncase C\nR : Type u_1\n\u03c3 : Type u_2\ninst\u271d\u00b9 : CommSemiring R\ninst\u271d : Fintype \u03c3\n\u03b3 : \u03c3 \u2192 Polynomial R\na : R\n\u22a2 Polynomial.derivative (sorry ()) = \u2211 x, Polynomial.derivative (\u03b3 x) * sorry (); Unknown identifier `aeval`; This simp argument is unused:\n  hq\n\nHint: Omit it from the simp argument list.\n  [apply] simp [hp, Finset.sum_add_distrib, mul_add]\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`; This simp argument is unused:\n  Finset.sum_add_distrib\n\nHint: Omit it from the simp argument list.\n  [apply] simp [hp, hq, mul_add]\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`; This simp argument is unused:\n  mul_add\n\nHint: Omit it from the simp argument list.\n  [apply] simp [hp, hq, Finset.sum_add_distrib]\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`; This simp argument is unused:\n  Finset.sum_add_distrib\n\nHint: Omit it from the simp argument list.\n  [apply] simp [hp, \u2190 Finset.mul_sum, add_mul, mul_assoc, mul_comm, Pi.single_apply, apply_ite (aeval \u03b3)]\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`; This simp argument is unused:\n  \u2190 Finset.mul_sum\n\nHint: Omit it from the simp argument list.\n  [apply] simp [hp, Finset.sum_add_distrib, add_mul, mul_assoc, mul_comm, Pi.single_apply, apply_ite (aeval \u03b3)]\n\nNote: Simp arguments with `\u2190` have the additional effect of removing the other direction from the simp set, even if the simp argument itself is unused. If the hint above does not work, try replacing `\u2190` with `-` to only get that effect and silence this warning.\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`; This simp argument is unused:\n  add_mul\n\nHint: Omit it from the simp argument list.\n  [apply] simp [hp, Finset.sum_add_distrib, \u2190 Finset.mul_sum, mul_assoc, mul_comm, Pi.single_apply, apply_ite (aeval \u03b3)]\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`; This simp argument is unused:\n  mul_assoc\n\nHint: Omit it from the simp argument list.\n  [apply] simp [hp, Finset.sum_add_distrib, \u2190 Finset.mul_sum, add_mul, mul_comm, Pi.single_apply, apply_ite (aeval \u03b3)]\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`; This simp argument is unused:\n  mul_comm\n\nHint: Omit it from the simp argument list.\n  [apply] simp [hp, Finset.sum_add_distrib, \u2190 Finset.mul_sum, add_mul, mul_assoc, Pi.single_apply, apply_ite (aeval \u03b3)]\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`; This simp argument is unused:\n  Pi.single_apply\n\nHint: Omit it from the simp argument list.\n  [apply] simp [hp, Finset.sum_add_distrib, \u2190 Finset.mul_sum, add_mul, mul_assoc, mul_comm, apply_ite (aeval \u03b3)]\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`; unsolved goals\ncase C\nR : Type u_1\nA : Type u_2\nM : Type u_3\n\u03c3 : Type u_4\ninst\u271d\u2076 : CommSemiring R\ninst\u271d\u2075 : CommSemiring A\ninst\u271d\u2074 : Algebra R A\ninst\u271d\u00b3 : AddCommMonoid M\ninst\u271d\u00b2 : Module R M\ninst\u271d\u00b9 : Module A M\ninst\u271d : Fintype \u03c3\nD : Derivation R A M\n\u03b3 : \u03c3 \u2192 A\na : R\n\u22a2 D (sorry ()) = \u2211 x, sorry () \u2022 D (\u03b3 x); unsolved goals\ncase add\nR : Type u_1\nA : Type u_2\nM : Type u_3\n\u03c3 : Type u_4\ninst\u271d\u2076 : CommSemiring R\ninst\u271d\u2075 : CommSemiring A\ninst\u271d\u2074 : Algebra R A\ninst\u271d\u00b3 : AddCommMonoid M\ninst\u271d\u00b2 : Module R M\ninst\u271d\u00b9 : Module A M\ninst\u271d : Fintype \u03c3\nD : Derivation R A M\n\u03b3 : \u03c3 \u2192 A\np q : MvPolynomial \u03c3 R\nhp : D sorry = \u2211 j, sorry \u2022 D (\u03b3 j)\nhq : D sorry = \u2211 j, sorry \u2022 D (\u03b3 j)\n\u22a2 \u2211 x, sorry () \u2022 D (\u03b3 x) = \u2211 x, sorry () \u2022 D (\u03b3 x); Unknown identifier `aeval`; unsolved goals\ncase mul_X\nR : Type u_1\nA : Type u_2\nM : Type u_3\n\u03c3 : Type u_4\ninst\u271d\u2076 : CommSemiring R\ninst\u271d\u2075 : CommSemiring A\ninst\u271d\u2074 : Algebra R A\ninst\u271d\u00b3 : AddCommMonoid M\ninst\u271d\u00b2 : Module R M\ninst\u271d\u00b9 : Module A M\ninst\u271d : Fintype \u03c3\nD : Derivation R A M\n\u03b3 : \u03c3 \u2192 A\np : MvPolynomial \u03c3 R\nj : \u03c3\nhp : D sorry = \u2211 j, sorry \u2022 D (\u03b3 j)\n\u22a2 \u2211 x, sorry () \u2022 D (\u03b3 x) = \u2211 x, sorry () \u2022 D (\u03b3 x); This simp argument is unused:\n  hq\n\nHint: Omit it from the simp argument list.\n  [apply] simp [hp, Finset.sum_add_distrib, add_smul]\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`; This simp argument is unused:\n  Finset.sum_add_distrib\n\nHint: Omit it from the simp argument list.\n  [apply] simp [hp, hq, add_smul]\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`; This simp argument is unused:\n  add_smul\n\nHint: Omit it from the simp argument list.\n  [apply] simp [hp, hq, Finset.sum_add_distrib]\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`; This simp argument is unused:\n  Finset.sum_add_distrib\n\nHint: Omit it from the simp argument list.\n  [apply] simp [hp, Finset.smul_sum, \u2190 mul_smul, add_smul, Pi.single_apply, apply_ite (aeval \u03b3)]\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`; This simp argument is unused:\n  Finset.smul_sum\n\nHint: Omit it from the simp argument list.\n  [apply] simp [hp, Finset.sum_add_distrib, \u2190 mul_smul, add_smul, Pi.single_apply, apply_ite (aeval \u03b3)]\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`; This simp argument is unused:\n  \u2190 mul_smul\n\nHint: Omit it from the simp argument list.\n  [apply] simp [hp, Finset.sum_add_distrib, Finset.smul_sum, add_smul, Pi.single_apply, apply_ite (aeval \u03b3)]\n\nNote: Simp arguments with `\u2190` have the additional effect of removing the other direction from the simp set, even if the simp argument itself is unused. If the hint above does not work, try replacing `\u2190` with `-` to only get that effect and silence this warning.\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`; This simp argument is unused:\n  add_smul\n\nHint: Omit it from the simp argument list.\n  [apply] simp [hp, Finset.sum_add_distrib, Finset.smul_sum, \u2190 mul_smul, Pi.single_apply, apply_ite (aeval \u03b3)]\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`; This simp argument is unused:\n  Pi.single_apply\n\nHint: Omit it from the simp argument list.\n  [apply] simp [hp, Finset.sum_add_distrib, Finset.smul_sum, \u2190 mul_smul, add_smul, apply_ite (aeval \u03b3)]\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`; Unknown constant `abstract`; Unknown identifier `aeval`\n\nNote: It is not possible to treat `aeval` as an implicitly bound variable here because it has multiple characters while the `relaxedAutoImplicit` option is set to `false`.; Unknown identifier `aeval`\n\nNote: It is not possible to treat `aeval` as an implicitly bound variable here because it has multiple characters while the `relaxedAutoImplicit` option is set to `false`.; Unknown identifier `exists_rename_coe_vars_eq`; Tactic `rcases` failed: `x\u271d : A` is not an inductive datatype; Unknown constant `finite_support`; Unknown identifier `DerivativeAEvalNoTower.finite_support`; Invalid simp theorem: Expected a proposition, but found\n  {K : Type u_1} \u2192 [inst : Field K] \u2192 {\u03c3 : Type u_2} \u2192 [Fintype \u03c3] \u2192 \u2115 \u2192 (\u03c3 \u2192\u2080 \u2115) \u2192 MvPolynomial \u03c3 K \u2192 Polynomial K; unsolved goals\nK : Type u_1\n\u03c3 : Type u_2\ninst\u271d\u00b9 : Field K\ninst\u271d : Fintype \u03c3\nk : \u2115\nd : \u03c3 \u2192\u2080 \u2115\nP : MvPolynomial \u03c3 K\n\u22a2 Polynomial.derivative (Roth.kronHasse\u271d k d P) =\n    \u2211 x,\n      Roth.kronHasse\u271d k (d + Finsupp.single x 1) P *\n        ((\u2191(d x) + 1) * Polynomial.derivative (Polynomial.X ^ k ^ \u2191((Fintype.equivFin \u03c3) x))); This simp argument is unused:\n  kronecker\n\nHint: Omit it from the simp argument list.\n  [apply] simp [derivKronHasseOriginal%, DerivativeAEvalFromSupport.finite, pderiv_hasseDeriv, map_smul,\n    Polynomial.smul_eq_C_mul, mul_assoc, mul_comm, mul_left_comm]\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`; This simp argument is unused:\n  DerivativeAEvalFromSupport.finite\n\nHint: Omit it from the simp argument list.\n  [apply] simp [derivKronHasseOriginal%, kronecker, pderiv_hasseDeriv, map_smul, Polynomial.smul_eq_C_mul, mul_assoc, mul_comm,\n    mul_left_comm]\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`; This simp argument is unused:\n  pderiv_hasseDeriv\n\nHint: Omit it from the simp argument list.\n  [apply] simp [derivKronHasseOriginal%, kronecker, DerivativeAEvalFromSupport.finite, map_smul, Polynomial.smul_eq_C_mul,\n    mul_assoc, mul_comm, mul_left_comm]\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`; This simp argument is unused:\n  map_smul\n\nHint: Omit it from the simp argument list.\n  [apply] simp [derivKronHasseOriginal%, kronecker, DerivativeAEvalFromSupport.finite, pderiv_hasseDeriv,\n    Polynomial.smul_eq_C_mul, mul_assoc, mul_comm, mul_left_comm]\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`; This simp argument is unused:\n  Polynomial.smul_eq_C_mul\n\nHint: Omit it from the simp argument list.\n  [apply] simp [derivKronHasseOriginal%, kronecker, DerivativeAEvalFromSupport.finite, pderiv_hasseDeriv, map_smul, mul_assoc,\n    mul_comm, mul_left_comm]\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`; This simp argument is unused:\n  mul_assoc\n\nHint: Omit it from the simp argument list.\n  [apply] simp [derivKronHasseOriginal%, kronecker, DerivativeAEvalFromSupport.finite, pderiv_hasseDeriv, map_smul,\n    Polynomial.smul_eq_C_mul, mul_comm, mul_left_comm]\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`; This simp argument is unused:\n  mul_left_comm\n\nHint: Omit it from the simp argument list.\n  [apply] simp [derivKronHasseOriginal%, kronecker, DerivativeAEvalFromSupport.finite, pderiv_hasseDeriv, map_smul,\n    Polynomial.smul_eq_C_mul, mul_assoc, mul_comm]\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`"
+    },
+    {
+      "label": "finite-support-rejected",
+      "source": "derivative-aeval-finite-support-rejected-executed.lean.txt",
+      "receipt": "derivative-aeval-finite-support-rejected-receipt.json",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MvPolynomial.PDeriv\nimport Mathlib.Algebra.Polynomial.Derivation\nopen MvPolynomial\n#check_failure Roth.derivative_aeval\n#check @Derivation.map_aeval\n#check @Derivation.comp_aeval_eq\n#check @MvPolynomial.derivation_ext\n#check @MvPolynomial.derivation_eq_of_forall_mem_vars\n#check @MvPolynomial.mkDerivationEquiv\n#check @Derivation.compAlgebraMap\n#check @Polynomial.derivative'\nnamespace DerivativeAEvalAssessment\ntheorem semiring {R \u03c3 : Type*} [CommSemiring R] [Fintype \u03c3]\n    (\u03b3 : \u03c3 \u2192 Polynomial R) (P : MvPolynomial \u03c3 R) :\n    Polynomial.derivative (aeval \u03b3 P) =\n      \u2211 j, Polynomial.derivative (\u03b3 j) * aeval \u03b3 (pderiv j P) := by\n  classical\n  induction P using MvPolynomial.induction_on with\n  | C a => simp\n  | add p q hp hq => simp [hp, hq, Finset.sum_add_distrib, mul_add]\n  | mul_X p j hp =>\n    simp [hp, Finset.sum_add_distrib, \u2190 Finset.mul_sum, add_mul, mul_assoc, mul_comm,\n      Pi.single_apply, apply_ite (aeval \u03b3)]\ntheorem abstract {R A M \u03c3 : Type*} [CommSemiring R] [CommSemiring A]\n    [Algebra R A] [AddCommMonoid M] [Module R M] [Module A M] [IsScalarTower R A M]\n    [Fintype \u03c3] (D : Derivation R A M) (\u03b3 : \u03c3 \u2192 A) (P : MvPolynomial \u03c3 R) :\n    D (aeval \u03b3 P) = \u2211 j, aeval \u03b3 (pderiv j P) \u2022 D (\u03b3 j) := by\n  classical\n  induction P using MvPolynomial.induction_on with\n  | C a => simp\n  | add p q hp hq => simp [hp, hq, Finset.sum_add_distrib, add_smul]\n  | mul_X p j hp =>\n    simp [hp, Finset.sum_add_distrib, Finset.smul_sum, \u2190 mul_smul, add_smul,\n      Pi.single_apply, apply_ite (aeval \u03b3)]\n#print axioms semiring\n#print axioms abstract\nend DerivativeAEvalAssessment\n\nnamespace DerivativeAEvalAssessment\ntheorem finite_support {R A M \u03c3 : Type*} [CommSemiring R] [CommSemiring A]\n    [Algebra R A] [AddCommMonoid M] [Module R M] [Module A M] [IsScalarTower R A M]\n    (D : Derivation R A M) (\u03b3 : \u03c3 \u2192 A) (P : MvPolynomial \u03c3 R) :\n    D (aeval \u03b3 P) = \u2211 j \u2208 P.vars, aeval \u03b3 (pderiv j P) \u2022 D (\u03b3 j) := by\n  classical\n  obtain \u27e8Q, hQ\u27e9 := exists_rename_coe_vars_eq P\n  have h := abstract D (\u03b3 \u2218 Subtype.val) Q\n  have hleft : aeval (\u03b3 \u2218 Subtype.val) Q = aeval \u03b3 P := by\n    rw [\u2190 aeval_rename, hQ]\n  have hder (j : P.vars) :\n      aeval (\u03b3 \u2218 Subtype.val) (pderiv j Q) = aeval \u03b3 (pderiv (j : \u03c3) P) := by\n    rw [\u2190 aeval_rename, \u2190 pderiv_rename Subtype.val_injective, hQ]\n  simpa only [hleft, hder, Finset.univ_eq_attach, Finset.sum_attach,\n    Function.comp_apply] using h\n#print axioms finite_support\nend DerivativeAEvalAssessment\n"
+      },
+      "reason": "Type mismatch: After simplification, term\n  h\n has type\n  D ((aeval \u03b3) P) = \u2211 j \u2208 P.vars.attach, (aeval \u03b3) ((pderiv \u2191j) P) \u2022 D (\u03b3 \u2191j)\nbut is expected to have type\n  D ((aeval \u03b3) P) = \u2211 j \u2208 P.vars, (aeval \u03b3) ((pderiv j) P) \u2022 D (\u03b3 j)"
+    },
+    {
+      "label": "finite-support-second-rejected",
+      "source": "derivative-aeval-finite-support-second-rejected-executed.lean.txt",
+      "receipt": "derivative-aeval-finite-support-second-rejected-receipt.json",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MvPolynomial.PDeriv\nimport Mathlib.Algebra.Polynomial.Derivation\nopen MvPolynomial\n#check_failure Roth.derivative_aeval\n#check @Derivation.map_aeval\n#check @Derivation.comp_aeval_eq\n#check @MvPolynomial.derivation_ext\n#check @MvPolynomial.derivation_eq_of_forall_mem_vars\n#check @MvPolynomial.mkDerivationEquiv\n#check @Derivation.compAlgebraMap\n#check @Polynomial.derivative'\nnamespace DerivativeAEvalAssessment\ntheorem semiring {R \u03c3 : Type*} [CommSemiring R] [Fintype \u03c3]\n    (\u03b3 : \u03c3 \u2192 Polynomial R) (P : MvPolynomial \u03c3 R) :\n    Polynomial.derivative (aeval \u03b3 P) =\n      \u2211 j, Polynomial.derivative (\u03b3 j) * aeval \u03b3 (pderiv j P) := by\n  classical\n  induction P using MvPolynomial.induction_on with\n  | C a => simp\n  | add p q hp hq => simp [hp, hq, Finset.sum_add_distrib, mul_add]\n  | mul_X p j hp =>\n    simp [hp, Finset.sum_add_distrib, \u2190 Finset.mul_sum, add_mul, mul_assoc, mul_comm,\n      Pi.single_apply, apply_ite (aeval \u03b3)]\ntheorem abstract {R A M \u03c3 : Type*} [CommSemiring R] [CommSemiring A]\n    [Algebra R A] [AddCommMonoid M] [Module R M] [Module A M] [IsScalarTower R A M]\n    [Fintype \u03c3] (D : Derivation R A M) (\u03b3 : \u03c3 \u2192 A) (P : MvPolynomial \u03c3 R) :\n    D (aeval \u03b3 P) = \u2211 j, aeval \u03b3 (pderiv j P) \u2022 D (\u03b3 j) := by\n  classical\n  induction P using MvPolynomial.induction_on with\n  | C a => simp\n  | add p q hp hq => simp [hp, hq, Finset.sum_add_distrib, add_smul]\n  | mul_X p j hp =>\n    simp [hp, Finset.sum_add_distrib, Finset.smul_sum, \u2190 mul_smul, add_smul,\n      Pi.single_apply, apply_ite (aeval \u03b3)]\n#print axioms semiring\n#print axioms abstract\nend DerivativeAEvalAssessment\n\nnamespace DerivativeAEvalAssessment\ntheorem finite_support {R A M \u03c3 : Type*} [CommSemiring R] [CommSemiring A]\n    [Algebra R A] [AddCommMonoid M] [Module R M] [Module A M] [IsScalarTower R A M]\n    (D : Derivation R A M) (\u03b3 : \u03c3 \u2192 A) (P : MvPolynomial \u03c3 R) :\n    D (aeval \u03b3 P) = \u2211 j \u2208 P.vars, aeval \u03b3 (pderiv j P) \u2022 D (\u03b3 j) := by\n  classical\n  obtain \u27e8Q, hQ\u27e9 := exists_rename_coe_vars_eq P\n  have h := abstract D (\u03b3 \u2218 Subtype.val) Q\n  have hleft : aeval (\u03b3 \u2218 Subtype.val) Q = aeval \u03b3 P := by\n    rw [\u2190 aeval_rename, hQ]\n  have hder (j : P.vars) :\n      aeval (\u03b3 \u2218 Subtype.val) (pderiv j Q) = aeval \u03b3 (pderiv (j : \u03c3) P) := by\n    rw [\u2190 aeval_rename, \u2190 pderiv_rename Subtype.val_injective, hQ]\n  simpa only [hleft, hder, Function.comp_apply, Finset.sum_coe_sort] using h\n#print axioms finite_support\nend DerivativeAEvalAssessment\n"
+      },
+      "reason": "Type mismatch: After simplification, term\n  h\n has type\n  D ((aeval \u03b3) P) = \u2211 x, (aeval \u03b3) ((pderiv \u2191x) P) \u2022 D (\u03b3 \u2191x)\nbut is expected to have type\n  D ((aeval \u03b3) P) = \u2211 j \u2208 P.vars, (aeval \u03b3) ((pderiv j) P) \u2022 D (\u03b3 j)"
+    },
+    {
+      "label": "raw-rejected",
+      "source": "derivative-aeval-raw-rejected-executed.lean.txt",
+      "receipt": "derivative-aeval-raw-rejected-receipt.json",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MvPolynomial.PDeriv\nimport Mathlib.Algebra.Polynomial.Derivation\nopen MvPolynomial\n#check_failure Roth.derivative_aeval\n#check @Derivation.map_aeval\n#check @Derivation.comp_aeval_eq\n#check @MvPolynomial.derivation_ext\n#check @MvPolynomial.derivation_eq_of_forall_mem_vars\n#check @MvPolynomial.mkDerivationEquiv\n#check @Derivation.compAlgebraMap\n#check @Polynomial.derivative'\nnamespace DerivativeAEvalAssessment\ntheorem semiring {R \u03c3 : Type*} [CommSemiring R] [Fintype \u03c3]\n    (\u03b3 : \u03c3 \u2192 Polynomial R) (P : MvPolynomial \u03c3 R) :\n    Polynomial.derivative (aeval \u03b3 P) =\n      \u2211 j, Polynomial.derivative (\u03b3 j) * aeval \u03b3 (pderiv j P) := by\n  classical\n  induction P using MvPolynomial.induction_on with\n  | C a => simp\n  | add p q hp hq => simp [hp, hq, Finset.sum_add_distrib, mul_add]\n  | mul_X p j hp =>\n    simp [hp, Finset.sum_add_distrib, \u2190 Finset.mul_sum, add_mul, mul_assoc, mul_comm,\n      Pi.single_apply, apply_ite (aeval \u03b3)]\ntheorem abstract {R A M \u03c3 : Type*} [CommSemiring R] [CommSemiring A]\n    [Algebra R A] [AddCommMonoid M] [Module R M] [Module A M] [IsScalarTower R A M]\n    [Fintype \u03c3] (D : Derivation R A M) (\u03b3 : \u03c3 \u2192 A) (P : MvPolynomial \u03c3 R) :\n    D (aeval \u03b3 P) = \u2211 j, aeval \u03b3 (pderiv j P) \u2022 D (\u03b3 j) := by\n  classical\n  induction P using MvPolynomial.induction_on with\n  | C a => simp\n  | add p q hp hq => simp [hp, hq, Finset.sum_add_distrib, add_smul]\n  | mul_X p j hp =>\n    simp [hp, Finset.sum_add_distrib, Finset.smul_sum, mul_smul, add_smul,\n      Pi.single_apply, apply_ite (aeval \u03b3), add_comm, smul_comm]\n#print axioms semiring\n#print axioms abstract\nend DerivativeAEvalAssessment\n"
+      },
+      "reason": "Tactic `simp` failed with a nested error:\nmaximum recursion depth has been reached\nuse `set_option maxRecDepth <num>` to increase limit\nuse `set_option diagnostics true` to get diagnostic information"
+    },
+    {
+      "label": "raw-style-rejected",
+      "source": "derivative-aeval-raw-style-rejected-executed.lean.txt",
+      "receipt": "derivative-aeval-raw-style-rejected-receipt.json",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MvPolynomial.PDeriv\nimport Mathlib.Algebra.Polynomial.Derivation\nopen MvPolynomial\n#check_failure Roth.derivative_aeval\n#check @Derivation.map_aeval\n#check @Derivation.comp_aeval_eq\n#check @MvPolynomial.derivation_ext\n#check @MvPolynomial.derivation_eq_of_forall_mem_vars\n#check @MvPolynomial.mkDerivationEquiv\n#check @Derivation.compAlgebraMap\n#check @Polynomial.derivative'\nnamespace DerivativeAEvalAssessment\ntheorem semiring {R \u03c3 : Type*} [CommSemiring R] [Fintype \u03c3]\n    (\u03b3 : \u03c3 \u2192 Polynomial R) (P : MvPolynomial \u03c3 R) :\n    Polynomial.derivative (aeval \u03b3 P) =\n      \u2211 j, Polynomial.derivative (\u03b3 j) * aeval \u03b3 (pderiv j P) := by\n  classical\n  induction P using MvPolynomial.induction_on with\n  | C a => simp\n  | add p q hp hq => simp [hp, hq, Finset.sum_add_distrib, mul_add]\n  | mul_X p j hp =>\n    simp [hp, Finset.sum_add_distrib, \u2190 Finset.mul_sum, add_mul, mul_assoc, mul_comm,\n      Pi.single_apply, apply_ite (aeval \u03b3)]\ntheorem abstract {R A M \u03c3 : Type*} [CommSemiring R] [CommSemiring A]\n    [Algebra R A] [AddCommMonoid M] [Module R M] [Module A M] [IsScalarTower R A M]\n    [Fintype \u03c3] (D : Derivation R A M) (\u03b3 : \u03c3 \u2192 A) (P : MvPolynomial \u03c3 R) :\n    D (aeval \u03b3 P) = \u2211 j, aeval \u03b3 (pderiv j P) \u2022 D (\u03b3 j) := by\n  classical\n  induction P using MvPolynomial.induction_on with\n  | C a => simp\n  | add p q hp hq => simp [hp, hq, Finset.sum_add_distrib, add_smul]\n  | mul_X p j hp =>\n    simp [hp, Finset.sum_add_distrib, Finset.smul_sum, \u2190 mul_smul, add_smul,\n      Pi.single_apply, apply_ite (aeval \u03b3), add_comm]\n#print axioms semiring\n#print axioms abstract\nend DerivativeAEvalAssessment\n"
+      },
+      "reason": "This simp argument is unused:\n  add_comm\n\nHint: Omit it from the simp argument list.\n  [apply] simp [hp, Finset.sum_add_distrib, Finset.smul_sum, \u2190 mul_smul, add_smul, Pi.single_apply, apply_ite (aeval \u03b3)]\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`"
+    },
+    {
+      "label": "absence",
+      "source": "derivative-aeval-absence-executed.lean.txt",
+      "receipt": "derivative-aeval-absence-receipt.json",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MvPolynomial.PDeriv\nimport Mathlib.Algebra.Polynomial.Derivation\nimport Mathlib.RingTheory.Kaehler.Polynomial\n#check_failure Roth.derivative_aeval\n#check_failure DerivativeAEvalNoTower.finite_support\nopen MvPolynomial\nexample {R \u03c3 : Type*} [CommSemiring R] [Fintype \u03c3]\n    (\u03b3 : \u03c3 \u2192 Polynomial R) (P : MvPolynomial \u03c3 R) :\n    Polynomial.derivative (aeval \u03b3 P) =\n      \u2211 j, Polynomial.derivative (\u03b3 j) * aeval \u03b3 (pderiv j P) := by\n  exact?\n"
+      },
+      "reason": "`exact?` could not close the goal. Try `apply?` to see partial suggestions."
+    }
+  ],
+  "unresolved": [],
+  "production_unchanged": true,
+  "standard_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "canonical_direct_consumers": [
+    "_private.Roth.GenWronskian.0.Roth.derivative_kronHasse_aux"
+  ],
+  "incomplete_native": [
+    {
+      "receipt": "derivative-aeval-consumer-partial-receipt.json",
+      "reason": "Import/header reload returned partial elaboration; not accepted as proof success."
+    }
+  ],
+  "notes": [
+    "Original/audit disk diagnostics contain historical info; freshness scoped to target native region.",
+    "Raw run-code returns diagnostics rather than items and has no partial field.",
+    "New generalization helpers are accepted new proofs, not existing mathlib replacement theorems.",
+    "No raised limits, axioms, sorry, unsafe or native_decide in accepted snippets."
+  ]
+}

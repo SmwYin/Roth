@@ -1,0 +1,84 @@
+namespace DerivativeAEvalNoTower
+theorem semiring {R σ : Type*} [CommSemiring R] [Fintype σ]
+    (γ : σ → Polynomial R) (P : MvPolynomial σ R) :
+    Polynomial.derivative (aeval γ P) =
+      ∑ j, Polynomial.derivative (γ j) * aeval γ (pderiv j P) := by
+  classical
+  induction P using MvPolynomial.induction_on with
+  | C a => simp
+  | add p q hp hq => simp [hp, hq, Finset.sum_add_distrib, mul_add]
+  | mul_X p j hp =>
+    simp [hp, Finset.sum_add_distrib, ← Finset.mul_sum, add_mul, mul_assoc, mul_comm,
+      Pi.single_apply, apply_ite (aeval γ)]
+theorem abstract {R A M σ : Type*} [CommSemiring R] [CommSemiring A]
+    [Algebra R A] [AddCommMonoid M] [Module R M] [Module A M]
+    [Fintype σ] (D : Derivation R A M) (γ : σ → A) (P : MvPolynomial σ R) :
+    D (aeval γ P) = ∑ j, aeval γ (pderiv j P) • D (γ j) := by
+  classical
+  induction P using MvPolynomial.induction_on with
+  | C a => simp
+  | add p q hp hq => simp [hp, hq, Finset.sum_add_distrib, add_smul]
+  | mul_X p j hp =>
+    simp [hp, Finset.sum_add_distrib, Finset.smul_sum, ← mul_smul, add_smul,
+      Pi.single_apply, apply_ite (aeval γ)]
+#print axioms semiring
+#print axioms abstract
+end DerivativeAEvalNoTower
+
+namespace DerivativeAEvalNoTower
+theorem finite_support {R A M σ : Type*} [CommSemiring R] [CommSemiring A]
+    [Algebra R A] [AddCommMonoid M] [Module R M] [Module A M]
+    (D : Derivation R A M) (γ : σ → A) (P : MvPolynomial σ R) :
+    D (aeval γ P) = ∑ j ∈ P.vars, aeval γ (pderiv j P) • D (γ j) := by
+  classical
+  obtain ⟨Q, hQ⟩ := exists_rename_coe_vars_eq P
+  have h := abstract D (γ ∘ Subtype.val) Q
+  have hleft : aeval (γ ∘ Subtype.val) Q = aeval γ P := by
+    rw [← aeval_rename, hQ]
+  have hder (j : P.vars) :
+      aeval (γ ∘ Subtype.val) (pderiv j Q) = aeval γ (pderiv (j : σ) P) := by
+    rw [← aeval_rename, ← pderiv_rename Subtype.val_injective, hQ]
+  calc
+    D (aeval γ P) = ∑ j : P.vars, aeval γ (pderiv (j : σ) P) • D (γ j) := by
+      simpa only [hleft, hder, Function.comp_apply] using h
+    _ = ∑ j ∈ P.vars, aeval γ (pderiv j P) • D (γ j) :=
+      Finset.sum_coe_sort P.vars (fun j ↦ aeval γ (pderiv j P) • D (γ j))
+#print axioms finite_support
+end DerivativeAEvalNoTower
+
+namespace DerivativeAEvalFromSupport
+open MvPolynomial
+theorem finite {R σ : Type*} [CommSemiring R] [Fintype σ]
+    (γ : σ → Polynomial R) (P : MvPolynomial σ R) :
+    Polynomial.derivative (aeval γ P) =
+      ∑ j, Polynomial.derivative (γ j) * aeval γ (pderiv j P) := by
+  classical
+  calc
+    Polynomial.derivative (aeval γ P) =
+        ∑ j ∈ P.vars, Polynomial.derivative (γ j) * aeval γ (pderiv j P) := by
+      simpa only [Polynomial.derivative'_apply, smul_eq_mul, mul_comm] using
+        DerivativeAEvalNoTower.finite_support (Polynomial.derivative' (R := R)) γ P
+    _ = ∑ j, Polynomial.derivative (γ j) * aeval γ (pderiv j P) :=
+      Finset.sum_subset (Finset.subset_univ _) fun j _ hj ↦ by
+        rw [pderiv_eq_zero_of_notMem_vars hj, map_zero, mul_zero]
+#print axioms finite
+end DerivativeAEvalFromSupport
+
+namespace DerivativeAEvalConsumer
+open MvPolynomial Roth
+variable {K σ : Type*} [Field K] [Fintype σ]
+open Lean Elab Term in
+elab "derivKronHasseOriginal%" : term => do
+  Lean.Meta.mkConstWithFreshMVarLevels
+    (Lean.mkPrivateNameCore `Roth.GenWronskian `Roth.kronHasse)
+theorem replay (k : ℕ) (d : σ →₀ ℕ) :
+    (fun P ↦ Polynomial.derivative (derivKronHasseOriginal% (K := K) k d P)) =
+      ∑ j, (Polynomial.derivative (Polynomial.X ^ k ^ (Fintype.equivFin σ j : ℕ)) *
+        Polynomial.C ((d j + 1 : ℕ) : K)) •
+          derivKronHasseOriginal% k (d + Finsupp.single j 1) := by
+  classical
+  funext P
+  simp [derivKronHasseOriginal%, kronecker, DerivativeAEvalFromSupport.finite,
+    pderiv_hasseDeriv, map_smul, Polynomial.smul_eq_C_mul, mul_assoc, mul_comm, mul_left_comm]
+#print axioms replay
+end DerivativeAEvalConsumer

@@ -1,0 +1,21 @@
+{
+  "declaration": "Roth.derivative_aeval",
+  "kind": "theorem",
+  "type": "@Roth.derivative_aeval : \u2200 {K : Type u_1} [inst : Field K] {\u03c3 : Type u_2} [inst_1 : Fintype \u03c3] (\u03b3 : \u03c3 \u2192 Polynomial K)\n  (P : MvPolynomial \u03c3 K),\n  Polynomial.derivative ((MvPolynomial.aeval \u03b3) P) =\n    \u2211 j, Polynomial.derivative (\u03b3 j) * (MvPolynomial.aeval \u03b3) ((MvPolynomial.pderiv j) P)",
+  "what": "Algebraic multivariate chain rule for polynomial coordinate substitution.",
+  "how": "Polynomial induction on constants, addition and multiplication by one variable; simplification uses Leibniz.",
+  "hypotheses": [
+    "Field K (verified weakenable to CommSemiring R)",
+    "Fintype \u03c3 for the univ-sum spelling",
+    "Arbitrary \u03b3 : \u03c3 \u2192 Polynomial K and P : MvPolynomial \u03c3 K",
+    "No CharZero or l parameter"
+  ],
+  "project_dependencies": [],
+  "caller_summary": "One same-file explicit caller: private Roth.derivative_kronHasse_aux at GenWronskian.lean:159; zero external-to-file callers; exact293 canonical audit confirms direct consumer.",
+  "mathlib_api_audit": "Univariate Derivation.map_aeval and comp_aeval_eq are near misses. MvPolynomial.derivation_ext/mkDerivationEquiv classify derivations but do not state evaluated partial-sum law. Kaehler coordinate theorem requires further pullback/reconstruction.",
+  "moral_duplications": "Standard multivariable analogue of the existing univariate chain rule; no verified existing \u22643-call replacement.",
+  "generalization": "Verified Field\u2192CommSemiring; arbitrary algebra/module-valued derivation; arbitrary-variable finite-support sum over P.vars.",
+  "missing_api": "Module-valued MvPolynomial evaluation chain rule expressed with pderiv, complementing Derivation.map_aeval.",
+  "junk": "Live single-consumer helper feeding higher-order Kronecker/Hasse recurrence, not dead code.",
+  "action": "YES-but-generalise-first: generalize semiring/derivation API before upstreaming; update the actual private consumer using verified replay."
+}

@@ -1,0 +1,17 @@
+namespace DerivativeAEvalAssessment
+ theorem finite_support {R A M σ : Type*} [CommSemiring R] [CommSemiring A]
+    [Algebra R A] [AddCommMonoid M] [Module R M] [Module A M] [IsScalarTower R A M]
+    (D : Derivation R A M) (γ : σ → A) (P : MvPolynomial σ R) :
+    D (aeval γ P) = ∑ j ∈ P.vars, aeval γ (pderiv j P) • D (γ j) := by
+  classical
+  obtain ⟨Q, hQ⟩ := exists_rename_coe_vars_eq P
+  have h := abstract D (γ ∘ Subtype.val) Q
+  have hleft : aeval (γ ∘ Subtype.val) Q = aeval γ P := by
+    rw [← aeval_rename, hQ]
+  have hder (j : P.vars) :
+      aeval (γ ∘ Subtype.val) (pderiv j Q) = aeval γ (pderiv (j : σ) P) := by
+    rw [← aeval_rename, ← pderiv_rename Subtype.val_injective, hQ]
+  simpa only [hleft, hder, Finset.univ_eq_attach, Finset.sum_attach,
+    Function.comp_apply] using h
+#print axioms finite_support
+end DerivativeAEvalAssessment
