@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-27
 
-- Declarations completed: **184/293**
-- Next declaration: **#185 `Roth.index_le_Θ`** (Roth/Theta.lean:99)
+- Declarations completed: **185/293**
+- Next declaration: **#186 `Roth.Θ_nonneg`** (Roth/Theta.lean:107)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -203,10 +203,10 @@ Last regenerated: 2026-10-27
 | 182 | `Roth.one_mem_RSet` | Roth/Theta.lean:73 | INHERITED-NO-composable-from-mathlib | [report](mathlibable/Roth.one_mem_RSet.md) |
 | 183 | `Roth.indexSet_nonempty` | Roth/Theta.lean:80 | INHERITED-NO-composable-from-mathlib | [report](mathlibable/Roth.indexSet_nonempty.md) |
 | 184 | `Roth.indexSet_bddAbove` | Roth/Theta.lean:87 | NO-composable-from-mathlib | [report](mathlibable/Roth.indexSet_bddAbove.md) |
+| 185 | `Roth.index_le_Θ` | Roth/Theta.lean:99 | NO-composable-from-mathlib | [report](mathlibable/Roth.index_le_Θ.md) |
 
 ## Remaining declarations (in processing order)
 
-- #185 `Roth.index_le_Θ` (Roth/Theta.lean:99, public theorem)
 - #186 `Roth.Θ_nonneg` (Roth/Theta.lean:107, public theorem)
 - #187 `Roth.Θ_le_card` (Roth/Theta.lean:114, public theorem)
 - #188 `Roth.Θ_le_of_forall_index_le` (Roth/Theta.lean:124, public theorem)
