@@ -1,0 +1,29 @@
+  exp_add' _ (fun _ ↦ hI.dpow_add ha hb)
+
+variable (hI : DividedPowers I)
+
+/-! ## Rewriting lemmas -/
+
+theorem dpow_smul {n : ℕ} (ha : a ∈ I) :
+    hI.dpow n (b • a) = b ^ n • hI.dpow n a := by
+  simp only [smul_eq_mul, hI.dpow_mul, ha]
+
+theorem dpow_mul_right {n : ℕ} (ha : a ∈ I) :
+    hI.dpow n (a * b) = hI.dpow n a * b ^ n := by
+  rw [mul_comm, hI.dpow_mul ha, mul_comm]
+
+theorem dpow_smul_right {n : ℕ} (ha : a ∈ I) :
+    hI.dpow n (a • b) = hI.dpow n a • b ^ n := by
+  rw [smul_eq_mul, hI.dpow_mul_right ha, smul_eq_mul]
+
+theorem factorial_mul_dpow_eq_pow {n : ℕ} (ha : a ∈ I) :
+    (n ! : A) * hI.dpow n a = a ^ n := by
+  induction n with
+  | zero => rw [factorial_zero, cast_one, one_mul, pow_zero, hI.dpow_zero ha]
+  | succ n ih =>
+    rw [factorial_succ, mul_comm (n + 1)]
+    nth_rewrite 1 [← (n + 1).choose_one_right]
+    rw [← choose_symm_add, cast_mul, mul_assoc,
+      ← hI.mul_dpow ha, ← mul_assoc, ih, hI.dpow_one ha, pow_succ, mul_comm]
+
+theorem dpow_eval_zero {n : ℕ} (hn : n ≠ 0) : hI.dpow n 0 = 0 := by

@@ -1,0 +1,23 @@
+/-- The derivative of a Laurent series. -/
+def derivative (R : Type*) {V : Type*} [AddCommGroup V] [Semiring R] [Module R V] :
+    LaurentSeries V →ₗ[R] LaurentSeries V :=
+  hasseDeriv R 1
+
+@[simp]
+theorem derivative_apply (f : LaurentSeries V) : derivative R f = hasseDeriv R 1 f := by
+  exact rfl
+
+theorem derivative_map {W : Type*} [AddCommGroup W] [Module R W]
+    (g : V →ₗ[R] W) (f : LaurentSeries V) :
+    derivative R (f.map g) = (derivative R f).map g :=
+  hasseDeriv_map g 1 f
+
+theorem derivative_iterate (k : ℕ) (f : LaurentSeries V) :
+    (derivative R)^[k] f = k.factorial • (hasseDeriv R k f) := by
+  ext n
+  induction k generalizing f with
+  | zero => simp
+  | succ k ih =>
+    rw [Function.iterate_succ, Function.comp_apply, ih, derivative_apply, hasseDeriv_comp,
+      Nat.choose_symm_add, Nat.choose_one_right, Nat.factorial, mul_nsmul]
+

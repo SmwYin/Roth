@@ -1,0 +1,58 @@
+{
+  "request": {
+    "query": "divided power higher derivation factorial scalar equals iterate linear endomorphism"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"DividedPowers.factorial_mul_dpow_eq_pow\",\n      \"informal_name\": \"Factorial-Divided Power Identity: $n! \\\\cdot \\\\gamma_n(a) = a^n$\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {A : Type u_1} [inst : CommSemiring A] {I : Ideal A} {a : A} (hI : DividedPowers I) {n : ℕ},\\n  a ∈ I → ↑n.factorial * hI.dpow n a = a ^ n\",\n      \"informal_description\": \"For any natural number $n$ and element $a$ in the ideal $I$, the product of $n!$ (cast to the semiring $A$) and the $n$-th divided power of $a$ equals $a$ raised to the $n$-th power, i.e., $n! \\\\cdot \\\\gamma_n(a) = a^n$.\",\n      \"path\": \"Mathlib.RingTheory.DividedPowers.Basic\"\n    },\n    {\n      \"formal_name\": \"Polynomial.factorial_smul_hasseDeriv\",\n      \"informal_name\": \"Factorial Scaling of Hasse Derivative Equals Iterated Derivative\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k : ℕ), ⇑(k.factorial • Polynomial.hasseDeriv k) = (⇑Polynomial.derivative)^[k]\",\n      \"informal_description\": \"For any semiring $ R $, the $ k $-th Hasse derivative operator on the polynomial ring $ R[X] $, when multiplied by $ k! $, equals the $ k $-th iterate of the standard derivative operator. Formally, $ k! \\\\cdot D^{(k)} = (\\\\frac{d}{dX})^k $, where $ D^{(k)} $ denotes the Hasse derivative of order $ k $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"DividedPowers.OfInvertibleFactorial.dpow_comp\",\n      \"informal_name\": \"Composition of Divided Powers with Uniform Bell Coefficients\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {A : Type u_1} [inst : CommSemiring A] {I : Ideal A} [inst_1 : DecidablePred fun x => x ∈ I] {n : ℕ},\\n  IsUnit ↑(n - 1).factorial →\\n    I ^ n = 0 →\\n      ∀ {m k : ℕ},\\n        k ≠ 0 →\\n          ∀ {x : A},\\n            x ∈ I →\\n              DividedPowers.OfInvertibleFactorial.dpow I m (DividedPowers.OfInvertibleFactorial.dpow I k x) =\\n                ↑(m.uniformBell k) * DividedPowers.OfInvertibleFactorial.dpow I (m * k) x\",\n      \"informal_description\": \"Under the conditions that $(n-1)!$ is invertible in $A$ and $I^n = 0$, for all natural numbers $m, k$ with $k \\\\neq 0$ and $x \\\\in I$, the composition of the divided power operations $\\\\text{dpow}\\\\, m$ and $\\\\text{dpow}\\\\, k$ applied to $x$ equals the product of the uniform Bell number $\\\\text{uniformBell}(m, k)$ and the divided power operation $\\\\text{dpow}\\\\, (m \\\\cdot k)$ applied to $x$.\",\n      \"path\": \"Mathlib.RingTheory.DividedPowers.RatAlgebra\"\n    },\n    {\n      \"formal_name\": \"DividedPowers.OfInvertibleFactorial.dpow_comp_of_mul_lt\",\n      \"informal_name\": \"Composition of Divided Powers with Uniform Bell Number\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {A : Type u_1} [inst : CommSemiring A] {I : Ideal A} [inst_1 : DecidablePred fun x => x ∈ I] {n : ℕ},\\n  IsUnit ↑(n - 1).factorial →\\n    ∀ {m k : ℕ},\\n      k ≠ 0 →\\n        m * k < n →\\n          ∀ {x : A},\\n            x ∈ I →\\n              DividedPowers.OfInvertibleFactorial.dpow I m (DividedPowers.OfInvertibleFactorial.dpow I k x) =\\n                ↑(m.uniformBell k) * DividedPowers.OfInvertibleFactorial.dpow I (m * k) x\",\n      \"informal_description\": \"For natural numbers $m, k$ (with $k \\\\neq 0$) and an element $x$ in an ideal $I$ of a semiring $A$, if $(n-1)!$ is invertible in $A$ and $m \\\\cdot k < n$, then the $m$-th divided power of the $k$-th divided power of $x$ equals the uniform Bell number $\\\\text{uniformBell}(m, k)$ multiplied by the $(m \\\\cdot k)$-th divided power of $x$. Formally, $\\\\text{dpow}_I(m, \\\\text{dpow}_I(k, x)) = \\\\text{uniformBell}(m, k) \\\\cdot \\\\text{dpow}_I(m \\\\cdot k, x)$.\",\n      \"path\": \"Mathlib.RingTheory.DividedPowers.RatAlgebra\"\n    },\n    {\n      \"formal_name\": \"DividedPowers.dpow_comp\",\n      \"informal_name\": \"Composition of Divided Powers with Uniform Bell Scaling\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {A : Type u_1} [inst : CommSemiring A] {I : Ideal A} (self : DividedPowers I) {m n : ℕ} {x : A},\\n  n ≠ 0 → x ∈ I → self.dpow m (self.dpow n x) = ↑(m.uniformBell n) * self.dpow (m * n) x\",\n      \"informal_description\": \"Let $ A $ be a commutative semiring and $ I $ an ideal of $ A $ equipped with a divided powers structure $ \\\\gamma_n $. For natural numbers $ m, n $ with $ n \\\\neq 0 $ and $ x \\\\in I $, the composition $ \\\\gamma_m(\\\\gamma_n(x)) $ equals the product of the uniform Bell number $ \\\\text{uniformBell}(m, n) $ and $ \\\\gamma_{mn}(x) $. Formally, $ \\\\gamma_m(\\\\gamma_n(x)) = \\\\text{uniformBell}(m, n) \\\\cdot \\\\gamma_{mn}(x) $.\",\n      \"path\": \"Mathlib.RingTheory.DividedPowers.Basic\"\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "items": [
+        {
+          "formal_name": "DividedPowers.factorial_mul_dpow_eq_pow",
+          "informal_name": "Factorial-Divided Power Identity: $n! \\cdot \\gamma_n(a) = a^n$",
+          "kind": "theorem",
+          "type": "∀ {A : Type u_1} [inst : CommSemiring A] {I : Ideal A} {a : A} (hI : DividedPowers I) {n : ℕ},\n  a ∈ I → ↑n.factorial * hI.dpow n a = a ^ n",
+          "informal_description": "For any natural number $n$ and element $a$ in the ideal $I$, the product of $n!$ (cast to the semiring $A$) and the $n$-th divided power of $a$ equals $a$ raised to the $n$-th power, i.e., $n! \\cdot \\gamma_n(a) = a^n$.",
+          "path": "Mathlib.RingTheory.DividedPowers.Basic"
+        },
+        {
+          "formal_name": "Polynomial.factorial_smul_hasseDeriv",
+          "informal_name": "Factorial Scaling of Hasse Derivative Equals Iterated Derivative",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} [inst : Semiring R] (k : ℕ), ⇑(k.factorial • Polynomial.hasseDeriv k) = (⇑Polynomial.derivative)^[k]",
+          "informal_description": "For any semiring $ R $, the $ k $-th Hasse derivative operator on the polynomial ring $ R[X] $, when multiplied by $ k! $, equals the $ k $-th iterate of the standard derivative operator. Formally, $ k! \\cdot D^{(k)} = (\\frac{d}{dX})^k $, where $ D^{(k)} $ denotes the Hasse derivative of order $ k $.",
+          "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+        },
+        {
+          "formal_name": "DividedPowers.OfInvertibleFactorial.dpow_comp",
+          "informal_name": "Composition of Divided Powers with Uniform Bell Coefficients",
+          "kind": "theorem",
+          "type": "∀ {A : Type u_1} [inst : CommSemiring A] {I : Ideal A} [inst_1 : DecidablePred fun x => x ∈ I] {n : ℕ},\n  IsUnit ↑(n - 1).factorial →\n    I ^ n = 0 →\n      ∀ {m k : ℕ},\n        k ≠ 0 →\n          ∀ {x : A},\n            x ∈ I →\n              DividedPowers.OfInvertibleFactorial.dpow I m (DividedPowers.OfInvertibleFactorial.dpow I k x) =\n                ↑(m.uniformBell k) * DividedPowers.OfInvertibleFactorial.dpow I (m * k) x",
+          "informal_description": "Under the conditions that $(n-1)!$ is invertible in $A$ and $I^n = 0$, for all natural numbers $m, k$ with $k \\neq 0$ and $x \\in I$, the composition of the divided power operations $\\text{dpow}\\, m$ and $\\text{dpow}\\, k$ applied to $x$ equals the product of the uniform Bell number $\\text{uniformBell}(m, k)$ and the divided power operation $\\text{dpow}\\, (m \\cdot k)$ applied to $x$.",
+          "path": "Mathlib.RingTheory.DividedPowers.RatAlgebra"
+        },
+        {
+          "formal_name": "DividedPowers.OfInvertibleFactorial.dpow_comp_of_mul_lt",
+          "informal_name": "Composition of Divided Powers with Uniform Bell Number",
+          "kind": "theorem",
+          "type": "∀ {A : Type u_1} [inst : CommSemiring A] {I : Ideal A} [inst_1 : DecidablePred fun x => x ∈ I] {n : ℕ},\n  IsUnit ↑(n - 1).factorial →\n    ∀ {m k : ℕ},\n      k ≠ 0 →\n        m * k < n →\n          ∀ {x : A},\n            x ∈ I →\n              DividedPowers.OfInvertibleFactorial.dpow I m (DividedPowers.OfInvertibleFactorial.dpow I k x) =\n                ↑(m.uniformBell k) * DividedPowers.OfInvertibleFactorial.dpow I (m * k) x",
+          "informal_description": "For natural numbers $m, k$ (with $k \\neq 0$) and an element $x$ in an ideal $I$ of a semiring $A$, if $(n-1)!$ is invertible in $A$ and $m \\cdot k < n$, then the $m$-th divided power of the $k$-th divided power of $x$ equals the uniform Bell number $\\text{uniformBell}(m, k)$ multiplied by the $(m \\cdot k)$-th divided power of $x$. Formally, $\\text{dpow}_I(m, \\text{dpow}_I(k, x)) = \\text{uniformBell}(m, k) \\cdot \\text{dpow}_I(m \\cdot k, x)$.",
+          "path": "Mathlib.RingTheory.DividedPowers.RatAlgebra"
+        },
+        {
+          "formal_name": "DividedPowers.dpow_comp",
+          "informal_name": "Composition of Divided Powers with Uniform Bell Scaling",
+          "kind": "theorem",
+          "type": "∀ {A : Type u_1} [inst : CommSemiring A] {I : Ideal A} (self : DividedPowers I) {m n : ℕ} {x : A},\n  n ≠ 0 → x ∈ I → self.dpow m (self.dpow n x) = ↑(m.uniformBell n) * self.dpow (m * n) x",
+          "informal_description": "Let $ A $ be a commutative semiring and $ I $ an ideal of $ A $ equipped with a divided powers structure $ \\gamma_n $. For natural numbers $ m, n $ with $ n \\neq 0 $ and $ x \\in I $, the composition $ \\gamma_m(\\gamma_n(x)) $ equals the product of the uniform Bell number $ \\text{uniformBell}(m, n) $ and $ \\gamma_{mn}(x) $. Formally, $ \\gamma_m(\\gamma_n(x)) = \\text{uniformBell}(m, n) \\cdot \\gamma_{mn}(x) $.",
+          "path": "Mathlib.RingTheory.DividedPowers.Basic"
+        }
+      ]
+    },
+    "isError": false
+  }
+}

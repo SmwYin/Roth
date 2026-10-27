@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 24/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 25/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 24; remaining: 269.
-- Verdicts: 4 NO-composable-from-mathlib, 10 YES-add-as-is, 0 YES-but-generalise-first, 0 NO-mathlib-has-it, 7 BORDERLINE-needs-human, 3 SKIP.
+- Completed applicable assessments: 25; remaining: 268.
+- Verdicts: 4 NO-composable-from-mathlib, 11 YES-add-as-is, 0 YES-but-generalise-first, 0 NO-mathlib-has-it, 7 BORDERLINE-needs-human, 3 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -285,6 +285,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: count: 2; callers: Roth.abs_coeff_hasseDeriv_le at Roth/CoeffNorm.lean:140, Roth.normOne_hasseDeriv_le at Roth/CoeffNorm.lean:157; scope: Explicit source references, not opaque kernel/simp closure
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/MvPolynomial.hasseCoeff_le_two_pow.md).
 
+### Completed: `MvPolynomial.factorial_smul_hasseDeriv_single`
+
+- Type: `theorem`
+- What: n! times coordinate Hasse derivative equals iterated partial differentiation over any commutative semiring.
+- How: Induct on order using scalar compatibility and pderiv_hasseDeriv recurrence.
+- Hypotheses: Arbitrary σ,R, CommSemiring R, coordinate j, natural order n and polynomial P.
+- Project dependencies: MvPolynomial.hasseDeriv, MvPolynomial.hasseDeriv_zero, MvPolynomial.pderiv_hasseDeriv
+- Caller summary: 0 explicit proof callers; 1 module-doc reference; inline audit found no rederivation. Not opaque kernel dependency closure.
+- Verdict: YES-add-as-is; [complete report](.mathlib-quality/overview/mathlibable/MvPolynomial.factorial_smul_hasseDeriv_single.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -359,6 +369,8 @@ Completed `MvPolynomial.uniqueAlgEquiv_hasseDeriv`: Univariate Hasse and canonic
 
 Completed `MvPolynomial.hasseCoeff_le_two_pow`: Five actual methods on three forms identify scalar choose bound and generic product/power infrastructure. Four substantive facts needed; local index unavailable.
 
+Completed `MvPolynomial.factorial_smul_hasseDeriv_single`: Polynomial.factorial_smul_hasseDeriv and LaurentSeries.derivative_iterate are analogous different domains; commutative ideal DividedPowers not arbitrary operator composition.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -408,6 +420,8 @@ Completed `MvPolynomial.hasseDeriv_single_aeval_X`: A short basis-ext and defini
 Completed `MvPolynomial.uniqueAlgEquiv_hasseDeriv`: Equivalent to coordinate aeval compatibility in the unique-variable case, but that bridge is project API. Generic linear conjugacy needs normalization.
 
 Completed `MvPolynomial.hasseCoeff_le_two_pow`: Hasse-named packaging of a finite-product natural combinatorial bound; not an exact named replacement claim.
+
+Completed `MvPolynomial.factorial_smul_hasseDeriv_single`: Shared generic additive recurrence induction, compiled for Polynomial and MvPolynomial; no exact pinned replacement.
 
 ## Part 5: Generalization opportunities
 
@@ -462,6 +476,8 @@ Completed `MvPolynomial.uniqueAlgEquiv_hasseDeriv`: No strict weakening verified
 
 Completed `MvPolynomial.hasseCoeff_le_two_pow`: Verified same conclusion with hk only on d.support; stronger support-sum form needs no Fintype. Raw finite-set form uses ordinary functions.
 
+Completed `MvPolynomial.factorial_smul_hasseDeriv_single`: MAXIMALLY GENERAL for fixed CommSemiring MvPolynomial/pderiv interface; no verified literal weakening. Q8 fires; meaningful shared induction extraction compiled with two consumers, but not mandatory replacement of canonical coordinate compatibility theorem. Concrete recurrence obligations remain.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -512,6 +528,8 @@ Completed `MvPolynomial.hasseDeriv_single_aeval_X`: Public coordinate compatibil
 Completed `MvPolynomial.uniqueAlgEquiv_hasseDeriv`: Public API choice for unique-variable Hasse transport beside proposed multivariate Hasse operator.
 
 Completed `MvPolynomial.hasseCoeff_le_two_pow`: Design choice whether general Finset/Nat binomial-product estimate merits named upstream API.
+
+Completed `MvPolynomial.factorial_smul_hasseDeriv_single`: Characteristic-free multivariate Hasse to iterated partial compatibility.
 
 ## Part 7: Junk / removable
 
@@ -566,6 +584,8 @@ Completed `MvPolynomial.uniqueAlgEquiv_hasseDeriv`: False
 
 Completed `MvPolynomial.hasseCoeff_le_two_pow`: False
 
+Completed `MvPolynomial.factorial_smul_hasseDeriv_single`: Unused explicitly in project; retain as standard canonical operator compatibility API, not evidence of hidden callers.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -594,6 +614,7 @@ Completed `MvPolynomial.hasseCoeff_le_two_pow`: False
 | 22 | `MvPolynomial.hasseDeriv_single_aeval_X` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.hasseDeriv_single_aeval_X.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_single_aeval_X/root-acceptance.json) |
 | 23 | `MvPolynomial.uniqueAlgEquiv_hasseDeriv` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.uniqueAlgEquiv_hasseDeriv.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.uniqueAlgEquiv_hasseDeriv/root-acceptance.json) |
 | 24 | `MvPolynomial.hasseCoeff_le_two_pow` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.hasseCoeff_le_two_pow.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.hasseCoeff_le_two_pow/root-acceptance.json) |
+| 25 | `MvPolynomial.factorial_smul_hasseDeriv_single` | YES-add-as-is | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.factorial_smul_hasseDeriv_single.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.factorial_smul_hasseDeriv_single/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -641,11 +662,13 @@ Completed `MvPolynomial.uniqueAlgEquiv_hasseDeriv` action: BORDERLINE: retain lo
 
 Completed `MvPolynomial.hasseCoeff_le_two_pow` action: BORDERLINE: retain locally pending three concrete API questions; migrate both CoeffNorm consumers if later wrapper omitted.
 
+Completed `MvPolynomial.factorial_smul_hasseDeriv_single` action: YES-add-as-is; upstream with base Hasse and pderiv recurrence family, optional common induction helper.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `MvPolynomial.factorial_smul_hasseDeriv_single` next. Supporting identities receive their own applicable checks.
+   `Roth.box` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.

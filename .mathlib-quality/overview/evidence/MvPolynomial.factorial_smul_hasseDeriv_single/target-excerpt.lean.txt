@@ -1,0 +1,13 @@
+/-- `n! • Δ_{n e_j} = ∂_j ^ n`; as for `Polynomial.factorial_smul_hasseDeriv`, this holds over
+any commutative semiring. Over a `ℚ`-algebra it identifies `Δ_{n e_j}` with `(1 / n!) ∂_j ^ n`.
+
+Source: §1. -/
+theorem factorial_smul_hasseDeriv_single (j : σ) (n : ℕ) (P : MvPolynomial σ R) :
+    (n.factorial : R) • hasseDeriv (Finsupp.single j n) P = (⇑(pderiv (R := R) j))^[n] P := by
+  induction n with
+  | zero => simp
+  | succ n ih =>
+    rw [Function.iterate_succ_apply', ← ih, Derivation.map_smul, pderiv_hasseDeriv, smul_smul,
+      Finsupp.single_eq_same, ← Finsupp.single_add, Nat.factorial_succ, Nat.cast_mul, mul_comm]
+
+end MvPolynomial
