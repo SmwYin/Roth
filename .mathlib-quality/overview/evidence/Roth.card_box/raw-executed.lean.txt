@@ -1,0 +1,44 @@
+import Mathlib.Data.Finsupp.Interval
+import Mathlib.Algebra.BigOperators.Ring.Finset
+import Mathlib.Order.Interval.Finset.Nat
+import Mathlib.SetTheory.Cardinal.Finite
+
+namespace RawCardBoxAssessment
+variable {σ : Type*} [Fintype σ] [DecidableEq σ]
+noncomputable def mapped_box (r : σ → ℕ) : Finset (σ →₀ ℕ) :=
+  (Fintype.piFinset fun j ↦ Finset.range (r j + 1)).map
+    Finsupp.equivFunOnFinite.symm.toEmbedding
+theorem original_three_facts (r : σ → ℕ) : (mapped_box r).card = ∏ j, (r j + 1) :=
+  (Finset.card_map _).trans ((Fintype.card_piFinset _).trans
+    (congrArg (fun f : σ → ℕ ↦ ∏ j, f j) (funext fun j ↦ Finset.card_range (r j + 1))))
+theorem dependent_mapped {β : σ → Type*} {γ : Type*}
+    (s : ∀ j, Finset (β j)) (e : (∀ j, β j) ↪ γ) :
+    ((Fintype.piFinset s).map e).card = ∏ j, (s j).card :=
+  (Finset.card_map _).trans (Fintype.card_piFinset s)
+theorem nat_card_shape (r : σ → ℕ) :
+    (mapped_box r).card = ∏ j, Nat.card (Fin (r j + 1)) := by
+  simpa using original_three_facts r
+omit [Fintype σ] in
+theorem support_card (r : σ →₀ ℕ) :
+    (Finset.Iic r).card = ∏ j ∈ r.support, (r j + 1) := by
+  rw [Finsupp.card_Iic]
+  simp
+theorem interval_global (r : σ → ℕ) :
+    (Finset.Iic (Finsupp.equivFunOnFinite.symm r)).card = ∏ j, (r j + 1) := by
+  rw [Finsupp.card_Iic]
+  change (Finsupp.equivFunOnFinite.symm r).prod (fun _ n ↦ (Finset.Iic n).card) = _
+  rw [Finsupp.prod_fintype _ _ (fun _ ↦ by simp)]
+  simp
+#check @Finset.card_map
+#check @Fintype.card_piFinset
+#check @Finset.card_range
+#check @Finsupp.card_Iic
+#check @Nat.card_fin
+#check_failure Roth.card_box
+#print axioms mapped_box
+#print axioms original_three_facts
+#print axioms dependent_mapped
+#print axioms nat_card_shape
+#print axioms support_card
+#print axioms interval_global
+end RawCardBoxAssessment

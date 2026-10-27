@@ -3,7 +3,7 @@
 Status: **in_progress**, 2026-10-26. Branch: `ramin-cleanup`.
 Production Lean files and all pins match baseline `99f19fd`.
 
-**Completed: 28 / 293 written declarations.**
+**Completed: 29 / 293 written declarations.**
 This counts the current overview assessments, separately from the earlier code cleanup.
 
 | # | Completed declaration | Applicable workflow | Verdict | Report |
@@ -36,8 +36,9 @@ This counts the current overview assessments, separately from the earlier code c
 | 26 | `Roth.box` | full-mathlibable; accepted complete | NO-composable-from-mathlib | [Detailed report](mathlibable/Roth.box.md) |
 | 27 | `Roth.weight` | full-mathlibable; accepted complete | NO-mathlib-has-it | [Detailed report](mathlibable/Roth.weight.md) |
 | 28 | `Roth.mem_box` | full-mathlibable; accepted complete | NO-composable-from-mathlib | [Detailed report](mathlibable/Roth.mem_box.md) |
+| 29 | `Roth.card_box` | full-mathlibable; accepted complete | NO-composable-from-mathlib | [Detailed report](mathlibable/Roth.card_box.md) |
 
-**Next declaration: `Roth.card_box`**, `Roth/Box.lean:57`.
+**Next declaration: `Roth.card_le_card_box`**, `Roth/Box.lean:65`.
 Only the listed assessments are complete. No partial assessment was committed.
 
 On restart: read [README](README.md), [machine progress](progress.json), and

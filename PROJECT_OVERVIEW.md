@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 28/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 29/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 28; remaining: 265.
-- Verdicts: 6 NO-composable-from-mathlib, 11 YES-add-as-is, 0 YES-but-generalise-first, 1 NO-mathlib-has-it, 7 BORDERLINE-needs-human, 3 SKIP.
+- Completed applicable assessments: 29; remaining: 264.
+- Verdicts: 7 NO-composable-from-mathlib, 11 YES-add-as-is, 0 YES-but-generalise-first, 1 NO-mathlib-has-it, 7 BORDERLINE-needs-human, 3 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -325,6 +325,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: 9 explicit references in7 declaration callers,8 external references across5 files.
 - Verdict: NO-composable-from-mathlib; [complete report](.mathlib-quality/overview/mathlibable/Roth.mem_box.md).
 
+### Completed: `Roth.card_box`
+
+- Type: `theorem`
+- What: Counts bounded natural multi-indices as product of coordinate sizes.
+- How: Map cardinality, dependent finite-product cardinality, natural range cardinality.
+- Hypotheses: Universe-polymorphic σ; Fintype σ; DecidableEq σ parent-interface; arbitrary r:σ→ℕ.
+- Project dependencies: Roth.box
+- Caller summary: 3 source occurrences: card_le_card_box, private lattice count helper, abs_eval_lt_of_le_index; 2 external files.
+- Verdict: NO-composable-from-mathlib; [complete report](.mathlib-quality/overview/mathlibable/Roth.card_box.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -407,6 +417,8 @@ Completed `Roth.weight`: Exact general existing Finsupp.weight specialized to �
 
 Completed `Roth.mem_box`: Finset.mem_map_equiv, Fintype.mem_piFinset, Finset.mem_range_succ_iff, Finset.mem_Iic, Finsupp.le_def
 
+Completed `Roth.card_box`: Finset.card_map, Fintype.card_piFinset, Finset.card_range, Finsupp.card_Iic, Finsupp.prod_fintype, Nat.card_Iic
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -464,6 +476,8 @@ Completed `Roth.box`: Principal lower interval of Finsupp pointwise order, MainL
 Completed `Roth.weight`: Finsupp.weight, Finsupp.linearCombination
 
 Completed `Roth.mem_box`: Box API duplicates existing product/interval membership.
+
+Completed `Roth.card_box`: Generic finite Cartesian-product counting.
 
 ## Part 5: Generalization opportunities
 
@@ -526,6 +540,8 @@ Completed `Roth.weight`: Native arbitrary-index finite-support and AddCommMonoid
 
 Completed `Roth.mem_box`: Existing generic interval; finite-only and arbitrary finite-support bounds verified after parent reaim.
 
+Completed `Roth.card_box`: Mapped arbitrary dependent finite coordinate sets; support-indexed lower intervals. Already existing APIs. Scoped Classical hides decision instance rather than proving independence.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -584,6 +600,8 @@ Completed `Roth.box`: None for constructing box; interval sum/product bridge a s
 Completed `Roth.weight`: No missing API for definition; assess re-aimed dependent order/index lemmas separately.
 
 Completed `Roth.mem_box`: None established.
+
+Completed `Roth.card_box`: None
 
 ## Part 7: Junk / removable
 
@@ -646,6 +664,8 @@ Completed `Roth.weight`: No sorry/unsafe/raised limits; upstream duplicate, loca
 
 Completed `Roth.mem_box`: Not dead:7 caller declarations. Thin wrapper candidate.
 
+Completed `Roth.card_box`: Useful local API with 3 consumers, redundant as upstream addition.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -678,6 +698,7 @@ Completed `Roth.mem_box`: Not dead:7 caller declarations. Thin wrapper candidate
 | 26 | `Roth.box` | NO-composable-from-mathlib | [Report](.mathlib-quality/overview/mathlibable/Roth.box.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.box/root-acceptance.json) |
 | 27 | `Roth.weight` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.weight.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.weight/root-acceptance.json) |
 | 28 | `Roth.mem_box` | NO-composable-from-mathlib | [Report](.mathlib-quality/overview/mathlibable/Roth.mem_box.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.mem_box/root-acceptance.json) |
+| 29 | `Roth.card_box` | NO-composable-from-mathlib | [Report](.mathlib-quality/overview/mathlibable/Roth.card_box.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.card_box/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -733,11 +754,13 @@ Completed `Roth.weight` action: NO-mathlib-has-it; migrate 30 callers per report
 
 Completed `Roth.mem_box` action: Delete mem_box during cleanup; inline exact three-fact term or expand box in explicit simp sites; optionally migrate parent to Iic.
 
+Completed `Roth.card_box` action: NO-composable-from-mathlib; coordinate delete with all 3 explicit caller rewrites; no production changes in assessment.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.card_box` next. Supporting identities receive their own applicable checks.
+   `Roth.card_le_card_box` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.

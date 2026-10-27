@@ -1,0 +1,33 @@
+{
+  "count": 3,
+  "declaration_callers": 3,
+  "external_files": [
+    "Roth/Lattice.lean",
+    "Roth/Main.lean"
+  ],
+  "rows": [
+    {
+      "file": "Roth/Box.lean",
+      "line": 68,
+      "caller": "Roth.card_le_card_box",
+      "use": "trans_eq (card_box r)",
+      "refactor": "replace equality term with explicit 3-fact composition"
+    },
+    {
+      "file": "Roth/Lattice.lean",
+      "line": 163,
+      "caller": "Roth.card_filter_weight_le_of_le_sqrt_aux",
+      "use": "simp [card_box]",
+      "refactor": "establish natural card equality via 3-fact composition, rewrite it then Nat.cast_prod/Nat.cast_add/Nat.cast_one"
+    },
+    {
+      "file": "Roth/Main.lean",
+      "line": 405,
+      "caller": "Roth.abs_eval_lt_of_le_index",
+      "use": "rw [Finset.sum_const, card_box, nsmul_eq_mul]",
+      "refactor": "replace card_box rewrite by local explicit card equality; keep sum_const/nsmul/cast normalization"
+    }
+  ],
+  "inline_derivation_count": 0,
+  "inline_note": "Original simp [box] is the declaration itself; independent boxFamily ncard in MainLemma is a coefficient-family counting theorem with different domain. Source refs do not claim opaque kernel closure."
+}
