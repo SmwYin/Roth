@@ -1,0 +1,85 @@
+{
+  "form": "current",
+  "method": "leanfinder",
+  "request": {
+    "query": "If integers u_i have gcd 1 and all u_i * v are integers, then the rational v is an integer",
+    "num_results": 8
+  },
+  "response": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Tactic.NormNum.isInt_ratNum\",\n      \"informal_name\": \"Numerator of Reduced Rational Number\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {q : ℚ} {n : ℤ} {n' d : ℕ},\\n  Mathlib.Meta.NormNum.IsRat q n d → n.natAbs = n' → n'.gcd d = 1 → Mathlib.Meta.NormNum.IsInt q.num n\",\n      \"informal_description\": \"If a rational number $ q $ is represented as $ \\\\frac{n}{d} $ with $ n' = |n| $, $ d \\\\in \\\\mathbb{N} $, and $ \\\\gcd(n', d) = 1 $, then the numerator of $ q $ is equal to the integer $ n $.\",\n      \"path\": \"Mathlib.Tactic.NormNum.GCD\"\n    },\n    {\n      \"formal_name\": \"Mathlib.Meta.NormNum.IsRat.to_isInt\",\n      \"informal_name\": \"Rational to Integer Conversion in Rings with Denominator One\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} [inst : Ring α] {a : α} {n : ℤ}, Mathlib.Meta.NormNum.IsRat a n 1 → Mathlib.Meta.NormNum.IsInt a n\",\n      \"informal_description\": \"For any ring $\\\\alpha$ and element $a \\\\in \\\\alpha$, if $a$ is equal to the rational number $\\\\frac{n}{1}$ (i.e., $\\\\mathrm{IsRat}(a, n, 1)$), then $a$ is equal to the integer $n$ (i.e., $\\\\mathrm{IsInt}(a, n)$).\",\n      \"path\": \"Mathlib.Tactic.NormNum.Result\"\n    },\n    {\n      \"formal_name\": \"Tactic.NormNum.isInt_isCoprime\",\n      \"informal_name\": \"Coprime Integers Imply Coprimality in Integer Ring\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {x y nx ny : ℤ}, Mathlib.Meta.NormNum.IsInt x nx → Mathlib.Meta.NormNum.IsInt y ny → IsCoprime nx ny → IsCoprime x y\",\n      \"informal_description\": \"If two integers $ nx $ and $ ny $ are coprime, then their corresponding elements $ x $ and $ y $ in the ring of integers are also coprime.\",\n      \"path\": \"Mathlib.Tactic.NormNum.IsCoprime\"\n    },\n    {\n      \"formal_name\": \"EisensteinSeries.gammaSet_eq_gcd_mul_divIntMap\",\n      \"informal_name\": \"Gamma Set Element Decomposition as GCD Multiple\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {r : ℕ} {v : Fin 2 → ℤ}, v ∈ EisensteinSeries.gammaSet 1 r 0 → v = r • EisensteinSeries.divIntMap (↑r) v\",\n      \"informal_description\": \"For any integer vector $ v = (x, y) $ with $ \\\\gcd(x, y) = r $, it holds that $ v = r \\\\cdot \\\\left( \\\\frac{x}{r}, \\\\frac{y}{r} \\\\right) $.\",\n      \"path\": \"Mathlib.NumberTheory.ModularForms.EisensteinSeries.Defs\"\n    },\n    {\n      \"formal_name\": \"Tactic.NormNum.isInt_not_isCoprime\",\n      \"informal_name\": \"Non-Coprime Integers Imply Non-Coprime Elements in the Ring\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {x y nx ny : ℤ}, Mathlib.Meta.NormNum.IsInt x nx → Mathlib.Meta.NormNum.IsInt y ny → ¬IsCoprime nx ny → ¬IsCoprime x y\",\n      \"informal_description\": \"If two integers $n$ and $m$ are not coprime, then their canonical embeddings $x = n$ and $y = m$ into any ring are also not coprime as elements of that ring.\",\n      \"path\": \"Mathlib.Tactic.NormNum.IsCoprime\"\n    },\n    {\n      \"formal_name\": \"Rat.div_int_inj\",\n      \"informal_name\": \"Injectivity of Reduced Integer Division in Rationals\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {a b c d : ℤ},\\n  0 < b → 0 < d → a.natAbs.Coprime b.natAbs → c.natAbs.Coprime d.natAbs → ↑a / ↑b = ↑c / ↑d → a = c ∧ b = d\",\n      \"informal_description\": \"For integers $a,b,c,d$ with $b>0$, $d>0$, and $\\\\gcd(|a|,|b|)=\\\\gcd(|c|,|d|)=1$, if $\\\\frac{a}{b} = \\\\frac{c}{d}$ in $\\\\mathbb{Q}$, then $a=c$ and $b=d$.\",\n      \"path\": \"Mathlib.Data.Rat.Lemmas\"\n    },\n    {\n      \"formal_name\": \"Rat.num_den_mk\",\n      \"informal_name\": \"Rational Number Numerator-Denominator Factorization\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {q : ℚ} {n d : ℤ}, d ≠ 0 → q = Rat.divInt n d → ∃ c, n = c * q.num ∧ d = c * ↑q.den\",\n      \"informal_description\": \"For any rational number $q$ and integers $n, d$ with $d \\\\neq 0$ such that $q = \\\\frac{n}{d}$, there exists an integer $c$ such that $n = c \\\\cdot \\\\text{num}(q)$ and $d = c \\\\cdot \\\\text{den}(q)$, where $\\\\text{num}(q)$ and $\\\\text{den}(q)$ denote the numerator and denominator of $q$ in reduced form.\",\n      \"path\": \"Mathlib.Data.Rat.Lemmas\"\n    },\n    {\n      \"formal_name\": \"Rat.exists_eq_mul_div_num_and_eq_mul_div_den\",\n      \"informal_name\": \"Existence of a Common Integer Factor for Rational Number Representation\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (n : ℤ) {d : ℤ}, d ≠ 0 → ∃ c, n = c * (↑n / ↑d).num ∧ d = c * ↑(↑n / ↑d).den\",\n      \"informal_description\": \"For any integers $n$ and $d$ with $d \\\\neq 0$, there exists an integer $c$ such that $n = c \\\\cdot \\\\text{num}(n/d)$ and $d = c \\\\cdot \\\\text{den}(n/d)$, where $\\\\text{num}(n/d)$ and $\\\\text{den}(n/d)$ denote the numerator and denominator of the rational number $n/d$ in its reduced form.\",\n      \"path\": \"Mathlib.Data.Rat.Lemmas\"\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "items": [
+        {
+          "formal_name": "Tactic.NormNum.isInt_ratNum",
+          "informal_name": "Numerator of Reduced Rational Number",
+          "kind": "theorem",
+          "type": "∀ {q : ℚ} {n : ℤ} {n' d : ℕ},\n  Mathlib.Meta.NormNum.IsRat q n d → n.natAbs = n' → n'.gcd d = 1 → Mathlib.Meta.NormNum.IsInt q.num n",
+          "informal_description": "If a rational number $ q $ is represented as $ \\frac{n}{d} $ with $ n' = |n| $, $ d \\in \\mathbb{N} $, and $ \\gcd(n', d) = 1 $, then the numerator of $ q $ is equal to the integer $ n $.",
+          "path": "Mathlib.Tactic.NormNum.GCD"
+        },
+        {
+          "formal_name": "Mathlib.Meta.NormNum.IsRat.to_isInt",
+          "informal_name": "Rational to Integer Conversion in Rings with Denominator One",
+          "kind": "theorem",
+          "type": "∀ {α : Type u_1} [inst : Ring α] {a : α} {n : ℤ}, Mathlib.Meta.NormNum.IsRat a n 1 → Mathlib.Meta.NormNum.IsInt a n",
+          "informal_description": "For any ring $\\alpha$ and element $a \\in \\alpha$, if $a$ is equal to the rational number $\\frac{n}{1}$ (i.e., $\\mathrm{IsRat}(a, n, 1)$), then $a$ is equal to the integer $n$ (i.e., $\\mathrm{IsInt}(a, n)$).",
+          "path": "Mathlib.Tactic.NormNum.Result"
+        },
+        {
+          "formal_name": "Tactic.NormNum.isInt_isCoprime",
+          "informal_name": "Coprime Integers Imply Coprimality in Integer Ring",
+          "kind": "theorem",
+          "type": "∀ {x y nx ny : ℤ}, Mathlib.Meta.NormNum.IsInt x nx → Mathlib.Meta.NormNum.IsInt y ny → IsCoprime nx ny → IsCoprime x y",
+          "informal_description": "If two integers $ nx $ and $ ny $ are coprime, then their corresponding elements $ x $ and $ y $ in the ring of integers are also coprime.",
+          "path": "Mathlib.Tactic.NormNum.IsCoprime"
+        },
+        {
+          "formal_name": "EisensteinSeries.gammaSet_eq_gcd_mul_divIntMap",
+          "informal_name": "Gamma Set Element Decomposition as GCD Multiple",
+          "kind": "theorem",
+          "type": "∀ {r : ℕ} {v : Fin 2 → ℤ}, v ∈ EisensteinSeries.gammaSet 1 r 0 → v = r • EisensteinSeries.divIntMap (↑r) v",
+          "informal_description": "For any integer vector $ v = (x, y) $ with $ \\gcd(x, y) = r $, it holds that $ v = r \\cdot \\left( \\frac{x}{r}, \\frac{y}{r} \\right) $.",
+          "path": "Mathlib.NumberTheory.ModularForms.EisensteinSeries.Defs"
+        },
+        {
+          "formal_name": "Tactic.NormNum.isInt_not_isCoprime",
+          "informal_name": "Non-Coprime Integers Imply Non-Coprime Elements in the Ring",
+          "kind": "theorem",
+          "type": "∀ {x y nx ny : ℤ}, Mathlib.Meta.NormNum.IsInt x nx → Mathlib.Meta.NormNum.IsInt y ny → ¬IsCoprime nx ny → ¬IsCoprime x y",
+          "informal_description": "If two integers $n$ and $m$ are not coprime, then their canonical embeddings $x = n$ and $y = m$ into any ring are also not coprime as elements of that ring.",
+          "path": "Mathlib.Tactic.NormNum.IsCoprime"
+        },
+        {
+          "formal_name": "Rat.div_int_inj",
+          "informal_name": "Injectivity of Reduced Integer Division in Rationals",
+          "kind": "theorem",
+          "type": "∀ {a b c d : ℤ},\n  0 < b → 0 < d → a.natAbs.Coprime b.natAbs → c.natAbs.Coprime d.natAbs → ↑a / ↑b = ↑c / ↑d → a = c ∧ b = d",
+          "informal_description": "For integers $a,b,c,d$ with $b>0$, $d>0$, and $\\gcd(|a|,|b|)=\\gcd(|c|,|d|)=1$, if $\\frac{a}{b} = \\frac{c}{d}$ in $\\mathbb{Q}$, then $a=c$ and $b=d$.",
+          "path": "Mathlib.Data.Rat.Lemmas"
+        },
+        {
+          "formal_name": "Rat.num_den_mk",
+          "informal_name": "Rational Number Numerator-Denominator Factorization",
+          "kind": "theorem",
+          "type": "∀ {q : ℚ} {n d : ℤ}, d ≠ 0 → q = Rat.divInt n d → ∃ c, n = c * q.num ∧ d = c * ↑q.den",
+          "informal_description": "For any rational number $q$ and integers $n, d$ with $d \\neq 0$ such that $q = \\frac{n}{d}$, there exists an integer $c$ such that $n = c \\cdot \\text{num}(q)$ and $d = c \\cdot \\text{den}(q)$, where $\\text{num}(q)$ and $\\text{den}(q)$ denote the numerator and denominator of $q$ in reduced form.",
+          "path": "Mathlib.Data.Rat.Lemmas"
+        },
+        {
+          "formal_name": "Rat.exists_eq_mul_div_num_and_eq_mul_div_den",
+          "informal_name": "Existence of a Common Integer Factor for Rational Number Representation",
+          "kind": "theorem",
+          "type": "∀ (n : ℤ) {d : ℤ}, d ≠ 0 → ∃ c, n = c * (↑n / ↑d).num ∧ d = c * ↑(↑n / ↑d).den",
+          "informal_description": "For any integers $n$ and $d$ with $d \\neq 0$, there exists an integer $c$ such that $n = c \\cdot \\text{num}(n/d)$ and $d = c \\cdot \\text{den}(n/d)$, where $\\text{num}(n/d)$ and $\\text{den}(n/d)$ denote the numerator and denominator of the rational number $n/d$ in its reduced form.",
+          "path": "Mathlib.Data.Rat.Lemmas"
+        }
+      ]
+    },
+    "isError": false
+  }
+}

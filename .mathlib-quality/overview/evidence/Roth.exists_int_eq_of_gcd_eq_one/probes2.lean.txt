@@ -1,0 +1,23 @@
+namespace Integral173Probe
+ theorem specialize_generic {ι : Type*} {s : Finset ι} {u : ι → ℤ} (hu : s.gcd u = 1)
+    {v : ℚ} (hv : ∀ a ∈ s, ∃ z : ℤ, (u a : ℚ) * v = z) : ∃ z : ℤ, v = z := by
+  have h := gcd_smul_mem (LinearMap.range (Algebra.linearMap ℤ ℚ)) s u hu v (by
+    intro i hi
+    obtain ⟨z, hz⟩ := hv i hi
+    exact ⟨z, by simpa only [Algebra.linearMap_apply, Algebra.smul_def] using hz.symm⟩)
+  obtain ⟨z, hz⟩ := h
+  exact ⟨z, hz.symm⟩
+ theorem generic_addmonoid {R M ι : Type*} [CommRing R] [IsBezout R]
+    [NormalizedGCDMonoid R] [AddCommMonoid M] [Module R M]
+    (N : Submodule R M) (s : Finset ι) (u : ι → R) (hu : s.gcd u = 1)
+    (v : M) (hv : ∀ i ∈ s, u i • v ∈ N) : v ∈ N := by
+  classical
+  obtain ⟨z, hz⟩ := Finset.gcd_eq_sum_mul s u
+  have h : (∑ i ∈ s, u i * z i) • v ∈ N := by
+    rw [Finset.sum_smul]
+    exact N.sum_mem fun i hi ↦ by
+      simpa only [mul_comm (u i), mul_smul] using N.smul_mem (z i) (hv i hi)
+  simpa only [← hz, hu, one_smul] using h
+#print axioms specialize_generic
+#print axioms generic_addmonoid
+end Integral173Probe

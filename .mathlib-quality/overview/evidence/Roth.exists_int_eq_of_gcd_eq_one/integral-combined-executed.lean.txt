@@ -1,0 +1,96 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
+import Mathlib.LinearAlgebra.FreeModule.PID
+
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+-- Required additional imports: Mathlib.RingTheory.MvPolynomial.Localization
+-- Mathlib.RingTheory.Localization.Integer; Mathlib.RingTheory.Localization.FractionRing
+#check_failure Roth.exists_int_eq_of_gcd_eq_one
+#check @Submodule.mem_of_span_top_of_smul_mem
+#check @Finset.gcd_eq_sum_mul
+#check @LinearMap.range
+#check @Submodule.sum_mem
+namespace Integral173Probe
+theorem gcd_smul_mem {R M ι : Type*} [CommRing R] [IsBezout R]
+    [NormalizedGCDMonoid R] [AddCommGroup M] [Module R M]
+    (N : Submodule R M) (s : Finset ι) (u : ι → R) (hu : s.gcd u = 1)
+    (v : M) (hv : ∀ i ∈ s, u i • v ∈ N) : v ∈ N := by
+  classical
+  obtain ⟨z, hz⟩ := Finset.gcd_eq_sum_mul s u
+  have h : (∑ i ∈ s, u i * z i) • v ∈ N := by
+    rw [Finset.sum_smul]
+    exact N.sum_mem fun i hi ↦ by
+      simpa only [mul_comm (u i), mul_smul] using N.smul_mem (z i) (hv i hi)
+  simpa only [← hz, hu, one_smul] using h
+theorem original {ι : Type*} {s : Finset ι} {u : ι → ℤ} (hu : s.gcd u = 1)
+    {v : ℚ} (hv : ∀ a ∈ s, ∃ z : ℤ, (u a : ℚ) * v = z) : ∃ z : ℤ, v = z := by
+  classical
+  obtain ⟨z, hz⟩ := Finset.gcd_eq_sum_mul s u
+  choose! w hw using hv
+  refine ⟨∑ i ∈ s, z i * w i, ?_⟩
+  calc v = ((∑ i ∈ s, u i * z i : ℤ) : ℚ) * v := by simp [← hz, hu]
+       _ = ((∑ i ∈ s, z i * w i : ℤ) : ℚ) := by
+         push_cast
+         rw [Finset.sum_mul]
+         exact Finset.sum_congr rfl fun i hi ↦ by rw [mul_comm (u i : ℚ), mul_assoc, hw i hi]
+theorem abstract_existing {R M : Type*} [Semiring R] [AddCommMonoid M] [Module R M]
+    (N : Submodule R M) (s : Set R) (hs : Ideal.span s = ⊤) (v : M)
+    (hv : ∀ r : s, (r : R) • v ∈ N) : v ∈ N :=
+  N.mem_of_span_top_of_smul_mem s hs v hv
+#print axioms gcd_smul_mem
+#print axioms original
+#print axioms abstract_existing
+end Integral173Probe
+
+namespace Integral173Probe
+theorem specialize_generic {ι : Type*} {s : Finset ι} {u : ι → ℤ} (hu : s.gcd u = 1)
+    {v : ℚ} (hv : ∀ a ∈ s, ∃ z : ℤ, (u a : ℚ) * v = z) : ∃ z : ℤ, v = z := by
+  have h := gcd_smul_mem (LinearMap.range (Algebra.linearMap ℤ ℚ)) s u hu v (by
+    intro i hi
+    obtain ⟨z, hz⟩ := hv i hi
+    exact ⟨z, by simpa only [Algebra.linearMap_apply, Algebra.smul_def, eq_intCast] using hz.symm⟩)
+  obtain ⟨z, hz⟩ := h
+  exact ⟨z, by simpa only [Algebra.linearMap_apply, eq_intCast] using hz.symm⟩
+theorem generic_addmonoid {R M ι : Type*} [CommRing R] [IsBezout R]
+    [NormalizedGCDMonoid R] [AddCommMonoid M] [Module R M]
+    (N : Submodule R M) (s : Finset ι) (u : ι → R) (hu : s.gcd u = 1)
+    (v : M) (hv : ∀ i ∈ s, u i • v ∈ N) : v ∈ N := by
+  classical
+  obtain ⟨z, hz⟩ := Finset.gcd_eq_sum_mul s u
+  have h : (∑ i ∈ s, u i * z i) • v ∈ N := by
+    rw [Finset.sum_smul]
+    exact N.sum_mem fun i hi ↦ by
+      simpa only [mul_comm (u i), mul_smul] using N.smul_mem (z i) (hv i hi)
+  simpa only [← hz, hu, one_smul] using h
+#print axioms specialize_generic
+#print axioms generic_addmonoid
+end Integral173Probe
+
+namespace Integral173Probe
+theorem gcd_smul_mem_all {R M ι : Type*} [CommRing R] [IsBezout R]
+    [NormalizedGCDMonoid R] [AddCommMonoid M] [Module R M]
+    (N : Submodule R M) (s : Finset ι) (u : ι → R)
+    (v : M) (hv : ∀ i ∈ s, u i • v ∈ N) : s.gcd u • v ∈ N := by
+  classical
+  obtain ⟨z, hz⟩ := Finset.gcd_eq_sum_mul s u
+  rw [hz, Finset.sum_smul]
+  exact N.sum_mem fun i hi ↦ by
+    simpa only [mul_comm (u i), mul_smul] using N.smul_mem (z i) (hv i hi)
+theorem of_isUnit_gcd {R M ι : Type*} [CommRing R] [IsBezout R]
+    [NormalizedGCDMonoid R] [AddCommMonoid M] [Module R M]
+    (N : Submodule R M) (s : Finset ι) (u : ι → R) (hu : IsUnit (s.gcd u))
+    (v : M) (hv : ∀ i ∈ s, u i • v ∈ N) : v ∈ N :=
+  (N.smul_mem_iff_of_isUnit hu).mp (gcd_smul_mem_all N s u v hv)
+#print axioms gcd_smul_mem_all
+#print axioms of_isUnit_gcd
+end Integral173Probe

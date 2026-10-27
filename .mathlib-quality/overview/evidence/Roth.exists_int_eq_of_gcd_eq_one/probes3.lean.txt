@@ -1,0 +1,18 @@
+namespace Integral173Probe
+ theorem gcd_smul_mem_all {R M ι : Type*} [CommRing R] [IsBezout R]
+    [NormalizedGCDMonoid R] [AddCommMonoid M] [Module R M]
+    (N : Submodule R M) (s : Finset ι) (u : ι → R)
+    (v : M) (hv : ∀ i ∈ s, u i • v ∈ N) : s.gcd u • v ∈ N := by
+  classical
+  obtain ⟨z, hz⟩ := Finset.gcd_eq_sum_mul s u
+  rw [hz, Finset.sum_smul]
+  exact N.sum_mem fun i hi ↦ by
+    simpa only [mul_comm (u i), mul_smul] using N.smul_mem (z i) (hv i hi)
+ theorem of_isUnit_gcd {R M ι : Type*} [CommRing R] [IsBezout R]
+    [NormalizedGCDMonoid R] [AddCommMonoid M] [Module R M]
+    (N : Submodule R M) (s : Finset ι) (u : ι → R) (hu : IsUnit (s.gcd u))
+    (v : M) (hv : ∀ i ∈ s, u i • v ∈ N) : v ∈ N :=
+  (N.smul_mem_iff_of_isUnit hu).mp (gcd_smul_mem_all N s u v hv)
+#print axioms gcd_smul_mem_all
+#print axioms of_isUnit_gcd
+end Integral173Probe

@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 172/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 173/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 172; remaining: 121.
-- Verdicts: 18 NO-composable-from-mathlib, 13 YES-add-as-is, 22 YES-but-generalise-first, 37 NO-mathlib-has-it, 52 BORDERLINE-needs-human, 30 SKIP.
+- Completed applicable assessments: 173; remaining: 120.
+- Verdicts: 18 NO-composable-from-mathlib, 13 YES-add-as-is, 23 YES-but-generalise-first, 37 NO-mathlib-has-it, 52 BORDERLINE-needs-human, 30 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -1955,6 +1955,17 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: explicit use count: 1; declaration occurrences: 1; callers: {'name': 'Roth.exists_int_factors', 'file': 'Roth/Separation.lean', 'line': 491, 'role': 'Uses all scalar/map/gcd1 conclusions to descend separated factors and preserve degrees.'}; direct kernel value consumers: Roth.exists_int_factors; inline rederivations: 0; scope: Complete canonical production inventory, git grep and rg --no-ignore; direct kernel values are distinct from transitive/simp dependencies.
 - Verdict: YES-but-generalise-first; [complete report](.mathlib-quality/overview/mathlibable/Roth.exists_primitive_smul_eq.md).
 
+### Completed: `Roth.exists_int_eq_of_gcd_eq_one`
+
+- Type: `∀ {ι : Type u_2} {s : Finset ι} {u : ι → ℤ},
+  s.gcd u = 1 → ∀ {v : ℚ}, (∀ a ∈ s, ∃ (z : ℤ), ↑(u a) * v = ↑z) → ∃ (z : ℤ), v = ↑z`
+- What: A finite gcd-one integer family detects integrality of a rational scalar from integrality of all selected products.
+- How: Use finite Bezout coefficients, choose integer product witnesses, and take their integer weighted sum; the generic proof uses submodule closure under finite sums/scalars.
+- Hypotheses: arbitrary index type ι, finite subset s, integer coefficient family u, s.gcd u = 1, each (u a : ℚ) * v has an integer witness for a∈s
+- Project dependencies: Roth.exists_sum_mul_eq_gcd
+- Caller summary: explicit use count: 1; callers: {'name': '_private.Roth.Separation.0.Roth.exists_int_polynomial_of_primitive_factor_aux', 'file': 'Roth/Separation.lean', 'line': 473}; direct kernel value consumers: _private.Roth.Separation.0.Roth.exists_int_polynomial_of_primitive_factor_aux; inline rederivations: 0; kernel scope: 293 canonical declaration values, direct consumers only
+- Verdict: YES-but-generalise-first; [complete report](.mathlib-quality/overview/mathlibable/Roth.exists_int_eq_of_gcd_eq_one.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -2325,6 +2336,8 @@ Completed `Roth.exists_nat_smul_eq_map`: methods: 15; existing: IsLocalization.e
 
 Completed `Roth.exists_primitive_smul_eq`: verdict: YES-but-generalise-first; fifteen actual search cells: True; building blocks: Finset.extract_gcd, Finset.gcd_eq_zero_iff, MvPolynomial.isLocalization, IsLocalization.exists_integer_multiple, IsFractionRing.injective; near misses: Polynomial.primPart/content/IsPrimitive concern univariate polynomials., IsFractionRing.exists_reduced_fraction concerns one fraction., Projectivization.exists_smul_eq_mk_rep does not enforce integral gcd1 coordinates.; composition: No verified ≤3-existing-call composition; polynomial reconstruction, mapped-scalar normalization and support-gcd transport remain genuine proof.
 
+Completed `Roth.exists_int_eq_of_gcd_eq_one`: actual search cells: 15; forms: current, standard, abstract; positive candidates: Finset.gcd_eq_sum_mul, Submodule.mem_of_span_top_of_smul_mem, Submodule.smul_mem_iff_of_isUnit, IsLocalization.IsInteger, IsLocalization.isInteger_smul; exact replacement: False; bridge: Finite gcd to submodule membership is a newly proved linear-combination bridge; existing unit-ideal law has a different premise.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -2670,6 +2683,8 @@ Completed `Roth.exists_sum_mul_eq_gcd`: Integer specialization and reordered equ
 Completed `Roth.exists_nat_smul_eq_map`: Same denominator mechanism as existing localization laws; concrete positive-natural output packaging is not an exact short existing-call theorem.
 
 Completed `Roth.exists_primitive_smul_eq`: Classical content/primitive-part normalization underlying Gauss lemma, not the whole product-primitivity law., Finite-function gcd extraction is already mathlib; the multivariate/fraction-field bridge is additional.
+
+Completed `Roth.exists_int_eq_of_gcd_eq_one`: finite Bezout identity, membership detected by generators of unit ideal
 
 ## Part 5: Generalization opportunities
 
@@ -3020,6 +3035,8 @@ Completed `Roth.exists_nat_smul_eq_map`: status: Verified broader existing inter
 
 Completed `Roth.exists_primitive_smul_eq`: current: Fixed ℤ/ℚ interface; all variable-type and nonzero assumptions essential or already unrestricted.; expanded: CommRing R + IsDomain R + NormalizedGCDMonoid R, Field K + Algebra R K + IsFractionRing R K, preserving g ≠ 0, map(algebraMap R K) U = g • G, gcd1.; scope: Full normalized-GCD-domain/fraction-field theorem native-checked, preserves every conclusion, no parent-definition migration. Concrete one-call specialization checked separately.; false generalization guard: gcd1 does not imply unit-ideal/unimodular coordinates over arbitrary GCD domains. No arbitrary field unrelated to R, no zero input, no infinite series.
 
+Completed `Roth.exists_int_eq_of_gcd_eq_one`: reason: MODERN-IDIOM; primary: Submodule.gcd_smul_mem; signature: {R M ι : Type*} [CommRing R] [IsBezout R] [NormalizedGCDMonoid R] [AddCommMonoid M] [Module R M] (N : Submodule R M) (s : Finset ι) (u : ι → R) (v : M) (hv : ∀ i ∈ s, u i • v ∈ N) : s.gcd u • v ∈ N; secondary: IsUnit (s.gcd u) implies unscaled membership via existing smul_mem_iff_of_isUnit; original bridge: N = LinearMap.range (Algebra.linearMap ℤ ℚ); convert product witnesses; rewrite gcd=1; return integer witness with equality symmetry; guard: Arbitrary GCD rings need not be Bezout; no claim that gcd1 implies unit ideal without Bezout.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -3366,6 +3383,8 @@ Completed `Roth.exists_sum_mul_eq_gcd`: None
 Completed `Roth.exists_nat_smul_eq_map`: Design question: positive-natural rational-polynomial specialization versus generic map/scalar numerator bridge; no generic denominator-law gap.
 
 Completed `Roth.exists_primitive_smul_eq`: MvPolynomial primitive representatives over a normalized GCD domain and its fraction field, with mapped scalar identity and coefficient gcd one. Finset.extract_gcd and localization are existing ingredients, not the full result.
+
+Completed `Roth.exists_int_eq_of_gcd_eq_one`: finite-gcd scalar membership in an arbitrary submodule over a Bezout ring
 
 ## Part 7: Junk / removable
 
@@ -3716,6 +3735,8 @@ Completed `Roth.exists_nat_smul_eq_map`: Live integrality helper with one source
 
 Completed `Roth.exists_primitive_smul_eq`: Not dead code: one explicit consumer uses every conclusion. Not safely deletable as a three-call wrapper.
 
+Completed `Roth.exists_int_eq_of_gcd_eq_one`: dead code: False; reason: one source caller and one direct kernel consumer in integral polynomial descent
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -3892,6 +3913,7 @@ Completed `Roth.exists_primitive_smul_eq`: Not dead code: one explicit consumer 
 | 170 | `Roth.exists_sum_mul_eq_gcd` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_sum_mul_eq_gcd.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_sum_mul_eq_gcd/root-acceptance.json) |
 | 171 | `Roth.exists_nat_smul_eq_map` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_nat_smul_eq_map.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_nat_smul_eq_map/root-acceptance.json) |
 | 172 | `Roth.exists_primitive_smul_eq` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_primitive_smul_eq.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_primitive_smul_eq/root-acceptance.json) |
+| 173 | `Roth.exists_int_eq_of_gcd_eq_one` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_int_eq_of_gcd_eq_one.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_int_eq_of_gcd_eq_one/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -4235,12 +4257,14 @@ Completed `Roth.exists_nat_smul_eq_map` action: BORDERLINE-needs-human: retain l
 
 Completed `Roth.exists_primitive_smul_eq` action: verdict: YES-but-generalise-first; reason: MODERN-IDIOM; declaration: MvPolynomial.exists_primitive_smul_eq; upstream file: Mathlib/RingTheory/MvPolynomial/Content.lean; new file: True; pr title: feat(MvPolynomial): primitive representatives over fraction fields; checklist: /generalise Roth.exists_primitive_smul_eq, /cleanup Roth/Separation.lean Roth.exists_primitive_smul_eq, Verify minimal new-module imports, generic signature, concrete specialization and full caller., /pre-submit before PR; grouping: Roth.exists_separated_representation, Roth.hasseDeriv_rename_mul_aeval; local destination: Roth/Separation.lean until upstream acceptance.; caller refactor: Roth.exists_int_factors:491 specializes new generic theorem with R := ℤ, K := ℚ, preserving witnesses and all conclusions.; optional followups: MvPolynomial content/IsPrimitive/primPart interface, Finsupp finite-coefficient gcd normalization; do not conflate gcd-primitive and unimodular.; reviewer candidates: Junyan Xu, Kim Morrison; reviewer evidence: reviewers.json
 
+Completed `Roth.exists_int_eq_of_gcd_eq_one` action: verdict: YES-but-generalise-first; upstream file: Mathlib/RingTheory/PrincipalIdealDomain.lean; pr title: feat(RingTheory): finite gcd scalar membership in submodules over Bézout rings; grouping: Roth.exists_primitive_smul_eq; reviewer candidates: Xavier Roblot, Noah Walker; checklist: /generalise Roth.exists_int_eq_of_gcd_eq_one, Restate primary API as verified generic gcd-scaled submodule lemma, /cleanup Mathlib/RingTheory/PrincipalIdealDomain.lean Submodule.gcd_smul_mem, Review unit-gcd corollary for redundancy, Add docstring and run build/checks and /pre-submit; caller refactor: Replace sole helper call with checked original specialization of Submodule.gcd_smul_mem, preserving coefficients and witness orientation.; local destination: Roth/Separation.lean until generic API is adopted
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.exists_int_eq_of_gcd_eq_one` next. Supporting identities receive their own applicable checks.
+   `Roth.rescale_separated_factor_aux` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

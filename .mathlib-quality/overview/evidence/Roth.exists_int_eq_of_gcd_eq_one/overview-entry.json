@@ -1,0 +1,89 @@
+{
+  "declaration": "Roth.exists_int_eq_of_gcd_eq_one",
+  "kind": "theorem",
+  "type": "\u2200 {\u03b9 : Type u_2} {s : Finset \u03b9} {u : \u03b9 \u2192 \u2124},\n  s.gcd u = 1 \u2192 \u2200 {v : \u211a}, (\u2200 a \u2208 s, \u2203 (z : \u2124), \u2191(u a) * v = \u2191z) \u2192 \u2203 (z : \u2124), v = \u2191z",
+  "what": "A finite gcd-one integer family detects integrality of a rational scalar from integrality of all selected products.",
+  "how": "Use finite Bezout coefficients, choose integer product witnesses, and take their integer weighted sum; the generic proof uses submodule closure under finite sums/scalars.",
+  "hypotheses": [
+    "arbitrary index type \u03b9",
+    "finite subset s",
+    "integer coefficient family u",
+    "s.gcd u = 1",
+    "each (u a : \u211a) * v has an integer witness for a\u2208s"
+  ],
+  "project_dependencies": [
+    "Roth.exists_sum_mul_eq_gcd"
+  ],
+  "caller_summary": {
+    "explicit_use_count": 1,
+    "callers": [
+      {
+        "name": "_private.Roth.Separation.0.Roth.exists_int_polynomial_of_primitive_factor_aux",
+        "file": "Roth/Separation.lean",
+        "line": 473
+      }
+    ],
+    "direct_kernel_value_consumers": [
+      "_private.Roth.Separation.0.Roth.exists_int_polynomial_of_primitive_factor_aux"
+    ],
+    "inline_rederivations": 0,
+    "kernel_scope": "293 canonical declaration values, direct consumers only"
+  },
+  "mathlib_api_audit": {
+    "actual_search_cells": 15,
+    "forms": [
+      "current",
+      "standard",
+      "abstract"
+    ],
+    "positive_candidates": [
+      "Finset.gcd_eq_sum_mul",
+      "Submodule.mem_of_span_top_of_smul_mem",
+      "Submodule.smul_mem_iff_of_isUnit",
+      "IsLocalization.IsInteger",
+      "IsLocalization.isInteger_smul"
+    ],
+    "exact_replacement": false,
+    "bridge": "Finite gcd to submodule membership is a newly proved linear-combination bridge; existing unit-ideal law has a different premise."
+  },
+  "moral_duplications": [
+    "finite Bezout identity",
+    "membership detected by generators of unit ideal"
+  ],
+  "generalization": {
+    "reason": "MODERN-IDIOM",
+    "primary": "Submodule.gcd_smul_mem",
+    "signature": "{R M \u03b9 : Type*} [CommRing R] [IsBezout R] [NormalizedGCDMonoid R] [AddCommMonoid M] [Module R M] (N : Submodule R M) (s : Finset \u03b9) (u : \u03b9 \u2192 R) (v : M) (hv : \u2200 i \u2208 s, u i \u2022 v \u2208 N) : s.gcd u \u2022 v \u2208 N",
+    "secondary": "IsUnit (s.gcd u) implies unscaled membership via existing smul_mem_iff_of_isUnit",
+    "original_bridge": "N = LinearMap.range (Algebra.linearMap \u2124 \u211a); convert product witnesses; rewrite gcd=1; return integer witness with equality symmetry",
+    "guard": "Arbitrary GCD rings need not be Bezout; no claim that gcd1 implies unit ideal without Bezout."
+  },
+  "missing_api": [
+    "finite-gcd scalar membership in an arbitrary submodule over a Bezout ring"
+  ],
+  "junk": {
+    "dead_code": false,
+    "reason": "one source caller and one direct kernel consumer in integral polynomial descent"
+  },
+  "action": {
+    "verdict": "YES-but-generalise-first",
+    "upstream_file": "Mathlib/RingTheory/PrincipalIdealDomain.lean",
+    "pr_title": "feat(RingTheory): finite gcd scalar membership in submodules over B\u00e9zout rings",
+    "grouping": [
+      "Roth.exists_primitive_smul_eq"
+    ],
+    "reviewer_candidates": [
+      "Xavier Roblot",
+      "Noah Walker"
+    ],
+    "checklist": [
+      "/generalise Roth.exists_int_eq_of_gcd_eq_one",
+      "Restate primary API as verified generic gcd-scaled submodule lemma",
+      "/cleanup Mathlib/RingTheory/PrincipalIdealDomain.lean Submodule.gcd_smul_mem",
+      "Review unit-gcd corollary for redundancy",
+      "Add docstring and run build/checks and /pre-submit"
+    ],
+    "caller_refactor": "Replace sole helper call with checked original specialization of Submodule.gcd_smul_mem, preserving coefficients and witness orientation.",
+    "local_destination": "Roth/Separation.lean until generic API is adopted"
+  }
+}

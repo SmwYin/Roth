@@ -1,0 +1,59 @@
+namespace Integral173Strong
+theorem gcd_smul_mem_all {R M ι : Type*} [CommRing R] [IsBezout R]
+    [NormalizedGCDMonoid R] [AddCommMonoid M] [Module R M]
+    (N : Submodule R M) (s : Finset ι) (u : ι → R)
+    (v : M) (hv : ∀ i ∈ s, u i • v ∈ N) : s.gcd u • v ∈ N := by
+  classical
+  obtain ⟨z, hz⟩ := Finset.gcd_eq_sum_mul s u
+  rw [hz, Finset.sum_smul]
+  exact N.sum_mem fun i hi ↦ by
+    simpa only [mul_comm (u i), mul_smul] using N.smul_mem (z i) (hv i hi)
+theorem of_isUnit_gcd {R M ι : Type*} [CommRing R] [IsBezout R]
+    [NormalizedGCDMonoid R] [AddCommMonoid M] [Module R M]
+    (N : Submodule R M) (s : Finset ι) (u : ι → R) (hu : IsUnit (s.gcd u))
+    (v : M) (hv : ∀ i ∈ s, u i • v ∈ N) : v ∈ N :=
+  (N.smul_mem_iff_of_isUnit hu).mp (gcd_smul_mem_all N s u v hv)
+#print axioms gcd_smul_mem_all
+#print axioms of_isUnit_gcd
+end Integral173Strong
+namespace Integral173Strong
+theorem original {ι : Type*} {s : Finset ι} {u : ι → ℤ} (hu : s.gcd u = 1)
+    {v : ℚ} (hv : ∀ a ∈ s, ∃ z : ℤ, (u a : ℚ) * v = z) : ∃ z : ℤ, v = z := by
+  have h := gcd_smul_mem_all (LinearMap.range (Algebra.linearMap ℤ ℚ)) s u v (by
+    intro i hi
+    obtain ⟨z, hz⟩ := hv i hi
+    exact ⟨z, by simpa only [Algebra.linearMap_apply, Algebra.smul_def, eq_intCast] using hz.symm⟩)
+  rw [hu, one_smul] at h
+  obtain ⟨z, hz⟩ := h
+  exact ⟨z, by simpa only [Algebra.linearMap_apply, eq_intCast] using hz.symm⟩
+theorem nonunit_counterexample :
+    (∃ z : ℤ, (2 : ℚ) * (1 / 2) = z) ∧ ¬ ∃ z : ℤ, (1 / 2 : ℚ) = z := by
+  constructor
+  · exact ⟨1, by norm_num⟩
+  · rintro ⟨z, hz⟩
+    have hden := congrArg Rat.den hz
+    norm_num at hden
+theorem empty_guard : (∅ : Finset ℕ).gcd (fun _ ↦ (0 : ℤ)) ≠ 1 := by simp
+#print axioms original
+#print axioms nonunit_counterexample
+#print axioms empty_guard
+end Integral173Strong
+namespace Integral173Caller
+open MvPolynomial Roth
+variable {τ : Type*}
+theorem exists_int_polynomial_of_primitive_factor_aux {U : MvPolynomial τ ℤ}
+    {V' : Polynomial ℚ} {F : MvPolynomial (Option τ) ℤ} (hgcd : U.support.gcd U.coeff = 1)
+    (hF : map (Int.castRingHom ℚ) F = rename some (map (Int.castRingHom ℚ) U) *
+      Polynomial.aeval (X none : MvPolynomial (Option τ) ℚ) V') :
+    ∃ V : Polynomial ℤ, V.map (Int.castRingHom ℚ) = V' := by
+  apply (Polynomial.mem_map_range (Int.castRingHom ℚ)).2
+  intro b
+  obtain ⟨z, hz⟩ := Integral173Strong.original hgcd fun a _ ↦
+    ⟨F.coeff (a.mapDomain some + Finsupp.single none b), by
+      have h := congrArg (fun P ↦ P.coeff (a.mapDomain some + Finsupp.single none b)) hF
+      simp only [coeff_rename_mul_aeval, coeff_map] at h
+      simpa using h.symm⟩
+  exact ⟨z, hz.symm⟩
+
+#print axioms exists_int_polynomial_of_primitive_factor_aux
+end Integral173Caller
