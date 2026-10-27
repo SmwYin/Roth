@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-26
 
-- Declarations completed: **101/293**
-- Next declaration: **#102 `Roth.genWronskian_eq_zero_of_not_linearIndependent`** (Roth/GenWronskian.lean:41)
+- Declarations completed: **102/293**
+- Next declaration: **#103 `Roth.kronecker`** (Roth/GenWronskian.lean:53)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -120,10 +120,10 @@ Last regenerated: 2026-10-26
 | 99 | `Roth.degreeOf_det_hasseDeriv_le` | Roth/CoeffNorm.lean:245 | YES-but-generalise-first | [report](mathlibable/Roth.degreeOf_det_hasseDeriv_le.md) |
 | 100 | `Roth.abs_coeff_det_hasseDeriv_le` | Roth/CoeffNorm.lean:258 | BORDERLINE-needs-human | [report](mathlibable/Roth.abs_coeff_det_hasseDeriv_le.md) |
 | 101 | `Roth.genWronskian` | Roth/GenWronskian.lean:32 | YES-but-generalise-first | [report](mathlibable/Roth.genWronskian.md) |
+| 102 | `Roth.genWronskian_eq_zero_of_not_linearIndependent` | Roth/GenWronskian.lean:41 | YES-but-generalise-first | [report](mathlibable/Roth.genWronskian_eq_zero_of_not_linearIndependent.md) |
 
 ## Remaining declarations (in processing order)
 
-- #102 `Roth.genWronskian_eq_zero_of_not_linearIndependent` (Roth/GenWronskian.lean:41, public theorem)
 - #103 `Roth.kronecker` (Roth/GenWronskian.lean:53, public def)
 - #104 `Roth.kroneckerExp` (Roth/GenWronskian.lean:57, public def)
 - #105 `Roth.kronecker_monomial` (Roth/GenWronskian.lean:60, public theorem)
