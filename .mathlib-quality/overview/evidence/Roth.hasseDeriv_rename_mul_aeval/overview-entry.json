@@ -1,0 +1,82 @@
+{
+  "type": "@Roth.hasseDeriv_rename_mul_aeval.{u_1,\n    u_2} : ∀ {τ : Type u_1} {R : Type u_2} [inst : CommSemiring.{u_2} R] (d : Finsupp.{u_1, 0} τ ℕ) (ν : ℕ)\n  (U : MvPolynomial.{u_1, u_2} τ R) (V : Polynomial.{u_2} R),\n  Eq.{max (u_1 + 1) (u_2 + 1)}\n    ((MvPolynomial.hasseDeriv.{u_1, u_2}\n        (HAdd.hAdd.{u_1, u_1, u_1} (Finsupp.mapDomain.{u_1, u_1, 0} some.{u_1} d)\n          (Finsupp.single.{u_1, 0} none.{u_1} ν)))\n      (HMul.hMul.{max u_1 u_2, max u_1 u_2, max u_1 u_2} ((MvPolynomial.rename.{u_1, u_1, u_2} some.{u_1}) U)\n        ((Polynomial.aeval.{u_2, max u_1 u_2} (MvPolynomial.X.{u_2, u_1} none.{u_1})) V)))\n    (HMul.hMul.{max u_1 u_2, max u_1 u_2, max u_1 u_2}\n      ((MvPolynomial.rename.{u_1, u_1, u_2} some.{u_1}) ((MvPolynomial.hasseDeriv.{u_1, u_2} d) U))\n      ((Polynomial.aeval.{u_2, max u_1 u_2} (MvPolynomial.X.{u_2, u_1} none.{u_1}))\n        ((Polynomial.hasseDeriv.{u_2} ν) V)))",
+  "kind": "theorem",
+  "what": "Hasse differentiation of a product in disjoint variable blocks acts on each factor separately.",
+  "how": "Split the multi-index into disjoint supports, compose Hasse operators, pull out factors of degree zero in the active variables, and transport each factor derivative through its embedding.",
+  "hypotheses": [
+    "arbitrary independent variable/coefficient universes",
+    "CommSemiring R",
+    "d : τ →₀ ℕ",
+    "ν : ℕ",
+    "U : MvPolynomial τ R",
+    "V : Polynomial R",
+    "no Fintype, DecidableEq, characteristic, field, domain or nonzero assumptions"
+  ],
+  "project_dependencies": [
+    "MvPolynomial.hasseDeriv",
+    "MvPolynomial.hasseDeriv_hasseDeriv_of_disjoint",
+    "MvPolynomial.hasseDeriv_mul_of_degreeOf_eq_zero",
+    "MvPolynomial.hasseDeriv_single_aeval_X",
+    "MvPolynomial.hasseDeriv_rename",
+    "Roth.aeval_X_eq_rename"
+  ],
+  "caller_summary": {
+    "explicit_call_sites": [
+      {
+        "file": "Roth/Separation.lean",
+        "line": 365,
+        "declaration": "Roth.det_hasseDeriv_separated",
+        "plan": "Use new freshCoordinate law specialized to some/none inside the existing entrywise determinant proof; retain Field signature of this caller."
+      }
+    ],
+    "external_to_file_occurrences": 0,
+    "direct_kernel_value_consumers": [
+      "Roth.det_hasseDeriv_separated"
+    ],
+    "inline_derivations": [],
+    "note": "Two lexical occurrences include the declaration itself; one explicit caller within same file. Source-level enumeration and ordered293 kernel audit agree here; neither is transitive simp closure."
+  },
+  "mathlib_api_audit": {
+    "verdict": "YES-but-generalise-first",
+    "cells": 15,
+    "partial_hits": [
+      "Polynomial.hasseDeriv_mul",
+      "Polynomial.hasseDeriv_map",
+      "Polynomial.hasseDeriv_coeff",
+      "Polynomial.toMvPolynomial_eq_rename_comp",
+      "Polynomial.taylor_mul",
+      "Polynomial.taylor_coeff"
+    ],
+    "note": "All multivariate Hasse names in the project namespace originate in Roth/HasseDeriv.lean; pinned mathlib supplies univariate API only. Missing multivariate guard compiled in isolated mathlib environment."
+  },
+  "moral_duplications": [
+    "Univariate constant outer-factor Hasse law is proved in mathlib-only scratch; it covers only the none-coordinate part.",
+    "Previous159 aeval bridge is already in mathlib, and its wrapper is eliminated in the target replay."
+  ],
+  "generalization": {
+    "status": "STRICTLY NARROWER representation interface",
+    "verified": "HasseSeparation160.freshCoordinate",
+    "statement": "Replace some : τ → Option τ and none by an arbitrary injective f : τ → σ and fresh i : σ satisfying ∀ j, f j ≠ i; no surjectivity/exhaustiveness required.",
+    "fixed_interface": "Original already uses weakest parent interface CommSemiring and arbitrary τ; no typeclass drop claimed.",
+    "original_specialization": "HasseSeparation160.originalFormAgain"
+  },
+  "missing_api": [
+    "Upstream multivariate Hasse derivative parent and compatibility API",
+    "Fresh-coordinate separated-product law over arbitrary injective embeddings; newly verified proof, not existing mathlib call"
+  ],
+  "junk": false,
+  "action": {
+    "upstream_file": "Mathlib/Algebra/MvPolynomial/HasseDeriv.lean",
+    "pr_title": "feat(Algebra/MvPolynomial/HasseDeriv): differentiate products in a fresh variable",
+    "next_steps": [
+      "/generalise Roth.hasseDeriv_rename_mul_aeval",
+      "/cleanup Roth/Separation.lean Roth.hasseDeriv_rename_mul_aeval",
+      "Upstream parent multivariate Hasse API first; install generalized law in MvPolynomial namespace.",
+      "Migrate sole determinant caller using specialization and remove old wrapper when new API exists."
+    ],
+    "reviewers": [
+      "Moritz Firsching (hasseDeriv_map #42428)",
+      "Yaël Dillies (MvPolynomial coefficient API #41427)"
+    ]
+  }
+}

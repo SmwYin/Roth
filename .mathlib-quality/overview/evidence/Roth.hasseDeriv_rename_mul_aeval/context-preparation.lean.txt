@@ -1,0 +1,52 @@
+namespace HasseSeparation160
+open MvPolynomial
+variable {τ R : Type*} [CommSemiring R]
+theorem factorwise (d : τ →₀ ℕ) (ν : ℕ) (U : MvPolynomial τ R) (V : Polynomial R) :
+    hasseDeriv (d.mapDomain some + Finsupp.single none ν) (rename some U * Polynomial.aeval
+      (X none : MvPolynomial (Option τ) R) V) = rename some (hasseDeriv d U) * Polynomial.aeval
+      (X none : MvPolynomial (Option τ) R) (Polynomial.hasseDeriv ν V) := by
+  classical
+  fail_if_success
+    exact Polynomial.hasseDeriv_mul _ _ _
+  fail_if_success
+    solve | simp only [Polynomial.toMvPolynomial_eq_rename_comp]
+  have hnone : ∀ {o : Option τ}, o ∈ (d.mapDomain some).support → o ≠ none := by
+    simp
+  have hdisj : Disjoint (d.mapDomain some).support (Finsupp.single none ν).support :=
+    Finset.disjoint_left.2 fun _ ho ho' ↦
+      hnone ho (Finset.mem_singleton.1 (Finsupp.support_single_subset ho'))
+  rw [← hasseDeriv_hasseDeriv_of_disjoint hdisj,
+    hasseDeriv_mul_of_degreeOf_eq_zero fun j hj ↦ by
+      rw [Finset.mem_singleton.1 (Finsupp.support_single_subset hj)]
+      simp [degreeOf, degrees_rename_of_injective (Option.some_injective τ)],
+    hasseDeriv_single_aeval_X, mul_comm,
+    hasseDeriv_mul_of_degreeOf_eq_zero fun j hj ↦ by
+      simp [show ∀ f : Polynomial R, Polynomial.aeval (X none : MvPolynomial (Option τ) R) f =
+          rename (fun _ : Unit ↦ none) ((uniqueAlgEquiv R Unit).symm f) from
+          fun f ↦ AlgHom.congr_fun (Polynomial.toMvPolynomial_eq_rename_comp none) f, degreeOf,
+        degrees_rename_of_injective (Function.injective_of_subsingleton _), Multiset.mem_replicate,
+        hnone hj],
+    hasseDeriv_rename (Option.some_injective τ), mul_comm]
+
+variable {K : Type*} [Field K] [Fintype τ] [DecidableEq τ]
+open Roth
+theorem caller {l : ℕ} (D : Fin l → (τ →₀ ℕ)) (φ : Fin l → Polynomial K)
+    (ψ : Fin l → MvPolynomial τ K) :
+    (Matrix.of fun μ ν : Fin l ↦ hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ))
+        (∑ ρ, Polynomial.aeval (X none : MvPolynomial (Option τ) K) (φ ρ) *
+          rename some (ψ ρ))).det = rename some (genWronskian D ψ) *
+      Polynomial.aeval (X none : MvPolynomial (Option τ) K) (wronskian φ) := by
+  rw [genWronskian, wronskian, AlgHom.map_det, AlgHom.map_det,
+    ← Matrix.det_transpose ((Polynomial.aeval (X none)).mapMatrix (wronskianMatrix φ)),
+    ← Matrix.det_mul]
+  congr 1
+  refine Matrix.ext fun μ ν ↦ ?_
+  rw [Matrix.of_apply, map_sum, Matrix.mul_apply]
+  refine Finset.sum_congr rfl fun ρ _ ↦ ?_
+  rw [mul_comm (Polynomial.aeval (X none : MvPolynomial (Option τ) K) (φ ρ)),
+    factorwise]
+  rfl
+
+#print axioms factorwise
+#print axioms caller
+end HasseSeparation160

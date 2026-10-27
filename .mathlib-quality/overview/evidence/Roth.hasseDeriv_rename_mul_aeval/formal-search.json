@@ -1,0 +1,660 @@
+[
+  {
+    "form": "current",
+    "method": "Finder",
+    "request": {
+      "query": "Hasse derivative of product of polynomials in disjoint variables, multivariate polynomial rename some and aeval X none factors",
+      "num_results": 6
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv_mul\",\n      \"informal_name\": \"Product Rule for Hasse Derivatives in Polynomial Rings\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f g : Polynomial R),\\n  (Polynomial.hasseDeriv k) (f * g) =\\n    ∑ ij ∈ Finset.antidiagonal k, (Polynomial.hasseDeriv ij.1) f * (Polynomial.hasseDeriv ij.2) g\",\n      \"informal_description\": \"For any polynomials $ f, g \\\\in R[X] $, the $ k $-th Hasse derivative of the product $ f \\\\cdot g $ satisfies $$ D^{(k)}(f \\\\cdot g) = \\\\sum_{\\\\substack{i + j = k}} D^{(i)}(f) \\\\cdot D^{(j)}(g), $$ where the sum is taken over all pairs $ (i, j) $ of natural numbers such that $ i + j = k $. This expresses the Hasse derivative of a product as a sum over the antidiagonal decomposition of $ k $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.pderiv_mul\",\n      \"informal_name\": \"Product Rule for Partial Derivatives in Multivariate Polynomial Rings\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type v} [inst : CommSemiring R] {i : σ} {f g : MvPolynomial σ R},\\n  (MvPolynomial.pderiv i) (f * g) = (MvPolynomial.pderiv i) f * g + f * (MvPolynomial.pderiv i) g\",\n      \"informal_description\": \"For any commutative semiring $ R $, type $ \\\\sigma $, and variables $ i \\\\in \\\\sigma $, the partial derivative with respect to $ i $ of the product of two multivariate polynomials $ f $ and $ g $ in $ R[\\\\sigma] $ satisfies the Leibniz rule: $ \\\\partial_i(fg) = (\\\\partial_i f) \\\\cdot g + f \\\\cdot (\\\\partial_i g) $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.PDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv\",\n      \"informal_name\": \"Hasse Derivative of Order k on Polynomial Ring\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : Semiring R] → ℕ → Polynomial R →ₗ[R] Polynomial R\",\n      \"informal_description\": \"For a semiring $ R $, the Hasse derivative of order $ k $ is an $ R $-linear map $ D^{(k)} : R[X] \\to R[X] $ defined by $ D^{(k)}(a_i X^i) = \\binom{i}{k} a_i X^{i - k} $ on monomials and extended linearly. This operation generalizes the usual derivative by scaling each coefficient $ a_i $ by the binomial coefficient $ \\binom{i}{k} $ and reducing the degree by $ k $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.derivative_prod\",\n      \"informal_name\": \"Generalized Product Rule for Polynomial Derivatives\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {ι : Type y} [inst : CommSemiring R] [inst_1 : DecidableEq ι] {s : Multiset ι} {f : ι → Polynomial R},\\n  Polynomial.derivative (Multiset.map f s).prod =\\n    (Multiset.map (fun i => (Multiset.map f (s.erase i)).prod * Polynomial.derivative (f i)) s).sum\",\n      \"informal_description\": \"For any commutative semiring $ R $, a multiset $ s $ of indices $ \\\\iota $, and a function $ f: \\\\iota \\\\to R[X] $, the derivative of the product $ \\\\prod_{i \\\\in s} f(i) $ satisfies:\\n$$\\n\\\\frac{d}{dx}\\\\left(\\\\prod_{i \\\\in s} f(i)\\\\right) = \\\\sum_{i \\\\in s} \\\\left(\\\\frac{d}{dx}f(i) \\\\cdot \\\\prod_{j \\\\in s \\\\setminus \\\\{i\\\\}} f(j)\\\\right).\\n$$\\nThis generalizes the product rule to the derivative of a product of multiple polynomials.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Derivative\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.leibniz_iff_X\",\n      \"informal_name\": \"Leibniz Rule Characterization for Derivations on Multivariate Polynomial Rings via Monomials and Variables\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_2} {A : Type u_3} [inst : CommSemiring R] [inst_1 : AddCommMonoid A] [inst_2 : Module R A]\\n  [inst_3 : Module (MvPolynomial σ R) A] [IsScalarTower R (MvPolynomial σ R) A] (D : MvPolynomial σ R →ₗ[R] A),\\n  D 1 = 0 →\\n    ((∀ (p q : MvPolynomial σ R), D (p * q) = p • D q + q • D p) ↔\\n      ∀ (s : σ →₀ ℕ) (i : σ),\\n        D ((MvPolynomial.monomial s) 1 * MvPolynomial.X i) =\\n          (MvPolynomial.monomial s) 1 • D (MvPolynomial.X i) + MvPolynomial.X i • D ((MvPolynom...\",\n      \"informal_description\": \"A linear map $ D : R[\\\\sigma] \\\\to A $ from the multivariate polynomial ring over a commutative semiring $ R $ to an $ R $-module $ A $, satisfying $ D(1) = 0 $, is a derivation (i.e., satisfies the Leibniz rule $ D(pq) = p \\\\cdot D(q) + q \\\\cdot D(p) $ for all polynomials $ p, q $) if and only if the Leibniz rule holds for all products of monomials $ \\\\text{monomial}(s, 1) $ and variables $ X_i $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Derivation\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.aeval_sumElim_pderiv_inl\",\n      \"informal_name\": \"Commutativity of Partial Derivatives with Evaluation in Multivariate Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type v} [inst : CommSemiring R] {S : Type u_1} {τ : Type u_2} [inst_1 : CommRing S]\\n  [inst_2 : Algebra R S] (p : MvPolynomial (σ ⊕ τ) R) (f : τ → S) (j : σ),\\n  (MvPolynomial.aeval (Sum.elim MvPolynomial.X (⇑MvPolynomial.C ∘ f))) ((MvPolynomial.pderiv (Sum.inl j)) p) =\\n    (MvPolynomial.pderiv j) ((MvPolynomial.aeval (Sum.elim MvPolynomial.X (⇑MvPolynomial.C ∘ f))) p)\",\n      \"informal_description\": \"For a multivariate polynomial $ p $ in variables $ \\\\sigma \\\\oplus \\\\tau $ with coefficients in a commutative ring $ R $, and an $ R $-algebra homomorphism evaluating variables in $ \\\\tau $ via a function $ f : \\\\tau \\\\to S $, the partial derivative of $ p $ with respect to $ j \\\\in \\\\sigma $ commutes with evaluation. Specifically, evaluating the partial derivative $ \\\\partial_{\\\\text{inl}(j)} p $ using the homomorphism that maps $ \\\\sigma $-variables to themselves and $ \\\\tau $-variables via $ f $ is equivalent to first evaluating $ p $ under this homomorphism and then taking the partial derivative with respect to $ j $. This establishes $ \\\\text{aeval}(\\\\partial_{\\\\text{inl}(j)} p) = \\\\partial_j(\\\\text{aeval}(p)) $ in the target algebra $ S $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.PDeriv\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Polynomial.hasseDeriv_mul",
+            "informal_name": "Product Rule for Hasse Derivatives in Polynomial Rings",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f g : Polynomial R),\n  (Polynomial.hasseDeriv k) (f * g) =\n    ∑ ij ∈ Finset.antidiagonal k, (Polynomial.hasseDeriv ij.1) f * (Polynomial.hasseDeriv ij.2) g",
+            "informal_description": "For any polynomials $ f, g \\in R[X] $, the $ k $-th Hasse derivative of the product $ f \\cdot g $ satisfies $$ D^{(k)}(f \\cdot g) = \\sum_{\\substack{i + j = k}} D^{(i)}(f) \\cdot D^{(j)}(g), $$ where the sum is taken over all pairs $ (i, j) $ of natural numbers such that $ i + j = k $. This expresses the Hasse derivative of a product as a sum over the antidiagonal decomposition of $ k $.",
+            "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          },
+          {
+            "formal_name": "MvPolynomial.pderiv_mul",
+            "informal_name": "Product Rule for Partial Derivatives in Multivariate Polynomial Rings",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type v} [inst : CommSemiring R] {i : σ} {f g : MvPolynomial σ R},\n  (MvPolynomial.pderiv i) (f * g) = (MvPolynomial.pderiv i) f * g + f * (MvPolynomial.pderiv i) g",
+            "informal_description": "For any commutative semiring $ R $, type $ \\sigma $, and variables $ i \\in \\sigma $, the partial derivative with respect to $ i $ of the product of two multivariate polynomials $ f $ and $ g $ in $ R[\\sigma] $ satisfies the Leibniz rule: $ \\partial_i(fg) = (\\partial_i f) \\cdot g + f \\cdot (\\partial_i g) $.",
+            "path": "Mathlib.Algebra.MvPolynomial.PDeriv"
+          },
+          {
+            "formal_name": "Polynomial.hasseDeriv",
+            "informal_name": "Hasse Derivative of Order k on Polynomial Ring",
+            "kind": "definition",
+            "type": "{R : Type u_1} → [inst : Semiring R] → ℕ → Polynomial R →ₗ[R] Polynomial R",
+            "informal_description": "For a semiring $ R $, the Hasse derivative of order $ k $ is an $ R $-linear map $ D^{(k)} : R[X] \to R[X] $ defined by $ D^{(k)}(a_i X^i) = \binom{i}{k} a_i X^{i - k} $ on monomials and extended linearly. This operation generalizes the usual derivative by scaling each coefficient $ a_i $ by the binomial coefficient $ \binom{i}{k} $ and reducing the degree by $ k $.",
+            "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          },
+          {
+            "formal_name": "Polynomial.derivative_prod",
+            "informal_name": "Generalized Product Rule for Polynomial Derivatives",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {ι : Type y} [inst : CommSemiring R] [inst_1 : DecidableEq ι] {s : Multiset ι} {f : ι → Polynomial R},\n  Polynomial.derivative (Multiset.map f s).prod =\n    (Multiset.map (fun i => (Multiset.map f (s.erase i)).prod * Polynomial.derivative (f i)) s).sum",
+            "informal_description": "For any commutative semiring $ R $, a multiset $ s $ of indices $ \\iota $, and a function $ f: \\iota \\to R[X] $, the derivative of the product $ \\prod_{i \\in s} f(i) $ satisfies:\n$$\n\\frac{d}{dx}\\left(\\prod_{i \\in s} f(i)\\right) = \\sum_{i \\in s} \\left(\\frac{d}{dx}f(i) \\cdot \\prod_{j \\in s \\setminus \\{i\\}} f(j)\\right).\n$$\nThis generalizes the product rule to the derivative of a product of multiple polynomials.",
+            "path": "Mathlib.Algebra.Polynomial.Derivative"
+          },
+          {
+            "formal_name": "MvPolynomial.leibniz_iff_X",
+            "informal_name": "Leibniz Rule Characterization for Derivations on Multivariate Polynomial Rings via Monomials and Variables",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {R : Type u_2} {A : Type u_3} [inst : CommSemiring R] [inst_1 : AddCommMonoid A] [inst_2 : Module R A]\n  [inst_3 : Module (MvPolynomial σ R) A] [IsScalarTower R (MvPolynomial σ R) A] (D : MvPolynomial σ R →ₗ[R] A),\n  D 1 = 0 →\n    ((∀ (p q : MvPolynomial σ R), D (p * q) = p • D q + q • D p) ↔\n      ∀ (s : σ →₀ ℕ) (i : σ),\n        D ((MvPolynomial.monomial s) 1 * MvPolynomial.X i) =\n          (MvPolynomial.monomial s) 1 • D (MvPolynomial.X i) + MvPolynomial.X i • D ((MvPolynom...",
+            "informal_description": "A linear map $ D : R[\\sigma] \\to A $ from the multivariate polynomial ring over a commutative semiring $ R $ to an $ R $-module $ A $, satisfying $ D(1) = 0 $, is a derivation (i.e., satisfies the Leibniz rule $ D(pq) = p \\cdot D(q) + q \\cdot D(p) $ for all polynomials $ p, q $) if and only if the Leibniz rule holds for all products of monomials $ \\text{monomial}(s, 1) $ and variables $ X_i $.",
+            "path": "Mathlib.Algebra.MvPolynomial.Derivation"
+          },
+          {
+            "formal_name": "MvPolynomial.aeval_sumElim_pderiv_inl",
+            "informal_name": "Commutativity of Partial Derivatives with Evaluation in Multivariate Polynomials",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type v} [inst : CommSemiring R] {S : Type u_1} {τ : Type u_2} [inst_1 : CommRing S]\n  [inst_2 : Algebra R S] (p : MvPolynomial (σ ⊕ τ) R) (f : τ → S) (j : σ),\n  (MvPolynomial.aeval (Sum.elim MvPolynomial.X (⇑MvPolynomial.C ∘ f))) ((MvPolynomial.pderiv (Sum.inl j)) p) =\n    (MvPolynomial.pderiv j) ((MvPolynomial.aeval (Sum.elim MvPolynomial.X (⇑MvPolynomial.C ∘ f))) p)",
+            "informal_description": "For a multivariate polynomial $ p $ in variables $ \\sigma \\oplus \\tau $ with coefficients in a commutative ring $ R $, and an $ R $-algebra homomorphism evaluating variables in $ \\tau $ via a function $ f : \\tau \\to S $, the partial derivative of $ p $ with respect to $ j \\in \\sigma $ commutes with evaluation. Specifically, evaluating the partial derivative $ \\partial_{\\text{inl}(j)} p $ using the homomorphism that maps $ \\sigma $-variables to themselves and $ \\tau $-variables via $ f $ is equivalent to first evaluating $ p $ under this homomorphism and then taking the partial derivative with respect to $ j $. This establishes $ \\text{aeval}(\\partial_{\\text{inl}(j)} p) = \\partial_j(\\text{aeval}(p)) $ in the target algebra $ S $.",
+            "path": "Mathlib.Algebra.MvPolynomial.PDeriv"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "current",
+    "method": "Loogle",
+    "request": {
+      "query": "Polynomial.hasseDeriv, _ * _",
+      "num_results": 8
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.hasseDeriv_coeff\",\n      \"type\": \" {R : Type u_1} [Semiring R] (k : ℕ) (f : Polynomial R) (n : ℕ) : ((Polynomial.hasseDeriv k) f).coeff n = ↑((n + k).choose k) * f.coeff (n + k)\",\n      \"module\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"name\": \"Polynomial.hasseDeriv_apply\",\n      \"type\": \" {R : Type u_1} [Semiring R] (k : ℕ) (f : Polynomial R) : (Polynomial.hasseDeriv k) f = f.sum fun i r => (Polynomial.monomial (i - k)) (↑(i.choose k) * r)\",\n      \"module\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"name\": \"Polynomial.hasseDeriv_monomial\",\n      \"type\": \" {R : Type u_1} [Semiring R] (k n : ℕ) (r : R) : (Polynomial.hasseDeriv k) ((Polynomial.monomial n) r) = (Polynomial.monomial (n - k)) (↑(n.choose k) * r)\",\n      \"module\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"name\": \"Polynomial.hasseDeriv_mul\",\n      \"type\": \" {R : Type u_1} [Semiring R] (k : ℕ) (f g : Polynomial R) : (Polynomial.hasseDeriv k) (f * g) = ∑ ij ∈ Finset.HasAntidiagonal.antidiagonal k, (Polynomial.hasseDeriv ij.1) f * (Polynomial.hasseDeriv ij.2) g\",\n      \"module\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.hasseDeriv_coeff",
+            "type": " {R : Type u_1} [Semiring R] (k : ℕ) (f : Polynomial R) (n : ℕ) : ((Polynomial.hasseDeriv k) f).coeff n = ↑((n + k).choose k) * f.coeff (n + k)",
+            "module": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          },
+          {
+            "name": "Polynomial.hasseDeriv_apply",
+            "type": " {R : Type u_1} [Semiring R] (k : ℕ) (f : Polynomial R) : (Polynomial.hasseDeriv k) f = f.sum fun i r => (Polynomial.monomial (i - k)) (↑(i.choose k) * r)",
+            "module": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          },
+          {
+            "name": "Polynomial.hasseDeriv_monomial",
+            "type": " {R : Type u_1} [Semiring R] (k n : ℕ) (r : R) : (Polynomial.hasseDeriv k) ((Polynomial.monomial n) r) = (Polynomial.monomial (n - k)) (↑(n.choose k) * r)",
+            "module": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          },
+          {
+            "name": "Polynomial.hasseDeriv_mul",
+            "type": " {R : Type u_1} [Semiring R] (k : ℕ) (f g : Polynomial R) : (Polynomial.hasseDeriv k) (f * g) = ∑ ij ∈ Finset.HasAntidiagonal.antidiagonal k, (Polynomial.hasseDeriv ij.1) f * (Polynomial.hasseDeriv ij.2) g",
+            "module": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "current",
+    "method": "LeanSearch",
+    "request": {
+      "query": "Hasse derivative of product of polynomials in disjoint variables, multivariate polynomial rename some and aeval X none factors",
+      "num_results": 6
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.hasseDeriv_mul\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.HasseDeriv\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f g : Polynomial R),\\n  (Polynomial.hasseDeriv k) (f * g) =\\n    ∑ ij ∈ Finset.antidiagonal k, (Polynomial.hasseDeriv ij.1) f * (Polynomial.hasseDeriv ij.2) g\"\n    },\n    {\n      \"name\": \"Polynomial.derivative_mul\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Derivative\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Semiring R] {f g : Polynomial R},\\n  Polynomial.derivative (f * g) = Polynomial.derivative f * g + f * Polynomial.derivative g\"\n    },\n    {\n      \"name\": \"Polynomial.derivative_prod\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Derivative\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {ι : Type y} [inst : CommSemiring R] [inst_1 : DecidableEq ι] {s : Multiset ι} {f : ι → Polynomial R},\\n  Polynomial.derivative (Multiset.map f s).prod =\\n    (Multiset.map (fun i => (Multiset.map f (s.erase i)).prod * Polynomial.derivative (f i)) s).sum\"\n    },\n    {\n      \"name\": \"Polynomial.derivative_prod_finset\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Derivative\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {ι : Type y} [inst : CommSemiring R] [inst_1 : DecidableEq ι] {s : Finset ι} {f : ι → Polynomial R},\\n  Polynomial.derivative (∏ b ∈ s, f b) = ∑ a ∈ s, (∏ b ∈ s.erase a, f b) * Polynomial.derivative (f a)\"\n    },\n    {\n      \"name\": \"MvPolynomial.pderiv_mul\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.PDeriv\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type v} [inst : CommSemiring R] {i : σ} {f g : MvPolynomial σ R},\\n  (MvPolynomial.pderiv i) (f * g) = (MvPolynomial.pderiv i) f * g + f * (MvPolynomial.pderiv i) g\"\n    },\n    {\n      \"name\": \"Polynomial.hasseDeriv\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.HasseDeriv\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : Semiring R] → ℕ → Polynomial R →ₗ[R] Polynomial R\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.hasseDeriv_mul",
+            "module_name": "Mathlib.Algebra.Polynomial.HasseDeriv",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f g : Polynomial R),\n  (Polynomial.hasseDeriv k) (f * g) =\n    ∑ ij ∈ Finset.antidiagonal k, (Polynomial.hasseDeriv ij.1) f * (Polynomial.hasseDeriv ij.2) g"
+          },
+          {
+            "name": "Polynomial.derivative_mul",
+            "module_name": "Mathlib.Algebra.Polynomial.Derivative",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : Semiring R] {f g : Polynomial R},\n  Polynomial.derivative (f * g) = Polynomial.derivative f * g + f * Polynomial.derivative g"
+          },
+          {
+            "name": "Polynomial.derivative_prod",
+            "module_name": "Mathlib.Algebra.Polynomial.Derivative",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {ι : Type y} [inst : CommSemiring R] [inst_1 : DecidableEq ι] {s : Multiset ι} {f : ι → Polynomial R},\n  Polynomial.derivative (Multiset.map f s).prod =\n    (Multiset.map (fun i => (Multiset.map f (s.erase i)).prod * Polynomial.derivative (f i)) s).sum"
+          },
+          {
+            "name": "Polynomial.derivative_prod_finset",
+            "module_name": "Mathlib.Algebra.Polynomial.Derivative",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {ι : Type y} [inst : CommSemiring R] [inst_1 : DecidableEq ι] {s : Finset ι} {f : ι → Polynomial R},\n  Polynomial.derivative (∏ b ∈ s, f b) = ∑ a ∈ s, (∏ b ∈ s.erase a, f b) * Polynomial.derivative (f a)"
+          },
+          {
+            "name": "MvPolynomial.pderiv_mul",
+            "module_name": "Mathlib.Algebra.MvPolynomial.PDeriv",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type v} [inst : CommSemiring R] {i : σ} {f g : MvPolynomial σ R},\n  (MvPolynomial.pderiv i) (f * g) = (MvPolynomial.pderiv i) f * g + f * (MvPolynomial.pderiv i) g"
+          },
+          {
+            "name": "Polynomial.hasseDeriv",
+            "module_name": "Mathlib.Algebra.Polynomial.HasseDeriv",
+            "kind": "definition",
+            "type": "{R : Type u_1} → [inst : Semiring R] → ℕ → Polynomial R →ₗ[R] Polynomial R"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "current",
+    "method": "local",
+    "request": {
+      "query": "hasseDeriv_rename_mul",
+      "limit": 50,
+      "project_root": "/Users/ramin/LEAN/Roth"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"AevalReplay159.hasseDeriv_rename_mul_aeval\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/roth-overview-session/GenWronskianChecks.lean\"\n    },\n    {\n      \"name\": \"CoeffNone152Replay.hasseDeriv_rename_mul_aeval\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/roth-overview-session/GenWronskianChecks.lean\"\n    },\n    {\n      \"name\": \"Roth.hasseDeriv_rename_mul_aeval\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/Separation.lean\"\n    },\n    {\n      \"name\": \"SeparationPrivate154.hasseDeriv_rename_mul_aeval\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/roth-overview-session/GenWronskianChecks.lean\"\n    },\n    {\n      \"name\": \"hasseDeriv_rename_mul_aeval\",\n      \"kind\": \"theorem\",\n      \"file\": \".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_rename/caller-Separation-146.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "AevalReplay159.hasseDeriv_rename_mul_aeval",
+            "kind": "theorem",
+            "file": ".lake/roth-overview-session/GenWronskianChecks.lean"
+          },
+          {
+            "name": "CoeffNone152Replay.hasseDeriv_rename_mul_aeval",
+            "kind": "theorem",
+            "file": ".lake/roth-overview-session/GenWronskianChecks.lean"
+          },
+          {
+            "name": "Roth.hasseDeriv_rename_mul_aeval",
+            "kind": "theorem",
+            "file": "Roth/Separation.lean"
+          },
+          {
+            "name": "SeparationPrivate154.hasseDeriv_rename_mul_aeval",
+            "kind": "theorem",
+            "file": ".lake/roth-overview-session/GenWronskianChecks.lean"
+          },
+          {
+            "name": "hasseDeriv_rename_mul_aeval",
+            "kind": "theorem",
+            "file": ".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_rename/caller-Separation-146.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "standard",
+    "method": "Finder",
+    "request": {
+      "query": "Multivariate Hasse Schmidt derivative disjoint variable product factorization over commutative semiring",
+      "num_results": 6
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"MvPolynomial.pderiv_inl_universalFactorizationMap_X\",\n      \"informal_name\": \"Partial Derivative of Tensor Product Polynomial in Universal Factorization Context\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (R : Type u_1) [inst : CommRing R] (n m k : ℕ) (hn : n = m + k) (i : Fin m) (j : Fin n),\\n  (MvPolynomial.pderiv (Sum.inl i))\\n      ((MvPolynomial.tensorEquivSum R (Fin m) (Fin k) R)\\n        ((MvPolynomial.universalFactorizationMap R n m k hn) (MvPolynomial.X j))) =\\n    if ↑j < ↑i then 0\\n    else if h : ↑j - ↑i < k then MvPolynomial.X (Sum.inr ⟨↑j - ↑i, h⟩) else if ↑j - ↑i = k then 1 else 0\",\n      \"informal_description\": \"The partial derivative of the tensor-equivalent polynomial $ \\\\text{tensorEquivSum}(R, \\\\text{Fin} \\\\, m, \\\\text{Fin} \\\\, k, R, \\\\text{universalFactorizationMap}(R, n, m, k, h_n, X_j)) $ with respect to the variable $ \\\\text{Sum.inl} \\\\, i $ yields: $ 0 $ if $ j < i $; $ X_{\\\\text{inr}(j - i)} $ if $ j - i < k $; $ 1 $ if $ j - i = k $; and $ 0 $ otherwise. This describes how differentiation interacts with tensor product structures in multivariate polynomial rings under universal factorization maps.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.UniversalFactorizationRing\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.pderiv_inr_universalFactorizationMap_X\",\n      \"informal_name\": \"Partial Derivative of Tensor Product Variable under Universal Factorization Map\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (R : Type u_1) [inst : CommRing R] (n m k : ℕ) (hn : n = m + k) (i : Fin k) (j : Fin n),\\n  (MvPolynomial.pderiv (Sum.inr i))\\n      ((MvPolynomial.tensorEquivSum R (Fin m) (Fin k) R)\\n        ((MvPolynomial.universalFactorizationMap R n m k hn) (MvPolynomial.X j))) =\\n    if ↑j < ↑i then 0\\n    else if h : ↑j - ↑i < m then MvPolynomial.X (Sum.inl ⟨↑j - ↑i, h⟩) else if ↑j - ↑i = m then 1 else 0\",\n      \"informal_description\": \"For variables $i$ and $j$, the partial derivative with respect to $\\\\text{inr}(i)$ of the tensor product equivalence applied to the universal factorization map's variable $X_j$ is: $0$ if $j < i$; $X_{\\\\text{inl}(j - i)}$ if $j - i < m$; $1$ if $j - i = m$; and $0$ otherwise. This describes how the partial derivative acts on the embedded variable in the tensor product structure of multivariate polynomial rings.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.UniversalFactorizationRing\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv_mul\",\n      \"informal_name\": \"Product Rule for Hasse Derivatives in Polynomial Rings\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f g : Polynomial R),\\n  (Polynomial.hasseDeriv k) (f * g) =\\n    ∑ ij ∈ Finset.antidiagonal k, (Polynomial.hasseDeriv ij.1) f * (Polynomial.hasseDeriv ij.2) g\",\n      \"informal_description\": \"For any polynomials $ f, g \\\\in R[X] $, the $ k $-th Hasse derivative of the product $ f \\\\cdot g $ satisfies $$ D^{(k)}(f \\\\cdot g) = \\\\sum_{\\\\substack{i + j = k}} D^{(i)}(f) \\\\cdot D^{(j)}(g), $$ where the sum is taken over all pairs $ (i, j) $ of natural numbers such that $ i + j = k $. This expresses the Hasse derivative of a product as a sum over the antidiagonal decomposition of $ k $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.pderiv_sumToIter\",\n      \"informal_name\": \"Partial Derivative of Sum Iteration Equals Sum of Partial Derivatives in Multivariate Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : CommSemiring R] {σ : Type u_1} {ι : Type u_2} (p : MvPolynomial (σ ⊕ ι) R) (i : σ),\\n  (MvPolynomial.pderiv i) ((MvPolynomial.sumToIter R σ ι) p) =\\n    (MvPolynomial.sumToIter R σ ι) ((MvPolynomial.pderiv (Sum.inl i)) p)\",\n      \"informal_description\": \"For any commutative semiring $ R $, types $ \\\\sigma $ and $ \\\\iota $, and polynomial $ p $, the partial derivative with respect to variable $ i $ of the $ \\\\text{sumToIter} $ representation of $ p $ is equal to the $ \\\\text{sumToIter} $ of the partial derivatives of each term of $ p $ with respect to the left-injected variable $ i $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.PDeriv\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.leibniz_iff_X\",\n      \"informal_name\": \"Leibniz Rule Characterization for Derivations on Multivariate Polynomial Rings via Monomials and Variables\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_2} {A : Type u_3} [inst : CommSemiring R] [inst_1 : AddCommMonoid A] [inst_2 : Module R A]\\n  [inst_3 : Module (MvPolynomial σ R) A] [IsScalarTower R (MvPolynomial σ R) A] (D : MvPolynomial σ R →ₗ[R] A),\\n  D 1 = 0 →\\n    ((∀ (p q : MvPolynomial σ R), D (p * q) = p • D q + q • D p) ↔\\n      ∀ (s : σ →₀ ℕ) (i : σ),\\n        D ((MvPolynomial.monomial s) 1 * MvPolynomial.X i) =\\n          (MvPolynomial.monomial s) 1 • D (MvPolynomial.X i) + MvPolynomial.X i • D ((MvPolynom...\",\n      \"informal_description\": \"A linear map $ D : R[\\\\sigma] \\\\to A $ from the multivariate polynomial ring over a commutative semiring $ R $ to an $ R $-module $ A $, satisfying $ D(1) = 0 $, is a derivation (i.e., satisfies the Leibniz rule $ D(pq) = p \\\\cdot D(q) + q \\\\cdot D(p) $ for all polynomials $ p, q $) if and only if the Leibniz rule holds for all products of monomials $ \\\\text{monomial}(s, 1) $ and variables $ X_i $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Derivation\"\n    },\n    {\n      \"formal_name\": \"Polynomial.derivative_prod\",\n      \"informal_name\": \"Generalized Product Rule for Polynomial Derivatives\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {ι : Type y} [inst : CommSemiring R] [inst_1 : DecidableEq ι] {s : Multiset ι} {f : ι → Polynomial R},\\n  Polynomial.derivative (Multiset.map f s).prod =\\n    (Multiset.map (fun i => (Multiset.map f (s.erase i)).prod * Polynomial.derivative (f i)) s).sum\",\n      \"informal_description\": \"For any commutative semiring $ R $, a multiset $ s $ of indices $ \\\\iota $, and a function $ f: \\\\iota \\\\to R[X] $, the derivative of the product $ \\\\prod_{i \\\\in s} f(i) $ satisfies:\\n$$\\n\\\\frac{d}{dx}\\\\left(\\\\prod_{i \\\\in s} f(i)\\\\right) = \\\\sum_{i \\\\in s} \\\\left(\\\\frac{d}{dx}f(i) \\\\cdot \\\\prod_{j \\\\in s \\\\setminus \\\\{i\\\\}} f(j)\\\\right).\\n$$\\nThis generalizes the product rule to the derivative of a product of multiple polynomials.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Derivative\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "MvPolynomial.pderiv_inl_universalFactorizationMap_X",
+            "informal_name": "Partial Derivative of Tensor Product Polynomial in Universal Factorization Context",
+            "kind": "theorem",
+            "type": "∀ (R : Type u_1) [inst : CommRing R] (n m k : ℕ) (hn : n = m + k) (i : Fin m) (j : Fin n),\n  (MvPolynomial.pderiv (Sum.inl i))\n      ((MvPolynomial.tensorEquivSum R (Fin m) (Fin k) R)\n        ((MvPolynomial.universalFactorizationMap R n m k hn) (MvPolynomial.X j))) =\n    if ↑j < ↑i then 0\n    else if h : ↑j - ↑i < k then MvPolynomial.X (Sum.inr ⟨↑j - ↑i, h⟩) else if ↑j - ↑i = k then 1 else 0",
+            "informal_description": "The partial derivative of the tensor-equivalent polynomial $ \\text{tensorEquivSum}(R, \\text{Fin} \\, m, \\text{Fin} \\, k, R, \\text{universalFactorizationMap}(R, n, m, k, h_n, X_j)) $ with respect to the variable $ \\text{Sum.inl} \\, i $ yields: $ 0 $ if $ j < i $; $ X_{\\text{inr}(j - i)} $ if $ j - i < k $; $ 1 $ if $ j - i = k $; and $ 0 $ otherwise. This describes how differentiation interacts with tensor product structures in multivariate polynomial rings under universal factorization maps.",
+            "path": "Mathlib.RingTheory.Polynomial.UniversalFactorizationRing"
+          },
+          {
+            "formal_name": "MvPolynomial.pderiv_inr_universalFactorizationMap_X",
+            "informal_name": "Partial Derivative of Tensor Product Variable under Universal Factorization Map",
+            "kind": "theorem",
+            "type": "∀ (R : Type u_1) [inst : CommRing R] (n m k : ℕ) (hn : n = m + k) (i : Fin k) (j : Fin n),\n  (MvPolynomial.pderiv (Sum.inr i))\n      ((MvPolynomial.tensorEquivSum R (Fin m) (Fin k) R)\n        ((MvPolynomial.universalFactorizationMap R n m k hn) (MvPolynomial.X j))) =\n    if ↑j < ↑i then 0\n    else if h : ↑j - ↑i < m then MvPolynomial.X (Sum.inl ⟨↑j - ↑i, h⟩) else if ↑j - ↑i = m then 1 else 0",
+            "informal_description": "For variables $i$ and $j$, the partial derivative with respect to $\\text{inr}(i)$ of the tensor product equivalence applied to the universal factorization map's variable $X_j$ is: $0$ if $j < i$; $X_{\\text{inl}(j - i)}$ if $j - i < m$; $1$ if $j - i = m$; and $0$ otherwise. This describes how the partial derivative acts on the embedded variable in the tensor product structure of multivariate polynomial rings.",
+            "path": "Mathlib.RingTheory.Polynomial.UniversalFactorizationRing"
+          },
+          {
+            "formal_name": "Polynomial.hasseDeriv_mul",
+            "informal_name": "Product Rule for Hasse Derivatives in Polynomial Rings",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f g : Polynomial R),\n  (Polynomial.hasseDeriv k) (f * g) =\n    ∑ ij ∈ Finset.antidiagonal k, (Polynomial.hasseDeriv ij.1) f * (Polynomial.hasseDeriv ij.2) g",
+            "informal_description": "For any polynomials $ f, g \\in R[X] $, the $ k $-th Hasse derivative of the product $ f \\cdot g $ satisfies $$ D^{(k)}(f \\cdot g) = \\sum_{\\substack{i + j = k}} D^{(i)}(f) \\cdot D^{(j)}(g), $$ where the sum is taken over all pairs $ (i, j) $ of natural numbers such that $ i + j = k $. This expresses the Hasse derivative of a product as a sum over the antidiagonal decomposition of $ k $.",
+            "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          },
+          {
+            "formal_name": "MvPolynomial.pderiv_sumToIter",
+            "informal_name": "Partial Derivative of Sum Iteration Equals Sum of Partial Derivatives in Multivariate Polynomials",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : CommSemiring R] {σ : Type u_1} {ι : Type u_2} (p : MvPolynomial (σ ⊕ ι) R) (i : σ),\n  (MvPolynomial.pderiv i) ((MvPolynomial.sumToIter R σ ι) p) =\n    (MvPolynomial.sumToIter R σ ι) ((MvPolynomial.pderiv (Sum.inl i)) p)",
+            "informal_description": "For any commutative semiring $ R $, types $ \\sigma $ and $ \\iota $, and polynomial $ p $, the partial derivative with respect to variable $ i $ of the $ \\text{sumToIter} $ representation of $ p $ is equal to the $ \\text{sumToIter} $ of the partial derivatives of each term of $ p $ with respect to the left-injected variable $ i $.",
+            "path": "Mathlib.Algebra.MvPolynomial.PDeriv"
+          },
+          {
+            "formal_name": "MvPolynomial.leibniz_iff_X",
+            "informal_name": "Leibniz Rule Characterization for Derivations on Multivariate Polynomial Rings via Monomials and Variables",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {R : Type u_2} {A : Type u_3} [inst : CommSemiring R] [inst_1 : AddCommMonoid A] [inst_2 : Module R A]\n  [inst_3 : Module (MvPolynomial σ R) A] [IsScalarTower R (MvPolynomial σ R) A] (D : MvPolynomial σ R →ₗ[R] A),\n  D 1 = 0 →\n    ((∀ (p q : MvPolynomial σ R), D (p * q) = p • D q + q • D p) ↔\n      ∀ (s : σ →₀ ℕ) (i : σ),\n        D ((MvPolynomial.monomial s) 1 * MvPolynomial.X i) =\n          (MvPolynomial.monomial s) 1 • D (MvPolynomial.X i) + MvPolynomial.X i • D ((MvPolynom...",
+            "informal_description": "A linear map $ D : R[\\sigma] \\to A $ from the multivariate polynomial ring over a commutative semiring $ R $ to an $ R $-module $ A $, satisfying $ D(1) = 0 $, is a derivation (i.e., satisfies the Leibniz rule $ D(pq) = p \\cdot D(q) + q \\cdot D(p) $ for all polynomials $ p, q $) if and only if the Leibniz rule holds for all products of monomials $ \\text{monomial}(s, 1) $ and variables $ X_i $.",
+            "path": "Mathlib.Algebra.MvPolynomial.Derivation"
+          },
+          {
+            "formal_name": "Polynomial.derivative_prod",
+            "informal_name": "Generalized Product Rule for Polynomial Derivatives",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {ι : Type y} [inst : CommSemiring R] [inst_1 : DecidableEq ι] {s : Multiset ι} {f : ι → Polynomial R},\n  Polynomial.derivative (Multiset.map f s).prod =\n    (Multiset.map (fun i => (Multiset.map f (s.erase i)).prod * Polynomial.derivative (f i)) s).sum",
+            "informal_description": "For any commutative semiring $ R $, a multiset $ s $ of indices $ \\iota $, and a function $ f: \\iota \\to R[X] $, the derivative of the product $ \\prod_{i \\in s} f(i) $ satisfies:\n$$\n\\frac{d}{dx}\\left(\\prod_{i \\in s} f(i)\\right) = \\sum_{i \\in s} \\left(\\frac{d}{dx}f(i) \\cdot \\prod_{j \\in s \\setminus \\{i\\}} f(j)\\right).\n$$\nThis generalizes the product rule to the derivative of a product of multiple polynomials.",
+            "path": "Mathlib.Algebra.Polynomial.Derivative"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "standard",
+    "method": "Loogle",
+    "request": {
+      "query": "Polynomial.hasseDeriv, Polynomial.C",
+      "num_results": 8
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.hasseDeriv_natDegree_eq_C\",\n      \"type\": \" {R : Type u_1} [Semiring R] (f : Polynomial R) : (Polynomial.hasseDeriv f.natDegree) f = Polynomial.C f.leadingCoeff\",\n      \"module\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"name\": \"Polynomial.hasseDeriv_C\",\n      \"type\": \" {R : Type u_1} [Semiring R] (k : ℕ) (r : R) (hk : 0 < k) : (Polynomial.hasseDeriv k) (Polynomial.C r) = 0\",\n      \"module\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.hasseDeriv_natDegree_eq_C",
+            "type": " {R : Type u_1} [Semiring R] (f : Polynomial R) : (Polynomial.hasseDeriv f.natDegree) f = Polynomial.C f.leadingCoeff",
+            "module": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          },
+          {
+            "name": "Polynomial.hasseDeriv_C",
+            "type": " {R : Type u_1} [Semiring R] (k : ℕ) (r : R) (hk : 0 < k) : (Polynomial.hasseDeriv k) (Polynomial.C r) = 0",
+            "module": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "standard",
+    "method": "LeanSearch",
+    "request": {
+      "query": "Multivariate Hasse Schmidt derivative disjoint variable product factorization over commutative semiring",
+      "num_results": 6
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.hasseDeriv\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.HasseDeriv\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : Semiring R] → ℕ → Polynomial R →ₗ[R] Polynomial R\"\n    },\n    {\n      \"name\": \"Polynomial.derivative_prod\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Derivative\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {ι : Type y} [inst : CommSemiring R] [inst_1 : DecidableEq ι] {s : Multiset ι} {f : ι → Polynomial R},\\n  Polynomial.derivative (Multiset.map f s).prod =\\n    (Multiset.map (fun i => (Multiset.map f (s.erase i)).prod * Polynomial.derivative (f i)) s).sum\"\n    },\n    {\n      \"name\": \"MvPolynomial.pderiv\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.PDeriv\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} → {σ : Type v} → [inst : CommSemiring R] → σ → Derivation R (MvPolynomial σ R) (MvPolynomial σ R)\"\n    },\n    {\n      \"name\": \"MvPolynomial.pderiv_X_of_ne\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.PDeriv\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type v} [inst : CommSemiring R] {i j : σ}, j ≠ i → (MvPolynomial.pderiv i) (MvPolynomial.X j) = 0\"\n    },\n    {\n      \"name\": \"MvPolynomial.mkDerivation_monomial\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Derivation\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} (R : Type u_2) {A : Type u_3} [inst : CommSemiring R] [inst_1 : AddCommMonoid A] [inst_2 : Module R A]\\n  [inst_3 : Module (MvPolynomial σ R) A] [inst_4 : IsScalarTower R (MvPolynomial σ R) A] (f : σ → A) (s : σ →₀ ℕ)\\n  (r : R),\\n  (MvPolynomial.mkDerivation R f) ((MvPolynomial.monomial s) r) =\\n    r • s.sum fun i k => (MvPolynomial.monomial (s - Finsupp.single i 1)) ↑k • f i\"\n    },\n    {\n      \"name\": \"Polynomial.hasseDeriv_mul\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.HasseDeriv\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f g : Polynomial R),\\n  (Polynomial.hasseDeriv k) (f * g) =\\n    ∑ ij ∈ Finset.antidiagonal k, (Polynomial.hasseDeriv ij.1) f * (Polynomial.hasseDeriv ij.2) g\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.hasseDeriv",
+            "module_name": "Mathlib.Algebra.Polynomial.HasseDeriv",
+            "kind": "definition",
+            "type": "{R : Type u_1} → [inst : Semiring R] → ℕ → Polynomial R →ₗ[R] Polynomial R"
+          },
+          {
+            "name": "Polynomial.derivative_prod",
+            "module_name": "Mathlib.Algebra.Polynomial.Derivative",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {ι : Type y} [inst : CommSemiring R] [inst_1 : DecidableEq ι] {s : Multiset ι} {f : ι → Polynomial R},\n  Polynomial.derivative (Multiset.map f s).prod =\n    (Multiset.map (fun i => (Multiset.map f (s.erase i)).prod * Polynomial.derivative (f i)) s).sum"
+          },
+          {
+            "name": "MvPolynomial.pderiv",
+            "module_name": "Mathlib.Algebra.MvPolynomial.PDeriv",
+            "kind": "definition",
+            "type": "{R : Type u} → {σ : Type v} → [inst : CommSemiring R] → σ → Derivation R (MvPolynomial σ R) (MvPolynomial σ R)"
+          },
+          {
+            "name": "MvPolynomial.pderiv_X_of_ne",
+            "module_name": "Mathlib.Algebra.MvPolynomial.PDeriv",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type v} [inst : CommSemiring R] {i j : σ}, j ≠ i → (MvPolynomial.pderiv i) (MvPolynomial.X j) = 0"
+          },
+          {
+            "name": "MvPolynomial.mkDerivation_monomial",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Derivation",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} (R : Type u_2) {A : Type u_3} [inst : CommSemiring R] [inst_1 : AddCommMonoid A] [inst_2 : Module R A]\n  [inst_3 : Module (MvPolynomial σ R) A] [inst_4 : IsScalarTower R (MvPolynomial σ R) A] (f : σ → A) (s : σ →₀ ℕ)\n  (r : R),\n  (MvPolynomial.mkDerivation R f) ((MvPolynomial.monomial s) r) =\n    r • s.sum fun i k => (MvPolynomial.monomial (s - Finsupp.single i 1)) ↑k • f i"
+          },
+          {
+            "name": "Polynomial.hasseDeriv_mul",
+            "module_name": "Mathlib.Algebra.Polynomial.HasseDeriv",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f g : Polynomial R),\n  (Polynomial.hasseDeriv k) (f * g) =\n    ∑ ij ∈ Finset.antidiagonal k, (Polynomial.hasseDeriv ij.1) f * (Polynomial.hasseDeriv ij.2) g"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "standard",
+    "method": "local",
+    "request": {
+      "query": "hasseDeriv_mul",
+      "limit": 50,
+      "project_root": "/Users/ramin/LEAN/Roth"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.hasseDeriv_mul\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/HasseDeriv.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.hasseDeriv_mul_of_degreeOf_eq_zero\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/HasseDeriv.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.hasseDeriv_mul",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/HasseDeriv.lean"
+          },
+          {
+            "name": "MvPolynomial.hasseDeriv_mul_of_degreeOf_eq_zero",
+            "kind": "theorem",
+            "file": "Roth/HasseDeriv.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "Finder",
+    "request": {
+      "query": "Coefficient of Taylor expansion algebra hom multiplication convolution multi index split variable blocks",
+      "num_results": 6
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"PolyEquivTensor.toFunLinear_mul_tmul_mul_aux_2\",\n      \"informal_name\": \"Polynomial Multiplication Coefficient Compatibility via Algebra Map\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (R : Type u_1) (A : Type u_2) [inst : CommSemiring R] [inst_1 : Semiring A] [inst_2 : Algebra R A] (k : ℕ) (a₁ a₂ : A)\\n  (p₁ p₂ : Polynomial R),\\n  a₁ * a₂ * (algebraMap R A) ((p₁ * p₂).coeff k) =\\n    ∑ x ∈ Finset.antidiagonal k, a₁ * (algebraMap R A) (p₁.coeff x.1) * (a₂ * (algebraMap R A) (p₂.coeff x.2))\",\n      \"informal_description\": \"For any natural number $k$ and elements $a_1, a_2$ in a semiring $A$, and polynomials $p_1, p_2$ over a commutative semiring $R$, the product $a_1 a_2$ multiplied by the algebra map of the coefficient of $p_1 p_2$ at $k$ equals the sum over all pairs $(i, j)$ with $i + j = k$ of $a_1$ times the algebra map of the coefficient of $p_1$ at $i$ multiplied by $a_2$ times the algebra map of the coefficient of $p_2$ at $j$.\",\n      \"path\": \"Mathlib.RingTheory.PolynomialAlgebra\"\n    },\n    {\n      \"formal_name\": \"Polynomial.taylor_mul\",\n      \"informal_name\": \"Multiplicativity of Taylor Series Expansion for Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommSemiring R] (r : R) (p q : Polynomial R),\\n  (Polynomial.taylor r) (p * q) = (Polynomial.taylor r) p * (Polynomial.taylor r) q\",\n      \"informal_description\": \"For any polynomials $ p, q \\\\in R[X] $ over a semiring $ R $, the Taylor series expansion at $ r \\\\in R $ satisfies $ \\\\operatorname{taylor}_r(p \\\\cdot q) = \\\\operatorname{taylor}_r(p) \\\\cdot \\\\operatorname{taylor}_r(q) $, where $ \\\\operatorname{taylor}_r(f) $ denotes the polynomial obtained by substituting $ X + r $ into $ f $. This expresses that the Taylor expansion map preserves multiplication of polynomials.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    },\n    {\n      \"formal_name\": \"Polynomial.taylorAlgHom\",\n      \"informal_name\": \"Taylor Algebra Homomorphism\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : CommSemiring R] → R → Polynomial R →ₐ[R] Polynomial R\",\n      \"informal_description\": \"For a given element $ r $ in a commutative semiring $ R $, this is the $ R $-algebra homomorphism from the polynomial ring $ R[X] $ to itself that sends each polynomial $ f $ to the composition $ f(X + r) $. It preserves addition, scalar multiplication, and multiplication of polynomials by substituting $ X + r $ into $ f $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    },\n    {\n      \"formal_name\": \"Polynomial.taylorAlgHom_apply\",\n      \"informal_name\": \"The Taylor Shift Operator: Algebra Homomorphism vs. Linear Map\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommSemiring R] (r : R) (a : Polynomial R),\\n  (Polynomial.taylorAlgHom r) a = (Polynomial.taylor r) a\",\n      \"informal_description\": \"Let $R$ be a commutative semiring, $r \\\\in R$, and $p$ a polynomial over $R$. Then\\n$$ (\\\\text{Polynomial.taylorAlgHom } r)(p) = (\\\\text{Polynomial.taylor } r)(p) $$\\nHere, `Polynomial.taylorAlgHom r` and `Polynomial.taylor r` are the Taylor shift operator $p(X) \\\\mapsto p(X+r)$, viewed as an $R$-algebra homomorphism and an $R$-linear map, respectively.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    },\n    {\n      \"formal_name\": \"Polynomial.coe_taylorAlgHom\",\n      \"informal_name\": \"Equality of Taylor Algebra Homomorphism and Taylor Series Expansion\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommSemiring R] (r : R), ↑(Polynomial.taylorAlgHom r) = Polynomial.taylor r\",\n      \"informal_description\": \"For a given element $ r $ in a commutative semiring $ R $, the Taylor algebra homomorphism $ \\\\text{taylorAlgHom}_r: R[X] \\\\to R[X] $ coincides with the Taylor series expansion linear map $ \\\\text{taylor}_r: R[X] \\\\to R[X] $, both of which send each polynomial $ f $ to the composition $ f(X + r) $. This equality asserts that substituting $ X + r $ into a polynomial preserves its algebraic structure as both an $ R $-linear map and an $ R $-algebra homomorphism.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    },\n    {\n      \"formal_name\": \"FormalMultilinearSeries.taylorComp\",\n      \"informal_name\": \"Taylor Composition of Formal Multilinear Series\",\n      \"kind\": \"definition\",\n      \"type\": \"{𝕜 : Type u_1} →\\n  [inst : NontriviallyNormedField 𝕜] →\\n    {E : Type u_2} →\\n      [inst_1 : NormedAddCommGroup E] →\\n        [inst_2 : NormedSpace 𝕜 E] →\\n          {F : Type u_3} →\\n            [inst_3 : NormedAddCommGroup F] →\\n              [inst_4 : NormedSpace 𝕜 F] →\\n                {G : Type u_4} →\\n                  [inst_5 : NormedAddCommGroup G] →\\n                    [inst_6 : NormedSpace 𝕜 G] →\\n                      FormalMultilinearSeries 𝕜 F G → FormalMultilinearSeries 𝕜 E F → FormalM...\",\n      \"informal_description\": \"Given a nontrivially normed field $\\\\mathbb{K}$ and normed vector spaces $E$, $F$, $G$, the Taylor composition of formal multilinear series $q : \\\\mathbb{K}[[F^k, G]]$ and $p : \\\\mathbb{K}[[E^{k_m}, F]]$ constructs a formal multilinear series from $E^n$ to $G$. For each natural number $n$, the $n$-th term is obtained by summing over all ordered finite partitions $c$ of $n$, where each term in the sum combines the $|c|$-th term of $q$ with the $\\\\text{partSize}(m)$-th terms of $p$ for each part $m$ of $c$. This results in a continuous multilinear map that is linear in each component of the input vector $v \\\\in E^n$.\",\n      \"path\": \"Mathlib.Analysis.Calculus.ContDiff.FaaDiBruno\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "PolyEquivTensor.toFunLinear_mul_tmul_mul_aux_2",
+            "informal_name": "Polynomial Multiplication Coefficient Compatibility via Algebra Map",
+            "kind": "theorem",
+            "type": "∀ (R : Type u_1) (A : Type u_2) [inst : CommSemiring R] [inst_1 : Semiring A] [inst_2 : Algebra R A] (k : ℕ) (a₁ a₂ : A)\n  (p₁ p₂ : Polynomial R),\n  a₁ * a₂ * (algebraMap R A) ((p₁ * p₂).coeff k) =\n    ∑ x ∈ Finset.antidiagonal k, a₁ * (algebraMap R A) (p₁.coeff x.1) * (a₂ * (algebraMap R A) (p₂.coeff x.2))",
+            "informal_description": "For any natural number $k$ and elements $a_1, a_2$ in a semiring $A$, and polynomials $p_1, p_2$ over a commutative semiring $R$, the product $a_1 a_2$ multiplied by the algebra map of the coefficient of $p_1 p_2$ at $k$ equals the sum over all pairs $(i, j)$ with $i + j = k$ of $a_1$ times the algebra map of the coefficient of $p_1$ at $i$ multiplied by $a_2$ times the algebra map of the coefficient of $p_2$ at $j$.",
+            "path": "Mathlib.RingTheory.PolynomialAlgebra"
+          },
+          {
+            "formal_name": "Polynomial.taylor_mul",
+            "informal_name": "Multiplicativity of Taylor Series Expansion for Polynomials",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommSemiring R] (r : R) (p q : Polynomial R),\n  (Polynomial.taylor r) (p * q) = (Polynomial.taylor r) p * (Polynomial.taylor r) q",
+            "informal_description": "For any polynomials $ p, q \\in R[X] $ over a semiring $ R $, the Taylor series expansion at $ r \\in R $ satisfies $ \\operatorname{taylor}_r(p \\cdot q) = \\operatorname{taylor}_r(p) \\cdot \\operatorname{taylor}_r(q) $, where $ \\operatorname{taylor}_r(f) $ denotes the polynomial obtained by substituting $ X + r $ into $ f $. This expresses that the Taylor expansion map preserves multiplication of polynomials.",
+            "path": "Mathlib.Algebra.Polynomial.Taylor"
+          },
+          {
+            "formal_name": "Polynomial.taylorAlgHom",
+            "informal_name": "Taylor Algebra Homomorphism",
+            "kind": "definition",
+            "type": "{R : Type u_1} → [inst : CommSemiring R] → R → Polynomial R →ₐ[R] Polynomial R",
+            "informal_description": "For a given element $ r $ in a commutative semiring $ R $, this is the $ R $-algebra homomorphism from the polynomial ring $ R[X] $ to itself that sends each polynomial $ f $ to the composition $ f(X + r) $. It preserves addition, scalar multiplication, and multiplication of polynomials by substituting $ X + r $ into $ f $.",
+            "path": "Mathlib.Algebra.Polynomial.Taylor"
+          },
+          {
+            "formal_name": "Polynomial.taylorAlgHom_apply",
+            "informal_name": "The Taylor Shift Operator: Algebra Homomorphism vs. Linear Map",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommSemiring R] (r : R) (a : Polynomial R),\n  (Polynomial.taylorAlgHom r) a = (Polynomial.taylor r) a",
+            "informal_description": "Let $R$ be a commutative semiring, $r \\in R$, and $p$ a polynomial over $R$. Then\n$$ (\\text{Polynomial.taylorAlgHom } r)(p) = (\\text{Polynomial.taylor } r)(p) $$\nHere, `Polynomial.taylorAlgHom r` and `Polynomial.taylor r` are the Taylor shift operator $p(X) \\mapsto p(X+r)$, viewed as an $R$-algebra homomorphism and an $R$-linear map, respectively.",
+            "path": "Mathlib.Algebra.Polynomial.Taylor"
+          },
+          {
+            "formal_name": "Polynomial.coe_taylorAlgHom",
+            "informal_name": "Equality of Taylor Algebra Homomorphism and Taylor Series Expansion",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommSemiring R] (r : R), ↑(Polynomial.taylorAlgHom r) = Polynomial.taylor r",
+            "informal_description": "For a given element $ r $ in a commutative semiring $ R $, the Taylor algebra homomorphism $ \\text{taylorAlgHom}_r: R[X] \\to R[X] $ coincides with the Taylor series expansion linear map $ \\text{taylor}_r: R[X] \\to R[X] $, both of which send each polynomial $ f $ to the composition $ f(X + r) $. This equality asserts that substituting $ X + r $ into a polynomial preserves its algebraic structure as both an $ R $-linear map and an $ R $-algebra homomorphism.",
+            "path": "Mathlib.Algebra.Polynomial.Taylor"
+          },
+          {
+            "formal_name": "FormalMultilinearSeries.taylorComp",
+            "informal_name": "Taylor Composition of Formal Multilinear Series",
+            "kind": "definition",
+            "type": "{𝕜 : Type u_1} →\n  [inst : NontriviallyNormedField 𝕜] →\n    {E : Type u_2} →\n      [inst_1 : NormedAddCommGroup E] →\n        [inst_2 : NormedSpace 𝕜 E] →\n          {F : Type u_3} →\n            [inst_3 : NormedAddCommGroup F] →\n              [inst_4 : NormedSpace 𝕜 F] →\n                {G : Type u_4} →\n                  [inst_5 : NormedAddCommGroup G] →\n                    [inst_6 : NormedSpace 𝕜 G] →\n                      FormalMultilinearSeries 𝕜 F G → FormalMultilinearSeries 𝕜 E F → FormalM...",
+            "informal_description": "Given a nontrivially normed field $\\mathbb{K}$ and normed vector spaces $E$, $F$, $G$, the Taylor composition of formal multilinear series $q : \\mathbb{K}[[F^k, G]]$ and $p : \\mathbb{K}[[E^{k_m}, F]]$ constructs a formal multilinear series from $E^n$ to $G$. For each natural number $n$, the $n$-th term is obtained by summing over all ordered finite partitions $c$ of $n$, where each term in the sum combines the $|c|$-th term of $q$ with the $\\text{partSize}(m)$-th terms of $p$ for each part $m$ of $c$. This results in a continuous multilinear map that is linear in each component of the input vector $v \\in E^n$.",
+            "path": "Mathlib.Analysis.Calculus.ContDiff.FaaDiBruno"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "Loogle",
+    "request": {
+      "query": "Polynomial.hasseDeriv, Polynomial.map",
+      "num_results": 8
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.hasseDeriv_map\",\n      \"type\": \" {R : Type u_1} [Semiring R] {S : Type u_2} [Semiring S] (f : R →+* S) (k : ℕ) (p : Polynomial R) : (Polynomial.hasseDeriv k) (Polynomial.map f p) = Polynomial.map f ((Polynomial.hasseDeriv k) p)\",\n      \"module\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.hasseDeriv_map",
+            "type": " {R : Type u_1} [Semiring R] {S : Type u_2} [Semiring S] (f : R →+* S) (k : ℕ) (p : Polynomial R) : (Polynomial.hasseDeriv k) (Polynomial.map f p) = Polynomial.map f ((Polynomial.hasseDeriv k) p)",
+            "module": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "LeanSearch",
+    "request": {
+      "query": "Coefficient of Taylor expansion algebra hom multiplication convolution multi index split variable blocks",
+      "num_results": 6
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.taylor_coeff\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Taylor\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R) (n : ℕ),\\n  ((Polynomial.taylor r) f).coeff n = Polynomial.eval r ((Polynomial.hasseDeriv n) f)\"\n    },\n    {\n      \"name\": \"Polynomial.taylor_mul\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Taylor\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommSemiring R] (r : R) (p q : Polynomial R),\\n  (Polynomial.taylor r) (p * q) = (Polynomial.taylor r) p * (Polynomial.taylor r) q\"\n    },\n    {\n      \"name\": \"Polynomial.taylorAlgHom\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Taylor\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : CommSemiring R] → R → Polynomial R →ₐ[R] Polynomial R\"\n    },\n    {\n      \"name\": \"Polynomial.Splits.taylor\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Splits\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommSemiring R] {p : Polynomial R}, p.Splits → ∀ (r : R), ((Polynomial.taylor r) p).Splits\"\n    },\n    {\n      \"name\": \"MvPowerSeries.instMul\",\n      \"module_name\": \"Mathlib.RingTheory.MvPowerSeries.Basic\",\n      \"kind\": \"instance\",\n      \"type\": \"{σ : Type u_1} → {R : Type u_2} → [Semiring R] → Mul (MvPowerSeries σ R)\"\n    },\n    {\n      \"name\": \"MvPowerSeries.coeff_prod\",\n      \"module_name\": \"Mathlib.RingTheory.MvPowerSeries.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_3} [inst : CommSemiring R] {ι : Type u_4} [inst_1 : DecidableEq ι] [inst_2 : DecidableEq σ]\\n  (f : ι → MvPowerSeries σ R) (d : σ →₀ ℕ) (s : Finset ι),\\n  (MvPowerSeries.coeff d) (∏ j ∈ s, f j) = ∑ l ∈ s.finsuppAntidiag d, ∏ i ∈ s, (MvPowerSeries.coeff (l i)) (f i)\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.taylor_coeff",
+            "module_name": "Mathlib.Algebra.Polynomial.Taylor",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R) (n : ℕ),\n  ((Polynomial.taylor r) f).coeff n = Polynomial.eval r ((Polynomial.hasseDeriv n) f)"
+          },
+          {
+            "name": "Polynomial.taylor_mul",
+            "module_name": "Mathlib.Algebra.Polynomial.Taylor",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommSemiring R] (r : R) (p q : Polynomial R),\n  (Polynomial.taylor r) (p * q) = (Polynomial.taylor r) p * (Polynomial.taylor r) q"
+          },
+          {
+            "name": "Polynomial.taylorAlgHom",
+            "module_name": "Mathlib.Algebra.Polynomial.Taylor",
+            "kind": "definition",
+            "type": "{R : Type u_1} → [inst : CommSemiring R] → R → Polynomial R →ₐ[R] Polynomial R"
+          },
+          {
+            "name": "Polynomial.Splits.taylor",
+            "module_name": "Mathlib.Algebra.Polynomial.Splits",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommSemiring R] {p : Polynomial R}, p.Splits → ∀ (r : R), ((Polynomial.taylor r) p).Splits"
+          },
+          {
+            "name": "MvPowerSeries.instMul",
+            "module_name": "Mathlib.RingTheory.MvPowerSeries.Basic",
+            "kind": "instance",
+            "type": "{σ : Type u_1} → {R : Type u_2} → [Semiring R] → Mul (MvPowerSeries σ R)"
+          },
+          {
+            "name": "MvPowerSeries.coeff_prod",
+            "module_name": "Mathlib.RingTheory.MvPowerSeries.Basic",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {R : Type u_3} [inst : CommSemiring R] {ι : Type u_4} [inst_1 : DecidableEq ι] [inst_2 : DecidableEq σ]\n  (f : ι → MvPowerSeries σ R) (d : σ →₀ ℕ) (s : Finset ι),\n  (MvPowerSeries.coeff d) (∏ j ∈ s, f j) = ∑ l ∈ s.finsuppAntidiag d, ∏ i ∈ s, (MvPowerSeries.coeff (l i)) (f i)"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "local",
+    "request": {
+      "query": "taylor_coeff",
+      "limit": 50,
+      "project_root": "/Users/ramin/LEAN/Roth"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.taylor_coeff\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Taylor.lean\"\n    },\n    {\n      \"name\": \"Polynomial.taylor_coeff_one\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Taylor.lean\"\n    },\n    {\n      \"name\": \"Polynomial.taylor_coeff_zero\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Taylor.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.taylor_coeff",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Taylor.lean"
+          },
+          {
+            "name": "Polynomial.taylor_coeff_one",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Taylor.lean"
+          },
+          {
+            "name": "Polynomial.taylor_coeff_zero",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Taylor.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "current",
+    "method": "rg",
+    "request": [
+      "rg",
+      "-n",
+      "hasseDeriv_rename_mul_aeval|hasseDeriv_single_aeval_X|hasseDeriv_rename",
+      ".lake/packages/mathlib/Mathlib/Algebra"
+    ],
+    "response": {
+      "request": [
+        "rg",
+        "-n",
+        "hasseDeriv_rename_mul_aeval|hasseDeriv_single_aeval_X|hasseDeriv_rename",
+        ".lake/packages/mathlib/Mathlib/Algebra"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": ""
+    }
+  },
+  {
+    "form": "standard",
+    "method": "rg",
+    "request": [
+      "rg",
+      "-n",
+      "hasseDeriv_mul|hasseDeriv_map|hasseDeriv_coeff",
+      ".lake/packages/mathlib/Mathlib/Algebra"
+    ],
+    "response": {
+      "request": [
+        "rg",
+        "-n",
+        "hasseDeriv_mul|hasseDeriv_map|hasseDeriv_coeff",
+        ".lake/packages/mathlib/Mathlib/Algebra"
+      ],
+      "exit_code": 0,
+      "stdout": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/HasseDeriv.lean:32:* `Polynomial.hasseDeriv_mul`:\n.lake/packages/mathlib/Mathlib/Algebra/Polynomial/HasseDeriv.lean:67:theorem hasseDeriv_coeff (n : ℕ) :\n.lake/packages/mathlib/Mathlib/Algebra/Polynomial/HasseDeriv.lean:107:  simp only [hasseDeriv_coeff, coeff_monomial]\n.lake/packages/mathlib/Mathlib/Algebra/Polynomial/HasseDeriv.lean:128:theorem hasseDeriv_map {S : Type*} [Semiring S] (f : R →+* S) (k : ℕ) (p : R[X]) :\n.lake/packages/mathlib/Mathlib/Algebra/Polynomial/HasseDeriv.lean:131:  simp [hasseDeriv_coeff]\n.lake/packages/mathlib/Mathlib/Algebra/Polynomial/HasseDeriv.lean:140:    hasseDeriv_coeff, ← @choose_symm_add _ k]\n.lake/packages/mathlib/Mathlib/Algebra/Polynomial/HasseDeriv.lean:195:  rw [eq_C_of_natDegree_le_zero this, hasseDeriv_coeff, zero_add, Nat.choose_self,\n.lake/packages/mathlib/Mathlib/Algebra/Polynomial/HasseDeriv.lean:211:theorem hasseDeriv_mul (f g : R[X]) :\n",
+      "stderr": ""
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "rg",
+    "request": [
+      "rg",
+      "-n",
+      "taylor_mul|taylor_coeff|sumToIter|tensorEquivSum",
+      ".lake/packages/mathlib/Mathlib/Algebra"
+    ],
+    "response": {
+      "request": [
+        "rg",
+        "-n",
+        "taylor_mul|taylor_coeff|sumToIter|tensorEquivSum",
+        ".lake/packages/mathlib/Mathlib/Algebra"
+      ],
+      "exit_code": 0,
+      "stdout": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Taylor.lean:19:* `Polynomial.taylor_coeff`: the `k`th coefficient of `taylor r f` is\n.lake/packages/mathlib/Mathlib/Algebra/Polynomial/Taylor.lean:68:theorem taylor_coeff (n : ℕ) : (taylor r f).coeff n = (hasseDeriv n f).eval r :=\n.lake/packages/mathlib/Mathlib/Algebra/Polynomial/Taylor.lean:79:theorem taylor_coeff_zero : (taylor r f).coeff 0 = f.eval r := by\n.lake/packages/mathlib/Mathlib/Algebra/Polynomial/Taylor.lean:80:  rw [taylor_coeff, hasseDeriv_zero, LinearMap.id_apply]\n.lake/packages/mathlib/Mathlib/Algebra/Polynomial/Taylor.lean:83:theorem taylor_coeff_one : (taylor r f).coeff 1 = f.derivative.eval r := by\n.lake/packages/mathlib/Mathlib/Algebra/Polynomial/Taylor.lean:84:  rw [taylor_coeff, hasseDeriv_one]\n.lake/packages/mathlib/Mathlib/Algebra/Polynomial/Taylor.lean:90:  · rw [taylor_coeff, hasseDeriv_natDegree_eq_C, eval_C]\n.lake/packages/mathlib/Mathlib/Algebra/Polynomial/Taylor.lean:118:  rw [taylor_coeff, h, coeff_zero]\n.lake/packages/mathlib/Mathlib/Algebra/Polynomial/Taylor.lean:143:theorem taylor_mul (p q : R[X]) : taylor r (p * q) = taylor r p * taylor r q := mul_comp ..\n.lake/packages/mathlib/Mathlib/Algebra/Polynomial/Taylor.lean:148:  AlgHom.ofLinearMap (taylor r) (taylor_one r) (taylor_mul r)\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean:352:def sumToIter : MvPolynomial (S₁ ⊕ S₂) R →+* MvPolynomial S₁ (MvPolynomial S₂ R) :=\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean:356:theorem sumToIter_C (a : R) : sumToIter R S₁ S₂ (C a) = C (C a) :=\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean:360:theorem sumToIter_Xl (b : S₁) : sumToIter R S₁ S₂ (X (Sum.inl b)) = X b :=\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean:364:theorem sumToIter_Xr (c : S₂) : sumToIter R S₁ S₂ (X (Sum.inr c)) = C (X c) :=\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean:389:@[deprecated (since := \"2026-06-18\")] alias iterToSum_sumToIter := RingEquiv.symm_apply_apply\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean:390:@[deprecated (since := \"2026-06-18\")] alias sumToIter_iterToSum := RingEquiv.apply_symm_apply\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/PDeriv.lean:176:@[deprecated (since := \"2026-06-18\")] alias pderiv_sumToIter := pderiv_sumRingEquiv\n",
+      "stderr": ""
+    }
+  }
+]

@@ -1,0 +1,29 @@
+namespace HasseSeparation160
+open MvPolynomial
+variable {σ τ R : Type*} [CommSemiring R]
+theorem freshCoordinate (f : τ → σ) (hf : Function.Injective f) (i : σ)
+    (hi : ∀ j, f j ≠ i) (d : τ →₀ ℕ) (ν : ℕ) (U : MvPolynomial τ R)
+    (V : Polynomial R) :
+    hasseDeriv (d.mapDomain f + Finsupp.single i ν)
+      (rename f U * Polynomial.aeval (X i : MvPolynomial σ R) V) =
+      rename f (hasseDeriv d U) *
+        Polynomial.aeval (X i : MvPolynomial σ R) (Polynomial.hasseDeriv ν V) := by
+  let g : Option τ → σ := Option.elim i f
+  have hg : Function.Injective g := by
+    intro a b h
+    cases a with
+    | none =>
+      cases b with
+      | none => rfl
+      | some b => exact False.elim (hi b h.symm)
+    | some a =>
+      cases b with
+      | none => exact False.elim (hi a h)
+      | some b => exact congrArg some (hf h)
+  have h := congrArg (rename g) (factorwise d ν U V)
+  rw [← hasseDeriv_rename hg] at h
+  simpa only [map_mul, rename_rename, rename_polynomial_aeval_X,
+    Finsupp.mapDomain_add, ← Finsupp.mapDomain_comp, Finsupp.mapDomain_single,
+    Function.comp_def, g, Option.elim_none, Option.elim_some] using h
+#print axioms freshCoordinate
+end HasseSeparation160

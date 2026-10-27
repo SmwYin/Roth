@@ -1,0 +1,122 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\n#check_failure Roth.hasseDeriv_rename_mul_aeval\n#check_failure MvPolynomial.hasseDeriv\nnamespace HasseSeparation160Isolated\n#check @Polynomial.hasseDeriv_mul\n#check @Polynomial.hasseDeriv_map\n#check @Polynomial.hasseDeriv_coeff\n#check @Polynomial.toMvPolynomial_eq_rename_comp\nvariable {R : Type*} [CommSemiring R]\n-- Actual existing univariate law: a constant outer factor differentiates factorwise.\ntheorem constantFactor (n : ℕ) (U : R) (V : Polynomial R) :\n    Polynomial.hasseDeriv n (Polynomial.C U * V) =\n      Polynomial.C U * Polynomial.hasseDeriv n V := by\n  apply Polynomial.ext\n  intro k\n  simp only [Polynomial.hasseDeriv_coeff, Polynomial.coeff_C_mul]\n  ac_rfl\n-- Coefficient form of separated product: genuine mathlib-only normalization.\ntheorem separatedCoefficients {τ : Type*} (n k : ℕ) (U : MvPolynomial τ R)\n    (V : Polynomial R) :\n    (Polynomial.hasseDeriv n (Polynomial.C U * V.map MvPolynomial.C)).coeff k =\n      U * MvPolynomial.C ((Polynomial.hasseDeriv n V).coeff k) := by\n  rw [constantFactor, Polynomial.hasseDeriv_map, Polynomial.coeff_C_mul,\n    Polynomial.coeff_map]\n-- Univariate polynomial law really holds for Semiring, unlike fixed multivariate parent.\ntheorem semiringLaw {S : Type*} [Semiring S] (n : ℕ) (V W : Polynomial S) :\n    Polynomial.hasseDeriv n (V * W) = ∑ ij ∈ Finset.antidiagonal n,\n      Polynomial.hasseDeriv ij.1 V * Polynomial.hasseDeriv ij.2 W :=\n  Polynomial.hasseDeriv_mul n V W\n-- Dropping disjointness is false even in one variable over the naturals.\ntheorem overlapCounterexample :\n    Polynomial.hasseDeriv 1 (Polynomial.X * Polynomial.X : Polynomial ℕ) ≠\n      Polynomial.hasseDeriv 1 Polynomial.X * Polynomial.hasseDeriv 1 Polynomial.X := by\n  intro h\n  have hc := congrArg (fun P : Polynomial ℕ ↦ P.coeff 1) h\n  norm_num [Polynomial.hasseDeriv_coeff] at hc\n#print axioms constantFactor\n#print axioms separatedCoefficients\n#print axioms semiringLaw\n#print axioms overlapCounterexample\nend HasseSeparation160Isolated\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": false,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.hasseDeriv_rename_mul_aeval`\",\n      \"line\": 10,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown constant `MvPolynomial.hasseDeriv`\",\n      \"line\": 11,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.hasseDeriv_mul : ∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f g : Polynomial R),\\n  (Polynomial.hasseDeriv k) (f * g) =\\n    ∑ ij ∈ Finset.antidiagonal k, (Polynomial.hasseDeriv ij.1) f * (Polynomial.hasseDeriv ij.2) g\",\n      \"line\": 13,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.hasseDeriv_map : ∀ {R : Type u_1} [inst : Semiring R] {S : Type u_2} [inst_1 : Semiring S] (f : R →+* S)\\n  (k : ℕ) (p : Polynomial R),\\n  (Polynomial.hasseDeriv k) (Polynomial.map f p) = Polynomial.map f ((Polynomial.hasseDeriv k) p)\",\n      \"line\": 14,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.hasseDeriv_coeff : ∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f : Polynomial R) (n : ℕ),\\n  ((Polynomial.hasseDeriv k) f).coeff n = ↑((n + k).choose k) * f.coeff (n + k)\",\n      \"line\": 15,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.toMvPolynomial_eq_rename_comp : ∀ {R : Type u_1} {σ : Type u_2} [inst : CommSemiring R] (i : σ),\\n  Polynomial.toMvPolynomial i = (MvPolynomial.rename fun x ↦ i).comp ↑(MvPolynomial.uniqueAlgEquiv R Unit).symm\",\n      \"line\": 16,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"unsolved goals\\nh :\\n  (Polynomial.hasseDeriv 1) (Polynomial.X * Polynomial.X) =\\n    (Polynomial.hasseDeriv 1) Polynomial.X * (Polynomial.hasseDeriv 1) Polynomial.X\\nhc : 2 = (Polynomial.coeff 1) 1\\n⊢ False\",\n      \"line\": 41,\n      \"column\": 86,\n      \"lean_tags\": [\n        \"unsolvedGoals\"\n      ],\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'HasseSeparation160Isolated.constantFactor' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 45,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'HasseSeparation160Isolated.separatedCoefficients' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 46,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'HasseSeparation160Isolated.semiringLaw' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 47,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'HasseSeparation160Isolated.overlapCounterexample' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 48,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": false,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.hasseDeriv_rename_mul_aeval`",
+          "line": 10,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown constant `MvPolynomial.hasseDeriv`",
+          "line": 11,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.hasseDeriv_mul : ∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f g : Polynomial R),\n  (Polynomial.hasseDeriv k) (f * g) =\n    ∑ ij ∈ Finset.antidiagonal k, (Polynomial.hasseDeriv ij.1) f * (Polynomial.hasseDeriv ij.2) g",
+          "line": 13,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.hasseDeriv_map : ∀ {R : Type u_1} [inst : Semiring R] {S : Type u_2} [inst_1 : Semiring S] (f : R →+* S)\n  (k : ℕ) (p : Polynomial R),\n  (Polynomial.hasseDeriv k) (Polynomial.map f p) = Polynomial.map f ((Polynomial.hasseDeriv k) p)",
+          "line": 14,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.hasseDeriv_coeff : ∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f : Polynomial R) (n : ℕ),\n  ((Polynomial.hasseDeriv k) f).coeff n = ↑((n + k).choose k) * f.coeff (n + k)",
+          "line": 15,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.toMvPolynomial_eq_rename_comp : ∀ {R : Type u_1} {σ : Type u_2} [inst : CommSemiring R] (i : σ),\n  Polynomial.toMvPolynomial i = (MvPolynomial.rename fun x ↦ i).comp ↑(MvPolynomial.uniqueAlgEquiv R Unit).symm",
+          "line": 16,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "unsolved goals\nh :\n  (Polynomial.hasseDeriv 1) (Polynomial.X * Polynomial.X) =\n    (Polynomial.hasseDeriv 1) Polynomial.X * (Polynomial.hasseDeriv 1) Polynomial.X\nhc : 2 = (Polynomial.coeff 1) 1\n⊢ False",
+          "line": 41,
+          "column": 86,
+          "lean_tags": [
+            "unsolvedGoals"
+          ],
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'HasseSeparation160Isolated.constantFactor' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 45,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'HasseSeparation160Isolated.separatedCoefficients' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 46,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'HasseSeparation160Isolated.semiringLaw' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 47,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'HasseSeparation160Isolated.overlapCounterexample' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 48,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 422
+}

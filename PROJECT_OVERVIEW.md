@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 159/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 160/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 159; remaining: 134.
-- Verdicts: 18 NO-composable-from-mathlib, 13 YES-add-as-is, 19 YES-but-generalise-first, 35 NO-mathlib-has-it, 47 BORDERLINE-needs-human, 27 SKIP.
+- Completed applicable assessments: 160; remaining: 133.
+- Verdicts: 18 NO-composable-from-mathlib, 13 YES-add-as-is, 20 YES-but-generalise-first, 35 NO-mathlib-has-it, 47 BORDERLINE-needs-human, 27 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -1762,6 +1762,28 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: explicit call sites: {'caller': 'Roth.hasseDeriv_rename_mul_aeval', 'file': 'Roth/Separation.lean', 'line': 162, 'refactor': 'Replace public wrapper with local specialization AlgHom.congr_fun (Polynomial.toMvPolynomial_eq_rename_comp i) f; full body replay succeeded.'}, {'caller': 'Roth.degreeOf_rename_mul_aeval', 'file': 'Roth/Separation.lean', 'line': 207, 'refactor': 'Replace public wrapper with local specialization AlgHom.congr_fun (Polynomial.toMvPolynomial_eq_rename_comp i) f; full body replay succeeded.'}, {'caller': 'Roth.degreeOf_none_rename_mul_aeval', 'file': 'Roth/Separation.lean', 'line': 224, 'refactor': 'Replace public wrapper with local specialization AlgHom.congr_fun (Polynomial.toMvPolynomial_eq_rename_comp i) f; full body replay succeeded.'}, {'caller': '_private.Roth.Theta.0.Roth.index_separated_mul_le_aux', 'file': 'Roth/Theta.lean', 'line': 437, 'refactor': 'Replace public wrapper with local specialization AlgHom.congr_fun (Polynomial.toMvPolynomial_eq_rename_comp i) f; full body replay succeeded.'}, {'caller': '_private.Roth.Theta.0.Roth.mapped_det_ne_zero_aux', 'file': 'Roth/Theta.lean', 'line': 528, 'refactor': 'Replace public wrapper with local specialization AlgHom.congr_fun (Polynomial.toMvPolynomial_eq_rename_comp i) f; full body replay succeeded.'}; direct kernel value consumers: Roth.hasseDeriv_rename_mul_aeval, Roth.degreeOf_rename_mul_aeval, Roth.degreeOf_none_rename_mul_aeval, _private.Roth.Theta.0.Roth.index_separated_mul_le_aux, _private.Roth.Theta.0.Roth.mapped_det_ne_zero_aux; total explicit uses: 5; same file uses: 3; external to file uses: 2; external files: 1; internal use count excluding declaring file: 2; inline derivations: None; scope: Fresh lexical inventory, no-ignore rg, git grep and exact ordered canonical293 direct kernel-value audit; not opaque/simp closure.
 - Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/Roth.aeval_X_eq_rename.md).
 
+### Completed: `Roth.hasseDeriv_rename_mul_aeval`
+
+- Type: `@Roth.hasseDeriv_rename_mul_aeval.{u_1,
+    u_2} : ∀ {τ : Type u_1} {R : Type u_2} [inst : CommSemiring.{u_2} R] (d : Finsupp.{u_1, 0} τ ℕ) (ν : ℕ)
+  (U : MvPolynomial.{u_1, u_2} τ R) (V : Polynomial.{u_2} R),
+  Eq.{max (u_1 + 1) (u_2 + 1)}
+    ((MvPolynomial.hasseDeriv.{u_1, u_2}
+        (HAdd.hAdd.{u_1, u_1, u_1} (Finsupp.mapDomain.{u_1, u_1, 0} some.{u_1} d)
+          (Finsupp.single.{u_1, 0} none.{u_1} ν)))
+      (HMul.hMul.{max u_1 u_2, max u_1 u_2, max u_1 u_2} ((MvPolynomial.rename.{u_1, u_1, u_2} some.{u_1}) U)
+        ((Polynomial.aeval.{u_2, max u_1 u_2} (MvPolynomial.X.{u_2, u_1} none.{u_1})) V)))
+    (HMul.hMul.{max u_1 u_2, max u_1 u_2, max u_1 u_2}
+      ((MvPolynomial.rename.{u_1, u_1, u_2} some.{u_1}) ((MvPolynomial.hasseDeriv.{u_1, u_2} d) U))
+      ((Polynomial.aeval.{u_2, max u_1 u_2} (MvPolynomial.X.{u_2, u_1} none.{u_1}))
+        ((Polynomial.hasseDeriv.{u_2} ν) V)))`
+- What: Hasse differentiation of a product in disjoint variable blocks acts on each factor separately.
+- How: Split the multi-index into disjoint supports, compose Hasse operators, pull out factors of degree zero in the active variables, and transport each factor derivative through its embedding.
+- Hypotheses: arbitrary independent variable/coefficient universes, CommSemiring R, d : τ →₀ ℕ, ν : ℕ, U : MvPolynomial τ R, V : Polynomial R, no Fintype, DecidableEq, characteristic, field, domain or nonzero assumptions
+- Project dependencies: MvPolynomial.hasseDeriv, MvPolynomial.hasseDeriv_hasseDeriv_of_disjoint, MvPolynomial.hasseDeriv_mul_of_degreeOf_eq_zero, MvPolynomial.hasseDeriv_single_aeval_X, MvPolynomial.hasseDeriv_rename, Roth.aeval_X_eq_rename
+- Caller summary: explicit call sites: {'file': 'Roth/Separation.lean', 'line': 365, 'declaration': 'Roth.det_hasseDeriv_separated', 'plan': 'Use new freshCoordinate law specialized to some/none inside the existing entrywise determinant proof; retain Field signature of this caller.'}; external to file occurrences: 0; direct kernel value consumers: Roth.det_hasseDeriv_separated; inline derivations: None; note: Two lexical occurrences include the declaration itself; one explicit caller within same file. Source-level enumeration and ordered293 kernel audit agree here; neither is transitive simp closure.
+- Verdict: YES-but-generalise-first; [complete report](.mathlib-quality/overview/mathlibable/Roth.hasseDeriv_rename_mul_aeval.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -2106,6 +2128,8 @@ Completed `Roth.coeff_rename_mul_aeval`: existing core: Polynomial.coeff_C_mul, 
 
 Completed `Roth.aeval_X_eq_rename`: verdict: NO-mathlib-has-it; existing: Polynomial.toMvPolynomial_eq_rename_comp; path: Mathlib/Algebra/MvPolynomial/Equiv.lean:891; proof: AlgHom.congr_fun (Polynomial.toMvPolynomial_eq_rename_comp i) f; five methods all three forms: True; local index: unavailable; positive lexical fallback, not absence; pinned native positive: True
 
+Completed `Roth.hasseDeriv_rename_mul_aeval`: verdict: YES-but-generalise-first; cells: 15; partial hits: Polynomial.hasseDeriv_mul, Polynomial.hasseDeriv_map, Polynomial.hasseDeriv_coeff, Polynomial.toMvPolynomial_eq_rename_comp, Polynomial.taylor_mul, Polynomial.taylor_coeff; note: All multivariate Hasse names in the project namespace originate in Roth/HasseDeriv.lean; pinned mathlib supplies univariate API only. Missing multivariate guard compiled in isolated mathlib environment.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -2425,6 +2449,8 @@ Completed `Roth.degreeOf_coeffNone_le`: Arbitrary Option analogue of existing fi
 Completed `Roth.coeff_rename_mul_aeval`: Canonical double coefficient law is exactly three existing calls; first-coefficient-only law is insufficient for the full theorem., No exact original Option/aeval law was verified as a single existing theorem.
 
 Completed `Roth.aeval_X_eq_rename`: Pointwise specialization of existing equality of the same R-algebra homomorphisms; no new mathematical law.
+
+Completed `Roth.hasseDeriv_rename_mul_aeval`: Univariate constant outer-factor Hasse law is proved in mathlib-only scratch; it covers only the none-coordinate part., Previous159 aeval bridge is already in mathlib, and its wrapper is eliminated in the target replay.
 
 ## Part 5: Generalization opportunities
 
@@ -2749,6 +2775,8 @@ Completed `Roth.coeff_rename_mul_aeval`: status: MAXIMALLY GENERAL for fixed pol
 
 Completed `Roth.aeval_X_eq_rename`: fixed interface: MAXIMALLY GENERAL; verified weakenings: None; representation extension: Arbitrary Unique index verified by a new hom-ext proof; not counted as existing-call API.; modern idiom: Existing bundled equality already supplies canonical abstract form.; false generalization: Arbitrary replacement of X_i while keeping the chosen-coordinate rename is false; concrete coefficient guard verified.
 
+Completed `Roth.hasseDeriv_rename_mul_aeval`: status: STRICTLY NARROWER representation interface; verified: HasseSeparation160.freshCoordinate; statement: Replace some : τ → Option τ and none by an arbitrary injective f : τ → σ and fresh i : σ satisfying ∀ j, f j ≠ i; no surjectivity/exhaustiveness required.; fixed interface: Original already uses weakest parent interface CommSemiring and arbitrary τ; no typeclass drop claimed.; original specialization: HasseSeparation160.originalFormAgain
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -3069,6 +3097,8 @@ Completed `Roth.degreeOf_coeffNone_le`: Candidate Option-variable coordinate-deg
 Completed `Roth.coeff_rename_mul_aeval`: Potential MvPolynomial coefficient adapter for separated Option-variable product, or reusable optionEquivLeft rename/aeval transport law; upstream API design question, not an absence theorem.
 
 Completed `Roth.aeval_X_eq_rename`: None needed for exact target or five complete callers.
+
+Completed `Roth.hasseDeriv_rename_mul_aeval`: Upstream multivariate Hasse derivative parent and compatibility API, Fresh-coordinate separated-product law over arbitrary injective embeddings; newly verified proof, not existing mathlib call
 
 ## Part 7: Junk / removable
 
@@ -3393,6 +3423,8 @@ Completed `Roth.coeff_rename_mul_aeval`: Useful local adapter: three uses in two
 
 Completed `Roth.aeval_X_eq_rename`: Useful in five callers, hence not dead code; public wrapper duplicates existing bundled Mathlib API.
 
+Completed `Roth.hasseDeriv_rename_mul_aeval`: False
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -3556,6 +3588,7 @@ Completed `Roth.aeval_X_eq_rename`: Useful in five callers, hence not dead code;
 | 157 | `Roth.degreeOf_coeffNone_le` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.degreeOf_coeffNone_le.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.degreeOf_coeffNone_le/root-acceptance.json) |
 | 158 | `Roth.coeff_rename_mul_aeval` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.coeff_rename_mul_aeval.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.coeff_rename_mul_aeval/root-acceptance.json) |
 | 159 | `Roth.aeval_X_eq_rename` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.aeval_X_eq_rename.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.aeval_X_eq_rename/root-acceptance.json) |
+| 160 | `Roth.hasseDeriv_rename_mul_aeval` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.hasseDeriv_rename_mul_aeval.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.hasseDeriv_rename_mul_aeval/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -3873,12 +3906,14 @@ Completed `Roth.coeff_rename_mul_aeval` action: verdict: BORDERLINE-needs-human;
 
 Completed `Roth.aeval_X_eq_rename` action: Delete public wrapper and update all five caller uses to existing-law specialization; retain only local/private project rewrite helper if preferred. Read-only assessment made no production edits.
 
+Completed `Roth.hasseDeriv_rename_mul_aeval` action: upstream file: Mathlib/Algebra/MvPolynomial/HasseDeriv.lean; pr title: feat(Algebra/MvPolynomial/HasseDeriv): differentiate products in a fresh variable; next steps: /generalise Roth.hasseDeriv_rename_mul_aeval, /cleanup Roth/Separation.lean Roth.hasseDeriv_rename_mul_aeval, Upstream parent multivariate Hasse API first; install generalized law in MvPolynomial namespace., Migrate sole determinant caller using specialization and remove old wrapper when new API exists.; reviewers: Moritz Firsching (hasseDeriv_map #42428), Yaël Dillies (MvPolynomial coefficient API #41427)
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.hasseDeriv_rename_mul_aeval` next. Supporting identities receive their own applicable checks.
+   `Roth.coeff_uniqueAlgEquiv_symm` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

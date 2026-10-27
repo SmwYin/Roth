@@ -1,0 +1,56 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+#check_failure Roth.hasseDeriv_rename_mul_aeval
+#check_failure MvPolynomial.hasseDeriv
+namespace HasseSeparation160Isolated
+#check @Polynomial.hasseDeriv_mul
+#check @Polynomial.hasseDeriv_map
+#check @Polynomial.hasseDeriv_coeff
+#check @Polynomial.toMvPolynomial_eq_rename_comp
+variable {R : Type*} [CommSemiring R]
+-- Actual existing univariate law: a constant outer factor differentiates factorwise.
+theorem constantFactor (n : ℕ) (U : R) (V : Polynomial R) :
+    Polynomial.hasseDeriv n (Polynomial.C U * V) =
+      Polynomial.C U * Polynomial.hasseDeriv n V := by
+  apply Polynomial.ext
+  intro k
+  simp only [Polynomial.hasseDeriv_coeff, Polynomial.coeff_C_mul]
+  ac_rfl
+-- Coefficient form of separated product: genuine mathlib-only normalization.
+theorem separatedCoefficients {τ : Type*} (n k : ℕ) (U : MvPolynomial τ R)
+    (V : Polynomial R) :
+    (Polynomial.hasseDeriv n (Polynomial.C U * V.map MvPolynomial.C)).coeff k =
+      U * MvPolynomial.C ((Polynomial.hasseDeriv n V).coeff k) := by
+  rw [constantFactor, Polynomial.hasseDeriv_map, Polynomial.coeff_C_mul,
+    Polynomial.coeff_map]
+-- Univariate polynomial law really holds for Semiring, unlike fixed multivariate parent.
+theorem semiringLaw {S : Type*} [Semiring S] (n : ℕ) (V W : Polynomial S) :
+    Polynomial.hasseDeriv n (V * W) = ∑ ij ∈ Finset.antidiagonal n,
+      Polynomial.hasseDeriv ij.1 V * Polynomial.hasseDeriv ij.2 W :=
+  Polynomial.hasseDeriv_mul n V W
+-- Dropping disjointness is false even in one variable over the naturals.
+theorem overlapCounterexample :
+    Polynomial.hasseDeriv 1 (Polynomial.X * Polynomial.X : Polynomial ℕ) ≠
+      Polynomial.hasseDeriv 1 Polynomial.X * Polynomial.hasseDeriv 1 Polynomial.X := by
+  intro h
+  have hc := congrArg (fun P : Polynomial ℕ ↦ P.coeff 1) h
+  norm_num [Polynomial.hasseDeriv_coeff, Polynomial.coeff_one] at hc
+#print axioms constantFactor
+#print axioms separatedCoefficients
+#print axioms semiringLaw
+#print axioms overlapCounterexample
+theorem overlapSumOrderCounterexample :
+    Polynomial.hasseDeriv 2 (Polynomial.X * Polynomial.X ^ 2 : Polynomial ℕ) ≠
+      Polynomial.hasseDeriv 1 Polynomial.X * Polynomial.hasseDeriv 1 (Polynomial.X ^ 2) := by
+  intro h
+  have hc := congrArg (fun P : Polynomial ℕ ↦ P.coeff 1) h
+  norm_num [Polynomial.hasseDeriv_coeff, Polynomial.coeff_mul, Polynomial.coeff_one] at hc
+#print axioms overlapSumOrderCounterexample
+end HasseSeparation160Isolated
