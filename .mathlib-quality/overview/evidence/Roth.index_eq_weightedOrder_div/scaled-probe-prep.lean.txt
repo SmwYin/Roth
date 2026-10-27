@@ -1,0 +1,42 @@
+namespace IndexWeightedScale143
+open MvPolynomial
+universe u v
+theorem scaledMinimum {σ : Type u} {R : Type v} [CommSemiring R]
+    (P : MvPolynomial σ R) (w : σ → ℕ) (D : ℝ) (hD : 0 ≤ D) :
+    sInf ((fun d ↦ (Finsupp.weight w d : ℝ) / D) '' (P.support : Set (σ →₀ ℕ))) =
+      (((P : MvPowerSeries σ R).weightedOrder w).toNat : ℝ) / D := by
+  classical
+  by_cases hP : P = 0
+  · subst P
+    simp
+  obtain ⟨d, hd, hdw⟩ := MvPowerSeries.exists_coeff_ne_zero_and_weightedOrder w
+    (f := (P : MvPowerSeries σ R))
+    ((MvPowerSeries.ne_zero_iff_weightedOrder_finite w).1 (by simpa using hP))
+  have hmem : d ∈ P.support := mem_support_iff.2 (by simpa using hd)
+  apply le_antisymm
+  · rw [← hdw, ENat.toNat_natCast]
+    exact csInf_le (P.support.finite_toSet.image _).bddBelow (Set.mem_image_of_mem _ hmem)
+  · refine le_csInf (by simpa using hP) ?_
+    rintro _ ⟨e, he, rfl⟩
+    apply div_le_div_of_nonneg_right _ hD
+    exact_mod_cast ENat.toNat_le_toNat (MvPowerSeries.weightedOrder_le w
+      (f := (P : MvPowerSeries σ R)) (by simpa using mem_support_iff.1 he)) (by simp)
+theorem finiteProjection {ι : Type u} (s : Finset ι) (v : ι → ℝ) :
+    (s.inf (fun d ↦ (v d : WithTop ℝ))).untopD 0 = sInf (v '' (s : Set ι)) := by
+  classical
+  rcases s.eq_empty_or_nonempty with h | h
+  · subst s
+    simp
+  · change (s.inf (WithTop.some ∘ v)).untopD 0 = _
+    rw [← Finset.coe_inf' h v, Finset.inf'_eq_csInf_image]
+    rfl
+theorem scaledInfDegree {σ : Type u} {R : Type v} [CommSemiring R]
+    (P : MvPolynomial σ R) (w : σ → ℕ) (D : ℝ) (hD : 0 ≤ D) :
+    (AddMonoidAlgebra.infDegree
+      (fun d ↦ (((Finsupp.weight w d : ℝ) / D) : WithTop ℝ)) P).untopD 0 =
+      (((P : MvPowerSeries σ R).weightedOrder w).toNat : ℝ) / D :=
+  (finiteProjection _ _).trans (scaledMinimum P w D hD)
+#print axioms scaledMinimum
+#print axioms finiteProjection
+#print axioms scaledInfDegree
+end IndexWeightedScale143

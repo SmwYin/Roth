@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 142/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 143/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 142; remaining: 151.
-- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 18 YES-but-generalise-first, 29 NO-mathlib-has-it, 42 BORDERLINE-needs-human, 26 SKIP.
+- Completed applicable assessments: 143; remaining: 150.
+- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 19 YES-but-generalise-first, 29 NO-mathlib-has-it, 42 BORDERLINE-needs-human, 26 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -1569,6 +1569,19 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: One explicit caller Roth.index_eq_weightedOrder_div, two body rewrites at Index152/155; one audited direct kernel consumer.
 - Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/Roth.weight_eq_finsuppWeight_div.md).
 
+### Completed: `Roth.index_eq_weightedOrder_div`
+
+- Type: `Roth.index_eq_weightedOrder_div.{u_1} {σ : Type u_1} [Fintype σ] {P : MvPolynomial σ ℝ} (hP : P ≠ 0) {r : σ → ℕ}
+  (hr : ∀ (j : σ), 0 < r j) (α : σ → ℝ) :
+  Roth.index P α r =
+    ↑(MvPowerSeries.weightedOrder (fun j ↦ (∏ i, r i) / r j) ↑((MvPolynomial.taylor α) P)).toNat / ↑(∏ i, r i)`
+- What: Identifies reciprocal-weight point index with natural weightedOrder of translated polynomial divided by common denominator.
+- How: Finite order attained coefficient gives upper index bound; all support coefficients and weightedOrder_le give lower bound after denominator clearing and finite toNat monotonicity.
+- Hypotheses: σ: Type*, Fintype for original full-product interface; P: real multivariate polynomial; hP: P≠0 is removable, verified exact formula allP; r: natural reciprocal denominators; hr: all positive; uniform removal false for mixedzero weights; α: real center
+- Project dependencies: Roth.index, Roth.weight_eq_finsuppWeight_div, Roth.index_le_weight, Roth.le_index_iff, MvPolynomial.taylor, MvPolynomial.coeff_taylor
+- Caller summary: distinct declarations: 1; proof body applications: 3; statement applications: 0; callers: Roth.index_mul; direct kernel consumers: Roth.index_mul; verified full caller: True
+- Verdict: YES-but-generalise-first; [complete report](.mathlib-quality/overview/mathlibable/Roth.index_eq_weightedOrder_div.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -1879,6 +1892,8 @@ Completed `Roth.le_index_sum`: supDegree_sum_le with B:=OrderDual T is definitio
 
 Completed `Roth.weight_eq_finsuppWeight_div`: Finsupp.apply_linearCombination R f w d is existing generic naturality; independently checked cast/scaling specializations and actual denominator bridge.
 
+Completed `Roth.index_eq_weightedOrder_div`: Existing infDegree and weightedOrder are canonical support-minimum constructions; no analogous coe comparison found across five methods×three forms. Native exact?/definition-simp closure probes fail, independent new proof succeeds.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -2164,6 +2179,8 @@ Completed `Roth.index_sub_weight_le_index_hasseDeriv`: Classical Roth/Milojevic 
 Completed `Roth.le_index_sum`: Classical minimum-order sum inequality, exactly generic finite-support degree inequality under OrderDual. MvPowerSeries.min_weightedOrder_le_add is adjacent natural-weight binary API.
 
 Completed `Roth.weight_eq_finsuppWeight_div`: Generic map/linearity law already exists; no claim that denominator arithmetic is definitional or ≤3 calls.
+
+Completed `Roth.index_eq_weightedOrder_div`: Original proof manually identifies two minima; this is missing generic bridge API, not duplicated existing comparison.
 
 ## Part 5: Generalization opportunities
 
@@ -2454,6 +2471,8 @@ Completed `Roth.le_index_sum`: Verified Semiring R, arbitrary support A, degree 
 
 Completed `Roth.weight_eq_finsuppWeight_div`: Arbitrary Semifield K; nonzero cast common denominator and divisibility only on d.support; no ambient Fintype or CharZero needed in strongest accepted form. Generic parent law has arbitrary semiring coefficients and module targets.
 
+Completed `Roth.index_eq_weightedOrder_div`: named weakening: delete hP, independently compiled zero case; expanded representation: CommSemiring/arbitraryσ/allP/assigned naturalw weightedOrder_coe, verified mathlib-only; projection scaling: scaledInfDegree real D≥0 including0/allP, verified; rejected: uniform hr removal false; arbitrary real w not same natural weightedOrder; negative real scaling not min-preserving
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -2740,6 +2759,8 @@ Completed `Roth.index_sub_weight_le_index_hasseDeriv`: Compatible coefficient-su
 Completed `Roth.le_index_sum`: No missing analogous sum law. Parent real-projection/Taylor normalization is a separately proved bridge, not existing-call replacement.
 
 Completed `Roth.weight_eq_finsuppWeight_div`: No missing generic naturality law identified; supportClear is new normalization glue, not an existing mathlib replacement.
+
+Completed `Roth.index_eq_weightedOrder_div`: MvPowerSeries.weightedOrder_coe against AddMonoidAlgebra.infDegree; proposed new theorem, not preexisting replacement
 
 ## Part 7: Junk / removable
 
@@ -3030,6 +3051,8 @@ Completed `Roth.le_index_sum`: Used once in determinant proof; not dead code. Lo
 
 Completed `Roth.weight_eq_finsuppWeight_div`: Active local implementation bridge; not dead code.
 
+Completed `Roth.index_eq_weightedOrder_div`: Active local API, three applications in sole caller; not dead code.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -3176,6 +3199,7 @@ Completed `Roth.weight_eq_finsuppWeight_div`: Active local implementation bridge
 | 140 | `Roth.index_sub_weight_le_index_hasseDeriv` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.index_sub_weight_le_index_hasseDeriv.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.index_sub_weight_le_index_hasseDeriv/root-acceptance.json) |
 | 141 | `Roth.le_index_sum` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.le_index_sum.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.le_index_sum/root-acceptance.json) |
 | 142 | `Roth.weight_eq_finsuppWeight_div` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.weight_eq_finsuppWeight_div.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.weight_eq_finsuppWeight_div/root-acceptance.json) |
+| 143 | `Roth.index_eq_weightedOrder_div` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.index_eq_weightedOrder_div.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.index_eq_weightedOrder_div/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -3459,12 +3483,14 @@ Completed `Roth.le_index_sum` action: NO-mathlib-has-it by fresh parent re-aim: 
 
 Completed `Roth.weight_eq_finsuppWeight_div` action: NO-mathlib-has-it by Mode B parent re-aim. Keep documented project bridge in Roth/Index.lean or migrate parent and replace both sole-caller rewrites using checked representation bridge.
 
+Completed `Roth.index_eq_weightedOrder_div` action: YES-but-generalise-first: remove hP locally; propose canonical polynomial/series comparison, with reciprocal denominator specialization kept project-local; review imports/naming and run generalise/cleanup.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.index_eq_weightedOrder_div` next. Supporting identities receive their own applicable checks.
+   `Roth.index_mul` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

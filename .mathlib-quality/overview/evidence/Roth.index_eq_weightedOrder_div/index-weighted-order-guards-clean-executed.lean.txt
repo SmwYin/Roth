@@ -1,0 +1,14 @@
+namespace IndexWeightedGuards143
+open MvPolynomial Roth
+def mixedWeights (b : Bool) : ℕ := if b then 1 else 0
+theorem mixedZeroIndex : index (X true) (fun _ ↦ 0) mixedWeights = 1 := by
+  simp [index, taylor_X, support_X, mixedWeights, weight]
+theorem mixedZeroRhs :
+    (((MvPowerSeries.weightedOrder
+      (fun j ↦ (∏ i, mixedWeights i) / mixedWeights j)
+      (taylor (fun _ ↦ 0) (X true : MvPolynomial Bool ℝ) : MvPowerSeries Bool ℝ)).toNat : ℝ) /
+        (∏ i, mixedWeights i : ℕ)) = 0 := by
+  simp [mixedWeights]
+#print axioms mixedZeroIndex
+#print axioms mixedZeroRhs
+end IndexWeightedGuards143

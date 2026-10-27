@@ -1,0 +1,14 @@
+[
+  {
+    "declaration": "Roth.index_mul",
+    "file": "Roth/Index.lean",
+    "source_sha256": "e22ab0acd820d9ae765e6f70279edbc0d626052372611806c4d5464ca3d377f1",
+    "identifier_occurrences": 3,
+    "reference_lines": [
+      164,
+      165
+    ],
+    "source_fragment": "theorem index_mul {P Q : MvPolynomial σ ℝ} (hP : P ≠ 0) (hQ : Q ≠ 0) (α : σ → ℝ) {r : σ → ℕ}\n    (hr : ∀ j, 0 < r j) : index (P * Q) α r = index P α r + index Q α r := by\n  rw [index_eq_weightedOrder_div hP hr, index_eq_weightedOrder_div hQ hr,\n    index_eq_weightedOrder_div (mul_ne_zero hP hQ) hr, ← add_div, map_mul, MvPolynomial.coe_mul,\n    MvPowerSeries.weightedOrder_mul]\n  congr 1\n  have hfin : ∀ R : MvPolynomial σ ℝ, R ≠ 0 →\n      ((taylor α R : MvPowerSeries σ ℝ).weightedOrder fun j ↦ (∏ i, r i) / r j) ≠ ⊤ := by simp\n  rw [ENat.toNat_add (hfin P hP) (hfin Q hQ), Nat.cast_add]\n\n",
+    "plan": "After replacing the local comparison by its checked hP-free form, rewrite each factor and product using replacement P hr α, replacement Q hr α, replacement (P*Q) hr α; retain hP/hQ to prove ENat.toNat_add finiteness. Generic upstream coe comparison plus denominator bridge and scaled finite projection reconstructs the same rewrite equality."
+  }
+]

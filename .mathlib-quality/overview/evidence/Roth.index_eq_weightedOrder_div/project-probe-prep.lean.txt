@@ -1,0 +1,43 @@
+namespace IndexWeightedOrderTarget143
+open MvPolynomial
+variable {σ : Type*} [Fintype σ]
+open Roth
+theorem replacementNonzero {P : MvPolynomial σ ℝ} (hP : P ≠ 0) {r : σ → ℕ}
+    (hr : ∀ j, 0 < r j) (α : σ → ℝ) : index P α r =
+      (((taylor α P : MvPowerSeries σ ℝ).weightedOrder fun j ↦ (∏ i, r i) / r j).toNat : ℝ) /
+        ∏ i, r i := by
+  set w : σ → ℕ := fun j ↦ (∏ i, r i) / r j
+  set F : MvPowerSeries σ ℝ := ↑(taylor α P)
+  obtain ⟨d, hd, hdw⟩ := MvPowerSeries.exists_coeff_ne_zero_and_weightedOrder w (f := F)
+    ((MvPowerSeries.ne_zero_iff_weightedOrder_finite w).1 (by simpa [F] using hP))
+  apply le_antisymm
+  · rw [← hdw, ENat.toNat_natCast, ← weight_eq_finsuppWeight_div hr]
+    exact index_le_weight (by simpa [F, MvPolynomial.coeff_coe, coeff_taylor] using hd)
+  · refine (le_index_iff hP).2 fun e he ↦ ?_
+    rw [weight_eq_finsuppWeight_div hr]
+    refine div_le_div_of_nonneg_right ?_ (Nat.cast_nonneg _)
+    exact_mod_cast ENat.toNat_le_toNat (MvPowerSeries.weightedOrder_le w (f := F) (d := e)
+      (by simpa [F, MvPolynomial.coeff_coe, coeff_taylor] using he)) (by simp)
+
+theorem replacement (P : MvPolynomial σ ℝ) {r : σ → ℕ}
+    (hr : ∀ j, 0 < r j) (α : σ → ℝ) : index P α r =
+      (((taylor α P : MvPowerSeries σ ℝ).weightedOrder fun j ↦ (∏ i, r i) / r j).toNat : ℝ) /
+        ∏ i, r i := by
+  by_cases hP : P = 0
+  · subst P
+    simp [index]
+  · exact replacementNonzero hP hr α
+theorem fullCaller {P Q : MvPolynomial σ ℝ} (hP : P ≠ 0) (hQ : Q ≠ 0) (α : σ → ℝ) {r : σ → ℕ}
+    (hr : ∀ j, 0 < r j) : index (P * Q) α r = index P α r + index Q α r := by
+  rw [replacement P hr, replacement Q hr,
+    replacement (P * Q) hr, ← add_div, map_mul, MvPolynomial.coe_mul,
+    MvPowerSeries.weightedOrder_mul]
+  congr 1
+  have hfin : ∀ R : MvPolynomial σ ℝ, R ≠ 0 →
+      ((taylor α R : MvPowerSeries σ ℝ).weightedOrder fun j ↦ (∏ i, r i) / r j) ≠ ⊤ := by simp
+  rw [ENat.toNat_add (hfin P hP) (hfin Q hQ), Nat.cast_add]
+
+#print axioms replacementNonzero
+#print axioms replacement
+#print axioms fullCaller
+end IndexWeightedOrderTarget143

@@ -1,0 +1,48 @@
+{
+  "declaration": "Roth.index_eq_weightedOrder_div",
+  "kind": "theorem",
+  "type": "Roth.index_eq_weightedOrder_div.{u_1} {σ : Type u_1} [Fintype σ] {P : MvPolynomial σ ℝ} (hP : P ≠ 0) {r : σ → ℕ}\n  (hr : ∀ (j : σ), 0 < r j) (α : σ → ℝ) :\n  Roth.index P α r =\n    ↑(MvPowerSeries.weightedOrder (fun j ↦ (∏ i, r i) / r j) ↑((MvPolynomial.taylor α) P)).toNat / ↑(∏ i, r i)",
+  "what": "Identifies reciprocal-weight point index with natural weightedOrder of translated polynomial divided by common denominator.",
+  "how": "Finite order attained coefficient gives upper index bound; all support coefficients and weightedOrder_le give lower bound after denominator clearing and finite toNat monotonicity.",
+  "hypotheses": {
+    "σ": "Type*, Fintype for original full-product interface",
+    "P": "real multivariate polynomial",
+    "hP": "P≠0 is removable, verified exact formula allP",
+    "r": "natural reciprocal denominators",
+    "hr": "all positive; uniform removal false for mixedzero weights",
+    "α": "real center"
+  },
+  "project_dependencies": [
+    "Roth.index",
+    "Roth.weight_eq_finsuppWeight_div",
+    "Roth.index_le_weight",
+    "Roth.le_index_iff",
+    "MvPolynomial.taylor",
+    "MvPolynomial.coeff_taylor"
+  ],
+  "caller_summary": {
+    "distinct_declarations": 1,
+    "proof_body_applications": 3,
+    "statement_applications": 0,
+    "callers": [
+      "Roth.index_mul"
+    ],
+    "direct_kernel_consumers": [
+      "Roth.index_mul"
+    ],
+    "verified_full_caller": true
+  },
+  "mathlib_api_audit": "Existing infDegree and weightedOrder are canonical support-minimum constructions; no analogous coe comparison found across five methods×three forms. Native exact?/definition-simp closure probes fail, independent new proof succeeds.",
+  "moral_duplications": "Original proof manually identifies two minima; this is missing generic bridge API, not duplicated existing comparison.",
+  "generalization": {
+    "named_weakening": "delete hP, independently compiled zero case",
+    "expanded_representation": "CommSemiring/arbitraryσ/allP/assigned naturalw weightedOrder_coe, verified mathlib-only",
+    "projection_scaling": "scaledInfDegree real D≥0 including0/allP, verified",
+    "rejected": "uniform hr removal false; arbitrary real w not same natural weightedOrder; negative real scaling not min-preserving"
+  },
+  "missing_api": [
+    "MvPowerSeries.weightedOrder_coe against AddMonoidAlgebra.infDegree; proposed new theorem, not preexisting replacement"
+  ],
+  "junk": "Active local API, three applications in sole caller; not dead code.",
+  "action": "YES-but-generalise-first: remove hP locally; propose canonical polynomial/series comparison, with reciprocal denominator specialization kept project-local; review imports/naming and run generalise/cleanup."
+}

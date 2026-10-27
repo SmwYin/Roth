@@ -1,0 +1,31 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+#check_failure Roth.index_eq_weightedOrder_div
+#check @Finset.le_inf_iff
+#check @Finset.inf_le
+namespace IndexWeightedOrder143
+open MvPolynomial
+universe u v
+theorem weightedOrder_coe {σ : Type u} {R : Type v} [CommSemiring R]
+    (P : MvPolynomial σ R) (w : σ → ℕ) :
+    (P : MvPowerSeries σ R).weightedOrder w =
+      AddMonoidAlgebra.infDegree (fun d ↦ (Finsupp.weight w d : ℕ∞)) P := by
+  classical
+  fail_if_success
+    solve | simp [MvPowerSeries.weightedOrder, AddMonoidAlgebra.infDegree]
+  apply le_antisymm
+  · apply Finset.le_inf_iff.2
+    intro d hd
+    exact MvPowerSeries.weightedOrder_le w (by simpa using mem_support_iff.1 hd)
+  · apply MvPowerSeries.le_weightedOrder
+    intro d hd
+    by_contra hn
+    have hm : d ∈ P.support := mem_support_iff.2 (by simpa using hn)
+    exact (not_lt_of_ge (Finset.inf_le (f := fun e ↦ (Finsupp.weight w e : ℕ∞)) hm)) hd
+#print axioms weightedOrder_coe
+end IndexWeightedOrder143

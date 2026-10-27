@@ -1,0 +1,18 @@
+namespace IndexWeightedModern143
+open MvPolynomial
+variable {σ : Type*} [Fintype σ]
+theorem specialization (P : MvPolynomial σ ℝ) {r : σ → ℕ}
+    (hr : ∀ j, 0 < r j) (α : σ → ℝ) : Roth.index P α r =
+      (((taylor α P : MvPowerSeries σ ℝ).weightedOrder fun j ↦ (∏ i, r i) / r j).toNat : ℝ) /
+        ∏ i, r i := by
+  rw [IndexConsumers133.targetBridge]
+  have hw : (fun d ↦ (Roth.weight r d : WithTop ℝ)) =
+      (fun d ↦ (((Finsupp.weight (fun j ↦ (∏ i, r i) / r j) d : ℝ) /
+        (∏ i, r i)) : WithTop ℝ)) := by
+    funext d
+    rw [WeightDivTarget142.replacement hr d]
+  rw [hw]
+  exact IndexWeightedScale143.scaledInfDegree (taylor α P)
+    (fun j ↦ (∏ i, r i) / r j) (∏ i, (r i : ℝ)) (by positivity)
+#print axioms specialization
+end IndexWeightedModern143
