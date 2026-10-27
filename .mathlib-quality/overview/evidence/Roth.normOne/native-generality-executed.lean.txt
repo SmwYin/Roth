@@ -1,0 +1,18 @@
+namespace Roth.NormOneGenerality
+open MvPolynomial
+noncomputable def arbitraryNorm {σ R : Type*} [CommSemiring R] [Norm R]
+    (P : MvPolynomial σ R) : ℝ := ∑ d ∈ P.support, ‖P.coeff d‖
+noncomputable def finiteCoefficientSize {ι R S : Type*} [Zero R] [AddCommMonoid S]
+    (size : R → S) (f : ι →₀ R) : S := f.sum fun _ c ↦ size c
+variable {σ : Type*}
+theorem recoverFromNorm (P : MvPolynomial σ ℤ) : arbitraryNorm P = normOne P := by
+  simp only [arbitraryNorm, normOne, Int.norm_eq_abs]
+theorem recoverFromFinsupp (P : MvPolynomial σ ℤ) :
+    finiteCoefficientSize (fun z : ℤ ↦ |(z : ℝ)|) P.coeff = normOne P := rfl
+#print axioms arbitraryNorm
+#print axioms finiteCoefficientSize
+#print axioms recoverFromNorm
+#print axioms recoverFromFinsupp
+#check @arbitraryNorm
+#check @finiteCoefficientSize
+end Roth.NormOneGenerality

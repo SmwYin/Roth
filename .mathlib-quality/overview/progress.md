@@ -3,7 +3,7 @@
 Status: **in_progress**, 2026-10-27. Branch: `ramin-cleanup`.
 Production Lean files and all pins match baseline `99f19fd`.
 
-**Completed: 74 / 293 written declarations.**
+**Completed: 75 / 293 written declarations.**
 This counts the current overview assessments, separately from the earlier code cleanup.
 
 | # | Completed declaration | Applicable workflow | Verdict | Report |
@@ -82,8 +82,9 @@ This counts the current overview assessments, separately from the earlier code c
 | 72 | `MvPolynomial.taylor_eq_zero_iff` | full-mathlibable; accepted complete | YES-but-generalise-first | [Detailed report](mathlibable/MvPolynomial.taylor_eq_zero_iff.md) |
 | 73 | `MvPolynomial.eq_sum_box_hasseDeriv` | full-mathlibable; accepted complete | YES-but-generalise-first | [Detailed report](mathlibable/MvPolynomial.eq_sum_box_hasseDeriv.md) |
 | 74 | `MvPolynomial.eval_eq_sum_box` | full-mathlibable; accepted complete | YES-but-generalise-first | [Detailed report](mathlibable/MvPolynomial.eval_eq_sum_box.md) |
+| 75 | `Roth.normOne` | full-mathlibable; accepted complete | NO-composable-from-mathlib | [Detailed report](mathlibable/Roth.normOne.md) |
 
-**Next declaration: `Roth.normOne`**, `Roth/CoeffNorm.lean:47`.
+**Next declaration: `Roth.diag`**, `Roth/CoeffNorm.lean:161`.
 Only the listed assessments are complete. No partial assessment was committed.
 
 On restart: read [README](README.md), [machine progress](progress.json), and

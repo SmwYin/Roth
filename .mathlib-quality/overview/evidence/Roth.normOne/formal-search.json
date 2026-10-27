@@ -1,0 +1,780 @@
+[
+  {
+    "method": "Finder",
+    "form": "current",
+    "request": {
+      "tool": "mcp__lean_lsp__lean_leanfinder",
+      "args": {
+        "query": "L1 norm sum absolute values coefficients integer multivariate polynomial",
+        "num_results": 7
+      }
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.gaussNorm\",\n      \"informal_name\": \"Gauss norm of a polynomial\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → {F : Type u_2} → [inst : Semiring R] → [FunLike F R ℝ] → F → ℝ → Polynomial R → ℝ\",\n      \"informal_description\": \"The Gauss norm of a polynomial $ p $ is defined as the supremum of $ v(a_i) \\\\cdot c^i $ over all exponents $ i $ in the support of $ p $, where $ a_i $ is the coefficient of $ X^i $ in $ p $. If $ p $ is the zero polynomial (with empty support), the Gauss norm is defined to be $ 0 $. Here, $ v $ denotes a valuation and $ c $ is a real number parameter.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.GaussNorm\"\n    },\n    {\n      \"formal_name\": \"Polynomial.mahlerMeasure_le_sum_norm_coeff\",\n      \"informal_name\": \"Mahler Measure Upper Bound by Coefficient Norms\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (p : Polynomial ℂ), p.mahlerMeasure ≤ p.sum fun x a => ‖a‖\",\n      \"informal_description\": \"For any complex polynomial $ p $, its Mahler measure satisfies $ \\\\text{Mahler}(p) \\\\leq \\\\sum_{n} \\\\|a_n\\\\| $, where $ a_n $ are the coefficients of $ p $ and $ \\\\|\\\\cdot\\\\| $ denotes the complex norm.\",\n      \"path\": \"Mathlib.Analysis.Polynomial.MahlerMeasure\"\n    },\n    {\n      \"formal_name\": \"spectralValueTerms\",\n      \"informal_name\": \"Spectral value terms sequence\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : SeminormedRing R] → Polynomial R → ℕ → ℝ\",\n      \"informal_description\": \"For a polynomial $ p $ over a seminormed ring $ R $, this function returns a sequence indexed by $ \\\\mathbb{N} $ where each term is defined as $ \\\\|p_n\\\\|^{1/(d - n)} $ if $ n < d $, and $ 0 $ otherwise. Here, $ p_n $ denotes the coefficient of $ X^n $ in $ p $, $ d $ is the natural degree of $ p $, and $ \\\\|\\\\cdot\\\\| $ is the seminorm on $ R $. This sequence captures the normed coefficients' growth rates relative to their distance from the polynomial's degree.\",\n      \"path\": \"Mathlib.Analysis.Normed.Unbundled.SpectralNorm\"\n    },\n    {\n      \"formal_name\": \"Polynomial.mahlerMeasure\",\n      \"informal_name\": \"Mahler measure of a polynomial\",\n      \"kind\": \"definition\",\n      \"type\": \"Polynomial ℂ → ℝ\",\n      \"informal_description\": \"The Mahler measure of a polynomial $ p $ is defined as $ \\\\exp(m(p)) $, where $ m(p) $ is the logarithmic Mahler measure given by $ \\\\frac{1}{2\\\\pi} \\\\int_0^{2\\\\pi} \\\\log \\\\|p(e^{i\\\\theta})\\\\| \\\\, d\\\\theta $, and $ \\\\|p(e^{i\\\\theta})\\\\| $ denotes the complex modulus of $ p $ evaluated at $ e^{i\\\\theta} $. If $ p $ is the zero polynomial, the Mahler measure is defined to be 0.\",\n      \"path\": \"Mathlib.Analysis.Polynomial.MahlerMeasure\"\n    },\n    {\n      \"formal_name\": \"Polynomial.le_gaussNorm\",\n      \"informal_name\": \"Gauss Norm Upper Bound for Coefficient Terms\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {F : Type u_2} [inst : Semiring R] [inst_1 : FunLike F R ℝ] (v : F) {c : ℝ} (p : Polynomial R)\\n  [ZeroHomClass F R ℝ] [NonnegHomClass F R ℝ], 0 ≤ c → ∀ (i : ℕ), v (p.coeff i) * c ^ i ≤ Polynomial.gaussNorm v c p\",\n      \"informal_description\": \"For any polynomial $ p $ over a semiring $ R $, valuation $ v $ (preserving zero and non-negative), non-negative real number $ c $, and natural number $ i $, the product $ v(a_i) \\\\cdot c^i $ (where $ a_i $ is the coefficient of $ X^i $ in $ p $) satisfies $ v(a_i) \\\\cdot c^i \\\\leq \\\\|p\\\\|_{v,c} $, where $ \\\\|p\\\\|_{v,c} $ denotes the Gauss norm of $ p $ with respect to $ v $ and $ c $.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.GaussNorm\"\n    },\n    {\n      \"formal_name\": \"Polynomial.norm_coeff_le_choose_mul_mahlerMeasure\",\n      \"informal_name\": \"Norm of Coefficient Bound via Binomial Coefficient and Mahler Measure\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (n : ℕ) (p : Polynomial ℂ), ‖p.coeff n‖ ≤ ↑(p.natDegree.choose n) * p.mahlerMeasure\",\n      \"informal_description\": \"For any natural number $ n $ and complex polynomial $ p $, the norm of the coefficient of $ X^n $ in $ p $ satisfies $ \\\\|p.coeff\\\\,n\\\\| \\\\leq \\\\binom{d}{n} \\\\cdot p.mahlerMeasure $, where $ d $ denotes the natural degree of $ p $.\",\n      \"path\": \"Mathlib.Analysis.Polynomial.MahlerMeasure\"\n    },\n    {\n      \"formal_name\": \"Polynomial.exists_eq_gaussNorm\",\n      \"informal_name\": \"Existence of a Coefficient Realizing the Gauss Norm\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {F : Type u_2} [inst : Semiring R] [inst_1 : FunLike F R ℝ] (v : F) (c : ℝ) (p : Polynomial R)\\n  [ZeroHomClass F R ℝ], ∃ i, Polynomial.gaussNorm v c p = v (p.coeff i) * c ^ i\",\n      \"informal_description\": \"For any polynomial $ p $, there exists an index $ i $ such that the Gauss norm of $ p $ with respect to valuation $ v $ and parameter $ c $ is equal to $ v(a_i) \\\\cdot c^i $, where $ a_i $ is the coefficient of $ X^i $ in $ p $.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.GaussNorm\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Polynomial.gaussNorm",
+            "informal_name": "Gauss norm of a polynomial",
+            "kind": "definition",
+            "type": "{R : Type u_1} → {F : Type u_2} → [inst : Semiring R] → [FunLike F R ℝ] → F → ℝ → Polynomial R → ℝ",
+            "informal_description": "The Gauss norm of a polynomial $ p $ is defined as the supremum of $ v(a_i) \\cdot c^i $ over all exponents $ i $ in the support of $ p $, where $ a_i $ is the coefficient of $ X^i $ in $ p $. If $ p $ is the zero polynomial (with empty support), the Gauss norm is defined to be $ 0 $. Here, $ v $ denotes a valuation and $ c $ is a real number parameter.",
+            "path": "Mathlib.RingTheory.Polynomial.GaussNorm"
+          },
+          {
+            "formal_name": "Polynomial.mahlerMeasure_le_sum_norm_coeff",
+            "informal_name": "Mahler Measure Upper Bound by Coefficient Norms",
+            "kind": "theorem",
+            "type": "∀ (p : Polynomial ℂ), p.mahlerMeasure ≤ p.sum fun x a => ‖a‖",
+            "informal_description": "For any complex polynomial $ p $, its Mahler measure satisfies $ \\text{Mahler}(p) \\leq \\sum_{n} \\|a_n\\| $, where $ a_n $ are the coefficients of $ p $ and $ \\|\\cdot\\| $ denotes the complex norm.",
+            "path": "Mathlib.Analysis.Polynomial.MahlerMeasure"
+          },
+          {
+            "formal_name": "spectralValueTerms",
+            "informal_name": "Spectral value terms sequence",
+            "kind": "definition",
+            "type": "{R : Type u_1} → [inst : SeminormedRing R] → Polynomial R → ℕ → ℝ",
+            "informal_description": "For a polynomial $ p $ over a seminormed ring $ R $, this function returns a sequence indexed by $ \\mathbb{N} $ where each term is defined as $ \\|p_n\\|^{1/(d - n)} $ if $ n < d $, and $ 0 $ otherwise. Here, $ p_n $ denotes the coefficient of $ X^n $ in $ p $, $ d $ is the natural degree of $ p $, and $ \\|\\cdot\\| $ is the seminorm on $ R $. This sequence captures the normed coefficients' growth rates relative to their distance from the polynomial's degree.",
+            "path": "Mathlib.Analysis.Normed.Unbundled.SpectralNorm"
+          },
+          {
+            "formal_name": "Polynomial.mahlerMeasure",
+            "informal_name": "Mahler measure of a polynomial",
+            "kind": "definition",
+            "type": "Polynomial ℂ → ℝ",
+            "informal_description": "The Mahler measure of a polynomial $ p $ is defined as $ \\exp(m(p)) $, where $ m(p) $ is the logarithmic Mahler measure given by $ \\frac{1}{2\\pi} \\int_0^{2\\pi} \\log \\|p(e^{i\\theta})\\| \\, d\\theta $, and $ \\|p(e^{i\\theta})\\| $ denotes the complex modulus of $ p $ evaluated at $ e^{i\\theta} $. If $ p $ is the zero polynomial, the Mahler measure is defined to be 0.",
+            "path": "Mathlib.Analysis.Polynomial.MahlerMeasure"
+          },
+          {
+            "formal_name": "Polynomial.le_gaussNorm",
+            "informal_name": "Gauss Norm Upper Bound for Coefficient Terms",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {F : Type u_2} [inst : Semiring R] [inst_1 : FunLike F R ℝ] (v : F) {c : ℝ} (p : Polynomial R)\n  [ZeroHomClass F R ℝ] [NonnegHomClass F R ℝ], 0 ≤ c → ∀ (i : ℕ), v (p.coeff i) * c ^ i ≤ Polynomial.gaussNorm v c p",
+            "informal_description": "For any polynomial $ p $ over a semiring $ R $, valuation $ v $ (preserving zero and non-negative), non-negative real number $ c $, and natural number $ i $, the product $ v(a_i) \\cdot c^i $ (where $ a_i $ is the coefficient of $ X^i $ in $ p $) satisfies $ v(a_i) \\cdot c^i \\leq \\|p\\|_{v,c} $, where $ \\|p\\|_{v,c} $ denotes the Gauss norm of $ p $ with respect to $ v $ and $ c $.",
+            "path": "Mathlib.RingTheory.Polynomial.GaussNorm"
+          },
+          {
+            "formal_name": "Polynomial.norm_coeff_le_choose_mul_mahlerMeasure",
+            "informal_name": "Norm of Coefficient Bound via Binomial Coefficient and Mahler Measure",
+            "kind": "theorem",
+            "type": "∀ (n : ℕ) (p : Polynomial ℂ), ‖p.coeff n‖ ≤ ↑(p.natDegree.choose n) * p.mahlerMeasure",
+            "informal_description": "For any natural number $ n $ and complex polynomial $ p $, the norm of the coefficient of $ X^n $ in $ p $ satisfies $ \\|p.coeff\\,n\\| \\leq \\binom{d}{n} \\cdot p.mahlerMeasure $, where $ d $ denotes the natural degree of $ p $.",
+            "path": "Mathlib.Analysis.Polynomial.MahlerMeasure"
+          },
+          {
+            "formal_name": "Polynomial.exists_eq_gaussNorm",
+            "informal_name": "Existence of a Coefficient Realizing the Gauss Norm",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {F : Type u_2} [inst : Semiring R] [inst_1 : FunLike F R ℝ] (v : F) (c : ℝ) (p : Polynomial R)\n  [ZeroHomClass F R ℝ], ∃ i, Polynomial.gaussNorm v c p = v (p.coeff i) * c ^ i",
+            "informal_description": "For any polynomial $ p $, there exists an index $ i $ such that the Gauss norm of $ p $ with respect to valuation $ v $ and parameter $ c $ is equal to $ v(a_i) \\cdot c^i $, where $ a_i $ is the coefficient of $ X^i $ in $ p $.",
+            "path": "Mathlib.RingTheory.Polynomial.GaussNorm"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "Finder",
+    "form": "literature",
+    "request": {
+      "tool": "mcp__lean_lsp__lean_leanfinder",
+      "args": {
+        "query": "finitely supported functions ell one norm sum coefficient norms",
+        "num_results": 7
+      }
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"PiLp.norm_eq_of_L1\",\n      \"informal_name\": \"L¹ Norm on Product Space: $\\\\|x\\\\| = \\\\sum_i \\\\|x_i\\\\|$\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_2} {β : ι → Type u_4} [inst : Fintype ι] [inst_1 : (i : ι) → SeminormedAddCommGroup (β i)] (x : PiLp 1 β),\\n  ‖x‖ = ∑ i, ‖x.ofLp i‖\",\n      \"informal_description\": \"For an element $x$ in the product $L^1$ space $\\\\Pi L^1$, its norm is equal to the sum of the norms of its components, i.e., $\\\\|x\\\\| = \\\\sum_{i \\\\in \\\\iota} \\\\|x_i\\\\|$. This follows directly from the definition of the $L^1$ norm on product spaces, where the norm is computed as the sum of the $L^1$ norms of each component function.\",\n      \"path\": \"Mathlib.Analysis.Normed.Lp.PiLp\"\n    },\n    {\n      \"formal_name\": \"PiLp.nnnorm_eq_of_L1\",\n      \"informal_name\": \"L^1 Norm of Product Space Equals Sum of Component Norms\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_2} {β : ι → Type u_4} [inst : Fintype ι] [inst_1 : (i : ι) → SeminormedAddCommGroup (β i)] (x : PiLp 1 β),\\n  ‖x‖₊ = ∑ i, ‖x.ofLp i‖₊\",\n      \"informal_description\": \"For a finite index set $\\\\iota$ and a family of seminormed additive commutative groups $\\\\beta(i)$, the $L^1$-norm of an element $x$ in the product $L^p$ space $\\\\Pi L^1$ satisfies $\\\\|x\\\\| = \\\\sum_{i \\\\in \\\\iota} \\\\|x_i\\\\|$, where $x_i$ denotes the $i$-th component of $x$.\",\n      \"path\": \"Mathlib.Analysis.Normed.Lp.PiLp\"\n    },\n    {\n      \"formal_name\": \"lp.norm_eq_card_dsupport\",\n      \"informal_name\": \"Norm in $L^0$ Space Equals Support Cardinality\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_3} {E : α → Type u_4} [inst : (i : α) → NormedAddCommGroup (E i)] (f : ↥(lp E 0)), ‖f‖ = ↑⋯.toFinset.card\",\n      \"informal_description\": \"For any function $f$ in the $L^0$ space (with $p = 0$), the norm $\\\\|f\\\\|$ is equal to the cardinality of the finite set of indices where $f(i) \\\\neq 0$.\",\n      \"path\": \"Mathlib.Analysis.Normed.Lp.lpSpace\"\n    },\n    {\n      \"formal_name\": \"lp.norm_sum_single\",\n      \"informal_name\": \"Norm of Finite Sum of Single-Element Functions in $L^p$\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_3} {E : α → Type u_4} {p : ENNReal} [inst : (i : α) → NormedAddCommGroup (E i)] [inst_1 : DecidableEq α],\\n  0 < p.toReal →\\n    ∀ (f : (i : α) → E i) (s : Finset α), ‖∑ i ∈ s, lp.single p i (f i)‖ ^ p.toReal = ∑ i ∈ s, ‖f i‖ ^ p.toReal\",\n      \"informal_description\": \"For any extended non-negative real number $p$ with $0 < p$ and a finite set $s$ of indices, the $L^p$ norm of the sum of single-element functions $\\\\sum_{i \\\\in s} \\\\text{single}_p(i, f_i)$ raised to the power $p$ equals the sum of the $L^p$ norms of the individual elements $f_i$ raised to the power $p$, i.e., $\\\\left\\\\|\\\\sum_{i \\\\in s} \\\\text{single}_p(i, f_i)\\\\right\\\\|^p = \\\\sum_{i \\\\in s} \\\\|f_i\\\\|^p$.\",\n      \"path\": \"Mathlib.Analysis.Normed.Lp.lpSpace\"\n    },\n    {\n      \"formal_name\": \"PiLp.norm_eq_card\",\n      \"informal_name\": \"Norm of Pi L⁰ Space Equals Cardinality of Non-Zero Components\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_2} {β : ι → Type u_4} [inst : Fintype ι] [inst_1 : (i : ι) → Norm (β i)] (f : PiLp 0 β),\\n  ‖f‖ = ↑⋯.toFinset.card\",\n      \"informal_description\": \"For an element $ f $ in the $ \\\\Pi L^0 $ space over a finite index type, the norm $ \\\\|f\\\\| $ is equal to the cardinality of the set $ \\\\{ i \\\\mid \\\\|f_i\\\\| \\\\neq 0 \\\\} $, i.e., $ \\\\|f\\\\| = \\\\left| \\\\{ i \\\\mid \\\\|f_i\\\\| \\\\neq 0 \\\\} \\\\right| $.\",\n      \"path\": \"Mathlib.Analysis.Normed.Lp.PiLp\"\n    },\n    {\n      \"formal_name\": \"PiLp.norm_toLp_one\",\n      \"informal_name\": \"Norm of Constant One Function in Product $ L^p $ Space\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {p : ENNReal} {ι : Type u_2} [hp : Fact (1 ≤ p)] [inst : Fintype ι] {β : Type u_5}\\n  [inst_1 : SeminormedAddCommGroup β],\\n  p ≠ ⊤ → ∀ [inst_2 : One β], ‖WithLp.toLp p 1‖ = ↑↑(Fintype.card ι) ^ (1 / p).toReal * ‖1‖\",\n      \"informal_description\": \"For a finite index set $\\\\iota$ and a family of seminormed additive commutative groups $\\\\beta_i$, if $p \\\\neq \\\\infty$, the norm of the constant function $1 : \\\\iota \\\\to \\\\beta$ in the product $L^p$ space is equal to $(\\\\#\\\\iota)^{1/p} \\\\cdot \\\\|1\\\\|_{\\\\beta}$, where $\\\\#\\\\iota$ denotes the cardinality of $\\\\iota$ and $\\\\|1\\\\|_{\\\\beta}$ is the norm of the multiplicative identity in $\\\\beta$.\",\n      \"path\": \"Mathlib.Analysis.Normed.Lp.PiLp\"\n    },\n    {\n      \"formal_name\": \"lp.norm_rpow_eq_tsum\",\n      \"informal_name\": \"L^p Norm Power Identity: $\\\\|f\\\\|^p = \\\\sum \\\\|f(i)\\\\|^p$\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_3} {E : α → Type u_4} {p : ENNReal} [inst : (i : α) → NormedAddCommGroup (E i)],\\n  0 < p.toReal → ∀ (f : ↥(lp E p)), ‖f‖ ^ p.toReal = ∑' (i : α), ‖↑f i‖ ^ p.toReal\",\n      \"informal_description\": \"For a function $ f $ in the $ L^p $ space with $ 1 \\\\leq p < \\\\infty $, the $ p $-th power of its $ L^p $ norm equals the sum over all indices $ i $ of the $ p $-th power of the norm of $ f(i) $. Formally, $ \\\\|f\\\\|^p = \\\\sum_{i} \\\\|f(i)\\\\|^p $.\",\n      \"path\": \"Mathlib.Analysis.Normed.Lp.lpSpace\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "PiLp.norm_eq_of_L1",
+            "informal_name": "L¹ Norm on Product Space: $\\|x\\| = \\sum_i \\|x_i\\|$",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_2} {β : ι → Type u_4} [inst : Fintype ι] [inst_1 : (i : ι) → SeminormedAddCommGroup (β i)] (x : PiLp 1 β),\n  ‖x‖ = ∑ i, ‖x.ofLp i‖",
+            "informal_description": "For an element $x$ in the product $L^1$ space $\\Pi L^1$, its norm is equal to the sum of the norms of its components, i.e., $\\|x\\| = \\sum_{i \\in \\iota} \\|x_i\\|$. This follows directly from the definition of the $L^1$ norm on product spaces, where the norm is computed as the sum of the $L^1$ norms of each component function.",
+            "path": "Mathlib.Analysis.Normed.Lp.PiLp"
+          },
+          {
+            "formal_name": "PiLp.nnnorm_eq_of_L1",
+            "informal_name": "L^1 Norm of Product Space Equals Sum of Component Norms",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_2} {β : ι → Type u_4} [inst : Fintype ι] [inst_1 : (i : ι) → SeminormedAddCommGroup (β i)] (x : PiLp 1 β),\n  ‖x‖₊ = ∑ i, ‖x.ofLp i‖₊",
+            "informal_description": "For a finite index set $\\iota$ and a family of seminormed additive commutative groups $\\beta(i)$, the $L^1$-norm of an element $x$ in the product $L^p$ space $\\Pi L^1$ satisfies $\\|x\\| = \\sum_{i \\in \\iota} \\|x_i\\|$, where $x_i$ denotes the $i$-th component of $x$.",
+            "path": "Mathlib.Analysis.Normed.Lp.PiLp"
+          },
+          {
+            "formal_name": "lp.norm_eq_card_dsupport",
+            "informal_name": "Norm in $L^0$ Space Equals Support Cardinality",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_3} {E : α → Type u_4} [inst : (i : α) → NormedAddCommGroup (E i)] (f : ↥(lp E 0)), ‖f‖ = ↑⋯.toFinset.card",
+            "informal_description": "For any function $f$ in the $L^0$ space (with $p = 0$), the norm $\\|f\\|$ is equal to the cardinality of the finite set of indices where $f(i) \\neq 0$.",
+            "path": "Mathlib.Analysis.Normed.Lp.lpSpace"
+          },
+          {
+            "formal_name": "lp.norm_sum_single",
+            "informal_name": "Norm of Finite Sum of Single-Element Functions in $L^p$",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_3} {E : α → Type u_4} {p : ENNReal} [inst : (i : α) → NormedAddCommGroup (E i)] [inst_1 : DecidableEq α],\n  0 < p.toReal →\n    ∀ (f : (i : α) → E i) (s : Finset α), ‖∑ i ∈ s, lp.single p i (f i)‖ ^ p.toReal = ∑ i ∈ s, ‖f i‖ ^ p.toReal",
+            "informal_description": "For any extended non-negative real number $p$ with $0 < p$ and a finite set $s$ of indices, the $L^p$ norm of the sum of single-element functions $\\sum_{i \\in s} \\text{single}_p(i, f_i)$ raised to the power $p$ equals the sum of the $L^p$ norms of the individual elements $f_i$ raised to the power $p$, i.e., $\\left\\|\\sum_{i \\in s} \\text{single}_p(i, f_i)\\right\\|^p = \\sum_{i \\in s} \\|f_i\\|^p$.",
+            "path": "Mathlib.Analysis.Normed.Lp.lpSpace"
+          },
+          {
+            "formal_name": "PiLp.norm_eq_card",
+            "informal_name": "Norm of Pi L⁰ Space Equals Cardinality of Non-Zero Components",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_2} {β : ι → Type u_4} [inst : Fintype ι] [inst_1 : (i : ι) → Norm (β i)] (f : PiLp 0 β),\n  ‖f‖ = ↑⋯.toFinset.card",
+            "informal_description": "For an element $ f $ in the $ \\Pi L^0 $ space over a finite index type, the norm $ \\|f\\| $ is equal to the cardinality of the set $ \\{ i \\mid \\|f_i\\| \\neq 0 \\} $, i.e., $ \\|f\\| = \\left| \\{ i \\mid \\|f_i\\| \\neq 0 \\} \\right| $.",
+            "path": "Mathlib.Analysis.Normed.Lp.PiLp"
+          },
+          {
+            "formal_name": "PiLp.norm_toLp_one",
+            "informal_name": "Norm of Constant One Function in Product $ L^p $ Space",
+            "kind": "theorem",
+            "type": "∀ {p : ENNReal} {ι : Type u_2} [hp : Fact (1 ≤ p)] [inst : Fintype ι] {β : Type u_5}\n  [inst_1 : SeminormedAddCommGroup β],\n  p ≠ ⊤ → ∀ [inst_2 : One β], ‖WithLp.toLp p 1‖ = ↑↑(Fintype.card ι) ^ (1 / p).toReal * ‖1‖",
+            "informal_description": "For a finite index set $\\iota$ and a family of seminormed additive commutative groups $\\beta_i$, if $p \\neq \\infty$, the norm of the constant function $1 : \\iota \\to \\beta$ in the product $L^p$ space is equal to $(\\#\\iota)^{1/p} \\cdot \\|1\\|_{\\beta}$, where $\\#\\iota$ denotes the cardinality of $\\iota$ and $\\|1\\|_{\\beta}$ is the norm of the multiplicative identity in $\\beta$.",
+            "path": "Mathlib.Analysis.Normed.Lp.PiLp"
+          },
+          {
+            "formal_name": "lp.norm_rpow_eq_tsum",
+            "informal_name": "L^p Norm Power Identity: $\\|f\\|^p = \\sum \\|f(i)\\|^p$",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_3} {E : α → Type u_4} {p : ENNReal} [inst : (i : α) → NormedAddCommGroup (E i)],\n  0 < p.toReal → ∀ (f : ↥(lp E p)), ‖f‖ ^ p.toReal = ∑' (i : α), ‖↑f i‖ ^ p.toReal",
+            "informal_description": "For a function $ f $ in the $ L^p $ space with $ 1 \\leq p < \\infty $, the $ p $-th power of its $ L^p $ norm equals the sum over all indices $ i $ of the $ p $-th power of the norm of $ f(i) $. Formally, $ \\|f\\|^p = \\sum_{i} \\|f(i)\\|^p $.",
+            "path": "Mathlib.Analysis.Normed.Lp.lpSpace"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "Finder",
+    "form": "abstract",
+    "request": {
+      "tool": "mcp__lean_lsp__lean_leanfinder",
+      "args": {
+        "query": "WithLp Finsupp distance equals sum pointwise distance exponent one",
+        "num_results": 7
+      }
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"PiLp.edist_eq_of_L1\",\n      \"informal_name\": \"Extended Distance in Product $ L^1 $ Space Equals Sum of Component Distances\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_2} {β : ι → Type u_4} [inst : Fintype ι] [inst_1 : (i : ι) → SeminormedAddCommGroup (β i)]\\n  (x y : PiLp 1 β), edist x y = ∑ i, edist (x.ofLp i) (y.ofLp i)\",\n      \"informal_description\": \"For any two elements $ x $ and $ y $ in the product $ L^1 $ space $ \\\\Pi L^1 $, the extended distance between $ x $ and $ y $ is equal to the sum of the extended distances between their corresponding components, i.e., $ \\\\text{edist}(x, y) = \\\\sum_{i} \\\\text{edist}(x_i, y_i) $.\",\n      \"path\": \"Mathlib.Analysis.Normed.Lp.PiLp\"\n    },\n    {\n      \"formal_name\": \"PiLp.dist_eq_of_L1\",\n      \"informal_name\": \"Distance in Product $ L^1 $ Space Equals Component Sum\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_2} {β : ι → Type u_4} [inst : Fintype ι] [inst_1 : (i : ι) → SeminormedAddCommGroup (β i)]\\n  (x y : PiLp 1 β), dist x y = ∑ i, dist (x.ofLp i) (y.ofLp i)\",\n      \"informal_description\": \"For any two elements $ x $ and $ y $ in the product $ L^1 $ space $ \\\\Pi L^1 $, the distance between them is equal to the sum of the distances between their corresponding components, i.e., $ \\\\mathrm{dist}(x, y) = \\\\sum_i \\\\mathrm{dist}(x_i, y_i) $.\",\n      \"path\": \"Mathlib.Analysis.Normed.Lp.PiLp\"\n    },\n    {\n      \"formal_name\": \"PiLp.dist_eq_sum\",\n      \"informal_name\": \"L^p Metric on Product Space for 0 < p < ∞\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_2} {α : ι → Type u_3} [inst : Fintype ι] [inst_1 : (i : ι) → Dist (α i)] {p : ENNReal},\\n  0 < p.toReal → ∀ (f g : PiLp p α), dist f g = (∑ i, dist (f.ofLp i) (g.ofLp i) ^ p.toReal) ^ (1 / p.toReal)\",\n      \"informal_description\": \"For a finite index set $\\\\iota$, extended non-negative real number $p$, and a family of pseudo-metric spaces $\\\\alpha_i$, if $p$ is a positive real number ($0 < p < \\\\infty$), then the distance between functions $f$ and $g$ in the product $L^p$ space $\\\\Pi L^p$ is given by $\\\\left( \\\\sum_{i \\\\in \\\\iota} \\\\text{dist}(f(i), g(i))^p \\\\right)^{1/p}$, where $p$ is truncated to a real number.\",\n      \"path\": \"Mathlib.Analysis.Normed.Lp.PiLp\"\n    },\n    {\n      \"formal_name\": \"PiLp.nndist_eq_of_L1\",\n      \"informal_name\": \"L¹ Distance in Product Space Equals Sum of Component Distances\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_2} {β : ι → Type u_4} [inst : Fintype ι] [inst_1 : (i : ι) → SeminormedAddCommGroup (β i)]\\n  (x y : PiLp 1 β), nndist x y = ∑ i, nndist (x.ofLp i) (y.ofLp i)\",\n      \"informal_description\": \"In the product $ L^1 $ space over a finite index type, the non-negative distance between two elements $ x $ and $ y $ is equal to the sum of the non-negative distances between their corresponding components, i.e., $ \\\\text{nndist}(x, y) = \\\\sum_{i} \\\\text{nndist}(x_i, y_i) $.\",\n      \"path\": \"Mathlib.Analysis.Normed.Lp.PiLp\"\n    },\n    {\n      \"formal_name\": \"PiLp.edist_eq_sum\",\n      \"informal_name\": \"Extended Distance in Product $ L^p $ Spaces Equals $ L^p $-Norm of Component Distances\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_2} {β : ι → Type u_4} [inst : Fintype ι] [inst_1 : (i : ι) → EDist (β i)] {p : ENNReal},\\n  0 < p.toReal → ∀ (f g : PiLp p β), edist f g = (∑ i, edist (f.ofLp i) (g.ofLp i) ^ p.toReal) ^ (1 / p.toReal)\",\n      \"informal_description\": \"For a finite index type $\\\\iota$ and a family of types $\\\\beta$ equipped with extended distances, and for $p \\\\in (0, \\\\infty)$, the extended distance between any two functions $f, g$ in the product $L^p$ space $\\\\Pi L^p$ is given by the $L^p$-norm of their component-wise extended distances: $$\\\\text{edist}(f, g) = \\\\left(\\\\sum_{i \\\\in \\\\iota} \\\\text{edist}(f(i), g(i))^p\\\\right)^{1/p}.$$\",\n      \"path\": \"Mathlib.Analysis.Normed.Lp.PiLp\"\n    },\n    {\n      \"formal_name\": \"PiLp.dist_toLp_single_same\",\n      \"informal_name\": \"Distance of Single Elements in Product $ L^p $ Spaces Equals Component Distance\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (p : ENNReal) {ι : Type u_2} (β : ι → Type u_4) [hp : Fact (1 ≤ p)] [inst : Fintype ι]\\n  [inst_1 : (i : ι) → SeminormedAddCommGroup (β i)] [inst_2 : DecidableEq ι] (i : ι) (b₁ b₂ : β i),\\n  dist (WithLp.toLp p (Pi.single i b₁)) (WithLp.toLp p (Pi.single i b₂)) = dist b₁ b₂\",\n      \"informal_description\": \"For a finite index set $\\\\iota$, extended real number $p \\\\in [0, \\\\infty]$, and a family of pseudo-metric spaces $\\\\beta_i$, the distance between two functions in the product $L^p$ space that are non-zero only at index $i$ with values $b_1$ and $b_2$ respectively equals the distance between $b_1$ and $b_2$ in $\\\\beta_i$. Formally, $d(\\\\text{toLp}(\\\\Pi.single\\\\ i\\\\ b_1), \\\\text{toLp}(\\\\Pi.single\\\\ i\\\\ b_2)) = d(b_1, b_2)$.\",\n      \"path\": \"Mathlib.Analysis.Normed.Lp.PiLp\"\n    },\n    {\n      \"formal_name\": \"PiLp.edist_toLp_single_same\",\n      \"informal_name\": \"Extended Distance Preservation for Single-Element Functions in Product $ L^p $ Spaces\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (p : ENNReal) {ι : Type u_2} (β : ι → Type u_4) [hp : Fact (1 ≤ p)] [inst : Fintype ι]\\n  [inst_1 : (i : ι) → SeminormedAddCommGroup (β i)] [inst_2 : DecidableEq ι] (i : ι) (b₁ b₂ : β i),\\n  edist (WithLp.toLp p (Pi.single i b₁)) (WithLp.toLp p (Pi.single i b₂)) = edist b₁ b₂\",\n      \"informal_description\": \"For any index $ i $ and elements $ b_1, b_2 $ in the $ i $-th component space, the extended distance between the $ L^p $-embeddings of the single-element functions $ \\\\Pi.single(i, b_1) $ and $ \\\\Pi.single(i, b_2) $ in the product $ L^p $ space equals the extended distance between $ b_1 $ and $ b_2 $ in their original space, i.e., $ \\\\text{edist}(\\\\text{toLp}(p, \\\\Pi.single(i, b_1)), \\\\text{toLp}(p, \\\\Pi.single(i, b_2))) = \\\\text{edist}(b_1, b_2) $.\",\n      \"path\": \"Mathlib.Analysis.Normed.Lp.PiLp\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "PiLp.edist_eq_of_L1",
+            "informal_name": "Extended Distance in Product $ L^1 $ Space Equals Sum of Component Distances",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_2} {β : ι → Type u_4} [inst : Fintype ι] [inst_1 : (i : ι) → SeminormedAddCommGroup (β i)]\n  (x y : PiLp 1 β), edist x y = ∑ i, edist (x.ofLp i) (y.ofLp i)",
+            "informal_description": "For any two elements $ x $ and $ y $ in the product $ L^1 $ space $ \\Pi L^1 $, the extended distance between $ x $ and $ y $ is equal to the sum of the extended distances between their corresponding components, i.e., $ \\text{edist}(x, y) = \\sum_{i} \\text{edist}(x_i, y_i) $.",
+            "path": "Mathlib.Analysis.Normed.Lp.PiLp"
+          },
+          {
+            "formal_name": "PiLp.dist_eq_of_L1",
+            "informal_name": "Distance in Product $ L^1 $ Space Equals Component Sum",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_2} {β : ι → Type u_4} [inst : Fintype ι] [inst_1 : (i : ι) → SeminormedAddCommGroup (β i)]\n  (x y : PiLp 1 β), dist x y = ∑ i, dist (x.ofLp i) (y.ofLp i)",
+            "informal_description": "For any two elements $ x $ and $ y $ in the product $ L^1 $ space $ \\Pi L^1 $, the distance between them is equal to the sum of the distances between their corresponding components, i.e., $ \\mathrm{dist}(x, y) = \\sum_i \\mathrm{dist}(x_i, y_i) $.",
+            "path": "Mathlib.Analysis.Normed.Lp.PiLp"
+          },
+          {
+            "formal_name": "PiLp.dist_eq_sum",
+            "informal_name": "L^p Metric on Product Space for 0 < p < ∞",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_2} {α : ι → Type u_3} [inst : Fintype ι] [inst_1 : (i : ι) → Dist (α i)] {p : ENNReal},\n  0 < p.toReal → ∀ (f g : PiLp p α), dist f g = (∑ i, dist (f.ofLp i) (g.ofLp i) ^ p.toReal) ^ (1 / p.toReal)",
+            "informal_description": "For a finite index set $\\iota$, extended non-negative real number $p$, and a family of pseudo-metric spaces $\\alpha_i$, if $p$ is a positive real number ($0 < p < \\infty$), then the distance between functions $f$ and $g$ in the product $L^p$ space $\\Pi L^p$ is given by $\\left( \\sum_{i \\in \\iota} \\text{dist}(f(i), g(i))^p \\right)^{1/p}$, where $p$ is truncated to a real number.",
+            "path": "Mathlib.Analysis.Normed.Lp.PiLp"
+          },
+          {
+            "formal_name": "PiLp.nndist_eq_of_L1",
+            "informal_name": "L¹ Distance in Product Space Equals Sum of Component Distances",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_2} {β : ι → Type u_4} [inst : Fintype ι] [inst_1 : (i : ι) → SeminormedAddCommGroup (β i)]\n  (x y : PiLp 1 β), nndist x y = ∑ i, nndist (x.ofLp i) (y.ofLp i)",
+            "informal_description": "In the product $ L^1 $ space over a finite index type, the non-negative distance between two elements $ x $ and $ y $ is equal to the sum of the non-negative distances between their corresponding components, i.e., $ \\text{nndist}(x, y) = \\sum_{i} \\text{nndist}(x_i, y_i) $.",
+            "path": "Mathlib.Analysis.Normed.Lp.PiLp"
+          },
+          {
+            "formal_name": "PiLp.edist_eq_sum",
+            "informal_name": "Extended Distance in Product $ L^p $ Spaces Equals $ L^p $-Norm of Component Distances",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_2} {β : ι → Type u_4} [inst : Fintype ι] [inst_1 : (i : ι) → EDist (β i)] {p : ENNReal},\n  0 < p.toReal → ∀ (f g : PiLp p β), edist f g = (∑ i, edist (f.ofLp i) (g.ofLp i) ^ p.toReal) ^ (1 / p.toReal)",
+            "informal_description": "For a finite index type $\\iota$ and a family of types $\\beta$ equipped with extended distances, and for $p \\in (0, \\infty)$, the extended distance between any two functions $f, g$ in the product $L^p$ space $\\Pi L^p$ is given by the $L^p$-norm of their component-wise extended distances: $$\\text{edist}(f, g) = \\left(\\sum_{i \\in \\iota} \\text{edist}(f(i), g(i))^p\\right)^{1/p}.$$",
+            "path": "Mathlib.Analysis.Normed.Lp.PiLp"
+          },
+          {
+            "formal_name": "PiLp.dist_toLp_single_same",
+            "informal_name": "Distance of Single Elements in Product $ L^p $ Spaces Equals Component Distance",
+            "kind": "theorem",
+            "type": "∀ (p : ENNReal) {ι : Type u_2} (β : ι → Type u_4) [hp : Fact (1 ≤ p)] [inst : Fintype ι]\n  [inst_1 : (i : ι) → SeminormedAddCommGroup (β i)] [inst_2 : DecidableEq ι] (i : ι) (b₁ b₂ : β i),\n  dist (WithLp.toLp p (Pi.single i b₁)) (WithLp.toLp p (Pi.single i b₂)) = dist b₁ b₂",
+            "informal_description": "For a finite index set $\\iota$, extended real number $p \\in [0, \\infty]$, and a family of pseudo-metric spaces $\\beta_i$, the distance between two functions in the product $L^p$ space that are non-zero only at index $i$ with values $b_1$ and $b_2$ respectively equals the distance between $b_1$ and $b_2$ in $\\beta_i$. Formally, $d(\\text{toLp}(\\Pi.single\\ i\\ b_1), \\text{toLp}(\\Pi.single\\ i\\ b_2)) = d(b_1, b_2)$.",
+            "path": "Mathlib.Analysis.Normed.Lp.PiLp"
+          },
+          {
+            "formal_name": "PiLp.edist_toLp_single_same",
+            "informal_name": "Extended Distance Preservation for Single-Element Functions in Product $ L^p $ Spaces",
+            "kind": "theorem",
+            "type": "∀ (p : ENNReal) {ι : Type u_2} (β : ι → Type u_4) [hp : Fact (1 ≤ p)] [inst : Fintype ι]\n  [inst_1 : (i : ι) → SeminormedAddCommGroup (β i)] [inst_2 : DecidableEq ι] (i : ι) (b₁ b₂ : β i),\n  edist (WithLp.toLp p (Pi.single i b₁)) (WithLp.toLp p (Pi.single i b₂)) = edist b₁ b₂",
+            "informal_description": "For any index $ i $ and elements $ b_1, b_2 $ in the $ i $-th component space, the extended distance between the $ L^p $-embeddings of the single-element functions $ \\Pi.single(i, b_1) $ and $ \\Pi.single(i, b_2) $ in the product $ L^p $ space equals the extended distance between $ b_1 $ and $ b_2 $ in their original space, i.e., $ \\text{edist}(\\text{toLp}(p, \\Pi.single(i, b_1)), \\text{toLp}(p, \\Pi.single(i, b_2))) = \\text{edist}(b_1, b_2) $.",
+            "path": "Mathlib.Analysis.Normed.Lp.PiLp"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "Loogle",
+    "form": "current",
+    "request": {
+      "tool": "mcp__lean_lsp__lean_loogle",
+      "args": {
+        "query": "MvPolynomial, \"norm\"",
+        "num_results": 10
+      }
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"NoetherNormalization.varChange\",\n      \"type\": \" {k : Type u_1} [Field k] {n : ℕ} (f : MvPolynomial (Fin (n + 1)) k) : MvPolynomial (Fin (n + 1)) k ≃ₐ[k] MvPolynomial (Fin (n + 1)) k\",\n      \"module\": \"Mathlib.RingTheory.NoetherNormalization\"\n    },\n    {\n      \"name\": \"NoetherNormalization.T1\",\n      \"type\": \" {k : Type u_1} [Field k] {n : ℕ} (f : MvPolynomial (Fin (n + 1)) k) (c : k) : MvPolynomial (Fin (n + 1)) k →ₐ[k] MvPolynomial (Fin (n + 1)) k\",\n      \"module\": \"Mathlib.RingTheory.NoetherNormalization\"\n    },\n    {\n      \"name\": \"NoetherNormalization.varChange_leadingCoeff_isUnit\",\n      \"type\": \" {k : Type u_1} [Field k] {n : ℕ} (f : MvPolynomial (Fin (n + 1)) k) (fne : f ≠ 0) : IsUnit ((MvPolynomial.finSuccEquiv k n) ((NoetherNormalization.varChange f) f)).leadingCoeff\",\n      \"module\": \"Mathlib.RingTheory.NoetherNormalization\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "NoetherNormalization.varChange",
+            "type": " {k : Type u_1} [Field k] {n : ℕ} (f : MvPolynomial (Fin (n + 1)) k) : MvPolynomial (Fin (n + 1)) k ≃ₐ[k] MvPolynomial (Fin (n + 1)) k",
+            "module": "Mathlib.RingTheory.NoetherNormalization"
+          },
+          {
+            "name": "NoetherNormalization.T1",
+            "type": " {k : Type u_1} [Field k] {n : ℕ} (f : MvPolynomial (Fin (n + 1)) k) (c : k) : MvPolynomial (Fin (n + 1)) k →ₐ[k] MvPolynomial (Fin (n + 1)) k",
+            "module": "Mathlib.RingTheory.NoetherNormalization"
+          },
+          {
+            "name": "NoetherNormalization.varChange_leadingCoeff_isUnit",
+            "type": " {k : Type u_1} [Field k] {n : ℕ} (f : MvPolynomial (Fin (n + 1)) k) (fne : f ≠ 0) : IsUnit ((MvPolynomial.finSuccEquiv k n) ((NoetherNormalization.varChange f) f)).leadingCoeff",
+            "module": "Mathlib.RingTheory.NoetherNormalization"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "Loogle",
+    "form": "literature",
+    "request": {
+      "tool": "mcp__lean_lsp__lean_loogle",
+      "args": {
+        "query": "Finsupp, \"sum\", \"norm\"",
+        "num_results": 10
+      }
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Orthonormal.inner_finsupp_eq_sum_left\",\n      \"type\": \" {𝕜 : Type u_1} {E : Type u_2} [RCLike 𝕜] [SeminormedAddCommGroup E] [InnerProductSpace 𝕜 E] {ι : Type u_4} {v : ι → E} (hv : Orthonormal 𝕜 v) (l₁ l₂ : ι →₀ 𝕜) : inner 𝕜 ((Finsupp.linearCombination 𝕜 v) l₁) ((Finsupp.linearCombination 𝕜 v) l₂) = l₁.sum fun i y => (starRingEnd 𝕜) y * l₂ i\",\n      \"module\": \"Mathlib.Analysis.InnerProductSpace.Orthonormal\"\n    },\n    {\n      \"name\": \"Orthonormal.inner_finsupp_eq_sum_right\",\n      \"type\": \" {𝕜 : Type u_1} {E : Type u_2} [RCLike 𝕜] [SeminormedAddCommGroup E] [InnerProductSpace 𝕜 E] {ι : Type u_4} {v : ι → E} (hv : Orthonormal 𝕜 v) (l₁ l₂ : ι →₀ 𝕜) : inner 𝕜 ((Finsupp.linearCombination 𝕜 v) l₁) ((Finsupp.linearCombination 𝕜 v) l₂) = l₂.sum fun i y => (starRingEnd 𝕜) (l₁ i) * y\",\n      \"module\": \"Mathlib.Analysis.InnerProductSpace.Orthonormal\"\n    },\n    {\n      \"name\": \"Polynomial.sum_sq_norm_coeff_eq_circleAverage\",\n      \"type\": \" (p : Polynomial ℂ) : ∑ i ∈ p.support, ‖p.coeff i‖ ^ 2 = Real.circleAverage (fun θ => ‖Polynomial.eval θ p‖ ^ 2) 0 1\",\n      \"module\": \"Mathlib.Analysis.Polynomial.Fourier\"\n    },\n    {\n      \"name\": \"Polynomial.mahlerMeasure_le_sqrt_sum_sq_norm_coeff\",\n      \"type\": \" (p : Polynomial ℂ) : p.mahlerMeasure ≤ √(∑ i ∈ p.support, ‖p.coeff i‖ ^ 2)\",\n      \"module\": \"Mathlib.Analysis.Polynomial.MahlerMeasure\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Orthonormal.inner_finsupp_eq_sum_left",
+            "type": " {𝕜 : Type u_1} {E : Type u_2} [RCLike 𝕜] [SeminormedAddCommGroup E] [InnerProductSpace 𝕜 E] {ι : Type u_4} {v : ι → E} (hv : Orthonormal 𝕜 v) (l₁ l₂ : ι →₀ 𝕜) : inner 𝕜 ((Finsupp.linearCombination 𝕜 v) l₁) ((Finsupp.linearCombination 𝕜 v) l₂) = l₁.sum fun i y => (starRingEnd 𝕜) y * l₂ i",
+            "module": "Mathlib.Analysis.InnerProductSpace.Orthonormal"
+          },
+          {
+            "name": "Orthonormal.inner_finsupp_eq_sum_right",
+            "type": " {𝕜 : Type u_1} {E : Type u_2} [RCLike 𝕜] [SeminormedAddCommGroup E] [InnerProductSpace 𝕜 E] {ι : Type u_4} {v : ι → E} (hv : Orthonormal 𝕜 v) (l₁ l₂ : ι →₀ 𝕜) : inner 𝕜 ((Finsupp.linearCombination 𝕜 v) l₁) ((Finsupp.linearCombination 𝕜 v) l₂) = l₂.sum fun i y => (starRingEnd 𝕜) (l₁ i) * y",
+            "module": "Mathlib.Analysis.InnerProductSpace.Orthonormal"
+          },
+          {
+            "name": "Polynomial.sum_sq_norm_coeff_eq_circleAverage",
+            "type": " (p : Polynomial ℂ) : ∑ i ∈ p.support, ‖p.coeff i‖ ^ 2 = Real.circleAverage (fun θ => ‖Polynomial.eval θ p‖ ^ 2) 0 1",
+            "module": "Mathlib.Analysis.Polynomial.Fourier"
+          },
+          {
+            "name": "Polynomial.mahlerMeasure_le_sqrt_sum_sq_norm_coeff",
+            "type": " (p : Polynomial ℂ) : p.mahlerMeasure ≤ √(∑ i ∈ p.support, ‖p.coeff i‖ ^ 2)",
+            "module": "Mathlib.Analysis.Polynomial.MahlerMeasure"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "Loogle",
+    "form": "abstract",
+    "request": {
+      "tool": "mcp__lean_lsp__lean_loogle",
+      "args": {
+        "query": "WithLp, \"dist\"",
+        "num_results": 10
+      }
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"WithLp.instDistribMulAction\",\n      \"type\": \" (p : ENNReal) (K : Type u_1) (V : Type u_4) [Monoid K] [AddCommGroup V] [DistribMulAction K V] : DistribMulAction K (WithLp p V)\",\n      \"module\": \"Mathlib.Analysis.Normed.Lp.WithLp\"\n    },\n    {\n      \"name\": \"WithLp.instProdDist\",\n      \"type\": \" (p : ENNReal) (α : Type u_2) (β : Type u_3) [Dist α] [Dist β] : Dist (WithLp p (α × β))\",\n      \"module\": \"Mathlib.Analysis.Normed.Lp.ProdLp\"\n    },\n    {\n      \"name\": \"WithLp.instProdEDist\",\n      \"type\": \" (p : ENNReal) (α : Type u_2) (β : Type u_3) [EDist α] [EDist β] : EDist (WithLp p (α × β))\",\n      \"module\": \"Mathlib.Analysis.Normed.Lp.ProdLp\"\n    },\n    {\n      \"name\": \"WithLp.prod_edist_self\",\n      \"type\": \" (p : ENNReal) {α : Type u_2} {β : Type u_3} [PseudoEMetricSpace α] [PseudoEMetricSpace β] (f : WithLp p (α × β)) : edist f f = 0\",\n      \"module\": \"Mathlib.Analysis.Normed.Lp.ProdLp\"\n    },\n    {\n      \"name\": \"WithLp.dist_fst_le\",\n      \"type\": \" {p : ENNReal} {α : Type u_2} {β : Type u_3} [hp : Fact (1 ≤ p)] [PseudoMetricSpace α] [PseudoMetricSpace β] (x y : WithLp p (α × β)) : dist x.fst y.fst ≤ dist x y\",\n      \"module\": \"Mathlib.Analysis.Normed.Lp.ProdLp\"\n    },\n    {\n      \"name\": \"WithLp.dist_snd_le\",\n      \"type\": \" {p : ENNReal} {α : Type u_2} {β : Type u_3} [hp : Fact (1 ≤ p)] [PseudoMetricSpace α] [PseudoMetricSpace β] (x y : WithLp p (α × β)) : dist x.snd y.snd ≤ dist x y\",\n      \"module\": \"Mathlib.Analysis.Normed.Lp.ProdLp\"\n    },\n    {\n      \"name\": \"WithLp.dist_pseudoMetricSpaceToProd\",\n      \"type\": \" (p : ENNReal) [hp : Fact (1 ≤ p)] (α : Type u_4) (β : Type u_5) [PseudoMetricSpace α] [PseudoMetricSpace β] (x y : α × β) : dist x y = dist (WithLp.toLp p x) (WithLp.toLp p y)\",\n      \"module\": \"Mathlib.Analysis.Normed.Lp.ProdLp\"\n    },\n    {\n      \"name\": \"WithLp.nndist_fst_le\",\n      \"type\": \" {p : ENNReal} {α : Type u_2} {β : Type u_3} [hp : Fact (1 ≤ p)] [PseudoMetricSpace α] [PseudoMetricSpace β] (x y : WithLp p (α × β)) : nndist x.fst y.fst ≤ nndist x y\",\n      \"module\": \"Mathlib.Analysis.Normed.Lp.ProdLp\"\n    },\n    {\n      \"name\": \"WithLp.nndist_snd_le\",\n      \"type\": \" {p : ENNReal} {α : Type u_2} {β : Type u_3} [hp : Fact (1 ≤ p)] [PseudoMetricSpace α] [PseudoMetricSpace β] (x y : WithLp p (α × β)) : nndist x.snd y.snd ≤ nndist x y\",\n      \"module\": \"Mathlib.Analysis.Normed.Lp.ProdLp\"\n    },\n    {\n      \"name\": \"WithLp.prod_dist_eq_sup\",\n      \"type\": \" {α : Type u_2} {β : Type u_3} [Dist α] [Dist β] (f g : WithLp ⊤ (α × β)) : dist f g = max (dist f.fst g.fst) (dist f.snd g.snd)\",\n      \"module\": \"Mathlib.Analysis.Normed.Lp.ProdLp\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "WithLp.instDistribMulAction",
+            "type": " (p : ENNReal) (K : Type u_1) (V : Type u_4) [Monoid K] [AddCommGroup V] [DistribMulAction K V] : DistribMulAction K (WithLp p V)",
+            "module": "Mathlib.Analysis.Normed.Lp.WithLp"
+          },
+          {
+            "name": "WithLp.instProdDist",
+            "type": " (p : ENNReal) (α : Type u_2) (β : Type u_3) [Dist α] [Dist β] : Dist (WithLp p (α × β))",
+            "module": "Mathlib.Analysis.Normed.Lp.ProdLp"
+          },
+          {
+            "name": "WithLp.instProdEDist",
+            "type": " (p : ENNReal) (α : Type u_2) (β : Type u_3) [EDist α] [EDist β] : EDist (WithLp p (α × β))",
+            "module": "Mathlib.Analysis.Normed.Lp.ProdLp"
+          },
+          {
+            "name": "WithLp.prod_edist_self",
+            "type": " (p : ENNReal) {α : Type u_2} {β : Type u_3} [PseudoEMetricSpace α] [PseudoEMetricSpace β] (f : WithLp p (α × β)) : edist f f = 0",
+            "module": "Mathlib.Analysis.Normed.Lp.ProdLp"
+          },
+          {
+            "name": "WithLp.dist_fst_le",
+            "type": " {p : ENNReal} {α : Type u_2} {β : Type u_3} [hp : Fact (1 ≤ p)] [PseudoMetricSpace α] [PseudoMetricSpace β] (x y : WithLp p (α × β)) : dist x.fst y.fst ≤ dist x y",
+            "module": "Mathlib.Analysis.Normed.Lp.ProdLp"
+          },
+          {
+            "name": "WithLp.dist_snd_le",
+            "type": " {p : ENNReal} {α : Type u_2} {β : Type u_3} [hp : Fact (1 ≤ p)] [PseudoMetricSpace α] [PseudoMetricSpace β] (x y : WithLp p (α × β)) : dist x.snd y.snd ≤ dist x y",
+            "module": "Mathlib.Analysis.Normed.Lp.ProdLp"
+          },
+          {
+            "name": "WithLp.dist_pseudoMetricSpaceToProd",
+            "type": " (p : ENNReal) [hp : Fact (1 ≤ p)] (α : Type u_4) (β : Type u_5) [PseudoMetricSpace α] [PseudoMetricSpace β] (x y : α × β) : dist x y = dist (WithLp.toLp p x) (WithLp.toLp p y)",
+            "module": "Mathlib.Analysis.Normed.Lp.ProdLp"
+          },
+          {
+            "name": "WithLp.nndist_fst_le",
+            "type": " {p : ENNReal} {α : Type u_2} {β : Type u_3} [hp : Fact (1 ≤ p)] [PseudoMetricSpace α] [PseudoMetricSpace β] (x y : WithLp p (α × β)) : nndist x.fst y.fst ≤ nndist x y",
+            "module": "Mathlib.Analysis.Normed.Lp.ProdLp"
+          },
+          {
+            "name": "WithLp.nndist_snd_le",
+            "type": " {p : ENNReal} {α : Type u_2} {β : Type u_3} [hp : Fact (1 ≤ p)] [PseudoMetricSpace α] [PseudoMetricSpace β] (x y : WithLp p (α × β)) : nndist x.snd y.snd ≤ nndist x y",
+            "module": "Mathlib.Analysis.Normed.Lp.ProdLp"
+          },
+          {
+            "name": "WithLp.prod_dist_eq_sup",
+            "type": " {α : Type u_2} {β : Type u_3} [Dist α] [Dist β] (f g : WithLp ⊤ (α × β)) : dist f g = max (dist f.fst g.fst) (dist f.snd g.snd)",
+            "module": "Mathlib.Analysis.Normed.Lp.ProdLp"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "LeanSearch",
+    "form": "current",
+    "request": {
+      "tool": "mcp__lean_lsp__lean_leansearch",
+      "args": {
+        "query": "The sum of absolute values of the coefficients of an integer multivariate polynomial",
+        "num_results": 7
+      }
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.coeff\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Basic\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} → {σ : Type u_1} → [inst : CommSemiring R] → (σ →₀ ℕ) → MvPolynomial σ R → R\"\n    },\n    {\n      \"name\": \"Polynomial.mahlerMeasure_le_sum_norm_coeff\",\n      \"module_name\": \"Mathlib.Analysis.Polynomial.MahlerMeasure\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (p : Polynomial ℂ), p.mahlerMeasure ≤ p.sum fun x a => ‖a‖\"\n    },\n    {\n      \"name\": \"MvPolynomial.eval_eq\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Eval\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] (X : σ → R) (f : MvPolynomial σ R),\\n  (MvPolynomial.eval X) f = ∑ d ∈ f.support, MvPolynomial.coeff d f * ∏ i ∈ d.support, X i ^ d i\"\n    },\n    {\n      \"name\": \"MvPolynomial.coeffs\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Basic\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} → {σ : Type u_1} → [inst : CommSemiring R] → MvPolynomial σ R → Finset R\"\n    },\n    {\n      \"name\": \"Poly\",\n      \"module_name\": \"Mathlib.NumberTheory.Dioph\",\n      \"kind\": \"definition\",\n      \"type\": \"Type u → Type (max 0 u)\"\n    },\n    {\n      \"name\": \"MvPolynomial.totalDegree_monomial\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Degrees\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] (s : σ →₀ ℕ) {c : R},\\n  c ≠ 0 → ((MvPolynomial.monomial s) c).totalDegree = s.sum fun x e => e\"\n    },\n    {\n      \"name\": \"MvPolynomial.support_sum_monomial_coeff\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] (p : MvPolynomial σ R),\\n  ∑ v ∈ p.support, (MvPolynomial.monomial v) (MvPolynomial.coeff v p) = p\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.coeff",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Basic",
+            "kind": "definition",
+            "type": "{R : Type u} → {σ : Type u_1} → [inst : CommSemiring R] → (σ →₀ ℕ) → MvPolynomial σ R → R"
+          },
+          {
+            "name": "Polynomial.mahlerMeasure_le_sum_norm_coeff",
+            "module_name": "Mathlib.Analysis.Polynomial.MahlerMeasure",
+            "kind": "theorem",
+            "type": "∀ (p : Polynomial ℂ), p.mahlerMeasure ≤ p.sum fun x a => ‖a‖"
+          },
+          {
+            "name": "MvPolynomial.eval_eq",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Eval",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] (X : σ → R) (f : MvPolynomial σ R),\n  (MvPolynomial.eval X) f = ∑ d ∈ f.support, MvPolynomial.coeff d f * ∏ i ∈ d.support, X i ^ d i"
+          },
+          {
+            "name": "MvPolynomial.coeffs",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Basic",
+            "kind": "definition",
+            "type": "{R : Type u} → {σ : Type u_1} → [inst : CommSemiring R] → MvPolynomial σ R → Finset R"
+          },
+          {
+            "name": "Poly",
+            "module_name": "Mathlib.NumberTheory.Dioph",
+            "kind": "definition",
+            "type": "Type u → Type (max 0 u)"
+          },
+          {
+            "name": "MvPolynomial.totalDegree_monomial",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Degrees",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] (s : σ →₀ ℕ) {c : R},\n  c ≠ 0 → ((MvPolynomial.monomial s) c).totalDegree = s.sum fun x e => e"
+          },
+          {
+            "name": "MvPolynomial.support_sum_monomial_coeff",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Basic",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] (p : MvPolynomial σ R),\n  ∑ v ∈ p.support, (MvPolynomial.monomial v) (MvPolynomial.coeff v p) = p"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "LeanSearch",
+    "form": "literature",
+    "request": {
+      "tool": "mcp__lean_lsp__lean_leansearch",
+      "args": {
+        "query": "The L1 norm of a finitely supported function is the sum of norms of its values",
+        "num_results": 7
+      }
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"lp.norm_eq_tsum_rpow\",\n      \"module_name\": \"Mathlib.Analysis.Normed.Lp.lpSpace\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_3} {E : α → Type u_4} {p : ENNReal} [inst : (i : α) → NormedAddCommGroup (E i)],\\n  0 < p.toReal → ∀ (f : ↥(lp E p)), ‖f‖ = (∑' (i : α), ‖↑f i‖ ^ p.toReal) ^ (1 / p.toReal)\"\n    },\n    {\n      \"name\": \"PiLp.nnnorm_eq_of_L1\",\n      \"module_name\": \"Mathlib.Analysis.Normed.Lp.PiLp\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_2} {β : ι → Type u_4} [inst : Fintype ι] [inst_1 : (i : ι) → SeminormedAddCommGroup (β i)] (x : PiLp 1 β),\\n  ‖x‖₊ = ∑ i, ‖x.ofLp i‖₊\"\n    },\n    {\n      \"name\": \"lp.norm_rpow_eq_tsum\",\n      \"module_name\": \"Mathlib.Analysis.Normed.Lp.lpSpace\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_3} {E : α → Type u_4} {p : ENNReal} [inst : (i : α) → NormedAddCommGroup (E i)],\\n  0 < p.toReal → ∀ (f : ↥(lp E p)), ‖f‖ ^ p.toReal = ∑' (i : α), ‖↑f i‖ ^ p.toReal\"\n    },\n    {\n      \"name\": \"lp.instNormSubtypePreLpMemAddSubgroup\",\n      \"module_name\": \"Mathlib.Analysis.Normed.Lp.lpSpace\",\n      \"kind\": \"instance\",\n      \"type\": \"{α : Type u_3} → {E : α → Type u_4} → {p : ENNReal} → [inst : (i : α) → NormedAddCommGroup (E i)] → Norm ↥(lp E p)\"\n    },\n    {\n      \"name\": \"MeasureTheory.L1.norm_eq_integral_norm\",\n      \"module_name\": \"Mathlib.MeasureTheory.Integral.Bochner.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {m : MeasurableSpace α} {μ : MeasureTheory.Measure α} {H : Type u_6} [inst : NormedAddCommGroup H]\\n  (f : ↥(MeasureTheory.Lp H 1 μ)), ‖f‖ = ∫ (a : α), ‖↑↑f a‖ ∂μ\"\n    },\n    {\n      \"name\": \"WithLp.prod_norm_eq_of_L1\",\n      \"module_name\": \"Mathlib.Analysis.Normed.Lp.ProdLp\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_2} {β : Type u_3} [inst : SeminormedAddCommGroup α] [inst_1 : SeminormedAddCommGroup β]\\n  (x : WithLp 1 (α × β)), ‖x‖ = ‖x.fst‖ + ‖x.snd‖\"\n    },\n    {\n      \"name\": \"MeasureTheory.L1.SimpleFunc.norm_eq_integral\",\n      \"module_name\": \"Mathlib.MeasureTheory.Integral.Bochner.L1\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {E : Type u_2} [inst : NormedAddCommGroup E] {m : MeasurableSpace α} {μ : MeasureTheory.Measure α}\\n  (f : ↥(MeasureTheory.Lp.simpleFunc E 1 μ)),\\n  ‖f‖ =\\n    MeasureTheory.SimpleFunc.integral μ (MeasureTheory.SimpleFunc.map norm (MeasureTheory.Lp.simpleFunc.toSimpleFunc f))\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "lp.norm_eq_tsum_rpow",
+            "module_name": "Mathlib.Analysis.Normed.Lp.lpSpace",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_3} {E : α → Type u_4} {p : ENNReal} [inst : (i : α) → NormedAddCommGroup (E i)],\n  0 < p.toReal → ∀ (f : ↥(lp E p)), ‖f‖ = (∑' (i : α), ‖↑f i‖ ^ p.toReal) ^ (1 / p.toReal)"
+          },
+          {
+            "name": "PiLp.nnnorm_eq_of_L1",
+            "module_name": "Mathlib.Analysis.Normed.Lp.PiLp",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_2} {β : ι → Type u_4} [inst : Fintype ι] [inst_1 : (i : ι) → SeminormedAddCommGroup (β i)] (x : PiLp 1 β),\n  ‖x‖₊ = ∑ i, ‖x.ofLp i‖₊"
+          },
+          {
+            "name": "lp.norm_rpow_eq_tsum",
+            "module_name": "Mathlib.Analysis.Normed.Lp.lpSpace",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_3} {E : α → Type u_4} {p : ENNReal} [inst : (i : α) → NormedAddCommGroup (E i)],\n  0 < p.toReal → ∀ (f : ↥(lp E p)), ‖f‖ ^ p.toReal = ∑' (i : α), ‖↑f i‖ ^ p.toReal"
+          },
+          {
+            "name": "lp.instNormSubtypePreLpMemAddSubgroup",
+            "module_name": "Mathlib.Analysis.Normed.Lp.lpSpace",
+            "kind": "instance",
+            "type": "{α : Type u_3} → {E : α → Type u_4} → {p : ENNReal} → [inst : (i : α) → NormedAddCommGroup (E i)] → Norm ↥(lp E p)"
+          },
+          {
+            "name": "MeasureTheory.L1.norm_eq_integral_norm",
+            "module_name": "Mathlib.MeasureTheory.Integral.Bochner.Basic",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {m : MeasurableSpace α} {μ : MeasureTheory.Measure α} {H : Type u_6} [inst : NormedAddCommGroup H]\n  (f : ↥(MeasureTheory.Lp H 1 μ)), ‖f‖ = ∫ (a : α), ‖↑↑f a‖ ∂μ"
+          },
+          {
+            "name": "WithLp.prod_norm_eq_of_L1",
+            "module_name": "Mathlib.Analysis.Normed.Lp.ProdLp",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_2} {β : Type u_3} [inst : SeminormedAddCommGroup α] [inst_1 : SeminormedAddCommGroup β]\n  (x : WithLp 1 (α × β)), ‖x‖ = ‖x.fst‖ + ‖x.snd‖"
+          },
+          {
+            "name": "MeasureTheory.L1.SimpleFunc.norm_eq_integral",
+            "module_name": "Mathlib.MeasureTheory.Integral.Bochner.L1",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {E : Type u_2} [inst : NormedAddCommGroup E] {m : MeasurableSpace α} {μ : MeasureTheory.Measure α}\n  (f : ↥(MeasureTheory.Lp.simpleFunc E 1 μ)),\n  ‖f‖ =\n    MeasureTheory.SimpleFunc.integral μ (MeasureTheory.SimpleFunc.map norm (MeasureTheory.Lp.simpleFunc.toSimpleFunc f))"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "LeanSearch",
+    "form": "abstract",
+    "request": {
+      "tool": "mcp__lean_lsp__lean_leansearch",
+      "args": {
+        "query": "Distance between finitely supported functions in WithLp one equals sum distances",
+        "num_results": 7
+      }
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"PiLp.nndist_eq_of_L1\",\n      \"module_name\": \"Mathlib.Analysis.Normed.Lp.PiLp\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_2} {β : ι → Type u_4} [inst : Fintype ι] [inst_1 : (i : ι) → SeminormedAddCommGroup (β i)]\\n  (x y : PiLp 1 β), nndist x y = ∑ i, nndist (x.ofLp i) (y.ofLp i)\"\n    },\n    {\n      \"name\": \"PiLp.dist_toLp_single_same\",\n      \"module_name\": \"Mathlib.Analysis.Normed.Lp.PiLp\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (p : ENNReal) {ι : Type u_2} (β : ι → Type u_4) [hp : Fact (1 ≤ p)] [inst : Fintype ι]\\n  [inst_1 : (i : ι) → SeminormedAddCommGroup (β i)] [inst_2 : DecidableEq ι] (i : ι) (b₁ b₂ : β i),\\n  dist (WithLp.toLp p (Pi.single i b₁)) (WithLp.toLp p (Pi.single i b₂)) = dist b₁ b₂\"\n    },\n    {\n      \"name\": \"WithLp.prod_edist_eq_of_L1\",\n      \"module_name\": \"Mathlib.Analysis.Normed.Lp.ProdLp\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_2} {β : Type u_3} [inst : SeminormedAddCommGroup α] [inst_1 : SeminormedAddCommGroup β]\\n  (x y : WithLp 1 (α × β)), edist x y = edist x.fst y.fst + edist x.snd y.snd\"\n    },\n    {\n      \"name\": \"MeasureTheory.Lp.dist_eq_norm\",\n      \"module_name\": \"Mathlib.MeasureTheory.Function.LpSpace.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {E : Type u_4} {m : MeasurableSpace α} {p : ENNReal} {μ : MeasureTheory.Measure α}\\n  [inst : NormedAddCommGroup E] (f g : ↥(MeasureTheory.Lp E p μ)), dist f g = ‖f - g‖\"\n    },\n    {\n      \"name\": \"PiLp.pseudoMetricAux\",\n      \"module_name\": \"Mathlib.Analysis.Normed.Lp.PiLp\",\n      \"kind\": \"abbrev\",\n      \"type\": \"(p : ENNReal) →\\n  {ι : Type u_2} →\\n    (α : ι → Type u_3) →\\n      [Fact (1 ≤ p)] → [(i : ι) → PseudoMetricSpace (α i)] → [Fintype ι] → PseudoMetricSpace (PiLp p α)\"\n    },\n    {\n      \"name\": \"PiLp.edist_eq_of_L1\",\n      \"module_name\": \"Mathlib.Analysis.Normed.Lp.PiLp\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_2} {β : ι → Type u_4} [inst : Fintype ι] [inst_1 : (i : ι) → SeminormedAddCommGroup (β i)]\\n  (x y : PiLp 1 β), edist x y = ∑ i, edist (x.ofLp i) (y.ofLp i)\"\n    },\n    {\n      \"name\": \"PiLp.dist_eq_of_L1\",\n      \"module_name\": \"Mathlib.Analysis.Normed.Lp.PiLp\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_2} {β : ι → Type u_4} [inst : Fintype ι] [inst_1 : (i : ι) → SeminormedAddCommGroup (β i)]\\n  (x y : PiLp 1 β), dist x y = ∑ i, dist (x.ofLp i) (y.ofLp i)\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "PiLp.nndist_eq_of_L1",
+            "module_name": "Mathlib.Analysis.Normed.Lp.PiLp",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_2} {β : ι → Type u_4} [inst : Fintype ι] [inst_1 : (i : ι) → SeminormedAddCommGroup (β i)]\n  (x y : PiLp 1 β), nndist x y = ∑ i, nndist (x.ofLp i) (y.ofLp i)"
+          },
+          {
+            "name": "PiLp.dist_toLp_single_same",
+            "module_name": "Mathlib.Analysis.Normed.Lp.PiLp",
+            "kind": "theorem",
+            "type": "∀ (p : ENNReal) {ι : Type u_2} (β : ι → Type u_4) [hp : Fact (1 ≤ p)] [inst : Fintype ι]\n  [inst_1 : (i : ι) → SeminormedAddCommGroup (β i)] [inst_2 : DecidableEq ι] (i : ι) (b₁ b₂ : β i),\n  dist (WithLp.toLp p (Pi.single i b₁)) (WithLp.toLp p (Pi.single i b₂)) = dist b₁ b₂"
+          },
+          {
+            "name": "WithLp.prod_edist_eq_of_L1",
+            "module_name": "Mathlib.Analysis.Normed.Lp.ProdLp",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_2} {β : Type u_3} [inst : SeminormedAddCommGroup α] [inst_1 : SeminormedAddCommGroup β]\n  (x y : WithLp 1 (α × β)), edist x y = edist x.fst y.fst + edist x.snd y.snd"
+          },
+          {
+            "name": "MeasureTheory.Lp.dist_eq_norm",
+            "module_name": "Mathlib.MeasureTheory.Function.LpSpace.Basic",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {E : Type u_4} {m : MeasurableSpace α} {p : ENNReal} {μ : MeasureTheory.Measure α}\n  [inst : NormedAddCommGroup E] (f g : ↥(MeasureTheory.Lp E p μ)), dist f g = ‖f - g‖"
+          },
+          {
+            "name": "PiLp.pseudoMetricAux",
+            "module_name": "Mathlib.Analysis.Normed.Lp.PiLp",
+            "kind": "abbrev",
+            "type": "(p : ENNReal) →\n  {ι : Type u_2} →\n    (α : ι → Type u_3) →\n      [Fact (1 ≤ p)] → [(i : ι) → PseudoMetricSpace (α i)] → [Fintype ι] → PseudoMetricSpace (PiLp p α)"
+          },
+          {
+            "name": "PiLp.edist_eq_of_L1",
+            "module_name": "Mathlib.Analysis.Normed.Lp.PiLp",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_2} {β : ι → Type u_4} [inst : Fintype ι] [inst_1 : (i : ι) → SeminormedAddCommGroup (β i)]\n  (x y : PiLp 1 β), edist x y = ∑ i, edist (x.ofLp i) (y.ofLp i)"
+          },
+          {
+            "name": "PiLp.dist_eq_of_L1",
+            "module_name": "Mathlib.Analysis.Normed.Lp.PiLp",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_2} {β : ι → Type u_4} [inst : Fintype ι] [inst_1 : (i : ι) → SeminormedAddCommGroup (β i)]\n  (x y : PiLp 1 β), dist x y = ∑ i, dist (x.ofLp i) (y.ofLp i)"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "Local",
+    "form": "current",
+    "request": {
+      "tool": "mcp__lean_lsp__lean_local_search",
+      "args": {
+        "query": "normOne",
+        "project_root": "/Users/ramin/LEAN/Roth",
+        "limit": 20
+      }
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Roth.normOne\",\n      \"kind\": \"def\",\n      \"file\": \"Roth/CoeffNorm.lean\"\n    },\n    {\n      \"name\": \"Roth.normOne_neg\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/CoeffNorm.lean\"\n    },\n    {\n      \"name\": \"Roth.normOne_zero\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/CoeffNorm.lean\"\n    },\n    {\n      \"name\": \"Roth.normOne_add_le\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/CoeffNorm.lean\"\n    },\n    {\n      \"name\": \"Roth.normOne_det_le\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/CoeffNorm.lean\"\n    },\n    {\n      \"name\": \"Roth.normOne_mul_le\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/CoeffNorm.lean\"\n    },\n    {\n      \"name\": \"Roth.normOne_nonneg\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/CoeffNorm.lean\"\n    },\n    {\n      \"name\": \"Roth.normOne_sum_le\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/CoeffNorm.lean\"\n    },\n    {\n      \"name\": \"Roth.normOne_prod_le\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/CoeffNorm.lean\"\n    },\n    {\n      \"name\": \"Roth.normOne_monomial\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/CoeffNorm.lean\"\n    },\n    {\n      \"name\": \"Roth.normOne_le_card_mul\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/CoeffNorm.lean\"\n    },\n    {\n      \"name\": \"Roth.normOne_hasseDeriv_le\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/CoeffNorm.lean\"\n    },\n    {\n      \"name\": \"normOne_hasseDeriv_le\",\n      \"kind\": \"theorem\",\n      \"file\": \".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_apply/evidence/caller-source.lean\"\n    },\n    {\n      \"name\": \"Roth.normOne_eq_sum_of_support_subset\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/CoeffNorm.lean\"\n    },\n    {\n      \"name\": \"ContinuousLinearMap.normOneClass\",\n      \"kind\": \"instance\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Analysis/Normed/Operator/Basic.lean\"\n    },\n    {\n      \"name\": \"MulOpposite.normOneClass\",\n      \"kind\": \"instance\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Analysis/Normed/Ring/Basic.lean\"\n    },\n    {\n      \"name\": \"Pi.normOneClass\",\n      \"kind\": \"instance\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Analysis/Normed/Ring/Basic.lean\"\n    },\n    {\n      \"name\": \"Prod.normOneClass\",\n      \"kind\": \"instance\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Analysis/Normed/Ring/Basic.lean\"\n    },\n    {\n      \"name\": \"ULift.normOneClass\",\n      \"kind\": \"instance\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Analysis/Normed/Ring/Basic.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Roth.normOne",
+            "kind": "def",
+            "file": "Roth/CoeffNorm.lean"
+          },
+          {
+            "name": "Roth.normOne_neg",
+            "kind": "theorem",
+            "file": "Roth/CoeffNorm.lean"
+          },
+          {
+            "name": "Roth.normOne_zero",
+            "kind": "theorem",
+            "file": "Roth/CoeffNorm.lean"
+          },
+          {
+            "name": "Roth.normOne_add_le",
+            "kind": "theorem",
+            "file": "Roth/CoeffNorm.lean"
+          },
+          {
+            "name": "Roth.normOne_det_le",
+            "kind": "theorem",
+            "file": "Roth/CoeffNorm.lean"
+          },
+          {
+            "name": "Roth.normOne_mul_le",
+            "kind": "theorem",
+            "file": "Roth/CoeffNorm.lean"
+          },
+          {
+            "name": "Roth.normOne_nonneg",
+            "kind": "theorem",
+            "file": "Roth/CoeffNorm.lean"
+          },
+          {
+            "name": "Roth.normOne_sum_le",
+            "kind": "theorem",
+            "file": "Roth/CoeffNorm.lean"
+          },
+          {
+            "name": "Roth.normOne_prod_le",
+            "kind": "theorem",
+            "file": "Roth/CoeffNorm.lean"
+          },
+          {
+            "name": "Roth.normOne_monomial",
+            "kind": "theorem",
+            "file": "Roth/CoeffNorm.lean"
+          },
+          {
+            "name": "Roth.normOne_le_card_mul",
+            "kind": "theorem",
+            "file": "Roth/CoeffNorm.lean"
+          },
+          {
+            "name": "Roth.normOne_hasseDeriv_le",
+            "kind": "theorem",
+            "file": "Roth/CoeffNorm.lean"
+          },
+          {
+            "name": "normOne_hasseDeriv_le",
+            "kind": "theorem",
+            "file": ".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_apply/evidence/caller-source.lean"
+          },
+          {
+            "name": "Roth.normOne_eq_sum_of_support_subset",
+            "kind": "theorem",
+            "file": "Roth/CoeffNorm.lean"
+          },
+          {
+            "name": "ContinuousLinearMap.normOneClass",
+            "kind": "instance",
+            "file": ".lake/packages/mathlib/Mathlib/Analysis/Normed/Operator/Basic.lean"
+          },
+          {
+            "name": "MulOpposite.normOneClass",
+            "kind": "instance",
+            "file": ".lake/packages/mathlib/Mathlib/Analysis/Normed/Ring/Basic.lean"
+          },
+          {
+            "name": "Pi.normOneClass",
+            "kind": "instance",
+            "file": ".lake/packages/mathlib/Mathlib/Analysis/Normed/Ring/Basic.lean"
+          },
+          {
+            "name": "Prod.normOneClass",
+            "kind": "instance",
+            "file": ".lake/packages/mathlib/Mathlib/Analysis/Normed/Ring/Basic.lean"
+          },
+          {
+            "name": "ULift.normOneClass",
+            "kind": "instance",
+            "file": ".lake/packages/mathlib/Mathlib/Analysis/Normed/Ring/Basic.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "Local",
+    "form": "literature",
+    "request": {
+      "tool": "mcp__lean_lsp__lean_local_search",
+      "args": {
+        "query": "Finsupp.dist_def",
+        "project_root": "/Users/ramin/LEAN/Roth",
+        "limit": 20
+      }
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finsupp.dist_def\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Analysis/Normed/Lp/Finsupp.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Finsupp.dist_def",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Analysis/Normed/Lp/Finsupp.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "Local",
+    "form": "abstract",
+    "request": {
+      "tool": "mcp__lean_lsp__lean_local_search",
+      "args": {
+        "query": "lp.norm_eq_tsum_rpow",
+        "project_root": "/Users/ramin/LEAN/Roth",
+        "limit": 20
+      }
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"lp.norm_eq_tsum_rpow\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Analysis/Normed/Lp/lpSpace.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "lp.norm_eq_tsum_rpow",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Analysis/Normed/Lp/lpSpace.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  }
+]

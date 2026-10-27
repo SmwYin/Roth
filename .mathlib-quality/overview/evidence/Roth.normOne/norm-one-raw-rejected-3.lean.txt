@@ -1,0 +1,37 @@
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+import Mathlib.Algebra.Polynomial.CancelLeads
+import Mathlib.Algebra.MvPolynomial.PDeriv
+#check_failure Roth.normOne
+namespace NormOneRaw
+variable {σ : Type*}
+noncomputable def replacement (P : MvPolynomial σ ℤ) : ℝ :=
+  P.coeff.sum (fun _ z ↦ |(z : ℝ)|)
+theorem nonneg (P : MvPolynomial σ ℤ) : 0 ≤ replacement P :=
+  Finset.sum_nonneg fun _ _ ↦ abs_nonneg _
+theorem zero : replacement (0 : MvPolynomial σ ℤ) = 0 := by
+  simp [replacement]
+theorem coefficientBound (P : MvPolynomial σ ℤ) (d : σ →₀ ℕ) :
+    |((P.coeff d : ℤ) : ℝ)| ≤ replacement P :=
+  Finsupp.single_eval_le_sum P.coeff (g := fun z ↦ |(z : ℝ)|) (by simp)
+    (fun _ ↦ abs_nonneg _) d
+theorem supportBound (P : MvPolynomial σ ℤ) {B : ℝ}
+    (hB : ∀ d, |((P.coeff d : ℤ) : ℝ)| ≤ B) :
+    replacement P ≤ P.support.card * B := by
+  simpa [replacement, Finsupp.sum] using
+    P.support.sum_le_card_nsmul _ _ (fun d _ ↦ hB d)
+#print axioms replacement
+#print axioms nonneg
+#print axioms zero
+#print axioms coefficientBound
+#print axioms supportBound
+#check @Finsupp.sum
+end NormOneRaw

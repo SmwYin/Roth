@@ -1,0 +1,20 @@
+open scoped NNReal
+namespace Roth.NormOneMetricAssessment
+open MvPolynomial
+variable {ι σ : Type*}
+theorem l1Distance (f : ι →₀ ℤ) :
+    dist (WithLp.toLp (1 : ℝ≥0) f) (WithLp.toLp (1 : ℝ≥0) (0 : ι →₀ ℤ)) =
+      f.sum (fun _ z ↦ |(z : ℝ)|) := by
+  have hz : f.zipWith dist (dist_self 0) 0 =
+      f.mapRange (fun z : ℤ ↦ dist z 0) (dist_self 0) := by
+    ext i
+    simp
+  simp only [Finsupp.dist_def, WithLp.ofLp_toLp, inv_one, NNReal.coe_one, Real.rpow_one, hz]
+  rw [Finsupp.sum_mapRange_index (by simp)]
+  simp only [dist_zero_right, Int.norm_eq_abs]
+theorem normOneDistance (P : MvPolynomial σ ℤ) :
+    dist (WithLp.toLp (1 : ℝ≥0) P.coeff)
+      (WithLp.toLp (1 : ℝ≥0) (0 : (σ →₀ ℕ) →₀ ℤ)) = normOne P := l1Distance P.coeff
+#print axioms l1Distance
+#print axioms normOneDistance
+end Roth.NormOneMetricAssessment

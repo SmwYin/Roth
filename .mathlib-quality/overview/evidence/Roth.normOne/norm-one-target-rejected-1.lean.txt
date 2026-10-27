@@ -1,0 +1,17 @@
+namespace Roth.NormOneAssessment
+open MvPolynomial
+variable {σ : Type*}
+#check @Roth.normOne
+#print Roth.normOne
+#print axioms Roth.normOne
+theorem originalExpansion (P : MvPolynomial σ ℤ) :
+    normOne P = ∑ d ∈ P.support, |((P.coeff d : ℤ) : ℝ)| := rfl
+noncomputable def coefficientSum {R : Type*} [SeminormedAddCommGroup R]
+    (P : MvPolynomial σ R) : ℝ := ∑ d ∈ P.support, ‖P.coeff d‖
+theorem integerRecovery (P : MvPolynomial σ ℤ) :
+    coefficientSum P = normOne P := by
+  simp only [coefficientSum, normOne, Int.norm_eq_abs]
+#print axioms originalExpansion
+#print axioms coefficientSum
+#print axioms integerRecovery
+end Roth.NormOneAssessment

@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 74/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 75/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 74; remaining: 219.
-- Verdicts: 10 NO-composable-from-mathlib, 13 YES-add-as-is, 6 YES-but-generalise-first, 11 NO-mathlib-has-it, 25 BORDERLINE-needs-human, 9 SKIP.
+- Completed applicable assessments: 75; remaining: 218.
+- Verdicts: 11 NO-composable-from-mathlib, 13 YES-add-as-is, 6 YES-but-generalise-first, 11 NO-mathlib-has-it, 25 BORDERLINE-needs-human, 9 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -799,6 +799,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: 1 explicit external-to-file caller Roth.abs_eval_lt_of_le_index at Main390; full estimate/private product-weight helper checked against fresh scalar recovery, intermediate algebra-target recovery and strongest B-valued center/point recovery (three full estimate replays).
 - Verdict: YES-but-generalise-first; [complete report](.mathlib-quality/overview/mathlibable/MvPolynomial.eval_eq_sum_box.md).
 
+### Completed: `Roth.normOne`
+
+- Type: `∀ {σ : Type u_1}, MvPolynomial σ ℤ → ℝ`
+- What: Coefficient ℓ¹ norm / length of an integer multivariate polynomial: finite sum of real absolute coefficient values.
+- How: One support sum; definitionally equal to P.coeff.sum (fun _ z : ℤ ↦ |(z : ℝ)|), existing Finsupp.sum.
+- Hypotheses: Arbitrary universe-polymorphic variable type σ and integer-coefficient polynomial; no Fintype, DecidableEq, nonzero or degree hypotheses.
+- Project dependencies: None
+- Caller summary: 14 distinct direct declaration consumers, all in CoeffNorm; no external-to-file named use. Four representative proofs replayed in mathlib-only native code; all fourteen have explicit transparent-substitution plans, not all claimed recompiled.
+- Verdict: NO-composable-from-mathlib; [complete report](.mathlib-quality/overview/mathlibable/Roth.normOne.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -973,6 +983,8 @@ Completed `MvPolynomial.eq_sum_box_hasseDeriv`: Polynomial.sum_taylor_eq is univ
 
 Completed `MvPolynomial.eval_eq_sum_box`: eval₂_eq/aeval_sum/aeval_prod and Polynomial.sum_taylor_eq are generic evaluation/univariate inputs, not multivariate Hasse identity. Isolated support-evaluation via explicit RingHom succeeds but lacks Hasse coefficients and box cutoff.
 
+Completed `Roth.normOne`: Finsupp.sum gives exact scalar construction by rfl. Finsupp WithLp1 dist-to-zero equals it, verified with zipWith/mapRange normalization. Current pinned file has metric structures, not a full normed-group/ring structure. Polynomial.supNorm is univariate maximum, not this sum.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -1122,6 +1134,8 @@ Completed `MvPolynomial.taylor_eq_zero_iff`: Univariate zero-reflection analogue
 Completed `MvPolynomial.eq_sum_box_hasseDeriv`: Distinct coefficient, polynomial reconstruction and evaluation layers; same inverse-shift motif as univariate sum_taylor_eq but no direct specialization to multivariate Hasse box expansion.
 
 Completed `MvPolynomial.eval_eq_sum_box`: Polynomial reconstruction, coefficient identification and evaluated scalar identity are distinct layers; Main consumer adds strict analytic estimates. No independent full evaluated expansion rederivation found.
+
+Completed `Roth.normOne`: No second full coefficient-L1 definition found. Diagonal/evaluation absolute-sum estimates concern different quantities. Bound laws need independent assessments rather than automatic inheritance of construction verdict.
 
 ## Part 5: Generalization opportunities
 
@@ -1276,6 +1290,8 @@ Completed `MvPolynomial.eq_sum_box_hasseDeriv`: Verified no explicit DecidableEq
 
 Completed `MvPolynomial.eval_eq_sum_box`: Strongest verified: coefficient CommSemiring A, arbitrary independent-universe CommRing A-algebra B, BOTH α/x : σ→B, aeval α derivative values. No explicit DecidableEq via scoped Classical; original CommRing A=A/arbitrary instance recovered propositionally by Subsingleton.elim/cases. Degree bound after coefficient map proved by support_map_subset; uses hasseDeriv_map and eval₂_eq_eval_map. Fintype, natural exponents and degree bound retained. Earlier center-in-A algebra law is intermediate.
 
+Completed `Roth.normOne`: Verified CommSemiring R + Norm R coefficient sum and integer recovery; arbitrary Zero coefficient / AddCommMonoid value / arbitrary index Finsupp aggregation with exact rfl recovery. Arbitrary Norm data does not imply norm axioms. Universe/lifted-index and existing metric synthesis tested.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -1426,6 +1442,8 @@ Completed `MvPolynomial.taylor_eq_zero_iff`: Multivariate semiring translation z
 Completed `MvPolynomial.eq_sum_box_hasseDeriv`: Multivariate Hasse/Taylor coefficient-to-finite-box reconstruction; optional support-indexed intermediate using generic evaluation sums.
 
 Completed `MvPolynomial.eval_eq_sum_box`: Multivariate Hasse finite Taylor evaluated expansion and foundational coefficient/polynomial reconstruction; existing generic homomorphism transport should be reused.
+
+Completed `Roth.normOne`: No missing scalar construction established; general coefficient L1/convolution normed structure and substantive bounds are separate potential contributions. Pinned Polynomial.Norm explicitly lists other Lp norms as TODO.
 
 ## Part 7: Junk / removable
 
@@ -1580,6 +1598,8 @@ Completed `MvPolynomial.eq_sum_box_hasseDeriv`: Keep standard substantive recons
 
 Completed `MvPolynomial.eval_eq_sum_box`: Keep standard exact identity with actual use in Roth upper estimate; short corollary of a missing substantive project theorem is not existing-mathlib duplication.
 
+Completed `Roth.normOne`: Useful semantic one-line local API with fourteen consumers; keep in Roth/CoeffNorm.lean under production freeze. No assertion the norm laws or determinant estimates are junk.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -1658,6 +1678,7 @@ Completed `MvPolynomial.eval_eq_sum_box`: Keep standard exact identity with actu
 | 72 | `MvPolynomial.taylor_eq_zero_iff` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor_eq_zero_iff.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.taylor_eq_zero_iff/root-acceptance.json) |
 | 73 | `MvPolynomial.eq_sum_box_hasseDeriv` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.eq_sum_box_hasseDeriv.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.eq_sum_box_hasseDeriv/root-acceptance.json) |
 | 74 | `MvPolynomial.eval_eq_sum_box` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.eval_eq_sum_box.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.eval_eq_sum_box/root-acceptance.json) |
+| 75 | `Roth.normOne` | NO-composable-from-mathlib | [Report](.mathlib-quality/overview/mathlibable/Roth.normOne.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.normOne/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -1805,11 +1826,13 @@ Completed `MvPolynomial.eq_sum_box_hasseDeriv` action: YES-but-generalise-first:
 
 Completed `MvPolynomial.eval_eq_sum_box` action: YES-but-generalise-first: propose Mathlib/Algebra/MvPolynomial/Taylor.lean with coefficient-CommSemiring/arbitrary-ring-algebra-target B-valued center/point/no-explicit-DecidableEq theorem and original recovery; group with accepted finite expansion/coefficient/Hasse foundations. Sources unchanged; full Taylor milestone build clean2467 jobs.
 
+Completed `Roth.normOne` action: NO-composable-from-mathlib for upstream integer-only def. Reuse existing Finsupp.sum; retain local name for readable downstream bounds. If deleting later, use all fourteen caller plans and full dependent validation. Sources unchanged.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.normOne` next. Supporting identities receive their own applicable checks.
+   `Roth.diag` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.

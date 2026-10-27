@@ -1,0 +1,17 @@
+namespace Roth.NormOneInfrastructure
+open scoped NNReal
+local instance : Fact (1 ≤ (1 : ℝ≥0)) := ⟨le_rfl⟩
+universe u
+#check (normOne (σ := Unit))
+#check (normOne (σ := ULift.{u} Unit))
+#synth Norm ℤ
+#synth Norm ℝ
+#synth SeminormedCommRing ℤ
+#synth MetricSpace (WithLp (1 : ℝ≥0) ((ULift.{u} Unit →₀ ℕ) →₀ ℤ))
+theorem representationStable {σ : Type u} (P : MvPolynomial σ ℤ) :
+    normOne P = P.coeff.sum (fun _ z ↦ |(z : ℝ)|) := rfl
+theorem liftedRepresentationStable (P : MvPolynomial (ULift.{u} Unit) ℤ) :
+    normOne P = P.coeff.sum (fun _ z ↦ |(z : ℝ)|) := rfl
+#print axioms representationStable
+#print axioms liftedRepresentationStable
+end Roth.NormOneInfrastructure
