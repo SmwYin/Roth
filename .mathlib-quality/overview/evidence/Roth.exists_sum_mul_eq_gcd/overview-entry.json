@@ -1,0 +1,43 @@
+{
+  "kind": "theorem",
+  "type": "∀ {ι : Type u_2} (s : Finset ι) (u : ι → ℤ), ∃ (z : ι → ℤ), ∑ i ∈ s, z i * u i = s.gcd u",
+  "what": "The gcd of finitely many integers is an integer linear combination of the family.",
+  "how": "Specialize Finset.gcd_eq_sum_mul to integers; reverse equality and commute factors.",
+  "hypotheses": [
+    "arbitrary universe-polymorphic index type ι",
+    "s : Finset ι",
+    "u : ι → ℤ; no nonemptiness, nonzero or coprimality assumptions"
+  ],
+  "project_dependencies": [],
+  "caller_summary": {
+    "explicit_use_count": 1,
+    "external_to_file_count": 0,
+    "internal_count_excluding_declaring_file": 0,
+    "callers": [
+      "Roth/Separation.lean:446 Roth.exists_int_eq_of_gcd_eq_one"
+    ],
+    "direct_kernel_value_consumers": [
+      "Roth.exists_int_eq_of_gcd_eq_one"
+    ]
+  },
+  "mathlib_api_audit": {
+    "existing": "Finset.gcd_eq_sum_mul",
+    "path": "Mathlib/RingTheory/PrincipalIdealDomain.lean:233",
+    "normalization": [
+      "eq_comm",
+      "mul_comm"
+    ],
+    "verified": "mathlib-only original/generic statements and full sole caller"
+  },
+  "moral_duplications": [
+    "Integer specialization and reordered equality of existing finite Bezout theorem."
+  ],
+  "generalization": {
+    "status": "STRICTLY NARROWER THAN STANDARD",
+    "verified": "CommRing R + IsBezout R + NormalizedGCDMonoid R; independently compiled",
+    "abstract_ideal_form": "Ideal.mem_span_range_iff_exists_fun under Semiring R and Fintype ι is also existing; not claimed identical gcd theorem without Bezout."
+  },
+  "missing_api": [],
+  "junk": "Useful current caller, so not dead code; redundant local wrapper.",
+  "action": "Delete wrapper; at Separation:446 use Finset.gcd_eq_sum_mul s u directly, retaining gcd-left/factor-right orientation and adapting the two arithmetic lines as verified in Bezout170.caller. No production change made."
+}

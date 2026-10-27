@@ -1,0 +1,38 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
+import Mathlib.LinearAlgebra.FreeModule.PID
+
+#check_failure Roth.exists_sum_mul_eq_gcd
+#check @Finset.gcd_eq_sum_mul
+#check @Ideal.mem_span_range_iff_exists_fun
+namespace Bezout170
+ theorem original {ι : Type*} (s : Finset ι) (u : ι → ℤ) :
+    ∃ z : ι → ℤ, ∑ i ∈ s, z i * u i = s.gcd u := by
+  simpa only [eq_comm, mul_comm] using Finset.gcd_eq_sum_mul s u
+ theorem general {R ι : Type*} [CommRing R] [IsBezout R] [NormalizedGCDMonoid R]
+    (s : Finset ι) (u : ι → R) : ∃ z : ι → R, ∑ i ∈ s, z i * u i = s.gcd u := by
+  simpa only [eq_comm, mul_comm] using Finset.gcd_eq_sum_mul s u
+ theorem caller {ι : Type*} {s : Finset ι} {u : ι → ℤ} (hu : s.gcd u = 1)
+    {v : ℚ} (hv : ∀ a ∈ s, ∃ z : ℤ, (u a : ℚ) * v = z) : ∃ z : ℤ, v = z := by
+  classical
+  obtain ⟨z, hz⟩ := Finset.gcd_eq_sum_mul s u
+  rw [hu] at hz
+  choose! w hw using hv
+  refine ⟨∑ i ∈ s, z i * w i, ?_⟩
+  calc v = ((∑ i ∈ s, u i * z i : ℤ) : ℚ) * v := by simp [← hz]
+    _ = ((∑ i ∈ s, z i * w i : ℤ) : ℚ) := by
+        push_cast
+        rw [Finset.sum_mul]
+        exact Finset.sum_congr rfl fun i hi ↦ by rw [mul_comm (u i), mul_assoc, hw i hi]
+#print axioms original
+#print axioms general
+#print axioms caller
+end Bezout170

@@ -1,0 +1,66 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\n\n#check_failure Roth.exists_sum_mul_eq_gcd\nnamespace Bezout170Guards\ntheorem naturalCoefficientsFail : ¬ ∃ a b : ℕ, a * 2 + b * 3 = 1 := by omega\ntheorem idealForm {R ι : Type*} [Semiring R] [Fintype ι] {x : R} {u : ι → R} :\n    x ∈ Ideal.span (Set.range u) ↔ ∃ z : ι → R, ∑ i, z i * u i = x :=\n  Ideal.mem_span_range_iff_exists_fun\ntheorem emptyFamily {ι : Type*} (u : ι → ℤ) :\n    ∃ z : ι → ℤ, ∑ i ∈ (∅ : Finset ι), z i * u i = (∅ : Finset ι).gcd u := by\n  simpa only [eq_comm, mul_comm] using Finset.gcd_eq_sum_mul (∅ : Finset ι) u\ntheorem zeroFamily {ι : Type*} (s : Finset ι) :\n    ∃ z : ι → ℤ, ∑ i ∈ s, z i * (0 : ℤ) = s.gcd (fun _ ↦ (0 : ℤ)) := by\n  simpa only [eq_comm, mul_comm] using Finset.gcd_eq_sum_mul s (fun _ ↦ (0 : ℤ))\n#print axioms naturalCoefficientsFail\n#print axioms idealForm\n#print axioms emptyFamily\n#print axioms zeroFamily\nend Bezout170Guards\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.exists_sum_mul_eq_gcd`\",\n      \"line\": 13,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Bezout170Guards.naturalCoefficientsFail' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 25,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Bezout170Guards.idealForm' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 26,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Bezout170Guards.emptyFamily' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 27,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Bezout170Guards.zeroFamily' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 28,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.exists_sum_mul_eq_gcd`",
+          "line": 13,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Bezout170Guards.naturalCoefficientsFail' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 25,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Bezout170Guards.idealForm' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 26,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Bezout170Guards.emptyFamily' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 27,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Bezout170Guards.zeroFamily' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 28,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 372
+}

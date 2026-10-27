@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 169/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 170/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 169; remaining: 124.
-- Verdicts: 18 NO-composable-from-mathlib, 13 YES-add-as-is, 21 YES-but-generalise-first, 36 NO-mathlib-has-it, 51 BORDERLINE-needs-human, 30 SKIP.
+- Completed applicable assessments: 170; remaining: 123.
+- Verdicts: 18 NO-composable-from-mathlib, 13 YES-add-as-is, 21 YES-but-generalise-first, 37 NO-mathlib-has-it, 51 BORDERLINE-needs-human, 30 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -1921,6 +1921,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: explicit use count: 1; external to file count: 0; textual occurrences: 3; explicit callers: Roth/Separation.lean:529 in private exists_rat_factors_det_hasseDeriv_aux; direct kernel value consumers: _private.Roth.Separation.0.Roth.exists_rat_factors_det_hasseDeriv_aux; full caller replays: exact original proof clone, expanded CommRing identity through named-parent bridge, strongest fresh-coordinate arbitraryorders identity through specialization bridge; inline rederivations: None; audit: Fresh exact ordered293 names,293unique,293present/kernelvalues; source occurrence count is distinct from direct kernel/simp/transitive closure.
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.det_hasseDeriv_separated.md).
 
+### Completed: `Roth.exists_sum_mul_eq_gcd`
+
+- Type: `∀ {ι : Type u_2} (s : Finset ι) (u : ι → ℤ), ∃ (z : ι → ℤ), ∑ i ∈ s, z i * u i = s.gcd u`
+- What: The gcd of finitely many integers is an integer linear combination of the family.
+- How: Specialize Finset.gcd_eq_sum_mul to integers; reverse equality and commute factors.
+- Hypotheses: arbitrary universe-polymorphic index type ι, s : Finset ι, u : ι → ℤ; no nonemptiness, nonzero or coprimality assumptions
+- Project dependencies: None
+- Caller summary: explicit use count: 1; external to file count: 0; internal count excluding declaring file: 0; callers: Roth/Separation.lean:446 Roth.exists_int_eq_of_gcd_eq_one; direct kernel value consumers: Roth.exists_int_eq_of_gcd_eq_one
+- Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/Roth.exists_sum_mul_eq_gcd.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -2285,6 +2295,8 @@ Completed `Roth.exists_separated_representation`: formal search cells: 15; suppl
 
 Completed `Roth.det_hasseDeriv_separated`: All15 cells executed. Pinned Matrix.det_mul, Matrix.det_transpose and AlgHom.map_det cover only the determinant core; isolated exact generic composition compiles. Binary Polynomial.wronskian and univariate hasseDeriv_mul do not replace the arbitrary-family mixed-variable theorem. Local symbol index unavailable; no universal absence claim.
 
+Completed `Roth.exists_sum_mul_eq_gcd`: existing: Finset.gcd_eq_sum_mul; path: Mathlib/RingTheory/PrincipalIdealDomain.lean:233; normalization: eq_comm, mul_comm; verified: mathlib-only original/generic statements and full sole caller
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -2624,6 +2636,8 @@ Completed `Roth.exists_coeffNone_basis_aux`: The helper has a distinct role in t
 Completed `Roth.exists_separated_representation`: Two-factor tensor/matrix rank factorization is abstract mathematical context; generic pure-tensor expansion loses simultaneous independence and bounds.
 
 Completed `Roth.det_hasseDeriv_separated`: Outer matrix formula is existing det_mul+transpose. Full derivative matrix normalization uses project multivariate Hasse/product API and is not an existing ≤3-call mathlib replacement.
+
+Completed `Roth.exists_sum_mul_eq_gcd`: Integer specialization and reordered equality of existing finite Bezout theorem.
 
 ## Part 5: Generalization opportunities
 
@@ -2968,6 +2982,8 @@ Completed `Roth.exists_separated_representation`: status: verified sufficient sc
 
 Completed `Roth.det_hasseDeriv_separated`: Clean native full expanded CommRing law; arbitrary finite square indexι and arbitrary univariate ordersE; injected f:τ→σ plus fresh coordinatei outside its range. Original named full conclusion and sole full caller compile via both ring bridge and strongest fresh-coordinate bridge. Original named Field parents cannot mechanically lower unchanged.
 
+Completed `Roth.exists_sum_mul_eq_gcd`: status: STRICTLY NARROWER THAN STANDARD; verified: CommRing R + IsBezout R + NormalizedGCDMonoid R; independently compiled; abstract ideal form: Ideal.mem_span_range_iff_exists_fun under Semiring R and Fintype ι is also existing; not claimed identical gcd theorem without Bezout.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -3308,6 +3324,8 @@ Completed `Roth.exists_coeffNone_basis_aux`: No new primitive is needed for this
 Completed `Roth.exists_separated_representation`: Bounded independent separated decomposition, using generic finite-free coefficient-span machinery.
 
 Completed `Roth.det_hasseDeriv_separated`: Multivariate Hasse derivative and fresh-coordinate factorwise law, settled finite-family Hasse-Wronskian API (binary polynomial Wronskian file has n-tuple TODO), and possible public separated derivative matrix/determinant factorization.
+
+Completed `Roth.exists_sum_mul_eq_gcd`: None
 
 ## Part 7: Junk / removable
 
@@ -3652,6 +3670,8 @@ Completed `Roth.exists_separated_representation`: Not junk: substantive finite-r
 
 Completed `Roth.det_hasseDeriv_separated`: Not junk: sole full private caller uses this identity to obtain rational separated factors, feeding integer separation; no duplicate inline derivation found.
 
+Completed `Roth.exists_sum_mul_eq_gcd`: Useful current caller, so not dead code; redundant local wrapper.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -3825,6 +3845,7 @@ Completed `Roth.det_hasseDeriv_separated`: Not junk: sole full private caller us
 | 167 | `Roth.exists_coeffNone_basis_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_coeffNone_basis_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_coeffNone_basis_aux/root-acceptance.json) |
 | 168 | `Roth.exists_separated_representation` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_separated_representation.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_separated_representation/root-acceptance.json) |
 | 169 | `Roth.det_hasseDeriv_separated` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.det_hasseDeriv_separated.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.det_hasseDeriv_separated/root-acceptance.json) |
+| 170 | `Roth.exists_sum_mul_eq_gcd` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_sum_mul_eq_gcd.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_sum_mul_eq_gcd/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -4162,12 +4183,14 @@ Completed `Roth.exists_separated_representation` action: YES-but-generalise-firs
 
 Completed `Roth.det_hasseDeriv_separated` action: BORDERLINE-needs-human: choose public fresh-coordinate determinant law versus primary matrix factorization after parent finite-family Wronskian API is settled. Keep Roth/Separation.lean and sole caller unchanged until that design decision; complete read-only verification unresolved[]. Provisional Mathlib/RingTheory/MvPolynomial/Wronskian.lean follows accepted genWronskian proposal, not a settled import commitment.
 
+Completed `Roth.exists_sum_mul_eq_gcd` action: Delete wrapper; at Separation:446 use Finset.gcd_eq_sum_mul s u directly, retaining gcd-left/factor-right orientation and adapting the two arithmetic lines as verified in Bezout170.caller. No production change made.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.exists_sum_mul_eq_gcd` next. Supporting identities receive their own applicable checks.
+   `Roth.exists_nat_smul_eq_map` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

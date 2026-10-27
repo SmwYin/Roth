@@ -1,0 +1,6 @@
+/-- Bézout's identity for a finite family of integers. Source: §2, Lean implementation note
+("if integer coefficients `u_a` have gcd `1` ... by a Bézout relation"). -/
+theorem exists_sum_mul_eq_gcd {ι : Type*} (s : Finset ι) (u : ι → ℤ) :
+    ∃ z : ι → ℤ, ∑ i ∈ s, z i * u i = s.gcd u := by
+  simpa [eq_comm, mul_comm] using Finset.gcd_eq_sum_mul s u
+

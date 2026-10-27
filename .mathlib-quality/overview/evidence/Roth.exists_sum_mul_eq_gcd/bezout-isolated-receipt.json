@@ -1,0 +1,75 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\n\n#check_failure Roth.exists_sum_mul_eq_gcd\n#check @Finset.gcd_eq_sum_mul\n#check @Ideal.mem_span_range_iff_exists_fun\nnamespace Bezout170\ntheorem original {ι : Type*} (s : Finset ι) (u : ι → ℤ) :\n    ∃ z : ι → ℤ, ∑ i ∈ s, z i * u i = s.gcd u := by\n  simpa only [eq_comm, mul_comm] using Finset.gcd_eq_sum_mul s u\ntheorem general {R ι : Type*} [CommRing R] [IsBezout R] [NormalizedGCDMonoid R]\n    (s : Finset ι) (u : ι → R) : ∃ z : ι → R, ∑ i ∈ s, z i * u i = s.gcd u := by\n  simpa only [eq_comm, mul_comm] using Finset.gcd_eq_sum_mul s u\ntheorem caller {ι : Type*} {s : Finset ι} {u : ι → ℤ} (hu : s.gcd u = 1)\n    {v : ℚ} (hv : ∀ a ∈ s, ∃ z : ℤ, (u a : ℚ) * v = z) : ∃ z : ℤ, v = z := by\n  classical\n  obtain ⟨z, hz⟩ := Finset.gcd_eq_sum_mul s u\n  rw [hu] at hz\n  choose! w hw using hv\n  refine ⟨∑ i ∈ s, z i * w i, ?_⟩\n  calc v = ((∑ i ∈ s, u i * z i : ℤ) : ℚ) * v := by simp [← hz]\n    _ = ((∑ i ∈ s, z i * w i : ℤ) : ℚ) := by\n        push_cast\n        rw [Finset.sum_mul]\n        exact Finset.sum_congr rfl fun i hi ↦ by rw [mul_comm (u i : ℚ), mul_assoc, hw i hi]\n#print axioms original\n#print axioms general\n#print axioms caller\nend Bezout170\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.exists_sum_mul_eq_gcd`\",\n      \"line\": 13,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finset.gcd_eq_sum_mul : ∀ {R : Type u_1} {α : Type u_2} [inst : CommRing R] [IsBezout R]\\n  [inst_2 : NormalizedGCDMonoid R] (s : Finset α) (f : α → R), ∃ g, s.gcd f = ∑ a ∈ s, f a * g a\",\n      \"line\": 14,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Ideal.mem_span_range_iff_exists_fun : ∀ {α : Type u_1} {R : Type u_2} [inst : Semiring R] [inst_1 : Fintype α] {x : R}\\n  {v : α → R}, x ∈ Ideal.span (Set.range v) ↔ ∃ c, ∑ i, c i * v i = x\",\n      \"line\": 15,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Bezout170.original' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 35,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Bezout170.general' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 36,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Bezout170.caller' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 37,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.exists_sum_mul_eq_gcd`",
+          "line": 13,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finset.gcd_eq_sum_mul : ∀ {R : Type u_1} {α : Type u_2} [inst : CommRing R] [IsBezout R]\n  [inst_2 : NormalizedGCDMonoid R] (s : Finset α) (f : α → R), ∃ g, s.gcd f = ∑ a ∈ s, f a * g a",
+          "line": 14,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Ideal.mem_span_range_iff_exists_fun : ∀ {α : Type u_1} {R : Type u_2} [inst : Semiring R] [inst_1 : Fintype α] {x : R}\n  {v : α → R}, x ∈ Ideal.span (Set.range v) ↔ ∃ c, ∑ i, c i * v i = x",
+          "line": 15,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Bezout170.original' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 35,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Bezout170.general' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 36,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Bezout170.caller' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 37,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 197
+}

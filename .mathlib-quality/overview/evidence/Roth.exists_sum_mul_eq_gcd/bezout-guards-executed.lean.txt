@@ -1,0 +1,29 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
+import Mathlib.LinearAlgebra.FreeModule.PID
+
+#check_failure Roth.exists_sum_mul_eq_gcd
+namespace Bezout170Guards
+theorem naturalCoefficientsFail : ¬ ∃ a b : ℕ, a * 2 + b * 3 = 1 := by omega
+theorem idealForm {R ι : Type*} [Semiring R] [Fintype ι] {x : R} {u : ι → R} :
+    x ∈ Ideal.span (Set.range u) ↔ ∃ z : ι → R, ∑ i, z i * u i = x :=
+  Ideal.mem_span_range_iff_exists_fun
+theorem emptyFamily {ι : Type*} (u : ι → ℤ) :
+    ∃ z : ι → ℤ, ∑ i ∈ (∅ : Finset ι), z i * u i = (∅ : Finset ι).gcd u := by
+  simpa only [eq_comm, mul_comm] using Finset.gcd_eq_sum_mul (∅ : Finset ι) u
+theorem zeroFamily {ι : Type*} (s : Finset ι) :
+    ∃ z : ι → ℤ, ∑ i ∈ s, z i * (0 : ℤ) = s.gcd (fun _ ↦ (0 : ℤ)) := by
+  simpa only [eq_comm, mul_comm] using Finset.gcd_eq_sum_mul s (fun _ ↦ (0 : ℤ))
+#print axioms naturalCoefficientsFail
+#print axioms idealForm
+#print axioms emptyFamily
+#print axioms zeroFamily
+end Bezout170Guards

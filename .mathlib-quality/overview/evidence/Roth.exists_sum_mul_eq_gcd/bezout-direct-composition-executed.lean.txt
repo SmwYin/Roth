@@ -1,0 +1,21 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
+import Mathlib.LinearAlgebra.FreeModule.PID
+
+#check_failure Roth.exists_sum_mul_eq_gcd
+namespace Bezout170Direct
+theorem explicitComposition {R ι : Type*} [CommRing R] [IsBezout R]
+    [NormalizedGCDMonoid R] (s : Finset ι) (u : ι → R) :
+    ∃ z : ι → R, ∑ i ∈ s, z i * u i = s.gcd u := by
+  obtain ⟨z, hz⟩ := Finset.gcd_eq_sum_mul s u
+  exact ⟨z, (Finset.sum_congr rfl (fun i _ ↦ mul_comm (z i) (u i))).trans hz.symm⟩
+#print axioms explicitComposition
+end Bezout170Direct
