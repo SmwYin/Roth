@@ -1,0 +1,39 @@
+namespace NoneDegree164Callers
+open Roth MvPolynomial
+variable {τ : Type*}
+elab "ratFactors164%" : term =>
+  Lean.Meta.mkConstWithFreshMVarLevels
+    (Lean.mkPrivateNameCore `Roth.Separation `Roth.exists_rat_factors_det_hasseDeriv_aux)
+theorem exists_det_eq_mul [Finite τ] {P : MvPolynomial (Option τ) ℤ} (hP : P ≠ 0) {r : Option τ → ℕ}
+    (hr : ∀ j, degreeOf j P ≤ r j) : ∃ l, 1 ≤ l ∧ l ≤ r none + 1 ∧ ∃ D : Fin l → (τ →₀ ℕ),
+      (∀ μ, (D μ).degree ≤ μ) ∧ ∃ (U : MvPolynomial τ ℤ) (V : Polynomial ℤ), U ≠ 0 ∧ V ≠ 0 ∧
+        (∀ j, degreeOf j U ≤ l * r (some j)) ∧ V.natDegree ≤ l * r none ∧
+        (Matrix.of fun μ ν : Fin l ↦
+            hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) P).det = rename some U *
+          Polynomial.aeval (X none : MvPolynomial (Option τ) ℤ) V := by
+  classical
+  obtain ⟨l, hl1, hl2, D, hD, U', V', hU', hV', hFmap⟩ :=
+    ratFactors164% hP (hr none)
+  obtain ⟨U, V, hU, hV, hFUV, -, -⟩ := exists_int_factors hU' hV' hFmap
+  refine ⟨l, hl1, hl2, D, hD, U, V, hU, hV, fun j ↦ ?_, ?_, hFUV⟩
+  · rw [← degreeOf_rename_mul_aeval U hV j, ← hFUV]
+    exact degreeOf_det_hasseDeriv_le
+      (fun μ ν : Fin l ↦ (D μ).mapDomain some + Finsupp.single none (ν : ℕ)) P hr (some j)
+  · have hdegree : degreeOf none
+        (rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) ℤ) V) =
+          V.natDegree := by
+      have h : (optionEquivLeft ℤ τ).toAlgHom.comp (rename some) = Polynomial.CAlgHom := by
+        apply MvPolynomial.algHom_ext
+        intro i
+        simp
+      rw [← natDegree_optionEquivLeft, map_mul,
+        (show optionEquivLeft ℤ τ (rename some U) = Polynomial.C U from AlgHom.congr_fun h U),
+        ← Polynomial.aeval_algHom_apply, optionEquivLeft_X_none,
+        Polynomial.aeval_X_left_eq_map, Polynomial.natDegree_C_mul hU]
+      exact Polynomial.natDegree_map_eq_of_injective (MvPolynomial.C_injective _ _) V
+    rw [← hdegree, ← hFUV]
+    exact degreeOf_det_hasseDeriv_le
+      (fun μ ν : Fin l ↦ (D μ).mapDomain some + Finsupp.single none (ν : ℕ)) P hr none
+
+#print axioms exists_det_eq_mul
+end NoneDegree164Callers

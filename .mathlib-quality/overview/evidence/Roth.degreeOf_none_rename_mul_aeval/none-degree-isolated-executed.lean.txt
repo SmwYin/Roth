@@ -1,0 +1,60 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
+#check_failure Roth.degreeOf_none_rename_mul_aeval
+#check MvPolynomial.natDegree_optionEquivLeft
+#check Polynomial.natDegree_C_mul
+#check Polynomial.natDegree_C_mul_of_mul_ne_zero
+#check Polynomial.natDegree_map_eq_of_injective
+namespace NoneDegree164
+open MvPolynomial
+variable {R τ : Type*} [CommSemiring R] [NoZeroDivisors R]
+theorem semiring {U : MvPolynomial τ R} (hU : U ≠ 0) (V : Polynomial R) :
+    degreeOf none (rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) R) V) =
+      V.natDegree := by
+  have h : (optionEquivLeft R τ).toAlgHom.comp (rename some) = Polynomial.CAlgHom := by
+    apply MvPolynomial.algHom_ext
+    intro i
+    simp
+  rw [← natDegree_optionEquivLeft, map_mul,
+    (show optionEquivLeft R τ (rename some U) = Polynomial.C U from AlgHom.congr_fun h U),
+    ← Polynomial.aeval_algHom_apply, optionEquivLeft_X_none, Polynomial.aeval_X_left_eq_map,
+    Polynomial.natDegree_C_mul hU]
+  exact Polynomial.natDegree_map_eq_of_injective (MvPolynomial.C_injective _ _) V
+example (U : MvPolynomial τ R) :
+    degreeOf none (rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) R)
+      (0 : Polynomial R)) = (0 : Polynomial R).natDegree := by simp
+theorem nonzeroNecessary : ¬ (∀ (U : MvPolynomial Unit ℤ) (V : Polynomial ℤ),
+    degreeOf none (rename some U *
+      Polynomial.aeval (X none : MvPolynomial (Option Unit) ℤ) V) = V.natDegree) := by
+  intro h
+  have hh := h 0 Polynomial.X
+  simp at hh
+theorem noZeroDivisorsNecessary : ¬ (∀ (U : MvPolynomial Unit (ℤ × ℤ)) (V : Polynomial (ℤ × ℤ)),
+    U ≠ 0 →
+    degreeOf none (rename some U *
+      Polynomial.aeval (X none : MvPolynomial (Option Unit) (ℤ × ℤ)) V) = V.natDegree) := by
+  intro h
+  have hu : (C ((1, 0) : ℤ × ℤ) : MvPolynomial Unit (ℤ × ℤ)) ≠ 0 := by simp
+  have hh := h (C ((1, 0) : ℤ × ℤ)) (Polynomial.C ((0, 1) : ℤ × ℤ) * Polynomial.X) hu
+  have hp : rename some (C ((1, 0) : ℤ × ℤ) : MvPolynomial Unit (ℤ × ℤ)) *
+      Polynomial.aeval (X none : MvPolynomial (Option Unit) (ℤ × ℤ))
+        (Polynomial.C ((0, 1) : ℤ × ℤ) * Polynomial.X) = 0 := by
+    simp only [rename_C, map_mul, Polynomial.aeval_C, algebraMap_eq, Polynomial.aeval_X]
+    rw [← mul_assoc, ← C_mul]
+    simp
+  rw [hp] at hh
+  have hd : (Polynomial.C ((0, 1) : ℤ × ℤ) * Polynomial.X).natDegree = 1 :=
+    Polynomial.natDegree_C_mul_X _ (by simp)
+  simp [hd] at hh
+#print axioms nonzeroNecessary
+#print axioms noZeroDivisorsNecessary
+#print axioms semiring
+end NoneDegree164

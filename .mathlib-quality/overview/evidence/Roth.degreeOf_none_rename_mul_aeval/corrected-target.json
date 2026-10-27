@@ -1,0 +1,54 @@
+{
+  "file": "Roth/Separation.lean",
+  "line": 213,
+  "name": "Roth.degreeOf_none_rename_mul_aeval",
+  "short": "degreeOf_none_rename_mul_aeval",
+  "kind": "theorem",
+  "visibility": "public",
+  "end_line": 226,
+  "source": "theorem degreeOf_none_rename_mul_aeval {U : MvPolynomial \u03c4 R} (hU : U \u2260 0) (V : Polynomial R) :\n    degreeOf none (rename some U * Polynomial.aeval (X none : MvPolynomial (Option \u03c4) R) V) =\n      V.natDegree := by\n  classical\n  by_cases hV : V = 0\n  \u00b7 simp [hV]\n  rw [degreeOf_mul_eq ((rename_eq_zero_iff_of_injective U (Option.some_injective \u03c4)).not.mpr hU)\n      ((map_ne_zero_iff (Polynomial.aeval (X none))\n        (Polynomial.toMvPolynomial_injective none)).2 hV),\n    (show degreeOf none (rename some U) = 0 by\n      simp [degreeOf, degrees_rename_of_injective (Option.some_injective \u03c4)]),\n    zero_add, aeval_X_eq_rename]\n  exact (degreeOf_rename_of_injective (f := fun _ : Unit \u21a6 (none : Option \u03c4))\n    (fun _ _ _ \u21a6 rfl) ()).trans (degreeOf_uniqueAlgEquiv_symm V)",
+  "signature": "theorem degreeOf_none_rename_mul_aeval {U : MvPolynomial \u03c4 R} (hU : U \u2260 0) (V : Polynomial R) :\n    degreeOf none (rename some U * Polynomial.aeval (X none : MvPolynomial (Option \u03c4) R) V) =\n      V.natDegree",
+  "body": "by\n  classical\n  by_cases hV : V = 0\n  \u00b7 simp [hV]\n  rw [degreeOf_mul_eq ((rename_eq_zero_iff_of_injective U (Option.some_injective \u03c4)).not.mpr hU)\n      ((map_ne_zero_iff (Polynomial.aeval (X none))\n        (Polynomial.toMvPolynomial_injective none)).2 hV),\n    (show degreeOf none (rename some U) = 0 by\n      simp [degreeOf, degrees_rename_of_injective (Option.some_injective \u03c4)]),\n    zero_add, aeval_X_eq_rename]\n  exact (degreeOf_rename_of_injective (f := fun _ : Unit \u21a6 (none : Option \u03c4))\n    (fun _ _ _ \u21a6 rfl) ()).trans (degreeOf_uniqueAlgEquiv_symm V)",
+  "proof_lines": 12,
+  "sha256": "ae53ce20ce3a5062ac4cb618f92d7b093b54a64a6a0bd09bdaa6e3923ec46169",
+  "what": "A separated product has distinguished-variable degree equal to that of its univariate factor when the other factor is nonzero.",
+  "how": "Use degreeOf_mul_eq, the zero degree of the renamed factor, and degreeOf_uniqueAlgEquiv_symm after singleton renaming.",
+  "hypotheses": "Integral-domain coefficients; ordinary-variable factor nonzero.",
+  "source_body_refs": [
+    "Roth.aeval_X_eq_rename",
+    "Roth.degreeOf_uniqueAlgEquiv_symm"
+  ],
+  "source_type_refs": [],
+  "source_callers": [
+    {
+      "name": "Roth.exists_det_eq_mul",
+      "file": "Roth/Separation.lean",
+      "line": 542
+    }
+  ],
+  "notes": [],
+  "input_file_sha256": "4ac885af6c9973d40f68bd2e6c42185f02a9996271ccaa67d4932d27e85a7d0e",
+  "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+  "section_context": "Namespace Roth; open MvPolynomial. Ambient \u03c4 : Type*. Domain section: R : Type*, [CommRing R], [IsDomain R]. Ambient [Fintype \u03c4] and [DecidableEq \u03c4] are explicitly omitted around general declarations; unused section instances are not implicit mathematical hypotheses. Inline binders override/add context. ",
+  "uses_from_project": [
+    "Roth.aeval_X_eq_rename",
+    "Roth.degreeOf_uniqueAlgEquiv_symm"
+  ],
+  "used_by_in_file": [
+    "Roth.exists_det_eq_mul"
+  ],
+  "used_by_other_files": [],
+  "assignment_offset": 208,
+  "project_body_refs": [
+    "Roth.aeval_X_eq_rename",
+    "Roth.degreeOf_uniqueAlgEquiv_symm"
+  ],
+  "project_type_refs": [],
+  "project_callers": [
+    {
+      "name": "Roth.exists_det_eq_mul",
+      "file": "Roth/Separation.lean",
+      "line": 542
+    }
+  ]
+}

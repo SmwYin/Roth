@@ -1,0 +1,32 @@
+{
+  "kind": "theorem",
+  "type": "@Roth.degreeOf_none_rename_mul_aeval : \u2200 {\u03c4 : Type u_1} {R : Type u_2} [inst : CommRing R] [IsDomain R]\n  {U : MvPolynomial \u03c4 R},\n  U \u2260 0 \u2192\n    \u2200 (V : Polynomial R),\n      MvPolynomial.degreeOf none ((MvPolynomial.rename some) U * (Polynomial.aeval (MvPolynomial.X none)) V) =\n        V.natDegree",
+  "what": "The none-variable degree of a separated product U(x_\u03c4)V(x_none) equals V.natDegree for U\u22600, including V=0.",
+  "how": "Source uses degreeOf_mul_eq, zero degree of renamed U and singleton-variable degree bridge; verified alternative uses optionEquivLeft and constant multiplication natDegree.",
+  "hypotheses": "Arbitrary \u03c4,R; CommRing+IsDomain; U\u22600; arbitrary V. Verified weakening CommSemiring+NoZeroDivisors and point-local leading-coefficient nonannihilation.",
+  "project_dependencies": [
+    "Roth.aeval_X_eq_rename",
+    "Roth.degreeOf_uniqueAlgEquiv_symm"
+  ],
+  "caller_summary": {
+    "explicit_use_count": 1,
+    "external_to_file_use_count": 0,
+    "explicit_call_sites": [
+      {
+        "file": "Roth/Separation.lean",
+        "line": 557,
+        "caller": "Roth.exists_det_eq_mul"
+      }
+    ],
+    "direct_kernel_value_consumers": [
+      "Roth.exists_det_eq_mul"
+    ],
+    "inline_derivations": []
+  },
+  "mathlib_api_audit": "All15 methods/forms executed; canonical natDegree_optionEquivLeft, Polynomial.natDegree_C_mul, natDegree_C_mul_of_mul_ne_zero and injective coefficient map degree verified.",
+  "moral_duplications": "Canonical constant-multiplication degree law exists, but old separated form needs an actual new AlgHom normalization proof.",
+  "generalization": "CommSemiring+NoZeroDivisors verified; arbitrary CommSemiring point-local V=0 or U*(V.map C).leadingCoeff\u22600 verified. U-nonzero and zero-divisor counterexamples compiled.",
+  "missing_api": "Design choice: general optionEquivLeft/rename-some AlgHom normalization bridge versus further separated degree wrapper.",
+  "junk": "Not dead: one explicit and direct kernel consumer, Roth.exists_det_eq_mul.",
+  "action": "BORDERLINE: retain provisionally; decide upstream bridge/wrapper grain; weaken/refactor in separate cleanup. Full caller inline proof verified."
+}

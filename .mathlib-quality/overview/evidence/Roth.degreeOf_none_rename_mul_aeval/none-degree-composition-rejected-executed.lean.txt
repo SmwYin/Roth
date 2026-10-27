@@ -1,0 +1,54 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
+#check_failure Roth.degreeOf_none_rename_mul_aeval
+namespace NoneDegree164Composition
+open MvPolynomial
+variable {R τ : Type*} [CommSemiring R] [NoZeroDivisors R]
+theorem canonical {U : MvPolynomial τ R} (hU : U ≠ 0) (V : Polynomial R) :
+    (Polynomial.C U * V.map (MvPolynomial.C : R →+* MvPolynomial τ R)).natDegree =
+      V.natDegree :=
+  (Polynomial.natDegree_C_mul hU).trans
+    (Polynomial.natDegree_map_eq_of_injective (MvPolynomial.C_injective _ _) V)
+theorem normalizationGap {U : MvPolynomial τ R} (hU : U ≠ 0) (V : Polynomial R)
+    (h : optionEquivLeft R τ
+      (rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) R) V) =
+        Polynomial.C U * V.map (MvPolynomial.C : R →+* MvPolynomial τ R)) :
+    degreeOf none (rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) R) V) =
+      V.natDegree := by
+  fail_if_success exact Polynomial.natDegree_C_mul hU
+  fail_if_success
+    simpa only [natDegree_optionEquivLeft] using
+      (Polynomial.natDegree_C_mul (p := V.map (MvPolynomial.C : R →+*
+        MvPolynomial τ R)) hU)
+  rw [← natDegree_optionEquivLeft, h]
+  exact canonical hU V
+section PointLocal
+variable {S : Type*} [CommSemiring S]
+theorem pointLocal {U : MvPolynomial τ S} (V : Polynomial S)
+    (hV : V = 0 ∨ U * (V.map (MvPolynomial.C : S →+* MvPolynomial τ S)).leadingCoeff ≠ 0) :
+    degreeOf none (rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) S) V) =
+      V.natDegree := by
+  rcases hV with rfl | hV
+  · simp
+  have h : (optionEquivLeft S τ).toAlgHom.comp (rename some) = Polynomial.CAlgHom := by
+    apply MvPolynomial.algHom_ext
+    intro i
+    simp
+  rw [← natDegree_optionEquivLeft, map_mul,
+    (show optionEquivLeft S τ (rename some U) = Polynomial.C U from AlgHom.congr_fun h U),
+    ← Polynomial.aeval_algHom_apply, optionEquivLeft_X_none, Polynomial.aeval_X_left_eq_map,
+    Polynomial.natDegree_C_mul_of_mul_ne_zero hV]
+  exact Polynomial.natDegree_map_eq_of_injective (MvPolynomial.C_injective _ _) V
+end PointLocal
+#print axioms canonical
+#print axioms normalizationGap
+#print axioms pointLocal
+end NoneDegree164Composition

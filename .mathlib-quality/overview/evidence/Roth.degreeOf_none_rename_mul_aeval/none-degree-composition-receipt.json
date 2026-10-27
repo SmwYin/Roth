@@ -1,0 +1,57 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\n#check_failure Roth.degreeOf_none_rename_mul_aeval\nnamespace NoneDegree164Composition\nopen MvPolynomial\nvariable {R τ : Type*} [CommSemiring R] [NoZeroDivisors R]\ntheorem canonical {U : MvPolynomial τ R} (hU : U ≠ 0) (V : Polynomial R) :\n    (Polynomial.C U * V.map (MvPolynomial.C : R →+* MvPolynomial τ R)).natDegree =\n      V.natDegree :=\n  (Polynomial.natDegree_C_mul hU).trans\n    (Polynomial.natDegree_map_eq_of_injective (MvPolynomial.C_injective _ _) V)\ntheorem normalizationGap {U : MvPolynomial τ R} (hU : U ≠ 0) (V : Polynomial R)\n    (h : optionEquivLeft R τ\n      (rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) R) V) =\n        Polynomial.C U * V.map (MvPolynomial.C : R →+* MvPolynomial τ R)) :\n    degreeOf none (rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) R) V) =\n      V.natDegree := by\n  fail_if_success exact Polynomial.natDegree_C_mul hU\n  fail_if_success\n    simpa only [natDegree_optionEquivLeft] using\n      (Polynomial.natDegree_C_mul (p := V.map (MvPolynomial.C : R →+*\n        MvPolynomial τ R)) hU)\n  rw [← natDegree_optionEquivLeft, h]\n  exact canonical hU V\nsection PointLocal\nvariable {S : Type*} [CommSemiring S]\ntheorem pointLocal {U : MvPolynomial τ S} (V : Polynomial S)\n    (hV : V = 0 ∨ U * (V.map (MvPolynomial.C : S →+* MvPolynomial τ S)).leadingCoeff ≠ 0) :\n    degreeOf none (rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) S) V) =\n      V.natDegree := by\n  rcases hV with rfl | hV\n  · simp\n  have h : (optionEquivLeft S τ).toAlgHom.comp (rename some) = Polynomial.CAlgHom := by\n    apply MvPolynomial.algHom_ext\n    intro i\n    simp\n  rw [← natDegree_optionEquivLeft, map_mul,\n    (show optionEquivLeft S τ (rename some U) = Polynomial.C U from AlgHom.congr_fun h U),\n    ← Polynomial.aeval_algHom_apply, optionEquivLeft_X_none, Polynomial.aeval_X_left_eq_map,\n    algebraMap_eq, Polynomial.natDegree_C_mul_of_mul_ne_zero hV]\n  exact Polynomial.natDegree_map_eq_of_injective (MvPolynomial.C_injective _ _) V\nend PointLocal\n#print axioms canonical\n#print axioms normalizationGap\n#print axioms pointLocal\nend NoneDegree164Composition\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.degreeOf_none_rename_mul_aeval`\",\n      \"line\": 11,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'NoneDegree164Composition.canonical' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 51,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'NoneDegree164Composition.normalizationGap' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 52,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'NoneDegree164Composition.pointLocal' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 53,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.degreeOf_none_rename_mul_aeval`",
+          "line": 11,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'NoneDegree164Composition.canonical' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 51,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'NoneDegree164Composition.normalizationGap' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 52,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'NoneDegree164Composition.pointLocal' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 53,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 157
+}

@@ -1,0 +1,93 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\n#check_failure Roth.degreeOf_none_rename_mul_aeval\n#check MvPolynomial.natDegree_optionEquivLeft\n#check Polynomial.natDegree_C_mul\n#check Polynomial.natDegree_C_mul_of_mul_ne_zero\n#check Polynomial.natDegree_map_eq_of_injective\nnamespace NoneDegree164\nopen MvPolynomial\nvariable {R τ : Type*} [CommSemiring R] [NoZeroDivisors R]\ntheorem semiring {U : MvPolynomial τ R} (hU : U ≠ 0) (V : Polynomial R) :\n    degreeOf none (rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) R) V) =\n      V.natDegree := by\n  have h : (optionEquivLeft R τ).toAlgHom.comp (rename some) = Polynomial.CAlgHom := by\n    apply MvPolynomial.algHom_ext\n    intro i\n    simp\n  rw [← natDegree_optionEquivLeft, map_mul,\n    (show optionEquivLeft R τ (rename some U) = Polynomial.C U from AlgHom.congr_fun h U),\n    ← Polynomial.aeval_algHom_apply, optionEquivLeft_X_none, Polynomial.aeval_X_left_eq_map,\n    Polynomial.natDegree_C_mul hU]\n  exact Polynomial.natDegree_map_eq_of_injective (MvPolynomial.C_injective _ _) V\nexample (U : MvPolynomial τ R) :\n    degreeOf none (rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) R)\n      (0 : Polynomial R)) = (0 : Polynomial R).natDegree := by simp\ntheorem nonzeroNecessary : ¬ (∀ (U : MvPolynomial Unit ℤ) (V : Polynomial ℤ),\n    degreeOf none (rename some U *\n      Polynomial.aeval (X none : MvPolynomial (Option Unit) ℤ) V) = V.natDegree) := by\n  intro h\n  have hh := h 0 Polynomial.X\n  simp at hh\ntheorem noZeroDivisorsNecessary : ¬ (∀ (U : MvPolynomial Unit (ℤ × ℤ)) (V : Polynomial (ℤ × ℤ)),\n    U ≠ 0 →\n    degreeOf none (rename some U *\n      Polynomial.aeval (X none : MvPolynomial (Option Unit) (ℤ × ℤ)) V) = V.natDegree) := by\n  intro h\n  have hu : (C ((1, 0) : ℤ × ℤ) : MvPolynomial Unit (ℤ × ℤ)) ≠ 0 := by simp\n  have hh := h (C ((1, 0) : ℤ × ℤ)) (Polynomial.C ((0, 1) : ℤ × ℤ) * Polynomial.X) hu\n  have hp : rename some (C ((1, 0) : ℤ × ℤ) : MvPolynomial Unit (ℤ × ℤ)) *\n      Polynomial.aeval (X none : MvPolynomial (Option Unit) (ℤ × ℤ))\n        (Polynomial.C ((0, 1) : ℤ × ℤ) * Polynomial.X) = 0 := by\n    simp only [rename_C, map_mul, Polynomial.aeval_C, algebraMap_eq, Polynomial.aeval_X]\n    rw [← mul_assoc, ← C_mul]\n    simp\n  rw [hp] at hh\n  have hd : (Polynomial.C ((0, 1) : ℤ × ℤ) * Polynomial.X).natDegree = 1 :=\n    Polynomial.natDegree_C_mul_X _ (by simp)\n  simp [hd] at hh\n#print axioms nonzeroNecessary\n#print axioms noZeroDivisorsNecessary\n#print axioms semiring\nend NoneDegree164\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.degreeOf_none_rename_mul_aeval`\",\n      \"line\": 11,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"MvPolynomial.natDegree_optionEquivLeft.{u, u_1} (R : Type u) {σ : Type u_1} [CommSemiring R]\\n  (p : MvPolynomial (Option σ) R) : ((MvPolynomial.optionEquivLeft R σ) p).natDegree = MvPolynomial.degreeOf none p\",\n      \"line\": 12,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Polynomial.natDegree_C_mul.{u} {R : Type u} [Semiring R] {p : Polynomial R} {a : R} [NoZeroDivisors R] (a0 : a ≠ 0) :\\n  (Polynomial.C a * p).natDegree = p.natDegree\",\n      \"line\": 13,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Polynomial.natDegree_C_mul_of_mul_ne_zero.{u} {R : Type u} {a : R} [Semiring R] {p : Polynomial R}\\n  (h : a * p.leadingCoeff ≠ 0) : (Polynomial.C a * p).natDegree = p.natDegree\",\n      \"line\": 14,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Polynomial.natDegree_map_eq_of_injective.{u, v} {R : Type u} {S : Type v} [Semiring R] [Semiring S] {f : R →+* S}\\n  (hf : Function.Injective ⇑f) (p : Polynomial R) : (Polynomial.map f p).natDegree = p.natDegree\",\n      \"line\": 15,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'NoneDegree164.nonzeroNecessary' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 57,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'NoneDegree164.noZeroDivisorsNecessary' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 58,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'NoneDegree164.semiring' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 59,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.degreeOf_none_rename_mul_aeval`",
+          "line": 11,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "MvPolynomial.natDegree_optionEquivLeft.{u, u_1} (R : Type u) {σ : Type u_1} [CommSemiring R]\n  (p : MvPolynomial (Option σ) R) : ((MvPolynomial.optionEquivLeft R σ) p).natDegree = MvPolynomial.degreeOf none p",
+          "line": 12,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Polynomial.natDegree_C_mul.{u} {R : Type u} [Semiring R] {p : Polynomial R} {a : R} [NoZeroDivisors R] (a0 : a ≠ 0) :\n  (Polynomial.C a * p).natDegree = p.natDegree",
+          "line": 13,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Polynomial.natDegree_C_mul_of_mul_ne_zero.{u} {R : Type u} {a : R} [Semiring R] {p : Polynomial R}\n  (h : a * p.leadingCoeff ≠ 0) : (Polynomial.C a * p).natDegree = p.natDegree",
+          "line": 14,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Polynomial.natDegree_map_eq_of_injective.{u, v} {R : Type u} {S : Type v} [Semiring R] [Semiring S] {f : R →+* S}\n  (hf : Function.Injective ⇑f) (p : Polynomial R) : (Polynomial.map f p).natDegree = p.natDegree",
+          "line": 15,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'NoneDegree164.nonzeroNecessary' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 57,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'NoneDegree164.noZeroDivisorsNecessary' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 58,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'NoneDegree164.semiring' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 59,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 768
+}
