@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-26
 
-- Declarations completed: **91/293**
-- Next declaration: **#92 `Roth.abs_coeff_diag_le`** (Roth/CoeffNorm.lean:174)
+- Declarations completed: **92/293**
+- Next declaration: **#93 `Roth.natDegree_diag_le`** (Roth/CoeffNorm.lean:183)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -110,10 +110,10 @@ Last regenerated: 2026-10-26
 | 89 | `Roth.normOne_hasseDeriv_le` | Roth/CoeffNorm.lean:148 | YES-but-generalise-first | [report](mathlibable/Roth.normOne_hasseDeriv_le.md) |
 | 90 | `Roth.diag` | Roth/CoeffNorm.lean:161 | NO-composable-from-mathlib | [report](mathlibable/Roth.diag.md) |
 | 91 | `Roth.diag_eq_sum` | Roth/CoeffNorm.lean:164 | YES-but-generalise-first | [report](mathlibable/Roth.diag_eq_sum.md) |
+| 92 | `Roth.abs_coeff_diag_le` | Roth/CoeffNorm.lean:174 | YES-but-generalise-first | [report](mathlibable/Roth.abs_coeff_diag_le.md) |
 
 ## Remaining declarations (in processing order)
 
-- #92 `Roth.abs_coeff_diag_le` (Roth/CoeffNorm.lean:174, public theorem)
 - #93 `Roth.natDegree_diag_le` (Roth/CoeffNorm.lean:183, public theorem)
 - #94 `Roth.eval_diag` (Roth/CoeffNorm.lean:193, public theorem)
 - #95 `Roth.diag_sub` (Roth/CoeffNorm.lean:199, public theorem)
