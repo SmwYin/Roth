@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-26
 
-- Declarations completed: **132/293**
-- Next declaration: **#133 `Roth.index`** (Roth/Index.lean:58)
+- Declarations completed: **133/293**
+- Next declaration: **#134 `Roth.mem_support_taylor_iff`** (Roth/Index.lean:62)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -151,10 +151,10 @@ Last regenerated: 2026-10-26
 | 130 | `Roth.card_filter_weight_le_of_le_sqrt_aux` | Roth/Lattice.lean:158 | SKIP | [report](mathlibable/Roth.card_filter_weight_le_of_le_sqrt_aux.md) |
 | 131 | `Roth.card_filter_weight_le_succ_aux` | Roth/Lattice.lean:166 | SKIP | [report](mathlibable/Roth.card_filter_weight_le_succ_aux.md) |
 | 132 | `Roth.card_filter_weight_le` | Roth/Lattice.lean:202 | BORDERLINE-needs-human | [report](mathlibable/Roth.card_filter_weight_le.md) |
+| 133 | `Roth.index` | Roth/Index.lean:58 | BORDERLINE-needs-human | [report](mathlibable/Roth.index.md) |
 
 ## Remaining declarations (in processing order)
 
-- #133 `Roth.index` (Roth/Index.lean:58, public def)
 - #134 `Roth.mem_support_taylor_iff` (Roth/Index.lean:62, private lemma)
 - #135 `Roth.index_le_weight` (Roth/Index.lean:69, public theorem)
 - #136 `Roth.exists_weight_eq_index` (Roth/Index.lean:76, public theorem)
