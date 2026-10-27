@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-27
 
-- Declarations completed: **284/293**
-- Next declaration: **#285 `Roth.roth_product_bound_aux`** (Roth/Main.lean:481)
+- Declarations completed: **285/293**
+- Next declaration: **#286 `Roth.roth_log_bound_aux`** (Roth/Main.lean:505)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -303,10 +303,10 @@ Last regenerated: 2026-10-27
 | 282 | `Roth.exists_roth_parameters_aux` | Roth/Main.lean:410 | SKIP | [report](mathlibable/Roth.exists_roth_parameters_aux.md) |
 | 283 | `Roth.exists_roth_approximants_aux` | Roth/Main.lean:429 | SKIP | [report](mathlibable/Roth.exists_roth_approximants_aux.md) |
 | 284 | `Roth.one_lt_roth_eval_bound_aux` | Roth/Main.lean:453 | SKIP | [report](mathlibable/Roth.one_lt_roth_eval_bound_aux.md) |
+| 285 | `Roth.roth_product_bound_aux` | Roth/Main.lean:481 | SKIP | [report](mathlibable/Roth.roth_product_bound_aux.md) |
 
 ## Remaining declarations (in processing order)
 
-- #285 `Roth.roth_product_bound_aux` (Roth/Main.lean:481, private lemma)
 - #286 `Roth.roth_log_bound_aux` (Roth/Main.lean:505, private lemma)
 - #287 `Roth.roth_of_isIntegral` (Roth/Main.lean:547, public theorem)
 - #288 `Roth.roth` (Roth/Main.lean:573, public theorem)
