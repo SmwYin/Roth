@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-27
 
-- Declarations completed: **191/293**
-- Next declaration: **#192 `Roth.isPrimitive_linear`** (Roth/Theta.lean:167)
+- Declarations completed: **192/293**
+- Next declaration: **#193 `Roth.isPrimitive_pow`** (Roth/Theta.lean:175)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -210,10 +210,10 @@ Last regenerated: 2026-10-27
 | 189 | `Roth.Θ_mono` | Roth/Theta.lean:134 | NO-composable-from-mathlib | [report](mathlibable/Roth.Θ_mono.md) |
 | 190 | `Roth.indexSet_comp_subset` | Roth/Theta.lean:141 | SKIP | [report](mathlibable/Roth.indexSet_comp_subset.md) |
 | 191 | `Roth.Θ_equiv` | Roth/Theta.lean:159 | NO-composable-from-mathlib | [report](mathlibable/Roth.Θ_equiv.md) |
+| 192 | `Roth.isPrimitive_linear` | Roth/Theta.lean:167 | SKIP | [report](mathlibable/Roth.isPrimitive_linear.md) |
 
 ## Remaining declarations (in processing order)
 
-- #192 `Roth.isPrimitive_linear` (Roth/Theta.lean:167, private lemma)
 - #193 `Roth.isPrimitive_pow` (Roth/Theta.lean:175, private lemma)
 - #194 `Roth.exists_eq_pow_mul_of_rootMultiplicity` (Roth/Theta.lean:184, public theorem)
 - #195 `Roth.pow_rootMultiplicity_le` (Roth/Theta.lean:206, public theorem)
