@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 79/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 80/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 79; remaining: 214.
-- Verdicts: 13 NO-composable-from-mathlib, 13 YES-add-as-is, 6 YES-but-generalise-first, 13 NO-mathlib-has-it, 25 BORDERLINE-needs-human, 9 SKIP.
+- Completed applicable assessments: 80; remaining: 213.
+- Verdicts: 13 NO-composable-from-mathlib, 13 YES-add-as-is, 6 YES-but-generalise-first, 14 NO-mathlib-has-it, 25 BORDERLINE-needs-human, 9 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -849,6 +849,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: Three explicit consumers/three references, all in CoeffNorm: normOne_mul_le102, normOne_prod_le108, normOne_hasseDeriv_le155. All three full replacement proofs freshly native checked.
 - Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/Roth.normOne_monomial.md).
 
+### Completed: `Roth.normOne_zero`
+
+- Type: `∀ {σ : Type u_1}, Roth.normOne (0 : MvPolynomial σ ℤ) = 0`
+- What: The zero integer multivariate polynomial has coefficient ℓ¹ norm zero.
+- How: Empty coefficient support; direct existing Finsupp.sum_zero_index specialization is definitionally the project statement.
+- Hypotheses: Only arbitrary universe-polymorphic σ. No Fintype, DecidableEq, degree, positivity or size-zero assumption.
+- Project dependencies: Roth.normOne
+- Caller summary: One explicit consumer: Roth.normOne_sum_le CoeffNorm92. All293 canonical production values audited; only that direct proof consumer and no additional hidden simp users. Full replacement sum proof checked. Audit is not transitive/external closure.
+- Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/Roth.normOne_zero.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -1033,6 +1043,8 @@ Completed `Roth.normOne_eq_sum_of_support_subset`: Existing same padding theorem
 
 Completed `Roth.normOne_monomial`: MvPolynomial.sum_monomial_eq exists in pinned Basic275–278; Finsupp.sum_single_index gives arbitrary Zero coefficient/AddCommMonoid codomain version. All5 methods/3forms actually searched and pinned law signatures compiled.
 
+Completed `Roth.normOne_zero`: Pinned Finsupp.sum_zero_index generated at Algebra/BigOperators/Finsupp/Basic86–88; arbitrary indexed size, Zero coefficients and AddCommMonoid output, no zero-preservation premise. Direct old-interface term and all generic probes freshly compiled. All5 methods/3forms run; Loogle retries retained.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -1192,6 +1204,8 @@ Completed `Roth.normOne_nonneg`: Generic finite-sum nonnegativity; individual ab
 Completed `Roth.normOne_eq_sum_of_support_subset`: Support-padding law already in Finsupp API. Univariate Polynomial.sum_eq_of_subset is analogous, not direct multivariate replacement. Hamming norm and module length semantic hits measure different objects.
 
 Completed `Roth.normOne_monomial`: Exact singleton sum law already in MvPolynomial and Finsupp. Univariate Polynomial.sum_monomial_index analogous. supNorm_monomial/gaussNorm_monomial are distinct size functions, not whole normOne replacements.
+
+Completed `Roth.normOne_zero`: Exact empty finite-support aggregate law already in mathlib; Polynomial.sum_zero_index analogous; support_zero+sum_empty alternative. Generic norm_zero requires a correct norm structure. Nearby normOne_neg/cardinality proofs are not inline duplicate zero laws.
 
 ## Part 5: Generalization opportunities
 
@@ -1356,6 +1370,8 @@ Completed `Roth.normOne_eq_sum_of_support_subset`: No removable assumptions at f
 
 Completed `Roth.normOne_monomial`: Fixed normOne interface has no removable assumptions. Expanded indexed zero-preserving size theorem and arbitrary Finsupp form verified; norm coefficient version verified. Local premise only size e0=0 needed; removing it false for coefficient0.
 
+Completed `Roth.normOne_zero`: Fixed parent interface no assumptions to weaken. Expanded generic Finsupp/polynomial laws verified; sizeZeroUnnecessary guards removal of unnecessary size-zero premise.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -1516,6 +1532,8 @@ Completed `Roth.normOne_nonneg`: None established for nonnegativity; full bundle
 Completed `Roth.normOne_eq_sum_of_support_subset`: None needed for support padding. No global coefficient norm instance proposed.
 
 Completed `Roth.normOne_monomial`: None needed. No new coefficient norm instance recommended.
+
+Completed `Roth.normOne_zero`: None. No proposed new global polynomial norm instance.
 
 ## Part 7: Junk / removable
 
@@ -1680,6 +1698,8 @@ Completed `Roth.normOne_eq_sum_of_support_subset`: Useful local convenience with
 
 Completed `Roth.normOne_monomial`: Useful project convenience with three consumers, not dead code; no source changes in read-only assessment.
 
+Completed `Roth.normOne_zero`: Useful local public simp convenience with one explicit caller; not dead code. Direct proof audit closes293 values but does not justify deleting future/public simp API without refactor/rebuild.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -1763,6 +1783,7 @@ Completed `Roth.normOne_monomial`: Useful project convenience with three consume
 | 77 | `Roth.normOne_nonneg` | NO-composable-from-mathlib | [Report](.mathlib-quality/overview/mathlibable/Roth.normOne_nonneg.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.normOne_nonneg/root-acceptance.json) |
 | 78 | `Roth.normOne_eq_sum_of_support_subset` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.normOne_eq_sum_of_support_subset.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.normOne_eq_sum_of_support_subset/root-acceptance.json) |
 | 79 | `Roth.normOne_monomial` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.normOne_monomial.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.normOne_monomial/root-acceptance.json) |
+| 80 | `Roth.normOne_zero` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.normOne_zero.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.normOne_zero/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -1920,11 +1941,13 @@ Completed `Roth.normOne_eq_sum_of_support_subset` action: NO-mathlib-has-it. Use
 
 Completed `Roth.normOne_monomial` action: NO-mathlib-has-it. Use existing sum_monomial_eq/Finsupp.sum_single_index directly at all3 references or retain project-local CoeffNorm convenience pending authorized refactor. No upstream PR.
 
+Completed `Roth.normOne_zero` action: NO-mathlib-has-it. Use existing sum_zero_index directly for the one explicit zero witness; retain project-local CoeffNorm simp bridge while parent spelling remains. No upstream PR and no production changes in assessment.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.normOne_zero` next. Supporting identities receive their own applicable checks.
+   `Roth.abs_coeff_le_normOne` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.

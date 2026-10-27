@@ -1,0 +1,41 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+import Mathlib.Algebra.Polynomial.CancelLeads
+import Mathlib.Algebra.MvPolynomial.PDeriv
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+import Mathlib.Algebra.MvPolynomial.Equiv
+
+#check_failure Roth.normOne_zero
+namespace NormZeroRaw
+open MvPolynomial
+variable {σ : Type*}
+noncomputable def normOne80 (P : MvPolynomial σ ℤ) : ℝ :=
+  ∑ d ∈ P.support, |((P.coeff d : ℤ) : ℝ)|
+theorem direct : normOne80 (0 : MvPolynomial σ ℤ) = 0 := by
+  change (0 : (σ →₀ ℕ) →₀ ℤ).sum (fun _ z ↦ |(z : ℝ)|) = 0
+  exact Finsupp.sum_zero_index
+theorem replay : normOne80 (0 : MvPolynomial σ ℤ) = 0 := by
+  simp [normOne80]
+theorem generic {ι M N : Type*} [Zero M] [AddCommMonoid N]
+    (size : ι → M → N) : (0 : ι →₀ M).sum size = 0 := Finsupp.sum_zero_index
+theorem genericPolynomial {R A : Type*} [CommSemiring R] [AddCommMonoid A]
+    (size : (σ →₀ ℕ) → R → A) :
+    (0 : MvPolynomial σ R).coeff.sum size = 0 := Finsupp.sum_zero_index
+theorem sizeZeroUnnecessary :
+    (0 : Unit →₀ ℤ).sum (fun _ _ ↦ (1 : ℕ)) = 0 := Finsupp.sum_zero_index
+#check @Finsupp.sum_zero_index
+#check @Polynomial.sum_zero_index
+#check @MvPolynomial.support_zero
+#print axioms direct
+#print axioms replay
+#print axioms generic
+#print axioms genericPolynomial
+#print axioms sizeZeroUnnecessary
+end NormZeroRaw

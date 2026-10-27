@@ -1,0 +1,15 @@
+namespace MvPolynomial.NormZeroAssessment
+variable {σ : Type*}
+#check @Roth.normOne_zero
+#print Roth.normOne_zero
+#print axioms Roth.normOne_zero
+theorem direct : Roth.normOne (0 : MvPolynomial σ ℤ) = 0 :=
+  Finsupp.sum_zero_index (α := σ →₀ ℕ) (h := fun _ (z : ℤ) ↦ |(z : ℝ)|)
+theorem generic {ι R S : Type*} [Zero R] [AddCommMonoid S] (size : ι → R → S) :
+    (0 : ι →₀ R).sum size = 0 := Finsupp.sum_zero_index
+#print axioms direct
+#print axioms generic
+#check @Finsupp.sum_zero_index
+#check @Finsupp.support_zero
+#check @Finset.sum_empty
+end MvPolynomial.NormZeroAssessment
