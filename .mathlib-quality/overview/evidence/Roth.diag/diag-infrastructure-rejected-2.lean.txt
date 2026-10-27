@@ -1,0 +1,20 @@
+namespace Roth.DiagonalInfrastructure
+open MvPolynomial
+universe u
+#check (DiagonalAssessment.generalized (σ := PEmpty) (R := ℕ))
+#check (DiagonalAssessment.generalized (σ := ULift.{u} Unit) (R := ℕ))
+#synth Algebra ℕ (Polynomial ℕ)
+#check (MvPolynomial.aeval (R := ℕ) (fun _ : ULift.{u} Unit ↦ (Polynomial.X : Polynomial ℕ)))
+theorem collapse (P : MvPolynomial Bool ℤ) :
+    DiagonalAssessment.generalized P = eval₂Hom Polynomial.C (fun _ ↦ Polynomial.X) P := rfl
+theorem notInjective :
+    ¬ Function.Injective (DiagonalAssessment.generalized (σ := Bool) (R := ℤ)) := by
+  intro hi
+  have he := hi (show DiagonalAssessment.generalized (X true : MvPolynomial Bool ℤ) =
+      DiagonalAssessment.generalized (X false : MvPolynomial Bool ℤ) by
+    simp [DiagonalAssessment.generalized])
+  have hv := congrArg (MvPolynomial.eval (fun b : Bool ↦ if b then (1 : ℤ) else 0)) he
+  simpa using hv
+#print axioms collapse
+#print axioms notInjective
+end Roth.DiagonalInfrastructure

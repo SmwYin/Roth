@@ -1,0 +1,83 @@
+{
+  "request": {
+    "query": "Multivariate polynomial diagonal substitution all variables equal one indeterminate polynomial",
+    "num_results": 8
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"MvPolynomial.eval₂_eta\",\n      \"informal_name\": \"Evaluation Identity (Eta Conversion) for Multivariate Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] (p : MvPolynomial σ R),\\n  MvPolynomial.eval₂ MvPolynomial.C MvPolynomial.X p = p\",\n      \"informal_description\": \"For any multivariate polynomial $ p $ in variables $ \\\\sigma $ with coefficients in a commutative semiring $ R $, evaluating $ p $ using the constant polynomial embedding $ C : R \\\\to R[\\\\sigma] $ and identity variable mapping $ X : \\\\sigma \\\\to R[\\\\sigma] $ yields the original polynomial $ p $. Symbolically, $ \\\\text{eval}_2(C, X)(p) = p $. This expresses that the canonical evaluation map is the identity when coefficients are embedded as constants and variables are mapped to themselves.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"formal_name\": \"matPolyEquiv_diagonal_X\",\n      \"informal_name\": \"Diagonal Matrix of Indeterminate X Maps to X under Matrix-Polynomial Equivalence\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommSemiring R] {n : Type w} [inst_1 : DecidableEq n] [inst_2 : Fintype n],\\n  matPolyEquiv (Matrix.diagonal fun x => Polynomial.X) = Polynomial.X\",\n      \"informal_description\": \"The canonical $ R $-algebra isomorphism between $ n \\times n $ matrices over the polynomial ring $ R[X] $ and polynomials over $ n \\times n $ matrices with coefficients in $ R $ sends the diagonal matrix with $ X $ on its diagonal to the indeterminate $ X $ itself, i.e., $ \\\\text{matPolyEquiv}(\\\\text{diag}(X,\\\\ldots,X)) = X $. This identifies scalar matrices with constant polynomial coefficients under the isomorphism.\",\n      \"path\": \"Mathlib.RingTheory.MatrixPolynomialAlgebra\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.expand_one\",\n      \"informal_name\": \"Expansion Homomorphism for Exponent One is Identity\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_3} [inst : CommSemiring R], MvPolynomial.expand 1 = AlgHom.id R (MvPolynomial σ R)\",\n      \"informal_description\": \"The expansion homomorphism that substitutes each variable $X_i$ in the multivariate polynomial ring $R[\\\\sigma]$ with $X_i^1$ (i.e., itself) is equal to the identity algebra homomorphism on $R[\\\\sigma]$.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Expand\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.bind₁_X_right\",\n      \"informal_name\": \"Variable Substitution Identity in Multivariate Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_3} [inst : CommSemiring R] (f : σ → MvPolynomial τ R) (i : σ),\\n  (MvPolynomial.bind₁ f) (MvPolynomial.X i) = f i\",\n      \"informal_description\": \"For any commutative semiring $ R $, types $ \\\\sigma $ and $ \\\\tau $, and a function $ f : \\\\sigma \\\\to R[\\\\tau] $, applying the substitution homomorphism $ \\\\text{bind}_1(f) $ to the variable $ X_i \\\\in R[\\\\sigma] $ yields $ f(i) $. In symbols, $ \\\\text{bind}_1(f)(X_i) = f(i) $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Monad\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.bind₁_X_left\",\n      \"informal_name\": \"Identity Substitution for Multivariate Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_3} [inst : CommSemiring R],\\n  MvPolynomial.bind₁ MvPolynomial.X = AlgHom.id R (MvPolynomial σ R)\",\n      \"informal_description\": \"Substituting each variable in the multivariate polynomial ring $ R[\\\\sigma] $ with itself results in the identity algebra homomorphism. That is, the variable substitution homomorphism induced by the identity map $ X : \\\\sigma \\\\to R[\\\\sigma] $ is equal to the identity function on $ R[\\\\sigma] $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Monad\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.finSuccEquiv_apply\",\n      \"informal_name\": \"Algebra Equivalence for Multivariate Polynomials with Incremented Index Type\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (R : Type u) [inst : CommSemiring R] (n : ℕ) (p : MvPolynomial (Fin (n + 1)) R),\\n  (MvPolynomial.finSuccEquiv R n) p =\\n    (MvPolynomial.eval₂Hom (Polynomial.C.comp MvPolynomial.C) fun i =>\\n        Fin.cases Polynomial.X (fun k => Polynomial.C (MvPolynomial.X k)) i)\\n      p\",\n      \"informal_description\": \"There is an algebra equivalence between the ring of multivariate polynomials over $ \\\\text{Fin}(n+1) $ with coefficients in a commutative semiring $ R $, and the polynomial ring in one variable whose coefficients are multivariate polynomials over $ R $ with variables indexed by $ \\\\text{Fin}(n) $. This equivalence is constructed via the bijection $ \\\\text{Fin}(n+1) \\\\simeq \\\\text{Option}(\\\\text{Fin}(n)) $, mapping the $ \\\\text{none} $ case to the outer polynomial indeterminate and $ \\\\text{some } k $ cases to inner variables. The equivalence preserves addition, multiplication, and scalar multiplication by elements of $ R $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.bind₁_id\",\n      \"informal_name\": \"Identity Substitution Equals Flattening Homomorphism\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_3} [inst : CommSemiring R], MvPolynomial.bind₁ id = MvPolynomial.join₁\",\n      \"informal_description\": \"Applying the variable substitution homomorphism with the identity map on multivariate polynomials $ R[\\\\sigma] $ is equivalent to the flattening homomorphism that reduces nested polynomial structures to a single polynomial layer.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Monad\"\n    },\n    {\n      \"formal_name\": \"Polynomial.toMvPolynomial_eq_rename_comp\",\n      \"informal_name\": \"Univariate Embedding Equals Rename Composition in Multivariate Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {σ : Type u_3} [inst : CommSemiring R] (i : σ),\\n  Polynomial.toMvPolynomial i = (MvPolynomial.rename fun x => i).comp ↑(MvPolynomial.pUnitAlgEquiv R).symm\",\n      \"informal_description\": \"The algebra homomorphism embedding a univariate polynomial ring $ R[X] $ into the multivariate polynomial ring $ R[\\\\sigma] $ by substituting $ X $ with the $ i $-th variable in $ \\\\sigma $ is equal to the composition of the inverse of the algebra equivalence between $ R[\\\\mathsf{PUnit}] $ and $ R[X] $ with the renaming of variables from $ \\\\mathsf{PUnit} $ to the $ i $-th variable in $ \\\\sigma $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "items": [
+        {
+          "formal_name": "MvPolynomial.eval₂_eta",
+          "informal_name": "Evaluation Identity (Eta Conversion) for Multivariate Polynomials",
+          "kind": "theorem",
+          "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] (p : MvPolynomial σ R),\n  MvPolynomial.eval₂ MvPolynomial.C MvPolynomial.X p = p",
+          "informal_description": "For any multivariate polynomial $ p $ in variables $ \\sigma $ with coefficients in a commutative semiring $ R $, evaluating $ p $ using the constant polynomial embedding $ C : R \\to R[\\sigma] $ and identity variable mapping $ X : \\sigma \\to R[\\sigma] $ yields the original polynomial $ p $. Symbolically, $ \\text{eval}_2(C, X)(p) = p $. This expresses that the canonical evaluation map is the identity when coefficients are embedded as constants and variables are mapped to themselves.",
+          "path": "Mathlib.Algebra.MvPolynomial.Eval"
+        },
+        {
+          "formal_name": "matPolyEquiv_diagonal_X",
+          "informal_name": "Diagonal Matrix of Indeterminate X Maps to X under Matrix-Polynomial Equivalence",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} [inst : CommSemiring R] {n : Type w} [inst_1 : DecidableEq n] [inst_2 : Fintype n],\n  matPolyEquiv (Matrix.diagonal fun x => Polynomial.X) = Polynomial.X",
+          "informal_description": "The canonical $ R $-algebra isomorphism between $ n \times n $ matrices over the polynomial ring $ R[X] $ and polynomials over $ n \times n $ matrices with coefficients in $ R $ sends the diagonal matrix with $ X $ on its diagonal to the indeterminate $ X $ itself, i.e., $ \\text{matPolyEquiv}(\\text{diag}(X,\\ldots,X)) = X $. This identifies scalar matrices with constant polynomial coefficients under the isomorphism.",
+          "path": "Mathlib.RingTheory.MatrixPolynomialAlgebra"
+        },
+        {
+          "formal_name": "MvPolynomial.expand_one",
+          "informal_name": "Expansion Homomorphism for Exponent One is Identity",
+          "kind": "theorem",
+          "type": "∀ {σ : Type u_1} {R : Type u_3} [inst : CommSemiring R], MvPolynomial.expand 1 = AlgHom.id R (MvPolynomial σ R)",
+          "informal_description": "The expansion homomorphism that substitutes each variable $X_i$ in the multivariate polynomial ring $R[\\sigma]$ with $X_i^1$ (i.e., itself) is equal to the identity algebra homomorphism on $R[\\sigma]$.",
+          "path": "Mathlib.Algebra.MvPolynomial.Expand"
+        },
+        {
+          "formal_name": "MvPolynomial.bind₁_X_right",
+          "informal_name": "Variable Substitution Identity in Multivariate Polynomials",
+          "kind": "theorem",
+          "type": "∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_3} [inst : CommSemiring R] (f : σ → MvPolynomial τ R) (i : σ),\n  (MvPolynomial.bind₁ f) (MvPolynomial.X i) = f i",
+          "informal_description": "For any commutative semiring $ R $, types $ \\sigma $ and $ \\tau $, and a function $ f : \\sigma \\to R[\\tau] $, applying the substitution homomorphism $ \\text{bind}_1(f) $ to the variable $ X_i \\in R[\\sigma] $ yields $ f(i) $. In symbols, $ \\text{bind}_1(f)(X_i) = f(i) $.",
+          "path": "Mathlib.Algebra.MvPolynomial.Monad"
+        },
+        {
+          "formal_name": "MvPolynomial.bind₁_X_left",
+          "informal_name": "Identity Substitution for Multivariate Polynomials",
+          "kind": "theorem",
+          "type": "∀ {σ : Type u_1} {R : Type u_3} [inst : CommSemiring R],\n  MvPolynomial.bind₁ MvPolynomial.X = AlgHom.id R (MvPolynomial σ R)",
+          "informal_description": "Substituting each variable in the multivariate polynomial ring $ R[\\sigma] $ with itself results in the identity algebra homomorphism. That is, the variable substitution homomorphism induced by the identity map $ X : \\sigma \\to R[\\sigma] $ is equal to the identity function on $ R[\\sigma] $.",
+          "path": "Mathlib.Algebra.MvPolynomial.Monad"
+        },
+        {
+          "formal_name": "MvPolynomial.finSuccEquiv_apply",
+          "informal_name": "Algebra Equivalence for Multivariate Polynomials with Incremented Index Type",
+          "kind": "theorem",
+          "type": "∀ (R : Type u) [inst : CommSemiring R] (n : ℕ) (p : MvPolynomial (Fin (n + 1)) R),\n  (MvPolynomial.finSuccEquiv R n) p =\n    (MvPolynomial.eval₂Hom (Polynomial.C.comp MvPolynomial.C) fun i =>\n        Fin.cases Polynomial.X (fun k => Polynomial.C (MvPolynomial.X k)) i)\n      p",
+          "informal_description": "There is an algebra equivalence between the ring of multivariate polynomials over $ \\text{Fin}(n+1) $ with coefficients in a commutative semiring $ R $, and the polynomial ring in one variable whose coefficients are multivariate polynomials over $ R $ with variables indexed by $ \\text{Fin}(n) $. This equivalence is constructed via the bijection $ \\text{Fin}(n+1) \\simeq \\text{Option}(\\text{Fin}(n)) $, mapping the $ \\text{none} $ case to the outer polynomial indeterminate and $ \\text{some } k $ cases to inner variables. The equivalence preserves addition, multiplication, and scalar multiplication by elements of $ R $.",
+          "path": "Mathlib.Algebra.MvPolynomial.Equiv"
+        },
+        {
+          "formal_name": "MvPolynomial.bind₁_id",
+          "informal_name": "Identity Substitution Equals Flattening Homomorphism",
+          "kind": "theorem",
+          "type": "∀ {σ : Type u_1} {R : Type u_3} [inst : CommSemiring R], MvPolynomial.bind₁ id = MvPolynomial.join₁",
+          "informal_description": "Applying the variable substitution homomorphism with the identity map on multivariate polynomials $ R[\\sigma] $ is equivalent to the flattening homomorphism that reduces nested polynomial structures to a single polynomial layer.",
+          "path": "Mathlib.Algebra.MvPolynomial.Monad"
+        },
+        {
+          "formal_name": "Polynomial.toMvPolynomial_eq_rename_comp",
+          "informal_name": "Univariate Embedding Equals Rename Composition in Multivariate Polynomials",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} {σ : Type u_3} [inst : CommSemiring R] (i : σ),\n  Polynomial.toMvPolynomial i = (MvPolynomial.rename fun x => i).comp ↑(MvPolynomial.pUnitAlgEquiv R).symm",
+          "informal_description": "The algebra homomorphism embedding a univariate polynomial ring $ R[X] $ into the multivariate polynomial ring $ R[\\sigma] $ by substituting $ X $ with the $ i $-th variable in $ \\sigma $ is equal to the composition of the inverse of the algebra equivalence between $ R[\\mathsf{PUnit}] $ and $ R[X] $ with the renaming of variables from $ \\mathsf{PUnit} $ to the $ i $-th variable in $ \\sigma $.",
+          "path": "Mathlib.Algebra.MvPolynomial.Equiv"
+        }
+      ]
+    },
+    "isError": false
+  }
+}

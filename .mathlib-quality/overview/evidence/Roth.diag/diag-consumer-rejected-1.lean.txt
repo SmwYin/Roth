@@ -1,0 +1,20 @@
+namespace Roth.DiagonalConsumers
+open MvPolynomial
+variable {σ : Type*}
+theorem subtraction (P Q : MvPolynomial σ ℤ) :
+    DiagonalAssessment.generalized (P - Q) =
+      DiagonalAssessment.generalized P - DiagonalAssessment.generalized Q := map_sub _ _ _
+theorem vanishing {S : Type*} [CommRing S] {f : Polynomial ℤ} {α : S}
+    (hfα : Polynomial.aeval α f = 0) {W' W'' : MvPolynomial σ ℤ} {j : σ →₀ ℕ}
+    (h : DiagonalAssessment.generalized (hasseDeriv j W') %ₘ f =
+      DiagonalAssessment.generalized (hasseDeriv j W'') %ₘ f) :
+    eval (fun _ ↦ α) (hasseDeriv j (map (Int.castRingHom S) (W' - W''))) = 0 := by
+  have hdvd : f ∣ DiagonalAssessment.generalized (hasseDeriv j (W' - W'')) := by
+    apply Polynomial.dvd_modByMonic_iff_dvd.mp
+    simp [map_sub, subtraction, Polynomial.sub_modByMonic, h]
+  simpa [hasseDeriv_map, eval_map, ← algebraMap_int_eq, ← aeval_def,
+    DiagonalAssessment.generalized, MvPolynomial.comp_aeval_apply, Polynomial.aeval_X] using
+    Polynomial.aeval_eq_zero_of_dvd_aeval_eq_zero hdvd hfα
+#print axioms subtraction
+#print axioms vanishing
+end Roth.DiagonalConsumers

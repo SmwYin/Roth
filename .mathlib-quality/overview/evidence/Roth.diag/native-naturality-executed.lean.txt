@@ -1,0 +1,13 @@
+namespace Roth.DiagonalNaturality
+open MvPolynomial
+variable {σ R S : Type*} [CommSemiring R] [CommSemiring S] [Algebra R S]
+theorem evaluation (P : MvPolynomial σ R) (x : S) :
+    Polynomial.aeval x (DiagonalAssessment.generalized P) = aeval (fun _ ↦ x) P := by
+  simpa only [DiagonalAssessment.generalized, Polynomial.aeval_X] using
+    (comp_aeval_apply (f := fun _ : σ ↦ (Polynomial.X : Polynomial R)) (Polynomial.aeval x) P)
+theorem ringHomRepresentation (P : MvPolynomial σ R) :
+    DiagonalAssessment.generalized P = eval₂Hom Polynomial.C (fun _ ↦ Polynomial.X) P := rfl
+#print axioms evaluation
+#print axioms ringHomRepresentation
+#check @evaluation
+end Roth.DiagonalNaturality

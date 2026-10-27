@@ -1,0 +1,16 @@
+namespace Roth.DiagonalAssessment
+open MvPolynomial
+#check @Roth.diag
+#print Roth.diag
+#print axioms Roth.diag
+noncomputable def generalized {σ R : Type*} [CommSemiring R]
+    (P : MvPolynomial σ R) : Polynomial R := aeval (fun _ ↦ Polynomial.X) P
+variable {σ : Type*}
+theorem originalRecovery (P : MvPolynomial σ ℤ) : generalized P = Roth.diag P := rfl
+theorem contextTransport (Φ : (MvPolynomial σ ℤ → Polynomial ℤ) → Prop) :
+    Φ Roth.diag ↔ Φ (fun P ↦ aeval (fun _ ↦ Polynomial.X) P) := Iff.rfl
+#print axioms generalized
+#print axioms originalRecovery
+#print axioms contextTransport
+#check @generalized
+end Roth.DiagonalAssessment

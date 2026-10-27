@@ -1,0 +1,85 @@
+{
+  "named_count": 11,
+  "external_to_declaring_file": 6,
+  "scope": "Distinct production declarations with exact whole-word diag in signature/body; excludes definition/docstrings; not kernel/simp dependency closure.",
+  "callers": [
+    {
+      "name": "Roth.diag_eq_sum",
+      "file": "Roth/CoeffNorm.lean",
+      "line": 164,
+      "end_line": 168,
+      "refactor": "Replace diag P by aeval-to-X; remove rw[diag] and retain aeval_def/eval₂_eq and monomial collection. Full general semiring raw proof verified."
+    },
+    {
+      "name": "Roth.abs_coeff_diag_le",
+      "file": "Roth/CoeffNorm.lean",
+      "line": 174,
+      "end_line": 179,
+      "refactor": "Substitute aeval-to-X in conclusion; use replayed expansion instead of diag_eq_sum; finite coefficient sum and absolute-value proof unchanged."
+    },
+    {
+      "name": "Roth.natDegree_diag_le",
+      "file": "Roth/CoeffNorm.lean",
+      "line": 183,
+      "end_line": 189,
+      "refactor": "Substitute aeval-to-X in conclusion; use replayed expansion, natDegree_sum_le and monomial degree bound. Keep inequality; cancellation prevents general equality."
+    },
+    {
+      "name": "Roth.eval_diag",
+      "file": "Roth/CoeffNorm.lean",
+      "line": 193,
+      "end_line": 196,
+      "refactor": "Replace diag P in statement and unfolding simp; existing comp_aeval_apply plus Polynomial.aeval_X supplies general algebra-target evaluation rather than polynomial induction."
+    },
+    {
+      "name": "Roth.diag_sub",
+      "file": "Roth/CoeffNorm.lean",
+      "line": 199,
+      "end_line": 200,
+      "refactor": "Replace all three occurrences with aeval-to-X; map_sub _ _ _ is already exact. Full scratch subtraction proof verified."
+    },
+    {
+      "name": "Roth.exists_ne_modByMonic_eq",
+      "file": "Roth/MainLemma.lean",
+      "line": 359,
+      "end_line": 379,
+      "refactor": "Replace every diag in remainder-bound hypothesis, conclusion, and finite encoding F by aeval-to-X; output polynomial is definitionally unchanged, finite pigeonhole/remainder reconstruction untouched."
+    },
+    {
+      "name": "Roth.eval_hasseDeriv_sub_eq_zero",
+      "file": "Roth/MainLemma.lean",
+      "line": 402,
+      "end_line": 411,
+      "refactor": "Replace both remainder-hypothesis expressions and intermediate divisibility; use generic map_sub, unfold aeval-to-X, then comp_aeval_apply and aeval_X. Full actual proof replayed natively."
+    },
+    {
+      "name": "Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux",
+      "file": "Roth/MainLemma.lean",
+      "line": 497,
+      "end_line": 513,
+      "refactor": "Replace diag in conclusion and hcD coefficient bound. Invoke rewritten coefficient and degree bounds; remainder estimate/arithmetic unchanged."
+    },
+    {
+      "name": "Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux",
+      "file": "Roth/MainLemma.lean",
+      "line": 515,
+      "end_line": 548,
+      "refactor": "Replace diag in conclusion, local bound, and hreal; use previous rewritten auxiliary, same monic/nonmonic/degree-zero cases and floor arithmetic."
+    },
+    {
+      "name": "Roth.exists_mem_RSet_le_index_aux",
+      "file": "Roth/MainLemma.lean",
+      "line": 550,
+      "end_line": 567,
+      "refactor": "Replace diag in hC; invoke rewritten pigeonhole and vanishing statements; final index membership conclusion unchanged."
+    },
+    {
+      "name": "Roth.exists_mem_RSet_le_index_of_rpow_bound_aux",
+      "file": "Roth/MainLemma.lean",
+      "line": 581,
+      "end_line": 616,
+      "refactor": "Replace diag in local hC; rewritten floor estimate gives same bound; final membership/index conclusion unchanged."
+    }
+  ],
+  "inline_audit": "No second aeval-to-Polynomial.X definition in production sources; univariate/uniqueAlgEquiv in HasseDeriv is single-variable coefficient/Hasse transport, not arbitrary variable collapse."
+}

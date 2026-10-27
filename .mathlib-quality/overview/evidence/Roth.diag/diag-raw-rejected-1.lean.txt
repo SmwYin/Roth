@@ -1,0 +1,40 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+import Mathlib.Algebra.Polynomial.CancelLeads
+import Mathlib.Algebra.MvPolynomial.PDeriv
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+import Mathlib.Algebra.MvPolynomial.Equiv
+#check_failure Roth.diag
+namespace DiagonalRaw
+open MvPolynomial
+variable {σ R : Type*} [CommSemiring R]
+noncomputable def replacement (P : MvPolynomial σ R) : Polynomial R :=
+  aeval (fun _ ↦ Polynomial.X) P
+theorem finiteExpansion (P : MvPolynomial σ R) :
+    replacement P = ∑ k ∈ P.support, Polynomial.monomial k.degree (P.coeff k) := by
+  rw [replacement, aeval_def, eval₂_eq]
+  simp_rw [Finset.prod_pow_eq_pow_sum, ← Finsupp.degree_apply, Polynomial.algebraMap_eq,
+    Polynomial.C_mul_X_pow_eq_monomial]
+theorem variableCollapse :
+    (uniqueAlgEquiv R PUnit).toAlgHom.comp (rename (fun _ : σ ↦ PUnit.unit)) =
+      aeval (fun _ : σ ↦ (Polynomial.X : Polynomial R)) := by
+  apply MvPolynomial.algHom_ext
+  intro i
+  simp [uniqueAlgEquiv]
+theorem evaluation {S : Type*} [CommSemiring S] [Algebra R S]
+    (P : MvPolynomial σ R) (x : S) :
+    Polynomial.aeval x (replacement P) = aeval (fun _ ↦ x) P := by
+  simpa only [replacement, Polynomial.aeval_X] using
+    (comp_aeval_apply (f := fun _ : σ ↦ (Polynomial.X : Polynomial R)) (Polynomial.aeval x) P)
+#print axioms replacement
+#print axioms finiteExpansion
+#print axioms variableCollapse
+#print axioms evaluation
+end DiagonalRaw
