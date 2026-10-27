@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 132/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 133/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 132; remaining: 161.
-- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 17 YES-but-generalise-first, 21 NO-mathlib-has-it, 42 BORDERLINE-needs-human, 25 SKIP.
+- Completed applicable assessments: 133; remaining: 160.
+- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 17 YES-but-generalise-first, 22 NO-mathlib-has-it, 42 BORDERLINE-needs-human, 25 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -1464,6 +1464,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: One explicit source caller MainLemma574 private mul_card_filter_weight_le_aux; same sole direct canonical kernel consumer. Original theorem with actual private helper constants and complete consumer body replayed natively.
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.card_filter_weight_le.md).
 
+### Completed: `Roth.index`
+
+- Type: `{σ : Type u_1} → [Fintype σ] → MvPolynomial σ ℝ → (σ → ℝ) → (σ → ℕ) → ℝ`
+- What: Minimum reciprocal-parameter weight of the Taylor support, with zero polynomial and zero denominators projected to the project real-valued convention.
+- How: sInf of weight image of translated polynomial support. More general existing AddMonoidAlgebra.infDegree computes that finite minimum in WithTop ℝ; untopD 0 restores the project zero convention.
+- Hypotheses: Fintype σ is required by Roth.weight global sum, avoidable by Finsupp weighting., P and α real-valued, r natural-valued; no nonzero/positive premises on the definition.
+- Project dependencies: Roth.weight, MvPolynomial.taylor
+- Caller summary: all explicit callers: 34; identifier occurrences: 60; same file: 16; external declarations: 18; external files: 3; direct kernel value consumers: 39; caveat: Explicit source references and canonical kernel-value references are distinct inventories.
+- Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/Roth.index.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -1754,6 +1764,8 @@ Completed `Roth.card_filter_weight_le_succ_aux`: Count by the last-coordinate fi
 
 Completed `Roth.card_filter_weight_le`: Five actual methods on current/literature/probability forms; generic cardinality and Chebyshev/variance/uniform APIs are partial matches. Pinned positive signatures and named Chebyshev application checked, no complete original specialization claimed. Bounded exact? nonclosure is not absence proof.
 
+Completed `Roth.index`: existing: AddMonoidAlgebra.infDegree; other positive: MvPowerSeries.weightedOrder; weight: Finsupp.weight; translation: MvPolynomial.aeval; representation bridge: Finite infimum with WithTop and default zero; not definitional equality.; methods: Finder, Loogle, LeanSearch, rg, lean_local_search
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -2019,6 +2031,8 @@ Completed `Roth.card_filter_weight_le_of_le_sqrt_aux`: The helper has a distinct
 Completed `Roth.card_filter_weight_le_succ_aux`: The helper has a distinct role in the lattice proof as described in the structural review; no duplicate full construction is introduced.
 
 Completed `Roth.card_filter_weight_le`: Not Roth arithmetic-progression/Behrend results. Generic fibre count handles decomposition, probability theory supplies a potential stronger route requiring new uniform-box moment/count bridges.
+
+Completed `Roth.index`: Generic support minimum is already infDegree., Natural weightedOrder is a positive-integral-parameter alternate interface; its project bridge is actual proof, not an existing library call.
 
 ## Part 5: Generalization opportunities
 
@@ -2289,6 +2303,8 @@ Completed `Roth.card_filter_weight_le_succ_aux`: No public generality claim unde
 
 Completed `Roth.card_filter_weight_le`: Arbitrary universe-polymorphic Fintype index transport actually compiled; expanded piFinset ordinary-sum form with DecidableEq and original Fin/Finsupp recovery compiled. These are new project-dependent proofs; no droppable original premise found.
 
+Completed `Roth.index`: Verified arbitrary variable types, CommSemiring coefficient type, arbitrary real weights via finite support; Fintype dependence belongs only to the current weight interface.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -2555,6 +2571,8 @@ Completed `Roth.card_filter_weight_le_of_le_sqrt_aux`: No new primitive is neede
 Completed `Roth.card_filter_weight_le_succ_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 Completed `Roth.card_filter_weight_le`: Design choice: named finite-product normalized lower-tail count versus primary stronger product-measure concentration with local count corollary; retain redundant project box/weight aliases outside mathlib.
+
+Completed `Roth.index`: No new generic minimum-support definition needed. A named point-index wrapper and normalization bridge can remain local; infinity-preserving API is distinct at zero.
 
 ## Part 7: Junk / removable
 
@@ -2825,6 +2843,8 @@ Completed `Roth.card_filter_weight_le_succ_aux`: Retain a live private proof int
 
 Completed `Roth.card_filter_weight_le`: No: live sole count estimate on the auxiliary-polynomial/main-lemma path.
 
+Completed `Roth.index`: False
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -2961,6 +2981,7 @@ Completed `Roth.card_filter_weight_le`: No: live sole count estimate on the auxi
 | 130 | `Roth.card_filter_weight_le_of_le_sqrt_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.card_filter_weight_le_of_le_sqrt_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.card_filter_weight_le_of_le_sqrt_aux/root-acceptance.json) |
 | 131 | `Roth.card_filter_weight_le_succ_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.card_filter_weight_le_succ_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.card_filter_weight_le_succ_aux/root-acceptance.json) |
 | 132 | `Roth.card_filter_weight_le` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.card_filter_weight_le.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.card_filter_weight_le/root-acceptance.json) |
+| 133 | `Roth.index` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.index.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.index/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -3224,12 +3245,14 @@ Completed `Roth.card_filter_weight_le_succ_aux` action: Keep unchanged; complete
 
 Completed `Roth.card_filter_weight_le` action: Retain local theorem and caller pending3 concrete upstream API questions; no production refactor now, no cost-based downgrade, prior helper verdicts not inherited.
 
+Completed `Roth.index` action: Retain Roth.index in Roth/Index.lean as the project convention wrapper; any refactor should implement it via infDegree and transport all 34 callers using the all-P/all-r bridge.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.index` next. Supporting identities receive their own applicable checks.
+   `Roth.mem_support_taylor_iff` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

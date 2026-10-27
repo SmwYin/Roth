@@ -1,0 +1,43 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+#check_failure Roth.index
+#check @AddMonoidAlgebra.infDegree
+#check @Finset.inf'_eq_csInf_image
+#check @Finset.coe_inf'
+#check @MvPowerSeries.weightedOrder
+#check @MvPowerSeries.weightedOrder_mul
+#check @MvPolynomial.coeff_coe
+#check @Finsupp.sum_fintype
+namespace IndexMathlibOnly133
+open MvPolynomial
+universe u v
+noncomputable def indexViaInfDegree {σ : Type u} {R : Type v} [CommSemiring R]
+    (P : MvPolynomial σ R) (α : σ → R) (w : (σ →₀ ℕ) → ℝ) : ℝ :=
+  (AddMonoidAlgebra.infDegree (fun d ↦ (w d : WithTop ℝ))
+    (aeval (fun j ↦ X j + C (α j)) P)).untopD 0
+noncomputable def expandedIndex {σ : Type u} {R : Type v} [CommSemiring R]
+    (P : MvPolynomial σ R) (α : σ → R) (w : (σ →₀ ℕ) → ℝ) : ℝ :=
+  sInf (w '' ((aeval (fun j ↦ X j + C (α j)) P).support : Set (σ →₀ ℕ)))
+theorem finsetBridge {ι : Type u} (s : Finset ι) (w : ι → ℝ) :
+    (s.inf (fun d ↦ (w d : WithTop ℝ))).untopD 0 =
+      sInf (w '' (s : Set ι)) := by
+  classical
+  rcases s.eq_empty_or_nonempty with h | h
+  · subst s
+    simp
+  · rw [← Finset.coe_inf' h w, Finset.inf'_eq_csInf_image]
+    rfl
+theorem genericBridge {σ : Type u} {R : Type v} [CommSemiring R]
+    (P : MvPolynomial σ R) (α : σ → R) (w : (σ →₀ ℕ) → ℝ) :
+    indexViaInfDegree P α w = expandedIndex P α w :=
+  finsetBridge _ _
+#print axioms finsetBridge
+#print axioms genericBridge
+#print axioms indexViaInfDegree
+#print axioms expandedIndex
+end IndexMathlibOnly133

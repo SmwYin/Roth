@@ -1,0 +1,121 @@
+  `(1 - g) * f` below the order of `g` coincide with that of `f`.
+
+- `MvPowerSeries.coeff_mul_prod_one_sub_of_lt_order`: the coefficients of `f * Π i in s, (1 - g i)`
+  coincide with that of `f` below the minimum of the orders of the `g i`, for `i ∈ s`.
+
+## Homogeneous components
+
+- `MvPowerSeries.weightedHomogeneousComponent`, `MvPowerSeries.homogeneousComponent`: the power
+  series which is the sum of all monomials of given weighted degree, resp. degree.
+
+NOTE:
+Under `Finite σ`, one can use `Finsupp.finite_of_degree_le` and `Finsupp.finite_of_weight_le` to
+show that they have finite support, hence correspond to `MvPolynomial`.
+
+However, when `σ` is finite, this is not necessarily an `MvPolynomial`.
+(For example: the homogeneous components of degree 1 of the multivariate power
+series, all of which coefficients are `1`, is the sum of all indeterminates.)
+
+TODO: Define a coercion to MvPolynomial.
+
+-/
+
+@[expose] public section
+
+namespace MvPowerSeries
+
+noncomputable section
+
+open ENat Finsupp
+
+variable {σ R : Type*} [Semiring R]
+
+section WeightedOrder
+
+variable (w : σ → ℕ) {f g : MvPowerSeries σ R}
+
+theorem ne_zero_iff_exists_coeff_ne_zero_and_weight :
+    f ≠ 0 ↔ (∃ n : ℕ, ∃ d : σ →₀ ℕ, coeff d f ≠ 0 ∧ weight w d = n) := by
+  simpa using ne_zero_iff_exists_coeff_ne_zero f
+
+/-- The weighted order with respect to `w : σ → ℕ`. This is the minimum value
+of `weight w d` over all exponents `d` with nonzero coefficient `coeff d f`. -/
+def weightedOrder (f : MvPowerSeries σ R) : ℕ∞ := by
+  classical
+  exact dite (f = 0) (fun _ => ⊤) fun h =>
+    Nat.find ((ne_zero_iff_exists_coeff_ne_zero_and_weight w).mp h)
+
+@[simp] theorem weightedOrder_zero : (0 : MvPowerSeries σ R).weightedOrder w = ⊤ := by
+  rw [weightedOrder, dite_eq_left rfl]
+
+theorem ne_zero_iff_weightedOrder_finite :
+    f ≠ 0 ↔ (f.weightedOrder w).toNat = f.weightedOrder w := by
+  simp only [weightedOrder, ne_eq, natCast_toNat_eq_self, dite_eq_left_iff,
+    ENat.natCast_ne_top, imp_false, not_not]
+
+/-- The `0` power series is the unique power series with infinite order. -/
+@[simp]
+theorem weightedOrder_eq_top_iff :
+    f.weightedOrder w = ⊤ ↔ f = 0 := by
+  rw [← not_iff_not, ← ne_eq, ← ne_eq, ne_zero_iff_weightedOrder_finite w, natCast_toNat_eq_self]
+
+/-- If the order of a formal power series `f` is finite,
+then some coefficient of weight equal to the order of `f` is nonzero. -/
+theorem exists_coeff_ne_zero_and_weightedOrder
+    (h : (toNat (f.weightedOrder w) : ℕ∞) = f.weightedOrder w) :
+    ∃ d, coeff d f ≠ 0 ∧ weight w d = f.weightedOrder w := by
+  classical
+  simp_rw [weightedOrder, dite_eq_right ((ne_zero_iff_weightedOrder_finite w).mpr h), Nat.cast_inj]
+  generalize_proofs h1
+  exact Nat.find_spec h1
+
+/-- If the `d`th coefficient of a formal power series is nonzero,
+then the weighted order of the power series is less than or equal to `weight d w`. -/
+theorem weightedOrder_le {d : σ →₀ ℕ} (h : coeff d f ≠ 0) :
+    f.weightedOrder w ≤ weight w d := by
+  rw [weightedOrder, dite_eq_right]
+  · simp only [ne_eq, Nat.cast_le, Nat.find_le_iff]
+    exact ⟨weight w d, le_rfl, d, h, rfl⟩
+  · exact (f.ne_zero_iff_exists_coeff_ne_zero_and_weight w).mpr ⟨weight w d, d, h, rfl⟩
+
+/-- The `n`th coefficient of a formal power series is `0` if `n` is strictly
+smaller than the order of the power series. -/
+theorem coeff_eq_zero_of_lt_weightedOrder {d : σ →₀ ℕ} (h : (weight w d) < f.weightedOrder w) :
+    coeff d f = 0 := by
+  contrapose! h; exact weightedOrder_le w h
+
+/-- The order of a formal power series is at least `n` if
+the `d`th coefficient is `0` for all `d` such that `weight w d < n`. -/
+theorem nat_le_weightedOrder {n : ℕ} (h : ∀ d, weight w d < n → coeff d f = 0) :
+    n ≤ f.weightedOrder w := by
+  by_contra! H
+  have : (f.weightedOrder w).toNat = f.weightedOrder w := by
+    rw [natCast_toNat_eq_self]; exact ne_top_of_lt H
+  obtain ⟨d, hfd, hd⟩ := exists_coeff_ne_zero_and_weightedOrder w this
+  rw [← hd, Nat.cast_lt] at H
+  exact hfd (h d H)
+
+/-- The order of a formal power series is at least `n` if
+the `d`th coefficient is `0` for all `d` such that `weight w d < n`. -/
+theorem le_weightedOrder {n : ℕ∞} (h : ∀ d : σ →₀ ℕ, weight w d < n → coeff d f = 0) :
+    n ≤ f.weightedOrder w := by
+  cases n
+  · rw [top_le_iff, weightedOrder_eq_top_iff]
+    ext d; exact h d (ENat.natCast_lt_top _)
+  · apply nat_le_weightedOrder;
+    simpa only [ENat.some_eq_natCast, Nat.cast_lt] using h
+
+/-- The order of a formal power series is exactly `n` if and only if some coefficient of weight `n`
+is nonzero, and the `d`th coefficient is `0` for all `d` such that `weight w d < n`. -/
+theorem weightedOrder_eq_nat {n : ℕ} :
+    f.weightedOrder w = n ↔
+      (∃ d, coeff d f ≠ 0 ∧ weight w d = n) ∧ ∀ d, weight w d < n → coeff d f = 0 := by
+  constructor
+  · intro h
+    obtain ⟨d, hd⟩ := f.exists_coeff_ne_zero_and_weightedOrder w (by simp only [h, toNat_natCast])
+    exact ⟨⟨d, by simpa [h, Nat.cast_inj, ne_eq] using hd⟩,
+      fun e he ↦ f.coeff_eq_zero_of_lt_weightedOrder w (by simp only [h, Nat.cast_lt, he])⟩
+  · rintro ⟨⟨d, hd', hd⟩, h⟩
+    exact le_antisymm (hd.symm ▸ f.weightedOrder_le w hd') (nat_le_weightedOrder w h)
+
+/-- The `weightedOrder` of the monomial `a*X^d` is infinite if `a = 0` and `weight w d` otherwise.

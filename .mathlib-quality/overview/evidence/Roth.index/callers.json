@@ -1,0 +1,436 @@
+[
+  {
+    "name": "Roth.le_index_of_forall_eval_eq_zero",
+    "file": "Roth/MainLemma.lean",
+    "line": 419,
+    "reference_lines": [
+      422
+    ],
+    "identifier_occurrences": 1,
+    "source_sha256": "4f7c7fee1bbceaffc79da9ca9d806a1e4b62a8b4a7534c996a1c58ea48a4b90d",
+    "source_fragment": "theorem le_index_of_forall_eval_eq_zero {\u03c3 : Type*} [Fintype \u03c3] {P : MvPolynomial \u03c3 \u211d} (hP : P \u2260 0)\n    {r : \u03c3 \u2192 \u2115} (hd : \u2200 j, degreeOf j P \u2264 r j) (\u03b1 : \u03c3 \u2192 \u211d) {c : \u211d}\n    (hvan : \u2200 d, (\u2200 j, d j \u2264 r j) \u2192 weight r d < c \u2192 eval \u03b1 (hasseDeriv d P) = 0) :\n    c \u2264 index P \u03b1 r := by\n  refine (le_index_iff hP).2 fun d he \u21a6 le_of_not_gt fun hw \u21a6 he (hvan d (fun j \u21a6 ?_) hw)\n  by_contra! hj\n  exact he <| by rw [hasseDeriv_eq_zero_of_degreeOf_lt ((hd j).trans_lt hj), map_zero]\n\n/-- The bound `m(2m + 1)/\u03b4 < L` from `0 < 2m + 1 \u2264 \u03b4\u00b2L` and `\u03b4m < 1`.\n\nWith `L = log q\u2081`, this gives the hypothesis of Lemma 7 under (29) and (32).\n\nSource: \u00a76, Lemma `lem:lem7-satisfied` (\"We just need to verify `\u03b4 log q_1 > m(2m+1)` but\nthis is immediate from (29) and (32)\"). -/",
+    "plan": "Retain project-local index API; if migrating its implementation, rewrite by the verified whole-function index/infDegree bridge. If deleting the name, expand to that exact expression in statement and body; preserve nonvanishing and zero-weight hypotheses."
+  },
+  {
+    "name": "Roth.exists_hasseDeriv_eval_ne_zero",
+    "file": "Roth/MainLemma.lean",
+    "line": 454,
+    "reference_lines": [
+      455
+    ],
+    "identifier_occurrences": 1,
+    "source_sha256": "4f7c7fee1bbceaffc79da9ca9d806a1e4b62a8b4a7534c996a1c58ea48a4b90d",
+    "source_fragment": "theorem exists_hasseDeriv_eval_ne_zero {\u03c3 : Type*} [Fintype \u03c3] {P : MvPolynomial \u03c3 \u211d} (hP : P \u2260 0)\n    (\u03b1 : \u03c3 \u2192 \u211d) (r : \u03c3 \u2192 \u2115) {c : \u211d} (hc : index P \u03b1 r < c) : \u2203 k : \u03c3 \u2192\u2080 \u2115,\n    weight r k < c \u2227 eval \u03b1 (hasseDeriv k P) \u2260 0 :=\n  (exists_weight_eq_index hP \u03b1 r).imp fun _ \u27e8hd, hw\u27e9 \u21a6 \u27e8hw \u25b8 hc, hd\u27e9\n",
+    "plan": "Retain project-local index API; if migrating its implementation, rewrite by the verified whole-function index/infDegree bridge. If deleting the name, expand to that exact expression in statement and body; preserve nonvanishing and zero-weight hypotheses."
+  },
+  {
+    "name": "Roth.exists_hasseDeriv_index_eval_bound_aux",
+    "file": "Roth/MainLemma.lean",
+    "line": 477,
+    "reference_lines": [
+      481,
+      482,
+      483
+    ],
+    "identifier_occurrences": 3,
+    "source_sha256": "4f7c7fee1bbceaffc79da9ca9d806a1e4b62a8b4a7534c996a1c58ea48a4b90d",
+    "source_fragment": "private lemma exists_hasseDeriv_index_eval_bound_aux {\u03c3 : Type*} [Fintype \u03c3] {P : MvPolynomial \u03c3 \u2124}\n    {r : \u03c3 \u2192 \u2115} {\u03b1 z : \u03c3 \u2192 \u211d} {C \u03b3 c : \u211d} (hP : P \u2260 0) (hd : \u2200 j, degreeOf j P \u2264 r j)\n    (hbound : \u2200 i k : \u03c3 \u2192\u2080 \u2115,\n      |eval \u03b1 (map (Int.castRingHom \u211d) (hasseDeriv i (hasseDeriv k P)))| < C)\n    (h\u03b3 : \u03b3 \u2264 index (map (Int.castRingHom \u211d) P) \u03b1 r)\n    (hz : index (map (Int.castRingHom \u211d) P) z r < c) : \u2203 Q : MvPolynomial \u03c3 \u2124, Q \u2260 0 \u2227\n      (\u2200 j, degreeOf j Q \u2264 r j) \u2227 \u03b3 - c < index (map (Int.castRingHom \u211d) Q) \u03b1 r \u2227\n      eval z (map (Int.castRingHom \u211d) Q) \u2260 0 \u2227 \u2200 i : \u03c3 \u2192\u2080 \u2115,\n        |eval \u03b1 (hasseDeriv i (map (Int.castRingHom \u211d) Q))| < C := by\n  obtain \u27e8k, hkw, hkev\u27e9 := exists_hasseDeriv_eval_ne_zero\n    ((map_ne_zero_iff _ (MvPolynomial.map_injective _ Int.cast_injective)).2 hP) z r hz\n  have hQev : eval z (map (Int.castRingHom \u211d) (hasseDeriv k P)) \u2260 0 := by\n    simpa [hasseDeriv_map] using hkev\n  refine \u27e8hasseDeriv k P, fun h0 \u21a6 hQev (by rw [h0, map_zero, map_zero]),\n    fun j \u21a6 (degreeOf_hasseDeriv_le j k P).trans (hd j), ?_, hQev, fun i \u21a6 ?_\u27e9\n  \u00b7 rw [\u2190 hasseDeriv_map]\n    exact ((sub_lt_sub_left hkw \u03b3).trans_le (sub_le_sub_right h\u03b3 _)).trans_le\n      (index_sub_weight_le_index_hasseDeriv (fun h0 \u21a6 hkev (by rw [h0, map_zero])) \u03b1 r)\n  \u00b7 simpa [hasseDeriv_map] using hbound i k\n",
+    "plan": "Retain project-local index API; if migrating its implementation, rewrite by the verified whole-function index/infDegree bridge. If deleting the name, expand to that exact expression in statement and body; preserve nonvanishing and zero-weight hypotheses."
+  },
+  {
+    "name": "Roth.exists_mem_RSet_le_index_aux",
+    "file": "Roth/MainLemma.lean",
+    "line": 550,
+    "reference_lines": [
+      556
+    ],
+    "identifier_occurrences": 1,
+    "source_sha256": "4f7c7fee1bbceaffc79da9ca9d806a1e4b62a8b4a7534c996a1c58ea48a4b90d",
+    "source_fragment": "private lemma exists_mem_RSet_le_index_aux {\u03c3 : Type*} [Fintype \u03c3] {f : Polynomial \u2124} {\u03b1 : \u211d}\n    (hf : f.Monic) (hf\u03b1 : Polynomial.aeval \u03b1 f = 0) (r : \u03c3 \u2192 \u2115) (B C : \u2115) (J : Finset (\u03c3 \u2192\u2080 \u2115))\n    {\u03b3 : \u211d} (hC : \u2200 W \u2208 boxFamily r B, \u2200 j \u2208 J, \u2200 i < f.natDegree,\n      |(diag (hasseDeriv j W) %\u2098 f).coeff i| \u2264 (C : \u2124))\n    (hcount : ((2 * C + 1 : \u2115) : \u211d) ^ (f.natDegree * J.card) < ((B : \u211d) + 1) ^ (\u220f k, (r k + 1) : \u2115))\n    (hJ : \u2200 d, (\u2200 k, d k \u2264 r k) \u2192 weight r d < \u03b3 \u2192 d \u2208 J) : \u2203 P : MvPolynomial \u03c3 \u2124, P \u2208 RSet B r \u2227\n      \u03b3 \u2264 index (map (Int.castRingHom \u211d) P) (fun _ \u21a6 \u03b1) r := by\n  obtain \u27e8W', hW', W'', hW'', hne, hWeq\u27e9 := exists_ne_modByMonic_eq r B hf J C hC\n    (by simpa [finprod_eq_prod_of_fintype] using hcount)\n  -- `W* = W' - W''`\n  have hP := sub_mem_RSet hW' hW'' hne\n  refine \u27e8W' - W'', hP, ?_\u27e9\n  exact le_index_of_forall_eval_eq_zero\n    ((map_ne_zero_iff _ (MvPolynomial.map_injective _ Int.cast_injective)).2 hP.1)\n    (by simpa only [degreeOf,\n          degrees_map_of_injective _ (f := Int.castRingHom \u211d) Int.cast_injective]\n        using hP.2.1) (fun _ \u21a6 \u03b1)\n    fun d hd hw \u21a6 eval_hasseDeriv_sub_eq_zero hf\u03b1 (hWeq d (hJ d hd hw))\n",
+    "plan": "Retain project-local index API; if migrating its implementation, rewrite by the verified whole-function index/infDegree bridge. If deleting the name, expand to that exact expression in statement and body; preserve nonvanishing and zero-weight hypotheses."
+  },
+  {
+    "name": "Roth.exists_mem_RSet_le_index_of_rpow_bound_aux",
+    "file": "Roth/MainLemma.lean",
+    "line": 581,
+    "reference_lines": [
+      586
+    ],
+    "identifier_occurrences": 1,
+    "source_sha256": "4f7c7fee1bbceaffc79da9ca9d806a1e4b62a8b4a7534c996a1c58ea48a4b90d",
+    "source_fragment": "private lemma exists_mem_RSet_le_index_of_rpow_bound_aux {f : Polynomial \u2124} {\u03b1 A : \u211d} (hf : f.Monic)\n    (hf\u03b1 : Polynomial.aeval \u03b1 f = 0) (hA : \u2200 i, |(f.coeff i : \u211d)| \u2264 A) {m : \u2115} (hm : 0 < m)\n    (r : Fin m \u2192 \u2115) (hr : \u2200 j, 0 < r j) {c \u03b2 : \u211d} {B s : \u2115} (hB : 0 < B) (hs : \u2211 j, r j \u2264 s)\n    (hA\u03b2 : (1 + A) ^ s \u2264 \u03b2) (hpow : (B : \u211d) * \u03b2 ^ 3 \u2264 (B : \u211d) ^ c) : \u2203 P : MvPolynomial (Fin m) \u2124,\n      P \u2208 RSet B r \u2227 ((m : \u211d) - 4 * c * f.natDegree * \u221a(m : \u211d)) / 2 \u2264\n        index (map (Int.castRingHom \u211d) P) (fun _ \u21a6 \u03b1) r := by\n  have hA1 : 1 \u2264 A := by simpa [hf.coeff_natDegree] using hA f.natDegree\n  have h2 : (2 : \u211d) ^ s \u2264 \u03b2 :=\n    (pow_le_pow_left\u2080 (by norm_num) (by linarith : (2 : \u211d) \u2264 1 + A) s).trans hA\u03b2\n  have hc : 1 \u2264 c := by\n    by_contra! hc\n    have hBc : (B : \u211d) ^ c \u2264 B := by\n      simpa using Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast hB) hc.le\n    have hs0 : 0 < s := (hr \u27e80, hm\u27e9).trans_le\n      ((Finset.single_le_sum (fun j _ \u21a6 Nat.zero_le (r j)) (Finset.mem_univ _)).trans hs)\n    have h\u03b2 : 1 < \u03b2 := (one_lt_pow\u2080 (by norm_num : (1 : \u211d) < 2) hs0.ne').trans_le h2\n    exact (not_lt_of_ge hBc) ((lt_mul_of_one_lt_right (Nat.cast_pos.2 hB)\n      (one_lt_pow\u2080 h\u03b2 (by decide : 3 \u2260 0))).trans_le hpow)\n  -- the bound `C` for the remainders\n  let Cn := \u230a(B : \u211d) ^ c\u230b\u208a\n  have hC : \u2200 W \u2208 boxFamily r B, \u2200 j i,\n      |(diag (hasseDeriv j W) %\u2098 f).coeff i| \u2264 (Cn : \u2124) := by\n    intro W hW j i\n    have hcW : \u2200 e, |(W.coeff e : \u211d)| \u2264 B := fun e \u21a6 by\n      exact_mod_cast (abs_of_nonneg (hW.2 e).1).trans_le (hW.2 e).2\n    exact (abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux\n      hA hW.1 hcW hs h2 hA\u03b2 j i).trans (by exact_mod_cast Nat.floor_mono hpow)\n  let J := (box r).filter fun d \u21a6\n    weight r d \u2264 ((m : \u211d) - 4 * c * f.natDegree * \u221a(m : \u211d)) / 2\n  -- the counting inequality\n  have hD : c * f.natDegree * J.card \u2264 ((\u220f j, (r j + 1) : \u2115) : \u211d) / 2 := by\n    simpa [J, mul_assoc] using mul_card_filter_weight_le_aux hm r hr (c * f.natDegree)\n  exact exists_mem_RSet_le_index_aux hf hf\u03b1 r B Cn J\n    (fun W hW j _ i _ \u21a6 hC W hW j i)\n    (pigeonhole_count (Nat.cast_pos.2 hB) hc (Finset.prod_pos fun j _ \u21a6 Nat.succ_pos _) hD)\n    (fun d hd hw \u21a6 Finset.mem_filter.2 \u27e8mem_box.2 hd, hw.le\u27e9)\n",
+    "plan": "Retain project-local index API; if migrating its implementation, rewrite by the verified whole-function index/infDegree bridge. If deleting the name, expand to that exact expression in statement and body; preserve nonvanishing and zero-weight hypotheses."
+  },
+  {
+    "name": "Roth.exists_mem_RSet_le_index_of_log_bound_aux",
+    "file": "Roth/MainLemma.lean",
+    "line": 618,
+    "reference_lines": [
+      623
+    ],
+    "identifier_occurrences": 1,
+    "source_sha256": "4f7c7fee1bbceaffc79da9ca9d806a1e4b62a8b4a7534c996a1c58ea48a4b90d",
+    "source_fragment": "private lemma exists_mem_RSet_le_index_of_log_bound_aux {f : Polynomial \u2124} {\u03b1 A : \u211d} (hf : f.Monic)\n    (hf\u03b1 : Polynomial.aeval \u03b1 f = 0) (hA : \u2200 i, |(f.coeff i : \u211d)| \u2264 A) {m q\u2081 r\u2081 : \u2115} (hm : 0 < m)\n    (r : Fin m \u2192 \u2115) (hr : \u2200 j, 0 < r j) (hs : \u2211 j, r j \u2264 m * r\u2081) {\u03b4 : \u211d} (h\u03b40 : 0 \u2264 \u03b4)\n    (hL : 2 * m + 1 + 2 * m * Real.log (1 + A) \u2264 \u03b4 ^ 2 * Real.log q\u2081) :\n    \u2203 P : MvPolynomial (Fin m) \u2124, P \u2208 RSet (mainCoeffBound \u03b4 q\u2081 r\u2081) r \u2227\n      gam \u03b4 f.natDegree m \u2264 index (map (Int.castRingHom \u211d) P) (fun _ \u21a6 \u03b1) r := by\n  have hA1 : 1 \u2264 A := by simpa [hf.coeff_natDegree] using hA f.natDegree\n  have hr\u2081 : 0 < r\u2081 := Nat.pos_of_mul_pos_left <| (hr \u27e80, hm\u27e9).trans_le\n    ((Finset.single_le_sum (fun j _ \u21a6 Nat.zero_le (r j)) (Finset.mem_univ _)).trans hs)\n  have hq : 3 \u2264 \u03b4 ^ 2 * Real.log q\u2081 := by\n    have hmR : (1 : \u211d) \u2264 m := by exact_mod_cast hm\n    nlinarith only [hL, hmR, mul_nonneg (by positivity : (0 : \u211d) \u2264 2 * m)\n      (Real.log_nonneg (by linarith : 1 \u2264 1 + A))]\n  obtain \u27e8_, hTA, _\u27e9 := three_small_factors (m := m) (q\u2081 := q\u2081) (\u03b1 := 0)\n    h\u03b40 hr\u2081 (zero_le_one.trans hA1) (by simpa using hL)\n  have hpow : (mainCoeffBound \u03b4 q\u2081 r\u2081 : \u211d) ^ (1 + 3 * \u03b4) =\n      mainCoeffBound \u03b4 q\u2081 r\u2081 * ((mainCoeffBound \u03b4 q\u2081 r\u2081 : \u211d) ^ \u03b4) ^ 3 := by\n    rw [Real.rpow_add_of_nonneg (by positivity) zero_le_one (by positivity), Real.rpow_one,\n      \u2190 Real.rpow_mul_natCast (by positivity)]\n    simp [mul_comm]\n  simpa only [gam, lam] using\n    exists_mem_RSet_le_index_of_rpow_bound_aux (B := mainCoeffBound \u03b4 q\u2081 r\u2081) hf hf\u03b1 hA\n    hm r hr (Nat.floor_pos.2 <| (by norm_num : (1 : \u211d) \u2264 4).trans\n      (four_lt_rpow h\u03b40 hr\u2081 hq).le) hs hTA.le hpow.ge\n",
+    "plan": "Retain project-local index API; if migrating its implementation, rewrite by the verified whole-function index/infDegree bridge. If deleting the name, expand to that exact expression in statement and body; preserve nonvanishing and zero-weight hypotheses."
+  },
+  {
+    "name": "Roth.exists_auxiliary_polynomial_of_log_bound_aux",
+    "file": "Roth/MainLemma.lean",
+    "line": 643,
+    "reference_lines": [
+      648
+    ],
+    "identifier_occurrences": 1,
+    "source_sha256": "4f7c7fee1bbceaffc79da9ca9d806a1e4b62a8b4a7534c996a1c58ea48a4b90d",
+    "source_fragment": "private lemma exists_auxiliary_polynomial_of_log_bound_aux {f : Polynomial \u2124} {\u03b1 A : \u211d}\n    (hf : f.Monic) (hf\u03b1 : Polynomial.aeval \u03b1 f = 0) (hA : \u2200 i, |(f.coeff i : \u211d)| \u2264 A) {m q\u2081 r\u2081 : \u2115}\n    (hm : 0 < m) (r : Fin m \u2192 \u2115) (hr : \u2200 j, 0 < r j) (hs : \u2211 j, r j \u2264 m * r\u2081) {\u03b4 : \u211d} (h\u03b40 : 0 \u2264 \u03b4)\n    (hL : 2 * m + 1 + 2 * m * Real.log (1 + A) + 2 * m * Real.log (1 + |\u03b1|) \u2264 \u03b4 ^ 2 * Real.log q\u2081) :\n    \u2203 P : MvPolynomial (Fin m) \u2124, P \u2208 RSet ((q\u2081 : \u211d) ^ (\u03b4 * r\u2081)) r \u2227\n      gam \u03b4 f.natDegree m \u2264 index (map (Int.castRingHom \u211d) P) (fun _ \u21a6 \u03b1) r \u2227 \u2200 i k : Fin m \u2192\u2080 \u2115,\n      |eval (fun _ \u21a6 \u03b1) (map (Int.castRingHom \u211d) (hasseDeriv i (hasseDeriv k P)))| <\n        (mainCoeffBound \u03b4 q\u2081 r\u2081 : \u211d) ^ (1 + 3 * \u03b4) := by\n  let B := mainCoeffBound \u03b4 q\u2081 r\u2081\n  let \u03b2 : \u211d := (B : \u211d) ^ \u03b4\n  obtain \u27e8P, hPR, h\u03b3\u27e9 := exists_mem_RSet_le_index_of_log_bound_aux hf hf\u03b1 hA hm r hr hs h\u03b40\n    ((le_add_of_nonneg_right (mul_nonneg (by positivity)\n      (Real.log_nonneg (le_add_of_nonneg_right (abs_nonneg \u03b1))))).trans hL)\n  obtain \u27e8h2, _, h\u03b1\u27e9 := three_small_factors h\u03b40 (Nat.pos_of_mul_pos_left <|\n    (hr \u27e80, hm\u27e9).trans_le ((Finset.single_le_sum (fun j _ \u21a6 Nat.zero_le (r j))\n      (Finset.mem_univ _)).trans hs)) ((abs_nonneg _).trans (hA 0)) hL\n  obtain \u27e8d, hdne\u27e9 := MvPolynomial.exists_coeff_ne_zero hPR.1\n  have hBpos : 0 < (B : \u211d) :=\n    (abs_pos.mpr (Int.cast_ne_zero.2 hdne)).trans_le (hPR.2.2 d)\n  have hpow : (B : \u211d) ^ (1 + 3 * \u03b4) = B * \u03b2 ^ 3 := by\n    rw [Real.rpow_add_of_nonneg hBpos.le zero_le_one (by positivity), Real.rpow_one,\n      \u2190 Real.rpow_mul_natCast hBpos.le]\n    simp [mul_comm]\n  refine \u27e8P, \u27e8hPR.1, hPR.2.1, fun d \u21a6 (hPR.2.2 d).trans (Nat.floor_le (by positivity))\u27e9,\n    h\u03b3, fun i k \u21a6\n      (abs_eval_iterated_hasseDeriv_lt_aux hPR.2.1 hBpos hs h2 h\u03b1.le hPR.2.2 i k).trans_eq ?_\u27e9\n  linear_combination -hpow\n",
+    "plan": "Retain project-local index API; if migrating its implementation, rewrite by the verified whole-function index/infDegree bridge. If deleting the name, expand to that exact expression in statement and body; preserve nonvanishing and zero-weight hypotheses."
+  },
+  {
+    "name": "Roth.exists_auxiliary_polynomial_with_index_gap_aux",
+    "file": "Roth/MainLemma.lean",
+    "line": 692,
+    "reference_lines": [
+      700
+    ],
+    "identifier_occurrences": 1,
+    "source_sha256": "4f7c7fee1bbceaffc79da9ca9d806a1e4b62a8b4a7534c996a1c58ea48a4b90d",
+    "source_fragment": "private lemma exists_auxiliary_polynomial_with_index_gap_aux {\u03b1 : \u211d} {f : Polynomial \u2124}\n    (hf : f.Monic) (hf\u03b1 : Polynomial.aeval \u03b1 f = 0) {A : \u211d} (hA : \u2200 i, |(f.coeff i : \u211d)| \u2264 A)\n    {m : \u2115} [NeZero m] {\u03b4 : \u211d} (h\u03b40 : 0 \u2264 \u03b4) (h\u03b4m : \u03b4 \u2264 1 / m) {r : Fin m \u2192 \u2115}\n    (hrlast : 3 \u2264 r (Fin.rev 0)) (h31b : \u2200 i j : Fin m, i.val + 1 = j.val \u2192 (r j : \u211d) / \u03b4 \u2264 r i)\n    {q : Fin m \u2192 \u2115} (h32 : 2 * m + 1 + 2 * m * Real.log (1 + A) + 2 * m * Real.log (1 + |\u03b1|) \u2264\n      \u03b4 ^ 2 * Real.log (q 0)) (h33 : \u2200 j, (r 0 : \u211d) * Real.log (q 0) \u2264 r j * Real.log (q j)) :\n    \u2203 W : MvPolynomial (Fin m) \u2124, W \u2208 RSet ((q 0 : \u211d) ^ (\u03b4 * r 0)) r \u2227\n      gam \u03b4 f.natDegree m - eta \u03b4 m + \u0398 ((q 0 : \u211d) ^ (\u03b4 * r 0)) q r <\n        index (map (Int.castRingHom \u211d) W) (fun _ \u21a6 \u03b1) r \u2227 \u2200 i k : Fin m \u2192\u2080 \u2115,\n        |eval (fun _ \u21a6 \u03b1) (map (Int.castRingHom \u211d) (hasseDeriv i (hasseDeriv k W)))| <\n          (mainCoeffBound \u03b4 (q 0) (r 0) : \u211d) ^ (1 + 3 * \u03b4) := by\n  obtain \u27e8m', rfl\u27e9 := Nat.exists_eq_succ_of_ne_zero (NeZero.ne m)\n  have h32' : 2 * ((m' + 1 : \u2115) : \u211d) + 1 \u2264 \u03b4 ^ 2 * Real.log (q 0) :=\n    (le_add_of_nonneg_right (mul_nonneg (by positivity)\n      (Real.log_nonneg (le_add_of_nonneg_right ((abs_nonneg _).trans (hA 0)))))).trans\n      ((le_add_of_nonneg_right (mul_nonneg (by positivity)\n        (Real.log_nonneg (le_add_of_nonneg_right (abs_nonneg \u03b1))))).trans h32)\n  have h\u03b40 : 0 < \u03b4 := lt_of_le_of_ne h\u03b40 fun he \u21a6 by\n    simpa [\u2190 he] using ((by positivity : 0 < 2 * ((m' + 1 : \u2115) : \u211d) + 1).trans_le h32')\n  have hmR : (1 : \u211d) \u2264 ((m' + 1 : \u2115) : \u211d) := by\n    exact_mod_cast (Nat.succ_le_succ (Nat.zero_le m'))\n  -- `r` is decreasing, so `r j \u2264 r 0`\n  have hanti : Antitone r := Fin.antitone_iff_succ_le.2 fun i \u21a6 by\n    exact_mod_cast (le_div_self (Nat.cast_nonneg _) h\u03b40\n      (h\u03b4m.trans ((div_le_one (by positivity)).2 hmR))).trans (h31b i.castSucc i.succ rfl)\n  have hsumr : \u2211 j, r j \u2264 (m' + 1) * r 0 := by\n    simpa using Finset.sum_le_card_nsmul Finset.univ r (r 0) (fun j _ \u21a6 hanti (Fin.zero_le j))\n  obtain \u27e8W, hWR, h\u03b3, hWbound\u27e9 := exists_auxiliary_polynomial_of_log_bound_aux hf hf\u03b1 hA\n    (Nat.succ_pos m') r (fun j \u21a6 (by decide : 0 < 3).trans_le\n      (hrlast.trans (hanti (by simpa using Fin.le_last j)))) hsumr h\u03b40.le h32\n  -- Lemma 7\n  refine \u27e8W, hWR, ?_, hWbound\u27e9\n  linarith only [h\u03b3, theta_lt_eta_of_sq_log_bound_aux h\u03b40.le\n    ((le_div_iff\u2080 (by positivity)).1 h\u03b4m) hrlast h31b h32' h33]\n\n/-- **Roth's main lemma** (Lemma 9), with weaker numerical hypotheses and a strict index bound.\nFor `m \u2265 1`, a monic integer equation for `\u03b1`, `0 \u2264 \u03b4 \u2264 1/m`, last degree at least `3`, and the\ndisplayed weak ratio and logarithmic bounds give a nonzero integer polynomial `Q` of degree\n`\u2264 r_j` in `X j`, with index greater than `\u03b3 - \u03b7` at `(\u03b1, \u2026, \u03b1)`, not vanishing at `(h_j/q_j)_j`.\nEvery Hasse derivative at `(\u03b1, \u2026, \u03b1)` is bounded by `B_1^{1 + 3\u03b4}`.\n\nSource: \u00a76, Lemma `roth:lem9` (for `m \u2265 1` variables indexed by `Fin m`; the chain conditions\n(31) are stated for consecutive indices). -/",
+    "plan": "Retain project-local index API; if migrating its implementation, rewrite by the verified whole-function index/infDegree bridge. If deleting the name, expand to that exact expression in statement and body; preserve nonvanishing and zero-weight hypotheses."
+  },
+  {
+    "name": "Roth.main_lemma",
+    "file": "Roth/MainLemma.lean",
+    "line": 735,
+    "reference_lines": [
+      743,
+      749
+    ],
+    "identifier_occurrences": 2,
+    "source_sha256": "4f7c7fee1bbceaffc79da9ca9d806a1e4b62a8b4a7534c996a1c58ea48a4b90d",
+    "source_fragment": "theorem main_lemma {\u03b1 : \u211d} {f : Polynomial \u2124} (hf : f.Monic) (hf\u03b1 : Polynomial.aeval \u03b1 f = 0)\n    {A : \u211d} (hA : \u2200 i, |(f.coeff i : \u211d)| \u2264 A) {m : \u2115} [NeZero m] {\u03b4 : \u211d} (h\u03b40 : 0 \u2264 \u03b4)\n    (h\u03b4m : \u03b4 \u2264 1 / m) {r : Fin m \u2192 \u2115} (hrlast : 3 \u2264 r (Fin.rev 0))\n    (h31b : \u2200 i j : Fin m, i.val + 1 = j.val \u2192 (r j : \u211d) / \u03b4 \u2264 r i) {q : Fin m \u2192 \u2115}\n    (h32 : 2 * m + 1 + 2 * m * Real.log (1 + A) + 2 * m * Real.log (1 + |\u03b1|) \u2264\n      \u03b4 ^ 2 * Real.log (q 0)) (h33 : \u2200 j, (r 0 : \u211d) * Real.log (q 0) \u2264 r j * Real.log (q j))\n    {h : Fin m \u2192 \u2124} (hh : \u2200 j, IsCoprime (h j) (q j : \u2124)) : \u2203 Q : MvPolynomial (Fin m) \u2124, Q \u2260 0 \u2227\n      (\u2200 j, degreeOf j Q \u2264 r j) \u2227\n      gam \u03b4 f.natDegree m - eta \u03b4 m < index (map (Int.castRingHom \u211d) Q) (fun _ \u21a6 \u03b1) r \u2227\n      eval (fun j \u21a6 (h j : \u211d) / q j) (map (Int.castRingHom \u211d) Q) \u2260 0 \u2227\n      \u2200 i : Fin m \u2192\u2080 \u2115, |eval (fun _ \u21a6 \u03b1) (hasseDeriv i (map (Int.castRingHom \u211d) Q))| <\n        (mainCoeffBound \u03b4 (q 0) (r 0) : \u211d) ^ (1 + 3 * \u03b4) := by\n  obtain \u27e8W, hW, hgap, hbound\u27e9 := exists_auxiliary_polynomial_with_index_gap_aux hf hf\u03b1 hA h\u03b40 h\u03b4m\n    hrlast h31b h32 h33\n  let c := (index (map (Int.castRingHom \u211d) W) (fun _ \u21a6 \u03b1) r -\n    (gam \u03b4 f.natDegree m - eta \u03b4 m) + \u0398 ((q 0 : \u211d) ^ (\u03b4 * r 0)) q r) / 2\n  simpa only [add_sub_cancel_right] using\n    exists_hasseDeriv_index_eval_bound_aux hW.1 hW.2.1 hbound\n      (\u03b3 := gam \u03b4 f.natDegree m - eta \u03b4 m + c) (c := c)\n      (z := fun j \u21a6 (h j : \u211d) / q j)\n      (by\n        dsimp only [c]\n        linarith only [hgap])\n      (by\n        dsimp only [c]\n        linarith only [hgap, index_le_\u0398 hW hh])\n\nend Roth",
+    "plan": "Retain project-local index API; if migrating its implementation, rewrite by the verified whole-function index/infDegree bridge. If deleting the name, expand to that exact expression in statement and body; preserve nonvanishing and zero-weight hypotheses."
+  },
+  {
+    "name": "Roth.indexSet",
+    "file": "Roth/Theta.lean",
+    "line": 62,
+    "reference_lines": [
+      64
+    ],
+    "identifier_occurrences": 1,
+    "source_sha256": "ea447150977f3acf5259cb27889019b9ac32195614f91bc78ed3454c26ca82f5",
+    "source_fragment": "def indexSet (B : \u211d) (q r : \u03c3 \u2192 \u2115) : Set \u211d :=\n  {x | \u2203 R \u2208 RSet B r, \u2203 h : \u03c3 \u2192 \u2124, (\u2200 j, IsCoprime (h j) (q j : \u2124)) \u2227\n    index (map (Int.castRingHom \u211d) R) (fun j \u21a6 (h j : \u211d) / q j) r = x}\n\n/-- `\u0398_m(B; q_1, \u2026, q_m; r_1, \u2026, r_m)` is the supremum of the indices `ind(R; h/q; r)` over\n`R \u2208 \u211b_m(B; r)` and `h` with each `h_j` coprime to `q_j`. Source: \u00a75, definition of `\u0398_m`. -/",
+    "plan": "Retain project-local index API; if migrating its implementation, rewrite by the verified whole-function index/infDegree bridge. If deleting the name, expand to that exact expression in statement and body; preserve nonvanishing and zero-weight hypotheses."
+  },
+  {
+    "name": "Roth.index_le_\u0398",
+    "file": "Roth/Theta.lean",
+    "line": 99,
+    "reference_lines": [
+      101
+    ],
+    "identifier_occurrences": 1,
+    "source_sha256": "ea447150977f3acf5259cb27889019b9ac32195614f91bc78ed3454c26ca82f5",
+    "source_fragment": "theorem index_le_\u0398 {B : \u211d} {q r : \u03c3 \u2192 \u2115} {R : MvPolynomial \u03c3 \u2124} (hR : R \u2208 RSet B r) {h : \u03c3 \u2192 \u2124}\n    (hh : \u2200 j, IsCoprime (h j) (q j : \u2124)) :\n    index (map (Int.castRingHom \u211d) R) (fun j \u21a6 (h j : \u211d) / q j) r \u2264 \u0398 B q r :=\n  le_csSup (indexSet_bddAbove B q) \u27e8R, hR, h, hh, rfl\u27e9\n\nomit [DecidableEq \u03c3] in\n/-- `\u0398_m(B; q; r)` is nonnegative for every coefficient bound and weight vector. Source: \u00a75\n(\"`0 \u2264 \u0398_m`\"). -/",
+    "plan": "Retain project-local index API; if migrating its implementation, rewrite by the verified whole-function index/infDegree bridge. If deleting the name, expand to that exact expression in statement and body; preserve nonvanishing and zero-weight hypotheses."
+  },
+  {
+    "name": "Roth.\u0398_le_of_forall_index_le",
+    "file": "Roth/Theta.lean",
+    "line": 124,
+    "reference_lines": [
+      126
+    ],
+    "identifier_occurrences": 1,
+    "source_sha256": "ea447150977f3acf5259cb27889019b9ac32195614f91bc78ed3454c26ca82f5",
+    "source_fragment": "theorem \u0398_le_of_forall_index_le {B : \u211d} (hB : 1 \u2264 B) {q r : \u03c3 \u2192 \u2115} {c : \u211d}\n    (hc : \u2200 R \u2208 RSet B r, \u2200 h : \u03c3 \u2192 \u2124, (\u2200 j, IsCoprime (h j) (q j : \u2124)) \u2192\n      index (map (Int.castRingHom \u211d) R) (fun j \u21a6 (h j : \u211d) / q j) r \u2264 c) : \u0398 B q r \u2264 c := by\n  refine csSup_le (indexSet_nonempty hB q r) ?_\n  rintro _ \u27e8R, hR, h, hh, rfl\u27e9\n  exact hc R hR h hh\n\nomit [DecidableEq \u03c3] in\n/-- `\u0398_m(B; q; r)` is monotone in `B`. Source: \u00a75 (\"`\u0398_m` is nondecreasing in `B`, since\nincreasing `B` enlarges the set of allowed polynomials\"). -/",
+    "plan": "Retain project-local index API; if migrating its implementation, rewrite by the verified whole-function index/infDegree bridge. If deleting the name, expand to that exact expression in statement and body; preserve nonvanishing and zero-weight hypotheses."
+  },
+  {
+    "name": "Roth.index_unique_le_log_div",
+    "file": "Roth/Theta.lean",
+    "line": 223,
+    "reference_lines": [
+      226
+    ],
+    "identifier_occurrences": 1,
+    "source_sha256": "ea447150977f3acf5259cb27889019b9ac32195614f91bc78ed3454c26ca82f5",
+    "source_fragment": "private lemma index_unique_le_log_div [Unique \u03c3] {B : \u211d} {q r : \u03c3 \u2192 \u2115} (hq : 1 < q default)\n    {R : MvPolynomial \u03c3 \u2124} (hR : R \u2260 0) (hRB : |((uniqueAlgEquiv \u2124 \u03c3 R).leadingCoeff : \u211d)| \u2264 B)\n    {h : \u03c3 \u2192 \u2124} (hh : IsCoprime (h default) (q default : \u2124)) :\n    index (map (Int.castRingHom \u211d) R) (fun j \u21a6 (h j : \u211d) / q j) r \u2264\n      Real.log B / (r default * Real.log (q default)) := by\n  classical\n  let R1 : Polynomial \u2124 := uniqueAlgEquiv \u2124 \u03c3 R\n  have hmapeq : uniqueAlgEquiv \u211d \u03c3 (map (Int.castRingHom \u211d) R) =\n      R1.map (Int.castRingHom \u211d) := by\n    dsimp only [R1]\n    ext n\n    rw [coeff_uniqueAlgEquiv, Polynomial.coeff_map, coeff_uniqueAlgEquiv, coeff_map]\n  have hmult : Polynomial.rootMultiplicity ((h default : \u211d) / q default)\n      (R1.map (Int.castRingHom \u211d)) =\n      Polynomial.rootMultiplicity ((h default : \u211a) / q default) (R1.map (Int.castRingHom \u211a)) := by\n    rw [Polynomial.eq_rootMultiplicity_map (f := Rat.castHom \u211d) Rat.cast_injective,\n      Polynomial.map_map]\n    congr 1\n    simp\n  rw [index_unique ((map_ne_zero_iff _ (map_injective _ Int.cast_injective)).2 hR), hmapeq, hmult]\n  have hlog := Real.log_le_log (by positivity : (0 : \u211d) < (q default : \u211d) ^\n    Polynomial.rootMultiplicity ((h default : \u211a) / q default) (R1.map (Int.castRingHom \u211a)))\n    (pow_rootMultiplicity_le ((map_ne_zero_iff _ (uniqueAlgEquiv \u2124 \u03c3).injective).2 hR)\n      (Nat.zero_lt_of_lt hq) hh hRB)\n  rw [Real.log_pow] at hlog\n  simpa [div_div, mul_comm] using\n    div_le_div_of_nonneg_right\n      ((le_div_iff\u2080 (Real.log_pos (by exact_mod_cast hq))).2 hlog) (Nat.cast_nonneg _)\n\nomit [DecidableEq \u03c3] in\n/-- **Lemma 5**: in one variable, if `q > 1` then `\u0398_1(B; q; r) \u2264 log B / (r log q)`.\nSource: \u00a75, Lemma `roth:lem5` (\"Suppose additionally that `q_1 > 1`. Then\n`\u0398_1(B; q_1; r_1) \u2264 log B / (r_1 log q_1)`\"), for a single variable `\u03c3`. -/",
+    "plan": "Retain project-local index API; if migrating its implementation, rewrite by the verified whole-function index/infDegree bridge. If deleting the name, expand to that exact expression in statement and body; preserve nonvanishing and zero-weight hypotheses."
+  },
+  {
+    "name": "Roth.sum_max_sub_le_index_det",
+    "file": "Roth/Theta.lean",
+    "line": 376,
+    "reference_lines": [
+      381,
+      382,
+      388,
+      388,
+      402,
+      403,
+      408
+    ],
+    "identifier_occurrences": 7,
+    "source_sha256": "ea447150977f3acf5259cb27889019b9ac32195614f91bc78ed3454c26ca82f5",
+    "source_fragment": "theorem sum_max_sub_le_index_det {R : MvPolynomial (Option \u03c4) \u211d} {l : \u2115} (D : Fin l \u2192 (\u03c4 \u2192\u2080 \u2115))\n    (hD : \u2200 \u03bc, (D \u03bc).degree \u2264 \u03bc) (hdet : (Matrix.of fun \u03bc \u03bd : Fin l \u21a6\n      hasseDeriv ((D \u03bc).mapDomain some + Finsupp.single none (\u03bd : \u2115)) R).det \u2260 0) (\u03b1 : Option \u03c4 \u2192 \u211d)\n    {r : Option \u03c4 \u2192 \u2115} (hr : \u2200 j, 0 < r j) {\u03b4 : \u211d}\n    (h\u03b4 : \u2200 d : \u03c4 \u2192\u2080 \u2115, d.degree \u2264 l - 1 \u2192 weight (r \u2218 some) d \u2264 \u03b4) :\n    \u2211 \u03bd \u2208 Finset.range l, max 0 (index R \u03b1 r - \u03bd / r none) - l * \u03b4 \u2264\n      index (Matrix.of fun \u03bc \u03bd : Fin l \u21a6\n        hasseDeriv ((D \u03bc).mapDomain some + Finsupp.single none (\u03bd : \u2115)) R).det \u03b1 r := by\n  classical\n  set E : Fin l \u2192 Fin l \u2192 MvPolynomial (Option \u03c4) \u211d := fun \u03bc \u03bd \u21a6\n    hasseDeriv ((D \u03bc).mapDomain some + Finsupp.single none (\u03bd : \u2115)) R\n  have hterm : \u2200 \u03bc \u03bd : Fin l, E \u03bc \u03bd \u2260 0 \u2192\n      max 0 (index R \u03b1 r - \u03bd / r none) - \u03b4 \u2264 index (E \u03bc \u03bd) \u03b1 r := by\n    intro \u03bc \u03bd hE\n    have h1 := index_sub_weight_le_index_hasseDeriv hE \u03b1 r\n    rw [weight_add, weight_mapDomain (Option.some_injective _), weight_single] at h1\n    have h2 := h\u03b4 (D \u03bc) ((hD \u03bc).trans (Nat.le_sub_one_of_lt \u03bc.isLt))\n    rw [\u2190 sub_sub, sub_right_comm] at h1\n    rw [sub_le_iff_le_add]\n    exact max_le (add_nonneg (index_nonneg _ _ _) ((weight_nonneg _ _).trans h2))\n      ((sub_le_iff_le_add).1 ((sub_le_sub_left h2 _).trans h1))\n  rw [Matrix.det_apply'] at hdet \u22a2\n  refine le_index_sum hdet fun s _ hs \u21a6 ?_\n  have hprod : \u220f i, Matrix.of E (s i) i \u2260 0 := (mul_ne_zero_iff.mp hs).2\n  have hentry (i : Fin l) : Matrix.of E (s i) i \u2260 0 :=\n    (Finset.prod_ne_zero_iff.1 hprod) i (Finset.mem_univ _)\n  have hidx : index (((Equiv.Perm.sign s : \u2124) : MvPolynomial (Option \u03c4) \u211d) *\n      \u220f i, Matrix.of E (s i) i) \u03b1 r = index (\u220f i, Matrix.of E (s i) i) \u03b1 r := by\n    simpa only [map_intCast] using\n      index_C_mul (Int.cast_ne_zero.2 (Units.ne_zero (Equiv.Perm.sign s)))\n        (\u220f i, Matrix.of E (s i) i) \u03b1 r\n  rw [hidx, index_prod _ (fun i _ \u21a6 hentry i) \u03b1 hr,\n    \u2190 Fin.sum_univ_eq_sum_range (fun \u03bd : \u2115 \u21a6 max 0 (index R \u03b1 r - \u03bd / r none)) l]\n  have hl\u03b4 : (l : \u211d) * \u03b4 = \u2211 _i : Fin l, \u03b4 := by rw [Fin.sum_const, nsmul_eq_mul]\n  rw [hl\u03b4, \u2190 Finset.sum_sub_distrib]\n  exact Finset.sum_le_sum fun i _ \u21a6 hterm (s i) i (hentry i)\n\nomit [DecidableEq \u03c4] in",
+    "plan": "Retain project-local index API; if migrating its implementation, rewrite by the verified whole-function index/infDegree bridge. If deleting the name, expand to that exact expression in statement and body; preserve nonvanishing and zero-weight hypotheses."
+  },
+  {
+    "name": "Roth.index_separated_mul_le_aux",
+    "file": "Roth/Theta.lean",
+    "line": 414,
+    "reference_lines": [
+      418
+    ],
+    "identifier_occurrences": 1,
+    "source_sha256": "ea447150977f3acf5259cb27889019b9ac32195614f91bc78ed3454c26ca82f5",
+    "source_fragment": "private lemma index_separated_mul_le_aux {r : Option \u03c4 \u2192 \u2115} (hr0 : \u2200 j, 0 < r j) {q : Option \u03c4 \u2192 \u2115}\n    {h : Option \u03c4 \u2192 \u2124} (hh : \u2200 j, IsCoprime (h j) (q j : \u2124)) {M : \u211d} {l : \u2115} (hl : 0 < l)\n    {U : MvPolynomial \u03c4 \u2124} (hU : U \u2208 RSet M (fun j \u21a6 l * r (some j))) {V : Polynomial \u2124}\n    (hV : V \u2260 0) (hVd : V.natDegree \u2264 l * r none) (hVc : \u2200 b, |(V.coeff b : \u211d)| \u2264 M) :\n    index (map (Int.castRingHom \u211d)\n        (rename some U * Polynomial.aeval (X none : MvPolynomial (Option \u03c4) \u2124) V))\n      (fun j \u21a6 (h j : \u211d) / q j) r \u2264 l * lem6\u03a6 q r M l := by\n  classical\n  set V' : MvPolynomial Unit \u2124 := (uniqueAlgEquiv \u2124 Unit).symm V with hV'\n  have hV'0 : V' \u2260 0 := by\n    rwa [hV', ne_eq, map_eq_zero_iff _ (uniqueAlgEquiv \u2124 Unit).symm.injective]\n  have hVmem : V' \u2208 RSet M (fun _ : Unit \u21a6 l * r none) := by\n    refine \u27e8hV'0, fun j \u21a6 ?_, fun d \u21a6 ?_\u27e9\n    \u00b7 rw [Subsingleton.elim j default, hV', degreeOf_uniqueAlgEquiv_symm]\n      exact hVd\n    \u00b7 rw [hV', MvPolynomial.coeff_uniqueAlgEquiv_symm]\n      exact hVc _\n  have hinjV : Function.Injective (fun _ : Unit \u21a6 (none : Option \u03c4)) :=\n    fun a b _ \u21a6 Subsingleton.elim a b\n  have hmU : map (Int.castRingHom \u211d) U \u2260 0 := fun h0 \u21a6\n    hU.1 (map_injective _ Int.cast_injective (h0.trans (map_zero _).symm))\n  have hmV : map (Int.castRingHom \u211d) V' \u2260 0 := fun h0 \u21a6\n    hV'0 (map_injective _ Int.cast_injective (h0.trans (map_zero _).symm))\n  rw [aeval_X_eq_rename, _root_.map_mul, map_rename, map_rename,\n    index_mul ((map_ne_zero_iff (rename (R := \u211d) some)\n      (rename_injective _ (Option.some_injective _))).2 hmU)\n      ((map_ne_zero_iff (rename (R := \u211d) (fun _ : Unit \u21a6 (none : Option \u03c4)))\n        (rename_injective _ hinjV)).2 hmV) _ hr0,\n    index_rename (Option.some_injective _), index_rename hinjV]\n  have hU\u0398 := index_le_\u0398 hU (h := h \u2218 some)\n    fun j \u21a6 hh (some j)\n  have hV\u0398 := index_le_\u0398 hVmem\n    (q := fun _ : Unit \u21a6 q none) (h := fun _ \u21a6 h none) fun _ \u21a6 hh none\n  rw [index_mul_left_weights] at hU\u0398 hV\u0398\n  have hlR : (0 : \u211d) < l := by exact_mod_cast hl\n  rw [lem6\u03a6, mul_add, add_comm]\n  exact add_le_add ((div_le_iff\u2080' hlR).1 hV\u0398) ((div_le_iff\u2080' hlR).1 hU\u0398)\n\nomit [DecidableEq \u03c4] in\n/-- If the determinant `F = det (\u2202_{D_\u03bc} \u2202_{x_p}^\u03bd R)_{\u03bc,\u03bd}` factors as\n`U(x_1, \u2026, x_{p-1}) V(x_p)` with suitably bounded degrees, then its index at `h/q` is at most\n`l \u03a6`, where `\u03a6` is formed with the coefficient bound `M` of Lemma 6.\nSource: \u00a75, proof of Lemma 6, eq. (17) (\"`ind F \u2264 l \u03a6`\"). -/",
+    "plan": "Retain project-local index API; if migrating its implementation, rewrite by the verified whole-function index/infDegree bridge. If deleting the name, expand to that exact expression in statement and body; preserve nonvanishing and zero-weight hypotheses."
+  },
+  {
+    "name": "Roth.index_det_le",
+    "file": "Roth/Theta.lean",
+    "line": 457,
+    "reference_lines": [
+      465
+    ],
+    "identifier_occurrences": 1,
+    "source_sha256": "ea447150977f3acf5259cb27889019b9ac32195614f91bc78ed3454c26ca82f5",
+    "source_fragment": "theorem index_det_le {r : Option \u03c4 \u2192 \u2115} (hr0 : \u2200 j, 0 < r j) {r\u2081 : \u2115} (hr\u2081 : \u2200 j, r j \u2264 r\u2081)\n    {q : Option \u03c4 \u2192 \u2115} {B : \u211d} {R : MvPolynomial (Option \u03c4) \u2124} (hR : R \u2208 RSet B r)\n    {h : Option \u03c4 \u2192 \u2124} (hh : \u2200 j, IsCoprime (h j) (q j : \u2124)) {l : \u2115} (hl : 1 \u2264 l)\n    {D : Fin l \u2192 (\u03c4 \u2192\u2080 \u2115)} {U : MvPolynomial \u03c4 \u2124} {V : Polynomial \u2124} (hU : U \u2260 0) (hV : V \u2260 0)\n    (hUd : \u2200 j, degreeOf j U \u2264 l * r (some j)) (hVd : V.natDegree \u2264 l * r none)\n    (hF : (Matrix.of fun \u03bc \u03bd : Fin l \u21a6\n        hasseDeriv ((D \u03bc).mapDomain some + Finsupp.single none (\u03bd : \u2115)) R).det =\n      rename some U * Polynomial.aeval (X none : MvPolynomial (Option \u03c4) \u2124) V) :\n    index (map (Int.castRingHom \u211d) (Matrix.of fun \u03bc \u03bd : Fin l \u21a6\n        hasseDeriv ((D \u03bc).mapDomain some + Finsupp.single none (\u03bd : \u2115)) R).det)\n      (fun j \u21a6 (h j : \u211d) / q j) r \u2264 l * lem6\u03a6 q r (lem6M (Fintype.card \u03c4 + 1) r\u2081 B l) l := by\n  classical\n  -- Step 1: the coefficients of `F` are bounded by `M`.\n  have hFcoef (d) : |(((Matrix.of fun \u03bc \u03bd : Fin l \u21a6 hasseDeriv\n      ((D \u03bc).mapDomain some + Finsupp.single none (\u03bd : \u2115)) R).det.coeff d : \u2124) : \u211d)| \u2264\n      lem6M (Fintype.card \u03c4 + 1) r\u2081 B l := by\n    simpa only [lem6M, Finset.prod_const, Finset.sum_const, Finset.card_univ,\n      Fintype.card_option, nsmul_eq_mul, Nat.cast_id, pow_mul, mul_right_comm] using\n      abs_coeff_det_hasseDeriv_le _ R (r := fun _ \u21a6 r\u2081) (fun j \u21a6 (hR.2.1 j).trans (hr\u2081 j))\n        ((abs_nonneg ((R.coeff 0 : \u2124) : \u211d)).trans (hR.2.2 0)) hR.2.2 d\n  -- Step 2: the coefficients of `U` and `V` are bounded by `M`.\n  have hUc : \u2200 a, |((U.coeff a : \u2124) : \u211d)| \u2264 lem6M (Fintype.card \u03c4 + 1) r\u2081 B l := fun a \u21a6 by\n    have h1 := hFcoef (a.mapDomain some + Finsupp.single none V.natDegree)\n    rw [hF, coeff_rename_mul_aeval, Int.cast_mul, abs_mul] at h1\n    exact (le_mul_of_one_le_right (abs_nonneg _) (by\n      exact_mod_cast Int.one_le_abs (Polynomial.leadingCoeff_ne_zero.2 hV))).trans h1\n  have hVc : \u2200 b, |((V.coeff b : \u2124) : \u211d)| \u2264 lem6M (Fintype.card \u03c4 + 1) r\u2081 B l := fun b \u21a6 by\n    obtain \u27e8a\u2080, ha\u2080\u27e9 := MvPolynomial.ne_zero_iff.1 hU\n    have h1 := hFcoef (a\u2080.mapDomain some + Finsupp.single none b)\n    rw [hF, coeff_rename_mul_aeval, Int.cast_mul, abs_mul] at h1\n    exact (le_mul_of_one_le_left (abs_nonneg _) (by\n      exact_mod_cast Int.one_le_abs ha\u2080)).trans h1\n  -- Step 3: Lemma 4-2, the index of the product of polynomials in separate variables.\n  rw [hF]\n  exact index_separated_mul_le_aux hr0 hh hl \u27e8hU, hUd, hUc\u27e9 hV hVd hVc\n\nomit [DecidableEq \u03c4] in",
+    "plan": "Retain project-local index API; if migrating its implementation, rewrite by the verified whole-function index/infDegree bridge. If deleting the name, expand to that exact expression in statement and body; preserve nonvanishing and zero-weight hypotheses."
+  },
+  {
+    "name": "Roth.index_le_lem6",
+    "file": "Roth/Theta.lean",
+    "line": 556,
+    "reference_lines": [
+      561,
+      586
+    ],
+    "identifier_occurrences": 2,
+    "source_sha256": "ea447150977f3acf5259cb27889019b9ac32195614f91bc78ed3454c26ca82f5",
+    "source_fragment": "theorem index_le_lem6 {\u03b4 : \u211d} (h\u03b40 : 0 \u2264 \u03b4) (h\u03b41 : \u03b4 \u2264 1) {r : Option \u03c4 \u2192 \u2115}\n    (hrp : 3 \u2264 (r none : \u211d)) (hratio : \u2200 j, (r none : \u211d) \u2264 \u03b4 * r (some j)) {r\u2081 : \u2115}\n    (hr\u2081 : \u2200 j, r j \u2264 r\u2081) {q : Option \u03c4 \u2192 \u2115} (_hq : \u2200 j, 0 < q j) {B : \u211d}\n    {R : MvPolynomial (Option \u03c4) \u2124} (hR : R \u2208 RSet B r) {h : Option \u03c4 \u2192 \u2124}\n    (hh : \u2200 j, IsCoprime (h j) (q j : \u2124)) : \u2203 l, 1 \u2264 l \u2227 l \u2264 r none + 1 \u2227\n      index (map (Int.castRingHom \u211d) R) (fun j \u21a6 (h j : \u211d) / q j) r \u2264\n        2 * (lem6\u03a6 q r (lem6M (Fintype.card \u03c4 + 1) r\u2081 B l) l +\n          \u221a(lem6\u03a6 q r (lem6M (Fintype.card \u03c4 + 1) r\u2081 B l) l) + \u221a\u03b4) := by\n  -- Retain the paper's positive-denominator setting.\n  classical\n  have hrp0 : (0 : \u211d) < r none := (by norm_num : (0 : \u211d) < 3).trans_le hrp\n  have hr0 : \u2200 j, 0 < r j := fun j \u21a6 by\n    cases j with\n    | none => exact_mod_cast hrp0\n    | some j => exact_mod_cast pos_of_mul_pos_right (hrp0.trans_le (hratio j)) h\u03b40\n  obtain \u27e8l, hl, hl', D, hD, U, V, hU, hV, hUd, hVd, hF\u27e9 := exists_det_eq_mul hR.1 hR.2.1\n  refine \u27e8l, hl, hl', ?_\u27e9\n  let \u03b1 : Option \u03c4 \u2192 \u211d := fun j \u21a6 (h j : \u211d) / q j\n  let \u03a6 := lem6\u03a6 q r (lem6M (Fintype.card \u03c4 + 1) r\u2081 B l) l\n  -- The two bounds for the index of `F`.\n  have hlower := sum_max_sub_le_index_det D hD (mapped_det_ne_zero_aux hU hV hF) \u03b1 hr0\n    (fun d hd \u21a6 weight_le_delta_aux h\u03b40 hratio (hd.trans (Nat.sub_le_iff_le_add.2 hl')))\n  have hupper := index_det_le hr0 hr\u2081 hR hh hl hU hV hUd hVd hF\n  simp only [RingHom.map_det, RingHom.mapMatrix_apply, Matrix.map, Matrix.of_apply] at hupper\n  simp only [hasseDeriv_map] at hlower\n  -- Both summands of `\u03a6` are nonnegative.\n  apply index_numeric_bound_aux (\u03a6 := \u03a6) (l := (l : \u211d))\n    (add_nonneg (\u0398_nonneg _) (\u0398_nonneg _)) h\u03b41 hrp\n    (by exact_mod_cast (show 0 < l from hl))\n    (by exact_mod_cast hl')\n  exact (min_le_sum_max (\u03b8 := index (map (Int.castRingHom \u211d) R) \u03b1 r) (rp := r none) l).trans\n    (by simpa only [mul_add] using sub_le_iff_le_add.1 (hlower.trans hupper))\n\nomit [DecidableEq \u03c4] in\n/-- **Lemma 6**: `\u0398_p(B; q; r)` is at most twice the maximum of `\u03a6 + \u03a6^{1/2} + \u03b4^{1/2}` over\n`1 \u2264 l \u2264 r_p + 1`. Source: \u00a75, Lemma `roth:lem6` (\"`\u0398_p(B; q; r) \u2264 2 max_l (\u03a6 + \u03a6^{1/2} + \u03b4^{1/2})`,\nwhere the maximum is taken over integers `l` satisfying `1 \u2264 l \u2264 r_p + 1`\"). -/",
+    "plan": "Retain project-local index API; if migrating its implementation, rewrite by the verified whole-function index/infDegree bridge. If deleting the name, expand to that exact expression in statement and body; preserve nonvanishing and zero-weight hypotheses."
+  },
+  {
+    "name": "Roth.index_le_weight",
+    "file": "Roth/Index.lean",
+    "line": 69,
+    "reference_lines": [
+      70
+    ],
+    "identifier_occurrences": 1,
+    "source_sha256": "e22ab0acd820d9ae765e6f70279edbc0d626052372611806c4d5464ca3d377f1",
+    "source_fragment": "theorem index_le_weight {P : MvPolynomial \u03c3 \u211d} {\u03b1 : \u03c3 \u2192 \u211d} {r : \u03c3 \u2192 \u2115} {d : \u03c3 \u2192\u2080 \u2115}\n    (h : eval \u03b1 (hasseDeriv d P) \u2260 0) : index P \u03b1 r \u2264 weight r d :=\n  csInf_le ((taylor \u03b1 P).support.finite_toSet.image (weight r)).bddBelow\n    (Set.mem_image_of_mem _ (Finset.mem_coe.2 (mem_support_taylor_iff.2 h)))\n\n/-- For nonzero `P`, the index is attained by some multi-index `d` with `(\u0394_d P)(\u03b1) \u2260 0`.\nSource: \u00a74, definition of the index (\"Thus this is an attained minimum\"). -/",
+    "plan": "Retain project-local index API; if migrating its implementation, rewrite by the verified whole-function index/infDegree bridge. If deleting the name, expand to that exact expression in statement and body; preserve nonvanishing and zero-weight hypotheses."
+  },
+  {
+    "name": "Roth.exists_weight_eq_index",
+    "file": "Roth/Index.lean",
+    "line": 76,
+    "reference_lines": [
+      77
+    ],
+    "identifier_occurrences": 1,
+    "source_sha256": "e22ab0acd820d9ae765e6f70279edbc0d626052372611806c4d5464ca3d377f1",
+    "source_fragment": "theorem exists_weight_eq_index {P : MvPolynomial \u03c3 \u211d} (hP : P \u2260 0) (\u03b1 : \u03c3 \u2192 \u211d) (r : \u03c3 \u2192 \u2115) :\n    \u2203 d, eval \u03b1 (hasseDeriv d P) \u2260 0 \u2227 weight r d = index P \u03b1 r := by\n  obtain \u27e8d, hd, hdw\u27e9 :=\n    (show (weight r '' ((taylor \u03b1 P).support : Set (\u03c3 \u2192\u2080 \u2115))).Nonempty by\n      simpa using hP).csInf_mem ((taylor \u03b1 P).support.finite_toSet.image (weight r))\n  exact \u27e8d, mem_support_taylor_iff.1 hd, hdw\u27e9\n\n/-- The characterisation of lower bounds for the index of a nonzero polynomial: `c \u2264 index P \u03b1 r`\niff every multi-index `d` with `(\u0394_d P)(\u03b1) \u2260 0` has weight at least `c`. -/",
+    "plan": "Retain project-local index API; if migrating its implementation, rewrite by the verified whole-function index/infDegree bridge. If deleting the name, expand to that exact expression in statement and body; preserve nonvanishing and zero-weight hypotheses."
+  },
+  {
+    "name": "Roth.le_index_iff",
+    "file": "Roth/Index.lean",
+    "line": 85,
+    "reference_lines": [
+      86
+    ],
+    "identifier_occurrences": 1,
+    "source_sha256": "e22ab0acd820d9ae765e6f70279edbc0d626052372611806c4d5464ca3d377f1",
+    "source_fragment": "theorem le_index_iff {P : MvPolynomial \u03c3 \u211d} (hP : P \u2260 0) {\u03b1 : \u03c3 \u2192 \u211d} {r : \u03c3 \u2192 \u2115} {c : \u211d} :\n    c \u2264 index P \u03b1 r \u2194 \u2200 d, eval \u03b1 (hasseDeriv d P) \u2260 0 \u2192 c \u2264 weight r d := by\n  refine \u27e8fun h d hd \u21a6 h.trans (index_le_weight hd), fun h \u21a6 ?_\u27e9\n  refine le_csInf (by simpa using hP) ?_\n  rintro _ \u27e8d, hd, rfl\u27e9\n  exact h d (mem_support_taylor_iff.1 hd)\n\n/-- The index is nonnegative. Source: \u00a74, first lemma on the index (\"We have `ind(P) \u2265 0`\"). -/",
+    "plan": "Retain project-local index API; if migrating its implementation, rewrite by the verified whole-function index/infDegree bridge. If deleting the name, expand to that exact expression in statement and body; preserve nonvanishing and zero-weight hypotheses."
+  },
+  {
+    "name": "Roth.index_nonneg",
+    "file": "Roth/Index.lean",
+    "line": 93,
+    "reference_lines": [
+      93
+    ],
+    "identifier_occurrences": 1,
+    "source_sha256": "e22ab0acd820d9ae765e6f70279edbc0d626052372611806c4d5464ca3d377f1",
+    "source_fragment": "theorem index_nonneg (P : MvPolynomial \u03c3 \u211d) (\u03b1 : \u03c3 \u2192 \u211d) (r : \u03c3 \u2192 \u2115) : 0 \u2264 index P \u03b1 r :=\n  Real.sInf_nonneg (Set.forall_mem_image.mpr fun d _ \u21a6 weight_nonneg r d)\n\n/-- For nonzero `P` and positive weights, the index vanishes iff `P(\u03b1) \u2260 0`.\nSource: \u00a74, first lemma on the index (\"`ind(P) = 0` if and only if `P(\u03b1_1, \u2026, \u03b1_p) \u2260 0`\"). -/",
+    "plan": "Retain project-local index API; if migrating its implementation, rewrite by the verified whole-function index/infDegree bridge. If deleting the name, expand to that exact expression in statement and body; preserve nonvanishing and zero-weight hypotheses."
+  },
+  {
+    "name": "Roth.index_eq_zero_iff",
+    "file": "Roth/Index.lean",
+    "line": 98,
+    "reference_lines": [
+      99
+    ],
+    "identifier_occurrences": 1,
+    "source_sha256": "e22ab0acd820d9ae765e6f70279edbc0d626052372611806c4d5464ca3d377f1",
+    "source_fragment": "theorem index_eq_zero_iff {P : MvPolynomial \u03c3 \u211d} (hP : P \u2260 0) {r : \u03c3 \u2192 \u2115} (hr : \u2200 j, 0 < r j)\n    (\u03b1 : \u03c3 \u2192 \u211d) : index P \u03b1 r = 0 \u2194 eval \u03b1 P \u2260 0 := by\n  refine \u27e8fun h \u21a6 ?_, fun h \u21a6 (index_nonneg P \u03b1 r).antisymm' ?_\u27e9\n  \u00b7 obtain \u27e8d, hd, hdw\u27e9 := exists_weight_eq_index hP \u03b1 r\n    rw [h, weight_eq_zero_iff hr] at hdw\n    subst hdw\n    simpa [hasseDeriv_zero_apply] using hd\n  \u00b7 simpa using index_le_weight (r := r) (d := 0) (by simpa [hasseDeriv_zero_apply] using h)\n\n/-- Applying `\u0394_k` lowers the index by at most the weight of `k`.\nSource: \u00a74, Lemma `lem:index-of-derivative` (\"`ind(\u0394_k P) \u2265 ind(P) - \u2211 k_j / r_j`\"). -/",
+    "plan": "Retain project-local index API; if migrating its implementation, rewrite by the verified whole-function index/infDegree bridge. If deleting the name, expand to that exact expression in statement and body; preserve nonvanishing and zero-weight hypotheses."
+  },
+  {
+    "name": "Roth.index_sub_weight_le_index_hasseDeriv",
+    "file": "Roth/Index.lean",
+    "line": 109,
+    "reference_lines": [
+      111,
+      111
+    ],
+    "identifier_occurrences": 2,
+    "source_sha256": "e22ab0acd820d9ae765e6f70279edbc0d626052372611806c4d5464ca3d377f1",
+    "source_fragment": "theorem index_sub_weight_le_index_hasseDeriv {P : MvPolynomial \u03c3 \u211d} {k : \u03c3 \u2192\u2080 \u2115}\n    (hk : hasseDeriv k P \u2260 0) (\u03b1 : \u03c3 \u2192 \u211d) (r : \u03c3 \u2192 \u2115) :\n    index P \u03b1 r - weight r k \u2264 index (hasseDeriv k P) \u03b1 r := by\n  obtain \u27e8i, hi, hiw\u27e9 := exists_weight_eq_index hk \u03b1 r\n  rw [hasseDeriv_hasseDeriv, smul_eq_C_mul, map_mul, eval_C, mul_ne_zero_iff] at hi\n  exact sub_le_iff_le_add.2 (by simpa [weight_add, hiw] using index_le_weight (r := r) hi.2)\n\n/-- Source: \u00a74, Lemma 4-1 (\"`ind(P + Q) \u2265 min(ind P, ind Q)`\"), in the form used in the proof of\nLemma 6 (a common lower bound for the nonzero summands is a lower bound for a nonzero sum). -/",
+    "plan": "Retain project-local index API; if migrating its implementation, rewrite by the verified whole-function index/infDegree bridge. If deleting the name, expand to that exact expression in statement and body; preserve nonvanishing and zero-weight hypotheses."
+  },
+  {
+    "name": "Roth.le_index_sum",
+    "file": "Roth/Index.lean",
+    "line": 118,
+    "reference_lines": [
+      119,
+      120
+    ],
+    "identifier_occurrences": 2,
+    "source_sha256": "e22ab0acd820d9ae765e6f70279edbc0d626052372611806c4d5464ca3d377f1",
+    "source_fragment": "theorem le_index_sum {\u03b9 : Type*} {s : Finset \u03b9} {f : \u03b9 \u2192 MvPolynomial \u03c3 \u211d} {\u03b1 : \u03c3 \u2192 \u211d} {r : \u03c3 \u2192 \u2115}\n    (hs : \u2211 i \u2208 s, f i \u2260 0) {c : \u211d} (hf : \u2200 i \u2208 s, f i \u2260 0 \u2192 c \u2264 index (f i) \u03b1 r) :\n    c \u2264 index (\u2211 i \u2208 s, f i) \u03b1 r := by\n  refine (le_index_iff hs).2 fun d hd \u21a6 ?_\n  rw [map_sum, map_sum] at hd\n  obtain \u27e8i, hi, hid\u27e9 := Finset.exists_ne_zero_of_sum_ne_zero hd\n  have hfi : f i \u2260 0 := fun h0 \u21a6 hid (by rw [h0, map_zero, map_zero])\n  exact (le_index_iff hfi).1 (hf i hi hfi) d hid\n\n/-- The rational weight of `d` as a natural-number weight divided by `D = \u220f r_j`.\nSource: \u00a74, Lean implementation note (\"set `D = \u220f r_j` and use the natural weights\n`w_j = D / r_j`\"). -/",
+    "plan": "Retain project-local index API; if migrating its implementation, rewrite by the verified whole-function index/infDegree bridge. If deleting the name, expand to that exact expression in statement and body; preserve nonvanishing and zero-weight hypotheses."
+  },
+  {
+    "name": "Roth.index_eq_weightedOrder_div",
+    "file": "Roth/Index.lean",
+    "line": 143,
+    "reference_lines": [
+      144
+    ],
+    "identifier_occurrences": 1,
+    "source_sha256": "e22ab0acd820d9ae765e6f70279edbc0d626052372611806c4d5464ca3d377f1",
+    "source_fragment": "theorem index_eq_weightedOrder_div {P : MvPolynomial \u03c3 \u211d} (hP : P \u2260 0) {r : \u03c3 \u2192 \u2115}\n    (hr : \u2200 j, 0 < r j) (\u03b1 : \u03c3 \u2192 \u211d) : index P \u03b1 r =\n      (((taylor \u03b1 P : MvPowerSeries \u03c3 \u211d).weightedOrder fun j \u21a6 (\u220f i, r i) / r j).toNat : \u211d) /\n        \u220f i, r i := by\n  set w : \u03c3 \u2192 \u2115 := fun j \u21a6 (\u220f i, r i) / r j\n  set F : MvPowerSeries \u03c3 \u211d := \u2191(taylor \u03b1 P)\n  obtain \u27e8d, hd, hdw\u27e9 := MvPowerSeries.exists_coeff_ne_zero_and_weightedOrder w (f := F)\n    ((MvPowerSeries.ne_zero_iff_weightedOrder_finite w).1 (by simpa [F] using hP))\n  apply le_antisymm\n  \u00b7 rw [\u2190 hdw, ENat.toNat_natCast, \u2190 weight_eq_finsuppWeight_div hr]\n    exact index_le_weight (by simpa [F, MvPolynomial.coeff_coe, coeff_taylor] using hd)\n  \u00b7 refine (le_index_iff hP).2 fun e he \u21a6 ?_\n    rw [weight_eq_finsuppWeight_div hr]\n    refine div_le_div_of_nonneg_right ?_ (Nat.cast_nonneg _)\n    exact_mod_cast ENat.toNat_le_toNat (MvPowerSeries.weightedOrder_le w (f := F) (d := e)\n      (by simpa [F, MvPolynomial.coeff_coe, coeff_taylor] using he)) (by simp)\n\n/-- The index is additive on products of nonzero polynomials.\nSource: \u00a74, Lemma 4-1 (\"`ind(P Q) = ind(P) + ind(Q)`\"). -/",
+    "plan": "Retain project-local index API; if migrating its implementation, rewrite by the verified whole-function index/infDegree bridge. If deleting the name, expand to that exact expression in statement and body; preserve nonvanishing and zero-weight hypotheses."
+  },
+  {
+    "name": "Roth.index_mul",
+    "file": "Roth/Index.lean",
+    "line": 162,
+    "reference_lines": [
+      163,
+      163,
+      163
+    ],
+    "identifier_occurrences": 3,
+    "source_sha256": "e22ab0acd820d9ae765e6f70279edbc0d626052372611806c4d5464ca3d377f1",
+    "source_fragment": "theorem index_mul {P Q : MvPolynomial \u03c3 \u211d} (hP : P \u2260 0) (hQ : Q \u2260 0) (\u03b1 : \u03c3 \u2192 \u211d) {r : \u03c3 \u2192 \u2115}\n    (hr : \u2200 j, 0 < r j) : index (P * Q) \u03b1 r = index P \u03b1 r + index Q \u03b1 r := by\n  rw [index_eq_weightedOrder_div hP hr, index_eq_weightedOrder_div hQ hr,\n    index_eq_weightedOrder_div (mul_ne_zero hP hQ) hr, \u2190 add_div, map_mul, MvPolynomial.coe_mul,\n    MvPowerSeries.weightedOrder_mul]\n  congr 1\n  have hfin : \u2200 R : MvPolynomial \u03c3 \u211d, R \u2260 0 \u2192\n      ((taylor \u03b1 R : MvPowerSeries \u03c3 \u211d).weightedOrder fun j \u21a6 (\u220f i, r i) / r j) \u2260 \u22a4 := by simp\n  rw [ENat.toNat_add (hfin P hP) (hfin Q hQ), Nat.cast_add]\n\n/-- The index is additive on finite products of nonzero polynomials.\nSource: \u00a74, Lemma 4-1, iterated (\"`ind \u220f_\u03bd ... = \u2211_\u03bd ind ...`\", as used in the proof of\nLemma 6). -/",
+    "plan": "Retain project-local index API; if migrating its implementation, rewrite by the verified whole-function index/infDegree bridge. If deleting the name, expand to that exact expression in statement and body; preserve nonvanishing and zero-weight hypotheses."
+  },
+  {
+    "name": "Roth.index_prod",
+    "file": "Roth/Index.lean",
+    "line": 175,
+    "reference_lines": [
+      177,
+      177
+    ],
+    "identifier_occurrences": 2,
+    "source_sha256": "e22ab0acd820d9ae765e6f70279edbc0d626052372611806c4d5464ca3d377f1",
+    "source_fragment": "theorem index_prod {\u03b9 : Type*} (s : Finset \u03b9) {f : \u03b9 \u2192 MvPolynomial \u03c3 \u211d} (hf : \u2200 i \u2208 s, f i \u2260 0)\n    (\u03b1 : \u03c3 \u2192 \u211d) {r : \u03c3 \u2192 \u2115} (hr : \u2200 j, 0 < r j) :\n    index (\u220f i \u2208 s, f i) \u03b1 r = \u2211 i \u2208 s, index (f i) \u03b1 r := by\n  classical\n  induction s using Finset.induction_on with\n  | empty =>\n    rw [Finset.prod_empty, Finset.sum_empty]\n    exact (index_eq_zero_iff one_ne_zero hr \u03b1).2 (by simp)\n  | insert a s has ih =>\n    rw [Finset.prod_insert has, Finset.sum_insert has,\n      index_mul (hf a (Finset.mem_insert_self a s))\n        (Finset.prod_ne_zero_iff.2 fun i hi \u21a6 hf i (Finset.mem_insert_of_mem hi)) \u03b1 hr,\n      ih fun i hi \u21a6 hf i (Finset.mem_insert_of_mem hi)]\n\n/-- Source: \u00a75, proof of Lemma 6 (\"Multiplication by a sign does not change the index\"). -/",
+    "plan": "Retain project-local index API; if migrating its implementation, rewrite by the verified whole-function index/infDegree bridge. If deleting the name, expand to that exact expression in statement and body; preserve nonvanishing and zero-weight hypotheses."
+  },
+  {
+    "name": "Roth.index_neg",
+    "file": "Roth/Index.lean",
+    "line": 190,
+    "reference_lines": [
+      191,
+      191,
+      192
+    ],
+    "identifier_occurrences": 3,
+    "source_sha256": "e22ab0acd820d9ae765e6f70279edbc0d626052372611806c4d5464ca3d377f1",
+    "source_fragment": "theorem index_neg (P : MvPolynomial \u03c3 \u211d) (\u03b1 : \u03c3 \u2192 \u211d) (r : \u03c3 \u2192 \u2115) :\n    index (-P) \u03b1 r = index P \u03b1 r := by\n  simp [index, support_neg]\n\n/-- Source: \u00a74, end (\"`ind(cP; \u03b1; r) = ind(P; \u03b1; r)`\" for nonzero `c`). -/",
+    "plan": "Retain project-local index API; if migrating its implementation, rewrite by the verified whole-function index/infDegree bridge. If deleting the name, expand to that exact expression in statement and body; preserve nonvanishing and zero-weight hypotheses."
+  },
+  {
+    "name": "Roth.index_C_mul",
+    "file": "Roth/Index.lean",
+    "line": 195,
+    "reference_lines": [
+      196,
+      196,
+      197,
+      197
+    ],
+    "identifier_occurrences": 4,
+    "source_sha256": "e22ab0acd820d9ae765e6f70279edbc0d626052372611806c4d5464ca3d377f1",
+    "source_fragment": "theorem index_C_mul {c : \u211d} (hc : c \u2260 0) (P : MvPolynomial \u03c3 \u211d) (\u03b1 : \u03c3 \u2192 \u211d) (r : \u03c3 \u2192 \u2115) :\n    index (C c * P) \u03b1 r = index P \u03b1 r := by\n  rw [index, index, map_mul, taylor_C, \u2190 smul_eq_C_mul, support_smul_eq hc]\n\n/-- Source: \u00a74, end (\"`ind(P; \u03b1; l r) = (1/l) ind(P; \u03b1; r)`\"). -/",
+    "plan": "Retain project-local index API; if migrating its implementation, rewrite by the verified whole-function index/infDegree bridge. If deleting the name, expand to that exact expression in statement and body; preserve nonvanishing and zero-weight hypotheses."
+  },
+  {
+    "name": "Roth.index_mul_left_weights",
+    "file": "Roth/Index.lean",
+    "line": 200,
+    "reference_lines": [
+      201,
+      201,
+      207,
+      207
+    ],
+    "identifier_occurrences": 4,
+    "source_sha256": "e22ab0acd820d9ae765e6f70279edbc0d626052372611806c4d5464ca3d377f1",
+    "source_fragment": "theorem index_mul_left_weights {l : \u2115} (P : MvPolynomial \u03c3 \u211d) (\u03b1 : \u03c3 \u2192 \u211d) (r : \u03c3 \u2192 \u2115) :\n    index P \u03b1 (fun j \u21a6 l * r j) = index P \u03b1 r / l := by\n  have himg : weight (fun j \u21a6 l * r j) '' ((taylor \u03b1 P).support : Set (\u03c3 \u2192\u2080 \u2115)) =\n      (l : \u211d)\u207b\u00b9 \u2022 (weight r '' ((taylor \u03b1 P).support : Set (\u03c3 \u2192\u2080 \u2115))) := by\n    rw [\u2190 Set.image_smul, Set.image_image]\n    refine Set.image_congr fun d _ \u21a6 ?_\n    rw [weight_mul_left, smul_eq_mul, div_eq_inv_mul]\n  rw [index, index, himg, Real.sInf_smul_of_nonneg (by positivity), smul_eq_mul, div_eq_inv_mul]\n\n/-- The index is invariant under injective renaming of variables.\nSource: \u00a74, Lemma 4-2 and its Lean note (\"invariance under ... variable renaming\": the index\nof a polynomial embedded into a larger set of variables is its index in its own variables). -/",
+    "plan": "Retain project-local index API; if migrating its implementation, rewrite by the verified whole-function index/infDegree bridge. If deleting the name, expand to that exact expression in statement and body; preserve nonvanishing and zero-weight hypotheses."
+  },
+  {
+    "name": "Roth.index_rename",
+    "file": "Roth/Index.lean",
+    "line": 212,
+    "reference_lines": [
+      214,
+      214,
+      216,
+      216
+    ],
+    "identifier_occurrences": 4,
+    "source_sha256": "e22ab0acd820d9ae765e6f70279edbc0d626052372611806c4d5464ca3d377f1",
+    "source_fragment": "theorem index_rename {\u03c4 : Type*} [Fintype \u03c4] {f : \u03c3 \u2192 \u03c4} (hf : Function.Injective f)\n    (P : MvPolynomial \u03c3 \u211d) (\u03b1 : \u03c4 \u2192 \u211d) (r : \u03c4 \u2192 \u2115) :\n    index (rename f P) \u03b1 r = index P (\u03b1 \u2218 f) (r \u2218 f) := by\n  classical\n  rw [index, index, taylor_rename, support_rename_of_injective hf, Finset.coe_image,\n    Set.image_image]\n  refine congrArg sInf (Set.image_congr fun d _ \u21a6 ?_)\n  exact weight_mapDomain hf r d\n\n/-- If `P` has degree at most `r j` in each `x_j`, its index is at most the number of variables.\nSource: \u00a75 (\"Taylor's theorem gives a nonzero derivative with `0 \u2264 i_j \u2264 r_j`, of weight at\nmost `m`\"). -/",
+    "plan": "Retain project-local index API; if migrating its implementation, rewrite by the verified whole-function index/infDegree bridge. If deleting the name, expand to that exact expression in statement and body; preserve nonvanishing and zero-weight hypotheses."
+  },
+  {
+    "name": "Roth.index_le_card",
+    "file": "Roth/Index.lean",
+    "line": 224,
+    "reference_lines": [
+      225
+    ],
+    "identifier_occurrences": 1,
+    "source_sha256": "e22ab0acd820d9ae765e6f70279edbc0d626052372611806c4d5464ca3d377f1",
+    "source_fragment": "theorem index_le_card {P : MvPolynomial \u03c3 \u211d} (hP : P \u2260 0) {r : \u03c3 \u2192 \u2115} (hd : \u2200 j, degreeOf j P \u2264 r j)\n    (\u03b1 : \u03c3 \u2192 \u211d) : index P \u03b1 r \u2264 Fintype.card \u03c3 := by\n  obtain \u27e8d, hd0, hdw\u27e9 := exists_weight_eq_index hP \u03b1 r\n  exact hdw \u25b8 weight_le_card fun j \u21a6\n    (monomial_le_degreeOf j (mem_support_taylor_iff.2 hd0)).trans\n      ((degreeOf_taylor_le \u03b1 j P).trans (hd j))\n\n/-- In one variable, the index is the multiplicity of `\u03b1` as a root divided by the weight.\nSource: \u00a75, proof of Lemma 5 (\"Let `t` be the multiplicity of `h_1/q_1` as a root of `R`;\nTaylor's theorem gives `ind(R; h_1/q_1; r_1) = t/r_1`\"). -/",
+    "plan": "Retain project-local index API; if migrating its implementation, rewrite by the verified whole-function index/infDegree bridge. If deleting the name, expand to that exact expression in statement and body; preserve nonvanishing and zero-weight hypotheses."
+  },
+  {
+    "name": "Roth.index_unique",
+    "file": "Roth/Index.lean",
+    "line": 234,
+    "reference_lines": [
+      235
+    ],
+    "identifier_occurrences": 1,
+    "source_sha256": "e22ab0acd820d9ae765e6f70279edbc0d626052372611806c4d5464ca3d377f1",
+    "source_fragment": "theorem index_unique [Unique \u03c3] {P : MvPolynomial \u03c3 \u211d} (hP : P \u2260 0) (\u03b1 : \u03c3 \u2192 \u211d) (r : \u03c3 \u2192 \u2115) :\n    index P \u03b1 r =\n      (Polynomial.rootMultiplicity (\u03b1 default) (uniqueAlgEquiv \u211d \u03c3 P) : \u211d) / r default := by\n  set q := Polynomial.taylor (\u03b1 default) (uniqueAlgEquiv \u211d \u03c3 P) with hqdef\n  have key (d : \u03c3 \u2192\u2080 \u2115) : eval \u03b1 (hasseDeriv d P) = q.coeff (d default) := by\n    rw [Polynomial.taylor_coeff, \u2190 uniqueAlgEquiv_hasseDeriv, \u2190 Finsupp.unique_single d]\n    exact (eval\u2082_uniqueAlgEquiv (f := hasseDeriv d P) (\u03c6 := RingHom.id \u211d) (a := \u03b1)).symm\n  have hq : q \u2260 0 := by\n    rwa [hqdef, Ne, Polynomial.taylor_eq_zero, map_eq_zero_iff _ (uniqueAlgEquiv \u211d \u03c3).injective]\n  rw [Polynomial.rootMultiplicity_eq_natTrailingDegree, \u2190 Polynomial.taylor_apply]\n  apply le_antisymm\n  \u00b7 simpa [weight, hqdef] using index_le_weight (P := P) (\u03b1 := \u03b1) (r := r)\n      (d := Finsupp.single default q.natTrailingDegree)\n      (by simpa [key] using Polynomial.trailingCoeff_nonzero_iff_nonzero.2 hq)\n  \u00b7 refine (le_index_iff hP).2 fun d hd \u21a6 ?_\n    simpa [weight, hqdef] using div_le_div_of_nonneg_right\n      (by exact_mod_cast Polynomial.natTrailingDegree_le_of_ne_zero (key d \u25b8 hd))\n      (Nat.cast_nonneg (r default))\n\nend Roth",
+    "plan": "Retain project-local index API; if migrating its implementation, rewrite by the verified whole-function index/infDegree bridge. If deleting the name, expand to that exact expression in statement and body; preserve nonvanishing and zero-weight hypotheses."
+  },
+  {
+    "name": "Roth.abs_eval_lt_of_le_index",
+    "file": "Roth/Main.lean",
+    "line": 380,
+    "reference_lines": [
+      381
+    ],
+    "identifier_occurrences": 1,
+    "source_sha256": "7750d80bac40feb9427f760f9524e30cb633d0a749d36e83e3c1376db4e10e29",
+    "source_fragment": "theorem abs_eval_lt_of_le_index {m : \u2115} [NeZero m] {Q : MvPolynomial (Fin m) \u211d} {r : Fin m \u2192 \u2115}\n    (hd : \u2200 j, degreeOf j Q \u2264 r j) {\u03b1 c : \u211d} (hidx : c \u2264 index Q (fun _ \u21a6 \u03b1) r) {h : Fin m \u2192 \u2124}\n    {q : Fin m \u2192 \u2115} (hq : \u2200 j, 0 < q j) {\u03ba : \u211d} (h\u03ba : 0 \u2264 \u03ba)\n    (happ : \u2200 j, |\u03b1 - (h j : \u211d) / q j| \u2264 1 / (q j : \u211d) ^ \u03ba)\n    (hqr : \u2200 j, (q 0 : \u211d) ^ ((r 0 : \u211d) / r j) \u2264 q j) {C : \u211d}\n    (hC : \u2200 i : Fin m \u2192\u2080 \u2115, |eval (fun _ \u21a6 \u03b1) (hasseDeriv i Q)| < C) :\n    |eval (fun j \u21a6 (h j : \u211d) / q j) Q| < (\u220f j, ((r j : \u211d) + 1)) * C *\n      (q 0 : \u211d) ^ (-(r 0 : \u211d) * c * \u03ba) := by\n  have hT : 0 < (q 0 : \u211d) ^ (-(r 0 : \u211d) * c * \u03ba) :=\n    Real.rpow_pos_of_pos (by exact_mod_cast hq 0) _\n  rw [eval_eq_sum_box (fun _ \u21a6 \u03b1) (fun j \u21a6 (h j : \u211d) / q j) r Q hd]\n  -- each term of the Taylor expansion is small\n  have hterm : \u2200 d \u2208 box r, |eval (fun _ \u21a6 \u03b1) (hasseDeriv d Q) *\n      \u220f j, ((h j : \u211d) / q j - \u03b1) ^ d j| < C * (q 0 : \u211d) ^ (-(r 0 : \u211d) * c * \u03ba) := by\n    intro d _\n    by_cases h0 : eval (fun _ \u21a6 \u03b1) (hasseDeriv d Q) = 0\n    \u00b7 rw [h0, zero_mul, abs_zero]\n      exact mul_pos (lt_of_le_of_lt (abs_nonneg _) (hC 0)) hT\n    rw [abs_mul]\n    exact mul_lt_mul_of_lt_of_le_of_nonneg_of_pos (hC d)\n      (abs_prod_pow_le_rpow_of_le_weight hq h\u03ba (fun j \u21a6 by\n        simpa only [abs_sub_comm] using happ j) hqr d (hidx.trans (index_le_weight h0)))\n      (abs_nonneg _) hT\n  refine (Finset.abs_sum_le_sum_abs _ _).trans_lt ?_\n  convert Finset.sum_lt_sum_of_nonempty \u27e80, mem_box.2 fun j \u21a6 Nat.zero_le _\u27e9 hterm using 1\n  rw [Finset.sum_const, card_box, nsmul_eq_mul]\n  push_cast\n  ring\n\n-- Choose the polynomial, coefficient bound, dimension and delta with compatible constraints.",
+    "plan": "Retain project-local index API; if migrating its implementation, rewrite by the verified whole-function index/infDegree bridge. If deleting the name, expand to that exact expression in statement and body; preserve nonvanishing and zero-weight hypotheses."
+  }
+]

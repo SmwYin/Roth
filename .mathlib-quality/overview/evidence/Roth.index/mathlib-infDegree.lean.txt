@@ -1,0 +1,30 @@
+variable [SemilatticeInf T] [OrderTop T] (D : A → T)
+
+/-- Let `R` be a semiring, let `A` be an `AddZeroClass`, let `T` be an `OrderTop`,
+and let `D : A → T` be a "degree" function.
+For an element `f : R[A]`, the element `infDegree f : T` is the infimum of all the elements in the
+support of `f`, or `⊤` if `f` is zero.
+Often, the Type `T` is `WithTop A`,
+If, further, `A` has a linear order, then this notion coincides with the usual one,
+using the minimum of the exponents. -/
+abbrev infDegree (f : R[A]) : T :=
+  f.coeff.support.inf D
+
+theorem le_infDegree_add (f g : R[A]) :
+    (f.infDegree D) ⊓ (g.infDegree D) ≤ (f + g).infDegree D :=
+  le_inf_support_coeff_add D f g
+
+variable {D} in
+theorem infDegree_withTop_some_comp {s : AddMonoidAlgebra R A} (hs : s.coeff.support.Nonempty) :
+    infDegree (WithTop.some ∘ D) s = infDegree D s := by
+  unfold AddMonoidAlgebra.infDegree
+  rw [← Finset.coe_inf' hs, Finset.inf'_eq_inf]
+
+theorem le_infDegree_mul [AddZeroClass A] [Add T] [AddLeftMono T] [AddRightMono T]
+    (D : AddHom A T) (f g : R[A]) :
+    f.infDegree D + g.infDegree D ≤ (f * g).infDegree D :=
+  le_inf_support_coeff_mul (fun {a b : A} => (map_add D a b).ge) _ _
+
+end InfDegree
+
+end Degrees

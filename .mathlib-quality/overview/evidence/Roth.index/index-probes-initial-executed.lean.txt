@@ -1,0 +1,65 @@
+namespace IndexAssessment133
+open MvPolynomial
+universe u v
+noncomputable def genericIndex {σ : Type u} {R : Type v} [CommSemiring R]
+    (P : MvPolynomial σ R) (α : σ → R) (w : σ → ℝ) : ℝ :=
+  sInf ((fun d : σ →₀ ℕ ↦ d.sum fun j n ↦ (n : ℝ) * w j) ''
+    ((aeval (fun j ↦ X j + C (α j)) P).support : Set (σ →₀ ℕ)))
+theorem directUnfold {σ : Type u} [Fintype σ] (P : MvPolynomial σ ℝ) (α : σ → ℝ)
+    (r : σ → ℕ) : Roth.index P α r =
+      sInf (Roth.weight r '' ((taylor α P).support : Set (σ →₀ ℕ))) := rfl
+theorem genericSpecialization {σ : Type u} [Fintype σ] (P : MvPolynomial σ ℝ) (α : σ → ℝ)
+    (r : σ → ℕ) : genericIndex P α (fun j ↦ (r j : ℝ)⁻¹) = Roth.index P α r := by
+  unfold genericIndex Roth.index Roth.weight taylor
+  congr 1
+  funext d
+  rw [Finsupp.sum_fintype _ _ (by simp)]
+  simp only [div_eq_mul_inv]
+theorem zero {σ : Type u} [Fintype σ] (α : σ → ℝ) (r : σ → ℕ) :
+    Roth.index 0 α r = 0 := by simp [Roth.index]
+theorem zeroWeights {σ : Type u} [Fintype σ] (P : MvPolynomial σ ℝ) (α : σ → ℝ) :
+    Roth.index P α (fun _ ↦ 0) = 0 := by
+  by_cases hP : P = 0
+  · subst P; simp [Roth.index]
+  · have hne : ((taylor α P).support : Set (σ →₀ ℕ)).Nonempty := by simpa using hP
+    simp [Roth.index, Roth.weight, Set.image_const hne]
+theorem beta {σ : Type u} [Fintype σ] (P : MvPolynomial σ ℝ) (α : σ → ℝ)
+    (r : σ → ℕ) : (fun Q ↦ Roth.index Q α r) P = Roth.index P α r := rfl
+#synth ConditionallyCompleteLinearOrder ℝ
+#synth Coe (MvPolynomial (Fin 2) ℝ) (MvPowerSeries (Fin 2) ℝ)
+theorem universeProbe (α : ULift.{1} (Fin 2) → ℝ) (r : ULift.{1} (Fin 2) → ℕ) :
+    Roth.index (0 : MvPolynomial (ULift.{1} (Fin 2)) ℝ) α r = 0 := by
+  simp [Roth.index]
+theorem fintypeIndependence {σ : Type u} (i j : Fintype σ) (P : MvPolynomial σ ℝ)
+    (α : σ → ℝ) (r : σ → ℕ) :
+    @Roth.index σ i P α r = @Roth.index σ j P α r := by
+  have : i = j := Subsingleton.elim _ _
+  subst j
+  rfl
+theorem noAutomaticUnfold {σ : Type u} [Fintype σ] (P : MvPolynomial σ ℝ) (α : σ → ℝ)
+    (r : σ → ℕ) : Roth.index P α r =
+      sInf (Roth.weight r '' ((taylor α P).support : Set (σ →₀ ℕ))) := by
+  fail_if_success simp only
+  rfl
+-- This is a project bridge, not an existing mathlib replacement.
+theorem positiveWeightedOrder {σ : Type u} [Fintype σ] (P : MvPolynomial σ ℝ) (α : σ → ℝ)
+    (r : σ → ℕ) (hr : ∀ j, 0 < r j) : Roth.index P α r =
+    (((taylor α P : MvPowerSeries σ ℝ).weightedOrder
+      (fun j ↦ (∏ i, r i) / r j)).toNat : ℝ) / ∏ i, r i := by
+  by_cases hP : P = 0
+  · subst P; simp [Roth.index]
+  · exact Roth.index_eq_weightedOrder_div hP hr α
+#check @AddMonoidAlgebra.infDegree
+#check @Finset.coe_inf'
+#check @Finset.inf'_eq_csInf_image
+#print axioms genericIndex
+#print axioms directUnfold
+#print axioms genericSpecialization
+#print axioms zero
+#print axioms zeroWeights
+#print axioms beta
+#print axioms universeProbe
+#print axioms fintypeIndependence
+#print axioms noAutomaticUnfold
+#print axioms positiveWeightedOrder
+end IndexAssessment133
