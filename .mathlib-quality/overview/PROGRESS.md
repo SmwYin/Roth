@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-26
 
-- Declarations completed: **114/293**
-- Next declaration: **#115 `Roth.hasseDeriv_kronecker_mem`** (Roth/GenWronskian.lean:190)
+- Declarations completed: **115/293**
+- Next declaration: **#116 `Roth.exists_hasseDeriv_kronecker_eq_sum`** (Roth/GenWronskian.lean:214)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -133,10 +133,10 @@ Last regenerated: 2026-10-26
 | 112 | `Roth.kronSpan` | Roth/GenWronskian.lean:149 | SKIP | [report](mathlibable/Roth.kronSpan.md) |
 | 113 | `Roth.derivative_kronHasse_aux` | Roth/GenWronskian.lean:153 | SKIP | [report](mathlibable/Roth.derivative_kronHasse_aux.md) |
 | 114 | `Roth.derivative_mem_kronSpan` | Roth/GenWronskian.lean:162 | SKIP | [report](mathlibable/Roth.derivative_mem_kronSpan.md) |
+| 115 | `Roth.hasseDeriv_kronecker_mem` | Roth/GenWronskian.lean:190 | SKIP | [report](mathlibable/Roth.hasseDeriv_kronecker_mem.md) |
 
 ## Remaining declarations (in processing order)
 
-- #115 `Roth.hasseDeriv_kronecker_mem` (Roth/GenWronskian.lean:190, private lemma)
 - #116 `Roth.exists_hasseDeriv_kronecker_eq_sum` (Roth/GenWronskian.lean:214, public theorem)
 - #117 `Roth.det_sum_rows` (Roth/GenWronskian.lean:228, public theorem)
 - #118 `Roth.wronskian_kronecker_eq_sum_aux` (Roth/GenWronskian.lean:238, private lemma)
