@@ -1,0 +1,38 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+import Mathlib.Algebra.Polynomial.CancelLeads
+import Mathlib.Algebra.MvPolynomial.PDeriv
+namespace MvPolynomial.TaylorZeroRaw
+#check_failure MvPolynomial.taylor_zero
+#check @MvPolynomial.C_0
+#print MvPolynomial.C_0
+#check @MvPolynomial.aeval_X_left_apply
+#print MvPolynomial.aeval_X_left_apply
+#check @MvPolynomial.aeval_X_left
+variable {σ R : Type*} [CommSemiring R]
+noncomputable def shift (α : σ → R) : MvPolynomial σ R →ₐ[R] MvPolynomial σ R :=
+  aeval fun j ↦ X j + C (α j)
+theorem composed (P : MvPolynomial σ R) : shift (fun _ ↦ (0 : R)) P = P := by
+  fail_if_success exact aeval_X_left_apply P
+  exact (congrArg (fun f : σ → MvPolynomial σ R ↦ aeval f P)
+    (funext fun j ↦
+      (congrArg (fun q : MvPolynomial σ R ↦ X j + q)
+        (map_zero (C : R →+* MvPolynomial σ R))).trans (add_zero (X j)))).trans
+    (aeval_X_left_apply P)
+theorem perturb {A : Type*} [CommSemiring A] [Algebra R A]
+    (g : σ → A) (P : MvPolynomial σ R) :
+    aeval (fun j ↦ g j + algebraMap R A (0 : R)) P = aeval g P :=
+  congrArg (fun f : σ → A ↦ aeval f P)
+    (funext fun j ↦
+      (congrArg (fun q : A ↦ g j + q) (map_zero (algebraMap R A))).trans
+        (add_zero (g j)))
+#print axioms composed
+#print axioms perturb
+end MvPolynomial.TaylorZeroRaw

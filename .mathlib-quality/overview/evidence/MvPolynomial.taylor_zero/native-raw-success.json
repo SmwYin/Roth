@@ -1,0 +1,93 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.Polynomial.HasseDeriv\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.LinearAlgebra.Matrix.ToLinearEquiv\nimport Mathlib.RingTheory.Polynomial.Wronskian\nimport Mathlib.LinearAlgebra.Vandermonde\nimport Mathlib.Data.ZMod.Defs\nimport Mathlib.Algebra.Field.ZMod\nimport Mathlib.Algebra.Order.Group.Int.Sum\nimport Mathlib.LinearAlgebra.Matrix.Polynomial\nimport Mathlib.Algebra.Polynomial.CancelLeads\nimport Mathlib.Algebra.MvPolynomial.PDeriv\nnamespace MvPolynomial.TaylorZeroRaw\n#check_failure MvPolynomial.taylor_zero\n#check @MvPolynomial.C_0\n#print MvPolynomial.C_0\n#check @MvPolynomial.aeval_X_left_apply\n#print MvPolynomial.aeval_X_left_apply\n#check @MvPolynomial.aeval_X_left\nvariable {σ R : Type*} [CommSemiring R]\nnoncomputable def shift (α : σ → R) : MvPolynomial σ R →ₐ[R] MvPolynomial σ R :=\n  aeval fun j ↦ X j + C (α j)\ntheorem composed (P : MvPolynomial σ R) : shift (fun _ ↦ (0 : R)) P = P := by\n  fail_if_success exact aeval_X_left_apply P\n  exact (congrArg (fun f : σ → MvPolynomial σ R ↦ aeval f P)\n    (funext fun j ↦\n      (congrArg (fun q : MvPolynomial σ R ↦ X j + q)\n        (map_zero (C : R →+* MvPolynomial σ R))).trans (add_zero (X j)))).trans\n    (aeval_X_left_apply P)\ntheorem perturb {A : Type*} [CommSemiring A] [Algebra R A]\n    (g : σ → A) (P : MvPolynomial σ R) :\n    aeval (fun j ↦ g j + algebraMap R A (0 : R)) P = aeval g P :=\n  congrArg (fun f : σ → A ↦ aeval f P)\n    (funext fun j ↦\n      (congrArg (fun q : A ↦ g j + q) (map_zero (algebraMap R A))).trans\n        (add_zero (g j)))\n#print axioms composed\n#print axioms perturb\nend MvPolynomial.TaylorZeroRaw\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown constant `MvPolynomial.taylor_zero`\",\n      \"line\": 13,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@C_0 : ∀ {R : Type u_1} {σ : Type u_2} [inst : CommSemiring R], C 0 = 0\",\n      \"line\": 14,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"theorem MvPolynomial.C_0.{u, u_1} : ∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R], C 0 = 0 :=\\nfun {R} {σ} [CommSemiring R] ↦ map_zero C\",\n      \"line\": 15,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@aeval_X_left_apply : ∀ {R : Type u_1} {σ : Type u_2} [inst : CommSemiring R] (p : MvPolynomial σ R), (aeval X) p = p\",\n      \"line\": 16,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"theorem MvPolynomial.aeval_X_left_apply.{u, u_1} : ∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R]\\n  (p : MvPolynomial σ R), (aeval X) p = p :=\\nfun {R} {σ} [CommSemiring R] p ↦ AlgHom.congr_fun aeval_X_left p\",\n      \"line\": 17,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@aeval_X_left : ∀ {R : Type u_1} {σ : Type u_2} [inst : CommSemiring R], aeval X = AlgHom.id R (MvPolynomial σ R)\",\n      \"line\": 18,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'MvPolynomial.TaylorZeroRaw.composed' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 36,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'MvPolynomial.TaylorZeroRaw.perturb' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 37,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown constant `MvPolynomial.taylor_zero`",
+          "line": 13,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@C_0 : ∀ {R : Type u_1} {σ : Type u_2} [inst : CommSemiring R], C 0 = 0",
+          "line": 14,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "theorem MvPolynomial.C_0.{u, u_1} : ∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R], C 0 = 0 :=\nfun {R} {σ} [CommSemiring R] ↦ map_zero C",
+          "line": 15,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@aeval_X_left_apply : ∀ {R : Type u_1} {σ : Type u_2} [inst : CommSemiring R] (p : MvPolynomial σ R), (aeval X) p = p",
+          "line": 16,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "theorem MvPolynomial.aeval_X_left_apply.{u, u_1} : ∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R]\n  (p : MvPolynomial σ R), (aeval X) p = p :=\nfun {R} {σ} [CommSemiring R] p ↦ AlgHom.congr_fun aeval_X_left p",
+          "line": 17,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@aeval_X_left : ∀ {R : Type u_1} {σ : Type u_2} [inst : CommSemiring R], aeval X = AlgHom.id R (MvPolynomial σ R)",
+          "line": 18,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'MvPolynomial.TaylorZeroRaw.composed' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 36,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'MvPolynomial.TaylorZeroRaw.perturb' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 37,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 1123
+}

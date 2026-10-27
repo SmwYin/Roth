@@ -1,0 +1,18 @@
+{
+  "declaration": "MvPolynomial.taylor_zero",
+  "kind": "theorem",
+  "type": "∀ {σ : Type u_3} {R : Type u_4} [CommSemiring R] (P : MvPolynomial σ R), (MvPolynomial.taylor fun x ↦ 0) P = P",
+  "what": "Zero translation fixes every multivariate polynomial.",
+  "how": "Normalize each generator X j+C 0 to X j, then apply aeval_X_left_apply.",
+  "hypotheses": "Arbitrary variable type σ, coefficient commutative semiring R, and polynomial P; no other hypotheses.",
+  "project_dependencies": [
+    "MvPolynomial.taylor"
+  ],
+  "caller_summary": "0 explicit refs; actual simp dependency in taylor_neg_taylor confirmed by disabling target and inspecting constants. Replacement inverse/injective/zero_iff chain verified.",
+  "mathlib_api_audit": "Existing map_zero(C), add_zero, aeval_X_left_apply compose exact old form; structural congrArg×2/funext/Eq.trans×2 explicit. aeval_X_left is bundled canonical identity. Univariate Polynomial.taylor_zero is only analogue.",
+  "moral_duplications": "Elementary identity-assignment law after zero normalization; not a direct definitional specialization.",
+  "generalization": "Already general within parent CommSemiring interface. Arbitrary-algebra zero-perturbation of any assignment verified separately; no unverified class weakening.",
+  "missing_api": "No mathematical API gap; parent translation naming/simp design independently assessed.",
+  "junk": "Not dead: simp attribute has verified implicit inverse-translation caller despite zero explicit references.",
+  "action": "NO-composable-from-mathlib: decline separate upstream theorem. If removing local lemma, inline three-fact composition in taylor_neg_taylor proof after taylor_taylor/neg_add_cancel normalization and rebuild project; retain locally while named translation simp API is desired. Read-only assessment, no production edits."
+}
