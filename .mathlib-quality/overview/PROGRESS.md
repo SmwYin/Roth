@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-27
 
-- Declarations completed: **268/293**
-- Next declaration: **#269 `Roth.approxSet_den_le_finite`** (Roth/Main.lean:73)
+- Declarations completed: **269/293**
+- Next declaration: **#270 `Roth.eventually_div_rpow_lt`** (Roth/Main.lean:103)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -287,10 +287,10 @@ Last regenerated: 2026-10-27
 | 266 | `Roth.main_lemma` | Roth/MainLemma.lean:735 | BORDERLINE-needs-human | [report](mathlibable/Roth.main_lemma.md) |
 | 267 | `Roth.approxSet` | Roth/Main.lean:55 | NO-composable-from-mathlib | [report](mathlibable/Roth.approxSet.md) |
 | 268 | `Roth.exists_nat_mul_isIntegral` | Roth/Main.lean:62 | NO-composable-from-mathlib | [report](mathlibable/Roth.exists_nat_mul_isIntegral.md) |
+| 269 | `Roth.approxSet_den_le_finite` | Roth/Main.lean:73 | BORDERLINE-needs-human | [report](mathlibable/Roth.approxSet_den_le_finite.md) |
 
 ## Remaining declarations (in processing order)
 
-- #269 `Roth.approxSet_den_le_finite` (Roth/Main.lean:73, public theorem)
 - #270 `Roth.eventually_div_rpow_lt` (Roth/Main.lean:103, public theorem)
 - #271 `Roth.reduction` (Roth/Main.lean:118, public theorem)
 - #272 `Roth.exists_monic_aeval_eq_zero` (Roth/Main.lean:142, public theorem)
