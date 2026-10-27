@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-27
 
-- Declarations completed: **209/293**
-- Next declaration: **#210 `Roth.weight_le_delta_aux`** (Roth/Theta.lean:494)
+- Declarations completed: **210/293**
+- Next declaration: **#211 `Roth.mapped_det_ne_zero_aux`** (Roth/Theta.lean:511)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -228,10 +228,10 @@ Last regenerated: 2026-10-27
 | 207 | `Roth.sum_max_sub_le_index_det` | Roth/Theta.lean:376 | BORDERLINE-needs-human | [report](mathlibable/Roth.sum_max_sub_le_index_det.md) |
 | 208 | `Roth.index_separated_mul_le_aux` | Roth/Theta.lean:414 | SKIP | [report](mathlibable/Roth.index_separated_mul_le_aux.md) |
 | 209 | `Roth.index_det_le` | Roth/Theta.lean:457 | BORDERLINE-needs-human | [report](mathlibable/Roth.index_det_le.md) |
+| 210 | `Roth.weight_le_delta_aux` | Roth/Theta.lean:494 | SKIP | [report](mathlibable/Roth.weight_le_delta_aux.md) |
 
 ## Remaining declarations (in processing order)
 
-- #210 `Roth.weight_le_delta_aux` (Roth/Theta.lean:494, private lemma)
 - #211 `Roth.mapped_det_ne_zero_aux` (Roth/Theta.lean:511, private lemma)
 - #212 `Roth.index_numeric_bound_aux` (Roth/Theta.lean:531, private lemma)
 - #213 `Roth.index_le_lem6` (Roth/Theta.lean:556, public theorem)
