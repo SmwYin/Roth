@@ -1,0 +1,24 @@
+private lemma eq_sum_aeval_basis_coeffNone_aux {R : Type*} [CommSemiring R]
+    {P : MvPolynomial (Option τ) R} {n l : ℕ}
+    (hP : P = ∑ ν : Fin (n + 1), X none ^ (ν : ℕ) * rename some (coeffNone P ν))
+    (b : Module.Basis (Fin l) R
+      (Submodule.span R (Set.range (fun ν : Fin (n + 1) ↦ coeffNone P ν)))) :
+    P = ∑ ρ, Polynomial.aeval (X none : MvPolynomial (Option τ) R) (∑ ν : Fin (n + 1),
+        Polynomial.C (b.repr ⟨coeffNone P ν, Submodule.subset_span ⟨ν, rfl⟩⟩ ρ) *
+          Polynomial.X ^ (ν : ℕ)) * rename some (b ρ : MvPolynomial τ R) := by
+  let a := fun (ν : Fin (n + 1)) ρ ↦ b.repr ⟨coeffNone P ν, Submodule.subset_span ⟨ν, rfl⟩⟩ ρ
+  have hexp : ∀ ν : Fin (n + 1), coeffNone P ν = ∑ ρ, a ν ρ • (b ρ : MvPolynomial τ R) := fun ν ↦ by
+    have h := congrArg Subtype.val (b.sum_repr ⟨coeffNone P ν, Submodule.subset_span ⟨ν, rfl⟩⟩)
+    simpa only [Submodule.coe_sum, Submodule.coe_smul] using h.symm
+  change P = ∑ ρ, Polynomial.aeval (X none : MvPolynomial (Option τ) R)
+    (∑ ν : Fin (n + 1), Polynomial.C (a ν ρ) * Polynomial.X ^ (ν : ℕ)) *
+      rename some (b ρ : MvPolynomial τ R)
+  conv_lhs => rw [hP]
+  simp_rw [hexp, map_sum, Finset.mul_sum]
+  rw [Finset.sum_comm]
+  refine Finset.sum_congr rfl fun ρ _ ↦ ?_
+  rw [Finset.sum_mul]
+  refine Finset.sum_congr rfl fun ν _ ↦ ?_
+  rw [map_smul, smul_eq_C_mul, map_mul, Polynomial.aeval_C, algebraMap_eq, map_pow,
+    Polynomial.aeval_X]
+  ac_rfl

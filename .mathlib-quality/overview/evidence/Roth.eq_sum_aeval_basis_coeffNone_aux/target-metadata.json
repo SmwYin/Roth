@@ -1,0 +1,55 @@
+{
+  "file": "Roth/Separation.lean",
+  "line": 265,
+  "name": "Roth.eq_sum_aeval_basis_coeffNone_aux",
+  "short": "eq_sum_aeval_basis_coeffNone_aux",
+  "kind": "lemma",
+  "visibility": "private",
+  "end_line": 288,
+  "source": "private lemma eq_sum_aeval_basis_coeffNone_aux {R : Type*} [CommSemiring R]\n    {P : MvPolynomial (Option τ) R} {n l : ℕ}\n    (hP : P = ∑ ν : Fin (n + 1), X none ^ (ν : ℕ) * rename some (coeffNone P ν))\n    (b : Module.Basis (Fin l) R\n      (Submodule.span R (Set.range (fun ν : Fin (n + 1) ↦ coeffNone P ν)))) :\n    P = ∑ ρ, Polynomial.aeval (X none : MvPolynomial (Option τ) R) (∑ ν : Fin (n + 1),\n        Polynomial.C (b.repr ⟨coeffNone P ν, Submodule.subset_span ⟨ν, rfl⟩⟩ ρ) *\n          Polynomial.X ^ (ν : ℕ)) * rename some (b ρ : MvPolynomial τ R) := by\n  let a := fun (ν : Fin (n + 1)) ρ ↦ b.repr ⟨coeffNone P ν, Submodule.subset_span ⟨ν, rfl⟩⟩ ρ\n  have hexp : ∀ ν : Fin (n + 1), coeffNone P ν = ∑ ρ, a ν ρ • (b ρ : MvPolynomial τ R) := fun ν ↦ by\n    have h := congrArg Subtype.val (b.sum_repr ⟨coeffNone P ν, Submodule.subset_span ⟨ν, rfl⟩⟩)\n    simpa only [Submodule.coe_sum, Submodule.coe_smul] using h.symm\n  change P = ∑ ρ, Polynomial.aeval (X none : MvPolynomial (Option τ) R)\n    (∑ ν : Fin (n + 1), Polynomial.C (a ν ρ) * Polynomial.X ^ (ν : ℕ)) *\n      rename some (b ρ : MvPolynomial τ R)\n  conv_lhs => rw [hP]\n  simp_rw [hexp, map_sum, Finset.mul_sum]\n  rw [Finset.sum_comm]\n  refine Finset.sum_congr rfl fun ρ _ ↦ ?_\n  rw [Finset.sum_mul]\n  refine Finset.sum_congr rfl fun ν _ ↦ ?_\n  rw [map_smul, smul_eq_C_mul, map_mul, Polynomial.aeval_C, algebraMap_eq, map_pow,\n    Polynomial.aeval_X]\n  ac_rfl",
+  "signature": "private lemma eq_sum_aeval_basis_coeffNone_aux {R : Type*} [CommSemiring R]\n    {P : MvPolynomial (Option τ) R} {n l : ℕ}\n    (hP : P = ∑ ν : Fin (n + 1), X none ^ (ν : ℕ) * rename some (coeffNone P ν))\n    (b : Module.Basis (Fin l) R\n      (Submodule.span R (Set.range (fun ν : Fin (n + 1) ↦ coeffNone P ν)))) :\n    P = ∑ ρ, Polynomial.aeval (X none : MvPolynomial (Option τ) R) (∑ ν : Fin (n + 1),\n        Polynomial.C (b.repr ⟨coeffNone P ν, Submodule.subset_span ⟨ν, rfl⟩⟩ ρ) *\n          Polynomial.X ^ (ν : ℕ)) * rename some (b ρ : MvPolynomial τ R)",
+  "body": "by\n  let a := fun (ν : Fin (n + 1)) ρ ↦ b.repr ⟨coeffNone P ν, Submodule.subset_span ⟨ν, rfl⟩⟩ ρ\n  have hexp : ∀ ν : Fin (n + 1), coeffNone P ν = ∑ ρ, a ν ρ • (b ρ : MvPolynomial τ R) := fun ν ↦ by\n    have h := congrArg Subtype.val (b.sum_repr ⟨coeffNone P ν, Submodule.subset_span ⟨ν, rfl⟩⟩)\n    simpa only [Submodule.coe_sum, Submodule.coe_smul] using h.symm\n  change P = ∑ ρ, Polynomial.aeval (X none : MvPolynomial (Option τ) R)\n    (∑ ν : Fin (n + 1), Polynomial.C (a ν ρ) * Polynomial.X ^ (ν : ℕ)) *\n      rename some (b ρ : MvPolynomial τ R)\n  conv_lhs => rw [hP]\n  simp_rw [hexp, map_sum, Finset.mul_sum]\n  rw [Finset.sum_comm]\n  refine Finset.sum_congr rfl fun ρ _ ↦ ?_\n  rw [Finset.sum_mul]\n  refine Finset.sum_congr rfl fun ν _ ↦ ?_\n  rw [map_smul, smul_eq_C_mul, map_mul, Polynomial.aeval_C, algebraMap_eq, map_pow,\n    Polynomial.aeval_X]\n  ac_rfl",
+  "proof_lines": 17,
+  "sha256": "6e82cce9ae573a7396771f038272e904463eb1d2200549484b4197bee4cf0f9d",
+  "what": "A coefficient expansion can be regrouped into a sum using a basis of its coefficient span.",
+  "how": "Expand each coefficient with Module.Basis.sum_repr, exchange finite sums, and transport scalars through evaluation and renaming.",
+  "hypotheses": "Commutative semiring, an existing coefficient expansion and a basis of its span.",
+  "source_body_refs": [
+    "Roth.coeffNone"
+  ],
+  "source_type_refs": [
+    "Roth.coeffNone"
+  ],
+  "source_callers": [
+    {
+      "name": "Roth.exists_separated_representation",
+      "file": "Roth/Separation.lean",
+      "line": 325
+    }
+  ],
+  "notes": [],
+  "input_file_sha256": "4ac885af6c9973d40f68bd2e6c42185f02a9996271ccaa67d4932d27e85a7d0e",
+  "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+  "section_context": "Namespace Roth; open MvPolynomial. Ambient τ : Type*. Field section: K : Type*, [Field K]. Ambient [Fintype τ] and [DecidableEq τ] are explicitly omitted around general declarations; unused section instances are not implicit mathematical hypotheses. Inline binders override/add context. ",
+  "uses_from_project": [
+    "Roth.coeffNone"
+  ],
+  "used_by_in_file": [
+    "Roth.exists_separated_representation"
+  ],
+  "used_by_other_files": [],
+  "assignment_offset": 555,
+  "project_body_refs": [
+    "Roth.coeffNone"
+  ],
+  "project_type_refs": [
+    "Roth.coeffNone"
+  ],
+  "project_callers": [
+    {
+      "name": "Roth.exists_separated_representation",
+      "file": "Roth/Separation.lean",
+      "line": 325
+    }
+  ]
+}

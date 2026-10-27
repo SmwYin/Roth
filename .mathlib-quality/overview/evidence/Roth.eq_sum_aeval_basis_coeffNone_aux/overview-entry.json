@@ -1,0 +1,18 @@
+{
+  "declaration": "Roth.eq_sum_aeval_basis_coeffNone_aux",
+  "kind": "lemma",
+  "type": "∀ {τ : Type u_1} {R : Type u_3}\n  [inst : CommSemiring R] {P : MvPolynomial (Option τ) R} {n l : ℕ},\n  P = ∑ ν, MvPolynomial.X none ^ ↑ν * (MvPolynomial.rename some) (Roth.coeffNone P ↑ν) →\n    ∀ (b : Module.Basis (Fin l) R ↥(Submodule.span R (Set.range fun ν ↦ Roth.coeffNone P ↑ν))),\n      P =\n        ∑ ρ,\n          (Polynomial.aeval (MvPolynomial.X none))\n              (∑ ν, Polynomial.C ((b.repr ⟨Roth.coeffNone P ↑ν, ⋯⟩) ρ) * Polynomial.X ^ ↑ν) *\n            (MvPolynomial.rename some) ↑(b ρ)",
+  "what": "The separated expansion of a polynomial can be regrouped in any chosen basis of the span of its coefficient polynomials.",
+  "how": "Expand each coefficient with Module.Basis.sum_repr, exchange finite sums, and transport scalars through evaluation and renaming.",
+  "hypotheses": "Commutative semiring, an existing coefficient expansion and a basis of its span. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.",
+  "project_dependencies": [
+    "Roth.coeffNone"
+  ],
+  "caller_summary": "1 explicit source caller declarations, all in Separation.lean; 1 direct original value consumers. Exact separate lists retained. Entire Separation module proof bodies replay successfully with fresh target name.",
+  "mathlib_api_audit": "Expand each coefficient polynomial in the chosen basis using Module.Basis.sum_repr, substitute into the given coefficient expansion, interchange the finite sums and normalize aeval, renaming and scalar multiplication. This reconstruction identity is distinct from coordinate-polynomial independence and from choosing a bounded basis.",
+  "moral_duplications": "The helper has a distinct role in the separated polynomial proof as described in the structural review; no duplicate full construction is introduced.",
+  "generalization": "No public generality claim under the private prefilter; preserve the existing definition and interface.",
+  "missing_api": "No new primitive is needed for this internal organization; full public contribution search is explicitly not run.",
+  "junk": "Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.",
+  "action": "Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration."
+}
