@@ -1,0 +1,20 @@
+{
+  "type": "∀ {σ : Type u_3} {R : Type u_4} [inst : CommSemiring R] (α : σ → R) (d k : σ →₀ ℕ) (a : R),\n  ((taylor α) ((monomial k) a)).coeff d = (eval α) ((hasseDeriv d) ((monomial k) a))",
+  "what": "Proves the coefficient Taylor identity for every monomial over arbitrary commutative semirings.",
+  "how": "Inducts on the finitely supported exponent; constant base cases use scalar homomorphism/derivative rules, coordinate extension uses private induction-step helper.",
+  "hypotheses": "Arbitrary variable type and commutative semiring; arbitrary translation, coefficient and multi-indices, with no support/degree/nonzero/finite-variable assumptions.",
+  "project_dependencies": [
+    "MvPolynomial.coeff_taylor_monomial_single_add_aux",
+    "MvPolynomial.hasseDeriv",
+    "MvPolynomial.hasseDeriv_C",
+    "MvPolynomial.hasseDeriv_zero",
+    "MvPolynomial.taylor"
+  ],
+  "caller_summary": "One explicit caller public coeff_taylor, Taylor138; entire public caller proof using fresh monomial replay validated.",
+  "mathlib_api_audit": "Finsupp.induction supplies exponent recursion; generic algHom_C handles constants. Direct expression audit maps private replay to canonical61 and confirms no later coeff_taylor use.",
+  "moral_duplications": "Monomial special case is proof scaffold for linear extension, distinct from aeval_monomial image formula and full coefficient theorem.",
+  "generalization": "Native type already arbitrary variables/commutative semiring; no leftover k_i=0 or IH in final statement; no circular weakening using later theorem.",
+  "missing_api": "No missing primitive blocks exponent induction; prospective public Hasse/Taylor API separately assessed at next declaration.",
+  "junk": "Retain private monomial boundary; full public theorem then reduces to additivity and this case.",
+  "action": "Keep unchanged; complete private-prefilter SKIP, continue full public assessment of coeff_taylor."
+}

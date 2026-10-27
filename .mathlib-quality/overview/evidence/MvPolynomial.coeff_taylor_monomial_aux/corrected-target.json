@@ -1,0 +1,47 @@
+{
+  "file": "Roth/Taylor.lean",
+  "line": 120,
+  "name": "MvPolynomial.coeff_taylor_monomial_aux",
+  "short": "coeff_taylor_monomial_aux",
+  "kind": "lemma",
+  "visibility": "private",
+  "end_line": 129,
+  "source": "private lemma coeff_taylor_monomial_aux (α : σ → R) (d k : σ →₀ ℕ) (a : R) :\n    (taylor α (monomial k a)).coeff d = eval α (hasseDeriv d (monomial k a)) := by\n  classical\n  induction k using Finsupp.induction generalizing d with\n  | zero =>\n    obtain rfl | hd := eq_or_ne d 0\n    · simp\n    · simp [← C_apply, hasseDeriv_C hd, hd.symm]\n  | single_add i n k hi _ ih =>\n    exact coeff_taylor_monomial_single_add_aux α a n (Finsupp.notMem_support_iff.1 hi) ih d",
+  "signature": "private lemma coeff_taylor_monomial_aux (α : σ → R) (d k : σ →₀ ℕ) (a : R) :\n    (taylor α (monomial k a)).coeff d = eval α (hasseDeriv d (monomial k a))",
+  "body": "by\n  classical\n  induction k using Finsupp.induction generalizing d with\n  | zero =>\n    obtain rfl | hd := eq_or_ne d 0\n    · simp\n    · simp [← C_apply, hasseDeriv_C hd, hd.symm]\n  | single_add i n k hi _ ih =>\n    exact coeff_taylor_monomial_single_add_aux α a n (Finsupp.notMem_support_iff.1 hi) ih d",
+  "proof_lines": 9,
+  "sha256": "c1a27133c1a1b41b6da367fd843e30f790ee1c4fe175d6f667d42c10326d944d",
+  "what": "Proves the Taylor coefficient equals the evaluated Hasse derivative for each scalar monomial.",
+  "how": "Finsupp.induction decomposes the monomial exponent by new coordinates; the zero exponent uses hasseDeriv_C, and coeff_taylor_monomial_single_add_aux supplies the inductive coordinate step.",
+  "hypotheses": "A commutative coefficient semiring and arbitrary translation, exponent, coefficient index, and scalar.",
+  "uses_from_project": [
+    "MvPolynomial.coeff_taylor_monomial_single_add_aux",
+    "MvPolynomial.hasseDeriv_C"
+  ],
+  "used_by_in_file": [
+    "MvPolynomial.coeff_taylor"
+  ],
+  "project_callers": [
+    {
+      "name": "MvPolynomial.coeff_taylor",
+      "file": "Roth/Taylor.lean",
+      "line": 134
+    }
+  ],
+  "type_context": "{σ R : Type*} [CommSemiring R]",
+  "type_provenance": "Exact written signature with section binders made explicit from source; not claimed as a fresh #check output. Minimal hasseCoeff #check succeeded; full Meta inspector timed out.",
+  "reference_provenance": "Manually disambiguated source-level direct project references in declaration bodies; callers include signature and body occurrences. Includes explicit references only, not an exhaustive kernel/simp dependency closure.",
+  "notes": [
+    "No set_option, sorry, TODO, or proof over 30 lines in declaration."
+  ],
+  "assignment_offset": 154,
+  "project_body_refs": [
+    "MvPolynomial.coeff_taylor_monomial_single_add_aux",
+    "MvPolynomial.hasseDeriv_C"
+  ],
+  "project_type_refs": [
+    "MvPolynomial.hasseDeriv",
+    "MvPolynomial.taylor"
+  ],
+  "section_context": "{σ R : Type*} [CommSemiring R]"
+}

@@ -1,0 +1,5 @@
+theorem coeff_taylor (α : σ → R) (d : σ →₀ ℕ) (P : MvPolynomial σ R) :
+    (taylor α P).coeff d = eval α (hasseDeriv d P) := by
+  induction P using MvPolynomial.induction_on' with
+  | add p q hp hq => simp [hp, hq]
+  | monomial k a => exact coeff_taylor_monomial_aux α d k a
