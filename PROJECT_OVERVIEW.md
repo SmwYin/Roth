@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 124/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 125/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 124; remaining: 169.
-- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 17 YES-but-generalise-first, 21 NO-mathlib-has-it, 40 BORDERLINE-needs-human, 19 SKIP.
+- Completed applicable assessments: 125; remaining: 168.
+- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 17 YES-but-generalise-first, 21 NO-mathlib-has-it, 40 BORDERLINE-needs-human, 20 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -1355,6 +1355,17 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: 1 explicit source caller declarations, all in Lattice.lean; 1 direct original value consumers. Exact separate lists retained. Entire module proof bodies replay successfully with fresh target name.
 - Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.extend_apply_castSucc.md).
 
+### Completed: `Roth.extend_apply_last`
+
+- Type: `∀ {m : ℕ} (d : Fin m →₀ ℕ) (i : ℕ),
+  (Finsupp.mapDomain Fin.castSucc d + Finsupp.single (Fin.last m) i) (Fin.last m) = i`
+- What: Extending a vector by a last coordinate assigns that last coordinate its prescribed value.
+- How: Finsupp.mapDomain_of_notMem_range makes the embedded vector vanish at Fin.last.
+- Hypotheses: A vector on Fin m and an arbitrary natural last coordinate. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.
+- Project dependencies: None
+- Caller summary: 1 explicit source caller declarations, all in Lattice.lean; 1 direct original value consumers. Exact separate lists retained. Entire module proof bodies replay successfully with fresh target name.
+- Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.extend_apply_last.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -1629,6 +1640,8 @@ Completed `Roth.sum_inv_lt`: All five methods on current, convex-endpoint litera
 
 Completed `Roth.extend_apply_castSucc`: Embedding a finitely supported vector along the injective Fin.castSucc map preserves each old coordinate. The added singleton at Fin.last has zero contribution at every castSucc coordinate. Finsupp.mapDomain_apply_of_injective and simplification prove the formula. This complements the last-coordinate helper and supports the filtered-box fiber bijection; it registers no instance or coercion.
 
+Completed `Roth.extend_apply_last`: The image of Fin.castSucc excludes Fin.last, so the embedded finitely supported vector evaluates to zero there. The singleton contributes exactly its stored natural value. Finsupp.mapDomain_of_notMem_range and simplification prove the formula. This complements the castSucc-coordinate helper and supplies the last-coordinate requirement in the filtered-box fiber bijection.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -1878,6 +1891,8 @@ Completed `Roth.sum_inv_le`: Complementary-pair and whole-grid reciprocal estima
 Completed `Roth.sum_inv_lt`: Reciprocal convexity already follows from convexOn_zpow(-1); sum reindexing exists. Grid rational upper bound and sqrt comparison still need proof.
 
 Completed `Roth.extend_apply_castSucc`: The helper has a distinct role in the lattice proof as described in the structural review; no duplicate full construction is introduced.
+
+Completed `Roth.extend_apply_last`: The helper has a distinct role in the lattice proof as described in the structural review; no duplicate full construction is introduced.
 
 ## Part 5: Generalization opportunities
 
@@ -2132,6 +2147,8 @@ Completed `Roth.sum_inv_lt`: Verified real m>1 and weak2√m≤lam preserve stri
 
 Completed `Roth.extend_apply_castSucc`: No public generality claim under the private prefilter; preserve the existing definition and interface.
 
+Completed `Roth.extend_apply_last`: No public generality claim under the private prefilter; preserve the existing definition and interface.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -2382,6 +2399,8 @@ Completed `Roth.sum_inv_le`: No new primitive is needed for this internal organi
 Completed `Roth.sum_inv_lt`: Candidate generic convex symmetric-average endpoint theorem or positive reciprocal-grid rational bound; exact sqrt corollary may remain downstream.
 
 Completed `Roth.extend_apply_castSucc`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
+
+Completed `Roth.extend_apply_last`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 ## Part 7: Junk / removable
 
@@ -2636,6 +2655,8 @@ Completed `Roth.sum_inv_lt`: Not dead: one private induction caller supports pub
 
 Completed `Roth.extend_apply_castSucc`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
 
+Completed `Roth.extend_apply_last`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -2764,6 +2785,7 @@ Completed `Roth.extend_apply_castSucc`: Retain a live private proof interface. N
 | 122 | `Roth.sum_inv_le` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.sum_inv_le.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.sum_inv_le/root-acceptance.json) |
 | 123 | `Roth.sum_inv_lt` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.sum_inv_lt.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.sum_inv_lt/root-acceptance.json) |
 | 124 | `Roth.extend_apply_castSucc` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.extend_apply_castSucc.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.extend_apply_castSucc/root-acceptance.json) |
+| 125 | `Roth.extend_apply_last` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.extend_apply_last.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.extend_apply_last/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -3011,12 +3033,14 @@ Completed `Roth.sum_inv_lt` action: BORDERLINE-needs-human: decide generic conve
 
 Completed `Roth.extend_apply_castSucc` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
 
+Completed `Roth.extend_apply_last` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.extend_apply_last` next. Supporting identities receive their own applicable checks.
+   `Roth.card_filter_box_fiber_aux` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

@@ -1,0 +1,53 @@
+[
+  {
+    "file": "Roth/Lattice.lean",
+    "line": 100,
+    "name": "Roth.card_filter_box_fiber_aux",
+    "short": "card_filter_box_fiber_aux",
+    "kind": "lemma",
+    "visibility": "private",
+    "end_line": 124,
+    "source": "private lemma card_filter_box_fiber_aux {m : ℕ} (r : Fin (m + 1) → ℕ)\n    (p : (Fin (m + 1) →₀ ℕ) → Prop) [DecidablePred p] {i : ℕ} (hi : i ≤ r (Fin.last m)) :\n    ((box (r ∘ Fin.castSucc)).filter fun d ↦\n      p (d.mapDomain Fin.castSucc + Finsupp.single (Fin.last m) i)).card =\n        (((box r).filter p).filter fun d ↦ d (Fin.last m) = i).card := by\n  classical\n  refine Finset.card_bij\n    (fun d _ ↦ d.mapDomain Fin.castSucc + Finsupp.single (Fin.last m) i) ?_ ?_ ?_\n  · intro d hd\n    simp only [Finset.mem_filter, mem_box, Function.comp_apply] at hd ⊢\n    refine ⟨⟨fun j ↦ ?_, hd.2⟩, extend_apply_last d i⟩\n    exact Fin.lastCases (by simpa [extend_apply_last] using hi)\n      (fun j ↦ by simpa [extend_apply_castSucc] using hd.1 j) j\n  · intro d₁ _ d₂ _ h\n    ext j\n    simpa [extend_apply_castSucc] using congrArg (fun d ↦ d j.castSucc) h\n  · intro d hd\n    obtain ⟨⟨hdr, hdp⟩, hdi⟩ := (by simpa [mem_box] using hd)\n    have hext : (Finsupp.equivFunOnFinite.symm fun j ↦ d j.castSucc).mapDomain Fin.castSucc +\n        Finsupp.single (Fin.last m) i = d := by\n      ext j\n      refine Fin.lastCases ?_ (fun j ↦ ?_) j <;>\n        simp [extend_apply_last, extend_apply_castSucc, hdi]\n    refine ⟨Finsupp.equivFunOnFinite.symm fun j ↦ d j.castSucc, ?_, hext⟩\n    simp [mem_box, hext, hdp, hdr]",
+    "signature": "private lemma card_filter_box_fiber_aux {m : ℕ} (r : Fin (m + 1) → ℕ)\n    (p : (Fin (m + 1) →₀ ℕ) → Prop) [DecidablePred p] {i : ℕ} (hi : i ≤ r (Fin.last m)) :\n    ((box (r ∘ Fin.castSucc)).filter fun d ↦\n      p (d.mapDomain Fin.castSucc + Finsupp.single (Fin.last m) i)).card =\n        (((box r).filter p).filter fun d ↦ d (Fin.last m) = i).card",
+    "body": "by\n  classical\n  refine Finset.card_bij\n    (fun d _ ↦ d.mapDomain Fin.castSucc + Finsupp.single (Fin.last m) i) ?_ ?_ ?_\n  · intro d hd\n    simp only [Finset.mem_filter, mem_box, Function.comp_apply] at hd ⊢\n    refine ⟨⟨fun j ↦ ?_, hd.2⟩, extend_apply_last d i⟩\n    exact Fin.lastCases (by simpa [extend_apply_last] using hi)\n      (fun j ↦ by simpa [extend_apply_castSucc] using hd.1 j) j\n  · intro d₁ _ d₂ _ h\n    ext j\n    simpa [extend_apply_castSucc] using congrArg (fun d ↦ d j.castSucc) h\n  · intro d hd\n    obtain ⟨⟨hdr, hdp⟩, hdi⟩ := (by simpa [mem_box] using hd)\n    have hext : (Finsupp.equivFunOnFinite.symm fun j ↦ d j.castSucc).mapDomain Fin.castSucc +\n        Finsupp.single (Fin.last m) i = d := by\n      ext j\n      refine Fin.lastCases ?_ (fun j ↦ ?_) j <;>\n        simp [extend_apply_last, extend_apply_castSucc, hdi]\n    refine ⟨Finsupp.equivFunOnFinite.symm fun j ↦ d j.castSucc, ?_, hext⟩\n    simp [mem_box, hext, hdp, hdr]",
+    "proof_lines": 21,
+    "sha256": "f0242e7fd148d4f4fe88d838b0e9507e9c73f7a9e6c95a0647a176d2a8f78386",
+    "source_body_project_refs": [
+      "Roth.extend_apply_castSucc",
+      "Roth.extend_apply_last",
+      "Roth.mem_box"
+    ],
+    "source_type_project_refs": [
+      "Roth.box"
+    ],
+    "what": "A box fiber at the last coordinate is equinumerous to the smaller box filtered after extending vectors by that coordinate.",
+    "how": "Constructs a Finset.card_bij with extension, proves coordinate bounds using extend_apply_castSucc/extend_apply_last, and reconstructs the inverse by restriction to earlier coordinates.",
+    "hypotheses": "A natural rectangular box, a decidable predicate, and a last coordinate within its bound.",
+    "source_used_by_project": [
+      "Roth.card_filter_box_last"
+    ],
+    "source_used_by_file": [
+      "Roth.card_filter_box_last"
+    ],
+    "section_binders": "(none; all binders written explicitly)",
+    "type_provenance": "Exact written signature plus manually identified captured section binders. Root cached full build succeeds; global opaque/type inspector timed out, so no kernel dump is claimed.",
+    "notes": "No sorry, TODO, or set_option in this declaration.",
+    "assignment_offset": 348,
+    "project_body_refs": [
+      "Roth.extend_apply_castSucc",
+      "Roth.extend_apply_last",
+      "Roth.mem_box"
+    ],
+    "project_type_refs": [
+      "Roth.box"
+    ],
+    "project_callers": [
+      {
+        "name": "Roth.card_filter_box_last",
+        "file": "Roth/Lattice.lean",
+        "line": 131
+      }
+    ],
+    "section_context": "(none; all binders written explicitly)"
+  }
+]
