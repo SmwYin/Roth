@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-27
 
-- Declarations completed: **199/293**
-- Next declaration: **#200 `Roth.one_le_lem6M`** (Roth/Theta.lean:279)
+- Declarations completed: **200/293**
+- Next declaration: **#201 `Roth.floor_sq_div_two_le_sum`** (Roth/Theta.lean:289)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -218,10 +218,10 @@ Last regenerated: 2026-10-27
 | 197 | `Roth.Θ_unique_le` | Roth/Theta.lean:256 | NO-composable-from-mathlib | [report](mathlibable/Roth.Θ_unique_le.md) |
 | 198 | `Roth.lem6M` | Roth/Theta.lean:270 | NO-composable-from-mathlib | [report](mathlibable/Roth.lem6M.md) |
 | 199 | `Roth.lem6Φ` | Roth/Theta.lean:275 | NO-composable-from-mathlib | [report](mathlibable/Roth.lem6Φ.md) |
+| 200 | `Roth.one_le_lem6M` | Roth/Theta.lean:279 | NO-composable-from-mathlib | [report](mathlibable/Roth.one_le_lem6M.md) |
 
 ## Remaining declarations (in processing order)
 
-- #200 `Roth.one_le_lem6M` (Roth/Theta.lean:279, public theorem)
 - #201 `Roth.floor_sq_div_two_le_sum` (Roth/Theta.lean:289, public theorem)
 - #202 `Roth.sq_div_three_lt_floor_sq_div_two` (Roth/Theta.lean:300, public theorem)
 - #203 `Roth.mul_div_two_le_sum_max_aux` (Roth/Theta.lean:304, private lemma)
