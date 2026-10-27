@@ -1,0 +1,713 @@
+[
+  {
+    "method": "lean_leanfinder",
+    "form": "abstract",
+    "request": {
+      "query": "AddGroupSeminorm coefficient sum Finsupp linear operator monomial binomial coefficient bound",
+      "num_results": 8
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"IsNonarchimedean.finset_powerset_image_add\",\n      \"informal_name\": \"Existence of a Subset in the Powerset for Non-Archimedean Seminorm Inequality\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] [inst_1 : LinearOrder R] [IsStrictOrderedRing R] {F : Type u_2} {α : Type u_3}\\n  {β : Type u_4} [inst_3 : CommRing α] [inst_4 : FunLike F α R] [AddGroupSeminormClass F α R] {f : F},\\n  IsNonarchimedean ⇑f →\\n    ∀ (s : Finset β) (b : β → α) (m : ℕ),\\n      ∃ u, f (∑ t ∈ Finset.powersetCard (s.card - m) s, ∏ i ∈ t, -b i) ≤ f (∏ i ∈ ↑u, -b i)\",\n      \"informal_description\": \"Let $ R $ be a strict ordered ring, $ \\\\alpha $ a commutative ring, and $ f : \\\\alpha \\\\to R $ a non-Archimedean seminorm (satisfying $ f(a + b) \\\\leq \\\\max(f(a), f(b)) $). For any finite set $ s $, function $ b : \\\\beta \\\\to \\\\alpha $, and natural number $ m $, there exists a subset $ u \\\\subseteq s $ of cardinality $ |s| - m $ such that the seminorm of the sum over all $ (|s| - m) $-element subsets $ t \\\\subseteq s $ of the product $ \\\\prod_{i \\\\in t} (-b(i)) $ is bounded above by $ f\\\\left(\\\\prod_{i \\\\in u} (-b(i))\\\\right) $. Formally, $$ f\\\\left(\\\\sum_{t \\\\in \\\\binom{s}{|s| - m}} \\\\prod_{i \\\\in t} (-b(i))\\\\right) \\\\leq f\\\\left(\\\\prod_{i \\\\in u} (-b(i))\\\\right). $$\",\n      \"path\": \"Mathlib.Algebra.Order.Ring.IsNonarchimedean\"\n    },\n    {\n      \"formal_name\": \"PiTensorProduct.projectiveSeminormAux\",\n      \"informal_name\": \"Projective Seminorm Auxiliary Function\",\n      \"kind\": \"definition\",\n      \"type\": \"{ι : Type uι} →\\n  [Fintype ι] →\\n    {𝕜 : Type u𝕜} →\\n      [NontriviallyNormedField 𝕜] →\\n        {E : ι → Type uE} → [(i : ι) → SeminormedAddCommGroup (E i)] → FreeAddMonoid (𝕜 × ((i : ι) → E i)) → ℝ\",\n      \"informal_description\": \"The function maps a finite formal sum $ p $ of pairs $ (k, f) $, where $ k $ is a scalar in a nontrivially normed field $ \\\\mathbb{K} $ and $ f $ is a tuple of vectors in normed spaces $ E_i $, to the sum over all summands of $ \\\\|k\\\\| $ multiplied by the product of $ \\\\|f_i\\\\| $ for each component $ i $. This defines an auxiliary seminorm used in the projective tensor product construction.\",\n      \"path\": \"Mathlib.Analysis.Normed.Module.PiTensorProduct.ProjectiveSeminorm\"\n    },\n    {\n      \"formal_name\": \"Polynomial.norm_coeff_le_choose_mul_mahlerMeasure\",\n      \"informal_name\": \"Norm of Coefficient Bound via Binomial Coefficient and Mahler Measure\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (n : ℕ) (p : Polynomial ℂ), ‖p.coeff n‖ ≤ ↑(p.natDegree.choose n) * p.mahlerMeasure\",\n      \"informal_description\": \"For any natural number $ n $ and complex polynomial $ p $, the norm of the coefficient of $ X^n $ in $ p $ satisfies $ \\\\|p.coeff\\\\,n\\\\| \\\\leq \\\\binom{d}{n} \\\\cdot p.mahlerMeasure $, where $ d $ denotes the natural degree of $ p $.\",\n      \"path\": \"Mathlib.Analysis.Polynomial.MahlerMeasure\"\n    },\n    {\n      \"formal_name\": \"spectralValueTerms\",\n      \"informal_name\": \"Spectral value terms sequence\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : SeminormedRing R] → Polynomial R → ℕ → ℝ\",\n      \"informal_description\": \"For a polynomial $ p $ over a seminormed ring $ R $, this function returns a sequence indexed by $ \\\\mathbb{N} $ where each term is defined as $ \\\\|p_n\\\\|^{1/(d - n)} $ if $ n < d $, and $ 0 $ otherwise. Here, $ p_n $ denotes the coefficient of $ X^n $ in $ p $, $ d $ is the natural degree of $ p $, and $ \\\\|\\\\cdot\\\\| $ is the seminorm on $ R $. This sequence captures the normed coefficients' growth rates relative to their distance from the polynomial's degree.\",\n      \"path\": \"Mathlib.Analysis.Normed.Unbundled.SpectralNorm\"\n    },\n    {\n      \"formal_name\": \"descPochhammer_eval_div_factorial_le_sum_choose\",\n      \"informal_name\": \"Upper Bound for Descending Pochhammer Symbol in Terms of Binomial Coefficients\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {n : ℕ},\\n  n ≠ 0 →\\n    ∀ {ι : Type u_2} {t : Finset ι} (p : ι → ℕ) (w : ι → ℝ),\\n      (∀ i ∈ t, 0 ≤ w i) →\\n        ∑ i ∈ t, w i = 1 →\\n          ↑n - 1 ≤ ∑ i ∈ t, w i * ↑(p i) →\\n            Polynomial.eval (∑ i ∈ t, w i * ↑(p i)) (descPochhammer ℝ n) / ↑n.factorial ≤\\n              ∑ i ∈ t, w i * ↑((p i).choose n)\",\n      \"informal_description\": \"For any non-zero natural number $n$, finite set $t$, non-negative real weights $w_i$ summing to 1, and natural numbers $p_i$ such that the weighted average $\\\\sum w_i p_i \\\\geq n - 1$, the descending Pochhammer symbol evaluated at the weighted average $\\\\sum w_i p_i$ divided by $n!$ is less than or equal to the weighted sum of binomial coefficients $\\\\sum w_i \\\\binom{p_i}{n}$.\",\n      \"path\": \"Mathlib.Analysis.SpecialFunctions.Pochhammer\"\n    },\n    {\n      \"formal_name\": \"ZLattice.sum_piFinset_Icc_rpow_le\",\n      \"informal_name\": \"Sum over Product of Intervals in a Z-Lattice with Negative Exponent Inequality\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {E : Type u_1} [inst : NormedAddCommGroup E] [inst_1 : NormedSpace ℝ E] [inst_2 : FiniteDimensional ℝ E]\\n  {L : Submodule ℤ E} [inst_3 : DiscreteTopology ↥L] {ι : Type u_3} [inst_4 : Fintype ι] [inst_5 : DecidableEq ι]\\n  (b : Module.Basis ι ℤ ↥L) {d : ℕ},\\n  d = Fintype.card ι →\\n    ∀ (n : ℕ),\\n      ∀ r < -↑d,\\n        ∑ p ∈ Fintype.piFinset fun x => Finset.Icc (-↑n) ↑n, ‖∑ i, p i • b i‖ ^ r ≤\\n          2 * ↑d * 3 ^ (d - 1) * ZLattice.normBound b ^ r * ∑' (k : ℕ), ↑k ^ (↑d - 1 + r)\",\n      \"informal_description\": \"For a finite index type $\\\\iota$ with cardinality $d$, a $\\\\mathbb{Z}$-basis $b$ of the lattice $L$, and real number $r < -d$, the sum over all tuples $p$ in the product of integer intervals $[-n, n]$ (for each $\\\\iota$) of the norm of $\\\\sum_i p_i \\\\cdot b_i$ raised to the power $r$ is bounded by $2d \\\\cdot 3^{d-1} \\\\cdot (\\\\varepsilon_b)^r \\\\cdot \\\\sum_{k \\\\in \\\\mathbb{N}} k^{d-1 + r}$, where $\\\\varepsilon_b$ is the norm bound associated with the basis $b$.\",\n      \"path\": \"Mathlib.Algebra.Module.ZLattice.Summable\"\n    },\n    {\n      \"formal_name\": \"Polynomial.le_gaussNorm\",\n      \"informal_name\": \"Gauss Norm Upper Bound for Coefficient Terms\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {F : Type u_2} [inst : Semiring R] [inst_1 : FunLike F R ℝ] (v : F) {c : ℝ} (p : Polynomial R)\\n  [ZeroHomClass F R ℝ] [NonnegHomClass F R ℝ], 0 ≤ c → ∀ (i : ℕ), v (p.coeff i) * c ^ i ≤ Polynomial.gaussNorm v c p\",\n      \"informal_description\": \"For any polynomial $ p $ over a semiring $ R $, valuation $ v $ (preserving zero and non-negative), non-negative real number $ c $, and natural number $ i $, the product $ v(a_i) \\\\cdot c^i $ (where $ a_i $ is the coefficient of $ X^i $ in $ p $) satisfies $ v(a_i) \\\\cdot c^i \\\\leq \\\\|p\\\\|_{v,c} $, where $ \\\\|p\\\\|_{v,c} $ denotes the Gauss norm of $ p $ with respect to $ v $ and $ c $.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.GaussNorm\"\n    },\n    {\n      \"formal_name\": \"PiTensorProduct.projectiveSeminormAux_add_le\",\n      \"informal_name\": \"Projective Seminorm Auxiliary Function is Subadditive\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type uι} [inst : Fintype ι] {𝕜 : Type u𝕜} [inst_1 : NontriviallyNormedField 𝕜] {E : ι → Type uE}\\n  [inst_2 : (i : ι) → SeminormedAddCommGroup (E i)] (p q : FreeAddMonoid (𝕜 × ((i : ι) → E i))),\\n  PiTensorProduct.projectiveSeminormAux (p + q) ≤\\n    PiTensorProduct.projectiveSeminormAux p + PiTensorProduct.projectiveSeminormAux q\",\n      \"informal_description\": \"For any elements $ p $ and $ q $ in the free additive monoid generated by $ \\\\mathbb{K} \\\\times \\\\prod_i E_i $, the projective seminorm auxiliary function satisfies $ \\\\pi_{\\\\text{aux}}(p + q) \\\\leq \\\\pi_{\\\\text{aux}}(p) + \\\\pi_{\\\\text{aux}}(q) $.\",\n      \"path\": \"Mathlib.Analysis.Normed.Module.PiTensorProduct.ProjectiveSeminorm\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "IsNonarchimedean.finset_powerset_image_add",
+            "informal_name": "Existence of a Subset in the Powerset for Non-Archimedean Seminorm Inequality",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] [inst_1 : LinearOrder R] [IsStrictOrderedRing R] {F : Type u_2} {α : Type u_3}\n  {β : Type u_4} [inst_3 : CommRing α] [inst_4 : FunLike F α R] [AddGroupSeminormClass F α R] {f : F},\n  IsNonarchimedean ⇑f →\n    ∀ (s : Finset β) (b : β → α) (m : ℕ),\n      ∃ u, f (∑ t ∈ Finset.powersetCard (s.card - m) s, ∏ i ∈ t, -b i) ≤ f (∏ i ∈ ↑u, -b i)",
+            "informal_description": "Let $ R $ be a strict ordered ring, $ \\alpha $ a commutative ring, and $ f : \\alpha \\to R $ a non-Archimedean seminorm (satisfying $ f(a + b) \\leq \\max(f(a), f(b)) $). For any finite set $ s $, function $ b : \\beta \\to \\alpha $, and natural number $ m $, there exists a subset $ u \\subseteq s $ of cardinality $ |s| - m $ such that the seminorm of the sum over all $ (|s| - m) $-element subsets $ t \\subseteq s $ of the product $ \\prod_{i \\in t} (-b(i)) $ is bounded above by $ f\\left(\\prod_{i \\in u} (-b(i))\\right) $. Formally, $$ f\\left(\\sum_{t \\in \\binom{s}{|s| - m}} \\prod_{i \\in t} (-b(i))\\right) \\leq f\\left(\\prod_{i \\in u} (-b(i))\\right). $$",
+            "path": "Mathlib.Algebra.Order.Ring.IsNonarchimedean"
+          },
+          {
+            "formal_name": "PiTensorProduct.projectiveSeminormAux",
+            "informal_name": "Projective Seminorm Auxiliary Function",
+            "kind": "definition",
+            "type": "{ι : Type uι} →\n  [Fintype ι] →\n    {𝕜 : Type u𝕜} →\n      [NontriviallyNormedField 𝕜] →\n        {E : ι → Type uE} → [(i : ι) → SeminormedAddCommGroup (E i)] → FreeAddMonoid (𝕜 × ((i : ι) → E i)) → ℝ",
+            "informal_description": "The function maps a finite formal sum $ p $ of pairs $ (k, f) $, where $ k $ is a scalar in a nontrivially normed field $ \\mathbb{K} $ and $ f $ is a tuple of vectors in normed spaces $ E_i $, to the sum over all summands of $ \\|k\\| $ multiplied by the product of $ \\|f_i\\| $ for each component $ i $. This defines an auxiliary seminorm used in the projective tensor product construction.",
+            "path": "Mathlib.Analysis.Normed.Module.PiTensorProduct.ProjectiveSeminorm"
+          },
+          {
+            "formal_name": "Polynomial.norm_coeff_le_choose_mul_mahlerMeasure",
+            "informal_name": "Norm of Coefficient Bound via Binomial Coefficient and Mahler Measure",
+            "kind": "theorem",
+            "type": "∀ (n : ℕ) (p : Polynomial ℂ), ‖p.coeff n‖ ≤ ↑(p.natDegree.choose n) * p.mahlerMeasure",
+            "informal_description": "For any natural number $ n $ and complex polynomial $ p $, the norm of the coefficient of $ X^n $ in $ p $ satisfies $ \\|p.coeff\\,n\\| \\leq \\binom{d}{n} \\cdot p.mahlerMeasure $, where $ d $ denotes the natural degree of $ p $.",
+            "path": "Mathlib.Analysis.Polynomial.MahlerMeasure"
+          },
+          {
+            "formal_name": "spectralValueTerms",
+            "informal_name": "Spectral value terms sequence",
+            "kind": "definition",
+            "type": "{R : Type u_1} → [inst : SeminormedRing R] → Polynomial R → ℕ → ℝ",
+            "informal_description": "For a polynomial $ p $ over a seminormed ring $ R $, this function returns a sequence indexed by $ \\mathbb{N} $ where each term is defined as $ \\|p_n\\|^{1/(d - n)} $ if $ n < d $, and $ 0 $ otherwise. Here, $ p_n $ denotes the coefficient of $ X^n $ in $ p $, $ d $ is the natural degree of $ p $, and $ \\|\\cdot\\| $ is the seminorm on $ R $. This sequence captures the normed coefficients' growth rates relative to their distance from the polynomial's degree.",
+            "path": "Mathlib.Analysis.Normed.Unbundled.SpectralNorm"
+          },
+          {
+            "formal_name": "descPochhammer_eval_div_factorial_le_sum_choose",
+            "informal_name": "Upper Bound for Descending Pochhammer Symbol in Terms of Binomial Coefficients",
+            "kind": "theorem",
+            "type": "∀ {n : ℕ},\n  n ≠ 0 →\n    ∀ {ι : Type u_2} {t : Finset ι} (p : ι → ℕ) (w : ι → ℝ),\n      (∀ i ∈ t, 0 ≤ w i) →\n        ∑ i ∈ t, w i = 1 →\n          ↑n - 1 ≤ ∑ i ∈ t, w i * ↑(p i) →\n            Polynomial.eval (∑ i ∈ t, w i * ↑(p i)) (descPochhammer ℝ n) / ↑n.factorial ≤\n              ∑ i ∈ t, w i * ↑((p i).choose n)",
+            "informal_description": "For any non-zero natural number $n$, finite set $t$, non-negative real weights $w_i$ summing to 1, and natural numbers $p_i$ such that the weighted average $\\sum w_i p_i \\geq n - 1$, the descending Pochhammer symbol evaluated at the weighted average $\\sum w_i p_i$ divided by $n!$ is less than or equal to the weighted sum of binomial coefficients $\\sum w_i \\binom{p_i}{n}$.",
+            "path": "Mathlib.Analysis.SpecialFunctions.Pochhammer"
+          },
+          {
+            "formal_name": "ZLattice.sum_piFinset_Icc_rpow_le",
+            "informal_name": "Sum over Product of Intervals in a Z-Lattice with Negative Exponent Inequality",
+            "kind": "theorem",
+            "type": "∀ {E : Type u_1} [inst : NormedAddCommGroup E] [inst_1 : NormedSpace ℝ E] [inst_2 : FiniteDimensional ℝ E]\n  {L : Submodule ℤ E} [inst_3 : DiscreteTopology ↥L] {ι : Type u_3} [inst_4 : Fintype ι] [inst_5 : DecidableEq ι]\n  (b : Module.Basis ι ℤ ↥L) {d : ℕ},\n  d = Fintype.card ι →\n    ∀ (n : ℕ),\n      ∀ r < -↑d,\n        ∑ p ∈ Fintype.piFinset fun x => Finset.Icc (-↑n) ↑n, ‖∑ i, p i • b i‖ ^ r ≤\n          2 * ↑d * 3 ^ (d - 1) * ZLattice.normBound b ^ r * ∑' (k : ℕ), ↑k ^ (↑d - 1 + r)",
+            "informal_description": "For a finite index type $\\iota$ with cardinality $d$, a $\\mathbb{Z}$-basis $b$ of the lattice $L$, and real number $r < -d$, the sum over all tuples $p$ in the product of integer intervals $[-n, n]$ (for each $\\iota$) of the norm of $\\sum_i p_i \\cdot b_i$ raised to the power $r$ is bounded by $2d \\cdot 3^{d-1} \\cdot (\\varepsilon_b)^r \\cdot \\sum_{k \\in \\mathbb{N}} k^{d-1 + r}$, where $\\varepsilon_b$ is the norm bound associated with the basis $b$.",
+            "path": "Mathlib.Algebra.Module.ZLattice.Summable"
+          },
+          {
+            "formal_name": "Polynomial.le_gaussNorm",
+            "informal_name": "Gauss Norm Upper Bound for Coefficient Terms",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {F : Type u_2} [inst : Semiring R] [inst_1 : FunLike F R ℝ] (v : F) {c : ℝ} (p : Polynomial R)\n  [ZeroHomClass F R ℝ] [NonnegHomClass F R ℝ], 0 ≤ c → ∀ (i : ℕ), v (p.coeff i) * c ^ i ≤ Polynomial.gaussNorm v c p",
+            "informal_description": "For any polynomial $ p $ over a semiring $ R $, valuation $ v $ (preserving zero and non-negative), non-negative real number $ c $, and natural number $ i $, the product $ v(a_i) \\cdot c^i $ (where $ a_i $ is the coefficient of $ X^i $ in $ p $) satisfies $ v(a_i) \\cdot c^i \\leq \\|p\\|_{v,c} $, where $ \\|p\\|_{v,c} $ denotes the Gauss norm of $ p $ with respect to $ v $ and $ c $.",
+            "path": "Mathlib.RingTheory.Polynomial.GaussNorm"
+          },
+          {
+            "formal_name": "PiTensorProduct.projectiveSeminormAux_add_le",
+            "informal_name": "Projective Seminorm Auxiliary Function is Subadditive",
+            "kind": "theorem",
+            "type": "∀ {ι : Type uι} [inst : Fintype ι] {𝕜 : Type u𝕜} [inst_1 : NontriviallyNormedField 𝕜] {E : ι → Type uE}\n  [inst_2 : (i : ι) → SeminormedAddCommGroup (E i)] (p q : FreeAddMonoid (𝕜 × ((i : ι) → E i))),\n  PiTensorProduct.projectiveSeminormAux (p + q) ≤\n    PiTensorProduct.projectiveSeminormAux p + PiTensorProduct.projectiveSeminormAux q",
+            "informal_description": "For any elements $ p $ and $ q $ in the free additive monoid generated by $ \\mathbb{K} \\times \\prod_i E_i $, the projective seminorm auxiliary function satisfies $ \\pi_{\\text{aux}}(p + q) \\leq \\pi_{\\text{aux}}(p) + \\pi_{\\text{aux}}(q) $.",
+            "path": "Mathlib.Analysis.Normed.Module.PiTensorProduct.ProjectiveSeminorm"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_leanfinder",
+    "form": "current",
+    "request": {
+      "query": "The sum of absolute coefficients of a multivariate Hasse derivative of an integer polynomial is at most 2 to sum of coordinate degree bounds times the sum of absolute coefficients",
+      "num_results": 8
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.numBound\",\n      \"informal_name\": \"Numerical Bound for Multivariate Polynomials in Chevalley's Theorem\",\n      \"kind\": \"definition\",\n      \"type\": \"ℕ → (ℕ → ℕ) → ℕ → ℕ\",\n      \"informal_description\": \"A function that takes a natural number $n$, a function $f : \\\\mathbb{N} \\\\to \\\\mathbb{N}$, and another natural number $m$, returning a natural number used to establish well-founded recursion in the context of multivariate polynomials and Chevalley's theorem. It computes bounds by recursively applying $f$ to $n$ and decrementing $m$.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.degBound\",\n      \"informal_name\": \"Degree Bound for Multivariate Polynomials in Chevalley's Theorem\",\n      \"kind\": \"definition\",\n      \"type\": \"ℕ → (ℕ → ℕ) → ℕ → ℕ\",\n      \"informal_description\": \"A function that computes a degree bound for multivariate polynomials, taking a natural number $n$, a function $f : \\\\mathbb{N} \\\\to \\\\mathbb{N}$, and an element of the sum type $\\\\mathbb{N} \\\\oplus \\\\mathbb{N}$. For left components, it applies $f$ to $n$, and for right components, it returns $n$ directly. This is used in the proof of Chevalley's theorem to establish well-founded recursion for multivariate polynomial constructions.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.numBound_succ\",\n      \"informal_name\": \"Successor Case of Numerical Bound in Chevalley's Theorem\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (k : ℕ) (D : ℕ → ℕ) (n : ℕ),\\n  ChevalleyThm.MvPolynomialC.numBound k D (n + 1) =\\n    ChevalleyThm.MvPolynomialC.numBound k D n * ChevalleyThm.MvPolynomialC.degBound k D n * D n\",\n      \"informal_description\": \"For natural numbers $k, n$ and function $D : \\\\mathbb{N} \\\\to \\\\mathbb{N}$, the numerical bound at $n+1$ satisfies $\\\\text{numBound}(k, D, n+1) = \\\\text{numBound}(k, D, n) \\\\cdot \\\\text{degBound}(k, D, n) \\\\cdot D(n)$, establishing a recursive relationship used in well-founded recursion for multivariate polynomials in Chevalley's theorem.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.degBound\",\n      \"informal_name\": \"Degree Bound for Chevalley's Theorem Using Multiset of Finite Elements\",\n      \"kind\": \"definition\",\n      \"type\": \"ℕ → (m : ℕ) → ℕ → Multiset (Fin m) → ℕ\",\n      \"informal_description\": \"The function computes a degree bound for Chevalley's theorem by taking $k + n$ and a function that adds 1 to the count of each natural number obtained from mapping $\\\\text{Fin.val}$ over the multiset $d$ of type $\\\\text{Fin} \\\\, m$. This constructs a degree bound used in the proof of Chevalley's theorem for multivariate polynomial recursions.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.numBound\",\n      \"informal_name\": \"Numerical Bound for Chevalley's Theorem in Multivariate Polynomials with Multiset Counts\",\n      \"kind\": \"definition\",\n      \"type\": \"ℕ → (m : ℕ) → ℕ → Multiset (Fin m) → ℕ\",\n      \"informal_description\": \"A function that computes a numerical bound used in the context of Chevalley's theorem for multivariate polynomials. It takes natural numbers $k$, $m$, $n$ and a multiset $d$ of elements of type $\\\\text{Fin}\\\\, m$, and returns a natural number obtained by applying the multivariate polynomial bound function to $k + n$ and a function that counts the occurrences of each element in the multiset $d$ after mapping each element to its value in $\\\\mathbb{N}$, then adding 1.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"Polynomial.natDegree_hasseDeriv_le\",\n      \"informal_name\": \"Degree Bound for Hasse Derivative of Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (p : Polynomial R) (n : ℕ),\\n  ((Polynomial.hasseDeriv n) p).natDegree ≤ p.natDegree - n\",\n      \"informal_description\": \"For any polynomial $ p $ over a semiring $ R $ and any natural number $ n $, the natural degree of the $ n $-th Hasse derivative of $ p $ satisfies $ \\\\deg(D^{(n)}(p)) \\\\leq \\\\deg(p) - n $, where $ D^{(n)} $ denotes the Hasse derivative of order $ n $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.degBound_succ\",\n      \"informal_name\": \"Recursive Successor Formula for Degree Bound in Chevalley's Theorem\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (k : ℕ) (D : ℕ → ℕ) (n : ℕ),\\n  ChevalleyThm.MvPolynomialC.degBound k D (n + 1) =\\n    ChevalleyThm.MvPolynomialC.numBound k D (n + 1) ^ ChevalleyThm.MvPolynomialC.numBound k D (n + 1) *\\n      ChevalleyThm.MvPolynomialC.degBound k D n\",\n      \"informal_description\": \"For natural numbers $k$, $D$, and $n$, the degree bound $\\\\operatorname{degBound}(k, D, n+1)$ satisfies the recursive relation $\\\\operatorname{degBound}(k, D, n+1) = \\\\operatorname{numBound}(k, D, n+1)^{\\\\operatorname{numBound}(k, D, n+1)} \\\\cdot \\\\operatorname{degBound}(k, D, n)$, where $\\\\operatorname{numBound}$ computes numerical bounds for multivariate polynomials in the context of Chevalley's theorem.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv\",\n      \"informal_name\": \"Hasse Derivative of Order k on Polynomial Ring\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : Semiring R] → ℕ → Polynomial R →ₗ[R] Polynomial R\",\n      \"informal_description\": \"For a semiring $ R $, the Hasse derivative of order $ k $ is an $ R $-linear map $ D^{(k)} : R[X] \\to R[X] $ defined by $ D^{(k)}(a_i X^i) = \\binom{i}{k} a_i X^{i - k} $ on monomials and extended linearly. This operation generalizes the usual derivative by scaling each coefficient $ a_i $ by the binomial coefficient $ \\binom{i}{k} $ and reducing the degree by $ k $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "ChevalleyThm.MvPolynomialC.numBound",
+            "informal_name": "Numerical Bound for Multivariate Polynomials in Chevalley's Theorem",
+            "kind": "definition",
+            "type": "ℕ → (ℕ → ℕ) → ℕ → ℕ",
+            "informal_description": "A function that takes a natural number $n$, a function $f : \\mathbb{N} \\to \\mathbb{N}$, and another natural number $m$, returning a natural number used to establish well-founded recursion in the context of multivariate polynomials and Chevalley's theorem. It computes bounds by recursively applying $f$ to $n$ and decrementing $m$.",
+            "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+          },
+          {
+            "formal_name": "ChevalleyThm.MvPolynomialC.degBound",
+            "informal_name": "Degree Bound for Multivariate Polynomials in Chevalley's Theorem",
+            "kind": "definition",
+            "type": "ℕ → (ℕ → ℕ) → ℕ → ℕ",
+            "informal_description": "A function that computes a degree bound for multivariate polynomials, taking a natural number $n$, a function $f : \\mathbb{N} \\to \\mathbb{N}$, and an element of the sum type $\\mathbb{N} \\oplus \\mathbb{N}$. For left components, it applies $f$ to $n$, and for right components, it returns $n$ directly. This is used in the proof of Chevalley's theorem to establish well-founded recursion for multivariate polynomial constructions.",
+            "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+          },
+          {
+            "formal_name": "ChevalleyThm.MvPolynomialC.numBound_succ",
+            "informal_name": "Successor Case of Numerical Bound in Chevalley's Theorem",
+            "kind": "theorem",
+            "type": "∀ (k : ℕ) (D : ℕ → ℕ) (n : ℕ),\n  ChevalleyThm.MvPolynomialC.numBound k D (n + 1) =\n    ChevalleyThm.MvPolynomialC.numBound k D n * ChevalleyThm.MvPolynomialC.degBound k D n * D n",
+            "informal_description": "For natural numbers $k, n$ and function $D : \\mathbb{N} \\to \\mathbb{N}$, the numerical bound at $n+1$ satisfies $\\text{numBound}(k, D, n+1) = \\text{numBound}(k, D, n) \\cdot \\text{degBound}(k, D, n) \\cdot D(n)$, establishing a recursive relationship used in well-founded recursion for multivariate polynomials in Chevalley's theorem.",
+            "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+          },
+          {
+            "formal_name": "ChevalleyThm.degBound",
+            "informal_name": "Degree Bound for Chevalley's Theorem Using Multiset of Finite Elements",
+            "kind": "definition",
+            "type": "ℕ → (m : ℕ) → ℕ → Multiset (Fin m) → ℕ",
+            "informal_description": "The function computes a degree bound for Chevalley's theorem by taking $k + n$ and a function that adds 1 to the count of each natural number obtained from mapping $\\text{Fin.val}$ over the multiset $d$ of type $\\text{Fin} \\, m$. This constructs a degree bound used in the proof of Chevalley's theorem for multivariate polynomial recursions.",
+            "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+          },
+          {
+            "formal_name": "ChevalleyThm.numBound",
+            "informal_name": "Numerical Bound for Chevalley's Theorem in Multivariate Polynomials with Multiset Counts",
+            "kind": "definition",
+            "type": "ℕ → (m : ℕ) → ℕ → Multiset (Fin m) → ℕ",
+            "informal_description": "A function that computes a numerical bound used in the context of Chevalley's theorem for multivariate polynomials. It takes natural numbers $k$, $m$, $n$ and a multiset $d$ of elements of type $\\text{Fin}\\, m$, and returns a natural number obtained by applying the multivariate polynomial bound function to $k + n$ and a function that counts the occurrences of each element in the multiset $d$ after mapping each element to its value in $\\mathbb{N}$, then adding 1.",
+            "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+          },
+          {
+            "formal_name": "Polynomial.natDegree_hasseDeriv_le",
+            "informal_name": "Degree Bound for Hasse Derivative of Polynomials",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (p : Polynomial R) (n : ℕ),\n  ((Polynomial.hasseDeriv n) p).natDegree ≤ p.natDegree - n",
+            "informal_description": "For any polynomial $ p $ over a semiring $ R $ and any natural number $ n $, the natural degree of the $ n $-th Hasse derivative of $ p $ satisfies $ \\deg(D^{(n)}(p)) \\leq \\deg(p) - n $, where $ D^{(n)} $ denotes the Hasse derivative of order $ n $.",
+            "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          },
+          {
+            "formal_name": "ChevalleyThm.MvPolynomialC.degBound_succ",
+            "informal_name": "Recursive Successor Formula for Degree Bound in Chevalley's Theorem",
+            "kind": "theorem",
+            "type": "∀ (k : ℕ) (D : ℕ → ℕ) (n : ℕ),\n  ChevalleyThm.MvPolynomialC.degBound k D (n + 1) =\n    ChevalleyThm.MvPolynomialC.numBound k D (n + 1) ^ ChevalleyThm.MvPolynomialC.numBound k D (n + 1) *\n      ChevalleyThm.MvPolynomialC.degBound k D n",
+            "informal_description": "For natural numbers $k$, $D$, and $n$, the degree bound $\\operatorname{degBound}(k, D, n+1)$ satisfies the recursive relation $\\operatorname{degBound}(k, D, n+1) = \\operatorname{numBound}(k, D, n+1)^{\\operatorname{numBound}(k, D, n+1)} \\cdot \\operatorname{degBound}(k, D, n)$, where $\\operatorname{numBound}$ computes numerical bounds for multivariate polynomials in the context of Chevalley's theorem.",
+            "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+          },
+          {
+            "formal_name": "Polynomial.hasseDeriv",
+            "informal_name": "Hasse Derivative of Order k on Polynomial Ring",
+            "kind": "definition",
+            "type": "{R : Type u_1} → [inst : Semiring R] → ℕ → Polynomial R →ₗ[R] Polynomial R",
+            "informal_description": "For a semiring $ R $, the Hasse derivative of order $ k $ is an $ R $-linear map $ D^{(k)} : R[X] \to R[X] $ defined by $ D^{(k)}(a_i X^i) = \binom{i}{k} a_i X^{i - k} $ on monomials and extended linearly. This operation generalizes the usual derivative by scaling each coefficient $ a_i $ by the binomial coefficient $ \binom{i}{k} $ and reducing the degree by $ k $.",
+            "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_leanfinder",
+    "form": "standard",
+    "request": {
+      "query": "Hasse derivative length L1 norm sum absolute polynomial coefficients bound binomial coefficients and degree",
+      "num_results": 8
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.norm_coeff_le_choose_mul_mahlerMeasure\",\n      \"informal_name\": \"Norm of Coefficient Bound via Binomial Coefficient and Mahler Measure\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (n : ℕ) (p : Polynomial ℂ), ‖p.coeff n‖ ≤ ↑(p.natDegree.choose n) * p.mahlerMeasure\",\n      \"informal_description\": \"For any natural number $ n $ and complex polynomial $ p $, the norm of the coefficient of $ X^n $ in $ p $ satisfies $ \\\\|p.coeff\\\\,n\\\\| \\\\leq \\\\binom{d}{n} \\\\cdot p.mahlerMeasure $, where $ d $ denotes the natural degree of $ p $.\",\n      \"path\": \"Mathlib.Analysis.Polynomial.MahlerMeasure\"\n    },\n    {\n      \"formal_name\": \"Polynomial.cauchyBound\",\n      \"informal_name\": \"Cauchy bound for polynomial roots\",\n      \"kind\": \"definition\",\n      \"type\": \"{K : Type u_1} → [inst : NormedDivisionRing K] → Polynomial K → NNReal\",\n      \"informal_description\": \"The Cauchy bound of a polynomial $ p $ over a normed division ring $ K $ is defined as $ 1 + \\\\frac{\\\\sup_{0 \\\\leq i < \\\\deg p} \\\\|\\\\text{coeff}_i(p)\\\\|}{\\\\|\\\\text{leadingCoeff}(p)\\\\|} $, where $ \\\\sup $ denotes the supremum of the absolute values of the coefficients excluding the leading term, and $ \\\\|\\\\cdot\\\\| $ is the norm on $ K $. This provides an upper bound on the absolute values of the roots of $ p $.\",\n      \"path\": \"Mathlib.Analysis.Polynomial.CauchyBound\"\n    },\n    {\n      \"formal_name\": \"Polynomial.natDegree_hasseDeriv_le\",\n      \"informal_name\": \"Degree Bound for Hasse Derivative of Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (p : Polynomial R) (n : ℕ),\\n  ((Polynomial.hasseDeriv n) p).natDegree ≤ p.natDegree - n\",\n      \"informal_description\": \"For any polynomial $ p $ over a semiring $ R $ and any natural number $ n $, the natural degree of the $ n $-th Hasse derivative of $ p $ satisfies $ \\\\deg(D^{(n)}(p)) \\\\leq \\\\deg(p) - n $, where $ D^{(n)} $ denotes the Hasse derivative of order $ n $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv_coeff\",\n      \"informal_name\": \"Coefficient Formula for Hasse Derivative of Order k\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f : Polynomial R) (n : ℕ),\\n  ((Polynomial.hasseDeriv k) f).coeff n = ↑((n + k).choose k) * f.coeff (n + k)\",\n      \"informal_description\": \"For any natural number $ n $, the coefficient of $ X^n $ in the $ k $-th Hasse derivative of a polynomial $ f $ over a semiring $ R $ is equal to $ \\\\binom{n + k}{k} $ multiplied by the coefficient of $ X^{n + k} $ in $ f $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv_apply\",\n      \"informal_name\": \"Hasse Derivative of Order k Applied to a Polynomial\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f : Polynomial R),\\n  (Polynomial.hasseDeriv k) f = f.sum fun i r => (Polynomial.monomial (i - k)) (↑(i.choose k) * r)\",\n      \"informal_description\": \"For a semiring $ R $ and a polynomial $ f \\\\in R[X] $, the Hasse derivative of order $ k $ applied to $ f $ is given by $ D^{(k)}(f) = \\\\sum_{i} \\\\binom{i}{k} \\\\cdot a_i \\\\cdot X^{i - k} $, where $ a_i $ is the coefficient of $ X^i $ in $ f $. This expression sums over all monomials in $ f $, scaling each by the binomial coefficient $ \\\\binom{i}{k} $ and reducing the exponent by $ k $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv\",\n      \"informal_name\": \"Hasse Derivative of Order k on Polynomial Ring\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : Semiring R] → ℕ → Polynomial R →ₗ[R] Polynomial R\",\n      \"informal_description\": \"For a semiring $ R $, the Hasse derivative of order $ k $ is an $ R $-linear map $ D^{(k)} : R[X] \\to R[X] $ defined by $ D^{(k)}(a_i X^i) = \\binom{i}{k} a_i X^{i - k} $ on monomials and extended linearly. This operation generalizes the usual derivative by scaling each coefficient $ a_i $ by the binomial coefficient $ \\binom{i}{k} $ and reducing the degree by $ k $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.coeff_le_of_roots_le\",\n      \"informal_name\": \"Coefficient Bound for Monic Polynomials with Bounded Roots\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {F : Type u_3} {K : Type u_4} [inst : CommRing F] [inst_1 : NormedField K] {p : Polynomial F} {f : F →+* K} {B : ℝ}\\n  (i : ℕ),\\n  p.Monic →\\n    (Polynomial.map f p).Splits →\\n      (∀ z ∈ (Polynomial.map f p).roots, ‖z‖ ≤ B) →\\n        ‖(Polynomial.map f p).coeff i‖ ≤ B ^ (p.natDegree - i) * ↑(p.natDegree.choose i)\",\n      \"informal_description\": \"Let $ p $ be a monic polynomial over a field $ F $, and let $ f : F \\\\to K $ be a ring homomorphism to a normed field $ K $. If the polynomial $ p $ splits over $ K $ and all roots $ z $ of $ f(p) $ satisfy $ \\\\|z\\\\| \\\\leq B $, then for every $ i \\\\in \\\\mathbb{N} $, the coefficient of $ X^i $ in $ f(p) $ satisfies $ \\\\|\\\\text{coeff}_{f(p)}(i)\\\\| \\\\leq B^{\\\\deg(p) - i} \\\\cdot \\\\binom{\\\\deg(p)}{i} $, where $ \\\\deg(p) $ denotes the natural degree of $ p $.\",\n      \"path\": \"Mathlib.Topology.Algebra.Polynomial\"\n    },\n    {\n      \"formal_name\": \"Polynomial.card_mahlerMeasure_le_prod\",\n      \"informal_name\": \"Cardinality Bound for Integer Polynomials with Bounded Mahler Measure and Degree\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (n : ℕ) (B : NNReal),\\n  {p | p.natDegree ≤ n ∧ (Polynomial.map (Int.castRingHom ℂ) p).mahlerMeasure ≤ ↑B}.ncard ≤\\n    ∏ i, (2 * ⌊↑(n.choose ↑i) * B⌋₊ + 1)\",\n      \"informal_description\": \"For any natural number $ n $ and non-negative real number $ B $, the number of integer polynomials $ p $ with natural degree at most $ n $ and Mahler measure $ \\\\mathcal{M}(p) \\\\leq B $ is at most the product over $ i = 0 $ to $ n $ of $ 2 \\\\left\\\\lfloor \\\\binom{n}{i} B \\\\right\\\\rfloor + 1 $.\",\n      \"path\": \"Mathlib.NumberTheory.MahlerMeasure\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Polynomial.norm_coeff_le_choose_mul_mahlerMeasure",
+            "informal_name": "Norm of Coefficient Bound via Binomial Coefficient and Mahler Measure",
+            "kind": "theorem",
+            "type": "∀ (n : ℕ) (p : Polynomial ℂ), ‖p.coeff n‖ ≤ ↑(p.natDegree.choose n) * p.mahlerMeasure",
+            "informal_description": "For any natural number $ n $ and complex polynomial $ p $, the norm of the coefficient of $ X^n $ in $ p $ satisfies $ \\|p.coeff\\,n\\| \\leq \\binom{d}{n} \\cdot p.mahlerMeasure $, where $ d $ denotes the natural degree of $ p $.",
+            "path": "Mathlib.Analysis.Polynomial.MahlerMeasure"
+          },
+          {
+            "formal_name": "Polynomial.cauchyBound",
+            "informal_name": "Cauchy bound for polynomial roots",
+            "kind": "definition",
+            "type": "{K : Type u_1} → [inst : NormedDivisionRing K] → Polynomial K → NNReal",
+            "informal_description": "The Cauchy bound of a polynomial $ p $ over a normed division ring $ K $ is defined as $ 1 + \\frac{\\sup_{0 \\leq i < \\deg p} \\|\\text{coeff}_i(p)\\|}{\\|\\text{leadingCoeff}(p)\\|} $, where $ \\sup $ denotes the supremum of the absolute values of the coefficients excluding the leading term, and $ \\|\\cdot\\| $ is the norm on $ K $. This provides an upper bound on the absolute values of the roots of $ p $.",
+            "path": "Mathlib.Analysis.Polynomial.CauchyBound"
+          },
+          {
+            "formal_name": "Polynomial.natDegree_hasseDeriv_le",
+            "informal_name": "Degree Bound for Hasse Derivative of Polynomials",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (p : Polynomial R) (n : ℕ),\n  ((Polynomial.hasseDeriv n) p).natDegree ≤ p.natDegree - n",
+            "informal_description": "For any polynomial $ p $ over a semiring $ R $ and any natural number $ n $, the natural degree of the $ n $-th Hasse derivative of $ p $ satisfies $ \\deg(D^{(n)}(p)) \\leq \\deg(p) - n $, where $ D^{(n)} $ denotes the Hasse derivative of order $ n $.",
+            "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          },
+          {
+            "formal_name": "Polynomial.hasseDeriv_coeff",
+            "informal_name": "Coefficient Formula for Hasse Derivative of Order k",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f : Polynomial R) (n : ℕ),\n  ((Polynomial.hasseDeriv k) f).coeff n = ↑((n + k).choose k) * f.coeff (n + k)",
+            "informal_description": "For any natural number $ n $, the coefficient of $ X^n $ in the $ k $-th Hasse derivative of a polynomial $ f $ over a semiring $ R $ is equal to $ \\binom{n + k}{k} $ multiplied by the coefficient of $ X^{n + k} $ in $ f $.",
+            "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          },
+          {
+            "formal_name": "Polynomial.hasseDeriv_apply",
+            "informal_name": "Hasse Derivative of Order k Applied to a Polynomial",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f : Polynomial R),\n  (Polynomial.hasseDeriv k) f = f.sum fun i r => (Polynomial.monomial (i - k)) (↑(i.choose k) * r)",
+            "informal_description": "For a semiring $ R $ and a polynomial $ f \\in R[X] $, the Hasse derivative of order $ k $ applied to $ f $ is given by $ D^{(k)}(f) = \\sum_{i} \\binom{i}{k} \\cdot a_i \\cdot X^{i - k} $, where $ a_i $ is the coefficient of $ X^i $ in $ f $. This expression sums over all monomials in $ f $, scaling each by the binomial coefficient $ \\binom{i}{k} $ and reducing the exponent by $ k $.",
+            "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          },
+          {
+            "formal_name": "Polynomial.hasseDeriv",
+            "informal_name": "Hasse Derivative of Order k on Polynomial Ring",
+            "kind": "definition",
+            "type": "{R : Type u_1} → [inst : Semiring R] → ℕ → Polynomial R →ₗ[R] Polynomial R",
+            "informal_description": "For a semiring $ R $, the Hasse derivative of order $ k $ is an $ R $-linear map $ D^{(k)} : R[X] \to R[X] $ defined by $ D^{(k)}(a_i X^i) = \binom{i}{k} a_i X^{i - k} $ on monomials and extended linearly. This operation generalizes the usual derivative by scaling each coefficient $ a_i $ by the binomial coefficient $ \binom{i}{k} $ and reducing the degree by $ k $.",
+            "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          },
+          {
+            "formal_name": "Polynomial.coeff_le_of_roots_le",
+            "informal_name": "Coefficient Bound for Monic Polynomials with Bounded Roots",
+            "kind": "theorem",
+            "type": "∀ {F : Type u_3} {K : Type u_4} [inst : CommRing F] [inst_1 : NormedField K] {p : Polynomial F} {f : F →+* K} {B : ℝ}\n  (i : ℕ),\n  p.Monic →\n    (Polynomial.map f p).Splits →\n      (∀ z ∈ (Polynomial.map f p).roots, ‖z‖ ≤ B) →\n        ‖(Polynomial.map f p).coeff i‖ ≤ B ^ (p.natDegree - i) * ↑(p.natDegree.choose i)",
+            "informal_description": "Let $ p $ be a monic polynomial over a field $ F $, and let $ f : F \\to K $ be a ring homomorphism to a normed field $ K $. If the polynomial $ p $ splits over $ K $ and all roots $ z $ of $ f(p) $ satisfy $ \\|z\\| \\leq B $, then for every $ i \\in \\mathbb{N} $, the coefficient of $ X^i $ in $ f(p) $ satisfies $ \\|\\text{coeff}_{f(p)}(i)\\| \\leq B^{\\deg(p) - i} \\cdot \\binom{\\deg(p)}{i} $, where $ \\deg(p) $ denotes the natural degree of $ p $.",
+            "path": "Mathlib.Topology.Algebra.Polynomial"
+          },
+          {
+            "formal_name": "Polynomial.card_mahlerMeasure_le_prod",
+            "informal_name": "Cardinality Bound for Integer Polynomials with Bounded Mahler Measure and Degree",
+            "kind": "theorem",
+            "type": "∀ (n : ℕ) (B : NNReal),\n  {p | p.natDegree ≤ n ∧ (Polynomial.map (Int.castRingHom ℂ) p).mahlerMeasure ≤ ↑B}.ncard ≤\n    ∏ i, (2 * ⌊↑(n.choose ↑i) * B⌋₊ + 1)",
+            "informal_description": "For any natural number $ n $ and non-negative real number $ B $, the number of integer polynomials $ p $ with natural degree at most $ n $ and Mahler measure $ \\mathcal{M}(p) \\leq B $ is at most the product over $ i = 0 $ to $ n $ of $ 2 \\left\\lfloor \\binom{n}{i} B \\right\\rfloor + 1 $.",
+            "path": "Mathlib.NumberTheory.MahlerMeasure"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_leansearch",
+    "form": "abstract",
+    "request": {
+      "query": "Sum of seminorms of finitely supported coefficients under a Hasse derivative bounded by binomial coefficient weights",
+      "num_results": 8
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.hasseDeriv\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.HasseDeriv\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : Semiring R] → ℕ → Polynomial R →ₗ[R] Polynomial R\"\n    },\n    {\n      \"name\": \"norm_sum_le_of_le\",\n      \"module_name\": \"Mathlib.Analysis.Normed.Group.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_3} {E : Type u_5} [inst : SeminormedAddCommGroup E] (s : Finset ι) {f : ι → E} {n : ι → ℝ},\\n  (∀ b ∈ s, ‖f b‖ ≤ n b) → ‖∑ b ∈ s, f b‖ ≤ ∑ b ∈ s, n b\"\n    },\n    {\n      \"name\": \"LaurentSeries.hasseDeriv\",\n      \"module_name\": \"Mathlib.RingTheory.LaurentSeries\",\n      \"kind\": \"definition\",\n      \"type\": \"(R : Type u_2) →\\n  {V : Type u_3} →\\n    [inst : AddCommGroup V] → [inst_1 : Semiring R] → [inst_2 : Module R V] → ℕ → LaurentSeries V →ₗ[R] LaurentSeries V\"\n    },\n    {\n      \"name\": \"Polynomial.hasseDeriv_apply\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.HasseDeriv\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f : Polynomial R),\\n  (Polynomial.hasseDeriv k) f = f.sum fun i r => (Polynomial.monomial (i - k)) (↑(i.choose k) * r)\"\n    },\n    {\n      \"name\": \"nnnorm_prod_le_of_le\",\n      \"module_name\": \"Mathlib.Analysis.Normed.Group.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_3} {E : Type u_5} [inst : SeminormedCommGroup E] (s : Finset ι) {f : ι → E} {n : ι → NNReal},\\n  (∀ b ∈ s, ‖f b‖₊ ≤ n b) → ‖∏ b ∈ s, f b‖₊ ≤ ∑ b ∈ s, n b\"\n    },\n    {\n      \"name\": \"LaurentSeries.hasseDeriv_single\",\n      \"module_name\": \"Mathlib.RingTheory.LaurentSeries\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] {V : Type u_2} [inst_1 : AddCommGroup V] [inst_2 : Module R V] (k : ℕ) (n : ℤ)\\n  (x : V), (LaurentSeries.hasseDeriv R k) ((HahnSeries.single n) x) = (HahnSeries.single (n - ↑k)) (Ring.choose n k • x)\"\n    },\n    {\n      \"name\": \"Polynomial.hasseDeriv_monomial\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.HasseDeriv\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k n : ℕ) (r : R),\\n  (Polynomial.hasseDeriv k) ((Polynomial.monomial n) r) = (Polynomial.monomial (n - k)) (↑(n.choose k) * r)\"\n    },\n    {\n      \"name\": \"LaurentSeries.hasseDeriv_single_add\",\n      \"module_name\": \"Mathlib.RingTheory.LaurentSeries\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] {V : Type u_2} [inst_1 : AddCommGroup V] [inst_2 : Module R V] (k : ℕ) (n : ℤ)\\n  (x : V),\\n  (LaurentSeries.hasseDeriv R k) ((HahnSeries.single (n + ↑k)) x) = (HahnSeries.single n) (Ring.choose (n + ↑k) k • x)\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.hasseDeriv",
+            "module_name": "Mathlib.Algebra.Polynomial.HasseDeriv",
+            "kind": "definition",
+            "type": "{R : Type u_1} → [inst : Semiring R] → ℕ → Polynomial R →ₗ[R] Polynomial R"
+          },
+          {
+            "name": "norm_sum_le_of_le",
+            "module_name": "Mathlib.Analysis.Normed.Group.Basic",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_3} {E : Type u_5} [inst : SeminormedAddCommGroup E] (s : Finset ι) {f : ι → E} {n : ι → ℝ},\n  (∀ b ∈ s, ‖f b‖ ≤ n b) → ‖∑ b ∈ s, f b‖ ≤ ∑ b ∈ s, n b"
+          },
+          {
+            "name": "LaurentSeries.hasseDeriv",
+            "module_name": "Mathlib.RingTheory.LaurentSeries",
+            "kind": "definition",
+            "type": "(R : Type u_2) →\n  {V : Type u_3} →\n    [inst : AddCommGroup V] → [inst_1 : Semiring R] → [inst_2 : Module R V] → ℕ → LaurentSeries V →ₗ[R] LaurentSeries V"
+          },
+          {
+            "name": "Polynomial.hasseDeriv_apply",
+            "module_name": "Mathlib.Algebra.Polynomial.HasseDeriv",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f : Polynomial R),\n  (Polynomial.hasseDeriv k) f = f.sum fun i r => (Polynomial.monomial (i - k)) (↑(i.choose k) * r)"
+          },
+          {
+            "name": "nnnorm_prod_le_of_le",
+            "module_name": "Mathlib.Analysis.Normed.Group.Basic",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_3} {E : Type u_5} [inst : SeminormedCommGroup E] (s : Finset ι) {f : ι → E} {n : ι → NNReal},\n  (∀ b ∈ s, ‖f b‖₊ ≤ n b) → ‖∏ b ∈ s, f b‖₊ ≤ ∑ b ∈ s, n b"
+          },
+          {
+            "name": "LaurentSeries.hasseDeriv_single",
+            "module_name": "Mathlib.RingTheory.LaurentSeries",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] {V : Type u_2} [inst_1 : AddCommGroup V] [inst_2 : Module R V] (k : ℕ) (n : ℤ)\n  (x : V), (LaurentSeries.hasseDeriv R k) ((HahnSeries.single n) x) = (HahnSeries.single (n - ↑k)) (Ring.choose n k • x)"
+          },
+          {
+            "name": "Polynomial.hasseDeriv_monomial",
+            "module_name": "Mathlib.Algebra.Polynomial.HasseDeriv",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (k n : ℕ) (r : R),\n  (Polynomial.hasseDeriv k) ((Polynomial.monomial n) r) = (Polynomial.monomial (n - k)) (↑(n.choose k) * r)"
+          },
+          {
+            "name": "LaurentSeries.hasseDeriv_single_add",
+            "module_name": "Mathlib.RingTheory.LaurentSeries",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] {V : Type u_2} [inst_1 : AddCommGroup V] [inst_2 : Module R V] (k : ℕ) (n : ℤ)\n  (x : V),\n  (LaurentSeries.hasseDeriv R k) ((HahnSeries.single (n + ↑k)) x) = (HahnSeries.single n) (Ring.choose (n + ↑k) k • x)"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_leansearch",
+    "form": "current",
+    "request": {
+      "query": "Hasse divided derivative multivariate polynomial coefficient l1 norm bounded by exponential degree",
+      "num_results": 8
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.pderiv\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.PDeriv\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} → {σ : Type v} → [inst : CommSemiring R] → σ → Derivation R (MvPolynomial σ R) (MvPolynomial σ R)\"\n    },\n    {\n      \"name\": \"MvPolynomial.mkDerivation\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Derivation\",\n      \"kind\": \"definition\",\n      \"type\": \"{σ : Type u_1} →\\n  (R : Type u_2) →\\n    {A : Type u_3} →\\n      [inst : CommSemiring R] →\\n        [inst_1 : AddCommMonoid A] →\\n          [inst_2 : Module R A] →\\n            [inst_3 : Module (MvPolynomial σ R) A] →\\n              [IsScalarTower R (MvPolynomial σ R) A] → (σ → A) → Derivation R (MvPolynomial σ R) A\"\n    },\n    {\n      \"name\": \"Polynomial.hasseDeriv\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.HasseDeriv\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : Semiring R] → ℕ → Polynomial R →ₗ[R] Polynomial R\"\n    },\n    {\n      \"name\": \"Polynomial.natDegree_hasseDeriv_le\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.HasseDeriv\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (p : Polynomial R) (n : ℕ),\\n  ((Polynomial.hasseDeriv n) p).natDegree ≤ p.natDegree - n\"\n    },\n    {\n      \"name\": \"MvPolynomial.mkDerivationₗ\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Derivation\",\n      \"kind\": \"definition\",\n      \"type\": \"{σ : Type u_1} →\\n  (R : Type u_2) →\\n    {A : Type u_3} →\\n      [inst : CommSemiring R] →\\n        [inst_1 : AddCommMonoid A] →\\n          [inst_2 : Module R A] → [Module (MvPolynomial σ R) A] → (σ → A) → MvPolynomial σ R →ₗ[R] A\"\n    },\n    {\n      \"name\": \"LaurentSeries.hasseDeriv\",\n      \"module_name\": \"Mathlib.RingTheory.LaurentSeries\",\n      \"kind\": \"definition\",\n      \"type\": \"(R : Type u_2) →\\n  {V : Type u_3} →\\n    [inst : AddCommGroup V] → [inst_1 : Semiring R] → [inst_2 : Module R V] → ℕ → LaurentSeries V →ₗ[R] LaurentSeries V\"\n    },\n    {\n      \"name\": \"Polynomial.hasseDeriv_apply\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.HasseDeriv\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f : Polynomial R),\\n  (Polynomial.hasseDeriv k) f = f.sum fun i r => (Polynomial.monomial (i - k)) (↑(i.choose k) * r)\"\n    },\n    {\n      \"name\": \"Polynomial.hasseDeriv_coeff\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.HasseDeriv\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f : Polynomial R) (n : ℕ),\\n  ((Polynomial.hasseDeriv k) f).coeff n = ↑((n + k).choose k) * f.coeff (n + k)\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.pderiv",
+            "module_name": "Mathlib.Algebra.MvPolynomial.PDeriv",
+            "kind": "definition",
+            "type": "{R : Type u} → {σ : Type v} → [inst : CommSemiring R] → σ → Derivation R (MvPolynomial σ R) (MvPolynomial σ R)"
+          },
+          {
+            "name": "MvPolynomial.mkDerivation",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Derivation",
+            "kind": "definition",
+            "type": "{σ : Type u_1} →\n  (R : Type u_2) →\n    {A : Type u_3} →\n      [inst : CommSemiring R] →\n        [inst_1 : AddCommMonoid A] →\n          [inst_2 : Module R A] →\n            [inst_3 : Module (MvPolynomial σ R) A] →\n              [IsScalarTower R (MvPolynomial σ R) A] → (σ → A) → Derivation R (MvPolynomial σ R) A"
+          },
+          {
+            "name": "Polynomial.hasseDeriv",
+            "module_name": "Mathlib.Algebra.Polynomial.HasseDeriv",
+            "kind": "definition",
+            "type": "{R : Type u_1} → [inst : Semiring R] → ℕ → Polynomial R →ₗ[R] Polynomial R"
+          },
+          {
+            "name": "Polynomial.natDegree_hasseDeriv_le",
+            "module_name": "Mathlib.Algebra.Polynomial.HasseDeriv",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (p : Polynomial R) (n : ℕ),\n  ((Polynomial.hasseDeriv n) p).natDegree ≤ p.natDegree - n"
+          },
+          {
+            "name": "MvPolynomial.mkDerivationₗ",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Derivation",
+            "kind": "definition",
+            "type": "{σ : Type u_1} →\n  (R : Type u_2) →\n    {A : Type u_3} →\n      [inst : CommSemiring R] →\n        [inst_1 : AddCommMonoid A] →\n          [inst_2 : Module R A] → [Module (MvPolynomial σ R) A] → (σ → A) → MvPolynomial σ R →ₗ[R] A"
+          },
+          {
+            "name": "LaurentSeries.hasseDeriv",
+            "module_name": "Mathlib.RingTheory.LaurentSeries",
+            "kind": "definition",
+            "type": "(R : Type u_2) →\n  {V : Type u_3} →\n    [inst : AddCommGroup V] → [inst_1 : Semiring R] → [inst_2 : Module R V] → ℕ → LaurentSeries V →ₗ[R] LaurentSeries V"
+          },
+          {
+            "name": "Polynomial.hasseDeriv_apply",
+            "module_name": "Mathlib.Algebra.Polynomial.HasseDeriv",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f : Polynomial R),\n  (Polynomial.hasseDeriv k) f = f.sum fun i r => (Polynomial.monomial (i - k)) (↑(i.choose k) * r)"
+          },
+          {
+            "name": "Polynomial.hasseDeriv_coeff",
+            "module_name": "Mathlib.Algebra.Polynomial.HasseDeriv",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f : Polynomial R) (n : ℕ),\n  ((Polynomial.hasseDeriv k) f).coeff n = ↑((n + k).choose k) * f.coeff (n + k)"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_leansearch",
+    "form": "standard",
+    "request": {
+      "query": "Length of divided derivatives of a polynomial bounded by two to degree times length",
+      "num_results": 8
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.natDegree_hasseDeriv_le\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.HasseDeriv\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (p : Polynomial R) (n : ℕ),\\n  ((Polynomial.hasseDeriv n) p).natDegree ≤ p.natDegree - n\"\n    },\n    {\n      \"name\": \"Polynomial.degree_derivative_le\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Derivative\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Semiring R] {p : Polynomial R}, (Polynomial.derivative p).degree ≤ p.degree\"\n    },\n    {\n      \"name\": \"Polynomial.natDegree_iterate_derivative\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Derivative\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Semiring R] (p : Polynomial R) (k : ℕ),\\n  ((⇑Polynomial.derivative)^[k] p).natDegree ≤ p.natDegree - k\"\n    },\n    {\n      \"name\": \"Polynomial.derivative'\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Derivation\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : CommSemiring R] → Derivation R (Polynomial R) (Polynomial R)\"\n    },\n    {\n      \"name\": \"Polynomial.derivative\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Derivative\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} → [inst : Semiring R] → Polynomial R →ₗ[R] Polynomial R\"\n    },\n    {\n      \"name\": \"Polynomial.iterate_derivative_eq_zero\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Derivative\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Semiring R] {p : Polynomial R} {x : ℕ}, p.natDegree < x → (⇑Polynomial.derivative)^[x] p = 0\"\n    },\n    {\n      \"name\": \"Polynomial.natDegree_derivative_le\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Derivative\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Semiring R] (p : Polynomial R), (Polynomial.derivative p).natDegree ≤ p.natDegree - 1\"\n    },\n    {\n      \"name\": \"Polynomial.degree_derivative_eq\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Derivative\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Semiring R] [IsAddTorsionFree R] (p : Polynomial R),\\n  0 < p.natDegree → (Polynomial.derivative p).degree = ↑(p.natDegree - 1)\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.natDegree_hasseDeriv_le",
+            "module_name": "Mathlib.Algebra.Polynomial.HasseDeriv",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (p : Polynomial R) (n : ℕ),\n  ((Polynomial.hasseDeriv n) p).natDegree ≤ p.natDegree - n"
+          },
+          {
+            "name": "Polynomial.degree_derivative_le",
+            "module_name": "Mathlib.Algebra.Polynomial.Derivative",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : Semiring R] {p : Polynomial R}, (Polynomial.derivative p).degree ≤ p.degree"
+          },
+          {
+            "name": "Polynomial.natDegree_iterate_derivative",
+            "module_name": "Mathlib.Algebra.Polynomial.Derivative",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : Semiring R] (p : Polynomial R) (k : ℕ),\n  ((⇑Polynomial.derivative)^[k] p).natDegree ≤ p.natDegree - k"
+          },
+          {
+            "name": "Polynomial.derivative'",
+            "module_name": "Mathlib.Algebra.Polynomial.Derivation",
+            "kind": "definition",
+            "type": "{R : Type u_1} → [inst : CommSemiring R] → Derivation R (Polynomial R) (Polynomial R)"
+          },
+          {
+            "name": "Polynomial.derivative",
+            "module_name": "Mathlib.Algebra.Polynomial.Derivative",
+            "kind": "definition",
+            "type": "{R : Type u} → [inst : Semiring R] → Polynomial R →ₗ[R] Polynomial R"
+          },
+          {
+            "name": "Polynomial.iterate_derivative_eq_zero",
+            "module_name": "Mathlib.Algebra.Polynomial.Derivative",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : Semiring R] {p : Polynomial R} {x : ℕ}, p.natDegree < x → (⇑Polynomial.derivative)^[x] p = 0"
+          },
+          {
+            "name": "Polynomial.natDegree_derivative_le",
+            "module_name": "Mathlib.Algebra.Polynomial.Derivative",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : Semiring R] (p : Polynomial R), (Polynomial.derivative p).natDegree ≤ p.natDegree - 1"
+          },
+          {
+            "name": "Polynomial.degree_derivative_eq",
+            "module_name": "Mathlib.Algebra.Polynomial.Derivative",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : Semiring R] [IsAddTorsionFree R] (p : Polynomial R),\n  0 < p.natDegree → (Polynomial.derivative p).degree = ↑(p.natDegree - 1)"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_local_search",
+    "form": "abstract",
+    "request": {
+      "query": "sum_le_sum",
+      "limit": 15,
+      "project_root": "/Users/ramin/LEAN/Roth"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Cardinal.sum_le_sum\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/SetTheory/Cardinal/Order.lean\"\n    },\n    {\n      \"name\": \"Finsupp.sum_le_sum\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Data/Finsupp/Order.lean\"\n    },\n    {\n      \"name\": \"GCongr.Finset.sum_le_sum\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Tactic/GCongr/Core.lean\"\n    },\n    {\n      \"name\": \"Finset.sum_le_sum_Ioc\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Order/Group/Int/Sum.lean\"\n    },\n    {\n      \"name\": \"Finsupp.sum_le_sum_index\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Data/Finsupp/Order.lean\"\n    },\n    {\n      \"name\": \"Finset.sum_le_sum_range\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Order/Group/Int/Sum.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Cardinal.sum_le_sum",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/SetTheory/Cardinal/Order.lean"
+          },
+          {
+            "name": "Finsupp.sum_le_sum",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Data/Finsupp/Order.lean"
+          },
+          {
+            "name": "GCongr.Finset.sum_le_sum",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Tactic/GCongr/Core.lean"
+          },
+          {
+            "name": "Finset.sum_le_sum_Ioc",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Order/Group/Int/Sum.lean"
+          },
+          {
+            "name": "Finsupp.sum_le_sum_index",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Data/Finsupp/Order.lean"
+          },
+          {
+            "name": "Finset.sum_le_sum_range",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Order/Group/Int/Sum.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_local_search",
+    "form": "current",
+    "request": {
+      "query": "normOne_hasseDeriv",
+      "limit": 15,
+      "project_root": "/Users/ramin/LEAN/Roth"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Roth.normOne_hasseDeriv_le\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/CoeffNorm.lean\"\n    },\n    {\n      \"name\": \"normOne_hasseDeriv_le\",\n      \"kind\": \"theorem\",\n      \"file\": \".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_apply/evidence/caller-source.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.NormSumConsumers.normOne_hasseDeriv_le_inline\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/roth-overview-session/NextHasseChecks.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Roth.normOne_hasseDeriv_le",
+            "kind": "theorem",
+            "file": "Roth/CoeffNorm.lean"
+          },
+          {
+            "name": "normOne_hasseDeriv_le",
+            "kind": "theorem",
+            "file": ".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_apply/evidence/caller-source.lean"
+          },
+          {
+            "name": "MvPolynomial.NormSumConsumers.normOne_hasseDeriv_le_inline",
+            "kind": "theorem",
+            "file": ".lake/roth-overview-session/NextHasseChecks.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_local_search",
+    "form": "standard",
+    "request": {
+      "query": "hasseDeriv",
+      "limit": 15,
+      "project_root": "/Users/ramin/LEAN/Roth"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"LaurentSeries.hasseDeriv\",\n      \"kind\": \"def\",\n      \"file\": \".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv/evidence/laurent-hasse-excerpt.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.hasseDeriv\",\n      \"kind\": \"def\",\n      \"file\": \"Roth/HasseDeriv.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.hasseDeriv\",\n      \"kind\": \"def\",\n      \"file\": \".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_zero_apply/target-excerpt.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.hasseDeriv\",\n      \"kind\": \"def\",\n      \"file\": \".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_rename/target-excerpt.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.hasseDeriv\",\n      \"kind\": \"def\",\n      \"file\": \".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_apply/evidence/target-source.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.hasseDeriv\",\n      \"kind\": \"def\",\n      \"file\": \".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv/evidence/target-excerpt.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.hasseDeriv\",\n      \"kind\": \"def\",\n      \"file\": \".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_zero/target-excerpt.lean\"\n    },\n    {\n      \"name\": \"Polynomial.hasseDeriv\",\n      \"kind\": \"def\",\n      \"file\": \".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_zero_apply/mathlib-hasse-excerpt.lean\"\n    },\n    {\n      \"name\": \"Polynomial.hasseDeriv\",\n      \"kind\": \"def\",\n      \"file\": \".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_apply/evidence/polynomial-source.lean\"\n    },\n    {\n      \"name\": \"Polynomial.hasseDeriv\",\n      \"kind\": \"def\",\n      \"file\": \".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_zero/mathlib-hasse-excerpt.lean\"\n    },\n    {\n      \"name\": \"Polynomial.hasseDeriv\",\n      \"kind\": \"def\",\n      \"file\": \".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv/evidence/polynomial-hasse-excerpt.lean\"\n    },\n    {\n      \"name\": \"Polynomial.hasseDeriv\",\n      \"kind\": \"def\",\n      \"file\": \".mathlib-quality/overview/evidence/MvPolynomial.hasseCoeff_eq_zero_iff/evidence/polynomial-hasse-source.lean\"\n    },\n    {\n      \"name\": \"hasseDeriv\",\n      \"kind\": \"def\",\n      \"file\": \".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_map/target-excerpt.lean\"\n    },\n    {\n      \"name\": \"hasseDeriv\",\n      \"kind\": \"def\",\n      \"file\": \".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_C/mathlib-hasse-excerpt.lean\"\n    },\n    {\n      \"name\": \"hasseDeriv\",\n      \"kind\": \"def\",\n      \"file\": \".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_C/target-excerpt.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "LaurentSeries.hasseDeriv",
+            "kind": "def",
+            "file": ".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv/evidence/laurent-hasse-excerpt.lean"
+          },
+          {
+            "name": "MvPolynomial.hasseDeriv",
+            "kind": "def",
+            "file": "Roth/HasseDeriv.lean"
+          },
+          {
+            "name": "MvPolynomial.hasseDeriv",
+            "kind": "def",
+            "file": ".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_zero_apply/target-excerpt.lean"
+          },
+          {
+            "name": "MvPolynomial.hasseDeriv",
+            "kind": "def",
+            "file": ".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_rename/target-excerpt.lean"
+          },
+          {
+            "name": "MvPolynomial.hasseDeriv",
+            "kind": "def",
+            "file": ".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_apply/evidence/target-source.lean"
+          },
+          {
+            "name": "MvPolynomial.hasseDeriv",
+            "kind": "def",
+            "file": ".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv/evidence/target-excerpt.lean"
+          },
+          {
+            "name": "MvPolynomial.hasseDeriv",
+            "kind": "def",
+            "file": ".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_zero/target-excerpt.lean"
+          },
+          {
+            "name": "Polynomial.hasseDeriv",
+            "kind": "def",
+            "file": ".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_zero_apply/mathlib-hasse-excerpt.lean"
+          },
+          {
+            "name": "Polynomial.hasseDeriv",
+            "kind": "def",
+            "file": ".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_apply/evidence/polynomial-source.lean"
+          },
+          {
+            "name": "Polynomial.hasseDeriv",
+            "kind": "def",
+            "file": ".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_zero/mathlib-hasse-excerpt.lean"
+          },
+          {
+            "name": "Polynomial.hasseDeriv",
+            "kind": "def",
+            "file": ".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv/evidence/polynomial-hasse-excerpt.lean"
+          },
+          {
+            "name": "Polynomial.hasseDeriv",
+            "kind": "def",
+            "file": ".mathlib-quality/overview/evidence/MvPolynomial.hasseCoeff_eq_zero_iff/evidence/polynomial-hasse-source.lean"
+          },
+          {
+            "name": "hasseDeriv",
+            "kind": "def",
+            "file": ".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_map/target-excerpt.lean"
+          },
+          {
+            "name": "hasseDeriv",
+            "kind": "def",
+            "file": ".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_C/mathlib-hasse-excerpt.lean"
+          },
+          {
+            "name": "hasseDeriv",
+            "kind": "def",
+            "file": ".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_C/target-excerpt.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_loogle",
+    "form": "abstract",
+    "request": {
+      "query": "\"AddGroupSeminorm\", \"sum\"",
+      "num_results": 8
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": []\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": []
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_loogle",
+    "form": "current",
+    "request": {
+      "query": "\"hasseDeriv\", \"norm\"",
+      "num_results": 8
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": []\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": []
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_loogle",
+    "form": "standard",
+    "request": {
+      "query": "\"hasseDeriv\", \"sum\"",
+      "num_results": 8
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": []\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": []
+      },
+      "isError": false
+    }
+  }
+]

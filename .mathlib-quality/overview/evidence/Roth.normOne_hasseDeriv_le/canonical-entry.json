@@ -1,0 +1,57 @@
+{
+  "file": "Roth/CoeffNorm.lean",
+  "line": 148,
+  "name": "Roth.normOne_hasseDeriv_le",
+  "short": "normOne_hasseDeriv_le",
+  "kind": "theorem",
+  "visibility": "public",
+  "end_line": 157,
+  "source": "theorem normOne_hasseDeriv_le [Fintype σ] (d : σ →₀ ℕ) (P : MvPolynomial σ ℤ) {r : σ → ℕ}\n    (hP : ∀ j, degreeOf j P ≤ r j) : normOne (hasseDeriv d P) ≤ 2 ^ (∑ j, r j) * normOne P := by\n  classical\n  rw [hasseDeriv_apply]\n  refine (normOne_sum_le _ _).trans ?_\n  rw [normOne, Finset.mul_sum]\n  refine Finset.sum_le_sum fun k hk ↦ ?_\n  rw [normOne_monomial, Int.cast_mul, Int.cast_natCast, abs_mul, Nat.abs_cast]\n  refine mul_le_mul_of_nonneg_right ?_ (abs_nonneg _)\n  exact_mod_cast hasseCoeff_le_two_pow fun j ↦ (monomial_le_degreeOf j hk).trans (hP j)",
+  "signature": "theorem normOne_hasseDeriv_le [Fintype σ] (d : σ →₀ ℕ) (P : MvPolynomial σ ℤ) {r : σ → ℕ}\n    (hP : ∀ j, degreeOf j P ≤ r j) : normOne (hasseDeriv d P) ≤ 2 ^ (∑ j, r j) * normOne P",
+  "body": "by\n  classical\n  rw [hasseDeriv_apply]\n  refine (normOne_sum_le _ _).trans ?_\n  rw [normOne, Finset.mul_sum]\n  refine Finset.sum_le_sum fun k hk ↦ ?_\n  rw [normOne_monomial, Int.cast_mul, Int.cast_natCast, abs_mul, Nat.abs_cast]\n  refine mul_le_mul_of_nonneg_right ?_ (abs_nonneg _)\n  exact_mod_cast hasseCoeff_le_two_pow fun j ↦ (monomial_le_degreeOf j hk).trans (hP j)",
+  "proof_lines": 9,
+  "sha256": "42268776852cb1e64f344bc389c19dd57c7e6273cf0be4cf609cab750eca12d0",
+  "source_body_project_refs": [
+    "MvPolynomial.hasseCoeff_le_two_pow",
+    "MvPolynomial.hasseDeriv_apply",
+    "Roth.normOne",
+    "Roth.normOne_monomial",
+    "Roth.normOne_sum_le"
+  ],
+  "source_type_project_refs": [
+    "MvPolynomial.hasseDeriv",
+    "Roth.normOne"
+  ],
+  "what": "A Hasse derivative increases the coefficient norm by at most 2^(sum r).",
+  "how": "Expands hasseDeriv_apply monomialwise, uses normOne_sum_le and normOne_monomial, then hasseCoeff_le_two_pow bounds each multiplier.",
+  "hypotheses": "Finitely many variables and partial-degree bounds r.",
+  "source_used_by_project": [
+    "Roth.abs_coeff_det_hasseDeriv_le"
+  ],
+  "source_used_by_file": [
+    "Roth.abs_coeff_det_hasseDeriv_le"
+  ],
+  "section_binders": "{σ : Type*}",
+  "type_provenance": "Exact written signature plus manually identified captured section binders. Root cached full build succeeds; global opaque/type inspector timed out, so no kernel dump is claimed.",
+  "notes": "No sorry, TODO, or set_option in this declaration.",
+  "assignment_offset": 181,
+  "project_body_refs": [
+    "MvPolynomial.hasseCoeff_le_two_pow",
+    "MvPolynomial.hasseDeriv_apply",
+    "Roth.normOne",
+    "Roth.normOne_monomial",
+    "Roth.normOne_sum_le"
+  ],
+  "project_type_refs": [
+    "MvPolynomial.hasseDeriv",
+    "Roth.normOne"
+  ],
+  "project_callers": [
+    {
+      "name": "Roth.abs_coeff_det_hasseDeriv_le",
+      "file": "Roth/CoeffNorm.lean",
+      "line": 258
+    }
+  ],
+  "section_context": "{σ : Type*}"
+}

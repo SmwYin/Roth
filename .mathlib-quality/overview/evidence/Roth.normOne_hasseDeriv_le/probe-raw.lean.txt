@@ -1,0 +1,55 @@
+#check_failure Roth.normOne_hasseDeriv_le
+#check_failure MvPolynomial.hasseDeriv
+namespace NormHasseRaw
+open MvPolynomial
+variable {σ R : Type*} [CommRing R]
+noncomputable def size (p : AddGroupSeminorm R) (P : MvPolynomial σ R) : ℝ :=
+  P.coeff.sum fun _ a ↦ p a
+theorem size_add (p : AddGroupSeminorm R) (P Q : MvPolynomial σ R) :
+    size p (P + Q) ≤ size p P + size p Q := by
+  classical
+  unfold size
+  rw [Finsupp.sum_of_support_subset _ Finsupp.support_add _ (by simp),
+    Finsupp.sum_of_support_subset _ Finset.subset_union_left _ (by simp),
+    Finsupp.sum_of_support_subset _ Finset.subset_union_right _ (by simp),
+    ← Finset.sum_add_distrib]
+  exact Finset.sum_le_sum fun i _ ↦ map_add_le_add p _ _
+theorem size_sum {ι : Type*} (p : AddGroupSeminorm R) (s : Finset ι)
+    (f : ι → MvPolynomial σ R) : size p (∑ i ∈ s, f i) ≤ ∑ i ∈ s, size p (f i) :=
+  Finset.le_sum_of_subadditive (size p) (by simp [size]) (size_add p) s f
+theorem size_monomial (p : AddGroupSeminorm R) (k : σ →₀ ℕ) (a : R) :
+    size p (monomial k a) = p a := by
+  classical
+  simp [size, monomial, Finsupp.sum_single_index]
+theorem scalarBound (p : AddGroupSeminorm R) (n : ℕ) (a : R) :
+    p ((n : R) * a) ≤ (n : ℝ) * p a := by
+  induction n with
+  | zero => simp
+  | succ n ih =>
+    simpa [Nat.cast_add, Nat.cast_one, add_mul, one_mul] using
+      (map_add_le_add p ((n : R) * a) a).trans (add_le_add ih le_rfl)
+theorem finiteMonomialBound [Fintype σ] (p : AddGroupSeminorm R)
+    (d : σ →₀ ℕ) (P : MvPolynomial σ R) {r : σ → ℕ}
+    (hP : ∀ j, degreeOf j P ≤ r j) :
+    size p (∑ k ∈ P.support,
+      monomial (k - d) (((∏ j, (k j).choose (d j) : ℕ) : R) * P.coeff k)) ≤
+      2 ^ (∑ j, r j) * size p P := by
+  classical
+  refine (size_sum p _ _).trans ?_
+  rw [size, Finsupp.sum, Finset.mul_sum]
+  refine Finset.sum_le_sum fun k hk ↦ ?_
+  rw [size_monomial]
+  have hc : (∏ j, (k j).choose (d j) : ℕ) ≤ 2 ^ (∑ j, r j) := by
+    rw [← Finset.prod_pow_eq_pow_sum]
+    exact Finset.prod_le_prod fun j _ ↦
+      (Nat.choose_le_two_pow _ _).trans
+        (Nat.pow_le_pow_right two_pos ((monomial_le_degreeOf j hk).trans (hP j)))
+  have hc' : ((∏ j, (k j).choose (d j) : ℕ) : ℝ) ≤ 2 ^ (∑ j, r j) := by
+    exact_mod_cast hc
+  exact (scalarBound p _ _).trans (mul_le_mul_of_nonneg_right hc' (apply_nonneg p _))
+#check @Polynomial.hasseDeriv_coeff
+#check @Finsupp.sum_of_support_subset
+#check @Finset.le_sum_of_subadditive
+#check @Nat.choose_le_two_pow
+#print axioms finiteMonomialBound
+end NormHasseRaw

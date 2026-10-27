@@ -1,0 +1,22 @@
+{
+  "declaration": "Roth.normOne_hasseDeriv_le",
+  "kind": "theorem",
+  "type": "∀ {σ : Type u_2} [inst : Fintype σ] (d : σ →₀ ℕ) (P : MvPolynomial σ ℤ) {r : σ → ℕ},\n  (∀ (j : σ), degreeOf j P ≤ r j) → normOne ((hasseDeriv d) P) ≤ (2 ^ ∑ j, r j) * normOne P",
+  "what": "Hasse derivative has coefficient ℓ¹ size at most 2 to sum of coordinate degree bounds times original size.",
+  "how": "Expand derivative into monomials, apply finite triangle inequality, bound each binomial product and sum.",
+  "hypotheses": "Fintype σ; arbitrary derivative multi-index; integer polynomial with degreeOf j P ≤ r j.",
+  "project_dependencies": [
+    "MvPolynomial.hasseDeriv_apply",
+    "Roth.normOne_sum_le",
+    "Roth.normOne_monomial",
+    "MvPolynomial.hasseCoeff_le_two_pow",
+    "Roth.normOne"
+  ],
+  "caller_summary": "One source proof caller, Roth.abs_coeff_det_hasseDeriv_le:269; same sole direct consumer in exact ordered293 native audit; full generic-specialization replay passed.",
+  "mathlib_api_audit": "Five actual methods across current/standard/abstract forms. Existing finite sum/natural binomial facts are building blocks; actual multivariate Hasse operator absent in guarded mathlib-only native environment.",
+  "moral_duplications": "Univariate Hasse coefficient formula is an analogue; Gauss sup norm, Mahler measure, and coefficient sup bound are distinct estimates.",
+  "generalization": "Native-verified arbitrary CommRing R and AddGroupSeminorm R coefficient sum; exact int recovery. MODERN-IDIOM.",
+  "missing_api": "Multivariate Hasse derivative foundation and coefficient seminorm finite-support sum bound. State explicit coefficient sums, avoiding a new coefficient norm foundation.",
+  "junk": "Keep estimate; integer-specific spelling becomes local specialization. Test-only size helper is not recommended public upstream API.",
+  "action": "YES-but-generalise-first: propose Mathlib/Analysis/Polynomial/MvHasseDeriv.lean after foundational algebra PR, group coefficient sup and coefficient sum bounds; generalise/cleanup before submission."
+}

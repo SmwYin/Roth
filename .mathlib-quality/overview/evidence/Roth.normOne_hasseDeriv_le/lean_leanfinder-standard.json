@@ -1,0 +1,85 @@
+{
+  "method": "lean_leanfinder",
+  "form": "standard",
+  "request": {
+    "query": "Hasse derivative length L1 norm sum absolute polynomial coefficients bound binomial coefficients and degree",
+    "num_results": 8
+  },
+  "response": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.norm_coeff_le_choose_mul_mahlerMeasure\",\n      \"informal_name\": \"Norm of Coefficient Bound via Binomial Coefficient and Mahler Measure\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (n : ℕ) (p : Polynomial ℂ), ‖p.coeff n‖ ≤ ↑(p.natDegree.choose n) * p.mahlerMeasure\",\n      \"informal_description\": \"For any natural number $ n $ and complex polynomial $ p $, the norm of the coefficient of $ X^n $ in $ p $ satisfies $ \\\\|p.coeff\\\\,n\\\\| \\\\leq \\\\binom{d}{n} \\\\cdot p.mahlerMeasure $, where $ d $ denotes the natural degree of $ p $.\",\n      \"path\": \"Mathlib.Analysis.Polynomial.MahlerMeasure\"\n    },\n    {\n      \"formal_name\": \"Polynomial.cauchyBound\",\n      \"informal_name\": \"Cauchy bound for polynomial roots\",\n      \"kind\": \"definition\",\n      \"type\": \"{K : Type u_1} → [inst : NormedDivisionRing K] → Polynomial K → NNReal\",\n      \"informal_description\": \"The Cauchy bound of a polynomial $ p $ over a normed division ring $ K $ is defined as $ 1 + \\\\frac{\\\\sup_{0 \\\\leq i < \\\\deg p} \\\\|\\\\text{coeff}_i(p)\\\\|}{\\\\|\\\\text{leadingCoeff}(p)\\\\|} $, where $ \\\\sup $ denotes the supremum of the absolute values of the coefficients excluding the leading term, and $ \\\\|\\\\cdot\\\\| $ is the norm on $ K $. This provides an upper bound on the absolute values of the roots of $ p $.\",\n      \"path\": \"Mathlib.Analysis.Polynomial.CauchyBound\"\n    },\n    {\n      \"formal_name\": \"Polynomial.natDegree_hasseDeriv_le\",\n      \"informal_name\": \"Degree Bound for Hasse Derivative of Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (p : Polynomial R) (n : ℕ),\\n  ((Polynomial.hasseDeriv n) p).natDegree ≤ p.natDegree - n\",\n      \"informal_description\": \"For any polynomial $ p $ over a semiring $ R $ and any natural number $ n $, the natural degree of the $ n $-th Hasse derivative of $ p $ satisfies $ \\\\deg(D^{(n)}(p)) \\\\leq \\\\deg(p) - n $, where $ D^{(n)} $ denotes the Hasse derivative of order $ n $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv_coeff\",\n      \"informal_name\": \"Coefficient Formula for Hasse Derivative of Order k\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f : Polynomial R) (n : ℕ),\\n  ((Polynomial.hasseDeriv k) f).coeff n = ↑((n + k).choose k) * f.coeff (n + k)\",\n      \"informal_description\": \"For any natural number $ n $, the coefficient of $ X^n $ in the $ k $-th Hasse derivative of a polynomial $ f $ over a semiring $ R $ is equal to $ \\\\binom{n + k}{k} $ multiplied by the coefficient of $ X^{n + k} $ in $ f $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv_apply\",\n      \"informal_name\": \"Hasse Derivative of Order k Applied to a Polynomial\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f : Polynomial R),\\n  (Polynomial.hasseDeriv k) f = f.sum fun i r => (Polynomial.monomial (i - k)) (↑(i.choose k) * r)\",\n      \"informal_description\": \"For a semiring $ R $ and a polynomial $ f \\\\in R[X] $, the Hasse derivative of order $ k $ applied to $ f $ is given by $ D^{(k)}(f) = \\\\sum_{i} \\\\binom{i}{k} \\\\cdot a_i \\\\cdot X^{i - k} $, where $ a_i $ is the coefficient of $ X^i $ in $ f $. This expression sums over all monomials in $ f $, scaling each by the binomial coefficient $ \\\\binom{i}{k} $ and reducing the exponent by $ k $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv\",\n      \"informal_name\": \"Hasse Derivative of Order k on Polynomial Ring\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : Semiring R] → ℕ → Polynomial R →ₗ[R] Polynomial R\",\n      \"informal_description\": \"For a semiring $ R $, the Hasse derivative of order $ k $ is an $ R $-linear map $ D^{(k)} : R[X] \\to R[X] $ defined by $ D^{(k)}(a_i X^i) = \\binom{i}{k} a_i X^{i - k} $ on monomials and extended linearly. This operation generalizes the usual derivative by scaling each coefficient $ a_i $ by the binomial coefficient $ \\binom{i}{k} $ and reducing the degree by $ k $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.coeff_le_of_roots_le\",\n      \"informal_name\": \"Coefficient Bound for Monic Polynomials with Bounded Roots\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {F : Type u_3} {K : Type u_4} [inst : CommRing F] [inst_1 : NormedField K] {p : Polynomial F} {f : F →+* K} {B : ℝ}\\n  (i : ℕ),\\n  p.Monic →\\n    (Polynomial.map f p).Splits →\\n      (∀ z ∈ (Polynomial.map f p).roots, ‖z‖ ≤ B) →\\n        ‖(Polynomial.map f p).coeff i‖ ≤ B ^ (p.natDegree - i) * ↑(p.natDegree.choose i)\",\n      \"informal_description\": \"Let $ p $ be a monic polynomial over a field $ F $, and let $ f : F \\\\to K $ be a ring homomorphism to a normed field $ K $. If the polynomial $ p $ splits over $ K $ and all roots $ z $ of $ f(p) $ satisfy $ \\\\|z\\\\| \\\\leq B $, then for every $ i \\\\in \\\\mathbb{N} $, the coefficient of $ X^i $ in $ f(p) $ satisfies $ \\\\|\\\\text{coeff}_{f(p)}(i)\\\\| \\\\leq B^{\\\\deg(p) - i} \\\\cdot \\\\binom{\\\\deg(p)}{i} $, where $ \\\\deg(p) $ denotes the natural degree of $ p $.\",\n      \"path\": \"Mathlib.Topology.Algebra.Polynomial\"\n    },\n    {\n      \"formal_name\": \"Polynomial.card_mahlerMeasure_le_prod\",\n      \"informal_name\": \"Cardinality Bound for Integer Polynomials with Bounded Mahler Measure and Degree\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (n : ℕ) (B : NNReal),\\n  {p | p.natDegree ≤ n ∧ (Polynomial.map (Int.castRingHom ℂ) p).mahlerMeasure ≤ ↑B}.ncard ≤\\n    ∏ i, (2 * ⌊↑(n.choose ↑i) * B⌋₊ + 1)\",\n      \"informal_description\": \"For any natural number $ n $ and non-negative real number $ B $, the number of integer polynomials $ p $ with natural degree at most $ n $ and Mahler measure $ \\\\mathcal{M}(p) \\\\leq B $ is at most the product over $ i = 0 $ to $ n $ of $ 2 \\\\left\\\\lfloor \\\\binom{n}{i} B \\\\right\\\\rfloor + 1 $.\",\n      \"path\": \"Mathlib.NumberTheory.MahlerMeasure\"\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "items": [
+        {
+          "formal_name": "Polynomial.norm_coeff_le_choose_mul_mahlerMeasure",
+          "informal_name": "Norm of Coefficient Bound via Binomial Coefficient and Mahler Measure",
+          "kind": "theorem",
+          "type": "∀ (n : ℕ) (p : Polynomial ℂ), ‖p.coeff n‖ ≤ ↑(p.natDegree.choose n) * p.mahlerMeasure",
+          "informal_description": "For any natural number $ n $ and complex polynomial $ p $, the norm of the coefficient of $ X^n $ in $ p $ satisfies $ \\|p.coeff\\,n\\| \\leq \\binom{d}{n} \\cdot p.mahlerMeasure $, where $ d $ denotes the natural degree of $ p $.",
+          "path": "Mathlib.Analysis.Polynomial.MahlerMeasure"
+        },
+        {
+          "formal_name": "Polynomial.cauchyBound",
+          "informal_name": "Cauchy bound for polynomial roots",
+          "kind": "definition",
+          "type": "{K : Type u_1} → [inst : NormedDivisionRing K] → Polynomial K → NNReal",
+          "informal_description": "The Cauchy bound of a polynomial $ p $ over a normed division ring $ K $ is defined as $ 1 + \\frac{\\sup_{0 \\leq i < \\deg p} \\|\\text{coeff}_i(p)\\|}{\\|\\text{leadingCoeff}(p)\\|} $, where $ \\sup $ denotes the supremum of the absolute values of the coefficients excluding the leading term, and $ \\|\\cdot\\| $ is the norm on $ K $. This provides an upper bound on the absolute values of the roots of $ p $.",
+          "path": "Mathlib.Analysis.Polynomial.CauchyBound"
+        },
+        {
+          "formal_name": "Polynomial.natDegree_hasseDeriv_le",
+          "informal_name": "Degree Bound for Hasse Derivative of Polynomials",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} [inst : Semiring R] (p : Polynomial R) (n : ℕ),\n  ((Polynomial.hasseDeriv n) p).natDegree ≤ p.natDegree - n",
+          "informal_description": "For any polynomial $ p $ over a semiring $ R $ and any natural number $ n $, the natural degree of the $ n $-th Hasse derivative of $ p $ satisfies $ \\deg(D^{(n)}(p)) \\leq \\deg(p) - n $, where $ D^{(n)} $ denotes the Hasse derivative of order $ n $.",
+          "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+        },
+        {
+          "formal_name": "Polynomial.hasseDeriv_coeff",
+          "informal_name": "Coefficient Formula for Hasse Derivative of Order k",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f : Polynomial R) (n : ℕ),\n  ((Polynomial.hasseDeriv k) f).coeff n = ↑((n + k).choose k) * f.coeff (n + k)",
+          "informal_description": "For any natural number $ n $, the coefficient of $ X^n $ in the $ k $-th Hasse derivative of a polynomial $ f $ over a semiring $ R $ is equal to $ \\binom{n + k}{k} $ multiplied by the coefficient of $ X^{n + k} $ in $ f $.",
+          "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+        },
+        {
+          "formal_name": "Polynomial.hasseDeriv_apply",
+          "informal_name": "Hasse Derivative of Order k Applied to a Polynomial",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f : Polynomial R),\n  (Polynomial.hasseDeriv k) f = f.sum fun i r => (Polynomial.monomial (i - k)) (↑(i.choose k) * r)",
+          "informal_description": "For a semiring $ R $ and a polynomial $ f \\in R[X] $, the Hasse derivative of order $ k $ applied to $ f $ is given by $ D^{(k)}(f) = \\sum_{i} \\binom{i}{k} \\cdot a_i \\cdot X^{i - k} $, where $ a_i $ is the coefficient of $ X^i $ in $ f $. This expression sums over all monomials in $ f $, scaling each by the binomial coefficient $ \\binom{i}{k} $ and reducing the exponent by $ k $.",
+          "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+        },
+        {
+          "formal_name": "Polynomial.hasseDeriv",
+          "informal_name": "Hasse Derivative of Order k on Polynomial Ring",
+          "kind": "definition",
+          "type": "{R : Type u_1} → [inst : Semiring R] → ℕ → Polynomial R →ₗ[R] Polynomial R",
+          "informal_description": "For a semiring $ R $, the Hasse derivative of order $ k $ is an $ R $-linear map $ D^{(k)} : R[X] \to R[X] $ defined by $ D^{(k)}(a_i X^i) = \binom{i}{k} a_i X^{i - k} $ on monomials and extended linearly. This operation generalizes the usual derivative by scaling each coefficient $ a_i $ by the binomial coefficient $ \binom{i}{k} $ and reducing the degree by $ k $.",
+          "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+        },
+        {
+          "formal_name": "Polynomial.coeff_le_of_roots_le",
+          "informal_name": "Coefficient Bound for Monic Polynomials with Bounded Roots",
+          "kind": "theorem",
+          "type": "∀ {F : Type u_3} {K : Type u_4} [inst : CommRing F] [inst_1 : NormedField K] {p : Polynomial F} {f : F →+* K} {B : ℝ}\n  (i : ℕ),\n  p.Monic →\n    (Polynomial.map f p).Splits →\n      (∀ z ∈ (Polynomial.map f p).roots, ‖z‖ ≤ B) →\n        ‖(Polynomial.map f p).coeff i‖ ≤ B ^ (p.natDegree - i) * ↑(p.natDegree.choose i)",
+          "informal_description": "Let $ p $ be a monic polynomial over a field $ F $, and let $ f : F \\to K $ be a ring homomorphism to a normed field $ K $. If the polynomial $ p $ splits over $ K $ and all roots $ z $ of $ f(p) $ satisfy $ \\|z\\| \\leq B $, then for every $ i \\in \\mathbb{N} $, the coefficient of $ X^i $ in $ f(p) $ satisfies $ \\|\\text{coeff}_{f(p)}(i)\\| \\leq B^{\\deg(p) - i} \\cdot \\binom{\\deg(p)}{i} $, where $ \\deg(p) $ denotes the natural degree of $ p $.",
+          "path": "Mathlib.Topology.Algebra.Polynomial"
+        },
+        {
+          "formal_name": "Polynomial.card_mahlerMeasure_le_prod",
+          "informal_name": "Cardinality Bound for Integer Polynomials with Bounded Mahler Measure and Degree",
+          "kind": "theorem",
+          "type": "∀ (n : ℕ) (B : NNReal),\n  {p | p.natDegree ≤ n ∧ (Polynomial.map (Int.castRingHom ℂ) p).mahlerMeasure ≤ ↑B}.ncard ≤\n    ∏ i, (2 * ⌊↑(n.choose ↑i) * B⌋₊ + 1)",
+          "informal_description": "For any natural number $ n $ and non-negative real number $ B $, the number of integer polynomials $ p $ with natural degree at most $ n $ and Mahler measure $ \\mathcal{M}(p) \\leq B $ is at most the product over $ i = 0 $ to $ n $ of $ 2 \\left\\lfloor \\binom{n}{i} B \\right\\rfloor + 1 $.",
+          "path": "Mathlib.NumberTheory.MahlerMeasure"
+        }
+      ]
+    },
+    "isError": false
+  }
+}
