@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 150/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 151/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 150; remaining: 143.
-- Verdicts: 16 NO-composable-from-mathlib, 13 YES-add-as-is, 19 YES-but-generalise-first, 31 NO-mathlib-has-it, 45 BORDERLINE-needs-human, 26 SKIP.
+- Completed applicable assessments: 151; remaining: 142.
+- Verdicts: 16 NO-composable-from-mathlib, 13 YES-add-as-is, 19 YES-but-generalise-first, 32 NO-mathlib-has-it, 45 BORDERLINE-needs-human, 26 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -1658,6 +1658,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: Exactly two source proof applications and two direct canonical kernel consumers: indexSet_bddAbove and Θ_le_card. Both complete proofs replay cleanly using independently proved noNonzero and discarding map nonzero arguments.
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.index_le_card.md).
 
+### Completed: `Roth.index_unique`
+
+- Type: `@Roth.index_unique : ∀ {σ : Type u_1} [inst : Fintype σ] [inst_1 : Unique σ] {P : MvPolynomial σ ℝ}, P ≠ 0 → ∀ (α : σ → ℝ) (r : σ → ℕ), Roth.index P α r = ↑(Polynomial.rootMultiplicity (α default) ((MvPolynomial.uniqueAlgEquiv ℝ σ) P)) / ↑(r default)`
+- What: In one variable the normalized polynomial index equals root multiplicity divided by the denominator.
+- How: Convert Hasse evaluations to coefficients of the univariate Taylor expansion; use least nonzero coefficient and nonnegative division.
+- Hypotheses: Fintype σ: fixed weight/index interface; derivable from Unique, Unique σ: exactly one variable and uniqueAlgEquiv, P ≠ 0: removable under zero projection; independently verified, α arbitrary; r natural including zero; no positivity/domain/characteristic-zero assumption
+- Project dependencies: Roth.index, Roth.weight, Roth.index_le_weight, Roth.le_index_iff, MvPolynomial.uniqueAlgEquiv_hasseDeriv, MvPolynomial.eval₂_uniqueAlgEquiv
+- Caller summary: explicit applications: 1; proof body: 1; statement: 0; files: Roth/Theta.lean:242; callers: private Roth.index_unique_le_log_div; direct kernel value consumers: _private.Roth.Theta.0.Roth.index_unique_le_log_div; inline rederivations: 0; full native replay: IndexUniqueCallers151.logBoundReplay
+- Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/Roth.index_unique.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -1984,6 +1994,8 @@ Completed `Roth.index_rename`: NO-composable-from-mathlib on canonical parent in
 
 Completed `Roth.index_le_card`: All five actual search methods on current/literature/abstract forms. Finset.inf_le exactly supplies canonical witness upper bound; csInf_le, finite-image boundedness, monomial_le_degreeOf, sum_le_sum and div_le_one_of_le₀ are building blocks. Full Taylor-degree/cardinality bound not located.
 
+Completed `Roth.index_unique`: verdict: NO-mathlib-has-it; reaim: Polynomial.rootMultiplicity_eq_natTrailingDegree; path: Mathlib/Algebra/Polynomial/RingDivision.lean:133; methods: Finder, Loogle, LeanSearch, rg, local; old form existing call count: Not <=3; genuine representation normalization required; normalized form existing call count: 1; bridge: Independently checked minimumSupport/taylorMinimum/trailingInf/rootInf/realInfSupport/realRootInf; these are new bridge proofs, not existing declarations.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -2285,6 +2297,8 @@ Completed `Roth.index_mul_left_weights`: Homogeneous scaling of a finite support
 Completed `Roth.index_rename`: Underlying finite-support transport duplicates generic lattice image functoriality; weightedTotalDegree rename is a related maximum law, not the exact minimum.
 
 Completed `Roth.index_le_card`: Canonical support-witness estimate is existing infDegree/Finset.inf_le; coordinate weight bound overlaps weight_le_card. Neither alone is exact full theorem.
+
+Completed `Roth.index_unique`: Existing rootMultiplicity_eq_natTrailingDegree is the analogous univariate law of the parent infDegree abstraction., Existing natTrailingDegree coefficient/support laws express the least nonzero coefficient.
 
 ## Part 5: Generalization opportunities
 
@@ -2591,6 +2605,8 @@ Completed `Roth.index_rename`: Verified expanded law has arbitrary variable type
 
 Completed `Roth.index_le_card`: Verified noNonzero drops hP; oneWitness weakens entire degree box to one nonzero Taylor coefficient in box; weightedWitness accepts arbitrary coefficient weight bound. Mathlib-only realSupport handles arbitrary finite exponent set; infDegreeWitness arbitrary semiring coefficients and grading/order target. Fixed parent interface remains real/Fintype.
 
+Completed `Roth.index_unique`: verified drop: P ≠ 0; finite data: Unique.fintype supplies the Fintype interface; choice independence checked; expanded: Univariate Taylor coefficient minimum over arbitrary CommRing R, real numerical codomain and natural denominators; independently compiled; rejected: Signed scaling without nonnegativity, Unprojected infinite zero order identified with real zero, Arbitrary many-to-one variable collapse
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -2893,6 +2909,8 @@ Completed `Roth.index_mul_left_weights`: No missing generic law: map_finset_inf.
 Completed `Roth.index_rename`: No essential mathematical gap. A discoverability-only infDegree rename wrapper is a separate API design choice; composition already uses two existing calls.
 
 Completed `Roth.index_le_card`: Choice of named Taylor coordinate-degree envelope and its cardinality corollary versus generic support-witness use. Mathematical proofs are complete; upstream API questions remain.
+
+Completed `Roth.index_unique`: Potential generic normalization API between finite real support minimum, projected infDegree and polynomial trailingDegree; exact new bridge evidence supplied, no unsupported absence claim.
 
 ## Part 7: Junk / removable
 
@@ -3199,6 +3217,8 @@ Completed `Roth.index_rename`: Useful transport API, not dead code: equivalence 
 
 Completed `Roth.index_le_card`: No. Two actual callers use the bound. hP is redundant only under current projected real convention.
 
+Completed `Roth.index_unique`: False
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -3353,6 +3373,7 @@ Completed `Roth.index_le_card`: No. Two actual callers use the bound. hP is redu
 | 148 | `Roth.index_mul_left_weights` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.index_mul_left_weights.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.index_mul_left_weights/root-acceptance.json) |
 | 149 | `Roth.index_rename` | NO-composable-from-mathlib | [Report](.mathlib-quality/overview/mathlibable/Roth.index_rename.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.index_rename/root-acceptance.json) |
 | 150 | `Roth.index_le_card` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.index_le_card.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.index_le_card/root-acceptance.json) |
+| 151 | `Roth.index_unique` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.index_unique.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.index_unique/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -3652,12 +3673,14 @@ Completed `Roth.index_rename` action: Do not upstream Roth-specific theorem. Wit
 
 Completed `Roth.index_le_card` action: BORDERLINE-needs-human: decide upstream coordinate-bound audience, zero∞ convention, and grouping with weight_le_card/Taylor degree API. Retain local theorem unchanged during read-only overview. Future local cleanup can drop hP and update both callers.
 
+Completed `Roth.index_unique` action: Do not upstream project spelling. Keep a documented project-local all-polynomial bridge while retaining index; at Theta242 replace index_unique nonzeroProof by that bridge, retain hR for later coefficient/log estimate. After full parent migration normalize to Polynomial then use existing rootMultiplicity_eq_natTrailingDegree; delete old wrapper only after caller conversion. Read-only assessment makes no production edits.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.index_unique` next. Supporting identities receive their own applicable checks.
+   `Roth.coeffNone` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

@@ -1,0 +1,51 @@
+namespace IndexUniqueAssessment151
+open MvPolynomial Roth
+universe u
+variable {σ : Type u} [Fintype σ]
+theorem independentNonzero [Unique σ] {P : MvPolynomial σ ℝ} (hP : P ≠ 0) (α : σ → ℝ) (r : σ → ℕ) :
+    index P α r =
+      (Polynomial.rootMultiplicity (α default) (uniqueAlgEquiv ℝ σ P) : ℝ) / r default := by
+  set q := Polynomial.taylor (α default) (uniqueAlgEquiv ℝ σ P) with hqdef
+  have key (d : σ →₀ ℕ) : eval α (hasseDeriv d P) = q.coeff (d default) := by
+    rw [Polynomial.taylor_coeff, ← uniqueAlgEquiv_hasseDeriv, ← Finsupp.unique_single d]
+    exact (eval₂_uniqueAlgEquiv (f := hasseDeriv d P) (φ := RingHom.id ℝ) (a := α)).symm
+  have hq : q ≠ 0 := by
+    rwa [hqdef, Ne, Polynomial.taylor_eq_zero, map_eq_zero_iff _ (uniqueAlgEquiv ℝ σ).injective]
+  rw [Polynomial.rootMultiplicity_eq_natTrailingDegree, ← Polynomial.taylor_apply]
+  apply le_antisymm
+  · simpa [weight, hqdef] using index_le_weight (P := P) (α := α) (r := r)
+      (d := Finsupp.single default q.natTrailingDegree)
+      (by simpa [key] using Polynomial.trailingCoeff_nonzero_iff_nonzero.2 hq)
+  · refine (le_index_iff hP).2 fun d hd ↦ ?_
+    simpa [weight, hqdef] using div_le_div_of_nonneg_right
+      (by exact_mod_cast Polynomial.natTrailingDegree_le_of_ne_zero (key d ▸ hd))
+      (Nat.cast_nonneg (r default))
+
+theorem allPolynomials [Unique σ] (P : MvPolynomial σ ℝ) (α : σ → ℝ) (r : σ → ℕ) :
+    index P α r =
+      (Polynomial.rootMultiplicity (α default) (uniqueAlgEquiv ℝ σ P) : ℝ) / r default := by
+  by_cases hP : P = 0
+  · subst P
+    simp [index]
+  · exact independentNonzero hP α r
+
+theorem noAutomaticClosure [Unique σ] (P : MvPolynomial σ ℝ) (α : σ → ℝ) (r : σ → ℕ) :
+    index P α r =
+      (Polynomial.rootMultiplicity (α default) (uniqueAlgEquiv ℝ σ P) : ℝ) / r default := by
+  fail_if_success rfl
+  fail_if_success simp only [index]
+  exact allPolynomials P α r
+
+theorem zeroDenominator [Unique σ] (P : MvPolynomial σ ℝ) (α : σ → ℝ) :
+    index P α (fun _ ↦ 0) = 0 := by
+  rw [allPolynomials]
+  simp
+
+#check @Roth.index_unique
+#print Roth.index_unique
+#print axioms Roth.index_unique
+#print axioms independentNonzero
+#print axioms allPolynomials
+#print axioms noAutomaticClosure
+#print axioms zeroDenominator
+end IndexUniqueAssessment151

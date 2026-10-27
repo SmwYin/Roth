@@ -1,0 +1,98 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+namespace IndexUniqueMathlib151
+universe u
+variable {R : Type u} [CommRing R]
+#check_failure Roth.index_unique
+#check @Polynomial.rootMultiplicity_eq_natTrailingDegree
+#check @Polynomial.taylor_apply
+#check @Polynomial.natTrailingDegree_eq_support_min'
+#check @Polynomial.natTrailingDegree_le_of_ne_zero
+#check @AddMonoidAlgebra.infDegree
+
+theorem minimumSupport (P : Polynomial R) (r : ℕ) :
+    sInf ((fun n : ℕ ↦ (n : ℝ) / r) '' (P.support : Set ℕ)) =
+      (P.natTrailingDegree : ℝ) / r := by
+  by_cases hP : P = 0
+  · subst P
+    simp
+  · apply le_antisymm
+    · apply csInf_le (P.support.finite_toSet.image (fun n : ℕ ↦ (n : ℝ) / r)).bddBelow
+      exact Set.mem_image_of_mem _ (Polynomial.mem_support_iff.mpr
+        (Polynomial.coeff_natTrailingDegree_ne_zero.mpr hP))
+    · refine le_csInf ((Polynomial.support_nonempty.mpr hP).to_set.image _) ?_
+      rintro _ ⟨n, hn, rfl⟩
+      exact div_le_div_of_nonneg_right
+        (by exact_mod_cast Polynomial.natTrailingDegree_le_of_mem_supp n hn) (Nat.cast_nonneg r)
+
+theorem taylorMinimum (P : Polynomial R) (a : R) (r : ℕ) :
+    sInf ((fun n : ℕ ↦ (n : ℝ) / r) '' ((Polynomial.taylor a P).support : Set ℕ)) =
+      (P.rootMultiplicity a : ℝ) / r := by
+  rw [minimumSupport, Polynomial.taylor_apply, Polynomial.rootMultiplicity_eq_natTrailingDegree]
+
+theorem existingReaim (P : Polynomial R) (a : R) :
+    (P.comp (Polynomial.X + Polynomial.C a)).natTrailingDegree = P.rootMultiplicity a :=
+  Polynomial.rootMultiplicity_eq_natTrailingDegree.symm
+
+#print axioms minimumSupport
+#print axioms taylorMinimum
+#print axioms existingReaim
+end IndexUniqueMathlib151
+
+namespace IndexUniqueInfDegree151
+universe u
+variable {R : Type u} [CommRing R]
+#check_failure Roth.index_unique
+#check @Finset.min_eq_inf_withTop
+#check @WithTop.untopD_coe
+#check @Finset.coe_inf'
+#check @Finset.inf'_eq_csInf_image
+
+theorem trailingInf (P : Polynomial R) :
+    AddMonoidAlgebra.infDegree (fun n : ℕ ↦ (n : ℕ∞)) P.toFinsupp =
+      P.trailingDegree := by
+  rw [Polynomial.trailingDegree, Finset.min_eq_inf_withTop]
+  rfl
+
+theorem rootInf (P : Polynomial R) (a : R) :
+    (AddMonoidAlgebra.infDegree (fun n : ℕ ↦ (n : ℕ∞))
+      (P.comp (Polynomial.X + Polynomial.C a)).toFinsupp).toNat = P.rootMultiplicity a := by
+  rw [trailingInf]
+  exact Polynomial.rootMultiplicity_eq_natTrailingDegree.symm
+
+theorem finsetBridge {ι : Type u} (s : Finset ι) (w : ι → ℝ) :
+    (s.inf (fun d ↦ (w d : WithTop ℝ))).untopD 0 =
+      sInf (w '' (s : Set ι)) := by
+  classical
+  rcases s.eq_empty_or_nonempty with h | h
+  · subst s
+    simp
+  · change (s.inf (WithTop.some ∘ w)).untopD 0 = _
+    rw [← Finset.coe_inf' h w, Finset.inf'_eq_csInf_image]
+    rfl
+
+theorem realInfSupport (P : Polynomial R) (r : ℕ) :
+    (AddMonoidAlgebra.infDegree (fun n : ℕ ↦ ((n : ℝ) / r : WithTop ℝ))
+      P.toFinsupp).untopD 0 = (P.natTrailingDegree : ℝ) / r := by
+  change (P.support.inf (fun n : ℕ ↦ ((n : ℝ) / r : WithTop ℝ))).untopD 0 = _
+  rw [finsetBridge, IndexUniqueMathlib151.minimumSupport]
+
+theorem realRootInf (P : Polynomial R) (a : R) (r : ℕ) :
+    (AddMonoidAlgebra.infDegree (fun n : ℕ ↦ ((n : ℝ) / r : WithTop ℝ))
+      (Polynomial.taylor a P).toFinsupp).untopD 0 = (P.rootMultiplicity a : ℝ) / r := by
+  rw [realInfSupport, Polynomial.taylor_apply,
+    Polynomial.rootMultiplicity_eq_natTrailingDegree]
+
+#print axioms trailingInf
+#print axioms rootInf
+#print axioms finsetBridge
+#print axioms realInfSupport
+#print axioms realRootInf
+end IndexUniqueInfDegree151

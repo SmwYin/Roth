@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Roth.index_unique_le_log_div",
+    "file": "Roth/Theta.lean",
+    "visibility": "private",
+    "line": 223,
+    "application_line": 242,
+    "kind": "proof body",
+    "source": "private lemma index_unique_le_log_div [Unique σ] {B : ℝ} {q r : σ → ℕ} (hq : 1 < q default)\n    {R : MvPolynomial σ ℤ} (hR : R ≠ 0) (hRB : |((uniqueAlgEquiv ℤ σ R).leadingCoeff : ℝ)| ≤ B)\n    {h : σ → ℤ} (hh : IsCoprime (h default) (q default : ℤ)) :\n    index (map (Int.castRingHom ℝ) R) (fun j ↦ (h j : ℝ) / q j) r ≤\n      Real.log B / (r default * Real.log (q default)) := by\n  classical\n  let R1 : Polynomial ℤ := uniqueAlgEquiv ℤ σ R\n  have hmapeq : uniqueAlgEquiv ℝ σ (map (Int.castRingHom ℝ) R) =\n      R1.map (Int.castRingHom ℝ) := by\n    dsimp only [R1]\n    ext n\n    rw [coeff_uniqueAlgEquiv, Polynomial.coeff_map, coeff_uniqueAlgEquiv, coeff_map]\n  have hmult : Polynomial.rootMultiplicity ((h default : ℝ) / q default)\n      (R1.map (Int.castRingHom ℝ)) =\n      Polynomial.rootMultiplicity ((h default : ℚ) / q default) (R1.map (Int.castRingHom ℚ)) := by\n    rw [Polynomial.eq_rootMultiplicity_map (f := Rat.castHom ℝ) Rat.cast_injective,\n      Polynomial.map_map]\n    congr 1\n    simp\n  rw [index_unique ((map_ne_zero_iff _ (map_injective _ Int.cast_injective)).2 hR), hmapeq, hmult]\n  have hlog := Real.log_le_log (by positivity : (0 : ℝ) < (q default : ℝ) ^\n    Polynomial.rootMultiplicity ((h default : ℚ) / q default) (R1.map (Int.castRingHom ℚ)))\n    (pow_rootMultiplicity_le ((map_ne_zero_iff _ (uniqueAlgEquiv ℤ σ).injective).2 hR)\n      (Nat.zero_lt_of_lt hq) hh hRB)\n  rw [Real.log_pow] at hlog\n  simpa [div_div, mul_comm] using\n    div_le_div_of_nonneg_right\n      ((le_div_iff₀ (Real.log_pos (by exact_mod_cast hq))).2 hlog) (Nat.cast_nonneg _)\n",
+    "plan": "Replace rw[index_unique nonzeroProof] by all-polynomial bridge, then use Polynomial.rootMultiplicity_eq_natTrailingDegree in univariate normal form; full actual caller replay proves drop of proof argument."
+  }
+]

@@ -1,0 +1,14 @@
+namespace IndexUniqueCollapse151
+open MvPolynomial
+
+theorem collapseCancellation :
+    rename (fun _ : Fin 2 ↦ ()) (X 0 - X 1 : MvPolynomial (Fin 2) ℝ) = 0 ∧
+      (X 0 - X 1 : MvPolynomial (Fin 2) ℝ) ≠ 0 := by
+  constructor
+  · simp
+  · intro h
+    have he := congrArg (eval (fun i : Fin 2 ↦ (i.val : ℝ))) h
+    norm_num at he
+
+#print axioms collapseCancellation
+end IndexUniqueCollapse151

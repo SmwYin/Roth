@@ -1,0 +1,42 @@
+namespace IndexUniqueGuards151
+open MvPolynomial Roth
+universe u
+variable {σ : Type u} [Fintype σ] [Unique σ]
+
+theorem zeroPolynomial (α : σ → ℝ) (r : σ → ℕ) :
+    index (0 : MvPolynomial σ ℝ) α r =
+      (Polynomial.rootMultiplicity (α default) (0 : Polynomial ℝ) : ℝ) / r default := by
+  simp [index]
+
+omit [Fintype σ] [Unique σ] in
+theorem arbitraryFintype (i j : Fintype σ) (P : MvPolynomial σ ℝ) (α : σ → ℝ)
+    (r : σ → ℕ) : @index σ i P α r = @index σ j P α r := by
+  have : i = j := Subsingleton.elim _ _
+  subst j
+  rfl
+
+omit [Fintype σ] [Unique σ] in
+theorem uniqueProvidesFinite {τ : Type u} [Unique τ] (P : MvPolynomial τ ℝ) (α : τ → ℝ)
+    (r : τ → ℕ) : letI := Unique.fintype
+      index P α r =
+        (Polynomial.rootMultiplicity (α default) (uniqueAlgEquiv ℝ τ P) : ℝ) / r default := by
+  exact IndexUniqueAssessment151.allPolynomials P α r
+
+theorem negativeScaleGuard :
+    sInf ((fun n : ℕ ↦ -(n : ℝ)) '' ({1, 2} : Set ℕ)) ≠ -(1 : ℝ) := by
+  have h : sInf ((fun n : ℕ ↦ -(n : ℝ)) '' ({1, 2} : Set ℕ)) ≤ -2 :=
+    csInf_le ((Set.toFinite ({1, 2} : Set ℕ)).image _).bddBelow
+      (Set.mem_image_of_mem _ (by simp))
+  linarith
+
+theorem wrongZeroInfinityGuard :
+    AddMonoidAlgebra.infDegree (fun n : ℕ ↦ (n : WithTop ℝ))
+      (0 : AddMonoidAlgebra ℝ ℕ) ≠ (0 : WithTop ℝ) := by
+  simp [AddMonoidAlgebra.infDegree]
+
+#print axioms zeroPolynomial
+#print axioms arbitraryFintype
+#print axioms uniqueProvidesFinite
+#print axioms negativeScaleGuard
+#print axioms wrongZeroInfinityGuard
+end IndexUniqueGuards151

@@ -1,0 +1,682 @@
+[
+  {
+    "method": "Finder-current",
+    "request": {
+      "query": "Roth index of a univariate polynomial equals root multiplicity divided by denominator weight",
+      "num_results": 5
+    },
+    "result": {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.derivRootWeight\",\n      \"informal_name\": \"Derivative Root Weight Function\",\n      \"kind\": \"definition\",\n      \"type\": \"Polynomial ℂ → ℂ → ℂ → ℝ\",\n      \"informal_description\": \"For a polynomial $ P $ over $ \\\\mathbb{C} $ and complex numbers $ z, w $, this function returns $ 1 $ if $ z $ is a root of $ P $ and $ w = z $, $ 0 $ if $ z $ is a root but $ w \\\\neq z $, and otherwise returns $ \\\\frac{\\\\text{mult}_P(w)}{\\\\|z - w\\\\|^2} $, where $ \\\\text{mult}_P(w) $ is the multiplicity of $ w $ as a root of $ P $ and $ \\\\|z - w\\\\| $ is the complex modulus of $ z - w $.\",\n      \"path\": \"Mathlib.Analysis.Complex.Polynomial.GaussLucas\"\n    },\n    {\n      \"formal_name\": \"Polynomial.rootMultiplicity\",\n      \"informal_name\": \"Root multiplicity in polynomial rings\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} → [inst : Ring R] → R → Polynomial R → ℕ\",\n      \"informal_description\": \"For a semiring $ R $ with decidable equality, the function $\\\\operatorname{rootMultiplicity}(a, p) $ returns the largest natural number $ n $ such that the linear factor $ X - a $ divides the polynomial $ p $ exactly $ n $ times. If $ p $ is the zero polynomial, it returns $ 0 $. This is computed by finding the minimal $ n $ where $ (X - a)^{n+1} $ does not divide $ p $, leveraging the finite multiplicity property of linear factors in polynomial rings.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Div\"\n    },\n    {\n      \"formal_name\": \"Polynomial.natDegree_hilbertPoly_of_ne_zero_of_rootMultiplicity_lt\",\n      \"informal_name\": \"Natural Degree of Hilbert Polynomial for Non-Zero Polynomials with Root Multiplicity of 1 Less Than d\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {F : Type u_1} [inst : Field F] [CharZero F] {p : Polynomial F} {d : ℕ},\\n  p ≠ 0 → Polynomial.rootMultiplicity 1 p < d → (p.hilbertPoly d).natDegree = d - Polynomial.rootMultiplicity 1 p - 1\",\n      \"informal_description\": \"For a non-zero polynomial $ p $ over a field $ F $, if the multiplicity of the root $ 1 $ in $ p $ is less than a natural number $ d $, then the natural degree of the Hilbert polynomial $ \\\\text{hilbertPoly}(p, d) $ is equal to $ d - \\\\text{rootMultiplicity}(p, 1) - 1 $.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.HilbertPoly\"\n    },\n    {\n      \"formal_name\": \"Polynomial.rootMultiplicity_eq_nat_find_of_nonzero\",\n      \"informal_name\": \"Multiplicity of Root $ a $ in Polynomial $ p $ as Minimal $ n $ with $ (X - a)^{n+1} \\nmid p $\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Ring R] [inst_1 : DecidableEq R] {p : Polynomial R} (p0 : p ≠ 0) {a : R},\\n  Polynomial.rootMultiplicity a p = Nat.find ⋯\",\n      \"informal_description\": \"For a non-zero polynomial $ p $ over a semiring $ R $ with decidable equality, the multiplicity of a root $ a $ is the least natural number $ n $ such that $ (X - a)^{n+1} $ does not divide $ p $. This characterizes the root multiplicity as the maximal $ k $ for which $ (X - a)^k $ divides $ p $, determined via the minimal $ n $ where divisibility fails for the next power.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Div\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hilbertPoly_eq_zero_of_le_rootMultiplicity_one\",\n      \"informal_name\": \"Hilbert Polynomial Vanishes for Degrees Bounded by Root Multiplicity at One\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {F : Type u_1} [inst : Field F] [CharZero F] {p : Polynomial F} {d : ℕ},\\n  d ≤ Polynomial.rootMultiplicity 1 p → p.hilbertPoly d = 0\",\n      \"informal_description\": \"For a polynomial $ p $ over a field $ F $ and a natural number $ d $, if $ d \\\\leq \\\\text{rootMultiplicity}_1(p) $, then the Hilbert polynomial $ \\\\text{HilbertPoly}(p, d) $ is zero. This means that when the degree parameter $ d $ does not exceed the multiplicity of the root $ 1 $ in $ p $, the corresponding Hilbert polynomial evaluation yields zero.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.HilbertPoly\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "formal_name": "Polynomial.derivRootWeight",
+              "informal_name": "Derivative Root Weight Function",
+              "kind": "definition",
+              "type": "Polynomial ℂ → ℂ → ℂ → ℝ",
+              "informal_description": "For a polynomial $ P $ over $ \\mathbb{C} $ and complex numbers $ z, w $, this function returns $ 1 $ if $ z $ is a root of $ P $ and $ w = z $, $ 0 $ if $ z $ is a root but $ w \\neq z $, and otherwise returns $ \\frac{\\text{mult}_P(w)}{\\|z - w\\|^2} $, where $ \\text{mult}_P(w) $ is the multiplicity of $ w $ as a root of $ P $ and $ \\|z - w\\| $ is the complex modulus of $ z - w $.",
+              "path": "Mathlib.Analysis.Complex.Polynomial.GaussLucas"
+            },
+            {
+              "formal_name": "Polynomial.rootMultiplicity",
+              "informal_name": "Root multiplicity in polynomial rings",
+              "kind": "definition",
+              "type": "{R : Type u} → [inst : Ring R] → R → Polynomial R → ℕ",
+              "informal_description": "For a semiring $ R $ with decidable equality, the function $\\operatorname{rootMultiplicity}(a, p) $ returns the largest natural number $ n $ such that the linear factor $ X - a $ divides the polynomial $ p $ exactly $ n $ times. If $ p $ is the zero polynomial, it returns $ 0 $. This is computed by finding the minimal $ n $ where $ (X - a)^{n+1} $ does not divide $ p $, leveraging the finite multiplicity property of linear factors in polynomial rings.",
+              "path": "Mathlib.Algebra.Polynomial.Div"
+            },
+            {
+              "formal_name": "Polynomial.natDegree_hilbertPoly_of_ne_zero_of_rootMultiplicity_lt",
+              "informal_name": "Natural Degree of Hilbert Polynomial for Non-Zero Polynomials with Root Multiplicity of 1 Less Than d",
+              "kind": "theorem",
+              "type": "∀ {F : Type u_1} [inst : Field F] [CharZero F] {p : Polynomial F} {d : ℕ},\n  p ≠ 0 → Polynomial.rootMultiplicity 1 p < d → (p.hilbertPoly d).natDegree = d - Polynomial.rootMultiplicity 1 p - 1",
+              "informal_description": "For a non-zero polynomial $ p $ over a field $ F $, if the multiplicity of the root $ 1 $ in $ p $ is less than a natural number $ d $, then the natural degree of the Hilbert polynomial $ \\text{hilbertPoly}(p, d) $ is equal to $ d - \\text{rootMultiplicity}(p, 1) - 1 $.",
+              "path": "Mathlib.RingTheory.Polynomial.HilbertPoly"
+            },
+            {
+              "formal_name": "Polynomial.rootMultiplicity_eq_nat_find_of_nonzero",
+              "informal_name": "Multiplicity of Root $ a $ in Polynomial $ p $ as Minimal $ n $ with $ (X - a)^{n+1} \nmid p $",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} [inst : Ring R] [inst_1 : DecidableEq R] {p : Polynomial R} (p0 : p ≠ 0) {a : R},\n  Polynomial.rootMultiplicity a p = Nat.find ⋯",
+              "informal_description": "For a non-zero polynomial $ p $ over a semiring $ R $ with decidable equality, the multiplicity of a root $ a $ is the least natural number $ n $ such that $ (X - a)^{n+1} $ does not divide $ p $. This characterizes the root multiplicity as the maximal $ k $ for which $ (X - a)^k $ divides $ p $, determined via the minimal $ n $ where divisibility fails for the next power.",
+              "path": "Mathlib.Algebra.Polynomial.Div"
+            },
+            {
+              "formal_name": "Polynomial.hilbertPoly_eq_zero_of_le_rootMultiplicity_one",
+              "informal_name": "Hilbert Polynomial Vanishes for Degrees Bounded by Root Multiplicity at One",
+              "kind": "theorem",
+              "type": "∀ {F : Type u_1} [inst : Field F] [CharZero F] {p : Polynomial F} {d : ℕ},\n  d ≤ Polynomial.rootMultiplicity 1 p → p.hilbertPoly d = 0",
+              "informal_description": "For a polynomial $ p $ over a field $ F $ and a natural number $ d $, if $ d \\leq \\text{rootMultiplicity}_1(p) $, then the Hilbert polynomial $ \\text{HilbertPoly}(p, d) $ is zero. This means that when the degree parameter $ d $ does not exceed the multiplicity of the root $ 1 $ in $ p $, the corresponding Hilbert polynomial evaluation yields zero.",
+              "path": "Mathlib.RingTheory.Polynomial.HilbertPoly"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "method": "LeanSearch-current",
+    "request": {
+      "query": "minimum weighted Taylor support of a polynomial in one variable is root multiplicity divided by weight",
+      "num_results": 5
+    },
+    "result": {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.derivRootWeight\",\n      \"module_name\": \"Mathlib.Analysis.Complex.Polynomial.GaussLucas\",\n      \"kind\": \"definition\",\n      \"type\": \"Polynomial ℂ → ℂ → ℂ → ℝ\"\n    },\n    {\n      \"name\": \"MvPowerSeries.weightedOrder\",\n      \"module_name\": \"Mathlib.RingTheory.MvPowerSeries.Order\",\n      \"kind\": \"definition\",\n      \"type\": \"{σ : Type u_1} → {R : Type u_2} → [Semiring R] → (σ → ℕ) → MvPowerSeries σ R → ℕ∞\"\n    },\n    {\n      \"name\": \"MvPowerSeries.weightedOrder_mul\",\n      \"module_name\": \"Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] [NoZeroDivisors R] (w : σ → ℕ) (f g : MvPowerSeries σ R),\\n  MvPowerSeries.weightedOrder w (f * g) = MvPowerSeries.weightedOrder w f + MvPowerSeries.weightedOrder w g\"\n    },\n    {\n      \"name\": \"MvPowerSeries.weightedOrder_monomial\",\n      \"module_name\": \"Mathlib.RingTheory.MvPowerSeries.Order\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ) {d : σ →₀ ℕ} {a : R} [inst_1 : Decidable (a = 0)],\\n  MvPowerSeries.weightedOrder w ((MvPowerSeries.monomial d) a) = if a = 0 then ⊤ else ↑((Finsupp.weight w) d)\"\n    },\n    {\n      \"name\": \"MvPowerSeries.weightedOrder_eq_nat\",\n      \"module_name\": \"Mathlib.RingTheory.MvPowerSeries.Order\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ) {f : MvPowerSeries σ R} {n : ℕ},\\n  MvPowerSeries.weightedOrder w f = ↑n ↔\\n    (∃ d, (MvPowerSeries.coeff d) f ≠ 0 ∧ (Finsupp.weight w) d = n) ∧\\n      ∀ (d : σ →₀ ℕ), (Finsupp.weight w) d < n → (MvPowerSeries.coeff d) f = 0\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "Polynomial.derivRootWeight",
+              "module_name": "Mathlib.Analysis.Complex.Polynomial.GaussLucas",
+              "kind": "definition",
+              "type": "Polynomial ℂ → ℂ → ℂ → ℝ"
+            },
+            {
+              "name": "MvPowerSeries.weightedOrder",
+              "module_name": "Mathlib.RingTheory.MvPowerSeries.Order",
+              "kind": "definition",
+              "type": "{σ : Type u_1} → {R : Type u_2} → [Semiring R] → (σ → ℕ) → MvPowerSeries σ R → ℕ∞"
+            },
+            {
+              "name": "MvPowerSeries.weightedOrder_mul",
+              "module_name": "Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors",
+              "kind": "theorem",
+              "type": "∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] [NoZeroDivisors R] (w : σ → ℕ) (f g : MvPowerSeries σ R),\n  MvPowerSeries.weightedOrder w (f * g) = MvPowerSeries.weightedOrder w f + MvPowerSeries.weightedOrder w g"
+            },
+            {
+              "name": "MvPowerSeries.weightedOrder_monomial",
+              "module_name": "Mathlib.RingTheory.MvPowerSeries.Order",
+              "kind": "theorem",
+              "type": "∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ) {d : σ →₀ ℕ} {a : R} [inst_1 : Decidable (a = 0)],\n  MvPowerSeries.weightedOrder w ((MvPowerSeries.monomial d) a) = if a = 0 then ⊤ else ↑((Finsupp.weight w) d)"
+            },
+            {
+              "name": "MvPowerSeries.weightedOrder_eq_nat",
+              "module_name": "Mathlib.RingTheory.MvPowerSeries.Order",
+              "kind": "theorem",
+              "type": "∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ) {f : MvPowerSeries σ R} {n : ℕ},\n  MvPowerSeries.weightedOrder w f = ↑n ↔\n    (∃ d, (MvPowerSeries.coeff d) f ≠ 0 ∧ (Finsupp.weight w) d = n) ∧\n      ∀ (d : σ →₀ ℕ), (Finsupp.weight w) d < n → (MvPowerSeries.coeff d) f = 0"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "method": "Loogle-literature",
+    "request": {
+      "query": "Polynomial.rootMultiplicity, Polynomial.natTrailingDegree",
+      "num_results": 8
+    },
+    "result": {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.rootMultiplicity_eq_natTrailingDegree'\",\n      \"type\": \" {R : Type u} [Ring R] {p : Polynomial R} : Polynomial.rootMultiplicity 0 p = p.natTrailingDegree\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Div\"\n    },\n    {\n      \"name\": \"Polynomial.rootMultiplicity_eq_natTrailingDegree\",\n      \"type\": \" {R : Type u} [CommRing R] {p : Polynomial R} {t : R} : Polynomial.rootMultiplicity t p = (p.comp (Polynomial.X + Polynomial.C t)).natTrailingDegree\",\n      \"module\": \"Mathlib.Algebra.Polynomial.RingDivision\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "Polynomial.rootMultiplicity_eq_natTrailingDegree'",
+              "type": " {R : Type u} [Ring R] {p : Polynomial R} : Polynomial.rootMultiplicity 0 p = p.natTrailingDegree",
+              "module": "Mathlib.Algebra.Polynomial.Div"
+            },
+            {
+              "name": "Polynomial.rootMultiplicity_eq_natTrailingDegree",
+              "type": " {R : Type u} [CommRing R] {p : Polynomial R} {t : R} : Polynomial.rootMultiplicity t p = (p.comp (Polynomial.X + Polynomial.C t)).natTrailingDegree",
+              "module": "Mathlib.Algebra.Polynomial.RingDivision"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "method": "local-current",
+    "request": {
+      "query": "rootMultiplicity",
+      "limit": 15,
+      "project_root": "/Users/ramin/LEAN/Roth"
+    },
+    "result": {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.rootMultiplicity\",\n      \"kind\": \"def\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Div.lean\"\n    },\n    {\n      \"name\": \"Polynomial.rootMultiplicity_C\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Div.lean\"\n    },\n    {\n      \"name\": \"Polynomial.rootMultiplicity_add\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Div.lean\"\n    },\n    {\n      \"name\": \"Polynomial.rootMultiplicity_mul\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/RingDivision.lean\"\n    },\n    {\n      \"name\": \"Polynomial.rootMultiplicity_pos\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Div.lean\"\n    },\n    {\n      \"name\": \"Polynomial.rootMultiplicity_mul'\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/RingDivision.lean\"\n    },\n    {\n      \"name\": \"Polynomial.rootMultiplicity_pos'\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Div.lean\"\n    },\n    {\n      \"name\": \"Polynomial.rootMultiplicity_zero\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Div.lean\"\n    },\n    {\n      \"name\": \"Polynomial.Chebyshev.rootMultiplicity_T_real\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Analysis/SpecialFunctions/Trigonometric/Chebyshev/RootsExtrema.lean\"\n    },\n    {\n      \"name\": \"Polynomial.Chebyshev.rootMultiplicity_U_real\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Analysis/SpecialFunctions/Trigonometric/Chebyshev/RootsExtrema.lean\"\n    },\n    {\n      \"name\": \"Polynomial.rootMultiplicity_expand\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Expand.lean\"\n    },\n    {\n      \"name\": \"Polynomial.rootMultiplicity_le_iff\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Div.lean\"\n    },\n    {\n      \"name\": \"Polynomial.rootMultiplicity_X_sub_C\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/RingDivision.lean\"\n    },\n    {\n      \"name\": \"Polynomial.rootMultiplicity_eq_zero\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Div.lean\"\n    },\n    {\n      \"name\": \"Polynomial.rootMultiplicity_expand_pow\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Expand.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "Polynomial.rootMultiplicity",
+              "kind": "def",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Div.lean"
+            },
+            {
+              "name": "Polynomial.rootMultiplicity_C",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Div.lean"
+            },
+            {
+              "name": "Polynomial.rootMultiplicity_add",
+              "kind": "lemma",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Div.lean"
+            },
+            {
+              "name": "Polynomial.rootMultiplicity_mul",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/RingDivision.lean"
+            },
+            {
+              "name": "Polynomial.rootMultiplicity_pos",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Div.lean"
+            },
+            {
+              "name": "Polynomial.rootMultiplicity_mul'",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/RingDivision.lean"
+            },
+            {
+              "name": "Polynomial.rootMultiplicity_pos'",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Div.lean"
+            },
+            {
+              "name": "Polynomial.rootMultiplicity_zero",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Div.lean"
+            },
+            {
+              "name": "Polynomial.Chebyshev.rootMultiplicity_T_real",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Analysis/SpecialFunctions/Trigonometric/Chebyshev/RootsExtrema.lean"
+            },
+            {
+              "name": "Polynomial.Chebyshev.rootMultiplicity_U_real",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Analysis/SpecialFunctions/Trigonometric/Chebyshev/RootsExtrema.lean"
+            },
+            {
+              "name": "Polynomial.rootMultiplicity_expand",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Expand.lean"
+            },
+            {
+              "name": "Polynomial.rootMultiplicity_le_iff",
+              "kind": "lemma",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Div.lean"
+            },
+            {
+              "name": "Polynomial.rootMultiplicity_X_sub_C",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/RingDivision.lean"
+            },
+            {
+              "name": "Polynomial.rootMultiplicity_eq_zero",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Div.lean"
+            },
+            {
+              "name": "Polynomial.rootMultiplicity_expand_pow",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Expand.lean"
+            }
+          ],
+          "index": "unavailable"
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "method": "Finder-literature",
+    "request": {
+      "query": "magnitude of root multiplicity equals natural trailing degree of translated polynomial",
+      "num_results": 5
+    },
+    "result": {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.rootMultiplicity_eq_natTrailingDegree\",\n      \"informal_name\": \"Root Multiplicity Equals Trailing Degree After Substitution in Polynomial Ring\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : CommRing R] {p : Polynomial R} {t : R},\\n  Polynomial.rootMultiplicity t p = (p.comp (Polynomial.X + Polynomial.C t)).natTrailingDegree\",\n      \"informal_description\": \"For a polynomial $ p \\\\in R[X] $ and an element $ t \\\\in R $, the multiplicity of $ t $ as a root of $ p $ is equal to the trailing degree of the polynomial obtained by substituting $ X + t $ into $ p $, i.e., $ \\\\operatorname{rootMultiplicity}(t, p) = \\\\operatorname{natTrailingDegree}(p(X + t)) $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.RingDivision\"\n    },\n    {\n      \"formal_name\": \"Polynomial.rootMultiplicity_eq_natTrailingDegree'\",\n      \"informal_name\": \"Root Multiplicity of Zero Equals Trailing Degree\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : CommRing R] {p : Polynomial R}, Polynomial.rootMultiplicity 0 p = p.natTrailingDegree\",\n      \"informal_description\": \"For any polynomial $ p $, the multiplicity of $ 0 $ as a root of $ p $ is equal to the trailing degree of $ p $ converted to a natural number, i.e., $ \\\\operatorname{rootMultiplicity}_0(p) = \\\\operatorname{natTrailingDegree}(p) $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Div\"\n    },\n    {\n      \"formal_name\": \"Polynomial.rootMultiplicity_eq_nat_find_of_nonzero\",\n      \"informal_name\": \"Multiplicity of Root $ a $ in Polynomial $ p $ as Minimal $ n $ with $ (X - a)^{n+1} \\nmid p $\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Ring R] [inst_1 : DecidableEq R] {p : Polynomial R} (p0 : p ≠ 0) {a : R},\\n  Polynomial.rootMultiplicity a p = Nat.find ⋯\",\n      \"informal_description\": \"For a non-zero polynomial $ p $ over a semiring $ R $ with decidable equality, the multiplicity of a root $ a $ is the least natural number $ n $ such that $ (X - a)^{n+1} $ does not divide $ p $. This characterizes the root multiplicity as the maximal $ k $ for which $ (X - a)^k $ divides $ p $, determined via the minimal $ n $ where divisibility fails for the next power.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Div\"\n    },\n    {\n      \"formal_name\": \"Polynomial.rootMultiplicity_eq_rootMultiplicity\",\n      \"informal_name\": \"Root Multiplicity Invariance under Polynomial Shift\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : CommRing R] {p : Polynomial R} {t : R},\\n  Polynomial.rootMultiplicity t p = Polynomial.rootMultiplicity 0 (p.comp (Polynomial.X + Polynomial.C t))\",\n      \"informal_description\": \"For any polynomial $ p $ over a semiring $ R $ and any element $ t \\\\in R $, the multiplicity of $ t $ as a root of $ p $ equals the multiplicity of $ 0 $ as a root of the polynomial obtained by substituting $ X + t $ into $ p $, i.e., $ \\\\operatorname{rootMultiplicity}(p, t) = \\\\operatorname{rootMultiplicity}(p(X + t), 0) $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.RingDivision\"\n    },\n    {\n      \"formal_name\": \"Polynomial.rootMultiplicity_eq_multiplicity\",\n      \"informal_name\": \"Root Multiplicity Equals Factor Multiplicity in Polynomial Rings\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Ring R] [inst_1 : DecidableEq R] (p : Polynomial R) (a : R),\\n  Polynomial.rootMultiplicity a p = if p = 0 then 0 else multiplicity (Polynomial.X - Polynomial.C a) p\",\n      \"informal_description\": \"For a polynomial $ p $ over a semiring $ R $ with decidable equality, the root multiplicity of $ a $ in $ p $ is equal to the multiplicity of the linear factor $ X - a $ in $ p $, unless $ p $ is the zero polynomial, in which case the root multiplicity is zero. Formally, $\\\\operatorname{rootMultiplicity}(a, p) = \\\\begin{cases} 0 & \\\\text{if } p = 0 \\\\\\\\ \\\\operatorname{multiplicity}(X - a, p) & \\\\text{otherwise} \\\\end{cases}$.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Div\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "formal_name": "Polynomial.rootMultiplicity_eq_natTrailingDegree",
+              "informal_name": "Root Multiplicity Equals Trailing Degree After Substitution in Polynomial Ring",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} [inst : CommRing R] {p : Polynomial R} {t : R},\n  Polynomial.rootMultiplicity t p = (p.comp (Polynomial.X + Polynomial.C t)).natTrailingDegree",
+              "informal_description": "For a polynomial $ p \\in R[X] $ and an element $ t \\in R $, the multiplicity of $ t $ as a root of $ p $ is equal to the trailing degree of the polynomial obtained by substituting $ X + t $ into $ p $, i.e., $ \\operatorname{rootMultiplicity}(t, p) = \\operatorname{natTrailingDegree}(p(X + t)) $.",
+              "path": "Mathlib.Algebra.Polynomial.RingDivision"
+            },
+            {
+              "formal_name": "Polynomial.rootMultiplicity_eq_natTrailingDegree'",
+              "informal_name": "Root Multiplicity of Zero Equals Trailing Degree",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} [inst : CommRing R] {p : Polynomial R}, Polynomial.rootMultiplicity 0 p = p.natTrailingDegree",
+              "informal_description": "For any polynomial $ p $, the multiplicity of $ 0 $ as a root of $ p $ is equal to the trailing degree of $ p $ converted to a natural number, i.e., $ \\operatorname{rootMultiplicity}_0(p) = \\operatorname{natTrailingDegree}(p) $.",
+              "path": "Mathlib.Algebra.Polynomial.Div"
+            },
+            {
+              "formal_name": "Polynomial.rootMultiplicity_eq_nat_find_of_nonzero",
+              "informal_name": "Multiplicity of Root $ a $ in Polynomial $ p $ as Minimal $ n $ with $ (X - a)^{n+1} \nmid p $",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} [inst : Ring R] [inst_1 : DecidableEq R] {p : Polynomial R} (p0 : p ≠ 0) {a : R},\n  Polynomial.rootMultiplicity a p = Nat.find ⋯",
+              "informal_description": "For a non-zero polynomial $ p $ over a semiring $ R $ with decidable equality, the multiplicity of a root $ a $ is the least natural number $ n $ such that $ (X - a)^{n+1} $ does not divide $ p $. This characterizes the root multiplicity as the maximal $ k $ for which $ (X - a)^k $ divides $ p $, determined via the minimal $ n $ where divisibility fails for the next power.",
+              "path": "Mathlib.Algebra.Polynomial.Div"
+            },
+            {
+              "formal_name": "Polynomial.rootMultiplicity_eq_rootMultiplicity",
+              "informal_name": "Root Multiplicity Invariance under Polynomial Shift",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} [inst : CommRing R] {p : Polynomial R} {t : R},\n  Polynomial.rootMultiplicity t p = Polynomial.rootMultiplicity 0 (p.comp (Polynomial.X + Polynomial.C t))",
+              "informal_description": "For any polynomial $ p $ over a semiring $ R $ and any element $ t \\in R $, the multiplicity of $ t $ as a root of $ p $ equals the multiplicity of $ 0 $ as a root of the polynomial obtained by substituting $ X + t $ into $ p $, i.e., $ \\operatorname{rootMultiplicity}(p, t) = \\operatorname{rootMultiplicity}(p(X + t), 0) $.",
+              "path": "Mathlib.Algebra.Polynomial.RingDivision"
+            },
+            {
+              "formal_name": "Polynomial.rootMultiplicity_eq_multiplicity",
+              "informal_name": "Root Multiplicity Equals Factor Multiplicity in Polynomial Rings",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} [inst : Ring R] [inst_1 : DecidableEq R] (p : Polynomial R) (a : R),\n  Polynomial.rootMultiplicity a p = if p = 0 then 0 else multiplicity (Polynomial.X - Polynomial.C a) p",
+              "informal_description": "For a polynomial $ p $ over a semiring $ R $ with decidable equality, the root multiplicity of $ a $ in $ p $ is equal to the multiplicity of the linear factor $ X - a $ in $ p $, unless $ p $ is the zero polynomial, in which case the root multiplicity is zero. Formally, $\\operatorname{rootMultiplicity}(a, p) = \\begin{cases} 0 & \\text{if } p = 0 \\\\ \\operatorname{multiplicity}(X - a, p) & \\text{otherwise} \\end{cases}$.",
+              "path": "Mathlib.Algebra.Polynomial.Div"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "method": "Finder-abstract",
+    "request": {
+      "query": "infDegree minimum support of univariate polynomial natural trailing degree",
+      "num_results": 5
+    },
+    "result": {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.natTrailingDegree_eq_support_min'\",\n      \"informal_name\": \"Trailing Degree Equals Minimum of Support for Non-zero Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Semiring R] {p : Polynomial R} (h : p ≠ 0), p.natTrailingDegree = p.support.min' ⋯\",\n      \"informal_description\": \"For any non-zero polynomial $ p $ over a semiring, the natural trailing degree of $ p $ is equal to the minimum element of its support, i.e., $\\\\operatorname{natTrailingDegree}(p) = \\\\min(\\\\operatorname{support}(p))$.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Degree.TrailingDegree\"\n    },\n    {\n      \"formal_name\": \"Polynomial.natTrailingDegree_le_of_mem_supp\",\n      \"informal_name\": \"Trailing Degree is Less Than or Equal to Support Elements in Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Semiring R] {p : Polynomial R}, ∀ a ∈ p.support, p.natTrailingDegree ≤ a\",\n      \"informal_description\": \"For any natural number $ a $, if $ a $ is in the support of a polynomial $ p $ (i.e., the set of exponents with non-zero coefficients), then the natural trailing degree of $ p $ (the smallest exponent in the support, or 0 for the zero polynomial) satisfies $ \\\\text{natTrailingDegree}(p) \\\\leq a $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Degree.TrailingDegree\"\n    },\n    {\n      \"formal_name\": \"Polynomial.natTrailingDegree\",\n      \"informal_name\": \"Trailing degree of a polynomial as a natural number\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} → [inst : Semiring R] → Polynomial R → ℕ\",\n      \"informal_description\": \"The function converts the trailing degree of a polynomial $ p $ (defined as the minimum exponent of its non-zero coefficients in $ \\\\mathbb{N}^\\\\top $) to a natural number by mapping $ \\\\top $ to $ 0 $. For the zero polynomial, this returns $ 0 $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Degree.TrailingDegree\"\n    },\n    {\n      \"formal_name\": \"Polynomial.trailingDegree\",\n      \"informal_name\": \"Trailing degree of a polynomial\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} → [inst : Semiring R] → Polynomial R → ℕ∞\",\n      \"informal_description\": \"The trailing degree of a polynomial $ p $ is defined as the minimum element of the finite set of exponents corresponding to its non-zero coefficients, with the minimum taken in the extended natural numbers $ \\\\mathbb{N}^{\\\\top} $. If $ p $ is the zero polynomial (with empty support), its trailing degree is the top element $ \\\\top $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Degree.TrailingDegree\"\n    },\n    {\n      \"formal_name\": \"Polynomial.trailingDegree_eq_natTrailingDegree\",\n      \"informal_name\": \"Trailing Degree Equals Natural Trailing Degree for Non-Zero Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Semiring R] {p : Polynomial R}, p ≠ 0 → p.trailingDegree = ↑p.natTrailingDegree\",\n      \"informal_description\": \"For any non-zero polynomial $ p $, the trailing degree of $ p $ (defined in the extended natural numbers $ \\\\mathbb{N}^{\\\\top} $) is equal to the natural number trailing degree of $ p $ when interpreted as an extended natural number.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Degree.TrailingDegree\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "formal_name": "Polynomial.natTrailingDegree_eq_support_min'",
+              "informal_name": "Trailing Degree Equals Minimum of Support for Non-zero Polynomials",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} [inst : Semiring R] {p : Polynomial R} (h : p ≠ 0), p.natTrailingDegree = p.support.min' ⋯",
+              "informal_description": "For any non-zero polynomial $ p $ over a semiring, the natural trailing degree of $ p $ is equal to the minimum element of its support, i.e., $\\operatorname{natTrailingDegree}(p) = \\min(\\operatorname{support}(p))$.",
+              "path": "Mathlib.Algebra.Polynomial.Degree.TrailingDegree"
+            },
+            {
+              "formal_name": "Polynomial.natTrailingDegree_le_of_mem_supp",
+              "informal_name": "Trailing Degree is Less Than or Equal to Support Elements in Polynomials",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} [inst : Semiring R] {p : Polynomial R}, ∀ a ∈ p.support, p.natTrailingDegree ≤ a",
+              "informal_description": "For any natural number $ a $, if $ a $ is in the support of a polynomial $ p $ (i.e., the set of exponents with non-zero coefficients), then the natural trailing degree of $ p $ (the smallest exponent in the support, or 0 for the zero polynomial) satisfies $ \\text{natTrailingDegree}(p) \\leq a $.",
+              "path": "Mathlib.Algebra.Polynomial.Degree.TrailingDegree"
+            },
+            {
+              "formal_name": "Polynomial.natTrailingDegree",
+              "informal_name": "Trailing degree of a polynomial as a natural number",
+              "kind": "definition",
+              "type": "{R : Type u} → [inst : Semiring R] → Polynomial R → ℕ",
+              "informal_description": "The function converts the trailing degree of a polynomial $ p $ (defined as the minimum exponent of its non-zero coefficients in $ \\mathbb{N}^\\top $) to a natural number by mapping $ \\top $ to $ 0 $. For the zero polynomial, this returns $ 0 $.",
+              "path": "Mathlib.Algebra.Polynomial.Degree.TrailingDegree"
+            },
+            {
+              "formal_name": "Polynomial.trailingDegree",
+              "informal_name": "Trailing degree of a polynomial",
+              "kind": "definition",
+              "type": "{R : Type u} → [inst : Semiring R] → Polynomial R → ℕ∞",
+              "informal_description": "The trailing degree of a polynomial $ p $ is defined as the minimum element of the finite set of exponents corresponding to its non-zero coefficients, with the minimum taken in the extended natural numbers $ \\mathbb{N}^{\\top} $. If $ p $ is the zero polynomial (with empty support), its trailing degree is the top element $ \\top $.",
+              "path": "Mathlib.Algebra.Polynomial.Degree.TrailingDegree"
+            },
+            {
+              "formal_name": "Polynomial.trailingDegree_eq_natTrailingDegree",
+              "informal_name": "Trailing Degree Equals Natural Trailing Degree for Non-Zero Polynomials",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} [inst : Semiring R] {p : Polynomial R}, p ≠ 0 → p.trailingDegree = ↑p.natTrailingDegree",
+              "informal_description": "For any non-zero polynomial $ p $, the trailing degree of $ p $ (defined in the extended natural numbers $ \\mathbb{N}^{\\top} $) is equal to the natural number trailing degree of $ p $ when interpreted as an extended natural number.",
+              "path": "Mathlib.Algebra.Polynomial.Degree.TrailingDegree"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "method": "LeanSearch-literature",
+    "request": {
+      "query": "The root multiplicity of a polynomial at a is the natural trailing degree of its Taylor expansion",
+      "num_results": 5
+    },
+    "result": {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.rootMultiplicity_eq_natTrailingDegree\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.RingDivision\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : CommRing R] {p : Polynomial R} {t : R},\\n  Polynomial.rootMultiplicity t p = (p.comp (Polynomial.X + Polynomial.C t)).natTrailingDegree\"\n    },\n    {\n      \"name\": \"Polynomial.rootMultiplicity\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Div\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} → [inst : Ring R] → R → Polynomial R → ℕ\"\n    },\n    {\n      \"name\": \"Polynomial.rootMultiplicity_eq_natTrailingDegree'\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Div\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : CommRing R] {p : Polynomial R}, Polynomial.rootMultiplicity 0 p = p.natTrailingDegree\"\n    },\n    {\n      \"name\": \"Polynomial.rootMultiplicity_eq_nat_find_of_nonzero\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Div\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Ring R] [inst_1 : DecidableEq R] {p : Polynomial R} (p0 : p ≠ 0) {a : R},\\n  Polynomial.rootMultiplicity a p = Nat.find ⋯\"\n    },\n    {\n      \"name\": \"Polynomial.rootMultiplicity_X_sub_C_pow\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.RingDivision\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : CommRing R] [Nontrivial R] (a : R) (n : ℕ),\\n  Polynomial.rootMultiplicity a ((Polynomial.X - Polynomial.C a) ^ n) = n\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "Polynomial.rootMultiplicity_eq_natTrailingDegree",
+              "module_name": "Mathlib.Algebra.Polynomial.RingDivision",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} [inst : CommRing R] {p : Polynomial R} {t : R},\n  Polynomial.rootMultiplicity t p = (p.comp (Polynomial.X + Polynomial.C t)).natTrailingDegree"
+            },
+            {
+              "name": "Polynomial.rootMultiplicity",
+              "module_name": "Mathlib.Algebra.Polynomial.Div",
+              "kind": "definition",
+              "type": "{R : Type u} → [inst : Ring R] → R → Polynomial R → ℕ"
+            },
+            {
+              "name": "Polynomial.rootMultiplicity_eq_natTrailingDegree'",
+              "module_name": "Mathlib.Algebra.Polynomial.Div",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} [inst : CommRing R] {p : Polynomial R}, Polynomial.rootMultiplicity 0 p = p.natTrailingDegree"
+            },
+            {
+              "name": "Polynomial.rootMultiplicity_eq_nat_find_of_nonzero",
+              "module_name": "Mathlib.Algebra.Polynomial.Div",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} [inst : Ring R] [inst_1 : DecidableEq R] {p : Polynomial R} (p0 : p ≠ 0) {a : R},\n  Polynomial.rootMultiplicity a p = Nat.find ⋯"
+            },
+            {
+              "name": "Polynomial.rootMultiplicity_X_sub_C_pow",
+              "module_name": "Mathlib.Algebra.Polynomial.RingDivision",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} [inst : CommRing R] [Nontrivial R] (a : R) (n : ℕ),\n  Polynomial.rootMultiplicity a ((Polynomial.X - Polynomial.C a) ^ n) = n"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "method": "LeanSearch-abstract",
+    "request": {
+      "query": "AddMonoidAlgebra infDegree of polynomial equals least exponent with nonzero coefficient",
+      "num_results": 5
+    },
+    "result": {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"AddMonoidAlgebra.infDegree\",\n      \"module_name\": \"Mathlib.Algebra.MonoidAlgebra.Degree\",\n      \"kind\": \"abbrev\",\n      \"type\": \"{R : Type u_1} →\\n  {A : Type u_3} →\\n    {T : Type u_4} →\\n      [inst : Semiring R] → [inst_1 : SemilatticeInf T] → [OrderTop T] → (A → T) → AddMonoidAlgebra R A → T\"\n    },\n    {\n      \"name\": \"Polynomial.trailingDegree\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Degree.TrailingDegree\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} → [inst : Semiring R] → Polynomial R → ℕ∞\"\n    },\n    {\n      \"name\": \"Polynomial.degree\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Degree.Definitions\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} → [inst : Semiring R] → Polynomial R → WithBot ℕ\"\n    },\n    {\n      \"name\": \"AddMonoidAlgebra.supDegree_add_eq_left\",\n      \"module_name\": \"Mathlib.Algebra.MonoidAlgebra.Degree\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {A : Type u_3} {B : Type u_5} [inst : Semiring R] [inst_1 : LinearOrder B] [inst_2 : OrderBot B]\\n  {p q : AddMonoidAlgebra R A} {D : A → B} [inst_3 : AddZeroClass A],\\n  AddMonoidAlgebra.supDegree D q < AddMonoidAlgebra.supDegree D p →\\n    AddMonoidAlgebra.supDegree D (p + q) = AddMonoidAlgebra.supDegree D p\"\n    },\n    {\n      \"name\": \"AddMonoidAlgebra.supDegree\",\n      \"module_name\": \"Mathlib.Algebra.MonoidAlgebra.Degree\",\n      \"kind\": \"abbrev\",\n      \"type\": \"{R : Type u_1} →\\n  {A : Type u_3} →\\n    {B : Type u_5} →\\n      [inst : Semiring R] → [inst_1 : SemilatticeSup B] → [OrderBot B] → (A → B) → AddMonoidAlgebra R A → B\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "AddMonoidAlgebra.infDegree",
+              "module_name": "Mathlib.Algebra.MonoidAlgebra.Degree",
+              "kind": "abbrev",
+              "type": "{R : Type u_1} →\n  {A : Type u_3} →\n    {T : Type u_4} →\n      [inst : Semiring R] → [inst_1 : SemilatticeInf T] → [OrderTop T] → (A → T) → AddMonoidAlgebra R A → T"
+            },
+            {
+              "name": "Polynomial.trailingDegree",
+              "module_name": "Mathlib.Algebra.Polynomial.Degree.TrailingDegree",
+              "kind": "definition",
+              "type": "{R : Type u} → [inst : Semiring R] → Polynomial R → ℕ∞"
+            },
+            {
+              "name": "Polynomial.degree",
+              "module_name": "Mathlib.Algebra.Polynomial.Degree.Definitions",
+              "kind": "definition",
+              "type": "{R : Type u} → [inst : Semiring R] → Polynomial R → WithBot ℕ"
+            },
+            {
+              "name": "AddMonoidAlgebra.supDegree_add_eq_left",
+              "module_name": "Mathlib.Algebra.MonoidAlgebra.Degree",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} {A : Type u_3} {B : Type u_5} [inst : Semiring R] [inst_1 : LinearOrder B] [inst_2 : OrderBot B]\n  {p q : AddMonoidAlgebra R A} {D : A → B} [inst_3 : AddZeroClass A],\n  AddMonoidAlgebra.supDegree D q < AddMonoidAlgebra.supDegree D p →\n    AddMonoidAlgebra.supDegree D (p + q) = AddMonoidAlgebra.supDegree D p"
+            },
+            {
+              "name": "AddMonoidAlgebra.supDegree",
+              "module_name": "Mathlib.Algebra.MonoidAlgebra.Degree",
+              "kind": "abbrev",
+              "type": "{R : Type u_1} →\n  {A : Type u_3} →\n    {B : Type u_5} →\n      [inst : Semiring R] → [inst_1 : SemilatticeSup B] → [OrderBot B] → (A → B) → AddMonoidAlgebra R A → B"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "method": "Loogle-current",
+    "request": {
+      "query": "MvPolynomial.uniqueAlgEquiv, Polynomial.rootMultiplicity"
+    },
+    "result": {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": []\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": []
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "method": "Loogle-abstract",
+    "request": {
+      "query": "AddMonoidAlgebra.infDegree"
+    },
+    "result": {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"AddMonoidAlgebra.infDegree\",\n      \"type\": \" {R : Type u_1} {A : Type u_3} {T : Type u_4} [Semiring R] [SemilatticeInf T] [OrderTop T] (D : A → T) (f : AddMonoidAlgebra R A) : T\",\n      \"module\": \"Mathlib.Algebra.MonoidAlgebra.Degree\"\n    },\n    {\n      \"name\": \"AddMonoidAlgebra.infDegree_withTop_some_comp\",\n      \"type\": \" {R : Type u_1} {A : Type u_3} {T : Type u_4} [Semiring R] [SemilatticeInf T] [OrderTop T] {D : A → T} {s : AddMonoidAlgebra R A} (hs : s.coeff.support.Nonempty) : AddMonoidAlgebra.infDegree (WithTop.some ∘ D) s = ↑(AddMonoidAlgebra.infDegree D s)\",\n      \"module\": \"Mathlib.Algebra.MonoidAlgebra.Degree\"\n    },\n    {\n      \"name\": \"AddMonoidAlgebra.le_infDegree_add\",\n      \"type\": \" {R : Type u_1} {A : Type u_3} {T : Type u_4} [Semiring R] [SemilatticeInf T] [OrderTop T] (D : A → T) (f g : AddMonoidAlgebra R A) : AddMonoidAlgebra.infDegree D f ⊓ AddMonoidAlgebra.infDegree D g ≤ AddMonoidAlgebra.infDegree D (f + g)\",\n      \"module\": \"Mathlib.Algebra.MonoidAlgebra.Degree\"\n    },\n    {\n      \"name\": \"AddMonoidAlgebra.le_infDegree_mul\",\n      \"type\": \" {R : Type u_1} {A : Type u_3} {T : Type u_4} [Semiring R] [SemilatticeInf T] [OrderTop T] [AddZeroClass A] [Add T] [AddLeftMono T] [AddRightMono T] (D : A →ₙ+ T) (f g : AddMonoidAlgebra R A) : AddMonoidAlgebra.infDegree (⇑D) f + AddMonoidAlgebra.infDegree (⇑D) g ≤ AddMonoidAlgebra.infDegree (⇑D) (f * g)\",\n      \"module\": \"Mathlib.Algebra.MonoidAlgebra.Degree\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "AddMonoidAlgebra.infDegree",
+              "type": " {R : Type u_1} {A : Type u_3} {T : Type u_4} [Semiring R] [SemilatticeInf T] [OrderTop T] (D : A → T) (f : AddMonoidAlgebra R A) : T",
+              "module": "Mathlib.Algebra.MonoidAlgebra.Degree"
+            },
+            {
+              "name": "AddMonoidAlgebra.infDegree_withTop_some_comp",
+              "type": " {R : Type u_1} {A : Type u_3} {T : Type u_4} [Semiring R] [SemilatticeInf T] [OrderTop T] {D : A → T} {s : AddMonoidAlgebra R A} (hs : s.coeff.support.Nonempty) : AddMonoidAlgebra.infDegree (WithTop.some ∘ D) s = ↑(AddMonoidAlgebra.infDegree D s)",
+              "module": "Mathlib.Algebra.MonoidAlgebra.Degree"
+            },
+            {
+              "name": "AddMonoidAlgebra.le_infDegree_add",
+              "type": " {R : Type u_1} {A : Type u_3} {T : Type u_4} [Semiring R] [SemilatticeInf T] [OrderTop T] (D : A → T) (f g : AddMonoidAlgebra R A) : AddMonoidAlgebra.infDegree D f ⊓ AddMonoidAlgebra.infDegree D g ≤ AddMonoidAlgebra.infDegree D (f + g)",
+              "module": "Mathlib.Algebra.MonoidAlgebra.Degree"
+            },
+            {
+              "name": "AddMonoidAlgebra.le_infDegree_mul",
+              "type": " {R : Type u_1} {A : Type u_3} {T : Type u_4} [Semiring R] [SemilatticeInf T] [OrderTop T] [AddZeroClass A] [Add T] [AddLeftMono T] [AddRightMono T] (D : A →ₙ+ T) (f g : AddMonoidAlgebra R A) : AddMonoidAlgebra.infDegree (⇑D) f + AddMonoidAlgebra.infDegree (⇑D) g ≤ AddMonoidAlgebra.infDegree (⇑D) (f * g)",
+              "module": "Mathlib.Algebra.MonoidAlgebra.Degree"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "method": "local-literature",
+    "request": {
+      "query": "natTrailingDegree"
+    },
+    "result": {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.natTrailingDegree\",\n      \"kind\": \"def\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Degree/TrailingDegree.lean\"\n    },\n    {\n      \"name\": \"Polynomial.natTrailingDegree_C\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Degree/TrailingDegree.lean\"\n    },\n    {\n      \"name\": \"Polynomial.natTrailingDegree_X\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Degree/TrailingDegree.lean\"\n    },\n    {\n      \"name\": \"Polynomial.natTrailingDegree_mul\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Degree/TrailingDegree.lean\"\n    },\n    {\n      \"name\": \"Polynomial.natTrailingDegree_neg\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Degree/TrailingDegree.lean\"\n    },\n    {\n      \"name\": \"Polynomial.natTrailingDegree_one\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Degree/TrailingDegree.lean\"\n    },\n    {\n      \"name\": \"Polynomial.natTrailingDegree_X_le\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Degree/TrailingDegree.lean\"\n    },\n    {\n      \"name\": \"Polynomial.natTrailingDegree_mul'\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Degree/TrailingDegree.lean\"\n    },\n    {\n      \"name\": \"Polynomial.natTrailingDegree_zero\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Degree/TrailingDegree.lean\"\n    },\n    {\n      \"name\": \"Polynomial.natTrailingDegree_X_pow\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Degree/TrailingDegree.lean\"\n    },\n    {\n      \"name\": \"Polynomial.natTrailingDegree_eq_zero\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Degree/TrailingDegree.lean\"\n    },\n    {\n      \"name\": \"Polynomial.natTrailingDegree_intCast\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Degree/TrailingDegree.lean\"\n    },\n    {\n      \"name\": \"Polynomial.natTrailingDegree_natCast\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Degree/TrailingDegree.lean\"\n    },\n    {\n      \"name\": \"Polynomial.natTrailingDegree_ne_zero\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Degree/TrailingDegree.lean\"\n    },\n    {\n      \"name\": \"Polynomial.natTrailingDegree_reverse\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Reverse.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "Polynomial.natTrailingDegree",
+              "kind": "def",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Degree/TrailingDegree.lean"
+            },
+            {
+              "name": "Polynomial.natTrailingDegree_C",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Degree/TrailingDegree.lean"
+            },
+            {
+              "name": "Polynomial.natTrailingDegree_X",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Degree/TrailingDegree.lean"
+            },
+            {
+              "name": "Polynomial.natTrailingDegree_mul",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Degree/TrailingDegree.lean"
+            },
+            {
+              "name": "Polynomial.natTrailingDegree_neg",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Degree/TrailingDegree.lean"
+            },
+            {
+              "name": "Polynomial.natTrailingDegree_one",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Degree/TrailingDegree.lean"
+            },
+            {
+              "name": "Polynomial.natTrailingDegree_X_le",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Degree/TrailingDegree.lean"
+            },
+            {
+              "name": "Polynomial.natTrailingDegree_mul'",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Degree/TrailingDegree.lean"
+            },
+            {
+              "name": "Polynomial.natTrailingDegree_zero",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Degree/TrailingDegree.lean"
+            },
+            {
+              "name": "Polynomial.natTrailingDegree_X_pow",
+              "kind": "lemma",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Degree/TrailingDegree.lean"
+            },
+            {
+              "name": "Polynomial.natTrailingDegree_eq_zero",
+              "kind": "lemma",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Degree/TrailingDegree.lean"
+            },
+            {
+              "name": "Polynomial.natTrailingDegree_intCast",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Degree/TrailingDegree.lean"
+            },
+            {
+              "name": "Polynomial.natTrailingDegree_natCast",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Degree/TrailingDegree.lean"
+            },
+            {
+              "name": "Polynomial.natTrailingDegree_ne_zero",
+              "kind": "lemma",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Degree/TrailingDegree.lean"
+            },
+            {
+              "name": "Polynomial.natTrailingDegree_reverse",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Reverse.lean"
+            }
+          ],
+          "index": "unavailable"
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "method": "local-abstract",
+    "request": {
+      "query": "infDegree"
+    },
+    "result": {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"AddMonoidAlgebra.infDegree\",\n      \"kind\": \"abbrev\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MonoidAlgebra/Degree.lean\"\n    },\n    {\n      \"name\": \"IndexCardGuards150.infDegreeZeroGuard\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/roth-overview-session/GenWronskianChecks.lean\"\n    },\n    {\n      \"name\": \"AddMonoidAlgebra.infDegree_withTop_some_comp\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MonoidAlgebra/Degree.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "AddMonoidAlgebra.infDegree",
+              "kind": "abbrev",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/MonoidAlgebra/Degree.lean"
+            },
+            {
+              "name": "IndexCardGuards150.infDegreeZeroGuard",
+              "kind": "theorem",
+              "file": ".lake/roth-overview-session/GenWronskianChecks.lean"
+            },
+            {
+              "name": "AddMonoidAlgebra.infDegree_withTop_some_comp",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/MonoidAlgebra/Degree.lean"
+            }
+          ],
+          "index": "unavailable"
+        },
+        "isError": false
+      }
+    }
+  }
+]

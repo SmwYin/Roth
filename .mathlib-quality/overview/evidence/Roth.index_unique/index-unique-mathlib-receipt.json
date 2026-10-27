@@ -1,0 +1,102 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nnamespace IndexUniqueMathlib151\nuniverse u\nvariable {R : Type u} [CommRing R]\n#check_failure Roth.index_unique\n#check @Polynomial.rootMultiplicity_eq_natTrailingDegree\n#check @Polynomial.taylor_apply\n#check @Polynomial.natTrailingDegree_eq_support_min'\n#check @Polynomial.natTrailingDegree_le_of_ne_zero\n#check @AddMonoidAlgebra.infDegree\n\ntheorem minimumSupport (P : Polynomial R) (r : ℕ) :\n    sInf ((fun n : ℕ ↦ (n : ℝ) / r) '' (P.support : Set ℕ)) =\n      (P.natTrailingDegree : ℝ) / r := by\n  by_cases hP : P = 0\n  · subst P\n    simp\n  · apply le_antisymm\n    · apply csInf_le (P.support.finite_toSet.image (fun n : ℕ ↦ (n : ℝ) / r)).bddBelow\n      exact Set.mem_image_of_mem _ (Polynomial.mem_support_iff.mpr\n        (Polynomial.coeff_natTrailingDegree_ne_zero.mpr hP))\n    · refine le_csInf ((Polynomial.support_nonempty.mpr hP).to_set.image _) ?_\n      rintro _ ⟨n, hn, rfl⟩\n      exact div_le_div_of_nonneg_right\n        (by exact_mod_cast Polynomial.natTrailingDegree_le_of_mem_supp n hn) (Nat.cast_nonneg r)\n\ntheorem taylorMinimum (P : Polynomial R) (a : R) (r : ℕ) :\n    sInf ((fun n : ℕ ↦ (n : ℝ) / r) '' ((Polynomial.taylor a P).support : Set ℕ)) =\n      (P.rootMultiplicity a : ℝ) / r := by\n  rw [minimumSupport, Polynomial.taylor_apply, Polynomial.rootMultiplicity_eq_natTrailingDegree]\n\ntheorem existingReaim (P : Polynomial R) (a : R) :\n    (P.comp (Polynomial.X + Polynomial.C a)).natTrailingDegree = P.rootMultiplicity a :=\n  Polynomial.rootMultiplicity_eq_natTrailingDegree.symm\n\n#print axioms minimumSupport\n#print axioms taylorMinimum\n#print axioms existingReaim\nend IndexUniqueMathlib151\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.index_unique`\",\n      \"line\": 13,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.rootMultiplicity_eq_natTrailingDegree : ∀ {R : Type u_1} [inst : CommRing R] {p : Polynomial R} {t : R},\\n  Polynomial.rootMultiplicity t p = (p.comp (Polynomial.X + Polynomial.C t)).natTrailingDegree\",\n      \"line\": 14,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.taylor_apply : ∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R),\\n  (Polynomial.taylor r) f = f.comp (Polynomial.X + Polynomial.C r)\",\n      \"line\": 15,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.natTrailingDegree_eq_support_min' : ∀ {R : Type u_1} [inst : Semiring R] {p : Polynomial R} (h : p ≠ 0),\\n  p.natTrailingDegree = p.support.min' ⋯\",\n      \"line\": 16,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.natTrailingDegree_le_of_ne_zero : ∀ {R : Type u_1} {n : ℕ} [inst : Semiring R] {p : Polynomial R},\\n  p.coeff n ≠ 0 → p.natTrailingDegree ≤ n\",\n      \"line\": 17,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@AddMonoidAlgebra.infDegree : {R : Type u_1} →\\n  {A : Type u_2} →\\n    {T : Type u_3} →\\n      [inst : Semiring R] → [inst_1 : SemilatticeInf T] → [OrderTop T] → (A → T) → AddMonoidAlgebra R A → T\",\n      \"line\": 18,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'IndexUniqueMathlib151.minimumSupport' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 44,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'IndexUniqueMathlib151.taylorMinimum' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 45,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'IndexUniqueMathlib151.existingReaim' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 46,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.index_unique`",
+          "line": 13,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.rootMultiplicity_eq_natTrailingDegree : ∀ {R : Type u_1} [inst : CommRing R] {p : Polynomial R} {t : R},\n  Polynomial.rootMultiplicity t p = (p.comp (Polynomial.X + Polynomial.C t)).natTrailingDegree",
+          "line": 14,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.taylor_apply : ∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R),\n  (Polynomial.taylor r) f = f.comp (Polynomial.X + Polynomial.C r)",
+          "line": 15,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.natTrailingDegree_eq_support_min' : ∀ {R : Type u_1} [inst : Semiring R] {p : Polynomial R} (h : p ≠ 0),\n  p.natTrailingDegree = p.support.min' ⋯",
+          "line": 16,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.natTrailingDegree_le_of_ne_zero : ∀ {R : Type u_1} {n : ℕ} [inst : Semiring R] {p : Polynomial R},\n  p.coeff n ≠ 0 → p.natTrailingDegree ≤ n",
+          "line": 17,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@AddMonoidAlgebra.infDegree : {R : Type u_1} →\n  {A : Type u_2} →\n    {T : Type u_3} →\n      [inst : Semiring R] → [inst_1 : SemilatticeInf T] → [OrderTop T] → (A → T) → AddMonoidAlgebra R A → T",
+          "line": 18,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'IndexUniqueMathlib151.minimumSupport' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 44,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'IndexUniqueMathlib151.taylorMinimum' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 45,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'IndexUniqueMathlib151.existingReaim' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 46,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 172713
+}

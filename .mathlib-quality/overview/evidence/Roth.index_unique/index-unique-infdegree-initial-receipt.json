@@ -1,0 +1,219 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nnamespace IndexUniqueMathlib151\nuniverse u\nvariable {R : Type u} [CommRing R]\n#check_failure Roth.index_unique\n#check @Polynomial.rootMultiplicity_eq_natTrailingDegree\n#check @Polynomial.taylor_apply\n#check @Polynomial.natTrailingDegree_eq_support_min'\n#check @Polynomial.natTrailingDegree_le_of_ne_zero\n#check @AddMonoidAlgebra.infDegree\n\ntheorem minimumSupport (P : Polynomial R) (r : \u2115) :\n    sInf ((fun n : \u2115 \u21a6 (n : \u211d) / r) '' (P.support : Set \u2115)) =\n      (P.natTrailingDegree : \u211d) / r := by\n  by_cases hP : P = 0\n  \u00b7 subst P\n    simp\n  \u00b7 apply le_antisymm\n    \u00b7 apply csInf_le (P.support.finite_toSet.image (fun n : \u2115 \u21a6 (n : \u211d) / r)).bddBelow\n      exact Set.mem_image_of_mem _ (Polynomial.mem_support_iff.mpr\n        (Polynomial.coeff_natTrailingDegree_ne_zero.mpr hP))\n    \u00b7 refine le_csInf ((Polynomial.support_nonempty.mpr hP).to_set.image _) ?_\n      rintro _ \u27e8n, hn, rfl\u27e9\n      exact div_le_div_of_nonneg_right\n        (by exact_mod_cast Polynomial.natTrailingDegree_le_of_mem_supp n hn) (Nat.cast_nonneg r)\n\ntheorem taylorMinimum (P : Polynomial R) (a : R) (r : \u2115) :\n    sInf ((fun n : \u2115 \u21a6 (n : \u211d) / r) '' ((Polynomial.taylor a P).support : Set \u2115)) =\n      (P.rootMultiplicity a : \u211d) / r := by\n  rw [minimumSupport, Polynomial.taylor_apply, Polynomial.rootMultiplicity_eq_natTrailingDegree]\n\ntheorem existingReaim (P : Polynomial R) (a : R) :\n    (P.comp (Polynomial.X + Polynomial.C a)).natTrailingDegree = P.rootMultiplicity a :=\n  Polynomial.rootMultiplicity_eq_natTrailingDegree.symm\n\n#print axioms minimumSupport\n#print axioms taylorMinimum\n#print axioms existingReaim\nend IndexUniqueMathlib151\n\nnamespace IndexUniqueInfDegree151\nuniverse u\nvariable {R : Type u} [CommRing R]\n#check_failure Roth.index_unique\n#check @Finset.min_eq_inf_withTop\n#check @WithTop.untopD_coe\n#check @Finset.coe_inf'\n#check @Finset.inf'_eq_csInf_image\n\ntheorem trailingInf (P : Polynomial R) :\n    AddMonoidAlgebra.infDegree (fun n : \u2115 \u21a6 (n : \u2115\u221e)) P.toFinsupp =\n      P.trailingDegree := by\n  rw [Polynomial.trailingDegree, Finset.min_eq_inf_withTop]\n  rfl\n\ntheorem rootInf (P : Polynomial R) (a : R) :\n    (AddMonoidAlgebra.infDegree (fun n : \u2115 \u21a6 (n : \u2115\u221e))\n      (P.comp (Polynomial.X + Polynomial.C a)).toFinsupp).toNat = P.rootMultiplicity a := by\n  rw [trailingInf]\n  exact Polynomial.rootMultiplicity_eq_natTrailingDegree.symm\n\ntheorem finsetBridge {\u03b9 : Type u} (s : Finset \u03b9) (w : \u03b9 \u2192 \u211d) :\n    (s.inf (fun d \u21a6 (w d : WithTop \u211d))).untopD 0 =\n      sInf (w '' (s : Set \u03b9)) := by\n  classical\n  rcases s.eq_empty_or_nonempty with h | h\n  \u00b7 subst s\n    simp\n  \u00b7 change (s.inf (WithTop.some \u2218 w)).untopD 0 = _\n    rw [\u2190 Finset.coe_inf' h w, Finset.inf'_eq_csInf_image]\n    rfl\n\ntheorem realInfSupport (P : Polynomial R) (r : \u2115) :\n    (AddMonoidAlgebra.infDegree (fun n : \u2115 \u21a6 ((n : \u211d) / r : WithTop \u211d))\n      P.toFinsupp).untopD 0 = (P.natTrailingDegree : \u211d) / r := by\n  change (P.support.inf (fun n : \u2115 \u21a6 ((n : \u211d) / r : WithTop \u211d))).untopD 0 = _\n  rw [finsetBridge, IndexUniqueMathlib151.minimumSupport]\n\ntheorem realRootInf (P : Polynomial R) (a : R) (r : \u2115) :\n    (AddMonoidAlgebra.infDegree (fun n : \u2115 \u21a6 ((n : \u211d) / r : WithTop \u211d))\n      (Polynomial.taylor a P).toFinsupp).untopD 0 = (P.rootMultiplicity a : \u211d) / r := by\n  rw [realInfSupport, Polynomial.taylor_apply,\n    Polynomial.rootMultiplicity_eq_natTrailingDegree]\n\n#print axioms trailingInf\n#print axioms rootInf\n#print axioms finsetBridge\n#print axioms realInfSupport\n#print axioms realRootInf\nend IndexUniqueInfDegree151\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": false,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.index_unique`\",\n      \"line\": 13,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.rootMultiplicity_eq_natTrailingDegree : \u2200 {R : Type u_1} [inst : CommRing R] {p : Polynomial R} {t : R},\\n  Polynomial.rootMultiplicity t p = (p.comp (Polynomial.X + Polynomial.C t)).natTrailingDegree\",\n      \"line\": 14,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.taylor_apply : \u2200 {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R),\\n  (Polynomial.taylor r) f = f.comp (Polynomial.X + Polynomial.C r)\",\n      \"line\": 15,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.natTrailingDegree_eq_support_min' : \u2200 {R : Type u_1} [inst : Semiring R] {p : Polynomial R} (h : p \u2260 0),\\n  p.natTrailingDegree = p.support.min' \u22ef\",\n      \"line\": 16,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.natTrailingDegree_le_of_ne_zero : \u2200 {R : Type u_1} {n : \u2115} [inst : Semiring R] {p : Polynomial R},\\n  p.coeff n \u2260 0 \u2192 p.natTrailingDegree \u2264 n\",\n      \"line\": 17,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@AddMonoidAlgebra.infDegree : {R : Type u_1} \u2192\\n  {A : Type u_2} \u2192\\n    {T : Type u_3} \u2192\\n      [inst : Semiring R] \u2192 [inst_1 : SemilatticeInf T] \u2192 [OrderTop T] \u2192 (A \u2192 T) \u2192 AddMonoidAlgebra R A \u2192 T\",\n      \"line\": 18,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'IndexUniqueMathlib151.minimumSupport' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 44,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'IndexUniqueMathlib151.taylorMinimum' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 45,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'IndexUniqueMathlib151.existingReaim' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 46,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.index_unique`\",\n      \"line\": 52,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finset.min_eq_inf_withTop : \u2200 {\u03b1 : Type u_1} [inst : LinearOrder \u03b1] (s : Finset \u03b1), s.min = s.inf WithTop.some\",\n      \"line\": 53,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@WithTop.untopD_coe : \u2200 {\u03b1 : Type u_1} (d x : \u03b1), WithTop.untopD d \u2191x = x\",\n      \"line\": 54,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finset.coe_inf' : \u2200 {\u03b1 : Type u_1} {\u03b2 : Type u_2} [inst : SemilatticeInf \u03b1] {s : Finset \u03b2} (H : s.Nonempty)\\n  (f : \u03b2 \u2192 \u03b1), \u2191(s.inf' H f) = s.inf (WithTop.some \u2218 f)\",\n      \"line\": 55,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finset.inf'_eq_csInf_image : \u2200 {\u03b9 : Type u_1} {\u03b1 : Type u_2} [inst : ConditionallyCompleteLattice \u03b1] (s : Finset \u03b9)\\n  (H : s.Nonempty) (f : \u03b9 \u2192 \u03b1), s.inf' H f = sInf (f '' \u2191s)\",\n      \"line\": 56,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"failed to synthesize instance of type class\\n  HDiv \u211d \u2115 ?m.10\\n\\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.\",\n      \"line\": 82,\n      \"column\": 47,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"failed to synthesize instance of type class\\n  HDiv \u211d \u2115 ?m.33\\n\\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.\",\n      \"line\": 84,\n      \"column\": 39,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"failed to synthesize instance of type class\\n  HDiv \u211d \u2115 ?m.10\\n\\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.\",\n      \"line\": 88,\n      \"column\": 47,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'IndexUniqueInfDegree151.trailingInf' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 93,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'IndexUniqueInfDegree151.rootInf' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 94,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'IndexUniqueInfDegree151.finsetBridge' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 95,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'IndexUniqueInfDegree151.realInfSupport' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 96,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'IndexUniqueInfDegree151.realRootInf' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 97,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": false,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.index_unique`",
+          "line": 13,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.rootMultiplicity_eq_natTrailingDegree : \u2200 {R : Type u_1} [inst : CommRing R] {p : Polynomial R} {t : R},\n  Polynomial.rootMultiplicity t p = (p.comp (Polynomial.X + Polynomial.C t)).natTrailingDegree",
+          "line": 14,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.taylor_apply : \u2200 {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R),\n  (Polynomial.taylor r) f = f.comp (Polynomial.X + Polynomial.C r)",
+          "line": 15,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.natTrailingDegree_eq_support_min' : \u2200 {R : Type u_1} [inst : Semiring R] {p : Polynomial R} (h : p \u2260 0),\n  p.natTrailingDegree = p.support.min' \u22ef",
+          "line": 16,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.natTrailingDegree_le_of_ne_zero : \u2200 {R : Type u_1} {n : \u2115} [inst : Semiring R] {p : Polynomial R},\n  p.coeff n \u2260 0 \u2192 p.natTrailingDegree \u2264 n",
+          "line": 17,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@AddMonoidAlgebra.infDegree : {R : Type u_1} \u2192\n  {A : Type u_2} \u2192\n    {T : Type u_3} \u2192\n      [inst : Semiring R] \u2192 [inst_1 : SemilatticeInf T] \u2192 [OrderTop T] \u2192 (A \u2192 T) \u2192 AddMonoidAlgebra R A \u2192 T",
+          "line": 18,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'IndexUniqueMathlib151.minimumSupport' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 44,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'IndexUniqueMathlib151.taylorMinimum' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 45,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'IndexUniqueMathlib151.existingReaim' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 46,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.index_unique`",
+          "line": 52,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finset.min_eq_inf_withTop : \u2200 {\u03b1 : Type u_1} [inst : LinearOrder \u03b1] (s : Finset \u03b1), s.min = s.inf WithTop.some",
+          "line": 53,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@WithTop.untopD_coe : \u2200 {\u03b1 : Type u_1} (d x : \u03b1), WithTop.untopD d \u2191x = x",
+          "line": 54,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finset.coe_inf' : \u2200 {\u03b1 : Type u_1} {\u03b2 : Type u_2} [inst : SemilatticeInf \u03b1] {s : Finset \u03b2} (H : s.Nonempty)\n  (f : \u03b2 \u2192 \u03b1), \u2191(s.inf' H f) = s.inf (WithTop.some \u2218 f)",
+          "line": 55,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finset.inf'_eq_csInf_image : \u2200 {\u03b9 : Type u_1} {\u03b1 : Type u_2} [inst : ConditionallyCompleteLattice \u03b1] (s : Finset \u03b9)\n  (H : s.Nonempty) (f : \u03b9 \u2192 \u03b1), s.inf' H f = sInf (f '' \u2191s)",
+          "line": 56,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "failed to synthesize instance of type class\n  HDiv \u211d \u2115 ?m.10\n\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.",
+          "line": 82,
+          "column": 47,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "failed to synthesize instance of type class\n  HDiv \u211d \u2115 ?m.33\n\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.",
+          "line": 84,
+          "column": 39,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "failed to synthesize instance of type class\n  HDiv \u211d \u2115 ?m.10\n\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.",
+          "line": 88,
+          "column": 47,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'IndexUniqueInfDegree151.trailingInf' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 93,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'IndexUniqueInfDegree151.rootInf' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 94,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'IndexUniqueInfDegree151.finsetBridge' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 95,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'IndexUniqueInfDegree151.realInfSupport' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 96,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'IndexUniqueInfDegree151.realRootInf' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 97,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 1220
+}

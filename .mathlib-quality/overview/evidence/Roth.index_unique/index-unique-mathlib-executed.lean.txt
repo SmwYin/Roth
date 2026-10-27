@@ -1,0 +1,47 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+namespace IndexUniqueMathlib151
+universe u
+variable {R : Type u} [CommRing R]
+#check_failure Roth.index_unique
+#check @Polynomial.rootMultiplicity_eq_natTrailingDegree
+#check @Polynomial.taylor_apply
+#check @Polynomial.natTrailingDegree_eq_support_min'
+#check @Polynomial.natTrailingDegree_le_of_ne_zero
+#check @AddMonoidAlgebra.infDegree
+
+theorem minimumSupport (P : Polynomial R) (r : ℕ) :
+    sInf ((fun n : ℕ ↦ (n : ℝ) / r) '' (P.support : Set ℕ)) =
+      (P.natTrailingDegree : ℝ) / r := by
+  by_cases hP : P = 0
+  · subst P
+    simp
+  · apply le_antisymm
+    · apply csInf_le (P.support.finite_toSet.image (fun n : ℕ ↦ (n : ℝ) / r)).bddBelow
+      exact Set.mem_image_of_mem _ (Polynomial.mem_support_iff.mpr
+        (Polynomial.coeff_natTrailingDegree_ne_zero.mpr hP))
+    · refine le_csInf ((Polynomial.support_nonempty.mpr hP).to_set.image _) ?_
+      rintro _ ⟨n, hn, rfl⟩
+      exact div_le_div_of_nonneg_right
+        (by exact_mod_cast Polynomial.natTrailingDegree_le_of_mem_supp n hn) (Nat.cast_nonneg r)
+
+theorem taylorMinimum (P : Polynomial R) (a : R) (r : ℕ) :
+    sInf ((fun n : ℕ ↦ (n : ℝ) / r) '' ((Polynomial.taylor a P).support : Set ℕ)) =
+      (P.rootMultiplicity a : ℝ) / r := by
+  rw [minimumSupport, Polynomial.taylor_apply, Polynomial.rootMultiplicity_eq_natTrailingDegree]
+
+theorem existingReaim (P : Polynomial R) (a : R) :
+    (P.comp (Polynomial.X + Polynomial.C a)).natTrailingDegree = P.rootMultiplicity a :=
+  Polynomial.rootMultiplicity_eq_natTrailingDegree.symm
+
+#print axioms minimumSupport
+#print axioms taylorMinimum
+#print axioms existingReaim
+end IndexUniqueMathlib151
