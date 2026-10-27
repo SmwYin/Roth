@@ -1,0 +1,8 @@
+/-- `Δ_d P = 0` as soon as `d j` exceeds the degree of `P` in some variable `j`.
+
+Source: §6, proof of Lemma 9. -/
+theorem hasseDeriv_eq_zero_of_degreeOf_lt {j : σ} {d : σ →₀ ℕ} {P : MvPolynomial σ R}
+    (h : degreeOf j P < d j) : hasseDeriv d P = 0 := by
+  ext e
+  simp [coeff_hasseDeriv, notMem_support_iff.1
+    (notMem_support_of_degreeOf_lt j (s := e + d) (h.trans_le (by simp)))]

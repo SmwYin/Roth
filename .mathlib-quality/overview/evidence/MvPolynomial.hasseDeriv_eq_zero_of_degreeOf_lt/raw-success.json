@@ -1,0 +1,120 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MvPolynomial.PDeriv\nimport Mathlib.Algebra.Polynomial.HasseDeriv\nimport Mathlib.Data.Nat.Choose.Bounds\n\n/-! Persistent mathlib-only assessment session control. -/\n#check_failure MvPolynomial.hasseDeriv\n#check Finsupp.lsum_apply\n#check Finsupp.lsum_single\n\n#check_failure MvPolynomial.coeff_hasseDeriv\n#check_failure MvPolynomial.hasseDeriv_hasseDeriv\n#check_failure MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt\nexample (P : Prop) (h : P) : P := by exact?\n\n/-! Isolated iterativity assessment: raw coefficient and cocycle witnesses, no project import. -/\nopen MvPolynomial\nnamespace CoeffAssessment\nvariable {σ R : Type*} [CommSemiring R]\nnoncomputable def delta (d : σ →₀ ℕ) : MvPolynomial σ R →ₗ[R] MvPolynomial σ R :=\n  Finsupp.lsum R (fun k : σ →₀ ℕ ↦\n    (monomial (k - d)).comp (LinearMap.lsmul R R ((d.prod (fun j ↦ (k j).choose) : ℕ) : R))) ∘ₗ\n      (AddMonoidAlgebra.coeffLinearEquiv R).toLinearMap\n\n-- Coefficient formula is independently proved below.\ntheorem independent (d e : σ →₀ ℕ) (P : MvPolynomial σ R) :\n    (delta d P).coeff e = ((d.prod (fun j ↦ ((e + d) j).choose) : ℕ) : R) * P.coeff (e + d) := by\n  classical\n  have hz (k : σ →₀ ℕ) : d.prod (fun j ↦ (k j).choose) = 0 ↔ ¬d ≤ k := by\n    simp [Finsupp.prod, Finset.prod_eq_zero_iff, Nat.choose_eq_zero_iff, Finsupp.le_iff,\n      not_forall]\n  induction P using MvPolynomial.induction_on' with\n  | monomial k a =>\n    rw [show delta d (monomial k a) =\n      monomial (k - d) (((d.prod (fun j ↦ (k j).choose) : ℕ) : R) * a) by simp [delta],\n      coeff_monomial, coeff_monomial]\n    by_cases hk : k = e + d\n    · simp [hk]\n    by_cases hdk : d ≤ k\n    · simp [hk, tsub_eq_iff_eq_add_of_le hdk]\n    · simp [hk, (hz k).2 hdk]\n  | add p q hp hq => simp [hp, hq, mul_add]\n\n\n#print axioms independent\nsection\nvariable {S : Type*} [Semiring S]\n#check_failure MvPolynomial σ S\nend\nend CoeffAssessment\n\nnamespace RawHasseZeroDegree\nopen MvPolynomial\nvariable {σ R : Type*} [CommSemiring R]\ntheorem replay {j : σ} {d : σ →₀ ℕ} {P : MvPolynomial σ R}\n    (h : degreeOf j P < d j) : CoeffAssessment.delta d P = 0 := by\n  apply MvPolynomial.ext\n  intro e\n  simp [CoeffAssessment.independent, notMem_support_iff.1\n    (notMem_support_of_degreeOf_lt j (s := e + d) (h.trans_le (by simp)))]\n#print axioms replay\n#check @Polynomial.hasseDeriv_eq_zero_of_lt_natDegree\nend RawHasseZeroDegree\n"
+  },
+  "elapsed_ms": 1093,
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown constant `MvPolynomial.hasseDeriv`\",\n      \"line\": 6,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Finsupp.lsum_apply.{u_1, u_2, u_3, u_4, u_5, u_6} {α : Type u_1} {M : Type u_2} {N : Type u_3} {R : Type u_4}\\n  {R₂ : Type u_5} (S : Type u_6) [Semiring R] [Semiring R₂] [Semiring S] [AddCommMonoid M] [Module R M]\\n  [AddCommMonoid N] [Module R₂ N] {σ : R →+* R₂} [Module S N] [SMulCommClass R₂ S N] (f : α → M →ₛₗ[σ] N) (l : α →₀ M) :\\n  ((Finsupp.lsum S) f) l = l.sum fun b ↦ ⇑(f b)\",\n      \"line\": 7,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Finsupp.lsum_single.{u_1, u_2, u_3, u_4, u_5, u_6} {α : Type u_1} {M : Type u_2} {N : Type u_3} {R : Type u_4}\\n  {R₂ : Type u_5} (S : Type u_6) [Semiring R] [Semiring R₂] [Semiring S] [AddCommMonoid M] [Module R M]\\n  [AddCommMonoid N] [Module R₂ N] {σ : R →+* R₂} [Module S N] [SMulCommClass R₂ S N] (f : α → M →ₛₗ[σ] N) (i : α)\\n  (m : M) : ((Finsupp.lsum S) f) (Finsupp.single i m) = (f i) m\",\n      \"line\": 8,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown constant `MvPolynomial.coeff_hasseDeriv`\",\n      \"line\": 10,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown constant `MvPolynomial.hasseDeriv_hasseDeriv`\",\n      \"line\": 11,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown constant `MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt`\",\n      \"line\": 12,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Try this:\\n  [apply] exact ((fun a ↦ h) ∘ fun a ↦ P) P\",\n      \"line\": 13,\n      \"column\": 38,\n      \"lean_tags\": null,\n      \"category\": \"suggestion\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'CoeffAssessment.independent' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 44,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"failed to synthesize instance of type class\\n  CommSemiring S\\n\\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.\",\n      \"line\": 47,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'RawHasseZeroDegree.replay' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 60,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.hasseDeriv_eq_zero_of_lt_natDegree : ∀ {R : Type u_3} [inst : Semiring R] (p : Polynomial R) (n : ℕ),\\n  p.natDegree < n → (Polynomial.hasseDeriv n) p = 0\",\n      \"line\": 61,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown constant `MvPolynomial.hasseDeriv`",
+          "line": 6,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Finsupp.lsum_apply.{u_1, u_2, u_3, u_4, u_5, u_6} {α : Type u_1} {M : Type u_2} {N : Type u_3} {R : Type u_4}\n  {R₂ : Type u_5} (S : Type u_6) [Semiring R] [Semiring R₂] [Semiring S] [AddCommMonoid M] [Module R M]\n  [AddCommMonoid N] [Module R₂ N] {σ : R →+* R₂} [Module S N] [SMulCommClass R₂ S N] (f : α → M →ₛₗ[σ] N) (l : α →₀ M) :\n  ((Finsupp.lsum S) f) l = l.sum fun b ↦ ⇑(f b)",
+          "line": 7,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Finsupp.lsum_single.{u_1, u_2, u_3, u_4, u_5, u_6} {α : Type u_1} {M : Type u_2} {N : Type u_3} {R : Type u_4}\n  {R₂ : Type u_5} (S : Type u_6) [Semiring R] [Semiring R₂] [Semiring S] [AddCommMonoid M] [Module R M]\n  [AddCommMonoid N] [Module R₂ N] {σ : R →+* R₂} [Module S N] [SMulCommClass R₂ S N] (f : α → M →ₛₗ[σ] N) (i : α)\n  (m : M) : ((Finsupp.lsum S) f) (Finsupp.single i m) = (f i) m",
+          "line": 8,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown constant `MvPolynomial.coeff_hasseDeriv`",
+          "line": 10,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown constant `MvPolynomial.hasseDeriv_hasseDeriv`",
+          "line": 11,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown constant `MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt`",
+          "line": 12,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Try this:\n  [apply] exact ((fun a ↦ h) ∘ fun a ↦ P) P",
+          "line": 13,
+          "column": 38,
+          "lean_tags": null,
+          "category": "suggestion",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'CoeffAssessment.independent' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 44,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "failed to synthesize instance of type class\n  CommSemiring S\n\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.",
+          "line": 47,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'RawHasseZeroDegree.replay' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 60,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.hasseDeriv_eq_zero_of_lt_natDegree : ∀ {R : Type u_3} [inst : Semiring R] (p : Polynomial R) (n : ℕ),\n  p.natDegree < n → (Polynomial.hasseDeriv n) p = 0",
+          "line": 61,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  }
+}

@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 18/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 19/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 18; remaining: 275.
-- Verdicts: 4 NO-composable-from-mathlib, 8 YES-add-as-is, 0 YES-but-generalise-first, 0 NO-mathlib-has-it, 4 BORDERLINE-needs-human, 2 SKIP.
+- Completed applicable assessments: 19; remaining: 274.
+- Verdicts: 4 NO-composable-from-mathlib, 9 YES-add-as-is, 0 YES-but-generalise-first, 0 NO-mathlib-has-it, 4 BORDERLINE-needs-human, 2 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -224,6 +224,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: Five invocations, CoeffNorm253 and MainLemma465/467/491/504; shared arbitrary-r transitivity checked, not whole downstream modules rebuilt.
 - Verdict: YES-add-as-is; [complete report](.mathlib-quality/overview/mathlibable/MvPolynomial.degreeOf_hasseDeriv_le.md).
 
+### Completed: `MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt`
+
+- Type: `theorem: coordinate degree below multi-index implies multivariate Hasse derivative zero`
+- What: If degreeOf j P < d j for any coordinate j, Δ_dP=0.
+- How: Each derivative coefficient comes from exponent e+d, excluded from input support by the strict degree bound.
+- Hypotheses: arbitrary σ,R with CommSemiring R, j:σ,d:σ→₀ℕ,P arbitrary, degreeOf j P < d j
+- Project dependencies: MvPolynomial.hasseDeriv, MvPolynomial.coeff_hasseDeriv
+- Caller summary: Three explicit invocations Taylor173/207, MainLemma425. Full degreeOf_taylor_le replay and generic outside-box evalzero/evalnonzero-degree-bound fragments verified.
+- Verdict: YES-add-as-is; [complete report](.mathlib-quality/overview/mathlibable/MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -286,6 +296,8 @@ Completed `MvPolynomial.pderiv_hasseDeriv`: All five methods on three forms; pin
 
 Completed `MvPolynomial.degreeOf_hasseDeriv_le`: Univariate natDegree_hasseDeriv_le exists at HasseDeriv179, generic degreeOf_le_iff/monomial_le_degreeOf support API at Degrees235/268; no arbitrary-variable bridge established.
 
+Completed `MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt`: Polynomial.hasseDeriv_eq_zero_of_lt_natDegree is univariate analogue; MvPolynomial.notMem_support_of_degreeOf_lt, notMem_support_iff and extensionality are generic blocks. No multivariate normalization supplied by ≤3 existing calls.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -323,6 +335,8 @@ Completed `MvPolynomial.hasseCoeff_mul_succ`: Isolates one-coordinate normalizat
 Completed `MvPolynomial.pderiv_hasseDeriv`: Coordinate case of additive iterativity, extending univariate Hasse composition.
 
 Completed `MvPolynomial.degreeOf_hasseDeriv_le`: Same degree-lowering idea as univariate Hasse bound; generic support-shift helper overlaps degreeOf support-sup infrastructure. Not a literal duplicate.
+
+Completed `MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt`: Same support-vanishing idea as univariate theorem; not a literal duplicate.
 
 ## Part 5: Generalization opportunities
 
@@ -365,6 +379,8 @@ Completed `MvPolynomial.pderiv_hasseDeriv`: MAXIMALLY GENERAL for canonical pinn
 
 Completed `MvPolynomial.degreeOf_hasseDeriv_le`: All arguments already broad within parent CommSemiring interface; conclusion not maximally strong. Same-argument degree-minus-order bound verified and strictly improves X³ witness.
 
+Completed `MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt`: MAXIMALLY GENERAL fixed CommSemiring parent interface; strictness essential. Stronger support/coefficient zero criteria are companions; existential j wrapper syntactically equivalent.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -403,6 +419,8 @@ Completed `MvPolynomial.hasseCoeff_mul_succ`: Existing finite-product and choose
 Completed `MvPolynomial.pderiv_hasseDeriv`: Canonical multivariate Hasse compatibility with ordinary pderiv in arbitrary characteristic.
 
 Completed `MvPolynomial.degreeOf_hasseDeriv_le`: Coordinate-degree/degree-box preservation for canonical multivariate Hasse derivative, with sharp primary companion matching univariate degree-minus-order convention.
+
+Completed `MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt`: Coordinate-degree annihilation for canonical multivariate Hasse derivative; support and exact weighted-coefficient criteria useful companions.
 
 ## Part 7: Junk / removable
 
@@ -445,6 +463,8 @@ Completed `MvPolynomial.pderiv_hasseDeriv`: No: factorial iteration and generali
 
 Completed `MvPolynomial.degreeOf_hasseDeriv_le`: No: five direct invocations in two files, canonical common API.
 
+Completed `MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt`: No: reused in translation degree, finite Taylor expansion and index box restriction.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -467,6 +487,7 @@ Completed `MvPolynomial.degreeOf_hasseDeriv_le`: No: five direct invocations in 
 | 16 | `MvPolynomial.hasseCoeff_mul_succ` | SKIP | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.hasseCoeff_mul_succ.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.hasseCoeff_mul_succ/root-acceptance.json) |
 | 17 | `MvPolynomial.pderiv_hasseDeriv` | YES-add-as-is | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.pderiv_hasseDeriv.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.pderiv_hasseDeriv/root-acceptance.json) |
 | 18 | `MvPolynomial.degreeOf_hasseDeriv_le` | YES-add-as-is | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.degreeOf_hasseDeriv_le.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.degreeOf_hasseDeriv_le/root-acceptance.json) |
+| 19 | `MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt` | YES-add-as-is | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -502,11 +523,13 @@ Completed `MvPolynomial.pderiv_hasseDeriv` action: YES-add-as-is grouped with ca
 
 Completed `MvPolynomial.degreeOf_hasseDeriv_le` action: YES-add-as-is weak corollary with sharp primary companion and coherent parent/API PR; run generalise and cleanup; no production change authorized by this assessment.
 
+Completed `MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt` action: YES-add-as-is with parent operator and coefficient API, optional support/exact coefficient criteria, generalise and cleanup before upstream PR.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt` next. Supporting identities receive their own applicable checks.
+   `MvPolynomial.hasseDeriv_monomial_mul` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
