@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-27
 
-- Declarations completed: **257/293**
-- Next declaration: **#258 `Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux`** (Roth/MainLemma.lean:515)
+- Declarations completed: **258/293**
+- Next declaration: **#259 `Roth.exists_mem_RSet_le_index_aux`** (Roth/MainLemma.lean:550)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -276,10 +276,10 @@ Last regenerated: 2026-10-27
 | 255 | `Roth.abs_eval_iterated_hasseDeriv_lt_aux` | Roth/MainLemma.lean:459 | SKIP | [report](mathlibable/Roth.abs_eval_iterated_hasseDeriv_lt_aux.md) |
 | 256 | `Roth.exists_hasseDeriv_index_eval_bound_aux` | Roth/MainLemma.lean:477 | SKIP | [report](mathlibable/Roth.exists_hasseDeriv_index_eval_bound_aux.md) |
 | 257 | `Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux` | Roth/MainLemma.lean:497 | SKIP | [report](mathlibable/Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux.md) |
+| 258 | `Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux` | Roth/MainLemma.lean:515 | SKIP | [report](mathlibable/Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux.md) |
 
 ## Remaining declarations (in processing order)
 
-- #258 `Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux` (Roth/MainLemma.lean:515, private lemma)
 - #259 `Roth.exists_mem_RSet_le_index_aux` (Roth/MainLemma.lean:550, private lemma)
 - #260 `Roth.mul_card_filter_weight_le_aux` (Roth/MainLemma.lean:569, private lemma)
 - #261 `Roth.exists_mem_RSet_le_index_of_rpow_bound_aux` (Roth/MainLemma.lean:581, private lemma)
