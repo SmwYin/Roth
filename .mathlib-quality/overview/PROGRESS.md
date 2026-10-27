@@ -9,10 +9,10 @@ Restart protocol: read this file, then continue with **Next declaration**.  A
 declaration is complete only when its report passes
 `python3 .mathlib-quality/overview/scripts/assemble.py check <Decl>`.
 
-Last regenerated: 2026-10-26
+Last regenerated: 2026-10-27
 
-- Declarations completed: **170/293**
-- Next declaration: **#171 `Roth.exists_nat_smul_eq_map`** (Roth/Separation.lean:380)
+- Declarations completed: **171/293**
+- Next declaration: **#172 `Roth.exists_primitive_smul_eq`** (Roth/Separation.lean:406)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -189,10 +189,10 @@ Last regenerated: 2026-10-26
 | 168 | `Roth.exists_separated_representation` | Roth/Separation.lean:325 | BORDERLINE-needs-human | [report](mathlibable/Roth.exists_separated_representation.md) |
 | 169 | `Roth.det_hasseDeriv_separated` | Roth/Separation.lean:351 | YES-but-generalise-first | [report](mathlibable/Roth.det_hasseDeriv_separated.md) |
 | 170 | `Roth.exists_sum_mul_eq_gcd` | Roth/Separation.lean:374 | NO-mathlib-has-it | [report](mathlibable/Roth.exists_sum_mul_eq_gcd.md) |
+| 171 | `Roth.exists_nat_smul_eq_map` | Roth/Separation.lean:380 | YES-but-generalise-first | [report](mathlibable/Roth.exists_nat_smul_eq_map.md) |
 
 ## Remaining declarations (in processing order)
 
-- #171 `Roth.exists_nat_smul_eq_map` (Roth/Separation.lean:380, public theorem)
 - #172 `Roth.exists_primitive_smul_eq` (Roth/Separation.lean:406, public theorem)
 - #173 `Roth.exists_int_eq_of_gcd_eq_one` (Roth/Separation.lean:443, public theorem)
 - #174 `Roth.rescale_separated_factor_aux` (Roth/Separation.lean:457, private lemma)
