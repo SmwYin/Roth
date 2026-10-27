@@ -1,0 +1,24 @@
+namespace KroneckerAssessment
+open MvPolynomial
+noncomputable def general {R : Type*} [CommSemiring R] {σ : Type*}
+    (e : σ → ℕ) (k : ℕ) : MvPolynomial σ R →ₐ[R] Polynomial R :=
+  aeval fun j ↦ Polynomial.X ^ k ^ e j
+noncomputable def weighted {R : Type*} [CommSemiring R] {σ : Type*}
+    (w : σ → ℕ) : MvPolynomial σ R →ₐ[R] Polynomial R :=
+  aeval fun j ↦ Polynomial.X ^ w j
+variable {K : Type*} [Field K] {σ : Type*} [Fintype σ]
+theorem direct_eq (k : ℕ) : Roth.kronecker (K := K) (σ := σ) k =
+    MvPolynomial.aeval (fun j ↦ Polynomial.X ^ k ^ (Fintype.equivFin σ j : ℕ)) := rfl
+theorem general_eq (k : ℕ) : Roth.kronecker (K := K) (σ := σ) k =
+    general (fun j ↦ (Fintype.equivFin σ j : ℕ)) k := rfl
+theorem weighted_eq (k : ℕ) : Roth.kronecker (K := K) (σ := σ) k =
+    weighted (fun j ↦ k ^ (Fintype.equivFin σ j : ℕ)) := rfl
+#check @MvPolynomial.aeval
+#check @MvPolynomial.aeval_monomial
+#check @MvPolynomial.eval₂Hom
+#check @Fintype.equivFin
+#print axioms direct_eq
+#print axioms general_eq
+#print axioms weighted_eq
+#check general (R := ℕ) (σ := ℕ) id
+end KroneckerAssessment

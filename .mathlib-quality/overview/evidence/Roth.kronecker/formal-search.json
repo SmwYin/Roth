@@ -1,0 +1,725 @@
+[
+  {
+    "method": "Finder",
+    "form": "current",
+    "request": {
+      "query": "Kronecker substitution multivariate polynomial to univariate powers"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"MvPolynomial.finSuccEquiv_apply\",\n      \"informal_name\": \"Algebra Equivalence for Multivariate Polynomials with Incremented Index Type\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (R : Type u) [inst : CommSemiring R] (n : ℕ) (p : MvPolynomial (Fin (n + 1)) R),\\n  (MvPolynomial.finSuccEquiv R n) p =\\n    (MvPolynomial.eval₂Hom (Polynomial.C.comp MvPolynomial.C) fun i =>\\n        Fin.cases Polynomial.X (fun k => Polynomial.C (MvPolynomial.X k)) i)\\n      p\",\n      \"informal_description\": \"There is an algebra equivalence between the ring of multivariate polynomials over $ \\\\text{Fin}(n+1) $ with coefficients in a commutative semiring $ R $, and the polynomial ring in one variable whose coefficients are multivariate polynomials over $ R $ with variables indexed by $ \\\\text{Fin}(n) $. This equivalence is constructed via the bijection $ \\\\text{Fin}(n+1) \\\\simeq \\\\text{Option}(\\\\text{Fin}(n)) $, mapping the $ \\\\text{none} $ case to the outer polynomial indeterminate and $ \\\\text{some } k $ cases to inner variables. The equivalence preserves addition, multiplication, and scalar multiplication by elements of $ R $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.coe_expand\",\n      \"informal_name\": \"Expansion Homomorphism for Multivariate Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_3} [inst : CommSemiring R] (p : ℕ),\\n  ⇑(MvPolynomial.expand p) = MvPolynomial.eval₂ MvPolynomial.C ((fun s => MvPolynomial.X s) ^ p)\",\n      \"informal_description\": \"The algebra homomorphism over $ R $ that substitutes each variable $ X_i $ in the multivariate polynomial ring $ R[\\\\sigma] $ with $ X_i^p $, effectively expanding the polynomial by raising each variable to the $ p $-th power.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Expand\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.bind₁_monomial\",\n      \"informal_name\": \"bind₁ Applied to a Monomial Yields Product of Substitutions\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_3} [inst : CommSemiring R] (f : σ → MvPolynomial τ R) (d : σ →₀ ℕ) (r : R),\\n  (MvPolynomial.bind₁ f) ((MvPolynomial.monomial d) r) = MvPolynomial.C r * ∏ i ∈ d.support, f i ^ d i\",\n      \"informal_description\": \"For any substitution function $ f : \\\\sigma \\\\to R[\\\\tau] $, finite exponent vector $ d : \\\\sigma \\\\to_0 \\\\mathbb{N} $, and coefficient $ r \\\\in R $, applying the variable substitution homomorphism $ \\\\text{bind}_1 $ to the monomial $ \\\\text{monomial}(d, r) $ results in the product of the constant polynomial $ C(r) $ and the product over $ f(i)^{d(i)} $ for all $ i $ in the support of $ d $. Formally, $ \\\\text{bind}_1(f)(\\\\text{monomial}(d, r)) = C(r) \\\\cdot \\\\prod_{i \\\\in \\\\text{support}(d)} f(i)^{d(i)} $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Monad\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.expand\",\n      \"informal_name\": \"Expansion Homomorphism for Multivariate Polynomials\",\n      \"kind\": \"definition\",\n      \"type\": \"{σ : Type u_1} → {R : Type u_3} → [inst : CommSemiring R] → ℕ → MvPolynomial σ R →ₐ[R] MvPolynomial σ R\",\n      \"informal_description\": \"The algebra homomorphism over $ R $ that substitutes each variable $ X_i $ in the multivariate polynomial ring $ R[\\\\sigma] $ with $ X_i^p $, effectively expanding the polynomial by raising each variable to the $ p $-th power. This is defined using the variable substitution homomorphism $ \\\\text{bind}_1 $, mapping $ X_i $ to $ X_i^p $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Expand\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.join₂\",\n      \"informal_name\": \"Join Homomorphism for Multivariate Polynomials\",\n      \"kind\": \"definition\",\n      \"type\": \"{σ : Type u_1} → {R : Type u_3} → [inst : CommSemiring R] → MvPolynomial σ (MvPolynomial σ R) →+* MvPolynomial σ R\",\n      \"informal_description\": \"The ring homomorphism that flattens a multivariate polynomial in variables $\\\\sigma$ with coefficients in another multivariate polynomial ring $R[\\\\sigma]$ by substituting the inner variables with the outer variables. Specifically, it evaluates each polynomial in $R[\\\\sigma][\\\\sigma]$ by interpreting the coefficients (which are polynomials in $\\\\sigma$) using the identity map on coefficients and variables, resulting in a single polynomial in $R[\\\\sigma]$.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Monad\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "MvPolynomial.finSuccEquiv_apply",
+            "informal_name": "Algebra Equivalence for Multivariate Polynomials with Incremented Index Type",
+            "kind": "theorem",
+            "type": "∀ (R : Type u) [inst : CommSemiring R] (n : ℕ) (p : MvPolynomial (Fin (n + 1)) R),\n  (MvPolynomial.finSuccEquiv R n) p =\n    (MvPolynomial.eval₂Hom (Polynomial.C.comp MvPolynomial.C) fun i =>\n        Fin.cases Polynomial.X (fun k => Polynomial.C (MvPolynomial.X k)) i)\n      p",
+            "informal_description": "There is an algebra equivalence between the ring of multivariate polynomials over $ \\text{Fin}(n+1) $ with coefficients in a commutative semiring $ R $, and the polynomial ring in one variable whose coefficients are multivariate polynomials over $ R $ with variables indexed by $ \\text{Fin}(n) $. This equivalence is constructed via the bijection $ \\text{Fin}(n+1) \\simeq \\text{Option}(\\text{Fin}(n)) $, mapping the $ \\text{none} $ case to the outer polynomial indeterminate and $ \\text{some } k $ cases to inner variables. The equivalence preserves addition, multiplication, and scalar multiplication by elements of $ R $.",
+            "path": "Mathlib.Algebra.MvPolynomial.Equiv"
+          },
+          {
+            "formal_name": "MvPolynomial.coe_expand",
+            "informal_name": "Expansion Homomorphism for Multivariate Polynomials",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {R : Type u_3} [inst : CommSemiring R] (p : ℕ),\n  ⇑(MvPolynomial.expand p) = MvPolynomial.eval₂ MvPolynomial.C ((fun s => MvPolynomial.X s) ^ p)",
+            "informal_description": "The algebra homomorphism over $ R $ that substitutes each variable $ X_i $ in the multivariate polynomial ring $ R[\\sigma] $ with $ X_i^p $, effectively expanding the polynomial by raising each variable to the $ p $-th power.",
+            "path": "Mathlib.Algebra.MvPolynomial.Expand"
+          },
+          {
+            "formal_name": "MvPolynomial.bind₁_monomial",
+            "informal_name": "bind₁ Applied to a Monomial Yields Product of Substitutions",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_3} [inst : CommSemiring R] (f : σ → MvPolynomial τ R) (d : σ →₀ ℕ) (r : R),\n  (MvPolynomial.bind₁ f) ((MvPolynomial.monomial d) r) = MvPolynomial.C r * ∏ i ∈ d.support, f i ^ d i",
+            "informal_description": "For any substitution function $ f : \\sigma \\to R[\\tau] $, finite exponent vector $ d : \\sigma \\to_0 \\mathbb{N} $, and coefficient $ r \\in R $, applying the variable substitution homomorphism $ \\text{bind}_1 $ to the monomial $ \\text{monomial}(d, r) $ results in the product of the constant polynomial $ C(r) $ and the product over $ f(i)^{d(i)} $ for all $ i $ in the support of $ d $. Formally, $ \\text{bind}_1(f)(\\text{monomial}(d, r)) = C(r) \\cdot \\prod_{i \\in \\text{support}(d)} f(i)^{d(i)} $.",
+            "path": "Mathlib.Algebra.MvPolynomial.Monad"
+          },
+          {
+            "formal_name": "MvPolynomial.expand",
+            "informal_name": "Expansion Homomorphism for Multivariate Polynomials",
+            "kind": "definition",
+            "type": "{σ : Type u_1} → {R : Type u_3} → [inst : CommSemiring R] → ℕ → MvPolynomial σ R →ₐ[R] MvPolynomial σ R",
+            "informal_description": "The algebra homomorphism over $ R $ that substitutes each variable $ X_i $ in the multivariate polynomial ring $ R[\\sigma] $ with $ X_i^p $, effectively expanding the polynomial by raising each variable to the $ p $-th power. This is defined using the variable substitution homomorphism $ \\text{bind}_1 $, mapping $ X_i $ to $ X_i^p $.",
+            "path": "Mathlib.Algebra.MvPolynomial.Expand"
+          },
+          {
+            "formal_name": "MvPolynomial.join₂",
+            "informal_name": "Join Homomorphism for Multivariate Polynomials",
+            "kind": "definition",
+            "type": "{σ : Type u_1} → {R : Type u_3} → [inst : CommSemiring R] → MvPolynomial σ (MvPolynomial σ R) →+* MvPolynomial σ R",
+            "informal_description": "The ring homomorphism that flattens a multivariate polynomial in variables $\\sigma$ with coefficients in another multivariate polynomial ring $R[\\sigma]$ by substituting the inner variables with the outer variables. Specifically, it evaluates each polynomial in $R[\\sigma][\\sigma]$ by interpreting the coefficients (which are polynomials in $\\sigma$) using the identity map on coefficients and variables, resulting in a single polynomial in $R[\\sigma]$.",
+            "path": "Mathlib.Algebra.MvPolynomial.Monad"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "Loogle",
+    "form": "current",
+    "request": {
+      "query": "\"kronecker\""
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Kronecker.«term_⊗ₖ_»\",\n      \"type\": \" : Lean.TrailingParserDescr\",\n      \"module\": \"Mathlib.LinearAlgebra.Matrix.Kronecker\"\n    },\n    {\n      \"name\": \"Kronecker.«term_⊗ₖₜ[_]_»\",\n      \"type\": \" : Lean.TrailingParserDescr\",\n      \"module\": \"Mathlib.LinearAlgebra.Matrix.Kronecker\"\n    },\n    {\n      \"name\": \"Kronecker.«term_⊗ₖₜ_»\",\n      \"type\": \" : Lean.TrailingParserDescr\",\n      \"module\": \"Mathlib.LinearAlgebra.Matrix.Kronecker\"\n    },\n    {\n      \"name\": \"Matrix.kronecker\",\n      \"type\": \" {α : Type u_3} {l : Type u_9} {m : Type u_10} {n : Type u_11} {p : Type u_12} [Mul α] : Matrix l m α → Matrix n p α → Matrix (l × n) (m × p) α\",\n      \"module\": \"Mathlib.LinearAlgebra.Matrix.Kronecker\"\n    },\n    {\n      \"name\": \"Matrix.kroneckerMap\",\n      \"type\": \" {α : Type u_3} {β : Type u_5} {γ : Type u_7} {l : Type u_9} {m : Type u_10} {n : Type u_11} {p : Type u_12} (f : α → β → γ) (A : Matrix l m α) (B : Matrix n p β) : Matrix (l × n) (m × p) γ\",\n      \"module\": \"Mathlib.LinearAlgebra.Matrix.Kronecker\"\n    },\n    {\n      \"name\": \"Matrix.kroneckerTMul\",\n      \"type\": \" (R : Type u_1) {α : Type u_3} {β : Type u_5} {l : Type u_9} {m : Type u_10} {n : Type u_11} {p : Type u_12} [CommSemiring R] [AddCommMonoid α] [AddCommMonoid β] [Module R α] [Module R β] : Matrix l m α → Matrix n p β → Matrix (l × n) (m × p) (TensorProduct R α β)\",\n      \"module\": \"Mathlib.LinearAlgebra.Matrix.Kronecker\"\n    },\n    {\n      \"name\": \"Matrix.kroneckerMap_apply\",\n      \"type\": \" {α : Type u_3} {β : Type u_5} {γ : Type u_7} {l : Type u_9} {m : Type u_10} {n : Type u_11} {p : Type u_12} (f : α → β → γ) (A : Matrix l m α) (B : Matrix n p β) (i : l × n) (j : m × p) : Matrix.kroneckerMap f A B i j = f (A i.1 j.1) (B i.2 j.2)\",\n      \"module\": \"Mathlib.LinearAlgebra.Matrix.Kronecker\"\n    },\n    {\n      \"name\": \"Matrix.kroneckerMap_map_left\",\n      \"type\": \" {α : Type u_3} {α' : Type u_4} {β : Type u_5} {γ : Type u_7} {l : Type u_9} {m : Type u_10} {n : Type u_11} {p : Type u_12} (f : α' → β → γ) (g : α → α') (A : Matrix l m α) (B : Matrix n p β) : Matrix.kroneckerMap f (A.map g) B = Matrix.kroneckerMap (fun a b => f (g a) b) A B\",\n      \"module\": \"Mathlib.LinearAlgebra.Matrix.Kronecker\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Kronecker.«term_⊗ₖ_»",
+            "type": " : Lean.TrailingParserDescr",
+            "module": "Mathlib.LinearAlgebra.Matrix.Kronecker"
+          },
+          {
+            "name": "Kronecker.«term_⊗ₖₜ[_]_»",
+            "type": " : Lean.TrailingParserDescr",
+            "module": "Mathlib.LinearAlgebra.Matrix.Kronecker"
+          },
+          {
+            "name": "Kronecker.«term_⊗ₖₜ_»",
+            "type": " : Lean.TrailingParserDescr",
+            "module": "Mathlib.LinearAlgebra.Matrix.Kronecker"
+          },
+          {
+            "name": "Matrix.kronecker",
+            "type": " {α : Type u_3} {l : Type u_9} {m : Type u_10} {n : Type u_11} {p : Type u_12} [Mul α] : Matrix l m α → Matrix n p α → Matrix (l × n) (m × p) α",
+            "module": "Mathlib.LinearAlgebra.Matrix.Kronecker"
+          },
+          {
+            "name": "Matrix.kroneckerMap",
+            "type": " {α : Type u_3} {β : Type u_5} {γ : Type u_7} {l : Type u_9} {m : Type u_10} {n : Type u_11} {p : Type u_12} (f : α → β → γ) (A : Matrix l m α) (B : Matrix n p β) : Matrix (l × n) (m × p) γ",
+            "module": "Mathlib.LinearAlgebra.Matrix.Kronecker"
+          },
+          {
+            "name": "Matrix.kroneckerTMul",
+            "type": " (R : Type u_1) {α : Type u_3} {β : Type u_5} {l : Type u_9} {m : Type u_10} {n : Type u_11} {p : Type u_12} [CommSemiring R] [AddCommMonoid α] [AddCommMonoid β] [Module R α] [Module R β] : Matrix l m α → Matrix n p β → Matrix (l × n) (m × p) (TensorProduct R α β)",
+            "module": "Mathlib.LinearAlgebra.Matrix.Kronecker"
+          },
+          {
+            "name": "Matrix.kroneckerMap_apply",
+            "type": " {α : Type u_3} {β : Type u_5} {γ : Type u_7} {l : Type u_9} {m : Type u_10} {n : Type u_11} {p : Type u_12} (f : α → β → γ) (A : Matrix l m α) (B : Matrix n p β) (i : l × n) (j : m × p) : Matrix.kroneckerMap f A B i j = f (A i.1 j.1) (B i.2 j.2)",
+            "module": "Mathlib.LinearAlgebra.Matrix.Kronecker"
+          },
+          {
+            "name": "Matrix.kroneckerMap_map_left",
+            "type": " {α : Type u_3} {α' : Type u_4} {β : Type u_5} {γ : Type u_7} {l : Type u_9} {m : Type u_10} {n : Type u_11} {p : Type u_12} (f : α' → β → γ) (g : α → α') (A : Matrix l m α) (B : Matrix n p β) : Matrix.kroneckerMap f (A.map g) B = Matrix.kroneckerMap (fun a b => f (g a) b) A B",
+            "module": "Mathlib.LinearAlgebra.Matrix.Kronecker"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "LeanSearch",
+    "form": "current",
+    "request": {
+      "query": "Kronecker substitution multivariate polynomial to univariate powers"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.finSuccEquiv\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Equiv\",\n      \"kind\": \"definition\",\n      \"type\": \"(R : Type u) →\\n  [inst : CommSemiring R] → (n : ℕ) → MvPolynomial (Fin (n + 1)) R ≃ₐ[R] Polynomial (MvPolynomial (Fin n) R)\"\n    },\n    {\n      \"name\": \"MvPowerSeries.subst_monomial\",\n      \"module_name\": \"Mathlib.RingTheory.MvPowerSeries.Substitution\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_3} [inst : CommRing R] {τ : Type u_4} {S : Type u_5} [inst_1 : CommRing S]\\n  [inst_2 : Algebra R S] {a : σ → MvPowerSeries τ S},\\n  MvPowerSeries.HasSubst a →\\n    ∀ (e : σ →₀ ℕ) (r : R),\\n      MvPowerSeries.subst a ((MvPowerSeries.monomial e) r) =\\n        (algebraMap R (MvPowerSeries τ S)) r * e.prod fun s n => a s ^ n\"\n    },\n    {\n      \"name\": \"MvPowerSeries.subst\",\n      \"module_name\": \"Mathlib.RingTheory.MvPowerSeries.Substitution\",\n      \"kind\": \"definition\",\n      \"type\": \"{σ : Type u_1} →\\n  {R : Type u_3} →\\n    [inst : CommRing R] →\\n      {τ : Type u_4} →\\n        {S : Type u_5} →\\n          [inst_1 : CommRing S] → [Algebra R S] → (σ → MvPowerSeries τ S) → MvPowerSeries σ R → MvPowerSeries τ S\"\n    },\n    {\n      \"name\": \"Polynomial.toMvPolynomial\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Equiv\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → {σ : Type u_3} → [inst : CommSemiring R] → σ → Polynomial R →ₐ[R] MvPolynomial σ R\"\n    },\n    {\n      \"name\": \"Poly.map\",\n      \"module_name\": \"Mathlib.NumberTheory.Dioph\",\n      \"kind\": \"definition\",\n      \"type\": \"{α : Type u_3} → {β : Type u_4} → (α → β) → Poly α → Poly β\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.finSuccEquiv",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Equiv",
+            "kind": "definition",
+            "type": "(R : Type u) →\n  [inst : CommSemiring R] → (n : ℕ) → MvPolynomial (Fin (n + 1)) R ≃ₐ[R] Polynomial (MvPolynomial (Fin n) R)"
+          },
+          {
+            "name": "MvPowerSeries.subst_monomial",
+            "module_name": "Mathlib.RingTheory.MvPowerSeries.Substitution",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {R : Type u_3} [inst : CommRing R] {τ : Type u_4} {S : Type u_5} [inst_1 : CommRing S]\n  [inst_2 : Algebra R S] {a : σ → MvPowerSeries τ S},\n  MvPowerSeries.HasSubst a →\n    ∀ (e : σ →₀ ℕ) (r : R),\n      MvPowerSeries.subst a ((MvPowerSeries.monomial e) r) =\n        (algebraMap R (MvPowerSeries τ S)) r * e.prod fun s n => a s ^ n"
+          },
+          {
+            "name": "MvPowerSeries.subst",
+            "module_name": "Mathlib.RingTheory.MvPowerSeries.Substitution",
+            "kind": "definition",
+            "type": "{σ : Type u_1} →\n  {R : Type u_3} →\n    [inst : CommRing R] →\n      {τ : Type u_4} →\n        {S : Type u_5} →\n          [inst_1 : CommRing S] → [Algebra R S] → (σ → MvPowerSeries τ S) → MvPowerSeries σ R → MvPowerSeries τ S"
+          },
+          {
+            "name": "Polynomial.toMvPolynomial",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Equiv",
+            "kind": "definition",
+            "type": "{R : Type u_1} → {σ : Type u_3} → [inst : CommSemiring R] → σ → Polynomial R →ₐ[R] MvPolynomial σ R"
+          },
+          {
+            "name": "Poly.map",
+            "module_name": "Mathlib.NumberTheory.Dioph",
+            "kind": "definition",
+            "type": "{α : Type u_3} → {β : Type u_4} → (α → β) → Poly α → Poly β"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "Local",
+    "form": "current",
+    "request": {
+      "query": "kronecker"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Roth.kronecker\",\n      \"kind\": \"def\",\n      \"file\": \"Roth/GenWronskian.lean\"\n    },\n    {\n      \"name\": \"Matrix.GeneralLinearGroup._root_.Matrix.IsUnit.kronecker\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/GeneralLinearGroup/Defs.lean\"\n    },\n    {\n      \"name\": \"Matrix.GeneralLinearGroup.kronecker\",\n      \"kind\": \"def\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/GeneralLinearGroup/Defs.lean\"\n    },\n    {\n      \"name\": \"Matrix.IsDiag.kronecker\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/IsDiag.lean\"\n    },\n    {\n      \"name\": \"Matrix.IsHadamard.kronecker\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/HadamardMatrix.lean\"\n    },\n    {\n      \"name\": \"Matrix.PosDef.kronecker\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Analysis/Matrix/Order.lean\"\n    },\n    {\n      \"name\": \"Matrix.PosSemidef.kronecker\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Analysis/Matrix/Order.lean\"\n    },\n    {\n      \"name\": \"Matrix.kronecker\",\n      \"kind\": \"def\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/Kronecker.lean\"\n    },\n    {\n      \"name\": \"Roth.kroneckerExp\",\n      \"kind\": \"def\",\n      \"file\": \"Roth/GenWronskian.lean\"\n    },\n    {\n      \"name\": \"Roth.kroneckerExp_injOn\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/GenWronskian.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Roth.kronecker",
+            "kind": "def",
+            "file": "Roth/GenWronskian.lean"
+          },
+          {
+            "name": "Matrix.GeneralLinearGroup._root_.Matrix.IsUnit.kronecker",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/GeneralLinearGroup/Defs.lean"
+          },
+          {
+            "name": "Matrix.GeneralLinearGroup.kronecker",
+            "kind": "def",
+            "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/GeneralLinearGroup/Defs.lean"
+          },
+          {
+            "name": "Matrix.IsDiag.kronecker",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/IsDiag.lean"
+          },
+          {
+            "name": "Matrix.IsHadamard.kronecker",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/HadamardMatrix.lean"
+          },
+          {
+            "name": "Matrix.PosDef.kronecker",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Analysis/Matrix/Order.lean"
+          },
+          {
+            "name": "Matrix.PosSemidef.kronecker",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Analysis/Matrix/Order.lean"
+          },
+          {
+            "name": "Matrix.kronecker",
+            "kind": "def",
+            "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/Kronecker.lean"
+          },
+          {
+            "name": "Roth.kroneckerExp",
+            "kind": "def",
+            "file": "Roth/GenWronskian.lean"
+          },
+          {
+            "name": "Roth.kroneckerExp_injOn",
+            "kind": "theorem",
+            "file": "Roth/GenWronskian.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "Finder",
+    "form": "literature",
+    "request": {
+      "query": "MvPolynomial aeval Polynomial.X powers"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"MvPolynomial.aeval_X_left_apply\",\n      \"informal_name\": \"Identity Evaluation of Multivariate Polynomials Preserves the Polynomial\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] (p : MvPolynomial σ R), (MvPolynomial.aeval MvPolynomial.X) p = p\",\n      \"informal_description\": \"For any polynomial $ p \\\\in R[\\\\sigma] $, evaluating $ p $ using the identity map on variables yields $ p $, i.e., $ \\\\text{aeval}(\\\\text{id})(p) = p $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.eval_X\",\n      \"informal_name\": \"Evaluation of Multivariate Polynomial Variables\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] {f : σ → R} (n : σ),\\n  (MvPolynomial.eval f) (MvPolynomial.X n) = f n\",\n      \"informal_description\": \"For any index $n$ in the type $\\\\sigma$, evaluating the variable polynomial $X_n$ in the multivariate polynomial ring $R[\\\\sigma]$ using the evaluation homomorphism defined by a map $f : \\\\sigma \\\\to R$ yields $f(n)$, i.e., $\\\\text{eval}_f(X_n) = f(n)$.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.aeval_X\",\n      \"informal_name\": \"Evaluation of $ X_s $ via $ \\\\text{aeval}_f $ Equals $ f(s) $\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁]\\n  (f : σ → S₁) (s : σ), (MvPolynomial.aeval f) (MvPolynomial.X s) = f s\",\n      \"informal_description\": \"For any $ s \\\\in \\\\sigma $, evaluating the variable polynomial $ X_s $ in the multivariate polynomial ring $ R[\\\\sigma] $ using the algebra homomorphism $ \\\\text{aeval}_f $ results in $ f(s) $, where $ f : \\\\sigma \\\\to S_1 $ is a given assignment of variables to elements in the target semiring $ S_1 $ equipped with an $ R $-algebra structure.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"formal_name\": \"Polynomial.aeval_X_pow\",\n      \"informal_name\": \"Evaluation of $X^n$ at $x$ equals $x^n$\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {A : Type z} [inst : CommSemiring R] [inst_1 : Semiring A] [inst_2 : Algebra R A] (x : A) {n : ℕ},\\n  (Polynomial.aeval x) (Polynomial.X ^ n) = x ^ n\",\n      \"informal_description\": \"For any natural number $n$, the evaluation of the polynomial $X^n$ (where $X$ is the indeterminate of the polynomial ring $R[X]$) at an element $x$ in an $R$-algebra $A$ is equal to $x^n$, i.e., $\\\\text{aeval}_x(X^n) = x^n$.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.AlgebraMap\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.eval₂_X\",\n      \"informal_name\": \"Evaluation of $X_n$ in Multivariate Polynomial\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] (f : R →+* S₁)\\n  (g : σ → S₁) (n : σ), MvPolynomial.eval₂ f g (MvPolynomial.X n) = g n\",\n      \"informal_description\": \"For any variable $X_n$ in the multivariate polynomial ring, $(X_n).eval₂ f g = g(n)$.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "MvPolynomial.aeval_X_left_apply",
+            "informal_name": "Identity Evaluation of Multivariate Polynomials Preserves the Polynomial",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] (p : MvPolynomial σ R), (MvPolynomial.aeval MvPolynomial.X) p = p",
+            "informal_description": "For any polynomial $ p \\in R[\\sigma] $, evaluating $ p $ using the identity map on variables yields $ p $, i.e., $ \\text{aeval}(\\text{id})(p) = p $.",
+            "path": "Mathlib.Algebra.MvPolynomial.Eval"
+          },
+          {
+            "formal_name": "MvPolynomial.eval_X",
+            "informal_name": "Evaluation of Multivariate Polynomial Variables",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] {f : σ → R} (n : σ),\n  (MvPolynomial.eval f) (MvPolynomial.X n) = f n",
+            "informal_description": "For any index $n$ in the type $\\sigma$, evaluating the variable polynomial $X_n$ in the multivariate polynomial ring $R[\\sigma]$ using the evaluation homomorphism defined by a map $f : \\sigma \\to R$ yields $f(n)$, i.e., $\\text{eval}_f(X_n) = f(n)$.",
+            "path": "Mathlib.Algebra.MvPolynomial.Eval"
+          },
+          {
+            "formal_name": "MvPolynomial.aeval_X",
+            "informal_name": "Evaluation of $ X_s $ via $ \\text{aeval}_f $ Equals $ f(s) $",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁]\n  (f : σ → S₁) (s : σ), (MvPolynomial.aeval f) (MvPolynomial.X s) = f s",
+            "informal_description": "For any $ s \\in \\sigma $, evaluating the variable polynomial $ X_s $ in the multivariate polynomial ring $ R[\\sigma] $ using the algebra homomorphism $ \\text{aeval}_f $ results in $ f(s) $, where $ f : \\sigma \\to S_1 $ is a given assignment of variables to elements in the target semiring $ S_1 $ equipped with an $ R $-algebra structure.",
+            "path": "Mathlib.Algebra.MvPolynomial.Eval"
+          },
+          {
+            "formal_name": "Polynomial.aeval_X_pow",
+            "informal_name": "Evaluation of $X^n$ at $x$ equals $x^n$",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {A : Type z} [inst : CommSemiring R] [inst_1 : Semiring A] [inst_2 : Algebra R A] (x : A) {n : ℕ},\n  (Polynomial.aeval x) (Polynomial.X ^ n) = x ^ n",
+            "informal_description": "For any natural number $n$, the evaluation of the polynomial $X^n$ (where $X$ is the indeterminate of the polynomial ring $R[X]$) at an element $x$ in an $R$-algebra $A$ is equal to $x^n$, i.e., $\\text{aeval}_x(X^n) = x^n$.",
+            "path": "Mathlib.Algebra.Polynomial.AlgebraMap"
+          },
+          {
+            "formal_name": "MvPolynomial.eval₂_X",
+            "informal_name": "Evaluation of $X_n$ in Multivariate Polynomial",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] (f : R →+* S₁)\n  (g : σ → S₁) (n : σ), MvPolynomial.eval₂ f g (MvPolynomial.X n) = g n",
+            "informal_description": "For any variable $X_n$ in the multivariate polynomial ring, $(X_n).eval₂ f g = g(n)$.",
+            "path": "Mathlib.Algebra.MvPolynomial.Eval"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "Loogle",
+    "form": "literature",
+    "request": {
+      "query": "MvPolynomial, Polynomial"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.toMvPolynomial\",\n      \"type\": \" {R : Type u_1} {σ : Type u_3} [CommSemiring R] (i : σ) : Polynomial R →ₐ[R] MvPolynomial σ R\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    },\n    {\n      \"name\": \"MvPolynomial.uniqueAlgEquiv\",\n      \"type\": \" (R : Type u) [CommSemiring R] (σ : Type u_2) [Unique σ] : MvPolynomial σ R ≃ₐ[R] Polynomial R\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    },\n    {\n      \"name\": \"MvPolynomial.optionEquivRight\",\n      \"type\": \" (R : Type u) (S₁ : Type v) [CommSemiring R] : MvPolynomial (Option S₁) R ≃ₐ[R] MvPolynomial S₁ (Polynomial R)\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    },\n    {\n      \"name\": \"MvPolynomial.optionEquivLeft\",\n      \"type\": \" (R : Type u) (S₁ : Type v) [CommSemiring R] : MvPolynomial (Option S₁) R ≃ₐ[R] Polynomial (MvPolynomial S₁ R)\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    },\n    {\n      \"name\": \"MvPolynomial.aeval_comp_toMvPolynomial\",\n      \"type\": \" {R : Type u_1} {S : Type u_2} {σ : Type u_3} [CommSemiring R] [CommSemiring S] [Algebra R S] (f : σ → S) (i : σ) : (MvPolynomial.aeval f).comp (Polynomial.toMvPolynomial i) = Polynomial.aeval (f i)\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    },\n    {\n      \"name\": \"Polynomial.toMvPolynomial_injective\",\n      \"type\": \" {R : Type u_1} {σ : Type u_3} [CommSemiring R] (i : σ) : Function.Injective ⇑(Polynomial.toMvPolynomial i)\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    },\n    {\n      \"name\": \"Polynomial.toMvPolynomial_X\",\n      \"type\": \" {R : Type u_1} {σ : Type u_3} [CommSemiring R] (i : σ) : (Polynomial.toMvPolynomial i) Polynomial.X = MvPolynomial.X i\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    },\n    {\n      \"name\": \"MvPolynomial.uniqueAlgEquiv_apply\",\n      \"type\": \" (R : Type u) [CommSemiring R] (σ : Type u_2) [Unique σ] (p : MvPolynomial σ R) : (MvPolynomial.uniqueAlgEquiv R σ) p = MvPolynomial.eval₂ Polynomial.C (fun x => Polynomial.X) p\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.toMvPolynomial",
+            "type": " {R : Type u_1} {σ : Type u_3} [CommSemiring R] (i : σ) : Polynomial R →ₐ[R] MvPolynomial σ R",
+            "module": "Mathlib.Algebra.MvPolynomial.Equiv"
+          },
+          {
+            "name": "MvPolynomial.uniqueAlgEquiv",
+            "type": " (R : Type u) [CommSemiring R] (σ : Type u_2) [Unique σ] : MvPolynomial σ R ≃ₐ[R] Polynomial R",
+            "module": "Mathlib.Algebra.MvPolynomial.Equiv"
+          },
+          {
+            "name": "MvPolynomial.optionEquivRight",
+            "type": " (R : Type u) (S₁ : Type v) [CommSemiring R] : MvPolynomial (Option S₁) R ≃ₐ[R] MvPolynomial S₁ (Polynomial R)",
+            "module": "Mathlib.Algebra.MvPolynomial.Equiv"
+          },
+          {
+            "name": "MvPolynomial.optionEquivLeft",
+            "type": " (R : Type u) (S₁ : Type v) [CommSemiring R] : MvPolynomial (Option S₁) R ≃ₐ[R] Polynomial (MvPolynomial S₁ R)",
+            "module": "Mathlib.Algebra.MvPolynomial.Equiv"
+          },
+          {
+            "name": "MvPolynomial.aeval_comp_toMvPolynomial",
+            "type": " {R : Type u_1} {S : Type u_2} {σ : Type u_3} [CommSemiring R] [CommSemiring S] [Algebra R S] (f : σ → S) (i : σ) : (MvPolynomial.aeval f).comp (Polynomial.toMvPolynomial i) = Polynomial.aeval (f i)",
+            "module": "Mathlib.Algebra.MvPolynomial.Equiv"
+          },
+          {
+            "name": "Polynomial.toMvPolynomial_injective",
+            "type": " {R : Type u_1} {σ : Type u_3} [CommSemiring R] (i : σ) : Function.Injective ⇑(Polynomial.toMvPolynomial i)",
+            "module": "Mathlib.Algebra.MvPolynomial.Equiv"
+          },
+          {
+            "name": "Polynomial.toMvPolynomial_X",
+            "type": " {R : Type u_1} {σ : Type u_3} [CommSemiring R] (i : σ) : (Polynomial.toMvPolynomial i) Polynomial.X = MvPolynomial.X i",
+            "module": "Mathlib.Algebra.MvPolynomial.Equiv"
+          },
+          {
+            "name": "MvPolynomial.uniqueAlgEquiv_apply",
+            "type": " (R : Type u) [CommSemiring R] (σ : Type u_2) [Unique σ] (p : MvPolynomial σ R) : (MvPolynomial.uniqueAlgEquiv R σ) p = MvPolynomial.eval₂ Polynomial.C (fun x => Polynomial.X) p",
+            "module": "Mathlib.Algebra.MvPolynomial.Equiv"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "LeanSearch",
+    "form": "literature",
+    "request": {
+      "query": "MvPolynomial aeval Polynomial.X powers"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.eval_pow\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Eval\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] {p : MvPolynomial σ R} {f : σ → R} (n : ℕ),\\n  (MvPolynomial.eval f) (p ^ n) = (MvPolynomial.eval f) p ^ n\"\n    },\n    {\n      \"name\": \"Polynomial.aeval\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.AlgebraMap\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} →\\n  {A : Type z} → [inst : CommSemiring R] → [inst_1 : Semiring A] → [inst_2 : Algebra R A] → A → Polynomial R →ₐ[R] A\"\n    },\n    {\n      \"name\": \"MvPolynomial.aeval_def\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Eval\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁]\\n  (f : σ → S₁) (p : MvPolynomial σ R), (MvPolynomial.aeval f) p = MvPolynomial.eval₂ (algebraMap R S₁) f p\"\n    },\n    {\n      \"name\": \"MvPolynomial.eval_X\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Eval\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] {f : σ → R} (n : σ),\\n  (MvPolynomial.eval f) (MvPolynomial.X n) = f n\"\n    },\n    {\n      \"name\": \"Module.AEval.X_pow_smul_of\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Module.AEval\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_2} {A : Type u_3} {M : Type u_1} [inst : CommSemiring R] [inst_1 : Semiring A] (a : A)\\n  [inst_2 : Algebra R A] [inst_3 : AddCommMonoid M] [inst_4 : Module A M] [inst_5 : Module R M]\\n  [inst_6 : IsScalarTower R A M] (m : M) (n : ℕ),\\n  Polynomial.X ^ n • (Module.AEval.of R M a) m = (Module.AEval.of R M a) (a ^ n • m)\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.eval_pow",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Eval",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] {p : MvPolynomial σ R} {f : σ → R} (n : ℕ),\n  (MvPolynomial.eval f) (p ^ n) = (MvPolynomial.eval f) p ^ n"
+          },
+          {
+            "name": "Polynomial.aeval",
+            "module_name": "Mathlib.Algebra.Polynomial.AlgebraMap",
+            "kind": "definition",
+            "type": "{R : Type u} →\n  {A : Type z} → [inst : CommSemiring R] → [inst_1 : Semiring A] → [inst_2 : Algebra R A] → A → Polynomial R →ₐ[R] A"
+          },
+          {
+            "name": "MvPolynomial.aeval_def",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Eval",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁]\n  (f : σ → S₁) (p : MvPolynomial σ R), (MvPolynomial.aeval f) p = MvPolynomial.eval₂ (algebraMap R S₁) f p"
+          },
+          {
+            "name": "MvPolynomial.eval_X",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Eval",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] {f : σ → R} (n : σ),\n  (MvPolynomial.eval f) (MvPolynomial.X n) = f n"
+          },
+          {
+            "name": "Module.AEval.X_pow_smul_of",
+            "module_name": "Mathlib.Algebra.Polynomial.Module.AEval",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_2} {A : Type u_3} {M : Type u_1} [inst : CommSemiring R] [inst_1 : Semiring A] (a : A)\n  [inst_2 : Algebra R A] [inst_3 : AddCommMonoid M] [inst_4 : Module A M] [inst_5 : Module R M]\n  [inst_6 : IsScalarTower R A M] (m : M) (n : ℕ),\n  Polynomial.X ^ n • (Module.AEval.of R M a) m = (Module.AEval.of R M a) (a ^ n • m)"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "Local",
+    "form": "literature",
+    "request": {
+      "query": "aeval"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.aeval\",\n      \"kind\": \"def\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/AlgebraMap.lean\"\n    },\n    {\n      \"name\": \"minpoly.aeval\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/FieldTheory/Minpoly/Basic.lean\"\n    },\n    {\n      \"name\": \"PDerivHasseExtra.aeval_caller\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/roth-overview-session/NextHasseChecks.lean\"\n    },\n    {\n      \"name\": \"Roth.aeval_X_eq_rename\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/Separation.lean\"\n    },\n    {\n      \"name\": \"aeval_X_eq_rename\",\n      \"kind\": \"theorem\",\n      \"file\": \".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_rename/caller-Separation-146.lean\"\n    },\n    {\n      \"name\": \"Polynomial.aeval_C\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/AlgebraMap.lean\"\n    },\n    {\n      \"name\": \"Polynomial.aeval_X\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/AlgebraMap.lean\"\n    },\n    {\n      \"name\": \"Polynomial.aeval_pi\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/AlgebraMap.lean\"\n    },\n    {\n      \"name\": \"Polynomial.IsMonicOfDegree.aeval_add\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Degree/IsMonicOfDegree.lean\"\n    },\n    {\n      \"name\": \"Polynomial.aeval_add\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/AlgebraMap.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.aeval",
+            "kind": "def",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/AlgebraMap.lean"
+          },
+          {
+            "name": "minpoly.aeval",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/FieldTheory/Minpoly/Basic.lean"
+          },
+          {
+            "name": "PDerivHasseExtra.aeval_caller",
+            "kind": "theorem",
+            "file": ".lake/roth-overview-session/NextHasseChecks.lean"
+          },
+          {
+            "name": "Roth.aeval_X_eq_rename",
+            "kind": "theorem",
+            "file": "Roth/Separation.lean"
+          },
+          {
+            "name": "aeval_X_eq_rename",
+            "kind": "theorem",
+            "file": ".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_rename/caller-Separation-146.lean"
+          },
+          {
+            "name": "Polynomial.aeval_C",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/AlgebraMap.lean"
+          },
+          {
+            "name": "Polynomial.aeval_X",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/AlgebraMap.lean"
+          },
+          {
+            "name": "Polynomial.aeval_pi",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/AlgebraMap.lean"
+          },
+          {
+            "name": "Polynomial.IsMonicOfDegree.aeval_add",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Degree/IsMonicOfDegree.lean"
+          },
+          {
+            "name": "Polynomial.aeval_add",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/AlgebraMap.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "Finder",
+    "form": "abstract",
+    "request": {
+      "query": "MvPolynomial σ R →ₐ[R] A"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"MvPolynomial.aeval\",\n      \"informal_name\": \"Algebra Evaluation Homomorphism for Multivariate Polynomials\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} →\\n  {S₁ : Type v} →\\n    {σ : Type u_1} →\\n      [inst : CommSemiring R] →\\n        [inst_1 : CommSemiring S₁] → [inst_2 : Algebra R S₁] → (σ → S₁) → MvPolynomial σ R →ₐ[R] S₁\",\n      \"informal_description\": \"The algebra homomorphism from the multivariate polynomial ring $ R[\\\\sigma] $ to a commutative semiring $ S_1 $ equipped with an $ R $-algebra structure, defined by evaluating polynomials using the canonical algebra map $ R \\\\to S_1 $ for coefficients and a given variable assignment $ \\\\sigma \\\\to S_1 $. This homomorphism preserves addition, multiplication, scalar multiplication by $ R $, and maps the constant polynomial $ C(r) $ to $ \\\\text{algebraMap}(r) $ for all $ r \\\\in R $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.ACounit\",\n      \"informal_name\": \"Algebra counit for multivariate polynomials\",\n      \"kind\": \"definition\",\n      \"type\": \"(A : Type u_1) →\\n  (B : Type u_2) →\\n    [inst : CommSemiring A] → [inst_1 : CommSemiring B] → [inst_2 : Algebra A B] → MvPolynomial B A →ₐ[A] B\",\n      \"informal_description\": \"The algebra homomorphism from the multivariate polynomial ring $ A[B] $ to $ B $ that evaluates each polynomial by substituting variables with their corresponding elements in $ B $, using the algebra structure of $ B $ over $ A $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Counit\"\n    },\n    {\n      \"formal_name\": \"PolynomialLaw.φ\",\n      \"informal_name\": \"Evaluation homomorphism for multivariate polynomials over finite set\",\n      \"kind\": \"definition\",\n      \"type\": \"(R : Type u) →\\n  [inst : CommSemiring R] →\\n    {S : Type v} →\\n      [inst_1 : CommSemiring S] → [inst_2 : Algebra R S] → (s : Finset S) → MvPolynomial (Fin s.card) R →ₐ[R] S\",\n      \"informal_description\": \"For a finite set $ s $ of elements in $ S $, this defines an algebra homomorphism from the multivariate polynomial ring $ R[X_1,\\\\ldots,X_n] $ (with $ n = |s| $) to $ S $. The homomorphism evaluates each variable $ X_i $ to the $ i $-th element of $ s $ under the canonical bijection between $ \\\\mathrm{Fin}(n) $ and $ s $, preserving the algebra structure of $ R $-linear combinations and polynomial multiplication.\",\n      \"path\": \"Mathlib.RingTheory.PolynomialLaw.Basic\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.aeval_def\",\n      \"informal_name\": \"Definition of Algebra Evaluation Homomorphism for Multivariate Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁]\\n  (f : σ → S₁) (p : MvPolynomial σ R), (MvPolynomial.aeval f) p = MvPolynomial.eval₂ (algebraMap R S₁) f p\",\n      \"informal_description\": \"The algebra evaluation homomorphism for multivariate polynomials is defined by evaluating each polynomial using the canonical algebra map from $ R $ to $ S_1 $ for coefficients and a given variable assignment $ f : \\\\sigma \\\\to S_1 $, such that $ \\\\text{aeval}\\\\, f\\\\, p = \\\\text{eval}_2(\\\\text{algebraMap}(R, S_1), f, p) $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.aevalTower\",\n      \"informal_name\": \"Evaluation Algebra Homomorphism for Multivariate Polynomials over an Algebra Tower\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} →\\n  {σ : Type u_1} →\\n    [inst : CommSemiring R] →\\n      {S : Type u_2} →\\n        {A : Type u_3} →\\n          [inst_1 : CommSemiring S] →\\n            [inst_2 : CommSemiring A] →\\n              [inst_3 : Algebra S R] → [inst_4 : Algebra S A] → (R →ₐ[S] A) → (σ → A) → MvPolynomial σ R →ₐ[S] A\",\n      \"informal_description\": \"Given an $ S $-algebra homomorphism $ f : R \\\\to A $ and a variable assignment $ X : \\\\sigma \\\\to A $, this constructs the algebra homomorphism from the multivariate polynomial ring $ R[\\\\sigma] $ to $ A $ that evaluates each polynomial by applying $ f $ to coefficients and $ X $ to variables. The homomorphism preserves the $ S $-algebra structure, ensuring compatibility with scalar multiplication and the algebra operations.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "MvPolynomial.aeval",
+            "informal_name": "Algebra Evaluation Homomorphism for Multivariate Polynomials",
+            "kind": "definition",
+            "type": "{R : Type u} →\n  {S₁ : Type v} →\n    {σ : Type u_1} →\n      [inst : CommSemiring R] →\n        [inst_1 : CommSemiring S₁] → [inst_2 : Algebra R S₁] → (σ → S₁) → MvPolynomial σ R →ₐ[R] S₁",
+            "informal_description": "The algebra homomorphism from the multivariate polynomial ring $ R[\\sigma] $ to a commutative semiring $ S_1 $ equipped with an $ R $-algebra structure, defined by evaluating polynomials using the canonical algebra map $ R \\to S_1 $ for coefficients and a given variable assignment $ \\sigma \\to S_1 $. This homomorphism preserves addition, multiplication, scalar multiplication by $ R $, and maps the constant polynomial $ C(r) $ to $ \\text{algebraMap}(r) $ for all $ r \\in R $.",
+            "path": "Mathlib.Algebra.MvPolynomial.Eval"
+          },
+          {
+            "formal_name": "MvPolynomial.ACounit",
+            "informal_name": "Algebra counit for multivariate polynomials",
+            "kind": "definition",
+            "type": "(A : Type u_1) →\n  (B : Type u_2) →\n    [inst : CommSemiring A] → [inst_1 : CommSemiring B] → [inst_2 : Algebra A B] → MvPolynomial B A →ₐ[A] B",
+            "informal_description": "The algebra homomorphism from the multivariate polynomial ring $ A[B] $ to $ B $ that evaluates each polynomial by substituting variables with their corresponding elements in $ B $, using the algebra structure of $ B $ over $ A $.",
+            "path": "Mathlib.Algebra.MvPolynomial.Counit"
+          },
+          {
+            "formal_name": "PolynomialLaw.φ",
+            "informal_name": "Evaluation homomorphism for multivariate polynomials over finite set",
+            "kind": "definition",
+            "type": "(R : Type u) →\n  [inst : CommSemiring R] →\n    {S : Type v} →\n      [inst_1 : CommSemiring S] → [inst_2 : Algebra R S] → (s : Finset S) → MvPolynomial (Fin s.card) R →ₐ[R] S",
+            "informal_description": "For a finite set $ s $ of elements in $ S $, this defines an algebra homomorphism from the multivariate polynomial ring $ R[X_1,\\ldots,X_n] $ (with $ n = |s| $) to $ S $. The homomorphism evaluates each variable $ X_i $ to the $ i $-th element of $ s $ under the canonical bijection between $ \\mathrm{Fin}(n) $ and $ s $, preserving the algebra structure of $ R $-linear combinations and polynomial multiplication.",
+            "path": "Mathlib.RingTheory.PolynomialLaw.Basic"
+          },
+          {
+            "formal_name": "MvPolynomial.aeval_def",
+            "informal_name": "Definition of Algebra Evaluation Homomorphism for Multivariate Polynomials",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁]\n  (f : σ → S₁) (p : MvPolynomial σ R), (MvPolynomial.aeval f) p = MvPolynomial.eval₂ (algebraMap R S₁) f p",
+            "informal_description": "The algebra evaluation homomorphism for multivariate polynomials is defined by evaluating each polynomial using the canonical algebra map from $ R $ to $ S_1 $ for coefficients and a given variable assignment $ f : \\sigma \\to S_1 $, such that $ \\text{aeval}\\, f\\, p = \\text{eval}_2(\\text{algebraMap}(R, S_1), f, p) $.",
+            "path": "Mathlib.Algebra.MvPolynomial.Eval"
+          },
+          {
+            "formal_name": "MvPolynomial.aevalTower",
+            "informal_name": "Evaluation Algebra Homomorphism for Multivariate Polynomials over an Algebra Tower",
+            "kind": "definition",
+            "type": "{R : Type u} →\n  {σ : Type u_1} →\n    [inst : CommSemiring R] →\n      {S : Type u_2} →\n        {A : Type u_3} →\n          [inst_1 : CommSemiring S] →\n            [inst_2 : CommSemiring A] →\n              [inst_3 : Algebra S R] → [inst_4 : Algebra S A] → (R →ₐ[S] A) → (σ → A) → MvPolynomial σ R →ₐ[S] A",
+            "informal_description": "Given an $ S $-algebra homomorphism $ f : R \\to A $ and a variable assignment $ X : \\sigma \\to A $, this constructs the algebra homomorphism from the multivariate polynomial ring $ R[\\sigma] $ to $ A $ that evaluates each polynomial by applying $ f $ to coefficients and $ X $ to variables. The homomorphism preserves the $ S $-algebra structure, ensuring compatibility with scalar multiplication and the algebra operations.",
+            "path": "Mathlib.Algebra.MvPolynomial.Eval"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "Loogle",
+    "form": "abstract",
+    "request": {
+      "query": "MvPolynomial.aeval"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.aeval\",\n      \"type\": \" {R : Type u} {S₁ : Type v} {σ : Type u_1} [CommSemiring R] [CommSemiring S₁] [Algebra R S₁] (f : σ → S₁) : MvPolynomial σ R →ₐ[R] S₁\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"name\": \"MvPolynomial.aevalTower_id\",\n      \"type\": \" {σ : Type u_1} {S : Type u_2} [CommSemiring S] : MvPolynomial.aevalTower (AlgHom.id S S) = MvPolynomial.aeval\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"name\": \"MvPolynomial.aevalTower_ofId\",\n      \"type\": \" {σ : Type u_1} {S : Type u_2} {A : Type u_3} [CommSemiring S] [CommSemiring A] [Algebra S A] : MvPolynomial.aevalTower (Algebra.ofId S A) = MvPolynomial.aeval\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"name\": \"Algebra.adjoin_range_eq_range_aeval\",\n      \"type\": \" (R : Type u) {S₁ : Type v} {σ : Type u_1} [CommSemiring R] [CommSemiring S₁] [Algebra R S₁] (f : σ → S₁) : Algebra.adjoin R (Set.range f) = (MvPolynomial.aeval f).range\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"name\": \"MvPolynomial.aeval_range\",\n      \"type\": \" {R : Type u} {S₁ : Type v} {σ : Type u_1} [CommSemiring R] [CommSemiring S₁] [Algebra R S₁] (f : σ → S₁) : (MvPolynomial.aeval f).range = Algebra.adjoin R (Set.range f)\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"name\": \"MvPolynomial.aeval_X\",\n      \"type\": \" {R : Type u} {S₁ : Type v} {σ : Type u_1} [CommSemiring R] [CommSemiring S₁] [Algebra R S₁] (f : σ → S₁) (s : σ) : (MvPolynomial.aeval f) (MvPolynomial.X s) = f s\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"name\": \"MvPolynomial.aeval_def\",\n      \"type\": \" {R : Type u} {S₁ : Type v} {σ : Type u_1} [CommSemiring R] [CommSemiring S₁] [Algebra R S₁] (f : σ → S₁) (p : MvPolynomial σ R) : (MvPolynomial.aeval f) p = MvPolynomial.eval₂ (algebraMap R S₁) f p\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"name\": \"Algebra.adjoin_eq_range\",\n      \"type\": \" (R : Type u) {S₁ : Type v} [CommSemiring R] [CommSemiring S₁] [Algebra R S₁] (s : Set S₁) : Algebra.adjoin R s = (MvPolynomial.aeval Subtype.val).range\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.aeval",
+            "type": " {R : Type u} {S₁ : Type v} {σ : Type u_1} [CommSemiring R] [CommSemiring S₁] [Algebra R S₁] (f : σ → S₁) : MvPolynomial σ R →ₐ[R] S₁",
+            "module": "Mathlib.Algebra.MvPolynomial.Eval"
+          },
+          {
+            "name": "MvPolynomial.aevalTower_id",
+            "type": " {σ : Type u_1} {S : Type u_2} [CommSemiring S] : MvPolynomial.aevalTower (AlgHom.id S S) = MvPolynomial.aeval",
+            "module": "Mathlib.Algebra.MvPolynomial.Eval"
+          },
+          {
+            "name": "MvPolynomial.aevalTower_ofId",
+            "type": " {σ : Type u_1} {S : Type u_2} {A : Type u_3} [CommSemiring S] [CommSemiring A] [Algebra S A] : MvPolynomial.aevalTower (Algebra.ofId S A) = MvPolynomial.aeval",
+            "module": "Mathlib.Algebra.MvPolynomial.Eval"
+          },
+          {
+            "name": "Algebra.adjoin_range_eq_range_aeval",
+            "type": " (R : Type u) {S₁ : Type v} {σ : Type u_1} [CommSemiring R] [CommSemiring S₁] [Algebra R S₁] (f : σ → S₁) : Algebra.adjoin R (Set.range f) = (MvPolynomial.aeval f).range",
+            "module": "Mathlib.Algebra.MvPolynomial.Eval"
+          },
+          {
+            "name": "MvPolynomial.aeval_range",
+            "type": " {R : Type u} {S₁ : Type v} {σ : Type u_1} [CommSemiring R] [CommSemiring S₁] [Algebra R S₁] (f : σ → S₁) : (MvPolynomial.aeval f).range = Algebra.adjoin R (Set.range f)",
+            "module": "Mathlib.Algebra.MvPolynomial.Eval"
+          },
+          {
+            "name": "MvPolynomial.aeval_X",
+            "type": " {R : Type u} {S₁ : Type v} {σ : Type u_1} [CommSemiring R] [CommSemiring S₁] [Algebra R S₁] (f : σ → S₁) (s : σ) : (MvPolynomial.aeval f) (MvPolynomial.X s) = f s",
+            "module": "Mathlib.Algebra.MvPolynomial.Eval"
+          },
+          {
+            "name": "MvPolynomial.aeval_def",
+            "type": " {R : Type u} {S₁ : Type v} {σ : Type u_1} [CommSemiring R] [CommSemiring S₁] [Algebra R S₁] (f : σ → S₁) (p : MvPolynomial σ R) : (MvPolynomial.aeval f) p = MvPolynomial.eval₂ (algebraMap R S₁) f p",
+            "module": "Mathlib.Algebra.MvPolynomial.Eval"
+          },
+          {
+            "name": "Algebra.adjoin_eq_range",
+            "type": " (R : Type u) {S₁ : Type v} [CommSemiring R] [CommSemiring S₁] [Algebra R S₁] (s : Set S₁) : Algebra.adjoin R s = (MvPolynomial.aeval Subtype.val).range",
+            "module": "Mathlib.Algebra.MvPolynomial.Eval"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "LeanSearch",
+    "form": "abstract",
+    "request": {
+      "query": "MvPolynomial σ R →ₐ[R] A"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.coeToMvPowerSeries.algHom\",\n      \"module_name\": \"Mathlib.RingTheory.MvPowerSeries.Basic\",\n      \"kind\": \"definition\",\n      \"type\": \"{σ : Type u_1} →\\n  {R : Type u_2} →\\n    [inst : CommSemiring R] →\\n      (A : Type u_3) → [inst_1 : CommSemiring A] → [inst_2 : Algebra R A] → MvPolynomial σ R →ₐ[R] MvPowerSeries σ A\"\n    },\n    {\n      \"name\": \"MvPolynomial.algHom_ext_iff\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] {A : Type u_2} [inst_1 : Semiring A] [inst_2 : Algebra R A]\\n  {f g : MvPolynomial σ R →ₐ[R] A}, f = g ↔ ∀ (i : σ), f (MvPolynomial.X i) = g (MvPolynomial.X i)\"\n    },\n    {\n      \"name\": \"MvPowerSeries.algebraMvPolynomial\",\n      \"module_name\": \"Mathlib.RingTheory.MvPowerSeries.Basic\",\n      \"kind\": \"instance\",\n      \"type\": \"{σ : Type u_1} →\\n  {R : Type u_2} →\\n    {A : Type u_3} →\\n      [inst : CommSemiring R] →\\n        [inst_1 : CommSemiring A] → [Algebra R A] → Algebra (MvPolynomial σ R) (MvPowerSeries σ A)\"\n    },\n    {\n      \"name\": \"MvPolynomial.aeval\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Eval\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} →\\n  {S₁ : Type v} →\\n    {σ : Type u_1} →\\n      [inst : CommSemiring R] →\\n        [inst_1 : CommSemiring S₁] → [inst_2 : Algebra R S₁] → (σ → S₁) → MvPolynomial σ R →ₐ[R] S₁\"\n    },\n    {\n      \"name\": \"MvPolynomial.mapAlgEquiv_apply\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Equiv\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} (σ : Type u_1) [inst : CommSemiring R] {A₁ : Type u_2} {A₂ : Type u_3} [inst_1 : CommSemiring A₁]\\n  [inst_2 : CommSemiring A₂] [inst_3 : Algebra R A₁] [inst_4 : Algebra R A₂] (e : A₁ ≃ₐ[R] A₂) (a : MvPolynomial σ A₁),\\n  (MvPolynomial.mapAlgEquiv σ e) a = (MvPolynomial.map ↑e) a\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.coeToMvPowerSeries.algHom",
+            "module_name": "Mathlib.RingTheory.MvPowerSeries.Basic",
+            "kind": "definition",
+            "type": "{σ : Type u_1} →\n  {R : Type u_2} →\n    [inst : CommSemiring R] →\n      (A : Type u_3) → [inst_1 : CommSemiring A] → [inst_2 : Algebra R A] → MvPolynomial σ R →ₐ[R] MvPowerSeries σ A"
+          },
+          {
+            "name": "MvPolynomial.algHom_ext_iff",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Basic",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] {A : Type u_2} [inst_1 : Semiring A] [inst_2 : Algebra R A]\n  {f g : MvPolynomial σ R →ₐ[R] A}, f = g ↔ ∀ (i : σ), f (MvPolynomial.X i) = g (MvPolynomial.X i)"
+          },
+          {
+            "name": "MvPowerSeries.algebraMvPolynomial",
+            "module_name": "Mathlib.RingTheory.MvPowerSeries.Basic",
+            "kind": "instance",
+            "type": "{σ : Type u_1} →\n  {R : Type u_2} →\n    {A : Type u_3} →\n      [inst : CommSemiring R] →\n        [inst_1 : CommSemiring A] → [Algebra R A] → Algebra (MvPolynomial σ R) (MvPowerSeries σ A)"
+          },
+          {
+            "name": "MvPolynomial.aeval",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Eval",
+            "kind": "definition",
+            "type": "{R : Type u} →\n  {S₁ : Type v} →\n    {σ : Type u_1} →\n      [inst : CommSemiring R] →\n        [inst_1 : CommSemiring S₁] → [inst_2 : Algebra R S₁] → (σ → S₁) → MvPolynomial σ R →ₐ[R] S₁"
+          },
+          {
+            "name": "MvPolynomial.mapAlgEquiv_apply",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Equiv",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} (σ : Type u_1) [inst : CommSemiring R] {A₁ : Type u_2} {A₂ : Type u_3} [inst_1 : CommSemiring A₁]\n  [inst_2 : CommSemiring A₂] [inst_3 : Algebra R A₁] [inst_4 : Algebra R A₂] (e : A₁ ≃ₐ[R] A₂) (a : MvPolynomial σ A₁),\n  (MvPolynomial.mapAlgEquiv σ e) a = (MvPolynomial.map ↑e) a"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "Local",
+    "form": "abstract",
+    "request": {
+      "query": "eval₂Hom"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.eval\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/CommRing.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.eval\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Monad.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.eval\",\n      \"kind\": \"def\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Eval.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.eval\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Eval.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.eval\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Rename.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.eval\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Expand.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.eval\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Variables.lean\"\n    },\n    {\n      \"name\": \"MvPowerSeries.eval\",\n      \"kind\": \"def\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Evaluation.lean\"\n    },\n    {\n      \"name\": \"MvPowerSeries.eval\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Evaluation.lean\"\n    },\n    {\n      \"name\": \"PowerSeries.eval\",\n      \"kind\": \"def\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/PowerSeries/Evaluation.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.eval",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/CommRing.lean"
+          },
+          {
+            "name": "MvPolynomial.eval",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Monad.lean"
+          },
+          {
+            "name": "MvPolynomial.eval",
+            "kind": "def",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Eval.lean"
+          },
+          {
+            "name": "MvPolynomial.eval",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Eval.lean"
+          },
+          {
+            "name": "MvPolynomial.eval",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Rename.lean"
+          },
+          {
+            "name": "MvPolynomial.eval",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Expand.lean"
+          },
+          {
+            "name": "MvPolynomial.eval",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Variables.lean"
+          },
+          {
+            "name": "MvPowerSeries.eval",
+            "kind": "def",
+            "file": ".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Evaluation.lean"
+          },
+          {
+            "name": "MvPowerSeries.eval",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Evaluation.lean"
+          },
+          {
+            "name": "PowerSeries.eval",
+            "kind": "def",
+            "file": ".lake/packages/mathlib/Mathlib/RingTheory/PowerSeries/Evaluation.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  }
+]

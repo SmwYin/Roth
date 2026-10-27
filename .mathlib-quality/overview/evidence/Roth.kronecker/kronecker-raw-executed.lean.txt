@@ -1,0 +1,28 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+import Mathlib.Algebra.Polynomial.CancelLeads
+import Mathlib.Algebra.MvPolynomial.PDeriv
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+import Mathlib.Algebra.MvPolynomial.Equiv
+import Mathlib.Analysis.Normed.Unbundled.RingSeminorm
+import Mathlib.LinearAlgebra.Matrix.AbsoluteValue
+import Mathlib.Data.Nat.Choose.Bounds
+import Mathlib.RingTheory.Polynomial.Basic
+/-! Independent existing substitution candidate. -/
+namespace KroneckerRaw
+#check_failure Roth.kronecker
+#check @MvPolynomial.aeval
+#check @MvPolynomial.aeval_monomial
+#check @MvPolynomial.eval₂Hom
+noncomputable def direct {R : Type*} [CommSemiring R] {σ : Type*}
+    (w : σ → ℕ) : MvPolynomial σ R →ₐ[R] Polynomial R :=
+  MvPolynomial.aeval fun j ↦ Polynomial.X ^ w j
+#print axioms direct
+end KroneckerRaw

@@ -1,0 +1,12 @@
+namespace KroneckerInfrastructure
+universe u v
+#synth CommSemiring (Polynomial ℕ)
+#synth Algebra ℕ (Polynomial ℕ)
+#synth CoeFun (MvPolynomial (Fin 2) ℚ →ₐ[ℚ] Polynomial ℚ)
+  (fun _ ↦ MvPolynomial (Fin 2) ℚ → Polynomial ℚ)
+#check Roth.kronecker (K := ℚ) (σ := Fin 2) 2
+#check Roth.kronecker (K := ULift.{u} ℚ) (σ := ULift.{v} (Fin 2)) 2
+example {K : Type u} [Field K] {σ : Type v} [Fintype σ] (k : ℕ) :
+    Roth.kronecker (K := K) (σ := σ) k =
+      MvPolynomial.aeval (fun j ↦ Polynomial.X ^ k ^ (Fintype.equivFin σ j : ℕ)) := rfl
+end KroneckerInfrastructure

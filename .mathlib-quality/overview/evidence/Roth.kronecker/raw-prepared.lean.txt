@@ -1,0 +1,14 @@
+import Mathlib.Algebra.MvPolynomial.PDeriv
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Data.Nat.Choose.Bounds
+/-! Independent existing substitution candidate. -/
+namespace KroneckerRaw
+#check_failure Roth.kronecker
+#check @MvPolynomial.aeval
+#check @MvPolynomial.aeval_monomial
+#check @MvPolynomial.eval₂Hom
+noncomputable def direct {R : Type*} [CommSemiring R] {σ : Type*}
+    (w : σ → ℕ) : MvPolynomial σ R →ₐ[R] Polynomial R :=
+  MvPolynomial.aeval fun j ↦ Polynomial.X ^ w j
+#print axioms direct
+end KroneckerRaw
