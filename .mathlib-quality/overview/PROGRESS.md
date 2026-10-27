@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-26
 
-- Declarations completed: **160/293**
-- Next declaration: **#161 `Roth.coeff_uniqueAlgEquiv_symm`** (Roth/Separation.lean:169)
+- Declarations completed: **161/293**
+- Next declaration: **#162 `Roth.degreeOf_uniqueAlgEquiv_symm`** (Roth/Separation.lean:174)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -179,10 +179,10 @@ Last regenerated: 2026-10-26
 | 158 | `Roth.coeff_rename_mul_aeval` | Roth/Separation.lean:123 | YES-but-generalise-first | [report](mathlibable/Roth.coeff_rename_mul_aeval.md) |
 | 159 | `Roth.aeval_X_eq_rename` | Roth/Separation.lean:137 | NO-mathlib-has-it | [report](mathlibable/Roth.aeval_X_eq_rename.md) |
 | 160 | `Roth.hasseDeriv_rename_mul_aeval` | Roth/Separation.lean:146 | YES-but-generalise-first | [report](mathlibable/Roth.hasseDeriv_rename_mul_aeval.md) |
+| 161 | `Roth.coeff_uniqueAlgEquiv_symm` | Roth/Separation.lean:169 | SKIP | [report](mathlibable/Roth.coeff_uniqueAlgEquiv_symm.md) |
 
 ## Remaining declarations (in processing order)
 
-- #161 `Roth.coeff_uniqueAlgEquiv_symm` (Roth/Separation.lean:169, public theorem)
 - #162 `Roth.degreeOf_uniqueAlgEquiv_symm` (Roth/Separation.lean:174, public theorem)
 - #163 `Roth.degreeOf_rename_mul_aeval` (Roth/Separation.lean:197, public theorem)
 - #164 `Roth.degreeOf_none_rename_mul_aeval` (Roth/Separation.lean:213, public theorem)
