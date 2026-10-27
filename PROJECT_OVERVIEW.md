@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 104/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 105/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 104; remaining: 189.
-- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 14 YES-but-generalise-first, 20 NO-mathlib-has-it, 32 BORDERLINE-needs-human, 11 SKIP.
+- Completed applicable assessments: 105; remaining: 188.
+- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 14 YES-but-generalise-first, 20 NO-mathlib-has-it, 32 BORDERLINE-needs-human, 12 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -1116,6 +1116,18 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: 4 explicit source caller declarations, all in GenWronskian.lean; 5 direct original value consumers. Exact separate lists retained. Entire module proof bodies replay successfully with fresh target name.
 - Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.kronHasse.md).
 
+### Completed: `Roth.kronSpan`
+
+- Type: `{K : Type u_1} →
+  [inst : Field K] →
+    {σ : Type u_2} → [Fintype σ] → ℕ → ℕ → Submodule (Polynomial K) (MvPolynomial σ K → Polynomial K)`
+- What: The polynomial-module span of substituted Hasse operators with total order at most the natural bound.
+- How: Uses Submodule.span of the image of kronHasse over the degree-bounded exponent set.
+- Hypotheses: A field, finite variable enumeration, and natural base and order bound. Actual kernel type retains Field and Fintype sigma; no characteristic-zero, positive-base or positive-order premise.
+- Project dependencies: Roth.kronHasse
+- Caller summary: 2 explicit source caller declarations, all in GenWronskian.lean; 2 direct original value consumers. Exact separate lists retained. Entire module proof bodies replay successfully with fresh target name.
+- Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.kronSpan.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -1350,6 +1362,8 @@ Completed `Roth.kroneckerExp`: Exact positive Finsupp.weight in Mathlib/Data/Fin
 
 Completed `Roth.kronHasse`: A pointwise composition: take one project multivariate Hasse derivative, then project Kronecker substitution. It provides generators for the polynomial-module span. Existing function composition is sufficient for the interface; this prefilter does not assign a separate public contribution verdict. The named private operator and the span have distinct roles.
 
+Completed `Roth.kronSpan`: Existing Submodule.span takes the image of the private substituted Hasse operators whose total order is at most the bound. It organizes the derivative-stability induction and finite span witness. The span and its individual operator generators have distinct roles; no duplicate definition or new instance is introduced.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -1559,6 +1573,8 @@ Completed `Roth.kronecker`: Literal one-call specialization of existing universa
 Completed `Roth.kroneckerExp`: Specialization of existing generic weighted exponent map. Shared generic API pattern with independently accepted Roth.weight, which instead targets Real with reciprocal weights; these project maps are not equal.
 
 Completed `Roth.kronHasse`: Private operator composition and bounded module span are different stages of the same derivative expansion, not duplicate full constructions.
+
+Completed `Roth.kronSpan`: Private operator composition and bounded module span are different stages of the same derivative expansion, not duplicate full constructions.
 
 ## Part 5: Generalization opportunities
 
@@ -1773,6 +1789,8 @@ Completed `Roth.kroneckerExp`: Existing arbitrary-index weight removes Fintype o
 
 Completed `Roth.kronHasse`: No public generality claim under the private prefilter; preserve the existing definition and interface.
 
+Completed `Roth.kronSpan`: No public generality claim under the private prefilter; preserve the existing definition and interface.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -1983,6 +2001,8 @@ Completed `Roth.kronecker`: No missing API for the definition itself; bounded en
 Completed `Roth.kroneckerExp`: None for this definition. Radix injectivity and substitution coefficient/derivative laws require their own assessment; arbitrary weights do not inherit injectivity.
 
 Completed `Roth.kronHasse`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
+
+Completed `Roth.kronSpan`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 ## Part 7: Junk / removable
 
@@ -2197,6 +2217,8 @@ Completed `Roth.kroneckerExp`: Useful local semantic one-line API with3 callers;
 
 Completed `Roth.kronHasse`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
 
+Completed `Roth.kronSpan`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -2305,6 +2327,7 @@ Completed `Roth.kronHasse`: Retain a live private proof interface. No placeholde
 | 102 | `Roth.kronecker` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.kronecker.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.kronecker/root-acceptance.json) |
 | 103 | `Roth.kroneckerExp` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.kroneckerExp.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.kroneckerExp/root-acceptance.json) |
 | 104 | `Roth.kronHasse` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.kronHasse.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.kronHasse/root-acceptance.json) |
+| 105 | `Roth.kronSpan` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.kronSpan.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.kronSpan/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -2512,12 +2535,14 @@ Completed `Roth.kroneckerExp` action: NO-mathlib-has-it. Use Finsupp.weight powe
 
 Completed `Roth.kronHasse` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
 
+Completed `Roth.kronSpan` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.kronSpan` next. Supporting identities receive their own applicable checks.
+   `Roth.genWronskian_eq_zero_of_not_linearIndependent` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 
