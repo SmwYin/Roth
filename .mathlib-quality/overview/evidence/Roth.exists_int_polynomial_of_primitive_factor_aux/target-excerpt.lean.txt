@@ -1,0 +1,13 @@
+private lemma exists_int_polynomial_of_primitive_factor_aux {U : MvPolynomial τ ℤ}
+    {V' : Polynomial ℚ} {F : MvPolynomial (Option τ) ℤ} (hgcd : U.support.gcd U.coeff = 1)
+    (hF : map (Int.castRingHom ℚ) F = rename some (map (Int.castRingHom ℚ) U) *
+      Polynomial.aeval (X none : MvPolynomial (Option τ) ℚ) V') :
+    ∃ V : Polynomial ℤ, V.map (Int.castRingHom ℚ) = V' := by
+  apply (Polynomial.mem_map_range (Int.castRingHom ℚ)).2
+  intro b
+  obtain ⟨z, hz⟩ := exists_int_eq_of_gcd_eq_one hgcd fun a _ ↦
+    ⟨F.coeff (a.mapDomain some + Finsupp.single none b), by
+      have h := congrArg (fun P ↦ P.coeff (a.mapDomain some + Finsupp.single none b)) hF
+      simp only [coeff_rename_mul_aeval, coeff_map] at h
+      simpa using h.symm⟩
+  exact ⟨z, hz.symm⟩

@@ -1,0 +1,54 @@
+{
+  "file": "Roth/Separation.lean",
+  "line": 466,
+  "name": "Roth.exists_int_polynomial_of_primitive_factor_aux",
+  "short": "exists_int_polynomial_of_primitive_factor_aux",
+  "kind": "lemma",
+  "visibility": "private",
+  "end_line": 478,
+  "source": "private lemma exists_int_polynomial_of_primitive_factor_aux {U : MvPolynomial τ ℤ}\n    {V' : Polynomial ℚ} {F : MvPolynomial (Option τ) ℤ} (hgcd : U.support.gcd U.coeff = 1)\n    (hF : map (Int.castRingHom ℚ) F = rename some (map (Int.castRingHom ℚ) U) *\n      Polynomial.aeval (X none : MvPolynomial (Option τ) ℚ) V') :\n    ∃ V : Polynomial ℤ, V.map (Int.castRingHom ℚ) = V' := by\n  apply (Polynomial.mem_map_range (Int.castRingHom ℚ)).2\n  intro b\n  obtain ⟨z, hz⟩ := exists_int_eq_of_gcd_eq_one hgcd fun a _ ↦\n    ⟨F.coeff (a.mapDomain some + Finsupp.single none b), by\n      have h := congrArg (fun P ↦ P.coeff (a.mapDomain some + Finsupp.single none b)) hF\n      simp only [coeff_rename_mul_aeval, coeff_map] at h\n      simpa using h.symm⟩\n  exact ⟨z, hz.symm⟩",
+  "signature": "private lemma exists_int_polynomial_of_primitive_factor_aux {U : MvPolynomial τ ℤ}\n    {V' : Polynomial ℚ} {F : MvPolynomial (Option τ) ℤ} (hgcd : U.support.gcd U.coeff = 1)\n    (hF : map (Int.castRingHom ℚ) F = rename some (map (Int.castRingHom ℚ) U) *\n      Polynomial.aeval (X none : MvPolynomial (Option τ) ℚ) V') :\n    ∃ V : Polynomial ℤ, V.map (Int.castRingHom ℚ) = V'",
+  "body": "by\n  apply (Polynomial.mem_map_range (Int.castRingHom ℚ)).2\n  intro b\n  obtain ⟨z, hz⟩ := exists_int_eq_of_gcd_eq_one hgcd fun a _ ↦\n    ⟨F.coeff (a.mapDomain some + Finsupp.single none b), by\n      have h := congrArg (fun P ↦ P.coeff (a.mapDomain some + Finsupp.single none b)) hF\n      simp only [coeff_rename_mul_aeval, coeff_map] at h\n      simpa using h.symm⟩\n  exact ⟨z, hz.symm⟩",
+  "proof_lines": 9,
+  "sha256": "ee87ac730604a1349ea975cbaeb19a47984fe95b8091c8bc92fd69a106c00895",
+  "what": "A rational univariate factor of an integral separated product is integral when the other factor is primitive integral.",
+  "how": "Extract every product coefficient with coeff_rename_mul_aeval and use exists_int_eq_of_gcd_eq_one; Polynomial.mem_map_range assembles the integral factor.",
+  "hypotheses": "Primitive integral ordinary-variable factor and integral separated product.",
+  "source_body_refs": [
+    "Roth.coeff_rename_mul_aeval",
+    "Roth.exists_int_eq_of_gcd_eq_one"
+  ],
+  "source_type_refs": [],
+  "source_callers": [
+    {
+      "name": "Roth.exists_int_factors",
+      "file": "Roth/Separation.lean",
+      "line": 485
+    }
+  ],
+  "notes": [],
+  "input_file_sha256": "4ac885af6c9973d40f68bd2e6c42185f02a9996271ccaa67d4932d27e85a7d0e",
+  "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+  "section_context": "Namespace Roth; open MvPolynomial. Ambient τ : Type*. Ambient [Fintype τ] and [DecidableEq τ] are explicitly omitted around general declarations; unused section instances are not implicit mathematical hypotheses. Inline binders override/add context. ",
+  "uses_from_project": [
+    "Roth.coeff_rename_mul_aeval",
+    "Roth.exists_int_eq_of_gcd_eq_one"
+  ],
+  "used_by_in_file": [
+    "Roth.exists_int_factors"
+  ],
+  "used_by_other_files": [],
+  "assignment_offset": 375,
+  "project_body_refs": [
+    "Roth.coeff_rename_mul_aeval",
+    "Roth.exists_int_eq_of_gcd_eq_one"
+  ],
+  "project_type_refs": [],
+  "project_callers": [
+    {
+      "name": "Roth.exists_int_factors",
+      "file": "Roth/Separation.lean",
+      "line": 485
+    }
+  ]
+}

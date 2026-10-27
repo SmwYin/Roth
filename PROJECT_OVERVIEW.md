@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 174/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 175/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 174; remaining: 119.
-- Verdicts: 18 NO-composable-from-mathlib, 13 YES-add-as-is, 23 YES-but-generalise-first, 37 NO-mathlib-has-it, 52 BORDERLINE-needs-human, 31 SKIP.
+- Completed applicable assessments: 175; remaining: 118.
+- Verdicts: 18 NO-composable-from-mathlib, 13 YES-add-as-is, 23 YES-but-generalise-first, 37 NO-mathlib-has-it, 52 BORDERLINE-needs-human, 32 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -1981,6 +1981,19 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: 1 explicit source caller declarations, all in Separation.lean; 1 direct original value consumers. Exact separate lists retained. Entire Separation module proof bodies replay successfully with fresh target name.
 - Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.rescale_separated_factor_aux.md).
 
+### Completed: `Roth.exists_int_polynomial_of_primitive_factor_aux`
+
+- Type: `∀ {τ : Type u_1} {U : MvPolynomial τ ℤ} {V' : Polynomial ℚ} {F : MvPolynomial (Option τ) ℤ},
+  U.support.gcd ⇑U.coeff = 1 →
+    (map (Int.castRingHom ℚ)) F = (rename some) ((map (Int.castRingHom ℚ)) U) * (Polynomial.aeval (X none)) V' →
+      ∃ (V : Polynomial ℤ), Polynomial.map (Int.castRingHom ℚ) V = V'`
+- What: When an integer multivariate polynomial is a separated product of an integer factor with coefficient gcd one and a rational univariate factor, the univariate factor has integer coefficients.
+- How: Extract every product coefficient with coeff_rename_mul_aeval and use exists_int_eq_of_gcd_eq_one; Polynomial.mem_map_range assembles the integral factor.
+- Hypotheses: Primitive integral ordinary-variable factor and integral separated product. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.
+- Project dependencies: Roth.coeff_rename_mul_aeval, Roth.exists_int_eq_of_gcd_eq_one
+- Caller summary: 1 explicit source caller declarations, all in Separation.lean; 1 direct original value consumers. Exact separate lists retained. Entire Separation module proof bodies replay successfully with fresh target name.
+- Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.exists_int_polynomial_of_primitive_factor_aux.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -2355,6 +2368,8 @@ Completed `Roth.exists_int_eq_of_gcd_eq_one`: actual search cells: 15; forms: cu
 
 Completed `Roth.rescale_separated_factor_aux`: Use the given scalar rescaling, move constant polynomials through coefficient renaming and polynomial evaluation, commute the four factors, and cancel the scalar with its inverse using the nonzero hypothesis. This scalar compensation identity is distinct from coefficient integrality and degree preservation, and is used by exists_int_factors.
 
+Completed `Roth.exists_int_polynomial_of_primitive_factor_aux`: For each univariate coefficient, coeff_rename_mul_aeval identifies its products with the primitive factor coefficients as integer coefficients of the given product. exists_int_eq_of_gcd_eq_one then gives an integer witness for each coefficient, and Polynomial.mem_map_range assembles the integer polynomial. This coefficient descent is distinct from scalar compensation and from choosing a primitive representative.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -2704,6 +2719,8 @@ Completed `Roth.exists_primitive_smul_eq`: Classical content/primitive-part norm
 Completed `Roth.exists_int_eq_of_gcd_eq_one`: finite Bezout identity, membership detected by generators of unit ideal
 
 Completed `Roth.rescale_separated_factor_aux`: The helper has a distinct role in the separated polynomial proof as described in the structural review; no duplicate full construction is introduced.
+
+Completed `Roth.exists_int_polynomial_of_primitive_factor_aux`: The helper has a distinct role in the separated polynomial proof as described in the structural review; no duplicate full construction is introduced.
 
 ## Part 5: Generalization opportunities
 
@@ -3058,6 +3075,8 @@ Completed `Roth.exists_int_eq_of_gcd_eq_one`: reason: MODERN-IDIOM; primary: Sub
 
 Completed `Roth.rescale_separated_factor_aux`: No public generality claim under the private prefilter; preserve the existing definition and interface.
 
+Completed `Roth.exists_int_polynomial_of_primitive_factor_aux`: No public generality claim under the private prefilter; preserve the existing definition and interface.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -3408,6 +3427,8 @@ Completed `Roth.exists_primitive_smul_eq`: MvPolynomial primitive representative
 Completed `Roth.exists_int_eq_of_gcd_eq_one`: finite-gcd scalar membership in an arbitrary submodule over a Bezout ring
 
 Completed `Roth.rescale_separated_factor_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
+
+Completed `Roth.exists_int_polynomial_of_primitive_factor_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 ## Part 7: Junk / removable
 
@@ -3762,6 +3783,8 @@ Completed `Roth.exists_int_eq_of_gcd_eq_one`: dead code: False; reason: one sour
 
 Completed `Roth.rescale_separated_factor_aux`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
 
+Completed `Roth.exists_int_polynomial_of_primitive_factor_aux`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -3940,6 +3963,7 @@ Completed `Roth.rescale_separated_factor_aux`: Retain a live private proof inter
 | 172 | `Roth.exists_primitive_smul_eq` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_primitive_smul_eq.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_primitive_smul_eq/root-acceptance.json) |
 | 173 | `Roth.exists_int_eq_of_gcd_eq_one` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_int_eq_of_gcd_eq_one.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_int_eq_of_gcd_eq_one/root-acceptance.json) |
 | 174 | `Roth.rescale_separated_factor_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.rescale_separated_factor_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.rescale_separated_factor_aux/root-acceptance.json) |
+| 175 | `Roth.exists_int_polynomial_of_primitive_factor_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_int_polynomial_of_primitive_factor_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_int_polynomial_of_primitive_factor_aux/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -4287,12 +4311,14 @@ Completed `Roth.exists_int_eq_of_gcd_eq_one` action: verdict: YES-but-generalise
 
 Completed `Roth.rescale_separated_factor_aux` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
 
+Completed `Roth.exists_int_polynomial_of_primitive_factor_aux` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.exists_int_polynomial_of_primitive_factor_aux` next. Supporting identities receive their own applicable checks.
+   `Roth.exists_int_factors` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

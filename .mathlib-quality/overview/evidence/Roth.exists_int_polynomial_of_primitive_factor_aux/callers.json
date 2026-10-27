@@ -1,0 +1,59 @@
+[
+  {
+    "file": "Roth/Separation.lean",
+    "line": 485,
+    "name": "Roth.exists_int_factors",
+    "short": "exists_int_factors",
+    "kind": "theorem",
+    "visibility": "public",
+    "end_line": 505,
+    "source": "theorem exists_int_factors {U' : MvPolynomial τ ℚ} {V' : Polynomial ℚ} (hU : U' ≠ 0) (hV : V' ≠ 0)\n    {F : MvPolynomial (Option τ) ℤ} (hF : map (Int.castRingHom ℚ) F =\n      rename some U' * Polynomial.aeval (X none : MvPolynomial (Option τ) ℚ) V') :\n    ∃ (U : MvPolynomial τ ℤ) (V : Polynomial ℤ), U ≠ 0 ∧ V ≠ 0 ∧\n      F = rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) ℤ) V ∧\n      (∀ j, degreeOf j U = degreeOf j U') ∧ V.natDegree = V'.natDegree := by\n  obtain ⟨g, U, hg, hUmap, hgcd⟩ := exists_primitive_smul_eq hU\n  have hF' := rescale_separated_factor_aux hg hUmap hF\n  obtain ⟨V, hVmap⟩ := exists_int_polynomial_of_primitive_factor_aux hgcd hF'\n  refine ⟨U, V, ?_, ?_, ?_, fun j ↦ ?_, ?_⟩\n  · exact fun h ↦ smul_ne_zero hg hU (by simpa [h] using hUmap.symm)\n  · exact fun h ↦ mul_ne_zero (Polynomial.C_ne_zero.2 (inv_ne_zero hg)) hV\n      (by simpa [h] using hVmap.symm)\n  · apply MvPolynomial.map_injective (Int.castRingHom ℚ) Int.cast_injective\n    rw [hF', map_mul (map (Int.castRingHom ℚ)), map_rename,\n      Polynomial.map_aeval_eq_aeval_map (φ := Int.castRingHom ℚ) (Subsingleton.elim _ _), map_X,\n      hVmap]\n  · rw [degreeOf, ← degrees_map_of_injective U (f := Int.castRingHom ℚ) Int.cast_injective,\n      hUmap, ← degreeOf, smul_eq_C_mul, degreeOf_C_mul j g (mem_nonZeroDivisors_of_ne_zero hg)]\n  · rw [← Polynomial.natDegree_map_eq_of_injective (f := Int.castRingHom ℚ)\n      (RingHom.injective_int _), hVmap, Polynomial.natDegree_C_mul (inv_ne_zero hg)]",
+    "signature": "theorem exists_int_factors {U' : MvPolynomial τ ℚ} {V' : Polynomial ℚ} (hU : U' ≠ 0) (hV : V' ≠ 0)\n    {F : MvPolynomial (Option τ) ℤ} (hF : map (Int.castRingHom ℚ) F =\n      rename some U' * Polynomial.aeval (X none : MvPolynomial (Option τ) ℚ) V') :\n    ∃ (U : MvPolynomial τ ℤ) (V : Polynomial ℤ), U ≠ 0 ∧ V ≠ 0 ∧\n      F = rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) ℤ) V ∧\n      (∀ j, degreeOf j U = degreeOf j U') ∧ V.natDegree = V'.natDegree",
+    "body": "by\n  obtain ⟨g, U, hg, hUmap, hgcd⟩ := exists_primitive_smul_eq hU\n  have hF' := rescale_separated_factor_aux hg hUmap hF\n  obtain ⟨V, hVmap⟩ := exists_int_polynomial_of_primitive_factor_aux hgcd hF'\n  refine ⟨U, V, ?_, ?_, ?_, fun j ↦ ?_, ?_⟩\n  · exact fun h ↦ smul_ne_zero hg hU (by simpa [h] using hUmap.symm)\n  · exact fun h ↦ mul_ne_zero (Polynomial.C_ne_zero.2 (inv_ne_zero hg)) hV\n      (by simpa [h] using hVmap.symm)\n  · apply MvPolynomial.map_injective (Int.castRingHom ℚ) Int.cast_injective\n    rw [hF', map_mul (map (Int.castRingHom ℚ)), map_rename,\n      Polynomial.map_aeval_eq_aeval_map (φ := Int.castRingHom ℚ) (Subsingleton.elim _ _), map_X,\n      hVmap]\n  · rw [degreeOf, ← degrees_map_of_injective U (f := Int.castRingHom ℚ) Int.cast_injective,\n      hUmap, ← degreeOf, smul_eq_C_mul, degreeOf_C_mul j g (mem_nonZeroDivisors_of_ne_zero hg)]\n  · rw [← Polynomial.natDegree_map_eq_of_injective (f := Int.castRingHom ℚ)\n      (RingHom.injective_int _), hVmap, Polynomial.natDegree_C_mul (inv_ne_zero hg)]",
+    "proof_lines": 16,
+    "sha256": "138d7b9d46c82a969b027d290c196be46daeea7c53d4b8c0ada5ba6c46107c46",
+    "what": "A rational separated factorization of an integer polynomial can be rescaled to integral nonzero factors without changing their degrees.",
+    "how": "Make one factor primitive with exists_primitive_smul_eq, compensate by rescale_separated_factor_aux, recover the other via exists_int_polynomial_of_primitive_factor_aux, and compare degrees under injective coefficient maps.",
+    "hypotheses": "Nonzero rational factors and an integral separated product.",
+    "source_body_refs": [
+      "Roth.exists_int_polynomial_of_primitive_factor_aux",
+      "Roth.exists_primitive_smul_eq",
+      "Roth.rescale_separated_factor_aux"
+    ],
+    "source_type_refs": [],
+    "source_callers": [
+      {
+        "name": "Roth.exists_det_eq_mul",
+        "file": "Roth/Separation.lean",
+        "line": 542
+      }
+    ],
+    "notes": [],
+    "input_file_sha256": "4ac885af6c9973d40f68bd2e6c42185f02a9996271ccaa67d4932d27e85a7d0e",
+    "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+    "section_context": "Namespace Roth; open MvPolynomial. Ambient τ : Type*. Ambient [Fintype τ] and [DecidableEq τ] are explicitly omitted around general declarations; unused section instances are not implicit mathematical hypotheses. Inline binders override/add context. ",
+    "uses_from_project": [
+      "Roth.exists_int_polynomial_of_primitive_factor_aux",
+      "Roth.exists_primitive_smul_eq",
+      "Roth.rescale_separated_factor_aux"
+    ],
+    "used_by_in_file": [
+      "Roth.exists_det_eq_mul"
+    ],
+    "used_by_other_files": [],
+    "assignment_offset": 472,
+    "project_body_refs": [
+      "Roth.exists_int_polynomial_of_primitive_factor_aux",
+      "Roth.exists_primitive_smul_eq",
+      "Roth.rescale_separated_factor_aux"
+    ],
+    "project_type_refs": [],
+    "project_callers": [
+      {
+        "name": "Roth.exists_det_eq_mul",
+        "file": "Roth/Separation.lean",
+        "line": 542
+      }
+    ]
+  }
+]
