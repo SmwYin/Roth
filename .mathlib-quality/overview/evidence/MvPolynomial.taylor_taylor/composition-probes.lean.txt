@@ -1,0 +1,26 @@
+namespace MvPolynomial.TaylorTaylorExtra
+variable {σ R : Type*} [CommSemiring R]
+#check @MvPolynomial.comp_aeval
+#check @MvPolynomial.comp_aeval_apply
+#check @Polynomial.taylor_taylor
+theorem bundled (α β : σ → R) :
+    (taylor α).comp (taylor β) = taylor (fun j ↦ α j + β j) := by
+  apply MvPolynomial.algHom_ext
+  intro j
+  simp [taylor, add_assoc]
+#print axioms bundled
+section Weaker
+variable {T : Type*} [Semiring T]
+#check_failure MvPolynomial.taylor (R := T)
+end Weaker
+end MvPolynomial.TaylorTaylorExtra
+namespace MvPolynomial.TaylorTaylorCallers
+variable {σ A : Type*} [CommRing A]
+theorem negative (α : σ → A) (P : MvPolynomial σ A) :
+    taylor (fun j ↦ -α j) (taylor α P) = P := by
+  simp [TaylorTaylorAssessment.replay]
+theorem injective (α : σ → A) : Function.Injective (taylor α : MvPolynomial σ A → _) :=
+  Function.LeftInverse.injective (negative α)
+#print axioms negative
+#print axioms injective
+end MvPolynomial.TaylorTaylorCallers

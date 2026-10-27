@@ -1,0 +1,40 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+import Mathlib.Algebra.Polynomial.CancelLeads
+import Mathlib.Algebra.MvPolynomial.PDeriv
+namespace MvPolynomial.TaylorTaylorProbe
+#check_failure MvPolynomial.taylor_taylor
+variable {σ R : Type*} [CommSemiring R]
+noncomputable def shift (α : σ → R) : MvPolynomial σ R →ₐ[R] MvPolynomial σ R :=
+  aeval (fun j ↦ X j + C (α j))
+theorem original (α β : σ → R) (P : MvPolynomial σ R) :
+    shift α (shift β P) = shift (fun j ↦ α j + β j) P := by
+  simp [shift, comp_aeval_apply, add_assoc]
+#print axioms original
+theorem bundled (α β : σ → R) :
+    (shift α).comp (shift β) = shift (fun j ↦ α j + β j) := by
+  apply MvPolynomial.algHom_ext
+  intro j
+  simp [shift, add_assoc]
+#print axioms bundled
+variable {S B : Type*} [CommSemiring S] [CommSemiring B] [Algebra R S] [Algebra R B]
+theorem abstractLaw (f : σ → S) (φ : S →ₐ[R] B) (P : MvPolynomial σ R) :
+    φ (aeval f P) = aeval (fun j ↦ φ (f j)) P :=
+  comp_aeval_apply (f := f) φ P
+#print axioms abstractLaw
+#check @MvPolynomial.comp_aeval
+#check @MvPolynomial.comp_aeval_apply
+-- An unsimplified generic composition needs genuine generator normalization.
+theorem exactComposition (α β : σ → R) (P : MvPolynomial σ R) :
+    shift α (shift β P) =
+      aeval (fun j ↦ shift α (X j + C (β j))) P :=
+  comp_aeval_apply (f := fun j ↦ X j + C (β j)) (shift α) P
+#print axioms exactComposition
+end MvPolynomial.TaylorTaylorProbe

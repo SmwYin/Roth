@@ -1,0 +1,85 @@
+{
+  "method": "lean_leanfinder",
+  "form": "current",
+  "request": {
+    "query": "multivariate polynomial Taylor translations compose taylor alpha (taylor beta P) equals taylor (alpha+beta) P",
+    "num_results": 8
+  },
+  "response": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.taylor_taylor\",\n      \"informal_name\": \"Composition of Taylor Expansions: $ T_r(T_s(f)) = T_{r+s}(f) $\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommSemiring R] (f : Polynomial R) (r s : R),\\n  (Polynomial.taylor r) ((Polynomial.taylor s) f) = (Polynomial.taylor (r + s)) f\",\n      \"informal_description\": \"For any polynomial $ f \\\\in R[X] $ and elements $ r, s \\\\in R $, composing the Taylor series expansion at $ r $ with the Taylor series expansion at $ s $ yields the same result as the Taylor series expansion at $ r + s $. Formally, $ \\\\operatorname{taylor}_r(\\\\operatorname{taylor}_s f) = \\\\operatorname{taylor}_{r+s} f $. This expresses the additive property of Taylor shifts in polynomial rings over semirings.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    },\n    {\n      \"formal_name\": \"Polynomial.taylor_apply\",\n      \"informal_name\": \"Taylor Expansion Formula for Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R),\\n  (Polynomial.taylor r) f = f.comp (Polynomial.X + Polynomial.C r)\",\n      \"informal_description\": \"For any polynomial $ f $ in $ R[X] $ and any element $ r $ in the semiring $ R $, the Taylor expansion of $ f $ at $ r $ is equal to the composition of $ f $ with the polynomial $ X + r $, i.e., $ \\\\text{Tay}_r(f) = f(X + r) $, where $ X $ denotes the indeterminate of the polynomial ring.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    },\n    {\n      \"formal_name\": \"Polynomial.taylor\",\n      \"informal_name\": \"Taylor series expansion at r\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : Semiring R] → R → Polynomial R →ₗ[R] Polynomial R\",\n      \"informal_description\": \"For a given element $ r $ in a semiring $ R $, the Taylor series expansion at $ r $ is the $ R $-linear map from $ R[X] $ to $ R[X] $ that sends each polynomial $ f $ to the composition $ f(X + r) $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    },\n    {\n      \"formal_name\": \"Polynomial.taylor_eval\",\n      \"informal_name\": \"Taylor Expansion Evaluation Identity: $(\\\\mathrm{taylor}\\\\, r\\\\, f)(s) = f(s + r)$\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommSemiring R] (r : R) (f : Polynomial R) (s : R),\\n  Polynomial.eval s ((Polynomial.taylor r) f) = Polynomial.eval (s + r) f\",\n      \"informal_description\": \"For any polynomial $ f \\\\in R[X] $ and elements $ r, s \\\\in R $, the evaluation of the Taylor expansion of $ f $ at $ r $ at $ s $ equals $ f(s + r) $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    },\n    {\n      \"formal_name\": \"Polynomial.map_taylor\",\n      \"informal_name\": \"Taylor Series Expansion at r is R-Linear\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_2} {S : Type u_3} [inst : Semiring R] [inst_1 : Semiring S] (p : Polynomial R) (r : R) (f : R →+* S),\\n  Polynomial.map f ((Polynomial.taylor r) p) = (Polynomial.taylor (f r)) (Polynomial.map f p)\",\n      \"informal_description\": \"For any element $ r $ in a semiring $ R $, the Taylor series expansion at $ r $ is an $ R $-linear map from the polynomial ring $ R[X] $ to itself, which sends each polynomial $ f $ to the polynomial obtained by substituting $ X + r $ into $ f $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    },\n    {\n      \"formal_name\": \"Polynomial.taylorEquiv_symm\",\n      \"informal_name\": \"Taylor Isomorphism for Polynomials over Commutative Rings\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] (r : R), (Polynomial.taylorEquiv r).symm = Polynomial.taylorEquiv (-r)\",\n      \"informal_description\": \"For any element $ r $ in a commutative ring $ R $, the Taylor isomorphism is an $ R $-algebra isomorphism from the polynomial ring $ R[X] $ to itself that maps each polynomial $ f(X) $ to $ f(X + r) $. This equivalence preserves addition, multiplication, and scalar multiplication, with the inverse map given by substituting $ X - r $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    },\n    {\n      \"formal_name\": \"Polynomial.taylorEquiv\",\n      \"informal_name\": \"Taylor Isomorphism for Polynomials over Commutative Rings\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : CommRing R] → R → Polynomial R ≃ₐ[R] Polynomial R\",\n      \"informal_description\": \"For any element $ r $ in a commutative ring $ R $, the Taylor isomorphism is an $ R $-algebra isomorphism from the polynomial ring $ R[X] $ to itself that maps each polynomial $ f(X) $ to $ f(X + r) $. This equivalence preserves addition, multiplication, and scalar multiplication, with the inverse map given by substituting $ X - r $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    },\n    {\n      \"formal_name\": \"Polynomial.taylorAlgHom_apply\",\n      \"informal_name\": \"The Taylor Shift Operator: Algebra Homomorphism vs. Linear Map\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommSemiring R] (r : R) (a : Polynomial R),\\n  (Polynomial.taylorAlgHom r) a = (Polynomial.taylor r) a\",\n      \"informal_description\": \"Let $R$ be a commutative semiring, $r \\\\in R$, and $p$ a polynomial over $R$. Then\\n$$ (\\\\text{Polynomial.taylorAlgHom } r)(p) = (\\\\text{Polynomial.taylor } r)(p) $$\\nHere, `Polynomial.taylorAlgHom r` and `Polynomial.taylor r` are the Taylor shift operator $p(X) \\\\mapsto p(X+r)$, viewed as an $R$-algebra homomorphism and an $R$-linear map, respectively.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "items": [
+        {
+          "formal_name": "Polynomial.taylor_taylor",
+          "informal_name": "Composition of Taylor Expansions: $ T_r(T_s(f)) = T_{r+s}(f) $",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} [inst : CommSemiring R] (f : Polynomial R) (r s : R),\n  (Polynomial.taylor r) ((Polynomial.taylor s) f) = (Polynomial.taylor (r + s)) f",
+          "informal_description": "For any polynomial $ f \\in R[X] $ and elements $ r, s \\in R $, composing the Taylor series expansion at $ r $ with the Taylor series expansion at $ s $ yields the same result as the Taylor series expansion at $ r + s $. Formally, $ \\operatorname{taylor}_r(\\operatorname{taylor}_s f) = \\operatorname{taylor}_{r+s} f $. This expresses the additive property of Taylor shifts in polynomial rings over semirings.",
+          "path": "Mathlib.Algebra.Polynomial.Taylor"
+        },
+        {
+          "formal_name": "Polynomial.taylor_apply",
+          "informal_name": "Taylor Expansion Formula for Polynomials",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R),\n  (Polynomial.taylor r) f = f.comp (Polynomial.X + Polynomial.C r)",
+          "informal_description": "For any polynomial $ f $ in $ R[X] $ and any element $ r $ in the semiring $ R $, the Taylor expansion of $ f $ at $ r $ is equal to the composition of $ f $ with the polynomial $ X + r $, i.e., $ \\text{Tay}_r(f) = f(X + r) $, where $ X $ denotes the indeterminate of the polynomial ring.",
+          "path": "Mathlib.Algebra.Polynomial.Taylor"
+        },
+        {
+          "formal_name": "Polynomial.taylor",
+          "informal_name": "Taylor series expansion at r",
+          "kind": "definition",
+          "type": "{R : Type u_1} → [inst : Semiring R] → R → Polynomial R →ₗ[R] Polynomial R",
+          "informal_description": "For a given element $ r $ in a semiring $ R $, the Taylor series expansion at $ r $ is the $ R $-linear map from $ R[X] $ to $ R[X] $ that sends each polynomial $ f $ to the composition $ f(X + r) $.",
+          "path": "Mathlib.Algebra.Polynomial.Taylor"
+        },
+        {
+          "formal_name": "Polynomial.taylor_eval",
+          "informal_name": "Taylor Expansion Evaluation Identity: $(\\mathrm{taylor}\\, r\\, f)(s) = f(s + r)$",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} [inst : CommSemiring R] (r : R) (f : Polynomial R) (s : R),\n  Polynomial.eval s ((Polynomial.taylor r) f) = Polynomial.eval (s + r) f",
+          "informal_description": "For any polynomial $ f \\in R[X] $ and elements $ r, s \\in R $, the evaluation of the Taylor expansion of $ f $ at $ r $ at $ s $ equals $ f(s + r) $.",
+          "path": "Mathlib.Algebra.Polynomial.Taylor"
+        },
+        {
+          "formal_name": "Polynomial.map_taylor",
+          "informal_name": "Taylor Series Expansion at r is R-Linear",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_2} {S : Type u_3} [inst : Semiring R] [inst_1 : Semiring S] (p : Polynomial R) (r : R) (f : R →+* S),\n  Polynomial.map f ((Polynomial.taylor r) p) = (Polynomial.taylor (f r)) (Polynomial.map f p)",
+          "informal_description": "For any element $ r $ in a semiring $ R $, the Taylor series expansion at $ r $ is an $ R $-linear map from the polynomial ring $ R[X] $ to itself, which sends each polynomial $ f $ to the polynomial obtained by substituting $ X + r $ into $ f $.",
+          "path": "Mathlib.Algebra.Polynomial.Taylor"
+        },
+        {
+          "formal_name": "Polynomial.taylorEquiv_symm",
+          "informal_name": "Taylor Isomorphism for Polynomials over Commutative Rings",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} [inst : CommRing R] (r : R), (Polynomial.taylorEquiv r).symm = Polynomial.taylorEquiv (-r)",
+          "informal_description": "For any element $ r $ in a commutative ring $ R $, the Taylor isomorphism is an $ R $-algebra isomorphism from the polynomial ring $ R[X] $ to itself that maps each polynomial $ f(X) $ to $ f(X + r) $. This equivalence preserves addition, multiplication, and scalar multiplication, with the inverse map given by substituting $ X - r $.",
+          "path": "Mathlib.Algebra.Polynomial.Taylor"
+        },
+        {
+          "formal_name": "Polynomial.taylorEquiv",
+          "informal_name": "Taylor Isomorphism for Polynomials over Commutative Rings",
+          "kind": "definition",
+          "type": "{R : Type u_1} → [inst : CommRing R] → R → Polynomial R ≃ₐ[R] Polynomial R",
+          "informal_description": "For any element $ r $ in a commutative ring $ R $, the Taylor isomorphism is an $ R $-algebra isomorphism from the polynomial ring $ R[X] $ to itself that maps each polynomial $ f(X) $ to $ f(X + r) $. This equivalence preserves addition, multiplication, and scalar multiplication, with the inverse map given by substituting $ X - r $.",
+          "path": "Mathlib.Algebra.Polynomial.Taylor"
+        },
+        {
+          "formal_name": "Polynomial.taylorAlgHom_apply",
+          "informal_name": "The Taylor Shift Operator: Algebra Homomorphism vs. Linear Map",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} [inst : CommSemiring R] (r : R) (a : Polynomial R),\n  (Polynomial.taylorAlgHom r) a = (Polynomial.taylor r) a",
+          "informal_description": "Let $R$ be a commutative semiring, $r \\in R$, and $p$ a polynomial over $R$. Then\n$$ (\\text{Polynomial.taylorAlgHom } r)(p) = (\\text{Polynomial.taylor } r)(p) $$\nHere, `Polynomial.taylorAlgHom r` and `Polynomial.taylor r` are the Taylor shift operator $p(X) \\mapsto p(X+r)$, viewed as an $R$-algebra homomorphism and an $R$-linear map, respectively.",
+          "path": "Mathlib.Algebra.Polynomial.Taylor"
+        }
+      ]
+    },
+    "isError": false
+  }
+}

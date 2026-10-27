@@ -1,0 +1,40 @@
+{
+  "declaration": "MvPolynomial.taylor_taylor",
+  "kind": "theorem",
+  "type": "\u2200 {\u03c3 : Type u_1} {R : Type u_2} [CommSemiring R] (\u03b1 \u03b2 : \u03c3 \u2192 R) (P : MvPolynomial \u03c3 R), taylor \u03b1 (taylor \u03b2 P) = taylor (fun j \u21a6 \u03b1 j + \u03b2 j) P",
+  "what": "Two constant polynomial translations compose by adding their translation vectors.",
+  "how": "Generic comp_aeval_apply followed by normalization of evaluation on variable plus constant, associativity, and constant-map additivity.",
+  "hypotheses": [
+    "CommSemiring R; arbitrary independent-universe \u03c3,R; no finite variables, degree bound, characteristic, decidable equality, or nonzero condition"
+  ],
+  "project_dependencies": [
+    "MvPolynomial.taylor"
+  ],
+  "caller_summary": {
+    "named_source_uses": 1,
+    "same_file_named_uses": 1,
+    "external_files": 0,
+    "caller": "Roth/Taylor.lean:184 taylor_neg_taylor",
+    "transitive": [
+      "taylor_injective",
+      "taylor_eq_zero_iff",
+      "eq_sum_box_hasseDeriv"
+    ]
+  },
+  "mathlib_api_audit": [
+    "comp_aeval_apply",
+    "comp_aeval",
+    "map_add",
+    "aeval_X",
+    "algHom_C",
+    "add_assoc",
+    "C_add"
+  ],
+  "moral_duplications": [
+    "Polynomial.taylor_taylor is only a univariate analogue; generic comp_aeval_apply needs nondefinitional generator normalization."
+  ],
+  "generalization": "Already arbitrary-variable CommSemiring interface; no removable assumptions. Bundled AlgHom composition verified; additive action or ring AlgEquiv is prospective structure, not an existing replacement.",
+  "missing_api": "Design question: package translation composition as named law or structural action API; no missing generic composition engine.",
+  "junk": "Live: sole direct caller supplies negative-translation inverse, then injectivity/nonzero and Taylor expansion. No automatic junk verdict.",
+  "action": "BORDERLINE-needs-human: keep in Roth/Taylor.lean pending translation API design; if omitted upstream inline generator normalization at Taylor.lean:184."
+}

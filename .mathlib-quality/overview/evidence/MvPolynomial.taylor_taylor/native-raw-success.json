@@ -1,0 +1,84 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.Polynomial.HasseDeriv\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.LinearAlgebra.Matrix.ToLinearEquiv\nimport Mathlib.RingTheory.Polynomial.Wronskian\nimport Mathlib.LinearAlgebra.Vandermonde\nimport Mathlib.Data.ZMod.Defs\nimport Mathlib.Algebra.Field.ZMod\nimport Mathlib.Algebra.Order.Group.Int.Sum\nimport Mathlib.LinearAlgebra.Matrix.Polynomial\nimport Mathlib.Algebra.Polynomial.CancelLeads\nimport Mathlib.Algebra.MvPolynomial.PDeriv\nnamespace MvPolynomial.TaylorTaylorProbe\n#check_failure MvPolynomial.taylor_taylor\nvariable {σ R : Type*} [CommSemiring R]\nnoncomputable def shift (α : σ → R) : MvPolynomial σ R →ₐ[R] MvPolynomial σ R :=\n  aeval (fun j ↦ X j + C (α j))\ntheorem original (α β : σ → R) (P : MvPolynomial σ R) :\n    shift α (shift β P) = shift (fun j ↦ α j + β j) P := by\n  simp [shift, comp_aeval_apply, add_assoc]\n#print axioms original\ntheorem bundled (α β : σ → R) :\n    (shift α).comp (shift β) = shift (fun j ↦ α j + β j) := by\n  apply MvPolynomial.algHom_ext\n  intro j\n  simp [shift, add_assoc]\n#print axioms bundled\nvariable {S B : Type*} [CommSemiring S] [CommSemiring B] [Algebra R S] [Algebra R B]\ntheorem abstractLaw (f : σ → S) (φ : S →ₐ[R] B) (P : MvPolynomial σ R) :\n    φ (aeval f P) = aeval (fun j ↦ φ (f j)) P :=\n  comp_aeval_apply (f := f) φ P\n#print axioms abstractLaw\n#check @MvPolynomial.comp_aeval\n#check @MvPolynomial.comp_aeval_apply\n-- An unsimplified generic composition needs genuine generator normalization.\ntheorem exactComposition (α β : σ → R) (P : MvPolynomial σ R) :\n    shift α (shift β P) =\n      aeval (fun j ↦ shift α (X j + C (β j))) P :=\n  comp_aeval_apply (f := fun j ↦ X j + C (β j)) (shift α) P\n#print axioms exactComposition\nend MvPolynomial.TaylorTaylorProbe\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown constant `MvPolynomial.taylor_taylor`\",\n      \"line\": 13,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'MvPolynomial.TaylorTaylorProbe.original' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 20,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'MvPolynomial.TaylorTaylorProbe.bundled' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 26,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'MvPolynomial.TaylorTaylorProbe.abstractLaw' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 31,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@comp_aeval : ∀ {R : Type u_5} {S₁ : Type u_6} {σ : Type u_7} [inst : CommSemiring R] [inst_1 : CommSemiring S₁]\\n  [inst_2 : Algebra R S₁] (f : σ → S₁) {B : Type u_8} [inst_3 : CommSemiring B] [inst_4 : Algebra R B] (φ : S₁ →ₐ[R] B),\\n  φ.comp (aeval f) = aeval fun i ↦ φ (f i)\",\n      \"line\": 32,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@comp_aeval_apply : ∀ {R : Type u_5} {S₁ : Type u_6} {σ : Type u_7} [inst : CommSemiring R] [inst_1 : CommSemiring S₁]\\n  [inst_2 : Algebra R S₁] (f : σ → S₁) {B : Type u_8} [inst_3 : CommSemiring B] [inst_4 : Algebra R B] (φ : S₁ →ₐ[R] B)\\n  (p : MvPolynomial σ R), φ ((aeval f) p) = (aeval fun i ↦ φ (f i)) p\",\n      \"line\": 33,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'MvPolynomial.TaylorTaylorProbe.exactComposition' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 39,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown constant `MvPolynomial.taylor_taylor`",
+          "line": 13,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'MvPolynomial.TaylorTaylorProbe.original' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 20,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'MvPolynomial.TaylorTaylorProbe.bundled' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 26,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'MvPolynomial.TaylorTaylorProbe.abstractLaw' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 31,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@comp_aeval : ∀ {R : Type u_5} {S₁ : Type u_6} {σ : Type u_7} [inst : CommSemiring R] [inst_1 : CommSemiring S₁]\n  [inst_2 : Algebra R S₁] (f : σ → S₁) {B : Type u_8} [inst_3 : CommSemiring B] [inst_4 : Algebra R B] (φ : S₁ →ₐ[R] B),\n  φ.comp (aeval f) = aeval fun i ↦ φ (f i)",
+          "line": 32,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@comp_aeval_apply : ∀ {R : Type u_5} {S₁ : Type u_6} {σ : Type u_7} [inst : CommSemiring R] [inst_1 : CommSemiring S₁]\n  [inst_2 : Algebra R S₁] (f : σ → S₁) {B : Type u_8} [inst_3 : CommSemiring B] [inst_4 : Algebra R B] (φ : S₁ →ₐ[R] B)\n  (p : MvPolynomial σ R), φ ((aeval f) p) = (aeval fun i ↦ φ (f i)) p",
+          "line": 33,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'MvPolynomial.TaylorTaylorProbe.exactComposition' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 39,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 853
+}
