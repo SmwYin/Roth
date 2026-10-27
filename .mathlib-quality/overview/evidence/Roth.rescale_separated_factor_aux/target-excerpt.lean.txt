@@ -1,0 +1,7 @@
+private lemma rescale_separated_factor_aux {K : Type*} [Field K] {U' U : MvPolynomial τ K}
+    {V' : Polynomial K} {F : MvPolynomial (Option τ) K} {g : K} (hg : g ≠ 0) (hUmap : U = g • U')
+    (hF : F = rename some U' * Polynomial.aeval (X none : MvPolynomial (Option τ) K) V') :
+    F = rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) K)
+      (Polynomial.C g⁻¹ * V') := by
+  rw [hF, hUmap, map_mul, Polynomial.aeval_C, algebraMap_eq, smul_eq_C_mul, map_mul,
+    rename_C, mul_mul_mul_comm, ← C_mul, mul_inv_cancel₀ hg, C_1, one_mul]

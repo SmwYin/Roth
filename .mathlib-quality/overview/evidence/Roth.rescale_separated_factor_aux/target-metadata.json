@@ -1,0 +1,45 @@
+{
+  "file": "Roth/Separation.lean",
+  "line": 457,
+  "name": "Roth.rescale_separated_factor_aux",
+  "short": "rescale_separated_factor_aux",
+  "kind": "lemma",
+  "visibility": "private",
+  "end_line": 463,
+  "source": "private lemma rescale_separated_factor_aux {K : Type*} [Field K] {U' U : MvPolynomial τ K}\n    {V' : Polynomial K} {F : MvPolynomial (Option τ) K} {g : K} (hg : g ≠ 0) (hUmap : U = g • U')\n    (hF : F = rename some U' * Polynomial.aeval (X none : MvPolynomial (Option τ) K) V') :\n    F = rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) K)\n      (Polynomial.C g⁻¹ * V') := by\n  rw [hF, hUmap, map_mul, Polynomial.aeval_C, algebraMap_eq, smul_eq_C_mul, map_mul,\n    rename_C, mul_mul_mul_comm, ← C_mul, mul_inv_cancel₀ hg, C_1, one_mul]",
+  "signature": "private lemma rescale_separated_factor_aux {K : Type*} [Field K] {U' U : MvPolynomial τ K}\n    {V' : Polynomial K} {F : MvPolynomial (Option τ) K} {g : K} (hg : g ≠ 0) (hUmap : U = g • U')\n    (hF : F = rename some U' * Polynomial.aeval (X none : MvPolynomial (Option τ) K) V') :\n    F = rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) K)\n      (Polynomial.C g⁻¹ * V')",
+  "body": "by\n  rw [hF, hUmap, map_mul, Polynomial.aeval_C, algebraMap_eq, smul_eq_C_mul, map_mul,\n    rename_C, mul_mul_mul_comm, ← C_mul, mul_inv_cancel₀ hg, C_1, one_mul]",
+  "proof_lines": 3,
+  "sha256": "30dcdf462bca41786ec005493a7e81ea62871e50e3f9b20703ab5297462c6cdd",
+  "what": "Scaling one separated factor by a nonzero scalar can be compensated in the other factor.",
+  "how": "Move scalar constants through renaming and evaluation and cancel the scalar with its inverse.",
+  "hypotheses": "Field coefficients; nonzero scale; a given separated factorization.",
+  "source_body_refs": [],
+  "source_type_refs": [],
+  "source_callers": [
+    {
+      "name": "Roth.exists_int_factors",
+      "file": "Roth/Separation.lean",
+      "line": 485
+    }
+  ],
+  "notes": [],
+  "input_file_sha256": "4ac885af6c9973d40f68bd2e6c42185f02a9996271ccaa67d4932d27e85a7d0e",
+  "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+  "section_context": "Namespace Roth; open MvPolynomial. Ambient τ : Type*. Ambient [Fintype τ] and [DecidableEq τ] are explicitly omitted around general declarations; unused section instances are not implicit mathematical hypotheses. Inline binders override/add context. ",
+  "uses_from_project": [],
+  "used_by_in_file": [
+    "Roth.exists_int_factors"
+  ],
+  "used_by_other_files": [],
+  "assignment_offset": 388,
+  "project_body_refs": [],
+  "project_type_refs": [],
+  "project_callers": [
+    {
+      "name": "Roth.exists_int_factors",
+      "file": "Roth/Separation.lean",
+      "line": 485
+    }
+  ]
+}
