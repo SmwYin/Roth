@@ -1,0 +1,16 @@
+namespace MvPolynomial.DegreeDiagComposition
+variable {σ R : Type*} [CommSemiring R]
+theorem expanded [Fintype σ] (P : MvPolynomial σ R) {r : σ → ℕ}
+    (hP : ∀ j, degreeOf j P ≤ r j) :
+    (aeval (fun _ ↦ (Polynomial.X : Polynomial R)) P).natDegree ≤ ∑ j, r j := by
+  classical
+  fail_if_success exact?
+  have htotal : P.totalDegree ≤ ∑ j, r j := by
+    refine (totalDegree_le_degrees_card P).trans ?_
+    rw [← Multiset.sum_count_eq_card (s := Finset.univ) (fun _ _ ↦ Finset.mem_univ _)]
+    exact Finset.sum_le_sum fun j _ ↦ by simpa only [← degreeOf_def] using hP j
+  simpa only [mul_one] using
+    (aeval_natDegree_le P htotal (fun _ ↦ Polynomial.X) fun _ ↦
+      (Polynomial.natDegree_X_le : (Polynomial.X : Polynomial R).natDegree ≤ 1))
+#print axioms expanded
+end MvPolynomial.DegreeDiagComposition

@@ -1,0 +1,59 @@
+{
+  "tool": "mcp__lean_lsp__lean_leanfinder",
+  "request": {
+    "query": "For a polynomial over a commutative semiring, aeval degree bounded by total degree times substitution degrees"
+  },
+  "response": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"MvPolynomial.aeval_natDegree_le\",\n      \"informal_name\": \"Natural Degree Bound for Evaluated Multivariate Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type v} {R : Type u_2} [inst : CommSemiring R] {m n : ℕ} (F : MvPolynomial σ R),\\n  F.totalDegree ≤ m →\\n    ∀ (f : σ → Polynomial R), (∀ (i : σ), (f i).natDegree ≤ n) → ((MvPolynomial.aeval f) F).natDegree ≤ m * n\",\n      \"informal_description\": \"Let $ R $ be a commutative semiring, $ \\\\sigma $ an index type, and $ F \\\\in R[\\\\sigma] $ a multivariate polynomial with total degree $ \\\\leq m $. If each variable in $ F $ is substituted by a univariate polynomial $ f_i \\\\in R[X] $ with natural degree $ \\\\leq n $, then the natural degree of the evaluated polynomial $ \\\\text{aeval}(f)(F) $ is at most $ m \\\\cdot n $. Formally, if $ F.\\\\text{totalDegree} \\\\leq m $ and $ \\\\forall i, (f_i.\\\\text{natDegree} \\\\leq n) $, then $ (\\\\text{aeval}\\\\, f\\\\, F).\\\\text{natDegree} \\\\leq m \\\\cdot n $.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.Basic\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.IsHomogeneous.aeval\",\n      \"informal_name\": \"Homogeneous Polynomial Evaluation Preserves Degree Multiplicatively\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_3} {S : Type u_4} [inst : CommSemiring R] [inst_1 : CommSemiring S]\\n  {φ : MvPolynomial σ R} {m n : ℕ} [inst_2 : Algebra R S],\\n  φ.IsHomogeneous m →\\n    ∀ (g : σ → MvPolynomial τ S), (∀ (i : σ), (g i).IsHomogeneous n) → ((MvPolynomial.aeval g) φ).IsHomogeneous (n * m)\",\n      \"informal_description\": \"If $\\\\varphi$ is a homogeneous polynomial of degree $m$ and each substitution polynomial $g_i$ is homogeneous of degree $n$, then the evaluation of $\\\\varphi$ via these substitutions results in a homogeneous polynomial of degree $n \\\\cdot m$.\",\n      \"path\": \"Mathlib.RingTheory.MvPolynomial.Homogeneous\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.degBound\",\n      \"informal_name\": \"Degree Bound for Multivariate Polynomials in Chevalley's Theorem\",\n      \"kind\": \"definition\",\n      \"type\": \"ℕ → (ℕ → ℕ) → ℕ → ℕ\",\n      \"informal_description\": \"A function that computes a degree bound for multivariate polynomials, taking a natural number $n$, a function $f : \\\\mathbb{N} \\\\to \\\\mathbb{N}$, and an element of the sum type $\\\\mathbb{N} \\\\oplus \\\\mathbb{N}$. For left components, it applies $f$ to $n$, and for right components, it returns $n$ directly. This is used in the proof of Chevalley's theorem to establish well-founded recursion for multivariate polynomial constructions.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.IsHomogeneous.eval₂\",\n      \"informal_name\": \"Evaluation of Homogeneous Polynomials Preserves Degree Product\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_3} {S : Type u_4} [inst : CommSemiring R] [inst_1 : CommSemiring S]\\n  {φ : MvPolynomial σ R} {m n : ℕ},\\n  φ.IsHomogeneous m →\\n    ∀ (f : R →+* MvPolynomial τ S) (g : σ → MvPolynomial τ S),\\n      (∀ (r : R), (f r).IsHomogeneous 0) →\\n        (∀ (i : σ), (g i).IsHomogeneous n) → (MvPolynomial.eval₂ f g φ).IsHomogeneous (n * m)\",\n      \"informal_description\": \"For commutative semirings $ R $ and $ S $, types $ \\\\sigma $ and $ \\\\tau $, and a multivariate polynomial $ \\\\varphi \\\\in R[\\\\sigma] $ that is homogeneous of degree $ m $, if $ f : R \\\\to S[\\\\tau] $ is a ring homomorphism with each $ f(r) $ homogeneous of degree 0, and $ g : \\\\sigma \\\\to S[\\\\tau] $ maps each variable to a homogeneous polynomial of degree $ n $, then the evaluation of $ \\\\varphi $ via $ f $ and $ g $ yields a homogeneous polynomial in $ S[\\\\tau] $ of degree $ n \\\\cdot m $.\",\n      \"path\": \"Mathlib.RingTheory.MvPolynomial.Homogeneous\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.degBound_casesOn_succ\",\n      \"informal_name\": \"Recursive Degree Bound for Multivariate Polynomials in Chevalley's Theorem\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (k₀ k : ℕ) (D : ℕ → ℕ) (n : ℕ),\\n  ChevalleyThm.MvPolynomialC.degBound k₀ (fun t => Nat.casesOn t k D) (n + 1) =\\n    (k₀ * k) ^ (k₀ * k) * ChevalleyThm.MvPolynomialC.degBound (k₀ * k) ((k₀ * k) ^ (k₀ * k) • D) n\",\n      \"informal_description\": \"For natural numbers $k_0, k$, a function $D : \\\\mathbb{N} \\\\to \\\\mathbb{N}$, and any $n \\\\in \\\\mathbb{N}$, the degree bound for $n+1$ satisfies: $$\\\\text{degBound}(k_0, \\\\text{casesOn}(t, k, D), n+1) = (k_0 k)^{k_0 k} \\\\cdot \\\\text{degBound}(k_0 k, ((k_0 k)^{k_0 k} \\\\bullet D), n),$$ where $\\\\bullet$ denotes function scaling. This establishes a recursive relationship for degree bounds in multivariate polynomial constructions used in Chevalley's theorem.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "items": [
+        {
+          "formal_name": "MvPolynomial.aeval_natDegree_le",
+          "informal_name": "Natural Degree Bound for Evaluated Multivariate Polynomials",
+          "kind": "theorem",
+          "type": "∀ {σ : Type v} {R : Type u_2} [inst : CommSemiring R] {m n : ℕ} (F : MvPolynomial σ R),\n  F.totalDegree ≤ m →\n    ∀ (f : σ → Polynomial R), (∀ (i : σ), (f i).natDegree ≤ n) → ((MvPolynomial.aeval f) F).natDegree ≤ m * n",
+          "informal_description": "Let $ R $ be a commutative semiring, $ \\sigma $ an index type, and $ F \\in R[\\sigma] $ a multivariate polynomial with total degree $ \\leq m $. If each variable in $ F $ is substituted by a univariate polynomial $ f_i \\in R[X] $ with natural degree $ \\leq n $, then the natural degree of the evaluated polynomial $ \\text{aeval}(f)(F) $ is at most $ m \\cdot n $. Formally, if $ F.\\text{totalDegree} \\leq m $ and $ \\forall i, (f_i.\\text{natDegree} \\leq n) $, then $ (\\text{aeval}\\, f\\, F).\\text{natDegree} \\leq m \\cdot n $.",
+          "path": "Mathlib.RingTheory.Polynomial.Basic"
+        },
+        {
+          "formal_name": "MvPolynomial.IsHomogeneous.aeval",
+          "informal_name": "Homogeneous Polynomial Evaluation Preserves Degree Multiplicatively",
+          "kind": "theorem",
+          "type": "∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_3} {S : Type u_4} [inst : CommSemiring R] [inst_1 : CommSemiring S]\n  {φ : MvPolynomial σ R} {m n : ℕ} [inst_2 : Algebra R S],\n  φ.IsHomogeneous m →\n    ∀ (g : σ → MvPolynomial τ S), (∀ (i : σ), (g i).IsHomogeneous n) → ((MvPolynomial.aeval g) φ).IsHomogeneous (n * m)",
+          "informal_description": "If $\\varphi$ is a homogeneous polynomial of degree $m$ and each substitution polynomial $g_i$ is homogeneous of degree $n$, then the evaluation of $\\varphi$ via these substitutions results in a homogeneous polynomial of degree $n \\cdot m$.",
+          "path": "Mathlib.RingTheory.MvPolynomial.Homogeneous"
+        },
+        {
+          "formal_name": "ChevalleyThm.MvPolynomialC.degBound",
+          "informal_name": "Degree Bound for Multivariate Polynomials in Chevalley's Theorem",
+          "kind": "definition",
+          "type": "ℕ → (ℕ → ℕ) → ℕ → ℕ",
+          "informal_description": "A function that computes a degree bound for multivariate polynomials, taking a natural number $n$, a function $f : \\mathbb{N} \\to \\mathbb{N}$, and an element of the sum type $\\mathbb{N} \\oplus \\mathbb{N}$. For left components, it applies $f$ to $n$, and for right components, it returns $n$ directly. This is used in the proof of Chevalley's theorem to establish well-founded recursion for multivariate polynomial constructions.",
+          "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+        },
+        {
+          "formal_name": "MvPolynomial.IsHomogeneous.eval₂",
+          "informal_name": "Evaluation of Homogeneous Polynomials Preserves Degree Product",
+          "kind": "theorem",
+          "type": "∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_3} {S : Type u_4} [inst : CommSemiring R] [inst_1 : CommSemiring S]\n  {φ : MvPolynomial σ R} {m n : ℕ},\n  φ.IsHomogeneous m →\n    ∀ (f : R →+* MvPolynomial τ S) (g : σ → MvPolynomial τ S),\n      (∀ (r : R), (f r).IsHomogeneous 0) →\n        (∀ (i : σ), (g i).IsHomogeneous n) → (MvPolynomial.eval₂ f g φ).IsHomogeneous (n * m)",
+          "informal_description": "For commutative semirings $ R $ and $ S $, types $ \\sigma $ and $ \\tau $, and a multivariate polynomial $ \\varphi \\in R[\\sigma] $ that is homogeneous of degree $ m $, if $ f : R \\to S[\\tau] $ is a ring homomorphism with each $ f(r) $ homogeneous of degree 0, and $ g : \\sigma \\to S[\\tau] $ maps each variable to a homogeneous polynomial of degree $ n $, then the evaluation of $ \\varphi $ via $ f $ and $ g $ yields a homogeneous polynomial in $ S[\\tau] $ of degree $ n \\cdot m $.",
+          "path": "Mathlib.RingTheory.MvPolynomial.Homogeneous"
+        },
+        {
+          "formal_name": "ChevalleyThm.MvPolynomialC.degBound_casesOn_succ",
+          "informal_name": "Recursive Degree Bound for Multivariate Polynomials in Chevalley's Theorem",
+          "kind": "theorem",
+          "type": "∀ (k₀ k : ℕ) (D : ℕ → ℕ) (n : ℕ),\n  ChevalleyThm.MvPolynomialC.degBound k₀ (fun t => Nat.casesOn t k D) (n + 1) =\n    (k₀ * k) ^ (k₀ * k) * ChevalleyThm.MvPolynomialC.degBound (k₀ * k) ((k₀ * k) ^ (k₀ * k) • D) n",
+          "informal_description": "For natural numbers $k_0, k$, a function $D : \\mathbb{N} \\to \\mathbb{N}$, and any $n \\in \\mathbb{N}$, the degree bound for $n+1$ satisfies: $$\\text{degBound}(k_0, \\text{casesOn}(t, k, D), n+1) = (k_0 k)^{k_0 k} \\cdot \\text{degBound}(k_0 k, ((k_0 k)^{k_0 k} \\bullet D), n),$$ where $\\bullet$ denotes function scaling. This establishes a recursive relationship for degree bounds in multivariate polynomial constructions used in Chevalley's theorem.",
+          "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+        }
+      ]
+    },
+    "isError": false
+  }
+}

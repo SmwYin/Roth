@@ -1,0 +1,31 @@
+{
+  "declaration": "Roth.natDegree_diag_le",
+  "kind": "theorem",
+  "type": "∀ {σ : Type u_1} [inst : Fintype σ] (P : MvPolynomial σ ℤ) {r : σ → ℕ}, (∀ (j : σ), MvPolynomial.degreeOf j P ≤ r j) → (Roth.diag P).natDegree ≤ ∑ j, r j",
+  "what": "Diagonal substitution has degree at most the sum of coordinate degree bounds.",
+  "how": "Expand into monomials and sum exponent bounds; independently verified existing aeval total-degree route with multiset-count bridge.",
+  "hypotheses": [
+    "arbitrary variable universe σ",
+    "Fintype σ for sum",
+    "P integer polynomial",
+    "r natural coordinate bounds",
+    "∀j, degreeOf j P≤r j"
+  ],
+  "project_dependencies": [
+    "Roth.diag",
+    "Roth.diag_eq_sum"
+  ],
+  "caller_summary": {
+    "named_count": 1,
+    "file": "Roth/MainLemma.lean:513",
+    "declaration": "_private.Roth.MainLemma.0.Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux",
+    "replay": "complete exact caller with expanded generic specialization verified"
+  },
+  "mathlib_api_audit": "aeval_natDegree_le in RingTheory/Polynomial/Basic:898 is broader substitution theorem; totalDegree_le_degrees_card, sum_count_eq_card, sum_le_sum and degreeOf_def derive its premise. No old-form <=3-call term established.",
+  "moral_duplications": "Overlaps existing aeval substitution law; local coordinate sum hypothesis bridge is distinct and not definitional.",
+  "generalization": "Expanded statement verified for arbitrary CommSemiring R; totalDegree bound removes Fintype; integer parent interface unchanged.",
+  "missing_api": "Potential named coordinate-to-totalDegree inequality / bounded variant, pending upstream API choice; search failure not an absence proof.",
+  "junk": "Not dead: one explicit and one canonical direct proof consumer, same private MainLemma theorem.",
+  "action": "Retain local theorem; decide upstream coordinate-to-total bridge API before PR or deletion.",
+  "verdict": "BORDERLINE-needs-human"
+}

@@ -1,0 +1,69 @@
+1404: \begin{proof}
+1405:     Consider the set $\mathcal W$ of all polynomials
+1406:     $$
+1407:     W(x_1, \dots, x_m) =\sum_{s_1=0}^{r_1} \dots \sum_{s_m=0}^{r_m} c(s_1, \dots, s_m) x_1^{s_1} \cdots x_m^{s_m}
+1408:     $$
+1409:     where the coefficients $c(s_1, \dots, s_m)$ are integers satisfying
+1410:     $$
+1411:     0 \leq c(s_1, \dots, s_m) \leq B_1.
+1412:     $$
+1413:     The number of such polynomials is
+1414:     $$
+1415:     |\mathcal W| =  (B_1+1)^r
+1416:     $$
+1417:     with
+1418:      \begin{equation}
+1419:      \label{roth:eq43}
+1420:      r = (r_1 + 1) \cdots (r_m+1).
+1421:  \end{equation}
+1422: 
+1423:  For $W \in \mathcal W$ consider the derivatives
+1424:  $$
+1425:  \Delta_{j_1, \dots, j_m} W
+1426:  $$
+1427:  for integers $j_1, \dots, j_m$ satisfying
+1428:   \begin{equation}
+1429:      \label{roth:eq44}
+1430:  0 \leq j_1 \leq r_1, \dots, 0 \leq j_m \leq r_m, \quad \frac{j_1}{r_1}+ \cdots + \frac{j_m}{r_m} \leq \gamma.
+1431:  \end{equation}
+1432:  By Lemma \ref{roth:lem8} and Equation \eqref{roth:eq35}, the number $D$ of such derivatives satisfies
+1433:  \begin{equation}
+1434:      \label{roth:eq45}
+1435:      D \leq 2m^{1/2} \lambda^{-1} r,
+1436:  \end{equation}
+1437:  with $r$ as in \eqref{roth:eq43}. For each such derivative let
+1438:  $$
+1439:  T_{j_1, \dots, j_m}(W; x)
+1440:  $$
+1441:  be the remainder of the division of $\Delta_{j_1, \dots, j_m}W(x, \dots, x)$ by $f(x)$.  Since $f$ is a monic polynomial, $T_{j_1, \dots, j_m}(W; x)$ will have integer coefficients, and its degree is less than or equal to $n-1$.
+1442: 
+1443: Our first task is to find an upper bound for the sizes of the coefficients of the polynomials $T_{j_1, \dots, j_m}(W; x)$. For $W \in \mathcal W$ we have
+1444: $$
+1445: abc(\Delta_{j_1, \dots, j_m} W) \leq 2^{r_1 +\dots + r_m} B_1 \leq 2^{mr_1} B_1 < B_1^{1+\delta}
+1446: $$
+1447: by \eqref{roth:three-small-factors}. Indeed, \eqref{roth:eq32} gives
+1448: $mr_1\log2<\tfrac12\delta^2r_1\log q_1<\delta\log B_1$.
+1449: When we replace $x_1, \dots, x_m$ by the same variable $x$ the absolute value of the coefficients of the resulting polynomial is at most the number of terms of the polynomial, which is at most $r$, multiplied by the coefficient bound $B_1^{1+\delta}$. Now,
+1450: $$
+1451: r = (r_1 + 1) \cdots (r_m + 1) \leq 2^{r_1 + \dots + r_m} \leq 2^{mr_1} < B_1^\delta,
+1452: $$
+1453: and this implies that $rB_1^{1+ \delta} < B_1^{1 + 2 \delta}$.  Consequently, the coefficients of $\Delta_{j_1, \dots, j_m}W (x, \dots, x)$ are bounded in absolute value by $B_1^{1+ 2\delta}$. Next we examine the effect of division by $f$ on these coefficients. Write
+1454: $$
+1455: \Delta_{j_1, \dots, j_m}W (x, \dots, x) = w_s x^s + w_{s-1} x^{s-1} + \cdots + w_0.
+1456: $$
+1457: When we divide this polynomial by $f$, the first operation we do (assuming $s \geq n$) is to subtract $w_s x^{s-n} f(x)$ and this gives a new polynomial whose coefficients are either of the form $w_\nu-a_{s-\nu}w_s$ (when $1\leq s-\nu\leq n$) or of the form $w_\nu$.  Since the $a_{s-\nu}$'s
+1458: are bounded by $A$, the absolute values of the resulting coefficients are at most $$(1 + A)  \cdot abc\, (\Delta_{j_1, \dots, j_m}W (x, \dots, x)) \leq (1+A) B_1^{1 + 2 \delta}.$$
+1459: If the input polynomial is zero, its remainder is zero. Otherwise the
+1460: number of leading-term eliminations is at most $\max(0,s-n+1)$: there are
+1461: none when $s<n$, and each elimination lowers the degree by at least one.
+1462: It follows that
+1463: \[
+1464: abc(T_{j_1,\dots,j_m}(W;x))
+1465:  \leq(1+A)^{\max(0,s-n+1)}B_1^{1+2\delta}
+1466:  \leq(1+A)^{mr_1}B_1^{1+2\delta}<B_1^{1+3\delta},
+1467: \]
+1468: using $s\leq\sum_jr_j\leq mr_1$ and
+1469: \eqref{roth:three-small-factors}.
+1470: \lean{Use
+1471: \texttt{Polynomial.modByMonic}\footnote{\url{https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/Polynomial/Div.html}}
+1472: directly in $\Z[X]$, rather than dividing over $\Q$ and later recovering

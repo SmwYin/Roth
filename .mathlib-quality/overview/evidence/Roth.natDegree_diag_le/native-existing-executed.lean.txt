@@ -1,0 +1,46 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+import Mathlib.Algebra.Polynomial.CancelLeads
+import Mathlib.Algebra.MvPolynomial.PDeriv
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+import Mathlib.Algebra.MvPolynomial.Equiv
+import Mathlib.Analysis.Normed.Unbundled.RingSeminorm
+import Mathlib.LinearAlgebra.Matrix.AbsoluteValue
+import Mathlib.Data.Nat.Choose.Bounds
+import Mathlib.RingTheory.Polynomial.Basic
+#check_failure Roth.natDegree_diag_le
+#check_failure Roth.diag
+namespace MvPolynomial.DegreeDiagExisting
+variable {σ R : Type*} [CommSemiring R]
+theorem total (P : MvPolynomial σ R) :
+    (aeval (fun _ ↦ (Polynomial.X : Polynomial R)) P).natDegree ≤ P.totalDegree := by
+  simpa only [mul_one] using
+    (aeval_natDegree_le P le_rfl (fun _ ↦ Polynomial.X) fun _ ↦
+      (Polynomial.natDegree_X_le : (Polynomial.X : Polynomial R).natDegree ≤ 1))
+theorem total_bound [Fintype σ] (P : MvPolynomial σ R) {r : σ → ℕ}
+    (hP : ∀ j, degreeOf j P ≤ r j) : P.totalDegree ≤ ∑ j, r j := by
+  classical
+  refine (totalDegree_le_degrees_card P).trans ?_
+  rw [← Multiset.sum_count_eq_card (s := Finset.univ) (fun _ _ ↦ Finset.mem_univ _)]
+  exact Finset.sum_le_sum fun j _ ↦ by simpa only [← degreeOf_def] using hP j
+theorem generic [Fintype σ] (P : MvPolynomial σ R) {r : σ → ℕ}
+    (hP : ∀ j, degreeOf j P ≤ r j) :
+    (aeval (fun _ ↦ (Polynomial.X : Polynomial R)) P).natDegree ≤ ∑ j, r j := by
+  simpa only [mul_one] using
+    (aeval_natDegree_le P (total_bound P hP) (fun _ ↦ Polynomial.X) fun _ ↦
+      (Polynomial.natDegree_X_le : (Polynomial.X : Polynomial R).natDegree ≤ 1))
+#check @MvPolynomial.aeval_natDegree_le
+#check @Multiset.sum_count_eq_card
+#check @MvPolynomial.degreeOf_def
+#check @Polynomial.natDegree_X_le
+#print axioms total
+#print axioms total_bound
+#print axioms generic
+end MvPolynomial.DegreeDiagExisting
