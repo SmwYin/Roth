@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 76/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 77/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 76; remaining: 217.
-- Verdicts: 12 NO-composable-from-mathlib, 13 YES-add-as-is, 6 YES-but-generalise-first, 11 NO-mathlib-has-it, 25 BORDERLINE-needs-human, 9 SKIP.
+- Completed applicable assessments: 77; remaining: 216.
+- Verdicts: 13 NO-composable-from-mathlib, 13 YES-add-as-is, 6 YES-but-generalise-first, 11 NO-mathlib-has-it, 25 BORDERLINE-needs-human, 9 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -819,6 +819,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: 11 distinct direct declaration consumers: 5 CoeffNorm and 6 MainLemma in one external file. Full vanishing/subtraction replays and mathlib-only generalized expansion verified; all 11 caller plans explicit. Arbitrary predicate-context rfl transport checked, not a claim all callers were separately rebuilt.
 - Verdict: NO-composable-from-mathlib; [complete report](.mathlib-quality/overview/mathlibable/Roth.diag.md).
 
+### Completed: `Roth.normOne_nonneg`
+
+- Type: `∀ {σ : Type u_1} (P : MvPolynomial σ ℤ), 0 ≤ Roth.normOne P`
+- What: Nonnegativity of integer polynomial coefficient ℓ¹ norm.
+- How: Finite sum of nonnegative real absolute values; exactly Finset.sum_nonneg + abs_nonneg.
+- Hypotheses: Arbitrary universe-polymorphic variable type and polynomial. No Fintype, DecidableEq, nonzero, degree or sign assumptions.
+- Project dependencies: Roth.normOne
+- Caller summary: Two named consumers, normOne_prod_le107 and normOne_det_le128, both full proof replays validated with fresh replacement.
+- Verdict: NO-composable-from-mathlib; [complete report](.mathlib-quality/overview/mathlibable/Roth.normOne_nonneg.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -997,6 +1007,8 @@ Completed `Roth.normOne`: Finsupp.sum gives exact scalar construction by rfl. Fi
 
 Completed `Roth.diag`: MvPolynomial.aeval (Eval569) gives exact construction; comp_aeval_apply and Polynomial.aeval_X give arbitrary algebra-target evaluation. Existing rename and uniqueAlgEquiv supply alternate bundle. pUnitAlgEquiv deprecated in pinned source, avoided in probes.
 
+Completed `Roth.normOne_nonneg`: Finset.sum_nonneg and abs_nonneg close exact expanded statement; Finsupp.sum_nonneg supplies generalized arbitrary-index ordered-codomain aggregation. No exact generic norm_nonneg application without correct norm structure bridge.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -1150,6 +1162,8 @@ Completed `MvPolynomial.eval_eq_sum_box`: Polynomial reconstruction, coefficient
 Completed `Roth.normOne`: No second full coefficient-L1 definition found. Diagonal/evaluation absolute-sum estimates concern different quantities. Bound laws need independent assessments rather than automatic inheritance of construction verdict.
 
 Completed `Roth.diag`: No second arbitrary-variable diagonal implementation found; HasseDeriv unique-variable transport is different. Not generating-series coefficient diagonal extraction. Bounds need independent assessments.
+
+Completed `Roth.normOne_nonneg`: Generic finite-sum nonnegativity; individual abs_nonneg uses elsewhere are not duplicate full theorem.
 
 ## Part 5: Generalization opportunities
 
@@ -1308,6 +1322,8 @@ Completed `Roth.normOne`: Verified CommSemiring R + Norm R coefficient sum and i
 
 Completed `Roth.diag`: Verified CommSemiring R, independent arbitrary variable universe, exact ℤ specialization, empty/lifted variables and arbitrary commutative R-algebra evaluation. Bool/ℤ noninjectivity proved; no degree equality or equivalence claimed.
 
+Completed `Roth.normOne_nonneg`: Fixed parent interface has no removable assumptions. Verified expanded formula to arbitrary Zero coefficients and ordered additive monoid sizes, requiring nonnegativity only on support; norm-coefficient specialization also verified.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -1462,6 +1478,8 @@ Completed `MvPolynomial.eval_eq_sum_box`: Multivariate Hasse finite Taylor evalu
 Completed `Roth.normOne`: No missing scalar construction established; general coefficient L1/convolution normed structure and substantive bounds are separate potential contributions. Pinned Polynomial.Norm explicitly lists other Lp norms as TODO.
 
 Completed `Roth.diag`: No missing scalar construction, hom bundle or evaluation-composition API established. Specialized coefficient/degree bounds remain separate assessment candidates.
+
+Completed `Roth.normOne_nonneg`: None established for nonnegativity; full bundled coefficient/convolution norm structure is separate from this law.
 
 ## Part 7: Junk / removable
 
@@ -1620,6 +1638,8 @@ Completed `Roth.normOne`: Useful semantic one-line local API with fourteen consu
 
 Completed `Roth.diag`: Useful one-line semantic local API with eleven consumers; retain in CoeffNorm under production freeze. No claim downstream estimates are junk.
 
+Completed `Roth.normOne_nonneg`: Useful local convenience with two consumers, not dead code. No production deletion in read-only survey.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -1700,6 +1720,7 @@ Completed `Roth.diag`: Useful one-line semantic local API with eleven consumers;
 | 74 | `MvPolynomial.eval_eq_sum_box` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.eval_eq_sum_box.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.eval_eq_sum_box/root-acceptance.json) |
 | 75 | `Roth.normOne` | NO-composable-from-mathlib | [Report](.mathlib-quality/overview/mathlibable/Roth.normOne.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.normOne/root-acceptance.json) |
 | 76 | `Roth.diag` | NO-composable-from-mathlib | [Report](.mathlib-quality/overview/mathlibable/Roth.diag.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.diag/root-acceptance.json) |
+| 77 | `Roth.normOne_nonneg` | NO-composable-from-mathlib | [Report](.mathlib-quality/overview/mathlibable/Roth.normOne_nonneg.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.normOne_nonneg/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -1851,11 +1872,13 @@ Completed `Roth.normOne` action: NO-composable-from-mathlib for upstream integer
 
 Completed `Roth.diag` action: NO-composable-from-mathlib upstream wrapper. Reuse existing aeval; if later deleting, apply all eleven explicit caller plans and full dependent validation. Production sources unchanged.
 
+Completed `Roth.normOne_nonneg` action: NO-composable-from-mathlib upstream. Keep local CoeffNorm convenience or inline exact two-call proof at two specified callers after separate authorized source refactor.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.normOne_nonneg` next. Supporting identities receive their own applicable checks.
+   `Roth.normOne_eq_sum_of_support_subset` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.

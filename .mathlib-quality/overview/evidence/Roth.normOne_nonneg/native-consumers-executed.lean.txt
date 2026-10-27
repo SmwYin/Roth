@@ -1,0 +1,27 @@
+namespace MvPolynomial.NormNonnegativeConsumers
+open Roth
+variable {σ : Type*}
+theorem product {ι : Type*} (s : Finset ι) (f : ι → MvPolynomial σ ℤ) :
+    normOne (∏ i ∈ s, f i) ≤ ∏ i ∈ s, normOne (f i) :=
+  Finset.le_prod_of_submultiplicative_of_nonneg normOne NormNonnegativeAssessment.replay
+    (by simpa using (normOne_monomial (0 : σ →₀ ℕ) 1).le) normOne_mul_le s f
+theorem determinant {l : ℕ} (M : Matrix (Fin l) (Fin l) (MvPolynomial σ ℤ)) {C : ℝ}
+    (hM : ∀ μ ν, normOne (M μ ν) ≤ C) : normOne M.det ≤ l.factorial * C ^ l := by
+  classical
+  rw [Matrix.det_apply']
+  calc _ ≤ ∑ τ : Equiv.Perm (Fin l), normOne (_ * ∏ i, M (τ i) i) := normOne_sum_le _ _
+    _ ≤ ∑ _τ : Equiv.Perm (Fin l), C ^ l := Finset.sum_le_sum fun τ _ ↦ ?_
+    _ = l.factorial * C ^ l := by simp [Fintype.card_perm]
+  rcases Int.units_eq_one_or (Equiv.Perm.sign τ) with h | h <;>
+    simpa [h, normOne_neg] using (product Finset.univ fun i ↦ M (τ i) i).trans
+      ((Finset.prod_le_prod₀ (fun _ _ ↦ NormNonnegativeAssessment.replay _) fun i _ ↦
+        hM _ _).trans_eq (by simp))
+#print axioms product
+#print axioms determinant
+run_cmd do
+  let env ← Lean.getEnv
+  for n in [`Finset.sum_nonneg, `abs_nonneg, `Finsupp.sum_nonneg, `norm_nonneg] do
+    match env.find? n with
+    | some ci => Lean.logInfo m!"{n}: {ci.type}"
+    | none => Lean.logInfo m!"{n}: not present in this environment"
+end MvPolynomial.NormNonnegativeConsumers

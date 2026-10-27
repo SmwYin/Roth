@@ -1,0 +1,30 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+import Mathlib.Algebra.Polynomial.CancelLeads
+import Mathlib.Algebra.MvPolynomial.PDeriv
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+import Mathlib.Algebra.MvPolynomial.Equiv
+#check_failure Roth.normOne_nonneg
+namespace NormNonnegativeRaw
+variable {σ : Type*}
+theorem current (P : MvPolynomial σ ℤ) :
+    0 ≤ ∑ d ∈ P.support, |((P.coeff d : ℤ) : ℝ)| :=
+  Finset.sum_nonneg fun _ _ ↦ abs_nonneg _
+theorem finsuppCurrent (P : MvPolynomial σ ℤ) :
+    0 ≤ P.coeff.sum (fun _ z ↦ |(z : ℝ)|) :=
+  Finsupp.sum_nonneg fun _ _ ↦ abs_nonneg _
+theorem supportOnly {ι R S : Type*} [Zero R] [AddCommMonoid S] [Preorder S]
+    [IsOrderedAddMonoid S] (f : ι →₀ R) (size : ι → R → S)
+    (hsize : ∀ i ∈ f.support, 0 ≤ size i (f i)) : 0 ≤ f.sum size :=
+  Finsupp.sum_nonneg hsize
+#print axioms current
+#print axioms finsuppCurrent
+#print axioms supportOnly
+end NormNonnegativeRaw

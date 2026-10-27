@@ -1,0 +1,738 @@
+[
+  {
+    "method": "lean_leanfinder",
+    "form": "current",
+    "request": {
+      "tool": "lean_leanfinder",
+      "args": {
+        "query": "Nonnegativity of sum absolute values real-cast integer coefficients of a multivariate polynomial",
+        "num_results": 6
+      }
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.gaussNorm_nonneg\",\n      \"informal_name\": \"Non-Negativity of the Gauss Norm\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {F : Type u_2} [inst : Semiring R] [inst_1 : FunLike F R ℝ] (v : F) {c : ℝ} (p : Polynomial R),\\n  0 ≤ c → ∀ [NonnegHomClass F R ℝ], 0 ≤ Polynomial.gaussNorm v c p\",\n      \"informal_description\": \"For a polynomial $ p $ over a semiring $ R $, if $ c \\\\geq 0 $ and $ v $ is a non-negative valuation (i.e., $ v(a) \\\\geq 0 $ for all $ a \\\\in R $), then the Gauss norm $ \\\\|p\\\\|_v^c $ satisfies $ 0 \\\\leq \\\\|p\\\\|_v^c $. The Gauss norm is defined as the supremum of $ v(a_i) \\\\cdot c^i $ over all coefficients $ a_i $ of $ p $, with $ \\\\|p\\\\|_v^c = 0 $ when $ p $ is the zero polynomial.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.GaussNorm\"\n    },\n    {\n      \"formal_name\": \"Poly.sumsq_nonneg\",\n      \"informal_name\": \"Non-Negativity of Sum of Squares of Integer Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} (x : α → ℕ) (l : List (Poly α)), 0 ≤ (Poly.sumsq l) x\",\n      \"informal_description\": \"For any assignment $x : \\\\alpha \\\\to \\\\mathbb{N}$ of natural numbers to variables indexed by $\\\\alpha$, the evaluation of the sum of squares of a list of integer polynomials at $x$ yields a non-negative integer, i.e., $\\\\text{sumsq}(l)(x) \\\\geq 0$ for all lists $l$ of polynomials in $\\\\text{Poly}\\\\, \\\\alpha$.\",\n      \"path\": \"Mathlib.NumberTheory.Dioph\"\n    },\n    {\n      \"formal_name\": \"Dioph.abs_poly_dioph\",\n      \"informal_name\": \"Absolute Value of Integer Polynomial is Diophantine\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u} (p : Poly α), Dioph.DiophFn fun v => (p v).natAbs\",\n      \"informal_description\": \"For any polynomial $ p $ with integer coefficients in variables indexed by $ \\\\alpha $, the function that maps each valuation $ v : \\\\alpha \\\\to \\\\mathbb{N} $ to the absolute value of $ p(v) $ is a Diophantine function. This means there exists a polynomial equation in variables indexed by $ \\\\alpha \\\\oplus \\\\beta $ with integer coefficients such that for any $ v : \\\\alpha \\\\to \\\\mathbb{N} $, there exists $ t : \\\\beta \\\\to \\\\mathbb{N} $ making the equation hold if and only if $ |p(v)| $ equals the extended valuation at $ \\\\text{none} $.\",\n      \"path\": \"Mathlib.NumberTheory.Dioph\"\n    },\n    {\n      \"formal_name\": \"spectralValueTerms_nonneg\",\n      \"informal_name\": \"Non-Negativity of Spectral Value Terms\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : SeminormedRing R] (p : Polynomial R) (n : ℕ), 0 ≤ spectralValueTerms p n\",\n      \"informal_description\": \"For any polynomial $ p $ over a seminormed ring $ R $ and any natural number $ n $, the $ n $-th term of the spectral value terms sequence is non-negative. Specifically, each term is defined as $ \\\\|p_n\\\\|^{1/(d - n)} $ for $ n < d $ (where $ d $ is the degree of $ p $) and $ 0 $ otherwise, and all such terms satisfy $ \\\\geq 0 $.\",\n      \"path\": \"Mathlib.Analysis.Normed.Unbundled.SpectralNorm\"\n    },\n    {\n      \"formal_name\": \"IsAbsoluteValue.Mathlib.Meta.Positivity.evalAbv\",\n      \"informal_name\": \"Positivity evaluation for absolute value expressions\",\n      \"kind\": \"definition\",\n      \"type\": \"Mathlib.Meta.Positivity.PositivityExt\",\n      \"informal_description\": \"A function that evaluates the strictness level of an absolute value expression by checking if it is of the form $\\\\text{abv}(a)$, verifying the function is a variable, and using the nonnegativity of absolute values to return a strictness level indicating nonnegativity.\",\n      \"path\": \"Mathlib.Algebra.Order.AbsoluteValue.Basic\"\n    },\n    {\n      \"formal_name\": \"Polynomial.mahlerMeasure_nonneg\",\n      \"informal_name\": \"Non-Negativity of the Mahler Measure\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (p : Polynomial ℂ), 0 ≤ p.mahlerMeasure\",\n      \"informal_description\": \"The Mahler measure of any polynomial $ p $ is non-negative, i.e., $ \\\\text{MahlerMeasure}(p) \\\\geq 0 $.\",\n      \"path\": \"Mathlib.Analysis.Polynomial.MahlerMeasure\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Polynomial.gaussNorm_nonneg",
+            "informal_name": "Non-Negativity of the Gauss Norm",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {F : Type u_2} [inst : Semiring R] [inst_1 : FunLike F R ℝ] (v : F) {c : ℝ} (p : Polynomial R),\n  0 ≤ c → ∀ [NonnegHomClass F R ℝ], 0 ≤ Polynomial.gaussNorm v c p",
+            "informal_description": "For a polynomial $ p $ over a semiring $ R $, if $ c \\geq 0 $ and $ v $ is a non-negative valuation (i.e., $ v(a) \\geq 0 $ for all $ a \\in R $), then the Gauss norm $ \\|p\\|_v^c $ satisfies $ 0 \\leq \\|p\\|_v^c $. The Gauss norm is defined as the supremum of $ v(a_i) \\cdot c^i $ over all coefficients $ a_i $ of $ p $, with $ \\|p\\|_v^c = 0 $ when $ p $ is the zero polynomial.",
+            "path": "Mathlib.RingTheory.Polynomial.GaussNorm"
+          },
+          {
+            "formal_name": "Poly.sumsq_nonneg",
+            "informal_name": "Non-Negativity of Sum of Squares of Integer Polynomials",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} (x : α → ℕ) (l : List (Poly α)), 0 ≤ (Poly.sumsq l) x",
+            "informal_description": "For any assignment $x : \\alpha \\to \\mathbb{N}$ of natural numbers to variables indexed by $\\alpha$, the evaluation of the sum of squares of a list of integer polynomials at $x$ yields a non-negative integer, i.e., $\\text{sumsq}(l)(x) \\geq 0$ for all lists $l$ of polynomials in $\\text{Poly}\\, \\alpha$.",
+            "path": "Mathlib.NumberTheory.Dioph"
+          },
+          {
+            "formal_name": "Dioph.abs_poly_dioph",
+            "informal_name": "Absolute Value of Integer Polynomial is Diophantine",
+            "kind": "theorem",
+            "type": "∀ {α : Type u} (p : Poly α), Dioph.DiophFn fun v => (p v).natAbs",
+            "informal_description": "For any polynomial $ p $ with integer coefficients in variables indexed by $ \\alpha $, the function that maps each valuation $ v : \\alpha \\to \\mathbb{N} $ to the absolute value of $ p(v) $ is a Diophantine function. This means there exists a polynomial equation in variables indexed by $ \\alpha \\oplus \\beta $ with integer coefficients such that for any $ v : \\alpha \\to \\mathbb{N} $, there exists $ t : \\beta \\to \\mathbb{N} $ making the equation hold if and only if $ |p(v)| $ equals the extended valuation at $ \\text{none} $.",
+            "path": "Mathlib.NumberTheory.Dioph"
+          },
+          {
+            "formal_name": "spectralValueTerms_nonneg",
+            "informal_name": "Non-Negativity of Spectral Value Terms",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : SeminormedRing R] (p : Polynomial R) (n : ℕ), 0 ≤ spectralValueTerms p n",
+            "informal_description": "For any polynomial $ p $ over a seminormed ring $ R $ and any natural number $ n $, the $ n $-th term of the spectral value terms sequence is non-negative. Specifically, each term is defined as $ \\|p_n\\|^{1/(d - n)} $ for $ n < d $ (where $ d $ is the degree of $ p $) and $ 0 $ otherwise, and all such terms satisfy $ \\geq 0 $.",
+            "path": "Mathlib.Analysis.Normed.Unbundled.SpectralNorm"
+          },
+          {
+            "formal_name": "IsAbsoluteValue.Mathlib.Meta.Positivity.evalAbv",
+            "informal_name": "Positivity evaluation for absolute value expressions",
+            "kind": "definition",
+            "type": "Mathlib.Meta.Positivity.PositivityExt",
+            "informal_description": "A function that evaluates the strictness level of an absolute value expression by checking if it is of the form $\\text{abv}(a)$, verifying the function is a variable, and using the nonnegativity of absolute values to return a strictness level indicating nonnegativity.",
+            "path": "Mathlib.Algebra.Order.AbsoluteValue.Basic"
+          },
+          {
+            "formal_name": "Polynomial.mahlerMeasure_nonneg",
+            "informal_name": "Non-Negativity of the Mahler Measure",
+            "kind": "theorem",
+            "type": "∀ (p : Polynomial ℂ), 0 ≤ p.mahlerMeasure",
+            "informal_description": "The Mahler measure of any polynomial $ p $ is non-negative, i.e., $ \\text{MahlerMeasure}(p) \\geq 0 $.",
+            "path": "Mathlib.Analysis.Polynomial.MahlerMeasure"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_leanfinder",
+    "form": "standard",
+    "request": {
+      "tool": "lean_leanfinder",
+      "args": {
+        "query": "The l1 norm or length of a polynomial is nonnegative",
+        "num_results": 6
+      }
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.gaussNorm_nonneg\",\n      \"informal_name\": \"Non-Negativity of the Gauss Norm\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {F : Type u_2} [inst : Semiring R] [inst_1 : FunLike F R ℝ] (v : F) {c : ℝ} (p : Polynomial R),\\n  0 ≤ c → ∀ [NonnegHomClass F R ℝ], 0 ≤ Polynomial.gaussNorm v c p\",\n      \"informal_description\": \"For a polynomial $ p $ over a semiring $ R $, if $ c \\\\geq 0 $ and $ v $ is a non-negative valuation (i.e., $ v(a) \\\\geq 0 $ for all $ a \\\\in R $), then the Gauss norm $ \\\\|p\\\\|_v^c $ satisfies $ 0 \\\\leq \\\\|p\\\\|_v^c $. The Gauss norm is defined as the supremum of $ v(a_i) \\\\cdot c^i $ over all coefficients $ a_i $ of $ p $, with $ \\\\|p\\\\|_v^c = 0 $ when $ p $ is the zero polynomial.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.GaussNorm\"\n    },\n    {\n      \"formal_name\": \"Polynomial.mahlerMeasure_nonneg\",\n      \"informal_name\": \"Non-Negativity of the Mahler Measure\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (p : Polynomial ℂ), 0 ≤ p.mahlerMeasure\",\n      \"informal_description\": \"The Mahler measure of any polynomial $ p $ is non-negative, i.e., $ \\\\text{MahlerMeasure}(p) \\\\geq 0 $.\",\n      \"path\": \"Mathlib.Analysis.Polynomial.MahlerMeasure\"\n    },\n    {\n      \"formal_name\": \"Polynomial.gaussNorm\",\n      \"informal_name\": \"Gauss norm of a polynomial\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → {F : Type u_2} → [inst : Semiring R] → [FunLike F R ℝ] → F → ℝ → Polynomial R → ℝ\",\n      \"informal_description\": \"The Gauss norm of a polynomial $ p $ is defined as the supremum of $ v(a_i) \\\\cdot c^i $ over all exponents $ i $ in the support of $ p $, where $ a_i $ is the coefficient of $ X^i $ in $ p $. If $ p $ is the zero polynomial (with empty support), the Gauss norm is defined to be $ 0 $. Here, $ v $ denotes a valuation and $ c $ is a real number parameter.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.GaussNorm\"\n    },\n    {\n      \"formal_name\": \"Polynomial.length_coeffList_eq_ite\",\n      \"informal_name\": \"Coefficient List Length Equals Zero or Natural Degree Plus One\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] [inst_1 : DecidableEq R] (P : Polynomial R),\\n  P.coeffList.length = if P = 0 then 0 else P.natDegree + 1\",\n      \"informal_description\": \"For a polynomial $ P $ over a semiring $ R $ with decidable equality, the length of the coefficient list of $ P $ is 0 if $ P $ is the zero polynomial, and $ \\\\operatorname{natDegree}(P) + 1 $ otherwise.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.CoeffList\"\n    },\n    {\n      \"formal_name\": \"Polynomial.length_coeffList_eq_withBotSucc_degree\",\n      \"informal_name\": \"Length of Coefficient List Equals Successor of Degree\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (P : Polynomial R), P.coeffList.length = P.degree.succ\",\n      \"informal_description\": \"For any polynomial $P$ over a semiring $R$, the length of the coefficient list of $P$, ordered from the highest degree term down to the constant term, is equal to the successor of the degree of $P$ in $\\\\mathbb{N} \\\\cup \\\\{-\\\\infty\\\\}$. Specifically, if $P$ has degree $d$, then the coefficient list has $d + 1$ elements; for the zero polynomial (degree $-\\\\infty$), the coefficient list is empty and $\\\\text{succ}(-\\\\infty) = 0$.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.CoeffList\"\n    },\n    {\n      \"formal_name\": \"Polynomial.cardPowDegree\",\n      \"informal_name\": \"Cardinality-based absolute value on polynomials over a finite field\",\n      \"kind\": \"definition\",\n      \"type\": \"{Fq : Type u_1} → [inst : Field Fq] → [Fintype Fq] → AbsoluteValue (Polynomial Fq) ℤ\",\n      \"informal_description\": \"The function assigns to each polynomial $ p $ over a finite field $ \\\\mathbb{F}_q $ the value $ 0 $ if $ p = 0 $, and $ |\\\\mathbb{F}_q|^{\\\\deg(p)} $ (as an integer) otherwise, where $ \\\\deg(p) $ denotes the natural degree of $ p $. This satisfies the absolute value properties: non-negativity, multiplicativity ($ |pq| = |p||q| $), and the triangle inequality ($ |p+q| \\\\leq |p| + |q| $).\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Degree.CardPowDegree\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Polynomial.gaussNorm_nonneg",
+            "informal_name": "Non-Negativity of the Gauss Norm",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {F : Type u_2} [inst : Semiring R] [inst_1 : FunLike F R ℝ] (v : F) {c : ℝ} (p : Polynomial R),\n  0 ≤ c → ∀ [NonnegHomClass F R ℝ], 0 ≤ Polynomial.gaussNorm v c p",
+            "informal_description": "For a polynomial $ p $ over a semiring $ R $, if $ c \\geq 0 $ and $ v $ is a non-negative valuation (i.e., $ v(a) \\geq 0 $ for all $ a \\in R $), then the Gauss norm $ \\|p\\|_v^c $ satisfies $ 0 \\leq \\|p\\|_v^c $. The Gauss norm is defined as the supremum of $ v(a_i) \\cdot c^i $ over all coefficients $ a_i $ of $ p $, with $ \\|p\\|_v^c = 0 $ when $ p $ is the zero polynomial.",
+            "path": "Mathlib.RingTheory.Polynomial.GaussNorm"
+          },
+          {
+            "formal_name": "Polynomial.mahlerMeasure_nonneg",
+            "informal_name": "Non-Negativity of the Mahler Measure",
+            "kind": "theorem",
+            "type": "∀ (p : Polynomial ℂ), 0 ≤ p.mahlerMeasure",
+            "informal_description": "The Mahler measure of any polynomial $ p $ is non-negative, i.e., $ \\text{MahlerMeasure}(p) \\geq 0 $.",
+            "path": "Mathlib.Analysis.Polynomial.MahlerMeasure"
+          },
+          {
+            "formal_name": "Polynomial.gaussNorm",
+            "informal_name": "Gauss norm of a polynomial",
+            "kind": "definition",
+            "type": "{R : Type u_1} → {F : Type u_2} → [inst : Semiring R] → [FunLike F R ℝ] → F → ℝ → Polynomial R → ℝ",
+            "informal_description": "The Gauss norm of a polynomial $ p $ is defined as the supremum of $ v(a_i) \\cdot c^i $ over all exponents $ i $ in the support of $ p $, where $ a_i $ is the coefficient of $ X^i $ in $ p $. If $ p $ is the zero polynomial (with empty support), the Gauss norm is defined to be $ 0 $. Here, $ v $ denotes a valuation and $ c $ is a real number parameter.",
+            "path": "Mathlib.RingTheory.Polynomial.GaussNorm"
+          },
+          {
+            "formal_name": "Polynomial.length_coeffList_eq_ite",
+            "informal_name": "Coefficient List Length Equals Zero or Natural Degree Plus One",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] [inst_1 : DecidableEq R] (P : Polynomial R),\n  P.coeffList.length = if P = 0 then 0 else P.natDegree + 1",
+            "informal_description": "For a polynomial $ P $ over a semiring $ R $ with decidable equality, the length of the coefficient list of $ P $ is 0 if $ P $ is the zero polynomial, and $ \\operatorname{natDegree}(P) + 1 $ otherwise.",
+            "path": "Mathlib.Algebra.Polynomial.CoeffList"
+          },
+          {
+            "formal_name": "Polynomial.length_coeffList_eq_withBotSucc_degree",
+            "informal_name": "Length of Coefficient List Equals Successor of Degree",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (P : Polynomial R), P.coeffList.length = P.degree.succ",
+            "informal_description": "For any polynomial $P$ over a semiring $R$, the length of the coefficient list of $P$, ordered from the highest degree term down to the constant term, is equal to the successor of the degree of $P$ in $\\mathbb{N} \\cup \\{-\\infty\\}$. Specifically, if $P$ has degree $d$, then the coefficient list has $d + 1$ elements; for the zero polynomial (degree $-\\infty$), the coefficient list is empty and $\\text{succ}(-\\infty) = 0$.",
+            "path": "Mathlib.Algebra.Polynomial.CoeffList"
+          },
+          {
+            "formal_name": "Polynomial.cardPowDegree",
+            "informal_name": "Cardinality-based absolute value on polynomials over a finite field",
+            "kind": "definition",
+            "type": "{Fq : Type u_1} → [inst : Field Fq] → [Fintype Fq] → AbsoluteValue (Polynomial Fq) ℤ",
+            "informal_description": "The function assigns to each polynomial $ p $ over a finite field $ \\mathbb{F}_q $ the value $ 0 $ if $ p = 0 $, and $ |\\mathbb{F}_q|^{\\deg(p)} $ (as an integer) otherwise, where $ \\deg(p) $ denotes the natural degree of $ p $. This satisfies the absolute value properties: non-negativity, multiplicativity ($ |pq| = |p||q| $), and the triangle inequality ($ |p+q| \\leq |p| + |q| $).",
+            "path": "Mathlib.Algebra.Polynomial.Degree.CardPowDegree"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_leanfinder",
+    "form": "abstract",
+    "request": {
+      "tool": "lean_leanfinder",
+      "args": {
+        "query": "A finite sum of pointwise nonnegative values is nonnegative",
+        "num_results": 6
+      }
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"finsum_nonneg\",\n      \"informal_name\": \"Non-negativity of Finite Sums in Ordered Additive Monoids\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Sort u_4} {M : Type u_7} [inst : AddCommMonoid M] [inst_1 : PartialOrder M] [IsOrderedAddMonoid M] {f : α → M},\\n  (∀ (i : α), 0 ≤ f i) → 0 ≤ ∑ᶠ (i : α), f i\",\n      \"informal_description\": \"In an ordered additive commutative monoid $M$, if every element $f(i)$ in a function $f : \\\\alpha \\\\to M$ satisfies $0 \\\\leq f(i)$, then the finite sum $\\\\sum^\\\\mathrm{fin}_{i : \\\\alpha} f(i)$ is also non-negative, i.e., $0 \\\\leq \\\\sum^\\\\mathrm{fin}_{i : \\\\alpha} f(i)$.\",\n      \"path\": \"Mathlib.Algebra.BigOperators.Finprod\"\n    },\n    {\n      \"formal_name\": \"Finset.sum_nonneg\",\n      \"informal_name\": \"Non-Negativity of Sum over Finite Set in Additive Commutative Monoid\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {N : Type u_5} [inst : AddCommMonoid N] [inst_1 : PartialOrder N] {f : ι → N} {s : Finset ι}\\n  [AddLeftMono N], (∀ i ∈ s, 0 ≤ f i) → 0 ≤ ∑ i ∈ s, f i\",\n      \"informal_description\": \"Let $\\\\iota$ be an index type and $N$ an additive commutative monoid equipped with a partial order $\\\\leq$ where addition is left-monic. For any finite set $s \\\\subseteq \\\\iota$ and function $f : \\\\iota \\\\to N$, if $0 \\\\leq f(i)$ for all $i \\\\in s$, then the sum $\\\\sum_{i \\\\in s} f(i)$ satisfies $0 \\\\leq \\\\sum_{i \\\\in s} f(i)$.\",\n      \"path\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    },\n    {\n      \"formal_name\": \"Finset.sum_nonneg'\",\n      \"informal_name\": \"Non-negativity of Sum in Additive Commutative Monoid with Partial Order\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {N : Type u_5} [inst : AddCommMonoid N] [inst_1 : PartialOrder N] {f : ι → N} {s : Finset ι}\\n  [AddLeftMono N], (∀ (i : ι), 0 ≤ f i) → 0 ≤ ∑ i ∈ s, f i\",\n      \"informal_description\": \"In an additive commutative monoid $N$ equipped with a partial order and left-addition monotonicity, if all elements $f(i)$ for $i$ in a finite set $s$ are non-negative, then the sum of $f(i)$ over $s$ is also non-negative.\",\n      \"path\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    },\n    {\n      \"formal_name\": \"Fintype.sum_nonneg\",\n      \"informal_name\": \"Non-Negativity of Finite Sums in Ordered Additive Monoids\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {M : Type u_4} [inst : Fintype ι] [inst_1 : AddCommMonoid M] [inst_2 : PartialOrder M] [AddLeftMono M]\\n  {f : ι → M}, 0 ≤ f → 0 ≤ ∑ i, f i\",\n      \"informal_description\": \"For any finite set $\\\\iota$ and an additive commutative monoid $M$ equipped with a partial order $\\\\leq$ where addition is left-monotonic, if each element $f(i)$ of a function $f : \\\\iota \\\\to M$ satisfies $0 \\\\leq f(i)$, then the sum $\\\\sum_{i \\\\in \\\\iota} f(i)$ is also non-negative, i.e., $0 \\\\leq \\\\sum_{i \\\\in \\\\iota} f(i)$.\",\n      \"path\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    },\n    {\n      \"formal_name\": \"Finsupp.sum_nonneg'\",\n      \"informal_name\": \"Non-Negativity of Sum of Finite Support Functions in Ordered Additive Monoid\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {α : Type u_3} {β : Type u_4} [inst : Zero α] [inst_1 : AddCommMonoid β] [inst_2 : PartialOrder β]\\n  [IsOrderedAddMonoid β] {f : ι →₀ α} {h₁ : ι → α → β}, (∀ (i : ι), 0 ≤ h₁ i (f i)) → 0 ≤ f.sum h₁\",\n      \"informal_description\": \"For any finite support function $ f : \\\\alpha \\\\to₀ M $ in an ordered additive commutative monoid $ M $, if each value $ f(i) $ is non-negative (i.e., $ 0 \\\\leq f(i) $ for all $ i $), then the sum of $ f $ is also non-negative (i.e., $ 0 \\\\leq \\\\sum f $).\",\n      \"path\": \"Mathlib.Data.Finsupp.Order\"\n    },\n    {\n      \"formal_name\": \"Finsupp.sum_nonneg\",\n      \"informal_name\": \"$\\\\cos(\\\\pi) = -1$\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {α : Type u_3} {β : Type u_4} [inst : Zero α] [inst_1 : AddCommMonoid β] [inst_2 : PartialOrder β]\\n  [IsOrderedAddMonoid β] {f : ι →₀ α} {h₁ : ι → α → β}, (∀ i ∈ f.support, 0 ≤ h₁ i (f i)) → 0 ≤ f.sum h₁\",\n      \"informal_description\": \"The cosine of $\\\\pi$ is equal to $-1$, i.e., $\\\\cos(\\\\pi) = -1$.\",\n      \"path\": \"Mathlib.Data.Finsupp.Order\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "finsum_nonneg",
+            "informal_name": "Non-negativity of Finite Sums in Ordered Additive Monoids",
+            "kind": "theorem",
+            "type": "∀ {α : Sort u_4} {M : Type u_7} [inst : AddCommMonoid M] [inst_1 : PartialOrder M] [IsOrderedAddMonoid M] {f : α → M},\n  (∀ (i : α), 0 ≤ f i) → 0 ≤ ∑ᶠ (i : α), f i",
+            "informal_description": "In an ordered additive commutative monoid $M$, if every element $f(i)$ in a function $f : \\alpha \\to M$ satisfies $0 \\leq f(i)$, then the finite sum $\\sum^\\mathrm{fin}_{i : \\alpha} f(i)$ is also non-negative, i.e., $0 \\leq \\sum^\\mathrm{fin}_{i : \\alpha} f(i)$.",
+            "path": "Mathlib.Algebra.BigOperators.Finprod"
+          },
+          {
+            "formal_name": "Finset.sum_nonneg",
+            "informal_name": "Non-Negativity of Sum over Finite Set in Additive Commutative Monoid",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_1} {N : Type u_5} [inst : AddCommMonoid N] [inst_1 : PartialOrder N] {f : ι → N} {s : Finset ι}\n  [AddLeftMono N], (∀ i ∈ s, 0 ≤ f i) → 0 ≤ ∑ i ∈ s, f i",
+            "informal_description": "Let $\\iota$ be an index type and $N$ an additive commutative monoid equipped with a partial order $\\leq$ where addition is left-monic. For any finite set $s \\subseteq \\iota$ and function $f : \\iota \\to N$, if $0 \\leq f(i)$ for all $i \\in s$, then the sum $\\sum_{i \\in s} f(i)$ satisfies $0 \\leq \\sum_{i \\in s} f(i)$.",
+            "path": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+          },
+          {
+            "formal_name": "Finset.sum_nonneg'",
+            "informal_name": "Non-negativity of Sum in Additive Commutative Monoid with Partial Order",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_1} {N : Type u_5} [inst : AddCommMonoid N] [inst_1 : PartialOrder N] {f : ι → N} {s : Finset ι}\n  [AddLeftMono N], (∀ (i : ι), 0 ≤ f i) → 0 ≤ ∑ i ∈ s, f i",
+            "informal_description": "In an additive commutative monoid $N$ equipped with a partial order and left-addition monotonicity, if all elements $f(i)$ for $i$ in a finite set $s$ are non-negative, then the sum of $f(i)$ over $s$ is also non-negative.",
+            "path": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+          },
+          {
+            "formal_name": "Fintype.sum_nonneg",
+            "informal_name": "Non-Negativity of Finite Sums in Ordered Additive Monoids",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_1} {M : Type u_4} [inst : Fintype ι] [inst_1 : AddCommMonoid M] [inst_2 : PartialOrder M] [AddLeftMono M]\n  {f : ι → M}, 0 ≤ f → 0 ≤ ∑ i, f i",
+            "informal_description": "For any finite set $\\iota$ and an additive commutative monoid $M$ equipped with a partial order $\\leq$ where addition is left-monotonic, if each element $f(i)$ of a function $f : \\iota \\to M$ satisfies $0 \\leq f(i)$, then the sum $\\sum_{i \\in \\iota} f(i)$ is also non-negative, i.e., $0 \\leq \\sum_{i \\in \\iota} f(i)$.",
+            "path": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+          },
+          {
+            "formal_name": "Finsupp.sum_nonneg'",
+            "informal_name": "Non-Negativity of Sum of Finite Support Functions in Ordered Additive Monoid",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_1} {α : Type u_3} {β : Type u_4} [inst : Zero α] [inst_1 : AddCommMonoid β] [inst_2 : PartialOrder β]\n  [IsOrderedAddMonoid β] {f : ι →₀ α} {h₁ : ι → α → β}, (∀ (i : ι), 0 ≤ h₁ i (f i)) → 0 ≤ f.sum h₁",
+            "informal_description": "For any finite support function $ f : \\alpha \\to₀ M $ in an ordered additive commutative monoid $ M $, if each value $ f(i) $ is non-negative (i.e., $ 0 \\leq f(i) $ for all $ i $), then the sum of $ f $ is also non-negative (i.e., $ 0 \\leq \\sum f $).",
+            "path": "Mathlib.Data.Finsupp.Order"
+          },
+          {
+            "formal_name": "Finsupp.sum_nonneg",
+            "informal_name": "$\\cos(\\pi) = -1$",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_1} {α : Type u_3} {β : Type u_4} [inst : Zero α] [inst_1 : AddCommMonoid β] [inst_2 : PartialOrder β]\n  [IsOrderedAddMonoid β] {f : ι →₀ α} {h₁ : ι → α → β}, (∀ i ∈ f.support, 0 ≤ h₁ i (f i)) → 0 ≤ f.sum h₁",
+            "informal_description": "The cosine of $\\pi$ is equal to $-1$, i.e., $\\cos(\\pi) = -1$.",
+            "path": "Mathlib.Data.Finsupp.Order"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_loogle",
+    "form": "current",
+    "request": {
+      "tool": "lean_loogle",
+      "args": {
+        "query": "0 ≤ ∑ d ∈ p.support, |((p.coeff d : ℤ) : ℝ)|",
+        "num_results": 6
+      }
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "Error executing tool lean_loogle: loogle query error: Unknown identifier `p.support`"
+        }
+      ],
+      "isError": true
+    }
+  },
+  {
+    "method": "lean_loogle",
+    "form": "standard",
+    "request": {
+      "tool": "lean_loogle",
+      "args": {
+        "query": "Finset.sum, (0 ≤ _)",
+        "num_results": 6
+      }
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finset.sum_mono_set_of_nonneg\",\n      \"type\": \" {ι : Type u_1} {N : Type u_5} [AddCommMonoid N] [Preorder N] {f : ι → N} [AddLeftMono N] (hf : ∀ (x : ι), 0 ≤ f x) : Monotone fun s => ∑ x ∈ s, f x\",\n      \"module\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    },\n    {\n      \"name\": \"Finset.sum_le_univ_sum_of_nonneg\",\n      \"type\": \" {ι : Type u_1} {N : Type u_5} [AddCommMonoid N] [Preorder N] {f : ι → N} [AddLeftMono N] [Fintype ι] {s : Finset ι} (w : ∀ (x : ι), 0 ≤ f x) : ∑ x ∈ s, f x ≤ ∑ x, f x\",\n      \"module\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    },\n    {\n      \"name\": \"Finset.sum_nonneg'\",\n      \"type\": \" {ι : Type u_1} {N : Type u_5} [AddCommMonoid N] [Preorder N] {f : ι → N} {s : Finset ι} [AddLeftMono N] (h : ∀ (i : ι), 0 ≤ f i) : 0 ≤ ∑ i ∈ s, f i\",\n      \"module\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    },\n    {\n      \"name\": \"Finset.sum_nonneg\",\n      \"type\": \" {ι : Type u_1} {N : Type u_5} [AddCommMonoid N] [Preorder N] {f : ι → N} {s : Finset ι} [AddLeftMono N] (h : ∀ i ∈ s, 0 ≤ f i) : 0 ≤ ∑ i ∈ s, f i\",\n      \"module\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    },\n    {\n      \"name\": \"Finset.single_le_sum\",\n      \"type\": \" {ι : Type u_1} {N : Type u_5} [AddCommMonoid N] [Preorder N] {f : ι → N} {s : Finset ι} [AddLeftMono N] (hf : ∀ i ∈ s, 0 ≤ f i) {a : ι} (h : a ∈ s) : f a ≤ ∑ x ∈ s, f x\",\n      \"module\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    },\n    {\n      \"name\": \"Fintype.sum_nonneg\",\n      \"type\": \" {ι : Type u_1} {M : Type u_4} [Fintype ι] [AddCommMonoid M] [Preorder M] [AddLeftMono M] {f : ι → M} (hf : 0 ≤ f) : 0 ≤ ∑ i, f i\",\n      \"module\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Finset.sum_mono_set_of_nonneg",
+            "type": " {ι : Type u_1} {N : Type u_5} [AddCommMonoid N] [Preorder N] {f : ι → N} [AddLeftMono N] (hf : ∀ (x : ι), 0 ≤ f x) : Monotone fun s => ∑ x ∈ s, f x",
+            "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+          },
+          {
+            "name": "Finset.sum_le_univ_sum_of_nonneg",
+            "type": " {ι : Type u_1} {N : Type u_5} [AddCommMonoid N] [Preorder N] {f : ι → N} [AddLeftMono N] [Fintype ι] {s : Finset ι} (w : ∀ (x : ι), 0 ≤ f x) : ∑ x ∈ s, f x ≤ ∑ x, f x",
+            "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+          },
+          {
+            "name": "Finset.sum_nonneg'",
+            "type": " {ι : Type u_1} {N : Type u_5} [AddCommMonoid N] [Preorder N] {f : ι → N} {s : Finset ι} [AddLeftMono N] (h : ∀ (i : ι), 0 ≤ f i) : 0 ≤ ∑ i ∈ s, f i",
+            "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+          },
+          {
+            "name": "Finset.sum_nonneg",
+            "type": " {ι : Type u_1} {N : Type u_5} [AddCommMonoid N] [Preorder N] {f : ι → N} {s : Finset ι} [AddLeftMono N] (h : ∀ i ∈ s, 0 ≤ f i) : 0 ≤ ∑ i ∈ s, f i",
+            "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+          },
+          {
+            "name": "Finset.single_le_sum",
+            "type": " {ι : Type u_1} {N : Type u_5} [AddCommMonoid N] [Preorder N] {f : ι → N} {s : Finset ι} [AddLeftMono N] (hf : ∀ i ∈ s, 0 ≤ f i) {a : ι} (h : a ∈ s) : f a ≤ ∑ x ∈ s, f x",
+            "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+          },
+          {
+            "name": "Fintype.sum_nonneg",
+            "type": " {ι : Type u_1} {M : Type u_4} [Fintype ι] [AddCommMonoid M] [Preorder M] [AddLeftMono M] {f : ι → M} (hf : 0 ≤ f) : 0 ≤ ∑ i, f i",
+            "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_loogle",
+    "form": "abstract",
+    "request": {
+      "tool": "lean_loogle",
+      "args": {
+        "query": "0 ≤ ∑ i ∈ ?s, ?f i",
+        "num_results": 6
+      }
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finset.sum_nonneg'\",\n      \"type\": \" {ι : Type u_1} {N : Type u_5} [AddCommMonoid N] [Preorder N] {f : ι → N} {s : Finset ι} [AddLeftMono N] (h : ∀ (i : ι), 0 ≤ f i) : 0 ≤ ∑ i ∈ s, f i\",\n      \"module\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    },\n    {\n      \"name\": \"Finset.sum_nonneg\",\n      \"type\": \" {ι : Type u_1} {N : Type u_5} [AddCommMonoid N] [Preorder N] {f : ι → N} {s : Finset ι} [AddLeftMono N] (h : ∀ i ∈ s, 0 ≤ f i) : 0 ≤ ∑ i ∈ s, f i\",\n      \"module\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    },\n    {\n      \"name\": \"Fintype.sum_nonneg\",\n      \"type\": \" {ι : Type u_1} {M : Type u_4} [Fintype ι] [AddCommMonoid M] [Preorder M] [AddLeftMono M] {f : ι → M} (hf : 0 ≤ f) : 0 ≤ ∑ i, f i\",\n      \"module\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    },\n    {\n      \"name\": \"Finset.sum_fiberwise_le_sum_of_sum_fiber_nonneg\",\n      \"type\": \" {ι : Type u_1} {N : Type u_5} [AddCommMonoid N] [Preorder N] {s : Finset ι} {ι' : Type u_8} [DecidableEq ι'] [AddLeftMono N] {t : Finset ι'} {g : ι → ι'} {f : ι → N} (h : ∀ y ∉ t, 0 ≤ ∑ x ∈ s with g x = y, f x) : ∑ y ∈ t, ∑ x ∈ s with g x = y, f x ≤ ∑ x ∈ s, f x\",\n      \"module\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    },\n    {\n      \"name\": \"Finset.exists_sum_fiber_lt_of_sum_fiber_nonneg_of_sum_lt_nsmul\",\n      \"type\": \" {α : Type u} {β : Type v} {M : Type w} [DecidableEq β] {s : Finset α} {t : Finset β} {f : α → β} {w : α → M} {b : M} [AddCommMonoid M] [LinearOrder M] [IsOrderedCancelAddMonoid M] (ht : ∀ y ∉ t, 0 ≤ ∑ x ∈ s with f x = y, w x) (hb : ∑ x ∈ s, w x < t.card • b) : ∃ y ∈ t, ∑ x ∈ s with f x = y, w x < b\",\n      \"module\": \"Mathlib.Combinatorics.Pigeonhole\"\n    },\n    {\n      \"name\": \"Finset.exists_sum_fiber_le_of_sum_fiber_nonneg_of_sum_le_nsmul\",\n      \"type\": \" {α : Type u} {β : Type v} {M : Type w} [DecidableEq β] {s : Finset α} {t : Finset β} {f : α → β} {w : α → M} {b : M} [AddCommMonoid M] [LinearOrder M] [IsOrderedCancelAddMonoid M] (hf : ∀ y ∉ t, 0 ≤ ∑ x ∈ s with f x = y, w x) (ht : t.Nonempty) (hb : ∑ x ∈ s, w x ≤ t.card • b) : ∃ y ∈ t, ∑ x ∈ s with f x = y, w x ≤ b\",\n      \"module\": \"Mathlib.Combinatorics.Pigeonhole\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Finset.sum_nonneg'",
+            "type": " {ι : Type u_1} {N : Type u_5} [AddCommMonoid N] [Preorder N] {f : ι → N} {s : Finset ι} [AddLeftMono N] (h : ∀ (i : ι), 0 ≤ f i) : 0 ≤ ∑ i ∈ s, f i",
+            "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+          },
+          {
+            "name": "Finset.sum_nonneg",
+            "type": " {ι : Type u_1} {N : Type u_5} [AddCommMonoid N] [Preorder N] {f : ι → N} {s : Finset ι} [AddLeftMono N] (h : ∀ i ∈ s, 0 ≤ f i) : 0 ≤ ∑ i ∈ s, f i",
+            "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+          },
+          {
+            "name": "Fintype.sum_nonneg",
+            "type": " {ι : Type u_1} {M : Type u_4} [Fintype ι] [AddCommMonoid M] [Preorder M] [AddLeftMono M] {f : ι → M} (hf : 0 ≤ f) : 0 ≤ ∑ i, f i",
+            "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+          },
+          {
+            "name": "Finset.sum_fiberwise_le_sum_of_sum_fiber_nonneg",
+            "type": " {ι : Type u_1} {N : Type u_5} [AddCommMonoid N] [Preorder N] {s : Finset ι} {ι' : Type u_8} [DecidableEq ι'] [AddLeftMono N] {t : Finset ι'} {g : ι → ι'} {f : ι → N} (h : ∀ y ∉ t, 0 ≤ ∑ x ∈ s with g x = y, f x) : ∑ y ∈ t, ∑ x ∈ s with g x = y, f x ≤ ∑ x ∈ s, f x",
+            "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+          },
+          {
+            "name": "Finset.exists_sum_fiber_lt_of_sum_fiber_nonneg_of_sum_lt_nsmul",
+            "type": " {α : Type u} {β : Type v} {M : Type w} [DecidableEq β] {s : Finset α} {t : Finset β} {f : α → β} {w : α → M} {b : M} [AddCommMonoid M] [LinearOrder M] [IsOrderedCancelAddMonoid M] (ht : ∀ y ∉ t, 0 ≤ ∑ x ∈ s with f x = y, w x) (hb : ∑ x ∈ s, w x < t.card • b) : ∃ y ∈ t, ∑ x ∈ s with f x = y, w x < b",
+            "module": "Mathlib.Combinatorics.Pigeonhole"
+          },
+          {
+            "name": "Finset.exists_sum_fiber_le_of_sum_fiber_nonneg_of_sum_le_nsmul",
+            "type": " {α : Type u} {β : Type v} {M : Type w} [DecidableEq β] {s : Finset α} {t : Finset β} {f : α → β} {w : α → M} {b : M} [AddCommMonoid M] [LinearOrder M] [IsOrderedCancelAddMonoid M] (hf : ∀ y ∉ t, 0 ≤ ∑ x ∈ s with f x = y, w x) (ht : t.Nonempty) (hb : ∑ x ∈ s, w x ≤ t.card • b) : ∃ y ∈ t, ∑ x ∈ s with f x = y, w x ≤ b",
+            "module": "Mathlib.Combinatorics.Pigeonhole"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_leansearch",
+    "form": "current",
+    "request": {
+      "tool": "lean_leansearch",
+      "args": {
+        "query": "Nonnegativity of sum absolute values real-cast integer coefficients of a multivariate polynomial",
+        "num_results": 6
+      }
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"NNReal.natCast_natAbs\",\n      \"module_name\": \"Mathlib.Analysis.Normed.Group.Int\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (n : ℤ), ↑n.natAbs = ‖n‖₊\"\n    },\n    {\n      \"name\": \"Finset.abs_sum_of_nonneg\",\n      \"module_name\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {G : Type u_9} [inst : AddCommGroup G] [inst_1 : LinearOrder G] [AddLeftMono G] {f : ι → G}\\n  {s : Finset ι}, (∀ i ∈ s, 0 ≤ f i) → |∑ i ∈ s, f i| = ∑ i ∈ s, f i\"\n    },\n    {\n      \"name\": \"Finset.abs_sum_of_nonneg'\",\n      \"module_name\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {G : Type u_9} [inst : AddCommGroup G] [inst_1 : LinearOrder G] [AddLeftMono G] {f : ι → G}\\n  {s : Finset ι}, (∀ (i : ι), 0 ≤ f i) → |∑ i ∈ s, f i| = ∑ i ∈ s, f i\"\n    },\n    {\n      \"name\": \"Poly\",\n      \"module_name\": \"Mathlib.NumberTheory.Dioph\",\n      \"kind\": \"definition\",\n      \"type\": \"Type u → Type (max 0 u)\"\n    },\n    {\n      \"name\": \"Polynomial.gaussNorm_nonneg\",\n      \"module_name\": \"Mathlib.RingTheory.Polynomial.GaussNorm\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {F : Type u_2} [inst : Semiring R] [inst_1 : FunLike F R ℝ] (v : F) {c : ℝ} (p : Polynomial R),\\n  0 ≤ c → ∀ [NonnegHomClass F R ℝ], 0 ≤ Polynomial.gaussNorm v c p\"\n    },\n    {\n      \"name\": \"spectralValue_nonneg\",\n      \"module_name\": \"Mathlib.Analysis.Normed.Unbundled.SpectralNorm\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : SeminormedRing R] (p : Polynomial R), 0 ≤ spectralValue p\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "NNReal.natCast_natAbs",
+            "module_name": "Mathlib.Analysis.Normed.Group.Int",
+            "kind": "theorem",
+            "type": "∀ (n : ℤ), ↑n.natAbs = ‖n‖₊"
+          },
+          {
+            "name": "Finset.abs_sum_of_nonneg",
+            "module_name": "Mathlib.Algebra.Order.BigOperators.Group.Finset",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_1} {G : Type u_9} [inst : AddCommGroup G] [inst_1 : LinearOrder G] [AddLeftMono G] {f : ι → G}\n  {s : Finset ι}, (∀ i ∈ s, 0 ≤ f i) → |∑ i ∈ s, f i| = ∑ i ∈ s, f i"
+          },
+          {
+            "name": "Finset.abs_sum_of_nonneg'",
+            "module_name": "Mathlib.Algebra.Order.BigOperators.Group.Finset",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_1} {G : Type u_9} [inst : AddCommGroup G] [inst_1 : LinearOrder G] [AddLeftMono G] {f : ι → G}\n  {s : Finset ι}, (∀ (i : ι), 0 ≤ f i) → |∑ i ∈ s, f i| = ∑ i ∈ s, f i"
+          },
+          {
+            "name": "Poly",
+            "module_name": "Mathlib.NumberTheory.Dioph",
+            "kind": "definition",
+            "type": "Type u → Type (max 0 u)"
+          },
+          {
+            "name": "Polynomial.gaussNorm_nonneg",
+            "module_name": "Mathlib.RingTheory.Polynomial.GaussNorm",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {F : Type u_2} [inst : Semiring R] [inst_1 : FunLike F R ℝ] (v : F) {c : ℝ} (p : Polynomial R),\n  0 ≤ c → ∀ [NonnegHomClass F R ℝ], 0 ≤ Polynomial.gaussNorm v c p"
+          },
+          {
+            "name": "spectralValue_nonneg",
+            "module_name": "Mathlib.Analysis.Normed.Unbundled.SpectralNorm",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : SeminormedRing R] (p : Polynomial R), 0 ≤ spectralValue p"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_leansearch",
+    "form": "standard",
+    "request": {
+      "tool": "lean_leansearch",
+      "args": {
+        "query": "The l1 norm or length of a polynomial is nonnegative",
+        "num_results": 6
+      }
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"lp.norm_nonneg'\",\n      \"module_name\": \"Mathlib.Analysis.Normed.Lp.lpSpace\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_3} {E : α → Type u_4} {p : ENNReal} [inst : (i : α) → NormedAddCommGroup (E i)] (f : ↥(lp E p)), 0 ≤ ‖f‖\"\n    },\n    {\n      \"name\": \"SeminormedSpace.Core.norm_nonneg\",\n      \"module_name\": \"Mathlib.Analysis.Normed.Module.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {𝕜 : Type u_6} {E : Type u_7} [inst : NormedField 𝕜] [inst_1 : AddCommGroup E] [inst_2 : Norm E]\\n  [inst_3 : Module 𝕜 E], SeminormedSpace.Core 𝕜 E → ∀ (x : E), 0 ≤ ‖x‖\"\n    },\n    {\n      \"name\": \"Polynomial.gaussNorm_nonneg\",\n      \"module_name\": \"Mathlib.RingTheory.Polynomial.GaussNorm\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {F : Type u_2} [inst : Semiring R] [inst_1 : FunLike F R ℝ] (v : F) {c : ℝ} (p : Polynomial R),\\n  0 ≤ c → ∀ [NonnegHomClass F R ℝ], 0 ≤ Polynomial.gaussNorm v c p\"\n    },\n    {\n      \"name\": \"Module.Basis.norm_nonneg\",\n      \"module_name\": \"Mathlib.Analysis.Normed.Unbundled.FiniteExtension\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {K : Type u_1} {L : Type u_2} [inst : NormedField K] [inst_1 : Ring L] [inst_2 : Algebra K L] {ι : Type u_3}\\n  [inst_3 : Fintype ι] [inst_4 : Nonempty ι] (B : Module.Basis ι K L) (x : L), 0 ≤ B.norm x\"\n    },\n    {\n      \"name\": \"Valued.norm_nonneg\",\n      \"module_name\": \"Mathlib.Topology.Algebra.Valued.NormedValued\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {L : Type u_1} [inst : Field L] {Γ₀ : Type u_2} [inst_1 : LinearOrderedCommGroupWithZero Γ₀] [val : Valued L Γ₀]\\n  [hv : Valued.v.RankOne] (x : L), 0 ≤ Valued.norm x\"\n    },\n    {\n      \"name\": \"spectralValueTerms_nonneg\",\n      \"module_name\": \"Mathlib.Analysis.Normed.Unbundled.SpectralNorm\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : SeminormedRing R] (p : Polynomial R) (n : ℕ), 0 ≤ spectralValueTerms p n\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "lp.norm_nonneg'",
+            "module_name": "Mathlib.Analysis.Normed.Lp.lpSpace",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_3} {E : α → Type u_4} {p : ENNReal} [inst : (i : α) → NormedAddCommGroup (E i)] (f : ↥(lp E p)), 0 ≤ ‖f‖"
+          },
+          {
+            "name": "SeminormedSpace.Core.norm_nonneg",
+            "module_name": "Mathlib.Analysis.Normed.Module.Basic",
+            "kind": "theorem",
+            "type": "∀ {𝕜 : Type u_6} {E : Type u_7} [inst : NormedField 𝕜] [inst_1 : AddCommGroup E] [inst_2 : Norm E]\n  [inst_3 : Module 𝕜 E], SeminormedSpace.Core 𝕜 E → ∀ (x : E), 0 ≤ ‖x‖"
+          },
+          {
+            "name": "Polynomial.gaussNorm_nonneg",
+            "module_name": "Mathlib.RingTheory.Polynomial.GaussNorm",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {F : Type u_2} [inst : Semiring R] [inst_1 : FunLike F R ℝ] (v : F) {c : ℝ} (p : Polynomial R),\n  0 ≤ c → ∀ [NonnegHomClass F R ℝ], 0 ≤ Polynomial.gaussNorm v c p"
+          },
+          {
+            "name": "Module.Basis.norm_nonneg",
+            "module_name": "Mathlib.Analysis.Normed.Unbundled.FiniteExtension",
+            "kind": "theorem",
+            "type": "∀ {K : Type u_1} {L : Type u_2} [inst : NormedField K] [inst_1 : Ring L] [inst_2 : Algebra K L] {ι : Type u_3}\n  [inst_3 : Fintype ι] [inst_4 : Nonempty ι] (B : Module.Basis ι K L) (x : L), 0 ≤ B.norm x"
+          },
+          {
+            "name": "Valued.norm_nonneg",
+            "module_name": "Mathlib.Topology.Algebra.Valued.NormedValued",
+            "kind": "theorem",
+            "type": "∀ {L : Type u_1} [inst : Field L] {Γ₀ : Type u_2} [inst_1 : LinearOrderedCommGroupWithZero Γ₀] [val : Valued L Γ₀]\n  [hv : Valued.v.RankOne] (x : L), 0 ≤ Valued.norm x"
+          },
+          {
+            "name": "spectralValueTerms_nonneg",
+            "module_name": "Mathlib.Analysis.Normed.Unbundled.SpectralNorm",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : SeminormedRing R] (p : Polynomial R) (n : ℕ), 0 ≤ spectralValueTerms p n"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_leansearch",
+    "form": "abstract",
+    "request": {
+      "tool": "lean_leansearch",
+      "args": {
+        "query": "A finite sum of pointwise nonnegative values is nonnegative",
+        "num_results": 6
+      }
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finset.sum_nonneg\",\n      \"module_name\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {N : Type u_5} [inst : AddCommMonoid N] [inst_1 : PartialOrder N] {f : ι → N} {s : Finset ι}\\n  [AddLeftMono N], (∀ i ∈ s, 0 ≤ f i) → 0 ≤ ∑ i ∈ s, f i\"\n    },\n    {\n      \"name\": \"Fintype.sum_nonneg\",\n      \"module_name\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {M : Type u_4} [inst : Fintype ι] [inst_1 : AddCommMonoid M] [inst_2 : PartialOrder M] [AddLeftMono M]\\n  {f : ι → M}, 0 ≤ f → 0 ≤ ∑ i, f i\"\n    },\n    {\n      \"name\": \"finsum_nonneg\",\n      \"module_name\": \"Mathlib.Algebra.BigOperators.Finprod\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Sort u_4} {M : Type u_7} [inst : AddCommMonoid M] [inst_1 : PartialOrder M] [IsOrderedAddMonoid M] {f : α → M},\\n  (∀ (i : α), 0 ≤ f i) → 0 ≤ ∑ᶠ (i : α), f i\"\n    },\n    {\n      \"name\": \"Finset.sum_nonneg'\",\n      \"module_name\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {N : Type u_5} [inst : AddCommMonoid N] [inst_1 : PartialOrder N] {f : ι → N} {s : Finset ι}\\n  [AddLeftMono N], (∀ (i : ι), 0 ≤ f i) → 0 ≤ ∑ i ∈ s, f i\"\n    },\n    {\n      \"name\": \"List.sum_nonneg\",\n      \"module_name\": \"Mathlib.Algebra.Order.BigOperators.Group.List\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {M : Type u_3} [inst : AddMonoid M] [inst_1 : Preorder M] [AddLeftMono M] {l : List M},\\n  (∀ (x : M), x ∈ l → 0 ≤ x) → 0 ≤ l.sum\"\n    },\n    {\n      \"name\": \"Finsupp.sum_nonneg'\",\n      \"module_name\": \"Mathlib.Data.Finsupp.Order\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {α : Type u_3} {β : Type u_4} [inst : Zero α] [inst_1 : AddCommMonoid β] [inst_2 : PartialOrder β]\\n  [IsOrderedAddMonoid β] {f : ι →₀ α} {h₁ : ι → α → β}, (∀ (i : ι), 0 ≤ h₁ i (f i)) → 0 ≤ f.sum h₁\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Finset.sum_nonneg",
+            "module_name": "Mathlib.Algebra.Order.BigOperators.Group.Finset",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_1} {N : Type u_5} [inst : AddCommMonoid N] [inst_1 : PartialOrder N] {f : ι → N} {s : Finset ι}\n  [AddLeftMono N], (∀ i ∈ s, 0 ≤ f i) → 0 ≤ ∑ i ∈ s, f i"
+          },
+          {
+            "name": "Fintype.sum_nonneg",
+            "module_name": "Mathlib.Algebra.Order.BigOperators.Group.Finset",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_1} {M : Type u_4} [inst : Fintype ι] [inst_1 : AddCommMonoid M] [inst_2 : PartialOrder M] [AddLeftMono M]\n  {f : ι → M}, 0 ≤ f → 0 ≤ ∑ i, f i"
+          },
+          {
+            "name": "finsum_nonneg",
+            "module_name": "Mathlib.Algebra.BigOperators.Finprod",
+            "kind": "theorem",
+            "type": "∀ {α : Sort u_4} {M : Type u_7} [inst : AddCommMonoid M] [inst_1 : PartialOrder M] [IsOrderedAddMonoid M] {f : α → M},\n  (∀ (i : α), 0 ≤ f i) → 0 ≤ ∑ᶠ (i : α), f i"
+          },
+          {
+            "name": "Finset.sum_nonneg'",
+            "module_name": "Mathlib.Algebra.Order.BigOperators.Group.Finset",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_1} {N : Type u_5} [inst : AddCommMonoid N] [inst_1 : PartialOrder N] {f : ι → N} {s : Finset ι}\n  [AddLeftMono N], (∀ (i : ι), 0 ≤ f i) → 0 ≤ ∑ i ∈ s, f i"
+          },
+          {
+            "name": "List.sum_nonneg",
+            "module_name": "Mathlib.Algebra.Order.BigOperators.Group.List",
+            "kind": "theorem",
+            "type": "∀ {M : Type u_3} [inst : AddMonoid M] [inst_1 : Preorder M] [AddLeftMono M] {l : List M},\n  (∀ (x : M), x ∈ l → 0 ≤ x) → 0 ≤ l.sum"
+          },
+          {
+            "name": "Finsupp.sum_nonneg'",
+            "module_name": "Mathlib.Data.Finsupp.Order",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_1} {α : Type u_3} {β : Type u_4} [inst : Zero α] [inst_1 : AddCommMonoid β] [inst_2 : PartialOrder β]\n  [IsOrderedAddMonoid β] {f : ι →₀ α} {h₁ : ι → α → β}, (∀ (i : ι), 0 ≤ h₁ i (f i)) → 0 ≤ f.sum h₁"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_local_search",
+    "form": "current",
+    "request": {
+      "tool": "lean_local_search",
+      "args": {
+        "query": "normOne_nonneg",
+        "limit": 15,
+        "project_root": "/Users/ramin/LEAN/Roth"
+      }
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Roth.normOne_nonneg\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/CoeffNorm.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Roth.normOne_nonneg",
+            "kind": "theorem",
+            "file": "Roth/CoeffNorm.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_local_search",
+    "form": "standard",
+    "request": {
+      "tool": "lean_local_search",
+      "args": {
+        "query": "sum_nonneg",
+        "limit": 15,
+        "project_root": "/Users/ramin/LEAN/Roth"
+      }
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finsupp.sum_nonneg\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Data/Finsupp/Order.lean\"\n    },\n    {\n      \"name\": \"PartitionOfUnity.sum_nonneg\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Topology/PartitionOfUnity.lean\"\n    },\n    {\n      \"name\": \"SmoothPartitionOfUnity.sum_nonneg\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Geometry/Manifold/PartitionOfUnity.lean\"\n    },\n    {\n      \"name\": \"Finsupp.sum_nonneg'\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Data/Finsupp/Order.lean\"\n    },\n    {\n      \"name\": \"Ballot.sum_nonneg_of_staysPositive\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Archive/Wiedijk100Theorems/BallotProblem.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Finsupp.sum_nonneg",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Data/Finsupp/Order.lean"
+          },
+          {
+            "name": "PartitionOfUnity.sum_nonneg",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Topology/PartitionOfUnity.lean"
+          },
+          {
+            "name": "SmoothPartitionOfUnity.sum_nonneg",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Geometry/Manifold/PartitionOfUnity.lean"
+          },
+          {
+            "name": "Finsupp.sum_nonneg'",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Data/Finsupp/Order.lean"
+          },
+          {
+            "name": "Ballot.sum_nonneg_of_staysPositive",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Archive/Wiedijk100Theorems/BallotProblem.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_local_search",
+    "form": "abstract",
+    "request": {
+      "tool": "lean_local_search",
+      "args": {
+        "query": "norm_nonneg",
+        "limit": 15,
+        "project_root": "/Users/ramin/LEAN/Roth"
+      }
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"CStarModule.norm_nonneg\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Analysis/CStarAlgebra/Module/Defs.lean\"\n    },\n    {\n      \"name\": \"Complex.norm_nonneg\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Analysis/Complex/Norm.lean\"\n    },\n    {\n      \"name\": \"GaussianInt.norm_nonneg\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/NumberTheory/Zsqrtd/GaussianInt.lean\"\n    },\n    {\n      \"name\": \"Module.Basis.norm_nonneg\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Analysis/Normed/Unbundled/FiniteExtension.lean\"\n    },\n    {\n      \"name\": \"NumberField.mixedEmbedding.norm_nonneg\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/NumberTheory/NumberField/CanonicalEmbedding/Basic.lean\"\n    },\n    {\n      \"name\": \"PadicSeq.norm_nonneg\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/NumberTheory/Padics/PadicNumbers.lean\"\n    },\n    {\n      \"name\": \"Valuation.norm_nonneg\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Topology/Algebra/Valued/NormedValued.lean\"\n    },\n    {\n      \"name\": \"Zsqrtd.norm_nonneg\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/NumberTheory/Zsqrtd/Basic.lean\"\n    },\n    {\n      \"name\": \"lp.norm_nonneg'\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Analysis/Normed/Lp/lpSpace.lean\"\n    },\n    {\n      \"name\": \"norm_nonneg'\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Analysis/Normed/Group/Basic.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "CStarModule.norm_nonneg",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Analysis/CStarAlgebra/Module/Defs.lean"
+          },
+          {
+            "name": "Complex.norm_nonneg",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Analysis/Complex/Norm.lean"
+          },
+          {
+            "name": "GaussianInt.norm_nonneg",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/NumberTheory/Zsqrtd/GaussianInt.lean"
+          },
+          {
+            "name": "Module.Basis.norm_nonneg",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Analysis/Normed/Unbundled/FiniteExtension.lean"
+          },
+          {
+            "name": "NumberField.mixedEmbedding.norm_nonneg",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/NumberTheory/NumberField/CanonicalEmbedding/Basic.lean"
+          },
+          {
+            "name": "PadicSeq.norm_nonneg",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/NumberTheory/Padics/PadicNumbers.lean"
+          },
+          {
+            "name": "Valuation.norm_nonneg",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Topology/Algebra/Valued/NormedValued.lean"
+          },
+          {
+            "name": "Zsqrtd.norm_nonneg",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/NumberTheory/Zsqrtd/Basic.lean"
+          },
+          {
+            "name": "lp.norm_nonneg'",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Analysis/Normed/Lp/lpSpace.lean"
+          },
+          {
+            "name": "norm_nonneg'",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Analysis/Normed/Group/Basic.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_loogle",
+    "form": "current-retry",
+    "request": {
+      "tool": "lean_loogle",
+      "args": {
+        "query": "Finset.sum, abs, (0 ≤ _)",
+        "num_results": 8
+      }
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finset.abs_sum_of_nonneg'\",\n      \"type\": \" {ι : Type u_1} {G : Type u_8} [AddCommGroup G] [LinearOrder G] [AddLeftMono G] {f : ι → G} {s : Finset ι} (hf : ∀ (i : ι), 0 ≤ f i) : |∑ i ∈ s, f i| = ∑ i ∈ s, f i\",\n      \"module\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    },\n    {\n      \"name\": \"Finset.abs_sum_of_nonneg\",\n      \"type\": \" {ι : Type u_1} {G : Type u_8} [AddCommGroup G] [LinearOrder G] [AddLeftMono G] {f : ι → G} {s : Finset ι} (hf : ∀ i ∈ s, 0 ≤ f i) : |∑ i ∈ s, f i| = ∑ i ∈ s, f i\",\n      \"module\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    },\n    {\n      \"name\": \"Finset.abs_sum_mul_le_mul_of_abs_sum_range_le\",\n      \"type\": \" {R : Type u_4} {f g : ℕ → R} {M : R} {n : ℕ} [Ring R] [LinearOrder R] [IsOrderedRing R] (hf : ∀ k ≤ n, |∑ i ∈ Finset.range k, f i| ≤ M) (hg₀ : 0 ≤ g) (hg : AntitoneOn g (Set.Iio n)) : |∑ i ∈ Finset.range n, f i * g i| ≤ M * g 0\",\n      \"module\": \"Mathlib.Algebra.Order.Chebyshev\"\n    },\n    {\n      \"name\": \"AntitoneOn.abs_tsum_sub_sum_range_le_integral\",\n      \"type\": \" {f : ℝ → ℝ} {N : ℕ} (hN : 1 ≤ N) (anti : AntitoneOn f (Set.Ici (↑N - 1))) (integrable : MeasureTheory.IntegrableOn f (Set.Ioi (↑N - 1)) MeasureTheory.volume) (nonneg : ∀ t ∈ Set.Ioi (↑N - 1), 0 ≤ f t) : |∑' (n : ℕ), f ↑n - ∑ n ∈ Finset.range N, f ↑n| ≤ ∫ (x : ℝ) in Set.Ioi (↑N - 1), f x\",\n      \"module\": \"Mathlib.Analysis.SumIntegralComparisons\"\n    },\n    {\n      \"name\": \"SzemerediRegularity.add_div_le_sum_sq_div_card\",\n      \"type\": \" {ι : Type u_2} {𝕜 : Type u_3} [Field 𝕜] [LinearOrder 𝕜] [IsStrictOrderedRing 𝕜] {s t : Finset ι} {x : 𝕜} (hst : s ⊆ t) (f : ι → 𝕜) (d : 𝕜) (hx : 0 ≤ x) (hs : x ≤ |(∑ i ∈ s, f i) / ↑s.card - (∑ i ∈ t, f i) / ↑t.card|) (ht : d ≤ ((∑ i ∈ t, f i) / ↑t.card) ^ 2) : d + ↑s.card / ↑t.card * x ^ 2 ≤ (∑ i ∈ t, f i ^ 2) / ↑t.card\",\n      \"module\": \"Mathlib.Combinatorics.SimpleGraph.Regularity.Bound\"\n    },\n    {\n      \"name\": \"ProbabilityTheory.strong_law_aux1\",\n      \"type\": \" {Ω : Type u_1} [MeasureTheory.MeasureSpace Ω] [MeasureTheory.IsProbabilityMeasure MeasureTheory.volume] (X : ℕ → Ω → ℝ) (hint : MeasureTheory.Integrable (X 0) MeasureTheory.volume) (hindep : Pairwise (Function.onFun (fun f g => ProbabilityTheory.IndepFun f g MeasureTheory.volume) X)) (hident : ∀ (i : ℕ), ProbabilityTheory.IdentDistrib (X i) (X 0) MeasureTheory.volume MeasureTheory.volume) (hnonneg : ∀ (i : ℕ) (ω : Ω), 0 ≤ X i ω) {c : ℝ} (c_one : 1 < c) {ε : ℝ} (εpos : 0 < ε) : ∀ᵐ (ω : Ω), ∀ᶠ (n : ℕ) in Filter.atTop, |∑ i ∈ Finset.range ⌊c ^ n⌋₊, ProbabilityTheory.truncation (X i) (↑i) ω - ∫ (a : Ω), (∑ i ∈ Finset.range ⌊c ^ n⌋₊, ProbabilityTheory.truncation (X i) ↑i) a| < ε * ↑⌊c ^ n⌋₊\",\n      \"module\": \"Mathlib.Probability.StrongLaw\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Finset.abs_sum_of_nonneg'",
+            "type": " {ι : Type u_1} {G : Type u_8} [AddCommGroup G] [LinearOrder G] [AddLeftMono G] {f : ι → G} {s : Finset ι} (hf : ∀ (i : ι), 0 ≤ f i) : |∑ i ∈ s, f i| = ∑ i ∈ s, f i",
+            "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+          },
+          {
+            "name": "Finset.abs_sum_of_nonneg",
+            "type": " {ι : Type u_1} {G : Type u_8} [AddCommGroup G] [LinearOrder G] [AddLeftMono G] {f : ι → G} {s : Finset ι} (hf : ∀ i ∈ s, 0 ≤ f i) : |∑ i ∈ s, f i| = ∑ i ∈ s, f i",
+            "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+          },
+          {
+            "name": "Finset.abs_sum_mul_le_mul_of_abs_sum_range_le",
+            "type": " {R : Type u_4} {f g : ℕ → R} {M : R} {n : ℕ} [Ring R] [LinearOrder R] [IsOrderedRing R] (hf : ∀ k ≤ n, |∑ i ∈ Finset.range k, f i| ≤ M) (hg₀ : 0 ≤ g) (hg : AntitoneOn g (Set.Iio n)) : |∑ i ∈ Finset.range n, f i * g i| ≤ M * g 0",
+            "module": "Mathlib.Algebra.Order.Chebyshev"
+          },
+          {
+            "name": "AntitoneOn.abs_tsum_sub_sum_range_le_integral",
+            "type": " {f : ℝ → ℝ} {N : ℕ} (hN : 1 ≤ N) (anti : AntitoneOn f (Set.Ici (↑N - 1))) (integrable : MeasureTheory.IntegrableOn f (Set.Ioi (↑N - 1)) MeasureTheory.volume) (nonneg : ∀ t ∈ Set.Ioi (↑N - 1), 0 ≤ f t) : |∑' (n : ℕ), f ↑n - ∑ n ∈ Finset.range N, f ↑n| ≤ ∫ (x : ℝ) in Set.Ioi (↑N - 1), f x",
+            "module": "Mathlib.Analysis.SumIntegralComparisons"
+          },
+          {
+            "name": "SzemerediRegularity.add_div_le_sum_sq_div_card",
+            "type": " {ι : Type u_2} {𝕜 : Type u_3} [Field 𝕜] [LinearOrder 𝕜] [IsStrictOrderedRing 𝕜] {s t : Finset ι} {x : 𝕜} (hst : s ⊆ t) (f : ι → 𝕜) (d : 𝕜) (hx : 0 ≤ x) (hs : x ≤ |(∑ i ∈ s, f i) / ↑s.card - (∑ i ∈ t, f i) / ↑t.card|) (ht : d ≤ ((∑ i ∈ t, f i) / ↑t.card) ^ 2) : d + ↑s.card / ↑t.card * x ^ 2 ≤ (∑ i ∈ t, f i ^ 2) / ↑t.card",
+            "module": "Mathlib.Combinatorics.SimpleGraph.Regularity.Bound"
+          },
+          {
+            "name": "ProbabilityTheory.strong_law_aux1",
+            "type": " {Ω : Type u_1} [MeasureTheory.MeasureSpace Ω] [MeasureTheory.IsProbabilityMeasure MeasureTheory.volume] (X : ℕ → Ω → ℝ) (hint : MeasureTheory.Integrable (X 0) MeasureTheory.volume) (hindep : Pairwise (Function.onFun (fun f g => ProbabilityTheory.IndepFun f g MeasureTheory.volume) X)) (hident : ∀ (i : ℕ), ProbabilityTheory.IdentDistrib (X i) (X 0) MeasureTheory.volume MeasureTheory.volume) (hnonneg : ∀ (i : ℕ) (ω : Ω), 0 ≤ X i ω) {c : ℝ} (c_one : 1 < c) {ε : ℝ} (εpos : 0 < ε) : ∀ᵐ (ω : Ω), ∀ᶠ (n : ℕ) in Filter.atTop, |∑ i ∈ Finset.range ⌊c ^ n⌋₊, ProbabilityTheory.truncation (X i) (↑i) ω - ∫ (a : Ω), (∑ i ∈ Finset.range ⌊c ^ n⌋₊, ProbabilityTheory.truncation (X i) ↑i) a| < ε * ↑⌊c ^ n⌋₊",
+            "module": "Mathlib.Probability.StrongLaw"
+          }
+        ]
+      },
+      "isError": false
+    }
+  }
+]

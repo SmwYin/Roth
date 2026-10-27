@@ -1,0 +1,16 @@
+namespace MvPolynomial.NormNonnegativeAssessment
+variable {σ : Type*}
+#check @Roth.normOne_nonneg
+#print Roth.normOne_nonneg
+#print axioms Roth.normOne_nonneg
+theorem replay (P : MvPolynomial σ ℤ) : 0 ≤ Roth.normOne P :=
+  Finset.sum_nonneg fun _ _ ↦ abs_nonneg _
+theorem finiteSize {ι R : Type*} [Zero R] (f : ι →₀ R)
+    (size : R → ℝ) (hsize : ∀ r, 0 ≤ size r) : 0 ≤ f.sum (fun _ c ↦ size c) :=
+  Finset.sum_nonneg fun _ _ ↦ hsize _
+theorem normCoefficients {R : Type*} [SeminormedCommRing R] (P : MvPolynomial σ R) :
+    0 ≤ ∑ d ∈ P.support, ‖P.coeff d‖ := Finset.sum_nonneg fun _ _ ↦ norm_nonneg _
+#print axioms replay
+#print axioms finiteSize
+#print axioms normCoefficients
+end MvPolynomial.NormNonnegativeAssessment
