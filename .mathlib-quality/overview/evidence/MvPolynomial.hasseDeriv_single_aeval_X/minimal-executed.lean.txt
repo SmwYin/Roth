@@ -1,0 +1,40 @@
+import Mathlib.Algebra.MvPolynomial.PDeriv
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Data.Nat.Choose.Bounds
+
+/-! Persistent mathlib-only assessment session control. -/
+#check_failure MvPolynomial.hasseDeriv
+#check Finsupp.lsum_apply
+#check Finsupp.lsum_single
+
+#check_failure MvPolynomial.coeff_hasseDeriv
+#check_failure MvPolynomial.hasseDeriv_hasseDeriv
+#check_failure MvPolynomial.hasseDeriv_single_aeval_X
+example (P : Prop) (h : P) : P := by exact?
+
+/-! Isolated iterativity assessment: raw coefficient and cocycle witnesses, no project import. -/
+open MvPolynomial
+namespace CoeffAssessment
+variable {σ R : Type*} [CommSemiring R]
+noncomputable def delta (d : σ →₀ ℕ) : MvPolynomial σ R →ₗ[R] MvPolynomial σ R :=
+  Finsupp.lsum R (fun k : σ →₀ ℕ ↦
+    (monomial (k - d)).comp (LinearMap.lsmul R R ((d.prod (fun j ↦ (k j).choose) : ℕ) : R))) ∘ₗ
+      (AddMonoidAlgebra.coeffLinearEquiv R).toLinearMap
+
+
+end CoeffAssessment
+namespace RawHasseSingleDirect
+open MvPolynomial
+variable {σ R : Type*} [CommSemiring R]
+theorem linear_square (j : σ) (n : ℕ) :
+    (CoeffAssessment.delta (Finsupp.single j n)).comp
+      (Polynomial.aeval (X j : MvPolynomial σ R)).toLinearMap =
+    (Polynomial.aeval (X j : MvPolynomial σ R)).toLinearMap.comp (Polynomial.hasseDeriv n) := by
+  apply Polynomial.lhom_ext'
+  intro m
+  apply LinearMap.ext
+  intro a
+  simp [-map_natCast, CoeffAssessment.delta, Polynomial.hasseDeriv,
+    X_pow_eq_monomial, C_mul_monomial, Finsupp.single_tsub, mul_assoc]
+#print axioms linear_square
+end RawHasseSingleDirect

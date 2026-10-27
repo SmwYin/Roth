@@ -1,0 +1,52 @@
+[
+  {
+    "form": "current",
+    "command": [
+      "rg",
+      "-n",
+      "hasseDeriv_single_aeval_X|hasseDeriv.*aeval|aeval.*hasseDeriv",
+      "Roth"
+    ],
+    "exit_code": 0,
+    "stdout": "Roth/HasseDeriv.lean:36:* `MvPolynomial.hasseDeriv_single_aeval_X`, `MvPolynomial.uniqueAlgEquiv_hasseDeriv`:\nRoth/HasseDeriv.lean:253:theorem hasseDeriv_single_aeval_X (j : \u03c3) (n : \u2115) (f : Polynomial R) :\nRoth/HasseDeriv.lean:254:    hasseDeriv (Finsupp.single j n) (Polynomial.aeval (X j : MvPolynomial \u03c3 R) f) =\nRoth/HasseDeriv.lean:255:      Polynomial.aeval (X j : MvPolynomial \u03c3 R) (Polynomial.hasseDeriv n f) := by\nRoth/Separation.lean:146:theorem hasseDeriv_rename_mul_aeval (d : \u03c4 \u2192\u2080 \u2115) (\u03bd : \u2115) (U : MvPolynomial \u03c4 R) (V : Polynomial R) :\nRoth/Separation.lean:147:    hasseDeriv (d.mapDomain some + Finsupp.single none \u03bd) (rename some U * Polynomial.aeval\nRoth/Separation.lean:148:      (X none : MvPolynomial (Option \u03c4) R) V) = rename some (hasseDeriv d U) * Polynomial.aeval\nRoth/Separation.lean:160:    hasseDeriv_single_aeval_X, mul_comm,\nRoth/Separation.lean:365:    hasseDeriv_rename_mul_aeval]\nRoth/GenWronskian.lean:159:  simp [kronHasse, kronecker, derivative_aeval, pderiv_hasseDeriv, map_smul,\nRoth/MainLemma.lean:409:  simpa [hasseDeriv_map, eval_map, \u2190 algebraMap_int_eq, \u2190 aeval_def, diag,\n",
+    "stderr": ""
+  },
+  {
+    "form": "literature",
+    "command": [
+      "rg",
+      "-n",
+      "Hasse|Schmidt|hasseDeriv",
+      ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial"
+    ],
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "form": "abstract",
+    "command": [
+      "rg",
+      "-n",
+      "toMvPolynomial|lhom_ext'|aeval_monomial",
+      ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean",
+      ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Basic.lean",
+      ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/AlgebraMap.lean"
+    ],
+    "exit_code": 0,
+    "stdout": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean:486:  rw [optionEquivLeft_apply, aeval_monomial, prod_option_index]\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean:875:section toMvPolynomial\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean:880:noncomputable def Polynomial.toMvPolynomial (i : \u03c3) : R[X] \u2192\u2090[R] MvPolynomial \u03c3 R :=\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean:884:lemma Polynomial.toMvPolynomial_C (i : \u03c3) (r : R) : (C r).toMvPolynomial i = MvPolynomial.C r := by\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean:885:  simp [toMvPolynomial]\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean:888:lemma Polynomial.toMvPolynomial_X (i : \u03c3) : X.toMvPolynomial i = MvPolynomial.X (R := R) i := by\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean:889:  simp [toMvPolynomial]\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean:891:lemma Polynomial.toMvPolynomial_eq_rename_comp (i : \u03c3) :\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean:892:    toMvPolynomial (R := R) i =\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean:897:lemma Polynomial.toMvPolynomial_injective (i : \u03c3) :\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean:898:    Function.Injective (toMvPolynomial (R := R) i) := by\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean:899:  simp only [toMvPolynomial_eq_rename_comp, AlgHom.coe_comp, AlgEquiv.coe_toAlgHom,\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean:903:lemma Polynomial.toMvPolynomial_inj {i : \u03c3} {p q : R[X]} :\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean:904:    toMvPolynomial (R := R) i p = toMvPolynomial i q \u2194 p = q :=\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean:905:  \u27e8fun h \u21a6 Polynomial.toMvPolynomial_injective i h, fun h \u21a6 by rw [h]\u27e9\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean:908:lemma MvPolynomial.eval_comp_toMvPolynomial (f : \u03c3 \u2192 R) (i : \u03c3) :\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean:909:    (eval f).comp (toMvPolynomial (R := R) i) = Polynomial.evalRingHom (f i) := by\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean:913:lemma MvPolynomial.eval_toMvPolynomial (f : \u03c3 \u2192 R) (i : \u03c3) (p : R[X]) :\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean:914:    eval f (p.toMvPolynomial i) = Polynomial.eval (f i) p :=\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean:915:  DFunLike.congr_fun (eval_comp_toMvPolynomial ..) p\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean:918:lemma MvPolynomial.aeval_comp_toMvPolynomial (f : \u03c3 \u2192 S) (i : \u03c3) :\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean:919:    (aeval (R := R) f).comp (toMvPolynomial i) = Polynomial.aeval (f i) := by\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean:924:lemma MvPolynomial.aeval_toMvPolynomial (f : \u03c3 \u2192 S) (i : \u03c3) (p : R[X]) :\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean:925:    aeval f (p.toMvPolynomial i) = Polynomial.aeval (f i) p :=\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean:926:  DFunLike.congr_fun (aeval_comp_toMvPolynomial ..) p\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean:929:lemma MvPolynomial.rename_comp_toMvPolynomial (f : \u03c3 \u2192 \u03c4) (a : \u03c3) :\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean:930:    (rename (R := R) f).comp (Polynomial.toMvPolynomial a) = Polynomial.toMvPolynomial (f a) := by\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean:935:lemma MvPolynomial.rename_toMvPolynomial (f : \u03c3 \u2192 \u03c4) (a : \u03c3) (p : R[X]) :\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean:936:    (rename (R := R) f) (p.toMvPolynomial a) = p.toMvPolynomial (f a) :=\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean:937:  DFunLike.congr_fun (rename_comp_toMvPolynomial ..) p\n.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean:939:end toMvPolynomial\n.lake/packages/mathlib/Mathlib/Algebra/Polynomial/AlgebraMap.lean:298:theorem aeval_monomial {n : \u2115} {r : R} : aeval x (monomial n r) = algebraMap _ _ r * x ^ n :=\n.lake/packages/mathlib/Mathlib/Algebra/Polynomial/AlgebraMap.lean:424:  | monomial n c => simp [aeval_monomial, MulOpposite.op_pow, Algebra.commutes]\n.lake/packages/mathlib/Mathlib/Algebra/Polynomial/Basic.lean:734:theorem lhom_ext' {M : Type*} [AddCommMonoid M] [Module R M] {f g : R[X] \u2192\u2097[R] M}\n",
+    "stderr": ""
+  },
+  {
+    "form": "local-paper",
+    "command": [
+      "rg",
+      "-n",
+      "Hasse|univariate|Polynomial.hasseDeriv",
+      ".mathlib-quality/references/clean.tex"
+    ],
+    "exit_code": 0,
+    "stdout": "122:For a multi-index $i=(i_1,\\dots,i_p)\\in\\N^p$, define the \\emph{Hasse differential operator}\n152:surviving monomials do not merge under differentiation. Use the univariate\n153:\\texttt{Polynomial.hasseDeriv}\\footnote{\\url{https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/Polynomial/HasseDeriv.html}}\n316:iterated derivatives to Hasse derivatives by factorial scaling only over\n457:An individual Hasse derivative of such a term is zero or a monomial whose\n497:coefficient of a fixed Hasse derivative receives at most one input\n579:    The Hasse composition identity gives\n1505:is divisible by $f(x)$ for all $j_1, \\dots, j_m$ that satisfy \\eqref{roth:eq44}. Let $W^*=W'-W''$. Hasse differentiation, diagonal substitution and\n1563:as three separate estimates. A fixed Hasse derivative has no coefficient\n",
+    "stderr": ""
+  }
+]
