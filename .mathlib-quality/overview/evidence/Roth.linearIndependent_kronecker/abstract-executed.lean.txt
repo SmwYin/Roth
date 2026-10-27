@@ -1,0 +1,37 @@
+namespace LinearIndependentKroneckerProbe
+open MvPolynomial
+#check @LinearIndependent.map_injOn
+#check @LinearMap.linearIndependent_iff_of_injOn
+#check @LinearIndependent.map'
+#check @AddMonoidAlgebra.supported
+#check @AddMonoidAlgebra.mem_supported
+theorem supported_span {R σ ι : Type*} [CommSemiring R]
+    (S : Set (σ →₀ ℕ)) (φ : ι → MvPolynomial σ R)
+    (hφ : ∀ i, (↑(φ i).coeff.support : Set (σ →₀ ℕ)) ⊆ S)
+    {P : MvPolynomial σ R} (hP : P ∈ Submodule.span R (Set.range φ)) :
+    (↑P.coeff.support : Set (σ →₀ ℕ)) ⊆ S := by
+  have hs : Submodule.span R (Set.range φ) ≤ AddMonoidAlgebra.supported R R S := by
+    apply Submodule.span_le.mpr
+    rintro _ ⟨i, rfl⟩
+    exact hφ i
+  exact hs hP
+theorem abstract_li {R σ ι : Type*} [CommSemiring R] (w : σ → ℕ)
+    (S : Set (σ →₀ ℕ)) (hi : Set.InjOn (Finsupp.weight (R := ℕ) w) S)
+    {φ : ι → MvPolynomial σ R}
+    (hφ : ∀ i, (↑(φ i).coeff.support : Set (σ →₀ ℕ)) ⊆ S)
+    (h : LinearIndependent R φ) :
+    LinearIndependent R fun i ↦ aeval (fun j ↦ (Polynomial.X : Polynomial R) ^ w j) (φ i) := by
+  exact h.map_injOn (aeval (fun j ↦ (Polynomial.X : Polynomial R) ^ w j)).toLinearMap
+    ((KroneckerZeroIffRestriction.restricted w S hi).mono
+      (fun P hP ↦ supported_span S φ hφ hP))
+theorem positional {R σ ι : Type*} [CommSemiring R] {n k : ℕ} (e : σ ≃ Fin n)
+    {φ : ι → MvPolynomial σ R} (hφ : ∀ i j, degreeOf j (φ i) < k)
+    (h : LinearIndependent R φ) :
+    LinearIndependent R fun i ↦
+      aeval (fun j ↦ (Polynomial.X : Polynomial R) ^ k ^ (e j : ℕ)) (φ i) := by
+  exact abstract_li _ {d | ∀ j, d j < k} (KroneckerExpInjOnNoBase.no_base e k)
+    (fun i d hd j ↦ (monomial_le_degreeOf j hd).trans_lt (hφ i j)) h
+#print axioms supported_span
+#print axioms abstract_li
+#print axioms positional
+end LinearIndependentKroneckerProbe

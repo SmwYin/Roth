@@ -1,0 +1,54 @@
+{
+  "declaration": "Roth.linearIndependent_kronecker",
+  "kind": "theorem",
+  "type": "∀ {K : Type u_1} [inst : Field K] {σ : Type u_2} [inst_1 : Fintype σ] {l k : ℕ},\n  1 < k →\n    ∀ {φ : Fin l → MvPolynomial σ K},\n      (∀ (ν : Fin l) (j : σ), MvPolynomial.degreeOf j (φ ν) < k) →\n        LinearIndependent K φ → LinearIndependent K fun ν ↦ (Roth.kronecker k) (φ ν)",
+  "what": "Kronecker substitution preserves linear independence of a family whose individual variable degrees are below the base.",
+  "how": "Pull scalar relations back using degree-bounded zero detection. Verified alternate proof puts the family span inside AddMonoidAlgebra.supported, uses restricted monomial-evaluation injectivity, then existing LinearIndependent.map_injOn.",
+  "hypotheses": {
+    "coefficients": "Field K in current parent interface; CommSemiring after reaim",
+    "variables": "Fintype σ for chosen enumeration; arbitrary σ with weights or explicit e:σ≃Fin n",
+    "family": "Fin l current; arbitrary index verified",
+    "base": "1<k current; hypothesis removable in support-based proof",
+    "bounds": "∀i j, degreeOf j (φ i)<k, or support containment in separated S",
+    "independence": "LinearIndependent coefficients φ remains essential"
+  },
+  "project_dependencies": [
+    "Roth.kronecker",
+    "Roth.kronecker_eq_zero_iff"
+  ],
+  "caller_summary": {
+    "explicit_callers": [
+      "Roth.exists_genWronskian_ne_zero"
+    ],
+    "explicit_count": 1,
+    "outside_declaring_file": 0,
+    "inline_rederivations": 0,
+    "canonical_audit": "all293 ordered unique/present/value declarations; sole direct consumer matches"
+  },
+  "mathlib_api_audit": {
+    "existing": [
+      "LinearIndependent.map_injOn",
+      "LinearMap.linearIndependent_iff_of_injOn",
+      "AddMonoidAlgebra.supported",
+      "AddMonoidAlgebra.mem_supported",
+      "Submodule.span_le",
+      "Finsupp.mapDomain_injOn"
+    ],
+    "limit": "Exact final transport exists, but specialized span-injectivity premise still requires new108–110 proofs. map′ global injectivity is false in two variables."
+  },
+  "moral_duplications": "Final linear relation transport duplicates generic map_injOn; degree-bound/weighted-support sufficient condition is additional specialized proof.",
+  "generalization": "Verified CommSemiring, arbitrary family index, arbitrary weighted variable set; explicit finite enumeration and no k>1 for positional theorem.",
+  "missing_api": "aeval(X^w) coefficient mapDomain bridge and support-restricted injection; packaging inherited questions from109–110, independently evaluated for111. No missing generic linear-independence transport.",
+  "junk": "No; actual sole source consumer verified by replay.",
+  "action": {
+    "verdict": "BORDERLINE-needs-human",
+    "questions": [
+      "Expose support-family independence corollary or only restricted aeval injection plus existing LinearIndependent.map_injOn?",
+      "Expose explicit-enumeration arbitrary-family no-hk positional corollary or keep it project-local?",
+      "Keep span-to-supported inclusion local via Submodule.span_le or package it with the chosen evaluation API?"
+    ],
+    "next": "Choose whether support/positional corollary merits public API after restricted-injection bridge; keep local until choice. No production edits in assessment.",
+    "potential_home": "Mathlib/Algebra/MvPolynomial/MonomialEval.lean (bridge API/import layering provisional); distinct positional separation108 remains Mathlib/Data/Nat/Digits/Finsupp.lean",
+    "grouping": "Accepted YES108 Roth.kroneckerExp_injOn;109/110 remain BORDERLINE, not inherited YES."
+  }
+}

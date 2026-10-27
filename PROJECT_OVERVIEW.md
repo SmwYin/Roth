@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 110/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 111/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 110; remaining: 183.
-- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 15 YES-but-generalise-first, 21 NO-mathlib-has-it, 35 BORDERLINE-needs-human, 12 SKIP.
+- Completed applicable assessments: 111; remaining: 182.
+- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 15 YES-but-generalise-first, 21 NO-mathlib-has-it, 36 BORDERLINE-needs-human, 12 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -1183,6 +1183,20 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: named: 1; callers: Roth.linearIndependent_kronecker; outside declaring file: 0; full replay: PASS
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.kronecker_eq_zero_iff.md).
 
+### Completed: `Roth.linearIndependent_kronecker`
+
+- Type: `∀ {K : Type u_1} [inst : Field K] {σ : Type u_2} [inst_1 : Fintype σ] {l k : ℕ},
+  1 < k →
+    ∀ {φ : Fin l → MvPolynomial σ K},
+      (∀ (ν : Fin l) (j : σ), MvPolynomial.degreeOf j (φ ν) < k) →
+        LinearIndependent K φ → LinearIndependent K fun ν ↦ (Roth.kronecker k) (φ ν)`
+- What: Kronecker substitution preserves linear independence of a family whose individual variable degrees are below the base.
+- How: Pull scalar relations back using degree-bounded zero detection. Verified alternate proof puts the family span inside AddMonoidAlgebra.supported, uses restricted monomial-evaluation injectivity, then existing LinearIndependent.map_injOn.
+- Hypotheses: coefficients: Field K in current parent interface; CommSemiring after reaim; variables: Fintype σ for chosen enumeration; arbitrary σ with weights or explicit e:σ≃Fin n; family: Fin l current; arbitrary index verified; base: 1<k current; hypothesis removable in support-based proof; bounds: ∀i j, degreeOf j (φ i)<k, or support containment in separated S; independence: LinearIndependent coefficients φ remains essential
+- Project dependencies: Roth.kronecker, Roth.kronecker_eq_zero_iff
+- Caller summary: explicit callers: Roth.exists_genWronskian_ne_zero; explicit count: 1; outside declaring file: 0; inline rederivations: 0; canonical audit: all293 ordered unique/present/value declarations; sole direct consumer matches
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.linearIndependent_kronecker.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -1429,6 +1443,8 @@ Completed `Roth.coeff_kronecker`: Finsupp.mapDomain_apply' supplies exact abstra
 
 Completed `Roth.kronecker_eq_zero_iff`: exact abstract: Finsupp.mapDomain_injOn; alternative: Finsupp.mapDomain_support_of_injOn; normalization: Newly proved weighted aeval/mapDomain bridge; not existing replacement; automatic parent gate: aeval analogous law not established; no blanket NO
 
+Completed `Roth.linearIndependent_kronecker`: existing: LinearIndependent.map_injOn, LinearMap.linearIndependent_iff_of_injOn, AddMonoidAlgebra.supported, AddMonoidAlgebra.mem_supported, Submodule.span_le, Finsupp.mapDomain_injOn; limit: Exact final transport exists, but specialized span-injectivity premise still requires new108–110 proofs. map′ global injectivity is false in two variables.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -1650,6 +1666,8 @@ Completed `Roth.kroneckerExp_injOn`: Private NoetherNormalization.sum_r_mul_ne90
 Completed `Roth.coeff_kronecker`: Coefficient separation is existing support-local mapDomain transport; exact aeval coefficient API not identified.
 
 Completed `Roth.kronecker_eq_zero_iff`: Abstract support-local injection is already in Finsupp.mapDomain_injOn; no duplicate Finsupp theorem needed.
+
+Completed `Roth.linearIndependent_kronecker`: Final linear relation transport duplicates generic map_injOn; degree-bound/weighted-support sufficient condition is additional specialized proof.
 
 ## Part 5: Generalization opportunities
 
@@ -1876,6 +1894,8 @@ Completed `Roth.coeff_kronecker`: Verified arbitrary sigma, CommSemiring, arbitr
 
 Completed `Roth.kronecker_eq_zero_iff`: Verified CommSemiring, arbitrary σ and weights with support separation; positional explicit e and no hk; literal parents retain Field/Fintype constraints.
 
+Completed `Roth.linearIndependent_kronecker`: Verified CommSemiring, arbitrary family index, arbitrary weighted variable set; explicit finite enumeration and no k>1 for positional theorem.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -2098,6 +2118,8 @@ Completed `Roth.kroneckerExp_injOn`: Public Finsupp geometric-weight injectivity
 Completed `Roth.coeff_kronecker`: Candidate normalization between aeval monomial powers and mapDomainAlgHom(weight); decide whether to expose extraction corollary.
 
 Completed `Roth.kronecker_eq_zero_iff`: Weighted monomial-evaluation coefficient/mapDomain bridge; packaging of restricted aeval injection versus zero corollary remains API choice.
+
+Completed `Roth.linearIndependent_kronecker`: aeval(X^w) coefficient mapDomain bridge and support-restricted injection; packaging inherited questions from109–110, independently evaluated for111. No missing generic linear-independence transport.
 
 ## Part 7: Junk / removable
 
@@ -2324,6 +2346,8 @@ Completed `Roth.coeff_kronecker`: Not junk: actual zero-detection consumer suppo
 
 Completed `Roth.kronecker_eq_zero_iff`: Not dead: sole explicit caller and canonical direct dependency agree; no inline duplicate found.
 
+Completed `Roth.linearIndependent_kronecker`: No; actual sole source consumer verified by replay.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -2438,6 +2462,7 @@ Completed `Roth.kronecker_eq_zero_iff`: Not dead: sole explicit caller and canon
 | 108 | `Roth.kroneckerExp_injOn` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.kroneckerExp_injOn.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.kroneckerExp_injOn/root-acceptance.json) |
 | 109 | `Roth.coeff_kronecker` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.coeff_kronecker.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.coeff_kronecker/root-acceptance.json) |
 | 110 | `Roth.kronecker_eq_zero_iff` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.kronecker_eq_zero_iff.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.kronecker_eq_zero_iff/root-acceptance.json) |
+| 111 | `Roth.linearIndependent_kronecker` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.linearIndependent_kronecker.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.linearIndependent_kronecker/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -2657,12 +2682,14 @@ Completed `Roth.coeff_kronecker` action: BORDERLINE-needs-human; resolve three c
 
 Completed `Roth.kronecker_eq_zero_iff` action: verdict: BORDERLINE-needs-human; questions: Bridge-only weighted aeval/mapDomainAlgHom contribution versus packaged consequences?, Restricted Set.InjOn primary, with named support-local zero iff rewriting corollary?, Include positional degree-box zero test with explicit-enumeration separation API or keep it local?; local destination: Roth/GenWronskian.lean; refactor: At linearIndependent_kronecker:123 substitute verified zero_replay/chosen support-law specialization; preserve sum-degree premises and caller hk.
 
+Completed `Roth.linearIndependent_kronecker` action: verdict: BORDERLINE-needs-human; questions: Expose support-family independence corollary or only restricted aeval injection plus existing LinearIndependent.map_injOn?, Expose explicit-enumeration arbitrary-family no-hk positional corollary or keep it project-local?, Keep span-to-supported inclusion local via Submodule.span_le or package it with the chosen evaluation API?; next: Choose whether support/positional corollary merits public API after restricted-injection bridge; keep local until choice. No production edits in assessment.; potential home: Mathlib/Algebra/MvPolynomial/MonomialEval.lean (bridge API/import layering provisional); distinct positional separation108 remains Mathlib/Data/Nat/Digits/Finsupp.lean; grouping: Accepted YES108 Roth.kroneckerExp_injOn;109/110 remain BORDERLINE, not inherited YES.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.linearIndependent_kronecker` next. Supporting identities receive their own applicable checks.
+   `Roth.derivative_aeval` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

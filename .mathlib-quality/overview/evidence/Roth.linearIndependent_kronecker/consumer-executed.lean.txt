@@ -1,0 +1,65 @@
+namespace LinearIndependentKroneckerConsumers
+open MvPolynomial Roth
+variable {K σ : Type*} [Field K] [Fintype σ] {l : ℕ}
+theorem replay {k : ℕ} (_hk : 1 < k) {φ : Fin l → MvPolynomial σ K}
+    (hφ : ∀ i j, degreeOf j (φ i) < k) (h : LinearIndependent K φ) :
+    LinearIndependent K fun i ↦ Roth.kronecker k (φ i) :=
+  LinearIndependentKroneckerProbe.positional (Fintype.equivFin σ) hφ h
+open Lean Elab Term in
+elab "linearKroneckerWronskianOriginal%" : term => do
+  Lean.Meta.mkConstWithFreshMVarLevels
+    (Lean.mkPrivateNameCore `Roth.GenWronskian `Roth.wronskian_kronecker_eq_sum_aux)
+omit [Fintype σ] in
+theorem exists_replay [Finite σ] [CharZero K] {φ : Fin l → MvPolynomial σ K}
+    (h : LinearIndependent K φ) :
+    ∃ D : Fin l → (σ →₀ ℕ), (∀ μ, (D μ).degree ≤ μ) ∧ genWronskian D φ ≠ 0 := by
+  classical
+  let := Fintype.ofFinite σ
+  let k := 2 + ∑ ν, ∑ j, degreeOf j (φ ν)
+  choose s c hs hc using fun μ : Fin l ↦ exists_hasseDeriv_kronecker_eq_sum (K := K) (σ := σ) k μ
+  by_contra! hcon
+  apply wronskian_ne_zero_of_linearIndependent
+    (replay (Nat.lt_add_right _ (by decide)) (fun ν j ↦
+      lt_of_le_of_lt ((Finset.single_le_sum (f := fun j ↦ degreeOf j (φ ν))
+        (by simp) (Finset.mem_univ j)).trans (Finset.single_le_sum
+          (f := fun ν ↦ ∑ j, degreeOf j (φ ν)) (by simp) (Finset.mem_univ ν)))
+        (Nat.lt_add_of_pos_left two_pos)) h)
+  rw [linearKroneckerWronskianOriginal% k φ s c (fun μ ν ↦ hc μ (φ ν))]
+  refine Finset.sum_eq_zero fun f hf ↦ ?_
+  rw [hcon f fun μ ↦ hs μ _ (Fintype.mem_piFinset.1 hf μ), map_zero, mul_zero]
+
+#print axioms exists_replay
+#print axioms replay
+end LinearIndependentKroneckerConsumers
+
+namespace LinearIndependentKroneckerEdges
+open MvPolynomial
+theorem empty_variables {R ι : Type*} [CommSemiring R]
+    {φ : ι → MvPolynomial (Fin 0) R}
+    (h : LinearIndependent R φ) :
+    LinearIndependent R fun i ↦
+      aeval (fun j : Fin 0 ↦ (Polynomial.X : Polynomial R) ^ 0 ^ (j : ℕ)) (φ i) := by
+  exact LinearIndependentKroneckerProbe.positional (Equiv.refl (Fin 0)) (by simp) h
+theorem base_one {R ι : Type*} [CommSemiring R]
+    {φ : ι → MvPolynomial (Fin 2) R}
+    (hφ : ∀ i j, degreeOf j (φ i) < 1) (h : LinearIndependent R φ) :
+    LinearIndependent R fun i ↦
+      aeval (fun j : Fin 2 ↦ (Polynomial.X : Polynomial R) ^ 1 ^ (j : ℕ)) (φ i) :=
+  LinearIndependentKroneckerProbe.positional (Equiv.refl (Fin 2)) hφ h
+theorem empty_family {R σ : Type*} [CommSemiring R] (w : σ → ℕ)
+    (φ : Fin 0 → MvPolynomial σ R) :
+    LinearIndependent R fun i ↦ aeval (fun j ↦ (Polynomial.X : Polynomial R) ^ w j) (φ i) := by
+  exact linearIndependent_empty_type
+theorem not_global_injective : ¬ Function.Injective
+    (aeval (R := ℚ) (fun j : Fin 2 ↦ (Polynomial.X : Polynomial ℚ) ^ 2 ^ (j : ℕ))) := by
+  intro hi
+  have h : (X (1 : Fin 2) : MvPolynomial (Fin 2) ℚ) = X (0 : Fin 2) ^ 2 := by
+    apply hi
+    simp
+  have hc := congrArg (MvPolynomial.eval fun j : Fin 2 ↦ if j = 1 then (1 : ℚ) else 0) h
+  norm_num at hc
+#print axioms empty_variables
+#print axioms base_one
+#print axioms empty_family
+#print axioms not_global_injective
+end LinearIndependentKroneckerEdges
