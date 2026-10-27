@@ -1,0 +1,82 @@
+{
+  "request": {
+    "query": "Finset.card, Fintype.piFinset",
+    "num_results": 12
+  },
+  "response": {
+    "status": "fulfilled",
+    "value": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Fintype.card_piFinset\",\n      \"type\": \" {ι : Type u_4} {α : ι → Type u_6} [DecidableEq ι] [Fintype ι] (s : (i : ι) → Finset (α i)) : (Fintype.piFinset s).card = ∏ i, (s i).card\",\n      \"module\": \"Mathlib.Data.Fintype.BigOperators\"\n    },\n    {\n      \"name\": \"Fintype.card_piFinset_const\",\n      \"type\": \" {α : Type u_7} (s : Finset α) (n : ℕ) : (Fintype.piFinset fun x => s).card = s.card ^ n\",\n      \"module\": \"Mathlib.Data.Fintype.BigOperators\"\n    },\n    {\n      \"name\": \"Fintype.card_filter_piFinset_const_eq_of_mem\",\n      \"type\": \" {ι : Type u_4} {κ : Type u_5} [DecidableEq ι] [DecidableEq κ] [Fintype ι] (s : Finset κ) (i : ι) {x : κ} (hx : x ∈ s) : {f ∈ Fintype.piFinset fun x => s | f i = x}.card = s.card ^ (Fintype.card ι - 1)\",\n      \"module\": \"Mathlib.Data.Fintype.BigOperators\"\n    },\n    {\n      \"name\": \"Fintype.card_filter_piFinset_eq_of_mem\",\n      \"type\": \" {ι : Type u_4} {α : ι → Type u_6} [DecidableEq ι] [Fintype ι] [(i : ι) → DecidableEq (α i)] (s : (i : ι) → Finset (α i)) (i : ι) {a : α i} (ha : a ∈ s i) : {f ∈ Fintype.piFinset s | f i = a}.card = ∏ j ∈ Finset.univ.erase i, (s j).card\",\n      \"module\": \"Mathlib.Data.Fintype.BigOperators\"\n    },\n    {\n      \"name\": \"Fintype.card_filter_piFinset_const\",\n      \"type\": \" {ι : Type u_4} {κ : Type u_5} [DecidableEq ι] [DecidableEq κ] [Fintype ι] (s : Finset κ) (i : ι) (j : κ) : {f ∈ Fintype.piFinset fun x => s | f i = j}.card = if j ∈ s then s.card ^ (Fintype.card ι - 1) else 0\",\n      \"module\": \"Mathlib.Data.Fintype.BigOperators\"\n    },\n    {\n      \"name\": \"Fintype.card_filter_piFinset_eq\",\n      \"type\": \" {ι : Type u_4} {α : ι → Type u_6} [DecidableEq ι] [Fintype ι] [(i : ι) → DecidableEq (α i)] (s : (i : ι) → Finset (α i)) (i : ι) (a : α i) : {f ∈ Fintype.piFinset s | f i = a}.card = if a ∈ s i then ∏ b ∈ Finset.univ.erase i, (s b).card else 0\",\n      \"module\": \"Mathlib.Data.Fintype.BigOperators\"\n    },\n    {\n      \"name\": \"Fintype.sum_piFinset_apply\",\n      \"type\": \" {ι : Type u_1} {κ : Type u_2} {α : Type u_3} [DecidableEq ι] [Fintype ι] [AddCommMonoid α] (f : κ → α) (s : Finset κ) (i : ι) : ∑ g ∈ Fintype.piFinset fun x => s, f (g i) = s.card ^ (Fintype.card ι - 1) • ∑ b ∈ s, f b\",\n      \"module\": \"Mathlib.Algebra.Module.BigOperators\"\n    },\n    {\n      \"name\": \"MultilinearMap.map_sum_finset_aux\",\n      \"type\": \" {R : Type uR} {ι : Type uι} {M₁ : ι → Type v₁} {M₂ : Type v₂} [Semiring R] [(i : ι) → AddCommMonoid (M₁ i)] [AddCommMonoid M₂] [(i : ι) → Module R (M₁ i)] [Module R M₂] (f : MultilinearMap R M₁ M₂) {α : ι → Type u_1} (g : (i : ι) → α i → M₁ i) (A : (i : ι) → Finset (α i)) [DecidableEq ι] [Fintype ι] {n : ℕ} (h : ∑ i, (A i).card = n) : (f fun i => ∑ j ∈ A i, g i j) = ∑ r ∈ Fintype.piFinset A, f fun i => g i (r i)\",\n      \"module\": \"Mathlib.LinearAlgebra.Multilinear.Basic\"\n    },\n    {\n      \"name\": \"Finset.card_snocEquiv_filter_piFinset\",\n      \"type\": \" {n : ℕ} {α : Fin (n + 1) → Type u_1} (S : (i : Fin (n + 1)) → Finset (α i)) (P : ((i : Fin n) → α i.castSucc) → Prop) [DecidablePred P] : {r ∈ Fintype.piFinset S | P (Fin.init r)}.card = (S (Fin.last n)).card * {r ∈ Fintype.piFinset (Fin.init S) | P r}.card\",\n      \"module\": \"Mathlib.Data.Fin.Tuple.Finset\"\n    },\n    {\n      \"name\": \"Finset.card_insertNthEquiv_filter_piFinset\",\n      \"type\": \" {n : ℕ} {α : Fin (n + 1) → Type u_1} {p : Fin (n + 1)} (S : (i : Fin (n + 1)) → Finset (α i)) (P : ((i : Fin n) → α (p.succAbove i)) → Prop) [DecidablePred P] : {r ∈ Fintype.piFinset S | P (p.removeNth r)}.card = (S p).card * {r ∈ Fintype.piFinset (p.removeNth S) | P r}.card\",\n      \"module\": \"Mathlib.Data.Fin.Tuple.Finset\"\n    },\n    {\n      \"name\": \"Finset.card_consEquiv_filter_piFinset\",\n      \"type\": \" {n : ℕ} {α : Fin (n + 1) → Type u_1} (S : (i : Fin (n + 1)) → Finset (α i)) (P : ((i : Fin n) → α i.succ) → Prop) [DecidablePred P] : {r ∈ Fintype.piFinset S | P (Fin.tail r)}.card = (S 0).card * {r ∈ Fintype.piFinset (Fin.tail S) | P r}.card\",\n      \"module\": \"Mathlib.Data.Fin.Tuple.Finset\"\n    },\n    {\n      \"name\": \"MvPolynomial.schwartz_zippel_totalDegree\",\n      \"type\": \" {R : Type u_1} [CommRing R] [IsDomain R] [DecidableEq R] {n : ℕ} {p : MvPolynomial (Fin n) R} (hp : p ≠ 0) (S : Finset R) : ↑{f ∈ Fintype.piFinset fun x => S | (MvPolynomial.eval f) p = 0}.card / ↑S.card ^ n ≤ ↑p.totalDegree / ↑S.card\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.SchwartzZippel\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Fintype.card_piFinset",
+            "type": " {ι : Type u_4} {α : ι → Type u_6} [DecidableEq ι] [Fintype ι] (s : (i : ι) → Finset (α i)) : (Fintype.piFinset s).card = ∏ i, (s i).card",
+            "module": "Mathlib.Data.Fintype.BigOperators"
+          },
+          {
+            "name": "Fintype.card_piFinset_const",
+            "type": " {α : Type u_7} (s : Finset α) (n : ℕ) : (Fintype.piFinset fun x => s).card = s.card ^ n",
+            "module": "Mathlib.Data.Fintype.BigOperators"
+          },
+          {
+            "name": "Fintype.card_filter_piFinset_const_eq_of_mem",
+            "type": " {ι : Type u_4} {κ : Type u_5} [DecidableEq ι] [DecidableEq κ] [Fintype ι] (s : Finset κ) (i : ι) {x : κ} (hx : x ∈ s) : {f ∈ Fintype.piFinset fun x => s | f i = x}.card = s.card ^ (Fintype.card ι - 1)",
+            "module": "Mathlib.Data.Fintype.BigOperators"
+          },
+          {
+            "name": "Fintype.card_filter_piFinset_eq_of_mem",
+            "type": " {ι : Type u_4} {α : ι → Type u_6} [DecidableEq ι] [Fintype ι] [(i : ι) → DecidableEq (α i)] (s : (i : ι) → Finset (α i)) (i : ι) {a : α i} (ha : a ∈ s i) : {f ∈ Fintype.piFinset s | f i = a}.card = ∏ j ∈ Finset.univ.erase i, (s j).card",
+            "module": "Mathlib.Data.Fintype.BigOperators"
+          },
+          {
+            "name": "Fintype.card_filter_piFinset_const",
+            "type": " {ι : Type u_4} {κ : Type u_5} [DecidableEq ι] [DecidableEq κ] [Fintype ι] (s : Finset κ) (i : ι) (j : κ) : {f ∈ Fintype.piFinset fun x => s | f i = j}.card = if j ∈ s then s.card ^ (Fintype.card ι - 1) else 0",
+            "module": "Mathlib.Data.Fintype.BigOperators"
+          },
+          {
+            "name": "Fintype.card_filter_piFinset_eq",
+            "type": " {ι : Type u_4} {α : ι → Type u_6} [DecidableEq ι] [Fintype ι] [(i : ι) → DecidableEq (α i)] (s : (i : ι) → Finset (α i)) (i : ι) (a : α i) : {f ∈ Fintype.piFinset s | f i = a}.card = if a ∈ s i then ∏ b ∈ Finset.univ.erase i, (s b).card else 0",
+            "module": "Mathlib.Data.Fintype.BigOperators"
+          },
+          {
+            "name": "Fintype.sum_piFinset_apply",
+            "type": " {ι : Type u_1} {κ : Type u_2} {α : Type u_3} [DecidableEq ι] [Fintype ι] [AddCommMonoid α] (f : κ → α) (s : Finset κ) (i : ι) : ∑ g ∈ Fintype.piFinset fun x => s, f (g i) = s.card ^ (Fintype.card ι - 1) • ∑ b ∈ s, f b",
+            "module": "Mathlib.Algebra.Module.BigOperators"
+          },
+          {
+            "name": "MultilinearMap.map_sum_finset_aux",
+            "type": " {R : Type uR} {ι : Type uι} {M₁ : ι → Type v₁} {M₂ : Type v₂} [Semiring R] [(i : ι) → AddCommMonoid (M₁ i)] [AddCommMonoid M₂] [(i : ι) → Module R (M₁ i)] [Module R M₂] (f : MultilinearMap R M₁ M₂) {α : ι → Type u_1} (g : (i : ι) → α i → M₁ i) (A : (i : ι) → Finset (α i)) [DecidableEq ι] [Fintype ι] {n : ℕ} (h : ∑ i, (A i).card = n) : (f fun i => ∑ j ∈ A i, g i j) = ∑ r ∈ Fintype.piFinset A, f fun i => g i (r i)",
+            "module": "Mathlib.LinearAlgebra.Multilinear.Basic"
+          },
+          {
+            "name": "Finset.card_snocEquiv_filter_piFinset",
+            "type": " {n : ℕ} {α : Fin (n + 1) → Type u_1} (S : (i : Fin (n + 1)) → Finset (α i)) (P : ((i : Fin n) → α i.castSucc) → Prop) [DecidablePred P] : {r ∈ Fintype.piFinset S | P (Fin.init r)}.card = (S (Fin.last n)).card * {r ∈ Fintype.piFinset (Fin.init S) | P r}.card",
+            "module": "Mathlib.Data.Fin.Tuple.Finset"
+          },
+          {
+            "name": "Finset.card_insertNthEquiv_filter_piFinset",
+            "type": " {n : ℕ} {α : Fin (n + 1) → Type u_1} {p : Fin (n + 1)} (S : (i : Fin (n + 1)) → Finset (α i)) (P : ((i : Fin n) → α (p.succAbove i)) → Prop) [DecidablePred P] : {r ∈ Fintype.piFinset S | P (p.removeNth r)}.card = (S p).card * {r ∈ Fintype.piFinset (p.removeNth S) | P r}.card",
+            "module": "Mathlib.Data.Fin.Tuple.Finset"
+          },
+          {
+            "name": "Finset.card_consEquiv_filter_piFinset",
+            "type": " {n : ℕ} {α : Fin (n + 1) → Type u_1} (S : (i : Fin (n + 1)) → Finset (α i)) (P : ((i : Fin n) → α i.succ) → Prop) [DecidablePred P] : {r ∈ Fintype.piFinset S | P (Fin.tail r)}.card = (S 0).card * {r ∈ Fintype.piFinset (Fin.tail S) | P r}.card",
+            "module": "Mathlib.Data.Fin.Tuple.Finset"
+          },
+          {
+            "name": "MvPolynomial.schwartz_zippel_totalDegree",
+            "type": " {R : Type u_1} [CommRing R] [IsDomain R] [DecidableEq R] {n : ℕ} {p : MvPolynomial (Fin n) R} (hp : p ≠ 0) (S : Finset R) : ↑{f ∈ Fintype.piFinset fun x => S | (MvPolynomial.eval f) p = 0}.card / ↑S.card ^ n ≤ ↑p.totalDegree / ↑S.card",
+            "module": "Mathlib.Algebra.MvPolynomial.SchwartzZippel"
+          }
+        ]
+      },
+      "isError": false
+    }
+  }
+}

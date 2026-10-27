@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 29/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 30/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 29; remaining: 264.
-- Verdicts: 7 NO-composable-from-mathlib, 11 YES-add-as-is, 0 YES-but-generalise-first, 1 NO-mathlib-has-it, 7 BORDERLINE-needs-human, 3 SKIP.
+- Completed applicable assessments: 30; remaining: 263.
+- Verdicts: 7 NO-composable-from-mathlib, 11 YES-add-as-is, 0 YES-but-generalise-first, 1 NO-mathlib-has-it, 8 BORDERLINE-needs-human, 3 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -335,6 +335,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: 3 source occurrences: card_le_card_box, private lattice count helper, abs_eval_lt_of_le_index; 2 external files.
 - Verdict: NO-composable-from-mathlib; [complete report](.mathlib-quality/overview/mathlibable/Roth.card_box.md).
 
+### Completed: `Roth.card_le_card_box`
+
+- Type: `theorem`
+- What: Distinct natural multiindices bounded coordinatewise by r have cardinality at most product(rj+1).
+- How: Containment in finite coordinate product, or independent injective Fin-valued tuple representation.
+- Hypotheses: arbitrary universe polymorphic σ, Fintype σ, r:σ→ℕ, s:Finset(σ→₀ℕ), ∀d∈s,j,dj≤rj; no public DecidableEq
+- Project dependencies: Roth.mem_box, Roth.card_box
+- Caller summary: count: 2; files: Roth/CoeffNorm.lean:264, Roth/MainLemma.lean:506; native tests: Both degreeOf-to-real-cardinality consumer formats verified using independent injection.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.card_le_card_box.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -419,6 +429,8 @@ Completed `Roth.mem_box`: Finset.mem_map_equiv, Fintype.mem_piFinset, Finset.mem
 
 Completed `Roth.card_box`: Finset.card_map, Fintype.card_piFinset, Finset.card_range, Finsupp.card_Iic, Finsupp.prod_fintype, Nat.card_Iic
 
+Completed `Roth.card_le_card_box`: Five actual search methods on current/standard/abstract forms. Existing generic function-family bound composes in three facts. Original Fin injection uses four domain facts including endpoint conversion; expanded original uses seven. Finsupp.card_Iic gives support product; normalization tested.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -478,6 +490,8 @@ Completed `Roth.weight`: Finsupp.weight, Finsupp.linearCombination
 Completed `Roth.mem_box`: Box API duplicates existing product/interval membership.
 
 Completed `Roth.card_box`: Generic finite Cartesian-product counting.
+
+Completed `Roth.card_le_card_box`: Finite Cartesian-product cardinality and monotonicity under inclusion, Finsupp interval cardinality bound after membership and endpoint normalization
 
 ## Part 5: Generalization opportunities
 
@@ -542,6 +556,8 @@ Completed `Roth.mem_box`: Existing generic interval; finite-only and arbitrary f
 
 Completed `Roth.card_box`: Mapped arbitrary dependent finite coordinate sets; support-indexed lower intervals. Already existing APIs. Scoped Classical hides decision instance rather than proving independence.
 
+Completed `Roth.card_le_card_box`: Dependent finite coordinate FUNCTION-family form already composable; arbitrary ambient Finsupp finite-support upper-bound form verified. Support-local hs is equivalent, not strictly weaker.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -602,6 +618,8 @@ Completed `Roth.weight`: No missing API for definition; assess re-aimed dependen
 Completed `Roth.mem_box`: None established.
 
 Completed `Roth.card_box`: None
+
+Completed `Roth.card_le_card_box`: No categorical missing-API claim. Design question: whether useful Finsupp natural-endpoint/support interval convenience bounds deserve upstream names.
 
 ## Part 7: Junk / removable
 
@@ -666,6 +684,8 @@ Completed `Roth.mem_box`: Not dead:7 caller declarations. Thin wrapper candidate
 
 Completed `Roth.card_box`: Useful local API with 3 consumers, redundant as upstream addition.
 
+Completed `Roth.card_le_card_box`: False
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -699,6 +719,7 @@ Completed `Roth.card_box`: Useful local API with 3 consumers, redundant as upstr
 | 27 | `Roth.weight` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.weight.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.weight/root-acceptance.json) |
 | 28 | `Roth.mem_box` | NO-composable-from-mathlib | [Report](.mathlib-quality/overview/mathlibable/Roth.mem_box.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.mem_box/root-acceptance.json) |
 | 29 | `Roth.card_box` | NO-composable-from-mathlib | [Report](.mathlib-quality/overview/mathlibable/Roth.card_box.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.card_box/root-acceptance.json) |
+| 30 | `Roth.card_le_card_box` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.card_le_card_box.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.card_le_card_box/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -756,11 +777,13 @@ Completed `Roth.mem_box` action: Delete mem_box during cleanup; inline exact thr
 
 Completed `Roth.card_box` action: NO-composable-from-mathlib; coordinate delete with all 3 explicit caller rewrites; no production changes in assessment.
 
+Completed `Roth.card_le_card_box` action: Keep local useful helper while resolving three upstream interface questions; do not inherit parent NO or count project parents as mathlib facts. No production edits.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.card_le_card_box` next. Supporting identities receive their own applicable checks.
+   `Roth.weight_nonneg` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.

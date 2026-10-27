@@ -1,0 +1,66 @@
+import Mathlib.Data.Finsupp.Interval
+import Mathlib.Algebra.BigOperators.Ring.Finset
+import Mathlib.Order.Interval.Finset.Nat
+import Mathlib.SetTheory.Cardinal.Finite
+
+namespace RawCardLeBoxAssessment
+variable {σ : Type*}
+noncomputable def raw_box [Fintype σ] [DecidableEq σ] (r : σ → ℕ) : Finset (σ →₀ ℕ) :=
+  (Fintype.piFinset fun j ↦ Finset.range (r j + 1)).map
+    Finsupp.equivFunOnFinite.symm.toEmbedding
+theorem expanded_original [Fintype σ] {r : σ → ℕ} {s : Finset (σ →₀ ℕ)}
+    (hs : ∀ d ∈ s, ∀ j, d j ≤ r j) : s.card ≤ ∏ j, (r j + 1) := by
+  classical
+  have hsub : s ⊆ raw_box r := fun _ hd ↦
+    (Finset.mem_map_equiv.trans (Fintype.mem_piFinset.trans
+      (forall_congr' fun _ ↦ Finset.mem_range_succ_iff))).mpr (hs _ hd)
+  exact (Finset.card_le_card hsub).trans_eq
+    ((Finset.card_map _).trans ((Fintype.card_piFinset _).trans
+      (congrArg (fun f : σ → ℕ ↦ ∏ j, f j) (funext fun j ↦ Finset.card_range (r j + 1)))))
+theorem fin_injection [Fintype σ] {r : σ → ℕ} {s : Finset (σ →₀ ℕ)}
+    (hs : ∀ d ∈ s, ∀ j, d j ≤ r j) : s.card ≤ ∏ j, (r j + 1) := by
+  classical
+  let f : s → (Finset.univ : Finset (∀ j, Fin (r j + 1))) := fun d ↦
+    ⟨fun j ↦ ⟨d.val j, Nat.lt_succ_of_le (hs d.val d.property j)⟩, Finset.mem_univ _⟩
+  have hf : Function.Injective f := by
+    intro d e h
+    apply Subtype.ext
+    apply Finsupp.ext
+    intro j
+    exact congrArg Fin.val (congrFun (congrArg Subtype.val h) j)
+  calc
+    s.card ≤ Fintype.card (∀ j, Fin (r j + 1)) := Finset.card_le_card_of_injective hf
+    _ = ∏ j, (r j + 1) := Fintype.card_pi.trans
+      (congrArg (fun g : σ → ℕ ↦ ∏ j, g j) (funext fun j ↦ Fintype.card_fin (r j + 1)))
+theorem function_family [Fintype σ] {β : σ → Type*} (s : Finset (∀ j, β j))
+    (t : ∀ j, Finset (β j)) (hs : ∀ f ∈ s, ∀ j, f j ∈ t j) :
+    s.card ≤ ∏ j, (t j).card := by
+  classical
+  exact (Finset.card_le_card fun f hf ↦ Fintype.mem_piFinset.mpr (hs f hf)).trans_eq
+    (Fintype.card_piFinset t)
+theorem support_interval (r : σ →₀ ℕ) (s : Finset (σ →₀ ℕ))
+    (hs : ∀ d ∈ s, ∀ j, d j ≤ r j) :
+    s.card ≤ ∏ j ∈ r.support, (r j + 1) := by
+  classical
+  calc
+    s.card ≤ (Finset.Iic r).card := Finset.card_le_card fun d hd ↦ Finset.mem_Iic.mpr (hs d hd)
+    _ = ∏ j ∈ r.support, (r j + 1) := by
+      rw [Finsupp.card_Iic]
+      simp
+theorem support_finite_bound (r : σ → ℕ) [Finite (Function.support r)] (s : Finset (σ →₀ ℕ))
+    (hs : ∀ d ∈ s, ∀ j, d j ≤ r j) :
+    s.card ≤ ∏ j ∈ (Finsupp.ofSupportFinite r (Set.toFinite _)).support, (r j + 1) :=
+  support_interval (Finsupp.ofSupportFinite r (Set.toFinite _)) s hs
+#check @Finset.card_le_card
+#check @Finset.card_le_card_of_injective
+#check @Fintype.card_pi
+#check @Fintype.card_fin
+#check @Nat.lt_succ_of_le
+#check @Finsupp.card_Iic
+#check_failure Roth.card_le_card_box
+#print axioms expanded_original
+#print axioms fin_injection
+#print axioms function_family
+#print axioms support_interval
+#print axioms support_finite_bound
+end RawCardLeBoxAssessment
