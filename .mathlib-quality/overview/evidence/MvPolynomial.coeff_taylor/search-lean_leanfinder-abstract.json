@@ -1,0 +1,85 @@
+{
+  "method": "lean_leanfinder",
+  "form": "abstract",
+  "request": {
+    "query": "coefficient functional composed with polynomial substitution X plus constants equals evaluation composed with Hasse derivative linear map",
+    "num_results": 8
+  },
+  "response": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.taylor_coeff\",\n      \"informal_name\": \"Coefficient of Taylor Expansion at $ r $: $ \\\\text{coeff}_n(f(X + r)) = D^{(n)}f(r) $\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R) (n : ℕ),\\n  ((Polynomial.taylor r) f).coeff n = Polynomial.eval r ((Polynomial.hasseDeriv n) f)\",\n      \"informal_description\": \"For any polynomial $ f $ over a semiring $ R $, natural number $ n $, and element $ r \\\\in R $, the coefficient of $ X^n $ in the Taylor expansion $ f(X + r) $ equals the evaluation of the $ n $-th Hasse derivative of $ f $ at $ r $. The Hasse derivative $ D^{(n)} $ scales monomials $ a_i X^i $ by $ \\\\binom{i}{n} a_i X^{i - n} $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv\",\n      \"informal_name\": \"Hasse Derivative of Order k on Polynomial Ring\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : Semiring R] → ℕ → Polynomial R →ₗ[R] Polynomial R\",\n      \"informal_description\": \"For a semiring $ R $, the Hasse derivative of order $ k $ is an $ R $-linear map $ D^{(k)} : R[X] \\to R[X] $ defined by $ D^{(k)}(a_i X^i) = \\binom{i}{k} a_i X^{i - k} $ on monomials and extended linearly. This operation generalizes the usual derivative by scaling each coefficient $ a_i $ by the binomial coefficient $ \\binom{i}{k} $ and reducing the degree by $ k $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.taylor_apply\",\n      \"informal_name\": \"Taylor Expansion Formula for Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R),\\n  (Polynomial.taylor r) f = f.comp (Polynomial.X + Polynomial.C r)\",\n      \"informal_description\": \"For any polynomial $ f $ in $ R[X] $ and any element $ r $ in the semiring $ R $, the Taylor expansion of $ f $ at $ r $ is equal to the composition of $ f $ with the polynomial $ X + r $, i.e., $ \\\\text{Tay}_r(f) = f(X + r) $, where $ X $ denotes the indeterminate of the polynomial ring.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    },\n    {\n      \"formal_name\": \"Polynomial.aeval_sumIDeriv_eq_eval\",\n      \"informal_name\": \"Equality of Evaluations for Sum of Iterated Derivatives via Algebra Homomorphism\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommSemiring R] (A : Type u_3) [inst_1 : CommRing A] [inst_2 : Algebra R A] (p : Polynomial R)\\n  (r : A),\\n  (Polynomial.aeval r) (Polynomial.sumIDeriv p) =\\n    Polynomial.eval r (Polynomial.sumIDeriv (Polynomial.map (algebraMap R A) p))\",\n      \"informal_description\": \"For any polynomial $ p $ over a commutative semiring $ R $ and any element $ r $ in an $ R $-algebra $ A $, evaluating the sum of iterated derivatives of $ p $ at $ r $ via the algebra homomorphism equals evaluating the sum of iterated derivatives of the polynomial $ p $ with coefficients mapped through the canonical algebra homomorphism $ R \\\\to A $ at $ r $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.SumIteratedDerivative\"\n    },\n    {\n      \"formal_name\": \"Polynomial.taylor\",\n      \"informal_name\": \"Taylor series expansion at r\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : Semiring R] → R → Polynomial R →ₗ[R] Polynomial R\",\n      \"informal_description\": \"For a given element $ r $ in a semiring $ R $, the Taylor series expansion at $ r $ is the $ R $-linear map from $ R[X] $ to $ R[X] $ that sends each polynomial $ f $ to the composition $ f(X + r) $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv_apply\",\n      \"informal_name\": \"Hasse Derivative of Order k Applied to a Polynomial\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f : Polynomial R),\\n  (Polynomial.hasseDeriv k) f = f.sum fun i r => (Polynomial.monomial (i - k)) (↑(i.choose k) * r)\",\n      \"informal_description\": \"For a semiring $ R $ and a polynomial $ f \\\\in R[X] $, the Hasse derivative of order $ k $ applied to $ f $ is given by $ D^{(k)}(f) = \\\\sum_{i} \\\\binom{i}{k} \\\\cdot a_i \\\\cdot X^{i - k} $, where $ a_i $ is the coefficient of $ X^i $ in $ f $. This expression sums over all monomials in $ f $, scaling each by the binomial coefficient $ \\\\binom{i}{k} $ and reducing the exponent by $ k $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.taylor_coeff_one\",\n      \"informal_name\": \"First Coefficient of Taylor Expansion Equals Derivative\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R),\\n  ((Polynomial.taylor r) f).coeff 1 = Polynomial.eval r (Polynomial.derivative f)\",\n      \"informal_description\": \"The coefficient of $ X $ in the Taylor expansion of a polynomial $ f $ at a point $ r $ in a semiring $ R $ is equal to the derivative of $ f $ evaluated at $ r $, i.e., $ \\\\text{coeff}_1(\\\\text{Taylor}_r(f)) = f'(r) $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv_coeff\",\n      \"informal_name\": \"Coefficient Formula for Hasse Derivative of Order k\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f : Polynomial R) (n : ℕ),\\n  ((Polynomial.hasseDeriv k) f).coeff n = ↑((n + k).choose k) * f.coeff (n + k)\",\n      \"informal_description\": \"For any natural number $ n $, the coefficient of $ X^n $ in the $ k $-th Hasse derivative of a polynomial $ f $ over a semiring $ R $ is equal to $ \\\\binom{n + k}{k} $ multiplied by the coefficient of $ X^{n + k} $ in $ f $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "items": [
+        {
+          "formal_name": "Polynomial.taylor_coeff",
+          "informal_name": "Coefficient of Taylor Expansion at $ r $: $ \\text{coeff}_n(f(X + r)) = D^{(n)}f(r) $",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R) (n : ℕ),\n  ((Polynomial.taylor r) f).coeff n = Polynomial.eval r ((Polynomial.hasseDeriv n) f)",
+          "informal_description": "For any polynomial $ f $ over a semiring $ R $, natural number $ n $, and element $ r \\in R $, the coefficient of $ X^n $ in the Taylor expansion $ f(X + r) $ equals the evaluation of the $ n $-th Hasse derivative of $ f $ at $ r $. The Hasse derivative $ D^{(n)} $ scales monomials $ a_i X^i $ by $ \\binom{i}{n} a_i X^{i - n} $.",
+          "path": "Mathlib.Algebra.Polynomial.Taylor"
+        },
+        {
+          "formal_name": "Polynomial.hasseDeriv",
+          "informal_name": "Hasse Derivative of Order k on Polynomial Ring",
+          "kind": "definition",
+          "type": "{R : Type u_1} → [inst : Semiring R] → ℕ → Polynomial R →ₗ[R] Polynomial R",
+          "informal_description": "For a semiring $ R $, the Hasse derivative of order $ k $ is an $ R $-linear map $ D^{(k)} : R[X] \to R[X] $ defined by $ D^{(k)}(a_i X^i) = \binom{i}{k} a_i X^{i - k} $ on monomials and extended linearly. This operation generalizes the usual derivative by scaling each coefficient $ a_i $ by the binomial coefficient $ \binom{i}{k} $ and reducing the degree by $ k $.",
+          "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+        },
+        {
+          "formal_name": "Polynomial.taylor_apply",
+          "informal_name": "Taylor Expansion Formula for Polynomials",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R),\n  (Polynomial.taylor r) f = f.comp (Polynomial.X + Polynomial.C r)",
+          "informal_description": "For any polynomial $ f $ in $ R[X] $ and any element $ r $ in the semiring $ R $, the Taylor expansion of $ f $ at $ r $ is equal to the composition of $ f $ with the polynomial $ X + r $, i.e., $ \\text{Tay}_r(f) = f(X + r) $, where $ X $ denotes the indeterminate of the polynomial ring.",
+          "path": "Mathlib.Algebra.Polynomial.Taylor"
+        },
+        {
+          "formal_name": "Polynomial.aeval_sumIDeriv_eq_eval",
+          "informal_name": "Equality of Evaluations for Sum of Iterated Derivatives via Algebra Homomorphism",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} [inst : CommSemiring R] (A : Type u_3) [inst_1 : CommRing A] [inst_2 : Algebra R A] (p : Polynomial R)\n  (r : A),\n  (Polynomial.aeval r) (Polynomial.sumIDeriv p) =\n    Polynomial.eval r (Polynomial.sumIDeriv (Polynomial.map (algebraMap R A) p))",
+          "informal_description": "For any polynomial $ p $ over a commutative semiring $ R $ and any element $ r $ in an $ R $-algebra $ A $, evaluating the sum of iterated derivatives of $ p $ at $ r $ via the algebra homomorphism equals evaluating the sum of iterated derivatives of the polynomial $ p $ with coefficients mapped through the canonical algebra homomorphism $ R \\to A $ at $ r $.",
+          "path": "Mathlib.Algebra.Polynomial.SumIteratedDerivative"
+        },
+        {
+          "formal_name": "Polynomial.taylor",
+          "informal_name": "Taylor series expansion at r",
+          "kind": "definition",
+          "type": "{R : Type u_1} → [inst : Semiring R] → R → Polynomial R →ₗ[R] Polynomial R",
+          "informal_description": "For a given element $ r $ in a semiring $ R $, the Taylor series expansion at $ r $ is the $ R $-linear map from $ R[X] $ to $ R[X] $ that sends each polynomial $ f $ to the composition $ f(X + r) $.",
+          "path": "Mathlib.Algebra.Polynomial.Taylor"
+        },
+        {
+          "formal_name": "Polynomial.hasseDeriv_apply",
+          "informal_name": "Hasse Derivative of Order k Applied to a Polynomial",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f : Polynomial R),\n  (Polynomial.hasseDeriv k) f = f.sum fun i r => (Polynomial.monomial (i - k)) (↑(i.choose k) * r)",
+          "informal_description": "For a semiring $ R $ and a polynomial $ f \\in R[X] $, the Hasse derivative of order $ k $ applied to $ f $ is given by $ D^{(k)}(f) = \\sum_{i} \\binom{i}{k} \\cdot a_i \\cdot X^{i - k} $, where $ a_i $ is the coefficient of $ X^i $ in $ f $. This expression sums over all monomials in $ f $, scaling each by the binomial coefficient $ \\binom{i}{k} $ and reducing the exponent by $ k $.",
+          "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+        },
+        {
+          "formal_name": "Polynomial.taylor_coeff_one",
+          "informal_name": "First Coefficient of Taylor Expansion Equals Derivative",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R),\n  ((Polynomial.taylor r) f).coeff 1 = Polynomial.eval r (Polynomial.derivative f)",
+          "informal_description": "The coefficient of $ X $ in the Taylor expansion of a polynomial $ f $ at a point $ r $ in a semiring $ R $ is equal to the derivative of $ f $ evaluated at $ r $, i.e., $ \\text{coeff}_1(\\text{Taylor}_r(f)) = f'(r) $.",
+          "path": "Mathlib.Algebra.Polynomial.Taylor"
+        },
+        {
+          "formal_name": "Polynomial.hasseDeriv_coeff",
+          "informal_name": "Coefficient Formula for Hasse Derivative of Order k",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f : Polynomial R) (n : ℕ),\n  ((Polynomial.hasseDeriv k) f).coeff n = ↑((n + k).choose k) * f.coeff (n + k)",
+          "informal_description": "For any natural number $ n $, the coefficient of $ X^n $ in the $ k $-th Hasse derivative of a polynomial $ f $ over a semiring $ R $ is equal to $ \\binom{n + k}{k} $ multiplied by the coefficient of $ X^{n + k} $ in $ f $.",
+          "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+        }
+      ]
+    },
+    "isError": false
+  }
+}

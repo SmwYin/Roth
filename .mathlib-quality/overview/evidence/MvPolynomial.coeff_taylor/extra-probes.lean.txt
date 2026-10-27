@@ -1,0 +1,25 @@
+namespace MvPolynomial.CoeffTaylorExtra
+variable {σ R : Type*} [CommSemiring R]
+theorem abstract_form (α : σ → R) (d : σ →₀ ℕ) (P : MvPolynomial σ R) :
+    (aeval (fun j ↦ X j + C (α j)) P).coeff d = eval α (hasseDeriv d P) :=
+  CoeffTaylorAssessment.replay α d P
+#print axioms abstract_form
+theorem bundled (α : σ → R) (d : σ →₀ ℕ) :
+    (lcoeff R d).comp (taylor α).toLinearMap =
+      (aeval α).toLinearMap.comp (hasseDeriv d) := by
+  apply LinearMap.ext
+  intro P
+  exact CoeffTaylorAssessment.replay α d P
+#print axioms bundled
+theorem base_change {S : Type*} [CommSemiring S] (f : R →+* S) (α : σ → S)
+    (d : σ →₀ ℕ) (P : MvPolynomial σ R) :
+    (taylor α (map f P)).coeff d = eval₂ f α (hasseDeriv d P) := by
+  rw [CoeffTaylorAssessment.replay, hasseDeriv_map, eval₂_eq_eval_map]
+#print axioms base_change
+section Weaker
+variable {T : Type*} [Semiring T]
+#check_failure MvPolynomial.taylor (R := T)
+#check_failure MvPolynomial.hasseDeriv (R := T)
+#check_failure MvPolynomial.eval (R := T)
+end Weaker
+end MvPolynomial.CoeffTaylorExtra

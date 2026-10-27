@@ -1,0 +1,24 @@
+import Mathlib.Algebra.MvPolynomial.PDeriv
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Data.Nat.Choose.Bounds
+#check_failure MvPolynomial.coeff_taylor
+namespace MvPolynomial.CoeffTaylorComposition
+variable {σ R : Type*} [CommSemiring R]
+-- A guarded default automation experiment on the mathlib-only expanded target.
+example (α : σ → R) (d : σ →₀ ℕ) (P : MvPolynomial σ R) : True := by
+  fail_if_success
+    have h : (aeval (fun j ↦ X j + C (α j)) P).coeff d =
+        ∑ k ∈ P.support,
+          ((d.prod (fun j n ↦ (k j).choose n) : ℕ) : R) * P.coeff k *
+            (k - d).prod (fun j n ↦ α j ^ n) := by
+      solve | simp only [aeval_def, eval₂_eq_sum, sum_def, coeff_sum, coeff_monomial]
+  trivial
+example (α : σ → R) (d : σ →₀ ℕ) (P : MvPolynomial σ R) : True := by
+  fail_if_success
+    have h : (aeval (fun j ↦ X j + C (α j)) P).coeff d =
+        ∑ k ∈ P.support,
+          ((d.prod (fun j n ↦ (k j).choose n) : ℕ) : R) * P.coeff k *
+            (k - d).prod (fun j n ↦ α j ^ n) := by
+      exact?
+  trivial
+end MvPolynomial.CoeffTaylorComposition

@@ -1,0 +1,27 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+import Mathlib.Algebra.Polynomial.CancelLeads
+import Mathlib.Algebra.MvPolynomial.PDeriv
+#check_failure MvPolynomial.coeff_taylor
+namespace MvPolynomial.CoeffTaylorComposition
+variable {σ R : Type*} [CommSemiring R]
+example (α : σ → R) (d : σ →₀ ℕ) (P : MvPolynomial σ R) :
+    (aeval (fun j ↦ X j + C (α j)) P).coeff d =
+      ∑ k ∈ P.support,
+        ((d.prod (fun j n ↦ (k j).choose n) : ℕ) : R) * P.coeff k *
+          (k - d).prod (fun j n ↦ α j ^ n) := by
+  simp only [aeval_def, eval₂_eq_sum, sum_def, coeff_sum, coeff_monomial]
+example (α : σ → R) (d : σ →₀ ℕ) (P : MvPolynomial σ R) :
+    (aeval (fun j ↦ X j + C (α j)) P).coeff d =
+      ∑ k ∈ P.support,
+        ((d.prod (fun j n ↦ (k j).choose n) : ℕ) : R) * P.coeff k *
+          (k - d).prod (fun j n ↦ α j ^ n) := by
+  exact?
+end MvPolynomial.CoeffTaylorComposition

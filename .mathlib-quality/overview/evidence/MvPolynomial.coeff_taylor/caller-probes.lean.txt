@@ -1,0 +1,57 @@
+namespace MvPolynomial.CoeffTaylorCallers
+variable {σ R : Type*} [CommSemiring R]
+theorem degree_replay (α : σ → R) (j : σ) (P : MvPolynomial σ R) :
+    degreeOf j (taylor α P) ≤ degreeOf j P := by
+  refine degreeOf_le_iff.2 fun e he ↦ not_lt.1 fun h ↦ ?_
+  simp [mem_support_iff, MvPolynomial.CoeffTaylorAssessment.replay, hasseDeriv_eq_zero_of_degreeOf_lt h] at he
+#print axioms degree_replay
+end MvPolynomial.CoeffTaylorCallers
+
+namespace MvPolynomial.CoeffTaylorCallers
+variable {σ A : Type*} [CommRing A]
+theorem sum_replay [Fintype σ] [DecidableEq σ] (α : σ → A) (r : σ → ℕ)
+    (P : MvPolynomial σ A) (hP : ∀ j, degreeOf j P ≤ r j) :
+    P = ∑ d ∈ Roth.box r, C (eval α (hasseDeriv d P)) * ∏ j, (X j - C (α j)) ^ d j := by
+  have h1 : taylor α P = ∑ d ∈ Roth.box r, monomial d (eval α (hasseDeriv d P)) := by
+    ext e
+    simp only [MvPolynomial.CoeffTaylorAssessment.replay, coeff_sum, coeff_monomial, Finset.sum_ite_eq']
+    split_ifs with he
+    · rfl
+    · obtain ⟨j, hj⟩ : ∃ j, r j < e j := by
+        simpa [Roth.mem_box] using he
+      rw [hasseDeriv_eq_zero_of_degreeOf_lt ((hP j).trans_lt hj), map_zero]
+  calc P = taylor (fun j ↦ -α j) (taylor α P) := (taylor_neg_taylor α P).symm
+    _ = _ := by
+      rw [h1, map_sum]
+      refine Finset.sum_congr rfl fun d _ ↦ ?_
+      rw [taylor_monomial, Finsupp.prod_fintype _ _ fun _ ↦ pow_zero _]
+      simp [sub_eq_add_neg]
+#print axioms sum_replay
+end MvPolynomial.CoeffTaylorCallers
+
+namespace Roth.CoeffTaylorCallers
+open MvPolynomial
+variable {σ : Type*}
+theorem support_replay {P : MvPolynomial σ ℝ} {α : σ → ℝ} {d : σ →₀ ℕ} :
+    d ∈ (taylor α P).support ↔ eval α (hasseDeriv d P) ≠ 0 := by
+  rw [mem_support_iff, MvPolynomial.CoeffTaylorAssessment.replay]
+#print axioms support_replay
+variable [Fintype σ]
+theorem weighted_replay {P : MvPolynomial σ ℝ} (hP : P ≠ 0) {r : σ → ℕ}
+    (hr : ∀ j, 0 < r j) (α : σ → ℝ) : index P α r =
+      (((taylor α P : MvPowerSeries σ ℝ).weightedOrder fun j ↦ (∏ i, r i) / r j).toNat : ℝ) /
+        ∏ i, r i := by
+  set w : σ → ℕ := fun j ↦ (∏ i, r i) / r j
+  set F : MvPowerSeries σ ℝ := ↑(taylor α P)
+  obtain ⟨d, hd, hdw⟩ := MvPowerSeries.exists_coeff_ne_zero_and_weightedOrder w (f := F)
+    ((MvPowerSeries.ne_zero_iff_weightedOrder_finite w).1 (by simpa [F] using hP))
+  apply le_antisymm
+  · rw [← hdw, ENat.toNat_natCast, ← weight_eq_finsuppWeight_div hr]
+    exact index_le_weight (by simpa [F, MvPolynomial.coeff_coe, MvPolynomial.CoeffTaylorAssessment.replay] using hd)
+  · refine (le_index_iff hP).2 fun e he ↦ ?_
+    rw [weight_eq_finsuppWeight_div hr]
+    refine div_le_div_of_nonneg_right ?_ (Nat.cast_nonneg _)
+    exact_mod_cast ENat.toNat_le_toNat (MvPowerSeries.weightedOrder_le w (f := F) (d := e)
+      (by simpa [F, MvPolynomial.coeff_coe, MvPolynomial.CoeffTaylorAssessment.replay] using he)) (by simp)
+#print axioms weighted_replay
+end Roth.CoeffTaylorCallers

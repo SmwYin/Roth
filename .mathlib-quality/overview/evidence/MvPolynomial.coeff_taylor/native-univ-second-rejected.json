@@ -1,0 +1,75 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.Polynomial.HasseDeriv\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.LinearAlgebra.Matrix.ToLinearEquiv\nimport Mathlib.RingTheory.Polynomial.Wronskian\nimport Mathlib.LinearAlgebra.Vandermonde\nimport Mathlib.Data.ZMod.Defs\nimport Mathlib.Algebra.Field.ZMod\nimport Mathlib.Algebra.Order.Group.Int.Sum\nimport Mathlib.LinearAlgebra.Matrix.Polynomial\nimport Mathlib.Algebra.Polynomial.CancelLeads\nimport Mathlib.Algebra.MvPolynomial.PDeriv\n#check_failure MvPolynomial.coeff_taylor\n#check @Polynomial.taylor_coeff\n#print Polynomial.taylor_coeff\n#check @Polynomial.hasseDeriv\nnamespace CoeffTaylorUnivariate\n theorem existing {R : Type*} [Semiring R] (r : R) (f : Polynomial R) (n : ℕ) :\n    (Polynomial.taylor r f).coeff n = (Polynomial.hasseDeriv n f).eval r :=\n  Polynomial.taylor_coeff r f n\n#print axioms existing\nend CoeffTaylorUnivariate\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown constant `MvPolynomial.coeff_taylor`\",\n      \"line\": 12,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.taylor_coeff : ∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R) (n : ℕ),\\n  ((Polynomial.taylor r) f).coeff n = Polynomial.eval r ((Polynomial.hasseDeriv n) f)\",\n      \"line\": 13,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"theorem Polynomial.taylor_coeff.{u_1} : ∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R) (n : ℕ),\\n  ((Polynomial.taylor r) f).coeff n = Polynomial.eval r ((Polynomial.hasseDeriv n) f) :=\\nfun {R} [inst : Semiring R] r f n ↦\\n  have this :=\\n    (fun {F α} {β} [DFunLike F α β] a a_1 e_a ↦\\n        Eq.rec (motive := fun a_2 e_a ↦ ∀ (a_3 : α), a a_3 = a_2 a_3) (fun a_2 ↦ Eq.refl (a a_2)) e_a)\\n      (Polynomial.lcoeff R n ∘ₗ Polynomial.taylor r) (Polynomial.leval r ∘ₗ Polynomial.hasseDeriv n)\\n      (Polynomial.lhom_ext' fun i ↦\\n        LinearMap.ext_ring\\n          (Eq.mpr\\n            (id\\n              (congr\\n                (congrArg Eq\\n                  (Eq.trans\\n                    (congrArg (⇑(Polynomial.lcoeff R n))\\n                      (Eq.trans (Polynomial.monomial_comp i)\\n                        (Eq.trans (congrArg (HMul.hMul 1) (Commute.add_pow (Polynomial.commute_X (Polynomial.C r)) i))\\n                          (one_mul\\n                            (∑ m ∈ Finset.range (i + 1),\\n                              Polynomial.X ^ m * Polynomial.C r ^ (i - m) * ↑(i.choose m))))))\\n                    (map_sum (Polynomial.lcoeff R n)\\n                      (fun x ↦ Polynomial.X ^ x * Polynomial.C r ^ (i - x) * ↑(i.choose x)) (Finset.range (i + 1)))))\\n                (Eq.trans\\n                  (Eq.trans\\n                    (congrArg (⇑(Polynomial.leval r))\\n                      (Eq.trans (Polynomial.hasseDeriv_monomial n i 1)\\n                        (congrArg (⇑(Polynomial.monomial (i - n))) (mul_one ↑(i.choose n)))))\\n                    (Polynomial.leval_apply r ((Polynomial.monomial (i - n)) ↑(i.choose n))))\\n                  Polynomial.eval_monomial)))\\n            (Eq.mpr\\n              (id\\n                (congr\\n                  (congrArg Eq\\n                    (Eq.trans\\n                      (Eq.trans\\n                        (Finset.sum_congr (Eq.refl (Finset.range (i + 1))) fun x a ↦\\n                          Eq.trans\\n                            (congrArg (⇑(Polynomial.lcoeff R n))\\n                              (Eq.trans\\n                                (Eq.trans\\n                                  (congr\\n                                    (congrArg HMul.hMul\\n                                      (congrArg (HMul.hMul (Polynomial.X ^ x)) Polynomial.taylor_coeff._simp_1_2✝))\\n                                    (Polynomial.taylor_coeff._simp_1_1✝ (i.choose x)))\\n                                  (mul_assoc (Polynomial.X ^ x) (Polynomial.C (r ^ (i - x)))\\n                                    (Polynomial.C ↑(i.choose x))))\\n                                (congrArg (HMul.hMul (Polynomial.X ^ x)) Polynomial.taylor_coeff._simp_1_3✝)))\\n                            (Eq.trans (Polynomial.coeff_mul_C (Polynomial.X ^ x) n (r ^ (i - x) * ↑(i.choose x)))\\n                              (Eq.trans\\n                                (congrFun' (congrArg HMul.hMul (Polynomial.coeff_X_pow x n))\\n                                  (r ^ (i - x) * ↑(i.choose x)))\\n                                (boole_mul (n = x) (r ^ (i - x) * ↑(i.choose x))))))\\n                        (Finset.sum_ite_eq (Finset.range (i + 1)) n fun x ↦ r ^ (i - x) * ↑(i.choose x)))\\n                      (ite_congr Polynomial.taylor_coeff._simp_1_4✝ (fun a ↦ Eq.refl (r ^ (i - n) * ↑(i.choose n)))\\n                        fun a ↦ Eq.refl 0)))\\n                  ((fun x_0 x_1 x_2 x_3 ↦ (fun x_0 x_1 x_2 x_3 ↦ Commute.eq (Nat.cast_commute x_2 x_3)) x_0 x_1 x_2 x_3)\\n                    R inst.toNonAssocSemiring (i.choose n) (r ^ (i - n)))))\\n              (if h : n < i + 1 then\\n                Eq.mpr (id (congrFun' (congrArg Eq (ite_eq_left h)) (r ^ (i - n) * ↑(i.choose n))))\\n                  (Eq.refl (r ^ (i - n) * ↑(i.choose n)))\\n              else\\n                Eq.mpr (id (congrFun' (congrArg Eq (ite_eq_right h)) (r ^ (i - n) * ↑(i.choose n))))\\n                  (Eq.mpr\\n                    (id (congrArg (fun _a ↦ 0 = r ^ (i - n) * ↑_a) (Nat.choose_eq_zero_of_lt (Eq.mp not_lt._simp_1 h))))\\n                    (Eq.mpr (id (congrArg (fun _a ↦ 0 = r ^ (i - n) * _a) Nat.cast_zero))\\n                      (Eq.mpr (id (congrArg (fun _a ↦ 0 = _a) (mul_zero (r ^ (i - n))))) (Eq.refl 0))))))))\\n      f;\\n  this\",\n      \"line\": 14,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.hasseDeriv : {R : Type u_1} → [inst : Semiring R] → ℕ → Polynomial R →ₗ[R] Polynomial R\",\n      \"line\": 15,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'CoeffTaylorUnivariate.existing' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 20,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"warning\",\n      \"message\": \"'theorem existing {R : Type*} [Semiring R] (r : R) (f : Polynomial R) (n : ℕ) :\\n    (Polynomial.taylor r f).coeff n = (Polynomial.hasseDeriv n f).eval r :=\\n  Polynomial.taylor_coeff r f n' starts on column 1, but all commands should start at the beginning of the line.\\n\\nNote: This linter can be disabled with `set_option linter.style.whitespace false`\",\n      \"line\": 17,\n      \"column\": 2,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown constant `MvPolynomial.coeff_taylor`",
+          "line": 12,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.taylor_coeff : ∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R) (n : ℕ),\n  ((Polynomial.taylor r) f).coeff n = Polynomial.eval r ((Polynomial.hasseDeriv n) f)",
+          "line": 13,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "theorem Polynomial.taylor_coeff.{u_1} : ∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R) (n : ℕ),\n  ((Polynomial.taylor r) f).coeff n = Polynomial.eval r ((Polynomial.hasseDeriv n) f) :=\nfun {R} [inst : Semiring R] r f n ↦\n  have this :=\n    (fun {F α} {β} [DFunLike F α β] a a_1 e_a ↦\n        Eq.rec (motive := fun a_2 e_a ↦ ∀ (a_3 : α), a a_3 = a_2 a_3) (fun a_2 ↦ Eq.refl (a a_2)) e_a)\n      (Polynomial.lcoeff R n ∘ₗ Polynomial.taylor r) (Polynomial.leval r ∘ₗ Polynomial.hasseDeriv n)\n      (Polynomial.lhom_ext' fun i ↦\n        LinearMap.ext_ring\n          (Eq.mpr\n            (id\n              (congr\n                (congrArg Eq\n                  (Eq.trans\n                    (congrArg (⇑(Polynomial.lcoeff R n))\n                      (Eq.trans (Polynomial.monomial_comp i)\n                        (Eq.trans (congrArg (HMul.hMul 1) (Commute.add_pow (Polynomial.commute_X (Polynomial.C r)) i))\n                          (one_mul\n                            (∑ m ∈ Finset.range (i + 1),\n                              Polynomial.X ^ m * Polynomial.C r ^ (i - m) * ↑(i.choose m))))))\n                    (map_sum (Polynomial.lcoeff R n)\n                      (fun x ↦ Polynomial.X ^ x * Polynomial.C r ^ (i - x) * ↑(i.choose x)) (Finset.range (i + 1)))))\n                (Eq.trans\n                  (Eq.trans\n                    (congrArg (⇑(Polynomial.leval r))\n                      (Eq.trans (Polynomial.hasseDeriv_monomial n i 1)\n                        (congrArg (⇑(Polynomial.monomial (i - n))) (mul_one ↑(i.choose n)))))\n                    (Polynomial.leval_apply r ((Polynomial.monomial (i - n)) ↑(i.choose n))))\n                  Polynomial.eval_monomial)))\n            (Eq.mpr\n              (id\n                (congr\n                  (congrArg Eq\n                    (Eq.trans\n                      (Eq.trans\n                        (Finset.sum_congr (Eq.refl (Finset.range (i + 1))) fun x a ↦\n                          Eq.trans\n                            (congrArg (⇑(Polynomial.lcoeff R n))\n                              (Eq.trans\n                                (Eq.trans\n                                  (congr\n                                    (congrArg HMul.hMul\n                                      (congrArg (HMul.hMul (Polynomial.X ^ x)) Polynomial.taylor_coeff._simp_1_2✝))\n                                    (Polynomial.taylor_coeff._simp_1_1✝ (i.choose x)))\n                                  (mul_assoc (Polynomial.X ^ x) (Polynomial.C (r ^ (i - x)))\n                                    (Polynomial.C ↑(i.choose x))))\n                                (congrArg (HMul.hMul (Polynomial.X ^ x)) Polynomial.taylor_coeff._simp_1_3✝)))\n                            (Eq.trans (Polynomial.coeff_mul_C (Polynomial.X ^ x) n (r ^ (i - x) * ↑(i.choose x)))\n                              (Eq.trans\n                                (congrFun' (congrArg HMul.hMul (Polynomial.coeff_X_pow x n))\n                                  (r ^ (i - x) * ↑(i.choose x)))\n                                (boole_mul (n = x) (r ^ (i - x) * ↑(i.choose x))))))\n                        (Finset.sum_ite_eq (Finset.range (i + 1)) n fun x ↦ r ^ (i - x) * ↑(i.choose x)))\n                      (ite_congr Polynomial.taylor_coeff._simp_1_4✝ (fun a ↦ Eq.refl (r ^ (i - n) * ↑(i.choose n)))\n                        fun a ↦ Eq.refl 0)))\n                  ((fun x_0 x_1 x_2 x_3 ↦ (fun x_0 x_1 x_2 x_3 ↦ Commute.eq (Nat.cast_commute x_2 x_3)) x_0 x_1 x_2 x_3)\n                    R inst.toNonAssocSemiring (i.choose n) (r ^ (i - n)))))\n              (if h : n < i + 1 then\n                Eq.mpr (id (congrFun' (congrArg Eq (ite_eq_left h)) (r ^ (i - n) * ↑(i.choose n))))\n                  (Eq.refl (r ^ (i - n) * ↑(i.choose n)))\n              else\n                Eq.mpr (id (congrFun' (congrArg Eq (ite_eq_right h)) (r ^ (i - n) * ↑(i.choose n))))\n                  (Eq.mpr\n                    (id (congrArg (fun _a ↦ 0 = r ^ (i - n) * ↑_a) (Nat.choose_eq_zero_of_lt (Eq.mp not_lt._simp_1 h))))\n                    (Eq.mpr (id (congrArg (fun _a ↦ 0 = r ^ (i - n) * _a) Nat.cast_zero))\n                      (Eq.mpr (id (congrArg (fun _a ↦ 0 = _a) (mul_zero (r ^ (i - n))))) (Eq.refl 0))))))))\n      f;\n  this",
+          "line": 14,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.hasseDeriv : {R : Type u_1} → [inst : Semiring R] → ℕ → Polynomial R →ₗ[R] Polynomial R",
+          "line": 15,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'CoeffTaylorUnivariate.existing' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 20,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "warning",
+          "message": "'theorem existing {R : Type*} [Semiring R] (r : R) (f : Polynomial R) (n : ℕ) :\n    (Polynomial.taylor r f).coeff n = (Polynomial.hasseDeriv n f).eval r :=\n  Polynomial.taylor_coeff r f n' starts on column 1, but all commands should start at the beginning of the line.\n\nNote: This linter can be disabled with `set_option linter.style.whitespace false`",
+          "line": 17,
+          "column": 2,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 56
+}

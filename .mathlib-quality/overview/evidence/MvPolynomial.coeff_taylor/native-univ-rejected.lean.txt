@@ -1,0 +1,21 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+import Mathlib.Algebra.Polynomial.CancelLeads
+import Mathlib.Algebra.MvPolynomial.PDeriv
+#check_failure MvPolynomial.coeff_taylor
+#check @Polynomial.taylor_coeff
+#print Polynomial.taylor_coeff
+#check @Polynomial.hasseDeriv
+namespace CoeffTaylorUnivariate
+ theorem existing {R : Type*} [Semiring R] (r : R) (f : Polynomial R) (n : ℕ) :
+    (Polynomial.taylor r f).coeff n = (Polynomial.hasseDeriv n f).eval r :=
+  Polynomial.taylor_coeff n
+#print axioms existing
+end CoeffTaylorUnivariate

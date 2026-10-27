@@ -1,0 +1,42 @@
+{
+  "declaration": "MvPolynomial.coeff_taylor",
+  "kind": "theorem",
+  "type": "∀ {σ : Type u_1} {R : Type u_2} [CommSemiring R] (α : σ → R) (d : σ →₀ ℕ) (P : MvPolynomial σ R), (MvPolynomial.taylor α P).coeff d = MvPolynomial.eval α (MvPolynomial.hasseDeriv d P)",
+  "what": "The coefficient of a translated multivariate polynomial is its Hasse derivative evaluated at the translation point.",
+  "how": "Additive polynomial induction and a separately verified monomial binomial-coefficient calculation; native direct-constant audit excludes circular target use.",
+  "hypotheses": [
+    "σ,R arbitrary independent universes",
+    "CommSemiring R; no Fintype, DecidableEq, Nontrivial, domain or characteristic assumptions",
+    "arbitrary α,d,P"
+  ],
+  "project_dependencies": [
+    "MvPolynomial.taylor",
+    "MvPolynomial.hasseDeriv",
+    "private monomial proof chain58–62"
+  ],
+  "caller_summary": {
+    "explicit_references": 5,
+    "caller_declarations": 4,
+    "external_references": 3,
+    "external_files": [
+      "Roth/Index.lean"
+    ],
+    "same_file_references": 2,
+    "full_replays": "native-callers-success.json"
+  },
+  "mathlib_api_audit": {
+    "existing_analogue": "Polynomial.taylor_coeff",
+    "exact_multivariate_hit": false,
+    "five_methods_three_forms": "formal-search.json",
+    "composition": "No ≤3-call proof demonstrated; tested expanded simp and default exact? leave genuine coefficient normalization."
+  },
+  "moral_duplications": [
+    "Univariate Polynomial.taylor_coeff is analogous, not a replacement for arbitrary σ.",
+    "Direct aeval statement is definitionally equivalent, not a distinct theorem."
+  ],
+  "generalization": "Already commutative semiring/arbitrary variable generality; bundled and base-change forms verified derived companions.",
+  "missing_api": "Coefficient normalization of multivariate substitution X+Cα against binomial Hasse derivative.",
+  "junk": false,
+  "action": "Upstream with accepted public multivariate Hasse API; use direct aeval if optional taylor naming is declined.",
+  "verdict": "YES-add-as-is"
+}

@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 62/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 63/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 62; remaining: 231.
-- Verdicts: 9 NO-composable-from-mathlib, 11 YES-add-as-is, 3 YES-but-generalise-first, 11 NO-mathlib-has-it, 19 BORDERLINE-needs-human, 9 SKIP.
+- Completed applicable assessments: 63; remaining: 230.
+- Verdicts: 9 NO-composable-from-mathlib, 12 YES-add-as-is, 3 YES-but-generalise-first, 11 NO-mathlib-has-it, 19 BORDERLINE-needs-human, 9 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -679,6 +679,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: One explicit caller public coeff_taylor, Taylor138; entire public caller proof using fresh monomial replay validated.
 - Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/MvPolynomial.coeff_taylor_monomial_aux.md).
 
+### Completed: `MvPolynomial.coeff_taylor`
+
+- Type: `∀ {σ : Type u_1} {R : Type u_2} [CommSemiring R] (α : σ → R) (d : σ →₀ ℕ) (P : MvPolynomial σ R), (MvPolynomial.taylor α P).coeff d = MvPolynomial.eval α (MvPolynomial.hasseDeriv d P)`
+- What: The coefficient of a translated multivariate polynomial is its Hasse derivative evaluated at the translation point.
+- How: Additive polynomial induction and a separately verified monomial binomial-coefficient calculation; native direct-constant audit excludes circular target use.
+- Hypotheses: σ,R arbitrary independent universes, CommSemiring R; no Fintype, DecidableEq, Nontrivial, domain or characteristic assumptions, arbitrary α,d,P
+- Project dependencies: MvPolynomial.taylor, MvPolynomial.hasseDeriv, private monomial proof chain58–62
+- Caller summary: explicit references: 5; caller declarations: 4; external references: 3; external files: Roth/Index.lean; same file references: 2; full replays: native-callers-success.json
+- Verdict: YES-add-as-is; [complete report](.mathlib-quality/overview/mathlibable/MvPolynomial.coeff_taylor.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -829,6 +839,8 @@ Completed `MvPolynomial.coeff_taylor_monomial_single_add_aux`: Uses Polynomial.c
 
 Completed `MvPolynomial.coeff_taylor_monomial_aux`: Finsupp.induction supplies exponent recursion; generic algHom_C handles constants. Direct expression audit maps private replay to canonical61 and confirms no later coeff_taylor use.
 
+Completed `MvPolynomial.coeff_taylor`: existing analogue: Polynomial.taylor_coeff; exact multivariate hit: False; five methods three forms: formal-search.json; composition: No ≤3-call proof demonstrated; tested expanded simp and default exact? leave genuine coefficient normalization.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -954,6 +966,8 @@ Completed `MvPolynomial.prod_pow_single_add_tsub`: Exponent splitting differs fr
 Completed `MvPolynomial.coeff_taylor_monomial_single_add_aux`: Coordinate induction step is distinct from universal aeval_monomial and full coefficient theorem; scalar helpers separate different calculations.
 
 Completed `MvPolynomial.coeff_taylor_monomial_aux`: Monomial special case is proof scaffold for linear extension, distinct from aeval_monomial image formula and full coefficient theorem.
+
+Completed `MvPolynomial.coeff_taylor`: Univariate Polynomial.taylor_coeff is analogous, not a replacement for arbitrary σ., Direct aeval statement is definitionally equivalent, not a distinct theorem.
 
 ## Part 5: Generalization opportunities
 
@@ -1084,6 +1098,8 @@ Completed `MvPolynomial.coeff_taylor_monomial_single_add_aux`: Native type needs
 
 Completed `MvPolynomial.coeff_taylor_monomial_aux`: Native type already arbitrary variables/commutative semiring; no leftover k_i=0 or IH in final statement; no circular weakening using later theorem.
 
+Completed `MvPolynomial.coeff_taylor`: Already commutative semiring/arbitrary variable generality; bundled and base-change forms verified derived companions.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -1210,6 +1226,8 @@ Completed `MvPolynomial.prod_pow_single_add_tsub`: No missing primitive blocks p
 Completed `MvPolynomial.coeff_taylor_monomial_single_add_aux`: No missing primitive blocks current decomposition; prospective public multivariate Hasse/Taylor API assessed separately.
 
 Completed `MvPolynomial.coeff_taylor_monomial_aux`: No missing primitive blocks exponent induction; prospective public Hasse/Taylor API separately assessed at next declaration.
+
+Completed `MvPolynomial.coeff_taylor`: Coefficient normalization of multivariate substitution X+Cα against binomial Hasse derivative.
 
 ## Part 7: Junk / removable
 
@@ -1340,6 +1358,8 @@ Completed `MvPolynomial.coeff_taylor_monomial_single_add_aux`: Retain private in
 
 Completed `MvPolynomial.coeff_taylor_monomial_aux`: Retain private monomial boundary; full public theorem then reduces to additivity and this case.
 
+Completed `MvPolynomial.coeff_taylor`: False
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -1406,6 +1426,7 @@ Completed `MvPolynomial.coeff_taylor_monomial_aux`: Retain private monomial boun
 | 60 | `MvPolynomial.prod_pow_single_add_tsub` | SKIP | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.prod_pow_single_add_tsub.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.prod_pow_single_add_tsub/root-acceptance.json) |
 | 61 | `MvPolynomial.coeff_taylor_monomial_single_add_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.coeff_taylor_monomial_single_add_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.coeff_taylor_monomial_single_add_aux/root-acceptance.json) |
 | 62 | `MvPolynomial.coeff_taylor_monomial_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.coeff_taylor_monomial_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.coeff_taylor_monomial_aux/root-acceptance.json) |
+| 63 | `MvPolynomial.coeff_taylor` | YES-add-as-is | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.coeff_taylor.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.coeff_taylor/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -1529,11 +1550,13 @@ Completed `MvPolynomial.coeff_taylor_monomial_single_add_aux` action: Keep uncha
 
 Completed `MvPolynomial.coeff_taylor_monomial_aux` action: Keep unchanged; complete private-prefilter SKIP, continue full public assessment of coeff_taylor.
 
+Completed `MvPolynomial.coeff_taylor` action: Upstream with accepted public multivariate Hasse API; use direct aeval if optional taylor naming is declined.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `MvPolynomial.coeff_taylor` next. Supporting identities receive their own applicable checks.
+   `MvPolynomial.eval_taylor` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
