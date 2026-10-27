@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-26
 
-- Declarations completed: **124/293**
-- Next declaration: **#125 `Roth.extend_apply_last`** (Roth/Lattice.lean:96)
+- Declarations completed: **125/293**
+- Next declaration: **#126 `Roth.card_filter_box_fiber_aux`** (Roth/Lattice.lean:100)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -143,10 +143,10 @@ Last regenerated: 2026-10-26
 | 122 | `Roth.sum_inv_le` | Roth/Lattice.lean:47 | SKIP | [report](mathlibable/Roth.sum_inv_le.md) |
 | 123 | `Roth.sum_inv_lt` | Roth/Lattice.lean:68 | BORDERLINE-needs-human | [report](mathlibable/Roth.sum_inv_lt.md) |
 | 124 | `Roth.extend_apply_castSucc` | Roth/Lattice.lean:92 | SKIP | [report](mathlibable/Roth.extend_apply_castSucc.md) |
+| 125 | `Roth.extend_apply_last` | Roth/Lattice.lean:96 | SKIP | [report](mathlibable/Roth.extend_apply_last.md) |
 
 ## Remaining declarations (in processing order)
 
-- #125 `Roth.extend_apply_last` (Roth/Lattice.lean:96, private lemma)
 - #126 `Roth.card_filter_box_fiber_aux` (Roth/Lattice.lean:100, private lemma)
 - #127 `Roth.card_filter_box_last` (Roth/Lattice.lean:131, public theorem)
 - #128 `Roth.filter_weight_le_eq_empty` (Roth/Lattice.lean:143, private lemma)
