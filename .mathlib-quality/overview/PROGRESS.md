@@ -13,7 +13,7 @@ Last regenerated: 2026-10-27
 
 - Declarations completed: **293/293**
 - Next declaration: none — all declarations complete
-- Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
+- Project-wide synthesis (Steps 3–8 cross-declaration analyses): complete
 
 ## Completed declarations
 
