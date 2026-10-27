@@ -1,0 +1,57 @@
+{
+  "file": "Roth/Taylor.lean",
+  "line": 101,
+  "name": "MvPolynomial.coeff_taylor_monomial_single_add_aux",
+  "short": "coeff_taylor_monomial_single_add_aux",
+  "kind": "lemma",
+  "visibility": "private",
+  "end_line": 118,
+  "source": "private lemma coeff_taylor_monomial_single_add_aux (α : σ → R) (a : R) {i : σ} (n : ℕ) {k : σ →₀ ℕ}\n    (hi : k i = 0)\n    (ih : ∀ d, (taylor α (monomial k a)).coeff d = eval α (hasseDeriv d (monomial k a)))\n    (d : σ →₀ ℕ) : (taylor α (monomial (Finsupp.single i n + k) a)).coeff d =\n      eval α (hasseDeriv d (monomial (Finsupp.single i n + k) a)) := by\n  have hXC : (X i + C (α i) : MvPolynomial σ R) ^ n =\n      Polynomial.aeval (X i) ((Polynomial.X + Polynomial.C (α i)) ^ n) := by\n    simp\n  have hsupp : ∀ e ∈ (taylor α (monomial k a)).support, e i = 0 := by\n    intro e he\n    rw [mem_support_iff, ih e, hasseDeriv_monomial] at he\n    by_contra h\n    simp [(hasseCoeff_eq_zero_iff e k).2 fun hle ↦ h (le_zero_iff.1 (hi ▸ hle i))] at he\n  rw [monomial_single_add, map_mul, map_pow, taylor_X, hXC,\n    coeff_aeval_X_mul i _ _ hsupp, ih, Polynomial.coeff_X_add_C_pow,\n    ← monomial_single_add, hasseDeriv_monomial, hasseDeriv_monomial, eval_monomial,\n    eval_monomial, hasseCoeff_single_add_eq hi, prod_pow_single_add_tsub α hi]\n  simp [mul_assoc, mul_comm, mul_left_comm]",
+  "signature": "private lemma coeff_taylor_monomial_single_add_aux (α : σ → R) (a : R) {i : σ} (n : ℕ) {k : σ →₀ ℕ}\n    (hi : k i = 0)\n    (ih : ∀ d, (taylor α (monomial k a)).coeff d = eval α (hasseDeriv d (monomial k a)))\n    (d : σ →₀ ℕ) : (taylor α (monomial (Finsupp.single i n + k) a)).coeff d =\n      eval α (hasseDeriv d (monomial (Finsupp.single i n + k) a))",
+  "body": "by\n  have hXC : (X i + C (α i) : MvPolynomial σ R) ^ n =\n      Polynomial.aeval (X i) ((Polynomial.X + Polynomial.C (α i)) ^ n) := by\n    simp\n  have hsupp : ∀ e ∈ (taylor α (monomial k a)).support, e i = 0 := by\n    intro e he\n    rw [mem_support_iff, ih e, hasseDeriv_monomial] at he\n    by_contra h\n    simp [(hasseCoeff_eq_zero_iff e k).2 fun hle ↦ h (le_zero_iff.1 (hi ▸ hle i))] at he\n  rw [monomial_single_add, map_mul, map_pow, taylor_X, hXC,\n    coeff_aeval_X_mul i _ _ hsupp, ih, Polynomial.coeff_X_add_C_pow,\n    ← monomial_single_add, hasseDeriv_monomial, hasseDeriv_monomial, eval_monomial,\n    eval_monomial, hasseCoeff_single_add_eq hi, prod_pow_single_add_tsub α hi]\n  simp [mul_assoc, mul_comm, mul_left_comm]",
+  "proof_lines": 14,
+  "sha256": "ad763b099d728b40558d0fd34c09bd7b10e8c4ac1dc0ecd55f373ce560ec8691",
+  "what": "Carries the Taylor coefficient identity from a residual monomial to one obtained by adding a new coordinate power.",
+  "how": "Expresses the new coordinate power through univariate Polynomial.aeval; coeff_aeval_X_mul and Polynomial.coeff_X_add_C_pow compute its coefficients, while hasseCoeff_single_add_eq and prod_pow_single_add_tsub match the divided-derivative expression.",
+  "hypotheses": "Commutative coefficients, a residual monomial not using the selected coordinate, and the coefficient identity already known for that residual monomial.",
+  "uses_from_project": [
+    "MvPolynomial.coeff_aeval_X_mul",
+    "MvPolynomial.hasseCoeff_eq_zero_iff",
+    "MvPolynomial.hasseCoeff_single_add_eq",
+    "MvPolynomial.hasseDeriv_monomial",
+    "MvPolynomial.prod_pow_single_add_tsub",
+    "MvPolynomial.taylor",
+    "MvPolynomial.taylor_X"
+  ],
+  "used_by_in_file": [
+    "MvPolynomial.coeff_taylor_monomial_aux"
+  ],
+  "project_callers": [
+    {
+      "name": "MvPolynomial.coeff_taylor_monomial_aux",
+      "file": "Roth/Taylor.lean",
+      "line": 120
+    }
+  ],
+  "type_context": "{σ R : Type*} [CommSemiring R]",
+  "type_provenance": "Exact written signature with section binders made explicit from source; not claimed as a fresh #check output. Minimal hasseCoeff #check succeeded; full Meta inspector timed out.",
+  "reference_provenance": "Manually disambiguated source-level direct project references in declaration bodies; callers include signature and body occurrences. Includes explicit references only, not an exhaustive kernel/simp dependency closure.",
+  "notes": [
+    "No set_option, sorry, TODO, or proof over 30 lines in declaration."
+  ],
+  "assignment_offset": 352,
+  "project_body_refs": [
+    "MvPolynomial.coeff_aeval_X_mul",
+    "MvPolynomial.hasseCoeff_eq_zero_iff",
+    "MvPolynomial.hasseCoeff_single_add_eq",
+    "MvPolynomial.hasseDeriv_monomial",
+    "MvPolynomial.prod_pow_single_add_tsub",
+    "MvPolynomial.taylor",
+    "MvPolynomial.taylor_X"
+  ],
+  "project_type_refs": [
+    "MvPolynomial.hasseDeriv",
+    "MvPolynomial.taylor"
+  ],
+  "section_context": "{σ R : Type*} [CommSemiring R]"
+}

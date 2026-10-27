@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 60/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 61/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 60; remaining: 233.
-- Verdicts: 9 NO-composable-from-mathlib, 11 YES-add-as-is, 3 YES-but-generalise-first, 11 NO-mathlib-has-it, 19 BORDERLINE-needs-human, 7 SKIP.
+- Completed applicable assessments: 61; remaining: 232.
+- Verdicts: 9 NO-composable-from-mathlib, 11 YES-add-as-is, 3 YES-but-generalise-first, 11 NO-mathlib-has-it, 19 BORDERLINE-needs-human, 8 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -653,6 +653,21 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: One named caller private coeff_taylor_monomial_single_add_aux, Taylor117. Complete caller with fresh target replay verified.
 - Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/MvPolynomial.prod_pow_single_add_tsub.md).
 
+### Completed: `MvPolynomial.coeff_taylor_monomial_single_add_aux`
+
+- Type: `∀ {σ : Type u_3} {R : Type u_4} [inst : CommSemiring R] (α : σ → R) (a : R) {i : σ} (n : ℕ) {k : σ →₀ ℕ},
+  k i = 0 →
+    (∀ (d : σ →₀ ℕ), ((taylor α) ((monomial k) a)).coeff d = (eval α) ((hasseDeriv d) ((monomial k) a))) →
+      ∀ (d : σ →₀ ℕ),
+        ((taylor α) ((monomial (Finsupp.single i n + k)) a)).coeff d =
+          (eval α) ((hasseDeriv d) ((monomial (Finsupp.single i n + k)) a))`
+- What: Proves the coefficient Taylor identity for a monomial after adding one new coordinate, assuming the identity for the residual monomial.
+- How: Derives translated residual support independence, applies coefficient separation and the one-variable binomial theorem, then factors binomial and power products.
+- Hypotheses: Arbitrary variables and commutative semiring; residual exponent zero in selected coordinate; induction hypothesis for all residual coefficients; n and a unrestricted.
+- Project dependencies: MvPolynomial.coeff_aeval_X_mul, MvPolynomial.hasseCoeff_eq_zero_iff, MvPolynomial.hasseCoeff_single_add_eq, MvPolynomial.hasseDeriv, MvPolynomial.hasseDeriv_monomial, MvPolynomial.prod_pow_single_add_tsub, MvPolynomial.taylor, MvPolynomial.taylor_X
+- Caller summary: One explicit caller private coeff_taylor_monomial_aux at Taylor129; full caller replay using fresh induction-step proof validated.
+- Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/MvPolynomial.coeff_taylor_monomial_single_add_aux.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -799,6 +814,8 @@ Completed `MvPolynomial.hasseCoeff_single_add_eq`: Extracts one factor with Fins
 
 Completed `MvPolynomial.prod_pow_single_add_tsub`: Existing finite-product splitting, powers and coordinate erasure express exact proof; no public contribution verdict under private rule.
 
+Completed `MvPolynomial.coeff_taylor_monomial_single_add_aux`: Uses Polynomial.coeff_X_add_C_pow and existing monomial/evaluation/multiplication laws plus three separately reviewed private project helpers; not a library-only composition claim.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -920,6 +937,8 @@ Completed `MvPolynomial.coeff_aeval_X_mul`: One implementation and one direct ca
 Completed `MvPolynomial.hasseCoeff_single_add_eq`: Special coordinate factorization, distinct from general cocycle or successor identities in HasseDeriv; one shared implementation for the monomial induction.
 
 Completed `MvPolynomial.prod_pow_single_add_tsub`: Exponent splitting differs from scalar binomial-coordinate helper; no second exact implementation in module.
+
+Completed `MvPolynomial.coeff_taylor_monomial_single_add_aux`: Coordinate induction step is distinct from universal aeval_monomial and full coefficient theorem; scalar helpers separate different calculations.
 
 ## Part 5: Generalization opportunities
 
@@ -1046,6 +1065,8 @@ Completed `MvPolynomial.hasseCoeff_single_add_eq`: Only variable type and natura
 
 Completed `MvPolynomial.prod_pow_single_add_tsub`: Native verified CommSemiring R to CommMonoid M with unchanged proof body; original source remains unchanged in read-only overview.
 
+Completed `MvPolynomial.coeff_taylor_monomial_single_add_aux`: Native type needs no Fintype/DecidableEq/field/charzero/nonzero or npositive hypotheses; no additional weakening or circular use of later coeff_taylor claimed.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -1168,6 +1189,8 @@ Completed `MvPolynomial.coeff_aeval_X_mul`: No missing primitive blocks existing
 Completed `MvPolynomial.hasseCoeff_single_add_eq`: Existing product/erase/support primitives suffice; full public upstream assessment n/a under private rule.
 
 Completed `MvPolynomial.prod_pow_single_add_tsub`: No missing primitive blocks proof. Potential generic monomial-evaluation formulation is a future public assessment, not claimed completed.
+
+Completed `MvPolynomial.coeff_taylor_monomial_single_add_aux`: No missing primitive blocks current decomposition; prospective public multivariate Hasse/Taylor API assessed separately.
 
 ## Part 7: Junk / removable
 
@@ -1294,6 +1317,8 @@ Completed `MvPolynomial.hasseCoeff_single_add_eq`: Keep private helper; short co
 
 Completed `MvPolynomial.prod_pow_single_add_tsub`: Retain private helper; clear algebraic boundary in monomial coefficient induction; no sorry, resource raises or unused local assumptions.
 
+Completed `MvPolynomial.coeff_taylor_monomial_single_add_aux`: Retain private induction-step helper to keep Finsupp induction case concise; no sorry, limitraise or long proof.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -1358,6 +1383,7 @@ Completed `MvPolynomial.prod_pow_single_add_tsub`: Retain private helper; clear 
 | 58 | `MvPolynomial.coeff_aeval_X_mul` | SKIP | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.coeff_aeval_X_mul.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.coeff_aeval_X_mul/root-acceptance.json) |
 | 59 | `MvPolynomial.hasseCoeff_single_add_eq` | SKIP | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.hasseCoeff_single_add_eq.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.hasseCoeff_single_add_eq/root-acceptance.json) |
 | 60 | `MvPolynomial.prod_pow_single_add_tsub` | SKIP | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.prod_pow_single_add_tsub.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.prod_pow_single_add_tsub/root-acceptance.json) |
+| 61 | `MvPolynomial.coeff_taylor_monomial_single_add_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.coeff_taylor_monomial_single_add_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.coeff_taylor_monomial_single_add_aux/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -1477,11 +1503,13 @@ Completed `MvPolynomial.hasseCoeff_single_add_eq` action: Retain unchanged; comp
 
 Completed `MvPolynomial.prod_pow_single_add_tsub` action: Keep source unchanged; record verified CommMonoid weakening as future refactor opportunity, private-prefilter SKIP complete.
 
+Completed `MvPolynomial.coeff_taylor_monomial_single_add_aux` action: Keep unchanged; complete private-prefilter SKIP, proceed to private monomial coefficient theorem.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `MvPolynomial.coeff_taylor_monomial_single_add_aux` next. Supporting identities receive their own applicable checks.
+   `MvPolynomial.coeff_taylor_monomial_aux` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.

@@ -1,0 +1,23 @@
+{
+  "type": "∀ {σ : Type u_3} {R : Type u_4} [inst : CommSemiring R] (α : σ → R) (a : R) {i : σ} (n : ℕ) {k : σ →₀ ℕ},\n  k i = 0 →\n    (∀ (d : σ →₀ ℕ), ((taylor α) ((monomial k) a)).coeff d = (eval α) ((hasseDeriv d) ((monomial k) a))) →\n      ∀ (d : σ →₀ ℕ),\n        ((taylor α) ((monomial (Finsupp.single i n + k)) a)).coeff d =\n          (eval α) ((hasseDeriv d) ((monomial (Finsupp.single i n + k)) a))",
+  "what": "Proves the coefficient Taylor identity for a monomial after adding one new coordinate, assuming the identity for the residual monomial.",
+  "how": "Derives translated residual support independence, applies coefficient separation and the one-variable binomial theorem, then factors binomial and power products.",
+  "hypotheses": "Arbitrary variables and commutative semiring; residual exponent zero in selected coordinate; induction hypothesis for all residual coefficients; n and a unrestricted.",
+  "project_dependencies": [
+    "MvPolynomial.coeff_aeval_X_mul",
+    "MvPolynomial.hasseCoeff_eq_zero_iff",
+    "MvPolynomial.hasseCoeff_single_add_eq",
+    "MvPolynomial.hasseDeriv",
+    "MvPolynomial.hasseDeriv_monomial",
+    "MvPolynomial.prod_pow_single_add_tsub",
+    "MvPolynomial.taylor",
+    "MvPolynomial.taylor_X"
+  ],
+  "caller_summary": "One explicit caller private coeff_taylor_monomial_aux at Taylor129; full caller replay using fresh induction-step proof validated.",
+  "mathlib_api_audit": "Uses Polynomial.coeff_X_add_C_pow and existing monomial/evaluation/multiplication laws plus three separately reviewed private project helpers; not a library-only composition claim.",
+  "moral_duplications": "Coordinate induction step is distinct from universal aeval_monomial and full coefficient theorem; scalar helpers separate different calculations.",
+  "generalization": "Native type needs no Fintype/DecidableEq/field/charzero/nonzero or npositive hypotheses; no additional weakening or circular use of later coeff_taylor claimed.",
+  "missing_api": "No missing primitive blocks current decomposition; prospective public multivariate Hasse/Taylor API assessed separately.",
+  "junk": "Retain private induction-step helper to keep Finsupp induction case concise; no sorry, limitraise or long proof.",
+  "action": "Keep unchanged; complete private-prefilter SKIP, proceed to private monomial coefficient theorem."
+}
