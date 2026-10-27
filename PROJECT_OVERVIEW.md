@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 31/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 32/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 31; remaining: 262.
-- Verdicts: 8 NO-composable-from-mathlib, 11 YES-add-as-is, 0 YES-but-generalise-first, 1 NO-mathlib-has-it, 8 BORDERLINE-needs-human, 3 SKIP.
+- Completed applicable assessments: 32; remaining: 261.
+- Verdicts: 9 NO-composable-from-mathlib, 11 YES-add-as-is, 0 YES-but-generalise-first, 1 NO-mathlib-has-it, 8 BORDERLINE-needs-human, 3 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -355,6 +355,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: occurrences: 3; declarations: 3; files: Roth/Lattice.lean:145, Roth/Index.lean:94, Roth/Theta.lean:395; simp attribute: False; opaque dependency closure claimed: False
 - Verdict: NO-composable-from-mathlib; [complete report](.mathlib-quality/overview/mathlibable/Roth.weight_nonneg.md).
 
+### Completed: `Roth.weight_zero`
+
+- Type: `theorem`
+- What: The zero natural multi-index has real weight zero for any natural parameter family.
+- How: Finite sum of zeros using cast-zero and zero-division; source simp [weight].
+- Hypotheses: Arbitrary σ with Fintype, No positive/nonzero denominator or DecidableEq premise
+- Project dependencies: Roth.weight
+- Caller summary: 0 explicit named references; @[simp] may normalize weight r 0 implicitly; Index.index_eq_zero_iff:105 potential consumer.
+- Verdict: NO-composable-from-mathlib; [complete report](.mathlib-quality/overview/mathlibable/Roth.weight_zero.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -443,6 +453,8 @@ Completed `Roth.card_le_card_box`: Five actual search methods on current/standar
 
 Completed `Roth.weight_nonneg`: verdict: NO-composable-from-mathlib; facts: Finset.sum_nonneg, div_nonneg, Nat.cast_nonneg; distinct facts: 3; expanded applications: 4; formal methods times forms: 5 x 3 actual; local-name index unavailable recorded
 
+Completed `Roth.weight_zero`: Finset.sum_eq_zero + Nat.cast_zero + zero_div; bundled Finsupp.weight has generic map_zero.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -506,6 +518,8 @@ Completed `Roth.card_box`: Generic finite Cartesian-product counting.
 Completed `Roth.card_le_card_box`: Finite Cartesian-product cardinality and monotonicity under inclusion, Finsupp interval cardinality bound after membership and endpoint normalization
 
 Completed `Roth.weight_nonneg`: Elementary sum positivity after definitional reduction; not a duplicated named Finsupp theorem
+
+Completed `Roth.weight_zero`: Zero preservation already structural for bundled Finsupp.weight; bridge from ratio formula is not defeq.
 
 ## Part 5: Generalization opportunities
 
@@ -574,6 +588,8 @@ Completed `Roth.card_le_card_box`: Dependent finite coordinate FUNCTION-family f
 
 Completed `Roth.weight_nonneg`: No unused original binder; larger formula and Finsupp representations compiled with ordinary families, finite subsets, nonnegative real denominators, ordered fields, arbitrary ambient variable types and ordered additive monoids. Signed-denominator false generalization rejected.
 
+Completed `Roth.weight_zero`: Existing arbitrary ambient Finsupp.weight in AddCommMonoid and DivisionSemiring finite formula verified; no fixed-parent binder removal.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -638,6 +654,8 @@ Completed `Roth.card_box`: None
 Completed `Roth.card_le_card_box`: No categorical missing-API claim. Design question: whether useful Finsupp natural-endpoint/support interval convenience bounds deserve upstream names.
 
 Completed `Roth.weight_nonneg`: No necessary gap: generic sum/scalar positivity composes. A standalone Finsupp.weight_nonneg convenience name not found; no absence claim.
+
+Completed `Roth.weight_zero`: No required missing upstream zero-preservation fact.
 
 ## Part 7: Junk / removable
 
@@ -706,6 +724,8 @@ Completed `Roth.card_le_card_box`: False
 
 Completed `Roth.weight_nonneg`: Useful three-caller project API, not dead code.
 
+Completed `Roth.weight_zero`: Not dead-code conclusion: simp API can be used without explicit name.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -741,6 +761,7 @@ Completed `Roth.weight_nonneg`: Useful three-caller project API, not dead code.
 | 29 | `Roth.card_box` | NO-composable-from-mathlib | [Report](.mathlib-quality/overview/mathlibable/Roth.card_box.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.card_box/root-acceptance.json) |
 | 30 | `Roth.card_le_card_box` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.card_le_card_box.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.card_le_card_box/root-acceptance.json) |
 | 31 | `Roth.weight_nonneg` | NO-composable-from-mathlib | [Report](.mathlib-quality/overview/mathlibable/Roth.weight_nonneg.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.weight_nonneg/root-acceptance.json) |
+| 32 | `Roth.weight_zero` | NO-composable-from-mathlib | [Report](.mathlib-quality/overview/mathlibable/Roth.weight_zero.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.weight_zero/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -802,11 +823,13 @@ Completed `Roth.card_le_card_box` action: Keep local useful helper while resolvi
 
 Completed `Roth.weight_nonneg` action: Do not submit this wrapper upstream. In a later authorized refactor inline the documented proof in all three callers; or keep as readable project-local Roth/Box.lean API.
 
+Completed `Roth.weight_zero` action: NO-composable-from-mathlib. Proposed deletion only with downstream simp-consumer refactor/rebuild; alternatively retain project-local Box simp API.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.weight_zero` next. Supporting identities receive their own applicable checks.
+   `Roth.weight_add` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.

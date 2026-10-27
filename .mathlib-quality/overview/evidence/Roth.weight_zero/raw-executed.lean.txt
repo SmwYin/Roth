@@ -1,0 +1,41 @@
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.Basic.Real.Basic
+#check_failure Roth.weight_zero
+open scoped BigOperators
+namespace RawWeightZeroAssessment
+variable {σ : Type*}
+noncomputable def original [Fintype σ] (r : σ → ℕ) (d : σ →₀ ℕ) : ℝ :=
+  ∑ j, (d j : ℝ) / r j
+theorem original_three_facts [Fintype σ] (r : σ → ℕ) : original r 0 = 0 :=
+  Finset.sum_eq_zero fun j _ ↦
+    (congrArg (fun x : ℝ ↦ x / (r j : ℝ)) (Nat.cast_zero (R := ℝ))).trans (zero_div _)
+theorem arbitrary_weight {M : Type*} [AddCommMonoid M] (w : σ → M) :
+    Finsupp.weight w (0 : σ →₀ ℕ) = 0 :=
+  map_zero (Finsupp.weight w)
+theorem finite_sum {K : Type*} [DivisionSemiring K] (s : Finset σ) (r : σ → K) :
+    ∑ j ∈ s, (0 : K) / r j = 0 :=
+  Finset.sum_eq_zero fun j _ ↦ zero_div (r j)
+theorem finite_functions [Fintype σ] {K : Type*} [DivisionSemiring K] (r : σ → K) :
+    ∑ j, ((0 : ℕ) : K) / r j = 0 :=
+  Finset.sum_eq_zero fun j _ ↦
+    (congrArg (fun x : K ↦ x / r j) (Nat.cast_zero (R := K))).trans (zero_div _)
+theorem weight_function_zero {M : Type*} [AddCommMonoid M] :
+    Finsupp.weight (fun _ : σ ↦ (0 : M)) = (0 : (σ →₀ ℕ) →+ M) := by
+  ext d
+  simp [Finsupp.weight_apply]
+example : Finsupp.weight (fun n : ℕ ↦ (n : ℝ)) (0 : ℕ →₀ ℕ) = 0 :=
+  map_zero _
+example : original (fun _ : Unit ↦ 0) (Finsupp.single () 1) = 0 := by
+  simp [original]
+example : ¬ original (fun _ : Unit ↦ 0) (Finsupp.single () 1) = 1 := by
+  simp [original]
+example : original (fun _ : Unit ↦ 1) (Finsupp.single () 1) = 1 := by
+  simp [original]
+example : ¬ original (fun _ : Unit ↦ 1) (Finsupp.single () 1) = 0 := by
+  simp [original]
+#print axioms original_three_facts
+#print axioms arbitrary_weight
+#print axioms finite_sum
+#print axioms finite_functions
+#print axioms weight_function_zero
+end RawWeightZeroAssessment
