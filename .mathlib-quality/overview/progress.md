@@ -3,7 +3,7 @@
 Status: **in_progress**, 2026-10-27. Branch: `ramin-cleanup`.
 Production Lean files and all pins match baseline `99f19fd`.
 
-**Completed: 71 / 293 written declarations.**
+**Completed: 72 / 293 written declarations.**
 This counts the current overview assessments, separately from the earlier code cleanup.
 
 | # | Completed declaration | Applicable workflow | Verdict | Report |
@@ -79,8 +79,9 @@ This counts the current overview assessments, separately from the earlier code c
 | 69 | `MvPolynomial.degreeOf_taylor_le` | full-mathlibable; accepted complete | YES-add-as-is | [Detailed report](mathlibable/MvPolynomial.degreeOf_taylor_le.md) |
 | 70 | `MvPolynomial.taylor_neg_taylor` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/MvPolynomial.taylor_neg_taylor.md) |
 | 71 | `MvPolynomial.taylor_injective` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/MvPolynomial.taylor_injective.md) |
+| 72 | `MvPolynomial.taylor_eq_zero_iff` | full-mathlibable; accepted complete | YES-but-generalise-first | [Detailed report](mathlibable/MvPolynomial.taylor_eq_zero_iff.md) |
 
-**Next declaration: `MvPolynomial.taylor_eq_zero_iff`**, `Roth/Taylor.lean:192`.
+**Next declaration: `MvPolynomial.eq_sum_box_hasseDeriv`**, `Roth/Taylor.lean:197`.
 Only the listed assessments are complete. No partial assessment was committed.
 
 On restart: read [README](README.md), [machine progress](progress.json), and

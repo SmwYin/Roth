@@ -1,0 +1,95 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+import Mathlib.Algebra.Polynomial.CancelLeads
+import Mathlib.Algebra.MvPolynomial.PDeriv
+import Mathlib.Algebra.Order.Ring.WithTop
+#check_failure MvPolynomial.taylor_neg_taylor
+noncomputable section
+namespace MvPolynomial.TaylorInverseRaw
+variable {σ R : Type*} [CommSemiring R]
+def shift (α : σ → R) : MvPolynomial σ R →ₐ[R] MvPolynomial σ R :=
+  aeval fun j ↦ X j + C (α j)
+theorem conditional (α β : σ → R) (h : ∀ j, β j + α j = 0)
+    (P : MvPolynomial σ R) : shift β (shift α P) = P := by
+  have hg : (fun j ↦ (X j + C (β j)) + C (α j)) = (X : σ → MvPolynomial σ R) := by
+    funext j
+    rw [add_assoc, ← map_add, h j, map_zero, add_zero]
+  simp only [shift, comp_aeval_apply, map_add, aeval_X, algHom_C]
+  exact (congrArg (fun g : σ → MvPolynomial σ R ↦ aeval g P) hg).trans
+    (aeval_X_left_apply P)
+variable {A : Type*} [CommRing A]
+theorem inverse (α : σ → A) (P : MvPolynomial σ A) :
+    shift (fun j ↦ -α j) (shift α P) = P :=
+  conditional α (fun j ↦ -α j) (fun j ↦ neg_add_cancel (α j)) P
+theorem directInverse (α : σ → A) (P : MvPolynomial σ A) :
+    shift (fun j ↦ -α j) (shift α P) = P := by
+  simp [shift, comp_aeval_apply, add_assoc, aeval_X_left_apply]
+#print axioms directInverse
+example (a : A) (P : Polynomial A) :
+    Polynomial.taylor (-a) (Polynomial.taylor a P) = P :=
+  (Polynomial.taylorEquiv a).symm_apply_apply P
+#print axioms conditional
+#print axioms inverse
+end MvPolynomial.TaylorInverseRaw
+#check_failure MvPolynomial.taylor_injective
+namespace MvPolynomial.TaylorInjectiveRaw
+open TaylorInverseRaw
+variable {σ R : Type*} [CommSemiring R]
+theorem conditionalInjective (α β : σ → R) (h : ∀ j, β j + α j = 0) :
+    Function.Injective (shift α : MvPolynomial σ R → _) :=
+  Function.LeftInverse.injective (conditional α β h)
+theorem ringInjective {A : Type*} [CommRing A] (α : σ → A) :
+    Function.Injective (shift α : MvPolynomial σ A → _) :=
+  Function.LeftInverse.injective (inverse α)
+#print axioms ringInjective
+theorem generic (α : σ → R) (g : MvPolynomial σ R → MvPolynomial σ R)
+    (h : Function.LeftInverse g (shift α)) : Function.Injective (shift α) :=
+  Function.LeftInverse.injective h
+example {A : Type*} [Ring A] (a : A) : Function.Injective (Polynomial.taylor a) :=
+  Polynomial.taylor_injective a
+#check @Polynomial.taylor_injective
+theorem topCollision :
+    shift (fun _ : Unit ↦ (⊤ : WithTop ℕ)) (X () + C 1) =
+      shift (fun _ : Unit ↦ (⊤ : WithTop ℕ)) (X () + C 2) := by
+  simp only [shift, map_add, aeval_X, algHom_C, algebraMap_eq]
+  rw [add_assoc, ← map_add, WithTop.top_add, add_assoc, ← map_add, WithTop.top_add]
+theorem topNotInjective :
+    ¬ Function.Injective (shift (fun _ : Unit ↦ (⊤ : WithTop ℕ))) := by
+  intro h
+  have heq := h topCollision
+  have hv := congrArg (fun Q : MvPolynomial Unit (WithTop ℕ) ↦ eval (fun _ ↦ 0) Q) heq
+  norm_num at hv
+#print axioms conditionalInjective
+#print axioms generic
+#print axioms topCollision
+#print axioms topNotInjective
+end MvPolynomial.TaylorInjectiveRaw
+#check_failure MvPolynomial.taylor_eq_zero_iff
+namespace MvPolynomial.TaylorZeroIffRaw
+open TaylorInverseRaw TaylorInjectiveRaw
+variable {σ R : Type*} [CommSemiring R]
+theorem generic (α : σ → R) (P : MvPolynomial σ R)
+    (h : Function.Injective (shift α : MvPolynomial σ R → _)) :
+    shift α P = 0 ↔ P = 0 :=
+  h.eq_iff' (map_zero _)
+theorem conditional (α β : σ → R) (h : ∀ j, β j + α j = 0)
+    (P : MvPolynomial σ R) : shift α P = 0 ↔ P = 0 :=
+  (conditionalInjective α β h).eq_iff' (map_zero _)
+theorem ring {A : Type*} [CommRing A] (α : σ → A) (P : MvPolynomial σ A) :
+    shift α P = 0 ↔ P = 0 :=
+  (ringInjective α).eq_iff' (map_zero _)
+example {B : Type*} [Semiring B] (a : B) (P : Polynomial B) :
+    Polynomial.taylor a P = 0 ↔ P = 0 :=
+  Polynomial.taylor_eq_zero a P
+#check @Polynomial.comp_X_add_C_eq_zero_iff
+#print axioms generic
+#print axioms conditional
+#print axioms ring
+end MvPolynomial.TaylorZeroIffRaw

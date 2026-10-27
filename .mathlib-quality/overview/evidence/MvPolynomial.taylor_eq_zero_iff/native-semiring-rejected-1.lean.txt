@@ -1,0 +1,30 @@
+#check @Finset.exists_maximal
+namespace MvPolynomial.TaylorZeroSemiringExperiment
+variable {σ R : Type*} [CommSemiring R]
+theorem reflected (α : σ → R) (P : MvPolynomial σ R) : taylor α P = 0 ↔ P = 0 := by
+  classical
+  constructor
+  · intro ht
+    by_contra hP
+    obtain ⟨d, hd, hmax⟩ := P.support.exists_maximal (support_nonempty.mpr hP)
+    have hderiv : hasseDeriv d P = C (P.coeff d) := by
+      ext e
+      rw [coeff_hasseDeriv]
+      by_cases he : e = 0
+      · subst e
+        simp [hasseCoeff]
+      · have hz : P.coeff (e + d) = 0 := by
+          by_contra hn
+          have hdle : d ≤ e + d := by
+            intro j
+            exact Nat.le_add_left (d j) (e j)
+          have heq : e + d = d := le_antisymm (hmax (mem_support_iff.mpr hn) hdle) hdle
+          exact he (add_right_cancel (heq.trans (zero_add d).symm))
+        simp [hz, he]
+    have hc := congrArg (fun Q : MvPolynomial σ R ↦ Q.coeff d) ht
+    rw [coeff_taylor, hderiv, eval_C] at hc
+    exact (mem_support_iff.mp hd) (by simpa using hc)
+  · rintro rfl
+    exact map_zero _
+#print axioms reflected
+end MvPolynomial.TaylorZeroSemiringExperiment

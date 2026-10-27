@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 71/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 72/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 71; remaining: 222.
-- Verdicts: 10 NO-composable-from-mathlib, 13 YES-add-as-is, 3 YES-but-generalise-first, 11 NO-mathlib-has-it, 25 BORDERLINE-needs-human, 9 SKIP.
+- Completed applicable assessments: 72; remaining: 221.
+- Verdicts: 10 NO-composable-from-mathlib, 13 YES-add-as-is, 4 YES-but-generalise-first, 11 NO-mathlib-has-it, 25 BORDERLINE-needs-human, 9 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -769,6 +769,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: One explicit caller: taylor_eq_zero_iff, Taylor193; full fresh caller proof verified. Index zero-iff uses are transitive.
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor_injective.md).
 
+### Completed: `MvPolynomial.taylor_eq_zero_iff`
+
+- Type: `∀ {σ : Type u_1} {A : Type u_2} [CommRing A] (α : σ → A) (P : MvPolynomial σ A), MvPolynomial.taylor α P = 0 ↔ P = 0`
+- What: Formal multivariate polynomial translation reflects zero; current ring hypothesis can be weakened to CommSemiring.
+- How: Original proof derives zero reflection from inverse-based injectivity. Verified stronger proof chooses a maximal supported exponent, whose Hasse derivative is its nonzero constant coefficient, contradicting zero translate.
+- Hypotheses: Arbitrary independent-universe variables and coefficients, shift and polynomial. CommRing currently, verified CommSemiring replacement; no finite/domain/characteristic/nontrivial assumptions.
+- Project dependencies: MvPolynomial.taylor, MvPolynomial.taylor_injective
+- Caller summary: 0explicit named refs,4 measured implicit simp consumers in Roth/Index: exists_weight_eq_index,le_index_iff,index_eq_weightedOrder_div,index_mul. All4 full fresh proofs pass with old target simp disabled and stronger theorem local simp.
+- Verdict: YES-but-generalise-first; [complete report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor_eq_zero_iff.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -937,6 +947,8 @@ Completed `MvPolynomial.taylor_neg_taylor`: Univariate Polynomial.taylorEquiv an
 
 Completed `MvPolynomial.taylor_injective`: Function.LeftInverse.injective exists but requires the project-specific inverse premise. Polynomial.taylor_injective works over Ring, univariate only. New translation AlgEquiv would supply injectivity generically, after proving its inverse fields.
 
+Completed `MvPolynomial.taylor_eq_zero_iff`: Polynomial.taylor_eq_zero and comp_X_add_C_eq_zero_iff are Semiring/univariate at pinned revision; generic zero-preserving injection iff exists but requires an injectivity premise. New multivariate semiring maximal-support proof is not an existing-call composition.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -1080,6 +1092,8 @@ Completed `MvPolynomial.degreeOf_taylor_le`: Univariate Taylor degree invariance
 Completed `MvPolynomial.taylor_neg_taylor`: Specializes additive composition to mutually cancelling shifts, and is a left-inverse interface for injectivity. Neither is a duplicate of composition or injectivity.
 
 Completed `MvPolynomial.taylor_injective`: A generic left-inverse corollary, analogous to univariate Taylor injectivity. Not an independently available multivariate all-mathlib one-call term.
+
+Completed `MvPolynomial.taylor_eq_zero_iff`: Univariate zero-reflection analogue and generic ring injectivity corollary; stronger arbitrary-variable semiring theorem provides genuine additional triangular coefficient content.
 
 ## Part 5: Generalization opportunities
 
@@ -1228,6 +1242,8 @@ Completed `MvPolynomial.taylor_neg_taylor`: CommRing is the fixed negation/cance
 
 Completed `MvPolynomial.taylor_injective`: No verified unchanged-signature mechanical weakening. Conditional semiring inverse-pair injectivity verified. Bare CommSemiring weakening refuted by WithTop Nat shift top colliding X+C1 and X+C2. Cancellative semiring alternatives not tested; no absolute minimality claim.
 
+Completed `MvPolynomial.taylor_eq_zero_iff`: Verified CommRing→CommSemiring same statement and parent with replacement 28-line maximal-support/Hasse argument, not unchanged-body mechanical deletion. All measured consumers checked. Semiring injectivity remains false and is not claimed.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -1372,6 +1388,8 @@ Completed `MvPolynomial.degreeOf_taylor_le`: Coordinate-degree control under mul
 Completed `MvPolynomial.taylor_neg_taylor`: Potential bundled multivariate translation algebra equivalence; its inverse fields are new obligations, not a missing generic equivalence theorem.
 
 Completed `MvPolynomial.taylor_injective`: Potential multivariate translation AlgEquiv; no missing generic left-inverse theorem.
+
+Completed `MvPolynomial.taylor_eq_zero_iff`: Multivariate semiring translation zero-reflection and reusable maximal-support Hasse constant lemma.
 
 ## Part 7: Junk / removable
 
@@ -1520,6 +1538,8 @@ Completed `MvPolynomial.taylor_neg_taylor`: Two live mathematical callers, so no
 
 Completed `MvPolynomial.taylor_injective`: Live zero-reflection caller; named convenience corollary status depends on future translation API.
 
+Completed `MvPolynomial.taylor_eq_zero_iff`: Live simplifier API with4 production consumers; not unused despite0explicit tokens.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -1595,6 +1615,7 @@ Completed `MvPolynomial.taylor_injective`: Live zero-reflection caller; named co
 | 69 | `MvPolynomial.degreeOf_taylor_le` | YES-add-as-is | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.degreeOf_taylor_le.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.degreeOf_taylor_le/root-acceptance.json) |
 | 70 | `MvPolynomial.taylor_neg_taylor` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor_neg_taylor.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.taylor_neg_taylor/root-acceptance.json) |
 | 71 | `MvPolynomial.taylor_injective` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor_injective.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.taylor_injective/root-acceptance.json) |
+| 72 | `MvPolynomial.taylor_eq_zero_iff` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor_eq_zero_iff.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.taylor_eq_zero_iff/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -1736,11 +1757,13 @@ Completed `MvPolynomial.taylor_neg_taylor` action: BORDERLINE: choose pointwise 
 
 Completed `MvPolynomial.taylor_injective` action: BORDERLINE: retain locally during read-only survey; decide bundled equivalence versus separate injectivity corollary upstream. Inline the tested generic term at Taylor193 if the concrete corollary is declined.
 
+Completed `MvPolynomial.taylor_eq_zero_iff` action: YES-but-generalise-first: propose CommSemiring theorem in Mathlib/Algebra/MvPolynomial/Taylor.lean with coefficient theorem; retain production unchanged during survey, use direct aeval spelling if named translation API declined.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `MvPolynomial.taylor_eq_zero_iff` next. Supporting identities receive their own applicable checks.
+   `MvPolynomial.eq_sum_box_hasseDeriv` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.

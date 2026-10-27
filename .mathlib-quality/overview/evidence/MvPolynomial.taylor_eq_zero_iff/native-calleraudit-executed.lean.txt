@@ -1,0 +1,43 @@
+
+run_cmd do
+  let names : Array Lean.Name := #[
+    `MvPolynomial.taylor,
+    `MvPolynomial.taylor_apply,
+    `MvPolynomial.taylor_X,
+    `MvPolynomial.taylor_C,
+    `MvPolynomial.taylor_monomial,
+    `MvPolynomial.coeff_taylor,
+    `MvPolynomial.eval_taylor,
+    `MvPolynomial.taylor_taylor,
+    `MvPolynomial.taylor_zero,
+    `MvPolynomial.taylor_map,
+    `MvPolynomial.taylor_rename,
+    `MvPolynomial.degreeOf_taylor_le,
+    `MvPolynomial.taylor_neg_taylor,
+    `MvPolynomial.taylor_injective,
+    `MvPolynomial.taylor_eq_zero_iff,
+    `MvPolynomial.eq_sum_box_hasseDeriv,
+    `MvPolynomial.eval_eq_sum_box,
+    `Roth.index,
+    `Roth.index_le_weight,
+    `Roth.exists_weight_eq_index,
+    `Roth.le_index_iff,
+    `Roth.index_nonneg,
+    `Roth.index_eq_zero_iff,
+    `Roth.index_sub_weight_le_index_hasseDeriv,
+    `Roth.le_index_sum,
+    `Roth.weight_eq_finsuppWeight_div,
+    `Roth.index_eq_weightedOrder_div,
+    `Roth.index_mul,
+    `Roth.index_prod,
+    `Roth.index_neg,
+    `Roth.index_C_mul,
+    `Roth.index_mul_left_weights,
+    `Roth.index_rename,
+    `Roth.index_le_card,
+    `Roth.index_unique]
+  for n in names do
+    let ci ← Lean.getConstInfo n
+    let constants := (ci.value! (allowOpaque := true)).getUsedConstants
+    if constants.any (fun c ↦ c.toString.startsWith "MvPolynomial.taylor_eq_zero_iff") then
+      Lean.logInfo m!"ZERO_IFF_DIRECT_PROOF_CONSUMER: {n}"

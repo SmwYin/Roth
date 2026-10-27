@@ -1,0 +1,57 @@
+
+namespace Roth.TaylorZeroIffConsumers
+open MvPolynomial
+attribute [-simp] MvPolynomial.taylor_eq_zero_iff
+attribute [local simp] MvPolynomial.TaylorZeroSemiringExperiment.reflected
+variable {σ : Type*} [Fintype σ]
+omit [Fintype σ] in
+private lemma mem_support_taylor_iff {P : MvPolynomial σ ℝ} {α : σ → ℝ} {d : σ →₀ ℕ} :
+    d ∈ (taylor α P).support ↔ eval α (hasseDeriv d P) ≠ 0 := by
+  rw [MvPolynomial.mem_support_iff, coeff_taylor]
+theorem exists_weight_eq_index {P : MvPolynomial σ ℝ} (hP : P ≠ 0) (α : σ → ℝ) (r : σ → ℕ) :
+    ∃ d, eval α (hasseDeriv d P) ≠ 0 ∧ weight r d = index P α r := by
+  obtain ⟨d, hd, hdw⟩ :=
+    (show (weight r '' ((taylor α P).support : Set (σ →₀ ℕ))).Nonempty by
+      simpa using hP).csInf_mem ((taylor α P).support.finite_toSet.image (weight r))
+  exact ⟨d, mem_support_taylor_iff.1 hd, hdw⟩
+
+theorem le_index_iff {P : MvPolynomial σ ℝ} (hP : P ≠ 0) {α : σ → ℝ} {r : σ → ℕ} {c : ℝ} :
+    c ≤ index P α r ↔ ∀ d, eval α (hasseDeriv d P) ≠ 0 → c ≤ weight r d := by
+  refine ⟨fun h d hd ↦ h.trans (index_le_weight hd), fun h ↦ ?_⟩
+  refine le_csInf (by simpa using hP) ?_
+  rintro _ ⟨d, hd, rfl⟩
+  exact h d (mem_support_taylor_iff.1 hd)
+
+theorem index_eq_weightedOrder_div {P : MvPolynomial σ ℝ} (hP : P ≠ 0) {r : σ → ℕ}
+    (hr : ∀ j, 0 < r j) (α : σ → ℝ) : index P α r =
+      (((taylor α P : MvPowerSeries σ ℝ).weightedOrder fun j ↦ (∏ i, r i) / r j).toNat : ℝ) /
+        ∏ i, r i := by
+  set w : σ → ℕ := fun j ↦ (∏ i, r i) / r j
+  set F : MvPowerSeries σ ℝ := ↑(taylor α P)
+  obtain ⟨d, hd, hdw⟩ := MvPowerSeries.exists_coeff_ne_zero_and_weightedOrder w (f := F)
+    ((MvPowerSeries.ne_zero_iff_weightedOrder_finite w).1 (by simpa [F] using hP))
+  apply le_antisymm
+  · rw [← hdw, ENat.toNat_natCast, ← weight_eq_finsuppWeight_div hr]
+    exact index_le_weight (by simpa [F, MvPolynomial.coeff_coe, coeff_taylor] using hd)
+  · refine (le_index_iff hP).2 fun e he ↦ ?_
+    rw [weight_eq_finsuppWeight_div hr]
+    refine div_le_div_of_nonneg_right ?_ (Nat.cast_nonneg _)
+    exact_mod_cast ENat.toNat_le_toNat (MvPowerSeries.weightedOrder_le w (f := F) (d := e)
+      (by simpa [F, MvPolynomial.coeff_coe, coeff_taylor] using he)) (by simp)
+
+theorem index_mul {P Q : MvPolynomial σ ℝ} (hP : P ≠ 0) (hQ : Q ≠ 0) (α : σ → ℝ) {r : σ → ℕ}
+    (hr : ∀ j, 0 < r j) : index (P * Q) α r = index P α r + index Q α r := by
+  rw [index_eq_weightedOrder_div hP hr, index_eq_weightedOrder_div hQ hr,
+    index_eq_weightedOrder_div (mul_ne_zero hP hQ) hr, ← add_div, map_mul, MvPolynomial.coe_mul,
+    MvPowerSeries.weightedOrder_mul]
+  congr 1
+  have hfin : ∀ R : MvPolynomial σ ℝ, R ≠ 0 →
+      ((taylor α R : MvPowerSeries σ ℝ).weightedOrder fun j ↦ (∏ i, r i) / r j) ≠ ⊤ := by simp
+  rw [ENat.toNat_add (hfin P hP) (hfin Q hQ), Nat.cast_add]
+
+#print axioms exists_weight_eq_index
+#print axioms le_index_iff
+#print axioms index_eq_weightedOrder_div
+#print axioms index_mul
+attribute [simp] MvPolynomial.taylor_eq_zero_iff
+end Roth.TaylorZeroIffConsumers

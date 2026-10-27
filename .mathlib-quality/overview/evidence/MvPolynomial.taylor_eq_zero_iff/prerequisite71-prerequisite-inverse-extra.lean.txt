@@ -1,0 +1,36 @@
+
+namespace MvPolynomial.TaylorInverseExtra
+variable {σ A : Type*} [CommRing A]
+noncomputable def equivalence (α : σ → A) : MvPolynomial σ A ≃ₐ[A] MvPolynomial σ A where
+  invFun := taylor (fun j ↦ -α j)
+  left_inv := TaylorInverseAssessment.leftInverse α
+  right_inv := TaylorInverseAssessment.rightInverse α
+  __ := taylor α
+example (α : σ → A) (P : MvPolynomial σ A) :
+    (equivalence α).symm (equivalence α P) = P :=
+  (equivalence α).symm_apply_apply P
+theorem expansionCaller [Fintype σ] [DecidableEq σ] (α : σ → A) (r : σ → ℕ)
+    (P : MvPolynomial σ A) (hP : ∀ j, degreeOf j P ≤ r j) :
+    P = ∑ d ∈ Roth.box r, C (eval α (hasseDeriv d P)) * ∏ j, (X j - C (α j)) ^ d j := by
+  have h1 : taylor α P = ∑ d ∈ Roth.box r, monomial d (eval α (hasseDeriv d P)) := by
+    ext e
+    simp only [coeff_taylor, coeff_sum, coeff_monomial, Finset.sum_ite_eq']
+    split_ifs with he
+    · rfl
+    · obtain ⟨j, hj⟩ : ∃ j, r j < e j := by
+        simpa [Roth.mem_box] using he
+      rw [hasseDeriv_eq_zero_of_degreeOf_lt ((hP j).trans_lt hj), map_zero]
+  calc P = taylor (fun j ↦ -α j) (taylor α P) := (TaylorInverseAssessment.replay α P).symm
+    _ = _ := by
+      rw [h1, map_sum]
+      refine Finset.sum_congr rfl fun d _ ↦ ?_
+      rw [taylor_monomial, Finsupp.prod_fintype _ _ fun _ ↦ pow_zero _]
+      simp [sub_eq_add_neg]
+
+#print axioms expansionCaller
+#print axioms equivalence
+#check @Polynomial.taylorEquiv
+example {T : Type*} [CommSemiring T] : True := by
+  fail_if_success let _ := (MvPolynomial.taylor_neg_taylor (σ := σ) (A := T))
+  trivial
+end MvPolynomial.TaylorInverseExtra

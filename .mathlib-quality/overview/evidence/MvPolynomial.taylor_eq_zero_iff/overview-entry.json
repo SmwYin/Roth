@@ -1,0 +1,19 @@
+{
+  "declaration": "MvPolynomial.taylor_eq_zero_iff",
+  "kind": "theorem",
+  "type": "∀ {σ : Type u_1} {A : Type u_2} [CommRing A] (α : σ → A) (P : MvPolynomial σ A), MvPolynomial.taylor α P = 0 ↔ P = 0",
+  "what": "Formal multivariate polynomial translation reflects zero; current ring hypothesis can be weakened to CommSemiring.",
+  "how": "Original proof derives zero reflection from inverse-based injectivity. Verified stronger proof chooses a maximal supported exponent, whose Hasse derivative is its nonzero constant coefficient, contradicting zero translate.",
+  "hypotheses": "Arbitrary independent-universe variables and coefficients, shift and polynomial. CommRing currently, verified CommSemiring replacement; no finite/domain/characteristic/nontrivial assumptions.",
+  "project_dependencies": [
+    "MvPolynomial.taylor",
+    "MvPolynomial.taylor_injective"
+  ],
+  "caller_summary": "0explicit named refs,4 measured implicit simp consumers in Roth/Index: exists_weight_eq_index,le_index_iff,index_eq_weightedOrder_div,index_mul. All4 full fresh proofs pass with old target simp disabled and stronger theorem local simp.",
+  "mathlib_api_audit": "Polynomial.taylor_eq_zero and comp_X_add_C_eq_zero_iff are Semiring/univariate at pinned revision; generic zero-preserving injection iff exists but requires an injectivity premise. New multivariate semiring maximal-support proof is not an existing-call composition.",
+  "moral_duplications": "Univariate zero-reflection analogue and generic ring injectivity corollary; stronger arbitrary-variable semiring theorem provides genuine additional triangular coefficient content.",
+  "generalization": "Verified CommRing→CommSemiring same statement and parent with replacement 28-line maximal-support/Hasse argument, not unchanged-body mechanical deletion. All measured consumers checked. Semiring injectivity remains false and is not claimed.",
+  "missing_api": "Multivariate semiring translation zero-reflection and reusable maximal-support Hasse constant lemma.",
+  "junk": "Live simplifier API with4 production consumers; not unused despite0explicit tokens.",
+  "action": "YES-but-generalise-first: propose CommSemiring theorem in Mathlib/Algebra/MvPolynomial/Taylor.lean with coefficient theorem; retain production unchanged during survey, use direct aeval spelling if named translation API declined."
+}

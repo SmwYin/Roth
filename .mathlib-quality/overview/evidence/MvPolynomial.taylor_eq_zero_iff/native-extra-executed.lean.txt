@@ -1,0 +1,15 @@
+#check @MvPolynomial.TaylorZeroSemiringExperiment.reflected
+namespace MvPolynomial.TaylorZeroIffShape
+variable {σ R : Type*} [CommSemiring R]
+theorem expanded (α : σ → R) (P : MvPolynomial σ R) :
+    aeval (fun j ↦ X j + C (α j)) P = 0 ↔ P = 0 :=
+  TaylorZeroSemiringExperiment.reflected α P
+example {A : Type*} [CommRing A] (α : σ → A) (P : MvPolynomial σ A) :
+    taylor α P = 0 ↔ P = 0 :=
+  TaylorZeroSemiringExperiment.reflected α P
+#print axioms expanded
+end MvPolynomial.TaylorZeroIffShape
+run_cmd do
+  let ci ← Lean.getConstInfo `MvPolynomial.TaylorZeroSemiringExperiment.reflected
+  let constants := (ci.value! (allowOpaque := true)).getUsedConstants
+  Lean.logInfo m!"SEMIRING_ZERO_REFLECTION_CONSTANTS: {constants}"
