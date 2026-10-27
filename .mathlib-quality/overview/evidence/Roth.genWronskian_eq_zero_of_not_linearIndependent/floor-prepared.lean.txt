@@ -1,0 +1,10 @@
+namespace GenWronskianZeroAssessment
+open MvPolynomial
+theorem noZeroDivisors_zero {R σ ι : Type*} [CommRing R] [NoZeroDivisors R]
+    [Fintype ι] [DecidableEq ι] (D : ι → σ →₀ ℕ)
+    {φ : ι → MvPolynomial σ R} (h : ¬ LinearIndependent R φ) :
+    GenWronskianAssessment.generalized D φ = 0 := by
+  nontriviality R
+  exact abstract_zero (fun i ↦ hasseDeriv (D i)) h
+#print axioms noZeroDivisors_zero
+end GenWronskianZeroAssessment

@@ -1,0 +1,47 @@
+namespace GenWronskianZeroAssessment
+open MvPolynomial
+theorem abstract_zero {R A M ι : Type*} [CommRing R] [CommRing A] [IsDomain A]
+    [Algebra R A] [FaithfulSMul R A] [AddCommGroup M] [Module R M]
+    [Fintype ι] [DecidableEq ι] (δ : ι → M →ₗ[R] A) {v : ι → M}
+    (h : ¬ LinearIndependent R v) :
+    (Matrix.of fun i j ↦ δ i (v j)).det = 0 :=
+  Matrix.det_eq_zero_of_not_linearIndependent_cols fun hc ↦
+    h (LinearIndependent.of_comp (LinearMap.pi δ) (hc.restrict_scalars' R))
+theorem generalized_zero {R σ ι : Type*} [CommRing R] [IsDomain R]
+    [Fintype ι] [DecidableEq ι] (D : ι → σ →₀ ℕ)
+    {φ : ι → MvPolynomial σ R} (h : ¬ LinearIndependent R φ) :
+    GenWronskianAssessment.generalized D φ = 0 :=
+  abstract_zero (fun i ↦ hasseDeriv (D i)) h
+theorem original_zero {K σ : Type*} [Field K] {l : ℕ}
+    (D : Fin l → σ →₀ ℕ) {φ : Fin l → MvPolynomial σ K}
+    (h : ¬ LinearIndependent K φ) : Roth.genWronskian D φ = 0 :=
+  abstract_zero (fun i ↦ hasseDeriv (D i)) h
+#print axioms abstract_zero
+#print axioms generalized_zero
+#print axioms original_zero
+#check @Matrix.det_eq_zero_of_not_linearIndependent_cols
+#check @LinearIndependent.of_comp
+#check @LinearIndependent.restrict_scalars'
+#check @Matrix.exists_mulVec_eq_zero_iff
+end GenWronskianZeroAssessment
+
+namespace GenWronskianZeroAssessment
+open MvPolynomial
+theorem zero_divisor_guard :
+    ¬ LinearIndependent (ℤ × ℤ) (fun _ : Fin 1 ↦ (C (1, 0) : MvPolynomial Unit (ℤ × ℤ))) ∧
+      GenWronskianAssessment.generalized (fun _ : Fin 1 ↦ (0 : Unit →₀ ℕ))
+        (fun _ ↦ C (1, 0) : Fin 1 → MvPolynomial Unit (ℤ × ℤ)) ≠ 0 := by
+  constructor
+  · apply Fintype.not_linearIndependent_iff.mpr
+    refine ⟨fun _ ↦ (0, 1), ?_, 0, by decide⟩
+    simp [smul_eq_C_mul, ← C_mul]
+  · simp [GenWronskianAssessment.generalized]
+theorem inline_original {K σ : Type*} [Field K] {l : ℕ}
+    (D : Fin l → σ →₀ ℕ) {φ : Fin l → MvPolynomial σ K}
+    (h : ¬ LinearIndependent K φ) : Roth.genWronskian D φ = 0 :=
+  Matrix.det_eq_zero_of_not_linearIndependent_cols fun hc ↦
+    h (LinearIndependent.of_comp (LinearMap.pi fun i ↦ hasseDeriv (D i))
+      (hc.restrict_scalars' K))
+#print axioms zero_divisor_guard
+#print axioms inline_original
+end GenWronskianZeroAssessment

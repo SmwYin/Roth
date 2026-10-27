@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 105/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 106/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 105; remaining: 188.
-- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 14 YES-but-generalise-first, 20 NO-mathlib-has-it, 32 BORDERLINE-needs-human, 12 SKIP.
+- Completed applicable assessments: 106; remaining: 187.
+- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 14 YES-but-generalise-first, 20 NO-mathlib-has-it, 33 BORDERLINE-needs-human, 12 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -1128,6 +1128,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: 2 explicit source caller declarations, all in GenWronskian.lean; 2 direct original value consumers. Exact separate lists retained. Entire module proof bodies replay successfully with fresh target name.
 - Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.kronSpan.md).
 
+### Completed: `Roth.genWronskian_eq_zero_of_not_linearIndependent`
+
+- Type: `∀ {K : Type u_1} [inst : Field K] {σ : Type u_2} {l : ℕ} (D : Fin l → σ →₀ ℕ) {φ : Fin l → MvPolynomial σ K}, ¬LinearIndependent K φ → Roth.genWronskian D φ = 0`
+- What: Linearly dependent polynomial families have zero generalized Hasse Wronskian for every row multi-index.
+- How: Extract a nontrivial constant relation, transport through each linear Hasse operator, and apply the domain matrix kernel criterion.
+- Hypotheses: Field K, arbitrary σ, no Fintype/Finite assumption, D : Fin l → σ →₀ ℕ, φ : Fin l → MvPolynomial σ K, ¬LinearIndependent K φ
+- Project dependencies: Roth.genWronskian, MvPolynomial.hasseDeriv
+- Caller summary: Zero source callers; canonical293 native audit found zero direct proof consumers. Analogous univariate easy direction is separate, not caller.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.genWronskian_eq_zero_of_not_linearIndependent.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -1364,6 +1374,8 @@ Completed `Roth.kronHasse`: A pointwise composition: take one project multivaria
 
 Completed `Roth.kronSpan`: Existing Submodule.span takes the image of the private substituted Hasse operators whose total order is at most the bound. It organizes the derivative-stability induction and finite span witness. The span and its individual operator generators have distinct roles; no duplicate definition or new instance is introduced.
 
+Completed `Roth.genWronskian_eq_zero_of_not_linearIndependent`: det_eq_zero_of_not_linearIndependent_cols + restrict_scalars' + of_comp + LinearMap.pi gives a checked four-call bridge; prebundled map needs three.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -1575,6 +1587,8 @@ Completed `Roth.kroneckerExp`: Specialization of existing generic weighted expon
 Completed `Roth.kronHasse`: Private operator composition and bounded module span are different stages of the same derivative expansion, not duplicate full constructions.
 
 Completed `Roth.kronSpan`: Private operator composition and bounded module span are different stages of the same derivative expansion, not duplicate full constructions.
+
+Completed `Roth.genWronskian_eq_zero_of_not_linearIndependent`: Roth.wronskian_eq_zero_of_not_linearIndependent has analogous coefficient-witness proof
 
 ## Part 5: Generalization opportunities
 
@@ -1791,6 +1805,8 @@ Completed `Roth.kronHasse`: No public generality claim under the private prefilt
 
 Completed `Roth.kronSpan`: No public generality claim under the private prefilter; preserve the existing definition and interface.
 
+Completed `Roth.genWronskian_eq_zero_of_not_linearIndependent`: Verified arbitrary finite index, CommRing+NoZeroDivisors polynomial coefficients; semiring base/module source abstract operator family with domain target/faithful scalar action. Plain ring false via ℤ×ℤ singleton.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -2003,6 +2019,8 @@ Completed `Roth.kroneckerExp`: None for this definition. Radix injectivity and s
 Completed `Roth.kronHasse`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 Completed `Roth.kronSpan`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
+
+Completed `Roth.genWronskian_eq_zero_of_not_linearIndependent`: Design choice: shared scalar-linear determinant family lemma versus alternating generalized-Wronskian representation.
 
 ## Part 7: Junk / removable
 
@@ -2219,6 +2237,8 @@ Completed `Roth.kronHasse`: Retain a live private proof interface. No placeholde
 
 Completed `Roth.kronSpan`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
 
+Completed `Roth.genWronskian_eq_zero_of_not_linearIndependent`: No present named callers; mathematically standard paper lemma, not automatically junk.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -2328,6 +2348,7 @@ Completed `Roth.kronSpan`: Retain a live private proof interface. No placeholder
 | 103 | `Roth.kroneckerExp` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.kroneckerExp.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.kroneckerExp/root-acceptance.json) |
 | 104 | `Roth.kronHasse` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.kronHasse.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.kronHasse/root-acceptance.json) |
 | 105 | `Roth.kronSpan` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.kronSpan.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.kronSpan/root-acceptance.json) |
+| 106 | `Roth.genWronskian_eq_zero_of_not_linearIndependent` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.genWronskian_eq_zero_of_not_linearIndependent.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.genWronskian_eq_zero_of_not_linearIndependent/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -2537,12 +2558,14 @@ Completed `Roth.kronHasse` action: Keep unchanged; complete private-prefilter SK
 
 Completed `Roth.kronSpan` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
 
+Completed `Roth.genWronskian_eq_zero_of_not_linearIndependent` action: BORDERLINE-needs-human: retain project-local until shared/alternating API chosen; optional verified four-call cleanup; no source callers to rewrite.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.genWronskian_eq_zero_of_not_linearIndependent` next. Supporting identities receive their own applicable checks.
+   `Roth.kronecker_monomial` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

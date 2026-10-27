@@ -1,0 +1,20 @@
+namespace GenWronskianZeroAssessment
+open MvPolynomial
+theorem zero_divisor_guard :
+    ¬ LinearIndependent (ℤ × ℤ) (fun _ : Fin 1 ↦ (C (1, 0) : MvPolynomial Unit (ℤ × ℤ))) ∧
+      GenWronskianAssessment.generalized (fun _ : Fin 1 ↦ (0 : Unit →₀ ℕ))
+        (fun _ ↦ C (1, 0) : Fin 1 → MvPolynomial Unit (ℤ × ℤ)) ≠ 0 := by
+  constructor
+  · apply Fintype.not_linearIndependent_iff.mpr
+    refine ⟨fun _ ↦ (0, 1), ?_, 0, by decide⟩
+    simp [smul_eq_C_mul, ← C_mul]
+  · simp [GenWronskianAssessment.generalized]
+theorem inline_original {K σ : Type*} [Field K] {l : ℕ}
+    (D : Fin l → σ →₀ ℕ) {φ : Fin l → MvPolynomial σ K}
+    (h : ¬ LinearIndependent K φ) : Roth.genWronskian D φ = 0 :=
+  Matrix.det_eq_zero_of_not_linearIndependent_cols fun hc ↦
+    h (LinearIndependent.of_comp (LinearMap.pi fun i ↦ hasseDeriv (D i))
+      (hc.restrict_scalars' K))
+#print axioms zero_divisor_guard
+#print axioms inline_original
+end GenWronskianZeroAssessment

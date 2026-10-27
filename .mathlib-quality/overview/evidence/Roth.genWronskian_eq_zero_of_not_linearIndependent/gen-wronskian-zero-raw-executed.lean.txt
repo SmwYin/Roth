@@ -1,0 +1,43 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+import Mathlib.Algebra.Polynomial.CancelLeads
+import Mathlib.Algebra.MvPolynomial.PDeriv
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+import Mathlib.Algebra.MvPolynomial.Equiv
+import Mathlib.Analysis.Normed.Unbundled.RingSeminorm
+import Mathlib.LinearAlgebra.Matrix.AbsoluteValue
+import Mathlib.Data.Nat.Choose.Bounds
+import Mathlib.RingTheory.Polynomial.Basic
+import Mathlib.Data.Finsupp.Weight
+#check_failure Roth.genWronskian_eq_zero_of_not_linearIndependent
+#check_failure MvPolynomial.hasseDeriv
+namespace GenWronskianZeroRaw
+theorem abstract_zero {R A M ι : Type*} [CommSemiring R] [CommRing A] [IsDomain A]
+    [Algebra R A] [FaithfulSMul R A] [AddCommMonoid M] [Module R M]
+    [Fintype ι] [DecidableEq ι] (δ : ι → M →ₗ[R] A) {v : ι → M}
+    (h : ¬ LinearIndependent R v) :
+    (Matrix.of fun i j ↦ δ i (v j)).det = 0 :=
+  Matrix.det_eq_zero_of_not_linearIndependent_cols fun hc ↦
+    h (LinearIndependent.of_comp (LinearMap.pi δ) (hc.restrict_scalars' R))
+theorem bundled_zero {R A M ι : Type*} [CommSemiring R] [CommRing A] [IsDomain A]
+    [Algebra R A] [FaithfulSMul R A] [AddCommMonoid M] [Module R M]
+    [Fintype ι] [DecidableEq ι] (δ : M →ₗ[R] (ι → A)) {v : ι → M}
+    (h : ¬ LinearIndependent R v) :
+    (Matrix.of fun i j ↦ δ (v j) i).det = 0 :=
+  Matrix.det_eq_zero_of_not_linearIndependent_cols fun hc ↦
+    h (LinearIndependent.of_comp δ (hc.restrict_scalars' R))
+#print axioms abstract_zero
+#print axioms bundled_zero
+#check @AlternatingMap.map_linearDependent
+#check @LinearMap.pi
+#check @Matrix.det_eq_zero_of_not_linearIndependent_cols
+#check @LinearIndependent.of_comp
+#check @LinearIndependent.restrict_scalars'
+end GenWronskianZeroRaw
