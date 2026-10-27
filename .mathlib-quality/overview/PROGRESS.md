@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-27
 
-- Declarations completed: **266/293**
-- Next declaration: **#267 `Roth.approxSet`** (Roth/Main.lean:55)
+- Declarations completed: **267/293**
+- Next declaration: **#268 `Roth.exists_nat_mul_isIntegral`** (Roth/Main.lean:62)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -285,10 +285,10 @@ Last regenerated: 2026-10-27
 | 264 | `Roth.theta_lt_eta_of_sq_log_bound_aux` | Roth/MainLemma.lean:671 | SKIP | [report](mathlibable/Roth.theta_lt_eta_of_sq_log_bound_aux.md) |
 | 265 | `Roth.exists_auxiliary_polynomial_with_index_gap_aux` | Roth/MainLemma.lean:692 | SKIP | [report](mathlibable/Roth.exists_auxiliary_polynomial_with_index_gap_aux.md) |
 | 266 | `Roth.main_lemma` | Roth/MainLemma.lean:735 | BORDERLINE-needs-human | [report](mathlibable/Roth.main_lemma.md) |
+| 267 | `Roth.approxSet` | Roth/Main.lean:55 | NO-composable-from-mathlib | [report](mathlibable/Roth.approxSet.md) |
 
 ## Remaining declarations (in processing order)
 
-- #267 `Roth.approxSet` (Roth/Main.lean:55, public def)
 - #268 `Roth.exists_nat_mul_isIntegral` (Roth/Main.lean:62, public theorem)
 - #269 `Roth.approxSet_den_le_finite` (Roth/Main.lean:73, public theorem)
 - #270 `Roth.eventually_div_rpow_lt` (Roth/Main.lean:103, public theorem)
