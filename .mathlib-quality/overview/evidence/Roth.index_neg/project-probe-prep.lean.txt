@@ -1,0 +1,17 @@
+namespace IndexNeg146
+open MvPolynomial Roth
+variable {σ : Type*} [Fintype σ]
+theorem replacement (P : MvPolynomial σ ℝ) (α : σ → ℝ) (r : σ → ℕ) :
+    index (-P) α r = index P α r := by
+  rw [IndexConsumers133.targetBridge, IndexConsumers133.targetBridge, map_neg]
+  exact congrArg (WithTop.untopD 0)
+    (AddMonoidAlgebra.supDegree_neg (B := OrderDual (WithTop ℝ)))
+theorem originalComposition (P : MvPolynomial σ ℝ) (α : σ → ℝ) (r : σ → ℕ) :
+    index (-P) α r = index P α r := by
+  simp only [index, map_neg, support_neg]
+theorem zero (α : σ → ℝ) (r : σ → ℕ) : index (-(0 : MvPolynomial σ ℝ)) α r = 0 := by
+  simp [index]
+#print axioms replacement
+#print axioms originalComposition
+#print axioms zero
+end IndexNeg146

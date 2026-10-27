@@ -1,0 +1,24 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+#check_failure Roth.index_neg
+namespace IndexNegMathlib146
+universe u v w
+ theorem modern {A : Type u} {R : Type v} {T : Type w} [Ring R]
+    [SemilatticeInf T] [OrderTop T] (D : A → T) (f : AddMonoidAlgebra R A) :
+    AddMonoidAlgebra.infDegree D (-f) = AddMonoidAlgebra.infDegree D f :=
+  AddMonoidAlgebra.supDegree_neg (B := OrderDual T)
+theorem projected {A : Type u} {R : Type v} [Ring R]
+    (D : A → ℝ) (f : AddMonoidAlgebra R A) :
+    (AddMonoidAlgebra.infDegree (fun a ↦ (D a : WithTop ℝ)) (-f)).untopD 0 =
+      (AddMonoidAlgebra.infDegree (fun a ↦ (D a : WithTop ℝ)) f).untopD 0 :=
+  congrArg (WithTop.untopD 0) (modern _ f)
+#check @AddMonoidAlgebra.supDegree_neg
+#check_failure AddMonoidAlgebra.infDegree_neg
+#print axioms modern
+#print axioms projected
+end IndexNegMathlib146

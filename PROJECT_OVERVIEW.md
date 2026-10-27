@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 145/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 146/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 145; remaining: 148.
-- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 19 YES-but-generalise-first, 29 NO-mathlib-has-it, 44 BORDERLINE-needs-human, 26 SKIP.
+- Completed applicable assessments: 146; remaining: 147.
+- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 19 YES-but-generalise-first, 30 NO-mathlib-has-it, 44 BORDERLINE-needs-human, 26 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -1605,6 +1605,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: One explicit proof-body application: Roth.sum_max_sub_le_index_det at Roth/Theta.lean:407. Exact293 canonical kernel audit independently finds this sole direct consumer. Entire caller replay compiled using the hr-free replacement, with hr renamed _hr preserving position/type.
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.index_prod.md).
 
+### Completed: `Roth.index_neg`
+
+- Type: `Roth.index_neg.{u_1} {σ : Type u_1} [Fintype σ] (P : MvPolynomial σ ℝ) (α : σ → ℝ) (r : σ → ℕ) : Roth.index (-P) α r = Roth.index P α r`
+- What: Negating a polynomial preserves its index at any center and natural weight vector, including zero cases.
+- How: Taylor map_neg preserves coefficient support via support_neg; identical weighted support infima.
+- Hypotheses: Fintype variable index fixed by parent; arbitrary P, α, r; no positivity/nonzero assumptions.
+- Project dependencies: Roth.index, Roth.weight, MvPolynomial.taylor
+- Caller summary: 0 explicit statement/body uses, 0 direct kernel consumers among exact canonical293; Theta sign bypasses via broader index_C_mul.
+- Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/Roth.index_neg.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -1921,6 +1931,8 @@ Completed `Roth.index_mul`: Existing MvPowerSeries.weightedOrder_mul verified in
 
 Completed `Roth.index_prod`: Existing MvPowerSeries.weightedOrder_prod independently verified over arbitrary σ, CommSemiring R, NoZeroDivisors R and Nontrivial R, natural weights, including zero factors. Coercion of polynomial products via coeToMvPowerSeries.ringHom and map_prod verified. Generic infDegree product equality for arbitrary real noninjective weights was not established. Fresh145 isolated IsWeightedHomogeneous.prod signature confirms AddCommMonoid weight target M and CommSemiring coefficients; this closure theorem is not an extremal component identity.
 
+Completed `Roth.index_neg`: Existing AddMonoidAlgebra.supDegree_neg on OrderDual gives exact infDegree negation law. Independent isolated Ring/semilatticeinf/top and projected proof compiled.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -2212,6 +2224,8 @@ Completed `Roth.index_eq_weightedOrder_div`: Original proof manually identifies 
 Completed `Roth.index_mul`: The natural-weight algebraic core is exactly the existing series multiplication theorem. The old real-index spelling requires genuine normalization and finite projection; new comparison proofs from133/143 are not preexisting mathlib calls.
 
 Completed `Roth.index_prod`: Natural-series finite-product additivity is already mathlib. Old real default-zero form needs genuine normalization, finite projection and casting. Parent local binary law and earlier new bridge proofs are not existing mathlib calls.
+
+Completed `Roth.index_neg`: Degree support-negation law; weightedOrder_neg/order_neg are related alternative APIs.
 
 ## Part 5: Generalization opportunities
 
@@ -2508,6 +2522,8 @@ Completed `Roth.index_mul`: Verified exact-interface deletion of hr. Expanded na
 
 Completed `Roth.index_prod`: Verified deletion of hr while preserving the exact conclusion. Natural-series and polynomial formulations remove finite-variable and real-coefficient restrictions, using infinity at zero. Arbitrary-real ordered polynomial extension is a proposal only.
 
+Completed `Roth.index_neg`: Verified expanded representation arbitrary Ring coefficients, exponent type and degree map into semilatticeinf/top. No claim Fintype can drop from unchanged parent signature.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -2800,6 +2816,8 @@ Completed `Roth.index_eq_weightedOrder_div`: MvPowerSeries.weightedOrder_coe aga
 Completed `Roth.index_mul`: Potential extremal weighted-homogeneous component multiplication and arbitrary-real polynomial infDegree multiplication law. Existing component, support, graded decomposition APIs support arbitrary additive commutative weight monoids. Scope/normal-form design remains open; no absence theorem claimed.
 
 Completed `Roth.index_prod`: Potential polynomial infDegree finite-product equality for real additive weights, likely grouped with binary equality and extremal weighted homogeneous component multiplication. No proof of absence claimed.
+
+Completed `Roth.index_neg`: No essential gap; infDegree_neg name absent in loaded pin but exact law exists on OrderDual.
 
 ## Part 7: Junk / removable
 
@@ -3096,6 +3114,8 @@ Completed `Roth.index_mul`: Not junk: two callers, one in another module, and a 
 
 Completed `Roth.index_prod`: Not junk: module main result and one determinant caller in another module. No independent inline duplicate found in production.
 
+Completed `Roth.index_neg`: Currently unused theorem without simp attribute; harmless local compatibility helper, not evidence of external deadness.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -3245,6 +3265,7 @@ Completed `Roth.index_prod`: Not junk: module main result and one determinant ca
 | 143 | `Roth.index_eq_weightedOrder_div` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.index_eq_weightedOrder_div.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.index_eq_weightedOrder_div/root-acceptance.json) |
 | 144 | `Roth.index_mul` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.index_mul.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.index_mul/root-acceptance.json) |
 | 145 | `Roth.index_prod` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.index_prod.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.index_prod/root-acceptance.json) |
+| 146 | `Roth.index_neg` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.index_neg.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.index_neg/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -3534,12 +3555,14 @@ Completed `Roth.index_mul` action: verdict: BORDERLINE-needs-human; questions: F
 
 Completed `Roth.index_prod` action: verdict: BORDERLINE-needs-human; questions: Should the upstream finite-product law target polynomial AddMonoidAlgebra.infDegree for arbitrary real additive weights, alongside the corresponding binary product law?, Should that law be organized through an extremal weightedHomogeneousComponent product theorem over ordered additive weights?, Should reciprocal-weight default-zero index_prod remain project-local while natural-weight applications use the existing MvPowerSeries.weightedOrder_prod API?; local refactor: Keep hf, replace original induction with hr-free binary induction and direct index-one base; entire determinant caller can invoke the hr-free theorem. Retain the theorem locally until upstream polynomial-order scope is settled.; upstream scope: Do not add a duplicate natural weightedOrder_prod wrapper. Decide the real-weight polynomial initial-form/order API together with its binary law.
 
+Completed `Roth.index_neg` action: NO-mathlib-has-it via parent re-aim; do not upstream this specialization. Retain local adapter in Roth/Index.lean if parent retained; no explicit callers to refactor.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.index_neg` next. Supporting identities receive their own applicable checks.
+   `Roth.index_C_mul` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

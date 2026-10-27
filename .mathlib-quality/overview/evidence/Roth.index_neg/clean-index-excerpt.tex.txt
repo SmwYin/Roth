@@ -1,0 +1,113 @@
+Let $P(x_1, \dots, x_p)$ be a nonzero polynomial with real coefficients in $p$ variables. Let $\alpha_1, \dots, \alpha_p$ be any real numbers. Let $r_1, \dots, r_p$ be any positive numbers. We define the {\it index} $\theta$ of $P$ at the point $(\alpha_1, \dots, \alpha_p)$ relative to $r_1, \dots, r_p$ as follows: We define $\theta$ to be the minimum of all numbers of the form
+$$
+\frac{i_1}{r_1} + \cdots + \frac{i_p}{r_p}
+$$
+where the minimum is over all tuples $(i_1, \dots, i_p)$ such that
+$$
+\Delta_{i_1, \dots, i_p} P(\alpha_1, \dots, \alpha_p) \ne 0.
+$$
+When we want to keep track of all data we write
+$$
+\ind(P; \alpha_1, \dots, \alpha_p; r_1, \dots, r_p).
+$$
+When there is no confusion about the data, we simply write $\ind(P)$.
+Taylor's theorem shows that at least one derivative at the chosen point is
+nonzero; only finitely many derivative multi-indices can be nonzero. Thus
+this is an attained minimum. We additionally set $\ind(0)=+\infty$.
+All comparisons involving zero polynomials below use this convention.
+\lean{Let $P_\alpha(X)=P(X+\alpha)$, whose coefficient at $d$ is
+$(\Delta_dP)(\alpha)$. Define the index as the minimum of
+$\sum_jd_j/r_j$ over its nonzero coefficients, with values in
+$[0,+\infty]$ and value $+\infty$ for the zero polynomial. For positive
+integral $r_j$, an alternative is to set $D=\prod_jr_j$ and use the
+natural weights $w_j=D/r_j$ in
+\texttt{MvPowerSeries.weightedOrder}\footnote{\url{https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/MvPowerSeries/Order.html}},
+then divide the finite value by $D$ after embedding $P_\alpha$ as a power
+series. Arbitrary positive real $r_j$ require the direct finite-support
+minimum; do not convert an infinite order to a natural number.}
+
+\begin{lem}
+   We have $\ind (P) \geq 0$ and $\ind(P) = 0$ if and only if
+$$
+P(\alpha_1, \dots, \alpha_p) \ne 0.
+$$
+\end{lem}
+\begin{proof}
+    Every weight $\sum_j i_j/r_j$ is nonnegative. Since each $r_j>0$,
+    such a weight is zero exactly when every $i_j=0$. The minimum is attained,
+    and $\Delta_0P=P$, proving the equivalence. For $P=0$ the index is
+    infinite, so the assertion remains valid.
+\end{proof}
+
+\begin{lem}\label{lem:index-of-derivative}
+    Suppose $k_1, \dots, k_p$ are non-negative integers such that $\Delta_{k_1, \dots, k_p} P$ is not identically zero. Then
+    $$
+    \ind(\Delta_{k_1, \dots, k_p} P; \alpha_1, \dots, \alpha_p; r_1, \dots, r_p) \geq \ind( P; \alpha_1, \dots, \alpha_p; r_1, \dots, r_p) - \left(\frac{k_1}{r_1}  + \cdots + \frac{k_p}{r_p}\right).
+    $$
+\end{lem}
+\begin{proof}
+    Choose a multi-index $i$ attaining the index of $\Delta_kP$.
+    The Hasse composition identity gives
+    \[
+    \Delta_i\Delta_kP=
+       \left(\prod_{j=1}^p{i_j+k_j\choose i_j}\right)\Delta_{i+k}P.
+    \]
+    Since its value at $\alpha$ is nonzero, $(\Delta_{i+k}P)(\alpha)\ne0$.
+    Therefore
+    $\ind(P)\leq\sum_j(i_j+k_j)/r_j
+       =\ind(\Delta_kP)+\sum_jk_j/r_j$, as required.
+\end{proof}
+\begin{lem}\label{roth:lem4-1}
+    Let $P,Q$ be polynomials with real coefficients. With $\ind(0)=+\infty$, we have
+    $$
+    \ind(P+Q) \geq \min(\ind P, \ind Q),
+    $$
+    $$
+    \ind(PQ) = \ind(P) + \ind(Q)
+    $$
+    if the indices are calculated relative to the tuples $(\alpha_1, \dots, \alpha_p)$ and $(r_1, \dots, r_p)$ as above.
+\end{lem}
+\begin{proof}
+    Write $P(X+\alpha)=\sum_i a_iX^i$ and
+    $Q(X+\alpha)=\sum_i b_iX^i$, and give $X^i$ weight
+    $w(i)=\sum_j i_j/r_j$. All coefficients of $P+Q$ below the smaller
+    index vanish, proving the addition inequality, including the case
+    $P+Q=0$.
+
+    For multiplication, if either factor is zero, both sides are $+\infty$. Otherwise let $u=\ind(P)$ and $v=\ind(Q)$, and let $P_u,Q_v$
+    be the sums of terms of weights exactly $u,v$ in the translated
+    polynomials. They are nonzero. Since the polynomial ring over $\R$ is
+    an integral domain, $P_uQ_v\ne0$. All its terms have weight $u+v$,
+    while every term involving a higher-weight component has weight
+    strictly greater than $u+v$. Thus the lowest nonzero weight of the
+    product is exactly $u+v$.
+\end{proof}
+\begin{lem}\label{roth:lem4-2}
+    Let $P$ be a polynomial in the variables $x_1, \dots, x_{p-1}$ and $Q$ a polynomial in the variable $x_p$, and suppose $P, Q$ are not identically zero. Then for tuples $(\alpha_1, \dots, \alpha_p)$ and $(r_1, \dots, r_p)$ as above we have
+    $$
+\ind(PQ; \alpha_1, \dots, \alpha_p; r_1, \dots, r_p) = \ind(P; \alpha_1, \dots, \alpha_{p-1}; r_1, \dots, r_{p-1}) + \ind(Q; \alpha_p; r_p).
+$$
+\end{lem}
+\begin{proof}
+    When $P$ is embedded into the larger polynomial ring, its translated
+    monomials have zero exponent in $x_p$, so its index is unchanged.
+    Similarly, the index of the embedded $Q$ is its one-variable index.
+    Apply the product formula of Lemma \ref{roth:lem4-1}.
+\end{proof}
+
+\lean{For integral $r_j$, apply
+\texttt{weightedOrder\_mul}\footnote{\url{https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/MvPowerSeries/NoZeroDivisors.html}}
+through translation and the normalisation just described, under a
+no-zero-divisors assumption. For arbitrary positive real $r_j$, formalise
+the lowest-weight-part argument above instead. Prove invariance under
+nonzero scalars and variable renaming, the disjoint-variable formula, and
+scaling of the index weights as separate lemmas, so later proofs do not
+repeat the conversions.}
+
+For nonzero $c$ and $l>0$, the same definition gives
+\[
+\ind(cP;\alpha;r)=\ind(P;\alpha;r),\qquad
+\ind(P;\alpha;lr)=\frac1l\ind(P;\alpha;r),
+\]
+with the second identity interpreted in the extended nonnegative reals.
+
