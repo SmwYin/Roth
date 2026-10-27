@@ -1,0 +1,102 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.Polynomial.HasseDeriv\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.LinearAlgebra.Matrix.ToLinearEquiv\nimport Mathlib.RingTheory.Polynomial.Wronskian\nimport Mathlib.LinearAlgebra.Vandermonde\nimport Mathlib.Data.ZMod.Defs\nimport Mathlib.Algebra.Field.ZMod\nimport Mathlib.Algebra.Order.Group.Int.Sum\nimport Mathlib.LinearAlgebra.Matrix.Polynomial\nimport Mathlib.Algebra.Polynomial.CancelLeads\nimport Mathlib.Algebra.MvPolynomial.PDeriv\n#check_failure MvPolynomial.taylor_neg_taylor\nnoncomputable section\nnamespace MvPolynomial.TaylorInverseRaw\nvariable {σ R : Type*} [CommSemiring R]\ndef shift (α : σ → R) : MvPolynomial σ R →ₐ[R] MvPolynomial σ R :=\n  aeval fun j ↦ X j + C (α j)\ntheorem conditional (α β : σ → R) (h : ∀ j, β j + α j = 0)\n    (P : MvPolynomial σ R) : shift β (shift α P) = P := by\n  have hg : (fun j ↦ (X j + C (β j)) + C (α j)) = (X : σ → MvPolynomial σ R) := by\n    funext j\n    rw [add_assoc, ← map_add, h j, map_zero, add_zero]\n  simp only [shift, comp_aeval_apply, map_add, aeval_X, algHom_C]\n  exact (congrArg (fun g : σ → MvPolynomial σ R ↦ aeval g P) hg).trans\n    (aeval_X_left_apply P)\nvariable {A : Type*} [CommRing A]\ntheorem inverse (α : σ → A) (P : MvPolynomial σ A) :\n    shift (fun j ↦ -α j) (shift α P) = P :=\n  conditional α (fun j ↦ -α j) (fun j ↦ neg_add_cancel (α j)) P\ntheorem directInverse (α : σ → A) (P : MvPolynomial σ A) :\n    shift (fun j ↦ -α j) (shift α P) = P := by\n  simp [shift, comp_aeval_apply, add_assoc, aeval_X_left_apply]\n#print axioms directInverse\nexample (a : A) (P : Polynomial A) :\n    Polynomial.taylor (-a) (Polynomial.taylor a P) = P :=\n  (Polynomial.taylorEquiv a).symm_apply_apply P\n#print axioms conditional\n#print axioms inverse\nend MvPolynomial.TaylorInverseRaw\n#check_failure MvPolynomial.eq_sum_box_hasseDeriv\n#check @Polynomial.sum_taylor_eq\n#print Polynomial.sum_taylor_eq\n#check @MvPolynomial.eval₂_eq\nnamespace MvPolynomial.TaylorExpansionRaw\nopen TaylorInverseRaw\nvariable {σ A : Type*} [CommRing A]\ntheorem supportExpansion (α : σ → A) (P : MvPolynomial σ A) :\n    P = ∑ d ∈ (shift α P).support,\n      C ((shift α P).coeff d) * d.prod (fun j n ↦ (X j - C (α j)) ^ n) := by\n  have general (Q : MvPolynomial σ A) :\n      shift (fun j ↦ -α j) Q = ∑ d ∈ Q.support,\n        C (Q.coeff d) * d.prod (fun j n ↦ (X j - C (α j)) ^ n) := by\n    change eval₂ C (fun j ↦ X j + C (-α j)) Q = _\n    simp only [eval₂_eq, Finsupp.prod, map_neg, sub_eq_add_neg]\n  calc\n    P = shift (fun j ↦ -α j) (shift α P) := (inverse α P).symm\n    _ = _ := general _\nexample (P : Polynomial A) (a : A) :\n    P = ((Polynomial.taylor a P).sum fun i c ↦ Polynomial.C c *\n      (Polynomial.X - Polynomial.C a) ^ i) :=\n  (Polynomial.sum_taylor_eq P a).symm\n#print axioms supportExpansion\nend MvPolynomial.TaylorExpansionRaw\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown constant `MvPolynomial.taylor_neg_taylor`\",\n      \"line\": 12,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'MvPolynomial.TaylorInverseRaw.directInverse' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 33,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'MvPolynomial.TaylorInverseRaw.conditional' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 37,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'MvPolynomial.TaylorInverseRaw.inverse' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 38,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown constant `MvPolynomial.eq_sum_box_hasseDeriv`\",\n      \"line\": 40,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.sum_taylor_eq : ∀ {R : Type u_1} [inst : CommRing R] (f : Polynomial R) (r : R),\\n  (((Polynomial.taylor r) f).sum fun i a ↦ Polynomial.C a * (Polynomial.X - Polynomial.C r) ^ i) = f\",\n      \"line\": 41,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"theorem Polynomial.sum_taylor_eq.{u_1} : ∀ {R : Type u_1} [inst : CommRing R] (f : Polynomial R) (r : R),\\n  (((Polynomial.taylor r) f).sum fun i a ↦ Polynomial.C a * (Polynomial.X - Polynomial.C r) ^ i) = f :=\\nfun {R} [CommRing R] f r ↦\\n  Eq.mpr (id (congrArg (fun _a ↦ _a = f) (Eq.symm Polynomial.comp_eq_sum_left)))\\n    (Eq.mpr\\n      (id (congrArg (fun _a ↦ ((Polynomial.taylor r) f).comp _a = f) (sub_eq_add_neg Polynomial.X (Polynomial.C r))))\\n      (Eq.mpr\\n        (id (congrArg (fun _a ↦ ((Polynomial.taylor r) f).comp (Polynomial.X + _a) = f) (Eq.symm Polynomial.C_neg)))\\n        (Eq.mpr (id (congrArg (fun _a ↦ _a = f) (Eq.symm (Polynomial.taylor_apply (-r) ((Polynomial.taylor r) f)))))\\n          (Eq.mpr (id (congrArg (fun _a ↦ _a = f) (Polynomial.taylor_taylor f (-r) r)))\\n            (Eq.mpr (id (congrArg (fun _a ↦ (Polynomial.taylor _a) f = f) (neg_add_cancel r)))\\n              (Eq.mpr (id (congrArg (fun _a ↦ _a = f) (Polynomial.taylor_zero f))) (Eq.refl f)))))))\",\n      \"line\": 42,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPolynomial.eval₂_eq : ∀ {R : Type u_1} {S₁ : Type u_2} {σ : Type u_3} [inst : CommSemiring R]\\n  [inst_1 : CommSemiring S₁] (g : R →+* S₁) (X : σ → S₁) (f : MvPolynomial σ R),\\n  MvPolynomial.eval₂ g X f = ∑ d ∈ f.support, g (f.coeff d) * ∏ i ∈ d.support, X i ^ d i\",\n      \"line\": 43,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'MvPolynomial.TaylorExpansionRaw.supportExpansion' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 62,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown constant `MvPolynomial.taylor_neg_taylor`",
+          "line": 12,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'MvPolynomial.TaylorInverseRaw.directInverse' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 33,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'MvPolynomial.TaylorInverseRaw.conditional' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 37,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'MvPolynomial.TaylorInverseRaw.inverse' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 38,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown constant `MvPolynomial.eq_sum_box_hasseDeriv`",
+          "line": 40,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.sum_taylor_eq : ∀ {R : Type u_1} [inst : CommRing R] (f : Polynomial R) (r : R),\n  (((Polynomial.taylor r) f).sum fun i a ↦ Polynomial.C a * (Polynomial.X - Polynomial.C r) ^ i) = f",
+          "line": 41,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "theorem Polynomial.sum_taylor_eq.{u_1} : ∀ {R : Type u_1} [inst : CommRing R] (f : Polynomial R) (r : R),\n  (((Polynomial.taylor r) f).sum fun i a ↦ Polynomial.C a * (Polynomial.X - Polynomial.C r) ^ i) = f :=\nfun {R} [CommRing R] f r ↦\n  Eq.mpr (id (congrArg (fun _a ↦ _a = f) (Eq.symm Polynomial.comp_eq_sum_left)))\n    (Eq.mpr\n      (id (congrArg (fun _a ↦ ((Polynomial.taylor r) f).comp _a = f) (sub_eq_add_neg Polynomial.X (Polynomial.C r))))\n      (Eq.mpr\n        (id (congrArg (fun _a ↦ ((Polynomial.taylor r) f).comp (Polynomial.X + _a) = f) (Eq.symm Polynomial.C_neg)))\n        (Eq.mpr (id (congrArg (fun _a ↦ _a = f) (Eq.symm (Polynomial.taylor_apply (-r) ((Polynomial.taylor r) f)))))\n          (Eq.mpr (id (congrArg (fun _a ↦ _a = f) (Polynomial.taylor_taylor f (-r) r)))\n            (Eq.mpr (id (congrArg (fun _a ↦ (Polynomial.taylor _a) f = f) (neg_add_cancel r)))\n              (Eq.mpr (id (congrArg (fun _a ↦ _a = f) (Polynomial.taylor_zero f))) (Eq.refl f)))))))",
+          "line": 42,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPolynomial.eval₂_eq : ∀ {R : Type u_1} {S₁ : Type u_2} {σ : Type u_3} [inst : CommSemiring R]\n  [inst_1 : CommSemiring S₁] (g : R →+* S₁) (X : σ → S₁) (f : MvPolynomial σ R),\n  MvPolynomial.eval₂ g X f = ∑ d ∈ f.support, g (f.coeff d) * ∏ i ∈ d.support, X i ^ d i",
+          "line": 43,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'MvPolynomial.TaylorExpansionRaw.supportExpansion' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 62,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 282
+}

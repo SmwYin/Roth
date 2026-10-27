@@ -1,0 +1,577 @@
+[
+  {
+    "method": "Finder",
+    "form": "current",
+    "request": {
+      "query": "multivariate polynomial Taylor expansion finite box Hasse derivatives at point product X minus alpha",
+      "num_results": 5
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.taylor_coeff\",\n      \"informal_name\": \"Coefficient of Taylor Expansion at $ r $: $ \\\\text{coeff}_n(f(X + r)) = D^{(n)}f(r) $\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R) (n : ℕ),\\n  ((Polynomial.taylor r) f).coeff n = Polynomial.eval r ((Polynomial.hasseDeriv n) f)\",\n      \"informal_description\": \"For any polynomial $ f $ over a semiring $ R $, natural number $ n $, and element $ r \\\\in R $, the coefficient of $ X^n $ in the Taylor expansion $ f(X + r) $ equals the evaluation of the $ n $-th Hasse derivative of $ f $ at $ r $. The Hasse derivative $ D^{(n)} $ scales monomials $ a_i X^i $ by $ \\\\binom{i}{n} a_i X^{i - n} $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    },\n    {\n      \"formal_name\": \"taylorWithin\",\n      \"informal_name\": \"Taylor Polynomial Within a Set\",\n      \"kind\": \"definition\",\n      \"type\": \"{E : Type u_2} →\\n  [inst : NormedAddCommGroup E] → [inst_1 : NormedSpace ℝ E] → (ℝ → E) → ℕ → Set ℝ → ℝ → PolynomialModule ℝ E\",\n      \"informal_description\": \"For a function $ f : \\\\mathbb{R} \\\\to E $, natural number $ n $, subset $ s \\\\subseteq \\\\mathbb{R} $, and point $ x_0 \\\\in \\\\mathbb{R} $, the Taylor polynomial of degree $ n $ within $ s $ at $ x_0 $ is defined as the finite sum $ \\\\sum_{k=0}^n \\\\left(\\\\frac{f^{(k)}(x_0)}{k!} \\\\cdot (X - x_0)^k\\\\right) $, where each coefficient $ \\\\frac{f^{(k)}(x_0)}{k!} $ is computed using the $ k $-th iterated derivative of $ f $ restricted to $ s $. This represents the polynomial approximation of $ f $ near $ x_0 $ within the domain $ s $.\",\n      \"path\": \"Mathlib.Analysis.Calculus.Taylor\"\n    },\n    {\n      \"formal_name\": \"Polynomial.sum_taylor_eq\",\n      \"informal_name\": \"Taylor Series Expansion Equals Original Polynomial\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] (f : Polynomial R) (r : R),\\n  (((Polynomial.taylor r) f).sum fun i a => Polynomial.C a * (Polynomial.X - Polynomial.C r) ^ i) = f\",\n      \"informal_description\": \"For any polynomial $ f \\\\in R[X] $ over a semiring $ R $ and any element $ r \\\\in R $, the sum of the Taylor series expansion of $ f $ at $ r $, expressed as $ \\\\sum_{i} C(a_i) \\\\cdot (X - r)^i $ where $ C(a_i) $ denotes the constant polynomial embedding, equals the original polynomial $ f $. This establishes that evaluating the Taylor expansion reconstructs the polynomial itself.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv\",\n      \"informal_name\": \"Hasse Derivative of Order k on Polynomial Ring\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : Semiring R] → ℕ → Polynomial R →ₗ[R] Polynomial R\",\n      \"informal_description\": \"For a semiring $ R $, the Hasse derivative of order $ k $ is an $ R $-linear map $ D^{(k)} : R[X] \\to R[X] $ defined by $ D^{(k)}(a_i X^i) = \\binom{i}{k} a_i X^{i - k} $ on monomials and extended linearly. This operation generalizes the usual derivative by scaling each coefficient $ a_i $ by the binomial coefficient $ \\binom{i}{k} $ and reducing the degree by $ k $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv_apply\",\n      \"informal_name\": \"Hasse Derivative of Order k Applied to a Polynomial\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f : Polynomial R),\\n  (Polynomial.hasseDeriv k) f = f.sum fun i r => (Polynomial.monomial (i - k)) (↑(i.choose k) * r)\",\n      \"informal_description\": \"For a semiring $ R $ and a polynomial $ f \\\\in R[X] $, the Hasse derivative of order $ k $ applied to $ f $ is given by $ D^{(k)}(f) = \\\\sum_{i} \\\\binom{i}{k} \\\\cdot a_i \\\\cdot X^{i - k} $, where $ a_i $ is the coefficient of $ X^i $ in $ f $. This expression sums over all monomials in $ f $, scaling each by the binomial coefficient $ \\\\binom{i}{k} $ and reducing the exponent by $ k $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Polynomial.taylor_coeff",
+            "informal_name": "Coefficient of Taylor Expansion at $ r $: $ \\text{coeff}_n(f(X + r)) = D^{(n)}f(r) $",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R) (n : ℕ),\n  ((Polynomial.taylor r) f).coeff n = Polynomial.eval r ((Polynomial.hasseDeriv n) f)",
+            "informal_description": "For any polynomial $ f $ over a semiring $ R $, natural number $ n $, and element $ r \\in R $, the coefficient of $ X^n $ in the Taylor expansion $ f(X + r) $ equals the evaluation of the $ n $-th Hasse derivative of $ f $ at $ r $. The Hasse derivative $ D^{(n)} $ scales monomials $ a_i X^i $ by $ \\binom{i}{n} a_i X^{i - n} $.",
+            "path": "Mathlib.Algebra.Polynomial.Taylor"
+          },
+          {
+            "formal_name": "taylorWithin",
+            "informal_name": "Taylor Polynomial Within a Set",
+            "kind": "definition",
+            "type": "{E : Type u_2} →\n  [inst : NormedAddCommGroup E] → [inst_1 : NormedSpace ℝ E] → (ℝ → E) → ℕ → Set ℝ → ℝ → PolynomialModule ℝ E",
+            "informal_description": "For a function $ f : \\mathbb{R} \\to E $, natural number $ n $, subset $ s \\subseteq \\mathbb{R} $, and point $ x_0 \\in \\mathbb{R} $, the Taylor polynomial of degree $ n $ within $ s $ at $ x_0 $ is defined as the finite sum $ \\sum_{k=0}^n \\left(\\frac{f^{(k)}(x_0)}{k!} \\cdot (X - x_0)^k\\right) $, where each coefficient $ \\frac{f^{(k)}(x_0)}{k!} $ is computed using the $ k $-th iterated derivative of $ f $ restricted to $ s $. This represents the polynomial approximation of $ f $ near $ x_0 $ within the domain $ s $.",
+            "path": "Mathlib.Analysis.Calculus.Taylor"
+          },
+          {
+            "formal_name": "Polynomial.sum_taylor_eq",
+            "informal_name": "Taylor Series Expansion Equals Original Polynomial",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommRing R] (f : Polynomial R) (r : R),\n  (((Polynomial.taylor r) f).sum fun i a => Polynomial.C a * (Polynomial.X - Polynomial.C r) ^ i) = f",
+            "informal_description": "For any polynomial $ f \\in R[X] $ over a semiring $ R $ and any element $ r \\in R $, the sum of the Taylor series expansion of $ f $ at $ r $, expressed as $ \\sum_{i} C(a_i) \\cdot (X - r)^i $ where $ C(a_i) $ denotes the constant polynomial embedding, equals the original polynomial $ f $. This establishes that evaluating the Taylor expansion reconstructs the polynomial itself.",
+            "path": "Mathlib.Algebra.Polynomial.Taylor"
+          },
+          {
+            "formal_name": "Polynomial.hasseDeriv",
+            "informal_name": "Hasse Derivative of Order k on Polynomial Ring",
+            "kind": "definition",
+            "type": "{R : Type u_1} → [inst : Semiring R] → ℕ → Polynomial R →ₗ[R] Polynomial R",
+            "informal_description": "For a semiring $ R $, the Hasse derivative of order $ k $ is an $ R $-linear map $ D^{(k)} : R[X] \to R[X] $ defined by $ D^{(k)}(a_i X^i) = \binom{i}{k} a_i X^{i - k} $ on monomials and extended linearly. This operation generalizes the usual derivative by scaling each coefficient $ a_i $ by the binomial coefficient $ \binom{i}{k} $ and reducing the degree by $ k $.",
+            "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          },
+          {
+            "formal_name": "Polynomial.hasseDeriv_apply",
+            "informal_name": "Hasse Derivative of Order k Applied to a Polynomial",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f : Polynomial R),\n  (Polynomial.hasseDeriv k) f = f.sum fun i r => (Polynomial.monomial (i - k)) (↑(i.choose k) * r)",
+            "informal_description": "For a semiring $ R $ and a polynomial $ f \\in R[X] $, the Hasse derivative of order $ k $ applied to $ f $ is given by $ D^{(k)}(f) = \\sum_{i} \\binom{i}{k} \\cdot a_i \\cdot X^{i - k} $, where $ a_i $ is the coefficient of $ X^i $ in $ f $. This expression sums over all monomials in $ f $, scaling each by the binomial coefficient $ \\binom{i}{k} $ and reducing the exponent by $ k $.",
+            "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "Finder",
+    "form": "literature",
+    "request": {
+      "query": "Taylor formula for polynomials over a commutative ring Hasse derivatives sum monomials",
+      "num_results": 5
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.taylor_coeff\",\n      \"informal_name\": \"Coefficient of Taylor Expansion at $ r $: $ \\\\text{coeff}_n(f(X + r)) = D^{(n)}f(r) $\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R) (n : ℕ),\\n  ((Polynomial.taylor r) f).coeff n = Polynomial.eval r ((Polynomial.hasseDeriv n) f)\",\n      \"informal_description\": \"For any polynomial $ f $ over a semiring $ R $, natural number $ n $, and element $ r \\\\in R $, the coefficient of $ X^n $ in the Taylor expansion $ f(X + r) $ equals the evaluation of the $ n $-th Hasse derivative of $ f $ at $ r $. The Hasse derivative $ D^{(n)} $ scales monomials $ a_i X^i $ by $ \\\\binom{i}{n} a_i X^{i - n} $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv_apply\",\n      \"informal_name\": \"Hasse Derivative of Order k Applied to a Polynomial\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f : Polynomial R),\\n  (Polynomial.hasseDeriv k) f = f.sum fun i r => (Polynomial.monomial (i - k)) (↑(i.choose k) * r)\",\n      \"informal_description\": \"For a semiring $ R $ and a polynomial $ f \\\\in R[X] $, the Hasse derivative of order $ k $ applied to $ f $ is given by $ D^{(k)}(f) = \\\\sum_{i} \\\\binom{i}{k} \\\\cdot a_i \\\\cdot X^{i - k} $, where $ a_i $ is the coefficient of $ X^i $ in $ f $. This expression sums over all monomials in $ f $, scaling each by the binomial coefficient $ \\\\binom{i}{k} $ and reducing the exponent by $ k $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.sum_taylor_eq\",\n      \"informal_name\": \"Taylor Series Expansion Equals Original Polynomial\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] (f : Polynomial R) (r : R),\\n  (((Polynomial.taylor r) f).sum fun i a => Polynomial.C a * (Polynomial.X - Polynomial.C r) ^ i) = f\",\n      \"informal_description\": \"For any polynomial $ f \\\\in R[X] $ over a semiring $ R $ and any element $ r \\\\in R $, the sum of the Taylor series expansion of $ f $ at $ r $, expressed as $ \\\\sum_{i} C(a_i) \\\\cdot (X - r)^i $ where $ C(a_i) $ denotes the constant polynomial embedding, equals the original polynomial $ f $. This establishes that evaluating the Taylor expansion reconstructs the polynomial itself.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    },\n    {\n      \"formal_name\": \"Polynomial.taylor_monomial\",\n      \"informal_name\": \"Taylor Expansion of Monomial $kX^i$ at $r$\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (r : R) (i : ℕ) (k : R),\\n  (Polynomial.taylor r) ((Polynomial.monomial i) k) = Polynomial.C k * (Polynomial.X + Polynomial.C r) ^ i\",\n      \"informal_description\": \"For any natural number $i$ and element $k$ in the semiring $R$, the Taylor series expansion at $r$ applied to the monomial polynomial $kX^i$ results in the polynomial $k(X + r)^i$.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv_monomial\",\n      \"informal_name\": \"Hasse Derivative of Monomial in Polynomial Ring\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k n : ℕ) (r : R),\\n  (Polynomial.hasseDeriv k) ((Polynomial.monomial n) r) = (Polynomial.monomial (n - k)) (↑(n.choose k) * r)\",\n      \"informal_description\": \"For a semiring $ R $, the $ k $-th Hasse derivative of the monomial $ rX^n $ in the polynomial ring $ R[X] $ is given by $ \\\\binom{n}{k} r X^{n - k} $. This expresses how the Hasse derivative acts on monomials by scaling the coefficient by the binomial coefficient $ \\\\binom{n}{k} $ and reducing the degree by $ k $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Polynomial.taylor_coeff",
+            "informal_name": "Coefficient of Taylor Expansion at $ r $: $ \\text{coeff}_n(f(X + r)) = D^{(n)}f(r) $",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R) (n : ℕ),\n  ((Polynomial.taylor r) f).coeff n = Polynomial.eval r ((Polynomial.hasseDeriv n) f)",
+            "informal_description": "For any polynomial $ f $ over a semiring $ R $, natural number $ n $, and element $ r \\in R $, the coefficient of $ X^n $ in the Taylor expansion $ f(X + r) $ equals the evaluation of the $ n $-th Hasse derivative of $ f $ at $ r $. The Hasse derivative $ D^{(n)} $ scales monomials $ a_i X^i $ by $ \\binom{i}{n} a_i X^{i - n} $.",
+            "path": "Mathlib.Algebra.Polynomial.Taylor"
+          },
+          {
+            "formal_name": "Polynomial.hasseDeriv_apply",
+            "informal_name": "Hasse Derivative of Order k Applied to a Polynomial",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f : Polynomial R),\n  (Polynomial.hasseDeriv k) f = f.sum fun i r => (Polynomial.monomial (i - k)) (↑(i.choose k) * r)",
+            "informal_description": "For a semiring $ R $ and a polynomial $ f \\in R[X] $, the Hasse derivative of order $ k $ applied to $ f $ is given by $ D^{(k)}(f) = \\sum_{i} \\binom{i}{k} \\cdot a_i \\cdot X^{i - k} $, where $ a_i $ is the coefficient of $ X^i $ in $ f $. This expression sums over all monomials in $ f $, scaling each by the binomial coefficient $ \\binom{i}{k} $ and reducing the exponent by $ k $.",
+            "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          },
+          {
+            "formal_name": "Polynomial.sum_taylor_eq",
+            "informal_name": "Taylor Series Expansion Equals Original Polynomial",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommRing R] (f : Polynomial R) (r : R),\n  (((Polynomial.taylor r) f).sum fun i a => Polynomial.C a * (Polynomial.X - Polynomial.C r) ^ i) = f",
+            "informal_description": "For any polynomial $ f \\in R[X] $ over a semiring $ R $ and any element $ r \\in R $, the sum of the Taylor series expansion of $ f $ at $ r $, expressed as $ \\sum_{i} C(a_i) \\cdot (X - r)^i $ where $ C(a_i) $ denotes the constant polynomial embedding, equals the original polynomial $ f $. This establishes that evaluating the Taylor expansion reconstructs the polynomial itself.",
+            "path": "Mathlib.Algebra.Polynomial.Taylor"
+          },
+          {
+            "formal_name": "Polynomial.taylor_monomial",
+            "informal_name": "Taylor Expansion of Monomial $kX^i$ at $r$",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (r : R) (i : ℕ) (k : R),\n  (Polynomial.taylor r) ((Polynomial.monomial i) k) = Polynomial.C k * (Polynomial.X + Polynomial.C r) ^ i",
+            "informal_description": "For any natural number $i$ and element $k$ in the semiring $R$, the Taylor series expansion at $r$ applied to the monomial polynomial $kX^i$ results in the polynomial $k(X + r)^i$.",
+            "path": "Mathlib.Algebra.Polynomial.Taylor"
+          },
+          {
+            "formal_name": "Polynomial.hasseDeriv_monomial",
+            "informal_name": "Hasse Derivative of Monomial in Polynomial Ring",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (k n : ℕ) (r : R),\n  (Polynomial.hasseDeriv k) ((Polynomial.monomial n) r) = (Polynomial.monomial (n - k)) (↑(n.choose k) * r)",
+            "informal_description": "For a semiring $ R $, the $ k $-th Hasse derivative of the monomial $ rX^n $ in the polynomial ring $ R[X] $ is given by $ \\binom{n}{k} r X^{n - k} $. This expresses how the Hasse derivative acts on monomials by scaling the coefficient by the binomial coefficient $ \\binom{n}{k} $ and reducing the degree by $ k $.",
+            "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "Finder",
+    "form": "abstract",
+    "request": {
+      "query": "recover polynomial from coefficients of translated polynomial by inverse substitution finite support",
+      "num_results": 5
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.toFinsuppIso_symm_apply\",\n      \"informal_name\": \"Inverse of Polynomial to Finitely Supported Function Isomorphism is Identity on Additive Monoid Algebra\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (R : Type u) [inst : Semiring R] (toFinsupp : AddMonoidAlgebra R ℕ),\\n  (Polynomial.toFinsuppIso R).symm toFinsupp = { toFinsupp := toFinsupp }\",\n      \"informal_description\": \"For any semiring $ R $ and any element $ f $ in the additive monoid algebra $ R[\\\\mathbb{N}] $, applying the inverse of the ring isomorphism between the polynomial ring $ R[X] $ and $ R[\\\\mathbb{N}] $ to $ f $ and then converting back via the original isomorphism results in $ f $ itself.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Basic\"\n    },\n    {\n      \"formal_name\": \"Polynomial.taylorEquiv\",\n      \"informal_name\": \"Taylor Isomorphism for Polynomials over Commutative Rings\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : CommRing R] → R → Polynomial R ≃ₐ[R] Polynomial R\",\n      \"informal_description\": \"For any element $ r $ in a commutative ring $ R $, the Taylor isomorphism is an $ R $-algebra isomorphism from the polynomial ring $ R[X] $ to itself that maps each polynomial $ f(X) $ to $ f(X + r) $. This equivalence preserves addition, multiplication, and scalar multiplication, with the inverse map given by substituting $ X - r $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    },\n    {\n      \"formal_name\": \"Polynomial.sum_taylor_eq\",\n      \"informal_name\": \"Taylor Series Expansion Equals Original Polynomial\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] (f : Polynomial R) (r : R),\\n  (((Polynomial.taylor r) f).sum fun i a => Polynomial.C a * (Polynomial.X - Polynomial.C r) ^ i) = f\",\n      \"informal_description\": \"For any polynomial $ f \\\\in R[X] $ over a semiring $ R $ and any element $ r \\\\in R $, the sum of the Taylor series expansion of $ f $ at $ r $, expressed as $ \\\\sum_{i} C(a_i) \\\\cdot (X - r)^i $ where $ C(a_i) $ denotes the constant polynomial embedding, equals the original polynomial $ f $. This establishes that evaluating the Taylor expansion reconstructs the polynomial itself.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    },\n    {\n      \"formal_name\": \"Polynomial.algEquivAevalXAddC_symm_apply\",\n      \"informal_name\": \"Inverse of Algebra Equivalence via Evaluation at $ X + C(t) $\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_3} [inst : CommRing R] (t : R) (a : Polynomial R),\\n  (Polynomial.algEquivAevalXAddC t).symm a = (Polynomial.aeval (Polynomial.X - Polynomial.C t)) a\",\n      \"informal_description\": \"The inverse of the algebra equivalence defined by evaluation at $ X + C(t) $ maps a polynomial $ a $ to its evaluation at $ X - C(t) $, i.e., $ (\\\\text{algEquivAevalXAddC}_t)^{-1}(a) = \\\\text{aeval}_{X - C(t)}(a) $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.AlgebraMap\"\n    },\n    {\n      \"formal_name\": \"Polynomial.taylorEquiv_symm\",\n      \"informal_name\": \"Taylor Isomorphism for Polynomials over Commutative Rings\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] (r : R), (Polynomial.taylorEquiv r).symm = Polynomial.taylorEquiv (-r)\",\n      \"informal_description\": \"For any element $ r $ in a commutative ring $ R $, the Taylor isomorphism is an $ R $-algebra isomorphism from the polynomial ring $ R[X] $ to itself that maps each polynomial $ f(X) $ to $ f(X + r) $. This equivalence preserves addition, multiplication, and scalar multiplication, with the inverse map given by substituting $ X - r $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Polynomial.toFinsuppIso_symm_apply",
+            "informal_name": "Inverse of Polynomial to Finitely Supported Function Isomorphism is Identity on Additive Monoid Algebra",
+            "kind": "theorem",
+            "type": "∀ (R : Type u) [inst : Semiring R] (toFinsupp : AddMonoidAlgebra R ℕ),\n  (Polynomial.toFinsuppIso R).symm toFinsupp = { toFinsupp := toFinsupp }",
+            "informal_description": "For any semiring $ R $ and any element $ f $ in the additive monoid algebra $ R[\\mathbb{N}] $, applying the inverse of the ring isomorphism between the polynomial ring $ R[X] $ and $ R[\\mathbb{N}] $ to $ f $ and then converting back via the original isomorphism results in $ f $ itself.",
+            "path": "Mathlib.Algebra.Polynomial.Basic"
+          },
+          {
+            "formal_name": "Polynomial.taylorEquiv",
+            "informal_name": "Taylor Isomorphism for Polynomials over Commutative Rings",
+            "kind": "definition",
+            "type": "{R : Type u_1} → [inst : CommRing R] → R → Polynomial R ≃ₐ[R] Polynomial R",
+            "informal_description": "For any element $ r $ in a commutative ring $ R $, the Taylor isomorphism is an $ R $-algebra isomorphism from the polynomial ring $ R[X] $ to itself that maps each polynomial $ f(X) $ to $ f(X + r) $. This equivalence preserves addition, multiplication, and scalar multiplication, with the inverse map given by substituting $ X - r $.",
+            "path": "Mathlib.Algebra.Polynomial.Taylor"
+          },
+          {
+            "formal_name": "Polynomial.sum_taylor_eq",
+            "informal_name": "Taylor Series Expansion Equals Original Polynomial",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommRing R] (f : Polynomial R) (r : R),\n  (((Polynomial.taylor r) f).sum fun i a => Polynomial.C a * (Polynomial.X - Polynomial.C r) ^ i) = f",
+            "informal_description": "For any polynomial $ f \\in R[X] $ over a semiring $ R $ and any element $ r \\in R $, the sum of the Taylor series expansion of $ f $ at $ r $, expressed as $ \\sum_{i} C(a_i) \\cdot (X - r)^i $ where $ C(a_i) $ denotes the constant polynomial embedding, equals the original polynomial $ f $. This establishes that evaluating the Taylor expansion reconstructs the polynomial itself.",
+            "path": "Mathlib.Algebra.Polynomial.Taylor"
+          },
+          {
+            "formal_name": "Polynomial.algEquivAevalXAddC_symm_apply",
+            "informal_name": "Inverse of Algebra Equivalence via Evaluation at $ X + C(t) $",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_3} [inst : CommRing R] (t : R) (a : Polynomial R),\n  (Polynomial.algEquivAevalXAddC t).symm a = (Polynomial.aeval (Polynomial.X - Polynomial.C t)) a",
+            "informal_description": "The inverse of the algebra equivalence defined by evaluation at $ X + C(t) $ maps a polynomial $ a $ to its evaluation at $ X - C(t) $, i.e., $ (\\text{algEquivAevalXAddC}_t)^{-1}(a) = \\text{aeval}_{X - C(t)}(a) $.",
+            "path": "Mathlib.Algebra.Polynomial.AlgebraMap"
+          },
+          {
+            "formal_name": "Polynomial.taylorEquiv_symm",
+            "informal_name": "Taylor Isomorphism for Polynomials over Commutative Rings",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommRing R] (r : R), (Polynomial.taylorEquiv r).symm = Polynomial.taylorEquiv (-r)",
+            "informal_description": "For any element $ r $ in a commutative ring $ R $, the Taylor isomorphism is an $ R $-algebra isomorphism from the polynomial ring $ R[X] $ to itself that maps each polynomial $ f(X) $ to $ f(X + r) $. This equivalence preserves addition, multiplication, and scalar multiplication, with the inverse map given by substituting $ X - r $.",
+            "path": "Mathlib.Algebra.Polynomial.Taylor"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "LeanSearch",
+    "form": "current",
+    "request": {
+      "query": "multivariate polynomial Taylor expansion finite box Hasse derivatives at point product X minus alpha",
+      "num_results": 5
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.taylor\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Taylor\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : Semiring R] → R → Polynomial R →ₗ[R] Polynomial R\"\n    },\n    {\n      \"name\": \"Polynomial.taylor_apply\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Taylor\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R),\\n  (Polynomial.taylor r) f = f.comp (Polynomial.X + Polynomial.C r)\"\n    },\n    {\n      \"name\": \"Polynomial.taylor_coeff\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Taylor\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R) (n : ℕ),\\n  ((Polynomial.taylor r) f).coeff n = Polynomial.eval r ((Polynomial.hasseDeriv n) f)\"\n    },\n    {\n      \"name\": \"Polynomial.hasseDeriv\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.HasseDeriv\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : Semiring R] → ℕ → Polynomial R →ₗ[R] Polynomial R\"\n    },\n    {\n      \"name\": \"Polynomial.sum_taylor_eq\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Taylor\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] (f : Polynomial R) (r : R),\\n  (((Polynomial.taylor r) f).sum fun i a => Polynomial.C a * (Polynomial.X - Polynomial.C r) ^ i) = f\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.taylor",
+            "module_name": "Mathlib.Algebra.Polynomial.Taylor",
+            "kind": "definition",
+            "type": "{R : Type u_1} → [inst : Semiring R] → R → Polynomial R →ₗ[R] Polynomial R"
+          },
+          {
+            "name": "Polynomial.taylor_apply",
+            "module_name": "Mathlib.Algebra.Polynomial.Taylor",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R),\n  (Polynomial.taylor r) f = f.comp (Polynomial.X + Polynomial.C r)"
+          },
+          {
+            "name": "Polynomial.taylor_coeff",
+            "module_name": "Mathlib.Algebra.Polynomial.Taylor",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R) (n : ℕ),\n  ((Polynomial.taylor r) f).coeff n = Polynomial.eval r ((Polynomial.hasseDeriv n) f)"
+          },
+          {
+            "name": "Polynomial.hasseDeriv",
+            "module_name": "Mathlib.Algebra.Polynomial.HasseDeriv",
+            "kind": "definition",
+            "type": "{R : Type u_1} → [inst : Semiring R] → ℕ → Polynomial R →ₗ[R] Polynomial R"
+          },
+          {
+            "name": "Polynomial.sum_taylor_eq",
+            "module_name": "Mathlib.Algebra.Polynomial.Taylor",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommRing R] (f : Polynomial R) (r : R),\n  (((Polynomial.taylor r) f).sum fun i a => Polynomial.C a * (Polynomial.X - Polynomial.C r) ^ i) = f"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "LeanSearch",
+    "form": "literature",
+    "request": {
+      "query": "Taylor formula for polynomials over a commutative ring Hasse derivatives sum monomials",
+      "num_results": 5
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.taylor_coeff\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Taylor\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R) (n : ℕ),\\n  ((Polynomial.taylor r) f).coeff n = Polynomial.eval r ((Polynomial.hasseDeriv n) f)\"\n    },\n    {\n      \"name\": \"Polynomial.taylor_apply\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Taylor\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R),\\n  (Polynomial.taylor r) f = f.comp (Polynomial.X + Polynomial.C r)\"\n    },\n    {\n      \"name\": \"Polynomial.taylor_monomial\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Taylor\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (r : R) (i : ℕ) (k : R),\\n  (Polynomial.taylor r) ((Polynomial.monomial i) k) = Polynomial.C k * (Polynomial.X + Polynomial.C r) ^ i\"\n    },\n    {\n      \"name\": \"Polynomial.taylor_zero\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Taylor\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (f : Polynomial R), (Polynomial.taylor 0) f = f\"\n    },\n    {\n      \"name\": \"Polynomial.taylor\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Taylor\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : Semiring R] → R → Polynomial R →ₗ[R] Polynomial R\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.taylor_coeff",
+            "module_name": "Mathlib.Algebra.Polynomial.Taylor",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R) (n : ℕ),\n  ((Polynomial.taylor r) f).coeff n = Polynomial.eval r ((Polynomial.hasseDeriv n) f)"
+          },
+          {
+            "name": "Polynomial.taylor_apply",
+            "module_name": "Mathlib.Algebra.Polynomial.Taylor",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R),\n  (Polynomial.taylor r) f = f.comp (Polynomial.X + Polynomial.C r)"
+          },
+          {
+            "name": "Polynomial.taylor_monomial",
+            "module_name": "Mathlib.Algebra.Polynomial.Taylor",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (r : R) (i : ℕ) (k : R),\n  (Polynomial.taylor r) ((Polynomial.monomial i) k) = Polynomial.C k * (Polynomial.X + Polynomial.C r) ^ i"
+          },
+          {
+            "name": "Polynomial.taylor_zero",
+            "module_name": "Mathlib.Algebra.Polynomial.Taylor",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (f : Polynomial R), (Polynomial.taylor 0) f = f"
+          },
+          {
+            "name": "Polynomial.taylor",
+            "module_name": "Mathlib.Algebra.Polynomial.Taylor",
+            "kind": "definition",
+            "type": "{R : Type u_1} → [inst : Semiring R] → R → Polynomial R →ₗ[R] Polynomial R"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "LeanSearch",
+    "form": "abstract",
+    "request": {
+      "query": "recover polynomial from coefficients of translated polynomial by inverse substitution finite support",
+      "num_results": 5
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.toFinsuppIsoAlg_symm_apply_toFinsupp\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.AlgebraMap\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (R : Type u) [inst : CommSemiring R] (toFinsupp : AddMonoidAlgebra R ℕ),\\n  ((Polynomial.toFinsuppIsoAlg R).symm toFinsupp).toFinsupp = toFinsupp\"\n    },\n    {\n      \"name\": \"Polynomial.algEquivAevalXAddC_symm\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.AlgebraMap\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_3} [inst : CommRing R] (t : R),\\n  (Polynomial.algEquivAevalXAddC t).symm = Polynomial.algEquivAevalXAddC (-t)\"\n    },\n    {\n      \"name\": \"Polynomial.toFinsuppIso_symm_apply\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (R : Type u) [inst : Semiring R] (toFinsupp : AddMonoidAlgebra R ℕ),\\n  (Polynomial.toFinsuppIso R).symm toFinsupp = { toFinsupp := toFinsupp }\"\n    },\n    {\n      \"name\": \"Polynomial.toFinsuppIsoLinear_symm_apply_toFinsupp\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (R : Type u) [inst : Semiring R] (a : AddMonoidAlgebra R ℕ), ((Polynomial.toFinsuppIsoLinear R).symm a).toFinsupp = a\"\n    },\n    {\n      \"name\": \"Polynomial.taylorLinearEquiv_symm\",\n      \"module_name\": \"Mathlib.RingTheory.Polynomial.DegreeLT\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] {n : ℕ} (r : R),\\n  (Polynomial.taylorLinearEquiv r n).symm = Polynomial.taylorLinearEquiv (-r) n\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.toFinsuppIsoAlg_symm_apply_toFinsupp",
+            "module_name": "Mathlib.Algebra.Polynomial.AlgebraMap",
+            "kind": "theorem",
+            "type": "∀ (R : Type u) [inst : CommSemiring R] (toFinsupp : AddMonoidAlgebra R ℕ),\n  ((Polynomial.toFinsuppIsoAlg R).symm toFinsupp).toFinsupp = toFinsupp"
+          },
+          {
+            "name": "Polynomial.algEquivAevalXAddC_symm",
+            "module_name": "Mathlib.Algebra.Polynomial.AlgebraMap",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_3} [inst : CommRing R] (t : R),\n  (Polynomial.algEquivAevalXAddC t).symm = Polynomial.algEquivAevalXAddC (-t)"
+          },
+          {
+            "name": "Polynomial.toFinsuppIso_symm_apply",
+            "module_name": "Mathlib.Algebra.Polynomial.Basic",
+            "kind": "theorem",
+            "type": "∀ (R : Type u) [inst : Semiring R] (toFinsupp : AddMonoidAlgebra R ℕ),\n  (Polynomial.toFinsuppIso R).symm toFinsupp = { toFinsupp := toFinsupp }"
+          },
+          {
+            "name": "Polynomial.toFinsuppIsoLinear_symm_apply_toFinsupp",
+            "module_name": "Mathlib.Algebra.Polynomial.Basic",
+            "kind": "theorem",
+            "type": "∀ (R : Type u) [inst : Semiring R] (a : AddMonoidAlgebra R ℕ), ((Polynomial.toFinsuppIsoLinear R).symm a).toFinsupp = a"
+          },
+          {
+            "name": "Polynomial.taylorLinearEquiv_symm",
+            "module_name": "Mathlib.RingTheory.Polynomial.DegreeLT",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommRing R] {n : ℕ} (r : R),\n  (Polynomial.taylorLinearEquiv r n).symm = Polynomial.taylorLinearEquiv (-r) n"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "Loogle",
+    "form": "current",
+    "request": {
+      "query": "\"taylor\", \"sum\"",
+      "num_results": 6
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.sum_taylor_eq\",\n      \"type\": \" {R : Type u_1} [CommRing R] (f : Polynomial R) (r : R) : (((Polynomial.taylor r) f).sum fun i a => Polynomial.C a * (Polynomial.X - Polynomial.C r) ^ i) = f\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    },\n    {\n      \"name\": \"Complex.hasSum_taylorSeries_of_entire\",\n      \"type\": \" {E : Type u_1} [NormedAddCommGroup E] [NormedSpace ℂ E] [CompleteSpace E] ⦃f : ℂ → E⦄ (hf : Differentiable ℂ f) (c z : ℂ) : HasSum (fun n => (↑n.factorial)⁻¹ • (z - c) ^ n • iteratedDeriv n f c) (f z)\",\n      \"module\": \"Mathlib.Analysis.Complex.TaylorSeries\"\n    },\n    {\n      \"name\": \"Complex.hasSum_taylorSeries_on_ball\",\n      \"type\": \" {E : Type u_1} [NormedAddCommGroup E] [NormedSpace ℂ E] [CompleteSpace E] ⦃f : ℂ → E⦄ ⦃c : ℂ⦄ ⦃r : ℝ⦄ (hf : DifferentiableOn ℂ f (Metric.ball c r)) ⦃z : ℂ⦄ (hz : z ∈ Metric.ball c r) : HasSum (fun n => (↑n.factorial)⁻¹ • (z - c) ^ n • iteratedDeriv n f c) (f z)\",\n      \"module\": \"Mathlib.Analysis.Complex.TaylorSeries\"\n    },\n    {\n      \"name\": \"Complex.hasSum_taylorSeries_on_eball\",\n      \"type\": \" {E : Type u_1} [NormedAddCommGroup E] [NormedSpace ℂ E] [CompleteSpace E] ⦃f : ℂ → E⦄ ⦃c : ℂ⦄ ⦃r : ENNReal⦄ (hf : DifferentiableOn ℂ f (Metric.eball c r)) ⦃z : ℂ⦄ (hz : z ∈ Metric.eball c r) : HasSum (fun n => (↑n.factorial)⁻¹ • (z - c) ^ n • iteratedDeriv n f c) (f z)\",\n      \"module\": \"Mathlib.Analysis.Complex.TaylorSeries\"\n    },\n    {\n      \"name\": \"Complex.hasSum_taylorSeries_neg_log\",\n      \"type\": \" {z : ℂ} (hz : ‖z‖ < 1) : HasSum (fun n => z ^ n / ↑n) (-Complex.log (1 - z))\",\n      \"module\": \"Mathlib.Analysis.SpecialFunctions.Complex.LogBounds\"\n    },\n    {\n      \"name\": \"Complex.hasSum_taylorSeries_neg_log'\",\n      \"type\": \" {z : ℂ} (hz : ‖z‖ < 1) : HasSum (fun n => z ^ (n + 1) / (↑n + 1)) (-Complex.log (1 - z))\",\n      \"module\": \"Mathlib.Analysis.SpecialFunctions.Complex.LogBounds\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.sum_taylor_eq",
+            "type": " {R : Type u_1} [CommRing R] (f : Polynomial R) (r : R) : (((Polynomial.taylor r) f).sum fun i a => Polynomial.C a * (Polynomial.X - Polynomial.C r) ^ i) = f",
+            "module": "Mathlib.Algebra.Polynomial.Taylor"
+          },
+          {
+            "name": "Complex.hasSum_taylorSeries_of_entire",
+            "type": " {E : Type u_1} [NormedAddCommGroup E] [NormedSpace ℂ E] [CompleteSpace E] ⦃f : ℂ → E⦄ (hf : Differentiable ℂ f) (c z : ℂ) : HasSum (fun n => (↑n.factorial)⁻¹ • (z - c) ^ n • iteratedDeriv n f c) (f z)",
+            "module": "Mathlib.Analysis.Complex.TaylorSeries"
+          },
+          {
+            "name": "Complex.hasSum_taylorSeries_on_ball",
+            "type": " {E : Type u_1} [NormedAddCommGroup E] [NormedSpace ℂ E] [CompleteSpace E] ⦃f : ℂ → E⦄ ⦃c : ℂ⦄ ⦃r : ℝ⦄ (hf : DifferentiableOn ℂ f (Metric.ball c r)) ⦃z : ℂ⦄ (hz : z ∈ Metric.ball c r) : HasSum (fun n => (↑n.factorial)⁻¹ • (z - c) ^ n • iteratedDeriv n f c) (f z)",
+            "module": "Mathlib.Analysis.Complex.TaylorSeries"
+          },
+          {
+            "name": "Complex.hasSum_taylorSeries_on_eball",
+            "type": " {E : Type u_1} [NormedAddCommGroup E] [NormedSpace ℂ E] [CompleteSpace E] ⦃f : ℂ → E⦄ ⦃c : ℂ⦄ ⦃r : ENNReal⦄ (hf : DifferentiableOn ℂ f (Metric.eball c r)) ⦃z : ℂ⦄ (hz : z ∈ Metric.eball c r) : HasSum (fun n => (↑n.factorial)⁻¹ • (z - c) ^ n • iteratedDeriv n f c) (f z)",
+            "module": "Mathlib.Analysis.Complex.TaylorSeries"
+          },
+          {
+            "name": "Complex.hasSum_taylorSeries_neg_log",
+            "type": " {z : ℂ} (hz : ‖z‖ < 1) : HasSum (fun n => z ^ n / ↑n) (-Complex.log (1 - z))",
+            "module": "Mathlib.Analysis.SpecialFunctions.Complex.LogBounds"
+          },
+          {
+            "name": "Complex.hasSum_taylorSeries_neg_log'",
+            "type": " {z : ℂ} (hz : ‖z‖ < 1) : HasSum (fun n => z ^ (n + 1) / (↑n + 1)) (-Complex.log (1 - z))",
+            "module": "Mathlib.Analysis.SpecialFunctions.Complex.LogBounds"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "Loogle",
+    "form": "literature",
+    "request": {
+      "query": "Polynomial.sum_taylor_eq",
+      "num_results": 6
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.sum_taylor_eq\",\n      \"type\": \" {R : Type u_1} [CommRing R] (f : Polynomial R) (r : R) : (((Polynomial.taylor r) f).sum fun i a => Polynomial.C a * (Polynomial.X - Polynomial.C r) ^ i) = f\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.sum_taylor_eq",
+            "type": " {R : Type u_1} [CommRing R] (f : Polynomial R) (r : R) : (((Polynomial.taylor r) f).sum fun i a => Polynomial.C a * (Polynomial.X - Polynomial.C r) ^ i) = f",
+            "module": "Mathlib.Algebra.Polynomial.Taylor"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "Loogle",
+    "form": "abstract",
+    "request": {
+      "query": "MvPolynomial.aeval, MvPolynomial.sum",
+      "num_results": 6
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "Error executing tool lean_loogle: loogle query error: unknown identifier 'MvPolynomial.sum' Suggestions: MvPolynomial.aeval, \"MvPolynomial.sum\""
+        }
+      ],
+      "isError": true
+    }
+  },
+  {
+    "method": "Local",
+    "form": "current",
+    "request": {
+      "query": "eq_sum_box_hasseDeriv",
+      "limit": 10,
+      "project_root": "/Users/ramin/LEAN/Roth"
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.eq_sum_box_hasseDeriv\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/Taylor.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.eq_sum_box_hasseDeriv",
+            "kind": "theorem",
+            "file": "Roth/Taylor.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "Local",
+    "form": "literature",
+    "request": {
+      "query": "sum_taylor",
+      "limit": 10,
+      "project_root": "/Users/ramin/LEAN/Roth"
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.sum_taylor_eq\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Taylor.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.sum_taylor_eq",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Taylor.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "Local",
+    "form": "abstract",
+    "request": {
+      "query": "sum_monomial",
+      "limit": 10,
+      "project_root": "/Users/ramin/LEAN/Roth"
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"SkewPolynomial.sum_monomial\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/SkewPolynomial/Basic.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.sum_monomial_eq\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Basic.lean\"\n    },\n    {\n      \"name\": \"Polynomial.sum_monomial_eq\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Basic.lean\"\n    },\n    {\n      \"name\": \"Polynomial.sum_monomial_index\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Basic.lean\"\n    },\n    {\n      \"name\": \"SkewPolynomial.sum_monomial_index\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/SkewPolynomial/Basic.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "SkewPolynomial.sum_monomial",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/SkewPolynomial/Basic.lean"
+          },
+          {
+            "name": "MvPolynomial.sum_monomial_eq",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Basic.lean"
+          },
+          {
+            "name": "Polynomial.sum_monomial_eq",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Basic.lean"
+          },
+          {
+            "name": "Polynomial.sum_monomial_index",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Basic.lean"
+          },
+          {
+            "name": "SkewPolynomial.sum_monomial_index",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/SkewPolynomial/Basic.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "Loogle",
+    "form": "abstract retry",
+    "request": {
+      "query": "MvPolynomial.aeval, \"sum\"",
+      "num_results": 6
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.aeval_sum\",\n      \"type\": \" {R : Type u} {S₁ : Type v} {σ : Type u_1} [CommSemiring R] [CommSemiring S₁] [Algebra R S₁] (f : σ → S₁) {ι : Type u_2} (s : Finset ι) (φ : ι → MvPolynomial σ R) : (MvPolynomial.aeval f) (∑ i ∈ s, φ i) = ∑ i ∈ s, (MvPolynomial.aeval f) (φ i)\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"name\": \"MvPolynomial.aeval_sumElim\",\n      \"type\": \" {R : Type u} [CommSemiring R] {S : Type u_2} {T : Type u_3} [CommSemiring S] [Algebra R S] [CommSemiring T] [Algebra R T] [Algebra S T] [IsScalarTower R S T] {σ : Type u_4} {τ : Type u_5} (p : MvPolynomial (σ ⊕ τ) R) (f : τ → S) (g : σ → T) : (MvPolynomial.aeval (Sum.elim g (⇑(algebraMap S T) ∘ f))) p = (MvPolynomial.aeval g) ((MvPolynomial.aeval (Sum.elim MvPolynomial.X (⇑MvPolynomial.C ∘ f))) p)\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"name\": \"Algebra.Generators.ofComp_toAlgHom_monomial_sumElim\",\n      \"type\": \" {R : Type u} {S : Type v} {ι : Type w} [CommRing R] [CommRing S] [Algebra R S] {ι' : Type u_3} {T : Type u_7} [CommRing T] [Algebra R T] [Algebra S T] [IsScalarTower R S T] (Q : Algebra.Generators S T ι') (P : Algebra.Generators R S ι) (v₁ : ι' →₀ ℕ) (v₂ : ι →₀ ℕ) (a : R) : (Q.ofComp P).toAlgHom ((MvPolynomial.monomial (v₁.sumElim v₂)) a) = (MvPolynomial.monomial v₁) ((MvPolynomial.aeval P.val) ((MvPolynomial.monomial v₂) a))\",\n      \"module\": \"Mathlib.RingTheory.Extension.Generators\"\n    },\n    {\n      \"name\": \"MvPolynomial.aeval_sumElim_pderiv_inl\",\n      \"type\": \" {R : Type u} {σ : Type v} [CommSemiring R] {S : Type u_1} {τ : Type u_2} [CommRing S] [Algebra R S] (p : MvPolynomial (σ ⊕ τ) R) (f : τ → S) (j : σ) : (MvPolynomial.aeval (Sum.elim MvPolynomial.X (⇑MvPolynomial.C ∘ f))) ((MvPolynomial.pderiv (Sum.inl j)) p) = (MvPolynomial.pderiv j) ((MvPolynomial.aeval (Sum.elim MvPolynomial.X (⇑MvPolynomial.C ∘ f))) p)\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.PDeriv\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.aeval_sum",
+            "type": " {R : Type u} {S₁ : Type v} {σ : Type u_1} [CommSemiring R] [CommSemiring S₁] [Algebra R S₁] (f : σ → S₁) {ι : Type u_2} (s : Finset ι) (φ : ι → MvPolynomial σ R) : (MvPolynomial.aeval f) (∑ i ∈ s, φ i) = ∑ i ∈ s, (MvPolynomial.aeval f) (φ i)",
+            "module": "Mathlib.Algebra.MvPolynomial.Eval"
+          },
+          {
+            "name": "MvPolynomial.aeval_sumElim",
+            "type": " {R : Type u} [CommSemiring R] {S : Type u_2} {T : Type u_3} [CommSemiring S] [Algebra R S] [CommSemiring T] [Algebra R T] [Algebra S T] [IsScalarTower R S T] {σ : Type u_4} {τ : Type u_5} (p : MvPolynomial (σ ⊕ τ) R) (f : τ → S) (g : σ → T) : (MvPolynomial.aeval (Sum.elim g (⇑(algebraMap S T) ∘ f))) p = (MvPolynomial.aeval g) ((MvPolynomial.aeval (Sum.elim MvPolynomial.X (⇑MvPolynomial.C ∘ f))) p)",
+            "module": "Mathlib.Algebra.MvPolynomial.Eval"
+          },
+          {
+            "name": "Algebra.Generators.ofComp_toAlgHom_monomial_sumElim",
+            "type": " {R : Type u} {S : Type v} {ι : Type w} [CommRing R] [CommRing S] [Algebra R S] {ι' : Type u_3} {T : Type u_7} [CommRing T] [Algebra R T] [Algebra S T] [IsScalarTower R S T] (Q : Algebra.Generators S T ι') (P : Algebra.Generators R S ι) (v₁ : ι' →₀ ℕ) (v₂ : ι →₀ ℕ) (a : R) : (Q.ofComp P).toAlgHom ((MvPolynomial.monomial (v₁.sumElim v₂)) a) = (MvPolynomial.monomial v₁) ((MvPolynomial.aeval P.val) ((MvPolynomial.monomial v₂) a))",
+            "module": "Mathlib.RingTheory.Extension.Generators"
+          },
+          {
+            "name": "MvPolynomial.aeval_sumElim_pderiv_inl",
+            "type": " {R : Type u} {σ : Type v} [CommSemiring R] {S : Type u_1} {τ : Type u_2} [CommRing S] [Algebra R S] (p : MvPolynomial (σ ⊕ τ) R) (f : τ → S) (j : σ) : (MvPolynomial.aeval (Sum.elim MvPolynomial.X (⇑MvPolynomial.C ∘ f))) ((MvPolynomial.pderiv (Sum.inl j)) p) = (MvPolynomial.pderiv j) ((MvPolynomial.aeval (Sum.elim MvPolynomial.X (⇑MvPolynomial.C ∘ f))) p)",
+            "module": "Mathlib.Algebra.MvPolynomial.PDeriv"
+          }
+        ]
+      },
+      "isError": false
+    }
+  }
+]

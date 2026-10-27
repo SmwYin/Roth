@@ -1,0 +1,45 @@
+#check @MvPolynomial.eq_sum_box_hasseDeriv
+#print axioms MvPolynomial.eq_sum_box_hasseDeriv
+namespace MvPolynomial.TaylorExpansionAssessment
+variable {σ A : Type*} [CommRing A]
+theorem replay [Fintype σ] [DecidableEq σ] (α : σ → A) (r : σ → ℕ)
+    (P : MvPolynomial σ A) (hP : ∀ j, degreeOf j P ≤ r j) :
+    P = ∑ d ∈ Roth.box r, C (eval α (hasseDeriv d P)) * ∏ j, (X j - C (α j)) ^ d j := by
+  have h1 : taylor α P = ∑ d ∈ Roth.box r, monomial d (eval α (hasseDeriv d P)) := by
+    ext e
+    simp only [coeff_taylor, coeff_sum, coeff_monomial, Finset.sum_ite_eq']
+    split_ifs with he
+    · rfl
+    · obtain ⟨j, hj⟩ : ∃ j, r j < e j := by
+        simpa [Roth.mem_box] using he
+      rw [hasseDeriv_eq_zero_of_degreeOf_lt ((hP j).trans_lt hj), map_zero]
+  calc P = taylor (fun j ↦ -α j) (taylor α P) := (taylor_neg_taylor α P).symm
+    _ = _ := by
+      rw [h1, map_sum]
+      refine Finset.sum_congr rfl fun d _ ↦ ?_
+      rw [taylor_monomial, Finsupp.prod_fintype _ _ fun _ ↦ pow_zero _]
+      simp [sub_eq_add_neg]
+
+theorem withoutDecidableEq [Fintype σ] (α : σ → A) (r : σ → ℕ)
+    (P : MvPolynomial σ A) (hP : ∀ j, degreeOf j P ≤ r j) :
+    P = ∑ d ∈ Roth.box r, C (eval α (hasseDeriv d P)) * ∏ j, (X j - C (α j)) ^ d j := by
+  classical
+  have h1 : taylor α P = ∑ d ∈ Roth.box r, monomial d (eval α (hasseDeriv d P)) := by
+    ext e
+    simp only [coeff_taylor, coeff_sum, coeff_monomial, Finset.sum_ite_eq']
+    split_ifs with he
+    · rfl
+    · obtain ⟨j, hj⟩ : ∃ j, r j < e j := by
+        simpa [Roth.mem_box] using he
+      rw [hasseDeriv_eq_zero_of_degreeOf_lt ((hP j).trans_lt hj), map_zero]
+  calc P = taylor (fun j ↦ -α j) (taylor α P) := (taylor_neg_taylor α P).symm
+    _ = _ := by
+      rw [h1, map_sum]
+      refine Finset.sum_congr rfl fun d _ ↦ ?_
+      rw [taylor_monomial, Finsupp.prod_fintype _ _ fun _ ↦ pow_zero _]
+      simp [sub_eq_add_neg]
+
+#check @withoutDecidableEq
+#print axioms replay
+#print axioms withoutDecidableEq
+end MvPolynomial.TaylorExpansionAssessment

@@ -1,0 +1,59 @@
+{
+  "file": "Roth/Taylor.lean",
+  "line": 197,
+  "name": "MvPolynomial.eq_sum_box_hasseDeriv",
+  "short": "eq_sum_box_hasseDeriv",
+  "kind": "theorem",
+  "visibility": "public",
+  "end_line": 213,
+  "source": "theorem eq_sum_box_hasseDeriv [Fintype σ] [DecidableEq σ] (α : σ → A) (r : σ → ℕ)\n    (P : MvPolynomial σ A) (hP : ∀ j, degreeOf j P ≤ r j) :\n    P = ∑ d ∈ Roth.box r, C (eval α (hasseDeriv d P)) * ∏ j, (X j - C (α j)) ^ d j := by\n  have h1 : taylor α P = ∑ d ∈ Roth.box r, monomial d (eval α (hasseDeriv d P)) := by\n    ext e\n    simp only [coeff_taylor, coeff_sum, coeff_monomial, Finset.sum_ite_eq']\n    split_ifs with he\n    · rfl\n    · obtain ⟨j, hj⟩ : ∃ j, r j < e j := by\n        simpa [Roth.mem_box] using he\n      rw [hasseDeriv_eq_zero_of_degreeOf_lt ((hP j).trans_lt hj), map_zero]\n  calc P = taylor (fun j ↦ -α j) (taylor α P) := (taylor_neg_taylor α P).symm\n    _ = _ := by\n      rw [h1, map_sum]\n      refine Finset.sum_congr rfl fun d _ ↦ ?_\n      rw [taylor_monomial, Finsupp.prod_fintype _ _ fun _ ↦ pow_zero _]\n      simp [sub_eq_add_neg]",
+  "signature": "theorem eq_sum_box_hasseDeriv [Fintype σ] [DecidableEq σ] (α : σ → A) (r : σ → ℕ)\n    (P : MvPolynomial σ A) (hP : ∀ j, degreeOf j P ≤ r j) :\n    P = ∑ d ∈ Roth.box r, C (eval α (hasseDeriv d P)) * ∏ j, (X j - C (α j)) ^ d j",
+  "body": "by\n  have h1 : taylor α P = ∑ d ∈ Roth.box r, monomial d (eval α (hasseDeriv d P)) := by\n    ext e\n    simp only [coeff_taylor, coeff_sum, coeff_monomial, Finset.sum_ite_eq']\n    split_ifs with he\n    · rfl\n    · obtain ⟨j, hj⟩ : ∃ j, r j < e j := by\n        simpa [Roth.mem_box] using he\n      rw [hasseDeriv_eq_zero_of_degreeOf_lt ((hP j).trans_lt hj), map_zero]\n  calc P = taylor (fun j ↦ -α j) (taylor α P) := (taylor_neg_taylor α P).symm\n    _ = _ := by\n      rw [h1, map_sum]\n      refine Finset.sum_congr rfl fun d _ ↦ ?_\n      rw [taylor_monomial, Finsupp.prod_fintype _ _ fun _ ↦ pow_zero _]\n      simp [sub_eq_add_neg]",
+  "proof_lines": 15,
+  "sha256": "645ed7e4912d6af08340a2cbc46b956c2f7da25f2c02f05982be43ca53d55485",
+  "what": "Reconstructs a polynomial from its Hasse-derivative values at α as a finite expansion in powers of X−α over a coordinate box.",
+  "how": "First applies coeff_taylor to identify a support-bounded expansion of taylor α P; hasseDeriv_eq_zero_of_degreeOf_lt kills out-of-box indices, then taylor_neg_taylor and taylor_monomial translate the expansion back.",
+  "hypotheses": "A commutative coefficient ring, an enumerated finite variable type with decidable equality, and coordinate degree bounds on the polynomial.",
+  "uses_from_project": [
+    "MvPolynomial.coeff_taylor",
+    "MvPolynomial.hasseDeriv",
+    "MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt",
+    "MvPolynomial.taylor",
+    "MvPolynomial.taylor_monomial",
+    "MvPolynomial.taylor_neg_taylor",
+    "Roth.box",
+    "Roth.mem_box"
+  ],
+  "used_by_in_file": [
+    "MvPolynomial.eval_eq_sum_box"
+  ],
+  "project_callers": [
+    {
+      "name": "MvPolynomial.eval_eq_sum_box",
+      "file": "Roth/Taylor.lean",
+      "line": 217
+    }
+  ],
+  "type_context": "{σ A : Type*} [CommRing A]",
+  "type_provenance": "Exact written signature with section binders made explicit from source; not claimed as a fresh #check output. Minimal hasseCoeff #check succeeded; full Meta inspector timed out.",
+  "reference_provenance": "Manually disambiguated source-level direct project references in declaration bodies; callers include signature and body occurrences. Includes explicit references only, not an exhaustive kernel/simp dependency closure.",
+  "notes": [
+    "No set_option, sorry, TODO, or proof over 30 lines in declaration."
+  ],
+  "assignment_offset": 225,
+  "project_body_refs": [
+    "MvPolynomial.coeff_taylor",
+    "MvPolynomial.hasseDeriv",
+    "MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt",
+    "MvPolynomial.taylor",
+    "MvPolynomial.taylor_monomial",
+    "MvPolynomial.taylor_neg_taylor",
+    "Roth.box",
+    "Roth.mem_box"
+  ],
+  "project_type_refs": [
+    "MvPolynomial.hasseDeriv",
+    "Roth.box"
+  ],
+  "section_context": "{σ A : Type*} [CommRing A]"
+}

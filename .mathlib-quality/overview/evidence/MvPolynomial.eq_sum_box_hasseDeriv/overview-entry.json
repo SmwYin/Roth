@@ -1,0 +1,25 @@
+{
+  "declaration": "MvPolynomial.eq_sum_box_hasseDeriv",
+  "kind": "theorem",
+  "type": "∀ {σ : Type u_1} {A : Type u_2} [CommRing A] [Fintype σ] [DecidableEq σ] (α : σ → A) (r : σ → ℕ) (P : MvPolynomial σ A), (∀ j, MvPolynomial.degreeOf j P ≤ r j) → P = ∑ d ∈ Roth.box r, MvPolynomial.C (MvPolynomial.eval α (MvPolynomial.hasseDeriv d P)) * ∏ j, (MvPolynomial.X j - MvPolynomial.C (α j)) ^ d j",
+  "what": "Reconstructs a polynomial from Hasse derivative values at a center as a finite sum of products of powers of X minus that center over a bounding coordinate box.",
+  "how": "Coefficient extensionality and coeff_taylor identify translated coefficients; hasseDeriv_eq_zero_of_degreeOf_lt kills out-of-box terms, and taylor_neg_taylor plus taylor_monomial transport back.",
+  "hypotheses": "Arbitrary commutative coefficient ring, finite variable enumeration, arbitrary center and polynomial, natural coordinatewise degree bounds. Explicit DecidableEq can be removed using scoped Classical and propositional instance transport.",
+  "project_dependencies": [
+    "MvPolynomial.taylor",
+    "MvPolynomial.coeff_taylor",
+    "MvPolynomial.hasseDeriv",
+    "MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt",
+    "MvPolynomial.taylor_neg_taylor",
+    "MvPolynomial.taylor_monomial",
+    "Roth.box",
+    "Roth.mem_box"
+  ],
+  "caller_summary": "1 explicit caller, eval_eq_sum_box at Taylor220; no direct callers outside file. Full evaluated caller checked both for original arbitrary DecidableEq and no-explicit-DecidableEq core. Main390 application is transitive through evaluated corollary.",
+  "mathlib_api_audit": "Polynomial.sum_taylor_eq is univariate CommRing analogue. eval₂_eq supplies arbitrary-variable finite-support reconstruction, but not Hasse coefficient identification or off-box vanishing. Isolated successful support expansion verifies the boundary.",
+  "moral_duplications": "Distinct coefficient, polynomial reconstruction and evaluation layers; same inverse-shift motif as univariate sum_taylor_eq but no direct specialization to multivariate Hasse box expansion.",
+  "generalization": "Verified no explicit DecidableEq binder using open Classical in statement plus proof-local classical. Old arbitrary instance recovered by Subsingleton.elim and cases; propositional, not definitional transport. Fintype retained for full product and box. Raw arbitrary-variable support expansion is a different representation, not this same statement.",
+  "missing_api": "Multivariate Hasse/Taylor coefficient-to-finite-box reconstruction; optional support-indexed intermediate using generic evaluation sums.",
+  "junk": "Keep standard substantive reconstruction theorem; actual evaluated consumer feeds main Diophantine estimate.",
+  "action": "YES-but-generalise-first: drop explicit equality-decision requirement with verified transport; propose Mathlib/Algebra/MvPolynomial/Taylor.lean alongside coeff_taylor, using standard Finsupp interval infrastructure upstream. Production unchanged during survey."
+}

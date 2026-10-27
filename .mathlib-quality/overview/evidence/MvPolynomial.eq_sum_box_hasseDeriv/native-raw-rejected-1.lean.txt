@@ -1,0 +1,63 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+import Mathlib.Algebra.Polynomial.CancelLeads
+import Mathlib.Algebra.MvPolynomial.PDeriv
+#check_failure MvPolynomial.taylor_neg_taylor
+noncomputable section
+namespace MvPolynomial.TaylorInverseRaw
+variable {σ R : Type*} [CommSemiring R]
+def shift (α : σ → R) : MvPolynomial σ R →ₐ[R] MvPolynomial σ R :=
+  aeval fun j ↦ X j + C (α j)
+theorem conditional (α β : σ → R) (h : ∀ j, β j + α j = 0)
+    (P : MvPolynomial σ R) : shift β (shift α P) = P := by
+  have hg : (fun j ↦ (X j + C (β j)) + C (α j)) = (X : σ → MvPolynomial σ R) := by
+    funext j
+    rw [add_assoc, ← map_add, h j, map_zero, add_zero]
+  simp only [shift, comp_aeval_apply, map_add, aeval_X, algHom_C]
+  exact (congrArg (fun g : σ → MvPolynomial σ R ↦ aeval g P) hg).trans
+    (aeval_X_left_apply P)
+variable {A : Type*} [CommRing A]
+theorem inverse (α : σ → A) (P : MvPolynomial σ A) :
+    shift (fun j ↦ -α j) (shift α P) = P :=
+  conditional α (fun j ↦ -α j) (fun j ↦ neg_add_cancel (α j)) P
+theorem directInverse (α : σ → A) (P : MvPolynomial σ A) :
+    shift (fun j ↦ -α j) (shift α P) = P := by
+  simp [shift, comp_aeval_apply, add_assoc, aeval_X_left_apply]
+#print axioms directInverse
+example (a : A) (P : Polynomial A) :
+    Polynomial.taylor (-a) (Polynomial.taylor a P) = P :=
+  (Polynomial.taylorEquiv a).symm_apply_apply P
+#print axioms conditional
+#print axioms inverse
+end MvPolynomial.TaylorInverseRaw
+#check_failure MvPolynomial.eq_sum_box_hasseDeriv
+#check @Polynomial.sum_taylor_eq
+#print Polynomial.sum_taylor_eq
+#check @MvPolynomial.eval₂_eq
+namespace MvPolynomial.TaylorExpansionRaw
+open TaylorInverseRaw
+variable {σ A : Type*} [CommRing A]
+theorem supportExpansion (α : σ → A) (P : MvPolynomial σ A) :
+    P = ∑ d ∈ (shift α P).support,
+      C ((shift α P).coeff d) * d.prod (fun j n ↦ (X j - C (α j)) ^ n) := by
+  have general (Q : MvPolynomial σ A) :
+      shift (fun j ↦ -α j) Q = ∑ d ∈ Q.support,
+        C (Q.coeff d) * d.prod (fun j n ↦ (X j - C (α j)) ^ n) := by
+    change eval₂ C (fun j ↦ X j + C (-α j)) Q = _
+    simp only [eval₂_eq, Finsupp.sum, map_neg, sub_eq_add_neg]
+  calc
+    P = shift (fun j ↦ -α j) (shift α P) := (inverse α P).symm
+    _ = _ := general _
+example (P : Polynomial A) (a : A) :
+    P = ((Polynomial.taylor a P).sum fun i c ↦ Polynomial.C c *
+      (Polynomial.X - Polynomial.C a) ^ i) :=
+  (Polynomial.sum_taylor_eq P a).symm
+#print axioms supportExpansion
+end MvPolynomial.TaylorExpansionRaw

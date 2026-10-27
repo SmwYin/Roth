@@ -1,0 +1,26 @@
+namespace MvPolynomial.TaylorExpansionExtra
+open TaylorExpansionAssessment
+variable {σ A : Type*} [CommRing A]
+theorem originalInstanceRecovery [Fintype σ] [DecidableEq σ] (α : σ → A) (r : σ → ℕ)
+    (P : MvPolynomial σ A) (hP : ∀ j, degreeOf j P ≤ r j) :
+    P = ∑ d ∈ Roth.box r, C (eval α (hasseDeriv d P)) * ∏ j, (X j - C (α j)) ^ d j  := by
+  have hi : (inferInstance : DecidableEq σ) = Classical.typeDecidableEq σ :=
+    Subsingleton.elim _ _
+  simpa only [hi] using withoutDecidableEq α r P hP
+theorem callerOriginalInstance [Fintype σ] [DecidableEq σ] (α x : σ → A) (r : σ → ℕ) (P : MvPolynomial σ A)
+    (hP : ∀ j, degreeOf j P ≤ r j) :
+    eval x P = ∑ d ∈ Roth.box r, eval α (hasseDeriv d P) * ∏ j, (x j - α j) ^ d j := by
+  have hi : (inferInstance : DecidableEq σ) = Classical.typeDecidableEq σ :=
+    Subsingleton.elim _ _
+  simpa only [hi, map_sum, map_mul, map_prod, map_pow, eval_C, eval_X, map_sub] using
+    congrArg (eval x) (withoutDecidableEq α r P hP)
+open Classical in
+theorem callerWithoutDecidableEq [Fintype σ] (α x : σ → A) (r : σ → ℕ) (P : MvPolynomial σ A)
+    (hP : ∀ j, degreeOf j P ≤ r j) :
+    eval x P = ∑ d ∈ Roth.box r, eval α (hasseDeriv d P) * ∏ j, (x j - α j) ^ d j := by
+  simpa using congrArg (eval x) (withoutDecidableEq α r P hP)
+#print axioms originalInstanceRecovery
+#print axioms callerOriginalInstance
+#print axioms callerWithoutDecidableEq
+#check @callerWithoutDecidableEq
+end MvPolynomial.TaylorExpansionExtra
