@@ -1,0 +1,587 @@
+namespace PrivateKronHasseAssessment
+
+open Roth MvPolynomial
+
+variable {K : Type*} [Field K] {σ : Type*} [Fintype σ] {l : ℕ}
+
+/-- The generalized Wronskian `det (Δ_{D μ} φ_ν)_{μ, ν}`. Source: §2, definition of
+`W(φ_0, …, φ_{l-1}; Δ_0, …, Δ_{l-1})`. -/
+noncomputable def genWronskian (D : Fin l → σ →₀ ℕ) (φ : Fin l → MvPolynomial σ K) :
+    MvPolynomial σ K :=
+  (Matrix.of fun μ ν ↦ hasseDeriv (D μ) (φ ν)).det
+
+omit [Fintype σ] in
+/-- Linearly dependent polynomials have identically vanishing generalized Wronskians.
+
+Source: §2, second lemma ("If `φ_0, …, φ_{l-1}` ... are linearly dependent ..., then all of
+their generalized Wronskians are identically zero"). -/
+theorem genWronskian_eq_zero_of_not_linearIndependent (D : Fin l → (σ →₀ ℕ))
+    {φ : Fin l → MvPolynomial σ K} (h : ¬ LinearIndependent K φ) : genWronskian D φ = 0 := by
+  classical
+  obtain ⟨g, hg, ν₀, hν₀⟩ := Fintype.not_linearIndependent_iff.1 h
+  refine Matrix.exists_mulVec_eq_zero_iff.1 ⟨fun ν ↦ C (g ν), fun h0 ↦ hν₀ ?_, ?_⟩
+  · simpa using congrFun h0 ν₀
+  · ext1 μ
+    simpa [Matrix.mulVec, dotProduct, map_smul, ← smul_eq_C_mul, mul_comm] using
+      congrArg (hasseDeriv (D μ)) hg
+
+/-- Kronecker substitution `x_j ↦ t^{k^{e j}}` where `e : σ ≃ Fin (card σ)` is the chosen
+enumeration. Source: §2, proof of Lemma 1 (`h_ν(t) = φ_ν(t, t^k, …, t^{k^{p-1}})`). -/
+noncomputable def kronecker (k : ℕ) : MvPolynomial σ K →ₐ[K] Polynomial K :=
+  aeval fun j ↦ Polynomial.X ^ k ^ (Fintype.equivFin σ j : ℕ)
+
+/-- The exponent `∑ j, d j * k^{e j}` of the image of the monomial `X^d`. -/
+noncomputable def kroneckerExp (k : ℕ) (d : σ →₀ ℕ) : ℕ := ∑ j, d j * k ^ (Fintype.equivFin σ j : ℕ)
+
+/-- The Kronecker substitution sends the monomial `a X^d` to `a t^{kroneckerExp k d}`. -/
+theorem kronecker_monomial (k : ℕ) (d : σ →₀ ℕ) (a : K) :
+    kronecker k (monomial d a) = Polynomial.C a * Polynomial.X ^ kroneckerExp k d := by
+  simp [kronecker, kroneckerExp, aeval_monomial, Finsupp.prod_fintype, ← pow_mul, mul_comm,
+    ← Finset.prod_pow_eq_pow_sum]
+
+/-- The Kronecker exponent map is injective on exponent vectors whose entries are all `< k`.
+
+Source: §2, proof of Lemma 1, FACT ("Since each `s_i` is strictly smaller than `k`, the
+representation of any natural number in the form `s_1 + k s_2 + ⋯ + k^{p-1} s_p` is unique"). -/
+theorem kroneckerExp_injOn {k : ℕ} (hk : 1 < k) :
+    Set.InjOn (kroneckerExp (σ := σ) k) {d | ∀ j, d j < k} := by
+  intro d hd d' hd' h
+  set e := Fintype.equivFin σ
+  have hsum (d : σ →₀ ℕ) : Nat.ofDigits k (List.ofFn fun i ↦ d (e.symm i)) = kroneckerExp k d := by
+    simp only [Nat.ofDigits_eq_sum_mapIdx, List.mapIdx_eq_ofFn, Fin.sum_ofFn, kroneckerExp,
+      ← e.symm.sum_comp, e, List.get_eq_getElem, List.getElem_ofFn, List.length_ofFn,
+      Equiv.apply_symm_apply, Fin.val_cast, Fin.eta]
+  apply DFunLike.coe_injective
+  apply e.symm.surjective.injective_comp_right
+  refine List.ofFn_injective (Nat.ofDigits_inj_of_len_eq hk (by simp)
+    (List.forall_mem_ofFn_iff.2 fun i ↦ hd (e.symm i))
+    (List.forall_mem_ofFn_iff.2 fun i ↦ hd' (e.symm i)) ?_)
+  simpa [Function.comp_def, hsum] using h
+
+/-- If all partial degrees of `P` are `< k`, the Kronecker substitution preserves the coefficient
+of `X^d` for every `d` with entries `< k`.
+
+Source: §2, proof of Lemma 1 ("Comparing the coefficient of `t^{s_1 + k s_2 + ⋯}` gives ..."). -/
+theorem coeff_kronecker {k : ℕ} (hk : 1 < k) {P : MvPolynomial σ K} (hP : ∀ j, degreeOf j P < k)
+    {d : σ →₀ ℕ} (hd : ∀ j, d j < k) : (kronecker k P).coeff (kroneckerExp k d) = P.coeff d := by
+  classical
+  conv_lhs => rw [P.as_sum]
+  rw [map_sum, Polynomial.finsetSum_coeff]
+  simp_rw [kronecker_monomial, Polynomial.coeff_C_mul_X_pow]
+  rw [Finset.sum_eq_single d]
+  · simp
+  · intro e he hed
+    exact ite_eq_right fun h ↦ hed (kroneckerExp_injOn hk
+      (fun j ↦ (monomial_le_degreeOf j he).trans_lt (hP j)) hd h.symm)
+  · intro hdP
+    simp [notMem_support_iff.1 hdP]
+
+/-- A polynomial with all partial degrees `< k` vanishes iff its Kronecker substitution does.
+
+Source: §2, Lean implementation note ("prove injectivity only on the subspace where every
+individual exponent is less than `k`"). -/
+theorem kronecker_eq_zero_iff {k : ℕ} (hk : 1 < k) {P : MvPolynomial σ K}
+    (hP : ∀ j, degreeOf j P < k) : kronecker k P = 0 ↔ P = 0 := by
+  refine ⟨fun h ↦ support_eq_empty.1 <| Finset.eq_empty_iff_forall_notMem.2 fun d hd ↦ ?_,
+    fun h ↦ by rw [h, map_zero]⟩
+  apply mem_support_iff.1 hd
+  simpa [h] using (coeff_kronecker hk hP fun j ↦ (monomial_le_degreeOf j hd).trans_lt (hP j)).symm
+
+/-- The Kronecker substitution preserves linear independence of polynomials whose partial degrees
+are all `< k`.
+
+Source: §2, proof of Lemma 1 ("We claim that these polynomials are linearly independent"). -/
+theorem linearIndependent_kronecker {k : ℕ} (hk : 1 < k) {φ : Fin l → MvPolynomial σ K}
+    (hφ : ∀ ν j, degreeOf j (φ ν) < k) (h : LinearIndependent K φ) :
+    LinearIndependent K fun ν ↦ kronecker k (φ ν) := by
+  rw [Fintype.linearIndependent_iff] at h ⊢
+  intro g hg
+  apply h g
+  refine (kronecker_eq_zero_iff hk fun j ↦ ?_).mp ?_
+  · refine (degreeOf_sum_le _ _ _).trans_lt <|
+      (Finset.sup_lt_iff (Nat.zero_lt_of_lt hk)).2 fun i _ ↦ ?_
+    simpa [smul_eq_C_mul] using (degreeOf_C_mul_le (φ i) j (g i)).trans_lt (hφ i j)
+  · simpa [map_sum, map_smul] using hg
+
+/-- The algebraic chain rule for substituting univariate polynomials into a multivariate one.
+
+Source: §2, proof of Lemma 1, FACT
+(`d/dt h_ν(t) = ∑_j γ_j'(t) (∂φ_ν/∂x_j)(γ(t))`). -/
+theorem derivative_aeval (γ : σ → Polynomial K) (P : MvPolynomial σ K) :
+    Polynomial.derivative (aeval γ P) =
+      ∑ j, Polynomial.derivative (γ j) * aeval γ (pderiv j P) := by
+  classical
+  induction P using MvPolynomial.induction_on with
+  | C a => simp
+  | add p q hp hq => simp [hp, hq, Finset.sum_add_distrib, mul_add]
+  | mul_X p j hp =>
+    simp [hp, Finset.sum_add_distrib, ← Finset.mul_sum, add_mul, mul_assoc, mul_comm,
+      Pi.single_apply, apply_ite (aeval γ)]
+
+/-- The operator `P ↦ kronecker k (Δ_d P)`, as an element of the `K[X]`-module of functions. -/
+noncomputable def replay (k : ℕ) (d : σ →₀ ℕ) : MvPolynomial σ K → Polynomial K :=
+  fun P ↦ kronecker k (hasseDeriv d P)
+
+/-- The `K[X]`-span of the operators `replay k d` with `|d| ≤ μ`. -/
+private noncomputable def kronSpan (k μ : ℕ) : Submodule (Polynomial K)
+    (MvPolynomial σ K → Polynomial K) :=
+  Submodule.span (Polynomial K) (replay (K := K) k '' {d | d.degree ≤ μ})
+
+private lemma derivative_kronHasse_aux (k : ℕ) (d : σ →₀ ℕ) :
+    (fun P ↦ Polynomial.derivative (replay (K := K) k d P)) =
+      ∑ j, (Polynomial.derivative (Polynomial.X ^ k ^ (Fintype.equivFin σ j : ℕ)) *
+        Polynomial.C ((d j + 1 : ℕ) : K)) • replay k (d + Finsupp.single j 1) := by
+  classical
+  funext P
+  simp [replay, kronecker, derivative_aeval, pderiv_hasseDeriv, map_smul,
+    Polynomial.smul_eq_C_mul, mul_assoc, mul_comm, mul_left_comm]
+
+private lemma derivative_mem_kronSpan (k μ : ℕ) {F : MvPolynomial σ K → Polynomial K}
+    (hF : F ∈ kronSpan k μ) :
+    (fun P ↦ Polynomial.derivative (F P)) ∈ kronSpan (K := K) (σ := σ) k (μ + 1) := by
+  classical
+  induction hF using Submodule.span_induction with
+  | mem F hF =>
+    obtain ⟨d, hd, rfl⟩ := hF
+    rw [derivative_kronHasse_aux]
+    refine Submodule.sum_mem _ fun j _ ↦ Submodule.smul_mem _ _ (Submodule.subset_span ?_)
+    refine ⟨d + Finsupp.single j 1, ?_, rfl⟩
+    simp only [Set.mem_ofPred_eq, map_add, Finsupp.degree_single] at hd ⊢
+    exact Nat.add_le_add_right hd 1
+  | zero =>
+    convert (kronSpan (K := K) (σ := σ) k (μ + 1)).zero_mem using 1
+    funext P
+    simp
+  | add F G _ _ hF hG =>
+    convert Submodule.add_mem _ hF hG using 1
+    funext P
+    simp [Polynomial.derivative_add]
+  | smul a F hF' hF =>
+    convert Submodule.add_mem (kronSpan (K := K) (σ := σ) k (μ + 1))
+      (Submodule.smul_mem _ (Polynomial.derivative a)
+        (Submodule.span_mono (Set.image_mono fun _ hd ↦ le_trans hd (Nat.le_succ μ)) hF'))
+      (Submodule.smul_mem _ a hF) using 1
+    funext P
+    simp [Polynomial.derivative_mul, add_comm]
+
+private lemma hasseDeriv_kronecker_mem [CharZero K] (k μ : ℕ) :
+    (fun P ↦ Polynomial.hasseDeriv μ (kronecker k P)) ∈ kronSpan (K := K) (σ := σ) k μ := by
+  induction μ with
+  | zero =>
+    refine Submodule.subset_span ⟨0, by simp, ?_⟩
+    funext P
+    simp [replay]
+  | succ μ ih =>
+    apply (((kronSpan (K := K) (σ := σ) k (μ + 1)).restrictScalars K).smul_mem_iff
+      (s := ((μ + 1 : ℕ) : K)) (Nat.cast_ne_zero.2 μ.succ_ne_zero)).mp
+    change (((μ + 1 : ℕ) : K) • fun P ↦ Polynomial.hasseDeriv (μ + 1) (kronecker k P)) ∈
+      kronSpan (K := K) (σ := σ) k (μ + 1)
+    convert derivative_mem_kronSpan k μ ih using 1
+    funext P
+    simpa [← Nat.cast_smul_eq_nsmul K, add_comm] using
+      (congrArg (fun L ↦ L (kronecker k P)) (Polynomial.hasseDeriv_comp (R := K) 1 μ)).symm
+
+/-- The `μ`-th Hasse derivative of a Kronecker substitution is a `K[t]`-linear combination of
+Kronecker substitutions of Hasse derivatives `Δ_d` of order `|d| ≤ μ`, uniformly in `P`.
+
+Source: §2, proof of Lemma 1 ("for each `μ`, there is a natural number `r(μ)` ..., polynomials
+`f^μ_i(t)` with rational coefficients, and differential operators `Δ^{(i)}_μ` of order `≤ μ` such
+that for all `ν`, `d^μ/dt^μ h_ν = ∑_i f^μ_i(t) (Δ^{(i)}_μ φ_ν)(γ(t))`"; here stated with Hasse
+derivatives on both sides, which over `ℚ` differ from iterated derivatives by factorials). -/
+theorem exists_hasseDeriv_kronecker_eq_sum [CharZero K] (k μ : ℕ) : ∃ (s : Finset (σ →₀ ℕ))
+    (c : (σ →₀ ℕ) → Polynomial K), (∀ d ∈ s, d.degree ≤ μ) ∧ ∀ P : MvPolynomial σ K,
+      Polynomial.hasseDeriv μ (kronecker k P) = ∑ d ∈ s, c d * kronecker k (hasseDeriv d P) := by
+  classical
+  obtain ⟨c, hc, hsum⟩ := (Finsupp.mem_span_image_iff_linearCombination _).1
+    (hasseDeriv_kronecker_mem (K := K) (σ := σ) k μ)
+  refine ⟨c.support, c, hc, fun P ↦ ?_⟩
+  simpa [Finsupp.linearCombination_apply, Finsupp.sum, replay] using congrFun hsum.symm P
+
+/-- Expanding the determinant of a matrix whose rows are linear combinations, by multilinearity
+in the rows.
+
+Source: §2, proof of Lemma 1 ("multilinearity of the determinant in each row gives
+`det (∑_i f^μ_i ⋯) = ∑_{i ∈ 𝒮} f_i(t) det (⋯)`"). -/
+theorem det_sum_rows {A : Type*} [CommRing A] {ι : Type*} (s : Fin l → Finset ι) (c : Fin l → ι → A)
+    (N : Fin l → ι → Fin l → A) :
+    (Matrix.of fun μ ν ↦ ∑ i ∈ s μ, c μ i * N μ i ν).det =
+      ∑ f ∈ Fintype.piFinset s, (∏ μ, c μ (f μ)) * (Matrix.of fun μ ν ↦ N μ (f μ) ν).det := by
+  have h := (Matrix.detRowAlternating (R := A) (n := Fin l)).toMultilinearMap.map_sum_finset
+    (fun μ i ↦ c μ i • N μ i) s
+  simp_rw [MultilinearMap.map_smul_univ, smul_eq_mul] at h
+  simp only [Matrix.det, Finset.sum_fn, Pi.smul_def, smul_eq_mul] at h ⊢
+  exact h
+
+private lemma wronskian_kronecker_eq_sum_aux (k : ℕ) (φ : Fin l → MvPolynomial σ K)
+    (s : Fin l → Finset (σ →₀ ℕ)) (c : Fin l → (σ →₀ ℕ) → Polynomial K)
+    (hc : ∀ μ ν : Fin l, Polynomial.hasseDeriv μ (kronecker k (φ ν)) =
+      ∑ d ∈ s μ, c μ d * kronecker k (hasseDeriv d (φ ν))) : wronskian (fun ν ↦ kronecker k (φ ν)) =
+    ∑ f ∈ Fintype.piFinset s, (∏ μ, c μ (f μ)) * kronecker k (genWronskian f φ) := by
+  classical
+  simpa [wronskian, wronskianMatrix, hc, genWronskian, AlgHom.map_det, Matrix.map] using
+    det_sum_rows s c (fun μ d ν ↦ kronecker k (hasseDeriv d (φ ν)))
+
+omit [Fintype σ] in
+/-- **Lemma 1**: a linearly independent family of polynomials has a generalized Wronskian (with
+Hasse operators of orders `|D μ| ≤ μ`) that is not identically zero.
+
+Source: §2, Lemma `roth:lem1` ("If `φ_0, …, φ_{l-1}` are `l` linearly independent
+polynomials in `p` variables with rational coefficients, then at least one of their generalized
+Wronskians is not identically zero"). -/
+theorem exists_genWronskian_ne_zero [Finite σ] [CharZero K] {φ : Fin l → MvPolynomial σ K}
+    (h : LinearIndependent K φ) :
+    ∃ D : Fin l → (σ →₀ ℕ), (∀ μ, (D μ).degree ≤ μ) ∧ genWronskian D φ ≠ 0 := by
+  classical
+  let := Fintype.ofFinite σ
+  let k := 2 + ∑ ν, ∑ j, degreeOf j (φ ν)
+  choose s c hs hc using fun μ : Fin l ↦ exists_hasseDeriv_kronecker_eq_sum (K := K) (σ := σ) k μ
+  by_contra! hcon
+  apply wronskian_ne_zero_of_linearIndependent
+    (linearIndependent_kronecker (Nat.lt_add_right _ (by decide)) (fun ν j ↦
+      lt_of_le_of_lt ((Finset.single_le_sum (f := fun j ↦ degreeOf j (φ ν))
+        (by simp) (Finset.mem_univ j)).trans (Finset.single_le_sum
+          (f := fun ν ↦ ∑ j, degreeOf j (φ ν)) (by simp) (Finset.mem_univ ν)))
+        (Nat.lt_add_of_pos_left two_pos)) h)
+  rw [wronskian_kronecker_eq_sum_aux k φ s c (fun μ ν ↦ hc μ (φ ν))]
+  refine Finset.sum_eq_zero fun f hf ↦ ?_
+  rw [hcon f fun μ ↦ hs μ _ (Fintype.mem_piFinset.1 hf μ), map_zero, mul_zero]
+
+end PrivateKronHasseAssessment
+
+#print axioms PrivateKronHasseAssessment.genWronskian
+#print axioms PrivateKronHasseAssessment.genWronskian_eq_zero_of_not_linearIndependent
+#print axioms PrivateKronHasseAssessment.kronecker
+#print axioms PrivateKronHasseAssessment.kroneckerExp
+#print axioms PrivateKronHasseAssessment.kronecker_monomial
+#print axioms PrivateKronHasseAssessment.kroneckerExp_injOn
+#print axioms PrivateKronHasseAssessment.coeff_kronecker
+#print axioms PrivateKronHasseAssessment.kronecker_eq_zero_iff
+#print axioms PrivateKronHasseAssessment.linearIndependent_kronecker
+#print axioms PrivateKronHasseAssessment.derivative_aeval
+#print axioms PrivateKronHasseAssessment.replay
+#print axioms PrivateKronHasseAssessment.exists_hasseDeriv_kronecker_eq_sum
+#print axioms PrivateKronHasseAssessment.det_sum_rows
+#print axioms PrivateKronHasseAssessment.exists_genWronskian_ne_zero
+run_cmd do
+  let n := Lean.mkPrivateNameCore `Roth.GenWronskian `Roth.kronHasse
+  Lean.Elab.Command.elabCommand (← `(#check $(Lean.mkIdent n)))
+  Lean.Elab.Command.elabCommand (← `(#print $(Lean.mkIdent n)))
+  Lean.Elab.Command.elabCommand (← `(#print axioms $(Lean.mkIdent n)))
+namespace PrivateKronHasseAssessmentAudit
+run_cmd do
+  let env ← Lean.getEnv
+  let target := Lean.mkPrivateNameCore `Roth.GenWronskian `Roth.kronHasse
+  let names : Array Lean.Name := #[
+    `MvPolynomial.hasseCoeff,
+    `MvPolynomial.hasseDeriv,
+    `MvPolynomial.hasseDeriv_monomial,
+    `MvPolynomial.hasseDeriv_apply,
+    `MvPolynomial.hasseCoeff_eq_zero_iff,
+    `MvPolynomial.coeff_hasseDeriv,
+    `MvPolynomial.hasseCoeff_eq_prod,
+    `MvPolynomial.hasseDeriv_zero_apply,
+    `MvPolynomial.hasseDeriv_zero,
+    `MvPolynomial.hasseDeriv_C,
+    `MvPolynomial.hasseDeriv_map,
+    `MvPolynomial.hasseDeriv_rename,
+    Lean.mkPrivateNameCore `Roth.HasseDeriv `MvPolynomial.hasseCoeff_mul_hasseCoeff,
+    `MvPolynomial.hasseDeriv_hasseDeriv,
+    `MvPolynomial.hasseDeriv_hasseDeriv_of_disjoint,
+    Lean.mkPrivateNameCore `Roth.HasseDeriv `MvPolynomial.hasseCoeff_mul_succ,
+    `MvPolynomial.pderiv_hasseDeriv,
+    `MvPolynomial.degreeOf_hasseDeriv_le,
+    `MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt,
+    Lean.mkPrivateNameCore `Roth.HasseDeriv `MvPolynomial.hasseDeriv_monomial_mul,
+    `MvPolynomial.hasseDeriv_mul_of_degreeOf_eq_zero,
+    `MvPolynomial.hasseDeriv_single_aeval_X,
+    `MvPolynomial.uniqueAlgEquiv_hasseDeriv,
+    `MvPolynomial.hasseCoeff_le_two_pow,
+    `MvPolynomial.factorial_smul_hasseDeriv_single,
+    `Roth.box,
+    `Roth.weight,
+    `Roth.mem_box,
+    `Roth.card_box,
+    `Roth.card_le_card_box,
+    `Roth.weight_nonneg,
+    `Roth.weight_zero,
+    `Roth.weight_add,
+    `Roth.weight_eq_zero_iff,
+    `Roth.weight_single,
+    `Roth.weight_le_card,
+    `Roth.weight_mul_left,
+    `Roth.weight_le_degree_div,
+    `Roth.weight_mapDomain,
+    `Roth.wronskianMatrix,
+    `Roth.wronskian,
+    `Roth.wronskian_eq_zero_of_not_linearIndependent,
+    `Roth.det_choose_eq,
+    Lean.mkPrivateNameCore `Roth.Wronskian `Roth.coeff_prod_of_natDegree_le',
+    `Roth.sum_range_le_sum_of_injective,
+    `Roth.coeff_wronskian_of_natDegree_injective,
+    `Roth.wronskian_ne_zero_of_natDegree_injective,
+    `Roth.wronskian_update_sub_smul,
+    `Roth.linearIndependent_update_sub_smul,
+    `Roth.sum_natDegree_update_lt,
+    `Roth.wronskian_ne_zero_of_linearIndependent,
+    `Roth.wronskian_eq_zero_iff,
+    `MvPolynomial.taylor,
+    `MvPolynomial.taylor_apply,
+    `MvPolynomial.taylor_X,
+    `MvPolynomial.taylor_C,
+    `MvPolynomial.taylor_monomial,
+    Lean.mkPrivateNameCore `Roth.Taylor `MvPolynomial.coeff_aeval_X_mul,
+    Lean.mkPrivateNameCore `Roth.Taylor `MvPolynomial.hasseCoeff_single_add_eq,
+    Lean.mkPrivateNameCore `Roth.Taylor `MvPolynomial.prod_pow_single_add_tsub,
+    Lean.mkPrivateNameCore `Roth.Taylor `MvPolynomial.coeff_taylor_monomial_single_add_aux,
+    Lean.mkPrivateNameCore `Roth.Taylor `MvPolynomial.coeff_taylor_monomial_aux,
+    `MvPolynomial.coeff_taylor,
+    `MvPolynomial.eval_taylor,
+    `MvPolynomial.taylor_taylor,
+    `MvPolynomial.taylor_zero,
+    `MvPolynomial.taylor_map,
+    `MvPolynomial.taylor_rename,
+    `MvPolynomial.degreeOf_taylor_le,
+    `MvPolynomial.taylor_neg_taylor,
+    `MvPolynomial.taylor_injective,
+    `MvPolynomial.taylor_eq_zero_iff,
+    `MvPolynomial.eq_sum_box_hasseDeriv,
+    `MvPolynomial.eval_eq_sum_box,
+    `Roth.normOne,
+    `Roth.diag,
+    `Roth.normOne_nonneg,
+    `Roth.normOne_eq_sum_of_support_subset,
+    `Roth.normOne_monomial,
+    `Roth.normOne_zero,
+    `Roth.abs_coeff_le_normOne,
+    `Roth.normOne_add_le,
+    `Roth.normOne_neg,
+    `Roth.normOne_sum_le,
+    `Roth.normOne_mul_le,
+    `Roth.normOne_prod_le,
+    `Roth.normOne_le_card_mul,
+    `Roth.normOne_det_le,
+    `Roth.abs_coeff_hasseDeriv_le,
+    `Roth.normOne_hasseDeriv_le,
+    `Roth.diag_eq_sum,
+    `Roth.abs_coeff_diag_le,
+    `Roth.natDegree_diag_le,
+    `Roth.eval_diag,
+    `Roth.diag_sub,
+    `Roth.geom_sum_le_one_add_pow,
+    Lean.mkPrivateNameCore `Roth.CoeffNorm `Roth.sum_box_prod_pow_le_aux,
+    `Roth.abs_eval_le,
+    `Roth.degreeOf_det_hasseDeriv_le,
+    `Roth.abs_coeff_det_hasseDeriv_le,
+    `Roth.genWronskian,
+    `Roth.kronecker,
+    `Roth.kroneckerExp,
+    Lean.mkPrivateNameCore `Roth.GenWronskian `Roth.kronHasse,
+    Lean.mkPrivateNameCore `Roth.GenWronskian `Roth.kronSpan,
+    `Roth.genWronskian_eq_zero_of_not_linearIndependent,
+    `Roth.kronecker_monomial,
+    `Roth.kroneckerExp_injOn,
+    `Roth.coeff_kronecker,
+    `Roth.kronecker_eq_zero_iff,
+    `Roth.linearIndependent_kronecker,
+    `Roth.derivative_aeval,
+    Lean.mkPrivateNameCore `Roth.GenWronskian `Roth.derivative_kronHasse_aux,
+    Lean.mkPrivateNameCore `Roth.GenWronskian `Roth.derivative_mem_kronSpan,
+    Lean.mkPrivateNameCore `Roth.GenWronskian `Roth.hasseDeriv_kronecker_mem,
+    `Roth.exists_hasseDeriv_kronecker_eq_sum,
+    `Roth.det_sum_rows,
+    Lean.mkPrivateNameCore `Roth.GenWronskian `Roth.wronskian_kronecker_eq_sum_aux,
+    `Roth.exists_genWronskian_ne_zero,
+    `Roth.sqrt_one_sub_inv_lt,
+    Lean.mkPrivateNameCore `Roth.Lattice `Roth.inv_add_inv_le,
+    Lean.mkPrivateNameCore `Roth.Lattice `Roth.sum_inv_le,
+    `Roth.sum_inv_lt,
+    Lean.mkPrivateNameCore `Roth.Lattice `Roth.extend_apply_castSucc,
+    Lean.mkPrivateNameCore `Roth.Lattice `Roth.extend_apply_last,
+    Lean.mkPrivateNameCore `Roth.Lattice `Roth.card_filter_box_fiber_aux,
+    `Roth.card_filter_box_last,
+    Lean.mkPrivateNameCore `Roth.Lattice `Roth.filter_weight_le_eq_empty,
+    Lean.mkPrivateNameCore `Roth.Lattice `Roth.card_filter_fiber_eq,
+    Lean.mkPrivateNameCore `Roth.Lattice `Roth.card_filter_weight_le_of_le_sqrt_aux,
+    Lean.mkPrivateNameCore `Roth.Lattice `Roth.card_filter_weight_le_succ_aux,
+    `Roth.card_filter_weight_le,
+    `Roth.index,
+    Lean.mkPrivateNameCore `Roth.Index `Roth.mem_support_taylor_iff,
+    `Roth.index_le_weight,
+    `Roth.exists_weight_eq_index,
+    `Roth.le_index_iff,
+    `Roth.index_nonneg,
+    `Roth.index_eq_zero_iff,
+    `Roth.index_sub_weight_le_index_hasseDeriv,
+    `Roth.le_index_sum,
+    `Roth.weight_eq_finsuppWeight_div,
+    `Roth.index_eq_weightedOrder_div,
+    `Roth.index_mul,
+    `Roth.index_prod,
+    `Roth.index_neg,
+    `Roth.index_C_mul,
+    `Roth.index_mul_left_weights,
+    `Roth.index_rename,
+    `Roth.index_le_card,
+    `Roth.index_unique,
+    `Roth.coeffNone,
+    `Roth.eq_mapDomain_some_add_single,
+    Lean.mkPrivateNameCore `Roth.Separation `Roth.coeff_X_none_pow_mul_rename,
+    `Roth.coeff_coeffNone,
+    `Roth.eq_sum_X_none_pow_mul_coeffNone,
+    `Roth.degreeOf_coeffNone_le,
+    `Roth.coeff_rename_mul_aeval,
+    `Roth.aeval_X_eq_rename,
+    `Roth.hasseDeriv_rename_mul_aeval,
+    `Roth.coeff_uniqueAlgEquiv_symm,
+    `Roth.degreeOf_uniqueAlgEquiv_symm,
+    `Roth.degreeOf_rename_mul_aeval,
+    `Roth.degreeOf_none_rename_mul_aeval,
+    Lean.mkPrivateNameCore `Roth.Separation `Roth.linearIndependent_coordinate_polynomials_aux,
+    Lean.mkPrivateNameCore `Roth.Separation `Roth.eq_sum_aeval_basis_coeffNone_aux,
+    Lean.mkPrivateNameCore `Roth.Separation `Roth.exists_coeffNone_basis_aux,
+    `Roth.exists_separated_representation,
+    `Roth.det_hasseDeriv_separated,
+    `Roth.exists_sum_mul_eq_gcd,
+    `Roth.exists_nat_smul_eq_map,
+    `Roth.exists_primitive_smul_eq,
+    `Roth.exists_int_eq_of_gcd_eq_one,
+    Lean.mkPrivateNameCore `Roth.Separation `Roth.rescale_separated_factor_aux,
+    Lean.mkPrivateNameCore `Roth.Separation `Roth.exists_int_polynomial_of_primitive_factor_aux,
+    `Roth.exists_int_factors,
+    Lean.mkPrivateNameCore `Roth.Separation `Roth.exists_rat_factors_det_hasseDeriv_aux,
+    `Roth.exists_det_eq_mul,
+    `Roth.RSet,
+    `Roth.indexSet,
+    `Roth.Θ,
+    `Roth.lem6M,
+    `Roth.lem6Φ,
+    `Roth.one_mem_RSet,
+    `Roth.indexSet_nonempty,
+    `Roth.indexSet_bddAbove,
+    `Roth.index_le_Θ,
+    `Roth.Θ_nonneg,
+    `Roth.Θ_le_card,
+    `Roth.Θ_le_of_forall_index_le,
+    `Roth.Θ_mono,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.indexSet_comp_subset,
+    `Roth.Θ_equiv,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.isPrimitive_linear,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.isPrimitive_pow,
+    `Roth.exists_eq_pow_mul_of_rootMultiplicity,
+    `Roth.pow_rootMultiplicity_le,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.index_unique_le_log_div,
+    `Roth.Θ_unique_le,
+    `Roth.one_le_lem6M,
+    `Roth.floor_sq_div_two_le_sum,
+    `Roth.sq_div_three_lt_floor_sq_div_two,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.mul_div_two_le_sum_max_aux,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.mul_sq_div_three_le_sum_max_of_pos_aux,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.mul_sq_div_three_le_sum_max_aux,
+    `Roth.min_le_sum_max,
+    `Roth.sum_max_sub_le_index_det,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.index_separated_mul_le_aux,
+    `Roth.index_det_le,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.weight_le_delta_aux,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.mapped_det_ne_zero_aux,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.index_numeric_bound_aux,
+    `Roth.index_le_lem6,
+    `Roth.Θ_option_le,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.factorial_coefficient_le_two_pow_aux,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.two_pow_lt_rpow_aux,
+    `Roth.lem6M_lt,
+    `Roth.lem7_Φ_bound,
+    `Roth.lem7_numeric,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.theta_scaled_unique_le_aux,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.theta_delta_succ_lt_aux,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.theta_prefix_lt_aux,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.theta_lt_base_aux,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.theta_denominators_one_lt_aux,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.theta_phi_lt_aux,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.theta_lt_succ_aux,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.theta_lt_of_large_delta_aux,
+    `Roth.Θ_lt,
+    `Roth.lam,
+    `Roth.gam,
+    `Roth.eta,
+    `Roth.mainCoeffBound,
+    `Roth.boxFamily,
+    `Roth.exists_delta_bound,
+    `Roth.eta_lt_gam_iff,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.sqrt_lt_nat_floor_aux,
+    `Roth.sqrt_lt_floor,
+    `Roth.four_lt_rpow,
+    `Roth.mul_log_div_two_lt_log_mainCoeffBound,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.two_lt_rpow_aux,
+    `Roth.three_small_factors,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.exists_norm_coeff_reduction_aux,
+    `Roth.norm_coeff_modByMonic_le,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.boxFamily_eq_image_finsupp_aux,
+    `Roth.boxFamily_finite,
+    `Roth.ncard_boxFamily,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.floor_rpow_count_lt_aux,
+    `Roth.pigeonhole_count,
+    `Roth.exists_ne_modByMonic_eq,
+    `Roth.sub_mem_RSet,
+    `Roth.eval_hasseDeriv_sub_eq_zero,
+    `Roth.le_index_of_forall_eval_eq_zero,
+    `Roth.mul_two_mul_add_one_div_lt_of_le_sq_mul,
+    `Roth.exists_hasseDeriv_eval_ne_zero,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.abs_eval_iterated_hasseDeriv_lt_aux,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.exists_hasseDeriv_index_eval_bound_aux,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.exists_mem_RSet_le_index_aux,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.mul_card_filter_weight_le_aux,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.exists_mem_RSet_le_index_of_rpow_bound_aux,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.exists_mem_RSet_le_index_of_log_bound_aux,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.exists_auxiliary_polynomial_of_log_bound_aux,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.theta_lt_eta_of_sq_log_bound_aux,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.exists_auxiliary_polynomial_with_index_gap_aux,
+    `Roth.main_lemma,
+    `Roth.approxSet,
+    `Roth.exists_nat_mul_isIntegral,
+    `Roth.approxSet_den_le_finite,
+    `Roth.eventually_div_rpow_lt,
+    `Roth.reduction,
+    `Roth.exists_monic_aeval_eq_zero,
+    Lean.mkPrivateNameCore `Roth.Main `Roth.approxSet_num_den_mem_aux,
+    `Roth.exists_reduced_approx,
+    `Roth.exists_m,
+    `Roth.exists_delta,
+    `Roth.exists_approximants,
+    `Roth.exists_degrees,
+    `Roth.one_le_prod_pow_mul_abs_eval,
+    Lean.mkPrivateNameCore `Roth.Main `Roth.abs_prod_pow_le_rpow_of_le_weight,
+    `Roth.abs_eval_lt_of_le_index,
+    Lean.mkPrivateNameCore `Roth.Main `Roth.exists_roth_parameters_aux,
+    Lean.mkPrivateNameCore `Roth.Main `Roth.exists_roth_approximants_aux,
+    Lean.mkPrivateNameCore `Roth.Main `Roth.one_lt_roth_eval_bound_aux,
+    Lean.mkPrivateNameCore `Roth.Main `Roth.roth_product_bound_aux,
+    Lean.mkPrivateNameCore `Roth.Main `Roth.roth_log_bound_aux,
+    `Roth.roth_of_isIntegral,
+    `Roth.roth,
+    `Roth.roth_rat,
+    `LeanEval.NumberTheory.ThueSiegelRothProblem.IsDiophantine,
+    Lean.mkPrivateNameCore `Roth.LeanEval
+      `LeanEval.NumberTheory.ThueSiegelRothProblem.exists_pos_div_rpow_lt_aux,
+    `LeanEval.NumberTheory.ThueSiegelRothProblem.isDiophantine_iff,
+    `LeanEval.NumberTheory.ThueSiegelRothProblem.thueSiegelRoth]
+  let unique := names.toList.eraseDups.length
+  unless names.size == 293 && unique == 293 do
+    throwError "PRIVATE_KRON_HASSE_BAD_CANONICAL_ARRAY"
+  let mut present : Nat := 0
+  let mut values : Nat := 0
+  for n in names do
+    match env.find? n with
+    | none => throwError "PRIVATE_KRON_HASSE_NOT_LOADED: {n}"
+    | some ci =>
+      present := present + 1
+      match ci.value? (allowOpaque := true) with
+      | none => pure ()
+      | some val =>
+        values := values + 1
+        if val.getUsedConstants.any (fun c ↦ c == target) then
+          Lean.logInfo m!"PRIVATE_KRON_HASSE_DIRECT_CONSUMER: {n}"
+  Lean.logInfo m!"PRIVATE_KRON_HASSE_AUDIT: requested={names.size}; unique={unique}"
+  Lean.logInfo m!"PRIVATE_KRON_HASSE_AUDIT_PRESENT: present={present}; values={values}"
+end PrivateKronHasseAssessmentAudit

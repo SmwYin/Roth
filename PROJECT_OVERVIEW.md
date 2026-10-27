@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 103/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 104/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 103; remaining: 190.
-- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 14 YES-but-generalise-first, 20 NO-mathlib-has-it, 32 BORDERLINE-needs-human, 10 SKIP.
+- Completed applicable assessments: 104; remaining: 189.
+- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 14 YES-but-generalise-first, 20 NO-mathlib-has-it, 32 BORDERLINE-needs-human, 11 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -1105,6 +1105,17 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: 3 explicit source callers on6 code lines (6 occurrences), zero external-to-file; one extra docstring occurrence. Full module replay migrates all applications/unfolding lists and reaches exists_genWronskian_ne_zero. Canonical293 value audit has4 direct consumers, additionally kronecker_eq_zero_iff via elaboration.
 - Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/Roth.kroneckerExp.md).
 
+### Completed: `Roth.kronHasse`
+
+- Type: `{K : Type u_1} →
+  [inst : Field K] → {σ : Type u_2} → [Fintype σ] → ℕ → (σ →₀ ℕ) → MvPolynomial σ K → Polynomial K`
+- What: Composes a multivariate Hasse derivative with Kronecker substitution, as a polynomial-valued function.
+- How: Composes hasseDeriv pointwise with kronecker; represented as a function into univariate polynomials.
+- Hypotheses: A field, a finite variable enumeration, a base, and a derivative multi-index. Actual kernel type retains Field and Fintype sigma; no characteristic-zero, positive-base or positive-order premise.
+- Project dependencies: MvPolynomial.hasseDeriv, Roth.kronecker
+- Caller summary: 4 explicit source caller declarations, all in GenWronskian.lean; 5 direct original value consumers. Exact separate lists retained. Entire module proof bodies replay successfully with fresh target name.
+- Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.kronHasse.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -1337,6 +1348,8 @@ Completed `Roth.kronecker`: Exact positive existing MvPolynomial.aeval; aeval_mo
 
 Completed `Roth.kroneckerExp`: Exact positive Finsupp.weight in Mathlib/Data/Finsupp/Weight.lean, weight_eq_sum bridge; underlying Finsupp.linearCombination read and native checked. Five actual search methods on current/standard/abstract; abstract dotted Loogle failure retried successfully, local index unavailable honestly recorded.
 
+Completed `Roth.kronHasse`: A pointwise composition: take one project multivariate Hasse derivative, then project Kronecker substitution. It provides generators for the polynomial-module span. Existing function composition is sufficient for the interface; this prefilter does not assign a separate public contribution verdict. The named private operator and the span have distinct roles.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -1544,6 +1557,8 @@ Completed `Roth.genWronskian`: One-line determinant wrapper, with established se
 Completed `Roth.kronecker`: Literal one-call specialization of existing universal evaluation, with legitimate local semantic naming exemption.
 
 Completed `Roth.kroneckerExp`: Specialization of existing generic weighted exponent map. Shared generic API pattern with independently accepted Roth.weight, which instead targets Real with reciprocal weights; these project maps are not equal.
+
+Completed `Roth.kronHasse`: Private operator composition and bounded module span are different stages of the same derivative expansion, not duplicate full constructions.
 
 ## Part 5: Generalization opportunities
 
@@ -1756,6 +1771,8 @@ Completed `Roth.kronecker`: CommSemiring coefficients and arbitrary explicit ran
 
 Completed `Roth.kroneckerExp`: Existing arbitrary-index weight removes Fintype only when explicit weights replace chosen equivFin; generic semiring coefficients/module target compiled. Original chosen positional interface retains Fintype; coefficient Field is already absent.
 
+Completed `Roth.kronHasse`: No public generality claim under the private prefilter; preserve the existing definition and interface.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -1964,6 +1981,8 @@ Completed `Roth.genWronskian`: Named finite-family multivariate Hasse Wronskian;
 Completed `Roth.kronecker`: No missing API for the definition itself; bounded encoding/injectivity and derivative results assessed separately.
 
 Completed `Roth.kroneckerExp`: None for this definition. Radix injectivity and substitution coefficient/derivative laws require their own assessment; arbitrary weights do not inherit injectivity.
+
+Completed `Roth.kronHasse`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 ## Part 7: Junk / removable
 
@@ -2176,6 +2195,8 @@ Completed `Roth.kronecker`: Useful local semantic API, not dead code. No new typ
 
 Completed `Roth.kroneckerExp`: Useful local semantic one-line API with3 callers; not dead code. No new instance/coercion structure.
 
+Completed `Roth.kronHasse`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -2283,6 +2304,7 @@ Completed `Roth.kroneckerExp`: Useful local semantic one-line API with3 callers;
 | 101 | `Roth.genWronskian` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.genWronskian.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.genWronskian/root-acceptance.json) |
 | 102 | `Roth.kronecker` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.kronecker.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.kronecker/root-acceptance.json) |
 | 103 | `Roth.kroneckerExp` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.kroneckerExp.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.kroneckerExp/root-acceptance.json) |
+| 104 | `Roth.kronHasse` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.kronHasse.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.kronHasse/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -2488,12 +2510,14 @@ Completed `Roth.kronecker` action: NO-mathlib-has-it. Inline existing aeval at a
 
 Completed `Roth.kroneckerExp` action: NO-mathlib-has-it. Use Finsupp.weight power weights in kronecker_monomial, kroneckerExp_injOn, coeff_kronecker per compiled replay, or keep documented local/private helper in Roth/GenWronskian.lean. Do not upstream duplicate definition alone.
 
+Completed `Roth.kronHasse` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.kronHasse` next. Supporting identities receive their own applicable checks.
+   `Roth.kronSpan` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

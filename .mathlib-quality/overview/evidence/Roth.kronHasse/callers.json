@@ -1,0 +1,211 @@
+[
+  {
+    "file": "Roth/GenWronskian.lean",
+    "line": 149,
+    "name": "Roth.kronSpan",
+    "short": "kronSpan",
+    "kind": "def",
+    "visibility": "private",
+    "end_line": 151,
+    "source": "private noncomputable def kronSpan (k μ : ℕ) : Submodule (Polynomial K)\n    (MvPolynomial σ K → Polynomial K) :=\n  Submodule.span (Polynomial K) (kronHasse (K := K) k '' {d | d.degree ≤ μ})",
+    "signature": "private noncomputable def kronSpan (k μ : ℕ) : Submodule (Polynomial K)\n    (MvPolynomial σ K → Polynomial K)",
+    "body": "Submodule.span (Polynomial K) (kronHasse (K := K) k '' {d | d.degree ≤ μ})",
+    "proof_lines": 1,
+    "sha256": "1faced4ec8b9adc20b2d01e2832c4a723029645c4b1424f0ee842487cba4232a",
+    "source_body_project_refs": [
+      "Roth.kronHasse"
+    ],
+    "source_type_project_refs": [],
+    "what": "Defines the polynomial-module span of substituted Hasse operators of order at most μ.",
+    "how": "Uses Submodule.span of the image of kronHasse over the degree-bounded exponent set.",
+    "hypotheses": "A field, finite variable enumeration, and natural base and order bound.",
+    "source_used_by_project": [
+      "Roth.derivative_mem_kronSpan",
+      "Roth.hasseDeriv_kronecker_mem"
+    ],
+    "source_used_by_file": [
+      "Roth.derivative_mem_kronSpan",
+      "Roth.hasseDeriv_kronecker_mem"
+    ],
+    "section_binders": "{K : Type*} [Field K] {σ : Type*} [Fintype σ]",
+    "type_provenance": "Exact written signature plus manually identified captured section binders. Root cached full build succeeds; global opaque/type inspector timed out, so no kernel dump is claimed.",
+    "notes": "No sorry, TODO, or set_option in this declaration.",
+    "assignment_offset": 110,
+    "project_body_refs": [
+      "Roth.kronHasse"
+    ],
+    "project_type_refs": [],
+    "project_callers": [
+      {
+        "name": "Roth.derivative_mem_kronSpan",
+        "file": "Roth/GenWronskian.lean",
+        "line": 162
+      },
+      {
+        "name": "Roth.hasseDeriv_kronecker_mem",
+        "file": "Roth/GenWronskian.lean",
+        "line": 190
+      }
+    ],
+    "section_context": "{K : Type*} [Field K] {σ : Type*} [Fintype σ]"
+  },
+  {
+    "file": "Roth/GenWronskian.lean",
+    "line": 153,
+    "name": "Roth.derivative_kronHasse_aux",
+    "short": "derivative_kronHasse_aux",
+    "kind": "lemma",
+    "visibility": "private",
+    "end_line": 160,
+    "source": "private lemma derivative_kronHasse_aux (k : ℕ) (d : σ →₀ ℕ) :\n    (fun P ↦ Polynomial.derivative (kronHasse (K := K) k d P)) =\n      ∑ j, (Polynomial.derivative (Polynomial.X ^ k ^ (Fintype.equivFin σ j : ℕ)) *\n        Polynomial.C ((d j + 1 : ℕ) : K)) • kronHasse k (d + Finsupp.single j 1) := by\n  classical\n  funext P\n  simp [kronHasse, kronecker, derivative_aeval, pderiv_hasseDeriv, map_smul,\n    Polynomial.smul_eq_C_mul, mul_assoc, mul_comm, mul_left_comm]",
+    "signature": "private lemma derivative_kronHasse_aux (k : ℕ) (d : σ →₀ ℕ) :\n    (fun P ↦ Polynomial.derivative (kronHasse (K := K) k d P)) =\n      ∑ j, (Polynomial.derivative (Polynomial.X ^ k ^ (Fintype.equivFin σ j : ℕ)) *\n        Polynomial.C ((d j + 1 : ℕ) : K)) • kronHasse k (d + Finsupp.single j 1)",
+    "body": "by\n  classical\n  funext P\n  simp [kronHasse, kronecker, derivative_aeval, pderiv_hasseDeriv, map_smul,\n    Polynomial.smul_eq_C_mul, mul_assoc, mul_comm, mul_left_comm]",
+    "proof_lines": 5,
+    "sha256": "707f851f98b54fdf65c13b1bc28794ed5a97c867582c3abe88ad3ac9cc8a19ae",
+    "source_body_project_refs": [
+      "MvPolynomial.pderiv_hasseDeriv",
+      "Roth.derivative_aeval",
+      "Roth.kronHasse",
+      "Roth.kronecker"
+    ],
+    "source_type_project_refs": [
+      "Roth.kronHasse"
+    ],
+    "what": "Differentiating a substituted Hasse operator is a sum of next-order substituted Hasse operators with polynomial coefficients.",
+    "how": "Combines derivative_aeval with pderiv_hasseDeriv, moving the scalar coefficient through kronecker.",
+    "hypotheses": "A field, finite variable enumeration, and arbitrary base and derivative exponent.",
+    "source_used_by_project": [
+      "Roth.derivative_mem_kronSpan"
+    ],
+    "source_used_by_file": [
+      "Roth.derivative_mem_kronSpan"
+    ],
+    "section_binders": "{K : Type*} [Field K] {σ : Type*} [Fintype σ]",
+    "type_provenance": "Exact written signature plus manually identified captured section binders. Root cached full build succeeds; global opaque/type inspector timed out, so no kernel dump is claimed.",
+    "notes": "No sorry, TODO, or set_option in this declaration.",
+    "assignment_offset": 292,
+    "project_body_refs": [
+      "MvPolynomial.pderiv_hasseDeriv",
+      "Roth.derivative_aeval",
+      "Roth.kronHasse",
+      "Roth.kronecker"
+    ],
+    "project_type_refs": [
+      "Roth.kronHasse"
+    ],
+    "project_callers": [
+      {
+        "name": "Roth.derivative_mem_kronSpan",
+        "file": "Roth/GenWronskian.lean",
+        "line": 162
+      }
+    ],
+    "section_context": "{K : Type*} [Field K] {σ : Type*} [Fintype σ]"
+  },
+  {
+    "file": "Roth/GenWronskian.lean",
+    "line": 190,
+    "name": "Roth.hasseDeriv_kronecker_mem",
+    "short": "hasseDeriv_kronecker_mem",
+    "kind": "lemma",
+    "visibility": "private",
+    "end_line": 205,
+    "source": "private lemma hasseDeriv_kronecker_mem [CharZero K] (k μ : ℕ) :\n    (fun P ↦ Polynomial.hasseDeriv μ (kronecker k P)) ∈ kronSpan (K := K) (σ := σ) k μ := by\n  induction μ with\n  | zero =>\n    refine Submodule.subset_span ⟨0, by simp, ?_⟩\n    funext P\n    simp [kronHasse]\n  | succ μ ih =>\n    apply (((kronSpan (K := K) (σ := σ) k (μ + 1)).restrictScalars K).smul_mem_iff\n      (s := ((μ + 1 : ℕ) : K)) (Nat.cast_ne_zero.2 μ.succ_ne_zero)).mp\n    change (((μ + 1 : ℕ) : K) • fun P ↦ Polynomial.hasseDeriv (μ + 1) (kronecker k P)) ∈\n      kronSpan (K := K) (σ := σ) k (μ + 1)\n    convert derivative_mem_kronSpan k μ ih using 1\n    funext P\n    simpa [← Nat.cast_smul_eq_nsmul K, add_comm] using\n      (congrArg (fun L ↦ L (kronecker k P)) (Polynomial.hasseDeriv_comp (R := K) 1 μ)).symm",
+    "signature": "private lemma hasseDeriv_kronecker_mem [CharZero K] (k μ : ℕ) :\n    (fun P ↦ Polynomial.hasseDeriv μ (kronecker k P)) ∈ kronSpan (K := K) (σ := σ) k μ",
+    "body": "by\n  induction μ with\n  | zero =>\n    refine Submodule.subset_span ⟨0, by simp, ?_⟩\n    funext P\n    simp [kronHasse]\n  | succ μ ih =>\n    apply (((kronSpan (K := K) (σ := σ) k (μ + 1)).restrictScalars K).smul_mem_iff\n      (s := ((μ + 1 : ℕ) : K)) (Nat.cast_ne_zero.2 μ.succ_ne_zero)).mp\n    change (((μ + 1 : ℕ) : K) • fun P ↦ Polynomial.hasseDeriv (μ + 1) (kronecker k P)) ∈\n      kronSpan (K := K) (σ := σ) k (μ + 1)\n    convert derivative_mem_kronSpan k μ ih using 1\n    funext P\n    simpa [← Nat.cast_smul_eq_nsmul K, add_comm] using\n      (congrArg (fun L ↦ L (kronecker k P)) (Polynomial.hasseDeriv_comp (R := K) 1 μ)).symm",
+    "proof_lines": 15,
+    "sha256": "0655940363d37d29eb43e22fb5effafbd4e0f76e38d17fb1cbf04a3957b5908e",
+    "source_body_project_refs": [
+      "Roth.derivative_mem_kronSpan",
+      "Roth.kronHasse",
+      "Roth.kronSpan",
+      "Roth.kronecker"
+    ],
+    "source_type_project_refs": [
+      "Roth.kronSpan",
+      "Roth.kronecker"
+    ],
+    "what": "The μ-th univariate Hasse derivative after Kronecker substitution lies in the order-μ operator span.",
+    "how": "Inducts on μ, starts with the zero multi-index generator, uses derivative_mem_kronSpan, and divides by the nonzero successor integer via Polynomial.hasseDeriv_comp.",
+    "hypotheses": "Characteristic zero field and a finite variable enumeration.",
+    "source_used_by_project": [
+      "Roth.exists_hasseDeriv_kronecker_eq_sum"
+    ],
+    "source_used_by_file": [
+      "Roth.exists_hasseDeriv_kronecker_eq_sum"
+    ],
+    "section_binders": "{K : Type*} [Field K] {σ : Type*} [Fintype σ]",
+    "type_provenance": "Exact written signature plus manually identified captured section binders. Root cached full build succeeds; global opaque/type inspector timed out, so no kernel dump is claimed.",
+    "notes": "No sorry, TODO, or set_option in this declaration.",
+    "assignment_offset": 151,
+    "project_body_refs": [
+      "Roth.derivative_mem_kronSpan",
+      "Roth.kronHasse",
+      "Roth.kronSpan",
+      "Roth.kronecker"
+    ],
+    "project_type_refs": [
+      "Roth.kronSpan",
+      "Roth.kronecker"
+    ],
+    "project_callers": [
+      {
+        "name": "Roth.exists_hasseDeriv_kronecker_eq_sum",
+        "file": "Roth/GenWronskian.lean",
+        "line": 214
+      }
+    ],
+    "section_context": "{K : Type*} [Field K] {σ : Type*} [Fintype σ]"
+  },
+  {
+    "file": "Roth/GenWronskian.lean",
+    "line": 214,
+    "name": "Roth.exists_hasseDeriv_kronecker_eq_sum",
+    "short": "exists_hasseDeriv_kronecker_eq_sum",
+    "kind": "theorem",
+    "visibility": "public",
+    "end_line": 221,
+    "source": "theorem exists_hasseDeriv_kronecker_eq_sum [CharZero K] (k μ : ℕ) : ∃ (s : Finset (σ →₀ ℕ))\n    (c : (σ →₀ ℕ) → Polynomial K), (∀ d ∈ s, d.degree ≤ μ) ∧ ∀ P : MvPolynomial σ K,\n      Polynomial.hasseDeriv μ (kronecker k P) = ∑ d ∈ s, c d * kronecker k (hasseDeriv d P) := by\n  classical\n  obtain ⟨c, hc, hsum⟩ := (Finsupp.mem_span_image_iff_linearCombination _).1\n    (hasseDeriv_kronecker_mem (K := K) (σ := σ) k μ)\n  refine ⟨c.support, c, hc, fun P ↦ ?_⟩\n  simpa [Finsupp.linearCombination_apply, Finsupp.sum, kronHasse] using congrFun hsum.symm P",
+    "signature": "theorem exists_hasseDeriv_kronecker_eq_sum [CharZero K] (k μ : ℕ) : ∃ (s : Finset (σ →₀ ℕ))\n    (c : (σ →₀ ℕ) → Polynomial K), (∀ d ∈ s, d.degree ≤ μ) ∧ ∀ P : MvPolynomial σ K,\n      Polynomial.hasseDeriv μ (kronecker k P) = ∑ d ∈ s, c d * kronecker k (hasseDeriv d P)",
+    "body": "by\n  classical\n  obtain ⟨c, hc, hsum⟩ := (Finsupp.mem_span_image_iff_linearCombination _).1\n    (hasseDeriv_kronecker_mem (K := K) (σ := σ) k μ)\n  refine ⟨c.support, c, hc, fun P ↦ ?_⟩\n  simpa [Finsupp.linearCombination_apply, Finsupp.sum, kronHasse] using congrFun hsum.symm P",
+    "proof_lines": 6,
+    "sha256": "d679c27830b23c4db488d6942b91480e72acf363f7bd4e6543b11bdd9c3cc877",
+    "source_body_project_refs": [
+      "Roth.hasseDeriv_kronecker_mem",
+      "Roth.kronHasse"
+    ],
+    "source_type_project_refs": [
+      "MvPolynomial.hasseDeriv",
+      "Roth.kronecker"
+    ],
+    "what": "Expresses a substituted univariate Hasse derivative uniformly as a finite polynomial-linear combination of multivariate Hasse derivatives of bounded total order.",
+    "how": "Finsupp.mem_span_image_iff_linearCombination turns hasseDeriv_kronecker_mem into finite coefficients; evaluating the function equality gives the required identity.",
+    "hypotheses": "Characteristic-zero field and a finite enumeration of variables; natural base and derivative order.",
+    "source_used_by_project": [
+      "Roth.exists_genWronskian_ne_zero"
+    ],
+    "source_used_by_file": [
+      "Roth.exists_genWronskian_ne_zero"
+    ],
+    "section_binders": "{K : Type*} [Field K] {σ : Type*} [Fintype σ]",
+    "type_provenance": "Exact written signature plus manually identified captured section binders. Root cached full build succeeds; global opaque/type inspector timed out, so no kernel dump is claimed.",
+    "notes": "No sorry, TODO, or set_option in this declaration.",
+    "assignment_offset": 269,
+    "project_body_refs": [
+      "Roth.hasseDeriv_kronecker_mem",
+      "Roth.kronHasse"
+    ],
+    "project_type_refs": [
+      "MvPolynomial.hasseDeriv",
+      "Roth.kronecker"
+    ],
+    "project_callers": [
+      {
+        "name": "Roth.exists_genWronskian_ne_zero",
+        "file": "Roth/GenWronskian.lean",
+        "line": 254
+      }
+    ],
+    "section_context": "{K : Type*} [Field K] {σ : Type*} [Fintype σ]"
+  }
+]
