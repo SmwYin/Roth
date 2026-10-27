@@ -1,0 +1,102 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\n#check_failure Roth.index_le_card\nnamespace IndexCardMathlib150\nopen MvPolynomial\nvariable {σ : Type*} [Fintype σ]\ntheorem realSupport (s : Finset (σ →₀ ℕ)) (r : σ → ℕ)\n    (h : ∀ d ∈ s, ∀ j, d j ≤ r j) :\n    sInf ((fun d : σ →₀ ℕ ↦ ∑ j, (d j : ℝ) / r j) '' (s : Set (σ →₀ ℕ))) ≤\n      Fintype.card σ := by\n  classical\n  by_cases hs : s.Nonempty\n  · obtain ⟨d, hd⟩ := hs\n    refine (csInf_le (s.finite_toSet.image _).bddBelow (Set.mem_image_of_mem _ hd)).trans ?_\n    exact (Finset.sum_le_sum fun j _ ↦ div_le_one_of_le₀\n      (by exact_mod_cast h d hd j) (by positivity)).trans_eq (by simp)\n  · simp [Finset.not_nonempty_iff_eq_empty.mp hs]\n\ntheorem infDegreeWitness {R A T : Type*} [Semiring R] [SemilatticeInf T] [OrderTop T]\n    (P : AddMonoidAlgebra R A) (D : A → T) {d : A} (hd : d ∈ P.coeff.support) :\n    P.infDegree D ≤ D d := Finset.inf_le hd\n\ntheorem realWitness {A : Type*} (s : Finset A) (w : A → ℝ) {c : ℝ}\n    (h : ∃ d ∈ s, w d ≤ c) : sInf (w '' (s : Set A)) ≤ c := by\n  obtain ⟨d, hd, hc⟩ := h\n  exact (csInf_le (s.finite_toSet.image w).bddBelow (Set.mem_image_of_mem w hd)).trans hc\n#print axioms realSupport\n#print axioms infDegreeWitness\n#print axioms realWitness\n#check MvPolynomial.monomial_le_degreeOf\n#check Finset.sum_le_sum\n#check div_le_one_of_le₀\n#check Finset.inf_le\n#check csInf_le\nend IndexCardMathlib150\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.index_le_card`\",\n      \"line\": 8,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'IndexCardMathlib150.realSupport' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 32,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'IndexCardMathlib150.infDegreeWitness' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 33,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'IndexCardMathlib150.realWitness' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 34,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"MvPolynomial.monomial_le_degreeOf.{u, u_1} {R : Type u} {σ : Type u_1} [CommSemiring R] (i : σ) {f : MvPolynomial σ R}\\n  {m : σ →₀ ℕ} (h_m : m ∈ f.support) : m i ≤ degreeOf i f\",\n      \"line\": 35,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Finset.sum_le_sum.{u_1, u_5} {ι : Type u_1} {N : Type u_5} [AddCommMonoid N] [Preorder N] {f g : ι → N} {s : Finset ι}\\n  [AddLeftMono N] (h : ∀ i ∈ s, f i ≤ g i) : ∑ i ∈ s, f i ≤ ∑ i ∈ s, g i\",\n      \"line\": 36,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"div_le_one_of_le₀.{u_3} {G₀ : Type u_3} [GroupWithZero G₀] [PartialOrder G₀] [MulPosReflectLT G₀] {a b : G₀}\\n  [ZeroLEOneClass G₀] (h : a ≤ b) (hb : 0 ≤ b) : a / b ≤ 1\",\n      \"line\": 37,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Finset.inf_le.{u_2, u_3} {α : Type u_2} {β : Type u_3} [SemilatticeInf α] [OrderTop α] {s : Finset β} {f : β → α}\\n  {b : β} (hb : b ∈ s) : s.inf f ≤ f b\",\n      \"line\": 38,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"csInf_le.{u_1} {α : Type u_1} [ConditionallyCompleteLattice α] {s : Set α} {a : α} (h₁ : BddBelow s) (h₂ : a ∈ s) :\\n  sInf s ≤ a\",\n      \"line\": 39,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.index_le_card`",
+          "line": 8,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'IndexCardMathlib150.realSupport' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 32,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'IndexCardMathlib150.infDegreeWitness' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 33,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'IndexCardMathlib150.realWitness' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 34,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "MvPolynomial.monomial_le_degreeOf.{u, u_1} {R : Type u} {σ : Type u_1} [CommSemiring R] (i : σ) {f : MvPolynomial σ R}\n  {m : σ →₀ ℕ} (h_m : m ∈ f.support) : m i ≤ degreeOf i f",
+          "line": 35,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Finset.sum_le_sum.{u_1, u_5} {ι : Type u_1} {N : Type u_5} [AddCommMonoid N] [Preorder N] {f g : ι → N} {s : Finset ι}\n  [AddLeftMono N] (h : ∀ i ∈ s, f i ≤ g i) : ∑ i ∈ s, f i ≤ ∑ i ∈ s, g i",
+          "line": 36,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "div_le_one_of_le₀.{u_3} {G₀ : Type u_3} [GroupWithZero G₀] [PartialOrder G₀] [MulPosReflectLT G₀] {a b : G₀}\n  [ZeroLEOneClass G₀] (h : a ≤ b) (hb : 0 ≤ b) : a / b ≤ 1",
+          "line": 37,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Finset.inf_le.{u_2, u_3} {α : Type u_2} {β : Type u_3} [SemilatticeInf α] [OrderTop α] {s : Finset β} {f : β → α}\n  {b : β} (hb : b ∈ s) : s.inf f ≤ f b",
+          "line": 38,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "csInf_le.{u_1} {α : Type u_1} [ConditionallyCompleteLattice α] {s : Set α} {a : α} (h₁ : BddBelow s) (h₂ : a ∈ s) :\n  sInf s ≤ a",
+          "line": 39,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 3219
+}

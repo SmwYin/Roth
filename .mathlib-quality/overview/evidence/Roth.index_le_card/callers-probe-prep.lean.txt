@@ -1,0 +1,21 @@
+namespace IndexCardCallers150
+open MvPolynomial Roth
+variable {σ : Type*} [Fintype σ] [DecidableEq σ]
+theorem bddAboveReplay (B : ℝ) (q : σ → ℕ) {r : σ → ℕ} : BddAbove (indexSet B q r) := by
+  classical
+  refine ⟨Fintype.card σ, ?_⟩
+  rintro _ ⟨R, ⟨-, hRd, -⟩, h, -, rfl⟩
+  exact IndexCardBridge150.noNonzero
+    (by simpa [degreeOf, degrees_map_of_injective R (f := Int.castRingHom ℝ)
+          Int.cast_injective] using hRd) _
+
+theorem cardReplay {B : ℝ} (q : σ → ℕ) {r : σ → ℕ} : Θ B q r ≤ Fintype.card σ := by
+  refine Real.sSup_le ?_ (Nat.cast_nonneg _)
+  rintro _ ⟨R, ⟨-, hRd, -⟩, h, -, rfl⟩
+  exact IndexCardBridge150.noNonzero
+    (by simpa [degreeOf, degrees_map_of_injective R (f := Int.castRingHom ℝ)
+          Int.cast_injective] using hRd) _
+
+#print axioms bddAboveReplay
+#print axioms cardReplay
+end IndexCardCallers150

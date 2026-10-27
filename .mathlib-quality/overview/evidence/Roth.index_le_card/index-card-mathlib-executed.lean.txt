@@ -1,0 +1,40 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+#check_failure Roth.index_le_card
+namespace IndexCardMathlib150
+open MvPolynomial
+variable {σ : Type*} [Fintype σ]
+theorem realSupport (s : Finset (σ →₀ ℕ)) (r : σ → ℕ)
+    (h : ∀ d ∈ s, ∀ j, d j ≤ r j) :
+    sInf ((fun d : σ →₀ ℕ ↦ ∑ j, (d j : ℝ) / r j) '' (s : Set (σ →₀ ℕ))) ≤
+      Fintype.card σ := by
+  classical
+  by_cases hs : s.Nonempty
+  · obtain ⟨d, hd⟩ := hs
+    refine (csInf_le (s.finite_toSet.image _).bddBelow (Set.mem_image_of_mem _ hd)).trans ?_
+    exact (Finset.sum_le_sum fun j _ ↦ div_le_one_of_le₀
+      (by exact_mod_cast h d hd j) (by positivity)).trans_eq (by simp)
+  · simp [Finset.not_nonempty_iff_eq_empty.mp hs]
+
+theorem infDegreeWitness {R A T : Type*} [Semiring R] [SemilatticeInf T] [OrderTop T]
+    (P : AddMonoidAlgebra R A) (D : A → T) {d : A} (hd : d ∈ P.coeff.support) :
+    P.infDegree D ≤ D d := Finset.inf_le hd
+
+theorem realWitness {A : Type*} (s : Finset A) (w : A → ℝ) {c : ℝ}
+    (h : ∃ d ∈ s, w d ≤ c) : sInf (w '' (s : Set A)) ≤ c := by
+  obtain ⟨d, hd, hc⟩ := h
+  exact (csInf_le (s.finite_toSet.image w).bddBelow (Set.mem_image_of_mem w hd)).trans hc
+#print axioms realSupport
+#print axioms infDegreeWitness
+#print axioms realWitness
+#check MvPolynomial.monomial_le_degreeOf
+#check Finset.sum_le_sum
+#check div_le_one_of_le₀
+#check Finset.inf_le
+#check csInf_le
+end IndexCardMathlib150

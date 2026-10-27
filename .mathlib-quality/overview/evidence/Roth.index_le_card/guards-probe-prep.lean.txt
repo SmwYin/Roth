@@ -1,0 +1,18 @@
+namespace IndexCardGuards150
+open Roth MvPolynomial
+example {σ : Type*} [Fintype σ] (α : σ → ℝ) (r : σ → ℕ) :
+    index (0 : MvPolynomial σ ℝ) α r = 0 := by simp [index]
+example {σ : Type*} [Fintype σ] (P : MvPolynomial σ ℝ) (α : σ → ℝ) :
+    index P α (fun _ ↦ 0) = 0 := by
+  simp [index, weight, Set.image_const]
+example : index (monomial (Finsupp.single () 2) 1 : MvPolynomial Unit ℝ)
+    (fun _ ↦ 0) (fun _ ↦ 1) = 2 := by
+  simp [index, weight, taylor_zero, support_monomial]
+example : ¬ index (monomial (Finsupp.single () 2) 1 : MvPolynomial Unit ℝ)
+    (fun _ ↦ 0) (fun _ ↦ 1) ≤ Fintype.card Unit := by
+  simp [index, weight, taylor_zero, support_monomial]
+example : ¬ (0 : AddMonoidAlgebra ℝ Unit).infDegree
+    (fun _ ↦ (0 : WithTop ℝ)) ≤ (1 : WithTop ℝ) := by
+  simp [AddMonoidAlgebra.infDegree]
+example : ¬ sInf ((fun _ : Unit ↦ (0 : ℝ)) '' (∅ : Set Unit)) ≤ -1 := by simp
+end IndexCardGuards150

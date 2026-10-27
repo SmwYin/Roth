@@ -1,0 +1,31 @@
+namespace IndexCardBridge150
+open MvPolynomial Roth
+variable {σ : Type*} [Fintype σ]
+theorem noNonzero {P : MvPolynomial σ ℝ} {r : σ → ℕ}
+    (hd : ∀ j, degreeOf j P ≤ r j) (α : σ → ℝ) :
+    index P α r ≤ Fintype.card σ := by
+  classical
+  by_cases hP : P = 0
+  · subst P
+    simp [index]
+  · obtain ⟨d, hd0, hdw⟩ := exists_weight_eq_index hP α r
+    have hdmem : d ∈ (taylor α P).support := by
+      rw [mem_support_iff, coeff_taylor]
+      exact hd0
+    exact hdw ▸ weight_le_card fun j ↦
+      (monomial_le_degreeOf j hdmem).trans ((degreeOf_taylor_le α j P).trans (hd j))
+
+theorem oneWitness {P : MvPolynomial σ ℝ} {r : σ → ℕ} {α : σ → ℝ}
+    (h : ∃ d, eval α (hasseDeriv d P) ≠ 0 ∧ ∀ j, d j ≤ r j) :
+    index P α r ≤ Fintype.card σ := by
+  obtain ⟨d, hd, hdr⟩ := h
+  exact (index_le_weight hd).trans (weight_le_card hdr)
+
+theorem weightedWitness {P : MvPolynomial σ ℝ} {r : σ → ℕ} {α : σ → ℝ} {c : ℝ}
+    (h : ∃ d, eval α (hasseDeriv d P) ≠ 0 ∧ weight r d ≤ c) : index P α r ≤ c := by
+  obtain ⟨d, hd, hdc⟩ := h
+  exact (index_le_weight hd).trans hdc
+#print axioms noNonzero
+#print axioms oneWitness
+#print axioms weightedWitness
+end IndexCardBridge150

@@ -1,0 +1,22 @@
+{
+  "declaration": "Roth.index_le_card",
+  "kind": "theorem",
+  "type": "Roth.index_le_card.{u_1} : ∀ {σ : Type u_1} [inst : Fintype σ] {P : MvPolynomial σ ℝ}, P ≠ 0 → ∀ {r : σ → ℕ}, (∀ j, MvPolynomial.degreeOf j P ≤ r j) → ∀ α : σ → ℝ, Roth.index P α r ≤ ↑(Fintype.card σ)",
+  "what": "Coordinate degree bounds by denominator parameters imply index at most number of variables.",
+  "how": "Choose a nonzero Taylor coefficient attaining the minimum; compare its coordinates with Taylor degrees and original degree bounds; sum quotients bounded by one.",
+  "hypotheses": "Fintype σ, real P, arbitrary center α, natural denominators r, hP≠0, coordinate degree bounds. hP independently verified droppable under project real-default0 convention; not droppable under canonical∞.",
+  "project_dependencies": [
+    "Roth.index",
+    "Roth.exists_weight_eq_index",
+    "Roth.weight_le_card",
+    "MvPolynomial.degreeOf_taylor_le",
+    "Roth.mem_support_taylor_iff (private)"
+  ],
+  "caller_summary": "Exactly two source proof applications and two direct canonical kernel consumers: indexSet_bddAbove and Θ_le_card. Both complete proofs replay cleanly using independently proved noNonzero and discarding map nonzero arguments.",
+  "mathlib_api_audit": "All five actual search methods on current/literature/abstract forms. Finset.inf_le exactly supplies canonical witness upper bound; csInf_le, finite-image boundedness, monomial_le_degreeOf, sum_le_sum and div_le_one_of_le₀ are building blocks. Full Taylor-degree/cardinality bound not located.",
+  "moral_duplications": "Canonical support-witness estimate is existing infDegree/Finset.inf_le; coordinate weight bound overlaps weight_le_card. Neither alone is exact full theorem.",
+  "generalization": "Verified noNonzero drops hP; oneWitness weakens entire degree box to one nonzero Taylor coefficient in box; weightedWitness accepts arbitrary coefficient weight bound. Mathlib-only realSupport handles arbitrary finite exponent set; infDegreeWitness arbitrary semiring coefficients and grading/order target. Fixed parent interface remains real/Fintype.",
+  "missing_api": "Choice of named Taylor coordinate-degree envelope and its cardinality corollary versus generic support-witness use. Mathematical proofs are complete; upstream API questions remain.",
+  "junk": "No. Two actual callers use the bound. hP is redundant only under current projected real convention.",
+  "action": "BORDERLINE-needs-human: decide upstream coordinate-bound audience, zero∞ convention, and grouping with weight_le_card/Taylor degree API. Retain local theorem unchanged during read-only overview. Future local cleanup can drop hP and update both callers."
+}
