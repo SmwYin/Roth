@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 69/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 70/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 69; remaining: 224.
-- Verdicts: 10 NO-composable-from-mathlib, 13 YES-add-as-is, 3 YES-but-generalise-first, 11 NO-mathlib-has-it, 23 BORDERLINE-needs-human, 9 SKIP.
+- Completed applicable assessments: 70; remaining: 223.
+- Verdicts: 10 NO-composable-from-mathlib, 13 YES-add-as-is, 3 YES-but-generalise-first, 11 NO-mathlib-has-it, 24 BORDERLINE-needs-human, 9 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -749,6 +749,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: One explicit caller Roth.index_le_card Index229; full copied proof verified using fresh target replay.
 - Verdict: YES-add-as-is; [complete report](.mathlib-quality/overview/mathlibable/MvPolynomial.degreeOf_taylor_le.md).
 
+### Completed: `MvPolynomial.taylor_neg_taylor`
+
+- Type: `∀ {σ : Type u_1} {A : Type u_2} [CommRing A] (α : σ → A) (P : MvPolynomial σ A), MvPolynomial.taylor (fun j ↦ -α j) (MvPolynomial.taylor α P) = P`
+- What: Translating a polynomial and translating back by the negative vector returns the original polynomial.
+- How: Substitution composition adds the shift vectors; additive cancellation and zero-translation identity then give the result.
+- Hypotheses: Arbitrary independent-universe variable and coefficient types, commutative coefficient ring, every shift and polynomial. No finiteness, nonzero, field or characteristic assumptions.
+- Project dependencies: MvPolynomial.taylor, MvPolynomial.taylor_taylor, MvPolynomial.taylor_zero (implicit simp)
+- Caller summary: Two explicit callers, taylor_injective Taylor188 and eq_sum_box_hasseDeriv Taylor208; native full replays use fresh inverse proof.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor_neg_taylor.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -913,6 +923,8 @@ Completed `MvPolynomial.taylor_rename`: aeval_rename and comp_aeval_apply are ex
 
 Completed `MvPolynomial.degreeOf_taylor_le`: Existing degreeOf_le_iff and degree bounds on sums/products do not prove the essential translated coefficient vanishing. Polynomial.natDegree_taylor is univariate; aeval_natDegree_le uses total degree and a univariate target.
 
+Completed `MvPolynomial.taylor_neg_taylor`: Univariate Polynomial.taylorEquiv and algEquivAevalXAddC are close analogues, not multivariate replacements. Generic inverse-application law needs an already verified multivariate equivalence.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -1052,6 +1064,8 @@ Completed `MvPolynomial.taylor_map`: Naturality of substitution specialized to t
 Completed `MvPolynomial.taylor_rename`: Generic substitution naturality specialized to shifted generators; close analogue rename_expand, not same substitution.
 
 Completed `MvPolynomial.degreeOf_taylor_le`: Univariate Taylor degree invariance is analogous but not direct replacement. Direct aeval spelling is definitionally equivalent.
+
+Completed `MvPolynomial.taylor_neg_taylor`: Specializes additive composition to mutually cancelling shifts, and is a left-inverse interface for injectivity. Neither is a duplicate of composition or injectivity.
 
 ## Part 5: Generalization opportunities
 
@@ -1196,6 +1210,8 @@ Completed `MvPolynomial.taylor_rename`: Maximal within parent CommSemiring inter
 
 Completed `MvPolynomial.degreeOf_taylor_le`: Maximal within CommSemiring parent interface; CommRing equality via inverse is a separately verified stronger specialization, not assumption weakening.
 
+Completed `MvPolynomial.taylor_neg_taylor`: CommRing is the fixed negation/cancellation interface floor. Conditional mutually cancelling shifts over CommSemiring are an expanded statement, not dropping ring assumptions from unchanged negative-shift law.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -1336,6 +1352,8 @@ Completed `MvPolynomial.taylor_map`: Design choice whether a named multivariate 
 Completed `MvPolynomial.taylor_rename`: No generic substitution gap; decision whether named multivariate translation API merits explicit rename convenience law.
 
 Completed `MvPolynomial.degreeOf_taylor_le`: Coordinate-degree control under multivariate constant-shift substitution, with arbitrary variable type and commutative-semiring coefficients.
+
+Completed `MvPolynomial.taylor_neg_taylor`: Potential bundled multivariate translation algebra equivalence; its inverse fields are new obligations, not a missing generic equivalence theorem.
 
 ## Part 7: Junk / removable
 
@@ -1480,6 +1498,8 @@ Completed `MvPolynomial.taylor_rename`: Used in index invariance, not dead code.
 
 Completed `MvPolynomial.degreeOf_taylor_le`: Used by index/cardinality bound; not dead code. Short proof relies on genuine new Hasse/Taylor content.
 
+Completed `MvPolynomial.taylor_neg_taylor`: Two live mathematical callers, so not dead code; optional inlining depends on retaining or replacing the named translation API.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -1553,6 +1573,7 @@ Completed `MvPolynomial.degreeOf_taylor_le`: Used by index/cardinality bound; no
 | 67 | `MvPolynomial.taylor_map` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor_map.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.taylor_map/root-acceptance.json) |
 | 68 | `MvPolynomial.taylor_rename` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor_rename.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.taylor_rename/root-acceptance.json) |
 | 69 | `MvPolynomial.degreeOf_taylor_le` | YES-add-as-is | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.degreeOf_taylor_le.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.degreeOf_taylor_le/root-acceptance.json) |
+| 70 | `MvPolynomial.taylor_neg_taylor` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor_neg_taylor.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.taylor_neg_taylor/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -1690,11 +1711,13 @@ Completed `MvPolynomial.taylor_rename` action: BORDERLINE: choose named convenie
 
 Completed `MvPolynomial.degreeOf_taylor_le` action: Propose in Mathlib/Algebra/MvPolynomial/Taylor.lean with coefficient Taylor and Hasse degree/vanishing API; direct aeval statement if named translation is declined.
 
+Completed `MvPolynomial.taylor_neg_taylor` action: BORDERLINE: choose pointwise inverse law versus bundled translation equivalence, then decide simp/name policy. Assessment complete; no production edits.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `MvPolynomial.taylor_neg_taylor` next. Supporting identities receive their own applicable checks.
+   `MvPolynomial.taylor_injective` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.

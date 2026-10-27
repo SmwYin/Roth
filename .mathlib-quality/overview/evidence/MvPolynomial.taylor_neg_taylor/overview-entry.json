@@ -1,0 +1,20 @@
+{
+  "declaration": "MvPolynomial.taylor_neg_taylor",
+  "kind": "theorem",
+  "type": "∀ {σ : Type u_1} {A : Type u_2} [CommRing A] (α : σ → A) (P : MvPolynomial σ A), MvPolynomial.taylor (fun j ↦ -α j) (MvPolynomial.taylor α P) = P",
+  "what": "Translating a polynomial and translating back by the negative vector returns the original polynomial.",
+  "how": "Substitution composition adds the shift vectors; additive cancellation and zero-translation identity then give the result.",
+  "hypotheses": "Arbitrary independent-universe variable and coefficient types, commutative coefficient ring, every shift and polynomial. No finiteness, nonzero, field or characteristic assumptions.",
+  "project_dependencies": [
+    "MvPolynomial.taylor",
+    "MvPolynomial.taylor_taylor",
+    "MvPolynomial.taylor_zero (implicit simp)"
+  ],
+  "caller_summary": "Two explicit callers, taylor_injective Taylor188 and eq_sum_box_hasseDeriv Taylor208; native full replays use fresh inverse proof.",
+  "mathlib_api_audit": "Univariate Polynomial.taylorEquiv and algEquivAevalXAddC are close analogues, not multivariate replacements. Generic inverse-application law needs an already verified multivariate equivalence.",
+  "moral_duplications": "Specializes additive composition to mutually cancelling shifts, and is a left-inverse interface for injectivity. Neither is a duplicate of composition or injectivity.",
+  "generalization": "CommRing is the fixed negation/cancellation interface floor. Conditional mutually cancelling shifts over CommSemiring are an expanded statement, not dropping ring assumptions from unchanged negative-shift law.",
+  "missing_api": "Potential bundled multivariate translation algebra equivalence; its inverse fields are new obligations, not a missing generic equivalence theorem.",
+  "junk": "Two live mathematical callers, so not dead code; optional inlining depends on retaining or replacing the named translation API.",
+  "action": "BORDERLINE: choose pointwise inverse law versus bundled translation equivalence, then decide simp/name policy. Assessment complete; no production edits."
+}

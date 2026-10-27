@@ -1,0 +1,37 @@
+from pathlib import Path
+import hashlib,json,shutil,subprocess
+D=Path(__file__).resolve().parent;R=Path('/Users/ramin/LEAN/Roth');N='MvPolynomial.taylor_neg_taylor'
+def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+def out(n,x):(D/n).write_text(json.dumps(x,indent=2,ensure_ascii=False)+'\n')
+for label,pattern,paths in [
+ ('current',r'taylor_neg_taylor|taylor.*neg|neg.*taylor',['.lake/packages/mathlib/Mathlib/Algebra']),
+ ('literature',r'algEquivAevalXAddC|taylorEquiv|algEquivOfCompEqX',['.lake/packages/mathlib/Mathlib/Algebra/Polynomial']),
+ ('abstract',r'comp_aeval|aeval_X_left|symm_apply_apply|leftInverse',['.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial','.lake/packages/mathlib/Mathlib/Algebra/Algebra/Equiv.lean']),
+ ('full-name',r'MvPolynomial\.taylor_neg_taylor|\b(theorem|lemma)\s+taylor_neg_taylor\b',['.lake/packages/mathlib/Mathlib']),
+ ('callers',r'\btaylor_neg_taylor\b',['Roth.lean','Roth']),
+ ('inline',r'taylor_taylor|taylor.*neg|neg.*taylor|LeftInverse.injective',['Roth.lean','Roth']),
+ ('local-literature',r'Taylor|P_\\alpha|x_i-\\alpha_i|x_j - \\alpha_j',['.mathlib-quality/references/clean.tex'])]:
+ args=['rg','-n',pattern,*paths];r=subprocess.run(args,cwd=R,capture_output=True);out('rg-'+label+'.json',dict(args=args,exit_code=r.returncode,stdout=r.stdout.decode(),stderr=r.stderr.decode()))
+manifest=json.loads((R/'.mathlib-quality/overview/evidence/shared/input-manifest.json').read_text());inputs=[]
+for p,x in manifest['sources_and_pins'].items():
+ f=R/p;inputs.append(dict(path=p,sha256=sha(f),baseline_sha256=x['sha256'],bytes=f.stat().st_size,match=sha(f)==x['sha256']))
+assert len(inputs)==17 and all(x['match'] for x in inputs)
+out('inputs.json',inputs);out('input-hash-check.json',dict(all_pass=True,count=17))
+shutil.copy(R/'.mathlib-quality/overview/evidence/shared/baseline-build.txt',D/'baseline-build.txt')
+entries=json.loads(Path('/private/tmp/roth-overview/review/corrected-manifest.json').read_text());out('canonical-entry.json',next(x for x in entries if x['name']==N))
+order=json.loads((R/'.mathlib-quality/overview/declaration-order.json').read_text())
+if isinstance(order,dict):order=order.get('declarations',order.get('order',[]))
+out('order-entry.json',next(x for x in order if x['name']==N))
+links={'Roth/Taylor.lean':'Taylor-module.lean.txt','Roth/Index.lean':'Index-module.lean.txt','.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Eval.lean':'MvPolynomial-Eval-module.lean.txt','.lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Basic.lean':'MvPolynomial-Basic-module.lean.txt','.lake/packages/mathlib/Mathlib/Algebra/Polynomial/Taylor.lean':'Polynomial-Taylor-module.lean.txt','.lake/packages/mathlib/Mathlib/Algebra/Polynomial/AlgebraMap.lean':'Polynomial-AlgebraMap-module.lean.txt','.lake/packages/mathlib/Mathlib/Algebra/Algebra/Equiv.lean':'AlgEquiv-module.lean.txt'}
+mi=[]
+for p,n in links.items():
+ shutil.copy(R/p,D/n)
+ if p.startswith('.lake'):mi.append(dict(path=p,sha256=sha(R/p),bytes=(R/p).stat().st_size))
+out('mathlib-inputs.json',mi)
+clean=R/'.mathlib-quality/references/clean.tex';out('local-literature.json',dict(path=str(clean.relative_to(R)),sha256=sha(clean),bytes=clean.stat().st_size,locator='Section4 Index, lines500–548',role='Finite real-coordinate Taylor expansion and undoing the constant shift. Inverse substitution is immediate context, not separately named theorem.'))
+(D/'clean-excerpts.tex.txt').write_text('\n'.join(clean.read_text().splitlines()[499:549])+'\n')
+out('callers.json',dict(explicit_count=2,external_to_declaring_file=0,named_callers=[dict(declaration='MvPolynomial.taylor_injective',file='Roth/Taylor.lean',line=188,role='left inverse implies injectivity'),dict(declaration='MvPolynomial.eq_sum_box_hasseDeriv',file='Roth/Taylor.lean',line=208,role='undo translated monomial expansion')],inline_audit='No independent same inverse law rederived in project source. taylor_taylor is a distinct general composition law, not duplication.',limitations='Source explicit named refs, not exhaustive opaque kernel dependency closure; target has no simp attribute.'))
+out('proof-body-diagnostic.json',dict(concrete_identifier='taylor',body_occurrences=0,project_fact='MvPolynomial.taylor_taylor',implicit_project_fact='MvPolynomial.taylor_zero',abstract='Invertible substitution is an algebra automorphism; AlgEquiv.symm_apply_apply only applies after constructing and verifying such an equivalence.',circularity_guard='Do not use a newly constructed shift equivalence with inverse fields discharged by this theorem as evidence of an existing one-call mathlib replacement.'))
+questions=['Should the named multivariate translation API expose this inverse law, matching the univariate taylorEquiv interface?', 'Should the primary ring-level API be a new translation AlgEquiv with the pointwise inverse theorem as a corollary?', 'Should inverse cancellation be a simp lemma, and should its name/orientation follow taylorEquiv.symm_apply_apply?']
+out('assessment.json',dict(declaration=N,canonical_index=70,source='Roth/Taylor.lean:182',kind='theorem',verdict='BORDERLINE-needs-human',completed=True,allphases='PASS',phases={k:'PASS' for k in ['0','1','2','3','4a','4b','4c','4.5','4.6','5','5.5','6.0','6','7','8']},justified_na={'2b':'Theorem, not data definition.','4.5':'Theorem adds no data or instances; all six infrastructure risk rows n/a.'},questions=questions,unresolved=[],root_acceptance='pending',production_unchanged=True))
+out('overview-entry.json',dict(declaration=N,kind='theorem',type='∀ {σ : Type u_1} {A : Type u_2} [CommRing A] (α : σ → A) (P : MvPolynomial σ A), MvPolynomial.taylor (fun j ↦ -α j) (MvPolynomial.taylor α P) = P',what='Translating a polynomial and translating back by the negative vector returns the original polynomial.',how='Substitution composition adds the shift vectors; additive cancellation and zero-translation identity then give the result.',hypotheses='Arbitrary independent-universe variable and coefficient types, commutative coefficient ring, every shift and polynomial. No finiteness, nonzero, field or characteristic assumptions.',project_dependencies=['MvPolynomial.taylor','MvPolynomial.taylor_taylor','MvPolynomial.taylor_zero (implicit simp)'],caller_summary='Two explicit callers, taylor_injective Taylor188 and eq_sum_box_hasseDeriv Taylor208; native full replays use fresh inverse proof.',mathlib_api_audit='Univariate Polynomial.taylorEquiv and algEquivAevalXAddC are close analogues, not multivariate replacements. Generic inverse-application law needs an already verified multivariate equivalence.',moral_duplications='Specializes additive composition to mutually cancelling shifts, and is a left-inverse interface for injectivity. Neither is a duplicate of composition or injectivity.',generalization='CommRing is the fixed negation/cancellation interface floor. Conditional mutually cancelling shifts over CommSemiring are an expanded statement, not dropping ring assumptions from unchanged negative-shift law.',missing_api='Potential bundled multivariate translation algebra equivalence; its inverse fields are new obligations, not a missing generic equivalence theorem.',junk='Two live mathematical callers, so not dead code; optional inlining depends on retaining or replacing the named translation API.',action='BORDERLINE: choose pointwise inverse law versus bundled translation equivalence, then decide simp/name policy. Assessment complete; no production edits.'))

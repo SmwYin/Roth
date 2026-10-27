@@ -1,0 +1,57 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.Polynomial.HasseDeriv\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.LinearAlgebra.Matrix.ToLinearEquiv\nimport Mathlib.RingTheory.Polynomial.Wronskian\nimport Mathlib.LinearAlgebra.Vandermonde\nimport Mathlib.Data.ZMod.Defs\nimport Mathlib.Algebra.Field.ZMod\nimport Mathlib.Algebra.Order.Group.Int.Sum\nimport Mathlib.LinearAlgebra.Matrix.Polynomial\nimport Mathlib.Algebra.Polynomial.CancelLeads\nimport Mathlib.Algebra.MvPolynomial.PDeriv\n#check_failure MvPolynomial.taylor_neg_taylor\nnoncomputable section\nnamespace MvPolynomial.TaylorInverseRaw\nvariable {σ R : Type*} [CommSemiring R]\ndef shift (α : σ → R) : MvPolynomial σ R →ₐ[R] MvPolynomial σ R :=\n  aeval fun j ↦ X j + C (α j)\ntheorem conditional (α β : σ → R) (h : ∀ j, β j + α j = 0)\n    (P : MvPolynomial σ R) : shift β (shift α P) = P := by\n  have hg : (fun j ↦ (X j + C (β j)) + C (α j)) = (X : σ → MvPolynomial σ R) := by\n    funext j\n    rw [add_assoc, ← map_add, h j, map_zero, add_zero]\n  simp only [shift, comp_aeval_apply, map_add, aeval_X, algHom_C]\n  exact (congrArg (fun g : σ → MvPolynomial σ R ↦ aeval g P) hg).trans\n    (aeval_X_left_apply P)\nvariable {A : Type*} [CommRing A]\ntheorem inverse (α : σ → A) (P : MvPolynomial σ A) :\n    shift (fun j ↦ -α j) (shift α P) = P :=\n  conditional α (fun j ↦ -α j) (fun j ↦ neg_add_cancel (α j)) P\ntheorem directInverse (α : σ → A) (P : MvPolynomial σ A) :\n    shift (fun j ↦ -α j) (shift α P) = P := by\n  simp [shift, comp_aeval_apply, add_assoc, aeval_X_left_apply]\n#print axioms directInverse\nexample (a : A) (P : Polynomial A) :\n    Polynomial.taylor (-a) (Polynomial.taylor a P) = P :=\n  (Polynomial.taylorEquiv a).symm_apply_apply P\n#print axioms conditional\n#print axioms inverse\nend MvPolynomial.TaylorInverseRaw\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown constant `MvPolynomial.taylor_neg_taylor`\",\n      \"line\": 12,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'MvPolynomial.TaylorInverseRaw.directInverse' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 33,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'MvPolynomial.TaylorInverseRaw.conditional' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 37,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'MvPolynomial.TaylorInverseRaw.inverse' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 38,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown constant `MvPolynomial.taylor_neg_taylor`",
+          "line": 12,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'MvPolynomial.TaylorInverseRaw.directInverse' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 33,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'MvPolynomial.TaylorInverseRaw.conditional' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 37,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'MvPolynomial.TaylorInverseRaw.inverse' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 38,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 523
+}

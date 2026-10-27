@@ -1,0 +1,692 @@
+[
+  {
+    "method": "Finder",
+    "form": "current",
+    "request": {
+      "query": "Multivariate polynomial translation by negative alpha undoes translation alpha.",
+      "num_results": 6
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.taylorEquiv_symm\",\n      \"informal_name\": \"Taylor Isomorphism for Polynomials over Commutative Rings\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] (r : R), (Polynomial.taylorEquiv r).symm = Polynomial.taylorEquiv (-r)\",\n      \"informal_description\": \"For any element $ r $ in a commutative ring $ R $, the Taylor isomorphism is an $ R $-algebra isomorphism from the polynomial ring $ R[X] $ to itself that maps each polynomial $ f(X) $ to $ f(X + r) $. This equivalence preserves addition, multiplication, and scalar multiplication, with the inverse map given by substituting $ X - r $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    },\n    {\n      \"formal_name\": \"Polynomial.algEquivAevalXAddC_symm\",\n      \"informal_name\": \"Inverse of Polynomial Substitution Equivalence at $X + t$ is Substitution at $X - t$\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_3} [inst : CommRing R] (t : R),\\n  (Polynomial.algEquivAevalXAddC t).symm = Polynomial.algEquivAevalXAddC (-t)\",\n      \"informal_description\": \"The inverse of the algebra equivalence defined by substituting $X + t$ in polynomials is equal to the algebra equivalence defined by substituting $X - t$.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.AlgebraMap\"\n    },\n    {\n      \"formal_name\": \"Polynomial.taylorLinearEquiv_symm\",\n      \"informal_name\": \"Inverse of Taylor's Linear Equivalence for Degree-Less-Than Submodules\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] {n : ℕ} (r : R),\\n  (Polynomial.taylorLinearEquiv r n).symm = Polynomial.taylorLinearEquiv (-r) n\",\n      \"informal_description\": \"For any element $ r $ in a commutative ring $ R $ and natural number $ n $, the inverse of the Taylor linear equivalence $ \\text{taylorLinearEquiv}(r, n) $ (which maps polynomials $ f(X) $ of degree $ <n $ to $ f(X + r) $) is equal to $ \\text{taylorLinearEquiv}(-r, n) $, corresponding to substitution of $ X - r $. This establishes that shifting by $ -r $ reverses the $ X + r $ shift within degree-$ <n $ polynomial submodules.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.DegreeLT\"\n    },\n    {\n      \"formal_name\": \"Polynomial.algEquivAevalXAddC_symm_apply\",\n      \"informal_name\": \"Inverse of Algebra Equivalence via Evaluation at $ X + C(t) $\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_3} [inst : CommRing R] (t : R) (a : Polynomial R),\\n  (Polynomial.algEquivAevalXAddC t).symm a = (Polynomial.aeval (Polynomial.X - Polynomial.C t)) a\",\n      \"informal_description\": \"The inverse of the algebra equivalence defined by evaluation at $ X + C(t) $ maps a polynomial $ a $ to its evaluation at $ X - C(t) $, i.e., $ (\\\\text{algEquivAevalXAddC}_t)^{-1}(a) = \\\\text{aeval}_{X - C(t)}(a) $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.AlgebraMap\"\n    },\n    {\n      \"formal_name\": \"Polynomial.comp_neg_X_comp_neg_X\",\n      \"informal_name\": \"Double Composition with $-X$ Recovers Original Polynomial\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_3} [inst : CommRing R] (p : Polynomial R), (p.comp (-Polynomial.X)).comp (-Polynomial.X) = p\",\n      \"informal_description\": \"For any commutative ring $R$ and polynomial $p \\\\in R[X]$, composing $p$ with the polynomial $-X$ twice yields the original polynomial $p$, i.e., $(p \\\\circ (-X)) \\\\circ (-X) = p$.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.AlgebraMap\"\n    },\n    {\n      \"formal_name\": \"Polynomial.algEquivAevalNegX_symm_apply\",\n      \"informal_name\": \"Inverse of Algebra Equivalence Induced by Negating the Indeterminate\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_3} [inst : CommRing R] (a : Polynomial R),\\n  Polynomial.algEquivAevalNegX.symm a = (Polynomial.aeval (-Polynomial.X)) a\",\n      \"informal_description\": \"The inverse of the $ R $-algebra equivalence from $ R[X] $ to itself induced by substituting $ -X $ for $ X $ maps a polynomial $ a $ to the evaluation of $ a $ at $ -X $, i.e., $ \\\\text{aeval}(-X)(a) $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.AlgebraMap\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Polynomial.taylorEquiv_symm",
+            "informal_name": "Taylor Isomorphism for Polynomials over Commutative Rings",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommRing R] (r : R), (Polynomial.taylorEquiv r).symm = Polynomial.taylorEquiv (-r)",
+            "informal_description": "For any element $ r $ in a commutative ring $ R $, the Taylor isomorphism is an $ R $-algebra isomorphism from the polynomial ring $ R[X] $ to itself that maps each polynomial $ f(X) $ to $ f(X + r) $. This equivalence preserves addition, multiplication, and scalar multiplication, with the inverse map given by substituting $ X - r $.",
+            "path": "Mathlib.Algebra.Polynomial.Taylor"
+          },
+          {
+            "formal_name": "Polynomial.algEquivAevalXAddC_symm",
+            "informal_name": "Inverse of Polynomial Substitution Equivalence at $X + t$ is Substitution at $X - t$",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_3} [inst : CommRing R] (t : R),\n  (Polynomial.algEquivAevalXAddC t).symm = Polynomial.algEquivAevalXAddC (-t)",
+            "informal_description": "The inverse of the algebra equivalence defined by substituting $X + t$ in polynomials is equal to the algebra equivalence defined by substituting $X - t$.",
+            "path": "Mathlib.Algebra.Polynomial.AlgebraMap"
+          },
+          {
+            "formal_name": "Polynomial.taylorLinearEquiv_symm",
+            "informal_name": "Inverse of Taylor's Linear Equivalence for Degree-Less-Than Submodules",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommRing R] {n : ℕ} (r : R),\n  (Polynomial.taylorLinearEquiv r n).symm = Polynomial.taylorLinearEquiv (-r) n",
+            "informal_description": "For any element $ r $ in a commutative ring $ R $ and natural number $ n $, the inverse of the Taylor linear equivalence $ \text{taylorLinearEquiv}(r, n) $ (which maps polynomials $ f(X) $ of degree $ <n $ to $ f(X + r) $) is equal to $ \text{taylorLinearEquiv}(-r, n) $, corresponding to substitution of $ X - r $. This establishes that shifting by $ -r $ reverses the $ X + r $ shift within degree-$ <n $ polynomial submodules.",
+            "path": "Mathlib.RingTheory.Polynomial.DegreeLT"
+          },
+          {
+            "formal_name": "Polynomial.algEquivAevalXAddC_symm_apply",
+            "informal_name": "Inverse of Algebra Equivalence via Evaluation at $ X + C(t) $",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_3} [inst : CommRing R] (t : R) (a : Polynomial R),\n  (Polynomial.algEquivAevalXAddC t).symm a = (Polynomial.aeval (Polynomial.X - Polynomial.C t)) a",
+            "informal_description": "The inverse of the algebra equivalence defined by evaluation at $ X + C(t) $ maps a polynomial $ a $ to its evaluation at $ X - C(t) $, i.e., $ (\\text{algEquivAevalXAddC}_t)^{-1}(a) = \\text{aeval}_{X - C(t)}(a) $.",
+            "path": "Mathlib.Algebra.Polynomial.AlgebraMap"
+          },
+          {
+            "formal_name": "Polynomial.comp_neg_X_comp_neg_X",
+            "informal_name": "Double Composition with $-X$ Recovers Original Polynomial",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_3} [inst : CommRing R] (p : Polynomial R), (p.comp (-Polynomial.X)).comp (-Polynomial.X) = p",
+            "informal_description": "For any commutative ring $R$ and polynomial $p \\in R[X]$, composing $p$ with the polynomial $-X$ twice yields the original polynomial $p$, i.e., $(p \\circ (-X)) \\circ (-X) = p$.",
+            "path": "Mathlib.Algebra.Polynomial.AlgebraMap"
+          },
+          {
+            "formal_name": "Polynomial.algEquivAevalNegX_symm_apply",
+            "informal_name": "Inverse of Algebra Equivalence Induced by Negating the Indeterminate",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_3} [inst : CommRing R] (a : Polynomial R),\n  Polynomial.algEquivAevalNegX.symm a = (Polynomial.aeval (-Polynomial.X)) a",
+            "informal_description": "The inverse of the $ R $-algebra equivalence from $ R[X] $ to itself induced by substituting $ -X $ for $ X $ maps a polynomial $ a $ to the evaluation of $ a $ at $ -X $, i.e., $ \\text{aeval}(-X)(a) $.",
+            "path": "Mathlib.Algebra.Polynomial.AlgebraMap"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "LeanSearch",
+    "form": "current",
+    "request": {
+      "query": "Multivariate polynomial translation by negative alpha undoes translation alpha.",
+      "num_results": 6
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.taylorLinearEquiv_symm\",\n      \"module_name\": \"Mathlib.RingTheory.Polynomial.DegreeLT\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] {n : ℕ} (r : R),\\n  (Polynomial.taylorLinearEquiv r n).symm = Polynomial.taylorLinearEquiv (-r) n\"\n    },\n    {\n      \"name\": \"Polynomial.algEquivAevalXAddC_symm\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.AlgebraMap\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_3} [inst : CommRing R] (t : R),\\n  (Polynomial.algEquivAevalXAddC t).symm = Polynomial.algEquivAevalXAddC (-t)\"\n    },\n    {\n      \"name\": \"Polynomial.algEquivAevalXAddC\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.AlgebraMap\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_3} → [inst : CommRing R] → R → Polynomial R ≃ₐ[R] Polynomial R\"\n    },\n    {\n      \"name\": \"Polynomial.comp_neg_X_comp_neg_X\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.AlgebraMap\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_3} [inst : CommRing R] (p : Polynomial R), (p.comp (-Polynomial.X)).comp (-Polynomial.X) = p\"\n    },\n    {\n      \"name\": \"translate_eq_domAddActMk_vadd\",\n      \"module_name\": \"Mathlib.Algebra.Group.Translate\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_2} {G : Type u_5} [inst : AddCommGroup G] (a : G) (f : G → α), translate a f = DomAddAct.mk (-a) +ᵥ f\"\n    },\n    {\n      \"name\": \"Polynomial.taylorEquiv\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Taylor\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : CommRing R] → R → Polynomial R ≃ₐ[R] Polynomial R\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.taylorLinearEquiv_symm",
+            "module_name": "Mathlib.RingTheory.Polynomial.DegreeLT",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommRing R] {n : ℕ} (r : R),\n  (Polynomial.taylorLinearEquiv r n).symm = Polynomial.taylorLinearEquiv (-r) n"
+          },
+          {
+            "name": "Polynomial.algEquivAevalXAddC_symm",
+            "module_name": "Mathlib.Algebra.Polynomial.AlgebraMap",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_3} [inst : CommRing R] (t : R),\n  (Polynomial.algEquivAevalXAddC t).symm = Polynomial.algEquivAevalXAddC (-t)"
+          },
+          {
+            "name": "Polynomial.algEquivAevalXAddC",
+            "module_name": "Mathlib.Algebra.Polynomial.AlgebraMap",
+            "kind": "definition",
+            "type": "{R : Type u_3} → [inst : CommRing R] → R → Polynomial R ≃ₐ[R] Polynomial R"
+          },
+          {
+            "name": "Polynomial.comp_neg_X_comp_neg_X",
+            "module_name": "Mathlib.Algebra.Polynomial.AlgebraMap",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_3} [inst : CommRing R] (p : Polynomial R), (p.comp (-Polynomial.X)).comp (-Polynomial.X) = p"
+          },
+          {
+            "name": "translate_eq_domAddActMk_vadd",
+            "module_name": "Mathlib.Algebra.Group.Translate",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_2} {G : Type u_5} [inst : AddCommGroup G] (a : G) (f : G → α), translate a f = DomAddAct.mk (-a) +ᵥ f"
+          },
+          {
+            "name": "Polynomial.taylorEquiv",
+            "module_name": "Mathlib.Algebra.Polynomial.Taylor",
+            "kind": "definition",
+            "type": "{R : Type u_1} → [inst : CommRing R] → R → Polynomial R ≃ₐ[R] Polynomial R"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "Finder",
+    "form": "literature",
+    "request": {
+      "query": "Substitution X_i minus a_i is inverse to substitution X_i plus a_i in polynomial ring.",
+      "num_results": 6
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.algEquivAevalXAddC_symm\",\n      \"informal_name\": \"Inverse of Polynomial Substitution Equivalence at $X + t$ is Substitution at $X - t$\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_3} [inst : CommRing R] (t : R),\\n  (Polynomial.algEquivAevalXAddC t).symm = Polynomial.algEquivAevalXAddC (-t)\",\n      \"informal_description\": \"The inverse of the algebra equivalence defined by substituting $X + t$ in polynomials is equal to the algebra equivalence defined by substituting $X - t$.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.AlgebraMap\"\n    },\n    {\n      \"formal_name\": \"Polynomial.algEquivAevalXAddC_symm_apply\",\n      \"informal_name\": \"Inverse of Algebra Equivalence via Evaluation at $ X + C(t) $\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_3} [inst : CommRing R] (t : R) (a : Polynomial R),\\n  (Polynomial.algEquivAevalXAddC t).symm a = (Polynomial.aeval (Polynomial.X - Polynomial.C t)) a\",\n      \"informal_description\": \"The inverse of the algebra equivalence defined by evaluation at $ X + C(t) $ maps a polynomial $ a $ to its evaluation at $ X - C(t) $, i.e., $ (\\\\text{algEquivAevalXAddC}_t)^{-1}(a) = \\\\text{aeval}_{X - C(t)}(a) $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.AlgebraMap\"\n    },\n    {\n      \"formal_name\": \"Polynomial.taylorEquiv_symm\",\n      \"informal_name\": \"Taylor Isomorphism for Polynomials over Commutative Rings\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] (r : R), (Polynomial.taylorEquiv r).symm = Polynomial.taylorEquiv (-r)\",\n      \"informal_description\": \"For any element $ r $ in a commutative ring $ R $, the Taylor isomorphism is an $ R $-algebra isomorphism from the polynomial ring $ R[X] $ to itself that maps each polynomial $ f(X) $ to $ f(X + r) $. This equivalence preserves addition, multiplication, and scalar multiplication, with the inverse map given by substituting $ X - r $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    },\n    {\n      \"formal_name\": \"Polynomial.algEquivAevalXAddC\",\n      \"informal_name\": \"Shift automorphism on the polynomial ring\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_3} → [inst : CommRing R] → R → Polynomial R ≃ₐ[R] Polynomial R\",\n      \"informal_description\": \"For any commutative ring $R$ and any element $t \\\\in R$, this defines an $R$-algebra automorphism of the polynomial ring $R[X]$. This automorphism maps a polynomial $p(X)$ to $p(X+t)$.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.AlgebraMap\"\n    },\n    {\n      \"formal_name\": \"Polynomial.algEquivCMulXAddC_symm_apply\",\n      \"informal_name\": \"Inverse of Algebra Isomorphism: Multiplication by $ a $ and Addition of $ b $\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_3} [inst : CommRing R] (a b : R) [inst_1 : Invertible a] (a_1 : Polynomial R),\\n  (Polynomial.algEquivCMulXAddC a b).symm a_1 =\\n    (Polynomial.aeval (Polynomial.C ⅟a * (Polynomial.X - Polynomial.C b))) a_1\",\n      \"informal_description\": \"The inverse of the algebra isomorphism that maps polynomials via multiplication by an invertible element $ a $ and addition of $ b $ is given by evaluating at the polynomial $ \\\\frac{1}{a}(X - b) $. Specifically, for any polynomial $ f $, applying the inverse isomorphism corresponds to substituting $ X $ with $ \\\\frac{1}{a}(X - b) $ through the evaluation homomorphism.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.AlgebraMap\"\n    },\n    {\n      \"formal_name\": \"Polynomial.algEquivCMulXAddC\",\n      \"informal_name\": \"Algebra Isomorphism Induced by Linear Polynomial $aX + b$\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_3} → [inst : CommRing R] → (a : R) → R → [Invertible a] → Polynomial R ≃ₐ[R] Polynomial R\",\n      \"informal_description\": \"For a commutative ring $R$ and elements $a,b \\\\in R$ with $a$ invertible, the linear polynomial $aX + b$ induces an $R$-algebra automorphism of $R[X]$. This isomorphism is given by composition with $aX + b$, with inverse given by composition with $\\\\frac{1}{a}(X - b)$, since their composition yields the identity polynomial $X$.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.AlgebraMap\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Polynomial.algEquivAevalXAddC_symm",
+            "informal_name": "Inverse of Polynomial Substitution Equivalence at $X + t$ is Substitution at $X - t$",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_3} [inst : CommRing R] (t : R),\n  (Polynomial.algEquivAevalXAddC t).symm = Polynomial.algEquivAevalXAddC (-t)",
+            "informal_description": "The inverse of the algebra equivalence defined by substituting $X + t$ in polynomials is equal to the algebra equivalence defined by substituting $X - t$.",
+            "path": "Mathlib.Algebra.Polynomial.AlgebraMap"
+          },
+          {
+            "formal_name": "Polynomial.algEquivAevalXAddC_symm_apply",
+            "informal_name": "Inverse of Algebra Equivalence via Evaluation at $ X + C(t) $",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_3} [inst : CommRing R] (t : R) (a : Polynomial R),\n  (Polynomial.algEquivAevalXAddC t).symm a = (Polynomial.aeval (Polynomial.X - Polynomial.C t)) a",
+            "informal_description": "The inverse of the algebra equivalence defined by evaluation at $ X + C(t) $ maps a polynomial $ a $ to its evaluation at $ X - C(t) $, i.e., $ (\\text{algEquivAevalXAddC}_t)^{-1}(a) = \\text{aeval}_{X - C(t)}(a) $.",
+            "path": "Mathlib.Algebra.Polynomial.AlgebraMap"
+          },
+          {
+            "formal_name": "Polynomial.taylorEquiv_symm",
+            "informal_name": "Taylor Isomorphism for Polynomials over Commutative Rings",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommRing R] (r : R), (Polynomial.taylorEquiv r).symm = Polynomial.taylorEquiv (-r)",
+            "informal_description": "For any element $ r $ in a commutative ring $ R $, the Taylor isomorphism is an $ R $-algebra isomorphism from the polynomial ring $ R[X] $ to itself that maps each polynomial $ f(X) $ to $ f(X + r) $. This equivalence preserves addition, multiplication, and scalar multiplication, with the inverse map given by substituting $ X - r $.",
+            "path": "Mathlib.Algebra.Polynomial.Taylor"
+          },
+          {
+            "formal_name": "Polynomial.algEquivAevalXAddC",
+            "informal_name": "Shift automorphism on the polynomial ring",
+            "kind": "definition",
+            "type": "{R : Type u_3} → [inst : CommRing R] → R → Polynomial R ≃ₐ[R] Polynomial R",
+            "informal_description": "For any commutative ring $R$ and any element $t \\in R$, this defines an $R$-algebra automorphism of the polynomial ring $R[X]$. This automorphism maps a polynomial $p(X)$ to $p(X+t)$.",
+            "path": "Mathlib.Algebra.Polynomial.AlgebraMap"
+          },
+          {
+            "formal_name": "Polynomial.algEquivCMulXAddC_symm_apply",
+            "informal_name": "Inverse of Algebra Isomorphism: Multiplication by $ a $ and Addition of $ b $",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_3} [inst : CommRing R] (a b : R) [inst_1 : Invertible a] (a_1 : Polynomial R),\n  (Polynomial.algEquivCMulXAddC a b).symm a_1 =\n    (Polynomial.aeval (Polynomial.C ⅟a * (Polynomial.X - Polynomial.C b))) a_1",
+            "informal_description": "The inverse of the algebra isomorphism that maps polynomials via multiplication by an invertible element $ a $ and addition of $ b $ is given by evaluating at the polynomial $ \\frac{1}{a}(X - b) $. Specifically, for any polynomial $ f $, applying the inverse isomorphism corresponds to substituting $ X $ with $ \\frac{1}{a}(X - b) $ through the evaluation homomorphism.",
+            "path": "Mathlib.Algebra.Polynomial.AlgebraMap"
+          },
+          {
+            "formal_name": "Polynomial.algEquivCMulXAddC",
+            "informal_name": "Algebra Isomorphism Induced by Linear Polynomial $aX + b$",
+            "kind": "definition",
+            "type": "{R : Type u_3} → [inst : CommRing R] → (a : R) → R → [Invertible a] → Polynomial R ≃ₐ[R] Polynomial R",
+            "informal_description": "For a commutative ring $R$ and elements $a,b \\in R$ with $a$ invertible, the linear polynomial $aX + b$ induces an $R$-algebra automorphism of $R[X]$. This isomorphism is given by composition with $aX + b$, with inverse given by composition with $\\frac{1}{a}(X - b)$, since their composition yields the identity polynomial $X$.",
+            "path": "Mathlib.Algebra.Polynomial.AlgebraMap"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "LeanSearch",
+    "form": "literature",
+    "request": {
+      "query": "Substitution X_i minus a_i is inverse to substitution X_i plus a_i in polynomial ring.",
+      "num_results": 6
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.algEquivAevalXAddC_symm\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.AlgebraMap\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_3} [inst : CommRing R] (t : R),\\n  (Polynomial.algEquivAevalXAddC t).symm = Polynomial.algEquivAevalXAddC (-t)\"\n    },\n    {\n      \"name\": \"Polynomial.taylorLinearEquiv_symm\",\n      \"module_name\": \"Mathlib.RingTheory.Polynomial.DegreeLT\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] {n : ℕ} (r : R),\\n  (Polynomial.taylorLinearEquiv r n).symm = Polynomial.taylorLinearEquiv (-r) n\"\n    },\n    {\n      \"name\": \"Polynomial.algEquivCMulXAddC\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.AlgebraMap\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_3} → [inst : CommRing R] → (a : R) → R → [Invertible a] → Polynomial R ≃ₐ[R] Polynomial R\"\n    },\n    {\n      \"name\": \"Polynomial.algEquivAevalXAddC\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.AlgebraMap\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_3} → [inst : CommRing R] → R → Polynomial R ≃ₐ[R] Polynomial R\"\n    },\n    {\n      \"name\": \"Polynomial.taylorEquiv\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Taylor\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : CommRing R] → R → Polynomial R ≃ₐ[R] Polynomial R\"\n    },\n    {\n      \"name\": \"Polynomial.algEquivAevalNegX_symm_apply\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.AlgebraMap\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_3} [inst : CommRing R] (a : Polynomial R),\\n  Polynomial.algEquivAevalNegX.symm a = (Polynomial.aeval (-Polynomial.X)) a\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.algEquivAevalXAddC_symm",
+            "module_name": "Mathlib.Algebra.Polynomial.AlgebraMap",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_3} [inst : CommRing R] (t : R),\n  (Polynomial.algEquivAevalXAddC t).symm = Polynomial.algEquivAevalXAddC (-t)"
+          },
+          {
+            "name": "Polynomial.taylorLinearEquiv_symm",
+            "module_name": "Mathlib.RingTheory.Polynomial.DegreeLT",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommRing R] {n : ℕ} (r : R),\n  (Polynomial.taylorLinearEquiv r n).symm = Polynomial.taylorLinearEquiv (-r) n"
+          },
+          {
+            "name": "Polynomial.algEquivCMulXAddC",
+            "module_name": "Mathlib.Algebra.Polynomial.AlgebraMap",
+            "kind": "definition",
+            "type": "{R : Type u_3} → [inst : CommRing R] → (a : R) → R → [Invertible a] → Polynomial R ≃ₐ[R] Polynomial R"
+          },
+          {
+            "name": "Polynomial.algEquivAevalXAddC",
+            "module_name": "Mathlib.Algebra.Polynomial.AlgebraMap",
+            "kind": "definition",
+            "type": "{R : Type u_3} → [inst : CommRing R] → R → Polynomial R ≃ₐ[R] Polynomial R"
+          },
+          {
+            "name": "Polynomial.taylorEquiv",
+            "module_name": "Mathlib.Algebra.Polynomial.Taylor",
+            "kind": "definition",
+            "type": "{R : Type u_1} → [inst : CommRing R] → R → Polynomial R ≃ₐ[R] Polynomial R"
+          },
+          {
+            "name": "Polynomial.algEquivAevalNegX_symm_apply",
+            "module_name": "Mathlib.Algebra.Polynomial.AlgebraMap",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_3} [inst : CommRing R] (a : Polynomial R),\n  Polynomial.algEquivAevalNegX.symm a = (Polynomial.aeval (-Polynomial.X)) a"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "Finder",
+    "form": "abstract",
+    "request": {
+      "query": "Algebra equivalence inverse apply apply polynomial substitution translation",
+      "num_results": 6
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.algEquivAevalXAddC_symm_apply\",\n      \"informal_name\": \"Inverse of Algebra Equivalence via Evaluation at $ X + C(t) $\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_3} [inst : CommRing R] (t : R) (a : Polynomial R),\\n  (Polynomial.algEquivAevalXAddC t).symm a = (Polynomial.aeval (Polynomial.X - Polynomial.C t)) a\",\n      \"informal_description\": \"The inverse of the algebra equivalence defined by evaluation at $ X + C(t) $ maps a polynomial $ a $ to its evaluation at $ X - C(t) $, i.e., $ (\\\\text{algEquivAevalXAddC}_t)^{-1}(a) = \\\\text{aeval}_{X - C(t)}(a) $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.AlgebraMap\"\n    },\n    {\n      \"formal_name\": \"Polynomial.algEquivOfCompEqX_symm_apply\",\n      \"informal_name\": \"Inverse of Algebra Equivalence from Compositional Inverses\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : CommSemiring R] (p q : Polynomial R) (hpq : p.comp q = Polynomial.X)\\n  (hqp : q.comp p = Polynomial.X) (a : Polynomial R), (p.algEquivOfCompEqX q hpq hqp).symm a = (Polynomial.aeval q) a\",\n      \"informal_description\": \"Given polynomials $p,q$ over a commutative semiring $R$ satisfying $p(q(X)) = X$ and $q(p(X)) = X$, the inverse of the algebra equivalence $p.algEquivOfCompEqX(q)$ acts on any polynomial $a$ by evaluating $a$ at $q$ via the polynomial evaluation homomorphism $\\\\text{aeval}$. Formally, $(p.algEquivOfCompEqX(q))^{-1}(a) = a(q)$.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.AlgebraMap\"\n    },\n    {\n      \"formal_name\": \"Polynomial.algEquivCMulXAddC_symm_apply\",\n      \"informal_name\": \"Inverse of Algebra Isomorphism: Multiplication by $ a $ and Addition of $ b $\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_3} [inst : CommRing R] (a b : R) [inst_1 : Invertible a] (a_1 : Polynomial R),\\n  (Polynomial.algEquivCMulXAddC a b).symm a_1 =\\n    (Polynomial.aeval (Polynomial.C ⅟a * (Polynomial.X - Polynomial.C b))) a_1\",\n      \"informal_description\": \"The inverse of the algebra isomorphism that maps polynomials via multiplication by an invertible element $ a $ and addition of $ b $ is given by evaluating at the polynomial $ \\\\frac{1}{a}(X - b) $. Specifically, for any polynomial $ f $, applying the inverse isomorphism corresponds to substituting $ X $ with $ \\\\frac{1}{a}(X - b) $ through the evaluation homomorphism.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.AlgebraMap\"\n    },\n    {\n      \"formal_name\": \"Polynomial.algEquivAevalXAddC_symm\",\n      \"informal_name\": \"Inverse of Polynomial Substitution Equivalence at $X + t$ is Substitution at $X - t$\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_3} [inst : CommRing R] (t : R),\\n  (Polynomial.algEquivAevalXAddC t).symm = Polynomial.algEquivAevalXAddC (-t)\",\n      \"informal_description\": \"The inverse of the algebra equivalence defined by substituting $X + t$ in polynomials is equal to the algebra equivalence defined by substituting $X - t$.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.AlgebraMap\"\n    },\n    {\n      \"formal_name\": \"Polynomial.algEquivOfCompEqX_apply\",\n      \"informal_name\": \"Algebra Equivalence from Compositional Inverses: Application Equals Evaluation\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : CommSemiring R] (p q : Polynomial R) (hpq : p.comp q = Polynomial.X)\\n  (hqp : q.comp p = Polynomial.X) (a : Polynomial R), (p.algEquivOfCompEqX q hpq hqp) a = (Polynomial.aeval p) a\",\n      \"informal_description\": \"Given a commutative semiring $ R $ and polynomials $ p, q \\\\in R[X] $ satisfying $ p \\\\circ q = X $ and $ q \\\\circ p = X $, the algebra equivalence $ \\\\text{algEquivOfCompEqX}(p, q) $ maps any polynomial $ a \\\\in R[X] $ to the evaluation of $ a $ at $ p $, i.e., $ \\\\text{aeval}_p(a) $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.AlgebraMap\"\n    },\n    {\n      \"formal_name\": \"Polynomial.algEquivOfCompEqX_symm\",\n      \"informal_name\": \"Symmetry of Inverse in Polynomial Composition Algebra Equivalence\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : CommSemiring R] (p q : Polynomial R) (hpq : p.comp q = Polynomial.X)\\n  (hqp : q.comp p = Polynomial.X), (p.algEquivOfCompEqX q hpq hqp).symm = q.algEquivOfCompEqX p hqp hpq\",\n      \"informal_description\": \"Given polynomials $ p $ and $ q $ such that $ p \\\\circ q = X $ and $ q \\\\circ p = X $, the inverse of the algebra equivalence $ p \\\\circ q = X $-induced equivalence is equal to the algebra equivalence induced by swapping $ p $ and $ q $ with their composition conditions interchanged.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.AlgebraMap\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Polynomial.algEquivAevalXAddC_symm_apply",
+            "informal_name": "Inverse of Algebra Equivalence via Evaluation at $ X + C(t) $",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_3} [inst : CommRing R] (t : R) (a : Polynomial R),\n  (Polynomial.algEquivAevalXAddC t).symm a = (Polynomial.aeval (Polynomial.X - Polynomial.C t)) a",
+            "informal_description": "The inverse of the algebra equivalence defined by evaluation at $ X + C(t) $ maps a polynomial $ a $ to its evaluation at $ X - C(t) $, i.e., $ (\\text{algEquivAevalXAddC}_t)^{-1}(a) = \\text{aeval}_{X - C(t)}(a) $.",
+            "path": "Mathlib.Algebra.Polynomial.AlgebraMap"
+          },
+          {
+            "formal_name": "Polynomial.algEquivOfCompEqX_symm_apply",
+            "informal_name": "Inverse of Algebra Equivalence from Compositional Inverses",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : CommSemiring R] (p q : Polynomial R) (hpq : p.comp q = Polynomial.X)\n  (hqp : q.comp p = Polynomial.X) (a : Polynomial R), (p.algEquivOfCompEqX q hpq hqp).symm a = (Polynomial.aeval q) a",
+            "informal_description": "Given polynomials $p,q$ over a commutative semiring $R$ satisfying $p(q(X)) = X$ and $q(p(X)) = X$, the inverse of the algebra equivalence $p.algEquivOfCompEqX(q)$ acts on any polynomial $a$ by evaluating $a$ at $q$ via the polynomial evaluation homomorphism $\\text{aeval}$. Formally, $(p.algEquivOfCompEqX(q))^{-1}(a) = a(q)$.",
+            "path": "Mathlib.Algebra.Polynomial.AlgebraMap"
+          },
+          {
+            "formal_name": "Polynomial.algEquivCMulXAddC_symm_apply",
+            "informal_name": "Inverse of Algebra Isomorphism: Multiplication by $ a $ and Addition of $ b $",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_3} [inst : CommRing R] (a b : R) [inst_1 : Invertible a] (a_1 : Polynomial R),\n  (Polynomial.algEquivCMulXAddC a b).symm a_1 =\n    (Polynomial.aeval (Polynomial.C ⅟a * (Polynomial.X - Polynomial.C b))) a_1",
+            "informal_description": "The inverse of the algebra isomorphism that maps polynomials via multiplication by an invertible element $ a $ and addition of $ b $ is given by evaluating at the polynomial $ \\frac{1}{a}(X - b) $. Specifically, for any polynomial $ f $, applying the inverse isomorphism corresponds to substituting $ X $ with $ \\frac{1}{a}(X - b) $ through the evaluation homomorphism.",
+            "path": "Mathlib.Algebra.Polynomial.AlgebraMap"
+          },
+          {
+            "formal_name": "Polynomial.algEquivAevalXAddC_symm",
+            "informal_name": "Inverse of Polynomial Substitution Equivalence at $X + t$ is Substitution at $X - t$",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_3} [inst : CommRing R] (t : R),\n  (Polynomial.algEquivAevalXAddC t).symm = Polynomial.algEquivAevalXAddC (-t)",
+            "informal_description": "The inverse of the algebra equivalence defined by substituting $X + t$ in polynomials is equal to the algebra equivalence defined by substituting $X - t$.",
+            "path": "Mathlib.Algebra.Polynomial.AlgebraMap"
+          },
+          {
+            "formal_name": "Polynomial.algEquivOfCompEqX_apply",
+            "informal_name": "Algebra Equivalence from Compositional Inverses: Application Equals Evaluation",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : CommSemiring R] (p q : Polynomial R) (hpq : p.comp q = Polynomial.X)\n  (hqp : q.comp p = Polynomial.X) (a : Polynomial R), (p.algEquivOfCompEqX q hpq hqp) a = (Polynomial.aeval p) a",
+            "informal_description": "Given a commutative semiring $ R $ and polynomials $ p, q \\in R[X] $ satisfying $ p \\circ q = X $ and $ q \\circ p = X $, the algebra equivalence $ \\text{algEquivOfCompEqX}(p, q) $ maps any polynomial $ a \\in R[X] $ to the evaluation of $ a $ at $ p $, i.e., $ \\text{aeval}_p(a) $.",
+            "path": "Mathlib.Algebra.Polynomial.AlgebraMap"
+          },
+          {
+            "formal_name": "Polynomial.algEquivOfCompEqX_symm",
+            "informal_name": "Symmetry of Inverse in Polynomial Composition Algebra Equivalence",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : CommSemiring R] (p q : Polynomial R) (hpq : p.comp q = Polynomial.X)\n  (hqp : q.comp p = Polynomial.X), (p.algEquivOfCompEqX q hpq hqp).symm = q.algEquivOfCompEqX p hqp hpq",
+            "informal_description": "Given polynomials $ p $ and $ q $ such that $ p \\circ q = X $ and $ q \\circ p = X $, the inverse of the algebra equivalence $ p \\circ q = X $-induced equivalence is equal to the algebra equivalence induced by swapping $ p $ and $ q $ with their composition conditions interchanged.",
+            "path": "Mathlib.Algebra.Polynomial.AlgebraMap"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "LeanSearch",
+    "form": "abstract",
+    "request": {
+      "query": "Algebra equivalence inverse apply apply polynomial substitution translation",
+      "num_results": 6
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.aeval_algEquiv\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.AlgebraMap\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {A : Type z} {B : Type u_2} [inst : CommSemiring R] [inst_1 : Semiring A] [inst_2 : Semiring B]\\n  [inst_3 : Algebra R A] [inst_4 : Algebra R B] (f : A ≃ₐ[R] B) (x : A),\\n  Polynomial.aeval (f x) = (↑f).comp (Polynomial.aeval x)\"\n    },\n    {\n      \"name\": \"Polynomial.algEquivCMulXAddC_symm_apply\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.AlgebraMap\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_3} [inst : CommRing R] (a b : R) [inst_1 : Invertible a] (a_1 : Polynomial R),\\n  (Polynomial.algEquivCMulXAddC a b).symm a_1 =\\n    (Polynomial.aeval (Polynomial.C ⅟a * (Polynomial.X - Polynomial.C b))) a_1\"\n    },\n    {\n      \"name\": \"Polynomial.mapEquiv_symm_apply\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Eval.Degree\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S : Type v} [inst : Semiring R] [inst_1 : Semiring S] (e : R ≃+* S) (a : Polynomial S),\\n  (Polynomial.mapEquiv e).symm a = Polynomial.map (↑e.symm) a\"\n    },\n    {\n      \"name\": \"MvPolynomial.renameEquiv\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Rename\",\n      \"kind\": \"definition\",\n      \"type\": \"{σ : Type u_1} →\\n  {τ : Type u_2} → (R : Type u_4) → [inst : CommSemiring R] → σ ≃ τ → MvPolynomial σ R ≃ₐ[R] MvPolynomial τ R\"\n    },\n    {\n      \"name\": \"Polynomial.algEquivAevalXAddC_symm\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.AlgebraMap\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_3} [inst : CommRing R] (t : R),\\n  (Polynomial.algEquivAevalXAddC t).symm = Polynomial.algEquivAevalXAddC (-t)\"\n    },\n    {\n      \"name\": \"Polynomial.mapAlgEquiv_toAlgHom\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.AlgebraMap\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {A : Type z} {B : Type u_2} [inst : CommSemiring R] [inst_1 : Semiring A] [inst_2 : Semiring B]\\n  [inst_3 : Algebra R A] [inst_4 : Algebra R B] (f : A ≃ₐ[R] B), ↑(Polynomial.mapAlgEquiv f) = Polynomial.mapAlgHom ↑f\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.aeval_algEquiv",
+            "module_name": "Mathlib.Algebra.Polynomial.AlgebraMap",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {A : Type z} {B : Type u_2} [inst : CommSemiring R] [inst_1 : Semiring A] [inst_2 : Semiring B]\n  [inst_3 : Algebra R A] [inst_4 : Algebra R B] (f : A ≃ₐ[R] B) (x : A),\n  Polynomial.aeval (f x) = (↑f).comp (Polynomial.aeval x)"
+          },
+          {
+            "name": "Polynomial.algEquivCMulXAddC_symm_apply",
+            "module_name": "Mathlib.Algebra.Polynomial.AlgebraMap",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_3} [inst : CommRing R] (a b : R) [inst_1 : Invertible a] (a_1 : Polynomial R),\n  (Polynomial.algEquivCMulXAddC a b).symm a_1 =\n    (Polynomial.aeval (Polynomial.C ⅟a * (Polynomial.X - Polynomial.C b))) a_1"
+          },
+          {
+            "name": "Polynomial.mapEquiv_symm_apply",
+            "module_name": "Mathlib.Algebra.Polynomial.Eval.Degree",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {S : Type v} [inst : Semiring R] [inst_1 : Semiring S] (e : R ≃+* S) (a : Polynomial S),\n  (Polynomial.mapEquiv e).symm a = Polynomial.map (↑e.symm) a"
+          },
+          {
+            "name": "MvPolynomial.renameEquiv",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Rename",
+            "kind": "definition",
+            "type": "{σ : Type u_1} →\n  {τ : Type u_2} → (R : Type u_4) → [inst : CommSemiring R] → σ ≃ τ → MvPolynomial σ R ≃ₐ[R] MvPolynomial τ R"
+          },
+          {
+            "name": "Polynomial.algEquivAevalXAddC_symm",
+            "module_name": "Mathlib.Algebra.Polynomial.AlgebraMap",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_3} [inst : CommRing R] (t : R),\n  (Polynomial.algEquivAevalXAddC t).symm = Polynomial.algEquivAevalXAddC (-t)"
+          },
+          {
+            "name": "Polynomial.mapAlgEquiv_toAlgHom",
+            "module_name": "Mathlib.Algebra.Polynomial.AlgebraMap",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {A : Type z} {B : Type u_2} [inst : CommSemiring R] [inst_1 : Semiring A] [inst_2 : Semiring B]\n  [inst_3 : Algebra R A] [inst_4 : Algebra R B] (f : A ≃ₐ[R] B), ↑(Polynomial.mapAlgEquiv f) = Polynomial.mapAlgHom ↑f"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "Loogle",
+    "form": "current",
+    "request": {
+      "query": "MvPolynomial.aeval, \"neg\"",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": []\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": []
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "Loogle",
+    "form": "literature",
+    "request": {
+      "query": "Polynomial.taylorEquiv",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.taylorEquiv\",\n      \"type\": \" {R : Type u_1} [CommRing R] (r : R) : Polynomial R ≃ₐ[R] Polynomial R\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    },\n    {\n      \"name\": \"Polynomial.toAlgHom_taylorEquiv\",\n      \"type\": \" {R : Type u_1} [CommRing R] (r : R) : ↑(Polynomial.taylorEquiv r) = Polynomial.taylorAlgHom r\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    },\n    {\n      \"name\": \"Polynomial.taylorEquiv_symm\",\n      \"type\": \" {R : Type u_1} [CommRing R] (r : R) : (Polynomial.taylorEquiv r).symm = Polynomial.taylorEquiv (-r)\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    },\n    {\n      \"name\": \"Polynomial.coe_taylorEquiv\",\n      \"type\": \" {R : Type u_1} [CommRing R] (r : R) : ↑↑(Polynomial.taylorEquiv r) = Polynomial.taylor r\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    },\n    {\n      \"name\": \"Polynomial.comap_taylorEquiv_degreeLT\",\n      \"type\": \" {R : Type u_1} [CommRing R] {r : R} {n : ℕ} : Submodule.comap (↑↑(Polynomial.taylorEquiv r)) (Polynomial.degreeLT R n) = Polynomial.degreeLT R n\",\n      \"module\": \"Mathlib.RingTheory.Polynomial.DegreeLT\"\n    },\n    {\n      \"name\": \"Polynomial.map_taylorEquiv_degreeLT\",\n      \"type\": \" {R : Type u_1} [CommRing R] {r : R} {n : ℕ} : Submodule.map (↑↑(Polynomial.taylorEquiv r)) (Polynomial.degreeLT R n) = Polynomial.degreeLT R n\",\n      \"module\": \"Mathlib.RingTheory.Polynomial.DegreeLT\"\n    },\n    {\n      \"name\": \"Polynomial.taylorLinearEquiv_apply_coe\",\n      \"type\": \" {R : Type u_1} [CommRing R] (r : R) (n : ℕ) (x : ↥(Polynomial.degreeLT R n)) : ↑((Polynomial.taylorLinearEquiv r n) x) = ↑(↑((↑(Polynomial.taylorEquiv r)).submoduleMap (Polynomial.degreeLT R n)) x)\",\n      \"module\": \"Mathlib.RingTheory.Polynomial.DegreeLT\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.taylorEquiv",
+            "type": " {R : Type u_1} [CommRing R] (r : R) : Polynomial R ≃ₐ[R] Polynomial R",
+            "module": "Mathlib.Algebra.Polynomial.Taylor"
+          },
+          {
+            "name": "Polynomial.toAlgHom_taylorEquiv",
+            "type": " {R : Type u_1} [CommRing R] (r : R) : ↑(Polynomial.taylorEquiv r) = Polynomial.taylorAlgHom r",
+            "module": "Mathlib.Algebra.Polynomial.Taylor"
+          },
+          {
+            "name": "Polynomial.taylorEquiv_symm",
+            "type": " {R : Type u_1} [CommRing R] (r : R) : (Polynomial.taylorEquiv r).symm = Polynomial.taylorEquiv (-r)",
+            "module": "Mathlib.Algebra.Polynomial.Taylor"
+          },
+          {
+            "name": "Polynomial.coe_taylorEquiv",
+            "type": " {R : Type u_1} [CommRing R] (r : R) : ↑↑(Polynomial.taylorEquiv r) = Polynomial.taylor r",
+            "module": "Mathlib.Algebra.Polynomial.Taylor"
+          },
+          {
+            "name": "Polynomial.comap_taylorEquiv_degreeLT",
+            "type": " {R : Type u_1} [CommRing R] {r : R} {n : ℕ} : Submodule.comap (↑↑(Polynomial.taylorEquiv r)) (Polynomial.degreeLT R n) = Polynomial.degreeLT R n",
+            "module": "Mathlib.RingTheory.Polynomial.DegreeLT"
+          },
+          {
+            "name": "Polynomial.map_taylorEquiv_degreeLT",
+            "type": " {R : Type u_1} [CommRing R] {r : R} {n : ℕ} : Submodule.map (↑↑(Polynomial.taylorEquiv r)) (Polynomial.degreeLT R n) = Polynomial.degreeLT R n",
+            "module": "Mathlib.RingTheory.Polynomial.DegreeLT"
+          },
+          {
+            "name": "Polynomial.taylorLinearEquiv_apply_coe",
+            "type": " {R : Type u_1} [CommRing R] (r : R) (n : ℕ) (x : ↥(Polynomial.degreeLT R n)) : ↑((Polynomial.taylorLinearEquiv r n) x) = ↑(↑((↑(Polynomial.taylorEquiv r)).submoduleMap (Polynomial.degreeLT R n)) x)",
+            "module": "Mathlib.RingTheory.Polynomial.DegreeLT"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "Loogle",
+    "form": "abstract",
+    "request": {
+      "query": "AlgEquiv, _ (_ _) = _",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "Error executing tool lean_loogle: loogle query error: A placeholder `_` cannot be used where a function is expected"
+        }
+      ],
+      "isError": true
+    }
+  },
+  {
+    "method": "local",
+    "form": "current",
+    "request": {
+      "query": "taylor_neg",
+      "limit": 12
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.taylor_neg_taylor\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/Taylor.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.taylor_neg_taylor",
+            "kind": "theorem",
+            "file": "Roth/Taylor.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "local",
+    "form": "literature",
+    "request": {
+      "query": "taylorEquiv",
+      "limit": 12
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.taylorEquiv\",\n      \"kind\": \"def\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Taylor.lean\"\n    },\n    {\n      \"name\": \"Polynomial.taylorEquiv_symm\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Taylor.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.taylorEquiv",
+            "kind": "def",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Taylor.lean"
+          },
+          {
+            "name": "Polynomial.taylorEquiv_symm",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Taylor.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "local",
+    "form": "abstract",
+    "request": {
+      "query": "symm_apply_apply",
+      "limit": 12
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"AddConstEquiv.symm_apply_apply\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/AddConstMap/Equiv.lean\"\n    },\n    {\n      \"name\": \"AffineEquiv.symm_apply_apply\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/AffineSpace/AffineEquiv.lean\"\n    },\n    {\n      \"name\": \"AffineIsometryEquiv.symm_apply_apply\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Analysis/Normed/Affine/Isometry.lean\"\n    },\n    {\n      \"name\": \"AlgEquiv.symm_apply_apply\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Algebra/Equiv.lean\"\n    },\n    {\n      \"name\": \"BialgEquiv.symm_apply_apply\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/Bialgebra/Equiv.lean\"\n    },\n    {\n      \"name\": \"Bundle.Pretrivialization.symm_apply_apply\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Topology/FiberBundle/Trivialization.lean\"\n    },\n    {\n      \"name\": \"CoalgEquiv.symm_apply_apply\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/Coalgebra/Equiv.lean\"\n    },\n    {\n      \"name\": \"ContRepresentation.Equiv.symm_apply_apply\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RepresentationTheory/Continuous/Basic.lean\"\n    },\n    {\n      \"name\": \"ContinuousAffineEquiv.symm_apply_apply\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Topology/Algebra/ContinuousAffineEquiv.lean\"\n    },\n    {\n      \"name\": \"ContinuousAlgEquiv.symm_apply_apply\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Topology/Algebra/Algebra/Equiv.lean\"\n    },\n    {\n      \"name\": \"ContinuousLinearEquiv.symm_apply_apply\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Topology/Algebra/Module/Equiv.lean\"\n    },\n    {\n      \"name\": \"ContinuousMulEquiv.symm_apply_apply\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Topology/Algebra/ContinuousMonoidHom.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "AddConstEquiv.symm_apply_apply",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/AddConstMap/Equiv.lean"
+          },
+          {
+            "name": "AffineEquiv.symm_apply_apply",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/AffineSpace/AffineEquiv.lean"
+          },
+          {
+            "name": "AffineIsometryEquiv.symm_apply_apply",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Analysis/Normed/Affine/Isometry.lean"
+          },
+          {
+            "name": "AlgEquiv.symm_apply_apply",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Algebra/Equiv.lean"
+          },
+          {
+            "name": "BialgEquiv.symm_apply_apply",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/RingTheory/Bialgebra/Equiv.lean"
+          },
+          {
+            "name": "Bundle.Pretrivialization.symm_apply_apply",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Topology/FiberBundle/Trivialization.lean"
+          },
+          {
+            "name": "CoalgEquiv.symm_apply_apply",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/RingTheory/Coalgebra/Equiv.lean"
+          },
+          {
+            "name": "ContRepresentation.Equiv.symm_apply_apply",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/RepresentationTheory/Continuous/Basic.lean"
+          },
+          {
+            "name": "ContinuousAffineEquiv.symm_apply_apply",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Topology/Algebra/ContinuousAffineEquiv.lean"
+          },
+          {
+            "name": "ContinuousAlgEquiv.symm_apply_apply",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Topology/Algebra/Algebra/Equiv.lean"
+          },
+          {
+            "name": "ContinuousLinearEquiv.symm_apply_apply",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Topology/Algebra/Module/Equiv.lean"
+          },
+          {
+            "name": "ContinuousMulEquiv.symm_apply_apply",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Topology/Algebra/ContinuousMonoidHom.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "Loogle",
+    "form": "abstract-retry",
+    "request": {
+      "query": "AlgEquiv.symm_apply_apply",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "Error executing tool lean_loogle: Rate limit exceeded: 3 requests per 30s. Use --loogle-local to avoid limits."
+        }
+      ],
+      "isError": true
+    }
+  },
+  {
+    "method": "Loogle",
+    "form": "abstract-retry-success",
+    "request": {
+      "query": "\"symm_apply_apply\"",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Equiv.ofBijective_symm_apply_apply\",\n      \"type\": \" {α : Sort u} {β : Sort v} (f : α → β) (hf : Function.Bijective f) (x : α) : (Equiv.ofBijective f hf).symm (f x) = x\",\n      \"module\": \"Mathlib.Logic.Equiv.Defs\"\n    },\n    {\n      \"name\": \"Equiv.symm_apply_apply\",\n      \"type\": \" {α : Sort u} {β : Sort v} (e : α ≃ β) (x : α) : e.symm (e x) = x\",\n      \"module\": \"Mathlib.Logic.Equiv.Defs\"\n    },\n    {\n      \"name\": \"EquivLike.coe_symm_apply_apply\",\n      \"type\": \" {α : Sort u} {β : Sort v} {F : Sort u_1} [EquivLike F α β] (e : F) (x : α) : (↑e).symm (e x) = x\",\n      \"module\": \"Mathlib.Logic.Equiv.Defs\"\n    },\n    {\n      \"name\": \"Equiv.symmEquiv_symm_apply_apply\",\n      \"type\": \" (α : Sort u_1) (β : Sort u_2) (e : β ≃ α) (a✝ : α) : ((Equiv.symmEquiv α β).symm e) a✝ = e.invFun a✝\",\n      \"module\": \"Mathlib.Logic.Equiv.Defs\"\n    },\n    {\n      \"name\": \"Equiv.optionSubtype_symm_apply_apply_none\",\n      \"type\": \" {α : Type u_1} {β : Type u_2} [DecidableEq β] (x : β) (e : α ≃ { y // y ≠ x }) : ↑((Equiv.optionSubtype x).symm e) none = x\",\n      \"module\": \"Mathlib.Logic.Equiv.Option\"\n    },\n    {\n      \"name\": \"Equiv.optionSubtype_symm_apply_apply_coe\",\n      \"type\": \" {α : Type u_1} {β : Type u_2} [DecidableEq β] (x : β) (e : α ≃ { y // y ≠ x }) (a : α) : ↑((Equiv.optionSubtype x).symm e) (some a) = ↑(e a)\",\n      \"module\": \"Mathlib.Logic.Equiv.Option\"\n    },\n    {\n      \"name\": \"Equiv.optionSubtype_symm_apply_apply_some\",\n      \"type\": \" {α : Type u_1} {β : Type u_2} [DecidableEq β] (x : β) (e : α ≃ { y // y ≠ x }) (a : α) : ↑((Equiv.optionSubtype x).symm e) (some a) = ↑(e a)\",\n      \"module\": \"Mathlib.Logic.Equiv.Option\"\n    },\n    {\n      \"name\": \"Equiv.piCongrLeft'_symm_apply_apply\",\n      \"type\": \" {α : Sort u_1} {β : Sort u_4} (P : α → Sort u_8) (e : α ≃ β) (g : (b : β) → P (e.symm b)) (b : β) : (Equiv.piCongrLeft' P e).symm g (e.symm b) = g b\",\n      \"module\": \"Mathlib.Logic.Equiv.Basic\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Equiv.ofBijective_symm_apply_apply",
+            "type": " {α : Sort u} {β : Sort v} (f : α → β) (hf : Function.Bijective f) (x : α) : (Equiv.ofBijective f hf).symm (f x) = x",
+            "module": "Mathlib.Logic.Equiv.Defs"
+          },
+          {
+            "name": "Equiv.symm_apply_apply",
+            "type": " {α : Sort u} {β : Sort v} (e : α ≃ β) (x : α) : e.symm (e x) = x",
+            "module": "Mathlib.Logic.Equiv.Defs"
+          },
+          {
+            "name": "EquivLike.coe_symm_apply_apply",
+            "type": " {α : Sort u} {β : Sort v} {F : Sort u_1} [EquivLike F α β] (e : F) (x : α) : (↑e).symm (e x) = x",
+            "module": "Mathlib.Logic.Equiv.Defs"
+          },
+          {
+            "name": "Equiv.symmEquiv_symm_apply_apply",
+            "type": " (α : Sort u_1) (β : Sort u_2) (e : β ≃ α) (a✝ : α) : ((Equiv.symmEquiv α β).symm e) a✝ = e.invFun a✝",
+            "module": "Mathlib.Logic.Equiv.Defs"
+          },
+          {
+            "name": "Equiv.optionSubtype_symm_apply_apply_none",
+            "type": " {α : Type u_1} {β : Type u_2} [DecidableEq β] (x : β) (e : α ≃ { y // y ≠ x }) : ↑((Equiv.optionSubtype x).symm e) none = x",
+            "module": "Mathlib.Logic.Equiv.Option"
+          },
+          {
+            "name": "Equiv.optionSubtype_symm_apply_apply_coe",
+            "type": " {α : Type u_1} {β : Type u_2} [DecidableEq β] (x : β) (e : α ≃ { y // y ≠ x }) (a : α) : ↑((Equiv.optionSubtype x).symm e) (some a) = ↑(e a)",
+            "module": "Mathlib.Logic.Equiv.Option"
+          },
+          {
+            "name": "Equiv.optionSubtype_symm_apply_apply_some",
+            "type": " {α : Type u_1} {β : Type u_2} [DecidableEq β] (x : β) (e : α ≃ { y // y ≠ x }) (a : α) : ↑((Equiv.optionSubtype x).symm e) (some a) = ↑(e a)",
+            "module": "Mathlib.Logic.Equiv.Option"
+          },
+          {
+            "name": "Equiv.piCongrLeft'_symm_apply_apply",
+            "type": " {α : Sort u_1} {β : Sort u_4} (P : α → Sort u_8) (e : α ≃ β) (g : (b : β) → P (e.symm b)) (b : β) : (Equiv.piCongrLeft' P e).symm g (e.symm b) = g b",
+            "module": "Mathlib.Logic.Equiv.Basic"
+          }
+        ]
+      },
+      "isError": false
+    }
+  }
+]

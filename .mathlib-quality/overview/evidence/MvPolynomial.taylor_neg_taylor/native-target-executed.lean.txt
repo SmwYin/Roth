@@ -1,0 +1,29 @@
+#check @MvPolynomial.taylor_neg_taylor
+#print MvPolynomial.taylor_neg_taylor
+#print axioms MvPolynomial.taylor_neg_taylor
+namespace MvPolynomial.TaylorInverseAssessment
+variable {σ A : Type*} [CommRing A]
+theorem replay (α : σ → A) (P : MvPolynomial σ A) :
+    taylor (fun j ↦ -α j) (taylor α P) = P := by
+  simp [taylor_taylor]
+theorem leftInverse (α : σ → A) :
+    Function.LeftInverse (taylor (fun j ↦ -α j)) (taylor α) :=
+  replay α
+theorem rightInverse (α : σ → A) :
+    Function.RightInverse (taylor (fun j ↦ -α j)) (taylor α) := by
+  intro P
+  simpa only [neg_neg] using replay (fun j ↦ -α j) P
+theorem injective (α : σ → A) : Function.Injective (taylor α : MvPolynomial σ A → _) :=
+  Function.LeftInverse.injective (replay α)
+theorem zeroIff (α : σ → A) (P : MvPolynomial σ A) : taylor α P = 0 ↔ P = 0 :=
+  (injective α).eq_iff' (map_zero _)
+#print axioms replay
+#print axioms leftInverse
+#print axioms rightInverse
+#print axioms injective
+#print axioms zeroIff
+end MvPolynomial.TaylorInverseAssessment
+run_cmd do
+  let ci ← Lean.getConstInfo `MvPolynomial.TaylorInverseAssessment.replay
+  let constants := (ci.value! (allowOpaque := true)).getUsedConstants
+  Lean.logInfo m!"INVERSE_REPLAY_CONSTANTS: {constants}"
