@@ -1,0 +1,75 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\n#check_failure Roth.exists_weight_eq_index\n#check @Finset.exists_mem_eq_inf\n#check @Finset.exists_mem_eq_inf'\n#check @WithTop.untopD_coe\nnamespace ExistsWeightEqIndex136\nuniverse u v w\ntheorem abstractLaw {A : Type u} {R : Type v} [Semiring R]\n    {T : Type w} [LinearOrder T] [OrderTop T] (D : A → T)\n    (P : AddMonoidAlgebra R A) (hP : P.coeff.support.Nonempty) :\n    ∃ d, d ∈ P.coeff.support ∧ AddMonoidAlgebra.infDegree D P = D d :=\n  Finset.exists_mem_eq_inf _ hP D\ntheorem projectedLaw {A : Type u} {R : Type v} [Semiring R]\n    (D : A → ℝ) (P : AddMonoidAlgebra R A) (hP : P.coeff.support.Nonempty) :\n    ∃ d, P.coeff d ≠ 0 ∧ D d =\n      (AddMonoidAlgebra.infDegree (fun a ↦ (D a : WithTop ℝ)) P).untopD 0 := by\n  obtain ⟨d, hd, heq⟩ := Finset.exists_mem_eq_inf P.coeff.support hP\n    (fun a ↦ (D a : WithTop ℝ))\n  refine ⟨d, Finsupp.mem_support_iff.mp hd, ?_⟩\n  change D d = (P.coeff.support.inf (fun a ↦ (D a : WithTop ℝ))).untopD 0\n  rw [heq]\n  rfl\n#print axioms abstractLaw\n#print axioms projectedLaw\nend ExistsWeightEqIndex136\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.exists_weight_eq_index`\",\n      \"line\": 8,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finset.exists_mem_eq_inf : ∀ {α : Type u_1} {ι : Type u_2} [inst : LinearOrder α] [inst_1 : OrderTop α] (s : Finset ι),\\n  s.Nonempty → ∀ (f : ι → α), ∃ i ∈ s, s.inf f = f i\",\n      \"line\": 9,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finset.exists_mem_eq_inf' : ∀ {α : Type u_1} {ι : Type u_2} [inst : LinearOrder α] {s : Finset ι} (H : s.Nonempty)\\n  (f : ι → α), ∃ i ∈ s, s.inf' H f = f i\",\n      \"line\": 10,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@WithTop.untopD_coe : ∀ {α : Type u_1} (d x : α), WithTop.untopD d ↑x = x\",\n      \"line\": 11,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'ExistsWeightEqIndex136.abstractLaw' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 29,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'ExistsWeightEqIndex136.projectedLaw' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 30,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.exists_weight_eq_index`",
+          "line": 8,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finset.exists_mem_eq_inf : ∀ {α : Type u_1} {ι : Type u_2} [inst : LinearOrder α] [inst_1 : OrderTop α] (s : Finset ι),\n  s.Nonempty → ∀ (f : ι → α), ∃ i ∈ s, s.inf f = f i",
+          "line": 9,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finset.exists_mem_eq_inf' : ∀ {α : Type u_1} {ι : Type u_2} [inst : LinearOrder α] {s : Finset ι} (H : s.Nonempty)\n  (f : ι → α), ∃ i ∈ s, s.inf' H f = f i",
+          "line": 10,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@WithTop.untopD_coe : ∀ {α : Type u_1} (d x : α), WithTop.untopD d ↑x = x",
+          "line": 11,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'ExistsWeightEqIndex136.abstractLaw' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 29,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'ExistsWeightEqIndex136.projectedLaw' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 30,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 1218
+}

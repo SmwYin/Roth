@@ -1,0 +1,18 @@
+namespace ExistsWeightEqIndex136
+open MvPolynomial
+universe u
+theorem originalReplacement {σ : Type u} [Fintype σ] {P : MvPolynomial σ ℝ}
+    (hP : P ≠ 0) (α : σ → ℝ) (r : σ → ℕ) :
+    ∃ d, eval α (hasseDeriv d P) ≠ 0 ∧ Roth.weight r d = Roth.index P α r := by
+  have hs : (taylor α P).support.Nonempty := by simpa using hP
+  obtain ⟨d, hd, heq⟩ := Finset.exists_mem_eq_inf (taylor α P).support hs
+    (fun d ↦ (Roth.weight r d : WithTop ℝ))
+  refine ⟨d, ?_, ?_⟩
+  · rwa [mem_support_iff, coeff_taylor] at hd
+  · rw [IndexConsumers133.targetBridge]
+    change Roth.weight r d =
+      ((taylor α P).support.inf (fun d ↦ (Roth.weight r d : WithTop ℝ))).untopD 0
+    rw [heq]
+    rfl
+#print axioms originalReplacement
+end ExistsWeightEqIndex136

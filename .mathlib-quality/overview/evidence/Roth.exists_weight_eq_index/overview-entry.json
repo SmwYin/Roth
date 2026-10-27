@@ -1,0 +1,48 @@
+{
+  "declaration": "Roth.exists_weight_eq_index",
+  "kind": "theorem",
+  "type": "Roth.exists_weight_eq_index.{u_1} {σ : Type u_1} [Fintype σ] {P : MvPolynomial σ ℝ} (hP : P ≠ 0) (α : σ → ℝ)\n  (r : σ → ℕ) : ∃ d, (MvPolynomial.eval α) ((MvPolynomial.hasseDeriv d) P) ≠ 0 ∧ Roth.weight r d = Roth.index P α r",
+  "what": "A nonzero polynomial has an evaluated Hasse derivative whose weight attains its index.",
+  "how": "Set.Nonempty.csInf_mem on finite nonempty weighted Taylor support, then private coefficient/support equivalence.",
+  "hypotheses": [
+    "σ : Type u with Fintype σ",
+    "P : MvPolynomial σ ℝ with P≠0",
+    "α : σ→ℝ",
+    "r : σ→ℕ, allowing zeros; no positivity assumption"
+  ],
+  "project_dependencies": [
+    "Roth.index",
+    "Roth.weight",
+    "MvPolynomial.taylor",
+    "MvPolynomial.taylor_eq_zero_iff",
+    "MvPolynomial.hasseDeriv",
+    "MvPolynomial.coeff_taylor",
+    "private Roth.mem_support_taylor_iff"
+  ],
+  "caller_summary": {
+    "explicit_declarations": 4,
+    "occurrences": 4,
+    "within_module": 3,
+    "outside_module": 1,
+    "kernel_direct_consumers": 4,
+    "files": [
+      "Roth/Index.lean",
+      "Roth/MainLemma.lean"
+    ]
+  },
+  "mathlib_api_audit": {
+    "verdict": "NO-mathlib-has-it",
+    "reaim_parent": "AddMonoidAlgebra.infDegree",
+    "analogous_law": "Finset.exists_mem_eq_inf",
+    "premise": "nonempty coefficient support",
+    "verified_native": true
+  },
+  "moral_duplications": [
+    "Attainment of a finite nonempty support infimum in a linear order is already Finset.exists_mem_eq_inf.",
+    "MvPowerSeries.exists_coeff_ne_zero_and_weightedOrder provides the standard natural-weight analogue."
+  ],
+  "generalization": "Verified Semiring coefficients, arbitrary ambient support type with no Fintype, arbitrary degree map into any LinearOrder/OrderTop target with independent universes; separately verified real default-zero projection.",
+  "missing_api": "No missing generic attained-minimum law. Parent finite-sInf/infDegree bridge and Taylor coefficient conversion are real normalization and separately justified project API.",
+  "junk": false,
+  "action": "Retain locally for manuscript vocabulary or migrate parent to projected infDegree and replace all four applications using existing Finset attainment. Delete this wrapper after replacing those calls; complete consumer replay verified. No upstream PR."
+}

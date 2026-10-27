@@ -1,0 +1,50 @@
+[
+  {
+    "declaration": "Roth.index_eq_zero_iff",
+    "file": "Roth/Index.lean",
+    "line": 98,
+    "source_sha256": "e22ab0acd820d9ae765e6f70279edbc0d626052372611806c4d5464ca3d377f1",
+    "identifier_occurrences": 1,
+    "reference_lines": [
+      101
+    ],
+    "source_fragment": "theorem index_eq_zero_iff {P : MvPolynomial σ ℝ} (hP : P ≠ 0) {r : σ → ℕ} (hr : ∀ j, 0 < r j)\n    (α : σ → ℝ) : index P α r = 0 ↔ eval α P ≠ 0 := by\n  refine ⟨fun h ↦ ?_, fun h ↦ (index_nonneg P α r).antisymm' ?_⟩\n  · obtain ⟨d, hd, hdw⟩ := exists_weight_eq_index hP α r\n    rw [h, weight_eq_zero_iff hr] at hdw\n    subst hdw\n    simpa [hasseDeriv_zero_apply] using hd\n  · simpa using index_le_weight (r := r) (d := 0) (by simpa [hasseDeriv_zero_apply] using h)\n\n/-- Applying `Δ_k` lowers the index by at most the weight of `k`.\nSource: §4, Lemma `lem:index-of-derivative` (\"`ind(Δ_k P) ≥ ind(P) - ∑ k_j / r_j`\"). -/\n",
+    "plan": "Choose d using Finset.exists_mem_eq_inf on nonempty Taylor support with WithTop-lifted weight; use coeff_taylor for nonvanishing and targetBridge plus untopD_coe to orient the attained equality. Keep subsequent consumer arithmetic. Complete caller replay replaces precisely this selection with the fresh originalReplacement."
+  },
+  {
+    "declaration": "Roth.index_sub_weight_le_index_hasseDeriv",
+    "file": "Roth/Index.lean",
+    "line": 109,
+    "source_sha256": "e22ab0acd820d9ae765e6f70279edbc0d626052372611806c4d5464ca3d377f1",
+    "identifier_occurrences": 1,
+    "reference_lines": [
+      112
+    ],
+    "source_fragment": "theorem index_sub_weight_le_index_hasseDeriv {P : MvPolynomial σ ℝ} {k : σ →₀ ℕ}\n    (hk : hasseDeriv k P ≠ 0) (α : σ → ℝ) (r : σ → ℕ) :\n    index P α r - weight r k ≤ index (hasseDeriv k P) α r := by\n  obtain ⟨i, hi, hiw⟩ := exists_weight_eq_index hk α r\n  rw [hasseDeriv_hasseDeriv, smul_eq_C_mul, map_mul, eval_C, mul_ne_zero_iff] at hi\n  exact sub_le_iff_le_add.2 (by simpa [weight_add, hiw] using index_le_weight (r := r) hi.2)\n\n/-- Source: §4, Lemma 4-1 (\"`ind(P + Q) ≥ min(ind P, ind Q)`\"), in the form used in the proof of\nLemma 6 (a common lower bound for the nonzero summands is a lower bound for a nonzero sum). -/\n",
+    "plan": "Choose d using Finset.exists_mem_eq_inf on nonempty Taylor support with WithTop-lifted weight; use coeff_taylor for nonvanishing and targetBridge plus untopD_coe to orient the attained equality. Keep subsequent consumer arithmetic. Complete caller replay replaces precisely this selection with the fresh originalReplacement."
+  },
+  {
+    "declaration": "Roth.index_le_card",
+    "file": "Roth/Index.lean",
+    "line": 224,
+    "source_sha256": "e22ab0acd820d9ae765e6f70279edbc0d626052372611806c4d5464ca3d377f1",
+    "identifier_occurrences": 1,
+    "reference_lines": [
+      226
+    ],
+    "source_fragment": "theorem index_le_card {P : MvPolynomial σ ℝ} (hP : P ≠ 0) {r : σ → ℕ} (hd : ∀ j, degreeOf j P ≤ r j)\n    (α : σ → ℝ) : index P α r ≤ Fintype.card σ := by\n  obtain ⟨d, hd0, hdw⟩ := exists_weight_eq_index hP α r\n  exact hdw ▸ weight_le_card fun j ↦\n    (monomial_le_degreeOf j (mem_support_taylor_iff.2 hd0)).trans\n      ((degreeOf_taylor_le α j P).trans (hd j))\n\n/-- In one variable, the index is the multiplicity of `α` as a root divided by the weight.\nSource: §5, proof of Lemma 5 (\"Let `t` be the multiplicity of `h_1/q_1` as a root of `R`;\nTaylor's theorem gives `ind(R; h_1/q_1; r_1) = t/r_1`\"). -/\n",
+    "plan": "Choose d using Finset.exists_mem_eq_inf on nonempty Taylor support with WithTop-lifted weight; use coeff_taylor for nonvanishing and targetBridge plus untopD_coe to orient the attained equality. Keep subsequent consumer arithmetic. Complete caller replay replaces precisely this selection with the fresh originalReplacement."
+  },
+  {
+    "declaration": "Roth.exists_hasseDeriv_eval_ne_zero",
+    "file": "Roth/MainLemma.lean",
+    "line": 454,
+    "source_sha256": "4f7c7fee1bbceaffc79da9ca9d806a1e4b62a8b4a7534c996a1c58ea48a4b90d",
+    "identifier_occurrences": 1,
+    "reference_lines": [
+      457
+    ],
+    "source_fragment": "theorem exists_hasseDeriv_eval_ne_zero {σ : Type*} [Fintype σ] {P : MvPolynomial σ ℝ} (hP : P ≠ 0)\n    (α : σ → ℝ) (r : σ → ℕ) {c : ℝ} (hc : index P α r < c) : ∃ k : σ →₀ ℕ,\n    weight r k < c ∧ eval α (hasseDeriv k P) ≠ 0 :=\n  (exists_weight_eq_index hP α r).imp fun _ ⟨hd, hw⟩ ↦ ⟨hw ▸ hc, hd⟩\n\n",
+    "plan": "Choose d using Finset.exists_mem_eq_inf on nonempty Taylor support with WithTop-lifted weight; use coeff_taylor for nonvanishing and targetBridge plus untopD_coe to orient the attained equality. Keep subsequent consumer arithmetic. Complete caller replay replaces precisely this selection with the fresh originalReplacement."
+  }
+]

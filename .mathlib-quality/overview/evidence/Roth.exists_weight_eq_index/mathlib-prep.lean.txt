@@ -1,0 +1,28 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+#check_failure Roth.exists_weight_eq_index
+#check @Finset.exists_mem_eq_inf
+#check @Finset.exists_mem_eq_inf'
+#check @WithTop.untopD_coe
+namespace ExistsWeightEqIndex136
+universe u v w
+theorem abstractLaw {A : Type u} {R : Type v} [Semiring R]
+    {T : Type w} [LinearOrder T] [OrderTop T] (D : A → T)
+    (P : AddMonoidAlgebra R A) (hP : P.coeff.support.Nonempty) :
+    ∃ d, d ∈ P.coeff.support ∧ AddMonoidAlgebra.infDegree D P = D d :=
+  Finset.exists_mem_eq_inf _ hP D
+theorem projectedLaw {A : Type u} {R : Type v} [Semiring R]
+    (D : A → ℝ) (P : AddMonoidAlgebra R A) (hP : P.coeff.support.Nonempty) :
+    ∃ d, P.coeff d ≠ 0 ∧ D d =
+      (AddMonoidAlgebra.infDegree (fun a ↦ (D a : WithTop ℝ)) P).untopD 0 := by
+  obtain ⟨d, hd, heq⟩ := Finset.exists_mem_eq_inf P.coeff.support hP
+    (fun a ↦ (D a : WithTop ℝ))
+  exact ⟨d, Finsupp.mem_support_iff.mp hd, by rw [heq]; rfl⟩
+#print axioms abstractLaw
+#print axioms projectedLaw
+end ExistsWeightEqIndex136

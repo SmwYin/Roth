@@ -1,0 +1,15 @@
+namespace IndexExpanded133
+open MvPolynomial
+universe u
+theorem weightBridge {σ : Type u} [Fintype σ] (r : σ → ℕ) (d : σ →₀ ℕ) :
+    Finsupp.weight (R := ℕ) (fun j ↦ (r j : ℝ)⁻¹) d = Roth.weight r d := by
+  simp only [Roth.weight, Finsupp.weight_eq_sum, nsmul_eq_mul, div_eq_mul_inv]
+theorem fullyExpandedBridge {σ : Type u} [Fintype σ] (P : MvPolynomial σ ℝ)
+    (α : σ → ℝ) (r : σ → ℕ) : Roth.index P α r =
+    (AddMonoidAlgebra.infDegree
+      (fun d : σ →₀ ℕ ↦ (Finsupp.weight (R := ℕ) (fun j ↦ (r j : ℝ)⁻¹) d : WithTop ℝ))
+      (aeval (fun j ↦ X j + C (α j)) P)).untopD 0 := by
+  simpa only [weightBridge, taylor] using IndexConsumers133.targetBridge P α r
+#print axioms weightBridge
+#print axioms fullyExpandedBridge
+end IndexExpanded133
