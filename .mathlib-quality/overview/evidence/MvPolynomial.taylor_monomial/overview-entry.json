@@ -1,0 +1,32 @@
+{
+  "declaration": "MvPolynomial.taylor_monomial",
+  "kind": "theorem",
+  "type": "∀ {σ : Type u_1} {R : Type u_2} [CommSemiring R] (α : σ → R) (k : σ →₀ ℕ) (a : R), (MvPolynomial.taylor α) ((MvPolynomial.monomial k) a) = MvPolynomial.C a * k.prod (fun j n ↦ (MvPolynomial.X j + MvPolynomial.C (α j)) ^ n)",
+  "what": "Translation of a monomial is its coefficient times the product of translated coordinate powers.",
+  "how": "One direct application of existing MvPolynomial.aeval_monomial.",
+  "hypotheses": "Arbitrary variable/coefficient universes; CommSemiring R; arbitrary shift α, finite natural exponent k, coefficient a.",
+  "project_dependencies": {
+    "type": [
+      "MvPolynomial.taylor"
+    ],
+    "body": []
+  },
+  "caller_summary": {
+    "all_explicit": 1,
+    "internal_excluding_declaring_file": 0,
+    "external_files": 0,
+    "callers": [
+      "MvPolynomial.eq_sum_box_hasseDeriv at Roth/Taylor.lean:212"
+    ],
+    "simp": false,
+    "opaque_closure_claimed": false
+  },
+  "mathlib_api_audit": "NO-mathlib-has-it: aeval_monomial at Mathlib/Algebra/MvPolynomial/Eval.lean:681; one-call exact target and independent mathlib-only arbitrary-algebra proof checked. Five actual methods × three forms.",
+  "moral_duplications": [
+    "Existing aeval_monomial specialized to g j=X j+C(α j), A=MvPolynomial σ R."
+  ],
+  "generalization": "Already general over CommSemiring at fixed taylor interface; arbitrary assignment and target commutative algebra form already exists.",
+  "missing_api": [],
+  "junk": "Redundant local specialization with one explicit caller; no dead-code inference.",
+  "action": "Delete taylor_monomial and replace sole named rewrite at eq_sum_box_hasseDeriv with typed show equality from aeval_monomial _ _ _, as accepted full caller replay. Parent taylor and caller content remain separately assessed."
+}

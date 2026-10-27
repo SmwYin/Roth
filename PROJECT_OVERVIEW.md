@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 56/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 57/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 56; remaining: 237.
-- Verdicts: 9 NO-composable-from-mathlib, 11 YES-add-as-is, 3 YES-but-generalise-first, 10 NO-mathlib-has-it, 19 BORDERLINE-needs-human, 4 SKIP.
+- Completed applicable assessments: 57; remaining: 236.
+- Verdicts: 9 NO-composable-from-mathlib, 11 YES-add-as-is, 3 YES-but-generalise-first, 11 NO-mathlib-has-it, 19 BORDERLINE-needs-human, 4 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -606,6 +606,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: explicit callers: 1; within file: 0; external to file: 1; locations: Roth/Index.lean:197 (Roth.index_C_mul); simp scope: @[simp] can serve implicit consumers; no exhaustive kernel/simp closure claim.
 - Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor_C.md).
 
+### Completed: `MvPolynomial.taylor_monomial`
+
+- Type: `∀ {σ : Type u_1} {R : Type u_2} [CommSemiring R] (α : σ → R) (k : σ →₀ ℕ) (a : R), (MvPolynomial.taylor α) ((MvPolynomial.monomial k) a) = MvPolynomial.C a * k.prod (fun j n ↦ (MvPolynomial.X j + MvPolynomial.C (α j)) ^ n)`
+- What: Translation of a monomial is its coefficient times the product of translated coordinate powers.
+- How: One direct application of existing MvPolynomial.aeval_monomial.
+- Hypotheses: Arbitrary variable/coefficient universes; CommSemiring R; arbitrary shift α, finite natural exponent k, coefficient a.
+- Project dependencies: type: MvPolynomial.taylor; body: None
+- Caller summary: all explicit: 1; internal excluding declaring file: 0; external files: 0; callers: MvPolynomial.eq_sum_box_hasseDeriv at Roth/Taylor.lean:212; simp: False; opaque closure claimed: False
+- Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor_monomial.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -744,6 +754,8 @@ Completed `MvPolynomial.taylor_X`: Existing more general MvPolynomial.aeval_X at
 
 Completed `MvPolynomial.taylor_C`: existing: MvPolynomial.algHom_C; file: Mathlib/Algebra/MvPolynomial/Basic.lean:441; broader: Arbitrary R-algebra homomorphism to any Semiring A with Algebra R A, including noncommutative A; scalar image algebraMap R A a; secondary: MvPolynomial.aeval_C, Polynomial.taylor_C; native: Target exact specialization, isolated arbitrary-AlgHom/raw translation, full copied named caller and target-disabled simp consumers all clean complete
 
+Completed `MvPolynomial.taylor_monomial`: NO-mathlib-has-it: aeval_monomial at Mathlib/Algebra/MvPolynomial/Eval.lean:681; one-call exact target and independent mathlib-only arbitrary-algebra proof checked. Five actual methods × three forms.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -857,6 +869,8 @@ Completed `MvPolynomial.taylor_apply`: Own defining equation applied to P, Polyn
 Completed `MvPolynomial.taylor_X`: MvPolynomial.aeval_X specialized definitionally to the translation assignment
 
 Completed `MvPolynomial.taylor_C`: Specialization of generic AlgHom coefficient preservation; univariate Polynomial.taylor_C is analogous but not identical.
+
+Completed `MvPolynomial.taylor_monomial`: Existing aeval_monomial specialized to g j=X j+C(α j), A=MvPolynomial σ R.
 
 ## Part 5: Generalization opportunities
 
@@ -975,6 +989,8 @@ Completed `MvPolynomial.taylor_X`: Maximally general relative to fixed parent in
 
 Completed `MvPolynomial.taylor_C`: No same-interface assumption-drop opportunities; already-existing broader representation verified. No unverified weakenings.
 
+Completed `MvPolynomial.taylor_monomial`: Already general over CommSemiring at fixed taylor interface; arbitrary assignment and target commutative algebra form already exists.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -1089,6 +1105,8 @@ Completed `MvPolynomial.taylor_apply`: No mathematical normalization API needed 
 Completed `MvPolynomial.taylor_X`: No mathematical gap for this law. A future translation bundle may independently choose its own stable generator simp interface.
 
 Completed `MvPolynomial.taylor_C`: None
+
+Completed `MvPolynomial.taylor_monomial`: None
 
 ## Part 7: Junk / removable
 
@@ -1207,6 +1225,8 @@ Completed `MvPolynomial.taylor_X`: Used by one named private caller and exported
 
 Completed `MvPolynomial.taylor_C`: Not dead code: one explicit named caller plus simp API; redundancy is independent of usage.
 
+Completed `MvPolynomial.taylor_monomial`: Redundant local specialization with one explicit caller; no dead-code inference.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -1267,6 +1287,7 @@ Completed `MvPolynomial.taylor_C`: Not dead code: one explicit named caller plus
 | 54 | `MvPolynomial.taylor_apply` | NO-composable-from-mathlib | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor_apply.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.taylor_apply/root-acceptance.json) |
 | 55 | `MvPolynomial.taylor_X` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor_X.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.taylor_X/root-acceptance.json) |
 | 56 | `MvPolynomial.taylor_C` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor_C.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.taylor_C/root-acceptance.json) |
+| 57 | `MvPolynomial.taylor_monomial` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor_monomial.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.taylor_monomial/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -1378,11 +1399,13 @@ Completed `MvPolynomial.taylor_X` action: Recommend delete standalone taylor_X, 
 
 Completed `MvPolynomial.taylor_C` action: NO-mathlib-has-it: delete specialized theorem and replace Index197 taylor_C token with show taylor α (C c) = C c from algHom_C _ _. Existing generic simp law handles tested constant/product/power consumers. Run full build during production migration; alternative retain locally in Roth/Taylor.lean for documented semantic API rationale.
 
+Completed `MvPolynomial.taylor_monomial` action: Delete taylor_monomial and replace sole named rewrite at eq_sum_box_hasseDeriv with typed show equality from aeval_monomial _ _ _, as accepted full caller replay. Parent taylor and caller content remain separately assessed.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `MvPolynomial.taylor_monomial` next. Supporting identities receive their own applicable checks.
+   `MvPolynomial.coeff_aeval_X_mul` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.

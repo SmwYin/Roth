@@ -1,0 +1,84 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.Polynomial.HasseDeriv\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.LinearAlgebra.Matrix.ToLinearEquiv\nimport Mathlib.RingTheory.Polynomial.Wronskian\nimport Mathlib.LinearAlgebra.Vandermonde\nimport Mathlib.Data.ZMod.Defs\nimport Mathlib.Algebra.Field.ZMod\nimport Mathlib.Algebra.Order.Group.Int.Sum\nimport Mathlib.LinearAlgebra.Matrix.Polynomial\nimport Mathlib.Algebra.Polynomial.CancelLeads\nimport Mathlib.Algebra.MvPolynomial.PDeriv\n#check_failure MvPolynomial.taylor_monomial\n#check @MvPolynomial.aeval_monomial\n#print MvPolynomial.aeval_monomial\n#check @MvPolynomial.eval₂Hom_monomial\n#print MvPolynomial.eval₂Hom_monomial\nnamespace MvPolynomial.TaylorMonomialRaw\ntheorem universal {σ R A : Type*} [CommSemiring R] [CommSemiring A] [Algebra R A]\n    (f : σ → A) (k : σ →₀ ℕ) (a : R) :\n    aeval (R := R) f (monomial k a) = algebraMap R A a * k.prod (fun j n ↦ f j ^ n) :=\n  aeval_monomial _ _ _\ntheorem inline {σ R : Type*} [CommSemiring R] (α : σ → R) (k : σ →₀ ℕ) (a : R) :\n    (let T : MvPolynomial σ R →ₐ[R] MvPolynomial σ R :=\n      aeval fun j ↦ X j + C (α j)\n     T (monomial k a)) = C a * k.prod (fun j n ↦ (X j + C (α j)) ^ n) :=\n  aeval_monomial _ _ _\n#print axioms universal\n#print axioms inline\nend MvPolynomial.TaylorMonomialRaw\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown constant `MvPolynomial.taylor_monomial`\",\n      \"line\": 12,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPolynomial.aeval_monomial : ∀ {R : Type u_1} {S₁ : Type u_2} {σ : Type u_3} [inst : CommSemiring R]\\n  [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁] (g : σ → S₁) (d : σ →₀ ℕ) (r : R),\\n  (MvPolynomial.aeval g) ((MvPolynomial.monomial d) r) = (algebraMap R S₁) r * d.prod fun i k ↦ g i ^ k\",\n      \"line\": 13,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"theorem MvPolynomial.aeval_monomial.{u, v, u_1} : ∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R]\\n  [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁] (g : σ → S₁) (d : σ →₀ ℕ) (r : R),\\n  (MvPolynomial.aeval g) ((MvPolynomial.monomial d) r) = (algebraMap R S₁) r * d.prod fun i k ↦ g i ^ k :=\\nfun {R} {S₁} {σ} [CommSemiring R] [CommSemiring S₁] [Algebra R S₁] g d r ↦\\n  MvPolynomial.eval₂Hom_monomial (algebraMap R S₁) g d r\",\n      \"line\": 14,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPolynomial.eval₂Hom_monomial : ∀ {R : Type u_1} {S₁ : Type u_2} {σ : Type u_3} [inst : CommSemiring R]\\n  [inst_1 : CommSemiring S₁] (f : R →+* S₁) (g : σ → S₁) (d : σ →₀ ℕ) (r : R),\\n  (MvPolynomial.eval₂Hom f g) ((MvPolynomial.monomial d) r) = f r * d.prod fun i k ↦ g i ^ k\",\n      \"line\": 15,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"theorem MvPolynomial.eval₂Hom_monomial.{u, v, u_1} : ∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R]\\n  [inst_1 : CommSemiring S₁] (f : R →+* S₁) (g : σ → S₁) (d : σ →₀ ℕ) (r : R),\\n  (MvPolynomial.eval₂Hom f g) ((MvPolynomial.monomial d) r) = f r * d.prod fun i k ↦ g i ^ k :=\\nfun {R} {S₁} {σ} [CommSemiring R] [CommSemiring S₁] f g d r ↦\\n  of_eq_true\\n    (Eq.trans (congrFun' (congrArg Eq (MvPolynomial.eval₂_monomial f g)) (f r * d.prod fun n e ↦ g n ^ e))\\n      (eq_self (f r * d.prod fun n e ↦ g n ^ e)))\",\n      \"line\": 16,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'MvPolynomial.TaylorMonomialRaw.universal' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 27,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'MvPolynomial.TaylorMonomialRaw.inline' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 28,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown constant `MvPolynomial.taylor_monomial`",
+          "line": 12,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPolynomial.aeval_monomial : ∀ {R : Type u_1} {S₁ : Type u_2} {σ : Type u_3} [inst : CommSemiring R]\n  [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁] (g : σ → S₁) (d : σ →₀ ℕ) (r : R),\n  (MvPolynomial.aeval g) ((MvPolynomial.monomial d) r) = (algebraMap R S₁) r * d.prod fun i k ↦ g i ^ k",
+          "line": 13,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "theorem MvPolynomial.aeval_monomial.{u, v, u_1} : ∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R]\n  [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁] (g : σ → S₁) (d : σ →₀ ℕ) (r : R),\n  (MvPolynomial.aeval g) ((MvPolynomial.monomial d) r) = (algebraMap R S₁) r * d.prod fun i k ↦ g i ^ k :=\nfun {R} {S₁} {σ} [CommSemiring R] [CommSemiring S₁] [Algebra R S₁] g d r ↦\n  MvPolynomial.eval₂Hom_monomial (algebraMap R S₁) g d r",
+          "line": 14,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPolynomial.eval₂Hom_monomial : ∀ {R : Type u_1} {S₁ : Type u_2} {σ : Type u_3} [inst : CommSemiring R]\n  [inst_1 : CommSemiring S₁] (f : R →+* S₁) (g : σ → S₁) (d : σ →₀ ℕ) (r : R),\n  (MvPolynomial.eval₂Hom f g) ((MvPolynomial.monomial d) r) = f r * d.prod fun i k ↦ g i ^ k",
+          "line": 15,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "theorem MvPolynomial.eval₂Hom_monomial.{u, v, u_1} : ∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R]\n  [inst_1 : CommSemiring S₁] (f : R →+* S₁) (g : σ → S₁) (d : σ →₀ ℕ) (r : R),\n  (MvPolynomial.eval₂Hom f g) ((MvPolynomial.monomial d) r) = f r * d.prod fun i k ↦ g i ^ k :=\nfun {R} {S₁} {σ} [CommSemiring R] [CommSemiring S₁] f g d r ↦\n  of_eq_true\n    (Eq.trans (congrFun' (congrArg Eq (MvPolynomial.eval₂_monomial f g)) (f r * d.prod fun n e ↦ g n ^ e))\n      (eq_self (f r * d.prod fun n e ↦ g n ^ e)))",
+          "line": 16,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'MvPolynomial.TaylorMonomialRaw.universal' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 27,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'MvPolynomial.TaylorMonomialRaw.inline' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 28,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 123
+}

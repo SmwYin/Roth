@@ -1,0 +1,29 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+import Mathlib.Algebra.Polynomial.CancelLeads
+import Mathlib.Algebra.MvPolynomial.PDeriv
+#check_failure MvPolynomial.taylor_monomial
+#check @MvPolynomial.aeval_monomial
+#print MvPolynomial.aeval_monomial
+#check @MvPolynomial.eval₂Hom_monomial
+#print MvPolynomial.eval₂Hom_monomial
+namespace MvPolynomial.TaylorMonomialRaw
+theorem universal {σ R A : Type*} [CommSemiring R] [CommSemiring A] [Algebra R A]
+    (f : σ → A) (k : σ →₀ ℕ) (a : R) :
+    aeval (R := R) f (monomial k a) = algebraMap R A a * k.prod (fun j n ↦ f j ^ n) :=
+  aeval_monomial _ _ _
+theorem inline {σ R : Type*} [CommSemiring R] (α : σ → R) (k : σ →₀ ℕ) (a : R) :
+    (let T : MvPolynomial σ R →ₐ[R] MvPolynomial σ R :=
+      aeval fun j ↦ X j + C (α j)
+     T (monomial k a)) = C a * k.prod (fun j n ↦ (X j + C (α j)) ^ n) :=
+  aeval_monomial _ _ _
+#print axioms universal
+#print axioms inline
+end MvPolynomial.TaylorMonomialRaw
