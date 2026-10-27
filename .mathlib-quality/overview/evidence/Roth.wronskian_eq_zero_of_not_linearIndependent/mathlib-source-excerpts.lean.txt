@@ -1,0 +1,244 @@
+.lake/packages/mathlib/Mathlib/LinearAlgebra/Alternating/Basic.lean:780
+  MultilinearMap.ext fun _ => rfl
+
+end DomDomCongr
+
+/-- If the arguments are linearly dependent then the result is `0`. -/
+theorem map_linearDependent {K M N : Type*} [Ring K] [IsDomain K] [AddCommGroup M] [Module K M]
+    [AddCommGroup N] [Module K N] [IsTorsionFree K N] (f : M [⋀^ι]→ₗ[K] N)
+    (v : ι → M) (h : ¬LinearIndependent K v) : f v = 0 := by
+  obtain ⟨s, g, h, i, hi, hz⟩ := not_linearIndependent_iff.mp h
+  let := Classical.decEq ι
+  suffices f (update v i (g i • v i)) = 0 by
+    rw [f.map_update_smul, Function.update_eq_self, smul_eq_zero] at this
+    exact Or.resolve_left this hz
+  rw [← Finset.insert_erase hi, Finset.sum_insert (s.notMem_erase i), add_eq_zero_iff_eq_neg] at h
+  rw [h, f.map_update_neg, f.map_update_sum, neg_eq_zero]
+  apply Finset.sum_eq_zero
+  intro j hj
+  obtain ⟨hij, _⟩ := Finset.mem_erase.mp hj
+  rw [f.map_update_smul, f.map_update_self _ hij.symm, smul_zero]
+
+section Fin
+
+open Fin
+
+/-- A version of `MultilinearMap.cons_add` for `AlternatingMap`. -/
+.lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/Determinant/Basic.lean:480
+  rw [← det_transpose, ← updateRow_transpose, ← det_transpose A]
+  exact det_updateRow_add_smul_self Aᵀ hij c
+
+theorem det_eq_zero_of_not_linearIndependent_rows [IsDomain R] {A : Matrix m m R}
+    (hA : ¬ LinearIndependent R (fun i ↦ A i)) :
+    det A = 0 := detRowAlternating.map_linearDependent A hA
+
+theorem linearIndependent_rows_of_det_ne_zero [IsDomain R] {A : Matrix m m R} (hA : A.det ≠ 0) :
+    LinearIndependent R (fun i ↦ A i) := by
+  contrapose hA
+  exact det_eq_zero_of_not_linearIndependent_rows hA
+
+theorem linearIndependent_cols_of_det_ne_zero [IsDomain R] {A : Matrix m m R} (hA : A.det ≠ 0) :
+    LinearIndependent R A.col :=
+  Matrix.linearIndependent_rows_of_det_ne_zero (by simpa [Matrix.col])
+
+theorem det_eq_zero_of_not_linearIndependent_cols [IsDomain R] {A : Matrix m m R}
+    (hA : ¬ LinearIndependent R (fun i ↦ Aᵀ i)) :
+    det A = 0 := by
+  contrapose! hA
+  exact linearIndependent_cols_of_det_ne_zero hA
+
+.lake/packages/mathlib/Mathlib/LinearAlgebra/LinearIndependent/Basic.lean:65
+variable {R v}
+
+/-- A set of linearly independent vectors in a module `M` over a semiring `K` is also linearly
+independent over a subring `R` of `K`.
+
+See also `LinearIndependent.restrict_scalars'` for a version with more convenient typeclass
+assumptions.
+
+TODO : `LinearIndepOn` version. -/
+theorem LinearIndependent.restrict_scalars [Semiring K] [SMulWithZero R K] [Module K M]
+    [IsScalarTower R K M] (hinj : Injective fun r : R ↦ r • (1 : K))
+    (li : LinearIndependent K v) : LinearIndependent R v := by
+  intro x y hxy
+  let f := fun r : R => r • (1 : K)
+  have := @li (x.mapRange f (by simp [f])) (y.mapRange f (by simp [f])) ?_
+  · ext i
+    exact hinj congr($this i)
+  simpa [Finsupp.linearCombination, f, Finsupp.sum_mapRange_index]
+
+variable (R) in
+theorem LinearIndependent.restrict_scalars' [Semiring K] [SMulWithZero R K] [Module K M]
+    [IsScalarTower R K M] [FaithfulSMul R K] [IsScalarTower R K K] {v : ι → M}
+    (li : LinearIndependent K v) : LinearIndependent R v :=
+  restrict_scalars ((faithfulSMul_iff_injective_smul_one R K).mp inferInstance) li
+
+/-- If `v` is an injective family of vectors such that `f ∘ v` is linearly independent, then `v`
+    spans a submodule disjoint from the kernel of `f`.
+TODO : `LinearIndepOn` version. -/
+theorem Submodule.range_ker_disjoint {f : M →ₗ[R] M'}
+    (hv : LinearIndependent R (f ∘ v)) :
+    Disjoint (span R (range v)) (LinearMap.ker f) := by
+  rw [LinearIndependent, Finsupp.linearCombination_linear_comp] at hv
+  rw [disjoint_iff_inf_le, ← Set.image_univ, Finsupp.span_image_eq_map_linearCombination,
+    map_inf_eq_map_inf_comap, (LinearMap.ker_comp _ _).symm.trans
+      (LinearMap.ker_eq_bot_of_injective hv), inf_bot_eq, map_bot]
+.lake/packages/mathlib/Mathlib/LinearAlgebra/LinearIndependent/Defs.lean:305
+  mpr hv := by
+    rw [LinearIndepOn, linearIndependent_iff_finset_linearIndependent]
+    exact fun t ↦ (hv (t.map <| .subtype _) (by simp)).comp (ι' := t)
+      (fun x ↦ ⟨x, Finset.mem_map_of_mem (.subtype _) x.2⟩) fun x ↦ by aesop
+
+/-- If the image of a family of vectors under a linear map is linearly independent, then so is
+the original family. -/
+theorem LinearIndependent.of_comp (f : M →ₗ[R] M') (hfv : LinearIndependent R (f ∘ v)) :
+    LinearIndependent R v := by
+  rw [LinearIndependent, Finsupp.linearCombination_linear_comp, LinearMap.coe_comp] at hfv
+  exact hfv.of_comp
+
+theorem LinearIndepOn.of_comp (f : M →ₗ[R] M') (hfv : LinearIndepOn R (f ∘ v) s) :
+    LinearIndepOn R v s :=
+  LinearIndependent.of_comp f hfv
+.lake/packages/mathlib/Mathlib/RingTheory/Polynomial/Wronskian.lean:1
+/-
+Copyright (c) 2024 Jineon Baek and Seewoo Lee. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Jineon Baek, Seewoo Lee
+-/
+module
+
+public import Mathlib.Algebra.Polynomial.AlgebraMap
+public import Mathlib.Algebra.Polynomial.Derivative
+public import Mathlib.LinearAlgebra.SesquilinearForm.Basic
+public import Mathlib.RingTheory.Coprime.Basic
+
+/-!
+# Wronskian of a pair of polynomial
+
+This file defines Wronskian of a pair of polynomials, which is `W(a, b) = ab' - a'b`.
+We also prove basic properties of it.
+
+## Main declarations
+
+- `Polynomial.wronskian_eq_of_sum_zero`: We have `W(a, b) = W(b, c)` when `a + b + c = 0`.
+- `Polynomial.degree_wronskian_lt_add`: Degree of Wronskian `W(a, b)` is strictly smaller than
+  the sum of degrees of `a` and `b`
+- `Polynomial.natDegree_wronskian_lt_add`: `natDegree` version of the above theorem.
+  We need to assume that the Wronskian is nonzero. (Otherwise, `a = b = 1` gives a counterexample.)
+
+## TODO
+
+- Define Wronskian for n-tuple of polynomials, not necessarily two.
+-/
+
+@[expose] public section
+
+noncomputable section
+
+open scoped Polynomial
+
+namespace Polynomial
+
+variable {R : Type*} [CommRing R]
+
+/-- Wronskian of a pair of polynomials, `W(a, b) = ab' - a'b`. -/
+def wronskian (a b : R[X]) : R[X] :=
+  a * (derivative b) - (derivative a) * b
+
+variable (R) in
+/-- `Polynomial.wronskian` as a bilinear map. -/
+def wronskianBilin : R[X] →ₗ[R] R[X] →ₗ[R] R[X] :=
+  (LinearMap.mul R R[X]).compl₂ derivative - (LinearMap.mul R R[X]).comp derivative
+
+@[simp]
+theorem wronskianBilin_apply (a b : R[X]) : wronskianBilin R a b = wronskian a b := rfl
+
+@[simp]
+theorem wronskian_zero_left (a : R[X]) : wronskian 0 a = 0 := by
+  rw [← wronskianBilin_apply 0 a, map_zero]; rfl
+
+@[simp]
+theorem wronskian_zero_right (a : R[X]) : wronskian a 0 = 0 := (wronskianBilin R a).map_zero
+
+theorem wronskian_neg_left (a b : R[X]) : wronskian (-a) b = -wronskian a b :=
+  LinearMap.map_neg₂ (wronskianBilin R) a b
+
+theorem wronskian_neg_right (a b : R[X]) : wronskian a (-b) = -wronskian a b :=
+  (wronskianBilin R a).map_neg b
+
+theorem wronskian_add_right (a b c : R[X]) : wronskian a (b + c) = wronskian a b + wronskian a c :=
+  (wronskianBilin R a).map_add b c
+
+theorem wronskian_add_left (a b c : R[X]) : wronskian (a + b) c = wronskian a c + wronskian b c :=
+  (wronskianBilin R).map_add₂ a b c
+
+theorem wronskian_self_eq_zero (a : R[X]) : wronskian a a = 0 := by
+  rw [wronskian, mul_comm, sub_self]
+
+theorem isAlt_wronskianBilin : (wronskianBilin R).IsAlt := wronskian_self_eq_zero
+
+theorem wronskian_neg_eq (a b : R[X]) : -wronskian a b = wronskian b a :=
+  LinearMap.IsAlt.neg isAlt_wronskianBilin a b
+
+theorem wronskian_eq_of_sum_zero {a b c : R[X]} (hAdd : a + b + c = 0) :
+    wronskian a b = wronskian b c := isAlt_wronskianBilin.eq_of_add_add_eq_zero hAdd
+
+/-- Degree of `W(a,b)` is strictly less than the sum of degrees of `a` and `b` (both nonzero). -/
+theorem degree_wronskian_lt_add {a b : R[X]} (ha : a ≠ 0) (hb : b ≠ 0) :
+    (wronskian a b).degree < a.degree + b.degree := by
+  calc
+    (wronskian a b).degree ≤ max (a * derivative b).degree (derivative a * b).degree :=
+      Polynomial.degree_sub_le _ _
+    _ < a.degree + b.degree := by
+      rw [max_lt_iff]
+      constructor
+      case left =>
+        apply lt_of_le_of_lt
+        · exact degree_mul_le a (derivative b)
+        · rw [← Polynomial.degree_ne_bot] at ha
+          rw [WithBot.add_lt_add_iff_left ha]
+          exact Polynomial.degree_derivative_lt hb
+      case right =>
+        apply lt_of_le_of_lt
+        · exact degree_mul_le (derivative a) b
+        · rw [← Polynomial.degree_ne_bot] at hb
+          rw [WithBot.add_lt_add_iff_right hb]
+          exact Polynomial.degree_derivative_lt ha
+
+/--
+`natDegree` version of the above theorem.
+Note this would be false with just `(ha : a ≠ 0)` and `(hb : b ≠ 0)`,
+since when `a = b = 1` we have `(wronskian a b).natDegree = a.natDegree = b.natDegree = 0`.
+-/
+theorem natDegree_wronskian_lt_add {a b : R[X]} (hw : wronskian a b ≠ 0) :
+    (wronskian a b).natDegree < a.natDegree + b.natDegree := by
+  have ha : a ≠ 0 := by intro h; subst h; rw [wronskian_zero_left] at hw; exact hw rfl
+  have hb : b ≠ 0 := by intro h; subst h; rw [wronskian_zero_right] at hw; exact hw rfl
+  rw [← WithBot.coe_lt_coe, WithBot.coe_add]
+  convert! ← degree_wronskian_lt_add ha hb
+  · exact Polynomial.degree_eq_natDegree hw
+  · exact Polynomial.degree_eq_natDegree ha
+  · exact Polynomial.degree_eq_natDegree hb
+
+/--
+For coprime polynomials `a` and `b`, their Wronskian is zero
+if and only if their derivatives are zeros.
+-/
+theorem _root_.IsCoprime.wronskian_eq_zero_iff
+    [NoZeroDivisors R] {a b : R[X]} (hc : IsCoprime a b) :
+    wronskian a b = 0 ↔ derivative a = 0 ∧ derivative b = 0 where
+  mp hw := by
+    rw [wronskian, sub_eq_iff_eq_add, zero_add] at hw
+    constructor
+    · rw [← dvd_derivative_iff]
+      apply hc.dvd_of_dvd_mul_right
+      rw [← hw]; exact dvd_mul_right _ _
+    · rw [← dvd_derivative_iff]
+      apply hc.symm.dvd_of_dvd_mul_left
+      rw [hw]; exact dvd_mul_left _ _
+  mpr hdab := by
+    obtain ⟨hda, hdb⟩ := hdab
+    rw [wronskian]
+    rw [hda, hdb]; simp only [mul_zero, zero_mul, sub_self]
+
+end Polynomial

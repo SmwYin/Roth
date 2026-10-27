@@ -1,0 +1,23 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+#check_failure Roth.wronskian_eq_zero_of_not_linearIndependent
+open Polynomial
+noncomputable section
+namespace WronskianDependentRaw
+def matrix {R : Type*} [Semiring R] {l : ℕ} (φ : Fin l → R[X]) :
+    Matrix (Fin l) (Fin l) R[X] := Matrix.of fun i j ↦ hasseDeriv i (φ j)
+def W {R : Type*} [CommRing R] {l : ℕ} (φ : Fin l → R[X]) : R[X] := (matrix φ).det
+theorem domain {R : Type*} [CommRing R] [IsDomain R] {l : ℕ} {φ : Fin l → R[X]}
+    (h : ¬ LinearIndependent R φ) : W φ = 0 := by
+  obtain ⟨g, hg, ν₀, hν₀⟩ := Fintype.not_linearIndependent_iff.1 h
+  refine Matrix.exists_mulVec_eq_zero_iff.1 ⟨fun ν ↦ C (g ν), fun h0 ↦ hν₀ ?_, ?_⟩
+  · simpa using congrFun h0 ν₀
+  · ext1 μ
+    simpa [matrix, Matrix.mulVec, dotProduct, ← smul_eq_C_mul, mul_comm]
+      using congrArg (hasseDeriv μ) hg
+#check @AlternatingMap.map_linearDependent
+#check @Matrix.det_eq_zero_of_not_linearIndependent_cols
+#print axioms domain
+end WronskianDependentRaw

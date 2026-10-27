@@ -1,0 +1,41 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+#check_failure Roth.wronskian_eq_zero_of_not_linearIndependent
+open Polynomial
+noncomputable section
+namespace WronskianDependentComposition
+theorem via_cols {R : Type*} [CommRing R] [IsDomain R] {l : ℕ}
+    {φ : Fin l → R[X]} (h : ¬ LinearIndependent R φ) :
+    (Matrix.of fun μ ν : Fin l ↦ hasseDeriv μ (φ ν)).det = 0 := by
+  apply Matrix.det_eq_zero_of_not_linearIndependent_cols
+  intro hc
+  exact h ((hc.restrict_scalars' R).of_comp
+    (LinearMap.pi fun μ : Fin l ↦ hasseDeriv (μ : ℕ)))
+theorem abstract {R M N ι : Type*} [Ring R] [IsDomain R] [AddCommGroup M]
+    [Module R M] [AddCommGroup N] [Module R N] [Module.IsTorsionFree R N]
+    (f : M [⋀^ι]→ₗ[R] N) (v : ι → M) (h : ¬ LinearIndependent R v) :
+    f v = 0 := f.map_linearDependent v h
+#print axioms via_cols
+#print axioms abstract
+
+theorem scalar_linear_family {R S M ι : Type*} [CommRing R] [CommRing S]
+    [IsDomain S] [Algebra R S] [FaithfulSMul R S] [AddCommGroup M] [Module R M]
+    [Fintype ι] [DecidableEq ι] (D : ι → M →ₗ[R] S) {v : ι → M}
+    (h : ¬ LinearIndependent R v) : (Matrix.of fun i j ↦ D i (v j)).det = 0 := by
+  apply Matrix.det_eq_zero_of_not_linearIndependent_cols
+  intro hc
+  exact h ((hc.restrict_scalars' R).of_comp (LinearMap.pi D))
+#print axioms scalar_linear_family
+
+theorem semiring_linear_family {R S M ι : Type*} [CommSemiring R] [CommRing S]
+    [IsDomain S] [Algebra R S] [FaithfulSMul R S] [AddCommMonoid M] [Module R M]
+    [Fintype ι] [DecidableEq ι] (D : ι → M →ₗ[R] S) {v : ι → M}
+    (h : ¬ LinearIndependent R v) : (Matrix.of fun i j ↦ D i (v j)).det = 0 := by
+  apply Matrix.det_eq_zero_of_not_linearIndependent_cols
+  intro hc
+  exact h ((hc.restrict_scalars' R).of_comp (LinearMap.pi D))
+#print axioms semiring_linear_family
+end WronskianDependentComposition
+
