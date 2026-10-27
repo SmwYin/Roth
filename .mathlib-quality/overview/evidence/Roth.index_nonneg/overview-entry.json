@@ -1,0 +1,21 @@
+{
+  "declaration": "Roth.index_nonneg",
+  "kind": "theorem",
+  "type": "Roth.index_nonneg.{u_1} : \u2200 {\u03c3 : Type u_1} [inst : Fintype \u03c3] (P : MvPolynomial \u03c3 \u211d) (\u03b1 : \u03c3 \u2192 \u211d) (r : \u03c3 \u2192 \u2115), 0 \u2264 Roth.index P \u03b1 r",
+  "what": "The weighted index at any real point is nonnegative, including zero polynomial and zero denominator parameters.",
+  "how": "Real.sInf_nonneg applied to the image of translated coefficient support; all rational weights are nonnegative.",
+  "hypotheses": "Fintype variables fixed by Roth.weight and Roth.index; no nonvanishing, positive denominator, nonempty variable or DecidableEq hypotheses.",
+  "project_dependencies": [
+    "Roth.index",
+    "Roth.weight",
+    "Roth.weight_nonneg",
+    "MvPolynomial.taylor"
+  ],
+  "caller_summary": "Three applications in three declarations: Index.index_eq_zero_iff, Theta.\u0398_nonneg and Theta.sum_max_sub_le_index_det; K=2 external-to-file applications in one module. Canonical kernel-value audit independently finds the same three direct consumers.",
+  "mathlib_api_audit": "Finite-inf lower-bound introduction Finset.le_inf_iff.mpr already supplies the analogous nonnegativity law on infDegree under support-local nonnegative degrees; Real.sInf_nonneg is exact order-theoretic engine of old proof. Finset.le_inf\u2032_iff, coe_inf\u2032 and WithTop.untopD_coe/top preserve zero-default projection.",
+  "moral_duplications": "Finite infimum preserves a common lower bound. Polynomial and point data select the finite support but add no order-theoretic content.",
+  "generalization": "Verified Semiring coefficient carrier with arbitrary support index type, arbitrary degree map to SemilatticeInf+OrderTop and arbitrary lower bound c. Projected real nonnegative law verified for all P with support-local nonnegative D.",
+  "missing_api": "No missing nonnegative-support lower-bound law on infDegree; project normalization bridge is actual new proof, not an existing mathlib call.",
+  "junk": "Not dead; three consumers, not a simp theorem. Useful manuscript-facing local convenience, no upstream theorem gap.",
+  "action": "NO-mathlib-has-it via independently verified parent re-aim. Migrate parent/shared projection bridge; use existing finite-inf lower-bound law at each of three applications and preserve surrounding antisymmetry, supremum and determinant arithmetic. Alternative destination Roth/Index.lean local convenience API."
+}

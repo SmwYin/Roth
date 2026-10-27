@@ -1,0 +1,30 @@
+namespace IndexConsumers133
+open MvPolynomial
+universe u
+theorem finsetBridge {ι : Type u} (s : Finset ι) (w : ι → ℝ) :
+    (s.inf (fun d ↦ (w d : WithTop ℝ))).untopD 0 =
+      sInf (w '' (s : Set ι)) := by
+  classical
+  rcases s.eq_empty_or_nonempty with h | h
+  · subst s
+    simp
+  · change (s.inf (WithTop.some ∘ w)).untopD 0 = _
+    rw [← Finset.coe_inf' h w, Finset.inf'_eq_csInf_image]
+    rfl
+
+theorem targetBridge {σ : Type u} [Fintype σ] (P : MvPolynomial σ ℝ)
+    (α : σ → ℝ) (r : σ → ℕ) : Roth.index P α r =
+    (AddMonoidAlgebra.infDegree (fun d ↦ (Roth.weight r d : WithTop ℝ))
+      (taylor α P)).untopD 0 := by
+  exact (finsetBridge (taylor α P).support (Roth.weight r)).symm
+
+theorem indexSetBridge {σ : Type u} [Fintype σ] (B : ℝ) (q r : σ → ℕ) :
+    Roth.indexSet B q r =
+      {x | ∃ P ∈ Roth.RSet B r, ∃ h : σ → ℤ, (∀ j, IsCoprime (h j) (q j : ℤ)) ∧
+        (AddMonoidAlgebra.infDegree (fun d ↦ (Roth.weight r d : WithTop ℝ))
+          (taylor (fun j ↦ (h j : ℝ) / q j) (map (Int.castRingHom ℝ) P))).untopD 0 = x} := by
+  unfold Roth.indexSet
+  simp_rw [targetBridge]
+#print axioms targetBridge
+#print axioms indexSetBridge
+end IndexConsumers133

@@ -1,0 +1,15 @@
+namespace IndexNonneg138
+open MvPolynomial
+universe u
+theorem originalReplacement {σ : Type u} [Fintype σ] (P : MvPolynomial σ ℝ)
+    (α : σ → ℝ) (r : σ → ℕ) : 0 ≤ Roth.index P α r := by
+  rw [IndexConsumers133.targetBridge]
+  change 0 ≤ ((taylor α P).support.inf (WithTop.some ∘ Roth.weight r)).untopD 0
+  classical
+  by_cases hs : (taylor α P).support.Nonempty
+  · rw [← Finset.coe_inf' hs (Roth.weight r), WithTop.untopD_coe]
+    exact (Finset.le_inf'_iff hs (Roth.weight r)).mpr fun d _ ↦ Roth.weight_nonneg r d
+  · have he : (taylor α P).support = ∅ := Finset.not_nonempty_iff_eq_empty.mp hs
+    simp only [he, Finset.inf_empty, WithTop.untopD_top, le_refl]
+#print axioms originalReplacement
+end IndexNonneg138

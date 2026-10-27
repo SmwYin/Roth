@@ -1,0 +1,84 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\n#check_failure Roth.index_nonneg\nnamespace IndexNonneg138\nuniverse u v w\n#check @Finset.le_inf_iff\n#check @Finset.le_inf'_iff\n#check @WithTop.le_untopD_iff\n#check @Real.sInf_nonneg\n\ntheorem abstractLaw {A : Type u} {R : Type v} {T : Type w} [Semiring R]\n    [SemilatticeInf T] [OrderTop T] (D : A → T) (P : AddMonoidAlgebra R A) (c : T)\n    (hD : ∀ d ∈ P.coeff.support, c ≤ D d) : c ≤ AddMonoidAlgebra.infDegree D P :=\n  Finset.le_inf_iff.mpr hD\n\ntheorem projectedLaw {A : Type u} {R : Type v} [Semiring R]\n    (D : A → ℝ) (P : AddMonoidAlgebra R A) (hD : ∀ d ∈ P.coeff.support, 0 ≤ D d) :\n    0 ≤ (AddMonoidAlgebra.infDegree (fun d ↦ (D d : WithTop ℝ)) P).untopD 0 := by\n  classical\n  by_cases hs : P.coeff.support.Nonempty\n  · change 0 ≤ (P.coeff.support.inf (WithTop.some ∘ D)).untopD 0\n    rw [← Finset.coe_inf' hs D, WithTop.untopD_coe]\n    exact (Finset.le_inf'_iff hs D).mpr hD\n  · have he : P.coeff.support = ∅ := Finset.not_nonempty_iff_eq_empty.mp hs\n    change 0 ≤ (P.coeff.support.inf (WithTop.some ∘ D)).untopD 0\n    simp only [he, Finset.inf_empty, WithTop.untopD_top, le_refl]\n#print axioms abstractLaw\n#print axioms projectedLaw\nend IndexNonneg138\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.index_nonneg`\",\n      \"line\": 8,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finset.le_inf_iff : ∀ {α : Type u_1} {β : Type u_2} [inst : SemilatticeInf α] [inst_1 : OrderTop α] {s : Finset β}\\n  {f : β → α} {a : α}, a ≤ s.inf f ↔ ∀ b ∈ s, a ≤ f b\",\n      \"line\": 11,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finset.le_inf'_iff : ∀ {α : Type u_1} {β : Type u_2} [inst : SemilatticeInf α] {s : Finset β} (H : s.Nonempty)\\n  (f : β → α) {a : α}, a ≤ s.inf' H f ↔ ∀ b ∈ s, a ≤ f b\",\n      \"line\": 12,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@WithTop.le_untopD_iff : ∀ {α : Type u_1} {a b : α} [inst : LE α] {x : WithTop α},\\n  (x = ⊤ → b ≤ a) → (b ≤ WithTop.untopD a x ↔ ↑b ≤ x)\",\n      \"line\": 13,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.sInf_nonneg : ∀ {s : Set ℝ}, (∀ x ∈ s, 0 ≤ x) → 0 ≤ sInf s\",\n      \"line\": 14,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'IndexNonneg138.abstractLaw' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 32,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'IndexNonneg138.projectedLaw' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 33,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.index_nonneg`",
+          "line": 8,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finset.le_inf_iff : ∀ {α : Type u_1} {β : Type u_2} [inst : SemilatticeInf α] [inst_1 : OrderTop α] {s : Finset β}\n  {f : β → α} {a : α}, a ≤ s.inf f ↔ ∀ b ∈ s, a ≤ f b",
+          "line": 11,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finset.le_inf'_iff : ∀ {α : Type u_1} {β : Type u_2} [inst : SemilatticeInf α] {s : Finset β} (H : s.Nonempty)\n  (f : β → α) {a : α}, a ≤ s.inf' H f ↔ ∀ b ∈ s, a ≤ f b",
+          "line": 12,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@WithTop.le_untopD_iff : ∀ {α : Type u_1} {a b : α} [inst : LE α] {x : WithTop α},\n  (x = ⊤ → b ≤ a) → (b ≤ WithTop.untopD a x ↔ ↑b ≤ x)",
+          "line": 13,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.sInf_nonneg : ∀ {s : Set ℝ}, (∀ x ∈ s, 0 ≤ x) → 0 ≤ sInf s",
+          "line": 14,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'IndexNonneg138.abstractLaw' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 32,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'IndexNonneg138.projectedLaw' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 33,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 1019
+}
