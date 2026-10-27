@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-27
 
-- Declarations completed: **292/293**
-- Next declaration: **#293 `LeanEval.NumberTheory.ThueSiegelRothProblem.thueSiegelRoth`** (Roth/LeanEval.lean:61)
+- Declarations completed: **293/293**
+- Next declaration: none — all declarations complete
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -311,7 +311,7 @@ Last regenerated: 2026-10-27
 | 290 | `LeanEval.NumberTheory.ThueSiegelRothProblem.IsDiophantine` | Roth/LeanEval.lean:16 | NO-composable-from-mathlib | [report](mathlibable/LeanEval.NumberTheory.ThueSiegelRothProblem.IsDiophantine.md) |
 | 291 | `LeanEval.NumberTheory.ThueSiegelRothProblem.exists_pos_div_rpow_lt_aux` | Roth/LeanEval.lean:20 | SKIP | [report](mathlibable/LeanEval.NumberTheory.ThueSiegelRothProblem.exists_pos_div_rpow_lt_aux.md) |
 | 292 | `LeanEval.NumberTheory.ThueSiegelRothProblem.isDiophantine_iff` | Roth/LeanEval.lean:42 | BORDERLINE-needs-human | [report](mathlibable/LeanEval.NumberTheory.ThueSiegelRothProblem.isDiophantine_iff.md) |
+| 293 | `LeanEval.NumberTheory.ThueSiegelRothProblem.thueSiegelRoth` | Roth/LeanEval.lean:61 | YES-but-generalise-first | [report](mathlibable/LeanEval.NumberTheory.ThueSiegelRothProblem.thueSiegelRoth.md) |
 
 ## Remaining declarations (in processing order)
 
-- #293 `LeanEval.NumberTheory.ThueSiegelRothProblem.thueSiegelRoth` (Roth/LeanEval.lean:61, public theorem)
