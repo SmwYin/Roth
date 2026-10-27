@@ -1,0 +1,560 @@
+[
+  {
+    "form": "current",
+    "method": "Finder",
+    "request": {
+      "query": "Kronecker substitution coefficient recovery polynomial individual degrees below base",
+      "num_results": 6
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.ofFn_comp_toFn_eq_id_of_natDegree_lt\",\n      \"informal_name\": \"Identity: $\\\\text{ofFn}_n \\\\circ \\\\text{toFn}_n = \\\\text{id}$ for Polynomials of Degree Less Than $n$\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] [inst_1 : DecidableEq R] {n : ℕ} {p : Polynomial R},\\n  p.natDegree < n → (Polynomial.ofFn n) ((Polynomial.toFn n) p) = p\",\n      \"informal_description\": \"For any natural number $n$ and polynomial $p$ over a semiring $R$ with natural degree less than $n$, the composition of the linear map converting finite sequences to polynomials and the coefficient extraction map results in the original polynomial $p$. In other words, $\\\\text{ofFn}_n(\\\\text{toFn}_n(p)) = p$.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.OfFn\"\n    },\n    {\n      \"formal_name\": \"Polynomial.exists_approx_polynomial_aux\",\n      \"informal_name\": \"Existence of Polynomial Pairs with Bounded Degree Difference\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {Fq : Type u_1} [inst : Fintype Fq] [inst_1 : Ring Fq] {d m : ℕ},\\n  Fintype.card Fq ^ d ≤ m →\\n    ∀ (b : Polynomial Fq) (A : Fin m.succ → Polynomial Fq),\\n      (∀ (i : Fin m.succ), (A i).degree < b.degree) → ∃ i₀ i₁, i₀ ≠ i₁ ∧ (A i₁ - A i₀).degree < ↑(b.natDegree - d)\",\n      \"informal_description\": \"Given a finite ring $ Fq $ with cardinality $ q $, natural numbers $ d $ and $ m $ such that $ q^d \\\\leq m $, a nonzero polynomial $ b \\\\in Fq[X] $, and a function $ A: \\\\mathrm{Fin}(m+1) \\\\to Fq[X] $ where each $ A(i) $ has degree less than $ \\\\deg(b) $, there exist distinct indices $ i_0, i_1 \\\\in \\\\mathrm{Fin}(m+1) $ such that the degree of $ A(i_1) - A(i_0) $ satisfies $ \\\\deg(A(i_1) - A(i_0)) < \\\\mathrm{natdeg}(b) - d $, where $ \\\\mathrm{natdeg}(b) $ denotes the natural degree of $ b $ (equal to $ \\\\deg(b) $ if nonzero, otherwise 0).\",\n      \"path\": \"Mathlib.NumberTheory.ClassNumber.AdmissibleCardPowDegree\"\n    },\n    {\n      \"formal_name\": \"Polynomial.degreeLT.basisProd_natAdd\",\n      \"informal_name\": \"Second Component of Product Basis for Degree-Less-Than Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (m n : ℕ) (i : Fin n),\\n  (Polynomial.degreeLT.basisProd R m n) (Fin.natAdd m i) = (0, (Polynomial.degreeLT.basis R n) i)\",\n      \"informal_description\": \"For natural numbers $ m $ and $ n $, and an index $ i $ in $ \\\\mathrm{Fin}(n) $, the basis element of the product module $ R[X]_{<m} \\\\times R[X]_{<n} $ at position $ i + m $ is the pair consisting of the zero polynomial and the $ i $-th basis element of $ R[X]_{<n} $.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.DegreeLT\"\n    },\n    {\n      \"formal_name\": \"Polynomial.coeff_contract\",\n      \"informal_name\": \"Coefficient of Contracted Polynomial\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : CommSemiring R] {p : ℕ},\\n  p ≠ 0 → ∀ (f : Polynomial R) (n : ℕ), (Polynomial.contract p f).coeff n = f.coeff (n * p)\",\n      \"informal_description\": \"For any non-zero natural number $ p $ and polynomial $ f $ over a commutative semiring $ R $, and for any natural number $ n $, the coefficient of $ X^n $ in the polynomial obtained by contracting $ f $ by $ p $ is equal to the coefficient of $ X^{n \\\\cdot p} $ in $ f $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Expand\"\n    },\n    {\n      \"formal_name\": \"Polynomial.exists_partition_polynomial\",\n      \"informal_name\": \"Partitioning Polynomials with Bounded Differences Modulo a Non-Zero Polynomial\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {Fq : Type u_1} [inst : Fintype Fq] [inst_1 : Field Fq] (n : ℕ) {ε : ℝ},\\n  0 < ε →\\n    ∀ {b : Polynomial Fq},\\n      b ≠ 0 →\\n        ∀ (A : Fin n → Polynomial Fq),\\n          ∃ t,\\n            ∀ (i₀ i₁ : Fin n),\\n              t i₀ = t i₁ → ↑(Polynomial.cardPowDegree (A i₁ % b - A i₀ % b)) < Polynomial.cardPowDegree b • ε\",\n      \"informal_description\": \"For any natural number $n$, positive real number $\\\\varepsilon$, non-zero polynomial $b \\\\in \\\\mathbb{F}_q[X]$, and sequence of $n$ polynomials $A_0, \\\\ldots, A_{n-1} \\\\in \\\\mathbb{F}_q[X]$, there exists a partition function $t$ mapping indices $\\\\{0, \\\\ldots, n-1\\\\}$ to $\\\\left\\\\lceil \\\\frac{-\\\\log \\\\varepsilon}{\\\\log |\\\\mathbb{F}_q|} \\\\right\\\\rceil$ classes such that for any two indices $i_0, i_1$ in the same class, the difference $A_{i_1} \\\\mod b - A_{i_0} \\\\mod b$ has $\\\\text{cardPowDegree}$ strictly less than $\\\\varepsilon \\\\cdot \\\\text{cardPowDegree}(b)$. Here, $\\\\text{cardPowDegree}$ denotes a degree-like measure combining field cardinality and polynomial degree, and $|\\\\mathbb{F}_q|$ is the size of the finite field $\\\\mathbb{F}_q$.\",\n      \"path\": \"Mathlib.NumberTheory.ClassNumber.AdmissibleCardPowDegree\"\n    },\n    {\n      \"formal_name\": \"WittVector.remainder\",\n      \"informal_name\": \"Witt Vector Remainder Term\",\n      \"kind\": \"definition\",\n      \"type\": \"ℕ → ℕ → MvPolynomial (Fin 2 × ℕ) ℤ\",\n      \"informal_description\": \"The function constructs an element of the Witt vector ring $\\\\mathbb{W}$ by multiplying two sums over $x \\\\in \\\\{0, 1, \\\\dots, n\\\\}$. Each sum involves monomials with coefficients $p^x$ and $p^{n+1 - x}$, where $p$ is a prime, and the terms are combined using variable renaming operations that separate the components of the Witt vector. This defines a remainder term in the recursive construction of Witt vectors.\",\n      \"path\": \"Mathlib.RingTheory.WittVector.MulCoeff\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Polynomial.ofFn_comp_toFn_eq_id_of_natDegree_lt",
+            "informal_name": "Identity: $\\text{ofFn}_n \\circ \\text{toFn}_n = \\text{id}$ for Polynomials of Degree Less Than $n$",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] [inst_1 : DecidableEq R] {n : ℕ} {p : Polynomial R},\n  p.natDegree < n → (Polynomial.ofFn n) ((Polynomial.toFn n) p) = p",
+            "informal_description": "For any natural number $n$ and polynomial $p$ over a semiring $R$ with natural degree less than $n$, the composition of the linear map converting finite sequences to polynomials and the coefficient extraction map results in the original polynomial $p$. In other words, $\\text{ofFn}_n(\\text{toFn}_n(p)) = p$.",
+            "path": "Mathlib.Algebra.Polynomial.OfFn"
+          },
+          {
+            "formal_name": "Polynomial.exists_approx_polynomial_aux",
+            "informal_name": "Existence of Polynomial Pairs with Bounded Degree Difference",
+            "kind": "theorem",
+            "type": "∀ {Fq : Type u_1} [inst : Fintype Fq] [inst_1 : Ring Fq] {d m : ℕ},\n  Fintype.card Fq ^ d ≤ m →\n    ∀ (b : Polynomial Fq) (A : Fin m.succ → Polynomial Fq),\n      (∀ (i : Fin m.succ), (A i).degree < b.degree) → ∃ i₀ i₁, i₀ ≠ i₁ ∧ (A i₁ - A i₀).degree < ↑(b.natDegree - d)",
+            "informal_description": "Given a finite ring $ Fq $ with cardinality $ q $, natural numbers $ d $ and $ m $ such that $ q^d \\leq m $, a nonzero polynomial $ b \\in Fq[X] $, and a function $ A: \\mathrm{Fin}(m+1) \\to Fq[X] $ where each $ A(i) $ has degree less than $ \\deg(b) $, there exist distinct indices $ i_0, i_1 \\in \\mathrm{Fin}(m+1) $ such that the degree of $ A(i_1) - A(i_0) $ satisfies $ \\deg(A(i_1) - A(i_0)) < \\mathrm{natdeg}(b) - d $, where $ \\mathrm{natdeg}(b) $ denotes the natural degree of $ b $ (equal to $ \\deg(b) $ if nonzero, otherwise 0).",
+            "path": "Mathlib.NumberTheory.ClassNumber.AdmissibleCardPowDegree"
+          },
+          {
+            "formal_name": "Polynomial.degreeLT.basisProd_natAdd",
+            "informal_name": "Second Component of Product Basis for Degree-Less-Than Polynomials",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (m n : ℕ) (i : Fin n),\n  (Polynomial.degreeLT.basisProd R m n) (Fin.natAdd m i) = (0, (Polynomial.degreeLT.basis R n) i)",
+            "informal_description": "For natural numbers $ m $ and $ n $, and an index $ i $ in $ \\mathrm{Fin}(n) $, the basis element of the product module $ R[X]_{<m} \\times R[X]_{<n} $ at position $ i + m $ is the pair consisting of the zero polynomial and the $ i $-th basis element of $ R[X]_{<n} $.",
+            "path": "Mathlib.RingTheory.Polynomial.DegreeLT"
+          },
+          {
+            "formal_name": "Polynomial.coeff_contract",
+            "informal_name": "Coefficient of Contracted Polynomial",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : CommSemiring R] {p : ℕ},\n  p ≠ 0 → ∀ (f : Polynomial R) (n : ℕ), (Polynomial.contract p f).coeff n = f.coeff (n * p)",
+            "informal_description": "For any non-zero natural number $ p $ and polynomial $ f $ over a commutative semiring $ R $, and for any natural number $ n $, the coefficient of $ X^n $ in the polynomial obtained by contracting $ f $ by $ p $ is equal to the coefficient of $ X^{n \\cdot p} $ in $ f $.",
+            "path": "Mathlib.Algebra.Polynomial.Expand"
+          },
+          {
+            "formal_name": "Polynomial.exists_partition_polynomial",
+            "informal_name": "Partitioning Polynomials with Bounded Differences Modulo a Non-Zero Polynomial",
+            "kind": "theorem",
+            "type": "∀ {Fq : Type u_1} [inst : Fintype Fq] [inst_1 : Field Fq] (n : ℕ) {ε : ℝ},\n  0 < ε →\n    ∀ {b : Polynomial Fq},\n      b ≠ 0 →\n        ∀ (A : Fin n → Polynomial Fq),\n          ∃ t,\n            ∀ (i₀ i₁ : Fin n),\n              t i₀ = t i₁ → ↑(Polynomial.cardPowDegree (A i₁ % b - A i₀ % b)) < Polynomial.cardPowDegree b • ε",
+            "informal_description": "For any natural number $n$, positive real number $\\varepsilon$, non-zero polynomial $b \\in \\mathbb{F}_q[X]$, and sequence of $n$ polynomials $A_0, \\ldots, A_{n-1} \\in \\mathbb{F}_q[X]$, there exists a partition function $t$ mapping indices $\\{0, \\ldots, n-1\\}$ to $\\left\\lceil \\frac{-\\log \\varepsilon}{\\log |\\mathbb{F}_q|} \\right\\rceil$ classes such that for any two indices $i_0, i_1$ in the same class, the difference $A_{i_1} \\mod b - A_{i_0} \\mod b$ has $\\text{cardPowDegree}$ strictly less than $\\varepsilon \\cdot \\text{cardPowDegree}(b)$. Here, $\\text{cardPowDegree}$ denotes a degree-like measure combining field cardinality and polynomial degree, and $|\\mathbb{F}_q|$ is the size of the finite field $\\mathbb{F}_q$.",
+            "path": "Mathlib.NumberTheory.ClassNumber.AdmissibleCardPowDegree"
+          },
+          {
+            "formal_name": "WittVector.remainder",
+            "informal_name": "Witt Vector Remainder Term",
+            "kind": "definition",
+            "type": "ℕ → ℕ → MvPolynomial (Fin 2 × ℕ) ℤ",
+            "informal_description": "The function constructs an element of the Witt vector ring $\\mathbb{W}$ by multiplying two sums over $x \\in \\{0, 1, \\dots, n\\}$. Each sum involves monomials with coefficients $p^x$ and $p^{n+1 - x}$, where $p$ is a prime, and the terms are combined using variable renaming operations that separate the components of the Witt vector. This defines a remainder term in the recursive construction of Witt vectors.",
+            "path": "Mathlib.RingTheory.WittVector.MulCoeff"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "current",
+    "method": "LeanSearch",
+    "request": {
+      "query": "Kronecker substitution coefficient recovery polynomial individual degrees below base",
+      "num_results": 6
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"PowerSeries.coeff_subst'\",\n      \"module_name\": \"Mathlib.RingTheory.PowerSeries.Substitution\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_2} [inst : CommRing R] {S : Type u_4} [inst_1 : CommRing S] [inst_2 : Algebra R S] {b : PowerSeries S},\\n  PowerSeries.HasSubst b →\\n    ∀ (f : PowerSeries R) (e : ℕ),\\n      (PowerSeries.coeff e) (PowerSeries.subst b f) =\\n        ∑ᶠ (d : ℕ), (PowerSeries.coeff d) f • (PowerSeries.coeff e) (b ^ d)\"\n    },\n    {\n      \"name\": \"Polynomial.degreeLTEquiv\",\n      \"module_name\": \"Mathlib.RingTheory.Polynomial.Basic\",\n      \"kind\": \"definition\",\n      \"type\": \"(R : Type u_2) → [inst : Semiring R] → (n : ℕ) → ↥(Polynomial.degreeLT R n) ≃ₗ[R] Fin n → R\"\n    },\n    {\n      \"name\": \"PowerSeries.coeff_subst\",\n      \"module_name\": \"Mathlib.RingTheory.PowerSeries.Substitution\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_2} [inst : CommRing R] {τ : Type u_3} {S : Type u_4} [inst_1 : CommRing S] [inst_2 : Algebra R S]\\n  {a : MvPowerSeries τ S},\\n  PowerSeries.HasSubst a →\\n    ∀ (f : PowerSeries R) (e : τ →₀ ℕ),\\n      (MvPowerSeries.coeff e) (PowerSeries.subst a f) =\\n        ∑ᶠ (d : ℕ), (PowerSeries.coeff d) f • (MvPowerSeries.coeff e) (a ^ d)\"\n    },\n    {\n      \"name\": \"Polynomial.coeff_expand\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Expand\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : CommSemiring R] {p : ℕ},\\n  0 < p → ∀ (f : Polynomial R) (n : ℕ), ((Polynomial.expand R p) f).coeff n = if p ∣ n then f.coeff (n / p) else 0\"\n    },\n    {\n      \"name\": \"Polynomial.sum_modByMonic_coeff\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Div\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Ring R] {p q : Polynomial R},\\n  q.Monic → ∀ {n : ℕ}, q.degree ≤ ↑n → ∑ i, (Polynomial.monomial ↑i) ((p %ₘ q).coeff ↑i) = p %ₘ q\"\n    },\n    {\n      \"name\": \"Polynomial.degreeLT\",\n      \"module_name\": \"Mathlib.RingTheory.Polynomial.Basic\",\n      \"kind\": \"definition\",\n      \"type\": \"(R : Type u) → [inst : Semiring R] → ℕ → Submodule R (Polynomial R)\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "PowerSeries.coeff_subst'",
+            "module_name": "Mathlib.RingTheory.PowerSeries.Substitution",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_2} [inst : CommRing R] {S : Type u_4} [inst_1 : CommRing S] [inst_2 : Algebra R S] {b : PowerSeries S},\n  PowerSeries.HasSubst b →\n    ∀ (f : PowerSeries R) (e : ℕ),\n      (PowerSeries.coeff e) (PowerSeries.subst b f) =\n        ∑ᶠ (d : ℕ), (PowerSeries.coeff d) f • (PowerSeries.coeff e) (b ^ d)"
+          },
+          {
+            "name": "Polynomial.degreeLTEquiv",
+            "module_name": "Mathlib.RingTheory.Polynomial.Basic",
+            "kind": "definition",
+            "type": "(R : Type u_2) → [inst : Semiring R] → (n : ℕ) → ↥(Polynomial.degreeLT R n) ≃ₗ[R] Fin n → R"
+          },
+          {
+            "name": "PowerSeries.coeff_subst",
+            "module_name": "Mathlib.RingTheory.PowerSeries.Substitution",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_2} [inst : CommRing R] {τ : Type u_3} {S : Type u_4} [inst_1 : CommRing S] [inst_2 : Algebra R S]\n  {a : MvPowerSeries τ S},\n  PowerSeries.HasSubst a →\n    ∀ (f : PowerSeries R) (e : τ →₀ ℕ),\n      (MvPowerSeries.coeff e) (PowerSeries.subst a f) =\n        ∑ᶠ (d : ℕ), (PowerSeries.coeff d) f • (MvPowerSeries.coeff e) (a ^ d)"
+          },
+          {
+            "name": "Polynomial.coeff_expand",
+            "module_name": "Mathlib.Algebra.Polynomial.Expand",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : CommSemiring R] {p : ℕ},\n  0 < p → ∀ (f : Polynomial R) (n : ℕ), ((Polynomial.expand R p) f).coeff n = if p ∣ n then f.coeff (n / p) else 0"
+          },
+          {
+            "name": "Polynomial.sum_modByMonic_coeff",
+            "module_name": "Mathlib.Algebra.Polynomial.Div",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : Ring R] {p q : Polynomial R},\n  q.Monic → ∀ {n : ℕ}, q.degree ≤ ↑n → ∑ i, (Polynomial.monomial ↑i) ((p %ₘ q).coeff ↑i) = p %ₘ q"
+          },
+          {
+            "name": "Polynomial.degreeLT",
+            "module_name": "Mathlib.RingTheory.Polynomial.Basic",
+            "kind": "definition",
+            "type": "(R : Type u) → [inst : Semiring R] → ℕ → Submodule R (Polynomial R)"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "current",
+    "method": "Loogle",
+    "request": {
+      "query": "Polynomial.coeff, MvPolynomial.aeval",
+      "num_results": 8
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "Error executing tool lean_loogle: Rate limit exceeded: 3 requests per 30s. Use --loogle-local to avoid limits."
+        }
+      ],
+      "isError": true
+    }
+  },
+  {
+    "form": "current",
+    "method": "local",
+    "request": {
+      "query": "coeff_kronecker",
+      "project_root": "/Users/ramin/LEAN/Roth",
+      "limit": 30
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"KroneckerConsumers.coeff_kronecker\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/roth-overview-session/GenWronskianChecks.lean\"\n    },\n    {\n      \"name\": \"PrivateKronHasseAssessment.coeff_kronecker\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/roth-overview-session/GenWronskianChecks.lean\"\n    },\n    {\n      \"name\": \"PrivateKronSpanAssessment.coeff_kronecker\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/roth-overview-session/GenWronskianChecks.lean\"\n    },\n    {\n      \"name\": \"Roth.KroneckerExpConsumers.coeff_kronecker\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/roth-overview-session/GenWronskianChecks.lean\"\n    },\n    {\n      \"name\": \"Roth.coeff_kronecker\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/GenWronskian.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "KroneckerConsumers.coeff_kronecker",
+            "kind": "theorem",
+            "file": ".lake/roth-overview-session/GenWronskianChecks.lean"
+          },
+          {
+            "name": "PrivateKronHasseAssessment.coeff_kronecker",
+            "kind": "theorem",
+            "file": ".lake/roth-overview-session/GenWronskianChecks.lean"
+          },
+          {
+            "name": "PrivateKronSpanAssessment.coeff_kronecker",
+            "kind": "theorem",
+            "file": ".lake/roth-overview-session/GenWronskianChecks.lean"
+          },
+          {
+            "name": "Roth.KroneckerExpConsumers.coeff_kronecker",
+            "kind": "theorem",
+            "file": ".lake/roth-overview-session/GenWronskianChecks.lean"
+          },
+          {
+            "name": "Roth.coeff_kronecker",
+            "kind": "theorem",
+            "file": "Roth/GenWronskian.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "standard",
+    "method": "Finder",
+    "request": {
+      "query": "coefficients of monomial substitution preserved when exponent weight injective on support",
+      "num_results": 6
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"MvPowerSeries.subst_monomial\",\n      \"informal_name\": \"Substitution of a Monomial in Multivariate Power Series\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_3} [inst : CommRing R] {τ : Type u_4} {S : Type u_5} [inst_1 : CommRing S]\\n  [inst_2 : Algebra R S] {a : σ → MvPowerSeries τ S},\\n  MvPowerSeries.HasSubst a →\\n    ∀ (e : σ →₀ ℕ) (r : R),\\n      MvPowerSeries.subst a ((MvPowerSeries.monomial e) r) =\\n        (algebraMap R (MvPowerSeries τ S)) r * e.prod fun s n => a s ^ n\",\n      \"informal_description\": \"For a multivariate power series $ f $ over a commutative ring $ R $ in variables $ \\\\sigma $, substituting each variable $ s \\\\in \\\\sigma $ with a power series $ a(s) $ in variables $ \\\\tau $ over a ring $ S $, the substitution of the monomial $ r \\\\cdot X^e $ (where $ e $ is a finite support function $ \\\\sigma \\\\to_0 \\\\mathbb{N} $) results in $ \\\\phi(r) \\\\cdot \\\\prod_{s \\\\in \\\\text{support}(e)} (a(s))^{e(s)} $, where $ \\\\phi: R \\\\to S[[\\\\tau]] $ is the canonical algebra homomorphism.\",\n      \"path\": \"Mathlib.RingTheory.MvPowerSeries.Substitution\"\n    },\n    {\n      \"formal_name\": \"MvPowerSeries.expand_monomial\",\n      \"informal_name\": \"Expansion of a Monomial in Multivariate Power Series Scales Exponents by p\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_3} [inst : Finite σ] [inst_1 : CommRing R] (p : ℕ) (hp : p ≠ 0) (d : σ →₀ ℕ) (r : R),\\n  (MvPowerSeries.expand p hp) ((MvPowerSeries.monomial d) r) = (MvPowerSeries.monomial (p • d)) r\",\n      \"informal_description\": \"For a multivariate power series over a commutative ring $ R $ in variables indexed by $ \\\\sigma $, applying the expansion map $ \\\\text{expand}_p $ to the monomial with exponent $ d : \\\\sigma \\\\to_0 \\\\mathbb{N} $ and coefficient $ r \\\\in R $ results in the monomial with exponent $ p \\\\cdot d $ and the same coefficient $ r $. In symbols: $ \\\\text{expand}_p(\\\\text{monomial}_d(r)) = \\\\text{monomial}_{p \\\\cdot d}(r) $.\",\n      \"path\": \"Mathlib.RingTheory.MvPowerSeries.Expand\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.coeff_rename_mapDomain\",\n      \"informal_name\": \"Coefficient Preservation Under Injective Variable Renaming in Multivariate Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_4} [inst : CommSemiring R] (f : σ → τ),\\n  Function.Injective f →\\n    ∀ (φ : MvPolynomial σ R) (d : σ →₀ ℕ),\\n      MvPolynomial.coeff (Finsupp.mapDomain f d) ((MvPolynomial.rename f) φ) = MvPolynomial.coeff d φ\",\n      \"informal_description\": \"For an injective function $ f : \\\\sigma \\\\to \\\\tau $, a multivariate polynomial $ \\\\varphi \\\\in R[\\\\sigma] $, and a finite support function $ d : \\\\sigma \\\\to_0 \\\\mathbb{N} $, the coefficient of the monomial $ d.\\\\text{mapDomain}(f) $ in the renamed polynomial $ \\\\text{rename}(f, \\\\varphi) $ equals the coefficient of $ d $ in $ \\\\varphi $. This holds because injective renaming preserves monomial coefficients when variables are relabeled without collision.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Rename\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.coeff_rename_embDomain\",\n      \"informal_name\": \"Coefficient Preservation Under Variable Renaming in Multivariate Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_4} [inst : CommSemiring R] (f : σ ↪ τ) (φ : MvPolynomial σ R) (d : σ →₀ ℕ),\\n  MvPolynomial.coeff (Finsupp.embDomain f d) ((MvPolynomial.rename ⇑f) φ) = MvPolynomial.coeff d φ\",\n      \"informal_description\": \"For any injective function $ f : \\\\sigma \\\\to \\\\tau $, multivariate polynomial $ \\\\varphi \\\\in R[\\\\sigma] $, and finite support function $ d : \\\\sigma \\\\to_0 \\\\mathbb{N} $, the coefficient of the monomial $ d.\\\\text{embDomain}(f) $ in the renamed polynomial $ \\\\text{rename}(f, \\\\varphi) $ equals the coefficient of $ d $ in $ \\\\varphi $. This equality reflects that renaming variables via an injective map preserves coefficients when monomials are adjusted by applying the map to their exponents.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Rename\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.coeff_expand_smul\",\n      \"informal_name\": \"Coefficient of Scaled Monomial in Expanded Polynomial Equals Original Coefficient\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_3} [inst : CommSemiring R] (p : ℕ),\\n  p ≠ 0 →\\n    ∀ (φ : MvPolynomial σ R) (m : σ →₀ ℕ),\\n      MvPolynomial.coeff (p • m) ((MvPolynomial.expand p) φ) = MvPolynomial.coeff m φ\",\n      \"informal_description\": \"For any non-zero natural number $ p $, multivariate polynomial $ \\\\phi \\\\in R[\\\\sigma] $, and monomial $ m : \\\\sigma \\\\to₀ \\\\mathbb{N} $, the coefficient of the monomial $ p \\\\cdot m $ in the expanded polynomial $ \\\\text{expand}_p(\\\\phi) $ is equal to the coefficient of $ m $ in $ \\\\phi $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Expand\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.expand_monomial\",\n      \"informal_name\": \"Expansion Homomorphism Scales Monomial Exponents by $ p $\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_3} [inst : CommSemiring R] (p : ℕ) (d : σ →₀ ℕ) (r : R),\\n  (MvPolynomial.expand p) ((MvPolynomial.monomial d) r) = (MvPolynomial.monomial (p • d)) r\",\n      \"informal_description\": \"For any exponent vector $ d $ and coefficient $ r $, applying the expansion homomorphism $ \\\\text{expand}_p $ to the monomial with exponent $ d $ and coefficient $ r $ results in the monomial with exponent $ p \\\\cdot d $ and coefficient $ r $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Expand\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "MvPowerSeries.subst_monomial",
+            "informal_name": "Substitution of a Monomial in Multivariate Power Series",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {R : Type u_3} [inst : CommRing R] {τ : Type u_4} {S : Type u_5} [inst_1 : CommRing S]\n  [inst_2 : Algebra R S] {a : σ → MvPowerSeries τ S},\n  MvPowerSeries.HasSubst a →\n    ∀ (e : σ →₀ ℕ) (r : R),\n      MvPowerSeries.subst a ((MvPowerSeries.monomial e) r) =\n        (algebraMap R (MvPowerSeries τ S)) r * e.prod fun s n => a s ^ n",
+            "informal_description": "For a multivariate power series $ f $ over a commutative ring $ R $ in variables $ \\sigma $, substituting each variable $ s \\in \\sigma $ with a power series $ a(s) $ in variables $ \\tau $ over a ring $ S $, the substitution of the monomial $ r \\cdot X^e $ (where $ e $ is a finite support function $ \\sigma \\to_0 \\mathbb{N} $) results in $ \\phi(r) \\cdot \\prod_{s \\in \\text{support}(e)} (a(s))^{e(s)} $, where $ \\phi: R \\to S[[\\tau]] $ is the canonical algebra homomorphism.",
+            "path": "Mathlib.RingTheory.MvPowerSeries.Substitution"
+          },
+          {
+            "formal_name": "MvPowerSeries.expand_monomial",
+            "informal_name": "Expansion of a Monomial in Multivariate Power Series Scales Exponents by p",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {R : Type u_3} [inst : Finite σ] [inst_1 : CommRing R] (p : ℕ) (hp : p ≠ 0) (d : σ →₀ ℕ) (r : R),\n  (MvPowerSeries.expand p hp) ((MvPowerSeries.monomial d) r) = (MvPowerSeries.monomial (p • d)) r",
+            "informal_description": "For a multivariate power series over a commutative ring $ R $ in variables indexed by $ \\sigma $, applying the expansion map $ \\text{expand}_p $ to the monomial with exponent $ d : \\sigma \\to_0 \\mathbb{N} $ and coefficient $ r \\in R $ results in the monomial with exponent $ p \\cdot d $ and the same coefficient $ r $. In symbols: $ \\text{expand}_p(\\text{monomial}_d(r)) = \\text{monomial}_{p \\cdot d}(r) $.",
+            "path": "Mathlib.RingTheory.MvPowerSeries.Expand"
+          },
+          {
+            "formal_name": "MvPolynomial.coeff_rename_mapDomain",
+            "informal_name": "Coefficient Preservation Under Injective Variable Renaming in Multivariate Polynomials",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_4} [inst : CommSemiring R] (f : σ → τ),\n  Function.Injective f →\n    ∀ (φ : MvPolynomial σ R) (d : σ →₀ ℕ),\n      MvPolynomial.coeff (Finsupp.mapDomain f d) ((MvPolynomial.rename f) φ) = MvPolynomial.coeff d φ",
+            "informal_description": "For an injective function $ f : \\sigma \\to \\tau $, a multivariate polynomial $ \\varphi \\in R[\\sigma] $, and a finite support function $ d : \\sigma \\to_0 \\mathbb{N} $, the coefficient of the monomial $ d.\\text{mapDomain}(f) $ in the renamed polynomial $ \\text{rename}(f, \\varphi) $ equals the coefficient of $ d $ in $ \\varphi $. This holds because injective renaming preserves monomial coefficients when variables are relabeled without collision.",
+            "path": "Mathlib.Algebra.MvPolynomial.Rename"
+          },
+          {
+            "formal_name": "MvPolynomial.coeff_rename_embDomain",
+            "informal_name": "Coefficient Preservation Under Variable Renaming in Multivariate Polynomials",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_4} [inst : CommSemiring R] (f : σ ↪ τ) (φ : MvPolynomial σ R) (d : σ →₀ ℕ),\n  MvPolynomial.coeff (Finsupp.embDomain f d) ((MvPolynomial.rename ⇑f) φ) = MvPolynomial.coeff d φ",
+            "informal_description": "For any injective function $ f : \\sigma \\to \\tau $, multivariate polynomial $ \\varphi \\in R[\\sigma] $, and finite support function $ d : \\sigma \\to_0 \\mathbb{N} $, the coefficient of the monomial $ d.\\text{embDomain}(f) $ in the renamed polynomial $ \\text{rename}(f, \\varphi) $ equals the coefficient of $ d $ in $ \\varphi $. This equality reflects that renaming variables via an injective map preserves coefficients when monomials are adjusted by applying the map to their exponents.",
+            "path": "Mathlib.Algebra.MvPolynomial.Rename"
+          },
+          {
+            "formal_name": "MvPolynomial.coeff_expand_smul",
+            "informal_name": "Coefficient of Scaled Monomial in Expanded Polynomial Equals Original Coefficient",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {R : Type u_3} [inst : CommSemiring R] (p : ℕ),\n  p ≠ 0 →\n    ∀ (φ : MvPolynomial σ R) (m : σ →₀ ℕ),\n      MvPolynomial.coeff (p • m) ((MvPolynomial.expand p) φ) = MvPolynomial.coeff m φ",
+            "informal_description": "For any non-zero natural number $ p $, multivariate polynomial $ \\phi \\in R[\\sigma] $, and monomial $ m : \\sigma \\to₀ \\mathbb{N} $, the coefficient of the monomial $ p \\cdot m $ in the expanded polynomial $ \\text{expand}_p(\\phi) $ is equal to the coefficient of $ m $ in $ \\phi $.",
+            "path": "Mathlib.Algebra.MvPolynomial.Expand"
+          },
+          {
+            "formal_name": "MvPolynomial.expand_monomial",
+            "informal_name": "Expansion Homomorphism Scales Monomial Exponents by $ p $",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {R : Type u_3} [inst : CommSemiring R] (p : ℕ) (d : σ →₀ ℕ) (r : R),\n  (MvPolynomial.expand p) ((MvPolynomial.monomial d) r) = (MvPolynomial.monomial (p • d)) r",
+            "informal_description": "For any exponent vector $ d $ and coefficient $ r $, applying the expansion homomorphism $ \\text{expand}_p $ to the monomial with exponent $ d $ and coefficient $ r $ results in the monomial with exponent $ p \\cdot d $ and coefficient $ r $.",
+            "path": "Mathlib.Algebra.MvPolynomial.Expand"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "standard",
+    "method": "LeanSearch",
+    "request": {
+      "query": "coefficients of monomial substitution preserved when exponent weight injective on support",
+      "num_results": 6
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPowerSeries.coeff_subst\",\n      \"module_name\": \"Mathlib.RingTheory.MvPowerSeries.Substitution\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_3} [inst : CommRing R] {τ : Type u_4} {S : Type u_5} [inst_1 : CommRing S]\\n  [inst_2 : Algebra R S] {a : σ → MvPowerSeries τ S},\\n  MvPowerSeries.HasSubst a →\\n    ∀ (f : MvPowerSeries σ R) (e : τ →₀ ℕ),\\n      (MvPowerSeries.coeff e) (MvPowerSeries.subst a f) =\\n        ∑ᶠ (d : σ →₀ ℕ), (MvPowerSeries.coeff d) f • (MvPowerSeries.coeff e) (d.prod fun s e => a s ^ e)\"\n    },\n    {\n      \"name\": \"MvPowerSeries.subst_monomial\",\n      \"module_name\": \"Mathlib.RingTheory.MvPowerSeries.Substitution\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_3} [inst : CommRing R] {τ : Type u_4} {S : Type u_5} [inst_1 : CommRing S]\\n  [inst_2 : Algebra R S] {a : σ → MvPowerSeries τ S},\\n  MvPowerSeries.HasSubst a →\\n    ∀ (e : σ →₀ ℕ) (r : R),\\n      MvPowerSeries.subst a ((MvPowerSeries.monomial e) r) =\\n        (algebraMap R (MvPowerSeries τ S)) r * e.prod fun s n => a s ^ n\"\n    },\n    {\n      \"name\": \"MvPowerSeries.substAlgHom_monomial\",\n      \"module_name\": \"Mathlib.RingTheory.MvPowerSeries.Substitution\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_3} [inst : CommRing R] {τ : Type u_4} {S : Type u_5} [inst_1 : CommRing S]\\n  [inst_2 : Algebra R S] {a : σ → MvPowerSeries τ S} (ha : MvPowerSeries.HasSubst a) (e : σ →₀ ℕ) (r : R),\\n  (MvPowerSeries.substAlgHom ha) ((MvPowerSeries.monomial e) r) =\\n    (algebraMap R (MvPowerSeries τ S)) r * e.prod fun s n => a s ^ n\"\n    },\n    {\n      \"name\": \"MvPolynomial.coeff_rename_embDomain\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Rename\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_4} [inst : CommSemiring R] (f : σ ↪ τ) (φ : MvPolynomial σ R) (d : σ →₀ ℕ),\\n  MvPolynomial.coeff (Finsupp.embDomain f d) ((MvPolynomial.rename ⇑f) φ) = MvPolynomial.coeff d φ\"\n    },\n    {\n      \"name\": \"MvPowerSeries.constantCoeff_subst\",\n      \"module_name\": \"Mathlib.RingTheory.MvPowerSeries.Substitution\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_3} [inst : CommRing R] {τ : Type u_4} {S : Type u_5} [inst_1 : CommRing S]\\n  [inst_2 : Algebra R S] {a : σ → MvPowerSeries τ S},\\n  MvPowerSeries.HasSubst a →\\n    ∀ (f : MvPowerSeries σ R),\\n      MvPowerSeries.constantCoeff (MvPowerSeries.subst a f) =\\n        ∑ᶠ (d : σ →₀ ℕ), (MvPowerSeries.coeff d) f • MvPowerSeries.constantCoeff (d.prod fun s e => a s ^ e)\"\n    },\n    {\n      \"name\": \"PowerSeries.coeff_subst\",\n      \"module_name\": \"Mathlib.RingTheory.PowerSeries.Substitution\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_2} [inst : CommRing R] {τ : Type u_3} {S : Type u_4} [inst_1 : CommRing S] [inst_2 : Algebra R S]\\n  {a : MvPowerSeries τ S},\\n  PowerSeries.HasSubst a →\\n    ∀ (f : PowerSeries R) (e : τ →₀ ℕ),\\n      (MvPowerSeries.coeff e) (PowerSeries.subst a f) =\\n        ∑ᶠ (d : ℕ), (PowerSeries.coeff d) f • (MvPowerSeries.coeff e) (a ^ d)\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPowerSeries.coeff_subst",
+            "module_name": "Mathlib.RingTheory.MvPowerSeries.Substitution",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {R : Type u_3} [inst : CommRing R] {τ : Type u_4} {S : Type u_5} [inst_1 : CommRing S]\n  [inst_2 : Algebra R S] {a : σ → MvPowerSeries τ S},\n  MvPowerSeries.HasSubst a →\n    ∀ (f : MvPowerSeries σ R) (e : τ →₀ ℕ),\n      (MvPowerSeries.coeff e) (MvPowerSeries.subst a f) =\n        ∑ᶠ (d : σ →₀ ℕ), (MvPowerSeries.coeff d) f • (MvPowerSeries.coeff e) (d.prod fun s e => a s ^ e)"
+          },
+          {
+            "name": "MvPowerSeries.subst_monomial",
+            "module_name": "Mathlib.RingTheory.MvPowerSeries.Substitution",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {R : Type u_3} [inst : CommRing R] {τ : Type u_4} {S : Type u_5} [inst_1 : CommRing S]\n  [inst_2 : Algebra R S] {a : σ → MvPowerSeries τ S},\n  MvPowerSeries.HasSubst a →\n    ∀ (e : σ →₀ ℕ) (r : R),\n      MvPowerSeries.subst a ((MvPowerSeries.monomial e) r) =\n        (algebraMap R (MvPowerSeries τ S)) r * e.prod fun s n => a s ^ n"
+          },
+          {
+            "name": "MvPowerSeries.substAlgHom_monomial",
+            "module_name": "Mathlib.RingTheory.MvPowerSeries.Substitution",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {R : Type u_3} [inst : CommRing R] {τ : Type u_4} {S : Type u_5} [inst_1 : CommRing S]\n  [inst_2 : Algebra R S] {a : σ → MvPowerSeries τ S} (ha : MvPowerSeries.HasSubst a) (e : σ →₀ ℕ) (r : R),\n  (MvPowerSeries.substAlgHom ha) ((MvPowerSeries.monomial e) r) =\n    (algebraMap R (MvPowerSeries τ S)) r * e.prod fun s n => a s ^ n"
+          },
+          {
+            "name": "MvPolynomial.coeff_rename_embDomain",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Rename",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_4} [inst : CommSemiring R] (f : σ ↪ τ) (φ : MvPolynomial σ R) (d : σ →₀ ℕ),\n  MvPolynomial.coeff (Finsupp.embDomain f d) ((MvPolynomial.rename ⇑f) φ) = MvPolynomial.coeff d φ"
+          },
+          {
+            "name": "MvPowerSeries.constantCoeff_subst",
+            "module_name": "Mathlib.RingTheory.MvPowerSeries.Substitution",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {R : Type u_3} [inst : CommRing R] {τ : Type u_4} {S : Type u_5} [inst_1 : CommRing S]\n  [inst_2 : Algebra R S] {a : σ → MvPowerSeries τ S},\n  MvPowerSeries.HasSubst a →\n    ∀ (f : MvPowerSeries σ R),\n      MvPowerSeries.constantCoeff (MvPowerSeries.subst a f) =\n        ∑ᶠ (d : σ →₀ ℕ), (MvPowerSeries.coeff d) f • MvPowerSeries.constantCoeff (d.prod fun s e => a s ^ e)"
+          },
+          {
+            "name": "PowerSeries.coeff_subst",
+            "module_name": "Mathlib.RingTheory.PowerSeries.Substitution",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_2} [inst : CommRing R] {τ : Type u_3} {S : Type u_4} [inst_1 : CommRing S] [inst_2 : Algebra R S]\n  {a : MvPowerSeries τ S},\n  PowerSeries.HasSubst a →\n    ∀ (f : PowerSeries R) (e : τ →₀ ℕ),\n      (MvPowerSeries.coeff e) (PowerSeries.subst a f) =\n        ∑ᶠ (d : ℕ), (PowerSeries.coeff d) f • (MvPowerSeries.coeff e) (a ^ d)"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "standard",
+    "method": "Loogle",
+    "request": {
+      "query": "Finsupp.mapDomain, Set.InjOn",
+      "num_results": 8
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "Error executing tool lean_loogle: Rate limit exceeded: 3 requests per 30s. Use --loogle-local to avoid limits."
+        }
+      ],
+      "isError": true
+    }
+  },
+  {
+    "form": "standard",
+    "method": "local",
+    "request": {
+      "query": "coeff_aeval",
+      "project_root": "/Users/ramin/LEAN/Roth",
+      "limit": 30
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.TaylorXCallerReplay.coeff_aeval_X_mul\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/roth-overview-session/NextHasseChecks.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.coeff_aeval_X_mul\",\n      \"kind\": \"lemma\",\n      \"file\": \"Roth/Taylor.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.TaylorXCallerReplay.coeff_aeval_X_mul",
+            "kind": "theorem",
+            "file": ".lake/roth-overview-session/NextHasseChecks.lean"
+          },
+          {
+            "name": "MvPolynomial.coeff_aeval_X_mul",
+            "kind": "lemma",
+            "file": "Roth/Taylor.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "Finder",
+    "request": {
+      "query": "Finsupp mapDomain coefficient evaluation injective on subset containing support",
+      "num_results": 6
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Finsupp.mapDomain_apply'\",\n      \"informal_name\": \"Evaluation Identity for Domain Mapping of Finite Support Functions under Injectivity\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_2} {M : Type u_5} [inst : AddCommMonoid M] (S : Set α) {f : α → β} (x : α →₀ M),\\n  ↑x.support ⊆ S → Set.InjOn f S → ∀ {a : α}, a ∈ S → (Finsupp.mapDomain f x) (f a) = x a\",\n      \"informal_description\": \"Let $ S $ be a subset of $ \\\\alpha $, $ f : \\\\alpha \\\\to \\\\beta $ a function, and $ x : \\\\alpha \\\\to_0 M $ a finite support function. If the support of $ x $ is contained in $ S $ and $ f $ is injective on $ S $, then for every $ a \\\\in S $, the value of the domain-mapped function $ \\\\mathrm{mapDomain}\\\\, f\\\\, x $ at $ f(a) $ equals $ x(a) $. In symbols: $ (\\\\mathrm{mapDomain}\\\\, f\\\\, x)(f(a)) = x(a) $.\",\n      \"path\": \"Mathlib.Data.Finsupp.Basic\"\n    },\n    {\n      \"formal_name\": \"Finsupp.mapDomain_injOn\",\n      \"informal_name\": \"Injectivity of Domain Mapping for Finite Support Functions on Injective Domain Restrictions\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_2} {M : Type u_5} [inst : AddCommMonoid M] (S : Set α) {f : α → β},\\n  Set.InjOn f S → Set.InjOn (Finsupp.mapDomain f) {w | ↑w.support ⊆ S}\",\n      \"informal_description\": \"If a function $ f : \\\\alpha \\\\to \\\\beta $ is injective on a subset $ S \\\\subseteq \\\\alpha $, then the domain mapping operation $ \\\\text{mapDomain} \\\\, f $ is injective when restricted to the set of finite support functions $ \\\\alpha \\\\to_0 M $ whose supports are contained in $ S $.\",\n      \"path\": \"Mathlib.Data.Finsupp.Basic\"\n    },\n    {\n      \"formal_name\": \"Finsupp.mapDomain_apply\",\n      \"informal_name\": \"Domain Mapping for Finite Support Functions\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_2} {M : Type u_5} [inst : AddCommMonoid M] {f : α → β},\\n  Function.Injective f → ∀ (x : α →₀ M) (a : α), (Finsupp.mapDomain f x) (f a) = x a\",\n      \"informal_description\": \"Given a function $ f : \\\\alpha \\\\to \\\\beta $ and a finite support function $ x : \\\\alpha \\\\to_0 M $, this constructs a finite support function $ \\\\beta \\\\to_0 M $ by summing the values of $ x $ over all pre-images of each $ b \\\\in \\\\beta $ under $ f $. Specifically, for each $ b \\\\in \\\\beta $, the resulting function evaluates to $ \\\\sum_{a \\\\in f^{-1}(b)} x(a) $, with finite support inherited from $ x $.\",\n      \"path\": \"Mathlib.Data.Finsupp.Basic\"\n    },\n    {\n      \"formal_name\": \"Finsupp.comapDomain\",\n      \"informal_name\": \"Contravariant Map for Finite Support Functions\",\n      \"kind\": \"definition\",\n      \"type\": \"{α : Type u_1} →\\n  {β : Type u_2} →\\n    {M : Type u_5} → [inst : Zero M] → (f : α → β) → (l : β →₀ M) → Set.InjOn f (f ⁻¹' ↑l.support) → α →₀ M\",\n      \"informal_description\": \"Given a function $ f : \\\\alpha \\\\to \\\\beta $, a finite support function $ l : \\\\beta \\\\to_0 M $, and a proof that $ f $ is injective on the preimage of $ \\\\text{support}(l) $, this constructs a finite support function $ \\\\alpha \\\\to_0 M $ whose support is the preimage of $ \\\\text{support}(l) $ under $ f $, and which maps each $ a \\\\in \\\\alpha $ to $ l(f(a)) $. The injectivity condition ensures the preimage remains finite.\",\n      \"path\": \"Mathlib.Data.Finsupp.Basic\"\n    },\n    {\n      \"formal_name\": \"Finsupp.comapDomain_apply\",\n      \"informal_name\": \"Contravariant Map for Finite Support Functions\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_2} {M : Type u_5} [inst : Zero M] (f : α → β) (l : β →₀ M)\\n  (hf : Set.InjOn f (f ⁻¹' ↑l.support)) (a : α), (Finsupp.comapDomain f l hf) a = l (f a)\",\n      \"informal_description\": \"Given a function $ f : \\\\alpha \\\\to \\\\beta $, a finite support function $ l : \\\\beta \\\\to_0 M $, and a proof that $ f $ is injective on the preimage of the support of $ l $, this constructs a finite support function $ \\\\alpha \\\\to_0 M $ whose support is the preimage of $ \\\\text{support}(l) $ under $ f $. For each $ a \\\\in \\\\alpha $, the function evaluates to $ l(f(a)) $. The injectivity condition ensures the preimage remains finite.\",\n      \"path\": \"Mathlib.Data.Finsupp.Basic\"\n    },\n    {\n      \"formal_name\": \"Finsupp.mapDomain_injective\",\n      \"informal_name\": \"Injectivity of Domain Mapping for Finite Support Functions\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_2} {M : Type u_5} [inst : AddCommMonoid M] {f : α → β},\\n  Function.Injective f → Function.Injective (Finsupp.mapDomain f)\",\n      \"informal_description\": \"If $ f : \\\\alpha \\\\to \\\\beta $ is an injective function, then the induced map $ \\\\mathrm{mapDomain}\\\\, f : (\\\\alpha \\\\to_0 M) \\\\to (\\\\beta \\\\to_0 M) $, which reindexes finite support functions along $ f $, is injective. This means that distinct finite support functions on $ \\\\alpha $ remain distinct after applying $ \\\\mathrm{mapDomain}\\\\, f $.\",\n      \"path\": \"Mathlib.Data.Finsupp.Basic\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Finsupp.mapDomain_apply'",
+            "informal_name": "Evaluation Identity for Domain Mapping of Finite Support Functions under Injectivity",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {β : Type u_2} {M : Type u_5} [inst : AddCommMonoid M] (S : Set α) {f : α → β} (x : α →₀ M),\n  ↑x.support ⊆ S → Set.InjOn f S → ∀ {a : α}, a ∈ S → (Finsupp.mapDomain f x) (f a) = x a",
+            "informal_description": "Let $ S $ be a subset of $ \\alpha $, $ f : \\alpha \\to \\beta $ a function, and $ x : \\alpha \\to_0 M $ a finite support function. If the support of $ x $ is contained in $ S $ and $ f $ is injective on $ S $, then for every $ a \\in S $, the value of the domain-mapped function $ \\mathrm{mapDomain}\\, f\\, x $ at $ f(a) $ equals $ x(a) $. In symbols: $ (\\mathrm{mapDomain}\\, f\\, x)(f(a)) = x(a) $.",
+            "path": "Mathlib.Data.Finsupp.Basic"
+          },
+          {
+            "formal_name": "Finsupp.mapDomain_injOn",
+            "informal_name": "Injectivity of Domain Mapping for Finite Support Functions on Injective Domain Restrictions",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {β : Type u_2} {M : Type u_5} [inst : AddCommMonoid M] (S : Set α) {f : α → β},\n  Set.InjOn f S → Set.InjOn (Finsupp.mapDomain f) {w | ↑w.support ⊆ S}",
+            "informal_description": "If a function $ f : \\alpha \\to \\beta $ is injective on a subset $ S \\subseteq \\alpha $, then the domain mapping operation $ \\text{mapDomain} \\, f $ is injective when restricted to the set of finite support functions $ \\alpha \\to_0 M $ whose supports are contained in $ S $.",
+            "path": "Mathlib.Data.Finsupp.Basic"
+          },
+          {
+            "formal_name": "Finsupp.mapDomain_apply",
+            "informal_name": "Domain Mapping for Finite Support Functions",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {β : Type u_2} {M : Type u_5} [inst : AddCommMonoid M] {f : α → β},\n  Function.Injective f → ∀ (x : α →₀ M) (a : α), (Finsupp.mapDomain f x) (f a) = x a",
+            "informal_description": "Given a function $ f : \\alpha \\to \\beta $ and a finite support function $ x : \\alpha \\to_0 M $, this constructs a finite support function $ \\beta \\to_0 M $ by summing the values of $ x $ over all pre-images of each $ b \\in \\beta $ under $ f $. Specifically, for each $ b \\in \\beta $, the resulting function evaluates to $ \\sum_{a \\in f^{-1}(b)} x(a) $, with finite support inherited from $ x $.",
+            "path": "Mathlib.Data.Finsupp.Basic"
+          },
+          {
+            "formal_name": "Finsupp.comapDomain",
+            "informal_name": "Contravariant Map for Finite Support Functions",
+            "kind": "definition",
+            "type": "{α : Type u_1} →\n  {β : Type u_2} →\n    {M : Type u_5} → [inst : Zero M] → (f : α → β) → (l : β →₀ M) → Set.InjOn f (f ⁻¹' ↑l.support) → α →₀ M",
+            "informal_description": "Given a function $ f : \\alpha \\to \\beta $, a finite support function $ l : \\beta \\to_0 M $, and a proof that $ f $ is injective on the preimage of $ \\text{support}(l) $, this constructs a finite support function $ \\alpha \\to_0 M $ whose support is the preimage of $ \\text{support}(l) $ under $ f $, and which maps each $ a \\in \\alpha $ to $ l(f(a)) $. The injectivity condition ensures the preimage remains finite.",
+            "path": "Mathlib.Data.Finsupp.Basic"
+          },
+          {
+            "formal_name": "Finsupp.comapDomain_apply",
+            "informal_name": "Contravariant Map for Finite Support Functions",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {β : Type u_2} {M : Type u_5} [inst : Zero M] (f : α → β) (l : β →₀ M)\n  (hf : Set.InjOn f (f ⁻¹' ↑l.support)) (a : α), (Finsupp.comapDomain f l hf) a = l (f a)",
+            "informal_description": "Given a function $ f : \\alpha \\to \\beta $, a finite support function $ l : \\beta \\to_0 M $, and a proof that $ f $ is injective on the preimage of the support of $ l $, this constructs a finite support function $ \\alpha \\to_0 M $ whose support is the preimage of $ \\text{support}(l) $ under $ f $. For each $ a \\in \\alpha $, the function evaluates to $ l(f(a)) $. The injectivity condition ensures the preimage remains finite.",
+            "path": "Mathlib.Data.Finsupp.Basic"
+          },
+          {
+            "formal_name": "Finsupp.mapDomain_injective",
+            "informal_name": "Injectivity of Domain Mapping for Finite Support Functions",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {β : Type u_2} {M : Type u_5} [inst : AddCommMonoid M] {f : α → β},\n  Function.Injective f → Function.Injective (Finsupp.mapDomain f)",
+            "informal_description": "If $ f : \\alpha \\to \\beta $ is an injective function, then the induced map $ \\mathrm{mapDomain}\\, f : (\\alpha \\to_0 M) \\to (\\beta \\to_0 M) $, which reindexes finite support functions along $ f $, is injective. This means that distinct finite support functions on $ \\alpha $ remain distinct after applying $ \\mathrm{mapDomain}\\, f $.",
+            "path": "Mathlib.Data.Finsupp.Basic"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "LeanSearch",
+    "request": {
+      "query": "Finsupp mapDomain coefficient evaluation injective on subset containing support",
+      "num_results": 6
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finsupp.mapDomain_apply'\",\n      \"module_name\": \"Mathlib.Data.Finsupp.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_2} {M : Type u_5} [inst : AddCommMonoid M] (S : Set α) {f : α → β} (x : α →₀ M),\\n  ↑x.support ⊆ S → Set.InjOn f S → ∀ {a : α}, a ∈ S → (Finsupp.mapDomain f x) (f a) = x a\"\n    },\n    {\n      \"name\": \"Finsupp.mapDomain_injOn\",\n      \"module_name\": \"Mathlib.Data.Finsupp.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_2} {M : Type u_5} [inst : AddCommMonoid M] (S : Set α) {f : α → β},\\n  Set.InjOn f S → Set.InjOn (Finsupp.mapDomain f) {w | ↑w.support ⊆ S}\"\n    },\n    {\n      \"name\": \"Finsupp.mapDomain_injective\",\n      \"module_name\": \"Mathlib.Data.Finsupp.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_2} {M : Type u_5} [inst : AddCommMonoid M] {f : α → β},\\n  Function.Injective f → Function.Injective (Finsupp.mapDomain f)\"\n    },\n    {\n      \"name\": \"Finsupp.mapDomain_apply\",\n      \"module_name\": \"Mathlib.Data.Finsupp.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_2} {M : Type u_5} [inst : AddCommMonoid M] {f : α → β},\\n  Function.Injective f → ∀ (x : α →₀ M) (a : α), (Finsupp.mapDomain f x) (f a) = x a\"\n    },\n    {\n      \"name\": \"Finsupp.mapDomain_support_of_injOn\",\n      \"module_name\": \"Mathlib.Data.Finsupp.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_2} {M : Type u_5} [inst : AddCommMonoid M] [inst_1 : DecidableEq β] {f : α → β}\\n  (s : α →₀ M), Set.InjOn f ↑s.support → (Finsupp.mapDomain f s).support = Finset.image f s.support\"\n    },\n    {\n      \"name\": \"Finsupp.mapDomain\",\n      \"module_name\": \"Mathlib.Data.Finsupp.Basic\",\n      \"kind\": \"definition\",\n      \"type\": \"{α : Type u_1} → {β : Type u_2} → {M : Type u_5} → [inst : AddCommMonoid M] → (α → β) → (α →₀ M) → β →₀ M\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Finsupp.mapDomain_apply'",
+            "module_name": "Mathlib.Data.Finsupp.Basic",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {β : Type u_2} {M : Type u_5} [inst : AddCommMonoid M] (S : Set α) {f : α → β} (x : α →₀ M),\n  ↑x.support ⊆ S → Set.InjOn f S → ∀ {a : α}, a ∈ S → (Finsupp.mapDomain f x) (f a) = x a"
+          },
+          {
+            "name": "Finsupp.mapDomain_injOn",
+            "module_name": "Mathlib.Data.Finsupp.Basic",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {β : Type u_2} {M : Type u_5} [inst : AddCommMonoid M] (S : Set α) {f : α → β},\n  Set.InjOn f S → Set.InjOn (Finsupp.mapDomain f) {w | ↑w.support ⊆ S}"
+          },
+          {
+            "name": "Finsupp.mapDomain_injective",
+            "module_name": "Mathlib.Data.Finsupp.Basic",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {β : Type u_2} {M : Type u_5} [inst : AddCommMonoid M] {f : α → β},\n  Function.Injective f → Function.Injective (Finsupp.mapDomain f)"
+          },
+          {
+            "name": "Finsupp.mapDomain_apply",
+            "module_name": "Mathlib.Data.Finsupp.Basic",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {β : Type u_2} {M : Type u_5} [inst : AddCommMonoid M] {f : α → β},\n  Function.Injective f → ∀ (x : α →₀ M) (a : α), (Finsupp.mapDomain f x) (f a) = x a"
+          },
+          {
+            "name": "Finsupp.mapDomain_support_of_injOn",
+            "module_name": "Mathlib.Data.Finsupp.Basic",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {β : Type u_2} {M : Type u_5} [inst : AddCommMonoid M] [inst_1 : DecidableEq β] {f : α → β}\n  (s : α →₀ M), Set.InjOn f ↑s.support → (Finsupp.mapDomain f s).support = Finset.image f s.support"
+          },
+          {
+            "name": "Finsupp.mapDomain",
+            "module_name": "Mathlib.Data.Finsupp.Basic",
+            "kind": "definition",
+            "type": "{α : Type u_1} → {β : Type u_2} → {M : Type u_5} → [inst : AddCommMonoid M] → (α → β) → (α →₀ M) → β →₀ M"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "Loogle",
+    "request": {
+      "query": "Finsupp.mapDomain_apply'",
+      "num_results": 8
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "Error executing tool lean_loogle: Rate limit exceeded: 3 requests per 30s. Use --loogle-local to avoid limits."
+        }
+      ],
+      "isError": true
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "local",
+    "request": {
+      "query": "mapDomain_apply",
+      "project_root": "/Users/ramin/LEAN/Roth",
+      "limit": 30
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finsupp.mapDomain_apply\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Data/Finsupp/Basic.lean\"\n    },\n    {\n      \"name\": \"Finsupp.mapDomain_apply'\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Data/Finsupp/Basic.lean\"\n    },\n    {\n      \"name\": \"Finsupp.mapDomain_apply_eq_sum\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Data/Finsupp/Basic.lean\"\n    },\n    {\n      \"name\": \"Finsupp.mapDomain_apply_of_injective\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Data/Finsupp/Basic.lean\"\n    },\n    {\n      \"name\": \"Finsupp.mapDomain_apply_eq_zero_iff_of_subsingletonAddUnits\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Data/Finsupp/Basic.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Finsupp.mapDomain_apply",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Data/Finsupp/Basic.lean"
+          },
+          {
+            "name": "Finsupp.mapDomain_apply'",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Data/Finsupp/Basic.lean"
+          },
+          {
+            "name": "Finsupp.mapDomain_apply_eq_sum",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Data/Finsupp/Basic.lean"
+          },
+          {
+            "name": "Finsupp.mapDomain_apply_of_injective",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Data/Finsupp/Basic.lean"
+          },
+          {
+            "name": "Finsupp.mapDomain_apply_eq_zero_iff_of_subsingletonAddUnits",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Data/Finsupp/Basic.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  }
+]

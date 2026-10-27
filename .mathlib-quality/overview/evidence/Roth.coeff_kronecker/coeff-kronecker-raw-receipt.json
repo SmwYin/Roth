@@ -1,0 +1,93 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.Polynomial.HasseDeriv\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.LinearAlgebra.Matrix.ToLinearEquiv\nimport Mathlib.RingTheory.Polynomial.Wronskian\nimport Mathlib.LinearAlgebra.Vandermonde\nimport Mathlib.Data.ZMod.Defs\nimport Mathlib.Algebra.Field.ZMod\nimport Mathlib.Algebra.Order.Group.Int.Sum\nimport Mathlib.LinearAlgebra.Matrix.Polynomial\nimport Mathlib.Algebra.Polynomial.CancelLeads\nimport Mathlib.Algebra.MvPolynomial.PDeriv\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\nimport Mathlib.Algebra.MvPolynomial.Equiv\nimport Mathlib.Analysis.Normed.Unbundled.RingSeminorm\nimport Mathlib.LinearAlgebra.Matrix.AbsoluteValue\nimport Mathlib.Data.Nat.Choose.Bounds\nimport Mathlib.RingTheory.Polynomial.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.Data.List.Indexes\n#check_failure Roth.coeff_kronecker\nnamespace CoeffKroneckerProbe\nopen MvPolynomial\n#check @Finsupp.mapDomain_apply'\n#check @MvPolynomial.induction_on'\n#check @AddMonoidAlgebra.coeff_add\n#check @Polynomial.toFinsupp_apply\ntheorem weighted_monomial {R σ : Type*} [CommSemiring R] (w : σ → ℕ)\n    (d : σ →₀ ℕ) (a : R) :\n    aeval (fun j ↦ (Polynomial.X : Polynomial R) ^ w j) (monomial d a) =\n      Polynomial.C a * Polynomial.X ^ Finsupp.weight w d := by\n  classical\n  simp only [aeval_monomial, Polynomial.algebraMap_eq, Finsupp.prod, Finsupp.weight_apply,\n    Finsupp.sum, smul_eq_mul, ← pow_mul, mul_comm, ← Finset.prod_pow_eq_pow_sum]\n\ntheorem bridge {R σ : Type*} [CommSemiring R] (w : σ → ℕ) (P : MvPolynomial σ R) :\n    (aeval (fun j ↦ (Polynomial.X : Polynomial R) ^ w j) P).toFinsupp.coeff =\n      P.coeff.mapDomain (Finsupp.weight w) := by\n  classical\n  induction P using MvPolynomial.induction_on' with\n  | monomial d a =>\n    rw [weighted_monomial, Polynomial.toFinsupp_C_mul_X_pow]\n    simp [MvPolynomial.monomial, Finsupp.mapDomain_single]\n  | add P Q hP hQ =>\n    simp only [map_add, Polynomial.toFinsupp_add, AddMonoidAlgebra.coeff_add,\n      hP, hQ, Finsupp.mapDomain_add]\ntheorem abstract_coeff {R σ : Type*} [CommSemiring R] (w : σ → ℕ)\n    (S : Set (σ →₀ ℕ)) (P : MvPolynomial σ R) (hP : (P.coeff.support : Set _) ⊆ S)\n    (hi : Set.InjOn (Finsupp.weight w) S) {d : σ →₀ ℕ} (hd : d ∈ S) :\n    (aeval (fun j ↦ (Polynomial.X : Polynomial R) ^ w j) P).coeff\n      (Finsupp.weight w d) = P.coeff d := by\n  rw [← Polynomial.toFinsupp_apply, bridge]\n  exact Finsupp.mapDomain_apply' S P.coeff hP hi hd\n#print axioms weighted_monomial\n#print axioms bridge\n#print axioms abstract_coeff\nend CoeffKroneckerProbe\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.coeff_kronecker`\",\n      \"line\": 20,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finsupp.mapDomain_apply' : ∀ {α : Type u_1} {β : Type u_2} {M : Type u_3} [inst : AddCommMonoid M] (S : Set α)\\n  {f : α → β} (x : α →₀ M), ↑x.support ⊆ S → Set.InjOn f S → ∀ {a : α}, a ∈ S → (Finsupp.mapDomain f x) (f a) = x a\",\n      \"line\": 23,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@induction_on' : ∀ {R : Type u_1} {σ : Type u_2} [inst : CommSemiring R] {P : MvPolynomial σ R → Prop}\\n  (p : MvPolynomial σ R),\\n  (∀ (u : σ →₀ ℕ) (a : R), P ((monomial u) a)) → (∀ (p q : MvPolynomial σ R), P p → P q → P (p + q)) → P p\",\n      \"line\": 24,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@AddMonoidAlgebra.coeff_add : ∀ {R : Type u_1} {M : Type u_2} [inst : Semiring R] (x y : AddMonoidAlgebra R M),\\n  (x + y).coeff = x.coeff + y.coeff\",\n      \"line\": 25,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.toFinsupp_apply : ∀ {R : Type u_1} [inst : Semiring R] (f : Polynomial R) (i : ℕ),\\n  f.toFinsupp.coeff i = f.coeff i\",\n      \"line\": 26,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'CoeffKroneckerProbe.weighted_monomial' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 53,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'CoeffKroneckerProbe.bridge' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 54,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'CoeffKroneckerProbe.abstract_coeff' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 55,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.coeff_kronecker`",
+          "line": 20,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finsupp.mapDomain_apply' : ∀ {α : Type u_1} {β : Type u_2} {M : Type u_3} [inst : AddCommMonoid M] (S : Set α)\n  {f : α → β} (x : α →₀ M), ↑x.support ⊆ S → Set.InjOn f S → ∀ {a : α}, a ∈ S → (Finsupp.mapDomain f x) (f a) = x a",
+          "line": 23,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@induction_on' : ∀ {R : Type u_1} {σ : Type u_2} [inst : CommSemiring R] {P : MvPolynomial σ R → Prop}\n  (p : MvPolynomial σ R),\n  (∀ (u : σ →₀ ℕ) (a : R), P ((monomial u) a)) → (∀ (p q : MvPolynomial σ R), P p → P q → P (p + q)) → P p",
+          "line": 24,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@AddMonoidAlgebra.coeff_add : ∀ {R : Type u_1} {M : Type u_2} [inst : Semiring R] (x y : AddMonoidAlgebra R M),\n  (x + y).coeff = x.coeff + y.coeff",
+          "line": 25,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.toFinsupp_apply : ∀ {R : Type u_1} [inst : Semiring R] (f : Polynomial R) (i : ℕ),\n  f.toFinsupp.coeff i = f.coeff i",
+          "line": 26,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'CoeffKroneckerProbe.weighted_monomial' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 53,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'CoeffKroneckerProbe.bridge' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 54,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'CoeffKroneckerProbe.abstract_coeff' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 55,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 148
+}

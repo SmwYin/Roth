@@ -1,0 +1,62 @@
+namespace CoeffKroneckerProbe
+open MvPolynomial
+#check @Finsupp.mapDomain_apply'
+#check @MvPolynomial.induction_on'
+#check @AddMonoidAlgebra.coeff_add
+#check @Polynomial.toFinsupp_apply
+theorem weighted_monomial {R σ : Type*} [CommSemiring R] (w : σ → ℕ)
+    (d : σ →₀ ℕ) (a : R) :
+    aeval (fun j ↦ (Polynomial.X : Polynomial R) ^ w j) (monomial d a) =
+      Polynomial.C a * Polynomial.X ^ Finsupp.weight w d := by
+  classical
+  simp only [aeval_monomial, Polynomial.algebraMap_eq, Finsupp.prod, Finsupp.weight_apply,
+    Finsupp.sum, smul_eq_mul, ← pow_mul, mul_comm, ← Finset.prod_pow_eq_pow_sum]
+
+theorem bridge {R σ : Type*} [CommSemiring R] (w : σ → ℕ) (P : MvPolynomial σ R) :
+    (aeval (fun j ↦ (Polynomial.X : Polynomial R) ^ w j) P).toFinsupp.coeff =
+      P.coeff.mapDomain (Finsupp.weight w) := by
+  classical
+  induction P using MvPolynomial.induction_on' with
+  | monomial d a =>
+    rw [weighted_monomial, Polynomial.toFinsupp_C_mul_X_pow]
+    simp [MvPolynomial.monomial, Finsupp.mapDomain_single]
+  | add P Q hP hQ =>
+    simp only [map_add, Polynomial.toFinsupp_add, AddMonoidAlgebra.coeff_add,
+      hP, hQ, Finsupp.mapDomain_add]
+theorem abstract_coeff {R σ : Type*} [CommSemiring R] (w : σ → ℕ)
+    (S : Set (σ →₀ ℕ)) (P : MvPolynomial σ R) (hP : (P.coeff.support : Set _) ⊆ S)
+    (hi : Set.InjOn (Finsupp.weight w) S) {d : σ →₀ ℕ} (hd : d ∈ S) :
+    (aeval (fun j ↦ (Polynomial.X : Polynomial R) ^ w j) P).coeff
+      (Finsupp.weight w d) = P.coeff d := by
+  rw [← Polynomial.toFinsupp_apply, bridge]
+  exact Finsupp.mapDomain_apply' S P.coeff hP hi hd
+#print axioms weighted_monomial
+#print axioms bridge
+#print axioms abstract_coeff
+end CoeffKroneckerProbe
+
+namespace CoeffKroneckerConsumers
+open Roth MvPolynomial
+variable {K : Type*} [Field K] {σ : Type*} [Fintype σ]
+theorem coeff_replay {k : ℕ} (hk : 1 < k) {P : MvPolynomial σ K}
+    (hP : ∀ j, degreeOf j P < k) {d : σ →₀ ℕ} (hd : ∀ j, d j < k) :
+    (kronecker k P).coeff (kroneckerExp k d) = P.coeff d := by
+  have hweight (v : σ →₀ ℕ) : Finsupp.weight
+      (fun j ↦ k ^ (Fintype.equivFin σ j : ℕ)) v = kroneckerExp k v := by
+    simp only [Finsupp.weight_eq_sum, smul_eq_mul, kroneckerExp]
+  simpa only [kronecker, hweight] using CoeffKroneckerProbe.abstract_coeff
+    (fun j ↦ k ^ (Fintype.equivFin σ j : ℕ)) {v : σ →₀ ℕ | ∀ j, v j < k} P
+    (fun v hv j ↦ (monomial_le_degreeOf j hv).trans_lt (hP j))
+    (by
+      intro v hv u hu he
+      exact kroneckerExp_injOn hk hv hu (by simpa only [hweight] using he)) hd
+theorem consumer_replay {k : ℕ} (hk : 1 < k) {P : MvPolynomial σ K}
+    (hP : ∀ j, degreeOf j P < k) : kronecker k P = 0 ↔ P = 0 := by
+  refine ⟨fun h ↦ support_eq_empty.1 <| Finset.eq_empty_iff_forall_notMem.2 fun d hd ↦ ?_,
+    fun h ↦ by rw [h, map_zero]⟩
+  apply mem_support_iff.1 hd
+  simpa [h] using (coeff_replay hk hP fun j ↦
+    (monomial_le_degreeOf j hd).trans_lt (hP j)).symm
+#print axioms coeff_replay
+#print axioms consumer_replay
+end CoeffKroneckerConsumers

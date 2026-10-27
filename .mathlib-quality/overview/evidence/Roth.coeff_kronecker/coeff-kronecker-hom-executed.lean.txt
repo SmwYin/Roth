@@ -1,0 +1,38 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+import Mathlib.Algebra.Polynomial.CancelLeads
+import Mathlib.Algebra.MvPolynomial.PDeriv
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+import Mathlib.Algebra.MvPolynomial.Equiv
+import Mathlib.Analysis.Normed.Unbundled.RingSeminorm
+import Mathlib.LinearAlgebra.Matrix.AbsoluteValue
+import Mathlib.Data.Nat.Choose.Bounds
+import Mathlib.RingTheory.Polynomial.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.Data.List.Indexes
+#check_failure Roth.coeff_kronecker
+namespace CoeffKroneckerHom
+open MvPolynomial
+#check @Polynomial.toFinsuppIsoAlg
+#check @AddMonoidAlgebra.mapDomainAlgHom
+#check @MvPolynomial.algHom_ext
+theorem hom_bridge {R σ : Type*} [CommSemiring R] (w : σ → ℕ) :
+    (Polynomial.toFinsuppIsoAlg R).toAlgHom.comp
+      (aeval (fun j ↦ (Polynomial.X : Polynomial R) ^ w j)) =
+        AddMonoidAlgebra.mapDomainAlgHom R R (Finsupp.weight w) := by
+  apply MvPolynomial.algHom_ext
+  intro i
+  simp only [AlgHom.comp_apply, MvPolynomial.aeval_X]
+  simp [MvPolynomial.X, MvPolynomial.monomial,
+    AddMonoidAlgebra.mapDomain_single, AddMonoidAlgebra.mapDomainAlgHom,
+    AddMonoidAlgebra.mapDomainRingHom, Finsupp.weight_single,
+    Polynomial.toFinsuppIsoAlg]
+#print axioms hom_bridge
+end CoeffKroneckerHom

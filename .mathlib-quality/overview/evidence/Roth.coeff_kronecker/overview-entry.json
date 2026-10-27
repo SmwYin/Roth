@@ -1,0 +1,27 @@
+{
+  "declaration": "Roth.coeff_kronecker",
+  "kind": "theorem",
+  "type": "\u2200 {K : Type u_1} [inst : Field K] {\u03c3 : Type u_2} [inst_1 : Fintype \u03c3] {k : \u2115},\n  1 < k \u2192\n    \u2200 {P : MvPolynomial \u03c3 K},\n      (\u2200 (j : \u03c3), MvPolynomial.degreeOf j P < k) \u2192\n        \u2200 {d : \u03c3 \u2192\u2080 \u2115}, (\u2200 (j : \u03c3), d j < k) \u2192 ((Roth.kronecker k) P).coeff (Roth.kroneckerExp k d) = P.coeff d",
+  "what": "Bounded Kronecker substitution preserves each admissible monomial coefficient.",
+  "how": "Expand into monomials and isolate the coefficient using bounded positional injectivity.",
+  "hypotheses": [
+    "Field K",
+    "Fintype sigma",
+    "1 < k",
+    "each partial degree of P < k",
+    "each entry of d < k"
+  ],
+  "project_dependencies": [
+    "Roth.kronecker",
+    "Roth.kroneckerExp",
+    "Roth.kronecker_monomial",
+    "Roth.kroneckerExp_injOn"
+  ],
+  "caller_summary": "One same-module explicit and canonical direct consumer: Roth.kronecker_eq_zero_iff at111; no external-to-file explicit reference.",
+  "mathlib_api_audit": "Finsupp.mapDomain_apply' supplies exact abstract coefficient transport; new nondefinitional aeval/mapDomain normalization bridge verified in arbitrary CommSemiring.",
+  "moral_duplications": "Coefficient separation is existing support-local mapDomain transport; exact aeval coefficient API not identified.",
+  "generalization": "Verified arbitrary sigma, CommSemiring, arbitrary weights with support-local InjOn; explicit finite enumeration and no hk positional specialization also checked.",
+  "missing_api": "Candidate normalization between aeval monomial powers and mapDomainAlgHom(weight); decide whether to expose extraction corollary.",
+  "junk": "Not junk: actual zero-detection consumer supports generalized Wronskian theorem.",
+  "action": "BORDERLINE-needs-human; resolve three concrete upstream API packaging questions. Production unchanged."
+}

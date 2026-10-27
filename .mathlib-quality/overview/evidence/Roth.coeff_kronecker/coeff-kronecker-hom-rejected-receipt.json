@@ -1,0 +1,95 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.Polynomial.HasseDeriv\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.LinearAlgebra.Matrix.ToLinearEquiv\nimport Mathlib.RingTheory.Polynomial.Wronskian\nimport Mathlib.LinearAlgebra.Vandermonde\nimport Mathlib.Data.ZMod.Defs\nimport Mathlib.Algebra.Field.ZMod\nimport Mathlib.Algebra.Order.Group.Int.Sum\nimport Mathlib.LinearAlgebra.Matrix.Polynomial\nimport Mathlib.Algebra.Polynomial.CancelLeads\nimport Mathlib.Algebra.MvPolynomial.PDeriv\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\nimport Mathlib.Algebra.MvPolynomial.Equiv\nimport Mathlib.Analysis.Normed.Unbundled.RingSeminorm\nimport Mathlib.LinearAlgebra.Matrix.AbsoluteValue\nimport Mathlib.Data.Nat.Choose.Bounds\nimport Mathlib.RingTheory.Polynomial.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.Data.List.Indexes\n#check_failure Roth.coeff_kronecker\nnamespace CoeffKroneckerHom\nopen MvPolynomial\n#check @Polynomial.toFinsuppIsoAlg\n#check @AddMonoidAlgebra.mapDomainAlgHom\n#check @MvPolynomial.algHom_ext\ntheorem hom_bridge {R σ : Type*} [CommSemiring R] (w : σ → ℕ) :\n    (Polynomial.toFinsuppIsoAlg R).toAlgHom.comp\n      (aeval (fun j ↦ (Polynomial.X : Polynomial R) ^ w j)) =\n        AddMonoidAlgebra.mapDomainAlgHom R R (Finsupp.weight w) := by\n  ext i\n  simp [MvPolynomial.X, AddMonoidAlgebra.mapDomainAlgHom,\n    AddMonoidAlgebra.mapDomainRingHom, Finsupp.weight_single,\n    Polynomial.toFinsuppIsoAlg, Polynomial.toFinsupp_X_pow]\n#print axioms hom_bridge\nend CoeffKroneckerHom\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": false,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.coeff_kronecker`\",\n      \"line\": 20,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Polynomial.toFinsuppIsoAlg : (R : Type u_1) → [inst : CommSemiring R] → Polynomial R ≃ₐ[R] AddMonoidAlgebra R ℕ\",\n      \"line\": 23,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"AddMonoidAlgebra.mapDomainAlgHom : (R : Type u_1) →\\n  (A : Type u_2) →\\n    {M : Type u_3} →\\n      {N : Type u_4} →\\n        [inst : CommSemiring R] →\\n          [inst_1 : Semiring A] →\\n            [inst_2 : Algebra R A] →\\n              [inst_3 : AddMonoid M] →\\n                [inst_4 : AddMonoid N] → (M →+ N) → AddMonoidAlgebra A M →ₐ[R] AddMonoidAlgebra A N\",\n      \"line\": 24,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@algHom_ext : ∀ {R : Type u_1} {σ : Type u_2} [inst : CommSemiring R] {A : Type u_3} [inst_1 : Semiring A]\\n  [inst_2 : Algebra R A] {f g : MvPolynomial σ R →ₐ[R] A}, (∀ (i : σ), f (X i) = g (X i)) → f = g\",\n      \"line\": 25,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"unsolved goals\\nR : Type u_1\\nσ : Type u_2\\ninst✝ : CommSemiring R\\nw : σ → ℕ\\ni : σ\\na✝ : ℕ\\n⊢ ((aeval fun j ↦ Polynomial.X ^ w j) ((monomial (Finsupp.single i 1)) 1)).toFinsupp.coeff a✝ =\\n    (Finsupp.mapDomain (⇑(Finsupp.weight w)) ((monomial (Finsupp.single i 1)) 1).coeff) a✝\",\n      \"line\": 29,\n      \"column\": 68,\n      \"lean_tags\": [\n        \"unsolvedGoals\"\n      ],\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'CoeffKroneckerHom.hom_bridge' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 34,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"warning\",\n      \"message\": \"This simp argument is unused:\\n  Finsupp.weight_single\\n\\nHint: Omit it from the simp argument list.\\n  [apply] simp [MvPolynomial.X, AddMonoidAlgebra.mapDomainAlgHom, AddMonoidAlgebra.mapDomainRingHom,\\n    Polynomial.toFinsuppIsoAlg, Polynomial.toFinsupp_X_pow]\\n\\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`\",\n      \"line\": 32,\n      \"column\": 40,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"warning\",\n      \"message\": \"This simp argument is unused:\\n  Polynomial.toFinsupp_X_pow\\n\\nHint: Omit it from the simp argument list.\\n  [apply] simp [MvPolynomial.X, AddMonoidAlgebra.mapDomainAlgHom, AddMonoidAlgebra.mapDomainRingHom, Finsupp.weight_single,\\n    Polynomial.toFinsuppIsoAlg]\\n\\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`\",\n      \"line\": 33,\n      \"column\": 33,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": false,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.coeff_kronecker`",
+          "line": 20,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Polynomial.toFinsuppIsoAlg : (R : Type u_1) → [inst : CommSemiring R] → Polynomial R ≃ₐ[R] AddMonoidAlgebra R ℕ",
+          "line": 23,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "AddMonoidAlgebra.mapDomainAlgHom : (R : Type u_1) →\n  (A : Type u_2) →\n    {M : Type u_3} →\n      {N : Type u_4} →\n        [inst : CommSemiring R] →\n          [inst_1 : Semiring A] →\n            [inst_2 : Algebra R A] →\n              [inst_3 : AddMonoid M] →\n                [inst_4 : AddMonoid N] → (M →+ N) → AddMonoidAlgebra A M →ₐ[R] AddMonoidAlgebra A N",
+          "line": 24,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@algHom_ext : ∀ {R : Type u_1} {σ : Type u_2} [inst : CommSemiring R] {A : Type u_3} [inst_1 : Semiring A]\n  [inst_2 : Algebra R A] {f g : MvPolynomial σ R →ₐ[R] A}, (∀ (i : σ), f (X i) = g (X i)) → f = g",
+          "line": 25,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "unsolved goals\nR : Type u_1\nσ : Type u_2\ninst✝ : CommSemiring R\nw : σ → ℕ\ni : σ\na✝ : ℕ\n⊢ ((aeval fun j ↦ Polynomial.X ^ w j) ((monomial (Finsupp.single i 1)) 1)).toFinsupp.coeff a✝ =\n    (Finsupp.mapDomain (⇑(Finsupp.weight w)) ((monomial (Finsupp.single i 1)) 1).coeff) a✝",
+          "line": 29,
+          "column": 68,
+          "lean_tags": [
+            "unsolvedGoals"
+          ],
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'CoeffKroneckerHom.hom_bridge' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 34,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "warning",
+          "message": "This simp argument is unused:\n  Finsupp.weight_single\n\nHint: Omit it from the simp argument list.\n  [apply] simp [MvPolynomial.X, AddMonoidAlgebra.mapDomainAlgHom, AddMonoidAlgebra.mapDomainRingHom,\n    Polynomial.toFinsuppIsoAlg, Polynomial.toFinsupp_X_pow]\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`",
+          "line": 32,
+          "column": 40,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "warning",
+          "message": "This simp argument is unused:\n  Polynomial.toFinsupp_X_pow\n\nHint: Omit it from the simp argument list.\n  [apply] simp [MvPolynomial.X, AddMonoidAlgebra.mapDomainAlgHom, AddMonoidAlgebra.mapDomainRingHom, Finsupp.weight_single,\n    Polynomial.toFinsuppIsoAlg]\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`",
+          "line": 33,
+          "column": 33,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 236
+}

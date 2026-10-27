@@ -1,0 +1,56 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+import Mathlib.Algebra.Polynomial.CancelLeads
+import Mathlib.Algebra.MvPolynomial.PDeriv
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+import Mathlib.Algebra.MvPolynomial.Equiv
+import Mathlib.Analysis.Normed.Unbundled.RingSeminorm
+import Mathlib.LinearAlgebra.Matrix.AbsoluteValue
+import Mathlib.Data.Nat.Choose.Bounds
+import Mathlib.RingTheory.Polynomial.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.Data.List.Indexes
+#check_failure Roth.coeff_kronecker
+namespace CoeffKroneckerProbe
+open MvPolynomial
+#check @Finsupp.mapDomain_apply'
+#check @MvPolynomial.induction_on'
+#check @AddMonoidAlgebra.coeff_add
+#check @Polynomial.toFinsupp_apply
+theorem weighted_monomial {R σ : Type*} [CommSemiring R] (w : σ → ℕ)
+    (d : σ →₀ ℕ) (a : R) :
+    aeval (fun j ↦ (Polynomial.X : Polynomial R) ^ w j) (monomial d a) =
+      Polynomial.C a * Polynomial.X ^ Finsupp.weight w d := by
+  classical
+  simp only [aeval_monomial, Polynomial.algebraMap_eq, Finsupp.prod, Finsupp.weight_apply,
+    Finsupp.sum, smul_eq_mul, ← pow_mul, mul_comm, ← Finset.prod_pow_eq_pow_sum]
+
+theorem bridge {R σ : Type*} [CommSemiring R] (w : σ → ℕ) (P : MvPolynomial σ R) :
+    (aeval (fun j ↦ (Polynomial.X : Polynomial R) ^ w j) P).toFinsupp.coeff =
+      P.coeff.mapDomain (Finsupp.weight w) := by
+  classical
+  induction P using MvPolynomial.induction_on' with
+  | monomial d a =>
+    rw [weighted_monomial, Polynomial.toFinsupp_C_mul_X_pow]
+    simp [MvPolynomial.monomial, Finsupp.mapDomain_single]
+  | add P Q hP hQ =>
+    simp only [map_add, Polynomial.toFinsupp_add, AddMonoidAlgebra.coeff_add,
+      hP, hQ, Finsupp.mapDomain_add]
+theorem abstract_coeff {R σ : Type*} [CommSemiring R] (w : σ → ℕ)
+    (S : Set (σ →₀ ℕ)) (P : MvPolynomial σ R) (hP : (P.coeff.support : Set _) ⊆ S)
+    (hi : Set.InjOn (Finsupp.weight w) S) {d : σ →₀ ℕ} (hd : d ∈ S) :
+    (aeval (fun j ↦ (Polynomial.X : Polynomial R) ^ w j) P).coeff
+      (Finsupp.weight w d) = P.coeff d := by
+  rw [← Polynomial.toFinsupp_apply, bridge]
+  exact Finsupp.mapDomain_apply' S P.coeff hP hi hd
+#print axioms weighted_monomial
+#print axioms bridge
+#print axioms abstract_coeff
+end CoeffKroneckerProbe
