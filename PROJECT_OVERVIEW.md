@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 90/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 91/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 90; remaining: 203.
-- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 9 YES-but-generalise-first, 16 NO-mathlib-has-it, 29 BORDERLINE-needs-human, 9 SKIP.
+- Completed applicable assessments: 91; remaining: 202.
+- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 9 YES-but-generalise-first, 16 NO-mathlib-has-it, 30 BORDERLINE-needs-human, 9 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -960,6 +960,17 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: One source proof caller, Roth.abs_coeff_det_hasseDeriv_le:269; same sole direct consumer in exact ordered293 native audit; full generic-specialization replay passed.
 - Verdict: YES-but-generalise-first; [complete report](.mathlib-quality/overview/mathlibable/Roth.normOne_hasseDeriv_le.md).
 
+### Completed: `Roth.diag_eq_sum`
+
+- Type: `∀ {σ : Type u_1} (P : MvPolynomial σ ℤ),
+  Roth.diag P = ∑ k ∈ P.support, (monomial (Finsupp.degree k)) (P.coeff k)`
+- What: Diagonal substitution sends each coefficient monomial to a univariate monomial at total degree.
+- How: Unfold diag/aeval, use eval₂_eq, collapse product of powers, identify total exponent and polynomial monomial.
+- Hypotheses: Arbitrary variable type σ and integer polynomial P; no finiteness, degree, or nonzero hypotheses.
+- Project dependencies: Roth.diag
+- Caller summary: Two explicit same-file callers: abs_coeff_diag_le at176 and natDegree_diag_le at185; zero external-to-file. Canonical293 direct proof audit agrees.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.diag_eq_sum.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -1166,6 +1177,8 @@ Completed `Roth.abs_coeff_hasseDeriv_le`: Polynomial.hasseDeriv_coeff and norm_n
 
 Completed `Roth.normOne_hasseDeriv_le`: Five actual methods across current/standard/abstract forms. Existing finite sum/natural binomial facts are building blocks; actual multivariate Hasse operator absent in guarded mathlib-only native environment.
 
+Completed `Roth.diag_eq_sum`: eval₂_eq plus aeval_def, prod_pow_eq_pow_sum, degree_apply, algebraMap_eq, C_mul_X_pow_eq_monomial compile generically. No exact diagonal theorem established; local index unavailable.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -1347,6 +1360,8 @@ Completed `Roth.normOne_det_le`: Analog of Matrix.det_le for merely submultiplic
 Completed `Roth.abs_coeff_hasseDeriv_le`: Same finite binomial factor appears in normOne_hasseDeriv_le; that is an L1 estimate and cannot retain the coefficient B without an unwanted support-cardinality factor.
 
 Completed `Roth.normOne_hasseDeriv_le`: Univariate Hasse coefficient formula is an analogue; Gauss sup norm, Mahler measure, and coefficient sup bound are distinct estimates.
+
+Completed `Roth.diag_eq_sum`: Elementary specialization and normalization of existing evaluation expansion; genuine product-power/monomial bridge prevents claiming definitional exact duplicate.
 
 ## Part 5: Generalization opportunities
 
@@ -1533,6 +1548,8 @@ Completed `Roth.abs_coeff_hasseDeriv_le`: Verified arbitrary CommRing R with Add
 
 Completed `Roth.normOne_hasseDeriv_le`: Native-verified arbitrary CommRing R and AddGroupSeminorm R coefficient sum; exact int recovery. MODERN-IDIOM.
 
+Completed `Roth.diag_eq_sum`: Verified CommSemiring R coefficient expansion with aeval; no need finite σ. Current diag remains fixed at ℤ.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -1715,6 +1732,8 @@ Completed `Roth.normOne_det_le`: RingSeminorm determinant factorial bound beyond
 Completed `Roth.abs_coeff_hasseDeriv_le`: Quantitative coefficient bounds for multivariate Hasse derivatives, atop the proposed multivariate Hasse algebraic API.
 
 Completed `Roth.normOne_hasseDeriv_le`: Multivariate Hasse derivative foundation and coefficient seminorm finite-support sum bound. State explicit coefficient sums, avoiding a new coefficient norm foundation.
+
+Completed `Roth.diag_eq_sum`: Optional named constant-X evaluation expansion, contingent on upstream API design; no mathematical proof infrastructure gap.
 
 ## Part 7: Junk / removable
 
@@ -1901,6 +1920,8 @@ Completed `Roth.abs_coeff_hasseDeriv_le`: Not junk: three explicit uses support 
 
 Completed `Roth.normOne_hasseDeriv_le`: Keep estimate; integer-specific spelling becomes local specialization. Test-only size helper is not recommended public upstream API.
 
+Completed `Roth.diag_eq_sum`: Not dead: two direct callers use the common expansion.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -1995,6 +2016,7 @@ Completed `Roth.normOne_hasseDeriv_le`: Keep estimate; integer-specific spelling
 | 88 | `Roth.normOne_det_le` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.normOne_det_le.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.normOne_det_le/root-acceptance.json) |
 | 89 | `Roth.abs_coeff_hasseDeriv_le` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.abs_coeff_hasseDeriv_le.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.abs_coeff_hasseDeriv_le/root-acceptance.json) |
 | 90 | `Roth.normOne_hasseDeriv_le` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.normOne_hasseDeriv_le.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.normOne_hasseDeriv_le/root-acceptance.json) |
+| 91 | `Roth.diag_eq_sum` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.diag_eq_sum.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.diag_eq_sum/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -2174,12 +2196,14 @@ Completed `Roth.abs_coeff_hasseDeriv_le` action: YES-but-generalise-first MODERN
 
 Completed `Roth.normOne_hasseDeriv_le` action: YES-but-generalise-first: propose Mathlib/Analysis/Polynomial/MvHasseDeriv.lean after foundational algebra PR, group coefficient sup and coefficient sum bounds; generalise/cleanup before submission.
 
+Completed `Roth.diag_eq_sum` action: BORDERLINE: retain production unchanged; resolve the three concrete upstream API questions before proposing a lemma or inlining.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.diag_eq_sum` next. Supporting identities receive their own applicable checks.
+   `Roth.abs_coeff_diag_le` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

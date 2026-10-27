@@ -1,0 +1,18 @@
+{
+  "declaration": "Roth.diag_eq_sum",
+  "kind": "theorem",
+  "type": "∀ {σ : Type u_1} (P : MvPolynomial σ ℤ),\n  Roth.diag P = ∑ k ∈ P.support, (monomial (Finsupp.degree k)) (P.coeff k)",
+  "what": "Diagonal substitution sends each coefficient monomial to a univariate monomial at total degree.",
+  "how": "Unfold diag/aeval, use eval₂_eq, collapse product of powers, identify total exponent and polynomial monomial.",
+  "hypotheses": "Arbitrary variable type σ and integer polynomial P; no finiteness, degree, or nonzero hypotheses.",
+  "project_dependencies": [
+    "Roth.diag"
+  ],
+  "caller_summary": "Two explicit same-file callers: abs_coeff_diag_le at176 and natDegree_diag_le at185; zero external-to-file. Canonical293 direct proof audit agrees.",
+  "mathlib_api_audit": "eval₂_eq plus aeval_def, prod_pow_eq_pow_sum, degree_apply, algebraMap_eq, C_mul_X_pow_eq_monomial compile generically. No exact diagonal theorem established; local index unavailable.",
+  "moral_duplications": "Elementary specialization and normalization of existing evaluation expansion; genuine product-power/monomial bridge prevents claiming definitional exact duplicate.",
+  "generalization": "Verified CommSemiring R coefficient expansion with aeval; no need finite σ. Current diag remains fixed at ℤ.",
+  "missing_api": "Optional named constant-X evaluation expansion, contingent on upstream API design; no mathematical proof infrastructure gap.",
+  "junk": "Not dead: two direct callers use the common expansion.",
+  "action": "BORDERLINE: retain production unchanged; resolve the three concrete upstream API questions before proposing a lemma or inlining."
+}

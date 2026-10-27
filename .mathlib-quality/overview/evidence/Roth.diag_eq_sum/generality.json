@@ -1,0 +1,112 @@
+{
+  "parameter_rows": [
+    {
+      "parameter": "σ : Type u",
+      "status": "already arbitrary; no finiteness/nonempty/decidable instance assumed"
+    },
+    {
+      "parameter": "P : MvPolynomial σ ℤ",
+      "status": "P essential; coefficients can be CommSemiring R in expanded representation"
+    },
+    {
+      "parameter": "diag : integer-polynomial interface",
+      "status": "fixed parent interface; generic result stated with aeval, not a claimed local edit dropping a class"
+    }
+  ],
+  "expanded_forms": [
+    {
+      "name": "CommSemiring coefficient expansion",
+      "verified": true,
+      "status": "PASS",
+      "source": "native-raw-executed.lean.txt",
+      "receipt": "native-raw-success.json"
+    }
+  ],
+  "modern_rows": [
+    {
+      "question": "Typeclasses",
+      "analysis": "No new class; use existing CommSemiring R."
+    },
+    {
+      "question": "Filters/topology",
+      "analysis": "n/a: finite algebraic identity."
+    },
+    {
+      "question": "Universal property",
+      "analysis": "Already aeval; arbitrary valuation expansion is eval₂_eq. No new universal-property class."
+    },
+    {
+      "question": "Bundled substructures",
+      "analysis": "n/a: no closure predicates; aeval is already an AlgHom."
+    },
+    {
+      "question": "Hierarchy weakening",
+      "analysis": "Yes: integers expand to arbitrary CommSemiring coefficients; native generic compiled."
+    },
+    {
+      "question": "Higher categories",
+      "analysis": "n/a: ordinary polynomial substitution has no higher coherence requirement."
+    },
+    {
+      "question": "Concrete index",
+      "analysis": "σ is already arbitrary Type u; natural exponents define ordinary polynomials. General additive exponents change representation."
+    },
+    {
+      "question": "Concrete-via-abstract",
+      "analysis": "Fires: after unfolding diag there is no integer-specific reasoning; generic CommSemiring proof compiled. Arbitrary valuation formula already exists as eval₂_eq."
+    },
+    {
+      "question": "False-generalization guard",
+      "analysis": "CommSemiring preserves original substitution on specialization. Reject confusing substitution P(X,…,X) with power-series diagonal coefficient extraction or arbitrary images while retaining total-degree RHS."
+    }
+  ],
+  "strategy_rows": [
+    {
+      "question": "Topology",
+      "analysis": "n/a: no topology."
+    },
+    {
+      "question": "Algebra inclusions",
+      "analysis": "No ideals/submodules appear; rewriting support expansion is appropriate."
+    },
+    {
+      "question": "Sequences",
+      "analysis": "n/a: no limits."
+    },
+    {
+      "question": "Universal property",
+      "analysis": "aeval already uses polynomial universal property; rebuilding it would duplicate infrastructure."
+    },
+    {
+      "question": "Missing helpers",
+      "analysis": "No required mathematical helper missing: eval₂_eq plus product-power and monomial identities suffice. Optional named diagonal expansion remains API-design question."
+    }
+  ],
+  "infrastructure_rows": [
+    {
+      "risk": "Typeclass diamond",
+      "analysis": "n/a: theorem; introduces no data, instances or coercions."
+    },
+    {
+      "risk": "Reducibility leak",
+      "analysis": "n/a: theorem; introduces no data, instances or coercions."
+    },
+    {
+      "risk": "Noncanonical unfolding",
+      "analysis": "n/a: theorem; introduces no data, instances or coercions."
+    },
+    {
+      "risk": "Instance priority",
+      "analysis": "n/a: theorem; introduces no data, instances or coercions."
+    },
+    {
+      "risk": "Universes",
+      "analysis": "n/a: theorem; introduces no data, instances or coercions."
+    },
+    {
+      "risk": "Coercion ambiguity",
+      "analysis": "n/a: theorem; introduces no data, instances or coercions."
+    }
+  ],
+  "verdict": "STRICTLY NARROWER in coefficient representation; mechanical expanded statement verified; BORDERLINE trivial-simp API packaging"
+}
