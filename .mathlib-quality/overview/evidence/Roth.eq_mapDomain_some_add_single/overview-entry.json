@@ -1,0 +1,50 @@
+{
+  "kind": "theorem",
+  "type": "@Roth.eq_mapDomain_some_add_single : ∀ {τ : Type u_1} (d : Option τ →₀ ℕ),\n  d = Finsupp.mapDomain some d.some + Finsupp.single none (d none)",
+  "what": "Rebuild an Option-indexed natural multi-index from restriction and distinguished coordinate.",
+  "how": "Pointwise extensionality, two Option cases, mapDomain evaluation.",
+  "hypotheses": [
+    "τ : Type u_1",
+    "d : Option τ →₀ ℕ; no Fintype, DecidableEq, or coefficient-ring instance"
+  ],
+  "project_dependencies": [],
+  "caller_summary": {
+    "explicit_call_sites": [
+      {
+        "file": "Roth/Separation.lean",
+        "line": 107,
+        "caller": "Roth.eq_sum_X_none_pow_mul_coeffNone"
+      }
+    ],
+    "internal_use_count_excluding_declaring_file": 0,
+    "same_file_count": 1,
+    "direct_kernel_value_consumers": [
+      "Roth.eq_sum_X_none_pow_mul_coeffNone"
+    ],
+    "inline_derivations": "coeff_coeffNone at86 independently normalizes inserted coordinates; not a duplicate full reconstruction"
+  },
+  "mathlib_api_audit": {
+    "canonical": "Finsupp.optionElim_some",
+    "building_blocks": [
+      "Finsupp.optionElim_some",
+      "Finsupp.update_eq_add_single",
+      "Finsupp.embDomain_some_none"
+    ],
+    "representation": "Finsupp.embDomain_eq_mapDomain",
+    "old_form_existing_calls": 4,
+    "embedding_form_existing_calls": 3
+  },
+  "moral_duplications": [
+    "Finsupp.optionElim_some expresses reconstruction at Zero generality; expanded additive form requires bridge"
+  ],
+  "generalization": {
+    "status": "STRICTLY NARROWER THAN STANDARD",
+    "fixed_surface": "AddCommMonoid M (mapDomain interface)",
+    "embedding_surface": "AddZeroClass M",
+    "canonical_surface": "Zero M",
+    "native_verified": true
+  },
+  "missing_api": "No missing reconstruction law; optional naming question for additive Option normal form is not a blocking gap.",
+  "junk": "Not dead: one explicit and direct-kernel caller.",
+  "action": "Delete project theorem after replacing sole caller true branch with rw [Roth.coeffNone, optionEquivLeft_coeff_some_coeff_none]; complete caller replay verified. Retain optional exposition in Roth/Separation.lean docstring."
+}

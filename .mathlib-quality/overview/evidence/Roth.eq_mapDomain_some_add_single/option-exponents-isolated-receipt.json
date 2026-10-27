@@ -1,0 +1,111 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\n#check_failure Roth.eq_mapDomain_some_add_single\n#check @Finsupp.optionElim_some\n#check @Finsupp.update_eq_add_single\n#check @Finsupp.embDomain_eq_mapDomain\nnamespace OptionExponents153\nvariable {τ M : Type*}\ntheorem canonical [Zero M] (d : Option τ →₀ M) : d = d.some.optionElim (d none) :=\n  (Finsupp.optionElim_some d).symm\ntheorem embedding [AddZeroClass M] (d : Option τ →₀ M) :\n    d = d.some.embDomain .some + Finsupp.single none (d none) :=\n  (Finsupp.optionElim_some d).symm.trans\n    (Finsupp.update_eq_add_single (Finsupp.embDomain_some_none d.some) (d none))\ntheorem mapped [AddCommMonoid M] (d : Option τ →₀ M) :\n    d = d.some.mapDomain some + Finsupp.single none (d none) := by\n  ext o\n  cases o <;> simp [Finsupp.mapDomain_of_notMem_range,\n    Finsupp.mapDomain_apply_of_injective (Option.some_injective τ), Finsupp.some_apply]\ntheorem bridge [AddCommMonoid M] (d : Option τ →₀ M) :\n    d.some.optionElim (d none) = d.some.mapDomain some + Finsupp.single none (d none) :=\n  (Finsupp.update_eq_add_single (Finsupp.embDomain_some_none d.some) (d none)).trans\n    (congrArg (fun f ↦ f + Finsupp.single none (d none))\n      (Finsupp.embDomain_eq_mapDomain .some d.some))\ntheorem composed [AddCommMonoid M] (d : Option τ →₀ M) :\n    d = d.some.mapDomain some + Finsupp.single none (d none) :=\n  (Finsupp.optionElim_some d).symm.trans\n    ((Finsupp.update_eq_add_single (by simp) (d none)).trans\n      (congrArg (fun f ↦ f + Finsupp.single none (d none))\n        (Finsupp.embDomain_eq_mapDomain .some d.some)))\ntheorem omission_guard :\n    (Finsupp.single none 1 : Option Unit →₀ ℕ) ≠\n      (Finsupp.single none 1 : Option Unit →₀ ℕ).some.mapDomain some := by\n  intro h\n  have := congrArg (fun d : Option Unit →₀ ℕ ↦ d none) h\n  simp at this\n#print axioms canonical\n#print axioms embedding\n#print axioms mapped\n#print axioms bridge\n#print axioms composed\n#print axioms omission_guard\nend OptionExponents153\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.eq_mapDomain_some_add_single`\",\n      \"line\": 10,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finsupp.optionElim_some : ∀ {α : Type u_1} {M : Type u_2} [inst : Zero M] (f : Option α →₀ M),\\n  Finsupp.optionElim (f none) f.some = f\",\n      \"line\": 11,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finsupp.update_eq_add_single : ∀ {ι : Type u_1} {M : Type u_2} [inst : AddZeroClass M] {f : ι →₀ M} {a : ι},\\n  f a = 0 → ∀ (b : M), f.update a b = f + Finsupp.single a b\",\n      \"line\": 12,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finsupp.embDomain_eq_mapDomain : ∀ {α : Type u_1} {β : Type u_2} {M : Type u_3} [inst : AddCommMonoid M] (f : α ↪ β)\\n  (v : α →₀ M), Finsupp.embDomain f v = Finsupp.mapDomain (⇑f) v\",\n      \"line\": 13,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'OptionExponents153.canonical' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 44,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'OptionExponents153.embedding' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 45,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'OptionExponents153.mapped' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 46,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'OptionExponents153.bridge' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 47,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'OptionExponents153.composed' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 48,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'OptionExponents153.omission_guard' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 49,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.eq_mapDomain_some_add_single`",
+          "line": 10,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finsupp.optionElim_some : ∀ {α : Type u_1} {M : Type u_2} [inst : Zero M] (f : Option α →₀ M),\n  Finsupp.optionElim (f none) f.some = f",
+          "line": 11,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finsupp.update_eq_add_single : ∀ {ι : Type u_1} {M : Type u_2} [inst : AddZeroClass M] {f : ι →₀ M} {a : ι},\n  f a = 0 → ∀ (b : M), f.update a b = f + Finsupp.single a b",
+          "line": 12,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finsupp.embDomain_eq_mapDomain : ∀ {α : Type u_1} {β : Type u_2} {M : Type u_3} [inst : AddCommMonoid M] (f : α ↪ β)\n  (v : α →₀ M), Finsupp.embDomain f v = Finsupp.mapDomain (⇑f) v",
+          "line": 13,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'OptionExponents153.canonical' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 44,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'OptionExponents153.embedding' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 45,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'OptionExponents153.mapped' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 46,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'OptionExponents153.bridge' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 47,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'OptionExponents153.composed' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 48,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'OptionExponents153.omission_guard' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 49,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 638
+}

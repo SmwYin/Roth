@@ -1,0 +1,41 @@
+#check_failure Roth.eq_mapDomain_some_add_single
+#check @Finsupp.optionElim_some
+#check @Finsupp.update_eq_add_single
+#check @Finsupp.embDomain_eq_mapDomain
+namespace OptionExponents153
+variable {τ M : Type*}
+theorem canonical [Zero M] (d : Option τ →₀ M) : d = d.some.optionElim (d none) :=
+  (Finsupp.optionElim_some d).symm
+theorem embedding [AddZeroClass M] (d : Option τ →₀ M) :
+    d = d.some.embDomain .some + Finsupp.single none (d none) :=
+  (Finsupp.optionElim_some d).symm.trans
+    (Finsupp.update_eq_add_single (Finsupp.embDomain_some_none d.some) (d none))
+theorem mapped [AddCommMonoid M] (d : Option τ →₀ M) :
+    d = d.some.mapDomain some + Finsupp.single none (d none) := by
+  ext o
+  cases o <;> simp [Finsupp.mapDomain_of_notMem_range,
+    Finsupp.mapDomain_apply_of_injective (Option.some_injective τ), Finsupp.some_apply]
+theorem bridge [AddCommMonoid M] (d : Option τ →₀ M) :
+    d.some.optionElim (d none) = d.some.mapDomain some + Finsupp.single none (d none) :=
+  (Finsupp.update_eq_add_single (Finsupp.embDomain_some_none d.some) (d none)).trans
+    (congrArg (fun f ↦ f + Finsupp.single none (d none))
+      (Finsupp.embDomain_eq_mapDomain .some d.some))
+theorem composed [AddCommMonoid M] (d : Option τ →₀ M) :
+    d = d.some.mapDomain some + Finsupp.single none (d none) :=
+  (Finsupp.optionElim_some d).symm.trans
+    ((Finsupp.update_eq_add_single (by simp) (d none)).trans
+      (congrArg (fun f ↦ f + Finsupp.single none (d none))
+        (Finsupp.embDomain_eq_mapDomain .some d.some)))
+theorem omission_guard :
+    (Finsupp.single none 1 : Option Unit →₀ ℕ) ≠
+      (Finsupp.single none 1 : Option Unit →₀ ℕ).some.mapDomain some := by
+  intro h
+  have := congrArg (fun d : Option Unit →₀ ℕ ↦ d none) h
+  simp at this
+#print axioms canonical
+#print axioms embedding
+#print axioms mapped
+#print axioms bridge
+#print axioms composed
+#print axioms omission_guard
+end OptionExponents153

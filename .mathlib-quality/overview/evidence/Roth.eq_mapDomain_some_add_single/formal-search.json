@@ -1,0 +1,346 @@
+[
+  {
+    "form": "current",
+    "method": "finder",
+    "query": "Finsupp on Option alpha equals mapDomain some restriction plus single none",
+    "response": {
+      "items": [
+        {
+          "formal_name": "Finsupp.optionElim",
+          "informal_name": "Finite support function on Option α from base value and α-finite support function",
+          "kind": "definition",
+          "type": "{α : Type u_1} → {M : Type u_2} → [inst : Zero M] → M → (α →₀ M) → Option α →₀ M",
+          "informal_description": "Given an element $ y $ in $ M $ and a finite support function $ f $ from $ \\alpha $ to $ M $, this constructs a finite support function from $ \\text{Option}\\, \\alpha $ to $ M $ that maps $ \\text{none} $ to $ y $ and $ \\text{some}\\, a $ to $ f(a) $ for each $ a \\in \\alpha $, with zero elsewhere.",
+          "path": "Mathlib.Data.Finsupp.Option"
+        },
+        {
+          "formal_name": "Finsupp.optionEquiv",
+          "informal_name": "Equivalence between finite support functions on Option α and pairs of M and α-finite support functions",
+          "kind": "definition",
+          "type": "{α : Type u_1} → {M : Type u_2} → [inst : Zero M] → (Option α →₀ M) ≃ M × (α →₀ M)",
+          "informal_description": "The equivalence establishes a bijection between finite support functions from $\\text{Option}\\, \\alpha$ to $M$ and pairs consisting of an element of $M$ (the value at $\\text{none}$) and a finite support function from $\\alpha$ to $M$. The forward direction maps $f$ to $(f(\\text{none}), f \\circ \\text{some})$, while the inverse maps a pair $(m, g)$ to the function that assigns $m$ at $\\text{none}$ and $g(a)$ at $\\text{some}\\, a$ for $a \\in \\alpha$, with zero elsewhere.",
+          "path": "Mathlib.Data.Finsupp.Option"
+        },
+        {
+          "formal_name": "Finsupp.optionEquiv_apply",
+          "informal_name": "Equivalence of Finite Support Functions on Option α with Pairs",
+          "kind": "theorem",
+          "type": "∀ {α : Type u_1} {M : Type u_2} [inst : Zero M] (P : Option α →₀ M), Finsupp.optionEquiv P = (P none, P.some)",
+          "informal_description": "There is a canonical bijection between finite support functions from $\\text{Option}\\, \\alpha$ to $M$ and pairs consisting of an element $m \\in M$ (the value at $\\text{none}$) and a finite support function from $\\alpha$ to $M$. This equivalence maps a function $f$ to $(f(\\text{none}), f \\circ \\text{some})$ and reconstructs $f$ from a pair $(m, g)$ by defining $f(\\text{none}) = m$ and $f(\\text{some}\\, a) = g(a)$ for $a \\in \\alpha$, with zero elsewhere.",
+          "path": "Mathlib.Data.Finsupp.Option"
+        },
+        {
+          "formal_name": "Finsupp.some",
+          "informal_name": "Restriction of finite support functions via Option.some",
+          "kind": "definition",
+          "type": "{α : Type u_1} → {M : Type u_2} → [inst : Zero M] → (Option α →₀ M) → α →₀ M",
+          "informal_description": "The function restricts a finite support function $ f : \\text{Option}\\, \\alpha \\to₀ M $ to $ \\alpha \\to₀ M $ by precomposing with the injection $ \\text{some} : \\alpha \\to \\text{Option}\\, \\alpha $, ensuring the support remains finite due to the injectivity of $ \\text{some} $ on the preimage of $ f $'s support.",
+          "path": "Mathlib.Data.Finsupp.Option"
+        },
+        {
+          "formal_name": "Finsupp.optionElim_some",
+          "informal_name": "Option Elimination Identity for Finite Support Functions",
+          "kind": "theorem",
+          "type": "∀ {α : Type u_1} {M : Type u_2} [inst : Zero M] (f : Option α →₀ M), Finsupp.optionElim (f none) f.some = f",
+          "informal_description": "For any finite support function $ f : \\text{Option}\\, \\alpha \\to₀ M $, applying the option elimination with base value $ f(\\text{none}) $ and the restriction of $ f $ to $ \\alpha $ recovers the original function $ f $, i.e., $ f.\\text{some}.\\text{optionElim}(f(\\text{none})) = f $.",
+          "path": "Mathlib.Data.Finsupp.Option"
+        }
+      ]
+    }
+  },
+  {
+    "form": "current",
+    "method": "loogle",
+    "query": "Finsupp.mapDomain, Finsupp.some",
+    "response": {
+      "items": []
+    }
+  },
+  {
+    "form": "current",
+    "method": "leansearch",
+    "query": "A finitely supported natural function on Option is the sum of the lifted restriction and its value at none",
+    "response": {
+      "items": [
+        {
+          "name": "Finsupp.sum_option_index",
+          "module_name": "Mathlib.Data.Finsupp.Option",
+          "kind": "theorem",
+          "type": "∀ {α : Type u_1} {M : Type u_2} {N : Type u_3} [inst : AddZeroClass M] [inst_1 : AddCommMonoid N] (f : Option α →₀ M)\n  (b : Option α → M → N),\n  (∀ (o : Option α), b o 0 = 0) →\n    (∀ (o : Option α) (m₁ m₂ : M), b o (m₁ + m₂) = b o m₁ + b o m₂) →\n      f.sum b = b none (f none) + f.some.sum fun a => b (some a)"
+        },
+        {
+          "name": "Finsupp.optionElim",
+          "module_name": "Mathlib.Data.Finsupp.Option",
+          "kind": "definition",
+          "type": "{α : Type u_1} → {M : Type u_2} → [inst : Zero M] → M → (α →₀ M) → Option α →₀ M"
+        },
+        {
+          "name": "Fintype.sum_option",
+          "module_name": "Mathlib.Data.Fintype.BigOperators",
+          "kind": "theorem",
+          "type": "∀ {α : Type u_1} {M : Type u_4} [inst : Fintype α] [inst_1 : AddCommMonoid M] (f : Option α → M),\n  ∑ i, f i = f none + ∑ i, f (some i)"
+        },
+        {
+          "name": "finsum_option",
+          "module_name": "Mathlib.Algebra.BigOperators.Finprod",
+          "kind": "theorem",
+          "type": "∀ {α : Type u_1} {M : Type u_5} [inst : AddCommMonoid M] {f : Option α → M},\n  (Function.support (f ∘ some)).Finite → ∑ᶠ (o : Option α), f o = f none + ∑ᶠ (a : α), f (some a)"
+        },
+        {
+          "name": "Finset.sum_insertNone",
+          "module_name": "Mathlib.Algebra.BigOperators.Option",
+          "kind": "theorem",
+          "type": "∀ {α : Type u_1} {M : Type u_2} [inst : AddCommMonoid M] (f : Option α → M) (s : Finset α),\n  ∑ x ∈ Finset.insertNone s, f x = f none + ∑ x ∈ s, f (some x)"
+        }
+      ]
+    }
+  },
+  {
+    "form": "current",
+    "method": "local",
+    "query": "mapDomain_some",
+    "response": {
+      "items": [],
+      "index": "unavailable"
+    }
+  },
+  {
+    "form": "literature",
+    "method": "finder",
+    "query": "finitely supported function on a disjoint union decomposes into restrictions",
+    "response": {
+      "items": [
+        {
+          "formal_name": "Finsupp.sumFinsuppEquivProdFinsupp_apply",
+          "informal_name": "Coproduct-Product Equivalence for Finite Support Functions",
+          "kind": "theorem",
+          "type": "∀ {α : Type u_12} {β : Type u_13} {γ : Type u_14} [inst : Zero γ] (f : α ⊕ β →₀ γ),\n  Finsupp.sumFinsuppEquivProdFinsupp f = (Finsupp.comapDomain Sum.inl f ⋯, Finsupp.comapDomain Sum.inr f ⋯)",
+          "informal_description": "There is a canonical bijection between finite support functions on the disjoint union $\\alpha \\oplus \\beta$ and pairs of finite support functions on $\\alpha$ and $\\beta$. This equivalence is established by decomposing a function on $\\alpha \\oplus \\beta$ into its restrictions to $\\alpha$ and $\\beta$ via the left/right injections, and conversely combining functions on $\\alpha$ and $\\beta$ into a function on $\\alpha \\oplus \\beta$ using sum elimination. The equivalence holds for any type $M$ with a zero element, where finite support functions are those vanishing except at finitely many points.",
+          "path": "Mathlib.Data.Finsupp.Basic"
+        },
+        {
+          "formal_name": "Finsupp.sumFinsuppEquivProdFinsupp",
+          "informal_name": "Coproduct-Product Equivalence for Finite Support Functions",
+          "kind": "definition",
+          "type": "{α : Type u_12} → {β : Type u_13} → {γ : Type u_14} → [inst : Zero γ] → (α ⊕ β →₀ γ) ≃ (α →₀ γ) × (β →₀ γ)",
+          "informal_description": "There is a canonical bijection between finite support functions on the disjoint union $\\alpha \\oplus \\beta$ and pairs of finite support functions on $\\alpha$ and $\\beta$, given by decomposing a function on $\\alpha \\oplus \\beta$ into its restrictions to $\\alpha$ and $\\beta$ via the left and right injections, and conversely combining functions on $\\alpha$ and $\\beta$ into a function on $\\alpha \\oplus \\beta$ using the sum elimination map. This establishes an equivalence between the type $\\alpha \\oplus \\beta \\to_0 M$ and the product type $(\\alpha \\to_0 M) \\times (\\beta \\to_0 M)$, where $M$ is a type with a zero element.",
+          "path": "Mathlib.Data.Finsupp.Basic"
+        },
+        {
+          "formal_name": "Finsupp.fst_sumFinsuppEquivProdFinsupp",
+          "informal_name": "Coproduct-Product Equivalence for Finite Support Functions",
+          "kind": "theorem",
+          "type": "∀ {α : Type u_12} {β : Type u_13} {γ : Type u_14} [inst : Zero γ] (f : α ⊕ β →₀ γ) (x : α),\n  (Finsupp.sumFinsuppEquivProdFinsupp f).1 x = f (Sum.inl x)",
+          "informal_description": "There is a canonical bijection between finite support functions on the disjoint union $\\alpha \\oplus \\beta$ and pairs of finite support functions on $\\alpha$ and $\\beta$. This equivalence is established by decomposing a function on $\\alpha \\oplus \\beta$ into its restrictions to $\\alpha$ and $\\beta$ via the left/right injections, and conversely combining functions on $\\alpha$ and $\\beta$ into a function on $\\alpha \\oplus \\beta$ using the sum elimination map. The equivalence holds between the type $\\alpha \\oplus \\beta \\to_0 M$ and the product type $(\\alpha \\to_0 M) \\times (\\beta \\to_0 M)$, where $M$ is a type with a zero element.",
+          "path": "Mathlib.Data.Finsupp.Basic"
+        },
+        {
+          "formal_name": "Finsupp.snd_sumFinsuppEquivProdFinsupp",
+          "informal_name": "Coproduct-Product Equivalence for Finite Support Functions",
+          "kind": "theorem",
+          "type": "∀ {α : Type u_12} {β : Type u_13} {γ : Type u_14} [inst : Zero γ] (f : α ⊕ β →₀ γ) (y : β),\n  (Finsupp.sumFinsuppEquivProdFinsupp f).2 y = f (Sum.inr y)",
+          "informal_description": "There is a canonical equivalence between the type of finite support functions on the disjoint union $\\alpha \\oplus \\beta$ and the product of the types of finite support functions on $\\alpha$ and $\\beta$. This equivalence is established by decomposing a function on $\\alpha \\oplus \\beta$ into its restrictions to $\\alpha$ and $\\beta$ via the left and right injections, and conversely combining functions on $\\alpha$ and $\\beta$ into a function on $\\alpha \\oplus \\beta$ using the sum elimination map.",
+          "path": "Mathlib.Data.Finsupp.Basic"
+        },
+        {
+          "formal_name": "Finsupp.sumFinsuppAddEquivProdFinsupp_apply",
+          "informal_name": "Additive Equivalence for Coproduct-Product of Finite Support Functions",
+          "kind": "theorem",
+          "type": "∀ {M : Type u_5} [inst : AddMonoid M] {α : Type u_12} {β : Type u_13} (f : α ⊕ β →₀ M),\n  Finsupp.sumFinsuppAddEquivProdFinsupp f = (Finsupp.comapDomain Sum.inl f ⋯, Finsupp.comapDomain Sum.inr f ⋯)",
+          "informal_description": "There exists a canonical additive equivalence between the additive monoid of finite support functions on the disjoint union $\\alpha \\oplus \\beta$ and the product of additive monoids of finite support functions on $\\alpha$ and $\\beta$. This equivalence maps a function $f : (\\alpha \\oplus \\beta) \\to_0 M$ to the pair $(f \\circ \\text{inl}, f \\circ \\text{inr})$, where $\\text{inl}$ and $\\text{inr}$ are the left and right injections of the coproduct. The inverse maps a pair of functions $(g,h)$ to their sum via the coproduct elimination map. This equivalence preserves pointwise addition, satisfying $\\text{equiv}(f + g) = \\text{equiv}(f) + \\text{equiv}(g)$ for all $f,g$.",
+          "path": "Mathlib.Data.Finsupp.Basic"
+        }
+      ]
+    }
+  },
+  {
+    "form": "literature",
+    "method": "loogle",
+    "query": "Finsupp.optionElim, Finsupp.some",
+    "response": {
+      "items": [
+        {
+          "name": "Finsupp.some_optionElim",
+          "type": " {α : Type u_1} {M : Type u_2} [Zero M] (y : M) (f : α →₀ M) : (Finsupp.optionElim y f).some = f",
+          "module": "Mathlib.Data.Finsupp.Option"
+        },
+        {
+          "name": "Finsupp.optionElim_some",
+          "type": " {α : Type u_1} {M : Type u_2} [Zero M] (f : Option α →₀ M) : Finsupp.optionElim (f none) f.some = f",
+          "module": "Mathlib.Data.Finsupp.Option"
+        }
+      ]
+    }
+  },
+  {
+    "form": "literature",
+    "method": "leansearch",
+    "query": "Finitely supported function on Option reconstructed from value at none and restriction to some",
+    "response": {
+      "items": [
+        {
+          "name": "Finsupp.optionElim",
+          "module_name": "Mathlib.Data.Finsupp.Option",
+          "kind": "definition",
+          "type": "{α : Type u_1} → {M : Type u_2} → [inst : Zero M] → M → (α →₀ M) → Option α →₀ M"
+        },
+        {
+          "name": "Finsupp.optionEquiv",
+          "module_name": "Mathlib.Data.Finsupp.Option",
+          "kind": "definition",
+          "type": "{α : Type u_1} → {M : Type u_2} → [inst : Zero M] → (Option α →₀ M) ≃ M × (α →₀ M)"
+        },
+        {
+          "name": "Finsupp.optionEquiv_apply",
+          "module_name": "Mathlib.Data.Finsupp.Option",
+          "kind": "theorem",
+          "type": "∀ {α : Type u_1} {M : Type u_2} [inst : Zero M] (P : Option α →₀ M), Finsupp.optionEquiv P = (P none, P.some)"
+        },
+        {
+          "name": "Finsupp.optionElim_some",
+          "module_name": "Mathlib.Data.Finsupp.Option",
+          "kind": "theorem",
+          "type": "∀ {α : Type u_1} {M : Type u_2} [inst : Zero M] (f : Option α →₀ M), Finsupp.optionElim (f none) f.some = f"
+        },
+        {
+          "name": "Function.tupleGraph",
+          "module_name": "Mathlib.Data.Rel",
+          "kind": "definition",
+          "type": "{α : Type u_1} → {β : Type u_2} → ((α → β) → β) → Set (Option α → β)"
+        }
+      ]
+    }
+  },
+  {
+    "form": "literature",
+    "method": "local",
+    "query": "optionElim_some",
+    "response": {
+      "items": [
+        {
+          "name": "Finsupp.optionElim_some",
+          "kind": "lemma",
+          "file": ".lake/packages/mathlib/Mathlib/Data/Finsupp/Option.lean"
+        }
+      ],
+      "index": "unavailable"
+    }
+  },
+  {
+    "form": "modern",
+    "method": "finder",
+    "query": "Finsupp embDomain some update none inverse optionEquiv",
+    "response": {
+      "items": [
+        {
+          "formal_name": "Finsupp.optionEquiv_symm_apply",
+          "informal_name": "Inverse Mapping of the Option α Finsupp Equivalence",
+          "kind": "theorem",
+          "type": "∀ {α : Type u_1} {M : Type u_2} [inst : Zero M] (P : M × (α →₀ M)),\n  Finsupp.optionEquiv.symm P = (Finsupp.embDomain Function.Embedding.some P.2).update none P.1",
+          "informal_description": "The inverse of the equivalence maps a pair $(m, g)$ to the finite support function on $\\text{Option}\\, \\alpha$ that assigns $m$ to $\\text{none}$ and $g(a)$ to $\\text{some}\\, a$ for each $a \\in \\alpha$, with zero elsewhere. This is constructed by embedding $g$ via the $\\text{some}$ injection and updating the value at $\\text{none}$ to $m$.",
+          "path": "Mathlib.Data.Finsupp.Option"
+        },
+        {
+          "formal_name": "Finsupp.optionEquiv",
+          "informal_name": "Equivalence between finite support functions on Option α and pairs of M and α-finite support functions",
+          "kind": "definition",
+          "type": "{α : Type u_1} → {M : Type u_2} → [inst : Zero M] → (Option α →₀ M) ≃ M × (α →₀ M)",
+          "informal_description": "The equivalence establishes a bijection between finite support functions from $\\text{Option}\\, \\alpha$ to $M$ and pairs consisting of an element of $M$ (the value at $\\text{none}$) and a finite support function from $\\alpha$ to $M$. The forward direction maps $f$ to $(f(\\text{none}), f \\circ \\text{some})$, while the inverse maps a pair $(m, g)$ to the function that assigns $m$ at $\\text{none}$ and $g(a)$ at $\\text{some}\\, a$ for $a \\in \\alpha$, with zero elsewhere.",
+          "path": "Mathlib.Data.Finsupp.Option"
+        },
+        {
+          "formal_name": "Finsupp.some_update_none",
+          "informal_name": "Restriction After Updating 'none' Equals Original Restriction",
+          "kind": "theorem",
+          "type": "∀ {α : Type u_1} {M : Type u_2} [inst : Zero M] (f : Option α →₀ M) (a : M), (f.update none a).some = f.some",
+          "informal_description": "For any finite support function $ f : \text{Option}\\, \\alpha \\to_0 M $ and any value $ a : M $, updating $ f $ at the $ \\text{none} $ key with $ a $ and then restricting to $ \\alpha \\to_0 M $ via $ \\text{some} $ yields the same result as restricting $ f $ without the update, i.e., $ (f.\\text{update}\\, \\text{none}\\, a).\\text{some} = f.\\text{some} $.",
+          "path": "Mathlib.Data.Finsupp.Option"
+        },
+        {
+          "formal_name": "Finsupp.some_embDomain_some",
+          "informal_name": "Composition of Domain Embedding and Restriction via Option.some is Identity",
+          "kind": "theorem",
+          "type": "∀ {α : Type u_1} {M : Type u_2} [inst : Zero M] (f : α →₀ M), (Finsupp.embDomain Function.Embedding.some f).some = f",
+          "informal_description": "For any finite support function $ f : \\alpha \\to_0 M $, composing the domain embedding via the injection $ \\text{some} : \\alpha \\to \\text{Option}\\, \\alpha $ followed by restriction back to $ \\alpha $ via $ \\text{some} $ recovers the original function $ f $.",
+          "path": "Mathlib.Data.Finsupp.Option"
+        },
+        {
+          "formal_name": "Finsupp.embDomain_some_none",
+          "informal_name": "Finite Support Function Embedding at 'None' is Zero",
+          "kind": "theorem",
+          "type": "∀ {α : Type u_1} {M : Type u_2} [inst : Zero M] (f : α →₀ M), (Finsupp.embDomain Function.Embedding.some f) none = 0",
+          "informal_description": "For any finite support function $ f : \\alpha \\to_0 M $, when extended to $ \\text{Option}\\, \\alpha $ via the canonical embedding that maps $ \\alpha $ to $ \\text{Some}\\, \\alpha $, the value of the extended function at $ \\text{None} $ is zero. This follows because $ \\text{None} $ is not in the original domain $ \\alpha $, and finite support functions are zero outside their finite support.",
+          "path": "Mathlib.Data.Finsupp.Option"
+        }
+      ]
+    }
+  },
+  {
+    "form": "modern",
+    "method": "loogle",
+    "query": "Finsupp.update, Finsupp.single",
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "Error executing tool lean_loogle: Rate limit exceeded: 3 requests per 30s. Use --loogle-local to avoid limits."
+        }
+      ],
+      "isError": true
+    }
+  },
+  {
+    "form": "modern",
+    "method": "leansearch",
+    "query": "Finsupp extending a function along an embedding and updating outside its range is adding a singleton",
+    "response": {
+      "items": [
+        {
+          "name": "Finsupp.update_eq_erase_add_single",
+          "module_name": "Mathlib.Algebra.Group.Finsupp",
+          "kind": "theorem",
+          "type": "∀ {ι : Type u_1} {M : Type u_3} [inst : AddZeroClass M] (f : ι →₀ M) (a : ι) (b : M),\n  f.update a b = Finsupp.erase a f + Finsupp.single a b"
+        },
+        {
+          "name": "DFinsupp.update",
+          "module_name": "Mathlib.Data.DFinsupp.Defs",
+          "kind": "definition",
+          "type": "{ι : Type u} →\n  {β : ι → Type v} →\n    [inst : (i : ι) → Zero (β i)] → [DecidableEq ι] → (Π₀ (i : ι), β i) → (i : ι) → β i → Π₀ (i : ι), β i"
+        },
+        {
+          "name": "Finsupp.update",
+          "module_name": "Mathlib.Data.Finsupp.Single",
+          "kind": "definition",
+          "type": "{α : Type u_1} → {M : Type u_5} → [inst : Zero M] → (α →₀ M) → α → M → α →₀ M"
+        },
+        {
+          "name": "Finsupp.update_eq_single_add_erase",
+          "module_name": "Mathlib.Algebra.Group.Finsupp",
+          "kind": "theorem",
+          "type": "∀ {ι : Type u_1} {M : Type u_3} [inst : AddZeroClass M] (f : ι →₀ M) (a : ι) (b : M),\n  f.update a b = Finsupp.single a b + Finsupp.erase a f"
+        },
+        {
+          "name": "Finsupp.extendDomain",
+          "module_name": "Mathlib.Data.Finsupp.Basic",
+          "kind": "definition",
+          "type": "{α : Type u_1} → {M : Type u_12} → [inst : Zero M] → {P : α → Prop} → [DecidablePred P] → (Subtype P →₀ M) → α →₀ M"
+        }
+      ]
+    }
+  },
+  {
+    "form": "modern",
+    "method": "local",
+    "query": "update_eq_add_single",
+    "response": {
+      "items": [
+        {
+          "name": "Finsupp.update_eq_add_single",
+          "kind": "lemma",
+          "file": ".lake/packages/mathlib/Mathlib/Algebra/Group/Finsupp.lean"
+        }
+      ],
+      "index": "unavailable"
+    }
+  }
+]
