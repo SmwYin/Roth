@@ -1,0 +1,46 @@
+{
+  "file": "Roth/HasseDeriv.lean",
+  "line": 225,
+  "name": "MvPolynomial.hasseDeriv_monomial_mul",
+  "short": "hasseDeriv_monomial_mul",
+  "kind": "lemma",
+  "visibility": "private",
+  "end_line": 237,
+  "source": "private lemma hasseDeriv_monomial_mul {d a : σ →₀ ℕ} (ha : ∀ j ∈ d.support, a j = 0) (c : R)\n    (g : MvPolynomial σ R) : hasseDeriv d (monomial a c * g) = monomial a c * hasseDeriv d g := by\n  classical\n  induction g using MvPolynomial.induction_on' with\n  | monomial b c' =>\n    have hs : a + b - d = a + (b - d) := by\n      ext j\n      by_cases hj : j ∈ d.support <;> simp_all\n    rw [monomial_mul_monomial, hasseDeriv_monomial, hasseDeriv_monomial,\n      show hasseCoeff d (a + b) = hasseCoeff d b from\n        Finset.prod_congr rfl fun j hj ↦ by simp [ha j hj]]\n    simp [monomial_mul_monomial, hs, mul_left_comm]\n  | add p q hp hq => simp [mul_add, hp, hq]",
+  "signature": "private lemma hasseDeriv_monomial_mul {d a : σ →₀ ℕ} (ha : ∀ j ∈ d.support, a j = 0) (c : R)\n    (g : MvPolynomial σ R) : hasseDeriv d (monomial a c * g) = monomial a c * hasseDeriv d g",
+  "body": "by\n  classical\n  induction g using MvPolynomial.induction_on' with\n  | monomial b c' =>\n    have hs : a + b - d = a + (b - d) := by\n      ext j\n      by_cases hj : j ∈ d.support <;> simp_all\n    rw [monomial_mul_monomial, hasseDeriv_monomial, hasseDeriv_monomial,\n      show hasseCoeff d (a + b) = hasseCoeff d b from\n        Finset.prod_congr rfl fun j hj ↦ by simp [ha j hj]]\n    simp [monomial_mul_monomial, hs, mul_left_comm]\n  | add p q hp hq => simp [mul_add, hp, hq]",
+  "proof_lines": 12,
+  "sha256": "8ebaf5b92b79839dee1ca7b3b1b3e12a806fd7ca5d4b75471a2b51f8bc02b423",
+  "what": "A scalar monomial supported away from the differentiation coordinates passes unchanged through the Hasse derivative of a product.",
+  "how": "Additive monomial induction and hasseDeriv_monomial reduce to exponent subtraction; a coordinate split proves a+b-d=a+(b-d), while the support-disjoint condition preserves hasseCoeff.",
+  "hypotheses": "Commutative coefficients and a monomial exponent that vanishes on the differentiation support.",
+  "uses_from_project": [
+    "MvPolynomial.hasseCoeff",
+    "MvPolynomial.hasseDeriv_monomial"
+  ],
+  "used_by_in_file": [
+    "MvPolynomial.hasseDeriv_mul_of_degreeOf_eq_zero"
+  ],
+  "project_callers": [
+    {
+      "name": "MvPolynomial.hasseDeriv_mul_of_degreeOf_eq_zero",
+      "file": "Roth/HasseDeriv.lean",
+      "line": 243
+    }
+  ],
+  "type_context": "{σ R : Type*} [CommSemiring R]",
+  "type_provenance": "Exact written signature with section binders made explicit from source; not claimed as a fresh #check output. Minimal hasseCoeff #check succeeded; full Meta inspector timed out.",
+  "reference_provenance": "Manually disambiguated source-level direct project references in declaration bodies; callers include signature and body occurrences. Includes explicit references only, not an exhaustive kernel/simp dependency closure.",
+  "notes": [
+    "No set_option, sorry, TODO, or proof over 30 lines in declaration."
+  ],
+  "assignment_offset": 186,
+  "project_body_refs": [
+    "MvPolynomial.hasseCoeff",
+    "MvPolynomial.hasseDeriv_monomial"
+  ],
+  "project_type_refs": [
+    "MvPolynomial.hasseDeriv"
+  ],
+  "section_context": "{σ R : Type*} [CommSemiring R]"
+}

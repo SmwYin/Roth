@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 19/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 20/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 19; remaining: 274.
-- Verdicts: 4 NO-composable-from-mathlib, 9 YES-add-as-is, 0 YES-but-generalise-first, 0 NO-mathlib-has-it, 4 BORDERLINE-needs-human, 2 SKIP.
+- Completed applicable assessments: 20; remaining: 273.
+- Verdicts: 4 NO-composable-from-mathlib, 9 YES-add-as-is, 0 YES-but-generalise-first, 0 NO-mathlib-has-it, 4 BORDERLINE-needs-human, 3 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -234,6 +234,17 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: Three explicit invocations Taylor173/207, MainLemma425. Full degreeOf_taylor_le replay and generic outside-box evalzero/evalnonzero-degree-bound fragments verified.
 - Verdict: YES-add-as-is; [complete report](.mathlib-quality/overview/mathlibable/MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt.md).
 
+### Completed: `MvPolynomial.hasseDeriv_monomial_mul`
+
+- Type: `private lemma hasseDeriv_monomial_mul {d a : σ →₀ ℕ} (ha : ∀ j ∈ d.support, a j = 0) (c : R)
+    (g : MvPolynomial σ R) : hasseDeriv d (monomial a c * g) = monomial a c * hasseDeriv d g; section {σ R : Type*} [CommSemiring R]`
+- What: A scalar monomial supported away from the differentiation coordinates passes unchanged through the Hasse derivative of a product.
+- How: Additive monomial induction and hasseDeriv_monomial reduce to exponent subtraction; a coordinate split proves a+b-d=a+(b-d), while the support-disjoint condition preserves hasseCoeff.
+- Hypotheses: Commutative coefficients and a monomial exponent that vanishes on the differentiation support.
+- Project dependencies: MvPolynomial.hasseCoeff, MvPolynomial.hasseDeriv_monomial
+- Caller summary: One explicit same-file invocation in hasseDeriv_mul_of_degreeOf_eq_zero at246; no explicit external helper invocation.
+- Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/MvPolynomial.hasseDeriv_monomial_mul.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -298,6 +309,8 @@ Completed `MvPolynomial.degreeOf_hasseDeriv_le`: Univariate natDegree_hasseDeriv
 
 Completed `MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt`: Polynomial.hasseDeriv_eq_zero_of_lt_natDegree is univariate analogue; MvPolynomial.notMem_support_of_degreeOf_lt, notMem_support_iff and extensionality are generic blocks. No multivariate normalization supplied by ≤3 existing calls.
 
+Completed `MvPolynomial.hasseDeriv_monomial_mul`: Existing polynomial induction/monomial product and support-product congruence prove the separated monomial step; exact native replay verified. Private-prefilter public search n/a.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -337,6 +350,8 @@ Completed `MvPolynomial.pderiv_hasseDeriv`: Coordinate case of additive iterativ
 Completed `MvPolynomial.degreeOf_hasseDeriv_le`: Same degree-lowering idea as univariate Hasse bound; generic support-shift helper overlaps degreeOf support-sup infrastructure. Not a literal duplicate.
 
 Completed `MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt`: Same support-vanishing idea as univariate theorem; not a literal duplicate.
+
+Completed `MvPolynomial.hasseDeriv_monomial_mul`: Monomial induction helper for public arbitrary-factor separation, no same-interface duplicate found by source audit.
 
 ## Part 5: Generalization opportunities
 
@@ -381,6 +396,8 @@ Completed `MvPolynomial.degreeOf_hasseDeriv_le`: All arguments already broad wit
 
 Completed `MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt`: MAXIMALLY GENERAL fixed CommSemiring parent interface; strictness essential. Stronger support/coefficient zero criteria are companions; existential j wrapper syntactically equivalent.
 
+Completed `MvPolynomial.hasseDeriv_monomial_mul`: Arbitrary variables and commutative semiring; arbitrary c,g; exponent separation on support d sufficient, no necessity or unverified weakening claimed.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -421,6 +438,8 @@ Completed `MvPolynomial.pderiv_hasseDeriv`: Canonical multivariate Hasse compati
 Completed `MvPolynomial.degreeOf_hasseDeriv_le`: Coordinate-degree/degree-box preservation for canonical multivariate Hasse derivative, with sharp primary companion matching univariate degree-minus-order convention.
 
 Completed `MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt`: Coordinate-degree annihilation for canonical multivariate Hasse derivative; support and exact weighted-coefficient criteria useful companions.
+
+Completed `MvPolynomial.hasseDeriv_monomial_mul`: Generic monomial/support infrastructure sufficient; public factor-separation operator API assessed next.
 
 ## Part 7: Junk / removable
 
@@ -465,6 +484,8 @@ Completed `MvPolynomial.degreeOf_hasseDeriv_le`: No: five direct invocations in 
 
 Completed `MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt`: No: reused in translation degree, finite Taylor expansion and index box restriction.
 
+Completed `MvPolynomial.hasseDeriv_monomial_mul`: Retain focused private induction helper; one real use, no deletion/export recommended.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -488,6 +509,7 @@ Completed `MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt`: No: reused in transl
 | 17 | `MvPolynomial.pderiv_hasseDeriv` | YES-add-as-is | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.pderiv_hasseDeriv.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.pderiv_hasseDeriv/root-acceptance.json) |
 | 18 | `MvPolynomial.degreeOf_hasseDeriv_le` | YES-add-as-is | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.degreeOf_hasseDeriv_le.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.degreeOf_hasseDeriv_le/root-acceptance.json) |
 | 19 | `MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt` | YES-add-as-is | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt/root-acceptance.json) |
+| 20 | `MvPolynomial.hasseDeriv_monomial_mul` | SKIP | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.hasseDeriv_monomial_mul.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_monomial_mul/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -525,11 +547,13 @@ Completed `MvPolynomial.degreeOf_hasseDeriv_le` action: YES-add-as-is weak corol
 
 Completed `MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt` action: YES-add-as-is with parent operator and coefficient API, optional support/exact coefficient criteria, generalise and cleanup before upstream PR.
 
+Completed `MvPolynomial.hasseDeriv_monomial_mul` action: SKIP-private under overview9a; complete applicable inventory, structural triage, exact proof replay and evidence. Continue with public factor-separation theorem.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `MvPolynomial.hasseDeriv_monomial_mul` next. Supporting identities receive their own applicable checks.
+   `MvPolynomial.hasseDeriv_mul_of_degreeOf_eq_zero` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
