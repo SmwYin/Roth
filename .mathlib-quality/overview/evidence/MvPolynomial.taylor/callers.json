@@ -1,0 +1,301 @@
+[
+  {
+    "name": "Roth.index",
+    "file": "Roth/Index.lean",
+    "line": 58,
+    "reference_lines": [
+      59
+    ],
+    "identifier_occurrences": 1,
+    "source_sha256": "e22ab0acd820d9ae765e6f70279edbc0d626052372611806c4d5464ca3d377f1",
+    "source": "noncomputable def index (P : MvPolynomial σ ℝ) (α : σ → ℝ) (r : σ → ℕ) : ℝ :=\n  sInf (weight r '' ((taylor α P).support : Set (σ →₀ ℕ)))",
+    "plan": "Retain current named translation while upstream API choice is reviewed; if rejected, mechanically expand each taylor α to aeval (fun j ↦ X j + C (α j)); rewrite simp [taylor] to direct aeval normalization; preserve enclosing statements and separate Hasse proofs."
+  },
+  {
+    "name": "Roth.mem_support_taylor_iff",
+    "file": "Roth/Index.lean",
+    "line": 62,
+    "reference_lines": [
+      63
+    ],
+    "identifier_occurrences": 1,
+    "source_sha256": "e22ab0acd820d9ae765e6f70279edbc0d626052372611806c4d5464ca3d377f1",
+    "source": "private lemma mem_support_taylor_iff {P : MvPolynomial σ ℝ} {α : σ → ℝ} {d : σ →₀ ℕ} :\n    d ∈ (taylor α P).support ↔ eval α (hasseDeriv d P) ≠ 0 := by\n  rw [mem_support_iff, coeff_taylor]",
+    "plan": "Retain current named translation while upstream API choice is reviewed; if rejected, mechanically expand each taylor α to aeval (fun j ↦ X j + C (α j)); rewrite simp [taylor] to direct aeval normalization; preserve enclosing statements and separate Hasse proofs."
+  },
+  {
+    "name": "Roth.index_le_weight",
+    "file": "Roth/Index.lean",
+    "line": 69,
+    "reference_lines": [
+      71
+    ],
+    "identifier_occurrences": 1,
+    "source_sha256": "e22ab0acd820d9ae765e6f70279edbc0d626052372611806c4d5464ca3d377f1",
+    "source": "theorem index_le_weight {P : MvPolynomial σ ℝ} {α : σ → ℝ} {r : σ → ℕ} {d : σ →₀ ℕ}\n    (h : eval α (hasseDeriv d P) ≠ 0) : index P α r ≤ weight r d :=\n  csInf_le ((taylor α P).support.finite_toSet.image (weight r)).bddBelow\n    (Set.mem_image_of_mem _ (Finset.mem_coe.2 (mem_support_taylor_iff.2 h)))",
+    "plan": "Retain current named translation while upstream API choice is reviewed; if rejected, mechanically expand each taylor α to aeval (fun j ↦ X j + C (α j)); rewrite simp [taylor] to direct aeval normalization; preserve enclosing statements and separate Hasse proofs."
+  },
+  {
+    "name": "Roth.exists_weight_eq_index",
+    "file": "Roth/Index.lean",
+    "line": 76,
+    "reference_lines": [
+      79,
+      80
+    ],
+    "identifier_occurrences": 2,
+    "source_sha256": "e22ab0acd820d9ae765e6f70279edbc0d626052372611806c4d5464ca3d377f1",
+    "source": "theorem exists_weight_eq_index {P : MvPolynomial σ ℝ} (hP : P ≠ 0) (α : σ → ℝ) (r : σ → ℕ) :\n    ∃ d, eval α (hasseDeriv d P) ≠ 0 ∧ weight r d = index P α r := by\n  obtain ⟨d, hd, hdw⟩ :=\n    (show (weight r '' ((taylor α P).support : Set (σ →₀ ℕ))).Nonempty by\n      simpa using hP).csInf_mem ((taylor α P).support.finite_toSet.image (weight r))\n  exact ⟨d, mem_support_taylor_iff.1 hd, hdw⟩",
+    "plan": "Retain current named translation while upstream API choice is reviewed; if rejected, mechanically expand each taylor α to aeval (fun j ↦ X j + C (α j)); rewrite simp [taylor] to direct aeval normalization; preserve enclosing statements and separate Hasse proofs."
+  },
+  {
+    "name": "Roth.index_eq_weightedOrder_div",
+    "file": "Roth/Index.lean",
+    "line": 143,
+    "reference_lines": [
+      145,
+      148
+    ],
+    "identifier_occurrences": 2,
+    "source_sha256": "e22ab0acd820d9ae765e6f70279edbc0d626052372611806c4d5464ca3d377f1",
+    "source": "theorem index_eq_weightedOrder_div {P : MvPolynomial σ ℝ} (hP : P ≠ 0) {r : σ → ℕ}\n    (hr : ∀ j, 0 < r j) (α : σ → ℝ) : index P α r =\n      (((taylor α P : MvPowerSeries σ ℝ).weightedOrder fun j ↦ (∏ i, r i) / r j).toNat : ℝ) /\n        ∏ i, r i := by\n  set w : σ → ℕ := fun j ↦ (∏ i, r i) / r j\n  set F : MvPowerSeries σ ℝ := ↑(taylor α P)\n  obtain ⟨d, hd, hdw⟩ := MvPowerSeries.exists_coeff_ne_zero_and_weightedOrder w (f := F)\n    ((MvPowerSeries.ne_zero_iff_weightedOrder_finite w).1 (by simpa [F] using hP))\n  apply le_antisymm\n  · rw [← hdw, ENat.toNat_natCast, ← weight_eq_finsuppWeight_div hr]\n    exact index_le_weight (by simpa [F, MvPolynomial.coeff_coe, coeff_taylor] using hd)\n  · refine (le_index_iff hP).2 fun e he ↦ ?_\n    rw [weight_eq_finsuppWeight_div hr]\n    refine div_le_div_of_nonneg_right ?_ (Nat.cast_nonneg _)\n    exact_mod_cast ENat.toNat_le_toNat (MvPowerSeries.weightedOrder_le w (f := F) (d := e)\n      (by simpa [F, MvPolynomial.coeff_coe, coeff_taylor] using he)) (by simp)",
+    "plan": "Retain current named translation while upstream API choice is reviewed; if rejected, mechanically expand each taylor α to aeval (fun j ↦ X j + C (α j)); rewrite simp [taylor] to direct aeval normalization; preserve enclosing statements and separate Hasse proofs."
+  },
+  {
+    "name": "Roth.index_mul",
+    "file": "Roth/Index.lean",
+    "line": 162,
+    "reference_lines": [
+      169
+    ],
+    "identifier_occurrences": 1,
+    "source_sha256": "e22ab0acd820d9ae765e6f70279edbc0d626052372611806c4d5464ca3d377f1",
+    "source": "theorem index_mul {P Q : MvPolynomial σ ℝ} (hP : P ≠ 0) (hQ : Q ≠ 0) (α : σ → ℝ) {r : σ → ℕ}\n    (hr : ∀ j, 0 < r j) : index (P * Q) α r = index P α r + index Q α r := by\n  rw [index_eq_weightedOrder_div hP hr, index_eq_weightedOrder_div hQ hr,\n    index_eq_weightedOrder_div (mul_ne_zero hP hQ) hr, ← add_div, map_mul, MvPolynomial.coe_mul,\n    MvPowerSeries.weightedOrder_mul]\n  congr 1\n  have hfin : ∀ R : MvPolynomial σ ℝ, R ≠ 0 →\n      ((taylor α R : MvPowerSeries σ ℝ).weightedOrder fun j ↦ (∏ i, r i) / r j) ≠ ⊤ := by simp\n  rw [ENat.toNat_add (hfin P hP) (hfin Q hQ), Nat.cast_add]",
+    "plan": "Retain current named translation while upstream API choice is reviewed; if rejected, mechanically expand each taylor α to aeval (fun j ↦ X j + C (α j)); rewrite simp [taylor] to direct aeval normalization; preserve enclosing statements and separate Hasse proofs."
+  },
+  {
+    "name": "Roth.index_mul_left_weights",
+    "file": "Roth/Index.lean",
+    "line": 200,
+    "reference_lines": [
+      202,
+      203
+    ],
+    "identifier_occurrences": 2,
+    "source_sha256": "e22ab0acd820d9ae765e6f70279edbc0d626052372611806c4d5464ca3d377f1",
+    "source": "theorem index_mul_left_weights {l : ℕ} (P : MvPolynomial σ ℝ) (α : σ → ℝ) (r : σ → ℕ) :\n    index P α (fun j ↦ l * r j) = index P α r / l := by\n  have himg : weight (fun j ↦ l * r j) '' ((taylor α P).support : Set (σ →₀ ℕ)) =\n      (l : ℝ)⁻¹ • (weight r '' ((taylor α P).support : Set (σ →₀ ℕ))) := by\n    rw [← Set.image_smul, Set.image_image]\n    refine Set.image_congr fun d _ ↦ ?_\n    rw [weight_mul_left, smul_eq_mul, div_eq_inv_mul]\n  rw [index, index, himg, Real.sInf_smul_of_nonneg (by positivity), smul_eq_mul, div_eq_inv_mul]",
+    "plan": "Retain current named translation while upstream API choice is reviewed; if rejected, mechanically expand each taylor α to aeval (fun j ↦ X j + C (α j)); rewrite simp [taylor] to direct aeval normalization; preserve enclosing statements and separate Hasse proofs."
+  },
+  {
+    "name": "MvPolynomial.taylor_apply",
+    "file": "Roth/Taylor.lean",
+    "line": 46,
+    "reference_lines": [
+      47
+    ],
+    "identifier_occurrences": 1,
+    "source_sha256": "5936e65c7d78143c5e5b0c7b35371c7631dc121aa8b600637cf7cd31335faaf7",
+    "source": "theorem taylor_apply (α : σ → R) (P : MvPolynomial σ R) :\n    taylor α P = aeval (fun j ↦ X j + C (α j)) P := rfl",
+    "plan": "Retain current named translation while upstream API choice is reviewed; if rejected, mechanically expand each taylor α to aeval (fun j ↦ X j + C (α j)); rewrite simp [taylor] to direct aeval normalization; preserve enclosing statements and separate Hasse proofs."
+  },
+  {
+    "name": "MvPolynomial.taylor_X",
+    "file": "Roth/Taylor.lean",
+    "line": 51,
+    "reference_lines": [
+      51
+    ],
+    "identifier_occurrences": 1,
+    "source_sha256": "5936e65c7d78143c5e5b0c7b35371c7631dc121aa8b600637cf7cd31335faaf7",
+    "source": "theorem taylor_X (α : σ → R) (j : σ) : taylor α (X j) = X j + C (α j) := aeval_X _ _",
+    "plan": "Retain current named translation while upstream API choice is reviewed; if rejected, mechanically expand each taylor α to aeval (fun j ↦ X j + C (α j)); rewrite simp [taylor] to direct aeval normalization; preserve enclosing statements and separate Hasse proofs."
+  },
+  {
+    "name": "MvPolynomial.taylor_C",
+    "file": "Roth/Taylor.lean",
+    "line": 55,
+    "reference_lines": [
+      55
+    ],
+    "identifier_occurrences": 1,
+    "source_sha256": "5936e65c7d78143c5e5b0c7b35371c7631dc121aa8b600637cf7cd31335faaf7",
+    "source": "theorem taylor_C (α : σ → R) (a : R) : taylor α (C a) = C a := algHom_C _ _",
+    "plan": "Retain current named translation while upstream API choice is reviewed; if rejected, mechanically expand each taylor α to aeval (fun j ↦ X j + C (α j)); rewrite simp [taylor] to direct aeval normalization; preserve enclosing statements and separate Hasse proofs."
+  },
+  {
+    "name": "MvPolynomial.taylor_monomial",
+    "file": "Roth/Taylor.lean",
+    "line": 59,
+    "reference_lines": [
+      60
+    ],
+    "identifier_occurrences": 1,
+    "source_sha256": "5936e65c7d78143c5e5b0c7b35371c7631dc121aa8b600637cf7cd31335faaf7",
+    "source": "theorem taylor_monomial (α : σ → R) (k : σ →₀ ℕ) (a : R) :\n    taylor α (monomial k a) = C a * k.prod fun j n ↦ (X j + C (α j)) ^ n :=\n  aeval_monomial _ _ _",
+    "plan": "Retain current named translation while upstream API choice is reviewed; if rejected, mechanically expand each taylor α to aeval (fun j ↦ X j + C (α j)); rewrite simp [taylor] to direct aeval normalization; preserve enclosing statements and separate Hasse proofs."
+  },
+  {
+    "name": "MvPolynomial.coeff_taylor_monomial_single_add_aux",
+    "file": "Roth/Taylor.lean",
+    "line": 101,
+    "reference_lines": [
+      103,
+      104,
+      109
+    ],
+    "identifier_occurrences": 3,
+    "source_sha256": "5936e65c7d78143c5e5b0c7b35371c7631dc121aa8b600637cf7cd31335faaf7",
+    "source": "private lemma coeff_taylor_monomial_single_add_aux (α : σ → R) (a : R) {i : σ} (n : ℕ) {k : σ →₀ ℕ}\n    (hi : k i = 0)\n    (ih : ∀ d, (taylor α (monomial k a)).coeff d = eval α (hasseDeriv d (monomial k a)))\n    (d : σ →₀ ℕ) : (taylor α (monomial (Finsupp.single i n + k) a)).coeff d =\n      eval α (hasseDeriv d (monomial (Finsupp.single i n + k) a)) := by\n  have hXC : (X i + C (α i) : MvPolynomial σ R) ^ n =\n      Polynomial.aeval (X i) ((Polynomial.X + Polynomial.C (α i)) ^ n) := by\n    simp\n  have hsupp : ∀ e ∈ (taylor α (monomial k a)).support, e i = 0 := by\n    intro e he\n    rw [mem_support_iff, ih e, hasseDeriv_monomial] at he\n    by_contra h\n    simp [(hasseCoeff_eq_zero_iff e k).2 fun hle ↦ h (le_zero_iff.1 (hi ▸ hle i))] at he\n  rw [monomial_single_add, map_mul, map_pow, taylor_X, hXC,\n    coeff_aeval_X_mul i _ _ hsupp, ih, Polynomial.coeff_X_add_C_pow,\n    ← monomial_single_add, hasseDeriv_monomial, hasseDeriv_monomial, eval_monomial,\n    eval_monomial, hasseCoeff_single_add_eq hi, prod_pow_single_add_tsub α hi]\n  simp [mul_assoc, mul_comm, mul_left_comm]",
+    "plan": "Retain current named translation while upstream API choice is reviewed; if rejected, mechanically expand each taylor α to aeval (fun j ↦ X j + C (α j)); rewrite simp [taylor] to direct aeval normalization; preserve enclosing statements and separate Hasse proofs."
+  },
+  {
+    "name": "MvPolynomial.coeff_taylor_monomial_aux",
+    "file": "Roth/Taylor.lean",
+    "line": 120,
+    "reference_lines": [
+      121
+    ],
+    "identifier_occurrences": 1,
+    "source_sha256": "5936e65c7d78143c5e5b0c7b35371c7631dc121aa8b600637cf7cd31335faaf7",
+    "source": "private lemma coeff_taylor_monomial_aux (α : σ → R) (d k : σ →₀ ℕ) (a : R) :\n    (taylor α (monomial k a)).coeff d = eval α (hasseDeriv d (monomial k a)) := by\n  classical\n  induction k using Finsupp.induction generalizing d with\n  | zero =>\n    obtain rfl | hd := eq_or_ne d 0\n    · simp\n    · simp [← C_apply, hasseDeriv_C hd, hd.symm]\n  | single_add i n k hi _ ih =>\n    exact coeff_taylor_monomial_single_add_aux α a n (Finsupp.notMem_support_iff.1 hi) ih d",
+    "plan": "Retain current named translation while upstream API choice is reviewed; if rejected, mechanically expand each taylor α to aeval (fun j ↦ X j + C (α j)); rewrite simp [taylor] to direct aeval normalization; preserve enclosing statements and separate Hasse proofs."
+  },
+  {
+    "name": "MvPolynomial.coeff_taylor",
+    "file": "Roth/Taylor.lean",
+    "line": 134,
+    "reference_lines": [
+      135
+    ],
+    "identifier_occurrences": 1,
+    "source_sha256": "5936e65c7d78143c5e5b0c7b35371c7631dc121aa8b600637cf7cd31335faaf7",
+    "source": "theorem coeff_taylor (α : σ → R) (d : σ →₀ ℕ) (P : MvPolynomial σ R) :\n    (taylor α P).coeff d = eval α (hasseDeriv d P) := by\n  induction P using MvPolynomial.induction_on' with\n  | add p q hp hq => simp [hp, hq]\n  | monomial k a => exact coeff_taylor_monomial_aux α d k a",
+    "plan": "Retain current named translation while upstream API choice is reviewed; if rejected, mechanically expand each taylor α to aeval (fun j ↦ X j + C (α j)); rewrite simp [taylor] to direct aeval normalization; preserve enclosing statements and separate Hasse proofs."
+  },
+  {
+    "name": "MvPolynomial.eval_taylor",
+    "file": "Roth/Taylor.lean",
+    "line": 141,
+    "reference_lines": [
+      142,
+      143
+    ],
+    "identifier_occurrences": 2,
+    "source_sha256": "5936e65c7d78143c5e5b0c7b35371c7631dc121aa8b600637cf7cd31335faaf7",
+    "source": "theorem eval_taylor (α x : σ → R) (P : MvPolynomial σ R) :\n    eval x (taylor α P) = eval (fun j ↦ x j + α j) P := by\n  simp [taylor, aeval_def, ← eval_assoc, Function.comp_def]",
+    "plan": "Retain current named translation while upstream API choice is reviewed; if rejected, mechanically expand each taylor α to aeval (fun j ↦ X j + C (α j)); rewrite simp [taylor] to direct aeval normalization; preserve enclosing statements and separate Hasse proofs."
+  },
+  {
+    "name": "MvPolynomial.taylor_taylor",
+    "file": "Roth/Taylor.lean",
+    "line": 146,
+    "reference_lines": [
+      147,
+      148
+    ],
+    "identifier_occurrences": 4,
+    "source_sha256": "5936e65c7d78143c5e5b0c7b35371c7631dc121aa8b600637cf7cd31335faaf7",
+    "source": "theorem taylor_taylor (α β : σ → R) (P : MvPolynomial σ R) :\n    taylor α (taylor β P) = taylor (fun j ↦ α j + β j) P := by\n  simp [taylor, comp_aeval_apply, add_assoc]",
+    "plan": "Retain current named translation while upstream API choice is reviewed; if rejected, mechanically expand each taylor α to aeval (fun j ↦ X j + C (α j)); rewrite simp [taylor] to direct aeval normalization; preserve enclosing statements and separate Hasse proofs."
+  },
+  {
+    "name": "MvPolynomial.taylor_zero",
+    "file": "Roth/Taylor.lean",
+    "line": 152,
+    "reference_lines": [
+      152,
+      153
+    ],
+    "identifier_occurrences": 2,
+    "source_sha256": "5936e65c7d78143c5e5b0c7b35371c7631dc121aa8b600637cf7cd31335faaf7",
+    "source": "theorem taylor_zero (P : MvPolynomial σ R) : taylor (fun _ ↦ (0 : R)) P = P := by\n  simp [taylor, aeval_X_left_apply]",
+    "plan": "Retain current named translation while upstream API choice is reviewed; if rejected, mechanically expand each taylor α to aeval (fun j ↦ X j + C (α j)); rewrite simp [taylor] to direct aeval normalization; preserve enclosing statements and separate Hasse proofs."
+  },
+  {
+    "name": "MvPolynomial.taylor_map",
+    "file": "Roth/Taylor.lean",
+    "line": 157,
+    "reference_lines": [
+      158,
+      159
+    ],
+    "identifier_occurrences": 3,
+    "source_sha256": "5936e65c7d78143c5e5b0c7b35371c7631dc121aa8b600637cf7cd31335faaf7",
+    "source": "theorem taylor_map {S : Type*} [CommSemiring S] (f : R →+* S) (α : σ → R) (P : MvPolynomial σ R) :\n    taylor (fun j ↦ f (α j)) (map f P) = map f (taylor α P) := by\n  simp [taylor, aeval_def, map_eval₂, Function.comp_def]",
+    "plan": "Retain current named translation while upstream API choice is reviewed; if rejected, mechanically expand each taylor α to aeval (fun j ↦ X j + C (α j)); rewrite simp [taylor] to direct aeval normalization; preserve enclosing statements and separate Hasse proofs."
+  },
+  {
+    "name": "MvPolynomial.taylor_rename",
+    "file": "Roth/Taylor.lean",
+    "line": 164,
+    "reference_lines": [
+      165,
+      166
+    ],
+    "identifier_occurrences": 3,
+    "source_sha256": "5936e65c7d78143c5e5b0c7b35371c7631dc121aa8b600637cf7cd31335faaf7",
+    "source": "theorem taylor_rename {τ : Type*} (f : σ → τ) (α : τ → R) (P : MvPolynomial σ R) :\n    taylor α (rename f P) = rename f (taylor (α ∘ f) P) := by\n  simp [taylor, rename_eq_aeval, comp_aeval_apply]",
+    "plan": "Retain current named translation while upstream API choice is reviewed; if rejected, mechanically expand each taylor α to aeval (fun j ↦ X j + C (α j)); rewrite simp [taylor] to direct aeval normalization; preserve enclosing statements and separate Hasse proofs."
+  },
+  {
+    "name": "MvPolynomial.degreeOf_taylor_le",
+    "file": "Roth/Taylor.lean",
+    "line": 170,
+    "reference_lines": [
+      171
+    ],
+    "identifier_occurrences": 1,
+    "source_sha256": "5936e65c7d78143c5e5b0c7b35371c7631dc121aa8b600637cf7cd31335faaf7",
+    "source": "theorem degreeOf_taylor_le (α : σ → R) (j : σ) (P : MvPolynomial σ R) :\n    degreeOf j (taylor α P) ≤ degreeOf j P := by\n  refine degreeOf_le_iff.2 fun e he ↦ not_lt.1 fun h ↦ ?_\n  simp [mem_support_iff, coeff_taylor, hasseDeriv_eq_zero_of_degreeOf_lt h] at he",
+    "plan": "Retain current named translation while upstream API choice is reviewed; if rejected, mechanically expand each taylor α to aeval (fun j ↦ X j + C (α j)); rewrite simp [taylor] to direct aeval normalization; preserve enclosing statements and separate Hasse proofs."
+  },
+  {
+    "name": "MvPolynomial.taylor_neg_taylor",
+    "file": "Roth/Taylor.lean",
+    "line": 182,
+    "reference_lines": [
+      182
+    ],
+    "identifier_occurrences": 2,
+    "source_sha256": "5936e65c7d78143c5e5b0c7b35371c7631dc121aa8b600637cf7cd31335faaf7",
+    "source": "theorem taylor_neg_taylor (α : σ → A) (P : MvPolynomial σ A) : taylor (fun j ↦ -α j) (taylor α P) =\n    P := by\n  simp [taylor_taylor]",
+    "plan": "Retain current named translation while upstream API choice is reviewed; if rejected, mechanically expand each taylor α to aeval (fun j ↦ X j + C (α j)); rewrite simp [taylor] to direct aeval normalization; preserve enclosing statements and separate Hasse proofs."
+  },
+  {
+    "name": "MvPolynomial.taylor_injective",
+    "file": "Roth/Taylor.lean",
+    "line": 187,
+    "reference_lines": [
+      187
+    ],
+    "identifier_occurrences": 1,
+    "source_sha256": "5936e65c7d78143c5e5b0c7b35371c7631dc121aa8b600637cf7cd31335faaf7",
+    "source": "theorem taylor_injective (α : σ → A) : Function.Injective (taylor α : MvPolynomial σ A → _) :=\n  Function.LeftInverse.injective (taylor_neg_taylor α)",
+    "plan": "Retain current named translation while upstream API choice is reviewed; if rejected, mechanically expand each taylor α to aeval (fun j ↦ X j + C (α j)); rewrite simp [taylor] to direct aeval normalization; preserve enclosing statements and separate Hasse proofs."
+  },
+  {
+    "name": "MvPolynomial.taylor_eq_zero_iff",
+    "file": "Roth/Taylor.lean",
+    "line": 192,
+    "reference_lines": [
+      192
+    ],
+    "identifier_occurrences": 1,
+    "source_sha256": "5936e65c7d78143c5e5b0c7b35371c7631dc121aa8b600637cf7cd31335faaf7",
+    "source": "theorem taylor_eq_zero_iff (α : σ → A) (P : MvPolynomial σ A) : taylor α P = 0 ↔ P = 0 :=\n  (taylor_injective α).eq_iff' (map_zero _)",
+    "plan": "Retain current named translation while upstream API choice is reviewed; if rejected, mechanically expand each taylor α to aeval (fun j ↦ X j + C (α j)); rewrite simp [taylor] to direct aeval normalization; preserve enclosing statements and separate Hasse proofs."
+  },
+  {
+    "name": "MvPolynomial.eq_sum_box_hasseDeriv",
+    "file": "Roth/Taylor.lean",
+    "line": 197,
+    "reference_lines": [
+      200,
+      208
+    ],
+    "identifier_occurrences": 3,
+    "source_sha256": "5936e65c7d78143c5e5b0c7b35371c7631dc121aa8b600637cf7cd31335faaf7",
+    "source": "theorem eq_sum_box_hasseDeriv [Fintype σ] [DecidableEq σ] (α : σ → A) (r : σ → ℕ)\n    (P : MvPolynomial σ A) (hP : ∀ j, degreeOf j P ≤ r j) :\n    P = ∑ d ∈ Roth.box r, C (eval α (hasseDeriv d P)) * ∏ j, (X j - C (α j)) ^ d j := by\n  have h1 : taylor α P = ∑ d ∈ Roth.box r, monomial d (eval α (hasseDeriv d P)) := by\n    ext e\n    simp only [coeff_taylor, coeff_sum, coeff_monomial, Finset.sum_ite_eq']\n    split_ifs with he\n    · rfl\n    · obtain ⟨j, hj⟩ : ∃ j, r j < e j := by\n        simpa [Roth.mem_box] using he\n      rw [hasseDeriv_eq_zero_of_degreeOf_lt ((hP j).trans_lt hj), map_zero]\n  calc P = taylor (fun j ↦ -α j) (taylor α P) := (taylor_neg_taylor α P).symm\n    _ = _ := by\n      rw [h1, map_sum]\n      refine Finset.sum_congr rfl fun d _ ↦ ?_\n      rw [taylor_monomial, Finsupp.prod_fintype _ _ fun _ ↦ pow_zero _]\n      simp [sub_eq_add_neg]",
+    "plan": "Retain current named translation while upstream API choice is reviewed; if rejected, mechanically expand each taylor α to aeval (fun j ↦ X j + C (α j)); rewrite simp [taylor] to direct aeval normalization; preserve enclosing statements and separate Hasse proofs."
+  }
+]

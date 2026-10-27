@@ -1,0 +1,147 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.Polynomial.HasseDeriv\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.LinearAlgebra.Matrix.ToLinearEquiv\nimport Mathlib.RingTheory.Polynomial.Wronskian\nimport Mathlib.LinearAlgebra.Vandermonde\nimport Mathlib.Data.ZMod.Defs\nimport Mathlib.Algebra.Field.ZMod\nimport Mathlib.Algebra.Order.Group.Int.Sum\nimport Mathlib.LinearAlgebra.Matrix.Polynomial\nimport Mathlib.Algebra.Polynomial.CancelLeads\nimport Mathlib.Algebra.MvPolynomial.PDeriv\n#check_failure MvPolynomial.taylor\n#check @MvPolynomial.aeval\n#check @MvPolynomial.aeval_unique\n#check @MvPolynomial.comp_aeval\n#check @MvPolynomial.aeval_X_left\n#check @MvPolynomial.aeval_X\n#check @MvPolynomial.algHom_C\n#check @Polynomial.taylor\n#check @Polynomial.taylorAlgHom\n#check @Polynomial.taylorEquiv\nnamespace TaylorAssessment\nuniverse u v\nnoncomputable def translate {σ : Type u} {R : Type v} [CommSemiring R] (α : σ → R) :\n    MvPolynomial σ R →ₐ[R] MvPolynomial σ R :=\n  MvPolynomial.aeval fun j ↦ MvPolynomial.X j + MvPolynomial.C (α j)\nexample {σ : Type u} {R : Type v} [CommSemiring R] (α : σ → R) :\n    translate α = MvPolynomial.aeval (fun j ↦ MvPolynomial.X j + MvPolynomial.C (α j)) := rfl\n#synth Algebra ℕ (MvPolynomial (Type 1) ℕ)\n#check (translate (fun _ : Type 1 ↦ (0 : ℕ)) : MvPolynomial (Type 1) ℕ →ₐ[ℕ] _)\nexample {σ R : Type*} [CommSemiring R] (α : σ → R) (P Q : MvPolynomial σ R) :\n    translate α (P * Q) = translate α P * translate α Q := map_mul _ _ _\nnoncomputable def translateEquiv {σ R : Type*} [CommRing R] (α : σ → R) :\n    MvPolynomial σ R ≃ₐ[R] MvPolynomial σ R where\n  __ := translate α\n  invFun := translate (fun j ↦ -α j)\n  left_inv P := by\n    simp [translate, MvPolynomial.comp_aeval_apply, MvPolynomial.aeval_X_left_apply]\n  right_inv P := by\n    simp [translate, MvPolynomial.comp_aeval_apply, MvPolynomial.aeval_X_left_apply]\nexample {σ R : Type*} [CommRing R] (α : σ → R) :\n    Function.Injective (translate α : MvPolynomial σ R → _) := (translateEquiv α).injective\n#print axioms translate\n#print axioms translateEquiv\nend TaylorAssessment\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown constant `MvPolynomial.taylor`\",\n      \"line\": 12,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPolynomial.aeval : {R : Type u_1} →\\n  {S₁ : Type u_2} →\\n    {σ : Type u_3} →\\n      [inst : CommSemiring R] →\\n        [inst_1 : CommSemiring S₁] → [inst_2 : Algebra R S₁] → (σ → S₁) → MvPolynomial σ R →ₐ[R] S₁\",\n      \"line\": 13,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPolynomial.aeval_unique : ∀ {R : Type u_1} {S₁ : Type u_2} {σ : Type u_3} [inst : CommSemiring R]\\n  [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁] (φ : MvPolynomial σ R →ₐ[R] S₁),\\n  φ = MvPolynomial.aeval (⇑φ ∘ MvPolynomial.X)\",\n      \"line\": 14,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPolynomial.comp_aeval : ∀ {R : Type u_1} {S₁ : Type u_2} {σ : Type u_3} [inst : CommSemiring R]\\n  [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁] (f : σ → S₁) {B : Type u_4} [inst_3 : CommSemiring B]\\n  [inst_4 : Algebra R B] (φ : S₁ →ₐ[R] B), φ.comp (MvPolynomial.aeval f) = MvPolynomial.aeval fun i ↦ φ (f i)\",\n      \"line\": 15,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPolynomial.aeval_X_left : ∀ {R : Type u_1} {σ : Type u_2} [inst : CommSemiring R],\\n  MvPolynomial.aeval MvPolynomial.X = AlgHom.id R (MvPolynomial σ R)\",\n      \"line\": 16,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPolynomial.aeval_X : ∀ {R : Type u_1} {S₁ : Type u_2} {σ : Type u_3} [inst : CommSemiring R]\\n  [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁] (f : σ → S₁) (s : σ),\\n  (MvPolynomial.aeval f) (MvPolynomial.X s) = f s\",\n      \"line\": 17,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPolynomial.algHom_C : ∀ {R : Type u_1} {σ : Type u_2} [inst : CommSemiring R] {A : Type u_3} [inst_1 : Semiring A]\\n  [inst_2 : Algebra R A] (f : MvPolynomial σ R →ₐ[R] A) (r : R), f (MvPolynomial.C r) = (algebraMap R A) r\",\n      \"line\": 18,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.taylor : {R : Type u_1} → [inst : Semiring R] → R → Polynomial R →ₗ[R] Polynomial R\",\n      \"line\": 19,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.taylorAlgHom : {R : Type u_1} → [inst : CommSemiring R] → R → Polynomial R →ₐ[R] Polynomial R\",\n      \"line\": 20,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.taylorEquiv : {R : Type u_1} → [inst : CommRing R] → R → Polynomial R ≃ₐ[R] Polynomial R\",\n      \"line\": 21,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"AddMonoidAlgebra.algebra\",\n      \"line\": 29,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"translate fun x ↦ 0 : MvPolynomial (Type 1) ℕ →ₐ[ℕ] MvPolynomial (Type 1) ℕ\",\n      \"line\": 30,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'TaylorAssessment.translate' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 43,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'TaylorAssessment.translateEquiv' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 44,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown constant `MvPolynomial.taylor`",
+          "line": 12,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPolynomial.aeval : {R : Type u_1} →\n  {S₁ : Type u_2} →\n    {σ : Type u_3} →\n      [inst : CommSemiring R] →\n        [inst_1 : CommSemiring S₁] → [inst_2 : Algebra R S₁] → (σ → S₁) → MvPolynomial σ R →ₐ[R] S₁",
+          "line": 13,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPolynomial.aeval_unique : ∀ {R : Type u_1} {S₁ : Type u_2} {σ : Type u_3} [inst : CommSemiring R]\n  [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁] (φ : MvPolynomial σ R →ₐ[R] S₁),\n  φ = MvPolynomial.aeval (⇑φ ∘ MvPolynomial.X)",
+          "line": 14,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPolynomial.comp_aeval : ∀ {R : Type u_1} {S₁ : Type u_2} {σ : Type u_3} [inst : CommSemiring R]\n  [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁] (f : σ → S₁) {B : Type u_4} [inst_3 : CommSemiring B]\n  [inst_4 : Algebra R B] (φ : S₁ →ₐ[R] B), φ.comp (MvPolynomial.aeval f) = MvPolynomial.aeval fun i ↦ φ (f i)",
+          "line": 15,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPolynomial.aeval_X_left : ∀ {R : Type u_1} {σ : Type u_2} [inst : CommSemiring R],\n  MvPolynomial.aeval MvPolynomial.X = AlgHom.id R (MvPolynomial σ R)",
+          "line": 16,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPolynomial.aeval_X : ∀ {R : Type u_1} {S₁ : Type u_2} {σ : Type u_3} [inst : CommSemiring R]\n  [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁] (f : σ → S₁) (s : σ),\n  (MvPolynomial.aeval f) (MvPolynomial.X s) = f s",
+          "line": 17,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPolynomial.algHom_C : ∀ {R : Type u_1} {σ : Type u_2} [inst : CommSemiring R] {A : Type u_3} [inst_1 : Semiring A]\n  [inst_2 : Algebra R A] (f : MvPolynomial σ R →ₐ[R] A) (r : R), f (MvPolynomial.C r) = (algebraMap R A) r",
+          "line": 18,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.taylor : {R : Type u_1} → [inst : Semiring R] → R → Polynomial R →ₗ[R] Polynomial R",
+          "line": 19,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.taylorAlgHom : {R : Type u_1} → [inst : CommSemiring R] → R → Polynomial R →ₐ[R] Polynomial R",
+          "line": 20,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.taylorEquiv : {R : Type u_1} → [inst : CommRing R] → R → Polynomial R ≃ₐ[R] Polynomial R",
+          "line": 21,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "AddMonoidAlgebra.algebra",
+          "line": 29,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "translate fun x ↦ 0 : MvPolynomial (Type 1) ℕ →ₐ[ℕ] MvPolynomial (Type 1) ℕ",
+          "line": 30,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'TaylorAssessment.translate' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 43,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'TaylorAssessment.translateEquiv' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 44,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 33767
+}

@@ -1,0 +1,45 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+import Mathlib.Algebra.Polynomial.CancelLeads
+import Mathlib.Algebra.MvPolynomial.PDeriv
+#check_failure MvPolynomial.taylor
+#check @MvPolynomial.aeval
+#check @MvPolynomial.aeval_unique
+#check @MvPolynomial.comp_aeval
+#check @MvPolynomial.aeval_X_left
+#check @MvPolynomial.aeval_X
+#check @MvPolynomial.algHom_C
+#check @Polynomial.taylor
+#check @Polynomial.taylorAlgHom
+#check @Polynomial.taylorEquiv
+namespace TaylorAssessment
+universe u v
+noncomputable def translate {σ : Type u} {R : Type v} [CommSemiring R] (α : σ → R) :
+    MvPolynomial σ R →ₐ[R] MvPolynomial σ R :=
+  MvPolynomial.aeval fun j ↦ MvPolynomial.X j + MvPolynomial.C (α j)
+example {σ : Type u} {R : Type v} [CommSemiring R] (α : σ → R) :
+    translate α = MvPolynomial.aeval (fun j ↦ MvPolynomial.X j + MvPolynomial.C (α j)) := rfl
+#synth Algebra ℕ (MvPolynomial (Type 1) ℕ)
+#check (translate (fun _ : Type 1 ↦ (0 : ℕ)) : MvPolynomial (Type 1) ℕ →ₐ[ℕ] _)
+example {σ R : Type*} [CommSemiring R] (α : σ → R) (P Q : MvPolynomial σ R) :
+    translate α (P * Q) = translate α P * translate α Q := map_mul _ _ _
+noncomputable def translateEquiv {σ R : Type*} [CommRing R] (α : σ → R) :
+    MvPolynomial σ R ≃ₐ[R] MvPolynomial σ R where
+  __ := translate α
+  invFun := translate (fun j ↦ -α j)
+  left_inv P := by
+    simp [translate, MvPolynomial.comp_aeval_apply, MvPolynomial.aeval_X_left_apply]
+  right_inv P := by
+    simp [translate, MvPolynomial.comp_aeval_apply, MvPolynomial.aeval_X_left_apply]
+example {σ R : Type*} [CommRing R] (α : σ → R) :
+    Function.Injective (translate α : MvPolynomial σ R → _) := (translateEquiv α).injective
+#print axioms translate
+#print axioms translateEquiv
+end TaylorAssessment

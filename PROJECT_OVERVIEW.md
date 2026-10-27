@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 52/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 53/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 52; remaining: 241.
-- Verdicts: 8 NO-composable-from-mathlib, 11 YES-add-as-is, 3 YES-but-generalise-first, 8 NO-mathlib-has-it, 18 BORDERLINE-needs-human, 4 SKIP.
+- Completed applicable assessments: 53; remaining: 240.
+- Verdicts: 8 NO-composable-from-mathlib, 11 YES-add-as-is, 3 YES-but-generalise-first, 8 NO-mathlib-has-it, 19 BORDERLINE-needs-human, 4 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -566,6 +566,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: external to file count: 0; all explicit calls: 0; locations: None; documentation: Roth/Wronskian.lean:32 lists as Main result; inline related: Roth/GenWronskian.lean:41 generalized easy direction, Roth/GenWronskian.lean:262 calls hard implication, Roth/Separation.lean:534 calls hard implication; scope: Whole production Lean source explicit references and inline audit, not opaque kernel/simp closure.
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.wronskian_eq_zero_iff.md).
 
+### Completed: `MvPolynomial.taylor`
+
+- Type: `{σ : Type u_1} → {R : Type u_2} → [CommSemiring R] → (σ → R) → MvPolynomial σ R →ₐ[R] MvPolynomial σ R`
+- What: Translation of multivariate polynomials by a constant vector, P(X+α).
+- How: Universal algebra evaluation at X j + C (α j).
+- Hypotheses: Arbitrary independent variable/coefficient universes, commutative coefficient semiring, arbitrary translation vector; no finiteness or characteristic restrictions.
+- Project dependencies: None
+- Caller summary: all explicit callers: 24; in declaring module: 17; external: 7; identifier occurrences: 41; detail: callers.json; scope: Source-level explicit references, not opaque kernel/simp closure.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -696,6 +706,8 @@ Completed `Roth.wronskian_ne_zero_of_linearIndependent`: Pinned binary Polynomia
 
 Completed `Roth.wronskian_eq_zero_iff`: Five actual methods on current, standard and abstract forms. Exact binary IsCoprime.wronskian_eq_zero_iff is a coprime/derivatives-zero theorem, not the n-ary criterion. Pinned TODO explicitly requests n-tuples. Mathlib-only raw iff exact? fails without timeout.
 
+Completed `MvPolynomial.taylor`: aeval/bind₁ yield the exact term; Polynomial.taylorAlgHom and taylorEquiv cover one variable only. Named multivariate shift not located; missing local index is not absence proof.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -801,6 +813,8 @@ Completed `Roth.sum_natDegree_update_lt`: Standard leading-term cancellation plu
 Completed `Roth.wronskian_ne_zero_of_linearIndependent`: The existing general elementary-shear independence law replaces one helper, not the Wronskian criterion. Downstream iff and generalized Wronskian theorem are circular replacements.
 
 Completed `Roth.wronskian_eq_zero_iff`: Propositional assembly duplicates no substantive mathlib theorem: both constituent criterion lemmas are project-local. Generic matrix determinant dependence helps only the easy direction with scalar/jet bridges.
+
+Completed `MvPolynomial.taylor`: MvPolynomial.aeval (fun j ↦ X j + C (α j)), MvPolynomial.bind₁ with the same substitution, Polynomial.taylorAlgHom: univariate analogy only
 
 ## Part 5: Generalization opportunities
 
@@ -911,6 +925,8 @@ Completed `Roth.wronskian_ne_zero_of_linearIndependent`: Expanded CommRing+IsDom
 
 Completed `Roth.wronskian_eq_zero_iff`: Complete expanded CommRing+IsDomain+CharZero iff compiled using fraction-field hard proof plus generic easy direction, and recovers original Field iff. Changing fixed Field parent interfaces is Class5, not a one-edit weakening. Compiled ZMod2 and CharZero product-ring counterexamples reject dropping CharZero and IsDomain.
 
+Completed `MvPolynomial.taylor`: Already maximally general in this MvPolynomial/AlgHom representation; generic substitutions already aeval. Ring-only AlgEquiv is complementary infrastructure, not weakening.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -1017,6 +1033,8 @@ Completed `Roth.sum_natDegree_update_lt`: Potential normalized quotient cancella
 Completed `Roth.wronskian_ne_zero_of_linearIndependent`: N-ary polynomial Hasse Wronskian criterion, coherent binary/n-ary naming bridge, potentially reusable polynomial echelon basis.
 
 Completed `Roth.wronskian_eq_zero_iff`: N-ary Hasse Wronskian foundation and criterion, coherent binary/n-ary naming and finite column reindexing.
+
+Completed `MvPolynomial.taylor`: Design question: stable named multivariate translation with Hasse coefficient, composition and inverse APIs.
 
 ## Part 7: Junk / removable
 
@@ -1127,6 +1145,8 @@ Completed `Roth.wronskian_ne_zero_of_linearIndependent`: No: same-module iff plu
 
 Completed `Roth.wronskian_eq_zero_iff`: No deletion: zero named source callers, but explicitly documented main public criterion; related downstream results use its primary implication. No simp attribute currently.
 
+Completed `MvPolynomial.taylor`: One-line definition with concrete semantic/API-stability exemption; no automatic deletion merely from line count.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -1183,6 +1203,7 @@ Completed `Roth.wronskian_eq_zero_iff`: No deletion: zero named source callers, 
 | 50 | `Roth.sum_natDegree_update_lt` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.sum_natDegree_update_lt.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.sum_natDegree_update_lt/root-acceptance.json) |
 | 51 | `Roth.wronskian_ne_zero_of_linearIndependent` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.wronskian_ne_zero_of_linearIndependent.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.wronskian_ne_zero_of_linearIndependent/root-acceptance.json) |
 | 52 | `Roth.wronskian_eq_zero_iff` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.wronskian_eq_zero_iff.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.wronskian_eq_zero_iff/root-acceptance.json) |
+| 53 | `MvPolynomial.taylor` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.taylor/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -1286,11 +1307,13 @@ Completed `Roth.wronskian_ne_zero_of_linearIndependent` action: BORDERLINE-needs
 
 Completed `Roth.wronskian_eq_zero_iff` action: Retain locally; resolve foundation Domain/Field, finite indexing and public iff/simp API questions before upstreaming.
 
+Completed `MvPolynomial.taylor` action: Retain project-local pending upstream decision on named translation API versus direct aeval; see three concrete Phase 7 questions.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `MvPolynomial.taylor` next. Supporting identities receive their own applicable checks.
+   `MvPolynomial.taylor_apply` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
