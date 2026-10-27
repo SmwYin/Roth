@@ -1,0 +1,18 @@
+{
+  "declaration": "Roth.normOne_le_card_mul",
+  "kind": "theorem",
+  "type": "∀ {σ : Type u_1} (P : MvPolynomial σ ℤ) {B : ℝ}, (∀ (d : σ →₀ ℕ), |((P.coeff d : ℤ) : ℝ)| ≤ B) → Roth.normOne P ≤ (P.support.card : ℝ) * B",
+  "what": "Coefficient ℓ¹ sum bounded by support size times uniform coefficient bound.",
+  "how": "Direct specialization of Finset.sum_le_card_nsmul; unfold normOne and rewrite nsmul_eq_mul.",
+  "hypotheses": "Arbitrary variable type; integer coefficients and real bound fixed by normOne interface; global coefficient bound can weaken to support-only.",
+  "project_dependencies": [
+    "Roth.normOne"
+  ],
+  "caller_summary": "One explicit caller Roth.abs_coeff_det_hasseDeriv_le at CoeffNorm.lean:270; full caller replay succeeds with inline Finset bound; canonical293 unique audit confirms sole direct proof consumer.",
+  "mathlib_api_audit": "Finset.sum_le_card_nsmul at Algebra/Order/BigOperators/Group/Finset.lean:285 generated from prod_le_pow_card. Current native signature uses Preorder.",
+  "moral_duplications": "Same scalar finite-family inequality independently used by abs_coeff_diag_le; exact target already duplicates existing generic Finset theorem.",
+  "generalization": "Support-only hB and arbitrary AddCommMonoid/Preorder/AddLeftMono codomain compile; existing mathlib law covers both.",
+  "missing_api": "No missing API required for this bound; broader coefficient norm representation issues do not obstruct this theorem.",
+  "junk": "Thin wrapper with one caller; useful estimate, redundant public declaration.",
+  "action": "NO-mathlib-has-it: inline Finset.sum_le_card_nsmul via local hsize in determinant caller and delete wrapper in separately authorized implementation. Keep source explanation in Roth/CoeffNorm.lean."
+}

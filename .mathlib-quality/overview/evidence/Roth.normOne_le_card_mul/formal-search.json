@@ -1,0 +1,585 @@
+[
+  {
+    "request": {
+      "query": "In an ordered additive commutative monoid sum over finset bounded above by cardinality nsmul bound",
+      "num_results": 5
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Finset.sum_le_card_nsmul\",\n      \"informal_name\": \"Sum over Finite Set Bounded by Cardinality Times Maximum Element\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {N : Type u_5} [inst : AddCommMonoid N] [inst_1 : PartialOrder N] [AddLeftMono N] (s : Finset ι)\\n  (f : ι → N) (n : N), (∀ x ∈ s, f x ≤ n) → s.sum f ≤ s.card • n\",\n      \"informal_description\": \"For any additive commutative monoid $N$ equipped with a partial order $\\\\leq$ where addition is left-monotonic, given a finite set $s$, a function $f : \\\\iota \\\\to N$, and an element $n \\\\in N$, if $f(x) \\\\leq n$ for all $x \\\\in s$, then the sum of $f(x)$ over all $x \\\\in s$ is less than or equal to the product of the cardinality of $s$ and $n$. Symbolically, $\\\\sum_{x \\\\in s} f(x) \\\\leq |s| \\\\cdot n$.\",\n      \"path\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    },\n    {\n      \"formal_name\": \"Finset.card_nsmul_le_sum\",\n      \"informal_name\": \"Cardinality times element is less than or equal to sum over finite set\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {N : Type u_5} [inst : AddCommMonoid N] [inst_1 : PartialOrder N] [AddLeftMono N] (s : Finset ι)\\n  (f : ι → N) (n : N), (∀ x ∈ s, n ≤ f x) → s.card • n ≤ s.sum f\",\n      \"informal_description\": \"For any finite set $s$ of type $\\\\iota$ and function $f : \\\\iota \\\\to N$ where $N$ is an additive commutative monoid equipped with a partial order and left addition monotonicity, if every element $x \\\\in s$ satisfies $n \\\\leq f(x)$, then the scalar multiplication of the cardinality of $s$ by $n$ is less than or equal to the sum of $f$ over $s$. Formally, $|s| \\\\cdot n \\\\leq \\\\sum_{x \\\\in s} f(x)$.\",\n      \"path\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    },\n    {\n      \"formal_name\": \"List.sum_le_card_nsmul\",\n      \"informal_name\": \"Bounded Sum Inequality in Ordered Additive Monoids\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {M : Type u_3} [inst : AddMonoid M] [inst_1 : Preorder M] [AddRightMono M] [AddLeftMono M] (l : List M) (n : M),\\n  (∀ (x : M), x ∈ l → x ≤ n) → l.sum ≤ l.length • n\",\n      \"informal_description\": \"In an additive monoid equipped with a preorder where addition is monotonic on both sides, for any list $ l $ of elements and any element $ n $, if every element $ x $ in $ l $ satisfies $ x \\\\leq n $, then the sum of the list $ \\\\sum l $ is less than or equal to the product of the list's length and $ n $, i.e., $ \\\\sum l \\\\leq \\\\mathrm{length}(l) \\\\cdot n $. Here, $ \\\\cdot $ denotes the canonical scalar multiplication by natural numbers in the additive monoid.\",\n      \"path\": \"Mathlib.Algebra.Order.BigOperators.Group.List\"\n    },\n    {\n      \"formal_name\": \"List.card_nsmul_le_sum\",\n      \"informal_name\": \"List Sum Bounded Below by Scalar Multiplication in Additive Monoids\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {M : Type u_3} [inst : AddMonoid M] [inst_1 : Preorder M] [AddRightMono M] [AddLeftMono M] (l : List M) (n : M),\\n  (∀ (x : M), x ∈ l → n ≤ x) → l.length • n ≤ l.sum\",\n      \"informal_description\": \"In an additive monoid $M$ equipped with a preorder where addition is monotonic on both sides, if every element $x$ in a list $l$ satisfies $n \\\\leq x$, then the scalar multiplication of $n$ by the length of $l$ is less than or equal to the sum of the list elements. Formally, if $\\\\forall x \\\\in l, n \\\\leq x$, then $\\\\text{length}(l) \\\\cdot n \\\\leq \\\\sum_{x \\\\in l} x$.\",\n      \"path\": \"Mathlib.Algebra.Order.BigOperators.Group.List\"\n    },\n    {\n      \"formal_name\": \"Finset.sum_le_sum_range\",\n      \"informal_name\": \"Sum of Bounded Elements in Finite Set is Less Than or Equal to Adjusted Range Sum\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {s : Finset ℤ} {c : ℤ}, (∀ x ∈ s, x ≤ c) → ∑ x ∈ s, x ≤ ∑ n ∈ Finset.range s.card, (c - ↑n)\",\n      \"informal_description\": \"For any finite set $ s $ of integers and any integer $ c $, if every element $ x $ in $ s $ satisfies $ x \\\\leq c $, then the sum of the elements in $ s $ is less than or equal to the sum of $ c - n $ for $ n $ ranging from 0 to $ |s| - 1 $, where $ |s| $ denotes the cardinality of $ s $.\",\n      \"path\": \"Mathlib.Algebra.Order.Group.Int.Sum\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Finset.sum_le_card_nsmul",
+            "informal_name": "Sum over Finite Set Bounded by Cardinality Times Maximum Element",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_1} {N : Type u_5} [inst : AddCommMonoid N] [inst_1 : PartialOrder N] [AddLeftMono N] (s : Finset ι)\n  (f : ι → N) (n : N), (∀ x ∈ s, f x ≤ n) → s.sum f ≤ s.card • n",
+            "informal_description": "For any additive commutative monoid $N$ equipped with a partial order $\\leq$ where addition is left-monotonic, given a finite set $s$, a function $f : \\iota \\to N$, and an element $n \\in N$, if $f(x) \\leq n$ for all $x \\in s$, then the sum of $f(x)$ over all $x \\in s$ is less than or equal to the product of the cardinality of $s$ and $n$. Symbolically, $\\sum_{x \\in s} f(x) \\leq |s| \\cdot n$.",
+            "path": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+          },
+          {
+            "formal_name": "Finset.card_nsmul_le_sum",
+            "informal_name": "Cardinality times element is less than or equal to sum over finite set",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_1} {N : Type u_5} [inst : AddCommMonoid N] [inst_1 : PartialOrder N] [AddLeftMono N] (s : Finset ι)\n  (f : ι → N) (n : N), (∀ x ∈ s, n ≤ f x) → s.card • n ≤ s.sum f",
+            "informal_description": "For any finite set $s$ of type $\\iota$ and function $f : \\iota \\to N$ where $N$ is an additive commutative monoid equipped with a partial order and left addition monotonicity, if every element $x \\in s$ satisfies $n \\leq f(x)$, then the scalar multiplication of the cardinality of $s$ by $n$ is less than or equal to the sum of $f$ over $s$. Formally, $|s| \\cdot n \\leq \\sum_{x \\in s} f(x)$.",
+            "path": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+          },
+          {
+            "formal_name": "List.sum_le_card_nsmul",
+            "informal_name": "Bounded Sum Inequality in Ordered Additive Monoids",
+            "kind": "theorem",
+            "type": "∀ {M : Type u_3} [inst : AddMonoid M] [inst_1 : Preorder M] [AddRightMono M] [AddLeftMono M] (l : List M) (n : M),\n  (∀ (x : M), x ∈ l → x ≤ n) → l.sum ≤ l.length • n",
+            "informal_description": "In an additive monoid equipped with a preorder where addition is monotonic on both sides, for any list $ l $ of elements and any element $ n $, if every element $ x $ in $ l $ satisfies $ x \\leq n $, then the sum of the list $ \\sum l $ is less than or equal to the product of the list's length and $ n $, i.e., $ \\sum l \\leq \\mathrm{length}(l) \\cdot n $. Here, $ \\cdot $ denotes the canonical scalar multiplication by natural numbers in the additive monoid.",
+            "path": "Mathlib.Algebra.Order.BigOperators.Group.List"
+          },
+          {
+            "formal_name": "List.card_nsmul_le_sum",
+            "informal_name": "List Sum Bounded Below by Scalar Multiplication in Additive Monoids",
+            "kind": "theorem",
+            "type": "∀ {M : Type u_3} [inst : AddMonoid M] [inst_1 : Preorder M] [AddRightMono M] [AddLeftMono M] (l : List M) (n : M),\n  (∀ (x : M), x ∈ l → n ≤ x) → l.length • n ≤ l.sum",
+            "informal_description": "In an additive monoid $M$ equipped with a preorder where addition is monotonic on both sides, if every element $x$ in a list $l$ satisfies $n \\leq x$, then the scalar multiplication of $n$ by the length of $l$ is less than or equal to the sum of the list elements. Formally, if $\\forall x \\in l, n \\leq x$, then $\\text{length}(l) \\cdot n \\leq \\sum_{x \\in l} x$.",
+            "path": "Mathlib.Algebra.Order.BigOperators.Group.List"
+          },
+          {
+            "formal_name": "Finset.sum_le_sum_range",
+            "informal_name": "Sum of Bounded Elements in Finite Set is Less Than or Equal to Adjusted Range Sum",
+            "kind": "theorem",
+            "type": "∀ {s : Finset ℤ} {c : ℤ}, (∀ x ∈ s, x ≤ c) → ∑ x ∈ s, x ≤ ∑ n ∈ Finset.range s.card, (c - ↑n)",
+            "informal_description": "For any finite set $ s $ of integers and any integer $ c $, if every element $ x $ in $ s $ satisfies $ x \\leq c $, then the sum of the elements in $ s $ is less than or equal to the sum of $ c - n $ for $ n $ ranging from 0 to $ |s| - 1 $, where $ |s| $ denotes the cardinality of $ s $.",
+            "path": "Mathlib.Algebra.Order.Group.Int.Sum"
+          }
+        ]
+      },
+      "isError": false
+    },
+    "method": "lean_leanfinder",
+    "form": "abstract"
+  },
+  {
+    "request": {
+      "query": "A multivariate integer polynomial with every coefficient bounded in absolute value by B has sum of absolute coefficients at most support cardinality times B",
+      "num_results": 5
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.numBound\",\n      \"informal_name\": \"Numerical Bound for Multivariate Polynomials in Chevalley's Theorem\",\n      \"kind\": \"definition\",\n      \"type\": \"ℕ → (ℕ → ℕ) → ℕ → ℕ\",\n      \"informal_description\": \"A function that takes a natural number $n$, a function $f : \\\\mathbb{N} \\\\to \\\\mathbb{N}$, and another natural number $m$, returning a natural number used to establish well-founded recursion in the context of multivariate polynomials and Chevalley's theorem. It computes bounds by recursively applying $f$ to $n$ and decrementing $m$.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.degBound\",\n      \"informal_name\": \"Degree Bound for Multivariate Polynomials in Chevalley's Theorem\",\n      \"kind\": \"definition\",\n      \"type\": \"ℕ → (ℕ → ℕ) → ℕ → ℕ\",\n      \"informal_description\": \"A function that computes a degree bound for multivariate polynomials, taking a natural number $n$, a function $f : \\\\mathbb{N} \\\\to \\\\mathbb{N}$, and an element of the sum type $\\\\mathbb{N} \\\\oplus \\\\mathbb{N}$. For left components, it applies $f$ to $n$, and for right components, it returns $n$ directly. This is used in the proof of Chevalley's theorem to establish well-founded recursion for multivariate polynomial constructions.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.numBound\",\n      \"informal_name\": \"Numerical Bound for Chevalley's Theorem in Multivariate Polynomials with Multiset Counts\",\n      \"kind\": \"definition\",\n      \"type\": \"ℕ → (m : ℕ) → ℕ → Multiset (Fin m) → ℕ\",\n      \"informal_description\": \"A function that computes a numerical bound used in the context of Chevalley's theorem for multivariate polynomials. It takes natural numbers $k$, $m$, $n$ and a multiset $d$ of elements of type $\\\\text{Fin}\\\\, m$, and returns a natural number obtained by applying the multivariate polynomial bound function to $k + n$ and a function that counts the occurrences of each element in the multiset $d$ after mapping each element to its value in $\\\\mathbb{N}$, then adding 1.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.degBound\",\n      \"informal_name\": \"Degree Bound for Chevalley's Theorem Using Multiset of Finite Elements\",\n      \"kind\": \"definition\",\n      \"type\": \"ℕ → (m : ℕ) → ℕ → Multiset (Fin m) → ℕ\",\n      \"informal_description\": \"The function computes a degree bound for Chevalley's theorem by taking $k + n$ and a function that adds 1 to the count of each natural number obtained from mapping $\\\\text{Fin.val}$ over the multiset $d$ of type $\\\\text{Fin} \\\\, m$. This constructs a degree bound used in the proof of Chevalley's theorem for multivariate polynomial recursions.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"Polynomial.card_mahlerMeasure_le_prod\",\n      \"informal_name\": \"Cardinality Bound for Integer Polynomials with Bounded Mahler Measure and Degree\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (n : ℕ) (B : NNReal),\\n  {p | p.natDegree ≤ n ∧ (Polynomial.map (Int.castRingHom ℂ) p).mahlerMeasure ≤ ↑B}.ncard ≤\\n    ∏ i, (2 * ⌊↑(n.choose ↑i) * B⌋₊ + 1)\",\n      \"informal_description\": \"For any natural number $ n $ and non-negative real number $ B $, the number of integer polynomials $ p $ with natural degree at most $ n $ and Mahler measure $ \\\\mathcal{M}(p) \\\\leq B $ is at most the product over $ i = 0 $ to $ n $ of $ 2 \\\\left\\\\lfloor \\\\binom{n}{i} B \\\\right\\\\rfloor + 1 $.\",\n      \"path\": \"Mathlib.NumberTheory.MahlerMeasure\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "ChevalleyThm.MvPolynomialC.numBound",
+            "informal_name": "Numerical Bound for Multivariate Polynomials in Chevalley's Theorem",
+            "kind": "definition",
+            "type": "ℕ → (ℕ → ℕ) → ℕ → ℕ",
+            "informal_description": "A function that takes a natural number $n$, a function $f : \\mathbb{N} \\to \\mathbb{N}$, and another natural number $m$, returning a natural number used to establish well-founded recursion in the context of multivariate polynomials and Chevalley's theorem. It computes bounds by recursively applying $f$ to $n$ and decrementing $m$.",
+            "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+          },
+          {
+            "formal_name": "ChevalleyThm.MvPolynomialC.degBound",
+            "informal_name": "Degree Bound for Multivariate Polynomials in Chevalley's Theorem",
+            "kind": "definition",
+            "type": "ℕ → (ℕ → ℕ) → ℕ → ℕ",
+            "informal_description": "A function that computes a degree bound for multivariate polynomials, taking a natural number $n$, a function $f : \\mathbb{N} \\to \\mathbb{N}$, and an element of the sum type $\\mathbb{N} \\oplus \\mathbb{N}$. For left components, it applies $f$ to $n$, and for right components, it returns $n$ directly. This is used in the proof of Chevalley's theorem to establish well-founded recursion for multivariate polynomial constructions.",
+            "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+          },
+          {
+            "formal_name": "ChevalleyThm.numBound",
+            "informal_name": "Numerical Bound for Chevalley's Theorem in Multivariate Polynomials with Multiset Counts",
+            "kind": "definition",
+            "type": "ℕ → (m : ℕ) → ℕ → Multiset (Fin m) → ℕ",
+            "informal_description": "A function that computes a numerical bound used in the context of Chevalley's theorem for multivariate polynomials. It takes natural numbers $k$, $m$, $n$ and a multiset $d$ of elements of type $\\text{Fin}\\, m$, and returns a natural number obtained by applying the multivariate polynomial bound function to $k + n$ and a function that counts the occurrences of each element in the multiset $d$ after mapping each element to its value in $\\mathbb{N}$, then adding 1.",
+            "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+          },
+          {
+            "formal_name": "ChevalleyThm.degBound",
+            "informal_name": "Degree Bound for Chevalley's Theorem Using Multiset of Finite Elements",
+            "kind": "definition",
+            "type": "ℕ → (m : ℕ) → ℕ → Multiset (Fin m) → ℕ",
+            "informal_description": "The function computes a degree bound for Chevalley's theorem by taking $k + n$ and a function that adds 1 to the count of each natural number obtained from mapping $\\text{Fin.val}$ over the multiset $d$ of type $\\text{Fin} \\, m$. This constructs a degree bound used in the proof of Chevalley's theorem for multivariate polynomial recursions.",
+            "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+          },
+          {
+            "formal_name": "Polynomial.card_mahlerMeasure_le_prod",
+            "informal_name": "Cardinality Bound for Integer Polynomials with Bounded Mahler Measure and Degree",
+            "kind": "theorem",
+            "type": "∀ (n : ℕ) (B : NNReal),\n  {p | p.natDegree ≤ n ∧ (Polynomial.map (Int.castRingHom ℂ) p).mahlerMeasure ≤ ↑B}.ncard ≤\n    ∏ i, (2 * ⌊↑(n.choose ↑i) * B⌋₊ + 1)",
+            "informal_description": "For any natural number $ n $ and non-negative real number $ B $, the number of integer polynomials $ p $ with natural degree at most $ n $ and Mahler measure $ \\mathcal{M}(p) \\leq B $ is at most the product over $ i = 0 $ to $ n $ of $ 2 \\left\\lfloor \\binom{n}{i} B \\right\\rfloor + 1 $.",
+            "path": "Mathlib.NumberTheory.MahlerMeasure"
+          }
+        ]
+      },
+      "isError": false
+    },
+    "method": "lean_leanfinder",
+    "form": "current"
+  },
+  {
+    "request": {
+      "query": "Finite sum of terms bounded above by B is at most cardinality times B",
+      "num_results": 5
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Finset.sum_le_card_nsmul\",\n      \"informal_name\": \"Sum over Finite Set Bounded by Cardinality Times Maximum Element\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {N : Type u_5} [inst : AddCommMonoid N] [inst_1 : PartialOrder N] [AddLeftMono N] (s : Finset ι)\\n  (f : ι → N) (n : N), (∀ x ∈ s, f x ≤ n) → s.sum f ≤ s.card • n\",\n      \"informal_description\": \"For any additive commutative monoid $N$ equipped with a partial order $\\\\leq$ where addition is left-monotonic, given a finite set $s$, a function $f : \\\\iota \\\\to N$, and an element $n \\\\in N$, if $f(x) \\\\leq n$ for all $x \\\\in s$, then the sum of $f(x)$ over all $x \\\\in s$ is less than or equal to the product of the cardinality of $s$ and $n$. Symbolically, $\\\\sum_{x \\\\in s} f(x) \\\\leq |s| \\\\cdot n$.\",\n      \"path\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    },\n    {\n      \"formal_name\": \"Finset.card_nsmul_le_sum\",\n      \"informal_name\": \"Cardinality times element is less than or equal to sum over finite set\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {N : Type u_5} [inst : AddCommMonoid N] [inst_1 : PartialOrder N] [AddLeftMono N] (s : Finset ι)\\n  (f : ι → N) (n : N), (∀ x ∈ s, n ≤ f x) → s.card • n ≤ s.sum f\",\n      \"informal_description\": \"For any finite set $s$ of type $\\\\iota$ and function $f : \\\\iota \\\\to N$ where $N$ is an additive commutative monoid equipped with a partial order and left addition monotonicity, if every element $x \\\\in s$ satisfies $n \\\\leq f(x)$, then the scalar multiplication of the cardinality of $s$ by $n$ is less than or equal to the sum of $f$ over $s$. Formally, $|s| \\\\cdot n \\\\leq \\\\sum_{x \\\\in s} f(x)$.\",\n      \"path\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    },\n    {\n      \"formal_name\": \"List.sum_le_card_nsmul\",\n      \"informal_name\": \"Bounded Sum Inequality in Ordered Additive Monoids\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {M : Type u_3} [inst : AddMonoid M] [inst_1 : Preorder M] [AddRightMono M] [AddLeftMono M] (l : List M) (n : M),\\n  (∀ (x : M), x ∈ l → x ≤ n) → l.sum ≤ l.length • n\",\n      \"informal_description\": \"In an additive monoid equipped with a preorder where addition is monotonic on both sides, for any list $ l $ of elements and any element $ n $, if every element $ x $ in $ l $ satisfies $ x \\\\leq n $, then the sum of the list $ \\\\sum l $ is less than or equal to the product of the list's length and $ n $, i.e., $ \\\\sum l \\\\leq \\\\mathrm{length}(l) \\\\cdot n $. Here, $ \\\\cdot $ denotes the canonical scalar multiplication by natural numbers in the additive monoid.\",\n      \"path\": \"Mathlib.Algebra.Order.BigOperators.Group.List\"\n    },\n    {\n      \"formal_name\": \"Fintype.exists_sum_fiber_le_of_sum_le_nsmul\",\n      \"informal_name\": \"Pigeonhole Principle: Total Weight Bound Implies Existence of Bounded Fiber\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u} {β : Type v} {M : Type w} [inst : DecidableEq β] [inst_1 : Fintype α] [inst_2 : Fintype β] (f : α → β)\\n  {w : α → M} {b : M} [inst_3 : AddCommMonoid M] [inst_4 : LinearOrder M] [IsOrderedCancelAddMonoid M] [Nonempty β],\\n  ∑ x, w x ≤ Fintype.card β • b → ∃ y, ∑ x with f x = y, w x ≤ b\",\n      \"informal_description\": \"Let $\\\\beta$ be a finite non-empty type. If the total sum of weights $w(x)$ over all elements is at most $\\\\#\\\\beta \\\\cdot b$, then there exists an element $y \\\\in \\\\beta$ such that the sum of weights for all $x$ with $f(x) = y$ is at most $b$.\",\n      \"path\": \"Mathlib.Combinatorics.Pigeonhole\"\n    },\n    {\n      \"formal_name\": \"Finset.exists_sum_fiber_le_of_sum_fiber_nonneg_of_sum_le_nsmul\",\n      \"informal_name\": \"Pigeonhole Principle: Bounded Fiber Sum\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u} {β : Type v} {M : Type w} [inst : DecidableEq β] {s : Finset α} {t : Finset β} {f : α → β} {w : α → M}\\n  {b : M} [inst_1 : AddCommMonoid M] [inst_2 : LinearOrder M] [IsOrderedCancelAddMonoid M],\\n  (∀ y ∉ t, 0 ≤ ∑ x ∈ s with f x = y, w x) →\\n    t.Nonempty → ∑ x ∈ s, w x ≤ t.card • b → ∃ y ∈ t, ∑ x ∈ s with f x = y, w x ≤ b\",\n      \"informal_description\": \"Let $ s $ be a finite set, $ f $ a function from $ s $ to some type, and $ w $ a weight function assigning non-negative values to elements of $ s $. Suppose that for every $ y $ not in a non-empty finite set $ t $, the sum $ \\\\sum_{x \\\\in s, f(x) = y} w(x) \\\\geq 0 $. If the total sum $ \\\\sum_{x \\\\in s} w(x) \\\\leq \\\\#t \\\\cdot b $, then there exists an element $ y \\\\in t $ such that $ \\\\sum_{x \\\\in s, f(x) = y} w(x) \\\\leq b $.\",\n      \"path\": \"Mathlib.Combinatorics.Pigeonhole\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Finset.sum_le_card_nsmul",
+            "informal_name": "Sum over Finite Set Bounded by Cardinality Times Maximum Element",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_1} {N : Type u_5} [inst : AddCommMonoid N] [inst_1 : PartialOrder N] [AddLeftMono N] (s : Finset ι)\n  (f : ι → N) (n : N), (∀ x ∈ s, f x ≤ n) → s.sum f ≤ s.card • n",
+            "informal_description": "For any additive commutative monoid $N$ equipped with a partial order $\\leq$ where addition is left-monotonic, given a finite set $s$, a function $f : \\iota \\to N$, and an element $n \\in N$, if $f(x) \\leq n$ for all $x \\in s$, then the sum of $f(x)$ over all $x \\in s$ is less than or equal to the product of the cardinality of $s$ and $n$. Symbolically, $\\sum_{x \\in s} f(x) \\leq |s| \\cdot n$.",
+            "path": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+          },
+          {
+            "formal_name": "Finset.card_nsmul_le_sum",
+            "informal_name": "Cardinality times element is less than or equal to sum over finite set",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_1} {N : Type u_5} [inst : AddCommMonoid N] [inst_1 : PartialOrder N] [AddLeftMono N] (s : Finset ι)\n  (f : ι → N) (n : N), (∀ x ∈ s, n ≤ f x) → s.card • n ≤ s.sum f",
+            "informal_description": "For any finite set $s$ of type $\\iota$ and function $f : \\iota \\to N$ where $N$ is an additive commutative monoid equipped with a partial order and left addition monotonicity, if every element $x \\in s$ satisfies $n \\leq f(x)$, then the scalar multiplication of the cardinality of $s$ by $n$ is less than or equal to the sum of $f$ over $s$. Formally, $|s| \\cdot n \\leq \\sum_{x \\in s} f(x)$.",
+            "path": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+          },
+          {
+            "formal_name": "List.sum_le_card_nsmul",
+            "informal_name": "Bounded Sum Inequality in Ordered Additive Monoids",
+            "kind": "theorem",
+            "type": "∀ {M : Type u_3} [inst : AddMonoid M] [inst_1 : Preorder M] [AddRightMono M] [AddLeftMono M] (l : List M) (n : M),\n  (∀ (x : M), x ∈ l → x ≤ n) → l.sum ≤ l.length • n",
+            "informal_description": "In an additive monoid equipped with a preorder where addition is monotonic on both sides, for any list $ l $ of elements and any element $ n $, if every element $ x $ in $ l $ satisfies $ x \\leq n $, then the sum of the list $ \\sum l $ is less than or equal to the product of the list's length and $ n $, i.e., $ \\sum l \\leq \\mathrm{length}(l) \\cdot n $. Here, $ \\cdot $ denotes the canonical scalar multiplication by natural numbers in the additive monoid.",
+            "path": "Mathlib.Algebra.Order.BigOperators.Group.List"
+          },
+          {
+            "formal_name": "Fintype.exists_sum_fiber_le_of_sum_le_nsmul",
+            "informal_name": "Pigeonhole Principle: Total Weight Bound Implies Existence of Bounded Fiber",
+            "kind": "theorem",
+            "type": "∀ {α : Type u} {β : Type v} {M : Type w} [inst : DecidableEq β] [inst_1 : Fintype α] [inst_2 : Fintype β] (f : α → β)\n  {w : α → M} {b : M} [inst_3 : AddCommMonoid M] [inst_4 : LinearOrder M] [IsOrderedCancelAddMonoid M] [Nonempty β],\n  ∑ x, w x ≤ Fintype.card β • b → ∃ y, ∑ x with f x = y, w x ≤ b",
+            "informal_description": "Let $\\beta$ be a finite non-empty type. If the total sum of weights $w(x)$ over all elements is at most $\\#\\beta \\cdot b$, then there exists an element $y \\in \\beta$ such that the sum of weights for all $x$ with $f(x) = y$ is at most $b$.",
+            "path": "Mathlib.Combinatorics.Pigeonhole"
+          },
+          {
+            "formal_name": "Finset.exists_sum_fiber_le_of_sum_fiber_nonneg_of_sum_le_nsmul",
+            "informal_name": "Pigeonhole Principle: Bounded Fiber Sum",
+            "kind": "theorem",
+            "type": "∀ {α : Type u} {β : Type v} {M : Type w} [inst : DecidableEq β] {s : Finset α} {t : Finset β} {f : α → β} {w : α → M}\n  {b : M} [inst_1 : AddCommMonoid M] [inst_2 : LinearOrder M] [IsOrderedCancelAddMonoid M],\n  (∀ y ∉ t, 0 ≤ ∑ x ∈ s with f x = y, w x) →\n    t.Nonempty → ∑ x ∈ s, w x ≤ t.card • b → ∃ y ∈ t, ∑ x ∈ s with f x = y, w x ≤ b",
+            "informal_description": "Let $ s $ be a finite set, $ f $ a function from $ s $ to some type, and $ w $ a weight function assigning non-negative values to elements of $ s $. Suppose that for every $ y $ not in a non-empty finite set $ t $, the sum $ \\sum_{x \\in s, f(x) = y} w(x) \\geq 0 $. If the total sum $ \\sum_{x \\in s} w(x) \\leq \\#t \\cdot b $, then there exists an element $ y \\in t $ such that $ \\sum_{x \\in s, f(x) = y} w(x) \\leq b $.",
+            "path": "Mathlib.Combinatorics.Pigeonhole"
+          }
+        ]
+      },
+      "isError": false
+    },
+    "method": "lean_leanfinder",
+    "form": "standard"
+  },
+  {
+    "request": {
+      "query": "In an ordered additive commutative monoid sum over finset bounded above by cardinality nsmul bound",
+      "num_results": 5
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finset.sum_le_card_nsmul\",\n      \"module_name\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {N : Type u_5} [inst : AddCommMonoid N] [inst_1 : PartialOrder N] [AddLeftMono N] (s : Finset ι)\\n  (f : ι → N) (n : N), (∀ x ∈ s, f x ≤ n) → s.sum f ≤ s.card • n\"\n    },\n    {\n      \"name\": \"Finset.card_nsmul_le_sum\",\n      \"module_name\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {N : Type u_5} [inst : AddCommMonoid N] [inst_1 : PartialOrder N] [AddLeftMono N] (s : Finset ι)\\n  (f : ι → N) (n : N), (∀ x ∈ s, n ≤ f x) → s.card • n ≤ s.sum f\"\n    },\n    {\n      \"name\": \"Multiset.sum_le_card_nsmul\",\n      \"module_name\": \"Mathlib.Algebra.Order.BigOperators.Group.Multiset\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_2} [inst : AddCommMonoid α] [inst_1 : PartialOrder α] [AddLeftMono α] (s : Multiset α) (n : α),\\n  (∀ (x : α), x ∈ s → x ≤ n) → s.sum ≤ s.card • n\"\n    },\n    {\n      \"name\": \"Finset.card_nsmul_le\",\n      \"module_name\": \"Mathlib.Algebra.Group.Pointwise.Finset.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_2} [inst : DecidableEq α] [inst_1 : AddMonoid α] {s : Finset α} {n : ℕ}, (n • s).card ≤ s.card ^ n\"\n    },\n    {\n      \"name\": \"List.sum_le_card_nsmul\",\n      \"module_name\": \"Mathlib.Algebra.Order.BigOperators.Group.List\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {M : Type u_3} [inst : AddMonoid M] [inst_1 : Preorder M] [AddRightMono M] [AddLeftMono M] (l : List M) (n : M),\\n  (∀ (x : M), x ∈ l → x ≤ n) → l.sum ≤ l.length • n\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Finset.sum_le_card_nsmul",
+            "module_name": "Mathlib.Algebra.Order.BigOperators.Group.Finset",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_1} {N : Type u_5} [inst : AddCommMonoid N] [inst_1 : PartialOrder N] [AddLeftMono N] (s : Finset ι)\n  (f : ι → N) (n : N), (∀ x ∈ s, f x ≤ n) → s.sum f ≤ s.card • n"
+          },
+          {
+            "name": "Finset.card_nsmul_le_sum",
+            "module_name": "Mathlib.Algebra.Order.BigOperators.Group.Finset",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_1} {N : Type u_5} [inst : AddCommMonoid N] [inst_1 : PartialOrder N] [AddLeftMono N] (s : Finset ι)\n  (f : ι → N) (n : N), (∀ x ∈ s, n ≤ f x) → s.card • n ≤ s.sum f"
+          },
+          {
+            "name": "Multiset.sum_le_card_nsmul",
+            "module_name": "Mathlib.Algebra.Order.BigOperators.Group.Multiset",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_2} [inst : AddCommMonoid α] [inst_1 : PartialOrder α] [AddLeftMono α] (s : Multiset α) (n : α),\n  (∀ (x : α), x ∈ s → x ≤ n) → s.sum ≤ s.card • n"
+          },
+          {
+            "name": "Finset.card_nsmul_le",
+            "module_name": "Mathlib.Algebra.Group.Pointwise.Finset.Basic",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_2} [inst : DecidableEq α] [inst_1 : AddMonoid α] {s : Finset α} {n : ℕ}, (n • s).card ≤ s.card ^ n"
+          },
+          {
+            "name": "List.sum_le_card_nsmul",
+            "module_name": "Mathlib.Algebra.Order.BigOperators.Group.List",
+            "kind": "theorem",
+            "type": "∀ {M : Type u_3} [inst : AddMonoid M] [inst_1 : Preorder M] [AddRightMono M] [AddLeftMono M] (l : List M) (n : M),\n  (∀ (x : M), x ∈ l → x ≤ n) → l.sum ≤ l.length • n"
+          }
+        ]
+      },
+      "isError": false
+    },
+    "method": "lean_leansearch",
+    "form": "abstract"
+  },
+  {
+    "request": {
+      "query": "A multivariate integer polynomial with every coefficient bounded in absolute value by B has sum of absolute coefficients at most support cardinality times B",
+      "num_results": 5
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.sum_def\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] {A : Type u_2} [inst_1 : AddCommMonoid A] {p : MvPolynomial σ R}\\n  {b : (σ →₀ ℕ) → R → A}, Finsupp.sum p b = ∑ m ∈ p.support, b m (MvPolynomial.coeff m p)\"\n    },\n    {\n      \"name\": \"MvPolynomial.coeffs\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Basic\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} → {σ : Type u_1} → [inst : CommSemiring R] → MvPolynomial σ R → Finset R\"\n    },\n    {\n      \"name\": \"Polynomial.card_mahlerMeasure_le_prod\",\n      \"module_name\": \"Mathlib.NumberTheory.MahlerMeasure\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (n : ℕ) (B : NNReal),\\n  {p | p.natDegree ≤ n ∧ (Polynomial.map (Int.castRingHom ℂ) p).mahlerMeasure ≤ ↑B}.ncard ≤\\n    ∏ i, (2 * ⌊↑(n.choose ↑i) * B⌋₊ + 1)\"\n    },\n    {\n      \"name\": \"Polynomial.card_support_mul_le\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Coeff\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Semiring R] {p q : Polynomial R}, (p * q).support.card ≤ p.support.card * q.support.card\"\n    },\n    {\n      \"name\": \"MvPolynomial.support\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Basic\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} → {σ : Type u_1} → [inst : CommSemiring R] → MvPolynomial σ R → Finset (σ →₀ ℕ)\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.sum_def",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Basic",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] {A : Type u_2} [inst_1 : AddCommMonoid A] {p : MvPolynomial σ R}\n  {b : (σ →₀ ℕ) → R → A}, Finsupp.sum p b = ∑ m ∈ p.support, b m (MvPolynomial.coeff m p)"
+          },
+          {
+            "name": "MvPolynomial.coeffs",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Basic",
+            "kind": "definition",
+            "type": "{R : Type u} → {σ : Type u_1} → [inst : CommSemiring R] → MvPolynomial σ R → Finset R"
+          },
+          {
+            "name": "Polynomial.card_mahlerMeasure_le_prod",
+            "module_name": "Mathlib.NumberTheory.MahlerMeasure",
+            "kind": "theorem",
+            "type": "∀ (n : ℕ) (B : NNReal),\n  {p | p.natDegree ≤ n ∧ (Polynomial.map (Int.castRingHom ℂ) p).mahlerMeasure ≤ ↑B}.ncard ≤\n    ∏ i, (2 * ⌊↑(n.choose ↑i) * B⌋₊ + 1)"
+          },
+          {
+            "name": "Polynomial.card_support_mul_le",
+            "module_name": "Mathlib.Algebra.Polynomial.Coeff",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : Semiring R] {p q : Polynomial R}, (p * q).support.card ≤ p.support.card * q.support.card"
+          },
+          {
+            "name": "MvPolynomial.support",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Basic",
+            "kind": "definition",
+            "type": "{R : Type u} → {σ : Type u_1} → [inst : CommSemiring R] → MvPolynomial σ R → Finset (σ →₀ ℕ)"
+          }
+        ]
+      },
+      "isError": false
+    },
+    "method": "lean_leansearch",
+    "form": "current"
+  },
+  {
+    "request": {
+      "query": "Finite sum of terms bounded above by B is at most cardinality times B",
+      "num_results": 5
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finset.sum_le_card_nsmul\",\n      \"module_name\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {N : Type u_5} [inst : AddCommMonoid N] [inst_1 : PartialOrder N] [AddLeftMono N] (s : Finset ι)\\n  (f : ι → N) (n : N), (∀ x ∈ s, f x ≤ n) → s.sum f ≤ s.card • n\"\n    },\n    {\n      \"name\": \"Cardinal.sum_le_iSup\",\n      \"module_name\": \"Mathlib.SetTheory.Cardinal.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u} (f : ι → Cardinal.{u}), Cardinal.sum f ≤ Cardinal.mk ι * ⨆ i, f i\"\n    },\n    {\n      \"name\": \"Finset.sum_card_le\",\n      \"module_name\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_2} [inst : DecidableEq α] {B : Finset (Finset α)} {n : ℕ} [inst_1 : Fintype α],\\n  (∀ (a : α), {b ∈ B | a ∈ b}.card ≤ n) → ∑ s ∈ B, s.card ≤ Fintype.card α * n\"\n    },\n    {\n      \"name\": \"Multiset.sum_le_card_nsmul\",\n      \"module_name\": \"Mathlib.Algebra.Order.BigOperators.Group.Multiset\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_2} [inst : AddCommMonoid α] [inst_1 : PartialOrder α] [AddLeftMono α] (s : Multiset α) (n : α),\\n  (∀ (x : α), x ∈ s → x ≤ n) → s.sum ≤ s.card • n\"\n    },\n    {\n      \"name\": \"Finset.card_nsmul_le_sum\",\n      \"module_name\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {N : Type u_5} [inst : AddCommMonoid N] [inst_1 : PartialOrder N] [AddLeftMono N] (s : Finset ι)\\n  (f : ι → N) (n : N), (∀ x ∈ s, n ≤ f x) → s.card • n ≤ s.sum f\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Finset.sum_le_card_nsmul",
+            "module_name": "Mathlib.Algebra.Order.BigOperators.Group.Finset",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_1} {N : Type u_5} [inst : AddCommMonoid N] [inst_1 : PartialOrder N] [AddLeftMono N] (s : Finset ι)\n  (f : ι → N) (n : N), (∀ x ∈ s, f x ≤ n) → s.sum f ≤ s.card • n"
+          },
+          {
+            "name": "Cardinal.sum_le_iSup",
+            "module_name": "Mathlib.SetTheory.Cardinal.Basic",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u} (f : ι → Cardinal.{u}), Cardinal.sum f ≤ Cardinal.mk ι * ⨆ i, f i"
+          },
+          {
+            "name": "Finset.sum_card_le",
+            "module_name": "Mathlib.Algebra.Order.BigOperators.Group.Finset",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_2} [inst : DecidableEq α] {B : Finset (Finset α)} {n : ℕ} [inst_1 : Fintype α],\n  (∀ (a : α), {b ∈ B | a ∈ b}.card ≤ n) → ∑ s ∈ B, s.card ≤ Fintype.card α * n"
+          },
+          {
+            "name": "Multiset.sum_le_card_nsmul",
+            "module_name": "Mathlib.Algebra.Order.BigOperators.Group.Multiset",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_2} [inst : AddCommMonoid α] [inst_1 : PartialOrder α] [AddLeftMono α] (s : Multiset α) (n : α),\n  (∀ (x : α), x ∈ s → x ≤ n) → s.sum ≤ s.card • n"
+          },
+          {
+            "name": "Finset.card_nsmul_le_sum",
+            "module_name": "Mathlib.Algebra.Order.BigOperators.Group.Finset",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_1} {N : Type u_5} [inst : AddCommMonoid N] [inst_1 : PartialOrder N] [AddLeftMono N] (s : Finset ι)\n  (f : ι → N) (n : N), (∀ x ∈ s, n ≤ f x) → s.card • n ≤ s.sum f"
+          }
+        ]
+      },
+      "isError": false
+    },
+    "method": "lean_leansearch",
+    "form": "standard"
+  },
+  {
+    "request": {
+      "query": "sum_le_card_nsmul",
+      "limit": 12
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [],
+        "index": "unavailable"
+      },
+      "isError": false
+    },
+    "method": "lean_local_search",
+    "form": "abstract"
+  },
+  {
+    "request": {
+      "query": "normOne_le_card_mul",
+      "limit": 12
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Roth.normOne_le_card_mul\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/CoeffNorm.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Roth.normOne_le_card_mul",
+            "kind": "theorem",
+            "file": "Roth/CoeffNorm.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    },
+    "method": "lean_local_search",
+    "form": "current"
+  },
+  {
+    "request": {
+      "query": "sum_le_card",
+      "limit": 12
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [],
+        "index": "unavailable"
+      },
+      "isError": false
+    },
+    "method": "lean_local_search",
+    "form": "standard"
+  },
+  {
+    "request": {
+      "query": "Finset.sum, _ ≤ _ • _",
+      "num_results": 10
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finset.sum_le_card_nsmul\",\n      \"type\": \" {ι : Type u_1} {N : Type u_5} [AddCommMonoid N] [Preorder N] [AddLeftMono N] (s : Finset ι) (f : ι → N) (n : N) (h : ∀ x ∈ s, f x ≤ n) : s.sum f ≤ s.card • n\",\n      \"module\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    },\n    {\n      \"name\": \"Pi.sum_norm_apply_le_norm\",\n      \"type\": \" {ι : Type u_1} {G : ι → Type u_5} [Fintype ι] [(i : ι) → SeminormedAddGroup (G i)] (f : (i : ι) → G i) : ∑ i, ‖f i‖ ≤ Fintype.card ι • ‖f‖\",\n      \"module\": \"Mathlib.Analysis.Normed.Group.Constructions\"\n    },\n    {\n      \"name\": \"Pi.sum_norm_apply_le_norm'\",\n      \"type\": \" {ι : Type u_1} {G : ι → Type u_5} [Fintype ι] [(i : ι) → SeminormedGroup (G i)] (f : (i : ι) → G i) : ∑ i, ‖f i‖ ≤ Fintype.card ι • ‖f‖\",\n      \"module\": \"Mathlib.Analysis.Normed.Group.Constructions\"\n    },\n    {\n      \"name\": \"Pi.sum_nnnorm_apply_le_nnnorm\",\n      \"type\": \" {ι : Type u_1} {G : ι → Type u_5} [Fintype ι] [(i : ι) → SeminormedAddGroup (G i)] (f : (i : ι) → G i) : ∑ i, ‖f i‖₊ ≤ Fintype.card ι • ‖f‖₊\",\n      \"module\": \"Mathlib.Analysis.Normed.Group.Constructions\"\n    },\n    {\n      \"name\": \"Pi.sum_nnnorm_apply_le_nnnorm'\",\n      \"type\": \" {ι : Type u_1} {G : ι → Type u_5} [Fintype ι] [(i : ι) → SeminormedGroup (G i)] (f : (i : ι) → G i) : ∑ i, ‖f i‖₊ ≤ Fintype.card ι • ‖f‖₊\",\n      \"module\": \"Mathlib.Analysis.Normed.Group.Constructions\"\n    },\n    {\n      \"name\": \"Seminorm.bound_sum_of_continuous\",\n      \"type\": \" {𝕜 : Type u_2} {E : Type u_6} {ι : Type u_9} [NontriviallyNormedField 𝕜] [AddCommGroup E] [Module 𝕜 E] {p : SeminormFamily 𝕜 E ι} [t : TopologicalSpace E] (hp : WithSeminorms p) (q : Seminorm 𝕜 E) (hq : Continuous ⇑q) : ∃ s C, C ≠ 0 ∧ q ≤ C • ∑ i ∈ s, p i\",\n      \"module\": \"Mathlib.Analysis.LocallyConvex.WithSeminorms\"\n    },\n    {\n      \"name\": \"Antivary.card_smul_sum_le_sum_smul_sum\",\n      \"type\": \" {ι : Type u_1} {α : Type u_2} {β : Type u_3} [Semiring α] [LinearOrder α] [IsStrictOrderedRing α] [ExistsAddOfLE α] [AddCommMonoid β] [LinearOrder β] [IsOrderedCancelAddMonoid β] [Module α β] [PosSMulMono α β] {f : ι → α} {g : ι → β} [Fintype ι] (hfg : Antivary f g) : Fintype.card ι • ∑ i, f i • g i ≤ (∑ i, f i) • ∑ i, g i\",\n      \"module\": \"Mathlib.Algebra.Order.Chebyshev\"\n    },\n    {\n      \"name\": \"Monovary.sum_smul_sum_le_card_smul_sum\",\n      \"type\": \" {ι : Type u_1} {α : Type u_2} {β : Type u_3} [Semiring α] [LinearOrder α] [IsStrictOrderedRing α] [ExistsAddOfLE α] [AddCommMonoid β] [LinearOrder β] [IsOrderedCancelAddMonoid β] [Module α β] [PosSMulMono α β] {f : ι → α} {g : ι → β} [Fintype ι] (hfg : Monovary f g) : (∑ i, f i) • ∑ i, g i ≤ Fintype.card ι • ∑ i, f i • g i\",\n      \"module\": \"Mathlib.Algebra.Order.Chebyshev\"\n    },\n    {\n      \"name\": \"AntivaryOn.card_smul_sum_le_sum_smul_sum\",\n      \"type\": \" {ι : Type u_1} {α : Type u_2} {β : Type u_3} [Semiring α] [LinearOrder α] [IsStrictOrderedRing α] [ExistsAddOfLE α] [AddCommMonoid β] [LinearOrder β] [IsOrderedCancelAddMonoid β] [Module α β] [PosSMulMono α β] {s : Finset ι} {f : ι → α} {g : ι → β} (hfg : AntivaryOn f g ↑s) : s.card • ∑ i ∈ s, f i • g i ≤ (∑ i ∈ s, f i) • ∑ i ∈ s, g i\",\n      \"module\": \"Mathlib.Algebra.Order.Chebyshev\"\n    },\n    {\n      \"name\": \"MonovaryOn.sum_smul_sum_le_card_smul_sum\",\n      \"type\": \" {ι : Type u_1} {α : Type u_2} {β : Type u_3} [Semiring α] [LinearOrder α] [IsStrictOrderedRing α] [ExistsAddOfLE α] [AddCommMonoid β] [LinearOrder β] [IsOrderedCancelAddMonoid β] [Module α β] [PosSMulMono α β] {s : Finset ι} {f : ι → α} {g : ι → β} (hfg : MonovaryOn f g ↑s) : (∑ i ∈ s, f i) • ∑ i ∈ s, g i ≤ s.card • ∑ i ∈ s, f i • g i\",\n      \"module\": \"Mathlib.Algebra.Order.Chebyshev\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Finset.sum_le_card_nsmul",
+            "type": " {ι : Type u_1} {N : Type u_5} [AddCommMonoid N] [Preorder N] [AddLeftMono N] (s : Finset ι) (f : ι → N) (n : N) (h : ∀ x ∈ s, f x ≤ n) : s.sum f ≤ s.card • n",
+            "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+          },
+          {
+            "name": "Pi.sum_norm_apply_le_norm",
+            "type": " {ι : Type u_1} {G : ι → Type u_5} [Fintype ι] [(i : ι) → SeminormedAddGroup (G i)] (f : (i : ι) → G i) : ∑ i, ‖f i‖ ≤ Fintype.card ι • ‖f‖",
+            "module": "Mathlib.Analysis.Normed.Group.Constructions"
+          },
+          {
+            "name": "Pi.sum_norm_apply_le_norm'",
+            "type": " {ι : Type u_1} {G : ι → Type u_5} [Fintype ι] [(i : ι) → SeminormedGroup (G i)] (f : (i : ι) → G i) : ∑ i, ‖f i‖ ≤ Fintype.card ι • ‖f‖",
+            "module": "Mathlib.Analysis.Normed.Group.Constructions"
+          },
+          {
+            "name": "Pi.sum_nnnorm_apply_le_nnnorm",
+            "type": " {ι : Type u_1} {G : ι → Type u_5} [Fintype ι] [(i : ι) → SeminormedAddGroup (G i)] (f : (i : ι) → G i) : ∑ i, ‖f i‖₊ ≤ Fintype.card ι • ‖f‖₊",
+            "module": "Mathlib.Analysis.Normed.Group.Constructions"
+          },
+          {
+            "name": "Pi.sum_nnnorm_apply_le_nnnorm'",
+            "type": " {ι : Type u_1} {G : ι → Type u_5} [Fintype ι] [(i : ι) → SeminormedGroup (G i)] (f : (i : ι) → G i) : ∑ i, ‖f i‖₊ ≤ Fintype.card ι • ‖f‖₊",
+            "module": "Mathlib.Analysis.Normed.Group.Constructions"
+          },
+          {
+            "name": "Seminorm.bound_sum_of_continuous",
+            "type": " {𝕜 : Type u_2} {E : Type u_6} {ι : Type u_9} [NontriviallyNormedField 𝕜] [AddCommGroup E] [Module 𝕜 E] {p : SeminormFamily 𝕜 E ι} [t : TopologicalSpace E] (hp : WithSeminorms p) (q : Seminorm 𝕜 E) (hq : Continuous ⇑q) : ∃ s C, C ≠ 0 ∧ q ≤ C • ∑ i ∈ s, p i",
+            "module": "Mathlib.Analysis.LocallyConvex.WithSeminorms"
+          },
+          {
+            "name": "Antivary.card_smul_sum_le_sum_smul_sum",
+            "type": " {ι : Type u_1} {α : Type u_2} {β : Type u_3} [Semiring α] [LinearOrder α] [IsStrictOrderedRing α] [ExistsAddOfLE α] [AddCommMonoid β] [LinearOrder β] [IsOrderedCancelAddMonoid β] [Module α β] [PosSMulMono α β] {f : ι → α} {g : ι → β} [Fintype ι] (hfg : Antivary f g) : Fintype.card ι • ∑ i, f i • g i ≤ (∑ i, f i) • ∑ i, g i",
+            "module": "Mathlib.Algebra.Order.Chebyshev"
+          },
+          {
+            "name": "Monovary.sum_smul_sum_le_card_smul_sum",
+            "type": " {ι : Type u_1} {α : Type u_2} {β : Type u_3} [Semiring α] [LinearOrder α] [IsStrictOrderedRing α] [ExistsAddOfLE α] [AddCommMonoid β] [LinearOrder β] [IsOrderedCancelAddMonoid β] [Module α β] [PosSMulMono α β] {f : ι → α} {g : ι → β} [Fintype ι] (hfg : Monovary f g) : (∑ i, f i) • ∑ i, g i ≤ Fintype.card ι • ∑ i, f i • g i",
+            "module": "Mathlib.Algebra.Order.Chebyshev"
+          },
+          {
+            "name": "AntivaryOn.card_smul_sum_le_sum_smul_sum",
+            "type": " {ι : Type u_1} {α : Type u_2} {β : Type u_3} [Semiring α] [LinearOrder α] [IsStrictOrderedRing α] [ExistsAddOfLE α] [AddCommMonoid β] [LinearOrder β] [IsOrderedCancelAddMonoid β] [Module α β] [PosSMulMono α β] {s : Finset ι} {f : ι → α} {g : ι → β} (hfg : AntivaryOn f g ↑s) : s.card • ∑ i ∈ s, f i • g i ≤ (∑ i ∈ s, f i) • ∑ i ∈ s, g i",
+            "module": "Mathlib.Algebra.Order.Chebyshev"
+          },
+          {
+            "name": "MonovaryOn.sum_smul_sum_le_card_smul_sum",
+            "type": " {ι : Type u_1} {α : Type u_2} {β : Type u_3} [Semiring α] [LinearOrder α] [IsStrictOrderedRing α] [ExistsAddOfLE α] [AddCommMonoid β] [LinearOrder β] [IsOrderedCancelAddMonoid β] [Module α β] [PosSMulMono α β] {s : Finset ι} {f : ι → α} {g : ι → β} (hfg : MonovaryOn f g ↑s) : (∑ i ∈ s, f i) • ∑ i ∈ s, g i ≤ s.card • ∑ i ∈ s, f i • g i",
+            "module": "Mathlib.Algebra.Order.Chebyshev"
+          }
+        ]
+      },
+      "isError": false
+    },
+    "method": "lean_loogle",
+    "form": "abstract"
+  },
+  {
+    "request": {
+      "query": "\"sum_le_card_nsmul\"",
+      "num_results": 10
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"List.sum_le_card_nsmul\",\n      \"type\": \" {M : Type u_3} [AddMonoid M] [Preorder M] [AddRightMono M] [AddLeftMono M] (l : List M) (n : M) (h : ∀ x ∈ l, x ≤ n) : l.sum ≤ l.length • n\",\n      \"module\": \"Mathlib.Algebra.Order.BigOperators.Group.List\"\n    },\n    {\n      \"name\": \"Multiset.sum_le_card_nsmul\",\n      \"type\": \" {α : Type u_2} [AddCommMonoid α] [Preorder α] [AddLeftMono α] (s : Multiset α) (n : α) (h : ∀ x ∈ s, x ≤ n) : s.sum ≤ s.card • n\",\n      \"module\": \"Mathlib.Algebra.Order.BigOperators.Group.Multiset\"\n    },\n    {\n      \"name\": \"Finset.sum_le_card_nsmul\",\n      \"type\": \" {ι : Type u_1} {N : Type u_5} [AddCommMonoid N] [Preorder N] [AddLeftMono N] (s : Finset ι) (f : ι → N) (n : N) (h : ∀ x ∈ s, f x ≤ n) : s.sum f ≤ s.card • n\",\n      \"module\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "List.sum_le_card_nsmul",
+            "type": " {M : Type u_3} [AddMonoid M] [Preorder M] [AddRightMono M] [AddLeftMono M] (l : List M) (n : M) (h : ∀ x ∈ l, x ≤ n) : l.sum ≤ l.length • n",
+            "module": "Mathlib.Algebra.Order.BigOperators.Group.List"
+          },
+          {
+            "name": "Multiset.sum_le_card_nsmul",
+            "type": " {α : Type u_2} [AddCommMonoid α] [Preorder α] [AddLeftMono α] (s : Multiset α) (n : α) (h : ∀ x ∈ s, x ≤ n) : s.sum ≤ s.card • n",
+            "module": "Mathlib.Algebra.Order.BigOperators.Group.Multiset"
+          },
+          {
+            "name": "Finset.sum_le_card_nsmul",
+            "type": " {ι : Type u_1} {N : Type u_5} [AddCommMonoid N] [Preorder N] [AddLeftMono N] (s : Finset ι) (f : ι → N) (n : N) (h : ∀ x ∈ s, f x ≤ n) : s.sum f ≤ s.card • n",
+            "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+          }
+        ]
+      },
+      "isError": false
+    },
+    "method": "lean_loogle",
+    "form": "current"
+  },
+  {
+    "request": {
+      "query": "Finset.sum, _ ≤ _ * _",
+      "num_results": 10
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finset.sum_card_le\",\n      \"type\": \" {α : Type u_2} [DecidableEq α] {B : Finset (Finset α)} {n : ℕ} [Fintype α] (h : ∀ (a : α), {b ∈ B | a ∈ b}.card ≤ n) : ∑ s ∈ B, s.card ≤ Fintype.card α * n\",\n      \"module\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    },\n    {\n      \"name\": \"Finset.sum_card_inter_le\",\n      \"type\": \" {α : Type u_2} [DecidableEq α] {s : Finset α} {B : Finset (Finset α)} {n : ℕ} (h : ∀ a ∈ s, {b ∈ B | a ∈ b}.card ≤ n) : ∑ t ∈ B, (s ∩ t).card ≤ s.card * n\",\n      \"module\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    },\n    {\n      \"name\": \"Finset.sum_mul_sq_le_sq_mul_sq\",\n      \"type\": \" {ι : Type u_1} {R : Type u_2} [CommSemiring R] [LinearOrder R] [IsStrictOrderedRing R] [ExistsAddOfLE R] (s : Finset ι) (f g : ι → R) : (∑ i ∈ s, f i * g i) ^ 2 ≤ (∑ i ∈ s, f i ^ 2) * ∑ i ∈ s, g i ^ 2\",\n      \"module\": \"Mathlib.Algebra.Order.BigOperators.Ring.Finset\"\n    },\n    {\n      \"name\": \"Finset.sum_sq_le_sum_mul_sum_of_sq_eq_mul\",\n      \"type\": \" {ι : Type u_1} {R : Type u_2} [CommSemiring R] [LinearOrder R] [IsStrictOrderedRing R] [ExistsAddOfLE R] (s : Finset ι) {r f g : ι → R} (hf : ∀ i ∈ s, 0 ≤ f i) (hg : ∀ i ∈ s, 0 ≤ g i) (ht : ∀ i ∈ s, r i ^ 2 = f i * g i) : (∑ i ∈ s, r i) ^ 2 ≤ (∑ i ∈ s, f i) * ∑ i ∈ s, g i\",\n      \"module\": \"Mathlib.Algebra.Order.BigOperators.Ring.Finset\"\n    },\n    {\n      \"name\": \"Finset.sum_sq_le_sum_mul_sum_of_sq_le_mul\",\n      \"type\": \" {ι : Type u_1} {R : Type u_2} [CommSemiring R] [LinearOrder R] [IsStrictOrderedRing R] [ExistsAddOfLE R] (s : Finset ι) {r f g : ι → R} (hf : ∀ i ∈ s, 0 ≤ f i) (hg : ∀ i ∈ s, 0 ≤ g i) (ht : ∀ i ∈ s, r i ^ 2 ≤ f i * g i) : (∑ i ∈ s, r i) ^ 2 ≤ (∑ i ∈ s, f i) * ∑ i ∈ s, g i\",\n      \"module\": \"Mathlib.Algebra.Order.BigOperators.Ring.Finset\"\n    },\n    {\n      \"name\": \"Real.sum_sqrt_mul_sqrt_le\",\n      \"type\": \" {ι : Type u_2} {f g : ι → ℝ} (s : Finset ι) (hf : ∀ (i : ι), 0 ≤ f i) (hg : ∀ (i : ι), 0 ≤ g i) : ∑ i ∈ s, √(f i) * √(g i) ≤ √(∑ i ∈ s, f i) * √(∑ i ∈ s, g i)\",\n      \"module\": \"Mathlib.Analysis.Real.Sqrt\"\n    },\n    {\n      \"name\": \"Real.sum_mul_le_sqrt_mul_sqrt\",\n      \"type\": \" {ι : Type u_2} (s : Finset ι) (f g : ι → ℝ) : ∑ i ∈ s, f i * g i ≤ √(∑ i ∈ s, f i ^ 2) * √(∑ i ∈ s, g i ^ 2)\",\n      \"module\": \"Mathlib.Analysis.Real.Sqrt\"\n    },\n    {\n      \"name\": \"NNReal.sum_mul_le_sqrt_mul_sqrt\",\n      \"type\": \" {ι : Type u_2} (s : Finset ι) (f g : ι → NNReal) : ∑ i ∈ s, f i * g i ≤ NNReal.sqrt (∑ i ∈ s, f i ^ 2) * NNReal.sqrt (∑ i ∈ s, g i ^ 2)\",\n      \"module\": \"Mathlib.Analysis.Real.Sqrt\"\n    },\n    {\n      \"name\": \"NNReal.sum_sqrt_mul_sqrt_le\",\n      \"type\": \" {ι : Type u_2} (s : Finset ι) (f g : ι → NNReal) : ∑ i ∈ s, NNReal.sqrt (f i) * NNReal.sqrt (g i) ≤ NNReal.sqrt (∑ i ∈ s, f i) * NNReal.sqrt (∑ i ∈ s, g i)\",\n      \"module\": \"Mathlib.Analysis.Real.Sqrt\"\n    },\n    {\n      \"name\": \"IsCauSeq.series_ratio_test\",\n      \"type\": \" {α : Type u_1} {β : Type u_2} [Field α] [LinearOrder α] [IsStrictOrderedRing α] [Ring β] {abv : β → α} [IsAbsoluteValue abv] [Archimedean α] {f : ℕ → β} (n : ℕ) (r : α) (hr0 : 0 ≤ r) (hr1 : r < 1) (h : ∀ (m : ℕ), n ≤ m → abv (f m.succ) ≤ r * abv (f m)) : IsCauSeq abv fun m => ∑ n ∈ Finset.range m, f n\",\n      \"module\": \"Mathlib.Algebra.Order.CauSeq.BigOperators\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Finset.sum_card_le",
+            "type": " {α : Type u_2} [DecidableEq α] {B : Finset (Finset α)} {n : ℕ} [Fintype α] (h : ∀ (a : α), {b ∈ B | a ∈ b}.card ≤ n) : ∑ s ∈ B, s.card ≤ Fintype.card α * n",
+            "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+          },
+          {
+            "name": "Finset.sum_card_inter_le",
+            "type": " {α : Type u_2} [DecidableEq α] {s : Finset α} {B : Finset (Finset α)} {n : ℕ} (h : ∀ a ∈ s, {b ∈ B | a ∈ b}.card ≤ n) : ∑ t ∈ B, (s ∩ t).card ≤ s.card * n",
+            "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+          },
+          {
+            "name": "Finset.sum_mul_sq_le_sq_mul_sq",
+            "type": " {ι : Type u_1} {R : Type u_2} [CommSemiring R] [LinearOrder R] [IsStrictOrderedRing R] [ExistsAddOfLE R] (s : Finset ι) (f g : ι → R) : (∑ i ∈ s, f i * g i) ^ 2 ≤ (∑ i ∈ s, f i ^ 2) * ∑ i ∈ s, g i ^ 2",
+            "module": "Mathlib.Algebra.Order.BigOperators.Ring.Finset"
+          },
+          {
+            "name": "Finset.sum_sq_le_sum_mul_sum_of_sq_eq_mul",
+            "type": " {ι : Type u_1} {R : Type u_2} [CommSemiring R] [LinearOrder R] [IsStrictOrderedRing R] [ExistsAddOfLE R] (s : Finset ι) {r f g : ι → R} (hf : ∀ i ∈ s, 0 ≤ f i) (hg : ∀ i ∈ s, 0 ≤ g i) (ht : ∀ i ∈ s, r i ^ 2 = f i * g i) : (∑ i ∈ s, r i) ^ 2 ≤ (∑ i ∈ s, f i) * ∑ i ∈ s, g i",
+            "module": "Mathlib.Algebra.Order.BigOperators.Ring.Finset"
+          },
+          {
+            "name": "Finset.sum_sq_le_sum_mul_sum_of_sq_le_mul",
+            "type": " {ι : Type u_1} {R : Type u_2} [CommSemiring R] [LinearOrder R] [IsStrictOrderedRing R] [ExistsAddOfLE R] (s : Finset ι) {r f g : ι → R} (hf : ∀ i ∈ s, 0 ≤ f i) (hg : ∀ i ∈ s, 0 ≤ g i) (ht : ∀ i ∈ s, r i ^ 2 ≤ f i * g i) : (∑ i ∈ s, r i) ^ 2 ≤ (∑ i ∈ s, f i) * ∑ i ∈ s, g i",
+            "module": "Mathlib.Algebra.Order.BigOperators.Ring.Finset"
+          },
+          {
+            "name": "Real.sum_sqrt_mul_sqrt_le",
+            "type": " {ι : Type u_2} {f g : ι → ℝ} (s : Finset ι) (hf : ∀ (i : ι), 0 ≤ f i) (hg : ∀ (i : ι), 0 ≤ g i) : ∑ i ∈ s, √(f i) * √(g i) ≤ √(∑ i ∈ s, f i) * √(∑ i ∈ s, g i)",
+            "module": "Mathlib.Analysis.Real.Sqrt"
+          },
+          {
+            "name": "Real.sum_mul_le_sqrt_mul_sqrt",
+            "type": " {ι : Type u_2} (s : Finset ι) (f g : ι → ℝ) : ∑ i ∈ s, f i * g i ≤ √(∑ i ∈ s, f i ^ 2) * √(∑ i ∈ s, g i ^ 2)",
+            "module": "Mathlib.Analysis.Real.Sqrt"
+          },
+          {
+            "name": "NNReal.sum_mul_le_sqrt_mul_sqrt",
+            "type": " {ι : Type u_2} (s : Finset ι) (f g : ι → NNReal) : ∑ i ∈ s, f i * g i ≤ NNReal.sqrt (∑ i ∈ s, f i ^ 2) * NNReal.sqrt (∑ i ∈ s, g i ^ 2)",
+            "module": "Mathlib.Analysis.Real.Sqrt"
+          },
+          {
+            "name": "NNReal.sum_sqrt_mul_sqrt_le",
+            "type": " {ι : Type u_2} (s : Finset ι) (f g : ι → NNReal) : ∑ i ∈ s, NNReal.sqrt (f i) * NNReal.sqrt (g i) ≤ NNReal.sqrt (∑ i ∈ s, f i) * NNReal.sqrt (∑ i ∈ s, g i)",
+            "module": "Mathlib.Analysis.Real.Sqrt"
+          },
+          {
+            "name": "IsCauSeq.series_ratio_test",
+            "type": " {α : Type u_1} {β : Type u_2} [Field α] [LinearOrder α] [IsStrictOrderedRing α] [Ring β] {abv : β → α} [IsAbsoluteValue abv] [Archimedean α] {f : ℕ → β} (n : ℕ) (r : α) (hr0 : 0 ≤ r) (hr1 : r < 1) (h : ∀ (m : ℕ), n ≤ m → abv (f m.succ) ≤ r * abv (f m)) : IsCauSeq abv fun m => ∑ n ∈ Finset.range m, f n",
+            "module": "Mathlib.Algebra.Order.CauSeq.BigOperators"
+          }
+        ]
+      },
+      "isError": false
+    },
+    "method": "lean_loogle",
+    "form": "standard"
+  }
+]

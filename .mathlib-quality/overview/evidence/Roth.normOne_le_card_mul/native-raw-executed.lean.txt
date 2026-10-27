@@ -1,0 +1,30 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+import Mathlib.Algebra.Polynomial.CancelLeads
+import Mathlib.Algebra.MvPolynomial.PDeriv
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+import Mathlib.Algebra.MvPolynomial.Equiv
+open scoped BigOperators
+#check_failure Roth.normOne_le_card_mul
+#check @Finset.sum_le_card_nsmul
+namespace NormCardRaw
+variable {σ : Type*}
+theorem polynomialSupport (P : MvPolynomial σ ℤ) {B : ℝ}
+    (hB : ∀ d ∈ P.support, |((P.coeff d : ℤ) : ℝ)| ≤ B) :
+    (∑ d ∈ P.support, |((P.coeff d : ℤ) : ℝ)|) ≤ P.support.card * B := by
+  simpa only [nsmul_eq_mul] using
+    P.support.sum_le_card_nsmul (fun d ↦ |((P.coeff d : ℤ) : ℝ)|) B hB
+theorem abstractBound {ι A : Type*} [AddCommMonoid A] [Preorder A] [AddLeftMono A]
+    (s : Finset ι) (f : ι → A) (B : A) (hB : ∀ d ∈ s, f d ≤ B) :
+    (∑ d ∈ s, f d) ≤ s.card • B :=
+  Finset.sum_le_card_nsmul s f B hB
+#print axioms polynomialSupport
+#print axioms abstractBound
+end NormCardRaw

@@ -1,0 +1,61 @@
+{
+  "request": {
+    "query": "Finite sum of terms bounded above by B is at most cardinality times B",
+    "num_results": 5
+  },
+  "response": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Finset.sum_le_card_nsmul\",\n      \"informal_name\": \"Sum over Finite Set Bounded by Cardinality Times Maximum Element\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {N : Type u_5} [inst : AddCommMonoid N] [inst_1 : PartialOrder N] [AddLeftMono N] (s : Finset ι)\\n  (f : ι → N) (n : N), (∀ x ∈ s, f x ≤ n) → s.sum f ≤ s.card • n\",\n      \"informal_description\": \"For any additive commutative monoid $N$ equipped with a partial order $\\\\leq$ where addition is left-monotonic, given a finite set $s$, a function $f : \\\\iota \\\\to N$, and an element $n \\\\in N$, if $f(x) \\\\leq n$ for all $x \\\\in s$, then the sum of $f(x)$ over all $x \\\\in s$ is less than or equal to the product of the cardinality of $s$ and $n$. Symbolically, $\\\\sum_{x \\\\in s} f(x) \\\\leq |s| \\\\cdot n$.\",\n      \"path\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    },\n    {\n      \"formal_name\": \"Finset.card_nsmul_le_sum\",\n      \"informal_name\": \"Cardinality times element is less than or equal to sum over finite set\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {N : Type u_5} [inst : AddCommMonoid N] [inst_1 : PartialOrder N] [AddLeftMono N] (s : Finset ι)\\n  (f : ι → N) (n : N), (∀ x ∈ s, n ≤ f x) → s.card • n ≤ s.sum f\",\n      \"informal_description\": \"For any finite set $s$ of type $\\\\iota$ and function $f : \\\\iota \\\\to N$ where $N$ is an additive commutative monoid equipped with a partial order and left addition monotonicity, if every element $x \\\\in s$ satisfies $n \\\\leq f(x)$, then the scalar multiplication of the cardinality of $s$ by $n$ is less than or equal to the sum of $f$ over $s$. Formally, $|s| \\\\cdot n \\\\leq \\\\sum_{x \\\\in s} f(x)$.\",\n      \"path\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    },\n    {\n      \"formal_name\": \"List.sum_le_card_nsmul\",\n      \"informal_name\": \"Bounded Sum Inequality in Ordered Additive Monoids\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {M : Type u_3} [inst : AddMonoid M] [inst_1 : Preorder M] [AddRightMono M] [AddLeftMono M] (l : List M) (n : M),\\n  (∀ (x : M), x ∈ l → x ≤ n) → l.sum ≤ l.length • n\",\n      \"informal_description\": \"In an additive monoid equipped with a preorder where addition is monotonic on both sides, for any list $ l $ of elements and any element $ n $, if every element $ x $ in $ l $ satisfies $ x \\\\leq n $, then the sum of the list $ \\\\sum l $ is less than or equal to the product of the list's length and $ n $, i.e., $ \\\\sum l \\\\leq \\\\mathrm{length}(l) \\\\cdot n $. Here, $ \\\\cdot $ denotes the canonical scalar multiplication by natural numbers in the additive monoid.\",\n      \"path\": \"Mathlib.Algebra.Order.BigOperators.Group.List\"\n    },\n    {\n      \"formal_name\": \"Fintype.exists_sum_fiber_le_of_sum_le_nsmul\",\n      \"informal_name\": \"Pigeonhole Principle: Total Weight Bound Implies Existence of Bounded Fiber\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u} {β : Type v} {M : Type w} [inst : DecidableEq β] [inst_1 : Fintype α] [inst_2 : Fintype β] (f : α → β)\\n  {w : α → M} {b : M} [inst_3 : AddCommMonoid M] [inst_4 : LinearOrder M] [IsOrderedCancelAddMonoid M] [Nonempty β],\\n  ∑ x, w x ≤ Fintype.card β • b → ∃ y, ∑ x with f x = y, w x ≤ b\",\n      \"informal_description\": \"Let $\\\\beta$ be a finite non-empty type. If the total sum of weights $w(x)$ over all elements is at most $\\\\#\\\\beta \\\\cdot b$, then there exists an element $y \\\\in \\\\beta$ such that the sum of weights for all $x$ with $f(x) = y$ is at most $b$.\",\n      \"path\": \"Mathlib.Combinatorics.Pigeonhole\"\n    },\n    {\n      \"formal_name\": \"Finset.exists_sum_fiber_le_of_sum_fiber_nonneg_of_sum_le_nsmul\",\n      \"informal_name\": \"Pigeonhole Principle: Bounded Fiber Sum\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u} {β : Type v} {M : Type w} [inst : DecidableEq β] {s : Finset α} {t : Finset β} {f : α → β} {w : α → M}\\n  {b : M} [inst_1 : AddCommMonoid M] [inst_2 : LinearOrder M] [IsOrderedCancelAddMonoid M],\\n  (∀ y ∉ t, 0 ≤ ∑ x ∈ s with f x = y, w x) →\\n    t.Nonempty → ∑ x ∈ s, w x ≤ t.card • b → ∃ y ∈ t, ∑ x ∈ s with f x = y, w x ≤ b\",\n      \"informal_description\": \"Let $ s $ be a finite set, $ f $ a function from $ s $ to some type, and $ w $ a weight function assigning non-negative values to elements of $ s $. Suppose that for every $ y $ not in a non-empty finite set $ t $, the sum $ \\\\sum_{x \\\\in s, f(x) = y} w(x) \\\\geq 0 $. If the total sum $ \\\\sum_{x \\\\in s} w(x) \\\\leq \\\\#t \\\\cdot b $, then there exists an element $ y \\\\in t $ such that $ \\\\sum_{x \\\\in s, f(x) = y} w(x) \\\\leq b $.\",\n      \"path\": \"Mathlib.Combinatorics.Pigeonhole\"\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "items": [
+        {
+          "formal_name": "Finset.sum_le_card_nsmul",
+          "informal_name": "Sum over Finite Set Bounded by Cardinality Times Maximum Element",
+          "kind": "theorem",
+          "type": "∀ {ι : Type u_1} {N : Type u_5} [inst : AddCommMonoid N] [inst_1 : PartialOrder N] [AddLeftMono N] (s : Finset ι)\n  (f : ι → N) (n : N), (∀ x ∈ s, f x ≤ n) → s.sum f ≤ s.card • n",
+          "informal_description": "For any additive commutative monoid $N$ equipped with a partial order $\\leq$ where addition is left-monotonic, given a finite set $s$, a function $f : \\iota \\to N$, and an element $n \\in N$, if $f(x) \\leq n$ for all $x \\in s$, then the sum of $f(x)$ over all $x \\in s$ is less than or equal to the product of the cardinality of $s$ and $n$. Symbolically, $\\sum_{x \\in s} f(x) \\leq |s| \\cdot n$.",
+          "path": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+        },
+        {
+          "formal_name": "Finset.card_nsmul_le_sum",
+          "informal_name": "Cardinality times element is less than or equal to sum over finite set",
+          "kind": "theorem",
+          "type": "∀ {ι : Type u_1} {N : Type u_5} [inst : AddCommMonoid N] [inst_1 : PartialOrder N] [AddLeftMono N] (s : Finset ι)\n  (f : ι → N) (n : N), (∀ x ∈ s, n ≤ f x) → s.card • n ≤ s.sum f",
+          "informal_description": "For any finite set $s$ of type $\\iota$ and function $f : \\iota \\to N$ where $N$ is an additive commutative monoid equipped with a partial order and left addition monotonicity, if every element $x \\in s$ satisfies $n \\leq f(x)$, then the scalar multiplication of the cardinality of $s$ by $n$ is less than or equal to the sum of $f$ over $s$. Formally, $|s| \\cdot n \\leq \\sum_{x \\in s} f(x)$.",
+          "path": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+        },
+        {
+          "formal_name": "List.sum_le_card_nsmul",
+          "informal_name": "Bounded Sum Inequality in Ordered Additive Monoids",
+          "kind": "theorem",
+          "type": "∀ {M : Type u_3} [inst : AddMonoid M] [inst_1 : Preorder M] [AddRightMono M] [AddLeftMono M] (l : List M) (n : M),\n  (∀ (x : M), x ∈ l → x ≤ n) → l.sum ≤ l.length • n",
+          "informal_description": "In an additive monoid equipped with a preorder where addition is monotonic on both sides, for any list $ l $ of elements and any element $ n $, if every element $ x $ in $ l $ satisfies $ x \\leq n $, then the sum of the list $ \\sum l $ is less than or equal to the product of the list's length and $ n $, i.e., $ \\sum l \\leq \\mathrm{length}(l) \\cdot n $. Here, $ \\cdot $ denotes the canonical scalar multiplication by natural numbers in the additive monoid.",
+          "path": "Mathlib.Algebra.Order.BigOperators.Group.List"
+        },
+        {
+          "formal_name": "Fintype.exists_sum_fiber_le_of_sum_le_nsmul",
+          "informal_name": "Pigeonhole Principle: Total Weight Bound Implies Existence of Bounded Fiber",
+          "kind": "theorem",
+          "type": "∀ {α : Type u} {β : Type v} {M : Type w} [inst : DecidableEq β] [inst_1 : Fintype α] [inst_2 : Fintype β] (f : α → β)\n  {w : α → M} {b : M} [inst_3 : AddCommMonoid M] [inst_4 : LinearOrder M] [IsOrderedCancelAddMonoid M] [Nonempty β],\n  ∑ x, w x ≤ Fintype.card β • b → ∃ y, ∑ x with f x = y, w x ≤ b",
+          "informal_description": "Let $\\beta$ be a finite non-empty type. If the total sum of weights $w(x)$ over all elements is at most $\\#\\beta \\cdot b$, then there exists an element $y \\in \\beta$ such that the sum of weights for all $x$ with $f(x) = y$ is at most $b$.",
+          "path": "Mathlib.Combinatorics.Pigeonhole"
+        },
+        {
+          "formal_name": "Finset.exists_sum_fiber_le_of_sum_fiber_nonneg_of_sum_le_nsmul",
+          "informal_name": "Pigeonhole Principle: Bounded Fiber Sum",
+          "kind": "theorem",
+          "type": "∀ {α : Type u} {β : Type v} {M : Type w} [inst : DecidableEq β] {s : Finset α} {t : Finset β} {f : α → β} {w : α → M}\n  {b : M} [inst_1 : AddCommMonoid M] [inst_2 : LinearOrder M] [IsOrderedCancelAddMonoid M],\n  (∀ y ∉ t, 0 ≤ ∑ x ∈ s with f x = y, w x) →\n    t.Nonempty → ∑ x ∈ s, w x ≤ t.card • b → ∃ y ∈ t, ∑ x ∈ s with f x = y, w x ≤ b",
+          "informal_description": "Let $ s $ be a finite set, $ f $ a function from $ s $ to some type, and $ w $ a weight function assigning non-negative values to elements of $ s $. Suppose that for every $ y $ not in a non-empty finite set $ t $, the sum $ \\sum_{x \\in s, f(x) = y} w(x) \\geq 0 $. If the total sum $ \\sum_{x \\in s} w(x) \\leq \\#t \\cdot b $, then there exists an element $ y \\in t $ such that $ \\sum_{x \\in s, f(x) = y} w(x) \\leq b $.",
+          "path": "Mathlib.Combinatorics.Pigeonhole"
+        }
+      ]
+    },
+    "isError": false
+  },
+  "method": "lean_leanfinder",
+  "form": "standard"
+}

@@ -1,0 +1,12 @@
+namespace MvPolynomial.NormCardAssessment
+variable {σ : Type*}
+#check @Roth.normOne_le_card_mul
+#print Roth.normOne_le_card_mul
+#print axioms Roth.normOne_le_card_mul
+#check @Finset.sum_le_card_nsmul
+theorem replay (P : MvPolynomial σ ℤ) {B : ℝ}
+    (hB : ∀ d, |((P.coeff d : ℤ) : ℝ)| ≤ B) :
+    Roth.normOne P ≤ P.support.card * B := by
+  simpa [Roth.normOne] using P.support.sum_le_card_nsmul _ _ (fun d _ ↦ hB d)
+#print axioms replay
+end MvPolynomial.NormCardAssessment
