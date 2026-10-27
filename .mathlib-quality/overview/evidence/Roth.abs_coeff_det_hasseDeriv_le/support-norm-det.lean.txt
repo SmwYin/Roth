@@ -1,0 +1,54 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+import Mathlib.Algebra.Polynomial.CancelLeads
+import Mathlib.Algebra.MvPolynomial.PDeriv
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+import Mathlib.Algebra.MvPolynomial.Equiv
+import Mathlib.Analysis.Normed.Unbundled.RingSeminorm
+import Mathlib.LinearAlgebra.Matrix.AbsoluteValue
+#check_failure Roth.normOne_det_le
+namespace NormDetRaw
+variable {R n : Type*} [CommRing R] [Fintype n] [DecidableEq n]
+theorem genericDet (size : R → ℝ) (hzero : size 0 = 0)
+    (hnonneg : ∀ a, 0 ≤ size a) (hone : size 1 ≤ 1)
+    (hneg : ∀ a, size (-a) = size a)
+    (hadd : ∀ a b, size (a + b) ≤ size a + size b)
+    (hmul : ∀ a b, size (a * b) ≤ size a * size b)
+    (M : Matrix n n R) {C : ℝ} (hM : ∀ i j, size (M i j) ≤ C) :
+    size M.det ≤ (Fintype.card n).factorial * C ^ Fintype.card n := by
+  classical
+  rw [Matrix.det_apply']
+  calc _ ≤ ∑ τ : Equiv.Perm n, size (_ * ∏ i, M (τ i) i) :=
+      Finset.le_sum_of_subadditive size hzero.le hadd _ _
+    _ ≤ ∑ _τ : Equiv.Perm n, C ^ Fintype.card n :=
+      Finset.sum_le_sum fun τ _ ↦ ?_
+    _ = _ := by simp [Fintype.card_perm]
+  rcases Int.units_eq_one_or (Equiv.Perm.sign τ) with h | h <;>
+    simpa [h, hneg] using
+      (Finset.le_prod_of_submultiplicative_of_nonneg size hnonneg hone hmul
+        Finset.univ fun i ↦ M (τ i) i).trans
+        ((Finset.prod_le_prod₀ (fun _ _ ↦ hnonneg _) fun i _ ↦ hM _ _).trans_eq
+          (by simp))
+#print axioms genericDet
+end NormDetRaw
+
+namespace NormDetRaw
+variable {R n : Type*} [CommRing R] [Fintype n] [DecidableEq n]
+#check @Matrix.det_le
+#check @map_neg_eq_map
+#check @map_add_le_add
+#check @map_mul_le_mul
+theorem seminormDet (p : RingSeminorm R) (hp : p 1 ≤ 1)
+    (M : Matrix n n R) {C : ℝ} (hM : ∀ i j, p (M i j) ≤ C) :
+    p M.det ≤ (Fintype.card n).factorial * C ^ Fintype.card n :=
+  genericDet p (map_zero p) (apply_nonneg p) hp (map_neg_eq_map p)
+    (map_add_le_add p) (map_mul_le_mul p) M hM
+#print axioms seminormDet
+end NormDetRaw

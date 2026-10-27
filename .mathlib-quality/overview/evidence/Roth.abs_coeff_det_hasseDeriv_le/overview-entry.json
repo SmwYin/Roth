@@ -1,0 +1,25 @@
+{
+  "declaration": "Roth.abs_coeff_det_hasseDeriv_le",
+  "kind": "theorem",
+  "type": "∀ {σ : Type u_1} [inst : Fintype σ] {l : ℕ} (E : Fin l → Fin l → σ →₀ ℕ)\n  (P : MvPolynomial σ ℤ) {r : σ → ℕ},\n  (∀ (j : σ), MvPolynomial.degreeOf j P ≤ r j) →\n    ∀ {B : ℝ},\n      0 ≤ B →\n        (∀ (d : σ →₀ ℕ), |↑(P.coeff d)| ≤ B) →\n          ∀ (d : σ →₀ ℕ),\n            |↑((Matrix.of fun μ ν ↦ (MvPolynomial.hasseDeriv (E μ ν)) P).det.coeff d)| ≤\n              (∏ j, (↑(r j) + 1)) ^ l * ↑l.factorial * B ^ l * 2 ^ ((∑ j, r j) * l)",
+  "what": "Every coefficient of an l×l determinant of arbitrary Hasse derivatives of P is bounded by N^l*l!*B^l*2^(S*l), N=∏(rj+1), S=∑rj.",
+  "how": "Coefficient ≤ coefficient length; support length ≤ box cardinality times B; each Hasse derivative length grows by at most2^S; expand determinant into l! products; scalar ring normalization.",
+  "hypotheses": "Arbitrary finite variable type, natural matrix size including0, arbitrary derivative-index array and exponent; degree and coefficient bounds; explicit hB0 is redundant.",
+  "project_dependencies": [
+    "MvPolynomial.hasseDeriv",
+    "MvPolynomial.hasseDeriv_apply",
+    "MvPolynomial.hasseCoeff_le_two_pow",
+    "Roth.card_le_card_box",
+    "Roth.abs_coeff_le_normOne",
+    "Roth.normOne_hasseDeriv_le",
+    "Roth.normOne_det_le",
+    "Roth.normOne_le_card_mul"
+  ],
+  "caller_summary": "One explicit use in Roth.index_det_le at Theta.lean475; canonical293 audit confirms sole direct consumer. Entire caller recompiled through strongest generic specialization.",
+  "mathlib_api_audit": "Matrix.det_le requires multiplicative AbsoluteValue; coefficient length is submultiplicative RingSeminorm. Polynomial.hasseDeriv_coeff is univariate. Finsupp and Finset size inequalities supply steps, not a≤3-call replacement.",
+  "moral_duplications": "A Hasse-specific assembly of support-cardinality, derivative-length and determinant seminorm estimates. Prior accepted project assessments do not make these existing mathlib lemmas.",
+  "generalization": "Verified RingSeminorm over arbitrary CommRing, normalized at1, arbitrary finite matrix index; omit hB0.",
+  "missing_api": "Coefficient l1 size API for multivariate polynomials, its Hasse estimate, and normalized RingSeminorm determinant estimate. Pinned Polynomial/Norm TODO documents missing lp norm API.",
+  "junk": "Sound, used main-result lemma with nonempty and empty determinant cases; no junk finding.",
+  "action": "YES-but-generalise-first; upstream generalized norm/Hasse infrastructure and coefficient bound, update sole caller to omit hB0."
+}

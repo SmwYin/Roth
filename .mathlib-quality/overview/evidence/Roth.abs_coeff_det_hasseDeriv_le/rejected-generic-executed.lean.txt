@@ -1,0 +1,61 @@
+namespace MvPolynomial.DetCoeffGeneric
+open MvPolynomial NormHasseGeneric
+variable {σ R : Type*} [CommRing R]
+theorem size_nonneg (p : AddGroupSeminorm R) (P : MvPolynomial σ R) : 0 ≤ size p P :=
+  Finset.sum_nonneg fun _ _ ↦ apply_nonneg p _
+theorem size_neg (p : AddGroupSeminorm R) (P : MvPolynomial σ R) :
+    size p (-P) = size p P := by simp [size]
+theorem size_mul (p : RingSeminorm R) (P Q : MvPolynomial σ R) :
+    size p.toAddGroupSeminorm (P * Q) ≤
+      size p.toAddGroupSeminorm P * size p.toAddGroupSeminorm Q := by
+  classical
+  rw [MvPolynomial.mul_def]
+  refine (size_sum _ _ _).trans ?_
+  rw [size, size, Finsupp.sum, Finsupp.sum, Finset.sum_mul_sum]
+  exact Finset.sum_le_sum fun a _ ↦ (size_sum _ _ _).trans <|
+    Finset.sum_le_sum fun b _ ↦ by simpa [size_monomial] using map_mul_le_mul p _ _
+theorem coeff_le_size (p : AddGroupSeminorm R) (P : MvPolynomial σ R) (d : σ →₀ ℕ) :
+    p (P.coeff d) ≤ size p P :=
+  Finsupp.single_eval_le_sum P.coeff (g := fun z ↦ p z) (map_zero p) (apply_nonneg p) d
+theorem size_le_card (p : AddGroupSeminorm R) (P : MvPolynomial σ R) {B : ℝ}
+    (hB : ∀ d, p (P.coeff d) ≤ B) : size p P ≤ P.support.card * B := by
+  simpa [size, Finsupp.sum] using P.support.sum_le_card_nsmul _ _ (fun d _ ↦ hB d)
+theorem bound [Fintype σ] (p : RingSeminorm R) (hp : p 1 ≤ 1) {l : ℕ}
+    (E : Fin l → Fin l → (σ →₀ ℕ)) (P : MvPolynomial σ R) {r : σ → ℕ}
+    (hP : ∀ j, degreeOf j P ≤ r j) {B : ℝ} (hB : ∀ d, p (P.coeff d) ≤ B)
+    (d : σ →₀ ℕ) :
+    p ((Matrix.of fun μ ν : Fin l ↦ hasseDeriv (E μ ν) P).det.coeff d) ≤
+      (∏ j, ((r j : ℝ) + 1)) ^ l * l.factorial * B ^ l *
+        2 ^ ((∑ j, r j) * l) := by
+  classical
+  have hB0 : 0 ≤ B := (apply_nonneg p _).trans (hB 0)
+  have hsupp : (P.support.card : ℝ) ≤ ∏ j, ((r j : ℝ) + 1) := by
+    exact_mod_cast Roth.card_le_card_box fun d hd j ↦
+      (monomial_le_degreeOf j hd).trans (hP j)
+  have hone : size p.toAddGroupSeminorm (1 : MvPolynomial σ R) ≤ 1 := by
+    simpa using (size_monomial p.toAddGroupSeminorm (0 : σ →₀ ℕ) (1 : R)).trans_le hp
+  calc _ ≤ size p.toAddGroupSeminorm
+      (Matrix.of fun μ ν : Fin l ↦ hasseDeriv (E μ ν) P).det := coeff_le_size _ _ _
+    _ ≤ l.factorial * (2 ^ (∑ j, r j) * ((∏ j, ((r j : ℝ) + 1)) * B)) ^ l := by
+      simpa only [Fintype.card_fin] using
+        NormDetRaw.genericDet (size p.toAddGroupSeminorm) (by simp [size])
+          (size_nonneg _) hone (size_neg _) (size_add _) (size_mul p) _
+          (fun μ ν ↦ (NormHasseGeneric.bound _ _ P hP).trans
+            (mul_le_mul_of_nonneg_left ((size_le_card _ P hB).trans
+              (mul_le_mul_of_nonneg_right hsupp hB0)) (by positivity)))
+    _ = _ := by ring
+noncomputable def intSize : RingSeminorm ℤ where
+  toFun z := |(z : ℝ)|
+  map_zero' := by simp
+  add_le' a b := by simpa using abs_add_le (a : ℝ) (b : ℝ)
+  neg' a := by simp
+  mul_le' a b := by simp [abs_mul]
+theorem specialization [Fintype σ] {l : ℕ} (E : Fin l → Fin l → (σ →₀ ℕ))
+    (P : MvPolynomial σ ℤ) {r : σ → ℕ} (hP : ∀ j, degreeOf j P ≤ r j)
+    {B : ℝ} (hB : ∀ d, |((P.coeff d : ℤ) : ℝ)| ≤ B) (d : σ →₀ ℕ) :
+    |(((Matrix.of fun μ ν : Fin l ↦ hasseDeriv (E μ ν) P).det.coeff d : ℤ) : ℝ)| ≤
+      (∏ j, ((r j : ℝ) + 1)) ^ l * l.factorial * B ^ l * 2 ^ ((∑ j, r j) * l) :=
+  bound intSize (by norm_num [intSize]) E P hP hB d
+#print axioms bound
+#print axioms specialization
+end MvPolynomial.DetCoeffGeneric

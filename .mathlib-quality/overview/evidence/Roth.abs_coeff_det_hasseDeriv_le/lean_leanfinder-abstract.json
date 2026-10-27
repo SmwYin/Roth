@@ -1,0 +1,59 @@
+{
+  "request": {
+    "query": "RingSeminorm coefficient l1 seminorm determinant Hasse derivative bound",
+    "num_results": 5
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"spectralValueTerms\",\n      \"informal_name\": \"Spectral value terms sequence\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : SeminormedRing R] → Polynomial R → ℕ → ℝ\",\n      \"informal_description\": \"For a polynomial $ p $ over a seminormed ring $ R $, this function returns a sequence indexed by $ \\\\mathbb{N} $ where each term is defined as $ \\\\|p_n\\\\|^{1/(d - n)} $ if $ n < d $, and $ 0 $ otherwise. Here, $ p_n $ denotes the coefficient of $ X^n $ in $ p $, $ d $ is the natural degree of $ p $, and $ \\\\|\\\\cdot\\\\| $ is the seminorm on $ R $. This sequence captures the normed coefficients' growth rates relative to their distance from the polynomial's degree.\",\n      \"path\": \"Mathlib.Analysis.Normed.Unbundled.SpectralNorm\"\n    },\n    {\n      \"formal_name\": \"ClassGroup.normBound\",\n      \"informal_name\": \"Norm Bound in Class Group for Euclidean Domains\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} →\\n  {S : Type u_2} →\\n    [inst : EuclideanDomain R] →\\n      [inst_1 : CommRing S] →\\n        [IsDomain S] →\\n          [inst_3 : Algebra R S] →\\n            AbsoluteValue R ℤ → {ι : Type u_5} → [DecidableEq ι] → [Fintype ι] → Module.Basis ι R S → ℤ\",\n      \"informal_description\": \"Given a Euclidean domain $ R $, a commutative domain $ S $ with an $ R $-algebra structure, and a finite basis $ b_S $ for $ S $ over $ R $, let $ n $ be the cardinality of the index set $ \\\\iota $ for the basis. Let $ m $ be the maximum absolute value of entries in the left multiplication matrix representation of $ b_S $. The norm bound is defined as $ n! \\\\cdot (n \\\\cdot m)^n $, where $ n! $ denotes the factorial of $ n $. This integer bound arises from combinatorial and matrix norm considerations in the class group context.\",\n      \"path\": \"Mathlib.NumberTheory.ClassNumber.Finite\"\n    },\n    {\n      \"formal_name\": \"Polynomial.le_gaussNorm\",\n      \"informal_name\": \"Gauss Norm Upper Bound for Coefficient Terms\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {F : Type u_2} [inst : Semiring R] [inst_1 : FunLike F R ℝ] (v : F) {c : ℝ} (p : Polynomial R)\\n  [ZeroHomClass F R ℝ] [NonnegHomClass F R ℝ], 0 ≤ c → ∀ (i : ℕ), v (p.coeff i) * c ^ i ≤ Polynomial.gaussNorm v c p\",\n      \"informal_description\": \"For any polynomial $ p $ over a semiring $ R $, valuation $ v $ (preserving zero and non-negative), non-negative real number $ c $, and natural number $ i $, the product $ v(a_i) \\\\cdot c^i $ (where $ a_i $ is the coefficient of $ X^i $ in $ p $) satisfies $ v(a_i) \\\\cdot c^i \\\\leq \\\\|p\\\\|_{v,c} $, where $ \\\\|p\\\\|_{v,c} $ denotes the Gauss norm of $ p $ with respect to $ v $ and $ c $.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.GaussNorm\"\n    },\n    {\n      \"formal_name\": \"ClassGroup.norm_le\",\n      \"informal_name\": \"Norm Bound in Terms of Coefficient Bounds\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {S : Type u_2} [inst : EuclideanDomain R] [inst_1 : CommRing S] [inst_2 : IsDomain S]\\n  [inst_3 : Algebra R S] (abv : AbsoluteValue R ℤ) {ι : Type u_5} [inst_4 : DecidableEq ι] [inst_5 : Fintype ι]\\n  (bS : Module.Basis ι R S) (a : S) {y : ℤ},\\n  (∀ (k : ι), abv ((bS.repr a) k) ≤ y) → abv ((Algebra.norm R) a) ≤ ClassGroup.normBound abv bS * y ^ Fintype.card ι\",\n      \"informal_description\": \"For any element $ a $ in $ S $, if the absolute value of each coefficient in its representation with respect to the basis $ b_S $ is at most $ y $, then the absolute value of the norm of $ a $ from $ S $ to $ R $ is bounded above by $ \\\\text{normBound} \\\\cdot y^{\\\\#\\\\iota} $, where $ \\\\#\\\\iota $ denotes the cardinality of the finite type $ \\\\iota $.\",\n      \"path\": \"Mathlib.NumberTheory.ClassNumber.Finite\"\n    },\n    {\n      \"formal_name\": \"ClassGroup.norm_lt\",\n      \"informal_name\": \"Norm Bound in Class Group\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {S : Type u_2} [inst : EuclideanDomain R] [inst_1 : CommRing S] [inst_2 : IsDomain S]\\n  [inst_3 : Algebra R S] (abv : AbsoluteValue R ℤ) {ι : Type u_5} [inst_4 : DecidableEq ι] [inst_5 : Fintype ι]\\n  (bS : Module.Basis ι R S) {T : Type u_6} [inst_6 : Ring T] [inst_7 : LinearOrder T] [IsStrictOrderedRing T] (a : S)\\n  {y : T},\\n  (∀ (k : ι), ↑(abv ((bS.repr a) k)) < y) →\\n    ↑(abv ((Algebra.norm R) a)) < ↑(ClassGroup.normBound abv bS) * y ^ Fintype.card ι\",\n      \"informal_description\": \"Let $ T $ be a linearly ordered ring with strict order. For a class group element $ a $, if each coefficient in the basis $ b_S $ has absolute value less than $ y $, then the norm $ \\\\mathrm{norm}(a) $ satisfies $ |\\\\mathrm{norm}(a)| < \\\\mathrm{normBound}(\\\\mathrm{abv}, b_S) \\\\cdot y^{\\\\#\\\\iota} $, where $ \\\\#\\\\iota $ denotes the cardinality of the finite type $ \\\\iota $.\",\n      \"path\": \"Mathlib.NumberTheory.ClassNumber.Finite\"\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "items": [
+        {
+          "formal_name": "spectralValueTerms",
+          "informal_name": "Spectral value terms sequence",
+          "kind": "definition",
+          "type": "{R : Type u_1} → [inst : SeminormedRing R] → Polynomial R → ℕ → ℝ",
+          "informal_description": "For a polynomial $ p $ over a seminormed ring $ R $, this function returns a sequence indexed by $ \\mathbb{N} $ where each term is defined as $ \\|p_n\\|^{1/(d - n)} $ if $ n < d $, and $ 0 $ otherwise. Here, $ p_n $ denotes the coefficient of $ X^n $ in $ p $, $ d $ is the natural degree of $ p $, and $ \\|\\cdot\\| $ is the seminorm on $ R $. This sequence captures the normed coefficients' growth rates relative to their distance from the polynomial's degree.",
+          "path": "Mathlib.Analysis.Normed.Unbundled.SpectralNorm"
+        },
+        {
+          "formal_name": "ClassGroup.normBound",
+          "informal_name": "Norm Bound in Class Group for Euclidean Domains",
+          "kind": "definition",
+          "type": "{R : Type u_1} →\n  {S : Type u_2} →\n    [inst : EuclideanDomain R] →\n      [inst_1 : CommRing S] →\n        [IsDomain S] →\n          [inst_3 : Algebra R S] →\n            AbsoluteValue R ℤ → {ι : Type u_5} → [DecidableEq ι] → [Fintype ι] → Module.Basis ι R S → ℤ",
+          "informal_description": "Given a Euclidean domain $ R $, a commutative domain $ S $ with an $ R $-algebra structure, and a finite basis $ b_S $ for $ S $ over $ R $, let $ n $ be the cardinality of the index set $ \\iota $ for the basis. Let $ m $ be the maximum absolute value of entries in the left multiplication matrix representation of $ b_S $. The norm bound is defined as $ n! \\cdot (n \\cdot m)^n $, where $ n! $ denotes the factorial of $ n $. This integer bound arises from combinatorial and matrix norm considerations in the class group context.",
+          "path": "Mathlib.NumberTheory.ClassNumber.Finite"
+        },
+        {
+          "formal_name": "Polynomial.le_gaussNorm",
+          "informal_name": "Gauss Norm Upper Bound for Coefficient Terms",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} {F : Type u_2} [inst : Semiring R] [inst_1 : FunLike F R ℝ] (v : F) {c : ℝ} (p : Polynomial R)\n  [ZeroHomClass F R ℝ] [NonnegHomClass F R ℝ], 0 ≤ c → ∀ (i : ℕ), v (p.coeff i) * c ^ i ≤ Polynomial.gaussNorm v c p",
+          "informal_description": "For any polynomial $ p $ over a semiring $ R $, valuation $ v $ (preserving zero and non-negative), non-negative real number $ c $, and natural number $ i $, the product $ v(a_i) \\cdot c^i $ (where $ a_i $ is the coefficient of $ X^i $ in $ p $) satisfies $ v(a_i) \\cdot c^i \\leq \\|p\\|_{v,c} $, where $ \\|p\\|_{v,c} $ denotes the Gauss norm of $ p $ with respect to $ v $ and $ c $.",
+          "path": "Mathlib.RingTheory.Polynomial.GaussNorm"
+        },
+        {
+          "formal_name": "ClassGroup.norm_le",
+          "informal_name": "Norm Bound in Terms of Coefficient Bounds",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} {S : Type u_2} [inst : EuclideanDomain R] [inst_1 : CommRing S] [inst_2 : IsDomain S]\n  [inst_3 : Algebra R S] (abv : AbsoluteValue R ℤ) {ι : Type u_5} [inst_4 : DecidableEq ι] [inst_5 : Fintype ι]\n  (bS : Module.Basis ι R S) (a : S) {y : ℤ},\n  (∀ (k : ι), abv ((bS.repr a) k) ≤ y) → abv ((Algebra.norm R) a) ≤ ClassGroup.normBound abv bS * y ^ Fintype.card ι",
+          "informal_description": "For any element $ a $ in $ S $, if the absolute value of each coefficient in its representation with respect to the basis $ b_S $ is at most $ y $, then the absolute value of the norm of $ a $ from $ S $ to $ R $ is bounded above by $ \\text{normBound} \\cdot y^{\\#\\iota} $, where $ \\#\\iota $ denotes the cardinality of the finite type $ \\iota $.",
+          "path": "Mathlib.NumberTheory.ClassNumber.Finite"
+        },
+        {
+          "formal_name": "ClassGroup.norm_lt",
+          "informal_name": "Norm Bound in Class Group",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} {S : Type u_2} [inst : EuclideanDomain R] [inst_1 : CommRing S] [inst_2 : IsDomain S]\n  [inst_3 : Algebra R S] (abv : AbsoluteValue R ℤ) {ι : Type u_5} [inst_4 : DecidableEq ι] [inst_5 : Fintype ι]\n  (bS : Module.Basis ι R S) {T : Type u_6} [inst_6 : Ring T] [inst_7 : LinearOrder T] [IsStrictOrderedRing T] (a : S)\n  {y : T},\n  (∀ (k : ι), ↑(abv ((bS.repr a) k)) < y) →\n    ↑(abv ((Algebra.norm R) a)) < ↑(ClassGroup.normBound abv bS) * y ^ Fintype.card ι",
+          "informal_description": "Let $ T $ be a linearly ordered ring with strict order. For a class group element $ a $, if each coefficient in the basis $ b_S $ has absolute value less than $ y $, then the norm $ \\mathrm{norm}(a) $ satisfies $ |\\mathrm{norm}(a)| < \\mathrm{normBound}(\\mathrm{abv}, b_S) \\cdot y^{\\#\\iota} $, where $ \\#\\iota $ denotes the cardinality of the finite type $ \\iota $.",
+          "path": "Mathlib.NumberTheory.ClassNumber.Finite"
+        }
+      ]
+    },
+    "isError": false
+  }
+}

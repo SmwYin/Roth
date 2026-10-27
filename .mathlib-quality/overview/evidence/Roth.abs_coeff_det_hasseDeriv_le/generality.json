@@ -1,0 +1,193 @@
+{
+  "parameter_rows": [
+    [
+      "σ : Type*",
+      "Arbitrary variable universe",
+      "Keep; no finite-cardinality coding in variable names."
+    ],
+    [
+      "[Fintype σ]",
+      "Finite variables",
+      "Global product and sum on RHS need a finite type. Finite-support variant changes interface and is not claimed verified."
+    ],
+    [
+      "l : ℕ, Fin l",
+      "Matrix size",
+      "Generalize to arbitrary finite index ι with cardι in formula; specialization recovers Fin l."
+    ],
+    [
+      "E : Fin l → Fin l → σ →₀ ℕ",
+      "Arbitrary multiindices",
+      "Already arbitrary; no triangularity, disjointness or derivative-order bounds needed."
+    ],
+    [
+      "P : MvPolynomial σ ℤ",
+      "Integer coefficients",
+      "Generalize ℤ/real absolute value to CommRing R with RingSeminorm p and p1≤1; the coefficient length proof uses only additive and submultiplicative bounds."
+    ],
+    [
+      "r : σ → ℕ",
+      "Degree ceiling vector",
+      "Keep natural exponents; hP supplies support box bound. No positive r assumption is necessary."
+    ],
+    [
+      "hP : ∀ j, degreeOf j P ≤ r j",
+      "Degree bound",
+      "Used in both support count and binomial estimate; retain."
+    ],
+    [
+      "B : ℝ",
+      "Coefficient-size ceiling",
+      "Keep real scalar bound to match bundled RingSeminorm codomain; arbitrary ordered target is not claimed verified."
+    ],
+    [
+      "hB0 : 0 ≤ B",
+      "Nonnegative ceiling",
+      "Drop: inferred from hB at exponent0 and nonnegative size. Verified omitted-hypothesis specialization and full caller replay."
+    ],
+    [
+      "hB : ∀ d, |coeff d P| ≤ B",
+      "Coefficient ceiling",
+      "Retain; p(coeff d P) in generalized form. Local-to-support hypotheses would need separate nonnegativity for zero polynomial."
+    ],
+    [
+      "d : σ →₀ ℕ",
+      "Output coefficient",
+      "Already arbitrary; retain."
+    ]
+  ],
+  "modern_rows": [
+    [
+      "1",
+      "yes",
+      "RingSeminorm p bundles additive/nonnegative/negative/submultiplicative laws; retain explicit p1≤1.",
+      "map_add_le_add, map_mul_le_mul, map_neg_eq_map compose directly."
+    ],
+    [
+      "2",
+      "no",
+      "Finite algebraic inequality has no convergence, metric or topology.",
+      "No filters needed."
+    ],
+    [
+      "3",
+      "no",
+      "No object with universal-property construction is being chosen.",
+      "No new universal-property layer."
+    ],
+    [
+      "4",
+      "no",
+      "No ad hoc closed subset predicate; RingSeminorm is an existing bundled function.",
+      "No substructure lattice needed."
+    ],
+    [
+      "5",
+      "yes",
+      "ℤ coefficients → arbitrary commutative ring carrying RingSeminorm; retain CommRing for determinant signs and commutativity.",
+      "Works over real, complex or other seminormed coefficient rings without separate integer casts."
+    ],
+    [
+      "6",
+      "no",
+      "No category or higher categorical structure occurs.",
+      "Higher categories do not improve coefficient bounds."
+    ],
+    [
+      "7",
+      "yes",
+      "Fin l matrix indices → arbitrary finite ι and cardι. Natural exponent monoid remains σ→₀ℕ.",
+      "Use Matrix.det on existing finite-index matrices without transporting to Fin."
+    ],
+    [
+      "8",
+      "yes",
+      "Proof body contains no ℤ-specific cast/absolute operations after statement: 0 ℤ, 0 Int.cast, 0 abs tokens in source proof; normOne calls expose abstract coefficient length laws.",
+      "Same Hasse bound feeds RingSeminorm coefficient estimate for other rings; new helper proofs establish transfer."
+    ],
+    [
+      "9",
+      "no false generalization",
+      "Generalized theorem has original as actual intSize specialization. RingSeminorm is not replaced with AbsoluteValue, since coefficient length is not multiplicative.",
+      "No wrong equality of distinct norms. Normalization p1≤1 retained, including empty determinant."
+    ]
+  ],
+  "strategy_rows": [
+    [
+      "1",
+      "no",
+      "No topology/epsilon-delta argument."
+    ],
+    [
+      "2",
+      "no",
+      "Finite coefficient sums are natural; ideal/submodule inclusions cannot express numerical upper bound."
+    ],
+    [
+      "3",
+      "no",
+      "No sequence convergence."
+    ],
+    [
+      "4",
+      "no",
+      "No categorical construction."
+    ],
+    [
+      "5",
+      "yes",
+      "Coefficient l1 size, size_mul, normalized RingSeminorm determinant and Hasse-size bounds form reusable API; use these then support-card bound and ring normalization."
+    ]
+  ],
+  "infrastructure_rows": [
+    [
+      "Typeclass diamond",
+      "n/a: theorem introduces no data, instances or coercion paths"
+    ],
+    [
+      "Reducibility leak",
+      "n/a: theorem introduces no data, instances or coercion paths"
+    ],
+    [
+      "Non-canonical unfolding",
+      "n/a: theorem introduces no data, instances or coercion paths"
+    ],
+    [
+      "Instance priority collision",
+      "n/a: theorem introduces no data, instances or coercion paths"
+    ],
+    [
+      "Universe polymorphism",
+      "n/a: theorem introduces no data, instances or coercion paths"
+    ],
+    [
+      "Coercion ambiguity",
+      "n/a: theorem introduces no data, instances or coercion paths"
+    ]
+  ],
+  "generality_verdict": "STRICTLY NARROWER THAN STANDARD",
+  "modern_verdict": "MODERN-IDIOM: verified coefficient RingSeminorm transfer; actual hB0 drop",
+  "strategy_verdict": "REFACTOR-RECOMMENDED",
+  "statement_shape": {
+    "normal_form": "coefficient size p(coeff d determinant) ≤ explicit scalar bound",
+    "syntactic_generality": "Arbitrary finite matrix index; omit hB0; preserve input hypothesis hB to avoid constructing a supremum norm object at callers.",
+    "superfluous_arguments": [
+      "hB0"
+    ],
+    "overall": "RESTATE-BEFORE-SHIP"
+  },
+  "expanded_forms": [
+    {
+      "form": "RingSeminorm R coefficient size; hB0 removed",
+      "verified": true,
+      "status": "PASS",
+      "receipt": "native-generic-clean-receipt.json"
+    },
+    {
+      "form": "Arbitrary finite matrix index plus original Fin specialization and full caller",
+      "verified": true,
+      "status": "PASS",
+      "receipt": "native-index-accepted-receipt.json"
+    }
+  ]
+}

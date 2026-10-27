@@ -1,0 +1,76 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+import Mathlib.Algebra.Polynomial.CancelLeads
+import Mathlib.Algebra.MvPolynomial.PDeriv
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+import Mathlib.Algebra.MvPolynomial.Equiv
+import Mathlib.Analysis.Normed.Unbundled.RingSeminorm
+import Mathlib.LinearAlgebra.Matrix.AbsoluteValue
+import Mathlib.Data.Nat.Choose.Bounds
+import Mathlib.RingTheory.Polynomial.Basic
+#check_failure Roth.abs_coeff_det_hasseDeriv_le
+namespace MvPolynomial.NormHasseGeneric
+open MvPolynomial
+variable {σ R : Type*} [CommRing R]
+noncomputable def size (p : AddGroupSeminorm R) (P : MvPolynomial σ R) : ℝ :=
+  P.coeff.sum fun _ a ↦ p a
+theorem size_add (p : AddGroupSeminorm R) (P Q : MvPolynomial σ R) :
+    size p (P + Q) ≤ size p P + size p Q := by
+  classical
+  change (P.coeff + Q.coeff).sum (fun _ a ↦ p a) ≤
+    P.coeff.sum (fun _ a ↦ p a) + Q.coeff.sum (fun _ a ↦ p a)
+  rw [Finsupp.sum_of_support_subset _ Finsupp.support_add _ (by simp),
+    Finsupp.sum_of_support_subset _ Finset.subset_union_left _ (by simp),
+    Finsupp.sum_of_support_subset _ Finset.subset_union_right _ (by simp),
+    ← Finset.sum_add_distrib]
+  exact Finset.sum_le_sum fun i _ ↦ map_add_le_add p _ _
+theorem size_sum {ι : Type*} (p : AddGroupSeminorm R) (s : Finset ι)
+    (f : ι → MvPolynomial σ R) : size p (∑ i ∈ s, f i) ≤ ∑ i ∈ s, size p (f i) :=
+  Finset.le_sum_of_subadditive (size p) (by simp [size]) (size_add p) s f
+theorem size_monomial (p : AddGroupSeminorm R) (k : σ →₀ ℕ) (a : R) :
+    size p (monomial k a) = p a := by
+  change (Finsupp.single k a).sum (fun _ r ↦ p r) = p a
+  exact Finsupp.sum_single_index (map_zero p)
+end MvPolynomial.NormHasseGeneric
+namespace MvPolynomial.DetCoeffGeneric
+open MvPolynomial NormHasseGeneric
+variable {σ R : Type*} [CommRing R]
+theorem size_nonneg (p : AddGroupSeminorm R) (P : MvPolynomial σ R) : 0 ≤ size p P :=
+  Finset.sum_nonneg fun _ _ ↦ apply_nonneg p _
+theorem size_neg (p : AddGroupSeminorm R) (P : MvPolynomial σ R) :
+    size p (-P) = size p P := by
+  change (-P.coeff).sum (fun _ a ↦ p a) = P.coeff.sum (fun _ a ↦ p a)
+  simp only [Finsupp.sum, Finsupp.support_neg, Finsupp.neg_apply, map_neg_eq_map]
+theorem size_mul (p : RingSeminorm R) (P Q : MvPolynomial σ R) :
+    size p.toAddGroupSeminorm (P * Q) ≤
+      size p.toAddGroupSeminorm P * size p.toAddGroupSeminorm Q := by
+  classical
+  rw [MvPolynomial.mul_def]
+  refine (size_sum _ _ _).trans ?_
+  rw [size, size, Finsupp.sum, Finsupp.sum, Finset.sum_mul_sum]
+  exact Finset.sum_le_sum fun a _ ↦ (size_sum _ _ _).trans <|
+    Finset.sum_le_sum fun b _ ↦ by simpa [size_monomial] using map_mul_le_mul p _ _
+theorem coeff_le_size (p : AddGroupSeminorm R) (P : MvPolynomial σ R) (d : σ →₀ ℕ) :
+    p (P.coeff d) ≤ size p P :=
+  Finsupp.single_eval_le_sum P.coeff (g := fun z ↦ p z) (map_zero p) (apply_nonneg p) d
+theorem size_le_card (p : AddGroupSeminorm R) (P : MvPolynomial σ R) {B : ℝ}
+    (hB : ∀ d, p (P.coeff d) ≤ B) : size p P ≤ P.support.card * B := by
+  simpa [size, Finsupp.sum, finsupp_support_eq_support] using
+    P.support.sum_le_card_nsmul _ _ (fun d _ ↦ hB d)
+#print axioms size_mul
+#print axioms coeff_le_size
+#print axioms size_le_card
+end MvPolynomial.DetCoeffGeneric
+#check @Matrix.det_le
+#check @Polynomial.hasseDeriv_coeff
+#check @Finsupp.single_eval_le_sum
+#check @Finset.le_sum_of_subadditive
+#check @Finset.le_prod_of_submultiplicative_of_nonneg
+#check @Nat.choose_le_two_pow

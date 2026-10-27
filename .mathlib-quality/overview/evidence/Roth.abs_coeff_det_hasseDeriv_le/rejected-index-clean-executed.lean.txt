@@ -1,0 +1,85 @@
+namespace MvPolynomial.DetCoeffIndexGeneric
+open NormHasseGeneric DetCoeffGeneric
+variable {σ R : Type*} [CommRing R]
+theorem bound [Fintype σ] (p : RingSeminorm R) (hp : p 1 ≤ 1)
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (E : ι → ι → (σ →₀ ℕ)) (P : MvPolynomial σ R) {r : σ → ℕ}
+    (hP : ∀ j, degreeOf j P ≤ r j) {B : ℝ} (hB : ∀ d, p (P.coeff d) ≤ B)
+    (d : σ →₀ ℕ) :
+    p ((Matrix.of fun μ ν : ι ↦ hasseDeriv (E μ ν) P).det.coeff d) ≤
+      (∏ j, ((r j : ℝ) + 1)) ^ Fintype.card ι * (Fintype.card ι).factorial * B ^ Fintype.card ι *
+        2 ^ ((∑ j, r j) * Fintype.card ι) := by
+  classical
+  have hB0 : 0 ≤ B := (apply_nonneg p _).trans (hB 0)
+  have hsupp : (P.support.card : ℝ) ≤ ∏ j, ((r j : ℝ) + 1) := by
+    exact_mod_cast Roth.card_le_card_box fun d hd j ↦
+      (monomial_le_degreeOf j hd).trans (hP j)
+  have hone : size p.toAddGroupSeminorm (1 : MvPolynomial σ R) ≤ 1 := by
+    simpa using (size_monomial p.toAddGroupSeminorm (0 : σ →₀ ℕ) (1 : R)).trans_le hp
+  calc
+    _ ≤ size p.toAddGroupSeminorm
+        (Matrix.of fun μ ν : ι ↦ hasseDeriv (E μ ν) P).det := coeff_le_size _ _ _
+    _ ≤ (Fintype.card ι).factorial *
+        (2 ^ (∑ j, r j) * ((∏ j, ((r j : ℝ) + 1)) * B)) ^ Fintype.card ι := by
+      exact NormDetRaw.genericDet (size p.toAddGroupSeminorm) (by simp [size])
+          (size_nonneg _) hone (size_neg _) (size_add _) (size_mul p)
+          (Matrix.of fun μ ν : ι ↦ hasseDeriv (E μ ν) P)
+          (fun μ ν ↦ (NormHasseGeneric.bound _ _ P hP).trans
+            (mul_le_mul_of_nonneg_left ((size_le_card _ P hB).trans
+              (mul_le_mul_of_nonneg_right hsupp hB0)) (by positivity)))
+    _ = _ := by ring
+theorem specialization [Fintype σ] {l : ℕ} (E : Fin l → Fin l → (σ →₀ ℕ))
+    (P : MvPolynomial σ ℤ) {r : σ → ℕ} (hP : ∀ j, degreeOf j P ≤ r j)
+    {B : ℝ} (hB : ∀ d, |((P.coeff d : ℤ) : ℝ)| ≤ B) (d : σ →₀ ℕ) :
+    |(((Matrix.of fun μ ν : Fin l ↦ hasseDeriv (E μ ν) P).det.coeff d : ℤ) : ℝ)| ≤
+      (∏ j, ((r j : ℝ) + 1)) ^ l * l.factorial * B ^ l * 2 ^ ((∑ j, r j) * l) :=
+  by simpa only [Fintype.card_fin] using
+    bound intSize (by change |((1 : ℤ) : ℝ)| ≤ 1; norm_num) E P hP hB d
+#print axioms bound
+#print axioms specialization
+end MvPolynomial.DetCoeffIndexGeneric
+namespace MvPolynomial.DetCoeffIndexConsumers
+open Roth MvPolynomial
+variable {τ : Type*} [Fintype τ]
+open Lean Elab Term in
+elab "detCoeffIndexPrivateIndexSeparated" : term => do
+  Lean.Meta.mkConstWithFreshMVarLevels
+    (Lean.mkPrivateNameCore `Roth.Theta `Roth.index_separated_mul_le_aux)
+theorem caller {r : Option τ → ℕ} (hr0 : ∀ j, 0 < r j) {r₁ : ℕ} (hr₁ : ∀ j, r j ≤ r₁)
+    {q : Option τ → ℕ} {B : ℝ} {R : MvPolynomial (Option τ) ℤ} (hR : R ∈ RSet B r)
+    {h : Option τ → ℤ} (hh : ∀ j, IsCoprime (h j) (q j : ℤ)) {l : ℕ} (hl : 1 ≤ l)
+    {D : Fin l → (τ →₀ ℕ)} {U : MvPolynomial τ ℤ} {V : Polynomial ℤ} (hU : U ≠ 0) (hV : V ≠ 0)
+    (hUd : ∀ j, degreeOf j U ≤ l * r (some j)) (hVd : V.natDegree ≤ l * r none)
+    (hF : (Matrix.of fun μ ν : Fin l ↦
+        hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) R).det =
+      rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) ℤ) V) :
+    index (map (Int.castRingHom ℝ) (Matrix.of fun μ ν : Fin l ↦
+        hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) R).det)
+      (fun j ↦ (h j : ℝ) / q j) r ≤ l * lem6Φ q r (lem6M (Fintype.card τ + 1) r₁ B l) l := by
+  classical
+  -- Step 1: the coefficients of `F` are bounded by `M`.
+  have hFcoef (d) : |(((Matrix.of fun μ ν : Fin l ↦ hasseDeriv
+      ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) R).det.coeff d : ℤ) : ℝ)| ≤
+      lem6M (Fintype.card τ + 1) r₁ B l := by
+    simpa only [lem6M, Finset.prod_const, Finset.sum_const, Finset.card_univ,
+      Fintype.card_option, nsmul_eq_mul, Nat.cast_id, pow_mul, mul_right_comm] using
+      DetCoeffIndexGeneric.specialization _ R (r := fun _ ↦ r₁) (fun j ↦ (hR.2.1 j).trans (hr₁ j))
+        hR.2.2 d
+  -- Step 2: the coefficients of `U` and `V` are bounded by `M`.
+  have hUc : ∀ a, |((U.coeff a : ℤ) : ℝ)| ≤ lem6M (Fintype.card τ + 1) r₁ B l := fun a ↦ by
+    have h1 := hFcoef (a.mapDomain some + Finsupp.single none V.natDegree)
+    rw [hF, coeff_rename_mul_aeval, Int.cast_mul, abs_mul] at h1
+    exact (le_mul_of_one_le_right (abs_nonneg _) (by
+      exact_mod_cast Int.one_le_abs (Polynomial.leadingCoeff_ne_zero.2 hV))).trans h1
+  have hVc : ∀ b, |((V.coeff b : ℤ) : ℝ)| ≤ lem6M (Fintype.card τ + 1) r₁ B l := fun b ↦ by
+    obtain ⟨a₀, ha₀⟩ := MvPolynomial.ne_zero_iff.1 hU
+    have h1 := hFcoef (a₀.mapDomain some + Finsupp.single none b)
+    rw [hF, coeff_rename_mul_aeval, Int.cast_mul, abs_mul] at h1
+    exact (le_mul_of_one_le_left (abs_nonneg _) (by
+      exact_mod_cast Int.one_le_abs ha₀)).trans h1
+  -- Step 3: Lemma 4-2, the index of the product of polynomials in separate variables.
+  rw [hF]
+  exact detCoeffIndexPrivateIndexSeparated hr0 hh hl ⟨hU, hUd, hUc⟩ hV hVd hVc
+
+#print axioms caller
+end MvPolynomial.DetCoeffIndexConsumers

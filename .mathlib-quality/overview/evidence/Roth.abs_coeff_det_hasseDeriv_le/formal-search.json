@@ -1,0 +1,596 @@
+[
+  {
+    "tool": "lean_leanfinder",
+    "form": "current",
+    "request": {
+      "query": "absolute coefficients determinant Hasse derivatives integer multivariate polynomial bounded degree",
+      "num_results": 5
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv_coeff\",\n      \"informal_name\": \"Coefficient Formula for Hasse Derivative of Order k\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u_1} [inst : Semiring R] (k : \u2115) (f : Polynomial R) (n : \u2115),\\n  ((Polynomial.hasseDeriv k) f).coeff n = \u2191((n + k).choose k) * f.coeff (n + k)\",\n      \"informal_description\": \"For any natural number $ n $, the coefficient of $ X^n $ in the $ k $-th Hasse derivative of a polynomial $ f $ over a semiring $ R $ is equal to $ \\\\binom{n + k}{k} $ multiplied by the coefficient of $ X^{n + k} $ in $ f $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"Matrix.det_matrixOfPolynomials\",\n      \"informal_name\": \"Determinant of a Matrix of Monic Polynomials with Degree Conditions Equals One\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type v} [inst : CommRing R] {n : \u2115} (p : Fin n \u2192 Polynomial R),\\n  (\u2200 (i : Fin n), (p i).natDegree = \u2191i) \u2192 (\u2200 (i : Fin n), (p i).Monic) \u2192 (Matrix.of fun i j => (p j).coeff \u2191i).det = 1\",\n      \"informal_description\": \"For a commutative ring $ R $ and natural number $ n $, consider monic polynomials $ p_0, p_1, \\\\ldots, p_{n-1} $ in $ R[X] $ where each $ p_i $ has degree $ i $. Construct an $ n \\\\times n $ matrix $ M $ such that the entry in row $ i $ and column $ j $ is the coefficient of $ X^i $ in $ p_j $. Then the determinant of $ M $ is equal to 1.\",\n      \"path\": \"Mathlib.LinearAlgebra.Matrix.Block\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv_apply\",\n      \"informal_name\": \"Hasse Derivative of Order k Applied to a Polynomial\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u_1} [inst : Semiring R] (k : \u2115) (f : Polynomial R),\\n  (Polynomial.hasseDeriv k) f = f.sum fun i r => (Polynomial.monomial (i - k)) (\u2191(i.choose k) * r)\",\n      \"informal_description\": \"For a semiring $ R $ and a polynomial $ f \\\\in R[X] $, the Hasse derivative of order $ k $ applied to $ f $ is given by $ D^{(k)}(f) = \\\\sum_{i} \\\\binom{i}{k} \\\\cdot a_i \\\\cdot X^{i - k} $, where $ a_i $ is the coefficient of $ X^i $ in $ f $. This expression sums over all monomials in $ f $, scaling each by the binomial coefficient $ \\\\binom{i}{k} $ and reducing the exponent by $ k $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"Algebra.SubmersivePresentation.jacobianOfHasCoeffs\",\n      \"informal_name\": \"Jacobian determinant of a submersive presentation with coefficients in R\u2080\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} \u2192\\n  {S : Type u_2} \u2192\\n    {\u03b9 : Type u_3} \u2192\\n      {\u03c3 : Type u_4} \u2192\\n        [inst : CommRing R] \u2192\\n          [inst_1 : CommRing S] \u2192\\n            [inst_2 : Algebra R S] \u2192\\n              [inst_3 : Finite \u03c3] \u2192\\n                (P : Algebra.SubmersivePresentation R S \u03b9 \u03c3) \u2192\\n                  (R\u2080 : Type u_5) \u2192\\n                    [inst_4 : CommRing R\u2080] \u2192\\n                      [inst_5 : Algebra R\u2080 R] \u2192\\n                        [inst_6 : Algebra R\u2080 S] \u2192 [inst_7 : IsScalarTower R\u2080 R S] \u2192 [P.H...\",\n      \"informal_description\": \"The Jacobian determinant of a submersive presentation with coefficients in R\u2080 is the determinant of the Jacobi matrix derived from the pre-submersive presentation constructed using coefficients in R\u2080. This matrix consists of partial derivatives of the relations with respect to the generators in the polynomial ring R\u2080[\u03b9], forming a square matrix over R\u2080.\",\n      \"path\": \"Mathlib.RingTheory.Extension.Presentation.Core\"\n    },\n    {\n      \"formal_name\": \"Polynomial.discr\",\n      \"informal_name\": \"Discriminant of a polynomial\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} \u2192 [inst : CommRing R] \u2192 Polynomial R \u2192 R\",\n      \"informal_description\": \"The discriminant of a polynomial $ f $ is defined as the determinant of the Sylvester matrix of $ f $ and its derivative, multiplied by $ (-1)^{n(n-1)/2} $, where $ n $ is the natural degree of $ f $.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.Resultant.Basic\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Polynomial.hasseDeriv_coeff",
+            "informal_name": "Coefficient Formula for Hasse Derivative of Order k",
+            "kind": "theorem",
+            "type": "\u2200 {R : Type u_1} [inst : Semiring R] (k : \u2115) (f : Polynomial R) (n : \u2115),\n  ((Polynomial.hasseDeriv k) f).coeff n = \u2191((n + k).choose k) * f.coeff (n + k)",
+            "informal_description": "For any natural number $ n $, the coefficient of $ X^n $ in the $ k $-th Hasse derivative of a polynomial $ f $ over a semiring $ R $ is equal to $ \\binom{n + k}{k} $ multiplied by the coefficient of $ X^{n + k} $ in $ f $.",
+            "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          },
+          {
+            "formal_name": "Matrix.det_matrixOfPolynomials",
+            "informal_name": "Determinant of a Matrix of Monic Polynomials with Degree Conditions Equals One",
+            "kind": "theorem",
+            "type": "\u2200 {R : Type v} [inst : CommRing R] {n : \u2115} (p : Fin n \u2192 Polynomial R),\n  (\u2200 (i : Fin n), (p i).natDegree = \u2191i) \u2192 (\u2200 (i : Fin n), (p i).Monic) \u2192 (Matrix.of fun i j => (p j).coeff \u2191i).det = 1",
+            "informal_description": "For a commutative ring $ R $ and natural number $ n $, consider monic polynomials $ p_0, p_1, \\ldots, p_{n-1} $ in $ R[X] $ where each $ p_i $ has degree $ i $. Construct an $ n \\times n $ matrix $ M $ such that the entry in row $ i $ and column $ j $ is the coefficient of $ X^i $ in $ p_j $. Then the determinant of $ M $ is equal to 1.",
+            "path": "Mathlib.LinearAlgebra.Matrix.Block"
+          },
+          {
+            "formal_name": "Polynomial.hasseDeriv_apply",
+            "informal_name": "Hasse Derivative of Order k Applied to a Polynomial",
+            "kind": "theorem",
+            "type": "\u2200 {R : Type u_1} [inst : Semiring R] (k : \u2115) (f : Polynomial R),\n  (Polynomial.hasseDeriv k) f = f.sum fun i r => (Polynomial.monomial (i - k)) (\u2191(i.choose k) * r)",
+            "informal_description": "For a semiring $ R $ and a polynomial $ f \\in R[X] $, the Hasse derivative of order $ k $ applied to $ f $ is given by $ D^{(k)}(f) = \\sum_{i} \\binom{i}{k} \\cdot a_i \\cdot X^{i - k} $, where $ a_i $ is the coefficient of $ X^i $ in $ f $. This expression sums over all monomials in $ f $, scaling each by the binomial coefficient $ \\binom{i}{k} $ and reducing the exponent by $ k $.",
+            "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          },
+          {
+            "formal_name": "Algebra.SubmersivePresentation.jacobianOfHasCoeffs",
+            "informal_name": "Jacobian determinant of a submersive presentation with coefficients in R\u2080",
+            "kind": "definition",
+            "type": "{R : Type u_1} \u2192\n  {S : Type u_2} \u2192\n    {\u03b9 : Type u_3} \u2192\n      {\u03c3 : Type u_4} \u2192\n        [inst : CommRing R] \u2192\n          [inst_1 : CommRing S] \u2192\n            [inst_2 : Algebra R S] \u2192\n              [inst_3 : Finite \u03c3] \u2192\n                (P : Algebra.SubmersivePresentation R S \u03b9 \u03c3) \u2192\n                  (R\u2080 : Type u_5) \u2192\n                    [inst_4 : CommRing R\u2080] \u2192\n                      [inst_5 : Algebra R\u2080 R] \u2192\n                        [inst_6 : Algebra R\u2080 S] \u2192 [inst_7 : IsScalarTower R\u2080 R S] \u2192 [P.H...",
+            "informal_description": "The Jacobian determinant of a submersive presentation with coefficients in R\u2080 is the determinant of the Jacobi matrix derived from the pre-submersive presentation constructed using coefficients in R\u2080. This matrix consists of partial derivatives of the relations with respect to the generators in the polynomial ring R\u2080[\u03b9], forming a square matrix over R\u2080.",
+            "path": "Mathlib.RingTheory.Extension.Presentation.Core"
+          },
+          {
+            "formal_name": "Polynomial.discr",
+            "informal_name": "Discriminant of a polynomial",
+            "kind": "definition",
+            "type": "{R : Type u_1} \u2192 [inst : CommRing R] \u2192 Polynomial R \u2192 R",
+            "informal_description": "The discriminant of a polynomial $ f $ is defined as the determinant of the Sylvester matrix of $ f $ and its derivative, multiplied by $ (-1)^{n(n-1)/2} $, where $ n $ is the natural degree of $ f $.",
+            "path": "Mathlib.RingTheory.Polynomial.Resultant.Basic"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "tool": "lean_leanfinder",
+    "form": "standard",
+    "request": {
+      "query": "polynomial determinant coefficient height bound factorial product degree Hasse derivative",
+      "num_results": 5
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.numBound\",\n      \"informal_name\": \"Numerical Bound for Multivariate Polynomials in Chevalley's Theorem\",\n      \"kind\": \"definition\",\n      \"type\": \"\u2115 \u2192 (\u2115 \u2192 \u2115) \u2192 \u2115 \u2192 \u2115\",\n      \"informal_description\": \"A function that takes a natural number $n$, a function $f : \\\\mathbb{N} \\\\to \\\\mathbb{N}$, and another natural number $m$, returning a natural number used to establish well-founded recursion in the context of multivariate polynomials and Chevalley's theorem. It computes bounds by recursively applying $f$ to $n$ and decrementing $m$.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.numBound_succ\",\n      \"informal_name\": \"Successor Case of Numerical Bound in Chevalley's Theorem\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 (k : \u2115) (D : \u2115 \u2192 \u2115) (n : \u2115),\\n  ChevalleyThm.MvPolynomialC.numBound k D (n + 1) =\\n    ChevalleyThm.MvPolynomialC.numBound k D n * ChevalleyThm.MvPolynomialC.degBound k D n * D n\",\n      \"informal_description\": \"For natural numbers $k, n$ and function $D : \\\\mathbb{N} \\\\to \\\\mathbb{N}$, the numerical bound at $n+1$ satisfies $\\\\text{numBound}(k, D, n+1) = \\\\text{numBound}(k, D, n) \\\\cdot \\\\text{degBound}(k, D, n) \\\\cdot D(n)$, establishing a recursive relationship used in well-founded recursion for multivariate polynomials in Chevalley's theorem.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.degBound\",\n      \"informal_name\": \"Degree Bound for Multivariate Polynomials in Chevalley's Theorem\",\n      \"kind\": \"definition\",\n      \"type\": \"\u2115 \u2192 (\u2115 \u2192 \u2115) \u2192 \u2115 \u2192 \u2115\",\n      \"informal_description\": \"A function that computes a degree bound for multivariate polynomials, taking a natural number $n$, a function $f : \\\\mathbb{N} \\\\to \\\\mathbb{N}$, and an element of the sum type $\\\\mathbb{N} \\\\oplus \\\\mathbb{N}$. For left components, it applies $f$ to $n$, and for right components, it returns $n$ directly. This is used in the proof of Chevalley's theorem to establish well-founded recursion for multivariate polynomial constructions.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.numBound\",\n      \"informal_name\": \"Numerical Bound for Chevalley's Theorem in Multivariate Polynomials with Multiset Counts\",\n      \"kind\": \"definition\",\n      \"type\": \"\u2115 \u2192 (m : \u2115) \u2192 \u2115 \u2192 Multiset (Fin m) \u2192 \u2115\",\n      \"informal_description\": \"A function that computes a numerical bound used in the context of Chevalley's theorem for multivariate polynomials. It takes natural numbers $k$, $m$, $n$ and a multiset $d$ of elements of type $\\\\text{Fin}\\\\, m$, and returns a natural number obtained by applying the multivariate polynomial bound function to $k + n$ and a function that counts the occurrences of each element in the multiset $d$ after mapping each element to its value in $\\\\mathbb{N}$, then adding 1.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"Polynomial.natDegree_det_X_add_C_le\",\n      \"informal_name\": \"Natural Degree of Determinant of X\u2022A + B is Bounded by Index Type Cardinality\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {n : Type u_1} {\u03b1 : Type u_2} [inst : DecidableEq n] [inst_1 : Fintype n] [inst_2 : CommRing \u03b1] (A B : Matrix n n \u03b1),\\n  (Polynomial.X \u2022 A.map \u21d1Polynomial.C + B.map \u21d1Polynomial.C).det.natDegree \u2264 Fintype.card n\",\n      \"informal_description\": \"For any commutative ring $\\\\alpha$ and finite type $n$, and for any $n \\\\times n$ matrices $A$ and $B$ with entries in $\\\\alpha$, the natural degree of the determinant of the matrix $X \\\\cdot A + B$ (where $X$ is the indeterminate and entries are embedded as constant polynomials) is at most the cardinality of $n$.\",\n      \"path\": \"Mathlib.LinearAlgebra.Matrix.Polynomial\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "ChevalleyThm.MvPolynomialC.numBound",
+            "informal_name": "Numerical Bound for Multivariate Polynomials in Chevalley's Theorem",
+            "kind": "definition",
+            "type": "\u2115 \u2192 (\u2115 \u2192 \u2115) \u2192 \u2115 \u2192 \u2115",
+            "informal_description": "A function that takes a natural number $n$, a function $f : \\mathbb{N} \\to \\mathbb{N}$, and another natural number $m$, returning a natural number used to establish well-founded recursion in the context of multivariate polynomials and Chevalley's theorem. It computes bounds by recursively applying $f$ to $n$ and decrementing $m$.",
+            "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+          },
+          {
+            "formal_name": "ChevalleyThm.MvPolynomialC.numBound_succ",
+            "informal_name": "Successor Case of Numerical Bound in Chevalley's Theorem",
+            "kind": "theorem",
+            "type": "\u2200 (k : \u2115) (D : \u2115 \u2192 \u2115) (n : \u2115),\n  ChevalleyThm.MvPolynomialC.numBound k D (n + 1) =\n    ChevalleyThm.MvPolynomialC.numBound k D n * ChevalleyThm.MvPolynomialC.degBound k D n * D n",
+            "informal_description": "For natural numbers $k, n$ and function $D : \\mathbb{N} \\to \\mathbb{N}$, the numerical bound at $n+1$ satisfies $\\text{numBound}(k, D, n+1) = \\text{numBound}(k, D, n) \\cdot \\text{degBound}(k, D, n) \\cdot D(n)$, establishing a recursive relationship used in well-founded recursion for multivariate polynomials in Chevalley's theorem.",
+            "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+          },
+          {
+            "formal_name": "ChevalleyThm.MvPolynomialC.degBound",
+            "informal_name": "Degree Bound for Multivariate Polynomials in Chevalley's Theorem",
+            "kind": "definition",
+            "type": "\u2115 \u2192 (\u2115 \u2192 \u2115) \u2192 \u2115 \u2192 \u2115",
+            "informal_description": "A function that computes a degree bound for multivariate polynomials, taking a natural number $n$, a function $f : \\mathbb{N} \\to \\mathbb{N}$, and an element of the sum type $\\mathbb{N} \\oplus \\mathbb{N}$. For left components, it applies $f$ to $n$, and for right components, it returns $n$ directly. This is used in the proof of Chevalley's theorem to establish well-founded recursion for multivariate polynomial constructions.",
+            "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+          },
+          {
+            "formal_name": "ChevalleyThm.numBound",
+            "informal_name": "Numerical Bound for Chevalley's Theorem in Multivariate Polynomials with Multiset Counts",
+            "kind": "definition",
+            "type": "\u2115 \u2192 (m : \u2115) \u2192 \u2115 \u2192 Multiset (Fin m) \u2192 \u2115",
+            "informal_description": "A function that computes a numerical bound used in the context of Chevalley's theorem for multivariate polynomials. It takes natural numbers $k$, $m$, $n$ and a multiset $d$ of elements of type $\\text{Fin}\\, m$, and returns a natural number obtained by applying the multivariate polynomial bound function to $k + n$ and a function that counts the occurrences of each element in the multiset $d$ after mapping each element to its value in $\\mathbb{N}$, then adding 1.",
+            "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+          },
+          {
+            "formal_name": "Polynomial.natDegree_det_X_add_C_le",
+            "informal_name": "Natural Degree of Determinant of X\u2022A + B is Bounded by Index Type Cardinality",
+            "kind": "theorem",
+            "type": "\u2200 {n : Type u_1} {\u03b1 : Type u_2} [inst : DecidableEq n] [inst_1 : Fintype n] [inst_2 : CommRing \u03b1] (A B : Matrix n n \u03b1),\n  (Polynomial.X \u2022 A.map \u21d1Polynomial.C + B.map \u21d1Polynomial.C).det.natDegree \u2264 Fintype.card n",
+            "informal_description": "For any commutative ring $\\alpha$ and finite type $n$, and for any $n \\times n$ matrices $A$ and $B$ with entries in $\\alpha$, the natural degree of the determinant of the matrix $X \\cdot A + B$ (where $X$ is the indeterminate and entries are embedded as constant polynomials) is at most the cardinality of $n$.",
+            "path": "Mathlib.LinearAlgebra.Matrix.Polynomial"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "tool": "lean_leanfinder",
+    "form": "abstract",
+    "request": {
+      "query": "RingSeminorm coefficient l1 seminorm determinant Hasse derivative bound",
+      "num_results": 5
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"spectralValueTerms\",\n      \"informal_name\": \"Spectral value terms sequence\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} \u2192 [inst : SeminormedRing R] \u2192 Polynomial R \u2192 \u2115 \u2192 \u211d\",\n      \"informal_description\": \"For a polynomial $ p $ over a seminormed ring $ R $, this function returns a sequence indexed by $ \\\\mathbb{N} $ where each term is defined as $ \\\\|p_n\\\\|^{1/(d - n)} $ if $ n < d $, and $ 0 $ otherwise. Here, $ p_n $ denotes the coefficient of $ X^n $ in $ p $, $ d $ is the natural degree of $ p $, and $ \\\\|\\\\cdot\\\\| $ is the seminorm on $ R $. This sequence captures the normed coefficients' growth rates relative to their distance from the polynomial's degree.\",\n      \"path\": \"Mathlib.Analysis.Normed.Unbundled.SpectralNorm\"\n    },\n    {\n      \"formal_name\": \"ClassGroup.normBound\",\n      \"informal_name\": \"Norm Bound in Class Group for Euclidean Domains\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} \u2192\\n  {S : Type u_2} \u2192\\n    [inst : EuclideanDomain R] \u2192\\n      [inst_1 : CommRing S] \u2192\\n        [IsDomain S] \u2192\\n          [inst_3 : Algebra R S] \u2192\\n            AbsoluteValue R \u2124 \u2192 {\u03b9 : Type u_5} \u2192 [DecidableEq \u03b9] \u2192 [Fintype \u03b9] \u2192 Module.Basis \u03b9 R S \u2192 \u2124\",\n      \"informal_description\": \"Given a Euclidean domain $ R $, a commutative domain $ S $ with an $ R $-algebra structure, and a finite basis $ b_S $ for $ S $ over $ R $, let $ n $ be the cardinality of the index set $ \\\\iota $ for the basis. Let $ m $ be the maximum absolute value of entries in the left multiplication matrix representation of $ b_S $. The norm bound is defined as $ n! \\\\cdot (n \\\\cdot m)^n $, where $ n! $ denotes the factorial of $ n $. This integer bound arises from combinatorial and matrix norm considerations in the class group context.\",\n      \"path\": \"Mathlib.NumberTheory.ClassNumber.Finite\"\n    },\n    {\n      \"formal_name\": \"Polynomial.le_gaussNorm\",\n      \"informal_name\": \"Gauss Norm Upper Bound for Coefficient Terms\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u_1} {F : Type u_2} [inst : Semiring R] [inst_1 : FunLike F R \u211d] (v : F) {c : \u211d} (p : Polynomial R)\\n  [ZeroHomClass F R \u211d] [NonnegHomClass F R \u211d], 0 \u2264 c \u2192 \u2200 (i : \u2115), v (p.coeff i) * c ^ i \u2264 Polynomial.gaussNorm v c p\",\n      \"informal_description\": \"For any polynomial $ p $ over a semiring $ R $, valuation $ v $ (preserving zero and non-negative), non-negative real number $ c $, and natural number $ i $, the product $ v(a_i) \\\\cdot c^i $ (where $ a_i $ is the coefficient of $ X^i $ in $ p $) satisfies $ v(a_i) \\\\cdot c^i \\\\leq \\\\|p\\\\|_{v,c} $, where $ \\\\|p\\\\|_{v,c} $ denotes the Gauss norm of $ p $ with respect to $ v $ and $ c $.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.GaussNorm\"\n    },\n    {\n      \"formal_name\": \"ClassGroup.norm_le\",\n      \"informal_name\": \"Norm Bound in Terms of Coefficient Bounds\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u_1} {S : Type u_2} [inst : EuclideanDomain R] [inst_1 : CommRing S] [inst_2 : IsDomain S]\\n  [inst_3 : Algebra R S] (abv : AbsoluteValue R \u2124) {\u03b9 : Type u_5} [inst_4 : DecidableEq \u03b9] [inst_5 : Fintype \u03b9]\\n  (bS : Module.Basis \u03b9 R S) (a : S) {y : \u2124},\\n  (\u2200 (k : \u03b9), abv ((bS.repr a) k) \u2264 y) \u2192 abv ((Algebra.norm R) a) \u2264 ClassGroup.normBound abv bS * y ^ Fintype.card \u03b9\",\n      \"informal_description\": \"For any element $ a $ in $ S $, if the absolute value of each coefficient in its representation with respect to the basis $ b_S $ is at most $ y $, then the absolute value of the norm of $ a $ from $ S $ to $ R $ is bounded above by $ \\\\text{normBound} \\\\cdot y^{\\\\#\\\\iota} $, where $ \\\\#\\\\iota $ denotes the cardinality of the finite type $ \\\\iota $.\",\n      \"path\": \"Mathlib.NumberTheory.ClassNumber.Finite\"\n    },\n    {\n      \"formal_name\": \"ClassGroup.norm_lt\",\n      \"informal_name\": \"Norm Bound in Class Group\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u_1} {S : Type u_2} [inst : EuclideanDomain R] [inst_1 : CommRing S] [inst_2 : IsDomain S]\\n  [inst_3 : Algebra R S] (abv : AbsoluteValue R \u2124) {\u03b9 : Type u_5} [inst_4 : DecidableEq \u03b9] [inst_5 : Fintype \u03b9]\\n  (bS : Module.Basis \u03b9 R S) {T : Type u_6} [inst_6 : Ring T] [inst_7 : LinearOrder T] [IsStrictOrderedRing T] (a : S)\\n  {y : T},\\n  (\u2200 (k : \u03b9), \u2191(abv ((bS.repr a) k)) < y) \u2192\\n    \u2191(abv ((Algebra.norm R) a)) < \u2191(ClassGroup.normBound abv bS) * y ^ Fintype.card \u03b9\",\n      \"informal_description\": \"Let $ T $ be a linearly ordered ring with strict order. For a class group element $ a $, if each coefficient in the basis $ b_S $ has absolute value less than $ y $, then the norm $ \\\\mathrm{norm}(a) $ satisfies $ |\\\\mathrm{norm}(a)| < \\\\mathrm{normBound}(\\\\mathrm{abv}, b_S) \\\\cdot y^{\\\\#\\\\iota} $, where $ \\\\#\\\\iota $ denotes the cardinality of the finite type $ \\\\iota $.\",\n      \"path\": \"Mathlib.NumberTheory.ClassNumber.Finite\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "spectralValueTerms",
+            "informal_name": "Spectral value terms sequence",
+            "kind": "definition",
+            "type": "{R : Type u_1} \u2192 [inst : SeminormedRing R] \u2192 Polynomial R \u2192 \u2115 \u2192 \u211d",
+            "informal_description": "For a polynomial $ p $ over a seminormed ring $ R $, this function returns a sequence indexed by $ \\mathbb{N} $ where each term is defined as $ \\|p_n\\|^{1/(d - n)} $ if $ n < d $, and $ 0 $ otherwise. Here, $ p_n $ denotes the coefficient of $ X^n $ in $ p $, $ d $ is the natural degree of $ p $, and $ \\|\\cdot\\| $ is the seminorm on $ R $. This sequence captures the normed coefficients' growth rates relative to their distance from the polynomial's degree.",
+            "path": "Mathlib.Analysis.Normed.Unbundled.SpectralNorm"
+          },
+          {
+            "formal_name": "ClassGroup.normBound",
+            "informal_name": "Norm Bound in Class Group for Euclidean Domains",
+            "kind": "definition",
+            "type": "{R : Type u_1} \u2192\n  {S : Type u_2} \u2192\n    [inst : EuclideanDomain R] \u2192\n      [inst_1 : CommRing S] \u2192\n        [IsDomain S] \u2192\n          [inst_3 : Algebra R S] \u2192\n            AbsoluteValue R \u2124 \u2192 {\u03b9 : Type u_5} \u2192 [DecidableEq \u03b9] \u2192 [Fintype \u03b9] \u2192 Module.Basis \u03b9 R S \u2192 \u2124",
+            "informal_description": "Given a Euclidean domain $ R $, a commutative domain $ S $ with an $ R $-algebra structure, and a finite basis $ b_S $ for $ S $ over $ R $, let $ n $ be the cardinality of the index set $ \\iota $ for the basis. Let $ m $ be the maximum absolute value of entries in the left multiplication matrix representation of $ b_S $. The norm bound is defined as $ n! \\cdot (n \\cdot m)^n $, where $ n! $ denotes the factorial of $ n $. This integer bound arises from combinatorial and matrix norm considerations in the class group context.",
+            "path": "Mathlib.NumberTheory.ClassNumber.Finite"
+          },
+          {
+            "formal_name": "Polynomial.le_gaussNorm",
+            "informal_name": "Gauss Norm Upper Bound for Coefficient Terms",
+            "kind": "theorem",
+            "type": "\u2200 {R : Type u_1} {F : Type u_2} [inst : Semiring R] [inst_1 : FunLike F R \u211d] (v : F) {c : \u211d} (p : Polynomial R)\n  [ZeroHomClass F R \u211d] [NonnegHomClass F R \u211d], 0 \u2264 c \u2192 \u2200 (i : \u2115), v (p.coeff i) * c ^ i \u2264 Polynomial.gaussNorm v c p",
+            "informal_description": "For any polynomial $ p $ over a semiring $ R $, valuation $ v $ (preserving zero and non-negative), non-negative real number $ c $, and natural number $ i $, the product $ v(a_i) \\cdot c^i $ (where $ a_i $ is the coefficient of $ X^i $ in $ p $) satisfies $ v(a_i) \\cdot c^i \\leq \\|p\\|_{v,c} $, where $ \\|p\\|_{v,c} $ denotes the Gauss norm of $ p $ with respect to $ v $ and $ c $.",
+            "path": "Mathlib.RingTheory.Polynomial.GaussNorm"
+          },
+          {
+            "formal_name": "ClassGroup.norm_le",
+            "informal_name": "Norm Bound in Terms of Coefficient Bounds",
+            "kind": "theorem",
+            "type": "\u2200 {R : Type u_1} {S : Type u_2} [inst : EuclideanDomain R] [inst_1 : CommRing S] [inst_2 : IsDomain S]\n  [inst_3 : Algebra R S] (abv : AbsoluteValue R \u2124) {\u03b9 : Type u_5} [inst_4 : DecidableEq \u03b9] [inst_5 : Fintype \u03b9]\n  (bS : Module.Basis \u03b9 R S) (a : S) {y : \u2124},\n  (\u2200 (k : \u03b9), abv ((bS.repr a) k) \u2264 y) \u2192 abv ((Algebra.norm R) a) \u2264 ClassGroup.normBound abv bS * y ^ Fintype.card \u03b9",
+            "informal_description": "For any element $ a $ in $ S $, if the absolute value of each coefficient in its representation with respect to the basis $ b_S $ is at most $ y $, then the absolute value of the norm of $ a $ from $ S $ to $ R $ is bounded above by $ \\text{normBound} \\cdot y^{\\#\\iota} $, where $ \\#\\iota $ denotes the cardinality of the finite type $ \\iota $.",
+            "path": "Mathlib.NumberTheory.ClassNumber.Finite"
+          },
+          {
+            "formal_name": "ClassGroup.norm_lt",
+            "informal_name": "Norm Bound in Class Group",
+            "kind": "theorem",
+            "type": "\u2200 {R : Type u_1} {S : Type u_2} [inst : EuclideanDomain R] [inst_1 : CommRing S] [inst_2 : IsDomain S]\n  [inst_3 : Algebra R S] (abv : AbsoluteValue R \u2124) {\u03b9 : Type u_5} [inst_4 : DecidableEq \u03b9] [inst_5 : Fintype \u03b9]\n  (bS : Module.Basis \u03b9 R S) {T : Type u_6} [inst_6 : Ring T] [inst_7 : LinearOrder T] [IsStrictOrderedRing T] (a : S)\n  {y : T},\n  (\u2200 (k : \u03b9), \u2191(abv ((bS.repr a) k)) < y) \u2192\n    \u2191(abv ((Algebra.norm R) a)) < \u2191(ClassGroup.normBound abv bS) * y ^ Fintype.card \u03b9",
+            "informal_description": "Let $ T $ be a linearly ordered ring with strict order. For a class group element $ a $, if each coefficient in the basis $ b_S $ has absolute value less than $ y $, then the norm $ \\mathrm{norm}(a) $ satisfies $ |\\mathrm{norm}(a)| < \\mathrm{normBound}(\\mathrm{abv}, b_S) \\cdot y^{\\#\\iota} $, where $ \\#\\iota $ denotes the cardinality of the finite type $ \\iota $.",
+            "path": "Mathlib.NumberTheory.ClassNumber.Finite"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "tool": "lean_loogle",
+    "form": "current",
+    "request": {
+      "query": "MvPolynomial.coeff, Matrix.det",
+      "num_results": 10
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "Error executing tool lean_loogle: loogle query error: unknown identifier 'MvPolynomial.coeff' Suggestions: \"MvPolynomial.coeff\", Matrix.det"
+        }
+      ],
+      "isError": true
+    }
+  },
+  {
+    "tool": "lean_loogle",
+    "form": "standard",
+    "request": {
+      "query": "Matrix.det, _ \u2264 _",
+      "num_results": 10
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.natDegree_det_X_add_C_le\",\n      \"type\": \" {n : Type u_1} {\u03b1 : Type u_2} [DecidableEq n] [Fintype n] [CommRing \u03b1] (A B : Matrix n n \u03b1) : (Polynomial.X \u2022 A.map \u21d1Polynomial.C + B.map \u21d1Polynomial.C).det.natDegree \u2264 Fintype.card n\",\n      \"module\": \"Mathlib.LinearAlgebra.Matrix.Polynomial\"\n    },\n    {\n      \"name\": \"Matrix.charpoly_coeff_eq_sum_minors\",\n      \"type\": \" {R : Type u} [CommRing R] {n : Type v} [DecidableEq n] [Fintype n] (M : Matrix n n R) (k : \u2115) (hk : k \u2264 Fintype.card n) : M.charpoly.coeff (Fintype.card n - k) = (-1) ^ k * \u2211 s \u2208 Finset.powersetCard k Finset.univ, (M.submatrix Subtype.val Subtype.val).det\",\n      \"module\": \"Mathlib.LinearAlgebra.Matrix.Charpoly.Coeff\"\n    },\n    {\n      \"name\": \"Matrix.pow_sub'\",\n      \"type\": \" {n' : Type u_1} [DecidableEq n'] [Fintype n'] {R : Type u_2} [CommRing R] (A : Matrix n' n' R) {m n : \u2115} (ha : IsUnit A.det) (h : n \u2264 m) : A ^ (m - n) = A ^ m * (A ^ n)\u207b\u00b9\",\n      \"module\": \"Mathlib.LinearAlgebra.Matrix.ZPow\"\n    },\n    {\n      \"name\": \"CartanMatrix.E_det\",\n      \"type\": \" {n : \u2115} (hn : 3 \u2264 n) : (CartanMatrix.E n).det = 9 - \u2191n\",\n      \"module\": \"Mathlib.LinearAlgebra.Matrix.Cartan.Basic\"\n    },\n    {\n      \"name\": \"CartanMatrix.det_E_add_two\",\n      \"type\": \" (n : \u2115) (hn : 4 \u2264 n) : (CartanMatrix.E (n + 2)).det = 2 * (CartanMatrix.E (n + 1)).det - (CartanMatrix.E n).det\",\n      \"module\": \"Mathlib.LinearAlgebra.Matrix.Cartan.Basic\"\n    },\n    {\n      \"name\": \"Matrix.PosSemidef.det_nonneg\",\n      \"type\": \" {n : Type u_2} {\ud835\udd5c : Type u_3} [Fintype n] [RCLike \ud835\udd5c] {A : Matrix n n \ud835\udd5c} [DecidableEq n] (hA : A.PosSemidef) : 0 \u2264 A.det\",\n      \"module\": \"Mathlib.Analysis.Matrix.PosDef\"\n    },\n    {\n      \"name\": \"Matrix.det_le\",\n      \"type\": \" {R : Type u_1} {S : Type u_2} [CommRing R] [Nontrivial R] [CommRing S] [LinearOrder S] [IsStrictOrderedRing S] {n : Type u_3} [Fintype n] [DecidableEq n] {A : Matrix n n R} {abv : AbsoluteValue R S} {x : S} (hx : \u2200 (i j : n), abv (A i j) \u2264 x) : abv A.det \u2264 (Fintype.card n).factorial \u2022 x ^ Fintype.card n\",\n      \"module\": \"Mathlib.LinearAlgebra.Matrix.AbsoluteValue\"\n    },\n    {\n      \"name\": \"Matrix.det_sum_le\",\n      \"type\": \" {R : Type u_1} {S : Type u_2} [CommRing R] [Nontrivial R] [CommRing S] [LinearOrder S] [IsStrictOrderedRing S] {n : Type u_3} [Fintype n] [DecidableEq n] {\u03b9 : Type u_4} (s : Finset \u03b9) {A : \u03b9 \u2192 Matrix n n R} {abv : AbsoluteValue R S} {x : S} (hx : \u2200 (k : \u03b9) (i j : n), abv (A k i j) \u2264 x) : abv (\u2211 k \u2208 s, A k).det \u2264 (Fintype.card n).factorial \u2022 (s.card \u2022 x) ^ Fintype.card n\",\n      \"module\": \"Mathlib.LinearAlgebra.Matrix.AbsoluteValue\"\n    },\n    {\n      \"name\": \"Matrix.det_sum_smul_le\",\n      \"type\": \" {R : Type u_1} {S : Type u_2} [CommRing R] [Nontrivial R] [CommRing S] [LinearOrder S] [IsStrictOrderedRing S] {n : Type u_3} [Fintype n] [DecidableEq n] {\u03b9 : Type u_4} (s : Finset \u03b9) {c : \u03b9 \u2192 R} {A : \u03b9 \u2192 Matrix n n R} {abv : AbsoluteValue R S} {x : S} (hx : \u2200 (k : \u03b9) (i j : n), abv (A k i j) \u2264 x) {y : S} (hy : \u2200 (k : \u03b9), abv (c k) \u2264 y) : abv (\u2211 k \u2208 s, c k \u2022 A k).det \u2264 (Fintype.card n).factorial \u2022 (s.card \u2022 y * x) ^ Fintype.card n\",\n      \"module\": \"Mathlib.LinearAlgebra.Matrix.AbsoluteValue\"\n    },\n    {\n      \"name\": \"FixedDetMatrices.induction_on\",\n      \"type\": \" {m : \u2124} {C : FixedDetMatrix (Fin 2) \u2124 m \u2192 Prop} {A : FixedDetMatrix (Fin 2) \u2124 m} (hm : m \u2260 0) (h0 : \u2200 (A : FixedDetMatrix (Fin 2) \u2124 m), \u2191A 1 0 = 0 \u2192 0 < \u2191A 0 0 \u2192 0 \u2264 \u2191A 0 1 \u2192 |\u2191A 0 1| < |\u2191A 1 1| \u2192 C A) (hS : \u2200 (B : FixedDetMatrix (Fin 2) \u2124 m), C B \u2192 C (ModularGroup.S \u2022 B)) (hT : \u2200 (B : FixedDetMatrix (Fin 2) \u2124 m), C B \u2192 C (ModularGroup.T \u2022 B)) : C A\",\n      \"module\": \"Mathlib.LinearAlgebra.Matrix.FixedDetMatrices\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.natDegree_det_X_add_C_le",
+            "type": " {n : Type u_1} {\u03b1 : Type u_2} [DecidableEq n] [Fintype n] [CommRing \u03b1] (A B : Matrix n n \u03b1) : (Polynomial.X \u2022 A.map \u21d1Polynomial.C + B.map \u21d1Polynomial.C).det.natDegree \u2264 Fintype.card n",
+            "module": "Mathlib.LinearAlgebra.Matrix.Polynomial"
+          },
+          {
+            "name": "Matrix.charpoly_coeff_eq_sum_minors",
+            "type": " {R : Type u} [CommRing R] {n : Type v} [DecidableEq n] [Fintype n] (M : Matrix n n R) (k : \u2115) (hk : k \u2264 Fintype.card n) : M.charpoly.coeff (Fintype.card n - k) = (-1) ^ k * \u2211 s \u2208 Finset.powersetCard k Finset.univ, (M.submatrix Subtype.val Subtype.val).det",
+            "module": "Mathlib.LinearAlgebra.Matrix.Charpoly.Coeff"
+          },
+          {
+            "name": "Matrix.pow_sub'",
+            "type": " {n' : Type u_1} [DecidableEq n'] [Fintype n'] {R : Type u_2} [CommRing R] (A : Matrix n' n' R) {m n : \u2115} (ha : IsUnit A.det) (h : n \u2264 m) : A ^ (m - n) = A ^ m * (A ^ n)\u207b\u00b9",
+            "module": "Mathlib.LinearAlgebra.Matrix.ZPow"
+          },
+          {
+            "name": "CartanMatrix.E_det",
+            "type": " {n : \u2115} (hn : 3 \u2264 n) : (CartanMatrix.E n).det = 9 - \u2191n",
+            "module": "Mathlib.LinearAlgebra.Matrix.Cartan.Basic"
+          },
+          {
+            "name": "CartanMatrix.det_E_add_two",
+            "type": " (n : \u2115) (hn : 4 \u2264 n) : (CartanMatrix.E (n + 2)).det = 2 * (CartanMatrix.E (n + 1)).det - (CartanMatrix.E n).det",
+            "module": "Mathlib.LinearAlgebra.Matrix.Cartan.Basic"
+          },
+          {
+            "name": "Matrix.PosSemidef.det_nonneg",
+            "type": " {n : Type u_2} {\ud835\udd5c : Type u_3} [Fintype n] [RCLike \ud835\udd5c] {A : Matrix n n \ud835\udd5c} [DecidableEq n] (hA : A.PosSemidef) : 0 \u2264 A.det",
+            "module": "Mathlib.Analysis.Matrix.PosDef"
+          },
+          {
+            "name": "Matrix.det_le",
+            "type": " {R : Type u_1} {S : Type u_2} [CommRing R] [Nontrivial R] [CommRing S] [LinearOrder S] [IsStrictOrderedRing S] {n : Type u_3} [Fintype n] [DecidableEq n] {A : Matrix n n R} {abv : AbsoluteValue R S} {x : S} (hx : \u2200 (i j : n), abv (A i j) \u2264 x) : abv A.det \u2264 (Fintype.card n).factorial \u2022 x ^ Fintype.card n",
+            "module": "Mathlib.LinearAlgebra.Matrix.AbsoluteValue"
+          },
+          {
+            "name": "Matrix.det_sum_le",
+            "type": " {R : Type u_1} {S : Type u_2} [CommRing R] [Nontrivial R] [CommRing S] [LinearOrder S] [IsStrictOrderedRing S] {n : Type u_3} [Fintype n] [DecidableEq n] {\u03b9 : Type u_4} (s : Finset \u03b9) {A : \u03b9 \u2192 Matrix n n R} {abv : AbsoluteValue R S} {x : S} (hx : \u2200 (k : \u03b9) (i j : n), abv (A k i j) \u2264 x) : abv (\u2211 k \u2208 s, A k).det \u2264 (Fintype.card n).factorial \u2022 (s.card \u2022 x) ^ Fintype.card n",
+            "module": "Mathlib.LinearAlgebra.Matrix.AbsoluteValue"
+          },
+          {
+            "name": "Matrix.det_sum_smul_le",
+            "type": " {R : Type u_1} {S : Type u_2} [CommRing R] [Nontrivial R] [CommRing S] [LinearOrder S] [IsStrictOrderedRing S] {n : Type u_3} [Fintype n] [DecidableEq n] {\u03b9 : Type u_4} (s : Finset \u03b9) {c : \u03b9 \u2192 R} {A : \u03b9 \u2192 Matrix n n R} {abv : AbsoluteValue R S} {x : S} (hx : \u2200 (k : \u03b9) (i j : n), abv (A k i j) \u2264 x) {y : S} (hy : \u2200 (k : \u03b9), abv (c k) \u2264 y) : abv (\u2211 k \u2208 s, c k \u2022 A k).det \u2264 (Fintype.card n).factorial \u2022 (s.card \u2022 y * x) ^ Fintype.card n",
+            "module": "Mathlib.LinearAlgebra.Matrix.AbsoluteValue"
+          },
+          {
+            "name": "FixedDetMatrices.induction_on",
+            "type": " {m : \u2124} {C : FixedDetMatrix (Fin 2) \u2124 m \u2192 Prop} {A : FixedDetMatrix (Fin 2) \u2124 m} (hm : m \u2260 0) (h0 : \u2200 (A : FixedDetMatrix (Fin 2) \u2124 m), \u2191A 1 0 = 0 \u2192 0 < \u2191A 0 0 \u2192 0 \u2264 \u2191A 0 1 \u2192 |\u2191A 0 1| < |\u2191A 1 1| \u2192 C A) (hS : \u2200 (B : FixedDetMatrix (Fin 2) \u2124 m), C B \u2192 C (ModularGroup.S \u2022 B)) (hT : \u2200 (B : FixedDetMatrix (Fin 2) \u2124 m), C B \u2192 C (ModularGroup.T \u2022 B)) : C A",
+            "module": "Mathlib.LinearAlgebra.Matrix.FixedDetMatrices"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "tool": "lean_loogle",
+    "form": "abstract",
+    "request": {
+      "query": "RingSeminorm, Matrix.det",
+      "num_results": 10
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": []\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": []
+      },
+      "isError": false
+    }
+  },
+  {
+    "tool": "lean_leansearch",
+    "form": "current",
+    "request": {
+      "query": "absolute coefficients determinant Hasse derivatives integer multivariate polynomial bounded degree",
+      "num_results": 5
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.hasseDeriv\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.HasseDeriv\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} \u2192 [inst : Semiring R] \u2192 \u2115 \u2192 Polynomial R \u2192\u2097[R] Polynomial R\"\n    },\n    {\n      \"name\": \"Polynomial.hasseDeriv_apply\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.HasseDeriv\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u_1} [inst : Semiring R] (k : \u2115) (f : Polynomial R),\\n  (Polynomial.hasseDeriv k) f = f.sum fun i r => (Polynomial.monomial (i - k)) (\u2191(i.choose k) * r)\"\n    },\n    {\n      \"name\": \"Matrix.det_le\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Matrix.AbsoluteValue\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u_1} {S : Type u_2} [inst : CommRing R] [Nontrivial R] [inst_2 : CommRing S] [inst_3 : LinearOrder S]\\n  [IsStrictOrderedRing S] {n : Type u_3} [inst_5 : Fintype n] [inst_6 : DecidableEq n] {A : Matrix n n R}\\n  {abv : AbsoluteValue R S} {x : S},\\n  (\u2200 (i j : n), abv (A i j) \u2264 x) \u2192 abv A.det \u2264 (Fintype.card n).factorial \u2022 x ^ Fintype.card n\"\n    },\n    {\n      \"name\": \"Polynomial.natDegree_hasseDeriv_le\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.HasseDeriv\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u_1} [inst : Semiring R] (p : Polynomial R) (n : \u2115),\\n  ((Polynomial.hasseDeriv n) p).natDegree \u2264 p.natDegree - n\"\n    },\n    {\n      \"name\": \"Polynomial.hasseDeriv_coeff\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.HasseDeriv\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u_1} [inst : Semiring R] (k : \u2115) (f : Polynomial R) (n : \u2115),\\n  ((Polynomial.hasseDeriv k) f).coeff n = \u2191((n + k).choose k) * f.coeff (n + k)\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.hasseDeriv",
+            "module_name": "Mathlib.Algebra.Polynomial.HasseDeriv",
+            "kind": "definition",
+            "type": "{R : Type u_1} \u2192 [inst : Semiring R] \u2192 \u2115 \u2192 Polynomial R \u2192\u2097[R] Polynomial R"
+          },
+          {
+            "name": "Polynomial.hasseDeriv_apply",
+            "module_name": "Mathlib.Algebra.Polynomial.HasseDeriv",
+            "kind": "theorem",
+            "type": "\u2200 {R : Type u_1} [inst : Semiring R] (k : \u2115) (f : Polynomial R),\n  (Polynomial.hasseDeriv k) f = f.sum fun i r => (Polynomial.monomial (i - k)) (\u2191(i.choose k) * r)"
+          },
+          {
+            "name": "Matrix.det_le",
+            "module_name": "Mathlib.LinearAlgebra.Matrix.AbsoluteValue",
+            "kind": "theorem",
+            "type": "\u2200 {R : Type u_1} {S : Type u_2} [inst : CommRing R] [Nontrivial R] [inst_2 : CommRing S] [inst_3 : LinearOrder S]\n  [IsStrictOrderedRing S] {n : Type u_3} [inst_5 : Fintype n] [inst_6 : DecidableEq n] {A : Matrix n n R}\n  {abv : AbsoluteValue R S} {x : S},\n  (\u2200 (i j : n), abv (A i j) \u2264 x) \u2192 abv A.det \u2264 (Fintype.card n).factorial \u2022 x ^ Fintype.card n"
+          },
+          {
+            "name": "Polynomial.natDegree_hasseDeriv_le",
+            "module_name": "Mathlib.Algebra.Polynomial.HasseDeriv",
+            "kind": "theorem",
+            "type": "\u2200 {R : Type u_1} [inst : Semiring R] (p : Polynomial R) (n : \u2115),\n  ((Polynomial.hasseDeriv n) p).natDegree \u2264 p.natDegree - n"
+          },
+          {
+            "name": "Polynomial.hasseDeriv_coeff",
+            "module_name": "Mathlib.Algebra.Polynomial.HasseDeriv",
+            "kind": "theorem",
+            "type": "\u2200 {R : Type u_1} [inst : Semiring R] (k : \u2115) (f : Polynomial R) (n : \u2115),\n  ((Polynomial.hasseDeriv k) f).coeff n = \u2191((n + k).choose k) * f.coeff (n + k)"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "tool": "lean_leansearch",
+    "form": "standard",
+    "request": {
+      "query": "polynomial determinant coefficient height bound factorial product degree Hasse derivative",
+      "num_results": 5
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.hasseDeriv\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.HasseDeriv\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} \u2192 [inst : Semiring R] \u2192 \u2115 \u2192 Polynomial R \u2192\u2097[R] Polynomial R\"\n    },\n    {\n      \"name\": \"Polynomial.iterate_derivative_eq_factorial_smul_sum\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Derivative\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u} [inst : Semiring R] (p : Polynomial R) (k : \u2115),\\n  (\u21d1Polynomial.derivative)^[k] p =\\n    k.factorial \u2022\\n      \u2211 x \u2208 ((\u21d1Polynomial.derivative)^[k] p).support,\\n        Polynomial.C ((x + k).choose k \u2022 p.coeff (x + k)) * Polynomial.X ^ x\"\n    },\n    {\n      \"name\": \"Polynomial.iterate_derivative_prod_X_sub_C\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Derivative\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u} [inst : CommRing R] {k : \u2115} {S : Finset R},\\n  k \u2264 S.card \u2192\\n    (\u21d1Polynomial.derivative)^[k] (\u220f a \u2208 S, (Polynomial.X - Polynomial.C a)) =\\n      \u2191k.factorial * \u2211 T \u2208 Finset.powersetCard (S.card - k) S, \u220f a \u2208 T, (Polynomial.X - Polynomial.C a)\"\n    },\n    {\n      \"name\": \"Polynomial.natDegree_hasseDeriv_le\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.HasseDeriv\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u_1} [inst : Semiring R] (p : Polynomial R) (n : \u2115),\\n  ((Polynomial.hasseDeriv n) p).natDegree \u2264 p.natDegree - n\"\n    },\n    {\n      \"name\": \"Polynomial.factorial_smul_hasseDeriv\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.HasseDeriv\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u_1} [inst : Semiring R] (k : \u2115), \u21d1(k.factorial \u2022 Polynomial.hasseDeriv k) = (\u21d1Polynomial.derivative)^[k]\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.hasseDeriv",
+            "module_name": "Mathlib.Algebra.Polynomial.HasseDeriv",
+            "kind": "definition",
+            "type": "{R : Type u_1} \u2192 [inst : Semiring R] \u2192 \u2115 \u2192 Polynomial R \u2192\u2097[R] Polynomial R"
+          },
+          {
+            "name": "Polynomial.iterate_derivative_eq_factorial_smul_sum",
+            "module_name": "Mathlib.Algebra.Polynomial.Derivative",
+            "kind": "theorem",
+            "type": "\u2200 {R : Type u} [inst : Semiring R] (p : Polynomial R) (k : \u2115),\n  (\u21d1Polynomial.derivative)^[k] p =\n    k.factorial \u2022\n      \u2211 x \u2208 ((\u21d1Polynomial.derivative)^[k] p).support,\n        Polynomial.C ((x + k).choose k \u2022 p.coeff (x + k)) * Polynomial.X ^ x"
+          },
+          {
+            "name": "Polynomial.iterate_derivative_prod_X_sub_C",
+            "module_name": "Mathlib.Algebra.Polynomial.Derivative",
+            "kind": "theorem",
+            "type": "\u2200 {R : Type u} [inst : CommRing R] {k : \u2115} {S : Finset R},\n  k \u2264 S.card \u2192\n    (\u21d1Polynomial.derivative)^[k] (\u220f a \u2208 S, (Polynomial.X - Polynomial.C a)) =\n      \u2191k.factorial * \u2211 T \u2208 Finset.powersetCard (S.card - k) S, \u220f a \u2208 T, (Polynomial.X - Polynomial.C a)"
+          },
+          {
+            "name": "Polynomial.natDegree_hasseDeriv_le",
+            "module_name": "Mathlib.Algebra.Polynomial.HasseDeriv",
+            "kind": "theorem",
+            "type": "\u2200 {R : Type u_1} [inst : Semiring R] (p : Polynomial R) (n : \u2115),\n  ((Polynomial.hasseDeriv n) p).natDegree \u2264 p.natDegree - n"
+          },
+          {
+            "name": "Polynomial.factorial_smul_hasseDeriv",
+            "module_name": "Mathlib.Algebra.Polynomial.HasseDeriv",
+            "kind": "theorem",
+            "type": "\u2200 {R : Type u_1} [inst : Semiring R] (k : \u2115), \u21d1(k.factorial \u2022 Polynomial.hasseDeriv k) = (\u21d1Polynomial.derivative)^[k]"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "tool": "lean_leansearch",
+    "form": "abstract",
+    "request": {
+      "query": "RingSeminorm coefficient l1 seminorm determinant Hasse derivative bound",
+      "num_results": 5
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"RingSeminorm\",\n      \"module_name\": \"Mathlib.Analysis.Normed.Unbundled.RingSeminorm\",\n      \"kind\": \"inductive\",\n      \"type\": \"(R : Type u_2) \u2192 [NonUnitalNonAssocRing R] \u2192 Type u_2\"\n    },\n    {\n      \"name\": \"SeminormedRing.noConfusion\",\n      \"module_name\": \"Mathlib.Analysis.Normed.Ring.Basic\",\n      \"kind\": \"definition\",\n      \"type\": \"{P : Sort u} \u2192\\n  {\u03b1 : Type u_5} \u2192\\n    {t : SeminormedRing \u03b1} \u2192\\n      {\u03b1' : Type u_5} \u2192 {t' : SeminormedRing \u03b1'} \u2192 \u03b1 = \u03b1' \u2192 t \u224d t' \u2192 SeminormedRing.noConfusionType P t t'\"\n    },\n    {\n      \"name\": \"SeminormedRing\",\n      \"module_name\": \"Mathlib.Analysis.Normed.Ring.Basic\",\n      \"kind\": \"inductive\",\n      \"type\": \"Type u_5 \u2192 Type u_5\"\n    },\n    {\n      \"name\": \"seminormFromBounded\",\n      \"module_name\": \"Mathlib.Analysis.Normed.Unbundled.SeminormFromBounded\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} \u2192\\n  [inst : CommRing R] \u2192\\n    {f : R \u2192 \u211d} \u2192\\n      {c : \u211d} \u2192\\n        f 0 = 0 \u2192\\n          0 \u2264 f \u2192\\n            (\u2200 (x y : R), f (x * y) \u2264 c * f x * f y) \u2192\\n              (\u2200 (a b : R), f (a + b) \u2264 f a + f b) \u2192 (\u2200 (x : R), f (-x) = f x) \u2192 RingSeminorm R\"\n    },\n    {\n      \"name\": \"RingNorm.toRingSeminorm\",\n      \"module_name\": \"Mathlib.Analysis.Normed.Unbundled.RingSeminorm\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_2} \u2192 [inst : NonUnitalNonAssocRing R] \u2192 RingNorm R \u2192 RingSeminorm R\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "RingSeminorm",
+            "module_name": "Mathlib.Analysis.Normed.Unbundled.RingSeminorm",
+            "kind": "inductive",
+            "type": "(R : Type u_2) \u2192 [NonUnitalNonAssocRing R] \u2192 Type u_2"
+          },
+          {
+            "name": "SeminormedRing.noConfusion",
+            "module_name": "Mathlib.Analysis.Normed.Ring.Basic",
+            "kind": "definition",
+            "type": "{P : Sort u} \u2192\n  {\u03b1 : Type u_5} \u2192\n    {t : SeminormedRing \u03b1} \u2192\n      {\u03b1' : Type u_5} \u2192 {t' : SeminormedRing \u03b1'} \u2192 \u03b1 = \u03b1' \u2192 t \u224d t' \u2192 SeminormedRing.noConfusionType P t t'"
+          },
+          {
+            "name": "SeminormedRing",
+            "module_name": "Mathlib.Analysis.Normed.Ring.Basic",
+            "kind": "inductive",
+            "type": "Type u_5 \u2192 Type u_5"
+          },
+          {
+            "name": "seminormFromBounded",
+            "module_name": "Mathlib.Analysis.Normed.Unbundled.SeminormFromBounded",
+            "kind": "definition",
+            "type": "{R : Type u_1} \u2192\n  [inst : CommRing R] \u2192\n    {f : R \u2192 \u211d} \u2192\n      {c : \u211d} \u2192\n        f 0 = 0 \u2192\n          0 \u2264 f \u2192\n            (\u2200 (x y : R), f (x * y) \u2264 c * f x * f y) \u2192\n              (\u2200 (a b : R), f (a + b) \u2264 f a + f b) \u2192 (\u2200 (x : R), f (-x) = f x) \u2192 RingSeminorm R"
+          },
+          {
+            "name": "RingNorm.toRingSeminorm",
+            "module_name": "Mathlib.Analysis.Normed.Unbundled.RingSeminorm",
+            "kind": "definition",
+            "type": "{R : Type u_2} \u2192 [inst : NonUnitalNonAssocRing R] \u2192 RingNorm R \u2192 RingSeminorm R"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "tool": "lean_local_search",
+    "form": "current",
+    "request": {
+      "query": "abs_coeff_det",
+      "project_root": "/Users/ramin/LEAN/Roth",
+      "limit": 20
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Roth.abs_coeff_det_hasseDeriv_le\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/CoeffNorm.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Roth.abs_coeff_det_hasseDeriv_le",
+            "kind": "theorem",
+            "file": "Roth/CoeffNorm.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "tool": "lean_local_search",
+    "form": "standard",
+    "request": {
+      "query": "norm_det",
+      "project_root": "/Users/ramin/LEAN/Roth",
+      "limit": 20
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "tool": "lean_local_search",
+    "form": "abstract",
+    "request": {
+      "query": "RingSeminorm",
+      "project_root": "/Users/ramin/LEAN/Roth",
+      "limit": 20
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"RingSeminorm\",\n      \"kind\": \"structure\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Analysis/Normed/Unbundled/RingSeminorm.lean\"\n    },\n    {\n      \"name\": \"RingSeminormClass\",\n      \"kind\": \"class\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Order/Hom/Basic.lean\"\n    },\n    {\n      \"name\": \"RingSeminorm.toRingNorm\",\n      \"kind\": \"def\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Analysis/Normed/Unbundled/RingSeminorm.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "RingSeminorm",
+            "kind": "structure",
+            "file": ".lake/packages/mathlib/Mathlib/Analysis/Normed/Unbundled/RingSeminorm.lean"
+          },
+          {
+            "name": "RingSeminormClass",
+            "kind": "class",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Order/Hom/Basic.lean"
+          },
+          {
+            "name": "RingSeminorm.toRingNorm",
+            "kind": "def",
+            "file": ".lake/packages/mathlib/Mathlib/Analysis/Normed/Unbundled/RingSeminorm.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "tool": "lean_loogle",
+    "form": "current",
+    "retry": true,
+    "request": {
+      "query": "\"coeff\", Matrix.det",
+      "num_results": 10
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.leadingCoeff_det_X_one_add_C\",\n      \"type\": \" {n : Type u_1} {\u03b1 : Type u_2} [DecidableEq n] [Fintype n] [CommRing \u03b1] (A : Matrix n n \u03b1) : (Polynomial.X \u2022 1 + A.map \u21d1Polynomial.C).det.leadingCoeff = 1\",\n      \"module\": \"Mathlib.LinearAlgebra.Matrix.Polynomial\"\n    },\n    {\n      \"name\": \"Polynomial.coeff_det_X_add_C_card\",\n      \"type\": \" {n : Type u_1} {\u03b1 : Type u_2} [DecidableEq n] [Fintype n] [CommRing \u03b1] (A B : Matrix n n \u03b1) : (Polynomial.X \u2022 A.map \u21d1Polynomial.C + B.map \u21d1Polynomial.C).det.coeff (Fintype.card n) = A.det\",\n      \"module\": \"Mathlib.LinearAlgebra.Matrix.Polynomial\"\n    },\n    {\n      \"name\": \"Polynomial.coeff_det_X_add_C_zero\",\n      \"type\": \" {n : Type u_1} {\u03b1 : Type u_2} [DecidableEq n] [Fintype n] [CommRing \u03b1] (A B : Matrix n n \u03b1) : (Polynomial.X \u2022 A.map \u21d1Polynomial.C + B.map \u21d1Polynomial.C).det.coeff 0 = B.det\",\n      \"module\": \"Mathlib.LinearAlgebra.Matrix.Polynomial\"\n    },\n    {\n      \"name\": \"Matrix.det_eq_sign_charpoly_coeff\",\n      \"type\": \" {R : Type u} [CommRing R] {n : Type v} [DecidableEq n] [Fintype n] (M : Matrix n n R) : M.det = (-1) ^ Fintype.card n * M.charpoly.coeff 0\",\n      \"module\": \"Mathlib.LinearAlgebra.Matrix.Charpoly.Coeff\"\n    },\n    {\n      \"name\": \"Matrix.charpoly_coeff_eq_sum_minors\",\n      \"type\": \" {R : Type u} [CommRing R] {n : Type v} [DecidableEq n] [Fintype n] (M : Matrix n n R) (k : \u2115) (hk : k \u2264 Fintype.card n) : M.charpoly.coeff (Fintype.card n - k) = (-1) ^ k * \u2211 s \u2208 Finset.powersetCard k Finset.univ, (M.submatrix Subtype.val Subtype.val).det\",\n      \"module\": \"Mathlib.LinearAlgebra.Matrix.Charpoly.Coeff\"\n    },\n    {\n      \"name\": \"Matrix.coeff_det_one_add_X_smul_one\",\n      \"type\": \" {R : Type u} [CommRing R] {n : Type v} [DecidableEq n] [Fintype n] (M : Matrix n n R) : (1 + Polynomial.X \u2022 M.map \u21d1Polynomial.C).det.coeff 1 = M.trace\",\n      \"module\": \"Mathlib.LinearAlgebra.Matrix.Charpoly.Coeff\"\n    },\n    {\n      \"name\": \"Matrix.coeff_det_one_add_X_smul_eq_sum_minors\",\n      \"type\": \" {R : Type u} [CommRing R] {n : Type v} [DecidableEq n] [Fintype n] (M : Matrix n n R) (k : \u2115) : (1 + Polynomial.X \u2022 M.map \u21d1Polynomial.C).det.coeff k = \u2211 s \u2208 Finset.powersetCard k Finset.univ, (M.submatrix Subtype.val Subtype.val).det\",\n      \"module\": \"Mathlib.LinearAlgebra.Matrix.Charpoly.Coeff\"\n    },\n    {\n      \"name\": \"Algebra.SubmersivePresentation.map_jacobianOfHasCoeffs\",\n      \"type\": \" {R : Type u_1} {S : Type u_2} {\u03b9 : Type u_3} {\u03c3 : Type u_4} [CommRing R] [CommRing S] [Algebra R S] [Finite \u03c3] (P : Algebra.SubmersivePresentation R S \u03b9 \u03c3) (R\u2080 : Type u_5) [CommRing R\u2080] [Algebra R\u2080 R] [Algebra R\u2080 S] [IsScalarTower R\u2080 R S] [P.HasCoeffs R\u2080] [Fintype \u03c3] [DecidableEq \u03c3] : (MvPolynomial.map (algebraMap R\u2080 R)) (P.jacobianOfHasCoeffs R\u2080) = P.jacobiMatrix.det\",\n      \"module\": \"Mathlib.RingTheory.Extension.Presentation.Core\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.leadingCoeff_det_X_one_add_C",
+            "type": " {n : Type u_1} {\u03b1 : Type u_2} [DecidableEq n] [Fintype n] [CommRing \u03b1] (A : Matrix n n \u03b1) : (Polynomial.X \u2022 1 + A.map \u21d1Polynomial.C).det.leadingCoeff = 1",
+            "module": "Mathlib.LinearAlgebra.Matrix.Polynomial"
+          },
+          {
+            "name": "Polynomial.coeff_det_X_add_C_card",
+            "type": " {n : Type u_1} {\u03b1 : Type u_2} [DecidableEq n] [Fintype n] [CommRing \u03b1] (A B : Matrix n n \u03b1) : (Polynomial.X \u2022 A.map \u21d1Polynomial.C + B.map \u21d1Polynomial.C).det.coeff (Fintype.card n) = A.det",
+            "module": "Mathlib.LinearAlgebra.Matrix.Polynomial"
+          },
+          {
+            "name": "Polynomial.coeff_det_X_add_C_zero",
+            "type": " {n : Type u_1} {\u03b1 : Type u_2} [DecidableEq n] [Fintype n] [CommRing \u03b1] (A B : Matrix n n \u03b1) : (Polynomial.X \u2022 A.map \u21d1Polynomial.C + B.map \u21d1Polynomial.C).det.coeff 0 = B.det",
+            "module": "Mathlib.LinearAlgebra.Matrix.Polynomial"
+          },
+          {
+            "name": "Matrix.det_eq_sign_charpoly_coeff",
+            "type": " {R : Type u} [CommRing R] {n : Type v} [DecidableEq n] [Fintype n] (M : Matrix n n R) : M.det = (-1) ^ Fintype.card n * M.charpoly.coeff 0",
+            "module": "Mathlib.LinearAlgebra.Matrix.Charpoly.Coeff"
+          },
+          {
+            "name": "Matrix.charpoly_coeff_eq_sum_minors",
+            "type": " {R : Type u} [CommRing R] {n : Type v} [DecidableEq n] [Fintype n] (M : Matrix n n R) (k : \u2115) (hk : k \u2264 Fintype.card n) : M.charpoly.coeff (Fintype.card n - k) = (-1) ^ k * \u2211 s \u2208 Finset.powersetCard k Finset.univ, (M.submatrix Subtype.val Subtype.val).det",
+            "module": "Mathlib.LinearAlgebra.Matrix.Charpoly.Coeff"
+          },
+          {
+            "name": "Matrix.coeff_det_one_add_X_smul_one",
+            "type": " {R : Type u} [CommRing R] {n : Type v} [DecidableEq n] [Fintype n] (M : Matrix n n R) : (1 + Polynomial.X \u2022 M.map \u21d1Polynomial.C).det.coeff 1 = M.trace",
+            "module": "Mathlib.LinearAlgebra.Matrix.Charpoly.Coeff"
+          },
+          {
+            "name": "Matrix.coeff_det_one_add_X_smul_eq_sum_minors",
+            "type": " {R : Type u} [CommRing R] {n : Type v} [DecidableEq n] [Fintype n] (M : Matrix n n R) (k : \u2115) : (1 + Polynomial.X \u2022 M.map \u21d1Polynomial.C).det.coeff k = \u2211 s \u2208 Finset.powersetCard k Finset.univ, (M.submatrix Subtype.val Subtype.val).det",
+            "module": "Mathlib.LinearAlgebra.Matrix.Charpoly.Coeff"
+          },
+          {
+            "name": "Algebra.SubmersivePresentation.map_jacobianOfHasCoeffs",
+            "type": " {R : Type u_1} {S : Type u_2} {\u03b9 : Type u_3} {\u03c3 : Type u_4} [CommRing R] [CommRing S] [Algebra R S] [Finite \u03c3] (P : Algebra.SubmersivePresentation R S \u03b9 \u03c3) (R\u2080 : Type u_5) [CommRing R\u2080] [Algebra R\u2080 R] [Algebra R\u2080 S] [IsScalarTower R\u2080 R S] [P.HasCoeffs R\u2080] [Fintype \u03c3] [DecidableEq \u03c3] : (MvPolynomial.map (algebraMap R\u2080 R)) (P.jacobianOfHasCoeffs R\u2080) = P.jacobiMatrix.det",
+            "module": "Mathlib.RingTheory.Extension.Presentation.Core"
+          }
+        ]
+      },
+      "isError": false
+    }
+  }
+]
