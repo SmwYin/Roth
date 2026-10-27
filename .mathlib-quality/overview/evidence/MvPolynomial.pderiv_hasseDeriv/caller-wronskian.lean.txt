@@ -1,0 +1,46 @@
+
+Source: §2, proof of Lemma 1, FACT
+(`d/dt h_ν(t) = ∑_j γ_j'(t) (∂φ_ν/∂x_j)(γ(t))`). -/
+theorem derivative_aeval (γ : σ → Polynomial K) (P : MvPolynomial σ K) :
+    Polynomial.derivative (aeval γ P) =
+      ∑ j, Polynomial.derivative (γ j) * aeval γ (pderiv j P) := by
+  classical
+  induction P using MvPolynomial.induction_on with
+  | C a => simp
+  | add p q hp hq => simp [hp, hq, Finset.sum_add_distrib, mul_add]
+  | mul_X p j hp =>
+    simp [hp, Finset.sum_add_distrib, ← Finset.mul_sum, add_mul, mul_assoc, mul_comm,
+      Pi.single_apply, apply_ite (aeval γ)]
+
+/-- The operator `P ↦ kronecker k (Δ_d P)`, as an element of the `K[X]`-module of functions. -/
+private noncomputable def kronHasse (k : ℕ) (d : σ →₀ ℕ) : MvPolynomial σ K → Polynomial K :=
+  fun P ↦ kronecker k (hasseDeriv d P)
+
+/-- The `K[X]`-span of the operators `kronHasse k d` with `|d| ≤ μ`. -/
+private noncomputable def kronSpan (k μ : ℕ) : Submodule (Polynomial K)
+    (MvPolynomial σ K → Polynomial K) :=
+  Submodule.span (Polynomial K) (kronHasse (K := K) k '' {d | d.degree ≤ μ})
+
+private lemma derivative_kronHasse_aux (k : ℕ) (d : σ →₀ ℕ) :
+    (fun P ↦ Polynomial.derivative (kronHasse (K := K) k d P)) =
+      ∑ j, (Polynomial.derivative (Polynomial.X ^ k ^ (Fintype.equivFin σ j : ℕ)) *
+        Polynomial.C ((d j + 1 : ℕ) : K)) • kronHasse k (d + Finsupp.single j 1) := by
+  classical
+  funext P
+  simp [kronHasse, kronecker, derivative_aeval, pderiv_hasseDeriv, map_smul,
+    Polynomial.smul_eq_C_mul, mul_assoc, mul_comm, mul_left_comm]
+
+private lemma derivative_mem_kronSpan (k μ : ℕ) {F : MvPolynomial σ K → Polynomial K}
+    (hF : F ∈ kronSpan k μ) :
+    (fun P ↦ Polynomial.derivative (F P)) ∈ kronSpan (K := K) (σ := σ) k (μ + 1) := by
+  classical
+  induction hF using Submodule.span_induction with
+  | mem F hF =>
+    obtain ⟨d, hd, rfl⟩ := hF
+    rw [derivative_kronHasse_aux]
+    refine Submodule.sum_mem _ fun j _ ↦ Submodule.smul_mem _ _ (Submodule.subset_span ?_)
+    refine ⟨d + Finsupp.single j 1, ?_, rfl⟩
+    simp only [Set.mem_ofPred_eq, map_add, Finsupp.degree_single] at hd ⊢
+    exact Nat.add_le_add_right hd 1
+  | zero =>
+    convert (kronSpan (K := K) (σ := σ) k (μ + 1)).zero_mem using 1

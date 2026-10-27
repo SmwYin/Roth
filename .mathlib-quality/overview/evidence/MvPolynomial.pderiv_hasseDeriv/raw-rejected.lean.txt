@@ -1,0 +1,118 @@
+import Mathlib.Algebra.MvPolynomial.PDeriv
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Data.Nat.Choose.Bounds
+
+/-! Persistent mathlib-only assessment session control. -/
+#check_failure MvPolynomial.hasseDeriv
+#check Finsupp.lsum_apply
+#check Finsupp.lsum_single
+
+#check_failure MvPolynomial.coeff_hasseDeriv
+#check_failure MvPolynomial.hasseDeriv_hasseDeriv
+#check_failure MvPolynomial.pderiv_hasseDeriv
+example (P : Prop) (h : P) : P := by exact?
+
+/-! Isolated iterativity assessment: raw coefficient and cocycle witnesses, no project import. -/
+open MvPolynomial
+namespace CoeffAssessment
+variable {σ R : Type*} [CommSemiring R]
+noncomputable def delta (d : σ →₀ ℕ) : MvPolynomial σ R →ₗ[R] MvPolynomial σ R :=
+  Finsupp.lsum R (fun k : σ →₀ ℕ ↦
+    (monomial (k - d)).comp (LinearMap.lsmul R R ((d.prod (fun j ↦ (k j).choose) : ℕ) : R))) ∘ₗ
+      (AddMonoidAlgebra.coeffLinearEquiv R).toLinearMap
+
+-- Coefficient formula is independently proved below.
+theorem independent (d e : σ →₀ ℕ) (P : MvPolynomial σ R) :
+    (delta d P).coeff e = ((d.prod (fun j ↦ ((e + d) j).choose) : ℕ) : R) * P.coeff (e + d) := by
+  classical
+  have hz (k : σ →₀ ℕ) : d.prod (fun j ↦ (k j).choose) = 0 ↔ ¬d ≤ k := by
+    simp [Finsupp.prod, Finset.prod_eq_zero_iff, Nat.choose_eq_zero_iff, Finsupp.le_iff,
+      not_forall]
+  induction P using MvPolynomial.induction_on' with
+  | monomial k a =>
+    rw [show delta d (monomial k a) =
+      monomial (k - d) (((d.prod (fun j ↦ (k j).choose) : ℕ) : R) * a) by simp [delta],
+      coeff_monomial, coeff_monomial]
+    by_cases hk : k = e + d
+    · simp [hk]
+    by_cases hdk : d ≤ k
+    · simp [hk, tsub_eq_iff_eq_add_of_le hdk]
+    · simp [hk, (hz k).2 hdk]
+  | add p q hp hq => simp [hp, hq, mul_add]
+
+def factor (d k : σ →₀ ℕ) : ℕ := d.prod fun j ↦ (k j).choose
+
+theorem cocycle (f d e : σ →₀ ℕ) :
+    factor d (f + d) * factor e (f + d + e) =
+      factor d (d + e) * factor (d + e) (f + (d + e)) := by
+  classical
+  simp only [factor]
+  have hd : d.support ⊆ d.support ∪ e.support := Finset.subset_union_left
+  rw [Finsupp.prod_of_support_subset _ hd _ fun _ _ ↦ Nat.choose_zero_right _,
+    Finsupp.prod_of_support_subset _ Finset.subset_union_right _
+      fun _ _ ↦ Nat.choose_zero_right _,
+    Finsupp.prod_of_support_subset _ hd _ fun _ _ ↦ Nat.choose_zero_right _,
+    Finsupp.prod_of_support_subset _ Finsupp.support_add _ fun _ _ ↦ Nat.choose_zero_right _,
+    ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]
+  exact Finset.prod_congr rfl fun i _ ↦ by
+    simpa [← add_assoc, mul_comm, ← Nat.choose_symm_add (a := d i) (b := e i)] using
+      (Nat.choose_mul (n := f i + d i + e i) (k := d i + e i) (s := e i)
+        (Nat.le_add_left (e i) (d i))).symm
+
+theorem iterativity (d e : σ →₀ ℕ) (P : MvPolynomial σ R) :
+    delta d (delta e P) = (factor d (d + e) : R) • delta (d + e) P := by
+  apply MvPolynomial.ext
+  intro f
+  change (delta d (delta e P)).coeff f = _
+  rw [coeff_smul, independent, independent, independent, smul_eq_mul,
+    ← mul_assoc, ← mul_assoc, ← Nat.cast_mul, ← Nat.cast_mul]
+  change ((factor d (f + d) * factor e (f + d + e) : ℕ) : R) * _ = _
+  rw [cocycle, add_assoc]
+  rfl
+
+example (d e : σ →₀ ℕ) :
+    (delta (R := R) d).comp (delta e) = (factor d (d + e) : R) • delta (d + e) := by
+  apply LinearMap.ext
+  intro P
+  exact iterativity d e P
+
+section
+variable {S : Type*} [Semiring S]
+#check_failure MvPolynomial σ S
+end
+#check @Polynomial.hasseDeriv_comp
+#print axioms independent
+#print axioms cocycle
+#print axioms iterativity
+theorem coeff_factor (d e : σ →₀ ℕ) (P : MvPolynomial σ R) :
+    (delta d P).coeff e = (factor d (e + d) : R) * P.coeff (e + d) :=
+  independent d e P
+theorem succ_factor (j : σ) (d e : σ →₀ ℕ) :
+    factor d (e + Finsupp.single j 1 + d) * (e j + 1) =
+      (d j + 1) * factor (d + Finsupp.single j 1) (e + Finsupp.single j 1 + d) := by
+  simpa [factor, add_comm, add_left_comm, add_assoc, mul_comm] using
+    cocycle e (Finsupp.single j 1) d
+theorem pderiv_delta (j : σ) (d : σ →₀ ℕ) (P : MvPolynomial σ R) :
+    pderiv j (delta d P) = ((d j + 1 : ℕ) : R) • delta (d + Finsupp.single j 1) P := by
+  apply MvPolynomial.ext
+  intro e
+  rw [coeff_pderiv, coeff_smul, coeff_factor, coeff_factor, smul_eq_mul,
+    ← add_assoc e d, add_right_comm e d, mul_right_comm, ← Nat.cast_add_one, ← Nat.cast_mul,
+    succ_factor, Nat.cast_mul, mul_assoc]
+#print axioms succ_factor
+#print axioms pderiv_delta
+end CoeffAssessment
+
+namespace PDerivPinnedAnalogue
+#check @Polynomial.hasseDeriv_one'
+#check @Polynomial.hasseDeriv_comp
+#check @Polynomial.factorial_smul_hasseDeriv
+#check @MvPolynomial.coeff_pderiv
+variable {S : Type*} [Semiring S]
+theorem univariate (n : ℕ) (p : Polynomial S) :
+    Polynomial.derivative (Polynomial.hasseDeriv n p) =
+      (n + 1) • Polynomial.hasseDeriv (n + 1) p := by
+  simpa [Polynomial.hasseDeriv_one, Nat.choose_one_right, add_comm] using
+    LinearMap.congr_fun (Polynomial.hasseDeriv_comp 1 n) p
+#print axioms univariate
+end PDerivPinnedAnalogue

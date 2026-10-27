@@ -1,0 +1,51 @@
+{
+  "file": "Roth/HasseDeriv.lean",
+  "line": 200,
+  "name": "MvPolynomial.pderiv_hasseDeriv",
+  "short": "pderiv_hasseDeriv",
+  "kind": "theorem",
+  "visibility": "public",
+  "end_line": 205,
+  "source": "theorem pderiv_hasseDeriv (j : σ) (d : σ →₀ ℕ) (P : MvPolynomial σ R) :\n    pderiv j (hasseDeriv d P) = ((d j + 1 : ℕ) : R) • hasseDeriv (d + Finsupp.single j 1) P := by\n  ext e\n  rw [coeff_pderiv, coeff_smul, coeff_hasseDeriv, coeff_hasseDeriv, smul_eq_mul,\n    ← add_assoc e d, add_right_comm e d, mul_right_comm, ← Nat.cast_add_one, ← Nat.cast_mul,\n    hasseCoeff_mul_succ, Nat.cast_mul, mul_assoc]",
+  "signature": "theorem pderiv_hasseDeriv (j : σ) (d : σ →₀ ℕ) (P : MvPolynomial σ R) :\n    pderiv j (hasseDeriv d P) = ((d j + 1 : ℕ) : R) • hasseDeriv (d + Finsupp.single j 1) P",
+  "body": "by\n  ext e\n  rw [coeff_pderiv, coeff_smul, coeff_hasseDeriv, coeff_hasseDeriv, smul_eq_mul,\n    ← add_assoc e d, add_right_comm e d, mul_right_comm, ← Nat.cast_add_one, ← Nat.cast_mul,\n    hasseCoeff_mul_succ, Nat.cast_mul, mul_assoc]",
+  "proof_lines": 5,
+  "sha256": "4251f7fae853e2f3d75b0679db63232fd6eb98b6d99fb4d2ca8d959ce4f75f15",
+  "what": "A partial derivative of a divided derivative equals the next divided derivative scaled by the successor of the selected index coordinate.",
+  "how": "Coefficient extensionality combines coeff_pderiv and coeff_hasseDeriv, then hasseCoeff_mul_succ identifies the scalar factors.",
+  "hypotheses": "Any commutative coefficient semiring; the natural successor scalar may vanish after casting in positive characteristic.",
+  "uses_from_project": [
+    "MvPolynomial.coeff_hasseDeriv",
+    "MvPolynomial.hasseCoeff_mul_succ"
+  ],
+  "used_by_in_file": [
+    "MvPolynomial.factorial_smul_hasseDeriv_single"
+  ],
+  "project_callers": [
+    {
+      "name": "Roth.derivative_kronHasse_aux",
+      "file": "Roth/GenWronskian.lean",
+      "line": 153
+    },
+    {
+      "name": "MvPolynomial.factorial_smul_hasseDeriv_single",
+      "file": "Roth/HasseDeriv.lean",
+      "line": 286
+    }
+  ],
+  "type_context": "{σ R : Type*} [CommSemiring R]",
+  "type_provenance": "Exact written signature with section binders made explicit from source; not claimed as a fresh #check output. Minimal hasseCoeff #check succeeded; full Meta inspector timed out.",
+  "reference_provenance": "Manually disambiguated source-level direct project references in declaration bodies; callers include signature and body occurrences. Includes explicit references only, not an exhaustive kernel/simp dependency closure.",
+  "notes": [
+    "No set_option, sorry, TODO, or proof over 30 lines in declaration."
+  ],
+  "assignment_offset": 164,
+  "project_body_refs": [
+    "MvPolynomial.coeff_hasseDeriv",
+    "MvPolynomial.hasseCoeff_mul_succ"
+  ],
+  "project_type_refs": [
+    "MvPolynomial.hasseDeriv"
+  ],
+  "section_context": "{σ R : Type*} [CommSemiring R]"
+}

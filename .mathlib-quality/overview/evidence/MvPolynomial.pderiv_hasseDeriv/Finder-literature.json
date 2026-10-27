@@ -1,0 +1,77 @@
+{
+  "method": "Finder",
+  "label": "literature",
+  "request": {
+    "query": "Hasse Schmidt iterative higher derivation first derivative D_j D_alpha equals (alpha_j+1) D_alpha+e_j",
+    "num_results": 7
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"LineDeriv.iteratedLineDerivOp\",\n      \"informal_name\": \"Iterated Linear Derivative Operation\",\n      \"kind\": \"definition\",\n      \"type\": \"{V : Type u_14} → {E : Type u_15} → [LineDeriv V E E] → {n : ℕ} → (Fin n → V) → E → E\",\n      \"informal_description\": \"For a natural number $n$, this function takes a sequence of $n$ elements from $V$ and an element of $E$, and returns the composition of $n$ successive linear derivative operations. It is defined recursively: for $n=0$ it acts as the identity, and for $n+1$ it composes the linear derivative operation applied to the first element with the iterated derivative of the remaining $n$ elements.\",\n      \"path\": \"Mathlib.Analysis.Distribution.DerivNotation\"\n    },\n    {\n      \"formal_name\": \"LaurentSeries.hasseDeriv_comp\",\n      \"informal_name\": \"Composition of Hasse Derivatives on Laurent Series\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] {V : Type u_2} [inst_1 : AddCommGroup V] [inst_2 : Module R V] (k l : ℕ)\\n  (f : LaurentSeries V),\\n  (LaurentSeries.hasseDeriv R k) ((LaurentSeries.hasseDeriv R l) f) =\\n    (k + l).choose k • (LaurentSeries.hasseDeriv R (k + l)) f\",\n      \"informal_description\": \"For any natural numbers $k$ and $l$, and any Laurent series $f$ with coefficients in an $R$-module $V$, the composition of the Hasse derivatives of orders $k$ and $l$ applied to $f$ equals $\\\\binom{k + l}{k} \\\\cdot \\\\text{hasseDeriv}_{k + l}(f)$, where $\\\\text{hasseDeriv}_n(f)$ denotes the Hasse derivative of order $n$.\",\n      \"path\": \"Mathlib.RingTheory.LaurentSeries\"\n    },\n    {\n      \"formal_name\": \"LineDeriv.iteratedLineDerivOp_succ_left\",\n      \"informal_name\": \"Successor Case for Iterated Linear Derivatives\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {V : Type u_14} {E : Type u_15} [inst : LineDeriv V E E] {n : ℕ} (m : Fin (n + 1) → V) (f : E),\\n  LineDeriv.iteratedLineDerivOp m f = LineDeriv.lineDerivOp (m 0) (LineDeriv.iteratedLineDerivOp (Fin.tail m) f)\",\n      \"informal_description\": \"For any natural number $n$, function $m : \\\\mathrm{Fin}(n+1) \\\\to V$, and element $f \\\\in E$, the $n$-th iterated linear derivative $\\\\partial^{m} f$ equals the linear derivative $\\\\partial_{m(0)}$ applied to the $(n-1)$-th iterated derivative $\\\\partial^{\\\\mathrm{tail}(m)} f$, where $\\\\mathrm{tail}(m)$ discards the first element of $m$.\",\n      \"path\": \"Mathlib.Analysis.Distribution.DerivNotation\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv_comp\",\n      \"informal_name\": \"Hasse Derivative Composition Formula with Binomial Coefficient\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k l : ℕ),\\n  Polynomial.hasseDeriv k ∘ₗ Polynomial.hasseDeriv l = (k + l).choose k • Polynomial.hasseDeriv (k + l)\",\n      \"informal_description\": \"For any semiring $ R $ and natural numbers $ k, l $, the composition of the $ k $-th and $ l $-th Hasse derivatives on the polynomial ring $ R[X] $ equals $ \\\\binom{k + l}{k} $ times the $ (k + l) $-th Hasse derivative, i.e., $ D^{(k)} \\\\circ D^{(l)} = \\\\binom{k + l}{k} D^{(k + l)} $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.factorial_smul_hasseDeriv\",\n      \"informal_name\": \"Factorial Scaling of Hasse Derivative Equals Iterated Derivative\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k : ℕ), ⇑(k.factorial • Polynomial.hasseDeriv k) = (⇑Polynomial.derivative)^[k]\",\n      \"informal_description\": \"For any semiring $ R $, the $ k $-th Hasse derivative operator on the polynomial ring $ R[X] $, when multiplied by $ k! $, equals the $ k $-th iterate of the standard derivative operator. Formally, $ k! \\\\cdot D^{(k)} = (\\\\frac{d}{dX})^k $, where $ D^{(k)} $ denotes the Hasse derivative of order $ k $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"SchwartzMap.iteratedPDeriv_succ_left\",\n      \"informal_name\": \"Successor Case for Iterated Partial Derivatives in Schwartz Space\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {V : Type u_14} {E : Type u_15} [inst : LineDeriv V E E] {n : ℕ} (m : Fin (n + 1) → V) (f : E),\\n  LineDeriv.iteratedLineDerivOp m f = LineDeriv.lineDerivOp (m 0) (LineDeriv.iteratedLineDerivOp (Fin.tail m) f)\",\n      \"informal_description\": \"For any natural number $n$, a map $m : \\\\mathrm{Fin}(n+1) \\\\to V$, and $f \\\\in E$, the $(n+1)$-th iterated linear derivative $\\\\mathrm{LineDeriv.iteratedLineDerivOp}(m, f)$ equals the composition of the first derivative $\\\\mathrm{LineDeriv.lineDerivOp}(m(0), \\\\cdot)$ with the $n$-th iterated derivative $\\\\mathrm{LineDeriv.iteratedLineDerivOp}(\\\\mathrm{Fin.tail}(m), f)$. This expresses the recursive structure of iterated derivatives in Schwartz space.\",\n      \"path\": \"Mathlib.Analysis.Distribution.SchwartzSpace.Deriv\"\n    },\n    {\n      \"formal_name\": \"LineDeriv.iteratedLineDerivOp_succ_right\",\n      \"informal_name\": \"Successor Decomposition of Iterated Linear Derivatives\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {V : Type u_14} {E : Type u_15} [inst : LineDeriv V E E] {n : ℕ} (m : Fin (n + 1) → V) (f : E),\\n  LineDeriv.iteratedLineDerivOp m f =\\n    LineDeriv.iteratedLineDerivOp (Fin.init m) (LineDeriv.lineDerivOp (m (Fin.last n)) f)\",\n      \"informal_description\": \"For any natural number $n$, function $m : \\\\text{Fin}(n+1) \\\\to V$, and element $f \\\\in E$, the iterated linear derivative $\\\\partial^m f$ equals the composition of the linear derivative $\\\\partial^{\\\\text{init} \\\\, m}$ applied to $\\\\partial_{m(\\\\text{last} \\\\, n)} f$, where $\\\\text{init} \\\\, m$ denotes the restriction of $m$ to $\\\\text{Fin}(n)$ and $\\\\text{last} \\\\, n$ denotes the final element of $\\\\text{Fin}(n+1)$.\",\n      \"path\": \"Mathlib.Analysis.Distribution.DerivNotation\"\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "items": [
+        {
+          "formal_name": "LineDeriv.iteratedLineDerivOp",
+          "informal_name": "Iterated Linear Derivative Operation",
+          "kind": "definition",
+          "type": "{V : Type u_14} → {E : Type u_15} → [LineDeriv V E E] → {n : ℕ} → (Fin n → V) → E → E",
+          "informal_description": "For a natural number $n$, this function takes a sequence of $n$ elements from $V$ and an element of $E$, and returns the composition of $n$ successive linear derivative operations. It is defined recursively: for $n=0$ it acts as the identity, and for $n+1$ it composes the linear derivative operation applied to the first element with the iterated derivative of the remaining $n$ elements.",
+          "path": "Mathlib.Analysis.Distribution.DerivNotation"
+        },
+        {
+          "formal_name": "LaurentSeries.hasseDeriv_comp",
+          "informal_name": "Composition of Hasse Derivatives on Laurent Series",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} [inst : Semiring R] {V : Type u_2} [inst_1 : AddCommGroup V] [inst_2 : Module R V] (k l : ℕ)\n  (f : LaurentSeries V),\n  (LaurentSeries.hasseDeriv R k) ((LaurentSeries.hasseDeriv R l) f) =\n    (k + l).choose k • (LaurentSeries.hasseDeriv R (k + l)) f",
+          "informal_description": "For any natural numbers $k$ and $l$, and any Laurent series $f$ with coefficients in an $R$-module $V$, the composition of the Hasse derivatives of orders $k$ and $l$ applied to $f$ equals $\\binom{k + l}{k} \\cdot \\text{hasseDeriv}_{k + l}(f)$, where $\\text{hasseDeriv}_n(f)$ denotes the Hasse derivative of order $n$.",
+          "path": "Mathlib.RingTheory.LaurentSeries"
+        },
+        {
+          "formal_name": "LineDeriv.iteratedLineDerivOp_succ_left",
+          "informal_name": "Successor Case for Iterated Linear Derivatives",
+          "kind": "theorem",
+          "type": "∀ {V : Type u_14} {E : Type u_15} [inst : LineDeriv V E E] {n : ℕ} (m : Fin (n + 1) → V) (f : E),\n  LineDeriv.iteratedLineDerivOp m f = LineDeriv.lineDerivOp (m 0) (LineDeriv.iteratedLineDerivOp (Fin.tail m) f)",
+          "informal_description": "For any natural number $n$, function $m : \\mathrm{Fin}(n+1) \\to V$, and element $f \\in E$, the $n$-th iterated linear derivative $\\partial^{m} f$ equals the linear derivative $\\partial_{m(0)}$ applied to the $(n-1)$-th iterated derivative $\\partial^{\\mathrm{tail}(m)} f$, where $\\mathrm{tail}(m)$ discards the first element of $m$.",
+          "path": "Mathlib.Analysis.Distribution.DerivNotation"
+        },
+        {
+          "formal_name": "Polynomial.hasseDeriv_comp",
+          "informal_name": "Hasse Derivative Composition Formula with Binomial Coefficient",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} [inst : Semiring R] (k l : ℕ),\n  Polynomial.hasseDeriv k ∘ₗ Polynomial.hasseDeriv l = (k + l).choose k • Polynomial.hasseDeriv (k + l)",
+          "informal_description": "For any semiring $ R $ and natural numbers $ k, l $, the composition of the $ k $-th and $ l $-th Hasse derivatives on the polynomial ring $ R[X] $ equals $ \\binom{k + l}{k} $ times the $ (k + l) $-th Hasse derivative, i.e., $ D^{(k)} \\circ D^{(l)} = \\binom{k + l}{k} D^{(k + l)} $.",
+          "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+        },
+        {
+          "formal_name": "Polynomial.factorial_smul_hasseDeriv",
+          "informal_name": "Factorial Scaling of Hasse Derivative Equals Iterated Derivative",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} [inst : Semiring R] (k : ℕ), ⇑(k.factorial • Polynomial.hasseDeriv k) = (⇑Polynomial.derivative)^[k]",
+          "informal_description": "For any semiring $ R $, the $ k $-th Hasse derivative operator on the polynomial ring $ R[X] $, when multiplied by $ k! $, equals the $ k $-th iterate of the standard derivative operator. Formally, $ k! \\cdot D^{(k)} = (\\frac{d}{dX})^k $, where $ D^{(k)} $ denotes the Hasse derivative of order $ k $.",
+          "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+        },
+        {
+          "formal_name": "SchwartzMap.iteratedPDeriv_succ_left",
+          "informal_name": "Successor Case for Iterated Partial Derivatives in Schwartz Space",
+          "kind": "theorem",
+          "type": "∀ {V : Type u_14} {E : Type u_15} [inst : LineDeriv V E E] {n : ℕ} (m : Fin (n + 1) → V) (f : E),\n  LineDeriv.iteratedLineDerivOp m f = LineDeriv.lineDerivOp (m 0) (LineDeriv.iteratedLineDerivOp (Fin.tail m) f)",
+          "informal_description": "For any natural number $n$, a map $m : \\mathrm{Fin}(n+1) \\to V$, and $f \\in E$, the $(n+1)$-th iterated linear derivative $\\mathrm{LineDeriv.iteratedLineDerivOp}(m, f)$ equals the composition of the first derivative $\\mathrm{LineDeriv.lineDerivOp}(m(0), \\cdot)$ with the $n$-th iterated derivative $\\mathrm{LineDeriv.iteratedLineDerivOp}(\\mathrm{Fin.tail}(m), f)$. This expresses the recursive structure of iterated derivatives in Schwartz space.",
+          "path": "Mathlib.Analysis.Distribution.SchwartzSpace.Deriv"
+        },
+        {
+          "formal_name": "LineDeriv.iteratedLineDerivOp_succ_right",
+          "informal_name": "Successor Decomposition of Iterated Linear Derivatives",
+          "kind": "theorem",
+          "type": "∀ {V : Type u_14} {E : Type u_15} [inst : LineDeriv V E E] {n : ℕ} (m : Fin (n + 1) → V) (f : E),\n  LineDeriv.iteratedLineDerivOp m f =\n    LineDeriv.iteratedLineDerivOp (Fin.init m) (LineDeriv.lineDerivOp (m (Fin.last n)) f)",
+          "informal_description": "For any natural number $n$, function $m : \\text{Fin}(n+1) \\to V$, and element $f \\in E$, the iterated linear derivative $\\partial^m f$ equals the composition of the linear derivative $\\partial^{\\text{init} \\, m}$ applied to $\\partial_{m(\\text{last} \\, n)} f$, where $\\text{init} \\, m$ denotes the restriction of $m$ to $\\text{Fin}(n)$ and $\\text{last} \\, n$ denotes the final element of $\\text{Fin}(n+1)$.",
+          "path": "Mathlib.Analysis.Distribution.DerivNotation"
+        }
+      ]
+    },
+    "isError": false
+  }
+}

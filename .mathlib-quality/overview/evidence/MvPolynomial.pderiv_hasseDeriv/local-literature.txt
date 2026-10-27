@@ -1,0 +1,68 @@
+
+We start by defining differential operators in $p\geq1$ variables.
+For a multi-index $i=(i_1,\dots,i_p)\in\N^p$, define the \emph{Hasse differential operator}
+$\Delta_i$ by its effect on monomials:
+\[
+\Delta_i(x_1^{k_1}\cdots x_p^{k_p})=
+\begin{cases}
+\displaystyle\left(\prod_{j=1}^p {k_j\choose i_j}\right)
+ x_1^{k_1-i_1}\cdots x_p^{k_p-i_p},& i_j\leq k_j\text{ for every }j,\\[3pt]
+0,&\text{otherwise}.
+\end{cases}
+\]
+We extend this operator linearly to all polynomials. It has order
+$|i|=i_1+\cdots+i_p$. The definition works over $\Z$, $\Q$, or $\R$
+(and over any commutative semiring by casting the binomial coefficients).
+Over a $\Q$-algebra it agrees with
+\[
+\Delta_i=\frac{1}{i_1!\cdots i_p!}
+ \left(\frac{\partial}{\partial x_1}\right)^{i_1}\cdots
+ \left(\frac{\partial}{\partial x_p}\right)^{i_p}.
+\]
+When $i_j\leq k_j$, one may equivalently write
+${k_j\choose i_j}={k_j\choose k_j-i_j}$.
+Unless explicitly stated otherwise, a differential operator below means one
+of these individual normalised operators, not an arbitrary linear combination.
+This algebraic definition avoids the technicalities of Fr\'echet derivatives.
+
+\lean{Represent polynomials by \texttt{MvPolynomial} and multi-indices
+by finitely supported maps $\sigma\to_0\N$. Define each $\Delta_d$ as a
+linear map and prove the coefficient identity
+$[X^e]\Delta_dP=(\prod_j\binom{e_j+d_j}{d_j})[X^{e+d}]P$,
+where $[X^e]$ denotes coefficient extraction; this shows that distinct
+
+For a polynomial $f$ in $x_1, \dots, x_p$, the composite $f(\gamma(t))$ is a polynomial in the single variable $t$. We now relate its derivatives to the partial derivatives of $f$.
+
+FACT: For each $\nu$,
+$$
+\frac{d}{dt}h_\nu(t) = \frac{\partial \phi_\nu} {\partial x_1 } (\gamma(t)) + k t^{k-1} \frac{\partial \phi_\nu} {\partial x_2 } (\gamma(t)) + \dots + k^{p-1}t^{k^{p-1}-1}\frac{\partial \phi_\nu} {\partial x_p } (\gamma(t)).
+$$
+
+This is the algebraic chain rule for polynomial substitution. The higher derivatives are handled by the uniform expansion below.
+
+Then for each $\mu$, there is a natural number $r(\mu)$ depending only on $\mu$, polynomials $f^\mu_1(t), \dots, f^\mu_{r(\mu)}(t)$ with rational coefficients, and differential operators $\Delta_\mu^{(1)}, \dots, \Delta_\mu^{({r(\mu)})}$ of order less than or equal to $\mu$ such that for all $\nu$
+$$
+\frac{d^\mu}{dt^\mu} h_\nu(t) = f^\mu_1(t) (\Delta_\mu^{(1)}\phi_\nu)(\gamma(t)) + \dots + f^\mu_{r(\mu)}(t) (\Delta_\mu^{({r(\mu)})}\phi_\nu)(\gamma(t)).
+$$
+
+For completeness, this follows by induction on $\mu$, uniformly for all
+input polynomials. For $\mu=0$, use the identity operator with coefficient $1$.
+If a term at stage $\mu$ is $a(t)(\Delta_d\phi)(\gamma(t))$, its derivative is
+\[
+a'(t)(\Delta_d\phi)(\gamma(t))+
+ a(t)\sum_{j=1}^p\gamma'_j(t)(d_j+1)
+                 (\Delta_{d+e_j}\phi)(\gamma(t)).
+\]
+Here $\partial_j\Delta_d=(d_j+1)\Delta_{d+e_j}$ follows directly on
+monomials. The orders are at most $\mu+1$, and all coefficients are rational
+polynomials independent of $\phi$. Thus the same finite list works for every
+$\phi_\nu$; $p$ and $k$ remain fixed throughout.
+\lean{Treat $\phi\mapsto\phi(\gamma(t))$ as an algebra homomorphism and
+prove the first-order chain rule using
+algebraic partial derivatives\footnote{\url{https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/MvPolynomial/PDeriv.html}}
+and polynomial induction, rather than analytic differentiation.
+Represent the higher-order expansion by a finitely supported family of
+coefficient polynomials indexed by $d$ with $|d|\leq\mu$; the recurrence
+above makes these coefficients independent of $\phi$. Convert ordinary
+iterated derivatives to Hasse derivatives by factorial scaling only over
+$\Q$.}
