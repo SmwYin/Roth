@@ -1,0 +1,705 @@
+import Roth.Taylor
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Data.ZMod.Defs
+
+/-! Verification replay of a private helper selected by the documented overview prefilter. -/
+namespace PrivateScalarAssessment
+open MvPolynomial
+variable {σ : Type*}
+theorem replay (f d e : σ →₀ ℕ) :
+    hasseCoeff d (f + d) * hasseCoeff e (f + d + e) =
+      hasseCoeff d (d + e) * hasseCoeff (d + e) (f + (d + e)) := by
+  classical
+  simp only [hasseCoeff]
+  have hd : d.support ⊆ d.support ∪ e.support := Finset.subset_union_left
+  rw [Finsupp.prod_of_support_subset _ hd _ fun _ _ ↦ Nat.choose_zero_right _,
+    Finsupp.prod_of_support_subset _ Finset.subset_union_right _
+      fun _ _ ↦ Nat.choose_zero_right _,
+    Finsupp.prod_of_support_subset _ hd _ fun _ _ ↦ Nat.choose_zero_right _,
+    Finsupp.prod_of_support_subset _ Finsupp.support_add _ fun _ _ ↦ Nat.choose_zero_right _,
+    ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]
+  exact Finset.prod_congr rfl fun i _ ↦ by
+    simpa [← add_assoc, mul_comm, ← Nat.choose_symm_add (a := d i) (b := e i)] using
+      (Nat.choose_mul (n := f i + d i + e i) (k := d i + e i) (s := e i)
+        (Nat.le_add_left (e i) (d i))).symm
+#check @replay
+#print axioms replay
+end PrivateScalarAssessment
+
+namespace HasseCompositionAssessment
+open MvPolynomial
+variable {σ R : Type*} [CommSemiring R]
+#check @MvPolynomial.hasseDeriv_hasseDeriv
+#print axioms MvPolynomial.hasseDeriv_hasseDeriv
+theorem replay (d e : σ →₀ ℕ) (P : MvPolynomial σ R) :
+    hasseDeriv d (hasseDeriv e P) = (hasseCoeff d (d + e) : R) • hasseDeriv (d + e) P := by
+  apply MvPolynomial.ext
+  intro f
+  rw [coeff_smul, coeff_hasseDeriv, coeff_hasseDeriv, coeff_hasseDeriv, smul_eq_mul,
+    ← mul_assoc, ← mul_assoc, ← Nat.cast_mul, ← Nat.cast_mul,
+    PrivateScalarAssessment.replay, add_assoc]
+#print axioms replay
+end HasseCompositionAssessment
+
+namespace HasseCompositionExtra
+open MvPolynomial
+variable {σ R : Type*} [CommSemiring R]
+theorem weighted (L : (σ →₀ ℕ) → MvPolynomial σ R →ₗ[R] MvPolynomial σ R)
+    (w : (σ →₀ ℕ) → (σ →₀ ℕ) → R) (c : (σ →₀ ℕ) → (σ →₀ ℕ) → R)
+    (hL : ∀ d f P, (L d P).coeff f = w d (f + d) * P.coeff (f + d))
+    (hc : ∀ f d e, w d (f + d) * w e (f + d + e) =
+      c d e * w (d + e) (f + (d + e))) (d e : σ →₀ ℕ) (P : MvPolynomial σ R) :
+    L d (L e P) = c d e • L (d + e) P := by
+  apply MvPolynomial.ext
+  intro f
+  rw [coeff_smul, hL, hL, hL, smul_eq_mul, ← mul_assoc, ← mul_assoc, hc, add_assoc]
+theorem bundled (d e : σ →₀ ℕ) :
+    (hasseDeriv (R := R) d).comp (hasseDeriv e) =
+      (hasseCoeff d (d + e) : R) • hasseDeriv (d + e) := by
+  apply LinearMap.ext
+  intro P
+  exact HasseCompositionAssessment.replay d e P
+theorem factor_necessary : hasseDeriv (Finsupp.single () 1)
+    (hasseDeriv (Finsupp.single () 1) (monomial (Finsupp.single () 2) (1 : ℕ))) ≠
+      hasseDeriv (Finsupp.single () 2) (monomial (Finsupp.single () 2) (1 : ℕ)) := by
+  intro h
+  have hh := congrArg (fun P : MvPolynomial Unit ℕ ↦ P.coeff 0) h
+  have hz : (Finsupp.single () 2 - Finsupp.single () 1 - Finsupp.single () 1 : Unit →₀ ℕ) = 0 := by
+    apply Finsupp.ext
+    intro i
+    cases i
+    norm_num
+  norm_num [hz, hasseDeriv_monomial, hasseCoeff, Finsupp.single_tsub, coeff_monomial] at hh
+theorem disjoint_caller (d e : σ →₀ ℕ) (P : MvPolynomial σ R)
+    (h : Disjoint d.support e.support) :
+    hasseDeriv d (hasseDeriv e P) = hasseDeriv (d + e) P := by
+  rw [HasseCompositionAssessment.replay,
+    show hasseCoeff d (d + e) = 1 from
+      Finset.prod_eq_one fun i hi ↦ by
+        simp [Finsupp.notMem_support_iff.1 (Finset.disjoint_left.1 h hi)],
+    Nat.cast_one, one_smul]
+theorem eval_nonzero_caller (α : σ → R) (d e : σ →₀ ℕ) (P : MvPolynomial σ R)
+    (hi : eval α (hasseDeriv d (hasseDeriv e P)) ≠ 0) :
+    eval α (hasseDeriv (d + e) P) ≠ 0 := by
+  intro hzero
+  apply hi
+  rw [HasseCompositionAssessment.replay, smul_eq_C_mul, map_mul, eval_C, hzero, mul_zero]
+#print axioms weighted
+#print axioms bundled
+#print axioms factor_necessary
+#print axioms disjoint_caller
+#print axioms eval_nonzero_caller
+end HasseCompositionExtra
+
+namespace HasseDisjointAssessment
+open MvPolynomial
+variable {σ R : Type*} [CommSemiring R]
+#check @MvPolynomial.hasseDeriv_hasseDeriv_of_disjoint
+#print axioms MvPolynomial.hasseDeriv_hasseDeriv_of_disjoint
+-- Replay uses the independently verified composition proof, not the target itself.
+theorem replay {d e : σ →₀ ℕ} (h : Disjoint d.support e.support)
+    (P : MvPolynomial σ R) : hasseDeriv d (hasseDeriv e P) = hasseDeriv (d + e) P := by
+  rw [HasseCompositionAssessment.replay, show hasseCoeff d (d + e) = 1 from
+    Finset.prod_eq_one fun i hi ↦ by
+      simp [Finsupp.notMem_support_iff.1 (Finset.disjoint_left.1 h hi)], Nat.cast_one, one_smul]
+#print axioms replay
+-- A scalar-one hypothesis is sufficient, without a support condition.
+theorem scalar_one {d e : σ →₀ ℕ} (h : (hasseCoeff d (d + e) : R) = 1)
+    (P : MvPolynomial σ R) : hasseDeriv d (hasseDeriv e P) = hasseDeriv (d + e) P := by
+  rw [HasseCompositionAssessment.replay, h, one_smul]
+#print axioms scalar_one
+-- Operator equality is the equivalent bundled shape.
+theorem bundled {d e : σ →₀ ℕ} (h : Disjoint d.support e.support) :
+    (hasseDeriv (R := R) d).comp (hasseDeriv e) = hasseDeriv (d + e) := by
+  apply LinearMap.ext
+  intro P
+  exact replay h P
+#print axioms bundled
+-- Scoped first rewrite from the sole external caller, with arbitrary Option-indexed input.
+theorem separated_caller {τ : Type*} (d : τ →₀ ℕ) (ν : ℕ)
+    (P : MvPolynomial (Option τ) R) :
+    hasseDeriv (d.mapDomain some + Finsupp.single none ν) P =
+      hasseDeriv (d.mapDomain some) (hasseDeriv (Finsupp.single none ν) P) := by
+  classical
+  have hnone : ∀ {o : Option τ}, o ∈ (d.mapDomain some).support → o ≠ none := by simp
+  have hdisj : Disjoint (d.mapDomain some).support (Finsupp.single none ν).support :=
+    Finset.disjoint_left.2 fun _ ho ho' ↦
+      hnone ho (Finset.mem_singleton.1 (Finsupp.support_single_subset ho'))
+  exact (replay hdisj P).symm
+#print axioms separated_caller
+end HasseDisjointAssessment
+
+namespace HasseDisjointExtra
+open MvPolynomial
+variable {σ R : Type*} [CommSemiring R]
+theorem nat_factor_one {d e : σ →₀ ℕ} (h : hasseCoeff d (d + e) = 1)
+    (P : MvPolynomial σ R) : hasseDeriv d (hasseDeriv e P) = hasseDeriv (d + e) P := by
+  rw [HasseCompositionAssessment.replay, h, Nat.cast_one, one_smul]
+theorem swapped {d e : σ →₀ ℕ} (h : Disjoint d.support e.support)
+    (P : MvPolynomial σ R) : hasseDeriv e (hasseDeriv d P) = hasseDeriv (d + e) P := by
+  simpa only [add_comm] using HasseDisjointAssessment.replay h.symm P
+-- Dropping support disjointness outright is false.
+theorem overlap_counterexample :
+    hasseDeriv (Finsupp.single () 1)
+      (hasseDeriv (Finsupp.single () 1) (monomial (Finsupp.single () 2) (1 : ℕ))) ≠
+    hasseDeriv (Finsupp.single () 1 + Finsupp.single () 1)
+      (monomial (Finsupp.single () 2) (1 : ℕ)) := by
+  simpa only [← Finsupp.single_add] using HasseCompositionExtra.factor_necessary
+-- In positive characteristic the cast-one criterion permits overlapping supports.
+theorem overlap_support :
+    ¬Disjoint (Finsupp.single () 1 : Unit →₀ ℕ).support
+      (Finsupp.single () 2 : Unit →₀ ℕ).support := by simp
+theorem overlap_cast_one :
+    (hasseCoeff (Finsupp.single () 1)
+      (Finsupp.single () 1 + Finsupp.single () 2) : ZMod 2) = 1 := by
+  norm_num [hasseCoeff, ← Finsupp.single_add]
+  decide
+theorem overlap_char_two (P : MvPolynomial Unit (ZMod 2)) :
+    hasseDeriv (Finsupp.single () 1) (hasseDeriv (Finsupp.single () 2) P) =
+      hasseDeriv (Finsupp.single () 1 + Finsupp.single () 2) P :=
+  HasseDisjointAssessment.scalar_one overlap_cast_one P
+#print axioms nat_factor_one
+#print axioms swapped
+#print axioms overlap_counterexample
+#print axioms overlap_support
+#print axioms overlap_cast_one
+#print axioms overlap_char_two
+end HasseDisjointExtra
+
+namespace HasseDisjointOrderShape
+open MvPolynomial
+variable {σ R : Type*} [CommSemiring R]
+#check @Finsupp.disjoint_iff
+theorem lattice_shape {d e : σ →₀ ℕ} (h : Disjoint d e)
+    (P : MvPolynomial σ R) : hasseDeriv d (hasseDeriv e P) = hasseDeriv (d + e) P :=
+  HasseDisjointAssessment.replay (Finsupp.disjoint_iff.mp h) P
+#print axioms lattice_shape
+end HasseDisjointOrderShape
+
+namespace PrivateSuccessorAssessment
+open MvPolynomial
+variable {σ : Type*}
+theorem replay (j : σ) (d e : σ →₀ ℕ) :
+    hasseCoeff d (e + Finsupp.single j 1 + d) * (e j + 1) =
+      (d j + 1) * hasseCoeff (d + Finsupp.single j 1) (e + Finsupp.single j 1 + d) := by
+  simpa [hasseCoeff, add_comm, add_left_comm, add_assoc, mul_comm] using
+    PrivateScalarAssessment.replay e (Finsupp.single j 1) d
+#check @replay
+#print axioms replay
+end PrivateSuccessorAssessment
+
+namespace PDerivHasseAssessment
+open MvPolynomial
+variable {σ R : Type*} [CommSemiring R]
+#check @MvPolynomial.pderiv_hasseDeriv
+#print axioms MvPolynomial.pderiv_hasseDeriv
+theorem replay (j : σ) (d : σ →₀ ℕ) (P : MvPolynomial σ R) :
+    pderiv j (hasseDeriv d P) = ((d j + 1 : ℕ) : R) • hasseDeriv (d + Finsupp.single j 1) P := by
+  apply MvPolynomial.ext
+  intro e
+  rw [coeff_pderiv, coeff_smul, coeff_hasseDeriv, coeff_hasseDeriv, smul_eq_mul,
+    ← add_assoc e d, add_right_comm e d, mul_right_comm, ← Nat.cast_add_one, ← Nat.cast_mul,
+    PrivateSuccessorAssessment.replay, Nat.cast_mul, mul_assoc]
+#print axioms replay
+end PDerivHasseAssessment
+
+namespace PDerivHasseExtra
+open MvPolynomial
+variable {σ R : Type*} [CommSemiring R]
+theorem bundled (j : σ) (d : σ →₀ ℕ) :
+    (pderiv (R := R) j).toLinearMap.comp (hasseDeriv d) =
+      ((d j + 1 : ℕ) : R) • hasseDeriv (d + Finsupp.single j 1) := by
+  apply LinearMap.ext
+  intro P
+  exact PDerivHasseAssessment.replay j d P
+theorem order_zero (j : σ) (P : MvPolynomial σ R) :
+    pderiv j P = hasseDeriv (Finsupp.single j 1) P := by
+  simpa using PDerivHasseAssessment.replay j 0 P
+theorem factorial_caller (j : σ) (n : ℕ) (P : MvPolynomial σ R) :
+    (n.factorial : R) • hasseDeriv (Finsupp.single j n) P =
+      (⇑(pderiv (R := R) j))^[n] P := by
+  induction n with
+  | zero => simp
+  | succ n ih =>
+    rw [Function.iterate_succ_apply', ← ih, Derivation.map_smul,
+      PDerivHasseAssessment.replay, smul_smul, Finsupp.single_eq_same,
+      ← Finsupp.single_add, Nat.factorial_succ, Nat.cast_mul, mul_comm]
+theorem aeval_caller (γ : σ → Polynomial R) (j : σ) (d : σ →₀ ℕ)
+    (P : MvPolynomial σ R) :
+    aeval γ (pderiv j (hasseDeriv d P)) =
+      Polynomial.C ((d j + 1 : ℕ) : R) * aeval γ (hasseDeriv (d + Finsupp.single j 1) P) := by
+  rw [PDerivHasseAssessment.replay, map_smul, Polynomial.smul_eq_C_mul]
+theorem factor_necessary :
+    pderiv () (hasseDeriv (Finsupp.single () 1)
+      (monomial (Finsupp.single () 2) (1 : ℕ))) ≠
+      hasseDeriv (Finsupp.single () 1 + Finsupp.single () 1)
+        (monomial (Finsupp.single () 2) (1 : ℕ)) := by
+  rw [order_zero]
+  exact HasseDisjointExtra.overlap_counterexample
+#print axioms bundled
+#print axioms order_zero
+#print axioms factorial_caller
+#print axioms aeval_caller
+#print axioms factor_necessary
+end PDerivHasseExtra
+
+namespace PDerivWeightedAssessment
+open MvPolynomial
+variable {σ R : Type*} [CommSemiring R]
+theorem weighted (L : (σ →₀ ℕ) → MvPolynomial σ R →ₗ[R] MvPolynomial σ R)
+    (w : (σ →₀ ℕ) → (σ →₀ ℕ) → R)
+    (hL : ∀ d e P, (L d P).coeff e = w d (e + d) * P.coeff (e + d))
+    (j : σ) (d : σ →₀ ℕ)
+    (hs : ∀ e, w d (e + Finsupp.single j 1 + d) * ((e j : R) + 1) =
+      ((d j : R) + 1) * w (d + Finsupp.single j 1) (e + Finsupp.single j 1 + d))
+    (P : MvPolynomial σ R) :
+    pderiv j (L d P) = ((d j : R) + 1) • L (d + Finsupp.single j 1) P := by
+  apply MvPolynomial.ext
+  intro e
+  rw [coeff_pderiv, coeff_smul, hL, hL, smul_eq_mul,
+    ← add_assoc e d, add_right_comm e d, mul_right_comm, ← mul_assoc, hs, mul_assoc]
+#print axioms weighted
+end PDerivWeightedAssessment
+
+namespace HasseDegreeAssessment
+open MvPolynomial
+variable {σ R : Type*} [CommSemiring R]
+#check @MvPolynomial.degreeOf_hasseDeriv_le
+#print axioms MvPolynomial.degreeOf_hasseDeriv_le
+theorem replay (j : σ) (d : σ →₀ ℕ) (P : MvPolynomial σ R) :
+    degreeOf j (hasseDeriv d P) ≤ degreeOf j P := by
+  refine degreeOf_le_iff.2 fun m hm ↦ ?_
+  rw [mem_support_iff, coeff_hasseDeriv] at hm
+  exact (monomial_le_degreeOf j (mem_support_iff.2 (right_ne_zero_of_mul hm))).trans'
+    (by simp)
+theorem strengthened (j : σ) (d : σ →₀ ℕ) (P : MvPolynomial σ R) :
+    degreeOf j (hasseDeriv d P) ≤ degreeOf j P - d j := by
+  refine degreeOf_le_iff.2 fun m hm ↦ ?_
+  rw [mem_support_iff, coeff_hasseDeriv] at hm
+  have h := monomial_le_degreeOf j (mem_support_iff.2 (right_ne_zero_of_mul hm))
+  exact Nat.le_sub_of_add_le (by simpa using h)
+#print axioms replay
+#print axioms strengthened
+end HasseDegreeAssessment
+
+namespace HasseDegreeExtra
+open MvPolynomial
+variable {σ R : Type*} [CommSemiring R]
+theorem support_shift (j : σ) (d : σ →₀ ℕ) (P Q : MvPolynomial σ R)
+    (hshift : ∀ m, Q.coeff m ≠ 0 → P.coeff (m + d) ≠ 0) :
+    degreeOf j Q ≤ degreeOf j P - d j := by
+  refine degreeOf_le_iff.2 fun m hm ↦ ?_
+  have h := monomial_le_degreeOf j (mem_support_iff.2 (hshift m (mem_support_iff.1 hm)))
+  exact Nat.le_sub_of_add_le (by simpa using h)
+theorem caller_bound (j : σ) (d : σ →₀ ℕ) (P : MvPolynomial σ R) (r : ℕ)
+    (hP : degreeOf j P ≤ r) : degreeOf j (hasseDeriv d P) ≤ r :=
+  (HasseDegreeAssessment.strengthened j d P).trans ((Nat.sub_le _ _).trans hP)
+theorem additive_without_nonzero_false :
+    ¬(degreeOf () (hasseDeriv (Finsupp.single () 1) (0 : MvPolynomial Unit ℕ)) + 1 ≤
+      degreeOf () (0 : MvPolynomial Unit ℕ)) := by simp
+#print axioms support_shift
+#print axioms caller_bound
+#print axioms additive_without_nonzero_false
+end HasseDegreeExtra
+
+namespace HasseDegreeGenerality
+open MvPolynomial
+variable {σ R S : Type*} [CommSemiring R] [CommSemiring S]
+theorem support_shift_cross (j : σ) (d : σ →₀ ℕ)
+    (P : MvPolynomial σ R) (Q : MvPolynomial σ S)
+    (hshift : ∀ m, Q.coeff m ≠ 0 → P.coeff (m + d) ≠ 0) :
+    degreeOf j Q ≤ degreeOf j P - d j := by
+  refine degreeOf_le_iff.2 fun m hm ↦ ?_
+  have h := monomial_le_degreeOf j (mem_support_iff.2 (hshift m (mem_support_iff.1 hm)))
+  exact Nat.le_sub_of_add_le (by simpa using h)
+theorem map_consumer (j : σ) (f : R →+* S) (P : MvPolynomial σ R) :
+    degreeOf j (MvPolynomial.map f P) ≤ degreeOf j P := by
+  apply le_trans (support_shift_cross j 0 P (MvPolynomial.map f P) ?_)
+  · simp
+  · intro m hm
+    simp only [coeff_map] at hm
+    simpa using (fun hzero ↦ hm (by rw [hzero, map_zero]) : P.coeff m ≠ 0)
+theorem truncated_consumer (j : σ) (P Q : MvPolynomial σ R)
+    (h : Q.support ⊆ P.support) : degreeOf j Q ≤ degreeOf j P := by
+  apply le_trans (support_shift_cross j 0 P Q ?_)
+  · simp
+  · intro m hm
+    simpa using (mem_support_iff.1 (h (mem_support_iff.2 hm)))
+theorem strict_improvement :
+    degreeOf () (hasseDeriv (Finsupp.single () 1)
+      (monomial (Finsupp.single () 3) (1 : ℕ))) = 2 ∧
+      degreeOf () (monomial (Finsupp.single () 3) (1 : ℕ)) = 3 := by
+  have hs : (Finsupp.single () 3 - Finsupp.single () 1 : Unit →₀ ℕ) = Finsupp.single () 2 := by
+    apply Finsupp.ext
+    intro i
+    cases i
+    norm_num
+  norm_num [hasseDeriv_monomial, hasseCoeff, hs, degreeOf_monomial_eq]
+#print axioms support_shift_cross
+#print axioms map_consumer
+#print axioms truncated_consumer
+#print axioms strict_improvement
+end HasseDegreeGenerality
+
+namespace HasseZeroDegreeAssessment
+open MvPolynomial
+variable {σ R : Type*} [CommSemiring R]
+#check @MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt
+#print axioms MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt
+theorem replay {j : σ} {d : σ →₀ ℕ} {P : MvPolynomial σ R}
+    (h : degreeOf j P < d j) : hasseDeriv d P = 0 := by
+  apply MvPolynomial.ext
+  intro e
+  simp [coeff_hasseDeriv, notMem_support_iff.1
+    (notMem_support_of_degreeOf_lt j (s := e + d) (h.trans_le (by simp)))]
+theorem support_criterion {d : σ →₀ ℕ} {P : MvPolynomial σ R}
+    (h : ∀ k ∈ P.support, ¬d ≤ k) : hasseDeriv d P = 0 := by
+  apply MvPolynomial.ext
+  intro e
+  rw [coeff_hasseDeriv]
+  change (hasseCoeff d (e + d) : R) * P.coeff (e + d) = 0
+  by_cases hc : P.coeff (e + d) = 0
+  · simp [hc]
+  · exact (h _ (mem_support_iff.2 hc) (by simp)).elim
+theorem coefficient_iff (d : σ →₀ ℕ) (P : MvPolynomial σ R) :
+    hasseDeriv d P = 0 ↔
+      ∀ e, (hasseCoeff d (e + d) : R) * P.coeff (e + d) = 0 := by
+  simp only [MvPolynomial.ext_iff, coeff_hasseDeriv,
+    AddMonoidAlgebra.coeff_zero, Finsupp.zero_apply]
+theorem existential {d : σ →₀ ℕ} {P : MvPolynomial σ R}
+    (h : ∃ j, degreeOf j P < d j) : hasseDeriv d P = 0 := by
+  obtain ⟨j, hj⟩ := h
+  exact replay hj
+theorem strict_needed :
+    degreeOf () (monomial (Finsupp.single () 1) (1 : ℕ)) = 1 ∧
+      hasseDeriv (Finsupp.single () 1) (monomial (Finsupp.single () 1) (1 : ℕ)) ≠ 0 := by
+  norm_num [degreeOf_monomial_eq, hasseDeriv_monomial, hasseCoeff]
+theorem converse_false :
+    hasseDeriv (Finsupp.single () 1) (monomial (Finsupp.single () 2) (1 : ZMod 2)) = 0 ∧
+      degreeOf () (monomial (Finsupp.single () 2) (1 : ZMod 2)) = 2 := by
+  have hb : (hasseCoeff (Finsupp.single () 1) (Finsupp.single () 2) : ZMod 2) = 0 := by
+    norm_num [hasseCoeff]
+    decide
+  constructor
+  · rw [hasseDeriv_monomial, hb]
+    simp
+  · rw [degreeOf_monomial_eq _ _ (by decide : (1 : ZMod 2) ≠ 0)]
+    simp
+#print axioms replay
+#print axioms support_criterion
+#print axioms coefficient_iff
+#print axioms existential
+#print axioms strict_needed
+#print axioms converse_false
+end HasseZeroDegreeAssessment
+
+namespace HasseZeroDegreeCallers
+open MvPolynomial
+variable {σ R : Type*} [CommSemiring R]
+theorem taylor_degree_replay (α : σ → R) (j : σ) (P : MvPolynomial σ R) :
+    degreeOf j (taylor α P) ≤ degreeOf j P := by
+  refine degreeOf_le_iff.2 fun e he ↦ not_lt.1 fun h ↦ ?_
+  simp [mem_support_iff, coeff_taylor, HasseZeroDegreeAssessment.replay h] at he
+theorem outside_box (α : σ → R) (r : σ → ℕ) (P : MvPolynomial σ R)
+    (hP : ∀ j, degreeOf j P ≤ r j) (j : σ) (d : σ →₀ ℕ) (hj : r j < d j) :
+    eval α (hasseDeriv d P) = 0 := by
+  rw [HasseZeroDegreeAssessment.replay ((hP j).trans_lt hj), map_zero]
+theorem eval_ne_zero_bound (α : σ → R) (r : σ → ℕ) (P : MvPolynomial σ R)
+    (hP : ∀ j, degreeOf j P ≤ r j) (j : σ) (d : σ →₀ ℕ)
+    (he : eval α (hasseDeriv d P) ≠ 0) : d j ≤ r j := by
+  by_contra! hj
+  exact he (outside_box α r P hP j d hj)
+theorem weighted_zero (P Q : MvPolynomial σ R) (d : σ →₀ ℕ)
+    (w : (σ →₀ ℕ) → R) (hcoeff : ∀ e, Q.coeff e = w e * P.coeff (e + d))
+    (havoid : ∀ k ∈ P.support, ¬d ≤ k) : Q = 0 := by
+  apply MvPolynomial.ext
+  intro e
+  rw [hcoeff]
+  change w e * P.coeff (e + d) = 0
+  by_cases hzero : P.coeff (e + d) = 0
+  · simp [hzero]
+  · exact (havoid _ (mem_support_iff.2 hzero) (by simp)).elim
+#print axioms taylor_degree_replay
+#print axioms outside_box
+#print axioms eval_ne_zero_bound
+#print axioms weighted_zero
+end HasseZeroDegreeCallers
+
+namespace HasseZeroShiftedInput
+open MvPolynomial
+variable {σ R : Type*} [CommSemiring R]
+theorem shifted_input_zero (d : σ →₀ ℕ) (P : MvPolynomial σ R)
+    (h : ∀ e, P.coeff (e + d) = 0) : hasseDeriv d P = 0 := by
+  apply MvPolynomial.ext
+  intro e
+  simp [coeff_hasseDeriv, h]
+theorem weighted (P Q : MvPolynomial σ R) (d : σ →₀ ℕ)
+    (w : (σ →₀ ℕ) → R) (hcoeff : ∀ e, Q.coeff e = w e * P.coeff (e + d))
+    (h : ∀ e, P.coeff (e + d) = 0) : Q = 0 := by
+  apply MvPolynomial.ext
+  intro e
+  rw [hcoeff, h, mul_zero]
+  rfl
+#print axioms shifted_input_zero
+#print axioms weighted
+end HasseZeroShiftedInput
+
+namespace PrivateMonomialFactorAssessment
+open MvPolynomial
+variable {σ R : Type*} [CommSemiring R]
+theorem replay {d a : σ →₀ ℕ} (ha : ∀ j ∈ d.support, a j = 0) (c : R)
+    (g : MvPolynomial σ R) : hasseDeriv d (monomial a c * g) = monomial a c * hasseDeriv d g := by
+  classical
+  induction g using MvPolynomial.induction_on' with
+  | monomial b c' =>
+    have hs : a + b - d = a + (b - d) := by
+      ext j
+      by_cases hj : j ∈ d.support <;> simp_all
+    rw [monomial_mul_monomial, hasseDeriv_monomial, hasseDeriv_monomial,
+      show hasseCoeff d (a + b) = hasseCoeff d b from
+        Finset.prod_congr rfl fun j hj ↦ by simp [ha j hj]]
+    simp [monomial_mul_monomial, hs, mul_left_comm]
+  | add p q hp hq => simp [mul_add, hp, hq]
+#check @replay
+#print axioms replay
+end PrivateMonomialFactorAssessment
+
+namespace HasseSeparatedFactorAssessment
+open MvPolynomial
+variable {σ R : Type*} [CommSemiring R]
+#check @MvPolynomial.hasseDeriv_mul_of_degreeOf_eq_zero
+#print axioms MvPolynomial.hasseDeriv_mul_of_degreeOf_eq_zero
+theorem replay {d : σ →₀ ℕ} {f g : MvPolynomial σ R}
+    (hf : ∀ j ∈ d.support, degreeOf j f = 0) :
+    hasseDeriv d (f * g) = f * hasseDeriv d g := by
+  classical
+  rw [f.as_sum, Finset.sum_mul, Finset.sum_mul, map_sum]
+  exact Finset.sum_congr rfl fun a haf ↦ PrivateMonomialFactorAssessment.replay
+    (fun j hj ↦ Nat.eq_zero_of_le_zero (hf j hj ▸ monomial_le_degreeOf j haf)) _ g
+#print axioms replay
+end HasseSeparatedFactorAssessment
+
+namespace HasseSeparatedFactorExtra
+open MvPolynomial
+variable {σ R : Type*} [CommSemiring R]
+#check @MvPolynomial.mem_vars_iff_degreeOf_ne_zero
+theorem vars_iff (d : σ →₀ ℕ) (f : MvPolynomial σ R) :
+    (∀ j ∈ d.support, degreeOf j f = 0) ↔ Disjoint d.support f.vars := by
+  classical
+  simp [Finset.disjoint_left, mem_vars_iff_degreeOf_ne_zero]
+theorem right_factor {d : σ →₀ ℕ} {f g : MvPolynomial σ R}
+    (hf : ∀ j ∈ d.support, degreeOf j f = 0) :
+    hasseDeriv d (g * f) = hasseDeriv d g * f := by
+  simpa only [mul_comm] using HasseSeparatedFactorAssessment.replay (g := g) hf
+theorem ordinary_derivative_guard :
+    pderiv () (monomial (Finsupp.single () 2) (1 : ZMod 2)) = 0 ∧
+      hasseDeriv (Finsupp.single () 2)
+        (monomial (Finsupp.single () 2) (1 : ZMod 2) * 1) ≠
+      monomial (Finsupp.single () 2) (1 : ZMod 2) * hasseDeriv (Finsupp.single () 2) 1 := by
+  constructor
+  · rw [PDerivHasseExtra.order_zero]
+    exact HasseZeroDegreeAssessment.converse_false.1
+  · rw [mul_one, HasseZeroDegreeAssessment.replay
+      (P := (1 : MvPolynomial Unit (ZMod 2))) (j := ()) (by norm_num)]
+    intro h
+    have hh := congrArg (fun Q : MvPolynomial Unit (ZMod 2) ↦ Q.coeff 0) h
+    norm_num [coeff_hasseDeriv, hasseCoeff] at hh
+    exact (by decide : (1 : ZMod 2) ≠ 0) hh
+#print axioms vars_iff
+#print axioms right_factor
+#print axioms ordinary_derivative_guard
+end HasseSeparatedFactorExtra
+
+namespace HasseSeparatedGeneric
+open MvPolynomial
+variable {σ R : Type*} [CommSemiring R]
+theorem sum_extension (T : MvPolynomial σ R →ₗ[R] MvPolynomial σ R)
+    {f g : MvPolynomial σ R}
+    (h : ∀ a ∈ f.support, T (monomial a (f.coeff a) * g) = monomial a (f.coeff a) * T g) :
+    T (f * g) = f * T g := by
+  rw [f.as_sum, Finset.sum_mul, Finset.sum_mul, map_sum]
+  exact Finset.sum_congr rfl h
+#check @Polynomial.hasseDeriv_mul
+#check @MvPolynomial.pderiv_mul
+#check @LinearMap.map_smul
+#check @MvPolynomial.linearMap_ext
+#print axioms sum_extension
+end HasseSeparatedGeneric
+
+namespace HasseSeparatedCallers
+open MvPolynomial
+variable {τ R : Type*} [CommSemiring R]
+theorem none_block (ν : ℕ) (U : MvPolynomial τ R) (G : MvPolynomial (Option τ) R) :
+    hasseDeriv (Finsupp.single none ν) (rename some U * G) =
+      rename some U * hasseDeriv (Finsupp.single none ν) G := by
+  classical
+  apply HasseSeparatedFactorAssessment.replay
+  intro j hj
+  rw [Finset.mem_singleton.1 (Finsupp.support_single_subset hj)]
+  simp [degreeOf, degrees_rename_of_injective (Option.some_injective τ)]
+theorem some_block (d : τ →₀ ℕ) (Q : MvPolynomial Unit R) (G : MvPolynomial (Option τ) R) :
+    hasseDeriv (d.mapDomain some) (rename (fun _ : Unit ↦ none) Q * G) =
+      rename (fun _ : Unit ↦ none) Q * hasseDeriv (d.mapDomain some) G := by
+  classical
+  have hnone : ∀ {o : Option τ}, o ∈ (d.mapDomain some).support → o ≠ none := by simp
+  apply HasseSeparatedFactorAssessment.replay
+  intro j hj
+  simp [degreeOf, degrees_rename_of_injective (Function.injective_of_subsingleton _),
+    Multiset.mem_replicate, hnone hj]
+#print axioms none_block
+#print axioms some_block
+end HasseSeparatedCallers
+
+namespace HasseSeparatedTopComponentGuard
+open MvPolynomial
+theorem insufficient :
+    hasseDeriv (Finsupp.single () 2) (monomial (Finsupp.single () 1) (1 : ℕ)) = 0 ∧
+      hasseDeriv (Finsupp.single () 2)
+        (monomial (Finsupp.single () 1) (1 : ℕ) * monomial (Finsupp.single () 1) 1) ≠
+      monomial (Finsupp.single () 1) 1 *
+        hasseDeriv (Finsupp.single () 2) (monomial (Finsupp.single () 1) (1 : ℕ)) := by
+  norm_num [monomial_mul_monomial, hasseDeriv_monomial, hasseCoeff, ← Finsupp.single_add]
+#print axioms insufficient
+end HasseSeparatedTopComponentGuard
+
+namespace HasseSingleAevalAssessment
+open MvPolynomial
+variable {σ R : Type*} [CommSemiring R]
+#check @MvPolynomial.hasseDeriv_single_aeval_X
+#print axioms MvPolynomial.hasseDeriv_single_aeval_X
+theorem replay (j : σ) (n : ℕ) (f : Polynomial R) :
+    hasseDeriv (Finsupp.single j n) (Polynomial.aeval (X j : MvPolynomial σ R) f) =
+      Polynomial.aeval (X j : MvPolynomial σ R) (Polynomial.hasseDeriv n f) := by
+  induction f using Polynomial.induction_on' with
+  | add p q hp hq => simp [hp, hq]
+  | monomial m a =>
+    simp [-map_natCast, X_pow_eq_monomial, C_mul_monomial, hasseCoeff, Finsupp.single_tsub,
+      mul_assoc]
+theorem linear_square (j : σ) (n : ℕ) :
+    (hasseDeriv (Finsupp.single j n)).comp
+      (Polynomial.aeval (X j : MvPolynomial σ R)).toLinearMap =
+    (Polynomial.aeval (X j : MvPolynomial σ R)).toLinearMap.comp (Polynomial.hasseDeriv n) := by
+  apply LinearMap.ext
+  intro f
+  exact replay j n f
+theorem option_none_caller {τ : Type*} (n : ℕ) (f : Polynomial R) :
+    hasseDeriv (Finsupp.single none n)
+      (Polynomial.aeval (X none : MvPolynomial (Option τ) R) f) =
+    Polynomial.aeval (X none : MvPolynomial (Option τ) R) (Polynomial.hasseDeriv n f) :=
+  replay none n f
+#print axioms replay
+#print axioms linear_square
+#print axioms option_none_caller
+end HasseSingleAevalAssessment
+
+namespace HasseSingleFalseGenerality
+open MvPolynomial
+theorem arbitrary_image_false :
+    hasseDeriv (Finsupp.single () 1)
+      (Polynomial.aeval (0 : MvPolynomial Unit ℕ) (Polynomial.X : Polynomial ℕ)) ≠
+    Polynomial.aeval (0 : MvPolynomial Unit ℕ)
+      (Polynomial.hasseDeriv 1 (Polynomial.X : Polynomial ℕ)) := by
+  simp
+#print axioms arbitrary_image_false
+end HasseSingleFalseGenerality
+
+namespace HasseSinglePinnedChecks
+#check @Polynomial.lhom_ext'
+#check @Polynomial.hasseDeriv_monomial
+#check @Polynomial.aeval_monomial
+#check @Polynomial.toMvPolynomial
+theorem coordinate_embedding {σ R : Type*} [CommSemiring R] (j : σ) :
+    Polynomial.toMvPolynomial (R := R) j =
+      Polynomial.aeval (MvPolynomial.X j : MvPolynomial σ R) := rfl
+#print axioms coordinate_embedding
+end HasseSinglePinnedChecks
+
+namespace HasseUniqueAssessment
+open MvPolynomial
+variable {σ R : Type*} [CommSemiring R] [Unique σ]
+#check @MvPolynomial.uniqueAlgEquiv_hasseDeriv
+#print axioms MvPolynomial.uniqueAlgEquiv_hasseDeriv
+theorem replay (n : ℕ) (P : MvPolynomial σ R) :
+    uniqueAlgEquiv R σ (hasseDeriv (R := R) (Finsupp.single (default : σ) n) P) =
+      Polynomial.hasseDeriv n (uniqueAlgEquiv R σ P) := by
+  apply Polynomial.ext
+  intro m
+  rw [coeff_uniqueAlgEquiv, coeff_hasseDeriv, Polynomial.hasseDeriv_coeff, coeff_uniqueAlgEquiv]
+  simp [hasseCoeff, Finsupp.single_add]
+theorem linear_square (n : ℕ) :
+    (uniqueAlgEquiv R σ).toLinearMap.comp (hasseDeriv (Finsupp.single (default : σ) n)) =
+      (Polynomial.hasseDeriv n).comp (uniqueAlgEquiv R σ).toLinearMap := by
+  apply LinearMap.ext
+  intro P
+  exact replay n P
+theorem inverse (n : ℕ) (f : Polynomial R) :
+    hasseDeriv (Finsupp.single (default : σ) n) ((uniqueAlgEquiv R σ).symm f) =
+      (uniqueAlgEquiv R σ).symm (Polynomial.hasseDeriv n f) := by
+  apply (uniqueAlgEquiv R σ).injective
+  simpa only [AlgEquiv.apply_symm_apply] using replay n ((uniqueAlgEquiv R σ).symm f)
+#print axioms replay
+#print axioms linear_square
+#print axioms inverse
+end HasseUniqueAssessment
+
+namespace HasseUniqueExtra
+open MvPolynomial
+variable {σ R : Type*} [CommSemiring R] [Unique σ]
+#check @MvPolynomial.coeff_uniqueAlgEquiv
+#check @MvPolynomial.uniqueAlgEquiv_symm_apply
+#check @Polynomial.lhom_ext'
+theorem from_coordinate_bridge (n : ℕ) (P : MvPolynomial σ R) :
+    uniqueAlgEquiv R σ (hasseDeriv (Finsupp.single (default : σ) n) P) =
+      Polynomial.hasseDeriv n (uniqueAlgEquiv R σ P) := by
+  have hinv (f : Polynomial R) :
+      hasseDeriv (Finsupp.single (default : σ) n) ((uniqueAlgEquiv R σ).symm f) =
+        (uniqueAlgEquiv R σ).symm (Polynomial.hasseDeriv n f) := by
+    change hasseDeriv (Finsupp.single (default : σ) n)
+        (Polynomial.aeval (X default : MvPolynomial σ R) f) =
+      Polynomial.aeval (X default : MvPolynomial σ R) (Polynomial.hasseDeriv n f)
+    exact HasseSingleAevalAssessment.replay default n f
+  have h := congrArg (fun Q ↦ uniqueAlgEquiv R σ Q) (hinv (uniqueAlgEquiv R σ P))
+  simpa only [AlgEquiv.symm_apply_apply, AlgEquiv.apply_symm_apply] using h
+theorem index_key_caller (α : σ → R) (d : σ →₀ ℕ) (P : MvPolynomial σ R) :
+    eval α (hasseDeriv d P) =
+      (Polynomial.taylor (α default) (uniqueAlgEquiv R σ P)).coeff (d default) := by
+  rw [Polynomial.taylor_coeff, ← HasseUniqueAssessment.replay, ← Finsupp.unique_single d]
+  exact (eval₂_uniqueAlgEquiv (f := hasseDeriv d P) (φ := RingHom.id R) (a := α)).symm
+#print axioms from_coordinate_bridge
+#print axioms index_key_caller
+end HasseUniqueExtra
+
+namespace HasseUniqueChosen
+open MvPolynomial
+variable {σ R : Type*} [CommSemiring R] [Subsingleton σ]
+theorem chosen (j : σ) (n : ℕ) (P : MvPolynomial σ R) :
+    let : Unique σ := { default := j, uniq := fun x ↦ Subsingleton.elim x j }
+    uniqueAlgEquiv R σ (hasseDeriv (Finsupp.single j n) P) =
+      Polynomial.hasseDeriv n (uniqueAlgEquiv R σ P) := by
+  let : Unique σ := { default := j, uniq := fun x ↦ Subsingleton.elim x j }
+  exact HasseUniqueAssessment.replay n P
+#print axioms chosen
+end HasseUniqueChosen
+
+namespace HasseUniquePinnedAndGuard
+#check @LinearEquiv.conj_apply_apply
+#check_failure MvPolynomial.uniqueAlgEquiv_symm_eq
+section
+variable {σ S : Type*} [Semiring S]
+#check_failure MvPolynomial σ S
+end
+open MvPolynomial
+noncomputable def scale : Polynomial ℚ ≃ₐ[ℚ] Polynomial ℚ :=
+  Polynomial.algEquivOfCompEqX (Polynomial.C 2 * Polynomial.X)
+    (Polynomial.C (1 / 2) * Polynomial.X)
+    (by norm_num [← Polynomial.C_mul, ← mul_assoc])
+    (by norm_num [← Polynomial.C_mul, ← mul_assoc])
+noncomputable def badEquiv : MvPolynomial Unit ℚ ≃ₐ[ℚ] Polynomial ℚ :=
+  (uniqueAlgEquiv ℚ Unit).trans scale
+theorem arbitrary_equiv_false :
+    badEquiv (hasseDeriv (Finsupp.single () 1) (X () : MvPolynomial Unit ℚ)) ≠
+      Polynomial.hasseDeriv 1 (badEquiv (X () : MvPolynomial Unit ℚ)) := by
+  norm_num [badEquiv, scale, Polynomial.algEquivOfCompEqX_apply,
+    Polynomial.hasseDeriv_one', MvPolynomial.X, hasseCoeff]
+#print axioms arbitrary_equiv_false
+end HasseUniquePinnedAndGuard

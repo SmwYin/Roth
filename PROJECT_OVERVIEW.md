@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 22/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 23/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 22; remaining: 271.
-- Verdicts: 4 NO-composable-from-mathlib, 10 YES-add-as-is, 0 YES-but-generalise-first, 0 NO-mathlib-has-it, 5 BORDERLINE-needs-human, 3 SKIP.
+- Completed applicable assessments: 23; remaining: 270.
+- Verdicts: 4 NO-composable-from-mathlib, 10 YES-add-as-is, 0 YES-but-generalise-first, 0 NO-mathlib-has-it, 6 BORDERLINE-needs-human, 3 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -265,6 +265,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: count: 1; sites: Roth/Separation.lean:160; detail: Roth.hasseDeriv_rename_mul_aeval uses j=none; compiled literal instance.
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/MvPolynomial.hasseDeriv_single_aeval_X.md).
 
+### Completed: `MvPolynomial.uniqueAlgEquiv_hasseDeriv`
+
+- Type: `theorem`
+- What: Canonical identification of a singleton-variable polynomial algebra commutes with every Hasse derivative.
+- How: Coefficient extensionality and singleton-binomial normalization; isolated raw basis proof also closes by definitions.
+- Hypotheses: CommSemiring R, Unique σ
+- Project dependencies: MvPolynomial.hasseDeriv, MvPolynomial.coeff_hasseDeriv, MvPolynomial.hasseCoeff
+- Caller summary: count: 1; callers: Roth.index_unique at Roth/Index.lean:239; scope: explicit source references, not opaque kernel or simp closure
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/MvPolynomial.uniqueAlgEquiv_hasseDeriv.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -335,6 +345,8 @@ Completed `MvPolynomial.hasseDeriv_mul_of_degreeOf_eq_zero`: Univariate hasseDer
 
 Completed `MvPolynomial.hasseDeriv_single_aeval_X`: All five methods on current/literature/abstract forms; positive toMvPolynomial and monomial/ext API, no existing Hasse bridge; local indexes unavailable.
 
+Completed `MvPolynomial.uniqueAlgEquiv_hasseDeriv`: Univariate Hasse and canonical polynomial equivalence exist; no named pinned multivariate compatibility. All five methods on three forms; local index unavailable.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -380,6 +392,8 @@ Completed `MvPolynomial.hasseDeriv_monomial_mul`: Monomial induction helper for 
 Completed `MvPolynomial.hasseDeriv_mul_of_degreeOf_eq_zero`: Constant-factor special case of future full multivariate Leibniz API, not a duplicate of the pinned univariate or ordinary derivative API.
 
 Completed `MvPolynomial.hasseDeriv_single_aeval_X`: A short basis-ext and definition-simp proof exists; Phase6b review case.
+
+Completed `MvPolynomial.uniqueAlgEquiv_hasseDeriv`: Equivalent to coordinate aeval compatibility in the unique-variable case, but that bridge is project API. Generic linear conjugacy needs normalization.
 
 ## Part 5: Generalization opportunities
 
@@ -430,6 +444,8 @@ Completed `MvPolynomial.hasseDeriv_mul_of_degreeOf_eq_zero`: Current fixed-paren
 
 Completed `MvPolynomial.hasseDeriv_single_aeval_X`: No verified weakening under canonical parent; bundled square is equivalent.
 
+Completed `MvPolynomial.uniqueAlgEquiv_hasseDeriv`: No strict weakening verified; Subsingleton plus a chosen variable repackages Unique. Inverse/bundled forms equivalent.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -476,6 +492,8 @@ Completed `MvPolynomial.hasseDeriv_monomial_mul`: Generic monomial/support infra
 Completed `MvPolynomial.hasseDeriv_mul_of_degreeOf_eq_zero`: Canonical multivariate Hasse factor-independence/relative-linearity rule; eventual full multi-index product formula.
 
 Completed `MvPolynomial.hasseDeriv_single_aeval_X`: Public coordinate compatibility API for new multivariate Hasse derivatives, subject to packing decision.
+
+Completed `MvPolynomial.uniqueAlgEquiv_hasseDeriv`: Public API choice for unique-variable Hasse transport beside proposed multivariate Hasse operator.
 
 ## Part 7: Junk / removable
 
@@ -526,6 +544,8 @@ Completed `MvPolynomial.hasseDeriv_mul_of_degreeOf_eq_zero`: No: two explicit ca
 
 Completed `MvPolynomial.hasseDeriv_single_aeval_X`: Not dead: one explicit consumer; no inline duplicate located.
 
+Completed `MvPolynomial.uniqueAlgEquiv_hasseDeriv`: False
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -552,6 +572,7 @@ Completed `MvPolynomial.hasseDeriv_single_aeval_X`: Not dead: one explicit consu
 | 20 | `MvPolynomial.hasseDeriv_monomial_mul` | SKIP | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.hasseDeriv_monomial_mul.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_monomial_mul/root-acceptance.json) |
 | 21 | `MvPolynomial.hasseDeriv_mul_of_degreeOf_eq_zero` | YES-add-as-is | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.hasseDeriv_mul_of_degreeOf_eq_zero.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_mul_of_degreeOf_eq_zero/root-acceptance.json) |
 | 22 | `MvPolynomial.hasseDeriv_single_aeval_X` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.hasseDeriv_single_aeval_X.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_single_aeval_X/root-acceptance.json) |
+| 23 | `MvPolynomial.uniqueAlgEquiv_hasseDeriv` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.uniqueAlgEquiv_hasseDeriv.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.uniqueAlgEquiv_hasseDeriv/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -595,11 +616,13 @@ Completed `MvPolynomial.hasseDeriv_mul_of_degreeOf_eq_zero` action: YES-add-as-i
 
 Completed `MvPolynomial.hasseDeriv_single_aeval_X` action: BORDERLINE-needs-human: settle three public API questions; retain local theorem meanwhile, or localize verified basis proof at Separation:160.
 
+Completed `MvPolynomial.uniqueAlgEquiv_hasseDeriv` action: BORDERLINE: retain locally pending three upstream API questions; if omitted inline exact local bridge at the single Index caller.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `MvPolynomial.uniqueAlgEquiv_hasseDeriv` next. Supporting identities receive their own applicable checks.
+   `MvPolynomial.hasseCoeff_le_two_pow` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
