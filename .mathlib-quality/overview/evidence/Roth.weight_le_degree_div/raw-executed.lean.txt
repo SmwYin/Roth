@@ -1,0 +1,37 @@
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.Basic.Real.Basic
+import Mathlib.Algebra.BigOperators.Field
+#check_failure Roth.weight_le_degree_div
+namespace WeightDegreeChecks
+theorem finite_bound {σ : Type*} [Fintype σ] {r : σ → ℕ} {m : ℕ}
+    (hm : 0 < m) (hr : ∀ j, m ≤ r j) (d : σ →₀ ℕ) :
+    (∑ j, (d j : ℝ) / r j) ≤ d.degree / m := by
+  rw [Finsupp.degree_eq_sum, Nat.cast_sum, Finset.sum_div]
+  exact Finset.sum_le_sum fun j _ ↦
+    div_le_div_of_nonneg_left (Nat.cast_nonneg _) (by exact_mod_cast hm) (by exact_mod_cast hr j)
+theorem support_bound {σ : Type*} {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (r : σ → K) {m : K} (hm : 0 < m) (d : σ →₀ ℕ)
+    (hr : ∀ j ∈ d.support, m ≤ r j) :
+    Finsupp.weight (fun j ↦ (r j)⁻¹) d ≤ (d.degree : K) / m := by
+  classical
+  simp only [Finsupp.weight_apply, Finsupp.sum, nsmul_eq_mul, Finsupp.degree_apply,
+    Nat.cast_sum, div_eq_mul_inv, Finset.sum_mul]
+  exact Finset.sum_le_sum fun j hj ↦ mul_le_mul_of_nonneg_left
+    (inv_anti₀ hm (hr j hj)) (Nat.cast_nonneg _)
+theorem support_strictly_weaker :
+    (∀ j ∈ (Finsupp.single true 1 : Bool →₀ ℕ).support,
+      1 ≤ (if j then 1 else 0 : ℕ)) ∧
+    ¬ (∀ j : Bool, 1 ≤ (if j then 1 else 0 : ℕ)) := by
+  simp
+theorem zero_m_counterexample :
+    ¬ ((∑ j : Unit, ((Finsupp.single () 1 : Unit →₀ ℕ) j : ℝ) / (1 : ℕ)) ≤
+      ((Finsupp.single () 1 : Unit →₀ ℕ).degree : ℝ) / (0 : ℕ)) := by
+  simp
+theorem negative_m_counterexample : ¬ ((1 : ℝ) / 1 ≤ 1 / (-1 : ℝ)) := by
+  norm_num
+#print axioms WeightDegreeChecks.finite_bound
+#print axioms WeightDegreeChecks.support_bound
+#print axioms WeightDegreeChecks.support_strictly_weaker
+#print axioms WeightDegreeChecks.zero_m_counterexample
+#print axioms WeightDegreeChecks.negative_m_counterexample
+end WeightDegreeChecks

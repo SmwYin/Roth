@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 37/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 38/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 37; remaining: 256.
-- Verdicts: 8 NO-composable-from-mathlib, 11 YES-add-as-is, 0 YES-but-generalise-first, 5 NO-mathlib-has-it, 10 BORDERLINE-needs-human, 3 SKIP.
+- Completed applicable assessments: 38; remaining: 255.
+- Verdicts: 8 NO-composable-from-mathlib, 11 YES-add-as-is, 0 YES-but-generalise-first, 5 NO-mathlib-has-it, 11 BORDERLINE-needs-human, 3 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -415,6 +415,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: One explicit caller Roth.index_mul_left_weights at Index.lean:206; native complete Set.image equality fragment verified. Source references only, not kernel/simp closure.
 - Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/Roth.weight_mul_left.md).
 
+### Completed: `Roth.weight_le_degree_div`
+
+- Type: `∀ {σ : Type u} [Fintype σ] {r : σ → ℕ} {m : ℕ}, 0 < m → (∀ j : σ, m ≤ r j) → ∀ d : σ →₀ ℕ, Roth.weight r d ≤ (Finsupp.degree d : ℝ) / (m : ℝ)`
+- What: Bounds a multi-index reciprocal weight by total degree divided by a positive common lower bound on denominators.
+- How: Rewrite degree as coordinate sum, cast and distribute division; use sum monotonicity and division antitonicity in positive denominators.
+- Hypotheses: Fintype variable enumeration; natural denominators; positive natural m; all r_j at least m; natural finitely supported multi-index. No DecidableEq needed.
+- Project dependencies: Roth.weight
+- Caller summary: Zero explicit source callers; no simp tag. Related Theta.lean494-508 real-ratio bound reuses proof technique but is not the exact statement or a migrated consumer.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.weight_le_degree_div.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -515,6 +525,8 @@ Completed `Roth.weight_le_card`: Finset.sum_le_card_nsmul + div_le_one_of_le₀ 
 
 Completed `Roth.weight_mul_left`: Genuine generator-family law supplied by (Finsupp.bilinearCombination R S).map_smul; Finsupp.weight underlying linearCombination. Reciprocal bridge independently compiled.
 
+Completed `Roth.weight_le_degree_div`: Actual Finder/Loogle/LeanSearch/rg/local searches on original, weighted-degree and abstract linearCombination forms. Existing Finsupp.weight/degree relations and sum/division order primitives inspected; no analogous bundled upper-bound hit established.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -590,6 +602,8 @@ Completed `Roth.weight_single`: Finsupp.weight_single, Finsupp.sum_single_index
 Completed `Roth.weight_le_card`: Instance of generic finite-sum upper bound. Parent Finsupp.weight bridge verified; no matching dedicated upper-cardinality law established.
 
 Completed `Roth.weight_mul_left`: Finsupp.bilinearCombination.map_smul, Finsupp.linearCombination generator linearity
+
+Completed `Roth.weight_le_degree_div`: Finset.sum_le_sum + div_le_div_of_nonneg_left proof pattern, Finsupp.sum_le_sum aggregation, Related real-ratio proof in Roth.weight_le_delta_aux
 
 ## Part 5: Generalization opportunities
 
@@ -670,6 +684,8 @@ Completed `Roth.weight_le_card`: Strictly weaken bounds to nonzero-denominator c
 
 Completed `Roth.weight_mul_left`: Native arbitrary semiring/module generator scaling without Fintype; arbitrary Field finite-set denominator identity; unchanged Roth interface is maximally general in hypotheses.
 
+Completed `Roth.weight_le_degree_div`: Verified support-local and conditional nonzero-denominator hypotheses; arbitrary ambient index set; ordered Semifield reciprocal-weight comparison. hm cannot be dropped: Unit m0,r1,d1.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -746,6 +762,8 @@ Completed `Roth.weight_single`: No demonstrated missing singleton-evaluation mat
 Completed `Roth.weight_le_card`: Potential ordered Finsupp.weight upper bound by support.card • b; API design question, not established absence.
 
 Completed `Roth.weight_mul_left`: No mathematical API gap established; dedicated weight_smul spelling would wrap bundled linearity.
+
+Completed `Roth.weight_le_degree_div`: Potential support-local weight monotonicity or constant/degree upper bound; design choice, not an existing verified law.
 
 ## Part 7: Junk / removable
 
@@ -826,6 +844,8 @@ Completed `Roth.weight_le_card`: One real caller; not dead code.
 
 Completed `Roth.weight_mul_left`: No sorry/unsafe/raised limits; active one-consumer local convenience theorem.
 
+Completed `Roth.weight_le_degree_div`: No sorry/unsafe/raised limits. Zero explicit callers is only source-level evidence, not proof of dead public API.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -867,6 +887,7 @@ Completed `Roth.weight_mul_left`: No sorry/unsafe/raised limits; active one-cons
 | 35 | `Roth.weight_single` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.weight_single.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.weight_single/root-acceptance.json) |
 | 36 | `Roth.weight_le_card` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.weight_le_card.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.weight_le_card/root-acceptance.json) |
 | 37 | `Roth.weight_mul_left` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.weight_mul_left.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.weight_mul_left/root-acceptance.json) |
+| 38 | `Roth.weight_le_degree_div` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.weight_le_degree_div.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.weight_le_degree_div/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -940,11 +961,13 @@ Completed `Roth.weight_le_card` action: BORDERLINE-needs-human: decide upstream 
 
 Completed `Roth.weight_mul_left` action: NO-mathlib-has-it via verified parent re-aim. Migrate sole Index pointwise image step to existing generator law and reciprocal normalization; remove local theorem during parent migration; retain locally in Box only if old interface remains.
 
+Completed `Roth.weight_le_degree_div` action: BORDERLINE-needs-human. Keep local while deciding whether to add general Finsupp generator comparison API; no production change or PR. Three concrete upstream design questions in report.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.weight_le_degree_div` next. Supporting identities receive their own applicable checks.
+   `Roth.weight_mapDomain` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.

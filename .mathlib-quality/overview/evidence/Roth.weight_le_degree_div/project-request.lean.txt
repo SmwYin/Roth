@@ -1,0 +1,41 @@
+namespace WeightDegreeProjectChecks
+#check @Roth.weight_le_degree_div
+#print axioms Roth.weight_le_degree_div
+ theorem same_statement {σ : Type*} [Fintype σ] {r : σ → ℕ} {m : ℕ}
+    (hm : 0 < m) (hr : ∀ j, m ≤ r j) (d : σ →₀ ℕ) :
+    Roth.weight r d ≤ d.degree / m := by
+  rw [Roth.weight, Finsupp.degree_eq_sum, Nat.cast_sum, Finset.sum_div]
+  exact Finset.sum_le_sum fun j _ ↦
+    div_le_div_of_nonneg_left (Nat.cast_nonneg _) (by exact_mod_cast hm) (by exact_mod_cast hr j)
+ theorem support_local {σ : Type*} [Fintype σ] {r : σ → ℕ} {m : ℕ}
+    (hm : 0 < m) (d : σ →₀ ℕ) (hr : ∀ j ∈ d.support, m ≤ r j) :
+    Roth.weight r d ≤ d.degree / m := by
+  classical
+  rw [Roth.weight, Finsupp.degree_eq_sum, Nat.cast_sum, Finset.sum_div]
+  refine Finset.sum_le_sum fun j _ ↦ ?_
+  by_cases hj : j ∈ d.support
+  · exact div_le_div_of_nonneg_left (Nat.cast_nonneg _) (by exact_mod_cast hm) (by exact_mod_cast hr j hj)
+  · simp [Finsupp.notMem_support_iff.mp hj]
+#print axioms WeightDegreeProjectChecks.same_statement
+#print axioms WeightDegreeProjectChecks.support_local
+ theorem conditional_support {σ : Type*} [Fintype σ] {r : σ → ℕ} {m : ℕ}
+    (hm : 0 < m) (d : σ →₀ ℕ)
+    (hr : ∀ j ∈ d.support, r j ≠ 0 → m ≤ r j) :
+    Roth.weight r d ≤ d.degree / m := by
+  classical
+  rw [Roth.weight, Finsupp.degree_eq_sum, Nat.cast_sum, Finset.sum_div]
+  refine Finset.sum_le_sum fun j _ ↦ ?_
+  by_cases hj : j ∈ d.support
+  · by_cases hz : r j = 0
+    · simp [hz, div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)]
+    · exact div_le_div_of_nonneg_left (Nat.cast_nonneg _) (by exact_mod_cast hm)
+        (by exact_mod_cast hr j hj hz)
+  · simp [Finsupp.notMem_support_iff.mp hj]
+ theorem conditional_strictly_weaker :
+    (∀ j ∈ (Finsupp.single () 1 : Unit →₀ ℕ).support,
+      (0 : ℕ) ≠ 0 → 1 ≤ (0 : ℕ)) ∧
+    ¬ (∀ j ∈ (Finsupp.single () 1 : Unit →₀ ℕ).support, 1 ≤ (0 : ℕ)) := by
+  simp
+#print axioms WeightDegreeProjectChecks.conditional_support
+#print axioms WeightDegreeProjectChecks.conditional_strictly_weaker
+end WeightDegreeProjectChecks

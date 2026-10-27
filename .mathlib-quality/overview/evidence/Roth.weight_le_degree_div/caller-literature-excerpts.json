@@ -1,0 +1,18 @@
+{
+  "explicit_callers": [],
+  "inline_related": [
+    {
+      "path": "Roth/Theta.lean",
+      "lines": "494-508",
+      "source": "private lemma weight_le_delta_aux {\u03b4 : \u211d} (h\u03b4 : 0 \u2264 \u03b4) {r : Option \u03c4 \u2192 \u2115}\n    (hratio : \u2200 j, (r none : \u211d) \u2264 \u03b4 * r (some j)) {d : \u03c4 \u2192\u2080 \u2115} (hd : d.degree \u2264 r none) :\n    weight (r \u2218 some) d \u2264 \u03b4 := by\n  classical\n  by_cases hr : r none = 0\n  \u00b7 rw [(Finsupp.degree_eq_zero_iff d).1 (Nat.eq_zero_of_le_zero (hr \u25b8 hd))]\n    simpa [weight] using h\u03b4\n  have hrp : (0 : \u211d) < r none := by exact_mod_cast Nat.pos_of_ne_zero hr\n  calc weight (r \u2218 some) d = \u2211 j, (d j : \u211d) / r (some j) := rfl\n    _ \u2264 \u2211 j, (d j : \u211d) * \u03b4 / r none := Finset.sum_le_sum fun j _ \u21a6 by\n        rw [div_le_div_iff\u2080 (pos_of_mul_pos_right (hrp.trans_le (hratio j)) h\u03b4) hrp, mul_assoc]\n        exact mul_le_mul_of_nonneg_left (hratio j) (Nat.cast_nonneg _)\n    _ = \u03b4 * d.degree / r none := by\n        rw [\u2190 Finset.sum_div, \u2190 Finset.sum_mul, Finsupp.degree_eq_sum, Nat.cast_sum, mul_comm]\n    _ \u2264 \u03b4 := (div_le_iff\u2080 hrp).2 (mul_le_mul_of_nonneg_left (by exact_mod_cast hd) h\u03b4)",
+      "classification": "related real-ratio weight bound, not exact same statement; target natural m cannot encode r_none/delta for arbitrary real delta"
+    }
+  ],
+  "local_literature": [
+    {
+      "path": ".mathlib-quality/references/clean.tex",
+      "lines": "790-809",
+      "source": "$$\n\\theta = \\ind(R; \\frac{h_1}{q_1}, \\dots, \\frac{h_p}{q_p}; r_1, \\dots, r_p).\n$$\n    Let $i_1, \\dots, i_{p-1}$ be non-negative integers such that $w=i_1+\\cdots+i_{p-1}\\leq l-1$.  If\n    $$\n    \\Delta_{i_1, \\dots, i_{p-1}} \\frac{1}{\\nu !} \\frac{\\partial^\\nu}{\\partial x_p^\\nu} R(x_1, \\dots, x_p)\n    $$\n    is not identically zero, then\n    $$\n    \\ind (\\Delta_{i_1, \\dots, i_{p-1}} \\frac{1}{\\nu !} \\frac{\\partial^\\nu}{\\partial x_p^\\nu} R(x_1, \\dots, x_p); \\frac{h_1}{q_1}, \\dots, \\frac{h_p}{q_p}; r_1, \\dots, r_p)\n    $$\n    $$\n    \\geq \\theta - \\frac{i_1}{r_1}- \\cdots - \\frac{i_{p-1}}{r_{p-1}}- \\frac{\\nu}{r_p}\n    $$\n    $$\n    \\geq \\theta - \\frac{w}{r_{p-1}}- \\frac{\\nu}{r_p}.\n    $$\n    We have\n    $$\n    \\frac{w}{r_{p-1}} \\leq \\frac{l-1}{r_{p-1}} \\leq \\frac{r_p}{r_{p-1}} < \\delta."
+    }
+  ]
+}
