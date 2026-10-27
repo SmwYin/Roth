@@ -1,0 +1,599 @@
+[
+  {
+    "form": "current",
+    "method": "Finder",
+    "request": {
+      "query": "coefficient of singleton monomial in inverse uniqueAlgEquiv polynomial equals polynomial coefficient"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"MvPolynomial.pUnitAlgEquiv_symm_monomial\",\n      \"informal_name\": \"Monomial Preservation under Inverse Algebra Equivalence\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (R : Type u) [inst : CommSemiring R] {d : PUnit.{1} →₀ ℕ} {r : R},\\n  (MvPolynomial.pUnitAlgEquiv R).symm ((Polynomial.monomial (d ())) r) = (MvPolynomial.monomial d) r\",\n      \"informal_description\": \"The inverse of the algebra equivalence between multivariate polynomials over the unit type $\\\\mathsf{PUnit}$ and univariate polynomials maps a monomial $rX^d$ in the univariate ring $R[X]$ to the corresponding monomial $rX^d$ in the multivariate ring $R[\\\\mathsf{PUnit}]$. Specifically, for any coefficient $r \\\\in R$ and degree $d \\\\in \\\\mathbb{N}$, applying the inverse equivalence to the univariate monomial yields the multivariate monomial with the same coefficient and degree.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.pUnitAlgEquiv_symm_toPowerSeries\",\n      \"informal_name\": \"Compatibility of Polynomial to Power Series Conversion with pUnit Algebra Equivalence\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommSemiring R] {f : Polynomial R}, ↑f = ↑((MvPolynomial.pUnitAlgEquiv R).symm f)\",\n      \"informal_description\": \"For any polynomial $ f $ over a ring $ R $, the direct conversion of $ f $ to a univariate power series coincides with the conversion obtained by first applying the algebra isomorphism between multivariate polynomials over the unit type $ \\\\mathsf{PUnit} $ and univariate polynomials, then converting to a multivariate power series. Formally, $ f.toPowerSeries = ((\\\\mathsf{pUnitAlgEquiv}.symm\\\\, f).toMvPowerSeries) $, where $ \\\\mathsf{pUnitAlgEquiv} $ denotes the canonical algebra equivalence.\",\n      \"path\": \"Mathlib.RingTheory.PowerSeries.Basic\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.pUnitAlgEquiv_monomial\",\n      \"informal_name\": \"Monomial Mapping under Algebra Equivalence for Unit-Type Multivariate Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (R : Type u) [inst : CommSemiring R] {d : PUnit.{1} →₀ ℕ} {r : R},\\n  (MvPolynomial.pUnitAlgEquiv R) ((MvPolynomial.monomial d) r) = (Polynomial.monomial (d ())) r\",\n      \"informal_description\": \"For a commutative semiring $ R $, the algebra equivalence between the multivariate polynomial ring $ R[\\\\mathsf{PUnit}] $ (where $ \\\\mathsf{PUnit} $ is the unit type with one element) and the univariate polynomial ring $ R[X] $ maps the monomial $ \\\\mathsf{monomial}(d, r) $ in $ R[\\\\mathsf{PUnit}] $ to the monomial $ rX^{d()} $ in $ R[X] $, where $ d $ is a finite support function encoding the single exponent.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.pUnitAlgEquiv_symm_apply\",\n      \"informal_name\": \"Inverse of Algebra Equivalence for Multivariate Polynomials over Unit Type\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (R : Type u) [inst : CommSemiring R] (p : Polynomial R),\\n  (MvPolynomial.pUnitAlgEquiv R).symm p = Polynomial.eval₂ MvPolynomial.C (MvPolynomial.X PUnit.unit) p\",\n      \"informal_description\": \"The inverse of the algebra equivalence between the multivariate polynomial ring $ R[\\\\mathsf{PUnit}] $ and the univariate polynomial ring $ R[X] $ maps a polynomial $ p \\\\in R[X] $ to its representation in $ R[\\\\mathsf{PUnit}] $ by substituting the indeterminate $ X $ with the single variable $ X(\\\\mathsf{PUnit}.\\\\mathsf{unit}) $ in the multivariate ring, using the constant polynomial embedding $ \\\\mathsf{C} $ for coefficients.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.toFinsuppIsoAlg_symm_apply_toFinsupp\",\n      \"informal_name\": \"Inverse of Polynomial-Finitely Supported Function Isomorphism is Identity\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (R : Type u) [inst : CommSemiring R] (toFinsupp : AddMonoidAlgebra R ℕ),\\n  ((Polynomial.toFinsuppIsoAlg R).symm toFinsupp).toFinsupp = toFinsupp\",\n      \"informal_description\": \"For any commutative semiring $ R $ and any finitely supported function $ f : \\\\mathbb{N} \\\\to R $, applying the inverse of the canonical $ R $-algebra isomorphism from $ R[\\\\mathbb{N}] $ to $ R[X] $ and then converting back to a finitely supported function results in $ f $ itself. This asserts that the composition of the inverse isomorphism and the finitely supported function conversion is the identity function on $ R[\\\\mathbb{N}] $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.AlgebraMap\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "MvPolynomial.pUnitAlgEquiv_symm_monomial",
+            "informal_name": "Monomial Preservation under Inverse Algebra Equivalence",
+            "kind": "theorem",
+            "type": "∀ (R : Type u) [inst : CommSemiring R] {d : PUnit.{1} →₀ ℕ} {r : R},\n  (MvPolynomial.pUnitAlgEquiv R).symm ((Polynomial.monomial (d ())) r) = (MvPolynomial.monomial d) r",
+            "informal_description": "The inverse of the algebra equivalence between multivariate polynomials over the unit type $\\mathsf{PUnit}$ and univariate polynomials maps a monomial $rX^d$ in the univariate ring $R[X]$ to the corresponding monomial $rX^d$ in the multivariate ring $R[\\mathsf{PUnit}]$. Specifically, for any coefficient $r \\in R$ and degree $d \\in \\mathbb{N}$, applying the inverse equivalence to the univariate monomial yields the multivariate monomial with the same coefficient and degree.",
+            "path": "Mathlib.Algebra.MvPolynomial.Equiv"
+          },
+          {
+            "formal_name": "Polynomial.pUnitAlgEquiv_symm_toPowerSeries",
+            "informal_name": "Compatibility of Polynomial to Power Series Conversion with pUnit Algebra Equivalence",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommSemiring R] {f : Polynomial R}, ↑f = ↑((MvPolynomial.pUnitAlgEquiv R).symm f)",
+            "informal_description": "For any polynomial $ f $ over a ring $ R $, the direct conversion of $ f $ to a univariate power series coincides with the conversion obtained by first applying the algebra isomorphism between multivariate polynomials over the unit type $ \\mathsf{PUnit} $ and univariate polynomials, then converting to a multivariate power series. Formally, $ f.toPowerSeries = ((\\mathsf{pUnitAlgEquiv}.symm\\, f).toMvPowerSeries) $, where $ \\mathsf{pUnitAlgEquiv} $ denotes the canonical algebra equivalence.",
+            "path": "Mathlib.RingTheory.PowerSeries.Basic"
+          },
+          {
+            "formal_name": "MvPolynomial.pUnitAlgEquiv_monomial",
+            "informal_name": "Monomial Mapping under Algebra Equivalence for Unit-Type Multivariate Polynomials",
+            "kind": "theorem",
+            "type": "∀ (R : Type u) [inst : CommSemiring R] {d : PUnit.{1} →₀ ℕ} {r : R},\n  (MvPolynomial.pUnitAlgEquiv R) ((MvPolynomial.monomial d) r) = (Polynomial.monomial (d ())) r",
+            "informal_description": "For a commutative semiring $ R $, the algebra equivalence between the multivariate polynomial ring $ R[\\mathsf{PUnit}] $ (where $ \\mathsf{PUnit} $ is the unit type with one element) and the univariate polynomial ring $ R[X] $ maps the monomial $ \\mathsf{monomial}(d, r) $ in $ R[\\mathsf{PUnit}] $ to the monomial $ rX^{d()} $ in $ R[X] $, where $ d $ is a finite support function encoding the single exponent.",
+            "path": "Mathlib.Algebra.MvPolynomial.Equiv"
+          },
+          {
+            "formal_name": "MvPolynomial.pUnitAlgEquiv_symm_apply",
+            "informal_name": "Inverse of Algebra Equivalence for Multivariate Polynomials over Unit Type",
+            "kind": "theorem",
+            "type": "∀ (R : Type u) [inst : CommSemiring R] (p : Polynomial R),\n  (MvPolynomial.pUnitAlgEquiv R).symm p = Polynomial.eval₂ MvPolynomial.C (MvPolynomial.X PUnit.unit) p",
+            "informal_description": "The inverse of the algebra equivalence between the multivariate polynomial ring $ R[\\mathsf{PUnit}] $ and the univariate polynomial ring $ R[X] $ maps a polynomial $ p \\in R[X] $ to its representation in $ R[\\mathsf{PUnit}] $ by substituting the indeterminate $ X $ with the single variable $ X(\\mathsf{PUnit}.\\mathsf{unit}) $ in the multivariate ring, using the constant polynomial embedding $ \\mathsf{C} $ for coefficients.",
+            "path": "Mathlib.Algebra.MvPolynomial.Equiv"
+          },
+          {
+            "formal_name": "Polynomial.toFinsuppIsoAlg_symm_apply_toFinsupp",
+            "informal_name": "Inverse of Polynomial-Finitely Supported Function Isomorphism is Identity",
+            "kind": "theorem",
+            "type": "∀ (R : Type u) [inst : CommSemiring R] (toFinsupp : AddMonoidAlgebra R ℕ),\n  ((Polynomial.toFinsuppIsoAlg R).symm toFinsupp).toFinsupp = toFinsupp",
+            "informal_description": "For any commutative semiring $ R $ and any finitely supported function $ f : \\mathbb{N} \\to R $, applying the inverse of the canonical $ R $-algebra isomorphism from $ R[\\mathbb{N}] $ to $ R[X] $ and then converting back to a finitely supported function results in $ f $ itself. This asserts that the composition of the inverse isomorphism and the finitely supported function conversion is the identity function on $ R[\\mathbb{N}] $.",
+            "path": "Mathlib.Algebra.Polynomial.AlgebraMap"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "current",
+    "method": "Loogle",
+    "request": {
+      "query": "MvPolynomial.uniqueAlgEquiv, Finsupp.single"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.coeff_uniqueAlgEquiv\",\n      \"type\": \" (R : Type u) {σ : Type u_1} [CommSemiring R] [Unique σ] (P : MvPolynomial σ R) (n : ℕ) : ((MvPolynomial.uniqueAlgEquiv R σ) P).coeff n = P.coeff fun₀ | default => n\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.coeff_uniqueAlgEquiv",
+            "type": " (R : Type u) {σ : Type u_1} [CommSemiring R] [Unique σ] (P : MvPolynomial σ R) (n : ℕ) : ((MvPolynomial.uniqueAlgEquiv R σ) P).coeff n = P.coeff fun₀ | default => n",
+            "module": "Mathlib.Algebra.MvPolynomial.Equiv"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "current",
+    "method": "LeanSearch",
+    "request": {
+      "query": "coefficient of singleton monomial in inverse uniqueAlgEquiv polynomial equals polynomial coefficient"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.mapEquiv_symm_apply\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Eval.Degree\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S : Type v} [inst : Semiring R] [inst_1 : Semiring S] (e : R ≃+* S) (a : Polynomial S),\\n  (Polynomial.mapEquiv e).symm a = Polynomial.map (↑e.symm) a\"\n    },\n    {\n      \"name\": \"MvPolynomial.pUnitAlgEquiv_symm_monomial\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Equiv\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (R : Type u) [inst : CommSemiring R] {d : PUnit.{1} →₀ ℕ} {r : R},\\n  (MvPolynomial.pUnitAlgEquiv R).symm ((Polynomial.monomial (d ())) r) = (MvPolynomial.monomial d) r\"\n    },\n    {\n      \"name\": \"Polynomial.coeff_inv_units\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.FieldDivision\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Field R] (u : (Polynomial R)ˣ) (n : ℕ), ((↑u).coeff n)⁻¹ = (↑u⁻¹).coeff n\"\n    },\n    {\n      \"name\": \"Polynomial.coeff\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Basic\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} → [inst : Semiring R] → Polynomial R → ℕ → R\"\n    },\n    {\n      \"name\": \"matPolyEquiv_symm_apply_coeff\",\n      \"module_name\": \"Mathlib.RingTheory.MatrixPolynomialAlgebra\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommSemiring R] {n : Type w} [inst_1 : DecidableEq n] [inst_2 : Fintype n]\\n  (p : Polynomial (Matrix n n R)) (i j : n) (k : ℕ), (matPolyEquiv.symm p i j).coeff k = p.coeff k i j\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.mapEquiv_symm_apply",
+            "module_name": "Mathlib.Algebra.Polynomial.Eval.Degree",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {S : Type v} [inst : Semiring R] [inst_1 : Semiring S] (e : R ≃+* S) (a : Polynomial S),\n  (Polynomial.mapEquiv e).symm a = Polynomial.map (↑e.symm) a"
+          },
+          {
+            "name": "MvPolynomial.pUnitAlgEquiv_symm_monomial",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Equiv",
+            "kind": "theorem",
+            "type": "∀ (R : Type u) [inst : CommSemiring R] {d : PUnit.{1} →₀ ℕ} {r : R},\n  (MvPolynomial.pUnitAlgEquiv R).symm ((Polynomial.monomial (d ())) r) = (MvPolynomial.monomial d) r"
+          },
+          {
+            "name": "Polynomial.coeff_inv_units",
+            "module_name": "Mathlib.Algebra.Polynomial.FieldDivision",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : Field R] (u : (Polynomial R)ˣ) (n : ℕ), ((↑u).coeff n)⁻¹ = (↑u⁻¹).coeff n"
+          },
+          {
+            "name": "Polynomial.coeff",
+            "module_name": "Mathlib.Algebra.Polynomial.Basic",
+            "kind": "definition",
+            "type": "{R : Type u} → [inst : Semiring R] → Polynomial R → ℕ → R"
+          },
+          {
+            "name": "matPolyEquiv_symm_apply_coeff",
+            "module_name": "Mathlib.RingTheory.MatrixPolynomialAlgebra",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommSemiring R] {n : Type w} [inst_1 : DecidableEq n] [inst_2 : Fintype n]\n  (p : Polynomial (Matrix n n R)) (i j : n) (k : ℕ), (matPolyEquiv.symm p i j).coeff k = p.coeff k i j"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "current",
+    "method": "local",
+    "request": {
+      "query": "coeff_uniqueAlgEquiv_symm"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"CoeffNone152Replay.coeff_uniqueAlgEquiv_symm\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/roth-overview-session/GenWronskianChecks.lean\"\n    },\n    {\n      \"name\": \"Roth.coeff_uniqueAlgEquiv_symm\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/Separation.lean\"\n    },\n    {\n      \"name\": \"SeparationPrivate154.coeff_uniqueAlgEquiv_symm\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/roth-overview-session/GenWronskianChecks.lean\"\n    },\n    {\n      \"name\": \"MonoidAlgebra.coeff_uniqueAlgEquiv_symm\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MonoidAlgebra/Basic.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.coeff_uniqueAlgEquiv_symm\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "CoeffNone152Replay.coeff_uniqueAlgEquiv_symm",
+            "kind": "theorem",
+            "file": ".lake/roth-overview-session/GenWronskianChecks.lean"
+          },
+          {
+            "name": "Roth.coeff_uniqueAlgEquiv_symm",
+            "kind": "theorem",
+            "file": "Roth/Separation.lean"
+          },
+          {
+            "name": "SeparationPrivate154.coeff_uniqueAlgEquiv_symm",
+            "kind": "theorem",
+            "file": ".lake/roth-overview-session/GenWronskianChecks.lean"
+          },
+          {
+            "name": "MonoidAlgebra.coeff_uniqueAlgEquiv_symm",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/MonoidAlgebra/Basic.lean"
+          },
+          {
+            "name": "MvPolynomial.coeff_uniqueAlgEquiv_symm",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "standard",
+    "method": "Finder",
+    "request": {
+      "query": "coefficients preserved by isomorphism between univariate polynomials and multivariate polynomials indexed by a singleton"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"MvPolynomial.pUnitAlgEquiv_monomial\",\n      \"informal_name\": \"Monomial Mapping under Algebra Equivalence for Unit-Type Multivariate Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (R : Type u) [inst : CommSemiring R] {d : PUnit.{1} →₀ ℕ} {r : R},\\n  (MvPolynomial.pUnitAlgEquiv R) ((MvPolynomial.monomial d) r) = (Polynomial.monomial (d ())) r\",\n      \"informal_description\": \"For a commutative semiring $ R $, the algebra equivalence between the multivariate polynomial ring $ R[\\\\mathsf{PUnit}] $ (where $ \\\\mathsf{PUnit} $ is the unit type with one element) and the univariate polynomial ring $ R[X] $ maps the monomial $ \\\\mathsf{monomial}(d, r) $ in $ R[\\\\mathsf{PUnit}] $ to the monomial $ rX^{d()} $ in $ R[X] $, where $ d $ is a finite support function encoding the single exponent.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.pUnitAlgEquiv_symm_monomial\",\n      \"informal_name\": \"Monomial Preservation under Inverse Algebra Equivalence\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (R : Type u) [inst : CommSemiring R] {d : PUnit.{1} →₀ ℕ} {r : R},\\n  (MvPolynomial.pUnitAlgEquiv R).symm ((Polynomial.monomial (d ())) r) = (MvPolynomial.monomial d) r\",\n      \"informal_description\": \"The inverse of the algebra equivalence between multivariate polynomials over the unit type $\\\\mathsf{PUnit}$ and univariate polynomials maps a monomial $rX^d$ in the univariate ring $R[X]$ to the corresponding monomial $rX^d$ in the multivariate ring $R[\\\\mathsf{PUnit}]$. Specifically, for any coefficient $r \\\\in R$ and degree $d \\\\in \\\\mathbb{N}$, applying the inverse equivalence to the univariate monomial yields the multivariate monomial with the same coefficient and degree.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.pUnitAlgEquiv\",\n      \"informal_name\": \"Algebra equivalence between multivariate polynomials over the unit type and univariate polynomials\",\n      \"kind\": \"definition\",\n      \"type\": \"(R : Type u) → [inst : CommSemiring R] → MvPolynomial PUnit.{u_2 + 1} R ≃ₐ[R] Polynomial R\",\n      \"informal_description\": \"The algebra equivalence between the multivariate polynomial ring $ R[\\\\mathsf{PUnit}] $ (where $ \\\\mathsf{PUnit} $ is the unit type with one element) and the univariate polynomial ring $ R[X] $. This equivalence is constructed by evaluating multivariate polynomials via the constant polynomial embedding $ \\\\mathsf{C} $ and indeterminate mapping $ X $, with the inverse given by evaluating univariate polynomials back into the multivariate ring using $ \\\\mathsf{C} $ and the unit-type variable. The equivalence preserves addition, multiplication, and scalar multiplication by elements of $ R $, establishing an isomorphism of $ R $-algebras.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.toMvPowerSeries_pUnitAlgEquiv\",\n      \"informal_name\": \"Equivalence of Multivariate Polynomial Embedding via Unit Type to Power Series\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommSemiring R] {f : MvPolynomial PUnit.{1} R}, ↑f = ↑((MvPolynomial.pUnitAlgEquiv R) f)\",\n      \"informal_description\": \"For multivariate polynomials over the unit type $\\\\mathsf{PUnit}$, the natural embedding into multivariate power series coincides with the embedding obtained by first applying the algebra isomorphism to univariate polynomials and then embedding into power series. Specifically, for any polynomial $f \\\\in R[\\\\mathsf{PUnit}]$, the power series representation $f.toMvPowerSeries$ equals the power series representation of $(f.pUnitAlgEquiv\\\\, R).toPowerSeries$.\",\n      \"path\": \"Mathlib.RingTheory.PowerSeries.Basic\"\n    },\n    {\n      \"formal_name\": \"Polynomial.toMvPolynomial_X\",\n      \"informal_name\": \"Image of Indeterminate under Polynomial Embedding into Multivariate Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {σ : Type u_3} [inst : CommSemiring R] (i : σ),\\n  (Polynomial.toMvPolynomial i) Polynomial.X = MvPolynomial.X i\",\n      \"informal_description\": \"For each index $ i $ in $ \\\\sigma $, the algebra homomorphism from the univariate polynomial ring $ R[X] $ to the multivariate polynomial ring $ R[\\\\sigma] $ maps the indeterminate $ X $ to the $ i $-th variable $ X_i $ in $ R[\\\\sigma] $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "MvPolynomial.pUnitAlgEquiv_monomial",
+            "informal_name": "Monomial Mapping under Algebra Equivalence for Unit-Type Multivariate Polynomials",
+            "kind": "theorem",
+            "type": "∀ (R : Type u) [inst : CommSemiring R] {d : PUnit.{1} →₀ ℕ} {r : R},\n  (MvPolynomial.pUnitAlgEquiv R) ((MvPolynomial.monomial d) r) = (Polynomial.monomial (d ())) r",
+            "informal_description": "For a commutative semiring $ R $, the algebra equivalence between the multivariate polynomial ring $ R[\\mathsf{PUnit}] $ (where $ \\mathsf{PUnit} $ is the unit type with one element) and the univariate polynomial ring $ R[X] $ maps the monomial $ \\mathsf{monomial}(d, r) $ in $ R[\\mathsf{PUnit}] $ to the monomial $ rX^{d()} $ in $ R[X] $, where $ d $ is a finite support function encoding the single exponent.",
+            "path": "Mathlib.Algebra.MvPolynomial.Equiv"
+          },
+          {
+            "formal_name": "MvPolynomial.pUnitAlgEquiv_symm_monomial",
+            "informal_name": "Monomial Preservation under Inverse Algebra Equivalence",
+            "kind": "theorem",
+            "type": "∀ (R : Type u) [inst : CommSemiring R] {d : PUnit.{1} →₀ ℕ} {r : R},\n  (MvPolynomial.pUnitAlgEquiv R).symm ((Polynomial.monomial (d ())) r) = (MvPolynomial.monomial d) r",
+            "informal_description": "The inverse of the algebra equivalence between multivariate polynomials over the unit type $\\mathsf{PUnit}$ and univariate polynomials maps a monomial $rX^d$ in the univariate ring $R[X]$ to the corresponding monomial $rX^d$ in the multivariate ring $R[\\mathsf{PUnit}]$. Specifically, for any coefficient $r \\in R$ and degree $d \\in \\mathbb{N}$, applying the inverse equivalence to the univariate monomial yields the multivariate monomial with the same coefficient and degree.",
+            "path": "Mathlib.Algebra.MvPolynomial.Equiv"
+          },
+          {
+            "formal_name": "MvPolynomial.pUnitAlgEquiv",
+            "informal_name": "Algebra equivalence between multivariate polynomials over the unit type and univariate polynomials",
+            "kind": "definition",
+            "type": "(R : Type u) → [inst : CommSemiring R] → MvPolynomial PUnit.{u_2 + 1} R ≃ₐ[R] Polynomial R",
+            "informal_description": "The algebra equivalence between the multivariate polynomial ring $ R[\\mathsf{PUnit}] $ (where $ \\mathsf{PUnit} $ is the unit type with one element) and the univariate polynomial ring $ R[X] $. This equivalence is constructed by evaluating multivariate polynomials via the constant polynomial embedding $ \\mathsf{C} $ and indeterminate mapping $ X $, with the inverse given by evaluating univariate polynomials back into the multivariate ring using $ \\mathsf{C} $ and the unit-type variable. The equivalence preserves addition, multiplication, and scalar multiplication by elements of $ R $, establishing an isomorphism of $ R $-algebras.",
+            "path": "Mathlib.Algebra.MvPolynomial.Equiv"
+          },
+          {
+            "formal_name": "MvPolynomial.toMvPowerSeries_pUnitAlgEquiv",
+            "informal_name": "Equivalence of Multivariate Polynomial Embedding via Unit Type to Power Series",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommSemiring R] {f : MvPolynomial PUnit.{1} R}, ↑f = ↑((MvPolynomial.pUnitAlgEquiv R) f)",
+            "informal_description": "For multivariate polynomials over the unit type $\\mathsf{PUnit}$, the natural embedding into multivariate power series coincides with the embedding obtained by first applying the algebra isomorphism to univariate polynomials and then embedding into power series. Specifically, for any polynomial $f \\in R[\\mathsf{PUnit}]$, the power series representation $f.toMvPowerSeries$ equals the power series representation of $(f.pUnitAlgEquiv\\, R).toPowerSeries$.",
+            "path": "Mathlib.RingTheory.PowerSeries.Basic"
+          },
+          {
+            "formal_name": "Polynomial.toMvPolynomial_X",
+            "informal_name": "Image of Indeterminate under Polynomial Embedding into Multivariate Polynomials",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {σ : Type u_3} [inst : CommSemiring R] (i : σ),\n  (Polynomial.toMvPolynomial i) Polynomial.X = MvPolynomial.X i",
+            "informal_description": "For each index $ i $ in $ \\sigma $, the algebra homomorphism from the univariate polynomial ring $ R[X] $ to the multivariate polynomial ring $ R[\\sigma] $ maps the indeterminate $ X $ to the $ i $-th variable $ X_i $ in $ R[\\sigma] $.",
+            "path": "Mathlib.Algebra.MvPolynomial.Equiv"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "standard",
+    "method": "Loogle",
+    "request": {
+      "query": "MvPolynomial.uniqueAlgEquiv, MvPolynomial.coeff"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "Error executing tool lean_loogle: loogle query error: unknown identifier 'MvPolynomial.coeff' Suggestions: MvPolynomial.uniqueAlgEquiv, \"MvPolynomial.coeff\""
+        }
+      ],
+      "isError": true
+    }
+  },
+  {
+    "form": "standard",
+    "method": "LeanSearch",
+    "request": {
+      "query": "coefficients preserved by isomorphism between univariate polynomials and multivariate polynomials indexed by a singleton"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.pUnitAlgEquiv\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Equiv\",\n      \"kind\": \"definition\",\n      \"type\": \"(R : Type u) → [inst : CommSemiring R] → MvPolynomial PUnit.{u_2 + 1} R ≃ₐ[R] Polynomial R\"\n    },\n    {\n      \"name\": \"MvPolynomial.image_support_finSuccEquiv\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Equiv\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : CommSemiring R] {n : ℕ} {f : MvPolynomial (Fin (n + 1)) R} {i : ℕ},\\n  Finset.image (Finsupp.cons i) (((MvPolynomial.finSuccEquiv R n) f).coeff i).support = {m ∈ f.support | m 0 = i}\"\n    },\n    {\n      \"name\": \"MvPolynomial.finSuccEquiv\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Equiv\",\n      \"kind\": \"definition\",\n      \"type\": \"(R : Type u) →\\n  [inst : CommSemiring R] → (n : ℕ) → MvPolynomial (Fin (n + 1)) R ≃ₐ[R] Polynomial (MvPolynomial (Fin n) R)\"\n    },\n    {\n      \"name\": \"MvPolynomial.optionEquivLeft_coeff_some_coeff_none\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Equiv\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (R : Type u) (S₁ : Type v) [inst : CommSemiring R] (n : Option S₁ →₀ ℕ) (f : MvPolynomial (Option S₁) R),\\n  MvPolynomial.coeff n.some (((MvPolynomial.optionEquivLeft R S₁) f).coeff (n none)) = MvPolynomial.coeff n f\"\n    },\n    {\n      \"name\": \"MvPolynomial.pUnitAlgEquiv_apply\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Equiv\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (R : Type u) [inst : CommSemiring R] (p : MvPolynomial PUnit.{u_2 + 1} R),\\n  (MvPolynomial.pUnitAlgEquiv R) p = MvPolynomial.eval₂ Polynomial.C (fun x => Polynomial.X) p\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.pUnitAlgEquiv",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Equiv",
+            "kind": "definition",
+            "type": "(R : Type u) → [inst : CommSemiring R] → MvPolynomial PUnit.{u_2 + 1} R ≃ₐ[R] Polynomial R"
+          },
+          {
+            "name": "MvPolynomial.image_support_finSuccEquiv",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Equiv",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : CommSemiring R] {n : ℕ} {f : MvPolynomial (Fin (n + 1)) R} {i : ℕ},\n  Finset.image (Finsupp.cons i) (((MvPolynomial.finSuccEquiv R n) f).coeff i).support = {m ∈ f.support | m 0 = i}"
+          },
+          {
+            "name": "MvPolynomial.finSuccEquiv",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Equiv",
+            "kind": "definition",
+            "type": "(R : Type u) →\n  [inst : CommSemiring R] → (n : ℕ) → MvPolynomial (Fin (n + 1)) R ≃ₐ[R] Polynomial (MvPolynomial (Fin n) R)"
+          },
+          {
+            "name": "MvPolynomial.optionEquivLeft_coeff_some_coeff_none",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Equiv",
+            "kind": "theorem",
+            "type": "∀ (R : Type u) (S₁ : Type v) [inst : CommSemiring R] (n : Option S₁ →₀ ℕ) (f : MvPolynomial (Option S₁) R),\n  MvPolynomial.coeff n.some (((MvPolynomial.optionEquivLeft R S₁) f).coeff (n none)) = MvPolynomial.coeff n f"
+          },
+          {
+            "name": "MvPolynomial.pUnitAlgEquiv_apply",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Equiv",
+            "kind": "theorem",
+            "type": "∀ (R : Type u) [inst : CommSemiring R] (p : MvPolynomial PUnit.{u_2 + 1} R),\n  (MvPolynomial.pUnitAlgEquiv R) p = MvPolynomial.eval₂ Polynomial.C (fun x => Polynomial.X) p"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "standard",
+    "method": "local",
+    "request": {
+      "query": "coeff_uniqueAlgEquiv"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.coeff_uniqueAlgEquiv\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean\"\n    },\n    {\n      \"name\": \"CoeffNone152Replay.coeff_uniqueAlgEquiv_symm\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/roth-overview-session/GenWronskianChecks.lean\"\n    },\n    {\n      \"name\": \"Roth.coeff_uniqueAlgEquiv_symm\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/Separation.lean\"\n    },\n    {\n      \"name\": \"SeparationPrivate154.coeff_uniqueAlgEquiv_symm\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/roth-overview-session/GenWronskianChecks.lean\"\n    },\n    {\n      \"name\": \"MonoidAlgebra.coeff_uniqueAlgEquiv_symm\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MonoidAlgebra/Basic.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.coeff_uniqueAlgEquiv_symm\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.coeff_uniqueAlgEquiv",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean"
+          },
+          {
+            "name": "CoeffNone152Replay.coeff_uniqueAlgEquiv_symm",
+            "kind": "theorem",
+            "file": ".lake/roth-overview-session/GenWronskianChecks.lean"
+          },
+          {
+            "name": "Roth.coeff_uniqueAlgEquiv_symm",
+            "kind": "theorem",
+            "file": "Roth/Separation.lean"
+          },
+          {
+            "name": "SeparationPrivate154.coeff_uniqueAlgEquiv_symm",
+            "kind": "theorem",
+            "file": ".lake/roth-overview-session/GenWronskianChecks.lean"
+          },
+          {
+            "name": "MonoidAlgebra.coeff_uniqueAlgEquiv_symm",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/MonoidAlgebra/Basic.lean"
+          },
+          {
+            "name": "MvPolynomial.coeff_uniqueAlgEquiv_symm",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "Finder",
+    "request": {
+      "query": "MvPolynomial.coeff_uniqueAlgEquiv_symm arbitrary finitely supported exponent d coefficient d default"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"MvPolynomial.pUnitAlgEquiv_symm_monomial\",\n      \"informal_name\": \"Monomial Preservation under Inverse Algebra Equivalence\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (R : Type u) [inst : CommSemiring R] {d : PUnit.{1} →₀ ℕ} {r : R},\\n  (MvPolynomial.pUnitAlgEquiv R).symm ((Polynomial.monomial (d ())) r) = (MvPolynomial.monomial d) r\",\n      \"informal_description\": \"The inverse of the algebra equivalence between multivariate polynomials over the unit type $\\\\mathsf{PUnit}$ and univariate polynomials maps a monomial $rX^d$ in the univariate ring $R[X]$ to the corresponding monomial $rX^d$ in the multivariate ring $R[\\\\mathsf{PUnit}]$. Specifically, for any coefficient $r \\\\in R$ and degree $d \\\\in \\\\mathbb{N}$, applying the inverse equivalence to the univariate monomial yields the multivariate monomial with the same coefficient and degree.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.mvPolynomialEquivMvPolynomial_symm_apply\",\n      \"informal_name\": \"Inverse of Multivariate Polynomial Ring Equivalence via Variable and Constant Preservation\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (R : Type u) (S₁ : Type v) (S₂ : Type w) (S₃ : Type x) [inst : CommSemiring R] [inst_1 : CommSemiring S₃]\\n  (f : MvPolynomial S₁ R →+* MvPolynomial S₂ S₃) (g : MvPolynomial S₂ S₃ →+* MvPolynomial S₁ R)\\n  (hfgC : (f.comp g).comp MvPolynomial.C = MvPolynomial.C)\\n  (hfgX : ∀ (n : S₂), f (g (MvPolynomial.X n)) = MvPolynomial.X n)\\n  (hgfC : (g.comp f).comp MvPolynomial.C = MvPolynomial.C)\\n  (hgfX : ∀ (n : S₁), g (f (MvPolynomial.X n)) = MvPolynomial.X n) (a : MvPolynomial S₂ S₃),\\n  (MvPolynomial...\",\n      \"informal_description\": \"Given commutative semirings $ R $ and $ S_3 $, and types $ S_1, S_2 $, if ring homomorphisms $ f : R[S_1] → S_3[S_2] $ and $ g : S_3[S_2] → R[S_1] $ satisfy $ f ∘ g $ and $ g ∘ f $ preserving constant polynomials and mapping variables to themselves, then the inverse of the ring equivalence $ R[S_1] ≃+* S_3[S_2] $ is given by $ g $. Specifically, for any polynomial $ a ∈ S_3[S_2] $, the inverse equivalence evaluates to $ g(a) $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.mapAlgEquiv_symm\",\n      \"informal_name\": \"Inverse of Multivariate Polynomial Ring Equivalence via Algebra Equivalence\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} (σ : Type u_1) [inst : CommSemiring R] {A₁ : Type u_2} {A₂ : Type u_3} [inst_1 : CommSemiring A₁]\\n  [inst_2 : CommSemiring A₂] [inst_3 : Algebra R A₁] [inst_4 : Algebra R A₂] (e : A₁ ≃ₐ[R] A₂),\\n  (MvPolynomial.mapAlgEquiv σ e).symm = MvPolynomial.mapAlgEquiv σ e.symm\",\n      \"informal_description\": \"Given an $ R $-algebra equivalence $ e : A₁ ≃ₐ[R] A₂ $, the inverse of the induced multivariate polynomial ring equivalence $ A₁[σ] ≃ₐ[R] A₂[σ] $ (constructed by applying $ e $ coefficient-wise) is equal to the multivariate polynomial ring equivalence induced by the inverse algebra equivalence $ e^{-1} : A₂ ≃ₐ[R] A₁ $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.pUnitAlgEquiv_symm_apply\",\n      \"informal_name\": \"Inverse of Algebra Equivalence for Multivariate Polynomials over Unit Type\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (R : Type u) [inst : CommSemiring R] (p : Polynomial R),\\n  (MvPolynomial.pUnitAlgEquiv R).symm p = Polynomial.eval₂ MvPolynomial.C (MvPolynomial.X PUnit.unit) p\",\n      \"informal_description\": \"The inverse of the algebra equivalence between the multivariate polynomial ring $ R[\\\\mathsf{PUnit}] $ and the univariate polynomial ring $ R[X] $ maps a polynomial $ p \\\\in R[X] $ to its representation in $ R[\\\\mathsf{PUnit}] $ by substituting the indeterminate $ X $ with the single variable $ X(\\\\mathsf{PUnit}.\\\\mathsf{unit}) $ in the multivariate ring, using the constant polynomial embedding $ \\\\mathsf{C} $ for coefficients.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    },\n    {\n      \"formal_name\": \"FirstOrder.Ring.MvPolynomialSupportLEEquiv_symm_apply_coeff\",\n      \"informal_name\": \"Inverse of the Equivalence for Polynomials with Restricted Support\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {κ : Type u_2} {R : Type u_3} [inst : DecidableEq κ] [inst_1 : CommRing R] [inst_2 : DecidableEq R]\\n  (p : ι → MvPolynomial κ R),\\n  ((FirstOrder.Ring.mvPolynomialSupportLEEquiv fun i => (p i).support).symm fun i =>\\n      MvPolynomial.coeff (↑i.snd) (p i.fst)) =\\n    ⟨p, ⋯⟩\",\n      \"informal_description\": \"The inverse of the equivalence between polynomials with supports contained in specified finite monomial sets and coefficient functions reconstructs the original polynomial by setting coefficients outside the specified monomials to zero. For any family of polynomials $ p_i $ with supports in finite sets $ S_i $, applying the inverse equivalence to the coefficient functions $ (p_i.\\\\text{coeff}(m))_{m \\\\in S_i} $ yields the original family $ p $ along with the proof that each support is contained in its respective $ S_i $.\",\n      \"path\": \"Mathlib.RingTheory.MvPolynomial.FreeCommRing\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "MvPolynomial.pUnitAlgEquiv_symm_monomial",
+            "informal_name": "Monomial Preservation under Inverse Algebra Equivalence",
+            "kind": "theorem",
+            "type": "∀ (R : Type u) [inst : CommSemiring R] {d : PUnit.{1} →₀ ℕ} {r : R},\n  (MvPolynomial.pUnitAlgEquiv R).symm ((Polynomial.monomial (d ())) r) = (MvPolynomial.monomial d) r",
+            "informal_description": "The inverse of the algebra equivalence between multivariate polynomials over the unit type $\\mathsf{PUnit}$ and univariate polynomials maps a monomial $rX^d$ in the univariate ring $R[X]$ to the corresponding monomial $rX^d$ in the multivariate ring $R[\\mathsf{PUnit}]$. Specifically, for any coefficient $r \\in R$ and degree $d \\in \\mathbb{N}$, applying the inverse equivalence to the univariate monomial yields the multivariate monomial with the same coefficient and degree.",
+            "path": "Mathlib.Algebra.MvPolynomial.Equiv"
+          },
+          {
+            "formal_name": "MvPolynomial.mvPolynomialEquivMvPolynomial_symm_apply",
+            "informal_name": "Inverse of Multivariate Polynomial Ring Equivalence via Variable and Constant Preservation",
+            "kind": "theorem",
+            "type": "∀ (R : Type u) (S₁ : Type v) (S₂ : Type w) (S₃ : Type x) [inst : CommSemiring R] [inst_1 : CommSemiring S₃]\n  (f : MvPolynomial S₁ R →+* MvPolynomial S₂ S₃) (g : MvPolynomial S₂ S₃ →+* MvPolynomial S₁ R)\n  (hfgC : (f.comp g).comp MvPolynomial.C = MvPolynomial.C)\n  (hfgX : ∀ (n : S₂), f (g (MvPolynomial.X n)) = MvPolynomial.X n)\n  (hgfC : (g.comp f).comp MvPolynomial.C = MvPolynomial.C)\n  (hgfX : ∀ (n : S₁), g (f (MvPolynomial.X n)) = MvPolynomial.X n) (a : MvPolynomial S₂ S₃),\n  (MvPolynomial...",
+            "informal_description": "Given commutative semirings $ R $ and $ S_3 $, and types $ S_1, S_2 $, if ring homomorphisms $ f : R[S_1] → S_3[S_2] $ and $ g : S_3[S_2] → R[S_1] $ satisfy $ f ∘ g $ and $ g ∘ f $ preserving constant polynomials and mapping variables to themselves, then the inverse of the ring equivalence $ R[S_1] ≃+* S_3[S_2] $ is given by $ g $. Specifically, for any polynomial $ a ∈ S_3[S_2] $, the inverse equivalence evaluates to $ g(a) $.",
+            "path": "Mathlib.Algebra.MvPolynomial.Equiv"
+          },
+          {
+            "formal_name": "MvPolynomial.mapAlgEquiv_symm",
+            "informal_name": "Inverse of Multivariate Polynomial Ring Equivalence via Algebra Equivalence",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} (σ : Type u_1) [inst : CommSemiring R] {A₁ : Type u_2} {A₂ : Type u_3} [inst_1 : CommSemiring A₁]\n  [inst_2 : CommSemiring A₂] [inst_3 : Algebra R A₁] [inst_4 : Algebra R A₂] (e : A₁ ≃ₐ[R] A₂),\n  (MvPolynomial.mapAlgEquiv σ e).symm = MvPolynomial.mapAlgEquiv σ e.symm",
+            "informal_description": "Given an $ R $-algebra equivalence $ e : A₁ ≃ₐ[R] A₂ $, the inverse of the induced multivariate polynomial ring equivalence $ A₁[σ] ≃ₐ[R] A₂[σ] $ (constructed by applying $ e $ coefficient-wise) is equal to the multivariate polynomial ring equivalence induced by the inverse algebra equivalence $ e^{-1} : A₂ ≃ₐ[R] A₁ $.",
+            "path": "Mathlib.Algebra.MvPolynomial.Equiv"
+          },
+          {
+            "formal_name": "MvPolynomial.pUnitAlgEquiv_symm_apply",
+            "informal_name": "Inverse of Algebra Equivalence for Multivariate Polynomials over Unit Type",
+            "kind": "theorem",
+            "type": "∀ (R : Type u) [inst : CommSemiring R] (p : Polynomial R),\n  (MvPolynomial.pUnitAlgEquiv R).symm p = Polynomial.eval₂ MvPolynomial.C (MvPolynomial.X PUnit.unit) p",
+            "informal_description": "The inverse of the algebra equivalence between the multivariate polynomial ring $ R[\\mathsf{PUnit}] $ and the univariate polynomial ring $ R[X] $ maps a polynomial $ p \\in R[X] $ to its representation in $ R[\\mathsf{PUnit}] $ by substituting the indeterminate $ X $ with the single variable $ X(\\mathsf{PUnit}.\\mathsf{unit}) $ in the multivariate ring, using the constant polynomial embedding $ \\mathsf{C} $ for coefficients.",
+            "path": "Mathlib.Algebra.MvPolynomial.Equiv"
+          },
+          {
+            "formal_name": "FirstOrder.Ring.MvPolynomialSupportLEEquiv_symm_apply_coeff",
+            "informal_name": "Inverse of the Equivalence for Polynomials with Restricted Support",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_1} {κ : Type u_2} {R : Type u_3} [inst : DecidableEq κ] [inst_1 : CommRing R] [inst_2 : DecidableEq R]\n  (p : ι → MvPolynomial κ R),\n  ((FirstOrder.Ring.mvPolynomialSupportLEEquiv fun i => (p i).support).symm fun i =>\n      MvPolynomial.coeff (↑i.snd) (p i.fst)) =\n    ⟨p, ⋯⟩",
+            "informal_description": "The inverse of the equivalence between polynomials with supports contained in specified finite monomial sets and coefficient functions reconstructs the original polynomial by setting coefficients outside the specified monomials to zero. For any family of polynomials $ p_i $ with supports in finite sets $ S_i $, applying the inverse equivalence to the coefficient functions $ (p_i.\\text{coeff}(m))_{m \\in S_i} $ yields the original family $ p $ along with the proof that each support is contained in its respective $ S_i $.",
+            "path": "Mathlib.RingTheory.MvPolynomial.FreeCommRing"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "Loogle",
+    "request": {
+      "query": "MvPolynomial.coeff_uniqueAlgEquiv_symm"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.coeff_uniqueAlgEquiv_symm\",\n      \"type\": \" (R : Type u) {σ : Type u_1} [CommSemiring R] [Unique σ] (P : Polynomial R) (d : σ →₀ ℕ) : ((MvPolynomial.uniqueAlgEquiv R σ).symm P).coeff d = P.coeff (d default)\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.coeff_uniqueAlgEquiv_symm",
+            "type": " (R : Type u) {σ : Type u_1} [CommSemiring R] [Unique σ] (P : Polynomial R) (d : σ →₀ ℕ) : ((MvPolynomial.uniqueAlgEquiv R σ).symm P).coeff d = P.coeff (d default)",
+            "module": "Mathlib.Algebra.MvPolynomial.Equiv"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "LeanSearch",
+    "request": {
+      "query": "MvPolynomial.coeff_uniqueAlgEquiv_symm arbitrary finitely supported exponent d coefficient d default"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.coeff\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Basic\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} → {σ : Type u_1} → [inst : CommSemiring R] → (σ →₀ ℕ) → MvPolynomial σ R → R\"\n    },\n    {\n      \"name\": \"MvPolynomial.ext_iff\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] {p q : MvPolynomial σ R},\\n  p = q ↔ ∀ (m : σ →₀ ℕ), MvPolynomial.coeff m p = MvPolynomial.coeff m q\"\n    },\n    {\n      \"name\": \"MvPolynomial.optionEquivLeft_coeff_some_coeff_none\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Equiv\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (R : Type u) (S₁ : Type v) [inst : CommSemiring R] (n : Option S₁ →₀ ℕ) (f : MvPolynomial (Option S₁) R),\\n  MvPolynomial.coeff n.some (((MvPolynomial.optionEquivLeft R S₁) f).coeff (n none)) = MvPolynomial.coeff n f\"\n    },\n    {\n      \"name\": \"FirstOrder.Ring.mvPolynomialSupportLEEquiv\",\n      \"module_name\": \"Mathlib.RingTheory.MvPolynomial.FreeCommRing\",\n      \"kind\": \"definition\",\n      \"type\": \"{ι : Type u_1} →\\n  {κ : Type u_2} →\\n    {R : Type u_3} →\\n      [DecidableEq κ] →\\n        [inst : CommRing R] →\\n          [DecidableEq R] →\\n            (monoms : ι → Finset (κ →₀ ℕ)) → { p // ∀ (i : ι), (p i).support ⊆ monoms i } ≃ ((i : ι) × ↥(monoms i) → R)\"\n    },\n    {\n      \"name\": \"MvPolynomial.ext\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] (p q : MvPolynomial σ R),\\n  (∀ (m : σ →₀ ℕ), MvPolynomial.coeff m p = MvPolynomial.coeff m q) → p = q\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.coeff",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Basic",
+            "kind": "definition",
+            "type": "{R : Type u} → {σ : Type u_1} → [inst : CommSemiring R] → (σ →₀ ℕ) → MvPolynomial σ R → R"
+          },
+          {
+            "name": "MvPolynomial.ext_iff",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Basic",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] {p q : MvPolynomial σ R},\n  p = q ↔ ∀ (m : σ →₀ ℕ), MvPolynomial.coeff m p = MvPolynomial.coeff m q"
+          },
+          {
+            "name": "MvPolynomial.optionEquivLeft_coeff_some_coeff_none",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Equiv",
+            "kind": "theorem",
+            "type": "∀ (R : Type u) (S₁ : Type v) [inst : CommSemiring R] (n : Option S₁ →₀ ℕ) (f : MvPolynomial (Option S₁) R),\n  MvPolynomial.coeff n.some (((MvPolynomial.optionEquivLeft R S₁) f).coeff (n none)) = MvPolynomial.coeff n f"
+          },
+          {
+            "name": "FirstOrder.Ring.mvPolynomialSupportLEEquiv",
+            "module_name": "Mathlib.RingTheory.MvPolynomial.FreeCommRing",
+            "kind": "definition",
+            "type": "{ι : Type u_1} →\n  {κ : Type u_2} →\n    {R : Type u_3} →\n      [DecidableEq κ] →\n        [inst : CommRing R] →\n          [DecidableEq R] →\n            (monoms : ι → Finset (κ →₀ ℕ)) → { p // ∀ (i : ι), (p i).support ⊆ monoms i } ≃ ((i : ι) × ↥(monoms i) → R)"
+          },
+          {
+            "name": "MvPolynomial.ext",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Basic",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] (p q : MvPolynomial σ R),\n  (∀ (m : σ →₀ ℕ), MvPolynomial.coeff m p = MvPolynomial.coeff m q) → p = q"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "local",
+    "request": {
+      "query": "uniqueAlgEquiv"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Matrix.uniqueAlgEquiv\",\n      \"kind\": \"def\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/Unique.lean\"\n    },\n    {\n      \"name\": \"MonoidAlgebra.uniqueAlgEquiv\",\n      \"kind\": \"def\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MonoidAlgebra/Basic.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.uniqueAlgEquiv\",\n      \"kind\": \"def\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.uniqueAlgEquiv_hasseDeriv\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/HasseDeriv.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.uniqueAlgEquiv_monomial\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean\"\n    },\n    {\n      \"name\": \"MonoidAlgebra.uniqueAlgEquiv_symm_apply\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MonoidAlgebra/Basic.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.uniqueAlgEquiv_symm_monomial\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Matrix.uniqueAlgEquiv",
+            "kind": "def",
+            "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/Unique.lean"
+          },
+          {
+            "name": "MonoidAlgebra.uniqueAlgEquiv",
+            "kind": "def",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/MonoidAlgebra/Basic.lean"
+          },
+          {
+            "name": "MvPolynomial.uniqueAlgEquiv",
+            "kind": "def",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean"
+          },
+          {
+            "name": "MvPolynomial.uniqueAlgEquiv_hasseDeriv",
+            "kind": "theorem",
+            "file": "Roth/HasseDeriv.lean"
+          },
+          {
+            "name": "MvPolynomial.uniqueAlgEquiv_monomial",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean"
+          },
+          {
+            "name": "MonoidAlgebra.uniqueAlgEquiv_symm_apply",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/MonoidAlgebra/Basic.lean"
+          },
+          {
+            "name": "MvPolynomial.uniqueAlgEquiv_symm_monomial",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "standard",
+    "method": "Loogle",
+    "retry": true,
+    "request": {
+      "query": "MvPolynomial.uniqueAlgEquiv, \"coeff\""
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "Error executing tool lean_loogle: Rate limit exceeded: 3 requests per 30s. Use --loogle-local to avoid limits."
+        }
+      ],
+      "isError": true
+    }
+  },
+  {
+    "form": "standard",
+    "method": "Loogle",
+    "retry": true,
+    "request": {
+      "query": "MvPolynomial.uniqueAlgEquiv, \"coeff\""
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.coeff_uniqueAlgEquiv\",\n      \"type\": \" (R : Type u) {σ : Type u_1} [CommSemiring R] [Unique σ] (P : MvPolynomial σ R) (n : ℕ) : ((MvPolynomial.uniqueAlgEquiv R σ) P).coeff n = P.coeff fun₀ | default => n\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    },\n    {\n      \"name\": \"MvPolynomial.coeff_uniqueAlgEquiv_symm\",\n      \"type\": \" (R : Type u) {σ : Type u_1} [CommSemiring R] [Unique σ] (P : Polynomial R) (d : σ →₀ ℕ) : ((MvPolynomial.uniqueAlgEquiv R σ).symm P).coeff d = P.coeff (d default)\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.coeff_uniqueAlgEquiv",
+            "type": " (R : Type u) {σ : Type u_1} [CommSemiring R] [Unique σ] (P : MvPolynomial σ R) (n : ℕ) : ((MvPolynomial.uniqueAlgEquiv R σ) P).coeff n = P.coeff fun₀ | default => n",
+            "module": "Mathlib.Algebra.MvPolynomial.Equiv"
+          },
+          {
+            "name": "MvPolynomial.coeff_uniqueAlgEquiv_symm",
+            "type": " (R : Type u) {σ : Type u_1} [CommSemiring R] [Unique σ] (P : Polynomial R) (d : σ →₀ ℕ) : ((MvPolynomial.uniqueAlgEquiv R σ).symm P).coeff d = P.coeff (d default)",
+            "module": "Mathlib.Algebra.MvPolynomial.Equiv"
+          }
+        ]
+      },
+      "isError": false
+    }
+  }
+]

@@ -1,0 +1,44 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+#check_failure Roth.coeff_uniqueAlgEquiv_symm
+#check @MvPolynomial.coeff_uniqueAlgEquiv_symm
+#check @MvPolynomial.coeff_uniqueAlgEquiv
+#check @Finsupp.single_eq_same
+namespace UniqueCoeff161
+open MvPolynomial
+variable {R : Type*} [CommSemiring R] {σ : Type*} [Unique σ]
+theorem oldForm (f : Polynomial R) (n : ℕ) :
+    ((uniqueAlgEquiv R σ).symm f).coeff (Finsupp.single default n) = f.coeff n :=
+  (MvPolynomial.coeff_uniqueAlgEquiv_symm R f _).trans
+    (congrArg f.coeff Finsupp.single_eq_same)
+theorem generalForm (f : Polynomial R) (d : σ →₀ ℕ) :
+    ((uniqueAlgEquiv R σ).symm f).coeff d = f.coeff (d default) :=
+  MvPolynomial.coeff_uniqueAlgEquiv_symm R f d
+theorem arbitraryCoordinate (f : Polynomial R) (n : ℕ) (j : σ) :
+    ((uniqueAlgEquiv R σ).symm f).coeff (Finsupp.single j n) = f.coeff n := by
+  rw [Subsingleton.elim j default]
+  exact oldForm f n
+theorem representationBridge (f : Polynomial R) (d : σ →₀ ℕ) :
+    d = Finsupp.single default (d default) := (Finsupp.unique_single d).symm
+theorem falseGeneralization :
+    (X true : MvPolynomial Bool ℕ).coeff (Finsupp.single false 1) ≠
+      (Polynomial.X : Polynomial ℕ).coeff 1 := by
+  simp [MvPolynomial.coeff_X, Finsupp.single_eq_single_iff]
+#check_failure (MvPolynomial.uniqueAlgEquiv ℕ Bool)
+section SemiringFloor
+variable (S : Type*) [Semiring S]
+#check_failure (MvPolynomial.uniqueAlgEquiv S Unit)
+end SemiringFloor
+#print axioms oldForm
+#print axioms generalForm
+#print axioms arbitraryCoordinate
+#print axioms representationBridge
+#print axioms falseGeneralization
+end UniqueCoeff161

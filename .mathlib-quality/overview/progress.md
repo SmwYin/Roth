@@ -3,7 +3,7 @@
 Status: **in_progress**, 2026-10-27. Branch: `ramin-cleanup`.
 Production Lean files and all pins match baseline `99f19fd`.
 
-**Completed: 160 / 293 written declarations.**
+**Completed: 161 / 293 written declarations.**
 This counts the current overview assessments, separately from the earlier code cleanup.
 
 | # | Completed declaration | Applicable workflow | Verdict | Report |
@@ -168,8 +168,9 @@ This counts the current overview assessments, separately from the earlier code c
 | 158 | `Roth.coeff_rename_mul_aeval` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.coeff_rename_mul_aeval.md) |
 | 159 | `Roth.aeval_X_eq_rename` | full-mathlibable; accepted complete | NO-mathlib-has-it | [Detailed report](mathlibable/Roth.aeval_X_eq_rename.md) |
 | 160 | `Roth.hasseDeriv_rename_mul_aeval` | full-mathlibable; accepted complete | YES-but-generalise-first | [Detailed report](mathlibable/Roth.hasseDeriv_rename_mul_aeval.md) |
+| 161 | `Roth.coeff_uniqueAlgEquiv_symm` | full-mathlibable; accepted complete | NO-mathlib-has-it | [Detailed report](mathlibable/Roth.coeff_uniqueAlgEquiv_symm.md) |
 
-**Next declaration: `Roth.coeff_uniqueAlgEquiv_symm`**, `Roth/Separation.lean:169`.
+**Next declaration: `Roth.degreeOf_uniqueAlgEquiv_symm`**, `Roth/Separation.lean:174`.
 Only the listed assessments are complete. No partial assessment was committed.
 
 On restart: read [README](README.md), [machine progress](progress.json), and

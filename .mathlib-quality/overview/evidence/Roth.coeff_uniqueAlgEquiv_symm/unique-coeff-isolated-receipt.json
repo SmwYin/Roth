@@ -1,0 +1,120 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\n#check_failure Roth.coeff_uniqueAlgEquiv_symm\n#check @MvPolynomial.coeff_uniqueAlgEquiv_symm\n#check @MvPolynomial.coeff_uniqueAlgEquiv\n#check @Finsupp.single_eq_same\nnamespace UniqueCoeff161\nopen MvPolynomial\nvariable {R : Type*} [CommSemiring R] {σ : Type*} [Unique σ]\ntheorem oldForm (f : Polynomial R) (n : ℕ) :\n    ((uniqueAlgEquiv R σ).symm f).coeff (Finsupp.single default n) = f.coeff n :=\n  (MvPolynomial.coeff_uniqueAlgEquiv_symm R f _).trans\n    (congrArg f.coeff Finsupp.single_eq_same)\ntheorem generalForm (f : Polynomial R) (d : σ →₀ ℕ) :\n    ((uniqueAlgEquiv R σ).symm f).coeff d = f.coeff (d default) :=\n  MvPolynomial.coeff_uniqueAlgEquiv_symm R f d\ntheorem arbitraryCoordinate (f : Polynomial R) (n : ℕ) (j : σ) :\n    ((uniqueAlgEquiv R σ).symm f).coeff (Finsupp.single j n) = f.coeff n := by\n  rw [Subsingleton.elim j default]\n  exact oldForm f n\ntheorem representationBridge (d : σ →₀ ℕ) :\n    d = Finsupp.single default (d default) := Finsupp.unique_single d\ntheorem falseGeneralization :\n    (X true : MvPolynomial Bool ℕ).coeff (Finsupp.single false 1) ≠\n      (Polynomial.X : Polynomial ℕ).coeff 1 := by\n  simp [MvPolynomial.coeff_X, Finsupp.single_eq_single_iff]\n#check_failure (MvPolynomial.uniqueAlgEquiv ℕ Bool)\nsection SemiringFloor\nvariable (S : Type*) [Semiring S]\n#check_failure (MvPolynomial.uniqueAlgEquiv S Unit)\nend SemiringFloor\n#print axioms oldForm\n#print axioms generalForm\n#print axioms arbitraryCoordinate\n#print axioms representationBridge\n#print axioms falseGeneralization\nend UniqueCoeff161\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.coeff_uniqueAlgEquiv_symm`\",\n      \"line\": 10,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"MvPolynomial.coeff_uniqueAlgEquiv_symm : ∀ (R : Type u_1) {σ : Type u_2} [inst : CommSemiring R] [inst_1 : Unique σ]\\n  (P : Polynomial R) (d : σ →₀ ℕ), ((MvPolynomial.uniqueAlgEquiv R σ).symm P).coeff d = P.coeff (d default)\",\n      \"line\": 11,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"MvPolynomial.coeff_uniqueAlgEquiv : ∀ (R : Type u_1) {σ : Type u_2} [inst : CommSemiring R] [inst_1 : Unique σ]\\n  (P : MvPolynomial σ R) (n : ℕ), ((MvPolynomial.uniqueAlgEquiv R σ) P).coeff n = P.coeff (Finsupp.single default n)\",\n      \"line\": 12,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finsupp.single_eq_same : ∀ {α : Type u_1} {M : Type u_2} [inst : Zero M] {a : α} {b : M}, (Finsupp.single a b) a = b\",\n      \"line\": 13,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"failed to synthesize instance of type class\\n  Unique Bool\\n\\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.\",\n      \"line\": 34,\n      \"column\": 17,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"failed to synthesize instance of type class\\n  CommSemiring S\\n\\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.\",\n      \"line\": 37,\n      \"column\": 17,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'UniqueCoeff161.oldForm' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 39,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'UniqueCoeff161.generalForm' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 40,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'UniqueCoeff161.arbitraryCoordinate' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 41,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'UniqueCoeff161.representationBridge' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 42,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'UniqueCoeff161.falseGeneralization' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 43,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.coeff_uniqueAlgEquiv_symm`",
+          "line": 10,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "MvPolynomial.coeff_uniqueAlgEquiv_symm : ∀ (R : Type u_1) {σ : Type u_2} [inst : CommSemiring R] [inst_1 : Unique σ]\n  (P : Polynomial R) (d : σ →₀ ℕ), ((MvPolynomial.uniqueAlgEquiv R σ).symm P).coeff d = P.coeff (d default)",
+          "line": 11,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "MvPolynomial.coeff_uniqueAlgEquiv : ∀ (R : Type u_1) {σ : Type u_2} [inst : CommSemiring R] [inst_1 : Unique σ]\n  (P : MvPolynomial σ R) (n : ℕ), ((MvPolynomial.uniqueAlgEquiv R σ) P).coeff n = P.coeff (Finsupp.single default n)",
+          "line": 12,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finsupp.single_eq_same : ∀ {α : Type u_1} {M : Type u_2} [inst : Zero M] {a : α} {b : M}, (Finsupp.single a b) a = b",
+          "line": 13,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "failed to synthesize instance of type class\n  Unique Bool\n\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.",
+          "line": 34,
+          "column": 17,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "failed to synthesize instance of type class\n  CommSemiring S\n\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.",
+          "line": 37,
+          "column": 17,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'UniqueCoeff161.oldForm' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 39,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'UniqueCoeff161.generalForm' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 40,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'UniqueCoeff161.arbitraryCoordinate' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 41,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'UniqueCoeff161.representationBridge' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 42,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'UniqueCoeff161.falseGeneralization' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 43,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 129
+}

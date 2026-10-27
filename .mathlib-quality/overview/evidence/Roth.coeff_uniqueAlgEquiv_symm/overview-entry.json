@@ -1,0 +1,52 @@
+{
+  "type": "Roth.coeff_uniqueAlgEquiv_symm : ∀ {R : Type u_1} [inst : CommSemiring R] {σ : Type u_2} [inst_1 : Unique σ]\n  (f : Polynomial R) (n : ℕ), ((MvPolynomial.uniqueAlgEquiv R σ).symm f).coeff (Finsupp.single default n) = f.coeff n",
+  "kind": "theorem",
+  "what": "The coefficient at singleton exponent n in the inverse singleton-variable polynomial equivalence is the ordinary nth coefficient.",
+  "how": "Specialize the existing arbitrary-exponent mathlib coefficient law and evaluate the finitely supported singleton at its own index.",
+  "hypotheses": "R and σ independently universe-polymorphic; CommSemiring R and Unique σ; arbitrary f and natural n. No Fintype, DecidableEq, domain or nonzero premise.",
+  "project_dependencies": [],
+  "caller_summary": {
+    "explicit_call_sites": [],
+    "explicit_use_count": 0,
+    "direct_kernel_value_consumers": [],
+    "inline_derivations": [
+      {
+        "file": "Roth/Theta.lean",
+        "line": 429,
+        "description": "Uses more general fully qualified MvPolynomial.coeff_uniqueAlgEquiv_symm for arbitrary d coefficient bound; independently replayed exact coefficient subproof only."
+      }
+    ],
+    "nearby_mathlib_uses": [
+      "Roth/Separation.lean:179",
+      "Roth/Separation.lean:182"
+    ],
+    "scope": "All canonical production files lexical-enumerated, no-ignore rg and tracked git grep cross-checked. Kernel audit covers293 canonical constants, direct value references only; not arbitrary external or opaque/simp closure."
+  },
+  "mathlib_api_audit": {
+    "existing": "MvPolynomial.coeff_uniqueAlgEquiv_symm",
+    "file": "Mathlib/Algebra/MvPolynomial/Equiv.lean:115",
+    "auxiliary": [
+      "Finsupp.single_eq_same",
+      "Finsupp.unique_single"
+    ],
+    "search": "15 method/form cells plus a repaired Loogle query and rate-limit retry; pinned exact signatures and specialization compiled without Roth imports."
+  },
+  "moral_duplications": [
+    "The Roth law is the singleton-exponent specialization of the existing arbitrary-finsupp law, not a namespace-aware prefilter hit."
+  ],
+  "generalization": {
+    "status": "More general exponent form already in mathlib; fixed parent interface maximally general",
+    "verified": [
+      "arbitrary finitely supported exponent d",
+      "arbitrary coordinate j in Unique σ",
+      "representation d=single default (d default)"
+    ],
+    "rejected": [
+      "Semiring alone cannot instantiate the fixed uniqueAlgEquiv algebra interface",
+      "Bool variable set lacks Unique; coordinate forgetting does not preserve coefficients"
+    ]
+  },
+  "missing_api": [],
+  "junk": "No explicit callers and no direct canonical kernel consumers; exact redundant law established independently, so zero-use count is supporting evidence rather than a dead-API inference.",
+  "action": "Recommend delete Roth.coeff_uniqueAlgEquiv_symm; zero caller rewrites. Retain the existing fully qualified mathlib law in Separation and Theta. If compatibility is required temporarily, keep only a project-local deprecated wrapper in Roth/Separation.lean; no upstream PR."
+}

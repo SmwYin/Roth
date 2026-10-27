@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 160/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 161/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 160; remaining: 133.
-- Verdicts: 18 NO-composable-from-mathlib, 13 YES-add-as-is, 20 YES-but-generalise-first, 35 NO-mathlib-has-it, 47 BORDERLINE-needs-human, 27 SKIP.
+- Completed applicable assessments: 161; remaining: 132.
+- Verdicts: 18 NO-composable-from-mathlib, 13 YES-add-as-is, 20 YES-but-generalise-first, 36 NO-mathlib-has-it, 47 BORDERLINE-needs-human, 27 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -1784,6 +1784,17 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: explicit call sites: {'file': 'Roth/Separation.lean', 'line': 365, 'declaration': 'Roth.det_hasseDeriv_separated', 'plan': 'Use new freshCoordinate law specialized to some/none inside the existing entrywise determinant proof; retain Field signature of this caller.'}; external to file occurrences: 0; direct kernel value consumers: Roth.det_hasseDeriv_separated; inline derivations: None; note: Two lexical occurrences include the declaration itself; one explicit caller within same file. Source-level enumeration and ordered293 kernel audit agree here; neither is transitive simp closure.
 - Verdict: YES-but-generalise-first; [complete report](.mathlib-quality/overview/mathlibable/Roth.hasseDeriv_rename_mul_aeval.md).
 
+### Completed: `Roth.coeff_uniqueAlgEquiv_symm`
+
+- Type: `Roth.coeff_uniqueAlgEquiv_symm : ∀ {R : Type u_1} [inst : CommSemiring R] {σ : Type u_2} [inst_1 : Unique σ]
+  (f : Polynomial R) (n : ℕ), ((MvPolynomial.uniqueAlgEquiv R σ).symm f).coeff (Finsupp.single default n) = f.coeff n`
+- What: The coefficient at singleton exponent n in the inverse singleton-variable polynomial equivalence is the ordinary nth coefficient.
+- How: Specialize the existing arbitrary-exponent mathlib coefficient law and evaluate the finitely supported singleton at its own index.
+- Hypotheses: R and σ independently universe-polymorphic; CommSemiring R and Unique σ; arbitrary f and natural n. No Fintype, DecidableEq, domain or nonzero premise.
+- Project dependencies: None
+- Caller summary: explicit call sites: None; explicit use count: 0; direct kernel value consumers: None; inline derivations: {'file': 'Roth/Theta.lean', 'line': 429, 'description': 'Uses more general fully qualified MvPolynomial.coeff_uniqueAlgEquiv_symm for arbitrary d coefficient bound; independently replayed exact coefficient subproof only.'}; nearby mathlib uses: Roth/Separation.lean:179, Roth/Separation.lean:182; scope: All canonical production files lexical-enumerated, no-ignore rg and tracked git grep cross-checked. Kernel audit covers293 canonical constants, direct value references only; not arbitrary external or opaque/simp closure.
+- Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/Roth.coeff_uniqueAlgEquiv_symm.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -2130,6 +2141,8 @@ Completed `Roth.aeval_X_eq_rename`: verdict: NO-mathlib-has-it; existing: Polyno
 
 Completed `Roth.hasseDeriv_rename_mul_aeval`: verdict: YES-but-generalise-first; cells: 15; partial hits: Polynomial.hasseDeriv_mul, Polynomial.hasseDeriv_map, Polynomial.hasseDeriv_coeff, Polynomial.toMvPolynomial_eq_rename_comp, Polynomial.taylor_mul, Polynomial.taylor_coeff; note: All multivariate Hasse names in the project namespace originate in Roth/HasseDeriv.lean; pinned mathlib supplies univariate API only. Missing multivariate guard compiled in isolated mathlib environment.
 
+Completed `Roth.coeff_uniqueAlgEquiv_symm`: existing: MvPolynomial.coeff_uniqueAlgEquiv_symm; file: Mathlib/Algebra/MvPolynomial/Equiv.lean:115; auxiliary: Finsupp.single_eq_same, Finsupp.unique_single; search: 15 method/form cells plus a repaired Loogle query and rate-limit retry; pinned exact signatures and specialization compiled without Roth imports.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -2451,6 +2464,8 @@ Completed `Roth.coeff_rename_mul_aeval`: Canonical double coefficient law is exa
 Completed `Roth.aeval_X_eq_rename`: Pointwise specialization of existing equality of the same R-algebra homomorphisms; no new mathematical law.
 
 Completed `Roth.hasseDeriv_rename_mul_aeval`: Univariate constant outer-factor Hasse law is proved in mathlib-only scratch; it covers only the none-coordinate part., Previous159 aeval bridge is already in mathlib, and its wrapper is eliminated in the target replay.
+
+Completed `Roth.coeff_uniqueAlgEquiv_symm`: The Roth law is the singleton-exponent specialization of the existing arbitrary-finsupp law, not a namespace-aware prefilter hit.
 
 ## Part 5: Generalization opportunities
 
@@ -2777,6 +2792,8 @@ Completed `Roth.aeval_X_eq_rename`: fixed interface: MAXIMALLY GENERAL; verified
 
 Completed `Roth.hasseDeriv_rename_mul_aeval`: status: STRICTLY NARROWER representation interface; verified: HasseSeparation160.freshCoordinate; statement: Replace some : τ → Option τ and none by an arbitrary injective f : τ → σ and fresh i : σ satisfying ∀ j, f j ≠ i; no surjectivity/exhaustiveness required.; fixed interface: Original already uses weakest parent interface CommSemiring and arbitrary τ; no typeclass drop claimed.; original specialization: HasseSeparation160.originalFormAgain
 
+Completed `Roth.coeff_uniqueAlgEquiv_symm`: status: More general exponent form already in mathlib; fixed parent interface maximally general; verified: arbitrary finitely supported exponent d, arbitrary coordinate j in Unique σ, representation d=single default (d default); rejected: Semiring alone cannot instantiate the fixed uniqueAlgEquiv algebra interface, Bool variable set lacks Unique; coordinate forgetting does not preserve coefficients
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -3099,6 +3116,8 @@ Completed `Roth.coeff_rename_mul_aeval`: Potential MvPolynomial coefficient adap
 Completed `Roth.aeval_X_eq_rename`: None needed for exact target or five complete callers.
 
 Completed `Roth.hasseDeriv_rename_mul_aeval`: Upstream multivariate Hasse derivative parent and compatibility API, Fresh-coordinate separated-product law over arbitrary injective embeddings; newly verified proof, not existing mathlib call
+
+Completed `Roth.coeff_uniqueAlgEquiv_symm`: None
 
 ## Part 7: Junk / removable
 
@@ -3425,6 +3444,8 @@ Completed `Roth.aeval_X_eq_rename`: Useful in five callers, hence not dead code;
 
 Completed `Roth.hasseDeriv_rename_mul_aeval`: False
 
+Completed `Roth.coeff_uniqueAlgEquiv_symm`: No explicit callers and no direct canonical kernel consumers; exact redundant law established independently, so zero-use count is supporting evidence rather than a dead-API inference.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -3589,6 +3610,7 @@ Completed `Roth.hasseDeriv_rename_mul_aeval`: False
 | 158 | `Roth.coeff_rename_mul_aeval` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.coeff_rename_mul_aeval.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.coeff_rename_mul_aeval/root-acceptance.json) |
 | 159 | `Roth.aeval_X_eq_rename` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.aeval_X_eq_rename.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.aeval_X_eq_rename/root-acceptance.json) |
 | 160 | `Roth.hasseDeriv_rename_mul_aeval` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.hasseDeriv_rename_mul_aeval.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.hasseDeriv_rename_mul_aeval/root-acceptance.json) |
+| 161 | `Roth.coeff_uniqueAlgEquiv_symm` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.coeff_uniqueAlgEquiv_symm.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.coeff_uniqueAlgEquiv_symm/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -3908,12 +3930,14 @@ Completed `Roth.aeval_X_eq_rename` action: Delete public wrapper and update all 
 
 Completed `Roth.hasseDeriv_rename_mul_aeval` action: upstream file: Mathlib/Algebra/MvPolynomial/HasseDeriv.lean; pr title: feat(Algebra/MvPolynomial/HasseDeriv): differentiate products in a fresh variable; next steps: /generalise Roth.hasseDeriv_rename_mul_aeval, /cleanup Roth/Separation.lean Roth.hasseDeriv_rename_mul_aeval, Upstream parent multivariate Hasse API first; install generalized law in MvPolynomial namespace., Migrate sole determinant caller using specialization and remove old wrapper when new API exists.; reviewers: Moritz Firsching (hasseDeriv_map #42428), Yaël Dillies (MvPolynomial coefficient API #41427)
 
+Completed `Roth.coeff_uniqueAlgEquiv_symm` action: Recommend delete Roth.coeff_uniqueAlgEquiv_symm; zero caller rewrites. Retain the existing fully qualified mathlib law in Separation and Theta. If compatibility is required temporarily, keep only a project-local deprecated wrapper in Roth/Separation.lean; no upstream PR.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.coeff_uniqueAlgEquiv_symm` next. Supporting identities receive their own applicable checks.
+   `Roth.degreeOf_uniqueAlgEquiv_symm` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 
