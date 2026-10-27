@@ -1,0 +1,55 @@
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.Basic.Real.Basic
+#check_failure Roth.weight_le_card
+open scoped BigOperators
+namespace WeightLeCardAssessment
+variable {σ : Type*}
+noncomputable def original [Fintype σ] (r : σ → ℕ) (d : σ →₀ ℕ) : ℝ := ∑ j, (d j : ℝ) / r j
+#check @Finset.sum_le_card_nsmul
+#check @Finset.sum_le_card_nsmul
+#check @div_le_one_of_le₀
+#check @Finsupp.weight_eq_sum
+-- Original target: three outer facts plus natural cast/order certificates.
+theorem original_composition [Fintype σ] {r : σ → ℕ} {d : σ →₀ ℕ}
+    (hd : ∀ j, d j ≤ r j) : original r d ≤ Fintype.card σ := by
+  exact (Finset.sum_le_card_nsmul Finset.univ (fun j ↦ (d j : ℝ) / r j) 1
+    (fun j _ ↦ div_le_one_of_le₀ (by exact_mod_cast hd j) (Nat.cast_nonneg _))).trans_eq
+      (nsmul_one _)
+theorem bridge [Fintype σ] (r : σ → ℕ) (d : σ →₀ ℕ) :
+    original r d = Finsupp.weight (fun j ↦ (r j : ℝ)⁻¹) d := by
+  simp [original, Finsupp.weight_eq_sum, nsmul_eq_mul, div_eq_mul_inv]
+-- Equivalent support-local hypothesis; stronger support cardinality; expanded ambient type.
+theorem support_bound (r : σ → ℕ) (d : σ →₀ ℕ) (hd : ∀ j ∈ d.support, d j ≤ r j) :
+    Finsupp.weight (fun j ↦ (r j : ℝ)⁻¹) d ≤ d.support.card := by
+  classical
+  rw [Finsupp.weight_apply, Finsupp.sum]
+  simpa only [nsmul_eq_mul, ← div_eq_mul_inv, mul_one] using
+    Finset.sum_le_card_nsmul d.support (fun j ↦ (d j : ℝ) / r j) 1
+      (fun j hj ↦ div_le_one_of_le₀ (by exact_mod_cast hd j hj) (Nat.cast_nonneg _))
+-- Expanded representation: arbitrary ordered field and ordinary functions over a finite set.
+theorem field_bound {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (s : Finset σ) (d r : σ → K)
+    (hd : ∀ j ∈ s, d j ≤ r j) (hr : ∀ j ∈ s, 0 ≤ r j) :
+    ∑ j ∈ s, d j / r j ≤ (s.card : K) := by
+  exact (Finset.sum_le_card_nsmul s (fun j ↦ d j / r j) 1
+    (fun j hj ↦ div_le_one_of_le₀ (hd j hj) (hr j hj))).trans_eq (nsmul_one _)
+example : original (fun _ : Unit ↦ 0) (Finsupp.single () 17) ≤ 1 := by simp [original]
+example : ¬ original (fun _ : Unit ↦ 1) (Finsupp.single () 2) ≤ 1 := by simp [original]
+example : ¬ (∑ _j ∈ ({()} : Finset Unit), (-2 : ℝ) / -1) ≤ 1 := by norm_num
+theorem nonzero_denominator_bounds [Fintype σ] {r : σ → ℕ} {d : σ →₀ ℕ}
+    (hd : ∀ j, r j ≠ 0 → d j ≤ r j) : original r d ≤ Fintype.card σ := by
+  exact (Finset.sum_le_card_nsmul Finset.univ (fun j ↦ (d j : ℝ) / r j) 1
+    (fun j _ ↦ by
+      by_cases hz : r j = 0
+      · simp [hz]
+      · exact div_le_one_of_le₀ (by exact_mod_cast hd j hz)
+          (Nat.cast_nonneg _))).trans_eq (nsmul_one _)
+example : (∀ j : Unit, (0 : ℕ) ≠ 0 → (Finsupp.single () 17 : Unit →₀ ℕ) j ≤ 0) ∧
+    ¬ (∀ j : Unit, (Finsupp.single () 17 : Unit →₀ ℕ) j ≤ 0) := by
+  simp
+#print axioms nonzero_denominator_bounds
+#print axioms original_composition
+#print axioms bridge
+#print axioms support_bound
+#print axioms field_bound
+end WeightLeCardAssessment
