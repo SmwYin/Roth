@@ -1,0 +1,14 @@
+namespace MvPolynomial.NormDetPackaging
+variable {σ : Type*}
+noncomputable def coeffSeminorm : RingSeminorm (MvPolynomial σ ℤ) where
+  toFun := Roth.normOne
+  map_zero' := Roth.normOne_zero
+  add_le' := Roth.normOne_add_le
+  neg' := Roth.normOne_neg
+  mul_le' := Roth.normOne_mul_le
+@[simp]
+theorem coeffSeminorm_apply (P : MvPolynomial σ ℤ) : coeffSeminorm P = Roth.normOne P := rfl
+theorem unitBound : (coeffSeminorm (1 : MvPolynomial σ ℤ)) ≤ 1 := by
+  change Roth.normOne (1 : MvPolynomial σ ℤ) ≤ 1
+  simpa using (Roth.normOne_monomial (0 : σ →₀ ℕ) 1).le
+end MvPolynomial.NormDetPackaging

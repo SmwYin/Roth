@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 87/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 88/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 87; remaining: 206.
-- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 6 YES-but-generalise-first, 16 NO-mathlib-has-it, 29 BORDERLINE-needs-human, 9 SKIP.
+- Completed applicable assessments: 88; remaining: 205.
+- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 7 YES-but-generalise-first, 16 NO-mathlib-has-it, 29 BORDERLINE-needs-human, 9 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -929,6 +929,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: One explicit caller Roth.abs_coeff_det_hasseDeriv_le at CoeffNorm.lean:270; full caller replay succeeds with inline Finset bound; canonical293 unique audit confirms sole direct proof consumer.
 - Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/Roth.normOne_le_card_mul.md).
 
+### Completed: `Roth.normOne_det_le`
+
+- Type: `∀ {σ : Type u_1} {l : ℕ} (M : Matrix (Fin l) (Fin l) (MvPolynomial σ ℤ)) {C : ℝ}, (∀ μ ν, Roth.normOne (M μ ν) ≤ C) → Roth.normOne M.det ≤ ↑l.factorial * C ^ l`
+- What: Bounds coefficient L1 size of an l×l polynomial determinant by l! C^l.
+- How: Leibniz expansion, subadditive finite sum, sign invariance, submultiplicative finite product, entrywise monotonicity, count permutations.
+- Hypotheses: Arbitrary variables σ and l; all entries size≤C; C unrestricted; includes empty matrix.
+- Project dependencies: Roth.normOne, Roth.normOne_sum_le, Roth.normOne_neg, Roth.normOne_prod_le, Roth.normOne_nonneg
+- Caller summary: One direct named caller: Roth.abs_coeff_det_hasseDeriv_le at CoeffNorm268; exact293unique canonical proof-value audit confirms.
+- Verdict: YES-but-generalise-first; [complete report](.mathlib-quality/overview/mathlibable/Roth.normOne_det_le.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -1129,6 +1139,8 @@ Completed `Roth.normOne_prod_le`: Finset.le_prod_of_submultiplicative_of_nonneg 
 
 Completed `Roth.normOne_le_card_mul`: Finset.sum_le_card_nsmul at Algebra/Order/BigOperators/Group/Finset.lean:285 generated from prod_le_pow_card. Current native signature uses Preorder.
 
+Completed `Roth.normOne_det_le`: Matrix.det_le requires multiplicative AbsoluteValue; existing RingSeminorm supports submultiplicativity but searched determinant law missing.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -1304,6 +1316,8 @@ Completed `Roth.normOne_mul_le`: Discrete Young L1 convolution inequality; stand
 Completed `Roth.normOne_prod_le`: Finite iteration of discrete Young coefficient L1 convolution bound; generic finite submultiplicative map bound already in mathlib.
 
 Completed `Roth.normOne_le_card_mul`: Same scalar finite-family inequality independently used by abs_coeff_diag_le; exact target already duplicates existing generic Finset theorem.
+
+Completed `Roth.normOne_det_le`: Analog of Matrix.det_le for merely submultiplicative real seminorms; degree/index/Wronskian determinant expansions prove different laws.
 
 ## Part 5: Generalization opportunities
 
@@ -1484,6 +1498,8 @@ Completed `Roth.normOne_prod_le`: Expanded genericProd verified over CommSemirin
 
 Completed `Roth.normOne_le_card_mul`: Support-only hB and arbitrary AddCommMonoid/Preorder/AddLeftMono codomain compile; existing mathlib law covers both.
 
+Completed `Roth.normOne_det_le`: Verified arbitrary CommRing R, existing RingSeminorm p with p1≤1, arbitrary Fintype n; exact normOne specialization packaged and compiled.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -1660,6 +1676,8 @@ Completed `Roth.normOne_mul_le`: Candidate shared coefficient-size convolution/R
 Completed `Roth.normOne_prod_le`: Substantive coefficient-size binary convolution/representation bridge, not finite-product induction.
 
 Completed `Roth.normOne_le_card_mul`: No missing API required for this bound; broader coefficient norm representation issues do not obstruct this theorem.
+
+Completed `Roth.normOne_det_le`: RingSeminorm determinant factorial bound beyond multiplicative AbsoluteValue.map_prod.
 
 ## Part 7: Junk / removable
 
@@ -1840,6 +1858,8 @@ Completed `Roth.normOne_prod_le`: Live helper for determinant norm estimate; no 
 
 Completed `Roth.normOne_le_card_mul`: Thin wrapper with one caller; useful estimate, redundant public declaration.
 
+Completed `Roth.normOne_det_le`: Not junk: module Main result and direct Lemma3 consumer.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -1931,6 +1951,7 @@ Completed `Roth.normOne_le_card_mul`: Thin wrapper with one caller; useful estim
 | 85 | `Roth.normOne_mul_le` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.normOne_mul_le.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.normOne_mul_le/root-acceptance.json) |
 | 86 | `Roth.normOne_prod_le` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.normOne_prod_le.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.normOne_prod_le/root-acceptance.json) |
 | 87 | `Roth.normOne_le_card_mul` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.normOne_le_card_mul.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.normOne_le_card_mul/root-acceptance.json) |
+| 88 | `Roth.normOne_det_le` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.normOne_det_le.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.normOne_det_le/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -2104,12 +2125,14 @@ Completed `Roth.normOne_prod_le` action: BORDERLINE: retain local wrapper pendin
 
 Completed `Roth.normOne_le_card_mul` action: NO-mathlib-has-it: inline Finset.sum_le_card_nsmul via local hsize in determinant caller and delete wrapper in separately authorized implementation. Keep source explanation in Roth/CoeffNorm.lean.
 
+Completed `Roth.normOne_det_le` action: YES-but-generalise-first MODERN-IDIOM: propose Matrix.ringSeminorm_det_le in new Mathlib/LinearAlgebra/Matrix/Seminorm.lean; keep local normOne corollary; run /generalise and /cleanup.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.normOne_det_le` next. Supporting identities receive their own applicable checks.
+   `Roth.abs_coeff_hasseDeriv_le` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

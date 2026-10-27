@@ -1,0 +1,505 @@
+[
+  {
+    "request": {
+      "query": "For a nonnegative subadditive submultiplicative negation invariant real-valued function on a commutative ring, bound determinant by cardinal factorial times uniform entry bound power cardinal",
+      "num_results": 5
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Matrix.det_le\",\n      \"informal_name\": \"Determinant Absolute Value Bound: $ n! \\\\cdot x^n $\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {S : Type u_2} [inst : CommRing R] [Nontrivial R] [inst_2 : CommRing S] [inst_3 : LinearOrder S]\\n  [IsStrictOrderedRing S] {n : Type u_3} [inst_5 : Fintype n] [inst_6 : DecidableEq n] {A : Matrix n n R}\\n  {abv : AbsoluteValue R S} {x : S},\\n  (∀ (i j : n), abv (A i j) ≤ x) → abv A.det ≤ (Fintype.card n).factorial • x ^ Fintype.card n\",\n      \"informal_description\": \"For any square matrix $ A $ of size $ n \\\\times n $ with entries in a commutative ring $ R $, and any absolute value $ \\\\text{abv} $ from $ R $ to a partially ordered semiring $ S $, if $ \\\\text{abv}(A_{i,j}) \\\\leq x $ for all entries $ A_{i,j} $, then $ \\\\text{abv}(\\\\det A) \\\\leq n! \\\\cdot x^n $.\",\n      \"path\": \"Mathlib.LinearAlgebra.Matrix.AbsoluteValue\"\n    },\n    {\n      \"formal_name\": \"Matrix.det_sum_le\",\n      \"informal_name\": \"Determinant Bound for Sum of Matrices with Bounded Entries\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {S : Type u_2} [inst : CommRing R] [Nontrivial R] [inst_2 : CommRing S] [inst_3 : LinearOrder S]\\n  [IsStrictOrderedRing S] {n : Type u_3} [inst_5 : Fintype n] [inst_6 : DecidableEq n] {ι : Type u_4} (s : Finset ι)\\n  {A : ι → Matrix n n R} {abv : AbsoluteValue R S} {x : S},\\n  (∀ (k : ι) (i j : n), abv (A k i j) ≤ x) →\\n    abv (∑ k ∈ s, A k).det ≤ (Fintype.card n).factorial • (s.card • x) ^ Fintype.card n\",\n      \"informal_description\": \"For any finite set $ s $, matrices $ A_k \\\\in M_n(R) $, and an absolute value $ abv: R \\\\to S $, if each entry of each $ A_k $ satisfies $ abv(A_k(i,j)) \\\\leq x $, then the absolute value of the determinant of the sum $ \\\\sum_{k \\\\in s} A_k $ is at most $ (n!) \\\\cdot (|s| \\\\cdot x)^n $, where $ n $ is the size of the matrices and $ |s| $ denotes the cardinality of $ s $.\",\n      \"path\": \"Mathlib.LinearAlgebra.Matrix.AbsoluteValue\"\n    },\n    {\n      \"formal_name\": \"Matrix.det_sum_smul_le\",\n      \"informal_name\": \"Determinant Inequality for Sum of Scaled Matrices with Absolute Value Bounds\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {S : Type u_2} [inst : CommRing R] [Nontrivial R] [inst_2 : CommRing S] [inst_3 : LinearOrder S]\\n  [IsStrictOrderedRing S] {n : Type u_3} [inst_5 : Fintype n] [inst_6 : DecidableEq n] {ι : Type u_4} (s : Finset ι)\\n  {c : ι → R} {A : ι → Matrix n n R} {abv : AbsoluteValue R S} {x : S},\\n  (∀ (k : ι) (i j : n), abv (A k i j) ≤ x) →\\n    ∀ {y : S},\\n      (∀ (k : ι), abv (c k) ≤ y) →\\n        abv (∑ k ∈ s, c k • A k).det ≤ (Fintype.card n).factorial • (s.card • y * x) ^ Fintype.card n\",\n      \"informal_description\": \"For any finite set $ s $, coefficient functions $ c $, matrix functions $ A $, and absolute value $ abv $ from a semiring $ R $ to a partially ordered semiring $ S $, if $ abv(A_k[i][j]) \\\\leq x $ for all $ k,i,j $ and $ abv(c_k) \\\\leq y $ for all $ k $, then the absolute value of the determinant of the sum $ \\\\sum_{k \\\\in s} c_k \\\\cdot A_k $ satisfies $ abv\\\\left(\\\\det\\\\left(\\\\sum_{k \\\\in s} c_k \\\\cdot A_k\\\\right)\\\\right) \\\\leq \\\\left(\\\\text{Nat.factorial}(\\\\#n)\\\\right) \\\\cdot \\\\left(\\\\#s \\\\cdot y \\\\cdot x\\\\right)^{\\\\#n} $, where $ \\\\#n $ denotes the cardinality of the matrix size $ n $.\",\n      \"path\": \"Mathlib.LinearAlgebra.Matrix.AbsoluteValue\"\n    },\n    {\n      \"formal_name\": \"ClassGroup.norm_le\",\n      \"informal_name\": \"Norm Bound in Terms of Coefficient Bounds\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {S : Type u_2} [inst : EuclideanDomain R] [inst_1 : CommRing S] [inst_2 : IsDomain S]\\n  [inst_3 : Algebra R S] (abv : AbsoluteValue R ℤ) {ι : Type u_5} [inst_4 : DecidableEq ι] [inst_5 : Fintype ι]\\n  (bS : Module.Basis ι R S) (a : S) {y : ℤ},\\n  (∀ (k : ι), abv ((bS.repr a) k) ≤ y) → abv ((Algebra.norm R) a) ≤ ClassGroup.normBound abv bS * y ^ Fintype.card ι\",\n      \"informal_description\": \"For any element $ a $ in $ S $, if the absolute value of each coefficient in its representation with respect to the basis $ b_S $ is at most $ y $, then the absolute value of the norm of $ a $ from $ S $ to $ R $ is bounded above by $ \\\\text{normBound} \\\\cdot y^{\\\\#\\\\iota} $, where $ \\\\#\\\\iota $ denotes the cardinality of the finite type $ \\\\iota $.\",\n      \"path\": \"Mathlib.NumberTheory.ClassNumber.Finite\"\n    },\n    {\n      \"formal_name\": \"ClassGroup.normBound\",\n      \"informal_name\": \"Norm Bound in Class Group for Euclidean Domains\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} →\\n  {S : Type u_2} →\\n    [inst : EuclideanDomain R] →\\n      [inst_1 : CommRing S] →\\n        [IsDomain S] →\\n          [inst_3 : Algebra R S] →\\n            AbsoluteValue R ℤ → {ι : Type u_5} → [DecidableEq ι] → [Fintype ι] → Module.Basis ι R S → ℤ\",\n      \"informal_description\": \"Given a Euclidean domain $ R $, a commutative domain $ S $ with an $ R $-algebra structure, and a finite basis $ b_S $ for $ S $ over $ R $, let $ n $ be the cardinality of the index set $ \\\\iota $ for the basis. Let $ m $ be the maximum absolute value of entries in the left multiplication matrix representation of $ b_S $. The norm bound is defined as $ n! \\\\cdot (n \\\\cdot m)^n $, where $ n! $ denotes the factorial of $ n $. This integer bound arises from combinatorial and matrix norm considerations in the class group context.\",\n      \"path\": \"Mathlib.NumberTheory.ClassNumber.Finite\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Matrix.det_le",
+            "informal_name": "Determinant Absolute Value Bound: $ n! \\cdot x^n $",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {S : Type u_2} [inst : CommRing R] [Nontrivial R] [inst_2 : CommRing S] [inst_3 : LinearOrder S]\n  [IsStrictOrderedRing S] {n : Type u_3} [inst_5 : Fintype n] [inst_6 : DecidableEq n] {A : Matrix n n R}\n  {abv : AbsoluteValue R S} {x : S},\n  (∀ (i j : n), abv (A i j) ≤ x) → abv A.det ≤ (Fintype.card n).factorial • x ^ Fintype.card n",
+            "informal_description": "For any square matrix $ A $ of size $ n \\times n $ with entries in a commutative ring $ R $, and any absolute value $ \\text{abv} $ from $ R $ to a partially ordered semiring $ S $, if $ \\text{abv}(A_{i,j}) \\leq x $ for all entries $ A_{i,j} $, then $ \\text{abv}(\\det A) \\leq n! \\cdot x^n $.",
+            "path": "Mathlib.LinearAlgebra.Matrix.AbsoluteValue"
+          },
+          {
+            "formal_name": "Matrix.det_sum_le",
+            "informal_name": "Determinant Bound for Sum of Matrices with Bounded Entries",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {S : Type u_2} [inst : CommRing R] [Nontrivial R] [inst_2 : CommRing S] [inst_3 : LinearOrder S]\n  [IsStrictOrderedRing S] {n : Type u_3} [inst_5 : Fintype n] [inst_6 : DecidableEq n] {ι : Type u_4} (s : Finset ι)\n  {A : ι → Matrix n n R} {abv : AbsoluteValue R S} {x : S},\n  (∀ (k : ι) (i j : n), abv (A k i j) ≤ x) →\n    abv (∑ k ∈ s, A k).det ≤ (Fintype.card n).factorial • (s.card • x) ^ Fintype.card n",
+            "informal_description": "For any finite set $ s $, matrices $ A_k \\in M_n(R) $, and an absolute value $ abv: R \\to S $, if each entry of each $ A_k $ satisfies $ abv(A_k(i,j)) \\leq x $, then the absolute value of the determinant of the sum $ \\sum_{k \\in s} A_k $ is at most $ (n!) \\cdot (|s| \\cdot x)^n $, where $ n $ is the size of the matrices and $ |s| $ denotes the cardinality of $ s $.",
+            "path": "Mathlib.LinearAlgebra.Matrix.AbsoluteValue"
+          },
+          {
+            "formal_name": "Matrix.det_sum_smul_le",
+            "informal_name": "Determinant Inequality for Sum of Scaled Matrices with Absolute Value Bounds",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {S : Type u_2} [inst : CommRing R] [Nontrivial R] [inst_2 : CommRing S] [inst_3 : LinearOrder S]\n  [IsStrictOrderedRing S] {n : Type u_3} [inst_5 : Fintype n] [inst_6 : DecidableEq n] {ι : Type u_4} (s : Finset ι)\n  {c : ι → R} {A : ι → Matrix n n R} {abv : AbsoluteValue R S} {x : S},\n  (∀ (k : ι) (i j : n), abv (A k i j) ≤ x) →\n    ∀ {y : S},\n      (∀ (k : ι), abv (c k) ≤ y) →\n        abv (∑ k ∈ s, c k • A k).det ≤ (Fintype.card n).factorial • (s.card • y * x) ^ Fintype.card n",
+            "informal_description": "For any finite set $ s $, coefficient functions $ c $, matrix functions $ A $, and absolute value $ abv $ from a semiring $ R $ to a partially ordered semiring $ S $, if $ abv(A_k[i][j]) \\leq x $ for all $ k,i,j $ and $ abv(c_k) \\leq y $ for all $ k $, then the absolute value of the determinant of the sum $ \\sum_{k \\in s} c_k \\cdot A_k $ satisfies $ abv\\left(\\det\\left(\\sum_{k \\in s} c_k \\cdot A_k\\right)\\right) \\leq \\left(\\text{Nat.factorial}(\\#n)\\right) \\cdot \\left(\\#s \\cdot y \\cdot x\\right)^{\\#n} $, where $ \\#n $ denotes the cardinality of the matrix size $ n $.",
+            "path": "Mathlib.LinearAlgebra.Matrix.AbsoluteValue"
+          },
+          {
+            "formal_name": "ClassGroup.norm_le",
+            "informal_name": "Norm Bound in Terms of Coefficient Bounds",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {S : Type u_2} [inst : EuclideanDomain R] [inst_1 : CommRing S] [inst_2 : IsDomain S]\n  [inst_3 : Algebra R S] (abv : AbsoluteValue R ℤ) {ι : Type u_5} [inst_4 : DecidableEq ι] [inst_5 : Fintype ι]\n  (bS : Module.Basis ι R S) (a : S) {y : ℤ},\n  (∀ (k : ι), abv ((bS.repr a) k) ≤ y) → abv ((Algebra.norm R) a) ≤ ClassGroup.normBound abv bS * y ^ Fintype.card ι",
+            "informal_description": "For any element $ a $ in $ S $, if the absolute value of each coefficient in its representation with respect to the basis $ b_S $ is at most $ y $, then the absolute value of the norm of $ a $ from $ S $ to $ R $ is bounded above by $ \\text{normBound} \\cdot y^{\\#\\iota} $, where $ \\#\\iota $ denotes the cardinality of the finite type $ \\iota $.",
+            "path": "Mathlib.NumberTheory.ClassNumber.Finite"
+          },
+          {
+            "formal_name": "ClassGroup.normBound",
+            "informal_name": "Norm Bound in Class Group for Euclidean Domains",
+            "kind": "definition",
+            "type": "{R : Type u_1} →\n  {S : Type u_2} →\n    [inst : EuclideanDomain R] →\n      [inst_1 : CommRing S] →\n        [IsDomain S] →\n          [inst_3 : Algebra R S] →\n            AbsoluteValue R ℤ → {ι : Type u_5} → [DecidableEq ι] → [Fintype ι] → Module.Basis ι R S → ℤ",
+            "informal_description": "Given a Euclidean domain $ R $, a commutative domain $ S $ with an $ R $-algebra structure, and a finite basis $ b_S $ for $ S $ over $ R $, let $ n $ be the cardinality of the index set $ \\iota $ for the basis. Let $ m $ be the maximum absolute value of entries in the left multiplication matrix representation of $ b_S $. The norm bound is defined as $ n! \\cdot (n \\cdot m)^n $, where $ n! $ denotes the factorial of $ n $. This integer bound arises from combinatorial and matrix norm considerations in the class group context.",
+            "path": "Mathlib.NumberTheory.ClassNumber.Finite"
+          }
+        ]
+      },
+      "isError": false
+    },
+    "method": "lean_leanfinder",
+    "form": "abstract"
+  },
+  {
+    "request": {
+      "query": "The determinant of a matrix of multivariate integer polynomials with coefficient l1 norm bounded by C has coefficient l1 norm at most factorial n times C^n",
+      "num_results": 5
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Matrix.det_le\",\n      \"informal_name\": \"Determinant Absolute Value Bound: $ n! \\\\cdot x^n $\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {S : Type u_2} [inst : CommRing R] [Nontrivial R] [inst_2 : CommRing S] [inst_3 : LinearOrder S]\\n  [IsStrictOrderedRing S] {n : Type u_3} [inst_5 : Fintype n] [inst_6 : DecidableEq n] {A : Matrix n n R}\\n  {abv : AbsoluteValue R S} {x : S},\\n  (∀ (i j : n), abv (A i j) ≤ x) → abv A.det ≤ (Fintype.card n).factorial • x ^ Fintype.card n\",\n      \"informal_description\": \"For any square matrix $ A $ of size $ n \\\\times n $ with entries in a commutative ring $ R $, and any absolute value $ \\\\text{abv} $ from $ R $ to a partially ordered semiring $ S $, if $ \\\\text{abv}(A_{i,j}) \\\\leq x $ for all entries $ A_{i,j} $, then $ \\\\text{abv}(\\\\det A) \\\\leq n! \\\\cdot x^n $.\",\n      \"path\": \"Mathlib.LinearAlgebra.Matrix.AbsoluteValue\"\n    },\n    {\n      \"formal_name\": \"Matrix.det_sum_smul_le\",\n      \"informal_name\": \"Determinant Inequality for Sum of Scaled Matrices with Absolute Value Bounds\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {S : Type u_2} [inst : CommRing R] [Nontrivial R] [inst_2 : CommRing S] [inst_3 : LinearOrder S]\\n  [IsStrictOrderedRing S] {n : Type u_3} [inst_5 : Fintype n] [inst_6 : DecidableEq n] {ι : Type u_4} (s : Finset ι)\\n  {c : ι → R} {A : ι → Matrix n n R} {abv : AbsoluteValue R S} {x : S},\\n  (∀ (k : ι) (i j : n), abv (A k i j) ≤ x) →\\n    ∀ {y : S},\\n      (∀ (k : ι), abv (c k) ≤ y) →\\n        abv (∑ k ∈ s, c k • A k).det ≤ (Fintype.card n).factorial • (s.card • y * x) ^ Fintype.card n\",\n      \"informal_description\": \"For any finite set $ s $, coefficient functions $ c $, matrix functions $ A $, and absolute value $ abv $ from a semiring $ R $ to a partially ordered semiring $ S $, if $ abv(A_k[i][j]) \\\\leq x $ for all $ k,i,j $ and $ abv(c_k) \\\\leq y $ for all $ k $, then the absolute value of the determinant of the sum $ \\\\sum_{k \\\\in s} c_k \\\\cdot A_k $ satisfies $ abv\\\\left(\\\\det\\\\left(\\\\sum_{k \\\\in s} c_k \\\\cdot A_k\\\\right)\\\\right) \\\\leq \\\\left(\\\\text{Nat.factorial}(\\\\#n)\\\\right) \\\\cdot \\\\left(\\\\#s \\\\cdot y \\\\cdot x\\\\right)^{\\\\#n} $, where $ \\\\#n $ denotes the cardinality of the matrix size $ n $.\",\n      \"path\": \"Mathlib.LinearAlgebra.Matrix.AbsoluteValue\"\n    },\n    {\n      \"formal_name\": \"Matrix.det_sum_le\",\n      \"informal_name\": \"Determinant Bound for Sum of Matrices with Bounded Entries\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {S : Type u_2} [inst : CommRing R] [Nontrivial R] [inst_2 : CommRing S] [inst_3 : LinearOrder S]\\n  [IsStrictOrderedRing S] {n : Type u_3} [inst_5 : Fintype n] [inst_6 : DecidableEq n] {ι : Type u_4} (s : Finset ι)\\n  {A : ι → Matrix n n R} {abv : AbsoluteValue R S} {x : S},\\n  (∀ (k : ι) (i j : n), abv (A k i j) ≤ x) →\\n    abv (∑ k ∈ s, A k).det ≤ (Fintype.card n).factorial • (s.card • x) ^ Fintype.card n\",\n      \"informal_description\": \"For any finite set $ s $, matrices $ A_k \\\\in M_n(R) $, and an absolute value $ abv: R \\\\to S $, if each entry of each $ A_k $ satisfies $ abv(A_k(i,j)) \\\\leq x $, then the absolute value of the determinant of the sum $ \\\\sum_{k \\\\in s} A_k $ is at most $ (n!) \\\\cdot (|s| \\\\cdot x)^n $, where $ n $ is the size of the matrices and $ |s| $ denotes the cardinality of $ s $.\",\n      \"path\": \"Mathlib.LinearAlgebra.Matrix.AbsoluteValue\"\n    },\n    {\n      \"formal_name\": \"Matrix.det_matrixOfPolynomials\",\n      \"informal_name\": \"Determinant of a Matrix of Monic Polynomials with Degree Conditions Equals One\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type v} [inst : CommRing R] {n : ℕ} (p : Fin n → Polynomial R),\\n  (∀ (i : Fin n), (p i).natDegree = ↑i) → (∀ (i : Fin n), (p i).Monic) → (Matrix.of fun i j => (p j).coeff ↑i).det = 1\",\n      \"informal_description\": \"For a commutative ring $ R $ and natural number $ n $, consider monic polynomials $ p_0, p_1, \\\\ldots, p_{n-1} $ in $ R[X] $ where each $ p_i $ has degree $ i $. Construct an $ n \\\\times n $ matrix $ M $ such that the entry in row $ i $ and column $ j $ is the coefficient of $ X^i $ in $ p_j $. Then the determinant of $ M $ is equal to 1.\",\n      \"path\": \"Mathlib.LinearAlgebra.Matrix.Block\"\n    },\n    {\n      \"formal_name\": \"Matrix.superFactorial_dvd_vandermonde_det\",\n      \"informal_name\": \"Superfactorial Divides Vandermonde Determinant\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {n : ℕ} (v : Fin (n + 1) → ℤ), ↑n.superFactorial ∣ (Matrix.vandermonde v).det\",\n      \"informal_description\": \"For any natural number $ n $ and any vector $ v $ of $ n+1 $ integers, the determinant of the Vandermonde matrix constructed from $ v $ is divisible by the superfactorial of $ n $. The superfactorial of $ n $ is defined as the product $ 1! \\\\times 2! \\\\times \\\\cdots \\\\times n! $.\",\n      \"path\": \"Mathlib.LinearAlgebra.Vandermonde\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Matrix.det_le",
+            "informal_name": "Determinant Absolute Value Bound: $ n! \\cdot x^n $",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {S : Type u_2} [inst : CommRing R] [Nontrivial R] [inst_2 : CommRing S] [inst_3 : LinearOrder S]\n  [IsStrictOrderedRing S] {n : Type u_3} [inst_5 : Fintype n] [inst_6 : DecidableEq n] {A : Matrix n n R}\n  {abv : AbsoluteValue R S} {x : S},\n  (∀ (i j : n), abv (A i j) ≤ x) → abv A.det ≤ (Fintype.card n).factorial • x ^ Fintype.card n",
+            "informal_description": "For any square matrix $ A $ of size $ n \\times n $ with entries in a commutative ring $ R $, and any absolute value $ \\text{abv} $ from $ R $ to a partially ordered semiring $ S $, if $ \\text{abv}(A_{i,j}) \\leq x $ for all entries $ A_{i,j} $, then $ \\text{abv}(\\det A) \\leq n! \\cdot x^n $.",
+            "path": "Mathlib.LinearAlgebra.Matrix.AbsoluteValue"
+          },
+          {
+            "formal_name": "Matrix.det_sum_smul_le",
+            "informal_name": "Determinant Inequality for Sum of Scaled Matrices with Absolute Value Bounds",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {S : Type u_2} [inst : CommRing R] [Nontrivial R] [inst_2 : CommRing S] [inst_3 : LinearOrder S]\n  [IsStrictOrderedRing S] {n : Type u_3} [inst_5 : Fintype n] [inst_6 : DecidableEq n] {ι : Type u_4} (s : Finset ι)\n  {c : ι → R} {A : ι → Matrix n n R} {abv : AbsoluteValue R S} {x : S},\n  (∀ (k : ι) (i j : n), abv (A k i j) ≤ x) →\n    ∀ {y : S},\n      (∀ (k : ι), abv (c k) ≤ y) →\n        abv (∑ k ∈ s, c k • A k).det ≤ (Fintype.card n).factorial • (s.card • y * x) ^ Fintype.card n",
+            "informal_description": "For any finite set $ s $, coefficient functions $ c $, matrix functions $ A $, and absolute value $ abv $ from a semiring $ R $ to a partially ordered semiring $ S $, if $ abv(A_k[i][j]) \\leq x $ for all $ k,i,j $ and $ abv(c_k) \\leq y $ for all $ k $, then the absolute value of the determinant of the sum $ \\sum_{k \\in s} c_k \\cdot A_k $ satisfies $ abv\\left(\\det\\left(\\sum_{k \\in s} c_k \\cdot A_k\\right)\\right) \\leq \\left(\\text{Nat.factorial}(\\#n)\\right) \\cdot \\left(\\#s \\cdot y \\cdot x\\right)^{\\#n} $, where $ \\#n $ denotes the cardinality of the matrix size $ n $.",
+            "path": "Mathlib.LinearAlgebra.Matrix.AbsoluteValue"
+          },
+          {
+            "formal_name": "Matrix.det_sum_le",
+            "informal_name": "Determinant Bound for Sum of Matrices with Bounded Entries",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {S : Type u_2} [inst : CommRing R] [Nontrivial R] [inst_2 : CommRing S] [inst_3 : LinearOrder S]\n  [IsStrictOrderedRing S] {n : Type u_3} [inst_5 : Fintype n] [inst_6 : DecidableEq n] {ι : Type u_4} (s : Finset ι)\n  {A : ι → Matrix n n R} {abv : AbsoluteValue R S} {x : S},\n  (∀ (k : ι) (i j : n), abv (A k i j) ≤ x) →\n    abv (∑ k ∈ s, A k).det ≤ (Fintype.card n).factorial • (s.card • x) ^ Fintype.card n",
+            "informal_description": "For any finite set $ s $, matrices $ A_k \\in M_n(R) $, and an absolute value $ abv: R \\to S $, if each entry of each $ A_k $ satisfies $ abv(A_k(i,j)) \\leq x $, then the absolute value of the determinant of the sum $ \\sum_{k \\in s} A_k $ is at most $ (n!) \\cdot (|s| \\cdot x)^n $, where $ n $ is the size of the matrices and $ |s| $ denotes the cardinality of $ s $.",
+            "path": "Mathlib.LinearAlgebra.Matrix.AbsoluteValue"
+          },
+          {
+            "formal_name": "Matrix.det_matrixOfPolynomials",
+            "informal_name": "Determinant of a Matrix of Monic Polynomials with Degree Conditions Equals One",
+            "kind": "theorem",
+            "type": "∀ {R : Type v} [inst : CommRing R] {n : ℕ} (p : Fin n → Polynomial R),\n  (∀ (i : Fin n), (p i).natDegree = ↑i) → (∀ (i : Fin n), (p i).Monic) → (Matrix.of fun i j => (p j).coeff ↑i).det = 1",
+            "informal_description": "For a commutative ring $ R $ and natural number $ n $, consider monic polynomials $ p_0, p_1, \\ldots, p_{n-1} $ in $ R[X] $ where each $ p_i $ has degree $ i $. Construct an $ n \\times n $ matrix $ M $ such that the entry in row $ i $ and column $ j $ is the coefficient of $ X^i $ in $ p_j $. Then the determinant of $ M $ is equal to 1.",
+            "path": "Mathlib.LinearAlgebra.Matrix.Block"
+          },
+          {
+            "formal_name": "Matrix.superFactorial_dvd_vandermonde_det",
+            "informal_name": "Superfactorial Divides Vandermonde Determinant",
+            "kind": "theorem",
+            "type": "∀ {n : ℕ} (v : Fin (n + 1) → ℤ), ↑n.superFactorial ∣ (Matrix.vandermonde v).det",
+            "informal_description": "For any natural number $ n $ and any vector $ v $ of $ n+1 $ integers, the determinant of the Vandermonde matrix constructed from $ v $ is divisible by the superfactorial of $ n $. The superfactorial of $ n $ is defined as the product $ 1! \\times 2! \\times \\cdots \\times n! $.",
+            "path": "Mathlib.LinearAlgebra.Vandermonde"
+          }
+        ]
+      },
+      "isError": false
+    },
+    "method": "lean_leanfinder",
+    "form": "current"
+  },
+  {
+    "request": {
+      "query": "For a matrix over a normed commutative ring with each entry norm at most C, norm of determinant is at most n factorial times C power n",
+      "num_results": 5
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Matrix.det_le\",\n      \"informal_name\": \"Determinant Absolute Value Bound: $ n! \\\\cdot x^n $\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {S : Type u_2} [inst : CommRing R] [Nontrivial R] [inst_2 : CommRing S] [inst_3 : LinearOrder S]\\n  [IsStrictOrderedRing S] {n : Type u_3} [inst_5 : Fintype n] [inst_6 : DecidableEq n] {A : Matrix n n R}\\n  {abv : AbsoluteValue R S} {x : S},\\n  (∀ (i j : n), abv (A i j) ≤ x) → abv A.det ≤ (Fintype.card n).factorial • x ^ Fintype.card n\",\n      \"informal_description\": \"For any square matrix $ A $ of size $ n \\\\times n $ with entries in a commutative ring $ R $, and any absolute value $ \\\\text{abv} $ from $ R $ to a partially ordered semiring $ S $, if $ \\\\text{abv}(A_{i,j}) \\\\leq x $ for all entries $ A_{i,j} $, then $ \\\\text{abv}(\\\\det A) \\\\leq n! \\\\cdot x^n $.\",\n      \"path\": \"Mathlib.LinearAlgebra.Matrix.AbsoluteValue\"\n    },\n    {\n      \"formal_name\": \"Matrix.det_sum_le\",\n      \"informal_name\": \"Determinant Bound for Sum of Matrices with Bounded Entries\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {S : Type u_2} [inst : CommRing R] [Nontrivial R] [inst_2 : CommRing S] [inst_3 : LinearOrder S]\\n  [IsStrictOrderedRing S] {n : Type u_3} [inst_5 : Fintype n] [inst_6 : DecidableEq n] {ι : Type u_4} (s : Finset ι)\\n  {A : ι → Matrix n n R} {abv : AbsoluteValue R S} {x : S},\\n  (∀ (k : ι) (i j : n), abv (A k i j) ≤ x) →\\n    abv (∑ k ∈ s, A k).det ≤ (Fintype.card n).factorial • (s.card • x) ^ Fintype.card n\",\n      \"informal_description\": \"For any finite set $ s $, matrices $ A_k \\\\in M_n(R) $, and an absolute value $ abv: R \\\\to S $, if each entry of each $ A_k $ satisfies $ abv(A_k(i,j)) \\\\leq x $, then the absolute value of the determinant of the sum $ \\\\sum_{k \\\\in s} A_k $ is at most $ (n!) \\\\cdot (|s| \\\\cdot x)^n $, where $ n $ is the size of the matrices and $ |s| $ denotes the cardinality of $ s $.\",\n      \"path\": \"Mathlib.LinearAlgebra.Matrix.AbsoluteValue\"\n    },\n    {\n      \"formal_name\": \"Matrix.det_sum_smul_le\",\n      \"informal_name\": \"Determinant Inequality for Sum of Scaled Matrices with Absolute Value Bounds\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {S : Type u_2} [inst : CommRing R] [Nontrivial R] [inst_2 : CommRing S] [inst_3 : LinearOrder S]\\n  [IsStrictOrderedRing S] {n : Type u_3} [inst_5 : Fintype n] [inst_6 : DecidableEq n] {ι : Type u_4} (s : Finset ι)\\n  {c : ι → R} {A : ι → Matrix n n R} {abv : AbsoluteValue R S} {x : S},\\n  (∀ (k : ι) (i j : n), abv (A k i j) ≤ x) →\\n    ∀ {y : S},\\n      (∀ (k : ι), abv (c k) ≤ y) →\\n        abv (∑ k ∈ s, c k • A k).det ≤ (Fintype.card n).factorial • (s.card • y * x) ^ Fintype.card n\",\n      \"informal_description\": \"For any finite set $ s $, coefficient functions $ c $, matrix functions $ A $, and absolute value $ abv $ from a semiring $ R $ to a partially ordered semiring $ S $, if $ abv(A_k[i][j]) \\\\leq x $ for all $ k,i,j $ and $ abv(c_k) \\\\leq y $ for all $ k $, then the absolute value of the determinant of the sum $ \\\\sum_{k \\\\in s} c_k \\\\cdot A_k $ satisfies $ abv\\\\left(\\\\det\\\\left(\\\\sum_{k \\\\in s} c_k \\\\cdot A_k\\\\right)\\\\right) \\\\leq \\\\left(\\\\text{Nat.factorial}(\\\\#n)\\\\right) \\\\cdot \\\\left(\\\\#s \\\\cdot y \\\\cdot x\\\\right)^{\\\\#n} $, where $ \\\\#n $ denotes the cardinality of the matrix size $ n $.\",\n      \"path\": \"Mathlib.LinearAlgebra.Matrix.AbsoluteValue\"\n    },\n    {\n      \"formal_name\": \"det_ne_zero_of_sum_col_lt_diag\",\n      \"informal_name\": \"Non-Zero Determinant for Strictly Diagonally Dominant Matrices\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {K : Type u_1} {n : Type u_2} [inst : NormedField K] [inst_1 : Fintype n] [inst_2 : DecidableEq n] {A : Matrix n n K},\\n  (∀ (k : n), ∑ i ∈ Finset.univ.erase k, ‖A i k‖ < ‖A k k‖) → A.det ≠ 0\",\n      \"informal_description\": \"If for every row $ k $, the absolute value of the diagonal entry $ A_{k,k} $ exceeds the sum of the absolute values of the remaining entries in that row, i.e., $ \\\\sum_{i \\\\neq k} \\\\|A_{i,k}\\\\| < \\\\|A_{k,k}\\\\| $, then the determinant of the matrix $ A $ is non-zero.\",\n      \"path\": \"Mathlib.LinearAlgebra.Matrix.Gershgorin\"\n    },\n    {\n      \"formal_name\": \"det_ne_zero_of_sum_row_lt_diag\",\n      \"informal_name\": \"Non-vanishing Determinant for Strictly Diagonally Dominant Matrices\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {K : Type u_1} {n : Type u_2} [inst : NormedField K] [inst_1 : Fintype n] [inst_2 : DecidableEq n] {A : Matrix n n K},\\n  (∀ (k : n), ∑ j ∈ Finset.univ.erase k, ‖A k j‖ < ‖A k k‖) → A.det ≠ 0\",\n      \"informal_description\": \"If for every row $k$ of a square matrix $A$ with entries in a normed field, the sum of the norms of the off-diagonal entries in row $k$ is strictly less than the norm of the diagonal entry $A_{k,k}$, then the determinant of $A$ is non-zero. Formally, $\\\\forall k, \\\\sum_{j \\\\neq k} \\\\|A_{k,j}\\\\| < \\\\|A_{k,k}\\\\| \\\\implies \\\\det(A) \\\\neq 0$.\",\n      \"path\": \"Mathlib.LinearAlgebra.Matrix.Gershgorin\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Matrix.det_le",
+            "informal_name": "Determinant Absolute Value Bound: $ n! \\cdot x^n $",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {S : Type u_2} [inst : CommRing R] [Nontrivial R] [inst_2 : CommRing S] [inst_3 : LinearOrder S]\n  [IsStrictOrderedRing S] {n : Type u_3} [inst_5 : Fintype n] [inst_6 : DecidableEq n] {A : Matrix n n R}\n  {abv : AbsoluteValue R S} {x : S},\n  (∀ (i j : n), abv (A i j) ≤ x) → abv A.det ≤ (Fintype.card n).factorial • x ^ Fintype.card n",
+            "informal_description": "For any square matrix $ A $ of size $ n \\times n $ with entries in a commutative ring $ R $, and any absolute value $ \\text{abv} $ from $ R $ to a partially ordered semiring $ S $, if $ \\text{abv}(A_{i,j}) \\leq x $ for all entries $ A_{i,j} $, then $ \\text{abv}(\\det A) \\leq n! \\cdot x^n $.",
+            "path": "Mathlib.LinearAlgebra.Matrix.AbsoluteValue"
+          },
+          {
+            "formal_name": "Matrix.det_sum_le",
+            "informal_name": "Determinant Bound for Sum of Matrices with Bounded Entries",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {S : Type u_2} [inst : CommRing R] [Nontrivial R] [inst_2 : CommRing S] [inst_3 : LinearOrder S]\n  [IsStrictOrderedRing S] {n : Type u_3} [inst_5 : Fintype n] [inst_6 : DecidableEq n] {ι : Type u_4} (s : Finset ι)\n  {A : ι → Matrix n n R} {abv : AbsoluteValue R S} {x : S},\n  (∀ (k : ι) (i j : n), abv (A k i j) ≤ x) →\n    abv (∑ k ∈ s, A k).det ≤ (Fintype.card n).factorial • (s.card • x) ^ Fintype.card n",
+            "informal_description": "For any finite set $ s $, matrices $ A_k \\in M_n(R) $, and an absolute value $ abv: R \\to S $, if each entry of each $ A_k $ satisfies $ abv(A_k(i,j)) \\leq x $, then the absolute value of the determinant of the sum $ \\sum_{k \\in s} A_k $ is at most $ (n!) \\cdot (|s| \\cdot x)^n $, where $ n $ is the size of the matrices and $ |s| $ denotes the cardinality of $ s $.",
+            "path": "Mathlib.LinearAlgebra.Matrix.AbsoluteValue"
+          },
+          {
+            "formal_name": "Matrix.det_sum_smul_le",
+            "informal_name": "Determinant Inequality for Sum of Scaled Matrices with Absolute Value Bounds",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {S : Type u_2} [inst : CommRing R] [Nontrivial R] [inst_2 : CommRing S] [inst_3 : LinearOrder S]\n  [IsStrictOrderedRing S] {n : Type u_3} [inst_5 : Fintype n] [inst_6 : DecidableEq n] {ι : Type u_4} (s : Finset ι)\n  {c : ι → R} {A : ι → Matrix n n R} {abv : AbsoluteValue R S} {x : S},\n  (∀ (k : ι) (i j : n), abv (A k i j) ≤ x) →\n    ∀ {y : S},\n      (∀ (k : ι), abv (c k) ≤ y) →\n        abv (∑ k ∈ s, c k • A k).det ≤ (Fintype.card n).factorial • (s.card • y * x) ^ Fintype.card n",
+            "informal_description": "For any finite set $ s $, coefficient functions $ c $, matrix functions $ A $, and absolute value $ abv $ from a semiring $ R $ to a partially ordered semiring $ S $, if $ abv(A_k[i][j]) \\leq x $ for all $ k,i,j $ and $ abv(c_k) \\leq y $ for all $ k $, then the absolute value of the determinant of the sum $ \\sum_{k \\in s} c_k \\cdot A_k $ satisfies $ abv\\left(\\det\\left(\\sum_{k \\in s} c_k \\cdot A_k\\right)\\right) \\leq \\left(\\text{Nat.factorial}(\\#n)\\right) \\cdot \\left(\\#s \\cdot y \\cdot x\\right)^{\\#n} $, where $ \\#n $ denotes the cardinality of the matrix size $ n $.",
+            "path": "Mathlib.LinearAlgebra.Matrix.AbsoluteValue"
+          },
+          {
+            "formal_name": "det_ne_zero_of_sum_col_lt_diag",
+            "informal_name": "Non-Zero Determinant for Strictly Diagonally Dominant Matrices",
+            "kind": "theorem",
+            "type": "∀ {K : Type u_1} {n : Type u_2} [inst : NormedField K] [inst_1 : Fintype n] [inst_2 : DecidableEq n] {A : Matrix n n K},\n  (∀ (k : n), ∑ i ∈ Finset.univ.erase k, ‖A i k‖ < ‖A k k‖) → A.det ≠ 0",
+            "informal_description": "If for every row $ k $, the absolute value of the diagonal entry $ A_{k,k} $ exceeds the sum of the absolute values of the remaining entries in that row, i.e., $ \\sum_{i \\neq k} \\|A_{i,k}\\| < \\|A_{k,k}\\| $, then the determinant of the matrix $ A $ is non-zero.",
+            "path": "Mathlib.LinearAlgebra.Matrix.Gershgorin"
+          },
+          {
+            "formal_name": "det_ne_zero_of_sum_row_lt_diag",
+            "informal_name": "Non-vanishing Determinant for Strictly Diagonally Dominant Matrices",
+            "kind": "theorem",
+            "type": "∀ {K : Type u_1} {n : Type u_2} [inst : NormedField K] [inst_1 : Fintype n] [inst_2 : DecidableEq n] {A : Matrix n n K},\n  (∀ (k : n), ∑ j ∈ Finset.univ.erase k, ‖A k j‖ < ‖A k k‖) → A.det ≠ 0",
+            "informal_description": "If for every row $k$ of a square matrix $A$ with entries in a normed field, the sum of the norms of the off-diagonal entries in row $k$ is strictly less than the norm of the diagonal entry $A_{k,k}$, then the determinant of $A$ is non-zero. Formally, $\\forall k, \\sum_{j \\neq k} \\|A_{k,j}\\| < \\|A_{k,k}\\| \\implies \\det(A) \\neq 0$.",
+            "path": "Mathlib.LinearAlgebra.Matrix.Gershgorin"
+          }
+        ]
+      },
+      "isError": false
+    },
+    "method": "lean_leanfinder",
+    "form": "standard"
+  },
+  {
+    "request": {
+      "query": "For a nonnegative subadditive submultiplicative negation invariant real-valued function on a commutative ring, bound determinant by cardinal factorial times uniform entry bound power cardinal",
+      "num_results": 5
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Matrix.det_le\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Matrix.AbsoluteValue\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {S : Type u_2} [inst : CommRing R] [Nontrivial R] [inst_2 : CommRing S] [inst_3 : LinearOrder S]\\n  [IsStrictOrderedRing S] {n : Type u_3} [inst_5 : Fintype n] [inst_6 : DecidableEq n] {A : Matrix n n R}\\n  {abv : AbsoluteValue R S} {x : S},\\n  (∀ (i j : n), abv (A i j) ≤ x) → abv A.det ≤ (Fintype.card n).factorial • x ^ Fintype.card n\"\n    },\n    {\n      \"name\": \"Matrix.det_sum_le\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Matrix.AbsoluteValue\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {S : Type u_2} [inst : CommRing R] [Nontrivial R] [inst_2 : CommRing S] [inst_3 : LinearOrder S]\\n  [IsStrictOrderedRing S] {n : Type u_3} [inst_5 : Fintype n] [inst_6 : DecidableEq n] {ι : Type u_4} (s : Finset ι)\\n  {A : ι → Matrix n n R} {abv : AbsoluteValue R S} {x : S},\\n  (∀ (k : ι) (i j : n), abv (A k i j) ≤ x) →\\n    abv (∑ k ∈ s, A k).det ≤ (Fintype.card n).factorial • (s.card • x) ^ Fintype.card n\"\n    },\n    {\n      \"name\": \"Matrix.det_sum_smul_le\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Matrix.AbsoluteValue\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {S : Type u_2} [inst : CommRing R] [Nontrivial R] [inst_2 : CommRing S] [inst_3 : LinearOrder S]\\n  [IsStrictOrderedRing S] {n : Type u_3} [inst_5 : Fintype n] [inst_6 : DecidableEq n] {ι : Type u_4} (s : Finset ι)\\n  {c : ι → R} {A : ι → Matrix n n R} {abv : AbsoluteValue R S} {x : S},\\n  (∀ (k : ι) (i j : n), abv (A k i j) ≤ x) →\\n    ∀ {y : S},\\n      (∀ (k : ι), abv (c k) ≤ y) →\\n        abv (∑ k ∈ s, c k • A k).det ≤ (Fintype.card n).factorial • (s.card • y * x) ^ Fintype.card n\"\n    },\n    {\n      \"name\": \"Finset.le_prod_of_submultiplicative_of_nonneg\",\n      \"module_name\": \"Mathlib.Algebra.Order.BigOperators.Ring.Finset\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {R : Type u_2} [inst : CommSemiring R] [inst_1 : PartialOrder R] [IsOrderedRing R] {M : Type u_4}\\n  [inst_3 : CommMonoid M] (f : M → R),\\n  (∀ (a : M), 0 ≤ f a) →\\n    f 1 ≤ 1 → (∀ (x y : M), f (x * y) ≤ f x * f y) → ∀ (s : Finset ι) (g : ι → M), f (∏ i ∈ s, g i) ≤ ∏ i ∈ s, f (g i)\"\n    },\n    {\n      \"name\": \"Matrix.det\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Matrix.Determinant.Basic\",\n      \"kind\": \"definition\",\n      \"type\": \"{n : Type u_2} → [DecidableEq n] → [Fintype n] → {R : Type v} → [CommRing R] → Matrix n n R → R\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Matrix.det_le",
+            "module_name": "Mathlib.LinearAlgebra.Matrix.AbsoluteValue",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {S : Type u_2} [inst : CommRing R] [Nontrivial R] [inst_2 : CommRing S] [inst_3 : LinearOrder S]\n  [IsStrictOrderedRing S] {n : Type u_3} [inst_5 : Fintype n] [inst_6 : DecidableEq n] {A : Matrix n n R}\n  {abv : AbsoluteValue R S} {x : S},\n  (∀ (i j : n), abv (A i j) ≤ x) → abv A.det ≤ (Fintype.card n).factorial • x ^ Fintype.card n"
+          },
+          {
+            "name": "Matrix.det_sum_le",
+            "module_name": "Mathlib.LinearAlgebra.Matrix.AbsoluteValue",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {S : Type u_2} [inst : CommRing R] [Nontrivial R] [inst_2 : CommRing S] [inst_3 : LinearOrder S]\n  [IsStrictOrderedRing S] {n : Type u_3} [inst_5 : Fintype n] [inst_6 : DecidableEq n] {ι : Type u_4} (s : Finset ι)\n  {A : ι → Matrix n n R} {abv : AbsoluteValue R S} {x : S},\n  (∀ (k : ι) (i j : n), abv (A k i j) ≤ x) →\n    abv (∑ k ∈ s, A k).det ≤ (Fintype.card n).factorial • (s.card • x) ^ Fintype.card n"
+          },
+          {
+            "name": "Matrix.det_sum_smul_le",
+            "module_name": "Mathlib.LinearAlgebra.Matrix.AbsoluteValue",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {S : Type u_2} [inst : CommRing R] [Nontrivial R] [inst_2 : CommRing S] [inst_3 : LinearOrder S]\n  [IsStrictOrderedRing S] {n : Type u_3} [inst_5 : Fintype n] [inst_6 : DecidableEq n] {ι : Type u_4} (s : Finset ι)\n  {c : ι → R} {A : ι → Matrix n n R} {abv : AbsoluteValue R S} {x : S},\n  (∀ (k : ι) (i j : n), abv (A k i j) ≤ x) →\n    ∀ {y : S},\n      (∀ (k : ι), abv (c k) ≤ y) →\n        abv (∑ k ∈ s, c k • A k).det ≤ (Fintype.card n).factorial • (s.card • y * x) ^ Fintype.card n"
+          },
+          {
+            "name": "Finset.le_prod_of_submultiplicative_of_nonneg",
+            "module_name": "Mathlib.Algebra.Order.BigOperators.Ring.Finset",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_1} {R : Type u_2} [inst : CommSemiring R] [inst_1 : PartialOrder R] [IsOrderedRing R] {M : Type u_4}\n  [inst_3 : CommMonoid M] (f : M → R),\n  (∀ (a : M), 0 ≤ f a) →\n    f 1 ≤ 1 → (∀ (x y : M), f (x * y) ≤ f x * f y) → ∀ (s : Finset ι) (g : ι → M), f (∏ i ∈ s, g i) ≤ ∏ i ∈ s, f (g i)"
+          },
+          {
+            "name": "Matrix.det",
+            "module_name": "Mathlib.LinearAlgebra.Matrix.Determinant.Basic",
+            "kind": "definition",
+            "type": "{n : Type u_2} → [DecidableEq n] → [Fintype n] → {R : Type v} → [CommRing R] → Matrix n n R → R"
+          }
+        ]
+      },
+      "isError": false
+    },
+    "method": "lean_leansearch",
+    "form": "abstract"
+  },
+  {
+    "request": {
+      "query": "The determinant of a matrix of multivariate integer polynomials with coefficient l1 norm bounded by C has coefficient l1 norm at most factorial n times C^n",
+      "num_results": 5
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Matrix.det_le\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Matrix.AbsoluteValue\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {S : Type u_2} [inst : CommRing R] [Nontrivial R] [inst_2 : CommRing S] [inst_3 : LinearOrder S]\\n  [IsStrictOrderedRing S] {n : Type u_3} [inst_5 : Fintype n] [inst_6 : DecidableEq n] {A : Matrix n n R}\\n  {abv : AbsoluteValue R S} {x : S},\\n  (∀ (i j : n), abv (A i j) ≤ x) → abv A.det ≤ (Fintype.card n).factorial • x ^ Fintype.card n\"\n    },\n    {\n      \"name\": \"Matrix.det_sum_smul_le\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Matrix.AbsoluteValue\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {S : Type u_2} [inst : CommRing R] [Nontrivial R] [inst_2 : CommRing S] [inst_3 : LinearOrder S]\\n  [IsStrictOrderedRing S] {n : Type u_3} [inst_5 : Fintype n] [inst_6 : DecidableEq n] {ι : Type u_4} (s : Finset ι)\\n  {c : ι → R} {A : ι → Matrix n n R} {abv : AbsoluteValue R S} {x : S},\\n  (∀ (k : ι) (i j : n), abv (A k i j) ≤ x) →\\n    ∀ {y : S},\\n      (∀ (k : ι), abv (c k) ≤ y) →\\n        abv (∑ k ∈ s, c k • A k).det ≤ (Fintype.card n).factorial • (s.card • y * x) ^ Fintype.card n\"\n    },\n    {\n      \"name\": \"IsIntegral.det\",\n      \"module_name\": \"Mathlib.RingTheory.IntegralClosure.IsIntegralClosure.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {A : Type u_2} [inst : CommRing R] [inst_1 : CommRing A] [inst_2 : Algebra R A] {n : Type u_5}\\n  [inst_3 : Fintype n] [inst_4 : DecidableEq n] {M : Matrix n n A},\\n  (∀ (i j : n), IsIntegral R (M i j)) → IsIntegral R M.det\"\n    },\n    {\n      \"name\": \"Matrix.det_sum_le\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Matrix.AbsoluteValue\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {S : Type u_2} [inst : CommRing R] [Nontrivial R] [inst_2 : CommRing S] [inst_3 : LinearOrder S]\\n  [IsStrictOrderedRing S] {n : Type u_3} [inst_5 : Fintype n] [inst_6 : DecidableEq n] {ι : Type u_4} (s : Finset ι)\\n  {A : ι → Matrix n n R} {abv : AbsoluteValue R S} {x : S},\\n  (∀ (k : ι) (i j : n), abv (A k i j) ≤ x) →\\n    abv (∑ k ∈ s, A k).det ≤ (Fintype.card n).factorial • (s.card • x) ^ Fintype.card n\"\n    },\n    {\n      \"name\": \"Matrix.det\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Matrix.Determinant.Basic\",\n      \"kind\": \"definition\",\n      \"type\": \"{n : Type u_2} → [DecidableEq n] → [Fintype n] → {R : Type v} → [CommRing R] → Matrix n n R → R\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Matrix.det_le",
+            "module_name": "Mathlib.LinearAlgebra.Matrix.AbsoluteValue",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {S : Type u_2} [inst : CommRing R] [Nontrivial R] [inst_2 : CommRing S] [inst_3 : LinearOrder S]\n  [IsStrictOrderedRing S] {n : Type u_3} [inst_5 : Fintype n] [inst_6 : DecidableEq n] {A : Matrix n n R}\n  {abv : AbsoluteValue R S} {x : S},\n  (∀ (i j : n), abv (A i j) ≤ x) → abv A.det ≤ (Fintype.card n).factorial • x ^ Fintype.card n"
+          },
+          {
+            "name": "Matrix.det_sum_smul_le",
+            "module_name": "Mathlib.LinearAlgebra.Matrix.AbsoluteValue",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {S : Type u_2} [inst : CommRing R] [Nontrivial R] [inst_2 : CommRing S] [inst_3 : LinearOrder S]\n  [IsStrictOrderedRing S] {n : Type u_3} [inst_5 : Fintype n] [inst_6 : DecidableEq n] {ι : Type u_4} (s : Finset ι)\n  {c : ι → R} {A : ι → Matrix n n R} {abv : AbsoluteValue R S} {x : S},\n  (∀ (k : ι) (i j : n), abv (A k i j) ≤ x) →\n    ∀ {y : S},\n      (∀ (k : ι), abv (c k) ≤ y) →\n        abv (∑ k ∈ s, c k • A k).det ≤ (Fintype.card n).factorial • (s.card • y * x) ^ Fintype.card n"
+          },
+          {
+            "name": "IsIntegral.det",
+            "module_name": "Mathlib.RingTheory.IntegralClosure.IsIntegralClosure.Basic",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {A : Type u_2} [inst : CommRing R] [inst_1 : CommRing A] [inst_2 : Algebra R A] {n : Type u_5}\n  [inst_3 : Fintype n] [inst_4 : DecidableEq n] {M : Matrix n n A},\n  (∀ (i j : n), IsIntegral R (M i j)) → IsIntegral R M.det"
+          },
+          {
+            "name": "Matrix.det_sum_le",
+            "module_name": "Mathlib.LinearAlgebra.Matrix.AbsoluteValue",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {S : Type u_2} [inst : CommRing R] [Nontrivial R] [inst_2 : CommRing S] [inst_3 : LinearOrder S]\n  [IsStrictOrderedRing S] {n : Type u_3} [inst_5 : Fintype n] [inst_6 : DecidableEq n] {ι : Type u_4} (s : Finset ι)\n  {A : ι → Matrix n n R} {abv : AbsoluteValue R S} {x : S},\n  (∀ (k : ι) (i j : n), abv (A k i j) ≤ x) →\n    abv (∑ k ∈ s, A k).det ≤ (Fintype.card n).factorial • (s.card • x) ^ Fintype.card n"
+          },
+          {
+            "name": "Matrix.det",
+            "module_name": "Mathlib.LinearAlgebra.Matrix.Determinant.Basic",
+            "kind": "definition",
+            "type": "{n : Type u_2} → [DecidableEq n] → [Fintype n] → {R : Type v} → [CommRing R] → Matrix n n R → R"
+          }
+        ]
+      },
+      "isError": false
+    },
+    "method": "lean_leansearch",
+    "form": "current"
+  },
+  {
+    "request": {
+      "query": "For a matrix over a normed commutative ring with each entry norm at most C, norm of determinant is at most n factorial times C power n",
+      "num_results": 5
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Matrix.det_le\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Matrix.AbsoluteValue\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {S : Type u_2} [inst : CommRing R] [Nontrivial R] [inst_2 : CommRing S] [inst_3 : LinearOrder S]\\n  [IsStrictOrderedRing S] {n : Type u_3} [inst_5 : Fintype n] [inst_6 : DecidableEq n] {A : Matrix n n R}\\n  {abv : AbsoluteValue R S} {x : S},\\n  (∀ (i j : n), abv (A i j) ≤ x) → abv A.det ≤ (Fintype.card n).factorial • x ^ Fintype.card n\"\n    },\n    {\n      \"name\": \"Matrix.det_sum_le\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Matrix.AbsoluteValue\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {S : Type u_2} [inst : CommRing R] [Nontrivial R] [inst_2 : CommRing S] [inst_3 : LinearOrder S]\\n  [IsStrictOrderedRing S] {n : Type u_3} [inst_5 : Fintype n] [inst_6 : DecidableEq n] {ι : Type u_4} (s : Finset ι)\\n  {A : ι → Matrix n n R} {abv : AbsoluteValue R S} {x : S},\\n  (∀ (k : ι) (i j : n), abv (A k i j) ≤ x) →\\n    abv (∑ k ∈ s, A k).det ≤ (Fintype.card n).factorial • (s.card • x) ^ Fintype.card n\"\n    },\n    {\n      \"name\": \"Matrix.det_sum_smul_le\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Matrix.AbsoluteValue\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {S : Type u_2} [inst : CommRing R] [Nontrivial R] [inst_2 : CommRing S] [inst_3 : LinearOrder S]\\n  [IsStrictOrderedRing S] {n : Type u_3} [inst_5 : Fintype n] [inst_6 : DecidableEq n] {ι : Type u_4} (s : Finset ι)\\n  {c : ι → R} {A : ι → Matrix n n R} {abv : AbsoluteValue R S} {x : S},\\n  (∀ (k : ι) (i j : n), abv (A k i j) ≤ x) →\\n    ∀ {y : S},\\n      (∀ (k : ι), abv (c k) ≤ y) →\\n        abv (∑ k ∈ s, c k • A k).det ≤ (Fintype.card n).factorial • (s.card • y * x) ^ Fintype.card n\"\n    },\n    {\n      \"name\": \"Matrix.norm_le_iff\",\n      \"module_name\": \"Mathlib.Analysis.Matrix.Normed\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {m : Type u_3} {n : Type u_4} {α : Type u_5} [inst : Fintype m] [inst_1 : Fintype n]\\n  [inst_2 : SeminormedAddCommGroup α] {r : ℝ}, 0 ≤ r → ∀ {A : Matrix m n α}, ‖A‖ ≤ r ↔ ∀ (i : m) (j : n), ‖A i j‖ ≤ r\"\n    },\n    {\n      \"name\": \"IsIntegral.det\",\n      \"module_name\": \"Mathlib.RingTheory.IntegralClosure.IsIntegralClosure.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {A : Type u_2} [inst : CommRing R] [inst_1 : CommRing A] [inst_2 : Algebra R A] {n : Type u_5}\\n  [inst_3 : Fintype n] [inst_4 : DecidableEq n] {M : Matrix n n A},\\n  (∀ (i j : n), IsIntegral R (M i j)) → IsIntegral R M.det\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Matrix.det_le",
+            "module_name": "Mathlib.LinearAlgebra.Matrix.AbsoluteValue",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {S : Type u_2} [inst : CommRing R] [Nontrivial R] [inst_2 : CommRing S] [inst_3 : LinearOrder S]\n  [IsStrictOrderedRing S] {n : Type u_3} [inst_5 : Fintype n] [inst_6 : DecidableEq n] {A : Matrix n n R}\n  {abv : AbsoluteValue R S} {x : S},\n  (∀ (i j : n), abv (A i j) ≤ x) → abv A.det ≤ (Fintype.card n).factorial • x ^ Fintype.card n"
+          },
+          {
+            "name": "Matrix.det_sum_le",
+            "module_name": "Mathlib.LinearAlgebra.Matrix.AbsoluteValue",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {S : Type u_2} [inst : CommRing R] [Nontrivial R] [inst_2 : CommRing S] [inst_3 : LinearOrder S]\n  [IsStrictOrderedRing S] {n : Type u_3} [inst_5 : Fintype n] [inst_6 : DecidableEq n] {ι : Type u_4} (s : Finset ι)\n  {A : ι → Matrix n n R} {abv : AbsoluteValue R S} {x : S},\n  (∀ (k : ι) (i j : n), abv (A k i j) ≤ x) →\n    abv (∑ k ∈ s, A k).det ≤ (Fintype.card n).factorial • (s.card • x) ^ Fintype.card n"
+          },
+          {
+            "name": "Matrix.det_sum_smul_le",
+            "module_name": "Mathlib.LinearAlgebra.Matrix.AbsoluteValue",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {S : Type u_2} [inst : CommRing R] [Nontrivial R] [inst_2 : CommRing S] [inst_3 : LinearOrder S]\n  [IsStrictOrderedRing S] {n : Type u_3} [inst_5 : Fintype n] [inst_6 : DecidableEq n] {ι : Type u_4} (s : Finset ι)\n  {c : ι → R} {A : ι → Matrix n n R} {abv : AbsoluteValue R S} {x : S},\n  (∀ (k : ι) (i j : n), abv (A k i j) ≤ x) →\n    ∀ {y : S},\n      (∀ (k : ι), abv (c k) ≤ y) →\n        abv (∑ k ∈ s, c k • A k).det ≤ (Fintype.card n).factorial • (s.card • y * x) ^ Fintype.card n"
+          },
+          {
+            "name": "Matrix.norm_le_iff",
+            "module_name": "Mathlib.Analysis.Matrix.Normed",
+            "kind": "theorem",
+            "type": "∀ {m : Type u_3} {n : Type u_4} {α : Type u_5} [inst : Fintype m] [inst_1 : Fintype n]\n  [inst_2 : SeminormedAddCommGroup α] {r : ℝ}, 0 ≤ r → ∀ {A : Matrix m n α}, ‖A‖ ≤ r ↔ ∀ (i : m) (j : n), ‖A i j‖ ≤ r"
+          },
+          {
+            "name": "IsIntegral.det",
+            "module_name": "Mathlib.RingTheory.IntegralClosure.IsIntegralClosure.Basic",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {A : Type u_2} [inst : CommRing R] [inst_1 : CommRing A] [inst_2 : Algebra R A] {n : Type u_5}\n  [inst_3 : Fintype n] [inst_4 : DecidableEq n] {M : Matrix n n A},\n  (∀ (i j : n), IsIntegral R (M i j)) → IsIntegral R M.det"
+          }
+        ]
+      },
+      "isError": false
+    },
+    "method": "lean_leansearch",
+    "form": "standard"
+  },
+  {
+    "request": {
+      "query": "RingSeminorm",
+      "num_results": 20
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"RingSeminorm\",\n      \"kind\": \"structure\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Analysis/Normed/Unbundled/RingSeminorm.lean\"\n    },\n    {\n      \"name\": \"RingSeminormClass\",\n      \"kind\": \"class\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Order/Hom/Basic.lean\"\n    },\n    {\n      \"name\": \"RingSeminorm.toRingNorm\",\n      \"kind\": \"def\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Analysis/Normed/Unbundled/RingSeminorm.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "RingSeminorm",
+            "kind": "structure",
+            "file": ".lake/packages/mathlib/Mathlib/Analysis/Normed/Unbundled/RingSeminorm.lean"
+          },
+          {
+            "name": "RingSeminormClass",
+            "kind": "class",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Order/Hom/Basic.lean"
+          },
+          {
+            "name": "RingSeminorm.toRingNorm",
+            "kind": "def",
+            "file": ".lake/packages/mathlib/Mathlib/Analysis/Normed/Unbundled/RingSeminorm.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    },
+    "method": "lean_local_search",
+    "form": "abstract"
+  },
+  {
+    "request": {
+      "query": "normOne_det_le",
+      "num_results": 20
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Roth.normOne_det_le\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/CoeffNorm.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.NormProdConsumers.normOne_det_le_inline\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/roth-overview-session/NextHasseChecks.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.NormSumConsumers.normOne_det_le_inline\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/roth-overview-session/NextHasseChecks.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Roth.normOne_det_le",
+            "kind": "theorem",
+            "file": "Roth/CoeffNorm.lean"
+          },
+          {
+            "name": "MvPolynomial.NormProdConsumers.normOne_det_le_inline",
+            "kind": "theorem",
+            "file": ".lake/roth-overview-session/NextHasseChecks.lean"
+          },
+          {
+            "name": "MvPolynomial.NormSumConsumers.normOne_det_le_inline",
+            "kind": "theorem",
+            "file": ".lake/roth-overview-session/NextHasseChecks.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    },
+    "method": "lean_local_search",
+    "form": "current"
+  },
+  {
+    "request": {
+      "query": "det_le",
+      "num_results": 20
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Matrix.det_le\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/AbsoluteValue.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Matrix.det_le",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/AbsoluteValue.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    },
+    "method": "lean_local_search",
+    "form": "standard"
+  },
+  {
+    "request": {
+      "query": "\"Matrix.det\", \"AbsoluteValue\"",
+      "num_results": 5
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": []\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": []
+      },
+      "isError": false
+    },
+    "method": "lean_loogle",
+    "form": "abstract"
+  },
+  {
+    "request": {
+      "query": "\"Matrix.det\", \"MvPolynomial\"",
+      "num_results": 5
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Matrix.det_mvPolynomialX_ne_zero\",\n      \"type\": \" (m : Type u_1) (R : Type u_3) [DecidableEq m] [Fintype m] [CommRing R] [Nontrivial R] : (Matrix.mvPolynomialX m m R).det ≠ 0\",\n      \"module\": \"Mathlib.LinearAlgebra.Matrix.MvPolynomial\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Matrix.det_mvPolynomialX_ne_zero",
+            "type": " (m : Type u_1) (R : Type u_3) [DecidableEq m] [Fintype m] [CommRing R] [Nontrivial R] : (Matrix.mvPolynomialX m m R).det ≠ 0",
+            "module": "Mathlib.LinearAlgebra.Matrix.MvPolynomial"
+          }
+        ]
+      },
+      "isError": false
+    },
+    "method": "lean_loogle",
+    "form": "current"
+  },
+  {
+    "request": {
+      "query": "\"Matrix.det\", \"norm\"",
+      "num_results": 5
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": []\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": []
+      },
+      "isError": false
+    },
+    "method": "lean_loogle",
+    "form": "standard"
+  }
+]

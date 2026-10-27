@@ -1,0 +1,55 @@
+{
+  "file": "Roth/CoeffNorm.lean",
+  "line": 119,
+  "name": "Roth.normOne_det_le",
+  "short": "normOne_det_le",
+  "kind": "theorem",
+  "visibility": "public",
+  "end_line": 128,
+  "source": "theorem normOne_det_le {l : ℕ} (M : Matrix (Fin l) (Fin l) (MvPolynomial σ ℤ)) {C : ℝ}\n    (hM : ∀ μ ν, normOne (M μ ν) ≤ C) : normOne M.det ≤ l.factorial * C ^ l := by\n  classical\n  rw [Matrix.det_apply']\n  calc _ ≤ ∑ τ : Equiv.Perm (Fin l), normOne (_ * ∏ i, M (τ i) i) := normOne_sum_le _ _\n    _ ≤ ∑ _τ : Equiv.Perm (Fin l), C ^ l := Finset.sum_le_sum fun τ _ ↦ ?_\n    _ = l.factorial * C ^ l := by simp [Fintype.card_perm]\n  rcases Int.units_eq_one_or (Equiv.Perm.sign τ) with h | h <;>\n    simpa [h, normOne_neg] using (normOne_prod_le Finset.univ fun i ↦ M (τ i) i).trans\n      ((Finset.prod_le_prod₀ (fun _ _ ↦ normOne_nonneg _) fun i _ ↦ hM _ _).trans_eq (by simp))",
+  "signature": "theorem normOne_det_le {l : ℕ} (M : Matrix (Fin l) (Fin l) (MvPolynomial σ ℤ)) {C : ℝ}\n    (hM : ∀ μ ν, normOne (M μ ν) ≤ C) : normOne M.det ≤ l.factorial * C ^ l",
+  "body": "by\n  classical\n  rw [Matrix.det_apply']\n  calc _ ≤ ∑ τ : Equiv.Perm (Fin l), normOne (_ * ∏ i, M (τ i) i) := normOne_sum_le _ _\n    _ ≤ ∑ _τ : Equiv.Perm (Fin l), C ^ l := Finset.sum_le_sum fun τ _ ↦ ?_\n    _ = l.factorial * C ^ l := by simp [Fintype.card_perm]\n  rcases Int.units_eq_one_or (Equiv.Perm.sign τ) with h | h <;>\n    simpa [h, normOne_neg] using (normOne_prod_le Finset.univ fun i ↦ M (τ i) i).trans\n      ((Finset.prod_le_prod₀ (fun _ _ ↦ normOne_nonneg _) fun i _ ↦ hM _ _).trans_eq (by simp))",
+  "proof_lines": 9,
+  "sha256": "f58411d2a975ea9535c6edaa5619643d418a8573069ddf992e9d293837ce5d85",
+  "source_body_project_refs": [
+    "Roth.normOne",
+    "Roth.normOne_neg",
+    "Roth.normOne_nonneg",
+    "Roth.normOne_prod_le",
+    "Roth.normOne_sum_le"
+  ],
+  "source_type_project_refs": [
+    "Roth.normOne"
+  ],
+  "what": "A determinant of size l with entry norms at most C has norm at most l! C^l.",
+  "how": "Expands Matrix.det_apply' over permutations, applies normOne_sum_le and normOne_prod_le, handles determinant signs through normOne_neg, and counts permutations.",
+  "hypotheses": "A square Fin l matrix of integer polynomials and an entrywise norm bound.",
+  "source_used_by_project": [
+    "Roth.abs_coeff_det_hasseDeriv_le"
+  ],
+  "source_used_by_file": [
+    "Roth.abs_coeff_det_hasseDeriv_le"
+  ],
+  "section_binders": "{σ : Type*}",
+  "type_provenance": "Exact written signature plus manually identified captured section binders. Root cached full build succeeds; global opaque/type inspector timed out, so no kernel dump is claimed.",
+  "notes": "No sorry, TODO, or set_option in this declaration.",
+  "assignment_offset": 163,
+  "project_body_refs": [
+    "Roth.normOne",
+    "Roth.normOne_neg",
+    "Roth.normOne_nonneg",
+    "Roth.normOne_prod_le",
+    "Roth.normOne_sum_le"
+  ],
+  "project_type_refs": [
+    "Roth.normOne"
+  ],
+  "project_callers": [
+    {
+      "name": "Roth.abs_coeff_det_hasseDeriv_le",
+      "file": "Roth/CoeffNorm.lean",
+      "line": 258
+    }
+  ],
+  "section_context": "{σ : Type*}"
+}

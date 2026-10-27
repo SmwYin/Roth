@@ -1,0 +1,170 @@
+{
+  "verdict": "STRICTLY NARROWER THAN STANDARD",
+  "reason": "MODERN-IDIOM",
+  "parameter_rows": [
+    [
+      "σ : Type*",
+      "already arbitrary",
+      "No Fintype or DecidableEq on polynomial variables."
+    ],
+    [
+      "l : ℕ / Fin l",
+      "generalize",
+      "Arbitrary finite n; verified generalIndex and genericDet."
+    ],
+    [
+      "MvPolynomial σ ℤ",
+      "generalize",
+      "Arbitrary commutative ring R with real RingSeminorm p; exact specialization packaged and compiled."
+    ],
+    [
+      "C : ℝ",
+      "retain",
+      "No nonnegativity hypothesis needed: empty case C^0=1; nonempty entry bounds supply nonnegative upper values as required."
+    ],
+    [
+      "M square matrix",
+      "retain",
+      "Matrix.det needs square finite index and commutative ring; dropping commutativity/subtraction not supported by this determinant API."
+    ],
+    [
+      "hM all entries",
+      "retain",
+      "Needed uniform entry estimate; no premise unused. Removing yields false bound already for1x1."
+    ]
+  ],
+  "modern_rows": [
+    [
+      "Bundled/typeclass structure",
+      "yes",
+      "Use existing RingSeminorm R with explicit p 1 ≤ 1, not a new global norm instance; applies to multiple seminorms on same ring."
+    ],
+    [
+      "Filters/topology",
+      "no",
+      "Finite sum/product estimate needs no convergence or topology."
+    ],
+    [
+      "Universal property",
+      "no",
+      "Bounds an existing determinant; does not construct a universal object."
+    ],
+    [
+      "Bundled substructures",
+      "no",
+      "No set-with-closure predicate appears."
+    ],
+    [
+      "Algebraic hierarchy",
+      "yes",
+      "Replace MvPolynomial σ ℤ by arbitrary CommRing R; no domain, field, nontriviality or completeness required."
+    ],
+    [
+      "Higher categories",
+      "no",
+      "Numerical finite determinant bound has no categorical enrichment to preserve."
+    ],
+    [
+      "Concrete index",
+      "yes",
+      "Replace Fin l by arbitrary Fintype n with DecidableEq; factorial and exponent use card n."
+    ],
+    [
+      "Concrete-via-abstract",
+      "yes",
+      "After det_apply the proof has zero MvPolynomial mentions. Every normOne occurrence is the size map or its abstract law witness. GenericDet and RingSeminorm specialization compile."
+    ],
+    [
+      "False generalization guard",
+      "PASS",
+      "RingSeminorm is submultiplicative, not multiplicative AbsoluteValue. (X+1)(X-1)=X²-1 has length2 while factors have length2 each. Sup/Gauss norm, spectral determinant and field norm are different objects. Keep unit bound for empty index and unrestricted C."
+    ]
+  ],
+  "strategy_rows": [
+    [
+      "epsilon-delta",
+      "no",
+      "No topology."
+    ],
+    [
+      "point-free subobjects",
+      "no",
+      "Entry estimates and real order do not encode ideal inclusions."
+    ],
+    [
+      "sequences to filters",
+      "no",
+      "Finite determinant."
+    ],
+    [
+      "universal construction",
+      "no",
+      "Determinant already defined."
+    ],
+    [
+      "missing helper",
+      "yes",
+      "General RingSeminorm determinant factorial bound is the contribution; reuse Finset generic sum/product induction and Matrix.det_apply rather than another coefficient-specific bound."
+    ]
+  ],
+  "infrastructure_rows": [
+    [
+      "typeclass diamond",
+      "n/a: theorem",
+      "No global instance introduced; local evidence bundles existing laws in RingSeminorm."
+    ],
+    [
+      "reducibility leak",
+      "n/a: theorem",
+      "Proof does not define a production reducible alias."
+    ],
+    [
+      "noncanonical unfolding",
+      "n/a: theorem",
+      "Proposed theorem states p M.det, with ordinary bundled-function application."
+    ],
+    [
+      "instance priority",
+      "n/a: theorem",
+      "No instance declaration or priority."
+    ],
+    [
+      "universes",
+      "n/a: theorem",
+      "Generic probes quantify R and n independently in Type*."
+    ],
+    [
+      "coercions",
+      "n/a: theorem",
+      "Uses existing RingSeminorm FunLike coercion; no new coercion."
+    ]
+  ],
+  "expanded_forms": [
+    {
+      "name": "arbitrary finite index",
+      "verified": true,
+      "status": "PASS",
+      "native": "consumers/generalIndex"
+    },
+    {
+      "name": "arbitrary CommRing and size axioms",
+      "verified": true,
+      "status": "PASS",
+      "native": "raw/genericDet"
+    },
+    {
+      "name": "existing RingSeminorm and polynomial specialization",
+      "verified": true,
+      "status": "PASS",
+      "native": "bundled and package"
+    }
+  ],
+  "modern_verdict": "Existing RingSeminorm determinant theorem independently useful; no foundational normOne change required.",
+  "strategy_verdict": "REFACTOR-RECOMMENDED",
+  "shape": {
+    "normal": "RingSeminorm application and card factorial scalar multiplication",
+    "syntactic": "general finite n and uniform hM",
+    "superfluous": "none; preserve unit bound and empty case",
+    "overall": "RESTATE-BEFORE-SHIP"
+  }
+}

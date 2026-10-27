@@ -1,0 +1,22 @@
+{
+  "declaration": "Roth.normOne_det_le",
+  "kind": "theorem",
+  "type": "∀ {σ : Type u_1} {l : ℕ} (M : Matrix (Fin l) (Fin l) (MvPolynomial σ ℤ)) {C : ℝ}, (∀ μ ν, Roth.normOne (M μ ν) ≤ C) → Roth.normOne M.det ≤ ↑l.factorial * C ^ l",
+  "what": "Bounds coefficient L1 size of an l×l polynomial determinant by l! C^l.",
+  "how": "Leibniz expansion, subadditive finite sum, sign invariance, submultiplicative finite product, entrywise monotonicity, count permutations.",
+  "hypotheses": "Arbitrary variables σ and l; all entries size≤C; C unrestricted; includes empty matrix.",
+  "project_dependencies": [
+    "Roth.normOne",
+    "Roth.normOne_sum_le",
+    "Roth.normOne_neg",
+    "Roth.normOne_prod_le",
+    "Roth.normOne_nonneg"
+  ],
+  "caller_summary": "One direct named caller: Roth.abs_coeff_det_hasseDeriv_le at CoeffNorm268; exact293unique canonical proof-value audit confirms.",
+  "mathlib_api_audit": "Matrix.det_le requires multiplicative AbsoluteValue; existing RingSeminorm supports submultiplicativity but searched determinant law missing.",
+  "moral_duplications": "Analog of Matrix.det_le for merely submultiplicative real seminorms; degree/index/Wronskian determinant expansions prove different laws.",
+  "generalization": "Verified arbitrary CommRing R, existing RingSeminorm p with p1≤1, arbitrary Fintype n; exact normOne specialization packaged and compiled.",
+  "missing_api": "RingSeminorm determinant factorial bound beyond multiplicative AbsoluteValue.map_prod.",
+  "junk": "Not junk: module Main result and direct Lemma3 consumer.",
+  "action": "YES-but-generalise-first MODERN-IDIOM: propose Matrix.ringSeminorm_det_le in new Mathlib/LinearAlgebra/Matrix/Seminorm.lean; keep local normOne corollary; run /generalise and /cleanup."
+}

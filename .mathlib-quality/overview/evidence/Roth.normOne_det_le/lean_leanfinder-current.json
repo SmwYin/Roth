@@ -1,0 +1,61 @@
+{
+  "request": {
+    "query": "The determinant of a matrix of multivariate integer polynomials with coefficient l1 norm bounded by C has coefficient l1 norm at most factorial n times C^n",
+    "num_results": 5
+  },
+  "response": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Matrix.det_le\",\n      \"informal_name\": \"Determinant Absolute Value Bound: $ n! \\\\cdot x^n $\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {S : Type u_2} [inst : CommRing R] [Nontrivial R] [inst_2 : CommRing S] [inst_3 : LinearOrder S]\\n  [IsStrictOrderedRing S] {n : Type u_3} [inst_5 : Fintype n] [inst_6 : DecidableEq n] {A : Matrix n n R}\\n  {abv : AbsoluteValue R S} {x : S},\\n  (∀ (i j : n), abv (A i j) ≤ x) → abv A.det ≤ (Fintype.card n).factorial • x ^ Fintype.card n\",\n      \"informal_description\": \"For any square matrix $ A $ of size $ n \\\\times n $ with entries in a commutative ring $ R $, and any absolute value $ \\\\text{abv} $ from $ R $ to a partially ordered semiring $ S $, if $ \\\\text{abv}(A_{i,j}) \\\\leq x $ for all entries $ A_{i,j} $, then $ \\\\text{abv}(\\\\det A) \\\\leq n! \\\\cdot x^n $.\",\n      \"path\": \"Mathlib.LinearAlgebra.Matrix.AbsoluteValue\"\n    },\n    {\n      \"formal_name\": \"Matrix.det_sum_smul_le\",\n      \"informal_name\": \"Determinant Inequality for Sum of Scaled Matrices with Absolute Value Bounds\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {S : Type u_2} [inst : CommRing R] [Nontrivial R] [inst_2 : CommRing S] [inst_3 : LinearOrder S]\\n  [IsStrictOrderedRing S] {n : Type u_3} [inst_5 : Fintype n] [inst_6 : DecidableEq n] {ι : Type u_4} (s : Finset ι)\\n  {c : ι → R} {A : ι → Matrix n n R} {abv : AbsoluteValue R S} {x : S},\\n  (∀ (k : ι) (i j : n), abv (A k i j) ≤ x) →\\n    ∀ {y : S},\\n      (∀ (k : ι), abv (c k) ≤ y) →\\n        abv (∑ k ∈ s, c k • A k).det ≤ (Fintype.card n).factorial • (s.card • y * x) ^ Fintype.card n\",\n      \"informal_description\": \"For any finite set $ s $, coefficient functions $ c $, matrix functions $ A $, and absolute value $ abv $ from a semiring $ R $ to a partially ordered semiring $ S $, if $ abv(A_k[i][j]) \\\\leq x $ for all $ k,i,j $ and $ abv(c_k) \\\\leq y $ for all $ k $, then the absolute value of the determinant of the sum $ \\\\sum_{k \\\\in s} c_k \\\\cdot A_k $ satisfies $ abv\\\\left(\\\\det\\\\left(\\\\sum_{k \\\\in s} c_k \\\\cdot A_k\\\\right)\\\\right) \\\\leq \\\\left(\\\\text{Nat.factorial}(\\\\#n)\\\\right) \\\\cdot \\\\left(\\\\#s \\\\cdot y \\\\cdot x\\\\right)^{\\\\#n} $, where $ \\\\#n $ denotes the cardinality of the matrix size $ n $.\",\n      \"path\": \"Mathlib.LinearAlgebra.Matrix.AbsoluteValue\"\n    },\n    {\n      \"formal_name\": \"Matrix.det_sum_le\",\n      \"informal_name\": \"Determinant Bound for Sum of Matrices with Bounded Entries\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {S : Type u_2} [inst : CommRing R] [Nontrivial R] [inst_2 : CommRing S] [inst_3 : LinearOrder S]\\n  [IsStrictOrderedRing S] {n : Type u_3} [inst_5 : Fintype n] [inst_6 : DecidableEq n] {ι : Type u_4} (s : Finset ι)\\n  {A : ι → Matrix n n R} {abv : AbsoluteValue R S} {x : S},\\n  (∀ (k : ι) (i j : n), abv (A k i j) ≤ x) →\\n    abv (∑ k ∈ s, A k).det ≤ (Fintype.card n).factorial • (s.card • x) ^ Fintype.card n\",\n      \"informal_description\": \"For any finite set $ s $, matrices $ A_k \\\\in M_n(R) $, and an absolute value $ abv: R \\\\to S $, if each entry of each $ A_k $ satisfies $ abv(A_k(i,j)) \\\\leq x $, then the absolute value of the determinant of the sum $ \\\\sum_{k \\\\in s} A_k $ is at most $ (n!) \\\\cdot (|s| \\\\cdot x)^n $, where $ n $ is the size of the matrices and $ |s| $ denotes the cardinality of $ s $.\",\n      \"path\": \"Mathlib.LinearAlgebra.Matrix.AbsoluteValue\"\n    },\n    {\n      \"formal_name\": \"Matrix.det_matrixOfPolynomials\",\n      \"informal_name\": \"Determinant of a Matrix of Monic Polynomials with Degree Conditions Equals One\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type v} [inst : CommRing R] {n : ℕ} (p : Fin n → Polynomial R),\\n  (∀ (i : Fin n), (p i).natDegree = ↑i) → (∀ (i : Fin n), (p i).Monic) → (Matrix.of fun i j => (p j).coeff ↑i).det = 1\",\n      \"informal_description\": \"For a commutative ring $ R $ and natural number $ n $, consider monic polynomials $ p_0, p_1, \\\\ldots, p_{n-1} $ in $ R[X] $ where each $ p_i $ has degree $ i $. Construct an $ n \\\\times n $ matrix $ M $ such that the entry in row $ i $ and column $ j $ is the coefficient of $ X^i $ in $ p_j $. Then the determinant of $ M $ is equal to 1.\",\n      \"path\": \"Mathlib.LinearAlgebra.Matrix.Block\"\n    },\n    {\n      \"formal_name\": \"Matrix.superFactorial_dvd_vandermonde_det\",\n      \"informal_name\": \"Superfactorial Divides Vandermonde Determinant\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {n : ℕ} (v : Fin (n + 1) → ℤ), ↑n.superFactorial ∣ (Matrix.vandermonde v).det\",\n      \"informal_description\": \"For any natural number $ n $ and any vector $ v $ of $ n+1 $ integers, the determinant of the Vandermonde matrix constructed from $ v $ is divisible by the superfactorial of $ n $. The superfactorial of $ n $ is defined as the product $ 1! \\\\times 2! \\\\times \\\\cdots \\\\times n! $.\",\n      \"path\": \"Mathlib.LinearAlgebra.Vandermonde\"\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "items": [
+        {
+          "formal_name": "Matrix.det_le",
+          "informal_name": "Determinant Absolute Value Bound: $ n! \\cdot x^n $",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} {S : Type u_2} [inst : CommRing R] [Nontrivial R] [inst_2 : CommRing S] [inst_3 : LinearOrder S]\n  [IsStrictOrderedRing S] {n : Type u_3} [inst_5 : Fintype n] [inst_6 : DecidableEq n] {A : Matrix n n R}\n  {abv : AbsoluteValue R S} {x : S},\n  (∀ (i j : n), abv (A i j) ≤ x) → abv A.det ≤ (Fintype.card n).factorial • x ^ Fintype.card n",
+          "informal_description": "For any square matrix $ A $ of size $ n \\times n $ with entries in a commutative ring $ R $, and any absolute value $ \\text{abv} $ from $ R $ to a partially ordered semiring $ S $, if $ \\text{abv}(A_{i,j}) \\leq x $ for all entries $ A_{i,j} $, then $ \\text{abv}(\\det A) \\leq n! \\cdot x^n $.",
+          "path": "Mathlib.LinearAlgebra.Matrix.AbsoluteValue"
+        },
+        {
+          "formal_name": "Matrix.det_sum_smul_le",
+          "informal_name": "Determinant Inequality for Sum of Scaled Matrices with Absolute Value Bounds",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} {S : Type u_2} [inst : CommRing R] [Nontrivial R] [inst_2 : CommRing S] [inst_3 : LinearOrder S]\n  [IsStrictOrderedRing S] {n : Type u_3} [inst_5 : Fintype n] [inst_6 : DecidableEq n] {ι : Type u_4} (s : Finset ι)\n  {c : ι → R} {A : ι → Matrix n n R} {abv : AbsoluteValue R S} {x : S},\n  (∀ (k : ι) (i j : n), abv (A k i j) ≤ x) →\n    ∀ {y : S},\n      (∀ (k : ι), abv (c k) ≤ y) →\n        abv (∑ k ∈ s, c k • A k).det ≤ (Fintype.card n).factorial • (s.card • y * x) ^ Fintype.card n",
+          "informal_description": "For any finite set $ s $, coefficient functions $ c $, matrix functions $ A $, and absolute value $ abv $ from a semiring $ R $ to a partially ordered semiring $ S $, if $ abv(A_k[i][j]) \\leq x $ for all $ k,i,j $ and $ abv(c_k) \\leq y $ for all $ k $, then the absolute value of the determinant of the sum $ \\sum_{k \\in s} c_k \\cdot A_k $ satisfies $ abv\\left(\\det\\left(\\sum_{k \\in s} c_k \\cdot A_k\\right)\\right) \\leq \\left(\\text{Nat.factorial}(\\#n)\\right) \\cdot \\left(\\#s \\cdot y \\cdot x\\right)^{\\#n} $, where $ \\#n $ denotes the cardinality of the matrix size $ n $.",
+          "path": "Mathlib.LinearAlgebra.Matrix.AbsoluteValue"
+        },
+        {
+          "formal_name": "Matrix.det_sum_le",
+          "informal_name": "Determinant Bound for Sum of Matrices with Bounded Entries",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} {S : Type u_2} [inst : CommRing R] [Nontrivial R] [inst_2 : CommRing S] [inst_3 : LinearOrder S]\n  [IsStrictOrderedRing S] {n : Type u_3} [inst_5 : Fintype n] [inst_6 : DecidableEq n] {ι : Type u_4} (s : Finset ι)\n  {A : ι → Matrix n n R} {abv : AbsoluteValue R S} {x : S},\n  (∀ (k : ι) (i j : n), abv (A k i j) ≤ x) →\n    abv (∑ k ∈ s, A k).det ≤ (Fintype.card n).factorial • (s.card • x) ^ Fintype.card n",
+          "informal_description": "For any finite set $ s $, matrices $ A_k \\in M_n(R) $, and an absolute value $ abv: R \\to S $, if each entry of each $ A_k $ satisfies $ abv(A_k(i,j)) \\leq x $, then the absolute value of the determinant of the sum $ \\sum_{k \\in s} A_k $ is at most $ (n!) \\cdot (|s| \\cdot x)^n $, where $ n $ is the size of the matrices and $ |s| $ denotes the cardinality of $ s $.",
+          "path": "Mathlib.LinearAlgebra.Matrix.AbsoluteValue"
+        },
+        {
+          "formal_name": "Matrix.det_matrixOfPolynomials",
+          "informal_name": "Determinant of a Matrix of Monic Polynomials with Degree Conditions Equals One",
+          "kind": "theorem",
+          "type": "∀ {R : Type v} [inst : CommRing R] {n : ℕ} (p : Fin n → Polynomial R),\n  (∀ (i : Fin n), (p i).natDegree = ↑i) → (∀ (i : Fin n), (p i).Monic) → (Matrix.of fun i j => (p j).coeff ↑i).det = 1",
+          "informal_description": "For a commutative ring $ R $ and natural number $ n $, consider monic polynomials $ p_0, p_1, \\ldots, p_{n-1} $ in $ R[X] $ where each $ p_i $ has degree $ i $. Construct an $ n \\times n $ matrix $ M $ such that the entry in row $ i $ and column $ j $ is the coefficient of $ X^i $ in $ p_j $. Then the determinant of $ M $ is equal to 1.",
+          "path": "Mathlib.LinearAlgebra.Matrix.Block"
+        },
+        {
+          "formal_name": "Matrix.superFactorial_dvd_vandermonde_det",
+          "informal_name": "Superfactorial Divides Vandermonde Determinant",
+          "kind": "theorem",
+          "type": "∀ {n : ℕ} (v : Fin (n + 1) → ℤ), ↑n.superFactorial ∣ (Matrix.vandermonde v).det",
+          "informal_description": "For any natural number $ n $ and any vector $ v $ of $ n+1 $ integers, the determinant of the Vandermonde matrix constructed from $ v $ is divisible by the superfactorial of $ n $. The superfactorial of $ n $ is defined as the product $ 1! \\times 2! \\times \\cdots \\times n! $.",
+          "path": "Mathlib.LinearAlgebra.Vandermonde"
+        }
+      ]
+    },
+    "isError": false
+  },
+  "method": "lean_leanfinder",
+  "form": "current"
+}
