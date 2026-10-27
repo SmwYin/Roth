@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-27
 
-- Declarations completed: **290/293**
-- Next declaration: **#291 `LeanEval.NumberTheory.ThueSiegelRothProblem.exists_pos_div_rpow_lt_aux`** (Roth/LeanEval.lean:20)
+- Declarations completed: **291/293**
+- Next declaration: **#292 `LeanEval.NumberTheory.ThueSiegelRothProblem.isDiophantine_iff`** (Roth/LeanEval.lean:42)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -309,9 +309,9 @@ Last regenerated: 2026-10-27
 | 288 | `Roth.roth` | Roth/Main.lean:573 | YES-but-generalise-first | [report](mathlibable/Roth.roth.md) |
 | 289 | `Roth.roth_rat` | Roth/Main.lean:581 | YES-but-generalise-first | [report](mathlibable/Roth.roth_rat.md) |
 | 290 | `LeanEval.NumberTheory.ThueSiegelRothProblem.IsDiophantine` | Roth/LeanEval.lean:16 | NO-composable-from-mathlib | [report](mathlibable/LeanEval.NumberTheory.ThueSiegelRothProblem.IsDiophantine.md) |
+| 291 | `LeanEval.NumberTheory.ThueSiegelRothProblem.exists_pos_div_rpow_lt_aux` | Roth/LeanEval.lean:20 | SKIP | [report](mathlibable/LeanEval.NumberTheory.ThueSiegelRothProblem.exists_pos_div_rpow_lt_aux.md) |
 
 ## Remaining declarations (in processing order)
 
-- #291 `LeanEval.NumberTheory.ThueSiegelRothProblem.exists_pos_div_rpow_lt_aux` (Roth/LeanEval.lean:20, private lemma)
 - #292 `LeanEval.NumberTheory.ThueSiegelRothProblem.isDiophantine_iff` (Roth/LeanEval.lean:42, public theorem)
 - #293 `LeanEval.NumberTheory.ThueSiegelRothProblem.thueSiegelRoth` (Roth/LeanEval.lean:61, public theorem)
