@@ -1,0 +1,242 @@
+[
+  {
+    "name": "Roth.weight_nonneg",
+    "file": "Roth/Box.lean",
+    "line": 75,
+    "end_line": 76,
+    "source": "theorem weight_nonneg (r : \u03c3 \u2192 \u2115) (d : \u03c3 \u2192\u2080 \u2115) : 0 \u2264 weight r d :=\n  Fintype.sum_nonneg fun _ \u21a6 by positivity",
+    "sha256": "aa5cd75bd11d6732f3b6157a235669098fe7b61ca9b374ed08247df7bc9b3b18"
+  },
+  {
+    "name": "Roth.weight_zero",
+    "file": "Roth/Box.lean",
+    "line": 80,
+    "end_line": 81,
+    "source": "theorem weight_zero (r : \u03c3 \u2192 \u2115) : weight r 0 = 0 := by\n  simp [weight]",
+    "sha256": "2899a457bb041472c2407763e594adb0351f66cfb0b05552665bfe0486c5ea45"
+  },
+  {
+    "name": "Roth.weight_add",
+    "file": "Roth/Box.lean",
+    "line": 85,
+    "end_line": 86,
+    "source": "theorem weight_add (r : \u03c3 \u2192 \u2115) (d e : \u03c3 \u2192\u2080 \u2115) : weight r (d + e) = weight r d + weight r e := by\n  simp [weight, add_div, Finset.sum_add_distrib]",
+    "sha256": "250aaf01e3e41d7740728f16f3b2fec81ba69f7fe42f26916d17eb93238d9dd5"
+  },
+  {
+    "name": "Roth.weight_eq_zero_iff",
+    "file": "Roth/Box.lean",
+    "line": 91,
+    "end_line": 93,
+    "source": "theorem weight_eq_zero_iff {r : \u03c3 \u2192 \u2115} (hr : \u2200 j, 0 < r j) {d : \u03c3 \u2192\u2080 \u2115} :\n    weight r d = 0 \u2194 d = 0 := by\n  simp [weight, Finset.sum_eq_zero_iff_of_nonneg, div_nonneg, (hr _).ne', Finsupp.ext_iff]",
+    "sha256": "07040ef100e4680d891b8e8d5f13211f7748553a2a6b787ecaed09652e332afd"
+  },
+  {
+    "name": "Roth.weight_single",
+    "file": "Roth/Box.lean",
+    "line": 96,
+    "end_line": 98,
+    "source": "theorem weight_single (r : \u03c3 \u2192 \u2115) (j : \u03c3) (n : \u2115) : weight r (Finsupp.single j n) = n / r j := by\n  classical\n  simp [weight, Finsupp.single_apply, ite_div]",
+    "sha256": "1212f9a448124f22fc39250168775914385f8822ff4d97b79d90fc8d5f67fa72"
+  },
+  {
+    "name": "Roth.weight_le_card",
+    "file": "Roth/Box.lean",
+    "line": 103,
+    "end_line": 106,
+    "source": "theorem weight_le_card {r : \u03c3 \u2192 \u2115} {d : \u03c3 \u2192\u2080 \u2115} (hd : \u2200 j, d j \u2264 r j) :\n    weight r d \u2264 Fintype.card \u03c3 :=\n  (Finset.sum_le_sum fun j _ \u21a6 div_le_one_of_le\u2080 (by exact_mod_cast hd j) (by positivity)).trans_eq\n    (by simp)",
+    "sha256": "fc6f8660e1bf01c60cb870f8f5fd011d5ac805f026574bf2d1f47f3e847a8dbb"
+  },
+  {
+    "name": "Roth.weight_mul_left",
+    "file": "Roth/Box.lean",
+    "line": 110,
+    "end_line": 112,
+    "source": "theorem weight_mul_left {l : \u2115} (r : \u03c3 \u2192 \u2115) (d : \u03c3 \u2192\u2080 \u2115) :\n    weight (fun j \u21a6 l * r j) d = weight r d / l := by\n  simp [weight, Finset.sum_div, div_div, mul_comm]",
+    "sha256": "ceb8c464f3b7a0cfe7d3c0518b47bcf09bae3d34e6c41abfaa8a101fb516682b"
+  },
+  {
+    "name": "Roth.weight_le_degree_div",
+    "file": "Roth/Box.lean",
+    "line": 118,
+    "end_line": 122,
+    "source": "theorem weight_le_degree_div {r : \u03c3 \u2192 \u2115} {m : \u2115} (hm : 0 < m) (hr : \u2200 j, m \u2264 r j) (d : \u03c3 \u2192\u2080 \u2115) :\n    weight r d \u2264 d.degree / m := by\n  rw [weight, Finsupp.degree_eq_sum, Nat.cast_sum, Finset.sum_div]\n  gcongr with j\n  exact hr j",
+    "sha256": "a9ff5fba1babc594d5dec31b352f4866d807f6499d28b0c6bef88d3d58ae33c3"
+  },
+  {
+    "name": "Roth.weight_mapDomain",
+    "file": "Roth/Box.lean",
+    "line": 127,
+    "end_line": 130,
+    "source": "theorem weight_mapDomain {\u03c4 : Type*} [Fintype \u03c4] {f : \u03c3 \u2192 \u03c4} (hf : Function.Injective f) (r : \u03c4 \u2192 \u2115)\n    (d : \u03c3 \u2192\u2080 \u2115) : weight r (d.mapDomain f) = weight (r \u2218 f) d := by\n  simpa [Finsupp.sum_fintype, weight] using\n    Finsupp.sum_mapDomain_index_inj (s := d) (h := fun j n \u21a6 (n : \u211d) / r j) hf",
+    "sha256": "5b0fa181d9518e4b47144a835cb0ea83b597bd71890c9683e09e6db94c78c492"
+  },
+  {
+    "name": "Roth.index",
+    "file": "Roth/Index.lean",
+    "line": 58,
+    "end_line": 59,
+    "source": "noncomputable def index (P : MvPolynomial \u03c3 \u211d) (\u03b1 : \u03c3 \u2192 \u211d) (r : \u03c3 \u2192 \u2115) : \u211d :=\n  sInf (weight r '' ((taylor \u03b1 P).support : Set (\u03c3 \u2192\u2080 \u2115)))",
+    "sha256": "453e3e250016fa121c036ac73caae41b7f7262fa758bed228e9ef600b7c5e60a"
+  },
+  {
+    "name": "Roth.index_le_weight",
+    "file": "Roth/Index.lean",
+    "line": 69,
+    "end_line": 72,
+    "source": "theorem index_le_weight {P : MvPolynomial \u03c3 \u211d} {\u03b1 : \u03c3 \u2192 \u211d} {r : \u03c3 \u2192 \u2115} {d : \u03c3 \u2192\u2080 \u2115}\n    (h : eval \u03b1 (hasseDeriv d P) \u2260 0) : index P \u03b1 r \u2264 weight r d :=\n  csInf_le ((taylor \u03b1 P).support.finite_toSet.image (weight r)).bddBelow\n    (Set.mem_image_of_mem _ (Finset.mem_coe.2 (mem_support_taylor_iff.2 h)))",
+    "sha256": "29cd1d2c64fbba551f22c4c5ebc08b1b00ceaae86c589b66b9c20b7315f938d3"
+  },
+  {
+    "name": "Roth.exists_weight_eq_index",
+    "file": "Roth/Index.lean",
+    "line": 76,
+    "end_line": 81,
+    "source": "theorem exists_weight_eq_index {P : MvPolynomial \u03c3 \u211d} (hP : P \u2260 0) (\u03b1 : \u03c3 \u2192 \u211d) (r : \u03c3 \u2192 \u2115) :\n    \u2203 d, eval \u03b1 (hasseDeriv d P) \u2260 0 \u2227 weight r d = index P \u03b1 r := by\n  obtain \u27e8d, hd, hdw\u27e9 :=\n    (show (weight r '' ((taylor \u03b1 P).support : Set (\u03c3 \u2192\u2080 \u2115))).Nonempty by\n      simpa using hP).csInf_mem ((taylor \u03b1 P).support.finite_toSet.image (weight r))\n  exact \u27e8d, mem_support_taylor_iff.1 hd, hdw\u27e9",
+    "sha256": "62e9454da2099dcfab21de9ee483932c8c0a59a24cab8625edc8c1422a1e68d9"
+  },
+  {
+    "name": "Roth.le_index_iff",
+    "file": "Roth/Index.lean",
+    "line": 85,
+    "end_line": 90,
+    "source": "theorem le_index_iff {P : MvPolynomial \u03c3 \u211d} (hP : P \u2260 0) {\u03b1 : \u03c3 \u2192 \u211d} {r : \u03c3 \u2192 \u2115} {c : \u211d} :\n    c \u2264 index P \u03b1 r \u2194 \u2200 d, eval \u03b1 (hasseDeriv d P) \u2260 0 \u2192 c \u2264 weight r d := by\n  refine \u27e8fun h d hd \u21a6 h.trans (index_le_weight hd), fun h \u21a6 ?_\u27e9\n  refine le_csInf (by simpa using hP) ?_\n  rintro _ \u27e8d, hd, rfl\u27e9\n  exact h d (mem_support_taylor_iff.1 hd)",
+    "sha256": "e2f891b05c726ecfee64bd368109f513cb1f396b32c13c99d0d44d656981a070"
+  },
+  {
+    "name": "Roth.index_sub_weight_le_index_hasseDeriv",
+    "file": "Roth/Index.lean",
+    "line": 109,
+    "end_line": 114,
+    "source": "theorem index_sub_weight_le_index_hasseDeriv {P : MvPolynomial \u03c3 \u211d} {k : \u03c3 \u2192\u2080 \u2115}\n    (hk : hasseDeriv k P \u2260 0) (\u03b1 : \u03c3 \u2192 \u211d) (r : \u03c3 \u2192 \u2115) :\n    index P \u03b1 r - weight r k \u2264 index (hasseDeriv k P) \u03b1 r := by\n  obtain \u27e8i, hi, hiw\u27e9 := exists_weight_eq_index hk \u03b1 r\n  rw [hasseDeriv_hasseDeriv, smul_eq_C_mul, map_mul, eval_C, mul_ne_zero_iff] at hi\n  exact sub_le_iff_le_add.2 (by simpa [weight_add, hiw] using index_le_weight (r := r) hi.2)",
+    "sha256": "f4910d9f1a182adcd49b260f33c4605d21f2c5f340a2339c80b56581c3fd948d"
+  },
+  {
+    "name": "Roth.weight_eq_finsuppWeight_div",
+    "file": "Roth/Index.lean",
+    "line": 130,
+    "end_line": 137,
+    "source": "theorem weight_eq_finsuppWeight_div {r : \u03c3 \u2192 \u2115} (hr : \u2200 j, 0 < r j) (d : \u03c3 \u2192\u2080 \u2115) :\n    weight r d = (Finsupp.weight (fun j \u21a6 (\u220f i, r i) / r j) d : \u211d) / \u220f i, r i := by\n  have hD : (0 : \u211d) < \u220f i, (r i : \u211d) := Finset.prod_pos fun i _ \u21a6 by exact_mod_cast hr i\n  rw [weight, Finsupp.weight_eq_sum, Nat.cast_sum, Finset.sum_div, Nat.cast_prod]\n  refine Finset.sum_congr rfl fun j _ \u21a6 ?_\n  rw [smul_eq_mul, Nat.cast_mul,\n    Nat.cast_div_charZero (Finset.dvd_prod_of_mem _ (Finset.mem_univ j)), Nat.cast_prod,\n    \u2190 mul_div_assoc, div_right_comm, mul_div_cancel_right\u2080 _ hD.ne']",
+    "sha256": "e34fbc12ac2482210f2599c0d762c253f408b6a9a1ddf56690e39930088b3034"
+  },
+  {
+    "name": "Roth.index_mul_left_weights",
+    "file": "Roth/Index.lean",
+    "line": 200,
+    "end_line": 207,
+    "source": "theorem index_mul_left_weights {l : \u2115} (P : MvPolynomial \u03c3 \u211d) (\u03b1 : \u03c3 \u2192 \u211d) (r : \u03c3 \u2192 \u2115) :\n    index P \u03b1 (fun j \u21a6 l * r j) = index P \u03b1 r / l := by\n  have himg : weight (fun j \u21a6 l * r j) '' ((taylor \u03b1 P).support : Set (\u03c3 \u2192\u2080 \u2115)) =\n      (l : \u211d)\u207b\u00b9 \u2022 (weight r '' ((taylor \u03b1 P).support : Set (\u03c3 \u2192\u2080 \u2115))) := by\n    rw [\u2190 Set.image_smul, Set.image_image]\n    refine Set.image_congr fun d _ \u21a6 ?_\n    rw [weight_mul_left, smul_eq_mul, div_eq_inv_mul]\n  rw [index, index, himg, Real.sInf_smul_of_nonneg (by positivity), smul_eq_mul, div_eq_inv_mul]",
+    "sha256": "58293aa8a7e9260f910c6d4d3c20a3cc777a9c541da4b03db3b90c1a4fb130ed"
+  },
+  {
+    "name": "Roth.index_unique",
+    "file": "Roth/Index.lean",
+    "line": 234,
+    "end_line": 251,
+    "source": "theorem index_unique [Unique \u03c3] {P : MvPolynomial \u03c3 \u211d} (hP : P \u2260 0) (\u03b1 : \u03c3 \u2192 \u211d) (r : \u03c3 \u2192 \u2115) :\n    index P \u03b1 r =\n      (Polynomial.rootMultiplicity (\u03b1 default) (uniqueAlgEquiv \u211d \u03c3 P) : \u211d) / r default := by\n  set q := Polynomial.taylor (\u03b1 default) (uniqueAlgEquiv \u211d \u03c3 P) with hqdef\n  have key (d : \u03c3 \u2192\u2080 \u2115) : eval \u03b1 (hasseDeriv d P) = q.coeff (d default) := by\n    rw [Polynomial.taylor_coeff, \u2190 uniqueAlgEquiv_hasseDeriv, \u2190 Finsupp.unique_single d]\n    exact (eval\u2082_uniqueAlgEquiv (f := hasseDeriv d P) (\u03c6 := RingHom.id \u211d) (a := \u03b1)).symm\n  have hq : q \u2260 0 := by\n    rwa [hqdef, Ne, Polynomial.taylor_eq_zero, map_eq_zero_iff _ (uniqueAlgEquiv \u211d \u03c3).injective]\n  rw [Polynomial.rootMultiplicity_eq_natTrailingDegree, \u2190 Polynomial.taylor_apply]\n  apply le_antisymm\n  \u00b7 simpa [weight, hqdef] using index_le_weight (P := P) (\u03b1 := \u03b1) (r := r)\n      (d := Finsupp.single default q.natTrailingDegree)\n      (by simpa [key] using Polynomial.trailingCoeff_nonzero_iff_nonzero.2 hq)\n  \u00b7 refine (le_index_iff hP).2 fun d hd \u21a6 ?_\n    simpa [weight, hqdef] using div_le_div_of_nonneg_right\n      (by exact_mod_cast Polynomial.natTrailingDegree_le_of_ne_zero (key d \u25b8 hd))\n      (Nat.cast_nonneg (r default))",
+    "sha256": "12ac3a355620badf2793a337e9b97d4aabe1d3e6845afc1ed620a2b217d12f6f"
+  },
+  {
+    "name": "Roth.filter_weight_le_eq_empty",
+    "file": "Roth/Lattice.lean",
+    "line": 143,
+    "end_line": 145,
+    "source": "private lemma filter_weight_le_eq_empty {m : \u2115} (r : Fin m \u2192 \u2115) {lam : \u211d} (hlam : (m : \u211d) < lam) :\n    (box r).filter (fun d \u21a6 weight r d \u2264 ((m : \u211d) - lam) / 2) = \u2205 :=\n  Finset.filter_eq_empty_iff.2 fun d _ h \u21a6 by linarith [weight_nonneg r d]",
+    "sha256": "4d8c0bf5794688d910fe0b6d453d53f59ebeec4227e98e1d4b78a38576cbff90"
+  },
+  {
+    "name": "Roth.card_filter_fiber_eq",
+    "file": "Roth/Lattice.lean",
+    "line": 147,
+    "end_line": 156,
+    "source": "private lemma card_filter_fiber_eq {n : \u2115} (r : Fin (n + 1) \u2192 \u2115) (lam : \u211d) (i : \u2115) :\n    (((box (r \u2218 Fin.castSucc)).filter fun d \u21a6 weight r\n      (d.mapDomain Fin.castSucc + Finsupp.single (Fin.last n) i) \u2264\n        (((n + 1 : \u2115) : \u211d) - lam) / 2).card : \u211d) =\n      (((box (r \u2218 Fin.castSucc)).filter fun d \u21a6 weight (r \u2218 Fin.castSucc) d \u2264\n        ((n : \u211d) - (lam - 1 + 2 * (i : \u211d) / r (Fin.last n))) / 2).card : \u211d) := by\n  congr 2\n  refine Finset.filter_congr fun d _ \u21a6 ?_\n  rw [weight_add, weight_mapDomain (Fin.castSucc_injective n), weight_single, mul_div_assoc]\n  grind",
+    "sha256": "5e3a3dab5e4affb1705f90ef08d081ecf2ed131717d612a70df183a7c7b9ffc5"
+  },
+  {
+    "name": "Roth.card_filter_weight_le_of_le_sqrt_aux",
+    "file": "Roth/Lattice.lean",
+    "line": 158,
+    "end_line": 164,
+    "source": "private lemma card_filter_weight_le_of_le_sqrt_aux (m : \u2115) (r : Fin m \u2192 \u2115) {lam : \u211d}\n    (hlam : 0 < lam) (h : lam \u2264 2 * \u221a(m : \u211d)) : (((box r).filter fun d \u21a6\n      weight r d \u2264 ((m : \u211d) - lam) / 2).card : \u211d) \u2264 2 * \u221a(m : \u211d) / lam * \u220f j, ((r j : \u211d) + 1) := by\n  classical\n  calc _ \u2264 ((box r).card : \u211d) := by exact_mod_cast Finset.card_filter_le (box r) _\n    _ = \u220f j, ((r j : \u211d) + 1) := by simp [card_box]\n    _ \u2264 _ := le_mul_of_one_le_left (by positivity) ((one_le_div hlam).2 h)",
+    "sha256": "5867bf405d78638f48dd6bf546f38c6d44bcb85b9317d45730cf4e3c30b69bbc"
+  },
+  {
+    "name": "Roth.card_filter_weight_le_succ_aux",
+    "file": "Roth/Lattice.lean",
+    "line": 166,
+    "end_line": 195,
+    "source": "private lemma card_filter_weight_le_succ_aux {n : \u2115} (r : Fin (n + 1) \u2192 \u2115) (hr : 0 < r (Fin.last n))\n    (hn : 0 < n) {lam : \u211d} (hlam : 2 * \u221a((n + 1 : \u2115) : \u211d) < lam) (ih : \u2200 {t : \u211d}, 0 < t \u2192\n      (((box (r \u2218 Fin.castSucc)).filter fun d \u21a6 weight (r \u2218 Fin.castSucc) d \u2264\n        ((n : \u211d) - t) / 2).card : \u211d) \u2264 2 * \u221a(n : \u211d) / t * \u220f j, (((r \u2218 Fin.castSucc) j : \u211d) + 1)) :\n    (((box r).filter fun d \u21a6 weight r d \u2264 (((n + 1 : \u2115) : \u211d) - lam) / 2).card : \u211d) \u2264\n      2 * \u221a((n + 1 : \u2115) : \u211d) / lam * \u220f j, ((r j : \u211d) + 1) := by\n  set R := r (Fin.last n)\n  have hs := sum_inv_lt (r := R) (m := n + 1) hr (Nat.succ_le_succ hn) hlam\n  push_cast [add_sub_cancel_right] at hs\n  rw [card_filter_box_last, Nat.cast_sum,\n    Finset.sum_congr rfl fun i _ \u21a6 card_filter_fiber_eq r lam i]\n  calc \u2211 i \u2208 range (R + 1), (((box (r \u2218 Fin.castSucc)).filter fun d \u21a6\n          weight (r \u2218 Fin.castSucc) d \u2264 ((n : \u211d) - (lam - 1 + 2 * (i : \u211d) / R)) / 2).card : \u211d)\n      \u2264 \u2211 i \u2208 range (R + 1), 2 * \u221a(n : \u211d) / (lam - 1 + 2 * (i : \u211d) / R) *\n          \u220f j, (((r \u2218 Fin.castSucc) j : \u211d) + 1) := by\n        refine Finset.sum_le_sum fun i _ \u21a6 ih ?_\n        linarith [Real.one_le_sqrt.2 (by simp : (1 : \u211d) \u2264 ((n + 1 : \u2115) : \u211d)),\n          show 0 \u2264 2 * (i : \u211d) / R by positivity]\n    _ = 2 * \u221a(n : \u211d) * (\u220f j, (((r \u2218 Fin.castSucc) j : \u211d) + 1)) *\n          \u2211 i \u2208 range (R + 1), (lam - 1 + 2 * (i : \u211d) / R)\u207b\u00b9 := by\n        rw [Finset.mul_sum]\n        exact Finset.sum_congr rfl fun i _ \u21a6 by ring\n    _ \u2264 2 * \u221a(n : \u211d) * (\u220f j, (((r \u2218 Fin.castSucc) j : \u211d) + 1)) *\n          (lam\u207b\u00b9 * (\u221a(n : \u211d))\u207b\u00b9 * \u221a((n : \u211d) + 1) * (R + 1)) :=\n        mul_le_mul_of_nonneg_left hs.le (by positivity)\n    _ = 2 * \u221a((n + 1 : \u2115) : \u211d) / lam * \u220f j, ((r j : \u211d) + 1) := by\n        rw [Fin.prod_univ_castSucc]\n        push_cast\n        field_simp\n        simp [R]",
+    "sha256": "212a6ad30d217ebcf7b9094cfcbe7e3918fc613509bbe7b1e7d93ba7801e8193"
+  },
+  {
+    "name": "Roth.card_filter_weight_le",
+    "file": "Roth/Lattice.lean",
+    "line": 202,
+    "end_line": 218,
+    "source": "theorem card_filter_weight_le (m : \u2115) (r : Fin m \u2192 \u2115) (hr : \u2200 j, 0 < r j) {lam : \u211d} (hlam : 0 < lam)\n    : (((box r).filter fun d \u21a6 weight r d \u2264 ((m : \u211d) - lam) / 2).card : \u211d) \u2264\n      2 * \u221a(m : \u211d) / lam * \u220f j, ((r j : \u211d) + 1) := by\n  classical\n  induction m generalizing lam with\n  | zero =>\n    rw [filter_weight_le_eq_empty r (by simpa using hlam)]\n    simp\n  | succ n ih =>\n    by_cases h : lam \u2264 2 * \u221a(((n + 1 : \u2115) : \u211d))\n    \u00b7 exact card_filter_weight_le_of_le_sqrt_aux (n + 1) r hlam h\n    rcases Nat.eq_zero_or_pos n with rfl | hn\n    \u00b7 rw [filter_weight_le_eq_empty r (by\n        norm_num at h \u22a2\n        linarith), card_empty, Nat.cast_zero]\n      positivity\n    exact card_filter_weight_le_succ_aux r (hr _) hn (lt_of_not_ge h) (ih _ fun j \u21a6 hr _)",
+    "sha256": "001f5ec6d1a8a0416a7ddb37602b2292931831ecbf152e332e14a7f39048af36"
+  },
+  {
+    "name": "Roth.abs_prod_pow_le_rpow_of_le_weight",
+    "file": "Roth/Main.lean",
+    "line": 347,
+    "end_line": 371,
+    "source": "private lemma abs_prod_pow_le_rpow_of_le_weight {m : \u2115} [NeZero m] {r q : Fin m \u2192 \u2115}\n    (hq : \u2200 j, 0 < q j) {\u03ba : \u211d} (h\u03ba : 0 \u2264 \u03ba) {x : Fin m \u2192 \u211d} (hx : \u2200 j, |x j| \u2264 1 / (q j : \u211d) ^ \u03ba)\n    (hqr : \u2200 j, (q 0 : \u211d) ^ ((r 0 : \u211d) / r j) \u2264 q j) (d : Fin m \u2192\u2080 \u2115) {c : \u211d} (hw : c \u2264 weight r d)\n    : |\u220f j, x j ^ d j| \u2264 (q 0 : \u211d) ^ (-(r 0 : \u211d) * c * \u03ba) := by\n  have hqR : \u2200 j, (0 : \u211d) < q j := fun j \u21a6 by exact_mod_cast hq j\n  have hq1 : (1 : \u211d) \u2264 q 0 := by exact_mod_cast hq 0\n  rw [Finset.abs_prod]\n  calc \u220f j, |x j ^ d j|\n      \u2264 \u220f j, (q j : \u211d) ^ (-\u03ba * d j) := by\n        refine Finset.prod_le_prod\u2080 (fun j _ \u21a6 abs_nonneg _) fun j _ \u21a6 ?_\n        rw [abs_pow, Real.rpow_mul (hqR j).le, Real.rpow_natCast,\n          Real.rpow_neg (hqR j).le, \u2190 one_div]\n        exact pow_le_pow_left\u2080 (abs_nonneg _) (hx j) _\n    _ \u2264 \u220f j, ((q 0 : \u211d) ^ ((r 0 : \u211d) / r j)) ^ (-\u03ba * d j) := by\n        refine Finset.prod_le_prod\u2080 (fun j _ \u21a6 by positivity) fun j _ \u21a6 ?_\n        exact Real.rpow_le_rpow_of_nonpos (by positivity) (hqr j)\n          (mul_nonpos_of_nonpos_of_nonneg (neg_nonpos.2 h\u03ba) (Nat.cast_nonneg _))\n    _ = (q 0 : \u211d) ^ (-(r 0 : \u211d) * \u03ba * weight r d) := by\n        simp_rw [\u2190 Real.rpow_mul (hqR 0).le]\n        rw [\u2190 Real.rpow_sum_of_pos (hqR 0), weight, Finset.mul_sum]\n        exact congrArg _ (Finset.sum_congr rfl fun j _ \u21a6 by ring)\n    _ \u2264 (q 0 : \u211d) ^ (-(r 0 : \u211d) * c * \u03ba) := by\n        apply Real.rpow_le_rpow_of_exponent_le hq1\n        convert mul_le_mul_of_nonpos_left hw\n          (neg_nonpos.2 (mul_nonneg (Nat.cast_nonneg (r 0)) h\u03ba)) using 1 <;> ring",
+    "sha256": "60419828e4448e15c2eea97d74b1cdf7c5775d2b57e26472659d63ba8fa34d8d"
+  },
+  {
+    "name": "Roth.le_index_of_forall_eval_eq_zero",
+    "file": "Roth/MainLemma.lean",
+    "line": 419,
+    "end_line": 425,
+    "source": "theorem le_index_of_forall_eval_eq_zero {\u03c3 : Type*} [Fintype \u03c3] {P : MvPolynomial \u03c3 \u211d} (hP : P \u2260 0)\n    {r : \u03c3 \u2192 \u2115} (hd : \u2200 j, degreeOf j P \u2264 r j) (\u03b1 : \u03c3 \u2192 \u211d) {c : \u211d}\n    (hvan : \u2200 d, (\u2200 j, d j \u2264 r j) \u2192 weight r d < c \u2192 eval \u03b1 (hasseDeriv d P) = 0) :\n    c \u2264 index P \u03b1 r := by\n  refine (le_index_iff hP).2 fun d he \u21a6 le_of_not_gt fun hw \u21a6 he (hvan d (fun j \u21a6 ?_) hw)\n  by_contra! hj\n  exact he <| by rw [hasseDeriv_eq_zero_of_degreeOf_lt ((hd j).trans_lt hj), map_zero]",
+    "sha256": "552ba89d49ca5b7160e92ebba4f2b2e4dd39f367d222c410d12c13550bad75c6"
+  },
+  {
+    "name": "Roth.exists_hasseDeriv_eval_ne_zero",
+    "file": "Roth/MainLemma.lean",
+    "line": 454,
+    "end_line": 457,
+    "source": "theorem exists_hasseDeriv_eval_ne_zero {\u03c3 : Type*} [Fintype \u03c3] {P : MvPolynomial \u03c3 \u211d} (hP : P \u2260 0)\n    (\u03b1 : \u03c3 \u2192 \u211d) (r : \u03c3 \u2192 \u2115) {c : \u211d} (hc : index P \u03b1 r < c) : \u2203 k : \u03c3 \u2192\u2080 \u2115,\n    weight r k < c \u2227 eval \u03b1 (hasseDeriv k P) \u2260 0 :=\n  (exists_weight_eq_index hP \u03b1 r).imp fun _ \u27e8hd, hw\u27e9 \u21a6 \u27e8hw \u25b8 hc, hd\u27e9",
+    "sha256": "3bdd67fe29d57ab1e766027ac8a81548411533efb119f40607a92adabe656cb2"
+  },
+  {
+    "name": "Roth.exists_mem_RSet_le_index_aux",
+    "file": "Roth/MainLemma.lean",
+    "line": 550,
+    "end_line": 567,
+    "source": "private lemma exists_mem_RSet_le_index_aux {\u03c3 : Type*} [Fintype \u03c3] {f : Polynomial \u2124} {\u03b1 : \u211d}\n    (hf : f.Monic) (hf\u03b1 : Polynomial.aeval \u03b1 f = 0) (r : \u03c3 \u2192 \u2115) (B C : \u2115) (J : Finset (\u03c3 \u2192\u2080 \u2115))\n    {\u03b3 : \u211d} (hC : \u2200 W \u2208 boxFamily r B, \u2200 j \u2208 J, \u2200 i < f.natDegree,\n      |(diag (hasseDeriv j W) %\u2098 f).coeff i| \u2264 (C : \u2124))\n    (hcount : ((2 * C + 1 : \u2115) : \u211d) ^ (f.natDegree * J.card) < ((B : \u211d) + 1) ^ (\u220f k, (r k + 1) : \u2115))\n    (hJ : \u2200 d, (\u2200 k, d k \u2264 r k) \u2192 weight r d < \u03b3 \u2192 d \u2208 J) : \u2203 P : MvPolynomial \u03c3 \u2124, P \u2208 RSet B r \u2227\n      \u03b3 \u2264 index (map (Int.castRingHom \u211d) P) (fun _ \u21a6 \u03b1) r := by\n  obtain \u27e8W', hW', W'', hW'', hne, hWeq\u27e9 := exists_ne_modByMonic_eq r B hf J C hC\n    (by simpa [finprod_eq_prod_of_fintype] using hcount)\n  -- `W* = W' - W''`\n  have hP := sub_mem_RSet hW' hW'' hne\n  refine \u27e8W' - W'', hP, ?_\u27e9\n  exact le_index_of_forall_eval_eq_zero\n    ((map_ne_zero_iff _ (MvPolynomial.map_injective _ Int.cast_injective)).2 hP.1)\n    (by simpa only [degreeOf,\n          degrees_map_of_injective _ (f := Int.castRingHom \u211d) Int.cast_injective]\n        using hP.2.1) (fun _ \u21a6 \u03b1)\n    fun d hd hw \u21a6 eval_hasseDeriv_sub_eq_zero hf\u03b1 (hWeq d (hJ d hd hw))",
+    "sha256": "acc391440f39f8916ce72ebead5f80d3222f6d10c73030138668cdcf500bca97"
+  },
+  {
+    "name": "Roth.mul_card_filter_weight_le_aux",
+    "file": "Roth/MainLemma.lean",
+    "line": 569,
+    "end_line": 579,
+    "source": "private lemma mul_card_filter_weight_le_aux {m : \u2115} (hm : 0 < m) (r : Fin m \u2192 \u2115) (hr : \u2200 j, 0 < r j)\n    (a : \u211d) : a * (((box r).filter fun d \u21a6 weight r d \u2264 ((m : \u211d) - 4 * a * \u221a(m : \u211d)) / 2).card : \u211d)\n      \u2264 ((\u220f j, (r j + 1) : \u2115) : \u211d) / 2 := by\n  by_cases ha : 0 < a\n  \u00b7 refine (mul_le_mul_of_nonneg_left\n      (card_filter_weight_le m r hr (by positivity)) ha.le).trans_eq ?_\n    push_cast\n    field_simp [ha.ne', (Real.sqrt_pos.2 (Nat.cast_pos.2 hm)).ne']\n    ring\n  \u00b7 exact (mul_nonpos_of_nonpos_of_nonneg (le_of_not_gt ha) (Nat.cast_nonneg _)).trans\n      (by positivity)",
+    "sha256": "b8b6245544980b4a105764d086adbb90a8da69fcf459df9da18c59981c78bc87"
+  },
+  {
+    "name": "Roth.exists_mem_RSet_le_index_of_rpow_bound_aux",
+    "file": "Roth/MainLemma.lean",
+    "line": 581,
+    "end_line": 616,
+    "source": "private lemma exists_mem_RSet_le_index_of_rpow_bound_aux {f : Polynomial \u2124} {\u03b1 A : \u211d} (hf : f.Monic)\n    (hf\u03b1 : Polynomial.aeval \u03b1 f = 0) (hA : \u2200 i, |(f.coeff i : \u211d)| \u2264 A) {m : \u2115} (hm : 0 < m)\n    (r : Fin m \u2192 \u2115) (hr : \u2200 j, 0 < r j) {c \u03b2 : \u211d} {B s : \u2115} (hB : 0 < B) (hs : \u2211 j, r j \u2264 s)\n    (hA\u03b2 : (1 + A) ^ s \u2264 \u03b2) (hpow : (B : \u211d) * \u03b2 ^ 3 \u2264 (B : \u211d) ^ c) : \u2203 P : MvPolynomial (Fin m) \u2124,\n      P \u2208 RSet B r \u2227 ((m : \u211d) - 4 * c * f.natDegree * \u221a(m : \u211d)) / 2 \u2264\n        index (map (Int.castRingHom \u211d) P) (fun _ \u21a6 \u03b1) r := by\n  have hA1 : 1 \u2264 A := by simpa [hf.coeff_natDegree] using hA f.natDegree\n  have h2 : (2 : \u211d) ^ s \u2264 \u03b2 :=\n    (pow_le_pow_left\u2080 (by norm_num) (by linarith : (2 : \u211d) \u2264 1 + A) s).trans hA\u03b2\n  have hc : 1 \u2264 c := by\n    by_contra! hc\n    have hBc : (B : \u211d) ^ c \u2264 B := by\n      simpa using Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast hB) hc.le\n    have hs0 : 0 < s := (hr \u27e80, hm\u27e9).trans_le\n      ((Finset.single_le_sum (fun j _ \u21a6 Nat.zero_le (r j)) (Finset.mem_univ _)).trans hs)\n    have h\u03b2 : 1 < \u03b2 := (one_lt_pow\u2080 (by norm_num : (1 : \u211d) < 2) hs0.ne').trans_le h2\n    exact (not_lt_of_ge hBc) ((lt_mul_of_one_lt_right (Nat.cast_pos.2 hB)\n      (one_lt_pow\u2080 h\u03b2 (by decide : 3 \u2260 0))).trans_le hpow)\n  -- the bound `C` for the remainders\n  let Cn := \u230a(B : \u211d) ^ c\u230b\u208a\n  have hC : \u2200 W \u2208 boxFamily r B, \u2200 j i,\n      |(diag (hasseDeriv j W) %\u2098 f).coeff i| \u2264 (Cn : \u2124) := by\n    intro W hW j i\n    have hcW : \u2200 e, |(W.coeff e : \u211d)| \u2264 B := fun e \u21a6 by\n      exact_mod_cast (abs_of_nonneg (hW.2 e).1).trans_le (hW.2 e).2\n    exact (abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux\n      hA hW.1 hcW hs h2 hA\u03b2 j i).trans (by exact_mod_cast Nat.floor_mono hpow)\n  let J := (box r).filter fun d \u21a6\n    weight r d \u2264 ((m : \u211d) - 4 * c * f.natDegree * \u221a(m : \u211d)) / 2\n  -- the counting inequality\n  have hD : c * f.natDegree * J.card \u2264 ((\u220f j, (r j + 1) : \u2115) : \u211d) / 2 := by\n    simpa [J, mul_assoc] using mul_card_filter_weight_le_aux hm r hr (c * f.natDegree)\n  exact exists_mem_RSet_le_index_aux hf hf\u03b1 r B Cn J\n    (fun W hW j _ i _ \u21a6 hC W hW j i)\n    (pigeonhole_count (Nat.cast_pos.2 hB) hc (Finset.prod_pos fun j _ \u21a6 Nat.succ_pos _) hD)\n    (fun d hd hw \u21a6 Finset.mem_filter.2 \u27e8mem_box.2 hd, hw.le\u27e9)",
+    "sha256": "d35def09cffea3966d19da542844f090f77e574715d58bf15e9275290b95d73e"
+  },
+  {
+    "name": "Roth.sum_max_sub_le_index_det",
+    "file": "Roth/Theta.lean",
+    "line": 376,
+    "end_line": 411,
+    "source": "theorem sum_max_sub_le_index_det {R : MvPolynomial (Option \u03c4) \u211d} {l : \u2115} (D : Fin l \u2192 (\u03c4 \u2192\u2080 \u2115))\n    (hD : \u2200 \u03bc, (D \u03bc).degree \u2264 \u03bc) (hdet : (Matrix.of fun \u03bc \u03bd : Fin l \u21a6\n      hasseDeriv ((D \u03bc).mapDomain some + Finsupp.single none (\u03bd : \u2115)) R).det \u2260 0) (\u03b1 : Option \u03c4 \u2192 \u211d)\n    {r : Option \u03c4 \u2192 \u2115} (hr : \u2200 j, 0 < r j) {\u03b4 : \u211d}\n    (h\u03b4 : \u2200 d : \u03c4 \u2192\u2080 \u2115, d.degree \u2264 l - 1 \u2192 weight (r \u2218 some) d \u2264 \u03b4) :\n    \u2211 \u03bd \u2208 Finset.range l, max 0 (index R \u03b1 r - \u03bd / r none) - l * \u03b4 \u2264\n      index (Matrix.of fun \u03bc \u03bd : Fin l \u21a6\n        hasseDeriv ((D \u03bc).mapDomain some + Finsupp.single none (\u03bd : \u2115)) R).det \u03b1 r := by\n  classical\n  set E : Fin l \u2192 Fin l \u2192 MvPolynomial (Option \u03c4) \u211d := fun \u03bc \u03bd \u21a6\n    hasseDeriv ((D \u03bc).mapDomain some + Finsupp.single none (\u03bd : \u2115)) R\n  have hterm : \u2200 \u03bc \u03bd : Fin l, E \u03bc \u03bd \u2260 0 \u2192\n      max 0 (index R \u03b1 r - \u03bd / r none) - \u03b4 \u2264 index (E \u03bc \u03bd) \u03b1 r := by\n    intro \u03bc \u03bd hE\n    have h1 := index_sub_weight_le_index_hasseDeriv hE \u03b1 r\n    rw [weight_add, weight_mapDomain (Option.some_injective _), weight_single] at h1\n    have h2 := h\u03b4 (D \u03bc) ((hD \u03bc).trans (Nat.le_sub_one_of_lt \u03bc.isLt))\n    rw [\u2190 sub_sub, sub_right_comm] at h1\n    rw [sub_le_iff_le_add]\n    exact max_le (add_nonneg (index_nonneg _ _ _) ((weight_nonneg _ _).trans h2))\n      ((sub_le_iff_le_add).1 ((sub_le_sub_left h2 _).trans h1))\n  rw [Matrix.det_apply'] at hdet \u22a2\n  refine le_index_sum hdet fun s _ hs \u21a6 ?_\n  have hprod : \u220f i, Matrix.of E (s i) i \u2260 0 := (mul_ne_zero_iff.mp hs).2\n  have hentry (i : Fin l) : Matrix.of E (s i) i \u2260 0 :=\n    (Finset.prod_ne_zero_iff.1 hprod) i (Finset.mem_univ _)\n  have hidx : index (((Equiv.Perm.sign s : \u2124) : MvPolynomial (Option \u03c4) \u211d) *\n      \u220f i, Matrix.of E (s i) i) \u03b1 r = index (\u220f i, Matrix.of E (s i) i) \u03b1 r := by\n    simpa only [map_intCast] using\n      index_C_mul (Int.cast_ne_zero.2 (Units.ne_zero (Equiv.Perm.sign s)))\n        (\u220f i, Matrix.of E (s i) i) \u03b1 r\n  rw [hidx, index_prod _ (fun i _ \u21a6 hentry i) \u03b1 hr,\n    \u2190 Fin.sum_univ_eq_sum_range (fun \u03bd : \u2115 \u21a6 max 0 (index R \u03b1 r - \u03bd / r none)) l]\n  have hl\u03b4 : (l : \u211d) * \u03b4 = \u2211 _i : Fin l, \u03b4 := by rw [Fin.sum_const, nsmul_eq_mul]\n  rw [hl\u03b4, \u2190 Finset.sum_sub_distrib]\n  exact Finset.sum_le_sum fun i _ \u21a6 hterm (s i) i (hentry i)",
+    "sha256": "bde0ba2553b7c15dd23072e0b1fa4dff39a038c99a0b8e39cb7ae353f714eab0"
+  },
+  {
+    "name": "Roth.weight_le_delta_aux",
+    "file": "Roth/Theta.lean",
+    "line": 494,
+    "end_line": 508,
+    "source": "private lemma weight_le_delta_aux {\u03b4 : \u211d} (h\u03b4 : 0 \u2264 \u03b4) {r : Option \u03c4 \u2192 \u2115}\n    (hratio : \u2200 j, (r none : \u211d) \u2264 \u03b4 * r (some j)) {d : \u03c4 \u2192\u2080 \u2115} (hd : d.degree \u2264 r none) :\n    weight (r \u2218 some) d \u2264 \u03b4 := by\n  classical\n  by_cases hr : r none = 0\n  \u00b7 rw [(Finsupp.degree_eq_zero_iff d).1 (Nat.eq_zero_of_le_zero (hr \u25b8 hd))]\n    simpa [weight] using h\u03b4\n  have hrp : (0 : \u211d) < r none := by exact_mod_cast Nat.pos_of_ne_zero hr\n  calc weight (r \u2218 some) d = \u2211 j, (d j : \u211d) / r (some j) := rfl\n    _ \u2264 \u2211 j, (d j : \u211d) * \u03b4 / r none := Finset.sum_le_sum fun j _ \u21a6 by\n        rw [div_le_div_iff\u2080 (pos_of_mul_pos_right (hrp.trans_le (hratio j)) h\u03b4) hrp, mul_assoc]\n        exact mul_le_mul_of_nonneg_left (hratio j) (Nat.cast_nonneg _)\n    _ = \u03b4 * d.degree / r none := by\n        rw [\u2190 Finset.sum_div, \u2190 Finset.sum_mul, Finsupp.degree_eq_sum, Nat.cast_sum, mul_comm]\n    _ \u2264 \u03b4 := (div_le_iff\u2080 hrp).2 (mul_le_mul_of_nonneg_left (by exact_mod_cast hd) h\u03b4)",
+    "sha256": "41eb1986a04c21c7cd8dacf0d82b243a0079af3447475d8c33793e91774addf8"
+  }
+]

@@ -1,0 +1,50 @@
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.Basic.Real.Basic
+
+namespace RawWeightAssessment
+variable {σ : Type*}
+noncomputable def reciprocal (r : σ → ℕ) : (σ →₀ ℕ) →+ ℝ :=
+  Finsupp.weight (fun j ↦ (r j : ℝ)⁻¹)
+theorem agreement [Fintype σ] (r : σ → ℕ) (d : σ →₀ ℕ) :
+    (∑ j, (d j : ℝ) / r j) = reciprocal r d := by
+  simpa [reciprocal, nsmul_eq_mul, div_eq_mul_inv] using
+    (Finsupp.weight_eq_sum (fun j ↦ (r j : ℝ)⁻¹) d).symm
+theorem zero (r : σ → ℕ) : reciprocal r 0 = 0 := map_zero _
+theorem additive (r : σ → ℕ) (d e : σ →₀ ℕ) :
+    reciprocal r (d + e) = reciprocal r d + reciprocal r e := map_add _ _ _
+theorem singleton (r : σ → ℕ) (j : σ) (n : ℕ) :
+    reciprocal r (Finsupp.single j n) = n / r j := by
+  rw [reciprocal, Finsupp.weight_single]
+  simp only [nsmul_eq_mul, div_eq_mul_inv]
+variable {M : Type*} [AddCommMonoid M]
+theorem generic_zero (w : σ → M) : Finsupp.weight w (0 : σ →₀ ℕ) = 0 := map_zero _
+theorem generic_add (w : σ → M) (d e : σ →₀ ℕ) :
+    Finsupp.weight w (d + e) = Finsupp.weight w d + Finsupp.weight w e := map_add _ _ _
+theorem generic_single (w : σ → M) (j : σ) (n : ℕ) :
+    Finsupp.weight w (Finsupp.single j n) = n • w j := Finsupp.weight_single w j n
+theorem infinite_ambient_example :
+    reciprocal (fun _ : ℕ ↦ 2) (Finsupp.single 100 3) = (3 : ℝ) / 2 := singleton _ _ _
+#check @Finsupp.weight
+#check @Finsupp.weight_eq_sum
+#check @Finsupp.linearCombination
+#check_failure Roth.weight
+#print axioms reciprocal
+#print axioms agreement
+#print axioms zero
+#print axioms additive
+#print axioms singleton
+#print axioms generic_zero
+#print axioms generic_add
+#print axioms generic_single
+#print axioms infinite_ambient_example
+
+theorem real_denominator_agreement [Fintype σ] (r : σ → ℝ) (d : σ →₀ ℕ) :
+    (∑ j, (d j : ℝ) / r j) = Finsupp.weight (fun j ↦ (r j)⁻¹) d := by
+  simpa [nsmul_eq_mul, div_eq_mul_inv] using
+    (Finsupp.weight_eq_sum (fun j ↦ (r j)⁻¹) d).symm
+theorem support_sum (r : σ → ℕ) (d : σ →₀ ℕ) :
+    reciprocal r d = d.sum (fun j n ↦ (n : ℝ) / r j) := by
+  simp only [reciprocal, Finsupp.weight_apply, nsmul_eq_mul, div_eq_mul_inv]
+#print axioms real_denominator_agreement
+#print axioms support_sum
+end RawWeightAssessment

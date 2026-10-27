@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 26/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 27/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 26; remaining: 267.
-- Verdicts: 5 NO-composable-from-mathlib, 11 YES-add-as-is, 0 YES-but-generalise-first, 0 NO-mathlib-has-it, 7 BORDERLINE-needs-human, 3 SKIP.
+- Completed applicable assessments: 27; remaining: 266.
+- Verdicts: 5 NO-composable-from-mathlib, 11 YES-add-as-is, 0 YES-but-generalise-first, 1 NO-mathlib-has-it, 7 BORDERLINE-needs-human, 3 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -305,6 +305,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: 22 direct code lines outside Box, in Lattice/CoeffNorm/Taylor/Main/MainLemma; additional mem/card consumers fully mapped; source counts only.
 - Verdict: NO-composable-from-mathlib; [complete report](.mathlib-quality/overview/mathlibable/Roth.box.md).
 
+### Completed: `Roth.weight`
+
+- Type: `{σ : Type u} → [Fintype σ] → (σ → ℕ) → (σ →₀ ℕ) → ℝ`
+- What: Real reciprocal-parameter weight of a natural multi-index.
+- How: Full ambient finite sum of d_j/r_j; totalized division permits zero denominators.
+- Hypotheses: Finite variable enumeration, natural parameter vector and natural Finsupp; no positivity or DecidableEq.
+- Project dependencies: None
+- Caller summary: 30 explicit source caller declarations, nine in Box; active local API, no dead-code claim; not a kernel/simp closure.
+- Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/Roth.weight.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -383,6 +393,8 @@ Completed `MvPolynomial.factorial_smul_hasseDeriv_single`: Polynomial.factorial_
 
 Completed `Roth.box`: Existing Finset.Iic + Finsupp.equivFunOnFinite.symm gives same object; raw mathlib-only native equality/cardinality/sum-product verified.
 
+Completed `Roth.weight`: Exact general existing Finsupp.weight specialized to ℕ scalars and reciprocal real weights; native representation equality verified.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -436,6 +448,8 @@ Completed `MvPolynomial.hasseCoeff_le_two_pow`: Hasse-named packaging of a finit
 Completed `MvPolynomial.factorial_smul_hasseDeriv_single`: Shared generic additive recurrence induction, compiled for Polynomial and MvPolynomial; no exact pinned replacement.
 
 Completed `Roth.box`: Principal lower interval of Finsupp pointwise order, MainLemma282-323 already uses Iic(ofSupportFinite r) under finite-support bounds
+
+Completed `Roth.weight`: Finsupp.weight, Finsupp.linearCombination
 
 ## Part 5: Generalization opportunities
 
@@ -494,6 +508,8 @@ Completed `MvPolynomial.factorial_smul_hasseDeriv_single`: MAXIMALLY GENERAL for
 
 Completed `Roth.box`: Verified classical DecidableEq-free and Finite-only versions; finite-support bounds allow infinite ambient variables; unrestricted constant1 infinite box refuted natively.
 
+Completed `Roth.weight`: Native arbitrary-index finite-support and AddCommMonoid M forms, Finite-only old syntax and arbitrary real denominators verified.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -548,6 +564,8 @@ Completed `MvPolynomial.hasseCoeff_le_two_pow`: Design choice whether general Fi
 Completed `MvPolynomial.factorial_smul_hasseDeriv_single`: Characteristic-free multivariate Hasse to iterated partial compatibility.
 
 Completed `Roth.box`: None for constructing box; interval sum/product bridge a separate optional API question.
+
+Completed `Roth.weight`: No missing API for definition; assess re-aimed dependent order/index lemmas separately.
 
 ## Part 7: Junk / removable
 
@@ -606,6 +624,8 @@ Completed `MvPolynomial.factorial_smul_hasseDeriv_single`: Unused explicitly in 
 
 Completed `Roth.box`: Useful local semantic API; not dead code.
 
+Completed `Roth.weight`: No sorry/unsafe/raised limits; upstream duplicate, locally semantically useful.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -636,6 +656,7 @@ Completed `Roth.box`: Useful local semantic API; not dead code.
 | 24 | `MvPolynomial.hasseCoeff_le_two_pow` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.hasseCoeff_le_two_pow.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.hasseCoeff_le_two_pow/root-acceptance.json) |
 | 25 | `MvPolynomial.factorial_smul_hasseDeriv_single` | YES-add-as-is | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.factorial_smul_hasseDeriv_single.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.factorial_smul_hasseDeriv_single/root-acceptance.json) |
 | 26 | `Roth.box` | NO-composable-from-mathlib | [Report](.mathlib-quality/overview/mathlibable/Roth.box.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.box/root-acceptance.json) |
+| 27 | `Roth.weight` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.weight.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.weight/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -687,11 +708,13 @@ Completed `MvPolynomial.factorial_smul_hasseDeriv_single` action: YES-add-as-is;
 
 Completed `Roth.box` action: NO-composable-from-mathlib; do not upstream redundant definition; locally migrate domains to Iic or retain project wrapper pending coordinated normalization.
 
+Completed `Roth.weight` action: NO-mathlib-has-it; migrate 30 callers per report and remove redundant definition after downstream validation; local notation/interface optional.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.weight` next. Supporting identities receive their own applicable checks.
+   `Roth.mem_box` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
