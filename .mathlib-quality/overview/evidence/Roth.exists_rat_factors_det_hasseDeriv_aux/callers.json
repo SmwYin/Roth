@@ -1,0 +1,73 @@
+[
+  {
+    "file": "Roth/Separation.lean",
+    "line": 542,
+    "name": "Roth.exists_det_eq_mul",
+    "short": "exists_det_eq_mul",
+    "kind": "theorem",
+    "visibility": "public",
+    "end_line": 559,
+    "source": "theorem exists_det_eq_mul [Finite τ] {P : MvPolynomial (Option τ) ℤ} (hP : P ≠ 0) {r : Option τ → ℕ}\n    (hr : ∀ j, degreeOf j P ≤ r j) : ∃ l, 1 ≤ l ∧ l ≤ r none + 1 ∧ ∃ D : Fin l → (τ →₀ ℕ),\n      (∀ μ, (D μ).degree ≤ μ) ∧ ∃ (U : MvPolynomial τ ℤ) (V : Polynomial ℤ), U ≠ 0 ∧ V ≠ 0 ∧\n        (∀ j, degreeOf j U ≤ l * r (some j)) ∧ V.natDegree ≤ l * r none ∧\n        (Matrix.of fun μ ν : Fin l ↦\n            hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) P).det = rename some U *\n          Polynomial.aeval (X none : MvPolynomial (Option τ) ℤ) V := by\n  classical\n  obtain ⟨l, hl1, hl2, D, hD, U', V', hU', hV', hFmap⟩ :=\n    exists_rat_factors_det_hasseDeriv_aux hP (hr none)\n  obtain ⟨U, V, hU, hV, hFUV, -, -⟩ := exists_int_factors hU' hV' hFmap\n  refine ⟨l, hl1, hl2, D, hD, U, V, hU, hV, fun j ↦ ?_, ?_, hFUV⟩\n  · rw [← degreeOf_rename_mul_aeval U hV j, ← hFUV]\n    exact degreeOf_det_hasseDeriv_le\n      (fun μ ν : Fin l ↦ (D μ).mapDomain some + Finsupp.single none (ν : ℕ)) P hr (some j)\n  · rw [← degreeOf_none_rename_mul_aeval hU V, ← hFUV]\n    exact degreeOf_det_hasseDeriv_le\n      (fun μ ν : Fin l ↦ (D μ).mapDomain some + Finsupp.single none (ν : ℕ)) P hr none",
+    "signature": "theorem exists_det_eq_mul [Finite τ] {P : MvPolynomial (Option τ) ℤ} (hP : P ≠ 0) {r : Option τ → ℕ}\n    (hr : ∀ j, degreeOf j P ≤ r j) : ∃ l, 1 ≤ l ∧ l ≤ r none + 1 ∧ ∃ D : Fin l → (τ →₀ ℕ),\n      (∀ μ, (D μ).degree ≤ μ) ∧ ∃ (U : MvPolynomial τ ℤ) (V : Polynomial ℤ), U ≠ 0 ∧ V ≠ 0 ∧\n        (∀ j, degreeOf j U ≤ l * r (some j)) ∧ V.natDegree ≤ l * r none ∧\n        (Matrix.of fun μ ν : Fin l ↦\n            hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) P).det = rename some U *\n          Polynomial.aeval (X none : MvPolynomial (Option τ) ℤ) V",
+    "body": "by\n  classical\n  obtain ⟨l, hl1, hl2, D, hD, U', V', hU', hV', hFmap⟩ :=\n    exists_rat_factors_det_hasseDeriv_aux hP (hr none)\n  obtain ⟨U, V, hU, hV, hFUV, -, -⟩ := exists_int_factors hU' hV' hFmap\n  refine ⟨l, hl1, hl2, D, hD, U, V, hU, hV, fun j ↦ ?_, ?_, hFUV⟩\n  · rw [← degreeOf_rename_mul_aeval U hV j, ← hFUV]\n    exact degreeOf_det_hasseDeriv_le\n      (fun μ ν : Fin l ↦ (D μ).mapDomain some + Finsupp.single none (ν : ℕ)) P hr (some j)\n  · rw [← degreeOf_none_rename_mul_aeval hU V, ← hFUV]\n    exact degreeOf_det_hasseDeriv_le\n      (fun μ ν : Fin l ↦ (D μ).mapDomain some + Finsupp.single none (ν : ℕ)) P hr none",
+    "proof_lines": 12,
+    "sha256": "5192d1cef368b4608083debb8340d65ec32229f86aef4ee698af6cffa4b884f9",
+    "what": "A nonzero integer polynomial has a bounded-order derivative determinant factoring into nonzero integral separated factors of bounded degree.",
+    "how": "Produce rational factors with exists_rat_factors_det_hasseDeriv_aux, integralize with exists_int_factors, and transfer degreeOf_det_hasseDeriv_le through the separated-degree identities.",
+    "hypotheses": "Finite variable type; nonzero integer polynomial and coordinate degree bounds.",
+    "source_body_refs": [
+      "Roth.degreeOf_det_hasseDeriv_le",
+      "Roth.degreeOf_none_rename_mul_aeval",
+      "Roth.degreeOf_rename_mul_aeval",
+      "Roth.exists_int_factors",
+      "Roth.exists_rat_factors_det_hasseDeriv_aux"
+    ],
+    "source_type_refs": [
+      "MvPolynomial.hasseDeriv"
+    ],
+    "source_callers": [
+      {
+        "name": "Roth.index_le_lem6",
+        "file": "Roth/Theta.lean",
+        "line": 556
+      }
+    ],
+    "notes": [],
+    "input_file_sha256": "4ac885af6c9973d40f68bd2e6c42185f02a9996271ccaa67d4932d27e85a7d0e",
+    "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+    "section_context": "Namespace Roth; open MvPolynomial. Ambient τ : Type*. Ambient [Fintype τ] and [DecidableEq τ] are explicitly omitted around general declarations; unused section instances are not implicit mathematical hypotheses. Inline binders override/add context. ",
+    "uses_from_project": [
+      "Roth.degreeOf_det_hasseDeriv_le",
+      "Roth.degreeOf_none_rename_mul_aeval",
+      "Roth.degreeOf_rename_mul_aeval",
+      "Roth.exists_int_factors",
+      "Roth.exists_rat_factors_det_hasseDeriv_aux"
+    ],
+    "used_by_in_file": [],
+    "used_by_other_files": [
+      {
+        "name": "Roth.index_le_lem6",
+        "file": "Roth/Theta.lean",
+        "line": 556
+      }
+    ],
+    "assignment_offset": 563,
+    "project_body_refs": [
+      "Roth.degreeOf_det_hasseDeriv_le",
+      "Roth.degreeOf_none_rename_mul_aeval",
+      "Roth.degreeOf_rename_mul_aeval",
+      "Roth.exists_int_factors",
+      "Roth.exists_rat_factors_det_hasseDeriv_aux"
+    ],
+    "project_type_refs": [
+      "MvPolynomial.hasseDeriv"
+    ],
+    "project_callers": [
+      {
+        "name": "Roth.index_le_lem6",
+        "file": "Roth/Theta.lean",
+        "line": 556
+      }
+    ]
+  }
+]

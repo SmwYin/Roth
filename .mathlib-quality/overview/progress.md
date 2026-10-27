@@ -3,7 +3,7 @@
 Status: **in_progress**, 2026-10-27. Branch: `ramin-cleanup`.
 Production Lean files and all pins match baseline `99f19fd`.
 
-**Completed: 176 / 293 written declarations.**
+**Completed: 177 / 293 written declarations.**
 This counts the current overview assessments, separately from the earlier code cleanup.
 
 | # | Completed declaration | Applicable workflow | Verdict | Report |
@@ -184,8 +184,9 @@ This counts the current overview assessments, separately from the earlier code c
 | 174 | `Roth.rescale_separated_factor_aux` | overview-private-prefilter; accepted complete | SKIP | [Detailed report](mathlibable/Roth.rescale_separated_factor_aux.md) |
 | 175 | `Roth.exists_int_polynomial_of_primitive_factor_aux` | overview-private-prefilter; accepted complete | SKIP | [Detailed report](mathlibable/Roth.exists_int_polynomial_of_primitive_factor_aux.md) |
 | 176 | `Roth.exists_int_factors` | full-mathlibable; accepted complete | YES-but-generalise-first | [Detailed report](mathlibable/Roth.exists_int_factors.md) |
+| 177 | `Roth.exists_rat_factors_det_hasseDeriv_aux` | overview-private-prefilter; accepted complete | SKIP | [Detailed report](mathlibable/Roth.exists_rat_factors_det_hasseDeriv_aux.md) |
 
-**Next declaration: `Roth.exists_rat_factors_det_hasseDeriv_aux`**, `Roth/Separation.lean:510`.
+**Next declaration: `Roth.exists_det_eq_mul`**, `Roth/Separation.lean:542`.
 Only the listed assessments are complete. No partial assessment was committed.
 
 On restart: read [README](README.md), [machine progress](progress.json), and

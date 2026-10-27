@@ -1,0 +1,76 @@
+{
+  "file": "Roth/Separation.lean",
+  "line": 510,
+  "name": "Roth.exists_rat_factors_det_hasseDeriv_aux",
+  "short": "exists_rat_factors_det_hasseDeriv_aux",
+  "kind": "lemma",
+  "visibility": "private",
+  "end_line": 534,
+  "source": "private lemma exists_rat_factors_det_hasseDeriv_aux [Finite τ] {P : MvPolynomial (Option τ) ℤ}\n    (hP : P ≠ 0) {n : ℕ} (hn : degreeOf none P ≤ n) : ∃ l, 1 ≤ l ∧ l ≤ n + 1 ∧\n      ∃ D : Fin l → (τ →₀ ℕ), (∀ μ, (D μ).degree ≤ μ) ∧ ∃ (U : MvPolynomial τ ℚ) (V : Polynomial ℚ),\n        U ≠ 0 ∧ V ≠ 0 ∧ map (Int.castRingHom ℚ) (Matrix.of fun μ ν : Fin l ↦\n          hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) P).det = rename some U *\n          Polynomial.aeval (X none : MvPolynomial (Option τ) ℚ) V := by\n  classical\n  set PQ := map (Int.castRingHom ℚ) P with hPQdef\n  have hdeg : degreeOf none PQ ≤ n := by\n    simpa [degreeOf_def, hPQdef,\n      degrees_map_of_injective P (f := Int.castRingHom ℚ) Int.cast_injective] using hn\n  obtain ⟨l, hl1, hl2, φ, ψ, hφ, hψ, -, -, hPQ⟩ :=\n    exists_separated_representation (fun h ↦\n      hP (MvPolynomial.map_injective _ Int.cast_injective (h.trans (map_zero _).symm))) hdeg\n  obtain ⟨D, hD, hG⟩ := exists_genWronskian_ne_zero hψ\n  set F := (Matrix.of fun μ ν : Fin l ↦\n    hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) P).det with hFdef\n  have hFmap : map (Int.castRingHom ℚ) F = rename some (genWronskian D ψ) *\n      Polynomial.aeval (X none : MvPolynomial (Option τ) ℚ) (wronskian φ) := by\n    rw [hFdef, RingHom.map_det, ← det_hasseDeriv_separated D φ ψ, ← hPQ]\n    congr 1\n    refine Matrix.ext fun μ ν ↦ ?_\n    rw [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, Matrix.of_apply,\n      hasseDeriv_map]\n  exact ⟨l, hl1, hl2, D, hD, _, _, hG, wronskian_ne_zero_of_linearIndependent hφ, hFmap⟩",
+  "signature": "private lemma exists_rat_factors_det_hasseDeriv_aux [Finite τ] {P : MvPolynomial (Option τ) ℤ}\n    (hP : P ≠ 0) {n : ℕ} (hn : degreeOf none P ≤ n) : ∃ l, 1 ≤ l ∧ l ≤ n + 1 ∧\n      ∃ D : Fin l → (τ →₀ ℕ), (∀ μ, (D μ).degree ≤ μ) ∧ ∃ (U : MvPolynomial τ ℚ) (V : Polynomial ℚ),\n        U ≠ 0 ∧ V ≠ 0 ∧ map (Int.castRingHom ℚ) (Matrix.of fun μ ν : Fin l ↦\n          hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) P).det = rename some U *\n          Polynomial.aeval (X none : MvPolynomial (Option τ) ℚ) V",
+  "body": "by\n  classical\n  set PQ := map (Int.castRingHom ℚ) P with hPQdef\n  have hdeg : degreeOf none PQ ≤ n := by\n    simpa [degreeOf_def, hPQdef,\n      degrees_map_of_injective P (f := Int.castRingHom ℚ) Int.cast_injective] using hn\n  obtain ⟨l, hl1, hl2, φ, ψ, hφ, hψ, -, -, hPQ⟩ :=\n    exists_separated_representation (fun h ↦\n      hP (MvPolynomial.map_injective _ Int.cast_injective (h.trans (map_zero _).symm))) hdeg\n  obtain ⟨D, hD, hG⟩ := exists_genWronskian_ne_zero hψ\n  set F := (Matrix.of fun μ ν : Fin l ↦\n    hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) P).det with hFdef\n  have hFmap : map (Int.castRingHom ℚ) F = rename some (genWronskian D ψ) *\n      Polynomial.aeval (X none : MvPolynomial (Option τ) ℚ) (wronskian φ) := by\n    rw [hFdef, RingHom.map_det, ← det_hasseDeriv_separated D φ ψ, ← hPQ]\n    congr 1\n    refine Matrix.ext fun μ ν ↦ ?_\n    rw [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, Matrix.of_apply,\n      hasseDeriv_map]\n  exact ⟨l, hl1, hl2, D, hD, _, _, hG, wronskian_ne_zero_of_linearIndependent hφ, hFmap⟩",
+  "proof_lines": 20,
+  "sha256": "b8583f45cbcdab17c274c7d81856787751fd37b461205a0908b653c7a90edfef",
+  "what": "A suitable Hasse-derivative determinant factors into nonzero rational factors in disjoint variables.",
+  "how": "Apply exists_separated_representation over the rationals, choose differential operators with exists_genWronskian_ne_zero, and use det_hasseDeriv_separated with ordinary Wronskian nonvanishing.",
+  "hypotheses": "Finitely many ordinary variables; nonzero integer polynomial with distinguished degree bound.",
+  "source_body_refs": [
+    "MvPolynomial.hasseDeriv",
+    "MvPolynomial.hasseDeriv_map",
+    "Roth.det_hasseDeriv_separated",
+    "Roth.exists_genWronskian_ne_zero",
+    "Roth.exists_separated_representation",
+    "Roth.genWronskian",
+    "Roth.wronskian",
+    "Roth.wronskian_ne_zero_of_linearIndependent"
+  ],
+  "source_type_refs": [
+    "MvPolynomial.hasseDeriv"
+  ],
+  "source_callers": [
+    {
+      "name": "Roth.exists_det_eq_mul",
+      "file": "Roth/Separation.lean",
+      "line": 542
+    }
+  ],
+  "notes": [],
+  "input_file_sha256": "4ac885af6c9973d40f68bd2e6c42185f02a9996271ccaa67d4932d27e85a7d0e",
+  "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+  "section_context": "Namespace Roth; open MvPolynomial. Ambient τ : Type*. Ambient [Fintype τ] and [DecidableEq τ] are explicitly omitted around general declarations; unused section instances are not implicit mathematical hypotheses. Inline binders override/add context. ",
+  "uses_from_project": [
+    "MvPolynomial.hasseDeriv",
+    "MvPolynomial.hasseDeriv_map",
+    "Roth.det_hasseDeriv_separated",
+    "Roth.exists_genWronskian_ne_zero",
+    "Roth.exists_separated_representation",
+    "Roth.genWronskian",
+    "Roth.wronskian",
+    "Roth.wronskian_ne_zero_of_linearIndependent"
+  ],
+  "used_by_in_file": [
+    "Roth.exists_det_eq_mul"
+  ],
+  "used_by_other_files": [],
+  "assignment_offset": 517,
+  "project_body_refs": [
+    "MvPolynomial.hasseDeriv",
+    "MvPolynomial.hasseDeriv_map",
+    "Roth.det_hasseDeriv_separated",
+    "Roth.exists_genWronskian_ne_zero",
+    "Roth.exists_separated_representation",
+    "Roth.genWronskian",
+    "Roth.wronskian",
+    "Roth.wronskian_ne_zero_of_linearIndependent"
+  ],
+  "project_type_refs": [
+    "MvPolynomial.hasseDeriv"
+  ],
+  "project_callers": [
+    {
+      "name": "Roth.exists_det_eq_mul",
+      "file": "Roth/Separation.lean",
+      "line": 542
+    }
+  ]
+}
