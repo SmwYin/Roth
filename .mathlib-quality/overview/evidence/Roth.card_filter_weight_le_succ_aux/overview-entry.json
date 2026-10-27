@@ -1,0 +1,22 @@
+{
+  "declaration": "Roth.card_filter_weight_le_succ_aux",
+  "kind": "lemma",
+  "type": "∀ {n : ℕ} (r : Fin (n + 1) → ℕ),\n  0 < r (Fin.last n) →\n    0 < n →\n      ∀ {lam : ℝ},\n        2 * √↑(n + 1) < lam →\n          (∀ {t : ℝ},\n              0 < t →\n                ↑{d ∈ Roth.box (r ∘ Fin.castSucc) | Roth.weight (r ∘ Fin.castSucc) d ≤ (↑n - t) / 2}.card ≤\n                  2 * √↑n / t * ∏ j, (↑((r ∘ Fin.castSucc) j) + 1)) →\n            ↑{d ∈ Roth.box r | Roth.weight r d ≤ (↑(n + 1) - lam) / 2}.card ≤ 2 * √↑(n + 1) / lam * ∏ j, (↑(r j) + 1)",
+  "what": "Carries the weighted lattice estimate from the smaller box to a positive last-coordinate extension in the large-lambda regime.",
+  "how": "Uses card_filter_box_last and card_filter_fiber_eq, applies the lower-dimensional bound in every fiber, then sum_inv_lt controls the reciprocals and Fin.prod_univ_castSucc restores the box product.",
+  "hypotheses": "At least two coordinates, positive last-coordinate bound, λ>2√(n+1), and the full positive-parameter induction hypothesis for the smaller box. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.",
+  "project_dependencies": [
+    "Roth.box",
+    "Roth.card_filter_box_last",
+    "Roth.card_filter_fiber_eq",
+    "Roth.sum_inv_lt",
+    "Roth.weight"
+  ],
+  "caller_summary": "1 explicit source caller declarations, all in Lattice.lean; 1 direct original value consumers. Exact separate lists retained. Entire module proof bodies replay successfully with fresh target name.",
+  "mathlib_api_audit": "Count by the last-coordinate fibers, rewrite each weighted predicate with the shifted lambda, and apply the full smaller-box induction hypothesis at each positive shifted parameter. Factor out the smaller-side product and use the harmonic reciprocal-grid estimate sum_inv_lt with positive last side and dimension at least two. Splitting the full product along Fin.castSucc and Fin.last cancels the square-root and side factors. This is the large-lambda inductive case, distinct from the direct small-lambda bound and empty-tail case.",
+  "moral_duplications": "The helper has a distinct role in the lattice proof as described in the structural review; no duplicate full construction is introduced.",
+  "generalization": "No public generality claim under the private prefilter; preserve the existing definition and interface.",
+  "missing_api": "No new primitive is needed for this internal organization; full public contribution search is explicitly not run.",
+  "junk": "Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.",
+  "action": "Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration."
+}

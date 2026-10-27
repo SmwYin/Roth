@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 130/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 131/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 130; remaining: 163.
-- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 17 YES-but-generalise-first, 21 NO-mathlib-has-it, 41 BORDERLINE-needs-human, 24 SKIP.
+- Completed applicable assessments: 131; remaining: 162.
+- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 17 YES-but-generalise-first, 21 NO-mathlib-has-it, 41 BORDERLINE-needs-human, 25 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -1432,6 +1432,25 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: 1 explicit source caller declarations, all in Lattice.lean; 1 direct original value consumers. Exact separate lists retained. Entire module proof bodies replay successfully with fresh target name.
 - Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.card_filter_weight_le_of_le_sqrt_aux.md).
 
+### Completed: `Roth.card_filter_weight_le_succ_aux`
+
+- Type: `∀ {n : ℕ} (r : Fin (n + 1) → ℕ),
+  0 < r (Fin.last n) →
+    0 < n →
+      ∀ {lam : ℝ},
+        2 * √↑(n + 1) < lam →
+          (∀ {t : ℝ},
+              0 < t →
+                ↑{d ∈ Roth.box (r ∘ Fin.castSucc) | Roth.weight (r ∘ Fin.castSucc) d ≤ (↑n - t) / 2}.card ≤
+                  2 * √↑n / t * ∏ j, (↑((r ∘ Fin.castSucc) j) + 1)) →
+            ↑{d ∈ Roth.box r | Roth.weight r d ≤ (↑(n + 1) - lam) / 2}.card ≤ 2 * √↑(n + 1) / lam * ∏ j, (↑(r j) + 1)`
+- What: Carries the weighted lattice estimate from the smaller box to a positive last-coordinate extension in the large-lambda regime.
+- How: Uses card_filter_box_last and card_filter_fiber_eq, applies the lower-dimensional bound in every fiber, then sum_inv_lt controls the reciprocals and Fin.prod_univ_castSucc restores the box product.
+- Hypotheses: At least two coordinates, positive last-coordinate bound, λ>2√(n+1), and the full positive-parameter induction hypothesis for the smaller box. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.
+- Project dependencies: Roth.box, Roth.card_filter_box_last, Roth.card_filter_fiber_eq, Roth.sum_inv_lt, Roth.weight
+- Caller summary: 1 explicit source caller declarations, all in Lattice.lean; 1 direct original value consumers. Exact separate lists retained. Entire module proof bodies replay successfully with fresh target name.
+- Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.card_filter_weight_le_succ_aux.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -1718,6 +1737,8 @@ Completed `Roth.card_filter_fiber_eq`: Weight additivity, injective mapDomain tr
 
 Completed `Roth.card_filter_weight_le_of_le_sqrt_aux`: A filtered box has cardinality at most the whole box by Finset.card_filter_le. card_box supplies the product of side cardinalities. Positive lambda and lambda at most twice the square root of the dimension make the requested prefactor at least one, so multiplying the nonnegative box cardinality gives the bound. This is the direct small-lambda regime, separate from the negative-threshold empty case and the large-lambda induction.
 
+Completed `Roth.card_filter_weight_le_succ_aux`: Count by the last-coordinate fibers, rewrite each weighted predicate with the shifted lambda, and apply the full smaller-box induction hypothesis at each positive shifted parameter. Factor out the smaller-side product and use the harmonic reciprocal-grid estimate sum_inv_lt with positive last side and dimension at least two. Splitting the full product along Fin.castSucc and Fin.last cancels the square-root and side factors. This is the large-lambda inductive case, distinct from the direct small-lambda bound and empty-tail case.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -1979,6 +2000,8 @@ Completed `Roth.filter_weight_le_eq_empty`: The helper has a distinct role in th
 Completed `Roth.card_filter_fiber_eq`: The helper has a distinct role in the lattice proof as described in the structural review; no duplicate full construction is introduced.
 
 Completed `Roth.card_filter_weight_le_of_le_sqrt_aux`: The helper has a distinct role in the lattice proof as described in the structural review; no duplicate full construction is introduced.
+
+Completed `Roth.card_filter_weight_le_succ_aux`: The helper has a distinct role in the lattice proof as described in the structural review; no duplicate full construction is introduced.
 
 ## Part 5: Generalization opportunities
 
@@ -2245,6 +2268,8 @@ Completed `Roth.card_filter_fiber_eq`: No public generality claim under the priv
 
 Completed `Roth.card_filter_weight_le_of_le_sqrt_aux`: No public generality claim under the private prefilter; preserve the existing definition and interface.
 
+Completed `Roth.card_filter_weight_le_succ_aux`: No public generality claim under the private prefilter; preserve the existing definition and interface.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -2507,6 +2532,8 @@ Completed `Roth.filter_weight_le_eq_empty`: No new primitive is needed for this 
 Completed `Roth.card_filter_fiber_eq`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 Completed `Roth.card_filter_weight_le_of_le_sqrt_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
+
+Completed `Roth.card_filter_weight_le_succ_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 ## Part 7: Junk / removable
 
@@ -2773,6 +2800,8 @@ Completed `Roth.card_filter_fiber_eq`: Retain a live private proof interface. No
 
 Completed `Roth.card_filter_weight_le_of_le_sqrt_aux`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
 
+Completed `Roth.card_filter_weight_le_succ_aux`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -2907,6 +2936,7 @@ Completed `Roth.card_filter_weight_le_of_le_sqrt_aux`: Retain a live private pro
 | 128 | `Roth.filter_weight_le_eq_empty` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.filter_weight_le_eq_empty.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.filter_weight_le_eq_empty/root-acceptance.json) |
 | 129 | `Roth.card_filter_fiber_eq` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.card_filter_fiber_eq.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.card_filter_fiber_eq/root-acceptance.json) |
 | 130 | `Roth.card_filter_weight_le_of_le_sqrt_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.card_filter_weight_le_of_le_sqrt_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.card_filter_weight_le_of_le_sqrt_aux/root-acceptance.json) |
+| 131 | `Roth.card_filter_weight_le_succ_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.card_filter_weight_le_succ_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.card_filter_weight_le_succ_aux/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -3166,12 +3196,14 @@ Completed `Roth.card_filter_fiber_eq` action: Keep unchanged; complete private-p
 
 Completed `Roth.card_filter_weight_le_of_le_sqrt_aux` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
 
+Completed `Roth.card_filter_weight_le_succ_aux` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.card_filter_weight_le_succ_aux` next. Supporting identities receive their own applicable checks.
+   `Roth.card_filter_weight_le` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 
