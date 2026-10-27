@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-26
 
-- Declarations completed: **126/293**
-- Next declaration: **#127 `Roth.card_filter_box_last`** (Roth/Lattice.lean:131)
+- Declarations completed: **127/293**
+- Next declaration: **#128 `Roth.filter_weight_le_eq_empty`** (Roth/Lattice.lean:143)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -145,10 +145,10 @@ Last regenerated: 2026-10-26
 | 124 | `Roth.extend_apply_castSucc` | Roth/Lattice.lean:92 | SKIP | [report](mathlibable/Roth.extend_apply_castSucc.md) |
 | 125 | `Roth.extend_apply_last` | Roth/Lattice.lean:96 | SKIP | [report](mathlibable/Roth.extend_apply_last.md) |
 | 126 | `Roth.card_filter_box_fiber_aux` | Roth/Lattice.lean:100 | SKIP | [report](mathlibable/Roth.card_filter_box_fiber_aux.md) |
+| 127 | `Roth.card_filter_box_last` | Roth/Lattice.lean:131 | BORDERLINE-needs-human | [report](mathlibable/Roth.card_filter_box_last.md) |
 
 ## Remaining declarations (in processing order)
 
-- #127 `Roth.card_filter_box_last` (Roth/Lattice.lean:131, public theorem)
 - #128 `Roth.filter_weight_le_eq_empty` (Roth/Lattice.lean:143, private lemma)
 - #129 `Roth.card_filter_fiber_eq` (Roth/Lattice.lean:147, private lemma)
 - #130 `Roth.card_filter_weight_le_of_le_sqrt_aux` (Roth/Lattice.lean:158, private lemma)
