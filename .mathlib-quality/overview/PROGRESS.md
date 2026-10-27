@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-27
 
-- Declarations completed: **262/293**
-- Next declaration: **#263 `Roth.exists_auxiliary_polynomial_of_log_bound_aux`** (Roth/MainLemma.lean:643)
+- Declarations completed: **263/293**
+- Next declaration: **#264 `Roth.theta_lt_eta_of_sq_log_bound_aux`** (Roth/MainLemma.lean:671)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -281,10 +281,10 @@ Last regenerated: 2026-10-27
 | 260 | `Roth.mul_card_filter_weight_le_aux` | Roth/MainLemma.lean:569 | SKIP | [report](mathlibable/Roth.mul_card_filter_weight_le_aux.md) |
 | 261 | `Roth.exists_mem_RSet_le_index_of_rpow_bound_aux` | Roth/MainLemma.lean:581 | SKIP | [report](mathlibable/Roth.exists_mem_RSet_le_index_of_rpow_bound_aux.md) |
 | 262 | `Roth.exists_mem_RSet_le_index_of_log_bound_aux` | Roth/MainLemma.lean:618 | SKIP | [report](mathlibable/Roth.exists_mem_RSet_le_index_of_log_bound_aux.md) |
+| 263 | `Roth.exists_auxiliary_polynomial_of_log_bound_aux` | Roth/MainLemma.lean:643 | SKIP | [report](mathlibable/Roth.exists_auxiliary_polynomial_of_log_bound_aux.md) |
 
 ## Remaining declarations (in processing order)
 
-- #263 `Roth.exists_auxiliary_polynomial_of_log_bound_aux` (Roth/MainLemma.lean:643, private lemma)
 - #264 `Roth.theta_lt_eta_of_sq_log_bound_aux` (Roth/MainLemma.lean:671, private lemma)
 - #265 `Roth.exists_auxiliary_polynomial_with_index_gap_aux` (Roth/MainLemma.lean:692, private lemma)
 - #266 `Roth.main_lemma` (Roth/MainLemma.lean:735, public theorem)
