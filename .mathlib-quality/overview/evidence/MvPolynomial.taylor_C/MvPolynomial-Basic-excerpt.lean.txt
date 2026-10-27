@@ -1,0 +1,18 @@
+  AlgHom.coe_ringHom_injective (MvPolynomial.ringHom_ext' (congr_arg AlgHom.toRingHom h₁) h₂)
+
+/-- See note [partially-applied ext lemmas].
+
+We set the priority higher than that of `MvPolynomial.algHom_ext'`. -/
+@[ext high + 2]
+theorem algHom_ext {A : Type*} [Semiring A] [Algebra R A] {f g : MvPolynomial σ R →ₐ[R] A}
+    (hf : ∀ i : σ, f (X i) = g (X i)) : f = g :=
+  AddMonoidAlgebra.algHom_ext' (mulHom_ext' fun X : σ => MonoidHom.ext_mnat (hf X)) (by ext)
+
+@[simp]
+theorem algHom_C {A : Type*} [Semiring A] [Algebra R A] (f : MvPolynomial σ R →ₐ[R] A) (r : R) :
+    f (C r) = algebraMap R A r :=
+  f.commutes r
+
+@[simp]
+theorem adjoin_range_X : Algebra.adjoin R (range (X : σ → MvPolynomial σ R)) = ⊤ := by
+  set S := Algebra.adjoin R (range (X : σ → MvPolynomial σ R))

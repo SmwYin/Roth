@@ -1,0 +1,28 @@
+
+namespace Polynomial
+
+section Semiring
+
+variable {R : Type*} [Semiring R] (r : R) (f : R[X])
+
+/-- The Taylor expansion of a polynomial `f` at `r`. -/
+def taylor (r : R) : R[X] →ₗ[R] R[X] where
+  toFun f := f.comp (X + C r)
+  map_add' _ _ := add_comp
+  map_smul' c f := by simp only [smul_eq_C_mul, C_mul_comp, RingHom.id_apply]
+
+theorem taylor_apply : taylor r f = f.comp (X + C r) :=
+  rfl
+
+@[simp]
+theorem taylor_X : taylor r X = X + C r := X_comp
+
+@[simp]
+theorem taylor_X_pow (n : ℕ) : taylor r (X ^ n) = (X + C r) ^ n := X_pow_comp
+
+@[simp]
+theorem taylor_C (x : R) : taylor r (C x) = C x := C_comp
+
+theorem taylor_zero (f : R[X]) : taylor 0 f = f := by rw [taylor_apply, C_0, add_zero, comp_X]
+
+@[simp]

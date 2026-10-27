@@ -1,0 +1,40 @@
+{
+  "declaration": "MvPolynomial.taylor_C",
+  "kind": "theorem",
+  "type": "∀ {σ : Type u_1} {R : Type u_2} [inst : CommSemiring R] (α : σ → R) (a : R), (MvPolynomial.taylor α) (MvPolynomial.C a) = MvPolynomial.C a",
+  "what": "Translation fixes constant polynomials.",
+  "how": "One existing-law specialization MvPolynomial.algHom_C _ _.",
+  "hypotheses": "Arbitrary variable type σ, commutative coefficient semiring R, translation vector α, scalar a; no finiteness/nonzero/characteristic constraints.",
+  "project_dependencies": {
+    "type": [
+      "MvPolynomial.taylor"
+    ],
+    "proof": []
+  },
+  "caller_summary": {
+    "explicit_callers": 1,
+    "within_file": 0,
+    "external_to_file": 1,
+    "locations": [
+      "Roth/Index.lean:197 (Roth.index_C_mul)"
+    ],
+    "simp_scope": "@[simp] can serve implicit consumers; no exhaustive kernel/simp closure claim."
+  },
+  "mathlib_api_audit": {
+    "existing": "MvPolynomial.algHom_C",
+    "file": "Mathlib/Algebra/MvPolynomial/Basic.lean:441",
+    "broader": "Arbitrary R-algebra homomorphism to any Semiring A with Algebra R A, including noncommutative A; scalar image algebraMap R A a",
+    "secondary": [
+      "MvPolynomial.aeval_C",
+      "Polynomial.taylor_C"
+    ],
+    "native": "Target exact specialization, isolated arbitrary-AlgHom/raw translation, full copied named caller and target-disabled simp consumers all clean complete"
+  },
+  "moral_duplications": [
+    "Specialization of generic AlgHom coefficient preservation; univariate Polynomial.taylor_C is analogous but not identical."
+  ],
+  "generalization": "No same-interface assumption-drop opportunities; already-existing broader representation verified. No unverified weakenings.",
+  "missing_api": [],
+  "junk": "Not dead code: one explicit named caller plus simp API; redundancy is independent of usage.",
+  "action": "NO-mathlib-has-it: delete specialized theorem and replace Index197 taylor_C token with show taylor α (C c) = C c from algHom_C _ _. Existing generic simp law handles tested constant/product/power consumers. Run full build during production migration; alternative retain locally in Roth/Taylor.lean for documented semantic API rationale."
+}

@@ -1,0 +1,29 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+import Mathlib.Algebra.Polynomial.CancelLeads
+import Mathlib.Algebra.MvPolynomial.PDeriv
+#check_failure MvPolynomial.taylor_C
+#check @MvPolynomial.algHom_C
+#print MvPolynomial.algHom_C
+#check @MvPolynomial.aeval_C
+#print MvPolynomial.aeval_C
+#check @Polynomial.taylor_C
+#print Polynomial.taylor_C
+namespace MvPolynomial.TaylorCRaw
+theorem universal {σ R A : Type*} [CommSemiring R] [Semiring A] [Algebra R A]
+    (f : MvPolynomial σ R →ₐ[R] A) (a : R) : f (C a) = algebraMap R A a :=
+  algHom_C _ _
+theorem inline {σ R : Type*} [CommSemiring R] (α : σ → R) (a : R) :
+    (let T : MvPolynomial σ R →ₐ[R] MvPolynomial σ R :=
+      aeval fun k ↦ X k + C (α k)
+     T (C a)) = C a := algHom_C _ _
+#print axioms universal
+#print axioms inline
+end MvPolynomial.TaylorCRaw

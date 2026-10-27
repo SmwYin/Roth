@@ -1,0 +1,22 @@
+namespace MvPolynomial.TaylorCCallerReplay
+attribute [-simp] MvPolynomial.taylor_C
+variable {σ : Type*} [Fintype σ]
+noncomputable def index (P : MvPolynomial σ ℝ) (α : σ → ℝ) (r : σ → ℕ) : ℝ :=
+  sInf (Roth.weight r '' ((taylor α P).support : Set (σ →₀ ℕ)))
+theorem index_C_mul {c : ℝ} (hc : c ≠ 0) (P : MvPolynomial σ ℝ) (α : σ → ℝ) (r : σ → ℕ) :
+    index (C c * P) α r = index P α r := by
+  rw [index, index, map_mul, show taylor α (C c) = C c from algHom_C _ _,
+    ← smul_eq_C_mul, support_smul_eq hc]
+#print axioms index_C_mul
+end MvPolynomial.TaylorCCallerReplay
+namespace MvPolynomial.TaylorCSimpProbe
+variable {σ R : Type*} [CommSemiring R]
+theorem inline_simp (α : σ → R) (a : R) : taylor α (C a) = C a := by
+  simp only [algHom_C, algebraMap_eq]
+theorem composite (α : σ → R) (a b : R) (n : ℕ) :
+    taylor α ((C a)^n * C b) = (C a)^n * C b := by
+  simp only [map_mul, map_pow, algHom_C, algebraMap_eq]
+#print axioms inline_simp
+#print axioms composite
+end MvPolynomial.TaylorCSimpProbe
+attribute [simp] MvPolynomial.taylor_C
