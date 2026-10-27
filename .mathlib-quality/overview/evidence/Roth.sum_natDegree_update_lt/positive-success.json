@@ -1,0 +1,102 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.Polynomial.HasseDeriv\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.LinearAlgebra.Matrix.ToLinearEquiv\nimport Mathlib.RingTheory.Polynomial.Wronskian\nimport Mathlib.LinearAlgebra.Vandermonde\nimport Mathlib.Data.ZMod.Defs\nimport Mathlib.Algebra.Field.ZMod\nimport Mathlib.Algebra.Order.Group.Int.Sum\nimport Mathlib.LinearAlgebra.Matrix.Polynomial\nopen Polynomial\n#check_failure Roth.sum_natDegree_update_lt\n#check @Polynomial.degree_sub_lt_left\n#check @Polynomial.natDegree_lt_natDegree\n#check @Finset.sum_lt_sum\n#check @Finset.sum_update_of_mem\ntheorem cancellation_degree {K : Type*} [Field K] {p q : K[X]} (hp : p \u2260 0)\n    (hq : q \u2260 0) (hd : p.natDegree = q.natDegree)\n    (hne : q - C (q.leadingCoeff / p.leadingCoeff) * p \u2260 0) :\n    (q - C (q.leadingCoeff / p.leadingCoeff) * p).natDegree < q.natDegree := by\n  have hlc : p.leadingCoeff \u2260 0 := leadingCoeff_ne_zero.2 hp\n  have hdeg' : degree q = degree (C (q.leadingCoeff / p.leadingCoeff) * p) := by\n    rw [degree_C_mul (div_ne_zero (leadingCoeff_ne_zero.2 hq) hlc),\n      degree_eq_natDegree hp, degree_eq_natDegree hq, hd]\n  exact natDegree_lt_natDegree hne (degree_sub_lt_left hdeg' hq (by\n    rw [leadingCoeff_mul, leadingCoeff_C, div_mul_cancel\u2080 _ hlc]))\ntheorem family_cancellation_degree {K \u03b9 : Type*} [Field K] [Fintype \u03b9] [DecidableEq \u03b9]\n    {\u03c6 : \u03b9 \u2192 K[X]} {i j : \u03b9} (hp : \u03c6 i \u2260 0) (hq : \u03c6 j \u2260 0)\n    (hd : (\u03c6 i).natDegree = (\u03c6 j).natDegree)\n    (hne : \u03c6 j - C ((\u03c6 j).leadingCoeff / (\u03c6 i).leadingCoeff) * \u03c6 i \u2260 0) :\n    \u2211 k, (Function.update \u03c6 j\n      (\u03c6 j - C ((\u03c6 j).leadingCoeff / (\u03c6 i).leadingCoeff) * \u03c6 i) k).natDegree <\n      \u2211 k, (\u03c6 k).natDegree := by\n  have hlt := cancellation_degree hp hq hd hne\n  refine Finset.sum_lt_sum (fun k _ \u21a6 ?_) \u27e8j, Finset.mem_univ _, by simpa\u27e9\n  by_cases hk : k = j\n  \u00b7 simpa [hk] using hlt.le\n  \u00b7 simp [Function.update_of_ne hk]\n#print axioms cancellation_degree\n#print axioms family_cancellation_degree\n\nnamespace DegreeUpdatePositive\ntheorem cancellation {K : Type*} [Field K] {p q : K[X]}\n    (hd : p.natDegree = q.natDegree) (hpos : 0 < q.natDegree) :\n    (q - C (q.leadingCoeff / p.leadingCoeff) * p).natDegree < q.natDegree := by\n  have hp : p \u2260 0 := by\n    intro hz\n    have hq0 : q.natDegree = 0 := hd.symm.trans (by simp [hz])\n    simp [hq0] at hpos\n  have hq : q \u2260 0 := by\n    intro hz\n    simp [hz] at hpos\n  by_cases hz : q - C (q.leadingCoeff / p.leadingCoeff) * p = 0\n  \u00b7 simpa only [hz, natDegree_zero] using hpos\n  \u00b7 exact cancellation_degree hp hq hd hz\n\ntheorem family {K \u03b9 : Type*} [Field K] [Fintype \u03b9] [DecidableEq \u03b9]\n    {\u03c6 : \u03b9 \u2192 K[X]} {i j : \u03b9}\n    (hd : (\u03c6 i).natDegree = (\u03c6 j).natDegree) (hpos : 0 < (\u03c6 j).natDegree) :\n    \u2211 k, (Function.update \u03c6 j\n      (\u03c6 j - C ((\u03c6 j).leadingCoeff / (\u03c6 i).leadingCoeff) * \u03c6 i) k).natDegree <\n      \u2211 k, (\u03c6 k).natDegree := by\n  have hlt := cancellation hd hpos\n  refine Finset.sum_lt_sum (fun k _ \u21a6 ?_) \u27e8j, Finset.mem_univ _, by simpa\u27e9\n  by_cases hk : k = j\n  \u00b7 simpa [hk] using hlt.le\n  \u00b7 simp [Function.update_of_ne hk]\n#print axioms cancellation\n#print axioms family\nend DegreeUpdatePositive\n\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.sum_natDegree_update_lt`\",\n      \"line\": 11,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@degree_sub_lt_left : \u2200 {R : Type u_1} [inst : Ring R] {p q : R[X]},\\n  p.degree = q.degree \u2192 p \u2260 0 \u2192 p.leadingCoeff = q.leadingCoeff \u2192 (p - q).degree < p.degree\",\n      \"line\": 12,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@natDegree_lt_natDegree : \u2200 {R : Type u_1} {S : Type u_2} [inst : Semiring R] [inst_1 : Semiring S] {p : R[X]}\\n  {q : S[X]}, p \u2260 0 \u2192 p.degree < q.degree \u2192 p.natDegree < q.natDegree\",\n      \"line\": 13,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finset.sum_lt_sum : \u2200 {\u03b9 : Type u_1} {M : Type u_2} [inst : AddCommMonoid M] [inst_1 : Preorder M]\\n  [IsOrderedCancelAddMonoid M] {f g : \u03b9 \u2192 M} {s : Finset \u03b9} [AddLeftStrictMono M],\\n  (\u2200 i \u2208 s, f i \u2264 g i) \u2192 (\u2203 i \u2208 s, f i < g i) \u2192 \u2211 i \u2208 s, f i < \u2211 i \u2208 s, g i\",\n      \"line\": 14,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finset.sum_update_of_mem : \u2200 {\u03b9 : Type u_1} {M : Type u_2} [inst : AddCommMonoid M] [inst_1 : DecidableEq \u03b9]\\n  {s : Finset \u03b9} {i : \u03b9}, i \u2208 s \u2192 \u2200 (f : \u03b9 \u2192 M) (b : M), \u2211 x \u2208 s, Function.update f i b x = b + \u2211 x \u2208 s \\\\ {i}, f x\",\n      \"line\": 15,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'cancellation_degree' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 38,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'family_cancellation_degree' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 39,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'DegreeUpdatePositive.cancellation' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 67,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'DegreeUpdatePositive.family' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 68,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.sum_natDegree_update_lt`",
+          "line": 11,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@degree_sub_lt_left : \u2200 {R : Type u_1} [inst : Ring R] {p q : R[X]},\n  p.degree = q.degree \u2192 p \u2260 0 \u2192 p.leadingCoeff = q.leadingCoeff \u2192 (p - q).degree < p.degree",
+          "line": 12,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@natDegree_lt_natDegree : \u2200 {R : Type u_1} {S : Type u_2} [inst : Semiring R] [inst_1 : Semiring S] {p : R[X]}\n  {q : S[X]}, p \u2260 0 \u2192 p.degree < q.degree \u2192 p.natDegree < q.natDegree",
+          "line": 13,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finset.sum_lt_sum : \u2200 {\u03b9 : Type u_1} {M : Type u_2} [inst : AddCommMonoid M] [inst_1 : Preorder M]\n  [IsOrderedCancelAddMonoid M] {f g : \u03b9 \u2192 M} {s : Finset \u03b9} [AddLeftStrictMono M],\n  (\u2200 i \u2208 s, f i \u2264 g i) \u2192 (\u2203 i \u2208 s, f i < g i) \u2192 \u2211 i \u2208 s, f i < \u2211 i \u2208 s, g i",
+          "line": 14,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finset.sum_update_of_mem : \u2200 {\u03b9 : Type u_1} {M : Type u_2} [inst : AddCommMonoid M] [inst_1 : DecidableEq \u03b9]\n  {s : Finset \u03b9} {i : \u03b9}, i \u2208 s \u2192 \u2200 (f : \u03b9 \u2192 M) (b : M), \u2211 x \u2208 s, Function.update f i b x = b + \u2211 x \u2208 s \\ {i}, f x",
+          "line": 15,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'cancellation_degree' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 38,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'family_cancellation_degree' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 39,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'DegreeUpdatePositive.cancellation' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 67,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'DegreeUpdatePositive.family' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 68,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 105
+}

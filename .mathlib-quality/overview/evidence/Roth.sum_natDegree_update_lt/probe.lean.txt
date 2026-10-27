@@ -1,0 +1,30 @@
+open Polynomial
+#check_failure Roth.sum_natDegree_update_lt
+#check @Polynomial.degree_sub_lt_left
+#check @Polynomial.natDegree_lt_natDegree
+#check @Finset.sum_lt_sum
+#check @Finset.sum_update_of_mem
+ theorem cancellation_degree {K : Type*} [Field K] {p q : K[X]} (hp : p ≠ 0)
+    (hq : q ≠ 0) (hd : p.natDegree = q.natDegree)
+    (hne : q - C (q.leadingCoeff / p.leadingCoeff) * p ≠ 0) :
+    (q - C (q.leadingCoeff / p.leadingCoeff) * p).natDegree < q.natDegree := by
+  have hlc : p.leadingCoeff ≠ 0 := leadingCoeff_ne_zero.2 hp
+  have hdeg' : degree q = degree (C (q.leadingCoeff / p.leadingCoeff) * p) := by
+    rw [degree_C_mul (div_ne_zero (leadingCoeff_ne_zero.2 hq) hlc),
+      degree_eq_natDegree hp, degree_eq_natDegree hq, hd]
+  exact natDegree_lt_natDegree hne (degree_sub_lt_left hdeg' hq (by
+    rw [leadingCoeff_mul, leadingCoeff_C, div_mul_cancel₀ _ hlc]))
+ theorem family_cancellation_degree {K ι : Type*} [Field K] [Fintype ι] [DecidableEq ι]
+    {φ : ι → K[X]} {i j : ι} (hp : φ i ≠ 0) (hq : φ j ≠ 0)
+    (hd : (φ i).natDegree = (φ j).natDegree)
+    (hne : φ j - C ((φ j).leadingCoeff / (φ i).leadingCoeff) * φ i ≠ 0) :
+    ∑ k, (Function.update φ j
+      (φ j - C ((φ j).leadingCoeff / (φ i).leadingCoeff) * φ i) k).natDegree <
+      ∑ k, (φ k).natDegree := by
+  have hlt := cancellation_degree hp hq hd hne
+  refine Finset.sum_lt_sum (fun k _ ↦ ?_) ⟨j, Finset.mem_univ _, by simpa⟩
+  by_cases hk : k = j
+  · simpa [hk] using hlt.le
+  · simp [Function.update_of_ne hk]
+#print axioms cancellation_degree
+#print axioms family_cancellation_degree

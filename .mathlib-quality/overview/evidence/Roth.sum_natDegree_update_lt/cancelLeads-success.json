@@ -1,0 +1,57 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.Polynomial.HasseDeriv\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.LinearAlgebra.Matrix.ToLinearEquiv\nimport Mathlib.RingTheory.Polynomial.Wronskian\nimport Mathlib.LinearAlgebra.Vandermonde\nimport Mathlib.Data.ZMod.Defs\nimport Mathlib.Algebra.Field.ZMod\nimport Mathlib.Algebra.Order.Group.Int.Sum\nimport Mathlib.LinearAlgebra.Matrix.Polynomial\nimport Mathlib.Algebra.Polynomial.CancelLeads\nopen Polynomial\n#check_failure Roth.sum_natDegree_update_lt\n#check @Polynomial.natDegree_cancelLeads_lt_of_natDegree_le_natDegree\nnamespace DegreeCancelLeadsProbe\ntheorem bridge {K : Type*} [Field K] {p q : K[X]} (hp : p \u2260 0)\n    (hd : p.natDegree = q.natDegree) :\n    q - C (q.leadingCoeff / p.leadingCoeff) * p = C p.leadingCoeff\u207b\u00b9 * p.cancelLeads q := by\n  have hlc : p.leadingCoeff \u2260 0 := leadingCoeff_ne_zero.2 hp\n  simp only [cancelLeads, hd, Nat.sub_self, pow_zero, mul_one, mul_sub, \u2190 mul_assoc,\n    \u2190 C_mul, inv_mul_cancel\u2080 hlc, C_1, one_mul, div_eq_inv_mul]\n\ntheorem from_existing {K : Type*} [Field K] {p q : K[X]}\n    (hd : p.natDegree = q.natDegree) (hpos : 0 < q.natDegree) :\n    (q - C (q.leadingCoeff / p.leadingCoeff) * p).natDegree < q.natDegree := by\n  have hp : p \u2260 0 := by\n    intro hz\n    have hq0 : q.natDegree = 0 := hd.symm.trans (by simp [hz])\n    simp [hq0] at hpos\n  rw [bridge hp hd]\n  exact (natDegree_C_mul_le _ _).trans_lt\n    (natDegree_cancelLeads_lt_of_natDegree_le_natDegree hd.le hpos)\n#print axioms bridge\n#print axioms from_existing\nend DegreeCancelLeadsProbe\n\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.sum_natDegree_update_lt`\",\n      \"line\": 12,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@natDegree_cancelLeads_lt_of_natDegree_le_natDegree : \u2200 {R : Type u_1} [inst : CommRing R] {p q : R[X]},\\n  p.natDegree \u2264 q.natDegree \u2192 0 < q.natDegree \u2192 (p.cancelLeads q).natDegree < q.natDegree\",\n      \"line\": 13,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'DegreeCancelLeadsProbe.bridge' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 32,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'DegreeCancelLeadsProbe.from_existing' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 33,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.sum_natDegree_update_lt`",
+          "line": 12,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@natDegree_cancelLeads_lt_of_natDegree_le_natDegree : \u2200 {R : Type u_1} [inst : CommRing R] {p q : R[X]},\n  p.natDegree \u2264 q.natDegree \u2192 0 < q.natDegree \u2192 (p.cancelLeads q).natDegree < q.natDegree",
+          "line": 13,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'DegreeCancelLeadsProbe.bridge' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 32,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'DegreeCancelLeadsProbe.from_existing' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 33,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 29437
+}

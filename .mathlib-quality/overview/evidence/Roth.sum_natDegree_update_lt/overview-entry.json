@@ -1,0 +1,23 @@
+{
+  "declaration": "Roth.sum_natDegree_update_lt",
+  "kind": "theorem",
+  "type": "\u2200 {K : Type u} [Field K] {l : \u2115} {\u03c6 : Fin l \u2192 K[X]}, LinearIndependent K \u03c6 \u2192 \u2200 {\u03bd \u03bd' : Fin l}, \u03bd \u2260 \u03bd' \u2192 (\u03c6 \u03bd).natDegree = (\u03c6 \u03bd').natDegree \u2192 \u2211 \u03c1, (Function.update \u03c6 \u03bd' (\u03c6 \u03bd' - C ((\u03c6 \u03bd').leadingCoeff / (\u03c6 \u03bd).leadingCoeff) * \u03c6 \u03bd) \u03c1).natDegree < \u2211 \u03c1, (\u03c6 \u03c1).natDegree",
+  "what": "Cancelling equal leading terms strictly lowers the sum of degrees of an independent finite polynomial family.",
+  "how": "Prove updated difference nonzero, cancel leading coefficients, convert degree to natDegree, apply Finset.sum_lt_sum.",
+  "hypotheses": [
+    "Field K",
+    "LinearIndependent K \u03c6",
+    "distinct indices",
+    "equal natural degrees"
+  ],
+  "project_dependencies": [
+    "Roth.linearIndependent_update_sub_smul (source proof only)"
+  ],
+  "caller_summary": "One explicit executable caller at Roth/Wronskian.lean:213; full strong-induction caller rebuilt noncircularly.",
+  "mathlib_api_audit": "Existing degree_sub_lt_left, cancelLeads natural-degree law, natDegree_lt_natDegree, Finset.sum_lt_sum and sum_update_of_mem. No verified \u22643-call entire original proof.",
+  "moral_duplications": "Standard leading-term cancellation plus generic finite-sum comparison; normalized cancelLeads bridge is compiled, not definitional.",
+  "generalization": "Compiled Field\u2192DivisionRing, arbitrary Fintype index, replace global LI and distinctness by local nonzero difference or positive common degree.",
+  "missing_api": "Potential normalized quotient cancellation corollary and relation to cancelLeads; generic finite-update wrapper is optional design question.",
+  "junk": "Live induction-measure helper, not junk.",
+  "action": "BORDERLINE-needs-human: resolve three concrete upstream API questions; retain project-local measure helper meanwhile."
+}

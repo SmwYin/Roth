@@ -1,0 +1,25 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+import Mathlib.Algebra.Polynomial.CancelLeads
+open Polynomial
+#check_failure Roth.sum_natDegree_update_lt
+namespace DegreeUpdateGuards
+theorem constant_guard :
+    ¬ (1 - C ((1 : ℚ[X]).leadingCoeff / (1 : ℚ[X]).leadingCoeff) * 1 : ℚ[X]).natDegree <
+      (1 : ℚ[X]).natDegree := by simp
+
+theorem unequal_degree_guard :
+    ((X ^ 2 + 1) - C ((X ^ 2 + 1 : ℚ[X]).leadingCoeff / (X : ℚ[X]).leadingCoeff) * X).natDegree =
+      (X ^ 2 + 1 : ℚ[X]).natDegree := by
+  compute_degree!
+#print axioms constant_guard
+#print axioms unequal_degree_guard
+end DegreeUpdateGuards
+

@@ -1,0 +1,35 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+import Mathlib.Algebra.Polynomial.CancelLeads
+open Polynomial
+#check_failure Roth.sum_natDegree_update_lt
+#check @Polynomial.natDegree_cancelLeads_lt_of_natDegree_le_natDegree
+namespace DegreeCancelLeadsProbe
+theorem bridge {K : Type*} [Field K] {p q : K[X]} (hp : p ≠ 0)
+    (hd : p.natDegree = q.natDegree) :
+    q - C (q.leadingCoeff / p.leadingCoeff) * p = C p.leadingCoeff⁻¹ * p.cancelLeads q := by
+  have hlc : p.leadingCoeff ≠ 0 := leadingCoeff_ne_zero.2 hp
+  simp only [cancelLeads, hd, Nat.sub_self, pow_zero, mul_one, mul_sub, ← mul_assoc,
+    ← C_mul, inv_mul_cancel₀ hlc, C_1, one_mul, div_eq_inv_mul]
+
+theorem from_existing {K : Type*} [Field K] {p q : K[X]}
+    (hd : p.natDegree = q.natDegree) (hpos : 0 < q.natDegree) :
+    (q - C (q.leadingCoeff / p.leadingCoeff) * p).natDegree < q.natDegree := by
+  have hp : p ≠ 0 := by
+    intro hz
+    have hq0 : q.natDegree = 0 := hd.symm.trans (by simp [hz])
+    simp [hq0] at hpos
+  rw [bridge hp hd]
+  exact (natDegree_C_mul_le _ _).trans_lt
+    (natDegree_cancelLeads_lt_of_natDegree_le_natDegree hd.le hpos)
+#print axioms bridge
+#print axioms from_existing
+end DegreeCancelLeadsProbe
+

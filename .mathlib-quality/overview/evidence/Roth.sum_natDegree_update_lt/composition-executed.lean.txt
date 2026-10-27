@@ -1,0 +1,19 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+import Mathlib.Algebra.Polynomial.CancelLeads
+open Polynomial
+#check_failure Roth.sum_natDegree_update_lt
+example {K : Type*} [Field K] {l : ℕ} {φ : Fin l → K[X]}
+    (hφ : LinearIndependent K φ) {i j : Fin l} (h : i ≠ j)
+    (hd : (φ i).natDegree = (φ j).natDegree) :
+    ∑ k, (Function.update φ j
+      (φ j - C ((φ j).leadingCoeff / (φ i).leadingCoeff) * φ i) k).natDegree <
+      ∑ k, (φ k).natDegree := by
+  exact?

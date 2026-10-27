@@ -1,0 +1,120 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.Polynomial.HasseDeriv\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.LinearAlgebra.Matrix.ToLinearEquiv\nimport Mathlib.RingTheory.Polynomial.Wronskian\nimport Mathlib.LinearAlgebra.Vandermonde\nimport Mathlib.Data.ZMod.Defs\nimport Mathlib.Algebra.Field.ZMod\nimport Mathlib.Algebra.Order.Group.Int.Sum\nimport Mathlib.LinearAlgebra.Matrix.Polynomial\nopen Polynomial\n#check_failure Roth.sum_natDegree_update_lt\n#check @Polynomial.degree_sub_lt_left\n#check @Polynomial.natDegree_lt_natDegree\n#check @Finset.sum_lt_sum\n#check @Finset.sum_update_of_mem\ntheorem cancellation_degree {K : Type*} [Field K] {p q : K[X]} (hp : p ≠ 0)\n    (hq : q ≠ 0) (hd : p.natDegree = q.natDegree)\n    (hne : q - C (q.leadingCoeff / p.leadingCoeff) * p ≠ 0) :\n    (q - C (q.leadingCoeff / p.leadingCoeff) * p).natDegree < q.natDegree := by\n  have hlc : p.leadingCoeff ≠ 0 := leadingCoeff_ne_zero.2 hp\n  have hdeg' : degree q = degree (C (q.leadingCoeff / p.leadingCoeff) * p) := by\n    rw [degree_C_mul (div_ne_zero (leadingCoeff_ne_zero.2 hq) hlc),\n      degree_eq_natDegree hp, degree_eq_natDegree hq, hd]\n  exact natDegree_lt_natDegree hne (degree_sub_lt_left hdeg' hq (by\n    rw [leadingCoeff_mul, leadingCoeff_C, div_mul_cancel₀ _ hlc]))\ntheorem family_cancellation_degree {K ι : Type*} [Field K] [Fintype ι] [DecidableEq ι]\n    {φ : ι → K[X]} {i j : ι} (hp : φ i ≠ 0) (hq : φ j ≠ 0)\n    (hd : (φ i).natDegree = (φ j).natDegree)\n    (hne : φ j - C ((φ j).leadingCoeff / (φ i).leadingCoeff) * φ i ≠ 0) :\n    ∑ k, (Function.update φ j\n      (φ j - C ((φ j).leadingCoeff / (φ i).leadingCoeff) * φ i) k).natDegree <\n      ∑ k, (φ k).natDegree := by\n  have hlt := cancellation_degree hp hq hd hne\n  refine Finset.sum_lt_sum (fun k _ ↦ ?_) ⟨j, Finset.mem_univ _, by simpa⟩\n  by_cases hk : k = j\n  · simpa [hk] using hlt.le\n  · simp [Function.update_of_ne hk]\n#print axioms cancellation_degree\n#print axioms family_cancellation_degree\n\nnamespace DegreeUpdatePositive\ntheorem cancellation {K : Type*} [Field K] {p q : K[X]}\n    (hd : p.natDegree = q.natDegree) (hpos : 0 < q.natDegree) :\n    (q - C (q.leadingCoeff / p.leadingCoeff) * p).natDegree < q.natDegree := by\n  have hp : p ≠ 0 := by\n    intro hz\n    have hq0 : q.natDegree = 0 := hd.symm.trans (by simp [hz])\n    simpa [hq0] using hpos\n  have hq : q ≠ 0 := by\n    intro hz\n    simpa [hz] using hpos\n  by_cases hz : q - C (q.leadingCoeff / p.leadingCoeff) * p = 0\n  · simpa only [hz, natDegree_zero] using hpos\n  · exact cancellation_degree hp hq hd hz\n\ntheorem family {K ι : Type*} [Field K] [Fintype ι] [DecidableEq ι]\n    {φ : ι → K[X]} {i j : ι}\n    (hd : (φ i).natDegree = (φ j).natDegree) (hpos : 0 < (φ j).natDegree) :\n    ∑ k, (Function.update φ j\n      (φ j - C ((φ j).leadingCoeff / (φ i).leadingCoeff) * φ i) k).natDegree <\n      ∑ k, (φ k).natDegree := by\n  have hlt := cancellation hd hpos\n  refine Finset.sum_lt_sum (fun k _ ↦ ?_) ⟨j, Finset.mem_univ _, by simpa⟩\n  by_cases hk : k = j\n  · simpa [hk] using hlt.le\n  · simp [Function.update_of_ne hk]\n#print axioms cancellation\n#print axioms family\nend DegreeUpdatePositive\n\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.sum_natDegree_update_lt`\",\n      \"line\": 11,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@degree_sub_lt_left : ∀ {R : Type u_1} [inst : Ring R] {p q : R[X]},\\n  p.degree = q.degree → p ≠ 0 → p.leadingCoeff = q.leadingCoeff → (p - q).degree < p.degree\",\n      \"line\": 12,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@natDegree_lt_natDegree : ∀ {R : Type u_1} {S : Type u_2} [inst : Semiring R] [inst_1 : Semiring S] {p : R[X]}\\n  {q : S[X]}, p ≠ 0 → p.degree < q.degree → p.natDegree < q.natDegree\",\n      \"line\": 13,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finset.sum_lt_sum : ∀ {ι : Type u_1} {M : Type u_2} [inst : AddCommMonoid M] [inst_1 : Preorder M]\\n  [IsOrderedCancelAddMonoid M] {f g : ι → M} {s : Finset ι} [AddLeftStrictMono M],\\n  (∀ i ∈ s, f i ≤ g i) → (∃ i ∈ s, f i < g i) → ∑ i ∈ s, f i < ∑ i ∈ s, g i\",\n      \"line\": 14,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finset.sum_update_of_mem : ∀ {ι : Type u_1} {M : Type u_2} [inst : AddCommMonoid M] [inst_1 : DecidableEq ι]\\n  {s : Finset ι} {i : ι}, i ∈ s → ∀ (f : ι → M) (b : M), ∑ x ∈ s, Function.update f i b x = b + ∑ x ∈ s \\\\ {i}, f x\",\n      \"line\": 15,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'cancellation_degree' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 38,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'family_cancellation_degree' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 39,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"warning\",\n      \"message\": \"Try `simp at hpos` instead of `simpa using hpos`\\n\\nNote: This linter can be disabled with `set_option linter.unnecessarySimpa false`\",\n      \"line\": 48,\n      \"column\": 5,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"warning\",\n      \"message\": \"Try `simp at hpos` instead of `simpa using hpos`\\n\\nNote: This linter can be disabled with `set_option linter.unnecessarySimpa false`\",\n      \"line\": 51,\n      \"column\": 5,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'DegreeUpdatePositive.cancellation' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 67,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'DegreeUpdatePositive.family' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 68,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.sum_natDegree_update_lt`",
+          "line": 11,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@degree_sub_lt_left : ∀ {R : Type u_1} [inst : Ring R] {p q : R[X]},\n  p.degree = q.degree → p ≠ 0 → p.leadingCoeff = q.leadingCoeff → (p - q).degree < p.degree",
+          "line": 12,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@natDegree_lt_natDegree : ∀ {R : Type u_1} {S : Type u_2} [inst : Semiring R] [inst_1 : Semiring S] {p : R[X]}\n  {q : S[X]}, p ≠ 0 → p.degree < q.degree → p.natDegree < q.natDegree",
+          "line": 13,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finset.sum_lt_sum : ∀ {ι : Type u_1} {M : Type u_2} [inst : AddCommMonoid M] [inst_1 : Preorder M]\n  [IsOrderedCancelAddMonoid M] {f g : ι → M} {s : Finset ι} [AddLeftStrictMono M],\n  (∀ i ∈ s, f i ≤ g i) → (∃ i ∈ s, f i < g i) → ∑ i ∈ s, f i < ∑ i ∈ s, g i",
+          "line": 14,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finset.sum_update_of_mem : ∀ {ι : Type u_1} {M : Type u_2} [inst : AddCommMonoid M] [inst_1 : DecidableEq ι]\n  {s : Finset ι} {i : ι}, i ∈ s → ∀ (f : ι → M) (b : M), ∑ x ∈ s, Function.update f i b x = b + ∑ x ∈ s \\ {i}, f x",
+          "line": 15,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'cancellation_degree' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 38,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'family_cancellation_degree' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 39,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "warning",
+          "message": "Try `simp at hpos` instead of `simpa using hpos`\n\nNote: This linter can be disabled with `set_option linter.unnecessarySimpa false`",
+          "line": 48,
+          "column": 5,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "warning",
+          "message": "Try `simp at hpos` instead of `simpa using hpos`\n\nNote: This linter can be disabled with `set_option linter.unnecessarySimpa false`",
+          "line": 51,
+          "column": 5,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'DegreeUpdatePositive.cancellation' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 67,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'DegreeUpdatePositive.family' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 68,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 213
+}
