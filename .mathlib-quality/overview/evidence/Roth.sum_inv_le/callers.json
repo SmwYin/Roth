@@ -1,0 +1,47 @@
+[
+  {
+    "file": "Roth/Lattice.lean",
+    "line": 68,
+    "name": "Roth.sum_inv_lt",
+    "short": "sum_inv_lt",
+    "kind": "theorem",
+    "visibility": "public",
+    "end_line": 90,
+    "source": "theorem sum_inv_lt {r m : ℕ} (hr : 1 ≤ r) (hm : 2 ≤ m) {lam : ℝ} (hlam : 2 * √(m : ℝ) < lam) :\n    ∑ j ∈ range (r + 1), (lam - 1 + 2 * (j : ℝ) / r)⁻¹ <\n      lam⁻¹ * (√((m : ℝ) - 1))⁻¹ * √(m : ℝ) * (r + 1) := by\n  have hm' : (2 : ℝ) ≤ m := by exact_mod_cast hm\n  have hlam2 : 2 < lam := by linarith [Real.lt_sqrt_of_sq_lt (by linarith : (1 : ℝ) ^ 2 < m)]\n  have hpos1 : 0 < √(1 - 1 / (m : ℝ)) := by\n    rw [Real.sqrt_pos, sub_pos, div_lt_one (by linarith)]\n    linarith\n  have hsqrt : √(1 - 1 / (m : ℝ)) = √((m : ℝ) - 1) / √(m : ℝ) := by\n    rw [← Real.sqrt_div' _ (Nat.cast_nonneg m)]\n    congr 1\n    field_simp\n  have hlam' : lam / (lam ^ 2 - 1) = lam⁻¹ / (1 - lam⁻¹ ^ 2) := by\n    have : lam ≠ 0 := by linarith\n    field_simp\n  calc _ ≤ (r + 1) * (lam / (lam ^ 2 - 1)) := sum_inv_le hr hlam2\n    _ < (r + 1) * (lam⁻¹ / √(1 - 1 / (m : ℝ))) := by\n      rw [hlam']\n      gcongr\n      exact sqrt_one_sub_inv_lt hm hlam\n    _ = _ := by\n      rw [hsqrt]\n      field_simp",
+    "signature": "theorem sum_inv_lt {r m : ℕ} (hr : 1 ≤ r) (hm : 2 ≤ m) {lam : ℝ} (hlam : 2 * √(m : ℝ) < lam) :\n    ∑ j ∈ range (r + 1), (lam - 1 + 2 * (j : ℝ) / r)⁻¹ <\n      lam⁻¹ * (√((m : ℝ) - 1))⁻¹ * √(m : ℝ) * (r + 1)",
+    "body": "by\n  have hm' : (2 : ℝ) ≤ m := by exact_mod_cast hm\n  have hlam2 : 2 < lam := by linarith [Real.lt_sqrt_of_sq_lt (by linarith : (1 : ℝ) ^ 2 < m)]\n  have hpos1 : 0 < √(1 - 1 / (m : ℝ)) := by\n    rw [Real.sqrt_pos, sub_pos, div_lt_one (by linarith)]\n    linarith\n  have hsqrt : √(1 - 1 / (m : ℝ)) = √((m : ℝ) - 1) / √(m : ℝ) := by\n    rw [← Real.sqrt_div' _ (Nat.cast_nonneg m)]\n    congr 1\n    field_simp\n  have hlam' : lam / (lam ^ 2 - 1) = lam⁻¹ / (1 - lam⁻¹ ^ 2) := by\n    have : lam ≠ 0 := by linarith\n    field_simp\n  calc _ ≤ (r + 1) * (lam / (lam ^ 2 - 1)) := sum_inv_le hr hlam2\n    _ < (r + 1) * (lam⁻¹ / √(1 - 1 / (m : ℝ))) := by\n      rw [hlam']\n      gcongr\n      exact sqrt_one_sub_inv_lt hm hlam\n    _ = _ := by\n      rw [hsqrt]\n      field_simp",
+    "proof_lines": 21,
+    "sha256": "3d2dea1a5f9fb17d9d217b0301eb7e5ae18241cae5095f9a6b3bb840fb04259e",
+    "source_body_project_refs": [
+      "Roth.sqrt_one_sub_inv_lt",
+      "Roth.sum_inv_le"
+    ],
+    "source_type_project_refs": [],
+    "what": "Gives the sharper harmonic-grid estimate with the square-root ratio needed for the lattice induction.",
+    "how": "Starts with sum_inv_le, rewrites the ratio using Real.sqrt_div', and improves the denominator by sqrt_one_sub_inv_lt.",
+    "hypotheses": "Positive natural r, m at least two, and λ greater than 2√m.",
+    "source_used_by_project": [
+      "Roth.card_filter_weight_le_succ_aux"
+    ],
+    "source_used_by_file": [
+      "Roth.card_filter_weight_le_succ_aux"
+    ],
+    "section_binders": "(none; all binders written explicitly)",
+    "type_provenance": "Exact written signature plus manually identified captured section binders. Root cached full build succeeds; global opaque/type inspector timed out, so no kernel dump is claimed.",
+    "notes": "No sorry, TODO, or set_option in this declaration.",
+    "assignment_offset": 206,
+    "project_body_refs": [
+      "Roth.sqrt_one_sub_inv_lt",
+      "Roth.sum_inv_le"
+    ],
+    "project_type_refs": [],
+    "project_callers": [
+      {
+        "name": "Roth.card_filter_weight_le_succ_aux",
+        "file": "Roth/Lattice.lean",
+        "line": 166
+      }
+    ],
+    "section_context": "(none; all binders written explicitly)"
+  }
+]

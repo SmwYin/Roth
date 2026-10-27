@@ -1,0 +1,15 @@
+private lemma sum_inv_le {r : ℕ} (hr : 1 ≤ r) {lam : ℝ} (hlam : 2 < lam) :
+    ∑ j ∈ range (r + 1), (lam - 1 + 2 * (j : ℝ) / r)⁻¹ ≤ (r + 1) * (lam / (lam ^ 2 - 1)) := by
+  have hr' : (0 : ℝ) < r := by exact_mod_cast hr
+  have h := Finset.sum_le_sum fun j (hj : j ∈ range (r + 1)) ↦ by
+    have hjr : j ≤ r := Nat.lt_succ_iff.1 (mem_range.1 hj)
+    have hx2 : 2 * (j : ℝ) / r ≤ 2 := by
+      rw [div_le_iff₀ hr']
+      gcongr
+    simpa only [show 2 - 2 * (j : ℝ) / r = 2 * ((r + 1 - 1 - j : ℕ) : ℝ) / r by
+      rw [Nat.add_sub_cancel, Nat.cast_sub hjr]
+      field_simp] using inv_add_inv_le hlam (by positivity) hx2
+  rw [Finset.sum_add_distrib, Finset.sum_range_reflect (fun j : ℕ ↦ (lam - 1 + 2 * (j : ℝ) / r)⁻¹),
+    Finset.sum_const, card_range, nsmul_eq_mul, mul_div_assoc] at h
+  push_cast at h
+  linarith

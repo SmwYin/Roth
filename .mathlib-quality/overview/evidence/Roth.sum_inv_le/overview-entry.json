@@ -1,0 +1,18 @@
+{
+  "declaration": "Roth.sum_inv_le",
+  "kind": "lemma",
+  "type": "∀ {r : ℕ},\n  1 ≤ r →\n    ∀ {lam : ℝ}, 2 < lam → ∑ j ∈ Finset.range (r + 1), (lam - 1 + 2 * ↑j / ↑r)⁻¹ ≤ (↑r + 1) * (lam / (lam ^ 2 - 1))",
+  "what": "Bounds the reciprocal arithmetic-grid sum by (r+1)*lambda/(lambda^2-1), using complementary-term pairing.",
+  "how": "Pairs each term j with r−j using inv_add_inv_le and Finset.sum_range_reflect, then divides the paired-sum estimate by two.",
+  "hypotheses": "Positive natural r and real λ greater than two. The exact type is over real numbers and natural grid sizes as printed; no additional project-defined structure is captured.",
+  "project_dependencies": [
+    "Roth.inv_add_inv_le"
+  ],
+  "caller_summary": "1 explicit source caller declarations, all in Lattice.lean; 1 direct original value consumers. Exact separate lists retained. Entire module proof bodies replay successfully with fresh target name.",
+  "mathlib_api_audit": "The preceding private complementary-pair bound is summed over the finite grid. Finset.sum_range_reflect identifies the reflected grid sum with the original one, and ordinary finite-sum distribution and arithmetic divide the resulting estimate by two. This upgrades the pointwise pair estimate to the whole reciprocal grid sum, without duplicating the public strict square-root bound.",
+  "moral_duplications": "Complementary-pair and whole-grid reciprocal estimates are distinct steps of the lattice proof, not duplicate full constructions.",
+  "generalization": "No public generality claim under the private prefilter; preserve the existing definition and interface.",
+  "missing_api": "No new primitive is needed for this internal organization; full public contribution search is explicitly not run.",
+  "junk": "Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.",
+  "action": "Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration."
+}
