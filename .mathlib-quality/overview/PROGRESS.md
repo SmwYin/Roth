@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-26
 
-- Declarations completed: **97/293**
-- Next declaration: **#98 `Roth.abs_eval_le`** (Roth/CoeffNorm.lean:223)
+- Declarations completed: **98/293**
+- Next declaration: **#99 `Roth.degreeOf_det_hasseDeriv_le`** (Roth/CoeffNorm.lean:245)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -116,10 +116,10 @@ Last regenerated: 2026-10-26
 | 95 | `Roth.diag_sub` | Roth/CoeffNorm.lean:199 | NO-mathlib-has-it | [report](mathlibable/Roth.diag_sub.md) |
 | 96 | `Roth.geom_sum_le_one_add_pow` | Roth/CoeffNorm.lean:205 | YES-but-generalise-first | [report](mathlibable/Roth.geom_sum_le_one_add_pow.md) |
 | 97 | `Roth.sum_box_prod_pow_le_aux` | Roth/CoeffNorm.lean:214 | SKIP | [report](mathlibable/Roth.sum_box_prod_pow_le_aux.md) |
+| 98 | `Roth.abs_eval_le` | Roth/CoeffNorm.lean:223 | YES-but-generalise-first | [report](mathlibable/Roth.abs_eval_le.md) |
 
 ## Remaining declarations (in processing order)
 
-- #98 `Roth.abs_eval_le` (Roth/CoeffNorm.lean:223, public theorem)
 - #99 `Roth.degreeOf_det_hasseDeriv_le` (Roth/CoeffNorm.lean:245, public theorem)
 - #100 `Roth.abs_coeff_det_hasseDeriv_le` (Roth/CoeffNorm.lean:258, public theorem)
 - #101 `Roth.genWronskian` (Roth/GenWronskian.lean:32, public def)
