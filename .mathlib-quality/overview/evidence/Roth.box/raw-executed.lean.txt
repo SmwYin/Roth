@@ -1,0 +1,36 @@
+import Mathlib.Data.Finsupp.Interval
+import Mathlib.Algebra.BigOperators.Ring.Finset
+import Mathlib.Order.Interval.Finset.Nat
+
+namespace RawBoxAssessment
+variable {σ : Type*} [Fintype σ] [DecidableEq σ]
+noncomputable def mapped_box (r : σ → ℕ) : Finset (σ →₀ ℕ) :=
+  (Fintype.piFinset fun j ↦ Finset.range (r j + 1)).map
+    Finsupp.equivFunOnFinite.symm.toEmbedding
+noncomputable def interval_box (r : σ → ℕ) : Finset (σ →₀ ℕ) :=
+  Finset.Iic (Finsupp.equivFunOnFinite.symm r)
+theorem exact_comparison (r : σ → ℕ) : mapped_box r = interval_box r := by
+  apply Finset.ext
+  intro d
+  simp [mapped_box, interval_box, Finset.mem_Iic, Finsupp.le_def, Nat.lt_succ_iff]
+theorem cardinal (r : σ → ℕ) : (interval_box r).card = ∏ j, (r j + 1) := by
+  rw [interval_box, Finsupp.card_Iic]
+  change (Finsupp.equivFunOnFinite.symm r).prod (fun _ n ↦ (Finset.Iic n).card) = _
+  rw [Finsupp.prod_fintype _ _ (fun _ ↦ by simp)]
+  simp
+theorem sum_product {R : Type*} [CommSemiring R] (r : σ → ℕ) (g : σ → ℕ → R) :
+    (∑ d ∈ interval_box r, ∏ j, g j (d j)) =
+      ∏ j, ∑ n ∈ Finset.range (r j + 1), g j n := by
+  rw [← exact_comparison]
+  simp [mapped_box, Finset.prod_univ_sum]
+#check @Fintype.piFinset
+#check @Finset.mem_Iic
+#check @Finsupp.card_Iic
+#check @Finsupp.equivFunOnFinite
+#check_failure Roth.box
+#print axioms mapped_box
+#print axioms interval_box
+#print axioms exact_comparison
+#print axioms cardinal
+#print axioms sum_product
+end RawBoxAssessment

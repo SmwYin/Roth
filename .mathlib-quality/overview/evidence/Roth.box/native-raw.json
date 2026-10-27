@@ -1,0 +1,111 @@
+{
+  "request": {
+    "code": "import Mathlib.Data.Finsupp.Interval\nimport Mathlib.Algebra.BigOperators.Ring.Finset\nimport Mathlib.Order.Interval.Finset.Nat\n\nnamespace RawBoxAssessment\nvariable {σ : Type*} [Fintype σ] [DecidableEq σ]\nnoncomputable def mapped_box (r : σ → ℕ) : Finset (σ →₀ ℕ) :=\n  (Fintype.piFinset fun j ↦ Finset.range (r j + 1)).map\n    Finsupp.equivFunOnFinite.symm.toEmbedding\nnoncomputable def interval_box (r : σ → ℕ) : Finset (σ →₀ ℕ) :=\n  Finset.Iic (Finsupp.equivFunOnFinite.symm r)\ntheorem exact_comparison (r : σ → ℕ) : mapped_box r = interval_box r := by\n  apply Finset.ext\n  intro d\n  simp [mapped_box, interval_box, Finset.mem_Iic, Finsupp.le_def, Nat.lt_succ_iff]\ntheorem cardinal (r : σ → ℕ) : (interval_box r).card = ∏ j, (r j + 1) := by\n  rw [interval_box, Finsupp.card_Iic]\n  change (Finsupp.equivFunOnFinite.symm r).prod (fun _ n ↦ (Finset.Iic n).card) = _\n  rw [Finsupp.prod_fintype _ _ (fun _ ↦ by simp)]\n  simp\ntheorem sum_product {R : Type*} [CommSemiring R] (r : σ → ℕ) (g : σ → ℕ → R) :\n    (∑ d ∈ interval_box r, ∏ j, g j (d j)) =\n      ∏ j, ∑ n ∈ Finset.range (r j + 1), g j n := by\n  rw [← exact_comparison]\n  simp [mapped_box, Finset.prod_univ_sum]\n#check @Fintype.piFinset\n#check @Finset.mem_Iic\n#check @Finsupp.card_Iic\n#check @Finsupp.equivFunOnFinite\n#check_failure Roth.box\n#print axioms mapped_box\n#print axioms interval_box\n#print axioms exact_comparison\n#print axioms cardinal\n#print axioms sum_product\nend RawBoxAssessment\n"
+  },
+  "elapsed_ms": 19830,
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Fintype.piFinset : {α : Type u_2} →\\n  [DecidableEq α] → [Fintype α] → {δ : α → Type u_3} → ((a : α) → Finset (δ a)) → Finset ((a : α) → δ a)\",\n      \"line\": 26,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finset.mem_Iic : ∀ {α : Type u_2} [inst : Preorder α] [inst_1 : LocallyFiniteOrderBot α] {a x : α},\\n  x ∈ Finset.Iic a ↔ x ≤ a\",\n      \"line\": 27,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finsupp.card_Iic : ∀ {ι : Type u_2} {α : Type u_3} [inst : AddCommMonoid α] [inst_1 : PartialOrder α]\\n  [inst_2 : IsBotZeroClass α] [inst_3 : OrderBot α] [inst_4 : LocallyFiniteOrder α] [inst_5 : DecidableEq ι]\\n  [inst_6 : DecidableEq α] (f : ι →₀ α), (Finset.Iic f).card = ∏ i ∈ f.support, (Finset.Iic (f i)).card\",\n      \"line\": 28,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finsupp.equivFunOnFinite : {α : Type u_2} → {M : Type u_3} → [inst : Zero M] → [Finite α] → (α →₀ M) ≃ (α → M)\",\n      \"line\": 29,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.box`\",\n      \"line\": 30,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'RawBoxAssessment.mapped_box' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 31,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'RawBoxAssessment.interval_box' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 32,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'RawBoxAssessment.exact_comparison' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 33,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'RawBoxAssessment.cardinal' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 34,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'RawBoxAssessment.sum_product' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 35,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "@Fintype.piFinset : {α : Type u_2} →\n  [DecidableEq α] → [Fintype α] → {δ : α → Type u_3} → ((a : α) → Finset (δ a)) → Finset ((a : α) → δ a)",
+          "line": 26,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finset.mem_Iic : ∀ {α : Type u_2} [inst : Preorder α] [inst_1 : LocallyFiniteOrderBot α] {a x : α},\n  x ∈ Finset.Iic a ↔ x ≤ a",
+          "line": 27,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finsupp.card_Iic : ∀ {ι : Type u_2} {α : Type u_3} [inst : AddCommMonoid α] [inst_1 : PartialOrder α]\n  [inst_2 : IsBotZeroClass α] [inst_3 : OrderBot α] [inst_4 : LocallyFiniteOrder α] [inst_5 : DecidableEq ι]\n  [inst_6 : DecidableEq α] (f : ι →₀ α), (Finset.Iic f).card = ∏ i ∈ f.support, (Finset.Iic (f i)).card",
+          "line": 28,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finsupp.equivFunOnFinite : {α : Type u_2} → {M : Type u_3} → [inst : Zero M] → [Finite α] → (α →₀ M) ≃ (α → M)",
+          "line": 29,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.box`",
+          "line": 30,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'RawBoxAssessment.mapped_box' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 31,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'RawBoxAssessment.interval_box' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 32,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'RawBoxAssessment.exact_comparison' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 33,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'RawBoxAssessment.cardinal' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 34,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'RawBoxAssessment.sum_product' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 35,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  }
+}
