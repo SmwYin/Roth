@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-27
 
-- Declarations completed: **216/293**
-- Next declaration: **#217 `Roth.lem6M_lt`** (Roth/Theta.lean:649)
+- Declarations completed: **217/293**
+- Next declaration: **#218 `Roth.lem7_Φ_bound`** (Roth/Theta.lean:678)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -235,10 +235,10 @@ Last regenerated: 2026-10-27
 | 214 | `Roth.Θ_option_le` | Roth/Theta.lean:593 | BORDERLINE-needs-human | [report](mathlibable/Roth.Θ_option_le.md) |
 | 215 | `Roth.factorial_coefficient_le_two_pow_aux` | Roth/Theta.lean:609 | SKIP | [report](mathlibable/Roth.factorial_coefficient_le_two_pow_aux.md) |
 | 216 | `Roth.two_pow_lt_rpow_aux` | Roth/Theta.lean:621 | SKIP | [report](mathlibable/Roth.two_pow_lt_rpow_aux.md) |
+| 217 | `Roth.lem6M_lt` | Roth/Theta.lean:649 | BORDERLINE-needs-human | [report](mathlibable/Roth.lem6M_lt.md) |
 
 ## Remaining declarations (in processing order)
 
-- #217 `Roth.lem6M_lt` (Roth/Theta.lean:649, public theorem)
 - #218 `Roth.lem7_Φ_bound` (Roth/Theta.lean:678, public theorem)
 - #219 `Roth.lem7_numeric` (Roth/Theta.lean:709, public theorem)
 - #220 `Roth.theta_scaled_unique_le_aux` (Roth/Theta.lean:742, private lemma)
