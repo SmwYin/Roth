@@ -1,0 +1,51 @@
+{
+  "file": "Roth/Lattice.lean",
+  "line": 158,
+  "name": "Roth.card_filter_weight_le_of_le_sqrt_aux",
+  "short": "card_filter_weight_le_of_le_sqrt_aux",
+  "kind": "lemma",
+  "visibility": "private",
+  "end_line": 164,
+  "source": "private lemma card_filter_weight_le_of_le_sqrt_aux (m : ℕ) (r : Fin m → ℕ) {lam : ℝ}\n    (hlam : 0 < lam) (h : lam ≤ 2 * √(m : ℝ)) : (((box r).filter fun d ↦\n      weight r d ≤ ((m : ℝ) - lam) / 2).card : ℝ) ≤ 2 * √(m : ℝ) / lam * ∏ j, ((r j : ℝ) + 1) := by\n  classical\n  calc _ ≤ ((box r).card : ℝ) := by exact_mod_cast Finset.card_filter_le (box r) _\n    _ = ∏ j, ((r j : ℝ) + 1) := by simp [card_box]\n    _ ≤ _ := le_mul_of_one_le_left (by positivity) ((one_le_div hlam).2 h)",
+  "signature": "private lemma card_filter_weight_le_of_le_sqrt_aux (m : ℕ) (r : Fin m → ℕ) {lam : ℝ}\n    (hlam : 0 < lam) (h : lam ≤ 2 * √(m : ℝ)) : (((box r).filter fun d ↦\n      weight r d ≤ ((m : ℝ) - lam) / 2).card : ℝ) ≤ 2 * √(m : ℝ) / lam * ∏ j, ((r j : ℝ) + 1)",
+  "body": "by\n  classical\n  calc _ ≤ ((box r).card : ℝ) := by exact_mod_cast Finset.card_filter_le (box r) _\n    _ = ∏ j, ((r j : ℝ) + 1) := by simp [card_box]\n    _ ≤ _ := le_mul_of_one_le_left (by positivity) ((one_le_div hlam).2 h)",
+  "proof_lines": 5,
+  "sha256": "5867bf405d78638f48dd6bf546f38c6d44bcb85b9317d45730cf4e3c30b69bbc",
+  "source_body_project_refs": [
+    "Roth.box",
+    "Roth.card_box"
+  ],
+  "source_type_project_refs": [
+    "Roth.box",
+    "Roth.weight"
+  ],
+  "what": "Proves the lattice estimate when λ≤2√m by the trivial upper bound on the entire box.",
+  "how": "Applies Finset.card_filter_le, card_box, and observes 2√m/λ≥1.",
+  "hypotheses": "Positive λ at most 2√m; natural box bounds.",
+  "source_used_by_project": [
+    "Roth.card_filter_weight_le"
+  ],
+  "source_used_by_file": [
+    "Roth.card_filter_weight_le"
+  ],
+  "section_binders": "(none; all binders written explicitly)",
+  "type_provenance": "Exact written signature plus manually identified captured section binders. Root cached full build succeeds; global opaque/type inspector timed out, so no kernel dump is claimed.",
+  "notes": "No sorry, TODO, or set_option in this declaration.",
+  "assignment_offset": 252,
+  "project_body_refs": [
+    "Roth.box",
+    "Roth.card_box"
+  ],
+  "project_type_refs": [
+    "Roth.box",
+    "Roth.weight"
+  ],
+  "project_callers": [
+    {
+      "name": "Roth.card_filter_weight_le",
+      "file": "Roth/Lattice.lean",
+      "line": 202
+    }
+  ],
+  "section_context": "(none; all binders written explicitly)"
+}

@@ -1,0 +1,53 @@
+[
+  {
+    "file": "Roth/Lattice.lean",
+    "line": 202,
+    "name": "Roth.card_filter_weight_le",
+    "short": "card_filter_weight_le",
+    "kind": "theorem",
+    "visibility": "public",
+    "end_line": 218,
+    "source": "theorem card_filter_weight_le (m : ℕ) (r : Fin m → ℕ) (hr : ∀ j, 0 < r j) {lam : ℝ} (hlam : 0 < lam)\n    : (((box r).filter fun d ↦ weight r d ≤ ((m : ℝ) - lam) / 2).card : ℝ) ≤\n      2 * √(m : ℝ) / lam * ∏ j, ((r j : ℝ) + 1) := by\n  classical\n  induction m generalizing lam with\n  | zero =>\n    rw [filter_weight_le_eq_empty r (by simpa using hlam)]\n    simp\n  | succ n ih =>\n    by_cases h : lam ≤ 2 * √(((n + 1 : ℕ) : ℝ))\n    · exact card_filter_weight_le_of_le_sqrt_aux (n + 1) r hlam h\n    rcases Nat.eq_zero_or_pos n with rfl | hn\n    · rw [filter_weight_le_eq_empty r (by\n        norm_num at h ⊢\n        linarith), card_empty, Nat.cast_zero]\n      positivity\n    exact card_filter_weight_le_succ_aux r (hr _) hn (lt_of_not_ge h) (ih _ fun j ↦ hr _)",
+    "signature": "theorem card_filter_weight_le (m : ℕ) (r : Fin m → ℕ) (hr : ∀ j, 0 < r j) {lam : ℝ} (hlam : 0 < lam)\n    : (((box r).filter fun d ↦ weight r d ≤ ((m : ℝ) - lam) / 2).card : ℝ) ≤\n      2 * √(m : ℝ) / lam * ∏ j, ((r j : ℝ) + 1)",
+    "body": "by\n  classical\n  induction m generalizing lam with\n  | zero =>\n    rw [filter_weight_le_eq_empty r (by simpa using hlam)]\n    simp\n  | succ n ih =>\n    by_cases h : lam ≤ 2 * √(((n + 1 : ℕ) : ℝ))\n    · exact card_filter_weight_le_of_le_sqrt_aux (n + 1) r hlam h\n    rcases Nat.eq_zero_or_pos n with rfl | hn\n    · rw [filter_weight_le_eq_empty r (by\n        norm_num at h ⊢\n        linarith), card_empty, Nat.cast_zero]\n      positivity\n    exact card_filter_weight_le_succ_aux r (hr _) hn (lt_of_not_ge h) (ih _ fun j ↦ hr _)",
+    "proof_lines": 15,
+    "sha256": "001f5ec6d1a8a0416a7ddb37602b2292931831ecbf152e332e14a7f39048af36",
+    "source_body_project_refs": [
+      "Roth.card_filter_weight_le_of_le_sqrt_aux",
+      "Roth.card_filter_weight_le_succ_aux",
+      "Roth.filter_weight_le_eq_empty"
+    ],
+    "source_type_project_refs": [
+      "Roth.box",
+      "Roth.weight"
+    ],
+    "what": "Lemma 8 bounds the number of box exponents of weight at most (m−λ)/2 by (2√m/λ) times the box cardinality.",
+    "how": "Inducts on dimension: filter_weight_le_eq_empty handles dimension zero and the exceptional one-dimensional case, card_filter_weight_le_of_le_sqrt_aux handles small λ, and card_filter_weight_le_succ_aux handles the remaining range.",
+    "hypotheses": "Every coordinate bound is strictly positive and λ is a positive real.",
+    "source_used_by_project": [
+      "Roth.mul_card_filter_weight_le_aux"
+    ],
+    "source_used_by_file": [],
+    "section_binders": "(none; all binders written explicitly)",
+    "type_provenance": "Exact written signature plus manually identified captured section binders. Root cached full build succeeds; global opaque/type inspector timed out, so no kernel dump is claimed.",
+    "notes": "No sorry, TODO, or set_option in this declaration.",
+    "assignment_offset": 226,
+    "project_body_refs": [
+      "Roth.card_filter_weight_le_of_le_sqrt_aux",
+      "Roth.card_filter_weight_le_succ_aux",
+      "Roth.filter_weight_le_eq_empty"
+    ],
+    "project_type_refs": [
+      "Roth.box",
+      "Roth.weight"
+    ],
+    "project_callers": [
+      {
+        "name": "Roth.mul_card_filter_weight_le_aux",
+        "file": "Roth/MainLemma.lean",
+        "line": 569
+      }
+    ],
+    "section_context": "(none; all binders written explicitly)"
+  }
+]

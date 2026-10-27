@@ -1,0 +1,7 @@
+private lemma card_filter_weight_le_of_le_sqrt_aux (m : ℕ) (r : Fin m → ℕ) {lam : ℝ}
+    (hlam : 0 < lam) (h : lam ≤ 2 * √(m : ℝ)) : (((box r).filter fun d ↦
+      weight r d ≤ ((m : ℝ) - lam) / 2).card : ℝ) ≤ 2 * √(m : ℝ) / lam * ∏ j, ((r j : ℝ) + 1) := by
+  classical
+  calc _ ≤ ((box r).card : ℝ) := by exact_mod_cast Finset.card_filter_le (box r) _
+    _ = ∏ j, ((r j : ℝ) + 1) := by simp [card_box]
+    _ ≤ _ := le_mul_of_one_le_left (by positivity) ((one_le_div hlam).2 h)

@@ -3,7 +3,7 @@
 Status: **in_progress**, 2026-10-27. Branch: `ramin-cleanup`.
 Production Lean files and all pins match baseline `99f19fd`.
 
-**Completed: 129 / 293 written declarations.**
+**Completed: 130 / 293 written declarations.**
 This counts the current overview assessments, separately from the earlier code cleanup.
 
 | # | Completed declaration | Applicable workflow | Verdict | Report |
@@ -137,8 +137,9 @@ This counts the current overview assessments, separately from the earlier code c
 | 127 | `Roth.card_filter_box_last` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.card_filter_box_last.md) |
 | 128 | `Roth.filter_weight_le_eq_empty` | overview-private-prefilter; accepted complete | SKIP | [Detailed report](mathlibable/Roth.filter_weight_le_eq_empty.md) |
 | 129 | `Roth.card_filter_fiber_eq` | overview-private-prefilter; accepted complete | SKIP | [Detailed report](mathlibable/Roth.card_filter_fiber_eq.md) |
+| 130 | `Roth.card_filter_weight_le_of_le_sqrt_aux` | overview-private-prefilter; accepted complete | SKIP | [Detailed report](mathlibable/Roth.card_filter_weight_le_of_le_sqrt_aux.md) |
 
-**Next declaration: `Roth.card_filter_weight_le_of_le_sqrt_aux`**, `Roth/Lattice.lean:158`.
+**Next declaration: `Roth.card_filter_weight_le_succ_aux`**, `Roth/Lattice.lean:166`.
 Only the listed assessments are complete. No partial assessment was committed.
 
 On restart: read [README](README.md), [machine progress](progress.json), and

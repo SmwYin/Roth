@@ -1,0 +1,20 @@
+{
+  "declaration": "Roth.card_filter_weight_le_of_le_sqrt_aux",
+  "kind": "lemma",
+  "type": "∀ (m : ℕ) (r : Fin m → ℕ) {lam : ℝ},\n  0 < lam →\n    lam ≤ 2 * √↑m → ↑{d ∈ Roth.box r | Roth.weight r d ≤ (↑m - lam) / 2}.card ≤ 2 * √↑m / lam * ∏ j, (↑(r j) + 1)",
+  "what": "Bounds the weighted-filter cardinality by the lattice estimate directly when positive lambda is at most twice the square root of the dimension.",
+  "how": "Applies Finset.card_filter_le, card_box, and observes 2√m/λ≥1.",
+  "hypotheses": "Positive λ at most 2√m; natural box bounds. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.",
+  "project_dependencies": [
+    "Roth.box",
+    "Roth.card_box",
+    "Roth.weight"
+  ],
+  "caller_summary": "1 explicit source caller declarations, all in Lattice.lean; 1 direct original value consumers. Exact separate lists retained. Entire module proof bodies replay successfully with fresh target name.",
+  "mathlib_api_audit": "A filtered box has cardinality at most the whole box by Finset.card_filter_le. card_box supplies the product of side cardinalities. Positive lambda and lambda at most twice the square root of the dimension make the requested prefactor at least one, so multiplying the nonnegative box cardinality gives the bound. This is the direct small-lambda regime, separate from the negative-threshold empty case and the large-lambda induction.",
+  "moral_duplications": "The helper has a distinct role in the lattice proof as described in the structural review; no duplicate full construction is introduced.",
+  "generalization": "No public generality claim under the private prefilter; preserve the existing definition and interface.",
+  "missing_api": "No new primitive is needed for this internal organization; full public contribution search is explicitly not run.",
+  "junk": "Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.",
+  "action": "Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration."
+}
