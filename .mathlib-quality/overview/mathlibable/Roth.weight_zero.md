@@ -1,6 +1,6 @@
 # Full mathlibable assessment: `Roth.weight_zero`
 
-Verdict: **NO-composable-from-mathlib**. Three existing arithmetic facts prove the exact statement: finite sums of zero terms vanish, natural zero casts to zero, and zero divided by anything is zero. This independent assessment does not inherit the parent definition's verdict. The underlying bundled `Finsupp.weight` also already preserves zero by `map_zero`, but identifying the project representation with that bundled map requires a bridge.
+Verdict: **NO-mathlib-has-it**, under the verified parent re-aim rule. Three existing arithmetic facts prove the exact statement: finite sums of zero terms vanish, natural zero casts to zero, and zero divided by anything is zero. All phases ran independently; the final verdict additionally applies the explicit parent re-aim rule. The underlying bundled `Finsupp.weight` also already preserves zero by `map_zero`, but identifying the project representation with that bundled map requires a bridge.
 
 ## Phase 0 — Baseline and scope
 
@@ -134,13 +134,13 @@ Exactly **three distinct existing mathematical fact references and three instant
 
 This is not merely a closing `simp [defs...]` composition, so Phase6b's BORDERLINE rule for an opaque simplifier proof is not being used as an automatic NO. The independent mathlib-only module defines the exact formula, guards `#check_failure Roth.weight_zero`, and proves it by the same explicit term. It imports no Roth code, preventing own/downstream simp circularity. The separate replay of the original simp proof is supplementary evidence only.
 
-At the abstract interface, `map_zero (Finsupp.weight w)` compiles for arbitrary ambient `σ` and arbitrary `AddCommMonoid M`; this is an existing result, not a newly proved helper. Replacing the unchanged project statement directly with it requires a representation bridge, so this independent NO-composable verdict rests on the three-fact exact proof. Accepted extensions include finite sets/functions over `DivisionSemiring` and infinite ambient support sums. Rejected attempts (missing additive structure, zero-instance diamond, omitted cast fact) are retained separately and excluded from accepted evidence.
+At the abstract interface, `map_zero (Finsupp.weight w)` compiles for arbitrary ambient `σ` and arbitrary `AddCommMonoid M`; this is an existing result, not a newly proved helper. Replacing the unchanged project statement directly with it requires a representation bridge, so the three-fact proof certifies old-form composition while the explicit re-aim rule determines the final existing-result verdict. Accepted extensions include finite sets/functions over `DivisionSemiring` and infinite ambient support sums. Rejected attempts (missing additive structure, zero-instance diamond, omitted cast fact) are retained separately and excluded from accepted evidence.
 
 Composition verdict: **COMPOSABLE**.
 
 ## Phase 7 — Verdict and actionable plan
 
-**NO-composable-from-mathlib**: the exact target follows from the three cited existing facts with no new mathematical helper or project theorem. The abstract re-aim already uses generic `map_zero`; no new preservation theorem is needed. Neither literature silence nor the parent assessment determines this verdict.
+**NO-mathlib-has-it**: after re-aiming the already redundant parent at `Finsupp.weight`, its zero law is existing `map_zero`. The native reciprocal bridge verifies the old notation. The independent three-fact proof remains valid evidence, but it does not override the command's explicit re-aim routing.
 
 Proposed subsequent change: delete the theorem and handle the zero-weight normalization at the potential `Index.index_eq_zero_iff:105` simp consumer explicitly by the compiled composition, then rewrite the upper bound. There are **0 explicit named call sites**. Rebuild downstream modules because simplifier uses are not enumerated by text search. Alternatively preserve this readable simp API in **project-local `Roth/Box.lean`**, where the wrapper's semantics live; no Archive or satellite-library destination is warranted for elementary glue. This assessment itself makes no production changes.
 
@@ -149,3 +149,32 @@ All phase gates pass; no cost-based downgrade, unsupported absence claim, or unv
 ## Phase 8 — Handoff
 
 [Assessment](../evidence/Roth.weight_zero/assessment.json), [verification](../evidence/Roth.weight_zero/verification.json), [overview entry](../evidence/Roth.weight_zero/overview-entry.json), [current copy manifest](../evidence/Roth.weight_zero/copy-manifest.json), [portable validator](../evidence/Roth.weight_zero/validate.py). Root acceptance pending independent review. The validator checks the current manifest; a later historical worker manifest never substitutes for it.
+
+## Re-aim rule correction and supplemental verification
+
+The initial report classified the old ratio representation by its three-fact
+composition. That classification overlooked `mathlibable.md`, Mode B,
+**Re-aim rule** (installed lines 1192–1207): when a parent is NO-mathlib-has-it
+because a more general definition D′ exists, and D′ has the analogous law,
+record the dependent lemma as NO-mathlib-has-it citing that law.
+Parent `Roth.weight` was already verified against `Finsupp.weight`.
+Its analogous law is existing `map_zero` for that bundled additive map.
+This is a checked re-aim, not blind inheritance or an unsupported absence claim.
+
+The [exact supplemental source](../evidence/Roth.weight_zero/reaim-executed.lean.txt)
+proves the reciprocal bridge and `RawWeightReaimChecks.zero_via_existing_map` with
+mathlib-only imports; [native receipt](../evidence/Roth.weight_zero/native-reaim.json)
+has terminal success, no errors/warnings, and standard axioms only.
+No Roth import or target theorem is used. The bridge is explicitly a proved
+normalization step and is not counted as an existing library lemma.
+At the re-aimed interface the law is one existing `map_zero` application.
+
+Future action: coordinate parent migration to reciprocal `Finsupp.weight`,
+then use `map_zero` and the existing quotient bridge at the consumers already
+audited above. Keep a project-local compatibility wrapper until the parent
+and complete dependent modules compile. No independent upstream preservation
+theorem is needed. Existing original-form composition, caller fragments,
+generality checks, literature and searches remain valid; production is unchanged.
+The [correction record](../evidence/Roth.weight_zero/verdict-correction.json) preserves
+the prior verdict and report hash. This changes the bucket, not the number
+of completed declarations or the next declaration.

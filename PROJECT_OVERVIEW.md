@@ -29,7 +29,7 @@ a partial assessment of the remaining declarations. See the completed-only
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
 - Completed applicable assessments: 35; remaining: 258.
-- Verdicts: 10 NO-composable-from-mathlib, 11 YES-add-as-is, 0 YES-but-generalise-first, 2 NO-mathlib-has-it, 9 BORDERLINE-needs-human, 3 SKIP.
+- Verdicts: 9 NO-composable-from-mathlib, 11 YES-add-as-is, 0 YES-but-generalise-first, 3 NO-mathlib-has-it, 9 BORDERLINE-needs-human, 3 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -363,7 +363,7 @@ entries are published only after the corresponding full applicable workflow is c
 - Hypotheses: Arbitrary σ with Fintype, No positive/nonzero denominator or DecidableEq premise
 - Project dependencies: Roth.weight
 - Caller summary: 0 explicit named references; @[simp] may normalize weight r 0 implicitly; Index.index_eq_zero_iff:105 potential consumer.
-- Verdict: NO-composable-from-mathlib; [complete report](.mathlib-quality/overview/mathlibable/Roth.weight_zero.md).
+- Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/Roth.weight_zero.md).
 
 ### Completed: `Roth.weight_add`
 
@@ -821,7 +821,7 @@ Completed `Roth.weight_single`: Not dead: two explicit caller files; no simp att
 | 29 | `Roth.card_box` | NO-composable-from-mathlib | [Report](.mathlib-quality/overview/mathlibable/Roth.card_box.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.card_box/root-acceptance.json) |
 | 30 | `Roth.card_le_card_box` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.card_le_card_box.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.card_le_card_box/root-acceptance.json) |
 | 31 | `Roth.weight_nonneg` | NO-composable-from-mathlib | [Report](.mathlib-quality/overview/mathlibable/Roth.weight_nonneg.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.weight_nonneg/root-acceptance.json) |
-| 32 | `Roth.weight_zero` | NO-composable-from-mathlib | [Report](.mathlib-quality/overview/mathlibable/Roth.weight_zero.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.weight_zero/root-acceptance.json) |
+| 32 | `Roth.weight_zero` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.weight_zero.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.weight_zero/root-acceptance.json) |
 | 33 | `Roth.weight_add` | NO-composable-from-mathlib | [Report](.mathlib-quality/overview/mathlibable/Roth.weight_add.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.weight_add/root-acceptance.json) |
 | 34 | `Roth.weight_eq_zero_iff` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.weight_eq_zero_iff.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.weight_eq_zero_iff/root-acceptance.json) |
 | 35 | `Roth.weight_single` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.weight_single.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.weight_single/root-acceptance.json) |
@@ -886,7 +886,7 @@ Completed `Roth.card_le_card_box` action: Keep local useful helper while resolvi
 
 Completed `Roth.weight_nonneg` action: Do not submit this wrapper upstream. In a later authorized refactor inline the documented proof in all three callers; or keep as readable project-local Roth/Box.lean API.
 
-Completed `Roth.weight_zero` action: NO-composable-from-mathlib. Proposed deletion only with downstream simp-consumer refactor/rebuild; alternatively retain project-local Box simp API.
+Completed `Roth.weight_zero` action: NO-mathlib-has-it under parent re-aim rule: use existing map_zero on reciprocal Finsupp.weight after coordinated parent migration; keep local compatibility API until full dependents compile.
 
 Completed `Roth.weight_add` action: NO-composable-from-mathlib. If removing wrapper, insert three-fact local equality at each named caller before existing rewrites, delete wrapper, rebuild; alternatively retain in Roth/Box.lean until parent migration.
 

@@ -39,7 +39,7 @@ This counts the current overview assessments, separately from the earlier code c
 | 29 | `Roth.card_box` | full-mathlibable; accepted complete | NO-composable-from-mathlib | [Detailed report](mathlibable/Roth.card_box.md) |
 | 30 | `Roth.card_le_card_box` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.card_le_card_box.md) |
 | 31 | `Roth.weight_nonneg` | full-mathlibable; accepted complete | NO-composable-from-mathlib | [Detailed report](mathlibable/Roth.weight_nonneg.md) |
-| 32 | `Roth.weight_zero` | full-mathlibable; accepted complete | NO-composable-from-mathlib | [Detailed report](mathlibable/Roth.weight_zero.md) |
+| 32 | `Roth.weight_zero` | full-mathlibable; accepted complete | NO-mathlib-has-it | [Detailed report](mathlibable/Roth.weight_zero.md) |
 | 33 | `Roth.weight_add` | full-mathlibable; accepted complete | NO-composable-from-mathlib | [Detailed report](mathlibable/Roth.weight_add.md) |
 | 34 | `Roth.weight_eq_zero_iff` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.weight_eq_zero_iff.md) |
 | 35 | `Roth.weight_single` | full-mathlibable; accepted complete | NO-mathlib-has-it | [Detailed report](mathlibable/Roth.weight_single.md) |

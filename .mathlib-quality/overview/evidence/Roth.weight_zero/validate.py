@@ -18,7 +18,7 @@ def sha(p):
 a = read('assessment.json')
 assert a['declaration'] == t and a['canonical_order'] == 32
 assert a['file'] == 'Roth/Box.lean' and a['line'] == 80
-assert a['verdict'] == 'NO-composable-from-mathlib'
+assert a['verdict'] == 'NO-mathlib-has-it'
 assert a['completed'] and a['unresolved'] == [] and not a['production_edits']
 assert a['root_acceptance'] in ['pending', 'PASS']
 assert set(a['phases']) == {'0','1','2','3','4a','4b','4c','4.5','4.6','5','5.5','6.0','6','7','8'}
@@ -119,7 +119,7 @@ s = report.read_text()
 for token in ['Phase 4.5', 'Phase 4.6', 'Phase 5.5', 'Phase 6.0', 'Phase6b',
               'three distinct existing mathematical fact', 'not definitional equality',
               'application/xhtml+xml', 'ask_chatgpt_math', 'MAXIMALLY GENERAL',
-              'zero subsequent proof lines', 'NO-composable-from-mathlib',
+              'zero subsequent proof lines', 'NO-mathlib-has-it',
               'not a replay of the full Index theorem']:
     assert token in s, token
 for link in re.findall(r'\]\(([^)]+)\)', s):
@@ -131,3 +131,7 @@ for link in re.findall(r'\]\(([^)]+)\)', s):
 print('PASS: all phases;17 source/pin hashes; exact successful native inputs;standard axioms;'
       '5x3 search methods;all named literature channels;0 explicit callers with simp caveat;'
       '3 facts/3 applications;current manifest bytes/hashes and portable links')
+
+import runpy
+from pathlib import Path as ReaimPath
+runpy.run_path(str(ReaimPath(__file__).resolve().parent / 'validate_reaim.py'), run_name='__main__')
