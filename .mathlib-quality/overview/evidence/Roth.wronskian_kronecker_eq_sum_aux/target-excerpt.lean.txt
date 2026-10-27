@@ -1,0 +1,8 @@
+private lemma wronskian_kronecker_eq_sum_aux (k : ℕ) (φ : Fin l → MvPolynomial σ K)
+    (s : Fin l → Finset (σ →₀ ℕ)) (c : Fin l → (σ →₀ ℕ) → Polynomial K)
+    (hc : ∀ μ ν : Fin l, Polynomial.hasseDeriv μ (kronecker k (φ ν)) =
+      ∑ d ∈ s μ, c μ d * kronecker k (hasseDeriv d (φ ν))) : wronskian (fun ν ↦ kronecker k (φ ν)) =
+    ∑ f ∈ Fintype.piFinset s, (∏ μ, c μ (f μ)) * kronecker k (genWronskian f φ) := by
+  classical
+  simpa [wronskian, wronskianMatrix, hc, genWronskian, AlgHom.map_det, Matrix.map] using
+    det_sum_rows s c (fun μ d ν ↦ kronecker k (hasseDeriv d (φ ν)))

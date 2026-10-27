@@ -1,0 +1,63 @@
+{
+  "file": "Roth/GenWronskian.lean",
+  "line": 238,
+  "name": "Roth.wronskian_kronecker_eq_sum_aux",
+  "short": "wronskian_kronecker_eq_sum_aux",
+  "kind": "lemma",
+  "visibility": "private",
+  "end_line": 245,
+  "source": "private lemma wronskian_kronecker_eq_sum_aux (k : ℕ) (φ : Fin l → MvPolynomial σ K)\n    (s : Fin l → Finset (σ →₀ ℕ)) (c : Fin l → (σ →₀ ℕ) → Polynomial K)\n    (hc : ∀ μ ν : Fin l, Polynomial.hasseDeriv μ (kronecker k (φ ν)) =\n      ∑ d ∈ s μ, c μ d * kronecker k (hasseDeriv d (φ ν))) : wronskian (fun ν ↦ kronecker k (φ ν)) =\n    ∑ f ∈ Fintype.piFinset s, (∏ μ, c μ (f μ)) * kronecker k (genWronskian f φ) := by\n  classical\n  simpa [wronskian, wronskianMatrix, hc, genWronskian, AlgHom.map_det, Matrix.map] using\n    det_sum_rows s c (fun μ d ν ↦ kronecker k (hasseDeriv d (φ ν)))",
+  "signature": "private lemma wronskian_kronecker_eq_sum_aux (k : ℕ) (φ : Fin l → MvPolynomial σ K)\n    (s : Fin l → Finset (σ →₀ ℕ)) (c : Fin l → (σ →₀ ℕ) → Polynomial K)\n    (hc : ∀ μ ν : Fin l, Polynomial.hasseDeriv μ (kronecker k (φ ν)) =\n      ∑ d ∈ s μ, c μ d * kronecker k (hasseDeriv d (φ ν))) : wronskian (fun ν ↦ kronecker k (φ ν)) =\n    ∑ f ∈ Fintype.piFinset s, (∏ μ, c μ (f μ)) * kronecker k (genWronskian f φ)",
+  "body": "by\n  classical\n  simpa [wronskian, wronskianMatrix, hc, genWronskian, AlgHom.map_det, Matrix.map] using\n    det_sum_rows s c (fun μ d ν ↦ kronecker k (hasseDeriv d (φ ν)))",
+  "proof_lines": 4,
+  "sha256": "77cba746e29bd5fe208f45b05a5aa1024cf14f279f1de1ed6313404999e13236",
+  "source_body_project_refs": [
+    "MvPolynomial.hasseDeriv",
+    "Roth.det_sum_rows",
+    "Roth.genWronskian",
+    "Roth.kronecker",
+    "Roth.wronskian",
+    "Roth.wronskianMatrix"
+  ],
+  "source_type_project_refs": [
+    "MvPolynomial.hasseDeriv",
+    "Roth.genWronskian",
+    "Roth.kronecker",
+    "Roth.wronskian"
+  ],
+  "what": "A Wronskian after Kronecker substitution expands as a linear combination of substituted generalized Wronskians.",
+  "how": "Uses det_sum_rows and compatibility AlgHom.map_det to move Kronecker substitution through the determinant.",
+  "hypotheses": "A field, finite variable enumeration, and supplied finite expansion formulas for each univariate derivative row.",
+  "source_used_by_project": [
+    "Roth.exists_genWronskian_ne_zero"
+  ],
+  "source_used_by_file": [
+    "Roth.exists_genWronskian_ne_zero"
+  ],
+  "section_binders": "{K : Type*} [Field K] {σ : Type*} [Fintype σ] {l : ℕ}",
+  "type_provenance": "Exact written signature plus manually identified captured section binders. Root cached full build succeeds; global opaque/type inspector timed out, so no kernel dump is claimed.",
+  "notes": "No sorry, TODO, or set_option in this declaration.",
+  "assignment_offset": 408,
+  "project_body_refs": [
+    "MvPolynomial.hasseDeriv",
+    "Roth.det_sum_rows",
+    "Roth.genWronskian",
+    "Roth.kronecker",
+    "Roth.wronskian",
+    "Roth.wronskianMatrix"
+  ],
+  "project_type_refs": [
+    "MvPolynomial.hasseDeriv",
+    "Roth.genWronskian",
+    "Roth.kronecker",
+    "Roth.wronskian"
+  ],
+  "project_callers": [
+    {
+      "name": "Roth.exists_genWronskian_ne_zero",
+      "file": "Roth/GenWronskian.lean",
+      "line": 254
+    }
+  ],
+  "section_context": "{K : Type*} [Field K] {σ : Type*} [Fintype σ] {l : ℕ}"
+}

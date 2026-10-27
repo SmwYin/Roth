@@ -1,0 +1,23 @@
+{
+  "declaration": "Roth.wronskian_kronecker_eq_sum_aux",
+  "kind": "lemma",
+  "type": "∀ {K : Type u_1} [inst : Field K] {σ : Type u_2}\n  [inst_1 : Fintype σ] {l : ℕ} (k : ℕ) (φ : Fin l → MvPolynomial σ K) (s : Fin l → Finset (σ →₀ ℕ))\n  (c : Fin l → (σ →₀ ℕ) → Polynomial K),\n  (∀ (μ ν : Fin l),\n      (Polynomial.hasseDeriv ↑μ) ((Roth.kronecker k) (φ ν)) =\n        ∑ d ∈ s μ, c μ d * (Roth.kronecker k) ((hasseDeriv d) (φ ν))) →\n    (Roth.wronskian fun ν ↦ (Roth.kronecker k) (φ ν)) =\n      ∑ f ∈ Fintype.piFinset s, (∏ μ, c μ (f μ)) * (Roth.kronecker k) (Roth.genWronskian f φ)",
+  "what": "Expands the Wronskian after Kronecker substitution as a finite polynomial-coefficient sum of substituted generalized Wronskians, given the derivative-row expansions.",
+  "how": "Uses det_sum_rows and compatibility AlgHom.map_det to move Kronecker substitution through the determinant.",
+  "hypotheses": "A field, finite variable enumeration, and supplied finite expansion formulas for each univariate derivative row. Actual kernel type retains Field and Fintype sigma; no characteristic-zero, positive-base or positive-order premise.",
+  "project_dependencies": [
+    "MvPolynomial.hasseDeriv",
+    "Roth.det_sum_rows",
+    "Roth.genWronskian",
+    "Roth.kronecker",
+    "Roth.wronskian",
+    "Roth.wronskianMatrix"
+  ],
+  "caller_summary": "1 explicit source caller declarations, all in GenWronskian.lean; 1 direct original value consumers. Exact separate lists retained. Entire module proof bodies replay successfully with fresh target name.",
+  "mathlib_api_audit": "The supplied uniform derivative-row expansions substitute into the Wronskian matrix. The existing project det_sum_rows helper expands its determinant by row multilinearity, while AlgHom.map_det transports each chosen generalized Wronskian through Kronecker substitution. This is a live application bridge, distinct from the standalone determinant identity and the final nonvanishing theorem. It adds no structure or instance; its private status is appropriate to the project-specific transport.",
+  "moral_duplications": "The determinant transport is distinct from the standalone row-multilinearity expansion and from the final nonvanishing implication; no duplicate full construction.",
+  "generalization": "No public generality claim under the private prefilter; preserve the existing definition and interface.",
+  "missing_api": "No new primitive is needed for this internal organization; full public contribution search is explicitly not run.",
+  "junk": "Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.",
+  "action": "Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration."
+}

@@ -1,0 +1,53 @@
+[
+  {
+    "file": "Roth/GenWronskian.lean",
+    "line": 254,
+    "name": "Roth.exists_genWronskian_ne_zero",
+    "short": "exists_genWronskian_ne_zero",
+    "kind": "theorem",
+    "visibility": "public",
+    "end_line": 270,
+    "source": "theorem exists_genWronskian_ne_zero [Finite σ] [CharZero K] {φ : Fin l → MvPolynomial σ K}\n    (h : LinearIndependent K φ) :\n    ∃ D : Fin l → (σ →₀ ℕ), (∀ μ, (D μ).degree ≤ μ) ∧ genWronskian D φ ≠ 0 := by\n  classical\n  let := Fintype.ofFinite σ\n  let k := 2 + ∑ ν, ∑ j, degreeOf j (φ ν)\n  choose s c hs hc using fun μ : Fin l ↦ exists_hasseDeriv_kronecker_eq_sum (K := K) (σ := σ) k μ\n  by_contra! hcon\n  apply wronskian_ne_zero_of_linearIndependent\n    (linearIndependent_kronecker (Nat.lt_add_right _ (by decide)) (fun ν j ↦\n      lt_of_le_of_lt ((Finset.single_le_sum (f := fun j ↦ degreeOf j (φ ν))\n        (by simp) (Finset.mem_univ j)).trans (Finset.single_le_sum\n          (f := fun ν ↦ ∑ j, degreeOf j (φ ν)) (by simp) (Finset.mem_univ ν)))\n        (Nat.lt_add_of_pos_left two_pos)) h)\n  rw [wronskian_kronecker_eq_sum_aux k φ s c (fun μ ν ↦ hc μ (φ ν))]\n  refine Finset.sum_eq_zero fun f hf ↦ ?_\n  rw [hcon f fun μ ↦ hs μ _ (Fintype.mem_piFinset.1 hf μ), map_zero, mul_zero]",
+    "signature": "theorem exists_genWronskian_ne_zero [Finite σ] [CharZero K] {φ : Fin l → MvPolynomial σ K}\n    (h : LinearIndependent K φ) :\n    ∃ D : Fin l → (σ →₀ ℕ), (∀ μ, (D μ).degree ≤ μ) ∧ genWronskian D φ ≠ 0",
+    "body": "by\n  classical\n  let := Fintype.ofFinite σ\n  let k := 2 + ∑ ν, ∑ j, degreeOf j (φ ν)\n  choose s c hs hc using fun μ : Fin l ↦ exists_hasseDeriv_kronecker_eq_sum (K := K) (σ := σ) k μ\n  by_contra! hcon\n  apply wronskian_ne_zero_of_linearIndependent\n    (linearIndependent_kronecker (Nat.lt_add_right _ (by decide)) (fun ν j ↦\n      lt_of_le_of_lt ((Finset.single_le_sum (f := fun j ↦ degreeOf j (φ ν))\n        (by simp) (Finset.mem_univ j)).trans (Finset.single_le_sum\n          (f := fun ν ↦ ∑ j, degreeOf j (φ ν)) (by simp) (Finset.mem_univ ν)))\n        (Nat.lt_add_of_pos_left two_pos)) h)\n  rw [wronskian_kronecker_eq_sum_aux k φ s c (fun μ ν ↦ hc μ (φ ν))]\n  refine Finset.sum_eq_zero fun f hf ↦ ?_\n  rw [hcon f fun μ ↦ hs μ _ (Fintype.mem_piFinset.1 hf μ), map_zero, mul_zero]",
+    "proof_lines": 15,
+    "sha256": "13a4bee0b8db209fbe0f21bee7acee8af7ba982ea6199b8de903bc0fce9675a9",
+    "source_body_project_refs": [
+      "Roth.exists_hasseDeriv_kronecker_eq_sum",
+      "Roth.linearIndependent_kronecker",
+      "Roth.wronskian_kronecker_eq_sum_aux",
+      "Roth.wronskian_ne_zero_of_linearIndependent"
+    ],
+    "source_type_project_refs": [
+      "Roth.genWronskian"
+    ],
+    "what": "An independent finite polynomial family in finitely many variables over a characteristic-zero field admits a nonzero generalized Wronskian with row order at most its index.",
+    "how": "Chooses a base larger than all partial degrees, uses linearIndependent_kronecker and wronskian_ne_zero_of_linearIndependent, then wronskian_kronecker_eq_sum_aux contradicts simultaneous vanishing of every allowed generalized Wronskian.",
+    "hypotheses": "Characteristic-zero field, finite variable type (Finite, with a local enumeration), and a linearly independent Fin l family.",
+    "source_used_by_project": [
+      "Roth.exists_rat_factors_det_hasseDeriv_aux"
+    ],
+    "source_used_by_file": [],
+    "section_binders": "{K : Type*} [Field K] {σ : Type*} {l : ℕ}",
+    "type_provenance": "Exact written signature plus manually identified captured section binders. Root cached full build succeeds; global opaque/type inspector timed out, so no kernel dump is claimed.",
+    "notes": "No sorry, TODO, or set_option in this declaration.",
+    "assignment_offset": 200,
+    "project_body_refs": [
+      "Roth.exists_hasseDeriv_kronecker_eq_sum",
+      "Roth.linearIndependent_kronecker",
+      "Roth.wronskian_kronecker_eq_sum_aux",
+      "Roth.wronskian_ne_zero_of_linearIndependent"
+    ],
+    "project_type_refs": [
+      "Roth.genWronskian"
+    ],
+    "project_callers": [
+      {
+        "name": "Roth.exists_rat_factors_det_hasseDeriv_aux",
+        "file": "Roth/Separation.lean",
+        "line": 510
+      }
+    ],
+    "section_context": "{K : Type*} [Field K] {σ : Type*} {l : ℕ}"
+  }
+]
