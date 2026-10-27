@@ -3,7 +3,7 @@
 Status: **in_progress**, 2026-10-27. Branch: `ramin-cleanup`.
 Production Lean files and all pins match baseline `99f19fd`.
 
-**Completed: 96 / 293 written declarations.**
+**Completed: 97 / 293 written declarations.**
 This counts the current overview assessments, separately from the earlier code cleanup.
 
 | # | Completed declaration | Applicable workflow | Verdict | Report |
@@ -104,8 +104,9 @@ This counts the current overview assessments, separately from the earlier code c
 | 94 | `Roth.eval_diag` | full-mathlibable; accepted complete | NO-mathlib-has-it | [Detailed report](mathlibable/Roth.eval_diag.md) |
 | 95 | `Roth.diag_sub` | full-mathlibable; accepted complete | NO-mathlib-has-it | [Detailed report](mathlibable/Roth.diag_sub.md) |
 | 96 | `Roth.geom_sum_le_one_add_pow` | full-mathlibable; accepted complete | YES-but-generalise-first | [Detailed report](mathlibable/Roth.geom_sum_le_one_add_pow.md) |
+| 97 | `Roth.sum_box_prod_pow_le_aux` | overview-private-prefilter; accepted complete | SKIP | [Detailed report](mathlibable/Roth.sum_box_prod_pow_le_aux.md) |
 
-**Next declaration: `Roth.sum_box_prod_pow_le_aux`**, `Roth/CoeffNorm.lean:214`.
+**Next declaration: `Roth.abs_eval_le`**, `Roth/CoeffNorm.lean:223`.
 Only the listed assessments are complete. No partial assessment was committed.
 
 On restart: read [README](README.md), [machine progress](progress.json), and

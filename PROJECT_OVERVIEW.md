@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 96/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 97/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 96; remaining: 197.
-- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 10 YES-but-generalise-first, 18 NO-mathlib-has-it, 32 BORDERLINE-needs-human, 9 SKIP.
+- Completed applicable assessments: 97; remaining: 196.
+- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 10 YES-but-generalise-first, 18 NO-mathlib-has-it, 32 BORDERLINE-needs-human, 10 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -1022,6 +1022,17 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: One direct source and kernel caller, private sum_box_prod_pow_le_aux; abs_eval_le uses it indirectly. Exact293 ordered unique audit complete.
 - Verdict: YES-but-generalise-first; [complete report](.mathlib-quality/overview/mathlibable/Roth.geom_sum_le_one_add_pow.md).
 
+### Completed: `Roth.sum_box_prod_pow_le_aux`
+
+- Type: `∀ {σ : Type u_1} [inst : Fintype σ] (r : σ → ℕ) {B : ℝ},
+  0 ≤ B → ∀ (x : σ → ℝ), ∑ k ∈ Roth.box r, B * ∏ j, |x j| ^ k j ≤ B * ∏ j, (1 + |x j|) ^ r j`
+- What: The weighted sum of products of absolute powers over a rectangular box is bounded by the corresponding binomial product.
+- How: Factors the box sum using Finset.prod_univ_sum and applies geom_sum_le_one_add_pow independently in each coordinate.
+- Hypotheses: A finite variable enumeration, a nonnegative common factor B, natural degree bounds, and real coordinates. Native original/replay types have no external DecidableEq or nonzero assumptions.
+- Project dependencies: Roth.box, Roth.geom_sum_le_one_add_pow
+- Caller summary: Exactly one explicit and canonical direct proof consumer Roth.abs_eval_le at CoeffNorm239; complete caller replay uses fresh exact private-helper replay.
+- Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.sum_box_prod_pow_le_aux.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -1240,6 +1251,8 @@ Completed `Roth.diag_sub`: Existing map_sub (generated additive theorem of map_d
 
 Completed `Roth.geom_sum_le_one_add_pow`: Five actual methods on three forms; positive Commute.add_pow, Nat.choose_pos, Nat.mono_cast, sum and order primitives; related Bernoulli/geometric results differ.
 
+Completed `Roth.sum_box_prod_pow_le_aux`: Finset.prod_univ_sum factors the rectangular sum; ordered finite product and nonnegative scalar monotonicity combine the separately assessed geometric bound. Full public contribution search n/a under private prefilter.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -1433,6 +1446,8 @@ Completed `Roth.eval_diag`: Generic polynomial substitution associativity/natura
 Completed `Roth.diag_sub`: Wrapper of map_sub; no independent algebraic content.
 
 Completed `Roth.geom_sum_le_one_add_pow`: No project duplicate or inspected exact existing replacement; binomial expansion is mathematical source, not a direct replacement.
+
+Completed `Roth.sum_box_prod_pow_le_aux`: Finite-box product estimate is an internal factorization stage, distinct from scalar geometric sum and polynomial support/evaluation bound. No duplicate full argument found in this source review.
 
 ## Part 5: Generalization opportunities
 
@@ -1631,6 +1646,8 @@ Completed `Roth.diag_sub`: Expanded arbitrary CommRing diagonal and arbitrary al
 
 Completed `Roth.geom_sum_le_one_add_pow`: Verified noncommutative ordered semiring; no CharZero, no linear order; ht essential (t=-1,r=2).
 
+Completed `Roth.sum_box_prod_pow_le_aux`: Finite variable enumeration, natural coordinate bounds, nonnegative real B and arbitrary real coordinates are explicit. No assumption weakening or broader public contribution is claimed under private triage.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -1825,6 +1842,8 @@ Completed `Roth.eval_diag`: None established; no new normalization helper needed
 Completed `Roth.diag_sub`: None needed for subtraction preservation.
 
 Completed `Roth.geom_sum_le_one_add_pow`: Finite geometric/binomial unweighted comparison without t<1 restriction.
+
+Completed `Roth.sum_box_prod_pow_le_aux`: Existing finite-product, finite-sum and order primitives support the decomposition; prospective public geometric bound is independently assessed at96.
 
 ## Part 7: Junk / removable
 
@@ -2023,6 +2042,8 @@ Completed `Roth.diag_sub`: Not dead: one genuine consumer, mechanically replacea
 
 Completed `Roth.geom_sum_le_one_add_pow`: Used by private helper; not dead code.
 
+Completed `Roth.sum_box_prod_pow_le_aux`: Retain this four-line private proof boundary with its single public caller. No sorry, new axiom, TODO or raised resource limit.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -2123,6 +2144,7 @@ Completed `Roth.geom_sum_le_one_add_pow`: Used by private helper; not dead code.
 | 94 | `Roth.eval_diag` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.eval_diag.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.eval_diag/root-acceptance.json) |
 | 95 | `Roth.diag_sub` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.diag_sub.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.diag_sub/root-acceptance.json) |
 | 96 | `Roth.geom_sum_le_one_add_pow` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.geom_sum_le_one_add_pow.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.geom_sum_le_one_add_pow/root-acceptance.json) |
+| 97 | `Roth.sum_box_prod_pow_le_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.sum_box_prod_pow_le_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.sum_box_prod_pow_le_aux/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -2314,12 +2336,14 @@ Completed `Roth.diag_sub` action: NO-mathlib-has-it. In future cleanup replace t
 
 Completed `Roth.geom_sum_le_one_add_pow` action: Generalize, clean and propose Mathlib/Algebra/Order/Ring/GeomSum.lean lemma; thereafter migrate sole caller. No production edits made.
 
+Completed `Roth.sum_box_prod_pow_le_aux` action: Keep unchanged; completed private-prefilter SKIP with all applicable structural/native evidence. Continue full public assessment of Roth.abs_eval_le.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.sum_box_prod_pow_le_aux` next. Supporting identities receive their own applicable checks.
+   `Roth.abs_eval_le` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

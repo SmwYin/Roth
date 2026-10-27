@@ -1,0 +1,45 @@
+{
+  "file": "Roth/CoeffNorm.lean",
+  "line": 223,
+  "name": "Roth.abs_eval_le",
+  "short": "abs_eval_le",
+  "kind": "theorem",
+  "visibility": "public",
+  "end_line": 239,
+  "source": "theorem abs_eval_le [Fintype σ] (P : MvPolynomial σ ℤ) {r : σ → ℕ} (hP : ∀ j, degreeOf j P ≤ r j)\n    {B : ℝ} (hB : ∀ d, |((P.coeff d : ℤ) : ℝ)| ≤ B) (x : σ → ℝ) :\n    |eval x (map (Int.castRingHom ℝ) P)| ≤ B * ∏ j, (1 + |x j|) ^ r j := by\n  classical\n  have hB0 : 0 ≤ B := (abs_nonneg _).trans (hB 0)\n  rw [eval_map, eval₂_eq']\n  calc |∑ k ∈ P.support, (P.coeff k : ℝ) * ∏ j, x j ^ k j|\n      ≤ ∑ k ∈ P.support, B * ∏ j, |x j| ^ k j := by\n        refine (Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun k _ ↦ ?_)\n        simp only [abs_mul, Finset.abs_prod, abs_pow]\n        exact mul_le_mul_of_nonneg_right (hB k) (by positivity)\n    _ ≤ ∑ k ∈ box r, B * ∏ j, |x j| ^ k j :=\n        Finset.sum_le_sum_of_subset_of_nonneg\n          (fun k hk ↦ mem_box.2 fun j ↦ (monomial_le_degreeOf j hk).trans (hP j))\n          fun _ _ _ ↦ by positivity\n    _ ≤ B * ∏ j, (1 + |x j|) ^ r j :=\n        sum_box_prod_pow_le_aux r hB0 x",
+  "signature": "theorem abs_eval_le [Fintype σ] (P : MvPolynomial σ ℤ) {r : σ → ℕ} (hP : ∀ j, degreeOf j P ≤ r j)\n    {B : ℝ} (hB : ∀ d, |((P.coeff d : ℤ) : ℝ)| ≤ B) (x : σ → ℝ) :\n    |eval x (map (Int.castRingHom ℝ) P)| ≤ B * ∏ j, (1 + |x j|) ^ r j",
+  "body": "by\n  classical\n  have hB0 : 0 ≤ B := (abs_nonneg _).trans (hB 0)\n  rw [eval_map, eval₂_eq']\n  calc |∑ k ∈ P.support, (P.coeff k : ℝ) * ∏ j, x j ^ k j|\n      ≤ ∑ k ∈ P.support, B * ∏ j, |x j| ^ k j := by\n        refine (Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun k _ ↦ ?_)\n        simp only [abs_mul, Finset.abs_prod, abs_pow]\n        exact mul_le_mul_of_nonneg_right (hB k) (by positivity)\n    _ ≤ ∑ k ∈ box r, B * ∏ j, |x j| ^ k j :=\n        Finset.sum_le_sum_of_subset_of_nonneg\n          (fun k hk ↦ mem_box.2 fun j ↦ (monomial_le_degreeOf j hk).trans (hP j))\n          fun _ _ _ ↦ by positivity\n    _ ≤ B * ∏ j, (1 + |x j|) ^ r j :=\n        sum_box_prod_pow_le_aux r hB0 x",
+  "proof_lines": 15,
+  "sha256": "6b826a706d36205a066b5af6ed98c01f06067bc80c595556b244f67415d63df7",
+  "source_body_project_refs": [
+    "Roth.box",
+    "Roth.mem_box",
+    "Roth.sum_box_prod_pow_le_aux"
+  ],
+  "source_type_project_refs": [],
+  "what": "An integer polynomial with bounded coefficients and partial degrees has absolute value at x bounded by B times the product (1+|x_j|)^r_j.",
+  "how": "Uses eval₂_eq' and the absolute triangle inequality, enlarges support to box r via mem_box and monomial_le_degreeOf, then applies sum_box_prod_pow_le_aux.",
+  "hypotheses": "Finitely many variables, partial-degree bounds r, and a uniform coefficient bound B.",
+  "source_used_by_project": [
+    "Roth.abs_eval_iterated_hasseDeriv_lt_aux"
+  ],
+  "source_used_by_file": [],
+  "section_binders": "{σ : Type*}",
+  "type_provenance": "Exact written signature plus manually identified captured section binders. Root cached full build succeeds; global opaque/type inspector timed out, so no kernel dump is claimed.",
+  "notes": "No sorry, TODO, or set_option in this declaration.",
+  "assignment_offset": 234,
+  "project_body_refs": [
+    "Roth.box",
+    "Roth.mem_box",
+    "Roth.sum_box_prod_pow_le_aux"
+  ],
+  "project_type_refs": [],
+  "project_callers": [
+    {
+      "name": "Roth.abs_eval_iterated_hasseDeriv_lt_aux",
+      "file": "Roth/MainLemma.lean",
+      "line": 459
+    }
+  ],
+  "section_context": "{σ : Type*}"
+}

@@ -1,0 +1,49 @@
+{
+  "file": "Roth/CoeffNorm.lean",
+  "line": 214,
+  "name": "Roth.sum_box_prod_pow_le_aux",
+  "short": "sum_box_prod_pow_le_aux",
+  "kind": "theorem",
+  "visibility": "private",
+  "end_line": 218,
+  "source": "private theorem sum_box_prod_pow_le_aux [Fintype σ] (r : σ → ℕ) {B : ℝ} (hB : 0 ≤ B) (x : σ → ℝ) :\n    ∑ k ∈ box r, B * ∏ j, |x j| ^ k j ≤ B * ∏ j, (1 + |x j|) ^ r j := by\n  simpa [← Finset.mul_sum, box, Finset.prod_univ_sum] using\n    mul_le_mul_of_nonneg_left (Finset.prod_le_prod₀ (s := Finset.univ) (fun _ _ ↦ by positivity)\n      fun j _ ↦ geom_sum_le_one_add_pow (abs_nonneg (x j)) (r j)) hB",
+  "signature": "private theorem sum_box_prod_pow_le_aux [Fintype σ] (r : σ → ℕ) {B : ℝ} (hB : 0 ≤ B) (x : σ → ℝ) :\n    ∑ k ∈ box r, B * ∏ j, |x j| ^ k j ≤ B * ∏ j, (1 + |x j|) ^ r j",
+  "body": "by\n  simpa [← Finset.mul_sum, box, Finset.prod_univ_sum] using\n    mul_le_mul_of_nonneg_left (Finset.prod_le_prod₀ (s := Finset.univ) (fun _ _ ↦ by positivity)\n      fun j _ ↦ geom_sum_le_one_add_pow (abs_nonneg (x j)) (r j)) hB",
+  "proof_lines": 4,
+  "sha256": "83be1851747d7f626eb503ce46e2aa1b6fb522afcbd7ad531d523b8f7e6c9f03",
+  "source_body_project_refs": [
+    "Roth.box",
+    "Roth.geom_sum_le_one_add_pow"
+  ],
+  "source_type_project_refs": [
+    "Roth.box"
+  ],
+  "what": "The weighted sum of products of absolute powers over a rectangular box is bounded by the corresponding binomial product.",
+  "how": "Factors the box sum using Finset.prod_univ_sum and applies geom_sum_le_one_add_pow independently in each coordinate.",
+  "hypotheses": "A finite variable enumeration, a nonnegative common factor B, natural degree bounds, and real coordinates.",
+  "source_used_by_project": [
+    "Roth.abs_eval_le"
+  ],
+  "source_used_by_file": [
+    "Roth.abs_eval_le"
+  ],
+  "section_binders": "{σ : Type*}",
+  "type_provenance": "Exact written signature plus manually identified captured section binders. Root cached full build succeeds; global opaque/type inspector timed out, so no kernel dump is claimed.",
+  "notes": "No sorry, TODO, or set_option in this declaration.",
+  "assignment_offset": 166,
+  "project_body_refs": [
+    "Roth.box",
+    "Roth.geom_sum_le_one_add_pow"
+  ],
+  "project_type_refs": [
+    "Roth.box"
+  ],
+  "project_callers": [
+    {
+      "name": "Roth.abs_eval_le",
+      "file": "Roth/CoeffNorm.lean",
+      "line": 223
+    }
+  ],
+  "section_context": "{σ : Type*}"
+}
