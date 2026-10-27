@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-27
 
-- Declarations completed: **206/293**
-- Next declaration: **#207 `Roth.sum_max_sub_le_index_det`** (Roth/Theta.lean:376)
+- Declarations completed: **207/293**
+- Next declaration: **#208 `Roth.index_separated_mul_le_aux`** (Roth/Theta.lean:414)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -225,10 +225,10 @@ Last regenerated: 2026-10-27
 | 204 | `Roth.mul_sq_div_three_le_sum_max_of_pos_aux` | Roth/Theta.lean:322 | SKIP | [report](mathlibable/Roth.mul_sq_div_three_le_sum_max_of_pos_aux.md) |
 | 205 | `Roth.mul_sq_div_three_le_sum_max_aux` | Roth/Theta.lean:347 | SKIP | [report](mathlibable/Roth.mul_sq_div_three_le_sum_max_aux.md) |
 | 206 | `Roth.min_le_sum_max` | Roth/Theta.lean:362 | BORDERLINE-needs-human | [report](mathlibable/Roth.min_le_sum_max.md) |
+| 207 | `Roth.sum_max_sub_le_index_det` | Roth/Theta.lean:376 | BORDERLINE-needs-human | [report](mathlibable/Roth.sum_max_sub_le_index_det.md) |
 
 ## Remaining declarations (in processing order)
 
-- #207 `Roth.sum_max_sub_le_index_det` (Roth/Theta.lean:376, public theorem)
 - #208 `Roth.index_separated_mul_le_aux` (Roth/Theta.lean:414, private lemma)
 - #209 `Roth.index_det_le` (Roth/Theta.lean:457, public theorem)
 - #210 `Roth.weight_le_delta_aux` (Roth/Theta.lean:494, private lemma)
