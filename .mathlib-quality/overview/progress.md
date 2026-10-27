@@ -3,7 +3,7 @@
 Status: **in_progress**, 2026-10-27. Branch: `ramin-cleanup`.
 Production Lean files and all pins match baseline `99f19fd`.
 
-**Completed: 120 / 293 written declarations.**
+**Completed: 121 / 293 written declarations.**
 This counts the current overview assessments, separately from the earlier code cleanup.
 
 | # | Completed declaration | Applicable workflow | Verdict | Report |
@@ -128,8 +128,9 @@ This counts the current overview assessments, separately from the earlier code c
 | 118 | `Roth.wronskian_kronecker_eq_sum_aux` | overview-private-prefilter; accepted complete | SKIP | [Detailed report](mathlibable/Roth.wronskian_kronecker_eq_sum_aux.md) |
 | 119 | `Roth.exists_genWronskian_ne_zero` | full-mathlibable; accepted complete | YES-but-generalise-first | [Detailed report](mathlibable/Roth.exists_genWronskian_ne_zero.md) |
 | 120 | `Roth.sqrt_one_sub_inv_lt` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.sqrt_one_sub_inv_lt.md) |
+| 121 | `Roth.inv_add_inv_le` | overview-private-prefilter; accepted complete | SKIP | [Detailed report](mathlibable/Roth.inv_add_inv_le.md) |
 
-**Next declaration: `Roth.inv_add_inv_le`**, `Roth/Lattice.lean:40`.
+**Next declaration: `Roth.sum_inv_le`**, `Roth/Lattice.lean:47`.
 Only the listed assessments are complete. No partial assessment was committed.
 
 On restart: read [README](README.md), [machine progress](progress.json), and

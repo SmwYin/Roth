@@ -1,0 +1,45 @@
+[
+  {
+    "file": "Roth/Lattice.lean",
+    "line": 47,
+    "name": "Roth.sum_inv_le",
+    "short": "sum_inv_le",
+    "kind": "lemma",
+    "visibility": "private",
+    "end_line": 61,
+    "source": "private lemma sum_inv_le {r : ℕ} (hr : 1 ≤ r) {lam : ℝ} (hlam : 2 < lam) :\n    ∑ j ∈ range (r + 1), (lam - 1 + 2 * (j : ℝ) / r)⁻¹ ≤ (r + 1) * (lam / (lam ^ 2 - 1)) := by\n  have hr' : (0 : ℝ) < r := by exact_mod_cast hr\n  have h := Finset.sum_le_sum fun j (hj : j ∈ range (r + 1)) ↦ by\n    have hjr : j ≤ r := Nat.lt_succ_iff.1 (mem_range.1 hj)\n    have hx2 : 2 * (j : ℝ) / r ≤ 2 := by\n      rw [div_le_iff₀ hr']\n      gcongr\n    simpa only [show 2 - 2 * (j : ℝ) / r = 2 * ((r + 1 - 1 - j : ℕ) : ℝ) / r by\n      rw [Nat.add_sub_cancel, Nat.cast_sub hjr]\n      field_simp] using inv_add_inv_le hlam (by positivity) hx2\n  rw [Finset.sum_add_distrib, Finset.sum_range_reflect (fun j : ℕ ↦ (lam - 1 + 2 * (j : ℝ) / r)⁻¹),\n    Finset.sum_const, card_range, nsmul_eq_mul, mul_div_assoc] at h\n  push_cast at h\n  linarith",
+    "signature": "private lemma sum_inv_le {r : ℕ} (hr : 1 ≤ r) {lam : ℝ} (hlam : 2 < lam) :\n    ∑ j ∈ range (r + 1), (lam - 1 + 2 * (j : ℝ) / r)⁻¹ ≤ (r + 1) * (lam / (lam ^ 2 - 1))",
+    "body": "by\n  have hr' : (0 : ℝ) < r := by exact_mod_cast hr\n  have h := Finset.sum_le_sum fun j (hj : j ∈ range (r + 1)) ↦ by\n    have hjr : j ≤ r := Nat.lt_succ_iff.1 (mem_range.1 hj)\n    have hx2 : 2 * (j : ℝ) / r ≤ 2 := by\n      rw [div_le_iff₀ hr']\n      gcongr\n    simpa only [show 2 - 2 * (j : ℝ) / r = 2 * ((r + 1 - 1 - j : ℕ) : ℝ) / r by\n      rw [Nat.add_sub_cancel, Nat.cast_sub hjr]\n      field_simp] using inv_add_inv_le hlam (by positivity) hx2\n  rw [Finset.sum_add_distrib, Finset.sum_range_reflect (fun j : ℕ ↦ (lam - 1 + 2 * (j : ℝ) / r)⁻¹),\n    Finset.sum_const, card_range, nsmul_eq_mul, mul_div_assoc] at h\n  push_cast at h\n  linarith",
+    "proof_lines": 14,
+    "sha256": "335336a234333cb9f521bc29cd67fd9b603aaed331d2922bb3075a1c1cccc760",
+    "source_body_project_refs": [
+      "Roth.inv_add_inv_le"
+    ],
+    "source_type_project_refs": [],
+    "what": "Bounds the reciprocal sum on a uniform grid by (r+1)λ/(λ²−1).",
+    "how": "Pairs each term j with r−j using inv_add_inv_le and Finset.sum_range_reflect, then divides the paired-sum estimate by two.",
+    "hypotheses": "Positive natural r and real λ greater than two.",
+    "source_used_by_project": [
+      "Roth.sum_inv_lt"
+    ],
+    "source_used_by_file": [
+      "Roth.sum_inv_lt"
+    ],
+    "section_binders": "(none; all binders written explicitly)",
+    "type_provenance": "Exact written signature plus manually identified captured section binders. Root cached full build succeeds; global opaque/type inspector timed out, so no kernel dump is claimed.",
+    "notes": "No sorry, TODO, or set_option in this declaration.",
+    "assignment_offset": 164,
+    "project_body_refs": [
+      "Roth.inv_add_inv_le"
+    ],
+    "project_type_refs": [],
+    "project_callers": [
+      {
+        "name": "Roth.sum_inv_lt",
+        "file": "Roth/Lattice.lean",
+        "line": 68
+      }
+    ],
+    "section_context": "(none; all binders written explicitly)"
+  }
+]

@@ -1,0 +1,39 @@
+{
+  "file": "Roth/Lattice.lean",
+  "line": 40,
+  "name": "Roth.inv_add_inv_le",
+  "short": "inv_add_inv_le",
+  "kind": "lemma",
+  "visibility": "private",
+  "end_line": 45,
+  "source": "private lemma inv_add_inv_le {lam x : ℝ} (hlam : 2 < lam) (hx0 : 0 ≤ x) (hx2 : x ≤ 2) :\n    (lam - 1 + x)⁻¹ + (lam - 1 + (2 - x))⁻¹ ≤ 2 * lam / (lam ^ 2 - 1) := by\n  have ha : 0 < lam - 1 + x := by linarith\n  have hb : 0 < lam - 1 + (2 - x) := by linarith\n  rw [inv_add_inv ha.ne' hb.ne', div_le_div_iff₀ (mul_pos ha hb) (by nlinarith)]\n  nlinarith [mul_nonneg hx0 (sub_nonneg.2 hx2)]",
+  "signature": "private lemma inv_add_inv_le {lam x : ℝ} (hlam : 2 < lam) (hx0 : 0 ≤ x) (hx2 : x ≤ 2) :\n    (lam - 1 + x)⁻¹ + (lam - 1 + (2 - x))⁻¹ ≤ 2 * lam / (lam ^ 2 - 1)",
+  "body": "by\n  have ha : 0 < lam - 1 + x := by linarith\n  have hb : 0 < lam - 1 + (2 - x) := by linarith\n  rw [inv_add_inv ha.ne' hb.ne', div_le_div_iff₀ (mul_pos ha hb) (by nlinarith)]\n  nlinarith [mul_nonneg hx0 (sub_nonneg.2 hx2)]",
+  "proof_lines": 5,
+  "sha256": "b986ceda0e15cfb02b0c11e27fd904cf787ac1bbd1a1e4a62a155353636f6f8d",
+  "source_body_project_refs": [],
+  "source_type_project_refs": [],
+  "what": "A symmetric pair of reciprocal terms at x and 2−x is at most 2λ/(λ²−1).",
+  "how": "Combines reciprocals with inv_add_inv, clears positive denominators, and uses x(2−x)≥0.",
+  "hypotheses": "Real λ greater than two and x in the closed interval [0,2].",
+  "source_used_by_project": [
+    "Roth.sum_inv_le"
+  ],
+  "source_used_by_file": [
+    "Roth.sum_inv_le"
+  ],
+  "section_binders": "(none; all binders written explicitly)",
+  "type_provenance": "Exact written signature plus manually identified captured section binders. Root cached full build succeeds; global opaque/type inspector timed out, so no kernel dump is claimed.",
+  "notes": "No sorry, TODO, or set_option in this declaration.",
+  "assignment_offset": 158,
+  "project_body_refs": [],
+  "project_type_refs": [],
+  "project_callers": [
+    {
+      "name": "Roth.sum_inv_le",
+      "file": "Roth/Lattice.lean",
+      "line": 47
+    }
+  ],
+  "section_context": "(none; all binders written explicitly)"
+}
