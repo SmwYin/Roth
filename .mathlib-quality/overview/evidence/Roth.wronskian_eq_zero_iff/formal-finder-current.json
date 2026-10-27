@@ -1,0 +1,83 @@
+{
+  "request": {
+    "query": "The determinant of successive Hasse derivatives of a finite family of polynomials over a characteristic zero field equals zero if and only if the family is not linearly independent",
+    "num_results": 8
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Algebra.discr_zero_of_not_linearIndependent\",\n      \"informal_name\": \"Discriminant Zero for Non-Linearly Independent Families\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (A : Type u) {B : Type v} {ι : Type w} [inst : DecidableEq ι] [inst_1 : CommRing A] [inst_2 : CommRing B]\\n  [inst_3 : Algebra A B] [inst_4 : Fintype ι] [IsDomain A] {b : ι → B}, ¬LinearIndependent A b → Algebra.discr A b = 0\",\n      \"informal_description\": \"Let $ A $ be a commutative domain and $ B $ a commutative $ A $-algebra. For a finite index type $ \\\\iota $ and a family of elements $ b : \\\\iota \\\\to B $, if the family is not linearly independent over $ A $, then the discriminant $ \\\\text{discr}_A(b) $ is zero.\",\n      \"path\": \"Mathlib.RingTheory.Discriminant\"\n    },\n    {\n      \"formal_name\": \"Algebra.SubmersivePresentation.linearIndependent_aeval_val_pderiv_relation\",\n      \"informal_name\": \"Linear Independence of Evaluated Partial Derivatives of Relations in Submersive Presentation\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S : Type v} {ι : Type w} {σ : Type t} [inst : CommRing R] [inst_1 : CommRing S] [inst_2 : Algebra R S]\\n  [inst_3 : Finite σ] (P : Algebra.SubmersivePresentation R S ι σ),\\n  LinearIndependent S fun i j => (MvPolynomial.aeval P.val) ((MvPolynomial.pderiv (P.map j)) (P.relation i))\",\n      \"informal_description\": \"The family of elements in $ S $ obtained by evaluating the partial derivatives of the relations in a submersive presentation $ P $ at the generators of $ S $ is linearly independent over $ S $. Specifically, for all indices $ i, j $, the evaluation map $ \\\\text{aeval} $ applied to the partial derivative $ \\\\text{pderiv}_{P.\\\\text{map}(j)}(P.\\\\text{relation}(i)) $ yields a linearly independent set in $ S $.\",\n      \"path\": \"Mathlib.RingTheory.Extension.Presentation.Submersive\"\n    },\n    {\n      \"formal_name\": \"Matrix.det_matrixOfPolynomials\",\n      \"informal_name\": \"Determinant of a Matrix of Monic Polynomials with Degree Conditions Equals One\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type v} [inst : CommRing R] {n : ℕ} (p : Fin n → Polynomial R),\\n  (∀ (i : Fin n), (p i).natDegree = ↑i) → (∀ (i : Fin n), (p i).Monic) → (Matrix.of fun i j => (p j).coeff ↑i).det = 1\",\n      \"informal_description\": \"For a commutative ring $ R $ and natural number $ n $, consider monic polynomials $ p_0, p_1, \\\\ldots, p_{n-1} $ in $ R[X] $ where each $ p_i $ has degree $ i $. Construct an $ n \\\\times n $ matrix $ M $ such that the entry in row $ i $ and column $ j $ is the coefficient of $ X^i $ in $ p_j $. Then the determinant of $ M $ is equal to 1.\",\n      \"path\": \"Mathlib.LinearAlgebra.Matrix.Block\"\n    },\n    {\n      \"formal_name\": \"Polynomial.wronskian_self_eq_zero\",\n      \"informal_name\": \"Wronskian of a Polynomial with Itself is Zero\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] (a : Polynomial R), a.wronskian a = 0\",\n      \"informal_description\": \"For any polynomial $ a $ in the polynomial ring $ R[X] $ over a commutative ring $ R $, the Wronskian of $ a $ with itself is zero, i.e., $ \\\\operatorname{Wronskian}(a, a) = 0 $. The Wronskian is defined as $ a \\\\cdot a' - a' \\\\cdot a $, where $ a' $ denotes the formal derivative of $ a $. This simplifies to zero due to the anti-commutative nature of the subtraction.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.Wronskian\"\n    },\n    {\n      \"formal_name\": \"Polynomial.sylvesterDeriv\",\n      \"informal_name\": \"Sylvester matrix of a polynomial and its derivative\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} →\\n  [inst : Semiring R] →\\n    (f : Polynomial R) → Matrix (Fin (f.natDegree - 1 + f.natDegree)) (Fin (f.natDegree - 1 + f.natDegree)) R\",\n      \"informal_description\": \"For a polynomial $ f $ of degree $ n $, this is a square matrix of size $ (2n - 2) \\\\times (2n - 2) $ constructed from the Sylvester matrix of $ f' $ (the derivative of $ f $) and $ f $. The final row is modified to have a 1 at column $ n-2 $, the value $ n $ at column $ 2n-2 $, and zeros elsewhere. This matrix is used in resultant computations involving polynomials and their derivatives.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.Resultant.Basic\"\n    },\n    {\n      \"formal_name\": \"Polynomial.wronskian\",\n      \"informal_name\": \"Wronskian of two polynomials\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : CommRing R] → Polynomial R → Polynomial R → Polynomial R\",\n      \"informal_description\": \"The Wronskian of two polynomials $ a $ and $ b $ is defined as $ a \\\\cdot b' - a' \\\\cdot b $, where $ b' $ and $ a' $ denote the formal derivatives of $ b $ and $ a $, respectively. This results in a polynomial in $ R[X] $.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.Wronskian\"\n    },\n    {\n      \"formal_name\": \"IsCoprime.wronskian_eq_zero_iff\",\n      \"informal_name\": \"Wronskian Zero iff Derivatives Zero for Coprime Polynomials in a Domain\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] [NoZeroDivisors R] {a b : Polynomial R},\\n  IsCoprime a b → (a.wronskian b = 0 ↔ Polynomial.derivative a = 0 ∧ Polynomial.derivative b = 0)\",\n      \"informal_description\": \"Let $ R $ be a commutative ring with no zero divisors, and let $ a, b \\\\in R[X] $ be coprime polynomials. The Wronskian $ ab' - a'b $ is zero if and only if both $ a' = 0 $ and $ b' = 0 $.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.Wronskian\"\n    },\n    {\n      \"formal_name\": \"Polynomial.wronskian_zero_right\",\n      \"informal_name\": \"Wronskian with Zero Polynomial on the Right is Zero\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] (a : Polynomial R), a.wronskian 0 = 0\",\n      \"informal_description\": \"For any polynomial $ a $ in $ R[X] $, the Wronskian of $ a $ and the zero polynomial is the zero polynomial, i.e., $ \\\\operatorname{wronskian}(a, 0) = 0 $.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.Wronskian\"\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "items": [
+        {
+          "formal_name": "Algebra.discr_zero_of_not_linearIndependent",
+          "informal_name": "Discriminant Zero for Non-Linearly Independent Families",
+          "kind": "theorem",
+          "type": "∀ (A : Type u) {B : Type v} {ι : Type w} [inst : DecidableEq ι] [inst_1 : CommRing A] [inst_2 : CommRing B]\n  [inst_3 : Algebra A B] [inst_4 : Fintype ι] [IsDomain A] {b : ι → B}, ¬LinearIndependent A b → Algebra.discr A b = 0",
+          "informal_description": "Let $ A $ be a commutative domain and $ B $ a commutative $ A $-algebra. For a finite index type $ \\iota $ and a family of elements $ b : \\iota \\to B $, if the family is not linearly independent over $ A $, then the discriminant $ \\text{discr}_A(b) $ is zero.",
+          "path": "Mathlib.RingTheory.Discriminant"
+        },
+        {
+          "formal_name": "Algebra.SubmersivePresentation.linearIndependent_aeval_val_pderiv_relation",
+          "informal_name": "Linear Independence of Evaluated Partial Derivatives of Relations in Submersive Presentation",
+          "kind": "theorem",
+          "type": "∀ {R : Type u} {S : Type v} {ι : Type w} {σ : Type t} [inst : CommRing R] [inst_1 : CommRing S] [inst_2 : Algebra R S]\n  [inst_3 : Finite σ] (P : Algebra.SubmersivePresentation R S ι σ),\n  LinearIndependent S fun i j => (MvPolynomial.aeval P.val) ((MvPolynomial.pderiv (P.map j)) (P.relation i))",
+          "informal_description": "The family of elements in $ S $ obtained by evaluating the partial derivatives of the relations in a submersive presentation $ P $ at the generators of $ S $ is linearly independent over $ S $. Specifically, for all indices $ i, j $, the evaluation map $ \\text{aeval} $ applied to the partial derivative $ \\text{pderiv}_{P.\\text{map}(j)}(P.\\text{relation}(i)) $ yields a linearly independent set in $ S $.",
+          "path": "Mathlib.RingTheory.Extension.Presentation.Submersive"
+        },
+        {
+          "formal_name": "Matrix.det_matrixOfPolynomials",
+          "informal_name": "Determinant of a Matrix of Monic Polynomials with Degree Conditions Equals One",
+          "kind": "theorem",
+          "type": "∀ {R : Type v} [inst : CommRing R] {n : ℕ} (p : Fin n → Polynomial R),\n  (∀ (i : Fin n), (p i).natDegree = ↑i) → (∀ (i : Fin n), (p i).Monic) → (Matrix.of fun i j => (p j).coeff ↑i).det = 1",
+          "informal_description": "For a commutative ring $ R $ and natural number $ n $, consider monic polynomials $ p_0, p_1, \\ldots, p_{n-1} $ in $ R[X] $ where each $ p_i $ has degree $ i $. Construct an $ n \\times n $ matrix $ M $ such that the entry in row $ i $ and column $ j $ is the coefficient of $ X^i $ in $ p_j $. Then the determinant of $ M $ is equal to 1.",
+          "path": "Mathlib.LinearAlgebra.Matrix.Block"
+        },
+        {
+          "formal_name": "Polynomial.wronskian_self_eq_zero",
+          "informal_name": "Wronskian of a Polynomial with Itself is Zero",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} [inst : CommRing R] (a : Polynomial R), a.wronskian a = 0",
+          "informal_description": "For any polynomial $ a $ in the polynomial ring $ R[X] $ over a commutative ring $ R $, the Wronskian of $ a $ with itself is zero, i.e., $ \\operatorname{Wronskian}(a, a) = 0 $. The Wronskian is defined as $ a \\cdot a' - a' \\cdot a $, where $ a' $ denotes the formal derivative of $ a $. This simplifies to zero due to the anti-commutative nature of the subtraction.",
+          "path": "Mathlib.RingTheory.Polynomial.Wronskian"
+        },
+        {
+          "formal_name": "Polynomial.sylvesterDeriv",
+          "informal_name": "Sylvester matrix of a polynomial and its derivative",
+          "kind": "definition",
+          "type": "{R : Type u_1} →\n  [inst : Semiring R] →\n    (f : Polynomial R) → Matrix (Fin (f.natDegree - 1 + f.natDegree)) (Fin (f.natDegree - 1 + f.natDegree)) R",
+          "informal_description": "For a polynomial $ f $ of degree $ n $, this is a square matrix of size $ (2n - 2) \\times (2n - 2) $ constructed from the Sylvester matrix of $ f' $ (the derivative of $ f $) and $ f $. The final row is modified to have a 1 at column $ n-2 $, the value $ n $ at column $ 2n-2 $, and zeros elsewhere. This matrix is used in resultant computations involving polynomials and their derivatives.",
+          "path": "Mathlib.RingTheory.Polynomial.Resultant.Basic"
+        },
+        {
+          "formal_name": "Polynomial.wronskian",
+          "informal_name": "Wronskian of two polynomials",
+          "kind": "definition",
+          "type": "{R : Type u_1} → [inst : CommRing R] → Polynomial R → Polynomial R → Polynomial R",
+          "informal_description": "The Wronskian of two polynomials $ a $ and $ b $ is defined as $ a \\cdot b' - a' \\cdot b $, where $ b' $ and $ a' $ denote the formal derivatives of $ b $ and $ a $, respectively. This results in a polynomial in $ R[X] $.",
+          "path": "Mathlib.RingTheory.Polynomial.Wronskian"
+        },
+        {
+          "formal_name": "IsCoprime.wronskian_eq_zero_iff",
+          "informal_name": "Wronskian Zero iff Derivatives Zero for Coprime Polynomials in a Domain",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} [inst : CommRing R] [NoZeroDivisors R] {a b : Polynomial R},\n  IsCoprime a b → (a.wronskian b = 0 ↔ Polynomial.derivative a = 0 ∧ Polynomial.derivative b = 0)",
+          "informal_description": "Let $ R $ be a commutative ring with no zero divisors, and let $ a, b \\in R[X] $ be coprime polynomials. The Wronskian $ ab' - a'b $ is zero if and only if both $ a' = 0 $ and $ b' = 0 $.",
+          "path": "Mathlib.RingTheory.Polynomial.Wronskian"
+        },
+        {
+          "formal_name": "Polynomial.wronskian_zero_right",
+          "informal_name": "Wronskian with Zero Polynomial on the Right is Zero",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} [inst : CommRing R] (a : Polynomial R), a.wronskian 0 = 0",
+          "informal_description": "For any polynomial $ a $ in $ R[X] $, the Wronskian of $ a $ and the zero polynomial is the zero polynomial, i.e., $ \\operatorname{wronskian}(a, 0) = 0 $.",
+          "path": "Mathlib.RingTheory.Polynomial.Wronskian"
+        }
+      ]
+    },
+    "isError": false
+  }
+}

@@ -1,0 +1,111 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.Polynomial.HasseDeriv\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.LinearAlgebra.Matrix.ToLinearEquiv\nimport Mathlib.RingTheory.Polynomial.Wronskian\nimport Mathlib.LinearAlgebra.Vandermonde\nimport Mathlib.Data.ZMod.Defs\nimport Mathlib.Algebra.Field.ZMod\nimport Mathlib.Algebra.Order.Group.Int.Sum\nimport Mathlib.LinearAlgebra.Matrix.Polynomial\nimport Mathlib.Algebra.Polynomial.CancelLeads\nopen Polynomial\n#check_failure Roth.wronskian_eq_zero_iff\n#check_failure Polynomial.wronskian_eq_zero_iff\n#check @Matrix.linearIndependent_rows_of_det_ne_zero\n#check @Matrix.linearIndependent_cols_of_det_ne_zero\n#check @IsCoprime.wronskian_eq_zero_iff\n#check @Polynomial.hasseDeriv_map\nnamespace WronskianIffGuards\nnoncomputable abbrev family : Fin 2 → (ZMod 2)[X] := ![1, X ^ 2]\ntheorem independent : LinearIndependent (ZMod 2) family := by\n  apply linearIndependent_fin2.mpr\n  constructor\n  · simp [family]\n  · intro a ha\n    have h0 := congrArg (fun p : (ZMod 2)[X] ↦ p.coeff 0) ha\n    simp [family, Polynomial.coeff_smul] at h0\n\ntheorem vanishes :\n    (Matrix.of fun μ ν : Fin 2 ↦ hasseDeriv (μ : ℕ) (family ν)).det = 0 := by\n  norm_num [family, Matrix.det_fin_two]\n  exact (show (2 : ZMod 2) = 0 from by decide)\n#print axioms independent\n#print axioms vanishes\nend WronskianIffGuards\n\nnamespace WronskianIffProductGuards\nopen Polynomial\ntheorem dependent :\n    ¬ LinearIndependent (ℤ × ℤ)\n      (fun _ : Fin 1 ↦ (C (1, 0) : (ℤ × ℤ)[X])) := by\n  apply Fintype.not_linearIndependent_iff.mpr\n  refine ⟨fun _ ↦ (0, 1), ?_, 0, by decide⟩\n  simp [smul_eq_C_mul, ← C_mul]\ntheorem nonzero :\n    (Matrix.of fun μ _ν : Fin 1 ↦ hasseDeriv (μ : ℕ)\n      (C (1, 0) : (ℤ × ℤ)[X])).det ≠ 0 := by\n  simp [Matrix.det_unique]\n#print axioms dependent\n#print axioms nonzero\nend WronskianIffProductGuards\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.wronskian_eq_zero_iff`\",\n      \"line\": 12,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown constant `Polynomial.wronskian_eq_zero_iff`\",\n      \"line\": 13,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Matrix.linearIndependent_rows_of_det_ne_zero : ∀ {m : Type u_2} [inst : DecidableEq m] [inst_1 : Fintype m]\\n  {R : Type u_1} [inst_2 : CommRing R] [IsDomain R] {A : Matrix m m R}, A.det ≠ 0 → LinearIndependent R fun i ↦ A i\",\n      \"line\": 14,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Matrix.linearIndependent_cols_of_det_ne_zero : ∀ {m : Type u_2} [inst : DecidableEq m] [inst_1 : Fintype m]\\n  {R : Type u_1} [inst_2 : CommRing R] [IsDomain R] {A : Matrix m m R}, A.det ≠ 0 → LinearIndependent R A.col\",\n      \"line\": 15,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@IsCoprime.wronskian_eq_zero_iff : ∀ {R : Type u_1} [inst : CommRing R] [NoZeroDivisors R] {a b : R[X]},\\n  IsCoprime a b → (a.wronskian b = 0 ↔ derivative a = 0 ∧ derivative b = 0)\",\n      \"line\": 16,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@hasseDeriv_map : ∀ {R : Type u_1} [inst : Semiring R] {S : Type u_2} [inst_1 : Semiring S] (f : R →+* S) (k : ℕ)\\n  (p : R[X]), (hasseDeriv k) (map f p) = map f ((hasseDeriv k) p)\",\n      \"line\": 17,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'WronskianIffGuards.independent' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 32,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'WronskianIffGuards.vanishes' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 33,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'WronskianIffProductGuards.dependent' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 48,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'WronskianIffProductGuards.nonzero' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 49,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.wronskian_eq_zero_iff`",
+          "line": 12,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown constant `Polynomial.wronskian_eq_zero_iff`",
+          "line": 13,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Matrix.linearIndependent_rows_of_det_ne_zero : ∀ {m : Type u_2} [inst : DecidableEq m] [inst_1 : Fintype m]\n  {R : Type u_1} [inst_2 : CommRing R] [IsDomain R] {A : Matrix m m R}, A.det ≠ 0 → LinearIndependent R fun i ↦ A i",
+          "line": 14,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Matrix.linearIndependent_cols_of_det_ne_zero : ∀ {m : Type u_2} [inst : DecidableEq m] [inst_1 : Fintype m]\n  {R : Type u_1} [inst_2 : CommRing R] [IsDomain R] {A : Matrix m m R}, A.det ≠ 0 → LinearIndependent R A.col",
+          "line": 15,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@IsCoprime.wronskian_eq_zero_iff : ∀ {R : Type u_1} [inst : CommRing R] [NoZeroDivisors R] {a b : R[X]},\n  IsCoprime a b → (a.wronskian b = 0 ↔ derivative a = 0 ∧ derivative b = 0)",
+          "line": 16,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@hasseDeriv_map : ∀ {R : Type u_1} [inst : Semiring R] {S : Type u_2} [inst_1 : Semiring S] (f : R →+* S) (k : ℕ)\n  (p : R[X]), (hasseDeriv k) (map f p) = map f ((hasseDeriv k) p)",
+          "line": 17,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'WronskianIffGuards.independent' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 32,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'WronskianIffGuards.vanishes' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 33,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'WronskianIffProductGuards.dependent' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 48,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'WronskianIffProductGuards.nonzero' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 49,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 676
+}

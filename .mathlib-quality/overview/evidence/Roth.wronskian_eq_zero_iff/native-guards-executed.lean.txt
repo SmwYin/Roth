@@ -1,0 +1,50 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+import Mathlib.Algebra.Polynomial.CancelLeads
+open Polynomial
+#check_failure Roth.wronskian_eq_zero_iff
+#check_failure Polynomial.wronskian_eq_zero_iff
+#check @Matrix.linearIndependent_rows_of_det_ne_zero
+#check @Matrix.linearIndependent_cols_of_det_ne_zero
+#check @IsCoprime.wronskian_eq_zero_iff
+#check @Polynomial.hasseDeriv_map
+namespace WronskianIffGuards
+noncomputable abbrev family : Fin 2 → (ZMod 2)[X] := ![1, X ^ 2]
+theorem independent : LinearIndependent (ZMod 2) family := by
+  apply linearIndependent_fin2.mpr
+  constructor
+  · simp [family]
+  · intro a ha
+    have h0 := congrArg (fun p : (ZMod 2)[X] ↦ p.coeff 0) ha
+    simp [family, Polynomial.coeff_smul] at h0
+
+theorem vanishes :
+    (Matrix.of fun μ ν : Fin 2 ↦ hasseDeriv (μ : ℕ) (family ν)).det = 0 := by
+  norm_num [family, Matrix.det_fin_two]
+  exact (show (2 : ZMod 2) = 0 from by decide)
+#print axioms independent
+#print axioms vanishes
+end WronskianIffGuards
+
+namespace WronskianIffProductGuards
+open Polynomial
+theorem dependent :
+    ¬ LinearIndependent (ℤ × ℤ)
+      (fun _ : Fin 1 ↦ (C (1, 0) : (ℤ × ℤ)[X])) := by
+  apply Fintype.not_linearIndependent_iff.mpr
+  refine ⟨fun _ ↦ (0, 1), ?_, 0, by decide⟩
+  simp [smul_eq_C_mul, ← C_mul]
+theorem nonzero :
+    (Matrix.of fun μ _ν : Fin 1 ↦ hasseDeriv (μ : ℕ)
+      (C (1, 0) : (ℤ × ℤ)[X])).det ≠ 0 := by
+  simp [Matrix.det_unique]
+#print axioms dependent
+#print axioms nonzero
+end WronskianIffProductGuards
