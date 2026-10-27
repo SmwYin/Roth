@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-26
 
-- Declarations completed: **149/293**
-- Next declaration: **#150 `Roth.index_le_card`** (Roth/Index.lean:224)
+- Declarations completed: **150/293**
+- Next declaration: **#151 `Roth.index_unique`** (Roth/Index.lean:234)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -168,10 +168,10 @@ Last regenerated: 2026-10-26
 | 147 | `Roth.index_C_mul` | Roth/Index.lean:195 | NO-composable-from-mathlib | [report](mathlibable/Roth.index_C_mul.md) |
 | 148 | `Roth.index_mul_left_weights` | Roth/Index.lean:200 | NO-composable-from-mathlib | [report](mathlibable/Roth.index_mul_left_weights.md) |
 | 149 | `Roth.index_rename` | Roth/Index.lean:212 | NO-composable-from-mathlib | [report](mathlibable/Roth.index_rename.md) |
+| 150 | `Roth.index_le_card` | Roth/Index.lean:224 | NO-composable-from-mathlib | [report](mathlibable/Roth.index_le_card.md) |
 
 ## Remaining declarations (in processing order)
 
-- #150 `Roth.index_le_card` (Roth/Index.lean:224, public theorem)
 - #151 `Roth.index_unique` (Roth/Index.lean:234, public theorem)
 - #152 `Roth.eq_mapDomain_some_add_single` (Roth/Separation.lean:57, public theorem)
 - #153 `Roth.coeff_X_none_pow_mul_rename` (Roth/Separation.lean:64, private lemma)
