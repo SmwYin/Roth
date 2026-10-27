@@ -1,0 +1,241 @@
+[
+  {
+    "status": "fulfilled",
+    "value": {
+      "method": "lean_leanfinder",
+      "request": {
+        "query": "Weighted degree of monomials adds under multiplying monomials"
+      },
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"MvPolynomial.IsWeightedHomogeneous.mul\",\n      \"informal_name\": \"Product of Weighted Homogeneous Polynomials is Weighted Homogeneous with Combined Weights\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {M : Type u_2} [inst : CommSemiring R] {σ : Type u_3} [inst_1 : AddCommMonoid M]\\n  {φ ψ : MvPolynomial σ R} {m n : M} {w : σ → M},\\n  MvPolynomial.IsWeightedHomogeneous w φ m →\\n    MvPolynomial.IsWeightedHomogeneous w ψ n → MvPolynomial.IsWeightedHomogeneous w (φ * ψ) (m + n)\",\n      \"informal_description\": \"Let $ R $ be a commutative semiring, $ \\\\sigma $ an index type, and $ w : \\\\sigma \\\\to M $ a weight function. If $ \\\\varphi $ and $ \\\\psi $ are weighted homogeneous polynomials in $ R[\\\\sigma] $ with weights $ m $ and $ n $ respectively (i.e., all monomials in $ \\\\varphi $ have weighted degree $ m $ and all monomials in $ \\\\psi $ have weighted degree $ n $), then their product $ \\\\varphi \\\\cdot \\\\psi $ is a weighted homogeneous polynomial with weight $ m + n $. This means every monomial in $ \\\\varphi \\\\cdot \\\\psi $ has weighted degree equal to the sum of the weights of $ \\\\varphi $ and $ \\\\psi $.\",\n      \"path\": \"Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.IsWeightedHomogeneous.prod\",\n      \"informal_name\": \"Weighted Homogeneity of Product of Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {M : Type u_2} [inst : CommSemiring R] {σ : Type u_3} [inst_1 : AddCommMonoid M] {ι : Type u_4}\\n  (s : Finset ι) (φ : ι → MvPolynomial σ R) (n : ι → M) {w : σ → M},\\n  (∀ i ∈ s, MvPolynomial.IsWeightedHomogeneous w (φ i) (n i)) →\\n    MvPolynomial.IsWeightedHomogeneous w (∏ i ∈ s, φ i) (∑ i ∈ s, n i)\",\n      \"informal_description\": \"Let $ R $ be a commutative semiring, $ \\\\sigma $ an index type for variables, and $ w : \\\\sigma \\\\to M $ a weight function taking values in an additive commutative monoid $ M $. If $ \\\\{\\\\varphi_i\\\\}_{i \\\\in s} $ is a finite family of multivariate polynomials in $ R[\\\\sigma] $, each of which is weighted homogeneous of weight $ n_i $ with respect to $ w $, then their product $ \\\\prod_{i \\\\in s} \\\\varphi_i $ is weighted homogeneous of weight $ \\\\sum_{i \\\\in s} n_i $ with respect to $ w $. This means every monomial in the product has weighted degree equal to the sum of the individual weights $ n_i $.\",\n      \"path\": \"Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.isWeightedHomogeneous_monomial\",\n      \"informal_name\": \"Weighted Homogeneity of Monomials in Multivariate Polynomial Rings\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {M : Type u_2} [inst : CommSemiring R] {σ : Type u_3} [inst_1 : AddCommMonoid M] (w : σ → M)\\n  (d : σ →₀ ℕ) (r : R) {m : M},\\n  (Finsupp.weight w) d = m → MvPolynomial.IsWeightedHomogeneous w ((MvPolynomial.monomial d) r) m\",\n      \"informal_description\": \"For a weight function $ w : \\\\sigma \\\\to M $, a monomial $ r \\\\cdot X^d $ in the polynomial ring $ R[\\\\sigma] $, and a weight $ m \\\\in M $, if the weighted sum $ \\\\sum_{i \\\\in \\\\text{support } d} d(i) \\\\cdot w(i) = m $, then the monomial is weighted homogeneous of weight $ m $ with respect to $ w $.\",\n      \"path\": \"Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous\"\n    },\n    {\n      \"formal_name\": \"MvPowerSeries.IsWeightedHomogeneous.mul\",\n      \"informal_name\": \"Product of Weighted Homogeneous Multivariate Power Series is Weighted Homogeneous of Combined Degree\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] {w : σ → ℕ} {f g : MvPowerSeries σ R} {p q : ℕ},\\n  MvPowerSeries.IsWeightedHomogeneous w f p →\\n    MvPowerSeries.IsWeightedHomogeneous w g q → MvPowerSeries.IsWeightedHomogeneous w (f * g) (p + q)\",\n      \"informal_description\": \"Let $\\\\sigma$ be an index type and $R$ a semiring. For any weight vector $w$, if $f$ and $g$ are weighted homogeneous multivariate power series over $R$ in variables indexed by $\\\\sigma$, with $f$ of weighted degree $p$ and $g$ of weighted degree $q$ with respect to $w$, then their product $f \\\\cdot g$ is a weighted homogeneous multivariate power series of weighted degree $p + q$ with respect to $w$.\",\n      \"path\": \"Mathlib.RingTheory.MvPowerSeries.Order\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.weightedTotalDegree\",\n      \"informal_name\": \"Weighted total degree of a multivariate polynomial\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} →\\n  {M : Type u_2} →\\n    [inst : CommSemiring R] →\\n      {σ : Type u_3} → [AddCommMonoid M] → [inst_2 : SemilatticeSup M] → [OrderBot M] → (σ → M) → MvPolynomial σ R → M\",\n      \"informal_description\": \"For a multivariate polynomial $ p $ over a commutative semiring $ R $ with variables indexed by $ \\\\sigma $, and a weighting function $ w : \\\\sigma \\\\to M $ where $ M $ is a sup-semilattice, this function computes the supremum of the weights $ w(s) $ over all monomials $ s $ in the support of $ p $. The weight $ w(s) $ of a monomial $ s $ is defined as the sum $ \\\\sum_{i \\\\in \\\\text{support } s} s(i) \\\\cdot v_i $ for some fixed vectors $ v_i $ associated with indices $ i $. The result is an element of $ M $ representing the weighted total degree of $ p $.\",\n      \"path\": \"Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "formal_name": "MvPolynomial.IsWeightedHomogeneous.mul",
+              "informal_name": "Product of Weighted Homogeneous Polynomials is Weighted Homogeneous with Combined Weights",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} {M : Type u_2} [inst : CommSemiring R] {σ : Type u_3} [inst_1 : AddCommMonoid M]\n  {φ ψ : MvPolynomial σ R} {m n : M} {w : σ → M},\n  MvPolynomial.IsWeightedHomogeneous w φ m →\n    MvPolynomial.IsWeightedHomogeneous w ψ n → MvPolynomial.IsWeightedHomogeneous w (φ * ψ) (m + n)",
+              "informal_description": "Let $ R $ be a commutative semiring, $ \\sigma $ an index type, and $ w : \\sigma \\to M $ a weight function. If $ \\varphi $ and $ \\psi $ are weighted homogeneous polynomials in $ R[\\sigma] $ with weights $ m $ and $ n $ respectively (i.e., all monomials in $ \\varphi $ have weighted degree $ m $ and all monomials in $ \\psi $ have weighted degree $ n $), then their product $ \\varphi \\cdot \\psi $ is a weighted homogeneous polynomial with weight $ m + n $. This means every monomial in $ \\varphi \\cdot \\psi $ has weighted degree equal to the sum of the weights of $ \\varphi $ and $ \\psi $.",
+              "path": "Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous"
+            },
+            {
+              "formal_name": "MvPolynomial.IsWeightedHomogeneous.prod",
+              "informal_name": "Weighted Homogeneity of Product of Polynomials",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} {M : Type u_2} [inst : CommSemiring R] {σ : Type u_3} [inst_1 : AddCommMonoid M] {ι : Type u_4}\n  (s : Finset ι) (φ : ι → MvPolynomial σ R) (n : ι → M) {w : σ → M},\n  (∀ i ∈ s, MvPolynomial.IsWeightedHomogeneous w (φ i) (n i)) →\n    MvPolynomial.IsWeightedHomogeneous w (∏ i ∈ s, φ i) (∑ i ∈ s, n i)",
+              "informal_description": "Let $ R $ be a commutative semiring, $ \\sigma $ an index type for variables, and $ w : \\sigma \\to M $ a weight function taking values in an additive commutative monoid $ M $. If $ \\{\\varphi_i\\}_{i \\in s} $ is a finite family of multivariate polynomials in $ R[\\sigma] $, each of which is weighted homogeneous of weight $ n_i $ with respect to $ w $, then their product $ \\prod_{i \\in s} \\varphi_i $ is weighted homogeneous of weight $ \\sum_{i \\in s} n_i $ with respect to $ w $. This means every monomial in the product has weighted degree equal to the sum of the individual weights $ n_i $.",
+              "path": "Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous"
+            },
+            {
+              "formal_name": "MvPolynomial.isWeightedHomogeneous_monomial",
+              "informal_name": "Weighted Homogeneity of Monomials in Multivariate Polynomial Rings",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} {M : Type u_2} [inst : CommSemiring R] {σ : Type u_3} [inst_1 : AddCommMonoid M] (w : σ → M)\n  (d : σ →₀ ℕ) (r : R) {m : M},\n  (Finsupp.weight w) d = m → MvPolynomial.IsWeightedHomogeneous w ((MvPolynomial.monomial d) r) m",
+              "informal_description": "For a weight function $ w : \\sigma \\to M $, a monomial $ r \\cdot X^d $ in the polynomial ring $ R[\\sigma] $, and a weight $ m \\in M $, if the weighted sum $ \\sum_{i \\in \\text{support } d} d(i) \\cdot w(i) = m $, then the monomial is weighted homogeneous of weight $ m $ with respect to $ w $.",
+              "path": "Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous"
+            },
+            {
+              "formal_name": "MvPowerSeries.IsWeightedHomogeneous.mul",
+              "informal_name": "Product of Weighted Homogeneous Multivariate Power Series is Weighted Homogeneous of Combined Degree",
+              "kind": "theorem",
+              "type": "∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] {w : σ → ℕ} {f g : MvPowerSeries σ R} {p q : ℕ},\n  MvPowerSeries.IsWeightedHomogeneous w f p →\n    MvPowerSeries.IsWeightedHomogeneous w g q → MvPowerSeries.IsWeightedHomogeneous w (f * g) (p + q)",
+              "informal_description": "Let $\\sigma$ be an index type and $R$ a semiring. For any weight vector $w$, if $f$ and $g$ are weighted homogeneous multivariate power series over $R$ in variables indexed by $\\sigma$, with $f$ of weighted degree $p$ and $g$ of weighted degree $q$ with respect to $w$, then their product $f \\cdot g$ is a weighted homogeneous multivariate power series of weighted degree $p + q$ with respect to $w$.",
+              "path": "Mathlib.RingTheory.MvPowerSeries.Order"
+            },
+            {
+              "formal_name": "MvPolynomial.weightedTotalDegree",
+              "informal_name": "Weighted total degree of a multivariate polynomial",
+              "kind": "definition",
+              "type": "{R : Type u_1} →\n  {M : Type u_2} →\n    [inst : CommSemiring R] →\n      {σ : Type u_3} → [AddCommMonoid M] → [inst_2 : SemilatticeSup M] → [OrderBot M] → (σ → M) → MvPolynomial σ R → M",
+              "informal_description": "For a multivariate polynomial $ p $ over a commutative semiring $ R $ with variables indexed by $ \\sigma $, and a weighting function $ w : \\sigma \\to M $ where $ M $ is a sup-semilattice, this function computes the supremum of the weights $ w(s) $ over all monomials $ s $ in the support of $ p $. The weight $ w(s) $ of a monomial $ s $ is defined as the sum $ \\sum_{i \\in \\text{support } s} s(i) \\cdot v_i $ for some fixed vectors $ v_i $ associated with indices $ i $. The result is an element of $ M $ representing the weighted total degree of $ p $.",
+              "path": "Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "method": "lean_loogle",
+      "request": {
+        "query": "Finsupp.weight"
+      },
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finsupp.weight\",\n      \"type\": \" {σ : Type u_1} {M : Type u_2} {R : Type u_3} [Semiring R] (w : σ → M) [AddCommMonoid M] [Module R M] : (σ →₀ R) →+ M\",\n      \"module\": \"Mathlib.Data.Finsupp.Weight\"\n    },\n    {\n      \"name\": \"Finsupp.degree_eq_weight_one\",\n      \"type\": \" {σ : Type u_1} {R : Type u_5} [Semiring R] : Finsupp.degree = Finsupp.weight fun x => 1\",\n      \"module\": \"Mathlib.Data.Finsupp.Weight\"\n    },\n    {\n      \"name\": \"Finsupp.finite_of_nat_weight_eq\",\n      \"type\": \" {σ : Type u_1} [Finite σ] (w : σ → ℕ) (hw : ∀ (x : σ), w x ≠ 0) (n : ℕ) : {d | (Finsupp.weight w) d = n}.Finite\",\n      \"module\": \"Mathlib.Data.Finsupp.Weight\"\n    },\n    {\n      \"name\": \"Finsupp.finite_of_nat_weight_le\",\n      \"type\": \" {σ : Type u_1} [Finite σ] (w : σ → ℕ) (hw : ∀ (x : σ), w x ≠ 0) (n : ℕ) : {d | (Finsupp.weight w) d ≤ n}.Finite\",\n      \"module\": \"Mathlib.Data.Finsupp.Weight\"\n    },\n    {\n      \"name\": \"Finsupp.finite_of_nat_weight_lt\",\n      \"type\": \" {σ : Type u_1} [Finite σ] (w : σ → ℕ) (hw : ∀ (x : σ), w x ≠ 0) (n : ℕ) : {d | (Finsupp.weight w) d < n}.Finite\",\n      \"module\": \"Mathlib.Data.Finsupp.Weight\"\n    },\n    {\n      \"name\": \"Finsupp.le_weight\",\n      \"type\": \" {σ : Type u_1} (w : σ → ℕ) {s : σ} (hs : w s ≠ 0) (f : σ →₀ ℕ) : f s ≤ (Finsupp.weight w) f\",\n      \"module\": \"Mathlib.Data.Finsupp.Weight\"\n    },\n    {\n      \"name\": \"Finsupp.le_weight_of_ne_zero'\",\n      \"type\": \" {σ : Type u_1} {M : Type u_4} [AddCommMonoid M] [PartialOrder M] [IsOrderedAddMonoid M] [CanonicallyOrderedAdd M] (w : σ → M) {s : σ} {f : σ →₀ ℕ} (hs : f s ≠ 0) : w s ≤ (Finsupp.weight w) f\",\n      \"module\": \"Mathlib.Data.Finsupp.Weight\"\n    },\n    {\n      \"name\": \"Finsupp.weight_single\",\n      \"type\": \" {σ : Type u_1} {M : Type u_2} {R : Type u_3} [Semiring R] (w : σ → M) [AddCommMonoid M] [Module R M] (s : σ) (r : R) : ((Finsupp.weight w) fun₀ | s => r) = r • w s\",\n      \"module\": \"Mathlib.Data.Finsupp.Weight\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "Finsupp.weight",
+              "type": " {σ : Type u_1} {M : Type u_2} {R : Type u_3} [Semiring R] (w : σ → M) [AddCommMonoid M] [Module R M] : (σ →₀ R) →+ M",
+              "module": "Mathlib.Data.Finsupp.Weight"
+            },
+            {
+              "name": "Finsupp.degree_eq_weight_one",
+              "type": " {σ : Type u_1} {R : Type u_5} [Semiring R] : Finsupp.degree = Finsupp.weight fun x => 1",
+              "module": "Mathlib.Data.Finsupp.Weight"
+            },
+            {
+              "name": "Finsupp.finite_of_nat_weight_eq",
+              "type": " {σ : Type u_1} [Finite σ] (w : σ → ℕ) (hw : ∀ (x : σ), w x ≠ 0) (n : ℕ) : {d | (Finsupp.weight w) d = n}.Finite",
+              "module": "Mathlib.Data.Finsupp.Weight"
+            },
+            {
+              "name": "Finsupp.finite_of_nat_weight_le",
+              "type": " {σ : Type u_1} [Finite σ] (w : σ → ℕ) (hw : ∀ (x : σ), w x ≠ 0) (n : ℕ) : {d | (Finsupp.weight w) d ≤ n}.Finite",
+              "module": "Mathlib.Data.Finsupp.Weight"
+            },
+            {
+              "name": "Finsupp.finite_of_nat_weight_lt",
+              "type": " {σ : Type u_1} [Finite σ] (w : σ → ℕ) (hw : ∀ (x : σ), w x ≠ 0) (n : ℕ) : {d | (Finsupp.weight w) d < n}.Finite",
+              "module": "Mathlib.Data.Finsupp.Weight"
+            },
+            {
+              "name": "Finsupp.le_weight",
+              "type": " {σ : Type u_1} (w : σ → ℕ) {s : σ} (hs : w s ≠ 0) (f : σ →₀ ℕ) : f s ≤ (Finsupp.weight w) f",
+              "module": "Mathlib.Data.Finsupp.Weight"
+            },
+            {
+              "name": "Finsupp.le_weight_of_ne_zero'",
+              "type": " {σ : Type u_1} {M : Type u_4} [AddCommMonoid M] [PartialOrder M] [IsOrderedAddMonoid M] [CanonicallyOrderedAdd M] (w : σ → M) {s : σ} {f : σ →₀ ℕ} (hs : f s ≠ 0) : w s ≤ (Finsupp.weight w) f",
+              "module": "Mathlib.Data.Finsupp.Weight"
+            },
+            {
+              "name": "Finsupp.weight_single",
+              "type": " {σ : Type u_1} {M : Type u_2} {R : Type u_3} [Semiring R] (w : σ → M) [AddCommMonoid M] [Module R M] (s : σ) (r : R) : ((Finsupp.weight w) fun₀ | s => r) = r • w s",
+              "module": "Mathlib.Data.Finsupp.Weight"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "method": "lean_leansearch",
+      "request": {
+        "query": "Weighted degree of finitely supported exponents with weights in additive commutative monoid is additive"
+      },
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finsupp.degree\",\n      \"module_name\": \"Mathlib.Data.Finsupp.Weight\",\n      \"kind\": \"definition\",\n      \"type\": \"{σ : Type u_1} → {R : Type u_4} → [inst : AddCommMonoid R] → (σ →₀ R) →+ R\"\n    },\n    {\n      \"name\": \"Finsupp.weight_apply\",\n      \"module_name\": \"Mathlib.Data.Finsupp.Weight\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {M : Type u_2} {R : Type u_3} [inst : Semiring R] (w : σ → M) [inst_1 : AddCommMonoid M]\\n  [inst_2 : Module R M] (f : σ →₀ R), (Finsupp.weight w) f = f.sum fun i c => c • w i\"\n    },\n    {\n      \"name\": \"Finsupp.degree_def\",\n      \"module_name\": \"Mathlib.Data.Finsupp.Weight\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_4} [inst : AddCommMonoid R] (d : σ →₀ R), Finsupp.degree d = ∑ i ∈ d.support, d i\"\n    },\n    {\n      \"name\": \"MvPolynomial.IsWeightedHomogeneous.mul\",\n      \"module_name\": \"Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {M : Type u_2} [inst : CommSemiring R] {σ : Type u_3} [inst_1 : AddCommMonoid M]\\n  {φ ψ : MvPolynomial σ R} {m n : M} {w : σ → M},\\n  MvPolynomial.IsWeightedHomogeneous w φ m →\\n    MvPolynomial.IsWeightedHomogeneous w ψ n → MvPolynomial.IsWeightedHomogeneous w (φ * ψ) (m + n)\"\n    },\n    {\n      \"name\": \"MvPolynomial.IsWeightedHomogeneous.prod\",\n      \"module_name\": \"Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {M : Type u_2} [inst : CommSemiring R] {σ : Type u_3} [inst_1 : AddCommMonoid M] {ι : Type u_4}\\n  (s : Finset ι) (φ : ι → MvPolynomial σ R) (n : ι → M) {w : σ → M},\\n  (∀ i ∈ s, MvPolynomial.IsWeightedHomogeneous w (φ i) (n i)) →\\n    MvPolynomial.IsWeightedHomogeneous w (∏ i ∈ s, φ i) (∑ i ∈ s, n i)\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "Finsupp.degree",
+              "module_name": "Mathlib.Data.Finsupp.Weight",
+              "kind": "definition",
+              "type": "{σ : Type u_1} → {R : Type u_4} → [inst : AddCommMonoid R] → (σ →₀ R) →+ R"
+            },
+            {
+              "name": "Finsupp.weight_apply",
+              "module_name": "Mathlib.Data.Finsupp.Weight",
+              "kind": "theorem",
+              "type": "∀ {σ : Type u_1} {M : Type u_2} {R : Type u_3} [inst : Semiring R] (w : σ → M) [inst_1 : AddCommMonoid M]\n  [inst_2 : Module R M] (f : σ →₀ R), (Finsupp.weight w) f = f.sum fun i c => c • w i"
+            },
+            {
+              "name": "Finsupp.degree_def",
+              "module_name": "Mathlib.Data.Finsupp.Weight",
+              "kind": "theorem",
+              "type": "∀ {σ : Type u_1} {R : Type u_4} [inst : AddCommMonoid R] (d : σ →₀ R), Finsupp.degree d = ∑ i ∈ d.support, d i"
+            },
+            {
+              "name": "MvPolynomial.IsWeightedHomogeneous.mul",
+              "module_name": "Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} {M : Type u_2} [inst : CommSemiring R] {σ : Type u_3} [inst_1 : AddCommMonoid M]\n  {φ ψ : MvPolynomial σ R} {m n : M} {w : σ → M},\n  MvPolynomial.IsWeightedHomogeneous w φ m →\n    MvPolynomial.IsWeightedHomogeneous w ψ n → MvPolynomial.IsWeightedHomogeneous w (φ * ψ) (m + n)"
+            },
+            {
+              "name": "MvPolynomial.IsWeightedHomogeneous.prod",
+              "module_name": "Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} {M : Type u_2} [inst : CommSemiring R] {σ : Type u_3} [inst_1 : AddCommMonoid M] {ι : Type u_4}\n  (s : Finset ι) (φ : ι → MvPolynomial σ R) (n : ι → M) {w : σ → M},\n  (∀ i ∈ s, MvPolynomial.IsWeightedHomogeneous w (φ i) (n i)) →\n    MvPolynomial.IsWeightedHomogeneous w (∏ i ∈ s, φ i) (∑ i ∈ s, n i)"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "method": "lean_local_search",
+      "request": {
+        "query": "Finsupp.weight"
+      },
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finsupp.weight\",\n      \"kind\": \"def\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Data/Finsupp/Weight.lean\"\n    },\n    {\n      \"name\": \"Finsupp.weight_apply\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Data/Finsupp/Weight.lean\"\n    },\n    {\n      \"name\": \"Finsupp.weight_eq_sum\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Data/Finsupp/Weight.lean\"\n    },\n    {\n      \"name\": \"Finsupp.weight_single\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Data/Finsupp/Weight.lean\"\n    },\n    {\n      \"name\": \"Finsupp.weight_single_index\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Data/Finsupp/Weight.lean\"\n    },\n    {\n      \"name\": \"Finsupp.weight_sub_single_add\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Data/Finsupp/Weight.lean\"\n    },\n    {\n      \"name\": \"Finsupp.weight_single_one_apply\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Data/Finsupp/Weight.lean\"\n    },\n    {\n      \"name\": \"Finsupp.weight_eq_zero_iff_eq_zero\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Data/Finsupp/Weight.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "Finsupp.weight",
+              "kind": "def",
+              "file": ".lake/packages/mathlib/Mathlib/Data/Finsupp/Weight.lean"
+            },
+            {
+              "name": "Finsupp.weight_apply",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Data/Finsupp/Weight.lean"
+            },
+            {
+              "name": "Finsupp.weight_eq_sum",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Data/Finsupp/Weight.lean"
+            },
+            {
+              "name": "Finsupp.weight_single",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Data/Finsupp/Weight.lean"
+            },
+            {
+              "name": "Finsupp.weight_single_index",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Data/Finsupp/Weight.lean"
+            },
+            {
+              "name": "Finsupp.weight_sub_single_add",
+              "kind": "lemma",
+              "file": ".lake/packages/mathlib/Mathlib/Data/Finsupp/Weight.lean"
+            },
+            {
+              "name": "Finsupp.weight_single_one_apply",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Data/Finsupp/Weight.lean"
+            },
+            {
+              "name": "Finsupp.weight_eq_zero_iff_eq_zero",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Data/Finsupp/Weight.lean"
+            }
+          ],
+          "index": "unavailable"
+        },
+        "isError": false
+      }
+    }
+  }
+]

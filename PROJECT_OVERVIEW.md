@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 32/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 33/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 32; remaining: 261.
-- Verdicts: 9 NO-composable-from-mathlib, 11 YES-add-as-is, 0 YES-but-generalise-first, 1 NO-mathlib-has-it, 8 BORDERLINE-needs-human, 3 SKIP.
+- Completed applicable assessments: 33; remaining: 260.
+- Verdicts: 10 NO-composable-from-mathlib, 11 YES-add-as-is, 0 YES-but-generalise-first, 1 NO-mathlib-has-it, 8 BORDERLINE-needs-human, 3 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -365,6 +365,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: 0 explicit named references; @[simp] may normalize weight r 0 implicitly; Index.index_eq_zero_iff:105 potential consumer.
 - Verdict: NO-composable-from-mathlib; [complete report](.mathlib-quality/overview/mathlibable/Roth.weight_zero.md).
 
+### Completed: `Roth.weight_add`
+
+- Type: `theorem`
+- What: Real reciprocal-denominator weight is additive in natural exponent vectors.
+- How: Nat.cast_add, add_div, and Finset.sum_add_distrib; independently verified explicit term.
+- Hypotheses: Universe-polymorphic σ, Fintype σ, r : σ → ℕ, d e : σ →₀ ℕ; no positivity or DecidableEq.
+- Project dependencies: Roth.weight
+- Caller summary: 3 explicit source callers: Roth/Lattice.lean:155, Roth/Index.lean:114, Roth/Theta.lean:391; all three weight substitution shapes native-verified.
+- Verdict: NO-composable-from-mathlib; [complete report](.mathlib-quality/overview/mathlibable/Roth.weight_add.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -455,6 +465,8 @@ Completed `Roth.weight_nonneg`: verdict: NO-composable-from-mathlib; facts: Fins
 
 Completed `Roth.weight_zero`: Finset.sum_eq_zero + Nat.cast_zero + zero_div; bundled Finsupp.weight has generic map_zero.
 
+Completed `Roth.weight_add`: Three existing arithmetic facts compose at current representation; generic map_add already supplies abstract Finsupp.weight additivity after a proved reciprocal-weight bridge.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -520,6 +532,8 @@ Completed `Roth.card_le_card_box`: Finite Cartesian-product cardinality and mono
 Completed `Roth.weight_nonneg`: Elementary sum positivity after definitional reduction; not a duplicated named Finsupp theorem
 
 Completed `Roth.weight_zero`: Zero preservation already structural for bundled Finsupp.weight; bridge from ratio formula is not defeq.
+
+Completed `Roth.weight_add`: Weighted monomial degree is an additive homomorphism; current ratio representation requires normalization.
 
 ## Part 5: Generalization opportunities
 
@@ -590,6 +604,8 @@ Completed `Roth.weight_nonneg`: No unused original binder; larger formula and Fi
 
 Completed `Roth.weight_zero`: Existing arbitrary ambient Finsupp.weight in AddCommMonoid and DivisionSemiring finite formula verified; no fixed-parent binder removal.
 
+Completed `Roth.weight_add`: Current parent-interface constraints fixed; verified finite functions in DivisionSemiring and arbitrary semiring-coefficient module-valued Finsupp weights, including infinite ambient types.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -656,6 +672,8 @@ Completed `Roth.card_le_card_box`: No categorical missing-API claim. Design ques
 Completed `Roth.weight_nonneg`: No necessary gap: generic sum/scalar positivity composes. A standalone Finsupp.weight_nonneg convenience name not found; no absence claim.
 
 Completed `Roth.weight_zero`: No required missing upstream zero-preservation fact.
+
+Completed `Roth.weight_add`: No new missing mathlib theorem identified; existing Finsupp.weight/map_add cover abstract content.
 
 ## Part 7: Junk / removable
 
@@ -726,6 +744,8 @@ Completed `Roth.weight_nonneg`: Useful three-caller project API, not dead code.
 
 Completed `Roth.weight_zero`: Not dead-code conclusion: simp API can be used without explicit name.
 
+Completed `Roth.weight_add`: Useful local rewrite API (three callers), not dead code; no independent upstream addition recommended.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -762,6 +782,7 @@ Completed `Roth.weight_zero`: Not dead-code conclusion: simp API can be used wit
 | 30 | `Roth.card_le_card_box` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.card_le_card_box.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.card_le_card_box/root-acceptance.json) |
 | 31 | `Roth.weight_nonneg` | NO-composable-from-mathlib | [Report](.mathlib-quality/overview/mathlibable/Roth.weight_nonneg.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.weight_nonneg/root-acceptance.json) |
 | 32 | `Roth.weight_zero` | NO-composable-from-mathlib | [Report](.mathlib-quality/overview/mathlibable/Roth.weight_zero.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.weight_zero/root-acceptance.json) |
+| 33 | `Roth.weight_add` | NO-composable-from-mathlib | [Report](.mathlib-quality/overview/mathlibable/Roth.weight_add.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.weight_add/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -825,11 +846,13 @@ Completed `Roth.weight_nonneg` action: Do not submit this wrapper upstream. In a
 
 Completed `Roth.weight_zero` action: NO-composable-from-mathlib. Proposed deletion only with downstream simp-consumer refactor/rebuild; alternatively retain project-local Box simp API.
 
+Completed `Roth.weight_add` action: NO-composable-from-mathlib. If removing wrapper, insert three-fact local equality at each named caller before existing rewrites, delete wrapper, rebuild; alternatively retain in Roth/Box.lean until parent migration.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.weight_add` next. Supporting identities receive their own applicable checks.
+   `Roth.weight_eq_zero_iff` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.

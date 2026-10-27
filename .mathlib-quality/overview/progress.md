@@ -3,7 +3,7 @@
 Status: **in_progress**, 2026-10-26. Branch: `ramin-cleanup`.
 Production Lean files and all pins match baseline `99f19fd`.
 
-**Completed: 32 / 293 written declarations.**
+**Completed: 33 / 293 written declarations.**
 This counts the current overview assessments, separately from the earlier code cleanup.
 
 | # | Completed declaration | Applicable workflow | Verdict | Report |
@@ -40,12 +40,11 @@ This counts the current overview assessments, separately from the earlier code c
 | 30 | `Roth.card_le_card_box` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.card_le_card_box.md) |
 | 31 | `Roth.weight_nonneg` | full-mathlibable; accepted complete | NO-composable-from-mathlib | [Detailed report](mathlibable/Roth.weight_nonneg.md) |
 | 32 | `Roth.weight_zero` | full-mathlibable; accepted complete | NO-composable-from-mathlib | [Detailed report](mathlibable/Roth.weight_zero.md) |
+| 33 | `Roth.weight_add` | full-mathlibable; accepted complete | NO-composable-from-mathlib | [Detailed report](mathlibable/Roth.weight_add.md) |
 
-**Next declaration: `Roth.weight_add`**, `Roth/Box.lean:85`.
+**Next declaration: `Roth.weight_eq_zero_iff`**, `Roth/Box.lean:91`.
 Only the listed assessments are complete. No partial assessment was committed.
 
 On restart: read [README](README.md), [machine progress](progress.json), and
 [declaration order](declaration-order.json); verify source/pin hashes and accepted evidence,
 then continue with the first unfinished declaration. Reports and evidence are tracked.
-
-Maintenance: corrected a returned signed web URL; [record](evidence/shared/web-evidence-redaction-2026-10-26.md). Declaration count unchanged.

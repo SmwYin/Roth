@@ -1,0 +1,53 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Finsupp.weight\",\n      \"informal_name\": \"Weighted sum of vectors indexed by σ over R\",\n      \"kind\": \"definition\",\n      \"type\": \"{σ : Type u_1} →\\n  {M : Type u_2} →\\n    {R : Type u_3} → [inst : Semiring R] → (σ → M) → [inst_1 : AddCommMonoid M] → [Module R M] → (σ →₀ R) →+ M\",\n      \"informal_description\": \"The additive homomorphism from the space of finite support functions $ \\\\sigma \\\\to_0 R $ to the module $ M $, which maps each finite support function $ d $ to the sum $ \\\\sum_{i \\\\in \\\\text{support } d} d(i) \\\\cdot v_i $, where $ v_i $ denotes the vector associated with index $ i $.\",\n      \"path\": \"Mathlib.Data.Finsupp.Weight\"\n    },\n    {\n      \"formal_name\": \"Finsupp.weight_apply\",\n      \"informal_name\": \"Weighted Sum Evaluation: $ \\\\text{weight } w f = \\\\sum_{i \\\\in \\\\text{support } f} c_i \\\\cdot w(i) $\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {M : Type u_2} {R : Type u_3} [inst : Semiring R] (w : σ → M) [inst_1 : AddCommMonoid M]\\n  [inst_2 : Module R M] (f : σ →₀ R), (Finsupp.weight w) f = f.sum fun i c => c • w i\",\n      \"informal_description\": \"For any finite support function $ f : \\\\sigma \\\\to_0 R $, the weight function applied to $ f $ is equal to the sum over all $ i $ in the support of $ f $ of $ c \\\\cdot w(i) $, where $ c $ is the coefficient of $ i $ in $ f $ and $ w : \\\\sigma \\\\to M $ is a function assigning vectors to indices.\",\n      \"path\": \"Mathlib.Data.Finsupp.Weight\"\n    },\n    {\n      \"formal_name\": \"Finsupp.weight_sub_single_add\",\n      \"informal_name\": \"Additivity of Weight Under Subtraction of a Single Element\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {M : Type u_2} {w : σ → M} [inst : AddCommMonoid M] {f : σ →₀ ℕ} {i : σ},\\n  f i ≠ 0 → (Finsupp.weight w) (f - Finsupp.single i 1) + w i = (Finsupp.weight w) f\",\n      \"informal_description\": \"For any finite support function $ f : \\\\sigma \\\\to_0 \\\\mathbb{N} $ and index $ i \\\\in \\\\sigma $ with $ f(i) \\\\neq 0 $, the weight of $ f - \\\\delta_i $ (where $ \\\\delta_i $ denotes the function taking value 1 at $ i $ and 0 elsewhere) satisfies $ \\\\text{weight}_w(f - \\\\delta_i) + w(i) = \\\\text{weight}_w(f) $.\",\n      \"path\": \"Mathlib.Data.Finsupp.Weight\"\n    },\n    {\n      \"formal_name\": \"Finsupp.sum_nsmul\",\n      \"informal_name\": \"Equality of Sums of Natural Scalar Multiples in Finite Support Functions\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {N : Type u_10} [inst : AddCommMonoid N] [inst_1 : Fintype α] (f : α →₀ ℕ) (g : α → N),\\n  (f.sum fun a b => b • g a) = ∑ a, f a • g a\",\n      \"informal_description\": \"For a finite type $\\\\alpha$ and an additive commutative monoid $N$, given a finite support function $f : \\\\alpha \\\\to_0 \\\\mathbb{N}$ and a function $g : \\\\alpha \\\\to N$, the sum of $f(a) \\\\cdot g(a)$ over the support of $f$ is equal to the sum of $f(a) \\\\cdot g(a)$ over all elements of $\\\\alpha$. Here, $\\\\cdot$ denotes natural number scalar multiplication in the additive monoid $N$.\",\n      \"path\": \"Mathlib.Algebra.BigOperators.Finsupp.Basic\"\n    },\n    {\n      \"formal_name\": \"Finsupp.le_weight\",\n      \"informal_name\": \"Weighted Sum Inequality for Finite Support Functions\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} (w : σ → ℕ) {s : σ}, w s ≠ 0 → ∀ (f : σ →₀ ℕ), f s ≤ (Finsupp.weight w) f\",\n      \"informal_description\": \"For any function $ w : \\\\sigma \\\\to \\\\mathbb{N} $, element $ s \\\\in \\\\sigma $ with $ w(s) \\\\neq 0 $, and finite support function $ f : \\\\sigma \\\\to_0 \\\\mathbb{N} $, the value $ f(s) $ is less than or equal to the weighted sum $ \\\\sum_{t \\\\in \\\\text{support } f} w(t) \\\\cdot f(t) $.\",\n      \"path\": \"Mathlib.Data.Finsupp.Weight\"\n    }\n  ]\n}"
+    }
+  ],
+  "structuredContent": {
+    "items": [
+      {
+        "formal_name": "Finsupp.weight",
+        "informal_name": "Weighted sum of vectors indexed by σ over R",
+        "kind": "definition",
+        "type": "{σ : Type u_1} →\n  {M : Type u_2} →\n    {R : Type u_3} → [inst : Semiring R] → (σ → M) → [inst_1 : AddCommMonoid M] → [Module R M] → (σ →₀ R) →+ M",
+        "informal_description": "The additive homomorphism from the space of finite support functions $ \\sigma \\to_0 R $ to the module $ M $, which maps each finite support function $ d $ to the sum $ \\sum_{i \\in \\text{support } d} d(i) \\cdot v_i $, where $ v_i $ denotes the vector associated with index $ i $.",
+        "path": "Mathlib.Data.Finsupp.Weight"
+      },
+      {
+        "formal_name": "Finsupp.weight_apply",
+        "informal_name": "Weighted Sum Evaluation: $ \\text{weight } w f = \\sum_{i \\in \\text{support } f} c_i \\cdot w(i) $",
+        "kind": "theorem",
+        "type": "∀ {σ : Type u_1} {M : Type u_2} {R : Type u_3} [inst : Semiring R] (w : σ → M) [inst_1 : AddCommMonoid M]\n  [inst_2 : Module R M] (f : σ →₀ R), (Finsupp.weight w) f = f.sum fun i c => c • w i",
+        "informal_description": "For any finite support function $ f : \\sigma \\to_0 R $, the weight function applied to $ f $ is equal to the sum over all $ i $ in the support of $ f $ of $ c \\cdot w(i) $, where $ c $ is the coefficient of $ i $ in $ f $ and $ w : \\sigma \\to M $ is a function assigning vectors to indices.",
+        "path": "Mathlib.Data.Finsupp.Weight"
+      },
+      {
+        "formal_name": "Finsupp.weight_sub_single_add",
+        "informal_name": "Additivity of Weight Under Subtraction of a Single Element",
+        "kind": "theorem",
+        "type": "∀ {σ : Type u_1} {M : Type u_2} {w : σ → M} [inst : AddCommMonoid M] {f : σ →₀ ℕ} {i : σ},\n  f i ≠ 0 → (Finsupp.weight w) (f - Finsupp.single i 1) + w i = (Finsupp.weight w) f",
+        "informal_description": "For any finite support function $ f : \\sigma \\to_0 \\mathbb{N} $ and index $ i \\in \\sigma $ with $ f(i) \\neq 0 $, the weight of $ f - \\delta_i $ (where $ \\delta_i $ denotes the function taking value 1 at $ i $ and 0 elsewhere) satisfies $ \\text{weight}_w(f - \\delta_i) + w(i) = \\text{weight}_w(f) $.",
+        "path": "Mathlib.Data.Finsupp.Weight"
+      },
+      {
+        "formal_name": "Finsupp.sum_nsmul",
+        "informal_name": "Equality of Sums of Natural Scalar Multiples in Finite Support Functions",
+        "kind": "theorem",
+        "type": "∀ {α : Type u_1} {N : Type u_10} [inst : AddCommMonoid N] [inst_1 : Fintype α] (f : α →₀ ℕ) (g : α → N),\n  (f.sum fun a b => b • g a) = ∑ a, f a • g a",
+        "informal_description": "For a finite type $\\alpha$ and an additive commutative monoid $N$, given a finite support function $f : \\alpha \\to_0 \\mathbb{N}$ and a function $g : \\alpha \\to N$, the sum of $f(a) \\cdot g(a)$ over the support of $f$ is equal to the sum of $f(a) \\cdot g(a)$ over all elements of $\\alpha$. Here, $\\cdot$ denotes natural number scalar multiplication in the additive monoid $N$.",
+        "path": "Mathlib.Algebra.BigOperators.Finsupp.Basic"
+      },
+      {
+        "formal_name": "Finsupp.le_weight",
+        "informal_name": "Weighted Sum Inequality for Finite Support Functions",
+        "kind": "theorem",
+        "type": "∀ {σ : Type u_1} (w : σ → ℕ) {s : σ}, w s ≠ 0 → ∀ (f : σ →₀ ℕ), f s ≤ (Finsupp.weight w) f",
+        "informal_description": "For any function $ w : \\sigma \\to \\mathbb{N} $, element $ s \\in \\sigma $ with $ w(s) \\neq 0 $, and finite support function $ f : \\sigma \\to_0 \\mathbb{N} $, the value $ f(s) $ is less than or equal to the weighted sum $ \\sum_{t \\in \\text{support } f} w(t) \\cdot f(t) $.",
+        "path": "Mathlib.Data.Finsupp.Weight"
+      }
+    ]
+  },
+  "isError": false
+}
