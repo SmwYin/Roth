@@ -1,0 +1,13 @@
+private lemma coeff_X_none_pow_mul_rename (ν : ℕ) (Q : MvPolynomial τ R) (e : Option τ →₀ ℕ) :
+    (X none ^ ν * rename some Q).coeff e = if e none = ν then Q.coeff (Finsupp.some e) else 0 := by
+  classical
+  have h : (optionEquivLeft R τ).toAlgHom.comp (rename some) = Polynomial.CAlgHom := by
+    ext i
+    simp
+  have hQ : optionEquivLeft R τ (rename some Q) = Polynomial.C Q := AlgHom.congr_fun h Q
+  rw [← optionEquivLeft_coeff_some_coeff_none R τ e, map_mul, map_pow,
+    optionEquivLeft_X_none, hQ, Polynomial.X_pow_mul_C,
+    Polynomial.C_mul_X_pow_eq_monomial, Polynomial.coeff_monomial]
+  by_cases he : e none = ν
+  · simp [he]
+  · simp [he, Ne.symm he]

@@ -1,0 +1,63 @@
+[
+  {
+    "file": "Roth/Separation.lean",
+    "line": 98,
+    "name": "Roth.eq_sum_X_none_pow_mul_coeffNone",
+    "short": "eq_sum_X_none_pow_mul_coeffNone",
+    "kind": "theorem",
+    "visibility": "public",
+    "end_line": 109,
+    "source": "theorem eq_sum_X_none_pow_mul_coeffNone (P : MvPolynomial (Option τ) R) {n : ℕ}\n    (hn : degreeOf none P ≤ n) :\n    P = ∑ ν ∈ Finset.range (n + 1), X none ^ ν * rename some (coeffNone P ν) := by\n  classical\n  ext e\n  rw [coeff_sum]\n  simp_rw [coeff_X_none_pow_mul_rename]\n  rw [Finset.sum_ite_eq]\n  split_ifs with he\n  · rw [coeff_coeffNone, ← eq_mapDomain_some_add_single]\n  · exact notMem_support_iff.1 fun h ↦\n      he (Finset.mem_range.2 (Nat.lt_succ_of_le ((monomial_le_degreeOf none h).trans hn)))",
+    "signature": "theorem eq_sum_X_none_pow_mul_coeffNone (P : MvPolynomial (Option τ) R) {n : ℕ}\n    (hn : degreeOf none P ≤ n) :\n    P = ∑ ν ∈ Finset.range (n + 1), X none ^ ν * rename some (coeffNone P ν)",
+    "body": "by\n  classical\n  ext e\n  rw [coeff_sum]\n  simp_rw [coeff_X_none_pow_mul_rename]\n  rw [Finset.sum_ite_eq]\n  split_ifs with he\n  · rw [coeff_coeffNone, ← eq_mapDomain_some_add_single]\n  · exact notMem_support_iff.1 fun h ↦\n      he (Finset.mem_range.2 (Nat.lt_succ_of_le ((monomial_le_degreeOf none h).trans hn)))",
+    "proof_lines": 10,
+    "sha256": "4a32bbe72b39b0020bf0b8a04c6a6254aba2d9e20bd35d0d8b2347106289e40c",
+    "what": "A polynomial expands as a finite sum of powers in its distinguished variable with polynomial coefficients.",
+    "how": "Coefficient extraction uses coeff_X_none_pow_mul_rename and coeff_coeffNone; degree support forces all omitted coefficients to vanish.",
+    "hypotheses": "The degree in the distinguished variable is bounded by n; commutative semiring.",
+    "source_body_refs": [
+      "Roth.coeff_X_none_pow_mul_rename",
+      "Roth.coeff_coeffNone",
+      "Roth.eq_mapDomain_some_add_single"
+    ],
+    "source_type_refs": [
+      "Roth.coeffNone"
+    ],
+    "source_callers": [
+      {
+        "name": "Roth.exists_separated_representation",
+        "file": "Roth/Separation.lean",
+        "line": 325
+      }
+    ],
+    "notes": [],
+    "input_file_sha256": "4ac885af6c9973d40f68bd2e6c42185f02a9996271ccaa67d4932d27e85a7d0e",
+    "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+    "section_context": "Namespace Roth; open MvPolynomial. Ambient τ : Type*. General section: R : Type*, [CommSemiring R]. Ambient [Fintype τ] and [DecidableEq τ] are explicitly omitted around general declarations; unused section instances are not implicit mathematical hypotheses. Inline binders override/add context. ",
+    "uses_from_project": [
+      "Roth.coeff_X_none_pow_mul_rename",
+      "Roth.coeff_coeffNone",
+      "Roth.eq_mapDomain_some_add_single"
+    ],
+    "used_by_in_file": [
+      "Roth.exists_separated_representation"
+    ],
+    "used_by_other_files": [],
+    "assignment_offset": 190,
+    "project_body_refs": [
+      "Roth.coeff_X_none_pow_mul_rename",
+      "Roth.coeff_coeffNone",
+      "Roth.eq_mapDomain_some_add_single"
+    ],
+    "project_type_refs": [
+      "Roth.coeffNone"
+    ],
+    "project_callers": [
+      {
+        "name": "Roth.exists_separated_representation",
+        "file": "Roth/Separation.lean",
+        "line": 325
+      }
+    ]
+  }
+]

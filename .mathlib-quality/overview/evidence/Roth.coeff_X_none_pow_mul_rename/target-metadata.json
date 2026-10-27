@@ -1,0 +1,45 @@
+{
+  "file": "Roth/Separation.lean",
+  "line": 64,
+  "name": "Roth.coeff_X_none_pow_mul_rename",
+  "short": "coeff_X_none_pow_mul_rename",
+  "kind": "lemma",
+  "visibility": "private",
+  "end_line": 76,
+  "source": "private lemma coeff_X_none_pow_mul_rename (ν : ℕ) (Q : MvPolynomial τ R) (e : Option τ →₀ ℕ) :\n    (X none ^ ν * rename some Q).coeff e = if e none = ν then Q.coeff (Finsupp.some e) else 0 := by\n  classical\n  have h : (optionEquivLeft R τ).toAlgHom.comp (rename some) = Polynomial.CAlgHom := by\n    ext i\n    simp\n  have hQ : optionEquivLeft R τ (rename some Q) = Polynomial.C Q := AlgHom.congr_fun h Q\n  rw [← optionEquivLeft_coeff_some_coeff_none R τ e, map_mul, map_pow,\n    optionEquivLeft_X_none, hQ, Polynomial.X_pow_mul_C,\n    Polynomial.C_mul_X_pow_eq_monomial, Polynomial.coeff_monomial]\n  by_cases he : e none = ν\n  · simp [he]\n  · simp [he, Ne.symm he]",
+  "signature": "private lemma coeff_X_none_pow_mul_rename (ν : ℕ) (Q : MvPolynomial τ R) (e : Option τ →₀ ℕ) :\n    (X none ^ ν * rename some Q).coeff e = if e none = ν then Q.coeff (Finsupp.some e) else 0",
+  "body": "by\n  classical\n  have h : (optionEquivLeft R τ).toAlgHom.comp (rename some) = Polynomial.CAlgHom := by\n    ext i\n    simp\n  have hQ : optionEquivLeft R τ (rename some Q) = Polynomial.C Q := AlgHom.congr_fun h Q\n  rw [← optionEquivLeft_coeff_some_coeff_none R τ e, map_mul, map_pow,\n    optionEquivLeft_X_none, hQ, Polynomial.X_pow_mul_C,\n    Polynomial.C_mul_X_pow_eq_monomial, Polynomial.coeff_monomial]\n  by_cases he : e none = ν\n  · simp [he]\n  · simp [he, Ne.symm he]",
+  "proof_lines": 12,
+  "sha256": "18f019b8e30697e3a5733249757e9317acc0866699946dab41037ea6af46b853",
+  "what": "Extracting a coefficient from a monomial in the distinguished variable times a renamed polynomial selects exactly the matching power.",
+  "how": "Transport by optionEquivLeft and use Polynomial.coeff_monomial after identifying the renamed polynomial with a constant polynomial.",
+  "hypotheses": "Commutative semiring coefficients and arbitrary variables.",
+  "source_body_refs": [],
+  "source_type_refs": [],
+  "source_callers": [
+    {
+      "name": "Roth.eq_sum_X_none_pow_mul_coeffNone",
+      "file": "Roth/Separation.lean",
+      "line": 98
+    }
+  ],
+  "notes": [],
+  "input_file_sha256": "4ac885af6c9973d40f68bd2e6c42185f02a9996271ccaa67d4932d27e85a7d0e",
+  "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+  "section_context": "Namespace Roth; open MvPolynomial. Ambient τ : Type*. General section: R : Type*, [CommSemiring R]. Ambient [Fintype τ] and [DecidableEq τ] are explicitly omitted around general declarations; unused section instances are not implicit mathematical hypotheses. Inline binders override/add context. ",
+  "uses_from_project": [],
+  "used_by_in_file": [
+    "Roth.eq_sum_X_none_pow_mul_coeffNone"
+  ],
+  "used_by_other_files": [],
+  "assignment_offset": 189,
+  "project_body_refs": [],
+  "project_type_refs": [],
+  "project_callers": [
+    {
+      "name": "Roth.eq_sum_X_none_pow_mul_coeffNone",
+      "file": "Roth/Separation.lean",
+      "line": 98
+    }
+  ]
+}

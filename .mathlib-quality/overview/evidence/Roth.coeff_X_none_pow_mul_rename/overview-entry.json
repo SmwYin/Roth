@@ -1,0 +1,16 @@
+{
+  "declaration": "Roth.coeff_X_none_pow_mul_rename",
+  "kind": "lemma",
+  "type": "∀ {τ : Type u_1} {R : Type u_2} [inst : CommSemiring R]\n  (ν : ℕ) (Q : MvPolynomial τ R) (e : Option τ →₀ ℕ),\n  (MvPolynomial.X none ^ ν * (MvPolynomial.rename some) Q).coeff e = if e none = ν then Q.coeff e.some else 0",
+  "what": "The coefficient of X none ^ ν times rename some Q at e is Q.coeff e.some when e none = ν, and zero otherwise.",
+  "how": "Transport by optionEquivLeft and use Polynomial.coeff_monomial after identifying the renamed polynomial with a constant polynomial.",
+  "hypotheses": "Commutative semiring coefficients and arbitrary variables. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.",
+  "project_dependencies": [],
+  "caller_summary": "1 explicit source caller declarations, all in Separation.lean; 1 direct original value consumers. Exact separate lists retained. Entire Separation module proof bodies replay successfully with fresh target name.",
+  "mathlib_api_audit": "The product of a pure power of the distinguished variable and a polynomial in the remaining variables has coefficients selected by the distinguished exponent. The proof moves through optionEquivLeft, computes the univariate monomial coefficient, and returns to the original exponent coordinates. This is a private computational interface for the subsequent coefficient-family expansion; it is distinct from the full expansion and determinant theorems.",
+  "moral_duplications": "The helper has a distinct role in the separated polynomial proof as described in the structural review; no duplicate full construction is introduced.",
+  "generalization": "No public generality claim under the private prefilter; preserve the existing definition and interface.",
+  "missing_api": "No new primitive is needed for this internal organization; full public contribution search is explicitly not run.",
+  "junk": "Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.",
+  "action": "Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration."
+}
