@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 53/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 54/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 53; remaining: 240.
-- Verdicts: 8 NO-composable-from-mathlib, 11 YES-add-as-is, 3 YES-but-generalise-first, 8 NO-mathlib-has-it, 19 BORDERLINE-needs-human, 4 SKIP.
+- Completed applicable assessments: 54; remaining: 239.
+- Verdicts: 9 NO-composable-from-mathlib, 11 YES-add-as-is, 3 YES-but-generalise-first, 8 NO-mathlib-has-it, 19 BORDERLINE-needs-human, 4 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -576,6 +576,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: all explicit callers: 24; in declaring module: 17; external: 7; identifier occurrences: 41; detail: callers.json; scope: Source-level explicit references, not opaque kernel/simp closure.
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor.md).
 
+### Completed: `MvPolynomial.taylor_apply`
+
+- Type: `∀ {σ : Type u_1} {R : Type u_2} [inst : CommSemiring R] (α : σ → R) (P : MvPolynomial σ R), (MvPolynomial.taylor α) P = (MvPolynomial.aeval fun j ↦ MvPolynomial.X j + MvPolynomial.C (α j)) P`
+- What: Applying polynomial translation is substitution of X j + C (α j).
+- How: Kernel reflexivity after unfolding the local taylor definition; no theorem calls.
+- Hypotheses: Arbitrary independent variable/coefficient universes; commutative coefficient semiring; arbitrary α and P.
+- Project dependencies: MvPolynomial.taylor (statement and definitional unfolding only)
+- Caller summary: all explicit callers: 0; in declaring module: 0; external: 0; excluded: Roth/Index.lean:243 uses Polynomial.taylor_apply; inline parent unfolding lines: 143, 148, 153, 159, 166; detail: callers.json; scope: Source-level explicit named references, not opaque kernel/simp closure; target has no simp annotation.
+- Verdict: NO-composable-from-mathlib; [complete report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor_apply.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -708,6 +718,8 @@ Completed `Roth.wronskian_eq_zero_iff`: Five actual methods on current, standard
 
 Completed `MvPolynomial.taylor`: aeval/bind₁ yield the exact term; Polynomial.taylorAlgHom and taylorEquiv cover one variable only. Named multivariate shift not located; missing local index is not absence proof.
 
+Completed `MvPolynomial.taylor_apply`: MvPolynomial.aeval supplies the defining substitution; own bridge is reflexive. Pinned Polynomial.taylor_apply is an analogous rfl law on Polynomial/LinearMap, not an exact multivariate hit; aeval_def expands a different layer.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -815,6 +827,8 @@ Completed `Roth.wronskian_ne_zero_of_linearIndependent`: The existing general el
 Completed `Roth.wronskian_eq_zero_iff`: Propositional assembly duplicates no substantive mathlib theorem: both constituent criterion lemmas are project-local. Generic matrix determinant dependence helps only the easy direction with scalar/jet bridges.
 
 Completed `MvPolynomial.taylor`: MvPolynomial.aeval (fun j ↦ X j + C (α j)), MvPolynomial.bind₁ with the same substitution, Polynomial.taylorAlgHom: univariate analogy only
+
+Completed `MvPolynomial.taylor_apply`: Own defining equation applied to P, Polynomial.taylor_apply: genuine univariate API analogy only
 
 ## Part 5: Generalization opportunities
 
@@ -927,6 +941,8 @@ Completed `Roth.wronskian_eq_zero_iff`: Complete expanded CommRing+IsDomain+Char
 
 Completed `MvPolynomial.taylor`: Already maximally general in this MvPolynomial/AlgHom representation; generic substitutions already aeval. Ring-only AlgEquiv is complementary infrastructure, not weakening.
 
+Completed `MvPolynomial.taylor_apply`: Maximally general relative to the existing CommSemiring/AlgHom parent interface; arbitrary substitution already aeval; no verified strict weakening claimed.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -1035,6 +1051,8 @@ Completed `Roth.wronskian_ne_zero_of_linearIndependent`: N-ary polynomial Hasse 
 Completed `Roth.wronskian_eq_zero_iff`: N-ary Hasse Wronskian foundation and criterion, coherent binary/n-ary naming and finite column reindexing.
 
 Completed `MvPolynomial.taylor`: Design question: stable named multivariate translation with Hasse coefficient, composition and inverse APIs.
+
+Completed `MvPolynomial.taylor_apply`: No mathematical normalization API needed for this constitutive equation. Optional stable unfold theorem may accompany a future upstream translation bundle.
 
 ## Part 7: Junk / removable
 
@@ -1147,6 +1165,8 @@ Completed `Roth.wronskian_eq_zero_iff`: No deletion: zero named source callers, 
 
 Completed `MvPolynomial.taylor`: One-line definition with concrete semantic/API-stability exemption; no automatic deletion merely from line count.
 
+Completed `MvPolynomial.taylor_apply`: Zero named callers; standalone bridge is dispensable. Semantic translation definition is independently BORDERLINE, not inherited here.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -1204,6 +1224,7 @@ Completed `MvPolynomial.taylor`: One-line definition with concrete semantic/API-
 | 51 | `Roth.wronskian_ne_zero_of_linearIndependent` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.wronskian_ne_zero_of_linearIndependent.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.wronskian_ne_zero_of_linearIndependent/root-acceptance.json) |
 | 52 | `Roth.wronskian_eq_zero_iff` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.wronskian_eq_zero_iff.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.wronskian_eq_zero_iff/root-acceptance.json) |
 | 53 | `MvPolynomial.taylor` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.taylor/root-acceptance.json) |
+| 54 | `MvPolynomial.taylor_apply` | NO-composable-from-mathlib | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor_apply.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.taylor_apply/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -1309,11 +1330,13 @@ Completed `Roth.wronskian_eq_zero_iff` action: Retain locally; resolve foundatio
 
 Completed `MvPolynomial.taylor` action: Retain project-local pending upstream decision on named translation API versus direct aeval; see three concrete Phase 7 questions.
 
+Completed `MvPolynomial.taylor_apply` action: Recommend remove unused docstring/theorem at Taylor lines45–47; zero caller edits; keep qualified univariate Index243 unchanged. Local retention for documentation remains possible.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `MvPolynomial.taylor_apply` next. Supporting identities receive their own applicable checks.
+   `MvPolynomial.taylor_X` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.

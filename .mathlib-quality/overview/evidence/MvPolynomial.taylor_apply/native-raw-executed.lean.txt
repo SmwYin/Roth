@@ -1,0 +1,28 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+import Mathlib.Algebra.Polynomial.CancelLeads
+import Mathlib.Algebra.MvPolynomial.PDeriv
+#check_failure MvPolynomial.taylor_apply
+#check @Polynomial.taylor_apply
+#print Polynomial.taylor_apply
+#check @MvPolynomial.aeval_def
+#check @MvPolynomial.aeval_X
+namespace TaylorApplyRaw
+theorem universal {σ τ R : Type*} [CommSemiring R]
+    (f : σ → MvPolynomial τ R) (P : MvPolynomial σ R) :
+    (MvPolynomial.aeval f) P = MvPolynomial.aeval f P := rfl
+
+theorem inline {σ R : Type*} [CommSemiring R] (α : σ → R) (P : MvPolynomial σ R) :
+    (let T : MvPolynomial σ R →ₐ[R] MvPolynomial σ R :=
+      MvPolynomial.aeval fun j ↦ MvPolynomial.X j + MvPolynomial.C (α j)
+     T P) = MvPolynomial.aeval (fun j ↦ MvPolynomial.X j + MvPolynomial.C (α j)) P := rfl
+#print axioms universal
+#print axioms inline
+end TaylorApplyRaw

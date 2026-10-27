@@ -3,7 +3,7 @@
 Status: **in_progress**, 2026-10-27. Branch: `ramin-cleanup`.
 Production Lean files and all pins match baseline `99f19fd`.
 
-**Completed: 53 / 293 written declarations.**
+**Completed: 54 / 293 written declarations.**
 This counts the current overview assessments, separately from the earlier code cleanup.
 
 | # | Completed declaration | Applicable workflow | Verdict | Report |
@@ -61,8 +61,9 @@ This counts the current overview assessments, separately from the earlier code c
 | 51 | `Roth.wronskian_ne_zero_of_linearIndependent` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.wronskian_ne_zero_of_linearIndependent.md) |
 | 52 | `Roth.wronskian_eq_zero_iff` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.wronskian_eq_zero_iff.md) |
 | 53 | `MvPolynomial.taylor` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/MvPolynomial.taylor.md) |
+| 54 | `MvPolynomial.taylor_apply` | full-mathlibable; accepted complete | NO-composable-from-mathlib | [Detailed report](mathlibable/MvPolynomial.taylor_apply.md) |
 
-**Next declaration: `MvPolynomial.taylor_apply`**, `Roth/Taylor.lean:46`.
+**Next declaration: `MvPolynomial.taylor_X`**, `Roth/Taylor.lean:51`.
 Only the listed assessments are complete. No partial assessment was committed.
 
 On restart: read [README](README.md), [machine progress](progress.json), and

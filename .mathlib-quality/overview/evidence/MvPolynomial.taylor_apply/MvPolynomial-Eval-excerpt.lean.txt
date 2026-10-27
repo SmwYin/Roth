@@ -1,0 +1,51 @@
+
+/-! ### The algebra of multivariate polynomials -/
+
+
+variable [Algebra R S₁] [CommSemiring S₂]
+variable (f : σ → S₁)
+
+/-- A map `σ → S₁` where `S₁` is an algebra over `R` generates an `R`-algebra homomorphism
+from multivariate polynomials over `σ` to `S₁`. -/
+def aeval : MvPolynomial σ R →ₐ[R] S₁ :=
+  { eval₂Hom (algebraMap R S₁) f with commutes' := fun _r => eval₂_C _ _ _ }
+
+theorem aeval_def (p : MvPolynomial σ R) : aeval f p = eval₂ (algebraMap R S₁) f p :=
+  rfl
+
+theorem aeval_eq_eval₂Hom (p : MvPolynomial σ R) : aeval f p = eval₂Hom (algebraMap R S₁) f p :=
+  rfl
+
+@[simp]
+lemma coe_aeval_eq_eval :
+    RingHomClass.toRingHom (aeval f : MvPolynomial σ S₁ →ₐ[S₁] S₁) = eval f :=
+  rfl
+
+@[simp]
+lemma aeval_eq_eval : (aeval f : MvPolynomial σ S₁ → S₁) = eval f := rfl
+
+@[simp]
+theorem aeval_X (s : σ) : aeval f (X s : MvPolynomial σ R) = f s :=
+  eval₂_X _ _ _
+
+theorem aeval_C (r : R) : aeval f (C r) = algebraMap R S₁ r :=
+  eval₂_C _ _ _
+
+@[simp] theorem aeval_ofNat (n : Nat) [n.AtLeastTwo] :
+    aeval f (ofNat(n) : MvPolynomial σ R) = ofNat(n) :=
+  map_ofNat _ _
+
+theorem aeval_unique (φ : MvPolynomial σ R →ₐ[R] S₁) : φ = aeval (φ ∘ X) := by
+  ext i
+  simp
+
+theorem aeval_X_left : aeval X = AlgHom.id R (MvPolynomial σ R) :=
+  (aeval_unique (AlgHom.id R _)).symm
+
+theorem aeval_X_left_apply (p : MvPolynomial σ R) : aeval X p = p :=
+  AlgHom.congr_fun aeval_X_left p
+
+theorem comp_aeval {B : Type*} [CommSemiring B] [Algebra R B] (φ : S₁ →ₐ[R] B) :
+    φ.comp (aeval f) = aeval fun i => φ (f i) := by
+  ext i
+  simp

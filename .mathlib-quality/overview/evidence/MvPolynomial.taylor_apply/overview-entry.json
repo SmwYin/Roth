@@ -1,0 +1,36 @@
+{
+  "declaration": "MvPolynomial.taylor_apply",
+  "kind": "theorem",
+  "type": "∀ {σ : Type u_1} {R : Type u_2} [inst : CommSemiring R] (α : σ → R) (P : MvPolynomial σ R), (MvPolynomial.taylor α) P = (MvPolynomial.aeval fun j ↦ MvPolynomial.X j + MvPolynomial.C (α j)) P",
+  "what": "Applying polynomial translation is substitution of X j + C (α j).",
+  "how": "Kernel reflexivity after unfolding the local taylor definition; no theorem calls.",
+  "hypotheses": "Arbitrary independent variable/coefficient universes; commutative coefficient semiring; arbitrary α and P.",
+  "project_dependencies": [
+    "MvPolynomial.taylor (statement and definitional unfolding only)"
+  ],
+  "caller_summary": {
+    "all_explicit_callers": 0,
+    "in_declaring_module": 0,
+    "external": 0,
+    "excluded": "Roth/Index.lean:243 uses Polynomial.taylor_apply",
+    "inline_parent_unfolding_lines": [
+      143,
+      148,
+      153,
+      159,
+      166
+    ],
+    "detail": "callers.json",
+    "scope": "Source-level explicit named references, not opaque kernel/simp closure; target has no simp annotation."
+  },
+  "mathlib_api_audit": "MvPolynomial.aeval supplies the defining substitution; own bridge is reflexive. Pinned Polynomial.taylor_apply is an analogous rfl law on Polynomial/LinearMap, not an exact multivariate hit; aeval_def expands a different layer.",
+  "moral_duplications": [
+    "Own defining equation applied to P",
+    "Polynomial.taylor_apply: genuine univariate API analogy only"
+  ],
+  "generalization": "Maximally general relative to the existing CommSemiring/AlgHom parent interface; arbitrary substitution already aeval; no verified strict weakening claimed.",
+  "missing_api": "No mathematical normalization API needed for this constitutive equation. Optional stable unfold theorem may accompany a future upstream translation bundle.",
+  "junk": "Zero named callers; standalone bridge is dispensable. Semantic translation definition is independently BORDERLINE, not inherited here.",
+  "action": "Recommend remove unused docstring/theorem at Taylor lines45–47; zero caller edits; keep qualified univariate Index243 unchanged. Local retention for documentation remains possible.",
+  "verdict": "NO-composable-from-mathlib"
+}

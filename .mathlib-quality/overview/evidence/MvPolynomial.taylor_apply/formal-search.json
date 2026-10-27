@@ -1,0 +1,727 @@
+[
+  {
+    "status": "fulfilled",
+    "value": {
+      "method": "Finder",
+      "form": "current",
+      "request": {
+        "query": "MvPolynomial Taylor translation application equals aeval at X plus constant",
+        "num_results": 8
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.taylor_apply\",\n      \"informal_name\": \"Taylor Expansion Formula for Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R),\\n  (Polynomial.taylor r) f = f.comp (Polynomial.X + Polynomial.C r)\",\n      \"informal_description\": \"For any polynomial $ f $ in $ R[X] $ and any element $ r $ in the semiring $ R $, the Taylor expansion of $ f $ at $ r $ is equal to the composition of $ f $ with the polynomial $ X + r $, i.e., $ \\\\text{Tay}_r(f) = f(X + r) $, where $ X $ denotes the indeterminate of the polynomial ring.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    },\n    {\n      \"formal_name\": \"Polynomial.taylor_eval\",\n      \"informal_name\": \"Taylor Expansion Evaluation Identity: $(\\\\mathrm{taylor}\\\\, r\\\\, f)(s) = f(s + r)$\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommSemiring R] (r : R) (f : Polynomial R) (s : R),\\n  Polynomial.eval s ((Polynomial.taylor r) f) = Polynomial.eval (s + r) f\",\n      \"informal_description\": \"For any polynomial $ f \\\\in R[X] $ and elements $ r, s \\\\in R $, the evaluation of the Taylor expansion of $ f $ at $ r $ at $ s $ equals $ f(s + r) $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    },\n    {\n      \"formal_name\": \"Polynomial.taylor_X\",\n      \"informal_name\": \"Taylor Expansion of X at r: $\\\\operatorname{taylor}_r(X) = X + r$\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (r : R), (Polynomial.taylor r) Polynomial.X = Polynomial.X + Polynomial.C r\",\n      \"informal_description\": \"For any element $ r $ in a semiring $ R $, applying the Taylor expansion at $ r $ to the indeterminate $ X $ results in the polynomial $ X + r $, i.e., $\\\\operatorname{taylor}_r(X) = X + r$.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    },\n    {\n      \"formal_name\": \"Polynomial.taylorAlgHom_apply\",\n      \"informal_name\": \"The Taylor Shift Operator: Algebra Homomorphism vs. Linear Map\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommSemiring R] (r : R) (a : Polynomial R),\\n  (Polynomial.taylorAlgHom r) a = (Polynomial.taylor r) a\",\n      \"informal_description\": \"Let $R$ be a commutative semiring, $r \\\\in R$, and $p$ a polynomial over $R$. Then\\n$$ (\\\\text{Polynomial.taylorAlgHom } r)(p) = (\\\\text{Polynomial.taylor } r)(p) $$\\nHere, `Polynomial.taylorAlgHom r` and `Polynomial.taylor r` are the Taylor shift operator $p(X) \\\\mapsto p(X+r)$, viewed as an $R$-algebra homomorphism and an $R$-linear map, respectively.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    },\n    {\n      \"formal_name\": \"Polynomial.algEquivAevalXAddC_apply\",\n      \"informal_name\": \"Action of the Polynomial Shift Automorphism\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_3} [inst : CommRing R] (t : R) (a : Polynomial R),\\n  (Polynomial.algEquivAevalXAddC t) a = (Polynomial.aeval (Polynomial.X + Polynomial.C t)) a\",\n      \"informal_description\": \"Let $R$ be a commutative ring and $t \\\\in R$. For any polynomial $p \\\\in R[X]$, the action of the algebra automorphism `Polynomial.algEquivAevalXAddC t` on $p$ is given by the evaluation of $p$ at the polynomial $X+t$. This corresponds to substituting the variable $X$ with $X+t$ in the polynomial $p$.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.AlgebraMap\"\n    },\n    {\n      \"formal_name\": \"Polynomial.taylor_eval_sub\",\n      \"informal_name\": \"Taylor Expansion Evaluation Identity: $\\\\text{Tay}_r(f)(s - r) = f(s)$\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] (r : R) (f : Polynomial R) (s : R),\\n  Polynomial.eval (s - r) ((Polynomial.taylor r) f) = Polynomial.eval s f\",\n      \"informal_description\": \"For any semiring $R$, element $r \\\\in R$, and polynomial $f \\\\in R[X]$, evaluating the Taylor expansion of $f$ at $r$ (denoted $\\\\text{Tay}_r(f)$) at the point $s - r$ yields $f(s)$. Symbolically, $\\\\text{Tay}_r(f)(s - r) = f(s)$.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    },\n    {\n      \"formal_name\": \"Polynomial.taylor\",\n      \"informal_name\": \"Taylor series expansion at r\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : Semiring R] → R → Polynomial R →ₗ[R] Polynomial R\",\n      \"informal_description\": \"For a given element $ r $ in a semiring $ R $, the Taylor series expansion at $ r $ is the $ R $-linear map from $ R[X] $ to $ R[X] $ that sends each polynomial $ f $ to the composition $ f(X + r) $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    },\n    {\n      \"formal_name\": \"Polynomial.taylor_taylor\",\n      \"informal_name\": \"Composition of Taylor Expansions: $ T_r(T_s(f)) = T_{r+s}(f) $\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommSemiring R] (f : Polynomial R) (r s : R),\\n  (Polynomial.taylor r) ((Polynomial.taylor s) f) = (Polynomial.taylor (r + s)) f\",\n      \"informal_description\": \"For any polynomial $ f \\\\in R[X] $ and elements $ r, s \\\\in R $, composing the Taylor series expansion at $ r $ with the Taylor series expansion at $ s $ yields the same result as the Taylor series expansion at $ r + s $. Formally, $ \\\\operatorname{taylor}_r(\\\\operatorname{taylor}_s f) = \\\\operatorname{taylor}_{r+s} f $. This expresses the additive property of Taylor shifts in polynomial rings over semirings.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "formal_name": "Polynomial.taylor_apply",
+              "informal_name": "Taylor Expansion Formula for Polynomials",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R),\n  (Polynomial.taylor r) f = f.comp (Polynomial.X + Polynomial.C r)",
+              "informal_description": "For any polynomial $ f $ in $ R[X] $ and any element $ r $ in the semiring $ R $, the Taylor expansion of $ f $ at $ r $ is equal to the composition of $ f $ with the polynomial $ X + r $, i.e., $ \\text{Tay}_r(f) = f(X + r) $, where $ X $ denotes the indeterminate of the polynomial ring.",
+              "path": "Mathlib.Algebra.Polynomial.Taylor"
+            },
+            {
+              "formal_name": "Polynomial.taylor_eval",
+              "informal_name": "Taylor Expansion Evaluation Identity: $(\\mathrm{taylor}\\, r\\, f)(s) = f(s + r)$",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} [inst : CommSemiring R] (r : R) (f : Polynomial R) (s : R),\n  Polynomial.eval s ((Polynomial.taylor r) f) = Polynomial.eval (s + r) f",
+              "informal_description": "For any polynomial $ f \\in R[X] $ and elements $ r, s \\in R $, the evaluation of the Taylor expansion of $ f $ at $ r $ at $ s $ equals $ f(s + r) $.",
+              "path": "Mathlib.Algebra.Polynomial.Taylor"
+            },
+            {
+              "formal_name": "Polynomial.taylor_X",
+              "informal_name": "Taylor Expansion of X at r: $\\operatorname{taylor}_r(X) = X + r$",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} [inst : Semiring R] (r : R), (Polynomial.taylor r) Polynomial.X = Polynomial.X + Polynomial.C r",
+              "informal_description": "For any element $ r $ in a semiring $ R $, applying the Taylor expansion at $ r $ to the indeterminate $ X $ results in the polynomial $ X + r $, i.e., $\\operatorname{taylor}_r(X) = X + r$.",
+              "path": "Mathlib.Algebra.Polynomial.Taylor"
+            },
+            {
+              "formal_name": "Polynomial.taylorAlgHom_apply",
+              "informal_name": "The Taylor Shift Operator: Algebra Homomorphism vs. Linear Map",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} [inst : CommSemiring R] (r : R) (a : Polynomial R),\n  (Polynomial.taylorAlgHom r) a = (Polynomial.taylor r) a",
+              "informal_description": "Let $R$ be a commutative semiring, $r \\in R$, and $p$ a polynomial over $R$. Then\n$$ (\\text{Polynomial.taylorAlgHom } r)(p) = (\\text{Polynomial.taylor } r)(p) $$\nHere, `Polynomial.taylorAlgHom r` and `Polynomial.taylor r` are the Taylor shift operator $p(X) \\mapsto p(X+r)$, viewed as an $R$-algebra homomorphism and an $R$-linear map, respectively.",
+              "path": "Mathlib.Algebra.Polynomial.Taylor"
+            },
+            {
+              "formal_name": "Polynomial.algEquivAevalXAddC_apply",
+              "informal_name": "Action of the Polynomial Shift Automorphism",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_3} [inst : CommRing R] (t : R) (a : Polynomial R),\n  (Polynomial.algEquivAevalXAddC t) a = (Polynomial.aeval (Polynomial.X + Polynomial.C t)) a",
+              "informal_description": "Let $R$ be a commutative ring and $t \\in R$. For any polynomial $p \\in R[X]$, the action of the algebra automorphism `Polynomial.algEquivAevalXAddC t` on $p$ is given by the evaluation of $p$ at the polynomial $X+t$. This corresponds to substituting the variable $X$ with $X+t$ in the polynomial $p$.",
+              "path": "Mathlib.Algebra.Polynomial.AlgebraMap"
+            },
+            {
+              "formal_name": "Polynomial.taylor_eval_sub",
+              "informal_name": "Taylor Expansion Evaluation Identity: $\\text{Tay}_r(f)(s - r) = f(s)$",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} [inst : CommRing R] (r : R) (f : Polynomial R) (s : R),\n  Polynomial.eval (s - r) ((Polynomial.taylor r) f) = Polynomial.eval s f",
+              "informal_description": "For any semiring $R$, element $r \\in R$, and polynomial $f \\in R[X]$, evaluating the Taylor expansion of $f$ at $r$ (denoted $\\text{Tay}_r(f)$) at the point $s - r$ yields $f(s)$. Symbolically, $\\text{Tay}_r(f)(s - r) = f(s)$.",
+              "path": "Mathlib.Algebra.Polynomial.Taylor"
+            },
+            {
+              "formal_name": "Polynomial.taylor",
+              "informal_name": "Taylor series expansion at r",
+              "kind": "definition",
+              "type": "{R : Type u_1} → [inst : Semiring R] → R → Polynomial R →ₗ[R] Polynomial R",
+              "informal_description": "For a given element $ r $ in a semiring $ R $, the Taylor series expansion at $ r $ is the $ R $-linear map from $ R[X] $ to $ R[X] $ that sends each polynomial $ f $ to the composition $ f(X + r) $.",
+              "path": "Mathlib.Algebra.Polynomial.Taylor"
+            },
+            {
+              "formal_name": "Polynomial.taylor_taylor",
+              "informal_name": "Composition of Taylor Expansions: $ T_r(T_s(f)) = T_{r+s}(f) $",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} [inst : CommSemiring R] (f : Polynomial R) (r s : R),\n  (Polynomial.taylor r) ((Polynomial.taylor s) f) = (Polynomial.taylor (r + s)) f",
+              "informal_description": "For any polynomial $ f \\in R[X] $ and elements $ r, s \\in R $, composing the Taylor series expansion at $ r $ with the Taylor series expansion at $ s $ yields the same result as the Taylor series expansion at $ r + s $. Formally, $ \\operatorname{taylor}_r(\\operatorname{taylor}_s f) = \\operatorname{taylor}_{r+s} f $. This expresses the additive property of Taylor shifts in polynomial rings over semirings.",
+              "path": "Mathlib.Algebra.Polynomial.Taylor"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "method": "Loogle",
+      "form": "current",
+      "request": {
+        "query": "MvPolynomial.aeval, MvPolynomial.X",
+        "num_results": 12
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.aeval_X\",\n      \"type\": \" {R : Type u} {S₁ : Type v} {σ : Type u_1} [CommSemiring R] [CommSemiring S₁] [Algebra R S₁] (f : σ → S₁) (s : σ) : (MvPolynomial.aeval f) (MvPolynomial.X s) = f s\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"name\": \"MvPolynomial.aeval_X_left\",\n      \"type\": \" {R : Type u} {σ : Type u_1} [CommSemiring R] : MvPolynomial.aeval MvPolynomial.X = AlgHom.id R (MvPolynomial σ R)\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"name\": \"MvPolynomial.aeval_unique\",\n      \"type\": \" {R : Type u} {S₁ : Type v} {σ : Type u_1} [CommSemiring R] [CommSemiring S₁] [Algebra R S₁] (φ : MvPolynomial σ R →ₐ[R] S₁) : φ = MvPolynomial.aeval (⇑φ ∘ MvPolynomial.X)\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"name\": \"MvPolynomial.aeval_X_left_apply\",\n      \"type\": \" {R : Type u} {σ : Type u_1} [CommSemiring R] (p : MvPolynomial σ R) : (MvPolynomial.aeval MvPolynomial.X) p = p\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"name\": \"MvPolynomial.aeval_sumElim\",\n      \"type\": \" {R : Type u} [CommSemiring R] {S : Type u_2} {T : Type u_3} [CommSemiring S] [Algebra R S] [CommSemiring T] [Algebra R T] [Algebra S T] [IsScalarTower R S T] {σ : Type u_4} {τ : Type u_5} (p : MvPolynomial (σ ⊕ τ) R) (f : τ → S) (g : σ → T) : (MvPolynomial.aeval (Sum.elim g (⇑(algebraMap S T) ∘ f))) p = (MvPolynomial.aeval g) ((MvPolynomial.aeval (Sum.elim MvPolynomial.X (⇑MvPolynomial.C ∘ f))) p)\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"name\": \"MvPolynomial.rename_eq\",\n      \"type\": \" {σ : Type u_1} {τ : Type u_2} {R : Type u_4} [CommSemiring R] (f : σ → τ) : MvPolynomial.rename f = MvPolynomial.aeval (MvPolynomial.X ∘ f)\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Rename\"\n    },\n    {\n      \"name\": \"MvPolynomial.rename_eq_aeval\",\n      \"type\": \" {σ : Type u_1} {τ : Type u_2} {R : Type u_4} [CommSemiring R] (f : σ → τ) : MvPolynomial.rename f = MvPolynomial.aeval (MvPolynomial.X ∘ f)\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Rename\"\n    },\n    {\n      \"name\": \"MvPolynomial.optionEquivRight_apply\",\n      \"type\": \" (R : Type u) (S₁ : Type v) [CommSemiring R] (a : MvPolynomial (Option S₁) R) : (MvPolynomial.optionEquivRight R S₁) a = (MvPolynomial.aeval fun o => o.elim (MvPolynomial.C Polynomial.X) MvPolynomial.X) a\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    },\n    {\n      \"name\": \"MvPolynomial.optionEquivLeft_apply\",\n      \"type\": \" (R : Type u) (S₁ : Type v) [CommSemiring R] (a : MvPolynomial (Option S₁) R) : (MvPolynomial.optionEquivLeft R S₁) a = (MvPolynomial.aeval fun o => o.elim Polynomial.X fun s => Polynomial.C (MvPolynomial.X s)) a\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    },\n    {\n      \"name\": \"MvPolynomial.aeval_ite_mem_eq_self\",\n      \"type\": \" {R : Type u} {σ : Type u_1} [CommSemiring R] (q : MvPolynomial σ R) {s : Set σ} (hs : ↑q.vars ⊆ s) [(i : σ) → Decidable (i ∈ s)] : (MvPolynomial.aeval fun i => if i ∈ s then MvPolynomial.X i else 0) q = q\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Variables\"\n    },\n    {\n      \"name\": \"MvPolynomial.aeval_ite_mem_eq\",\n      \"type\": \" {R : Type u} {σ : Type u_1} [CommSemiring R] (q : MvPolynomial σ R) (s : Set σ) [DecidablePred fun x => x ∈ s] [DecidablePred fun x => ↑x.support ⊆ s] : (MvPolynomial.aeval fun i => if i ∈ s then MvPolynomial.X i else 0) q = ∑ x ∈ q.support, if ↑x.support ⊆ s then (MvPolynomial.monomial x) (q.coeff x) else 0\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Variables\"\n    },\n    {\n      \"name\": \"Algebra.Generators.Hom.equivAlgHom_symm_apply_val\",\n      \"type\": \" {R : Type u} {S : Type v} {ι : Type w} [CommRing R] [CommRing S] [Algebra R S] {P : Algebra.Generators R S ι} {R' : Type u_1} {S' : Type u_2} {ι' : Type u_3} [CommRing R'] [CommRing S'] [Algebra R' S'] {P' : Algebra.Generators R' S' ι'} [Algebra R R'] [Algebra S S'] [Algebra R S'] [IsScalarTower R R' S'] [IsScalarTower R S S'] (f : { f // ∀ (x : P.Ring), (MvPolynomial.aeval P'.val) (f x) = (algebraMap S S') ((MvPolynomial.aeval P.val) x) }) (i : ι) : (Algebra.Generators.Hom.equivAlgHom.symm f).val i = ↑f (MvPolynomial.X i)\",\n      \"module\": \"Mathlib.RingTheory.Extension.Generators\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "MvPolynomial.aeval_X",
+              "type": " {R : Type u} {S₁ : Type v} {σ : Type u_1} [CommSemiring R] [CommSemiring S₁] [Algebra R S₁] (f : σ → S₁) (s : σ) : (MvPolynomial.aeval f) (MvPolynomial.X s) = f s",
+              "module": "Mathlib.Algebra.MvPolynomial.Eval"
+            },
+            {
+              "name": "MvPolynomial.aeval_X_left",
+              "type": " {R : Type u} {σ : Type u_1} [CommSemiring R] : MvPolynomial.aeval MvPolynomial.X = AlgHom.id R (MvPolynomial σ R)",
+              "module": "Mathlib.Algebra.MvPolynomial.Eval"
+            },
+            {
+              "name": "MvPolynomial.aeval_unique",
+              "type": " {R : Type u} {S₁ : Type v} {σ : Type u_1} [CommSemiring R] [CommSemiring S₁] [Algebra R S₁] (φ : MvPolynomial σ R →ₐ[R] S₁) : φ = MvPolynomial.aeval (⇑φ ∘ MvPolynomial.X)",
+              "module": "Mathlib.Algebra.MvPolynomial.Eval"
+            },
+            {
+              "name": "MvPolynomial.aeval_X_left_apply",
+              "type": " {R : Type u} {σ : Type u_1} [CommSemiring R] (p : MvPolynomial σ R) : (MvPolynomial.aeval MvPolynomial.X) p = p",
+              "module": "Mathlib.Algebra.MvPolynomial.Eval"
+            },
+            {
+              "name": "MvPolynomial.aeval_sumElim",
+              "type": " {R : Type u} [CommSemiring R] {S : Type u_2} {T : Type u_3} [CommSemiring S] [Algebra R S] [CommSemiring T] [Algebra R T] [Algebra S T] [IsScalarTower R S T] {σ : Type u_4} {τ : Type u_5} (p : MvPolynomial (σ ⊕ τ) R) (f : τ → S) (g : σ → T) : (MvPolynomial.aeval (Sum.elim g (⇑(algebraMap S T) ∘ f))) p = (MvPolynomial.aeval g) ((MvPolynomial.aeval (Sum.elim MvPolynomial.X (⇑MvPolynomial.C ∘ f))) p)",
+              "module": "Mathlib.Algebra.MvPolynomial.Eval"
+            },
+            {
+              "name": "MvPolynomial.rename_eq",
+              "type": " {σ : Type u_1} {τ : Type u_2} {R : Type u_4} [CommSemiring R] (f : σ → τ) : MvPolynomial.rename f = MvPolynomial.aeval (MvPolynomial.X ∘ f)",
+              "module": "Mathlib.Algebra.MvPolynomial.Rename"
+            },
+            {
+              "name": "MvPolynomial.rename_eq_aeval",
+              "type": " {σ : Type u_1} {τ : Type u_2} {R : Type u_4} [CommSemiring R] (f : σ → τ) : MvPolynomial.rename f = MvPolynomial.aeval (MvPolynomial.X ∘ f)",
+              "module": "Mathlib.Algebra.MvPolynomial.Rename"
+            },
+            {
+              "name": "MvPolynomial.optionEquivRight_apply",
+              "type": " (R : Type u) (S₁ : Type v) [CommSemiring R] (a : MvPolynomial (Option S₁) R) : (MvPolynomial.optionEquivRight R S₁) a = (MvPolynomial.aeval fun o => o.elim (MvPolynomial.C Polynomial.X) MvPolynomial.X) a",
+              "module": "Mathlib.Algebra.MvPolynomial.Equiv"
+            },
+            {
+              "name": "MvPolynomial.optionEquivLeft_apply",
+              "type": " (R : Type u) (S₁ : Type v) [CommSemiring R] (a : MvPolynomial (Option S₁) R) : (MvPolynomial.optionEquivLeft R S₁) a = (MvPolynomial.aeval fun o => o.elim Polynomial.X fun s => Polynomial.C (MvPolynomial.X s)) a",
+              "module": "Mathlib.Algebra.MvPolynomial.Equiv"
+            },
+            {
+              "name": "MvPolynomial.aeval_ite_mem_eq_self",
+              "type": " {R : Type u} {σ : Type u_1} [CommSemiring R] (q : MvPolynomial σ R) {s : Set σ} (hs : ↑q.vars ⊆ s) [(i : σ) → Decidable (i ∈ s)] : (MvPolynomial.aeval fun i => if i ∈ s then MvPolynomial.X i else 0) q = q",
+              "module": "Mathlib.Algebra.MvPolynomial.Variables"
+            },
+            {
+              "name": "MvPolynomial.aeval_ite_mem_eq",
+              "type": " {R : Type u} {σ : Type u_1} [CommSemiring R] (q : MvPolynomial σ R) (s : Set σ) [DecidablePred fun x => x ∈ s] [DecidablePred fun x => ↑x.support ⊆ s] : (MvPolynomial.aeval fun i => if i ∈ s then MvPolynomial.X i else 0) q = ∑ x ∈ q.support, if ↑x.support ⊆ s then (MvPolynomial.monomial x) (q.coeff x) else 0",
+              "module": "Mathlib.Algebra.MvPolynomial.Variables"
+            },
+            {
+              "name": "Algebra.Generators.Hom.equivAlgHom_symm_apply_val",
+              "type": " {R : Type u} {S : Type v} {ι : Type w} [CommRing R] [CommRing S] [Algebra R S] {P : Algebra.Generators R S ι} {R' : Type u_1} {S' : Type u_2} {ι' : Type u_3} [CommRing R'] [CommRing S'] [Algebra R' S'] {P' : Algebra.Generators R' S' ι'} [Algebra R R'] [Algebra S S'] [Algebra R S'] [IsScalarTower R R' S'] [IsScalarTower R S S'] (f : { f // ∀ (x : P.Ring), (MvPolynomial.aeval P'.val) (f x) = (algebraMap S S') ((MvPolynomial.aeval P.val) x) }) (i : ι) : (Algebra.Generators.Hom.equivAlgHom.symm f).val i = ↑f (MvPolynomial.X i)",
+              "module": "Mathlib.RingTheory.Extension.Generators"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "method": "LeanSearch",
+      "form": "current",
+      "request": {
+        "query": "MvPolynomial Taylor translation application equals aeval at X plus constant",
+        "num_results": 8
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.taylor_apply\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Taylor\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R),\\n  (Polynomial.taylor r) f = f.comp (Polynomial.X + Polynomial.C r)\"\n    },\n    {\n      \"name\": \"Polynomial.taylor_X\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Taylor\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (r : R), (Polynomial.taylor r) Polynomial.X = Polynomial.X + Polynomial.C r\"\n    },\n    {\n      \"name\": \"Polynomial.taylor_eval\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Taylor\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommSemiring R] (r : R) (f : Polynomial R) (s : R),\\n  Polynomial.eval s ((Polynomial.taylor r) f) = Polynomial.eval (s + r) f\"\n    },\n    {\n      \"name\": \"Polynomial.taylor_eval_sub\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Taylor\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] (r : R) (f : Polynomial R) (s : R),\\n  Polynomial.eval (s - r) ((Polynomial.taylor r) f) = Polynomial.eval s f\"\n    },\n    {\n      \"name\": \"Polynomial.sum_taylor_eq\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Taylor\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] (f : Polynomial R) (r : R),\\n  (((Polynomial.taylor r) f).sum fun i a => Polynomial.C a * (Polynomial.X - Polynomial.C r) ^ i) = f\"\n    },\n    {\n      \"name\": \"Polynomial.algEquivAevalXAddC_apply\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.AlgebraMap\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_3} [inst : CommRing R] (t : R) (a : Polynomial R),\\n  (Polynomial.algEquivAevalXAddC t) a = (Polynomial.aeval (Polynomial.X + Polynomial.C t)) a\"\n    },\n    {\n      \"name\": \"Polynomial.taylor_coeff_zero\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Taylor\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R), ((Polynomial.taylor r) f).coeff 0 = Polynomial.eval r f\"\n    },\n    {\n      \"name\": \"Polynomial.taylor\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Taylor\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : Semiring R] → R → Polynomial R →ₗ[R] Polynomial R\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "Polynomial.taylor_apply",
+              "module_name": "Mathlib.Algebra.Polynomial.Taylor",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R),\n  (Polynomial.taylor r) f = f.comp (Polynomial.X + Polynomial.C r)"
+            },
+            {
+              "name": "Polynomial.taylor_X",
+              "module_name": "Mathlib.Algebra.Polynomial.Taylor",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} [inst : Semiring R] (r : R), (Polynomial.taylor r) Polynomial.X = Polynomial.X + Polynomial.C r"
+            },
+            {
+              "name": "Polynomial.taylor_eval",
+              "module_name": "Mathlib.Algebra.Polynomial.Taylor",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} [inst : CommSemiring R] (r : R) (f : Polynomial R) (s : R),\n  Polynomial.eval s ((Polynomial.taylor r) f) = Polynomial.eval (s + r) f"
+            },
+            {
+              "name": "Polynomial.taylor_eval_sub",
+              "module_name": "Mathlib.Algebra.Polynomial.Taylor",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} [inst : CommRing R] (r : R) (f : Polynomial R) (s : R),\n  Polynomial.eval (s - r) ((Polynomial.taylor r) f) = Polynomial.eval s f"
+            },
+            {
+              "name": "Polynomial.sum_taylor_eq",
+              "module_name": "Mathlib.Algebra.Polynomial.Taylor",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} [inst : CommRing R] (f : Polynomial R) (r : R),\n  (((Polynomial.taylor r) f).sum fun i a => Polynomial.C a * (Polynomial.X - Polynomial.C r) ^ i) = f"
+            },
+            {
+              "name": "Polynomial.algEquivAevalXAddC_apply",
+              "module_name": "Mathlib.Algebra.Polynomial.AlgebraMap",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_3} [inst : CommRing R] (t : R) (a : Polynomial R),\n  (Polynomial.algEquivAevalXAddC t) a = (Polynomial.aeval (Polynomial.X + Polynomial.C t)) a"
+            },
+            {
+              "name": "Polynomial.taylor_coeff_zero",
+              "module_name": "Mathlib.Algebra.Polynomial.Taylor",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R), ((Polynomial.taylor r) f).coeff 0 = Polynomial.eval r f"
+            },
+            {
+              "name": "Polynomial.taylor",
+              "module_name": "Mathlib.Algebra.Polynomial.Taylor",
+              "kind": "definition",
+              "type": "{R : Type u_1} → [inst : Semiring R] → R → Polynomial R →ₗ[R] Polynomial R"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "method": "local",
+      "form": "current",
+      "request": {
+        "query": "taylor_apply",
+        "limit": 30,
+        "project_root": "/Users/ramin/LEAN/Roth"
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.taylor_apply\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/Taylor.lean\"\n    },\n    {\n      \"name\": \"Polynomial.taylor_apply\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Taylor.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "MvPolynomial.taylor_apply",
+              "kind": "theorem",
+              "file": "Roth/Taylor.lean"
+            },
+            {
+              "name": "Polynomial.taylor_apply",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Taylor.lean"
+            }
+          ],
+          "index": "unavailable"
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "method": "Finder",
+      "form": "literature",
+      "request": {
+        "query": "Polynomial translation P(X+a) is substitution comp X plus C a",
+        "num_results": 8
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.taylor_apply\",\n      \"informal_name\": \"Taylor Expansion Formula for Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R),\\n  (Polynomial.taylor r) f = f.comp (Polynomial.X + Polynomial.C r)\",\n      \"informal_description\": \"For any polynomial $ f $ in $ R[X] $ and any element $ r $ in the semiring $ R $, the Taylor expansion of $ f $ at $ r $ is equal to the composition of $ f $ with the polynomial $ X + r $, i.e., $ \\\\text{Tay}_r(f) = f(X + r) $, where $ X $ denotes the indeterminate of the polynomial ring.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    },\n    {\n      \"formal_name\": \"Polynomial.taylor_X\",\n      \"informal_name\": \"Taylor Expansion of X at r: $\\\\operatorname{taylor}_r(X) = X + r$\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (r : R), (Polynomial.taylor r) Polynomial.X = Polynomial.X + Polynomial.C r\",\n      \"informal_description\": \"For any element $ r $ in a semiring $ R $, applying the Taylor expansion at $ r $ to the indeterminate $ X $ results in the polynomial $ X + r $, i.e., $\\\\operatorname{taylor}_r(X) = X + r$.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    },\n    {\n      \"formal_name\": \"Polynomial.taylor\",\n      \"informal_name\": \"Taylor series expansion at r\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : Semiring R] → R → Polynomial R →ₗ[R] Polynomial R\",\n      \"informal_description\": \"For a given element $ r $ in a semiring $ R $, the Taylor series expansion at $ r $ is the $ R $-linear map from $ R[X] $ to $ R[X] $ that sends each polynomial $ f $ to the composition $ f(X + r) $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    },\n    {\n      \"formal_name\": \"Polynomial.algEquivAevalXAddC_apply\",\n      \"informal_name\": \"Action of the Polynomial Shift Automorphism\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_3} [inst : CommRing R] (t : R) (a : Polynomial R),\\n  (Polynomial.algEquivAevalXAddC t) a = (Polynomial.aeval (Polynomial.X + Polynomial.C t)) a\",\n      \"informal_description\": \"Let $R$ be a commutative ring and $t \\\\in R$. For any polynomial $p \\\\in R[X]$, the action of the algebra automorphism `Polynomial.algEquivAevalXAddC t` on $p$ is given by the evaluation of $p$ at the polynomial $X+t$. This corresponds to substituting the variable $X$ with $X+t$ in the polynomial $p$.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.AlgebraMap\"\n    },\n    {\n      \"formal_name\": \"Polynomial.taylor_eval\",\n      \"informal_name\": \"Taylor Expansion Evaluation Identity: $(\\\\mathrm{taylor}\\\\, r\\\\, f)(s) = f(s + r)$\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommSemiring R] (r : R) (f : Polynomial R) (s : R),\\n  Polynomial.eval s ((Polynomial.taylor r) f) = Polynomial.eval (s + r) f\",\n      \"informal_description\": \"For any polynomial $ f \\\\in R[X] $ and elements $ r, s \\\\in R $, the evaluation of the Taylor expansion of $ f $ at $ r $ at $ s $ equals $ f(s + r) $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    },\n    {\n      \"formal_name\": \"Polynomial.algEquivAevalXAddC\",\n      \"informal_name\": \"Shift automorphism on the polynomial ring\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_3} → [inst : CommRing R] → R → Polynomial R ≃ₐ[R] Polynomial R\",\n      \"informal_description\": \"For any commutative ring $R$ and any element $t \\\\in R$, this defines an $R$-algebra automorphism of the polynomial ring $R[X]$. This automorphism maps a polynomial $p(X)$ to $p(X+t)$.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.AlgebraMap\"\n    },\n    {\n      \"formal_name\": \"Polynomial.taylor_X_pow\",\n      \"informal_name\": \"Taylor Expansion of $X^n$ at $r$ is $(X + r)^n$\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (r : R) (n : ℕ),\\n  (Polynomial.taylor r) (Polynomial.X ^ n) = (Polynomial.X + Polynomial.C r) ^ n\",\n      \"informal_description\": \"For any natural number $n$, the Taylor expansion of the polynomial $X^n$ at $r$ is equal to $(X + r)^n$.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    },\n    {\n      \"formal_name\": \"Polynomial.dvd_comp_X_add_C_iff\",\n      \"informal_name\": \"Divisibility Equivalence for Polynomial Compositions with X ± a\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : CommRing R] (p q : Polynomial R) (a : R),\\n  p ∣ q.comp (Polynomial.X + Polynomial.C a) ↔ p.comp (Polynomial.X - Polynomial.C a) ∣ q\",\n      \"informal_description\": \"For any polynomials $p, q \\\\in R[X]$ and any element $a \\\\in R$, the polynomial $p$ divides the composition $q(X + a)$ if and only if the composition $p(X - a)$ divides $q$.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.AlgebraMap\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "formal_name": "Polynomial.taylor_apply",
+              "informal_name": "Taylor Expansion Formula for Polynomials",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R),\n  (Polynomial.taylor r) f = f.comp (Polynomial.X + Polynomial.C r)",
+              "informal_description": "For any polynomial $ f $ in $ R[X] $ and any element $ r $ in the semiring $ R $, the Taylor expansion of $ f $ at $ r $ is equal to the composition of $ f $ with the polynomial $ X + r $, i.e., $ \\text{Tay}_r(f) = f(X + r) $, where $ X $ denotes the indeterminate of the polynomial ring.",
+              "path": "Mathlib.Algebra.Polynomial.Taylor"
+            },
+            {
+              "formal_name": "Polynomial.taylor_X",
+              "informal_name": "Taylor Expansion of X at r: $\\operatorname{taylor}_r(X) = X + r$",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} [inst : Semiring R] (r : R), (Polynomial.taylor r) Polynomial.X = Polynomial.X + Polynomial.C r",
+              "informal_description": "For any element $ r $ in a semiring $ R $, applying the Taylor expansion at $ r $ to the indeterminate $ X $ results in the polynomial $ X + r $, i.e., $\\operatorname{taylor}_r(X) = X + r$.",
+              "path": "Mathlib.Algebra.Polynomial.Taylor"
+            },
+            {
+              "formal_name": "Polynomial.taylor",
+              "informal_name": "Taylor series expansion at r",
+              "kind": "definition",
+              "type": "{R : Type u_1} → [inst : Semiring R] → R → Polynomial R →ₗ[R] Polynomial R",
+              "informal_description": "For a given element $ r $ in a semiring $ R $, the Taylor series expansion at $ r $ is the $ R $-linear map from $ R[X] $ to $ R[X] $ that sends each polynomial $ f $ to the composition $ f(X + r) $.",
+              "path": "Mathlib.Algebra.Polynomial.Taylor"
+            },
+            {
+              "formal_name": "Polynomial.algEquivAevalXAddC_apply",
+              "informal_name": "Action of the Polynomial Shift Automorphism",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_3} [inst : CommRing R] (t : R) (a : Polynomial R),\n  (Polynomial.algEquivAevalXAddC t) a = (Polynomial.aeval (Polynomial.X + Polynomial.C t)) a",
+              "informal_description": "Let $R$ be a commutative ring and $t \\in R$. For any polynomial $p \\in R[X]$, the action of the algebra automorphism `Polynomial.algEquivAevalXAddC t` on $p$ is given by the evaluation of $p$ at the polynomial $X+t$. This corresponds to substituting the variable $X$ with $X+t$ in the polynomial $p$.",
+              "path": "Mathlib.Algebra.Polynomial.AlgebraMap"
+            },
+            {
+              "formal_name": "Polynomial.taylor_eval",
+              "informal_name": "Taylor Expansion Evaluation Identity: $(\\mathrm{taylor}\\, r\\, f)(s) = f(s + r)$",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} [inst : CommSemiring R] (r : R) (f : Polynomial R) (s : R),\n  Polynomial.eval s ((Polynomial.taylor r) f) = Polynomial.eval (s + r) f",
+              "informal_description": "For any polynomial $ f \\in R[X] $ and elements $ r, s \\in R $, the evaluation of the Taylor expansion of $ f $ at $ r $ at $ s $ equals $ f(s + r) $.",
+              "path": "Mathlib.Algebra.Polynomial.Taylor"
+            },
+            {
+              "formal_name": "Polynomial.algEquivAevalXAddC",
+              "informal_name": "Shift automorphism on the polynomial ring",
+              "kind": "definition",
+              "type": "{R : Type u_3} → [inst : CommRing R] → R → Polynomial R ≃ₐ[R] Polynomial R",
+              "informal_description": "For any commutative ring $R$ and any element $t \\in R$, this defines an $R$-algebra automorphism of the polynomial ring $R[X]$. This automorphism maps a polynomial $p(X)$ to $p(X+t)$.",
+              "path": "Mathlib.Algebra.Polynomial.AlgebraMap"
+            },
+            {
+              "formal_name": "Polynomial.taylor_X_pow",
+              "informal_name": "Taylor Expansion of $X^n$ at $r$ is $(X + r)^n$",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} [inst : Semiring R] (r : R) (n : ℕ),\n  (Polynomial.taylor r) (Polynomial.X ^ n) = (Polynomial.X + Polynomial.C r) ^ n",
+              "informal_description": "For any natural number $n$, the Taylor expansion of the polynomial $X^n$ at $r$ is equal to $(X + r)^n$.",
+              "path": "Mathlib.Algebra.Polynomial.Taylor"
+            },
+            {
+              "formal_name": "Polynomial.dvd_comp_X_add_C_iff",
+              "informal_name": "Divisibility Equivalence for Polynomial Compositions with X ± a",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} [inst : CommRing R] (p q : Polynomial R) (a : R),\n  p ∣ q.comp (Polynomial.X + Polynomial.C a) ↔ p.comp (Polynomial.X - Polynomial.C a) ∣ q",
+              "informal_description": "For any polynomials $p, q \\in R[X]$ and any element $a \\in R$, the polynomial $p$ divides the composition $q(X + a)$ if and only if the composition $p(X - a)$ divides $q$.",
+              "path": "Mathlib.Algebra.Polynomial.AlgebraMap"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "method": "Loogle",
+      "form": "literature",
+      "request": {
+        "query": "Polynomial.taylor, Polynomial.comp",
+        "num_results": 12
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.taylor_apply\",\n      \"type\": \" {R : Type u_1} [Semiring R] (r : R) (f : Polynomial R) : (Polynomial.taylor r) f = f.comp (Polynomial.X + Polynomial.C r)\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "Polynomial.taylor_apply",
+              "type": " {R : Type u_1} [Semiring R] (r : R) (f : Polynomial R) : (Polynomial.taylor r) f = f.comp (Polynomial.X + Polynomial.C r)",
+              "module": "Mathlib.Algebra.Polynomial.Taylor"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "method": "LeanSearch",
+      "form": "literature",
+      "request": {
+        "query": "Polynomial translation P(X+a) is substitution comp X plus C a",
+        "num_results": 8
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.comp\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Eval.Defs\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} → [inst : Semiring R] → Polynomial R → Polynomial R → Polynomial R\"\n    },\n    {\n      \"name\": \"Polynomial.algEquivAevalXAddC\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.AlgebraMap\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_3} → [inst : CommRing R] → R → Polynomial R ≃ₐ[R] Polynomial R\"\n    },\n    {\n      \"name\": \"Polynomial.algEquivAevalXAddC_apply\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.AlgebraMap\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_3} [inst : CommRing R] (t : R) (a : Polynomial R),\\n  (Polynomial.algEquivAevalXAddC t) a = (Polynomial.aeval (Polynomial.X + Polynomial.C t)) a\"\n    },\n    {\n      \"name\": \"minpoly.add_algebraMap\",\n      \"module_name\": \"Mathlib.FieldTheory.Minpoly.Field\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {A : Type u_1} [inst : Field A] {B : Type u_3} [inst_1 : CommRing B] [inst_2 : Algebra A B] (x : B) (a : A),\\n  minpoly A (x + (algebraMap A B) a) = (minpoly A x).comp (Polynomial.X - Polynomial.C a)\"\n    },\n    {\n      \"name\": \"Poly.map\",\n      \"module_name\": \"Mathlib.NumberTheory.Dioph\",\n      \"kind\": \"definition\",\n      \"type\": \"{α : Type u_3} → {β : Type u_4} → (α → β) → Poly α → Poly β\"\n    },\n    {\n      \"name\": \"Polynomial.taylor_apply\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Taylor\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R),\\n  (Polynomial.taylor r) f = f.comp (Polynomial.X + Polynomial.C r)\"\n    },\n    {\n      \"name\": \"Polynomial.compRingHom\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Eval.Defs\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} → [inst : CommSemiring R] → Polynomial R → Polynomial R →+* Polynomial R\"\n    },\n    {\n      \"name\": \"minpoly.sub_algebraMap\",\n      \"module_name\": \"Mathlib.FieldTheory.Minpoly.Field\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {A : Type u_1} [inst : Field A] {B : Type u_3} [inst_1 : CommRing B] [inst_2 : Algebra A B] (x : B) (a : A),\\n  minpoly A (x - (algebraMap A B) a) = (minpoly A x).comp (Polynomial.X + Polynomial.C a)\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "Polynomial.comp",
+              "module_name": "Mathlib.Algebra.Polynomial.Eval.Defs",
+              "kind": "definition",
+              "type": "{R : Type u} → [inst : Semiring R] → Polynomial R → Polynomial R → Polynomial R"
+            },
+            {
+              "name": "Polynomial.algEquivAevalXAddC",
+              "module_name": "Mathlib.Algebra.Polynomial.AlgebraMap",
+              "kind": "definition",
+              "type": "{R : Type u_3} → [inst : CommRing R] → R → Polynomial R ≃ₐ[R] Polynomial R"
+            },
+            {
+              "name": "Polynomial.algEquivAevalXAddC_apply",
+              "module_name": "Mathlib.Algebra.Polynomial.AlgebraMap",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_3} [inst : CommRing R] (t : R) (a : Polynomial R),\n  (Polynomial.algEquivAevalXAddC t) a = (Polynomial.aeval (Polynomial.X + Polynomial.C t)) a"
+            },
+            {
+              "name": "minpoly.add_algebraMap",
+              "module_name": "Mathlib.FieldTheory.Minpoly.Field",
+              "kind": "theorem",
+              "type": "∀ {A : Type u_1} [inst : Field A] {B : Type u_3} [inst_1 : CommRing B] [inst_2 : Algebra A B] (x : B) (a : A),\n  minpoly A (x + (algebraMap A B) a) = (minpoly A x).comp (Polynomial.X - Polynomial.C a)"
+            },
+            {
+              "name": "Poly.map",
+              "module_name": "Mathlib.NumberTheory.Dioph",
+              "kind": "definition",
+              "type": "{α : Type u_3} → {β : Type u_4} → (α → β) → Poly α → Poly β"
+            },
+            {
+              "name": "Polynomial.taylor_apply",
+              "module_name": "Mathlib.Algebra.Polynomial.Taylor",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R),\n  (Polynomial.taylor r) f = f.comp (Polynomial.X + Polynomial.C r)"
+            },
+            {
+              "name": "Polynomial.compRingHom",
+              "module_name": "Mathlib.Algebra.Polynomial.Eval.Defs",
+              "kind": "definition",
+              "type": "{R : Type u} → [inst : CommSemiring R] → Polynomial R → Polynomial R →+* Polynomial R"
+            },
+            {
+              "name": "minpoly.sub_algebraMap",
+              "module_name": "Mathlib.FieldTheory.Minpoly.Field",
+              "kind": "theorem",
+              "type": "∀ {A : Type u_1} [inst : Field A] {B : Type u_3} [inst_1 : CommRing B] [inst_2 : Algebra A B] (x : B) (a : A),\n  minpoly A (x - (algebraMap A B) a) = (minpoly A x).comp (Polynomial.X + Polynomial.C a)"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "method": "local",
+      "form": "literature",
+      "request": {
+        "query": "Polynomial.taylor_apply",
+        "limit": 30,
+        "project_root": "/Users/ramin/LEAN/Roth"
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.taylor_apply\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Taylor.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.taylor_apply\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/Taylor.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "Polynomial.taylor_apply",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Taylor.lean"
+            },
+            {
+              "name": "MvPolynomial.taylor_apply",
+              "kind": "theorem",
+              "file": "Roth/Taylor.lean"
+            }
+          ],
+          "index": "unavailable"
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "method": "Finder",
+      "form": "abstract",
+      "request": {
+        "query": "Multivariate polynomial algebra homomorphism evaluation is substitution eval2 algebraMap",
+        "num_results": 8
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"MvPolynomial.aeval_eq_eval₂Hom\",\n      \"informal_name\": \"Equality of Algebra Evaluation and Two-Argument Evaluation for Multivariate Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁]\\n  (f : σ → S₁) (p : MvPolynomial σ R), (MvPolynomial.aeval f) p = (MvPolynomial.eval₂Hom (algebraMap R S₁) f) p\",\n      \"informal_description\": \"For any multivariate polynomial $ p $ over a commutative semiring $ R $ with variables indexed by $ \\\\sigma $, the algebra evaluation homomorphism $ \\\\mathrm{aeval}_f(p) $ using an $ R $-algebra structure on $ S_1 $ and variable assignment $ f : \\\\sigma \\\\to S_1 $ is equal to the two-argument evaluation homomorphism $ \\\\mathrm{eval}_2^{\\\\mathrm{Hom}}(\\\\mathrm{algebraMap}, f)(p) $, where $ \\\\mathrm{algebraMap} : R \\\\to S_1 $ provides the scalar evaluation. Both methods compute the same result by applying the algebra map to coefficients and substituting variables via $ f $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.aeval_def\",\n      \"informal_name\": \"Definition of Algebra Evaluation Homomorphism for Multivariate Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁]\\n  (f : σ → S₁) (p : MvPolynomial σ R), (MvPolynomial.aeval f) p = MvPolynomial.eval₂ (algebraMap R S₁) f p\",\n      \"informal_description\": \"The algebra evaluation homomorphism for multivariate polynomials is defined by evaluating each polynomial using the canonical algebra map from $ R $ to $ S_1 $ for coefficients and a given variable assignment $ f : \\\\sigma \\\\to S_1 $, such that $ \\\\text{aeval}\\\\, f\\\\, p = \\\\text{eval}_2(\\\\text{algebraMap}(R, S_1), f, p) $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.mapAlgHom_apply\",\n      \"informal_name\": \"Evaluation of Multivariate Polynomials via Algebra Homomorphism\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S₁ : Type v} {S₂ : Type w} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁]\\n  [inst_2 : CommSemiring S₂] [inst_3 : Algebra R S₁] [inst_4 : Algebra R S₂] (f : S₁ →ₐ[R] S₂) (p : MvPolynomial σ S₁),\\n  (MvPolynomial.mapAlgHom f) p = MvPolynomial.eval₂ (MvPolynomial.C.comp ↑f) MvPolynomial.X p\",\n      \"informal_description\": \"For commutative semirings $R$, $S_1$, $S_2$, a type $\\\\sigma$, and an $R$-algebra homomorphism $f : S_1 \\\\to S_2$, applying the algebra homomorphism $\\\\mathrm{MvPolynomial.mapAlgHom}(f)$ to a polynomial $p \\\\in \\\\mathrm{MvPolynomial}(\\\\sigma, S_1)$ yields the same result as evaluating $p$ using the coefficient map $\\\\mathrm{MvPolynomial.C} \\\\circ f$ and the variable map $\\\\mathrm{MvPolynomial.X}$.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.map_aeval\",\n      \"informal_name\": \"Compatibility of Multivariate Polynomial Evaluation with Ring Homomorphisms\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁]\\n  {B : Type u_2} [inst_3 : CommSemiring B] (g : σ → S₁) (φ : S₁ →+* B) (p : MvPolynomial σ R),\\n  φ ((MvPolynomial.aeval g) p) = (MvPolynomial.eval₂Hom (φ.comp (algebraMap R S₁)) fun i => φ (g i)) p\",\n      \"informal_description\": \"For any commutative semiring $ R $, type $ \\\\sigma $, commutative semiring $ S_1 $ with an $ R $-algebra structure, and commutative semiring $ B $, given a variable assignment $ g : \\\\sigma \\\\to S_1 $, a ring homomorphism $ \\\\varphi : S_1 \\\\to B $, and a polynomial $ p \\\\in R[\\\\sigma] $, applying $ \\\\varphi $ to the algebra evaluation $ \\\\mathrm{aeval}_g(p) $ equals evaluating $ p $ using the composed ring homomorphism $ \\\\varphi \\\\circ \\\\mathrm{algebraMap}_{R \\\\to S_1} $ on coefficients and $ \\\\varphi \\\\circ g $ on variables. Symbolically, $ \\\\varphi(\\\\mathrm{aeval}_g(p)) = \\\\mathrm{eval}_2^{\\\\varphi \\\\circ \\\\mathrm{algebraMap}, \\\\varphi \\\\circ g}(p) $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.aeval_algebraMap_apply\",\n      \"informal_name\": \"Algebra Evaluation Commutes with Algebra Map\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {A : Type u_2} (B : Type u_3) {σ : Type u_4} [inst : CommSemiring R] [inst_1 : CommSemiring A]\\n  [inst_2 : CommSemiring B] [inst_3 : Algebra R A] [inst_4 : Algebra A B] [inst_5 : Algebra R B] [IsScalarTower R A B]\\n  (x : σ → A) (p : MvPolynomial σ R),\\n  (MvPolynomial.aeval (⇑(algebraMap A B) ∘ x)) p = (algebraMap A B) ((MvPolynomial.aeval x) p)\",\n      \"informal_description\": \"For any commutative semiring $ R $, type $ \\\\sigma $, and $ R $-algebras $ A $ and $ B $, given a variable assignment $ x : \\\\sigma \\\\to A $ and a polynomial $ p \\\\in R[\\\\sigma] $, the evaluation of $ p $ using the composition of the algebra map $ A \\\\to B $ with $ x $ equals the algebra map $ A \\\\to B $ applied to the evaluation of $ p $ using $ x $. Symbolically, $ \\\\text{eval}_{\\\\text{algebraMap}(A,B) \\\\circ x}(p) = \\\\text{algebraMap}(A,B)(\\\\text{eval}_x(p)) $.\",\n      \"path\": \"Mathlib.RingTheory.MvPolynomial.Tower\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.aeval_map_algebraMap\",\n      \"informal_name\": \"Compatibility of Algebra Evaluation with Coefficient Algebra Map\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} (A : Type u_2) {B : Type u_3} {σ : Type u_4} [inst : CommSemiring R] [inst_1 : CommSemiring A]\\n  [inst_2 : CommSemiring B] [inst_3 : Algebra R A] [inst_4 : Algebra A B] [inst_5 : Algebra R B] [IsScalarTower R A B]\\n  (x : σ → B) (p : MvPolynomial σ R),\\n  (MvPolynomial.aeval x) ((MvPolynomial.map (algebraMap R A)) p) = (MvPolynomial.aeval x) p\",\n      \"informal_description\": \"For any polynomial $ p \\\\in R[\\\\sigma] $ and any assignment $ x : \\\\sigma \\\\to B $, the evaluation of $ p $ after applying the algebra map $ R \\\\to A $ to its coefficients equals the direct evaluation of $ p $ using $ x $. Formally, $ \\\\operatorname{aeval}_x(\\\\operatorname{map}(\\\\operatorname{algebraMap}(R,A)(p)) = \\\\operatorname{aeval}_x(p) $.\",\n      \"path\": \"Mathlib.RingTheory.MvPolynomial.Tower\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.aeval_toMvPolynomial\",\n      \"informal_name\": \"Compatibility of Evaluation with Univariate to Multivariate Polynomial Embedding\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {S : Type u_2} {σ : Type u_3} [inst : CommSemiring R] [inst_1 : CommSemiring S] [inst_2 : Algebra R S]\\n  (f : σ → S) (i : σ) (p : Polynomial R),\\n  (MvPolynomial.aeval f) ((Polynomial.toMvPolynomial i) p) = (Polynomial.aeval (f i)) p\",\n      \"informal_description\": \"For any function $ f : \\\\sigma \\\\to S $, element $ i \\\\in \\\\sigma $, and polynomial $ p \\\\in R[X] $, evaluating the multivariate polynomial obtained by substituting the variable $ X $ with the $ i $-th variable in $ \\\\sigma $ using the evaluation map defined by $ f $ is equal to evaluating $ p $ at $ f(i) $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.aeval\",\n      \"informal_name\": \"Algebra Evaluation Homomorphism for Multivariate Polynomials\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} →\\n  {S₁ : Type v} →\\n    {σ : Type u_1} →\\n      [inst : CommSemiring R] →\\n        [inst_1 : CommSemiring S₁] → [inst_2 : Algebra R S₁] → (σ → S₁) → MvPolynomial σ R →ₐ[R] S₁\",\n      \"informal_description\": \"The algebra homomorphism from the multivariate polynomial ring $ R[\\\\sigma] $ to a commutative semiring $ S_1 $ equipped with an $ R $-algebra structure, defined by evaluating polynomials using the canonical algebra map $ R \\\\to S_1 $ for coefficients and a given variable assignment $ \\\\sigma \\\\to S_1 $. This homomorphism preserves addition, multiplication, scalar multiplication by $ R $, and maps the constant polynomial $ C(r) $ to $ \\\\text{algebraMap}(r) $ for all $ r \\\\in R $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "formal_name": "MvPolynomial.aeval_eq_eval₂Hom",
+              "informal_name": "Equality of Algebra Evaluation and Two-Argument Evaluation for Multivariate Polynomials",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁]\n  (f : σ → S₁) (p : MvPolynomial σ R), (MvPolynomial.aeval f) p = (MvPolynomial.eval₂Hom (algebraMap R S₁) f) p",
+              "informal_description": "For any multivariate polynomial $ p $ over a commutative semiring $ R $ with variables indexed by $ \\sigma $, the algebra evaluation homomorphism $ \\mathrm{aeval}_f(p) $ using an $ R $-algebra structure on $ S_1 $ and variable assignment $ f : \\sigma \\to S_1 $ is equal to the two-argument evaluation homomorphism $ \\mathrm{eval}_2^{\\mathrm{Hom}}(\\mathrm{algebraMap}, f)(p) $, where $ \\mathrm{algebraMap} : R \\to S_1 $ provides the scalar evaluation. Both methods compute the same result by applying the algebra map to coefficients and substituting variables via $ f $.",
+              "path": "Mathlib.Algebra.MvPolynomial.Eval"
+            },
+            {
+              "formal_name": "MvPolynomial.aeval_def",
+              "informal_name": "Definition of Algebra Evaluation Homomorphism for Multivariate Polynomials",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁]\n  (f : σ → S₁) (p : MvPolynomial σ R), (MvPolynomial.aeval f) p = MvPolynomial.eval₂ (algebraMap R S₁) f p",
+              "informal_description": "The algebra evaluation homomorphism for multivariate polynomials is defined by evaluating each polynomial using the canonical algebra map from $ R $ to $ S_1 $ for coefficients and a given variable assignment $ f : \\sigma \\to S_1 $, such that $ \\text{aeval}\\, f\\, p = \\text{eval}_2(\\text{algebraMap}(R, S_1), f, p) $.",
+              "path": "Mathlib.Algebra.MvPolynomial.Eval"
+            },
+            {
+              "formal_name": "MvPolynomial.mapAlgHom_apply",
+              "informal_name": "Evaluation of Multivariate Polynomials via Algebra Homomorphism",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} {S₁ : Type v} {S₂ : Type w} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁]\n  [inst_2 : CommSemiring S₂] [inst_3 : Algebra R S₁] [inst_4 : Algebra R S₂] (f : S₁ →ₐ[R] S₂) (p : MvPolynomial σ S₁),\n  (MvPolynomial.mapAlgHom f) p = MvPolynomial.eval₂ (MvPolynomial.C.comp ↑f) MvPolynomial.X p",
+              "informal_description": "For commutative semirings $R$, $S_1$, $S_2$, a type $\\sigma$, and an $R$-algebra homomorphism $f : S_1 \\to S_2$, applying the algebra homomorphism $\\mathrm{MvPolynomial.mapAlgHom}(f)$ to a polynomial $p \\in \\mathrm{MvPolynomial}(\\sigma, S_1)$ yields the same result as evaluating $p$ using the coefficient map $\\mathrm{MvPolynomial.C} \\circ f$ and the variable map $\\mathrm{MvPolynomial.X}$.",
+              "path": "Mathlib.Algebra.MvPolynomial.Eval"
+            },
+            {
+              "formal_name": "MvPolynomial.map_aeval",
+              "informal_name": "Compatibility of Multivariate Polynomial Evaluation with Ring Homomorphisms",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁]\n  {B : Type u_2} [inst_3 : CommSemiring B] (g : σ → S₁) (φ : S₁ →+* B) (p : MvPolynomial σ R),\n  φ ((MvPolynomial.aeval g) p) = (MvPolynomial.eval₂Hom (φ.comp (algebraMap R S₁)) fun i => φ (g i)) p",
+              "informal_description": "For any commutative semiring $ R $, type $ \\sigma $, commutative semiring $ S_1 $ with an $ R $-algebra structure, and commutative semiring $ B $, given a variable assignment $ g : \\sigma \\to S_1 $, a ring homomorphism $ \\varphi : S_1 \\to B $, and a polynomial $ p \\in R[\\sigma] $, applying $ \\varphi $ to the algebra evaluation $ \\mathrm{aeval}_g(p) $ equals evaluating $ p $ using the composed ring homomorphism $ \\varphi \\circ \\mathrm{algebraMap}_{R \\to S_1} $ on coefficients and $ \\varphi \\circ g $ on variables. Symbolically, $ \\varphi(\\mathrm{aeval}_g(p)) = \\mathrm{eval}_2^{\\varphi \\circ \\mathrm{algebraMap}, \\varphi \\circ g}(p) $.",
+              "path": "Mathlib.Algebra.MvPolynomial.Eval"
+            },
+            {
+              "formal_name": "MvPolynomial.aeval_algebraMap_apply",
+              "informal_name": "Algebra Evaluation Commutes with Algebra Map",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} {A : Type u_2} (B : Type u_3) {σ : Type u_4} [inst : CommSemiring R] [inst_1 : CommSemiring A]\n  [inst_2 : CommSemiring B] [inst_3 : Algebra R A] [inst_4 : Algebra A B] [inst_5 : Algebra R B] [IsScalarTower R A B]\n  (x : σ → A) (p : MvPolynomial σ R),\n  (MvPolynomial.aeval (⇑(algebraMap A B) ∘ x)) p = (algebraMap A B) ((MvPolynomial.aeval x) p)",
+              "informal_description": "For any commutative semiring $ R $, type $ \\sigma $, and $ R $-algebras $ A $ and $ B $, given a variable assignment $ x : \\sigma \\to A $ and a polynomial $ p \\in R[\\sigma] $, the evaluation of $ p $ using the composition of the algebra map $ A \\to B $ with $ x $ equals the algebra map $ A \\to B $ applied to the evaluation of $ p $ using $ x $. Symbolically, $ \\text{eval}_{\\text{algebraMap}(A,B) \\circ x}(p) = \\text{algebraMap}(A,B)(\\text{eval}_x(p)) $.",
+              "path": "Mathlib.RingTheory.MvPolynomial.Tower"
+            },
+            {
+              "formal_name": "MvPolynomial.aeval_map_algebraMap",
+              "informal_name": "Compatibility of Algebra Evaluation with Coefficient Algebra Map",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} (A : Type u_2) {B : Type u_3} {σ : Type u_4} [inst : CommSemiring R] [inst_1 : CommSemiring A]\n  [inst_2 : CommSemiring B] [inst_3 : Algebra R A] [inst_4 : Algebra A B] [inst_5 : Algebra R B] [IsScalarTower R A B]\n  (x : σ → B) (p : MvPolynomial σ R),\n  (MvPolynomial.aeval x) ((MvPolynomial.map (algebraMap R A)) p) = (MvPolynomial.aeval x) p",
+              "informal_description": "For any polynomial $ p \\in R[\\sigma] $ and any assignment $ x : \\sigma \\to B $, the evaluation of $ p $ after applying the algebra map $ R \\to A $ to its coefficients equals the direct evaluation of $ p $ using $ x $. Formally, $ \\operatorname{aeval}_x(\\operatorname{map}(\\operatorname{algebraMap}(R,A)(p)) = \\operatorname{aeval}_x(p) $.",
+              "path": "Mathlib.RingTheory.MvPolynomial.Tower"
+            },
+            {
+              "formal_name": "MvPolynomial.aeval_toMvPolynomial",
+              "informal_name": "Compatibility of Evaluation with Univariate to Multivariate Polynomial Embedding",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} {S : Type u_2} {σ : Type u_3} [inst : CommSemiring R] [inst_1 : CommSemiring S] [inst_2 : Algebra R S]\n  (f : σ → S) (i : σ) (p : Polynomial R),\n  (MvPolynomial.aeval f) ((Polynomial.toMvPolynomial i) p) = (Polynomial.aeval (f i)) p",
+              "informal_description": "For any function $ f : \\sigma \\to S $, element $ i \\in \\sigma $, and polynomial $ p \\in R[X] $, evaluating the multivariate polynomial obtained by substituting the variable $ X $ with the $ i $-th variable in $ \\sigma $ using the evaluation map defined by $ f $ is equal to evaluating $ p $ at $ f(i) $.",
+              "path": "Mathlib.Algebra.MvPolynomial.Equiv"
+            },
+            {
+              "formal_name": "MvPolynomial.aeval",
+              "informal_name": "Algebra Evaluation Homomorphism for Multivariate Polynomials",
+              "kind": "definition",
+              "type": "{R : Type u} →\n  {S₁ : Type v} →\n    {σ : Type u_1} →\n      [inst : CommSemiring R] →\n        [inst_1 : CommSemiring S₁] → [inst_2 : Algebra R S₁] → (σ → S₁) → MvPolynomial σ R →ₐ[R] S₁",
+              "informal_description": "The algebra homomorphism from the multivariate polynomial ring $ R[\\sigma] $ to a commutative semiring $ S_1 $ equipped with an $ R $-algebra structure, defined by evaluating polynomials using the canonical algebra map $ R \\to S_1 $ for coefficients and a given variable assignment $ \\sigma \\to S_1 $. This homomorphism preserves addition, multiplication, scalar multiplication by $ R $, and maps the constant polynomial $ C(r) $ to $ \\text{algebraMap}(r) $ for all $ r \\in R $.",
+              "path": "Mathlib.Algebra.MvPolynomial.Eval"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "method": "Loogle",
+      "form": "abstract",
+      "request": {
+        "query": "MvPolynomial.aeval, MvPolynomial.eval₂",
+        "num_results": 12
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.aeval_def\",\n      \"type\": \" {R : Type u} {S₁ : Type v} {σ : Type u_1} [CommSemiring R] [CommSemiring S₁] [Algebra R S₁] (f : σ → S₁) (p : MvPolynomial σ R) : (MvPolynomial.aeval f) p = MvPolynomial.eval₂ (algebraMap R S₁) f p\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "MvPolynomial.aeval_def",
+              "type": " {R : Type u} {S₁ : Type v} {σ : Type u_1} [CommSemiring R] [CommSemiring S₁] [Algebra R S₁] (f : σ → S₁) (p : MvPolynomial σ R) : (MvPolynomial.aeval f) p = MvPolynomial.eval₂ (algebraMap R S₁) f p",
+              "module": "Mathlib.Algebra.MvPolynomial.Eval"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "method": "LeanSearch",
+      "form": "abstract",
+      "request": {
+        "query": "Multivariate polynomial algebra homomorphism evaluation is substitution eval2 algebraMap",
+        "num_results": 8
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.aeval\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Eval\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} →\\n  {S₁ : Type v} →\\n    {σ : Type u_1} →\\n      [inst : CommSemiring R] →\\n        [inst_1 : CommSemiring S₁] → [inst_2 : Algebra R S₁] → (σ → S₁) → MvPolynomial σ R →ₐ[R] S₁\"\n    },\n    {\n      \"name\": \"Polynomial.algHom_eval₂_algebraMap\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.AlgebraMap\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_3} {A : Type u_4} {B : Type u_5} [inst : CommSemiring R] [inst_1 : Semiring A] [inst_2 : Semiring B]\\n  [inst_3 : Algebra R A] [inst_4 : Algebra R B] (p : Polynomial R) (f : A →ₐ[R] B) (a : A),\\n  f (Polynomial.eval₂ (algebraMap R A) a p) = Polynomial.eval₂ (algebraMap R B) (f a) p\"\n    },\n    {\n      \"name\": \"Polynomial.aeval_def\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.AlgebraMap\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {A : Type z} [inst : CommSemiring R] [inst_1 : Semiring A] [inst_2 : Algebra R A] (x : A)\\n  (p : Polynomial R), (Polynomial.aeval x) p = Polynomial.eval₂ (algebraMap R A) x p\"\n    },\n    {\n      \"name\": \"MvPolynomial.aeval_eq_eval₂Hom\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Eval\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁]\\n  (f : σ → S₁) (p : MvPolynomial σ R), (MvPolynomial.aeval f) p = (MvPolynomial.eval₂Hom (algebraMap R S₁) f) p\"\n    },\n    {\n      \"name\": \"MvPolynomial.mapAlgHom_apply\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Eval\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S₁ : Type v} {S₂ : Type w} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁]\\n  [inst_2 : CommSemiring S₂] [inst_3 : Algebra R S₁] [inst_4 : Algebra R S₂] (f : S₁ →ₐ[R] S₂) (p : MvPolynomial σ S₁),\\n  (MvPolynomial.mapAlgHom f) p = MvPolynomial.eval₂ (MvPolynomial.C.comp ↑f) MvPolynomial.X p\"\n    },\n    {\n      \"name\": \"MvPolynomial.eval₂_eq_eval_map\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Eval\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] (f : R →+* S₁)\\n  (g : σ → S₁) (p : MvPolynomial σ R), MvPolynomial.eval₂ f g p = (MvPolynomial.eval g) ((MvPolynomial.map f) p)\"\n    },\n    {\n      \"name\": \"MvPowerSeries.subst_eq_eval₂\",\n      \"module_name\": \"Mathlib.RingTheory.MvPowerSeries.Substitution\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_3} [inst : CommRing R] {τ : Type u_4} {S : Type u_5} [inst_1 : CommRing S]\\n  [inst_2 : Algebra R S] [inst_3 : UniformSpace R] [DiscreteUniformity R] [inst_5 : UniformSpace S]\\n  [DiscreteUniformity S], MvPowerSeries.subst = MvPowerSeries.eval₂ (algebraMap R (MvPowerSeries τ S))\"\n    },\n    {\n      \"name\": \"Polynomial.aeval_algebraMap_apply\",\n      \"module_name\": \"Mathlib.RingTheory.Polynomial.Tower\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {A : Type u_2} (B : Type u_3) [inst : CommSemiring R] [inst_1 : CommSemiring A] [inst_2 : Semiring B]\\n  [inst_3 : Algebra R A] [inst_4 : Algebra A B] [inst_5 : Algebra R B] [IsScalarTower R A B] (x : A) (p : Polynomial R),\\n  (Polynomial.aeval ((algebraMap A B) x)) p = (algebraMap A B) ((Polynomial.aeval x) p)\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "MvPolynomial.aeval",
+              "module_name": "Mathlib.Algebra.MvPolynomial.Eval",
+              "kind": "definition",
+              "type": "{R : Type u} →\n  {S₁ : Type v} →\n    {σ : Type u_1} →\n      [inst : CommSemiring R] →\n        [inst_1 : CommSemiring S₁] → [inst_2 : Algebra R S₁] → (σ → S₁) → MvPolynomial σ R →ₐ[R] S₁"
+            },
+            {
+              "name": "Polynomial.algHom_eval₂_algebraMap",
+              "module_name": "Mathlib.Algebra.Polynomial.AlgebraMap",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_3} {A : Type u_4} {B : Type u_5} [inst : CommSemiring R] [inst_1 : Semiring A] [inst_2 : Semiring B]\n  [inst_3 : Algebra R A] [inst_4 : Algebra R B] (p : Polynomial R) (f : A →ₐ[R] B) (a : A),\n  f (Polynomial.eval₂ (algebraMap R A) a p) = Polynomial.eval₂ (algebraMap R B) (f a) p"
+            },
+            {
+              "name": "Polynomial.aeval_def",
+              "module_name": "Mathlib.Algebra.Polynomial.AlgebraMap",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} {A : Type z} [inst : CommSemiring R] [inst_1 : Semiring A] [inst_2 : Algebra R A] (x : A)\n  (p : Polynomial R), (Polynomial.aeval x) p = Polynomial.eval₂ (algebraMap R A) x p"
+            },
+            {
+              "name": "MvPolynomial.aeval_eq_eval₂Hom",
+              "module_name": "Mathlib.Algebra.MvPolynomial.Eval",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁]\n  (f : σ → S₁) (p : MvPolynomial σ R), (MvPolynomial.aeval f) p = (MvPolynomial.eval₂Hom (algebraMap R S₁) f) p"
+            },
+            {
+              "name": "MvPolynomial.mapAlgHom_apply",
+              "module_name": "Mathlib.Algebra.MvPolynomial.Eval",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} {S₁ : Type v} {S₂ : Type w} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁]\n  [inst_2 : CommSemiring S₂] [inst_3 : Algebra R S₁] [inst_4 : Algebra R S₂] (f : S₁ →ₐ[R] S₂) (p : MvPolynomial σ S₁),\n  (MvPolynomial.mapAlgHom f) p = MvPolynomial.eval₂ (MvPolynomial.C.comp ↑f) MvPolynomial.X p"
+            },
+            {
+              "name": "MvPolynomial.eval₂_eq_eval_map",
+              "module_name": "Mathlib.Algebra.MvPolynomial.Eval",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] (f : R →+* S₁)\n  (g : σ → S₁) (p : MvPolynomial σ R), MvPolynomial.eval₂ f g p = (MvPolynomial.eval g) ((MvPolynomial.map f) p)"
+            },
+            {
+              "name": "MvPowerSeries.subst_eq_eval₂",
+              "module_name": "Mathlib.RingTheory.MvPowerSeries.Substitution",
+              "kind": "theorem",
+              "type": "∀ {σ : Type u_1} {R : Type u_3} [inst : CommRing R] {τ : Type u_4} {S : Type u_5} [inst_1 : CommRing S]\n  [inst_2 : Algebra R S] [inst_3 : UniformSpace R] [DiscreteUniformity R] [inst_5 : UniformSpace S]\n  [DiscreteUniformity S], MvPowerSeries.subst = MvPowerSeries.eval₂ (algebraMap R (MvPowerSeries τ S))"
+            },
+            {
+              "name": "Polynomial.aeval_algebraMap_apply",
+              "module_name": "Mathlib.RingTheory.Polynomial.Tower",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} {A : Type u_2} (B : Type u_3) [inst : CommSemiring R] [inst_1 : CommSemiring A] [inst_2 : Semiring B]\n  [inst_3 : Algebra R A] [inst_4 : Algebra A B] [inst_5 : Algebra R B] [IsScalarTower R A B] (x : A) (p : Polynomial R),\n  (Polynomial.aeval ((algebraMap A B) x)) p = (algebraMap A B) ((Polynomial.aeval x) p)"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "method": "local",
+      "form": "abstract",
+      "request": {
+        "query": "MvPolynomial.aeval_def",
+        "limit": 30,
+        "project_root": "/Users/ramin/LEAN/Roth"
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.aeval_def\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Eval.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "MvPolynomial.aeval_def",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Eval.lean"
+            }
+          ],
+          "index": "unavailable"
+        },
+        "isError": false
+      }
+    }
+  }
+]
