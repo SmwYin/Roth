@@ -1,0 +1,12 @@
+  (Finset.prod_const b).symm ▸ prod_mul_distrib.symm
+
+@[to_additive]
+theorem pow_eq_prod_const (b : M) : ∀ n, b ^ n = ∏ _k ∈ range n, b := by simp
+
+@[to_additive sum_nsmul_assoc]
+lemma prod_pow_eq_pow_sum (s : Finset ι) (f : ι → ℕ) (a : M) :
+    ∏ i ∈ s, a ^ f i = a ^ ∑ i ∈ s, f i :=
+  cons_induction (by simp) (fun _ _ _ _ ↦ by simp [prod_cons, sum_cons, pow_add, *]) s
+
+@[to_additive]
+theorem prod_flip {n : ℕ} (f : ℕ → M) :

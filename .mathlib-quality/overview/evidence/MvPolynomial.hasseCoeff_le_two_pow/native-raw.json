@@ -1,0 +1,93 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MvPolynomial.PDeriv\nimport Mathlib.Algebra.MvPolynomial.Equiv\nimport Mathlib.Algebra.Polynomial.HasseDeriv\nimport Mathlib.Data.Nat.Choose.Bounds\n\n\nnamespace RawHasseCoefficientBounds\nvariable {σ : Type*}\ndef factor (d k : σ →₀ ℕ) : ℕ := d.prod fun j ↦ (k j).choose\ntheorem finite_product (s : Finset σ) (d k r : σ → ℕ) (hk : ∀ j ∈ s, k j ≤ r j) :\n    (∏ j ∈ s, (k j).choose (d j)) ≤ 2 ^ (∑ j ∈ s, r j) := by\n  rw [← Finset.prod_pow_eq_pow_sum]\n  exact Finset.prod_le_prod fun j hj ↦\n    (Nat.choose_le_two_pow _ _).trans (Nat.pow_le_pow_right two_pos (hk j hj))\ntheorem support_bound {d k : σ →₀ ℕ} {r : σ → ℕ}\n    (hk : ∀ j ∈ d.support, k j ≤ r j) :\n    factor d k ≤ 2 ^ (∑ j ∈ d.support, r j) :=\n  finite_product d.support d k r hk\ntheorem global [Fintype σ] {d k : σ →₀ ℕ} {r : σ → ℕ}\n    (hk : ∀ j ∈ d.support, k j ≤ r j) : factor d k ≤ 2 ^ (∑ j, r j) := by\n  refine support_bound hk |>.trans (Nat.pow_le_pow_right two_pos ?_)\n  exact Finset.sum_le_sum_of_subset (Finset.subset_univ _)\n#check @Nat.choose_le_two_pow\n#check @Nat.pow_le_pow_right\n#check @Finset.prod_le_prod\n#check @Finset.prod_pow_eq_pow_sum\n#check_failure MvPolynomial.hasseCoeff_le_two_pow\n#print axioms finite_product\n#print axioms support_bound\n#print axioms global\nend RawHasseCoefficientBounds\n"
+  },
+  "elapsed_ms": 613,
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Nat.choose_le_two_pow : ∀ (n k : ℕ), n.choose k ≤ 2 ^ n\",\n      \"line\": 23,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Nat.pow_le_pow_right : ∀ {n : ℕ}, n > 0 → ∀ {i j : ℕ}, i ≤ j → n ^ i ≤ n ^ j\",\n      \"line\": 24,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finset.prod_le_prod : ∀ {ι : Type u_2} {N : Type u_3} [inst : CommMonoid N] [inst_1 : Preorder N] {f g : ι → N}\\n  {s : Finset ι} [MulLeftMono N], (∀ i ∈ s, f i ≤ g i) → ∏ i ∈ s, f i ≤ ∏ i ∈ s, g i\",\n      \"line\": 25,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finset.prod_pow_eq_pow_sum : ∀ {ι : Type u_2} {M : Type u_3} [inst : CommMonoid M] (s : Finset ι) (f : ι → ℕ) (a : M),\\n  ∏ i ∈ s, a ^ f i = a ^ ∑ i ∈ s, f i\",\n      \"line\": 26,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown constant `MvPolynomial.hasseCoeff_le_two_pow`\",\n      \"line\": 27,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'RawHasseCoefficientBounds.finite_product' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 28,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'RawHasseCoefficientBounds.support_bound' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 29,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'RawHasseCoefficientBounds.global' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 30,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Nat.choose_le_two_pow : ∀ (n k : ℕ), n.choose k ≤ 2 ^ n",
+          "line": 23,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Nat.pow_le_pow_right : ∀ {n : ℕ}, n > 0 → ∀ {i j : ℕ}, i ≤ j → n ^ i ≤ n ^ j",
+          "line": 24,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finset.prod_le_prod : ∀ {ι : Type u_2} {N : Type u_3} [inst : CommMonoid N] [inst_1 : Preorder N] {f g : ι → N}\n  {s : Finset ι} [MulLeftMono N], (∀ i ∈ s, f i ≤ g i) → ∏ i ∈ s, f i ≤ ∏ i ∈ s, g i",
+          "line": 25,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finset.prod_pow_eq_pow_sum : ∀ {ι : Type u_2} {M : Type u_3} [inst : CommMonoid M] (s : Finset ι) (f : ι → ℕ) (a : M),\n  ∏ i ∈ s, a ^ f i = a ^ ∑ i ∈ s, f i",
+          "line": 26,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown constant `MvPolynomial.hasseCoeff_le_two_pow`",
+          "line": 27,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'RawHasseCoefficientBounds.finite_product' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 28,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'RawHasseCoefficientBounds.support_bound' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 29,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'RawHasseCoefficientBounds.global' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 30,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  }
+}

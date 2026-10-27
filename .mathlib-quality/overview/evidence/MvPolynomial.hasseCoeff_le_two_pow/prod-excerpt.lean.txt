@@ -1,0 +1,18 @@
+
+/-- If `f : M → N` is a subadditive function, `f (x + y) ≤ f x + f y`, `f 0 = 0`, and `g i`,
+`i ∈ s`, is a finite family of elements of `M`, then `f (∑ i ∈ s, g i) ≤ ∑ i ∈ s, f (g i)`. -/
+add_decl_doc le_sum_of_subadditive
+
+variable {f g : ι → N} {s t : Finset ι}
+
+/-- In an ordered commutative monoid, if each factor `f i` of one finite product is less than or
+equal to the corresponding factor `g i` of another finite product, then
+`∏ i ∈ s, f i ≤ ∏ i ∈ s, g i`. -/
+@[to_additive (attr := gcongr)]
+theorem prod_le_prod [MulLeftMono N] (h : ∀ i ∈ s, f i ≤ g i) : ∏ i ∈ s, f i ≤ ∏ i ∈ s, g i :=
+  Multiset.prod_map_le_prod_map f g h
+
+@[deprecated (since := "2026-09-01")] alias prod_le_prod' := prod_le_prod
+
+attribute [bound] sum_le_sum
+

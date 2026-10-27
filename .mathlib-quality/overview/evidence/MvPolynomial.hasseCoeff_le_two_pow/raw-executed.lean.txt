@@ -1,0 +1,31 @@
+import Mathlib.Algebra.MvPolynomial.PDeriv
+import Mathlib.Algebra.MvPolynomial.Equiv
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Data.Nat.Choose.Bounds
+
+
+namespace RawHasseCoefficientBounds
+variable {σ : Type*}
+def factor (d k : σ →₀ ℕ) : ℕ := d.prod fun j ↦ (k j).choose
+theorem finite_product (s : Finset σ) (d k r : σ → ℕ) (hk : ∀ j ∈ s, k j ≤ r j) :
+    (∏ j ∈ s, (k j).choose (d j)) ≤ 2 ^ (∑ j ∈ s, r j) := by
+  rw [← Finset.prod_pow_eq_pow_sum]
+  exact Finset.prod_le_prod fun j hj ↦
+    (Nat.choose_le_two_pow _ _).trans (Nat.pow_le_pow_right two_pos (hk j hj))
+theorem support_bound {d k : σ →₀ ℕ} {r : σ → ℕ}
+    (hk : ∀ j ∈ d.support, k j ≤ r j) :
+    factor d k ≤ 2 ^ (∑ j ∈ d.support, r j) :=
+  finite_product d.support d k r hk
+theorem global [Fintype σ] {d k : σ →₀ ℕ} {r : σ → ℕ}
+    (hk : ∀ j ∈ d.support, k j ≤ r j) : factor d k ≤ 2 ^ (∑ j, r j) := by
+  refine support_bound hk |>.trans (Nat.pow_le_pow_right two_pos ?_)
+  exact Finset.sum_le_sum_of_subset (Finset.subset_univ _)
+#check @Nat.choose_le_two_pow
+#check @Nat.pow_le_pow_right
+#check @Finset.prod_le_prod
+#check @Finset.prod_pow_eq_pow_sum
+#check_failure MvPolynomial.hasseCoeff_le_two_pow
+#print axioms finite_product
+#print axioms support_bound
+#print axioms global
+end RawHasseCoefficientBounds
