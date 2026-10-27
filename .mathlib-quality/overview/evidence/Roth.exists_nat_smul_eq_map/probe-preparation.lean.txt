@@ -1,0 +1,21 @@
+-- Required additional imports: Mathlib.RingTheory.MvPolynomial.Localization
+-- Mathlib.RingTheory.Localization.Integer; Mathlib.RingTheory.Localization.FractionRing
+#check_failure Roth.exists_nat_smul_eq_map
+#check @MvPolynomial.isLocalization
+#check @IsLocalization.exists_integer_multiple
+#check @IsLocalization.exist_integer_multiples
+#check @MvPolynomial.algebraMvPolynomial
+#check @Int.natCast_natAbs
+#check @Int.natAbs_of_nonneg
+open MvPolynomial
+example {σ : Type*} (G : MvPolynomial σ ℚ) :
+    ∃ (N : ℕ) (U : MvPolynomial σ ℤ), 0 < N ∧
+      map (Int.castRingHom ℚ) U = (N : ℚ) • G := by
+  letI := MvPolynomial.algebraMvPolynomial (σ := σ) ℤ ℚ
+  obtain ⟨⟨_, n, hn, rfl⟩, U, hU⟩ :=
+    IsLocalization.exists_integer_multiple
+      ((Submonoid.pos ℤ).map (C (σ := σ))) G
+  refine ⟨n.natAbs, U, Int.natAbs_pos.mpr (ne_of_gt hn), ?_⟩
+  simpa only [MvPolynomial.algebraMap_def, Algebra.smul_def, map_C,
+    Int.castRingHom_eq_intCast, Int.natCast_natAbs, abs_of_pos hn,
+    smul_eq_C_mul] using hU

@@ -1,0 +1,93 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\n\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\n-- Required additional imports: Mathlib.RingTheory.MvPolynomial.Localization\n-- Mathlib.RingTheory.Localization.Integer; Mathlib.RingTheory.Localization.FractionRing\n#check_failure Roth.exists_nat_smul_eq_map\n#check @MvPolynomial.isLocalization\n#check @IsLocalization.exists_integer_multiple\n#check @IsLocalization.exist_integer_multiples\n#check @MvPolynomial.algebraMvPolynomial\n#check @Int.natCast_natAbs\n#check @Int.natAbs_of_nonneg\nnamespace ClearDenoms171\nopen MvPolynomial\ntheorem originalProbe171 {σ : Type*} (G : MvPolynomial σ ℚ) :\n    ∃ (N : ℕ) (U : MvPolynomial σ ℤ), 0 < N ∧\n      map (Int.castRingHom ℚ) U = (N : ℚ) • G := by\n  let : Algebra (MvPolynomial σ ℤ) (MvPolynomial σ ℚ) :=\n    MvPolynomial.algebraMvPolynomial\n  obtain ⟨⟨_, n, hn, rfl⟩, U, hU⟩ :=\n    IsLocalization.exists_integer_multiple\n      ((Submonoid.pos ℤ).map (C (σ := σ))) G\n  have hn' : (0 : ℤ) < n := hn\n  have hnat : (n.natAbs : ℤ) = n := Int.natAbs_of_nonneg hn'.le\n  have hcast : (n.natAbs : ℚ) = (n : ℚ) := by\n    simpa only [Int.cast_natCast] using congrArg (fun z : ℤ ↦ (z : ℚ)) hnat\n  refine ⟨n.natAbs, U, Int.natAbs_pos.mpr (ne_of_gt hn'), ?_⟩\n  have hU' : map (Int.castRingHom ℚ) U = C (n : ℚ) * G := by\n    simpa only [MvPolynomial.algebraMap_def, Algebra.smul_def, map_C, algebraMap_int_eq,\n      Int.coe_castRingHom] using hU\n  simpa only [smul_eq_C_mul, hcast] using hU'\n\n#print axioms ClearDenoms171.originalProbe171\nend ClearDenoms171\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.exists_nat_smul_eq_map`\",\n      \"line\": 18,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPolynomial.isLocalization : ∀ {σ : Type u_1} {R : Type u_2} [inst : CommRing R] (M : Submonoid R) (S : Type u_3)\\n  [inst_1 : CommRing S] [inst_2 : Algebra R S] [IsLocalization M S],\\n  IsLocalization (Submonoid.map MvPolynomial.C M) (MvPolynomial σ S)\",\n      \"line\": 19,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@IsLocalization.exists_integer_multiple : ∀ {R : Type u_1} [inst : CommSemiring R] (M : Submonoid R) {S : Type u_2}\\n  [inst_1 : CommSemiring S] [inst_2 : Algebra R S] [IsLocalization M S] (a : S),\\n  ∃ b, IsLocalization.IsInteger R (↑b • a)\",\n      \"line\": 20,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@IsLocalization.exist_integer_multiples : ∀ {R : Type u_1} [inst : CommSemiring R] (M : Submonoid R) {S : Type u_2}\\n  [inst_1 : CommSemiring S] [inst_2 : Algebra R S] [IsLocalization M S] {ι : Type u_3} (s : Finset ι) (f : ι → S),\\n  ∃ b, ∀ i ∈ s, IsLocalization.IsInteger R (↑b • f i)\",\n      \"line\": 21,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPolynomial.algebraMvPolynomial : {R : Type u_1} →\\n  {S : Type u_2} →\\n    {σ : Type u_3} →\\n      [inst : CommSemiring R] →\\n        [inst_1 : CommSemiring S] → [Algebra R S] → Algebra (MvPolynomial σ R) (MvPolynomial σ S)\",\n      \"line\": 22,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Int.natCast_natAbs : ∀ (n : ℤ), ↑n.natAbs = |n|\",\n      \"line\": 23,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Int.natAbs_of_nonneg : ∀ {a : ℤ}, 0 ≤ a → ↑a.natAbs = a\",\n      \"line\": 24,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'ClearDenoms171.originalProbe171' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 45,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.exists_nat_smul_eq_map`",
+          "line": 18,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPolynomial.isLocalization : ∀ {σ : Type u_1} {R : Type u_2} [inst : CommRing R] (M : Submonoid R) (S : Type u_3)\n  [inst_1 : CommRing S] [inst_2 : Algebra R S] [IsLocalization M S],\n  IsLocalization (Submonoid.map MvPolynomial.C M) (MvPolynomial σ S)",
+          "line": 19,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@IsLocalization.exists_integer_multiple : ∀ {R : Type u_1} [inst : CommSemiring R] (M : Submonoid R) {S : Type u_2}\n  [inst_1 : CommSemiring S] [inst_2 : Algebra R S] [IsLocalization M S] (a : S),\n  ∃ b, IsLocalization.IsInteger R (↑b • a)",
+          "line": 20,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@IsLocalization.exist_integer_multiples : ∀ {R : Type u_1} [inst : CommSemiring R] (M : Submonoid R) {S : Type u_2}\n  [inst_1 : CommSemiring S] [inst_2 : Algebra R S] [IsLocalization M S] {ι : Type u_3} (s : Finset ι) (f : ι → S),\n  ∃ b, ∀ i ∈ s, IsLocalization.IsInteger R (↑b • f i)",
+          "line": 21,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPolynomial.algebraMvPolynomial : {R : Type u_1} →\n  {S : Type u_2} →\n    {σ : Type u_3} →\n      [inst : CommSemiring R] →\n        [inst_1 : CommSemiring S] → [Algebra R S] → Algebra (MvPolynomial σ R) (MvPolynomial σ S)",
+          "line": 22,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Int.natCast_natAbs : ∀ (n : ℤ), ↑n.natAbs = |n|",
+          "line": 23,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Int.natAbs_of_nonneg : ∀ {a : ℤ}, 0 ≤ a → ↑a.natAbs = a",
+          "line": 24,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'ClearDenoms171.originalProbe171' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 45,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 209
+}

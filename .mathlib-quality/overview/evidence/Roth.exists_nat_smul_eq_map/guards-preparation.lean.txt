@@ -1,0 +1,16 @@
+#check_failure Roth.exists_nat_smul_eq_map
+open MvPolynomial
+namespace Clear171Guards
+-- Positivity is retained even for the zero polynomial.
+theorem zero {σ : Type*} :
+    ∃ (N : ℕ) (U : MvPolynomial σ ℤ), 0 < N ∧
+      map (Int.castRingHom ℚ) U = (N : ℚ) • (0 : MvPolynomial σ ℚ) := by
+  exact ⟨1, 0, Nat.zero_lt_one, by simp⟩
+-- Removing positivity makes the theorem vacuous for every rational polynomial.
+theorem vacuous {σ : Type*} (G : MvPolynomial σ ℚ) :
+    ∃ (N : ℕ) (U : MvPolynomial σ ℤ),
+      map (Int.castRingHom ℚ) U = (N : ℚ) • G := by
+  exact ⟨0, 0, by simp⟩
+#print axioms zero
+#print axioms vacuous
+end Clear171Guards

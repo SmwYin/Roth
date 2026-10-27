@@ -1,0 +1,633 @@
+[
+  {
+    "form": "current",
+    "method": "lean_leanfinder",
+    "args": {
+      "query": "A multivariate polynomial over rational numbers becomes an integer coefficient polynomial after multiplication by a positive natural number"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.nnqsmul_eq_C_mul\",\n      \"informal_name\": \"Non-negative Rational Scalar Multiplication Equals Constant Polynomial Multiplication\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : DivisionSemiring R] (q : ℚ≥0) (f : Polynomial R), q • f = Polynomial.C ↑q * f\",\n      \"informal_description\": \"For any non-negative rational number $ q $ and polynomial $ f $ over a division semiring $ R $, the scalar multiplication $ q \\\\bullet f $ is equal to the product of the constant polynomial $ \\\\mathbf{C}(q) $ (with coefficient $ q $) and $ f $, i.e., $ q \\\\bullet f = \\\\mathbf{C}(q) \\\\cdot f $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Basic\"\n    },\n    {\n      \"formal_name\": \"Polynomial.integralNormalization\",\n      \"informal_name\": \"Integral normalization of a polynomial\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} → [inst : Semiring R] → Polynomial R → Polynomial R\",\n      \"informal_description\": \"The integral normalization of a polynomial $ p $ is the polynomial obtained by summing over each term of $ p $, replacing the coefficient $ a $ of $ X^i $ with $ 1 $ if $ i $ is the degree of $ p $, and with $ a \\\\cdot (\\\\text{leading coefficient of } p)^{\\\\text{natDegree}(p) - 1 - i} $ otherwise. This results in a monic polynomial where all coefficients are scaled by appropriate powers of the original leading coefficient.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.IntegralNormalization\"\n    },\n    {\n      \"formal_name\": \"IsLocalization.coeffIntegerNormalization\",\n      \"informal_name\": \"Integer Normalization of Polynomial Coefficients in Localization\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} →\\n  [inst : CommRing R] →\\n    (M : Submonoid R) →\\n      {S : Type u_2} → [inst_1 : CommRing S] → [inst_2 : Algebra R S] → [IsLocalization M S] → Polynomial S → ℕ → R\",\n      \"informal_description\": \"For a polynomial $ p $ over the localization $ S $ of a commutative ring $ R $ at a submonoid $ M $, this function returns an element of $ R $ corresponding to the $ i $-th coefficient of $ p $ under the canonical homomorphism $ R \\to S $. Specifically, if the coefficient is non-zero, it selects an integer representative in $ R $ whose image in $ S $ equals the coefficient; otherwise, it returns zero.\",\n      \"path\": \"Mathlib.RingTheory.Localization.Integral\"\n    },\n    {\n      \"formal_name\": \"Polynomial.qsmul_eq_C_mul\",\n      \"informal_name\": \"Rational Scalar Multiplication Equals Constant Polynomial Multiplication\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : DivisionRing R] (a : ℚ) (f : Polynomial R), a • f = Polynomial.C ↑a * f\",\n      \"informal_description\": \"For any rational number $ a $ and polynomial $ f $ in $ R[X] $, the scalar multiplication $ a \\\\cdot f $ is equal to the product of the constant polynomial $ C(a) $ and $ f $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Basic\"\n    },\n    {\n      \"formal_name\": \"denomsClearable_C_mul_X_pow\",\n      \"informal_name\": \"Denominators Clearable for Constant-Monomial Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {K : Type u_2} [inst : Semiring R] [inst_1 : CommSemiring K] {i : R →+* K} {b : R} {bi : K} {N : ℕ}\\n  (a : R), bi * i b = 1 → ∀ {n : ℕ} (r : R), n ≤ N → DenomsClearable a b N (Polynomial.C r * Polynomial.X ^ n) i\",\n      \"informal_description\": \"For elements $a, b \\\\in R$, natural numbers $N$ and $n \\\\leq N$, a constant $r \\\\in R$, and a ring homomorphism $i : R \\\\to K$, there exist elements $D \\\\in R$ and $\\\\beta \\\\in K$ such that $\\\\beta \\\\cdot i(b) = 1$ and $i(D) = i(b)^N \\\\cdot \\\\text{eval}_{i(a)\\\\beta}(f^i)$, where $f^i$ is the polynomial $C(r) \\\\cdot X^n$ with coefficients mapped by $i$.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.DenomsClearable\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Polynomial.nnqsmul_eq_C_mul",
+            "informal_name": "Non-negative Rational Scalar Multiplication Equals Constant Polynomial Multiplication",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : DivisionSemiring R] (q : ℚ≥0) (f : Polynomial R), q • f = Polynomial.C ↑q * f",
+            "informal_description": "For any non-negative rational number $ q $ and polynomial $ f $ over a division semiring $ R $, the scalar multiplication $ q \\bullet f $ is equal to the product of the constant polynomial $ \\mathbf{C}(q) $ (with coefficient $ q $) and $ f $, i.e., $ q \\bullet f = \\mathbf{C}(q) \\cdot f $.",
+            "path": "Mathlib.Algebra.Polynomial.Basic"
+          },
+          {
+            "formal_name": "Polynomial.integralNormalization",
+            "informal_name": "Integral normalization of a polynomial",
+            "kind": "definition",
+            "type": "{R : Type u} → [inst : Semiring R] → Polynomial R → Polynomial R",
+            "informal_description": "The integral normalization of a polynomial $ p $ is the polynomial obtained by summing over each term of $ p $, replacing the coefficient $ a $ of $ X^i $ with $ 1 $ if $ i $ is the degree of $ p $, and with $ a \\cdot (\\text{leading coefficient of } p)^{\\text{natDegree}(p) - 1 - i} $ otherwise. This results in a monic polynomial where all coefficients are scaled by appropriate powers of the original leading coefficient.",
+            "path": "Mathlib.RingTheory.Polynomial.IntegralNormalization"
+          },
+          {
+            "formal_name": "IsLocalization.coeffIntegerNormalization",
+            "informal_name": "Integer Normalization of Polynomial Coefficients in Localization",
+            "kind": "definition",
+            "type": "{R : Type u_1} →\n  [inst : CommRing R] →\n    (M : Submonoid R) →\n      {S : Type u_2} → [inst_1 : CommRing S] → [inst_2 : Algebra R S] → [IsLocalization M S] → Polynomial S → ℕ → R",
+            "informal_description": "For a polynomial $ p $ over the localization $ S $ of a commutative ring $ R $ at a submonoid $ M $, this function returns an element of $ R $ corresponding to the $ i $-th coefficient of $ p $ under the canonical homomorphism $ R \to S $. Specifically, if the coefficient is non-zero, it selects an integer representative in $ R $ whose image in $ S $ equals the coefficient; otherwise, it returns zero.",
+            "path": "Mathlib.RingTheory.Localization.Integral"
+          },
+          {
+            "formal_name": "Polynomial.qsmul_eq_C_mul",
+            "informal_name": "Rational Scalar Multiplication Equals Constant Polynomial Multiplication",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : DivisionRing R] (a : ℚ) (f : Polynomial R), a • f = Polynomial.C ↑a * f",
+            "informal_description": "For any rational number $ a $ and polynomial $ f $ in $ R[X] $, the scalar multiplication $ a \\cdot f $ is equal to the product of the constant polynomial $ C(a) $ and $ f $.",
+            "path": "Mathlib.Algebra.Polynomial.Basic"
+          },
+          {
+            "formal_name": "denomsClearable_C_mul_X_pow",
+            "informal_name": "Denominators Clearable for Constant-Monomial Polynomials",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {K : Type u_2} [inst : Semiring R] [inst_1 : CommSemiring K] {i : R →+* K} {b : R} {bi : K} {N : ℕ}\n  (a : R), bi * i b = 1 → ∀ {n : ℕ} (r : R), n ≤ N → DenomsClearable a b N (Polynomial.C r * Polynomial.X ^ n) i",
+            "informal_description": "For elements $a, b \\in R$, natural numbers $N$ and $n \\leq N$, a constant $r \\in R$, and a ring homomorphism $i : R \\to K$, there exist elements $D \\in R$ and $\\beta \\in K$ such that $\\beta \\cdot i(b) = 1$ and $i(D) = i(b)^N \\cdot \\text{eval}_{i(a)\\beta}(f^i)$, where $f^i$ is the polynomial $C(r) \\cdot X^n$ with coefficients mapped by $i$.",
+            "path": "Mathlib.Algebra.Polynomial.DenomsClearable"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "current",
+    "method": "lean_leansearch",
+    "args": {
+      "query": "A multivariate polynomial over rational numbers becomes an integer coefficient polynomial after multiplication by a positive natural number"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.instNSMul\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Basic\",\n      \"kind\": \"instance\",\n      \"type\": \"{R : Type u} → [inst : Semiring R] → SMul ℕ (Polynomial R)\"\n    },\n    {\n      \"name\": \"Polynomial.coeff_mul_intCast\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Coeff\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {S : Type v} [inst : Ring S] {p : Polynomial S} {a : ℤ} {k : ℕ}, (p * ↑a).coeff k = p.coeff k * ↑a\"\n    },\n    {\n      \"name\": \"Polynomial.coeff_natCast_mul\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Coeff\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Semiring R] {p : Polynomial R} {a k : ℕ}, (↑a * p).coeff k = ↑a * p.coeff k\"\n    },\n    {\n      \"name\": \"Polynomial.instZSMul\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Basic\",\n      \"kind\": \"instance\",\n      \"type\": \"{R : Type u} → [inst : Ring R] → SMul ℤ (Polynomial R)\"\n    },\n    {\n      \"name\": \"Polynomial.coeff_mul_natCast\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Coeff\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Semiring R] {p : Polynomial R} {a k : ℕ}, (p * ↑a).coeff k = p.coeff k * ↑a\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.instNSMul",
+            "module_name": "Mathlib.Algebra.Polynomial.Basic",
+            "kind": "instance",
+            "type": "{R : Type u} → [inst : Semiring R] → SMul ℕ (Polynomial R)"
+          },
+          {
+            "name": "Polynomial.coeff_mul_intCast",
+            "module_name": "Mathlib.Algebra.Polynomial.Coeff",
+            "kind": "theorem",
+            "type": "∀ {S : Type v} [inst : Ring S] {p : Polynomial S} {a : ℤ} {k : ℕ}, (p * ↑a).coeff k = p.coeff k * ↑a"
+          },
+          {
+            "name": "Polynomial.coeff_natCast_mul",
+            "module_name": "Mathlib.Algebra.Polynomial.Coeff",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : Semiring R] {p : Polynomial R} {a k : ℕ}, (↑a * p).coeff k = ↑a * p.coeff k"
+          },
+          {
+            "name": "Polynomial.instZSMul",
+            "module_name": "Mathlib.Algebra.Polynomial.Basic",
+            "kind": "instance",
+            "type": "{R : Type u} → [inst : Ring R] → SMul ℤ (Polynomial R)"
+          },
+          {
+            "name": "Polynomial.coeff_mul_natCast",
+            "module_name": "Mathlib.Algebra.Polynomial.Coeff",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : Semiring R] {p : Polynomial R} {a k : ℕ}, (p * ↑a).coeff k = p.coeff k * ↑a"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "current",
+    "method": "lean_local_search",
+    "args": {
+      "query": "exists_nat_smul_eq_map"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"CoeffNone152Replay.exists_nat_smul_eq_map\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/roth-overview-session/GenWronskianChecks.lean\"\n    },\n    {\n      \"name\": \"Roth.exists_nat_smul_eq_map\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/Separation.lean\"\n    },\n    {\n      \"name\": \"SeparationPrivate154.exists_nat_smul_eq_map\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/roth-overview-session/GenWronskianChecks.lean\"\n    },\n    {\n      \"name\": \"SeparationPrivate165.exists_nat_smul_eq_map\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/roth-overview-session/GenWronskianChecks.lean\"\n    },\n    {\n      \"name\": \"SeparationPrivate166.exists_nat_smul_eq_map\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/roth-overview-session/GenWronskianChecks.lean\"\n    },\n    {\n      \"name\": \"SeparationPrivate167.exists_nat_smul_eq_map\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/roth-overview-session/GenWronskianChecks.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "CoeffNone152Replay.exists_nat_smul_eq_map",
+            "kind": "theorem",
+            "file": ".lake/roth-overview-session/GenWronskianChecks.lean"
+          },
+          {
+            "name": "Roth.exists_nat_smul_eq_map",
+            "kind": "theorem",
+            "file": "Roth/Separation.lean"
+          },
+          {
+            "name": "SeparationPrivate154.exists_nat_smul_eq_map",
+            "kind": "theorem",
+            "file": ".lake/roth-overview-session/GenWronskianChecks.lean"
+          },
+          {
+            "name": "SeparationPrivate165.exists_nat_smul_eq_map",
+            "kind": "theorem",
+            "file": ".lake/roth-overview-session/GenWronskianChecks.lean"
+          },
+          {
+            "name": "SeparationPrivate166.exists_nat_smul_eq_map",
+            "kind": "theorem",
+            "file": ".lake/roth-overview-session/GenWronskianChecks.lean"
+          },
+          {
+            "name": "SeparationPrivate167.exists_nat_smul_eq_map",
+            "kind": "theorem",
+            "file": ".lake/roth-overview-session/GenWronskianChecks.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "standard",
+    "method": "lean_leanfinder",
+    "args": {
+      "query": "Clear denominators of finitely many elements in a localization with a common denominator"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"IsLocalization.commonDenom\",\n      \"informal_name\": \"Common denominator in localization\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} →\\n  [inst : CommSemiring R] →\\n    (M : Submonoid R) →\\n      {S : Type u_2} →\\n        [inst_1 : CommSemiring S] →\\n          [inst_2 : Algebra R S] → [IsLocalization M S] → {ι : Type u_4} → Finset ι → (ι → S) → ↥M\",\n      \"informal_description\": \"Given a finite set $ s $ of indices and a function $ f $ assigning elements of the localization $ S $ to these indices, this function returns an element $ b $ of the submonoid $ M $ such that for every index $ i \\\\in s $, the product $ b \\\\cdot f(i) $ lies in the image of the canonical homomorphism from $ R $ to $ S $, i.e., is an integer in the localization.\",\n      \"path\": \"Mathlib.RingTheory.Localization.Integer\"\n    },\n    {\n      \"formal_name\": \"IsLocalization.commonDenomOfFinset\",\n      \"informal_name\": \"Common denominator for a finite set in the localization\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} →\\n  [inst : CommSemiring R] →\\n    (M : Submonoid R) →\\n      {S : Type u_2} → [inst_1 : CommSemiring S] → [inst_2 : Algebra R S] → [IsLocalization M S] → Finset S → ↥M\",\n      \"informal_description\": \"For any finite subset $ s $ of the localized semiring $ S $, there exists an element $ m $ in the submonoid $ M $ such that multiplying each element of $ s $ by $ m $ yields an element in the original semiring $ R $. This element $ m $ is returned as the common denominator.\",\n      \"path\": \"Mathlib.RingTheory.Localization.Integer\"\n    },\n    {\n      \"formal_name\": \"IsLocalization.exist_integer_multiples\",\n      \"informal_name\": \"Existence of Common Multiple Clearing Denominators in Localization\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommSemiring R] (M : Submonoid R) {S : Type u_2} [inst_1 : CommSemiring S]\\n  [inst_2 : Algebra R S] [IsLocalization M S] {ι : Type u_4} (s : Finset ι) (f : ι → S),\\n  ∃ b, ∀ i ∈ s, IsLocalization.IsInteger R (↑b • f i)\",\n      \"informal_description\": \"For any finite set $ s $ of indices and any function $ f $ assigning elements of the localization $ S $ to these indices, there exists an element $ b $ in the submonoid $ M $ such that for every index $ i $ in $ s $, the product of $ b $ (converted to $ R $) with $ f(i) $ lies in the image of the canonical homomorphism from $ R $ to $ S $, i.e., is an integer in the localization.\",\n      \"path\": \"Mathlib.RingTheory.Localization.Integer\"\n    },\n    {\n      \"formal_name\": \"IsLocalization.exist_integer_multiples_of_finite\",\n      \"informal_name\": \"Existence of Common Integer Multiples in Localization for Finite Sets\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommSemiring R] (M : Submonoid R) {S : Type u_2} [inst_1 : CommSemiring S]\\n  [inst_2 : Algebra R S] [IsLocalization M S] {ι : Type u_4} [Finite ι] (f : ι → S),\\n  ∃ b, ∀ (i : ι), IsLocalization.IsInteger R (↑b • f i)\",\n      \"informal_description\": \"For any finite family of elements in $ S $, there exists an element $ b $ in the submonoid $ M $ such that the scalar multiplication of $ b $ (viewed as an element of $ R $) with each element of the family results in an integer in $ S $.\",\n      \"path\": \"Mathlib.RingTheory.Localization.Integer\"\n    },\n    {\n      \"formal_name\": \"IsLocalization.exist_integer_multiples_of_finset\",\n      \"informal_name\": \"Existence of Common Multiples for Finite Sets in Localization to Yield Integers\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommSemiring R] (M : Submonoid R) {S : Type u_2} [inst_1 : CommSemiring S]\\n  [inst_2 : Algebra R S] [IsLocalization M S] (s : Finset S), ∃ b, ∀ a ∈ s, IsLocalization.IsInteger R (↑b • a)\",\n      \"informal_description\": \"For any finite subset $ s $ of the localization $ S $, there exists an element $ b $ in the submonoid $ M $ such that multiplying each element $ a \\\\in s $ by $ b $ (interpreted as an element of $ R $) results in an integer in $ S $.\",\n      \"path\": \"Mathlib.RingTheory.Localization.Integer\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "IsLocalization.commonDenom",
+            "informal_name": "Common denominator in localization",
+            "kind": "definition",
+            "type": "{R : Type u_1} →\n  [inst : CommSemiring R] →\n    (M : Submonoid R) →\n      {S : Type u_2} →\n        [inst_1 : CommSemiring S] →\n          [inst_2 : Algebra R S] → [IsLocalization M S] → {ι : Type u_4} → Finset ι → (ι → S) → ↥M",
+            "informal_description": "Given a finite set $ s $ of indices and a function $ f $ assigning elements of the localization $ S $ to these indices, this function returns an element $ b $ of the submonoid $ M $ such that for every index $ i \\in s $, the product $ b \\cdot f(i) $ lies in the image of the canonical homomorphism from $ R $ to $ S $, i.e., is an integer in the localization.",
+            "path": "Mathlib.RingTheory.Localization.Integer"
+          },
+          {
+            "formal_name": "IsLocalization.commonDenomOfFinset",
+            "informal_name": "Common denominator for a finite set in the localization",
+            "kind": "definition",
+            "type": "{R : Type u_1} →\n  [inst : CommSemiring R] →\n    (M : Submonoid R) →\n      {S : Type u_2} → [inst_1 : CommSemiring S] → [inst_2 : Algebra R S] → [IsLocalization M S] → Finset S → ↥M",
+            "informal_description": "For any finite subset $ s $ of the localized semiring $ S $, there exists an element $ m $ in the submonoid $ M $ such that multiplying each element of $ s $ by $ m $ yields an element in the original semiring $ R $. This element $ m $ is returned as the common denominator.",
+            "path": "Mathlib.RingTheory.Localization.Integer"
+          },
+          {
+            "formal_name": "IsLocalization.exist_integer_multiples",
+            "informal_name": "Existence of Common Multiple Clearing Denominators in Localization",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommSemiring R] (M : Submonoid R) {S : Type u_2} [inst_1 : CommSemiring S]\n  [inst_2 : Algebra R S] [IsLocalization M S] {ι : Type u_4} (s : Finset ι) (f : ι → S),\n  ∃ b, ∀ i ∈ s, IsLocalization.IsInteger R (↑b • f i)",
+            "informal_description": "For any finite set $ s $ of indices and any function $ f $ assigning elements of the localization $ S $ to these indices, there exists an element $ b $ in the submonoid $ M $ such that for every index $ i $ in $ s $, the product of $ b $ (converted to $ R $) with $ f(i) $ lies in the image of the canonical homomorphism from $ R $ to $ S $, i.e., is an integer in the localization.",
+            "path": "Mathlib.RingTheory.Localization.Integer"
+          },
+          {
+            "formal_name": "IsLocalization.exist_integer_multiples_of_finite",
+            "informal_name": "Existence of Common Integer Multiples in Localization for Finite Sets",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommSemiring R] (M : Submonoid R) {S : Type u_2} [inst_1 : CommSemiring S]\n  [inst_2 : Algebra R S] [IsLocalization M S] {ι : Type u_4} [Finite ι] (f : ι → S),\n  ∃ b, ∀ (i : ι), IsLocalization.IsInteger R (↑b • f i)",
+            "informal_description": "For any finite family of elements in $ S $, there exists an element $ b $ in the submonoid $ M $ such that the scalar multiplication of $ b $ (viewed as an element of $ R $) with each element of the family results in an integer in $ S $.",
+            "path": "Mathlib.RingTheory.Localization.Integer"
+          },
+          {
+            "formal_name": "IsLocalization.exist_integer_multiples_of_finset",
+            "informal_name": "Existence of Common Multiples for Finite Sets in Localization to Yield Integers",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommSemiring R] (M : Submonoid R) {S : Type u_2} [inst_1 : CommSemiring S]\n  [inst_2 : Algebra R S] [IsLocalization M S] (s : Finset S), ∃ b, ∀ a ∈ s, IsLocalization.IsInteger R (↑b • a)",
+            "informal_description": "For any finite subset $ s $ of the localization $ S $, there exists an element $ b $ in the submonoid $ M $ such that multiplying each element $ a \\in s $ by $ b $ (interpreted as an element of $ R $) results in an integer in $ S $.",
+            "path": "Mathlib.RingTheory.Localization.Integer"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "standard",
+    "method": "lean_leansearch",
+    "args": {
+      "query": "Clear denominators of finitely many elements in a localization with a common denominator"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"IsLocalization.finsetIntegerMultiple\",\n      \"module_name\": \"Mathlib.RingTheory.Localization.Integer\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} →\\n  [inst : CommSemiring R] →\\n    (M : Submonoid R) →\\n      {S : Type u_2} →\\n        [inst_1 : CommSemiring S] →\\n          [inst_2 : Algebra R S] → [IsLocalization M S] → [DecidableEq R] → Finset S → Finset R\"\n    },\n    {\n      \"name\": \"IsLocalization.finsetIntegerMultiple_image\",\n      \"module_name\": \"Mathlib.RingTheory.Localization.Integer\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommSemiring R] (M : Submonoid R) {S : Type u_2} [inst_1 : CommSemiring S]\\n  [inst_2 : Algebra R S] [inst_3 : IsLocalization M S] [inst_4 : DecidableEq R] (s : Finset S),\\n  ⇑(algebraMap R S) '' ↑(IsLocalization.finsetIntegerMultiple M s) = IsLocalization.commonDenomOfFinset M s • ↑s\"\n    },\n    {\n      \"name\": \"IsLocalization.integerMultiple\",\n      \"module_name\": \"Mathlib.RingTheory.Localization.Integer\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} →\\n  [inst : CommSemiring R] →\\n    (M : Submonoid R) →\\n      {S : Type u_2} →\\n        [inst_1 : CommSemiring S] →\\n          [inst_2 : Algebra R S] → [IsLocalization M S] → {ι : Type u_4} → (s : Finset ι) → (ι → S) → ↥s → R\"\n    },\n    {\n      \"name\": \"IsLocalization.smul_mem_finsetIntegerMultiple_span\",\n      \"module_name\": \"Mathlib.RingTheory.RingHom.Finite\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {S : Type u_2} [inst : CommRing R] [inst_1 : CommRing S] (M : Submonoid R) (S' : Type u_4)\\n  [inst_2 : CommRing S'] [inst_3 : Algebra S S'] [inst_4 : Algebra R S] [inst_5 : Algebra R S'] [IsScalarTower R S S']\\n  [inst_7 : IsLocalization (Submonoid.map (algebraMap R S) M) S'] (x : S) (s : Finset S'),\\n  (algebraMap S S') x ∈ Submodule.span R ↑s →\\n    ∃ m, m • x ∈ Submodule.span R ↑(IsLocalization.finsetIntegerMultiple (Submonoid.map (algebraMap R S) M) s)\"\n    },\n    {\n      \"name\": \"IsLocalization.exist_integer_multiples\",\n      \"module_name\": \"Mathlib.RingTheory.Localization.Integer\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommSemiring R] (M : Submonoid R) {S : Type u_2} [inst_1 : CommSemiring S]\\n  [inst_2 : Algebra R S] [IsLocalization M S] {ι : Type u_4} (s : Finset ι) (f : ι → S),\\n  ∃ b, ∀ i ∈ s, IsLocalization.IsInteger R (↑b • f i)\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "IsLocalization.finsetIntegerMultiple",
+            "module_name": "Mathlib.RingTheory.Localization.Integer",
+            "kind": "definition",
+            "type": "{R : Type u_1} →\n  [inst : CommSemiring R] →\n    (M : Submonoid R) →\n      {S : Type u_2} →\n        [inst_1 : CommSemiring S] →\n          [inst_2 : Algebra R S] → [IsLocalization M S] → [DecidableEq R] → Finset S → Finset R"
+          },
+          {
+            "name": "IsLocalization.finsetIntegerMultiple_image",
+            "module_name": "Mathlib.RingTheory.Localization.Integer",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommSemiring R] (M : Submonoid R) {S : Type u_2} [inst_1 : CommSemiring S]\n  [inst_2 : Algebra R S] [inst_3 : IsLocalization M S] [inst_4 : DecidableEq R] (s : Finset S),\n  ⇑(algebraMap R S) '' ↑(IsLocalization.finsetIntegerMultiple M s) = IsLocalization.commonDenomOfFinset M s • ↑s"
+          },
+          {
+            "name": "IsLocalization.integerMultiple",
+            "module_name": "Mathlib.RingTheory.Localization.Integer",
+            "kind": "definition",
+            "type": "{R : Type u_1} →\n  [inst : CommSemiring R] →\n    (M : Submonoid R) →\n      {S : Type u_2} →\n        [inst_1 : CommSemiring S] →\n          [inst_2 : Algebra R S] → [IsLocalization M S] → {ι : Type u_4} → (s : Finset ι) → (ι → S) → ↥s → R"
+          },
+          {
+            "name": "IsLocalization.smul_mem_finsetIntegerMultiple_span",
+            "module_name": "Mathlib.RingTheory.RingHom.Finite",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {S : Type u_2} [inst : CommRing R] [inst_1 : CommRing S] (M : Submonoid R) (S' : Type u_4)\n  [inst_2 : CommRing S'] [inst_3 : Algebra S S'] [inst_4 : Algebra R S] [inst_5 : Algebra R S'] [IsScalarTower R S S']\n  [inst_7 : IsLocalization (Submonoid.map (algebraMap R S) M) S'] (x : S) (s : Finset S'),\n  (algebraMap S S') x ∈ Submodule.span R ↑s →\n    ∃ m, m • x ∈ Submodule.span R ↑(IsLocalization.finsetIntegerMultiple (Submonoid.map (algebraMap R S) M) s)"
+          },
+          {
+            "name": "IsLocalization.exist_integer_multiples",
+            "module_name": "Mathlib.RingTheory.Localization.Integer",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommSemiring R] (M : Submonoid R) {S : Type u_2} [inst_1 : CommSemiring S]\n  [inst_2 : Algebra R S] [IsLocalization M S] {ι : Type u_4} (s : Finset ι) (f : ι → S),\n  ∃ b, ∀ i ∈ s, IsLocalization.IsInteger R (↑b • f i)"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "standard",
+    "method": "lean_local_search",
+    "args": {
+      "query": "exist_integer_multiples"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"IsLocalization.exist_integer_multiples\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/Localization/Integer.lean\"\n    },\n    {\n      \"name\": \"IsLocalizedModule.exist_integer_multiples\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Module/LocalizedModule/Int.lean\"\n    },\n    {\n      \"name\": \"Ideal.exist_integer_multiples_notMem\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/DedekindDomain/Ideal/Lemmas.lean\"\n    },\n    {\n      \"name\": \"IsLocalization.exist_integer_multiples_of_finite\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/Localization/Integer.lean\"\n    },\n    {\n      \"name\": \"IsLocalizedModule.exist_integer_multiples_of_finite\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Module/LocalizedModule/Int.lean\"\n    },\n    {\n      \"name\": \"IsLocalization.exist_integer_multiples_of_finset\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/Localization/Integer.lean\"\n    },\n    {\n      \"name\": \"IsLocalizedModule.exist_integer_multiples_of_finset\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Module/LocalizedModule/Int.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "IsLocalization.exist_integer_multiples",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/RingTheory/Localization/Integer.lean"
+          },
+          {
+            "name": "IsLocalizedModule.exist_integer_multiples",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Module/LocalizedModule/Int.lean"
+          },
+          {
+            "name": "Ideal.exist_integer_multiples_notMem",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/RingTheory/DedekindDomain/Ideal/Lemmas.lean"
+          },
+          {
+            "name": "IsLocalization.exist_integer_multiples_of_finite",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/RingTheory/Localization/Integer.lean"
+          },
+          {
+            "name": "IsLocalizedModule.exist_integer_multiples_of_finite",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Module/LocalizedModule/Int.lean"
+          },
+          {
+            "name": "IsLocalization.exist_integer_multiples_of_finset",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/RingTheory/Localization/Integer.lean"
+          },
+          {
+            "name": "IsLocalizedModule.exist_integer_multiples_of_finset",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Module/LocalizedModule/Int.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "lean_leanfinder",
+    "args": {
+      "query": "For a localization of a ring at a submonoid, multivariate polynomial rings are localizations at constant polynomials"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"MvPolynomial.isLocalization\",\n      \"informal_name\": \"Localization of Multivariate Polynomial Ring at Constant Polynomials\",\n      \"kind\": \"instance\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_2} [inst : CommRing R] (M : Submonoid R) (S : Type u_3) [inst_1 : CommRing S]\\n  [inst_2 : Algebra R S] [IsLocalization M S], IsLocalization (Submonoid.map MvPolynomial.C M) (MvPolynomial σ S)\",\n      \"informal_description\": \"The multivariate polynomial ring $ S[\\\\sigma] $ is the localization of itself at the submonoid consisting of constant polynomials with coefficients in $ M $. This means that every element of $ M $, when embedded as a constant polynomial, becomes invertible in $ S[\\\\sigma] $, and $ S[\\\\sigma] $ satisfies the universal property of localization.\",\n      \"path\": \"Mathlib.RingTheory.MvPolynomial.Localization\"\n    },\n    {\n      \"formal_name\": \"Polynomial.isLocalization\",\n      \"informal_name\": \"Localization of Polynomial Rings at Submonoid Images\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_5} [inst : CommSemiring R] (S : Submonoid R) (A : Type u_6) [inst_1 : CommSemiring A]\\n  [inst_2 : Algebra R A] [IsLocalization S A], IsLocalization (Submonoid.map Polynomial.C S) (Polynomial A)\",\n      \"informal_description\": \"If $ A $ is the localization of a commutative semiring $ R $ at a submonoid $ S $, then the polynomial ring $ A[X] $ is the localization of the polynomial ring $ R[X] $ at the submonoid consisting of constant polynomials with coefficients in $ S $. This follows from the universal property of localization and the fact that the constant polynomial embedding preserves the submonoid structure.\",\n      \"path\": \"Mathlib.RingTheory.Localization.Algebra\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.isLocalization_C_mk'\",\n      \"informal_name\": \"Compatibility of Constant Polynomial Embedding with Localization\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_2} [inst : CommRing R] (M : Submonoid R) (S : Type u_3) [inst_1 : CommRing S]\\n  [inst_2 : Algebra R S] [inst_3 : IsLocalization M S] (a : R) (m : ↥M),\\n  MvPolynomial.C (IsLocalization.mk' S a m) =\\n    IsLocalization.mk' (MvPolynomial σ S) (MvPolynomial.C a) ⟨MvPolynomial.C ↑m, ⋯⟩\",\n      \"informal_description\": \"For any element $ a $ in the base ring $ R $ and $ m $ in the submonoid $ M $, the constant polynomial embedding of the localized element $ \\\\frac{a}{m} $ in the localization $ S $ equals the localized element in the multivariate polynomial ring $ S[\\\\sigma] $ constructed from the constant polynomial $ a $ and the image of $ m $ under the constant polynomial embedding. Formally, $ C(\\\\frac{a}{m}) = \\\\frac{C(a)}{C(m)} $ in $ S[\\\\sigma] $.\",\n      \"path\": \"Mathlib.RingTheory.MvPolynomial.Localization\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.instIsLocalHomRingHomC\",\n      \"informal_name\": \"The Constant Polynomial Embedding is a Local Homomorphism\",\n      \"kind\": \"instance\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_2} [inst : CommRing R], IsLocalHom MvPolynomial.C\",\n      \"informal_description\": \"The canonical ring homomorphism from a commutative semiring $ R $ to the multivariate polynomial ring $ R[\\\\sigma] $, which maps each element of $ R $ to the corresponding constant polynomial, satisfies the local homomorphism conditions specified by the IsLocalHom predicate.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Nilpotent\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.instIsLocalHomRingHomAlgebraMap\",\n      \"informal_name\": \"The Algebra Map from R to Multivariate Polynomials is a Local Homomorphism\",\n      \"kind\": \"instance\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_2} [inst : CommRing R], IsLocalHom (algebraMap R (MvPolynomial σ R))\",\n      \"informal_description\": \"The canonical algebra map from a commutative semiring $ R $ to the multivariate polynomial ring $ R[\\\\sigma] $ satisfies the local homomorphism conditions specified by the IsLocalHom predicate, ensuring compatibility between the multiplicative structure of $ R $ and the polynomial ring.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Nilpotent\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "MvPolynomial.isLocalization",
+            "informal_name": "Localization of Multivariate Polynomial Ring at Constant Polynomials",
+            "kind": "instance",
+            "type": "∀ {σ : Type u_1} {R : Type u_2} [inst : CommRing R] (M : Submonoid R) (S : Type u_3) [inst_1 : CommRing S]\n  [inst_2 : Algebra R S] [IsLocalization M S], IsLocalization (Submonoid.map MvPolynomial.C M) (MvPolynomial σ S)",
+            "informal_description": "The multivariate polynomial ring $ S[\\sigma] $ is the localization of itself at the submonoid consisting of constant polynomials with coefficients in $ M $. This means that every element of $ M $, when embedded as a constant polynomial, becomes invertible in $ S[\\sigma] $, and $ S[\\sigma] $ satisfies the universal property of localization.",
+            "path": "Mathlib.RingTheory.MvPolynomial.Localization"
+          },
+          {
+            "formal_name": "Polynomial.isLocalization",
+            "informal_name": "Localization of Polynomial Rings at Submonoid Images",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_5} [inst : CommSemiring R] (S : Submonoid R) (A : Type u_6) [inst_1 : CommSemiring A]\n  [inst_2 : Algebra R A] [IsLocalization S A], IsLocalization (Submonoid.map Polynomial.C S) (Polynomial A)",
+            "informal_description": "If $ A $ is the localization of a commutative semiring $ R $ at a submonoid $ S $, then the polynomial ring $ A[X] $ is the localization of the polynomial ring $ R[X] $ at the submonoid consisting of constant polynomials with coefficients in $ S $. This follows from the universal property of localization and the fact that the constant polynomial embedding preserves the submonoid structure.",
+            "path": "Mathlib.RingTheory.Localization.Algebra"
+          },
+          {
+            "formal_name": "MvPolynomial.isLocalization_C_mk'",
+            "informal_name": "Compatibility of Constant Polynomial Embedding with Localization",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {R : Type u_2} [inst : CommRing R] (M : Submonoid R) (S : Type u_3) [inst_1 : CommRing S]\n  [inst_2 : Algebra R S] [inst_3 : IsLocalization M S] (a : R) (m : ↥M),\n  MvPolynomial.C (IsLocalization.mk' S a m) =\n    IsLocalization.mk' (MvPolynomial σ S) (MvPolynomial.C a) ⟨MvPolynomial.C ↑m, ⋯⟩",
+            "informal_description": "For any element $ a $ in the base ring $ R $ and $ m $ in the submonoid $ M $, the constant polynomial embedding of the localized element $ \\frac{a}{m} $ in the localization $ S $ equals the localized element in the multivariate polynomial ring $ S[\\sigma] $ constructed from the constant polynomial $ a $ and the image of $ m $ under the constant polynomial embedding. Formally, $ C(\\frac{a}{m}) = \\frac{C(a)}{C(m)} $ in $ S[\\sigma] $.",
+            "path": "Mathlib.RingTheory.MvPolynomial.Localization"
+          },
+          {
+            "formal_name": "MvPolynomial.instIsLocalHomRingHomC",
+            "informal_name": "The Constant Polynomial Embedding is a Local Homomorphism",
+            "kind": "instance",
+            "type": "∀ {σ : Type u_1} {R : Type u_2} [inst : CommRing R], IsLocalHom MvPolynomial.C",
+            "informal_description": "The canonical ring homomorphism from a commutative semiring $ R $ to the multivariate polynomial ring $ R[\\sigma] $, which maps each element of $ R $ to the corresponding constant polynomial, satisfies the local homomorphism conditions specified by the IsLocalHom predicate.",
+            "path": "Mathlib.Algebra.MvPolynomial.Nilpotent"
+          },
+          {
+            "formal_name": "MvPolynomial.instIsLocalHomRingHomAlgebraMap",
+            "informal_name": "The Algebra Map from R to Multivariate Polynomials is a Local Homomorphism",
+            "kind": "instance",
+            "type": "∀ {σ : Type u_1} {R : Type u_2} [inst : CommRing R], IsLocalHom (algebraMap R (MvPolynomial σ R))",
+            "informal_description": "The canonical algebra map from a commutative semiring $ R $ to the multivariate polynomial ring $ R[\\sigma] $ satisfies the local homomorphism conditions specified by the IsLocalHom predicate, ensuring compatibility between the multiplicative structure of $ R $ and the polynomial ring.",
+            "path": "Mathlib.Algebra.MvPolynomial.Nilpotent"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "lean_leansearch",
+    "args": {
+      "query": "For a localization of a ring at a submonoid, multivariate polynomial rings are localizations at constant polynomials"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.isLocalization\",\n      \"module_name\": \"Mathlib.RingTheory.MvPolynomial.Localization\",\n      \"kind\": \"instance\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_2} [inst : CommRing R] (M : Submonoid R) (S : Type u_3) [inst_1 : CommRing S]\\n  [inst_2 : Algebra R S] [IsLocalization M S], IsLocalization (Submonoid.map MvPolynomial.C M) (MvPolynomial σ S)\"\n    },\n    {\n      \"name\": \"MvPolynomial.isLocalization_C_mk'\",\n      \"module_name\": \"Mathlib.RingTheory.MvPolynomial.Localization\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_2} [inst : CommRing R] (M : Submonoid R) (S : Type u_3) [inst_1 : CommRing S]\\n  [inst_2 : Algebra R S] [inst_3 : IsLocalization M S] (a : R) (m : ↥M),\\n  MvPolynomial.C (IsLocalization.mk' S a m) =\\n    IsLocalization.mk' (MvPolynomial σ S) (MvPolynomial.C a) ⟨MvPolynomial.C ↑m, ⋯⟩\"\n    },\n    {\n      \"name\": \"Polynomial.instIsLocalHomRingHomC\",\n      \"module_name\": \"Mathlib.RingTheory.Polynomial.Nilpotent\",\n      \"kind\": \"instance\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R], IsLocalHom Polynomial.C\"\n    },\n    {\n      \"name\": \"Polynomial.isLocalization\",\n      \"module_name\": \"Mathlib.RingTheory.Localization.Algebra\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_5} [inst : CommSemiring R] (S : Submonoid R) (A : Type u_6) [inst_1 : CommSemiring A]\\n  [inst_2 : Algebra R A] [IsLocalization S A], IsLocalization (Submonoid.map Polynomial.C S) (Polynomial A)\"\n    },\n    {\n      \"name\": \"IsLocalization'.mk\",\n      \"module_name\": \"Mathlib.RingTheory.Localization.Defs\",\n      \"kind\": \"constructor\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommSemiring R] {M : Submonoid R} {S : Type u_2} [inst_1 : CommSemiring S]\\n  [inst_2 : Algebra R S], M.IsLocalizationMap ⇑(algebraMap R S) → IsLocalization' M S\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.isLocalization",
+            "module_name": "Mathlib.RingTheory.MvPolynomial.Localization",
+            "kind": "instance",
+            "type": "∀ {σ : Type u_1} {R : Type u_2} [inst : CommRing R] (M : Submonoid R) (S : Type u_3) [inst_1 : CommRing S]\n  [inst_2 : Algebra R S] [IsLocalization M S], IsLocalization (Submonoid.map MvPolynomial.C M) (MvPolynomial σ S)"
+          },
+          {
+            "name": "MvPolynomial.isLocalization_C_mk'",
+            "module_name": "Mathlib.RingTheory.MvPolynomial.Localization",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {R : Type u_2} [inst : CommRing R] (M : Submonoid R) (S : Type u_3) [inst_1 : CommRing S]\n  [inst_2 : Algebra R S] [inst_3 : IsLocalization M S] (a : R) (m : ↥M),\n  MvPolynomial.C (IsLocalization.mk' S a m) =\n    IsLocalization.mk' (MvPolynomial σ S) (MvPolynomial.C a) ⟨MvPolynomial.C ↑m, ⋯⟩"
+          },
+          {
+            "name": "Polynomial.instIsLocalHomRingHomC",
+            "module_name": "Mathlib.RingTheory.Polynomial.Nilpotent",
+            "kind": "instance",
+            "type": "∀ {R : Type u_1} [inst : CommRing R], IsLocalHom Polynomial.C"
+          },
+          {
+            "name": "Polynomial.isLocalization",
+            "module_name": "Mathlib.RingTheory.Localization.Algebra",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_5} [inst : CommSemiring R] (S : Submonoid R) (A : Type u_6) [inst_1 : CommSemiring A]\n  [inst_2 : Algebra R A] [IsLocalization S A], IsLocalization (Submonoid.map Polynomial.C S) (Polynomial A)"
+          },
+          {
+            "name": "IsLocalization'.mk",
+            "module_name": "Mathlib.RingTheory.Localization.Defs",
+            "kind": "constructor",
+            "type": "∀ {R : Type u_1} [inst : CommSemiring R] {M : Submonoid R} {S : Type u_2} [inst_1 : CommSemiring S]\n  [inst_2 : Algebra R S], M.IsLocalizationMap ⇑(algebraMap R S) → IsLocalization' M S"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "lean_local_search",
+    "args": {
+      "query": "isLocalization"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Algebra.EssFiniteType.isLocalization\",\n      \"kind\": \"instance\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/EssentialFiniteness.lean\"\n    },\n    {\n      \"name\": \"CategoryTheory.Adjunction.isLocalization\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/CategoryTheory/Localization/Adjunction.lean\"\n    },\n    {\n      \"name\": \"CategoryTheory.LocalizerMorphism.IsLocalizedEquivalence.isLocalization\",\n      \"kind\": \"instance\",\n      \"file\": \".lake/packages/mathlib/Mathlib/CategoryTheory/Localization/LocalizerMorphism.lean\"\n    },\n    {\n      \"name\": \"IsIntegralClosure.isLocalization\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/DedekindDomain/IntegralClosure.lean\"\n    },\n    {\n      \"name\": \"LaurentPolynomial.isLocalization\",\n      \"kind\": \"instance\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Laurent.lean\"\n    },\n    {\n      \"name\": \"Localization.isLocalization\",\n      \"kind\": \"instance\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/Localization/Defs.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.isLocalization\",\n      \"kind\": \"instance\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/MvPolynomial/Localization.lean\"\n    },\n    {\n      \"name\": \"Polynomial.isLocalization\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/Localization/Algebra.lean\"\n    },\n    {\n      \"name\": \"CategoryTheory.Adjunction.isLocalization'\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/CategoryTheory/Localization/Adjunction.lean\"\n    },\n    {\n      \"name\": \"RingHom.HoldsForLocalization.isLocalizationMap\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/LocalProperties/Basic.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Algebra.EssFiniteType.isLocalization",
+            "kind": "instance",
+            "file": ".lake/packages/mathlib/Mathlib/RingTheory/EssentialFiniteness.lean"
+          },
+          {
+            "name": "CategoryTheory.Adjunction.isLocalization",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/CategoryTheory/Localization/Adjunction.lean"
+          },
+          {
+            "name": "CategoryTheory.LocalizerMorphism.IsLocalizedEquivalence.isLocalization",
+            "kind": "instance",
+            "file": ".lake/packages/mathlib/Mathlib/CategoryTheory/Localization/LocalizerMorphism.lean"
+          },
+          {
+            "name": "IsIntegralClosure.isLocalization",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/RingTheory/DedekindDomain/IntegralClosure.lean"
+          },
+          {
+            "name": "LaurentPolynomial.isLocalization",
+            "kind": "instance",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Laurent.lean"
+          },
+          {
+            "name": "Localization.isLocalization",
+            "kind": "instance",
+            "file": ".lake/packages/mathlib/Mathlib/RingTheory/Localization/Defs.lean"
+          },
+          {
+            "name": "MvPolynomial.isLocalization",
+            "kind": "instance",
+            "file": ".lake/packages/mathlib/Mathlib/RingTheory/MvPolynomial/Localization.lean"
+          },
+          {
+            "name": "Polynomial.isLocalization",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/RingTheory/Localization/Algebra.lean"
+          },
+          {
+            "name": "CategoryTheory.Adjunction.isLocalization'",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/CategoryTheory/Localization/Adjunction.lean"
+          },
+          {
+            "name": "RingHom.HoldsForLocalization.isLocalizationMap",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/RingTheory/LocalProperties/Basic.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "current",
+    "method": "lean_loogle",
+    "args": {
+      "query": "MvPolynomial.map, ℚ, ℤ",
+      "num_results": 10
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"map_wittStructureInt\",\n      \"type\": \" (p : ℕ) {idx : Type u_2} [hp : Fact (Nat.Prime p)] (Φ : MvPolynomial idx ℤ) (n : ℕ) : (MvPolynomial.map (Int.castRingHom ℚ)) (wittStructureInt p Φ n) = wittStructureRat p ((MvPolynomial.map (Int.castRingHom ℚ)) Φ) n\",\n      \"module\": \"Mathlib.RingTheory.WittVector.StructurePolynomial\"\n    },\n    {\n      \"name\": \"C_p_pow_dvd_bind₁_rename_wittPolynomial_sub_sum\",\n      \"type\": \" {p : ℕ} {idx : Type u_2} [hp : Fact (Nat.Prime p)] (Φ : MvPolynomial idx ℤ) (n : ℕ) (IH : ∀ m < n, (MvPolynomial.map (Int.castRingHom ℚ)) (wittStructureInt p Φ m) = wittStructureRat p ((MvPolynomial.map (Int.castRingHom ℚ)) Φ) m) : MvPolynomial.C ↑(p ^ n) ∣ (MvPolynomial.bind₁ fun b => (MvPolynomial.rename fun i => (b, i)) (wittPolynomial p ℤ n)) Φ - ∑ i ∈ Finset.range n, MvPolynomial.C (↑p ^ i) * wittStructureInt p Φ i ^ p ^ (n - i)\",\n      \"module\": \"Mathlib.RingTheory.WittVector.StructurePolynomial\"\n    },\n    {\n      \"name\": \"bind₁_rename_expand_wittPolynomial\",\n      \"type\": \" {p : ℕ} {idx : Type u_2} [hp : Fact (Nat.Prime p)] (Φ : MvPolynomial idx ℤ) (n : ℕ) (IH : ∀ m < n + 1, (MvPolynomial.map (Int.castRingHom ℚ)) (wittStructureInt p Φ m) = wittStructureRat p ((MvPolynomial.map (Int.castRingHom ℚ)) Φ) m) : (MvPolynomial.bind₁ fun b => (MvPolynomial.rename fun i => (b, i)) ((MvPolynomial.expand p) (wittPolynomial p ℤ n))) Φ = (MvPolynomial.bind₁ fun i => (MvPolynomial.expand p) (wittStructureInt p Φ i)) (wittPolynomial p ℤ n)\",\n      \"module\": \"Mathlib.RingTheory.WittVector.StructurePolynomial\"\n    },\n    {\n      \"name\": \"WittVector.map_frobeniusPoly\",\n      \"type\": \" (p : ℕ) [hp : Fact (Nat.Prime p)] (n : ℕ) : (MvPolynomial.map (Int.castRingHom ℚ)) (WittVector.frobeniusPoly p n) = WittVector.frobeniusPolyRat p n\",\n      \"module\": \"Mathlib.RingTheory.WittVector.Frobenius\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "map_wittStructureInt",
+            "type": " (p : ℕ) {idx : Type u_2} [hp : Fact (Nat.Prime p)] (Φ : MvPolynomial idx ℤ) (n : ℕ) : (MvPolynomial.map (Int.castRingHom ℚ)) (wittStructureInt p Φ n) = wittStructureRat p ((MvPolynomial.map (Int.castRingHom ℚ)) Φ) n",
+            "module": "Mathlib.RingTheory.WittVector.StructurePolynomial"
+          },
+          {
+            "name": "C_p_pow_dvd_bind₁_rename_wittPolynomial_sub_sum",
+            "type": " {p : ℕ} {idx : Type u_2} [hp : Fact (Nat.Prime p)] (Φ : MvPolynomial idx ℤ) (n : ℕ) (IH : ∀ m < n, (MvPolynomial.map (Int.castRingHom ℚ)) (wittStructureInt p Φ m) = wittStructureRat p ((MvPolynomial.map (Int.castRingHom ℚ)) Φ) m) : MvPolynomial.C ↑(p ^ n) ∣ (MvPolynomial.bind₁ fun b => (MvPolynomial.rename fun i => (b, i)) (wittPolynomial p ℤ n)) Φ - ∑ i ∈ Finset.range n, MvPolynomial.C (↑p ^ i) * wittStructureInt p Φ i ^ p ^ (n - i)",
+            "module": "Mathlib.RingTheory.WittVector.StructurePolynomial"
+          },
+          {
+            "name": "bind₁_rename_expand_wittPolynomial",
+            "type": " {p : ℕ} {idx : Type u_2} [hp : Fact (Nat.Prime p)] (Φ : MvPolynomial idx ℤ) (n : ℕ) (IH : ∀ m < n + 1, (MvPolynomial.map (Int.castRingHom ℚ)) (wittStructureInt p Φ m) = wittStructureRat p ((MvPolynomial.map (Int.castRingHom ℚ)) Φ) m) : (MvPolynomial.bind₁ fun b => (MvPolynomial.rename fun i => (b, i)) ((MvPolynomial.expand p) (wittPolynomial p ℤ n))) Φ = (MvPolynomial.bind₁ fun i => (MvPolynomial.expand p) (wittStructureInt p Φ i)) (wittPolynomial p ℤ n)",
+            "module": "Mathlib.RingTheory.WittVector.StructurePolynomial"
+          },
+          {
+            "name": "WittVector.map_frobeniusPoly",
+            "type": " (p : ℕ) [hp : Fact (Nat.Prime p)] (n : ℕ) : (MvPolynomial.map (Int.castRingHom ℚ)) (WittVector.frobeniusPoly p n) = WittVector.frobeniusPolyRat p n",
+            "module": "Mathlib.RingTheory.WittVector.Frobenius"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "standard",
+    "method": "lean_loogle",
+    "args": {
+      "query": "IsLocalization.IsInteger, _ • _",
+      "num_results": 10
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"IsLocalization.isInteger_smul\",\n      \"type\": \" {R : Type u_1} [CommSemiring R] {S : Type u_2} [CommSemiring S] [Algebra R S] {a : R} {b : S} (hb : IsLocalization.IsInteger R b) : IsLocalization.IsInteger R (a • b)\",\n      \"module\": \"Mathlib.RingTheory.Localization.Integer\"\n    },\n    {\n      \"name\": \"IsLocalization.exists_integer_multiple\",\n      \"type\": \" {R : Type u_1} [CommSemiring R] (M : Submonoid R) {S : Type u_2} [CommSemiring S] [Algebra R S] [IsLocalization M S] (a : S) : ∃ b, IsLocalization.IsInteger R (↑b • a)\",\n      \"module\": \"Mathlib.RingTheory.Localization.Integer\"\n    },\n    {\n      \"name\": \"IsLocalization.exist_integer_multiples_of_finite\",\n      \"type\": \" {R : Type u_1} [CommSemiring R] (M : Submonoid R) {S : Type u_2} [CommSemiring S] [Algebra R S] [IsLocalization M S] {ι : Type u_3} [Finite ι] (f : ι → S) : ∃ b, ∀ (i : ι), IsLocalization.IsInteger R (↑b • f i)\",\n      \"module\": \"Mathlib.RingTheory.Localization.Integer\"\n    },\n    {\n      \"name\": \"IsLocalization.exist_integer_multiples_of_finset\",\n      \"type\": \" {R : Type u_1} [CommSemiring R] (M : Submonoid R) {S : Type u_2} [CommSemiring S] [Algebra R S] [IsLocalization M S] (s : Finset S) : ∃ b, ∀ a ∈ s, IsLocalization.IsInteger R (↑b • a)\",\n      \"module\": \"Mathlib.RingTheory.Localization.Integer\"\n    },\n    {\n      \"name\": \"IsLocalization.exist_integer_multiples\",\n      \"type\": \" {R : Type u_1} [CommSemiring R] (M : Submonoid R) {S : Type u_2} [CommSemiring S] [Algebra R S] [IsLocalization M S] {ι : Type u_3} (s : Finset ι) (f : ι → S) : ∃ b, ∀ i ∈ s, IsLocalization.IsInteger R (↑b • f i)\",\n      \"module\": \"Mathlib.RingTheory.Localization.Integer\"\n    },\n    {\n      \"name\": \"FractionalIdeal.isFractional_span_iff\",\n      \"type\": \" {R : Type u_1} [CommRing R] {S : Submonoid R} {P : Type u_2} [CommRing P] [Algebra R P] {s : Set P} : IsFractional S (Submodule.span R s) ↔ ∃ a ∈ S, ∀ b ∈ s, IsLocalization.IsInteger R (a • b)\",\n      \"module\": \"Mathlib.RingTheory.FractionalIdeal.Operations\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "IsLocalization.isInteger_smul",
+            "type": " {R : Type u_1} [CommSemiring R] {S : Type u_2} [CommSemiring S] [Algebra R S] {a : R} {b : S} (hb : IsLocalization.IsInteger R b) : IsLocalization.IsInteger R (a • b)",
+            "module": "Mathlib.RingTheory.Localization.Integer"
+          },
+          {
+            "name": "IsLocalization.exists_integer_multiple",
+            "type": " {R : Type u_1} [CommSemiring R] (M : Submonoid R) {S : Type u_2} [CommSemiring S] [Algebra R S] [IsLocalization M S] (a : S) : ∃ b, IsLocalization.IsInteger R (↑b • a)",
+            "module": "Mathlib.RingTheory.Localization.Integer"
+          },
+          {
+            "name": "IsLocalization.exist_integer_multiples_of_finite",
+            "type": " {R : Type u_1} [CommSemiring R] (M : Submonoid R) {S : Type u_2} [CommSemiring S] [Algebra R S] [IsLocalization M S] {ι : Type u_3} [Finite ι] (f : ι → S) : ∃ b, ∀ (i : ι), IsLocalization.IsInteger R (↑b • f i)",
+            "module": "Mathlib.RingTheory.Localization.Integer"
+          },
+          {
+            "name": "IsLocalization.exist_integer_multiples_of_finset",
+            "type": " {R : Type u_1} [CommSemiring R] (M : Submonoid R) {S : Type u_2} [CommSemiring S] [Algebra R S] [IsLocalization M S] (s : Finset S) : ∃ b, ∀ a ∈ s, IsLocalization.IsInteger R (↑b • a)",
+            "module": "Mathlib.RingTheory.Localization.Integer"
+          },
+          {
+            "name": "IsLocalization.exist_integer_multiples",
+            "type": " {R : Type u_1} [CommSemiring R] (M : Submonoid R) {S : Type u_2} [CommSemiring S] [Algebra R S] [IsLocalization M S] {ι : Type u_3} (s : Finset ι) (f : ι → S) : ∃ b, ∀ i ∈ s, IsLocalization.IsInteger R (↑b • f i)",
+            "module": "Mathlib.RingTheory.Localization.Integer"
+          },
+          {
+            "name": "FractionalIdeal.isFractional_span_iff",
+            "type": " {R : Type u_1} [CommRing R] {S : Submonoid R} {P : Type u_2} [CommRing P] [Algebra R P] {s : Set P} : IsFractional S (Submodule.span R s) ↔ ∃ a ∈ S, ∀ b ∈ s, IsLocalization.IsInteger R (a • b)",
+            "module": "Mathlib.RingTheory.FractionalIdeal.Operations"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "lean_loogle",
+    "args": {
+      "query": "IsLocalization, MvPolynomial",
+      "num_results": 10
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.isLocalization\",\n      \"type\": \" {σ : Type u_1} {R : Type u_2} [CommRing R] (M : Submonoid R) (S : Type u_3) [CommRing S] [Algebra R S] [IsLocalization M S] : IsLocalization (Submonoid.map MvPolynomial.C M) (MvPolynomial σ S)\",\n      \"module\": \"Mathlib.RingTheory.MvPolynomial.Localization\"\n    },\n    {\n      \"name\": \"MvPolynomial.isLocalization_C_mk'\",\n      \"type\": \" {σ : Type u_1} {R : Type u_2} [CommRing R] (M : Submonoid R) (S : Type u_3) [CommRing S] [Algebra R S] [IsLocalization M S] (a : R) (m : ↥M) : MvPolynomial.C (IsLocalization.mk' S a m) = IsLocalization.mk' (MvPolynomial σ S) (MvPolynomial.C a) ⟨MvPolynomial.C ↑m, ⋯⟩\",\n      \"module\": \"Mathlib.RingTheory.MvPolynomial.Localization\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.isLocalization",
+            "type": " {σ : Type u_1} {R : Type u_2} [CommRing R] (M : Submonoid R) (S : Type u_3) [CommRing S] [Algebra R S] [IsLocalization M S] : IsLocalization (Submonoid.map MvPolynomial.C M) (MvPolynomial σ S)",
+            "module": "Mathlib.RingTheory.MvPolynomial.Localization"
+          },
+          {
+            "name": "MvPolynomial.isLocalization_C_mk'",
+            "type": " {σ : Type u_1} {R : Type u_2} [CommRing R] (M : Submonoid R) (S : Type u_3) [CommRing S] [Algebra R S] [IsLocalization M S] (a : R) (m : ↥M) : MvPolynomial.C (IsLocalization.mk' S a m) = IsLocalization.mk' (MvPolynomial σ S) (MvPolynomial.C a) ⟨MvPolynomial.C ↑m, ⋯⟩",
+            "module": "Mathlib.RingTheory.MvPolynomial.Localization"
+          }
+        ]
+      },
+      "isError": false
+    }
+  }
+]

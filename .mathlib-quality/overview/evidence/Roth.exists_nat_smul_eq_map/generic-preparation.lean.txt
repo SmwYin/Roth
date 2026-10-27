@@ -1,0 +1,17 @@
+open MvPolynomial
+namespace Clear171Generic
+variable {σ R S : Type*} [CommRing R] [CommRing S] [Algebra R S]
+    (M : Submonoid R) [IsLocalization M S]
+attribute [local instance] MvPolynomial.algebraMvPolynomial
+-- Existing generic theorem, exact one-call specialization, no project dependencies.
+theorem clear (G : MvPolynomial σ S) :
+    ∃ b : M.map (C (σ := σ)),
+      IsLocalization.IsInteger (MvPolynomial σ R) ((b : MvPolynomial σ R) • G) :=
+  IsLocalization.exists_integer_multiple (M.map (C (σ := σ))) G
+#print axioms clear
+-- The coefficient-family route works over commutative semirings already.
+example {A B ι : Type*} [CommSemiring A] [CommSemiring B] [Algebra A B]
+    (T : Submonoid A) [IsLocalization T B] (s : Finset ι) (f : ι → B) :
+    ∃ b : T, ∀ i ∈ s, IsLocalization.IsInteger A ((b : A) • f i) :=
+  IsLocalization.exist_integer_multiples T s f
+end Clear171Generic

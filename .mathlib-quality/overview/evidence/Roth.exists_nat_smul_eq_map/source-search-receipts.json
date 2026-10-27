@@ -1,0 +1,62 @@
+[
+  {
+    "command": [
+      "rg",
+      "-n",
+      "exists_nat_smul_eq_map",
+      ".lake/packages/mathlib/Mathlib"
+    ],
+    "exit": 1,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "rg",
+      "-n",
+      "commonDenom|exist_integer_multiples",
+      ".lake/packages/mathlib/Mathlib/RingTheory/Localization/Integer.lean"
+    ],
+    "exit": 0,
+    "stdout": "87:theorem exist_integer_multiples {\u03b9 : Type*} (s : Finset \u03b9) (f : \u03b9 \u2192 S) :\n102:theorem exist_integer_multiples_of_finite {\u03b9 : Type*} [Finite \u03b9] (f : \u03b9 \u2192 S) :\n105:  obtain \u27e8b, hb\u27e9 := exist_integer_multiples M Finset.univ f\n109:theorem exist_integer_multiples_of_finset (s : Finset S) :\n111:  exist_integer_multiples M s id\n114:noncomputable def commonDenom {\u03b9 : Type*} (s : Finset \u03b9) (f : \u03b9 \u2192 S) : M :=\n115:  (exist_integer_multiples M s f).choose\n120:  ((exist_integer_multiples M s f).choose_spec i i.prop).choose\n124:    algebraMap R S (integerMultiple M s f i) = commonDenom M s f \u2022 f i :=\n125:  ((exist_integer_multiples M s f).choose_spec _ i.prop).choose_spec\n131:    \u2190 (IsLocalization.smul_bijective S (commonDenom M s f)).injective.eq_iff,\n138:noncomputable def commonDenomOfFinset (s : Finset S) : M :=\n139:  commonDenom M s id\n148:    algebraMap R S '' finsetIntegerMultiple M s = commonDenomOfFinset M s \u2022 (s : Set S) := by\n149:  delta finsetIntegerMultiple commonDenom\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "rg",
+      "-n",
+      "isLocalization|algebraMvPolynomial",
+      ".lake/packages/mathlib/Mathlib/RingTheory/MvPolynomial/Localization.lean"
+    ],
+    "exit": 0,
+    "stdout": "22:- `MvPolynomial.isLocalization`: If `S` is the localization of `R` at a submonoid `M`, then\n37:attribute [local instance] algebraMvPolynomial\n43:See also `Polynomial.isLocalization` for the univariate case. -/\n44:instance isLocalization : IsLocalization (M.map <| C (\u03c3 := \u03c3)) (MvPolynomial \u03c3 S) :=\n45:  isLocalizedModule_iff_isLocalization.mp <| (isLocalizedModule_iff_isBaseChange M S _).mpr <|\n48:lemma isLocalization_C_mk' (a : R) (m : M) :\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "git",
+      "grep",
+      "-n",
+      "exists_nat_smul_eq_map",
+      "--",
+      "Roth",
+      "Roth.lean"
+    ],
+    "exit": 0,
+    "stdout": "Roth/Separation.lean:380:theorem exists_nat_smul_eq_map {\u03c3 : Type*} (G : MvPolynomial \u03c3 \u211a) :\nRoth/Separation.lean:410:  obtain \u27e8N, U0, hN, hU0\u27e9 := exists_nat_smul_eq_map G\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "rg",
+      "--no-ignore",
+      "-n",
+      "exists_nat_smul_eq_map|Rat.den_mul_eq_num|clear.*denom|commonDenom|exists_integer_multiple",
+      "Roth",
+      "Roth.lean"
+    ],
+    "exit": 0,
+    "stdout": "Roth/Separation.lean:379:Source: \u00a72, proof of Lemma 2 (\"clearing denominators\"). -/\nRoth/Separation.lean:380:theorem exists_nat_smul_eq_map {\u03c3 : Type*} (G : MvPolynomial \u03c3 \u211a) :\nRoth/Separation.lean:391:      rw [mul_comm ((G.coeff d).den : \u211a) k, mul_assoc, Rat.den_mul_eq_num]\nRoth/Separation.lean:405:polynomial, by clearing denominators and then dividing by the gcd of its coefficients\"). -/\nRoth/Separation.lean:410:  obtain \u27e8N, U0, hN, hU0\u27e9 := exists_nat_smul_eq_map G\n",
+    "stderr": ""
+  }
+]

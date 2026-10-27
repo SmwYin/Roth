@@ -3,7 +3,7 @@
 Status: **in_progress**, 2026-10-27. Branch: `ramin-cleanup`.
 Production Lean files and all pins match baseline `99f19fd`.
 
-**Completed: 170 / 293 written declarations.**
+**Completed: 171 / 293 written declarations.**
 This counts the current overview assessments, separately from the earlier code cleanup.
 
 | # | Completed declaration | Applicable workflow | Verdict | Report |
@@ -178,8 +178,9 @@ This counts the current overview assessments, separately from the earlier code c
 | 168 | `Roth.exists_separated_representation` | full-mathlibable; accepted complete | YES-but-generalise-first | [Detailed report](mathlibable/Roth.exists_separated_representation.md) |
 | 169 | `Roth.det_hasseDeriv_separated` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.det_hasseDeriv_separated.md) |
 | 170 | `Roth.exists_sum_mul_eq_gcd` | full-mathlibable; accepted complete | NO-mathlib-has-it | [Detailed report](mathlibable/Roth.exists_sum_mul_eq_gcd.md) |
+| 171 | `Roth.exists_nat_smul_eq_map` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.exists_nat_smul_eq_map.md) |
 
-**Next declaration: `Roth.exists_nat_smul_eq_map`**, `Roth/Separation.lean:380`.
+**Next declaration: `Roth.exists_primitive_smul_eq`**, `Roth/Separation.lean:406`.
 Only the listed assessments are complete. No partial assessment was committed.
 
 On restart: read [README](README.md), [machine progress](progress.json), and

@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 170/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 171/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 170; remaining: 123.
-- Verdicts: 18 NO-composable-from-mathlib, 13 YES-add-as-is, 21 YES-but-generalise-first, 37 NO-mathlib-has-it, 51 BORDERLINE-needs-human, 30 SKIP.
+- Completed applicable assessments: 171; remaining: 122.
+- Verdicts: 18 NO-composable-from-mathlib, 13 YES-add-as-is, 21 YES-but-generalise-first, 37 NO-mathlib-has-it, 52 BORDERLINE-needs-human, 30 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -1931,6 +1931,17 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: explicit use count: 1; external to file count: 0; internal count excluding declaring file: 0; callers: Roth/Separation.lean:446 Roth.exists_int_eq_of_gcd_eq_one; direct kernel value consumers: Roth.exists_int_eq_of_gcd_eq_one
 - Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/Roth.exists_sum_mul_eq_gcd.md).
 
+### Completed: `Roth.exists_nat_smul_eq_map`
+
+- Type: `∀ {σ : Type u_2} (G : MvPolynomial σ ℚ),
+  ∃ (N : ℕ) (U : MvPolynomial σ ℤ), 0 < N ∧ (map (Int.castRingHom ℚ)) U = ↑N • G`
+- What: Clears all rational coefficients of an arbitrary multivariate polynomial by a positive natural scalar.
+- How: Product of positive coefficient denominators on finite support, integer scaled coefficients, reconstruction and coefficient extensionality.
+- Hypotheses: Only σ : Type* and G : MvPolynomial σ ℚ; no finite/decidable/nonzero assumptions.
+- Project dependencies: None
+- Caller summary: explicit use count: 1; statement use count: 0; external to file use count: 0; callers: {'name': 'Roth.exists_primitive_smul_eq', 'file': 'Roth/Separation.lean', 'line': 410, 'role': 'Obtain a positive integral multiple before primitive gcd extraction.'}; direct kernel value consumers: Roth.exists_primitive_smul_eq; audit scope: All293 canonical values, exact names/order/private names; not transitive/simp closure.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.exists_nat_smul_eq_map.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -2297,6 +2308,8 @@ Completed `Roth.det_hasseDeriv_separated`: All15 cells executed. Pinned Matrix.d
 
 Completed `Roth.exists_sum_mul_eq_gcd`: existing: Finset.gcd_eq_sum_mul; path: Mathlib/RingTheory/PrincipalIdealDomain.lean:233; normalization: eq_comm, mul_comm; verified: mathlib-only original/generic statements and full sole caller
 
+Completed `Roth.exists_nat_smul_eq_map`: methods: 15; existing: IsLocalization.exists_integer_multiple, IsLocalization.exist_integer_multiples, MvPolynomial.isLocalization; exact replacement: Verified with genuine positivity/cast/scalar normalization; not ≤3 existing calls.; local index: unavailable; not absence evidence
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -2638,6 +2651,8 @@ Completed `Roth.exists_separated_representation`: Two-factor tensor/matrix rank 
 Completed `Roth.det_hasseDeriv_separated`: Outer matrix formula is existing det_mul+transpose. Full derivative matrix normalization uses project multivariate Hasse/product API and is not an existing ≤3-call mathlib replacement.
 
 Completed `Roth.exists_sum_mul_eq_gcd`: Integer specialization and reordered equality of existing finite Bezout theorem.
+
+Completed `Roth.exists_nat_smul_eq_map`: Same denominator mechanism as existing localization laws; concrete positive-natural output packaging is not an exact short existing-call theorem.
 
 ## Part 5: Generalization opportunities
 
@@ -2984,6 +2999,8 @@ Completed `Roth.det_hasseDeriv_separated`: Clean native full expanded CommRing l
 
 Completed `Roth.exists_sum_mul_eq_gcd`: status: STRICTLY NARROWER THAN STANDARD; verified: CommRing R + IsBezout R + NormalizedGCDMonoid R; independently compiled; abstract ideal form: Ideal.mem_span_range_iff_exists_fun under Semiring R and Fintype ι is also existing; not claimed identical gcd theorem without Bezout.
 
+Completed `Roth.exists_nat_smul_eq_map`: status: Verified broader existing interfaces; polynomial: CommRing R/S + Algebra R S + IsLocalization M S; clear denominator in M.map C.; finite family: CommSemiring A/B + localization; finite coefficient family common denominator.; fixed interface: Exact positive-natural rational/integer specialization retained.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -3326,6 +3343,8 @@ Completed `Roth.exists_separated_representation`: Bounded independent separated 
 Completed `Roth.det_hasseDeriv_separated`: Multivariate Hasse derivative and fresh-coordinate factorwise law, settled finite-family Hasse-Wronskian API (binary polynomial Wronskian file has n-tuple TODO), and possible public separated derivative matrix/determinant factorization.
 
 Completed `Roth.exists_sum_mul_eq_gcd`: None
+
+Completed `Roth.exists_nat_smul_eq_map`: Design question: positive-natural rational-polynomial specialization versus generic map/scalar numerator bridge; no generic denominator-law gap.
 
 ## Part 7: Junk / removable
 
@@ -3672,6 +3691,8 @@ Completed `Roth.det_hasseDeriv_separated`: Not junk: sole full private caller us
 
 Completed `Roth.exists_sum_mul_eq_gcd`: Useful current caller, so not dead code; redundant local wrapper.
 
+Completed `Roth.exists_nat_smul_eq_map`: Live integrality helper with one source caller and one canonical direct consumer.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -3846,6 +3867,7 @@ Completed `Roth.exists_sum_mul_eq_gcd`: Useful current caller, so not dead code;
 | 168 | `Roth.exists_separated_representation` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_separated_representation.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_separated_representation/root-acceptance.json) |
 | 169 | `Roth.det_hasseDeriv_separated` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.det_hasseDeriv_separated.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.det_hasseDeriv_separated/root-acceptance.json) |
 | 170 | `Roth.exists_sum_mul_eq_gcd` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_sum_mul_eq_gcd.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_sum_mul_eq_gcd/root-acceptance.json) |
+| 171 | `Roth.exists_nat_smul_eq_map` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_nat_smul_eq_map.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_nat_smul_eq_map/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -4185,12 +4207,14 @@ Completed `Roth.det_hasseDeriv_separated` action: BORDERLINE-needs-human: choose
 
 Completed `Roth.exists_sum_mul_eq_gcd` action: Delete wrapper; at Separation:446 use Finset.gcd_eq_sum_mul s u directly, retaining gcd-left/factor-right orientation and adapting the two arithmetic lines as verified in Bezout170.caller. No production change made.
 
+Completed `Roth.exists_nat_smul_eq_map` action: BORDERLINE-needs-human: retain local helper pending three concrete upstream API questions; all verification complete, production unchanged.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.exists_nat_smul_eq_map` next. Supporting identities receive their own applicable checks.
+   `Roth.exists_primitive_smul_eq` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 
