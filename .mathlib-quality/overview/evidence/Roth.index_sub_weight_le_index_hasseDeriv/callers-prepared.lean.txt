@@ -1,0 +1,67 @@
+namespace IndexShiftReplay140
+open Roth MvPolynomial
+open scoped Pointwise
+variable {τ : Type*} [Fintype τ]
+
+theorem sum_max_sub_le_index_det {R : MvPolynomial (Option τ) ℝ} {l : ℕ} (D : Fin l → (τ →₀ ℕ))
+    (hD : ∀ μ, (D μ).degree ≤ μ) (hdet : (Matrix.of fun μ ν : Fin l ↦
+      hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) R).det ≠ 0) (α : Option τ → ℝ)
+    {r : Option τ → ℕ} (hr : ∀ j, 0 < r j) {δ : ℝ}
+    (hδ : ∀ d : τ →₀ ℕ, d.degree ≤ l - 1 → weight (r ∘ some) d ≤ δ) :
+    ∑ ν ∈ Finset.range l, max 0 (index R α r - ν / r none) - l * δ ≤
+      index (Matrix.of fun μ ν : Fin l ↦
+        hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) R).det α r := by
+  classical
+  set E : Fin l → Fin l → MvPolynomial (Option τ) ℝ := fun μ ν ↦
+    hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) R
+  have hterm : ∀ μ ν : Fin l, E μ ν ≠ 0 →
+      max 0 (index R α r - ν / r none) - δ ≤ index (E μ ν) α r := by
+    intro μ ν hE
+    have h1 := IndexShiftTarget140.replacement hE α r
+    rw [weight_add, weight_mapDomain (Option.some_injective _), weight_single] at h1
+    have h2 := hδ (D μ) ((hD μ).trans (Nat.le_sub_one_of_lt μ.isLt))
+    rw [← sub_sub, sub_right_comm] at h1
+    rw [sub_le_iff_le_add]
+    exact max_le (add_nonneg (index_nonneg _ _ _) ((weight_nonneg _ _).trans h2))
+      ((sub_le_iff_le_add).1 ((sub_le_sub_left h2 _).trans h1))
+  rw [Matrix.det_apply'] at hdet ⊢
+  refine le_index_sum hdet fun s _ hs ↦ ?_
+  have hprod : ∏ i, Matrix.of E (s i) i ≠ 0 := (mul_ne_zero_iff.mp hs).2
+  have hentry (i : Fin l) : Matrix.of E (s i) i ≠ 0 :=
+    (Finset.prod_ne_zero_iff.1 hprod) i (Finset.mem_univ _)
+  have hidx : index (((Equiv.Perm.sign s : ℤ) : MvPolynomial (Option τ) ℝ) *
+      ∏ i, Matrix.of E (s i) i) α r = index (∏ i, Matrix.of E (s i) i) α r := by
+    simpa only [map_intCast] using
+      index_C_mul (Int.cast_ne_zero.2 (Units.ne_zero (Equiv.Perm.sign s)))
+        (∏ i, Matrix.of E (s i) i) α r
+  rw [hidx, index_prod _ (fun i _ ↦ hentry i) α hr,
+    ← Fin.sum_univ_eq_sum_range (fun ν : ℕ ↦ max 0 (index R α r - ν / r none)) l]
+  have hlδ : (l : ℝ) * δ = ∑ _i : Fin l, δ := by rw [Fin.sum_const, nsmul_eq_mul]
+  rw [hlδ, ← Finset.sum_sub_distrib]
+  exact Finset.sum_le_sum fun i _ ↦ hterm (s i) i (hentry i)
+
+
+theorem exists_hasseDeriv_index_eval_bound_aux {σ : Type*} [Fintype σ] {P : MvPolynomial σ ℤ}
+    {r : σ → ℕ} {α z : σ → ℝ} {C γ c : ℝ} (hP : P ≠ 0) (hd : ∀ j, degreeOf j P ≤ r j)
+    (hbound : ∀ i k : σ →₀ ℕ,
+      |eval α (map (Int.castRingHom ℝ) (hasseDeriv i (hasseDeriv k P)))| < C)
+    (hγ : γ ≤ index (map (Int.castRingHom ℝ) P) α r)
+    (hz : index (map (Int.castRingHom ℝ) P) z r < c) : ∃ Q : MvPolynomial σ ℤ, Q ≠ 0 ∧
+      (∀ j, degreeOf j Q ≤ r j) ∧ γ - c < index (map (Int.castRingHom ℝ) Q) α r ∧
+      eval z (map (Int.castRingHom ℝ) Q) ≠ 0 ∧ ∀ i : σ →₀ ℕ,
+        |eval α (hasseDeriv i (map (Int.castRingHom ℝ) Q))| < C := by
+  obtain ⟨k, hkw, hkev⟩ := exists_hasseDeriv_eval_ne_zero
+    ((map_ne_zero_iff _ (MvPolynomial.map_injective _ Int.cast_injective)).2 hP) z r hz
+  have hQev : eval z (map (Int.castRingHom ℝ) (hasseDeriv k P)) ≠ 0 := by
+    simpa [hasseDeriv_map] using hkev
+  refine ⟨hasseDeriv k P, fun h0 ↦ hQev (by rw [h0, map_zero, map_zero]),
+    fun j ↦ (degreeOf_hasseDeriv_le j k P).trans (hd j), ?_, hQev, fun i ↦ ?_⟩
+  · rw [← hasseDeriv_map]
+    exact ((sub_lt_sub_left hkw γ).trans_le (sub_le_sub_right hγ _)).trans_le
+      (IndexShiftTarget140.replacement (fun h0 ↦ hkev (by rw [h0, map_zero])) α r)
+  · simpa [hasseDeriv_map] using hbound i k
+
+
+#print axioms sum_max_sub_le_index_det
+#print axioms exists_hasseDeriv_index_eval_bound_aux
+end IndexShiftReplay140

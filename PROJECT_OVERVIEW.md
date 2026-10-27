@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 139/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 140/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 139; remaining: 154.
-- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 17 YES-but-generalise-first, 27 NO-mathlib-has-it, 42 BORDERLINE-needs-human, 26 SKIP.
+- Completed applicable assessments: 140; remaining: 153.
+- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 18 YES-but-generalise-first, 27 NO-mathlib-has-it, 42 BORDERLINE-needs-human, 26 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -1537,6 +1537,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: explicit applications: 1; declarations: Roth.index_prod; external to declaring file: 0; direct kernel value consumers: 1; simp: False; scope: source inventory and direct kernel values, not opaque/transitive/simp closure
 - Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/Roth.index_eq_zero_iff.md).
 
+### Completed: `Roth.index_sub_weight_le_index_hasseDeriv`
+
+- Type: `Roth.index_sub_weight_le_index_hasseDeriv.{u_1} {σ : Type u_1} [Fintype σ] {P : MvPolynomial σ ℝ} {k : σ →₀ ℕ} (hk : (MvPolynomial.hasseDeriv k) P ≠ 0) (α : σ → ℝ) (r : σ → ℕ) : Roth.index P α r - Roth.weight r k ≤ Roth.index ((MvPolynomial.hasseDeriv k) P) α r`
+- What: Applying a nonzero Hasse derivative decreases weighted vanishing index by at most the weight of its multi-order.
+- How: Choose an attaining derivative; composition gives a nonzero shifted coefficient; compare the original minimum and use additive weights.
+- Hypotheses: Finite variable interface, real coefficients, nonzero Hasse derivative. Natural denominators may be zero. Expanded new theorem uses arbitrary sigma, CommRing coefficients and shift-compatible real degree.
+- Project dependencies: Roth.index, Roth.weight_add, Roth.exists_weight_eq_index, Roth.index_le_weight, MvPolynomial.hasseDeriv_hasseDeriv, Roth.weight, MvPolynomial.hasseDeriv, MvPolynomial.hasseCoeff
+- Caller summary: Two explicit proof callers: sum_max_sub_le_index_det at Theta:390 and private exists_hasseDeriv_index_eval_bound_aux at MainLemma:494. Both complete replays pass after replacement. Two direct canonical kernel consumers.
+- Verdict: YES-but-generalise-first; [complete report](.mathlib-quality/overview/mathlibable/Roth.index_sub_weight_le_index_hasseDeriv.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -1841,6 +1851,8 @@ Completed `Roth.index_nonneg`: Finite-inf lower-bound introduction Finset.le_inf
 
 Completed `Roth.index_eq_zero_iff`: existing: Finset.inf_eq_bot_iff on AddMonoidAlgebra.infDegree; native: isolated abstract/general real laws; actual parent bridge; nonnegative NNReal recoding; bounded actual replacement; full Index consumer replay; old form call count: more than3 including normalization and project API; not claimed mathlib-only one-call; abstract call count: one finite-inf criterion plus exists_eq_right and Finsupp.mem_support_iff normalization
 
+Completed `Roth.index_sub_weight_le_index_hasseDeriv`: infDegree, weightedOrder and finite infimum APIs exist, but no existing derivative-shift law identified. Univariate natDegree_hasseDeriv_le bounds maximum degree, not vanishing minimum. Twelve actual formal-method requests and pinned rg searches.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -2120,6 +2132,8 @@ Completed `Roth.le_index_iff`: Finite meet lower-bound universal property, not a
 Completed `Roth.index_nonneg`: Finite infimum preserves a common lower bound. Polynomial and point data select the finite support but add no order-theoretic content.
 
 Completed `Roth.index_eq_zero_iff`: Finite support minimum equals bottom iff a supported degree is bottom, Taylor constant coefficient is evaluation at center
+
+Completed `Roth.index_sub_weight_le_index_hasseDeriv`: Classical Roth/Milojevic derivative-index estimate. Generic infDegree sums/products are adjacent, not duplicates. New supportShift proof is not a preexisting mathlib call.
 
 ## Part 5: Generalization opportunities
 
@@ -2404,6 +2418,8 @@ Completed `Roth.index_nonneg`: Verified Semiring coefficient carrier with arbitr
 
 Completed `Roth.index_eq_zero_iff`: Expanded arbitrary Semiring coefficients/support carrier/distinguished exponent/bounded linear target; degree bottom iff distinguished exponent. Real degrees need nonnegativity and zero-fiber control; no unchanged-parent mechanical drop.
 
+Completed `Roth.index_sub_weight_le_index_hasseDeriv`: Verified standalone projectedInfDegreeShift and expandedProjectedShift over arbitrary sigma, CommRing R, real degree D with D(i+k)=D(i)+D(k). supportShift separately CommSemiring. Parent fixed-interface restrictions are not claimed mechanically deleted. Infinity-preserving and general ordered-target variants remain optional unverified extensions.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -2684,6 +2700,8 @@ Completed `Roth.le_index_iff`: No missing lower-bound law on infDegree. Parent c
 Completed `Roth.index_nonneg`: No missing nonnegative-support lower-bound law on infDegree; project normalization bridge is actual new proof, not an existing mathlib call.
 
 Completed `Roth.index_eq_zero_iff`: No missing generic finite-infimum bottom criterion; real/NNReal/Taylor bridges are new normalization proofs.
+
+Completed `Roth.index_sub_weight_le_index_hasseDeriv`: Compatible coefficient-support shifts imply infDegree lower bounds, with Hasse derivative specialization and explicit finite minimum projection bridge.
 
 ## Part 7: Junk / removable
 
@@ -2968,6 +2986,8 @@ Completed `Roth.index_nonneg`: Not dead; three consumers, not a simp theorem. Us
 
 Completed `Roth.index_eq_zero_iff`: Used local manuscript convenience API, not dead code; redundant upstream after parent re-aim.
 
+Completed `Roth.index_sub_weight_le_index_hasseDeriv`: Used twice; no dead-code or duplicate-wrapper deletion justified.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -3111,6 +3131,7 @@ Completed `Roth.index_eq_zero_iff`: Used local manuscript convenience API, not d
 | 137 | `Roth.le_index_iff` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.le_index_iff.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.le_index_iff/root-acceptance.json) |
 | 138 | `Roth.index_nonneg` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.index_nonneg.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.index_nonneg/root-acceptance.json) |
 | 139 | `Roth.index_eq_zero_iff` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.index_eq_zero_iff.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.index_eq_zero_iff/root-acceptance.json) |
+| 140 | `Roth.index_sub_weight_le_index_hasseDeriv` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.index_sub_weight_le_index_hasseDeriv.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.index_sub_weight_le_index_hasseDeriv/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -3388,12 +3409,14 @@ Completed `Roth.index_nonneg` action: NO-mathlib-has-it via independently verifi
 
 Completed `Roth.index_eq_zero_iff` action: After sharing parent projection and NNReal recoding bridges replace index_prod empty-product iff .2 application with existing finite-inf criterion and evaluation1 normalization; delete wrapper or retain project-local in Roth/Index.lean.
 
+Completed `Roth.index_sub_weight_le_index_hasseDeriv` action: YES-but-generalise-first MODERN-IDIOM: contribute verified new aeval/infDegree derivative bound in Mathlib/Algebra/MvPolynomial/TaylorDegree.lean, staged after accepted Hasse/Taylor infrastructure; retain local point-index wrapper. Full PR title/grouping/reviewer and generalise/cleanup/pre-submit checklist in report.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.index_sub_weight_le_index_hasseDeriv` next. Supporting identities receive their own applicable checks.
+   `Roth.le_index_sum` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

@@ -1,0 +1,39 @@
+namespace IndexShiftTarget140
+open MvPolynomial
+-- Generic finite-support shift law, reproduced in the actual project context.
+noncomputable def minimum {σ R : Type*} [CommSemiring R]
+    (D : (σ →₀ ℕ) → ℝ) (P : MvPolynomial σ R) : ℝ :=
+  sInf (D '' (P.support : Set (σ →₀ ℕ)))
+theorem supportShift {σ R : Type*} [CommSemiring R]
+    (D : (σ →₀ ℕ) → ℝ) (P Q : MvPolynomial σ R) (k : σ →₀ ℕ)
+    (hQ : Q ≠ 0) (hs : ∀ i, Q.coeff i ≠ 0 → P.coeff (i + k) ≠ 0)
+    (hD : ∀ i, D (i + k) = D i + D k) :
+    minimum D P - D k ≤ minimum D Q := by
+  classical
+  have hne : (D '' (Q.support : Set (σ →₀ ℕ))).Nonempty := by
+    simpa using hQ
+  obtain ⟨i, hi, himin⟩ := hne.csInf_mem (Q.support.finite_toSet.image D)
+  have hp : minimum D P ≤ D (i + k) :=
+    csInf_le (P.support.finite_toSet.image D).bddBelow
+      (Set.mem_image_of_mem D (MvPolynomial.mem_support_iff.2 (hs i
+        (MvPolynomial.mem_support_iff.1 hi))))
+  apply sub_le_iff_le_add.mpr
+  rw [hD i, himin] at hp
+  exact hp
+theorem pointShift {σ R : Type*} [CommRing R]
+    (D : (σ →₀ ℕ) → ℝ) (P : MvPolynomial σ R) (α : σ → R) (k : σ →₀ ℕ)
+    (hk : hasseDeriv k P ≠ 0) (hD : ∀ i, D (i + k) = D i + D k) :
+    minimum D (taylor α P) - D k ≤ minimum D (taylor α (hasseDeriv k P)) := by
+  apply supportShift D _ _ k (by simpa using hk) _ hD
+  intro i hi
+  rw [coeff_taylor] at hi ⊢
+  rw [hasseDeriv_hasseDeriv, smul_eq_C_mul, map_mul, eval_C] at hi
+  exact right_ne_zero_of_mul hi
+theorem replacement {σ : Type*} [Fintype σ] {P : MvPolynomial σ ℝ} {k : σ →₀ ℕ}
+    (hk : hasseDeriv k P ≠ 0) (α : σ → ℝ) (r : σ → ℕ) :
+    Roth.index P α r - Roth.weight r k ≤ Roth.index (hasseDeriv k P) α r :=
+  pointShift (Roth.weight r) P α k hk (fun i ↦ Roth.weight_add r i k)
+#print axioms supportShift
+#print axioms pointShift
+#print axioms replacement
+end IndexShiftTarget140

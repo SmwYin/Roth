@@ -1,0 +1,24 @@
+{
+  "kind": "theorem",
+  "type": "Roth.index_sub_weight_le_index_hasseDeriv.{u_1} {σ : Type u_1} [Fintype σ] {P : MvPolynomial σ ℝ} {k : σ →₀ ℕ} (hk : (MvPolynomial.hasseDeriv k) P ≠ 0) (α : σ → ℝ) (r : σ → ℕ) : Roth.index P α r - Roth.weight r k ≤ Roth.index ((MvPolynomial.hasseDeriv k) P) α r",
+  "what": "Applying a nonzero Hasse derivative decreases weighted vanishing index by at most the weight of its multi-order.",
+  "how": "Choose an attaining derivative; composition gives a nonzero shifted coefficient; compare the original minimum and use additive weights.",
+  "hypotheses": "Finite variable interface, real coefficients, nonzero Hasse derivative. Natural denominators may be zero. Expanded new theorem uses arbitrary sigma, CommRing coefficients and shift-compatible real degree.",
+  "project_dependencies": [
+    "Roth.index",
+    "Roth.weight_add",
+    "Roth.exists_weight_eq_index",
+    "Roth.index_le_weight",
+    "MvPolynomial.hasseDeriv_hasseDeriv",
+    "Roth.weight",
+    "MvPolynomial.hasseDeriv",
+    "MvPolynomial.hasseCoeff"
+  ],
+  "caller_summary": "Two explicit proof callers: sum_max_sub_le_index_det at Theta:390 and private exists_hasseDeriv_index_eval_bound_aux at MainLemma:494. Both complete replays pass after replacement. Two direct canonical kernel consumers.",
+  "mathlib_api_audit": "infDegree, weightedOrder and finite infimum APIs exist, but no existing derivative-shift law identified. Univariate natDegree_hasseDeriv_le bounds maximum degree, not vanishing minimum. Twelve actual formal-method requests and pinned rg searches.",
+  "moral_duplications": "Classical Roth/Milojevic derivative-index estimate. Generic infDegree sums/products are adjacent, not duplicates. New supportShift proof is not a preexisting mathlib call.",
+  "generalization": "Verified standalone projectedInfDegreeShift and expandedProjectedShift over arbitrary sigma, CommRing R, real degree D with D(i+k)=D(i)+D(k). supportShift separately CommSemiring. Parent fixed-interface restrictions are not claimed mechanically deleted. Infinity-preserving and general ordered-target variants remain optional unverified extensions.",
+  "missing_api": "Compatible coefficient-support shifts imply infDegree lower bounds, with Hasse derivative specialization and explicit finite minimum projection bridge.",
+  "junk": "Used twice; no dead-code or duplicate-wrapper deletion justified.",
+  "action": "YES-but-generalise-first MODERN-IDIOM: contribute verified new aeval/infDegree derivative bound in Mathlib/Algebra/MvPolynomial/TaylorDegree.lean, staged after accepted Hasse/Taylor infrastructure; retain local point-index wrapper. Full PR title/grouping/reviewer and generalise/cleanup/pre-submit checklist in report."
+}

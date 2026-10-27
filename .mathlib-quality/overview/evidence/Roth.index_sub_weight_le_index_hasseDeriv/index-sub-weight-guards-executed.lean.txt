@@ -1,0 +1,21 @@
+namespace IndexShiftGuards140
+open MvPolynomial Roth
+theorem nonzeroHypothesisGuard :
+    hasseDeriv (Finsupp.single true 1) (X false : MvPolynomial Bool ℝ) = 0 ∧
+      ¬ (index (X false : MvPolynomial Bool ℝ) (fun _ ↦ 0)
+          (fun b ↦ if b then 2 else 1) -
+        weight (fun b : Bool ↦ if b then 2 else 1) (Finsupp.single true 1) ≤
+        index (hasseDeriv (Finsupp.single true 1) (X false : MvPolynomial Bool ℝ))
+          (fun _ ↦ 0) (fun b ↦ if b then 2 else 1)) := by
+  have hz : hasseDeriv (Finsupp.single true 1) (X false : MvPolynomial Bool ℝ) = 0 :=
+    hasseDeriv_eq_zero_of_degreeOf_lt (j := true) (by simp [degreeOf_X])
+  refine ⟨hz, ?_⟩
+  norm_num [hz, index, taylor_X, support_X, weight]
+theorem allZeroDenominators {σ : Type*} [Fintype σ] {P : MvPolynomial σ ℝ}
+    {k : σ →₀ ℕ} (hk : hasseDeriv k P ≠ 0) (α : σ → ℝ) :
+    index P α (fun _ ↦ 0) - weight (fun _ ↦ 0) k ≤
+      index (hasseDeriv k P) α (fun _ ↦ 0) :=
+  IndexShiftTarget140.replacement hk α (fun _ ↦ 0)
+#print axioms nonzeroHypothesisGuard
+#print axioms allZeroDenominators
+end IndexShiftGuards140

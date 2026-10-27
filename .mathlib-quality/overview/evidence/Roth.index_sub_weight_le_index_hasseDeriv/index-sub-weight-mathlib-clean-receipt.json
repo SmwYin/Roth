@@ -1,0 +1,93 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\n#check_failure Roth.index_sub_weight_le_index_hasseDeriv\n#check_failure MvPolynomial.hasseDeriv\nnamespace IndexShift140\nopen MvPolynomial\nnoncomputable def minimum {σ R : Type*} [CommSemiring R]\n    (D : (σ →₀ ℕ) → ℝ) (P : MvPolynomial σ R) : ℝ :=\n  sInf (D '' (P.support : Set (σ →₀ ℕ)))\ntheorem supportShift {σ R : Type*} [CommSemiring R]\n    (D : (σ →₀ ℕ) → ℝ) (P Q : MvPolynomial σ R) (k : σ →₀ ℕ)\n    (hQ : Q ≠ 0) (hs : ∀ i, Q.coeff i ≠ 0 → P.coeff (i + k) ≠ 0)\n    (hD : ∀ i, D (i + k) = D i + D k) :\n    minimum D P - D k ≤ minimum D Q := by\n  classical\n  have hne : (D '' (Q.support : Set (σ →₀ ℕ))).Nonempty := by\n    simpa using hQ\n  obtain ⟨i, hi, himin⟩ := hne.csInf_mem (Q.support.finite_toSet.image D)\n  have hp : minimum D P ≤ D (i + k) :=\n    csInf_le (P.support.finite_toSet.image D).bddBelow\n      (Set.mem_image_of_mem D (MvPolynomial.mem_support_iff.2 (hs i\n        (MvPolynomial.mem_support_iff.1 hi))))\n  apply sub_le_iff_le_add.mpr\n  rw [hD i, himin] at hp\n  exact hp\n#print axioms supportShift\n#check @AddMonoidAlgebra.infDegree\n#check @AddMonoidAlgebra.le_infDegree_add\n#check @AddMonoidAlgebra.le_infDegree_mul\n#check @MvPowerSeries.weightedOrder_le\n#check @Finset.inf_le\nend IndexShift140\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.index_sub_weight_le_index_hasseDeriv`\",\n      \"line\": 8,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown constant `MvPolynomial.hasseDeriv`\",\n      \"line\": 9,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'IndexShift140.supportShift' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 31,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@AddMonoidAlgebra.infDegree : {R : Type u_1} →\\n  {A : Type u_2} →\\n    {T : Type u_3} →\\n      [inst : Semiring R] → [inst_1 : SemilatticeInf T] → [OrderTop T] → (A → T) → AddMonoidAlgebra R A → T\",\n      \"line\": 32,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@AddMonoidAlgebra.le_infDegree_add : ∀ {R : Type u_1} {A : Type u_2} {T : Type u_3} [inst : Semiring R]\\n  [inst_1 : SemilatticeInf T] [inst_2 : OrderTop T] (D : A → T) (f g : AddMonoidAlgebra R A),\\n  AddMonoidAlgebra.infDegree D f ⊓ AddMonoidAlgebra.infDegree D g ≤ AddMonoidAlgebra.infDegree D (f + g)\",\n      \"line\": 33,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@AddMonoidAlgebra.le_infDegree_mul : ∀ {R : Type u_1} {A : Type u_2} {T : Type u_3} [inst : Semiring R]\\n  [inst_1 : SemilatticeInf T] [inst_2 : OrderTop T] [inst_3 : AddZeroClass A] [inst_4 : Add T] [AddLeftMono T]\\n  [AddRightMono T] (D : A →ₙ+ T) (f g : AddMonoidAlgebra R A),\\n  AddMonoidAlgebra.infDegree (⇑D) f + AddMonoidAlgebra.infDegree (⇑D) g ≤ AddMonoidAlgebra.infDegree (⇑D) (f * g)\",\n      \"line\": 34,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPowerSeries.weightedOrder_le : ∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ)\\n  {f : MvPowerSeries σ R} {d : σ →₀ ℕ},\\n  (MvPowerSeries.coeff d) f ≠ 0 → MvPowerSeries.weightedOrder w f ≤ ↑((Finsupp.weight w) d)\",\n      \"line\": 35,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finset.inf_le : ∀ {α : Type u_1} {β : Type u_2} [inst : SemilatticeInf α] [inst_1 : OrderTop α] {s : Finset β}\\n  {f : β → α} {b : β}, b ∈ s → s.inf f ≤ f b\",\n      \"line\": 36,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.index_sub_weight_le_index_hasseDeriv`",
+          "line": 8,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown constant `MvPolynomial.hasseDeriv`",
+          "line": 9,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'IndexShift140.supportShift' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 31,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@AddMonoidAlgebra.infDegree : {R : Type u_1} →\n  {A : Type u_2} →\n    {T : Type u_3} →\n      [inst : Semiring R] → [inst_1 : SemilatticeInf T] → [OrderTop T] → (A → T) → AddMonoidAlgebra R A → T",
+          "line": 32,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@AddMonoidAlgebra.le_infDegree_add : ∀ {R : Type u_1} {A : Type u_2} {T : Type u_3} [inst : Semiring R]\n  [inst_1 : SemilatticeInf T] [inst_2 : OrderTop T] (D : A → T) (f g : AddMonoidAlgebra R A),\n  AddMonoidAlgebra.infDegree D f ⊓ AddMonoidAlgebra.infDegree D g ≤ AddMonoidAlgebra.infDegree D (f + g)",
+          "line": 33,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@AddMonoidAlgebra.le_infDegree_mul : ∀ {R : Type u_1} {A : Type u_2} {T : Type u_3} [inst : Semiring R]\n  [inst_1 : SemilatticeInf T] [inst_2 : OrderTop T] [inst_3 : AddZeroClass A] [inst_4 : Add T] [AddLeftMono T]\n  [AddRightMono T] (D : A →ₙ+ T) (f g : AddMonoidAlgebra R A),\n  AddMonoidAlgebra.infDegree (⇑D) f + AddMonoidAlgebra.infDegree (⇑D) g ≤ AddMonoidAlgebra.infDegree (⇑D) (f * g)",
+          "line": 34,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPowerSeries.weightedOrder_le : ∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ)\n  {f : MvPowerSeries σ R} {d : σ →₀ ℕ},\n  (MvPowerSeries.coeff d) f ≠ 0 → MvPowerSeries.weightedOrder w f ≤ ↑((Finsupp.weight w) d)",
+          "line": 35,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finset.inf_le : ∀ {α : Type u_1} {β : Type u_2} [inst : SemilatticeInf α] [inst_1 : OrderTop α] {s : Finset β}\n  {f : β → α} {b : β}, b ∈ s → s.inf f ≤ f b",
+          "line": 36,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 1019
+}

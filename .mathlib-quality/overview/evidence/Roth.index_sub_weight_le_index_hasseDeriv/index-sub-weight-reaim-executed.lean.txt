@@ -1,0 +1,19 @@
+namespace IndexShiftReaim140
+open MvPolynomial
+theorem projectedInfDegreeShift {σ R : Type*} [CommRing R]
+    (D : (σ →₀ ℕ) → ℝ) (P : MvPolynomial σ R) (α : σ → R) (k : σ →₀ ℕ)
+    (hk : hasseDeriv k P ≠ 0) (hD : ∀ i, D (i + k) = D i + D k) :
+    (AddMonoidAlgebra.infDegree (fun d ↦ (D d : WithTop ℝ))
+      (taylor α P)).untopD 0 - D k ≤
+    (AddMonoidAlgebra.infDegree (fun d ↦ (D d : WithTop ℝ))
+      (taylor α (hasseDeriv k P))).untopD 0 := by
+  rw [show (AddMonoidAlgebra.infDegree (fun d ↦ (D d : WithTop ℝ))
+      (taylor α P)).untopD 0 = IndexShiftTarget140.minimum D (taylor α P) from
+        IndexConsumers133.finsetBridge _ _,
+    show (AddMonoidAlgebra.infDegree (fun d ↦ (D d : WithTop ℝ))
+      (taylor α (hasseDeriv k P))).untopD 0 =
+        IndexShiftTarget140.minimum D (taylor α (hasseDeriv k P)) from
+          IndexConsumers133.finsetBridge _ _]
+  exact IndexShiftTarget140.pointShift D P α k hk hD
+#print axioms projectedInfDegreeShift
+end IndexShiftReaim140

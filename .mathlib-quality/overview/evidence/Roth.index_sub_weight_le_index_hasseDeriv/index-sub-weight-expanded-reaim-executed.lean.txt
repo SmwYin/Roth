@@ -1,0 +1,12 @@
+namespace IndexShiftExpanded140
+open MvPolynomial
+theorem expandedProjectedShift {σ R : Type*} [CommRing R]
+    (D : (σ →₀ ℕ) → ℝ) (P : MvPolynomial σ R) (α : σ → R) (k : σ →₀ ℕ)
+    (hk : hasseDeriv k P ≠ 0) (hD : ∀ i, D (i + k) = D i + D k) :
+    (AddMonoidAlgebra.infDegree (fun d ↦ (D d : WithTop ℝ))
+      (aeval (fun j ↦ X j + C (α j)) P)).untopD 0 - D k ≤
+    (AddMonoidAlgebra.infDegree (fun d ↦ (D d : WithTop ℝ))
+      (aeval (fun j ↦ X j + C (α j)) (hasseDeriv k P))).untopD 0 :=
+  IndexShiftReaim140.projectedInfDegreeShift D P α k hk hD
+#print axioms expandedProjectedShift
+end IndexShiftExpanded140
