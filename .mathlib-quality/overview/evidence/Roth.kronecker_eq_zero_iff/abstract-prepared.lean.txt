@@ -1,0 +1,27 @@
+namespace KroneckerZeroIffProbe
+open MvPolynomial
+#check @Finsupp.mapDomain_injOn
+#check @Finsupp.mapDomain_support_of_injOn
+#check @Polynomial.toFinsupp_injective
+#check @MvPolynomial.coeff_injective
+theorem abstract_zero {R σ : Type*} [CommSemiring R] (w : σ → ℕ)
+    (P : MvPolynomial σ R) (hi : Set.InjOn (Finsupp.weight w) P.coeff.support) :
+    aeval (fun j ↦ (Polynomial.X : Polynomial R) ^ w j) P = 0 ↔ P = 0 := by
+  constructor
+  · intro h
+    have hz : P.coeff.mapDomain (Finsupp.weight w) = 0 := by
+      rw [← CoeffKroneckerProbe.bridge, h]
+      simp
+    have hp : P.coeff = 0 := Finsupp.mapDomain_injOn (↑P.coeff.support) hi
+      (Set.Subset.refl _) (by simp) (by simpa using hz)
+    exact MvPolynomial.coeff_injective hp
+  · intro h
+    rw [h, map_zero]
+theorem positional {R σ : Type*} [CommSemiring R] {n k : ℕ} (e : σ ≃ Fin n)
+    {P : MvPolynomial σ R} (hP : ∀ j, degreeOf j P < k) :
+    aeval (fun j ↦ (Polynomial.X : Polynomial R) ^ k ^ (e j : ℕ)) P = 0 ↔ P = 0 := by
+  exact abstract_zero _ P ((KroneckerExpInjOnNoBase.no_base e k).mono
+    (fun d hd j ↦ (monomial_le_degreeOf j hd).trans_lt (hP j)))
+#print axioms abstract_zero
+#print axioms positional
+end KroneckerZeroIffProbe

@@ -1,0 +1,148 @@
+{
+  "declaration": "Roth.kronecker_eq_zero_iff",
+  "unresolved": [],
+  "production_unchanged": true,
+  "standard_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "accepted": [
+    {
+      "label": "original",
+      "source": "kronecker-zero-iff-original-executed.lean.txt",
+      "source_sha256": "e849992250f5d476a991b6a3ede33045972a5e4ccbfef4a0f5575e49f7a0ad0d",
+      "receipt": "kronecker-zero-iff-original-receipt.json",
+      "execution_kind": "persistent-disk",
+      "native_region_start_line": 4536,
+      "expected_axiom_declarations": [
+        "Roth.kronecker_eq_zero_iff"
+      ],
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      }
+    },
+    {
+      "label": "audit",
+      "source": "kronecker-zero-iff-audit-executed.lean.txt",
+      "source_sha256": "069abac62c276c14dc0685372b3dec7e82688ca6850b648612d68418ceebb426",
+      "receipt": "kronecker-zero-iff-audit-receipt.json",
+      "execution_kind": "persistent-disk",
+      "native_region_start_line": 4540,
+      "expected_axiom_declarations": [],
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      }
+    },
+    {
+      "label": "abstract",
+      "source": "kronecker-zero-iff-abstract-executed.lean.txt",
+      "source_sha256": "e356ef9295aa38ff9a99cbb92502ba98a7df6ca27b7a77001874c7fc2d64ef44",
+      "receipt": "kronecker-zero-iff-abstract-receipt.json",
+      "execution_kind": "persistent-disk",
+      "native_region_start_line": 4859,
+      "expected_axiom_declarations": [
+        "KroneckerZeroIffProbe.abstract_zero",
+        "KroneckerZeroIffProbe.positional"
+      ],
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      }
+    },
+    {
+      "label": "consumer",
+      "source": "kronecker-zero-iff-consumer-executed.lean.txt",
+      "source_sha256": "91d6ed044d16ee6c2b160b56b29517df7a3e0f11dbbaa5cbd6ac747dffccebc0",
+      "receipt": "kronecker-zero-iff-consumer-receipt.json",
+      "execution_kind": "persistent-disk",
+      "native_region_start_line": 4888,
+      "expected_axiom_declarations": [
+        "KroneckerZeroIffConsumer.zero_replay",
+        "KroneckerZeroIffConsumer.linearIndependent_replay"
+      ],
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      }
+    },
+    {
+      "label": "isolated",
+      "source": "kronecker-zero-iff-isolated-executed.lean.txt",
+      "source_sha256": "b677d2acd0f5871a312dfc179e56bc0260fa44b7447b65dd123fb83c37ad1deb",
+      "receipt": "kronecker-zero-iff-isolated-receipt.json",
+      "execution_kind": "mathlib-only-run-code",
+      "native_region_start_line": 1,
+      "expected_axiom_declarations": [
+        "KroneckerExpInjOnNoBase.no_base",
+        "CoeffKroneckerProbe.bridge",
+        "KroneckerZeroIffProbe.abstract_zero",
+        "KroneckerZeroIffProbe.positional"
+      ],
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.Polynomial.HasseDeriv\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.LinearAlgebra.Matrix.ToLinearEquiv\nimport Mathlib.RingTheory.Polynomial.Wronskian\nimport Mathlib.LinearAlgebra.Vandermonde\nimport Mathlib.Data.ZMod.Defs\nimport Mathlib.Algebra.Field.ZMod\nimport Mathlib.Algebra.Order.Group.Int.Sum\nimport Mathlib.LinearAlgebra.Matrix.Polynomial\nimport Mathlib.Algebra.Polynomial.CancelLeads\nimport Mathlib.Algebra.MvPolynomial.PDeriv\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\nimport Mathlib.Algebra.MvPolynomial.Equiv\nimport Mathlib.Analysis.Normed.Unbundled.RingSeminorm\nimport Mathlib.LinearAlgebra.Matrix.AbsoluteValue\nimport Mathlib.Data.Nat.Choose.Bounds\nimport Mathlib.RingTheory.Polynomial.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.Data.List.Indexes\n#check_failure Roth.kroneckerExp_injOn\nnamespace KroneckerExpInjOnRaw\n#check @Nat.ofDigits_inj_of_len_eq\n#check @Nat.injOn_ofDigits\n#check @Nat.bijOn_ofDigits\n#check @Finsupp.weight_eq_sum\ntheorem digits_law {k : \u2115} (hk : 1 < k) (n : \u2115) :\n    Set.InjOn (Nat.ofDigits k) {L : List \u2115 | L.length = n \u2227 \u2200 x \u2208 L, x < k} :=\n  Nat.injOn_ofDigits hk n\ntheorem weighted_law {\u03c3 : Type*} {n k : \u2115} (e : \u03c3 \u2243 Fin n) (hk : 1 < k) :\n    Set.InjOn (Finsupp.weight (fun j \u21a6 k ^ (e j : \u2115))) {d : \u03c3 \u2192\u2080 \u2115 | \u2200 j, d j < k} := by\n  let := Fintype.ofEquiv (Fin n) e.symm\n  intro d hd d' hd' h\n  have hsum (d : \u03c3 \u2192\u2080 \u2115) : Nat.ofDigits k (List.ofFn fun i \u21a6 d (e.symm i)) =\n      Finsupp.weight (fun j \u21a6 k ^ (e j : \u2115)) d := by\n    simp only [Nat.ofDigits_eq_sum_mapIdx, List.mapIdx_eq_ofFn, Fin.sum_ofFn,\n      Finsupp.weight_eq_sum, smul_eq_mul, \u2190 e.symm.sum_comp, List.get_eq_getElem,\n      List.getElem_ofFn, List.length_ofFn, Equiv.apply_symm_apply, Fin.val_cast, Fin.eta]\n  apply DFunLike.coe_injective\n  apply e.symm.surjective.injective_comp_right\n  refine List.ofFn_injective (Nat.ofDigits_inj_of_len_eq hk (by simp)\n    (List.forall_mem_ofFn_iff.2 fun i \u21a6 hd (e.symm i))\n    (List.forall_mem_ofFn_iff.2 fun i \u21a6 hd' (e.symm i)) ?_)\n  simpa only [Function.comp_def, hsum] using h\n#print axioms digits_law\n#print axioms weighted_law\nend KroneckerExpInjOnRaw\n\nnamespace KroneckerExpInjOnNoBase\ntheorem no_base {\u03c3 : Type*} {n : \u2115} (e : \u03c3 \u2243 Fin n) (k : \u2115) :\n    Set.InjOn (Finsupp.weight (fun j \u21a6 k ^ (e j : \u2115))) {d : \u03c3 \u2192\u2080 \u2115 | \u2200 j, d j < k} := by\n  by_cases hk : 1 < k\n  \u00b7 exact KroneckerExpInjOnRaw.weighted_law e hk\n  \u00b7 intro d hd d' hd' _\n    apply Finsupp.ext\n    intro j\n    have h1 := hd j\n    have h2 := hd' j\n    omega\n#print axioms no_base\nend KroneckerExpInjOnNoBase\n\n#check_failure Roth.kronecker_eq_zero_iff\nnamespace CoeffKroneckerProbe\nopen MvPolynomial\n#check @Finsupp.mapDomain_apply'\n#check @MvPolynomial.induction_on'\n#check @AddMonoidAlgebra.coeff_add\n#check @Polynomial.toFinsupp_apply\ntheorem weighted_monomial {R \u03c3 : Type*} [CommSemiring R] (w : \u03c3 \u2192 \u2115)\n    (d : \u03c3 \u2192\u2080 \u2115) (a : R) :\n    aeval (fun j \u21a6 (Polynomial.X : Polynomial R) ^ w j) (monomial d a) =\n      Polynomial.C a * Polynomial.X ^ Finsupp.weight w d := by\n  classical\n  simp only [aeval_monomial, Polynomial.algebraMap_eq, Finsupp.prod, Finsupp.weight_apply,\n    Finsupp.sum, smul_eq_mul, \u2190 pow_mul, mul_comm, \u2190 Finset.prod_pow_eq_pow_sum]\n\ntheorem bridge {R \u03c3 : Type*} [CommSemiring R] (w : \u03c3 \u2192 \u2115) (P : MvPolynomial \u03c3 R) :\n    (aeval (fun j \u21a6 (Polynomial.X : Polynomial R) ^ w j) P).toFinsupp.coeff =\n      P.coeff.mapDomain (Finsupp.weight w) := by\n  classical\n  induction P using MvPolynomial.induction_on' with\n  | monomial d a =>\n    rw [weighted_monomial, Polynomial.toFinsupp_C_mul_X_pow]\n    simp [MvPolynomial.monomial, Finsupp.mapDomain_single]\n  | add P Q hP hQ =>\n    simp only [map_add, Polynomial.toFinsupp_add, AddMonoidAlgebra.coeff_add,\n      hP, hQ, Finsupp.mapDomain_add]\ntheorem abstract_coeff {R \u03c3 : Type*} [CommSemiring R] (w : \u03c3 \u2192 \u2115)\n    (S : Set (\u03c3 \u2192\u2080 \u2115)) (P : MvPolynomial \u03c3 R) (hP : (P.coeff.support : Set _) \u2286 S)\n    (hi : Set.InjOn (Finsupp.weight w) S) {d : \u03c3 \u2192\u2080 \u2115} (hd : d \u2208 S) :\n    (aeval (fun j \u21a6 (Polynomial.X : Polynomial R) ^ w j) P).coeff\n      (Finsupp.weight w d) = P.coeff d := by\n  rw [\u2190 Polynomial.toFinsupp_apply, bridge]\n  exact Finsupp.mapDomain_apply' S P.coeff hP hi hd\n#print axioms weighted_monomial\n#print axioms bridge\n#print axioms abstract_coeff\nend CoeffKroneckerProbe\n\nnamespace KroneckerZeroIffProbe\nopen MvPolynomial\n#check @Finsupp.mapDomain_injOn\n#check @Finsupp.mapDomain_support_of_injOn\n#check @Polynomial.toFinsupp_injective\n#check @AddMonoidAlgebra.coeff_injective\ntheorem abstract_zero {R \u03c3 : Type*} [CommSemiring R] (w : \u03c3 \u2192 \u2115)\n    (P : MvPolynomial \u03c3 R)\n    (hi : Set.InjOn (Finsupp.weight (R := \u2115) w) (\u2191P.coeff.support : Set (\u03c3 \u2192\u2080 \u2115))) :\n    aeval (fun j \u21a6 (Polynomial.X : Polynomial R) ^ w j) P = 0 \u2194 P = 0 := by\n  constructor\n  \u00b7 intro h\n    have hz : P.coeff.mapDomain (Finsupp.weight w) = 0 := by\n      rw [\u2190 CoeffKroneckerProbe.bridge, h]\n      simp\n    have hp : P.coeff = 0 := Finsupp.mapDomain_injOn (\u2191P.coeff.support) hi\n      (Set.Subset.refl _) (by simp) (by simpa using hz)\n    exact AddMonoidAlgebra.coeff_injective hp\n  \u00b7 intro h\n    rw [h, map_zero]\ntheorem positional {R \u03c3 : Type*} [CommSemiring R] {n k : \u2115} (e : \u03c3 \u2243 Fin n)\n    {P : MvPolynomial \u03c3 R} (hP : \u2200 j, degreeOf j P < k) :\n    aeval (fun j \u21a6 (Polynomial.X : Polynomial R) ^ k ^ (e j : \u2115)) P = 0 \u2194 P = 0 := by\n  exact abstract_zero _ P ((KroneckerExpInjOnNoBase.no_base e k).mono\n    (fun d hd j \u21a6 (monomial_le_degreeOf j hd).trans_lt (hP j)))\n#print axioms abstract_zero\n#print axioms positional\nend KroneckerZeroIffProbe\n"
+      }
+    },
+    {
+      "label": "restriction",
+      "source": "kronecker-zero-iff-restriction-executed.lean.txt",
+      "source_sha256": "1e79a9a996ff56ee941eabdf538ef292e549614fedde85adfa0368eedfd3bbf2",
+      "receipt": "kronecker-zero-iff-restriction-receipt.json",
+      "execution_kind": "persistent-disk",
+      "native_region_start_line": 4910,
+      "expected_axiom_declarations": [
+        "KroneckerZeroIffRestriction.restricted",
+        "KroneckerZeroIffRestriction.support_zero"
+      ],
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      }
+    }
+  ],
+  "rejected": [
+    {
+      "label": "abstract-rejected",
+      "source": "kronecker-zero-iff-abstract-rejected-executed.lean.txt",
+      "receipt": "kronecker-zero-iff-abstract-rejected-receipt.json",
+      "reason": "Finset support not coerced to Set while weight scalar metavariable unsolved; recovered sorryAx invalidates result."
+    },
+    {
+      "label": "abstract-second-rejected",
+      "source": "kronecker-zero-iff-abstract-second-rejected-executed.lean.txt",
+      "receipt": "kronecker-zero-iff-abstract-second-rejected-receipt.json",
+      "reason": "Remaining binder inference failure; recovered sorryAx invalidates result."
+    },
+    {
+      "label": "abstract-style-rejected",
+      "source": "kronecker-zero-iff-abstract-style-rejected-executed.lean.txt",
+      "receipt": "kronecker-zero-iff-abstract-style-rejected-receipt.json",
+      "reason": "Proof elaborated but whitespace style warning: rejected until clean rstrip rerun."
+    },
+    {
+      "label": "absence",
+      "source": "kronecker-zero-iff-absence-executed.lean.txt",
+      "receipt": "kronecker-zero-iff-absence-receipt.json",
+      "reason": "Fresh mathlib-only exact? could not close support-local aeval zero goal; no timeout; search attempt, not accepted theorem."
+    }
+  ],
+  "canonical_direct_consumers": [
+    "Roth.linearIndependent_kronecker"
+  ],
+  "prerequisites": [
+    {
+      "declaration_index": 108,
+      "helper": "KroneckerExpInjOnNoBase.no_base",
+      "status": "new proof, not mathlib",
+      "verified_in": "kronecker-zero-iff-isolated-executed.lean.txt"
+    },
+    {
+      "declaration_index": 109,
+      "helper": "CoeffKroneckerProbe.bridge",
+      "status": "new proof, not mathlib",
+      "verified_in": "kronecker-zero-iff-isolated-executed.lean.txt"
+    }
+  ]
+}

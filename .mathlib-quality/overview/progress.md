@@ -3,7 +3,7 @@
 Status: **in_progress**, 2026-10-27. Branch: `ramin-cleanup`.
 Production Lean files and all pins match baseline `99f19fd`.
 
-**Completed: 109 / 293 written declarations.**
+**Completed: 110 / 293 written declarations.**
 This counts the current overview assessments, separately from the earlier code cleanup.
 
 | # | Completed declaration | Applicable workflow | Verdict | Report |
@@ -117,8 +117,9 @@ This counts the current overview assessments, separately from the earlier code c
 | 107 | `Roth.kronecker_monomial` | full-mathlibable; accepted complete | NO-mathlib-has-it | [Detailed report](mathlibable/Roth.kronecker_monomial.md) |
 | 108 | `Roth.kroneckerExp_injOn` | full-mathlibable; accepted complete | YES-but-generalise-first | [Detailed report](mathlibable/Roth.kroneckerExp_injOn.md) |
 | 109 | `Roth.coeff_kronecker` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.coeff_kronecker.md) |
+| 110 | `Roth.kronecker_eq_zero_iff` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.kronecker_eq_zero_iff.md) |
 
-**Next declaration: `Roth.kronecker_eq_zero_iff`**, `Roth/GenWronskian.lean:106`.
+**Next declaration: `Roth.linearIndependent_kronecker`**, `Roth/GenWronskian.lean:117`.
 Only the listed assessments are complete. No partial assessment was committed.
 
 On restart: read [README](README.md), [machine progress](progress.json), and

@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 109/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 110/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 109; remaining: 184.
-- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 15 YES-but-generalise-first, 21 NO-mathlib-has-it, 34 BORDERLINE-needs-human, 12 SKIP.
+- Completed applicable assessments: 110; remaining: 183.
+- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 15 YES-but-generalise-first, 21 NO-mathlib-has-it, 35 BORDERLINE-needs-human, 12 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -1172,6 +1172,17 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: One same-module explicit and canonical direct consumer: Roth.kronecker_eq_zero_iff at111; no external-to-file explicit reference.
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.coeff_kronecker.md).
 
+### Completed: `Roth.kronecker_eq_zero_iff`
+
+- Type: `∀ {K : Type u_1} [inst : Field K] {σ : Type u_2} [inst_1 : Fintype σ] {k : ℕ},
+  1 < k → ∀ {P : MvPolynomial σ K}, (∀ (j : σ), MvPolynomial.degreeOf j P < k) → ((Roth.kronecker k) P = 0 ↔ P = 0)`
+- What: The Kronecker substitution detects zero under individual-degree bounds.
+- How: Every support exponent lies in the bounded radix box; coefficient recovery prevents cancellation. Reverse direction is map_zero.
+- Hypotheses: Field K, Fintype σ, k : ℕ, 1 < k, P : MvPolynomial σ K, ∀ j, degreeOf j P < k
+- Project dependencies: Roth.kronecker, Roth.coeff_kronecker
+- Caller summary: named: 1; callers: Roth.linearIndependent_kronecker; outside declaring file: 0; full replay: PASS
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.kronecker_eq_zero_iff.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -1416,6 +1427,8 @@ Completed `Roth.kroneckerExp_injOn`: All5 actual methods on current, standard an
 
 Completed `Roth.coeff_kronecker`: Finsupp.mapDomain_apply' supplies exact abstract coefficient transport; new nondefinitional aeval/mapDomain normalization bridge verified in arbitrary CommSemiring.
 
+Completed `Roth.kronecker_eq_zero_iff`: exact abstract: Finsupp.mapDomain_injOn; alternative: Finsupp.mapDomain_support_of_injOn; normalization: Newly proved weighted aeval/mapDomain bridge; not existing replacement; automatic parent gate: aeval analogous law not established; no blanket NO
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -1635,6 +1648,8 @@ Completed `Roth.kronecker_monomial`: Redundant specialization of existing generi
 Completed `Roth.kroneckerExp_injOn`: Private NoetherNormalization.sum_r_mul_ne90–98 independently performs essentially same positional conversion. Its expanded statement replays using generalized weight helper; not a public exact replacement or actual source caller.
 
 Completed `Roth.coeff_kronecker`: Coefficient separation is existing support-local mapDomain transport; exact aeval coefficient API not identified.
+
+Completed `Roth.kronecker_eq_zero_iff`: Abstract support-local injection is already in Finsupp.mapDomain_injOn; no duplicate Finsupp theorem needed.
 
 ## Part 5: Generalization opportunities
 
@@ -1859,6 +1874,8 @@ Completed `Roth.kroneckerExp_injOn`: Checked explicit e:σ≃Fin n with proof-lo
 
 Completed `Roth.coeff_kronecker`: Verified arbitrary sigma, CommSemiring, arbitrary weights with support-local InjOn; explicit finite enumeration and no hk positional specialization also checked.
 
+Completed `Roth.kronecker_eq_zero_iff`: Verified CommSemiring, arbitrary σ and weights with support separation; positional explicit e and no hk; literal parents retain Field/Fintype constraints.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -2079,6 +2096,8 @@ Completed `Roth.kronecker_monomial`: No missing evaluation infrastructure establ
 Completed `Roth.kroneckerExp_injOn`: Public Finsupp geometric-weight injectivity on bounded digits; concrete recurring list conversion in Roth and pinned NoetherNormalization private helper.
 
 Completed `Roth.coeff_kronecker`: Candidate normalization between aeval monomial powers and mapDomainAlgHom(weight); decide whether to expose extraction corollary.
+
+Completed `Roth.kronecker_eq_zero_iff`: Weighted monomial-evaluation coefficient/mapDomain bridge; packaging of restricted aeval injection versus zero corollary remains API choice.
 
 ## Part 7: Junk / removable
 
@@ -2303,6 +2322,8 @@ Completed `Roth.kroneckerExp_injOn`: Useful non-simp arithmetic helper, not dead
 
 Completed `Roth.coeff_kronecker`: Not junk: actual zero-detection consumer supports generalized Wronskian theorem.
 
+Completed `Roth.kronecker_eq_zero_iff`: Not dead: sole explicit caller and canonical direct dependency agree; no inline duplicate found.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -2416,6 +2437,7 @@ Completed `Roth.coeff_kronecker`: Not junk: actual zero-detection consumer suppo
 | 107 | `Roth.kronecker_monomial` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.kronecker_monomial.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.kronecker_monomial/root-acceptance.json) |
 | 108 | `Roth.kroneckerExp_injOn` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.kroneckerExp_injOn.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.kroneckerExp_injOn/root-acceptance.json) |
 | 109 | `Roth.coeff_kronecker` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.coeff_kronecker.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.coeff_kronecker/root-acceptance.json) |
+| 110 | `Roth.kronecker_eq_zero_iff` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.kronecker_eq_zero_iff.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.kronecker_eq_zero_iff/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -2633,12 +2655,14 @@ Completed `Roth.kroneckerExp_injOn` action: YES-but-generalise-first. Propose Fi
 
 Completed `Roth.coeff_kronecker` action: BORDERLINE-needs-human; resolve three concrete upstream API packaging questions. Production unchanged.
 
+Completed `Roth.kronecker_eq_zero_iff` action: verdict: BORDERLINE-needs-human; questions: Bridge-only weighted aeval/mapDomainAlgHom contribution versus packaged consequences?, Restricted Set.InjOn primary, with named support-local zero iff rewriting corollary?, Include positional degree-box zero test with explicit-enumeration separation API or keep it local?; local destination: Roth/GenWronskian.lean; refactor: At linearIndependent_kronecker:123 substitute verified zero_replay/chosen support-law specialization; preserve sum-degree premises and caller hk.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.kronecker_eq_zero_iff` next. Supporting identities receive their own applicable checks.
+   `Roth.linearIndependent_kronecker` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

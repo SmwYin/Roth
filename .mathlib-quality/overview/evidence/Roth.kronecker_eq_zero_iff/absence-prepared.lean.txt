@@ -1,0 +1,25 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+import Mathlib.Algebra.Polynomial.CancelLeads
+import Mathlib.Algebra.MvPolynomial.PDeriv
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+import Mathlib.Algebra.MvPolynomial.Equiv
+import Mathlib.Analysis.Normed.Unbundled.RingSeminorm
+import Mathlib.LinearAlgebra.Matrix.AbsoluteValue
+import Mathlib.Data.Nat.Choose.Bounds
+import Mathlib.RingTheory.Polynomial.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.Data.List.Indexes
+#check_failure Roth.kronecker_eq_zero_iff
+open MvPolynomial
+example {R σ : Type*} [CommSemiring R] (w : σ → ℕ)
+    (P : MvPolynomial σ R) (hi : Set.InjOn (Finsupp.weight (R := ℕ) w) (↑P.coeff.support : Set (σ →₀ ℕ))) :
+    aeval (fun j ↦ (Polynomial.X : Polynomial R) ^ w j) P = 0 ↔ P = 0 := by
+  exact?

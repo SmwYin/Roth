@@ -1,0 +1,27 @@
+namespace KroneckerZeroIffRestriction
+open MvPolynomial
+theorem restricted {R σ : Type*} [CommSemiring R] (w : σ → ℕ)
+    (S : Set (σ →₀ ℕ)) (hi : Set.InjOn (Finsupp.weight (R := ℕ) w) S) :
+    Set.InjOn (aeval (fun j ↦ (Polynomial.X : Polynomial R) ^ w j))
+      {P : MvPolynomial σ R | (↑P.coeff.support : Set (σ →₀ ℕ)) ⊆ S} := by
+  intro P hP Q hQ h
+  apply AddMonoidAlgebra.coeff_injective
+  apply Finsupp.mapDomain_injOn S hi hP hQ
+  rw [← CoeffKroneckerProbe.bridge, ← CoeffKroneckerProbe.bridge, h]
+theorem support_zero {R σ : Type*} [CommSemiring R] (w : σ → ℕ)
+    (P : MvPolynomial σ R)
+    (hi : Set.InjOn (Finsupp.weight (R := ℕ) w) (↑P.coeff.support : Set (σ →₀ ℕ))) :
+    aeval (fun j ↦ (Polynomial.X : Polynomial R) ^ w j) P = 0 ↔ P = 0 := by
+  constructor
+  · intro h
+    have hz : P.coeff.mapDomain (Finsupp.weight w) = 0 := by
+      rw [← CoeffKroneckerProbe.bridge, h]
+      simp
+    have hs := Finsupp.mapDomain_support_of_injOn P.coeff hi
+    rw [hz, Finsupp.support_zero, eq_comm, Finset.image_eq_empty] at hs
+    exact AddMonoidAlgebra.coeff_injective (Finsupp.support_eq_empty.mp hs)
+  · intro h
+    rw [h, map_zero]
+#print axioms restricted
+#print axioms support_zero
+end KroneckerZeroIffRestriction

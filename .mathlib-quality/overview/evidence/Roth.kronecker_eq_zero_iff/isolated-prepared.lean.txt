@@ -1,0 +1,127 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+import Mathlib.Algebra.Polynomial.CancelLeads
+import Mathlib.Algebra.MvPolynomial.PDeriv
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+import Mathlib.Algebra.MvPolynomial.Equiv
+import Mathlib.Analysis.Normed.Unbundled.RingSeminorm
+import Mathlib.LinearAlgebra.Matrix.AbsoluteValue
+import Mathlib.Data.Nat.Choose.Bounds
+import Mathlib.RingTheory.Polynomial.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.Data.List.Indexes
+#check_failure Roth.kroneckerExp_injOn
+namespace KroneckerExpInjOnRaw
+#check @Nat.ofDigits_inj_of_len_eq
+#check @Nat.injOn_ofDigits
+#check @Nat.bijOn_ofDigits
+#check @Finsupp.weight_eq_sum
+theorem digits_law {k : ℕ} (hk : 1 < k) (n : ℕ) :
+    Set.InjOn (Nat.ofDigits k) {L : List ℕ | L.length = n ∧ ∀ x ∈ L, x < k} :=
+  Nat.injOn_ofDigits hk n
+theorem weighted_law {σ : Type*} {n k : ℕ} (e : σ ≃ Fin n) (hk : 1 < k) :
+    Set.InjOn (Finsupp.weight (fun j ↦ k ^ (e j : ℕ))) {d : σ →₀ ℕ | ∀ j, d j < k} := by
+  let := Fintype.ofEquiv (Fin n) e.symm
+  intro d hd d' hd' h
+  have hsum (d : σ →₀ ℕ) : Nat.ofDigits k (List.ofFn fun i ↦ d (e.symm i)) =
+      Finsupp.weight (fun j ↦ k ^ (e j : ℕ)) d := by
+    simp only [Nat.ofDigits_eq_sum_mapIdx, List.mapIdx_eq_ofFn, Fin.sum_ofFn,
+      Finsupp.weight_eq_sum, smul_eq_mul, ← e.symm.sum_comp, List.get_eq_getElem,
+      List.getElem_ofFn, List.length_ofFn, Equiv.apply_symm_apply, Fin.val_cast, Fin.eta]
+  apply DFunLike.coe_injective
+  apply e.symm.surjective.injective_comp_right
+  refine List.ofFn_injective (Nat.ofDigits_inj_of_len_eq hk (by simp)
+    (List.forall_mem_ofFn_iff.2 fun i ↦ hd (e.symm i))
+    (List.forall_mem_ofFn_iff.2 fun i ↦ hd' (e.symm i)) ?_)
+  simpa only [Function.comp_def, hsum] using h
+#print axioms digits_law
+#print axioms weighted_law
+end KroneckerExpInjOnRaw
+
+namespace KroneckerExpInjOnNoBase
+theorem no_base {σ : Type*} {n : ℕ} (e : σ ≃ Fin n) (k : ℕ) :
+    Set.InjOn (Finsupp.weight (fun j ↦ k ^ (e j : ℕ))) {d : σ →₀ ℕ | ∀ j, d j < k} := by
+  by_cases hk : 1 < k
+  · exact KroneckerExpInjOnRaw.weighted_law e hk
+  · intro d hd d' hd' _
+    apply Finsupp.ext
+    intro j
+    have h1 := hd j
+    have h2 := hd' j
+    omega
+#print axioms no_base
+end KroneckerExpInjOnNoBase
+
+#check_failure Roth.kronecker_eq_zero_iff
+namespace CoeffKroneckerProbe
+open MvPolynomial
+#check @Finsupp.mapDomain_apply'
+#check @MvPolynomial.induction_on'
+#check @AddMonoidAlgebra.coeff_add
+#check @Polynomial.toFinsupp_apply
+theorem weighted_monomial {R σ : Type*} [CommSemiring R] (w : σ → ℕ)
+    (d : σ →₀ ℕ) (a : R) :
+    aeval (fun j ↦ (Polynomial.X : Polynomial R) ^ w j) (monomial d a) =
+      Polynomial.C a * Polynomial.X ^ Finsupp.weight w d := by
+  classical
+  simp only [aeval_monomial, Polynomial.algebraMap_eq, Finsupp.prod, Finsupp.weight_apply,
+    Finsupp.sum, smul_eq_mul, ← pow_mul, mul_comm, ← Finset.prod_pow_eq_pow_sum]
+
+theorem bridge {R σ : Type*} [CommSemiring R] (w : σ → ℕ) (P : MvPolynomial σ R) :
+    (aeval (fun j ↦ (Polynomial.X : Polynomial R) ^ w j) P).toFinsupp.coeff =
+      P.coeff.mapDomain (Finsupp.weight w) := by
+  classical
+  induction P using MvPolynomial.induction_on' with
+  | monomial d a =>
+    rw [weighted_monomial, Polynomial.toFinsupp_C_mul_X_pow]
+    simp [MvPolynomial.monomial, Finsupp.mapDomain_single]
+  | add P Q hP hQ =>
+    simp only [map_add, Polynomial.toFinsupp_add, AddMonoidAlgebra.coeff_add,
+      hP, hQ, Finsupp.mapDomain_add]
+theorem abstract_coeff {R σ : Type*} [CommSemiring R] (w : σ → ℕ)
+    (S : Set (σ →₀ ℕ)) (P : MvPolynomial σ R) (hP : (P.coeff.support : Set _) ⊆ S)
+    (hi : Set.InjOn (Finsupp.weight w) S) {d : σ →₀ ℕ} (hd : d ∈ S) :
+    (aeval (fun j ↦ (Polynomial.X : Polynomial R) ^ w j) P).coeff
+      (Finsupp.weight w d) = P.coeff d := by
+  rw [← Polynomial.toFinsupp_apply, bridge]
+  exact Finsupp.mapDomain_apply' S P.coeff hP hi hd
+#print axioms weighted_monomial
+#print axioms bridge
+#print axioms abstract_coeff
+end CoeffKroneckerProbe
+
+namespace KroneckerZeroIffProbe
+open MvPolynomial
+#check @Finsupp.mapDomain_injOn
+#check @Finsupp.mapDomain_support_of_injOn
+#check @Polynomial.toFinsupp_injective
+#check @AddMonoidAlgebra.coeff_injective
+theorem abstract_zero {R σ : Type*} [CommSemiring R] (w : σ → ℕ)
+    (P : MvPolynomial σ R)
+    (hi : Set.InjOn (Finsupp.weight (R := ℕ) w) (↑P.coeff.support : Set (σ →₀ ℕ))) :
+    aeval (fun j ↦ (Polynomial.X : Polynomial R) ^ w j) P = 0 ↔ P = 0 := by
+  constructor
+  · intro h
+    have hz : P.coeff.mapDomain (Finsupp.weight w) = 0 := by
+      rw [← CoeffKroneckerProbe.bridge, h]
+      simp
+    have hp : P.coeff = 0 := Finsupp.mapDomain_injOn (↑P.coeff.support) hi
+      (Set.Subset.refl _) (by simp) (by simpa using hz)
+    exact AddMonoidAlgebra.coeff_injective hp
+  · intro h
+    rw [h, map_zero]
+theorem positional {R σ : Type*} [CommSemiring R] {n k : ℕ} (e : σ ≃ Fin n)
+    {P : MvPolynomial σ R} (hP : ∀ j, degreeOf j P < k) :
+    aeval (fun j ↦ (Polynomial.X : Polynomial R) ^ k ^ (e j : ℕ)) P = 0 ↔ P = 0 := by
+  exact abstract_zero _ P ((KroneckerExpInjOnNoBase.no_base e k).mono
+    (fun d hd j ↦ (monomial_le_degreeOf j hd).trans_lt (hP j)))
+#print axioms abstract_zero
+#print axioms positional
+end KroneckerZeroIffProbe

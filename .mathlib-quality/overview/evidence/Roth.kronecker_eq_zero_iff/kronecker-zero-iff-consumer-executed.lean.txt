@@ -1,0 +1,21 @@
+namespace KroneckerZeroIffConsumer
+open MvPolynomial Roth
+variable {K σ : Type*} [Field K] [Fintype σ] {l : ℕ}
+theorem zero_replay {k : ℕ} {P : MvPolynomial σ K}
+    (hP : ∀ j, degreeOf j P < k) : kronecker k P = 0 ↔ P = 0 := by
+  simpa only [Roth.kronecker] using
+    KroneckerZeroIffProbe.positional (Fintype.equivFin σ) hP
+theorem linearIndependent_replay {k : ℕ} (hk : 1 < k) {φ : Fin l → MvPolynomial σ K}
+    (hφ : ∀ ν j, degreeOf j (φ ν) < k) (h : LinearIndependent K φ) :
+    LinearIndependent K fun ν ↦ kronecker k (φ ν) := by
+  rw [Fintype.linearIndependent_iff] at h ⊢
+  intro g hg
+  apply h g
+  refine (zero_replay (k := k) fun j ↦ ?_).mp ?_
+  · refine (degreeOf_sum_le _ _ _).trans_lt <|
+      (Finset.sup_lt_iff (Nat.zero_lt_of_lt hk)).2 fun i _ ↦ ?_
+    simpa [smul_eq_C_mul] using (degreeOf_C_mul_le (φ i) j (g i)).trans_lt (hφ i j)
+  · simpa [map_sum, map_smul] using hg
+#print axioms zero_replay
+#print axioms linearIndependent_replay
+end KroneckerZeroIffConsumer

@@ -1,0 +1,51 @@
+{
+  "declaration": "Roth.kronecker_eq_zero_iff",
+  "kind": "theorem",
+  "type": "\u2200 {K : Type u_1} [inst : Field K] {\u03c3 : Type u_2} [inst_1 : Fintype \u03c3] {k : \u2115},\n  1 < k \u2192 \u2200 {P : MvPolynomial \u03c3 K}, (\u2200 (j : \u03c3), MvPolynomial.degreeOf j P < k) \u2192 ((Roth.kronecker k) P = 0 \u2194 P = 0)",
+  "what": "The Kronecker substitution detects zero under individual-degree bounds.",
+  "how": "Every support exponent lies in the bounded radix box; coefficient recovery prevents cancellation. Reverse direction is map_zero.",
+  "hypotheses": [
+    "Field K",
+    "Fintype \u03c3",
+    "k : \u2115",
+    "1 < k",
+    "P : MvPolynomial \u03c3 K",
+    "\u2200 j, degreeOf j P < k"
+  ],
+  "project_dependencies": [
+    "Roth.kronecker",
+    "Roth.coeff_kronecker"
+  ],
+  "caller_summary": {
+    "named": 1,
+    "callers": [
+      "Roth.linearIndependent_kronecker"
+    ],
+    "outside_declaring_file": 0,
+    "full_replay": "PASS"
+  },
+  "mathlib_api_audit": {
+    "exact_abstract": "Finsupp.mapDomain_injOn",
+    "alternative": "Finsupp.mapDomain_support_of_injOn",
+    "normalization": "Newly proved weighted aeval/mapDomain bridge; not existing replacement",
+    "automatic_parent_gate": "aeval analogous law not established; no blanket NO"
+  },
+  "moral_duplications": [
+    "Abstract support-local injection is already in Finsupp.mapDomain_injOn; no duplicate Finsupp theorem needed."
+  ],
+  "generalization": "Verified CommSemiring, arbitrary \u03c3 and weights with support separation; positional explicit e and no hk; literal parents retain Field/Fintype constraints.",
+  "missing_api": [
+    "Weighted monomial-evaluation coefficient/mapDomain bridge; packaging of restricted aeval injection versus zero corollary remains API choice."
+  ],
+  "junk": "Not dead: sole explicit caller and canonical direct dependency agree; no inline duplicate found.",
+  "action": {
+    "verdict": "BORDERLINE-needs-human",
+    "questions": [
+      "Bridge-only weighted aeval/mapDomainAlgHom contribution versus packaged consequences?",
+      "Restricted Set.InjOn primary, with named support-local zero iff rewriting corollary?",
+      "Include positional degree-box zero test with explicit-enumeration separation API or keep it local?"
+    ],
+    "local_destination": "Roth/GenWronskian.lean",
+    "refactor": "At linearIndependent_kronecker:123 substitute verified zero_replay/chosen support-law specialization; preserve sum-degree premises and caller hk."
+  }
+}
