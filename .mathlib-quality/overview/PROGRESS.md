@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-26
 
-- Declarations completed: **118/293**
-- Next declaration: **#119 `Roth.exists_genWronskian_ne_zero`** (Roth/GenWronskian.lean:254)
+- Declarations completed: **119/293**
+- Next declaration: **#120 `Roth.sqrt_one_sub_inv_lt`** (Roth/Lattice.lean:29)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -137,10 +137,10 @@ Last regenerated: 2026-10-26
 | 116 | `Roth.exists_hasseDeriv_kronecker_eq_sum` | Roth/GenWronskian.lean:214 | BORDERLINE-needs-human | [report](mathlibable/Roth.exists_hasseDeriv_kronecker_eq_sum.md) |
 | 117 | `Roth.det_sum_rows` | Roth/GenWronskian.lean:228 | NO-composable-from-mathlib | [report](mathlibable/Roth.det_sum_rows.md) |
 | 118 | `Roth.wronskian_kronecker_eq_sum_aux` | Roth/GenWronskian.lean:238 | SKIP | [report](mathlibable/Roth.wronskian_kronecker_eq_sum_aux.md) |
+| 119 | `Roth.exists_genWronskian_ne_zero` | Roth/GenWronskian.lean:254 | YES-but-generalise-first | [report](mathlibable/Roth.exists_genWronskian_ne_zero.md) |
 
 ## Remaining declarations (in processing order)
 
-- #119 `Roth.exists_genWronskian_ne_zero` (Roth/GenWronskian.lean:254, public theorem)
 - #120 `Roth.sqrt_one_sub_inv_lt` (Roth/Lattice.lean:29, public theorem)
 - #121 `Roth.inv_add_inv_le` (Roth/Lattice.lean:40, private lemma)
 - #122 `Roth.sum_inv_le` (Roth/Lattice.lean:47, private lemma)
