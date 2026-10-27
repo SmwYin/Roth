@@ -1,0 +1,66 @@
+{
+  "declaration": "MvPolynomial.taylor_X",
+  "standard_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "accepted": [
+    {
+      "label": "target",
+      "source": "native-target-executed.lean.txt",
+      "source_sha256": "732f53d785e52893731aa80bd4b73a8d2dda52429b715f00cdf793300bb5fb8c",
+      "receipt": "native-target-success.json",
+      "proof_check": true
+    },
+    {
+      "label": "raw",
+      "source": "native-raw-executed.lean.txt",
+      "source_sha256": "631f5e1e38ddedeb079d913b79906fab20c986b1320d6e1111a1a999a95576bf",
+      "receipt": "native-raw-success.json",
+      "proof_check": true
+    },
+    {
+      "label": "caller",
+      "source": "native-caller-executed.lean.txt",
+      "source_sha256": "7461c8139ef0b1d4967907956a3a3363ecdae5d4760dacea804f92f65fff6d48",
+      "receipt": "native-caller-success.json",
+      "proof_check": true
+    },
+    {
+      "label": "candidates",
+      "source": "native-candidates-executed.lean.txt",
+      "source_sha256": "f41d5eae8ce636eb2a2e7d7cafbdb1eb3c10eb78b0122209f1b0766f719c026a",
+      "receipt": "native-candidates-success.json",
+      "proof_check": false
+    }
+  ],
+  "rejected": [
+    {
+      "source": "native-raw-rejected.lean.txt",
+      "receipt": "native-raw-rejected.json",
+      "reason": "Ambiguous implicit coefficient ring in arbitrary R-algebra test; explicit (R := R) corrected it."
+    },
+    {
+      "source": "native-caller-rejected.lean.txt",
+      "receipt": "native-caller-rejected.json",
+      "reason": "Global open Polynomial caused namespace ambiguity in tentative caller copy; corrected namespace."
+    },
+    {
+      "source": "native-caller-second-rejected.lean.txt",
+      "receipt": "native-caller-second-rejected.json",
+      "reason": "Linewrap warning and missing algebraMap_eq normalization in composite consumer; corrected before final acceptance."
+    }
+  ],
+  "inputs": "inputs.json",
+  "mathlib_inputs": "mathlib-inputs.json",
+  "source_links": {
+    "Roth/Taylor.lean": "Taylor-module.lean.txt"
+  },
+  "caller_experiments": {
+    "named_caller": "Full private caller and its three prerequisite helper bodies replayed with target simp disabled, sole token replaced by typed aeval_X equality.",
+    "simp_consumers": "inline_simp and composite: target simp disabled; original target restored only after proofs.",
+    "scope": "No whole-project deletion or opaque kernel/simp dependency closure migration claimed."
+  },
+  "unresolved": []
+}

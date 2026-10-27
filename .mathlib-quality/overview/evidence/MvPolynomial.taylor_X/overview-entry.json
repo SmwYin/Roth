@@ -1,0 +1,31 @@
+{
+  "declaration": "MvPolynomial.taylor_X",
+  "kind": "theorem",
+  "type": "∀ {σ : Type u_1} {R : Type u_2} [inst : CommSemiring R] (α : σ → R) (j : σ), (MvPolynomial.taylor α) (MvPolynomial.X j) = MvPolynomial.X j + MvPolynomial.C (α j)",
+  "what": "Translation sends the generator X j to X j plus the constant α j.",
+  "how": "Direct existing MvPolynomial.aeval_X theorem application after definitional reduction of the parent taylor; one existing-law call, no closing simp required.",
+  "hypotheses": "Arbitrary independent variable and coefficient universes, CommSemiring R, arbitrary α : σ → R and j : σ.",
+  "project_dependencies": [
+    "MvPolynomial.taylor (statement and definitional specialization only)"
+  ],
+  "caller_summary": {
+    "all_explicit_callers": 1,
+    "in_declaring_module": 1,
+    "external": 0,
+    "outside_file_internal_use_count": 0,
+    "caller": "Roth/Taylor.lean:114, private coeff_taylor_monomial_single_add_aux",
+    "inline_rederivations": [],
+    "simp_api": true,
+    "scope": "Named references do not measure opaque kernel/simp closure. Full caller and concrete simp consumers verified with target simp disabled.",
+    "detail": "callers.json"
+  },
+  "mathlib_api_audit": "Existing more general MvPolynomial.aeval_X at Mathlib/Algebra/MvPolynomial/Eval.lean:587; arbitrary commutative R-algebra assignment. eval₂_X is a broader coefficient-map generator rule. Polynomial.taylor_X is only a pinned univariate analogy.",
+  "moral_duplications": [
+    "MvPolynomial.aeval_X specialized definitionally to the translation assignment"
+  ],
+  "generalization": "Maximally general relative to fixed parent interface. Expanded arbitrary-target/assignment representation already exists as aeval_X and is verified; no assumption weakening claimed.",
+  "missing_api": "No mathematical gap for this law. A future translation bundle may independently choose its own stable generator simp interface.",
+  "junk": "Used by one named private caller and exported as simp; not dead code. Redundant standalone mathematical result.",
+  "action": "Recommend delete standalone taylor_X, replace Taylor:114 rw token by a typed show equality from aeval_X _ _. For implicit simp consumers use local [taylor] and run full build in production refactor. Alternatively retain in Roth/Taylor.lean as an explicit project semantic API choice.",
+  "verdict": "NO-mathlib-has-it"
+}

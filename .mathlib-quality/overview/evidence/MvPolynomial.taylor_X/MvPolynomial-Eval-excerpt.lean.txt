@@ -1,0 +1,70 @@
+88: theorem eval₂_add : (p + q).eval₂ f g = p.eval₂ f g + q.eval₂ f g := by
+89:   classical exact Finsupp.sum_add_index (by simp [f.map_zero]) (by simp [add_mul, f.map_add])
+90: 
+91: @[simp]
+92: theorem eval₂_monomial : (monomial s a).eval₂ f g = f a * s.prod fun n e => g n ^ e :=
+93:   Finsupp.sum_single_index (by simp [f.map_zero])
+94: 
+95: @[simp]
+96: theorem eval₂_C (a) : (C a).eval₂ f g = f a := by
+97:   rw [C_apply, eval₂_monomial, prod_zero_index, mul_one]
+98: 
+99: @[simp]
+100: theorem eval₂_one : (1 : MvPolynomial σ R).eval₂ f g = 1 :=
+101:   (eval₂_C _ _ _).trans f.map_one
+102: 
+103: @[simp] theorem eval₂_natCast (n : Nat) : (n : MvPolynomial σ R).eval₂ f g = n :=
+104:   (eval₂_C _ _ _).trans (map_natCast f n)
+105: 
+106: @[simp] theorem eval₂_ofNat (n : Nat) [n.AtLeastTwo] :
+107:     (ofNat(n) : MvPolynomial σ R).eval₂ f g = ofNat(n) :=
+108:   eval₂_natCast f g n
+109: 
+110: @[simp]
+111: theorem eval₂_X (n) : (X n).eval₂ f g = g n := by
+112:   simp [eval₂_monomial, f.map_one, X, prod_single_index, pow_one]
+113: 
+114: theorem eval₂_X_pow {s : σ} {n : ℕ} : ((X s) ^ n).eval₂ f g = (g s) ^ n := by
+563: 
+564: variable [Algebra R S₁] [CommSemiring S₂]
+565: variable (f : σ → S₁)
+566: 
+567: /-- A map `σ → S₁` where `S₁` is an algebra over `R` generates an `R`-algebra homomorphism
+568: from multivariate polynomials over `σ` to `S₁`. -/
+569: def aeval : MvPolynomial σ R →ₐ[R] S₁ :=
+570:   { eval₂Hom (algebraMap R S₁) f with commutes' := fun _r => eval₂_C _ _ _ }
+571: 
+572: theorem aeval_def (p : MvPolynomial σ R) : aeval f p = eval₂ (algebraMap R S₁) f p :=
+573:   rfl
+574: 
+575: theorem aeval_eq_eval₂Hom (p : MvPolynomial σ R) : aeval f p = eval₂Hom (algebraMap R S₁) f p :=
+576:   rfl
+577: 
+578: @[simp]
+579: lemma coe_aeval_eq_eval :
+580:     RingHomClass.toRingHom (aeval f : MvPolynomial σ S₁ →ₐ[S₁] S₁) = eval f :=
+581:   rfl
+582: 
+583: @[simp]
+584: lemma aeval_eq_eval : (aeval f : MvPolynomial σ S₁ → S₁) = eval f := rfl
+585: 
+586: @[simp]
+587: theorem aeval_X (s : σ) : aeval f (X s : MvPolynomial σ R) = f s :=
+588:   eval₂_X _ _ _
+589: 
+590: theorem aeval_C (r : R) : aeval f (C r) = algebraMap R S₁ r :=
+591:   eval₂_C _ _ _
+592: 
+593: @[simp] theorem aeval_ofNat (n : Nat) [n.AtLeastTwo] :
+594:     aeval f (ofNat(n) : MvPolynomial σ R) = ofNat(n) :=
+595:   map_ofNat _ _
+596: 
+597: theorem aeval_unique (φ : MvPolynomial σ R →ₐ[R] S₁) : φ = aeval (φ ∘ X) := by
+598:   ext i
+599:   simp
+600: 
+601: theorem aeval_X_left : aeval X = AlgHom.id R (MvPolynomial σ R) :=
+602:   (aeval_unique (AlgHom.id R _)).symm
+603: 
+604: theorem aeval_X_left_apply (p : MvPolynomial σ R) : aeval X p = p :=
+605:   AlgHom.congr_fun aeval_X_left p

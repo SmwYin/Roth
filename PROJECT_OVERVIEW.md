@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 54/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 55/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 54; remaining: 239.
-- Verdicts: 9 NO-composable-from-mathlib, 11 YES-add-as-is, 3 YES-but-generalise-first, 8 NO-mathlib-has-it, 19 BORDERLINE-needs-human, 4 SKIP.
+- Completed applicable assessments: 55; remaining: 238.
+- Verdicts: 9 NO-composable-from-mathlib, 11 YES-add-as-is, 3 YES-but-generalise-first, 9 NO-mathlib-has-it, 19 BORDERLINE-needs-human, 4 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -586,6 +586,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: all explicit callers: 0; in declaring module: 0; external: 0; excluded: Roth/Index.lean:243 uses Polynomial.taylor_apply; inline parent unfolding lines: 143, 148, 153, 159, 166; detail: callers.json; scope: Source-level explicit named references, not opaque kernel/simp closure; target has no simp annotation.
 - Verdict: NO-composable-from-mathlib; [complete report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor_apply.md).
 
+### Completed: `MvPolynomial.taylor_X`
+
+- Type: `∀ {σ : Type u_1} {R : Type u_2} [inst : CommSemiring R] (α : σ → R) (j : σ), (MvPolynomial.taylor α) (MvPolynomial.X j) = MvPolynomial.X j + MvPolynomial.C (α j)`
+- What: Translation sends the generator X j to X j plus the constant α j.
+- How: Direct existing MvPolynomial.aeval_X theorem application after definitional reduction of the parent taylor; one existing-law call, no closing simp required.
+- Hypotheses: Arbitrary independent variable and coefficient universes, CommSemiring R, arbitrary α : σ → R and j : σ.
+- Project dependencies: MvPolynomial.taylor (statement and definitional specialization only)
+- Caller summary: all explicit callers: 1; in declaring module: 1; external: 0; outside file internal use count: 0; caller: Roth/Taylor.lean:114, private coeff_taylor_monomial_single_add_aux; inline rederivations: None; simp api: True; scope: Named references do not measure opaque kernel/simp closure. Full caller and concrete simp consumers verified with target simp disabled.; detail: callers.json
+- Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor_X.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -720,6 +730,8 @@ Completed `MvPolynomial.taylor`: aeval/bind₁ yield the exact term; Polynomial.
 
 Completed `MvPolynomial.taylor_apply`: MvPolynomial.aeval supplies the defining substitution; own bridge is reflexive. Pinned Polynomial.taylor_apply is an analogous rfl law on Polynomial/LinearMap, not an exact multivariate hit; aeval_def expands a different layer.
 
+Completed `MvPolynomial.taylor_X`: Existing more general MvPolynomial.aeval_X at Mathlib/Algebra/MvPolynomial/Eval.lean:587; arbitrary commutative R-algebra assignment. eval₂_X is a broader coefficient-map generator rule. Polynomial.taylor_X is only a pinned univariate analogy.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -829,6 +841,8 @@ Completed `Roth.wronskian_eq_zero_iff`: Propositional assembly duplicates no sub
 Completed `MvPolynomial.taylor`: MvPolynomial.aeval (fun j ↦ X j + C (α j)), MvPolynomial.bind₁ with the same substitution, Polynomial.taylorAlgHom: univariate analogy only
 
 Completed `MvPolynomial.taylor_apply`: Own defining equation applied to P, Polynomial.taylor_apply: genuine univariate API analogy only
+
+Completed `MvPolynomial.taylor_X`: MvPolynomial.aeval_X specialized definitionally to the translation assignment
 
 ## Part 5: Generalization opportunities
 
@@ -943,6 +957,8 @@ Completed `MvPolynomial.taylor`: Already maximally general in this MvPolynomial/
 
 Completed `MvPolynomial.taylor_apply`: Maximally general relative to the existing CommSemiring/AlgHom parent interface; arbitrary substitution already aeval; no verified strict weakening claimed.
 
+Completed `MvPolynomial.taylor_X`: Maximally general relative to fixed parent interface. Expanded arbitrary-target/assignment representation already exists as aeval_X and is verified; no assumption weakening claimed.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -1053,6 +1069,8 @@ Completed `Roth.wronskian_eq_zero_iff`: N-ary Hasse Wronskian foundation and cri
 Completed `MvPolynomial.taylor`: Design question: stable named multivariate translation with Hasse coefficient, composition and inverse APIs.
 
 Completed `MvPolynomial.taylor_apply`: No mathematical normalization API needed for this constitutive equation. Optional stable unfold theorem may accompany a future upstream translation bundle.
+
+Completed `MvPolynomial.taylor_X`: No mathematical gap for this law. A future translation bundle may independently choose its own stable generator simp interface.
 
 ## Part 7: Junk / removable
 
@@ -1167,6 +1185,8 @@ Completed `MvPolynomial.taylor`: One-line definition with concrete semantic/API-
 
 Completed `MvPolynomial.taylor_apply`: Zero named callers; standalone bridge is dispensable. Semantic translation definition is independently BORDERLINE, not inherited here.
 
+Completed `MvPolynomial.taylor_X`: Used by one named private caller and exported as simp; not dead code. Redundant standalone mathematical result.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -1225,6 +1245,7 @@ Completed `MvPolynomial.taylor_apply`: Zero named callers; standalone bridge is 
 | 52 | `Roth.wronskian_eq_zero_iff` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.wronskian_eq_zero_iff.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.wronskian_eq_zero_iff/root-acceptance.json) |
 | 53 | `MvPolynomial.taylor` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.taylor/root-acceptance.json) |
 | 54 | `MvPolynomial.taylor_apply` | NO-composable-from-mathlib | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor_apply.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.taylor_apply/root-acceptance.json) |
+| 55 | `MvPolynomial.taylor_X` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor_X.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.taylor_X/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -1332,11 +1353,13 @@ Completed `MvPolynomial.taylor` action: Retain project-local pending upstream de
 
 Completed `MvPolynomial.taylor_apply` action: Recommend remove unused docstring/theorem at Taylor lines45–47; zero caller edits; keep qualified univariate Index243 unchanged. Local retention for documentation remains possible.
 
+Completed `MvPolynomial.taylor_X` action: Recommend delete standalone taylor_X, replace Taylor:114 rw token by a typed show equality from aeval_X _ _. For implicit simp consumers use local [taylor] and run full build in production refactor. Alternatively retain in Roth/Taylor.lean as an explicit project semantic API choice.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `MvPolynomial.taylor_X` next. Supporting identities receive their own applicable checks.
+   `MvPolynomial.taylor_C` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.

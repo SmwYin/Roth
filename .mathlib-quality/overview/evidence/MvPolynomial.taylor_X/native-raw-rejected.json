@@ -1,0 +1,75 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.Polynomial.HasseDeriv\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.LinearAlgebra.Matrix.ToLinearEquiv\nimport Mathlib.RingTheory.Polynomial.Wronskian\nimport Mathlib.LinearAlgebra.Vandermonde\nimport Mathlib.Data.ZMod.Defs\nimport Mathlib.Algebra.Field.ZMod\nimport Mathlib.Algebra.Order.Group.Int.Sum\nimport Mathlib.LinearAlgebra.Matrix.Polynomial\nimport Mathlib.Algebra.Polynomial.CancelLeads\nimport Mathlib.Algebra.MvPolynomial.PDeriv\n#check_failure MvPolynomial.taylor_X\n#check @MvPolynomial.aeval_X\n#print MvPolynomial.aeval_X\nnamespace TaylorXRaw\ntheorem universal {σ R A : Type*} [CommSemiring R] [CommSemiring A] [Algebra R A]\n    (f : σ → A) (j : σ) : MvPolynomial.aeval f (MvPolynomial.X j) = f j :=\n  MvPolynomial.aeval_X _ _\ntheorem inline {σ R : Type*} [CommSemiring R] (α : σ → R) (j : σ) :\n    (let T : MvPolynomial σ R →ₐ[R] MvPolynomial σ R :=\n      MvPolynomial.aeval fun k ↦ MvPolynomial.X k + MvPolynomial.C (α k)\n     T (MvPolynomial.X j)) = MvPolynomial.X j + MvPolynomial.C (α j) :=\n  MvPolynomial.aeval_X _ _\n#print axioms universal\n#print axioms inline\nend TaylorXRaw\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": false,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown constant `MvPolynomial.taylor_X`\",\n      \"line\": 12,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPolynomial.aeval_X : ∀ {R : Type u_1} {S₁ : Type u_2} {σ : Type u_3} [inst : CommSemiring R]\\n  [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁] (f : σ → S₁) (s : σ),\\n  (MvPolynomial.aeval f) (MvPolynomial.X s) = f s\",\n      \"line\": 13,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"theorem MvPolynomial.aeval_X.{u, v, u_1} : ∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R]\\n  [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁] (f : σ → S₁) (s : σ),\\n  (MvPolynomial.aeval f) (MvPolynomial.X s) = f s :=\\nfun {R} {S₁} {σ} [CommSemiring R] [CommSemiring S₁] [Algebra R S₁] f s ↦ MvPolynomial.eval₂_X (algebraMap R S₁) f s\",\n      \"line\": 14,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"typeclass instance problem is stuck\\n  CommSemiring ?m.10\\n\\nNote: Lean will not try to resolve this typeclass instance problem because the type argument to `CommSemiring` is a metavariable. This argument must be fully determined before Lean will try to resolve the typeclass.\\n\\nHint: Adding type annotations and supplying implicit arguments to functions can give Lean more information for typeclass resolution. For example, if you have a variable `x` that you intend to be a `Nat`, but Lean reports it as having an unresolved type like `?m`, replacing `x` with `(x : Nat)` can get typeclass resolution un-stuck.\",\n      \"line\": 17,\n      \"column\": 49,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"Unknown constant `universal`\",\n      \"line\": 24,\n      \"column\": 15,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'TaylorXRaw.inline' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 25,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": false,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown constant `MvPolynomial.taylor_X`",
+          "line": 12,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPolynomial.aeval_X : ∀ {R : Type u_1} {S₁ : Type u_2} {σ : Type u_3} [inst : CommSemiring R]\n  [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁] (f : σ → S₁) (s : σ),\n  (MvPolynomial.aeval f) (MvPolynomial.X s) = f s",
+          "line": 13,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "theorem MvPolynomial.aeval_X.{u, v, u_1} : ∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R]\n  [inst_1 : CommSemiring S₁] [inst_2 : Algebra R S₁] (f : σ → S₁) (s : σ),\n  (MvPolynomial.aeval f) (MvPolynomial.X s) = f s :=\nfun {R} {S₁} {σ} [CommSemiring R] [CommSemiring S₁] [Algebra R S₁] f s ↦ MvPolynomial.eval₂_X (algebraMap R S₁) f s",
+          "line": 14,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "typeclass instance problem is stuck\n  CommSemiring ?m.10\n\nNote: Lean will not try to resolve this typeclass instance problem because the type argument to `CommSemiring` is a metavariable. This argument must be fully determined before Lean will try to resolve the typeclass.\n\nHint: Adding type annotations and supplying implicit arguments to functions can give Lean more information for typeclass resolution. For example, if you have a variable `x` that you intend to be a `Nat`, but Lean reports it as having an unresolved type like `?m`, replacing `x` with `(x : Nat)` can get typeclass resolution un-stuck.",
+          "line": 17,
+          "column": 49,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "Unknown constant `universal`",
+          "line": 24,
+          "column": 15,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'TaylorXRaw.inline' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 25,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 262
+}

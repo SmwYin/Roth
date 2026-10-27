@@ -1,0 +1,26 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+import Mathlib.Algebra.Polynomial.CancelLeads
+import Mathlib.Algebra.MvPolynomial.PDeriv
+#check_failure MvPolynomial.taylor_X
+#check @MvPolynomial.aeval_X
+#print MvPolynomial.aeval_X
+namespace TaylorXRaw
+theorem universal {σ R A : Type*} [CommSemiring R] [CommSemiring A] [Algebra R A]
+    (f : σ → A) (j : σ) : MvPolynomial.aeval f (MvPolynomial.X j) = f j :=
+  MvPolynomial.aeval_X _ _
+theorem inline {σ R : Type*} [CommSemiring R] (α : σ → R) (j : σ) :
+    (let T : MvPolynomial σ R →ₐ[R] MvPolynomial σ R :=
+      MvPolynomial.aeval fun k ↦ MvPolynomial.X k + MvPolynomial.C (α k)
+     T (MvPolynomial.X j)) = MvPolynomial.X j + MvPolynomial.C (α j) :=
+  MvPolynomial.aeval_X _ _
+#print axioms universal
+#print axioms inline
+end TaylorXRaw
