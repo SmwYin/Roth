@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-27
 
-- Declarations completed: **242/293**
-- Next declaration: **#243 `Roth.boxFamily`** (Roth/MainLemma.lean:275)
+- Declarations completed: **243/293**
+- Next declaration: **#244 `Roth.boxFamily_eq_image_finsupp_aux`** (Roth/MainLemma.lean:280)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -261,10 +261,10 @@ Last regenerated: 2026-10-27
 | 240 | `Roth.three_small_factors` | Roth/MainLemma.lean:180 | BORDERLINE-needs-human | [report](mathlibable/Roth.three_small_factors.md) |
 | 241 | `Roth.exists_norm_coeff_reduction_aux` | Roth/MainLemma.lean:212 | SKIP | [report](mathlibable/Roth.exists_norm_coeff_reduction_aux.md) |
 | 242 | `Roth.norm_coeff_modByMonic_le` | Roth/MainLemma.lean:252 | YES-but-generalise-first | [report](mathlibable/Roth.norm_coeff_modByMonic_le.md) |
+| 243 | `Roth.boxFamily` | Roth/MainLemma.lean:275 | NO-composable-from-mathlib | [report](mathlibable/Roth.boxFamily.md) |
 
 ## Remaining declarations (in processing order)
 
-- #243 `Roth.boxFamily` (Roth/MainLemma.lean:275, public def)
 - #244 `Roth.boxFamily_eq_image_finsupp_aux` (Roth/MainLemma.lean:280, private lemma)
 - #245 `Roth.boxFamily_finite` (Roth/MainLemma.lean:301, public theorem)
 - #246 `Roth.ncard_boxFamily` (Roth/MainLemma.lean:311, public theorem)
