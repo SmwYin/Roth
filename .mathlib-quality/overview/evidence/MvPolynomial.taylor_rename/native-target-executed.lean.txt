@@ -1,0 +1,16 @@
+#check @MvPolynomial.taylor_rename
+#print MvPolynomial.taylor_rename
+#print axioms MvPolynomial.taylor_rename
+#check @MvPolynomial.rename_eq_aeval
+#check @MvPolynomial.comp_aeval_apply
+namespace MvPolynomial.TaylorRenameAssessment
+variable {σ τ R : Type*} [CommSemiring R]
+theorem replay (f : σ → τ) (α : τ → R) (P : MvPolynomial σ R) :
+    taylor α (rename f P) = rename f (taylor (α ∘ f) P) := by
+  simp [taylor, rename_eq_aeval, comp_aeval_apply]
+#print axioms replay
+end MvPolynomial.TaylorRenameAssessment
+run_cmd do
+  let ci ← Lean.getConstInfo `MvPolynomial.TaylorRenameAssessment.replay
+  let constants := (ci.value! (allowOpaque := true)).getUsedConstants
+  Lean.logInfo m!"RENAME_REPLAY_CONSTANTS: {constants}"

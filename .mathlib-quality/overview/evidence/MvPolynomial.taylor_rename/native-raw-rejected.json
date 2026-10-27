@@ -1,0 +1,75 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.Polynomial.HasseDeriv\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.LinearAlgebra.Matrix.ToLinearEquiv\nimport Mathlib.RingTheory.Polynomial.Wronskian\nimport Mathlib.LinearAlgebra.Vandermonde\nimport Mathlib.Data.ZMod.Defs\nimport Mathlib.Algebra.Field.ZMod\nimport Mathlib.Algebra.Order.Group.Int.Sum\nimport Mathlib.LinearAlgebra.Matrix.Polynomial\nimport Mathlib.Algebra.Polynomial.CancelLeads\nimport Mathlib.Algebra.MvPolynomial.PDeriv\n#check_failure MvPolynomial.taylor_rename\nnoncomputable section\nnamespace MvPolynomial.TaylorRenameRaw\nvariable {σ τ υ R A : Type*} [CommSemiring R] [CommSemiring A] [Algebra R A]\ndef shift (α : σ → R) : MvPolynomial σ R →ₐ[R] MvPolynomial σ R :=\n  aeval fun j ↦ X j + C (α j)\ntheorem afterRename (f : σ → τ) (g : τ → A) (P : MvPolynomial σ R) :\n    aeval g (rename f P) = aeval (g ∘ f) P :=\n  aeval_rename f g P\ntheorem afterSubstitution (f : τ → υ) (g : σ → MvPolynomial τ R)\n    (P : MvPolynomial σ R) :\n    rename f (aeval g P) = aeval (fun j ↦ rename f (g j)) P :=\n  comp_aeval_apply g (rename f) P\ntheorem oldForm (f : σ → τ) (α : τ → R) (P : MvPolynomial σ R) :\n    shift α (rename f P) = rename f (shift (α ∘ f) P) := by\n  change aeval (fun j ↦ X j + C (α j)) (rename f P) =\n    rename f (aeval (fun j ↦ X j + C (α (f j))) P)\n  rw [aeval_rename, comp_aeval_apply]\n  congr 1\n  funext j\n  simp only [Function.comp_apply, map_add, rename_X, rename_C]\n#print axioms afterRename\n#print axioms afterSubstitution\n#print axioms oldForm\n#print oldForm\nend MvPolynomial.TaylorRenameRaw\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": false,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown constant `MvPolynomial.taylor_rename`\",\n      \"line\": 12,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"Tactic `apply` failed: could not unify the conclusion of `@funext`\\n  ?f = ?g\\nwith the goal\\n  aeval ((fun j ↦ X j + C (α j)) ∘ f) = aeval fun i ↦ (rename f) (X i + C (α (f i)))\\n\\nNote: The full type of `@funext` is\\n  ∀ {α : Sort ?u.85} {β : α → Sort ?u.84} {f g : (x : α) → β x}, (∀ (x : α), f x = g x) → f = g\\n\\nσ : Type u_1\\nτ : Type u_2\\nR : Type u_4\\ninst✝ : CommSemiring R\\nf : σ → τ\\nα : τ → R\\nP : MvPolynomial σ R\\n⊢ aeval ((fun j ↦ X j + C (α j)) ∘ f) = aeval fun i ↦ (rename f) (X i + C (α (f i)))\",\n      \"line\": 31,\n      \"column\": 3,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'MvPolynomial.TaylorRenameRaw.afterRename' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 33,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'MvPolynomial.TaylorRenameRaw.afterSubstitution' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 34,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'MvPolynomial.TaylorRenameRaw.oldForm' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 35,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"theorem MvPolynomial.TaylorRenameRaw.oldForm.{u_1, u_2, u_4} : ∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_4}\\n  [inst : CommSemiring R] (f : σ → τ) (α : τ → R) (P : MvPolynomial σ R),\\n  (shift α) ((rename f) P) = (rename f) ((shift (α ∘ f)) P) :=\\nfun {σ} {τ} {R} [CommSemiring R] f α P ↦\\n  id\\n    (Eq.mpr\\n      (id\\n        (congrArg (fun _a ↦ _a = (rename f) ((aeval fun j ↦ X j + C (α (f j))) P))\\n          (aeval_rename f (fun j ↦ X j + C (α j)) P)))\\n      (Eq.mpr\\n        (id\\n          (congrArg (fun _a ↦ (aeval ((fun j ↦ X j + C (α j)) ∘ f)) P = _a)\\n            (comp_aeval_apply (fun j ↦ X j + C (α (f j))) (rename f) P)))\\n        (sorry fun {F} {α} {β} [DFunLike F α β] a a_1 e_a ↦\\n          Eq.rec (motive := fun a_2 e_a ↦ ∀ (a_3 : α), a a_3 = a_2 a_3) (fun a_2 ↦ Eq.refl (a a_2)) e_a)))\",\n      \"line\": 36,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": false,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown constant `MvPolynomial.taylor_rename`",
+          "line": 12,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "Tactic `apply` failed: could not unify the conclusion of `@funext`\n  ?f = ?g\nwith the goal\n  aeval ((fun j ↦ X j + C (α j)) ∘ f) = aeval fun i ↦ (rename f) (X i + C (α (f i)))\n\nNote: The full type of `@funext` is\n  ∀ {α : Sort ?u.85} {β : α → Sort ?u.84} {f g : (x : α) → β x}, (∀ (x : α), f x = g x) → f = g\n\nσ : Type u_1\nτ : Type u_2\nR : Type u_4\ninst✝ : CommSemiring R\nf : σ → τ\nα : τ → R\nP : MvPolynomial σ R\n⊢ aeval ((fun j ↦ X j + C (α j)) ∘ f) = aeval fun i ↦ (rename f) (X i + C (α (f i)))",
+          "line": 31,
+          "column": 3,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'MvPolynomial.TaylorRenameRaw.afterRename' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 33,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'MvPolynomial.TaylorRenameRaw.afterSubstitution' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 34,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'MvPolynomial.TaylorRenameRaw.oldForm' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 35,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "theorem MvPolynomial.TaylorRenameRaw.oldForm.{u_1, u_2, u_4} : ∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_4}\n  [inst : CommSemiring R] (f : σ → τ) (α : τ → R) (P : MvPolynomial σ R),\n  (shift α) ((rename f) P) = (rename f) ((shift (α ∘ f)) P) :=\nfun {σ} {τ} {R} [CommSemiring R] f α P ↦\n  id\n    (Eq.mpr\n      (id\n        (congrArg (fun _a ↦ _a = (rename f) ((aeval fun j ↦ X j + C (α (f j))) P))\n          (aeval_rename f (fun j ↦ X j + C (α j)) P)))\n      (Eq.mpr\n        (id\n          (congrArg (fun _a ↦ (aeval ((fun j ↦ X j + C (α j)) ∘ f)) P = _a)\n            (comp_aeval_apply (fun j ↦ X j + C (α (f j))) (rename f) P)))\n        (sorry fun {F} {α} {β} [DFunLike F α β] a a_1 e_a ↦\n          Eq.rec (motive := fun a_2 e_a ↦ ∀ (a_3 : α), a a_3 = a_2 a_3) (fun a_2 ↦ Eq.refl (a a_2)) e_a)))",
+          "line": 36,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 1482
+}

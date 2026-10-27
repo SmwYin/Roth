@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 67/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 68/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 67; remaining: 226.
-- Verdicts: 10 NO-composable-from-mathlib, 12 YES-add-as-is, 3 YES-but-generalise-first, 11 NO-mathlib-has-it, 22 BORDERLINE-needs-human, 9 SKIP.
+- Completed applicable assessments: 68; remaining: 225.
+- Verdicts: 10 NO-composable-from-mathlib, 12 YES-add-as-is, 3 YES-but-generalise-first, 11 NO-mathlib-has-it, 23 BORDERLINE-needs-human, 9 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -729,6 +729,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: 0 named production callers; no independent inline derivation found. Not simp-tagged; no exhaustive implicit dependency closure claimed.
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor_map.md).
 
+### Completed: `MvPolynomial.taylor_rename`
+
+- Type: `∀ {σ : Type u} {R : Type v} [CommSemiring R] {τ : Type w} (f : σ → τ) (α : τ → R) (P : MvPolynomial σ R), MvPolynomial.taylor α (MvPolynomial.rename f P) = MvPolynomial.rename f (MvPolynomial.taylor (α ∘ f) P)`
+- What: Translation commutes with arbitrary variable renaming, restricting the shift along the variable map.
+- How: Generic aevaluation/renaming composition, then normalization of shifted generators.
+- Hypotheses: Arbitrary independent-universe σ,τ,R; CommSemiring R; arbitrary map f including noninjective, arbitrary α,P. No finiteness/characteristic/nonzero assumptions.
+- Project dependencies: MvPolynomial.taylor
+- Caller summary: One explicit source caller Roth.index_rename at Index216; full native caller replay succeeds using fresh target replay. Its injectivity assumption belongs to support/weight transport.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor_rename.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -889,6 +899,8 @@ Completed `MvPolynomial.taylor_zero`: Existing map_zero(C), add_zero, aeval_X_le
 
 Completed `MvPolynomial.taylor_map`: map_eval₂ is exact generic substitution law; map_aeval/eval₂_map and Monad.map_bind₁ are related. Original translated-generator normalization is propositional, not a direct exact call. Polynomial.map_taylor is univariate analogue over Semiring.
 
+Completed `MvPolynomial.taylor_rename`: aeval_rename and comp_aeval_apply are exact abstract compatibility laws. Original normalized translation square requires five mathematical facts; not a one-call defeq replacement.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -1024,6 +1036,8 @@ Completed `MvPolynomial.taylor_taylor`: Polynomial.taylor_taylor is only a univa
 Completed `MvPolynomial.taylor_zero`: Elementary identity-assignment law after zero normalization; not a direct definitional specialization.
 
 Completed `MvPolynomial.taylor_map`: Naturality of substitution specialized to translations; no distinct new mathematical argument.
+
+Completed `MvPolynomial.taylor_rename`: Generic substitution naturality specialized to shifted generators; close analogue rename_expand, not same substitution.
 
 ## Part 5: Generalization opportunities
 
@@ -1164,6 +1178,8 @@ Completed `MvPolynomial.taylor_zero`: Already general within parent CommSemiring
 
 Completed `MvPolynomial.taylor_map`: Maximal within fixed parent CommSemiring interface; arbitrary substitution/variable target is already existing mathlib. Bundled RingHom square verified without adding assumptions; no verified parent weakening.
 
+Completed `MvPolynomial.taylor_rename`: Maximal within parent CommSemiring interface; bundled AlgHom square and arbitrary target-algebra evaluation verified. No mechanical weakening established.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -1300,6 +1316,8 @@ Completed `MvPolynomial.taylor_taylor`: Design question: package translation com
 Completed `MvPolynomial.taylor_zero`: No mathematical API gap; parent translation naming/simp design independently assessed.
 
 Completed `MvPolynomial.taylor_map`: Design choice whether a named multivariate translation API merits coefficient-map convenience law; no generic substitution gap.
+
+Completed `MvPolynomial.taylor_rename`: No generic substitution gap; decision whether named multivariate translation API merits explicit rename convenience law.
 
 ## Part 7: Junk / removable
 
@@ -1440,6 +1458,8 @@ Completed `MvPolynomial.taylor_zero`: Not dead: simp attribute has verified impl
 
 Completed `MvPolynomial.taylor_map`: Unused by explicit project source references, but standard base-change convenience law; zero references alone does not establish dead code.
 
+Completed `MvPolynomial.taylor_rename`: Used in index invariance, not dead code. One source use and generic derivation do not by themselves force deletion.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -1511,6 +1531,7 @@ Completed `MvPolynomial.taylor_map`: Unused by explicit project source reference
 | 65 | `MvPolynomial.taylor_taylor` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor_taylor.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.taylor_taylor/root-acceptance.json) |
 | 66 | `MvPolynomial.taylor_zero` | NO-composable-from-mathlib | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor_zero.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.taylor_zero/root-acceptance.json) |
 | 67 | `MvPolynomial.taylor_map` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor_map.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.taylor_map/root-acceptance.json) |
+| 68 | `MvPolynomial.taylor_rename` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor_rename.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.taylor_rename/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -1644,11 +1665,13 @@ Completed `MvPolynomial.taylor_zero` action: NO-composable-from-mathlib: decline
 
 Completed `MvPolynomial.taylor_map` action: BORDERLINE: decide translation convenience API, orientation/naming and whether to expose only generic substitution law. Keep production unchanged; no user input needed to complete this read-only assessment.
 
+Completed `MvPolynomial.taylor_rename` action: BORDERLINE: choose named convenience law versus generic substitution API, bundled square and naming/orientation. Read-only assessment complete; production unchanged.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `MvPolynomial.taylor_rename` next. Supporting identities receive their own applicable checks.
+   `MvPolynomial.degreeOf_taylor_le` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.

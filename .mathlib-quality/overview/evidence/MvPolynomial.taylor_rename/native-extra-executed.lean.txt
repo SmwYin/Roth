@@ -1,0 +1,28 @@
+#check @MvPolynomial.aeval_rename
+#print MvPolynomial.aeval_rename
+#check @MvPolynomial.aeval_comp_rename
+namespace MvPolynomial.TaylorRenameExtra
+universe u v w
+variable {σ : Type u} {τ : Type v} {R : Type w} [CommSemiring R]
+theorem square (f : σ → τ) (α : τ → R) :
+    (taylor α).comp (rename f) = (rename f).comp (taylor (α ∘ f)) := by
+  apply AlgHom.ext
+  intro P
+  exact TaylorRenameAssessment.replay f α P
+example {T : Type*} [Semiring T] : True := by
+  fail_if_success let _ := (MvPolynomial.taylor (σ := σ) (R := T))
+  trivial
+#print axioms square
+end MvPolynomial.TaylorRenameExtra
+namespace Roth.TaylorRenameCaller
+variable {σ τ : Type*} [Fintype σ] [Fintype τ]
+theorem replay {f : σ → τ} (hf : Function.Injective f)
+    (P : MvPolynomial σ ℝ) (α : τ → ℝ) (r : τ → ℕ) :
+    index (MvPolynomial.rename f P) α r = index P (α ∘ f) (r ∘ f) := by
+  classical
+  rw [index, index, MvPolynomial.TaylorRenameAssessment.replay,
+    MvPolynomial.support_rename_of_injective hf, Finset.coe_image, Set.image_image]
+  refine congrArg sInf (Set.image_congr fun d _ ↦ ?_)
+  exact weight_mapDomain hf r d
+#print axioms replay
+end Roth.TaylorRenameCaller

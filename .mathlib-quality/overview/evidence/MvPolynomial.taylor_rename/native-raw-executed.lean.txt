@@ -1,0 +1,37 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+import Mathlib.Algebra.Polynomial.CancelLeads
+import Mathlib.Algebra.MvPolynomial.PDeriv
+#check_failure MvPolynomial.taylor_rename
+noncomputable section
+namespace MvPolynomial.TaylorRenameRaw
+variable {σ τ υ R A : Type*} [CommSemiring R] [CommSemiring A] [Algebra R A]
+def shift (α : σ → R) : MvPolynomial σ R →ₐ[R] MvPolynomial σ R :=
+  aeval fun j ↦ X j + C (α j)
+theorem afterRename (f : σ → τ) (g : τ → A) (P : MvPolynomial σ R) :
+    aeval g (rename f P) = aeval (g ∘ f) P :=
+  aeval_rename f g P
+theorem afterSubstitution (f : τ → υ) (g : σ → MvPolynomial τ R)
+    (P : MvPolynomial σ R) :
+    rename f (aeval g P) = aeval (fun j ↦ rename f (g j)) P :=
+  comp_aeval_apply g (rename f) P
+theorem oldForm (f : σ → τ) (α : τ → R) (P : MvPolynomial σ R) :
+    shift α (rename f P) = rename f (shift (α ∘ f) P) := by
+  change aeval (fun j ↦ X j + C (α j)) (rename f P) =
+    rename f (aeval (fun j ↦ X j + C (α (f j))) P)
+  rw [aeval_rename, comp_aeval_apply]
+  apply congrArg (fun g : σ → MvPolynomial τ R ↦ aeval g P)
+  funext j
+  simp only [Function.comp_apply, map_add, rename_X, rename_C]
+#print axioms afterRename
+#print axioms afterSubstitution
+#print axioms oldForm
+#print oldForm
+end MvPolynomial.TaylorRenameRaw
