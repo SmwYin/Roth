@@ -1,0 +1,31 @@
+#check_failure Roth.abs_coeff_diag_le
+namespace MvPolynomial.CoeffDiagGeneric
+variable {σ R : Type*} [CommSemiring R]
+theorem coeff_fiber (P : MvPolynomial σ R) (n : ℕ) :
+    (aeval (fun _ ↦ (Polynomial.X : Polynomial R)) P).coeff n =
+      ∑ k ∈ P.support.filter (fun k ↦ k.degree = n), P.coeff k := by
+  classical
+  rw [MvPolynomial.DiagSumRaw.generic, Polynomial.finsetSum_coeff]
+  simp only [Polynomial.coeff_monomial, Finset.sum_filter]
+theorem subadditive_fiber (P : MvPolynomial σ R) (n : ℕ) (f : R → ℝ)
+    (hf0 : f 0 ≤ 0) (hfadd : ∀ a b, f (a + b) ≤ f a + f b) :
+    f ((aeval (fun _ ↦ (Polynomial.X : Polynomial R)) P).coeff n) ≤
+      ∑ k ∈ P.support.filter (fun k ↦ k.degree = n), f (P.coeff k) := by
+  classical
+  rw [coeff_fiber]
+  exact Finset.le_sum_of_subadditive f hf0 hfadd _ _
+theorem cardinal_fiber (P : MvPolynomial σ R) (n : ℕ) (f : R → ℝ)
+    (hf0 : f 0 ≤ 0) (hfadd : ∀ a b, f (a + b) ≤ f a + f b) {B : ℝ}
+    (hB : ∀ k ∈ P.support.filter (fun k ↦ k.degree = n), f (P.coeff k) ≤ B) :
+    f ((aeval (fun _ ↦ (Polynomial.X : Polynomial R)) P).coeff n) ≤
+      (P.support.filter (fun k ↦ k.degree = n)).card * B := by
+  classical
+  exact (subadditive_fiber P n f hf0 hfadd).trans
+    (by simpa using Finset.sum_le_card_nsmul _ _ B hB)
+#check @Finset.le_sum_of_subadditive
+#check @Finset.sum_le_card_nsmul
+#check @Finset.abs_sum_le_sum_abs
+#print axioms coeff_fiber
+#print axioms subadditive_fiber
+#print axioms cardinal_fiber
+end MvPolynomial.CoeffDiagGeneric

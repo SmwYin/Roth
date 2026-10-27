@@ -1,0 +1,594 @@
+[
+  {
+    "method": "lean_leanfinder",
+    "form": "abstract",
+    "request": {
+      "query": "Subadditive function of finite sum bounded by sum and cardinality times uniform bound"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Finset.sum_le_card_nsmul\",\n      \"informal_name\": \"Sum over Finite Set Bounded by Cardinality Times Maximum Element\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {N : Type u_5} [inst : AddCommMonoid N] [inst_1 : PartialOrder N] [AddLeftMono N] (s : Finset ι)\\n  (f : ι → N) (n : N), (∀ x ∈ s, f x ≤ n) → s.sum f ≤ s.card • n\",\n      \"informal_description\": \"For any additive commutative monoid $N$ equipped with a partial order $\\\\leq$ where addition is left-monotonic, given a finite set $s$, a function $f : \\\\iota \\\\to N$, and an element $n \\\\in N$, if $f(x) \\\\leq n$ for all $x \\\\in s$, then the sum of $f(x)$ over all $x \\\\in s$ is less than or equal to the product of the cardinality of $s$ and $n$. Symbolically, $\\\\sum_{x \\\\in s} f(x) \\\\leq |s| \\\\cdot n$.\",\n      \"path\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    },\n    {\n      \"formal_name\": \"Finset.card_nsmul_le_sum\",\n      \"informal_name\": \"Cardinality times element is less than or equal to sum over finite set\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {N : Type u_5} [inst : AddCommMonoid N] [inst_1 : PartialOrder N] [AddLeftMono N] (s : Finset ι)\\n  (f : ι → N) (n : N), (∀ x ∈ s, n ≤ f x) → s.card • n ≤ s.sum f\",\n      \"informal_description\": \"For any finite set $s$ of type $\\\\iota$ and function $f : \\\\iota \\\\to N$ where $N$ is an additive commutative monoid equipped with a partial order and left addition monotonicity, if every element $x \\\\in s$ satisfies $n \\\\leq f(x)$, then the scalar multiplication of the cardinality of $s$ by $n$ is less than or equal to the sum of $f$ over $s$. Formally, $|s| \\\\cdot n \\\\leq \\\\sum_{x \\\\in s} f(x)$.\",\n      \"path\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    },\n    {\n      \"formal_name\": \"Finset.le_sum_of_subadditive\",\n      \"informal_name\": \"Subadditive Function Inequality for Finite Sums\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {M : Type u_4} {N : Type u_5} [inst : AddCommMonoid M] [inst_1 : AddCommMonoid N]\\n  [inst_2 : PartialOrder N] [IsOrderedAddMonoid N] (f : M → N),\\n  f 0 ≤ 0 → (∀ (x y : M), f (x + y) ≤ f x + f y) → ∀ (s : Finset ι) (g : ι → M), f (∑ i ∈ s, g i) ≤ ∑ i ∈ s, f (g i)\",\n      \"informal_description\": \"Let $M$ and $N$ be additive commutative monoids, where $N$ is equipped with a partial order compatible with addition. For any subadditive function $f : M \\\\to N$ satisfying $f(0) \\\\leq 0$, and for any finite set $s$ of indices and function $g : s \\\\to M$, it holds that $f\\\\left(\\\\sum_{i \\\\in s} g(i)\\\\right) \\\\leq \\\\sum_{i \\\\in s} f(g(i))$.\",\n      \"path\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    },\n    {\n      \"formal_name\": \"Finset.le_sum_nonempty_of_subadditive\",\n      \"informal_name\": \"Subadditive Function Inequality for Non-Empty Finite Sums\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {M : Type u_4} {N : Type u_5} [inst : AddCommMonoid M] [inst_1 : AddCommMonoid N]\\n  [inst_2 : PartialOrder N] [IsOrderedAddMonoid N] (f : M → N),\\n  (∀ (x y : M), f (x + y) ≤ f x + f y) →\\n    ∀ {s : Finset ι}, s.Nonempty → ∀ (g : ι → M), f (∑ i ∈ s, g i) ≤ ∑ i ∈ s, f (g i)\",\n      \"informal_description\": \"Let $ M $ and $ N $ be additive commutative monoids, with $ N $ equipped with a partial order compatible with addition. For any subadditive function $ f : M \\\\to N $ (i.e., $ f(x + y) \\\\leq f(x) + f(y) $ for all $ x, y \\\\in M $), any non-empty finite set $ s $, and any function $ g : s \\\\to M $, it holds that $ f\\\\left(\\\\sum_{i \\\\in s} g(i)\\\\right) \\\\leq \\\\sum_{i \\\\in s} f(g(i)) $.\",\n      \"path\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    },\n    {\n      \"formal_name\": \"Finset.le_sum_of_subadditive_on_pred\",\n      \"informal_name\": \"Subadditive Function Inequality on Finite Sets\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {M : Type u_4} {N : Type u_5} [inst : AddCommMonoid M] [inst_1 : AddCommMonoid N]\\n  [inst_2 : PartialOrder N] [IsOrderedAddMonoid N] (f : M → N) (p : M → Prop),\\n  f 0 ≤ 0 →\\n    (∀ (x y : M), p x → p y → f (x + y) ≤ f x + f y) →\\n      (∀ (x y : M), p x → p y → p (x + y)) →\\n        ∀ (g : ι → M) {s : Finset ι}, (∀ i ∈ s, p (g i)) → f (∑ i ∈ s, g i) ≤ ∑ i ∈ s, f (g i)\",\n      \"informal_description\": \"Let $ M $ and $ N $ be additive commutative monoids with $ N $ equipped with a partial order compatible with addition. For any function $ f : M → N $ satisfying $ f(0) ≤ 0 $, and predicate $ p : M → \\text{Prop} $ such that:\\n1. $ f $ is subadditive on $ p $-elements: $ p(x) ∧ p(y) ⇒ f(x + y) ≤ f(x) + f(y) $,\\n2. $ p $-elements are closed under addition: $ p(x) ∧ p(y) ⇒ p(x + y) $,\\nthen for any finite set $ s $ and function $ g : ι → M $ with $ p(g(i)) $ for all $ i ∈ s $, we have:\\n$$\\n f\\\\left(\\\\sum_{i ∈ s} g(i)\\\\right) ≤ \\\\sum_{i ∈ s} f(g(i)).\\n$$\",\n      \"path\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Finset.sum_le_card_nsmul",
+            "informal_name": "Sum over Finite Set Bounded by Cardinality Times Maximum Element",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_1} {N : Type u_5} [inst : AddCommMonoid N] [inst_1 : PartialOrder N] [AddLeftMono N] (s : Finset ι)\n  (f : ι → N) (n : N), (∀ x ∈ s, f x ≤ n) → s.sum f ≤ s.card • n",
+            "informal_description": "For any additive commutative monoid $N$ equipped with a partial order $\\leq$ where addition is left-monotonic, given a finite set $s$, a function $f : \\iota \\to N$, and an element $n \\in N$, if $f(x) \\leq n$ for all $x \\in s$, then the sum of $f(x)$ over all $x \\in s$ is less than or equal to the product of the cardinality of $s$ and $n$. Symbolically, $\\sum_{x \\in s} f(x) \\leq |s| \\cdot n$.",
+            "path": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+          },
+          {
+            "formal_name": "Finset.card_nsmul_le_sum",
+            "informal_name": "Cardinality times element is less than or equal to sum over finite set",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_1} {N : Type u_5} [inst : AddCommMonoid N] [inst_1 : PartialOrder N] [AddLeftMono N] (s : Finset ι)\n  (f : ι → N) (n : N), (∀ x ∈ s, n ≤ f x) → s.card • n ≤ s.sum f",
+            "informal_description": "For any finite set $s$ of type $\\iota$ and function $f : \\iota \\to N$ where $N$ is an additive commutative monoid equipped with a partial order and left addition monotonicity, if every element $x \\in s$ satisfies $n \\leq f(x)$, then the scalar multiplication of the cardinality of $s$ by $n$ is less than or equal to the sum of $f$ over $s$. Formally, $|s| \\cdot n \\leq \\sum_{x \\in s} f(x)$.",
+            "path": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+          },
+          {
+            "formal_name": "Finset.le_sum_of_subadditive",
+            "informal_name": "Subadditive Function Inequality for Finite Sums",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_1} {M : Type u_4} {N : Type u_5} [inst : AddCommMonoid M] [inst_1 : AddCommMonoid N]\n  [inst_2 : PartialOrder N] [IsOrderedAddMonoid N] (f : M → N),\n  f 0 ≤ 0 → (∀ (x y : M), f (x + y) ≤ f x + f y) → ∀ (s : Finset ι) (g : ι → M), f (∑ i ∈ s, g i) ≤ ∑ i ∈ s, f (g i)",
+            "informal_description": "Let $M$ and $N$ be additive commutative monoids, where $N$ is equipped with a partial order compatible with addition. For any subadditive function $f : M \\to N$ satisfying $f(0) \\leq 0$, and for any finite set $s$ of indices and function $g : s \\to M$, it holds that $f\\left(\\sum_{i \\in s} g(i)\\right) \\leq \\sum_{i \\in s} f(g(i))$.",
+            "path": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+          },
+          {
+            "formal_name": "Finset.le_sum_nonempty_of_subadditive",
+            "informal_name": "Subadditive Function Inequality for Non-Empty Finite Sums",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_1} {M : Type u_4} {N : Type u_5} [inst : AddCommMonoid M] [inst_1 : AddCommMonoid N]\n  [inst_2 : PartialOrder N] [IsOrderedAddMonoid N] (f : M → N),\n  (∀ (x y : M), f (x + y) ≤ f x + f y) →\n    ∀ {s : Finset ι}, s.Nonempty → ∀ (g : ι → M), f (∑ i ∈ s, g i) ≤ ∑ i ∈ s, f (g i)",
+            "informal_description": "Let $ M $ and $ N $ be additive commutative monoids, with $ N $ equipped with a partial order compatible with addition. For any subadditive function $ f : M \\to N $ (i.e., $ f(x + y) \\leq f(x) + f(y) $ for all $ x, y \\in M $), any non-empty finite set $ s $, and any function $ g : s \\to M $, it holds that $ f\\left(\\sum_{i \\in s} g(i)\\right) \\leq \\sum_{i \\in s} f(g(i)) $.",
+            "path": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+          },
+          {
+            "formal_name": "Finset.le_sum_of_subadditive_on_pred",
+            "informal_name": "Subadditive Function Inequality on Finite Sets",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_1} {M : Type u_4} {N : Type u_5} [inst : AddCommMonoid M] [inst_1 : AddCommMonoid N]\n  [inst_2 : PartialOrder N] [IsOrderedAddMonoid N] (f : M → N) (p : M → Prop),\n  f 0 ≤ 0 →\n    (∀ (x y : M), p x → p y → f (x + y) ≤ f x + f y) →\n      (∀ (x y : M), p x → p y → p (x + y)) →\n        ∀ (g : ι → M) {s : Finset ι}, (∀ i ∈ s, p (g i)) → f (∑ i ∈ s, g i) ≤ ∑ i ∈ s, f (g i)",
+            "informal_description": "Let $ M $ and $ N $ be additive commutative monoids with $ N $ equipped with a partial order compatible with addition. For any function $ f : M → N $ satisfying $ f(0) ≤ 0 $, and predicate $ p : M → \text{Prop} $ such that:\n1. $ f $ is subadditive on $ p $-elements: $ p(x) ∧ p(y) ⇒ f(x + y) ≤ f(x) + f(y) $,\n2. $ p $-elements are closed under addition: $ p(x) ∧ p(y) ⇒ p(x + y) $,\nthen for any finite set $ s $ and function $ g : ι → M $ with $ p(g(i)) $ for all $ i ∈ s $, we have:\n$$\n f\\left(\\sum_{i ∈ s} g(i)\\right) ≤ \\sum_{i ∈ s} f(g(i)).\n$$",
+            "path": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_leanfinder",
+    "form": "current",
+    "request": {
+      "query": "Coefficient bound for diagonal substitution P(X,...,X) by support cardinality times uniform coefficient bound"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.numBound\",\n      \"informal_name\": \"Numerical Bound for Multivariate Polynomials in Chevalley's Theorem\",\n      \"kind\": \"definition\",\n      \"type\": \"ℕ → (ℕ → ℕ) → ℕ → ℕ\",\n      \"informal_description\": \"A function that takes a natural number $n$, a function $f : \\\\mathbb{N} \\\\to \\\\mathbb{N}$, and another natural number $m$, returning a natural number used to establish well-founded recursion in the context of multivariate polynomials and Chevalley's theorem. It computes bounds by recursively applying $f$ to $n$ and decrementing $m$.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.degBound\",\n      \"informal_name\": \"Degree Bound for Multivariate Polynomials in Chevalley's Theorem\",\n      \"kind\": \"definition\",\n      \"type\": \"ℕ → (ℕ → ℕ) → ℕ → ℕ\",\n      \"informal_description\": \"A function that computes a degree bound for multivariate polynomials, taking a natural number $n$, a function $f : \\\\mathbb{N} \\\\to \\\\mathbb{N}$, and an element of the sum type $\\\\mathbb{N} \\\\oplus \\\\mathbb{N}$. For left components, it applies $f$ to $n$, and for right components, it returns $n$ directly. This is used in the proof of Chevalley's theorem to establish well-founded recursion for multivariate polynomial constructions.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.numBound_casesOn_succ\",\n      \"informal_name\": \"Successor Case for Numerical Bound in Chevalley's Theorem\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (k₀ k : ℕ) (D : ℕ → ℕ) (n : ℕ),\\n  ChevalleyThm.MvPolynomialC.numBound k₀ (fun x => Nat.casesOn x k D) (n + 1) =\\n    ChevalleyThm.MvPolynomialC.numBound (k₀ * k) ((k₀ * k) ^ (k₀ * k) • D) n\",\n      \"informal_description\": \"For natural numbers $k_0, k, n$ and function $D : \\\\mathbb{N} \\\\to \\\\mathbb{N}$, the numerical bound for $n+1$ satisfies: $$\\\\text{numBound}(k_0, \\\\text{casesOn}(k, D), n+1) = \\\\text{numBound}(k_0 \\\\cdot k, (k_0 \\\\cdot k)^{k_0 \\\\cdot k} \\\\bullet D, n)$$ where $\\\\bullet$ denotes natural scalar multiplication of functions.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.schwartz_zippel_sup_sum\",\n      \"informal_name\": \"Schwartz-Zippel Lemma: Root Bound via Supremum of Exponent Ratios\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] [IsDomain R] [inst_2 : DecidableEq R] {n : ℕ} {p : MvPolynomial (Fin n) R},\\n  p ≠ 0 →\\n    ∀ (S : Fin n → Finset R),\\n      ↑{x ∈ Fintype.piFinset fun i => S i | (MvPolynomial.eval x) p = 0}.card / ∏ i, ↑(S i).card ≤\\n        p.support.sup fun s => ∑ i, ↑(s i) / ↑(S i).card\",\n      \"informal_description\": \"For any non-zero multivariate polynomial $ p $ in $ n $ variables over a commutative semiring $ R $, and for any finite subsets $ S_i \\\\subseteq R $ for each variable, the ratio of the number of roots of $ p $ in the product set $ S_1 \\\\times \\\\cdots \\\\times S_n $ to the product of the cardinalities $ \\\\prod_{i=1}^n |S_i| $ is at most the supremum over all monomials $ s $ in the support of $ p $ of the sum $ \\\\sum_{i=1}^n \\\\frac{s_i}{|S_i|} $, where $ s_i $ denotes the exponent of the $ i $-th variable in the monomial $ s $. All divisions are performed in the non-negative rational numbers $ \\\\mathbb{Q}_{\\\\geq 0} $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.SchwartzZippel\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.numBound\",\n      \"informal_name\": \"Numerical Bound for Chevalley's Theorem in Multivariate Polynomials with Multiset Counts\",\n      \"kind\": \"definition\",\n      \"type\": \"ℕ → (m : ℕ) → ℕ → Multiset (Fin m) → ℕ\",\n      \"informal_description\": \"A function that computes a numerical bound used in the context of Chevalley's theorem for multivariate polynomials. It takes natural numbers $k$, $m$, $n$ and a multiset $d$ of elements of type $\\\\text{Fin}\\\\, m$, and returns a natural number obtained by applying the multivariate polynomial bound function to $k + n$ and a function that counts the occurrences of each element in the multiset $d$ after mapping each element to its value in $\\\\mathbb{N}$, then adding 1.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "ChevalleyThm.MvPolynomialC.numBound",
+            "informal_name": "Numerical Bound for Multivariate Polynomials in Chevalley's Theorem",
+            "kind": "definition",
+            "type": "ℕ → (ℕ → ℕ) → ℕ → ℕ",
+            "informal_description": "A function that takes a natural number $n$, a function $f : \\mathbb{N} \\to \\mathbb{N}$, and another natural number $m$, returning a natural number used to establish well-founded recursion in the context of multivariate polynomials and Chevalley's theorem. It computes bounds by recursively applying $f$ to $n$ and decrementing $m$.",
+            "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+          },
+          {
+            "formal_name": "ChevalleyThm.MvPolynomialC.degBound",
+            "informal_name": "Degree Bound for Multivariate Polynomials in Chevalley's Theorem",
+            "kind": "definition",
+            "type": "ℕ → (ℕ → ℕ) → ℕ → ℕ",
+            "informal_description": "A function that computes a degree bound for multivariate polynomials, taking a natural number $n$, a function $f : \\mathbb{N} \\to \\mathbb{N}$, and an element of the sum type $\\mathbb{N} \\oplus \\mathbb{N}$. For left components, it applies $f$ to $n$, and for right components, it returns $n$ directly. This is used in the proof of Chevalley's theorem to establish well-founded recursion for multivariate polynomial constructions.",
+            "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+          },
+          {
+            "formal_name": "ChevalleyThm.MvPolynomialC.numBound_casesOn_succ",
+            "informal_name": "Successor Case for Numerical Bound in Chevalley's Theorem",
+            "kind": "theorem",
+            "type": "∀ (k₀ k : ℕ) (D : ℕ → ℕ) (n : ℕ),\n  ChevalleyThm.MvPolynomialC.numBound k₀ (fun x => Nat.casesOn x k D) (n + 1) =\n    ChevalleyThm.MvPolynomialC.numBound (k₀ * k) ((k₀ * k) ^ (k₀ * k) • D) n",
+            "informal_description": "For natural numbers $k_0, k, n$ and function $D : \\mathbb{N} \\to \\mathbb{N}$, the numerical bound for $n+1$ satisfies: $$\\text{numBound}(k_0, \\text{casesOn}(k, D), n+1) = \\text{numBound}(k_0 \\cdot k, (k_0 \\cdot k)^{k_0 \\cdot k} \\bullet D, n)$$ where $\\bullet$ denotes natural scalar multiplication of functions.",
+            "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+          },
+          {
+            "formal_name": "MvPolynomial.schwartz_zippel_sup_sum",
+            "informal_name": "Schwartz-Zippel Lemma: Root Bound via Supremum of Exponent Ratios",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommRing R] [IsDomain R] [inst_2 : DecidableEq R] {n : ℕ} {p : MvPolynomial (Fin n) R},\n  p ≠ 0 →\n    ∀ (S : Fin n → Finset R),\n      ↑{x ∈ Fintype.piFinset fun i => S i | (MvPolynomial.eval x) p = 0}.card / ∏ i, ↑(S i).card ≤\n        p.support.sup fun s => ∑ i, ↑(s i) / ↑(S i).card",
+            "informal_description": "For any non-zero multivariate polynomial $ p $ in $ n $ variables over a commutative semiring $ R $, and for any finite subsets $ S_i \\subseteq R $ for each variable, the ratio of the number of roots of $ p $ in the product set $ S_1 \\times \\cdots \\times S_n $ to the product of the cardinalities $ \\prod_{i=1}^n |S_i| $ is at most the supremum over all monomials $ s $ in the support of $ p $ of the sum $ \\sum_{i=1}^n \\frac{s_i}{|S_i|} $, where $ s_i $ denotes the exponent of the $ i $-th variable in the monomial $ s $. All divisions are performed in the non-negative rational numbers $ \\mathbb{Q}_{\\geq 0} $.",
+            "path": "Mathlib.Algebra.MvPolynomial.SchwartzZippel"
+          },
+          {
+            "formal_name": "ChevalleyThm.numBound",
+            "informal_name": "Numerical Bound for Chevalley's Theorem in Multivariate Polynomials with Multiset Counts",
+            "kind": "definition",
+            "type": "ℕ → (m : ℕ) → ℕ → Multiset (Fin m) → ℕ",
+            "informal_description": "A function that computes a numerical bound used in the context of Chevalley's theorem for multivariate polynomials. It takes natural numbers $k$, $m$, $n$ and a multiset $d$ of elements of type $\\text{Fin}\\, m$, and returns a natural number obtained by applying the multivariate polynomial bound function to $k + n$ and a function that counts the occurrences of each element in the multiset $d$ after mapping each element to its value in $\\mathbb{N}$, then adding 1.",
+            "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_leanfinder",
+    "form": "standard",
+    "request": {
+      "query": "Triangle inequality coefficient of polynomial specialization sum over total degree fiber bounded by coefficient absolute sum"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.numBound\",\n      \"informal_name\": \"Numerical Bound for Multivariate Polynomials in Chevalley's Theorem\",\n      \"kind\": \"definition\",\n      \"type\": \"ℕ → (ℕ → ℕ) → ℕ → ℕ\",\n      \"informal_description\": \"A function that takes a natural number $n$, a function $f : \\\\mathbb{N} \\\\to \\\\mathbb{N}$, and another natural number $m$, returning a natural number used to establish well-founded recursion in the context of multivariate polynomials and Chevalley's theorem. It computes bounds by recursively applying $f$ to $n$ and decrementing $m$.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.degBound\",\n      \"informal_name\": \"Degree Bound for Multivariate Polynomials in Chevalley's Theorem\",\n      \"kind\": \"definition\",\n      \"type\": \"ℕ → (ℕ → ℕ) → ℕ → ℕ\",\n      \"informal_description\": \"A function that computes a degree bound for multivariate polynomials, taking a natural number $n$, a function $f : \\\\mathbb{N} \\\\to \\\\mathbb{N}$, and an element of the sum type $\\\\mathbb{N} \\\\oplus \\\\mathbb{N}$. For left components, it applies $f$ to $n$, and for right components, it returns $n$ directly. This is used in the proof of Chevalley's theorem to establish well-founded recursion for multivariate polynomial constructions.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"Polynomial.le_gaussNorm\",\n      \"informal_name\": \"Gauss Norm Upper Bound for Coefficient Terms\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {F : Type u_2} [inst : Semiring R] [inst_1 : FunLike F R ℝ] (v : F) {c : ℝ} (p : Polynomial R)\\n  [ZeroHomClass F R ℝ] [NonnegHomClass F R ℝ], 0 ≤ c → ∀ (i : ℕ), v (p.coeff i) * c ^ i ≤ Polynomial.gaussNorm v c p\",\n      \"informal_description\": \"For any polynomial $ p $ over a semiring $ R $, valuation $ v $ (preserving zero and non-negative), non-negative real number $ c $, and natural number $ i $, the product $ v(a_i) \\\\cdot c^i $ (where $ a_i $ is the coefficient of $ X^i $ in $ p $) satisfies $ v(a_i) \\\\cdot c^i \\\\leq \\\\|p\\\\|_{v,c} $, where $ \\\\|p\\\\|_{v,c} $ denotes the Gauss norm of $ p $ with respect to $ v $ and $ c $.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.GaussNorm\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.degBound\",\n      \"informal_name\": \"Degree Bound for Chevalley's Theorem Using Multiset of Finite Elements\",\n      \"kind\": \"definition\",\n      \"type\": \"ℕ → (m : ℕ) → ℕ → Multiset (Fin m) → ℕ\",\n      \"informal_description\": \"The function computes a degree bound for Chevalley's theorem by taking $k + n$ and a function that adds 1 to the count of each natural number obtained from mapping $\\\\text{Fin.val}$ over the multiset $d$ of type $\\\\text{Fin} \\\\, m$. This constructs a degree bound used in the proof of Chevalley's theorem for multivariate polynomial recursions.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.schwartz_zippel_sum_degreeOf\",\n      \"informal_name\": \"Schwartz-Zippel Inequality for Multivariate Polynomials with Sum of Degrees\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] [IsDomain R] [inst_2 : DecidableEq R] {n : ℕ} {p : MvPolynomial (Fin n) R},\\n  p ≠ 0 →\\n    ∀ (S : Fin n → Finset R),\\n      ↑{x ∈ Fintype.piFinset fun i => S i | (MvPolynomial.eval x) p = 0}.card / ∏ i, ↑(S i).card ≤\\n        ∑ i, ↑(MvPolynomial.degreeOf i p) / ↑(S i).card\",\n      \"informal_description\": \"For a non-zero multivariate polynomial $ p $ in $ n $ variables over a commutative semiring $ R $, and finite sets $ S_i \\\\subseteq R $ for each variable $ i $, the ratio of the number of roots of $ p $ in the Cartesian product $ S_1 \\\\times \\\\cdots \\\\times S_n $ to the product of the sizes $ \\\\prod_{i=1}^n |S_i| $ is at most the sum of the degrees of $ p $ in each variable divided by the corresponding $ |S_i| $. Formally, $$\\\\frac{\\\\#\\\\{x \\\\in S_1 \\\\times \\\\cdots \\\\times S_n \\\\mid p(x) = 0\\\\}}{\\\\prod_{i=1}^n |S_i|} \\\\leq \\\\sum_{i=1}^n \\\\frac{\\\\deg_i(p)}{|S_i|},$$ where $ \\\\deg_i(p) $ denotes the total degree of $ p $ in variable $ i $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.SchwartzZippel\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "ChevalleyThm.MvPolynomialC.numBound",
+            "informal_name": "Numerical Bound for Multivariate Polynomials in Chevalley's Theorem",
+            "kind": "definition",
+            "type": "ℕ → (ℕ → ℕ) → ℕ → ℕ",
+            "informal_description": "A function that takes a natural number $n$, a function $f : \\mathbb{N} \\to \\mathbb{N}$, and another natural number $m$, returning a natural number used to establish well-founded recursion in the context of multivariate polynomials and Chevalley's theorem. It computes bounds by recursively applying $f$ to $n$ and decrementing $m$.",
+            "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+          },
+          {
+            "formal_name": "ChevalleyThm.MvPolynomialC.degBound",
+            "informal_name": "Degree Bound for Multivariate Polynomials in Chevalley's Theorem",
+            "kind": "definition",
+            "type": "ℕ → (ℕ → ℕ) → ℕ → ℕ",
+            "informal_description": "A function that computes a degree bound for multivariate polynomials, taking a natural number $n$, a function $f : \\mathbb{N} \\to \\mathbb{N}$, and an element of the sum type $\\mathbb{N} \\oplus \\mathbb{N}$. For left components, it applies $f$ to $n$, and for right components, it returns $n$ directly. This is used in the proof of Chevalley's theorem to establish well-founded recursion for multivariate polynomial constructions.",
+            "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+          },
+          {
+            "formal_name": "Polynomial.le_gaussNorm",
+            "informal_name": "Gauss Norm Upper Bound for Coefficient Terms",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {F : Type u_2} [inst : Semiring R] [inst_1 : FunLike F R ℝ] (v : F) {c : ℝ} (p : Polynomial R)\n  [ZeroHomClass F R ℝ] [NonnegHomClass F R ℝ], 0 ≤ c → ∀ (i : ℕ), v (p.coeff i) * c ^ i ≤ Polynomial.gaussNorm v c p",
+            "informal_description": "For any polynomial $ p $ over a semiring $ R $, valuation $ v $ (preserving zero and non-negative), non-negative real number $ c $, and natural number $ i $, the product $ v(a_i) \\cdot c^i $ (where $ a_i $ is the coefficient of $ X^i $ in $ p $) satisfies $ v(a_i) \\cdot c^i \\leq \\|p\\|_{v,c} $, where $ \\|p\\|_{v,c} $ denotes the Gauss norm of $ p $ with respect to $ v $ and $ c $.",
+            "path": "Mathlib.RingTheory.Polynomial.GaussNorm"
+          },
+          {
+            "formal_name": "ChevalleyThm.degBound",
+            "informal_name": "Degree Bound for Chevalley's Theorem Using Multiset of Finite Elements",
+            "kind": "definition",
+            "type": "ℕ → (m : ℕ) → ℕ → Multiset (Fin m) → ℕ",
+            "informal_description": "The function computes a degree bound for Chevalley's theorem by taking $k + n$ and a function that adds 1 to the count of each natural number obtained from mapping $\\text{Fin.val}$ over the multiset $d$ of type $\\text{Fin} \\, m$. This constructs a degree bound used in the proof of Chevalley's theorem for multivariate polynomial recursions.",
+            "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+          },
+          {
+            "formal_name": "MvPolynomial.schwartz_zippel_sum_degreeOf",
+            "informal_name": "Schwartz-Zippel Inequality for Multivariate Polynomials with Sum of Degrees",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommRing R] [IsDomain R] [inst_2 : DecidableEq R] {n : ℕ} {p : MvPolynomial (Fin n) R},\n  p ≠ 0 →\n    ∀ (S : Fin n → Finset R),\n      ↑{x ∈ Fintype.piFinset fun i => S i | (MvPolynomial.eval x) p = 0}.card / ∏ i, ↑(S i).card ≤\n        ∑ i, ↑(MvPolynomial.degreeOf i p) / ↑(S i).card",
+            "informal_description": "For a non-zero multivariate polynomial $ p $ in $ n $ variables over a commutative semiring $ R $, and finite sets $ S_i \\subseteq R $ for each variable $ i $, the ratio of the number of roots of $ p $ in the Cartesian product $ S_1 \\times \\cdots \\times S_n $ to the product of the sizes $ \\prod_{i=1}^n |S_i| $ is at most the sum of the degrees of $ p $ in each variable divided by the corresponding $ |S_i| $. Formally, $$\\frac{\\#\\{x \\in S_1 \\times \\cdots \\times S_n \\mid p(x) = 0\\}}{\\prod_{i=1}^n |S_i|} \\leq \\sum_{i=1}^n \\frac{\\deg_i(p)}{|S_i|},$$ where $ \\deg_i(p) $ denotes the total degree of $ p $ in variable $ i $.",
+            "path": "Mathlib.Algebra.MvPolynomial.SchwartzZippel"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_leansearch",
+    "form": "abstract",
+    "request": {
+      "query": "Subadditive function of finite sum bounded by sum and cardinality times uniform bound"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finset.le_sum_of_subadditive_on_pred\",\n      \"module_name\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {M : Type u_4} {N : Type u_5} [inst : AddCommMonoid M] [inst_1 : AddCommMonoid N]\\n  [inst_2 : PartialOrder N] [IsOrderedAddMonoid N] (f : M → N) (p : M → Prop),\\n  f 0 ≤ 0 →\\n    (∀ (x y : M), p x → p y → f (x + y) ≤ f x + f y) →\\n      (∀ (x y : M), p x → p y → p (x + y)) →\\n        ∀ (g : ι → M) {s : Finset ι}, (∀ i ∈ s, p (g i)) → f (∑ i ∈ s, g i) ≤ ∑ i ∈ s, f (g i)\"\n    },\n    {\n      \"name\": \"Finset.le_sum_of_subadditive\",\n      \"module_name\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {M : Type u_4} {N : Type u_5} [inst : AddCommMonoid M] [inst_1 : AddCommMonoid N]\\n  [inst_2 : PartialOrder N] [IsOrderedAddMonoid N] (f : M → N),\\n  f 0 ≤ 0 → (∀ (x y : M), f (x + y) ≤ f x + f y) → ∀ (s : Finset ι) (g : ι → M), f (∑ i ∈ s, g i) ≤ ∑ i ∈ s, f (g i)\"\n    },\n    {\n      \"name\": \"Finset.le_sum_nonempty_of_subadditive_on_pred\",\n      \"module_name\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {M : Type u_4} {N : Type u_5} [inst : AddCommMonoid M] [inst_1 : AddCommMonoid N]\\n  [inst_2 : PartialOrder N] [IsOrderedAddMonoid N] (f : M → N) (p : M → Prop),\\n  (∀ (x y : M), p x → p y → f (x + y) ≤ f x + f y) →\\n    (∀ (x y : M), p x → p y → p (x + y)) →\\n      ∀ (g : ι → M) (s : Finset ι), s.Nonempty → (∀ i ∈ s, p (g i)) → f (∑ i ∈ s, g i) ≤ ∑ i ∈ s, f (g i)\"\n    },\n    {\n      \"name\": \"Finset.le_sum_nonempty_of_subadditive\",\n      \"module_name\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {M : Type u_4} {N : Type u_5} [inst : AddCommMonoid M] [inst_1 : AddCommMonoid N]\\n  [inst_2 : PartialOrder N] [IsOrderedAddMonoid N] (f : M → N),\\n  (∀ (x y : M), f (x + y) ≤ f x + f y) →\\n    ∀ {s : Finset ι}, s.Nonempty → ∀ (g : ι → M), f (∑ i ∈ s, g i) ≤ ∑ i ∈ s, f (g i)\"\n    },\n    {\n      \"name\": \"Finset.apply_union_le_sum\",\n      \"module_name\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {α : Type u_2} {β : Type u_3} [inst : AddCommMonoid β] [inst_1 : PartialOrder β] [AddLeftMono β]\\n  {f : Set α → β},\\n  f ∅ = 0 →\\n    (∀ {s t : Set α}, f (s ∪ t) ≤ f s + f t) → ∀ {s : ι → Set α} (t : Finset ι), f (⋃ i ∈ t, s i) ≤ ∑ i ∈ t, f (s i)\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Finset.le_sum_of_subadditive_on_pred",
+            "module_name": "Mathlib.Algebra.Order.BigOperators.Group.Finset",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_1} {M : Type u_4} {N : Type u_5} [inst : AddCommMonoid M] [inst_1 : AddCommMonoid N]\n  [inst_2 : PartialOrder N] [IsOrderedAddMonoid N] (f : M → N) (p : M → Prop),\n  f 0 ≤ 0 →\n    (∀ (x y : M), p x → p y → f (x + y) ≤ f x + f y) →\n      (∀ (x y : M), p x → p y → p (x + y)) →\n        ∀ (g : ι → M) {s : Finset ι}, (∀ i ∈ s, p (g i)) → f (∑ i ∈ s, g i) ≤ ∑ i ∈ s, f (g i)"
+          },
+          {
+            "name": "Finset.le_sum_of_subadditive",
+            "module_name": "Mathlib.Algebra.Order.BigOperators.Group.Finset",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_1} {M : Type u_4} {N : Type u_5} [inst : AddCommMonoid M] [inst_1 : AddCommMonoid N]\n  [inst_2 : PartialOrder N] [IsOrderedAddMonoid N] (f : M → N),\n  f 0 ≤ 0 → (∀ (x y : M), f (x + y) ≤ f x + f y) → ∀ (s : Finset ι) (g : ι → M), f (∑ i ∈ s, g i) ≤ ∑ i ∈ s, f (g i)"
+          },
+          {
+            "name": "Finset.le_sum_nonempty_of_subadditive_on_pred",
+            "module_name": "Mathlib.Algebra.Order.BigOperators.Group.Finset",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_1} {M : Type u_4} {N : Type u_5} [inst : AddCommMonoid M] [inst_1 : AddCommMonoid N]\n  [inst_2 : PartialOrder N] [IsOrderedAddMonoid N] (f : M → N) (p : M → Prop),\n  (∀ (x y : M), p x → p y → f (x + y) ≤ f x + f y) →\n    (∀ (x y : M), p x → p y → p (x + y)) →\n      ∀ (g : ι → M) (s : Finset ι), s.Nonempty → (∀ i ∈ s, p (g i)) → f (∑ i ∈ s, g i) ≤ ∑ i ∈ s, f (g i)"
+          },
+          {
+            "name": "Finset.le_sum_nonempty_of_subadditive",
+            "module_name": "Mathlib.Algebra.Order.BigOperators.Group.Finset",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_1} {M : Type u_4} {N : Type u_5} [inst : AddCommMonoid M] [inst_1 : AddCommMonoid N]\n  [inst_2 : PartialOrder N] [IsOrderedAddMonoid N] (f : M → N),\n  (∀ (x y : M), f (x + y) ≤ f x + f y) →\n    ∀ {s : Finset ι}, s.Nonempty → ∀ (g : ι → M), f (∑ i ∈ s, g i) ≤ ∑ i ∈ s, f (g i)"
+          },
+          {
+            "name": "Finset.apply_union_le_sum",
+            "module_name": "Mathlib.Algebra.Order.BigOperators.Group.Finset",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_1} {α : Type u_2} {β : Type u_3} [inst : AddCommMonoid β] [inst_1 : PartialOrder β] [AddLeftMono β]\n  {f : Set α → β},\n  f ∅ = 0 →\n    (∀ {s t : Set α}, f (s ∪ t) ≤ f s + f t) → ∀ {s : ι → Set α} (t : Finset ι), f (⋃ i ∈ t, s i) ≤ ∑ i ∈ t, f (s i)"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_leansearch",
+    "form": "current",
+    "request": {
+      "query": "Coefficient bound for diagonal substitution P(X,...,X) by support cardinality times uniform coefficient bound"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPowerSeries.constantCoeff_subst\",\n      \"module_name\": \"Mathlib.RingTheory.MvPowerSeries.Substitution\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_3} [inst : CommRing R] {τ : Type u_4} {S : Type u_5} [inst_1 : CommRing S]\\n  [inst_2 : Algebra R S] {a : σ → MvPowerSeries τ S},\\n  MvPowerSeries.HasSubst a →\\n    ∀ (f : MvPowerSeries σ R),\\n      MvPowerSeries.constantCoeff (MvPowerSeries.subst a f) =\\n        ∑ᶠ (d : σ →₀ ℕ), (MvPowerSeries.coeff d) f • MvPowerSeries.constantCoeff (d.prod fun s e => a s ^ e)\"\n    },\n    {\n      \"name\": \"MvPowerSeries.coeff_subst\",\n      \"module_name\": \"Mathlib.RingTheory.MvPowerSeries.Substitution\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_3} [inst : CommRing R] {τ : Type u_4} {S : Type u_5} [inst_1 : CommRing S]\\n  [inst_2 : Algebra R S] {a : σ → MvPowerSeries τ S},\\n  MvPowerSeries.HasSubst a →\\n    ∀ (f : MvPowerSeries σ R) (e : τ →₀ ℕ),\\n      (MvPowerSeries.coeff e) (MvPowerSeries.subst a f) =\\n        ∑ᶠ (d : σ →₀ ℕ), (MvPowerSeries.coeff d) f • (MvPowerSeries.coeff e) (d.prod fun s e => a s ^ e)\"\n    },\n    {\n      \"name\": \"PowerSeries.coeff_subst'\",\n      \"module_name\": \"Mathlib.RingTheory.PowerSeries.Substitution\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_2} [inst : CommRing R] {S : Type u_4} [inst_1 : CommRing S] [inst_2 : Algebra R S] {b : PowerSeries S},\\n  PowerSeries.HasSubst b →\\n    ∀ (f : PowerSeries R) (e : ℕ),\\n      (PowerSeries.coeff e) (PowerSeries.subst b f) =\\n        ∑ᶠ (d : ℕ), (PowerSeries.coeff d) f • (PowerSeries.coeff e) (b ^ d)\"\n    },\n    {\n      \"name\": \"Polynomial.coeff_le_of_roots_le\",\n      \"module_name\": \"Mathlib.Topology.Algebra.Polynomial\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {F : Type u_3} {K : Type u_4} [inst : CommRing F] [inst_1 : NormedField K] {p : Polynomial F} {f : F →+* K} {B : ℝ}\\n  (i : ℕ),\\n  p.Monic →\\n    (Polynomial.map f p).Splits →\\n      (∀ z ∈ (Polynomial.map f p).roots, ‖z‖ ≤ B) →\\n        ‖(Polynomial.map f p).coeff i‖ ≤ B ^ (p.natDegree - i) * ↑(p.natDegree.choose i)\"\n    },\n    {\n      \"name\": \"PowerSeries.coeff_subst\",\n      \"module_name\": \"Mathlib.RingTheory.PowerSeries.Substitution\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_2} [inst : CommRing R] {τ : Type u_3} {S : Type u_4} [inst_1 : CommRing S] [inst_2 : Algebra R S]\\n  {a : MvPowerSeries τ S},\\n  PowerSeries.HasSubst a →\\n    ∀ (f : PowerSeries R) (e : τ →₀ ℕ),\\n      (MvPowerSeries.coeff e) (PowerSeries.subst a f) =\\n        ∑ᶠ (d : ℕ), (PowerSeries.coeff d) f • (MvPowerSeries.coeff e) (a ^ d)\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPowerSeries.constantCoeff_subst",
+            "module_name": "Mathlib.RingTheory.MvPowerSeries.Substitution",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {R : Type u_3} [inst : CommRing R] {τ : Type u_4} {S : Type u_5} [inst_1 : CommRing S]\n  [inst_2 : Algebra R S] {a : σ → MvPowerSeries τ S},\n  MvPowerSeries.HasSubst a →\n    ∀ (f : MvPowerSeries σ R),\n      MvPowerSeries.constantCoeff (MvPowerSeries.subst a f) =\n        ∑ᶠ (d : σ →₀ ℕ), (MvPowerSeries.coeff d) f • MvPowerSeries.constantCoeff (d.prod fun s e => a s ^ e)"
+          },
+          {
+            "name": "MvPowerSeries.coeff_subst",
+            "module_name": "Mathlib.RingTheory.MvPowerSeries.Substitution",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {R : Type u_3} [inst : CommRing R] {τ : Type u_4} {S : Type u_5} [inst_1 : CommRing S]\n  [inst_2 : Algebra R S] {a : σ → MvPowerSeries τ S},\n  MvPowerSeries.HasSubst a →\n    ∀ (f : MvPowerSeries σ R) (e : τ →₀ ℕ),\n      (MvPowerSeries.coeff e) (MvPowerSeries.subst a f) =\n        ∑ᶠ (d : σ →₀ ℕ), (MvPowerSeries.coeff d) f • (MvPowerSeries.coeff e) (d.prod fun s e => a s ^ e)"
+          },
+          {
+            "name": "PowerSeries.coeff_subst'",
+            "module_name": "Mathlib.RingTheory.PowerSeries.Substitution",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_2} [inst : CommRing R] {S : Type u_4} [inst_1 : CommRing S] [inst_2 : Algebra R S] {b : PowerSeries S},\n  PowerSeries.HasSubst b →\n    ∀ (f : PowerSeries R) (e : ℕ),\n      (PowerSeries.coeff e) (PowerSeries.subst b f) =\n        ∑ᶠ (d : ℕ), (PowerSeries.coeff d) f • (PowerSeries.coeff e) (b ^ d)"
+          },
+          {
+            "name": "Polynomial.coeff_le_of_roots_le",
+            "module_name": "Mathlib.Topology.Algebra.Polynomial",
+            "kind": "theorem",
+            "type": "∀ {F : Type u_3} {K : Type u_4} [inst : CommRing F] [inst_1 : NormedField K] {p : Polynomial F} {f : F →+* K} {B : ℝ}\n  (i : ℕ),\n  p.Monic →\n    (Polynomial.map f p).Splits →\n      (∀ z ∈ (Polynomial.map f p).roots, ‖z‖ ≤ B) →\n        ‖(Polynomial.map f p).coeff i‖ ≤ B ^ (p.natDegree - i) * ↑(p.natDegree.choose i)"
+          },
+          {
+            "name": "PowerSeries.coeff_subst",
+            "module_name": "Mathlib.RingTheory.PowerSeries.Substitution",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_2} [inst : CommRing R] {τ : Type u_3} {S : Type u_4} [inst_1 : CommRing S] [inst_2 : Algebra R S]\n  {a : MvPowerSeries τ S},\n  PowerSeries.HasSubst a →\n    ∀ (f : PowerSeries R) (e : τ →₀ ℕ),\n      (MvPowerSeries.coeff e) (PowerSeries.subst a f) =\n        ∑ᶠ (d : ℕ), (PowerSeries.coeff d) f • (MvPowerSeries.coeff e) (a ^ d)"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_leansearch",
+    "form": "standard",
+    "request": {
+      "query": "Triangle inequality coefficient of polynomial specialization sum over total degree fiber bounded by coefficient absolute sum"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finset.abs_sum_le_sum_abs\",\n      \"module_name\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {G : Type u_9} [inst : AddCommGroup G] [inst_1 : LinearOrder G] [IsOrderedAddMonoid G] (f : ι → G)\\n  (s : Finset ι), |∑ i ∈ s, f i| ≤ ∑ i ∈ s, |f i|\"\n    },\n    {\n      \"name\": \"Polynomial.cauchyBound_zero\",\n      \"module_name\": \"Mathlib.Analysis.Polynomial.CauchyBound\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {K : Type u_1} [inst : NormedDivisionRing K], Polynomial.cauchyBound 0 = 1\"\n    },\n    {\n      \"name\": \"nat_abs_sum_le\",\n      \"module_name\": \"Mathlib.Algebra.BigOperators.Group.Finset.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} (s : Finset ι) (f : ι → ℤ), (∑ i ∈ s, f i).natAbs ≤ ∑ i ∈ s, (f i).natAbs\"\n    },\n    {\n      \"name\": \"AbsoluteValue.sum_le\",\n      \"module_name\": \"Mathlib.Algebra.Order.BigOperators.Ring.Finset\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {R : Type u_2} {S : Type u_3} [inst : Semiring R] [inst_1 : Semiring S] [inst_2 : PartialOrder S]\\n  [IsOrderedRing S] (abv : AbsoluteValue R S) (s : Finset ι) (f : ι → R), abv (∑ i ∈ s, f i) ≤ ∑ i ∈ s, abv (f i)\"\n    },\n    {\n      \"name\": \"Polynomial.norm_coeff_le_choose_mul_mahlerMeasure\",\n      \"module_name\": \"Mathlib.Analysis.Polynomial.MahlerMeasure\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (n : ℕ) (p : Polynomial ℂ), ‖p.coeff n‖ ≤ ↑(p.natDegree.choose n) * p.mahlerMeasure\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Finset.abs_sum_le_sum_abs",
+            "module_name": "Mathlib.Algebra.Order.BigOperators.Group.Finset",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_1} {G : Type u_9} [inst : AddCommGroup G] [inst_1 : LinearOrder G] [IsOrderedAddMonoid G] (f : ι → G)\n  (s : Finset ι), |∑ i ∈ s, f i| ≤ ∑ i ∈ s, |f i|"
+          },
+          {
+            "name": "Polynomial.cauchyBound_zero",
+            "module_name": "Mathlib.Analysis.Polynomial.CauchyBound",
+            "kind": "theorem",
+            "type": "∀ {K : Type u_1} [inst : NormedDivisionRing K], Polynomial.cauchyBound 0 = 1"
+          },
+          {
+            "name": "nat_abs_sum_le",
+            "module_name": "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_1} (s : Finset ι) (f : ι → ℤ), (∑ i ∈ s, f i).natAbs ≤ ∑ i ∈ s, (f i).natAbs"
+          },
+          {
+            "name": "AbsoluteValue.sum_le",
+            "module_name": "Mathlib.Algebra.Order.BigOperators.Ring.Finset",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_1} {R : Type u_2} {S : Type u_3} [inst : Semiring R] [inst_1 : Semiring S] [inst_2 : PartialOrder S]\n  [IsOrderedRing S] (abv : AbsoluteValue R S) (s : Finset ι) (f : ι → R), abv (∑ i ∈ s, f i) ≤ ∑ i ∈ s, abv (f i)"
+          },
+          {
+            "name": "Polynomial.norm_coeff_le_choose_mul_mahlerMeasure",
+            "module_name": "Mathlib.Analysis.Polynomial.MahlerMeasure",
+            "kind": "theorem",
+            "type": "∀ (n : ℕ) (p : Polynomial ℂ), ‖p.coeff n‖ ≤ ↑(p.natDegree.choose n) * p.mahlerMeasure"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_local_search",
+    "form": "abstract",
+    "request": {
+      "query": "le_sum_of_subadditive"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_local_search",
+    "form": "current",
+    "request": {
+      "query": "abs_coeff"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Roth.abs_coeff_diag_le\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/CoeffNorm.lean\"\n    },\n    {\n      \"name\": \"Roth.abs_coeff_le_normOne\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/CoeffNorm.lean\"\n    },\n    {\n      \"name\": \"Roth.abs_coeff_hasseDeriv_le\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/CoeffNorm.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.DiagSumConsumers.abs_coeff_diag_le_replay\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/roth-overview-session/NextHasseChecks.lean\"\n    },\n    {\n      \"name\": \"Roth.abs_coeff_det_hasseDeriv_le\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/CoeffNorm.lean\"\n    },\n    {\n      \"name\": \"Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux\",\n      \"kind\": \"lemma\",\n      \"file\": \"Roth/MainLemma.lean\"\n    },\n    {\n      \"name\": \"Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux\",\n      \"kind\": \"lemma\",\n      \"file\": \"Roth/MainLemma.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.AbsHasseConsumers.abs_coeff_diag_hasseDeriv_modByMonic_le_aux_replay\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/roth-overview-session/NextHasseChecks.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Roth.abs_coeff_diag_le",
+            "kind": "theorem",
+            "file": "Roth/CoeffNorm.lean"
+          },
+          {
+            "name": "Roth.abs_coeff_le_normOne",
+            "kind": "theorem",
+            "file": "Roth/CoeffNorm.lean"
+          },
+          {
+            "name": "Roth.abs_coeff_hasseDeriv_le",
+            "kind": "theorem",
+            "file": "Roth/CoeffNorm.lean"
+          },
+          {
+            "name": "MvPolynomial.DiagSumConsumers.abs_coeff_diag_le_replay",
+            "kind": "theorem",
+            "file": ".lake/roth-overview-session/NextHasseChecks.lean"
+          },
+          {
+            "name": "Roth.abs_coeff_det_hasseDeriv_le",
+            "kind": "theorem",
+            "file": "Roth/CoeffNorm.lean"
+          },
+          {
+            "name": "Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux",
+            "kind": "lemma",
+            "file": "Roth/MainLemma.lean"
+          },
+          {
+            "name": "Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux",
+            "kind": "lemma",
+            "file": "Roth/MainLemma.lean"
+          },
+          {
+            "name": "MvPolynomial.AbsHasseConsumers.abs_coeff_diag_hasseDeriv_modByMonic_le_aux_replay",
+            "kind": "theorem",
+            "file": ".lake/roth-overview-session/NextHasseChecks.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_local_search",
+    "form": "standard",
+    "request": {
+      "query": "abs_sum_le_sum_abs"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finset.abs_sum_le_sum_abs\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Order/BigOperators/Group/Finset.lean\"\n    },\n    {\n      \"name\": \"Multiset.abs_sum_le_sum_abs\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Order/BigOperators/Group/Multiset.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Finset.abs_sum_le_sum_abs",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Order/BigOperators/Group/Finset.lean"
+          },
+          {
+            "name": "Multiset.abs_sum_le_sum_abs",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Order/BigOperators/Group/Multiset.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_loogle",
+    "form": "abstract",
+    "request": {
+      "query": "Finset.card, Finset.sum, _ ≤ _"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finset.card_biUnion_le\",\n      \"type\": \" {ι : Type u_1} {M : Type u_4} [DecidableEq M] {s : Finset ι} {t : ι → Finset M} : (s.biUnion t).card ≤ ∑ a ∈ s, (t a).card\",\n      \"module\": \"Mathlib.Algebra.BigOperators.Group.Finset.Basic\"\n    },\n    {\n      \"name\": \"Finset.eq_of_card_le_one_of_sum_eq\",\n      \"type\": \" {ι : Type u_1} {M : Type u_4} [AddCommMonoid M] {s : Finset ι} (hc : s.card ≤ 1) {f : ι → M} {b : M} (h : ∑ x ∈ s, f x = b) (x : ι) : x ∈ s → f x = b\",\n      \"module\": \"Mathlib.Algebra.BigOperators.Group.Finset.Basic\"\n    },\n    {\n      \"name\": \"Finset.card_eq_sum_ite\",\n      \"type\": \" {ι : Type u_1} {s t : Finset ι} [DecidablePred fun x => x ∈ s] (hst : s ⊆ t) : s.card = ∑ i ∈ t, if i ∈ s then 1 else 0\",\n      \"module\": \"Mathlib.Algebra.BigOperators.Ring.Finset\"\n    },\n    {\n      \"name\": \"Finset.le_sum_card\",\n      \"type\": \" {α : Type u_2} [DecidableEq α] {B : Finset (Finset α)} {n : ℕ} [Fintype α] (h : ∀ (a : α), n ≤ {b ∈ B | a ∈ b}.card) : Fintype.card α * n ≤ ∑ s ∈ B, s.card\",\n      \"module\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    },\n    {\n      \"name\": \"Finset.sum_card_le\",\n      \"type\": \" {α : Type u_2} [DecidableEq α] {B : Finset (Finset α)} {n : ℕ} [Fintype α] (h : ∀ (a : α), {b ∈ B | a ∈ b}.card ≤ n) : ∑ s ∈ B, s.card ≤ Fintype.card α * n\",\n      \"module\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    },\n    {\n      \"name\": \"Finset.card_nsmul_le_sum\",\n      \"type\": \" {ι : Type u_1} {N : Type u_5} [AddCommMonoid N] [Preorder N] [AddLeftMono N] (s : Finset ι) (f : ι → N) (n : N) (h : ∀ x ∈ s, n ≤ f x) : s.card • n ≤ s.sum f\",\n      \"module\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    },\n    {\n      \"name\": \"Finset.sum_le_card_nsmul\",\n      \"type\": \" {ι : Type u_1} {N : Type u_5} [AddCommMonoid N] [Preorder N] [AddLeftMono N] (s : Finset ι) (f : ι → N) (n : N) (h : ∀ x ∈ s, f x ≤ n) : s.sum f ≤ s.card • n\",\n      \"module\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    },\n    {\n      \"name\": \"Finset.le_sum_card_inter\",\n      \"type\": \" {α : Type u_2} [DecidableEq α] {s : Finset α} {B : Finset (Finset α)} {n : ℕ} (h : ∀ a ∈ s, n ≤ {b ∈ B | a ∈ b}.card) : s.card * n ≤ ∑ t ∈ B, (s ∩ t).card\",\n      \"module\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Finset.card_biUnion_le",
+            "type": " {ι : Type u_1} {M : Type u_4} [DecidableEq M] {s : Finset ι} {t : ι → Finset M} : (s.biUnion t).card ≤ ∑ a ∈ s, (t a).card",
+            "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+          },
+          {
+            "name": "Finset.eq_of_card_le_one_of_sum_eq",
+            "type": " {ι : Type u_1} {M : Type u_4} [AddCommMonoid M] {s : Finset ι} (hc : s.card ≤ 1) {f : ι → M} {b : M} (h : ∑ x ∈ s, f x = b) (x : ι) : x ∈ s → f x = b",
+            "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+          },
+          {
+            "name": "Finset.card_eq_sum_ite",
+            "type": " {ι : Type u_1} {s t : Finset ι} [DecidablePred fun x => x ∈ s] (hst : s ⊆ t) : s.card = ∑ i ∈ t, if i ∈ s then 1 else 0",
+            "module": "Mathlib.Algebra.BigOperators.Ring.Finset"
+          },
+          {
+            "name": "Finset.le_sum_card",
+            "type": " {α : Type u_2} [DecidableEq α] {B : Finset (Finset α)} {n : ℕ} [Fintype α] (h : ∀ (a : α), n ≤ {b ∈ B | a ∈ b}.card) : Fintype.card α * n ≤ ∑ s ∈ B, s.card",
+            "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+          },
+          {
+            "name": "Finset.sum_card_le",
+            "type": " {α : Type u_2} [DecidableEq α] {B : Finset (Finset α)} {n : ℕ} [Fintype α] (h : ∀ (a : α), {b ∈ B | a ∈ b}.card ≤ n) : ∑ s ∈ B, s.card ≤ Fintype.card α * n",
+            "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+          },
+          {
+            "name": "Finset.card_nsmul_le_sum",
+            "type": " {ι : Type u_1} {N : Type u_5} [AddCommMonoid N] [Preorder N] [AddLeftMono N] (s : Finset ι) (f : ι → N) (n : N) (h : ∀ x ∈ s, n ≤ f x) : s.card • n ≤ s.sum f",
+            "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+          },
+          {
+            "name": "Finset.sum_le_card_nsmul",
+            "type": " {ι : Type u_1} {N : Type u_5} [AddCommMonoid N] [Preorder N] [AddLeftMono N] (s : Finset ι) (f : ι → N) (n : N) (h : ∀ x ∈ s, f x ≤ n) : s.sum f ≤ s.card • n",
+            "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+          },
+          {
+            "name": "Finset.le_sum_card_inter",
+            "type": " {α : Type u_2} [DecidableEq α] {s : Finset α} {B : Finset (Finset α)} {n : ℕ} (h : ∀ a ∈ s, n ≤ {b ∈ B | a ∈ b}.card) : s.card * n ≤ ∑ t ∈ B, (s ∩ t).card",
+            "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_loogle",
+    "form": "current",
+    "request": {
+      "query": "Polynomial.coeff, abs, _ ≤ _"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.Chebyshev.coeff_le_of_forall_abs_le_one\",\n      \"type\": \" {n : ℕ} {P : Polynomial ℝ} (hPdeg : P.degree ≤ ↑n) (hPbnd : ∀ x ∈ Set.Icc (-1) 1, |Polynomial.eval x P| ≤ 1) : P.coeff n ≤ 2 ^ (n - 1)\",\n      \"module\": \"Mathlib.Analysis.SpecialFunctions.Trigonometric.Chebyshev.Extremal\"\n    },\n    {\n      \"name\": \"Polynomial.Chebyshev.coeff_eq_iff_of_forall_abs_le_one\",\n      \"type\": \" {n : ℕ} {P : Polynomial ℝ} (hPdeg : P.degree ≤ ↑n) (hPbnd : ∀ x ∈ Set.Icc (-1) 1, |Polynomial.eval x P| ≤ 1) : P.coeff n = 2 ^ (n - 1) ↔ P = Polynomial.Chebyshev.T ℝ ↑n\",\n      \"module\": \"Mathlib.Analysis.SpecialFunctions.Trigonometric.Chebyshev.Extremal\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.Chebyshev.coeff_le_of_forall_abs_le_one",
+            "type": " {n : ℕ} {P : Polynomial ℝ} (hPdeg : P.degree ≤ ↑n) (hPbnd : ∀ x ∈ Set.Icc (-1) 1, |Polynomial.eval x P| ≤ 1) : P.coeff n ≤ 2 ^ (n - 1)",
+            "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Chebyshev.Extremal"
+          },
+          {
+            "name": "Polynomial.Chebyshev.coeff_eq_iff_of_forall_abs_le_one",
+            "type": " {n : ℕ} {P : Polynomial ℝ} (hPdeg : P.degree ≤ ↑n) (hPbnd : ∀ x ∈ Set.Icc (-1) 1, |Polynomial.eval x P| ≤ 1) : P.coeff n = 2 ^ (n - 1) ↔ P = Polynomial.Chebyshev.T ℝ ↑n",
+            "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Chebyshev.Extremal"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_loogle",
+    "form": "standard",
+    "request": {
+      "query": "Finset.sum, abs, _ ≤ _"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finset.abs_sum_le_sum_abs\",\n      \"type\": \" {ι : Type u_1} {G : Type u_8} [AddCommGroup G] [LinearOrder G] [IsOrderedAddMonoid G] (f : ι → G) (s : Finset ι) : |∑ i ∈ s, f i| ≤ ∑ i ∈ s, |f i|\",\n      \"module\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    },\n    {\n      \"name\": \"Finset.abs_sum_of_nonneg'\",\n      \"type\": \" {ι : Type u_1} {G : Type u_8} [AddCommGroup G] [LinearOrder G] [AddLeftMono G] {f : ι → G} {s : Finset ι} (hf : ∀ (i : ι), 0 ≤ f i) : |∑ i ∈ s, f i| = ∑ i ∈ s, f i\",\n      \"module\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    },\n    {\n      \"name\": \"Finset.abs_sum_of_nonneg\",\n      \"type\": \" {ι : Type u_1} {G : Type u_8} [AddCommGroup G] [LinearOrder G] [AddLeftMono G] {f : ι → G} {s : Finset ι} (hf : ∀ i ∈ s, 0 ≤ f i) : |∑ i ∈ s, f i| = ∑ i ∈ s, f i\",\n      \"module\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    },\n    {\n      \"name\": \"IsCauSeq.of_abv_le\",\n      \"type\": \" {α : Type u_1} {β : Type u_2} [Field α] [LinearOrder α] [IsStrictOrderedRing α] [Ring β] {abv : β → α} [IsAbsoluteValue abv] {f : ℕ → β} {a : ℕ → α} (n : ℕ) (hm : ∀ (m : ℕ), n ≤ m → abv (f m) ≤ a m) : (IsCauSeq abs fun n => ∑ i ∈ Finset.range n, a i) → IsCauSeq abv fun n => ∑ i ∈ Finset.range n, f i\",\n      \"module\": \"Mathlib.Algebra.Order.CauSeq.BigOperators\"\n    },\n    {\n      \"name\": \"Real.exp_bound\",\n      \"type\": \" {x : ℝ} (hx : |x| ≤ 1) {n : ℕ} (hn : 0 < n) : |Real.exp x - ∑ m ∈ Finset.range n, x ^ m / ↑m.factorial| ≤ |x| ^ n * (↑n.succ / (↑n.factorial * ↑n))\",\n      \"module\": \"Mathlib.Analysis.Complex.Exponential\"\n    },\n    {\n      \"name\": \"alternating_series_error_bound\",\n      \"type\": \" {E : Type u_5} [Ring E] [LinearOrder E] [IsOrderedRing E] [UniformSpace E] [IsUniformAddGroup E] [CompleteSpace E] [OrderClosedTopology E] (f : ℕ → E) (hfa : Antitone f) (hfs : Summable f) (n : ℕ) : |∑' (i : ℕ), (-1) ^ i * f i - ∑ i ∈ Finset.range n, (-1) ^ i * f i| ≤ f n\",\n      \"module\": \"Mathlib.Analysis.SpecificLimits.Normed\"\n    },\n    {\n      \"name\": \"Real.abs_sin_sum_le\",\n      \"type\": \" {ι : Type u_1} (s : Finset ι) (f : ι → ℝ) : |Real.sin (∑ i ∈ s, f i)| ≤ ∑ i ∈ s, |Real.sin (f i)|\",\n      \"module\": \"Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic\"\n    },\n    {\n      \"name\": \"Real.rpow_sum_le_const_mul_sum_rpow\",\n      \"type\": \" {ι : Type u} (s : Finset ι) (f : ι → ℝ) {p : ℝ} (hp : 1 ≤ p) : (∑ i ∈ s, |f i|) ^ p ≤ ↑s.card ^ (p - 1) * ∑ i ∈ s, |f i| ^ p\",\n      \"module\": \"Mathlib.Analysis.MeanInequalities\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Finset.abs_sum_le_sum_abs",
+            "type": " {ι : Type u_1} {G : Type u_8} [AddCommGroup G] [LinearOrder G] [IsOrderedAddMonoid G] (f : ι → G) (s : Finset ι) : |∑ i ∈ s, f i| ≤ ∑ i ∈ s, |f i|",
+            "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+          },
+          {
+            "name": "Finset.abs_sum_of_nonneg'",
+            "type": " {ι : Type u_1} {G : Type u_8} [AddCommGroup G] [LinearOrder G] [AddLeftMono G] {f : ι → G} {s : Finset ι} (hf : ∀ (i : ι), 0 ≤ f i) : |∑ i ∈ s, f i| = ∑ i ∈ s, f i",
+            "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+          },
+          {
+            "name": "Finset.abs_sum_of_nonneg",
+            "type": " {ι : Type u_1} {G : Type u_8} [AddCommGroup G] [LinearOrder G] [AddLeftMono G] {f : ι → G} {s : Finset ι} (hf : ∀ i ∈ s, 0 ≤ f i) : |∑ i ∈ s, f i| = ∑ i ∈ s, f i",
+            "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+          },
+          {
+            "name": "IsCauSeq.of_abv_le",
+            "type": " {α : Type u_1} {β : Type u_2} [Field α] [LinearOrder α] [IsStrictOrderedRing α] [Ring β] {abv : β → α} [IsAbsoluteValue abv] {f : ℕ → β} {a : ℕ → α} (n : ℕ) (hm : ∀ (m : ℕ), n ≤ m → abv (f m) ≤ a m) : (IsCauSeq abs fun n => ∑ i ∈ Finset.range n, a i) → IsCauSeq abv fun n => ∑ i ∈ Finset.range n, f i",
+            "module": "Mathlib.Algebra.Order.CauSeq.BigOperators"
+          },
+          {
+            "name": "Real.exp_bound",
+            "type": " {x : ℝ} (hx : |x| ≤ 1) {n : ℕ} (hn : 0 < n) : |Real.exp x - ∑ m ∈ Finset.range n, x ^ m / ↑m.factorial| ≤ |x| ^ n * (↑n.succ / (↑n.factorial * ↑n))",
+            "module": "Mathlib.Analysis.Complex.Exponential"
+          },
+          {
+            "name": "alternating_series_error_bound",
+            "type": " {E : Type u_5} [Ring E] [LinearOrder E] [IsOrderedRing E] [UniformSpace E] [IsUniformAddGroup E] [CompleteSpace E] [OrderClosedTopology E] (f : ℕ → E) (hfa : Antitone f) (hfs : Summable f) (n : ℕ) : |∑' (i : ℕ), (-1) ^ i * f i - ∑ i ∈ Finset.range n, (-1) ^ i * f i| ≤ f n",
+            "module": "Mathlib.Analysis.SpecificLimits.Normed"
+          },
+          {
+            "name": "Real.abs_sin_sum_le",
+            "type": " {ι : Type u_1} (s : Finset ι) (f : ι → ℝ) : |Real.sin (∑ i ∈ s, f i)| ≤ ∑ i ∈ s, |Real.sin (f i)|",
+            "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+          },
+          {
+            "name": "Real.rpow_sum_le_const_mul_sum_rpow",
+            "type": " {ι : Type u} (s : Finset ι) (f : ι → ℝ) {p : ℝ} (hp : 1 ≤ p) : (∑ i ∈ s, |f i|) ^ p ≤ ↑s.card ^ (p - 1) * ∑ i ∈ s, |f i| ^ p",
+            "module": "Mathlib.Analysis.MeanInequalities"
+          }
+        ]
+      },
+      "isError": false
+    }
+  }
+]

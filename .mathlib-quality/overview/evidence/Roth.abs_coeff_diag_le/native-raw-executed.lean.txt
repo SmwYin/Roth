@@ -1,0 +1,75 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+import Mathlib.Algebra.Polynomial.CancelLeads
+import Mathlib.Algebra.MvPolynomial.PDeriv
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+import Mathlib.Algebra.MvPolynomial.Equiv
+import Mathlib.Analysis.Normed.Unbundled.RingSeminorm
+import Mathlib.LinearAlgebra.Matrix.AbsoluteValue
+import Mathlib.Data.Nat.Choose.Bounds
+#check_failure Roth.diag
+namespace MvPolynomial.DiagSumRaw
+open MvPolynomial
+variable {σ R : Type*} [CommSemiring R]
+theorem generic (P : MvPolynomial σ R) :
+    aeval (fun _ ↦ (Polynomial.X : Polynomial R)) P =
+      ∑ k ∈ P.support, Polynomial.monomial k.degree (P.coeff k) := by
+  classical
+  rw [aeval_def, eval₂_eq]
+  simp_rw [Finset.prod_pow_eq_pow_sum, ← Finsupp.degree_apply, Polynomial.algebraMap_eq,
+    Polynomial.C_mul_X_pow_eq_monomial]
+theorem existingExpansion (P : MvPolynomial σ R) :
+    aeval (fun _ ↦ (Polynomial.X : Polynomial R)) P =
+      ∑ k ∈ P.support, Polynomial.monomial k.degree (P.coeff k) := by
+  classical
+  simpa only [MvPolynomial.aeval_def, Finset.prod_pow_eq_pow_sum,
+    ← Finsupp.degree_apply, Polynomial.algebraMap_eq,
+    Polynomial.C_mul_X_pow_eq_monomial] using
+    (eval₂_eq (algebraMap R (Polynomial R)) (fun _ ↦ Polynomial.X) P)
+#check @MvPolynomial.eval₂_eq
+#check @MvPolynomial.aeval_def
+#check @Finset.prod_pow_eq_pow_sum
+#check @Finsupp.degree_apply
+#check @Polynomial.algebraMap_eq
+#check @Polynomial.C_mul_X_pow_eq_monomial
+#print axioms generic
+#print axioms existingExpansion
+end MvPolynomial.DiagSumRaw
+#check_failure Roth.abs_coeff_diag_le
+namespace MvPolynomial.CoeffDiagGeneric
+variable {σ R : Type*} [CommSemiring R]
+theorem coeff_fiber (P : MvPolynomial σ R) (n : ℕ) :
+    (aeval (fun _ ↦ (Polynomial.X : Polynomial R)) P).coeff n =
+      ∑ k ∈ P.support.filter (fun k ↦ k.degree = n), P.coeff k := by
+  classical
+  rw [MvPolynomial.DiagSumRaw.generic, Polynomial.finsetSum_coeff]
+  simp only [Polynomial.coeff_monomial, Finset.sum_filter]
+theorem subadditive_fiber (P : MvPolynomial σ R) (n : ℕ) (f : R → ℝ)
+    (hf0 : f 0 ≤ 0) (hfadd : ∀ a b, f (a + b) ≤ f a + f b) :
+    f ((aeval (fun _ ↦ (Polynomial.X : Polynomial R)) P).coeff n) ≤
+      ∑ k ∈ P.support.filter (fun k ↦ k.degree = n), f (P.coeff k) := by
+  classical
+  rw [coeff_fiber]
+  exact Finset.le_sum_of_subadditive f hf0 hfadd _ _
+theorem cardinal_fiber (P : MvPolynomial σ R) (n : ℕ) (f : R → ℝ)
+    (hf0 : f 0 ≤ 0) (hfadd : ∀ a b, f (a + b) ≤ f a + f b) {B : ℝ}
+    (hB : ∀ k ∈ P.support.filter (fun k ↦ k.degree = n), f (P.coeff k) ≤ B) :
+    f ((aeval (fun _ ↦ (Polynomial.X : Polynomial R)) P).coeff n) ≤
+      (P.support.filter (fun k ↦ k.degree = n)).card * B := by
+  classical
+  exact (subadditive_fiber P n f hf0 hfadd).trans
+    (by simpa using Finset.sum_le_card_nsmul _ _ B hB)
+#check @Finset.le_sum_of_subadditive
+#check @Finset.sum_le_card_nsmul
+#check @Finset.abs_sum_le_sum_abs
+#print axioms coeff_fiber
+#print axioms subadditive_fiber
+#print axioms cardinal_fiber
+end MvPolynomial.CoeffDiagGeneric

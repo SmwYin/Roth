@@ -1,0 +1,21 @@
+namespace MvPolynomial.CoeffDiagCodomain
+variable {σ R N : Type*} [CommSemiring R] [AddCommMonoid N]
+    [PartialOrder N] [IsOrderedAddMonoid N]
+theorem subadditive_fiber (P : MvPolynomial σ R) (n : ℕ) (f : R → N)
+    (hf0 : f 0 ≤ 0) (hfadd : ∀ a b, f (a + b) ≤ f a + f b) :
+    f ((aeval (fun _ ↦ (Polynomial.X : Polynomial R)) P).coeff n) ≤
+      ∑ k ∈ P.support.filter (fun k ↦ k.degree = n), f (P.coeff k) := by
+  classical
+  rw [MvPolynomial.CoeffDiagGeneric.coeff_fiber]
+  exact Finset.le_sum_of_subadditive f hf0 hfadd _ _
+theorem cardinal_fiber (P : MvPolynomial σ R) (n : ℕ) (f : R → N)
+    (hf0 : f 0 ≤ 0) (hfadd : ∀ a b, f (a + b) ≤ f a + f b) {B : N}
+    (hB : ∀ k ∈ P.support.filter (fun k ↦ k.degree = n), f (P.coeff k) ≤ B) :
+    f ((aeval (fun _ ↦ (Polynomial.X : Polynomial R)) P).coeff n) ≤
+      (P.support.filter (fun k ↦ k.degree = n)).card • B := by
+  classical
+  exact (subadditive_fiber P n f hf0 hfadd).trans
+    (Finset.sum_le_card_nsmul _ _ B hB)
+#print axioms subadditive_fiber
+#print axioms cardinal_fiber
+end MvPolynomial.CoeffDiagCodomain

@@ -1,0 +1,155 @@
+{
+  "parameter_rows": [
+    {
+      "parameter": "σ : Type u",
+      "analysis": "Already arbitrary; no finite/nonempty/decidable hypothesis."
+    },
+    {
+      "parameter": "P : MvPolynomial σ ℤ",
+      "analysis": "Essential; fixed diag parent accepts integers. Expanded aeval representation supports CommSemiring R."
+    },
+    {
+      "parameter": "B : ℝ",
+      "analysis": "Arbitrary real bound; global hB entails nonnegative. Expanded codomain N uses nsmul."
+    },
+    {
+      "parameter": "hB : ∀ d, |(coeff d : ℝ)| ≤ B",
+      "analysis": "Essential size control; generic fiber variant requires only the degree-n support fiber. Original bound recovered with B≥0 from hB0."
+    },
+    {
+      "parameter": "n : ℕ",
+      "analysis": "Essential coefficient index; no range or degree assumption needed."
+    }
+  ],
+  "expanded_forms": [
+    {
+      "name": "CommSemiring coefficient-fiber equality",
+      "verified": true,
+      "status": "PASS",
+      "source": "native-consumers-executed.lean.txt",
+      "receipt": "native-consumers-success.json"
+    },
+    {
+      "name": "Subadditive coefficient size map to ℝ",
+      "verified": true,
+      "status": "PASS",
+      "source": "native-consumers-executed.lean.txt",
+      "receipt": "native-consumers-success.json"
+    },
+    {
+      "name": "AddGroupSeminorm over CommRing",
+      "verified": true,
+      "status": "PASS",
+      "source": "native-consumers-executed.lean.txt",
+      "receipt": "native-consumers-success.json"
+    },
+    {
+      "name": "Preordered additive monoid codomain N",
+      "verified": true,
+      "status": "PASS",
+      "source": "native-consumers-executed.lean.txt",
+      "receipt": "native-consumers-success.json"
+    },
+    {
+      "name": "Fiber-local hB and fiber cardinality",
+      "verified": true,
+      "status": "PASS",
+      "source": "native-consumers-executed.lean.txt",
+      "receipt": "native-consumers-success.json"
+    },
+    {
+      "name": "Exact integer original recovery and full caller",
+      "verified": true,
+      "status": "PASS",
+      "source": "native-consumers-executed.lean.txt",
+      "receipt": "native-consumers-success.json"
+    }
+  ],
+  "modern_rows": [
+    {
+      "question": "Typeclass hierarchy",
+      "analysis": "Use CommSemiring R with an arbitrary subadditive f; AddGroupSeminorm R is an existing bundled specialization under CommRing R, verified."
+    },
+    {
+      "question": "Filters/topology",
+      "analysis": "n/a: every sum is finite; no convergence premise."
+    },
+    {
+      "question": "Universal properties",
+      "analysis": "aeval already bundles substitution. Total-degree fibers describe its action on the monomial basis; no new universal-property construction needed."
+    },
+    {
+      "question": "Bundled structures",
+      "analysis": "Existing AddGroupSeminorm and SubadditiveHomClass/map_add_le_add avoid inventing a coefficient-size class. Bare f permits weaker semiring generality."
+    },
+    {
+      "question": "Module hierarchy",
+      "analysis": "No vector space or scalar field is used. Codomain generalizes to ordered additive monoid N with Preorder/IsOrderedAddMonoid, cardinal expressed by nsmul, verified."
+    },
+    {
+      "question": "Higher categories",
+      "analysis": "n/a: no higher coherence data appears."
+    },
+    {
+      "question": "Concrete indices",
+      "analysis": "σ already arbitrary Type u; empty/infinite variable types work because P has finite support. n:ℕ is intrinsic to univariate polynomials."
+    },
+    {
+      "question": "Concrete-via-abstract",
+      "analysis": "Fires: after diagonal monomial expansion, only finite-sum triangle/cardinality inequalities remain; coefficients need not be integers, nor size multiplicative. Fiber-sum and seminorm experiments compile and recover exact original."
+    },
+    {
+      "question": "False-generalization guard",
+      "analysis": "Keep constant-X substitution and total-degree fiber; power-series diagonal extraction and arbitrary valuation are different operations. A fiber-card bound needs only fiber-local hB and no B≥0. Widening fiber.card to support.card uses B≥0, supplied by original global hB 0; do not silently discard this premise."
+    }
+  ],
+  "strategy_rows": [
+    {
+      "question": "Topology ε–δ versus filters",
+      "analysis": "n/a: finite algebraic estimate."
+    },
+    {
+      "question": "Element versus subobject argument",
+      "analysis": "No ideal/submodule inclusion is involved. Coefficient fiber rewrite followed by subadditivity is appropriate."
+    },
+    {
+      "question": "Sequences versus nets",
+      "analysis": "n/a: no asymptotic or topological statement."
+    },
+    {
+      "question": "Construction versus universal property",
+      "analysis": "Current aeval already is the canonical substitution; a fresh homomorphism construction would duplicate infrastructure."
+    },
+    {
+      "question": "Missing helpers",
+      "analysis": "A named coefficient-fiber identity would expose the reusable bridge. Once it is proved, sum and cardinal bounds use existing Finset APIs. Whether to upstream bridge alone or estimate too is a concrete design question."
+    }
+  ],
+  "infrastructure_rows": [
+    {
+      "risk": "Typeclass diamond",
+      "analysis": "n/a: theorem; introduces no data, instance, reducibility rule or coercion path."
+    },
+    {
+      "risk": "Reducibility leak",
+      "analysis": "n/a: theorem; introduces no data, instance, reducibility rule or coercion path."
+    },
+    {
+      "risk": "Noncanonical unfolding",
+      "analysis": "n/a: theorem; introduces no data, instance, reducibility rule or coercion path."
+    },
+    {
+      "risk": "Instance priority collision",
+      "analysis": "n/a: theorem; introduces no data, instance, reducibility rule or coercion path."
+    },
+    {
+      "risk": "Universe-polymorphism issue",
+      "analysis": "n/a: theorem; introduces no data, instance, reducibility rule or coercion path."
+    },
+    {
+      "risk": "Coercion ambiguity",
+      "analysis": "n/a: theorem; introduces no data, instance, reducibility rule or coercion path."
+    }
+  ],
+  "verdict": "Expanded representation strictly more general and eligible for YES-but-generalise-first; fixed-parent representation alone is not disqualifying. BORDERLINE follows from trivial-simp normalization/composition and concrete upstream API packaging choice, not a missing droppable typeclass or representation cost."
+}

@@ -1,0 +1,17 @@
+from pathlib import Path
+import json,hashlib,shutil,re
+D=Path(__file__).parent;T=Path('/private/tmp/roth-overview');N='Roth.abs_coeff_diag_le'
+def out(n,x):(D/n).write_text(json.dumps(x,indent=2,ensure_ascii=False)+'\n')
+def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+def nodes(x):
+ yield x
+ if isinstance(x,dict):
+  for v in x.values():yield from nodes(v)
+ elif isinstance(x,list):
+  for v in x:yield from nodes(v)
+for src,dst in [('coeff-diag-consumers-accepted-executed.lean.txt','native-consumers-executed.lean.txt'),('coeff-diag-consumers-accepted-receipt.json','native-consumers-success.json'),('coeff-diag-consumers-executed.lean.txt','rejected-consumers-executed.lean.txt'),('coeff-diag-consumers-complete-receipt.json','rejected-consumers-receipt.json')]:shutil.copyfile(T/src,D/dst)
+r=json.loads((D/'native-original-success.json').read_text());ms=[x['message'] for x in nodes(r['result'].get('structuredContent',{})) if isinstance(x,dict) and 'message'in x]
+t=next(x for x in ms if x.startswith('@Roth.abs_coeff_diag_le : ')).split(' : ',1)[1];out('native-type.json',dict(type=t,receipt='native-original-success.json',source='native-original-executed.lean.txt'))
+sets=[('original',['Roth.abs_coeff_diag_le']),('raw',['MvPolynomial.CoeffDiagGeneric.coeff_fiber','MvPolynomial.CoeffDiagGeneric.subadditive_fiber','MvPolynomial.CoeffDiagGeneric.cardinal_fiber']),('consumers',['MvPolynomial.CoeffDiagGeneric.coeff_fiber','MvPolynomial.CoeffDiagGeneric.subadditive_fiber','MvPolynomial.CoeffDiagGeneric.cardinal_fiber','MvPolynomial.CoeffDiagSeminorm.seminorm_fiber','MvPolynomial.CoeffDiagConsumers.specialization','MvPolynomial.CoeffDiagConsumers.abs_coeff_diag_hasseDeriv_modByMonic_le_aux_replay','MvPolynomial.CoeffDiagCodomain.subadditive_fiber','MvPolynomial.CoeffDiagCodomain.cardinal_fiber'])]
+out('verification.json',dict(declaration=N,production_unchanged=True,unresolved=[],standard_axioms=['propext','Classical.choice','Quot.sound'],accepted=[dict(label=tag,source=f'native-{tag}-executed.lean.txt',source_sha256=sha(D/f'native-{tag}-executed.lean.txt'),receipt=f'native-{tag}-success.json',expected_axiom_declarations=ds) for tag,ds in sets],rejected=[dict(accepted=False,source='rejected-consumers-executed.lean.txt',source_sha256=sha(D/'rejected-consumers-executed.lean.txt'),receipt='rejected-consumers-receipt.json',reason='Initial seminorm field f.add_le does not exist; receipt contains recovered sorryAx and is rejected. Corrected using map_add_le_add f in accepted evidence.')],orchestration_incident='Root initially failed a line-length preflight before appending source; unrelated unchanged-file diagnostic is not executed consumer evidence and is excluded. Actual accepted header wrapped <=100.'))
+out('callers.json',dict(named_count=1,explicit_occurrences=1,external_to_file_count=1,internal_use_count=1,callers=[dict(name='Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux',visibility='private',kernel_name='_private.Roth.MainLemma.0.Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux',file='Roth/MainLemma.lean',line=509,refactor='Use newly proved generic-fiber specialization (not existing mathlib replacement); entire caller replay verified. Or retain helper locally / inline original expansion and triangle bound.')],inline_rederivations=[],native_audit=dict(status='PASS',requested=293,unique=293,present=293,values=293,scope='canonical direct proof constants, not transitive or simp closure',source='native-consumers-executed.lean.txt',receipt='native-consumers-success.json')))

@@ -1,0 +1,10 @@
+namespace MvPolynomial.CoeffDiagSeminorm
+variable {σ R : Type*} [CommRing R]
+theorem seminorm_fiber (P : MvPolynomial σ R) (n : ℕ) (f : AddGroupSeminorm R) :
+    f ((aeval (fun _ ↦ (Polynomial.X : Polynomial R)) P).coeff n) ≤
+      ∑ k ∈ P.support.filter (fun k ↦ k.degree = n), f (P.coeff k) := by
+  classical
+  exact MvPolynomial.CoeffDiagGeneric.subadditive_fiber P n f (by simp) f.add_le
+#check @AddGroupSeminorm.add_le
+#print axioms seminorm_fiber
+end MvPolynomial.CoeffDiagSeminorm

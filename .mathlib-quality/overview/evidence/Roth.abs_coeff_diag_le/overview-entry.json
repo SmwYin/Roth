@@ -1,0 +1,19 @@
+{
+  "declaration": "Roth.abs_coeff_diag_le",
+  "kind": "theorem",
+  "type": "∀ {σ : Type u_1} (P : MvPolynomial σ ℤ) {B : ℝ},\n  (∀ (d : σ →₀ ℕ), |↑(P.coeff d)| ≤ B) → ∀ (n : ℕ), |↑((Roth.diag P).coeff n)| ≤ ↑P.support.card * B",
+  "what": "Each coefficient after identifying all variables is bounded by input support cardinality times a uniform input coefficient bound.",
+  "how": "Expand diagonal polynomial into monomials; coefficient linearity and integer cast give finite sum; triangle inequality and sum≤card·B finish, treating off-degree terms as zero.",
+  "hypotheses": "Arbitrary σ, integer polynomial P, real B with every input coefficient bounded in cast absolute value, arbitrary output index n; hB implies B≥0.",
+  "project_dependencies": [
+    "Roth.diag",
+    "Roth.diag_eq_sum"
+  ],
+  "caller_summary": "One explicit external-to-file private caller Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux at MainLemma.lean:509; exact canonical293 direct proof audit agrees and full caller replay passes.",
+  "mathlib_api_audit": "Finset.abs_sum_le_sum_abs, Finset.le_sum_of_subadditive, Finset.sum_le_card_nsmul plus polynomial coefficient/evaluation normalization are existing blocks, not an established direct diagonal estimate. New assessment helpers are not mathlib replacements.",
+  "moral_duplications": "A finite-fiber pushforward triangle bound; abstract Finset inequalities exist but the polynomial substitution-to-fiber bridge is real normalization, not definitional equality.",
+  "generalization": "Verified CommSemiring coefficients, arbitrary subadditive size map and ordered additive monoid codomain; CommRing AddGroupSeminorm specialization. Stronger support-fiber sum/cardinality and fiber-local hypothesis recover original.",
+  "missing_api": "Optional coefficient formula for constant-X substitution, followed by a design choice about exposing a generic estimate. No missing finite-sum inequality infrastructure.",
+  "junk": "Used by sole remainder coefficient estimate in Roth main lemma; not dead. No rewrite attribute or instance side effects.",
+  "action": "BORDERLINE: decide upstream coefficient-fiber API and estimate scope. Keep local theorem until that choice; exact replay demonstrates migration if generic API is selected."
+}

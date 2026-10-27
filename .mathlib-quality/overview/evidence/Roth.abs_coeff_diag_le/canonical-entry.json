@@ -1,0 +1,45 @@
+{
+  "file": "Roth/CoeffNorm.lean",
+  "line": 174,
+  "name": "Roth.abs_coeff_diag_le",
+  "short": "abs_coeff_diag_le",
+  "kind": "theorem",
+  "visibility": "public",
+  "end_line": 179,
+  "source": "theorem abs_coeff_diag_le (P : MvPolynomial σ ℤ) {B : ℝ} (hB : ∀ d, |((P.coeff d : ℤ) : ℝ)| ≤ B)\n    (n : ℕ) : |(((diag P).coeff n : ℤ) : ℝ)| ≤ P.support.card * B := by\n  rw [diag_eq_sum, Polynomial.finsetSum_coeff, Int.cast_sum, ← nsmul_eq_mul]\n  refine (Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_card_nsmul _ _ B fun k _ ↦ ?_)\n  rw [Polynomial.coeff_monomial]\n  split_ifs <;> grind [abs_nonneg]",
+  "signature": "theorem abs_coeff_diag_le (P : MvPolynomial σ ℤ) {B : ℝ} (hB : ∀ d, |((P.coeff d : ℤ) : ℝ)| ≤ B)\n    (n : ℕ) : |(((diag P).coeff n : ℤ) : ℝ)| ≤ P.support.card * B",
+  "body": "by\n  rw [diag_eq_sum, Polynomial.finsetSum_coeff, Int.cast_sum, ← nsmul_eq_mul]\n  refine (Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_card_nsmul _ _ B fun k _ ↦ ?_)\n  rw [Polynomial.coeff_monomial]\n  split_ifs <;> grind [abs_nonneg]",
+  "proof_lines": 5,
+  "sha256": "b0d93520fd0fe3c9960fc82681715dc7b28ec95b7ef21d9789d6520f383b49d2",
+  "source_body_project_refs": [
+    "Roth.diag_eq_sum"
+  ],
+  "source_type_project_refs": [
+    "Roth.diag"
+  ],
+  "what": "A diagonal coefficient is bounded by the original support cardinality times a uniform coefficient bound.",
+  "how": "Uses diag_eq_sum and Polynomial.finsetSum_coeff, bounds the absolute sum termwise, and applies Finset.sum_le_card_nsmul.",
+  "hypotheses": "An integer polynomial and a uniform real upper bound for all original coefficient magnitudes.",
+  "source_used_by_project": [
+    "Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux"
+  ],
+  "source_used_by_file": [],
+  "section_binders": "{σ : Type*}",
+  "type_provenance": "Exact written signature plus manually identified captured section binders. Root cached full build succeeds; global opaque/type inspector timed out, so no kernel dump is claimed.",
+  "notes": "No sorry, TODO, or set_option in this declaration.",
+  "assignment_offset": 163,
+  "project_body_refs": [
+    "Roth.diag_eq_sum"
+  ],
+  "project_type_refs": [
+    "Roth.diag"
+  ],
+  "project_callers": [
+    {
+      "name": "Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux",
+      "file": "Roth/MainLemma.lean",
+      "line": 497
+    }
+  ],
+  "section_context": "{σ : Type*}"
+}
