@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-27
 
-- Declarations completed: **227/293**
-- Next declaration: **#228 `Roth.Θ_lt`** (Roth/Theta.lean:962)
+- Declarations completed: **228/293**
+- Next declaration: **#229 `Roth.lam`** (Roth/MainLemma.lean:60)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -246,10 +246,10 @@ Last regenerated: 2026-10-27
 | 225 | `Roth.theta_phi_lt_aux` | Roth/Theta.lean:840 | SKIP | [report](mathlibable/Roth.theta_phi_lt_aux.md) |
 | 226 | `Roth.theta_lt_succ_aux` | Roth/Theta.lean:891 | SKIP | [report](mathlibable/Roth.theta_lt_succ_aux.md) |
 | 227 | `Roth.theta_lt_of_large_delta_aux` | Roth/Theta.lean:932 | SKIP | [report](mathlibable/Roth.theta_lt_of_large_delta_aux.md) |
+| 228 | `Roth.Θ_lt` | Roth/Theta.lean:962 | BORDERLINE-needs-human | [report](mathlibable/Roth.Θ_lt.md) |
 
 ## Remaining declarations (in processing order)
 
-- #228 `Roth.Θ_lt` (Roth/Theta.lean:962, public theorem)
 - #229 `Roth.lam` (Roth/MainLemma.lean:60, public def)
 - #230 `Roth.gam` (Roth/MainLemma.lean:63, public def)
 - #231 `Roth.eta` (Roth/MainLemma.lean:66, public def)
