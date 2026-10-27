@@ -1,0 +1,27 @@
+import Mathlib.Algebra.MvPolynomial.PDeriv
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Data.Nat.Choose.Bounds
+namespace MvPolynomial.EvalTaylorProbe
+#check_failure MvPolynomial.eval_taylor
+#check @MvPolynomial.eval_assoc
+#check @MvPolynomial.comp_aeval_apply
+#check @MvPolynomial.eval_eval₂
+variable {σ R : Type*} [CommSemiring R]
+noncomputable def shift (α : σ → R) : MvPolynomial σ R →ₐ[R] MvPolynomial σ R :=
+  MvPolynomial.aeval fun j ↦ MvPolynomial.X j + MvPolynomial.C (α j)
+theorem original (α x : σ → R) (P : MvPolynomial σ R) :
+    MvPolynomial.eval x (shift α P) = MvPolynomial.eval (fun j ↦ x j + α j) P := by
+  simp [shift, MvPolynomial.aeval_def, ← MvPolynomial.eval_assoc, Function.comp_def]
+theorem abstractLaw {τ : Type*} (f : σ → MvPolynomial τ R) (x : τ → R)
+    (P : MvPolynomial σ R) :
+    MvPolynomial.eval x (MvPolynomial.eval₂ MvPolynomial.C f P) =
+      MvPolynomial.eval (MvPolynomial.eval x ∘ f) P :=
+  (MvPolynomial.eval_assoc f x P).symm
+theorem bundled (α x : σ → R) (P : MvPolynomial σ R) :
+    MvPolynomial.eval x (shift α P) = MvPolynomial.eval (fun j ↦ x j + α j) P := by
+  simpa [shift] using MvPolynomial.comp_aeval_apply (MvPolynomial.aeval x)
+    (f := fun j ↦ MvPolynomial.X j + MvPolynomial.C (α j)) P
+#print axioms original
+#print axioms abstractLaw
+#print axioms bundled
+end MvPolynomial.EvalTaylorProbe

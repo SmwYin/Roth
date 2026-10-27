@@ -1,0 +1,61 @@
+{
+  "request": {
+    "query": "multivariate polynomial substitution evaluation composition law P(Q)(x) = P(Q(x))",
+    "num_results": 5
+  },
+  "response": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"MvPolynomial.aeval_bind\u2081\",\n      \"informal_name\": \"Compatibility of Evaluation and Variable Substitution in Multivariate Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {\u03c3 : Type u_1} {\u03c4 : Type u_2} {R : Type u_3} {S : Type u_4} [inst : CommSemiring R] [inst_1 : CommSemiring S]\\n  [inst_2 : Algebra R S] (f : \u03c4 \u2192 S) (g : \u03c3 \u2192 MvPolynomial \u03c4 R) (\u03c6 : MvPolynomial \u03c3 R),\\n  (MvPolynomial.aeval f) ((MvPolynomial.bind\u2081 g) \u03c6) = (MvPolynomial.aeval fun i => (MvPolynomial.aeval f) (g i)) \u03c6\",\n      \"informal_description\": \"For any commutative semiring $ R $, types $ \\\\sigma $ and $ \\\\tau $, and an $ R $-algebra $ S $, given a variable assignment $ f : \\\\tau \\\\to S $ and a substitution map $ g : \\\\sigma \\\\to R[\\\\tau] $, the evaluation of a polynomial $ \\\\varphi \\\\in R[\\\\sigma] $ after substituting variables via $ g $ and then applying algebra evaluation $ \\\\text{aeval}_f $ is equal to evaluating $ \\\\varphi $ with each variable $ i \\\\in \\\\sigma $ replaced by $ \\\\text{aeval}_f(g(i)) $. Formally, $ \\\\text{aeval}_f(\\\\text{bind}_1(g, \\\\varphi)) = \\\\text{aeval}_{(i \\\\mapsto \\\\text{aeval}_f(g(i)))}(\\\\varphi) $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Monad\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.aeval_comp_bind\u2081\",\n      \"informal_name\": \"Composition of Evaluation and Variable Substitution in Multivariate Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {\u03c3 : Type u_1} {\u03c4 : Type u_2} {R : Type u_3} {S : Type u_4} [inst : CommSemiring R] [inst_1 : CommSemiring S]\\n  [inst_2 : Algebra R S] (f : \u03c4 \u2192 S) (g : \u03c3 \u2192 MvPolynomial \u03c4 R),\\n  (MvPolynomial.aeval f).comp (MvPolynomial.bind\u2081 g) = MvPolynomial.aeval fun i => (MvPolynomial.aeval f) (g i)\",\n      \"informal_description\": \"For any commutative semiring $ R $, type $ \\\\sigma $, and $ R $-algebra $ S $, given a variable assignment $ f : \\\\tau \\\\to S $ and a substitution map $ g : \\\\sigma \\\\to R[\\\\tau] $, the composition of the algebra evaluation homomorphism $ \\\\text{aeval}(f) $ with the variable substitution homomorphism $ \\\\text{bind}_1(g) $ equals the algebra evaluation homomorphism obtained by first substituting variables via $ g $ and then evaluating using $ f $. Formally, $ (\\\\text{aeval}\\\\, f) \\\\circ (\\\\text{bind}_1\\\\, g) = \\\\text{aeval}(i \\\\mapsto \\\\text{aeval}\\\\, f(g(i))) $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Monad\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.eval_eval\u2082\",\n      \"informal_name\": \"Composition Identity for Multivariate Polynomial Evaluations\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u} {\u03c3 : Type u_1} [inst : CommSemiring R] {S : Type u_2} {\u03c4 : Type u_3} {x : \u03c4 \u2192 S}\\n  [inst_1 : CommSemiring S] (f : R \u2192+* MvPolynomial \u03c4 S) (g : \u03c3 \u2192 MvPolynomial \u03c4 S) (p : MvPolynomial \u03c3 R),\\n  (MvPolynomial.eval x) (MvPolynomial.eval\u2082 f g p) =\\n    MvPolynomial.eval\u2082 ((MvPolynomial.eval x).comp f) (fun s => (MvPolynomial.eval x) (g s)) p\",\n      \"informal_description\": \"For any commutative semiring $ S $, type $ \\\\tau $, and evaluation map $ x : \\\\tau \\\\to S $, evaluating a multivariate polynomial $ p \\\\in R[\\\\sigma] $ first with coefficient map $ f : R \\\\to S[\\\\tau] $ and variable map $ g : \\\\sigma \\\\to S[\\\\tau] $, then evaluating the result at $ x $, is equivalent to directly evaluating $ p $ using the composed coefficient map $ \\\\text{eval}_x \\\\circ f $ and variable map $ s \\\\mapsto \\\\text{eval}_x(g(s)) $. This equality holds for all $ p $ and establishes compatibility of evaluation homomorphisms with composition.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"formal_name\": \"Polynomial.eval_comp\",\n      \"informal_name\": \"Evaluation of Composed Polynomials: $(p \\\\circ q)(x) = p(q(x))$\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u} [inst : CommSemiring R] {p q : Polynomial R} {x : R},\\n  Polynomial.eval x (p.comp q) = Polynomial.eval (Polynomial.eval x q) p\",\n      \"informal_description\": \"For polynomials $ p $ and $ q $ over a commutative semiring $ R $, and for any element $ x \\\\in R $, the evaluation of the composition $ p \\\\circ q $ at $ x $ equals the evaluation of $ p $ at $ q(x) $, i.e., $ (p \\\\circ q)(x) = p(q(x)) $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Eval.Defs\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.eval\u2082_comp\",\n      \"informal_name\": \"Evaluation of Multivariate Polynomials Composes with Ring Homomorphisms\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u} {S\u2081 : Type v} {\u03c3 : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S\u2081] (f : R \u2192+* S\u2081)\\n  (g : \u03c3 \u2192 R) (p : MvPolynomial \u03c3 R), f ((MvPolynomial.eval g) p) = MvPolynomial.eval\u2082 f (\u21d1f \u2218 g) p\",\n      \"informal_description\": \"For any ring homomorphism $ f : R \\\\to S_1 $, any map $ g : \\\\sigma \\\\to R $, and any polynomial $ p \\\\in R[\\\\sigma] $, it holds that $ f(\\\\mathrm{eval}_g(p)) = \\\\mathrm{eval}_{f, f \\\\circ g}(p) $, where $ \\\\mathrm{eval}_g $ denotes evaluation using variable map $ g $ and identity coefficient map, and $ \\\\mathrm{eval}_{f, f \\\\circ g} $ denotes evaluation using coefficient map $ f $ and variable map $ f \\\\circ g $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "items": [
+        {
+          "formal_name": "MvPolynomial.aeval_bind\u2081",
+          "informal_name": "Compatibility of Evaluation and Variable Substitution in Multivariate Polynomials",
+          "kind": "theorem",
+          "type": "\u2200 {\u03c3 : Type u_1} {\u03c4 : Type u_2} {R : Type u_3} {S : Type u_4} [inst : CommSemiring R] [inst_1 : CommSemiring S]\n  [inst_2 : Algebra R S] (f : \u03c4 \u2192 S) (g : \u03c3 \u2192 MvPolynomial \u03c4 R) (\u03c6 : MvPolynomial \u03c3 R),\n  (MvPolynomial.aeval f) ((MvPolynomial.bind\u2081 g) \u03c6) = (MvPolynomial.aeval fun i => (MvPolynomial.aeval f) (g i)) \u03c6",
+          "informal_description": "For any commutative semiring $ R $, types $ \\sigma $ and $ \\tau $, and an $ R $-algebra $ S $, given a variable assignment $ f : \\tau \\to S $ and a substitution map $ g : \\sigma \\to R[\\tau] $, the evaluation of a polynomial $ \\varphi \\in R[\\sigma] $ after substituting variables via $ g $ and then applying algebra evaluation $ \\text{aeval}_f $ is equal to evaluating $ \\varphi $ with each variable $ i \\in \\sigma $ replaced by $ \\text{aeval}_f(g(i)) $. Formally, $ \\text{aeval}_f(\\text{bind}_1(g, \\varphi)) = \\text{aeval}_{(i \\mapsto \\text{aeval}_f(g(i)))}(\\varphi) $.",
+          "path": "Mathlib.Algebra.MvPolynomial.Monad"
+        },
+        {
+          "formal_name": "MvPolynomial.aeval_comp_bind\u2081",
+          "informal_name": "Composition of Evaluation and Variable Substitution in Multivariate Polynomials",
+          "kind": "theorem",
+          "type": "\u2200 {\u03c3 : Type u_1} {\u03c4 : Type u_2} {R : Type u_3} {S : Type u_4} [inst : CommSemiring R] [inst_1 : CommSemiring S]\n  [inst_2 : Algebra R S] (f : \u03c4 \u2192 S) (g : \u03c3 \u2192 MvPolynomial \u03c4 R),\n  (MvPolynomial.aeval f).comp (MvPolynomial.bind\u2081 g) = MvPolynomial.aeval fun i => (MvPolynomial.aeval f) (g i)",
+          "informal_description": "For any commutative semiring $ R $, type $ \\sigma $, and $ R $-algebra $ S $, given a variable assignment $ f : \\tau \\to S $ and a substitution map $ g : \\sigma \\to R[\\tau] $, the composition of the algebra evaluation homomorphism $ \\text{aeval}(f) $ with the variable substitution homomorphism $ \\text{bind}_1(g) $ equals the algebra evaluation homomorphism obtained by first substituting variables via $ g $ and then evaluating using $ f $. Formally, $ (\\text{aeval}\\, f) \\circ (\\text{bind}_1\\, g) = \\text{aeval}(i \\mapsto \\text{aeval}\\, f(g(i))) $.",
+          "path": "Mathlib.Algebra.MvPolynomial.Monad"
+        },
+        {
+          "formal_name": "MvPolynomial.eval_eval\u2082",
+          "informal_name": "Composition Identity for Multivariate Polynomial Evaluations",
+          "kind": "theorem",
+          "type": "\u2200 {R : Type u} {\u03c3 : Type u_1} [inst : CommSemiring R] {S : Type u_2} {\u03c4 : Type u_3} {x : \u03c4 \u2192 S}\n  [inst_1 : CommSemiring S] (f : R \u2192+* MvPolynomial \u03c4 S) (g : \u03c3 \u2192 MvPolynomial \u03c4 S) (p : MvPolynomial \u03c3 R),\n  (MvPolynomial.eval x) (MvPolynomial.eval\u2082 f g p) =\n    MvPolynomial.eval\u2082 ((MvPolynomial.eval x).comp f) (fun s => (MvPolynomial.eval x) (g s)) p",
+          "informal_description": "For any commutative semiring $ S $, type $ \\tau $, and evaluation map $ x : \\tau \\to S $, evaluating a multivariate polynomial $ p \\in R[\\sigma] $ first with coefficient map $ f : R \\to S[\\tau] $ and variable map $ g : \\sigma \\to S[\\tau] $, then evaluating the result at $ x $, is equivalent to directly evaluating $ p $ using the composed coefficient map $ \\text{eval}_x \\circ f $ and variable map $ s \\mapsto \\text{eval}_x(g(s)) $. This equality holds for all $ p $ and establishes compatibility of evaluation homomorphisms with composition.",
+          "path": "Mathlib.Algebra.MvPolynomial.Eval"
+        },
+        {
+          "formal_name": "Polynomial.eval_comp",
+          "informal_name": "Evaluation of Composed Polynomials: $(p \\circ q)(x) = p(q(x))$",
+          "kind": "theorem",
+          "type": "\u2200 {R : Type u} [inst : CommSemiring R] {p q : Polynomial R} {x : R},\n  Polynomial.eval x (p.comp q) = Polynomial.eval (Polynomial.eval x q) p",
+          "informal_description": "For polynomials $ p $ and $ q $ over a commutative semiring $ R $, and for any element $ x \\in R $, the evaluation of the composition $ p \\circ q $ at $ x $ equals the evaluation of $ p $ at $ q(x) $, i.e., $ (p \\circ q)(x) = p(q(x)) $.",
+          "path": "Mathlib.Algebra.Polynomial.Eval.Defs"
+        },
+        {
+          "formal_name": "MvPolynomial.eval\u2082_comp",
+          "informal_name": "Evaluation of Multivariate Polynomials Composes with Ring Homomorphisms",
+          "kind": "theorem",
+          "type": "\u2200 {R : Type u} {S\u2081 : Type v} {\u03c3 : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S\u2081] (f : R \u2192+* S\u2081)\n  (g : \u03c3 \u2192 R) (p : MvPolynomial \u03c3 R), f ((MvPolynomial.eval g) p) = MvPolynomial.eval\u2082 f (\u21d1f \u2218 g) p",
+          "informal_description": "For any ring homomorphism $ f : R \\to S_1 $, any map $ g : \\sigma \\to R $, and any polynomial $ p \\in R[\\sigma] $, it holds that $ f(\\mathrm{eval}_g(p)) = \\mathrm{eval}_{f, f \\circ g}(p) $, where $ \\mathrm{eval}_g $ denotes evaluation using variable map $ g $ and identity coefficient map, and $ \\mathrm{eval}_{f, f \\circ g} $ denotes evaluation using coefficient map $ f $ and variable map $ f \\circ g $.",
+          "path": "Mathlib.Algebra.MvPolynomial.Eval"
+        }
+      ]
+    },
+    "isError": false
+  },
+  "method": "lean_leanfinder",
+  "form": "literature"
+}

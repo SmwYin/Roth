@@ -1,0 +1,40 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+import Mathlib.Algebra.Polynomial.CancelLeads
+import Mathlib.Algebra.MvPolynomial.PDeriv
+namespace MvPolynomial.EvalTaylorProbe
+#check_failure MvPolynomial.eval_taylor
+#check @MvPolynomial.eval_assoc
+#check @MvPolynomial.comp_aeval_apply
+#check @MvPolynomial.eval_eval₂
+variable {σ R : Type*} [CommSemiring R]
+noncomputable def shift (α : σ → R) : MvPolynomial σ R →ₐ[R] MvPolynomial σ R :=
+  MvPolynomial.aeval fun j ↦ MvPolynomial.X j + MvPolynomial.C (α j)
+theorem original (α x : σ → R) (P : MvPolynomial σ R) :
+    MvPolynomial.eval x (shift α P) = MvPolynomial.eval (fun j ↦ x j + α j) P := by
+  simp [shift, MvPolynomial.aeval_def, ← MvPolynomial.eval_assoc, Function.comp_def]
+theorem abstractLaw {τ : Type*} (f : σ → MvPolynomial τ R) (x : τ → R)
+    (P : MvPolynomial σ R) :
+    MvPolynomial.eval x (MvPolynomial.eval₂ MvPolynomial.C f P) =
+      MvPolynomial.eval (MvPolynomial.eval x ∘ f) P :=
+  (MvPolynomial.eval_assoc f x P).symm
+theorem bundled (α x : σ → R) (P : MvPolynomial σ R) :
+    MvPolynomial.eval x (shift α P) = MvPolynomial.eval (fun j ↦ x j + α j) P := by
+  have h := MvPolynomial.comp_aeval_apply (R := R)
+    (f := fun j ↦ MvPolynomial.X j + MvPolynomial.C (α j))
+    (MvPolynomial.aeval x : MvPolynomial σ R →ₐ[R] R) P
+  change eval x (aeval (fun j ↦ X j + C (α j)) P) =
+    eval (fun j ↦ eval x (X j + C (α j))) P at h
+  simpa only [shift, map_add, eval_X, eval_C] using h
+
+#print axioms original
+#print axioms abstractLaw
+#print axioms bundled
+end MvPolynomial.EvalTaylorProbe

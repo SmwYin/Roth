@@ -1,0 +1,27 @@
+import Mathlib.Algebra.MvPolynomial.PDeriv
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Data.Nat.Choose.Bounds
+namespace MvPolynomial.EvalTaylorExtra
+universe u v w
+#check_failure MvPolynomial.eval_taylor
+section Weakening
+variable (σ R : Type*) [Semiring R]
+#check_failure (MvPolynomial.eval : (σ → R) → MvPolynomial σ R →+* R)
+end Weakening
+section General
+variable {σ : Type u} {R : Type v} {A : Type w} [CommSemiring R] [CommSemiring A]
+  [Algebra R A]
+theorem baseChange (α : σ → R) (x : σ → A) (P : MvPolynomial σ R) :
+    MvPolynomial.aeval x (MvPolynomial.aeval
+      (fun j ↦ MvPolynomial.X j + MvPolynomial.C (α j)) P) =
+      MvPolynomial.aeval (fun j ↦ x j + algebraMap R A (α j)) P := by
+  simpa using MvPolynomial.comp_aeval_apply (MvPolynomial.aeval x)
+    (f := fun j ↦ MvPolynomial.X j + MvPolynomial.C (α j)) P
+ theorem homForm (f : σ → MvPolynomial σ R) (x : σ → R) :
+    (MvPolynomial.aeval x).comp (MvPolynomial.aeval f) =
+      MvPolynomial.aeval (fun j ↦ MvPolynomial.aeval x (f j)) :=
+  MvPolynomial.comp_aeval (MvPolynomial.aeval x)
+#print axioms baseChange
+#print axioms homForm
+end General
+end MvPolynomial.EvalTaylorExtra

@@ -1,0 +1,38 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+import Mathlib.Algebra.Polynomial.CancelLeads
+import Mathlib.Algebra.MvPolynomial.PDeriv
+namespace MvPolynomial.EvalTaylorExtra
+#check @MvPolynomial.comp_aeval
+universe u v w
+#check_failure MvPolynomial.eval_taylor
+section Weakening
+variable (σ R : Type*) [Semiring R]
+#check_failure (MvPolynomial.eval : (σ → R) → MvPolynomial σ R →+* R)
+end Weakening
+section General
+variable {σ : Type u} {R : Type v} {A : Type w} [CommSemiring R] [CommSemiring A]
+  [Algebra R A]
+theorem baseChange (α : σ → R) (x : σ → A) (P : MvPolynomial σ R) :
+    MvPolynomial.aeval x (MvPolynomial.aeval
+      (fun j ↦ MvPolynomial.X j + MvPolynomial.C (α j)) P) =
+      MvPolynomial.aeval (fun j ↦ x j + algebraMap R A (α j)) P := by
+  have h := MvPolynomial.comp_aeval_apply (R := R)
+    (f := fun j ↦ MvPolynomial.X j + MvPolynomial.C (α j))
+    (MvPolynomial.aeval x : MvPolynomial σ R →ₐ[R] A) P
+  simpa only [map_add, aeval_X, aeval_C] using h
+theorem homForm (f : σ → MvPolynomial σ R) (x : σ → R) :
+    (MvPolynomial.aeval x).comp (MvPolynomial.aeval f) =
+      MvPolynomial.aeval (fun j ↦ MvPolynomial.aeval x (f j)) :=
+  MvPolynomial.comp_aeval (f := f) (MvPolynomial.aeval x : MvPolynomial σ R →ₐ[R] R)
+#print axioms baseChange
+#print axioms homForm
+end General
+end MvPolynomial.EvalTaylorExtra
