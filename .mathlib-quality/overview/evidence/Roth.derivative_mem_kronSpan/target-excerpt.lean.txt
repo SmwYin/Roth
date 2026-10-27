@@ -1,0 +1,27 @@
+private lemma derivative_mem_kronSpan (k μ : ℕ) {F : MvPolynomial σ K → Polynomial K}
+    (hF : F ∈ kronSpan k μ) :
+    (fun P ↦ Polynomial.derivative (F P)) ∈ kronSpan (K := K) (σ := σ) k (μ + 1) := by
+  classical
+  induction hF using Submodule.span_induction with
+  | mem F hF =>
+    obtain ⟨d, hd, rfl⟩ := hF
+    rw [derivative_kronHasse_aux]
+    refine Submodule.sum_mem _ fun j _ ↦ Submodule.smul_mem _ _ (Submodule.subset_span ?_)
+    refine ⟨d + Finsupp.single j 1, ?_, rfl⟩
+    simp only [Set.mem_ofPred_eq, map_add, Finsupp.degree_single] at hd ⊢
+    exact Nat.add_le_add_right hd 1
+  | zero =>
+    convert (kronSpan (K := K) (σ := σ) k (μ + 1)).zero_mem using 1
+    funext P
+    simp
+  | add F G _ _ hF hG =>
+    convert Submodule.add_mem _ hF hG using 1
+    funext P
+    simp [Polynomial.derivative_add]
+  | smul a F hF' hF =>
+    convert Submodule.add_mem (kronSpan (K := K) (σ := σ) k (μ + 1))
+      (Submodule.smul_mem _ (Polynomial.derivative a)
+        (Submodule.span_mono (Set.image_mono fun _ hd ↦ le_trans hd (Nat.le_succ μ)) hF'))
+      (Submodule.smul_mem _ a hF) using 1
+    funext P
+    simp [Polynomial.derivative_mul, add_comm]

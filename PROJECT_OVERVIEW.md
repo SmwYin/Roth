@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 113/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 114/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 113; remaining: 180.
-- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 16 YES-but-generalise-first, 21 NO-mathlib-has-it, 36 BORDERLINE-needs-human, 13 SKIP.
+- Completed applicable assessments: 114; remaining: 179.
+- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 16 YES-but-generalise-first, 21 NO-mathlib-has-it, 36 BORDERLINE-needs-human, 14 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -1225,6 +1225,18 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: 1 explicit source caller declarations, all in GenWronskian.lean; 1 direct original value consumers. Exact separate lists retained. Entire module proof bodies replay successfully with fresh target name.
 - Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.derivative_kronHasse_aux.md).
 
+### Completed: `Roth.derivative_mem_kronSpan`
+
+- Type: `∀ {K : Type u_1} [inst : Field K] {σ : Type u_2}
+  [inst_1 : Fintype σ] (k μ : ℕ) {F : MvPolynomial σ K → Polynomial K},
+  F ∈ Roth.kronSpan✝ k μ → (fun P ↦ Polynomial.derivative (F P)) ∈ Roth.kronSpan✝ k (μ + 1)`
+- What: Ordinary differentiation sends every operator in the order-mu substituted Hasse span into the order-(mu+1) span.
+- How: Uses Submodule.span_induction: derivative_kronHasse_aux handles generators; sums are preserved; Polynomial.derivative_mul handles scalar multiplication, and span_mono embeds old-order operators.
+- Hypotheses: A field and finite variable enumeration; the operator lies in kronSpan k μ. Actual kernel type retains Field and Fintype sigma; no characteristic-zero, positive-base or positive-order premise.
+- Project dependencies: Roth.derivative_kronHasse_aux, Roth.kronSpan
+- Caller summary: 1 explicit source caller declarations, all in GenWronskian.lean; 1 direct original value consumers. Exact separate lists retained. Entire module proof bodies replay successfully with fresh target name.
+- Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.derivative_mem_kronSpan.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -1477,6 +1489,8 @@ Completed `Roth.derivative_aeval`: Univariate Derivation.map_aeval and comp_aeva
 
 Completed `Roth.derivative_kronHasse_aux`: This function-valued derivative identity follows pointwise from the project chain rule and the partial/Hasse commutation identity. It supplies the next-order generators in the bounded-span induction. Existing function extensionality and pointwise sums/scalars express the interface; there is no new definition, instance or coercion. It is a live internal recurrence, not a duplicate of the scalar chain rule. The public contribution verdicts of its ingredients remain separate.
 
+Completed `Roth.derivative_mem_kronSpan`: Submodule.span_induction is the existing organizing API. The generator case uses the preceding private derivative recurrence and the bound on total Hasse order; the scalar case uses the polynomial Leibniz rule and inclusion of the old bounded span in the next one. This lifts a generator identity to closure of the whole polynomial-coefficient span. It is distinct from both the generator recurrence and the subsequent Hasse-iteration result. No new definition, class or instance is needed.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -1704,6 +1718,8 @@ Completed `Roth.linearIndependent_kronecker`: Final linear relation transport du
 Completed `Roth.derivative_aeval`: Standard multivariable analogue of the existing univariate chain rule; no verified existing ≤3-call replacement.
 
 Completed `Roth.derivative_kronHasse_aux`: Private operator composition and bounded module span are different stages of the same derivative expansion, not duplicate full constructions.
+
+Completed `Roth.derivative_mem_kronSpan`: Private operator composition and bounded module span are different stages of the same derivative expansion, not duplicate full constructions.
 
 ## Part 5: Generalization opportunities
 
@@ -1936,6 +1952,8 @@ Completed `Roth.derivative_aeval`: Verified Field→CommSemiring; arbitrary alge
 
 Completed `Roth.derivative_kronHasse_aux`: No public generality claim under the private prefilter; preserve the existing definition and interface.
 
+Completed `Roth.derivative_mem_kronSpan`: No public generality claim under the private prefilter; preserve the existing definition and interface.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -2164,6 +2182,8 @@ Completed `Roth.linearIndependent_kronecker`: aeval(X^w) coefficient mapDomain b
 Completed `Roth.derivative_aeval`: Module-valued MvPolynomial evaluation chain rule expressed with pderiv, complementing Derivation.map_aeval.
 
 Completed `Roth.derivative_kronHasse_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
+
+Completed `Roth.derivative_mem_kronSpan`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 ## Part 7: Junk / removable
 
@@ -2396,6 +2416,8 @@ Completed `Roth.derivative_aeval`: Live single-consumer helper feeding higher-or
 
 Completed `Roth.derivative_kronHasse_aux`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
 
+Completed `Roth.derivative_mem_kronSpan`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -2513,6 +2535,7 @@ Completed `Roth.derivative_kronHasse_aux`: Retain a live private proof interface
 | 111 | `Roth.linearIndependent_kronecker` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.linearIndependent_kronecker.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.linearIndependent_kronecker/root-acceptance.json) |
 | 112 | `Roth.derivative_aeval` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.derivative_aeval.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.derivative_aeval/root-acceptance.json) |
 | 113 | `Roth.derivative_kronHasse_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.derivative_kronHasse_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.derivative_kronHasse_aux/root-acceptance.json) |
+| 114 | `Roth.derivative_mem_kronSpan` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.derivative_mem_kronSpan.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.derivative_mem_kronSpan/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -2738,12 +2761,14 @@ Completed `Roth.derivative_aeval` action: YES-but-generalise-first: generalize s
 
 Completed `Roth.derivative_kronHasse_aux` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
 
+Completed `Roth.derivative_mem_kronSpan` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.derivative_mem_kronSpan` next. Supporting identities receive their own applicable checks.
+   `Roth.hasseDeriv_kronecker_mem` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

@@ -1,0 +1,49 @@
+{
+  "file": "Roth/GenWronskian.lean",
+  "line": 162,
+  "name": "Roth.derivative_mem_kronSpan",
+  "short": "derivative_mem_kronSpan",
+  "kind": "lemma",
+  "visibility": "private",
+  "end_line": 188,
+  "source": "private lemma derivative_mem_kronSpan (k μ : ℕ) {F : MvPolynomial σ K → Polynomial K}\n    (hF : F ∈ kronSpan k μ) :\n    (fun P ↦ Polynomial.derivative (F P)) ∈ kronSpan (K := K) (σ := σ) k (μ + 1) := by\n  classical\n  induction hF using Submodule.span_induction with\n  | mem F hF =>\n    obtain ⟨d, hd, rfl⟩ := hF\n    rw [derivative_kronHasse_aux]\n    refine Submodule.sum_mem _ fun j _ ↦ Submodule.smul_mem _ _ (Submodule.subset_span ?_)\n    refine ⟨d + Finsupp.single j 1, ?_, rfl⟩\n    simp only [Set.mem_ofPred_eq, map_add, Finsupp.degree_single] at hd ⊢\n    exact Nat.add_le_add_right hd 1\n  | zero =>\n    convert (kronSpan (K := K) (σ := σ) k (μ + 1)).zero_mem using 1\n    funext P\n    simp\n  | add F G _ _ hF hG =>\n    convert Submodule.add_mem _ hF hG using 1\n    funext P\n    simp [Polynomial.derivative_add]\n  | smul a F hF' hF =>\n    convert Submodule.add_mem (kronSpan (K := K) (σ := σ) k (μ + 1))\n      (Submodule.smul_mem _ (Polynomial.derivative a)\n        (Submodule.span_mono (Set.image_mono fun _ hd ↦ le_trans hd (Nat.le_succ μ)) hF'))\n      (Submodule.smul_mem _ a hF) using 1\n    funext P\n    simp [Polynomial.derivative_mul, add_comm]",
+  "signature": "private lemma derivative_mem_kronSpan (k μ : ℕ) {F : MvPolynomial σ K → Polynomial K}\n    (hF : F ∈ kronSpan k μ) :\n    (fun P ↦ Polynomial.derivative (F P)) ∈ kronSpan (K := K) (σ := σ) k (μ + 1)",
+  "body": "by\n  classical\n  induction hF using Submodule.span_induction with\n  | mem F hF =>\n    obtain ⟨d, hd, rfl⟩ := hF\n    rw [derivative_kronHasse_aux]\n    refine Submodule.sum_mem _ fun j _ ↦ Submodule.smul_mem _ _ (Submodule.subset_span ?_)\n    refine ⟨d + Finsupp.single j 1, ?_, rfl⟩\n    simp only [Set.mem_ofPred_eq, map_add, Finsupp.degree_single] at hd ⊢\n    exact Nat.add_le_add_right hd 1\n  | zero =>\n    convert (kronSpan (K := K) (σ := σ) k (μ + 1)).zero_mem using 1\n    funext P\n    simp\n  | add F G _ _ hF hG =>\n    convert Submodule.add_mem _ hF hG using 1\n    funext P\n    simp [Polynomial.derivative_add]\n  | smul a F hF' hF =>\n    convert Submodule.add_mem (kronSpan (K := K) (σ := σ) k (μ + 1))\n      (Submodule.smul_mem _ (Polynomial.derivative a)\n        (Submodule.span_mono (Set.image_mono fun _ hd ↦ le_trans hd (Nat.le_succ μ)) hF'))\n      (Submodule.smul_mem _ a hF) using 1\n    funext P\n    simp [Polynomial.derivative_mul, add_comm]",
+  "proof_lines": 25,
+  "sha256": "b32a47028d4f58483f5000a11d09867eadec38fe1653a710a6c6a387f7194d01",
+  "source_body_project_refs": [
+    "Roth.derivative_kronHasse_aux",
+    "Roth.kronSpan"
+  ],
+  "source_type_project_refs": [
+    "Roth.kronSpan"
+  ],
+  "what": "Differentiation maps the order-μ operator span into the order-(μ+1) span.",
+  "how": "Uses Submodule.span_induction: derivative_kronHasse_aux handles generators; sums are preserved; Polynomial.derivative_mul handles scalar multiplication, and span_mono embeds old-order operators.",
+  "hypotheses": "A field and finite variable enumeration; the operator lies in kronSpan k μ.",
+  "source_used_by_project": [
+    "Roth.hasseDeriv_kronecker_mem"
+  ],
+  "source_used_by_file": [
+    "Roth.hasseDeriv_kronecker_mem"
+  ],
+  "section_binders": "{K : Type*} [Field K] {σ : Type*} [Fintype σ]",
+  "type_provenance": "Exact written signature plus manually identified captured section binders. Root cached full build succeeds; global opaque/type inspector timed out, so no kernel dump is claimed.",
+  "notes": "No sorry, TODO, or set_option in this declaration.",
+  "assignment_offset": 197,
+  "project_body_refs": [
+    "Roth.derivative_kronHasse_aux",
+    "Roth.kronSpan"
+  ],
+  "project_type_refs": [
+    "Roth.kronSpan"
+  ],
+  "project_callers": [
+    {
+      "name": "Roth.hasseDeriv_kronecker_mem",
+      "file": "Roth/GenWronskian.lean",
+      "line": 190
+    }
+  ],
+  "section_context": "{K : Type*} [Field K] {σ : Type*} [Fintype σ]"
+}

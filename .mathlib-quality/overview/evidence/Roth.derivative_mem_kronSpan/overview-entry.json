@@ -1,0 +1,19 @@
+{
+  "declaration": "Roth.derivative_mem_kronSpan",
+  "kind": "lemma",
+  "type": "∀ {K : Type u_1} [inst : Field K] {σ : Type u_2}\n  [inst_1 : Fintype σ] (k μ : ℕ) {F : MvPolynomial σ K → Polynomial K},\n  F ∈ Roth.kronSpan✝ k μ → (fun P ↦ Polynomial.derivative (F P)) ∈ Roth.kronSpan✝ k (μ + 1)",
+  "what": "Ordinary differentiation sends every operator in the order-mu substituted Hasse span into the order-(mu+1) span.",
+  "how": "Uses Submodule.span_induction: derivative_kronHasse_aux handles generators; sums are preserved; Polynomial.derivative_mul handles scalar multiplication, and span_mono embeds old-order operators.",
+  "hypotheses": "A field and finite variable enumeration; the operator lies in kronSpan k μ. Actual kernel type retains Field and Fintype sigma; no characteristic-zero, positive-base or positive-order premise.",
+  "project_dependencies": [
+    "Roth.derivative_kronHasse_aux",
+    "Roth.kronSpan"
+  ],
+  "caller_summary": "1 explicit source caller declarations, all in GenWronskian.lean; 1 direct original value consumers. Exact separate lists retained. Entire module proof bodies replay successfully with fresh target name.",
+  "mathlib_api_audit": "Submodule.span_induction is the existing organizing API. The generator case uses the preceding private derivative recurrence and the bound on total Hasse order; the scalar case uses the polynomial Leibniz rule and inclusion of the old bounded span in the next one. This lifts a generator identity to closure of the whole polynomial-coefficient span. It is distinct from both the generator recurrence and the subsequent Hasse-iteration result. No new definition, class or instance is needed.",
+  "moral_duplications": "Private operator composition and bounded module span are different stages of the same derivative expansion, not duplicate full constructions.",
+  "generalization": "No public generality claim under the private prefilter; preserve the existing definition and interface.",
+  "missing_api": "No new primitive is needed for this internal organization; full public contribution search is explicitly not run.",
+  "junk": "Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.",
+  "action": "Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration."
+}
