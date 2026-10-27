@@ -1,0 +1,540 @@
+[
+  {
+    "form": "current",
+    "method": "Finder",
+    "request": {
+      "query": "degreeOf inverse uniqueAlgEquiv polynomial equals natDegree"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.algEquivOfCompEqX_symm\",\n      \"informal_name\": \"Symmetry of Inverse in Polynomial Composition Algebra Equivalence\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : CommSemiring R] (p q : Polynomial R) (hpq : p.comp q = Polynomial.X)\\n  (hqp : q.comp p = Polynomial.X), (p.algEquivOfCompEqX q hpq hqp).symm = q.algEquivOfCompEqX p hqp hpq\",\n      \"informal_description\": \"Given polynomials $ p $ and $ q $ such that $ p \\\\circ q = X $ and $ q \\\\circ p = X $, the inverse of the algebra equivalence $ p \\\\circ q = X $-induced equivalence is equal to the algebra equivalence induced by swapping $ p $ and $ q $ with their composition conditions interchanged.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.AlgebraMap\"\n    },\n    {\n      \"formal_name\": \"Polynomial.algEquivOfCompEqX_symm_apply\",\n      \"informal_name\": \"Inverse of Algebra Equivalence from Compositional Inverses\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : CommSemiring R] (p q : Polynomial R) (hpq : p.comp q = Polynomial.X)\\n  (hqp : q.comp p = Polynomial.X) (a : Polynomial R), (p.algEquivOfCompEqX q hpq hqp).symm a = (Polynomial.aeval q) a\",\n      \"informal_description\": \"Given polynomials $p,q$ over a commutative semiring $R$ satisfying $p(q(X)) = X$ and $q(p(X)) = X$, the inverse of the algebra equivalence $p.algEquivOfCompEqX(q)$ acts on any polynomial $a$ by evaluating $a$ at $q$ via the polynomial evaluation homomorphism $\\\\text{aeval}$. Formally, $(p.algEquivOfCompEqX(q))^{-1}(a) = a(q)$.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.AlgebraMap\"\n    },\n    {\n      \"formal_name\": \"Polynomial.algEquivOfCompEqX\",\n      \"informal_name\": \"Algebra automorphism of the polynomial ring induced by compositional inverses\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} →\\n  [inst : CommSemiring R] →\\n    (p q : Polynomial R) → p.comp q = Polynomial.X → q.comp p = Polynomial.X → Polynomial R ≃ₐ[R] Polynomial R\",\n      \"informal_description\": \"Let $R$ be a commutative semiring. Given two polynomials $p, q \\\\in R[X]$ that are compositional inverses of each other, meaning $p(q(X)) = X$ and $q(p(X)) = X$, this defines an $R$-algebra automorphism of $R[X]$. This automorphism is given by the evaluation map that sends a polynomial $r(X)$ to $r(p(X))$.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.AlgebraMap\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.natDegree_finSuccEquiv\",\n      \"informal_name\": \"Natural Degree Under FinSucc Equivalence Equals Zeroth Variable Degree\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : CommSemiring R] {n : ℕ} (f : MvPolynomial (Fin (n + 1)) R),\\n  ((MvPolynomial.finSuccEquiv R n) f).natDegree = MvPolynomial.degreeOf 0 f\",\n      \"informal_description\": \"For any multivariate polynomial $ f $ with variables indexed by $ \\\\text{Fin}(n+1) $, the natural degree of the polynomial obtained via the finSuccEquiv transformation is equal to the total degree of $ f $ in the zeroth variable. Symbolically, $ \\\\text{natdeg}(\\\\text{finSuccEquiv}(f)) = \\\\text{degreeOf}(0, f) $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.algEquivOfCompEqX_apply\",\n      \"informal_name\": \"Algebra Equivalence from Compositional Inverses: Application Equals Evaluation\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : CommSemiring R] (p q : Polynomial R) (hpq : p.comp q = Polynomial.X)\\n  (hqp : q.comp p = Polynomial.X) (a : Polynomial R), (p.algEquivOfCompEqX q hpq hqp) a = (Polynomial.aeval p) a\",\n      \"informal_description\": \"Given a commutative semiring $ R $ and polynomials $ p, q \\\\in R[X] $ satisfying $ p \\\\circ q = X $ and $ q \\\\circ p = X $, the algebra equivalence $ \\\\text{algEquivOfCompEqX}(p, q) $ maps any polynomial $ a \\\\in R[X] $ to the evaluation of $ a $ at $ p $, i.e., $ \\\\text{aeval}_p(a) $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.AlgebraMap\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Polynomial.algEquivOfCompEqX_symm",
+            "informal_name": "Symmetry of Inverse in Polynomial Composition Algebra Equivalence",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : CommSemiring R] (p q : Polynomial R) (hpq : p.comp q = Polynomial.X)\n  (hqp : q.comp p = Polynomial.X), (p.algEquivOfCompEqX q hpq hqp).symm = q.algEquivOfCompEqX p hqp hpq",
+            "informal_description": "Given polynomials $ p $ and $ q $ such that $ p \\circ q = X $ and $ q \\circ p = X $, the inverse of the algebra equivalence $ p \\circ q = X $-induced equivalence is equal to the algebra equivalence induced by swapping $ p $ and $ q $ with their composition conditions interchanged.",
+            "path": "Mathlib.Algebra.Polynomial.AlgebraMap"
+          },
+          {
+            "formal_name": "Polynomial.algEquivOfCompEqX_symm_apply",
+            "informal_name": "Inverse of Algebra Equivalence from Compositional Inverses",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : CommSemiring R] (p q : Polynomial R) (hpq : p.comp q = Polynomial.X)\n  (hqp : q.comp p = Polynomial.X) (a : Polynomial R), (p.algEquivOfCompEqX q hpq hqp).symm a = (Polynomial.aeval q) a",
+            "informal_description": "Given polynomials $p,q$ over a commutative semiring $R$ satisfying $p(q(X)) = X$ and $q(p(X)) = X$, the inverse of the algebra equivalence $p.algEquivOfCompEqX(q)$ acts on any polynomial $a$ by evaluating $a$ at $q$ via the polynomial evaluation homomorphism $\\text{aeval}$. Formally, $(p.algEquivOfCompEqX(q))^{-1}(a) = a(q)$.",
+            "path": "Mathlib.Algebra.Polynomial.AlgebraMap"
+          },
+          {
+            "formal_name": "Polynomial.algEquivOfCompEqX",
+            "informal_name": "Algebra automorphism of the polynomial ring induced by compositional inverses",
+            "kind": "definition",
+            "type": "{R : Type u} →\n  [inst : CommSemiring R] →\n    (p q : Polynomial R) → p.comp q = Polynomial.X → q.comp p = Polynomial.X → Polynomial R ≃ₐ[R] Polynomial R",
+            "informal_description": "Let $R$ be a commutative semiring. Given two polynomials $p, q \\in R[X]$ that are compositional inverses of each other, meaning $p(q(X)) = X$ and $q(p(X)) = X$, this defines an $R$-algebra automorphism of $R[X]$. This automorphism is given by the evaluation map that sends a polynomial $r(X)$ to $r(p(X))$.",
+            "path": "Mathlib.Algebra.Polynomial.AlgebraMap"
+          },
+          {
+            "formal_name": "MvPolynomial.natDegree_finSuccEquiv",
+            "informal_name": "Natural Degree Under FinSucc Equivalence Equals Zeroth Variable Degree",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : CommSemiring R] {n : ℕ} (f : MvPolynomial (Fin (n + 1)) R),\n  ((MvPolynomial.finSuccEquiv R n) f).natDegree = MvPolynomial.degreeOf 0 f",
+            "informal_description": "For any multivariate polynomial $ f $ with variables indexed by $ \\text{Fin}(n+1) $, the natural degree of the polynomial obtained via the finSuccEquiv transformation is equal to the total degree of $ f $ in the zeroth variable. Symbolically, $ \\text{natdeg}(\\text{finSuccEquiv}(f)) = \\text{degreeOf}(0, f) $.",
+            "path": "Mathlib.Algebra.MvPolynomial.Equiv"
+          },
+          {
+            "formal_name": "Polynomial.algEquivOfCompEqX_apply",
+            "informal_name": "Algebra Equivalence from Compositional Inverses: Application Equals Evaluation",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : CommSemiring R] (p q : Polynomial R) (hpq : p.comp q = Polynomial.X)\n  (hqp : q.comp p = Polynomial.X) (a : Polynomial R), (p.algEquivOfCompEqX q hpq hqp) a = (Polynomial.aeval p) a",
+            "informal_description": "Given a commutative semiring $ R $ and polynomials $ p, q \\in R[X] $ satisfying $ p \\circ q = X $ and $ q \\circ p = X $, the algebra equivalence $ \\text{algEquivOfCompEqX}(p, q) $ maps any polynomial $ a \\in R[X] $ to the evaluation of $ a $ at $ p $, i.e., $ \\text{aeval}_p(a) $.",
+            "path": "Mathlib.Algebra.Polynomial.AlgebraMap"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "current",
+    "method": "Loogle",
+    "request": {
+      "query": "MvPolynomial.uniqueAlgEquiv, MvPolynomial.degreeOf"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": []\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": []
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "current",
+    "method": "LeanSearch",
+    "request": {
+      "query": "degreeOf inverse uniqueAlgEquiv polynomial equals natDegree"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.degree_eq_iff_natDegree_eq_of_pos\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Degree.Definitions\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Semiring R] {p : Polynomial R} {n : ℕ}, 0 < n → (p.degree = ↑n ↔ p.natDegree = n)\"\n    },\n    {\n      \"name\": \"Polynomial.degree_eq_iff_natDegree_eq\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Degree.Definitions\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Semiring R] {p : Polynomial R} {n : ℕ}, p ≠ 0 → (p.degree = ↑n ↔ p.natDegree = n)\"\n    },\n    {\n      \"name\": \"Polynomial.degree_eq_natDegree\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Degree.Definitions\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Semiring R] {p : Polynomial R}, p ≠ 0 → p.degree = ↑p.natDegree\"\n    },\n    {\n      \"name\": \"Polynomial.supDegree_eq_natDegree\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Degree.Support\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Semiring R] (p : Polynomial R), AddMonoidAlgebra.supDegree id p.toFinsupp = p.natDegree\"\n    },\n    {\n      \"name\": \"Polynomial.natDegree_eq_of_degree_eq_some\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Degree.Definitions\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Semiring R] {p : Polynomial R} {n : ℕ}, p.degree = ↑n → p.natDegree = n\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.degree_eq_iff_natDegree_eq_of_pos",
+            "module_name": "Mathlib.Algebra.Polynomial.Degree.Definitions",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : Semiring R] {p : Polynomial R} {n : ℕ}, 0 < n → (p.degree = ↑n ↔ p.natDegree = n)"
+          },
+          {
+            "name": "Polynomial.degree_eq_iff_natDegree_eq",
+            "module_name": "Mathlib.Algebra.Polynomial.Degree.Definitions",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : Semiring R] {p : Polynomial R} {n : ℕ}, p ≠ 0 → (p.degree = ↑n ↔ p.natDegree = n)"
+          },
+          {
+            "name": "Polynomial.degree_eq_natDegree",
+            "module_name": "Mathlib.Algebra.Polynomial.Degree.Definitions",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : Semiring R] {p : Polynomial R}, p ≠ 0 → p.degree = ↑p.natDegree"
+          },
+          {
+            "name": "Polynomial.supDegree_eq_natDegree",
+            "module_name": "Mathlib.Algebra.Polynomial.Degree.Support",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : Semiring R] (p : Polynomial R), AddMonoidAlgebra.supDegree id p.toFinsupp = p.natDegree"
+          },
+          {
+            "name": "Polynomial.natDegree_eq_of_degree_eq_some",
+            "module_name": "Mathlib.Algebra.Polynomial.Degree.Definitions",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : Semiring R] {p : Polynomial R} {n : ℕ}, p.degree = ↑n → p.natDegree = n"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "current",
+    "method": "local",
+    "request": {
+      "query": "degreeOf_uniqueAlgEquiv"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"CoeffNone152Replay.degreeOf_uniqueAlgEquiv_symm\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/roth-overview-session/GenWronskianChecks.lean\"\n    },\n    {\n      \"name\": \"Roth.degreeOf_uniqueAlgEquiv_symm\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/Separation.lean\"\n    },\n    {\n      \"name\": \"SeparationPrivate154.degreeOf_uniqueAlgEquiv_symm\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/roth-overview-session/GenWronskianChecks.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "CoeffNone152Replay.degreeOf_uniqueAlgEquiv_symm",
+            "kind": "theorem",
+            "file": ".lake/roth-overview-session/GenWronskianChecks.lean"
+          },
+          {
+            "name": "Roth.degreeOf_uniqueAlgEquiv_symm",
+            "kind": "theorem",
+            "file": "Roth/Separation.lean"
+          },
+          {
+            "name": "SeparationPrivate154.degreeOf_uniqueAlgEquiv_symm",
+            "kind": "theorem",
+            "file": ".lake/roth-overview-session/GenWronskianChecks.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "standard",
+    "method": "Finder",
+    "request": {
+      "query": "univariate polynomial degree preserved by isomorphism polynomial ring in singleton variable"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"MvPolynomial.natDegree_finSuccEquiv\",\n      \"informal_name\": \"Natural Degree Under FinSucc Equivalence Equals Zeroth Variable Degree\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : CommSemiring R] {n : ℕ} (f : MvPolynomial (Fin (n + 1)) R),\\n  ((MvPolynomial.finSuccEquiv R n) f).natDegree = MvPolynomial.degreeOf 0 f\",\n      \"informal_description\": \"For any multivariate polynomial $ f $ with variables indexed by $ \\\\text{Fin}(n+1) $, the natural degree of the polynomial obtained via the finSuccEquiv transformation is equal to the total degree of $ f $ in the zeroth variable. Symbolically, $ \\\\text{natdeg}(\\\\text{finSuccEquiv}(f)) = \\\\text{degreeOf}(0, f) $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.degree_finSuccEquiv\",\n      \"informal_name\": \"Degree Preservation under Fin(n+1) to Polynomial Ring Equivalence\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : CommSemiring R] {n : ℕ} {f : MvPolynomial (Fin (n + 1)) R},\\n  f ≠ 0 → ((MvPolynomial.finSuccEquiv R n) f).degree = ↑(MvPolynomial.degreeOf 0 f)\",\n      \"informal_description\": \"For a nonzero multivariate polynomial $ f $ over $ \\\\text{Fin}(n+1) $, the degree of the equivalent polynomial obtained via the algebra equivalence to the polynomial ring in one variable with coefficients in multivariate polynomials over $ \\\\text{Fin}(n) $ is equal to the total degree of $ f $ in the variable indexed by $ 0 $. This equivalence is constructed by renaming variables through the bijection $ \\\\text{Fin}(n+1) \\\\simeq \\\\text{Option}(\\\\text{Fin}(n)) $, mapping the new variable to the outer polynomial's indeterminate.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.degreeOf_eq_natDegree\",\n      \"informal_name\": \"Algebra Equivalence for Multivariate Polynomials with Option-Indexed Variables\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : DecidableEq σ] (a : σ) (p : MvPolynomial σ R),\\n  MvPolynomial.degreeOf a p =\\n    ((MvPolynomial.optionEquivLeft R { b // b ≠ a })\\n        ((MvPolynomial.rename ⇑(Equiv.optionSubtypeNe a).symm) p)).natDegree\",\n      \"informal_description\": \"There exists an algebra equivalence between the ring of multivariate polynomials over a commutative semiring $ R $ with variables indexed by $ \\\\text{Option } \\\\sigma $, and the polynomial ring in one variable whose coefficients are multivariate polynomials over $ R $ with variables indexed by $ \\\\sigma $. This equivalence maps variables corresponding to $ \\\\text{none} $ to the outer polynomial indeterminate and variables corresponding to $ \\\\text{some } s $ to coefficients in the inner multivariate polynomial ring, with the inverse given by variable substitution.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.natDegree_optionEquivLeft\",\n      \"informal_name\": \"Algebra Equivalence between Multivariate Polynomials over Option σ and Polynomials in One Variable with Multivariate Coefficients\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (R : Type u) {σ : Type u_1} [inst : CommSemiring R] (p : MvPolynomial (Option σ) R),\\n  ((MvPolynomial.optionEquivLeft R σ) p).natDegree = MvPolynomial.degreeOf none p\",\n      \"informal_description\": \"There exists an algebra equivalence between the ring of multivariate polynomials with variables indexed by $\\\\text{Option } \\\\sigma$ (i.e., $\\\\sigma \\\\cup \\\\{\\\\text{none}\\\\}$) and coefficients in a commutative semiring $R$, and the polynomial ring in one variable (corresponding to $\\\\text{none}$) whose coefficients are multivariate polynomials over $R$ with variables indexed by $\\\\sigma$. This equivalence maps variables in $\\\\text{Option } \\\\sigma$ to either the outer polynomial's indeterminate (for $\\\\text{none}$) or coefficients in the inner multivariate polynomial ring (for $\\\\text{some } s$), with the inverse given by renaming variables.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.degree_optionEquivLeft\",\n      \"informal_name\": \"Algebra Equivalence Between Multivariate Polynomials Over Option σ and Polynomials in One Variable with Multivariate Coefficients\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (R : Type u) {σ : Type u_1} [inst : CommSemiring R] {f : MvPolynomial (Option σ) R},\\n  f ≠ 0 → ((MvPolynomial.optionEquivLeft R σ) f).degree = ↑(MvPolynomial.degreeOf none f)\",\n      \"informal_description\": \"There exists an algebra equivalence between the ring of multivariate polynomials with variables indexed by $\\\\text{Option } \\\\sigma$ and coefficients in a commutative semiring $R$, and the polynomial ring in one variable whose coefficients are multivariate polynomials over $R$ with variables indexed by $\\\\sigma$. This equivalence maps variables in $\\\\text{Option } \\\\sigma$ to either the indeterminate of the outer polynomial ring (for the $\\\\text{none}$ case) or coefficients in the inner multivariate polynomial ring (for the $\\\\text{some } s$ cases), with the inverse given by substituting renamed variables. For any nonzero polynomial $f$, the degree of the transformed polynomial equals the total degree of $f$ in the $\\\\text{none}$ variable.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "MvPolynomial.natDegree_finSuccEquiv",
+            "informal_name": "Natural Degree Under FinSucc Equivalence Equals Zeroth Variable Degree",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : CommSemiring R] {n : ℕ} (f : MvPolynomial (Fin (n + 1)) R),\n  ((MvPolynomial.finSuccEquiv R n) f).natDegree = MvPolynomial.degreeOf 0 f",
+            "informal_description": "For any multivariate polynomial $ f $ with variables indexed by $ \\text{Fin}(n+1) $, the natural degree of the polynomial obtained via the finSuccEquiv transformation is equal to the total degree of $ f $ in the zeroth variable. Symbolically, $ \\text{natdeg}(\\text{finSuccEquiv}(f)) = \\text{degreeOf}(0, f) $.",
+            "path": "Mathlib.Algebra.MvPolynomial.Equiv"
+          },
+          {
+            "formal_name": "MvPolynomial.degree_finSuccEquiv",
+            "informal_name": "Degree Preservation under Fin(n+1) to Polynomial Ring Equivalence",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : CommSemiring R] {n : ℕ} {f : MvPolynomial (Fin (n + 1)) R},\n  f ≠ 0 → ((MvPolynomial.finSuccEquiv R n) f).degree = ↑(MvPolynomial.degreeOf 0 f)",
+            "informal_description": "For a nonzero multivariate polynomial $ f $ over $ \\text{Fin}(n+1) $, the degree of the equivalent polynomial obtained via the algebra equivalence to the polynomial ring in one variable with coefficients in multivariate polynomials over $ \\text{Fin}(n) $ is equal to the total degree of $ f $ in the variable indexed by $ 0 $. This equivalence is constructed by renaming variables through the bijection $ \\text{Fin}(n+1) \\simeq \\text{Option}(\\text{Fin}(n)) $, mapping the new variable to the outer polynomial's indeterminate.",
+            "path": "Mathlib.Algebra.MvPolynomial.Equiv"
+          },
+          {
+            "formal_name": "MvPolynomial.degreeOf_eq_natDegree",
+            "informal_name": "Algebra Equivalence for Multivariate Polynomials with Option-Indexed Variables",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : DecidableEq σ] (a : σ) (p : MvPolynomial σ R),\n  MvPolynomial.degreeOf a p =\n    ((MvPolynomial.optionEquivLeft R { b // b ≠ a })\n        ((MvPolynomial.rename ⇑(Equiv.optionSubtypeNe a).symm) p)).natDegree",
+            "informal_description": "There exists an algebra equivalence between the ring of multivariate polynomials over a commutative semiring $ R $ with variables indexed by $ \\text{Option } \\sigma $, and the polynomial ring in one variable whose coefficients are multivariate polynomials over $ R $ with variables indexed by $ \\sigma $. This equivalence maps variables corresponding to $ \\text{none} $ to the outer polynomial indeterminate and variables corresponding to $ \\text{some } s $ to coefficients in the inner multivariate polynomial ring, with the inverse given by variable substitution.",
+            "path": "Mathlib.Algebra.MvPolynomial.Equiv"
+          },
+          {
+            "formal_name": "MvPolynomial.natDegree_optionEquivLeft",
+            "informal_name": "Algebra Equivalence between Multivariate Polynomials over Option σ and Polynomials in One Variable with Multivariate Coefficients",
+            "kind": "theorem",
+            "type": "∀ (R : Type u) {σ : Type u_1} [inst : CommSemiring R] (p : MvPolynomial (Option σ) R),\n  ((MvPolynomial.optionEquivLeft R σ) p).natDegree = MvPolynomial.degreeOf none p",
+            "informal_description": "There exists an algebra equivalence between the ring of multivariate polynomials with variables indexed by $\\text{Option } \\sigma$ (i.e., $\\sigma \\cup \\{\\text{none}\\}$) and coefficients in a commutative semiring $R$, and the polynomial ring in one variable (corresponding to $\\text{none}$) whose coefficients are multivariate polynomials over $R$ with variables indexed by $\\sigma$. This equivalence maps variables in $\\text{Option } \\sigma$ to either the outer polynomial's indeterminate (for $\\text{none}$) or coefficients in the inner multivariate polynomial ring (for $\\text{some } s$), with the inverse given by renaming variables.",
+            "path": "Mathlib.Algebra.MvPolynomial.Equiv"
+          },
+          {
+            "formal_name": "MvPolynomial.degree_optionEquivLeft",
+            "informal_name": "Algebra Equivalence Between Multivariate Polynomials Over Option σ and Polynomials in One Variable with Multivariate Coefficients",
+            "kind": "theorem",
+            "type": "∀ (R : Type u) {σ : Type u_1} [inst : CommSemiring R] {f : MvPolynomial (Option σ) R},\n  f ≠ 0 → ((MvPolynomial.optionEquivLeft R σ) f).degree = ↑(MvPolynomial.degreeOf none f)",
+            "informal_description": "There exists an algebra equivalence between the ring of multivariate polynomials with variables indexed by $\\text{Option } \\sigma$ and coefficients in a commutative semiring $R$, and the polynomial ring in one variable whose coefficients are multivariate polynomials over $R$ with variables indexed by $\\sigma$. This equivalence maps variables in $\\text{Option } \\sigma$ to either the indeterminate of the outer polynomial ring (for the $\\text{none}$ case) or coefficients in the inner multivariate polynomial ring (for the $\\text{some } s$ cases), with the inverse given by substituting renamed variables. For any nonzero polynomial $f$, the degree of the transformed polynomial equals the total degree of $f$ in the $\\text{none}$ variable.",
+            "path": "Mathlib.Algebra.MvPolynomial.Equiv"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "standard",
+    "method": "Loogle",
+    "request": {
+      "query": "MvPolynomial.degreeOf, Polynomial.natDegree"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.natDegree_optionEquivLeft\",\n      \"type\": \" (R : Type u) {σ : Type u_1} [CommSemiring R] (p : MvPolynomial (Option σ) R) : ((MvPolynomial.optionEquivLeft R σ) p).natDegree = MvPolynomial.degreeOf none p\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    },\n    {\n      \"name\": \"MvPolynomial.natDegree_finSuccEquiv\",\n      \"type\": \" {R : Type u} [CommSemiring R] {n : ℕ} (f : MvPolynomial (Fin (n + 1)) R) : ((MvPolynomial.finSuccEquiv R n) f).natDegree = MvPolynomial.degreeOf 0 f\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    },\n    {\n      \"name\": \"MvPolynomial.degreeOf_eq_natDegree\",\n      \"type\": \" {R : Type u} {σ : Type u_1} [CommSemiring R] [DecidableEq σ] (a : σ) (p : MvPolynomial σ R) : MvPolynomial.degreeOf a p = ((MvPolynomial.optionEquivLeft R { b // b ≠ a }) ((MvPolynomial.rename ⇑(Equiv.optionSubtypeNe a).symm) p)).natDegree\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.natDegree_optionEquivLeft",
+            "type": " (R : Type u) {σ : Type u_1} [CommSemiring R] (p : MvPolynomial (Option σ) R) : ((MvPolynomial.optionEquivLeft R σ) p).natDegree = MvPolynomial.degreeOf none p",
+            "module": "Mathlib.Algebra.MvPolynomial.Equiv"
+          },
+          {
+            "name": "MvPolynomial.natDegree_finSuccEquiv",
+            "type": " {R : Type u} [CommSemiring R] {n : ℕ} (f : MvPolynomial (Fin (n + 1)) R) : ((MvPolynomial.finSuccEquiv R n) f).natDegree = MvPolynomial.degreeOf 0 f",
+            "module": "Mathlib.Algebra.MvPolynomial.Equiv"
+          },
+          {
+            "name": "MvPolynomial.degreeOf_eq_natDegree",
+            "type": " {R : Type u} {σ : Type u_1} [CommSemiring R] [DecidableEq σ] (a : σ) (p : MvPolynomial σ R) : MvPolynomial.degreeOf a p = ((MvPolynomial.optionEquivLeft R { b // b ≠ a }) ((MvPolynomial.rename ⇑(Equiv.optionSubtypeNe a).symm) p)).natDegree",
+            "module": "Mathlib.Algebra.MvPolynomial.Equiv"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "standard",
+    "method": "LeanSearch",
+    "request": {
+      "query": "univariate polynomial degree preserved by isomorphism polynomial ring in singleton variable"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.map_natDegree_eq_natDegree\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.EraseLead\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] {S : Type u_2} {F : Type u_3} [inst_1 : Semiring S]\\n  [inst_2 : FunLike F (Polynomial R) (Polynomial S)] [AddMonoidHomClass F (Polynomial R) (Polynomial S)] {φ : F}\\n  (p : Polynomial R),\\n  (∀ (n : ℕ) (c : R), c ≠ 0 → (φ ((Polynomial.monomial n) c)).natDegree = n) → (φ p).natDegree = p.natDegree\"\n    },\n    {\n      \"name\": \"Polynomial.degree_toSubring\",\n      \"module_name\": \"Mathlib.RingTheory.Polynomial.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Ring R] (p : Polynomial R) (T : Subring R) (hp : ↑p.coeffs ⊆ ↑T),\\n  (p.toSubring T hp).degree = p.degree\"\n    },\n    {\n      \"name\": \"MvPolynomial.pUnitAlgEquiv\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Equiv\",\n      \"kind\": \"definition\",\n      \"type\": \"(R : Type u) → [inst : CommSemiring R] → MvPolynomial PUnit.{u_2 + 1} R ≃ₐ[R] Polynomial R\"\n    },\n    {\n      \"name\": \"freeCommRingPunitEquivPolynomialInt\",\n      \"module_name\": \"Mathlib.RingTheory.FreeCommRing\",\n      \"kind\": \"definition\",\n      \"type\": \"FreeCommRing PUnit.{u + 1} ≃+* Polynomial ℤ\"\n    },\n    {\n      \"name\": \"Polynomial.degree_map\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.FieldDivision\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S : Type v} [inst : Ring R] [IsSimpleRing R] [inst_2 : Semiring S] [Nontrivial S] (p : Polynomial R)\\n  (f : R →+* S), (Polynomial.map f p).degree = p.degree\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.map_natDegree_eq_natDegree",
+            "module_name": "Mathlib.Algebra.Polynomial.EraseLead",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] {S : Type u_2} {F : Type u_3} [inst_1 : Semiring S]\n  [inst_2 : FunLike F (Polynomial R) (Polynomial S)] [AddMonoidHomClass F (Polynomial R) (Polynomial S)] {φ : F}\n  (p : Polynomial R),\n  (∀ (n : ℕ) (c : R), c ≠ 0 → (φ ((Polynomial.monomial n) c)).natDegree = n) → (φ p).natDegree = p.natDegree"
+          },
+          {
+            "name": "Polynomial.degree_toSubring",
+            "module_name": "Mathlib.RingTheory.Polynomial.Basic",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : Ring R] (p : Polynomial R) (T : Subring R) (hp : ↑p.coeffs ⊆ ↑T),\n  (p.toSubring T hp).degree = p.degree"
+          },
+          {
+            "name": "MvPolynomial.pUnitAlgEquiv",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Equiv",
+            "kind": "definition",
+            "type": "(R : Type u) → [inst : CommSemiring R] → MvPolynomial PUnit.{u_2 + 1} R ≃ₐ[R] Polynomial R"
+          },
+          {
+            "name": "freeCommRingPunitEquivPolynomialInt",
+            "module_name": "Mathlib.RingTheory.FreeCommRing",
+            "kind": "definition",
+            "type": "FreeCommRing PUnit.{u + 1} ≃+* Polynomial ℤ"
+          },
+          {
+            "name": "Polynomial.degree_map",
+            "module_name": "Mathlib.Algebra.Polynomial.FieldDivision",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {S : Type v} [inst : Ring R] [IsSimpleRing R] [inst_2 : Semiring S] [Nontrivial S] (p : Polynomial R)\n  (f : R →+* S), (Polynomial.map f p).degree = p.degree"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "standard",
+    "method": "local",
+    "request": {
+      "query": "degreeOf_eq_natDegree"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.degreeOf_eq_natDegree\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.degreeOf_eq_natDegree",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "Finder",
+    "request": {
+      "query": "degree in a variable equals natural degree after optionEquivLeft polynomial equivalence"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"MvPolynomial.degree_optionEquivLeft\",\n      \"informal_name\": \"Algebra Equivalence Between Multivariate Polynomials Over Option σ and Polynomials in One Variable with Multivariate Coefficients\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (R : Type u) {σ : Type u_1} [inst : CommSemiring R] {f : MvPolynomial (Option σ) R},\\n  f ≠ 0 → ((MvPolynomial.optionEquivLeft R σ) f).degree = ↑(MvPolynomial.degreeOf none f)\",\n      \"informal_description\": \"There exists an algebra equivalence between the ring of multivariate polynomials with variables indexed by $\\\\text{Option } \\\\sigma$ and coefficients in a commutative semiring $R$, and the polynomial ring in one variable whose coefficients are multivariate polynomials over $R$ with variables indexed by $\\\\sigma$. This equivalence maps variables in $\\\\text{Option } \\\\sigma$ to either the indeterminate of the outer polynomial ring (for the $\\\\text{none}$ case) or coefficients in the inner multivariate polynomial ring (for the $\\\\text{some } s$ cases), with the inverse given by substituting renamed variables. For any nonzero polynomial $f$, the degree of the transformed polynomial equals the total degree of $f$ in the $\\\\text{none}$ variable.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.natDegree_optionEquivLeft\",\n      \"informal_name\": \"Algebra Equivalence between Multivariate Polynomials over Option σ and Polynomials in One Variable with Multivariate Coefficients\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (R : Type u) {σ : Type u_1} [inst : CommSemiring R] (p : MvPolynomial (Option σ) R),\\n  ((MvPolynomial.optionEquivLeft R σ) p).natDegree = MvPolynomial.degreeOf none p\",\n      \"informal_description\": \"There exists an algebra equivalence between the ring of multivariate polynomials with variables indexed by $\\\\text{Option } \\\\sigma$ (i.e., $\\\\sigma \\\\cup \\\\{\\\\text{none}\\\\}$) and coefficients in a commutative semiring $R$, and the polynomial ring in one variable (corresponding to $\\\\text{none}$) whose coefficients are multivariate polynomials over $R$ with variables indexed by $\\\\sigma$. This equivalence maps variables in $\\\\text{Option } \\\\sigma$ to either the outer polynomial's indeterminate (for $\\\\text{none}$) or coefficients in the inner multivariate polynomial ring (for $\\\\text{some } s$), with the inverse given by renaming variables.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.degreeOf_eq_natDegree\",\n      \"informal_name\": \"Algebra Equivalence for Multivariate Polynomials with Option-Indexed Variables\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : DecidableEq σ] (a : σ) (p : MvPolynomial σ R),\\n  MvPolynomial.degreeOf a p =\\n    ((MvPolynomial.optionEquivLeft R { b // b ≠ a })\\n        ((MvPolynomial.rename ⇑(Equiv.optionSubtypeNe a).symm) p)).natDegree\",\n      \"informal_description\": \"There exists an algebra equivalence between the ring of multivariate polynomials over a commutative semiring $ R $ with variables indexed by $ \\\\text{Option } \\\\sigma $, and the polynomial ring in one variable whose coefficients are multivariate polynomials over $ R $ with variables indexed by $ \\\\sigma $. This equivalence maps variables corresponding to $ \\\\text{none} $ to the outer polynomial indeterminate and variables corresponding to $ \\\\text{some } s $ to coefficients in the inner multivariate polynomial ring, with the inverse given by variable substitution.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.natDegree_finSuccEquiv\",\n      \"informal_name\": \"Natural Degree Under FinSucc Equivalence Equals Zeroth Variable Degree\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : CommSemiring R] {n : ℕ} (f : MvPolynomial (Fin (n + 1)) R),\\n  ((MvPolynomial.finSuccEquiv R n) f).natDegree = MvPolynomial.degreeOf 0 f\",\n      \"informal_description\": \"For any multivariate polynomial $ f $ with variables indexed by $ \\\\text{Fin}(n+1) $, the natural degree of the polynomial obtained via the finSuccEquiv transformation is equal to the total degree of $ f $ in the zeroth variable. Symbolically, $ \\\\text{natdeg}(\\\\text{finSuccEquiv}(f)) = \\\\text{degreeOf}(0, f) $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.totalDegree_coeff_optionEquivLeft_le\",\n      \"informal_name\": \"Total Degree of Coefficient Under Option σ Equivalence is Bounded\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (R : Type u) (S₁ : Type v) [inst : CommSemiring R] (p : MvPolynomial (Option S₁) R) (i : ℕ),\\n  (((MvPolynomial.optionEquivLeft R S₁) p).coeff i).totalDegree ≤ p.totalDegree\",\n      \"informal_description\": \"For any multivariate polynomial $ p $ over a commutative semiring $ R $ with variables indexed by $ \\\\text{Option } \\\\sigma $, and for any natural number $ i $, the total degree of the coefficient of $ X^i $ in the polynomial obtained by applying the algebra equivalence between $ R[\\\\text{Option } \\\\sigma] $ and $ R[\\\\sigma][X] $ to $ p $ is less than or equal to the total degree of $ p $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "MvPolynomial.degree_optionEquivLeft",
+            "informal_name": "Algebra Equivalence Between Multivariate Polynomials Over Option σ and Polynomials in One Variable with Multivariate Coefficients",
+            "kind": "theorem",
+            "type": "∀ (R : Type u) {σ : Type u_1} [inst : CommSemiring R] {f : MvPolynomial (Option σ) R},\n  f ≠ 0 → ((MvPolynomial.optionEquivLeft R σ) f).degree = ↑(MvPolynomial.degreeOf none f)",
+            "informal_description": "There exists an algebra equivalence between the ring of multivariate polynomials with variables indexed by $\\text{Option } \\sigma$ and coefficients in a commutative semiring $R$, and the polynomial ring in one variable whose coefficients are multivariate polynomials over $R$ with variables indexed by $\\sigma$. This equivalence maps variables in $\\text{Option } \\sigma$ to either the indeterminate of the outer polynomial ring (for the $\\text{none}$ case) or coefficients in the inner multivariate polynomial ring (for the $\\text{some } s$ cases), with the inverse given by substituting renamed variables. For any nonzero polynomial $f$, the degree of the transformed polynomial equals the total degree of $f$ in the $\\text{none}$ variable.",
+            "path": "Mathlib.Algebra.MvPolynomial.Equiv"
+          },
+          {
+            "formal_name": "MvPolynomial.natDegree_optionEquivLeft",
+            "informal_name": "Algebra Equivalence between Multivariate Polynomials over Option σ and Polynomials in One Variable with Multivariate Coefficients",
+            "kind": "theorem",
+            "type": "∀ (R : Type u) {σ : Type u_1} [inst : CommSemiring R] (p : MvPolynomial (Option σ) R),\n  ((MvPolynomial.optionEquivLeft R σ) p).natDegree = MvPolynomial.degreeOf none p",
+            "informal_description": "There exists an algebra equivalence between the ring of multivariate polynomials with variables indexed by $\\text{Option } \\sigma$ (i.e., $\\sigma \\cup \\{\\text{none}\\}$) and coefficients in a commutative semiring $R$, and the polynomial ring in one variable (corresponding to $\\text{none}$) whose coefficients are multivariate polynomials over $R$ with variables indexed by $\\sigma$. This equivalence maps variables in $\\text{Option } \\sigma$ to either the outer polynomial's indeterminate (for $\\text{none}$) or coefficients in the inner multivariate polynomial ring (for $\\text{some } s$), with the inverse given by renaming variables.",
+            "path": "Mathlib.Algebra.MvPolynomial.Equiv"
+          },
+          {
+            "formal_name": "MvPolynomial.degreeOf_eq_natDegree",
+            "informal_name": "Algebra Equivalence for Multivariate Polynomials with Option-Indexed Variables",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : DecidableEq σ] (a : σ) (p : MvPolynomial σ R),\n  MvPolynomial.degreeOf a p =\n    ((MvPolynomial.optionEquivLeft R { b // b ≠ a })\n        ((MvPolynomial.rename ⇑(Equiv.optionSubtypeNe a).symm) p)).natDegree",
+            "informal_description": "There exists an algebra equivalence between the ring of multivariate polynomials over a commutative semiring $ R $ with variables indexed by $ \\text{Option } \\sigma $, and the polynomial ring in one variable whose coefficients are multivariate polynomials over $ R $ with variables indexed by $ \\sigma $. This equivalence maps variables corresponding to $ \\text{none} $ to the outer polynomial indeterminate and variables corresponding to $ \\text{some } s $ to coefficients in the inner multivariate polynomial ring, with the inverse given by variable substitution.",
+            "path": "Mathlib.Algebra.MvPolynomial.Equiv"
+          },
+          {
+            "formal_name": "MvPolynomial.natDegree_finSuccEquiv",
+            "informal_name": "Natural Degree Under FinSucc Equivalence Equals Zeroth Variable Degree",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : CommSemiring R] {n : ℕ} (f : MvPolynomial (Fin (n + 1)) R),\n  ((MvPolynomial.finSuccEquiv R n) f).natDegree = MvPolynomial.degreeOf 0 f",
+            "informal_description": "For any multivariate polynomial $ f $ with variables indexed by $ \\text{Fin}(n+1) $, the natural degree of the polynomial obtained via the finSuccEquiv transformation is equal to the total degree of $ f $ in the zeroth variable. Symbolically, $ \\text{natdeg}(\\text{finSuccEquiv}(f)) = \\text{degreeOf}(0, f) $.",
+            "path": "Mathlib.Algebra.MvPolynomial.Equiv"
+          },
+          {
+            "formal_name": "MvPolynomial.totalDegree_coeff_optionEquivLeft_le",
+            "informal_name": "Total Degree of Coefficient Under Option σ Equivalence is Bounded",
+            "kind": "theorem",
+            "type": "∀ (R : Type u) (S₁ : Type v) [inst : CommSemiring R] (p : MvPolynomial (Option S₁) R) (i : ℕ),\n  (((MvPolynomial.optionEquivLeft R S₁) p).coeff i).totalDegree ≤ p.totalDegree",
+            "informal_description": "For any multivariate polynomial $ p $ over a commutative semiring $ R $ with variables indexed by $ \\text{Option } \\sigma $, and for any natural number $ i $, the total degree of the coefficient of $ X^i $ in the polynomial obtained by applying the algebra equivalence between $ R[\\text{Option } \\sigma] $ and $ R[\\sigma][X] $ to $ p $ is less than or equal to the total degree of $ p $.",
+            "path": "Mathlib.Algebra.MvPolynomial.Equiv"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "Loogle",
+    "request": {
+      "query": "MvPolynomial.optionEquivLeft, Polynomial.natDegree"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.natDegree_optionEquivLeft\",\n      \"type\": \" (R : Type u) {σ : Type u_1} [CommSemiring R] (p : MvPolynomial (Option σ) R) : ((MvPolynomial.optionEquivLeft R σ) p).natDegree = MvPolynomial.degreeOf none p\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    },\n    {\n      \"name\": \"MvPolynomial.degreeOf_eq_natDegree\",\n      \"type\": \" {R : Type u} {σ : Type u_1} [CommSemiring R] [DecidableEq σ] (a : σ) (p : MvPolynomial σ R) : MvPolynomial.degreeOf a p = ((MvPolynomial.optionEquivLeft R { b // b ≠ a }) ((MvPolynomial.rename ⇑(Equiv.optionSubtypeNe a).symm) p)).natDegree\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.natDegree_optionEquivLeft",
+            "type": " (R : Type u) {σ : Type u_1} [CommSemiring R] (p : MvPolynomial (Option σ) R) : ((MvPolynomial.optionEquivLeft R σ) p).natDegree = MvPolynomial.degreeOf none p",
+            "module": "Mathlib.Algebra.MvPolynomial.Equiv"
+          },
+          {
+            "name": "MvPolynomial.degreeOf_eq_natDegree",
+            "type": " {R : Type u} {σ : Type u_1} [CommSemiring R] [DecidableEq σ] (a : σ) (p : MvPolynomial σ R) : MvPolynomial.degreeOf a p = ((MvPolynomial.optionEquivLeft R { b // b ≠ a }) ((MvPolynomial.rename ⇑(Equiv.optionSubtypeNe a).symm) p)).natDegree",
+            "module": "Mathlib.Algebra.MvPolynomial.Equiv"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "LeanSearch",
+    "request": {
+      "query": "degree in a variable equals natural degree after optionEquivLeft polynomial equivalence"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.degreeOf_eq_natDegree\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Equiv\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : DecidableEq σ] (a : σ) (p : MvPolynomial σ R),\\n  MvPolynomial.degreeOf a p =\\n    ((MvPolynomial.optionEquivLeft R { b // b ≠ a })\\n        ((MvPolynomial.rename ⇑(Equiv.optionSubtypeNe a).symm) p)).natDegree\"\n    },\n    {\n      \"name\": \"MvPolynomial.degree_optionEquivLeft\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Equiv\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (R : Type u) {σ : Type u_1} [inst : CommSemiring R] {f : MvPolynomial (Option σ) R},\\n  f ≠ 0 → ((MvPolynomial.optionEquivLeft R σ) f).degree = ↑(MvPolynomial.degreeOf none f)\"\n    },\n    {\n      \"name\": \"MvPolynomial.natDegree_optionEquivLeft\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Equiv\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (R : Type u) {σ : Type u_1} [inst : CommSemiring R] (p : MvPolynomial (Option σ) R),\\n  ((MvPolynomial.optionEquivLeft R σ) p).natDegree = MvPolynomial.degreeOf none p\"\n    },\n    {\n      \"name\": \"Polynomial.degree_eq_iff_natDegree_eq_of_pos\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Degree.Definitions\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Semiring R] {p : Polynomial R} {n : ℕ}, 0 < n → (p.degree = ↑n ↔ p.natDegree = n)\"\n    },\n    {\n      \"name\": \"MvPolynomial.degreeOf\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Degrees\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} → {σ : Type u_1} → [inst : CommSemiring R] → σ → MvPolynomial σ R → ℕ\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.degreeOf_eq_natDegree",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Equiv",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : DecidableEq σ] (a : σ) (p : MvPolynomial σ R),\n  MvPolynomial.degreeOf a p =\n    ((MvPolynomial.optionEquivLeft R { b // b ≠ a })\n        ((MvPolynomial.rename ⇑(Equiv.optionSubtypeNe a).symm) p)).natDegree"
+          },
+          {
+            "name": "MvPolynomial.degree_optionEquivLeft",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Equiv",
+            "kind": "theorem",
+            "type": "∀ (R : Type u) {σ : Type u_1} [inst : CommSemiring R] {f : MvPolynomial (Option σ) R},\n  f ≠ 0 → ((MvPolynomial.optionEquivLeft R σ) f).degree = ↑(MvPolynomial.degreeOf none f)"
+          },
+          {
+            "name": "MvPolynomial.natDegree_optionEquivLeft",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Equiv",
+            "kind": "theorem",
+            "type": "∀ (R : Type u) {σ : Type u_1} [inst : CommSemiring R] (p : MvPolynomial (Option σ) R),\n  ((MvPolynomial.optionEquivLeft R σ) p).natDegree = MvPolynomial.degreeOf none p"
+          },
+          {
+            "name": "Polynomial.degree_eq_iff_natDegree_eq_of_pos",
+            "module_name": "Mathlib.Algebra.Polynomial.Degree.Definitions",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : Semiring R] {p : Polynomial R} {n : ℕ}, 0 < n → (p.degree = ↑n ↔ p.natDegree = n)"
+          },
+          {
+            "name": "MvPolynomial.degreeOf",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Degrees",
+            "kind": "definition",
+            "type": "{R : Type u} → {σ : Type u_1} → [inst : CommSemiring R] → σ → MvPolynomial σ R → ℕ"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "local",
+    "request": {
+      "query": "natDegree_optionEquivLeft"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.natDegree_optionEquivLeft\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.natDegree_optionEquivLeft",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "current",
+    "method": "rg",
+    "request": [
+      "rg",
+      "-n",
+      "uniqueAlgEquiv.*natDegree|natDegree.*uniqueAlgEquiv|degreeOf_unique",
+      ".lake/packages/mathlib/Mathlib"
+    ],
+    "receipt": "rg-current.json",
+    "status": "executed; see exact source receipt"
+  },
+  {
+    "form": "standard",
+    "method": "rg",
+    "request": [
+      "rg",
+      "-n",
+      "degreeOf_eq_natDegree|natDegree_optionEquivLeft|natDegree_finSuccEquiv",
+      ".lake/packages/mathlib/Mathlib"
+    ],
+    "receipt": "rg-literature.json",
+    "status": "executed; see exact source receipt"
+  },
+  {
+    "form": "abstract",
+    "method": "rg",
+    "request": [
+      "rg",
+      "-n",
+      "supDegree_eq_natDegree|natDegree_map_eq_of_injective|degreeOf_eq_sup",
+      ".lake/packages/mathlib/Mathlib"
+    ],
+    "receipt": "rg-modern.json",
+    "status": "executed; see exact source receipt"
+  }
+]

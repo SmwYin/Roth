@@ -1,0 +1,68 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\n#check_failure Roth.degreeOf_uniqueAlgEquiv_symm\nnamespace UniqueDegree162Composition\nopen MvPolynomial\nvariable {R : Type*} [CommSemiring R] {σ : Type*} [Unique σ]\ntheorem directGenericLaw (p : MvPolynomial σ R) :\n    degreeOf default p =\n      (optionEquivLeft R {b : σ // b ≠ default}\n        (rename (Equiv.optionSubtypeNe (default : σ)).symm p)).natDegree := by\n  classical\n  exact degreeOf_eq_natDegree default p\ntheorem representationGap (f : Polynomial R) : True := by\n  classical\n  have checked : degreeOf default ((uniqueAlgEquiv R σ).symm f) = f.natDegree → True :=\n    fun _ ↦ True.intro\n  fail_if_success\n    apply checked\n    exact degreeOf_eq_natDegree default ((uniqueAlgEquiv R σ).symm f)\n  fail_if_success\n    apply checked\n    simpa only [uniqueAlgEquiv_symm_apply] using\n      degreeOf_eq_natDegree default ((uniqueAlgEquiv R σ).symm f)\n  exact True.intro\n#print axioms directGenericLaw\n#print axioms representationGap\nend UniqueDegree162Composition\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": false,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.degreeOf_uniqueAlgEquiv_symm`\",\n      \"line\": 10,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"Unknown identifier `σ`\",\n      \"line\": 22,\n      \"column\": 54,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"unsolved goals\\nR : Type u_1\\ninst✝ : CommSemiring R\\nf : Polynomial R\\n⊢ True\",\n      \"line\": 20,\n      \"column\": 56,\n      \"lean_tags\": [\n        \"unsolvedGoals\"\n      ],\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'UniqueDegree162Composition.directGenericLaw' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 32,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'UniqueDegree162Composition.representationGap' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 33,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": false,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.degreeOf_uniqueAlgEquiv_symm`",
+          "line": 10,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "Unknown identifier `σ`",
+          "line": 22,
+          "column": 54,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "unsolved goals\nR : Type u_1\ninst✝ : CommSemiring R\nf : Polynomial R\n⊢ True",
+          "line": 20,
+          "column": 56,
+          "lean_tags": [
+            "unsolvedGoals"
+          ],
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'UniqueDegree162Composition.directGenericLaw' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 32,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'UniqueDegree162Composition.representationGap' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 33,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 14814
+}

@@ -1,0 +1,69 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+#check_failure Roth.degreeOf_uniqueAlgEquiv_symm
+namespace UniqueDegree162
+open MvPolynomial
+variable {R : Type*} [CommSemiring R] {σ : Type*} [Unique σ]
+theorem oldForm (f : Polynomial R) :
+    degreeOf default ((uniqueAlgEquiv R σ).symm f) = f.natDegree := by
+  apply le_antisymm
+  · rw [degreeOf_le_iff]
+    intro e he
+    rw [mem_support_iff, MvPolynomial.coeff_uniqueAlgEquiv_symm] at he
+    exact Polynomial.le_natDegree_of_ne_zero he
+  · refine Polynomial.natDegree_le_iff_coeff_eq_zero.2 fun n hn ↦ ?_
+    simpa only [mem_support_iff, MvPolynomial.coeff_uniqueAlgEquiv_symm,
+      Finsupp.single_eq_same, not_not] using
+      (notMem_support_of_degreeOf_lt (p := (uniqueAlgEquiv R σ).symm f) (i := default)
+        (s := Finsupp.single default n) (by simpa only [Finsupp.single_eq_same] using hn))
+theorem representationBridge (f : Polynomial R) :
+    optionEquivLeft R {b : σ // b ≠ default}
+      (rename (Equiv.optionSubtypeNe (default : σ)).symm ((uniqueAlgEquiv R σ).symm f)) =
+        f.map MvPolynomial.C := by
+  classical
+  have h : (optionEquivLeft R {b : σ // b ≠ default}).toAlgHom.comp
+      ((rename (Equiv.optionSubtypeNe (default : σ)).symm).comp
+        (uniqueAlgEquiv R σ).symm.toAlgHom) =
+      Polynomial.mapAlgHom (MvPolynomial.CAlgHom : R →ₐ[R] MvPolynomial {b : σ // b ≠ default} R) := by
+    apply Polynomial.algHom_ext
+    simp [uniqueAlgEquiv_symm_apply]
+  exact AlgHom.congr_fun h f
+theorem canonicalRoute (f : Polynomial R) :
+    degreeOf default ((uniqueAlgEquiv R σ).symm f) = f.natDegree := by
+  classical
+  rw [degreeOf_eq_natDegree, representationBridge]
+  exact Polynomial.natDegree_map_eq_of_injective MvPolynomial.C_injective f
+theorem arbitraryCoordinate (f : Polynomial R) (j : σ) :
+    degreeOf j ((uniqueAlgEquiv R σ).symm f) = f.natDegree := by
+  rw [Subsingleton.elim j default]
+  exact oldForm f
+example : degreeOf default ((uniqueAlgEquiv ℕ Unit).symm (0 : Polynomial ℕ)) = 0 := by
+  simp [oldForm]
+example : degreeOf default ((uniqueAlgEquiv ℕ Unit).symm (Polynomial.X ^ 3)) = 3 := by
+  rw [oldForm]
+  simp
+example : degreeOf default ((uniqueAlgEquiv (ZMod 4) Unit).symm
+    (Polynomial.C 2 * Polynomial.X ^ 2)) = 2 := by
+  rw [oldForm, Polynomial.natDegree_C_mul_X_pow]
+  decide
+theorem falseGeneralization :
+    degreeOf false (X true : MvPolynomial Bool ℕ) ≠ (Polynomial.X : Polynomial ℕ).natDegree := by
+  simp
+#check_failure (MvPolynomial.uniqueAlgEquiv ℕ Bool)
+section SemiringFloor
+variable (S : Type*) [Semiring S]
+#check_failure (MvPolynomial.uniqueAlgEquiv S Unit)
+end SemiringFloor
+#print axioms oldForm
+#print axioms representationBridge
+#print axioms canonicalRoute
+#print axioms arbitraryCoordinate
+#print axioms falseGeneralization
+end UniqueDegree162

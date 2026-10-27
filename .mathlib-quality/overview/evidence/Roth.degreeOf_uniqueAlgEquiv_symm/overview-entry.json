@@ -1,0 +1,52 @@
+{
+  "kind": "theorem",
+  "type": "@Roth.degreeOf_uniqueAlgEquiv_symm : ∀ {R : Type u_1} [inst : CommSemiring R] {σ : Type u_2} [inst_1 : Unique σ]\n  (f : Polynomial R), MvPolynomial.degreeOf default ((MvPolynomial.uniqueAlgEquiv R σ).symm f) = f.natDegree",
+  "what": "Identifies the degree in the unique variable of the inverse uniqueAlgEquiv image with the original polynomial natDegree, including zero.",
+  "how": "Two coefficient-support inequalities using mathlib coeff_uniqueAlgEquiv_symm directly; independent structural proof uses a newly proved optionSubtypeNe/optionEquivLeft normalization and existing degreeOf_eq_natDegree plus injective map degree.",
+  "hypotheses": "Universe-polymorphic CommSemiring R and Unique sigma; arbitrary polynomial; no nonzero, finite, DecidableEq, domain or field hypotheses.",
+  "project_dependencies": [],
+  "caller_summary": {
+    "explicit_use_count": 2,
+    "external_to_file_use_count": 1,
+    "explicit_call_sites": [
+      {
+        "name": "Roth.degreeOf_none_rename_mul_aeval",
+        "file": "Roth/Separation.lean",
+        "line": 226
+      },
+      {
+        "name": "Roth.index_separated_mul_le_aux",
+        "visibility": "private",
+        "file": "Roth/Theta.lean",
+        "line": 427
+      }
+    ],
+    "direct_kernel_value_consumers": [
+      "Roth.degreeOf_none_rename_mul_aeval",
+      "_private.Roth.Theta.0.Roth.index_separated_mul_le_aux"
+    ],
+    "inline_derivations": [],
+    "complete_replays_verified": true
+  },
+  "mathlib_api_audit": {
+    "verdict": "BORDERLINE-needs-human",
+    "existing_canonical_law": "MvPolynomial.degreeOf_eq_natDegree",
+    "other_hits": [
+      "MvPolynomial.natDegree_optionEquivLeft",
+      "MvPolynomial.coeff_uniqueAlgEquiv_symm",
+      "Polynomial.natDegree_map_eq_of_injective",
+      "MvPolynomial.C_injective",
+      "MvPolynomial.degreeOf_eq_sup",
+      "Polynomial.supDegree_eq_natDegree"
+    ],
+    "exact_target_located": false,
+    "new_bridge_required": true,
+    "cells": 15,
+    "local_index": "unavailable; source hits checked natively"
+  },
+  "moral_duplications": "The selected-variable/natDegree content exists canonically, but a genuine newly proved presentation bridge is needed to apply it to uniqueAlgEquiv. No automatic inherited NO from coefficient theorem161.",
+  "generalization": "Already maximal for fixed CommSemiring/Unique interface; arbitrary coordinate is checked equivalent restatement. Arbitrary selected-variable general law is already in mathlib; Semiring interface drop and Bool uniqueness drop rejected.",
+  "missing_api": "Potential named uniqueAlgEquiv degree rewrite or normalization bridge; upstream design choice rather than established mathematical gap.",
+  "junk": "Not dead: two actual source uses and two exact native direct kernel-value consumers.",
+  "action": "Retain locally pending upstream API choice: direct singleton degree rewrite, normalization bridge, and default versus arbitrary coordinate signature. Both full caller replacements compiled; no production edits made."
+}

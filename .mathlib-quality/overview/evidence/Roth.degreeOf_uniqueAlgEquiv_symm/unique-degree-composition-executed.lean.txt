@@ -1,0 +1,33 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+#check_failure Roth.degreeOf_uniqueAlgEquiv_symm
+namespace UniqueDegree162Composition
+open MvPolynomial
+variable {R : Type*} [CommSemiring R] {σ : Type*} [Unique σ]
+theorem directGenericLaw {ι : Type*} [DecidableEq ι] (i : ι) (p : MvPolynomial ι R) :
+    degreeOf i p =
+      (optionEquivLeft R {b : ι // b ≠ i}
+        (rename (Equiv.optionSubtypeNe i).symm p)).natDegree :=
+  degreeOf_eq_natDegree i p
+theorem representationGap {σ : Type*} [Unique σ] (f : Polynomial R) : True := by
+  classical
+  have checked : degreeOf default ((uniqueAlgEquiv R σ).symm f) = f.natDegree → True :=
+    fun _ ↦ True.intro
+  fail_if_success
+    apply checked
+    exact degreeOf_eq_natDegree default ((uniqueAlgEquiv R σ).symm f)
+  fail_if_success
+    apply checked
+    simpa only [uniqueAlgEquiv_symm_apply] using
+      degreeOf_eq_natDegree default ((uniqueAlgEquiv R σ).symm f)
+  exact True.intro
+#print axioms directGenericLaw
+#print axioms representationGap
+end UniqueDegree162Composition

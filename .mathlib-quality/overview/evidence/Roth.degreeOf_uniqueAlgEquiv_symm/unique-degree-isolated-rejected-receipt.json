@@ -1,0 +1,131 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\n#check_failure Roth.degreeOf_uniqueAlgEquiv_symm\nnamespace UniqueDegree162\nopen MvPolynomial\nvariable {R : Type*} [CommSemiring R] {σ : Type*} [Unique σ]\ntheorem oldForm (f : Polynomial R) :\n    degreeOf default ((uniqueAlgEquiv R σ).symm f) = f.natDegree := by\n  apply le_antisymm\n  · rw [degreeOf_le_iff]\n    intro e he\n    rw [mem_support_iff, MvPolynomial.coeff_uniqueAlgEquiv_symm] at he\n    exact Polynomial.le_natDegree_of_ne_zero he\n  · refine Polynomial.natDegree_le_iff_coeff_eq_zero.2 fun n hn ↦ ?_\n    simpa only [mem_support_iff, MvPolynomial.coeff_uniqueAlgEquiv_symm,\n      Finsupp.single_eq_same, not_not] using\n      (notMem_support_of_degreeOf_lt (p := (uniqueAlgEquiv R σ).symm f) (i := default)\n        (s := Finsupp.single default n) (by simpa only [Finsupp.single_eq_same] using hn))\ntheorem representationBridge (f : Polynomial R) :\n    optionEquivLeft R {b : σ // b ≠ default}\n      (rename (Equiv.optionSubtypeNe (default : σ)).symm ((uniqueAlgEquiv R σ).symm f)) =\n        f.map MvPolynomial.C := by\n  classical\n  have h : (optionEquivLeft R {b : σ // b ≠ default}).toAlgHom.comp\n      ((rename (Equiv.optionSubtypeNe (default : σ)).symm).comp\n        (uniqueAlgEquiv R σ).symm.toAlgHom) =\n      Polynomial.mapAlgHom (MvPolynomial.CAlgHom : R →ₐ[R] MvPolynomial {b : σ // b ≠ default} R) := by\n    apply Polynomial.algHom_ext\n    simp [uniqueAlgEquiv_symm_apply]\n  exact AlgHom.congr_fun h f\ntheorem canonicalRoute (f : Polynomial R) :\n    degreeOf default ((uniqueAlgEquiv R σ).symm f) = f.natDegree := by\n  classical\n  rw [degreeOf_eq_natDegree, representationBridge]\n  exact Polynomial.natDegree_map_eq_of_injective MvPolynomial.C_injective f\ntheorem arbitraryCoordinate (f : Polynomial R) (j : σ) :\n    degreeOf j ((uniqueAlgEquiv R σ).symm f) = f.natDegree := by\n  rw [Subsingleton.elim j default]\n  exact oldForm f\nexample : degreeOf default ((uniqueAlgEquiv ℕ Unit).symm (0 : Polynomial ℕ)) = 0 := by\n  simp [oldForm]\nexample : degreeOf default ((uniqueAlgEquiv ℕ Unit).symm (Polynomial.X ^ 3)) = 3 := by\n  rw [oldForm]\n  simp\nexample : degreeOf default ((uniqueAlgEquiv (ZMod 4) Unit).symm\n    (Polynomial.C 2 * Polynomial.X ^ 2)) = 2 := by\n  rw [oldForm, Polynomial.natDegree_C_mul_X_pow]\n  decide\ntheorem falseGeneralization :\n    degreeOf false (X true : MvPolynomial Bool ℕ) ≠ (Polynomial.X : Polynomial ℕ).natDegree := by\n  simp\n#check_failure (MvPolynomial.uniqueAlgEquiv ℕ Bool)\nsection SemiringFloor\nvariable (S : Type*) [Semiring S]\n#check_failure (MvPolynomial.uniqueAlgEquiv S Unit)\nend SemiringFloor\n#print axioms oldForm\n#print axioms representationBridge\n#print axioms canonicalRoute\n#print axioms arbitraryCoordinate\n#print axioms falseGeneralization\nend UniqueDegree162\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": false,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.degreeOf_uniqueAlgEquiv_symm`\",\n      \"line\": 10,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"Unknown constant `MvPolynomial.CAlgHom`\",\n      \"line\": 34,\n      \"column\": 29,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"Application type mismatch: The argument\\n  C_injective\\nhas type\\n  ∀ (σ : Type ?u.28) (R : Type ?u.27) [inst : CommSemiring R], Function.Injective ⇑C\\nbut is expected to have type\\n  Function.Injective ⇑?m.40\\nin the application\\n  Polynomial.natDegree_map_eq_of_injective C_injective\",\n      \"line\": 42,\n      \"column\": 50,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"failed to synthesize instance of type class\\n  Unique Bool\\n\\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.\",\n      \"line\": 59,\n      \"column\": 17,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"unsolved goals\\n⊢ ¬degreeOf false (X true) = 1\",\n      \"line\": 57,\n      \"column\": 96,\n      \"lean_tags\": [\n        \"unsolvedGoals\"\n      ],\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"failed to synthesize instance of type class\\n  CommSemiring S\\n\\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.\",\n      \"line\": 62,\n      \"column\": 17,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'UniqueDegree162.oldForm' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 64,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'UniqueDegree162.representationBridge' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 65,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'UniqueDegree162.canonicalRoute' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 66,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'UniqueDegree162.arbitraryCoordinate' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 67,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'UniqueDegree162.falseGeneralization' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 68,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"warning\",\n      \"message\": \"This simp argument is unused:\\n  oldForm\\n\\nHint: Omit it from the simp argument list.\\n  [apply] simp\\n\\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`\",\n      \"line\": 48,\n      \"column\": 9,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": false,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.degreeOf_uniqueAlgEquiv_symm`",
+          "line": 10,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "Unknown constant `MvPolynomial.CAlgHom`",
+          "line": 34,
+          "column": 29,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "Application type mismatch: The argument\n  C_injective\nhas type\n  ∀ (σ : Type ?u.28) (R : Type ?u.27) [inst : CommSemiring R], Function.Injective ⇑C\nbut is expected to have type\n  Function.Injective ⇑?m.40\nin the application\n  Polynomial.natDegree_map_eq_of_injective C_injective",
+          "line": 42,
+          "column": 50,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "failed to synthesize instance of type class\n  Unique Bool\n\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.",
+          "line": 59,
+          "column": 17,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "unsolved goals\n⊢ ¬degreeOf false (X true) = 1",
+          "line": 57,
+          "column": 96,
+          "lean_tags": [
+            "unsolvedGoals"
+          ],
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "failed to synthesize instance of type class\n  CommSemiring S\n\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.",
+          "line": 62,
+          "column": 17,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'UniqueDegree162.oldForm' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 64,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'UniqueDegree162.representationBridge' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 65,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'UniqueDegree162.canonicalRoute' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 66,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'UniqueDegree162.arbitraryCoordinate' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 67,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'UniqueDegree162.falseGeneralization' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 68,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "warning",
+          "message": "This simp argument is unused:\n  oldForm\n\nHint: Omit it from the simp argument list.\n  [apply] simp\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`",
+          "line": 48,
+          "column": 9,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 817
+}

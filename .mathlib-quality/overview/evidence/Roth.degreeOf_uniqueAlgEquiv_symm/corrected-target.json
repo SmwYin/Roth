@@ -1,0 +1,61 @@
+{
+  "file": "Roth/Separation.lean",
+  "line": 174,
+  "name": "Roth.degreeOf_uniqueAlgEquiv_symm",
+  "short": "degreeOf_uniqueAlgEquiv_symm",
+  "kind": "theorem",
+  "visibility": "public",
+  "end_line": 185,
+  "source": "theorem degreeOf_uniqueAlgEquiv_symm {\u03c3 : Type*} [Unique \u03c3] (f : Polynomial R) :\n    degreeOf default ((uniqueAlgEquiv R \u03c3).symm f) = f.natDegree := by\n  apply le_antisymm\n  \u00b7 rw [degreeOf_le_iff]\n    intro e he\n    rw [mem_support_iff, MvPolynomial.coeff_uniqueAlgEquiv_symm] at he\n    exact Polynomial.le_natDegree_of_ne_zero he\n  \u00b7 refine Polynomial.natDegree_le_iff_coeff_eq_zero.2 fun n hn \u21a6 ?_\n    simpa only [mem_support_iff, MvPolynomial.coeff_uniqueAlgEquiv_symm,\n      Finsupp.single_eq_same, not_not] using\n      (notMem_support_of_degreeOf_lt (p := (uniqueAlgEquiv R \u03c3).symm f) (i := default)\n        (s := Finsupp.single default n) (by simpa only [Finsupp.single_eq_same] using hn))",
+  "signature": "theorem degreeOf_uniqueAlgEquiv_symm {\u03c3 : Type*} [Unique \u03c3] (f : Polynomial R) :\n    degreeOf default ((uniqueAlgEquiv R \u03c3).symm f) = f.natDegree",
+  "body": "by\n  apply le_antisymm\n  \u00b7 rw [degreeOf_le_iff]\n    intro e he\n    rw [mem_support_iff, MvPolynomial.coeff_uniqueAlgEquiv_symm] at he\n    exact Polynomial.le_natDegree_of_ne_zero he\n  \u00b7 refine Polynomial.natDegree_le_iff_coeff_eq_zero.2 fun n hn \u21a6 ?_\n    simpa only [mem_support_iff, MvPolynomial.coeff_uniqueAlgEquiv_symm,\n      Finsupp.single_eq_same, not_not] using\n      (notMem_support_of_degreeOf_lt (p := (uniqueAlgEquiv R \u03c3).symm f) (i := default)\n        (s := Finsupp.single default n) (by simpa only [Finsupp.single_eq_same] using hn))",
+  "proof_lines": 11,
+  "sha256": "ee56af91570cef7fa69fdd87a773ab1c78d40fd03076d995f9a699f73c7e7645",
+  "what": "The coordinate degree of the singleton-variable representation equals univariate natural degree.",
+  "how": "Use support-to-degree and coefficient-to-natural-degree inequalities in both directions via MvPolynomial.coeff_uniqueAlgEquiv_symm.",
+  "hypotheses": "Commutative semiring; uniquely inhabited variable type.",
+  "source_body_refs": [],
+  "source_type_refs": [],
+  "source_callers": [
+    {
+      "name": "Roth.degreeOf_none_rename_mul_aeval",
+      "file": "Roth/Separation.lean",
+      "line": 213
+    },
+    {
+      "name": "Roth.index_separated_mul_le_aux",
+      "file": "Roth/Theta.lean",
+      "line": 414
+    }
+  ],
+  "notes": [],
+  "input_file_sha256": "4ac885af6c9973d40f68bd2e6c42185f02a9996271ccaa67d4932d27e85a7d0e",
+  "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+  "section_context": "Namespace Roth; open MvPolynomial. Ambient \u03c4 : Type*. General section: R : Type*, [CommSemiring R]. Ambient [Fintype \u03c4] and [DecidableEq \u03c4] are explicitly omitted around general declarations; unused section instances are not implicit mathematical hypotheses. Inline binders override/add context. ",
+  "uses_from_project": [],
+  "used_by_in_file": [
+    "Roth.degreeOf_none_rename_mul_aeval"
+  ],
+  "used_by_other_files": [
+    {
+      "name": "Roth.index_separated_mul_le_aux",
+      "file": "Roth/Theta.lean",
+      "line": 414
+    }
+  ],
+  "assignment_offset": 146,
+  "project_body_refs": [],
+  "project_type_refs": [],
+  "project_callers": [
+    {
+      "name": "Roth.degreeOf_none_rename_mul_aeval",
+      "file": "Roth/Separation.lean",
+      "line": 213
+    },
+    {
+      "name": "Roth.index_separated_mul_le_aux",
+      "file": "Roth/Theta.lean",
+      "line": 414
+    }
+  ]
+}
