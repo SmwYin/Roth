@@ -1,0 +1,729 @@
+[
+  {
+    "key": "finder-current",
+    "request": {
+      "query": "Hasse derivative of Kronecker substitution is finite polynomial linear combination of substituted multivariate Hasse derivatives of order at most n uniformly in P",
+      "num_results": 8
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv\",\n      \"informal_name\": \"Hasse Derivative of Order k on Polynomial Ring\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} \u2192 [inst : Semiring R] \u2192 \u2115 \u2192 Polynomial R \u2192\u2097[R] Polynomial R\",\n      \"informal_description\": \"For a semiring $ R $, the Hasse derivative of order $ k $ is an $ R $-linear map $ D^{(k)} : R[X] \\to R[X] $ defined by $ D^{(k)}(a_i X^i) = \\binom{i}{k} a_i X^{i - k} $ on monomials and extended linearly. This operation generalizes the usual derivative by scaling each coefficient $ a_i $ by the binomial coefficient $ \\binom{i}{k} $ and reducing the degree by $ k $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv_apply\",\n      \"informal_name\": \"Hasse Derivative of Order k Applied to a Polynomial\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u_1} [inst : Semiring R] (k : \u2115) (f : Polynomial R),\\n  (Polynomial.hasseDeriv k) f = f.sum fun i r => (Polynomial.monomial (i - k)) (\u2191(i.choose k) * r)\",\n      \"informal_description\": \"For a semiring $ R $ and a polynomial $ f \\\\in R[X] $, the Hasse derivative of order $ k $ applied to $ f $ is given by $ D^{(k)}(f) = \\\\sum_{i} \\\\binom{i}{k} \\\\cdot a_i \\\\cdot X^{i - k} $, where $ a_i $ is the coefficient of $ X^i $ in $ f $. This expression sums over all monomials in $ f $, scaling each by the binomial coefficient $ \\\\binom{i}{k} $ and reducing the exponent by $ k $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv_mul\",\n      \"informal_name\": \"Product Rule for Hasse Derivatives in Polynomial Rings\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u_1} [inst : Semiring R] (k : \u2115) (f g : Polynomial R),\\n  (Polynomial.hasseDeriv k) (f * g) =\\n    \u2211 ij \u2208 Finset.antidiagonal k, (Polynomial.hasseDeriv ij.1) f * (Polynomial.hasseDeriv ij.2) g\",\n      \"informal_description\": \"For any polynomials $ f, g \\\\in R[X] $, the $ k $-th Hasse derivative of the product $ f \\\\cdot g $ satisfies $$ D^{(k)}(f \\\\cdot g) = \\\\sum_{\\\\substack{i + j = k}} D^{(i)}(f) \\\\cdot D^{(j)}(g), $$ where the sum is taken over all pairs $ (i, j) $ of natural numbers such that $ i + j = k $. This expresses the Hasse derivative of a product as a sum over the antidiagonal decomposition of $ k $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv_monomial\",\n      \"informal_name\": \"Hasse Derivative of Monomial in Polynomial Ring\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u_1} [inst : Semiring R] (k n : \u2115) (r : R),\\n  (Polynomial.hasseDeriv k) ((Polynomial.monomial n) r) = (Polynomial.monomial (n - k)) (\u2191(n.choose k) * r)\",\n      \"informal_description\": \"For a semiring $ R $, the $ k $-th Hasse derivative of the monomial $ rX^n $ in the polynomial ring $ R[X] $ is given by $ \\\\binom{n}{k} r X^{n - k} $. This expresses how the Hasse derivative acts on monomials by scaling the coefficient by the binomial coefficient $ \\\\binom{n}{k} $ and reducing the degree by $ k $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv_coeff\",\n      \"informal_name\": \"Coefficient Formula for Hasse Derivative of Order k\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u_1} [inst : Semiring R] (k : \u2115) (f : Polynomial R) (n : \u2115),\\n  ((Polynomial.hasseDeriv k) f).coeff n = \u2191((n + k).choose k) * f.coeff (n + k)\",\n      \"informal_description\": \"For any natural number $ n $, the coefficient of $ X^n $ in the $ k $-th Hasse derivative of a polynomial $ f $ over a semiring $ R $ is equal to $ \\\\binom{n + k}{k} $ multiplied by the coefficient of $ X^{n + k} $ in $ f $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv_comp\",\n      \"informal_name\": \"Hasse Derivative Composition Formula with Binomial Coefficient\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u_1} [inst : Semiring R] (k l : \u2115),\\n  Polynomial.hasseDeriv k \u2218\u2097 Polynomial.hasseDeriv l = (k + l).choose k \u2022 Polynomial.hasseDeriv (k + l)\",\n      \"informal_description\": \"For any semiring $ R $ and natural numbers $ k, l $, the composition of the $ k $-th and $ l $-th Hasse derivatives on the polynomial ring $ R[X] $ equals $ \\\\binom{k + l}{k} $ times the $ (k + l) $-th Hasse derivative, i.e., $ D^{(k)} \\\\circ D^{(l)} = \\\\binom{k + l}{k} D^{(k + l)} $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.factorial_smul_hasseDeriv\",\n      \"informal_name\": \"Factorial Scaling of Hasse Derivative Equals Iterated Derivative\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u_1} [inst : Semiring R] (k : \u2115), \u21d1(k.factorial \u2022 Polynomial.hasseDeriv k) = (\u21d1Polynomial.derivative)^[k]\",\n      \"informal_description\": \"For any semiring $ R $, the $ k $-th Hasse derivative operator on the polynomial ring $ R[X] $, when multiplied by $ k! $, equals the $ k $-th iterate of the standard derivative operator. Formally, $ k! \\\\cdot D^{(k)} = (\\\\frac{d}{dX})^k $, where $ D^{(k)} $ denotes the Hasse derivative of order $ k $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.natDegree_hasseDeriv_le\",\n      \"informal_name\": \"Degree Bound for Hasse Derivative of Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u_1} [inst : Semiring R] (p : Polynomial R) (n : \u2115),\\n  ((Polynomial.hasseDeriv n) p).natDegree \u2264 p.natDegree - n\",\n      \"informal_description\": \"For any polynomial $ p $ over a semiring $ R $ and any natural number $ n $, the natural degree of the $ n $-th Hasse derivative of $ p $ satisfies $ \\\\deg(D^{(n)}(p)) \\\\leq \\\\deg(p) - n $, where $ D^{(n)} $ denotes the Hasse derivative of order $ n $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Polynomial.hasseDeriv",
+            "informal_name": "Hasse Derivative of Order k on Polynomial Ring",
+            "kind": "definition",
+            "type": "{R : Type u_1} \u2192 [inst : Semiring R] \u2192 \u2115 \u2192 Polynomial R \u2192\u2097[R] Polynomial R",
+            "informal_description": "For a semiring $ R $, the Hasse derivative of order $ k $ is an $ R $-linear map $ D^{(k)} : R[X] \to R[X] $ defined by $ D^{(k)}(a_i X^i) = \binom{i}{k} a_i X^{i - k} $ on monomials and extended linearly. This operation generalizes the usual derivative by scaling each coefficient $ a_i $ by the binomial coefficient $ \binom{i}{k} $ and reducing the degree by $ k $.",
+            "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          },
+          {
+            "formal_name": "Polynomial.hasseDeriv_apply",
+            "informal_name": "Hasse Derivative of Order k Applied to a Polynomial",
+            "kind": "theorem",
+            "type": "\u2200 {R : Type u_1} [inst : Semiring R] (k : \u2115) (f : Polynomial R),\n  (Polynomial.hasseDeriv k) f = f.sum fun i r => (Polynomial.monomial (i - k)) (\u2191(i.choose k) * r)",
+            "informal_description": "For a semiring $ R $ and a polynomial $ f \\in R[X] $, the Hasse derivative of order $ k $ applied to $ f $ is given by $ D^{(k)}(f) = \\sum_{i} \\binom{i}{k} \\cdot a_i \\cdot X^{i - k} $, where $ a_i $ is the coefficient of $ X^i $ in $ f $. This expression sums over all monomials in $ f $, scaling each by the binomial coefficient $ \\binom{i}{k} $ and reducing the exponent by $ k $.",
+            "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          },
+          {
+            "formal_name": "Polynomial.hasseDeriv_mul",
+            "informal_name": "Product Rule for Hasse Derivatives in Polynomial Rings",
+            "kind": "theorem",
+            "type": "\u2200 {R : Type u_1} [inst : Semiring R] (k : \u2115) (f g : Polynomial R),\n  (Polynomial.hasseDeriv k) (f * g) =\n    \u2211 ij \u2208 Finset.antidiagonal k, (Polynomial.hasseDeriv ij.1) f * (Polynomial.hasseDeriv ij.2) g",
+            "informal_description": "For any polynomials $ f, g \\in R[X] $, the $ k $-th Hasse derivative of the product $ f \\cdot g $ satisfies $$ D^{(k)}(f \\cdot g) = \\sum_{\\substack{i + j = k}} D^{(i)}(f) \\cdot D^{(j)}(g), $$ where the sum is taken over all pairs $ (i, j) $ of natural numbers such that $ i + j = k $. This expresses the Hasse derivative of a product as a sum over the antidiagonal decomposition of $ k $.",
+            "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          },
+          {
+            "formal_name": "Polynomial.hasseDeriv_monomial",
+            "informal_name": "Hasse Derivative of Monomial in Polynomial Ring",
+            "kind": "theorem",
+            "type": "\u2200 {R : Type u_1} [inst : Semiring R] (k n : \u2115) (r : R),\n  (Polynomial.hasseDeriv k) ((Polynomial.monomial n) r) = (Polynomial.monomial (n - k)) (\u2191(n.choose k) * r)",
+            "informal_description": "For a semiring $ R $, the $ k $-th Hasse derivative of the monomial $ rX^n $ in the polynomial ring $ R[X] $ is given by $ \\binom{n}{k} r X^{n - k} $. This expresses how the Hasse derivative acts on monomials by scaling the coefficient by the binomial coefficient $ \\binom{n}{k} $ and reducing the degree by $ k $.",
+            "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          },
+          {
+            "formal_name": "Polynomial.hasseDeriv_coeff",
+            "informal_name": "Coefficient Formula for Hasse Derivative of Order k",
+            "kind": "theorem",
+            "type": "\u2200 {R : Type u_1} [inst : Semiring R] (k : \u2115) (f : Polynomial R) (n : \u2115),\n  ((Polynomial.hasseDeriv k) f).coeff n = \u2191((n + k).choose k) * f.coeff (n + k)",
+            "informal_description": "For any natural number $ n $, the coefficient of $ X^n $ in the $ k $-th Hasse derivative of a polynomial $ f $ over a semiring $ R $ is equal to $ \\binom{n + k}{k} $ multiplied by the coefficient of $ X^{n + k} $ in $ f $.",
+            "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          },
+          {
+            "formal_name": "Polynomial.hasseDeriv_comp",
+            "informal_name": "Hasse Derivative Composition Formula with Binomial Coefficient",
+            "kind": "theorem",
+            "type": "\u2200 {R : Type u_1} [inst : Semiring R] (k l : \u2115),\n  Polynomial.hasseDeriv k \u2218\u2097 Polynomial.hasseDeriv l = (k + l).choose k \u2022 Polynomial.hasseDeriv (k + l)",
+            "informal_description": "For any semiring $ R $ and natural numbers $ k, l $, the composition of the $ k $-th and $ l $-th Hasse derivatives on the polynomial ring $ R[X] $ equals $ \\binom{k + l}{k} $ times the $ (k + l) $-th Hasse derivative, i.e., $ D^{(k)} \\circ D^{(l)} = \\binom{k + l}{k} D^{(k + l)} $.",
+            "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          },
+          {
+            "formal_name": "Polynomial.factorial_smul_hasseDeriv",
+            "informal_name": "Factorial Scaling of Hasse Derivative Equals Iterated Derivative",
+            "kind": "theorem",
+            "type": "\u2200 {R : Type u_1} [inst : Semiring R] (k : \u2115), \u21d1(k.factorial \u2022 Polynomial.hasseDeriv k) = (\u21d1Polynomial.derivative)^[k]",
+            "informal_description": "For any semiring $ R $, the $ k $-th Hasse derivative operator on the polynomial ring $ R[X] $, when multiplied by $ k! $, equals the $ k $-th iterate of the standard derivative operator. Formally, $ k! \\cdot D^{(k)} = (\\frac{d}{dX})^k $, where $ D^{(k)} $ denotes the Hasse derivative of order $ k $.",
+            "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          },
+          {
+            "formal_name": "Polynomial.natDegree_hasseDeriv_le",
+            "informal_name": "Degree Bound for Hasse Derivative of Polynomials",
+            "kind": "theorem",
+            "type": "\u2200 {R : Type u_1} [inst : Semiring R] (p : Polynomial R) (n : \u2115),\n  ((Polynomial.hasseDeriv n) p).natDegree \u2264 p.natDegree - n",
+            "informal_description": "For any polynomial $ p $ over a semiring $ R $ and any natural number $ n $, the natural degree of the $ n $-th Hasse derivative of $ p $ satisfies $ \\deg(D^{(n)}(p)) \\leq \\deg(p) - n $, where $ D^{(n)} $ denotes the Hasse derivative of order $ n $.",
+            "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "key": "leansearch-current",
+    "request": {
+      "query": "Hasse derivative of Kronecker substitution is finite polynomial linear combination of substituted multivariate Hasse derivatives of order at most n uniformly in P",
+      "num_results": 8
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.hasseDeriv\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.HasseDeriv\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} \u2192 [inst : Semiring R] \u2192 \u2115 \u2192 Polynomial R \u2192\u2097[R] Polynomial R\"\n    },\n    {\n      \"name\": \"LaurentSeries.hasseDeriv\",\n      \"module_name\": \"Mathlib.RingTheory.LaurentSeries\",\n      \"kind\": \"definition\",\n      \"type\": \"(R : Type u_2) \u2192\\n  {V : Type u_3} \u2192\\n    [inst : AddCommGroup V] \u2192 [inst_1 : Semiring R] \u2192 [inst_2 : Module R V] \u2192 \u2115 \u2192 LaurentSeries V \u2192\u2097[R] LaurentSeries V\"\n    },\n    {\n      \"name\": \"Polynomial.taylor_coeff\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Taylor\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R) (n : \u2115),\\n  ((Polynomial.taylor r) f).coeff n = Polynomial.eval r ((Polynomial.hasseDeriv n) f)\"\n    },\n    {\n      \"name\": \"Polynomial.hasseDeriv_coeff\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.HasseDeriv\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u_1} [inst : Semiring R] (k : \u2115) (f : Polynomial R) (n : \u2115),\\n  ((Polynomial.hasseDeriv k) f).coeff n = \u2191((n + k).choose k) * f.coeff (n + k)\"\n    },\n    {\n      \"name\": \"Polynomial.hasseDeriv_apply\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.HasseDeriv\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u_1} [inst : Semiring R] (k : \u2115) (f : Polynomial R),\\n  (Polynomial.hasseDeriv k) f = f.sum fun i r => (Polynomial.monomial (i - k)) (\u2191(i.choose k) * r)\"\n    },\n    {\n      \"name\": \"Polynomial.hasseDeriv_comp\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.HasseDeriv\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u_1} [inst : Semiring R] (k l : \u2115),\\n  Polynomial.hasseDeriv k \u2218\u2097 Polynomial.hasseDeriv l = (k + l).choose k \u2022 Polynomial.hasseDeriv (k + l)\"\n    },\n    {\n      \"name\": \"Polynomial.hasseDeriv_zero'\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.HasseDeriv\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u_1} [inst : Semiring R] (f : Polynomial R), (Polynomial.hasseDeriv 0) f = f\"\n    },\n    {\n      \"name\": \"Polynomial.hasseDeriv_one\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.HasseDeriv\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u_1} [inst : Semiring R], Polynomial.hasseDeriv 1 = Polynomial.derivative\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.hasseDeriv",
+            "module_name": "Mathlib.Algebra.Polynomial.HasseDeriv",
+            "kind": "definition",
+            "type": "{R : Type u_1} \u2192 [inst : Semiring R] \u2192 \u2115 \u2192 Polynomial R \u2192\u2097[R] Polynomial R"
+          },
+          {
+            "name": "LaurentSeries.hasseDeriv",
+            "module_name": "Mathlib.RingTheory.LaurentSeries",
+            "kind": "definition",
+            "type": "(R : Type u_2) \u2192\n  {V : Type u_3} \u2192\n    [inst : AddCommGroup V] \u2192 [inst_1 : Semiring R] \u2192 [inst_2 : Module R V] \u2192 \u2115 \u2192 LaurentSeries V \u2192\u2097[R] LaurentSeries V"
+          },
+          {
+            "name": "Polynomial.taylor_coeff",
+            "module_name": "Mathlib.Algebra.Polynomial.Taylor",
+            "kind": "theorem",
+            "type": "\u2200 {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R) (n : \u2115),\n  ((Polynomial.taylor r) f).coeff n = Polynomial.eval r ((Polynomial.hasseDeriv n) f)"
+          },
+          {
+            "name": "Polynomial.hasseDeriv_coeff",
+            "module_name": "Mathlib.Algebra.Polynomial.HasseDeriv",
+            "kind": "theorem",
+            "type": "\u2200 {R : Type u_1} [inst : Semiring R] (k : \u2115) (f : Polynomial R) (n : \u2115),\n  ((Polynomial.hasseDeriv k) f).coeff n = \u2191((n + k).choose k) * f.coeff (n + k)"
+          },
+          {
+            "name": "Polynomial.hasseDeriv_apply",
+            "module_name": "Mathlib.Algebra.Polynomial.HasseDeriv",
+            "kind": "theorem",
+            "type": "\u2200 {R : Type u_1} [inst : Semiring R] (k : \u2115) (f : Polynomial R),\n  (Polynomial.hasseDeriv k) f = f.sum fun i r => (Polynomial.monomial (i - k)) (\u2191(i.choose k) * r)"
+          },
+          {
+            "name": "Polynomial.hasseDeriv_comp",
+            "module_name": "Mathlib.Algebra.Polynomial.HasseDeriv",
+            "kind": "theorem",
+            "type": "\u2200 {R : Type u_1} [inst : Semiring R] (k l : \u2115),\n  Polynomial.hasseDeriv k \u2218\u2097 Polynomial.hasseDeriv l = (k + l).choose k \u2022 Polynomial.hasseDeriv (k + l)"
+          },
+          {
+            "name": "Polynomial.hasseDeriv_zero'",
+            "module_name": "Mathlib.Algebra.Polynomial.HasseDeriv",
+            "kind": "theorem",
+            "type": "\u2200 {R : Type u_1} [inst : Semiring R] (f : Polynomial R), (Polynomial.hasseDeriv 0) f = f"
+          },
+          {
+            "name": "Polynomial.hasseDeriv_one",
+            "module_name": "Mathlib.Algebra.Polynomial.HasseDeriv",
+            "kind": "theorem",
+            "type": "\u2200 {R : Type u_1} [inst : Semiring R], Polynomial.hasseDeriv 1 = Polynomial.derivative"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "key": "local-current",
+    "request": {
+      "query": "hasseDeriv_kronecker",
+      "limit": 20,
+      "project_root": "/Users/ramin/LEAN/Roth"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"KroneckerConsumers.hasseDeriv_kronecker_mem\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/roth-overview-session/GenWronskianChecks.lean\"\n    },\n    {\n      \"name\": \"PrivateDerivativeAuxAssessment.hasseDeriv_kronecker_mem\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/roth-overview-session/GenWronskianChecks.lean\"\n    },\n    {\n      \"name\": \"PrivateDerivativeSpanAssessment.hasseDeriv_kronecker_mem\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/roth-overview-session/GenWronskianChecks.lean\"\n    },\n    {\n      \"name\": \"PrivateKronHasseAssessment.hasseDeriv_kronecker_mem\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/roth-overview-session/GenWronskianChecks.lean\"\n    },\n    {\n      \"name\": \"PrivateKronSpanAssessment.hasseDeriv_kronecker_mem\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/roth-overview-session/GenWronskianChecks.lean\"\n    },\n    {\n      \"name\": \"Roth.KroneckerExpConsumers.hasseDeriv_kronecker_mem\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/roth-overview-session/GenWronskianChecks.lean\"\n    },\n    {\n      \"name\": \"Roth.hasseDeriv_kronecker_mem\",\n      \"kind\": \"lemma\",\n      \"file\": \"Roth/GenWronskian.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "KroneckerConsumers.hasseDeriv_kronecker_mem",
+            "kind": "lemma",
+            "file": ".lake/roth-overview-session/GenWronskianChecks.lean"
+          },
+          {
+            "name": "PrivateDerivativeAuxAssessment.hasseDeriv_kronecker_mem",
+            "kind": "lemma",
+            "file": ".lake/roth-overview-session/GenWronskianChecks.lean"
+          },
+          {
+            "name": "PrivateDerivativeSpanAssessment.hasseDeriv_kronecker_mem",
+            "kind": "lemma",
+            "file": ".lake/roth-overview-session/GenWronskianChecks.lean"
+          },
+          {
+            "name": "PrivateKronHasseAssessment.hasseDeriv_kronecker_mem",
+            "kind": "lemma",
+            "file": ".lake/roth-overview-session/GenWronskianChecks.lean"
+          },
+          {
+            "name": "PrivateKronSpanAssessment.hasseDeriv_kronecker_mem",
+            "kind": "lemma",
+            "file": ".lake/roth-overview-session/GenWronskianChecks.lean"
+          },
+          {
+            "name": "Roth.KroneckerExpConsumers.hasseDeriv_kronecker_mem",
+            "kind": "lemma",
+            "file": ".lake/roth-overview-session/GenWronskianChecks.lean"
+          },
+          {
+            "name": "Roth.hasseDeriv_kronecker_mem",
+            "kind": "lemma",
+            "file": "Roth/GenWronskian.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "key": "finder-standard",
+    "request": {
+      "query": "higher chain rule polynomial substitution multivariate Hasse derivatives Faa di Bruno bounded total order",
+      "num_results": 8
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv_comp\",\n      \"informal_name\": \"Hasse Derivative Composition Formula with Binomial Coefficient\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u_1} [inst : Semiring R] (k l : \u2115),\\n  Polynomial.hasseDeriv k \u2218\u2097 Polynomial.hasseDeriv l = (k + l).choose k \u2022 Polynomial.hasseDeriv (k + l)\",\n      \"informal_description\": \"For any semiring $ R $ and natural numbers $ k, l $, the composition of the $ k $-th and $ l $-th Hasse derivatives on the polynomial ring $ R[X] $ equals $ \\\\binom{k + l}{k} $ times the $ (k + l) $-th Hasse derivative, i.e., $ D^{(k)} \\\\circ D^{(l)} = \\\\binom{k + l}{k} D^{(k + l)} $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv_mul\",\n      \"informal_name\": \"Product Rule for Hasse Derivatives in Polynomial Rings\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u_1} [inst : Semiring R] (k : \u2115) (f g : Polynomial R),\\n  (Polynomial.hasseDeriv k) (f * g) =\\n    \u2211 ij \u2208 Finset.antidiagonal k, (Polynomial.hasseDeriv ij.1) f * (Polynomial.hasseDeriv ij.2) g\",\n      \"informal_description\": \"For any polynomials $ f, g \\\\in R[X] $, the $ k $-th Hasse derivative of the product $ f \\\\cdot g $ satisfies $$ D^{(k)}(f \\\\cdot g) = \\\\sum_{\\\\substack{i + j = k}} D^{(i)}(f) \\\\cdot D^{(j)}(g), $$ where the sum is taken over all pairs $ (i, j) $ of natural numbers such that $ i + j = k $. This expresses the Hasse derivative of a product as a sum over the antidiagonal decomposition of $ k $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv\",\n      \"informal_name\": \"Hasse Derivative of Order k on Polynomial Ring\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} \u2192 [inst : Semiring R] \u2192 \u2115 \u2192 Polynomial R \u2192\u2097[R] Polynomial R\",\n      \"informal_description\": \"For a semiring $ R $, the Hasse derivative of order $ k $ is an $ R $-linear map $ D^{(k)} : R[X] \\to R[X] $ defined by $ D^{(k)}(a_i X^i) = \\binom{i}{k} a_i X^{i - k} $ on monomials and extended linearly. This operation generalizes the usual derivative by scaling each coefficient $ a_i $ by the binomial coefficient $ \\binom{i}{k} $ and reducing the degree by $ k $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv_apply\",\n      \"informal_name\": \"Hasse Derivative of Order k Applied to a Polynomial\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u_1} [inst : Semiring R] (k : \u2115) (f : Polynomial R),\\n  (Polynomial.hasseDeriv k) f = f.sum fun i r => (Polynomial.monomial (i - k)) (\u2191(i.choose k) * r)\",\n      \"informal_description\": \"For a semiring $ R $ and a polynomial $ f \\\\in R[X] $, the Hasse derivative of order $ k $ applied to $ f $ is given by $ D^{(k)}(f) = \\\\sum_{i} \\\\binom{i}{k} \\\\cdot a_i \\\\cdot X^{i - k} $, where $ a_i $ is the coefficient of $ X^i $ in $ f $. This expression sums over all monomials in $ f $, scaling each by the binomial coefficient $ \\\\binom{i}{k} $ and reducing the exponent by $ k $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.factorial_smul_hasseDeriv\",\n      \"informal_name\": \"Factorial Scaling of Hasse Derivative Equals Iterated Derivative\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u_1} [inst : Semiring R] (k : \u2115), \u21d1(k.factorial \u2022 Polynomial.hasseDeriv k) = (\u21d1Polynomial.derivative)^[k]\",\n      \"informal_description\": \"For any semiring $ R $, the $ k $-th Hasse derivative operator on the polynomial ring $ R[X] $, when multiplied by $ k! $, equals the $ k $-th iterate of the standard derivative operator. Formally, $ k! \\\\cdot D^{(k)} = (\\\\frac{d}{dX})^k $, where $ D^{(k)} $ denotes the Hasse derivative of order $ k $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.aeval_iterate_derivative_of_ge\",\n      \"informal_name\": \"Factorial Scaling Identity for k-th Derivatives of Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u_1} [inst : CommSemiring R] (A : Type u_3) [inst_1 : CommRing A] [inst_2 : Algebra R A] (p : Polynomial R)\\n  (q : \u2115) {k : \u2115},\\n  q \u2264 k \u2192\\n    \u2203 gp,\\n      gp.natDegree \u2264 p.natDegree - k \u2227\\n        \u2200 (r : A), (Polynomial.aeval r) ((\u21d1Polynomial.derivative)^[k] p) = q.factorial \u2022 (Polynomial.aeval r) gp\",\n      \"informal_description\": \"For any polynomial $ p \\\\in R[X] $, natural numbers $ q $ and $ k $ with $ q \\\\leq k $, there exists a polynomial $ g_p $ with $ \\\\deg(g_p) \\\\leq \\\\deg(p) - k $ such that for every $ r \\\\in A $, the evaluation of the $ k $-th derivative of $ p $ at $ r $ equals $ q! \\\\cdot \\\\text{aeval}_r(g_p) $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.SumIteratedDerivative\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv_coeff\",\n      \"informal_name\": \"Coefficient Formula for Hasse Derivative of Order k\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u_1} [inst : Semiring R] (k : \u2115) (f : Polynomial R) (n : \u2115),\\n  ((Polynomial.hasseDeriv k) f).coeff n = \u2191((n + k).choose k) * f.coeff (n + k)\",\n      \"informal_description\": \"For any natural number $ n $, the coefficient of $ X^n $ in the $ k $-th Hasse derivative of a polynomial $ f $ over a semiring $ R $ is equal to $ \\\\binom{n + k}{k} $ multiplied by the coefficient of $ X^{n + k} $ in $ f $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"LaurentSeries.hasseDeriv_comp\",\n      \"informal_name\": \"Composition of Hasse Derivatives on Laurent Series\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u_1} [inst : Semiring R] {V : Type u_2} [inst_1 : AddCommGroup V] [inst_2 : Module R V] (k l : \u2115)\\n  (f : LaurentSeries V),\\n  (LaurentSeries.hasseDeriv R k) ((LaurentSeries.hasseDeriv R l) f) =\\n    (k + l).choose k \u2022 (LaurentSeries.hasseDeriv R (k + l)) f\",\n      \"informal_description\": \"For any natural numbers $k$ and $l$, and any Laurent series $f$ with coefficients in an $R$-module $V$, the composition of the Hasse derivatives of orders $k$ and $l$ applied to $f$ equals $\\\\binom{k + l}{k} \\\\cdot \\\\text{hasseDeriv}_{k + l}(f)$, where $\\\\text{hasseDeriv}_n(f)$ denotes the Hasse derivative of order $n$.\",\n      \"path\": \"Mathlib.RingTheory.LaurentSeries\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Polynomial.hasseDeriv_comp",
+            "informal_name": "Hasse Derivative Composition Formula with Binomial Coefficient",
+            "kind": "theorem",
+            "type": "\u2200 {R : Type u_1} [inst : Semiring R] (k l : \u2115),\n  Polynomial.hasseDeriv k \u2218\u2097 Polynomial.hasseDeriv l = (k + l).choose k \u2022 Polynomial.hasseDeriv (k + l)",
+            "informal_description": "For any semiring $ R $ and natural numbers $ k, l $, the composition of the $ k $-th and $ l $-th Hasse derivatives on the polynomial ring $ R[X] $ equals $ \\binom{k + l}{k} $ times the $ (k + l) $-th Hasse derivative, i.e., $ D^{(k)} \\circ D^{(l)} = \\binom{k + l}{k} D^{(k + l)} $.",
+            "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          },
+          {
+            "formal_name": "Polynomial.hasseDeriv_mul",
+            "informal_name": "Product Rule for Hasse Derivatives in Polynomial Rings",
+            "kind": "theorem",
+            "type": "\u2200 {R : Type u_1} [inst : Semiring R] (k : \u2115) (f g : Polynomial R),\n  (Polynomial.hasseDeriv k) (f * g) =\n    \u2211 ij \u2208 Finset.antidiagonal k, (Polynomial.hasseDeriv ij.1) f * (Polynomial.hasseDeriv ij.2) g",
+            "informal_description": "For any polynomials $ f, g \\in R[X] $, the $ k $-th Hasse derivative of the product $ f \\cdot g $ satisfies $$ D^{(k)}(f \\cdot g) = \\sum_{\\substack{i + j = k}} D^{(i)}(f) \\cdot D^{(j)}(g), $$ where the sum is taken over all pairs $ (i, j) $ of natural numbers such that $ i + j = k $. This expresses the Hasse derivative of a product as a sum over the antidiagonal decomposition of $ k $.",
+            "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          },
+          {
+            "formal_name": "Polynomial.hasseDeriv",
+            "informal_name": "Hasse Derivative of Order k on Polynomial Ring",
+            "kind": "definition",
+            "type": "{R : Type u_1} \u2192 [inst : Semiring R] \u2192 \u2115 \u2192 Polynomial R \u2192\u2097[R] Polynomial R",
+            "informal_description": "For a semiring $ R $, the Hasse derivative of order $ k $ is an $ R $-linear map $ D^{(k)} : R[X] \to R[X] $ defined by $ D^{(k)}(a_i X^i) = \binom{i}{k} a_i X^{i - k} $ on monomials and extended linearly. This operation generalizes the usual derivative by scaling each coefficient $ a_i $ by the binomial coefficient $ \binom{i}{k} $ and reducing the degree by $ k $.",
+            "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          },
+          {
+            "formal_name": "Polynomial.hasseDeriv_apply",
+            "informal_name": "Hasse Derivative of Order k Applied to a Polynomial",
+            "kind": "theorem",
+            "type": "\u2200 {R : Type u_1} [inst : Semiring R] (k : \u2115) (f : Polynomial R),\n  (Polynomial.hasseDeriv k) f = f.sum fun i r => (Polynomial.monomial (i - k)) (\u2191(i.choose k) * r)",
+            "informal_description": "For a semiring $ R $ and a polynomial $ f \\in R[X] $, the Hasse derivative of order $ k $ applied to $ f $ is given by $ D^{(k)}(f) = \\sum_{i} \\binom{i}{k} \\cdot a_i \\cdot X^{i - k} $, where $ a_i $ is the coefficient of $ X^i $ in $ f $. This expression sums over all monomials in $ f $, scaling each by the binomial coefficient $ \\binom{i}{k} $ and reducing the exponent by $ k $.",
+            "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          },
+          {
+            "formal_name": "Polynomial.factorial_smul_hasseDeriv",
+            "informal_name": "Factorial Scaling of Hasse Derivative Equals Iterated Derivative",
+            "kind": "theorem",
+            "type": "\u2200 {R : Type u_1} [inst : Semiring R] (k : \u2115), \u21d1(k.factorial \u2022 Polynomial.hasseDeriv k) = (\u21d1Polynomial.derivative)^[k]",
+            "informal_description": "For any semiring $ R $, the $ k $-th Hasse derivative operator on the polynomial ring $ R[X] $, when multiplied by $ k! $, equals the $ k $-th iterate of the standard derivative operator. Formally, $ k! \\cdot D^{(k)} = (\\frac{d}{dX})^k $, where $ D^{(k)} $ denotes the Hasse derivative of order $ k $.",
+            "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          },
+          {
+            "formal_name": "Polynomial.aeval_iterate_derivative_of_ge",
+            "informal_name": "Factorial Scaling Identity for k-th Derivatives of Polynomials",
+            "kind": "theorem",
+            "type": "\u2200 {R : Type u_1} [inst : CommSemiring R] (A : Type u_3) [inst_1 : CommRing A] [inst_2 : Algebra R A] (p : Polynomial R)\n  (q : \u2115) {k : \u2115},\n  q \u2264 k \u2192\n    \u2203 gp,\n      gp.natDegree \u2264 p.natDegree - k \u2227\n        \u2200 (r : A), (Polynomial.aeval r) ((\u21d1Polynomial.derivative)^[k] p) = q.factorial \u2022 (Polynomial.aeval r) gp",
+            "informal_description": "For any polynomial $ p \\in R[X] $, natural numbers $ q $ and $ k $ with $ q \\leq k $, there exists a polynomial $ g_p $ with $ \\deg(g_p) \\leq \\deg(p) - k $ such that for every $ r \\in A $, the evaluation of the $ k $-th derivative of $ p $ at $ r $ equals $ q! \\cdot \\text{aeval}_r(g_p) $.",
+            "path": "Mathlib.Algebra.Polynomial.SumIteratedDerivative"
+          },
+          {
+            "formal_name": "Polynomial.hasseDeriv_coeff",
+            "informal_name": "Coefficient Formula for Hasse Derivative of Order k",
+            "kind": "theorem",
+            "type": "\u2200 {R : Type u_1} [inst : Semiring R] (k : \u2115) (f : Polynomial R) (n : \u2115),\n  ((Polynomial.hasseDeriv k) f).coeff n = \u2191((n + k).choose k) * f.coeff (n + k)",
+            "informal_description": "For any natural number $ n $, the coefficient of $ X^n $ in the $ k $-th Hasse derivative of a polynomial $ f $ over a semiring $ R $ is equal to $ \\binom{n + k}{k} $ multiplied by the coefficient of $ X^{n + k} $ in $ f $.",
+            "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          },
+          {
+            "formal_name": "LaurentSeries.hasseDeriv_comp",
+            "informal_name": "Composition of Hasse Derivatives on Laurent Series",
+            "kind": "theorem",
+            "type": "\u2200 {R : Type u_1} [inst : Semiring R] {V : Type u_2} [inst_1 : AddCommGroup V] [inst_2 : Module R V] (k l : \u2115)\n  (f : LaurentSeries V),\n  (LaurentSeries.hasseDeriv R k) ((LaurentSeries.hasseDeriv R l) f) =\n    (k + l).choose k \u2022 (LaurentSeries.hasseDeriv R (k + l)) f",
+            "informal_description": "For any natural numbers $k$ and $l$, and any Laurent series $f$ with coefficients in an $R$-module $V$, the composition of the Hasse derivatives of orders $k$ and $l$ applied to $f$ equals $\\binom{k + l}{k} \\cdot \\text{hasseDeriv}_{k + l}(f)$, where $\\text{hasseDeriv}_n(f)$ denotes the Hasse derivative of order $n$.",
+            "path": "Mathlib.RingTheory.LaurentSeries"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "key": "leansearch-standard",
+    "request": {
+      "query": "higher chain rule polynomial substitution multivariate Hasse derivatives Faa di Bruno bounded total order",
+      "num_results": 8
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"iteratedDeriv_comp_eq_sum_orderedFinpartition\",\n      \"module_name\": \"Mathlib.Analysis.Calculus.IteratedDeriv.FaaDiBruno\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {\ud835\udd5c : Type u_1} [inst : NontriviallyNormedField \ud835\udd5c] {g f : \ud835\udd5c \u2192 \ud835\udd5c} {x : \ud835\udd5c} {n : WithTop \u2115\u221e} {i : \u2115},\\n  ContDiffAt \ud835\udd5c n g (f x) \u2192\\n    ContDiffAt \ud835\udd5c n f x \u2192\\n      \u2191i \u2264 n \u2192 iteratedDeriv i (g \u2218 f) x = \u2211 c, iteratedDeriv c.length g (f x) * \u220f j, iteratedDeriv (c.partSize j) f x\"\n    },\n    {\n      \"name\": \"iteratedDeriv_scomp_eq_sum_orderedFinpartition\",\n      \"module_name\": \"Mathlib.Analysis.Calculus.IteratedDeriv.FaaDiBruno\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {\ud835\udd5c : Type u_1} {E : Type u_2} [inst : NontriviallyNormedField \ud835\udd5c] [inst_1 : NormedAddCommGroup E]\\n  [inst_2 : NormedSpace \ud835\udd5c E] {g : \ud835\udd5c \u2192 E} {f : \ud835\udd5c \u2192 \ud835\udd5c} {x : \ud835\udd5c} {n : WithTop \u2115\u221e} {i : \u2115},\\n  ContDiffAt \ud835\udd5c n g (f x) \u2192\\n    ContDiffAt \ud835\udd5c n f x \u2192\\n      \u2191i \u2264 n \u2192 iteratedDeriv i (g \u2218 f) x = \u2211 c, (\u220f j, iteratedDeriv (c.partSize j) f x) \u2022 iteratedDeriv c.length g (f x)\"\n    },\n    {\n      \"name\": \"HasFTaylorSeriesUpToOn.comp\",\n      \"module_name\": \"Mathlib.Analysis.Calculus.ContDiff.FaaDiBruno\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {\ud835\udd5c : Type u_1} [inst : NontriviallyNormedField \ud835\udd5c] {E : Type u_2} [inst_1 : NormedAddCommGroup E]\\n  [inst_2 : NormedSpace \ud835\udd5c E] {F : Type u_3} [inst_3 : NormedAddCommGroup F] [inst_4 : NormedSpace \ud835\udd5c F] {G : Type u_4}\\n  [inst_5 : NormedAddCommGroup G] [inst_6 : NormedSpace \ud835\udd5c G] {s : Set E} {t : Set F}\\n  {q : F \u2192 FormalMultilinearSeries \ud835\udd5c F G} {p : E \u2192 FormalMultilinearSeries \ud835\udd5c E F} {n : WithTop \u2115\u221e} {g : F \u2192 G}\\n  {f : E \u2192 F},\\n  HasFTaylorSeriesUpToOn n g q t \u2192\\n    HasFTaylorSeriesUpToOn n f p s...\"\n    },\n    {\n      \"name\": \"iteratedDerivWithin_vcomp_eq_sum_orderedFinpartition\",\n      \"module_name\": \"Mathlib.Analysis.Calculus.IteratedDeriv.FaaDiBruno\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {\ud835\udd5c : Type u_1} {E : Type u_2} {F : Type u_3} [inst : NontriviallyNormedField \ud835\udd5c] [inst_1 : NormedAddCommGroup E]\\n  [inst_2 : NormedSpace \ud835\udd5c E] [inst_3 : NormedAddCommGroup F] [inst_4 : NormedSpace \ud835\udd5c F] {g : E \u2192 F} {f : \ud835\udd5c \u2192 E}\\n  {s : Set \ud835\udd5c} {t : Set E} {x : \ud835\udd5c} {n : WithTop \u2115\u221e} {i : \u2115},\\n  ContDiffWithinAt \ud835\udd5c n g t (f x) \u2192\\n    ContDiffWithinAt \ud835\udd5c n f s x \u2192\\n      UniqueDiffOn \ud835\udd5c t \u2192\\n        UniqueDiffOn \ud835\udd5c s \u2192\\n          x \u2208 s \u2192\\n            Set.MapsTo f s t \u2192\\n              \u2191i \u2264 n \u2192\\n                ite...\"\n    },\n    {\n      \"name\": \"HasFPowerSeriesWithinAt.comp\",\n      \"module_name\": \"Mathlib.Analysis.Analytic.Composition\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {\ud835\udd5c : Type u_1} {E : Type u_2} {F : Type u_3} {G : Type u_4} [inst : NontriviallyNormedField \ud835\udd5c]\\n  [inst_1 : NormedAddCommGroup E] [inst_2 : NormedSpace \ud835\udd5c E] [inst_3 : NormedAddCommGroup F] [inst_4 : NormedSpace \ud835\udd5c F]\\n  [inst_5 : NormedAddCommGroup G] [inst_6 : NormedSpace \ud835\udd5c G] {g : F \u2192 G} {f : E \u2192 F} {q : FormalMultilinearSeries \ud835\udd5c F G}\\n  {p : FormalMultilinearSeries \ud835\udd5c E F} {x : E} {t : Set F} {s : Set E},\\n  HasFPowerSeriesWithinAt g q t (f x) \u2192\\n    HasFPowerSeriesWithinAt f p s x \u2192 Set.MapsTo...\"\n    },\n    {\n      \"name\": \"iteratedDerivWithin_scomp_eq_sum_orderedFinpartition\",\n      \"module_name\": \"Mathlib.Analysis.Calculus.IteratedDeriv.FaaDiBruno\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {\ud835\udd5c : Type u_1} {E : Type u_2} [inst : NontriviallyNormedField \ud835\udd5c] [inst_1 : NormedAddCommGroup E]\\n  [inst_2 : NormedSpace \ud835\udd5c E] {g : \ud835\udd5c \u2192 E} {f : \ud835\udd5c \u2192 \ud835\udd5c} {s t : Set \ud835\udd5c} {x : \ud835\udd5c} {n : WithTop \u2115\u221e} {i : \u2115},\\n  ContDiffWithinAt \ud835\udd5c n g t (f x) \u2192\\n    ContDiffWithinAt \ud835\udd5c n f s x \u2192\\n      UniqueDiffOn \ud835\udd5c t \u2192\\n        UniqueDiffOn \ud835\udd5c s \u2192\\n          x \u2208 s \u2192\\n            Set.MapsTo f s t \u2192\\n              \u2191i \u2264 n \u2192\\n                iteratedDerivWithin i (g \u2218 f) s x =\\n                  \u2211 c, (\u220f j, iteratedDerivWithin (c.p...\"\n    },\n    {\n      \"name\": \"iteratedDerivWithin_comp_eq_sum_orderedFinpartition\",\n      \"module_name\": \"Mathlib.Analysis.Calculus.IteratedDeriv.FaaDiBruno\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {\ud835\udd5c : Type u_1} [inst : NontriviallyNormedField \ud835\udd5c] {g f : \ud835\udd5c \u2192 \ud835\udd5c} {s t : Set \ud835\udd5c} {x : \ud835\udd5c} {n : WithTop \u2115\u221e} {i : \u2115},\\n  ContDiffWithinAt \ud835\udd5c n g t (f x) \u2192\\n    ContDiffWithinAt \ud835\udd5c n f s x \u2192\\n      UniqueDiffOn \ud835\udd5c t \u2192\\n        UniqueDiffOn \ud835\udd5c s \u2192\\n          x \u2208 s \u2192\\n            Set.MapsTo f s t \u2192\\n              \u2191i \u2264 n \u2192\\n                iteratedDerivWithin i (g \u2218 f) s x =\\n                  \u2211 c, iteratedDerivWithin c.length g t (f x) * \u220f j, iteratedDerivWithin (c.partSize j) f s x\"\n    },\n    {\n      \"name\": \"PowerSeries.subst_comp_subst_apply\",\n      \"module_name\": \"Mathlib.RingTheory.PowerSeries.Substitution\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u_2} [inst : CommRing R] {S : Type u_4} [inst_1 : CommRing S] {\u03c5 : Type u_5} {T : Type u_6}\\n  [inst_2 : CommRing T] [inst_3 : Algebra R S] [inst_4 : Algebra R T] [inst_5 : Algebra S T] {a : PowerSeries S}\\n  {b : MvPowerSeries \u03c5 T} [IsScalarTower R S T],\\n  PowerSeries.HasSubst a \u2192\\n    PowerSeries.HasSubst b \u2192\\n      \u2200 (f : PowerSeries R), PowerSeries.subst b (PowerSeries.subst a f) = PowerSeries.subst (PowerSeries.subst b a) f\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "iteratedDeriv_comp_eq_sum_orderedFinpartition",
+            "module_name": "Mathlib.Analysis.Calculus.IteratedDeriv.FaaDiBruno",
+            "kind": "theorem",
+            "type": "\u2200 {\ud835\udd5c : Type u_1} [inst : NontriviallyNormedField \ud835\udd5c] {g f : \ud835\udd5c \u2192 \ud835\udd5c} {x : \ud835\udd5c} {n : WithTop \u2115\u221e} {i : \u2115},\n  ContDiffAt \ud835\udd5c n g (f x) \u2192\n    ContDiffAt \ud835\udd5c n f x \u2192\n      \u2191i \u2264 n \u2192 iteratedDeriv i (g \u2218 f) x = \u2211 c, iteratedDeriv c.length g (f x) * \u220f j, iteratedDeriv (c.partSize j) f x"
+          },
+          {
+            "name": "iteratedDeriv_scomp_eq_sum_orderedFinpartition",
+            "module_name": "Mathlib.Analysis.Calculus.IteratedDeriv.FaaDiBruno",
+            "kind": "theorem",
+            "type": "\u2200 {\ud835\udd5c : Type u_1} {E : Type u_2} [inst : NontriviallyNormedField \ud835\udd5c] [inst_1 : NormedAddCommGroup E]\n  [inst_2 : NormedSpace \ud835\udd5c E] {g : \ud835\udd5c \u2192 E} {f : \ud835\udd5c \u2192 \ud835\udd5c} {x : \ud835\udd5c} {n : WithTop \u2115\u221e} {i : \u2115},\n  ContDiffAt \ud835\udd5c n g (f x) \u2192\n    ContDiffAt \ud835\udd5c n f x \u2192\n      \u2191i \u2264 n \u2192 iteratedDeriv i (g \u2218 f) x = \u2211 c, (\u220f j, iteratedDeriv (c.partSize j) f x) \u2022 iteratedDeriv c.length g (f x)"
+          },
+          {
+            "name": "HasFTaylorSeriesUpToOn.comp",
+            "module_name": "Mathlib.Analysis.Calculus.ContDiff.FaaDiBruno",
+            "kind": "theorem",
+            "type": "\u2200 {\ud835\udd5c : Type u_1} [inst : NontriviallyNormedField \ud835\udd5c] {E : Type u_2} [inst_1 : NormedAddCommGroup E]\n  [inst_2 : NormedSpace \ud835\udd5c E] {F : Type u_3} [inst_3 : NormedAddCommGroup F] [inst_4 : NormedSpace \ud835\udd5c F] {G : Type u_4}\n  [inst_5 : NormedAddCommGroup G] [inst_6 : NormedSpace \ud835\udd5c G] {s : Set E} {t : Set F}\n  {q : F \u2192 FormalMultilinearSeries \ud835\udd5c F G} {p : E \u2192 FormalMultilinearSeries \ud835\udd5c E F} {n : WithTop \u2115\u221e} {g : F \u2192 G}\n  {f : E \u2192 F},\n  HasFTaylorSeriesUpToOn n g q t \u2192\n    HasFTaylorSeriesUpToOn n f p s..."
+          },
+          {
+            "name": "iteratedDerivWithin_vcomp_eq_sum_orderedFinpartition",
+            "module_name": "Mathlib.Analysis.Calculus.IteratedDeriv.FaaDiBruno",
+            "kind": "theorem",
+            "type": "\u2200 {\ud835\udd5c : Type u_1} {E : Type u_2} {F : Type u_3} [inst : NontriviallyNormedField \ud835\udd5c] [inst_1 : NormedAddCommGroup E]\n  [inst_2 : NormedSpace \ud835\udd5c E] [inst_3 : NormedAddCommGroup F] [inst_4 : NormedSpace \ud835\udd5c F] {g : E \u2192 F} {f : \ud835\udd5c \u2192 E}\n  {s : Set \ud835\udd5c} {t : Set E} {x : \ud835\udd5c} {n : WithTop \u2115\u221e} {i : \u2115},\n  ContDiffWithinAt \ud835\udd5c n g t (f x) \u2192\n    ContDiffWithinAt \ud835\udd5c n f s x \u2192\n      UniqueDiffOn \ud835\udd5c t \u2192\n        UniqueDiffOn \ud835\udd5c s \u2192\n          x \u2208 s \u2192\n            Set.MapsTo f s t \u2192\n              \u2191i \u2264 n \u2192\n                ite..."
+          },
+          {
+            "name": "HasFPowerSeriesWithinAt.comp",
+            "module_name": "Mathlib.Analysis.Analytic.Composition",
+            "kind": "theorem",
+            "type": "\u2200 {\ud835\udd5c : Type u_1} {E : Type u_2} {F : Type u_3} {G : Type u_4} [inst : NontriviallyNormedField \ud835\udd5c]\n  [inst_1 : NormedAddCommGroup E] [inst_2 : NormedSpace \ud835\udd5c E] [inst_3 : NormedAddCommGroup F] [inst_4 : NormedSpace \ud835\udd5c F]\n  [inst_5 : NormedAddCommGroup G] [inst_6 : NormedSpace \ud835\udd5c G] {g : F \u2192 G} {f : E \u2192 F} {q : FormalMultilinearSeries \ud835\udd5c F G}\n  {p : FormalMultilinearSeries \ud835\udd5c E F} {x : E} {t : Set F} {s : Set E},\n  HasFPowerSeriesWithinAt g q t (f x) \u2192\n    HasFPowerSeriesWithinAt f p s x \u2192 Set.MapsTo..."
+          },
+          {
+            "name": "iteratedDerivWithin_scomp_eq_sum_orderedFinpartition",
+            "module_name": "Mathlib.Analysis.Calculus.IteratedDeriv.FaaDiBruno",
+            "kind": "theorem",
+            "type": "\u2200 {\ud835\udd5c : Type u_1} {E : Type u_2} [inst : NontriviallyNormedField \ud835\udd5c] [inst_1 : NormedAddCommGroup E]\n  [inst_2 : NormedSpace \ud835\udd5c E] {g : \ud835\udd5c \u2192 E} {f : \ud835\udd5c \u2192 \ud835\udd5c} {s t : Set \ud835\udd5c} {x : \ud835\udd5c} {n : WithTop \u2115\u221e} {i : \u2115},\n  ContDiffWithinAt \ud835\udd5c n g t (f x) \u2192\n    ContDiffWithinAt \ud835\udd5c n f s x \u2192\n      UniqueDiffOn \ud835\udd5c t \u2192\n        UniqueDiffOn \ud835\udd5c s \u2192\n          x \u2208 s \u2192\n            Set.MapsTo f s t \u2192\n              \u2191i \u2264 n \u2192\n                iteratedDerivWithin i (g \u2218 f) s x =\n                  \u2211 c, (\u220f j, iteratedDerivWithin (c.p..."
+          },
+          {
+            "name": "iteratedDerivWithin_comp_eq_sum_orderedFinpartition",
+            "module_name": "Mathlib.Analysis.Calculus.IteratedDeriv.FaaDiBruno",
+            "kind": "theorem",
+            "type": "\u2200 {\ud835\udd5c : Type u_1} [inst : NontriviallyNormedField \ud835\udd5c] {g f : \ud835\udd5c \u2192 \ud835\udd5c} {s t : Set \ud835\udd5c} {x : \ud835\udd5c} {n : WithTop \u2115\u221e} {i : \u2115},\n  ContDiffWithinAt \ud835\udd5c n g t (f x) \u2192\n    ContDiffWithinAt \ud835\udd5c n f s x \u2192\n      UniqueDiffOn \ud835\udd5c t \u2192\n        UniqueDiffOn \ud835\udd5c s \u2192\n          x \u2208 s \u2192\n            Set.MapsTo f s t \u2192\n              \u2191i \u2264 n \u2192\n                iteratedDerivWithin i (g \u2218 f) s x =\n                  \u2211 c, iteratedDerivWithin c.length g t (f x) * \u220f j, iteratedDerivWithin (c.partSize j) f s x"
+          },
+          {
+            "name": "PowerSeries.subst_comp_subst_apply",
+            "module_name": "Mathlib.RingTheory.PowerSeries.Substitution",
+            "kind": "theorem",
+            "type": "\u2200 {R : Type u_2} [inst : CommRing R] {S : Type u_4} [inst_1 : CommRing S] {\u03c5 : Type u_5} {T : Type u_6}\n  [inst_2 : CommRing T] [inst_3 : Algebra R S] [inst_4 : Algebra R T] [inst_5 : Algebra S T] {a : PowerSeries S}\n  {b : MvPowerSeries \u03c5 T} [IsScalarTower R S T],\n  PowerSeries.HasSubst a \u2192\n    PowerSeries.HasSubst b \u2192\n      \u2200 (f : PowerSeries R), PowerSeries.subst b (PowerSeries.subst a f) = PowerSeries.subst (PowerSeries.subst b a) f"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "key": "local-standard",
+    "request": {
+      "query": "hasseDeriv_comp",
+      "limit": 20,
+      "project_root": "/Users/ramin/LEAN/Roth"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"LaurentSeries.hasseDeriv_comp\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/LaurentSeries.lean\"\n    },\n    {\n      \"name\": \"Polynomial.hasseDeriv_comp\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/HasseDeriv.lean\"\n    },\n    {\n      \"name\": \"LaurentSeries.hasseDeriv_comp_coeff\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/LaurentSeries.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "LaurentSeries.hasseDeriv_comp",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/RingTheory/LaurentSeries.lean"
+          },
+          {
+            "name": "Polynomial.hasseDeriv_comp",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/HasseDeriv.lean"
+          },
+          {
+            "name": "LaurentSeries.hasseDeriv_comp_coeff",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/RingTheory/LaurentSeries.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "key": "finder-abstract",
+    "request": {
+      "query": "composition pullback filtered differential operators polynomial algebra Hasse Schmidt derivation",
+      "num_results": 8
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Algebra.Generators.H1Cotangent.\u03b4Aux_ofComp\",\n      \"informal_name\": \"Compatibility of \u03b4Aux with Composition of Algebra Extensions\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u\u2081} {S : Type u\u2082} [inst : CommRing R] [inst_1 : CommRing S] [inst_2 : Algebra R S] {T : Type u\u2083}\\n  [inst_3 : CommRing T] [inst_4 : Algebra R T] [inst_5 : Algebra S T] [inst_6 : IsScalarTower R S T] {\u03b9 : Type w\u2081}\\n  {\u03c3 : Type w\u2082} (Q : Algebra.Generators S T \u03b9) (P : Algebra.Generators R S \u03c3) (x : (Q.comp P).Ring),\\n  (Algebra.Generators.H1Cotangent.\u03b4Aux R Q) ((Q.ofComp P).toAlgHom x) =\\n    (LinearMap.baseChange T P.toExtension.toKaehler)\\n      ((Algebra.Generators.CotangentSpace.compE...\",\n      \"informal_description\": \"For any element $x$ in the composed algebra $(Q \\\\circ P).\\\\text{Ring}$, the auxiliary differential map $\\\\delta_{\\\\text{Aux}}^{R,Q}$ applied to the algebra homomorphism $(Q.\\\\text{ofComp} \\\\, P).\\\\text{toAlgHom}(x)$ equals the base change of the Kaehler differentials along $T$ composed with the cotangent space equivalence for the composition $Q \\\\circ P$, evaluated at the tensor product $1 \\\\otimes (\\\\text{D}_R((Q \\\\circ P).\\\\text{Ring})(x))$.\",\n      \"path\": \"Mathlib.RingTheory.Kaehler.JacobiZariski\"\n    },\n    {\n      \"formal_name\": \"KaehlerDifferential.polynomialEquiv_comp_D\",\n      \"informal_name\": \"Composition of Polynomial K\u00e4hler Differential Isomorphism with Derivation Equals Formal Derivative\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 (R : Type u) [inst : CommRing R],\\n  (KaehlerDifferential.polynomialEquiv R).compDer (KaehlerDifferential.D R (Polynomial R)) = Polynomial.derivative'\",\n      \"informal_description\": \"For any commutative ring $ R $, the composition of the $ R[X] $-module isomorphism $ \\\\Omega_{R[X]/R} \\\\cong R[X] $ (sending $ dX $ to 1) with the K\u00e4hler differential derivation $ d: R[X] \\\\to \\\\Omega_{R[X]/R} $ yields the formal derivative operator on polynomials. That is, applying the isomorphism to the differential $ df $ of a polynomial $ f \\\\in R[X] $ produces the standard formal derivative $ f' $.\",\n      \"path\": \"Mathlib.RingTheory.Kaehler.Polynomial\"\n    },\n    {\n      \"formal_name\": \"LinearMap.compDer\",\n      \"informal_name\": \"Composition of a derivation with an A-linear map\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} \u2192\\n  {A : Type u_2} \u2192\\n    {M : Type u_4} \u2192\\n      [inst : CommSemiring R] \u2192\\n        [inst_1 : CommSemiring A] \u2192\\n          [inst_2 : AddCommMonoid M] \u2192\\n            [inst_3 : Algebra R A] \u2192\\n              [inst_4 : Module A M] \u2192\\n                [inst_5 : Module R M] \u2192\\n                  {N : Type u_5} \u2192\\n                    [inst_6 : AddCommMonoid N] \u2192\\n                      [inst_7 : Module A N] \u2192\\n                        [inst_8 : Module R N] \u2192\\n                          [inst_9 : IsSc...\",\n      \"informal_description\": \"Given an $ A $-linear map $ f : M \\to N $, this constructs a linear map from derivations $ D : A \\to M $ over $ R $ to derivations $ A \\to N $ over $ R $, defined by composing $ f $ with $ D $. The resulting derivation satisfies the Leibniz rule and maps $ 1 $ to $ 0 $, with linearity over $ A $ inherited from the composition.\",\n      \"path\": \"Mathlib.RingTheory.Derivation.Basic\"\n    },\n    {\n      \"formal_name\": \"Derivation.compAlgebraMap\",\n      \"informal_name\": \"Composition of a derivation with an algebra map\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} \u2192\\n  (A : Type u_2) \u2192\\n    {B : Type u_3} \u2192\\n      {M : Type u_4} \u2192\\n        [inst : CommSemiring R] \u2192\\n          [inst_1 : CommSemiring A] \u2192\\n            [inst_2 : CommSemiring B] \u2192\\n              [inst_3 : AddCommMonoid M] \u2192\\n                [inst_4 : Algebra R A] \u2192\\n                  [inst_5 : Algebra R B] \u2192\\n                    [inst_6 : Module A M] \u2192\\n                      [inst_7 : Module B M] \u2192\\n                        [inst_8 : Module R M] \u2192\\n                          [inst_9 : Alge...\",\n      \"informal_description\": \"Let $R \\\\to A \\\\to B$ be a tower of algebras and $M$ be a $B$-module, with compatible scalar actions. Let $\\\\varphi : A \\\\to B$ be the canonical algebra homomorphism. Given an $R$-derivation $d : B \\\\to M$, this defines a new $R$-derivation from $A$ to $M$ by composition, yielding the map $d \\\\circ \\\\varphi$.\",\n      \"path\": \"Mathlib.RingTheory.Derivation.Basic\"\n    },\n    {\n      \"formal_name\": \"Derivation.compAEval\",\n      \"informal_name\": \"Derivation Composed with Polynomial Evaluation\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} \u2192\\n  {A : Type u_2} \u2192\\n    {M : Type u_3} \u2192\\n      [inst : CommSemiring R] \u2192\\n        [inst_1 : CommSemiring A] \u2192\\n          [inst_2 : Algebra R A] \u2192\\n            [inst_3 : AddCommMonoid M] \u2192\\n              [inst_4 : Module A M] \u2192\\n                [inst_5 : Module R M] \u2192\\n                  [inst_6 : IsScalarTower R A M] \u2192\\n                    Derivation R A M \u2192 (a : A) \u2192 Derivation R (Polynomial R) (Module.AEval R M a)\",\n      \"informal_description\": \"The derivation from $ R[X] $ to the polynomial evaluation module $ \\\\text{AEval}(R, M, a) $, constructed by composing a derivation $ d: R \\\\to M $ with polynomial evaluation at $ a $. This derivation satisfies the Leibniz rule and maps polynomials to their evaluations at $ a $ followed by application of $ d $, preserving the module structure defined by scalar tower compatibility.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Derivation\"\n    },\n    {\n      \"formal_name\": \"Algebra.Generators.H1Cotangent.\u03b4Aux_toAlgHom\",\n      \"informal_name\": \"Compatibility of \u03b4Aux with Algebra Homomorphisms\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u\u2081} {S : Type u\u2082} [inst : CommRing R] [inst_1 : CommRing S] [inst_2 : Algebra R S] {T : Type u\u2083}\\n  [inst_3 : CommRing T] [inst_4 : Algebra R T] [inst_5 : Algebra S T] [inst_6 : IsScalarTower R S T] {\u03b9 : Type w\u2081}\\n  {\u03b9' : Type w\u2083} {Q : Algebra.Generators S T \u03b9} {Q' : Algebra.Generators S T \u03b9'} (f : Q.Hom Q') (x : Q.Ring),\\n  (Algebra.Generators.H1Cotangent.\u03b4Aux R Q') (f.toAlgHom x) =\\n    (Algebra.Generators.H1Cotangent.\u03b4Aux R Q) x +\\n      (Finsupp.linearCombination T (\u21d1(Algebra.Gener...\",\n      \"informal_description\": \"For an algebra homomorphism $ f : Q \\to Q' $ and element $ x $, the derivation $ \\\\delta_{\\\\text{Aux}} $ satisfies $ \\\\delta_{\\\\text{Aux}}^{Q'}(f(x)) = \\\\delta_{\\\\text{Aux}}^Q(x) + \\\\text{Finsupp.linearCombination}(\\\\delta_{\\\\text{Aux}}^{Q'} \\\\circ f, \\\\text{repr}(1 \\\\otimes D_{Q.Ring}(x))) $, where $ \\\\text{repr} $ denotes the basis representation in the cotangent space.\",\n      \"path\": \"Mathlib.RingTheory.Kaehler.JacobiZariski\"\n    },\n    {\n      \"formal_name\": \"Derivation.compAEval_apply\",\n      \"informal_name\": \"Derivation Composed with Polynomial Evaluation Equals Derivation of Evaluated Polynomial\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u_1} {A : Type u_2} {M : Type u_3} [inst : CommSemiring R] [inst_1 : CommSemiring A] [inst_2 : Algebra R A]\\n  [inst_3 : AddCommMonoid M] [inst_4 : Module A M] [inst_5 : Module R M] [inst_6 : IsScalarTower R A M]\\n  (d : Derivation R A M) (a : A) (f : Polynomial R),\\n  (d.compAEval a) f = (Module.AEval.of R M a) (d ((Polynomial.aeval a) f))\",\n      \"informal_description\": \"For any derivation $ d $ from $ R $ to $ A $ with values in $ M $, any element $ a \\\\in A $, and any polynomial $ f \\\\in R[X] $, it holds that $ (d \\\\circ \\\\text{aeval}_a)(f) = d(f(a)) $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Derivation\"\n    },\n    {\n      \"formal_name\": \"KaehlerDifferential.map_compDer\",\n      \"informal_name\": \"Compatibility of K\u00e4hler Differential Map with Derivations under Scalar Restriction\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 (R : Type u) (S : Type v) [inst : CommRing R] [inst_1 : CommRing S] [inst_2 : Algebra R S] (A : Type u_2)\\n  (B : Type u_3) [inst_3 : CommRing A] [inst_4 : CommRing B] [inst_5 : Algebra R A] [inst_6 : Algebra A B]\\n  [inst_7 : Algebra S B] [inst_8 : Algebra R B] [inst_9 : IsScalarTower R A B] [inst_10 : IsScalarTower R S B]\\n  [inst_11 : SMulCommClass S A B],\\n  (KaehlerDifferential.map R S A B).compDer (KaehlerDifferential.D R A) =\\n    Derivation.compAlgebraMap A (Derivation.restrictScalars R ...\",\n      \"informal_description\": \"The composition of the K\u00e4hler differential map $\\\\Omega_{A/R} \\\\to \\\\Omega_{B/S}$ with the canonical derivation $d : A \\\\to \\\\Omega_{A/R}$ equals the composition of the derivation $d : B \\\\to \\\\Omega_{B/S}$ restricted to scalars from $R$ with the algebra homomorphism $A \\\\to B$. This establishes a commutative diagram relating differential maps across algebra extensions under scalar tower conditions.\",\n      \"path\": \"Mathlib.RingTheory.Kaehler.Basic\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Algebra.Generators.H1Cotangent.\u03b4Aux_ofComp",
+            "informal_name": "Compatibility of \u03b4Aux with Composition of Algebra Extensions",
+            "kind": "theorem",
+            "type": "\u2200 {R : Type u\u2081} {S : Type u\u2082} [inst : CommRing R] [inst_1 : CommRing S] [inst_2 : Algebra R S] {T : Type u\u2083}\n  [inst_3 : CommRing T] [inst_4 : Algebra R T] [inst_5 : Algebra S T] [inst_6 : IsScalarTower R S T] {\u03b9 : Type w\u2081}\n  {\u03c3 : Type w\u2082} (Q : Algebra.Generators S T \u03b9) (P : Algebra.Generators R S \u03c3) (x : (Q.comp P).Ring),\n  (Algebra.Generators.H1Cotangent.\u03b4Aux R Q) ((Q.ofComp P).toAlgHom x) =\n    (LinearMap.baseChange T P.toExtension.toKaehler)\n      ((Algebra.Generators.CotangentSpace.compE...",
+            "informal_description": "For any element $x$ in the composed algebra $(Q \\circ P).\\text{Ring}$, the auxiliary differential map $\\delta_{\\text{Aux}}^{R,Q}$ applied to the algebra homomorphism $(Q.\\text{ofComp} \\, P).\\text{toAlgHom}(x)$ equals the base change of the Kaehler differentials along $T$ composed with the cotangent space equivalence for the composition $Q \\circ P$, evaluated at the tensor product $1 \\otimes (\\text{D}_R((Q \\circ P).\\text{Ring})(x))$.",
+            "path": "Mathlib.RingTheory.Kaehler.JacobiZariski"
+          },
+          {
+            "formal_name": "KaehlerDifferential.polynomialEquiv_comp_D",
+            "informal_name": "Composition of Polynomial K\u00e4hler Differential Isomorphism with Derivation Equals Formal Derivative",
+            "kind": "theorem",
+            "type": "\u2200 (R : Type u) [inst : CommRing R],\n  (KaehlerDifferential.polynomialEquiv R).compDer (KaehlerDifferential.D R (Polynomial R)) = Polynomial.derivative'",
+            "informal_description": "For any commutative ring $ R $, the composition of the $ R[X] $-module isomorphism $ \\Omega_{R[X]/R} \\cong R[X] $ (sending $ dX $ to 1) with the K\u00e4hler differential derivation $ d: R[X] \\to \\Omega_{R[X]/R} $ yields the formal derivative operator on polynomials. That is, applying the isomorphism to the differential $ df $ of a polynomial $ f \\in R[X] $ produces the standard formal derivative $ f' $.",
+            "path": "Mathlib.RingTheory.Kaehler.Polynomial"
+          },
+          {
+            "formal_name": "LinearMap.compDer",
+            "informal_name": "Composition of a derivation with an A-linear map",
+            "kind": "definition",
+            "type": "{R : Type u_1} \u2192\n  {A : Type u_2} \u2192\n    {M : Type u_4} \u2192\n      [inst : CommSemiring R] \u2192\n        [inst_1 : CommSemiring A] \u2192\n          [inst_2 : AddCommMonoid M] \u2192\n            [inst_3 : Algebra R A] \u2192\n              [inst_4 : Module A M] \u2192\n                [inst_5 : Module R M] \u2192\n                  {N : Type u_5} \u2192\n                    [inst_6 : AddCommMonoid N] \u2192\n                      [inst_7 : Module A N] \u2192\n                        [inst_8 : Module R N] \u2192\n                          [inst_9 : IsSc...",
+            "informal_description": "Given an $ A $-linear map $ f : M \to N $, this constructs a linear map from derivations $ D : A \to M $ over $ R $ to derivations $ A \to N $ over $ R $, defined by composing $ f $ with $ D $. The resulting derivation satisfies the Leibniz rule and maps $ 1 $ to $ 0 $, with linearity over $ A $ inherited from the composition.",
+            "path": "Mathlib.RingTheory.Derivation.Basic"
+          },
+          {
+            "formal_name": "Derivation.compAlgebraMap",
+            "informal_name": "Composition of a derivation with an algebra map",
+            "kind": "definition",
+            "type": "{R : Type u_1} \u2192\n  (A : Type u_2) \u2192\n    {B : Type u_3} \u2192\n      {M : Type u_4} \u2192\n        [inst : CommSemiring R] \u2192\n          [inst_1 : CommSemiring A] \u2192\n            [inst_2 : CommSemiring B] \u2192\n              [inst_3 : AddCommMonoid M] \u2192\n                [inst_4 : Algebra R A] \u2192\n                  [inst_5 : Algebra R B] \u2192\n                    [inst_6 : Module A M] \u2192\n                      [inst_7 : Module B M] \u2192\n                        [inst_8 : Module R M] \u2192\n                          [inst_9 : Alge...",
+            "informal_description": "Let $R \\to A \\to B$ be a tower of algebras and $M$ be a $B$-module, with compatible scalar actions. Let $\\varphi : A \\to B$ be the canonical algebra homomorphism. Given an $R$-derivation $d : B \\to M$, this defines a new $R$-derivation from $A$ to $M$ by composition, yielding the map $d \\circ \\varphi$.",
+            "path": "Mathlib.RingTheory.Derivation.Basic"
+          },
+          {
+            "formal_name": "Derivation.compAEval",
+            "informal_name": "Derivation Composed with Polynomial Evaluation",
+            "kind": "definition",
+            "type": "{R : Type u_1} \u2192\n  {A : Type u_2} \u2192\n    {M : Type u_3} \u2192\n      [inst : CommSemiring R] \u2192\n        [inst_1 : CommSemiring A] \u2192\n          [inst_2 : Algebra R A] \u2192\n            [inst_3 : AddCommMonoid M] \u2192\n              [inst_4 : Module A M] \u2192\n                [inst_5 : Module R M] \u2192\n                  [inst_6 : IsScalarTower R A M] \u2192\n                    Derivation R A M \u2192 (a : A) \u2192 Derivation R (Polynomial R) (Module.AEval R M a)",
+            "informal_description": "The derivation from $ R[X] $ to the polynomial evaluation module $ \\text{AEval}(R, M, a) $, constructed by composing a derivation $ d: R \\to M $ with polynomial evaluation at $ a $. This derivation satisfies the Leibniz rule and maps polynomials to their evaluations at $ a $ followed by application of $ d $, preserving the module structure defined by scalar tower compatibility.",
+            "path": "Mathlib.Algebra.Polynomial.Derivation"
+          },
+          {
+            "formal_name": "Algebra.Generators.H1Cotangent.\u03b4Aux_toAlgHom",
+            "informal_name": "Compatibility of \u03b4Aux with Algebra Homomorphisms",
+            "kind": "theorem",
+            "type": "\u2200 {R : Type u\u2081} {S : Type u\u2082} [inst : CommRing R] [inst_1 : CommRing S] [inst_2 : Algebra R S] {T : Type u\u2083}\n  [inst_3 : CommRing T] [inst_4 : Algebra R T] [inst_5 : Algebra S T] [inst_6 : IsScalarTower R S T] {\u03b9 : Type w\u2081}\n  {\u03b9' : Type w\u2083} {Q : Algebra.Generators S T \u03b9} {Q' : Algebra.Generators S T \u03b9'} (f : Q.Hom Q') (x : Q.Ring),\n  (Algebra.Generators.H1Cotangent.\u03b4Aux R Q') (f.toAlgHom x) =\n    (Algebra.Generators.H1Cotangent.\u03b4Aux R Q) x +\n      (Finsupp.linearCombination T (\u21d1(Algebra.Gener...",
+            "informal_description": "For an algebra homomorphism $ f : Q \to Q' $ and element $ x $, the derivation $ \\delta_{\\text{Aux}} $ satisfies $ \\delta_{\\text{Aux}}^{Q'}(f(x)) = \\delta_{\\text{Aux}}^Q(x) + \\text{Finsupp.linearCombination}(\\delta_{\\text{Aux}}^{Q'} \\circ f, \\text{repr}(1 \\otimes D_{Q.Ring}(x))) $, where $ \\text{repr} $ denotes the basis representation in the cotangent space.",
+            "path": "Mathlib.RingTheory.Kaehler.JacobiZariski"
+          },
+          {
+            "formal_name": "Derivation.compAEval_apply",
+            "informal_name": "Derivation Composed with Polynomial Evaluation Equals Derivation of Evaluated Polynomial",
+            "kind": "theorem",
+            "type": "\u2200 {R : Type u_1} {A : Type u_2} {M : Type u_3} [inst : CommSemiring R] [inst_1 : CommSemiring A] [inst_2 : Algebra R A]\n  [inst_3 : AddCommMonoid M] [inst_4 : Module A M] [inst_5 : Module R M] [inst_6 : IsScalarTower R A M]\n  (d : Derivation R A M) (a : A) (f : Polynomial R),\n  (d.compAEval a) f = (Module.AEval.of R M a) (d ((Polynomial.aeval a) f))",
+            "informal_description": "For any derivation $ d $ from $ R $ to $ A $ with values in $ M $, any element $ a \\in A $, and any polynomial $ f \\in R[X] $, it holds that $ (d \\circ \\text{aeval}_a)(f) = d(f(a)) $.",
+            "path": "Mathlib.Algebra.Polynomial.Derivation"
+          },
+          {
+            "formal_name": "KaehlerDifferential.map_compDer",
+            "informal_name": "Compatibility of K\u00e4hler Differential Map with Derivations under Scalar Restriction",
+            "kind": "theorem",
+            "type": "\u2200 (R : Type u) (S : Type v) [inst : CommRing R] [inst_1 : CommRing S] [inst_2 : Algebra R S] (A : Type u_2)\n  (B : Type u_3) [inst_3 : CommRing A] [inst_4 : CommRing B] [inst_5 : Algebra R A] [inst_6 : Algebra A B]\n  [inst_7 : Algebra S B] [inst_8 : Algebra R B] [inst_9 : IsScalarTower R A B] [inst_10 : IsScalarTower R S B]\n  [inst_11 : SMulCommClass S A B],\n  (KaehlerDifferential.map R S A B).compDer (KaehlerDifferential.D R A) =\n    Derivation.compAlgebraMap A (Derivation.restrictScalars R ...",
+            "informal_description": "The composition of the K\u00e4hler differential map $\\Omega_{A/R} \\to \\Omega_{B/S}$ with the canonical derivation $d : A \\to \\Omega_{A/R}$ equals the composition of the derivation $d : B \\to \\Omega_{B/S}$ restricted to scalars from $R$ with the algebra homomorphism $A \\to B$. This establishes a commutative diagram relating differential maps across algebra extensions under scalar tower conditions.",
+            "path": "Mathlib.RingTheory.Kaehler.Basic"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "key": "leansearch-abstract",
+    "request": {
+      "query": "composition pullback filtered differential operators polynomial algebra Hasse Schmidt derivation",
+      "num_results": 8
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.hasseDeriv_comp\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.HasseDeriv\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u_1} [inst : Semiring R] (k l : \u2115),\\n  Polynomial.hasseDeriv k \u2218\u2097 Polynomial.hasseDeriv l = (k + l).choose k \u2022 Polynomial.hasseDeriv (k + l)\"\n    },\n    {\n      \"name\": \"MvPolynomial.comap_comp\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Comap\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {\u03c3 : Type u_1} {\u03c4 : Type u_2} {\u03c5 : Type u_3} {R : Type u_4} [inst : CommSemiring R]\\n  (f : MvPolynomial \u03c3 R \u2192\u2090[R] MvPolynomial \u03c4 R) (g : MvPolynomial \u03c4 R \u2192\u2090[R] MvPolynomial \u03c5 R),\\n  MvPolynomial.comap (g.comp f) = MvPolynomial.comap f \u2218 MvPolynomial.comap g\"\n    },\n    {\n      \"name\": \"KaehlerDifferential.polynomialEquiv_comp_D\",\n      \"module_name\": \"Mathlib.RingTheory.Kaehler.Polynomial\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 (R : Type u) [inst : CommRing R],\\n  (KaehlerDifferential.polynomialEquiv R).compDer (KaehlerDifferential.D R (Polynomial R)) = Polynomial.derivative'\"\n    },\n    {\n      \"name\": \"Derivation.compAEval_eq\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Derivation\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u_1} {A : Type u_2} {M : Type u_3} [inst : CommSemiring R] [inst_1 : CommSemiring A] [inst_2 : Algebra R A]\\n  [inst_3 : AddCommMonoid M] [inst_4 : Module A M] [inst_5 : Module R M] [inst_6 : IsScalarTower R A M] (a : A)\\n  (d : Derivation R A M) (f : Polynomial R), (d.compAEval a) f = Polynomial.derivative f \u2022 (Module.AEval.of R M a) (d a)\"\n    },\n    {\n      \"name\": \"HasDerivAtFilter.scomp_of_eq\",\n      \"module_name\": \"Mathlib.Analysis.Calculus.Deriv.Comp\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {\ud835\udd5c : Type u} [inst : NontriviallyNormedField \ud835\udd5c] {F : Type v} [inst_1 : NormedAddCommGroup F]\\n  [inst_2 : NormedSpace \ud835\udd5c F] (x : \ud835\udd5c) {L : Filter \ud835\udd5c} {\ud835\udd5c' : Type u_1} [inst_3 : NontriviallyNormedField \ud835\udd5c']\\n  [inst_4 : NormedAlgebra \ud835\udd5c \ud835\udd5c'] [inst_5 : NormedSpace \ud835\udd5c' F] [IsScalarTower \ud835\udd5c \ud835\udd5c' F] {h : \ud835\udd5c \u2192 \ud835\udd5c'} {h' : \ud835\udd5c'} {g\u2081 : \ud835\udd5c' \u2192 F}\\n  {g\u2081' : F} {L' : Filter \ud835\udd5c'} {y : \ud835\udd5c'},\\n  HasDerivAtFilter g\u2081 g\u2081' y L' \u2192\\n    HasDerivAtFilter h h' x L \u2192 y = h x \u2192 Filter.Tendsto h L L' \u2192 HasDerivAtFilter (g\u2081 \u2218 h) (h' \u2022 g\u2081') x L\"\n    },\n    {\n      \"name\": \"Derivation.compAlgebraMap_apply\",\n      \"module_name\": \"Mathlib.RingTheory.Derivation.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u_1} (A : Type u_2) {B : Type u_3} {M : Type u_4} [inst : CommSemiring R] [inst_1 : CommSemiring A]\\n  [inst_2 : CommSemiring B] [inst_3 : AddCommMonoid M] [inst_4 : Algebra R A] [inst_5 : Algebra R B]\\n  [inst_6 : Module A M] [inst_7 : Module B M] [inst_8 : Module R M] [inst_9 : Algebra A B]\\n  [inst_10 : IsScalarTower R A B] [inst_11 : IsScalarTower A B M] (d : Derivation R B M) (a : A),\\n  (Derivation.compAlgebraMap A d) a = d ((algebraMap A B) a)\"\n    },\n    {\n      \"name\": \"Derivation.compAEval_apply\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Derivation\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u_1} {A : Type u_2} {M : Type u_3} [inst : CommSemiring R] [inst_1 : CommSemiring A] [inst_2 : Algebra R A]\\n  [inst_3 : AddCommMonoid M] [inst_4 : Module A M] [inst_5 : Module R M] [inst_6 : IsScalarTower R A M]\\n  (d : Derivation R A M) (a : A) (f : Polynomial R),\\n  (d.compAEval a) f = (Module.AEval.of R M a) (d ((Polynomial.aeval a) f))\"\n    },\n    {\n      \"name\": \"KaehlerDifferential.mvPolynomialBasis_repr_comp_D\",\n      \"module_name\": \"Mathlib.RingTheory.Kaehler.Polynomial\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 (R : Type u) [inst : CommRing R] (\u03c3 : Type u_1),\\n  (\u2191(KaehlerDifferential.mvPolynomialBasis R \u03c3).repr).compDer (KaehlerDifferential.D R (MvPolynomial \u03c3 R)) =\\n    MvPolynomial.mkDerivation R fun x => Finsupp.single x 1\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.hasseDeriv_comp",
+            "module_name": "Mathlib.Algebra.Polynomial.HasseDeriv",
+            "kind": "theorem",
+            "type": "\u2200 {R : Type u_1} [inst : Semiring R] (k l : \u2115),\n  Polynomial.hasseDeriv k \u2218\u2097 Polynomial.hasseDeriv l = (k + l).choose k \u2022 Polynomial.hasseDeriv (k + l)"
+          },
+          {
+            "name": "MvPolynomial.comap_comp",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Comap",
+            "kind": "theorem",
+            "type": "\u2200 {\u03c3 : Type u_1} {\u03c4 : Type u_2} {\u03c5 : Type u_3} {R : Type u_4} [inst : CommSemiring R]\n  (f : MvPolynomial \u03c3 R \u2192\u2090[R] MvPolynomial \u03c4 R) (g : MvPolynomial \u03c4 R \u2192\u2090[R] MvPolynomial \u03c5 R),\n  MvPolynomial.comap (g.comp f) = MvPolynomial.comap f \u2218 MvPolynomial.comap g"
+          },
+          {
+            "name": "KaehlerDifferential.polynomialEquiv_comp_D",
+            "module_name": "Mathlib.RingTheory.Kaehler.Polynomial",
+            "kind": "theorem",
+            "type": "\u2200 (R : Type u) [inst : CommRing R],\n  (KaehlerDifferential.polynomialEquiv R).compDer (KaehlerDifferential.D R (Polynomial R)) = Polynomial.derivative'"
+          },
+          {
+            "name": "Derivation.compAEval_eq",
+            "module_name": "Mathlib.Algebra.Polynomial.Derivation",
+            "kind": "theorem",
+            "type": "\u2200 {R : Type u_1} {A : Type u_2} {M : Type u_3} [inst : CommSemiring R] [inst_1 : CommSemiring A] [inst_2 : Algebra R A]\n  [inst_3 : AddCommMonoid M] [inst_4 : Module A M] [inst_5 : Module R M] [inst_6 : IsScalarTower R A M] (a : A)\n  (d : Derivation R A M) (f : Polynomial R), (d.compAEval a) f = Polynomial.derivative f \u2022 (Module.AEval.of R M a) (d a)"
+          },
+          {
+            "name": "HasDerivAtFilter.scomp_of_eq",
+            "module_name": "Mathlib.Analysis.Calculus.Deriv.Comp",
+            "kind": "theorem",
+            "type": "\u2200 {\ud835\udd5c : Type u} [inst : NontriviallyNormedField \ud835\udd5c] {F : Type v} [inst_1 : NormedAddCommGroup F]\n  [inst_2 : NormedSpace \ud835\udd5c F] (x : \ud835\udd5c) {L : Filter \ud835\udd5c} {\ud835\udd5c' : Type u_1} [inst_3 : NontriviallyNormedField \ud835\udd5c']\n  [inst_4 : NormedAlgebra \ud835\udd5c \ud835\udd5c'] [inst_5 : NormedSpace \ud835\udd5c' F] [IsScalarTower \ud835\udd5c \ud835\udd5c' F] {h : \ud835\udd5c \u2192 \ud835\udd5c'} {h' : \ud835\udd5c'} {g\u2081 : \ud835\udd5c' \u2192 F}\n  {g\u2081' : F} {L' : Filter \ud835\udd5c'} {y : \ud835\udd5c'},\n  HasDerivAtFilter g\u2081 g\u2081' y L' \u2192\n    HasDerivAtFilter h h' x L \u2192 y = h x \u2192 Filter.Tendsto h L L' \u2192 HasDerivAtFilter (g\u2081 \u2218 h) (h' \u2022 g\u2081') x L"
+          },
+          {
+            "name": "Derivation.compAlgebraMap_apply",
+            "module_name": "Mathlib.RingTheory.Derivation.Basic",
+            "kind": "theorem",
+            "type": "\u2200 {R : Type u_1} (A : Type u_2) {B : Type u_3} {M : Type u_4} [inst : CommSemiring R] [inst_1 : CommSemiring A]\n  [inst_2 : CommSemiring B] [inst_3 : AddCommMonoid M] [inst_4 : Algebra R A] [inst_5 : Algebra R B]\n  [inst_6 : Module A M] [inst_7 : Module B M] [inst_8 : Module R M] [inst_9 : Algebra A B]\n  [inst_10 : IsScalarTower R A B] [inst_11 : IsScalarTower A B M] (d : Derivation R B M) (a : A),\n  (Derivation.compAlgebraMap A d) a = d ((algebraMap A B) a)"
+          },
+          {
+            "name": "Derivation.compAEval_apply",
+            "module_name": "Mathlib.Algebra.Polynomial.Derivation",
+            "kind": "theorem",
+            "type": "\u2200 {R : Type u_1} {A : Type u_2} {M : Type u_3} [inst : CommSemiring R] [inst_1 : CommSemiring A] [inst_2 : Algebra R A]\n  [inst_3 : AddCommMonoid M] [inst_4 : Module A M] [inst_5 : Module R M] [inst_6 : IsScalarTower R A M]\n  (d : Derivation R A M) (a : A) (f : Polynomial R),\n  (d.compAEval a) f = (Module.AEval.of R M a) (d ((Polynomial.aeval a) f))"
+          },
+          {
+            "name": "KaehlerDifferential.mvPolynomialBasis_repr_comp_D",
+            "module_name": "Mathlib.RingTheory.Kaehler.Polynomial",
+            "kind": "theorem",
+            "type": "\u2200 (R : Type u) [inst : CommRing R] (\u03c3 : Type u_1),\n  (\u2191(KaehlerDifferential.mvPolynomialBasis R \u03c3).repr).compDer (KaehlerDifferential.D R (MvPolynomial \u03c3 R)) =\n    MvPolynomial.mkDerivation R fun x => Finsupp.single x 1"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "key": "local-abstract",
+    "request": {
+      "query": "mem_span_image_iff_linearCombination",
+      "limit": 20,
+      "project_root": "/Users/ramin/LEAN/Roth"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finsupp.mem_span_image_iff_linearCombination\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/Finsupp/LinearCombination.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Finsupp.mem_span_image_iff_linearCombination",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/Finsupp/LinearCombination.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "key": "loogle-current",
+    "request": {
+      "query": "Polynomial.hasseDeriv, MvPolynomial.aeval",
+      "num_results": 12
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": []\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": []
+      },
+      "isError": false
+    }
+  },
+  {
+    "key": "loogle-standard",
+    "request": {
+      "query": "Polynomial.hasseDeriv, _ (_ * _)",
+      "num_results": 12
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "Error executing tool lean_loogle: loogle query error: A placeholder `_` cannot be used where a function is expected"
+        }
+      ],
+      "isError": true
+    }
+  },
+  {
+    "key": "loogle-abstract",
+    "request": {
+      "query": "Submodule.span, Finsupp.linearCombination",
+      "num_results": 12
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finsupp.range_linearCombination\",\n      \"type\": \" {\u03b1 : Type u_1} {M : Type u_2} (R : Type u_3) [Semiring R] [AddCommMonoid M] [Module R M] {v : \u03b1 \u2192 M} : (Finsupp.linearCombination R v).range = Submodule.span R (Set.range v)\",\n      \"module\": \"Mathlib.LinearAlgebra.Finsupp.LinearCombination\"\n    },\n    {\n      \"name\": \"Finsupp.span_image_eq_map_linearCombination\",\n      \"type\": \" {\u03b1 : Type u_1} {M : Type u_2} (R : Type u_3) [Semiring R] [AddCommMonoid M] [Module R M] {v : \u03b1 \u2192 M} (s : Set \u03b1) : Submodule.span R (v '' s) = Submodule.map (Finsupp.linearCombination R v) (Finsupp.supported R R s)\",\n      \"module\": \"Mathlib.LinearAlgebra.Finsupp.LinearCombination\"\n    },\n    {\n      \"name\": \"Finsupp.span_eq_range_linearCombination\",\n      \"type\": \" {M : Type u_2} (R : Type u_3) [Semiring R] [AddCommMonoid M] [Module R M] (s : Set M) : Submodule.span R s = (Finsupp.linearCombination R Subtype.val).range\",\n      \"module\": \"Mathlib.LinearAlgebra.Finsupp.LinearCombination\"\n    },\n    {\n      \"name\": \"span_range_eq_top_iff_surjective_finsuppLinearCombination\",\n      \"type\": \" {\u03b1 : Type u_1} {M : Type u_2} (R : Type u_3) [Semiring R] [AddCommMonoid M] [Module R M] {v : \u03b1 \u2192 M} : Submodule.span R (Set.range v) = \u22a4 \u2194 Function.Surjective \u21d1(Finsupp.linearCombination R v)\",\n      \"module\": \"Mathlib.LinearAlgebra.Finsupp.LinearCombination\"\n    },\n    {\n      \"name\": \"Finsupp.mem_span_iff_linearCombination\",\n      \"type\": \" {M : Type u_2} (R : Type u_3) [Semiring R] [AddCommMonoid M] [Module R M] (s : Set M) (x : M) : x \u2208 Submodule.span R s \u2194 \u2203 l, (Finsupp.linearCombination R Subtype.val) l = x\",\n      \"module\": \"Mathlib.LinearAlgebra.Finsupp.LinearCombination\"\n    },\n    {\n      \"name\": \"Span.repr_def\",\n      \"type\": \" (R : Type u_4) {M : Type u_5} [Semiring R] [AddCommMonoid M] [Module R M] (w : Set M) (x : \u21a5(Submodule.span R w)) : Span.repr R w x = \u22ef.choose\",\n      \"module\": \"Mathlib.LinearAlgebra.Finsupp.LinearCombination\"\n    },\n    {\n      \"name\": \"Span.finsupp_linearCombination_repr\",\n      \"type\": \" (R : Type u_1) {M : Type u_2} [Semiring R] [AddCommMonoid M] [Module R M] {w : Set M} (x : \u21a5(Submodule.span R w)) : (Finsupp.linearCombination R Subtype.val) (Span.repr R w x) = \u2191x\",\n      \"module\": \"Mathlib.LinearAlgebra.Finsupp.LinearCombination\"\n    },\n    {\n      \"name\": \"Finsupp.mem_span_image_iff_linearCombination\",\n      \"type\": \" {\u03b1 : Type u_1} {M : Type u_2} (R : Type u_3) [Semiring R] [AddCommMonoid M] [Module R M] {v : \u03b1 \u2192 M} {s : Set \u03b1} {x : M} : x \u2208 Submodule.span R (v '' s) \u2194 \u2203 l \u2208 Finsupp.supported R R s, (Finsupp.linearCombination R v) l = x\",\n      \"module\": \"Mathlib.LinearAlgebra.Finsupp.LinearCombination\"\n    },\n    {\n      \"name\": \"Finsupp.linearCombination_restrict\",\n      \"type\": \" {\u03b1 : Type u_1} {M : Type u_2} (R : Type u_3) [Semiring R] [AddCommMonoid M] [Module R M] {v : \u03b1 \u2192 M} (s : Set \u03b1) : Finsupp.linearCombination R (s.domRestrict v) = (Submodule.span R (v '' s)).subtype \u2218\u2097 Finsupp.linearCombinationOn \u03b1 M R v s \u2218\u2097 \u2191(Finsupp.supportedEquivFinsupp s).symm\",\n      \"module\": \"Mathlib.LinearAlgebra.Finsupp.LinearCombination\"\n    },\n    {\n      \"name\": \"LinearIndependent.linearCombination_comp_repr\",\n      \"type\": \" {\u03b9 : Type u'} {R : Type u_2} {M : Type u_4} {v : \u03b9 \u2192 M} [Semiring R] [AddCommMonoid M] [Module R M] (hv : LinearIndependent R v) : Finsupp.linearCombination R v \u2218\u2097 hv.repr = (Submodule.span R (Set.range v)).subtype\",\n      \"module\": \"Mathlib.LinearAlgebra.LinearIndependent.Defs\"\n    },\n    {\n      \"name\": \"LinearIndependent.linearCombination_repr\",\n      \"type\": \" {\u03b9 : Type u'} {R : Type u_2} {M : Type u_4} {v : \u03b9 \u2192 M} [Semiring R] [AddCommMonoid M] [Module R M] (hv : LinearIndependent R v) (x : \u21a5(Submodule.span R (Set.range v))) : (Finsupp.linearCombination R v) (hv.repr x) = \u2191x\",\n      \"module\": \"Mathlib.LinearAlgebra.LinearIndependent.Defs\"\n    },\n    {\n      \"name\": \"LinearIndependent.repr_eq\",\n      \"type\": \" {\u03b9 : Type u'} {R : Type u_2} {M : Type u_4} {v : \u03b9 \u2192 M} [Semiring R] [AddCommMonoid M] [Module R M] (hv : LinearIndependent R v) {l : \u03b9 \u2192\u2080 R} {x : \u21a5(Submodule.span R (Set.range v))} (eq : (Finsupp.linearCombination R v) l = \u2191x) : hv.repr x = l\",\n      \"module\": \"Mathlib.LinearAlgebra.LinearIndependent.Defs\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Finsupp.range_linearCombination",
+            "type": " {\u03b1 : Type u_1} {M : Type u_2} (R : Type u_3) [Semiring R] [AddCommMonoid M] [Module R M] {v : \u03b1 \u2192 M} : (Finsupp.linearCombination R v).range = Submodule.span R (Set.range v)",
+            "module": "Mathlib.LinearAlgebra.Finsupp.LinearCombination"
+          },
+          {
+            "name": "Finsupp.span_image_eq_map_linearCombination",
+            "type": " {\u03b1 : Type u_1} {M : Type u_2} (R : Type u_3) [Semiring R] [AddCommMonoid M] [Module R M] {v : \u03b1 \u2192 M} (s : Set \u03b1) : Submodule.span R (v '' s) = Submodule.map (Finsupp.linearCombination R v) (Finsupp.supported R R s)",
+            "module": "Mathlib.LinearAlgebra.Finsupp.LinearCombination"
+          },
+          {
+            "name": "Finsupp.span_eq_range_linearCombination",
+            "type": " {M : Type u_2} (R : Type u_3) [Semiring R] [AddCommMonoid M] [Module R M] (s : Set M) : Submodule.span R s = (Finsupp.linearCombination R Subtype.val).range",
+            "module": "Mathlib.LinearAlgebra.Finsupp.LinearCombination"
+          },
+          {
+            "name": "span_range_eq_top_iff_surjective_finsuppLinearCombination",
+            "type": " {\u03b1 : Type u_1} {M : Type u_2} (R : Type u_3) [Semiring R] [AddCommMonoid M] [Module R M] {v : \u03b1 \u2192 M} : Submodule.span R (Set.range v) = \u22a4 \u2194 Function.Surjective \u21d1(Finsupp.linearCombination R v)",
+            "module": "Mathlib.LinearAlgebra.Finsupp.LinearCombination"
+          },
+          {
+            "name": "Finsupp.mem_span_iff_linearCombination",
+            "type": " {M : Type u_2} (R : Type u_3) [Semiring R] [AddCommMonoid M] [Module R M] (s : Set M) (x : M) : x \u2208 Submodule.span R s \u2194 \u2203 l, (Finsupp.linearCombination R Subtype.val) l = x",
+            "module": "Mathlib.LinearAlgebra.Finsupp.LinearCombination"
+          },
+          {
+            "name": "Span.repr_def",
+            "type": " (R : Type u_4) {M : Type u_5} [Semiring R] [AddCommMonoid M] [Module R M] (w : Set M) (x : \u21a5(Submodule.span R w)) : Span.repr R w x = \u22ef.choose",
+            "module": "Mathlib.LinearAlgebra.Finsupp.LinearCombination"
+          },
+          {
+            "name": "Span.finsupp_linearCombination_repr",
+            "type": " (R : Type u_1) {M : Type u_2} [Semiring R] [AddCommMonoid M] [Module R M] {w : Set M} (x : \u21a5(Submodule.span R w)) : (Finsupp.linearCombination R Subtype.val) (Span.repr R w x) = \u2191x",
+            "module": "Mathlib.LinearAlgebra.Finsupp.LinearCombination"
+          },
+          {
+            "name": "Finsupp.mem_span_image_iff_linearCombination",
+            "type": " {\u03b1 : Type u_1} {M : Type u_2} (R : Type u_3) [Semiring R] [AddCommMonoid M] [Module R M] {v : \u03b1 \u2192 M} {s : Set \u03b1} {x : M} : x \u2208 Submodule.span R (v '' s) \u2194 \u2203 l \u2208 Finsupp.supported R R s, (Finsupp.linearCombination R v) l = x",
+            "module": "Mathlib.LinearAlgebra.Finsupp.LinearCombination"
+          },
+          {
+            "name": "Finsupp.linearCombination_restrict",
+            "type": " {\u03b1 : Type u_1} {M : Type u_2} (R : Type u_3) [Semiring R] [AddCommMonoid M] [Module R M] {v : \u03b1 \u2192 M} (s : Set \u03b1) : Finsupp.linearCombination R (s.domRestrict v) = (Submodule.span R (v '' s)).subtype \u2218\u2097 Finsupp.linearCombinationOn \u03b1 M R v s \u2218\u2097 \u2191(Finsupp.supportedEquivFinsupp s).symm",
+            "module": "Mathlib.LinearAlgebra.Finsupp.LinearCombination"
+          },
+          {
+            "name": "LinearIndependent.linearCombination_comp_repr",
+            "type": " {\u03b9 : Type u'} {R : Type u_2} {M : Type u_4} {v : \u03b9 \u2192 M} [Semiring R] [AddCommMonoid M] [Module R M] (hv : LinearIndependent R v) : Finsupp.linearCombination R v \u2218\u2097 hv.repr = (Submodule.span R (Set.range v)).subtype",
+            "module": "Mathlib.LinearAlgebra.LinearIndependent.Defs"
+          },
+          {
+            "name": "LinearIndependent.linearCombination_repr",
+            "type": " {\u03b9 : Type u'} {R : Type u_2} {M : Type u_4} {v : \u03b9 \u2192 M} [Semiring R] [AddCommMonoid M] [Module R M] (hv : LinearIndependent R v) (x : \u21a5(Submodule.span R (Set.range v))) : (Finsupp.linearCombination R v) (hv.repr x) = \u2191x",
+            "module": "Mathlib.LinearAlgebra.LinearIndependent.Defs"
+          },
+          {
+            "name": "LinearIndependent.repr_eq",
+            "type": " {\u03b9 : Type u'} {R : Type u_2} {M : Type u_4} {v : \u03b9 \u2192 M} [Semiring R] [AddCommMonoid M] [Module R M] (hv : LinearIndependent R v) {l : \u03b9 \u2192\u2080 R} {x : \u21a5(Submodule.span R (Set.range v))} (eq : (Finsupp.linearCombination R v) l = \u2191x) : hv.repr x = l",
+            "module": "Mathlib.LinearAlgebra.LinearIndependent.Defs"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "key": "loogle-standard-retry",
+    "request": {
+      "query": "Polynomial.hasseDeriv, Polynomial.comp",
+      "num_results": 12
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "Error executing tool lean_loogle: Rate limit exceeded: 3 requests per 30s. Use --loogle-local to avoid limits."
+        }
+      ],
+      "isError": true
+    }
+  },
+  {
+    "key": "loogle-standard-valid",
+    "request": {
+      "query": "Polynomial.hasseDeriv, Polynomial.comp",
+      "num_results": 12
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": []\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": []
+      },
+      "isError": false
+    }
+  }
+]

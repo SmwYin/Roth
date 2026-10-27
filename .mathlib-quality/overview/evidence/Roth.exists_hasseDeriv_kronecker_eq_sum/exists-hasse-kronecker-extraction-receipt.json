@@ -1,0 +1,75 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MvPolynomial.PDeriv\nimport Mathlib.Algebra.Polynomial.HasseDeriv\nimport Mathlib.Data.Nat.Choose.Bounds\n#check_failure Roth.exists_hasseDeriv_kronecker_eq_sum\n#check @Polynomial.hasseDeriv_comp\n#check @Polynomial.factorial_smul_hasseDeriv\n#check @Finsupp.mem_span_image_iff_linearCombination\n#check @Finsupp.linearCombination_apply\nnamespace ExistsHasseExtraction\nvariable {A α β : Type*} [CommSemiring A]\ntheorem extract (v : α → β → A) (s : Set α) (F : β → A)\n    (hF : F ∈ Submodule.span A (v '' s)) :\n    ∃ (t : Finset α) (c : α → A), (∀ a ∈ t, a ∈ s) ∧\n      ∀ b, F b = ∑ a ∈ t, c a * v a b := by\n  classical\n  obtain ⟨c, hc, hsum⟩ := (Finsupp.mem_span_image_iff_linearCombination _).1 hF\n  refine ⟨c.support, c, hc, fun b ↦ ?_⟩\n  simpa [Finsupp.linearCombination_apply, Finsupp.sum] using congrFun hsum.symm b\n#print axioms extract\nend ExistsHasseExtraction\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.exists_hasseDeriv_kronecker_eq_sum`\",\n      \"line\": 4,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.hasseDeriv_comp : ∀ {R : Type u_1} [inst : Semiring R] (k l : ℕ),\\n  Polynomial.hasseDeriv k ∘ₗ Polynomial.hasseDeriv l = (k + l).choose k • Polynomial.hasseDeriv (k + l)\",\n      \"line\": 5,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.factorial_smul_hasseDeriv : ∀ {R : Type u_1} [inst : Semiring R] (k : ℕ),\\n  ⇑(k.factorial • Polynomial.hasseDeriv k) = (⇑Polynomial.derivative)^[k]\",\n      \"line\": 6,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finsupp.mem_span_image_iff_linearCombination : ∀ {α : Type u_1} {M : Type u_2} (R : Type u_3) [inst : Semiring R]\\n  [inst_1 : AddCommMonoid M] [inst_2 : Module R M] {v : α → M} {s : Set α} {x : M},\\n  x ∈ Submodule.span R (v '' s) ↔ ∃ l ∈ Finsupp.supported R R s, (Finsupp.linearCombination R v) l = x\",\n      \"line\": 7,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finsupp.linearCombination_apply : ∀ {α : Type u_1} {M : Type u_2} (R : Type u_3) [inst : Semiring R]\\n  [inst_1 : AddCommMonoid M] [inst_2 : Module R M] {v : α → M} (l : α →₀ R),\\n  (Finsupp.linearCombination R v) l = l.sum fun i a ↦ a • v i\",\n      \"line\": 8,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'ExistsHasseExtraction.extract' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 19,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.exists_hasseDeriv_kronecker_eq_sum`",
+          "line": 4,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.hasseDeriv_comp : ∀ {R : Type u_1} [inst : Semiring R] (k l : ℕ),\n  Polynomial.hasseDeriv k ∘ₗ Polynomial.hasseDeriv l = (k + l).choose k • Polynomial.hasseDeriv (k + l)",
+          "line": 5,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.factorial_smul_hasseDeriv : ∀ {R : Type u_1} [inst : Semiring R] (k : ℕ),\n  ⇑(k.factorial • Polynomial.hasseDeriv k) = (⇑Polynomial.derivative)^[k]",
+          "line": 6,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finsupp.mem_span_image_iff_linearCombination : ∀ {α : Type u_1} {M : Type u_2} (R : Type u_3) [inst : Semiring R]\n  [inst_1 : AddCommMonoid M] [inst_2 : Module R M] {v : α → M} {s : Set α} {x : M},\n  x ∈ Submodule.span R (v '' s) ↔ ∃ l ∈ Finsupp.supported R R s, (Finsupp.linearCombination R v) l = x",
+          "line": 7,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finsupp.linearCombination_apply : ∀ {α : Type u_1} {M : Type u_2} (R : Type u_3) [inst : Semiring R]\n  [inst_1 : AddCommMonoid M] [inst_2 : Module R M] {v : α → M} (l : α →₀ R),\n  (Finsupp.linearCombination R v) l = l.sum fun i a ↦ a • v i",
+          "line": 8,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'ExistsHasseExtraction.extract' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 19,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 28939
+}

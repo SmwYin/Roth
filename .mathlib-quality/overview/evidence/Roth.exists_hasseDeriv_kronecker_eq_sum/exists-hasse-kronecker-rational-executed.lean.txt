@@ -1,0 +1,88 @@
+namespace ExistsHasseRationalProbe
+open MvPolynomial
+variable {R : Type*} [CommRing R] [Algebra ℚ R] {σ : Type*} [Fintype σ]
+noncomputable def kronHasse (γ : σ → Polynomial R) (d : σ →₀ ℕ) : MvPolynomial σ R → Polynomial R :=
+  fun P ↦ aeval γ (hasseDeriv d P)
+
+/-- The `R[X]`-span of the operators `kronHasse γ d` with `|d| ≤ μ`. -/
+noncomputable def kronSpan (γ : σ → Polynomial R) (μ : ℕ) : Submodule (Polynomial R)
+    (MvPolynomial σ R → Polynomial R) :=
+  Submodule.span (Polynomial R) (kronHasse (R := R) γ '' {d | d.degree ≤ μ})
+
+lemma derivative_kronHasse_aux (γ : σ → Polynomial R) (d : σ →₀ ℕ) :
+    (fun P ↦ Polynomial.derivative (kronHasse (R := R) γ d P)) =
+      ∑ j, (Polynomial.derivative (γ j) *
+        Polynomial.C ((d j + 1 : ℕ) : R)) • kronHasse γ (d + Finsupp.single j 1) := by
+  classical
+  funext P
+  simp [kronHasse, DerivativeAEvalNoTower.semiring, pderiv_hasseDeriv, map_smul,
+    Polynomial.smul_eq_C_mul, mul_assoc, mul_comm, mul_left_comm]
+
+omit [Fintype σ] in
+lemma derivative_mem_kronSpan [Finite σ] (γ : σ → Polynomial R) (μ : ℕ)
+    {F : MvPolynomial σ R → Polynomial R}
+    (hF : F ∈ kronSpan γ μ) :
+    (fun P ↦ Polynomial.derivative (F P)) ∈ kronSpan (R := R) (σ := σ) γ (μ + 1) := by
+  classical
+  let := Fintype.ofFinite σ
+  induction hF using Submodule.span_induction with
+  | mem F hF =>
+    obtain ⟨d, hd, rfl⟩ := hF
+    rw [derivative_kronHasse_aux]
+    refine Submodule.sum_mem _ fun j _ ↦ Submodule.smul_mem _ _ (Submodule.subset_span ?_)
+    refine ⟨d + Finsupp.single j 1, ?_, rfl⟩
+    simp only [Set.mem_ofPred_eq, map_add, Finsupp.degree_single] at hd ⊢
+    exact Nat.add_le_add_right hd 1
+  | zero =>
+    convert (kronSpan (R := R) (σ := σ) γ (μ + 1)).zero_mem using 1
+    funext P
+    simp
+  | add F G _ _ hF hG =>
+    convert Submodule.add_mem _ hF hG using 1
+    funext P
+    simp [Polynomial.derivative_add]
+  | smul a F hF' hF =>
+    convert Submodule.add_mem (kronSpan (R := R) (σ := σ) γ (μ + 1))
+      (Submodule.smul_mem _ (Polynomial.derivative a)
+        (Submodule.span_mono (Set.image_mono fun _ hd ↦ le_trans hd (Nat.le_succ μ)) hF'))
+      (Submodule.smul_mem _ a hF) using 1
+    funext P
+    simp [Polynomial.derivative_mul, add_comm]
+
+omit [Fintype σ] in
+lemma hasseDeriv_kronecker_mem [Finite σ] (γ : σ → Polynomial R) (μ : ℕ) :
+    (fun P ↦ Polynomial.hasseDeriv μ (aeval γ P)) ∈ kronSpan (R := R) (σ := σ) γ μ := by
+  induction μ with
+  | zero =>
+    refine Submodule.subset_span ⟨0, by simp, ?_⟩
+    funext P
+    simp [kronHasse]
+  | succ μ ih =>
+    apply (((kronSpan (R := R) (σ := σ) γ (μ + 1)).restrictScalars ℚ).smul_mem_iff
+      (s := ((μ + 1 : ℕ) : ℚ)) (Nat.cast_ne_zero.2 μ.succ_ne_zero)).mp
+    change (((μ + 1 : ℕ) : ℚ) • fun P ↦ Polynomial.hasseDeriv (μ + 1) (aeval γ P)) ∈
+      kronSpan (R := R) (σ := σ) γ (μ + 1)
+    convert derivative_mem_kronSpan γ μ ih using 1
+    funext P
+    simpa [← Nat.cast_smul_eq_nsmul ℚ, add_comm] using
+      (congrArg (fun L ↦ L (aeval γ P)) (Polynomial.hasseDeriv_comp (R := R) 1 μ)).symm
+
+omit [Fintype σ] in
+theorem exists_hasseDeriv_aeval_eq_sum [Finite σ] (γ : σ → Polynomial R) (μ : ℕ) :
+    ∃ (s : Finset (σ →₀ ℕ))
+    (c : (σ →₀ ℕ) → Polynomial R), (∀ d ∈ s, d.degree ≤ μ) ∧ ∀ P : MvPolynomial σ R,
+      Polynomial.hasseDeriv μ (aeval γ P) = ∑ d ∈ s, c d * aeval γ (hasseDeriv d P) := by
+  classical
+  obtain ⟨c, hc, hsum⟩ := (Finsupp.mem_span_image_iff_linearCombination _).1
+    (hasseDeriv_kronecker_mem (R := R) (σ := σ) γ μ)
+  refine ⟨c.support, c, hc, fun P ↦ ?_⟩
+  simpa [Finsupp.linearCombination_apply, Finsupp.sum, kronHasse] using congrFun hsum.symm P
+
+
+#print axioms kronHasse
+#print axioms kronSpan
+#print axioms derivative_kronHasse_aux
+#print axioms derivative_mem_kronSpan
+#print axioms hasseDeriv_kronecker_mem
+#print axioms exists_hasseDeriv_aeval_eq_sum
+end ExistsHasseRationalProbe

@@ -3,7 +3,7 @@
 Status: **in_progress**, 2026-10-27. Branch: `ramin-cleanup`.
 Production Lean files and all pins match baseline `99f19fd`.
 
-**Completed: 115 / 293 written declarations.**
+**Completed: 116 / 293 written declarations.**
 This counts the current overview assessments, separately from the earlier code cleanup.
 
 | # | Completed declaration | Applicable workflow | Verdict | Report |
@@ -123,8 +123,9 @@ This counts the current overview assessments, separately from the earlier code c
 | 113 | `Roth.derivative_kronHasse_aux` | overview-private-prefilter; accepted complete | SKIP | [Detailed report](mathlibable/Roth.derivative_kronHasse_aux.md) |
 | 114 | `Roth.derivative_mem_kronSpan` | overview-private-prefilter; accepted complete | SKIP | [Detailed report](mathlibable/Roth.derivative_mem_kronSpan.md) |
 | 115 | `Roth.hasseDeriv_kronecker_mem` | overview-private-prefilter; accepted complete | SKIP | [Detailed report](mathlibable/Roth.hasseDeriv_kronecker_mem.md) |
+| 116 | `Roth.exists_hasseDeriv_kronecker_eq_sum` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.exists_hasseDeriv_kronecker_eq_sum.md) |
 
-**Next declaration: `Roth.exists_hasseDeriv_kronecker_eq_sum`**, `Roth/GenWronskian.lean:214`.
+**Next declaration: `Roth.det_sum_rows`**, `Roth/GenWronskian.lean:228`.
 Only the listed assessments are complete. No partial assessment was committed.
 
 On restart: read [README](README.md), [machine progress](progress.json), and

@@ -1,0 +1,26 @@
+{
+  "declaration": "Roth.exists_hasseDeriv_kronecker_eq_sum",
+  "kind": "theorem",
+  "type": "@Roth.exists_hasseDeriv_kronecker_eq_sum : \u2200 {K : Type u_1} [Field K] {\u03c3 : Type u_2} [Fintype \u03c3] [CharZero K] (k \u03bc : \u2115), \u2203 (s : Finset (\u03c3 \u2192\u2080 \u2115)) (c : (\u03c3 \u2192\u2080 \u2115) \u2192 Polynomial K), (\u2200 d \u2208 s, d.degree \u2264 \u03bc) \u2227 \u2200 P : MvPolynomial \u03c3 K, Polynomial.hasseDeriv \u03bc (Roth.kronecker k P) = \u2211 d \u2208 s, c d * Roth.kronecker k (MvPolynomial.hasseDeriv d P)",
+  "what": "Uniform finite polynomial linear combination of substituted multivariate Hasse derivatives of order at most \u03bc for a Kronecker pullback.",
+  "how": "Extract supported Finsupp coefficients from private order-filtered span membership; membership uses derivative stability, induction and successor-scalar division.",
+  "hypotheses": [
+    "Field K and CharZero K in original",
+    "Fintype \u03c3 fixes concrete Kronecker enumeration",
+    "arbitrary natural k and \u03bc; no k>1, degree bounds or l"
+  ],
+  "project_dependencies": [
+    "Roth.hasseDeriv_kronecker_mem (private)",
+    "Roth.kronSpan (private)",
+    "Roth.kronHasse (private)",
+    "Roth.kronecker",
+    "MvPolynomial.hasseDeriv"
+  ],
+  "caller_summary": "One explicit same-file consumer Roth.exists_genWronskian_ne_zero at line260; canonical exact293 direct-consumer audit agrees. Full caller replays against strongest generalized theorem.",
+  "mathlib_api_audit": "Polynomial.hasseDeriv_comp is operator composition, not substitution; Finsupp span/extraction API supplies coefficients only after substantive membership. Analytic Fa\u00e0 di Bruno and univariate Taylor API are partial matches.",
+  "moral_duplications": "Final extraction is generic span linear algebra, but the private uniform higher chain-rule premise is new project content. No verified existing <=3-call replacement for the full law.",
+  "generalization": "Verified arbitrary \u03b3 : \u03c3 \u2192 Polynomial R, CommSemiring R + Algebra \u211a R, Finite \u03c3. Original specialization and actual sole caller compile. Characteristic-independent primary literature formula not claimed compiled.",
+  "missing_api": "Higher polynomial-substitution law for multivariate Hasse derivatives, with choice of filtered-span, finitely supported coefficients or explicit Taylor formula.",
+  "junk": "Live Wronskian helper; single explicit consumer does not make it dead or automatically composable.",
+  "action": "BORDERLINE-needs-human: choose primary upstream representation and characteristic scope; original Kronecker corollary can remain project-local. All assessment verification complete."
+}

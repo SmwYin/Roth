@@ -1,0 +1,38 @@
+open Lean Elab Term in
+elab "existsHasseSemiringWronskian%" : term => do
+  Lean.Meta.mkConstWithFreshMVarLevels
+    (Lean.mkPrivateNameCore `Roth.GenWronskian `Roth.wronskian_kronecker_eq_sum_aux)
+namespace Roth.ExistsHasseSemiringConsumer
+open MvPolynomial
+variable {K : Type*} [Field K] {σ : Type*} {l : ℕ}
+theorem original_specialization [Fintype σ] [CharZero K] (k μ : ℕ) :
+    ∃ (s : Finset (σ →₀ ℕ)) (c : (σ →₀ ℕ) → Polynomial K),
+      (∀ d ∈ s, d.degree ≤ μ) ∧ ∀ P : MvPolynomial σ K,
+      Polynomial.hasseDeriv μ (kronecker k P) =
+        ∑ d ∈ s, c d * kronecker k (hasseDeriv d P) := by
+  exact ExistsHasseSemiringProbe.exists_hasseDeriv_aeval_eq_sum
+    (fun j ↦ Polynomial.X ^ k ^ (Fintype.equivFin σ j : ℕ)) μ
+
+theorem caller_replay [Finite σ] [CharZero K] {φ : Fin l → MvPolynomial σ K}
+    (h : LinearIndependent K φ) :
+    ∃ D : Fin l → (σ →₀ ℕ), (∀ μ, (D μ).degree ≤ μ) ∧ genWronskian D φ ≠ 0 := by
+  classical
+  let := Fintype.ofFinite σ
+  let k := 2 + ∑ ν, ∑ j, degreeOf j (φ ν)
+  choose s c hs hc using fun μ : Fin l ↦
+    ExistsHasseSemiringProbe.exists_hasseDeriv_aeval_eq_sum (K := K) (σ := σ)
+    (fun j ↦ Polynomial.X ^ k ^ (Fintype.equivFin σ j : ℕ)) μ
+  by_contra! hcon
+  apply wronskian_ne_zero_of_linearIndependent
+    (linearIndependent_kronecker (Nat.lt_add_right _ (by decide)) (fun ν j ↦
+      lt_of_le_of_lt ((Finset.single_le_sum (f := fun j ↦ degreeOf j (φ ν))
+        (by simp) (Finset.mem_univ j)).trans (Finset.single_le_sum
+          (f := fun ν ↦ ∑ j, degreeOf j (φ ν)) (by simp) (Finset.mem_univ ν)))
+        (Nat.lt_add_of_pos_left two_pos)) h)
+  rw [existsHasseSemiringWronskian% k φ s c (fun μ ν ↦ hc μ (φ ν))]
+  refine Finset.sum_eq_zero fun f hf ↦ ?_
+  rw [hcon f fun μ ↦ hs μ _ (Fintype.mem_piFinset.1 hf μ), map_zero, mul_zero]
+
+#print axioms original_specialization
+#print axioms caller_replay
+end Roth.ExistsHasseSemiringConsumer

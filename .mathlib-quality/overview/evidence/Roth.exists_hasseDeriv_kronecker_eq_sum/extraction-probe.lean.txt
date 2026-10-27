@@ -1,0 +1,20 @@
+import Mathlib.Algebra.MvPolynomial.PDeriv
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Data.Nat.Choose.Bounds
+#check_failure Roth.exists_hasseDeriv_kronecker_eq_sum
+#check @Polynomial.hasseDeriv_comp
+#check @Polynomial.factorial_smul_hasseDeriv
+#check @Finsupp.mem_span_image_iff_linearCombination
+#check @Finsupp.linearCombination_apply
+namespace ExistsHasseExtraction
+variable {A α β : Type*} [CommSemiring A]
+theorem extract (v : α → β → A) (s : Set α) (F : β → A)
+    (hF : F ∈ Submodule.span A (v '' s)) :
+    ∃ (t : Finset α) (c : α → A), (∀ a ∈ t, a ∈ s) ∧
+      ∀ b, F b = ∑ a ∈ t, c a * v a b := by
+  classical
+  obtain ⟨c, hc, hsum⟩ := (Finsupp.mem_span_image_iff_linearCombination _).1 hF
+  refine ⟨c.support, c, hc, fun b ↦ ?_⟩
+  simpa [Finsupp.linearCombination_apply, Finsupp.sum] using congrFun hsum.symm b
+#print axioms extract
+end ExistsHasseExtraction

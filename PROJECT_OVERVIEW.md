@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 115/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 116/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 115; remaining: 178.
-- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 16 YES-but-generalise-first, 21 NO-mathlib-has-it, 36 BORDERLINE-needs-human, 15 SKIP.
+- Completed applicable assessments: 116; remaining: 177.
+- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 16 YES-but-generalise-first, 21 NO-mathlib-has-it, 37 BORDERLINE-needs-human, 15 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -1249,6 +1249,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: 1 explicit source caller declarations, all in GenWronskian.lean; 1 direct original value consumers. Exact separate lists retained. Entire module proof bodies replay successfully with fresh target name.
 - Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.hasseDeriv_kronecker_mem.md).
 
+### Completed: `Roth.exists_hasseDeriv_kronecker_eq_sum`
+
+- Type: `@Roth.exists_hasseDeriv_kronecker_eq_sum : ∀ {K : Type u_1} [Field K] {σ : Type u_2} [Fintype σ] [CharZero K] (k μ : ℕ), ∃ (s : Finset (σ →₀ ℕ)) (c : (σ →₀ ℕ) → Polynomial K), (∀ d ∈ s, d.degree ≤ μ) ∧ ∀ P : MvPolynomial σ K, Polynomial.hasseDeriv μ (Roth.kronecker k P) = ∑ d ∈ s, c d * Roth.kronecker k (MvPolynomial.hasseDeriv d P)`
+- What: Uniform finite polynomial linear combination of substituted multivariate Hasse derivatives of order at most μ for a Kronecker pullback.
+- How: Extract supported Finsupp coefficients from private order-filtered span membership; membership uses derivative stability, induction and successor-scalar division.
+- Hypotheses: Field K and CharZero K in original, Fintype σ fixes concrete Kronecker enumeration, arbitrary natural k and μ; no k>1, degree bounds or l
+- Project dependencies: Roth.hasseDeriv_kronecker_mem (private), Roth.kronSpan (private), Roth.kronHasse (private), Roth.kronecker, MvPolynomial.hasseDeriv
+- Caller summary: One explicit same-file consumer Roth.exists_genWronskian_ne_zero at line260; canonical exact293 direct-consumer audit agrees. Full caller replays against strongest generalized theorem.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.exists_hasseDeriv_kronecker_eq_sum.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -1505,6 +1515,8 @@ Completed `Roth.derivative_mem_kronSpan`: Submodule.span_induction is the existi
 
 Completed `Roth.hasseDeriv_kronecker_mem`: Induction on the univariate Hasse order uses the order-zero span generator and the preceding derivative-span closure. Polynomial.hasseDeriv_comp relates the next Hasse derivative to differentiation, and characteristic zero makes the natural successor scalar invertible in the field. This is a live bridge from ordinary derivative closure to Hasse derivative span membership, not a duplicate of either preceding lemma. Existing span and scalar-restriction APIs supply the interface; no new class or instance is installed.
 
+Completed `Roth.exists_hasseDeriv_kronecker_eq_sum`: Polynomial.hasseDeriv_comp is operator composition, not substitution; Finsupp span/extraction API supplies coefficients only after substantive membership. Analytic Faà di Bruno and univariate Taylor API are partial matches.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -1736,6 +1748,8 @@ Completed `Roth.derivative_kronHasse_aux`: Private operator composition and boun
 Completed `Roth.derivative_mem_kronSpan`: Private operator composition and bounded module span are different stages of the same derivative expansion, not duplicate full constructions.
 
 Completed `Roth.hasseDeriv_kronecker_mem`: Private operator composition and bounded module span are different stages of the same derivative expansion, not duplicate full constructions.
+
+Completed `Roth.exists_hasseDeriv_kronecker_eq_sum`: Final extraction is generic span linear algebra, but the private uniform higher chain-rule premise is new project content. No verified existing <=3-call replacement for the full law.
 
 ## Part 5: Generalization opportunities
 
@@ -1972,6 +1986,8 @@ Completed `Roth.derivative_mem_kronSpan`: No public generality claim under the p
 
 Completed `Roth.hasseDeriv_kronecker_mem`: No public generality claim under the private prefilter; preserve the existing definition and interface.
 
+Completed `Roth.exists_hasseDeriv_kronecker_eq_sum`: Verified arbitrary γ : σ → Polynomial R, CommSemiring R + Algebra ℚ R, Finite σ. Original specialization and actual sole caller compile. Characteristic-independent primary literature formula not claimed compiled.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -2204,6 +2220,8 @@ Completed `Roth.derivative_kronHasse_aux`: No new primitive is needed for this i
 Completed `Roth.derivative_mem_kronSpan`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 Completed `Roth.hasseDeriv_kronecker_mem`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
+
+Completed `Roth.exists_hasseDeriv_kronecker_eq_sum`: Higher polynomial-substitution law for multivariate Hasse derivatives, with choice of filtered-span, finitely supported coefficients or explicit Taylor formula.
 
 ## Part 7: Junk / removable
 
@@ -2440,6 +2458,8 @@ Completed `Roth.derivative_mem_kronSpan`: Retain a live private proof interface.
 
 Completed `Roth.hasseDeriv_kronecker_mem`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
 
+Completed `Roth.exists_hasseDeriv_kronecker_eq_sum`: Live Wronskian helper; single explicit consumer does not make it dead or automatically composable.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -2559,6 +2579,7 @@ Completed `Roth.hasseDeriv_kronecker_mem`: Retain a live private proof interface
 | 113 | `Roth.derivative_kronHasse_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.derivative_kronHasse_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.derivative_kronHasse_aux/root-acceptance.json) |
 | 114 | `Roth.derivative_mem_kronSpan` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.derivative_mem_kronSpan.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.derivative_mem_kronSpan/root-acceptance.json) |
 | 115 | `Roth.hasseDeriv_kronecker_mem` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.hasseDeriv_kronecker_mem.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.hasseDeriv_kronecker_mem/root-acceptance.json) |
+| 116 | `Roth.exists_hasseDeriv_kronecker_eq_sum` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_hasseDeriv_kronecker_eq_sum.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_hasseDeriv_kronecker_eq_sum/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -2788,12 +2809,14 @@ Completed `Roth.derivative_mem_kronSpan` action: Keep unchanged; complete privat
 
 Completed `Roth.hasseDeriv_kronecker_mem` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
 
+Completed `Roth.exists_hasseDeriv_kronecker_eq_sum` action: BORDERLINE-needs-human: choose primary upstream representation and characteristic scope; original Kronecker corollary can remain project-local. All assessment verification complete.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.exists_hasseDeriv_kronecker_eq_sum` next. Supporting identities receive their own applicable checks.
+   `Roth.det_sum_rows` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 
