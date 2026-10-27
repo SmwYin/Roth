@@ -1,0 +1,15 @@
+
+/-- Degree bound for a determinant of Hasse derivatives of `P`.
+Source: §2, end of the proof of Lemma 2 ("Since `F` is a determinant of an `l × l` matrix whose
+entries are polynomials of degree at most `r_j` in `x_j`, `F` will be of degree at most `l r_j` in
+each variable `x_j`"). -/
+theorem degreeOf_det_hasseDeriv_le {l : ℕ} (E : Fin l → Fin l → (σ →₀ ℕ)) (P : MvPolynomial σ ℤ)
+    {r : σ → ℕ} (hP : ∀ j, degreeOf j P ≤ r j) (j : σ) :
+    degreeOf j (Matrix.of fun μ ν : Fin l ↦ hasseDeriv (E μ ν) P).det ≤ l * r j := by
+  rw [Matrix.det_apply']
+  refine (degreeOf_sum_le _ _ _).trans (Finset.sup_le fun τ _ ↦ ?_)
+  refine (degreeOf_C_mul_le _ j (Equiv.Perm.sign τ : ℤ)).trans ?_
+  refine (degreeOf_prod_le _ _ _).trans ?_
+  simpa using Finset.sum_le_sum (s := Finset.univ)
+    (fun (i : Fin l) _ ↦ (degreeOf_hasseDeriv_le _ _ _).trans (hP j))
+

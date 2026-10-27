@@ -1,0 +1,55 @@
+  (exists_weight_eq_index hP α r).imp fun _ ⟨hd, hw⟩ ↦ ⟨hw ▸ hc, hd⟩
+
+private lemma abs_eval_iterated_hasseDeriv_lt_aux {σ : Type*} [Fintype σ] {P : MvPolynomial σ ℤ}
+    {r : σ → ℕ} {B α β : ℝ} {s : ℕ} (hP : ∀ j, degreeOf j P ≤ r j) (hB : 0 < B) (hs : ∑ j, r j ≤ s)
+    (h2 : (2 : ℝ) ^ s < β) (hα : (1 + |α|) ^ s ≤ β) (hc : ∀ d, |(P.coeff d : ℝ)| ≤ B) (i k : σ →₀ ℕ)
+    : |eval (fun _ ↦ α) (map (Int.castRingHom ℝ) (hasseDeriv i (hasseDeriv k P)))| <
+      β * (β * B) * β := by
+  have hdQ : ∀ j, degreeOf j (hasseDeriv k P) ≤ r j := fun j ↦
+    (degreeOf_hasseDeriv_le j k P).trans (hP j)
+  have heval := abs_eval_le (hasseDeriv i (hasseDeriv k P))
+    (fun j ↦ (degreeOf_hasseDeriv_le j i _).trans (hdQ j))
+    (abs_coeff_hasseDeriv_le i _ hdQ (abs_coeff_hasseDeriv_le k P hP hc)) (fun _ ↦ α)
+  rw [Finset.prod_pow_eq_pow_sum] at heval
+  have h2' : (2 : ℝ) ^ (∑ j, r j) < β :=
+    (pow_le_pow_right₀ (by norm_num) hs).trans_lt h2
+  exact heval.trans_lt <| mul_lt_mul_of_nonneg_of_pos
+    (mul_lt_mul'' h2' (mul_lt_mul_of_pos_right h2' hB) (by positivity) (by positivity))
+    ((pow_le_pow_right₀ (le_add_of_nonneg_right (abs_nonneg α)) hs).trans hα)
+    (by positivity) ((pow_pos (by norm_num) _).trans h2')
+
+private lemma exists_hasseDeriv_index_eval_bound_aux {σ : Type*} [Fintype σ] {P : MvPolynomial σ ℤ}
+    {r : σ → ℕ} {α z : σ → ℝ} {C γ c : ℝ} (hP : P ≠ 0) (hd : ∀ j, degreeOf j P ≤ r j)
+    (hbound : ∀ i k : σ →₀ ℕ,
+      |eval α (map (Int.castRingHom ℝ) (hasseDeriv i (hasseDeriv k P)))| < C)
+    (hγ : γ ≤ index (map (Int.castRingHom ℝ) P) α r)
+    (hz : index (map (Int.castRingHom ℝ) P) z r < c) : ∃ Q : MvPolynomial σ ℤ, Q ≠ 0 ∧
+      (∀ j, degreeOf j Q ≤ r j) ∧ γ - c < index (map (Int.castRingHom ℝ) Q) α r ∧
+      eval z (map (Int.castRingHom ℝ) Q) ≠ 0 ∧ ∀ i : σ →₀ ℕ,
+        |eval α (hasseDeriv i (map (Int.castRingHom ℝ) Q))| < C := by
+  obtain ⟨k, hkw, hkev⟩ := exists_hasseDeriv_eval_ne_zero
+    ((map_ne_zero_iff _ (MvPolynomial.map_injective _ Int.cast_injective)).2 hP) z r hz
+  have hQev : eval z (map (Int.castRingHom ℝ) (hasseDeriv k P)) ≠ 0 := by
+    simpa [hasseDeriv_map] using hkev
+  refine ⟨hasseDeriv k P, fun h0 ↦ hQev (by rw [h0, map_zero, map_zero]),
+    fun j ↦ (degreeOf_hasseDeriv_le j k P).trans (hd j), ?_, hQev, fun i ↦ ?_⟩
+  · rw [← hasseDeriv_map]
+    exact ((sub_lt_sub_left hkw γ).trans_le (sub_le_sub_right hγ _)).trans_le
+      (index_sub_weight_le_index_hasseDeriv (fun h0 ↦ hkev (by rw [h0, map_zero])) α r)
+  · simpa [hasseDeriv_map] using hbound i k
+
+private lemma abs_coeff_diag_hasseDeriv_modByMonic_le_aux {σ : Type*} [Fintype σ] {f : Polynomial ℤ}
+    {P : MvPolynomial σ ℤ} {r : σ → ℕ} {A B : ℝ} (hA : ∀ i, |(f.coeff i : ℝ)| ≤ A)
+    (hd : ∀ k, degreeOf k P ≤ r k) (hc : ∀ d, |(P.coeff d : ℝ)| ≤ B) (j : σ →₀ ℕ) (i : ℕ) :
+    |((diag (hasseDeriv j P) %ₘ f).coeff i : ℝ)| ≤ (1 + A) ^ ((∑ k, r k) + 1 - f.natDegree) *
+      (((∏ k, (r k + 1) : ℕ) : ℝ) * (2 ^ (∑ k, r k) * B)) := by
+  have hB : 0 ≤ B := (abs_nonneg _).trans (hc 0)
+  have hdP : ∀ k, degreeOf k (hasseDeriv j P) ≤ r k := fun k ↦
+    (degreeOf_hasseDeriv_le k j P).trans (hd k)
+  have hsupp : ((hasseDeriv j P).support.card : ℝ) ≤ ((∏ k, (r k + 1) : ℕ) : ℝ) := by
+    exact_mod_cast card_le_card_box fun d he k ↦ (monomial_le_degreeOf k he).trans (hdP k)
+  have hcD : ∀ k, |((diag (hasseDeriv j P)).coeff k : ℝ)| ≤
+      ((∏ k, (r k + 1) : ℕ) : ℝ) * (2 ^ (∑ k, r k) * B) := fun k ↦
+    (abs_coeff_diag_le _ (abs_coeff_hasseDeriv_le j P hd hc) k).trans
+      (mul_le_mul_of_nonneg_right hsupp (by positivity))
+  simpa only [Int.norm_eq_abs, Nat.cast_prod, Nat.cast_add, Nat.cast_one] using
