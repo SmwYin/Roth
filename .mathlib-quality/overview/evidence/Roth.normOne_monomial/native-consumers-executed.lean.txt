@@ -1,0 +1,28 @@
+namespace MvPolynomial.NormMonomialConsumers
+open Roth
+variable {σ : Type*}
+theorem multiplication (P Q : MvPolynomial σ ℤ) : normOne (P * Q) ≤ normOne P * normOne Q := by
+  classical
+  rw [MvPolynomial.mul_def]
+  refine (normOne_sum_le _ _).trans ?_
+  rw [normOne, normOne, Finset.sum_mul_sum]
+  exact Finset.sum_le_sum fun a _ ↦ (normOne_sum_le _ _).trans_eq <|
+    Finset.sum_congr rfl fun b _ ↦ by simp [NormMonomialAssessment.direct, abs_mul]
+theorem product {ι : Type*} (s : Finset ι) (f : ι → MvPolynomial σ ℤ) :
+    normOne (∏ i ∈ s, f i) ≤ ∏ i ∈ s, normOne (f i) :=
+  Finset.le_prod_of_submultiplicative_of_nonneg normOne normOne_nonneg
+    (by simpa using (NormMonomialAssessment.direct (0 : σ →₀ ℕ) 1).le) multiplication s f
+theorem hasseBound [Fintype σ] (d : σ →₀ ℕ) (P : MvPolynomial σ ℤ) {r : σ → ℕ}
+    (hP : ∀ j, degreeOf j P ≤ r j) : normOne (hasseDeriv d P) ≤ 2 ^ (∑ j, r j) * normOne P := by
+  classical
+  rw [MvPolynomial.hasseDeriv_apply]
+  refine (normOne_sum_le _ _).trans ?_
+  rw [normOne, Finset.mul_sum]
+  refine Finset.sum_le_sum fun k hk ↦ ?_
+  rw [NormMonomialAssessment.direct, Int.cast_mul, Int.cast_natCast, abs_mul, Nat.abs_cast]
+  refine mul_le_mul_of_nonneg_right ?_ (abs_nonneg _)
+  exact_mod_cast hasseCoeff_le_two_pow fun j ↦ (monomial_le_degreeOf j hk).trans (hP j)
+#print axioms multiplication
+#print axioms product
+#print axioms hasseBound
+end MvPolynomial.NormMonomialConsumers

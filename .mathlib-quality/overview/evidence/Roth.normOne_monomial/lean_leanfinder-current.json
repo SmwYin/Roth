@@ -1,0 +1,85 @@
+{
+  "method": "lean_leanfinder",
+  "form": "current",
+  "request": {
+    "query": "The sum of absolute values of coefficients of a monomial over the integers equals the absolute value of its coefficient",
+    "num_results": 8
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.gaussNorm_monomial\",\n      \"informal_name\": \"Gauss Norm of Monomial Polynomial\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {F : Type u_2} [inst : Semiring R] [inst_1 : FunLike F R ℝ] (v : F) (c : ℝ) [ZeroHomClass F R ℝ]\\n  (n : ℕ) (r : R), Polynomial.gaussNorm v c ((Polynomial.monomial n) r) = v r * c ^ n\",\n      \"informal_description\": \"The Gauss norm of the monomial polynomial $ rX^n $ is equal to $ v(r) \\\\cdot c^n $, where $ v $ is a valuation on the semiring $ R $ and $ c $ is a real number parameter.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.GaussNorm\"\n    },\n    {\n      \"formal_name\": \"Mathlib.Tactic.Linarith.SumOfMonom\",\n      \"informal_name\": \"Linear combination with a single monomial term\",\n      \"kind\": \"definition\",\n      \"type\": \"Mathlib.Tactic.Linarith.Monom → Mathlib.Tactic.Linarith.Sum\",\n      \"informal_description\": \"The function maps a monomial $ m $ to the linear combination where $ m $ has coefficient 1 and all other monomials have coefficient 0. This is implemented as an ordered map from monomials to integers with only the entry $ (m, 1) $.\",\n      \"path\": \"Mathlib.Tactic.Linarith.Parsing\"\n    },\n    {\n      \"formal_name\": \"Polynomial.sum_monomial_index\",\n      \"informal_name\": \"Sum of Monomial Polynomial Terms Equals Single Term Application\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Semiring R] {S : Type u_1} [inst_1 : AddCommMonoid S] {n : ℕ} (a : R) (f : ℕ → R → S),\\n  f n 0 = 0 → ((Polynomial.monomial n) a).sum f = f n a\",\n      \"informal_description\": \"For a monomial polynomial $ rX^n $ in $ R[X] $, the sum over its terms using a function $ f : \\\\mathbb{N} \\\\to R \\\\to S $ (where $ S $ is an additive commutative monoid and $ f(n, 0) = 0 $) equals $ f(n, r) $. This follows because the monomial has only one non-zero coefficient at degree $ n $, and the condition $ f(n, 0) = 0 $ ensures zero coefficients contribute nothing to the sum.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Basic\"\n    },\n    {\n      \"formal_name\": \"Polynomial.coeffs_monomial\",\n      \"informal_name\": \"Coefficients of Monomial Polynomial Form Singleton Set\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Semiring R] (n : ℕ) {c : R}, c ≠ 0 → ((Polynomial.monomial n) c).coeffs = {c}\",\n      \"informal_description\": \"For a non-zero element $ c $ in a semiring $ R $ and a natural number $ n $, the coefficients of the monomial polynomial $ cX^n $ form the singleton set $ \\\\{c\\\\} $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Basic\"\n    },\n    {\n      \"formal_name\": \"Mathlib.Tactic.ComputeDegree.coeff_intCast_ite\",\n      \"informal_name\": \"Integer Embedding in Polynomial Ring: Coefficient at Zero\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Ring R] {n : ℕ} {a : ℤ}, (↑a).coeff n = ↑(if n = 0 then a else 0)\",\n      \"informal_description\": \"For any integer $ a $ and natural number $ n $, the coefficient of $ X^n $ in the polynomial obtained by embedding $ a $ into $ R[X] $ is $ a $ if $ n = 0 $, and $ 0 $ otherwise.\",\n      \"path\": \"Mathlib.Tactic.ComputeDegree\"\n    },\n    {\n      \"formal_name\": \"PowerSeries.gaussNorm_monomial\",\n      \"informal_name\": \"Gauss Norm of Monomial: $ \\\\|rX^n\\\\|_{v,c} = v(r) c^n $\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {F : Type u_2} [inst : Semiring R] [inst_1 : FunLike F R ℝ] (v : F) {c : ℝ} (r : R)\\n  [ZeroHomClass F R ℝ] [NonnegHomClass F R ℝ],\\n  0 ≤ c → ∀ (n : ℕ), PowerSeries.gaussNorm v c ((PowerSeries.monomial n) r) = v r * c ^ n\",\n      \"informal_description\": \"For a monomial $ rX^n $ in the ring of power series over a semiring $ R $, the Gauss norm $ \\\\|rX^n\\\\|_{v,c} $ with respect to a valuation $ v $ and a non-negative real number $ c $ is equal to $ v(r) \\\\cdot c^n $. This holds for any $ r \\\\in R $, natural number $ n $, and non-negative $ c $. The Gauss norm is defined as the supremum of $ v(f_i) \\\\cdot c^i $ over all coefficients $ f_i $ of the power series.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.GaussNorm\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.sum_monomial_eq\",\n      \"informal_name\": \"Sum of a Monomial in Multivariate Polynomial Ring Equals Its Term\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] {A : Type u_2} [inst_1 : AddCommMonoid A] {u : σ →₀ ℕ} {r : R}\\n  {b : (σ →₀ ℕ) → R → A}, b u 0 = 0 → Finsupp.sum ((MvPolynomial.monomial u) r) b = b u r\",\n      \"informal_description\": \"For any additive commutative monoid $A$, commutative semiring $R$, and type $\\\\sigma$, if $b : (\\\\sigma \\\\to₀ \\\\mathbb{N}) \\\\to R \\\\to A$ satisfies $b(u, 0) = 0$ for a monomial $u$, then the sum of the monomial $\\\\text{monomial}(u, r)$ over $b$ equals $b(u, r)$. This expresses that summing a single monomial term in the multivariate polynomial ring $R[\\\\sigma]$ reduces to evaluating $b$ at the monomial's exponent vector and coefficient, provided $b$ annihilates zero coefficients.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Basic\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.constantCoeff_monomial\",\n      \"informal_name\": \"Constant Coefficient of Monomials in Multivariate Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : DecidableEq σ] (d : σ →₀ ℕ) (r : R),\\n  MvPolynomial.constantCoeff ((MvPolynomial.monomial d) r) = if d = 0 then r else 0\",\n      \"informal_description\": \"For a monomial in the multivariate polynomial ring $ R[\\\\sigma] $ with exponent vector $ d $ and coefficient $ r $, the constant coefficient homomorphism evaluates to $ r $ if $ d $ is the zero vector (i.e., all exponents are zero), and to zero otherwise.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Basic\"\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "items": [
+        {
+          "formal_name": "Polynomial.gaussNorm_monomial",
+          "informal_name": "Gauss Norm of Monomial Polynomial",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} {F : Type u_2} [inst : Semiring R] [inst_1 : FunLike F R ℝ] (v : F) (c : ℝ) [ZeroHomClass F R ℝ]\n  (n : ℕ) (r : R), Polynomial.gaussNorm v c ((Polynomial.monomial n) r) = v r * c ^ n",
+          "informal_description": "The Gauss norm of the monomial polynomial $ rX^n $ is equal to $ v(r) \\cdot c^n $, where $ v $ is a valuation on the semiring $ R $ and $ c $ is a real number parameter.",
+          "path": "Mathlib.RingTheory.Polynomial.GaussNorm"
+        },
+        {
+          "formal_name": "Mathlib.Tactic.Linarith.SumOfMonom",
+          "informal_name": "Linear combination with a single monomial term",
+          "kind": "definition",
+          "type": "Mathlib.Tactic.Linarith.Monom → Mathlib.Tactic.Linarith.Sum",
+          "informal_description": "The function maps a monomial $ m $ to the linear combination where $ m $ has coefficient 1 and all other monomials have coefficient 0. This is implemented as an ordered map from monomials to integers with only the entry $ (m, 1) $.",
+          "path": "Mathlib.Tactic.Linarith.Parsing"
+        },
+        {
+          "formal_name": "Polynomial.sum_monomial_index",
+          "informal_name": "Sum of Monomial Polynomial Terms Equals Single Term Application",
+          "kind": "theorem",
+          "type": "∀ {R : Type u} [inst : Semiring R] {S : Type u_1} [inst_1 : AddCommMonoid S] {n : ℕ} (a : R) (f : ℕ → R → S),\n  f n 0 = 0 → ((Polynomial.monomial n) a).sum f = f n a",
+          "informal_description": "For a monomial polynomial $ rX^n $ in $ R[X] $, the sum over its terms using a function $ f : \\mathbb{N} \\to R \\to S $ (where $ S $ is an additive commutative monoid and $ f(n, 0) = 0 $) equals $ f(n, r) $. This follows because the monomial has only one non-zero coefficient at degree $ n $, and the condition $ f(n, 0) = 0 $ ensures zero coefficients contribute nothing to the sum.",
+          "path": "Mathlib.Algebra.Polynomial.Basic"
+        },
+        {
+          "formal_name": "Polynomial.coeffs_monomial",
+          "informal_name": "Coefficients of Monomial Polynomial Form Singleton Set",
+          "kind": "theorem",
+          "type": "∀ {R : Type u} [inst : Semiring R] (n : ℕ) {c : R}, c ≠ 0 → ((Polynomial.monomial n) c).coeffs = {c}",
+          "informal_description": "For a non-zero element $ c $ in a semiring $ R $ and a natural number $ n $, the coefficients of the monomial polynomial $ cX^n $ form the singleton set $ \\{c\\} $.",
+          "path": "Mathlib.Algebra.Polynomial.Basic"
+        },
+        {
+          "formal_name": "Mathlib.Tactic.ComputeDegree.coeff_intCast_ite",
+          "informal_name": "Integer Embedding in Polynomial Ring: Coefficient at Zero",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} [inst : Ring R] {n : ℕ} {a : ℤ}, (↑a).coeff n = ↑(if n = 0 then a else 0)",
+          "informal_description": "For any integer $ a $ and natural number $ n $, the coefficient of $ X^n $ in the polynomial obtained by embedding $ a $ into $ R[X] $ is $ a $ if $ n = 0 $, and $ 0 $ otherwise.",
+          "path": "Mathlib.Tactic.ComputeDegree"
+        },
+        {
+          "formal_name": "PowerSeries.gaussNorm_monomial",
+          "informal_name": "Gauss Norm of Monomial: $ \\|rX^n\\|_{v,c} = v(r) c^n $",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} {F : Type u_2} [inst : Semiring R] [inst_1 : FunLike F R ℝ] (v : F) {c : ℝ} (r : R)\n  [ZeroHomClass F R ℝ] [NonnegHomClass F R ℝ],\n  0 ≤ c → ∀ (n : ℕ), PowerSeries.gaussNorm v c ((PowerSeries.monomial n) r) = v r * c ^ n",
+          "informal_description": "For a monomial $ rX^n $ in the ring of power series over a semiring $ R $, the Gauss norm $ \\|rX^n\\|_{v,c} $ with respect to a valuation $ v $ and a non-negative real number $ c $ is equal to $ v(r) \\cdot c^n $. This holds for any $ r \\in R $, natural number $ n $, and non-negative $ c $. The Gauss norm is defined as the supremum of $ v(f_i) \\cdot c^i $ over all coefficients $ f_i $ of the power series.",
+          "path": "Mathlib.RingTheory.Polynomial.GaussNorm"
+        },
+        {
+          "formal_name": "MvPolynomial.sum_monomial_eq",
+          "informal_name": "Sum of a Monomial in Multivariate Polynomial Ring Equals Its Term",
+          "kind": "theorem",
+          "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] {A : Type u_2} [inst_1 : AddCommMonoid A] {u : σ →₀ ℕ} {r : R}\n  {b : (σ →₀ ℕ) → R → A}, b u 0 = 0 → Finsupp.sum ((MvPolynomial.monomial u) r) b = b u r",
+          "informal_description": "For any additive commutative monoid $A$, commutative semiring $R$, and type $\\sigma$, if $b : (\\sigma \\to₀ \\mathbb{N}) \\to R \\to A$ satisfies $b(u, 0) = 0$ for a monomial $u$, then the sum of the monomial $\\text{monomial}(u, r)$ over $b$ equals $b(u, r)$. This expresses that summing a single monomial term in the multivariate polynomial ring $R[\\sigma]$ reduces to evaluating $b$ at the monomial's exponent vector and coefficient, provided $b$ annihilates zero coefficients.",
+          "path": "Mathlib.Algebra.MvPolynomial.Basic"
+        },
+        {
+          "formal_name": "MvPolynomial.constantCoeff_monomial",
+          "informal_name": "Constant Coefficient of Monomials in Multivariate Polynomials",
+          "kind": "theorem",
+          "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : DecidableEq σ] (d : σ →₀ ℕ) (r : R),\n  MvPolynomial.constantCoeff ((MvPolynomial.monomial d) r) = if d = 0 then r else 0",
+          "informal_description": "For a monomial in the multivariate polynomial ring $ R[\\sigma] $ with exponent vector $ d $ and coefficient $ r $, the constant coefficient homomorphism evaluates to $ r $ if $ d $ is the zero vector (i.e., all exponents are zero), and to zero otherwise.",
+          "path": "Mathlib.Algebra.MvPolynomial.Basic"
+        }
+      ]
+    },
+    "isError": false
+  }
+}

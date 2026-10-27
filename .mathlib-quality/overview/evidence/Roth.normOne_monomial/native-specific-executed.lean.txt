@@ -1,0 +1,25 @@
+
+namespace MvPolynomial.MonomialNormAssessment
+variable {σ : Type*}
+#check @Roth.normOne_monomial
+#print Roth.normOne_monomial
+#print axioms Roth.normOne_monomial
+theorem replay (e : σ →₀ ℕ) (c : ℤ) : Roth.normOne (monomial e c) = |(c : ℝ)| := by
+  classical
+  rw [Roth.normOne_eq_sum_of_support_subset support_monomial_subset]
+  simp
+theorem direct (e : σ →₀ ℕ) (c : ℤ) : Roth.normOne (monomial e c) = |(c : ℝ)| :=
+  MvPolynomial.sum_monomial_eq (u := e) (r := c) (b := fun _ (z : ℤ) ↦ |(z : ℝ)|)
+    (show |((0 : ℤ) : ℝ)| = 0 from (congrArg abs Int.cast_zero).trans abs_zero)
+theorem generic {R A : Type*} [CommSemiring R] [AddCommMonoid A]
+    (e : σ →₀ ℕ) (c : R) (size : (σ →₀ ℕ) → R → A) (hzero : size e 0 = 0) :
+    (monomial e c).coeff.sum size = size e c := MvPolynomial.sum_monomial_eq hzero
+theorem normCoefficients {R : Type*} [SeminormedCommRing R] (e : σ →₀ ℕ) (c : R) :
+    (monomial e c).coeff.sum (fun _ z ↦ ‖z‖) = ‖c‖ := MvPolynomial.sum_monomial_eq norm_zero
+#check @MvPolynomial.sum_monomial_eq
+#check @Finsupp.sum_single_index
+#print axioms replay
+#print axioms direct
+#print axioms generic
+#print axioms normCoefficients
+end MvPolynomial.MonomialNormAssessment

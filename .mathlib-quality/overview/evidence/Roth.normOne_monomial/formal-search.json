@@ -1,0 +1,796 @@
+[
+  {
+    "method": "lean_leanfinder",
+    "form": "abstract",
+    "request": {
+      "query": "Summing an indexed zero-preserving function over a finitely supported single equals evaluation at that index and coefficient",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Finsupp.sum_single_index\",\n      \"informal_name\": \"Sum of Single-Nonzero Finite Support Function\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {M : Type u_8} {N : Type u_10} [inst : Zero M] [inst_1 : AddCommMonoid N] {a : α} {b : M}\\n  {h : α → M → N}, h a 0 = 0 → (Finsupp.single a b).sum h = h a b\",\n      \"informal_description\": \"If $ h(a, 0) = 0 $, then the sum of the finite support function $ f $, defined by $ f(a) = b $ and $ f(x) = 0 $ for $ x \\neq a $, under the mapping $ h $ is equal to $ h(a, b) $.\",\n      \"path\": \"Mathlib.Algebra.BigOperators.Finsupp.Basic\"\n    },\n    {\n      \"formal_name\": \"DFinsupp.sum_single_index\",\n      \"informal_name\": \"Sum over Single Index in Dependent Finite Support Function\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u} {γ : Type w} {β : ι → Type v} [inst : DecidableEq ι] [inst_1 : (i : ι) → Zero (β i)]\\n  [inst_2 : (i : ι) → (x : β i) → Decidable (x ≠ 0)] [inst_3 : AddCommMonoid γ] {i : ι} {b : β i}\\n  {h : (i : ι) → β i → γ}, h i 0 = 0 → (DFinsupp.single i b).sum h = h i b\",\n      \"informal_description\": \"For a dependent finite support function $ f $ that is non-zero only at index $ i $ with value $ b $, and a function $ h $ mapping $ (i, 0) $ to $ 0 $, the sum $ \\\\sum_{i \\\\in \\\\text{supp}(f)} h(i, f(i)) $ equals $ h(i, b) $. This holds when $ \\\\gamma $ is an additive commutative monoid and the support of $ f $ is finite.\",\n      \"path\": \"Mathlib.Data.DFinsupp.BigOperators\"\n    },\n    {\n      \"formal_name\": \"AddMonoidAlgebra.sum_single_index\",\n      \"informal_name\": \"Sum of Single Basis Element in Additive Monoid Algebra\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {M : Type u_2} {N : Type u_3} {R : Type u_6} [inst : Semiring R] [inst_1 : AddCommMonoid N] {m : M} {r : R}\\n  {h : M → R → N}, h m 0 = 0 → Finsupp.sum (AddMonoidAlgebra.single m r) h = h m r\",\n      \"informal_description\": \"For any additive monoid $M$, semiring $R$, and function $h : M \\\\times R \\\\to N$ satisfying $h(m, 0) = 0$, the finite sum of the basis element $\\\\text{single}_M(m, r)$ under $h$ evaluates to $h(m, r)$. This expresses that summing a formal $R$-linear combination with a single non-zero coefficient $r$ at $m$ reduces to evaluating $h$ at $(m, r)$.\",\n      \"path\": \"Mathlib.Algebra.MonoidAlgebra.Defs\"\n    },\n    {\n      \"formal_name\": \"Finsupp.sum_eq_single\",\n      \"informal_name\": \"Sum over Finite Support Function Equals Single Term Under Non-Zero Condition\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {M : Type u_8} {N : Type u_10} [inst : Zero M] [inst_1 : AddCommMonoid N] {f : α →₀ M} (a : α)\\n  {g : α → M → N}, (∀ (b : α), f b ≠ 0 → b ≠ a → g b (f b) = 0) → (f a = 0 → g a 0 = 0) → f.sum g = g a (f a)\",\n      \"informal_description\": \"Let $\\\\alpha$ be a type, $M$ and $N$ be types with $M$ having a zero element and $N$ an additive commutative monoid. For a finite support function $f : \\\\alpha \\\\to_0 M$, an element $a \\\\in \\\\alpha$, and a function $g : \\\\alpha \\\\to M \\\\to N$, if (1) $g(b, f(b)) = 0$ for all $b \\\\neq a$ where $f(b) \\\\neq 0$, and (2) $g(a, 0) = 0$ when $f(a) = 0$, then the sum $\\\\sum_{b \\\\in \\\\alpha} g(b, f(b))$ equals $g(a, f(a))$.\",\n      \"path\": \"Mathlib.Algebra.BigOperators.Finsupp.Basic\"\n    },\n    {\n      \"formal_name\": \"MonoidAlgebra.sum_single_index\",\n      \"informal_name\": \"Sum of Single-Indexed Monomial in Monoid Algebra\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {M : Type u_2} {N : Type u_3} {R : Type u_6} [inst : Semiring R] [inst_1 : AddCommMonoid N] {m : M} {r : R}\\n  {h : M → R → N}, h m 0 = 0 → Finsupp.sum (MonoidAlgebra.single m r) h = h m r\",\n      \"informal_description\": \"In a monoid algebra $ R[M] $ over a semiring $ R $ and an additive commutative monoid $ M $, for any monomial $ \\\\text{single}_m(r) $ (which has coefficient $ r $ at $ m \\\\in M $ and zero elsewhere), and for any function $ h : M \\\\to R \\\\to N $ into an additive commutative monoid $ N $ satisfying $ h(m, 0) = 0 $, the sum $ \\\\sum h(m, r) $ over the monomial equals $ h(m, r) $. This follows because all terms in the monomial vanish except at $ m $, and the zero condition ensures no contribution from zero coefficients.\",\n      \"path\": \"Mathlib.Algebra.MonoidAlgebra.Defs\"\n    },\n    {\n      \"formal_name\": \"Finsupp.sum_ite_self_eq'\",\n      \"informal_name\": \"Sum of Finite Support Function with Indicator Equals Value at Point\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} [inst : DecidableEq α] {N : Type u_16} [inst_1 : AddCommMonoid N] (f : α →₀ N) (a : α),\\n  (f.sum fun x v => if x = a then v else 0) = f a\",\n      \"informal_description\": \"For a finite support function $ f : \\\\alpha \\\\to_0 N $ where $ N $ is an additive commutative monoid, and for any $ a : \\\\alpha $, the sum over $ \\\\alpha $ of $ f(x) $ multiplied by the indicator function $ \\\\mathbf{1}_{\\\\{a\\\\}}(x) $ equals $ f(a) $. Formally, $ \\\\sum_{x : \\\\alpha} \\\\begin{cases} f(x) & x = a \\\\\\\\ 0 & \\\\text{otherwise} \\\\end{cases} = f(a) $.\",\n      \"path\": \"Mathlib.Algebra.BigOperators.Finsupp.Basic\"\n    },\n    {\n      \"formal_name\": \"Finsupp.sum_ite_self_eq\",\n      \"informal_name\": \"Sum of Finite Support Function with Indicator Equals Value at Point\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} [inst : DecidableEq α] {N : Type u_16} [inst_1 : AddCommMonoid N] (f : α →₀ N) (a : α),\\n  (f.sum fun x v => if a = x then v else 0) = f a\",\n      \"informal_description\": \"For any finite support function $ f : \\\\alpha \\\\to₀ N $ where $ N $ is an additive commutative monoid, and for any $ a \\\\in \\\\alpha $, the sum $ \\\\sum_{x \\\\in \\\\alpha} f(x) \\\\cdot \\\\mathbf{1}_{x = a} $ equals $ f(a) $.\",\n      \"path\": \"Mathlib.Algebra.BigOperators.Finsupp.Basic\"\n    },\n    {\n      \"formal_name\": \"Finsupp.sum_single\",\n      \"informal_name\": \"Sum of Single Functions Reconstructs Finite Support Function\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {M : Type u_8} [inst : AddCommMonoid M] (f : α →₀ M), f.sum Finsupp.single = f\",\n      \"informal_description\": \"For any finite support function $f : \\\\alpha \\\\to_0 M$ where $M$ is an additive commutative monoid, the sum of the single functions (each non-zero at one index) reconstructs $f$, i.e., $\\\\sum_{a} \\\\text{single}(a, f(a)) = f$.\",\n      \"path\": \"Mathlib.Algebra.BigOperators.Finsupp.Basic\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Finsupp.sum_single_index",
+            "informal_name": "Sum of Single-Nonzero Finite Support Function",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {M : Type u_8} {N : Type u_10} [inst : Zero M] [inst_1 : AddCommMonoid N] {a : α} {b : M}\n  {h : α → M → N}, h a 0 = 0 → (Finsupp.single a b).sum h = h a b",
+            "informal_description": "If $ h(a, 0) = 0 $, then the sum of the finite support function $ f $, defined by $ f(a) = b $ and $ f(x) = 0 $ for $ x \neq a $, under the mapping $ h $ is equal to $ h(a, b) $.",
+            "path": "Mathlib.Algebra.BigOperators.Finsupp.Basic"
+          },
+          {
+            "formal_name": "DFinsupp.sum_single_index",
+            "informal_name": "Sum over Single Index in Dependent Finite Support Function",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u} {γ : Type w} {β : ι → Type v} [inst : DecidableEq ι] [inst_1 : (i : ι) → Zero (β i)]\n  [inst_2 : (i : ι) → (x : β i) → Decidable (x ≠ 0)] [inst_3 : AddCommMonoid γ] {i : ι} {b : β i}\n  {h : (i : ι) → β i → γ}, h i 0 = 0 → (DFinsupp.single i b).sum h = h i b",
+            "informal_description": "For a dependent finite support function $ f $ that is non-zero only at index $ i $ with value $ b $, and a function $ h $ mapping $ (i, 0) $ to $ 0 $, the sum $ \\sum_{i \\in \\text{supp}(f)} h(i, f(i)) $ equals $ h(i, b) $. This holds when $ \\gamma $ is an additive commutative monoid and the support of $ f $ is finite.",
+            "path": "Mathlib.Data.DFinsupp.BigOperators"
+          },
+          {
+            "formal_name": "AddMonoidAlgebra.sum_single_index",
+            "informal_name": "Sum of Single Basis Element in Additive Monoid Algebra",
+            "kind": "theorem",
+            "type": "∀ {M : Type u_2} {N : Type u_3} {R : Type u_6} [inst : Semiring R] [inst_1 : AddCommMonoid N] {m : M} {r : R}\n  {h : M → R → N}, h m 0 = 0 → Finsupp.sum (AddMonoidAlgebra.single m r) h = h m r",
+            "informal_description": "For any additive monoid $M$, semiring $R$, and function $h : M \\times R \\to N$ satisfying $h(m, 0) = 0$, the finite sum of the basis element $\\text{single}_M(m, r)$ under $h$ evaluates to $h(m, r)$. This expresses that summing a formal $R$-linear combination with a single non-zero coefficient $r$ at $m$ reduces to evaluating $h$ at $(m, r)$.",
+            "path": "Mathlib.Algebra.MonoidAlgebra.Defs"
+          },
+          {
+            "formal_name": "Finsupp.sum_eq_single",
+            "informal_name": "Sum over Finite Support Function Equals Single Term Under Non-Zero Condition",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {M : Type u_8} {N : Type u_10} [inst : Zero M] [inst_1 : AddCommMonoid N] {f : α →₀ M} (a : α)\n  {g : α → M → N}, (∀ (b : α), f b ≠ 0 → b ≠ a → g b (f b) = 0) → (f a = 0 → g a 0 = 0) → f.sum g = g a (f a)",
+            "informal_description": "Let $\\alpha$ be a type, $M$ and $N$ be types with $M$ having a zero element and $N$ an additive commutative monoid. For a finite support function $f : \\alpha \\to_0 M$, an element $a \\in \\alpha$, and a function $g : \\alpha \\to M \\to N$, if (1) $g(b, f(b)) = 0$ for all $b \\neq a$ where $f(b) \\neq 0$, and (2) $g(a, 0) = 0$ when $f(a) = 0$, then the sum $\\sum_{b \\in \\alpha} g(b, f(b))$ equals $g(a, f(a))$.",
+            "path": "Mathlib.Algebra.BigOperators.Finsupp.Basic"
+          },
+          {
+            "formal_name": "MonoidAlgebra.sum_single_index",
+            "informal_name": "Sum of Single-Indexed Monomial in Monoid Algebra",
+            "kind": "theorem",
+            "type": "∀ {M : Type u_2} {N : Type u_3} {R : Type u_6} [inst : Semiring R] [inst_1 : AddCommMonoid N] {m : M} {r : R}\n  {h : M → R → N}, h m 0 = 0 → Finsupp.sum (MonoidAlgebra.single m r) h = h m r",
+            "informal_description": "In a monoid algebra $ R[M] $ over a semiring $ R $ and an additive commutative monoid $ M $, for any monomial $ \\text{single}_m(r) $ (which has coefficient $ r $ at $ m \\in M $ and zero elsewhere), and for any function $ h : M \\to R \\to N $ into an additive commutative monoid $ N $ satisfying $ h(m, 0) = 0 $, the sum $ \\sum h(m, r) $ over the monomial equals $ h(m, r) $. This follows because all terms in the monomial vanish except at $ m $, and the zero condition ensures no contribution from zero coefficients.",
+            "path": "Mathlib.Algebra.MonoidAlgebra.Defs"
+          },
+          {
+            "formal_name": "Finsupp.sum_ite_self_eq'",
+            "informal_name": "Sum of Finite Support Function with Indicator Equals Value at Point",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} [inst : DecidableEq α] {N : Type u_16} [inst_1 : AddCommMonoid N] (f : α →₀ N) (a : α),\n  (f.sum fun x v => if x = a then v else 0) = f a",
+            "informal_description": "For a finite support function $ f : \\alpha \\to_0 N $ where $ N $ is an additive commutative monoid, and for any $ a : \\alpha $, the sum over $ \\alpha $ of $ f(x) $ multiplied by the indicator function $ \\mathbf{1}_{\\{a\\}}(x) $ equals $ f(a) $. Formally, $ \\sum_{x : \\alpha} \\begin{cases} f(x) & x = a \\\\ 0 & \\text{otherwise} \\end{cases} = f(a) $.",
+            "path": "Mathlib.Algebra.BigOperators.Finsupp.Basic"
+          },
+          {
+            "formal_name": "Finsupp.sum_ite_self_eq",
+            "informal_name": "Sum of Finite Support Function with Indicator Equals Value at Point",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} [inst : DecidableEq α] {N : Type u_16} [inst_1 : AddCommMonoid N] (f : α →₀ N) (a : α),\n  (f.sum fun x v => if a = x then v else 0) = f a",
+            "informal_description": "For any finite support function $ f : \\alpha \\to₀ N $ where $ N $ is an additive commutative monoid, and for any $ a \\in \\alpha $, the sum $ \\sum_{x \\in \\alpha} f(x) \\cdot \\mathbf{1}_{x = a} $ equals $ f(a) $.",
+            "path": "Mathlib.Algebra.BigOperators.Finsupp.Basic"
+          },
+          {
+            "formal_name": "Finsupp.sum_single",
+            "informal_name": "Sum of Single Functions Reconstructs Finite Support Function",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {M : Type u_8} [inst : AddCommMonoid M] (f : α →₀ M), f.sum Finsupp.single = f",
+            "informal_description": "For any finite support function $f : \\alpha \\to_0 M$ where $M$ is an additive commutative monoid, the sum of the single functions (each non-zero at one index) reconstructs $f$, i.e., $\\sum_{a} \\text{single}(a, f(a)) = f$.",
+            "path": "Mathlib.Algebra.BigOperators.Finsupp.Basic"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_leanfinder",
+    "form": "current",
+    "request": {
+      "query": "The sum of absolute values of coefficients of a monomial over the integers equals the absolute value of its coefficient",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.gaussNorm_monomial\",\n      \"informal_name\": \"Gauss Norm of Monomial Polynomial\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {F : Type u_2} [inst : Semiring R] [inst_1 : FunLike F R ℝ] (v : F) (c : ℝ) [ZeroHomClass F R ℝ]\\n  (n : ℕ) (r : R), Polynomial.gaussNorm v c ((Polynomial.monomial n) r) = v r * c ^ n\",\n      \"informal_description\": \"The Gauss norm of the monomial polynomial $ rX^n $ is equal to $ v(r) \\\\cdot c^n $, where $ v $ is a valuation on the semiring $ R $ and $ c $ is a real number parameter.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.GaussNorm\"\n    },\n    {\n      \"formal_name\": \"Mathlib.Tactic.Linarith.SumOfMonom\",\n      \"informal_name\": \"Linear combination with a single monomial term\",\n      \"kind\": \"definition\",\n      \"type\": \"Mathlib.Tactic.Linarith.Monom → Mathlib.Tactic.Linarith.Sum\",\n      \"informal_description\": \"The function maps a monomial $ m $ to the linear combination where $ m $ has coefficient 1 and all other monomials have coefficient 0. This is implemented as an ordered map from monomials to integers with only the entry $ (m, 1) $.\",\n      \"path\": \"Mathlib.Tactic.Linarith.Parsing\"\n    },\n    {\n      \"formal_name\": \"Polynomial.sum_monomial_index\",\n      \"informal_name\": \"Sum of Monomial Polynomial Terms Equals Single Term Application\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Semiring R] {S : Type u_1} [inst_1 : AddCommMonoid S] {n : ℕ} (a : R) (f : ℕ → R → S),\\n  f n 0 = 0 → ((Polynomial.monomial n) a).sum f = f n a\",\n      \"informal_description\": \"For a monomial polynomial $ rX^n $ in $ R[X] $, the sum over its terms using a function $ f : \\\\mathbb{N} \\\\to R \\\\to S $ (where $ S $ is an additive commutative monoid and $ f(n, 0) = 0 $) equals $ f(n, r) $. This follows because the monomial has only one non-zero coefficient at degree $ n $, and the condition $ f(n, 0) = 0 $ ensures zero coefficients contribute nothing to the sum.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Basic\"\n    },\n    {\n      \"formal_name\": \"Polynomial.coeffs_monomial\",\n      \"informal_name\": \"Coefficients of Monomial Polynomial Form Singleton Set\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Semiring R] (n : ℕ) {c : R}, c ≠ 0 → ((Polynomial.monomial n) c).coeffs = {c}\",\n      \"informal_description\": \"For a non-zero element $ c $ in a semiring $ R $ and a natural number $ n $, the coefficients of the monomial polynomial $ cX^n $ form the singleton set $ \\\\{c\\\\} $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Basic\"\n    },\n    {\n      \"formal_name\": \"Mathlib.Tactic.ComputeDegree.coeff_intCast_ite\",\n      \"informal_name\": \"Integer Embedding in Polynomial Ring: Coefficient at Zero\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Ring R] {n : ℕ} {a : ℤ}, (↑a).coeff n = ↑(if n = 0 then a else 0)\",\n      \"informal_description\": \"For any integer $ a $ and natural number $ n $, the coefficient of $ X^n $ in the polynomial obtained by embedding $ a $ into $ R[X] $ is $ a $ if $ n = 0 $, and $ 0 $ otherwise.\",\n      \"path\": \"Mathlib.Tactic.ComputeDegree\"\n    },\n    {\n      \"formal_name\": \"PowerSeries.gaussNorm_monomial\",\n      \"informal_name\": \"Gauss Norm of Monomial: $ \\\\|rX^n\\\\|_{v,c} = v(r) c^n $\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {F : Type u_2} [inst : Semiring R] [inst_1 : FunLike F R ℝ] (v : F) {c : ℝ} (r : R)\\n  [ZeroHomClass F R ℝ] [NonnegHomClass F R ℝ],\\n  0 ≤ c → ∀ (n : ℕ), PowerSeries.gaussNorm v c ((PowerSeries.monomial n) r) = v r * c ^ n\",\n      \"informal_description\": \"For a monomial $ rX^n $ in the ring of power series over a semiring $ R $, the Gauss norm $ \\\\|rX^n\\\\|_{v,c} $ with respect to a valuation $ v $ and a non-negative real number $ c $ is equal to $ v(r) \\\\cdot c^n $. This holds for any $ r \\\\in R $, natural number $ n $, and non-negative $ c $. The Gauss norm is defined as the supremum of $ v(f_i) \\\\cdot c^i $ over all coefficients $ f_i $ of the power series.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.GaussNorm\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.sum_monomial_eq\",\n      \"informal_name\": \"Sum of a Monomial in Multivariate Polynomial Ring Equals Its Term\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] {A : Type u_2} [inst_1 : AddCommMonoid A] {u : σ →₀ ℕ} {r : R}\\n  {b : (σ →₀ ℕ) → R → A}, b u 0 = 0 → Finsupp.sum ((MvPolynomial.monomial u) r) b = b u r\",\n      \"informal_description\": \"For any additive commutative monoid $A$, commutative semiring $R$, and type $\\\\sigma$, if $b : (\\\\sigma \\\\to₀ \\\\mathbb{N}) \\\\to R \\\\to A$ satisfies $b(u, 0) = 0$ for a monomial $u$, then the sum of the monomial $\\\\text{monomial}(u, r)$ over $b$ equals $b(u, r)$. This expresses that summing a single monomial term in the multivariate polynomial ring $R[\\\\sigma]$ reduces to evaluating $b$ at the monomial's exponent vector and coefficient, provided $b$ annihilates zero coefficients.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Basic\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.constantCoeff_monomial\",\n      \"informal_name\": \"Constant Coefficient of Monomials in Multivariate Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : DecidableEq σ] (d : σ →₀ ℕ) (r : R),\\n  MvPolynomial.constantCoeff ((MvPolynomial.monomial d) r) = if d = 0 then r else 0\",\n      \"informal_description\": \"For a monomial in the multivariate polynomial ring $ R[\\\\sigma] $ with exponent vector $ d $ and coefficient $ r $, the constant coefficient homomorphism evaluates to $ r $ if $ d $ is the zero vector (i.e., all exponents are zero), and to zero otherwise.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Basic\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Polynomial.gaussNorm_monomial",
+            "informal_name": "Gauss Norm of Monomial Polynomial",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {F : Type u_2} [inst : Semiring R] [inst_1 : FunLike F R ℝ] (v : F) (c : ℝ) [ZeroHomClass F R ℝ]\n  (n : ℕ) (r : R), Polynomial.gaussNorm v c ((Polynomial.monomial n) r) = v r * c ^ n",
+            "informal_description": "The Gauss norm of the monomial polynomial $ rX^n $ is equal to $ v(r) \\cdot c^n $, where $ v $ is a valuation on the semiring $ R $ and $ c $ is a real number parameter.",
+            "path": "Mathlib.RingTheory.Polynomial.GaussNorm"
+          },
+          {
+            "formal_name": "Mathlib.Tactic.Linarith.SumOfMonom",
+            "informal_name": "Linear combination with a single monomial term",
+            "kind": "definition",
+            "type": "Mathlib.Tactic.Linarith.Monom → Mathlib.Tactic.Linarith.Sum",
+            "informal_description": "The function maps a monomial $ m $ to the linear combination where $ m $ has coefficient 1 and all other monomials have coefficient 0. This is implemented as an ordered map from monomials to integers with only the entry $ (m, 1) $.",
+            "path": "Mathlib.Tactic.Linarith.Parsing"
+          },
+          {
+            "formal_name": "Polynomial.sum_monomial_index",
+            "informal_name": "Sum of Monomial Polynomial Terms Equals Single Term Application",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : Semiring R] {S : Type u_1} [inst_1 : AddCommMonoid S] {n : ℕ} (a : R) (f : ℕ → R → S),\n  f n 0 = 0 → ((Polynomial.monomial n) a).sum f = f n a",
+            "informal_description": "For a monomial polynomial $ rX^n $ in $ R[X] $, the sum over its terms using a function $ f : \\mathbb{N} \\to R \\to S $ (where $ S $ is an additive commutative monoid and $ f(n, 0) = 0 $) equals $ f(n, r) $. This follows because the monomial has only one non-zero coefficient at degree $ n $, and the condition $ f(n, 0) = 0 $ ensures zero coefficients contribute nothing to the sum.",
+            "path": "Mathlib.Algebra.Polynomial.Basic"
+          },
+          {
+            "formal_name": "Polynomial.coeffs_monomial",
+            "informal_name": "Coefficients of Monomial Polynomial Form Singleton Set",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : Semiring R] (n : ℕ) {c : R}, c ≠ 0 → ((Polynomial.monomial n) c).coeffs = {c}",
+            "informal_description": "For a non-zero element $ c $ in a semiring $ R $ and a natural number $ n $, the coefficients of the monomial polynomial $ cX^n $ form the singleton set $ \\{c\\} $.",
+            "path": "Mathlib.Algebra.Polynomial.Basic"
+          },
+          {
+            "formal_name": "Mathlib.Tactic.ComputeDegree.coeff_intCast_ite",
+            "informal_name": "Integer Embedding in Polynomial Ring: Coefficient at Zero",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Ring R] {n : ℕ} {a : ℤ}, (↑a).coeff n = ↑(if n = 0 then a else 0)",
+            "informal_description": "For any integer $ a $ and natural number $ n $, the coefficient of $ X^n $ in the polynomial obtained by embedding $ a $ into $ R[X] $ is $ a $ if $ n = 0 $, and $ 0 $ otherwise.",
+            "path": "Mathlib.Tactic.ComputeDegree"
+          },
+          {
+            "formal_name": "PowerSeries.gaussNorm_monomial",
+            "informal_name": "Gauss Norm of Monomial: $ \\|rX^n\\|_{v,c} = v(r) c^n $",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {F : Type u_2} [inst : Semiring R] [inst_1 : FunLike F R ℝ] (v : F) {c : ℝ} (r : R)\n  [ZeroHomClass F R ℝ] [NonnegHomClass F R ℝ],\n  0 ≤ c → ∀ (n : ℕ), PowerSeries.gaussNorm v c ((PowerSeries.monomial n) r) = v r * c ^ n",
+            "informal_description": "For a monomial $ rX^n $ in the ring of power series over a semiring $ R $, the Gauss norm $ \\|rX^n\\|_{v,c} $ with respect to a valuation $ v $ and a non-negative real number $ c $ is equal to $ v(r) \\cdot c^n $. This holds for any $ r \\in R $, natural number $ n $, and non-negative $ c $. The Gauss norm is defined as the supremum of $ v(f_i) \\cdot c^i $ over all coefficients $ f_i $ of the power series.",
+            "path": "Mathlib.RingTheory.Polynomial.GaussNorm"
+          },
+          {
+            "formal_name": "MvPolynomial.sum_monomial_eq",
+            "informal_name": "Sum of a Monomial in Multivariate Polynomial Ring Equals Its Term",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] {A : Type u_2} [inst_1 : AddCommMonoid A] {u : σ →₀ ℕ} {r : R}\n  {b : (σ →₀ ℕ) → R → A}, b u 0 = 0 → Finsupp.sum ((MvPolynomial.monomial u) r) b = b u r",
+            "informal_description": "For any additive commutative monoid $A$, commutative semiring $R$, and type $\\sigma$, if $b : (\\sigma \\to₀ \\mathbb{N}) \\to R \\to A$ satisfies $b(u, 0) = 0$ for a monomial $u$, then the sum of the monomial $\\text{monomial}(u, r)$ over $b$ equals $b(u, r)$. This expresses that summing a single monomial term in the multivariate polynomial ring $R[\\sigma]$ reduces to evaluating $b$ at the monomial's exponent vector and coefficient, provided $b$ annihilates zero coefficients.",
+            "path": "Mathlib.Algebra.MvPolynomial.Basic"
+          },
+          {
+            "formal_name": "MvPolynomial.constantCoeff_monomial",
+            "informal_name": "Constant Coefficient of Monomials in Multivariate Polynomials",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : DecidableEq σ] (d : σ →₀ ℕ) (r : R),\n  MvPolynomial.constantCoeff ((MvPolynomial.monomial d) r) = if d = 0 then r else 0",
+            "informal_description": "For a monomial in the multivariate polynomial ring $ R[\\sigma] $ with exponent vector $ d $ and coefficient $ r $, the constant coefficient homomorphism evaluates to $ r $ if $ d $ is the zero vector (i.e., all exponents are zero), and to zero otherwise.",
+            "path": "Mathlib.Algebra.MvPolynomial.Basic"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_leanfinder",
+    "form": "standard",
+    "request": {
+      "query": "The coefficient l1 norm of a monomial equals the norm of its coefficient",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.gaussNorm_monomial\",\n      \"informal_name\": \"Gauss Norm of Monomial Polynomial\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {F : Type u_2} [inst : Semiring R] [inst_1 : FunLike F R ℝ] (v : F) (c : ℝ) [ZeroHomClass F R ℝ]\\n  (n : ℕ) (r : R), Polynomial.gaussNorm v c ((Polynomial.monomial n) r) = v r * c ^ n\",\n      \"informal_description\": \"The Gauss norm of the monomial polynomial $ rX^n $ is equal to $ v(r) \\\\cdot c^n $, where $ v $ is a valuation on the semiring $ R $ and $ c $ is a real number parameter.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.GaussNorm\"\n    },\n    {\n      \"formal_name\": \"PadicInt.norm_mahlerTerm\",\n      \"informal_name\": \"Norm of Mahler Basis Term Equals Norm of Coefficient\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {p : ℕ} [hp : Fact (Nat.Prime p)] {E : Type u_1} [inst : NormedAddCommGroup E] [inst_1 : Module ℤ_[p] E]\\n  [inst_2 : IsBoundedSMul ℤ_[p] E] (a : E) (n : ℕ), ‖PadicInt.mahlerTerm a n‖ = ‖a‖\",\n      \"informal_description\": \"For the Mahler basis term function $ f(x) = a \\\\cdot \\\\binom{x}{n} $ in the space of continuous functions $ C(\\\\mathbb{Z}_p, E) $, where $ E $ is a normed additive commutative group equipped with a $ \\\\mathbb{Z}_p $-module structure, the supremum norm of $ f $ satisfies $ \\\\|f\\\\| = \\\\|a\\\\| $. Here, $ \\\\|\\\\cdot\\\\| $ denotes the norm induced by the supremum of $ \\\\|f(x)\\\\| $ over $ x \\\\in \\\\mathbb{Z}_p $.\",\n      \"path\": \"Mathlib.NumberTheory.Padics.MahlerBasis\"\n    },\n    {\n      \"formal_name\": \"FormalMultilinearSeries.norm_apply_eq_norm_coef\",\n      \"informal_name\": \"Equality of Operator Norm and Coefficient Norm in Formal Multilinear Series\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {𝕜 : Type u} {E : Type v} [inst : NontriviallyNormedField 𝕜] [inst_1 : NormedAddCommGroup E]\\n  [inst_2 : NormedSpace 𝕜 E] {p : FormalMultilinearSeries 𝕜 𝕜 E} {n : ℕ}, ‖p n‖ = ‖p.coeff n‖\",\n      \"informal_description\": \"For any formal multilinear series $ p $ and natural number $ n $, the operator norm of the $ n $-th term $ p_n $ is equal to the norm of the coefficient $ \\\\text{coeff } p \\\\, n $.\",\n      \"path\": \"Mathlib.Analysis.Calculus.FormalMultilinearSeries\"\n    },\n    {\n      \"formal_name\": \"FormalMultilinearSeries.ofScalars_norm\",\n      \"informal_name\": \"Norm Equality for Scalar Terms in Formal Multilinear Series\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {𝕜 : Type u_1} (E : Type u_2) [inst : NontriviallyNormedField 𝕜] [inst_1 : SeminormedRing E]\\n  [inst_2 : NormedAlgebra 𝕜 E] (c : ℕ → 𝕜) (n : ℕ) [NormOneClass E], ‖FormalMultilinearSeries.ofScalars E c n‖ = ‖c n‖\",\n      \"informal_description\": \"For a formal multilinear series constructed from scalar coefficients $ c : \\\\mathbb{N} \\\\to \\\\mathbb{K} $ in a normed field $ \\\\mathbb{K} $ with $ \\\\|1\\\\| = 1 $, the norm of the $ n $-th term is equal to the norm of the scalar $ c(n) $, i.e., $ \\\\|\\\\text{ofScalars}_n(c)\\\\| = \\\\|c(n)\\\\| $.\",\n      \"path\": \"Mathlib.Analysis.Analytic.OfScalars\"\n    },\n    {\n      \"formal_name\": \"PowerSeries.gaussNorm_monomial\",\n      \"informal_name\": \"Gauss Norm of Monomial: $ \\\\|rX^n\\\\|_{v,c} = v(r) c^n $\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {F : Type u_2} [inst : Semiring R] [inst_1 : FunLike F R ℝ] (v : F) {c : ℝ} (r : R)\\n  [ZeroHomClass F R ℝ] [NonnegHomClass F R ℝ],\\n  0 ≤ c → ∀ (n : ℕ), PowerSeries.gaussNorm v c ((PowerSeries.monomial n) r) = v r * c ^ n\",\n      \"informal_description\": \"For a monomial $ rX^n $ in the ring of power series over a semiring $ R $, the Gauss norm $ \\\\|rX^n\\\\|_{v,c} $ with respect to a valuation $ v $ and a non-negative real number $ c $ is equal to $ v(r) \\\\cdot c^n $. This holds for any $ r \\\\in R $, natural number $ n $, and non-negative $ c $. The Gauss norm is defined as the supremum of $ v(f_i) \\\\cdot c^i $ over all coefficients $ f_i $ of the power series.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.GaussNorm\"\n    },\n    {\n      \"formal_name\": \"Polynomial.mahlerMeasure_const\",\n      \"informal_name\": \"Mahler Measure of Constant Polynomial Equals Modulus\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (z : ℂ), (Polynomial.C z).mahlerMeasure = ‖z‖\",\n      \"informal_description\": \"For any complex number $ z $, the Mahler measure of the constant polynomial $ z $ is equal to the modulus of $ z $, i.e., $ \\\\text{MahlerMeasure}(z) = |z| $.\",\n      \"path\": \"Mathlib.Analysis.Polynomial.MahlerMeasure\"\n    },\n    {\n      \"formal_name\": \"lp.norm_single\",\n      \"informal_name\": \"Norm of Single-Element Function in $ L^p $ Space Equals Element Norm\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_3} {E : α → Type u_4} {p : ENNReal} [inst : (i : α) → NormedAddCommGroup (E i)] [inst_1 : DecidableEq α],\\n  0 < p → ∀ (i : α) (x : E i), ‖lp.single p i x‖ = ‖x‖\",\n      \"informal_description\": \"For any extended non-negative real number $ p $ with $ 0 < p $, index $ i $, and element $ x $ in the normed additive commutative group $ E_i $, the norm of the function in the $ L^p $ space that takes the value $ x $ at index $ i $ and zero elsewhere is equal to the norm of $ x $.\",\n      \"path\": \"Mathlib.Analysis.Normed.Lp.lpSpace\"\n    },\n    {\n      \"formal_name\": \"Polynomial.logMahlerMeasure_monomial\",\n      \"informal_name\": \"Logarithmic Mahler Measure of Monomial Polynomial Equals Log of Coefficient Norm\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (n : ℕ) (z : ℂ), ((Polynomial.monomial n) z).logMahlerMeasure = Real.log ‖z‖\",\n      \"informal_description\": \"For any natural number $n$ and complex number $z$, the logarithmic Mahler measure of the monomial polynomial $zX^n$ is equal to the natural logarithm of the absolute value of $z$, i.e., $\\\\log |z|$.\",\n      \"path\": \"Mathlib.Analysis.Polynomial.MahlerMeasure\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Polynomial.gaussNorm_monomial",
+            "informal_name": "Gauss Norm of Monomial Polynomial",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {F : Type u_2} [inst : Semiring R] [inst_1 : FunLike F R ℝ] (v : F) (c : ℝ) [ZeroHomClass F R ℝ]\n  (n : ℕ) (r : R), Polynomial.gaussNorm v c ((Polynomial.monomial n) r) = v r * c ^ n",
+            "informal_description": "The Gauss norm of the monomial polynomial $ rX^n $ is equal to $ v(r) \\cdot c^n $, where $ v $ is a valuation on the semiring $ R $ and $ c $ is a real number parameter.",
+            "path": "Mathlib.RingTheory.Polynomial.GaussNorm"
+          },
+          {
+            "formal_name": "PadicInt.norm_mahlerTerm",
+            "informal_name": "Norm of Mahler Basis Term Equals Norm of Coefficient",
+            "kind": "theorem",
+            "type": "∀ {p : ℕ} [hp : Fact (Nat.Prime p)] {E : Type u_1} [inst : NormedAddCommGroup E] [inst_1 : Module ℤ_[p] E]\n  [inst_2 : IsBoundedSMul ℤ_[p] E] (a : E) (n : ℕ), ‖PadicInt.mahlerTerm a n‖ = ‖a‖",
+            "informal_description": "For the Mahler basis term function $ f(x) = a \\cdot \\binom{x}{n} $ in the space of continuous functions $ C(\\mathbb{Z}_p, E) $, where $ E $ is a normed additive commutative group equipped with a $ \\mathbb{Z}_p $-module structure, the supremum norm of $ f $ satisfies $ \\|f\\| = \\|a\\| $. Here, $ \\|\\cdot\\| $ denotes the norm induced by the supremum of $ \\|f(x)\\| $ over $ x \\in \\mathbb{Z}_p $.",
+            "path": "Mathlib.NumberTheory.Padics.MahlerBasis"
+          },
+          {
+            "formal_name": "FormalMultilinearSeries.norm_apply_eq_norm_coef",
+            "informal_name": "Equality of Operator Norm and Coefficient Norm in Formal Multilinear Series",
+            "kind": "theorem",
+            "type": "∀ {𝕜 : Type u} {E : Type v} [inst : NontriviallyNormedField 𝕜] [inst_1 : NormedAddCommGroup E]\n  [inst_2 : NormedSpace 𝕜 E] {p : FormalMultilinearSeries 𝕜 𝕜 E} {n : ℕ}, ‖p n‖ = ‖p.coeff n‖",
+            "informal_description": "For any formal multilinear series $ p $ and natural number $ n $, the operator norm of the $ n $-th term $ p_n $ is equal to the norm of the coefficient $ \\text{coeff } p \\, n $.",
+            "path": "Mathlib.Analysis.Calculus.FormalMultilinearSeries"
+          },
+          {
+            "formal_name": "FormalMultilinearSeries.ofScalars_norm",
+            "informal_name": "Norm Equality for Scalar Terms in Formal Multilinear Series",
+            "kind": "theorem",
+            "type": "∀ {𝕜 : Type u_1} (E : Type u_2) [inst : NontriviallyNormedField 𝕜] [inst_1 : SeminormedRing E]\n  [inst_2 : NormedAlgebra 𝕜 E] (c : ℕ → 𝕜) (n : ℕ) [NormOneClass E], ‖FormalMultilinearSeries.ofScalars E c n‖ = ‖c n‖",
+            "informal_description": "For a formal multilinear series constructed from scalar coefficients $ c : \\mathbb{N} \\to \\mathbb{K} $ in a normed field $ \\mathbb{K} $ with $ \\|1\\| = 1 $, the norm of the $ n $-th term is equal to the norm of the scalar $ c(n) $, i.e., $ \\|\\text{ofScalars}_n(c)\\| = \\|c(n)\\| $.",
+            "path": "Mathlib.Analysis.Analytic.OfScalars"
+          },
+          {
+            "formal_name": "PowerSeries.gaussNorm_monomial",
+            "informal_name": "Gauss Norm of Monomial: $ \\|rX^n\\|_{v,c} = v(r) c^n $",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {F : Type u_2} [inst : Semiring R] [inst_1 : FunLike F R ℝ] (v : F) {c : ℝ} (r : R)\n  [ZeroHomClass F R ℝ] [NonnegHomClass F R ℝ],\n  0 ≤ c → ∀ (n : ℕ), PowerSeries.gaussNorm v c ((PowerSeries.monomial n) r) = v r * c ^ n",
+            "informal_description": "For a monomial $ rX^n $ in the ring of power series over a semiring $ R $, the Gauss norm $ \\|rX^n\\|_{v,c} $ with respect to a valuation $ v $ and a non-negative real number $ c $ is equal to $ v(r) \\cdot c^n $. This holds for any $ r \\in R $, natural number $ n $, and non-negative $ c $. The Gauss norm is defined as the supremum of $ v(f_i) \\cdot c^i $ over all coefficients $ f_i $ of the power series.",
+            "path": "Mathlib.RingTheory.Polynomial.GaussNorm"
+          },
+          {
+            "formal_name": "Polynomial.mahlerMeasure_const",
+            "informal_name": "Mahler Measure of Constant Polynomial Equals Modulus",
+            "kind": "theorem",
+            "type": "∀ (z : ℂ), (Polynomial.C z).mahlerMeasure = ‖z‖",
+            "informal_description": "For any complex number $ z $, the Mahler measure of the constant polynomial $ z $ is equal to the modulus of $ z $, i.e., $ \\text{MahlerMeasure}(z) = |z| $.",
+            "path": "Mathlib.Analysis.Polynomial.MahlerMeasure"
+          },
+          {
+            "formal_name": "lp.norm_single",
+            "informal_name": "Norm of Single-Element Function in $ L^p $ Space Equals Element Norm",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_3} {E : α → Type u_4} {p : ENNReal} [inst : (i : α) → NormedAddCommGroup (E i)] [inst_1 : DecidableEq α],\n  0 < p → ∀ (i : α) (x : E i), ‖lp.single p i x‖ = ‖x‖",
+            "informal_description": "For any extended non-negative real number $ p $ with $ 0 < p $, index $ i $, and element $ x $ in the normed additive commutative group $ E_i $, the norm of the function in the $ L^p $ space that takes the value $ x $ at index $ i $ and zero elsewhere is equal to the norm of $ x $.",
+            "path": "Mathlib.Analysis.Normed.Lp.lpSpace"
+          },
+          {
+            "formal_name": "Polynomial.logMahlerMeasure_monomial",
+            "informal_name": "Logarithmic Mahler Measure of Monomial Polynomial Equals Log of Coefficient Norm",
+            "kind": "theorem",
+            "type": "∀ (n : ℕ) (z : ℂ), ((Polynomial.monomial n) z).logMahlerMeasure = Real.log ‖z‖",
+            "informal_description": "For any natural number $n$ and complex number $z$, the logarithmic Mahler measure of the monomial polynomial $zX^n$ is equal to the natural logarithm of the absolute value of $z$, i.e., $\\log |z|$.",
+            "path": "Mathlib.Analysis.Polynomial.MahlerMeasure"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_leansearch",
+    "form": "abstract",
+    "request": {
+      "query": "Summing an indexed zero-preserving function over a finitely supported single equals evaluation at that index and coefficient",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finsupp.sum_ite_eq\",\n      \"module_name\": \"Mathlib.Algebra.BigOperators.Finsupp.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {M : Type u_8} {N : Type u_10} [inst : Zero M] [inst_1 : AddCommMonoid N] [inst_2 : DecidableEq α]\\n  (f : α →₀ M) (a : α) (b : α → M → N),\\n  (f.sum fun x v => if a = x then b x v else 0) = if a ∈ f.support then b a (f a) else 0\"\n    },\n    {\n      \"name\": \"Finsupp.sum_single_index\",\n      \"module_name\": \"Mathlib.Algebra.BigOperators.Finsupp.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {M : Type u_8} {N : Type u_10} [inst : Zero M] [inst_1 : AddCommMonoid N] {a : α} {b : M}\\n  {h : α → M → N}, h a 0 = 0 → (Finsupp.single a b).sum h = h a b\"\n    },\n    {\n      \"name\": \"Finsupp.sum_eq_single\",\n      \"module_name\": \"Mathlib.Algebra.BigOperators.Finsupp.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {M : Type u_8} {N : Type u_10} [inst : Zero M] [inst_1 : AddCommMonoid N] {f : α →₀ M} (a : α)\\n  {g : α → M → N}, (∀ (b : α), f b ≠ 0 → b ≠ a → g b (f b) = 0) → (f a = 0 → g a 0 = 0) → f.sum g = g a (f a)\"\n    },\n    {\n      \"name\": \"finsum\",\n      \"module_name\": \"Mathlib.Algebra.BigOperators.Finprod\",\n      \"kind\": \"definition\",\n      \"type\": \"{M : Type u_7} → {α : Sort u_8} → [AddCommMonoid M] → (α → M) → M\"\n    },\n    {\n      \"name\": \"DFinsupp.sumZeroHom_single\",\n      \"module_name\": \"Mathlib.Data.DFinsupp.BigOperators\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u} {γ : Type w} {β : ι → Type v} [inst : DecidableEq ι] [inst_1 : (i : ι) → Zero (β i)]\\n  [inst_2 : AddCommMonoid γ] (φ : (i : ι) → ZeroHom (β i) γ) (i : ι) (x : β i),\\n  (DFinsupp.sumZeroHom φ) (DFinsupp.single i x) = (φ i) x\"\n    },\n    {\n      \"name\": \"DFinsupp.sum_single_index\",\n      \"module_name\": \"Mathlib.Data.DFinsupp.BigOperators\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u} {γ : Type w} {β : ι → Type v} [inst : DecidableEq ι] [inst_1 : (i : ι) → Zero (β i)]\\n  [inst_2 : (i : ι) → (x : β i) → Decidable (x ≠ 0)] [inst_3 : AddCommMonoid γ] {i : ι} {b : β i}\\n  {h : (i : ι) → β i → γ}, h i 0 = 0 → (DFinsupp.single i b).sum h = h i b\"\n    },\n    {\n      \"name\": \"Finsupp.sum_fintype\",\n      \"module_name\": \"Mathlib.Algebra.BigOperators.Finsupp.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {M : Type u_8} {N : Type u_10} [inst : Zero M] [inst_1 : AddCommMonoid N] [inst_2 : Fintype α]\\n  (f : α →₀ M) (g : α → M → N), (∀ (i : α), g i 0 = 0) → f.sum g = ∑ i, g i (f i)\"\n    },\n    {\n      \"name\": \"Finsupp.sum_ite_self_eq\",\n      \"module_name\": \"Mathlib.Algebra.BigOperators.Finsupp.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} [inst : DecidableEq α] {N : Type u_16} [inst_1 : AddCommMonoid N] (f : α →₀ N) (a : α),\\n  (f.sum fun x v => if a = x then v else 0) = f a\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Finsupp.sum_ite_eq",
+            "module_name": "Mathlib.Algebra.BigOperators.Finsupp.Basic",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {M : Type u_8} {N : Type u_10} [inst : Zero M] [inst_1 : AddCommMonoid N] [inst_2 : DecidableEq α]\n  (f : α →₀ M) (a : α) (b : α → M → N),\n  (f.sum fun x v => if a = x then b x v else 0) = if a ∈ f.support then b a (f a) else 0"
+          },
+          {
+            "name": "Finsupp.sum_single_index",
+            "module_name": "Mathlib.Algebra.BigOperators.Finsupp.Basic",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {M : Type u_8} {N : Type u_10} [inst : Zero M] [inst_1 : AddCommMonoid N] {a : α} {b : M}\n  {h : α → M → N}, h a 0 = 0 → (Finsupp.single a b).sum h = h a b"
+          },
+          {
+            "name": "Finsupp.sum_eq_single",
+            "module_name": "Mathlib.Algebra.BigOperators.Finsupp.Basic",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {M : Type u_8} {N : Type u_10} [inst : Zero M] [inst_1 : AddCommMonoid N] {f : α →₀ M} (a : α)\n  {g : α → M → N}, (∀ (b : α), f b ≠ 0 → b ≠ a → g b (f b) = 0) → (f a = 0 → g a 0 = 0) → f.sum g = g a (f a)"
+          },
+          {
+            "name": "finsum",
+            "module_name": "Mathlib.Algebra.BigOperators.Finprod",
+            "kind": "definition",
+            "type": "{M : Type u_7} → {α : Sort u_8} → [AddCommMonoid M] → (α → M) → M"
+          },
+          {
+            "name": "DFinsupp.sumZeroHom_single",
+            "module_name": "Mathlib.Data.DFinsupp.BigOperators",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u} {γ : Type w} {β : ι → Type v} [inst : DecidableEq ι] [inst_1 : (i : ι) → Zero (β i)]\n  [inst_2 : AddCommMonoid γ] (φ : (i : ι) → ZeroHom (β i) γ) (i : ι) (x : β i),\n  (DFinsupp.sumZeroHom φ) (DFinsupp.single i x) = (φ i) x"
+          },
+          {
+            "name": "DFinsupp.sum_single_index",
+            "module_name": "Mathlib.Data.DFinsupp.BigOperators",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u} {γ : Type w} {β : ι → Type v} [inst : DecidableEq ι] [inst_1 : (i : ι) → Zero (β i)]\n  [inst_2 : (i : ι) → (x : β i) → Decidable (x ≠ 0)] [inst_3 : AddCommMonoid γ] {i : ι} {b : β i}\n  {h : (i : ι) → β i → γ}, h i 0 = 0 → (DFinsupp.single i b).sum h = h i b"
+          },
+          {
+            "name": "Finsupp.sum_fintype",
+            "module_name": "Mathlib.Algebra.BigOperators.Finsupp.Basic",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {M : Type u_8} {N : Type u_10} [inst : Zero M] [inst_1 : AddCommMonoid N] [inst_2 : Fintype α]\n  (f : α →₀ M) (g : α → M → N), (∀ (i : α), g i 0 = 0) → f.sum g = ∑ i, g i (f i)"
+          },
+          {
+            "name": "Finsupp.sum_ite_self_eq",
+            "module_name": "Mathlib.Algebra.BigOperators.Finsupp.Basic",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} [inst : DecidableEq α] {N : Type u_16} [inst_1 : AddCommMonoid N] (f : α →₀ N) (a : α),\n  (f.sum fun x v => if a = x then v else 0) = f a"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_leansearch",
+    "form": "current",
+    "request": {
+      "query": "The sum of absolute values of coefficients of a monomial over the integers equals the absolute value of its coefficient",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.coeff\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Basic\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} → {σ : Type u_1} → [inst : CommSemiring R] → (σ →₀ ℕ) → MvPolynomial σ R → R\"\n    },\n    {\n      \"name\": \"MvPolynomial.coeff_sum\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] {X : Type u_2} (s : Finset X) (f : X → MvPolynomial σ R)\\n  (m : σ →₀ ℕ), MvPolynomial.coeff m (∑ x ∈ s, f x) = ∑ x ∈ s, MvPolynomial.coeff m (f x)\"\n    },\n    {\n      \"name\": \"MvPolynomial.coeffAddMonoidHom\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Basic\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} → {σ : Type u_1} → [inst : CommSemiring R] → (σ →₀ ℕ) → MvPolynomial σ R →+ R\"\n    },\n    {\n      \"name\": \"MvPolynomial.coeffAddMonoidHom_apply\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] (m : σ →₀ ℕ) (p : MvPolynomial σ R),\\n  (MvPolynomial.coeffAddMonoidHom m) p = MvPolynomial.coeff m p\"\n    },\n    {\n      \"name\": \"PowerSeries.coeff_monomial_same\",\n      \"module_name\": \"Mathlib.RingTheory.PowerSeries.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (n : ℕ) (a : R), (PowerSeries.coeff n) ((PowerSeries.monomial n) a) = a\"\n    },\n    {\n      \"name\": \"MvPowerSeries.coeff_monomial_same\",\n      \"module_name\": \"Mathlib.RingTheory.MvPowerSeries.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (n : σ →₀ ℕ) (a : R),\\n  (MvPowerSeries.coeff n) ((MvPowerSeries.monomial n) a) = a\"\n    },\n    {\n      \"name\": \"MvPolynomial.lcoeff\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Basic\",\n      \"kind\": \"definition\",\n      \"type\": \"(R : Type u) → {σ : Type u_1} → [inst : CommSemiring R] → (σ →₀ ℕ) → MvPolynomial σ R →ₗ[R] R\"\n    },\n    {\n      \"name\": \"MvPowerSeries.coeff_monomial\",\n      \"module_name\": \"Mathlib.RingTheory.MvPowerSeries.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] [inst_1 : DecidableEq σ] (m n : σ →₀ ℕ) (a : R),\\n  (MvPowerSeries.coeff m) ((MvPowerSeries.monomial n) a) = if m = n then a else 0\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.coeff",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Basic",
+            "kind": "definition",
+            "type": "{R : Type u} → {σ : Type u_1} → [inst : CommSemiring R] → (σ →₀ ℕ) → MvPolynomial σ R → R"
+          },
+          {
+            "name": "MvPolynomial.coeff_sum",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Basic",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] {X : Type u_2} (s : Finset X) (f : X → MvPolynomial σ R)\n  (m : σ →₀ ℕ), MvPolynomial.coeff m (∑ x ∈ s, f x) = ∑ x ∈ s, MvPolynomial.coeff m (f x)"
+          },
+          {
+            "name": "MvPolynomial.coeffAddMonoidHom",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Basic",
+            "kind": "definition",
+            "type": "{R : Type u} → {σ : Type u_1} → [inst : CommSemiring R] → (σ →₀ ℕ) → MvPolynomial σ R →+ R"
+          },
+          {
+            "name": "MvPolynomial.coeffAddMonoidHom_apply",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Basic",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] (m : σ →₀ ℕ) (p : MvPolynomial σ R),\n  (MvPolynomial.coeffAddMonoidHom m) p = MvPolynomial.coeff m p"
+          },
+          {
+            "name": "PowerSeries.coeff_monomial_same",
+            "module_name": "Mathlib.RingTheory.PowerSeries.Basic",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (n : ℕ) (a : R), (PowerSeries.coeff n) ((PowerSeries.monomial n) a) = a"
+          },
+          {
+            "name": "MvPowerSeries.coeff_monomial_same",
+            "module_name": "Mathlib.RingTheory.MvPowerSeries.Basic",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (n : σ →₀ ℕ) (a : R),\n  (MvPowerSeries.coeff n) ((MvPowerSeries.monomial n) a) = a"
+          },
+          {
+            "name": "MvPolynomial.lcoeff",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Basic",
+            "kind": "definition",
+            "type": "(R : Type u) → {σ : Type u_1} → [inst : CommSemiring R] → (σ →₀ ℕ) → MvPolynomial σ R →ₗ[R] R"
+          },
+          {
+            "name": "MvPowerSeries.coeff_monomial",
+            "module_name": "Mathlib.RingTheory.MvPowerSeries.Basic",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] [inst_1 : DecidableEq σ] (m n : σ →₀ ℕ) (a : R),\n  (MvPowerSeries.coeff m) ((MvPowerSeries.monomial n) a) = if m = n then a else 0"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_leansearch",
+    "form": "standard",
+    "request": {
+      "query": "The coefficient l1 norm of a monomial equals the norm of its coefficient",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"FormalMultilinearSeries.norm_apply_eq_norm_coef\",\n      \"module_name\": \"Mathlib.Analysis.Calculus.FormalMultilinearSeries\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {𝕜 : Type u} {E : Type v} [inst : NontriviallyNormedField 𝕜] [inst_1 : NormedAddCommGroup E]\\n  [inst_2 : NormedSpace 𝕜 E] {p : FormalMultilinearSeries 𝕜 𝕜 E} {n : ℕ}, ‖p n‖ = ‖p.coeff n‖\"\n    },\n    {\n      \"name\": \"ModularFormClass.qExpansionFormalMultilinearSeries_apply_norm\",\n      \"module_name\": \"Mathlib.NumberTheory.ModularForms.QExpansion\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {F : Type u_1} [inst : FunLike F UpperHalfPlane ℂ] {h : ℝ} (f : F) (m : ℕ),\\n  ‖ModularFormClass.qExpansionFormalMultilinearSeries h f m‖ = ‖(PowerSeries.coeff m) (ModularFormClass.qExpansion h f)‖\"\n    },\n    {\n      \"name\": \"MonomialOrder.leadingCoeff_monomial\",\n      \"module_name\": \"Mathlib.RingTheory.MvPolynomial.MonomialOrder\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {m : MonomialOrder σ} {R : Type u_2} [inst : CommSemiring R] {d : σ →₀ ℕ} (c : R),\\n  m.leadingCoeff ((MvPolynomial.monomial d) c) = c\"\n    },\n    {\n      \"name\": \"PowerSeries.coeff_monomial_same\",\n      \"module_name\": \"Mathlib.RingTheory.PowerSeries.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (n : ℕ) (a : R), (PowerSeries.coeff n) ((PowerSeries.monomial n) a) = a\"\n    },\n    {\n      \"name\": \"MvPolynomial.coeffAddMonoidHom_apply\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] (m : σ →₀ ℕ) (p : MvPolynomial σ R),\\n  (MvPolynomial.coeffAddMonoidHom m) p = MvPolynomial.coeff m p\"\n    },\n    {\n      \"name\": \"MvPolynomial.coeff\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Basic\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} → {σ : Type u_1} → [inst : CommSemiring R] → (σ →₀ ℕ) → MvPolynomial σ R → R\"\n    },\n    {\n      \"name\": \"MvPowerSeries.coeff_monomial\",\n      \"module_name\": \"Mathlib.RingTheory.MvPowerSeries.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] [inst_1 : DecidableEq σ] (m n : σ →₀ ℕ) (a : R),\\n  (MvPowerSeries.coeff m) ((MvPowerSeries.monomial n) a) = if m = n then a else 0\"\n    },\n    {\n      \"name\": \"MvPowerSeries.coeff_monomial_same\",\n      \"module_name\": \"Mathlib.RingTheory.MvPowerSeries.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (n : σ →₀ ℕ) (a : R),\\n  (MvPowerSeries.coeff n) ((MvPowerSeries.monomial n) a) = a\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "FormalMultilinearSeries.norm_apply_eq_norm_coef",
+            "module_name": "Mathlib.Analysis.Calculus.FormalMultilinearSeries",
+            "kind": "theorem",
+            "type": "∀ {𝕜 : Type u} {E : Type v} [inst : NontriviallyNormedField 𝕜] [inst_1 : NormedAddCommGroup E]\n  [inst_2 : NormedSpace 𝕜 E] {p : FormalMultilinearSeries 𝕜 𝕜 E} {n : ℕ}, ‖p n‖ = ‖p.coeff n‖"
+          },
+          {
+            "name": "ModularFormClass.qExpansionFormalMultilinearSeries_apply_norm",
+            "module_name": "Mathlib.NumberTheory.ModularForms.QExpansion",
+            "kind": "theorem",
+            "type": "∀ {F : Type u_1} [inst : FunLike F UpperHalfPlane ℂ] {h : ℝ} (f : F) (m : ℕ),\n  ‖ModularFormClass.qExpansionFormalMultilinearSeries h f m‖ = ‖(PowerSeries.coeff m) (ModularFormClass.qExpansion h f)‖"
+          },
+          {
+            "name": "MonomialOrder.leadingCoeff_monomial",
+            "module_name": "Mathlib.RingTheory.MvPolynomial.MonomialOrder",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {m : MonomialOrder σ} {R : Type u_2} [inst : CommSemiring R] {d : σ →₀ ℕ} (c : R),\n  m.leadingCoeff ((MvPolynomial.monomial d) c) = c"
+          },
+          {
+            "name": "PowerSeries.coeff_monomial_same",
+            "module_name": "Mathlib.RingTheory.PowerSeries.Basic",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (n : ℕ) (a : R), (PowerSeries.coeff n) ((PowerSeries.monomial n) a) = a"
+          },
+          {
+            "name": "MvPolynomial.coeffAddMonoidHom_apply",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Basic",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] (m : σ →₀ ℕ) (p : MvPolynomial σ R),\n  (MvPolynomial.coeffAddMonoidHom m) p = MvPolynomial.coeff m p"
+          },
+          {
+            "name": "MvPolynomial.coeff",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Basic",
+            "kind": "definition",
+            "type": "{R : Type u} → {σ : Type u_1} → [inst : CommSemiring R] → (σ →₀ ℕ) → MvPolynomial σ R → R"
+          },
+          {
+            "name": "MvPowerSeries.coeff_monomial",
+            "module_name": "Mathlib.RingTheory.MvPowerSeries.Basic",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] [inst_1 : DecidableEq σ] (m n : σ →₀ ℕ) (a : R),\n  (MvPowerSeries.coeff m) ((MvPowerSeries.monomial n) a) = if m = n then a else 0"
+          },
+          {
+            "name": "MvPowerSeries.coeff_monomial_same",
+            "module_name": "Mathlib.RingTheory.MvPowerSeries.Basic",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (n : σ →₀ ℕ) (a : R),\n  (MvPowerSeries.coeff n) ((MvPowerSeries.monomial n) a) = a"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_local_search",
+    "form": "abstract",
+    "request": {
+      "query": "sum_single_index",
+      "project_root": "/Users/ramin/LEAN/Roth",
+      "limit": 12
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MonoidAlgebra.sum_single_index\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MonoidAlgebra/Defs.lean\"\n    },\n    {\n      \"name\": \"SkewMonoidAlgebra.sum_single_index\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/SkewMonoidAlgebra/Basic.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MonoidAlgebra.sum_single_index",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/MonoidAlgebra/Defs.lean"
+          },
+          {
+            "name": "SkewMonoidAlgebra.sum_single_index",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/SkewMonoidAlgebra/Basic.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_local_search",
+    "form": "current",
+    "request": {
+      "query": "normOne_monomial",
+      "project_root": "/Users/ramin/LEAN/Roth",
+      "limit": 12
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Roth.normOne_monomial\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/CoeffNorm.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Roth.normOne_monomial",
+            "kind": "theorem",
+            "file": "Roth/CoeffNorm.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_local_search",
+    "form": "standard",
+    "request": {
+      "query": "sum_monomial",
+      "project_root": "/Users/ramin/LEAN/Roth",
+      "limit": 12
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"SkewPolynomial.sum_monomial\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/SkewPolynomial/Basic.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.sum_monomial_eq\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Basic.lean\"\n    },\n    {\n      \"name\": \"Polynomial.sum_monomial_eq\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Basic.lean\"\n    },\n    {\n      \"name\": \"Polynomial.sum_monomial_index\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Basic.lean\"\n    },\n    {\n      \"name\": \"SkewPolynomial.sum_monomial_index\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/SkewPolynomial/Basic.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "SkewPolynomial.sum_monomial",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/SkewPolynomial/Basic.lean"
+          },
+          {
+            "name": "MvPolynomial.sum_monomial_eq",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Basic.lean"
+          },
+          {
+            "name": "Polynomial.sum_monomial_eq",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Basic.lean"
+          },
+          {
+            "name": "Polynomial.sum_monomial_index",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Basic.lean"
+          },
+          {
+            "name": "SkewPolynomial.sum_monomial_index",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/SkewPolynomial/Basic.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_loogle",
+    "form": "abstract",
+    "request": {
+      "query": "Finsupp.sum, Finsupp.single",
+      "num_results": 12
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finsupp.sum_eq_one_iff\",\n      \"type\": \" {α : Type u_1} (d : α →₀ ℕ) : (d.sum fun x n => n) = 1 ↔ ∃ a, d = fun₀ | a => 1\",\n      \"module\": \"Mathlib.Algebra.BigOperators.Finsupp.Basic\"\n    },\n    {\n      \"name\": \"Finsupp.sum_single_index\",\n      \"type\": \" {α : Type u_1} {M : Type u_8} {N : Type u_10} [Zero M] [AddCommMonoid N] {a : α} {b : M} {h : α → M → N} (h_zero : h a 0 = 0) : (fun₀ | a => b).sum h = h a b\",\n      \"module\": \"Mathlib.Algebra.BigOperators.Finsupp.Basic\"\n    },\n    {\n      \"name\": \"Finsupp.sum_single\",\n      \"type\": \" {α : Type u_1} {M : Type u_8} [AddCommMonoid M] (f : α →₀ M) : f.sum Finsupp.single = f\",\n      \"module\": \"Mathlib.Algebra.BigOperators.Finsupp.Basic\"\n    },\n    {\n      \"name\": \"Finsupp.single_sum\",\n      \"type\": \" {α : Type u_1} {ι : Type u_2} {M : Type u_8} {N : Type u_10} [Zero M] [AddCommMonoid N] (s : ι →₀ M) (f : ι → M → N) (a : α) : (fun₀ | a => s.sum f) = s.sum fun d c => fun₀ | a => f d c\",\n      \"module\": \"Mathlib.Algebra.BigOperators.Finsupp.Basic\"\n    },\n    {\n      \"name\": \"Finsupp.sum_single_add_single\",\n      \"type\": \" {ι : Type u_2} {A : Type u_4} {B : Type u_5} [AddCommMonoid A] [AddCommMonoid B] (f₁ f₂ : ι) (g₁ g₂ : A) (F : ι → A → B) (H : f₁ ≠ f₂) (HF : ∀ (f : ι), F f 0 = 0) : ((fun₀ | f₁ => g₁) + fun₀ | f₂ => g₂).sum F = F f₁ g₁ + F f₂ g₂\",\n      \"module\": \"Mathlib.Algebra.BigOperators.Finsupp.Basic\"\n    },\n    {\n      \"name\": \"Finsupp.mapDomain_apply\",\n      \"type\": \" {α : Type u_1} {β : Type u_2} {M : Type u_5} [AddCommMonoid M] (f : α → β) (x : α →₀ M) (b : β) : (Finsupp.mapDomain f x) b = x.sum fun a m => (fun₀ | f a => m) b\",\n      \"module\": \"Mathlib.Data.Finsupp.Basic\"\n    },\n    {\n      \"name\": \"TensorProduct.finsuppScalarLeft_apply_tmul\",\n      \"type\": \" {R : Type u_1} [CommSemiring R] {N : Type u_4} [AddCommMonoid N] [Module R N] {ι : Type u_5} [DecidableEq ι] (p : ι →₀ R) (n : N) : (TensorProduct.finsuppScalarLeft R N ι) (p ⊗ₜ[R] n) = p.sum fun i m => fun₀ | i => m • n\",\n      \"module\": \"Mathlib.LinearAlgebra.DirectSum.Finsupp\"\n    },\n    {\n      \"name\": \"TensorProduct.finsuppScalarRight_apply_tmul\",\n      \"type\": \" {R : Type u_1} {S : Type u_2} [CommSemiring R] [Semiring S] [Algebra R S] {M : Type u_3} [AddCommMonoid M] [Module R M] [Module S M] [IsScalarTower R S M] {ι : Type u_5} [DecidableEq ι] (m : M) (p : ι →₀ R) : (TensorProduct.finsuppScalarRight R S M ι) (m ⊗ₜ[R] p) = p.sum fun i n => fun₀ | i => n • m\",\n      \"module\": \"Mathlib.LinearAlgebra.DirectSum.Finsupp\"\n    },\n    {\n      \"name\": \"TensorProduct.finsuppRight_apply_tmul\",\n      \"type\": \" {R : Type u_1} {S : Type u_2} [CommSemiring R] [Semiring S] [Algebra R S] {M : Type u_3} [AddCommMonoid M] [Module R M] [Module S M] [IsScalarTower R S M] {N : Type u_4} [AddCommMonoid N] [Module R N] {ι : Type u_5} [DecidableEq ι] (m : M) (p : ι →₀ N) : (TensorProduct.finsuppRight R S M N ι) (m ⊗ₜ[R] p) = p.sum fun i n => fun₀ | i => m ⊗ₜ[R] n\",\n      \"module\": \"Mathlib.LinearAlgebra.DirectSum.Finsupp\"\n    },\n    {\n      \"name\": \"TensorProduct.finsuppLeft_apply_tmul\",\n      \"type\": \" {R : Type u_1} {S : Type u_2} [CommSemiring R] [Semiring S] [Algebra R S] {M : Type u_3} [AddCommMonoid M] [Module R M] [Module S M] [IsScalarTower R S M] {N : Type u_4} [AddCommMonoid N] [Module R N] {ι : Type u_5} [DecidableEq ι] (p : ι →₀ M) (n : N) : (TensorProduct.finsuppLeft R S M N ι) (p ⊗ₜ[R] n) = p.sum fun i m => fun₀ | i => m ⊗ₜ[R] n\",\n      \"module\": \"Mathlib.LinearAlgebra.DirectSum.Finsupp\"\n    },\n    {\n      \"name\": \"Finsupp.single_le_sum\",\n      \"type\": \" {α : Type u_6} {M : Type u_7} {N : Type u_8} [Zero M] [AddCommMonoid N] [PartialOrder N] [IsOrderedAddMonoid N] (f : α →₀ M) {g : α → M → N} (h : 0 ≤ fun x1 x2 => g x1 x2) (a : α) : (fun₀ | a => f a).sum g ≤ f.sum g\",\n      \"module\": \"Mathlib.Data.Finsupp.Order\"\n    },\n    {\n      \"name\": \"MvPolynomial.mkDerivationₗ_monomial\",\n      \"type\": \" {σ : Type u_1} {R : Type u_2} {A : Type u_3} [CommSemiring R] [AddCommMonoid A] [Module R A] [Module (MvPolynomial σ R) A] (f : σ → A) (s : σ →₀ ℕ) (r : R) : (MvPolynomial.mkDerivationₗ R f) ((MvPolynomial.monomial s) r) = r • s.sum fun i k => (MvPolynomial.monomial (s - fun₀ | i => 1)) ↑k • f i\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Derivation\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Finsupp.sum_eq_one_iff",
+            "type": " {α : Type u_1} (d : α →₀ ℕ) : (d.sum fun x n => n) = 1 ↔ ∃ a, d = fun₀ | a => 1",
+            "module": "Mathlib.Algebra.BigOperators.Finsupp.Basic"
+          },
+          {
+            "name": "Finsupp.sum_single_index",
+            "type": " {α : Type u_1} {M : Type u_8} {N : Type u_10} [Zero M] [AddCommMonoid N] {a : α} {b : M} {h : α → M → N} (h_zero : h a 0 = 0) : (fun₀ | a => b).sum h = h a b",
+            "module": "Mathlib.Algebra.BigOperators.Finsupp.Basic"
+          },
+          {
+            "name": "Finsupp.sum_single",
+            "type": " {α : Type u_1} {M : Type u_8} [AddCommMonoid M] (f : α →₀ M) : f.sum Finsupp.single = f",
+            "module": "Mathlib.Algebra.BigOperators.Finsupp.Basic"
+          },
+          {
+            "name": "Finsupp.single_sum",
+            "type": " {α : Type u_1} {ι : Type u_2} {M : Type u_8} {N : Type u_10} [Zero M] [AddCommMonoid N] (s : ι →₀ M) (f : ι → M → N) (a : α) : (fun₀ | a => s.sum f) = s.sum fun d c => fun₀ | a => f d c",
+            "module": "Mathlib.Algebra.BigOperators.Finsupp.Basic"
+          },
+          {
+            "name": "Finsupp.sum_single_add_single",
+            "type": " {ι : Type u_2} {A : Type u_4} {B : Type u_5} [AddCommMonoid A] [AddCommMonoid B] (f₁ f₂ : ι) (g₁ g₂ : A) (F : ι → A → B) (H : f₁ ≠ f₂) (HF : ∀ (f : ι), F f 0 = 0) : ((fun₀ | f₁ => g₁) + fun₀ | f₂ => g₂).sum F = F f₁ g₁ + F f₂ g₂",
+            "module": "Mathlib.Algebra.BigOperators.Finsupp.Basic"
+          },
+          {
+            "name": "Finsupp.mapDomain_apply",
+            "type": " {α : Type u_1} {β : Type u_2} {M : Type u_5} [AddCommMonoid M] (f : α → β) (x : α →₀ M) (b : β) : (Finsupp.mapDomain f x) b = x.sum fun a m => (fun₀ | f a => m) b",
+            "module": "Mathlib.Data.Finsupp.Basic"
+          },
+          {
+            "name": "TensorProduct.finsuppScalarLeft_apply_tmul",
+            "type": " {R : Type u_1} [CommSemiring R] {N : Type u_4} [AddCommMonoid N] [Module R N] {ι : Type u_5} [DecidableEq ι] (p : ι →₀ R) (n : N) : (TensorProduct.finsuppScalarLeft R N ι) (p ⊗ₜ[R] n) = p.sum fun i m => fun₀ | i => m • n",
+            "module": "Mathlib.LinearAlgebra.DirectSum.Finsupp"
+          },
+          {
+            "name": "TensorProduct.finsuppScalarRight_apply_tmul",
+            "type": " {R : Type u_1} {S : Type u_2} [CommSemiring R] [Semiring S] [Algebra R S] {M : Type u_3} [AddCommMonoid M] [Module R M] [Module S M] [IsScalarTower R S M] {ι : Type u_5} [DecidableEq ι] (m : M) (p : ι →₀ R) : (TensorProduct.finsuppScalarRight R S M ι) (m ⊗ₜ[R] p) = p.sum fun i n => fun₀ | i => n • m",
+            "module": "Mathlib.LinearAlgebra.DirectSum.Finsupp"
+          },
+          {
+            "name": "TensorProduct.finsuppRight_apply_tmul",
+            "type": " {R : Type u_1} {S : Type u_2} [CommSemiring R] [Semiring S] [Algebra R S] {M : Type u_3} [AddCommMonoid M] [Module R M] [Module S M] [IsScalarTower R S M] {N : Type u_4} [AddCommMonoid N] [Module R N] {ι : Type u_5} [DecidableEq ι] (m : M) (p : ι →₀ N) : (TensorProduct.finsuppRight R S M N ι) (m ⊗ₜ[R] p) = p.sum fun i n => fun₀ | i => m ⊗ₜ[R] n",
+            "module": "Mathlib.LinearAlgebra.DirectSum.Finsupp"
+          },
+          {
+            "name": "TensorProduct.finsuppLeft_apply_tmul",
+            "type": " {R : Type u_1} {S : Type u_2} [CommSemiring R] [Semiring S] [Algebra R S] {M : Type u_3} [AddCommMonoid M] [Module R M] [Module S M] [IsScalarTower R S M] {N : Type u_4} [AddCommMonoid N] [Module R N] {ι : Type u_5} [DecidableEq ι] (p : ι →₀ M) (n : N) : (TensorProduct.finsuppLeft R S M N ι) (p ⊗ₜ[R] n) = p.sum fun i m => fun₀ | i => m ⊗ₜ[R] n",
+            "module": "Mathlib.LinearAlgebra.DirectSum.Finsupp"
+          },
+          {
+            "name": "Finsupp.single_le_sum",
+            "type": " {α : Type u_6} {M : Type u_7} {N : Type u_8} [Zero M] [AddCommMonoid N] [PartialOrder N] [IsOrderedAddMonoid N] (f : α →₀ M) {g : α → M → N} (h : 0 ≤ fun x1 x2 => g x1 x2) (a : α) : (fun₀ | a => f a).sum g ≤ f.sum g",
+            "module": "Mathlib.Data.Finsupp.Order"
+          },
+          {
+            "name": "MvPolynomial.mkDerivationₗ_monomial",
+            "type": " {σ : Type u_1} {R : Type u_2} {A : Type u_3} [CommSemiring R] [AddCommMonoid A] [Module R A] [Module (MvPolynomial σ R) A] (f : σ → A) (s : σ →₀ ℕ) (r : R) : (MvPolynomial.mkDerivationₗ R f) ((MvPolynomial.monomial s) r) = r • s.sum fun i k => (MvPolynomial.monomial (s - fun₀ | i => 1)) ↑k • f i",
+            "module": "Mathlib.Algebra.MvPolynomial.Derivation"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_loogle",
+    "form": "current",
+    "request": {
+      "query": "MvPolynomial.monomial, Finsupp.sum",
+      "num_results": 12
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.sum_monomial_eq\",\n      \"type\": \" {R : Type u} {σ : Type u_1} [CommSemiring R] {A : Type u_2} [AddCommMonoid A] {u : σ →₀ ℕ} {r : R} {b : (σ →₀ ℕ) → R → A} (w : b u 0 = 0) : ((MvPolynomial.monomial u) r).coeff.sum b = b u r\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Basic\"\n    },\n    {\n      \"name\": \"MvPolynomial.mul_def\",\n      \"type\": \" {R : Type u} {σ : Type u_1} [CommSemiring R] {p q : MvPolynomial σ R} : p * q = p.coeff.sum fun m a => q.coeff.sum fun n b => (MvPolynomial.monomial (m + n)) (a * b)\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Basic\"\n    },\n    {\n      \"name\": \"MvPolynomial.monomial_finsupp_sum_index\",\n      \"type\": \" {R : Type u} {σ : Type u_1} [CommSemiring R] {α : Type u_2} {β : Type u_3} [Zero β] (f : α →₀ β) (g : α → β → σ →₀ ℕ) (a : R) : (MvPolynomial.monomial (f.sum g)) a = MvPolynomial.C a * f.prod fun a b => (MvPolynomial.monomial (g a b)) 1\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Basic\"\n    },\n    {\n      \"name\": \"MvPolynomial.totalDegree_monomial_le\",\n      \"type\": \" {R : Type u} {σ : Type u_1} [CommSemiring R] (s : σ →₀ ℕ) (c : R) : ((MvPolynomial.monomial s) c).totalDegree ≤ s.sum fun x => id\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Degrees\"\n    },\n    {\n      \"name\": \"MvPolynomial.totalDegree_monomial\",\n      \"type\": \" {R : Type u} {σ : Type u_1} [CommSemiring R] (s : σ →₀ ℕ) {c : R} (hc : c ≠ 0) : ((MvPolynomial.monomial s) c).totalDegree = s.sum fun x e => e\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Degrees\"\n    },\n    {\n      \"name\": \"Algebra.Generators.comp_σ\",\n      \"type\": \" {R : Type u} {S : Type v} {ι : Type w} [CommRing R] [CommRing S] [Algebra R S] {ι' : Type u_1} {T : Type u_2} [CommRing T] [Algebra R T] [Algebra S T] [IsScalarTower R S T] (Q : Algebra.Generators S T ι') (P : Algebra.Generators R S ι) (x : T) : (Q.comp P).σ x = (Q.σ x).coeff.sum fun n r => (MvPolynomial.rename Sum.inr) (P.σ r) * (MvPolynomial.monomial (Finsupp.mapDomain Sum.inl n)) 1\",\n      \"module\": \"Mathlib.RingTheory.Extension.Generators\"\n    },\n    {\n      \"name\": \"MvPolynomial.mkDerivationₗ_monomial\",\n      \"type\": \" {σ : Type u_1} {R : Type u_2} {A : Type u_3} [CommSemiring R] [AddCommMonoid A] [Module R A] [Module (MvPolynomial σ R) A] (f : σ → A) (s : σ →₀ ℕ) (r : R) : (MvPolynomial.mkDerivationₗ R f) ((MvPolynomial.monomial s) r) = r • s.sum fun i k => (MvPolynomial.monomial (s - fun₀ | i => 1)) ↑k • f i\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Derivation\"\n    },\n    {\n      \"name\": \"MvPolynomial.mkDerivation_monomial\",\n      \"type\": \" {σ : Type u_1} (R : Type u_2) {A : Type u_3} [CommSemiring R] [AddCommMonoid A] [Module R A] [Module (MvPolynomial σ R) A] [IsScalarTower R (MvPolynomial σ R) A] (f : σ → A) (s : σ →₀ ℕ) (r : R) : (MvPolynomial.mkDerivation R f) ((MvPolynomial.monomial s) r) = r • s.sum fun i k => (MvPolynomial.monomial (s - fun₀ | i => 1)) ↑k • f i\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Derivation\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.sum_monomial_eq",
+            "type": " {R : Type u} {σ : Type u_1} [CommSemiring R] {A : Type u_2} [AddCommMonoid A] {u : σ →₀ ℕ} {r : R} {b : (σ →₀ ℕ) → R → A} (w : b u 0 = 0) : ((MvPolynomial.monomial u) r).coeff.sum b = b u r",
+            "module": "Mathlib.Algebra.MvPolynomial.Basic"
+          },
+          {
+            "name": "MvPolynomial.mul_def",
+            "type": " {R : Type u} {σ : Type u_1} [CommSemiring R] {p q : MvPolynomial σ R} : p * q = p.coeff.sum fun m a => q.coeff.sum fun n b => (MvPolynomial.monomial (m + n)) (a * b)",
+            "module": "Mathlib.Algebra.MvPolynomial.Basic"
+          },
+          {
+            "name": "MvPolynomial.monomial_finsupp_sum_index",
+            "type": " {R : Type u} {σ : Type u_1} [CommSemiring R] {α : Type u_2} {β : Type u_3} [Zero β] (f : α →₀ β) (g : α → β → σ →₀ ℕ) (a : R) : (MvPolynomial.monomial (f.sum g)) a = MvPolynomial.C a * f.prod fun a b => (MvPolynomial.monomial (g a b)) 1",
+            "module": "Mathlib.Algebra.MvPolynomial.Basic"
+          },
+          {
+            "name": "MvPolynomial.totalDegree_monomial_le",
+            "type": " {R : Type u} {σ : Type u_1} [CommSemiring R] (s : σ →₀ ℕ) (c : R) : ((MvPolynomial.monomial s) c).totalDegree ≤ s.sum fun x => id",
+            "module": "Mathlib.Algebra.MvPolynomial.Degrees"
+          },
+          {
+            "name": "MvPolynomial.totalDegree_monomial",
+            "type": " {R : Type u} {σ : Type u_1} [CommSemiring R] (s : σ →₀ ℕ) {c : R} (hc : c ≠ 0) : ((MvPolynomial.monomial s) c).totalDegree = s.sum fun x e => e",
+            "module": "Mathlib.Algebra.MvPolynomial.Degrees"
+          },
+          {
+            "name": "Algebra.Generators.comp_σ",
+            "type": " {R : Type u} {S : Type v} {ι : Type w} [CommRing R] [CommRing S] [Algebra R S] {ι' : Type u_1} {T : Type u_2} [CommRing T] [Algebra R T] [Algebra S T] [IsScalarTower R S T] (Q : Algebra.Generators S T ι') (P : Algebra.Generators R S ι) (x : T) : (Q.comp P).σ x = (Q.σ x).coeff.sum fun n r => (MvPolynomial.rename Sum.inr) (P.σ r) * (MvPolynomial.monomial (Finsupp.mapDomain Sum.inl n)) 1",
+            "module": "Mathlib.RingTheory.Extension.Generators"
+          },
+          {
+            "name": "MvPolynomial.mkDerivationₗ_monomial",
+            "type": " {σ : Type u_1} {R : Type u_2} {A : Type u_3} [CommSemiring R] [AddCommMonoid A] [Module R A] [Module (MvPolynomial σ R) A] (f : σ → A) (s : σ →₀ ℕ) (r : R) : (MvPolynomial.mkDerivationₗ R f) ((MvPolynomial.monomial s) r) = r • s.sum fun i k => (MvPolynomial.monomial (s - fun₀ | i => 1)) ↑k • f i",
+            "module": "Mathlib.Algebra.MvPolynomial.Derivation"
+          },
+          {
+            "name": "MvPolynomial.mkDerivation_monomial",
+            "type": " {σ : Type u_1} (R : Type u_2) {A : Type u_3} [CommSemiring R] [AddCommMonoid A] [Module R A] [Module (MvPolynomial σ R) A] [IsScalarTower R (MvPolynomial σ R) A] (f : σ → A) (s : σ →₀ ℕ) (r : R) : (MvPolynomial.mkDerivation R f) ((MvPolynomial.monomial s) r) = r • s.sum fun i k => (MvPolynomial.monomial (s - fun₀ | i => 1)) ↑k • f i",
+            "module": "Mathlib.Algebra.MvPolynomial.Derivation"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_loogle",
+    "form": "standard",
+    "request": {
+      "query": "\"monomial\", \"sum\"",
+      "num_results": 12
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.sum_monomial_eq\",\n      \"type\": \" {R : Type u} [Semiring R] (p : Polynomial R) : (p.sum fun n a => (Polynomial.monomial n) a) = p\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Basic\"\n    },\n    {\n      \"name\": \"Polynomial.sum_monomial_index\",\n      \"type\": \" {R : Type u} [Semiring R] {S : Type u_1} [AddCommMonoid S] {n : ℕ} (a : R) (f : ℕ → R → S) (hf : f n 0 = 0) : ((Polynomial.monomial n) a).sum f = f n a\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Basic\"\n    },\n    {\n      \"name\": \"MvPolynomial.sum_monomial_eq\",\n      \"type\": \" {R : Type u} {σ : Type u_1} [CommSemiring R] {A : Type u_2} [AddCommMonoid A] {u : σ →₀ ℕ} {r : R} {b : (σ →₀ ℕ) → R → A} (w : b u 0 = 0) : ((MvPolynomial.monomial u) r).coeff.sum b = b u r\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Basic\"\n    },\n    {\n      \"name\": \"MvPolynomial.support_sum_monomial_coeff\",\n      \"type\": \" {R : Type u} {σ : Type u_1} [CommSemiring R] (p : MvPolynomial σ R) : ∑ v ∈ p.support, (MvPolynomial.monomial v) (p.coeff v) = p\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Basic\"\n    },\n    {\n      \"name\": \"MvPolynomial.monomial_sum_prod\",\n      \"type\": \" {R : Type u} {σ : Type u_1} [CommSemiring R] {α : Type u_2} (s : Finset α) (f : α → σ →₀ ℕ) (g : α → R) : (MvPolynomial.monomial (∑ i ∈ s, f i)) (∏ i ∈ s, g i) = ∏ i ∈ s, (MvPolynomial.monomial (f i)) (g i)\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Basic\"\n    },\n    {\n      \"name\": \"MvPolynomial.monomial_sum_one\",\n      \"type\": \" {R : Type u} {σ : Type u_1} [CommSemiring R] {α : Type u_2} (s : Finset α) (f : α → σ →₀ ℕ) : (MvPolynomial.monomial (∑ i ∈ s, f i)) 1 = ∏ i ∈ s, (MvPolynomial.monomial (f i)) 1\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Basic\"\n    },\n    {\n      \"name\": \"MvPolynomial.monomial_sum_index\",\n      \"type\": \" {R : Type u} {σ : Type u_1} [CommSemiring R] {α : Type u_2} (s : Finset α) (f : α → σ →₀ ℕ) (a : R) : (MvPolynomial.monomial (∑ i ∈ s, f i)) a = MvPolynomial.C a * ∏ i ∈ s, (MvPolynomial.monomial (f i)) 1\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Basic\"\n    },\n    {\n      \"name\": \"MvPolynomial.monomial_finsupp_sum_index\",\n      \"type\": \" {R : Type u} {σ : Type u_1} [CommSemiring R] {α : Type u_2} {β : Type u_3} [Zero β] (f : α →₀ β) (g : α → β → σ →₀ ℕ) (a : R) : (MvPolynomial.monomial (f.sum g)) a = MvPolynomial.C a * f.prod fun a b => (MvPolynomial.monomial (g a b)) 1\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Basic\"\n    },\n    {\n      \"name\": \"Algebra.Generators.ofComp_toAlgHom_monomial_sumElim\",\n      \"type\": \" {R : Type u} {S : Type v} {ι : Type w} [CommRing R] [CommRing S] [Algebra R S] {ι' : Type u_3} {T : Type u_7} [CommRing T] [Algebra R T] [Algebra S T] [IsScalarTower R S T] (Q : Algebra.Generators S T ι') (P : Algebra.Generators R S ι) (v₁ : ι' →₀ ℕ) (v₂ : ι →₀ ℕ) (a : R) : (Q.ofComp P).toAlgHom ((MvPolynomial.monomial (v₁.sumElim v₂)) a) = (MvPolynomial.monomial v₁) ((MvPolynomial.aeval P.val) ((MvPolynomial.monomial v₂) a))\",\n      \"module\": \"Mathlib.RingTheory.Extension.Generators\"\n    },\n    {\n      \"name\": \"MonomialOrder.coeff_prod_sum_degree\",\n      \"type\": \" {σ : Type u_1} {m : MonomialOrder σ} {R : Type u_2} [CommSemiring R] {ι : Type u_3} (P : ι → MvPolynomial σ R) (s : Finset ι) : (∏ i ∈ s, P i).coeff (∑ i ∈ s, m.degree (P i)) = ∏ i ∈ s, m.leadingCoeff (P i)\",\n      \"module\": \"Mathlib.RingTheory.MvPolynomial.MonomialOrder\"\n    },\n    {\n      \"name\": \"MonomialOrder.degree_sum_le\",\n      \"type\": \" {σ : Type u_1} {m : MonomialOrder σ} {R : Type u_2} [CommSemiring R] {α : Type u_3} {s : Finset α} {f : α → MvPolynomial σ R} : m.toSyn (m.degree (∑ x ∈ s, f x)) ≤ s.sup fun x => m.toSyn (m.degree (f x))\",\n      \"module\": \"Mathlib.RingTheory.MvPolynomial.MonomialOrder\"\n    },\n    {\n      \"name\": \"MonomialOrder.withBotDegree_sum_le\",\n      \"type\": \" {σ : Type u_1} {m : MonomialOrder σ} {R : Type u_2} [CommSemiring R] {α : Type u_3} {s : Finset α} {f : α → MvPolynomial σ R} : m.toWithBotSyn (m.withBotDegree (∑ x ∈ s, f x)) ≤ s.sup fun x => m.toWithBotSyn (m.withBotDegree (f x))\",\n      \"module\": \"Mathlib.RingTheory.MvPolynomial.MonomialOrder\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.sum_monomial_eq",
+            "type": " {R : Type u} [Semiring R] (p : Polynomial R) : (p.sum fun n a => (Polynomial.monomial n) a) = p",
+            "module": "Mathlib.Algebra.Polynomial.Basic"
+          },
+          {
+            "name": "Polynomial.sum_monomial_index",
+            "type": " {R : Type u} [Semiring R] {S : Type u_1} [AddCommMonoid S] {n : ℕ} (a : R) (f : ℕ → R → S) (hf : f n 0 = 0) : ((Polynomial.monomial n) a).sum f = f n a",
+            "module": "Mathlib.Algebra.Polynomial.Basic"
+          },
+          {
+            "name": "MvPolynomial.sum_monomial_eq",
+            "type": " {R : Type u} {σ : Type u_1} [CommSemiring R] {A : Type u_2} [AddCommMonoid A] {u : σ →₀ ℕ} {r : R} {b : (σ →₀ ℕ) → R → A} (w : b u 0 = 0) : ((MvPolynomial.monomial u) r).coeff.sum b = b u r",
+            "module": "Mathlib.Algebra.MvPolynomial.Basic"
+          },
+          {
+            "name": "MvPolynomial.support_sum_monomial_coeff",
+            "type": " {R : Type u} {σ : Type u_1} [CommSemiring R] (p : MvPolynomial σ R) : ∑ v ∈ p.support, (MvPolynomial.monomial v) (p.coeff v) = p",
+            "module": "Mathlib.Algebra.MvPolynomial.Basic"
+          },
+          {
+            "name": "MvPolynomial.monomial_sum_prod",
+            "type": " {R : Type u} {σ : Type u_1} [CommSemiring R] {α : Type u_2} (s : Finset α) (f : α → σ →₀ ℕ) (g : α → R) : (MvPolynomial.monomial (∑ i ∈ s, f i)) (∏ i ∈ s, g i) = ∏ i ∈ s, (MvPolynomial.monomial (f i)) (g i)",
+            "module": "Mathlib.Algebra.MvPolynomial.Basic"
+          },
+          {
+            "name": "MvPolynomial.monomial_sum_one",
+            "type": " {R : Type u} {σ : Type u_1} [CommSemiring R] {α : Type u_2} (s : Finset α) (f : α → σ →₀ ℕ) : (MvPolynomial.monomial (∑ i ∈ s, f i)) 1 = ∏ i ∈ s, (MvPolynomial.monomial (f i)) 1",
+            "module": "Mathlib.Algebra.MvPolynomial.Basic"
+          },
+          {
+            "name": "MvPolynomial.monomial_sum_index",
+            "type": " {R : Type u} {σ : Type u_1} [CommSemiring R] {α : Type u_2} (s : Finset α) (f : α → σ →₀ ℕ) (a : R) : (MvPolynomial.monomial (∑ i ∈ s, f i)) a = MvPolynomial.C a * ∏ i ∈ s, (MvPolynomial.monomial (f i)) 1",
+            "module": "Mathlib.Algebra.MvPolynomial.Basic"
+          },
+          {
+            "name": "MvPolynomial.monomial_finsupp_sum_index",
+            "type": " {R : Type u} {σ : Type u_1} [CommSemiring R] {α : Type u_2} {β : Type u_3} [Zero β] (f : α →₀ β) (g : α → β → σ →₀ ℕ) (a : R) : (MvPolynomial.monomial (f.sum g)) a = MvPolynomial.C a * f.prod fun a b => (MvPolynomial.monomial (g a b)) 1",
+            "module": "Mathlib.Algebra.MvPolynomial.Basic"
+          },
+          {
+            "name": "Algebra.Generators.ofComp_toAlgHom_monomial_sumElim",
+            "type": " {R : Type u} {S : Type v} {ι : Type w} [CommRing R] [CommRing S] [Algebra R S] {ι' : Type u_3} {T : Type u_7} [CommRing T] [Algebra R T] [Algebra S T] [IsScalarTower R S T] (Q : Algebra.Generators S T ι') (P : Algebra.Generators R S ι) (v₁ : ι' →₀ ℕ) (v₂ : ι →₀ ℕ) (a : R) : (Q.ofComp P).toAlgHom ((MvPolynomial.monomial (v₁.sumElim v₂)) a) = (MvPolynomial.monomial v₁) ((MvPolynomial.aeval P.val) ((MvPolynomial.monomial v₂) a))",
+            "module": "Mathlib.RingTheory.Extension.Generators"
+          },
+          {
+            "name": "MonomialOrder.coeff_prod_sum_degree",
+            "type": " {σ : Type u_1} {m : MonomialOrder σ} {R : Type u_2} [CommSemiring R] {ι : Type u_3} (P : ι → MvPolynomial σ R) (s : Finset ι) : (∏ i ∈ s, P i).coeff (∑ i ∈ s, m.degree (P i)) = ∏ i ∈ s, m.leadingCoeff (P i)",
+            "module": "Mathlib.RingTheory.MvPolynomial.MonomialOrder"
+          },
+          {
+            "name": "MonomialOrder.degree_sum_le",
+            "type": " {σ : Type u_1} {m : MonomialOrder σ} {R : Type u_2} [CommSemiring R] {α : Type u_3} {s : Finset α} {f : α → MvPolynomial σ R} : m.toSyn (m.degree (∑ x ∈ s, f x)) ≤ s.sup fun x => m.toSyn (m.degree (f x))",
+            "module": "Mathlib.RingTheory.MvPolynomial.MonomialOrder"
+          },
+          {
+            "name": "MonomialOrder.withBotDegree_sum_le",
+            "type": " {σ : Type u_1} {m : MonomialOrder σ} {R : Type u_2} [CommSemiring R] {α : Type u_3} {s : Finset α} {f : α → MvPolynomial σ R} : m.toWithBotSyn (m.withBotDegree (∑ x ∈ s, f x)) ≤ s.sup fun x => m.toWithBotSyn (m.withBotDegree (f x))",
+            "module": "Mathlib.RingTheory.MvPolynomial.MonomialOrder"
+          }
+        ]
+      },
+      "isError": false
+    }
+  }
+]

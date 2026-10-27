@@ -1,0 +1,85 @@
+{
+  "method": "lean_leanfinder",
+  "form": "abstract",
+  "request": {
+    "query": "Summing an indexed zero-preserving function over a finitely supported single equals evaluation at that index and coefficient",
+    "num_results": 8
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Finsupp.sum_single_index\",\n      \"informal_name\": \"Sum of Single-Nonzero Finite Support Function\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {M : Type u_8} {N : Type u_10} [inst : Zero M] [inst_1 : AddCommMonoid N] {a : α} {b : M}\\n  {h : α → M → N}, h a 0 = 0 → (Finsupp.single a b).sum h = h a b\",\n      \"informal_description\": \"If $ h(a, 0) = 0 $, then the sum of the finite support function $ f $, defined by $ f(a) = b $ and $ f(x) = 0 $ for $ x \\neq a $, under the mapping $ h $ is equal to $ h(a, b) $.\",\n      \"path\": \"Mathlib.Algebra.BigOperators.Finsupp.Basic\"\n    },\n    {\n      \"formal_name\": \"DFinsupp.sum_single_index\",\n      \"informal_name\": \"Sum over Single Index in Dependent Finite Support Function\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u} {γ : Type w} {β : ι → Type v} [inst : DecidableEq ι] [inst_1 : (i : ι) → Zero (β i)]\\n  [inst_2 : (i : ι) → (x : β i) → Decidable (x ≠ 0)] [inst_3 : AddCommMonoid γ] {i : ι} {b : β i}\\n  {h : (i : ι) → β i → γ}, h i 0 = 0 → (DFinsupp.single i b).sum h = h i b\",\n      \"informal_description\": \"For a dependent finite support function $ f $ that is non-zero only at index $ i $ with value $ b $, and a function $ h $ mapping $ (i, 0) $ to $ 0 $, the sum $ \\\\sum_{i \\\\in \\\\text{supp}(f)} h(i, f(i)) $ equals $ h(i, b) $. This holds when $ \\\\gamma $ is an additive commutative monoid and the support of $ f $ is finite.\",\n      \"path\": \"Mathlib.Data.DFinsupp.BigOperators\"\n    },\n    {\n      \"formal_name\": \"AddMonoidAlgebra.sum_single_index\",\n      \"informal_name\": \"Sum of Single Basis Element in Additive Monoid Algebra\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {M : Type u_2} {N : Type u_3} {R : Type u_6} [inst : Semiring R] [inst_1 : AddCommMonoid N] {m : M} {r : R}\\n  {h : M → R → N}, h m 0 = 0 → Finsupp.sum (AddMonoidAlgebra.single m r) h = h m r\",\n      \"informal_description\": \"For any additive monoid $M$, semiring $R$, and function $h : M \\\\times R \\\\to N$ satisfying $h(m, 0) = 0$, the finite sum of the basis element $\\\\text{single}_M(m, r)$ under $h$ evaluates to $h(m, r)$. This expresses that summing a formal $R$-linear combination with a single non-zero coefficient $r$ at $m$ reduces to evaluating $h$ at $(m, r)$.\",\n      \"path\": \"Mathlib.Algebra.MonoidAlgebra.Defs\"\n    },\n    {\n      \"formal_name\": \"Finsupp.sum_eq_single\",\n      \"informal_name\": \"Sum over Finite Support Function Equals Single Term Under Non-Zero Condition\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {M : Type u_8} {N : Type u_10} [inst : Zero M] [inst_1 : AddCommMonoid N] {f : α →₀ M} (a : α)\\n  {g : α → M → N}, (∀ (b : α), f b ≠ 0 → b ≠ a → g b (f b) = 0) → (f a = 0 → g a 0 = 0) → f.sum g = g a (f a)\",\n      \"informal_description\": \"Let $\\\\alpha$ be a type, $M$ and $N$ be types with $M$ having a zero element and $N$ an additive commutative monoid. For a finite support function $f : \\\\alpha \\\\to_0 M$, an element $a \\\\in \\\\alpha$, and a function $g : \\\\alpha \\\\to M \\\\to N$, if (1) $g(b, f(b)) = 0$ for all $b \\\\neq a$ where $f(b) \\\\neq 0$, and (2) $g(a, 0) = 0$ when $f(a) = 0$, then the sum $\\\\sum_{b \\\\in \\\\alpha} g(b, f(b))$ equals $g(a, f(a))$.\",\n      \"path\": \"Mathlib.Algebra.BigOperators.Finsupp.Basic\"\n    },\n    {\n      \"formal_name\": \"MonoidAlgebra.sum_single_index\",\n      \"informal_name\": \"Sum of Single-Indexed Monomial in Monoid Algebra\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {M : Type u_2} {N : Type u_3} {R : Type u_6} [inst : Semiring R] [inst_1 : AddCommMonoid N] {m : M} {r : R}\\n  {h : M → R → N}, h m 0 = 0 → Finsupp.sum (MonoidAlgebra.single m r) h = h m r\",\n      \"informal_description\": \"In a monoid algebra $ R[M] $ over a semiring $ R $ and an additive commutative monoid $ M $, for any monomial $ \\\\text{single}_m(r) $ (which has coefficient $ r $ at $ m \\\\in M $ and zero elsewhere), and for any function $ h : M \\\\to R \\\\to N $ into an additive commutative monoid $ N $ satisfying $ h(m, 0) = 0 $, the sum $ \\\\sum h(m, r) $ over the monomial equals $ h(m, r) $. This follows because all terms in the monomial vanish except at $ m $, and the zero condition ensures no contribution from zero coefficients.\",\n      \"path\": \"Mathlib.Algebra.MonoidAlgebra.Defs\"\n    },\n    {\n      \"formal_name\": \"Finsupp.sum_ite_self_eq'\",\n      \"informal_name\": \"Sum of Finite Support Function with Indicator Equals Value at Point\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} [inst : DecidableEq α] {N : Type u_16} [inst_1 : AddCommMonoid N] (f : α →₀ N) (a : α),\\n  (f.sum fun x v => if x = a then v else 0) = f a\",\n      \"informal_description\": \"For a finite support function $ f : \\\\alpha \\\\to_0 N $ where $ N $ is an additive commutative monoid, and for any $ a : \\\\alpha $, the sum over $ \\\\alpha $ of $ f(x) $ multiplied by the indicator function $ \\\\mathbf{1}_{\\\\{a\\\\}}(x) $ equals $ f(a) $. Formally, $ \\\\sum_{x : \\\\alpha} \\\\begin{cases} f(x) & x = a \\\\\\\\ 0 & \\\\text{otherwise} \\\\end{cases} = f(a) $.\",\n      \"path\": \"Mathlib.Algebra.BigOperators.Finsupp.Basic\"\n    },\n    {\n      \"formal_name\": \"Finsupp.sum_ite_self_eq\",\n      \"informal_name\": \"Sum of Finite Support Function with Indicator Equals Value at Point\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} [inst : DecidableEq α] {N : Type u_16} [inst_1 : AddCommMonoid N] (f : α →₀ N) (a : α),\\n  (f.sum fun x v => if a = x then v else 0) = f a\",\n      \"informal_description\": \"For any finite support function $ f : \\\\alpha \\\\to₀ N $ where $ N $ is an additive commutative monoid, and for any $ a \\\\in \\\\alpha $, the sum $ \\\\sum_{x \\\\in \\\\alpha} f(x) \\\\cdot \\\\mathbf{1}_{x = a} $ equals $ f(a) $.\",\n      \"path\": \"Mathlib.Algebra.BigOperators.Finsupp.Basic\"\n    },\n    {\n      \"formal_name\": \"Finsupp.sum_single\",\n      \"informal_name\": \"Sum of Single Functions Reconstructs Finite Support Function\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {M : Type u_8} [inst : AddCommMonoid M] (f : α →₀ M), f.sum Finsupp.single = f\",\n      \"informal_description\": \"For any finite support function $f : \\\\alpha \\\\to_0 M$ where $M$ is an additive commutative monoid, the sum of the single functions (each non-zero at one index) reconstructs $f$, i.e., $\\\\sum_{a} \\\\text{single}(a, f(a)) = f$.\",\n      \"path\": \"Mathlib.Algebra.BigOperators.Finsupp.Basic\"\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "items": [
+        {
+          "formal_name": "Finsupp.sum_single_index",
+          "informal_name": "Sum of Single-Nonzero Finite Support Function",
+          "kind": "theorem",
+          "type": "∀ {α : Type u_1} {M : Type u_8} {N : Type u_10} [inst : Zero M] [inst_1 : AddCommMonoid N] {a : α} {b : M}\n  {h : α → M → N}, h a 0 = 0 → (Finsupp.single a b).sum h = h a b",
+          "informal_description": "If $ h(a, 0) = 0 $, then the sum of the finite support function $ f $, defined by $ f(a) = b $ and $ f(x) = 0 $ for $ x \neq a $, under the mapping $ h $ is equal to $ h(a, b) $.",
+          "path": "Mathlib.Algebra.BigOperators.Finsupp.Basic"
+        },
+        {
+          "formal_name": "DFinsupp.sum_single_index",
+          "informal_name": "Sum over Single Index in Dependent Finite Support Function",
+          "kind": "theorem",
+          "type": "∀ {ι : Type u} {γ : Type w} {β : ι → Type v} [inst : DecidableEq ι] [inst_1 : (i : ι) → Zero (β i)]\n  [inst_2 : (i : ι) → (x : β i) → Decidable (x ≠ 0)] [inst_3 : AddCommMonoid γ] {i : ι} {b : β i}\n  {h : (i : ι) → β i → γ}, h i 0 = 0 → (DFinsupp.single i b).sum h = h i b",
+          "informal_description": "For a dependent finite support function $ f $ that is non-zero only at index $ i $ with value $ b $, and a function $ h $ mapping $ (i, 0) $ to $ 0 $, the sum $ \\sum_{i \\in \\text{supp}(f)} h(i, f(i)) $ equals $ h(i, b) $. This holds when $ \\gamma $ is an additive commutative monoid and the support of $ f $ is finite.",
+          "path": "Mathlib.Data.DFinsupp.BigOperators"
+        },
+        {
+          "formal_name": "AddMonoidAlgebra.sum_single_index",
+          "informal_name": "Sum of Single Basis Element in Additive Monoid Algebra",
+          "kind": "theorem",
+          "type": "∀ {M : Type u_2} {N : Type u_3} {R : Type u_6} [inst : Semiring R] [inst_1 : AddCommMonoid N] {m : M} {r : R}\n  {h : M → R → N}, h m 0 = 0 → Finsupp.sum (AddMonoidAlgebra.single m r) h = h m r",
+          "informal_description": "For any additive monoid $M$, semiring $R$, and function $h : M \\times R \\to N$ satisfying $h(m, 0) = 0$, the finite sum of the basis element $\\text{single}_M(m, r)$ under $h$ evaluates to $h(m, r)$. This expresses that summing a formal $R$-linear combination with a single non-zero coefficient $r$ at $m$ reduces to evaluating $h$ at $(m, r)$.",
+          "path": "Mathlib.Algebra.MonoidAlgebra.Defs"
+        },
+        {
+          "formal_name": "Finsupp.sum_eq_single",
+          "informal_name": "Sum over Finite Support Function Equals Single Term Under Non-Zero Condition",
+          "kind": "theorem",
+          "type": "∀ {α : Type u_1} {M : Type u_8} {N : Type u_10} [inst : Zero M] [inst_1 : AddCommMonoid N] {f : α →₀ M} (a : α)\n  {g : α → M → N}, (∀ (b : α), f b ≠ 0 → b ≠ a → g b (f b) = 0) → (f a = 0 → g a 0 = 0) → f.sum g = g a (f a)",
+          "informal_description": "Let $\\alpha$ be a type, $M$ and $N$ be types with $M$ having a zero element and $N$ an additive commutative monoid. For a finite support function $f : \\alpha \\to_0 M$, an element $a \\in \\alpha$, and a function $g : \\alpha \\to M \\to N$, if (1) $g(b, f(b)) = 0$ for all $b \\neq a$ where $f(b) \\neq 0$, and (2) $g(a, 0) = 0$ when $f(a) = 0$, then the sum $\\sum_{b \\in \\alpha} g(b, f(b))$ equals $g(a, f(a))$.",
+          "path": "Mathlib.Algebra.BigOperators.Finsupp.Basic"
+        },
+        {
+          "formal_name": "MonoidAlgebra.sum_single_index",
+          "informal_name": "Sum of Single-Indexed Monomial in Monoid Algebra",
+          "kind": "theorem",
+          "type": "∀ {M : Type u_2} {N : Type u_3} {R : Type u_6} [inst : Semiring R] [inst_1 : AddCommMonoid N] {m : M} {r : R}\n  {h : M → R → N}, h m 0 = 0 → Finsupp.sum (MonoidAlgebra.single m r) h = h m r",
+          "informal_description": "In a monoid algebra $ R[M] $ over a semiring $ R $ and an additive commutative monoid $ M $, for any monomial $ \\text{single}_m(r) $ (which has coefficient $ r $ at $ m \\in M $ and zero elsewhere), and for any function $ h : M \\to R \\to N $ into an additive commutative monoid $ N $ satisfying $ h(m, 0) = 0 $, the sum $ \\sum h(m, r) $ over the monomial equals $ h(m, r) $. This follows because all terms in the monomial vanish except at $ m $, and the zero condition ensures no contribution from zero coefficients.",
+          "path": "Mathlib.Algebra.MonoidAlgebra.Defs"
+        },
+        {
+          "formal_name": "Finsupp.sum_ite_self_eq'",
+          "informal_name": "Sum of Finite Support Function with Indicator Equals Value at Point",
+          "kind": "theorem",
+          "type": "∀ {α : Type u_1} [inst : DecidableEq α] {N : Type u_16} [inst_1 : AddCommMonoid N] (f : α →₀ N) (a : α),\n  (f.sum fun x v => if x = a then v else 0) = f a",
+          "informal_description": "For a finite support function $ f : \\alpha \\to_0 N $ where $ N $ is an additive commutative monoid, and for any $ a : \\alpha $, the sum over $ \\alpha $ of $ f(x) $ multiplied by the indicator function $ \\mathbf{1}_{\\{a\\}}(x) $ equals $ f(a) $. Formally, $ \\sum_{x : \\alpha} \\begin{cases} f(x) & x = a \\\\ 0 & \\text{otherwise} \\end{cases} = f(a) $.",
+          "path": "Mathlib.Algebra.BigOperators.Finsupp.Basic"
+        },
+        {
+          "formal_name": "Finsupp.sum_ite_self_eq",
+          "informal_name": "Sum of Finite Support Function with Indicator Equals Value at Point",
+          "kind": "theorem",
+          "type": "∀ {α : Type u_1} [inst : DecidableEq α] {N : Type u_16} [inst_1 : AddCommMonoid N] (f : α →₀ N) (a : α),\n  (f.sum fun x v => if a = x then v else 0) = f a",
+          "informal_description": "For any finite support function $ f : \\alpha \\to₀ N $ where $ N $ is an additive commutative monoid, and for any $ a \\in \\alpha $, the sum $ \\sum_{x \\in \\alpha} f(x) \\cdot \\mathbf{1}_{x = a} $ equals $ f(a) $.",
+          "path": "Mathlib.Algebra.BigOperators.Finsupp.Basic"
+        },
+        {
+          "formal_name": "Finsupp.sum_single",
+          "informal_name": "Sum of Single Functions Reconstructs Finite Support Function",
+          "kind": "theorem",
+          "type": "∀ {α : Type u_1} {M : Type u_8} [inst : AddCommMonoid M] (f : α →₀ M), f.sum Finsupp.single = f",
+          "informal_description": "For any finite support function $f : \\alpha \\to_0 M$ where $M$ is an additive commutative monoid, the sum of the single functions (each non-zero at one index) reconstructs $f$, i.e., $\\sum_{a} \\text{single}(a, f(a)) = f$.",
+          "path": "Mathlib.Algebra.BigOperators.Finsupp.Basic"
+        }
+      ]
+    },
+    "isError": false
+  }
+}

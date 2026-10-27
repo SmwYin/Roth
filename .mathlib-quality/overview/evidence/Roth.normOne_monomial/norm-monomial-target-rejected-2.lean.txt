@@ -1,0 +1,18 @@
+namespace MvPolynomial.NormMonomialAssessment
+variable {σ : Type*}
+#check @Roth.normOne_monomial
+#print Roth.normOne_monomial
+#print axioms Roth.normOne_monomial
+theorem direct (e : σ →₀ ℕ) (c : ℤ) : Roth.normOne (monomial e c) = |(c : ℝ)| :=
+  Finsupp.sum_single_index (a := e) (b := c) (h := fun _ z : ℤ ↦ |(z : ℝ)|) (by simp)
+theorem singleSize {ι R S : Type*} [Zero R] [AddCommMonoid S]
+    (e : ι) (c : R) (size : ι → R → S) (hsize : size e 0 = 0) :
+    (Finsupp.single e c).sum size = size e c := Finsupp.sum_single_index hsize
+theorem normCoefficients {R : Type*} [SeminormedCommRing R] (e : σ →₀ ℕ) (c : R) :
+    (monomial e c).coeff.sum (fun _ z ↦ ‖z‖) = ‖c‖ :=
+  Finsupp.sum_single_index (by simp)
+#print axioms direct
+#print axioms singleSize
+#print axioms normCoefficients
+#check @Finsupp.sum_single_index
+end MvPolynomial.NormMonomialAssessment

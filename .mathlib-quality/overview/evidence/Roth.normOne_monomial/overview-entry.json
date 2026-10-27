@@ -1,0 +1,19 @@
+{
+  "declaration": "Roth.normOne_monomial",
+  "kind": "theorem",
+  "type": "∀ {σ : Type u_1} (e : σ →₀ ℕ) (c : ℤ), Roth.normOne (MvPolynomial.monomial e c) = |(c : ℝ)|",
+  "what": "Coefficient ℓ¹ norm of a monomial is the absolute value of its coefficient, including zero.",
+  "how": "Single nonzero position, or empty support when coefficient zero; existing sum_monomial_eq applies directly with absolute-value cast size and explicit zero normalization.",
+  "hypotheses": "Arbitrary universe-polymorphic variable type σ, exponent e : σ →₀ ℕ and c : ℤ. No finite variable, degree, coefficient nonzero or positivity hypotheses.",
+  "project_dependencies": [
+    "Roth.normOne",
+    "Roth.normOne_eq_sum_of_support_subset (original proof only)"
+  ],
+  "caller_summary": "Three explicit consumers/three references, all in CoeffNorm: normOne_mul_le102, normOne_prod_le108, normOne_hasseDeriv_le155. All three full replacement proofs freshly native checked.",
+  "mathlib_api_audit": "MvPolynomial.sum_monomial_eq exists in pinned Basic275–278; Finsupp.sum_single_index gives arbitrary Zero coefficient/AddCommMonoid codomain version. All5 methods/3forms actually searched and pinned law signatures compiled.",
+  "moral_duplications": "Exact singleton sum law already in MvPolynomial and Finsupp. Univariate Polynomial.sum_monomial_index analogous. supNorm_monomial/gaussNorm_monomial are distinct size functions, not whole normOne replacements.",
+  "generalization": "Fixed normOne interface has no removable assumptions. Expanded indexed zero-preserving size theorem and arbitrary Finsupp form verified; norm coefficient version verified. Local premise only size e0=0 needed; removing it false for coefficient0.",
+  "missing_api": "None needed. No new coefficient norm instance recommended.",
+  "junk": "Useful project convenience with three consumers, not dead code; no source changes in read-only assessment.",
+  "action": "NO-mathlib-has-it. Use existing sum_monomial_eq/Finsupp.sum_single_index directly at all3 references or retain project-local CoeffNorm convenience pending authorized refactor. No upstream PR."
+}

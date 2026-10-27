@@ -1,0 +1,36 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+import Mathlib.Algebra.Polynomial.CancelLeads
+import Mathlib.Algebra.MvPolynomial.PDeriv
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+import Mathlib.Algebra.MvPolynomial.Equiv
+#check_failure Roth.normOne_monomial
+namespace MonomialNormRaw
+open MvPolynomial
+variable {σ : Type*}
+noncomputable def replacement (P : MvPolynomial σ ℤ) : ℝ := P.coeff.sum (fun _ z ↦ |(z : ℝ)|)
+theorem direct (e : σ →₀ ℕ) (c : ℤ) : replacement (monomial e c) = |(c : ℝ)| :=
+  MvPolynomial.sum_monomial_eq (u := e) (r := c) (b := fun _ (z : ℤ) ↦ |(z : ℝ)|)
+    (show |((0 : ℤ) : ℝ)| = 0 from (congrArg abs Int.cast_zero).trans abs_zero)
+theorem generic {ι R A : Type*} [Zero R] [AddCommMonoid A]
+    (i : ι) (r : R) (size : ι → R → A) (hzero : size i 0 = 0) :
+    (Finsupp.single i r).sum size = size i r := Finsupp.sum_single_index hzero
+theorem genericPolynomial {R A : Type*} [CommSemiring R] [AddCommMonoid A]
+    (e : σ →₀ ℕ) (c : R) (size : (σ →₀ ℕ) → R → A) (hzero : size e 0 = 0) :
+    (monomial e c).coeff.sum size = size e c := MvPolynomial.sum_monomial_eq hzero
+theorem zeroNecessary :
+    (Finsupp.single () (0 : ℤ)).sum (fun _ _ ↦ (1 : ℕ)) ≠ 1 := by simp
+#print axioms direct
+#print axioms generic
+#print axioms genericPolynomial
+#print axioms zeroNecessary
+#check @MvPolynomial.sum_monomial_eq
+#check @Finsupp.sum_single_index
+end MonomialNormRaw
