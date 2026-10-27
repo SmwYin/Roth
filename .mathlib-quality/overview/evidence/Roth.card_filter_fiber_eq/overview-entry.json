@@ -1,0 +1,22 @@
+{
+  "declaration": "Roth.card_filter_fiber_eq",
+  "kind": "lemma",
+  "type": "∀ {n : ℕ} (r : Fin (n + 1) → ℕ) (lam : ℝ) (i : ℕ),\n  ↑{d ∈ Roth.box (r ∘ Fin.castSucc) |\n          Roth.weight r (Finsupp.mapDomain Fin.castSucc d + Finsupp.single (Fin.last n) i) ≤\n            (↑(n + 1) - lam) / 2}.card =\n    ↑{d ∈ Roth.box (r ∘ Fin.castSucc) |\n          Roth.weight (r ∘ Fin.castSucc) d ≤ (↑n - (lam - 1 + 2 * ↑i / ↑(r (Fin.last n)))) / 2}.card",
+  "what": "Rewrites the weighted last-coordinate fiber as a smaller box with lambda shifted by the last-coordinate contribution.",
+  "how": "Uses weight_add, weight_mapDomain and weight_single, then rearranges the real expression.",
+  "hypotheses": "Natural box bounds, real λ, and any chosen last coordinate. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.",
+  "project_dependencies": [
+    "Roth.weight_add",
+    "Roth.weight_mapDomain",
+    "Roth.weight_single",
+    "Roth.box",
+    "Roth.weight"
+  ],
+  "caller_summary": "1 explicit source caller declarations, all in Lattice.lean; 1 direct original value consumers. Exact separate lists retained. Entire module proof bodies replay successfully with fresh target name.",
+  "mathlib_api_audit": "Weight additivity, injective mapDomain transport and singleton evaluation split the extended vector weight into the smaller-vector contribution plus i/r_last. An affine rearrangement moves that last-coordinate contribution into the shifted lambda parameter. Finset.filter_congr identifies the predicates before cardinalities are cast to real numbers. No denominator positivity is required for this rearrangement; all box bounds and last coordinates may be zero.",
+  "moral_duplications": "The helper has a distinct role in the lattice proof as described in the structural review; no duplicate full construction is introduced.",
+  "generalization": "No public generality claim under the private prefilter; preserve the existing definition and interface.",
+  "missing_api": "No new primitive is needed for this internal organization; full public contribution search is explicitly not run.",
+  "junk": "Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.",
+  "action": "Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration."
+}

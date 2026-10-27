@@ -1,0 +1,53 @@
+{
+  "file": "Roth/Lattice.lean",
+  "line": 147,
+  "name": "Roth.card_filter_fiber_eq",
+  "short": "card_filter_fiber_eq",
+  "kind": "lemma",
+  "visibility": "private",
+  "end_line": 156,
+  "source": "private lemma card_filter_fiber_eq {n : ℕ} (r : Fin (n + 1) → ℕ) (lam : ℝ) (i : ℕ) :\n    (((box (r ∘ Fin.castSucc)).filter fun d ↦ weight r\n      (d.mapDomain Fin.castSucc + Finsupp.single (Fin.last n) i) ≤\n        (((n + 1 : ℕ) : ℝ) - lam) / 2).card : ℝ) =\n      (((box (r ∘ Fin.castSucc)).filter fun d ↦ weight (r ∘ Fin.castSucc) d ≤\n        ((n : ℝ) - (lam - 1 + 2 * (i : ℝ) / r (Fin.last n))) / 2).card : ℝ) := by\n  congr 2\n  refine Finset.filter_congr fun d _ ↦ ?_\n  rw [weight_add, weight_mapDomain (Fin.castSucc_injective n), weight_single, mul_div_assoc]\n  grind",
+  "signature": "private lemma card_filter_fiber_eq {n : ℕ} (r : Fin (n + 1) → ℕ) (lam : ℝ) (i : ℕ) :\n    (((box (r ∘ Fin.castSucc)).filter fun d ↦ weight r\n      (d.mapDomain Fin.castSucc + Finsupp.single (Fin.last n) i) ≤\n        (((n + 1 : ℕ) : ℝ) - lam) / 2).card : ℝ) =\n      (((box (r ∘ Fin.castSucc)).filter fun d ↦ weight (r ∘ Fin.castSucc) d ≤\n        ((n : ℝ) - (lam - 1 + 2 * (i : ℝ) / r (Fin.last n))) / 2).card : ℝ)",
+  "body": "by\n  congr 2\n  refine Finset.filter_congr fun d _ ↦ ?_\n  rw [weight_add, weight_mapDomain (Fin.castSucc_injective n), weight_single, mul_div_assoc]\n  grind",
+  "proof_lines": 5,
+  "sha256": "5e3a3dab5e4affb1705f90ef08d081ecf2ed131717d612a70df183a7c7b9ffc5",
+  "source_body_project_refs": [
+    "Roth.weight_add",
+    "Roth.weight_mapDomain",
+    "Roth.weight_single"
+  ],
+  "source_type_project_refs": [
+    "Roth.box",
+    "Roth.weight"
+  ],
+  "what": "Rewrites the weighted inequality in a fixed last-coordinate fiber as the lower-dimensional inequality with shifted λ.",
+  "how": "Uses weight_add, weight_mapDomain and weight_single, then rearranges the real expression.",
+  "hypotheses": "Natural box bounds, real λ, and any chosen last coordinate.",
+  "source_used_by_project": [
+    "Roth.card_filter_weight_le_succ_aux"
+  ],
+  "source_used_by_file": [
+    "Roth.card_filter_weight_le_succ_aux"
+  ],
+  "section_binders": "(none; all binders written explicitly)",
+  "type_provenance": "Exact written signature plus manually identified captured section binders. Root cached full build succeeds; global opaque/type inspector timed out, so no kernel dump is claimed.",
+  "notes": "No sorry, TODO, or set_option in this declaration.",
+  "assignment_offset": 412,
+  "project_body_refs": [
+    "Roth.weight_add",
+    "Roth.weight_mapDomain",
+    "Roth.weight_single"
+  ],
+  "project_type_refs": [
+    "Roth.box",
+    "Roth.weight"
+  ],
+  "project_callers": [
+    {
+      "name": "Roth.card_filter_weight_le_succ_aux",
+      "file": "Roth/Lattice.lean",
+      "line": 166
+    }
+  ],
+  "section_context": "(none; all binders written explicitly)"
+}

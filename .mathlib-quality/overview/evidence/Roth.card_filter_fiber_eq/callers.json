@@ -1,0 +1,59 @@
+[
+  {
+    "file": "Roth/Lattice.lean",
+    "line": 166,
+    "name": "Roth.card_filter_weight_le_succ_aux",
+    "short": "card_filter_weight_le_succ_aux",
+    "kind": "lemma",
+    "visibility": "private",
+    "end_line": 195,
+    "source": "private lemma card_filter_weight_le_succ_aux {n : ℕ} (r : Fin (n + 1) → ℕ) (hr : 0 < r (Fin.last n))\n    (hn : 0 < n) {lam : ℝ} (hlam : 2 * √((n + 1 : ℕ) : ℝ) < lam) (ih : ∀ {t : ℝ}, 0 < t →\n      (((box (r ∘ Fin.castSucc)).filter fun d ↦ weight (r ∘ Fin.castSucc) d ≤\n        ((n : ℝ) - t) / 2).card : ℝ) ≤ 2 * √(n : ℝ) / t * ∏ j, (((r ∘ Fin.castSucc) j : ℝ) + 1)) :\n    (((box r).filter fun d ↦ weight r d ≤ (((n + 1 : ℕ) : ℝ) - lam) / 2).card : ℝ) ≤\n      2 * √((n + 1 : ℕ) : ℝ) / lam * ∏ j, ((r j : ℝ) + 1) := by\n  set R := r (Fin.last n)\n  have hs := sum_inv_lt (r := R) (m := n + 1) hr (Nat.succ_le_succ hn) hlam\n  push_cast [add_sub_cancel_right] at hs\n  rw [card_filter_box_last, Nat.cast_sum,\n    Finset.sum_congr rfl fun i _ ↦ card_filter_fiber_eq r lam i]\n  calc ∑ i ∈ range (R + 1), (((box (r ∘ Fin.castSucc)).filter fun d ↦\n          weight (r ∘ Fin.castSucc) d ≤ ((n : ℝ) - (lam - 1 + 2 * (i : ℝ) / R)) / 2).card : ℝ)\n      ≤ ∑ i ∈ range (R + 1), 2 * √(n : ℝ) / (lam - 1 + 2 * (i : ℝ) / R) *\n          ∏ j, (((r ∘ Fin.castSucc) j : ℝ) + 1) := by\n        refine Finset.sum_le_sum fun i _ ↦ ih ?_\n        linarith [Real.one_le_sqrt.2 (by simp : (1 : ℝ) ≤ ((n + 1 : ℕ) : ℝ)),\n          show 0 ≤ 2 * (i : ℝ) / R by positivity]\n    _ = 2 * √(n : ℝ) * (∏ j, (((r ∘ Fin.castSucc) j : ℝ) + 1)) *\n          ∑ i ∈ range (R + 1), (lam - 1 + 2 * (i : ℝ) / R)⁻¹ := by\n        rw [Finset.mul_sum]\n        exact Finset.sum_congr rfl fun i _ ↦ by ring\n    _ ≤ 2 * √(n : ℝ) * (∏ j, (((r ∘ Fin.castSucc) j : ℝ) + 1)) *\n          (lam⁻¹ * (√(n : ℝ))⁻¹ * √((n : ℝ) + 1) * (R + 1)) :=\n        mul_le_mul_of_nonneg_left hs.le (by positivity)\n    _ = 2 * √((n + 1 : ℕ) : ℝ) / lam * ∏ j, ((r j : ℝ) + 1) := by\n        rw [Fin.prod_univ_castSucc]\n        push_cast\n        field_simp\n        simp [R]",
+    "signature": "private lemma card_filter_weight_le_succ_aux {n : ℕ} (r : Fin (n + 1) → ℕ) (hr : 0 < r (Fin.last n))\n    (hn : 0 < n) {lam : ℝ} (hlam : 2 * √((n + 1 : ℕ) : ℝ) < lam) (ih : ∀ {t : ℝ}, 0 < t →\n      (((box (r ∘ Fin.castSucc)).filter fun d ↦ weight (r ∘ Fin.castSucc) d ≤\n        ((n : ℝ) - t) / 2).card : ℝ) ≤ 2 * √(n : ℝ) / t * ∏ j, (((r ∘ Fin.castSucc) j : ℝ) + 1)) :\n    (((box r).filter fun d ↦ weight r d ≤ (((n + 1 : ℕ) : ℝ) - lam) / 2).card : ℝ) ≤\n      2 * √((n + 1 : ℕ) : ℝ) / lam * ∏ j, ((r j : ℝ) + 1)",
+    "body": "by\n  set R := r (Fin.last n)\n  have hs := sum_inv_lt (r := R) (m := n + 1) hr (Nat.succ_le_succ hn) hlam\n  push_cast [add_sub_cancel_right] at hs\n  rw [card_filter_box_last, Nat.cast_sum,\n    Finset.sum_congr rfl fun i _ ↦ card_filter_fiber_eq r lam i]\n  calc ∑ i ∈ range (R + 1), (((box (r ∘ Fin.castSucc)).filter fun d ↦\n          weight (r ∘ Fin.castSucc) d ≤ ((n : ℝ) - (lam - 1 + 2 * (i : ℝ) / R)) / 2).card : ℝ)\n      ≤ ∑ i ∈ range (R + 1), 2 * √(n : ℝ) / (lam - 1 + 2 * (i : ℝ) / R) *\n          ∏ j, (((r ∘ Fin.castSucc) j : ℝ) + 1) := by\n        refine Finset.sum_le_sum fun i _ ↦ ih ?_\n        linarith [Real.one_le_sqrt.2 (by simp : (1 : ℝ) ≤ ((n + 1 : ℕ) : ℝ)),\n          show 0 ≤ 2 * (i : ℝ) / R by positivity]\n    _ = 2 * √(n : ℝ) * (∏ j, (((r ∘ Fin.castSucc) j : ℝ) + 1)) *\n          ∑ i ∈ range (R + 1), (lam - 1 + 2 * (i : ℝ) / R)⁻¹ := by\n        rw [Finset.mul_sum]\n        exact Finset.sum_congr rfl fun i _ ↦ by ring\n    _ ≤ 2 * √(n : ℝ) * (∏ j, (((r ∘ Fin.castSucc) j : ℝ) + 1)) *\n          (lam⁻¹ * (√(n : ℝ))⁻¹ * √((n : ℝ) + 1) * (R + 1)) :=\n        mul_le_mul_of_nonneg_left hs.le (by positivity)\n    _ = 2 * √((n + 1 : ℕ) : ℝ) / lam * ∏ j, ((r j : ℝ) + 1) := by\n        rw [Fin.prod_univ_castSucc]\n        push_cast\n        field_simp\n        simp [R]",
+    "proof_lines": 25,
+    "sha256": "212a6ad30d217ebcf7b9094cfcbe7e3918fc613509bbe7b1e7d93ba7801e8193",
+    "source_body_project_refs": [
+      "Roth.box",
+      "Roth.card_filter_box_last",
+      "Roth.card_filter_fiber_eq",
+      "Roth.sum_inv_lt",
+      "Roth.weight"
+    ],
+    "source_type_project_refs": [
+      "Roth.box",
+      "Roth.weight"
+    ],
+    "what": "Proves the large-λ induction step for the weighted lattice count.",
+    "how": "Uses card_filter_box_last and card_filter_fiber_eq, applies the lower-dimensional bound in every fiber, then sum_inv_lt controls the reciprocals and Fin.prod_univ_castSucc restores the box product.",
+    "hypotheses": "At least two coordinates, positive last-coordinate bound, λ>2√(n+1), and the full positive-parameter induction hypothesis for the smaller box.",
+    "source_used_by_project": [
+      "Roth.card_filter_weight_le"
+    ],
+    "source_used_by_file": [
+      "Roth.card_filter_weight_le"
+    ],
+    "section_binders": "(none; all binders written explicitly)",
+    "type_provenance": "Exact written signature plus manually identified captured section binders. Root cached full build succeeds; global opaque/type inspector timed out, so no kernel dump is claimed.",
+    "notes": "No sorry, TODO, or set_option in this declaration.",
+    "assignment_offset": 511,
+    "project_body_refs": [
+      "Roth.box",
+      "Roth.card_filter_box_last",
+      "Roth.card_filter_fiber_eq",
+      "Roth.sum_inv_lt",
+      "Roth.weight"
+    ],
+    "project_type_refs": [
+      "Roth.box",
+      "Roth.weight"
+    ],
+    "project_callers": [
+      {
+        "name": "Roth.card_filter_weight_le",
+        "file": "Roth/Lattice.lean",
+        "line": 202
+      }
+    ],
+    "section_context": "(none; all binders written explicitly)"
+  }
+]

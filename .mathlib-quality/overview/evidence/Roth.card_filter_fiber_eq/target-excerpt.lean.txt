@@ -1,0 +1,10 @@
+private lemma card_filter_fiber_eq {n : ℕ} (r : Fin (n + 1) → ℕ) (lam : ℝ) (i : ℕ) :
+    (((box (r ∘ Fin.castSucc)).filter fun d ↦ weight r
+      (d.mapDomain Fin.castSucc + Finsupp.single (Fin.last n) i) ≤
+        (((n + 1 : ℕ) : ℝ) - lam) / 2).card : ℝ) =
+      (((box (r ∘ Fin.castSucc)).filter fun d ↦ weight (r ∘ Fin.castSucc) d ≤
+        ((n : ℝ) - (lam - 1 + 2 * (i : ℝ) / r (Fin.last n))) / 2).card : ℝ) := by
+  congr 2
+  refine Finset.filter_congr fun d _ ↦ ?_
+  rw [weight_add, weight_mapDomain (Fin.castSucc_injective n), weight_single, mul_div_assoc]
+  grind
