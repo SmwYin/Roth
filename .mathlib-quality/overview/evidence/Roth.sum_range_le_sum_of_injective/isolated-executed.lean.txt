@@ -1,0 +1,39 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+#check_failure Roth.sum_range_le_sum_of_injective
+#check @Finset.sum_range_le_sum
+#check @Finset.sum_Ico_le_sum
+#check @Finset.card_image_of_injective
+#check @Finset.sum_image
+#check @Fin.sum_univ_eq_sum_range
+#check @Nat.cast_sum
+namespace SumInjectiveProbe
+theorem original {l : ℕ} (d : Fin l → ℕ) (hd : Function.Injective d) :
+    ∑ ν : Fin l, (ν : ℕ) ≤ ∑ ν, d ν := by
+  exact_mod_cast (show ((∑ ν : Fin l, (ν : ℕ) : ℕ) : ℤ) ≤
+      ((∑ ν, d ν : ℕ) : ℤ) by
+    simpa [Finset.card_image_of_injective _ hd, Finset.sum_image hd.injOn,
+      ← Fin.sum_univ_eq_sum_range, Nat.cast_sum] using
+      Finset.sum_range_le_sum (s := (Finset.univ.image d).map Nat.castEmbedding)
+        (c := 0) (by simp))
+theorem integer_finite {ι : Type*} [Fintype ι] (d : ι → ℤ)
+    (hd : Function.Injective d) (c : ℤ) (hc : ∀ i, c ≤ d i) :
+    (∑ n ∈ Finset.range (Fintype.card ι), (c + n)) ≤ ∑ i, d i := by
+  classical
+  simpa [Finset.card_image_of_injective _ hd, Finset.sum_image hd.injOn] using
+    (Finset.sum_range_le_sum (s := Finset.univ.image d) (c := c) (by simpa using hc))
+theorem canonical (s : Finset ℤ) (c : ℤ) (hs : ∀ x ∈ s, c ≤ x) :
+    ∑ n ∈ Finset.range s.card, (c + n) ≤ ∑ x ∈ s, x := Finset.sum_range_le_sum hs
+theorem injectivity_needed :
+    ¬ (∑ i : Fin 2, (i : ℕ) ≤ ∑ _i : Fin 2, (0 : ℕ)) := by decide
+end SumInjectiveProbe
+#print axioms SumInjectiveProbe.original
+#print axioms SumInjectiveProbe.integer_finite
+#print axioms SumInjectiveProbe.canonical
+#print axioms SumInjectiveProbe.injectivity_needed

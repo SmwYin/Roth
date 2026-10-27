@@ -1,0 +1,30 @@
+{
+  "file": "Roth/Wronskian.lean",
+  "line": 107,
+  "name": "Roth.sum_range_le_sum_of_injective",
+  "short": "sum_range_le_sum_of_injective",
+  "kind": "theorem",
+  "visibility": "public",
+  "end_line": 114,
+  "source": "theorem sum_range_le_sum_of_injective (d : Fin l → ℕ) (hd : Function.Injective d) :\n    ∑ ν : Fin l, (ν : ℕ) ≤ ∑ ν, d ν := by\n  exact_mod_cast (show ((∑ ν : Fin l, (ν : ℕ) : ℕ) : ℤ) ≤\n      ((∑ ν, d ν : ℕ) : ℤ) by\n    simpa [Finset.card_image_of_injective _ hd, Finset.sum_image hd.injOn,\n      ← Fin.sum_univ_eq_sum_range, Nat.cast_sum] using\n      Finset.sum_range_le_sum (s := (Finset.univ.image d).map Nat.castEmbedding)\n        (c := 0) (by simp))",
+  "signature": "theorem sum_range_le_sum_of_injective (d : Fin l → ℕ) (hd : Function.Injective d) :\n    ∑ ν : Fin l, (ν : ℕ) ≤ ∑ ν, d ν",
+  "body": "by\n  exact_mod_cast (show ((∑ ν : Fin l, (ν : ℕ) : ℕ) : ℤ) ≤\n      ((∑ ν, d ν : ℕ) : ℤ) by\n    simpa [Finset.card_image_of_injective _ hd, Finset.sum_image hd.injOn,\n      ← Fin.sum_univ_eq_sum_range, Nat.cast_sum] using\n      Finset.sum_range_le_sum (s := (Finset.univ.image d).map Nat.castEmbedding)\n        (c := 0) (by simp))",
+  "proof_lines": 7,
+  "sha256": "ea1bbdbcadb21e4a3113668b045425d867830721782caf727e99adfdee5b445b",
+  "what": "The sum of l distinct natural numbers is at least the sum from zero to l−1.",
+  "how": "Maps the image of the injective family into integers, uses Finset.sum_range_le_sum for its minimum possible sum, and transports the inequality back through casts.",
+  "hypotheses": "An injective natural-valued function on Fin l; no coefficient-field assumptions.",
+  "uses_from_project": [],
+  "used_by_in_file": [],
+  "project_callers": [],
+  "type_context": "{l : ℕ}",
+  "type_provenance": "Exact written signature with section binders made explicit from source; not claimed as a fresh #check output. Minimal hasseCoeff #check succeeded; full Meta inspector timed out.",
+  "reference_provenance": "Manually disambiguated source-level direct project references in declaration bodies; callers include signature and body occurrences. Includes explicit references only, not an exhaustive kernel/simp dependency closure.",
+  "notes": [
+    "No set_option, sorry, TODO, or proof over 30 lines in declaration."
+  ],
+  "assignment_offset": 120,
+  "project_body_refs": [],
+  "project_type_refs": [],
+  "section_context": "{l : ℕ}"
+}

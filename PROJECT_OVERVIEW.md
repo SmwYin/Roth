@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 44/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 45/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 44; remaining: 249.
-- Verdicts: 8 NO-composable-from-mathlib, 11 YES-add-as-is, 1 YES-but-generalise-first, 6 NO-mathlib-has-it, 14 BORDERLINE-needs-human, 4 SKIP.
+- Completed applicable assessments: 45; remaining: 248.
+- Verdicts: 8 NO-composable-from-mathlib, 11 YES-add-as-is, 1 YES-but-generalise-first, 7 NO-mathlib-has-it, 14 BORDERLINE-needs-human, 4 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -485,6 +485,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: One explicit same-file call at131 inside coeff_wronskian_of_natDegree_injective; no external calls.
 - Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.coeff_prod_of_natDegree_le'.md).
 
+### Completed: `Roth.sum_range_le_sum_of_injective`
+
+- Type: `∀ {l : ℕ} (d : Fin l → ℕ), Function.Injective d → (∑ ν : Fin l, (ν : ℕ)) ≤ ∑ ν, d ν`
+- What: Any l distinct natural numbers have sum at least 0+1+⋯+(l−1).
+- How: Embed the finite image into ℤ, apply Finset.sum_range_le_sum at c=0, normalize image cardinality/sums and reflect the inequality through casts.
+- Hypotheses: {l : ℕ}, d : Fin l → ℕ, Function.Injective d. No coefficient field or characteristic binder.
+- Project dependencies: None
+- Caller summary: explicit source callers: None; count: 0; inline rederivations: 0; scope: Source-level explicit references only; no exhaustive kernel/simp closure claim. No simp attribute on target.
+- Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/Roth.sum_range_le_sum_of_injective.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -599,6 +609,8 @@ Completed `Roth.det_choose_eq`: generic law: Matrix.det_eval_matrixOfPolynomials
 
 Completed `Roth.coeff_prod_of_natDegree_le'`: Public coeff_prod_of_natDegree_le uses one common bound; this variant uses n i. Native signature comparison and replay verified.
 
+Completed `Roth.sum_range_le_sum_of_injective`: replacement: Finset.sum_range_le_sum; path: Mathlib/Algebra/Order/Group/Int/Sum.lean:72; same mathematical law: True; bridge: Nat.castEmbedding + image cardinality + sum_image + Fin.sum_univ_eq_sum_range + Nat.cast_sum + cast order reflection; not defeq and not claimed ≤3 calls.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -688,6 +700,8 @@ Completed `Roth.wronskian_eq_zero_of_not_linearIndependent`: Multivariate easy d
 Completed `Roth.det_choose_eq`: Generic monic evaluation content is already in mathlib; specific binomial normalization resembles an existing private integer bridge. Do not add another generic evaluation theorem.
 
 Completed `Roth.coeff_prod_of_natDegree_le'`: Related public common-bound API, not the same statement; no project duplicate found.
+
+Completed `Roth.sum_range_le_sum_of_injective`: Existing sharper lower-bounded finite integer-set sum theorem already contains the Nat/Fin c=0 case.
 
 ## Part 5: Generalization opportunities
 
@@ -782,6 +796,8 @@ Completed `Roth.det_choose_eq`: Verified exact quotient under local nonzero fact
 
 Completed `Roth.coeff_prod_of_natDegree_le'`: Verified same-body Field→CommSemiring, no domain/nontriviality/characteristic/finite-ambient restriction.
 
+Completed `Roth.sum_range_le_sum_of_injective`: Arbitrary finite index type and integer-valued injective family with common lower bound c verified natively; existing finset theorem already covers it. Injectivity is necessary, verified Fin 2 constant-zero counterexample.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -872,6 +888,8 @@ Completed `Roth.wronskian_eq_zero_of_not_linearIndependent`: Design-dependent pa
 Completed `Roth.det_choose_eq`: Public characteristic-aware binomial evaluation determinant API; Pochhammer monicity/degree can be transferred from ℤ to remove pinned NoZeroDivisors assumptions.
 
 Completed `Roth.coeff_prod_of_natDegree_le'`: Potential varying-bound public coefficient generalization; full public contribution verdict n/a under private prefilter.
+
+Completed `Roth.sum_range_le_sum_of_injective`: None
 
 ## Part 7: Junk / removable
 
@@ -966,6 +984,8 @@ Completed `Roth.det_choose_eq`: No; explicitly used once in Wronskian nonvanishi
 
 Completed `Roth.coeff_prod_of_natDegree_le'`: Retain focused private induction helper for sole actual caller; prime distinguishes common-bound theorem.
 
+Completed `Roth.sum_range_le_sum_of_injective`: Unused public convenience wrapper; zero explicit callers, zero inline re-derivations found.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -1014,6 +1034,7 @@ Completed `Roth.coeff_prod_of_natDegree_le'`: Retain focused private induction h
 | 42 | `Roth.wronskian_eq_zero_of_not_linearIndependent` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.wronskian_eq_zero_of_not_linearIndependent.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.wronskian_eq_zero_of_not_linearIndependent/root-acceptance.json) |
 | 43 | `Roth.det_choose_eq` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.det_choose_eq.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.det_choose_eq/root-acceptance.json) |
 | 44 | `Roth.coeff_prod_of_natDegree_le'` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.coeff_prod_of_natDegree_le'.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.coeff_prod_of_natDegree_le'/root-acceptance.json) |
+| 45 | `Roth.sum_range_le_sum_of_injective` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.sum_range_le_sum_of_injective.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.sum_range_le_sum_of_injective/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -1101,11 +1122,13 @@ Completed `Roth.det_choose_eq` action: YES-but-generalise-first: expose cancella
 
 Completed `Roth.coeff_prod_of_natDegree_le'` action: SKIP-private under overview9a after complete applicable review/native verification. Future generalization recorded; production unchanged.
 
+Completed `Roth.sum_range_le_sum_of_injective` action: Delete wrapper in follow-up cleanup; no caller edits. Conditionally inspect now-unused Int.Sum import with ordinary import/build checks. If desired retain private pedagogical helper in Roth/Wronskian.lean.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.sum_range_le_sum_of_injective` next. Supporting identities receive their own applicable checks.
+   `Roth.coeff_wronskian_of_natDegree_injective` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.

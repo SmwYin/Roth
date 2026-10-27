@@ -1,0 +1,603 @@
+[
+  {
+    "status": "fulfilled",
+    "value": {
+      "id": "finder-current",
+      "name": "mcp__lean_lsp__lean_leanfinder",
+      "request": {
+        "query": "The sum of l distinct natural numbers indexed by Fin l is at least the sum 0 + 1 + ... + (l-1)",
+        "num_results": 6
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Finset.sum_range_le_sum\",\n      \"informal_name\": \"Sum over Range is Less Than or Equal to Sum over Finite Set with Lower Bound\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {s : Finset ℤ} {c : ℤ}, (∀ x ∈ s, c ≤ x) → ∑ n ∈ Finset.range s.card, (c + ↑n) ≤ ∑ x ∈ s, x\",\n      \"informal_description\": \"For any finite set $ s $ of integers and any integer $ c $ such that every element $ x \\\\in s $ satisfies $ c \\\\leq x $, the sum of $ c + n $ for $ n $ from $ 0 $ to $ |s| - 1 $ is less than or equal to the sum of the elements in $ s $. Formally, $ \\\\sum_{n=0}^{|s|-1} (c + n) \\\\leq \\\\sum_{x \\\\in s} x $.\",\n      \"path\": \"Mathlib.Algebra.Order.Group.Int.Sum\"\n    },\n    {\n      \"formal_name\": \"Finset.sum_le_sum_range\",\n      \"informal_name\": \"Sum of Bounded Elements in Finite Set is Less Than or Equal to Adjusted Range Sum\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {s : Finset ℤ} {c : ℤ}, (∀ x ∈ s, x ≤ c) → ∑ x ∈ s, x ≤ ∑ n ∈ Finset.range s.card, (c - ↑n)\",\n      \"informal_description\": \"For any finite set $ s $ of integers and any integer $ c $, if every element $ x $ in $ s $ satisfies $ x \\\\leq c $, then the sum of the elements in $ s $ is less than or equal to the sum of $ c - n $ for $ n $ ranging from 0 to $ |s| - 1 $, where $ |s| $ denotes the cardinality of $ s $.\",\n      \"path\": \"Mathlib.Algebra.Order.Group.Int.Sum\"\n    },\n    {\n      \"formal_name\": \"Finset.sum_Ico_le_sum\",\n      \"informal_name\": \"Sum of Interval [c, c + |s|) is Less Than or Equal to Sum of Set s\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {s : Finset ℤ} {c : ℤ}, (∀ x ∈ s, c ≤ x) → ∑ x ∈ Finset.Ico c (c + ↑s.card), x ≤ ∑ x ∈ s, x\",\n      \"informal_description\": \"For any finite set $ s $ of integers and integer $ c $, if every element $ x \\\\in s $ satisfies $ c \\\\leq x $, then the sum of the integers in the interval $[c, c + |s|)$ is less than or equal to the sum of the elements in $ s $.\",\n      \"path\": \"Mathlib.Algebra.Order.Group.Int.Sum\"\n    },\n    {\n      \"formal_name\": \"List.length_le_sum_of_one_le\",\n      \"informal_name\": \"Length of List with Elements ≥1 is Bounded by Sum\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (L : List ℕ), (∀ (i : ℕ), i ∈ L → 1 ≤ i) → L.length ≤ L.sum\",\n      \"informal_description\": \"For any list $ L $ of natural numbers where each element $ i $ satisfies $ 1 \\\\leq i $, the length of $ L $ is less than or equal to the sum of the elements in $ L $, i.e., $ |L| \\\\leq \\\\sum L $.\",\n      \"path\": \"Mathlib.Algebra.BigOperators.Group.List.Basic\"\n    },\n    {\n      \"formal_name\": \"Finset.sum_le_sum_Ioc\",\n      \"informal_name\": \"Sum of Finite Set Bounded by Interval Sum\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {s : Finset ℤ} {c : ℤ}, (∀ x ∈ s, x ≤ c) → ∑ x ∈ s, x ≤ ∑ x ∈ Finset.Ioc (c - ↑s.card) c, x\",\n      \"informal_description\": \"For any finite set $ s $ of integers and integer $ c $, if every element of $ s $ is less than or equal to $ c $, then the sum of the elements of $ s $ is less than or equal to the sum of the interval $[c - |s|, c]$.\",\n      \"path\": \"Mathlib.Algebra.Order.Group.Int.Sum\"\n    },\n    {\n      \"formal_name\": \"Finset.add_le_sum\",\n      \"informal_name\": \"Sum of Two Distinct Elements is Bounded by Total Sum in Additive Commutative Monoid\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {N : Type u_5} [inst : AddCommMonoid N] [inst_1 : PartialOrder N] {f : ι → N} {s : Finset ι}\\n  [AddLeftMono N] {i j : ι}, (∀ i ∈ s, 0 ≤ f i) → i ∈ s → j ∈ s → i ≠ j → f i + f j ≤ ∑ k ∈ s, f k\",\n      \"informal_description\": \"For any finite set $ s $ over a type $ \\\\iota $, and a function $ f : \\\\iota \\\\to N $ where $ N $ is an additive commutative monoid equipped with a partial order, if $ f $ is non-negative on all elements of $ s $ (i.e., $ 0 \\\\leq f(i) $ for all $ i \\\\in s $), then for any two distinct elements $ i, j \\\\in s $, the sum $ f(i) + f(j) $ is less than or equal to the total sum $ \\\\sum_{k \\\\in s} f(k) $.\",\n      \"path\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "formal_name": "Finset.sum_range_le_sum",
+              "informal_name": "Sum over Range is Less Than or Equal to Sum over Finite Set with Lower Bound",
+              "kind": "theorem",
+              "type": "∀ {s : Finset ℤ} {c : ℤ}, (∀ x ∈ s, c ≤ x) → ∑ n ∈ Finset.range s.card, (c + ↑n) ≤ ∑ x ∈ s, x",
+              "informal_description": "For any finite set $ s $ of integers and any integer $ c $ such that every element $ x \\in s $ satisfies $ c \\leq x $, the sum of $ c + n $ for $ n $ from $ 0 $ to $ |s| - 1 $ is less than or equal to the sum of the elements in $ s $. Formally, $ \\sum_{n=0}^{|s|-1} (c + n) \\leq \\sum_{x \\in s} x $.",
+              "path": "Mathlib.Algebra.Order.Group.Int.Sum"
+            },
+            {
+              "formal_name": "Finset.sum_le_sum_range",
+              "informal_name": "Sum of Bounded Elements in Finite Set is Less Than or Equal to Adjusted Range Sum",
+              "kind": "theorem",
+              "type": "∀ {s : Finset ℤ} {c : ℤ}, (∀ x ∈ s, x ≤ c) → ∑ x ∈ s, x ≤ ∑ n ∈ Finset.range s.card, (c - ↑n)",
+              "informal_description": "For any finite set $ s $ of integers and any integer $ c $, if every element $ x $ in $ s $ satisfies $ x \\leq c $, then the sum of the elements in $ s $ is less than or equal to the sum of $ c - n $ for $ n $ ranging from 0 to $ |s| - 1 $, where $ |s| $ denotes the cardinality of $ s $.",
+              "path": "Mathlib.Algebra.Order.Group.Int.Sum"
+            },
+            {
+              "formal_name": "Finset.sum_Ico_le_sum",
+              "informal_name": "Sum of Interval [c, c + |s|) is Less Than or Equal to Sum of Set s",
+              "kind": "theorem",
+              "type": "∀ {s : Finset ℤ} {c : ℤ}, (∀ x ∈ s, c ≤ x) → ∑ x ∈ Finset.Ico c (c + ↑s.card), x ≤ ∑ x ∈ s, x",
+              "informal_description": "For any finite set $ s $ of integers and integer $ c $, if every element $ x \\in s $ satisfies $ c \\leq x $, then the sum of the integers in the interval $[c, c + |s|)$ is less than or equal to the sum of the elements in $ s $.",
+              "path": "Mathlib.Algebra.Order.Group.Int.Sum"
+            },
+            {
+              "formal_name": "List.length_le_sum_of_one_le",
+              "informal_name": "Length of List with Elements ≥1 is Bounded by Sum",
+              "kind": "theorem",
+              "type": "∀ (L : List ℕ), (∀ (i : ℕ), i ∈ L → 1 ≤ i) → L.length ≤ L.sum",
+              "informal_description": "For any list $ L $ of natural numbers where each element $ i $ satisfies $ 1 \\leq i $, the length of $ L $ is less than or equal to the sum of the elements in $ L $, i.e., $ |L| \\leq \\sum L $.",
+              "path": "Mathlib.Algebra.BigOperators.Group.List.Basic"
+            },
+            {
+              "formal_name": "Finset.sum_le_sum_Ioc",
+              "informal_name": "Sum of Finite Set Bounded by Interval Sum",
+              "kind": "theorem",
+              "type": "∀ {s : Finset ℤ} {c : ℤ}, (∀ x ∈ s, x ≤ c) → ∑ x ∈ s, x ≤ ∑ x ∈ Finset.Ioc (c - ↑s.card) c, x",
+              "informal_description": "For any finite set $ s $ of integers and integer $ c $, if every element of $ s $ is less than or equal to $ c $, then the sum of the elements of $ s $ is less than or equal to the sum of the interval $[c - |s|, c]$.",
+              "path": "Mathlib.Algebra.Order.Group.Int.Sum"
+            },
+            {
+              "formal_name": "Finset.add_le_sum",
+              "informal_name": "Sum of Two Distinct Elements is Bounded by Total Sum in Additive Commutative Monoid",
+              "kind": "theorem",
+              "type": "∀ {ι : Type u_1} {N : Type u_5} [inst : AddCommMonoid N] [inst_1 : PartialOrder N] {f : ι → N} {s : Finset ι}\n  [AddLeftMono N] {i j : ι}, (∀ i ∈ s, 0 ≤ f i) → i ∈ s → j ∈ s → i ≠ j → f i + f j ≤ ∑ k ∈ s, f k",
+              "informal_description": "For any finite set $ s $ over a type $ \\iota $, and a function $ f : \\iota \\to N $ where $ N $ is an additive commutative monoid equipped with a partial order, if $ f $ is non-negative on all elements of $ s $ (i.e., $ 0 \\leq f(i) $ for all $ i \\in s $), then for any two distinct elements $ i, j \\in s $, the sum $ f(i) + f(j) $ is less than or equal to the total sum $ \\sum_{k \\in s} f(k) $.",
+              "path": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "id": "finder-literature",
+      "name": "mcp__lean_lsp__lean_leanfinder",
+      "request": {
+        "query": "Sharp lower bound for the sum of a finite set of distinct integers bounded below by c",
+        "num_results": 6
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Finset.sum_range_le_sum\",\n      \"informal_name\": \"Sum over Range is Less Than or Equal to Sum over Finite Set with Lower Bound\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {s : Finset ℤ} {c : ℤ}, (∀ x ∈ s, c ≤ x) → ∑ n ∈ Finset.range s.card, (c + ↑n) ≤ ∑ x ∈ s, x\",\n      \"informal_description\": \"For any finite set $ s $ of integers and any integer $ c $ such that every element $ x \\\\in s $ satisfies $ c \\\\leq x $, the sum of $ c + n $ for $ n $ from $ 0 $ to $ |s| - 1 $ is less than or equal to the sum of the elements in $ s $. Formally, $ \\\\sum_{n=0}^{|s|-1} (c + n) \\\\leq \\\\sum_{x \\\\in s} x $.\",\n      \"path\": \"Mathlib.Algebra.Order.Group.Int.Sum\"\n    },\n    {\n      \"formal_name\": \"Finset.sum_le_sum_range\",\n      \"informal_name\": \"Sum of Bounded Elements in Finite Set is Less Than or Equal to Adjusted Range Sum\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {s : Finset ℤ} {c : ℤ}, (∀ x ∈ s, x ≤ c) → ∑ x ∈ s, x ≤ ∑ n ∈ Finset.range s.card, (c - ↑n)\",\n      \"informal_description\": \"For any finite set $ s $ of integers and any integer $ c $, if every element $ x $ in $ s $ satisfies $ x \\\\leq c $, then the sum of the elements in $ s $ is less than or equal to the sum of $ c - n $ for $ n $ ranging from 0 to $ |s| - 1 $, where $ |s| $ denotes the cardinality of $ s $.\",\n      \"path\": \"Mathlib.Algebra.Order.Group.Int.Sum\"\n    },\n    {\n      \"formal_name\": \"Finset.sum_Ico_le_sum\",\n      \"informal_name\": \"Sum of Interval [c, c + |s|) is Less Than or Equal to Sum of Set s\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {s : Finset ℤ} {c : ℤ}, (∀ x ∈ s, c ≤ x) → ∑ x ∈ Finset.Ico c (c + ↑s.card), x ≤ ∑ x ∈ s, x\",\n      \"informal_description\": \"For any finite set $ s $ of integers and integer $ c $, if every element $ x \\\\in s $ satisfies $ c \\\\leq x $, then the sum of the integers in the interval $[c, c + |s|)$ is less than or equal to the sum of the elements in $ s $.\",\n      \"path\": \"Mathlib.Algebra.Order.Group.Int.Sum\"\n    },\n    {\n      \"formal_name\": \"Finset.sum_le_sum_Ioc\",\n      \"informal_name\": \"Sum of Finite Set Bounded by Interval Sum\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {s : Finset ℤ} {c : ℤ}, (∀ x ∈ s, x ≤ c) → ∑ x ∈ s, x ≤ ∑ x ∈ Finset.Ioc (c - ↑s.card) c, x\",\n      \"informal_description\": \"For any finite set $ s $ of integers and integer $ c $, if every element of $ s $ is less than or equal to $ c $, then the sum of the elements of $ s $ is less than or equal to the sum of the interval $[c - |s|, c]$.\",\n      \"path\": \"Mathlib.Algebra.Order.Group.Int.Sum\"\n    },\n    {\n      \"formal_name\": \"Finset.card_nsmul_le_sum\",\n      \"informal_name\": \"Cardinality times element is less than or equal to sum over finite set\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {N : Type u_5} [inst : AddCommMonoid N] [inst_1 : PartialOrder N] [AddLeftMono N] (s : Finset ι)\\n  (f : ι → N) (n : N), (∀ x ∈ s, n ≤ f x) → s.card • n ≤ s.sum f\",\n      \"informal_description\": \"For any finite set $s$ of type $\\\\iota$ and function $f : \\\\iota \\\\to N$ where $N$ is an additive commutative monoid equipped with a partial order and left addition monotonicity, if every element $x \\\\in s$ satisfies $n \\\\leq f(x)$, then the scalar multiplication of the cardinality of $s$ by $n$ is less than or equal to the sum of $f$ over $s$. Formally, $|s| \\\\cdot n \\\\leq \\\\sum_{x \\\\in s} f(x)$.\",\n      \"path\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    },\n    {\n      \"formal_name\": \"Finset.single_lt_sum\",\n      \"informal_name\": \"Single Element Strict Inequality in Finite Set Sum with Positive Contributor\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {M : Type u_4} [inst : AddCommMonoid M] [inst_1 : PartialOrder M] [IsOrderedCancelAddMonoid M]\\n  {f : ι → M} {s : Finset ι} {i j : ι},\\n  j ≠ i → i ∈ s → j ∈ s → 0 < f j → (∀ k ∈ s, k ≠ i → 0 ≤ f k) → f i < ∑ k ∈ s, f k\",\n      \"informal_description\": \"In an ordered cancellative additive monoid $ M $, for any finite set $ s $ and function $ f : \\\\iota \\\\to M $, if there exist distinct elements $ i, j \\\\in s $ such that $ f(j) > 0 $ and for all $ k \\\\in s $ with $ k \\\\neq i $, $ f(k) \\\\geq 0 $, then $ f(i) < \\\\sum_{k \\\\in s} f(k) $.\",\n      \"path\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "formal_name": "Finset.sum_range_le_sum",
+              "informal_name": "Sum over Range is Less Than or Equal to Sum over Finite Set with Lower Bound",
+              "kind": "theorem",
+              "type": "∀ {s : Finset ℤ} {c : ℤ}, (∀ x ∈ s, c ≤ x) → ∑ n ∈ Finset.range s.card, (c + ↑n) ≤ ∑ x ∈ s, x",
+              "informal_description": "For any finite set $ s $ of integers and any integer $ c $ such that every element $ x \\in s $ satisfies $ c \\leq x $, the sum of $ c + n $ for $ n $ from $ 0 $ to $ |s| - 1 $ is less than or equal to the sum of the elements in $ s $. Formally, $ \\sum_{n=0}^{|s|-1} (c + n) \\leq \\sum_{x \\in s} x $.",
+              "path": "Mathlib.Algebra.Order.Group.Int.Sum"
+            },
+            {
+              "formal_name": "Finset.sum_le_sum_range",
+              "informal_name": "Sum of Bounded Elements in Finite Set is Less Than or Equal to Adjusted Range Sum",
+              "kind": "theorem",
+              "type": "∀ {s : Finset ℤ} {c : ℤ}, (∀ x ∈ s, x ≤ c) → ∑ x ∈ s, x ≤ ∑ n ∈ Finset.range s.card, (c - ↑n)",
+              "informal_description": "For any finite set $ s $ of integers and any integer $ c $, if every element $ x $ in $ s $ satisfies $ x \\leq c $, then the sum of the elements in $ s $ is less than or equal to the sum of $ c - n $ for $ n $ ranging from 0 to $ |s| - 1 $, where $ |s| $ denotes the cardinality of $ s $.",
+              "path": "Mathlib.Algebra.Order.Group.Int.Sum"
+            },
+            {
+              "formal_name": "Finset.sum_Ico_le_sum",
+              "informal_name": "Sum of Interval [c, c + |s|) is Less Than or Equal to Sum of Set s",
+              "kind": "theorem",
+              "type": "∀ {s : Finset ℤ} {c : ℤ}, (∀ x ∈ s, c ≤ x) → ∑ x ∈ Finset.Ico c (c + ↑s.card), x ≤ ∑ x ∈ s, x",
+              "informal_description": "For any finite set $ s $ of integers and integer $ c $, if every element $ x \\in s $ satisfies $ c \\leq x $, then the sum of the integers in the interval $[c, c + |s|)$ is less than or equal to the sum of the elements in $ s $.",
+              "path": "Mathlib.Algebra.Order.Group.Int.Sum"
+            },
+            {
+              "formal_name": "Finset.sum_le_sum_Ioc",
+              "informal_name": "Sum of Finite Set Bounded by Interval Sum",
+              "kind": "theorem",
+              "type": "∀ {s : Finset ℤ} {c : ℤ}, (∀ x ∈ s, x ≤ c) → ∑ x ∈ s, x ≤ ∑ x ∈ Finset.Ioc (c - ↑s.card) c, x",
+              "informal_description": "For any finite set $ s $ of integers and integer $ c $, if every element of $ s $ is less than or equal to $ c $, then the sum of the elements of $ s $ is less than or equal to the sum of the interval $[c - |s|, c]$.",
+              "path": "Mathlib.Algebra.Order.Group.Int.Sum"
+            },
+            {
+              "formal_name": "Finset.card_nsmul_le_sum",
+              "informal_name": "Cardinality times element is less than or equal to sum over finite set",
+              "kind": "theorem",
+              "type": "∀ {ι : Type u_1} {N : Type u_5} [inst : AddCommMonoid N] [inst_1 : PartialOrder N] [AddLeftMono N] (s : Finset ι)\n  (f : ι → N) (n : N), (∀ x ∈ s, n ≤ f x) → s.card • n ≤ s.sum f",
+              "informal_description": "For any finite set $s$ of type $\\iota$ and function $f : \\iota \\to N$ where $N$ is an additive commutative monoid equipped with a partial order and left addition monotonicity, if every element $x \\in s$ satisfies $n \\leq f(x)$, then the scalar multiplication of the cardinality of $s$ by $n$ is less than or equal to the sum of $f$ over $s$. Formally, $|s| \\cdot n \\leq \\sum_{x \\in s} f(x)$.",
+              "path": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+            },
+            {
+              "formal_name": "Finset.single_lt_sum",
+              "informal_name": "Single Element Strict Inequality in Finite Set Sum with Positive Contributor",
+              "kind": "theorem",
+              "type": "∀ {ι : Type u_1} {M : Type u_4} [inst : AddCommMonoid M] [inst_1 : PartialOrder M] [IsOrderedCancelAddMonoid M]\n  {f : ι → M} {s : Finset ι} {i j : ι},\n  j ≠ i → i ∈ s → j ∈ s → 0 < f j → (∀ k ∈ s, k ≠ i → 0 ≤ f k) → f i < ∑ k ∈ s, f k",
+              "informal_description": "In an ordered cancellative additive monoid $ M $, for any finite set $ s $ and function $ f : \\iota \\to M $, if there exist distinct elements $ i, j \\in s $ such that $ f(j) > 0 $ and for all $ k \\in s $ with $ k \\neq i $, $ f(k) \\geq 0 $, then $ f(i) < \\sum_{k \\in s} f(k) $.",
+              "path": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "id": "finder-abstract",
+      "name": "mcp__lean_lsp__lean_leanfinder",
+      "request": {
+        "query": "For an injective map from a finite type into integers bounded below by c, sum is at least sum of first card successive integers starting c",
+        "num_results": 6
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Finset.sum_range_le_sum\",\n      \"informal_name\": \"Sum over Range is Less Than or Equal to Sum over Finite Set with Lower Bound\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {s : Finset ℤ} {c : ℤ}, (∀ x ∈ s, c ≤ x) → ∑ n ∈ Finset.range s.card, (c + ↑n) ≤ ∑ x ∈ s, x\",\n      \"informal_description\": \"For any finite set $ s $ of integers and any integer $ c $ such that every element $ x \\\\in s $ satisfies $ c \\\\leq x $, the sum of $ c + n $ for $ n $ from $ 0 $ to $ |s| - 1 $ is less than or equal to the sum of the elements in $ s $. Formally, $ \\\\sum_{n=0}^{|s|-1} (c + n) \\\\leq \\\\sum_{x \\\\in s} x $.\",\n      \"path\": \"Mathlib.Algebra.Order.Group.Int.Sum\"\n    },\n    {\n      \"formal_name\": \"Finset.sum_Ico_le_sum\",\n      \"informal_name\": \"Sum of Interval [c, c + |s|) is Less Than or Equal to Sum of Set s\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {s : Finset ℤ} {c : ℤ}, (∀ x ∈ s, c ≤ x) → ∑ x ∈ Finset.Ico c (c + ↑s.card), x ≤ ∑ x ∈ s, x\",\n      \"informal_description\": \"For any finite set $ s $ of integers and integer $ c $, if every element $ x \\\\in s $ satisfies $ c \\\\leq x $, then the sum of the integers in the interval $[c, c + |s|)$ is less than or equal to the sum of the elements in $ s $.\",\n      \"path\": \"Mathlib.Algebra.Order.Group.Int.Sum\"\n    },\n    {\n      \"formal_name\": \"Finset.sum_le_sum_range\",\n      \"informal_name\": \"Sum of Bounded Elements in Finite Set is Less Than or Equal to Adjusted Range Sum\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {s : Finset ℤ} {c : ℤ}, (∀ x ∈ s, x ≤ c) → ∑ x ∈ s, x ≤ ∑ n ∈ Finset.range s.card, (c - ↑n)\",\n      \"informal_description\": \"For any finite set $ s $ of integers and any integer $ c $, if every element $ x $ in $ s $ satisfies $ x \\\\leq c $, then the sum of the elements in $ s $ is less than or equal to the sum of $ c - n $ for $ n $ ranging from 0 to $ |s| - 1 $, where $ |s| $ denotes the cardinality of $ s $.\",\n      \"path\": \"Mathlib.Algebra.Order.Group.Int.Sum\"\n    },\n    {\n      \"formal_name\": \"Finset.sum_le_sum_Ioc\",\n      \"informal_name\": \"Sum of Finite Set Bounded by Interval Sum\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {s : Finset ℤ} {c : ℤ}, (∀ x ∈ s, x ≤ c) → ∑ x ∈ s, x ≤ ∑ x ∈ Finset.Ioc (c - ↑s.card) c, x\",\n      \"informal_description\": \"For any finite set $ s $ of integers and integer $ c $, if every element of $ s $ is less than or equal to $ c $, then the sum of the elements of $ s $ is less than or equal to the sum of the interval $[c - |s|, c]$.\",\n      \"path\": \"Mathlib.Algebra.Order.Group.Int.Sum\"\n    },\n    {\n      \"formal_name\": \"Finset.card_nsmul_le_sum\",\n      \"informal_name\": \"Cardinality times element is less than or equal to sum over finite set\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {N : Type u_5} [inst : AddCommMonoid N] [inst_1 : PartialOrder N] [AddLeftMono N] (s : Finset ι)\\n  (f : ι → N) (n : N), (∀ x ∈ s, n ≤ f x) → s.card • n ≤ s.sum f\",\n      \"informal_description\": \"For any finite set $s$ of type $\\\\iota$ and function $f : \\\\iota \\\\to N$ where $N$ is an additive commutative monoid equipped with a partial order and left addition monotonicity, if every element $x \\\\in s$ satisfies $n \\\\leq f(x)$, then the scalar multiplication of the cardinality of $s$ by $n$ is less than or equal to the sum of $f$ over $s$. Formally, $|s| \\\\cdot n \\\\leq \\\\sum_{x \\\\in s} f(x)$.\",\n      \"path\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    },\n    {\n      \"formal_name\": \"hasSum_le_inj\",\n      \"informal_name\": \"Comparison of Infinite Sums via Injective Mapping and Component-wise Inequality\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {κ : Type u_2} {α : Type u_3} [inst : AddCommMonoid α] [inst_1 : PartialOrder α] [IsOrderedAddMonoid α]\\n  [inst_3 : TopologicalSpace α] [OrderClosedTopology α] {f : ι → α} {a₁ a₂ : α} {g : κ → α} (e : ι → κ),\\n  Function.Injective e → (∀ c ∉ Set.range e, 0 ≤ g c) → (∀ (i : ι), f i ≤ g (e i)) → HasSum f a₁ → HasSum g a₂ → a₁ ≤ a₂\",\n      \"informal_description\": \"Let $\\\\alpha$ be an ordered additive commutative monoid equipped with an order-closed topology. For functions $f : \\\\iota \\\\to \\\\alpha$ and $g : \\\\kappa \\\\to \\\\alpha$, suppose there exists an injective map $e : \\\\iota \\\\to \\\\kappa$ such that: (1) $g(c) \\\\geq 0$ for all $c \\\\notin \\\\text{range}(e)$, and (2) $f(i) \\\\leq g(e(i))$ for all $i \\\\in \\\\iota$. If the infinite sum of $f$ converges to $a_1 \\\\in \\\\alpha$ and the infinite sum of $g$ converges to $a_2 \\\\in \\\\alpha$, then $a_1 \\\\leq a_2$.\",\n      \"path\": \"Mathlib.Topology.Algebra.InfiniteSum.Order\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "formal_name": "Finset.sum_range_le_sum",
+              "informal_name": "Sum over Range is Less Than or Equal to Sum over Finite Set with Lower Bound",
+              "kind": "theorem",
+              "type": "∀ {s : Finset ℤ} {c : ℤ}, (∀ x ∈ s, c ≤ x) → ∑ n ∈ Finset.range s.card, (c + ↑n) ≤ ∑ x ∈ s, x",
+              "informal_description": "For any finite set $ s $ of integers and any integer $ c $ such that every element $ x \\in s $ satisfies $ c \\leq x $, the sum of $ c + n $ for $ n $ from $ 0 $ to $ |s| - 1 $ is less than or equal to the sum of the elements in $ s $. Formally, $ \\sum_{n=0}^{|s|-1} (c + n) \\leq \\sum_{x \\in s} x $.",
+              "path": "Mathlib.Algebra.Order.Group.Int.Sum"
+            },
+            {
+              "formal_name": "Finset.sum_Ico_le_sum",
+              "informal_name": "Sum of Interval [c, c + |s|) is Less Than or Equal to Sum of Set s",
+              "kind": "theorem",
+              "type": "∀ {s : Finset ℤ} {c : ℤ}, (∀ x ∈ s, c ≤ x) → ∑ x ∈ Finset.Ico c (c + ↑s.card), x ≤ ∑ x ∈ s, x",
+              "informal_description": "For any finite set $ s $ of integers and integer $ c $, if every element $ x \\in s $ satisfies $ c \\leq x $, then the sum of the integers in the interval $[c, c + |s|)$ is less than or equal to the sum of the elements in $ s $.",
+              "path": "Mathlib.Algebra.Order.Group.Int.Sum"
+            },
+            {
+              "formal_name": "Finset.sum_le_sum_range",
+              "informal_name": "Sum of Bounded Elements in Finite Set is Less Than or Equal to Adjusted Range Sum",
+              "kind": "theorem",
+              "type": "∀ {s : Finset ℤ} {c : ℤ}, (∀ x ∈ s, x ≤ c) → ∑ x ∈ s, x ≤ ∑ n ∈ Finset.range s.card, (c - ↑n)",
+              "informal_description": "For any finite set $ s $ of integers and any integer $ c $, if every element $ x $ in $ s $ satisfies $ x \\leq c $, then the sum of the elements in $ s $ is less than or equal to the sum of $ c - n $ for $ n $ ranging from 0 to $ |s| - 1 $, where $ |s| $ denotes the cardinality of $ s $.",
+              "path": "Mathlib.Algebra.Order.Group.Int.Sum"
+            },
+            {
+              "formal_name": "Finset.sum_le_sum_Ioc",
+              "informal_name": "Sum of Finite Set Bounded by Interval Sum",
+              "kind": "theorem",
+              "type": "∀ {s : Finset ℤ} {c : ℤ}, (∀ x ∈ s, x ≤ c) → ∑ x ∈ s, x ≤ ∑ x ∈ Finset.Ioc (c - ↑s.card) c, x",
+              "informal_description": "For any finite set $ s $ of integers and integer $ c $, if every element of $ s $ is less than or equal to $ c $, then the sum of the elements of $ s $ is less than or equal to the sum of the interval $[c - |s|, c]$.",
+              "path": "Mathlib.Algebra.Order.Group.Int.Sum"
+            },
+            {
+              "formal_name": "Finset.card_nsmul_le_sum",
+              "informal_name": "Cardinality times element is less than or equal to sum over finite set",
+              "kind": "theorem",
+              "type": "∀ {ι : Type u_1} {N : Type u_5} [inst : AddCommMonoid N] [inst_1 : PartialOrder N] [AddLeftMono N] (s : Finset ι)\n  (f : ι → N) (n : N), (∀ x ∈ s, n ≤ f x) → s.card • n ≤ s.sum f",
+              "informal_description": "For any finite set $s$ of type $\\iota$ and function $f : \\iota \\to N$ where $N$ is an additive commutative monoid equipped with a partial order and left addition monotonicity, if every element $x \\in s$ satisfies $n \\leq f(x)$, then the scalar multiplication of the cardinality of $s$ by $n$ is less than or equal to the sum of $f$ over $s$. Formally, $|s| \\cdot n \\leq \\sum_{x \\in s} f(x)$.",
+              "path": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+            },
+            {
+              "formal_name": "hasSum_le_inj",
+              "informal_name": "Comparison of Infinite Sums via Injective Mapping and Component-wise Inequality",
+              "kind": "theorem",
+              "type": "∀ {ι : Type u_1} {κ : Type u_2} {α : Type u_3} [inst : AddCommMonoid α] [inst_1 : PartialOrder α] [IsOrderedAddMonoid α]\n  [inst_3 : TopologicalSpace α] [OrderClosedTopology α] {f : ι → α} {a₁ a₂ : α} {g : κ → α} (e : ι → κ),\n  Function.Injective e → (∀ c ∉ Set.range e, 0 ≤ g c) → (∀ (i : ι), f i ≤ g (e i)) → HasSum f a₁ → HasSum g a₂ → a₁ ≤ a₂",
+              "informal_description": "Let $\\alpha$ be an ordered additive commutative monoid equipped with an order-closed topology. For functions $f : \\iota \\to \\alpha$ and $g : \\kappa \\to \\alpha$, suppose there exists an injective map $e : \\iota \\to \\kappa$ such that: (1) $g(c) \\geq 0$ for all $c \\notin \\text{range}(e)$, and (2) $f(i) \\leq g(e(i))$ for all $i \\in \\iota$. If the infinite sum of $f$ converges to $a_1 \\in \\alpha$ and the infinite sum of $g$ converges to $a_2 \\in \\alpha$, then $a_1 \\leq a_2$.",
+              "path": "Mathlib.Topology.Algebra.InfiniteSum.Order"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "id": "search-current",
+      "name": "mcp__lean_lsp__lean_leansearch",
+      "request": {
+        "query": "For injective d : Fin l → ℕ, sum i : Fin l, (i : ℕ) ≤ sum i, d i",
+        "num_results": 6
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finset.sum_image\",\n      \"module_name\": \"Mathlib.Algebra.BigOperators.Group.Finset.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {κ : Type u_2} {M : Type u_4} [inst : AddCommMonoid M] {f : ι → M} [inst_1 : DecidableEq ι]\\n  {s : Finset κ} {g : κ → ι}, Set.InjOn g ↑s → ∑ x ∈ Finset.image g s, f x = ∑ x ∈ s, f (g x)\"\n    },\n    {\n      \"name\": \"ENNReal.tsum_comp_le_tsum_of_injective\",\n      \"module_name\": \"Mathlib.Topology.Algebra.InfiniteSum.ENNReal\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_2} {f : α → β},\\n  Function.Injective f → ∀ (g : β → ENNReal), ∑' (x : α), g (f x) ≤ ∑' (y : β), g y\"\n    },\n    {\n      \"name\": \"tsum_comp_le_tsum_of_inj\",\n      \"module_name\": \"Mathlib.Topology.Algebra.InfiniteSum.ENNReal\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_4} {f : α → ℝ},\\n  Summable f → (∀ (a : α), 0 ≤ f a) → ∀ {i : β → α}, Function.Injective i → tsum (f ∘ i) ≤ tsum f\"\n    },\n    {\n      \"name\": \"Fintype.sum_of_injective\",\n      \"module_name\": \"Mathlib.Algebra.BigOperators.Group.Finset.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {M : Type u_4} {κ : Type u_6} {ι : Type u_7} [inst : Fintype ι] [inst_1 : Fintype κ] [inst_2 : AddCommMonoid M]\\n  (e : ι → κ),\\n  Function.Injective e →\\n    ∀ (f : ι → M) (g : κ → M), (∀ i ∉ Set.range e, g i = 0) → (∀ (i : ι), f i = g (e i)) → ∑ i, f i = ∑ j, g j\"\n    },\n    {\n      \"name\": \"Finset.sum_map\",\n      \"module_name\": \"Mathlib.Algebra.BigOperators.Group.Finset.Defs\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {κ : Type u_2} {M : Type u_3} [inst : AddCommMonoid M] (s : Finset ι) (e : ι ↪ κ) (f : κ → M),\\n  ∑ x ∈ Finset.map e s, f x = ∑ x ∈ s, f (e x)\"\n    },\n    {\n      \"name\": \"Finset.sum_map'\",\n      \"module_name\": \"Mathlib.Algebra.BigOperators.Group.Finset.Defs\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {κ : Type u_2} {M : Type u_3} [inst : AddCommMonoid M] (s : Finset ι) (e : ι ↪ κ),\\n  (Finset.map e s).sum = fun f => ∑ x ∈ s, f (e x)\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "Finset.sum_image",
+              "module_name": "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+              "kind": "theorem",
+              "type": "∀ {ι : Type u_1} {κ : Type u_2} {M : Type u_4} [inst : AddCommMonoid M] {f : ι → M} [inst_1 : DecidableEq ι]\n  {s : Finset κ} {g : κ → ι}, Set.InjOn g ↑s → ∑ x ∈ Finset.image g s, f x = ∑ x ∈ s, f (g x)"
+            },
+            {
+              "name": "ENNReal.tsum_comp_le_tsum_of_injective",
+              "module_name": "Mathlib.Topology.Algebra.InfiniteSum.ENNReal",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} {β : Type u_2} {f : α → β},\n  Function.Injective f → ∀ (g : β → ENNReal), ∑' (x : α), g (f x) ≤ ∑' (y : β), g y"
+            },
+            {
+              "name": "tsum_comp_le_tsum_of_inj",
+              "module_name": "Mathlib.Topology.Algebra.InfiniteSum.ENNReal",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} {β : Type u_4} {f : α → ℝ},\n  Summable f → (∀ (a : α), 0 ≤ f a) → ∀ {i : β → α}, Function.Injective i → tsum (f ∘ i) ≤ tsum f"
+            },
+            {
+              "name": "Fintype.sum_of_injective",
+              "module_name": "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+              "kind": "theorem",
+              "type": "∀ {M : Type u_4} {κ : Type u_6} {ι : Type u_7} [inst : Fintype ι] [inst_1 : Fintype κ] [inst_2 : AddCommMonoid M]\n  (e : ι → κ),\n  Function.Injective e →\n    ∀ (f : ι → M) (g : κ → M), (∀ i ∉ Set.range e, g i = 0) → (∀ (i : ι), f i = g (e i)) → ∑ i, f i = ∑ j, g j"
+            },
+            {
+              "name": "Finset.sum_map",
+              "module_name": "Mathlib.Algebra.BigOperators.Group.Finset.Defs",
+              "kind": "theorem",
+              "type": "∀ {ι : Type u_1} {κ : Type u_2} {M : Type u_3} [inst : AddCommMonoid M] (s : Finset ι) (e : ι ↪ κ) (f : κ → M),\n  ∑ x ∈ Finset.map e s, f x = ∑ x ∈ s, f (e x)"
+            },
+            {
+              "name": "Finset.sum_map'",
+              "module_name": "Mathlib.Algebra.BigOperators.Group.Finset.Defs",
+              "kind": "theorem",
+              "type": "∀ {ι : Type u_1} {κ : Type u_2} {M : Type u_3} [inst : AddCommMonoid M] (s : Finset ι) (e : ι ↪ κ),\n  (Finset.map e s).sum = fun f => ∑ x ∈ s, f (e x)"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "id": "search-literature",
+      "name": "mcp__lean_lsp__lean_leansearch",
+      "request": {
+        "query": "The sum of a finite set of integers bounded below by c is at least the sum c + 0 through c + card s - 1",
+        "num_results": 6
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finset.sum_range_le_sum\",\n      \"module_name\": \"Mathlib.Algebra.Order.Group.Int.Sum\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {s : Finset ℤ} {c : ℤ}, (∀ x ∈ s, c ≤ x) → ∑ n ∈ Finset.range s.card, (c + ↑n) ≤ ∑ x ∈ s, x\"\n    },\n    {\n      \"name\": \"Filter.isBoundedUnder_ge_sum\",\n      \"module_name\": \"Mathlib.Order.Filter.IsBounded\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_5} {f : Filter α} {R : Type u_6} [inst : Preorder R] {κ : Type u_7} [inst_1 : AddCommMonoid R]\\n  [AddLeftMono R] [AddRightMono R] {u : κ → α → R} (s : Finset κ),\\n  (∀ k ∈ s, Filter.IsBoundedUnder (fun x1 x2 => x1 ≥ x2) f (u k)) →\\n    Filter.IsBoundedUnder (fun x1 x2 => x1 ≥ x2) f (∑ k ∈ s, u k)\"\n    },\n    {\n      \"name\": \"Finset.sum_le_sum_Ioc\",\n      \"module_name\": \"Mathlib.Algebra.Order.Group.Int.Sum\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {s : Finset ℤ} {c : ℤ}, (∀ x ∈ s, x ≤ c) → ∑ x ∈ s, x ≤ ∑ x ∈ Finset.Ioc (c - ↑s.card) c, x\"\n    },\n    {\n      \"name\": \"Finset.sum_Ico_le_sum\",\n      \"module_name\": \"Mathlib.Algebra.Order.Group.Int.Sum\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {s : Finset ℤ} {c : ℤ}, (∀ x ∈ s, c ≤ x) → ∑ x ∈ Finset.Ico c (c + ↑s.card), x ≤ ∑ x ∈ s, x\"\n    },\n    {\n      \"name\": \"Finset.sum_le_sum_range\",\n      \"module_name\": \"Mathlib.Algebra.Order.Group.Int.Sum\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {s : Finset ℤ} {c : ℤ}, (∀ x ∈ s, x ≤ c) → ∑ x ∈ s, x ≤ ∑ n ∈ Finset.range s.card, (c - ↑n)\"\n    },\n    {\n      \"name\": \"Finset.sum_le_card_nsmul\",\n      \"module_name\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {N : Type u_5} [inst : AddCommMonoid N] [inst_1 : PartialOrder N] [AddLeftMono N] (s : Finset ι)\\n  (f : ι → N) (n : N), (∀ x ∈ s, f x ≤ n) → s.sum f ≤ s.card • n\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "Finset.sum_range_le_sum",
+              "module_name": "Mathlib.Algebra.Order.Group.Int.Sum",
+              "kind": "theorem",
+              "type": "∀ {s : Finset ℤ} {c : ℤ}, (∀ x ∈ s, c ≤ x) → ∑ n ∈ Finset.range s.card, (c + ↑n) ≤ ∑ x ∈ s, x"
+            },
+            {
+              "name": "Filter.isBoundedUnder_ge_sum",
+              "module_name": "Mathlib.Order.Filter.IsBounded",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_5} {f : Filter α} {R : Type u_6} [inst : Preorder R] {κ : Type u_7} [inst_1 : AddCommMonoid R]\n  [AddLeftMono R] [AddRightMono R] {u : κ → α → R} (s : Finset κ),\n  (∀ k ∈ s, Filter.IsBoundedUnder (fun x1 x2 => x1 ≥ x2) f (u k)) →\n    Filter.IsBoundedUnder (fun x1 x2 => x1 ≥ x2) f (∑ k ∈ s, u k)"
+            },
+            {
+              "name": "Finset.sum_le_sum_Ioc",
+              "module_name": "Mathlib.Algebra.Order.Group.Int.Sum",
+              "kind": "theorem",
+              "type": "∀ {s : Finset ℤ} {c : ℤ}, (∀ x ∈ s, x ≤ c) → ∑ x ∈ s, x ≤ ∑ x ∈ Finset.Ioc (c - ↑s.card) c, x"
+            },
+            {
+              "name": "Finset.sum_Ico_le_sum",
+              "module_name": "Mathlib.Algebra.Order.Group.Int.Sum",
+              "kind": "theorem",
+              "type": "∀ {s : Finset ℤ} {c : ℤ}, (∀ x ∈ s, c ≤ x) → ∑ x ∈ Finset.Ico c (c + ↑s.card), x ≤ ∑ x ∈ s, x"
+            },
+            {
+              "name": "Finset.sum_le_sum_range",
+              "module_name": "Mathlib.Algebra.Order.Group.Int.Sum",
+              "kind": "theorem",
+              "type": "∀ {s : Finset ℤ} {c : ℤ}, (∀ x ∈ s, x ≤ c) → ∑ x ∈ s, x ≤ ∑ n ∈ Finset.range s.card, (c - ↑n)"
+            },
+            {
+              "name": "Finset.sum_le_card_nsmul",
+              "module_name": "Mathlib.Algebra.Order.BigOperators.Group.Finset",
+              "kind": "theorem",
+              "type": "∀ {ι : Type u_1} {N : Type u_5} [inst : AddCommMonoid N] [inst_1 : PartialOrder N] [AddLeftMono N] (s : Finset ι)\n  (f : ι → N) (n : N), (∀ x ∈ s, f x ≤ n) → s.sum f ≤ s.card • n"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "id": "search-abstract",
+      "name": "mcp__lean_lsp__lean_leansearch",
+      "request": {
+        "query": "Sharp lower bound sum of injective finite family of integers in terms of its cardinality and a common lower bound",
+        "num_results": 6
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"Set.le_ncard_of_inj_on_range\",\n      \"module_name\": \"Mathlib.Data.Set.Card\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {s : Set α} {n : ℕ} (f : ℕ → α),\\n  (∀ i < n, f i ∈ s) →\\n    (∀ i < n, ∀ j < n, f i = f j → i = j) → autoParam s.Finite Set.le_ncard_of_inj_on_range._auto_1 → n ≤ s.ncard\"\n    },\n    {\n      \"name\": \"Finset.card_nsmul_le_sum\",\n      \"module_name\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {N : Type u_5} [inst : AddCommMonoid N] [inst_1 : PartialOrder N] [AddLeftMono N] (s : Finset ι)\\n  (f : ι → N) (n : N), (∀ x ∈ s, n ≤ f x) → s.card • n ≤ s.sum f\"\n    },\n    {\n      \"name\": \"AddValuation.map_le_sum\",\n      \"module_name\": \"Mathlib.RingTheory.Valuation.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_3} {Γ₀ : Type u_4} [inst : Ring R] [inst_1 : LinearOrderedAddCommMonoidWithTop Γ₀] (v : AddValuation R Γ₀)\\n  {ι : Type u_6} {s : Finset ι} {f : ι → R} {g : Γ₀}, (∀ i ∈ s, g ≤ v (f i)) → g ≤ v (∑ i ∈ s, f i)\"\n    },\n    {\n      \"name\": \"Multiset.card_nsmul_le_sum\",\n      \"module_name\": \"Mathlib.Algebra.Order.BigOperators.Group.Multiset\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_2} [inst : AddCommMonoid α] [inst_1 : PartialOrder α] {s : Multiset α} {a : α} [AddLeftMono α],\\n  (∀ (x : α), x ∈ s → a ≤ x) → s.card • a ≤ s.sum\"\n    },\n    {\n      \"name\": \"AhlswedeZhang.infSum\",\n      \"module_name\": \"Mathlib.Combinatorics.SetFamily.AhlswedeZhang\",\n      \"kind\": \"definition\",\n      \"type\": \"{α : Type u_1} → [Fintype α] → [DecidableEq α] → Finset (Finset α) → ℚ\"\n    },\n    {\n      \"name\": \"Finset.card_le_card_add_right_of_injective\",\n      \"module_name\": \"Mathlib.Algebra.Group.Pointwise.Finset.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_2} [inst : DecidableEq α] [inst_1 : Add α] {s t : Finset α} {a : α},\\n  a ∈ t → (Function.Injective fun x => x + a) → s.card ≤ (s + t).card\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "Set.le_ncard_of_inj_on_range",
+              "module_name": "Mathlib.Data.Set.Card",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} {s : Set α} {n : ℕ} (f : ℕ → α),\n  (∀ i < n, f i ∈ s) →\n    (∀ i < n, ∀ j < n, f i = f j → i = j) → autoParam s.Finite Set.le_ncard_of_inj_on_range._auto_1 → n ≤ s.ncard"
+            },
+            {
+              "name": "Finset.card_nsmul_le_sum",
+              "module_name": "Mathlib.Algebra.Order.BigOperators.Group.Finset",
+              "kind": "theorem",
+              "type": "∀ {ι : Type u_1} {N : Type u_5} [inst : AddCommMonoid N] [inst_1 : PartialOrder N] [AddLeftMono N] (s : Finset ι)\n  (f : ι → N) (n : N), (∀ x ∈ s, n ≤ f x) → s.card • n ≤ s.sum f"
+            },
+            {
+              "name": "AddValuation.map_le_sum",
+              "module_name": "Mathlib.RingTheory.Valuation.Basic",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_3} {Γ₀ : Type u_4} [inst : Ring R] [inst_1 : LinearOrderedAddCommMonoidWithTop Γ₀] (v : AddValuation R Γ₀)\n  {ι : Type u_6} {s : Finset ι} {f : ι → R} {g : Γ₀}, (∀ i ∈ s, g ≤ v (f i)) → g ≤ v (∑ i ∈ s, f i)"
+            },
+            {
+              "name": "Multiset.card_nsmul_le_sum",
+              "module_name": "Mathlib.Algebra.Order.BigOperators.Group.Multiset",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_2} [inst : AddCommMonoid α] [inst_1 : PartialOrder α] {s : Multiset α} {a : α} [AddLeftMono α],\n  (∀ (x : α), x ∈ s → a ≤ x) → s.card • a ≤ s.sum"
+            },
+            {
+              "name": "AhlswedeZhang.infSum",
+              "module_name": "Mathlib.Combinatorics.SetFamily.AhlswedeZhang",
+              "kind": "definition",
+              "type": "{α : Type u_1} → [Fintype α] → [DecidableEq α] → Finset (Finset α) → ℚ"
+            },
+            {
+              "name": "Finset.card_le_card_add_right_of_injective",
+              "module_name": "Mathlib.Algebra.Group.Pointwise.Finset.Basic",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_2} [inst : DecidableEq α] [inst_1 : Add α] {s t : Finset α} {a : α},\n  a ∈ t → (Function.Injective fun x => x + a) → s.card ≤ (s + t).card"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "id": "loogle-current",
+      "name": "mcp__lean_lsp__lean_loogle",
+      "request": {
+        "query": "Function.Injective, Finset.sum, (_ ≤ _)",
+        "num_results": 6
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finset.geomSum_injective\",\n      \"type\": \" {n : ℕ} (hn : 2 ≤ n) : Function.Injective fun s => ∑ i ∈ s, n ^ i\",\n      \"module\": \"Mathlib.Combinatorics.Colex\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "Finset.geomSum_injective",
+              "type": " {n : ℕ} (hn : 2 ≤ n) : Function.Injective fun s => ∑ i ∈ s, n ^ i",
+              "module": "Mathlib.Combinatorics.Colex"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "id": "loogle-literature",
+      "name": "mcp__lean_lsp__lean_loogle",
+      "request": {
+        "query": "\"sum_range_le_sum\"",
+        "num_results": 6
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finset.sum_range_le_sum\",\n      \"type\": \" {s : Finset ℤ} {c : ℤ} (hs : ∀ x ∈ s, c ≤ x) : ∑ n ∈ Finset.range s.card, (c + ↑n) ≤ ∑ x ∈ s, x\",\n      \"module\": \"Mathlib.Algebra.Order.Group.Int.Sum\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "Finset.sum_range_le_sum",
+              "type": " {s : Finset ℤ} {c : ℤ} (hs : ∀ x ∈ s, c ≤ x) : ∑ n ∈ Finset.range s.card, (c + ↑n) ≤ ∑ x ∈ s, x",
+              "module": "Mathlib.Algebra.Order.Group.Int.Sum"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "id": "loogle-abstract",
+      "name": "mcp__lean_lsp__lean_loogle",
+      "request": {
+        "query": "Finset.sum, Finset.card, Int, (_ ≤ _)",
+        "num_results": 6
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finset.sum_le_sum_range\",\n      \"type\": \" {s : Finset ℤ} {c : ℤ} (hs : ∀ x ∈ s, x ≤ c) : ∑ x ∈ s, x ≤ ∑ n ∈ Finset.range s.card, (c - ↑n)\",\n      \"module\": \"Mathlib.Algebra.Order.Group.Int.Sum\"\n    },\n    {\n      \"name\": \"Finset.sum_range_le_sum\",\n      \"type\": \" {s : Finset ℤ} {c : ℤ} (hs : ∀ x ∈ s, c ≤ x) : ∑ n ∈ Finset.range s.card, (c + ↑n) ≤ ∑ x ∈ s, x\",\n      \"module\": \"Mathlib.Algebra.Order.Group.Int.Sum\"\n    },\n    {\n      \"name\": \"Finset.sum_Ico_le_sum\",\n      \"type\": \" {s : Finset ℤ} {c : ℤ} (hs : ∀ x ∈ s, c ≤ x) : ∑ x ∈ Finset.Ico c (c + ↑s.card), x ≤ ∑ x ∈ s, x\",\n      \"module\": \"Mathlib.Algebra.Order.Group.Int.Sum\"\n    },\n    {\n      \"name\": \"Finset.sum_le_sum_Ioc\",\n      \"type\": \" {s : Finset ℤ} {c : ℤ} (hs : ∀ x ∈ s, x ≤ c) : ∑ x ∈ s, x ≤ ∑ x ∈ Finset.Ioc (c - ↑s.card) c, x\",\n      \"module\": \"Mathlib.Algebra.Order.Group.Int.Sum\"\n    },\n    {\n      \"name\": \"Int.erdos_ginzburg_ziv\",\n      \"type\": \" {ι : Type u_1} {n : ℕ} {s : Finset ι} (a : ι → ℤ) (hs : 2 * n - 1 ≤ s.card) : ∃ t ⊆ s, t.card = n ∧ ↑n ∣ ∑ i ∈ t, a i\",\n      \"module\": \"Mathlib.Combinatorics.Additive.ErdosGinzburgZiv\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "Finset.sum_le_sum_range",
+              "type": " {s : Finset ℤ} {c : ℤ} (hs : ∀ x ∈ s, x ≤ c) : ∑ x ∈ s, x ≤ ∑ n ∈ Finset.range s.card, (c - ↑n)",
+              "module": "Mathlib.Algebra.Order.Group.Int.Sum"
+            },
+            {
+              "name": "Finset.sum_range_le_sum",
+              "type": " {s : Finset ℤ} {c : ℤ} (hs : ∀ x ∈ s, c ≤ x) : ∑ n ∈ Finset.range s.card, (c + ↑n) ≤ ∑ x ∈ s, x",
+              "module": "Mathlib.Algebra.Order.Group.Int.Sum"
+            },
+            {
+              "name": "Finset.sum_Ico_le_sum",
+              "type": " {s : Finset ℤ} {c : ℤ} (hs : ∀ x ∈ s, c ≤ x) : ∑ x ∈ Finset.Ico c (c + ↑s.card), x ≤ ∑ x ∈ s, x",
+              "module": "Mathlib.Algebra.Order.Group.Int.Sum"
+            },
+            {
+              "name": "Finset.sum_le_sum_Ioc",
+              "type": " {s : Finset ℤ} {c : ℤ} (hs : ∀ x ∈ s, x ≤ c) : ∑ x ∈ s, x ≤ ∑ x ∈ Finset.Ioc (c - ↑s.card) c, x",
+              "module": "Mathlib.Algebra.Order.Group.Int.Sum"
+            },
+            {
+              "name": "Int.erdos_ginzburg_ziv",
+              "type": " {ι : Type u_1} {n : ℕ} {s : Finset ι} (a : ι → ℤ) (hs : 2 * n - 1 ≤ s.card) : ∃ t ⊆ s, t.card = n ∧ ↑n ∣ ∑ i ∈ t, a i",
+              "module": "Mathlib.Combinatorics.Additive.ErdosGinzburgZiv"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "id": "local-current",
+      "name": "mcp__lean_lsp__lean_local_search",
+      "request": {
+        "query": "sum_range_le_sum_of_injective",
+        "project_root": "/Users/ramin/LEAN/Roth",
+        "limit": 20
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"Roth.sum_range_le_sum_of_injective\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/Wronskian.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "Roth.sum_range_le_sum_of_injective",
+              "kind": "theorem",
+              "file": "Roth/Wronskian.lean"
+            }
+          ],
+          "index": "unavailable"
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "id": "local-literature",
+      "name": "mcp__lean_lsp__lean_local_search",
+      "request": {
+        "query": "sum_range_le_sum",
+        "project_root": "/Users/ramin/LEAN/Roth",
+        "limit": 20
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finset.sum_range_le_sum\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Order/Group/Int/Sum.lean\"\n    },\n    {\n      \"name\": \"Roth.sum_range_le_sum_of_injective\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/Wronskian.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "Finset.sum_range_le_sum",
+              "kind": "lemma",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/Order/Group/Int/Sum.lean"
+            },
+            {
+              "name": "Roth.sum_range_le_sum_of_injective",
+              "kind": "theorem",
+              "file": "Roth/Wronskian.lean"
+            }
+          ],
+          "index": "unavailable"
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "id": "local-abstract",
+      "name": "mcp__lean_lsp__lean_local_search",
+      "request": {
+        "query": "sum_Ico_le_sum",
+        "project_root": "/Users/ramin/LEAN/Roth",
+        "limit": 20
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finset.sum_Ico_le_sum\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Order/Group/Int/Sum.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "Finset.sum_Ico_le_sum",
+              "kind": "lemma",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/Order/Group/Int/Sum.lean"
+            }
+          ],
+          "index": "unavailable"
+        },
+        "isError": false
+      }
+    }
+  }
+]

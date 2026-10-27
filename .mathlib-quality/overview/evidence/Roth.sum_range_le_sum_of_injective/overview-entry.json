@@ -1,0 +1,30 @@
+{
+  "declaration": "Roth.sum_range_le_sum_of_injective",
+  "kind": "theorem",
+  "type": "∀ {l : ℕ} (d : Fin l → ℕ), Function.Injective d → (∑ ν : Fin l, (ν : ℕ)) ≤ ∑ ν, d ν",
+  "what": "Any l distinct natural numbers have sum at least 0+1+⋯+(l−1).",
+  "how": "Embed the finite image into ℤ, apply Finset.sum_range_le_sum at c=0, normalize image cardinality/sums and reflect the inequality through casts.",
+  "hypotheses": "{l : ℕ}, d : Fin l → ℕ, Function.Injective d. No coefficient field or characteristic binder.",
+  "project_dependencies": [],
+  "caller_summary": {
+    "explicit_source_callers": [],
+    "count": 0,
+    "inline_rederivations": 0,
+    "scope": "Source-level explicit references only; no exhaustive kernel/simp closure claim. No simp attribute on target."
+  },
+  "mathlib_api_audit": {
+    "replacement": "Finset.sum_range_le_sum",
+    "path": "Mathlib/Algebra/Order/Group/Int/Sum.lean:72",
+    "same_mathematical_law": true,
+    "bridge": "Nat.castEmbedding + image cardinality + sum_image + Fin.sum_univ_eq_sum_range + Nat.cast_sum + cast order reflection; not defeq and not claimed ≤3 calls."
+  },
+  "moral_duplications": [
+    "Existing sharper lower-bounded finite integer-set sum theorem already contains the Nat/Fin c=0 case."
+  ],
+  "generalization": "Arbitrary finite index type and integer-valued injective family with common lower bound c verified natively; existing finset theorem already covers it. Injectivity is necessary, verified Fin 2 constant-zero counterexample.",
+  "missing_api": [],
+  "junk": "Unused public convenience wrapper; zero explicit callers, zero inline re-derivations found.",
+  "action": "Delete wrapper in follow-up cleanup; no caller edits. Conditionally inspect now-unused Int.Sum import with ordinary import/build checks. If desired retain private pedagogical helper in Roth/Wronskian.lean.",
+  "verdict": "NO-mathlib-has-it",
+  "unresolved": []
+}
