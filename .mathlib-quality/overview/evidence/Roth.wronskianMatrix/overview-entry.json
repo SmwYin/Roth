@@ -1,0 +1,81 @@
+{
+  "declaration": "Roth.wronskianMatrix",
+  "kind": "def",
+  "type": "{K : Type u_1} → [inst : Field K] → {l : ℕ} → (Fin l → K[X]) → Matrix (Fin l) (Fin l) K[X]",
+  "what": "Square matrix of successive univariate Hasse derivatives of a polynomial family.",
+  "how": "Matrix.of bundles (μ,ν) ↦ Polynomial.hasseDeriv μ (φ ν).",
+  "hypotheses": [
+    "Universe-polymorphic K with Field K, mechanically weakenable to Semiring.",
+    "Implicit length l : ℕ; explicit φ : Fin l → Polynomial K.",
+    "No characteristic, independence, nonzero or positive-length assumption."
+  ],
+  "project_dependencies": [],
+  "caller_summary": {
+    "declarations": 6,
+    "executable_occurrences": 7,
+    "external_to_declaring_file_occurrences": 2,
+    "external_files": 2,
+    "scope": "Explicit source references only; not kernel/simp closure.",
+    "callers": [
+      {
+        "name": "Roth.wronskian_kronecker_eq_sum_aux",
+        "file": "Roth/GenWronskian.lean",
+        "line": 238
+      },
+      {
+        "name": "Roth.det_hasseDeriv_separated",
+        "file": "Roth/Separation.lean",
+        "line": 351
+      },
+      {
+        "name": "Roth.wronskian",
+        "file": "Roth/Wronskian.lean",
+        "line": 60
+      },
+      {
+        "name": "Roth.wronskian_eq_zero_of_not_linearIndependent",
+        "file": "Roth/Wronskian.lean",
+        "line": 65
+      },
+      {
+        "name": "Roth.coeff_wronskian_of_natDegree_injective",
+        "file": "Roth/Wronskian.lean",
+        "line": 122
+      },
+      {
+        "name": "Roth.wronskian_update_sub_smul",
+        "file": "Roth/Wronskian.lean",
+        "line": 158
+      }
+    ]
+  },
+  "mathlib_api_audit": {
+    "verdict": "BORDERLINE-needs-human",
+    "building_blocks": [
+      "Matrix.of",
+      "Polynomial.hasseDeriv"
+    ],
+    "near_matches": [
+      "Polynomial.wronskian (binary polynomial output)",
+      "Polynomial.taylor_coeff (evaluated entries)",
+      "LinearMap.toMatrix (basis-coordinates, not arbitrary-family constructor)"
+    ],
+    "gap_anchor": "Mathlib/RingTheory/Polynomial/Wronskian.lean TODO: define Wronskian for n-tuple, not necessarily two.",
+    "formal_methods": "Finder, Loogle, LeanSearch, rg, local each on current/standard/abstract forms.",
+    "local_index": "unavailable; no absence inference."
+  },
+  "moral_duplications": [
+    "Direct construction is a verified two-block composition; meaningful semantic API exemption.",
+    "Multivariate genWronskian constructs related selected-operator matrix, not identical target."
+  ],
+  "generalization": [
+    "Verified Field→Semiring for standalone same-body definition.",
+    "Verified arbitrary rectangular row-order matrix specializes by rfl.",
+    "Verified bundled R-linear operator specializes by rfl and provides map_add."
+  ],
+  "missing_api": [
+    "Coherent named n-ary normalized Wronskian API; existing pinned TODO. No absolute absence theorem claimed."
+  ],
+  "junk": false,
+  "action": "Retain useful local name pending future upstream granularity/normalization choice. No implementation authorized; if anchor rejected, report lists all caller inlining plans."
+}

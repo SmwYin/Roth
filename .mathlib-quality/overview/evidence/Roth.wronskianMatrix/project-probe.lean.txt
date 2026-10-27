@@ -1,0 +1,11 @@
+#check @Roth.wronskianMatrix
+#print Roth.wronskianMatrix
+#print axioms Roth.wronskianMatrix
+namespace WronskianMatrixProjectAssessment
+open Polynomial
+theorem bridge {K : Type*} [Field K] {l : ℕ} (φ : Fin l → K[X]) :
+    Roth.wronskianMatrix φ = Matrix.of (fun μ ν : Fin l ↦ hasseDeriv μ (φ ν)) := rfl
+example {K : Type*} [Field K] {l : ℕ} (φ : Fin l → K[X]) (i j : Fin l) :
+    Roth.wronskianMatrix φ i j = hasseDeriv i (φ j) := rfl
+#print axioms bridge
+end WronskianMatrixProjectAssessment

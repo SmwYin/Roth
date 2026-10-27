@@ -1,0 +1,62 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+#check_failure Roth.wronskianMatrix
+open Polynomial
+noncomputable section
+namespace WronskianMatrixAssessment
+noncomputable def matrix {R : Type*} [Semiring R] {l : ℕ}
+    (φ : Fin l → R[X]) : Matrix (Fin l) (Fin l) R[X] :=
+  Matrix.of fun μ ν ↦ hasseDeriv μ (φ ν)
+theorem direct {R : Type*} [Semiring R] {l : ℕ} (φ : Fin l → R[X]) :
+    matrix φ = Matrix.of (fun μ ν : Fin l ↦ hasseDeriv μ (φ ν)) := rfl
+noncomputable def rectangular {R : Type*} [Semiring R] {ι κ : Type*}
+    (order : ι → ℕ) (φ : κ → R[X]) : Matrix ι κ R[X] :=
+  Matrix.of fun μ ν ↦ hasseDeriv (order μ) (φ ν)
+theorem rectangular_bridge {R : Type*} [Semiring R] {l : ℕ} (φ : Fin l → R[X]) :
+    matrix φ = rectangular (fun μ : Fin l ↦ (μ : ℕ)) φ := rfl
+example : Matrix (Fin 2) (Fin 2) ℕ[X] := matrix (fun _ ↦ X)
+universe u
+example {R : Type u} [Semiring R] {l : ℕ} (φ : Fin l → R[X]) :
+    Matrix (Fin l) (Fin l) R[X] := matrix φ
+example {l : ℕ} (φ : Fin l → ℕ[X]) (i j : Fin l) :
+    matrix φ i j = hasseDeriv i (φ j) := rfl
+#synth Semiring ℕ
+#synth CommRing (Polynomial ℤ)
+#check @Polynomial.hasseDeriv
+#check @Matrix.of
+#check @Polynomial.wronskian
+#check @Polynomial.factorial_smul_hasseDeriv
+#check @Polynomial.taylor_coeff
+#print axioms matrix
+#print axioms direct
+#print axioms rectangular_bridge
+
+noncomputable def bundled {R : Type*} [Semiring R] {l : ℕ} :
+    (Fin l → R[X]) →ₗ[R] Matrix (Fin l) (Fin l) R[X] :=
+  LinearMap.pi fun i ↦ LinearMap.pi fun j ↦
+    (hasseDeriv i).comp (LinearMap.proj j)
+theorem bundled_bridge {R : Type*} [Semiring R] {l : ℕ} (φ : Fin l → R[X]) :
+    bundled φ = matrix φ := rfl
+theorem matrix_add {R : Type*} [Semiring R] {l : ℕ} (φ ψ : Fin l → R[X]) :
+    matrix (φ + ψ) = matrix φ + matrix ψ :=
+  (bundled : (Fin l → R[X]) →ₗ[R] Matrix (Fin l) (Fin l) R[X]).map_add φ ψ
+theorem factorial_normalization_guard :
+    hasseDeriv 2 (X ^ 2 : ℕ[X]) ≠ Polynomial.derivative (Polynomial.derivative (X ^ 2)) := by
+  intro h
+  have hc := congrArg (fun p : ℕ[X] ↦ p.coeff 0) h
+  norm_num [hasseDeriv_coeff] at hc
+#print axioms bundled_bridge
+#print axioms matrix_add
+#print axioms factorial_normalization_guard
+
+theorem evaluated_taylor {R : Type*} [Semiring R] {l : ℕ} (r : R) (φ : Fin l → R[X]) :
+    (matrix φ).map (Polynomial.eval r) =
+      Matrix.of (fun i j : Fin l ↦ (Polynomial.taylor r (φ j)).coeff i) := by
+  funext i j
+  exact (Polynomial.taylor_coeff r (φ j) i).symm
+example {R : Type 1} [Semiring R] {l : ℕ} (φ : Fin l → R[X]) :
+    Matrix (Fin l) (Fin l) R[X] := matrix φ
+#print axioms evaluated_taylor
+end WronskianMatrixAssessment

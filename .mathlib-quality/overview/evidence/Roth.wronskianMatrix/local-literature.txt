@@ -1,0 +1,100 @@
+118: 
+119: \section{Derivatives}
+120: 
+121: We start by defining differential operators in $p\geq1$ variables.
+122: For a multi-index $i=(i_1,\dots,i_p)\in\N^p$, define the \emph{Hasse differential operator}
+123: $\Delta_i$ by its effect on monomials:
+124: \[
+125: \Delta_i(x_1^{k_1}\cdots x_p^{k_p})=
+126: \begin{cases}
+127: \displaystyle\left(\prod_{j=1}^p {k_j\choose i_j}\right)
+128:  x_1^{k_1-i_1}\cdots x_p^{k_p-i_p},& i_j\leq k_j\text{ for every }j,\\[3pt]
+129: 0,&\text{otherwise}.
+130: \end{cases}
+131: \]
+132: We extend this operator linearly to all polynomials. It has order
+133: $|i|=i_1+\cdots+i_p$. The definition works over $\Z$, $\Q$, or $\R$
+134: (and over any commutative semiring by casting the binomial coefficients).
+135: Over a $\Q$-algebra it agrees with
+136: \[
+137: \Delta_i=\frac{1}{i_1!\cdots i_p!}
+138:  \left(\frac{\partial}{\partial x_1}\right)^{i_1}\cdots
+139:  \left(\frac{\partial}{\partial x_p}\right)^{i_p}.
+140: \]
+141: When $i_j\leq k_j$, one may equivalently write
+142: ${k_j\choose i_j}={k_j\choose k_j-i_j}$.
+143: Unless explicitly stated otherwise, a differential operator below means one
+144: of these individual normalised operators, not an arbitrary linear combination.
+145: This algebraic definition avoids the technicalities of Fr\'echet derivatives.
+146: 
+147: \lean{Represent polynomials by \texttt{MvPolynomial} and multi-indices
+148: by finitely supported maps $\sigma\to_0\N$. Define each $\Delta_d$ as a
+149: linear map and prove the coefficient identity
+150: $[X^e]\Delta_dP=(\prod_j\binom{e_j+d_j}{d_j})[X^{e+d}]P$,
+151: where $[X^e]$ denotes coefficient extraction; this shows that distinct
+152: surviving monomials do not merge under differentiation. Use the univariate
+153: \texttt{Polynomial.hasseDeriv}\footnote{\url{https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/Polynomial/HasseDeriv.html}}
+154: as a model, and prove compatibility with coefficient maps before passing
+155: between $\Z$, $\Q$ and $\R$.}
+156: 
+157: \section{Wronskians}
+158: 
+159: If $l\geq1$ and $\phi_0(t), \dots, \phi_{l-1}(t)$ are $l$ polynomials in the variable $t$, we call the determinant
+160: $$
+161: W(\phi_0, \dots, \phi_{l-1})(t) = \det \left(\frac{1}{\mu !} \frac{d^\mu}{d t^\mu} \phi_\nu(t)\right)_{0 \leq \mu \leq l-1 \atop 0 \leq \nu \leq l-1}
+162: $$
+163: the Wronskian of the polynomials.
+164: 
+165: \begin{lem}
+166:     If $\phi_0(t), \dots, \phi_{l-1}(t)$ have rational coefficients, then the Wronskian vanishes if and only if they are linearly dependent, i.e., there are rational constants $c_0, \dots, c_{l-1}$, not all of which are zero, such that
+167:     $$
+168:     c_0 \phi_0(t) + \dots + c_{l-1} \phi_{l-1}(t) = 0.
+169:     $$
+170: \end{lem}
+171: \begin{proof}
+172:     Linear dependence gives a nontrivial constant linear relation between
+173:     the columns, so the determinant vanishes.
+174:     Conversely, suppose the polynomials are linearly independent. By invertible
+175:     column operations over $\Q$, replace them by a basis $g_0,\dots,g_{l-1}$ of
+176:     their span having distinct degrees $d_0<\cdots<d_{l-1}$.
+177:     Such a basis is obtained by eliminating equal leading degrees: the
+178:     successive quotients of the degree filtration have dimension at most one.
+179:     If $A\in\mathrm{GL}_l(\Q)$ is this change-of-basis matrix, then
+180:     $W(g_0,\dots,g_{l-1})=W(\phi_0,\dots,\phi_{l-1})\det A$.
+181: 
+182:     Write $a_\nu\ne0$ for the leading coefficient of $g_\nu$ and set
+183:     $D=\sum_\nu d_\nu-l(l-1)/2\geq0$. The coefficient of $t^D$ in the new
+184:     Wronskian is
+185:     \[
+186:     \left(\prod_{\nu=0}^{l-1}a_\nu\right)
+187:     \det\left({d_\nu\choose\mu}\right)_{\mu,\nu=0}^{l-1}
+188:     =\left(\prod_{\nu=0}^{l-1}a_\nu\right)
+189:       \frac{\prod_{0\leq i<j<l}(d_j-d_i)}{\prod_{\mu=0}^{l-1}\mu!}\ne0.
+190:     \]
+191:     Indeed, $\binom{X}{\mu}$ has degree $\mu$ and leading coefficient
+192:     $1/\mu!$, so its evaluation determinant is the Vandermonde determinant
+193:     multiplied by $\prod_\mu1/\mu!$. All other contributions have lower total
+194:     degree. Thus the new Wronskian, and hence the original one, is nonzero.
+195: \end{proof}
+196: 
+197: \lean{Index both rows and columns by \texttt{Fin l}, the type of integers
+198: $0,\ldots,l-1$, and take the determinant of the matrix with entries
+199: $\Delta_\mu\phi_\nu$ in $\Q[t]$. Using the
+200: matrix determinant API\footnote{\url{https://leanprover-community.github.io/mathlib4_docs/Mathlib/LinearAlgebra/Matrix/Determinant/Basic.html}},
+201: split the independence criterion into change of basis, construction of a
+202: basis with distinct degrees, and the Vandermonde leading-coefficient
+203: calculation. This keeps the construction valid for arbitrary finite
+204: families, rather than just two polynomials.}
+205: 
+206: Suppose $l\geq1$ and $\phi_0(x_1, \dots, x_p), \phi_1(x_1, \dots, x_p), \dots, \phi_{l-1}(x_1, \dots, x_p)$ are $l$ polynomials in the $p$ variables $x_1, \dots, x_p$. Also suppose $\Delta_0, \Delta_1, \dots, \Delta_{l-1}$ are $l$ differential operators such that for each $i$, $0 \leq i \leq l-1$, the order of $\Delta_i$ is at most $i$. We call the determinant
+207: $$
+208: W(\phi_0, \dots, \phi_{l-1}; \Delta_0, \dots, \Delta_{l-1}) = \det \left(\Delta_\mu \phi_\nu (x_1, \dots, x_p) \right)_{ 0 \leq \mu \leq l-1 \atop 0 \leq \nu \leq l-1}
+209: $$
+210: a generalized Wronskian. This is understood as a polynomial in the variables $x_1, \dots, x_p$.  If $p > 1$ and $l >1$ we have more than one generalized Wronskian.
+211: 
+212: \begin{lem}
+213:     If $\phi_0, \dots, \phi_{l-1}$ are polynomials over a characteristic-zero field and are linearly dependent over that field, then all of their generalized Wronskians are identically zero.
+214: \end{lem}
+215: \begin{proof}
+216:     Let $\sum_\nu c_\nu\phi_\nu=0$ be a nontrivial dependence relation
+217:     over the coefficient field. Applying each $\Delta_\mu$ gives

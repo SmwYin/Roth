@@ -1,0 +1,462 @@
+// SOURCE .lake/packages/mathlib/Mathlib/Algebra/Polynomial/HasseDeriv.lean:44-70
+44: @[expose] public section
+45: 
+46: 
+47: noncomputable section
+48: 
+49: namespace Polynomial
+50: 
+51: open Nat Polynomial
+52: 
+53: open Function
+54: 
+55: variable {R : Type*} [Semiring R] (k : ℕ) (f : R[X])
+56: 
+57: /-- The `k`th Hasse derivative of a polynomial `∑ a_i X^i` is `∑ (i.choose k) a_i X^(i-k)`.
+58: It satisfies `k! * (hasse_deriv k f) = derivative^[k] f`. -/
+59: def hasseDeriv (k : ℕ) : R[X] →ₗ[R] R[X] :=
+60:   lsum fun i => monomial (i - k) ∘ₗ DistribSMul.toLinearMap R R (i.choose k)
+61: 
+62: theorem hasseDeriv_apply :
+63:     hasseDeriv k f = f.sum fun i r => monomial (i - k) (↑(i.choose k) * r) := by
+64:   dsimp [hasseDeriv]
+65:   simp
+66: 
+67: theorem hasseDeriv_coeff (n : ℕ) :
+68:     (hasseDeriv k f).coeff n = (n + k).choose k * f.coeff (n + k) := by
+69:   rw [hasseDeriv_apply, coeff_sum, sum_def, Finset.sum_eq_single (n + k), coeff_monomial]
+70:   · simp
+
+// SOURCE .lake/packages/mathlib/Mathlib/Algebra/Polynomial/HasseDeriv.lean:128-140
+128: theorem hasseDeriv_map {S : Type*} [Semiring S] (f : R →+* S) (k : ℕ) (p : R[X]) :
+129:     hasseDeriv k (p.map f) = (hasseDeriv k p).map f := by
+130:   ext
+131:   simp [hasseDeriv_coeff]
+132: 
+133: theorem factorial_smul_hasseDeriv : ⇑(k ! • @hasseDeriv R _ k) = (@derivative R _)^[k] := by
+134:   induction k with
+135:   | zero => rw [hasseDeriv_zero, factorial_zero, iterate_zero, one_smul, LinearMap.id_coe]
+136:   | succ k ih => ?_
+137:   ext f n : 2
+138:   rw [iterate_succ_apply', ← ih]
+139:   simp only [LinearMap.smul_apply, coeff_smul, LinearMap.map_smul_of_tower, coeff_derivative,
+140:     hasseDeriv_coeff, ← @choose_symm_add _ k]
+
+// SOURCE .lake/packages/mathlib/Mathlib/Algebra/Polynomial/Taylor.lean:43-84
+43: theorem taylor_apply : taylor r f = f.comp (X + C r) :=
+44:   rfl
+45: 
+46: @[simp]
+47: theorem taylor_X : taylor r X = X + C r := X_comp
+48: 
+49: @[simp]
+50: theorem taylor_X_pow (n : ℕ) : taylor r (X ^ n) = (X + C r) ^ n := X_pow_comp
+51: 
+52: @[simp]
+53: theorem taylor_C (x : R) : taylor r (C x) = C x := C_comp
+54: 
+55: theorem taylor_zero (f : R[X]) : taylor 0 f = f := by rw [taylor_apply, C_0, add_zero, comp_X]
+56: 
+57: @[simp]
+58: theorem taylor_zero' : taylor (0 : R) = LinearMap.id := LinearMap.ext taylor_zero
+59: 
+60: @[simp]
+61: theorem taylor_one : taylor r (1 : R[X]) = C 1 := taylor_C r 1
+62: 
+63: @[simp]
+64: theorem taylor_monomial (i : ℕ) (k : R) : taylor r (monomial i k) = C k * (X + C r) ^ i := by
+65:   simp [taylor_apply]
+66: 
+67: /-- The `k`th coefficient of `Polynomial.taylor r f` is `(Polynomial.hasseDeriv k f).eval r`. -/
+68: theorem taylor_coeff (n : ℕ) : (taylor r f).coeff n = (hasseDeriv n f).eval r :=
+69:   show (lcoeff R n).comp (taylor r) f = (leval r).comp (hasseDeriv n) f by
+70:     congr 1; clear! f; ext i
+71:     simp only [leval_apply, mul_one, one_mul, eval_monomial, LinearMap.comp_apply, map_sum,
+72:       hasseDeriv_monomial, taylor_apply, monomial_comp, C_1, (commute_X (C r)).add_pow i]
+73:     simp only [lcoeff_apply, ← C_eq_natCast, mul_assoc, ← C_pow, ← C_mul, coeff_mul_C,
+74:       (Nat.cast_commute _ _).eq, coeff_X_pow, boole_mul, Finset.sum_ite_eq, Finset.mem_range]
+75:     split_ifs with h; · rfl
+76:     push Not at h; rw [Nat.choose_eq_zero_of_lt h, Nat.cast_zero, mul_zero]
+77: 
+78: @[simp]
+79: theorem taylor_coeff_zero : (taylor r f).coeff 0 = f.eval r := by
+80:   rw [taylor_coeff, hasseDeriv_zero, LinearMap.id_apply]
+81: 
+82: @[simp]
+83: theorem taylor_coeff_one : (taylor r f).coeff 1 = f.derivative.eval r := by
+84:   rw [taylor_coeff, hasseDeriv_one]
+
+// SOURCE .lake/packages/mathlib/Mathlib/RingTheory/Polynomial/Wronskian.lean:13-51
+13: /-!
+14: # Wronskian of a pair of polynomial
+15: 
+16: This file defines Wronskian of a pair of polynomials, which is `W(a, b) = ab' - a'b`.
+17: We also prove basic properties of it.
+18: 
+19: ## Main declarations
+20: 
+21: - `Polynomial.wronskian_eq_of_sum_zero`: We have `W(a, b) = W(b, c)` when `a + b + c = 0`.
+22: - `Polynomial.degree_wronskian_lt_add`: Degree of Wronskian `W(a, b)` is strictly smaller than
+23:   the sum of degrees of `a` and `b`
+24: - `Polynomial.natDegree_wronskian_lt_add`: `natDegree` version of the above theorem.
+25:   We need to assume that the Wronskian is nonzero. (Otherwise, `a = b = 1` gives a counterexample.)
+26: 
+27: ## TODO
+28: 
+29: - Define Wronskian for n-tuple of polynomials, not necessarily two.
+30: -/
+31: 
+32: @[expose] public section
+33: 
+34: noncomputable section
+35: 
+36: open scoped Polynomial
+37: 
+38: namespace Polynomial
+39: 
+40: variable {R : Type*} [CommRing R]
+41: 
+42: /-- Wronskian of a pair of polynomials, `W(a, b) = ab' - a'b`. -/
+43: def wronskian (a b : R[X]) : R[X] :=
+44:   a * (derivative b) - (derivative a) * b
+45: 
+46: variable (R) in
+47: /-- `Polynomial.wronskian` as a bilinear map. -/
+48: def wronskianBilin : R[X] →ₗ[R] R[X] →ₗ[R] R[X] :=
+49:   (LinearMap.mul R R[X]).compl₂ derivative - (LinearMap.mul R R[X]).comp derivative
+50: 
+51: @[simp]
+
+// SOURCE .lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/Defs.lean:1-150
+1: /-
+2: Copyright (c) 2018 Ellen Arlt. All rights reserved.
+3: Released under Apache 2.0 license as described in the file LICENSE.
+4: Authors: Ellen Arlt, Blair Shi, Sean Leather, Mario Carneiro, Johan Commelin, Lu-Ming Zhang
+5: -/
+6: module
+7: 
+8: public import Batteries.Data.Fin.Lemmas
+9: public import Mathlib.Algebra.Module.Pi
+10: public import Mathlib.Basic.Nontrivial.Basic
+11: public import Mathlib.Tactic.CrossRefAttribute
+12: public import Mathlib.Tactic.Attr.Core
+13: 
+14: /-!
+15: # Matrices
+16: 
+17: This file defines basic properties of matrices up to the module structure.
+18: 
+19: Matrices with rows indexed by `m`, columns indexed by `n`, and entries of type `α` are represented
+20: with `Matrix m n α`. For the typical approach of counting rows and columns,
+21: `Matrix (Fin m) (Fin n) α` can be used.
+22: 
+23: ## Main definitions
+24: 
+25: * `Matrix.transpose`: transpose of a matrix, turning rows into columns and vice versa
+26: * `Matrix.submatrix`: take a submatrix by reindexing rows and columns
+27: * `Matrix.module`: matrices are a module over the ring of entries
+28: * `Set.matrix`: set of matrices with entries in a given set
+29: 
+30: ## Notation
+31: 
+32: The scope `Matrix` gives the following notation:
+33: 
+34: * `ᵀ` for `Matrix.transpose`
+35: 
+36: See `Mathlib/LinearAlgebra/Matrix/ConjTranspose.lean` for
+37: 
+38: * `ᴴ` for `Matrix.conjTranspose`
+39: 
+40: ## Implementation notes
+41: 
+42: For convenience, `Matrix m n α` is defined as `m → n → α`, as this allows elements of the matrix
+43: to be accessed with `A i j`. However, it is not advisable to _construct_ matrices using terms of the
+44: form `fun i j ↦ _` or even `(fun i j ↦ _ : Matrix m n α)`, as these are not recognized by Lean
+45: as having the right type. Instead, `Matrix.of` should be used.
+46: -/
+47: 
+48: @[expose] public section
+49: 
+50: assert_not_exists Algebra TrivialStar
+51: 
+52: universe u u' v w
+53: 
+54: /-- `Matrix m n R` is the type of matrices with entries in `R`, whose rows are indexed by `m`
+55: and whose columns are indexed by `n`. -/
+56: @[wikidata Q44337]
+57: def Matrix (m : Type u) (n : Type u') (α : Type v) : Type max u u' v :=
+58:   m → n → α
+59: 
+60: variable {l m n o : Type*}
+61: variable {R : Type*} {S : Type*} {α : Type v} {β : Type w} {γ : Type*}
+62: 
+63: namespace Matrix
+64: 
+65: section Ext
+66: 
+67: variable {M N : Matrix m n α}
+68: 
+69: theorem ext_iff : (∀ i j, M i j = N i j) ↔ M = N :=
+70:   ⟨fun h => funext fun i => funext <| h i, fun h => by simp [h]⟩
+71: 
+72: @[ext]
+73: theorem ext : (∀ i j, M i j = N i j) → M = N :=
+74:   ext_iff.mp
+75: 
+76: end Ext
+77: 
+78: /-- Cast a function into a matrix.
+79: 
+80: The two sides of the equivalence are definitionally equal types. We want to use an explicit cast
+81: to distinguish the types because `Matrix` has different instances to pi types (such as `Pi.mul`,
+82: which performs elementwise multiplication, vs `Matrix.mul`).
+83: 
+84: If you are defining a matrix, in terms of its entries, use `of (fun i j ↦ _)`. The
+85: purpose of this approach is to ensure that terms of the form `(fun i j ↦ _) * (fun i j ↦ _)` do not
+86: appear, as the type of `*` can be misleading.
+87: -/
+88: def of : (m → n → α) ≃ Matrix m n α :=
+89:   Equiv.refl _
+90: 
+91: @[simp]
+92: theorem of_apply (f : m → n → α) (i j) : of f i j = f i j :=
+93:   rfl
+94: 
+95: @[simp]
+96: theorem of_symm_apply (f : Matrix m n α) (i j) : of.symm f i j = f i j :=
+97:   rfl
+98: 
+99: /-- Construct a matrix from an array in row-major ordering. -/
+100: def ofArray {m n : ℕ} (A : Array R) (hA : A.size = m * n) : Matrix (Fin m) (Fin n) R :=
+101:   fun i j => A[Fin.mkDivMod i j]
+102: 
+103: @[simp]
+104: theorem ofArray_apply {m n : ℕ} (A : Array R) (hA : A.size = m * n) (i : Fin m) (j : Fin n) :
+105:     ofArray A hA i j = A[Fin.mkDivMod i j] := rfl
+106: 
+107: /-- The matrix constructed from the row-major array of `A`'s entries is `A`. -/
+108: @[simp]
+109: theorem ofArray_ofFn {m n : ℕ} (A : Matrix (Fin m) (Fin n) R) :
+110:     ofArray (.ofFn fun k : Fin (m * n) ↦ A k.divNat k.modNat) Array.size_ofFn = A := by
+111:   ext i j
+112:   rw [ofArray_apply, Fin.getElem_fin, Array.getElem_ofFn, Fin.divNat_mkDivMod,
+113:     Fin.modNat_mkDivMod]
+114: 
+115: lemma ofArray_eq_of_getD [Zero R] {m n : ℕ} (A : Array R) (hA : A.size = m * n) :
+116:     ofArray A hA = .of fun i j ↦ A.getD (n * i.val + j.val) 0 := by
+117:   ext i j
+118:   have : n * i.val + j.val < m * n := (Fin.mkDivMod i j).isLt
+119:   simp [ofArray, hA, this]
+120: 
+121: /-- `M.map f` is the matrix obtained by applying `f` to each entry of the matrix `M`.
+122: 
+123: This is available in bundled forms as:
+124: * `AddMonoidHom.mapMatrix`
+125: * `LinearMap.mapMatrix`
+126: * `RingHom.mapMatrix`
+127: * `AlgHom.mapMatrix`
+128: * `Equiv.mapMatrix`
+129: * `AddEquiv.mapMatrix`
+130: * `LinearEquiv.mapMatrix`
+131: * `RingEquiv.mapMatrix`
+132: * `AlgEquiv.mapMatrix`
+133: -/
+134: def map (M : Matrix m n α) (f : α → β) : Matrix m n β :=
+135:   of fun i j => f (M i j)
+136: 
+137: @[simp]
+138: theorem map_apply {M : Matrix m n α} {f : α → β} {i : m} {j : n} : M.map f i j = f (M i j) :=
+139:   rfl
+140: 
+141: @[simp]
+142: theorem map_id (M : Matrix m n α) : M.map id = M := by
+143:   ext
+144:   rfl
+145: 
+146: @[simp]
+147: theorem map_id' (M : Matrix m n α) : M.map (·) = M := map_id M
+148: 
+149: @[simp]
+150: theorem map_map {M : Matrix m n α} {β γ : Type*} {f : α → β} {g : β → γ} :
+
+// SOURCE .lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/ToLin.lean:1-180
+1: /-
+2: Copyright (c) 2019 Johannes Hölzl. All rights reserved.
+3: Released under Apache 2.0 license as described in the file LICENSE.
+4: Authors: Johannes Hölzl, Patrick Massot, Casper Putz, Anne Baanen
+5: -/
+6: module
+7: 
+8: public import Mathlib.Algebra.Algebra.Subalgebra.Tower
+9: public import Mathlib.Algebra.Module.Projective
+10: public import Mathlib.Basic.Finite.Sum
+11: public import Mathlib.Data.Matrix.Block
+12: public import Mathlib.LinearAlgebra.Basis.Basic
+13: public import Mathlib.LinearAlgebra.Basis.Fin
+14: public import Mathlib.LinearAlgebra.Basis.Prod
+15: public import Mathlib.LinearAlgebra.Basis.SMul
+16: public import Mathlib.LinearAlgebra.Matrix.Notation
+17: public import Mathlib.LinearAlgebra.Matrix.StdBasis
+18: public import Mathlib.RingTheory.AlgebraTower
+19: public import Mathlib.RingTheory.Ideal.Span
+20: 
+21: /-!
+22: # Linear maps and matrices
+23: 
+24: This file defines the maps to send matrices to a linear map,
+25: and to send linear maps between modules with a finite bases
+26: to matrices. This defines a linear equivalence between linear maps
+27: between finite-dimensional vector spaces and matrices indexed by
+28: the respective bases.
+29: 
+30: ## Main definitions
+31: 
+32: In the list below, and in all this file, `R` is a commutative ring (semiring
+33: is sometimes enough), `M` and its variations are `R`-modules, `ι`, `κ`, `n` and `m` are finite
+34: types used for indexing.
+35: 
+36: * `LinearMap.toMatrix`: given bases `v₁ : ι → M₁` and `v₂ : κ → M₂`,
+37:   the `R`-linear equivalence from `M₁ →ₗ[R] M₂` to `Matrix κ ι R`
+38: * `Matrix.toLin`: the inverse of `LinearMap.toMatrix`
+39: * `LinearMap.toMatrix'`: the `R`-linear equivalence from `(m → R) →ₗ[R] (n → R)`
+40:   to `Matrix m n R` (with the standard basis on `m → R` and `n → R`)
+41: * `Matrix.toLin'`: the inverse of `LinearMap.toMatrix'`
+42: * `algEquivMatrix`: given a basis indexed by `n`, the `R`-algebra equivalence between
+43:   `R`-endomorphisms of `M` and `Matrix n n R`
+44: 
+45: ## Issues
+46: 
+47: This file was originally written without attention to non-commutative rings,
+48: and so mostly only works in the commutative setting. This should be fixed.
+49: 
+50: In particular, `Matrix.mulVec` gives us a linear equivalence
+51: `Matrix m n R ≃ₗ[R] (n → R) →ₗ[Rᵐᵒᵖ] (m → R)`
+52: while `Matrix.vecMul` gives us a linear equivalence
+53: `Matrix m n R ≃ₗ[Rᵐᵒᵖ] (m → R) →ₗ[R] (n → R)`.
+54: At present, the first equivalence is developed in detail but only for commutative rings
+55: (and we omit the distinction between `Rᵐᵒᵖ` and `R`),
+56: while the second equivalence is developed only in brief, but for not-necessarily-commutative rings.
+57: 
+58: Naming is slightly inconsistent between the two developments.
+59: In the original (commutative) development `linear` is abbreviated to `lin`,
+60: although this is not consistent with the rest of mathlib.
+61: In the new (non-commutative) development `linear` is not abbreviated, and declarations use `_right`
+62: to indicate they use the right action of matrices on vectors (via `Matrix.vecMul`).
+63: When the two developments are made uniform, the names should be made uniform, too,
+64: by choosing between `linear` and `lin` consistently,
+65: and (presumably) adding `_left` where necessary.
+66: 
+67: ## Tags
+68: 
+69: linear_map, matrix, linear_equiv, diagonal, det, trace
+70: -/
+71: 
+72: @[expose] public section
+73: 
+74: noncomputable section
+75: 
+76: open LinearMap Matrix Module Set Submodule
+77: 
+78: /-!
+79: ### Bilinear versions of matrix products
+80: 
+81: The definitions in this section are stated with two extra rings, to allow for non-commutative rings.
+82: -/
+83: 
+84: section Bilinear
+85: variable {m n R S A : Type*}
+86: variable [Semiring R] [Semiring S] [NonUnitalNonAssocSemiring A]
+87: variable [Module R A] [Module S A]
+88: variable [SMulCommClass S R A] [SMulCommClass S A A] [IsScalarTower R A A]
+89: 
+90: variable (R S)
+91: 
+92: /-- `Matrix.vecMul` as a bilinear map.
+93: 
+94: When `A` is non-commutative, this can be instantiated as `vecMulBilin A Aᵐᵒᵖ` -/
+95: def Matrix.vecMulBilin [Fintype m] : (m → A) →ₗ[R] Matrix m n A →ₗ[S] (n → A) where
+96:   toFun x :=
+97:   { toFun M := x ᵥ* M
+98:     map_add' _ _ := vecMul_add _ _ _
+99:     map_smul' _ _ := vecMul_smul _ _ _ }
+100:   map_add' _ _ := LinearMap.ext fun _ => add_vecMul _ _ _
+101:   map_smul' _ _ := LinearMap.ext fun _ => smul_vecMul _ _ _
+102: 
+103: @[simp]
+104: theorem Matrix.vecMulBilin_apply [Fintype m] (v : m → A) (M : Matrix m n A) :
+105:     Matrix.vecMulBilin R S v M = v ᵥ* M := rfl
+106: 
+107: example {A} [Semiring A] [Fintype m] := (vecMulBilin A Aᵐᵒᵖ : _ →ₗ[_] Matrix m n A →ₗ[_] _)
+108: 
+109: /-- `Matrix.mulVec` as a bilinear map.
+110: 
+111: When `A` is non-commutative, this can be instantiated as `mulVecBilin A Aᵐᵒᵖ` -/
+112: def Matrix.mulVecBilin [Fintype n] : Matrix m n A →ₗ[R] (n → A) →ₗ[S] (m → A) where
+113:   toFun M :=
+114:   { toFun x := M *ᵥ x
+115:     map_add' _ _ := mulVec_add _ _ _
+116:     map_smul' _ _ := mulVec_smul _ _ _ }
+117:   map_add' _ _ := LinearMap.ext fun _ => add_mulVec _ _ _
+118:   map_smul' _ _ := LinearMap.ext fun _ => smul_mulVec _ _ _
+119: 
+120: @[simp]
+121: theorem Matrix.mulVecBilin_apply [Fintype n] (M : Matrix m n A) (v : n → A) :
+122:     Matrix.mulVecBilin R S M v = M *ᵥ v := rfl
+123: 
+124: example {A} [Semiring A] [Fintype n] := (mulVecBilin A Aᵐᵒᵖ : Matrix m n A →ₗ[_] _ →ₗ[_] _)
+125: 
+126: /-- `vecMulVec` as a bilinear map.
+127: 
+128: When `A` is noncommutative, `R` and `S` can be instantiated as `vecMulVecBilin A Aᵐᵒᵖ`. -/
+129: @[simps]
+130: def vecMulVecBilin : (m → A) →ₗ[R] (n → A) →ₗ[S] Matrix m n A where
+131:   toFun x :=
+132:     { toFun y := vecMulVec x y
+133:       map_add' _ _ := vecMulVec_add _ _ _
+134:       map_smul' _ _ := vecMulVec_smul _ _ _ }
+135:   map_add' _ _ := LinearMap.ext fun _ => add_vecMulVec _ _ _
+136:   map_smul' _ _ := LinearMap.ext fun _ => smul_vecMulVec _ _ _
+137: 
+138: example {A} [Semiring A] := (vecMulVecBilin A Aᵐᵒᵖ : (m → A) →ₗ[_] (n → A) →ₗ[_] _)
+139: 
+140: /-- `dotProduct` as a bilinear map.
+141: 
+142: When `A` is noncommutative, `R` and `S` can be instantiated as `dotProductBilin A Aᵐᵒᵖ`. -/
+143: @[simps]
+144: def dotProductBilin [Fintype m] : (m → A) →ₗ[R] (m → A) →ₗ[S] A where
+145:   toFun x :=
+146:     { toFun y := dotProduct x y
+147:       map_add' _ _ := dotProduct_add _ _ _
+148:       map_smul' _ _ := dotProduct_smul _ _ _ }
+149:   map_add' _ _ := LinearMap.ext fun _ => add_dotProduct _ _ _
+150:   map_smul' _ _ := LinearMap.ext fun _ => smul_dotProduct _ _ _
+151: 
+152: example {A} [Semiring A] [Fintype m] := (dotProductBilin A Aᵐᵒᵖ : (m → A) →ₗ[_] _ →ₗ[_] _)
+153: 
+154: end Bilinear
+155: 
+156: section ToMatrixRight
+157: variable {R : Type*} [Semiring R]
+158: variable {l m n : Type*}
+159: 
+160: /-- `Matrix.vecMul M` is a linear map.
+161: 
+162: Note this is a special case of `Matrix.vecMulBilin`. -/
+163: abbrev Matrix.vecMulLinear [Fintype m] (M : Matrix m n R) : (m → R) →ₗ[R] n → R :=
+164:   Matrix.vecMulBilin R Rᵐᵒᵖ |>.flip M
+165: 
+166: @[simp] theorem Matrix.vecMulLinear_apply [Fintype m] (M : Matrix m n R) (x : m → R) :
+167:     M.vecMulLinear x = x ᵥ* M := rfl
+168: 
+169: theorem Matrix.coe_vecMulLinear [Fintype m] (M : Matrix m n R) :
+170:     (M.vecMulLinear : _ → _) = M.vecMul := rfl
+171: 
+172: variable [Fintype m]
+173: 
+174: set_option backward.isDefEq.respectTransparency false in
+175: theorem range_vecMulLinear (M : Matrix m n R) :
+176:     LinearMap.range M.vecMulLinear = span R (range M.row) := by
+177:   let := Classical.decEq m
+178:   simp_rw [range_eq_map, ← iSup_range_single, Submodule.map_iSup, range_eq_map, ←
+179:     Ideal.span_singleton_one, Ideal.span, Submodule.map_span, image_image, image_singleton,
+180:     Matrix.vecMulLinear_apply, iSup_span, range_eq_iUnion, iUnion_singleton_eq_range,

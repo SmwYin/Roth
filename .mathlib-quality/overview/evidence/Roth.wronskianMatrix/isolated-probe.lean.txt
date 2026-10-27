@@ -1,0 +1,34 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+#check_failure Roth.wronskianMatrix
+open Polynomial
+namespace WronskianMatrixAssessment
+noncomputable def matrix {R : Type*} [Semiring R] {l : ℕ}
+    (φ : Fin l → R[X]) : Matrix (Fin l) (Fin l) R[X] :=
+  Matrix.of fun μ ν ↦ hasseDeriv μ (φ ν)
+theorem direct {R : Type*} [Semiring R] {l : ℕ} (φ : Fin l → R[X]) :
+    matrix φ = Matrix.of (fun μ ν : Fin l ↦ hasseDeriv μ (φ ν)) := rfl
+noncomputable def rectangular {R : Type*} [Semiring R] {ι κ : Type*}
+    (order : ι → ℕ) (φ : κ → R[X]) : Matrix ι κ R[X] :=
+  Matrix.of fun μ ν ↦ hasseDeriv (order μ) (φ ν)
+theorem rectangular_bridge {R : Type*} [Semiring R] {l : ℕ} (φ : Fin l → R[X]) :
+    matrix φ = rectangular (fun μ : Fin l ↦ (μ : ℕ)) φ := rfl
+example : Matrix (Fin 2) (Fin 2) ℕ[X] := matrix (fun _ ↦ X)
+universe u
+example {R : Type u} [Semiring R] {l : ℕ} (φ : Fin l → R[X]) :
+    Matrix (Fin l) (Fin l) R[X] := matrix φ
+example {l : ℕ} (φ : Fin l → ℕ[X]) (i j : Fin l) :
+    matrix φ i j = hasseDeriv i (φ j) := rfl
+#synth Semiring ℕ
+#synth CommRing (Polynomial ℤ)
+#check @Polynomial.hasseDeriv
+#check @Matrix.of
+#check @Polynomial.wronskian
+#check @Polynomial.factorial_smul_hasseDeriv
+#check @Polynomial.taylor_coeff
+#print axioms matrix
+#print axioms direct
+#print axioms rectangular_bridge
+end WronskianMatrixAssessment
