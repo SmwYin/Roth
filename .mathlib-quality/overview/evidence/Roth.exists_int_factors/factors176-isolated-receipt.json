@@ -1,0 +1,93 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\n/-! Isolated existing Gauss APIs and full target closure audit. -/\n#check_failure Roth.exists_int_factors\n#check @Polynomial.IsPrimitive.mul_map_mem_lifts_iff\n#check @Polynomial.IsPrimitive.map_mul_mem_lifts_iff\n#check @Polynomial.IsPrimitive.dvd_of_fraction_map_dvd_fraction_map\n#check @IsLocalization.exists_integer_multiple\n#check @MvPolynomial.degrees_map_of_injective\n#check @Polynomial.natDegree_C_mul\nnamespace Factors176Mathlib\nvariable {R K : Type*} [CommRing R] [IsDomain R] [IsGCDMonoid R]\n    [Field K] [Algebra R K] [IsFractionRing R K]\ntheorem actual_gauss {f : Polynomial R} (hf : f.IsPrimitive) {g : Polynomial K}\n    (h : f.map (algebraMap R K) * g ∈ Polynomial.lifts (algebraMap R K)) :\n    g ∈ Polynomial.lifts (algebraMap R K) := hf.map_mul_mem_lifts_iff.mp h\n#print axioms actual_gauss\nend Factors176Mathlib\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.exists_int_factors`\",\n      \"line\": 17,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.IsPrimitive.mul_map_mem_lifts_iff : ∀ {R : Type u_1} [inst : CommRing R] {K : Type u_2} [inst_1 : Field K]\\n  [inst_2 : Algebra R K] [IsFractionRing R K] [IsDomain R] [IsGCDMonoid R] {f : Polynomial R},\\n  f.IsPrimitive →\\n    ∀ {g : Polynomial K},\\n      g * Polynomial.map (algebraMap R K) f ∈ Polynomial.lifts (algebraMap R K) ↔ g ∈ Polynomial.lifts (algebraMap R K)\",\n      \"line\": 18,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.IsPrimitive.map_mul_mem_lifts_iff : ∀ {R : Type u_1} [inst : CommRing R] {K : Type u_2} [inst_1 : Field K]\\n  [inst_2 : Algebra R K] [IsFractionRing R K] [IsDomain R] [IsGCDMonoid R] {f : Polynomial R},\\n  f.IsPrimitive →\\n    ∀ {g : Polynomial K},\\n      Polynomial.map (algebraMap R K) f * g ∈ Polynomial.lifts (algebraMap R K) ↔ g ∈ Polynomial.lifts (algebraMap R K)\",\n      \"line\": 19,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.IsPrimitive.dvd_of_fraction_map_dvd_fraction_map : ∀ {R : Type u_1} [inst : CommRing R] {K : Type u_2}\\n  [inst_1 : Field K] [inst_2 : Algebra R K] [IsFractionRing R K] [IsDomain R] [IsGCDMonoid R] {p q : Polynomial R},\\n  p.IsPrimitive → Polynomial.map (algebraMap R K) p ∣ Polynomial.map (algebraMap R K) q → p ∣ q\",\n      \"line\": 20,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@IsLocalization.exists_integer_multiple : ∀ {R : Type u_1} [inst : CommSemiring R] (M : Submonoid R) {S : Type u_2}\\n  [inst_1 : CommSemiring S] [inst_2 : Algebra R S] [IsLocalization M S] (a : S),\\n  ∃ b, IsLocalization.IsInteger R (↑b • a)\",\n      \"line\": 21,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPolynomial.degrees_map_of_injective : ∀ {R : Type u_1} {S : Type u_2} {σ : Type u_3} [inst : CommSemiring R]\\n  [inst_1 : CommSemiring S] (p : MvPolynomial σ R) {f : R →+* S},\\n  Function.Injective ⇑f → ((MvPolynomial.map f) p).degrees = p.degrees\",\n      \"line\": 22,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.natDegree_C_mul : ∀ {R : Type u_1} [inst : Semiring R] {p : Polynomial R} {a : R} [NoZeroDivisors R],\\n  a ≠ 0 → (Polynomial.C a * p).natDegree = p.natDegree\",\n      \"line\": 23,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Factors176Mathlib.actual_gauss' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 30,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.exists_int_factors`",
+          "line": 17,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.IsPrimitive.mul_map_mem_lifts_iff : ∀ {R : Type u_1} [inst : CommRing R] {K : Type u_2} [inst_1 : Field K]\n  [inst_2 : Algebra R K] [IsFractionRing R K] [IsDomain R] [IsGCDMonoid R] {f : Polynomial R},\n  f.IsPrimitive →\n    ∀ {g : Polynomial K},\n      g * Polynomial.map (algebraMap R K) f ∈ Polynomial.lifts (algebraMap R K) ↔ g ∈ Polynomial.lifts (algebraMap R K)",
+          "line": 18,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.IsPrimitive.map_mul_mem_lifts_iff : ∀ {R : Type u_1} [inst : CommRing R] {K : Type u_2} [inst_1 : Field K]\n  [inst_2 : Algebra R K] [IsFractionRing R K] [IsDomain R] [IsGCDMonoid R] {f : Polynomial R},\n  f.IsPrimitive →\n    ∀ {g : Polynomial K},\n      Polynomial.map (algebraMap R K) f * g ∈ Polynomial.lifts (algebraMap R K) ↔ g ∈ Polynomial.lifts (algebraMap R K)",
+          "line": 19,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.IsPrimitive.dvd_of_fraction_map_dvd_fraction_map : ∀ {R : Type u_1} [inst : CommRing R] {K : Type u_2}\n  [inst_1 : Field K] [inst_2 : Algebra R K] [IsFractionRing R K] [IsDomain R] [IsGCDMonoid R] {p q : Polynomial R},\n  p.IsPrimitive → Polynomial.map (algebraMap R K) p ∣ Polynomial.map (algebraMap R K) q → p ∣ q",
+          "line": 20,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@IsLocalization.exists_integer_multiple : ∀ {R : Type u_1} [inst : CommSemiring R] (M : Submonoid R) {S : Type u_2}\n  [inst_1 : CommSemiring S] [inst_2 : Algebra R S] [IsLocalization M S] (a : S),\n  ∃ b, IsLocalization.IsInteger R (↑b • a)",
+          "line": 21,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPolynomial.degrees_map_of_injective : ∀ {R : Type u_1} {S : Type u_2} {σ : Type u_3} [inst : CommSemiring R]\n  [inst_1 : CommSemiring S] (p : MvPolynomial σ R) {f : R →+* S},\n  Function.Injective ⇑f → ((MvPolynomial.map f) p).degrees = p.degrees",
+          "line": 22,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.natDegree_C_mul : ∀ {R : Type u_1} [inst : Semiring R] {p : Polynomial R} {a : R} [NoZeroDivisors R],\n  a ≠ 0 → (Polynomial.C a * p).natDegree = p.natDegree",
+          "line": 23,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Factors176Mathlib.actual_gauss' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 30,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 53
+}

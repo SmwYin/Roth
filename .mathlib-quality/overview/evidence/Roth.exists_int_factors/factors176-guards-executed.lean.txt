@@ -1,0 +1,40 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.RingTheory.Polynomial.GaussLemma
+
+/-! Zero-factor semantic guards. -/
+namespace Factors176Guards
+open MvPolynomial
+variable {τ : Type*}
+theorem zero_product_impossible :
+    ¬ ∃ (U : MvPolynomial τ ℤ) (V : Polynomial ℤ), U ≠ 0 ∧ V ≠ 0 ∧
+      (0 : MvPolynomial (Option τ) ℤ) =
+        rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) ℤ) V := by
+  rintro ⟨U, V, hU, hV, h⟩
+  apply mul_ne_zero
+    ((rename_eq_zero_iff_of_injective U (Option.some_injective τ)).not.mpr hU)
+    ((map_ne_zero_iff (Polynomial.aeval (X none))
+      (Polynomial.toMvPolynomial_injective none)).2 hV)
+  exact h.symm
+theorem left_zero_input : map (Int.castRingHom ℚ) (0 : MvPolynomial (Option τ) ℤ) =
+    rename some (0 : MvPolynomial τ ℚ) *
+      Polynomial.aeval (X none : MvPolynomial (Option τ) ℚ) (1 : Polynomial ℚ) := by simp
+theorem right_zero_input : map (Int.castRingHom ℚ) (0 : MvPolynomial (Option τ) ℤ) =
+    rename some (1 : MvPolynomial τ ℚ) *
+      Polynomial.aeval (X none : MvPolynomial (Option τ) ℚ) (0 : Polynomial ℚ) := by simp
+#print axioms zero_product_impossible
+#print axioms left_zero_input
+#print axioms right_zero_input
+end Factors176Guards

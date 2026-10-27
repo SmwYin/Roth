@@ -1,0 +1,24 @@
+namespace Factors176GCDScalar
+variable {R K : Type*} [CommRing R] [IsDomain R] [NormalizedGCDMonoid R]
+    [Field K] [Algebra R K] [IsFractionRing R K]
+theorem scalar_integer {ι : Type*} {s : Finset ι} {u : ι → R} (hu : s.gcd u = 1)
+    {v : K} (hv : ∀ a ∈ s, ∃ z : R, algebraMap R K (u a) * v = algebraMap R K z) :
+    ∃ z : R, v = algebraMap R K z := by
+  obtain ⟨a, b, hab, he⟩ := IsLocalization.surj_of_gcd_domain (nonZeroDivisors R) v
+  have hrel : IsRelPrime a b := gcd_isUnit_iff_isRelPrime.mp hab
+  have hdiv : b ∣ s.gcd u := Finset.dvd_gcd fun i hi ↦ by
+    obtain ⟨z, hz⟩ := hv i hi
+    have hmul : u i * a = z * b := IsFractionRing.injective R K (by
+      simp only [map_mul]
+      rw [← he, ← mul_assoc, hz])
+    apply hrel.symm.dvd_of_dvd_mul_right
+    exact hmul ▸ dvd_mul_left b z
+  have hb : IsUnit b := isUnit_iff_dvd_one.mpr (hu ▸ hdiv)
+  refine ⟨a * (hb.unit⁻¹ : R), ?_⟩
+  rw [map_mul]
+  have hmap := Units.coe_map_inv (algebraMap R K : R →* K) hb.unit
+  simp only [MonoidHom.coe_coe] at hmap
+  rw [← hmap, Units.eq_mul_inv_iff_mul_eq]
+  exact he
+#print axioms scalar_integer
+end Factors176GCDScalar

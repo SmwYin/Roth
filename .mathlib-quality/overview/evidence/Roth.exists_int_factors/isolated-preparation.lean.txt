@@ -1,0 +1,45 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.RingTheory.Polynomial.GaussLemma
+/-! Isolated existing Gauss APIs and full target closure audit. -/
+#check_failure Roth.exists_int_factors
+#check @Polynomial.IsPrimitive.mul_map_mem_lifts_iff
+#check @Polynomial.IsPrimitive.map_mul_mem_lifts_iff
+#check @Polynomial.IsPrimitive.dvd_of_fraction_map_dvd_fraction_map
+#check @IsLocalization.exists_integer_multiple
+#check @MvPolynomial.degrees_map_of_injective
+#check @Polynomial.natDegree_C_mul
+namespace Factors176Mathlib
+variable {R K : Type*} [CommRing R] [IsDomain R] [IsGCDMonoid R]
+    [Field K] [Algebra R K] [IsFractionRing R K]
+theorem actual_gauss {f : Polynomial R} (hf : f.IsPrimitive) {g : Polynomial K}
+    (h : f.map (algebraMap R K) * g ∈ Polynomial.lifts (algebraMap R K)) :
+    g ∈ Polynomial.lifts (algebraMap R K) := hf.map_mul_mem_lifts_iff.mp h
+#print axioms actual_gauss
+end Factors176Mathlib
+namespace Factors176Closure
+open MvPolynomial
+variable {τ : Type*}
+example {U' : MvPolynomial τ ℚ} {V' : Polynomial ℚ} (hU : U' ≠ 0) (hV : V' ≠ 0)
+    {F : MvPolynomial (Option τ) ℤ} (hF : map (Int.castRingHom ℚ) F =
+      rename some U' * Polynomial.aeval (X none : MvPolynomial (Option τ) ℚ) V') : True := by
+  fail_if_success
+    have h : ∃ (U : MvPolynomial τ ℤ) (V : Polynomial ℤ), U ≠ 0 ∧ V ≠ 0 ∧
+        F = rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) ℤ) V ∧
+        (∀ j, degreeOf j U = degreeOf j U') ∧ V.natDegree = V'.natDegree := by
+      simpa only using hF
+    exact True.intro
+  exact True.intro
+end Factors176Closure

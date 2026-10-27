@@ -1,0 +1,48 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\n\n/-! Zero-factor semantic guards. -/\nnamespace Factors176Guards\nopen MvPolynomial\nvariable {τ : Type*}\ntheorem zero_product_impossible :\n    ¬ ∃ (U : MvPolynomial τ ℤ) (V : Polynomial ℤ), U ≠ 0 ∧ V ≠ 0 ∧\n      (0 : MvPolynomial (Option τ) ℤ) =\n        rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) ℤ) V := by\n  rintro ⟨U, V, hU, hV, h⟩\n  apply mul_ne_zero\n    ((rename_eq_zero_iff_of_injective U (Option.some_injective τ)).not.mpr hU)\n    ((map_ne_zero_iff (Polynomial.aeval (X none))\n      (Polynomial.toMvPolynomial_injective none)).2 hV)\n  exact h.symm\ntheorem left_zero_input : map (Int.castRingHom ℚ) (0 : MvPolynomial (Option τ) ℤ) =\n    rename some (0 : MvPolynomial τ ℚ) *\n      Polynomial.aeval (X none : MvPolynomial (Option τ) ℚ) (1 : Polynomial ℚ) := by simp\ntheorem right_zero_input : map (Int.castRingHom ℚ) (0 : MvPolynomial (Option τ) ℤ) =\n    rename some (1 : MvPolynomial τ ℚ) *\n      Polynomial.aeval (X none : MvPolynomial (Option τ) ℚ) (0 : Polynomial ℚ) := by simp\n#print axioms zero_product_impossible\n#print axioms left_zero_input\n#print axioms right_zero_input\nend Factors176Guards\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Factors176Guards.zero_product_impossible' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 37,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Factors176Guards.left_zero_input' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 38,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Factors176Guards.right_zero_input' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 39,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "'Factors176Guards.zero_product_impossible' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 37,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Factors176Guards.left_zero_input' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 38,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Factors176Guards.right_zero_input' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 39,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 220
+}

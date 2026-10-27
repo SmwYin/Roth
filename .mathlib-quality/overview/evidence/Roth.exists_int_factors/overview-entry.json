@@ -1,0 +1,88 @@
+{
+  "declaration": "Roth.exists_int_factors",
+  "kind": "theorem",
+  "type": "\u2200 {\u03c4 : Type u_1} {U' : MvPolynomial \u03c4 \u211a} {V' : Polynomial \u211a},\n  U' \u2260 0 \u2192\n    V' \u2260 0 \u2192\n      \u2200 {F : MvPolynomial (Option \u03c4) \u2124},\n        (map (Int.castRingHom \u211a)) F = (rename some) U' * (Polynomial.aeval (X none)) V' \u2192\n          \u2203 (U : MvPolynomial \u03c4 \u2124) (V : Polynomial \u2124),\n            U \u2260 0 \u2227\n              V \u2260 0 \u2227\n                F = (rename some) U * (Polynomial.aeval (X none)) V \u2227\n                  (\u2200 (j : \u03c4), degreeOf j U = degreeOf j U') \u2227 V.natDegree = V'.natDegree",
+  "what": "Descend a nonzero separated rational factorization of an integer polynomial to integer factors, preserving all factor degrees.",
+  "how": "Roth.exists_primitive_smul_eq supplies a primitive scalar representative; Roth.rescale_separated_factor_aux transfers the inverse scalar to the right factor; Roth.exists_int_polynomial_of_primitive_factor_aux descends its coefficients. MvPolynomial.map_injective descends equality; degrees_map_of_injective/degreeOf_C_mul and Polynomial.natDegree_map_eq_of_injective/natDegree_C_mul transport all degrees.",
+  "hypotheses": [
+    "Arbitrary variable type \u03c4; no Fintype or DecidableEq.",
+    "Nonzero U\u2032 and V\u2032.",
+    "Exact mapped factorization of integral F."
+  ],
+  "project_dependencies": [
+    "Roth.exists_primitive_smul_eq",
+    "Roth.rescale_separated_factor_aux",
+    "Roth.exists_int_polynomial_of_primitive_factor_aux"
+  ],
+  "caller_summary": {
+    "explicit_use_count": 1,
+    "external_to_file_count": 0,
+    "callers": [
+      {
+        "declaration": "Roth.exists_det_eq_mul",
+        "file": "Roth/Separation.lean",
+        "line": 552,
+        "role": "Integral nonzero determinant factors; degree equalities discarded, bounds rederived."
+      }
+    ],
+    "direct_kernel_value_consumers": [
+      "Roth.exists_det_eq_mul"
+    ],
+    "inline_rederivations": []
+  },
+  "mathlib_api_audit": {
+    "status": "Partial Gauss/localization/reduced-GCD matches, no full target or \u22643-call proof verified.",
+    "existing": [
+      "Polynomial.IsPrimitive.map_mul_mem_lifts_iff",
+      "Polynomial.IsPrimitive.mul_map_mem_lifts_iff",
+      "Polynomial.IsPrimitive.dvd_of_fraction_map_dvd_fraction_map",
+      "IsLocalization.surj_of_gcd_domain",
+      "MvPolynomial.isLocalization"
+    ],
+    "search_forms": [
+      "current",
+      "standard",
+      "abstract"
+    ],
+    "all_five_methods_executed": true,
+    "index_caveat": "Local index unavailable; fallback hits include scratch project proofs, external versions can differ."
+  },
+  "moral_duplications": "Gauss-type descent; univariate Gauss integrality is a partial match requiring actual multivariate and support/primitivity bridges.",
+  "generalization": {
+    "status": "Verified full GCD-domain/fraction-field proof, exact concrete specialization and entire sole caller.",
+    "signature": "variable {\u03c4 R K : Type*} [CommRing R] [IsDomain R] [NormalizedGCDMonoid R]\n    [Field K] [Algebra R K] [IsFractionRing R K]\ntheorem exists_separated_factors {U' : MvPolynomial \u03c4 K} {V' : Polynomial K} (hU : U' \u2260 0) (hV : V' \u2260 0)\n    {F : MvPolynomial (Option \u03c4) R} (hF : map (algebraMap R K) F =\n      rename some U' * Polynomial.aeval (X none : MvPolynomial (Option \u03c4) K) V') :\n    \u2203 (U : MvPolynomial \u03c4 R) (V : Polynomial R), U \u2260 0 \u2227 V \u2260 0 \u2227\n      F = rename some U * Polynomial.aeval (X none : MvPolynomial (Option \u03c4) R) V \u2227\n      (\u2200 j, degreeOf j U = degreeOf j U') \u2227 V.natDegree = V'.natDegree",
+    "no_IsBezout": true,
+    "no_UFD": true,
+    "all_conclusions_preserved": true
+  },
+  "missing_api": [
+    "Generic multivariate primitive representative (accepted172 proposal).",
+    "Finite primitive coefficient scalar descent over GCD domains (new reduced-fraction proof).",
+    "Separated polynomial factor descent with all degree conclusions."
+  ],
+  "junk": {
+    "status": false,
+    "reason": "Main module result used by determinant factorization."
+  },
+  "action": {
+    "verdict": "YES-but-generalise-first",
+    "upstream_file": "Mathlib/RingTheory/MvPolynomial/GaussLemma.lean",
+    "pr_title": "feat(MvPolynomial): descend separated fraction-field factors over GCD domains",
+    "grouping": [
+      "Roth.exists_primitive_smul_eq",
+      "Roth.exists_int_eq_of_gcd_eq_one"
+    ],
+    "checklist": [
+      "/generalise Roth.exists_int_factors",
+      "/cleanup Roth/Separation.lean Roth.exists_int_factors",
+      "/cleanup Mathlib/RingTheory/MvPolynomial/GaussLemma.lean MvPolynomial.exists_separated_factors",
+      "Replay complete Roth.exists_det_eq_mul with generic specialization.",
+      "/pre-submit"
+    ],
+    "reviewer_candidates": [
+      "Justus Springer",
+      "Junyan Xu"
+    ],
+    "local_destination": "Roth/Separation.lean during migration."
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "method": "leanfinder",
+  "request": {
+    "query": "GCD domain fraction field primitive coefficient family scalar multiple integral denominator divides gcd",
+    "num_results": 5
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.IsPrimitive.dvd_of_fraction_map_dvd_fraction_map\",\n      \"informal_name\": \"Divisibility of Primitive Polynomials via Fraction Ring Extension\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] {K : Type u_2} [inst_1 : Field K] [inst_2 : Algebra R K] [IsFractionRing R K]\\n  [IsDomain R] [Nonempty (NormalizedGCDMonoid R)] {p q : Polynomial R},\\n  p.IsPrimitive → q.IsPrimitive → Polynomial.map (algebraMap R K) p ∣ Polynomial.map (algebraMap R K) q → p ∣ q\",\n      \"informal_description\": \"Let $ R $ be a commutative ring and $ K $ its fraction field. If $ p $ and $ q $ are primitive polynomials in $ R[X] $, and the image of $ p $ under the canonical ring homomorphism $ R \\\\to K $ divides the image of $ q $ in $ K[X] $, then $ p $ divides $ q $ in $ R[X] $.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.GaussLemma\"\n    },\n    {\n      \"formal_name\": \"RatFunc.num_div_dvd'\",\n      \"informal_name\": \"Divisibility by Normalized Coprime Polynomial Factor\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {K : Type u} [inst : Field K] (p : Polynomial K) {q : Polynomial K},\\n  q ≠ 0 → Polynomial.C (q / gcd p q).leadingCoeff⁻¹ * (p / gcd p q) ∣ p\",\n      \"informal_description\": \"For any polynomial $ p $ and non-zero polynomial $ q $ over a field $ K $, the product of the constant polynomial with coefficient equal to the inverse of the leading coefficient of $ q / \\\\gcd(p, q) $ and the polynomial $ p / \\\\gcd(p, q) $ divides $ p $. This constructs a normalized coprime divisor of $ p $ by adjusting the leading coefficient of the coprime part of $ q $.\",\n      \"path\": \"Mathlib.FieldTheory.RatFunc.Basic\"\n    },\n    {\n      \"formal_name\": \"Polynomial.IsPrimitive.dvd_iff_fraction_map_dvd_fraction_map\",\n      \"informal_name\": \"Divisibility of Primitive Polynomials in Fraction Rings\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] (K : Type u_2) [inst_1 : Field K] [inst_2 : Algebra R K] [IsFractionRing R K]\\n  [IsDomain R] [Nonempty (NormalizedGCDMonoid R)] {p q : Polynomial R},\\n  p.IsPrimitive → q.IsPrimitive → (p ∣ q ↔ Polynomial.map (algebraMap R K) p ∣ Polynomial.map (algebraMap R K) q)\",\n      \"informal_description\": \"For primitive polynomials $ p $ and $ q $ over a commutative ring $ R $, $ p $ divides $ q $ in $ R[X] $ if and only if their images under the canonical map to the fraction ring $ K $ satisfy $ p_{K} \\\\mid q_{K} $ in $ K[X] $.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.GaussLemma\"\n    },\n    {\n      \"formal_name\": \"RatFunc.denom_div\",\n      \"informal_name\": \"Normalized Denominator of Rational Function $ p/q $\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {K : Type u} [inst : Field K] (p : Polynomial K) {q : Polynomial K},\\n  q ≠ 0 →\\n    ((algebraMap (Polynomial K) (RatFunc K)) p / (algebraMap (Polynomial K) (RatFunc K)) q).denom =\\n      Polynomial.C (q / gcd p q).leadingCoeff⁻¹ * (q / gcd p q)\",\n      \"informal_description\": \"For polynomials $ p $ and nonzero $ q $ over a commutative domain $ K $, the normalized denominator of the rational function $ \\\\frac{p}{q} $ is given by $ \\\\text{Polynomial.C}(\\\\text{leadingCoeff}(q/\\\\gcd(p,q))^{-1}) \\\\cdot (q/\\\\gcd(p,q)) $, where $ \\\\gcd(p,q) $ denotes the greatest common divisor of $ p $ and $ q $. This expression ensures the denominator is monic and coprime with the numerator.\",\n      \"path\": \"Mathlib.FieldTheory.RatFunc.Basic\"\n    },\n    {\n      \"formal_name\": \"Mathlib.Tactic.FieldSimp.qNF.gcd\",\n      \"informal_name\": \"GCD Computation for Field Simplification Normal Forms\",\n      \"kind\": \"definition\",\n      \"type\": \"{v : Lean.Level} →\\n  {M : Q(Type v)} →\\n    (iM : Q(CommGroupWithZero «$M»)) →\\n      (l₁ l₂ : Mathlib.Tactic.FieldSimp.qNF M) →\\n        ({u : Lean.Level} → (type : Q(Sort u)) → Lean.MetaM Q(«$type»)) →\\n          (cond : Mathlib.Tactic.FieldSimp.DenomCondition q(inferInstance)) →\\n            Lean.MetaM\\n              ((L : Mathlib.Tactic.FieldSimp.qNF M) ×\\n                (l₁' : Mathlib.Tactic.FieldSimp.qNF M) ×\\n                  (l₂' : Mathlib.Tactic.FieldSimp.qNF M) ×\\n                    (have...\",\n      \"informal_description\": \"A tactic function that computes the greatest common divisor of two quantifier normal forms $l_1$ and $l_2$ in the context of field simplification. Given a group with zero structure $M$, a discharger function for proofs, and a denominator condition $C$, it returns a tuple containing: \\n1. A common factor $L$ in quantifier normal form\\n2. Simplified forms $l_1'$ and $l_2'$\\n3. Proof that $\\\\text{NF.eval}(L.toNF) \\\\cdot \\\\text{NF.eval}(l_1'.toNF) = \\\\text{NF.eval}(l_1.toNF)$\\n4. Proof that $\\\\text{NF.eval}(L.toNF) \\\\cdot \\\\text{NF.eval}(l_2'.toNF) = \\\\text{NF.eval}(l_2.toNF)$\\n5. Proof that the evaluated normal form of $L$ satisfies the denominator condition $C$. \\nThis ensures valid denominator constraints during field tactic simplifications while maintaining equality relations between original and simplified forms.\",\n      \"path\": \"Mathlib.Tactic.FieldSimp\"\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "items": [
+        {
+          "formal_name": "Polynomial.IsPrimitive.dvd_of_fraction_map_dvd_fraction_map",
+          "informal_name": "Divisibility of Primitive Polynomials via Fraction Ring Extension",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} [inst : CommRing R] {K : Type u_2} [inst_1 : Field K] [inst_2 : Algebra R K] [IsFractionRing R K]\n  [IsDomain R] [Nonempty (NormalizedGCDMonoid R)] {p q : Polynomial R},\n  p.IsPrimitive → q.IsPrimitive → Polynomial.map (algebraMap R K) p ∣ Polynomial.map (algebraMap R K) q → p ∣ q",
+          "informal_description": "Let $ R $ be a commutative ring and $ K $ its fraction field. If $ p $ and $ q $ are primitive polynomials in $ R[X] $, and the image of $ p $ under the canonical ring homomorphism $ R \\to K $ divides the image of $ q $ in $ K[X] $, then $ p $ divides $ q $ in $ R[X] $.",
+          "path": "Mathlib.RingTheory.Polynomial.GaussLemma"
+        },
+        {
+          "formal_name": "RatFunc.num_div_dvd'",
+          "informal_name": "Divisibility by Normalized Coprime Polynomial Factor",
+          "kind": "theorem",
+          "type": "∀ {K : Type u} [inst : Field K] (p : Polynomial K) {q : Polynomial K},\n  q ≠ 0 → Polynomial.C (q / gcd p q).leadingCoeff⁻¹ * (p / gcd p q) ∣ p",
+          "informal_description": "For any polynomial $ p $ and non-zero polynomial $ q $ over a field $ K $, the product of the constant polynomial with coefficient equal to the inverse of the leading coefficient of $ q / \\gcd(p, q) $ and the polynomial $ p / \\gcd(p, q) $ divides $ p $. This constructs a normalized coprime divisor of $ p $ by adjusting the leading coefficient of the coprime part of $ q $.",
+          "path": "Mathlib.FieldTheory.RatFunc.Basic"
+        },
+        {
+          "formal_name": "Polynomial.IsPrimitive.dvd_iff_fraction_map_dvd_fraction_map",
+          "informal_name": "Divisibility of Primitive Polynomials in Fraction Rings",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} [inst : CommRing R] (K : Type u_2) [inst_1 : Field K] [inst_2 : Algebra R K] [IsFractionRing R K]\n  [IsDomain R] [Nonempty (NormalizedGCDMonoid R)] {p q : Polynomial R},\n  p.IsPrimitive → q.IsPrimitive → (p ∣ q ↔ Polynomial.map (algebraMap R K) p ∣ Polynomial.map (algebraMap R K) q)",
+          "informal_description": "For primitive polynomials $ p $ and $ q $ over a commutative ring $ R $, $ p $ divides $ q $ in $ R[X] $ if and only if their images under the canonical map to the fraction ring $ K $ satisfy $ p_{K} \\mid q_{K} $ in $ K[X] $.",
+          "path": "Mathlib.RingTheory.Polynomial.GaussLemma"
+        },
+        {
+          "formal_name": "RatFunc.denom_div",
+          "informal_name": "Normalized Denominator of Rational Function $ p/q $",
+          "kind": "theorem",
+          "type": "∀ {K : Type u} [inst : Field K] (p : Polynomial K) {q : Polynomial K},\n  q ≠ 0 →\n    ((algebraMap (Polynomial K) (RatFunc K)) p / (algebraMap (Polynomial K) (RatFunc K)) q).denom =\n      Polynomial.C (q / gcd p q).leadingCoeff⁻¹ * (q / gcd p q)",
+          "informal_description": "For polynomials $ p $ and nonzero $ q $ over a commutative domain $ K $, the normalized denominator of the rational function $ \\frac{p}{q} $ is given by $ \\text{Polynomial.C}(\\text{leadingCoeff}(q/\\gcd(p,q))^{-1}) \\cdot (q/\\gcd(p,q)) $, where $ \\gcd(p,q) $ denotes the greatest common divisor of $ p $ and $ q $. This expression ensures the denominator is monic and coprime with the numerator.",
+          "path": "Mathlib.FieldTheory.RatFunc.Basic"
+        },
+        {
+          "formal_name": "Mathlib.Tactic.FieldSimp.qNF.gcd",
+          "informal_name": "GCD Computation for Field Simplification Normal Forms",
+          "kind": "definition",
+          "type": "{v : Lean.Level} →\n  {M : Q(Type v)} →\n    (iM : Q(CommGroupWithZero «$M»)) →\n      (l₁ l₂ : Mathlib.Tactic.FieldSimp.qNF M) →\n        ({u : Lean.Level} → (type : Q(Sort u)) → Lean.MetaM Q(«$type»)) →\n          (cond : Mathlib.Tactic.FieldSimp.DenomCondition q(inferInstance)) →\n            Lean.MetaM\n              ((L : Mathlib.Tactic.FieldSimp.qNF M) ×\n                (l₁' : Mathlib.Tactic.FieldSimp.qNF M) ×\n                  (l₂' : Mathlib.Tactic.FieldSimp.qNF M) ×\n                    (have...",
+          "informal_description": "A tactic function that computes the greatest common divisor of two quantifier normal forms $l_1$ and $l_2$ in the context of field simplification. Given a group with zero structure $M$, a discharger function for proofs, and a denominator condition $C$, it returns a tuple containing: \n1. A common factor $L$ in quantifier normal form\n2. Simplified forms $l_1'$ and $l_2'$\n3. Proof that $\\text{NF.eval}(L.toNF) \\cdot \\text{NF.eval}(l_1'.toNF) = \\text{NF.eval}(l_1.toNF)$\n4. Proof that $\\text{NF.eval}(L.toNF) \\cdot \\text{NF.eval}(l_2'.toNF) = \\text{NF.eval}(l_2.toNF)$\n5. Proof that the evaluated normal form of $L$ satisfies the denominator condition $C$. \nThis ensures valid denominator constraints during field tactic simplifications while maintaining equality relations between original and simplified forms.",
+          "path": "Mathlib.Tactic.FieldSimp"
+        }
+      ]
+    },
+    "isError": false
+  }
+}

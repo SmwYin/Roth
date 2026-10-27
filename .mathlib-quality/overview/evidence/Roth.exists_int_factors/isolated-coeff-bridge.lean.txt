@@ -1,0 +1,27 @@
+namespace Factors176Coeff
+open MvPolynomial
+variable {τ R : Type*} [CommSemiring R]
+noncomputable def coeffNone (P : MvPolynomial (Option τ) R) (ν : ℕ) : MvPolynomial τ R :=
+  (optionEquivLeft R τ P).coeff ν
+
+/-- The coefficient of `x_τ^d` in `coeffNone P ν` is the coefficient of `x_τ^d x_none^ν` in `P`. -/
+theorem coeff_coeffNone (P : MvPolynomial (Option τ) R) (ν : ℕ) (d : τ →₀ ℕ) :
+    (coeffNone P ν).coeff d = P.coeff (d.mapDomain some + Finsupp.single none ν) := by
+  rw [coeffNone, optionEquivLeft_coeff_coeff]
+  congr 1
+  ext o
+  cases o <;> simp [Finsupp.mapDomain_of_notMem_range,
+    Finsupp.mapDomain_apply_of_injective (Option.some_injective τ)]
+
+theorem coeff_rename_mul_aeval (U : MvPolynomial τ R) (V : Polynomial R) (a : τ →₀ ℕ) (b : ℕ) :
+    (rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) R) V).coeff
+        (a.mapDomain some + Finsupp.single none b) = U.coeff a * V.coeff b := by
+  have h : (optionEquivLeft R τ).toAlgHom.comp (rename some) = Polynomial.CAlgHom := by
+    ext i
+    simp
+  rw [← coeff_coeffNone, coeffNone, map_mul,
+    (show optionEquivLeft R τ (rename some U) = Polynomial.C U from AlgHom.congr_fun h U),
+    ← Polynomial.aeval_algHom_apply, optionEquivLeft_X_none, Polynomial.aeval_X_left_eq_map,
+    Polynomial.coeff_C_mul, Polynomial.coeff_map, algebraMap_eq, mul_comm U, coeff_C_mul, mul_comm]
+
+end Factors176Coeff

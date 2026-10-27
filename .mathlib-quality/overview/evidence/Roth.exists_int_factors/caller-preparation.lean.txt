@@ -1,0 +1,28 @@
+namespace Factors176Caller
+open MvPolynomial Roth
+open Lean Elab Term in
+elab "rat_factors" : term =>
+  return ← Lean.Meta.mkConstWithFreshMVarLevels
+    (Lean.mkPrivateNameCore `Roth.Separation `Roth.exists_rat_factors_det_hasseDeriv_aux)
+variable {τ : Type*}
+theorem exists_det_eq_mul [Finite τ] {P : MvPolynomial (Option τ) ℤ} (hP : P ≠ 0) {r : Option τ → ℕ}
+    (hr : ∀ j, degreeOf j P ≤ r j) : ∃ l, 1 ≤ l ∧ l ≤ r none + 1 ∧ ∃ D : Fin l → (τ →₀ ℕ),
+      (∀ μ, (D μ).degree ≤ μ) ∧ ∃ (U : MvPolynomial τ ℤ) (V : Polynomial ℤ), U ≠ 0 ∧ V ≠ 0 ∧
+        (∀ j, degreeOf j U ≤ l * r (some j)) ∧ V.natDegree ≤ l * r none ∧
+        (Matrix.of fun μ ν : Fin l ↦
+            hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) P).det = rename some U *
+          Polynomial.aeval (X none : MvPolynomial (Option τ) ℤ) V := by
+  classical
+  obtain ⟨l, hl1, hl2, D, hD, U', V', hU', hV', hFmap⟩ :=
+    rat_factors hP (hr none)
+  obtain ⟨U, V, hU, hV, hFUV, -, -⟩ := Factors176Generic.exists_int_factors (R := ℤ) (K := ℚ) hU' hV' hFmap
+  refine ⟨l, hl1, hl2, D, hD, U, V, hU, hV, fun j ↦ ?_, ?_, hFUV⟩
+  · rw [← degreeOf_rename_mul_aeval U hV j, ← hFUV]
+    exact degreeOf_det_hasseDeriv_le
+      (fun μ ν : Fin l ↦ (D μ).mapDomain some + Finsupp.single none (ν : ℕ)) P hr (some j)
+  · rw [← degreeOf_none_rename_mul_aeval hU V, ← hFUV]
+    exact degreeOf_det_hasseDeriv_le
+      (fun μ ν : Fin l ↦ (D μ).mapDomain some + Finsupp.single none (ν : ℕ)) P hr none
+
+#print axioms exists_det_eq_mul
+end Factors176Caller

@@ -1,0 +1,1115 @@
+import Mathlib.Algebra.Polynomial.Derivation
+import Roth.LeanEval
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.Algebra.Field.ULift
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+
+/-! Scratch checks of primitive representatives and the complete integer-factor caller. -/
+
+open MvPolynomial
+namespace Primitive172FullGeneric
+variable {σ R K : Type*} [CommRing R] [IsDomain R] [NormalizedGCDMonoid R]
+    [Field K] [Algebra R K] [IsFractionRing R K]
+theorem primitive {G : MvPolynomial σ K} (hG : G ≠ 0) :
+    ∃ (g : K) (U : MvPolynomial σ R), g ≠ 0 ∧ map (algebraMap R K) U = g • G ∧
+      U.support.gcd U.coeff = 1 := by
+  classical
+  let : Algebra (MvPolynomial σ R) (MvPolynomial σ K) :=
+    MvPolynomial.algebraMvPolynomial
+  obtain ⟨⟨_, N, hNmem, rfl⟩, U0, hU0raw⟩ :=
+    IsLocalization.exists_integer_multiple ((nonZeroDivisors R).map (C (σ := σ))) G
+  have hN : N ≠ 0 := mem_nonZeroDivisors_iff_ne_zero.mp hNmem
+  have hinj : Function.Injective (algebraMap R K) := IsFractionRing.injective R K
+  have hNcast : algebraMap R K N ≠ 0 := (map_ne_zero_iff _ hinj).mpr hN
+  have hU0 : map (algebraMap R K) U0 = algebraMap R K N • G := by
+    have h : map (algebraMap R K) U0 = C (algebraMap R K N) * G := by
+      simpa only [MvPolynomial.algebraMap_def, Algebra.smul_def, map_C] using hU0raw
+    simpa only [smul_eq_C_mul] using h
+  have hne : U0.support.Nonempty := support_nonempty.mpr fun h ↦ by
+    exact smul_ne_zero hNcast hG (by simpa only [h, map_zero] using hU0.symm)
+  obtain ⟨g', hg', hg1⟩ := Finset.extract_gcd (fun d ↦ U0.coeff d) hne
+  set g0 := U0.support.gcd (fun d ↦ U0.coeff d) with hg0def
+  have hg0 : g0 ≠ 0 := by
+    obtain ⟨d, hd⟩ := hne
+    rw [hg0def, Ne, Finset.gcd_eq_zero_iff]
+    exact fun h ↦ mem_support_iff.1 hd (h d hd)
+  set U := ∑ d ∈ U0.support, monomial d (g' d) with hUdef
+  have hUcoeff : ∀ d, U.coeff d = if d ∈ U0.support then g' d else 0 := by
+    simp [hUdef, coeff_monomial, Finset.sum_ite_eq']
+  have hU0coeff : ∀ d, U0.coeff d = g0 * U.coeff d := by
+    intro d
+    by_cases hd : d ∈ U0.support
+    · simpa [hUcoeff, hd] using hg' d hd
+    · simp [hUcoeff, hd, notMem_support_iff.1 hd]
+  refine ⟨algebraMap R K N / algebraMap R K g0, U,
+    div_ne_zero hNcast ((map_ne_zero_iff _ hinj).mpr hg0), ?_, ?_⟩
+  · ext d
+    have h1 := congrArg (fun P ↦ P.coeff d) hU0
+    simp only [coeff_map, coeff_smul, smul_eq_mul] at h1 ⊢
+    rw [hU0coeff] at h1
+    rw [map_mul] at h1
+    rwa [div_mul_eq_mul_div, eq_div_iff ((map_ne_zero_iff _ hinj).mpr hg0), mul_comm]
+  · have hsupp : U.support = U0.support := by
+      ext d
+      simp [mem_support_iff, hU0coeff d, hg0]
+    rw [hsupp, ← hg1]
+    exact Finset.gcd_congr rfl fun d hd ↦ by rw [hUcoeff, ite_eq_left hd]
+
+
+#print axioms primitive
+end Primitive172FullGeneric
+
+#check @Polynomial.primPart
+#check @Polynomial.content
+#check @Polynomial.IsPrimitive
+#check @Polynomial.eq_C_content_mul_primPart
+#check @Polynomial.content_primPart
+#check @Polynomial.isUnit_or_eq_zero_of_isUnit_integerNormalization_primPart
+namespace Primitive172Specialization
+open MvPolynomial
+theorem original {σ : Type*} {G : MvPolynomial σ ℚ} (hG : G ≠ 0) :
+    ∃ (g : ℚ) (U : MvPolynomial σ ℤ), g ≠ 0 ∧ map (Int.castRingHom ℚ) U = g • G ∧
+      U.support.gcd U.coeff = 1 :=
+  Primitive172FullGeneric.primitive (R := ℤ) (K := ℚ) hG
+#print axioms original
+end Primitive172Specialization
+
+namespace Primitive172Caller
+open MvPolynomial Roth
+variable {τ : Type*}
+theorem exists_int_eq_of_gcd_eq_one {ι : Type*} {s : Finset ι} {u : ι → ℤ} (hu : s.gcd u = 1)
+    {v : ℚ} (hv : ∀ a ∈ s, ∃ z : ℤ, (u a : ℚ) * v = z) : ∃ z : ℤ, v = z := by
+  classical
+  obtain ⟨z, hz⟩ := exists_sum_mul_eq_gcd s u
+  rw [hu] at hz
+  choose! w hw using hv
+  refine ⟨∑ i ∈ s, z i * w i, ?_⟩
+  calc v = ((∑ i ∈ s, z i * u i : ℤ) : ℚ) * v := by simp [hz]
+    _ = ((∑ i ∈ s, z i * w i : ℤ) : ℚ) := by
+        push_cast
+        rw [Finset.sum_mul]
+        exact Finset.sum_congr rfl fun i hi ↦ by rw [mul_assoc, hw i hi]
+
+private lemma rescale_separated_factor_aux {K : Type*} [Field K] {U' U : MvPolynomial τ K}
+    {V' : Polynomial K} {F : MvPolynomial (Option τ) K} {g : K} (hg : g ≠ 0) (hUmap : U = g • U')
+    (hF : F = rename some U' * Polynomial.aeval (X none : MvPolynomial (Option τ) K) V') :
+    F = rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) K)
+      (Polynomial.C g⁻¹ * V') := by
+  rw [hF, hUmap, map_mul, Polynomial.aeval_C, algebraMap_eq, smul_eq_C_mul, map_mul,
+    rename_C, mul_mul_mul_comm, ← C_mul, mul_inv_cancel₀ hg, C_1, one_mul]
+
+private lemma exists_int_polynomial_of_primitive_factor_aux {U : MvPolynomial τ ℤ}
+    {V' : Polynomial ℚ} {F : MvPolynomial (Option τ) ℤ} (hgcd : U.support.gcd U.coeff = 1)
+    (hF : map (Int.castRingHom ℚ) F = rename some (map (Int.castRingHom ℚ) U) *
+      Polynomial.aeval (X none : MvPolynomial (Option τ) ℚ) V') :
+    ∃ V : Polynomial ℤ, V.map (Int.castRingHom ℚ) = V' := by
+  apply (Polynomial.mem_map_range (Int.castRingHom ℚ)).2
+  intro b
+  obtain ⟨z, hz⟩ := exists_int_eq_of_gcd_eq_one hgcd fun a _ ↦
+    ⟨F.coeff (a.mapDomain some + Finsupp.single none b), by
+      have h := congrArg (fun P ↦ P.coeff (a.mapDomain some + Finsupp.single none b)) hF
+      simp only [coeff_rename_mul_aeval, coeff_map] at h
+      simpa using h.symm⟩
+  exact ⟨z, hz.symm⟩
+
+/-- If an integer polynomial `F` factors over `ℚ` as `U'(x_τ) V'(x_none)` with nonzero factors,
+then it factors over `ℤ` as `U(x_τ) V(x_none)` with the same partial degrees.
+Source: §2, proof of Lemma 2 ("Thus `U, V` are integral and nonzero, as required"), together
+with the degree comparison at the end of the proof. -/
+theorem exists_int_factors {U' : MvPolynomial τ ℚ} {V' : Polynomial ℚ} (hU : U' ≠ 0) (hV : V' ≠ 0)
+    {F : MvPolynomial (Option τ) ℤ} (hF : map (Int.castRingHom ℚ) F =
+      rename some U' * Polynomial.aeval (X none : MvPolynomial (Option τ) ℚ) V') :
+    ∃ (U : MvPolynomial τ ℤ) (V : Polynomial ℤ), U ≠ 0 ∧ V ≠ 0 ∧
+      F = rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) ℤ) V ∧
+      (∀ j, degreeOf j U = degreeOf j U') ∧ V.natDegree = V'.natDegree := by
+  obtain ⟨g, U, hg, hUmap, hgcd⟩ := Primitive172Specialization.original hU
+  have hF' := rescale_separated_factor_aux hg hUmap hF
+  obtain ⟨V, hVmap⟩ := exists_int_polynomial_of_primitive_factor_aux hgcd hF'
+  refine ⟨U, V, ?_, ?_, ?_, fun j ↦ ?_, ?_⟩
+  · exact fun h ↦ smul_ne_zero hg hU (by simpa [h] using hUmap.symm)
+  · exact fun h ↦ mul_ne_zero (Polynomial.C_ne_zero.2 (inv_ne_zero hg)) hV
+      (by simpa [h] using hVmap.symm)
+  · apply MvPolynomial.map_injective (Int.castRingHom ℚ) Int.cast_injective
+    rw [hF', map_mul (map (Int.castRingHom ℚ)), map_rename,
+      Polynomial.map_aeval_eq_aeval_map (φ := Int.castRingHom ℚ) (Subsingleton.elim _ _), map_X,
+      hVmap]
+  · rw [degreeOf, ← degrees_map_of_injective U (f := Int.castRingHom ℚ) Int.cast_injective,
+      hUmap, ← degreeOf, smul_eq_C_mul, degreeOf_C_mul j g (mem_nonZeroDivisors_of_ne_zero hg)]
+  · rw [← Polynomial.natDegree_map_eq_of_injective (f := Int.castRingHom ℚ)
+      (RingHom.injective_int _), hVmap, Polynomial.natDegree_C_mul (inv_ne_zero hg)]
+
+
+#print axioms exists_int_factors
+end Primitive172Caller
+
+#check @Roth.exists_int_eq_of_gcd_eq_one
+#print Roth.exists_int_eq_of_gcd_eq_one
+#print axioms Roth.exists_int_eq_of_gcd_eq_one
+run_cmd Lean.Elab.Command.liftTermElabM do
+  let ci ← Lean.getConstInfo `Roth.exists_int_eq_of_gcd_eq_one
+  Lean.withOptions (fun o ↦ o.setBool `pp.funBinderTypes true) do
+    Lean.logInfo m!"INTEGRAL173_FULL_TYPE: {ci.type}"
+
+namespace IntegralAudit173
+run_cmd do
+  let env ← Lean.getEnv
+  let target := `Roth.exists_int_eq_of_gcd_eq_one
+  let names : Array Lean.Name := #[
+    `MvPolynomial.hasseCoeff,
+    `MvPolynomial.hasseDeriv,
+    `MvPolynomial.hasseDeriv_monomial,
+    `MvPolynomial.hasseDeriv_apply,
+    `MvPolynomial.hasseCoeff_eq_zero_iff,
+    `MvPolynomial.coeff_hasseDeriv,
+    `MvPolynomial.hasseCoeff_eq_prod,
+    `MvPolynomial.hasseDeriv_zero_apply,
+    `MvPolynomial.hasseDeriv_zero,
+    `MvPolynomial.hasseDeriv_C,
+    `MvPolynomial.hasseDeriv_map,
+    `MvPolynomial.hasseDeriv_rename,
+    Lean.mkPrivateNameCore `Roth.HasseDeriv `MvPolynomial.hasseCoeff_mul_hasseCoeff,
+    `MvPolynomial.hasseDeriv_hasseDeriv,
+    `MvPolynomial.hasseDeriv_hasseDeriv_of_disjoint,
+    Lean.mkPrivateNameCore `Roth.HasseDeriv `MvPolynomial.hasseCoeff_mul_succ,
+    `MvPolynomial.pderiv_hasseDeriv,
+    `MvPolynomial.degreeOf_hasseDeriv_le,
+    `MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt,
+    Lean.mkPrivateNameCore `Roth.HasseDeriv `MvPolynomial.hasseDeriv_monomial_mul,
+    `MvPolynomial.hasseDeriv_mul_of_degreeOf_eq_zero,
+    `MvPolynomial.hasseDeriv_single_aeval_X,
+    `MvPolynomial.uniqueAlgEquiv_hasseDeriv,
+    `MvPolynomial.hasseCoeff_le_two_pow,
+    `MvPolynomial.factorial_smul_hasseDeriv_single,
+    `Roth.box,
+    `Roth.weight,
+    `Roth.mem_box,
+    `Roth.card_box,
+    `Roth.card_le_card_box,
+    `Roth.weight_nonneg,
+    `Roth.weight_zero,
+    `Roth.weight_add,
+    `Roth.weight_eq_zero_iff,
+    `Roth.weight_single,
+    `Roth.weight_le_card,
+    `Roth.weight_mul_left,
+    `Roth.weight_le_degree_div,
+    `Roth.weight_mapDomain,
+    `Roth.wronskianMatrix,
+    `Roth.wronskian,
+    `Roth.wronskian_eq_zero_of_not_linearIndependent,
+    `Roth.det_choose_eq,
+    Lean.mkPrivateNameCore `Roth.Wronskian `Roth.coeff_prod_of_natDegree_le',
+    `Roth.sum_range_le_sum_of_injective,
+    `Roth.coeff_wronskian_of_natDegree_injective,
+    `Roth.wronskian_ne_zero_of_natDegree_injective,
+    `Roth.wronskian_update_sub_smul,
+    `Roth.linearIndependent_update_sub_smul,
+    `Roth.sum_natDegree_update_lt,
+    `Roth.wronskian_ne_zero_of_linearIndependent,
+    `Roth.wronskian_eq_zero_iff,
+    `MvPolynomial.taylor,
+    `MvPolynomial.taylor_apply,
+    `MvPolynomial.taylor_X,
+    `MvPolynomial.taylor_C,
+    `MvPolynomial.taylor_monomial,
+    Lean.mkPrivateNameCore `Roth.Taylor `MvPolynomial.coeff_aeval_X_mul,
+    Lean.mkPrivateNameCore `Roth.Taylor `MvPolynomial.hasseCoeff_single_add_eq,
+    Lean.mkPrivateNameCore `Roth.Taylor `MvPolynomial.prod_pow_single_add_tsub,
+    Lean.mkPrivateNameCore `Roth.Taylor `MvPolynomial.coeff_taylor_monomial_single_add_aux,
+    Lean.mkPrivateNameCore `Roth.Taylor `MvPolynomial.coeff_taylor_monomial_aux,
+    `MvPolynomial.coeff_taylor,
+    `MvPolynomial.eval_taylor,
+    `MvPolynomial.taylor_taylor,
+    `MvPolynomial.taylor_zero,
+    `MvPolynomial.taylor_map,
+    `MvPolynomial.taylor_rename,
+    `MvPolynomial.degreeOf_taylor_le,
+    `MvPolynomial.taylor_neg_taylor,
+    `MvPolynomial.taylor_injective,
+    `MvPolynomial.taylor_eq_zero_iff,
+    `MvPolynomial.eq_sum_box_hasseDeriv,
+    `MvPolynomial.eval_eq_sum_box,
+    `Roth.normOne,
+    `Roth.diag,
+    `Roth.normOne_nonneg,
+    `Roth.normOne_eq_sum_of_support_subset,
+    `Roth.normOne_monomial,
+    `Roth.normOne_zero,
+    `Roth.abs_coeff_le_normOne,
+    `Roth.normOne_add_le,
+    `Roth.normOne_neg,
+    `Roth.normOne_sum_le,
+    `Roth.normOne_mul_le,
+    `Roth.normOne_prod_le,
+    `Roth.normOne_le_card_mul,
+    `Roth.normOne_det_le,
+    `Roth.abs_coeff_hasseDeriv_le,
+    `Roth.normOne_hasseDeriv_le,
+    `Roth.diag_eq_sum,
+    `Roth.abs_coeff_diag_le,
+    `Roth.natDegree_diag_le,
+    `Roth.eval_diag,
+    `Roth.diag_sub,
+    `Roth.geom_sum_le_one_add_pow,
+    Lean.mkPrivateNameCore `Roth.CoeffNorm `Roth.sum_box_prod_pow_le_aux,
+    `Roth.abs_eval_le,
+    `Roth.degreeOf_det_hasseDeriv_le,
+    `Roth.abs_coeff_det_hasseDeriv_le,
+    `Roth.genWronskian,
+    `Roth.kronecker,
+    `Roth.kroneckerExp,
+    Lean.mkPrivateNameCore `Roth.GenWronskian `Roth.kronHasse,
+    Lean.mkPrivateNameCore `Roth.GenWronskian `Roth.kronSpan,
+    `Roth.genWronskian_eq_zero_of_not_linearIndependent,
+    `Roth.kronecker_monomial,
+    `Roth.kroneckerExp_injOn,
+    `Roth.coeff_kronecker,
+    `Roth.kronecker_eq_zero_iff,
+    `Roth.linearIndependent_kronecker,
+    `Roth.derivative_aeval,
+    Lean.mkPrivateNameCore `Roth.GenWronskian `Roth.derivative_kronHasse_aux,
+    Lean.mkPrivateNameCore `Roth.GenWronskian `Roth.derivative_mem_kronSpan,
+    Lean.mkPrivateNameCore `Roth.GenWronskian `Roth.hasseDeriv_kronecker_mem,
+    `Roth.exists_hasseDeriv_kronecker_eq_sum,
+    `Roth.det_sum_rows,
+    Lean.mkPrivateNameCore `Roth.GenWronskian `Roth.wronskian_kronecker_eq_sum_aux,
+    `Roth.exists_genWronskian_ne_zero,
+    `Roth.sqrt_one_sub_inv_lt,
+    Lean.mkPrivateNameCore `Roth.Lattice `Roth.inv_add_inv_le,
+    Lean.mkPrivateNameCore `Roth.Lattice `Roth.sum_inv_le,
+    `Roth.sum_inv_lt,
+    Lean.mkPrivateNameCore `Roth.Lattice `Roth.extend_apply_castSucc,
+    Lean.mkPrivateNameCore `Roth.Lattice `Roth.extend_apply_last,
+    Lean.mkPrivateNameCore `Roth.Lattice `Roth.card_filter_box_fiber_aux,
+    `Roth.card_filter_box_last,
+    Lean.mkPrivateNameCore `Roth.Lattice `Roth.filter_weight_le_eq_empty,
+    Lean.mkPrivateNameCore `Roth.Lattice `Roth.card_filter_fiber_eq,
+    Lean.mkPrivateNameCore `Roth.Lattice `Roth.card_filter_weight_le_of_le_sqrt_aux,
+    Lean.mkPrivateNameCore `Roth.Lattice `Roth.card_filter_weight_le_succ_aux,
+    `Roth.card_filter_weight_le,
+    `Roth.index,
+    Lean.mkPrivateNameCore `Roth.Index `Roth.mem_support_taylor_iff,
+    `Roth.index_le_weight,
+    `Roth.exists_weight_eq_index,
+    `Roth.le_index_iff,
+    `Roth.index_nonneg,
+    `Roth.index_eq_zero_iff,
+    `Roth.index_sub_weight_le_index_hasseDeriv,
+    `Roth.le_index_sum,
+    `Roth.weight_eq_finsuppWeight_div,
+    `Roth.index_eq_weightedOrder_div,
+    `Roth.index_mul,
+    `Roth.index_prod,
+    `Roth.index_neg,
+    `Roth.index_C_mul,
+    `Roth.index_mul_left_weights,
+    `Roth.index_rename,
+    `Roth.index_le_card,
+    `Roth.index_unique,
+    `Roth.coeffNone,
+    `Roth.eq_mapDomain_some_add_single,
+    Lean.mkPrivateNameCore `Roth.Separation `Roth.coeff_X_none_pow_mul_rename,
+    `Roth.coeff_coeffNone,
+    `Roth.eq_sum_X_none_pow_mul_coeffNone,
+    `Roth.degreeOf_coeffNone_le,
+    `Roth.coeff_rename_mul_aeval,
+    `Roth.aeval_X_eq_rename,
+    `Roth.hasseDeriv_rename_mul_aeval,
+    `Roth.coeff_uniqueAlgEquiv_symm,
+    `Roth.degreeOf_uniqueAlgEquiv_symm,
+    `Roth.degreeOf_rename_mul_aeval,
+    `Roth.degreeOf_none_rename_mul_aeval,
+    Lean.mkPrivateNameCore `Roth.Separation `Roth.linearIndependent_coordinate_polynomials_aux,
+    Lean.mkPrivateNameCore `Roth.Separation `Roth.eq_sum_aeval_basis_coeffNone_aux,
+    Lean.mkPrivateNameCore `Roth.Separation `Roth.exists_coeffNone_basis_aux,
+    `Roth.exists_separated_representation,
+    `Roth.det_hasseDeriv_separated,
+    `Roth.exists_sum_mul_eq_gcd,
+    `Roth.exists_nat_smul_eq_map,
+    `Roth.exists_primitive_smul_eq,
+    `Roth.exists_int_eq_of_gcd_eq_one,
+    Lean.mkPrivateNameCore `Roth.Separation `Roth.rescale_separated_factor_aux,
+    Lean.mkPrivateNameCore `Roth.Separation `Roth.exists_int_polynomial_of_primitive_factor_aux,
+    `Roth.exists_int_factors,
+    Lean.mkPrivateNameCore `Roth.Separation `Roth.exists_rat_factors_det_hasseDeriv_aux,
+    `Roth.exists_det_eq_mul,
+    `Roth.RSet,
+    `Roth.indexSet,
+    `Roth.Θ,
+    `Roth.lem6M,
+    `Roth.lem6Φ,
+    `Roth.one_mem_RSet,
+    `Roth.indexSet_nonempty,
+    `Roth.indexSet_bddAbove,
+    `Roth.index_le_Θ,
+    `Roth.Θ_nonneg,
+    `Roth.Θ_le_card,
+    `Roth.Θ_le_of_forall_index_le,
+    `Roth.Θ_mono,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.indexSet_comp_subset,
+    `Roth.Θ_equiv,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.isPrimitive_linear,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.isPrimitive_pow,
+    `Roth.exists_eq_pow_mul_of_rootMultiplicity,
+    `Roth.pow_rootMultiplicity_le,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.index_unique_le_log_div,
+    `Roth.Θ_unique_le,
+    `Roth.one_le_lem6M,
+    `Roth.floor_sq_div_two_le_sum,
+    `Roth.sq_div_three_lt_floor_sq_div_two,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.mul_div_two_le_sum_max_aux,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.mul_sq_div_three_le_sum_max_of_pos_aux,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.mul_sq_div_three_le_sum_max_aux,
+    `Roth.min_le_sum_max,
+    `Roth.sum_max_sub_le_index_det,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.index_separated_mul_le_aux,
+    `Roth.index_det_le,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.weight_le_delta_aux,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.mapped_det_ne_zero_aux,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.index_numeric_bound_aux,
+    `Roth.index_le_lem6,
+    `Roth.Θ_option_le,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.factorial_coefficient_le_two_pow_aux,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.two_pow_lt_rpow_aux,
+    `Roth.lem6M_lt,
+    `Roth.lem7_Φ_bound,
+    `Roth.lem7_numeric,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.theta_scaled_unique_le_aux,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.theta_delta_succ_lt_aux,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.theta_prefix_lt_aux,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.theta_lt_base_aux,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.theta_denominators_one_lt_aux,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.theta_phi_lt_aux,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.theta_lt_succ_aux,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.theta_lt_of_large_delta_aux,
+    `Roth.Θ_lt,
+    `Roth.lam,
+    `Roth.gam,
+    `Roth.eta,
+    `Roth.mainCoeffBound,
+    `Roth.boxFamily,
+    `Roth.exists_delta_bound,
+    `Roth.eta_lt_gam_iff,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.sqrt_lt_nat_floor_aux,
+    `Roth.sqrt_lt_floor,
+    `Roth.four_lt_rpow,
+    `Roth.mul_log_div_two_lt_log_mainCoeffBound,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.two_lt_rpow_aux,
+    `Roth.three_small_factors,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.exists_norm_coeff_reduction_aux,
+    `Roth.norm_coeff_modByMonic_le,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.boxFamily_eq_image_finsupp_aux,
+    `Roth.boxFamily_finite,
+    `Roth.ncard_boxFamily,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.floor_rpow_count_lt_aux,
+    `Roth.pigeonhole_count,
+    `Roth.exists_ne_modByMonic_eq,
+    `Roth.sub_mem_RSet,
+    `Roth.eval_hasseDeriv_sub_eq_zero,
+    `Roth.le_index_of_forall_eval_eq_zero,
+    `Roth.mul_two_mul_add_one_div_lt_of_le_sq_mul,
+    `Roth.exists_hasseDeriv_eval_ne_zero,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.abs_eval_iterated_hasseDeriv_lt_aux,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.exists_hasseDeriv_index_eval_bound_aux,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.exists_mem_RSet_le_index_aux,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.mul_card_filter_weight_le_aux,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.exists_mem_RSet_le_index_of_rpow_bound_aux,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.exists_mem_RSet_le_index_of_log_bound_aux,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.exists_auxiliary_polynomial_of_log_bound_aux,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.theta_lt_eta_of_sq_log_bound_aux,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.exists_auxiliary_polynomial_with_index_gap_aux,
+    `Roth.main_lemma,
+    `Roth.approxSet,
+    `Roth.exists_nat_mul_isIntegral,
+    `Roth.approxSet_den_le_finite,
+    `Roth.eventually_div_rpow_lt,
+    `Roth.reduction,
+    `Roth.exists_monic_aeval_eq_zero,
+    Lean.mkPrivateNameCore `Roth.Main `Roth.approxSet_num_den_mem_aux,
+    `Roth.exists_reduced_approx,
+    `Roth.exists_m,
+    `Roth.exists_delta,
+    `Roth.exists_approximants,
+    `Roth.exists_degrees,
+    `Roth.one_le_prod_pow_mul_abs_eval,
+    Lean.mkPrivateNameCore `Roth.Main `Roth.abs_prod_pow_le_rpow_of_le_weight,
+    `Roth.abs_eval_lt_of_le_index,
+    Lean.mkPrivateNameCore `Roth.Main `Roth.exists_roth_parameters_aux,
+    Lean.mkPrivateNameCore `Roth.Main `Roth.exists_roth_approximants_aux,
+    Lean.mkPrivateNameCore `Roth.Main `Roth.one_lt_roth_eval_bound_aux,
+    Lean.mkPrivateNameCore `Roth.Main `Roth.roth_product_bound_aux,
+    Lean.mkPrivateNameCore `Roth.Main `Roth.roth_log_bound_aux,
+    `Roth.roth_of_isIntegral,
+    `Roth.roth,
+    `Roth.roth_rat,
+    `LeanEval.NumberTheory.ThueSiegelRothProblem.IsDiophantine,
+    Lean.mkPrivateNameCore `Roth.LeanEval
+      `LeanEval.NumberTheory.ThueSiegelRothProblem.exists_pos_div_rpow_lt_aux,
+    `LeanEval.NumberTheory.ThueSiegelRothProblem.isDiophantine_iff,
+    `LeanEval.NumberTheory.ThueSiegelRothProblem.thueSiegelRoth]
+  let unique := names.toList.eraseDups.length
+  unless names.size == 293 && unique == 293 do
+    throwError "INTEGRAL173_BAD_CANONICAL_ARRAY"
+  let mut present : Nat := 0
+  let mut values : Nat := 0
+  for n in names do
+    match env.find? n with
+    | none => throwError "INTEGRAL173_NOT_LOADED: {n}"
+    | some ci =>
+      present := present + 1
+      match ci.value? (allowOpaque := true) with
+      | none => pure ()
+      | some val =>
+        values := values + 1
+        if val.getUsedConstants.any (fun c ↦ c == target) then
+          Lean.logInfo m!"INTEGRAL173_DIRECT_CONSUMER: {n}"
+  Lean.logInfo m!"INTEGRAL173_AUDIT: requested={names.size}; unique={unique}"
+  Lean.logInfo m!"INTEGRAL173_AUDIT_PRESENT: present={present}; values={values}"
+end IntegralAudit173
+
+namespace Integral173Strong
+theorem gcd_smul_mem_all {R M ι : Type*} [CommRing R] [IsBezout R]
+    [NormalizedGCDMonoid R] [AddCommMonoid M] [Module R M]
+    (N : Submodule R M) (s : Finset ι) (u : ι → R)
+    (v : M) (hv : ∀ i ∈ s, u i • v ∈ N) : s.gcd u • v ∈ N := by
+  classical
+  obtain ⟨z, hz⟩ := Finset.gcd_eq_sum_mul s u
+  rw [hz, Finset.sum_smul]
+  exact N.sum_mem fun i hi ↦ by
+    simpa only [mul_comm (u i), mul_smul] using N.smul_mem (z i) (hv i hi)
+theorem of_isUnit_gcd {R M ι : Type*} [CommRing R] [IsBezout R]
+    [NormalizedGCDMonoid R] [AddCommMonoid M] [Module R M]
+    (N : Submodule R M) (s : Finset ι) (u : ι → R) (hu : IsUnit (s.gcd u))
+    (v : M) (hv : ∀ i ∈ s, u i • v ∈ N) : v ∈ N :=
+  (N.smul_mem_iff_of_isUnit hu).mp (gcd_smul_mem_all N s u v hv)
+#print axioms gcd_smul_mem_all
+#print axioms of_isUnit_gcd
+end Integral173Strong
+namespace Integral173Strong
+theorem original {ι : Type*} {s : Finset ι} {u : ι → ℤ} (hu : s.gcd u = 1)
+    {v : ℚ} (hv : ∀ a ∈ s, ∃ z : ℤ, (u a : ℚ) * v = z) : ∃ z : ℤ, v = z := by
+  have h := gcd_smul_mem_all (LinearMap.range (Algebra.linearMap ℤ ℚ)) s u v (by
+    intro i hi
+    obtain ⟨z, hz⟩ := hv i hi
+    exact ⟨z, by simpa only [Algebra.linearMap_apply, Algebra.smul_def, eq_intCast] using hz.symm⟩)
+  rw [hu, one_smul] at h
+  obtain ⟨z, hz⟩ := h
+  exact ⟨z, by simpa only [Algebra.linearMap_apply, eq_intCast] using hz.symm⟩
+theorem nonunit_counterexample :
+    (∃ z : ℤ, (2 : ℚ) * (1 / 2) = z) ∧ ¬ ∃ z : ℤ, (1 / 2 : ℚ) = z := by
+  constructor
+  · exact ⟨1, by norm_num⟩
+  · rintro ⟨z, hz⟩
+    have hden := congrArg Rat.den hz
+    norm_num at hden
+theorem empty_guard : (∅ : Finset ℕ).gcd (fun _ ↦ (0 : ℤ)) ≠ 1 := by simp
+#print axioms original
+#print axioms nonunit_counterexample
+#print axioms empty_guard
+end Integral173Strong
+namespace Integral173Caller
+open MvPolynomial Roth
+variable {τ : Type*}
+theorem exists_int_polynomial_of_primitive_factor_aux {U : MvPolynomial τ ℤ}
+    {V' : Polynomial ℚ} {F : MvPolynomial (Option τ) ℤ} (hgcd : U.support.gcd U.coeff = 1)
+    (hF : map (Int.castRingHom ℚ) F = rename some (map (Int.castRingHom ℚ) U) *
+      Polynomial.aeval (X none : MvPolynomial (Option τ) ℚ) V') :
+    ∃ V : Polynomial ℤ, V.map (Int.castRingHom ℚ) = V' := by
+  apply (Polynomial.mem_map_range (Int.castRingHom ℚ)).2
+  intro b
+  obtain ⟨z, hz⟩ := Integral173Strong.original hgcd fun a _ ↦
+    ⟨F.coeff (a.mapDomain some + Finsupp.single none b), by
+      have h := congrArg (fun P ↦ P.coeff (a.mapDomain some + Finsupp.single none b)) hF
+      simp only [coeff_rename_mul_aeval, coeff_map] at h
+      simpa using h.symm⟩
+  exact ⟨z, hz.symm⟩
+
+#print axioms exists_int_polynomial_of_primitive_factor_aux
+end Integral173Caller
+
+#check @Roth.exists_int_factors
+#print Roth.exists_int_factors
+#print axioms Roth.exists_int_factors
+run_cmd Lean.Elab.Command.liftTermElabM do
+  let ci ← Lean.getConstInfo `Roth.exists_int_factors
+  Lean.withOptions (fun o ↦ o.setBool `pp.funBinderTypes true) do
+    Lean.logInfo m!"FACTORS176_FULL_TYPE: {ci.type}"
+
+namespace Factors176Audit
+run_cmd do
+  let env ← Lean.getEnv
+  let target := `Roth.exists_int_factors
+  let names : Array Lean.Name := #[
+    `MvPolynomial.hasseCoeff,
+    `MvPolynomial.hasseDeriv,
+    `MvPolynomial.hasseDeriv_monomial,
+    `MvPolynomial.hasseDeriv_apply,
+    `MvPolynomial.hasseCoeff_eq_zero_iff,
+    `MvPolynomial.coeff_hasseDeriv,
+    `MvPolynomial.hasseCoeff_eq_prod,
+    `MvPolynomial.hasseDeriv_zero_apply,
+    `MvPolynomial.hasseDeriv_zero,
+    `MvPolynomial.hasseDeriv_C,
+    `MvPolynomial.hasseDeriv_map,
+    `MvPolynomial.hasseDeriv_rename,
+    Lean.mkPrivateNameCore `Roth.HasseDeriv `MvPolynomial.hasseCoeff_mul_hasseCoeff,
+    `MvPolynomial.hasseDeriv_hasseDeriv,
+    `MvPolynomial.hasseDeriv_hasseDeriv_of_disjoint,
+    Lean.mkPrivateNameCore `Roth.HasseDeriv `MvPolynomial.hasseCoeff_mul_succ,
+    `MvPolynomial.pderiv_hasseDeriv,
+    `MvPolynomial.degreeOf_hasseDeriv_le,
+    `MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt,
+    Lean.mkPrivateNameCore `Roth.HasseDeriv `MvPolynomial.hasseDeriv_monomial_mul,
+    `MvPolynomial.hasseDeriv_mul_of_degreeOf_eq_zero,
+    `MvPolynomial.hasseDeriv_single_aeval_X,
+    `MvPolynomial.uniqueAlgEquiv_hasseDeriv,
+    `MvPolynomial.hasseCoeff_le_two_pow,
+    `MvPolynomial.factorial_smul_hasseDeriv_single,
+    `Roth.box,
+    `Roth.weight,
+    `Roth.mem_box,
+    `Roth.card_box,
+    `Roth.card_le_card_box,
+    `Roth.weight_nonneg,
+    `Roth.weight_zero,
+    `Roth.weight_add,
+    `Roth.weight_eq_zero_iff,
+    `Roth.weight_single,
+    `Roth.weight_le_card,
+    `Roth.weight_mul_left,
+    `Roth.weight_le_degree_div,
+    `Roth.weight_mapDomain,
+    `Roth.wronskianMatrix,
+    `Roth.wronskian,
+    `Roth.wronskian_eq_zero_of_not_linearIndependent,
+    `Roth.det_choose_eq,
+    Lean.mkPrivateNameCore `Roth.Wronskian `Roth.coeff_prod_of_natDegree_le',
+    `Roth.sum_range_le_sum_of_injective,
+    `Roth.coeff_wronskian_of_natDegree_injective,
+    `Roth.wronskian_ne_zero_of_natDegree_injective,
+    `Roth.wronskian_update_sub_smul,
+    `Roth.linearIndependent_update_sub_smul,
+    `Roth.sum_natDegree_update_lt,
+    `Roth.wronskian_ne_zero_of_linearIndependent,
+    `Roth.wronskian_eq_zero_iff,
+    `MvPolynomial.taylor,
+    `MvPolynomial.taylor_apply,
+    `MvPolynomial.taylor_X,
+    `MvPolynomial.taylor_C,
+    `MvPolynomial.taylor_monomial,
+    Lean.mkPrivateNameCore `Roth.Taylor `MvPolynomial.coeff_aeval_X_mul,
+    Lean.mkPrivateNameCore `Roth.Taylor `MvPolynomial.hasseCoeff_single_add_eq,
+    Lean.mkPrivateNameCore `Roth.Taylor `MvPolynomial.prod_pow_single_add_tsub,
+    Lean.mkPrivateNameCore `Roth.Taylor `MvPolynomial.coeff_taylor_monomial_single_add_aux,
+    Lean.mkPrivateNameCore `Roth.Taylor `MvPolynomial.coeff_taylor_monomial_aux,
+    `MvPolynomial.coeff_taylor,
+    `MvPolynomial.eval_taylor,
+    `MvPolynomial.taylor_taylor,
+    `MvPolynomial.taylor_zero,
+    `MvPolynomial.taylor_map,
+    `MvPolynomial.taylor_rename,
+    `MvPolynomial.degreeOf_taylor_le,
+    `MvPolynomial.taylor_neg_taylor,
+    `MvPolynomial.taylor_injective,
+    `MvPolynomial.taylor_eq_zero_iff,
+    `MvPolynomial.eq_sum_box_hasseDeriv,
+    `MvPolynomial.eval_eq_sum_box,
+    `Roth.normOne,
+    `Roth.diag,
+    `Roth.normOne_nonneg,
+    `Roth.normOne_eq_sum_of_support_subset,
+    `Roth.normOne_monomial,
+    `Roth.normOne_zero,
+    `Roth.abs_coeff_le_normOne,
+    `Roth.normOne_add_le,
+    `Roth.normOne_neg,
+    `Roth.normOne_sum_le,
+    `Roth.normOne_mul_le,
+    `Roth.normOne_prod_le,
+    `Roth.normOne_le_card_mul,
+    `Roth.normOne_det_le,
+    `Roth.abs_coeff_hasseDeriv_le,
+    `Roth.normOne_hasseDeriv_le,
+    `Roth.diag_eq_sum,
+    `Roth.abs_coeff_diag_le,
+    `Roth.natDegree_diag_le,
+    `Roth.eval_diag,
+    `Roth.diag_sub,
+    `Roth.geom_sum_le_one_add_pow,
+    Lean.mkPrivateNameCore `Roth.CoeffNorm `Roth.sum_box_prod_pow_le_aux,
+    `Roth.abs_eval_le,
+    `Roth.degreeOf_det_hasseDeriv_le,
+    `Roth.abs_coeff_det_hasseDeriv_le,
+    `Roth.genWronskian,
+    `Roth.kronecker,
+    `Roth.kroneckerExp,
+    Lean.mkPrivateNameCore `Roth.GenWronskian `Roth.kronHasse,
+    Lean.mkPrivateNameCore `Roth.GenWronskian `Roth.kronSpan,
+    `Roth.genWronskian_eq_zero_of_not_linearIndependent,
+    `Roth.kronecker_monomial,
+    `Roth.kroneckerExp_injOn,
+    `Roth.coeff_kronecker,
+    `Roth.kronecker_eq_zero_iff,
+    `Roth.linearIndependent_kronecker,
+    `Roth.derivative_aeval,
+    Lean.mkPrivateNameCore `Roth.GenWronskian `Roth.derivative_kronHasse_aux,
+    Lean.mkPrivateNameCore `Roth.GenWronskian `Roth.derivative_mem_kronSpan,
+    Lean.mkPrivateNameCore `Roth.GenWronskian `Roth.hasseDeriv_kronecker_mem,
+    `Roth.exists_hasseDeriv_kronecker_eq_sum,
+    `Roth.det_sum_rows,
+    Lean.mkPrivateNameCore `Roth.GenWronskian `Roth.wronskian_kronecker_eq_sum_aux,
+    `Roth.exists_genWronskian_ne_zero,
+    `Roth.sqrt_one_sub_inv_lt,
+    Lean.mkPrivateNameCore `Roth.Lattice `Roth.inv_add_inv_le,
+    Lean.mkPrivateNameCore `Roth.Lattice `Roth.sum_inv_le,
+    `Roth.sum_inv_lt,
+    Lean.mkPrivateNameCore `Roth.Lattice `Roth.extend_apply_castSucc,
+    Lean.mkPrivateNameCore `Roth.Lattice `Roth.extend_apply_last,
+    Lean.mkPrivateNameCore `Roth.Lattice `Roth.card_filter_box_fiber_aux,
+    `Roth.card_filter_box_last,
+    Lean.mkPrivateNameCore `Roth.Lattice `Roth.filter_weight_le_eq_empty,
+    Lean.mkPrivateNameCore `Roth.Lattice `Roth.card_filter_fiber_eq,
+    Lean.mkPrivateNameCore `Roth.Lattice `Roth.card_filter_weight_le_of_le_sqrt_aux,
+    Lean.mkPrivateNameCore `Roth.Lattice `Roth.card_filter_weight_le_succ_aux,
+    `Roth.card_filter_weight_le,
+    `Roth.index,
+    Lean.mkPrivateNameCore `Roth.Index `Roth.mem_support_taylor_iff,
+    `Roth.index_le_weight,
+    `Roth.exists_weight_eq_index,
+    `Roth.le_index_iff,
+    `Roth.index_nonneg,
+    `Roth.index_eq_zero_iff,
+    `Roth.index_sub_weight_le_index_hasseDeriv,
+    `Roth.le_index_sum,
+    `Roth.weight_eq_finsuppWeight_div,
+    `Roth.index_eq_weightedOrder_div,
+    `Roth.index_mul,
+    `Roth.index_prod,
+    `Roth.index_neg,
+    `Roth.index_C_mul,
+    `Roth.index_mul_left_weights,
+    `Roth.index_rename,
+    `Roth.index_le_card,
+    `Roth.index_unique,
+    `Roth.coeffNone,
+    `Roth.eq_mapDomain_some_add_single,
+    Lean.mkPrivateNameCore `Roth.Separation `Roth.coeff_X_none_pow_mul_rename,
+    `Roth.coeff_coeffNone,
+    `Roth.eq_sum_X_none_pow_mul_coeffNone,
+    `Roth.degreeOf_coeffNone_le,
+    `Roth.coeff_rename_mul_aeval,
+    `Roth.aeval_X_eq_rename,
+    `Roth.hasseDeriv_rename_mul_aeval,
+    `Roth.coeff_uniqueAlgEquiv_symm,
+    `Roth.degreeOf_uniqueAlgEquiv_symm,
+    `Roth.degreeOf_rename_mul_aeval,
+    `Roth.degreeOf_none_rename_mul_aeval,
+    Lean.mkPrivateNameCore `Roth.Separation `Roth.linearIndependent_coordinate_polynomials_aux,
+    Lean.mkPrivateNameCore `Roth.Separation `Roth.eq_sum_aeval_basis_coeffNone_aux,
+    Lean.mkPrivateNameCore `Roth.Separation `Roth.exists_coeffNone_basis_aux,
+    `Roth.exists_separated_representation,
+    `Roth.det_hasseDeriv_separated,
+    `Roth.exists_sum_mul_eq_gcd,
+    `Roth.exists_nat_smul_eq_map,
+    `Roth.exists_primitive_smul_eq,
+    `Roth.exists_int_eq_of_gcd_eq_one,
+    Lean.mkPrivateNameCore `Roth.Separation `Roth.rescale_separated_factor_aux,
+    Lean.mkPrivateNameCore `Roth.Separation `Roth.exists_int_polynomial_of_primitive_factor_aux,
+    `Roth.exists_int_factors,
+    Lean.mkPrivateNameCore `Roth.Separation `Roth.exists_rat_factors_det_hasseDeriv_aux,
+    `Roth.exists_det_eq_mul,
+    `Roth.RSet,
+    `Roth.indexSet,
+    `Roth.Θ,
+    `Roth.lem6M,
+    `Roth.lem6Φ,
+    `Roth.one_mem_RSet,
+    `Roth.indexSet_nonempty,
+    `Roth.indexSet_bddAbove,
+    `Roth.index_le_Θ,
+    `Roth.Θ_nonneg,
+    `Roth.Θ_le_card,
+    `Roth.Θ_le_of_forall_index_le,
+    `Roth.Θ_mono,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.indexSet_comp_subset,
+    `Roth.Θ_equiv,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.isPrimitive_linear,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.isPrimitive_pow,
+    `Roth.exists_eq_pow_mul_of_rootMultiplicity,
+    `Roth.pow_rootMultiplicity_le,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.index_unique_le_log_div,
+    `Roth.Θ_unique_le,
+    `Roth.one_le_lem6M,
+    `Roth.floor_sq_div_two_le_sum,
+    `Roth.sq_div_three_lt_floor_sq_div_two,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.mul_div_two_le_sum_max_aux,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.mul_sq_div_three_le_sum_max_of_pos_aux,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.mul_sq_div_three_le_sum_max_aux,
+    `Roth.min_le_sum_max,
+    `Roth.sum_max_sub_le_index_det,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.index_separated_mul_le_aux,
+    `Roth.index_det_le,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.weight_le_delta_aux,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.mapped_det_ne_zero_aux,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.index_numeric_bound_aux,
+    `Roth.index_le_lem6,
+    `Roth.Θ_option_le,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.factorial_coefficient_le_two_pow_aux,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.two_pow_lt_rpow_aux,
+    `Roth.lem6M_lt,
+    `Roth.lem7_Φ_bound,
+    `Roth.lem7_numeric,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.theta_scaled_unique_le_aux,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.theta_delta_succ_lt_aux,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.theta_prefix_lt_aux,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.theta_lt_base_aux,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.theta_denominators_one_lt_aux,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.theta_phi_lt_aux,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.theta_lt_succ_aux,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.theta_lt_of_large_delta_aux,
+    `Roth.Θ_lt,
+    `Roth.lam,
+    `Roth.gam,
+    `Roth.eta,
+    `Roth.mainCoeffBound,
+    `Roth.boxFamily,
+    `Roth.exists_delta_bound,
+    `Roth.eta_lt_gam_iff,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.sqrt_lt_nat_floor_aux,
+    `Roth.sqrt_lt_floor,
+    `Roth.four_lt_rpow,
+    `Roth.mul_log_div_two_lt_log_mainCoeffBound,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.two_lt_rpow_aux,
+    `Roth.three_small_factors,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.exists_norm_coeff_reduction_aux,
+    `Roth.norm_coeff_modByMonic_le,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.boxFamily_eq_image_finsupp_aux,
+    `Roth.boxFamily_finite,
+    `Roth.ncard_boxFamily,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.floor_rpow_count_lt_aux,
+    `Roth.pigeonhole_count,
+    `Roth.exists_ne_modByMonic_eq,
+    `Roth.sub_mem_RSet,
+    `Roth.eval_hasseDeriv_sub_eq_zero,
+    `Roth.le_index_of_forall_eval_eq_zero,
+    `Roth.mul_two_mul_add_one_div_lt_of_le_sq_mul,
+    `Roth.exists_hasseDeriv_eval_ne_zero,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.abs_eval_iterated_hasseDeriv_lt_aux,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.exists_hasseDeriv_index_eval_bound_aux,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.exists_mem_RSet_le_index_aux,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.mul_card_filter_weight_le_aux,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.exists_mem_RSet_le_index_of_rpow_bound_aux,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.exists_mem_RSet_le_index_of_log_bound_aux,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.exists_auxiliary_polynomial_of_log_bound_aux,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.theta_lt_eta_of_sq_log_bound_aux,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.exists_auxiliary_polynomial_with_index_gap_aux,
+    `Roth.main_lemma,
+    `Roth.approxSet,
+    `Roth.exists_nat_mul_isIntegral,
+    `Roth.approxSet_den_le_finite,
+    `Roth.eventually_div_rpow_lt,
+    `Roth.reduction,
+    `Roth.exists_monic_aeval_eq_zero,
+    Lean.mkPrivateNameCore `Roth.Main `Roth.approxSet_num_den_mem_aux,
+    `Roth.exists_reduced_approx,
+    `Roth.exists_m,
+    `Roth.exists_delta,
+    `Roth.exists_approximants,
+    `Roth.exists_degrees,
+    `Roth.one_le_prod_pow_mul_abs_eval,
+    Lean.mkPrivateNameCore `Roth.Main `Roth.abs_prod_pow_le_rpow_of_le_weight,
+    `Roth.abs_eval_lt_of_le_index,
+    Lean.mkPrivateNameCore `Roth.Main `Roth.exists_roth_parameters_aux,
+    Lean.mkPrivateNameCore `Roth.Main `Roth.exists_roth_approximants_aux,
+    Lean.mkPrivateNameCore `Roth.Main `Roth.one_lt_roth_eval_bound_aux,
+    Lean.mkPrivateNameCore `Roth.Main `Roth.roth_product_bound_aux,
+    Lean.mkPrivateNameCore `Roth.Main `Roth.roth_log_bound_aux,
+    `Roth.roth_of_isIntegral,
+    `Roth.roth,
+    `Roth.roth_rat,
+    `LeanEval.NumberTheory.ThueSiegelRothProblem.IsDiophantine,
+    Lean.mkPrivateNameCore `Roth.LeanEval
+      `LeanEval.NumberTheory.ThueSiegelRothProblem.exists_pos_div_rpow_lt_aux,
+    `LeanEval.NumberTheory.ThueSiegelRothProblem.isDiophantine_iff,
+    `LeanEval.NumberTheory.ThueSiegelRothProblem.thueSiegelRoth]
+  let unique := names.toList.eraseDups.length
+  unless names.size == 293 && unique == 293 do
+    throwError "FACTORS176_BAD_CANONICAL_ARRAY"
+  let mut present : Nat := 0
+  let mut values : Nat := 0
+  for n in names do
+    match env.find? n with
+    | none => throwError "FACTORS176_NOT_LOADED: {n}"
+    | some ci =>
+      present := present + 1
+      match ci.value? (allowOpaque := true) with
+      | none => pure ()
+      | some val =>
+        values := values + 1
+        if val.getUsedConstants.any (fun c ↦ c == target) then
+          Lean.logInfo m!"FACTORS176_DIRECT_CONSUMER: {n}"
+  Lean.logInfo m!"FACTORS176_AUDIT: requested={names.size}; unique={unique}"
+  Lean.logInfo m!"FACTORS176_AUDIT_PRESENT: present={present}; values={values}"
+end Factors176Audit
+
+namespace Factors176Generic
+open MvPolynomial Roth
+variable {τ R K : Type*} [CommRing R] [IsDomain R] [NormalizedGCDMonoid R]
+    [IsBezout R] [Field K] [Algebra R K] [IsFractionRing R K]
+omit [IsDomain R] [IsFractionRing R K] in
+theorem scalar_integer {ι : Type*} {s : Finset ι} {u : ι → R} (hu : s.gcd u = 1)
+    {v : K} (hv : ∀ a ∈ s, ∃ z : R, algebraMap R K (u a) * v = algebraMap R K z) :
+    ∃ z : R, v = algebraMap R K z := by
+  have h := Integral173Strong.gcd_smul_mem_all
+    (LinearMap.range (Algebra.linearMap R K)) s u v (by
+      intro i hi
+      obtain ⟨z, hz⟩ := hv i hi
+      exact ⟨z, by simpa only [Algebra.linearMap_apply, Algebra.smul_def] using hz.symm⟩)
+  rw [hu, one_smul] at h
+  obtain ⟨z, hz⟩ := h
+  exact ⟨z, hz.symm⟩
+theorem rescale_separated_factor_aux {U' U : MvPolynomial τ K}
+    {V' : Polynomial K} {F : MvPolynomial (Option τ) K} {g : K} (hg : g ≠ 0) (hUmap : U = g • U')
+    (hF : F = rename some U' * Polynomial.aeval (X none : MvPolynomial (Option τ) K) V') :
+    F = rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) K)
+      (Polynomial.C g⁻¹ * V') := by
+  rw [hF, hUmap, map_mul, Polynomial.aeval_C, algebraMap_eq, smul_eq_C_mul, map_mul,
+    rename_C, mul_mul_mul_comm, ← C_mul, mul_inv_cancel₀ hg, C_1, one_mul]
+
+omit [IsDomain R] [IsFractionRing R K] in
+theorem exists_int_polynomial_of_primitive_factor_aux {U : MvPolynomial τ R}
+    {V' : Polynomial K} {F : MvPolynomial (Option τ) R} (hgcd : U.support.gcd U.coeff = 1)
+    (hF : map (algebraMap R K) F = rename some (map (algebraMap R K) U) *
+      Polynomial.aeval (X none : MvPolynomial (Option τ) K) V') :
+    ∃ V : Polynomial R, V.map (algebraMap R K) = V' := by
+  apply (Polynomial.mem_map_range (algebraMap R K)).2
+  intro b
+  obtain ⟨z, hz⟩ := scalar_integer hgcd fun a _ ↦
+    ⟨F.coeff (a.mapDomain some + Finsupp.single none b), by
+      have h := congrArg (fun P ↦ P.coeff (a.mapDomain some + Finsupp.single none b)) hF
+      simp only [coeff_rename_mul_aeval, coeff_map] at h
+      simpa using h.symm⟩
+  exact ⟨z, hz.symm⟩
+
+/-- If an integer polynomial `F` factors over `K` as `U'(x_τ) V'(x_none)` with nonzero factors,
+then it factors over `R` as `U(x_τ) V(x_none)` with the same partial degrees.
+Source: §2, proof of Lemma 2 ("Thus `U, V` are integral and nonzero, as required"), together
+with the degree comparison at the end of the proof. -/
+theorem exists_int_factors {U' : MvPolynomial τ K} {V' : Polynomial K} (hU : U' ≠ 0) (hV : V' ≠ 0)
+    {F : MvPolynomial (Option τ) R} (hF : map (algebraMap R K) F =
+      rename some U' * Polynomial.aeval (X none : MvPolynomial (Option τ) K) V') :
+    ∃ (U : MvPolynomial τ R) (V : Polynomial R), U ≠ 0 ∧ V ≠ 0 ∧
+      F = rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) R) V ∧
+      (∀ j, degreeOf j U = degreeOf j U') ∧ V.natDegree = V'.natDegree := by
+  obtain ⟨g, U, hg, hUmap, hgcd⟩ := Primitive172FullGeneric.primitive (R := R) hU
+  have hF' := rescale_separated_factor_aux hg hUmap hF
+  obtain ⟨V, hVmap⟩ := exists_int_polynomial_of_primitive_factor_aux hgcd hF'
+  refine ⟨U, V, ?_, ?_, ?_, fun j ↦ ?_, ?_⟩
+  · exact fun h ↦ smul_ne_zero hg hU (by simpa [h] using hUmap.symm)
+  · exact fun h ↦ mul_ne_zero (Polynomial.C_ne_zero.2 (inv_ne_zero hg)) hV
+      (by simpa [h] using hVmap.symm)
+  · apply MvPolynomial.map_injective (algebraMap R K) (IsFractionRing.injective R K)
+    rw [hF', map_mul (map (algebraMap R K)), map_rename,
+      Polynomial.map_aeval_eq_aeval_map (φ := algebraMap R K)
+        (ψ := MvPolynomial.map (algebraMap R K)) (by ext r; simp), map_X,
+      hVmap]
+  · rw [degreeOf, ← degrees_map_of_injective U (f := algebraMap R K) (IsFractionRing.injective R K),
+      hUmap, ← degreeOf, smul_eq_C_mul, degreeOf_C_mul j g (mem_nonZeroDivisors_of_ne_zero hg)]
+  · rw [← Polynomial.natDegree_map_eq_of_injective (f := algebraMap R K)
+      (IsFractionRing.injective R K), hVmap, Polynomial.natDegree_C_mul (inv_ne_zero hg)]
+
+#print axioms exists_int_factors
+end Factors176Generic
+
+namespace Factors176Caller
+open MvPolynomial Roth
+open Lean Elab Term in
+elab "rat_factors" : term =>
+  return ← Lean.Meta.mkConstWithFreshMVarLevels
+    (Lean.mkPrivateNameCore `Roth.Separation `Roth.exists_rat_factors_det_hasseDeriv_aux)
+variable {τ : Type*}
+theorem exists_det_eq_mul [Finite τ] {P : MvPolynomial (Option τ) ℤ} (hP : P ≠ 0) {r : Option τ → ℕ}
+    (hr : ∀ j, degreeOf j P ≤ r j) : ∃ l, 1 ≤ l ∧ l ≤ r none + 1 ∧ ∃ D : Fin l → (τ →₀ ℕ),
+      (∀ μ, (D μ).degree ≤ μ) ∧ ∃ (U : MvPolynomial τ ℤ) (V : Polynomial ℤ), U ≠ 0 ∧ V ≠ 0 ∧
+        (∀ j, degreeOf j U ≤ l * r (some j)) ∧ V.natDegree ≤ l * r none ∧
+        (Matrix.of fun μ ν : Fin l ↦
+            hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) P).det = rename some U *
+          Polynomial.aeval (X none : MvPolynomial (Option τ) ℤ) V := by
+  classical
+  obtain ⟨l, hl1, hl2, D, hD, U', V', hU', hV', hFmap⟩ :=
+    rat_factors hP (hr none)
+  obtain ⟨U, V, hU, hV, hFUV, -, -⟩ :=
+    Factors176Generic.exists_int_factors (R := ℤ) (K := ℚ) hU' hV' hFmap
+  refine ⟨l, hl1, hl2, D, hD, U, V, hU, hV, fun j ↦ ?_, ?_, hFUV⟩
+  · rw [← degreeOf_rename_mul_aeval U hV j, ← hFUV]
+    exact degreeOf_det_hasseDeriv_le
+      (fun μ ν : Fin l ↦ (D μ).mapDomain some + Finsupp.single none (ν : ℕ)) P hr (some j)
+  · rw [← degreeOf_none_rename_mul_aeval hU V, ← hFUV]
+    exact degreeOf_det_hasseDeriv_le
+      (fun μ ν : Fin l ↦ (D μ).mapDomain some + Finsupp.single none (ν : ℕ)) P hr none
+
+#print axioms exists_det_eq_mul
+end Factors176Caller
+
+namespace Factors176GCDScalar
+variable {R K : Type*} [CommRing R] [IsDomain R] [NormalizedGCDMonoid R]
+    [Field K] [Algebra R K] [IsFractionRing R K]
+omit [IsDomain R] in
+theorem scalar_integer {ι : Type*} {s : Finset ι} {u : ι → R} (hu : s.gcd u = 1)
+    {v : K} (hv : ∀ a ∈ s, ∃ z : R, algebraMap R K (u a) * v = algebraMap R K z) :
+    ∃ z : R, v = algebraMap R K z := by
+  obtain ⟨a, b, hab, he⟩ := IsLocalization.surj_of_gcd_domain (nonZeroDivisors R) v
+  have hrel : IsRelPrime a b := gcd_isUnit_iff_isRelPrime.mp hab
+  have hdiv : b ∣ s.gcd u := Finset.dvd_gcd fun i hi ↦ by
+    obtain ⟨z, hz⟩ := hv i hi
+    have hmul : u i * a = z * b := IsFractionRing.injective R K (by
+      simp only [map_mul]
+      rw [← he, ← mul_assoc, hz])
+    apply hrel.symm.dvd_of_dvd_mul_right
+    exact hmul ▸ dvd_mul_left b z
+  have hb : IsUnit b := isUnit_iff_dvd_one.mpr (hu ▸ hdiv)
+  refine ⟨a * (↑(hb.unit⁻¹) : R), ?_⟩
+  rw [map_mul]
+  have hmap := Units.coe_map_inv (algebraMap R K : R →* K) hb.unit
+  simp only [MonoidHom.coe_coe] at hmap
+  rw [← hmap, Units.eq_mul_inv_iff_mul_eq]
+  exact he
+#print axioms scalar_integer
+end Factors176GCDScalar
+
+namespace Factors176Coeff
+open MvPolynomial
+variable {τ R : Type*} [CommSemiring R]
+noncomputable def coeffNone (P : MvPolynomial (Option τ) R) (ν : ℕ) : MvPolynomial τ R :=
+  (optionEquivLeft R τ P).coeff ν
+
+/-- The coefficient of `x_τ^d` in `coeffNone P ν` is the coefficient of `x_τ^d x_none^ν` in `P`. -/
+theorem coeff_coeffNone (P : MvPolynomial (Option τ) R) (ν : ℕ) (d : τ →₀ ℕ) :
+    (coeffNone P ν).coeff d = P.coeff (d.mapDomain some + Finsupp.single none ν) := by
+  rw [coeffNone, optionEquivLeft_coeff_coeff]
+  congr 1
+  ext o
+  cases o <;> simp [Finsupp.mapDomain_of_notMem_range,
+    Finsupp.mapDomain_apply_of_injective (Option.some_injective τ)]
+
+theorem coeff_rename_mul_aeval (U : MvPolynomial τ R) (V : Polynomial R) (a : τ →₀ ℕ) (b : ℕ) :
+    (rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) R) V).coeff
+        (a.mapDomain some + Finsupp.single none b) = U.coeff a * V.coeff b := by
+  have h : (optionEquivLeft R τ).toAlgHom.comp (rename some) = Polynomial.CAlgHom := by
+    ext i
+    simp
+  rw [← coeff_coeffNone, coeffNone, map_mul,
+    (show optionEquivLeft R τ (rename some U) = Polynomial.C U from AlgHom.congr_fun h U),
+    ← Polynomial.aeval_algHom_apply, optionEquivLeft_X_none, Polynomial.aeval_X_left_eq_map,
+    Polynomial.coeff_C_mul, Polynomial.coeff_map, algebraMap_eq, mul_comm U, coeff_C_mul, mul_comm]
+
+end Factors176Coeff
+
+namespace Factors176GCD
+open MvPolynomial Factors176Coeff
+variable {τ R K : Type*} [CommRing R] [IsDomain R] [NormalizedGCDMonoid R]
+    [Field K] [Algebra R K] [IsFractionRing R K]
+theorem rescale_separated_factor_aux {U' U : MvPolynomial τ K}
+    {V' : Polynomial K} {F : MvPolynomial (Option τ) K} {g : K} (hg : g ≠ 0) (hUmap : U = g • U')
+    (hF : F = rename some U' * Polynomial.aeval (X none : MvPolynomial (Option τ) K) V') :
+    F = rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) K)
+      (Polynomial.C g⁻¹ * V') := by
+  rw [hF, hUmap, map_mul, Polynomial.aeval_C, algebraMap_eq, smul_eq_C_mul, map_mul,
+    rename_C, mul_mul_mul_comm, ← C_mul, mul_inv_cancel₀ hg, C_1, one_mul]
+
+omit [IsDomain R] in
+theorem exists_int_polynomial_of_primitive_factor_aux {U : MvPolynomial τ R}
+    {V' : Polynomial K} {F : MvPolynomial (Option τ) R} (hgcd : U.support.gcd U.coeff = 1)
+    (hF : map (algebraMap R K) F = rename some (map (algebraMap R K) U) *
+      Polynomial.aeval (X none : MvPolynomial (Option τ) K) V') :
+    ∃ V : Polynomial R, V.map (algebraMap R K) = V' := by
+  apply (Polynomial.mem_map_range (algebraMap R K)).2
+  intro b
+  obtain ⟨z, hz⟩ := Factors176GCDScalar.scalar_integer hgcd fun a _ ↦
+    ⟨F.coeff (a.mapDomain some + Finsupp.single none b), by
+      have h := congrArg (fun P ↦ P.coeff (a.mapDomain some + Finsupp.single none b)) hF
+      simp only [coeff_rename_mul_aeval, coeff_map] at h
+      simpa using h.symm⟩
+  exact ⟨z, hz.symm⟩
+
+/-- If an integer polynomial `F` factors over `K` as `U'(x_τ) V'(x_none)` with nonzero factors,
+then it factors over `R` as `U(x_τ) V(x_none)` with the same partial degrees.
+Source: §2, proof of Lemma 2 ("Thus `U, V` are integral and nonzero, as required"), together
+with the degree comparison at the end of the proof. -/
+theorem exists_int_factors {U' : MvPolynomial τ K} {V' : Polynomial K} (hU : U' ≠ 0) (hV : V' ≠ 0)
+    {F : MvPolynomial (Option τ) R} (hF : map (algebraMap R K) F =
+      rename some U' * Polynomial.aeval (X none : MvPolynomial (Option τ) K) V') :
+    ∃ (U : MvPolynomial τ R) (V : Polynomial R), U ≠ 0 ∧ V ≠ 0 ∧
+      F = rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) R) V ∧
+      (∀ j, degreeOf j U = degreeOf j U') ∧ V.natDegree = V'.natDegree := by
+  fail_if_success exact hF
+  fail_if_success simpa only using hF
+  obtain ⟨g, U, hg, hUmap, hgcd⟩ := Primitive172FullGeneric.primitive (R := R) hU
+  have hF' := rescale_separated_factor_aux hg hUmap hF
+  obtain ⟨V, hVmap⟩ := exists_int_polynomial_of_primitive_factor_aux hgcd hF'
+  refine ⟨U, V, ?_, ?_, ?_, fun j ↦ ?_, ?_⟩
+  · exact fun h ↦ smul_ne_zero hg hU (by simpa [h] using hUmap.symm)
+  · exact fun h ↦ mul_ne_zero (Polynomial.C_ne_zero.2 (inv_ne_zero hg)) hV
+      (by simpa [h] using hVmap.symm)
+  · apply MvPolynomial.map_injective (algebraMap R K) (IsFractionRing.injective R K)
+    rw [hF', map_mul (map (algebraMap R K)), map_rename,
+      Polynomial.map_aeval_eq_aeval_map (φ := algebraMap R K)
+        (ψ := MvPolynomial.map (algebraMap R K)) (by ext r; simp), map_X,
+      hVmap]
+  · rw [degreeOf, ← degrees_map_of_injective U (f := algebraMap R K) (IsFractionRing.injective R K),
+      hUmap, ← degreeOf, smul_eq_C_mul, degreeOf_C_mul j g (mem_nonZeroDivisors_of_ne_zero hg)]
+  · rw [← Polynomial.natDegree_map_eq_of_injective (f := algebraMap R K)
+      (IsFractionRing.injective R K), hVmap, Polynomial.natDegree_C_mul (inv_ne_zero hg)]
+
+#print axioms exists_int_factors
+end Factors176GCD
+
+namespace Factors176Specialization
+open MvPolynomial
+theorem original {τ : Type*} {U' : MvPolynomial τ ℚ} {V' : Polynomial ℚ}
+    (hU : U' ≠ 0) (hV : V' ≠ 0) {F : MvPolynomial (Option τ) ℤ}
+    (hF : map (Int.castRingHom ℚ) F =
+      rename some U' * Polynomial.aeval (X none : MvPolynomial (Option τ) ℚ) V') :
+    ∃ (U : MvPolynomial τ ℤ) (V : Polynomial ℤ), U ≠ 0 ∧ V ≠ 0 ∧
+      F = rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) ℤ) V ∧
+      (∀ j, degreeOf j U = degreeOf j U') ∧ V.natDegree = V'.natDegree :=
+  Factors176GCD.exists_int_factors (R := ℤ) (K := ℚ) hU hV hF
+#print axioms original
+end Factors176Specialization
+
+namespace Factors176GCDCaller
+open MvPolynomial Roth
+open Lean Elab Term in
+elab "gcd_rat_factors" : term =>
+  return ← Lean.Meta.mkConstWithFreshMVarLevels
+    (Lean.mkPrivateNameCore `Roth.Separation `Roth.exists_gcd_rat_factors_det_hasseDeriv_aux)
+variable {τ : Type*}
+theorem exists_det_eq_mul [Finite τ] {P : MvPolynomial (Option τ) ℤ} (hP : P ≠ 0) {r : Option τ → ℕ}
+    (hr : ∀ j, degreeOf j P ≤ r j) : ∃ l, 1 ≤ l ∧ l ≤ r none + 1 ∧ ∃ D : Fin l → (τ →₀ ℕ),
+      (∀ μ, (D μ).degree ≤ μ) ∧ ∃ (U : MvPolynomial τ ℤ) (V : Polynomial ℤ), U ≠ 0 ∧ V ≠ 0 ∧
+        (∀ j, degreeOf j U ≤ l * r (some j)) ∧ V.natDegree ≤ l * r none ∧
+        (Matrix.of fun μ ν : Fin l ↦
+            hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) P).det = rename some U *
+          Polynomial.aeval (X none : MvPolynomial (Option τ) ℤ) V := by
+  classical
+  obtain ⟨l, hl1, hl2, D, hD, U', V', hU', hV', hFmap⟩ :=
+    gcd_rat_factors hP (hr none)
+  obtain ⟨U, V, hU, hV, hFUV, -, -⟩ :=
+    Factors176GCD.exists_int_factors (R := ℤ) (K := ℚ) hU' hV' hFmap
+  refine ⟨l, hl1, hl2, D, hD, U, V, hU, hV, fun j ↦ ?_, ?_, hFUV⟩
+  · rw [← degreeOf_rename_mul_aeval U hV j, ← hFUV]
+    exact degreeOf_det_hasseDeriv_le
+      (fun μ ν : Fin l ↦ (D μ).mapDomain some + Finsupp.single none (ν : ℕ)) P hr (some j)
+  · rw [← degreeOf_none_rename_mul_aeval hU V, ← hFUV]
+    exact degreeOf_det_hasseDeriv_le
+      (fun μ ν : Fin l ↦ (D μ).mapDomain some + Finsupp.single none (ν : ℕ)) P hr none
+
+#print axioms exists_det_eq_mul
+end Factors176GCDCaller
