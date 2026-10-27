@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 94/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 95/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 94; remaining: 199.
-- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 9 YES-but-generalise-first, 17 NO-mathlib-has-it, 32 BORDERLINE-needs-human, 9 SKIP.
+- Completed applicable assessments: 95; remaining: 198.
+- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 9 YES-but-generalise-first, 18 NO-mathlib-has-it, 32 BORDERLINE-needs-human, 9 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -1002,6 +1002,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: 0 named explicit callers,0 direct proof consumers in exact ordered293audit;1 inline bypass at MainLemma:409 over arbitrary CommRing S.
 - Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/Roth.eval_diag.md).
 
+### Completed: `Roth.diag_sub`
+
+- Type: `∀ {σ : Type u_1} (P Q : MvPolynomial σ ℤ), Roth.diag (P - Q) = Roth.diag P - Roth.diag Q`
+- What: Diagonal substitution preserves subtraction.
+- How: One generic map_sub application to MvPolynomial.aeval.
+- Hypotheses: Arbitrary variable type; integer coefficients fixed by parent diag; two arbitrary polynomials.
+- Project dependencies: Roth.diag
+- Caller summary: One explicit reference and one native direct proof consumer: MainLemma408 eval_hasseDeriv_sub_eq_zero.
+- Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/Roth.diag_sub.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -1216,6 +1226,8 @@ Completed `Roth.natDegree_diag_le`: aeval_natDegree_le in RingTheory/Polynomial/
 
 Completed `Roth.eval_diag`: NO-mathlib-has-it: MvPolynomial.comp_aeval_apply, Mathlib/Algebra/MvPolynomial/Eval.lean:612; hom_eval₂:198, map/eval/aeval transport.
 
+Completed `Roth.diag_sub`: Existing map_sub (generated additive theorem of map_div) already proves this with weaker generic homomorphism assumptions.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -1405,6 +1417,8 @@ Completed `Roth.abs_coeff_diag_le`: A finite-fiber pushforward triangle bound; a
 Completed `Roth.natDegree_diag_le`: Overlaps existing aeval substitution law; local coordinate sum hypothesis bridge is distinct and not definitional.
 
 Completed `Roth.eval_diag`: Generic polynomial substitution associativity/naturality already in mathlib and re-used inline.
+
+Completed `Roth.diag_sub`: Wrapper of map_sub; no independent algebraic content.
 
 ## Part 5: Generalization opportunities
 
@@ -1599,6 +1613,8 @@ Completed `Roth.natDegree_diag_le`: Expanded statement verified for arbitrary Co
 
 Completed `Roth.eval_diag`: Compiled arbitrary CommSemiring R,S with f:R→+*S and Algebra aeval forms. Parent diag remains ℤ-specific.
 
+Completed `Roth.diag_sub`: Expanded arbitrary CommRing diagonal and arbitrary algebra substitution compile; generic AddGroupHom law also compiles.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -1789,6 +1805,8 @@ Completed `Roth.abs_coeff_diag_le`: Optional coefficient formula for constant-X 
 Completed `Roth.natDegree_diag_le`: Potential named coordinate-to-totalDegree inequality / bounded variant, pending upstream API choice; search failure not an absence proof.
 
 Completed `Roth.eval_diag`: None established; no new normalization helper needed.
+
+Completed `Roth.diag_sub`: None needed for subtraction preservation.
 
 ## Part 7: Junk / removable
 
@@ -1983,6 +2001,8 @@ Completed `Roth.natDegree_diag_le`: Not dead: one explicit and one canonical dir
 
 Completed `Roth.eval_diag`: Unused named wrapper; no simp attribute. Zero references alone not proof of mathematical uselessness.
 
+Completed `Roth.diag_sub`: Not dead: one genuine consumer, mechanically replaceable using typed hdiag.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -2081,6 +2101,7 @@ Completed `Roth.eval_diag`: Unused named wrapper; no simp attribute. Zero refere
 | 92 | `Roth.abs_coeff_diag_le` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.abs_coeff_diag_le.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.abs_coeff_diag_le/root-acceptance.json) |
 | 93 | `Roth.natDegree_diag_le` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.natDegree_diag_le.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.natDegree_diag_le/root-acceptance.json) |
 | 94 | `Roth.eval_diag` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.eval_diag.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.eval_diag/root-acceptance.json) |
+| 95 | `Roth.diag_sub` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.diag_sub.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.diag_sub/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -2268,12 +2289,14 @@ Completed `Roth.natDegree_diag_le` action: Retain local theorem; decide upstream
 
 Completed `Roth.eval_diag` action: In a later authorized refactor remove eval_diag, update0 named callers, retain MainLemma409 existing stronger composition-law proof. Future callers specialize comp_aeval_apply or hom_eval₂.
 
+Completed `Roth.diag_sub` action: NO-mathlib-has-it. In future cleanup replace the sole caller using accepted replay, delete local wrapper; alternative destination CoeffNorm only if stable local spelling deliberately retained.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.diag_sub` next. Supporting identities receive their own applicable checks.
+   `Roth.geom_sum_le_one_add_pow` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

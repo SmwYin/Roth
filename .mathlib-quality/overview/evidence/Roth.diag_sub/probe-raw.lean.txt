@@ -1,0 +1,23 @@
+import Mathlib.Algebra.MvPolynomial.PDeriv
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Data.Nat.Choose.Bounds
+#check_failure Roth.diag_sub
+#check_failure Roth.diag
+#check @map_sub
+#check @MvPolynomial.aeval
+namespace MvPolynomial.DiagSubRaw
+variable {σ R A B : Type*}
+theorem diagonal [CommRing R] (P Q : MvPolynomial σ R) :
+    aeval (fun _ : σ ↦ (Polynomial.X : Polynomial R)) (P - Q) =
+      aeval (fun _ : σ ↦ (Polynomial.X : Polynomial R)) P -
+        aeval (fun _ : σ ↦ (Polynomial.X : Polynomial R)) Q :=
+  map_sub _ _ _
+theorem substitution [CommRing R] [CommRing A] [Algebra R A] (x : σ → A)
+    (P Q : MvPolynomial σ R) : aeval x (P - Q) = aeval x P - aeval x Q :=
+  map_sub _ _ _
+theorem abstract [AddGroup A] [AddGroup B] (f : A →+ B) (a b : A) :
+    f (a - b) = f a - f b := map_sub f a b
+#print axioms diagonal
+#print axioms substitution
+#print axioms abstract
+end MvPolynomial.DiagSubRaw

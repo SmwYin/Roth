@@ -1,0 +1,163 @@
+{
+  "parameters": [
+    {
+      "parameter": "σ : Type*",
+      "status": "already arbitrary",
+      "reason": "No Fintype or DecidableEq assumption."
+    },
+    {
+      "parameter": "P Q",
+      "status": "essential",
+      "reason": "Both arbitrary polynomial inputs occur in subtraction."
+    },
+    {
+      "parameter": "ℤ",
+      "status": "fixed parent interface",
+      "reason": "Cannot mechanically change Roth.diag domain. Expanded aeval representation verified for CommRing R."
+    }
+  ],
+  "modern_rows": [
+    {
+      "question": "Typeclasses",
+      "answer": "yes",
+      "proposal": "Use existing AddMonoidHomClass with FunLike, AddGroup domain and SubtractionMonoid codomain; no explicit closure hypotheses.",
+      "downstream": "Every additive bundled map uses map_sub."
+    },
+    {
+      "question": "Filters",
+      "answer": "no",
+      "proposal": "No topology or convergence.",
+      "downstream": "n/a"
+    },
+    {
+      "question": "Universal properties",
+      "answer": "yes",
+      "proposal": "aeval already supplies the universal algebra homomorphism; use its generic law.",
+      "downstream": "Arbitrary substitutions inherit subtraction automatically."
+    },
+    {
+      "question": "Bundled substructures",
+      "answer": "no",
+      "proposal": "No subset or closure predicate; aeval is already bundled.",
+      "downstream": "n/a"
+    },
+    {
+      "question": "Hierarchy weakening",
+      "answer": "yes",
+      "proposal": "Replace integer coefficients by CommRing R in expanded representation.",
+      "downstream": "Arbitrary polynomial coefficient rings."
+    },
+    {
+      "question": "Higher categories",
+      "answer": "no",
+      "proposal": "Elementary homomorphism law has no additional higher coherence requirement.",
+      "downstream": "n/a"
+    },
+    {
+      "question": "Concrete index",
+      "answer": "no",
+      "proposal": "σ is already arbitrary; ℤ is the coefficient object, treated in row5.",
+      "downstream": "n/a"
+    },
+    {
+      "question": "Concrete via abstract",
+      "answer": "yes",
+      "proposal": "Body map_sub _ _ _ contains zero occurrences of diag: it uses only additive homomorphism structure.",
+      "downstream": "Specialise existing map_sub to AddGroupHom or aeval."
+    },
+    {
+      "question": "False generalisation guard",
+      "answer": "PASS",
+      "proposal": "Expanded CommRing diagonal specialises back at R=ℤ. Abstract map_sub forgets multiplicative structure but retains the identical subtraction law. Do not claim CommSemiring truncated subtraction preserves it.",
+      "downstream": "Original content preserved."
+    }
+  ],
+  "strategy_rows": [
+    {
+      "question": "Topology",
+      "answer": "no",
+      "reason": "No neighbourhood arguments."
+    },
+    {
+      "question": "Point-free algebra",
+      "answer": "no",
+      "reason": "Already a direct generic homomorphism-law application; ideal inclusions add no value."
+    },
+    {
+      "question": "Analysis",
+      "answer": "no",
+      "reason": "No sequence or limit."
+    },
+    {
+      "question": "Universal property",
+      "answer": "no",
+      "reason": "Construction supplied by aeval; no new construction proof."
+    },
+    {
+      "question": "Missing helpers",
+      "answer": "no",
+      "reason": "map_sub already supplies the whole law."
+    }
+  ],
+  "infrastructure_rows": [
+    {
+      "risk": "diamond",
+      "status": "n/a: theorem",
+      "reason": "A proposition proof adds no definitional object, instance, or coercion path."
+    },
+    {
+      "risk": "reducibility",
+      "status": "n/a: theorem",
+      "reason": "A proposition proof adds no definitional object, instance, or coercion path."
+    },
+    {
+      "risk": "noncanonical unfolding",
+      "status": "n/a: theorem",
+      "reason": "A proposition proof adds no definitional object, instance, or coercion path."
+    },
+    {
+      "risk": "priority",
+      "status": "n/a: theorem",
+      "reason": "A proposition proof adds no definitional object, instance, or coercion path."
+    },
+    {
+      "risk": "universes",
+      "status": "n/a: theorem",
+      "reason": "A proposition proof adds no definitional object, instance, or coercion path."
+    },
+    {
+      "risk": "coercions",
+      "status": "n/a: theorem",
+      "reason": "A proposition proof adds no definitional object, instance, or coercion path."
+    }
+  ],
+  "expanded_forms": [
+    {
+      "name": "diagonal",
+      "verified": true,
+      "status": "PASS",
+      "receipt": "native-raw-success.json"
+    },
+    {
+      "name": "substitution",
+      "verified": true,
+      "status": "PASS",
+      "receipt": "native-raw-success.json"
+    },
+    {
+      "name": "abstract",
+      "verified": true,
+      "status": "PASS",
+      "receipt": "native-raw-success.json"
+    }
+  ],
+  "shape": {
+    "normal_form": "map_sub with homomorphism applied to subtraction on lhs and separate images rhs",
+    "alternatives": [
+      "expanded aeval diagonal",
+      "arbitrary aeval substitution",
+      "generic additive homomorphism"
+    ],
+    "superfluous": "No removable explicit hypotheses in fixed Roth.diag interface. Fixed ℤ is broadened only by changing representation."
+  }
+}
