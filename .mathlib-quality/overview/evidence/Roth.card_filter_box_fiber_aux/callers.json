@@ -1,0 +1,51 @@
+[
+  {
+    "file": "Roth/Lattice.lean",
+    "line": 131,
+    "name": "Roth.card_filter_box_last",
+    "short": "card_filter_box_last",
+    "kind": "theorem",
+    "visibility": "public",
+    "end_line": 141,
+    "source": "theorem card_filter_box_last {m : ℕ} (r : Fin (m + 1) → ℕ) (p : (Fin (m + 1) →₀ ℕ) → Prop)\n    [DecidablePred p] : ((box r).filter p).card = ∑ i ∈ range (r (Fin.last m) + 1),\n      ((box (r ∘ Fin.castSucc)).filter fun d ↦\n        p (d.mapDomain Fin.castSucc + Finsupp.single (Fin.last m) i)).card := by\n  classical\n  rw [Finset.card_eq_sum_card_fiberwise (f := fun d ↦ d (Fin.last m))\n    (t := range (r (Fin.last m) + 1)) fun d hd ↦ by\n      simp only [Finset.coe_filter, Set.mem_ofPred_eq, mem_box] at hd\n      simpa [Nat.lt_succ_iff] using hd.1 (Fin.last m)]\n  exact Finset.sum_congr rfl fun i hi ↦\n    (card_filter_box_fiber_aux r p (Nat.lt_succ_iff.1 (mem_range.1 hi))).symm",
+    "signature": "theorem card_filter_box_last {m : ℕ} (r : Fin (m + 1) → ℕ) (p : (Fin (m + 1) →₀ ℕ) → Prop)\n    [DecidablePred p] : ((box r).filter p).card = ∑ i ∈ range (r (Fin.last m) + 1),\n      ((box (r ∘ Fin.castSucc)).filter fun d ↦\n        p (d.mapDomain Fin.castSucc + Finsupp.single (Fin.last m) i)).card",
+    "body": "by\n  classical\n  rw [Finset.card_eq_sum_card_fiberwise (f := fun d ↦ d (Fin.last m))\n    (t := range (r (Fin.last m) + 1)) fun d hd ↦ by\n      simp only [Finset.coe_filter, Set.mem_ofPred_eq, mem_box] at hd\n      simpa [Nat.lt_succ_iff] using hd.1 (Fin.last m)]\n  exact Finset.sum_congr rfl fun i hi ↦\n    (card_filter_box_fiber_aux r p (Nat.lt_succ_iff.1 (mem_range.1 hi))).symm",
+    "proof_lines": 8,
+    "sha256": "9c1ab29293a3e742b43831e8d485df9a629ee68ac84dfe9b055b39eb311c9639",
+    "source_body_project_refs": [
+      "Roth.card_filter_box_fiber_aux",
+      "Roth.mem_box"
+    ],
+    "source_type_project_refs": [
+      "Roth.box"
+    ],
+    "what": "Counts a filtered box by summing cardinalities of its fibers over the last coordinate.",
+    "how": "Uses Finset.card_eq_sum_card_fiberwise and identifies each fiber with the smaller box by card_filter_box_fiber_aux.",
+    "hypotheses": "A rectangular box on Fin(m+1) and a decidable predicate.",
+    "source_used_by_project": [
+      "Roth.card_filter_weight_le_succ_aux"
+    ],
+    "source_used_by_file": [
+      "Roth.card_filter_weight_le_succ_aux"
+    ],
+    "section_binders": "(none; all binders written explicitly)",
+    "type_provenance": "Exact written signature plus manually identified captured section binders. Root cached full build succeeds; global opaque/type inspector timed out, so no kernel dump is claimed.",
+    "notes": "No sorry, TODO, or set_option in this declaration.",
+    "assignment_offset": 297,
+    "project_body_refs": [
+      "Roth.card_filter_box_fiber_aux",
+      "Roth.mem_box"
+    ],
+    "project_type_refs": [
+      "Roth.box"
+    ],
+    "project_callers": [
+      {
+        "name": "Roth.card_filter_weight_le_succ_aux",
+        "file": "Roth/Lattice.lean",
+        "line": 166
+      }
+    ],
+    "section_context": "(none; all binders written explicitly)"
+  }
+]

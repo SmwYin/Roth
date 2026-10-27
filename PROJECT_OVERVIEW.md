@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 125/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 126/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 125; remaining: 168.
-- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 17 YES-but-generalise-first, 21 NO-mathlib-has-it, 40 BORDERLINE-needs-human, 20 SKIP.
+- Completed applicable assessments: 126; remaining: 167.
+- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 17 YES-but-generalise-first, 21 NO-mathlib-has-it, 40 BORDERLINE-needs-human, 21 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -1366,6 +1366,20 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: 1 explicit source caller declarations, all in Lattice.lean; 1 direct original value consumers. Exact separate lists retained. Entire module proof bodies replay successfully with fresh target name.
 - Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.extend_apply_last.md).
 
+### Completed: `Roth.card_filter_box_fiber_aux`
+
+- Type: `∀ {m : ℕ} (r : Fin (m + 1) → ℕ) (p : (Fin (m + 1) →₀ ℕ) → Prop)
+  [inst : DecidablePred p] {i : ℕ},
+  i ≤ r (Fin.last m) →
+    {d ∈ Roth.box (r ∘ Fin.castSucc) | p (Finsupp.mapDomain Fin.castSucc d + Finsupp.single (Fin.last m) i)}.card =
+      {d ∈ Finset.filter p (Roth.box r) | d (Fin.last m) = i}.card`
+- What: A fixed last-coordinate fiber of a filtered rectangular box has the same cardinality as the smaller box filtered after extension by that coordinate.
+- How: Constructs a Finset.card_bij with extension, proves coordinate bounds using extend_apply_castSucc/extend_apply_last, and reconstructs the inverse by restriction to earlier coordinates.
+- Hypotheses: A natural rectangular box, a decidable predicate, and a last coordinate within its bound. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.
+- Project dependencies: Roth.extend_apply_castSucc, Roth.extend_apply_last, Roth.mem_box, Roth.box
+- Caller summary: 1 explicit source caller declarations, all in Lattice.lean; 1 direct original value consumers. Exact separate lists retained. Entire module proof bodies replay successfully with fresh target name.
+- Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.card_filter_box_fiber_aux.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -1642,6 +1656,8 @@ Completed `Roth.extend_apply_castSucc`: Embedding a finitely supported vector al
 
 Completed `Roth.extend_apply_last`: The image of Fin.castSucc excludes Fin.last, so the embedded finitely supported vector evaluates to zero there. The singleton contributes exactly its stored natural value. Finsupp.mapDomain_of_notMem_range and simplification prove the formula. This complements the castSucc-coordinate helper and supplies the last-coordinate requirement in the filtered-box fiber bijection.
 
+Completed `Roth.card_filter_box_fiber_aux`: Finset.card_bij compares the smaller filtered box with the fixed last-coordinate fiber. Extension preserves all old coordinates and sets the last to i; the bound hi ensures membership. Injectivity follows by restriction to castSucc coordinates. Surjectivity reconstructs the smaller vector with Finsupp.equivFunOnFinite and proves its extension equals the original by Fin.lastCases. This is the geometric fiber-identification step; the public cardinality theorem separately sums the fibers.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -1893,6 +1909,8 @@ Completed `Roth.sum_inv_lt`: Reciprocal convexity already follows from convexOn_
 Completed `Roth.extend_apply_castSucc`: The helper has a distinct role in the lattice proof as described in the structural review; no duplicate full construction is introduced.
 
 Completed `Roth.extend_apply_last`: The helper has a distinct role in the lattice proof as described in the structural review; no duplicate full construction is introduced.
+
+Completed `Roth.card_filter_box_fiber_aux`: The helper has a distinct role in the lattice proof as described in the structural review; no duplicate full construction is introduced.
 
 ## Part 5: Generalization opportunities
 
@@ -2149,6 +2167,8 @@ Completed `Roth.extend_apply_castSucc`: No public generality claim under the pri
 
 Completed `Roth.extend_apply_last`: No public generality claim under the private prefilter; preserve the existing definition and interface.
 
+Completed `Roth.card_filter_box_fiber_aux`: No public generality claim under the private prefilter; preserve the existing definition and interface.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -2401,6 +2421,8 @@ Completed `Roth.sum_inv_lt`: Candidate generic convex symmetric-average endpoint
 Completed `Roth.extend_apply_castSucc`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 Completed `Roth.extend_apply_last`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
+
+Completed `Roth.card_filter_box_fiber_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 ## Part 7: Junk / removable
 
@@ -2657,6 +2679,8 @@ Completed `Roth.extend_apply_castSucc`: Retain a live private proof interface. N
 
 Completed `Roth.extend_apply_last`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
 
+Completed `Roth.card_filter_box_fiber_aux`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -2786,6 +2810,7 @@ Completed `Roth.extend_apply_last`: Retain a live private proof interface. No pl
 | 123 | `Roth.sum_inv_lt` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.sum_inv_lt.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.sum_inv_lt/root-acceptance.json) |
 | 124 | `Roth.extend_apply_castSucc` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.extend_apply_castSucc.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.extend_apply_castSucc/root-acceptance.json) |
 | 125 | `Roth.extend_apply_last` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.extend_apply_last.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.extend_apply_last/root-acceptance.json) |
+| 126 | `Roth.card_filter_box_fiber_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.card_filter_box_fiber_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.card_filter_box_fiber_aux/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -3035,12 +3060,14 @@ Completed `Roth.extend_apply_castSucc` action: Keep unchanged; complete private-
 
 Completed `Roth.extend_apply_last` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
 
+Completed `Roth.card_filter_box_fiber_aux` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.card_filter_box_fiber_aux` next. Supporting identities receive their own applicable checks.
+   `Roth.card_filter_box_last` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

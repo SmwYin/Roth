@@ -1,0 +1,21 @@
+{
+  "declaration": "Roth.card_filter_box_fiber_aux",
+  "kind": "lemma",
+  "type": "∀ {m : ℕ} (r : Fin (m + 1) → ℕ) (p : (Fin (m + 1) →₀ ℕ) → Prop)\n  [inst : DecidablePred p] {i : ℕ},\n  i ≤ r (Fin.last m) →\n    {d ∈ Roth.box (r ∘ Fin.castSucc) | p (Finsupp.mapDomain Fin.castSucc d + Finsupp.single (Fin.last m) i)}.card =\n      {d ∈ Finset.filter p (Roth.box r) | d (Fin.last m) = i}.card",
+  "what": "A fixed last-coordinate fiber of a filtered rectangular box has the same cardinality as the smaller box filtered after extension by that coordinate.",
+  "how": "Constructs a Finset.card_bij with extension, proves coordinate bounds using extend_apply_castSucc/extend_apply_last, and reconstructs the inverse by restriction to earlier coordinates.",
+  "hypotheses": "A natural rectangular box, a decidable predicate, and a last coordinate within its bound. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.",
+  "project_dependencies": [
+    "Roth.extend_apply_castSucc",
+    "Roth.extend_apply_last",
+    "Roth.mem_box",
+    "Roth.box"
+  ],
+  "caller_summary": "1 explicit source caller declarations, all in Lattice.lean; 1 direct original value consumers. Exact separate lists retained. Entire module proof bodies replay successfully with fresh target name.",
+  "mathlib_api_audit": "Finset.card_bij compares the smaller filtered box with the fixed last-coordinate fiber. Extension preserves all old coordinates and sets the last to i; the bound hi ensures membership. Injectivity follows by restriction to castSucc coordinates. Surjectivity reconstructs the smaller vector with Finsupp.equivFunOnFinite and proves its extension equals the original by Fin.lastCases. This is the geometric fiber-identification step; the public cardinality theorem separately sums the fibers.",
+  "moral_duplications": "The helper has a distinct role in the lattice proof as described in the structural review; no duplicate full construction is introduced.",
+  "generalization": "No public generality claim under the private prefilter; preserve the existing definition and interface.",
+  "missing_api": "No new primitive is needed for this internal organization; full public contribution search is explicitly not run.",
+  "junk": "Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.",
+  "action": "Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration."
+}
