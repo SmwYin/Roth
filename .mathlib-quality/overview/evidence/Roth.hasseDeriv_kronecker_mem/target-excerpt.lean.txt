@@ -1,0 +1,16 @@
+private lemma hasseDeriv_kronecker_mem [CharZero K] (k μ : ℕ) :
+    (fun P ↦ Polynomial.hasseDeriv μ (kronecker k P)) ∈ kronSpan (K := K) (σ := σ) k μ := by
+  induction μ with
+  | zero =>
+    refine Submodule.subset_span ⟨0, by simp, ?_⟩
+    funext P
+    simp [kronHasse]
+  | succ μ ih =>
+    apply (((kronSpan (K := K) (σ := σ) k (μ + 1)).restrictScalars K).smul_mem_iff
+      (s := ((μ + 1 : ℕ) : K)) (Nat.cast_ne_zero.2 μ.succ_ne_zero)).mp
+    change (((μ + 1 : ℕ) : K) • fun P ↦ Polynomial.hasseDeriv (μ + 1) (kronecker k P)) ∈
+      kronSpan (K := K) (σ := σ) k (μ + 1)
+    convert derivative_mem_kronSpan k μ ih using 1
+    funext P
+    simpa [← Nat.cast_smul_eq_nsmul K, add_comm] using
+      (congrArg (fun L ↦ L (kronecker k P)) (Polynomial.hasseDeriv_comp (R := K) 1 μ)).symm

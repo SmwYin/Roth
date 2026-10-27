@@ -1,0 +1,53 @@
+[
+  {
+    "file": "Roth/GenWronskian.lean",
+    "line": 214,
+    "name": "Roth.exists_hasseDeriv_kronecker_eq_sum",
+    "short": "exists_hasseDeriv_kronecker_eq_sum",
+    "kind": "theorem",
+    "visibility": "public",
+    "end_line": 221,
+    "source": "theorem exists_hasseDeriv_kronecker_eq_sum [CharZero K] (k μ : ℕ) : ∃ (s : Finset (σ →₀ ℕ))\n    (c : (σ →₀ ℕ) → Polynomial K), (∀ d ∈ s, d.degree ≤ μ) ∧ ∀ P : MvPolynomial σ K,\n      Polynomial.hasseDeriv μ (kronecker k P) = ∑ d ∈ s, c d * kronecker k (hasseDeriv d P) := by\n  classical\n  obtain ⟨c, hc, hsum⟩ := (Finsupp.mem_span_image_iff_linearCombination _).1\n    (hasseDeriv_kronecker_mem (K := K) (σ := σ) k μ)\n  refine ⟨c.support, c, hc, fun P ↦ ?_⟩\n  simpa [Finsupp.linearCombination_apply, Finsupp.sum, kronHasse] using congrFun hsum.symm P",
+    "signature": "theorem exists_hasseDeriv_kronecker_eq_sum [CharZero K] (k μ : ℕ) : ∃ (s : Finset (σ →₀ ℕ))\n    (c : (σ →₀ ℕ) → Polynomial K), (∀ d ∈ s, d.degree ≤ μ) ∧ ∀ P : MvPolynomial σ K,\n      Polynomial.hasseDeriv μ (kronecker k P) = ∑ d ∈ s, c d * kronecker k (hasseDeriv d P)",
+    "body": "by\n  classical\n  obtain ⟨c, hc, hsum⟩ := (Finsupp.mem_span_image_iff_linearCombination _).1\n    (hasseDeriv_kronecker_mem (K := K) (σ := σ) k μ)\n  refine ⟨c.support, c, hc, fun P ↦ ?_⟩\n  simpa [Finsupp.linearCombination_apply, Finsupp.sum, kronHasse] using congrFun hsum.symm P",
+    "proof_lines": 6,
+    "sha256": "d679c27830b23c4db488d6942b91480e72acf363f7bd4e6543b11bdd9c3cc877",
+    "source_body_project_refs": [
+      "Roth.hasseDeriv_kronecker_mem",
+      "Roth.kronHasse"
+    ],
+    "source_type_project_refs": [
+      "MvPolynomial.hasseDeriv",
+      "Roth.kronecker"
+    ],
+    "what": "Expresses a substituted univariate Hasse derivative uniformly as a finite polynomial-linear combination of multivariate Hasse derivatives of bounded total order.",
+    "how": "Finsupp.mem_span_image_iff_linearCombination turns hasseDeriv_kronecker_mem into finite coefficients; evaluating the function equality gives the required identity.",
+    "hypotheses": "Characteristic-zero field and a finite enumeration of variables; natural base and derivative order.",
+    "source_used_by_project": [
+      "Roth.exists_genWronskian_ne_zero"
+    ],
+    "source_used_by_file": [
+      "Roth.exists_genWronskian_ne_zero"
+    ],
+    "section_binders": "{K : Type*} [Field K] {σ : Type*} [Fintype σ]",
+    "type_provenance": "Exact written signature plus manually identified captured section binders. Root cached full build succeeds; global opaque/type inspector timed out, so no kernel dump is claimed.",
+    "notes": "No sorry, TODO, or set_option in this declaration.",
+    "assignment_offset": 269,
+    "project_body_refs": [
+      "Roth.hasseDeriv_kronecker_mem",
+      "Roth.kronHasse"
+    ],
+    "project_type_refs": [
+      "MvPolynomial.hasseDeriv",
+      "Roth.kronecker"
+    ],
+    "project_callers": [
+      {
+        "name": "Roth.exists_genWronskian_ne_zero",
+        "file": "Roth/GenWronskian.lean",
+        "line": 254
+      }
+    ],
+    "section_context": "{K : Type*} [Field K] {σ : Type*} [Fintype σ]"
+  }
+]
