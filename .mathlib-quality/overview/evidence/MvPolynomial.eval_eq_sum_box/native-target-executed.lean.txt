@@ -1,0 +1,26 @@
+
+#check @MvPolynomial.eval_eq_sum_box
+#print MvPolynomial.eval_eq_sum_box
+#print axioms MvPolynomial.eval_eq_sum_box
+namespace MvPolynomial.TaylorEvaluatedAssessment
+variable {σ A : Type*} [CommRing A]
+theorem replay [Fintype σ] [DecidableEq σ] (α x : σ → A) (r : σ → ℕ)
+    (P : MvPolynomial σ A) (hP : ∀ j, degreeOf j P ≤ r j) :
+    eval x P = ∑ d ∈ Roth.box r, eval α (hasseDeriv d P) * ∏ j, (x j - α j) ^ d j := by
+  simpa using congrArg (eval x) (TaylorExpansionExtra.originalInstanceRecovery α r P hP)
+open Classical in
+theorem withoutDecidableEq [Fintype σ] (α x : σ → A) (r : σ → ℕ)
+    (P : MvPolynomial σ A) (hP : ∀ j, degreeOf j P ≤ r j) :
+    eval x P = ∑ d ∈ Roth.box r, eval α (hasseDeriv d P) * ∏ j, (x j - α j) ^ d j := by
+  simpa using congrArg (eval x) (TaylorExpansionAssessment.withoutDecidableEq α r P hP)
+theorem recovery [Fintype σ] [dec : DecidableEq σ] (α x : σ → A) (r : σ → ℕ)
+    (P : MvPolynomial σ A) (hP : ∀ j, degreeOf j P ≤ r j) :
+    eval x P = ∑ d ∈ Roth.box r, eval α (hasseDeriv d P) * ∏ j, (x j - α j) ^ d j := by
+  have hi : dec = Classical.typeDecidableEq σ := Subsingleton.elim _ _
+  cases hi
+  exact withoutDecidableEq α x r P hP
+#print axioms replay
+#print axioms withoutDecidableEq
+#print axioms recovery
+#check @withoutDecidableEq
+end MvPolynomial.TaylorEvaluatedAssessment

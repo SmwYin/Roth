@@ -1,0 +1,20 @@
+{
+  "declaration": "MvPolynomial.eval_eq_sum_box",
+  "kind": "theorem",
+  "type": "∀ {σ : Type u_1} {A : Type u_2} [CommRing A] [Fintype σ] [DecidableEq σ] (α x : σ → A) (r : σ → ℕ) (P : MvPolynomial σ A), (∀ j, MvPolynomial.degreeOf j P ≤ r j) → MvPolynomial.eval x P = ∑ d ∈ Roth.box r, MvPolynomial.eval α (MvPolynomial.hasseDeriv d P) * ∏ j, (x j - α j) ^ d j",
+  "what": "Evaluates a polynomial as a finite Hasse Taylor expansion about an arbitrary center, over its coordinate degree-bounding box.",
+  "how": "Apply the evaluation ring homomorphism to eq_sum_box_hasseDeriv and distribute over finite sums, products, powers, variables and constants; no repeated binomial proof. Strongest scalar-extension form additionally transports degree via support_map_subset and Hasse evaluation via hasseDeriv_map/eval₂_eq_eval_map.",
+  "hypotheses": "Arbitrary commutative coefficient ring and finite variable type, arbitrary center/point/polynomial, natural coordinate bounds with each degree bounded. Explicit DecidableEq removable through scoped Classical and propositional original-instance recovery.",
+  "project_dependencies": [
+    "MvPolynomial.eq_sum_box_hasseDeriv",
+    "MvPolynomial.hasseDeriv",
+    "Roth.box"
+  ],
+  "caller_summary": "1 explicit external-to-file caller Roth.abs_eval_lt_of_le_index at Main390; full estimate/private product-weight helper checked against fresh scalar recovery, intermediate algebra-target recovery and strongest B-valued center/point recovery (three full estimate replays).",
+  "mathlib_api_audit": "eval₂_eq/aeval_sum/aeval_prod and Polynomial.sum_taylor_eq are generic evaluation/univariate inputs, not multivariate Hasse identity. Isolated support-evaluation via explicit RingHom succeeds but lacks Hasse coefficients and box cutoff.",
+  "moral_duplications": "Polynomial reconstruction, coefficient identification and evaluated scalar identity are distinct layers; Main consumer adds strict analytic estimates. No independent full evaluated expansion rederivation found.",
+  "generalization": "Strongest verified: coefficient CommSemiring A, arbitrary independent-universe CommRing A-algebra B, BOTH α/x : σ→B, aeval α derivative values. No explicit DecidableEq via scoped Classical; original CommRing A=A/arbitrary instance recovered propositionally by Subsingleton.elim/cases. Degree bound after coefficient map proved by support_map_subset; uses hasseDeriv_map and eval₂_eq_eval_map. Fintype, natural exponents and degree bound retained. Earlier center-in-A algebra law is intermediate.",
+  "missing_api": "Multivariate Hasse finite Taylor evaluated expansion and foundational coefficient/polynomial reconstruction; existing generic homomorphism transport should be reused.",
+  "junk": "Keep standard exact identity with actual use in Roth upper estimate; short corollary of a missing substantive project theorem is not existing-mathlib duplication.",
+  "action": "YES-but-generalise-first: propose Mathlib/Algebra/MvPolynomial/Taylor.lean with coefficient-CommSemiring/arbitrary-ring-algebra-target B-valued center/point/no-explicit-DecidableEq theorem and original recovery; group with accepted finite expansion/coefficient/Hasse foundations. Sources unchanged; full Taylor milestone build clean2467 jobs."
+}

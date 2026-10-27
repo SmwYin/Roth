@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 73/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 74/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 73; remaining: 220.
-- Verdicts: 10 NO-composable-from-mathlib, 13 YES-add-as-is, 5 YES-but-generalise-first, 11 NO-mathlib-has-it, 25 BORDERLINE-needs-human, 9 SKIP.
+- Completed applicable assessments: 74; remaining: 219.
+- Verdicts: 10 NO-composable-from-mathlib, 13 YES-add-as-is, 6 YES-but-generalise-first, 11 NO-mathlib-has-it, 25 BORDERLINE-needs-human, 9 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -789,6 +789,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: 1 explicit caller, eval_eq_sum_box at Taylor220; no direct callers outside file. Full evaluated caller checked both for original arbitrary DecidableEq and no-explicit-DecidableEq core. Main390 application is transitive through evaluated corollary.
 - Verdict: YES-but-generalise-first; [complete report](.mathlib-quality/overview/mathlibable/MvPolynomial.eq_sum_box_hasseDeriv.md).
 
+### Completed: `MvPolynomial.eval_eq_sum_box`
+
+- Type: `∀ {σ : Type u_1} {A : Type u_2} [CommRing A] [Fintype σ] [DecidableEq σ] (α x : σ → A) (r : σ → ℕ) (P : MvPolynomial σ A), (∀ j, MvPolynomial.degreeOf j P ≤ r j) → MvPolynomial.eval x P = ∑ d ∈ Roth.box r, MvPolynomial.eval α (MvPolynomial.hasseDeriv d P) * ∏ j, (x j - α j) ^ d j`
+- What: Evaluates a polynomial as a finite Hasse Taylor expansion about an arbitrary center, over its coordinate degree-bounding box.
+- How: Apply the evaluation ring homomorphism to eq_sum_box_hasseDeriv and distribute over finite sums, products, powers, variables and constants; no repeated binomial proof. Strongest scalar-extension form additionally transports degree via support_map_subset and Hasse evaluation via hasseDeriv_map/eval₂_eq_eval_map.
+- Hypotheses: Arbitrary commutative coefficient ring and finite variable type, arbitrary center/point/polynomial, natural coordinate bounds with each degree bounded. Explicit DecidableEq removable through scoped Classical and propositional original-instance recovery.
+- Project dependencies: MvPolynomial.eq_sum_box_hasseDeriv, MvPolynomial.hasseDeriv, Roth.box
+- Caller summary: 1 explicit external-to-file caller Roth.abs_eval_lt_of_le_index at Main390; full estimate/private product-weight helper checked against fresh scalar recovery, intermediate algebra-target recovery and strongest B-valued center/point recovery (three full estimate replays).
+- Verdict: YES-but-generalise-first; [complete report](.mathlib-quality/overview/mathlibable/MvPolynomial.eval_eq_sum_box.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -961,6 +971,8 @@ Completed `MvPolynomial.taylor_eq_zero_iff`: Polynomial.taylor_eq_zero and comp_
 
 Completed `MvPolynomial.eq_sum_box_hasseDeriv`: Polynomial.sum_taylor_eq is univariate CommRing analogue. eval₂_eq supplies arbitrary-variable finite-support reconstruction, but not Hasse coefficient identification or off-box vanishing. Isolated successful support expansion verifies the boundary.
 
+Completed `MvPolynomial.eval_eq_sum_box`: eval₂_eq/aeval_sum/aeval_prod and Polynomial.sum_taylor_eq are generic evaluation/univariate inputs, not multivariate Hasse identity. Isolated support-evaluation via explicit RingHom succeeds but lacks Hasse coefficients and box cutoff.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -1108,6 +1120,8 @@ Completed `MvPolynomial.taylor_injective`: A generic left-inverse corollary, ana
 Completed `MvPolynomial.taylor_eq_zero_iff`: Univariate zero-reflection analogue and generic ring injectivity corollary; stronger arbitrary-variable semiring theorem provides genuine additional triangular coefficient content.
 
 Completed `MvPolynomial.eq_sum_box_hasseDeriv`: Distinct coefficient, polynomial reconstruction and evaluation layers; same inverse-shift motif as univariate sum_taylor_eq but no direct specialization to multivariate Hasse box expansion.
+
+Completed `MvPolynomial.eval_eq_sum_box`: Polynomial reconstruction, coefficient identification and evaluated scalar identity are distinct layers; Main consumer adds strict analytic estimates. No independent full evaluated expansion rederivation found.
 
 ## Part 5: Generalization opportunities
 
@@ -1260,6 +1274,8 @@ Completed `MvPolynomial.taylor_eq_zero_iff`: Verified CommRing→CommSemiring sa
 
 Completed `MvPolynomial.eq_sum_box_hasseDeriv`: Verified no explicit DecidableEq binder using open Classical in statement plus proof-local classical. Old arbitrary instance recovered by Subsingleton.elim and cases; propositional, not definitional transport. Fintype retained for full product and box. Raw arbitrary-variable support expansion is a different representation, not this same statement.
 
+Completed `MvPolynomial.eval_eq_sum_box`: Strongest verified: coefficient CommSemiring A, arbitrary independent-universe CommRing A-algebra B, BOTH α/x : σ→B, aeval α derivative values. No explicit DecidableEq via scoped Classical; original CommRing A=A/arbitrary instance recovered propositionally by Subsingleton.elim/cases. Degree bound after coefficient map proved by support_map_subset; uses hasseDeriv_map and eval₂_eq_eval_map. Fintype, natural exponents and degree bound retained. Earlier center-in-A algebra law is intermediate.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -1408,6 +1424,8 @@ Completed `MvPolynomial.taylor_injective`: Potential multivariate translation Al
 Completed `MvPolynomial.taylor_eq_zero_iff`: Multivariate semiring translation zero-reflection and reusable maximal-support Hasse constant lemma.
 
 Completed `MvPolynomial.eq_sum_box_hasseDeriv`: Multivariate Hasse/Taylor coefficient-to-finite-box reconstruction; optional support-indexed intermediate using generic evaluation sums.
+
+Completed `MvPolynomial.eval_eq_sum_box`: Multivariate Hasse finite Taylor evaluated expansion and foundational coefficient/polynomial reconstruction; existing generic homomorphism transport should be reused.
 
 ## Part 7: Junk / removable
 
@@ -1560,6 +1578,8 @@ Completed `MvPolynomial.taylor_eq_zero_iff`: Live simplifier API with4 productio
 
 Completed `MvPolynomial.eq_sum_box_hasseDeriv`: Keep standard substantive reconstruction theorem; actual evaluated consumer feeds main Diophantine estimate.
 
+Completed `MvPolynomial.eval_eq_sum_box`: Keep standard exact identity with actual use in Roth upper estimate; short corollary of a missing substantive project theorem is not existing-mathlib duplication.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -1637,6 +1657,7 @@ Completed `MvPolynomial.eq_sum_box_hasseDeriv`: Keep standard substantive recons
 | 71 | `MvPolynomial.taylor_injective` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor_injective.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.taylor_injective/root-acceptance.json) |
 | 72 | `MvPolynomial.taylor_eq_zero_iff` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor_eq_zero_iff.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.taylor_eq_zero_iff/root-acceptance.json) |
 | 73 | `MvPolynomial.eq_sum_box_hasseDeriv` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.eq_sum_box_hasseDeriv.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.eq_sum_box_hasseDeriv/root-acceptance.json) |
+| 74 | `MvPolynomial.eval_eq_sum_box` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.eval_eq_sum_box.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.eval_eq_sum_box/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -1782,11 +1803,13 @@ Completed `MvPolynomial.taylor_eq_zero_iff` action: YES-but-generalise-first: pr
 
 Completed `MvPolynomial.eq_sum_box_hasseDeriv` action: YES-but-generalise-first: drop explicit equality-decision requirement with verified transport; propose Mathlib/Algebra/MvPolynomial/Taylor.lean alongside coeff_taylor, using standard Finsupp interval infrastructure upstream. Production unchanged during survey.
 
+Completed `MvPolynomial.eval_eq_sum_box` action: YES-but-generalise-first: propose Mathlib/Algebra/MvPolynomial/Taylor.lean with coefficient-CommSemiring/arbitrary-ring-algebra-target B-valued center/point/no-explicit-DecidableEq theorem and original recovery; group with accepted finite expansion/coefficient/Hasse foundations. Sources unchanged; full Taylor milestone build clean2467 jobs.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `MvPolynomial.eval_eq_sum_box` next. Supporting identities receive their own applicable checks.
+   `Roth.normOne` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.

@@ -1,0 +1,57 @@
+namespace MvPolynomial.TaylorEvaluatedAlgebra
+variable {σ A B : Type*} [CommRing A] [CommRing B] [Algebra A B]
+open Classical in
+theorem target [Fintype σ] (α : σ → A) (x : σ → B) (r : σ → ℕ)
+    (P : MvPolynomial σ A) (hP : ∀ j, degreeOf j P ≤ r j) :
+    aeval x P = ∑ d ∈ Roth.box r, algebraMap A B (eval α (hasseDeriv d P)) *
+      ∏ j, (x j - algebraMap A B (α j)) ^ d j := by
+  simpa only [map_sum, map_mul, map_prod, map_pow, map_sub, aeval_C, aeval_X] using
+    congrArg (aeval (R := A) x) (TaylorExpansionAssessment.withoutDecidableEq α r P hP)
+#print axioms target
+#check @target
+end MvPolynomial.TaylorEvaluatedAlgebra
+namespace MvPolynomial.TaylorEvaluatedAlgebra
+variable {σ A : Type*} [CommRing A]
+theorem originalRecovery [Fintype σ] [dec : DecidableEq σ] (α x : σ → A) (r : σ → ℕ)
+    (P : MvPolynomial σ A) (hP : ∀ j, degreeOf j P ≤ r j) :
+    eval x P = ∑ d ∈ Roth.box r, eval α (hasseDeriv d P) * ∏ j, (x j - α j) ^ d j := by
+  have hi : dec = Classical.typeDecidableEq σ := Subsingleton.elim _ _
+  cases hi
+  exact target (B := A) α x r P hP
+#print axioms originalRecovery
+end MvPolynomial.TaylorEvaluatedAlgebra
+
+namespace Roth.TaylorEvaluatedAlgebraConsumer
+open MvPolynomial
+theorem estimateFromAlgebraTarget {m : ℕ} [NeZero m] {Q : MvPolynomial (Fin m) ℝ} {r : Fin m → ℕ}
+    (hd : ∀ j, degreeOf j Q ≤ r j) {α c : ℝ} (hidx : c ≤ index Q (fun _ ↦ α) r) {h : Fin m → ℤ}
+    {q : Fin m → ℕ} (hq : ∀ j, 0 < q j) {κ : ℝ} (hκ : 0 ≤ κ)
+    (happ : ∀ j, |α - (h j : ℝ) / q j| ≤ 1 / (q j : ℝ) ^ κ)
+    (hqr : ∀ j, (q 0 : ℝ) ^ ((r 0 : ℝ) / r j) ≤ q j) {C : ℝ}
+    (hC : ∀ i : Fin m →₀ ℕ, |eval (fun _ ↦ α) (hasseDeriv i Q)| < C) :
+    |eval (fun j ↦ (h j : ℝ) / q j) Q| < (∏ j, ((r j : ℝ) + 1)) * C *
+      (q 0 : ℝ) ^ (-(r 0 : ℝ) * c * κ) := by
+  have hT : 0 < (q 0 : ℝ) ^ (-(r 0 : ℝ) * c * κ) :=
+    Real.rpow_pos_of_pos (by exact_mod_cast hq 0) _
+  rw [MvPolynomial.TaylorEvaluatedAlgebra.originalRecovery
+    (fun _ ↦ α) (fun j ↦ (h j : ℝ) / q j) r Q hd]
+  -- each term of the Taylor expansion is small
+  have hterm : ∀ d ∈ box r, |eval (fun _ ↦ α) (hasseDeriv d Q) *
+      ∏ j, ((h j : ℝ) / q j - α) ^ d j| < C * (q 0 : ℝ) ^ (-(r 0 : ℝ) * c * κ) := by
+    intro d _
+    by_cases h0 : eval (fun _ ↦ α) (hasseDeriv d Q) = 0
+    · rw [h0, zero_mul, abs_zero]
+      exact mul_pos (lt_of_le_of_lt (abs_nonneg _) (hC 0)) hT
+    rw [abs_mul]
+    exact mul_lt_mul_of_lt_of_le_of_nonneg_of_pos (hC d)
+      (Roth.TaylorEvaluatedConsumers.powerBound hq hκ (fun j ↦ by
+        simpa only [abs_sub_comm] using happ j) hqr d (hidx.trans (index_le_weight h0)))
+      (abs_nonneg _) hT
+  refine (Finset.abs_sum_le_sum_abs _ _).trans_lt ?_
+  convert Finset.sum_lt_sum_of_nonempty ⟨0, mem_box.2 fun j ↦ Nat.zero_le _⟩ hterm using 1
+  rw [Finset.sum_const, card_box, nsmul_eq_mul]
+  push_cast
+  ring
+
+#print axioms estimateFromAlgebraTarget
+end Roth.TaylorEvaluatedAlgebraConsumer

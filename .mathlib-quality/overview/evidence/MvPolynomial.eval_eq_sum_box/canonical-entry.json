@@ -1,0 +1,43 @@
+{
+  "file": "Roth/Taylor.lean",
+  "line": 217,
+  "name": "MvPolynomial.eval_eq_sum_box",
+  "short": "eval_eq_sum_box",
+  "kind": "theorem",
+  "visibility": "public",
+  "end_line": 220,
+  "source": "theorem eval_eq_sum_box [Fintype σ] [DecidableEq σ] (α x : σ → A) (r : σ → ℕ) (P : MvPolynomial σ A)\n    (hP : ∀ j, degreeOf j P ≤ r j) :\n    eval x P = ∑ d ∈ Roth.box r, eval α (hasseDeriv d P) * ∏ j, (x j - α j) ^ d j := by\n  simpa using congrArg (eval x) (eq_sum_box_hasseDeriv α r P hP)",
+  "signature": "theorem eval_eq_sum_box [Fintype σ] [DecidableEq σ] (α x : σ → A) (r : σ → ℕ) (P : MvPolynomial σ A)\n    (hP : ∀ j, degreeOf j P ≤ r j) :\n    eval x P = ∑ d ∈ Roth.box r, eval α (hasseDeriv d P) * ∏ j, (x j - α j) ^ d j",
+  "body": "by\n  simpa using congrArg (eval x) (eq_sum_box_hasseDeriv α r P hP)",
+  "proof_lines": 2,
+  "sha256": "72030e924455fb97790f98835e76573a3238b0200d4d212faf9207ac65b5f523",
+  "what": "Evaluates the multivariate Taylor expansion at a second vector, giving a finite sum of Hasse-derivative values times coordinate differences.",
+  "how": "Applies the evaluation ring homomorphism to eq_sum_box_hasseDeriv and distributes evaluation over finite sums and products.",
+  "hypotheses": "A commutative coefficient ring, finitely many variables with decidable equality, and coordinate degree bounds.",
+  "uses_from_project": [
+    "MvPolynomial.eq_sum_box_hasseDeriv"
+  ],
+  "used_by_in_file": [],
+  "project_callers": [
+    {
+      "name": "Roth.abs_eval_lt_of_le_index",
+      "file": "Roth/Main.lean",
+      "line": 380
+    }
+  ],
+  "type_context": "{σ A : Type*} [CommRing A]",
+  "type_provenance": "Exact written signature with section binders made explicit from source; not claimed as a fresh #check output. Minimal hasseCoeff #check succeeded; full Meta inspector timed out.",
+  "reference_provenance": "Manually disambiguated source-level direct project references in declaration bodies; callers include signature and body occurrences. Includes explicit references only, not an exhaustive kernel/simp dependency closure.",
+  "notes": [
+    "No set_option, sorry, TODO, or proof over 30 lines in declaration."
+  ],
+  "assignment_offset": 220,
+  "project_body_refs": [
+    "MvPolynomial.eq_sum_box_hasseDeriv"
+  ],
+  "project_type_refs": [
+    "MvPolynomial.hasseDeriv",
+    "Roth.box"
+  ],
+  "section_context": "{σ A : Type*} [CommRing A]"
+}

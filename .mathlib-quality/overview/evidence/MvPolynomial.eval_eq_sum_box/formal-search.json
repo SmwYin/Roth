@@ -1,0 +1,562 @@
+[
+  {
+    "method": "Finder",
+    "form": "current",
+    "request": {
+      "query": "multivariate polynomial value Taylor expansion Hasse derivatives finite box product differences at two points",
+      "num_results": 5
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"taylorWithinEval\",\n      \"informal_name\": \"Evaluation of Taylor Polynomial within a Set\",\n      \"kind\": \"definition\",\n      \"type\": \"{E : Type u_2} → [inst : NormedAddCommGroup E] → [NormedSpace ℝ E] → (ℝ → E) → ℕ → Set ℝ → ℝ → ℝ → E\",\n      \"informal_description\": \"The function evaluates the Taylor polynomial of degree $n$ of a real function $f : \\\\mathbb{R} \\\\to E$, centered at $x_0$ and restricted to the subset $s \\\\subseteq \\\\mathbb{R}$, at the point $x$. Here, $E$ is a real normed vector space. The result is an element of $E$ obtained by evaluating the polynomial approximation of $f$ constructed using $n$ terms within the specified domain $s$.\",\n      \"path\": \"Mathlib.Analysis.Calculus.Taylor\"\n    },\n    {\n      \"formal_name\": \"taylorWithin\",\n      \"informal_name\": \"Taylor Polynomial Within a Set\",\n      \"kind\": \"definition\",\n      \"type\": \"{E : Type u_2} →\\n  [inst : NormedAddCommGroup E] → [inst_1 : NormedSpace ℝ E] → (ℝ → E) → ℕ → Set ℝ → ℝ → PolynomialModule ℝ E\",\n      \"informal_description\": \"For a function $ f : \\\\mathbb{R} \\\\to E $, natural number $ n $, subset $ s \\\\subseteq \\\\mathbb{R} $, and point $ x_0 \\\\in \\\\mathbb{R} $, the Taylor polynomial of degree $ n $ within $ s $ at $ x_0 $ is defined as the finite sum $ \\\\sum_{k=0}^n \\\\left(\\\\frac{f^{(k)}(x_0)}{k!} \\\\cdot (X - x_0)^k\\\\right) $, where each coefficient $ \\\\frac{f^{(k)}(x_0)}{k!} $ is computed using the $ k $-th iterated derivative of $ f $ restricted to $ s $. This represents the polynomial approximation of $ f $ near $ x_0 $ within the domain $ s $.\",\n      \"path\": \"Mathlib.Analysis.Calculus.Taylor\"\n    },\n    {\n      \"formal_name\": \"Polynomial.taylor_coeff\",\n      \"informal_name\": \"Coefficient of Taylor Expansion at $ r $: $ \\\\text{coeff}_n(f(X + r)) = D^{(n)}f(r) $\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R) (n : ℕ),\\n  ((Polynomial.taylor r) f).coeff n = Polynomial.eval r ((Polynomial.hasseDeriv n) f)\",\n      \"informal_description\": \"For any polynomial $ f $ over a semiring $ R $, natural number $ n $, and element $ r \\\\in R $, the coefficient of $ X^n $ in the Taylor expansion $ f(X + r) $ equals the evaluation of the $ n $-th Hasse derivative of $ f $ at $ r $. The Hasse derivative $ D^{(n)} $ scales monomials $ a_i X^i $ by $ \\\\binom{i}{n} a_i X^{i - n} $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv\",\n      \"informal_name\": \"Hasse Derivative of Order k on Polynomial Ring\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : Semiring R] → ℕ → Polynomial R →ₗ[R] Polynomial R\",\n      \"informal_description\": \"For a semiring $ R $, the Hasse derivative of order $ k $ is an $ R $-linear map $ D^{(k)} : R[X] \\to R[X] $ defined by $ D^{(k)}(a_i X^i) = \\binom{i}{k} a_i X^{i - k} $ on monomials and extended linearly. This operation generalizes the usual derivative by scaling each coefficient $ a_i $ by the binomial coefficient $ \\binom{i}{k} $ and reducing the degree by $ k $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv_apply\",\n      \"informal_name\": \"Hasse Derivative of Order k Applied to a Polynomial\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f : Polynomial R),\\n  (Polynomial.hasseDeriv k) f = f.sum fun i r => (Polynomial.monomial (i - k)) (↑(i.choose k) * r)\",\n      \"informal_description\": \"For a semiring $ R $ and a polynomial $ f \\\\in R[X] $, the Hasse derivative of order $ k $ applied to $ f $ is given by $ D^{(k)}(f) = \\\\sum_{i} \\\\binom{i}{k} \\\\cdot a_i \\\\cdot X^{i - k} $, where $ a_i $ is the coefficient of $ X^i $ in $ f $. This expression sums over all monomials in $ f $, scaling each by the binomial coefficient $ \\\\binom{i}{k} $ and reducing the exponent by $ k $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "taylorWithinEval",
+            "informal_name": "Evaluation of Taylor Polynomial within a Set",
+            "kind": "definition",
+            "type": "{E : Type u_2} → [inst : NormedAddCommGroup E] → [NormedSpace ℝ E] → (ℝ → E) → ℕ → Set ℝ → ℝ → ℝ → E",
+            "informal_description": "The function evaluates the Taylor polynomial of degree $n$ of a real function $f : \\mathbb{R} \\to E$, centered at $x_0$ and restricted to the subset $s \\subseteq \\mathbb{R}$, at the point $x$. Here, $E$ is a real normed vector space. The result is an element of $E$ obtained by evaluating the polynomial approximation of $f$ constructed using $n$ terms within the specified domain $s$.",
+            "path": "Mathlib.Analysis.Calculus.Taylor"
+          },
+          {
+            "formal_name": "taylorWithin",
+            "informal_name": "Taylor Polynomial Within a Set",
+            "kind": "definition",
+            "type": "{E : Type u_2} →\n  [inst : NormedAddCommGroup E] → [inst_1 : NormedSpace ℝ E] → (ℝ → E) → ℕ → Set ℝ → ℝ → PolynomialModule ℝ E",
+            "informal_description": "For a function $ f : \\mathbb{R} \\to E $, natural number $ n $, subset $ s \\subseteq \\mathbb{R} $, and point $ x_0 \\in \\mathbb{R} $, the Taylor polynomial of degree $ n $ within $ s $ at $ x_0 $ is defined as the finite sum $ \\sum_{k=0}^n \\left(\\frac{f^{(k)}(x_0)}{k!} \\cdot (X - x_0)^k\\right) $, where each coefficient $ \\frac{f^{(k)}(x_0)}{k!} $ is computed using the $ k $-th iterated derivative of $ f $ restricted to $ s $. This represents the polynomial approximation of $ f $ near $ x_0 $ within the domain $ s $.",
+            "path": "Mathlib.Analysis.Calculus.Taylor"
+          },
+          {
+            "formal_name": "Polynomial.taylor_coeff",
+            "informal_name": "Coefficient of Taylor Expansion at $ r $: $ \\text{coeff}_n(f(X + r)) = D^{(n)}f(r) $",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R) (n : ℕ),\n  ((Polynomial.taylor r) f).coeff n = Polynomial.eval r ((Polynomial.hasseDeriv n) f)",
+            "informal_description": "For any polynomial $ f $ over a semiring $ R $, natural number $ n $, and element $ r \\in R $, the coefficient of $ X^n $ in the Taylor expansion $ f(X + r) $ equals the evaluation of the $ n $-th Hasse derivative of $ f $ at $ r $. The Hasse derivative $ D^{(n)} $ scales monomials $ a_i X^i $ by $ \\binom{i}{n} a_i X^{i - n} $.",
+            "path": "Mathlib.Algebra.Polynomial.Taylor"
+          },
+          {
+            "formal_name": "Polynomial.hasseDeriv",
+            "informal_name": "Hasse Derivative of Order k on Polynomial Ring",
+            "kind": "definition",
+            "type": "{R : Type u_1} → [inst : Semiring R] → ℕ → Polynomial R →ₗ[R] Polynomial R",
+            "informal_description": "For a semiring $ R $, the Hasse derivative of order $ k $ is an $ R $-linear map $ D^{(k)} : R[X] \to R[X] $ defined by $ D^{(k)}(a_i X^i) = \binom{i}{k} a_i X^{i - k} $ on monomials and extended linearly. This operation generalizes the usual derivative by scaling each coefficient $ a_i $ by the binomial coefficient $ \binom{i}{k} $ and reducing the degree by $ k $.",
+            "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          },
+          {
+            "formal_name": "Polynomial.hasseDeriv_apply",
+            "informal_name": "Hasse Derivative of Order k Applied to a Polynomial",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f : Polynomial R),\n  (Polynomial.hasseDeriv k) f = f.sum fun i r => (Polynomial.monomial (i - k)) (↑(i.choose k) * r)",
+            "informal_description": "For a semiring $ R $ and a polynomial $ f \\in R[X] $, the Hasse derivative of order $ k $ applied to $ f $ is given by $ D^{(k)}(f) = \\sum_{i} \\binom{i}{k} \\cdot a_i \\cdot X^{i - k} $, where $ a_i $ is the coefficient of $ X^i $ in $ f $. This expression sums over all monomials in $ f $, scaling each by the binomial coefficient $ \\binom{i}{k} $ and reducing the exponent by $ k $.",
+            "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "Loogle",
+    "form": "current",
+    "request": {
+      "query": "MvPolynomial.eval, \"sum\"",
+      "num_results": 6
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.eval_sum\",\n      \"type\": \" {R : Type u} {σ : Type u_1} [CommSemiring R] {ι : Type u_2} (s : Finset ι) (f : ι → MvPolynomial σ R) (g : σ → R) : (MvPolynomial.eval g) (∑ i ∈ s, f i) = ∑ i ∈ s, (MvPolynomial.eval g) (f i)\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"name\": \"MvPolynomial.schwartz_zippel_sum_degreeOf\",\n      \"type\": \" {R : Type u_1} [CommRing R] [IsDomain R] [DecidableEq R] {n : ℕ} {p : MvPolynomial (Fin n) R} (hp : p ≠ 0) (S : Fin n → Finset R) : ↑{x ∈ Fintype.piFinset fun i => S i | (MvPolynomial.eval x) p = 0}.card / ∏ i, ↑(S i).card ≤ ∑ i, ↑(MvPolynomial.degreeOf i p) / ↑(S i).card\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.SchwartzZippel\"\n    },\n    {\n      \"name\": \"MvPolynomial.schwartz_zippel_sup_sum\",\n      \"type\": \" {R : Type u_1} [CommRing R] [IsDomain R] [DecidableEq R] {n : ℕ} {p : MvPolynomial (Fin n) R} (hp : p ≠ 0) (S : Fin n → Finset R) : ↑{x ∈ Fintype.piFinset fun i => S i | (MvPolynomial.eval x) p = 0}.card / ∏ i, ↑(S i).card ≤ p.support.sup fun s => ∑ i, ↑(s i) / ↑(S i).card\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.SchwartzZippel\"\n    },\n    {\n      \"name\": \"MvPolynomial.sum_eval_eq_zero\",\n      \"type\": \" {K : Type u_1} {σ : Type u_2} [Fintype K] [Field K] [Fintype σ] [DecidableEq σ] (f : MvPolynomial σ K) (h : f.totalDegree < (Fintype.card K - 1) * Fintype.card σ) : ∑ x, (MvPolynomial.eval x) f = 0\",\n      \"module\": \"Mathlib.FieldTheory.ChevalleyWarning\"\n    },\n    {\n      \"name\": \"char_dvd_card_solutions_of_fintype_sum_lt\",\n      \"type\": \" {K : Type u_1} {σ : Type u_2} {ι : Type u_3} [Fintype K] [Field K] [Fintype σ] [DecidableEq σ] [DecidableEq K] (p : ℕ) [CharP K p] [Fintype ι] {f : ι → MvPolynomial σ K} (h : ∑ i, (f i).totalDegree < Fintype.card σ) : p ∣ Fintype.card { x // ∀ (i : ι), (MvPolynomial.eval x) (f i) = 0 }\",\n      \"module\": \"Mathlib.FieldTheory.ChevalleyWarning\"\n    },\n    {\n      \"name\": \"char_dvd_card_solutions_of_sum_lt\",\n      \"type\": \" {K : Type u_1} {σ : Type u_2} {ι : Type u_3} [Fintype K] [Field K] [Fintype σ] [DecidableEq σ] [DecidableEq K] (p : ℕ) [CharP K p] {s : Finset ι} {f : ι → MvPolynomial σ K} (h : ∑ i ∈ s, (f i).totalDegree < Fintype.card σ) : p ∣ Fintype.card { x // ∀ i ∈ s, (MvPolynomial.eval x) (f i) = 0 }\",\n      \"module\": \"Mathlib.FieldTheory.ChevalleyWarning\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.eval_sum",
+            "type": " {R : Type u} {σ : Type u_1} [CommSemiring R] {ι : Type u_2} (s : Finset ι) (f : ι → MvPolynomial σ R) (g : σ → R) : (MvPolynomial.eval g) (∑ i ∈ s, f i) = ∑ i ∈ s, (MvPolynomial.eval g) (f i)",
+            "module": "Mathlib.Algebra.MvPolynomial.Eval"
+          },
+          {
+            "name": "MvPolynomial.schwartz_zippel_sum_degreeOf",
+            "type": " {R : Type u_1} [CommRing R] [IsDomain R] [DecidableEq R] {n : ℕ} {p : MvPolynomial (Fin n) R} (hp : p ≠ 0) (S : Fin n → Finset R) : ↑{x ∈ Fintype.piFinset fun i => S i | (MvPolynomial.eval x) p = 0}.card / ∏ i, ↑(S i).card ≤ ∑ i, ↑(MvPolynomial.degreeOf i p) / ↑(S i).card",
+            "module": "Mathlib.Algebra.MvPolynomial.SchwartzZippel"
+          },
+          {
+            "name": "MvPolynomial.schwartz_zippel_sup_sum",
+            "type": " {R : Type u_1} [CommRing R] [IsDomain R] [DecidableEq R] {n : ℕ} {p : MvPolynomial (Fin n) R} (hp : p ≠ 0) (S : Fin n → Finset R) : ↑{x ∈ Fintype.piFinset fun i => S i | (MvPolynomial.eval x) p = 0}.card / ∏ i, ↑(S i).card ≤ p.support.sup fun s => ∑ i, ↑(s i) / ↑(S i).card",
+            "module": "Mathlib.Algebra.MvPolynomial.SchwartzZippel"
+          },
+          {
+            "name": "MvPolynomial.sum_eval_eq_zero",
+            "type": " {K : Type u_1} {σ : Type u_2} [Fintype K] [Field K] [Fintype σ] [DecidableEq σ] (f : MvPolynomial σ K) (h : f.totalDegree < (Fintype.card K - 1) * Fintype.card σ) : ∑ x, (MvPolynomial.eval x) f = 0",
+            "module": "Mathlib.FieldTheory.ChevalleyWarning"
+          },
+          {
+            "name": "char_dvd_card_solutions_of_fintype_sum_lt",
+            "type": " {K : Type u_1} {σ : Type u_2} {ι : Type u_3} [Fintype K] [Field K] [Fintype σ] [DecidableEq σ] [DecidableEq K] (p : ℕ) [CharP K p] [Fintype ι] {f : ι → MvPolynomial σ K} (h : ∑ i, (f i).totalDegree < Fintype.card σ) : p ∣ Fintype.card { x // ∀ (i : ι), (MvPolynomial.eval x) (f i) = 0 }",
+            "module": "Mathlib.FieldTheory.ChevalleyWarning"
+          },
+          {
+            "name": "char_dvd_card_solutions_of_sum_lt",
+            "type": " {K : Type u_1} {σ : Type u_2} {ι : Type u_3} [Fintype K] [Field K] [Fintype σ] [DecidableEq σ] [DecidableEq K] (p : ℕ) [CharP K p] {s : Finset ι} {f : ι → MvPolynomial σ K} (h : ∑ i ∈ s, (f i).totalDegree < Fintype.card σ) : p ∣ Fintype.card { x // ∀ i ∈ s, (MvPolynomial.eval x) (f i) = 0 }",
+            "module": "Mathlib.FieldTheory.ChevalleyWarning"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "LeanSearch",
+    "form": "current",
+    "request": {
+      "query": "A multivariate polynomial evaluated at x equals the sum of its Hasse derivatives at a times products of powers of x minus a",
+      "num_results": 5
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.eval₂_eq\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Eval\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] (g : R →+* S₁)\\n  (X : σ → S₁) (f : MvPolynomial σ R),\\n  MvPolynomial.eval₂ g X f = ∑ d ∈ f.support, g (MvPolynomial.coeff d f) * ∏ i ∈ d.support, X i ^ d i\"\n    },\n    {\n      \"name\": \"Polynomial.hasseDeriv\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.HasseDeriv\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : Semiring R] → ℕ → Polynomial R →ₗ[R] Polynomial R\"\n    },\n    {\n      \"name\": \"MvPowerSeries.aeval_eq_sum\",\n      \"module_name\": \"Mathlib.RingTheory.MvPowerSeries.Evaluation\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_2} [inst : CommRing R] [inst_1 : UniformSpace R] {S : Type u_3} [inst_2 : CommRing S]\\n  [inst_3 : UniformSpace S] {a : σ → S} [inst_4 : IsTopologicalSemiring R] [inst_5 : IsUniformAddGroup R]\\n  [inst_6 : IsUniformAddGroup S] [inst_7 : CompleteSpace S] [inst_8 : T2Space S] [inst_9 : IsTopologicalRing S]\\n  [inst_10 : IsLinearTopology S S] [inst_11 : Algebra R S] [inst_12 : ContinuousSMul R S] (ha : MvPowerSeries.HasEval a)\\n  (f : MvPowerSeries σ R),\\n  (MvPowerSeries...\"\n    },\n    {\n      \"name\": \"Polynomial.hasDerivWithinAt_aeval\",\n      \"module_name\": \"Mathlib.Analysis.Calculus.Deriv.Polynomial\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {𝕜 : Type u} [inst : NontriviallyNormedField 𝕜] {R : Type u_1} [inst_1 : CommSemiring R] [inst_2 : Algebra R 𝕜]\\n  (q : Polynomial R) (x : 𝕜) (s : Set 𝕜),\\n  HasDerivWithinAt (fun x => (Polynomial.aeval x) q) ((Polynomial.aeval x) (Polynomial.derivative q)) s x\"\n    },\n    {\n      \"name\": \"Polynomial.derivative_eval\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Derivative\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Semiring R] (p : Polynomial R) (x : R),\\n  Polynomial.eval x (Polynomial.derivative p) = p.sum fun n a => a * ↑n * x ^ (n - 1)\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.eval₂_eq",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Eval",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] (g : R →+* S₁)\n  (X : σ → S₁) (f : MvPolynomial σ R),\n  MvPolynomial.eval₂ g X f = ∑ d ∈ f.support, g (MvPolynomial.coeff d f) * ∏ i ∈ d.support, X i ^ d i"
+          },
+          {
+            "name": "Polynomial.hasseDeriv",
+            "module_name": "Mathlib.Algebra.Polynomial.HasseDeriv",
+            "kind": "definition",
+            "type": "{R : Type u_1} → [inst : Semiring R] → ℕ → Polynomial R →ₗ[R] Polynomial R"
+          },
+          {
+            "name": "MvPowerSeries.aeval_eq_sum",
+            "module_name": "Mathlib.RingTheory.MvPowerSeries.Evaluation",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {R : Type u_2} [inst : CommRing R] [inst_1 : UniformSpace R] {S : Type u_3} [inst_2 : CommRing S]\n  [inst_3 : UniformSpace S] {a : σ → S} [inst_4 : IsTopologicalSemiring R] [inst_5 : IsUniformAddGroup R]\n  [inst_6 : IsUniformAddGroup S] [inst_7 : CompleteSpace S] [inst_8 : T2Space S] [inst_9 : IsTopologicalRing S]\n  [inst_10 : IsLinearTopology S S] [inst_11 : Algebra R S] [inst_12 : ContinuousSMul R S] (ha : MvPowerSeries.HasEval a)\n  (f : MvPowerSeries σ R),\n  (MvPowerSeries..."
+          },
+          {
+            "name": "Polynomial.hasDerivWithinAt_aeval",
+            "module_name": "Mathlib.Analysis.Calculus.Deriv.Polynomial",
+            "kind": "theorem",
+            "type": "∀ {𝕜 : Type u} [inst : NontriviallyNormedField 𝕜] {R : Type u_1} [inst_1 : CommSemiring R] [inst_2 : Algebra R 𝕜]\n  (q : Polynomial R) (x : 𝕜) (s : Set 𝕜),\n  HasDerivWithinAt (fun x => (Polynomial.aeval x) q) ((Polynomial.aeval x) (Polynomial.derivative q)) s x"
+          },
+          {
+            "name": "Polynomial.derivative_eval",
+            "module_name": "Mathlib.Algebra.Polynomial.Derivative",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : Semiring R] (p : Polynomial R) (x : R),\n  Polynomial.eval x (Polynomial.derivative p) = p.sum fun n a => a * ↑n * x ^ (n - 1)"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "Local",
+    "form": "current",
+    "request": {
+      "query": "eval_eq_sum_box",
+      "limit": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.eval_eq_sum_box\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/Taylor.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.eval_eq_sum_box",
+            "kind": "theorem",
+            "file": "Roth/Taylor.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "Finder",
+    "form": "literature",
+    "request": {
+      "query": "Hasse Taylor formula polynomial f(x) sum derivative at alpha times (x-alpha) multiindex over commutative ring",
+      "num_results": 5
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.sum_taylor_eq\",\n      \"informal_name\": \"Taylor Series Expansion Equals Original Polynomial\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] (f : Polynomial R) (r : R),\\n  (((Polynomial.taylor r) f).sum fun i a => Polynomial.C a * (Polynomial.X - Polynomial.C r) ^ i) = f\",\n      \"informal_description\": \"For any polynomial $ f \\\\in R[X] $ over a semiring $ R $ and any element $ r \\\\in R $, the sum of the Taylor series expansion of $ f $ at $ r $, expressed as $ \\\\sum_{i} C(a_i) \\\\cdot (X - r)^i $ where $ C(a_i) $ denotes the constant polynomial embedding, equals the original polynomial $ f $. This establishes that evaluating the Taylor expansion reconstructs the polynomial itself.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    },\n    {\n      \"formal_name\": \"Polynomial.binomExpansion\",\n      \"informal_name\": \"Binomial expansion for polynomial evaluation\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} →\\n  [inst : CommRing R] →\\n    (f : Polynomial R) →\\n      (x y : R) →\\n        { k //\\n          Polynomial.eval (x + y) f =\\n            Polynomial.eval x f + Polynomial.eval x (Polynomial.derivative f) * y + k * y ^ 2 }\",\n      \"informal_description\": \"For any polynomial $ f \\\\in R[X] $ and elements $ x, y \\\\in R $, there exists an element $ k \\\\in R $ such that the evaluation of $ f $ at $ x + y $ satisfies: $$ f(x + y) = f(x) + f'(x) \\\\cdot y + k \\\\cdot y^2 $$ where $ f'(x) $ denotes the formal derivative of $ f $ evaluated at $ x $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Identities\"\n    },\n    {\n      \"formal_name\": \"Polynomial.taylor_coeff\",\n      \"informal_name\": \"Coefficient of Taylor Expansion at $ r $: $ \\\\text{coeff}_n(f(X + r)) = D^{(n)}f(r) $\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R) (n : ℕ),\\n  ((Polynomial.taylor r) f).coeff n = Polynomial.eval r ((Polynomial.hasseDeriv n) f)\",\n      \"informal_description\": \"For any polynomial $ f $ over a semiring $ R $, natural number $ n $, and element $ r \\\\in R $, the coefficient of $ X^n $ in the Taylor expansion $ f(X + r) $ equals the evaluation of the $ n $-th Hasse derivative of $ f $ at $ r $. The Hasse derivative $ D^{(n)} $ scales monomials $ a_i X^i $ by $ \\\\binom{i}{n} a_i X^{i - n} $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv_apply\",\n      \"informal_name\": \"Hasse Derivative of Order k Applied to a Polynomial\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f : Polynomial R),\\n  (Polynomial.hasseDeriv k) f = f.sum fun i r => (Polynomial.monomial (i - k)) (↑(i.choose k) * r)\",\n      \"informal_description\": \"For a semiring $ R $ and a polynomial $ f \\\\in R[X] $, the Hasse derivative of order $ k $ applied to $ f $ is given by $ D^{(k)}(f) = \\\\sum_{i} \\\\binom{i}{k} \\\\cdot a_i \\\\cdot X^{i - k} $, where $ a_i $ is the coefficient of $ X^i $ in $ f $. This expression sums over all monomials in $ f $, scaling each by the binomial coefficient $ \\\\binom{i}{k} $ and reducing the exponent by $ k $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.aeval_sumIDeriv\",\n      \"informal_name\": \"Evaluation of Sum of Iterated Derivatives with Factorial Multiplicity\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommSemiring R] (A : Type u_3) [inst_1 : CommRing A] [inst_2 : Algebra R A] (p : Polynomial R)\\n  (q : ℕ),\\n  ∃ gp,\\n    gp.natDegree ≤ p.natDegree - q ∧\\n      ∀ (r : A),\\n        (Polynomial.X - Polynomial.C r) ^ q ∣ Polynomial.map (algebraMap R A) p →\\n          (Polynomial.aeval r) (Polynomial.sumIDeriv p) = q.factorial • (Polynomial.aeval r) gp\",\n      \"informal_description\": \"For any polynomial $ p $ over a ring $ R $ and natural number $ q $, there exists a polynomial $ g_p $ with $ \\\\deg(g_p) \\\\leq \\\\deg(p) - q $ such that for every element $ r $ in an $ R $-algebra $ A $, if $ (X - r)^q $ divides $ p $ under the canonical algebra map $ R \\\\to A $, then the evaluation of the sum of all iterated derivatives of $ p $ at $ r $ equals $ q! \\\\cdot \\\\text{eval}_r(g_p) $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.SumIteratedDerivative\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Polynomial.sum_taylor_eq",
+            "informal_name": "Taylor Series Expansion Equals Original Polynomial",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommRing R] (f : Polynomial R) (r : R),\n  (((Polynomial.taylor r) f).sum fun i a => Polynomial.C a * (Polynomial.X - Polynomial.C r) ^ i) = f",
+            "informal_description": "For any polynomial $ f \\in R[X] $ over a semiring $ R $ and any element $ r \\in R $, the sum of the Taylor series expansion of $ f $ at $ r $, expressed as $ \\sum_{i} C(a_i) \\cdot (X - r)^i $ where $ C(a_i) $ denotes the constant polynomial embedding, equals the original polynomial $ f $. This establishes that evaluating the Taylor expansion reconstructs the polynomial itself.",
+            "path": "Mathlib.Algebra.Polynomial.Taylor"
+          },
+          {
+            "formal_name": "Polynomial.binomExpansion",
+            "informal_name": "Binomial expansion for polynomial evaluation",
+            "kind": "definition",
+            "type": "{R : Type u} →\n  [inst : CommRing R] →\n    (f : Polynomial R) →\n      (x y : R) →\n        { k //\n          Polynomial.eval (x + y) f =\n            Polynomial.eval x f + Polynomial.eval x (Polynomial.derivative f) * y + k * y ^ 2 }",
+            "informal_description": "For any polynomial $ f \\in R[X] $ and elements $ x, y \\in R $, there exists an element $ k \\in R $ such that the evaluation of $ f $ at $ x + y $ satisfies: $$ f(x + y) = f(x) + f'(x) \\cdot y + k \\cdot y^2 $$ where $ f'(x) $ denotes the formal derivative of $ f $ evaluated at $ x $.",
+            "path": "Mathlib.Algebra.Polynomial.Identities"
+          },
+          {
+            "formal_name": "Polynomial.taylor_coeff",
+            "informal_name": "Coefficient of Taylor Expansion at $ r $: $ \\text{coeff}_n(f(X + r)) = D^{(n)}f(r) $",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R) (n : ℕ),\n  ((Polynomial.taylor r) f).coeff n = Polynomial.eval r ((Polynomial.hasseDeriv n) f)",
+            "informal_description": "For any polynomial $ f $ over a semiring $ R $, natural number $ n $, and element $ r \\in R $, the coefficient of $ X^n $ in the Taylor expansion $ f(X + r) $ equals the evaluation of the $ n $-th Hasse derivative of $ f $ at $ r $. The Hasse derivative $ D^{(n)} $ scales monomials $ a_i X^i $ by $ \\binom{i}{n} a_i X^{i - n} $.",
+            "path": "Mathlib.Algebra.Polynomial.Taylor"
+          },
+          {
+            "formal_name": "Polynomial.hasseDeriv_apply",
+            "informal_name": "Hasse Derivative of Order k Applied to a Polynomial",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f : Polynomial R),\n  (Polynomial.hasseDeriv k) f = f.sum fun i r => (Polynomial.monomial (i - k)) (↑(i.choose k) * r)",
+            "informal_description": "For a semiring $ R $ and a polynomial $ f \\in R[X] $, the Hasse derivative of order $ k $ applied to $ f $ is given by $ D^{(k)}(f) = \\sum_{i} \\binom{i}{k} \\cdot a_i \\cdot X^{i - k} $, where $ a_i $ is the coefficient of $ X^i $ in $ f $. This expression sums over all monomials in $ f $, scaling each by the binomial coefficient $ \\binom{i}{k} $ and reducing the exponent by $ k $.",
+            "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          },
+          {
+            "formal_name": "Polynomial.aeval_sumIDeriv",
+            "informal_name": "Evaluation of Sum of Iterated Derivatives with Factorial Multiplicity",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommSemiring R] (A : Type u_3) [inst_1 : CommRing A] [inst_2 : Algebra R A] (p : Polynomial R)\n  (q : ℕ),\n  ∃ gp,\n    gp.natDegree ≤ p.natDegree - q ∧\n      ∀ (r : A),\n        (Polynomial.X - Polynomial.C r) ^ q ∣ Polynomial.map (algebraMap R A) p →\n          (Polynomial.aeval r) (Polynomial.sumIDeriv p) = q.factorial • (Polynomial.aeval r) gp",
+            "informal_description": "For any polynomial $ p $ over a ring $ R $ and natural number $ q $, there exists a polynomial $ g_p $ with $ \\deg(g_p) \\leq \\deg(p) - q $ such that for every element $ r $ in an $ R $-algebra $ A $, if $ (X - r)^q $ divides $ p $ under the canonical algebra map $ R \\to A $, then the evaluation of the sum of all iterated derivatives of $ p $ at $ r $ equals $ q! \\cdot \\text{eval}_r(g_p) $.",
+            "path": "Mathlib.Algebra.Polynomial.SumIteratedDerivative"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "Finder",
+    "form": "abstract",
+    "request": {
+      "query": "evaluate finite multivariate polynomial expansion along algebra homomorphism map sums products and constants",
+      "num_results": 5
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"MvPolynomial.aeval_expand\",\n      \"informal_name\": \"Evaluation of Expanded Multivariate Polynomial Equals Evaluation with Pth Power Function\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_3} [inst : CommSemiring R] (p : ℕ) {A : Type u_5} [inst_1 : CommSemiring A]\\n  [inst_2 : Algebra R A] (f : σ → A) (φ : MvPolynomial σ R),\\n  (MvPolynomial.aeval f) ((MvPolynomial.expand p) φ) = (MvPolynomial.aeval (f ^ p)) φ\",\n      \"informal_description\": \"For any commutative semiring $A$ with an $R$-algebra structure, function $f : \\\\sigma \\\\to A$, and polynomial $\\\\varphi \\\\in R[\\\\sigma]$, the evaluation of the expanded polynomial $\\\\text{expand}_p(\\\\varphi)$ using $f$ equals the evaluation of $\\\\varphi$ using the function $f^p$ that maps each $x \\\\in \\\\sigma$ to $f(x)^p$. Symbolically: $\\\\text{aeval}_f(\\\\text{expand}_p(\\\\varphi)) = \\\\text{aeval}_{f^p}(\\\\varphi)$.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Expand\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.aeval_comp_expand\",\n      \"informal_name\": \"Composition of Evaluation and Expansion Homomorphisms Equals Evaluation of p-th Power\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_3} [inst : CommSemiring R] (p : ℕ) {A : Type u_5} [inst_1 : CommSemiring A]\\n  [inst_2 : Algebra R A] (f : σ → A), (MvPolynomial.aeval f).comp (MvPolynomial.expand p) = MvPolynomial.aeval (f ^ p)\",\n      \"informal_description\": \"For any commutative semiring $A$ with an $R$-algebra structure and any function $f : \\\\sigma \\\\to A$, the composition of the algebra homomorphism $\\\\text{aeval}(f)$ with the expansion homomorphism $\\\\text{expand}(p)$ equals the algebra homomorphism $\\\\text{aeval}(f^p)$, where $f^p$ denotes the function mapping each variable to its $p$-th power under the algebra structure.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Expand\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.eval₂_expand\",\n      \"informal_name\": \"Evaluation of Expanded Polynomial\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_3} {S : Type u_4} [inst : CommSemiring R] [inst_1 : CommSemiring S] (p : ℕ) (f : R →+* S)\\n  (g : σ → S) (φ : MvPolynomial σ R),\\n  MvPolynomial.eval₂ f g ((MvPolynomial.expand p) φ) = MvPolynomial.eval₂ f (g ^ p) φ\",\n      \"informal_description\": \"For any commutative semiring homomorphism $ f : R \\\\to S $, variable assignment $ g : \\\\sigma \\\\to S $, polynomial $ \\\\varphi \\\\in R[\\\\sigma] $, and natural number $ p $, evaluating the expanded polynomial $ \\\\text{expand}_p(\\\\varphi) $ using $ f $ and $ g $ is equivalent to evaluating $ \\\\varphi $ using $ f $ and the $ p $-th power of $ g $, i.e., $ \\\\text{eval}_2(f, g)(\\\\text{expand}_p(\\\\varphi)) = \\\\text{eval}_2(f, g^p)(\\\\varphi) $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Expand\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.eval_expand\",\n      \"informal_name\": \"Evaluation of Expanded Polynomial Equals Evaluation with Variables Raised to p-th Power\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_3} [inst : CommSemiring R] (p : ℕ) (f : σ → R) (φ : MvPolynomial σ R),\\n  (MvPolynomial.eval f) ((MvPolynomial.expand p) φ) = (MvPolynomial.eval (f ^ p)) φ\",\n      \"informal_description\": \"For any commutative semiring $ R $, type $ \\\\sigma $, natural number $ p $, function $ f : \\\\sigma \\\\to R $, and polynomial $ \\\\varphi \\\\in R[\\\\sigma] $, the evaluation of the expanded polynomial $ \\\\text{expand}_p(\\\\varphi) $ at $ f $ is equal to the evaluation of $ \\\\varphi $ at the function $ f^p $, where $ f^p $ denotes the function mapping each $ \\\\sigma $ to $ f(\\\\sigma)^p $. This establishes that expanding a multivariate polynomial by raising variables to the $ p $-th power and then evaluating is equivalent to evaluating the original polynomial with each variable's value raised to the $ p $-th power.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Expand\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.eval₂\",\n      \"informal_name\": \"Evaluation of Multivariate Polynomial with Coefficient and Variable Maps\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} →\\n  {S₁ : Type v} →\\n    {σ : Type u_1} →\\n      [inst : CommSemiring R] → [inst_1 : CommSemiring S₁] → (R →+* S₁) → (σ → S₁) → MvPolynomial σ R → S₁\",\n      \"informal_description\": \"The evaluation of a multivariate polynomial $ p $ in variables $ \\\\sigma $ with coefficients in a commutative semiring $ R $, where coefficients are mapped via $ f : R \\\\to S_1 $ and variables are mapped via $ g : \\\\sigma \\\\to S_1 $. For each monomial term $ a \\\\cdot \\\\prod_{n \\\\in \\\\sigma} X_n^{e_n} $, the evaluation computes $ f(a) \\\\cdot \\\\prod_{n \\\\in \\\\sigma} g(n)^{e_n} $, and sums these contributions over all terms of the polynomial.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "MvPolynomial.aeval_expand",
+            "informal_name": "Evaluation of Expanded Multivariate Polynomial Equals Evaluation with Pth Power Function",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {R : Type u_3} [inst : CommSemiring R] (p : ℕ) {A : Type u_5} [inst_1 : CommSemiring A]\n  [inst_2 : Algebra R A] (f : σ → A) (φ : MvPolynomial σ R),\n  (MvPolynomial.aeval f) ((MvPolynomial.expand p) φ) = (MvPolynomial.aeval (f ^ p)) φ",
+            "informal_description": "For any commutative semiring $A$ with an $R$-algebra structure, function $f : \\sigma \\to A$, and polynomial $\\varphi \\in R[\\sigma]$, the evaluation of the expanded polynomial $\\text{expand}_p(\\varphi)$ using $f$ equals the evaluation of $\\varphi$ using the function $f^p$ that maps each $x \\in \\sigma$ to $f(x)^p$. Symbolically: $\\text{aeval}_f(\\text{expand}_p(\\varphi)) = \\text{aeval}_{f^p}(\\varphi)$.",
+            "path": "Mathlib.Algebra.MvPolynomial.Expand"
+          },
+          {
+            "formal_name": "MvPolynomial.aeval_comp_expand",
+            "informal_name": "Composition of Evaluation and Expansion Homomorphisms Equals Evaluation of p-th Power",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {R : Type u_3} [inst : CommSemiring R] (p : ℕ) {A : Type u_5} [inst_1 : CommSemiring A]\n  [inst_2 : Algebra R A] (f : σ → A), (MvPolynomial.aeval f).comp (MvPolynomial.expand p) = MvPolynomial.aeval (f ^ p)",
+            "informal_description": "For any commutative semiring $A$ with an $R$-algebra structure and any function $f : \\sigma \\to A$, the composition of the algebra homomorphism $\\text{aeval}(f)$ with the expansion homomorphism $\\text{expand}(p)$ equals the algebra homomorphism $\\text{aeval}(f^p)$, where $f^p$ denotes the function mapping each variable to its $p$-th power under the algebra structure.",
+            "path": "Mathlib.Algebra.MvPolynomial.Expand"
+          },
+          {
+            "formal_name": "MvPolynomial.eval₂_expand",
+            "informal_name": "Evaluation of Expanded Polynomial",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {R : Type u_3} {S : Type u_4} [inst : CommSemiring R] [inst_1 : CommSemiring S] (p : ℕ) (f : R →+* S)\n  (g : σ → S) (φ : MvPolynomial σ R),\n  MvPolynomial.eval₂ f g ((MvPolynomial.expand p) φ) = MvPolynomial.eval₂ f (g ^ p) φ",
+            "informal_description": "For any commutative semiring homomorphism $ f : R \\to S $, variable assignment $ g : \\sigma \\to S $, polynomial $ \\varphi \\in R[\\sigma] $, and natural number $ p $, evaluating the expanded polynomial $ \\text{expand}_p(\\varphi) $ using $ f $ and $ g $ is equivalent to evaluating $ \\varphi $ using $ f $ and the $ p $-th power of $ g $, i.e., $ \\text{eval}_2(f, g)(\\text{expand}_p(\\varphi)) = \\text{eval}_2(f, g^p)(\\varphi) $.",
+            "path": "Mathlib.Algebra.MvPolynomial.Expand"
+          },
+          {
+            "formal_name": "MvPolynomial.eval_expand",
+            "informal_name": "Evaluation of Expanded Polynomial Equals Evaluation with Variables Raised to p-th Power",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {R : Type u_3} [inst : CommSemiring R] (p : ℕ) (f : σ → R) (φ : MvPolynomial σ R),\n  (MvPolynomial.eval f) ((MvPolynomial.expand p) φ) = (MvPolynomial.eval (f ^ p)) φ",
+            "informal_description": "For any commutative semiring $ R $, type $ \\sigma $, natural number $ p $, function $ f : \\sigma \\to R $, and polynomial $ \\varphi \\in R[\\sigma] $, the evaluation of the expanded polynomial $ \\text{expand}_p(\\varphi) $ at $ f $ is equal to the evaluation of $ \\varphi $ at the function $ f^p $, where $ f^p $ denotes the function mapping each $ \\sigma $ to $ f(\\sigma)^p $. This establishes that expanding a multivariate polynomial by raising variables to the $ p $-th power and then evaluating is equivalent to evaluating the original polynomial with each variable's value raised to the $ p $-th power.",
+            "path": "Mathlib.Algebra.MvPolynomial.Expand"
+          },
+          {
+            "formal_name": "MvPolynomial.eval₂",
+            "informal_name": "Evaluation of Multivariate Polynomial with Coefficient and Variable Maps",
+            "kind": "definition",
+            "type": "{R : Type u} →\n  {S₁ : Type v} →\n    {σ : Type u_1} →\n      [inst : CommSemiring R] → [inst_1 : CommSemiring S₁] → (R →+* S₁) → (σ → S₁) → MvPolynomial σ R → S₁",
+            "informal_description": "The evaluation of a multivariate polynomial $ p $ in variables $ \\sigma $ with coefficients in a commutative semiring $ R $, where coefficients are mapped via $ f : R \\to S_1 $ and variables are mapped via $ g : \\sigma \\to S_1 $. For each monomial term $ a \\cdot \\prod_{n \\in \\sigma} X_n^{e_n} $, the evaluation computes $ f(a) \\cdot \\prod_{n \\in \\sigma} g(n)^{e_n} $, and sums these contributions over all terms of the polynomial.",
+            "path": "Mathlib.Algebra.MvPolynomial.Eval"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "Loogle",
+    "form": "literature",
+    "request": {
+      "query": "Polynomial.taylor, \"sum\"",
+      "num_results": 6
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.sum_taylor_eq\",\n      \"type\": \" {R : Type u_1} [CommRing R] (f : Polynomial R) (r : R) : (((Polynomial.taylor r) f).sum fun i a => Polynomial.C a * (Polynomial.X - Polynomial.C r) ^ i) = f\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Taylor\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.sum_taylor_eq",
+            "type": " {R : Type u_1} [CommRing R] (f : Polynomial R) (r : R) : (((Polynomial.taylor r) f).sum fun i a => Polynomial.C a * (Polynomial.X - Polynomial.C r) ^ i) = f",
+            "module": "Mathlib.Algebra.Polynomial.Taylor"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "Loogle",
+    "form": "abstract",
+    "request": {
+      "query": "MvPolynomial.aeval, \"sum\"",
+      "num_results": 6
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.aeval_sum\",\n      \"type\": \" {R : Type u} {S₁ : Type v} {σ : Type u_1} [CommSemiring R] [CommSemiring S₁] [Algebra R S₁] (f : σ → S₁) {ι : Type u_2} (s : Finset ι) (φ : ι → MvPolynomial σ R) : (MvPolynomial.aeval f) (∑ i ∈ s, φ i) = ∑ i ∈ s, (MvPolynomial.aeval f) (φ i)\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"name\": \"MvPolynomial.aeval_sumElim\",\n      \"type\": \" {R : Type u} [CommSemiring R] {S : Type u_2} {T : Type u_3} [CommSemiring S] [Algebra R S] [CommSemiring T] [Algebra R T] [Algebra S T] [IsScalarTower R S T] {σ : Type u_4} {τ : Type u_5} (p : MvPolynomial (σ ⊕ τ) R) (f : τ → S) (g : σ → T) : (MvPolynomial.aeval (Sum.elim g (⇑(algebraMap S T) ∘ f))) p = (MvPolynomial.aeval g) ((MvPolynomial.aeval (Sum.elim MvPolynomial.X (⇑MvPolynomial.C ∘ f))) p)\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Eval\"\n    },\n    {\n      \"name\": \"Algebra.Generators.ofComp_toAlgHom_monomial_sumElim\",\n      \"type\": \" {R : Type u} {S : Type v} {ι : Type w} [CommRing R] [CommRing S] [Algebra R S] {ι' : Type u_3} {T : Type u_7} [CommRing T] [Algebra R T] [Algebra S T] [IsScalarTower R S T] (Q : Algebra.Generators S T ι') (P : Algebra.Generators R S ι) (v₁ : ι' →₀ ℕ) (v₂ : ι →₀ ℕ) (a : R) : (Q.ofComp P).toAlgHom ((MvPolynomial.monomial (v₁.sumElim v₂)) a) = (MvPolynomial.monomial v₁) ((MvPolynomial.aeval P.val) ((MvPolynomial.monomial v₂) a))\",\n      \"module\": \"Mathlib.RingTheory.Extension.Generators\"\n    },\n    {\n      \"name\": \"MvPolynomial.aeval_sumElim_pderiv_inl\",\n      \"type\": \" {R : Type u} {σ : Type v} [CommSemiring R] {S : Type u_1} {τ : Type u_2} [CommRing S] [Algebra R S] (p : MvPolynomial (σ ⊕ τ) R) (f : τ → S) (j : σ) : (MvPolynomial.aeval (Sum.elim MvPolynomial.X (⇑MvPolynomial.C ∘ f))) ((MvPolynomial.pderiv (Sum.inl j)) p) = (MvPolynomial.pderiv j) ((MvPolynomial.aeval (Sum.elim MvPolynomial.X (⇑MvPolynomial.C ∘ f))) p)\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.PDeriv\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.aeval_sum",
+            "type": " {R : Type u} {S₁ : Type v} {σ : Type u_1} [CommSemiring R] [CommSemiring S₁] [Algebra R S₁] (f : σ → S₁) {ι : Type u_2} (s : Finset ι) (φ : ι → MvPolynomial σ R) : (MvPolynomial.aeval f) (∑ i ∈ s, φ i) = ∑ i ∈ s, (MvPolynomial.aeval f) (φ i)",
+            "module": "Mathlib.Algebra.MvPolynomial.Eval"
+          },
+          {
+            "name": "MvPolynomial.aeval_sumElim",
+            "type": " {R : Type u} [CommSemiring R] {S : Type u_2} {T : Type u_3} [CommSemiring S] [Algebra R S] [CommSemiring T] [Algebra R T] [Algebra S T] [IsScalarTower R S T] {σ : Type u_4} {τ : Type u_5} (p : MvPolynomial (σ ⊕ τ) R) (f : τ → S) (g : σ → T) : (MvPolynomial.aeval (Sum.elim g (⇑(algebraMap S T) ∘ f))) p = (MvPolynomial.aeval g) ((MvPolynomial.aeval (Sum.elim MvPolynomial.X (⇑MvPolynomial.C ∘ f))) p)",
+            "module": "Mathlib.Algebra.MvPolynomial.Eval"
+          },
+          {
+            "name": "Algebra.Generators.ofComp_toAlgHom_monomial_sumElim",
+            "type": " {R : Type u} {S : Type v} {ι : Type w} [CommRing R] [CommRing S] [Algebra R S] {ι' : Type u_3} {T : Type u_7} [CommRing T] [Algebra R T] [Algebra S T] [IsScalarTower R S T] (Q : Algebra.Generators S T ι') (P : Algebra.Generators R S ι) (v₁ : ι' →₀ ℕ) (v₂ : ι →₀ ℕ) (a : R) : (Q.ofComp P).toAlgHom ((MvPolynomial.monomial (v₁.sumElim v₂)) a) = (MvPolynomial.monomial v₁) ((MvPolynomial.aeval P.val) ((MvPolynomial.monomial v₂) a))",
+            "module": "Mathlib.RingTheory.Extension.Generators"
+          },
+          {
+            "name": "MvPolynomial.aeval_sumElim_pderiv_inl",
+            "type": " {R : Type u} {σ : Type v} [CommSemiring R] {S : Type u_1} {τ : Type u_2} [CommRing S] [Algebra R S] (p : MvPolynomial (σ ⊕ τ) R) (f : τ → S) (j : σ) : (MvPolynomial.aeval (Sum.elim MvPolynomial.X (⇑MvPolynomial.C ∘ f))) ((MvPolynomial.pderiv (Sum.inl j)) p) = (MvPolynomial.pderiv j) ((MvPolynomial.aeval (Sum.elim MvPolynomial.X (⇑MvPolynomial.C ∘ f))) p)",
+            "module": "Mathlib.Algebra.MvPolynomial.PDeriv"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "LeanSearch",
+    "form": "literature",
+    "request": {
+      "query": "Taylor expansion Hasse derivatives multivariate polynomial over commutative ring evaluated at an arbitrary point",
+      "num_results": 5
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.taylor_coeff\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Taylor\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R) (n : ℕ),\\n  ((Polynomial.taylor r) f).coeff n = Polynomial.eval r ((Polynomial.hasseDeriv n) f)\"\n    },\n    {\n      \"name\": \"Polynomial.taylor_apply\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Taylor\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R),\\n  (Polynomial.taylor r) f = f.comp (Polynomial.X + Polynomial.C r)\"\n    },\n    {\n      \"name\": \"Polynomial.taylor\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Taylor\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : Semiring R] → R → Polynomial R →ₗ[R] Polynomial R\"\n    },\n    {\n      \"name\": \"Polynomial.taylor_eval_sub\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Taylor\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] (r : R) (f : Polynomial R) (s : R),\\n  Polynomial.eval (s - r) ((Polynomial.taylor r) f) = Polynomial.eval s f\"\n    },\n    {\n      \"name\": \"Polynomial.taylor_eval\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Taylor\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommSemiring R] (r : R) (f : Polynomial R) (s : R),\\n  Polynomial.eval s ((Polynomial.taylor r) f) = Polynomial.eval (s + r) f\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.taylor_coeff",
+            "module_name": "Mathlib.Algebra.Polynomial.Taylor",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R) (n : ℕ),\n  ((Polynomial.taylor r) f).coeff n = Polynomial.eval r ((Polynomial.hasseDeriv n) f)"
+          },
+          {
+            "name": "Polynomial.taylor_apply",
+            "module_name": "Mathlib.Algebra.Polynomial.Taylor",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (r : R) (f : Polynomial R),\n  (Polynomial.taylor r) f = f.comp (Polynomial.X + Polynomial.C r)"
+          },
+          {
+            "name": "Polynomial.taylor",
+            "module_name": "Mathlib.Algebra.Polynomial.Taylor",
+            "kind": "definition",
+            "type": "{R : Type u_1} → [inst : Semiring R] → R → Polynomial R →ₗ[R] Polynomial R"
+          },
+          {
+            "name": "Polynomial.taylor_eval_sub",
+            "module_name": "Mathlib.Algebra.Polynomial.Taylor",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommRing R] (r : R) (f : Polynomial R) (s : R),\n  Polynomial.eval (s - r) ((Polynomial.taylor r) f) = Polynomial.eval s f"
+          },
+          {
+            "name": "Polynomial.taylor_eval",
+            "module_name": "Mathlib.Algebra.Polynomial.Taylor",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommSemiring R] (r : R) (f : Polynomial R) (s : R),\n  Polynomial.eval s ((Polynomial.taylor r) f) = Polynomial.eval (s + r) f"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "LeanSearch",
+    "form": "abstract",
+    "request": {
+      "query": "algebra evaluation multivariate polynomial finite sum of coefficients multiplied by monomials",
+      "num_results": 5
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.eval₂_eq'\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Eval\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] [inst_2 : Fintype σ]\\n  (g : R →+* S₁) (X : σ → S₁) (f : MvPolynomial σ R),\\n  MvPolynomial.eval₂ g X f = ∑ d ∈ f.support, g (MvPolynomial.coeff d f) * ∏ i, X i ^ d i\"\n    },\n    {\n      \"name\": \"MvPolynomial.eval₂\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Eval\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} →\\n  {S₁ : Type v} →\\n    {σ : Type u_1} →\\n      [inst : CommSemiring R] → [inst_1 : CommSemiring S₁] → (R →+* S₁) → (σ → S₁) → MvPolynomial σ R → S₁\"\n    },\n    {\n      \"name\": \"MvPolynomial.eval_eq'\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Eval\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : Fintype σ] (X : σ → R) (f : MvPolynomial σ R),\\n  (MvPolynomial.eval X) f = ∑ d ∈ f.support, MvPolynomial.coeff d f * ∏ i, X i ^ d i\"\n    },\n    {\n      \"name\": \"MvPolynomial.eval₂_eq\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Eval\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] (g : R →+* S₁)\\n  (X : σ → S₁) (f : MvPolynomial σ R),\\n  MvPolynomial.eval₂ g X f = ∑ d ∈ f.support, g (MvPolynomial.coeff d f) * ∏ i ∈ d.support, X i ^ d i\"\n    },\n    {\n      \"name\": \"MvPolynomial.eval_eq\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Eval\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] (X : σ → R) (f : MvPolynomial σ R),\\n  (MvPolynomial.eval X) f = ∑ d ∈ f.support, MvPolynomial.coeff d f * ∏ i ∈ d.support, X i ^ d i\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.eval₂_eq'",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Eval",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] [inst_2 : Fintype σ]\n  (g : R →+* S₁) (X : σ → S₁) (f : MvPolynomial σ R),\n  MvPolynomial.eval₂ g X f = ∑ d ∈ f.support, g (MvPolynomial.coeff d f) * ∏ i, X i ^ d i"
+          },
+          {
+            "name": "MvPolynomial.eval₂",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Eval",
+            "kind": "definition",
+            "type": "{R : Type u} →\n  {S₁ : Type v} →\n    {σ : Type u_1} →\n      [inst : CommSemiring R] → [inst_1 : CommSemiring S₁] → (R →+* S₁) → (σ → S₁) → MvPolynomial σ R → S₁"
+          },
+          {
+            "name": "MvPolynomial.eval_eq'",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Eval",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : Fintype σ] (X : σ → R) (f : MvPolynomial σ R),\n  (MvPolynomial.eval X) f = ∑ d ∈ f.support, MvPolynomial.coeff d f * ∏ i, X i ^ d i"
+          },
+          {
+            "name": "MvPolynomial.eval₂_eq",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Eval",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] (g : R →+* S₁)\n  (X : σ → S₁) (f : MvPolynomial σ R),\n  MvPolynomial.eval₂ g X f = ∑ d ∈ f.support, g (MvPolynomial.coeff d f) * ∏ i ∈ d.support, X i ^ d i"
+          },
+          {
+            "name": "MvPolynomial.eval_eq",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Eval",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] (X : σ → R) (f : MvPolynomial σ R),\n  (MvPolynomial.eval X) f = ∑ d ∈ f.support, MvPolynomial.coeff d f * ∏ i ∈ d.support, X i ^ d i"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "Local",
+    "form": "literature",
+    "request": {
+      "query": "sum_taylor",
+      "limit": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.sum_taylor_eq\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Taylor.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.sum_taylor_eq",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Taylor.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "Local",
+    "form": "abstract",
+    "request": {
+      "query": "eval₂_eq",
+      "limit": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"eval\",\n      \"kind\": \"theorem\",\n      \"file\": \".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_map/mathlib-map-excerpt.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.eval\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Eval.lean\"\n    },\n    {\n      \"name\": \"MvPowerSeries.eval\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Evaluation.lean\"\n    },\n    {\n      \"name\": \"Polynomial.eval\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Eval/Degree.lean\"\n    },\n    {\n      \"name\": \"Polynomial.eval\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Eval/Defs.lean\"\n    },\n    {\n      \"name\": \"PowerSeries.eval\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/PowerSeries/Evaluation.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "eval",
+            "kind": "theorem",
+            "file": ".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_map/mathlib-map-excerpt.lean"
+          },
+          {
+            "name": "MvPolynomial.eval",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Eval.lean"
+          },
+          {
+            "name": "MvPowerSeries.eval",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Evaluation.lean"
+          },
+          {
+            "name": "Polynomial.eval",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Eval/Degree.lean"
+          },
+          {
+            "name": "Polynomial.eval",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Eval/Defs.lean"
+          },
+          {
+            "name": "PowerSeries.eval",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/RingTheory/PowerSeries/Evaluation.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  }
+]
