@@ -1,0 +1,102 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\n#check_failure Roth.coeff_coeffNone\n#check @MvPolynomial.optionEquivLeft_coeff_coeff\n#check @Finsupp.update_eq_add_single\n#check @Finsupp.embDomain_eq_mapDomain\nnamespace CoeffCoeffNone155\nopen MvPolynomial\nvariable {τ R : Type*} [CommSemiring R]\ntheorem canonical (P : MvPolynomial (Option τ) R) (ν : ℕ) (d : τ →₀ ℕ) :\n    ((optionEquivLeft R τ P).coeff ν).coeff d = P.coeff (d.optionElim ν) :=\n  optionEquivLeft_coeff_coeff R P ν d\ntheorem embedding (P : MvPolynomial (Option τ) R) (ν : ℕ) (d : τ →₀ ℕ) :\n    ((optionEquivLeft R τ P).coeff ν).coeff d =\n      P.coeff (d.embDomain .some + Finsupp.single none ν) :=\n  (optionEquivLeft_coeff_coeff R P ν d).trans\n    (congrArg P.coeff (Finsupp.update_eq_add_single (Finsupp.embDomain_some_none d) ν))\ntheorem mapped (P : MvPolynomial (Option τ) R) (ν : ℕ) (d : τ →₀ ℕ) :\n    ((optionEquivLeft R τ P).coeff ν).coeff d =\n      P.coeff (d.mapDomain some + Finsupp.single none ν) := by\n  rw [optionEquivLeft_coeff_coeff]\n  congr 1\n  exact (Finsupp.update_eq_add_single (Finsupp.embDomain_some_none d) ν).trans\n    (congrArg (fun e ↦ e + Finsupp.single none ν) (Finsupp.embDomain_eq_mapDomain .some d))\ntheorem omission_guard :\n    ((optionEquivLeft ℕ Unit (X none)).coeff 1).coeff 0 ≠\n      (X none : MvPolynomial (Option Unit) ℕ).coeff (Finsupp.mapDomain some (0 : Unit →₀ ℕ)) := by\n  simp\ntheorem wrong_power_guard :\n    ((optionEquivLeft ℕ Unit (X none)).coeff 0).coeff 0 ≠\n      (X none : MvPolynomial (Option Unit) ℕ).coeff (Finsupp.single none 1) := by\n  simp\n#print axioms canonical\n#print axioms embedding\n#print axioms mapped\n#print axioms omission_guard\n#print axioms wrong_power_guard\nend CoeffCoeffNone155\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.coeff_coeffNone`\",\n      \"line\": 10,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"MvPolynomial.optionEquivLeft_coeff_coeff : ∀ (R : Type u_1) {σ : Type u_2} [inst : CommSemiring R]\\n  (p : MvPolynomial (Option σ) R) (m : ℕ) (d : σ →₀ ℕ),\\n  (((MvPolynomial.optionEquivLeft R σ) p).coeff m).coeff d = p.coeff (Finsupp.optionElim m d)\",\n      \"line\": 11,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finsupp.update_eq_add_single : ∀ {ι : Type u_1} {M : Type u_2} [inst : AddZeroClass M] {f : ι →₀ M} {a : ι},\\n  f a = 0 → ∀ (b : M), f.update a b = f + Finsupp.single a b\",\n      \"line\": 12,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finsupp.embDomain_eq_mapDomain : ∀ {α : Type u_1} {β : Type u_2} {M : Type u_3} [inst : AddCommMonoid M] (f : α ↪ β)\\n  (v : α →₀ M), Finsupp.embDomain f v = Finsupp.mapDomain (⇑f) v\",\n      \"line\": 13,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'CoeffCoeffNone155.canonical' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 40,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'CoeffCoeffNone155.embedding' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 41,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'CoeffCoeffNone155.mapped' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 42,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'CoeffCoeffNone155.omission_guard' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 43,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'CoeffCoeffNone155.wrong_power_guard' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 44,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.coeff_coeffNone`",
+          "line": 10,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "MvPolynomial.optionEquivLeft_coeff_coeff : ∀ (R : Type u_1) {σ : Type u_2} [inst : CommSemiring R]\n  (p : MvPolynomial (Option σ) R) (m : ℕ) (d : σ →₀ ℕ),\n  (((MvPolynomial.optionEquivLeft R σ) p).coeff m).coeff d = p.coeff (Finsupp.optionElim m d)",
+          "line": 11,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finsupp.update_eq_add_single : ∀ {ι : Type u_1} {M : Type u_2} [inst : AddZeroClass M] {f : ι →₀ M} {a : ι},\n  f a = 0 → ∀ (b : M), f.update a b = f + Finsupp.single a b",
+          "line": 12,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finsupp.embDomain_eq_mapDomain : ∀ {α : Type u_1} {β : Type u_2} {M : Type u_3} [inst : AddCommMonoid M] (f : α ↪ β)\n  (v : α →₀ M), Finsupp.embDomain f v = Finsupp.mapDomain (⇑f) v",
+          "line": 13,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'CoeffCoeffNone155.canonical' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 40,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'CoeffCoeffNone155.embedding' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 41,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'CoeffCoeffNone155.mapped' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 42,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'CoeffCoeffNone155.omission_guard' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 43,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'CoeffCoeffNone155.wrong_power_guard' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 44,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 501
+}

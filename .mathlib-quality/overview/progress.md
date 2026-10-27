@@ -3,7 +3,7 @@
 Status: **in_progress**, 2026-10-27. Branch: `ramin-cleanup`.
 Production Lean files and all pins match baseline `99f19fd`.
 
-**Completed: 154 / 293 written declarations.**
+**Completed: 155 / 293 written declarations.**
 This counts the current overview assessments, separately from the earlier code cleanup.
 
 | # | Completed declaration | Applicable workflow | Verdict | Report |
@@ -162,8 +162,9 @@ This counts the current overview assessments, separately from the earlier code c
 | 152 | `Roth.coeffNone` | full-mathlibable; accepted complete | NO-composable-from-mathlib | [Detailed report](mathlibable/Roth.coeffNone.md) |
 | 153 | `Roth.eq_mapDomain_some_add_single` | full-mathlibable; accepted complete | NO-composable-from-mathlib | [Detailed report](mathlibable/Roth.eq_mapDomain_some_add_single.md) |
 | 154 | `Roth.coeff_X_none_pow_mul_rename` | overview-private-prefilter; accepted complete | SKIP | [Detailed report](mathlibable/Roth.coeff_X_none_pow_mul_rename.md) |
+| 155 | `Roth.coeff_coeffNone` | full-mathlibable; accepted complete | NO-mathlib-has-it | [Detailed report](mathlibable/Roth.coeff_coeffNone.md) |
 
-**Next declaration: `Roth.coeff_coeffNone`**, `Roth/Separation.lean:85`.
+**Next declaration: `Roth.eq_sum_X_none_pow_mul_coeffNone`**, `Roth/Separation.lean:98`.
 Only the listed assessments are complete. No partial assessment was committed.
 
 On restart: read [README](README.md), [machine progress](progress.json), and

@@ -1,0 +1,82 @@
+{
+  "request": {
+    "query": "Collecting a multivariate polynomial by powers of one distinguished variable preserves the coefficients of each monomial"
+  },
+  "response": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"MvPolynomial.coeff_mul_X\",\n      \"informal_name\": \"Coefficient of Product with Variable in Multivariate Polynomial Ring\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u} {\u03c3 : Type u_1} [inst : CommSemiring R] (m : \u03c3 \u2192\u2080 \u2115) (s : \u03c3) (p : MvPolynomial \u03c3 R),\\n  MvPolynomial.coeff (m + Finsupp.single s 1) (p * MvPolynomial.X s) = MvPolynomial.coeff m p\",\n      \"informal_description\": \"For any commutative semiring $ R $, type $ \\\\sigma $, polynomial $ p \\\\in R[\\\\sigma] $, monomial $ m : \\\\sigma \\\\to_0 \\\\mathbb{N} $, and variable $ s \\\\in \\\\sigma $, the coefficient of the monomial $ m + \\\\delta_s $ in the product $ p \\\\cdot X_s $ equals the coefficient of $ m $ in $ p $. Here $ \\\\delta_s $ denotes the monomial with exponent $ 1 $ at $ s $ and $ 0 $ elsewhere, and $ X_s $ is the variable corresponding to $ s $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Basic\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.coeffs_X_mul\",\n      \"informal_name\": \"Multiplication by a Variable Preserves Coefficients in Multivariate Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u} {\u03c3 : Type u_1} [inst : CommSemiring R] (p : MvPolynomial \u03c3 R) (n : \u03c3),\\n  (MvPolynomial.X n * p).coeffs = p.coeffs\",\n      \"informal_description\": \"For any multivariate polynomial $ p $ in variables indexed by $ \\\\sigma $ with coefficients in a commutative semiring $ R $, and for any variable $ X_n $, the set of coefficients of the product $ X_n \\\\cdot p $ is equal to the set of coefficients of $ p $. This equality holds because multiplying by $ X_n $ shifts monomials without altering their coefficients, preserving the finite set of non-zero coefficients.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Basic\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.coeff_X_mul\",\n      \"informal_name\": \"Multiplication by Variable Shifts Coefficients in Multivariate Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u} {\u03c3 : Type u_1} [inst : CommSemiring R] (m : \u03c3 \u2192\u2080 \u2115) (s : \u03c3) (p : MvPolynomial \u03c3 R),\\n  MvPolynomial.coeff (Finsupp.single s 1 + m) (MvPolynomial.X s * p) = MvPolynomial.coeff m p\",\n      \"informal_description\": \"For any monomial $ m $, variable $ s $, and polynomial $ p $ in the multivariate polynomial ring $ R[\\\\sigma] $, the coefficient of the monomial $ m + e_s $ (where $ e_s $ denotes the monomial with exponent $ 1 $ at $ s $ and $ 0 $ elsewhere) in the product $ X_s \\\\cdot p $ is equal to the coefficient of $ m $ in $ p $. This reflects that multiplying by the variable $ X_s $ shifts coefficients by incrementing the exponent of $ s $ by $ 1 $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Basic\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.coeff_single_X_pow\",\n      \"informal_name\": \"Coefficient of $ X_s^n $ in Multivariate Polynomial is 1 if Equal or Both Zero, 0 Otherwise\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u} {\u03c3 : Type u_1} [inst : CommSemiring R] [inst_1 : DecidableEq \u03c3] (s s' : \u03c3) (n n' : \u2115),\\n  MvPolynomial.coeff (Finsupp.single s' n') (MvPolynomial.X s ^ n) = if s = s' \u2227 n = n' \u2228 n = 0 \u2227 n' = 0 then 1 else 0\",\n      \"informal_description\": \"For a multivariate polynomial ring over a commutative semiring $ R $ with variables indexed by $ \\\\sigma $, the coefficient of the monomial $ X_{s'}^{n'} $ in the polynomial $ X_s^n $ is 1 if $ s = s' $ and $ n = n' $, or if both $ n $ and $ n' $ are zero; otherwise, it is 0.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Basic\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.finSuccEquiv_coeff_coeff\",\n      \"informal_name\": \"Coefficient correspondence in Fin(n+1) multivariate polynomial equivalence\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u} [inst : CommSemiring R] {n : \u2115} (m : Fin n \u2192\u2080 \u2115) (f : MvPolynomial (Fin (n + 1)) R) (i : \u2115),\\n  MvPolynomial.coeff m (((MvPolynomial.finSuccEquiv R n) f).coeff i) = MvPolynomial.coeff (Finsupp.cons i m) f\",\n      \"informal_description\": \"For a multivariate polynomial $ f $ over $ \\\\text{Fin}(n+1) $, the coefficient of monomial $ m $ in the $ i $-th coefficient of its algebra equivalence to a univariate polynomial with coefficients in $ R[\\\\text{Fin}(n)] $ equals the coefficient of the extended monomial $ m $ with exponent $ i $ in $ f $. Formally, $ \\\\text{coeff}_m(\\\\text{coeff}_i(\\\\text{finSuccEquiv}(f))) = \\\\text{coeff}_{m \\\\oplus i}(f) $, where $ \\\\oplus $ denotes monomial extension.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.coeff_sumSMulX\",\n      \"informal_name\": \"Coefficient of x_i in Sum of Scalar Multiples is c_i\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {n : Type u_1} {R : Type u_2} [inst : CommRing R] (c : n \u2192\u2080 R) (i : n),\\n  MvPolynomial.coeff (Finsupp.single i 1) (MvPolynomial.sumSMulX c) = c i\",\n      \"informal_description\": \"For any index $i$ in $\\\\sigma$, the coefficient of the monomial $x_i$ in the polynomial $\\\\sum_{i \\\\in \\\\sigma} c_i x_i$ over the multivariate polynomial ring $R[\\\\sigma]$ is equal to $c_i$.\",\n      \"path\": \"Mathlib.RingTheory.MvPolynomial.IrreducibleQuadratic\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.coeff_X_pow\",\n      \"informal_name\": \"Coefficient of Variable Power in Multivariate Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u} {\u03c3 : Type u_1} [inst : CommSemiring R] [inst_1 : DecidableEq \u03c3] (i : \u03c3) (m : \u03c3 \u2192\u2080 \u2115) (k : \u2115),\\n  MvPolynomial.coeff m (MvPolynomial.X i ^ k) = if Finsupp.single i k = m then 1 else 0\",\n      \"informal_description\": \"For a multivariate polynomial ring $ R[\\\\sigma] $ over a commutative semiring $ R $ with variables indexed by $ \\\\sigma $, the coefficient of the monomial $ m $ in the polynomial $ X_i^k $ (where $ i \\\\in \\\\sigma $ and $ k \\\\in \\\\mathbb{N} $) is $ 1 $ if $ m $ equals the monomial $ X_i^k $, and $ 0 $ otherwise. Formally, $ \\\\text{coeff}_m(X_i^k) = \\\\begin{cases} 1 & \\\\text{if } m = X_i^k, \\\\\\\\ 0 & \\\\text{otherwise}. \\\\end{cases} $\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Basic\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.coeff_mul_X'\",\n      \"informal_name\": \"Coefficient of m in p * X_s is Coefficient of m - e_s in p if s \u2208 m\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {R : Type u} {\u03c3 : Type u_1} [inst : CommSemiring R] [inst_1 : DecidableEq \u03c3] (m : \u03c3 \u2192\u2080 \u2115) (s : \u03c3)\\n  (p : MvPolynomial \u03c3 R),\\n  MvPolynomial.coeff m (p * MvPolynomial.X s) =\\n    if s \u2208 m.support then MvPolynomial.coeff (m - Finsupp.single s 1) p else 0\",\n      \"informal_description\": \"For any commutative semiring $ R $, type $ \\\\sigma $, monomial $ m : \\\\sigma \\\\to_0 \\\\mathbb{N} $, variable $ s \\\\in \\\\sigma $, and polynomial $ p \\\\in R[\\\\sigma] $, the coefficient of $ m $ in the product $ p \\\\cdot X_s $ is equal to the coefficient of the monomial $ m - \\\\text{single}(s, 1) $ in $ p $ if $ s $ is in the support of $ m $, and zero otherwise.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Basic\"\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "items": [
+        {
+          "formal_name": "MvPolynomial.coeff_mul_X",
+          "informal_name": "Coefficient of Product with Variable in Multivariate Polynomial Ring",
+          "kind": "theorem",
+          "type": "\u2200 {R : Type u} {\u03c3 : Type u_1} [inst : CommSemiring R] (m : \u03c3 \u2192\u2080 \u2115) (s : \u03c3) (p : MvPolynomial \u03c3 R),\n  MvPolynomial.coeff (m + Finsupp.single s 1) (p * MvPolynomial.X s) = MvPolynomial.coeff m p",
+          "informal_description": "For any commutative semiring $ R $, type $ \\sigma $, polynomial $ p \\in R[\\sigma] $, monomial $ m : \\sigma \\to_0 \\mathbb{N} $, and variable $ s \\in \\sigma $, the coefficient of the monomial $ m + \\delta_s $ in the product $ p \\cdot X_s $ equals the coefficient of $ m $ in $ p $. Here $ \\delta_s $ denotes the monomial with exponent $ 1 $ at $ s $ and $ 0 $ elsewhere, and $ X_s $ is the variable corresponding to $ s $.",
+          "path": "Mathlib.Algebra.MvPolynomial.Basic"
+        },
+        {
+          "formal_name": "MvPolynomial.coeffs_X_mul",
+          "informal_name": "Multiplication by a Variable Preserves Coefficients in Multivariate Polynomials",
+          "kind": "theorem",
+          "type": "\u2200 {R : Type u} {\u03c3 : Type u_1} [inst : CommSemiring R] (p : MvPolynomial \u03c3 R) (n : \u03c3),\n  (MvPolynomial.X n * p).coeffs = p.coeffs",
+          "informal_description": "For any multivariate polynomial $ p $ in variables indexed by $ \\sigma $ with coefficients in a commutative semiring $ R $, and for any variable $ X_n $, the set of coefficients of the product $ X_n \\cdot p $ is equal to the set of coefficients of $ p $. This equality holds because multiplying by $ X_n $ shifts monomials without altering their coefficients, preserving the finite set of non-zero coefficients.",
+          "path": "Mathlib.Algebra.MvPolynomial.Basic"
+        },
+        {
+          "formal_name": "MvPolynomial.coeff_X_mul",
+          "informal_name": "Multiplication by Variable Shifts Coefficients in Multivariate Polynomials",
+          "kind": "theorem",
+          "type": "\u2200 {R : Type u} {\u03c3 : Type u_1} [inst : CommSemiring R] (m : \u03c3 \u2192\u2080 \u2115) (s : \u03c3) (p : MvPolynomial \u03c3 R),\n  MvPolynomial.coeff (Finsupp.single s 1 + m) (MvPolynomial.X s * p) = MvPolynomial.coeff m p",
+          "informal_description": "For any monomial $ m $, variable $ s $, and polynomial $ p $ in the multivariate polynomial ring $ R[\\sigma] $, the coefficient of the monomial $ m + e_s $ (where $ e_s $ denotes the monomial with exponent $ 1 $ at $ s $ and $ 0 $ elsewhere) in the product $ X_s \\cdot p $ is equal to the coefficient of $ m $ in $ p $. This reflects that multiplying by the variable $ X_s $ shifts coefficients by incrementing the exponent of $ s $ by $ 1 $.",
+          "path": "Mathlib.Algebra.MvPolynomial.Basic"
+        },
+        {
+          "formal_name": "MvPolynomial.coeff_single_X_pow",
+          "informal_name": "Coefficient of $ X_s^n $ in Multivariate Polynomial is 1 if Equal or Both Zero, 0 Otherwise",
+          "kind": "theorem",
+          "type": "\u2200 {R : Type u} {\u03c3 : Type u_1} [inst : CommSemiring R] [inst_1 : DecidableEq \u03c3] (s s' : \u03c3) (n n' : \u2115),\n  MvPolynomial.coeff (Finsupp.single s' n') (MvPolynomial.X s ^ n) = if s = s' \u2227 n = n' \u2228 n = 0 \u2227 n' = 0 then 1 else 0",
+          "informal_description": "For a multivariate polynomial ring over a commutative semiring $ R $ with variables indexed by $ \\sigma $, the coefficient of the monomial $ X_{s'}^{n'} $ in the polynomial $ X_s^n $ is 1 if $ s = s' $ and $ n = n' $, or if both $ n $ and $ n' $ are zero; otherwise, it is 0.",
+          "path": "Mathlib.Algebra.MvPolynomial.Basic"
+        },
+        {
+          "formal_name": "MvPolynomial.finSuccEquiv_coeff_coeff",
+          "informal_name": "Coefficient correspondence in Fin(n+1) multivariate polynomial equivalence",
+          "kind": "theorem",
+          "type": "\u2200 {R : Type u} [inst : CommSemiring R] {n : \u2115} (m : Fin n \u2192\u2080 \u2115) (f : MvPolynomial (Fin (n + 1)) R) (i : \u2115),\n  MvPolynomial.coeff m (((MvPolynomial.finSuccEquiv R n) f).coeff i) = MvPolynomial.coeff (Finsupp.cons i m) f",
+          "informal_description": "For a multivariate polynomial $ f $ over $ \\text{Fin}(n+1) $, the coefficient of monomial $ m $ in the $ i $-th coefficient of its algebra equivalence to a univariate polynomial with coefficients in $ R[\\text{Fin}(n)] $ equals the coefficient of the extended monomial $ m $ with exponent $ i $ in $ f $. Formally, $ \\text{coeff}_m(\\text{coeff}_i(\\text{finSuccEquiv}(f))) = \\text{coeff}_{m \\oplus i}(f) $, where $ \\oplus $ denotes monomial extension.",
+          "path": "Mathlib.Algebra.MvPolynomial.Equiv"
+        },
+        {
+          "formal_name": "MvPolynomial.coeff_sumSMulX",
+          "informal_name": "Coefficient of x_i in Sum of Scalar Multiples is c_i",
+          "kind": "theorem",
+          "type": "\u2200 {n : Type u_1} {R : Type u_2} [inst : CommRing R] (c : n \u2192\u2080 R) (i : n),\n  MvPolynomial.coeff (Finsupp.single i 1) (MvPolynomial.sumSMulX c) = c i",
+          "informal_description": "For any index $i$ in $\\sigma$, the coefficient of the monomial $x_i$ in the polynomial $\\sum_{i \\in \\sigma} c_i x_i$ over the multivariate polynomial ring $R[\\sigma]$ is equal to $c_i$.",
+          "path": "Mathlib.RingTheory.MvPolynomial.IrreducibleQuadratic"
+        },
+        {
+          "formal_name": "MvPolynomial.coeff_X_pow",
+          "informal_name": "Coefficient of Variable Power in Multivariate Polynomials",
+          "kind": "theorem",
+          "type": "\u2200 {R : Type u} {\u03c3 : Type u_1} [inst : CommSemiring R] [inst_1 : DecidableEq \u03c3] (i : \u03c3) (m : \u03c3 \u2192\u2080 \u2115) (k : \u2115),\n  MvPolynomial.coeff m (MvPolynomial.X i ^ k) = if Finsupp.single i k = m then 1 else 0",
+          "informal_description": "For a multivariate polynomial ring $ R[\\sigma] $ over a commutative semiring $ R $ with variables indexed by $ \\sigma $, the coefficient of the monomial $ m $ in the polynomial $ X_i^k $ (where $ i \\in \\sigma $ and $ k \\in \\mathbb{N} $) is $ 1 $ if $ m $ equals the monomial $ X_i^k $, and $ 0 $ otherwise. Formally, $ \\text{coeff}_m(X_i^k) = \\begin{cases} 1 & \\text{if } m = X_i^k, \\\\ 0 & \\text{otherwise}. \\end{cases} $",
+          "path": "Mathlib.Algebra.MvPolynomial.Basic"
+        },
+        {
+          "formal_name": "MvPolynomial.coeff_mul_X'",
+          "informal_name": "Coefficient of m in p * X_s is Coefficient of m - e_s in p if s \u2208 m",
+          "kind": "theorem",
+          "type": "\u2200 {R : Type u} {\u03c3 : Type u_1} [inst : CommSemiring R] [inst_1 : DecidableEq \u03c3] (m : \u03c3 \u2192\u2080 \u2115) (s : \u03c3)\n  (p : MvPolynomial \u03c3 R),\n  MvPolynomial.coeff m (p * MvPolynomial.X s) =\n    if s \u2208 m.support then MvPolynomial.coeff (m - Finsupp.single s 1) p else 0",
+          "informal_description": "For any commutative semiring $ R $, type $ \\sigma $, monomial $ m : \\sigma \\to_0 \\mathbb{N} $, variable $ s \\in \\sigma $, and polynomial $ p \\in R[\\sigma] $, the coefficient of $ m $ in the product $ p \\cdot X_s $ is equal to the coefficient of the monomial $ m - \\text{single}(s, 1) $ in $ p $ if $ s $ is in the support of $ m $, and zero otherwise.",
+          "path": "Mathlib.Algebra.MvPolynomial.Basic"
+        }
+      ]
+    },
+    "isError": false
+  }
+}

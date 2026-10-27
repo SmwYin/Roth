@@ -1,0 +1,39 @@
+namespace CoeffCoeffNone155Replay
+open MvPolynomial
+variable {τ R : Type*} [CommSemiring R]
+open Lean Elab Term in
+elab "originalCoeffX155" : term => do
+  let n := Lean.mkPrivateNameCore `Roth.Separation `Roth.coeff_X_none_pow_mul_rename
+  return ← Lean.Meta.mkConstWithFreshMVarLevels n
+-- Entire sole caller, replacing the expanded multi-index bridge with mathlib's
+-- canonical coefficient normal form. The private helper is the original constant.
+theorem eq_sum_X_none_pow_mul_coeffNone (P : MvPolynomial (Option τ) R) {n : ℕ}
+    (hn : degreeOf none P ≤ n) :
+    P = ∑ ν ∈ Finset.range (n + 1), X none ^ ν * rename some (Roth.coeffNone P ν) := by
+  classical
+  ext e
+  rw [coeff_sum]
+  simp_rw [show ∀ ν : ℕ, (X none ^ ν * rename some (Roth.coeffNone P ν)).coeff e =
+      if e none = ν then (Roth.coeffNone P ν).coeff (Finsupp.some e) else 0 from
+    fun ν ↦ originalCoeffX155 ν (Roth.coeffNone P ν) e]
+  rw [Finset.sum_ite_eq]
+  split_ifs with he
+  · rw [Roth.coeffNone, optionEquivLeft_coeff_some_coeff_none]
+  · exact notMem_support_iff.1 fun h ↦
+      he (Finset.mem_range.2 (Nat.lt_succ_of_le ((monomial_le_degreeOf none h).trans hn)))
+#print axioms eq_sum_X_none_pow_mul_coeffNone
+theorem coeff_rename_mul_aeval (U : MvPolynomial τ R) (V : Polynomial R) (a : τ →₀ ℕ) (b : ℕ) :
+    (rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) R) V).coeff
+        (a.mapDomain some + Finsupp.single none b) = U.coeff a * V.coeff b := by
+  have h : (optionEquivLeft R τ).toAlgHom.comp (rename some) = Polynomial.CAlgHom := by
+    ext i
+    simp
+  have he : a.optionElim b = a.mapDomain some + Finsupp.single none b :=
+    (Finsupp.update_eq_add_single (Finsupp.embDomain_some_none a) b).trans
+      (congrArg (fun e ↦ e + Finsupp.single none b) (Finsupp.embDomain_eq_mapDomain .some a))
+  rw [← he, ← optionEquivLeft_coeff_coeff, map_mul,
+    (show optionEquivLeft R τ (rename some U) = Polynomial.C U from AlgHom.congr_fun h U),
+    ← Polynomial.aeval_algHom_apply, optionEquivLeft_X_none, Polynomial.aeval_X_left_eq_map,
+    Polynomial.coeff_C_mul, Polynomial.coeff_map, algebraMap_eq, mul_comm U, coeff_C_mul, mul_comm]
+#print axioms coeff_rename_mul_aeval
+end CoeffCoeffNone155Replay

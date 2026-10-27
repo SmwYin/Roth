@@ -1,0 +1,36 @@
+#check_failure Roth.coeff_coeffNone
+#check @MvPolynomial.optionEquivLeft_coeff_coeff
+#check @Finsupp.update_eq_add_single
+#check @Finsupp.embDomain_eq_mapDomain
+namespace CoeffCoeffNone155
+open MvPolynomial
+variable {τ R : Type*} [CommSemiring R]
+theorem canonical (P : MvPolynomial (Option τ) R) (ν : ℕ) (d : τ →₀ ℕ) :
+    ((optionEquivLeft R τ P).coeff ν).coeff d = P.coeff (d.optionElim ν) :=
+  optionEquivLeft_coeff_coeff R P ν d
+theorem embedding (P : MvPolynomial (Option τ) R) (ν : ℕ) (d : τ →₀ ℕ) :
+    ((optionEquivLeft R τ P).coeff ν).coeff d =
+      P.coeff (d.embDomain .some + Finsupp.single none ν) :=
+  (optionEquivLeft_coeff_coeff R P ν d).trans
+    (congrArg P.coeff (Finsupp.update_eq_add_single (Finsupp.embDomain_some_none d) ν))
+theorem mapped (P : MvPolynomial (Option τ) R) (ν : ℕ) (d : τ →₀ ℕ) :
+    ((optionEquivLeft R τ P).coeff ν).coeff d =
+      P.coeff (d.mapDomain some + Finsupp.single none ν) := by
+  rw [optionEquivLeft_coeff_coeff]
+  congr 1
+  exact (Finsupp.update_eq_add_single (Finsupp.embDomain_some_none d) ν).trans
+    (congrArg (fun e ↦ e + Finsupp.single none ν) (Finsupp.embDomain_eq_mapDomain .some d))
+theorem omission_guard :
+    ((optionEquivLeft ℕ Unit (X none)).coeff 1).coeff 0 ≠
+      (X none : MvPolynomial (Option Unit) ℕ).coeff (0 : Unit →₀ ℕ).mapDomain some := by
+  simp
+theorem wrong_power_guard :
+    ((optionEquivLeft ℕ Unit (X none)).coeff 0).coeff 0 ≠
+      (X none : MvPolynomial (Option Unit) ℕ).coeff (Finsupp.single none 1) := by
+  simp
+#print axioms canonical
+#print axioms embedding
+#print axioms mapped
+#print axioms omission_guard
+#print axioms wrong_power_guard
+end CoeffCoeffNone155

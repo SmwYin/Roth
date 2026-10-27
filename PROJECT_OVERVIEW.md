@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 154/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 155/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 154; remaining: 139.
-- Verdicts: 18 NO-composable-from-mathlib, 13 YES-add-as-is, 19 YES-but-generalise-first, 32 NO-mathlib-has-it, 45 BORDERLINE-needs-human, 27 SKIP.
+- Completed applicable assessments: 155; remaining: 138.
+- Verdicts: 18 NO-composable-from-mathlib, 13 YES-add-as-is, 19 YES-but-generalise-first, 33 NO-mathlib-has-it, 45 BORDERLINE-needs-human, 27 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -1701,6 +1701,17 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: 1 explicit source caller declarations, all in Separation.lean; 1 direct original value consumers. Exact separate lists retained. Entire Separation module proof bodies replay successfully with fresh target name.
 - Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.coeff_X_none_pow_mul_rename.md).
 
+### Completed: `Roth.coeff_coeffNone`
+
+- Type: `@Roth.coeff_coeffNone : ∀ {τ : Type u_1} {R : Type u_2} [inst : CommSemiring R] (P : MvPolynomial (Option τ) R) (ν : ℕ)
+  (d : τ →₀ ℕ), (Roth.coeffNone P ν).coeff d = P.coeff (Finsupp.mapDomain some d + Finsupp.single none ν)`
+- What: Extracting exponent d from the coefficient polynomial at distinguished exponent ν recovers the original coefficient at those combined exponents.
+- How: Unfold coeffNone, rewrite optionEquivLeft_coeff_coeff, normalize the Option multi-index pointwise.
+- Hypotheses: τ : Type u_1, R : Type u_2, CommSemiring R, P : MvPolynomial (Option τ) R; ν : ℕ; d : τ →₀ ℕ, No Fintype τ or DecidableEq τ
+- Project dependencies: Roth.coeffNone
+- Caller summary: explicit call sites: {'file': 'Roth/Separation.lean', 'line': 107, 'caller': 'Roth.eq_sum_X_none_pow_mul_coeffNone'}, {'file': 'Roth/Separation.lean', 'line': 129, 'caller': 'Roth.coeff_rename_mul_aeval'}; internal use count excluding declaring file: 0; same file count: 2; direct kernel value consumers: Roth.eq_sum_X_none_pow_mul_coeffNone, Roth.coeff_rename_mul_aeval; inline derivations: Private coeff_X_none_pow_mul_rename and degreeOf_coeffNone_le use canonical coefficient/support API, not duplicate full target.
+- Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/Roth.coeff_coeffNone.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -2035,6 +2046,8 @@ Completed `Roth.eq_mapDomain_some_add_single`: canonical: Finsupp.optionElim_som
 
 Completed `Roth.coeff_X_none_pow_mul_rename`: The product of a pure power of the distinguished variable and a polynomial in the remaining variables has coefficients selected by the distinguished exponent. The proof moves through optionEquivLeft, computes the univariate monomial coefficient, and returns to the original exponent coordinates. This is a private computational interface for the subsequent coefficient-family expansion; it is distinct from the full expansion and determinant theorems.
 
+Completed `Roth.coeff_coeffNone`: canonical: MvPolynomial.optionEquivLeft_coeff_coeff; canonical path: Mathlib/Algebra/MvPolynomial/Equiv.lean:610; canonical existing calls: 1; old form existing calls: 4; old form ingredients: MvPolynomial.optionEquivLeft_coeff_coeff, Finsupp.update_eq_add_single, Finsupp.embDomain_some_none, Finsupp.embDomain_eq_mapDomain; representation: optionElim versus mapDomain some + single none is propositional normalization, not definitional equality; abstract: Finsupp.comapDomain_apply at Mathlib/Data/Finsupp/Basic.lean:517
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -2344,6 +2357,8 @@ Completed `Roth.coeffNone`: New plain-function name for existing equivalence fol
 Completed `Roth.eq_mapDomain_some_add_single`: Finsupp.optionElim_some expresses reconstruction at Zero generality; expanded additive form requires bridge
 
 Completed `Roth.coeff_X_none_pow_mul_rename`: The helper has a distinct role in the separated polynomial proof as described in the structural review; no duplicate full construction is introduced.
+
+Completed `Roth.coeff_coeffNone`: The existing canonical coefficient correspondence is the same mathematical law under normalized exponent coordinates.
 
 ## Part 5: Generalization opportunities
 
@@ -2658,6 +2673,8 @@ Completed `Roth.eq_mapDomain_some_add_single`: status: STRICTLY NARROWER THAN ST
 
 Completed `Roth.coeff_X_none_pow_mul_rename`: No public generality claim under the private prefilter; preserve the existing definition and interface.
 
+Completed `Roth.coeff_coeffNone`: status: MAXIMALLY GENERAL for fixed parent interface; canonical surface: CommSemiring R; arbitrary variable type and independent universes; expanded representation: Zero A suffices for underlying coefficient slicing by Finsupp.comapDomain; prior152 actual slice_apply and direct_coeff bridge reused with freshly matching17source/pin hashes. This is a wider representation, not a mechanical weakening of the fixed coeffNone interface.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -2968,6 +2985,8 @@ Completed `Roth.coeffNone`: None required for the definition. Bundled coefficien
 Completed `Roth.eq_mapDomain_some_add_single`: No missing reconstruction law; optional naming question for additive Option normal form is not a blocking gap.
 
 Completed `Roth.coeff_X_none_pow_mul_rename`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
+
+Completed `Roth.coeff_coeffNone`: No missing coefficient law. An optional named Option-index bridge is a separate normal-form API question.
 
 ## Part 7: Junk / removable
 
@@ -3282,6 +3301,8 @@ Completed `Roth.eq_mapDomain_some_add_single`: Not dead: one explicit and direct
 
 Completed `Roth.coeff_X_none_pow_mul_rename`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
 
+Completed `Roth.coeff_coeffNone`: Useful: two explicit callers and two direct kernel-value consumers.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -3440,6 +3461,7 @@ Completed `Roth.coeff_X_none_pow_mul_rename`: Retain a live private proof interf
 | 152 | `Roth.coeffNone` | NO-composable-from-mathlib | [Report](.mathlib-quality/overview/mathlibable/Roth.coeffNone.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.coeffNone/root-acceptance.json) |
 | 153 | `Roth.eq_mapDomain_some_add_single` | NO-composable-from-mathlib | [Report](.mathlib-quality/overview/mathlibable/Roth.eq_mapDomain_some_add_single.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.eq_mapDomain_some_add_single/root-acceptance.json) |
 | 154 | `Roth.coeff_X_none_pow_mul_rename` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.coeff_X_none_pow_mul_rename.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.coeff_X_none_pow_mul_rename/root-acceptance.json) |
+| 155 | `Roth.coeff_coeffNone` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.coeff_coeffNone.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.coeff_coeffNone/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -3747,12 +3769,14 @@ Completed `Roth.eq_mapDomain_some_add_single` action: Delete project theorem aft
 
 Completed `Roth.coeff_X_none_pow_mul_rename` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
 
+Completed `Roth.coeff_coeffNone` action: Delete only after refactoring both callers: eqsum uses optionEquivLeft_coeff_some_coeff_none; coefficient product uses optionElim normalization then optionEquivLeft_coeff_coeff. Both full caller replays passed. Optional local exposition belongs in Roth/Separation.lean.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.coeff_coeffNone` next. Supporting identities receive their own applicable checks.
+   `Roth.eq_sum_X_none_pow_mul_coeffNone` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

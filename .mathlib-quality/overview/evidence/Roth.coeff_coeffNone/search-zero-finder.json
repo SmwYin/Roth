@@ -1,0 +1,67 @@
+{
+  "request": {
+    "query": "For a finitely supported function P with coefficients in a type having only zero, pulling P back along an injective coordinate insertion f has coefficient at d equal to P (f d)",
+    "num_results": 6
+  },
+  "response": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Finsupp.embDomain_apply_self\",\n      \"informal_name\": \"Evaluation of Embedded Finite Support Function at Image Point\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {\u03b1 : Type u_1} {\u03b2 : Type u_2} {M : Type u_4} [inst : Zero M] (f : \u03b1 \u21aa \u03b2) (v : \u03b1 \u2192\u2080 M) (a : \u03b1),\\n  (Finsupp.embDomain f v) (f a) = v a\",\n      \"informal_description\": \"For an injective function $ f : \\\\alpha \\\\to \\\\beta $ and a finite support function $ v : \\\\alpha \\\\to_0 M $, evaluating the embedded function $ \\\\text{embDomain}(f, v) $ at $ f(a) $ yields $ v(a) $. Formally, $ (\\\\text{embDomain}\\\\, f\\\\, v)(f(a)) = v(a) $ for all $ a : \\\\alpha $.\",\n      \"path\": \"Mathlib.Data.Finsupp.Defs\"\n    },\n    {\n      \"formal_name\": \"Finsupp.embDomain\",\n      \"informal_name\": \"Embedding of finite support functions via domain mapping\",\n      \"kind\": \"definition\",\n      \"type\": \"{\u03b1 : Type u_1} \u2192 {\u03b2 : Type u_2} \u2192 {M : Type u_4} \u2192 [inst : Zero M] \u2192 (\u03b1 \u21aa \u03b2) \u2192 (\u03b1 \u2192\u2080 M) \u2192 \u03b2 \u2192\u2080 M\",\n      \"informal_description\": \"Given an injective function $ f : \\\\alpha \\\\to \\\\beta $ and a finite support function $ v : \\\\alpha \\\\to_0 M $, this constructs a finite support function $ \\\\beta \\\\to_0 M $ whose support is the image of $ v $'s support under $ f $. For each $ a_2 \\\\in \\\\beta $, the value is $ v(a_1) $ where $ a_1 $ is the unique pre-image of $ a_2 $ under $ f $ (if it exists in $ v $'s support), otherwise zero. The injectivity of $ f $ ensures the image support remains finite and values are well-defined.\",\n      \"path\": \"Mathlib.Data.Finsupp.Defs\"\n    },\n    {\n      \"formal_name\": \"Finsupp.mapDomain_apply\",\n      \"informal_name\": \"Domain Mapping for Finite Support Functions\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {\u03b1 : Type u_1} {\u03b2 : Type u_2} {M : Type u_5} [inst : AddCommMonoid M] {f : \u03b1 \u2192 \u03b2},\\n  Function.Injective f \u2192 \u2200 (x : \u03b1 \u2192\u2080 M) (a : \u03b1), (Finsupp.mapDomain f x) (f a) = x a\",\n      \"informal_description\": \"Given a function $ f : \\\\alpha \\\\to \\\\beta $ and a finite support function $ x : \\\\alpha \\\\to_0 M $, this constructs a finite support function $ \\\\beta \\\\to_0 M $ by summing the values of $ x $ over all pre-images of each $ b \\\\in \\\\beta $ under $ f $. Specifically, for each $ b \\\\in \\\\beta $, the resulting function evaluates to $ \\\\sum_{a \\\\in f^{-1}(b)} x(a) $, with finite support inherited from $ x $.\",\n      \"path\": \"Mathlib.Data.Finsupp.Basic\"\n    },\n    {\n      \"formal_name\": \"DFinsupp.comapDomain_apply\",\n      \"informal_name\": \"ComapDomain Application Equality for Dependent Finite Support Functions\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {\u03b9 : Type u} {\u03b2 : \u03b9 \u2192 Type v} {\u03ba : Type u_1} [inst : (i : \u03b9) \u2192 Zero (\u03b2 i)] (h : \u03ba \u2192 \u03b9) (hh : Function.Injective h)\\n  (f : \u03a0\u2080 (i : \u03b9), \u03b2 i) (k : \u03ba), (DFinsupp.comapDomain h hh f) k = f (h k)\",\n      \"informal_description\": \"Let $ h : \\\\kappa \\\\to \\\\iota $ be an injective function, and let $ f $ be a dependent finite support function from $ \\\\iota $ to a family of types $ \\\\beta(i) $ (each equipped with a zero element). For any $ k \\\\in \\\\kappa $, the value of the function obtained by reindexing $ f $ via $ h $ at $ k $ is equal to $ f(h(k)) $. In symbols, $ (\\\\text{comapDomain}(h, f))(k) = f(h(k)) $.\",\n      \"path\": \"Mathlib.Data.DFinsupp.Defs\"\n    },\n    {\n      \"formal_name\": \"DFinsupp.comapDomain\",\n      \"informal_name\": \"Pullback of a dependent function with finite support along an injective function\",\n      \"kind\": \"definition\",\n      \"type\": \"{\u03b9 : Type u} \u2192\\n  {\u03b2 : \u03b9 \u2192 Type v} \u2192\\n    {\u03ba : Type u_1} \u2192\\n      [inst : (i : \u03b9) \u2192 Zero (\u03b2 i)] \u2192 (h : \u03ba \u2192 \u03b9) \u2192 Function.Injective h \u2192 (\u03a0\u2080 (i : \u03b9), \u03b2 i) \u2192 \u03a0\u2080 (k : \u03ba), \u03b2 (h k)\",\n      \"informal_description\": \"Let $\\\\iota$ and $\\\\kappa$ be types, and let $\\\\beta$ be a family of types indexed by $\\\\iota$, where each type $\\\\beta(i)$ has a zero element. Given an injective function $h : \\\\kappa \\\\to \\\\iota$ and a dependent function with finite support $f : \\\\Pi_0(i:\\\\iota), \\\\beta(i)$, `DFinsupp.comapDomain` constructs a new dependent function with finite support over the domain $\\\\kappa$. This new function is defined as the pre-composition $f \\\\circ h$, which maps an element $k \\\\in \\\\kappa$ to $f(h(k)) \\\\in \\\\beta(h(k))$. The injectivity of $h$ is required to ensure that the resulting function also has finite support.\",\n      \"path\": \"Mathlib.Data.DFinsupp.Defs\"\n    },\n    {\n      \"formal_name\": \"Finsupp.embDomain_apply\",\n      \"informal_name\": \"Embedding of Finite Support Functions via Domain Mapping\",\n      \"kind\": \"theorem\",\n      \"type\": \"\u2200 {\u03b1 : Type u_1} {\u03b2 : Type u_2} {M : Type u_4} [inst : Zero M] (f : \u03b1 \u21aa \u03b2) (v : \u03b1 \u2192\u2080 M) (b : \u03b2),\\n  (Finsupp.embDomain f v) b = if h : \u2203 a, f a = b then v h.choose else 0\",\n      \"informal_description\": \"Given an injective function $ f : \\\\alpha \\\\to \\\\beta $ and a finite support function $ v : \\\\alpha \\\\to_0 M $, the function $ \\\\mathrm{embDomain}\\\\, f\\\\, v $ is a finite support function $ \\\\beta \\\\to_0 M $ defined by $ (\\\\mathrm{embDomain}\\\\, f\\\\, v)(b) = v(a) $ if there exists $ a \\\\in \\\\alpha $ with $ f(a) = b $, and $ 0 $ otherwise. The injectivity of $ f $ ensures the support of $ \\\\mathrm{embDomain}\\\\, f\\\\, v $ is finite and values are well-defined.\",\n      \"path\": \"Mathlib.Data.Finsupp.Defs\"\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "items": [
+        {
+          "formal_name": "Finsupp.embDomain_apply_self",
+          "informal_name": "Evaluation of Embedded Finite Support Function at Image Point",
+          "kind": "theorem",
+          "type": "\u2200 {\u03b1 : Type u_1} {\u03b2 : Type u_2} {M : Type u_4} [inst : Zero M] (f : \u03b1 \u21aa \u03b2) (v : \u03b1 \u2192\u2080 M) (a : \u03b1),\n  (Finsupp.embDomain f v) (f a) = v a",
+          "informal_description": "For an injective function $ f : \\alpha \\to \\beta $ and a finite support function $ v : \\alpha \\to_0 M $, evaluating the embedded function $ \\text{embDomain}(f, v) $ at $ f(a) $ yields $ v(a) $. Formally, $ (\\text{embDomain}\\, f\\, v)(f(a)) = v(a) $ for all $ a : \\alpha $.",
+          "path": "Mathlib.Data.Finsupp.Defs"
+        },
+        {
+          "formal_name": "Finsupp.embDomain",
+          "informal_name": "Embedding of finite support functions via domain mapping",
+          "kind": "definition",
+          "type": "{\u03b1 : Type u_1} \u2192 {\u03b2 : Type u_2} \u2192 {M : Type u_4} \u2192 [inst : Zero M] \u2192 (\u03b1 \u21aa \u03b2) \u2192 (\u03b1 \u2192\u2080 M) \u2192 \u03b2 \u2192\u2080 M",
+          "informal_description": "Given an injective function $ f : \\alpha \\to \\beta $ and a finite support function $ v : \\alpha \\to_0 M $, this constructs a finite support function $ \\beta \\to_0 M $ whose support is the image of $ v $'s support under $ f $. For each $ a_2 \\in \\beta $, the value is $ v(a_1) $ where $ a_1 $ is the unique pre-image of $ a_2 $ under $ f $ (if it exists in $ v $'s support), otherwise zero. The injectivity of $ f $ ensures the image support remains finite and values are well-defined.",
+          "path": "Mathlib.Data.Finsupp.Defs"
+        },
+        {
+          "formal_name": "Finsupp.mapDomain_apply",
+          "informal_name": "Domain Mapping for Finite Support Functions",
+          "kind": "theorem",
+          "type": "\u2200 {\u03b1 : Type u_1} {\u03b2 : Type u_2} {M : Type u_5} [inst : AddCommMonoid M] {f : \u03b1 \u2192 \u03b2},\n  Function.Injective f \u2192 \u2200 (x : \u03b1 \u2192\u2080 M) (a : \u03b1), (Finsupp.mapDomain f x) (f a) = x a",
+          "informal_description": "Given a function $ f : \\alpha \\to \\beta $ and a finite support function $ x : \\alpha \\to_0 M $, this constructs a finite support function $ \\beta \\to_0 M $ by summing the values of $ x $ over all pre-images of each $ b \\in \\beta $ under $ f $. Specifically, for each $ b \\in \\beta $, the resulting function evaluates to $ \\sum_{a \\in f^{-1}(b)} x(a) $, with finite support inherited from $ x $.",
+          "path": "Mathlib.Data.Finsupp.Basic"
+        },
+        {
+          "formal_name": "DFinsupp.comapDomain_apply",
+          "informal_name": "ComapDomain Application Equality for Dependent Finite Support Functions",
+          "kind": "theorem",
+          "type": "\u2200 {\u03b9 : Type u} {\u03b2 : \u03b9 \u2192 Type v} {\u03ba : Type u_1} [inst : (i : \u03b9) \u2192 Zero (\u03b2 i)] (h : \u03ba \u2192 \u03b9) (hh : Function.Injective h)\n  (f : \u03a0\u2080 (i : \u03b9), \u03b2 i) (k : \u03ba), (DFinsupp.comapDomain h hh f) k = f (h k)",
+          "informal_description": "Let $ h : \\kappa \\to \\iota $ be an injective function, and let $ f $ be a dependent finite support function from $ \\iota $ to a family of types $ \\beta(i) $ (each equipped with a zero element). For any $ k \\in \\kappa $, the value of the function obtained by reindexing $ f $ via $ h $ at $ k $ is equal to $ f(h(k)) $. In symbols, $ (\\text{comapDomain}(h, f))(k) = f(h(k)) $.",
+          "path": "Mathlib.Data.DFinsupp.Defs"
+        },
+        {
+          "formal_name": "DFinsupp.comapDomain",
+          "informal_name": "Pullback of a dependent function with finite support along an injective function",
+          "kind": "definition",
+          "type": "{\u03b9 : Type u} \u2192\n  {\u03b2 : \u03b9 \u2192 Type v} \u2192\n    {\u03ba : Type u_1} \u2192\n      [inst : (i : \u03b9) \u2192 Zero (\u03b2 i)] \u2192 (h : \u03ba \u2192 \u03b9) \u2192 Function.Injective h \u2192 (\u03a0\u2080 (i : \u03b9), \u03b2 i) \u2192 \u03a0\u2080 (k : \u03ba), \u03b2 (h k)",
+          "informal_description": "Let $\\iota$ and $\\kappa$ be types, and let $\\beta$ be a family of types indexed by $\\iota$, where each type $\\beta(i)$ has a zero element. Given an injective function $h : \\kappa \\to \\iota$ and a dependent function with finite support $f : \\Pi_0(i:\\iota), \\beta(i)$, `DFinsupp.comapDomain` constructs a new dependent function with finite support over the domain $\\kappa$. This new function is defined as the pre-composition $f \\circ h$, which maps an element $k \\in \\kappa$ to $f(h(k)) \\in \\beta(h(k))$. The injectivity of $h$ is required to ensure that the resulting function also has finite support.",
+          "path": "Mathlib.Data.DFinsupp.Defs"
+        },
+        {
+          "formal_name": "Finsupp.embDomain_apply",
+          "informal_name": "Embedding of Finite Support Functions via Domain Mapping",
+          "kind": "theorem",
+          "type": "\u2200 {\u03b1 : Type u_1} {\u03b2 : Type u_2} {M : Type u_4} [inst : Zero M] (f : \u03b1 \u21aa \u03b2) (v : \u03b1 \u2192\u2080 M) (b : \u03b2),\n  (Finsupp.embDomain f v) b = if h : \u2203 a, f a = b then v h.choose else 0",
+          "informal_description": "Given an injective function $ f : \\alpha \\to \\beta $ and a finite support function $ v : \\alpha \\to_0 M $, the function $ \\mathrm{embDomain}\\, f\\, v $ is a finite support function $ \\beta \\to_0 M $ defined by $ (\\mathrm{embDomain}\\, f\\, v)(b) = v(a) $ if there exists $ a \\in \\alpha $ with $ f(a) = b $, and $ 0 $ otherwise. The injectivity of $ f $ ensures the support of $ \\mathrm{embDomain}\\, f\\, v $ is finite and values are well-defined.",
+          "path": "Mathlib.Data.Finsupp.Defs"
+        }
+      ]
+    },
+    "isError": false
+  }
+}

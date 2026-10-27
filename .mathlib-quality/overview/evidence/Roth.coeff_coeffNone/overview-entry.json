@@ -1,0 +1,61 @@
+{
+  "kind": "theorem",
+  "type": "@Roth.coeff_coeffNone : ∀ {τ : Type u_1} {R : Type u_2} [inst : CommSemiring R] (P : MvPolynomial (Option τ) R) (ν : ℕ)\n  (d : τ →₀ ℕ), (Roth.coeffNone P ν).coeff d = P.coeff (Finsupp.mapDomain some d + Finsupp.single none ν)",
+  "what": "Extracting exponent d from the coefficient polynomial at distinguished exponent ν recovers the original coefficient at those combined exponents.",
+  "how": "Unfold coeffNone, rewrite optionEquivLeft_coeff_coeff, normalize the Option multi-index pointwise.",
+  "hypotheses": [
+    "τ : Type u_1, R : Type u_2",
+    "CommSemiring R",
+    "P : MvPolynomial (Option τ) R; ν : ℕ; d : τ →₀ ℕ",
+    "No Fintype τ or DecidableEq τ"
+  ],
+  "project_dependencies": [
+    "Roth.coeffNone"
+  ],
+  "caller_summary": {
+    "explicit_call_sites": [
+      {
+        "file": "Roth/Separation.lean",
+        "line": 107,
+        "caller": "Roth.eq_sum_X_none_pow_mul_coeffNone"
+      },
+      {
+        "file": "Roth/Separation.lean",
+        "line": 129,
+        "caller": "Roth.coeff_rename_mul_aeval"
+      }
+    ],
+    "internal_use_count_excluding_declaring_file": 0,
+    "same_file_count": 2,
+    "direct_kernel_value_consumers": [
+      "Roth.eq_sum_X_none_pow_mul_coeffNone",
+      "Roth.coeff_rename_mul_aeval"
+    ],
+    "inline_derivations": "Private coeff_X_none_pow_mul_rename and degreeOf_coeffNone_le use canonical coefficient/support API, not duplicate full target."
+  },
+  "mathlib_api_audit": {
+    "canonical": "MvPolynomial.optionEquivLeft_coeff_coeff",
+    "canonical_path": "Mathlib/Algebra/MvPolynomial/Equiv.lean:610",
+    "canonical_existing_calls": 1,
+    "old_form_existing_calls": 4,
+    "old_form_ingredients": [
+      "MvPolynomial.optionEquivLeft_coeff_coeff",
+      "Finsupp.update_eq_add_single",
+      "Finsupp.embDomain_some_none",
+      "Finsupp.embDomain_eq_mapDomain"
+    ],
+    "representation": "optionElim versus mapDomain some + single none is propositional normalization, not definitional equality",
+    "abstract": "Finsupp.comapDomain_apply at Mathlib/Data/Finsupp/Basic.lean:517"
+  },
+  "moral_duplications": [
+    "The existing canonical coefficient correspondence is the same mathematical law under normalized exponent coordinates."
+  ],
+  "generalization": {
+    "status": "MAXIMALLY GENERAL for fixed parent interface",
+    "canonical_surface": "CommSemiring R; arbitrary variable type and independent universes",
+    "expanded_representation": "Zero A suffices for underlying coefficient slicing by Finsupp.comapDomain; prior152 actual slice_apply and direct_coeff bridge reused with freshly matching17source/pin hashes. This is a wider representation, not a mechanical weakening of the fixed coeffNone interface."
+  },
+  "missing_api": "No missing coefficient law. An optional named Option-index bridge is a separate normal-form API question.",
+  "junk": "Useful: two explicit callers and two direct kernel-value consumers.",
+  "action": "Delete only after refactoring both callers: eqsum uses optionEquivLeft_coeff_some_coeff_none; coefficient product uses optionElim normalization then optionEquivLeft_coeff_coeff. Both full caller replays passed. Optional local exposition belongs in Roth/Separation.lean."
+}

@@ -1,0 +1,42 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+namespace CoeffNonePullbackGuarded152
+#check_failure Roth.coeffNone
+open MvPolynomial
+universe u v
+variable {τ : Type u}
+
+theorem coordinateInjective (ν : ℕ) :
+    Function.Injective (fun d : τ →₀ ℕ ↦ d.optionElim ν) := by
+  intro a b h
+  ext j
+  simpa using congrArg (fun e : Option τ →₀ ℕ ↦ e (some j)) h
+
+noncomputable def slice {A : Type v} [Zero A]
+    (P : (Option τ →₀ ℕ) →₀ A) (ν : ℕ) : (τ →₀ ℕ) →₀ A :=
+  Finsupp.comapDomain (fun d ↦ d.optionElim ν) P (coordinateInjective ν).injOn
+
+theorem slice_apply {A : Type v} [Zero A]
+    (P : (Option τ →₀ ℕ) →₀ A) (ν : ℕ) (d : τ →₀ ℕ) :
+    slice P ν d = P (d.optionElim ν) := rfl
+
+theorem direct_coeff {R : Type v} [CommSemiring R]
+    (P : MvPolynomial (Option τ) R) (ν : ℕ) :
+    ((optionEquivLeft R τ P).coeff ν).coeff = slice P.coeff ν := by
+  ext d
+  exact optionEquivLeft_coeff_coeff R P ν d
+
+#check @Finsupp.comapDomain
+#check @MvPolynomial.optionEquivLeft_coeff_coeff
+#print axioms coordinateInjective
+#print axioms slice
+#print axioms slice_apply
+#print axioms direct_coeff
+end CoeffNonePullbackGuarded152
