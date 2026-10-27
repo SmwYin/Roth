@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-27
 
-- Declarations completed: **177/293**
-- Next declaration: **#178 `Roth.exists_det_eq_mul`** (Roth/Separation.lean:542)
+- Declarations completed: **178/293**
+- Next declaration: **#179 `Roth.RSet`** (Roth/Theta.lean:56)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -196,10 +196,10 @@ Last regenerated: 2026-10-27
 | 175 | `Roth.exists_int_polynomial_of_primitive_factor_aux` | Roth/Separation.lean:466 | SKIP | [report](mathlibable/Roth.exists_int_polynomial_of_primitive_factor_aux.md) |
 | 176 | `Roth.exists_int_factors` | Roth/Separation.lean:485 | BORDERLINE-needs-human | [report](mathlibable/Roth.exists_int_factors.md) |
 | 177 | `Roth.exists_rat_factors_det_hasseDeriv_aux` | Roth/Separation.lean:510 | SKIP | [report](mathlibable/Roth.exists_rat_factors_det_hasseDeriv_aux.md) |
+| 178 | `Roth.exists_det_eq_mul` | Roth/Separation.lean:542 | BORDERLINE-needs-human | [report](mathlibable/Roth.exists_det_eq_mul.md) |
 
 ## Remaining declarations (in processing order)
 
-- #178 `Roth.exists_det_eq_mul` (Roth/Separation.lean:542, public theorem)
 - #179 `Roth.RSet` (Roth/Theta.lean:56, public def)
 - #180 `Roth.indexSet` (Roth/Theta.lean:62, public def)
 - #181 `Roth.Θ` (Roth/Theta.lean:68, public def)
