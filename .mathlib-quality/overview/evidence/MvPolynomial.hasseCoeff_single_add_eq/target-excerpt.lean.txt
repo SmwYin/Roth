@@ -1,0 +1,9 @@
+private lemma hasseCoeff_single_add_eq {i : σ} {n : ℕ} {k' : σ →₀ ℕ} (hi : k' i = 0) (d : σ →₀ ℕ) :
+    hasseCoeff d (Finsupp.single i n + k') = n.choose (d i) * hasseCoeff (d.erase i) k' := by
+  classical
+  rw [hasseCoeff, ← Finsupp.mul_prod_erase' d i _ (by simp), hasseCoeff]
+  congr 1
+  · simp [hi]
+  · refine Finsupp.prod_congr fun j hj ↦ ?_
+    rw [Finsupp.support_erase] at hj
+    simp [Finsupp.single_eq_of_ne (Finset.ne_of_mem_erase hj)]

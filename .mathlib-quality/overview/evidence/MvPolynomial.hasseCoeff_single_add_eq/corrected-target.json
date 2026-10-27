@@ -1,0 +1,44 @@
+{
+  "file": "Roth/Taylor.lean",
+  "line": 82,
+  "name": "MvPolynomial.hasseCoeff_single_add_eq",
+  "short": "hasseCoeff_single_add_eq",
+  "kind": "lemma",
+  "visibility": "private",
+  "end_line": 90,
+  "source": "private lemma hasseCoeff_single_add_eq {i : σ} {n : ℕ} {k' : σ →₀ ℕ} (hi : k' i = 0) (d : σ →₀ ℕ) :\n    hasseCoeff d (Finsupp.single i n + k') = n.choose (d i) * hasseCoeff (d.erase i) k' := by\n  classical\n  rw [hasseCoeff, ← Finsupp.mul_prod_erase' d i _ (by simp), hasseCoeff]\n  congr 1\n  · simp [hi]\n  · refine Finsupp.prod_congr fun j hj ↦ ?_\n    rw [Finsupp.support_erase] at hj\n    simp [Finsupp.single_eq_of_ne (Finset.ne_of_mem_erase hj)]",
+  "signature": "private lemma hasseCoeff_single_add_eq {i : σ} {n : ℕ} {k' : σ →₀ ℕ} (hi : k' i = 0) (d : σ →₀ ℕ) :\n    hasseCoeff d (Finsupp.single i n + k') = n.choose (d i) * hasseCoeff (d.erase i) k'",
+  "body": "by\n  classical\n  rw [hasseCoeff, ← Finsupp.mul_prod_erase' d i _ (by simp), hasseCoeff]\n  congr 1\n  · simp [hi]\n  · refine Finsupp.prod_congr fun j hj ↦ ?_\n    rw [Finsupp.support_erase] at hj\n    simp [Finsupp.single_eq_of_ne (Finset.ne_of_mem_erase hj)]",
+  "proof_lines": 8,
+  "sha256": "939db0bdc4a70fa82c6bf2a7bdefbd014460401cff46fa1aa8caef57014bb595",
+  "what": "Splits a multivariate binomial factor into one coordinate's binomial coefficient and the factor on the erased multi-index.",
+  "how": "Uses Finsupp.mul_prod_erase' to extract the selected coordinate; all other coordinates are unchanged because the added one-coordinate term vanishes there.",
+  "hypotheses": "Natural multi-indices with the residual exponent zero at the selected coordinate; no coefficient-semiring assumption.",
+  "uses_from_project": [
+    "MvPolynomial.hasseCoeff"
+  ],
+  "used_by_in_file": [
+    "MvPolynomial.coeff_taylor_monomial_single_add_aux"
+  ],
+  "project_callers": [
+    {
+      "name": "MvPolynomial.coeff_taylor_monomial_single_add_aux",
+      "file": "Roth/Taylor.lean",
+      "line": 101
+    }
+  ],
+  "type_context": "{σ : Type*}",
+  "type_provenance": "Exact written signature with section binders made explicit from source; not claimed as a fresh #check output. Minimal hasseCoeff #check succeeded; full Meta inspector timed out.",
+  "reference_provenance": "Manually disambiguated source-level direct project references in declaration bodies; callers include signature and body occurrences. Includes explicit references only, not an exhaustive kernel/simp dependency closure.",
+  "notes": [
+    "No set_option, sorry, TODO, or proof over 30 lines in declaration."
+  ],
+  "assignment_offset": 188,
+  "project_body_refs": [
+    "MvPolynomial.hasseCoeff"
+  ],
+  "project_type_refs": [
+    "MvPolynomial.hasseCoeff"
+  ],
+  "section_context": "{σ : Type*}"
+}
