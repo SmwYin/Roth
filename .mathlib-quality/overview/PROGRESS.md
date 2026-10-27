@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-26
 
-- Declarations completed: **145/293**
-- Next declaration: **#146 `Roth.index_neg`** (Roth/Index.lean:190)
+- Declarations completed: **146/293**
+- Next declaration: **#147 `Roth.index_C_mul`** (Roth/Index.lean:195)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -164,10 +164,10 @@ Last regenerated: 2026-10-26
 | 143 | `Roth.index_eq_weightedOrder_div` | Roth/Index.lean:143 | NO-composable-from-mathlib | [report](mathlibable/Roth.index_eq_weightedOrder_div.md) |
 | 144 | `Roth.index_mul` | Roth/Index.lean:162 | NO-composable-from-mathlib | [report](mathlibable/Roth.index_mul.md) |
 | 145 | `Roth.index_prod` | Roth/Index.lean:175 | NO-composable-from-mathlib | [report](mathlibable/Roth.index_prod.md) |
+| 146 | `Roth.index_neg` | Roth/Index.lean:190 | SKIP | [report](mathlibable/Roth.index_neg.md) |
 
 ## Remaining declarations (in processing order)
 
-- #146 `Roth.index_neg` (Roth/Index.lean:190, public theorem)
 - #147 `Roth.index_C_mul` (Roth/Index.lean:195, public theorem)
 - #148 `Roth.index_mul_left_weights` (Roth/Index.lean:200, public theorem)
 - #149 `Roth.index_rename` (Roth/Index.lean:212, public theorem)
