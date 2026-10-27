@@ -1,0 +1,47 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+import Mathlib.Algebra.Polynomial.CancelLeads
+import Mathlib.Algebra.MvPolynomial.PDeriv
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+import Mathlib.Algebra.MvPolynomial.Equiv
+import Mathlib.Analysis.Normed.Unbundled.RingSeminorm
+import Mathlib.LinearAlgebra.Matrix.AbsoluteValue
+import Mathlib.Data.Nat.Choose.Bounds
+#check_failure Roth.abs_coeff_hasseDeriv_le
+#check_failure MvPolynomial.hasseDeriv
+namespace AbsHasseRaw
+variable {σ R : Type*} [CommRing R]
+theorem scalarBound (p : AddGroupSeminorm R) (n : ℕ) (a : R) :
+    p ((n : R) * a) ≤ (n : ℝ) * p a := by
+  induction n with
+  | zero => simp
+  | succ n ih =>
+    simpa [Nat.cast_add, Nat.cast_one, add_mul, one_mul] using
+      (map_add_le_add p ((n : R) * a) a).trans (add_le_add ih le_rfl)
+theorem binomialBound [Fintype σ] (p : AddGroupSeminorm R)
+    (d k : σ →₀ ℕ) (r : σ → ℕ) (hk : ∀ j, k j ≤ r j)
+    (a : R) {B : ℝ} (ha : p a ≤ B) :
+    p (((∏ j, (k j).choose (d j) : ℕ) : R) * a) ≤ 2 ^ (∑ j, r j) * B := by
+  have hc : (∏ j, (k j).choose (d j) : ℕ) ≤ 2 ^ (∑ j, r j) := by
+    rw [← Finset.prod_pow_eq_pow_sum]
+    exact Finset.prod_le_prod fun j _ ↦
+      (Nat.choose_le_two_pow _ _).trans (Nat.pow_le_pow_right two_pos (hk j))
+  have hc' : ((∏ j, (k j).choose (d j) : ℕ) : ℝ) ≤ 2 ^ (∑ j, r j) := by
+    exact_mod_cast hc
+  exact (scalarBound p _ _).trans
+    (mul_le_mul hc' ha (apply_nonneg p a) (by positivity))
+#check @Polynomial.hasseDeriv_coeff
+#check @Nat.choose_le_two_pow
+#check @Finset.prod_le_prod
+#check @MvPolynomial.monomial_le_degreeOf
+#check @norm_nsmul_le
+#print axioms scalarBound
+#print axioms binomialBound
+end AbsHasseRaw

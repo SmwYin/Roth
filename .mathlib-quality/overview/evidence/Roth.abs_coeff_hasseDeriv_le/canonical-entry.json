@@ -1,0 +1,55 @@
+{
+  "file": "Roth/CoeffNorm.lean",
+  "line": 134,
+  "name": "Roth.abs_coeff_hasseDeriv_le",
+  "short": "abs_coeff_hasseDeriv_le",
+  "kind": "theorem",
+  "visibility": "public",
+  "end_line": 143,
+  "source": "theorem abs_coeff_hasseDeriv_le [Fintype σ] (d : σ →₀ ℕ) (P : MvPolynomial σ ℤ) {r : σ → ℕ}\n    (hP : ∀ j, degreeOf j P ≤ r j) {B : ℝ} (hB : ∀ e, |((P.coeff e : ℤ) : ℝ)| ≤ B) (e : σ →₀ ℕ) :\n    |(((hasseDeriv d P).coeff e : ℤ) : ℝ)| ≤ 2 ^ (∑ j, r j) * B := by\n  rw [coeff_hasseDeriv, Int.cast_mul, Int.cast_natCast, abs_mul, Nat.abs_cast]\n  by_cases he : e + d ∈ P.support\n  · have hc : (hasseCoeff d (e + d) : ℝ) ≤ 2 ^ (∑ j, r j) := by\n      exact_mod_cast hasseCoeff_le_two_pow fun j ↦ (monomial_le_degreeOf j he).trans (hP j)\n    exact mul_le_mul hc (hB _) (abs_nonneg _) (by positivity)\n  · rw [notMem_support_iff.1 he]\n    simpa using mul_nonneg (by positivity : (0 : ℝ) ≤ 2 ^ (∑ j, r j)) ((abs_nonneg _).trans (hB e))",
+  "signature": "theorem abs_coeff_hasseDeriv_le [Fintype σ] (d : σ →₀ ℕ) (P : MvPolynomial σ ℤ) {r : σ → ℕ}\n    (hP : ∀ j, degreeOf j P ≤ r j) {B : ℝ} (hB : ∀ e, |((P.coeff e : ℤ) : ℝ)| ≤ B) (e : σ →₀ ℕ) :\n    |(((hasseDeriv d P).coeff e : ℤ) : ℝ)| ≤ 2 ^ (∑ j, r j) * B",
+  "body": "by\n  rw [coeff_hasseDeriv, Int.cast_mul, Int.cast_natCast, abs_mul, Nat.abs_cast]\n  by_cases he : e + d ∈ P.support\n  · have hc : (hasseCoeff d (e + d) : ℝ) ≤ 2 ^ (∑ j, r j) := by\n      exact_mod_cast hasseCoeff_le_two_pow fun j ↦ (monomial_le_degreeOf j he).trans (hP j)\n    exact mul_le_mul hc (hB _) (abs_nonneg _) (by positivity)\n  · rw [notMem_support_iff.1 he]\n    simpa using mul_nonneg (by positivity : (0 : ℝ) ≤ 2 ^ (∑ j, r j)) ((abs_nonneg _).trans (hB e))",
+  "proof_lines": 8,
+  "sha256": "a8787379ea84f4e07616886fe969f878cc47b03e2ad3b962937ebfb6b1b77987",
+  "source_body_project_refs": [
+    "MvPolynomial.coeff_hasseDeriv",
+    "MvPolynomial.hasseCoeff",
+    "MvPolynomial.hasseCoeff_le_two_pow"
+  ],
+  "source_type_project_refs": [
+    "MvPolynomial.hasseDeriv"
+  ],
+  "what": "Every coefficient of a Hasse derivative is bounded by 2^(sum r) times an original uniform coefficient bound.",
+  "how": "Uses coeff_hasseDeriv and hasseCoeff_le_two_pow on a supported input monomial; unsupported coefficients vanish.",
+  "hypotheses": "A finite variable enumeration, bounds r on each partial degree, and a uniform original coefficient bound B.",
+  "source_used_by_project": [
+    "Roth.abs_eval_iterated_hasseDeriv_lt_aux",
+    "Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux"
+  ],
+  "source_used_by_file": [],
+  "section_binders": "{σ : Type*}",
+  "type_provenance": "Exact written signature plus manually identified captured section binders. Root cached full build succeeds; global opaque/type inspector timed out, so no kernel dump is claimed.",
+  "notes": "No sorry, TODO, or set_option in this declaration.",
+  "assignment_offset": 254,
+  "project_body_refs": [
+    "MvPolynomial.coeff_hasseDeriv",
+    "MvPolynomial.hasseCoeff",
+    "MvPolynomial.hasseCoeff_le_two_pow"
+  ],
+  "project_type_refs": [
+    "MvPolynomial.hasseDeriv"
+  ],
+  "project_callers": [
+    {
+      "name": "Roth.abs_eval_iterated_hasseDeriv_lt_aux",
+      "file": "Roth/MainLemma.lean",
+      "line": 459
+    },
+    {
+      "name": "Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux",
+      "file": "Roth/MainLemma.lean",
+      "line": 497
+    }
+  ],
+  "section_context": "{σ : Type*}"
+}

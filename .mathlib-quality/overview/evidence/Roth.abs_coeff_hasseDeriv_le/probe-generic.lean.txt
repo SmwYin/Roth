@@ -1,0 +1,37 @@
+namespace MvPolynomial.AbsHasseGeneric
+open MvPolynomial
+variable {σ R : Type*} [CommRing R]
+theorem scalarBound (p : AddGroupSeminorm R) (n : ℕ) (a : R) :
+    p ((n : R) * a) ≤ (n : ℝ) * p a := by
+  induction n with
+  | zero => simp
+  | succ n ih =>
+    simpa [Nat.cast_add, Nat.cast_one, add_mul, one_mul] using
+      (map_add_le_add p ((n : R) * a) a).trans (add_le_add ih le_rfl)
+theorem bound [Fintype σ] (p : AddGroupSeminorm R)
+    (d : σ →₀ ℕ) (P : MvPolynomial σ R) {r : σ → ℕ}
+    (hP : ∀ j, degreeOf j P ≤ r j) {B : ℝ} (hB : ∀ e, p (P.coeff e) ≤ B)
+    (e : σ →₀ ℕ) : p ((hasseDeriv d P).coeff e) ≤ 2 ^ (∑ j, r j) * B := by
+  rw [coeff_hasseDeriv]
+  by_cases he : e + d ∈ P.support
+  · have hc : (hasseCoeff d (e + d) : ℝ) ≤ 2 ^ (∑ j, r j) := by
+      exact_mod_cast hasseCoeff_le_two_pow fun j ↦
+        (monomial_le_degreeOf j he).trans (hP j)
+    exact (scalarBound p _ _).trans
+      (mul_le_mul hc (hB _) (apply_nonneg p _) (by positivity))
+  · rw [notMem_support_iff.1 he, mul_zero, map_zero]
+    exact mul_nonneg (by positivity) ((apply_nonneg p _).trans (hB e))
+noncomputable def intSize : AddGroupSeminorm ℤ where
+  toFun z := |(z : ℝ)|
+  map_zero' := by simp
+  add_le' a b := by simpa using abs_add_le (a : ℝ) (b : ℝ)
+  neg' a := by simp
+theorem specialization [Fintype σ] (d : σ →₀ ℕ) (P : MvPolynomial σ ℤ)
+    {r : σ → ℕ} (hP : ∀ j, degreeOf j P ≤ r j) {B : ℝ}
+    (hB : ∀ e, |((P.coeff e : ℤ) : ℝ)| ≤ B) (e : σ →₀ ℕ) :
+    |(((hasseDeriv d P).coeff e : ℤ) : ℝ)| ≤ 2 ^ (∑ j, r j) * B :=
+  bound intSize d P hP hB e
+#print axioms scalarBound
+#print axioms bound
+#print axioms specialization
+end MvPolynomial.AbsHasseGeneric

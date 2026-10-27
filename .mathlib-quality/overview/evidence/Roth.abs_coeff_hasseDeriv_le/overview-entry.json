@@ -1,0 +1,19 @@
+{
+  "declaration": "Roth.abs_coeff_hasseDeriv_le",
+  "kind": "theorem",
+  "type": "∀ {σ : Type u_1} [Fintype σ] (d : σ →₀ ℕ) (P : MvPolynomial σ ℤ) {r : σ → ℕ}, (∀ j, MvPolynomial.degreeOf j P ≤ r j) → ∀ {B : ℝ}, (∀ e, |((P.coeff e : ℤ) : ℝ)| ≤ B) → ∀ e, |(((MvPolynomial.hasseDeriv d P).coeff e : ℤ) : ℝ)| ≤ 2 ^ (∑ j, r j) * B",
+  "what": "Every coefficient of a multivariate Hasse derivative is bounded by 2^(sum coordinate degree bounds) times an input coefficient bound.",
+  "how": "Coefficient extraction has one preimage e+d; split membership in input support, bound binomial product, multiply coefficient bound, handle zero coefficients.",
+  "hypotheses": "Arbitrary finite variable type; integer polynomial; coordinate degree bounds r; real coefficient bound B; no B≥0 assumption because hB implies it.",
+  "project_dependencies": [
+    "MvPolynomial.coeff_hasseDeriv",
+    "MvPolynomial.hasseCoeff_le_two_pow"
+  ],
+  "caller_summary": "Three explicit applications in two private MainLemma declarations at lines468 and509; full replay and exact canonical293 unique proof-value audit.",
+  "mathlib_api_audit": "Polynomial.hasseDeriv_coeff and norm_nsmul_le cover separate ingredients; no searched multivariate Hasse coefficient-size bound. Isolated raw binomial bound and actual generic operator bound compiled.",
+  "moral_duplications": "Same finite binomial factor appears in normOne_hasseDeriv_le; that is an L1 estimate and cannot retain the coefficient B without an unwanted support-cardinality factor.",
+  "generalization": "Verified arbitrary CommRing R with AddGroupSeminorm R, followed by exact integer absolute-value specialization.",
+  "missing_api": "Quantitative coefficient bounds for multivariate Hasse derivatives, atop the proposed multivariate Hasse algebraic API.",
+  "junk": "Not junk: three explicit uses support main Lemma9, including iterated derivatives and diagonal remainder bounds.",
+  "action": "YES-but-generalise-first MODERN-IDIOM: add additive-seminorm version in proposed Mathlib/Analysis/Polynomial/MvHasseDeriv.lean, after upstream algebraic Hasse API; preserve local integer corollary."
+}
