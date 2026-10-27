@@ -1,0 +1,111 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\n#check_failure Roth.weight_eq_finsuppWeight_div\nnamespace WeightDiv142\ntheorem mapWeight {σ R M N : Type*} [Semiring R] [AddCommMonoid M] [AddCommMonoid N]\n    [Module R M] [Module R N] (f : M →ₗ[R] N) (w : σ → M) (d : σ →₀ R) :\n    f (Finsupp.weight w d) = Finsupp.weight (f ∘ w) d :=\n  Finsupp.apply_linearCombination R f w d\nvariable {σ K : Type*} [Semifield K]\ntheorem castWeight (w : σ → ℕ) (d : σ →₀ ℕ) :\n    (Finsupp.weight w d : K) = Finsupp.weight (fun i ↦ (w i : K)) d := by\n  exact Finsupp.apply_linearCombination ℕ (Nat.castAddMonoidHom K).toNatLinearMap w d\ntheorem scaleWeight (w : σ → K) (c : K) (d : σ →₀ ℕ) :\n    c * Finsupp.weight w d = Finsupp.weight (fun i ↦ c * w i) d := by\n  exact Finsupp.apply_linearCombination ℕ\n    ((DistribSMul.toLinearMap ℕ K c) : K →ₗ[ℕ] K) w d\nvariable [CharZero K] [Fintype σ]\ntheorem clear (r : σ → ℕ) (hr : ∀ i, r i ≠ 0) (d : σ →₀ ℕ) :\n    Finsupp.weight (fun i ↦ (r i : K)⁻¹) d =\n      (Finsupp.weight (fun j ↦ (∏ i, r i) / r j) d : K) / ∏ i, (r i : K) := by\n  have hD : (∏ i, (r i : K)) ≠ 0 := by\n    exact_mod_cast (Finset.prod_ne_zero_iff.mpr (fun i _ ↦ hr i))\n  rw [castWeight, div_eq_inv_mul, scaleWeight]\n  congr 2\n  funext j\n  rw [Nat.cast_div_charZero (Finset.dvd_prod_of_mem r (Finset.mem_univ j)), Nat.cast_prod,\n    div_eq_mul_inv, ← mul_assoc, inv_mul_cancel₀ hD, one_mul]\nend WeightDiv142\n\n#check @Finsupp.apply_linearCombination\n#check @DistribSMul.toLinearMap\n#print axioms WeightDiv142.castWeight\n#print axioms WeightDiv142.scaleWeight\n#print axioms WeightDiv142.clear\n\n#print axioms WeightDiv142.mapWeight\n\nnamespace WeightDiv142Extra\nvariable {σ K : Type*} [Semifield K] [CharZero K]\ntheorem supportClear (r : σ → ℕ) (d : σ →₀ ℕ) (D : ℕ) (hD : D ≠ 0)\n    (hdiv : ∀ j ∈ d.support, r j ∣ D) :\n    Finsupp.weight (fun j ↦ (r j : K)⁻¹) d =\n      (Finsupp.weight (fun j ↦ D / r j) d : K) / D := by\n  rw [WeightDiv142.castWeight, div_eq_inv_mul, WeightDiv142.scaleWeight]\n  simp only [Finsupp.weight_apply, Finsupp.sum]\n  apply Finset.sum_congr rfl\n  intro j hj\n  rw [Nat.cast_div_charZero (hdiv j hj), div_eq_mul_inv, ← mul_assoc,\n    inv_mul_cancel₀ (by exact_mod_cast hD), one_mul]\ntheorem mixedZero :\n    Finsupp.weight (fun j : Bool ↦ ((if j then 1 else 0 : ℕ) : ℝ)⁻¹)\n        (Finsupp.single true 1) ≠\n      (Finsupp.weight (fun j : Bool ↦ (∏ i : Bool, (if i then 1 else 0 : ℕ)) /\n        (if j then 1 else 0)) (Finsupp.single true 1) : ℝ) /\n        (∏ i : Bool, ((if i then 1 else 0 : ℕ) : ℝ)) := by\n  simp [Finsupp.weight_single]\nomit [CharZero K] in\ntheorem zeroIndex (r : σ → ℕ) :\n    Finsupp.weight (fun j ↦ (r j : K)⁻¹) (0 : σ →₀ ℕ) =\n      (Finsupp.weight (fun j ↦ 0 / r j) (0 : σ →₀ ℕ) : K) / 0 := by simp\nend WeightDiv142Extra\n\n#print axioms WeightDiv142Extra.supportClear\n#print axioms WeightDiv142Extra.mixedZero\n#print axioms WeightDiv142Extra.zeroIndex\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.weight_eq_finsuppWeight_div`\",\n      \"line\": 8,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finsupp.apply_linearCombination : ∀ {α : Type u_1} {M : Type u_2} (R : Type u_3) [inst : Semiring R]\\n  [inst_1 : AddCommMonoid M] [inst_2 : Module R M] {M' : Type u_4} [inst_3 : AddCommMonoid M'] [inst_4 : Module R M']\\n  (f : M →ₗ[R] M') (v : α → M) (l : α →₀ R),\\n  f ((Finsupp.linearCombination R v) l) = (Finsupp.linearCombination R (⇑f ∘ v)) l\",\n      \"line\": 35,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"DistribSMul.toLinearMap : (R : Type u_1) →\\n  {S : Type u_2} →\\n    (M : Type u_3) →\\n      [inst : Semiring R] →\\n        [inst_1 : AddCommMonoid M] →\\n          [inst_2 : Module R M] → [inst_3 : DistribSMul S M] → [SMulCommClass S R M] → S → M →ₗ[R] M\",\n      \"line\": 36,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'WeightDiv142.castWeight' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 37,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'WeightDiv142.scaleWeight' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 38,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'WeightDiv142.clear' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 39,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'WeightDiv142.mapWeight' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 41,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'WeightDiv142Extra.supportClear' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 68,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'WeightDiv142Extra.mixedZero' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 69,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'WeightDiv142Extra.zeroIndex' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 70,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.weight_eq_finsuppWeight_div`",
+          "line": 8,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finsupp.apply_linearCombination : ∀ {α : Type u_1} {M : Type u_2} (R : Type u_3) [inst : Semiring R]\n  [inst_1 : AddCommMonoid M] [inst_2 : Module R M] {M' : Type u_4} [inst_3 : AddCommMonoid M'] [inst_4 : Module R M']\n  (f : M →ₗ[R] M') (v : α → M) (l : α →₀ R),\n  f ((Finsupp.linearCombination R v) l) = (Finsupp.linearCombination R (⇑f ∘ v)) l",
+          "line": 35,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "DistribSMul.toLinearMap : (R : Type u_1) →\n  {S : Type u_2} →\n    (M : Type u_3) →\n      [inst : Semiring R] →\n        [inst_1 : AddCommMonoid M] →\n          [inst_2 : Module R M] → [inst_3 : DistribSMul S M] → [SMulCommClass S R M] → S → M →ₗ[R] M",
+          "line": 36,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'WeightDiv142.castWeight' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 37,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'WeightDiv142.scaleWeight' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 38,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'WeightDiv142.clear' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 39,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'WeightDiv142.mapWeight' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 41,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'WeightDiv142Extra.supportClear' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 68,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'WeightDiv142Extra.mixedZero' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 69,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'WeightDiv142Extra.zeroIndex' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 70,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 1117
+}

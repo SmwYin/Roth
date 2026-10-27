@@ -1,0 +1,18 @@
+{
+  "declaration": "Roth.weight_eq_finsuppWeight_div",
+  "kind": "theorem",
+  "type": "∀ {σ : Type u} [Fintype σ] {r : σ → ℕ}, (∀ j, 0 < r j) → ∀ d : σ →₀ ℕ, Roth.weight r d = (Finsupp.weight (fun j ↦ (∏ i, r i) / r j) d : ℝ) / ↑(∏ i, r i)",
+  "what": "Clear reciprocal natural parameter denominators using D=∏r.",
+  "how": "Expand weights, cast exact natural quotients, distribute division, cancel nonzero D.",
+  "hypotheses": "Fintype σ; globally positive natural r; arbitrary finitely supported natural d.",
+  "project_dependencies": [
+    "Roth.weight"
+  ],
+  "caller_summary": "One explicit caller Roth.index_eq_weightedOrder_div, two body rewrites at Index152/155; one audited direct kernel consumer.",
+  "mathlib_api_audit": "Finsupp.apply_linearCombination R f w d is existing generic naturality; independently checked cast/scaling specializations and actual denominator bridge.",
+  "moral_duplications": "Generic map/linearity law already exists; no claim that denominator arithmetic is definitional or ≤3 calls.",
+  "generalization": "Arbitrary Semifield K; nonzero cast common denominator and divisibility only on d.support; no ambient Fintype or CharZero needed in strongest accepted form. Generic parent law has arbitrary semiring coefficients and module targets.",
+  "missing_api": "No missing generic naturality law identified; supportClear is new normalization glue, not an existing mathlib replacement.",
+  "junk": "Active local implementation bridge; not dead code.",
+  "action": "NO-mathlib-has-it by Mode B parent re-aim. Keep documented project bridge in Roth/Index.lean or migrate parent and replace both sole-caller rewrites using checked representation bridge."
+}

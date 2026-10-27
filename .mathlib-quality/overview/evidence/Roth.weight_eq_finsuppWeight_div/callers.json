@@ -1,0 +1,15 @@
+[
+  {
+    "name": "Roth.index_eq_weightedOrder_div",
+    "file": "Roth/Index.lean",
+    "line": 143,
+    "reference_lines": [
+      152,
+      155
+    ],
+    "identifier_occurrences": 2,
+    "source_sha256": "e22ab0acd820d9ae765e6f70279edbc0d626052372611806c4d5464ca3d377f1",
+    "source_fragment": "theorem index_eq_weightedOrder_div {P : MvPolynomial σ ℝ} (hP : P ≠ 0) {r : σ → ℕ}\n    (hr : ∀ j, 0 < r j) (α : σ → ℝ) : index P α r =\n      (((taylor α P : MvPowerSeries σ ℝ).weightedOrder fun j ↦ (∏ i, r i) / r j).toNat : ℝ) /\n        ∏ i, r i := by\n  set w : σ → ℕ := fun j ↦ (∏ i, r i) / r j\n  set F : MvPowerSeries σ ℝ := ↑(taylor α P)\n  obtain ⟨d, hd, hdw⟩ := MvPowerSeries.exists_coeff_ne_zero_and_weightedOrder w (f := F)\n    ((MvPowerSeries.ne_zero_iff_weightedOrder_finite w).1 (by simpa [F] using hP))\n  apply le_antisymm\n  · rw [← hdw, ENat.toNat_natCast, ← weight_eq_finsuppWeight_div hr]\n    exact index_le_weight (by simpa [F, MvPolynomial.coeff_coe, coeff_taylor] using hd)\n  · refine (le_index_iff hP).2 fun e he ↦ ?_\n    rw [weight_eq_finsuppWeight_div hr]\n    refine div_le_div_of_nonneg_right ?_ (Nat.cast_nonneg _)\n    exact_mod_cast ENat.toNat_le_toNat (MvPowerSeries.weightedOrder_le w (f := F) (d := e)\n      (by simpa [F, MvPolynomial.coeff_coe, coeff_taylor] using he)) (by simp)\n",
+    "plan": "Keep the weighted-order proof and replace both rewrites at 152 and 155 by the checked denominator-clearing bridge for the Finsupp reciprocal-weight representation. At 152 reverse the equality after ENat.toNat_natCast; at 155 use it forwards. Preserve hP, hr and the natural-to-real casts."
+  }
+]

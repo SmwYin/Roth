@@ -1,0 +1,19 @@
+namespace WeightDivStrong142
+variable {σ K : Type*} [Semifield K]
+theorem supportClear (r : σ → ℕ) (d : σ →₀ ℕ) (D : ℕ) (hD : (D : K) ≠ 0)
+    (hdiv : ∀ j ∈ d.support, r j ∣ D) :
+    Finsupp.weight (fun j ↦ (r j : K)⁻¹) d =
+      (Finsupp.weight (fun j ↦ D / r j) d : K) / D := by
+  rw [WeightDiv142.castWeight, div_eq_inv_mul, WeightDiv142.scaleWeight]
+  simp only [Finsupp.weight_apply, Finsupp.sum]
+  apply Finset.sum_congr rfl
+  intro j hj
+  have hr : (r j : K) ≠ 0 := by
+    intro h
+    apply hD
+    obtain ⟨k, hk⟩ := hdiv j hj
+    rw [hk, Nat.cast_mul, h, zero_mul]
+  rw [Nat.cast_div (hdiv j hj) hr, div_eq_mul_inv, ← mul_assoc,
+    inv_mul_cancel₀ hD, one_mul]
+end WeightDivStrong142
+#print axioms WeightDivStrong142.supportClear

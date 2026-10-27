@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 141/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 142/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 141; remaining: 152.
-- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 18 YES-but-generalise-first, 28 NO-mathlib-has-it, 42 BORDERLINE-needs-human, 26 SKIP.
+- Completed applicable assessments: 142; remaining: 151.
+- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 18 YES-but-generalise-first, 29 NO-mathlib-has-it, 42 BORDERLINE-needs-human, 26 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -1559,6 +1559,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: One explicit application in Roth.sum_max_sub_le_index_det at Theta.lean398 after determinant expansion; one direct kernel consumer. Entire caller replay with replacement passes.
 - Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/Roth.le_index_sum.md).
 
+### Completed: `Roth.weight_eq_finsuppWeight_div`
+
+- Type: `∀ {σ : Type u} [Fintype σ] {r : σ → ℕ}, (∀ j, 0 < r j) → ∀ d : σ →₀ ℕ, Roth.weight r d = (Finsupp.weight (fun j ↦ (∏ i, r i) / r j) d : ℝ) / ↑(∏ i, r i)`
+- What: Clear reciprocal natural parameter denominators using D=∏r.
+- How: Expand weights, cast exact natural quotients, distribute division, cancel nonzero D.
+- Hypotheses: Fintype σ; globally positive natural r; arbitrary finitely supported natural d.
+- Project dependencies: Roth.weight
+- Caller summary: One explicit caller Roth.index_eq_weightedOrder_div, two body rewrites at Index152/155; one audited direct kernel consumer.
+- Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/Roth.weight_eq_finsuppWeight_div.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -1867,6 +1877,8 @@ Completed `Roth.index_sub_weight_le_index_hasseDeriv`: infDegree, weightedOrder 
 
 Completed `Roth.le_index_sum`: supDegree_sum_le with B:=OrderDual T is definitionally the finite-infDegree sum law (one existing call); Finset.le_inf_iff and trans give a common lower bound. Five actual methods on current, literature and abstract forms; positive candidates verified at pin.
 
+Completed `Roth.weight_eq_finsuppWeight_div`: Finsupp.apply_linearCombination R f w d is existing generic naturality; independently checked cast/scaling specializations and actual denominator bridge.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -2150,6 +2162,8 @@ Completed `Roth.index_eq_zero_iff`: Finite support minimum equals bottom iff a s
 Completed `Roth.index_sub_weight_le_index_hasseDeriv`: Classical Roth/Milojevic derivative-index estimate. Generic infDegree sums/products are adjacent, not duplicates. New supportShift proof is not a preexisting mathlib call.
 
 Completed `Roth.le_index_sum`: Classical minimum-order sum inequality, exactly generic finite-support degree inequality under OrderDual. MvPowerSeries.min_weightedOrder_le_add is adjacent natural-weight binary API.
+
+Completed `Roth.weight_eq_finsuppWeight_div`: Generic map/linearity law already exists; no claim that denominator arithmetic is definitional or ≤3 calls.
 
 ## Part 5: Generalization opportunities
 
@@ -2438,6 +2452,8 @@ Completed `Roth.index_sub_weight_le_index_hasseDeriv`: Verified standalone proje
 
 Completed `Roth.le_index_sum`: Verified Semiring R, arbitrary support A, degree D:A→T and SemilatticeInf/OrderTop target, no finiteness on A or sum-nonzero premise in top-valued law. Point aeval projected form verified over CommRing and arbitrary sigma. Fixed parent restrictions are not silently deleted. Zero-default real projection retains sum nonzero; X+(-X) guard confirms cancellation necessity.
 
+Completed `Roth.weight_eq_finsuppWeight_div`: Arbitrary Semifield K; nonzero cast common denominator and divisibility only on d.support; no ambient Fintype or CharZero needed in strongest accepted form. Generic parent law has arbitrary semiring coefficients and module targets.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -2722,6 +2738,8 @@ Completed `Roth.index_eq_zero_iff`: No missing generic finite-infimum bottom cri
 Completed `Roth.index_sub_weight_le_index_hasseDeriv`: Compatible coefficient-support shifts imply infDegree lower bounds, with Hasse derivative specialization and explicit finite minimum projection bridge.
 
 Completed `Roth.le_index_sum`: No missing analogous sum law. Parent real-projection/Taylor normalization is a separately proved bridge, not existing-call replacement.
+
+Completed `Roth.weight_eq_finsuppWeight_div`: No missing generic naturality law identified; supportClear is new normalization glue, not an existing mathlib replacement.
 
 ## Part 7: Junk / removable
 
@@ -3010,6 +3028,8 @@ Completed `Roth.index_sub_weight_le_index_hasseDeriv`: Used twice; no dead-code 
 
 Completed `Roth.le_index_sum`: Used once in determinant proof; not dead code. Local manuscript wrapper may remain while upstream contribution would duplicate existing degree API.
 
+Completed `Roth.weight_eq_finsuppWeight_div`: Active local implementation bridge; not dead code.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -3155,6 +3175,7 @@ Completed `Roth.le_index_sum`: Used once in determinant proof; not dead code. Lo
 | 139 | `Roth.index_eq_zero_iff` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.index_eq_zero_iff.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.index_eq_zero_iff/root-acceptance.json) |
 | 140 | `Roth.index_sub_weight_le_index_hasseDeriv` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.index_sub_weight_le_index_hasseDeriv.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.index_sub_weight_le_index_hasseDeriv/root-acceptance.json) |
 | 141 | `Roth.le_index_sum` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.le_index_sum.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.le_index_sum/root-acceptance.json) |
+| 142 | `Roth.weight_eq_finsuppWeight_div` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.weight_eq_finsuppWeight_div.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.weight_eq_finsuppWeight_div/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -3436,12 +3457,14 @@ Completed `Roth.index_sub_weight_le_index_hasseDeriv` action: YES-but-generalise
 
 Completed `Roth.le_index_sum` action: NO-mathlib-has-it by fresh parent re-aim: after shared parent bridge, inline common-bound introduction and OrderDual supDegree_sum_le at Theta.lean398; retain nonzero determinant and projection. Alternative local destination Roth/Index.lean; no upstream PR proposed.
 
+Completed `Roth.weight_eq_finsuppWeight_div` action: NO-mathlib-has-it by Mode B parent re-aim. Keep documented project bridge in Roth/Index.lean or migrate parent and replace both sole-caller rewrites using checked representation bridge.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.weight_eq_finsuppWeight_div` next. Supporting identities receive their own applicable checks.
+   `Roth.index_eq_weightedOrder_div` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

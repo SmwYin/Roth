@@ -1,0 +1,27 @@
+namespace WeightDivTarget142
+open MvPolynomial
+variable {σ : Type*} [Fintype σ]
+theorem replacement {r : σ → ℕ} (hr : ∀ j, 0 < r j) (d : σ →₀ ℕ) :
+    Roth.weight r d = (Finsupp.weight (fun j ↦ (∏ i, r i) / r j) d : ℝ) / ∏ i, r i := by
+  rw [← IndexExpanded133.weightBridge]
+  simpa only [Nat.cast_prod] using
+    (WeightDiv142.clear (K := ℝ) r (fun j ↦ (hr j).ne') d)
+theorem caller {P : MvPolynomial σ ℝ} (hP : P ≠ 0) {r : σ → ℕ}
+    (hr : ∀ j, 0 < r j) (α : σ → ℝ) : Roth.index P α r =
+      (((taylor α P : MvPowerSeries σ ℝ).weightedOrder fun j ↦ (∏ i, r i) / r j).toNat : ℝ) /
+        ∏ i, r i := by
+  set w : σ → ℕ := fun j ↦ (∏ i, r i) / r j
+  set F : MvPowerSeries σ ℝ := ↑(taylor α P)
+  obtain ⟨d, hd, hdw⟩ := MvPowerSeries.exists_coeff_ne_zero_and_weightedOrder w (f := F)
+    ((MvPowerSeries.ne_zero_iff_weightedOrder_finite w).1 (by simpa [F] using hP))
+  apply le_antisymm
+  · rw [← hdw, ENat.toNat_natCast, ← replacement hr]
+    exact Roth.index_le_weight (by simpa [F, MvPolynomial.coeff_coe, coeff_taylor] using hd)
+  · refine (Roth.le_index_iff hP).2 fun e he ↦ ?_
+    rw [replacement hr]
+    refine div_le_div_of_nonneg_right ?_ (Nat.cast_nonneg _)
+    exact_mod_cast ENat.toNat_le_toNat (MvPowerSeries.weightedOrder_le w (f := F) (d := e)
+      (by simpa [F, MvPolynomial.coeff_coe, coeff_taylor] using he)) (by simp)
+end WeightDivTarget142
+#print axioms WeightDivTarget142.replacement
+#print axioms WeightDivTarget142.caller

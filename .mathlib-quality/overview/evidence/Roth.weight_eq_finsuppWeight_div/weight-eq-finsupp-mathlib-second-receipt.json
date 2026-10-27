@@ -1,0 +1,93 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\n#check_failure Roth.weight_eq_finsuppWeight_div\nnamespace WeightDiv142\ntheorem mapWeight {σ R M N : Type*} [Semiring R] [AddCommMonoid M] [AddCommMonoid N]\n    [Module R M] [Module R N] (f : M →ₗ[R] N) (w : σ → M) (d : σ →₀ R) :\n    f (Finsupp.weight w d) = Finsupp.weight (f ∘ w) d :=\n  Finsupp.apply_linearCombination R f w d\nvariable {σ K : Type*} [Semifield K]\ntheorem castWeight (w : σ → ℕ) (d : σ →₀ ℕ) :\n    (Finsupp.weight w d : K) = Finsupp.weight (fun i ↦ (w i : K)) d := by\n  exact Finsupp.apply_linearCombination ℕ (Nat.castAddMonoidHom K).toNatLinearMap w d\ntheorem scaleWeight (w : σ → K) (c : K) (d : σ →₀ ℕ) :\n    c * Finsupp.weight w d = Finsupp.weight (fun i ↦ c * w i) d := by\n  exact Finsupp.apply_linearCombination ℕ\n    ((DistribSMul.toLinearMap ℕ K c) : K →ₗ[ℕ] K) w d\nvariable [CharZero K] [Fintype σ]\ntheorem clear (r : σ → ℕ) (hr : ∀ i, r i ≠ 0) (d : σ →₀ ℕ) :\n    Finsupp.weight (fun i ↦ (r i : K)⁻¹) d =\n      (Finsupp.weight (fun j ↦ (∏ i, r i) / r j) d : K) / ∏ i, (r i : K) := by\n  have hD : (∏ i, (r i : K)) ≠ 0 := by\n    exact_mod_cast (Finset.prod_ne_zero_iff.mpr (fun i _ ↦ hr i))\n  rw [castWeight, div_eq_inv_mul, scaleWeight]\n  congr 1\n  funext j\n  rw [Nat.cast_div_charZero (Finset.dvd_prod_of_mem r (Finset.mem_univ j)), Nat.cast_prod,\n    div_eq_mul_inv, ← mul_assoc, inv_mul_cancel₀ hD, one_mul]\nend WeightDiv142\n\n#check @Finsupp.apply_linearCombination\n#check @DistribSMul.toLinearMap\n#print axioms WeightDiv142.castWeight\n#print axioms WeightDiv142.scaleWeight\n#print axioms WeightDiv142.clear\n\n#print axioms WeightDiv142.mapWeight\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": false,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.weight_eq_finsuppWeight_div`\",\n      \"line\": 8,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finsupp.apply_linearCombination : ∀ {α : Type u_1} {M : Type u_2} (R : Type u_3) [inst : Semiring R]\\n  [inst_1 : AddCommMonoid M] [inst_2 : Module R M] {M' : Type u_4} [inst_3 : AddCommMonoid M'] [inst_4 : Module R M']\\n  (f : M →ₗ[R] M') (v : α → M) (l : α →₀ R),\\n  f ((Finsupp.linearCombination R v) l) = (Finsupp.linearCombination R (⇑f ∘ v)) l\",\n      \"line\": 35,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"DistribSMul.toLinearMap : (R : Type u_1) →\\n  {S : Type u_2} →\\n    (M : Type u_3) →\\n      [inst : Semiring R] →\\n        [inst_1 : AddCommMonoid M] →\\n          [inst_2 : Module R M] → [inst_3 : DistribSMul S M] → [SMulCommClass S R M] → S → M →ₗ[R] M\",\n      \"line\": 36,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'WeightDiv142.castWeight' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 37,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'WeightDiv142.scaleWeight' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 38,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'WeightDiv142.clear' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 39,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'WeightDiv142.mapWeight' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 41,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"Tactic `apply` failed: could not unify the conclusion of `@funext`\\n  ?f = ?g\\nwith the goal\\n  (Finsupp.weight fun i ↦ (↑(r i))⁻¹) = Finsupp.weight fun i ↦ (∏ i, ↑(r i))⁻¹ * ↑((∏ i, r i) / r i)\\n\\nNote: The full type of `@funext` is\\n  ∀ {α : Sort ?u.71} {β : α → Sort ?u.70} {f g : (x : α) → β x}, (∀ (x : α), f x = g x) → f = g\\n\\nσ : Type u_1\\nK : Type u_2\\ninst✝² : Semifield K\\ninst✝¹ : CharZero K\\ninst✝ : Fintype σ\\nr : σ → ℕ\\nhr : ∀ (i : σ), r i ≠ 0\\nd : σ →₀ ℕ\\nhD : ∏ i, ↑(r i) ≠ 0\\n⊢ (Finsupp.weight fun i ↦ (↑(r i))⁻¹) = Finsupp.weight fun i ↦ (∏ i, ↑(r i))⁻¹ * ↑((∏ i, r i) / r i)\",\n      \"line\": 30,\n      \"column\": 3,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": false,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.weight_eq_finsuppWeight_div`",
+          "line": 8,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finsupp.apply_linearCombination : ∀ {α : Type u_1} {M : Type u_2} (R : Type u_3) [inst : Semiring R]\n  [inst_1 : AddCommMonoid M] [inst_2 : Module R M] {M' : Type u_4} [inst_3 : AddCommMonoid M'] [inst_4 : Module R M']\n  (f : M →ₗ[R] M') (v : α → M) (l : α →₀ R),\n  f ((Finsupp.linearCombination R v) l) = (Finsupp.linearCombination R (⇑f ∘ v)) l",
+          "line": 35,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "DistribSMul.toLinearMap : (R : Type u_1) →\n  {S : Type u_2} →\n    (M : Type u_3) →\n      [inst : Semiring R] →\n        [inst_1 : AddCommMonoid M] →\n          [inst_2 : Module R M] → [inst_3 : DistribSMul S M] → [SMulCommClass S R M] → S → M →ₗ[R] M",
+          "line": 36,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'WeightDiv142.castWeight' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 37,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'WeightDiv142.scaleWeight' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 38,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'WeightDiv142.clear' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 39,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'WeightDiv142.mapWeight' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 41,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "Tactic `apply` failed: could not unify the conclusion of `@funext`\n  ?f = ?g\nwith the goal\n  (Finsupp.weight fun i ↦ (↑(r i))⁻¹) = Finsupp.weight fun i ↦ (∏ i, ↑(r i))⁻¹ * ↑((∏ i, r i) / r i)\n\nNote: The full type of `@funext` is\n  ∀ {α : Sort ?u.71} {β : α → Sort ?u.70} {f g : (x : α) → β x}, (∀ (x : α), f x = g x) → f = g\n\nσ : Type u_1\nK : Type u_2\ninst✝² : Semifield K\ninst✝¹ : CharZero K\ninst✝ : Fintype σ\nr : σ → ℕ\nhr : ∀ (i : σ), r i ≠ 0\nd : σ →₀ ℕ\nhD : ∏ i, ↑(r i) ≠ 0\n⊢ (Finsupp.weight fun i ↦ (↑(r i))⁻¹) = Finsupp.weight fun i ↦ (∏ i, ↑(r i))⁻¹ * ↑((∏ i, r i) / r i)",
+          "line": 30,
+          "column": 3,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 1195
+}

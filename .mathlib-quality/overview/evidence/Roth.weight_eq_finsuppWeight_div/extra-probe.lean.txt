@@ -1,0 +1,23 @@
+namespace WeightDiv142Extra
+variable {σ K : Type*} [Semifield K] [CharZero K]
+theorem supportClear (r : σ → ℕ) (d : σ →₀ ℕ) (D : ℕ) (hD : D ≠ 0)
+    (hdiv : ∀ j ∈ d.support, r j ∣ D) :
+    Finsupp.weight (fun j ↦ (r j : K)⁻¹) d =
+      (Finsupp.weight (fun j ↦ D / r j) d : K) / D := by
+  rw [WeightDiv142.castWeight, div_eq_inv_mul, WeightDiv142.scaleWeight]
+  simp only [Finsupp.weight_apply, Finsupp.sum]
+  apply Finset.sum_congr rfl
+  intro j hj
+  rw [Nat.cast_div_charZero (hdiv j hj), div_eq_mul_inv, ← mul_assoc,
+    inv_mul_cancel₀ (by exact_mod_cast hD), one_mul]
+theorem mixedZero :
+    Finsupp.weight (fun j : Bool ↦ ((if j then 1 else 0 : ℕ) : ℝ)⁻¹)
+        (Finsupp.single true 1) ≠
+      (Finsupp.weight (fun j : Bool ↦ (∏ i : Bool, (if i then 1 else 0 : ℕ)) /
+        (if j then 1 else 0)) (Finsupp.single true 1) : ℝ) /
+        (∏ i : Bool, ((if i then 1 else 0 : ℕ) : ℝ)) := by
+  simp [Finsupp.weight_single]
+theorem zeroIndex (r : σ → ℕ) :
+    Finsupp.weight (fun j ↦ (r j : K)⁻¹) (0 : σ →₀ ℕ) =
+      (Finsupp.weight (fun j ↦ 0 / r j) (0 : σ →₀ ℕ) : K) / 0 := by simp
+end WeightDiv142Extra
