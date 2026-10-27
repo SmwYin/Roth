@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-27
 
-- Declarations completed: **173/293**
-- Next declaration: **#174 `Roth.rescale_separated_factor_aux`** (Roth/Separation.lean:457)
+- Declarations completed: **174/293**
+- Next declaration: **#175 `Roth.exists_int_polynomial_of_primitive_factor_aux`** (Roth/Separation.lean:466)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -192,10 +192,10 @@ Last regenerated: 2026-10-27
 | 171 | `Roth.exists_nat_smul_eq_map` | Roth/Separation.lean:380 | YES-but-generalise-first | [report](mathlibable/Roth.exists_nat_smul_eq_map.md) |
 | 172 | `Roth.exists_primitive_smul_eq` | Roth/Separation.lean:406 | YES-but-generalise-first | [report](mathlibable/Roth.exists_primitive_smul_eq.md) |
 | 173 | `Roth.exists_int_eq_of_gcd_eq_one` | Roth/Separation.lean:443 | NO-composable-from-mathlib | [report](mathlibable/Roth.exists_int_eq_of_gcd_eq_one.md) |
+| 174 | `Roth.rescale_separated_factor_aux` | Roth/Separation.lean:457 | SKIP | [report](mathlibable/Roth.rescale_separated_factor_aux.md) |
 
 ## Remaining declarations (in processing order)
 
-- #174 `Roth.rescale_separated_factor_aux` (Roth/Separation.lean:457, private lemma)
 - #175 `Roth.exists_int_polynomial_of_primitive_factor_aux` (Roth/Separation.lean:466, private lemma)
 - #176 `Roth.exists_int_factors` (Roth/Separation.lean:485, public theorem)
 - #177 `Roth.exists_rat_factors_det_hasseDeriv_aux` (Roth/Separation.lean:510, private lemma)
