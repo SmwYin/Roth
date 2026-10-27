@@ -1,0 +1,18 @@
+{
+  "declaration": "Roth.exists_coeffNone_basis_aux",
+  "kind": "lemma",
+  "type": "∀ {τ : Type u_1} {K : Type u_2} [inst : Field K] {P : MvPolynomial (Option τ) K},\n  P ≠ 0 →\n    ∀ {n : ℕ},\n      P = ∑ ν : Fin (n + 1), MvPolynomial.X none ^ ↑ν * (MvPolynomial.rename some) (Roth.coeffNone P ↑ν) →\n        ∃ (l : ℕ) (b :\n          Module.Basis (Fin l) K ↥(Submodule.span K (Set.range fun (ν : Fin (n + 1)) ↦ Roth.coeffNone P ↑ν))),\n          1 ≤ l ∧ l ≤ n + 1 ∧ ∀ (ρ : Fin l) (j : τ), MvPolynomial.degreeOf j ↑(b ρ) ≤ MvPolynomial.degreeOf (some j) P",
+  "what": "The coefficient-polynomial span of a nonzero separated expansion has a finite basis of positive size at most n+1, whose members satisfy the original individual degree bounds.",
+  "how": "Use Module.finBasis on the finite coefficient span, derive positive finrank from nonzero expansion, and contain the span in restrictSupport to retain degree bounds.",
+  "hypotheses": "Field coefficients, nonzero polynomial, finite distinguished-variable expansion. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.",
+  "project_dependencies": [
+    "Roth.coeffNone"
+  ],
+  "caller_summary": "1 explicit source caller declarations, all in Separation.lean; 1 direct original value consumers. Exact separate lists retained. Entire Separation module proof bodies replay successfully with fresh target name.",
+  "mathlib_api_audit": "The finitely many coefficient polynomials span a finite-dimensional space. Nonzero input forces at least one nonzero coefficient and thus positive finrank; finrank_range_le_card gives the upper bound. The span lies in a support-restriction submodule by coefficient-support transport, so every basis vector inherits the individual degree bounds. This basis-selection helper is distinct from reconstruction and coordinate-family independence.",
+  "moral_duplications": "The helper has a distinct role in the separated polynomial proof as described in the structural review; no duplicate full construction is introduced.",
+  "generalization": "No public generality claim under the private prefilter; preserve the existing definition and interface.",
+  "missing_api": "No new primitive is needed for this internal organization; full public contribution search is explicitly not run.",
+  "junk": "Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.",
+  "action": "Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration."
+}

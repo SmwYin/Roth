@@ -1,0 +1,65 @@
+[
+  {
+    "file": "Roth/Separation.lean",
+    "line": 325,
+    "name": "Roth.exists_separated_representation",
+    "short": "exists_separated_representation",
+    "kind": "theorem",
+    "visibility": "public",
+    "end_line": 344,
+    "source": "theorem exists_separated_representation {P : MvPolynomial (Option τ) K} (hP : P ≠ 0) {n : ℕ}\n    (hn : degreeOf none P ≤ n) :\n    ∃ l, 1 ≤ l ∧ l ≤ n + 1 ∧ ∃ (φ : Fin l → Polynomial K) (ψ : Fin l → MvPolynomial τ K),\n      LinearIndependent K φ ∧ LinearIndependent K ψ ∧ (∀ ν, (φ ν).natDegree ≤ n) ∧\n      (∀ ν j, degreeOf j (ψ ν) ≤ degreeOf (some j) P) ∧\n      P = ∑ ν, Polynomial.aeval (X none : MvPolynomial (Option τ) K) (φ ν) * rename some (ψ ν) := by\n  classical\n  let v : Fin (n + 1) → MvPolynomial τ K := fun ν ↦ coeffNone P ν\n  have hP' : P = ∑ ν : Fin (n + 1), X none ^ (ν : ℕ) * rename some (v ν) := by\n    rw [Fin.sum_univ_eq_sum_range (fun ν ↦ X none ^ ν * rename some (coeffNone P ν))]\n    exact eq_sum_X_none_pow_mul_coeffNone P hn\n  obtain ⟨l, b, hl1, hl2, hdegree⟩ := exists_coeffNone_basis_aux hP hP'\n  refine ⟨l, hl1, hl2, fun ρ ↦ ∑ ν : Fin (n + 1),\n      Polynomial.C (b.repr ⟨v ν, Submodule.subset_span ⟨ν, rfl⟩⟩ ρ) * Polynomial.X ^ (ν : ℕ),\n    fun ρ ↦ (b ρ : MvPolynomial τ K), linearIndependent_coordinate_polynomials_aux v b,\n    b.linearIndependent.map' (Submodule.span K (Set.range v)).subtype\n      (Submodule.ker_subtype _), ?_, hdegree,\n    eq_sum_aeval_basis_coeffNone_aux hP' b⟩\n  exact fun ρ ↦ Polynomial.natDegree_sum_le_of_forall_le _ _ fun ν _ ↦\n    (Polynomial.natDegree_C_mul_X_pow_le _ _).trans (Nat.lt_succ_iff.1 ν.2)",
+    "signature": "theorem exists_separated_representation {P : MvPolynomial (Option τ) K} (hP : P ≠ 0) {n : ℕ}\n    (hn : degreeOf none P ≤ n) :\n    ∃ l, 1 ≤ l ∧ l ≤ n + 1 ∧ ∃ (φ : Fin l → Polynomial K) (ψ : Fin l → MvPolynomial τ K),\n      LinearIndependent K φ ∧ LinearIndependent K ψ ∧ (∀ ν, (φ ν).natDegree ≤ n) ∧\n      (∀ ν j, degreeOf j (ψ ν) ≤ degreeOf (some j) P) ∧\n      P = ∑ ν, Polynomial.aeval (X none : MvPolynomial (Option τ) K) (φ ν) * rename some (ψ ν)",
+    "body": "by\n  classical\n  let v : Fin (n + 1) → MvPolynomial τ K := fun ν ↦ coeffNone P ν\n  have hP' : P = ∑ ν : Fin (n + 1), X none ^ (ν : ℕ) * rename some (v ν) := by\n    rw [Fin.sum_univ_eq_sum_range (fun ν ↦ X none ^ ν * rename some (coeffNone P ν))]\n    exact eq_sum_X_none_pow_mul_coeffNone P hn\n  obtain ⟨l, b, hl1, hl2, hdegree⟩ := exists_coeffNone_basis_aux hP hP'\n  refine ⟨l, hl1, hl2, fun ρ ↦ ∑ ν : Fin (n + 1),\n      Polynomial.C (b.repr ⟨v ν, Submodule.subset_span ⟨ν, rfl⟩⟩ ρ) * Polynomial.X ^ (ν : ℕ),\n    fun ρ ↦ (b ρ : MvPolynomial τ K), linearIndependent_coordinate_polynomials_aux v b,\n    b.linearIndependent.map' (Submodule.span K (Set.range v)).subtype\n      (Submodule.ker_subtype _), ?_, hdegree,\n    eq_sum_aeval_basis_coeffNone_aux hP' b⟩\n  exact fun ρ ↦ Polynomial.natDegree_sum_le_of_forall_le _ _ fun ν _ ↦\n    (Polynomial.natDegree_C_mul_X_pow_le _ _).trans (Nat.lt_succ_iff.1 ν.2)",
+    "proof_lines": 15,
+    "sha256": "0ac691e031c311791608274e17e913287996219fac03e695963f53d80bbd4e8c",
+    "what": "A nonzero polynomial admits a separated-variable representation with both factor families independent and controlled degrees.",
+    "how": "Construct a basis of its coefficient span via exists_coeffNone_basis_aux, use linearIndependent_coordinate_polynomials_aux for coordinate polynomials, and reconstruct with eq_sum_aeval_basis_coeffNone_aux.",
+    "hypotheses": "Field coefficients; nonzero polynomial and distinguished-variable degree bound.",
+    "source_body_refs": [
+      "Roth.coeffNone",
+      "Roth.eq_sum_X_none_pow_mul_coeffNone",
+      "Roth.eq_sum_aeval_basis_coeffNone_aux",
+      "Roth.exists_coeffNone_basis_aux",
+      "Roth.linearIndependent_coordinate_polynomials_aux"
+    ],
+    "source_type_refs": [],
+    "source_callers": [
+      {
+        "name": "Roth.exists_rat_factors_det_hasseDeriv_aux",
+        "file": "Roth/Separation.lean",
+        "line": 510
+      }
+    ],
+    "notes": [],
+    "input_file_sha256": "4ac885af6c9973d40f68bd2e6c42185f02a9996271ccaa67d4932d27e85a7d0e",
+    "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+    "section_context": "Namespace Roth; open MvPolynomial. Ambient τ : Type*. Field section: K : Type*, [Field K]. Ambient [Fintype τ] and [DecidableEq τ] are explicitly omitted around general declarations; unused section instances are not implicit mathematical hypotheses. Inline binders override/add context. ",
+    "uses_from_project": [
+      "Roth.coeffNone",
+      "Roth.eq_sum_X_none_pow_mul_coeffNone",
+      "Roth.eq_sum_aeval_basis_coeffNone_aux",
+      "Roth.exists_coeffNone_basis_aux",
+      "Roth.linearIndependent_coordinate_polynomials_aux"
+    ],
+    "used_by_in_file": [
+      "Roth.exists_rat_factors_det_hasseDeriv_aux"
+    ],
+    "used_by_other_files": [],
+    "assignment_offset": 450,
+    "project_body_refs": [
+      "Roth.coeffNone",
+      "Roth.eq_sum_X_none_pow_mul_coeffNone",
+      "Roth.eq_sum_aeval_basis_coeffNone_aux",
+      "Roth.exists_coeffNone_basis_aux",
+      "Roth.linearIndependent_coordinate_polynomials_aux"
+    ],
+    "project_type_refs": [],
+    "project_callers": [
+      {
+        "name": "Roth.exists_rat_factors_det_hasseDeriv_aux",
+        "file": "Roth/Separation.lean",
+        "line": 510
+      }
+    ]
+  }
+]

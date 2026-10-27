@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 166/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 167/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 166; remaining: 127.
-- Verdicts: 18 NO-composable-from-mathlib, 13 YES-add-as-is, 20 YES-but-generalise-first, 36 NO-mathlib-has-it, 50 BORDERLINE-needs-human, 29 SKIP.
+- Completed applicable assessments: 167; remaining: 126.
+- Verdicts: 18 NO-composable-from-mathlib, 13 YES-add-as-is, 20 YES-but-generalise-first, 36 NO-mathlib-has-it, 50 BORDERLINE-needs-human, 30 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -1867,6 +1867,22 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: 1 explicit source caller declarations, all in Separation.lean; 1 direct original value consumers. Exact separate lists retained. Entire Separation module proof bodies replay successfully with fresh target name.
 - Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.eq_sum_aeval_basis_coeffNone_aux.md).
 
+### Completed: `Roth.exists_coeffNone_basis_aux`
+
+- Type: `∀ {τ : Type u_1} {K : Type u_2} [inst : Field K] {P : MvPolynomial (Option τ) K},
+  P ≠ 0 →
+    ∀ {n : ℕ},
+      P = ∑ ν : Fin (n + 1), MvPolynomial.X none ^ ↑ν * (MvPolynomial.rename some) (Roth.coeffNone P ↑ν) →
+        ∃ (l : ℕ) (b :
+          Module.Basis (Fin l) K ↥(Submodule.span K (Set.range fun (ν : Fin (n + 1)) ↦ Roth.coeffNone P ↑ν))),
+          1 ≤ l ∧ l ≤ n + 1 ∧ ∀ (ρ : Fin l) (j : τ), MvPolynomial.degreeOf j ↑(b ρ) ≤ MvPolynomial.degreeOf (some j) P`
+- What: The coefficient-polynomial span of a nonzero separated expansion has a finite basis of positive size at most n+1, whose members satisfy the original individual degree bounds.
+- How: Use Module.finBasis on the finite coefficient span, derive positive finrank from nonzero expansion, and contain the span in restrictSupport to retain degree bounds.
+- Hypotheses: Field coefficients, nonzero polynomial, finite distinguished-variable expansion. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.
+- Project dependencies: Roth.coeffNone
+- Caller summary: 1 explicit source caller declarations, all in Separation.lean; 1 direct original value consumers. Exact separate lists retained. Entire Separation module proof bodies replay successfully with fresh target name.
+- Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.exists_coeffNone_basis_aux.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -2225,6 +2241,8 @@ Completed `Roth.linearIndependent_coordinate_polynomials_aux`: A vanishing linea
 
 Completed `Roth.eq_sum_aeval_basis_coeffNone_aux`: Expand each coefficient polynomial in the chosen basis using Module.Basis.sum_repr, substitute into the given coefficient expansion, interchange the finite sums and normalize aeval, renaming and scalar multiplication. This reconstruction identity is distinct from coordinate-polynomial independence and from choosing a bounded basis.
 
+Completed `Roth.exists_coeffNone_basis_aux`: The finitely many coefficient polynomials span a finite-dimensional space. Nonzero input forces at least one nonzero coefficient and thus positive finrank; finrank_range_le_card gives the upper bound. The span lies in a support-restriction submodule by coefficient-support transport, so every basis vector inherits the individual degree bounds. This basis-selection helper is distinct from reconstruction and coordinate-family independence.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -2558,6 +2576,8 @@ Completed `Roth.degreeOf_none_rename_mul_aeval`: Canonical constant-multiplicati
 Completed `Roth.linearIndependent_coordinate_polynomials_aux`: The helper has a distinct role in the separated polynomial proof as described in the structural review; no duplicate full construction is introduced.
 
 Completed `Roth.eq_sum_aeval_basis_coeffNone_aux`: The helper has a distinct role in the separated polynomial proof as described in the structural review; no duplicate full construction is introduced.
+
+Completed `Roth.exists_coeffNone_basis_aux`: The helper has a distinct role in the separated polynomial proof as described in the structural review; no duplicate full construction is introduced.
 
 ## Part 5: Generalization opportunities
 
@@ -2896,6 +2916,8 @@ Completed `Roth.linearIndependent_coordinate_polynomials_aux`: No public general
 
 Completed `Roth.eq_sum_aeval_basis_coeffNone_aux`: No public generality claim under the private prefilter; preserve the existing definition and interface.
 
+Completed `Roth.exists_coeffNone_basis_aux`: No public generality claim under the private prefilter; preserve the existing definition and interface.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -3230,6 +3252,8 @@ Completed `Roth.degreeOf_none_rename_mul_aeval`: Design choice: general optionEq
 Completed `Roth.linearIndependent_coordinate_polynomials_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 Completed `Roth.eq_sum_aeval_basis_coeffNone_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
+
+Completed `Roth.exists_coeffNone_basis_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 ## Part 7: Junk / removable
 
@@ -3568,6 +3592,8 @@ Completed `Roth.linearIndependent_coordinate_polynomials_aux`: Retain a live pri
 
 Completed `Roth.eq_sum_aeval_basis_coeffNone_aux`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
 
+Completed `Roth.exists_coeffNone_basis_aux`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -3738,6 +3764,7 @@ Completed `Roth.eq_sum_aeval_basis_coeffNone_aux`: Retain a live private proof i
 | 164 | `Roth.degreeOf_none_rename_mul_aeval` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.degreeOf_none_rename_mul_aeval.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.degreeOf_none_rename_mul_aeval/root-acceptance.json) |
 | 165 | `Roth.linearIndependent_coordinate_polynomials_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.linearIndependent_coordinate_polynomials_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.linearIndependent_coordinate_polynomials_aux/root-acceptance.json) |
 | 166 | `Roth.eq_sum_aeval_basis_coeffNone_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.eq_sum_aeval_basis_coeffNone_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.eq_sum_aeval_basis_coeffNone_aux/root-acceptance.json) |
+| 167 | `Roth.exists_coeffNone_basis_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_coeffNone_basis_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_coeffNone_basis_aux/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -4069,12 +4096,14 @@ Completed `Roth.linearIndependent_coordinate_polynomials_aux` action: Keep uncha
 
 Completed `Roth.eq_sum_aeval_basis_coeffNone_aux` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
 
+Completed `Roth.exists_coeffNone_basis_aux` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.exists_coeffNone_basis_aux` next. Supporting identities receive their own applicable checks.
+   `Roth.exists_separated_representation` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 
