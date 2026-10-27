@@ -1,0 +1,45 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+#check_failure Roth.le_index_sum
+namespace IndexSum141
+universe u v w z
+open AddMonoidAlgebra
+variable {R : Type u} {A : Type v} {T : Type w} {ι : Type z}
+theorem finiteInfLaw [Semiring R] [SemilatticeInf T] [OrderTop T]
+    (D : A → T) (s : Finset ι) (f : ι → AddMonoidAlgebra R A) :
+    s.inf (fun i ↦ infDegree D (f i)) ≤ infDegree D (∑ i ∈ s, f i) :=
+  AddMonoidAlgebra.supDegree_sum_le (B := OrderDual T)
+theorem commonLowerBound [Semiring R] [SemilatticeInf T] [OrderTop T]
+    (D : A → T) (s : Finset ι) (f : ι → AddMonoidAlgebra R A) (c : T)
+    (hf : ∀ i ∈ s, c ≤ infDegree D (f i)) :
+    c ≤ infDegree D (∑ i ∈ s, f i) :=
+  (Finset.le_inf_iff.mpr hf).trans (finiteInfLaw D s f)
+theorem projectedLaw [Semiring R] (D : A → ℝ) (s : Finset ι)
+    (f : ι → AddMonoidAlgebra R A) (hs : ∑ i ∈ s, f i ≠ 0) (c : ℝ)
+    (hf : ∀ i ∈ s, f i ≠ 0 →
+      c ≤ (infDegree (fun a ↦ (D a : WithTop ℝ)) (f i)).untopD 0) :
+    c ≤ (infDegree (fun a ↦ (D a : WithTop ℝ)) (∑ i ∈ s, f i)).untopD 0 := by
+  classical
+  have hh : (∑ i ∈ s, f i).coeff.support.Nonempty := by simpa using hs
+  have h := commonLowerBound (fun a ↦ (D a : WithTop ℝ)) s f (c : WithTop ℝ)
+    (fun i hi ↦ by
+      by_cases hfi : f i = 0
+      · simp [hfi, infDegree]
+      · exact (WithTop.coe_le_coe.mpr (hf i hi hfi)).trans (WithTop.coe_untopD_le _ 0))
+  change c ≤ ((∑ i ∈ s, f i).coeff.support.inf (WithTop.some ∘ D)).untopD 0
+  change (c : WithTop ℝ) ≤ (∑ i ∈ s, f i).coeff.support.inf (WithTop.some ∘ D) at h
+  rw [← Finset.coe_inf' hh D] at h ⊢
+  exact WithTop.coe_le_coe.mp h
+#check @AddMonoidAlgebra.supDegree_sum_le
+#check @AddMonoidAlgebra.le_infDegree_add
+#check @Finset.le_inf_iff
+#check @WithTop.coe_untopD_le
+#print axioms finiteInfLaw
+#print axioms commonLowerBound
+#print axioms projectedLaw
+end IndexSum141

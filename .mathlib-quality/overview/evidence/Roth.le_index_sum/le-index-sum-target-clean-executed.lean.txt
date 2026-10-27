@@ -1,0 +1,70 @@
+namespace IndexSum141
+universe u v w z
+open AddMonoidAlgebra
+variable {R : Type u} {A : Type v} {T : Type w} {ι : Type z}
+theorem finiteInfLaw [Semiring R] [SemilatticeInf T] [OrderTop T]
+    (D : A → T) (s : Finset ι) (f : ι → AddMonoidAlgebra R A) :
+    s.inf (fun i ↦ infDegree D (f i)) ≤ infDegree D (∑ i ∈ s, f i) :=
+  AddMonoidAlgebra.supDegree_sum_le (B := OrderDual T)
+theorem commonLowerBound [Semiring R] [SemilatticeInf T] [OrderTop T]
+    (D : A → T) (s : Finset ι) (f : ι → AddMonoidAlgebra R A) (c : T)
+    (hf : ∀ i ∈ s, c ≤ infDegree D (f i)) :
+    c ≤ infDegree D (∑ i ∈ s, f i) :=
+  (Finset.le_inf_iff.mpr hf).trans (finiteInfLaw D s f)
+theorem projectedLaw [Semiring R] (D : A → ℝ) (s : Finset ι)
+    (f : ι → AddMonoidAlgebra R A) (hs : ∑ i ∈ s, f i ≠ 0) (c : ℝ)
+    (hf : ∀ i ∈ s, f i ≠ 0 →
+      c ≤ (infDegree (fun a ↦ (D a : WithTop ℝ)) (f i)).untopD 0) :
+    c ≤ (infDegree (fun a ↦ (D a : WithTop ℝ)) (∑ i ∈ s, f i)).untopD 0 := by
+  classical
+  have hh : (∑ i ∈ s, f i).coeff.support.Nonempty := by
+    exact Finsupp.support_nonempty_iff.mpr
+      (fun h0 ↦ hs (AddMonoidAlgebra.coeff_eq_zero.mp h0))
+  have h := commonLowerBound (fun a ↦ (D a : WithTop ℝ)) s f (c : WithTop ℝ)
+    (fun i hi ↦ by
+      by_cases hfi : f i = 0
+      · simp [hfi, infDegree]
+      · exact (WithTop.coe_le_coe.mpr (hf i hi hfi)).trans (WithTop.coe_untopD_le _ 0))
+  change c ≤ ((∑ i ∈ s, f i).coeff.support.inf (WithTop.some ∘ D)).untopD 0
+  change (c : WithTop ℝ) ≤ (∑ i ∈ s, f i).coeff.support.inf (WithTop.some ∘ D) at h
+  rw [← Finset.coe_inf' hh D] at h ⊢
+  exact WithTop.coe_le_coe.mp h
+#check @AddMonoidAlgebra.supDegree_sum_le
+#check @AddMonoidAlgebra.le_infDegree_add
+#check @Finset.le_inf_iff
+#check @WithTop.coe_untopD_le
+#print axioms finiteInfLaw
+#print axioms commonLowerBound
+#print axioms projectedLaw
+end IndexSum141
+
+namespace IndexSumTarget141
+open MvPolynomial
+universe u v w
+theorem pointProjectedLaw {σ : Type u} {R : Type v} [CommRing R] {ι : Type w}
+    (D : (σ →₀ ℕ) → ℝ) (s : Finset ι) (f : ι → MvPolynomial σ R) (α : σ → R)
+    (hs : ∑ i ∈ s, f i ≠ 0) (c : ℝ)
+    (hf : ∀ i ∈ s, f i ≠ 0 → c ≤
+      (AddMonoidAlgebra.infDegree (fun d ↦ (D d : WithTop ℝ))
+        (aeval (fun j ↦ X j + C (α j)) (f i))).untopD 0) :
+    c ≤ (AddMonoidAlgebra.infDegree (fun d ↦ (D d : WithTop ℝ))
+      (aeval (fun j ↦ X j + C (α j)) (∑ i ∈ s, f i))).untopD 0 := by
+  rw [map_sum]
+  refine IndexSum141.projectedLaw D s _ ?_ c ?_
+  · simpa only [← map_sum, ← taylor_apply, taylor_eq_zero_iff] using hs
+  · intro i hi hfi
+    exact hf i hi (fun h0 ↦ hfi (by rw [h0, map_zero]))
+theorem replacement {σ : Type u} [Fintype σ] {ι : Type v} {s : Finset ι}
+    {f : ι → MvPolynomial σ ℝ} {α : σ → ℝ} {r : σ → ℕ}
+    (hs : ∑ i ∈ s, f i ≠ 0) {c : ℝ}
+    (hf : ∀ i ∈ s, f i ≠ 0 → c ≤ Roth.index (f i) α r) :
+    c ≤ Roth.index (∑ i ∈ s, f i) α r := by
+  rw [IndexConsumers133.targetBridge, map_sum]
+  refine IndexSum141.projectedLaw (Roth.weight r) s _ ?_ c ?_
+  · simpa only [← map_sum, taylor_eq_zero_iff] using hs
+  · intro i hi hfi
+    rw [← IndexConsumers133.targetBridge]
+    exact hf i hi (fun h0 ↦ hfi (by rw [h0, map_zero]))
+#print axioms pointProjectedLaw
+#print axioms replacement
+end IndexSumTarget141

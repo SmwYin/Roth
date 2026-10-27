@@ -1,0 +1,20 @@
+{
+  "kind": "theorem",
+  "type": "Roth.le_index_sum.{u_1, u_2} : ∀ {σ : Type u_1} [inst : Fintype σ] {ι : Type u_2} {s : Finset ι}\n  {f : ι → MvPolynomial σ ℝ} {α : σ → ℝ} {r : σ → ℕ},\n  ∑ i ∈ s, f i ≠ 0 → ∀ {c : ℝ}, (∀ i ∈ s, f i ≠ 0 → c ≤ Roth.index (f i) α r) → c ≤ Roth.index (∑ i ∈ s, f i) α r",
+  "what": "A common lower bound for the indices of nonzero summands is a lower bound for their nonzero finite sum.",
+  "how": "For every nonzero Hasse coefficient of the sum, map_sum and exists_ne_zero_of_sum_ne_zero select a nonzero summand coefficient; its assumed index bound controls the weight.",
+  "hypotheses": "Finite variable interface, real coefficients, arbitrary finite summation type, nonzero sum, common bound for nonzero summands. Natural denominator weights may vanish; no positivity premise.",
+  "project_dependencies": [
+    "Roth.index",
+    "Roth.le_index_iff",
+    "Roth.weight",
+    "MvPolynomial.hasseDeriv"
+  ],
+  "caller_summary": "One explicit application in Roth.sum_max_sub_le_index_det at Theta.lean398 after determinant expansion; one direct kernel consumer. Entire caller replay with replacement passes.",
+  "mathlib_api_audit": "supDegree_sum_le with B:=OrderDual T is definitionally the finite-infDegree sum law (one existing call); Finset.le_inf_iff and trans give a common lower bound. Five actual methods on current, literature and abstract forms; positive candidates verified at pin.",
+  "moral_duplications": "Classical minimum-order sum inequality, exactly generic finite-support degree inequality under OrderDual. MvPowerSeries.min_weightedOrder_le_add is adjacent natural-weight binary API.",
+  "generalization": "Verified Semiring R, arbitrary support A, degree D:A→T and SemilatticeInf/OrderTop target, no finiteness on A or sum-nonzero premise in top-valued law. Point aeval projected form verified over CommRing and arbitrary sigma. Fixed parent restrictions are not silently deleted. Zero-default real projection retains sum nonzero; X+(-X) guard confirms cancellation necessity.",
+  "missing_api": "No missing analogous sum law. Parent real-projection/Taylor normalization is a separately proved bridge, not existing-call replacement.",
+  "junk": "Used once in determinant proof; not dead code. Local manuscript wrapper may remain while upstream contribution would duplicate existing degree API.",
+  "action": "NO-mathlib-has-it by fresh parent re-aim: after shared parent bridge, inline common-bound introduction and OrderDual supDegree_sum_le at Theta.lean398; retain nonzero determinant and projection. Alternative local destination Roth/Index.lean; no upstream PR proposed."
+}

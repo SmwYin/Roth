@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 140/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 141/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 140; remaining: 153.
-- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 18 YES-but-generalise-first, 27 NO-mathlib-has-it, 42 BORDERLINE-needs-human, 26 SKIP.
+- Completed applicable assessments: 141; remaining: 152.
+- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 18 YES-but-generalise-first, 28 NO-mathlib-has-it, 42 BORDERLINE-needs-human, 26 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -1547,6 +1547,18 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: Two explicit proof callers: sum_max_sub_le_index_det at Theta:390 and private exists_hasseDeriv_index_eval_bound_aux at MainLemma:494. Both complete replays pass after replacement. Two direct canonical kernel consumers.
 - Verdict: YES-but-generalise-first; [complete report](.mathlib-quality/overview/mathlibable/Roth.index_sub_weight_le_index_hasseDeriv.md).
 
+### Completed: `Roth.le_index_sum`
+
+- Type: `Roth.le_index_sum.{u_1, u_2} : ∀ {σ : Type u_1} [inst : Fintype σ] {ι : Type u_2} {s : Finset ι}
+  {f : ι → MvPolynomial σ ℝ} {α : σ → ℝ} {r : σ → ℕ},
+  ∑ i ∈ s, f i ≠ 0 → ∀ {c : ℝ}, (∀ i ∈ s, f i ≠ 0 → c ≤ Roth.index (f i) α r) → c ≤ Roth.index (∑ i ∈ s, f i) α r`
+- What: A common lower bound for the indices of nonzero summands is a lower bound for their nonzero finite sum.
+- How: For every nonzero Hasse coefficient of the sum, map_sum and exists_ne_zero_of_sum_ne_zero select a nonzero summand coefficient; its assumed index bound controls the weight.
+- Hypotheses: Finite variable interface, real coefficients, arbitrary finite summation type, nonzero sum, common bound for nonzero summands. Natural denominator weights may vanish; no positivity premise.
+- Project dependencies: Roth.index, Roth.le_index_iff, Roth.weight, MvPolynomial.hasseDeriv
+- Caller summary: One explicit application in Roth.sum_max_sub_le_index_det at Theta.lean398 after determinant expansion; one direct kernel consumer. Entire caller replay with replacement passes.
+- Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/Roth.le_index_sum.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -1853,6 +1865,8 @@ Completed `Roth.index_eq_zero_iff`: existing: Finset.inf_eq_bot_iff on AddMonoid
 
 Completed `Roth.index_sub_weight_le_index_hasseDeriv`: infDegree, weightedOrder and finite infimum APIs exist, but no existing derivative-shift law identified. Univariate natDegree_hasseDeriv_le bounds maximum degree, not vanishing minimum. Twelve actual formal-method requests and pinned rg searches.
 
+Completed `Roth.le_index_sum`: supDegree_sum_le with B:=OrderDual T is definitionally the finite-infDegree sum law (one existing call); Finset.le_inf_iff and trans give a common lower bound. Five actual methods on current, literature and abstract forms; positive candidates verified at pin.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -2134,6 +2148,8 @@ Completed `Roth.index_nonneg`: Finite infimum preserves a common lower bound. Po
 Completed `Roth.index_eq_zero_iff`: Finite support minimum equals bottom iff a supported degree is bottom, Taylor constant coefficient is evaluation at center
 
 Completed `Roth.index_sub_weight_le_index_hasseDeriv`: Classical Roth/Milojevic derivative-index estimate. Generic infDegree sums/products are adjacent, not duplicates. New supportShift proof is not a preexisting mathlib call.
+
+Completed `Roth.le_index_sum`: Classical minimum-order sum inequality, exactly generic finite-support degree inequality under OrderDual. MvPowerSeries.min_weightedOrder_le_add is adjacent natural-weight binary API.
 
 ## Part 5: Generalization opportunities
 
@@ -2420,6 +2436,8 @@ Completed `Roth.index_eq_zero_iff`: Expanded arbitrary Semiring coefficients/sup
 
 Completed `Roth.index_sub_weight_le_index_hasseDeriv`: Verified standalone projectedInfDegreeShift and expandedProjectedShift over arbitrary sigma, CommRing R, real degree D with D(i+k)=D(i)+D(k). supportShift separately CommSemiring. Parent fixed-interface restrictions are not claimed mechanically deleted. Infinity-preserving and general ordered-target variants remain optional unverified extensions.
 
+Completed `Roth.le_index_sum`: Verified Semiring R, arbitrary support A, degree D:A→T and SemilatticeInf/OrderTop target, no finiteness on A or sum-nonzero premise in top-valued law. Point aeval projected form verified over CommRing and arbitrary sigma. Fixed parent restrictions are not silently deleted. Zero-default real projection retains sum nonzero; X+(-X) guard confirms cancellation necessity.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -2702,6 +2720,8 @@ Completed `Roth.index_nonneg`: No missing nonnegative-support lower-bound law on
 Completed `Roth.index_eq_zero_iff`: No missing generic finite-infimum bottom criterion; real/NNReal/Taylor bridges are new normalization proofs.
 
 Completed `Roth.index_sub_weight_le_index_hasseDeriv`: Compatible coefficient-support shifts imply infDegree lower bounds, with Hasse derivative specialization and explicit finite minimum projection bridge.
+
+Completed `Roth.le_index_sum`: No missing analogous sum law. Parent real-projection/Taylor normalization is a separately proved bridge, not existing-call replacement.
 
 ## Part 7: Junk / removable
 
@@ -2988,6 +3008,8 @@ Completed `Roth.index_eq_zero_iff`: Used local manuscript convenience API, not d
 
 Completed `Roth.index_sub_weight_le_index_hasseDeriv`: Used twice; no dead-code or duplicate-wrapper deletion justified.
 
+Completed `Roth.le_index_sum`: Used once in determinant proof; not dead code. Local manuscript wrapper may remain while upstream contribution would duplicate existing degree API.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -3132,6 +3154,7 @@ Completed `Roth.index_sub_weight_le_index_hasseDeriv`: Used twice; no dead-code 
 | 138 | `Roth.index_nonneg` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.index_nonneg.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.index_nonneg/root-acceptance.json) |
 | 139 | `Roth.index_eq_zero_iff` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.index_eq_zero_iff.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.index_eq_zero_iff/root-acceptance.json) |
 | 140 | `Roth.index_sub_weight_le_index_hasseDeriv` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.index_sub_weight_le_index_hasseDeriv.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.index_sub_weight_le_index_hasseDeriv/root-acceptance.json) |
+| 141 | `Roth.le_index_sum` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.le_index_sum.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.le_index_sum/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -3411,12 +3434,14 @@ Completed `Roth.index_eq_zero_iff` action: After sharing parent projection and N
 
 Completed `Roth.index_sub_weight_le_index_hasseDeriv` action: YES-but-generalise-first MODERN-IDIOM: contribute verified new aeval/infDegree derivative bound in Mathlib/Algebra/MvPolynomial/TaylorDegree.lean, staged after accepted Hasse/Taylor infrastructure; retain local point-index wrapper. Full PR title/grouping/reviewer and generalise/cleanup/pre-submit checklist in report.
 
+Completed `Roth.le_index_sum` action: NO-mathlib-has-it by fresh parent re-aim: after shared parent bridge, inline common-bound introduction and OrderDual supDegree_sum_le at Theta.lean398; retain nonzero determinant and projection. Alternative local destination Roth/Index.lean; no upstream PR proposed.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.le_index_sum` next. Supporting identities receive their own applicable checks.
+   `Roth.weight_eq_finsuppWeight_div` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

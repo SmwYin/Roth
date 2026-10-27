@@ -1,0 +1,129 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\n#check_failure Roth.index\n#check @AddMonoidAlgebra.infDegree\n#check @Finset.inf'_eq_csInf_image\n#check @Finset.coe_inf'\n#check @MvPowerSeries.weightedOrder\n#check @MvPowerSeries.weightedOrder_mul\n#check @MvPolynomial.coeff_coe\n#check @Finsupp.sum_fintype\nnamespace IndexMathlibOnly133\nopen MvPolynomial\nuniverse u v\nnoncomputable def indexViaInfDegree {σ : Type u} {R : Type v} [CommSemiring R]\n    (P : MvPolynomial σ R) (α : σ → R) (w : (σ →₀ ℕ) → ℝ) : ℝ :=\n  (AddMonoidAlgebra.infDegree (fun d ↦ (w d : WithTop ℝ))\n    (aeval (fun j ↦ X j + C (α j)) P)).untopD 0\nnoncomputable def expandedIndex {σ : Type u} {R : Type v} [CommSemiring R]\n    (P : MvPolynomial σ R) (α : σ → R) (w : (σ →₀ ℕ) → ℝ) : ℝ :=\n  sInf (w '' ((aeval (fun j ↦ X j + C (α j)) P).support : Set (σ →₀ ℕ)))\ntheorem finsetBridge {ι : Type u} (s : Finset ι) (w : ι → ℝ) :\n    (s.inf (fun d ↦ (w d : WithTop ℝ))).untopD 0 =\n      sInf (w '' (s : Set ι)) := by\n  classical\n  rcases s.eq_empty_or_nonempty with h | h\n  · subst s\n    simp\n  · change (s.inf (WithTop.some ∘ w)).untopD 0 = _\n    rw [← Finset.coe_inf' h w, Finset.inf'_eq_csInf_image]\n    rfl\ntheorem genericBridge {σ : Type u} {R : Type v} [CommSemiring R]\n    (P : MvPolynomial σ R) (α : σ → R) (w : (σ →₀ ℕ) → ℝ) :\n    indexViaInfDegree P α w = expandedIndex P α w :=\n  finsetBridge _ _\n#print axioms finsetBridge\n#print axioms genericBridge\n#print axioms indexViaInfDegree\n#print axioms expandedIndex\nend IndexMathlibOnly133\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.index`\",\n      \"line\": 8,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@AddMonoidAlgebra.infDegree : {R : Type u_1} →\\n  {A : Type u_2} →\\n    {T : Type u_3} →\\n      [inst : Semiring R] → [inst_1 : SemilatticeInf T] → [OrderTop T] → (A → T) → AddMonoidAlgebra R A → T\",\n      \"line\": 9,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finset.inf'_eq_csInf_image : ∀ {ι : Type u_1} {α : Type u_2} [inst : ConditionallyCompleteLattice α] (s : Finset ι)\\n  (H : s.Nonempty) (f : ι → α), s.inf' H f = sInf (f '' ↑s)\",\n      \"line\": 10,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finset.coe_inf' : ∀ {α : Type u_1} {β : Type u_2} [inst : SemilatticeInf α] {s : Finset β} (H : s.Nonempty)\\n  (f : β → α), ↑(s.inf' H f) = s.inf (WithTop.some ∘ f)\",\n      \"line\": 11,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPowerSeries.weightedOrder : {σ : Type u_1} → {R : Type u_2} → [Semiring R] → (σ → ℕ) → MvPowerSeries σ R → ℕ∞\",\n      \"line\": 12,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPowerSeries.weightedOrder_mul : ∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] [NoZeroDivisors R] (w : σ → ℕ)\\n  (f g : MvPowerSeries σ R),\\n  MvPowerSeries.weightedOrder w (f * g) = MvPowerSeries.weightedOrder w f + MvPowerSeries.weightedOrder w g\",\n      \"line\": 13,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPolynomial.coeff_coe : ∀ {σ : Type u_1} {R : Type u_2} [inst : CommSemiring R] (φ : MvPolynomial σ R) (n : σ →₀ ℕ),\\n  (MvPowerSeries.coeff n) ↑φ = φ.coeff n\",\n      \"line\": 14,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finsupp.sum_fintype : ∀ {α : Type u_1} {M : Type u_2} {N : Type u_3} [inst : Zero M] [inst_1 : AddCommMonoid N]\\n  [inst_2 : Fintype α] (f : α →₀ M) (g : α → M → N), (∀ (i : α), g i 0 = 0) → f.sum g = ∑ i, g i (f i)\",\n      \"line\": 15,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'IndexMathlibOnly133.finsetBridge' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 40,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'IndexMathlibOnly133.genericBridge' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 41,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'IndexMathlibOnly133.indexViaInfDegree' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 42,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'IndexMathlibOnly133.expandedIndex' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 43,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.index`",
+          "line": 8,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@AddMonoidAlgebra.infDegree : {R : Type u_1} →\n  {A : Type u_2} →\n    {T : Type u_3} →\n      [inst : Semiring R] → [inst_1 : SemilatticeInf T] → [OrderTop T] → (A → T) → AddMonoidAlgebra R A → T",
+          "line": 9,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finset.inf'_eq_csInf_image : ∀ {ι : Type u_1} {α : Type u_2} [inst : ConditionallyCompleteLattice α] (s : Finset ι)\n  (H : s.Nonempty) (f : ι → α), s.inf' H f = sInf (f '' ↑s)",
+          "line": 10,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finset.coe_inf' : ∀ {α : Type u_1} {β : Type u_2} [inst : SemilatticeInf α] {s : Finset β} (H : s.Nonempty)\n  (f : β → α), ↑(s.inf' H f) = s.inf (WithTop.some ∘ f)",
+          "line": 11,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPowerSeries.weightedOrder : {σ : Type u_1} → {R : Type u_2} → [Semiring R] → (σ → ℕ) → MvPowerSeries σ R → ℕ∞",
+          "line": 12,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPowerSeries.weightedOrder_mul : ∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] [NoZeroDivisors R] (w : σ → ℕ)\n  (f g : MvPowerSeries σ R),\n  MvPowerSeries.weightedOrder w (f * g) = MvPowerSeries.weightedOrder w f + MvPowerSeries.weightedOrder w g",
+          "line": 13,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPolynomial.coeff_coe : ∀ {σ : Type u_1} {R : Type u_2} [inst : CommSemiring R] (φ : MvPolynomial σ R) (n : σ →₀ ℕ),\n  (MvPowerSeries.coeff n) ↑φ = φ.coeff n",
+          "line": 14,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finsupp.sum_fintype : ∀ {α : Type u_1} {M : Type u_2} {N : Type u_3} [inst : Zero M] [inst_1 : AddCommMonoid N]\n  [inst_2 : Fintype α] (f : α →₀ M) (g : α → M → N), (∀ (i : α), g i 0 = 0) → f.sum g = ∑ i, g i (f i)",
+          "line": 15,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'IndexMathlibOnly133.finsetBridge' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 40,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'IndexMathlibOnly133.genericBridge' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 41,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'IndexMathlibOnly133.indexViaInfDegree' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 42,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'IndexMathlibOnly133.expandedIndex' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 43,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 1263
+}

@@ -1,0 +1,25 @@
+namespace IndexSumGuards141
+open Roth MvPolynomial
+theorem emptySumNonzeroGuard : ¬ ((1 : ℝ) ≤
+    index (∑ _i ∈ (∅ : Finset Unit), (X () : MvPolynomial Unit ℝ)) (fun _ ↦ 0) (fun _ ↦ 1)) := by
+  simp [index]
+theorem cancellationGuard :
+    ∃ P : MvPolynomial Unit ℝ, P ≠ 0 ∧
+      (0 < index P (fun _ ↦ 0) (fun _ ↦ 1)) ∧
+      index (-P) (fun _ ↦ 0) (fun _ ↦ 1) = index P (fun _ ↦ 0) (fun _ ↦ 1) ∧
+      index (P + -P) (fun _ ↦ 0) (fun _ ↦ 1) = 0 := by
+  refine ⟨X (), X_ne_zero (), ?_, index_neg _ _ _, ?_⟩
+  · apply lt_of_le_of_ne (index_nonneg _ _ _)
+    intro h
+    have hh := (index_eq_zero_iff (X_ne_zero ()) (fun _ ↦ by norm_num)
+      (fun _ : Unit ↦ (0 : ℝ))).1 h.symm
+    simp at hh
+  · simp [index]
+theorem allZeroDenominators {σ ι : Type*} [Fintype σ] {s : Finset ι}
+    {f : ι → MvPolynomial σ ℝ} {α : σ → ℝ} (hs : ∑ i ∈ s, f i ≠ 0) {c : ℝ}
+    (hf : ∀ i ∈ s, f i ≠ 0 → c ≤ index (f i) α (fun _ ↦ 0)) :
+    c ≤ index (∑ i ∈ s, f i) α (fun _ ↦ 0) := IndexSumTarget141.replacement hs hf
+#print axioms emptySumNonzeroGuard
+#print axioms cancellationGuard
+#print axioms allZeroDenominators
+end IndexSumGuards141
