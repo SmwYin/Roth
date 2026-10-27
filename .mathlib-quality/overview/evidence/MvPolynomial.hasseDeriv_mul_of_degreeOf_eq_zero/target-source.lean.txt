@@ -1,0 +1,23 @@
+private lemma hasseDeriv_monomial_mul {d a : σ →₀ ℕ} (ha : ∀ j ∈ d.support, a j = 0) (c : R)
+    (g : MvPolynomial σ R) : hasseDeriv d (monomial a c * g) = monomial a c * hasseDeriv d g := by
+  classical
+  induction g using MvPolynomial.induction_on' with
+  | monomial b c' =>
+    have hs : a + b - d = a + (b - d) := by
+      ext j
+      by_cases hj : j ∈ d.support <;> simp_all
+    rw [monomial_mul_monomial, hasseDeriv_monomial, hasseDeriv_monomial,
+      show hasseCoeff d (a + b) = hasseCoeff d b from
+        Finset.prod_congr rfl fun j hj ↦ by simp [ha j hj]]
+    simp [monomial_mul_monomial, hs, mul_left_comm]
+  | add p q hp hq => simp [mul_add, hp, hq]
+
+/-- A factor `f` not involving any variable in the support of `d` passes through `Δ_d`:
+`Δ_d (f * g) = f * Δ_d g`.
+
+Source: §2, proof of Lemma 2. -/
+theorem hasseDeriv_mul_of_degreeOf_eq_zero {d : σ →₀ ℕ} {f g : MvPolynomial σ R}
+    (hf : ∀ j ∈ d.support, degreeOf j f = 0) : hasseDeriv d (f * g) = f * hasseDeriv d g := by
+  rw [f.as_sum, Finset.sum_mul, Finset.sum_mul, map_sum]
+  exact Finset.sum_congr rfl fun a haf ↦ hasseDeriv_monomial_mul
+    (fun j hj ↦ Nat.eq_zero_of_le_zero (hf j hj ▸ monomial_le_degreeOf j haf)) _ _

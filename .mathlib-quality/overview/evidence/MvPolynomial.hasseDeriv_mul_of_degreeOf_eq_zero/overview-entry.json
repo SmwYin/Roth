@@ -1,0 +1,36 @@
+{
+  "declaration": "MvPolynomial.hasseDeriv_mul_of_degreeOf_eq_zero",
+  "type": "theorem",
+  "what": "A factor independent of all variables in d.support passes through the canonical multi-index Hasse derivative.",
+  "how": "Expand f into monomials; degree-zero gives exponent zero in differentiated variables; prove monomial compatibility then extend by linearity.",
+  "hypotheses": [
+    "arbitrary variable type and coefficient type",
+    "CommSemiring R",
+    "d finitely supported natural multi-index",
+    "forall j in d.support, degreeOf j f=0"
+  ],
+  "project_dependencies": [
+    "MvPolynomial.hasseDeriv",
+    "MvPolynomial.hasseCoeff",
+    "MvPolynomial.hasseDeriv_monomial",
+    "MvPolynomial.hasseDeriv_monomial_mul (private)"
+  ],
+  "caller_summary": {
+    "count": 2,
+    "files": [
+      "Roth/Separation.lean"
+    ],
+    "locations": [
+      "Roth/Separation.lean:157",
+      "Roth/Separation.lean:161"
+    ],
+    "owner": "Roth.hasseDeriv_rename_mul_aeval",
+    "effect": "Pass complementary-variable factors through none-block and some-block Hasse operators; used in determinant separation."
+  },
+  "mathlib_api_audit": "Univariate hasseDeriv_mul and first-order pderiv_mul are partial analogues; base-R map_smul cannot pass general undifferentiated polynomial factors. No existing multivariate bridge.",
+  "moral_duplications": "Constant-factor special case of future full multivariate Leibniz API, not a duplicate of the pinned univariate or ordinary derivative API.",
+  "generalization": "Current fixed-parent signature maximally general. Vars-disjoint equivalent and symmetric-side companion tested; abstract sum extension tested with actual compatibility premise.",
+  "missing_api": "Canonical multivariate Hasse factor-independence/relative-linearity rule; eventual full multi-index product formula.",
+  "junk": "No: two explicit calls in one theorem are essential steps toward separated determinant factorization.",
+  "action": "YES-add-as-is; retain source calls, contribute with canonical multivariate Hasse API; keep monomial helper private and consider vars/right-factor corollaries after cleanup."
+}

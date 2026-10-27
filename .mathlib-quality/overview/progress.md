@@ -3,7 +3,7 @@
 Status: **in_progress**, 2026-10-26. Branch: `ramin-cleanup`.
 Production Lean files and all pins match baseline `99f19fd`.
 
-**Completed: 20 / 293 written declarations.**
+**Completed: 21 / 293 written declarations.**
 This counts the current overview assessments, separately from the earlier code cleanup.
 
 | # | Completed declaration | Applicable workflow | Verdict | Report |
@@ -28,8 +28,9 @@ This counts the current overview assessments, separately from the earlier code c
 | 18 | `MvPolynomial.degreeOf_hasseDeriv_le` | full-mathlibable; accepted complete | YES-add-as-is | [Detailed report](mathlibable/MvPolynomial.degreeOf_hasseDeriv_le.md) |
 | 19 | `MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt` | full-mathlibable; accepted complete | YES-add-as-is | [Detailed report](mathlibable/MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt.md) |
 | 20 | `MvPolynomial.hasseDeriv_monomial_mul` | overview-private-prefilter; accepted complete | SKIP | [Detailed report](mathlibable/MvPolynomial.hasseDeriv_monomial_mul.md) |
+| 21 | `MvPolynomial.hasseDeriv_mul_of_degreeOf_eq_zero` | full-mathlibable; accepted complete | YES-add-as-is | [Detailed report](mathlibable/MvPolynomial.hasseDeriv_mul_of_degreeOf_eq_zero.md) |
 
-**Next declaration: `MvPolynomial.hasseDeriv_mul_of_degreeOf_eq_zero`**, `Roth/HasseDeriv.lean:243`.
+**Next declaration: `MvPolynomial.hasseDeriv_single_aeval_X`**, `Roth/HasseDeriv.lean:253`.
 Only the listed assessments are complete. No partial assessment was committed.
 
 On restart: read [README](README.md), [machine progress](progress.json), and

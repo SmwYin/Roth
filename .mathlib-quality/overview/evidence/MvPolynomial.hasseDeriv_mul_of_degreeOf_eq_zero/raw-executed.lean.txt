@@ -1,0 +1,87 @@
+import Mathlib.Algebra.MvPolynomial.PDeriv
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Data.Nat.Choose.Bounds
+
+/-! Persistent mathlib-only assessment session control. -/
+#check_failure MvPolynomial.hasseDeriv
+#check Finsupp.lsum_apply
+#check Finsupp.lsum_single
+
+#check_failure MvPolynomial.coeff_hasseDeriv
+#check_failure MvPolynomial.hasseDeriv_hasseDeriv
+#check_failure MvPolynomial.hasseDeriv_mul_of_degreeOf_eq_zero
+example (P : Prop) (h : P) : P := by exact?
+
+/-! Isolated iterativity assessment: raw coefficient and cocycle witnesses, no project import. -/
+open MvPolynomial
+namespace CoeffAssessment
+variable {σ R : Type*} [CommSemiring R]
+noncomputable def delta (d : σ →₀ ℕ) : MvPolynomial σ R →ₗ[R] MvPolynomial σ R :=
+  Finsupp.lsum R (fun k : σ →₀ ℕ ↦
+    (monomial (k - d)).comp (LinearMap.lsmul R R ((d.prod (fun j ↦ (k j).choose) : ℕ) : R))) ∘ₗ
+      (AddMonoidAlgebra.coeffLinearEquiv R).toLinearMap
+
+-- Coefficient formula is independently proved below.
+theorem independent (d e : σ →₀ ℕ) (P : MvPolynomial σ R) :
+    (delta d P).coeff e = ((d.prod (fun j ↦ ((e + d) j).choose) : ℕ) : R) * P.coeff (e + d) := by
+  classical
+  have hz (k : σ →₀ ℕ) : d.prod (fun j ↦ (k j).choose) = 0 ↔ ¬d ≤ k := by
+    simp [Finsupp.prod, Finset.prod_eq_zero_iff, Nat.choose_eq_zero_iff, Finsupp.le_iff,
+      not_forall]
+  induction P using MvPolynomial.induction_on' with
+  | monomial k a =>
+    rw [show delta d (monomial k a) =
+      monomial (k - d) (((d.prod (fun j ↦ (k j).choose) : ℕ) : R) * a) by simp [delta],
+      coeff_monomial, coeff_monomial]
+    by_cases hk : k = e + d
+    · simp [hk]
+    by_cases hdk : d ≤ k
+    · simp [hk, tsub_eq_iff_eq_add_of_le hdk]
+    · simp [hk, (hz k).2 hdk]
+  | add p q hp hq => simp [hp, hq, mul_add]
+
+
+#print axioms independent
+section
+variable {S : Type*} [Semiring S]
+#check_failure MvPolynomial σ S
+end
+end CoeffAssessment
+
+
+namespace RawHasseSeparated
+open MvPolynomial
+variable {σ R : Type*} [CommSemiring R]
+def factor (d k : σ →₀ ℕ) : ℕ := d.prod fun j ↦ (k j).choose
+theorem monomial_delta (d k : σ →₀ ℕ) (c : R) :
+    CoeffAssessment.delta d (monomial k c) =
+      monomial (k - d) ((factor d k : R) * c) := by
+  simp [CoeffAssessment.delta, factor]
+theorem monomial_mul {d a : σ →₀ ℕ} (ha : ∀ j ∈ d.support, a j = 0) (c : R)
+    (g : MvPolynomial σ R) :
+    CoeffAssessment.delta d (monomial a c * g) =
+      monomial a c * CoeffAssessment.delta d g := by
+  classical
+  induction g using MvPolynomial.induction_on' with
+  | monomial b c' =>
+    have hs : a + b - d = a + (b - d) := by
+      ext j
+      by_cases hj : j ∈ d.support <;> simp_all
+    rw [monomial_mul_monomial, monomial_delta, monomial_delta,
+      show factor d (a + b) = factor d b from
+        Finset.prod_congr rfl fun j hj ↦ by simp [ha j hj]]
+    simp [monomial_mul_monomial, hs, mul_left_comm]
+  | add p q hp hq => simp [mul_add, hp, hq]
+theorem separated {d : σ →₀ ℕ} {f g : MvPolynomial σ R}
+    (hf : ∀ j ∈ d.support, degreeOf j f = 0) :
+    CoeffAssessment.delta d (f * g) = f * CoeffAssessment.delta d g := by
+  rw [f.as_sum, Finset.sum_mul, Finset.sum_mul, map_sum]
+  exact Finset.sum_congr rfl fun a haf ↦ monomial_mul
+    (fun j hj ↦ Nat.eq_zero_of_le_zero (hf j hj ▸ monomial_le_degreeOf j haf)) _ _
+#print axioms monomial_delta
+#print axioms monomial_mul
+#print axioms separated
+end RawHasseSeparated
+
+#check @LinearMap.map_algebraMap_mul
+#check @LinearMap.map_mul_algebraMap

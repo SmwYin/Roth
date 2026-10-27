@@ -1,0 +1,380 @@
+[
+  {
+    "form": "current",
+    "method": "lean_leanfinder",
+    "request": {
+      "query": "The multivariate Hasse derivative of f times g equals f times the Hasse derivative of g if f has degree zero in every differentiated variable",
+      "num_results": 6
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv_mul\",\n      \"informal_name\": \"Product Rule for Hasse Derivatives in Polynomial Rings\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f g : Polynomial R),\\n  (Polynomial.hasseDeriv k) (f * g) =\\n    ∑ ij ∈ Finset.antidiagonal k, (Polynomial.hasseDeriv ij.1) f * (Polynomial.hasseDeriv ij.2) g\",\n      \"informal_description\": \"For any polynomials $ f, g \\\\in R[X] $, the $ k $-th Hasse derivative of the product $ f \\\\cdot g $ satisfies $$ D^{(k)}(f \\\\cdot g) = \\\\sum_{\\\\substack{i + j = k}} D^{(i)}(f) \\\\cdot D^{(j)}(g), $$ where the sum is taken over all pairs $ (i, j) $ of natural numbers such that $ i + j = k $. This expresses the Hasse derivative of a product as a sum over the antidiagonal decomposition of $ k $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.pderiv_mul\",\n      \"informal_name\": \"Product Rule for Partial Derivatives in Multivariate Polynomial Rings\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type v} [inst : CommSemiring R] {i : σ} {f g : MvPolynomial σ R},\\n  (MvPolynomial.pderiv i) (f * g) = (MvPolynomial.pderiv i) f * g + f * (MvPolynomial.pderiv i) g\",\n      \"informal_description\": \"For any commutative semiring $ R $, type $ \\\\sigma $, and variables $ i \\\\in \\\\sigma $, the partial derivative with respect to $ i $ of the product of two multivariate polynomials $ f $ and $ g $ in $ R[\\\\sigma] $ satisfies the Leibniz rule: $ \\\\partial_i(fg) = (\\\\partial_i f) \\\\cdot g + f \\\\cdot (\\\\partial_i g) $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.PDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv\",\n      \"informal_name\": \"Hasse Derivative of Order k on Polynomial Ring\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : Semiring R] → ℕ → Polynomial R →ₗ[R] Polynomial R\",\n      \"informal_description\": \"For a semiring $ R $, the Hasse derivative of order $ k $ is an $ R $-linear map $ D^{(k)} : R[X] \\to R[X] $ defined by $ D^{(k)}(a_i X^i) = \\binom{i}{k} a_i X^{i - k} $ on monomials and extended linearly. This operation generalizes the usual derivative by scaling each coefficient $ a_i $ by the binomial coefficient $ \\binom{i}{k} $ and reducing the degree by $ k $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv_comp\",\n      \"informal_name\": \"Hasse Derivative Composition Formula with Binomial Coefficient\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k l : ℕ),\\n  Polynomial.hasseDeriv k ∘ₗ Polynomial.hasseDeriv l = (k + l).choose k • Polynomial.hasseDeriv (k + l)\",\n      \"informal_description\": \"For any semiring $ R $ and natural numbers $ k, l $, the composition of the $ k $-th and $ l $-th Hasse derivatives on the polynomial ring $ R[X] $ equals $ \\\\binom{k + l}{k} $ times the $ (k + l) $-th Hasse derivative, i.e., $ D^{(k)} \\\\circ D^{(l)} = \\\\binom{k + l}{k} D^{(k + l)} $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv_monomial\",\n      \"informal_name\": \"Hasse Derivative of Monomial in Polynomial Ring\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k n : ℕ) (r : R),\\n  (Polynomial.hasseDeriv k) ((Polynomial.monomial n) r) = (Polynomial.monomial (n - k)) (↑(n.choose k) * r)\",\n      \"informal_description\": \"For a semiring $ R $, the $ k $-th Hasse derivative of the monomial $ rX^n $ in the polynomial ring $ R[X] $ is given by $ \\\\binom{n}{k} r X^{n - k} $. This expresses how the Hasse derivative acts on monomials by scaling the coefficient by the binomial coefficient $ \\\\binom{n}{k} $ and reducing the degree by $ k $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv_apply\",\n      \"informal_name\": \"Hasse Derivative of Order k Applied to a Polynomial\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f : Polynomial R),\\n  (Polynomial.hasseDeriv k) f = f.sum fun i r => (Polynomial.monomial (i - k)) (↑(i.choose k) * r)\",\n      \"informal_description\": \"For a semiring $ R $ and a polynomial $ f \\\\in R[X] $, the Hasse derivative of order $ k $ applied to $ f $ is given by $ D^{(k)}(f) = \\\\sum_{i} \\\\binom{i}{k} \\\\cdot a_i \\\\cdot X^{i - k} $, where $ a_i $ is the coefficient of $ X^i $ in $ f $. This expression sums over all monomials in $ f $, scaling each by the binomial coefficient $ \\\\binom{i}{k} $ and reducing the exponent by $ k $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Polynomial.hasseDeriv_mul",
+            "informal_name": "Product Rule for Hasse Derivatives in Polynomial Rings",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f g : Polynomial R),\n  (Polynomial.hasseDeriv k) (f * g) =\n    ∑ ij ∈ Finset.antidiagonal k, (Polynomial.hasseDeriv ij.1) f * (Polynomial.hasseDeriv ij.2) g",
+            "informal_description": "For any polynomials $ f, g \\in R[X] $, the $ k $-th Hasse derivative of the product $ f \\cdot g $ satisfies $$ D^{(k)}(f \\cdot g) = \\sum_{\\substack{i + j = k}} D^{(i)}(f) \\cdot D^{(j)}(g), $$ where the sum is taken over all pairs $ (i, j) $ of natural numbers such that $ i + j = k $. This expresses the Hasse derivative of a product as a sum over the antidiagonal decomposition of $ k $.",
+            "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          },
+          {
+            "formal_name": "MvPolynomial.pderiv_mul",
+            "informal_name": "Product Rule for Partial Derivatives in Multivariate Polynomial Rings",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type v} [inst : CommSemiring R] {i : σ} {f g : MvPolynomial σ R},\n  (MvPolynomial.pderiv i) (f * g) = (MvPolynomial.pderiv i) f * g + f * (MvPolynomial.pderiv i) g",
+            "informal_description": "For any commutative semiring $ R $, type $ \\sigma $, and variables $ i \\in \\sigma $, the partial derivative with respect to $ i $ of the product of two multivariate polynomials $ f $ and $ g $ in $ R[\\sigma] $ satisfies the Leibniz rule: $ \\partial_i(fg) = (\\partial_i f) \\cdot g + f \\cdot (\\partial_i g) $.",
+            "path": "Mathlib.Algebra.MvPolynomial.PDeriv"
+          },
+          {
+            "formal_name": "Polynomial.hasseDeriv",
+            "informal_name": "Hasse Derivative of Order k on Polynomial Ring",
+            "kind": "definition",
+            "type": "{R : Type u_1} → [inst : Semiring R] → ℕ → Polynomial R →ₗ[R] Polynomial R",
+            "informal_description": "For a semiring $ R $, the Hasse derivative of order $ k $ is an $ R $-linear map $ D^{(k)} : R[X] \to R[X] $ defined by $ D^{(k)}(a_i X^i) = \binom{i}{k} a_i X^{i - k} $ on monomials and extended linearly. This operation generalizes the usual derivative by scaling each coefficient $ a_i $ by the binomial coefficient $ \binom{i}{k} $ and reducing the degree by $ k $.",
+            "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          },
+          {
+            "formal_name": "Polynomial.hasseDeriv_comp",
+            "informal_name": "Hasse Derivative Composition Formula with Binomial Coefficient",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (k l : ℕ),\n  Polynomial.hasseDeriv k ∘ₗ Polynomial.hasseDeriv l = (k + l).choose k • Polynomial.hasseDeriv (k + l)",
+            "informal_description": "For any semiring $ R $ and natural numbers $ k, l $, the composition of the $ k $-th and $ l $-th Hasse derivatives on the polynomial ring $ R[X] $ equals $ \\binom{k + l}{k} $ times the $ (k + l) $-th Hasse derivative, i.e., $ D^{(k)} \\circ D^{(l)} = \\binom{k + l}{k} D^{(k + l)} $.",
+            "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          },
+          {
+            "formal_name": "Polynomial.hasseDeriv_monomial",
+            "informal_name": "Hasse Derivative of Monomial in Polynomial Ring",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (k n : ℕ) (r : R),\n  (Polynomial.hasseDeriv k) ((Polynomial.monomial n) r) = (Polynomial.monomial (n - k)) (↑(n.choose k) * r)",
+            "informal_description": "For a semiring $ R $, the $ k $-th Hasse derivative of the monomial $ rX^n $ in the polynomial ring $ R[X] $ is given by $ \\binom{n}{k} r X^{n - k} $. This expresses how the Hasse derivative acts on monomials by scaling the coefficient by the binomial coefficient $ \\binom{n}{k} $ and reducing the degree by $ k $.",
+            "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          },
+          {
+            "formal_name": "Polynomial.hasseDeriv_apply",
+            "informal_name": "Hasse Derivative of Order k Applied to a Polynomial",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f : Polynomial R),\n  (Polynomial.hasseDeriv k) f = f.sum fun i r => (Polynomial.monomial (i - k)) (↑(i.choose k) * r)",
+            "informal_description": "For a semiring $ R $ and a polynomial $ f \\in R[X] $, the Hasse derivative of order $ k $ applied to $ f $ is given by $ D^{(k)}(f) = \\sum_{i} \\binom{i}{k} \\cdot a_i \\cdot X^{i - k} $, where $ a_i $ is the coefficient of $ X^i $ in $ f $. This expression sums over all monomials in $ f $, scaling each by the binomial coefficient $ \\binom{i}{k} $ and reducing the exponent by $ k $.",
+            "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "current",
+    "method": "lean_leansearch",
+    "request": {
+      "query": "The multivariate Hasse derivative of f times g equals f times the Hasse derivative of g if f has degree zero in every differentiated variable",
+      "num_results": 6
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.hasseDeriv_mul\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.HasseDeriv\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f g : Polynomial R),\\n  (Polynomial.hasseDeriv k) (f * g) =\\n    ∑ ij ∈ Finset.antidiagonal k, (Polynomial.hasseDeriv ij.1) f * (Polynomial.hasseDeriv ij.2) g\"\n    },\n    {\n      \"name\": \"MvPolynomial.pderiv_mul\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.PDeriv\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type v} [inst : CommSemiring R] {i : σ} {f g : MvPolynomial σ R},\\n  (MvPolynomial.pderiv i) (f * g) = (MvPolynomial.pderiv i) f * g + f * (MvPolynomial.pderiv i) g\"\n    },\n    {\n      \"name\": \"Polynomial.derivative_mul\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Derivative\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Semiring R] {f g : Polynomial R},\\n  Polynomial.derivative (f * g) = Polynomial.derivative f * g + f * Polynomial.derivative g\"\n    },\n    {\n      \"name\": \"PowerSeries.derivativeFun_mul\",\n      \"module_name\": \"Mathlib.RingTheory.PowerSeries.Derivative\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommSemiring R] (f g : PowerSeries R),\\n  (f * g).derivativeFun = f • g.derivativeFun + g • f.derivativeFun\"\n    },\n    {\n      \"name\": \"MvPolynomial.leibniz_iff_X\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Derivation\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_2} {A : Type u_3} [inst : CommSemiring R] [inst_1 : AddCommMonoid A] [inst_2 : Module R A]\\n  [inst_3 : Module (MvPolynomial σ R) A] [IsScalarTower R (MvPolynomial σ R) A] (D : MvPolynomial σ R →ₗ[R] A),\\n  D 1 = 0 →\\n    ((∀ (p q : MvPolynomial σ R), D (p * q) = p • D q + q • D p) ↔\\n      ∀ (s : σ →₀ ℕ) (i : σ),\\n        D ((MvPolynomial.monomial s) 1 * MvPolynomial.X i) =\\n          (MvPolynomial.monomial s) 1 • D (MvPolynomial.X i) + MvPolynomial.X i • D ((MvPolynom...\"\n    },\n    {\n      \"name\": \"Polynomial.derivative'\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Derivation\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : CommSemiring R] → Derivation R (Polynomial R) (Polynomial R)\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.hasseDeriv_mul",
+            "module_name": "Mathlib.Algebra.Polynomial.HasseDeriv",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f g : Polynomial R),\n  (Polynomial.hasseDeriv k) (f * g) =\n    ∑ ij ∈ Finset.antidiagonal k, (Polynomial.hasseDeriv ij.1) f * (Polynomial.hasseDeriv ij.2) g"
+          },
+          {
+            "name": "MvPolynomial.pderiv_mul",
+            "module_name": "Mathlib.Algebra.MvPolynomial.PDeriv",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type v} [inst : CommSemiring R] {i : σ} {f g : MvPolynomial σ R},\n  (MvPolynomial.pderiv i) (f * g) = (MvPolynomial.pderiv i) f * g + f * (MvPolynomial.pderiv i) g"
+          },
+          {
+            "name": "Polynomial.derivative_mul",
+            "module_name": "Mathlib.Algebra.Polynomial.Derivative",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : Semiring R] {f g : Polynomial R},\n  Polynomial.derivative (f * g) = Polynomial.derivative f * g + f * Polynomial.derivative g"
+          },
+          {
+            "name": "PowerSeries.derivativeFun_mul",
+            "module_name": "Mathlib.RingTheory.PowerSeries.Derivative",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommSemiring R] (f g : PowerSeries R),\n  (f * g).derivativeFun = f • g.derivativeFun + g • f.derivativeFun"
+          },
+          {
+            "name": "MvPolynomial.leibniz_iff_X",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Derivation",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {R : Type u_2} {A : Type u_3} [inst : CommSemiring R] [inst_1 : AddCommMonoid A] [inst_2 : Module R A]\n  [inst_3 : Module (MvPolynomial σ R) A] [IsScalarTower R (MvPolynomial σ R) A] (D : MvPolynomial σ R →ₗ[R] A),\n  D 1 = 0 →\n    ((∀ (p q : MvPolynomial σ R), D (p * q) = p • D q + q • D p) ↔\n      ∀ (s : σ →₀ ℕ) (i : σ),\n        D ((MvPolynomial.monomial s) 1 * MvPolynomial.X i) =\n          (MvPolynomial.monomial s) 1 • D (MvPolynomial.X i) + MvPolynomial.X i • D ((MvPolynom..."
+          },
+          {
+            "name": "Polynomial.derivative'",
+            "module_name": "Mathlib.Algebra.Polynomial.Derivation",
+            "kind": "definition",
+            "type": "{R : Type u_1} → [inst : CommSemiring R] → Derivation R (Polynomial R) (Polynomial R)"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "literature",
+    "method": "lean_leanfinder",
+    "request": {
+      "query": "Hasse Schmidt higher derivation product rule with constant factor independent of differentiated variables",
+      "num_results": 6
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv_comp\",\n      \"informal_name\": \"Hasse Derivative Composition Formula with Binomial Coefficient\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k l : ℕ),\\n  Polynomial.hasseDeriv k ∘ₗ Polynomial.hasseDeriv l = (k + l).choose k • Polynomial.hasseDeriv (k + l)\",\n      \"informal_description\": \"For any semiring $ R $ and natural numbers $ k, l $, the composition of the $ k $-th and $ l $-th Hasse derivatives on the polynomial ring $ R[X] $ equals $ \\\\binom{k + l}{k} $ times the $ (k + l) $-th Hasse derivative, i.e., $ D^{(k)} \\\\circ D^{(l)} = \\\\binom{k + l}{k} D^{(k + l)} $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"LaurentSeries.hasseDeriv_comp\",\n      \"informal_name\": \"Composition of Hasse Derivatives on Laurent Series\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] {V : Type u_2} [inst_1 : AddCommGroup V] [inst_2 : Module R V] (k l : ℕ)\\n  (f : LaurentSeries V),\\n  (LaurentSeries.hasseDeriv R k) ((LaurentSeries.hasseDeriv R l) f) =\\n    (k + l).choose k • (LaurentSeries.hasseDeriv R (k + l)) f\",\n      \"informal_description\": \"For any natural numbers $k$ and $l$, and any Laurent series $f$ with coefficients in an $R$-module $V$, the composition of the Hasse derivatives of orders $k$ and $l$ applied to $f$ equals $\\\\binom{k + l}{k} \\\\cdot \\\\text{hasseDeriv}_{k + l}(f)$, where $\\\\text{hasseDeriv}_n(f)$ denotes the Hasse derivative of order $n$.\",\n      \"path\": \"Mathlib.RingTheory.LaurentSeries\"\n    },\n    {\n      \"formal_name\": \"Polynomial.hasseDeriv_mul\",\n      \"informal_name\": \"Product Rule for Hasse Derivatives in Polynomial Rings\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f g : Polynomial R),\\n  (Polynomial.hasseDeriv k) (f * g) =\\n    ∑ ij ∈ Finset.antidiagonal k, (Polynomial.hasseDeriv ij.1) f * (Polynomial.hasseDeriv ij.2) g\",\n      \"informal_description\": \"For any polynomials $ f, g \\\\in R[X] $, the $ k $-th Hasse derivative of the product $ f \\\\cdot g $ satisfies $$ D^{(k)}(f \\\\cdot g) = \\\\sum_{\\\\substack{i + j = k}} D^{(i)}(f) \\\\cdot D^{(j)}(g), $$ where the sum is taken over all pairs $ (i, j) $ of natural numbers such that $ i + j = k $. This expresses the Hasse derivative of a product as a sum over the antidiagonal decomposition of $ k $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"Polynomial.factorial_smul_hasseDeriv\",\n      \"informal_name\": \"Factorial Scaling of Hasse Derivative Equals Iterated Derivative\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (k : ℕ), ⇑(k.factorial • Polynomial.hasseDeriv k) = (⇑Polynomial.derivative)^[k]\",\n      \"informal_description\": \"For any semiring $ R $, the $ k $-th Hasse derivative operator on the polynomial ring $ R[X] $, when multiplied by $ k! $, equals the $ k $-th iterate of the standard derivative operator. Formally, $ k! \\\\cdot D^{(k)} = (\\\\frac{d}{dX})^k $, where $ D^{(k)} $ denotes the Hasse derivative of order $ k $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"fwdDiff_smul\",\n      \"informal_name\": \"Forward Difference of Scalar Product in Modules\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {M : Type u_1} {G : Type u_2} [inst : AddCommMonoid M] [inst_1 : AddCommGroup G] (h : M) {R : Type} [inst_2 : Ring R]\\n  [inst_3 : Module R G] (f : M → R) (g : M → G),\\n  fwdDiff h (f • g) = fwdDiff h f • g + f • fwdDiff h g + fwdDiff h f • fwdDiff h g\",\n      \"informal_description\": \"For any ring $R$, $R$-module $G$, additive commutative group $M$, and functions $f : M \\to R$ and $g : M \\to G$, the forward difference of the scalar product $f \\bullet g$ with respect to $h$ satisfies $\\\\Delta_h (f \\bullet g) = \\\\Delta_h f \\bullet g + f \\bullet \\\\Delta_h g + \\\\Delta_h f \\bullet \\\\Delta_h g$, where $\\\\Delta_h$ denotes the forward difference operator defined by $\\\\Delta_h f(n) = f(n + h) - f(n)$.\",\n      \"path\": \"Mathlib.Algebra.Group.ForwardDiff\"\n    },\n    {\n      \"formal_name\": \"Algebra.Generators.H1Cotangent.δAux_mul\",\n      \"informal_name\": \"Leibniz Rule for Auxiliary Map in Jacobi-Zariski Sequence\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u₁} {S : Type u₂} [inst : CommRing R] [inst_1 : CommRing S] [inst_2 : Algebra R S] {T : Type u₃}\\n  [inst_3 : CommRing T] [inst_4 : Algebra R T] [inst_5 : Algebra S T] [inst_6 : IsScalarTower R S T] {ι : Type w₁}\\n  (Q : Algebra.Generators S T ι) (x y : Q.Ring),\\n  (Algebra.Generators.H1Cotangent.δAux R Q) (x * y) =\\n    x • (Algebra.Generators.H1Cotangent.δAux R Q) y + y • (Algebra.Generators.H1Cotangent.δAux R Q) x\",\n      \"informal_description\": \"For the auxiliary linear map $\\\\delta_{\\\\text{Aux}}: Q.\\\\text{Ring} \\\\to T \\\\otimes_S \\\\Omega_{S/R}$ in the first cotangent module of the Jacobi-Zariski sequence, the map satisfies the Leibniz rule: $\\\\delta_{\\\\text{Aux}}(x \\\\cdot y) = x \\\\cdot \\\\delta_{\\\\text{Aux}}(y) + y \\\\cdot \\\\delta_{\\\\text{Aux}}(x)$ for all $x, y \\\\in Q.\\\\text{Ring}$. This follows from the derivation property of the canonical map $d: S \\\\to \\\\Omega_{S/R}$ and the tensor product's universal property.\",\n      \"path\": \"Mathlib.RingTheory.Kaehler.JacobiZariski\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Polynomial.hasseDeriv_comp",
+            "informal_name": "Hasse Derivative Composition Formula with Binomial Coefficient",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (k l : ℕ),\n  Polynomial.hasseDeriv k ∘ₗ Polynomial.hasseDeriv l = (k + l).choose k • Polynomial.hasseDeriv (k + l)",
+            "informal_description": "For any semiring $ R $ and natural numbers $ k, l $, the composition of the $ k $-th and $ l $-th Hasse derivatives on the polynomial ring $ R[X] $ equals $ \\binom{k + l}{k} $ times the $ (k + l) $-th Hasse derivative, i.e., $ D^{(k)} \\circ D^{(l)} = \\binom{k + l}{k} D^{(k + l)} $.",
+            "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          },
+          {
+            "formal_name": "LaurentSeries.hasseDeriv_comp",
+            "informal_name": "Composition of Hasse Derivatives on Laurent Series",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] {V : Type u_2} [inst_1 : AddCommGroup V] [inst_2 : Module R V] (k l : ℕ)\n  (f : LaurentSeries V),\n  (LaurentSeries.hasseDeriv R k) ((LaurentSeries.hasseDeriv R l) f) =\n    (k + l).choose k • (LaurentSeries.hasseDeriv R (k + l)) f",
+            "informal_description": "For any natural numbers $k$ and $l$, and any Laurent series $f$ with coefficients in an $R$-module $V$, the composition of the Hasse derivatives of orders $k$ and $l$ applied to $f$ equals $\\binom{k + l}{k} \\cdot \\text{hasseDeriv}_{k + l}(f)$, where $\\text{hasseDeriv}_n(f)$ denotes the Hasse derivative of order $n$.",
+            "path": "Mathlib.RingTheory.LaurentSeries"
+          },
+          {
+            "formal_name": "Polynomial.hasseDeriv_mul",
+            "informal_name": "Product Rule for Hasse Derivatives in Polynomial Rings",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (k : ℕ) (f g : Polynomial R),\n  (Polynomial.hasseDeriv k) (f * g) =\n    ∑ ij ∈ Finset.antidiagonal k, (Polynomial.hasseDeriv ij.1) f * (Polynomial.hasseDeriv ij.2) g",
+            "informal_description": "For any polynomials $ f, g \\in R[X] $, the $ k $-th Hasse derivative of the product $ f \\cdot g $ satisfies $$ D^{(k)}(f \\cdot g) = \\sum_{\\substack{i + j = k}} D^{(i)}(f) \\cdot D^{(j)}(g), $$ where the sum is taken over all pairs $ (i, j) $ of natural numbers such that $ i + j = k $. This expresses the Hasse derivative of a product as a sum over the antidiagonal decomposition of $ k $.",
+            "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          },
+          {
+            "formal_name": "Polynomial.factorial_smul_hasseDeriv",
+            "informal_name": "Factorial Scaling of Hasse Derivative Equals Iterated Derivative",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (k : ℕ), ⇑(k.factorial • Polynomial.hasseDeriv k) = (⇑Polynomial.derivative)^[k]",
+            "informal_description": "For any semiring $ R $, the $ k $-th Hasse derivative operator on the polynomial ring $ R[X] $, when multiplied by $ k! $, equals the $ k $-th iterate of the standard derivative operator. Formally, $ k! \\cdot D^{(k)} = (\\frac{d}{dX})^k $, where $ D^{(k)} $ denotes the Hasse derivative of order $ k $.",
+            "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          },
+          {
+            "formal_name": "fwdDiff_smul",
+            "informal_name": "Forward Difference of Scalar Product in Modules",
+            "kind": "theorem",
+            "type": "∀ {M : Type u_1} {G : Type u_2} [inst : AddCommMonoid M] [inst_1 : AddCommGroup G] (h : M) {R : Type} [inst_2 : Ring R]\n  [inst_3 : Module R G] (f : M → R) (g : M → G),\n  fwdDiff h (f • g) = fwdDiff h f • g + f • fwdDiff h g + fwdDiff h f • fwdDiff h g",
+            "informal_description": "For any ring $R$, $R$-module $G$, additive commutative group $M$, and functions $f : M \to R$ and $g : M \to G$, the forward difference of the scalar product $f \bullet g$ with respect to $h$ satisfies $\\Delta_h (f \bullet g) = \\Delta_h f \bullet g + f \bullet \\Delta_h g + \\Delta_h f \bullet \\Delta_h g$, where $\\Delta_h$ denotes the forward difference operator defined by $\\Delta_h f(n) = f(n + h) - f(n)$.",
+            "path": "Mathlib.Algebra.Group.ForwardDiff"
+          },
+          {
+            "formal_name": "Algebra.Generators.H1Cotangent.δAux_mul",
+            "informal_name": "Leibniz Rule for Auxiliary Map in Jacobi-Zariski Sequence",
+            "kind": "theorem",
+            "type": "∀ {R : Type u₁} {S : Type u₂} [inst : CommRing R] [inst_1 : CommRing S] [inst_2 : Algebra R S] {T : Type u₃}\n  [inst_3 : CommRing T] [inst_4 : Algebra R T] [inst_5 : Algebra S T] [inst_6 : IsScalarTower R S T] {ι : Type w₁}\n  (Q : Algebra.Generators S T ι) (x y : Q.Ring),\n  (Algebra.Generators.H1Cotangent.δAux R Q) (x * y) =\n    x • (Algebra.Generators.H1Cotangent.δAux R Q) y + y • (Algebra.Generators.H1Cotangent.δAux R Q) x",
+            "informal_description": "For the auxiliary linear map $\\delta_{\\text{Aux}}: Q.\\text{Ring} \\to T \\otimes_S \\Omega_{S/R}$ in the first cotangent module of the Jacobi-Zariski sequence, the map satisfies the Leibniz rule: $\\delta_{\\text{Aux}}(x \\cdot y) = x \\cdot \\delta_{\\text{Aux}}(y) + y \\cdot \\delta_{\\text{Aux}}(x)$ for all $x, y \\in Q.\\text{Ring}$. This follows from the derivation property of the canonical map $d: S \\to \\Omega_{S/R}$ and the tensor product's universal property.",
+            "path": "Mathlib.RingTheory.Kaehler.JacobiZariski"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "literature",
+    "method": "lean_leansearch",
+    "request": {
+      "query": "Hasse Schmidt higher derivation product rule with constant factor independent of differentiated variables",
+      "num_results": 6
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"HasDerivAt.mul_const\",\n      \"module_name\": \"Mathlib.Analysis.Calculus.Deriv.Mul\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {𝕜 : Type u} [inst : NontriviallyNormedField 𝕜] {x : 𝕜} {𝔸 : Type u_3} [inst_1 : NormedRing 𝔸]\\n  [inst_2 : NormedAlgebra 𝕜 𝔸] {c : 𝕜 → 𝔸} {c' : 𝔸},\\n  HasDerivAt c c' x → ∀ (d : 𝔸), HasDerivAt (fun y => c y * d) (c' * d) x\"\n    },\n    {\n      \"name\": \"deriv_mul_const_field\",\n      \"module_name\": \"Mathlib.Analysis.Calculus.Deriv.Mul\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {𝕜 : Type u} [inst : NontriviallyNormedField 𝕜] {x : 𝕜} {𝕜' : Type u_2} [inst_1 : NormedField 𝕜']\\n  [inst_2 : NormedAlgebra 𝕜 𝕜'] {u : 𝕜 → 𝕜'} (v : 𝕜'), deriv (fun y => u y * v) x = deriv u x * v\"\n    },\n    {\n      \"name\": \"deriv_mul_const\",\n      \"module_name\": \"Mathlib.Analysis.Calculus.Deriv.Mul\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {𝕜 : Type u} [inst : NontriviallyNormedField 𝕜] {x : 𝕜} {𝔸 : Type u_3} [inst_1 : NormedRing 𝔸]\\n  [inst_2 : NormedAlgebra 𝕜 𝔸] {c : 𝕜 → 𝔸},\\n  DifferentiableAt 𝕜 c x → ∀ (d : 𝔸), deriv (fun y => c y * d) x = deriv c x * d\"\n    },\n    {\n      \"name\": \"Polynomial.iterate_derivative_C_mul\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Derivative\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Semiring R] (a : R) (p : Polynomial R) (k : ℕ),\\n  (⇑Polynomial.derivative)^[k] (Polynomial.C a * p) = Polynomial.C a * (⇑Polynomial.derivative)^[k] p\"\n    },\n    {\n      \"name\": \"HasStrictDerivAt.mul_const\",\n      \"module_name\": \"Mathlib.Analysis.Calculus.Deriv.Mul\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {𝕜 : Type u} [inst : NontriviallyNormedField 𝕜] {x : 𝕜} {𝔸 : Type u_3} [inst_1 : NormedRing 𝔸]\\n  [inst_2 : NormedAlgebra 𝕜 𝔸] {c : 𝕜 → 𝔸} {c' : 𝔸},\\n  HasStrictDerivAt c c' x → ∀ (d : 𝔸), HasStrictDerivAt (fun y => c y * d) (c' * d) x\"\n    },\n    {\n      \"name\": \"derivWithin_mul_const_field\",\n      \"module_name\": \"Mathlib.Analysis.Calculus.Deriv.Mul\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {𝕜 : Type u} [inst : NontriviallyNormedField 𝕜] {x : 𝕜} {s : Set 𝕜} {𝕜' : Type u_2} [inst_1 : NormedField 𝕜']\\n  [inst_2 : NormedAlgebra 𝕜 𝕜'] {v : 𝕜 → 𝕜'} (u : 𝕜'), derivWithin (fun y => v y * u) s x = derivWithin v s x * u\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "HasDerivAt.mul_const",
+            "module_name": "Mathlib.Analysis.Calculus.Deriv.Mul",
+            "kind": "theorem",
+            "type": "∀ {𝕜 : Type u} [inst : NontriviallyNormedField 𝕜] {x : 𝕜} {𝔸 : Type u_3} [inst_1 : NormedRing 𝔸]\n  [inst_2 : NormedAlgebra 𝕜 𝔸] {c : 𝕜 → 𝔸} {c' : 𝔸},\n  HasDerivAt c c' x → ∀ (d : 𝔸), HasDerivAt (fun y => c y * d) (c' * d) x"
+          },
+          {
+            "name": "deriv_mul_const_field",
+            "module_name": "Mathlib.Analysis.Calculus.Deriv.Mul",
+            "kind": "theorem",
+            "type": "∀ {𝕜 : Type u} [inst : NontriviallyNormedField 𝕜] {x : 𝕜} {𝕜' : Type u_2} [inst_1 : NormedField 𝕜']\n  [inst_2 : NormedAlgebra 𝕜 𝕜'] {u : 𝕜 → 𝕜'} (v : 𝕜'), deriv (fun y => u y * v) x = deriv u x * v"
+          },
+          {
+            "name": "deriv_mul_const",
+            "module_name": "Mathlib.Analysis.Calculus.Deriv.Mul",
+            "kind": "theorem",
+            "type": "∀ {𝕜 : Type u} [inst : NontriviallyNormedField 𝕜] {x : 𝕜} {𝔸 : Type u_3} [inst_1 : NormedRing 𝔸]\n  [inst_2 : NormedAlgebra 𝕜 𝔸] {c : 𝕜 → 𝔸},\n  DifferentiableAt 𝕜 c x → ∀ (d : 𝔸), deriv (fun y => c y * d) x = deriv c x * d"
+          },
+          {
+            "name": "Polynomial.iterate_derivative_C_mul",
+            "module_name": "Mathlib.Algebra.Polynomial.Derivative",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : Semiring R] (a : R) (p : Polynomial R) (k : ℕ),\n  (⇑Polynomial.derivative)^[k] (Polynomial.C a * p) = Polynomial.C a * (⇑Polynomial.derivative)^[k] p"
+          },
+          {
+            "name": "HasStrictDerivAt.mul_const",
+            "module_name": "Mathlib.Analysis.Calculus.Deriv.Mul",
+            "kind": "theorem",
+            "type": "∀ {𝕜 : Type u} [inst : NontriviallyNormedField 𝕜] {x : 𝕜} {𝔸 : Type u_3} [inst_1 : NormedRing 𝔸]\n  [inst_2 : NormedAlgebra 𝕜 𝔸] {c : 𝕜 → 𝔸} {c' : 𝔸},\n  HasStrictDerivAt c c' x → ∀ (d : 𝔸), HasStrictDerivAt (fun y => c y * d) (c' * d) x"
+          },
+          {
+            "name": "derivWithin_mul_const_field",
+            "module_name": "Mathlib.Analysis.Calculus.Deriv.Mul",
+            "kind": "theorem",
+            "type": "∀ {𝕜 : Type u} [inst : NontriviallyNormedField 𝕜] {x : 𝕜} {s : Set 𝕜} {𝕜' : Type u_2} [inst_1 : NormedField 𝕜']\n  [inst_2 : NormedAlgebra 𝕜 𝕜'] {v : 𝕜 → 𝕜'} (u : 𝕜'), derivWithin (fun y => v y * u) s x = derivWithin v s x * u"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "lean_leanfinder",
+    "request": {
+      "query": "A linear map on multivariate polynomials commutes with multiplication by polynomials supported in variables disjoint from its multi-index",
+      "num_results": 6
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"MvPolynomial.sumSMulXSMulY\",\n      \"informal_name\": \"Linear combination of products of paired variables\",\n      \"kind\": \"definition\",\n      \"type\": \"{n : Type u_1} → {R : Type u_2} → [inst : CommRing R] → (n →₀ R) →ₗ[R] MvPolynomial (n ⊕ n) R\",\n      \"informal_description\": \"The linear map that sends each finite support function $ d $ to the sum $ \\\\sum_{i \\\\in \\\\text{support } d} d(i) \\\\cdot X_i \\\\cdot Y_i $, where $ X_i $ and $ Y_i $ are variables in the multivariate polynomial ring indexed by $ n \\\\oplus n $.\",\n      \"path\": \"Mathlib.RingTheory.MvPolynomial.IrreducibleQuadratic\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.disjoint_support_monomial\",\n      \"informal_name\": \"Disjointness of Monomial and Polynomial Supports\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] {a : σ →₀ ℕ} {p : MvPolynomial σ R} {s : R},\\n  a ∉ p.support → s ≠ 0 → Disjoint ((MvPolynomial.monomial a) s).support p.support\",\n      \"informal_description\": \"For a multivariate polynomial $ p $ over a commutative semiring $ R $, if a monomial with non-zero coefficient $ s $ has an exponent vector $ a $ not in the support of $ p $, then the support of this monomial (a singleton set containing $ a $) and the support of $ p $ (the set of monomials with non-zero coefficients in $ p $) are disjoint sets. Formally, if $ a \\notin \\text{support}(p) $ and $ s \\neq 0 $, then $ \\text{support}(\\text{monomial}(a, s)) $ and $ \\text{support}(p) $ are disjoint.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Basic\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.bind₂_monomial\",\n      \"informal_name\": \"Bind₂ of Monomial: $ \\\\text{bind₂}(f)(r X^d) = f(r) X^d $\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_3} {S : Type u_4} [inst : CommSemiring R] [inst_1 : CommSemiring S]\\n  (f : R →+* MvPolynomial σ S) (d : σ →₀ ℕ) (r : R),\\n  (MvPolynomial.bind₂ f) ((MvPolynomial.monomial d) r) = f r * (MvPolynomial.monomial d) 1\",\n      \"informal_description\": \"For any ring homomorphism $ f : R \\\\to R[\\\\sigma] $, finite support function $ d : \\\\sigma \\\\to₀ \\\\mathbb{N} $, and coefficient $ r \\\\in R $, applying the bind₂ operation to the monomial $ r X^d $ yields $ f(r) X^d $, where $ X^d $ denotes the monomial with exponents specified by $ d $ and coefficient 1.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Monad\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.esymmAlgHomMonomial_add\",\n      \"informal_name\": \"Additivity of Elementary Symmetric Polynomial Substitution for Monomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_3} {n : ℕ} [inst : CommSemiring R] [inst_1 : Fintype σ] {r : R} {t s : Fin n →₀ ℕ},\\n  MvPolynomial.esymmAlgHomMonomial σ (t + s) r =\\n    MvPolynomial.esymmAlgHomMonomial σ t r * MvPolynomial.esymmAlgHomMonomial σ s 1\",\n      \"informal_description\": \"For any finite support functions $ t $ and $ s $ from $ \\\\text{Fin } n $ to $ \\\\mathbb{N} $, the elementary symmetric polynomial substitution for the monomial with exponent $ t + s $ and coefficient $ r $ equals the product of the substitution for the monomial with exponent $ t $ and coefficient $ r $ and the substitution for the monomial with exponent $ s $ and coefficient $ 1 $. Formally, $ \\\\text{esymmAlgHomMonomial}_\\\\sigma(t + s, r) = \\\\text{esymmAlgHomMonomial}_\\\\sigma(t, r) \\\\cdot \\\\text{esymmAlgHomMonomial}_\\\\sigma(s, 1) $.\",\n      \"path\": \"Mathlib.RingTheory.MvPolynomial.Symmetric.FundamentalTheorem\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.bind₁_monomial\",\n      \"informal_name\": \"bind₁ Applied to a Monomial Yields Product of Substitutions\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_3} [inst : CommSemiring R] (f : σ → MvPolynomial τ R) (d : σ →₀ ℕ) (r : R),\\n  (MvPolynomial.bind₁ f) ((MvPolynomial.monomial d) r) = MvPolynomial.C r * ∏ i ∈ d.support, f i ^ d i\",\n      \"informal_description\": \"For any substitution function $ f : \\\\sigma \\\\to R[\\\\tau] $, finite exponent vector $ d : \\\\sigma \\\\to_0 \\\\mathbb{N} $, and coefficient $ r \\\\in R $, applying the variable substitution homomorphism $ \\\\text{bind}_1 $ to the monomial $ \\\\text{monomial}(d, r) $ results in the product of the constant polynomial $ C(r) $ and the product over $ f(i)^{d(i)} $ for all $ i $ in the support of $ d $. Formally, $ \\\\text{bind}_1(f)(\\\\text{monomial}(d, r)) = C(r) \\\\cdot \\\\prod_{i \\\\in \\\\text{support}(d)} f(i)^{d(i)} $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Monad\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.mul_X_mem_coeffsIn\",\n      \"informal_name\": \"Multiplication by a Variable Preserves Coefficient Submodule Membership\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_2} {S : Type u_3} {σ : Type u_4} [inst : CommSemiring R] [inst_1 : CommSemiring S] [inst_2 : Module R S]\\n  {M : Submodule R S} {p : MvPolynomial σ S} {s : σ},\\n  p * MvPolynomial.X s ∈ MvPolynomial.coeffsIn σ M ↔ p ∈ MvPolynomial.coeffsIn σ M\",\n      \"informal_description\": \"For any polynomial $ p $ in the multivariate polynomial ring $ R[\\\\sigma] $, multiplying $ p $ by the variable $ X_s $ results in a polynomial with coefficients in the submodule $ M $ if and only if $ p $ itself has coefficients in $ M $. Formally, $ p \\\\cdot X_s \\\\in \\\\text{coeffsIn}(\\\\sigma, M) $ if and only if $ p \\\\in \\\\text{coeffsIn}(\\\\sigma, M) $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Basic\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "MvPolynomial.sumSMulXSMulY",
+            "informal_name": "Linear combination of products of paired variables",
+            "kind": "definition",
+            "type": "{n : Type u_1} → {R : Type u_2} → [inst : CommRing R] → (n →₀ R) →ₗ[R] MvPolynomial (n ⊕ n) R",
+            "informal_description": "The linear map that sends each finite support function $ d $ to the sum $ \\sum_{i \\in \\text{support } d} d(i) \\cdot X_i \\cdot Y_i $, where $ X_i $ and $ Y_i $ are variables in the multivariate polynomial ring indexed by $ n \\oplus n $.",
+            "path": "Mathlib.RingTheory.MvPolynomial.IrreducibleQuadratic"
+          },
+          {
+            "formal_name": "MvPolynomial.disjoint_support_monomial",
+            "informal_name": "Disjointness of Monomial and Polynomial Supports",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] {a : σ →₀ ℕ} {p : MvPolynomial σ R} {s : R},\n  a ∉ p.support → s ≠ 0 → Disjoint ((MvPolynomial.monomial a) s).support p.support",
+            "informal_description": "For a multivariate polynomial $ p $ over a commutative semiring $ R $, if a monomial with non-zero coefficient $ s $ has an exponent vector $ a $ not in the support of $ p $, then the support of this monomial (a singleton set containing $ a $) and the support of $ p $ (the set of monomials with non-zero coefficients in $ p $) are disjoint sets. Formally, if $ a \notin \text{support}(p) $ and $ s \neq 0 $, then $ \text{support}(\text{monomial}(a, s)) $ and $ \text{support}(p) $ are disjoint.",
+            "path": "Mathlib.Algebra.MvPolynomial.Basic"
+          },
+          {
+            "formal_name": "MvPolynomial.bind₂_monomial",
+            "informal_name": "Bind₂ of Monomial: $ \\text{bind₂}(f)(r X^d) = f(r) X^d $",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {R : Type u_3} {S : Type u_4} [inst : CommSemiring R] [inst_1 : CommSemiring S]\n  (f : R →+* MvPolynomial σ S) (d : σ →₀ ℕ) (r : R),\n  (MvPolynomial.bind₂ f) ((MvPolynomial.monomial d) r) = f r * (MvPolynomial.monomial d) 1",
+            "informal_description": "For any ring homomorphism $ f : R \\to R[\\sigma] $, finite support function $ d : \\sigma \\to₀ \\mathbb{N} $, and coefficient $ r \\in R $, applying the bind₂ operation to the monomial $ r X^d $ yields $ f(r) X^d $, where $ X^d $ denotes the monomial with exponents specified by $ d $ and coefficient 1.",
+            "path": "Mathlib.Algebra.MvPolynomial.Monad"
+          },
+          {
+            "formal_name": "MvPolynomial.esymmAlgHomMonomial_add",
+            "informal_name": "Additivity of Elementary Symmetric Polynomial Substitution for Monomials",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {R : Type u_3} {n : ℕ} [inst : CommSemiring R] [inst_1 : Fintype σ] {r : R} {t s : Fin n →₀ ℕ},\n  MvPolynomial.esymmAlgHomMonomial σ (t + s) r =\n    MvPolynomial.esymmAlgHomMonomial σ t r * MvPolynomial.esymmAlgHomMonomial σ s 1",
+            "informal_description": "For any finite support functions $ t $ and $ s $ from $ \\text{Fin } n $ to $ \\mathbb{N} $, the elementary symmetric polynomial substitution for the monomial with exponent $ t + s $ and coefficient $ r $ equals the product of the substitution for the monomial with exponent $ t $ and coefficient $ r $ and the substitution for the monomial with exponent $ s $ and coefficient $ 1 $. Formally, $ \\text{esymmAlgHomMonomial}_\\sigma(t + s, r) = \\text{esymmAlgHomMonomial}_\\sigma(t, r) \\cdot \\text{esymmAlgHomMonomial}_\\sigma(s, 1) $.",
+            "path": "Mathlib.RingTheory.MvPolynomial.Symmetric.FundamentalTheorem"
+          },
+          {
+            "formal_name": "MvPolynomial.bind₁_monomial",
+            "informal_name": "bind₁ Applied to a Monomial Yields Product of Substitutions",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_3} [inst : CommSemiring R] (f : σ → MvPolynomial τ R) (d : σ →₀ ℕ) (r : R),\n  (MvPolynomial.bind₁ f) ((MvPolynomial.monomial d) r) = MvPolynomial.C r * ∏ i ∈ d.support, f i ^ d i",
+            "informal_description": "For any substitution function $ f : \\sigma \\to R[\\tau] $, finite exponent vector $ d : \\sigma \\to_0 \\mathbb{N} $, and coefficient $ r \\in R $, applying the variable substitution homomorphism $ \\text{bind}_1 $ to the monomial $ \\text{monomial}(d, r) $ results in the product of the constant polynomial $ C(r) $ and the product over $ f(i)^{d(i)} $ for all $ i $ in the support of $ d $. Formally, $ \\text{bind}_1(f)(\\text{monomial}(d, r)) = C(r) \\cdot \\prod_{i \\in \\text{support}(d)} f(i)^{d(i)} $.",
+            "path": "Mathlib.Algebra.MvPolynomial.Monad"
+          },
+          {
+            "formal_name": "MvPolynomial.mul_X_mem_coeffsIn",
+            "informal_name": "Multiplication by a Variable Preserves Coefficient Submodule Membership",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_2} {S : Type u_3} {σ : Type u_4} [inst : CommSemiring R] [inst_1 : CommSemiring S] [inst_2 : Module R S]\n  {M : Submodule R S} {p : MvPolynomial σ S} {s : σ},\n  p * MvPolynomial.X s ∈ MvPolynomial.coeffsIn σ M ↔ p ∈ MvPolynomial.coeffsIn σ M",
+            "informal_description": "For any polynomial $ p $ in the multivariate polynomial ring $ R[\\sigma] $, multiplying $ p $ by the variable $ X_s $ results in a polynomial with coefficients in the submodule $ M $ if and only if $ p $ itself has coefficients in $ M $. Formally, $ p \\cdot X_s \\in \\text{coeffsIn}(\\sigma, M) $ if and only if $ p \\in \\text{coeffsIn}(\\sigma, M) $.",
+            "path": "Mathlib.Algebra.MvPolynomial.Basic"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "lean_leansearch",
+    "request": {
+      "query": "A linear map on multivariate polynomials commutes with multiplication by polynomials supported in variables disjoint from its multi-index",
+      "num_results": 6
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPowerSeries.commute_monomial\",\n      \"module_name\": \"Mathlib.RingTheory.MvPowerSeries.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (φ : MvPowerSeries σ R) {a : R} {n : σ →₀ ℕ},\\n  Commute φ ((MvPowerSeries.monomial n) a) ↔ ∀ (m : σ →₀ ℕ), Commute ((MvPowerSeries.coeff m) φ) a\"\n    },\n    {\n      \"name\": \"PolynomialModule.map\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Module.Basic\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} →\\n  {M : Type u_2} →\\n    [inst : CommRing R] →\\n      [inst_1 : AddCommGroup M] →\\n        [inst_2 : Module R M] →\\n          (R' : Type u_4) →\\n            {M' : Type u_5} →\\n              [inst_3 : CommRing R'] →\\n                [inst_4 : AddCommGroup M'] →\\n                  [inst_5 : Module R' M'] →\\n                    [inst_6 : Module R M'] → (M →ₗ[R] M') → PolynomialModule R M →ₗ[R] PolynomialModule R' M'\"\n    },\n    {\n      \"name\": \"MvPolynomial.sumSMulX\",\n      \"module_name\": \"Mathlib.RingTheory.MvPolynomial.IrreducibleQuadratic\",\n      \"kind\": \"definition\",\n      \"type\": \"{n : Type u_1} → {R : Type u_2} → [inst : CommRing R] → (n →₀ R) →ₗ[R] MvPolynomial n R\"\n    },\n    {\n      \"name\": \"MvPolynomial.mkDerivationₗ\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Derivation\",\n      \"kind\": \"definition\",\n      \"type\": \"{σ : Type u_1} →\\n  (R : Type u_2) →\\n    {A : Type u_3} →\\n      [inst : CommSemiring R] →\\n        [inst_1 : AddCommMonoid A] →\\n          [inst_2 : Module R A] → [Module (MvPolynomial σ R) A] → (σ → A) → MvPolynomial σ R →ₗ[R] A\"\n    },\n    {\n      \"name\": \"MvPolynomial.linearMap_ext\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] {M : Type u_2} [inst_1 : AddCommMonoid M] [inst_2 : Module R M]\\n  {f g : MvPolynomial σ R →ₗ[R] M},\\n  (∀ (s : σ →₀ ℕ), f ∘ₗ MvPolynomial.monomial s = g ∘ₗ MvPolynomial.monomial s) → f = g\"\n    },\n    {\n      \"name\": \"PolyEquivTensor.toFunLinear_mul_tmul_mul\",\n      \"module_name\": \"Mathlib.RingTheory.PolynomialAlgebra\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (R : Type u_1) (A : Type u_2) [inst : CommSemiring R] [inst_1 : Semiring A] [inst_2 : Algebra R A] (a₁ a₂ : A)\\n  (p₁ p₂ : Polynomial R),\\n  (PolyEquivTensor.toFunLinear R A) ((a₁ * a₂) ⊗ₜ[R] (p₁ * p₂)) =\\n    (PolyEquivTensor.toFunLinear R A) (a₁ ⊗ₜ[R] p₁) * (PolyEquivTensor.toFunLinear R A) (a₂ ⊗ₜ[R] p₂)\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPowerSeries.commute_monomial",
+            "module_name": "Mathlib.RingTheory.MvPowerSeries.Basic",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (φ : MvPowerSeries σ R) {a : R} {n : σ →₀ ℕ},\n  Commute φ ((MvPowerSeries.monomial n) a) ↔ ∀ (m : σ →₀ ℕ), Commute ((MvPowerSeries.coeff m) φ) a"
+          },
+          {
+            "name": "PolynomialModule.map",
+            "module_name": "Mathlib.Algebra.Polynomial.Module.Basic",
+            "kind": "definition",
+            "type": "{R : Type u_1} →\n  {M : Type u_2} →\n    [inst : CommRing R] →\n      [inst_1 : AddCommGroup M] →\n        [inst_2 : Module R M] →\n          (R' : Type u_4) →\n            {M' : Type u_5} →\n              [inst_3 : CommRing R'] →\n                [inst_4 : AddCommGroup M'] →\n                  [inst_5 : Module R' M'] →\n                    [inst_6 : Module R M'] → (M →ₗ[R] M') → PolynomialModule R M →ₗ[R] PolynomialModule R' M'"
+          },
+          {
+            "name": "MvPolynomial.sumSMulX",
+            "module_name": "Mathlib.RingTheory.MvPolynomial.IrreducibleQuadratic",
+            "kind": "definition",
+            "type": "{n : Type u_1} → {R : Type u_2} → [inst : CommRing R] → (n →₀ R) →ₗ[R] MvPolynomial n R"
+          },
+          {
+            "name": "MvPolynomial.mkDerivationₗ",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Derivation",
+            "kind": "definition",
+            "type": "{σ : Type u_1} →\n  (R : Type u_2) →\n    {A : Type u_3} →\n      [inst : CommSemiring R] →\n        [inst_1 : AddCommMonoid A] →\n          [inst_2 : Module R A] → [Module (MvPolynomial σ R) A] → (σ → A) → MvPolynomial σ R →ₗ[R] A"
+          },
+          {
+            "name": "MvPolynomial.linearMap_ext",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Basic",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] {M : Type u_2} [inst_1 : AddCommMonoid M] [inst_2 : Module R M]\n  {f g : MvPolynomial σ R →ₗ[R] M},\n  (∀ (s : σ →₀ ℕ), f ∘ₗ MvPolynomial.monomial s = g ∘ₗ MvPolynomial.monomial s) → f = g"
+          },
+          {
+            "name": "PolyEquivTensor.toFunLinear_mul_tmul_mul",
+            "module_name": "Mathlib.RingTheory.PolynomialAlgebra",
+            "kind": "theorem",
+            "type": "∀ (R : Type u_1) (A : Type u_2) [inst : CommSemiring R] [inst_1 : Semiring A] [inst_2 : Algebra R A] (a₁ a₂ : A)\n  (p₁ p₂ : Polynomial R),\n  (PolyEquivTensor.toFunLinear R A) ((a₁ * a₂) ⊗ₜ[R] (p₁ * p₂)) =\n    (PolyEquivTensor.toFunLinear R A) (a₁ ⊗ₜ[R] p₁) * (PolyEquivTensor.toFunLinear R A) (a₂ ⊗ₜ[R] p₂)"
+          }
+        ]
+      },
+      "isError": false
+    }
+  }
+]
