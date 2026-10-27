@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-27
 
-- Declarations completed: **287/293**
-- Next declaration: **#288 `Roth.roth`** (Roth/Main.lean:573)
+- Declarations completed: **288/293**
+- Next declaration: **#289 `Roth.roth_rat`** (Roth/Main.lean:581)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -306,10 +306,10 @@ Last regenerated: 2026-10-27
 | 285 | `Roth.roth_product_bound_aux` | Roth/Main.lean:481 | SKIP | [report](mathlibable/Roth.roth_product_bound_aux.md) |
 | 286 | `Roth.roth_log_bound_aux` | Roth/Main.lean:505 | SKIP | [report](mathlibable/Roth.roth_log_bound_aux.md) |
 | 287 | `Roth.roth_of_isIntegral` | Roth/Main.lean:547 | BORDERLINE-needs-human | [report](mathlibable/Roth.roth_of_isIntegral.md) |
+| 288 | `Roth.roth` | Roth/Main.lean:573 | YES-but-generalise-first | [report](mathlibable/Roth.roth.md) |
 
 ## Remaining declarations (in processing order)
 
-- #288 `Roth.roth` (Roth/Main.lean:573, public theorem)
 - #289 `Roth.roth_rat` (Roth/Main.lean:581, public theorem)
 - #290 `LeanEval.NumberTheory.ThueSiegelRothProblem.IsDiophantine` (Roth/LeanEval.lean:16, public def)
 - #291 `LeanEval.NumberTheory.ThueSiegelRothProblem.exists_pos_div_rpow_lt_aux` (Roth/LeanEval.lean:20, private lemma)
