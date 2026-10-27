@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-27
 
-- Declarations completed: **254/293**
-- Next declaration: **#255 `Roth.abs_eval_iterated_hasseDeriv_lt_aux`** (Roth/MainLemma.lean:459)
+- Declarations completed: **255/293**
+- Next declaration: **#256 `Roth.exists_hasseDeriv_index_eval_bound_aux`** (Roth/MainLemma.lean:477)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -273,10 +273,10 @@ Last regenerated: 2026-10-27
 | 252 | `Roth.le_index_of_forall_eval_eq_zero` | Roth/MainLemma.lean:419 | NO-composable-from-mathlib | [report](mathlibable/Roth.le_index_of_forall_eval_eq_zero.md) |
 | 253 | `Roth.mul_two_mul_add_one_div_lt_of_le_sq_mul` | Roth/MainLemma.lean:433 | SKIP | [report](mathlibable/Roth.mul_two_mul_add_one_div_lt_of_le_sq_mul.md) |
 | 254 | `Roth.exists_hasseDeriv_eval_ne_zero` | Roth/MainLemma.lean:454 | NO-composable-from-mathlib | [report](mathlibable/Roth.exists_hasseDeriv_eval_ne_zero.md) |
+| 255 | `Roth.abs_eval_iterated_hasseDeriv_lt_aux` | Roth/MainLemma.lean:459 | SKIP | [report](mathlibable/Roth.abs_eval_iterated_hasseDeriv_lt_aux.md) |
 
 ## Remaining declarations (in processing order)
 
-- #255 `Roth.abs_eval_iterated_hasseDeriv_lt_aux` (Roth/MainLemma.lean:459, private lemma)
 - #256 `Roth.exists_hasseDeriv_index_eval_bound_aux` (Roth/MainLemma.lean:477, private lemma)
 - #257 `Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux` (Roth/MainLemma.lean:497, private lemma)
 - #258 `Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux` (Roth/MainLemma.lean:515, private lemma)
