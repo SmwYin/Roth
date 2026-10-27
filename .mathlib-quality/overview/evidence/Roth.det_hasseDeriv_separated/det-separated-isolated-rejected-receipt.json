@@ -1,0 +1,75 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\n\n#check_failure Roth.det_hasseDeriv_separated\nnamespace Det169Abstract\nvariable {R : Type*} [CommRing R] {ι : Type*} [Fintype ι] [DecidableEq ι]\n#check @Matrix.det_mul\n#check @Matrix.det_transpose\n#check @AlgHom.map_det\ntheorem generic (A B : Matrix ι ι R) :\n    (Matrix.of fun i j ↦ ∑ k, A i k * B j k).det = A.det * B.det := by\n  simpa only [Matrix.mul_apply, Matrix.transpose_apply] using\n    (Matrix.det_mul A B.transpose).trans\n      (congrArg (fun b ↦ A.det * b) (Matrix.det_transpose B))\n#print axioms generic\nexample (A B : Matrix (Fin 0) (Fin 0) R) :\n    (Matrix.of fun i j ↦ ∑ k, A i k * B j k).det = A.det * B.det := generic A B\nexample (A B : Matrix (Fin 2) (Fin 2) (ZMod 1)) :\n    (Matrix.of fun i j ↦ ∑ k, A i k * B j k).det = A.det * B.det := generic A B\nend Det169Abstract\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": false,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.det_hasseDeriv_separated`\",\n      \"line\": 13,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Matrix.det_mul : ∀ {n : Type u_4} [inst : DecidableEq n] [inst_1 : Fintype n] {R : Type u_3} [inst_2 : CommRing R]\\n  (M N : Matrix n n R), (M * N).det = M.det * N.det\",\n      \"line\": 16,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Matrix.det_transpose : ∀ {n : Type u_4} [inst : DecidableEq n] [inst_1 : Fintype n] {R : Type u_3}\\n  [inst_2 : CommRing R] (M : Matrix n n R), M.transpose.det = M.det\",\n      \"line\": 17,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@AlgHom.map_det : ∀ {n : Type u_6} [inst : DecidableEq n] [inst_1 : Fintype n] {R : Type u_3} [inst_2 : CommRing R]\\n  {S : Type u_4} [inst_3 : CommRing S] [inst_4 : Algebra R S] {T : Type u_5} [inst_5 : CommRing T]\\n  [inst_6 : Algebra R T] (f : S →ₐ[R] T) (M : Matrix n n S), f M.det = (f.mapMatrix M).det\",\n      \"line\": 18,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"Type mismatch: After simplification, term\\n  Eq.trans (Matrix.det_mul A B.transpose) (congrArg (fun b ↦ A.det * b) (Matrix.det_transpose B))\\n has type\\n  @Eq R (A * B.transpose).det (A.det * B.det)\\nbut is expected to have type\\n  @Eq R (Matrix.of fun i j ↦ ∑ k, A i k * B j k).det (A.det * B.det)\",\n      \"line\": 21,\n      \"column\": 3,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Det169Abstract.generic' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 24,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": false,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.det_hasseDeriv_separated`",
+          "line": 13,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Matrix.det_mul : ∀ {n : Type u_4} [inst : DecidableEq n] [inst_1 : Fintype n] {R : Type u_3} [inst_2 : CommRing R]\n  (M N : Matrix n n R), (M * N).det = M.det * N.det",
+          "line": 16,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Matrix.det_transpose : ∀ {n : Type u_4} [inst : DecidableEq n] [inst_1 : Fintype n] {R : Type u_3}\n  [inst_2 : CommRing R] (M : Matrix n n R), M.transpose.det = M.det",
+          "line": 17,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@AlgHom.map_det : ∀ {n : Type u_6} [inst : DecidableEq n] [inst_1 : Fintype n] {R : Type u_3} [inst_2 : CommRing R]\n  {S : Type u_4} [inst_3 : CommRing S] [inst_4 : Algebra R S] {T : Type u_5} [inst_5 : CommRing T]\n  [inst_6 : Algebra R T] (f : S →ₐ[R] T) (M : Matrix n n S), f M.det = (f.mapMatrix M).det",
+          "line": 18,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "Type mismatch: After simplification, term\n  Eq.trans (Matrix.det_mul A B.transpose) (congrArg (fun b ↦ A.det * b) (Matrix.det_transpose B))\n has type\n  @Eq R (A * B.transpose).det (A.det * B.det)\nbut is expected to have type\n  @Eq R (Matrix.of fun i j ↦ ∑ k, A i k * B j k).det (A.det * B.det)",
+          "line": 21,
+          "column": 3,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Det169Abstract.generic' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 24,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 429
+}

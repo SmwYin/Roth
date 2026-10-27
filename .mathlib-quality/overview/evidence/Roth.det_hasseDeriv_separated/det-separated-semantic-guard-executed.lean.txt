@@ -1,0 +1,22 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
+import Mathlib.LinearAlgebra.FreeModule.PID
+
+#check_failure Roth.det_hasseDeriv_separated
+namespace Det169SemanticGuard
+open Polynomial
+theorem overlappingVariables :
+    hasseDeriv 1 ((X : Polynomial ℤ) * X) ≠ hasseDeriv 1 (X : Polynomial ℤ) * X := by
+  intro h
+  have hc := congrArg (fun p : Polynomial ℤ ↦ p.coeff 1) h
+  norm_num [hasseDeriv_one', derivative_mul] at hc
+#print axioms overlappingVariables
+end Det169SemanticGuard

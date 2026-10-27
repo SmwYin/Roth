@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 168/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 169/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 168; remaining: 125.
-- Verdicts: 18 NO-composable-from-mathlib, 13 YES-add-as-is, 21 YES-but-generalise-first, 36 NO-mathlib-has-it, 50 BORDERLINE-needs-human, 30 SKIP.
+- Completed applicable assessments: 169; remaining: 124.
+- Verdicts: 18 NO-composable-from-mathlib, 13 YES-add-as-is, 21 YES-but-generalise-first, 36 NO-mathlib-has-it, 51 BORDERLINE-needs-human, 30 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -1906,6 +1906,21 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: explicit use count: 1; external to file use count: 0; explicit call sites: {'file': 'Roth/Separation.lean', 'line': 522, 'declaration': 'Roth.exists_rat_factors_det_hasseDeriv_aux', 'private': True}; documentation occurrences: 31; direct kernel value consumers: _private.Roth.Separation.0.Roth.exists_rat_factors_det_hasseDeriv_aux; inline derivations: None
 - Verdict: YES-but-generalise-first; [complete report](.mathlib-quality/overview/mathlibable/Roth.exists_separated_representation.md).
 
+### Completed: `Roth.det_hasseDeriv_separated`
+
+- Type: `∀ {τ : Type u_1} {K : Type u_2} [inst : Field K] {l : ℕ} (D : Fin l → τ →₀ ℕ)
+  (φ : Fin l → Polynomial K) (ψ : Fin l → MvPolynomial τ K),
+  (Matrix.of fun (μ ν : Fin l) ↦
+        (hasseDeriv (Finsupp.mapDomain some (D μ) + Finsupp.single none ↑ν))
+          (∑ ρ : Fin l, (Polynomial.aeval (X none)) (φ ρ) * (rename some) (ψ ρ))).det =
+    (rename some) (genWronskian D ψ) * (Polynomial.aeval (X none)) (wronskian φ)`
+- What: The mixed Hasse derivative determinant of a separated polynomial sum is the product of the embedded generalized and univariate Hasse Wronskians.
+- How: Identify entries with an embedded A·Bᵀ using factorwise separated Hasse differentiation and linearity; apply determinant multiplicativity, transpose invariance and AlgHom determinant transport.
+- Hypotheses: Arbitrary variable type τ; no Fintype or DecidableEq τ survives elaboration, Field K is required by existing named Wronskian parents, while expanded identity verifies over CommRing, Any l including0, arbitrary D and families φ/ψ; no independence, characteristic, nonzero or order-bound premise
+- Project dependencies: MvPolynomial.hasseDeriv, Roth.hasseDeriv_rename_mul_aeval, Roth.genWronskian, Roth.wronskian, Roth.wronskianMatrix
+- Caller summary: explicit use count: 1; external to file count: 0; textual occurrences: 3; explicit callers: Roth/Separation.lean:529 in private exists_rat_factors_det_hasseDeriv_aux; direct kernel value consumers: _private.Roth.Separation.0.Roth.exists_rat_factors_det_hasseDeriv_aux; full caller replays: exact original proof clone, expanded CommRing identity through named-parent bridge, strongest fresh-coordinate arbitraryorders identity through specialization bridge; inline rederivations: None; audit: Fresh exact ordered293 names,293unique,293present/kernelvalues; source occurrence count is distinct from direct kernel/simp/transitive closure.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.det_hasseDeriv_separated.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -2268,6 +2283,8 @@ Completed `Roth.exists_coeffNone_basis_aux`: The finitely many coefficient polyn
 
 Completed `Roth.exists_separated_representation`: formal search cells: 15; supplementary pid cells: 5; existing candidates: Module.finBasis, Module.free_of_finite_type_torsion_free', TensorProduct.exists_sum_tmul_eq, TensorProduct.eq_repr_basis_left, TensorProduct.eq_repr_basis_right, Matrix.exists_rank_normal_form; conclusion: Complete mathlib-only unconditional PID proof, complete rational caller and conditional free-span proof verified; existing finite/free/tensor/rank primitives still require substantive coordinate/degree reconstruction.
 
+Completed `Roth.det_hasseDeriv_separated`: All15 cells executed. Pinned Matrix.det_mul, Matrix.det_transpose and AlgHom.map_det cover only the determinant core; isolated exact generic composition compiles. Binary Polynomial.wronskian and univariate hasseDeriv_mul do not replace the arbitrary-family mixed-variable theorem. Local symbol index unavailable; no universal absence claim.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -2605,6 +2622,8 @@ Completed `Roth.eq_sum_aeval_basis_coeffNone_aux`: The helper has a distinct rol
 Completed `Roth.exists_coeffNone_basis_aux`: The helper has a distinct role in the separated polynomial proof as described in the structural review; no duplicate full construction is introduced.
 
 Completed `Roth.exists_separated_representation`: Two-factor tensor/matrix rank factorization is abstract mathematical context; generic pure-tensor expansion loses simultaneous independence and bounds.
+
+Completed `Roth.det_hasseDeriv_separated`: Outer matrix formula is existing det_mul+transpose. Full derivative matrix normalization uses project multivariate Hasse/product API and is not an existing ≤3-call mathlib replacement.
 
 ## Part 5: Generalization opportunities
 
@@ -2947,6 +2966,8 @@ Completed `Roth.exists_coeffNone_basis_aux`: No public generality claim under th
 
 Completed `Roth.exists_separated_representation`: status: verified sufficient scalar weakening; from: Field K; to: CommRing K + IsDomain K + IsPrincipalIdealRing K; preserved: arbitrary τ, hP nonzero, chosen n and hn, 1 ≤ l ≤ n+1, LinearIndependent K φ, LinearIndependent K ψ, all φ natDegree bounds, all ψ coordinate degree bounds, separated reconstruction; not claimed: PID is not claimed the weakest possible scalar condition; given-basis variant is conditional.; primary evidence: separated-repr-isolated-pid-executed.lean.txt / separated-repr-isolated-pid-receipt.json
 
+Completed `Roth.det_hasseDeriv_separated`: Clean native full expanded CommRing law; arbitrary finite square indexι and arbitrary univariate ordersE; injected f:τ→σ plus fresh coordinatei outside its range. Original named full conclusion and sole full caller compile via both ring bridge and strongest fresh-coordinate bridge. Original named Field parents cannot mechanically lower unchanged.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -3285,6 +3306,8 @@ Completed `Roth.eq_sum_aeval_basis_coeffNone_aux`: No new primitive is needed fo
 Completed `Roth.exists_coeffNone_basis_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 Completed `Roth.exists_separated_representation`: Bounded independent separated decomposition, using generic finite-free coefficient-span machinery.
+
+Completed `Roth.det_hasseDeriv_separated`: Multivariate Hasse derivative and fresh-coordinate factorwise law, settled finite-family Hasse-Wronskian API (binary polynomial Wronskian file has n-tuple TODO), and possible public separated derivative matrix/determinant factorization.
 
 ## Part 7: Junk / removable
 
@@ -3627,6 +3650,8 @@ Completed `Roth.exists_coeffNone_basis_aux`: Retain a live private proof interfa
 
 Completed `Roth.exists_separated_representation`: Not junk: substantive finite-rank decomposition, both independent factor families and degree control are used to construct nonzero Wronskians in the sole caller.
 
+Completed `Roth.det_hasseDeriv_separated`: Not junk: sole full private caller uses this identity to obtain rational separated factors, feeding integer separation; no duplicate inline derivation found.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -3799,6 +3824,7 @@ Completed `Roth.exists_separated_representation`: Not junk: substantive finite-r
 | 166 | `Roth.eq_sum_aeval_basis_coeffNone_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.eq_sum_aeval_basis_coeffNone_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.eq_sum_aeval_basis_coeffNone_aux/root-acceptance.json) |
 | 167 | `Roth.exists_coeffNone_basis_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_coeffNone_basis_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_coeffNone_basis_aux/root-acceptance.json) |
 | 168 | `Roth.exists_separated_representation` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_separated_representation.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_separated_representation/root-acceptance.json) |
+| 169 | `Roth.det_hasseDeriv_separated` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.det_hasseDeriv_separated.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.det_hasseDeriv_separated/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -4134,12 +4160,14 @@ Completed `Roth.exists_coeffNone_basis_aux` action: Keep unchanged; complete pri
 
 Completed `Roth.exists_separated_representation` action: YES-but-generalise-first; propose new Mathlib/Algebra/MvPolynomial/Separation.lean leaf, preserve complete API, then cleanup/upstream review; production unchanged.
 
+Completed `Roth.det_hasseDeriv_separated` action: BORDERLINE-needs-human: choose public fresh-coordinate determinant law versus primary matrix factorization after parent finite-family Wronskian API is settled. Keep Roth/Separation.lean and sole caller unchanged until that design decision; complete read-only verification unresolved[]. Provisional Mathlib/RingTheory/MvPolynomial/Wronskian.lean follows accepted genWronskian proposal, not a settled import commitment.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.det_hasseDeriv_separated` next. Supporting identities receive their own applicable checks.
+   `Roth.exists_sum_mul_eq_gcd` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

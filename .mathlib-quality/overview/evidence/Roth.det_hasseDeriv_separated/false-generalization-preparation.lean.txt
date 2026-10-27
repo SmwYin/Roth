@@ -1,0 +1,9 @@
+namespace Det169SemanticGuard
+open Polynomial
+theorem overlappingVariables :
+    hasseDeriv 1 ((X : Polynomial ℤ) * X) ≠ hasseDeriv 1 (X : Polynomial ℤ) * X := by
+  intro h
+  have hc := congrArg (fun p : Polynomial ℤ ↦ p.coeff 1) h
+  norm_num [hasseDeriv_one', derivative_mul] at hc
+#print axioms overlappingVariables
+end Det169SemanticGuard

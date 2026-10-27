@@ -1,0 +1,59 @@
+namespace Det169Fresh
+open MvPolynomial
+variable {σ τ : Type*}
+section Semiring
+variable {R : Type*} [CommSemiring R]
+theorem freshCoordinate (f : τ → σ) (hf : Function.Injective f) (i : σ)
+    (hi : ∀ j, f j ≠ i) (d : τ →₀ ℕ) (ν : ℕ) (U : MvPolynomial τ R)
+    (V : Polynomial R) :
+    hasseDeriv (d.mapDomain f + Finsupp.single i ν)
+      (rename f U * Polynomial.aeval (X i : MvPolynomial σ R) V) =
+      rename f (hasseDeriv d U) *
+        Polynomial.aeval (X i : MvPolynomial σ R) (Polynomial.hasseDeriv ν V) := by
+  let g : Option τ → σ := Option.elim i f
+  have hg : Function.Injective g := by
+    intro a b h
+    cases a with
+    | none =>
+      cases b with
+      | none => rfl
+      | some b => exact False.elim (hi b h.symm)
+    | some a =>
+      cases b with
+      | none => exact False.elim (hi a h)
+      | some b => exact congrArg some (hf h)
+  have h := congrArg (rename g) (Roth.hasseDeriv_rename_mul_aeval d ν U V)
+  rw [← hasseDeriv_rename hg] at h
+  simpa only [map_mul, rename_rename, rename_polynomial_aeval_X,
+    Finsupp.mapDomain_add, ← Finsupp.mapDomain_comp, Finsupp.mapDomain_single,
+    Function.comp_def, g, Option.elim_none, Option.elim_some] using h
+
+end Semiring
+section Ring
+variable {R : Type*} [CommRing R]
+theorem freshOrders169 {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (f : τ → σ) (hf : Function.Injective f) (i : σ) (hi : ∀ j, f j ≠ i)
+    (E : ι → ℕ) (D : ι → (τ →₀ ℕ)) (φ : ι → Polynomial R)
+    (ψ : ι → MvPolynomial τ R) :
+    (Matrix.of fun μ ν : ι ↦ hasseDeriv ((D μ).mapDomain f + Finsupp.single i (E ν))
+        (∑ ρ, Polynomial.aeval (X i : MvPolynomial σ R) (φ ρ) *
+          rename f (ψ ρ))).det = rename f ((Matrix.of fun μ ρ ↦ hasseDeriv (D μ) (ψ ρ)).det) *
+      Polynomial.aeval (X i : MvPolynomial σ R)
+        ((Matrix.of fun ν ρ : ι ↦ Polynomial.hasseDeriv (E ν) (φ ρ)).det) := by
+  rw [AlgHom.map_det, AlgHom.map_det,
+    ← Matrix.det_transpose ((Polynomial.aeval (X i)).mapMatrix
+      (Matrix.of fun ν ρ : ι ↦ Polynomial.hasseDeriv (E ν) (φ ρ))),
+    ← Matrix.det_mul]
+  congr 1
+  refine Matrix.ext fun μ ν ↦ ?_
+  rw [Matrix.of_apply, map_sum, Matrix.mul_apply]
+  refine Finset.sum_congr rfl fun ρ _ ↦ ?_
+  rw [mul_comm (Polynomial.aeval (X i : MvPolynomial σ R) (φ ρ)),
+    freshCoordinate f hf i hi]
+  rfl
+
+
+#print axioms freshCoordinate
+#print axioms freshOrders169
+end Ring
+end Det169Fresh

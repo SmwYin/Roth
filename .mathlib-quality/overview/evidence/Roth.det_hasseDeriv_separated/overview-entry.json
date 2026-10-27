@@ -1,0 +1,43 @@
+{
+  "declaration": "Roth.det_hasseDeriv_separated",
+  "kind": "theorem",
+  "type": "∀ {τ : Type u_1} {K : Type u_2} [inst : Field K] {l : ℕ} (D : Fin l → τ →₀ ℕ)\n  (φ : Fin l → Polynomial K) (ψ : Fin l → MvPolynomial τ K),\n  (Matrix.of fun (μ ν : Fin l) ↦\n        (hasseDeriv (Finsupp.mapDomain some (D μ) + Finsupp.single none ↑ν))\n          (∑ ρ : Fin l, (Polynomial.aeval (X none)) (φ ρ) * (rename some) (ψ ρ))).det =\n    (rename some) (genWronskian D ψ) * (Polynomial.aeval (X none)) (wronskian φ)",
+  "what": "The mixed Hasse derivative determinant of a separated polynomial sum is the product of the embedded generalized and univariate Hasse Wronskians.",
+  "how": "Identify entries with an embedded A·Bᵀ using factorwise separated Hasse differentiation and linearity; apply determinant multiplicativity, transpose invariance and AlgHom determinant transport.",
+  "hypotheses": [
+    "Arbitrary variable type τ; no Fintype or DecidableEq τ survives elaboration",
+    "Field K is required by existing named Wronskian parents, while expanded identity verifies over CommRing",
+    "Any l including0, arbitrary D and families φ/ψ; no independence, characteristic, nonzero or order-bound premise"
+  ],
+  "project_dependencies": [
+    "MvPolynomial.hasseDeriv",
+    "Roth.hasseDeriv_rename_mul_aeval",
+    "Roth.genWronskian",
+    "Roth.wronskian",
+    "Roth.wronskianMatrix"
+  ],
+  "caller_summary": {
+    "explicit_use_count": 1,
+    "external_to_file_count": 0,
+    "textual_occurrences": 3,
+    "explicit_callers": [
+      "Roth/Separation.lean:529 in private exists_rat_factors_det_hasseDeriv_aux"
+    ],
+    "direct_kernel_value_consumers": [
+      "_private.Roth.Separation.0.Roth.exists_rat_factors_det_hasseDeriv_aux"
+    ],
+    "full_caller_replays": [
+      "exact original proof clone",
+      "expanded CommRing identity through named-parent bridge",
+      "strongest fresh-coordinate arbitraryorders identity through specialization bridge"
+    ],
+    "inline_rederivations": [],
+    "audit": "Fresh exact ordered293 names,293unique,293present/kernelvalues; source occurrence count is distinct from direct kernel/simp/transitive closure."
+  },
+  "mathlib_api_audit": "All15 cells executed. Pinned Matrix.det_mul, Matrix.det_transpose and AlgHom.map_det cover only the determinant core; isolated exact generic composition compiles. Binary Polynomial.wronskian and univariate hasseDeriv_mul do not replace the arbitrary-family mixed-variable theorem. Local symbol index unavailable; no universal absence claim.",
+  "moral_duplications": "Outer matrix formula is existing det_mul+transpose. Full derivative matrix normalization uses project multivariate Hasse/product API and is not an existing ≤3-call mathlib replacement.",
+  "generalization": "Clean native full expanded CommRing law; arbitrary finite square indexι and arbitrary univariate ordersE; injected f:τ→σ plus fresh coordinatei outside its range. Original named full conclusion and sole full caller compile via both ring bridge and strongest fresh-coordinate bridge. Original named Field parents cannot mechanically lower unchanged.",
+  "missing_api": "Multivariate Hasse derivative and fresh-coordinate factorwise law, settled finite-family Hasse-Wronskian API (binary polynomial Wronskian file has n-tuple TODO), and possible public separated derivative matrix/determinant factorization.",
+  "junk": "Not junk: sole full private caller uses this identity to obtain rational separated factors, feeding integer separation; no duplicate inline derivation found.",
+  "action": "BORDERLINE-needs-human: choose public fresh-coordinate determinant law versus primary matrix factorization after parent finite-family Wronskian API is settled. Keep Roth/Separation.lean and sole caller unchanged until that design decision; complete read-only verification unresolved[]. Provisional Mathlib/RingTheory/MvPolynomial/Wronskian.lean follows accepted genWronskian proposal, not a settled import commitment."
+}

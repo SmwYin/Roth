@@ -1,0 +1,29 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
+import Mathlib.LinearAlgebra.FreeModule.PID
+
+#check_failure Roth.det_hasseDeriv_separated
+namespace Det169Abstract
+variable {R : Type*} [CommRing R] {ι : Type*} [Fintype ι] [DecidableEq ι]
+#check @Matrix.det_mul
+#check @Matrix.det_transpose
+#check @AlgHom.map_det
+theorem generic (A B : Matrix ι ι R) :
+    (Matrix.of fun i j ↦ ∑ k, A i k * B j k).det = A.det * B.det := by
+  change (A * B.transpose).det = A.det * B.det
+  exact (Matrix.det_mul A B.transpose).trans
+      (congrArg (fun b ↦ A.det * b) (Matrix.det_transpose B))
+#print axioms generic
+example (A B : Matrix (Fin 0) (Fin 0) R) :
+    (Matrix.of fun i j ↦ ∑ k, A i k * B j k).det = A.det * B.det := generic A B
+example (A B : Matrix (Fin 2) (Fin 2) (ZMod 1)) :
+    (Matrix.of fun i j ↦ ∑ k, A i k * B j k).det = A.det * B.det := generic A B
+end Det169Abstract

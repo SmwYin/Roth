@@ -1,0 +1,25 @@
+namespace Det169Context
+open MvPolynomial Roth
+variable {τ : Type*} {R : Type*} [CommRing R]
+theorem ringOrders169 {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (E : ι → ℕ) (D : ι → (τ →₀ ℕ)) (φ : ι → Polynomial R)
+    (ψ : ι → MvPolynomial τ R) :
+    (Matrix.of fun μ ν : ι ↦ hasseDeriv ((D μ).mapDomain some + Finsupp.single none (E ν))
+        (∑ ρ, Polynomial.aeval (X none : MvPolynomial (Option τ) R) (φ ρ) *
+          rename some (ψ ρ))).det = rename some ((Matrix.of fun μ ρ ↦ hasseDeriv (D μ) (ψ ρ)).det) *
+      Polynomial.aeval (X none : MvPolynomial (Option τ) R)
+        ((Matrix.of fun ν ρ : ι ↦ Polynomial.hasseDeriv (E ν) (φ ρ)).det) := by
+  rw [AlgHom.map_det, AlgHom.map_det,
+    ← Matrix.det_transpose ((Polynomial.aeval (X none)).mapMatrix
+      (Matrix.of fun ν ρ : ι ↦ Polynomial.hasseDeriv (E ν) (φ ρ))),
+    ← Matrix.det_mul]
+  congr 1
+  refine Matrix.ext fun μ ν ↦ ?_
+  rw [Matrix.of_apply, map_sum, Matrix.mul_apply]
+  refine Finset.sum_congr rfl fun ρ _ ↦ ?_
+  rw [mul_comm (Polynomial.aeval (X none : MvPolynomial (Option τ) R) (φ ρ)),
+    hasseDeriv_rename_mul_aeval]
+  rfl
+
+#print axioms ringOrders169
+end Det169Context
