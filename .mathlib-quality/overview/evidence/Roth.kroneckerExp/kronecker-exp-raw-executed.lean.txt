@@ -1,0 +1,31 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+import Mathlib.Algebra.Polynomial.CancelLeads
+import Mathlib.Algebra.MvPolynomial.PDeriv
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+import Mathlib.Algebra.MvPolynomial.Equiv
+import Mathlib.Analysis.Normed.Unbundled.RingSeminorm
+import Mathlib.LinearAlgebra.Matrix.AbsoluteValue
+import Mathlib.Data.Nat.Choose.Bounds
+import Mathlib.RingTheory.Polynomial.Basic
+import Mathlib.Data.Finsupp.Weight
+#check_failure Roth.kroneckerExp
+/-! Independent existing weighted-sum checks. -/
+namespace KroneckerExpRawAssessment
+theorem finite_sum_eq {σ : Type*} [Fintype σ] (k : ℕ) (d : σ →₀ ℕ) :
+    (∑ j, d j * k ^ (Fintype.equivFin σ j : ℕ)) =
+      Finsupp.weight (fun j ↦ k ^ (Fintype.equivFin σ j : ℕ)) d := by
+  simpa only [smul_eq_mul] using
+    (Finsupp.weight_eq_sum (fun j ↦ k ^ (Fintype.equivFin σ j : ℕ)) d).symm
+theorem linearCombination_eq {σ M R : Type*} [Semiring R] [AddCommMonoid M] [Module R M]
+    (w : σ → M) (d : σ →₀ R) : Finsupp.weight w d = Finsupp.linearCombination R w d := rfl
+#print axioms finite_sum_eq
+#print axioms linearCombination_eq
+end KroneckerExpRawAssessment

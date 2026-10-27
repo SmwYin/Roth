@@ -1,0 +1,829 @@
+[
+  {
+    "form": "current",
+    "method": "lean_leanfinder",
+    "request": {
+      "query": "Kronecker substitution monomial exponent sum d j * k ^ j",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"MvPolynomial.bind₁_monomial\",\n      \"informal_name\": \"bind₁ Applied to a Monomial Yields Product of Substitutions\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_3} [inst : CommSemiring R] (f : σ → MvPolynomial τ R) (d : σ →₀ ℕ) (r : R),\\n  (MvPolynomial.bind₁ f) ((MvPolynomial.monomial d) r) = MvPolynomial.C r * ∏ i ∈ d.support, f i ^ d i\",\n      \"informal_description\": \"For any substitution function $ f : \\\\sigma \\\\to R[\\\\tau] $, finite exponent vector $ d : \\\\sigma \\\\to_0 \\\\mathbb{N} $, and coefficient $ r \\\\in R $, applying the variable substitution homomorphism $ \\\\text{bind}_1 $ to the monomial $ \\\\text{monomial}(d, r) $ results in the product of the constant polynomial $ C(r) $ and the product over $ f(i)^{d(i)} $ for all $ i $ in the support of $ d $. Formally, $ \\\\text{bind}_1(f)(\\\\text{monomial}(d, r)) = C(r) \\\\cdot \\\\prod_{i \\\\in \\\\text{support}(d)} f(i)^{d(i)} $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Monad\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.monomial_sum_index\",\n      \"informal_name\": \"Monomial with Summed Exponents Equals Product of Monomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] {α : Type u_2} (s : Finset α) (f : α → σ →₀ ℕ) (a : R),\\n  (MvPolynomial.monomial (∑ i ∈ s, f i)) a = MvPolynomial.C a * ∏ i ∈ s, (MvPolynomial.monomial (f i)) 1\",\n      \"informal_description\": \"For any finite set $s$, function $f : \\\\alpha \\\\to \\\\sigma \\\\to_0 \\\\mathbb{N}$, and coefficient $a \\\\in R$, the monomial with exponent $\\\\sum_{i \\\\in s} f(i)$ and coefficient $a$ is equal to the product of the constant polynomial $C(a)$ and the product of monomials $\\\\prod_{i \\\\in s} \\\\text{monomial}(f(i), 1)$.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Basic\"\n    },\n    {\n      \"formal_name\": \"Polynomial.expand_eq_sum\",\n      \"informal_name\": \"Polynomial Expansion Equals Sum of Scaled Terms\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : CommSemiring R] (p : ℕ) {f : Polynomial R},\\n  (Polynomial.expand R p) f = f.sum fun e a => Polynomial.C a * (Polynomial.X ^ p) ^ e\",\n      \"informal_description\": \"For any polynomial $ f $ over a semiring $ R $ and natural number $ p $, substituting the indeterminate $ X $ with $ X^p $ in $ f $ yields the same polynomial as summing over all terms $ a_e X^{p e} $, where $ a_e $ are the coefficients of $ f $. Formally, $\\\\text{expand}_p(f) = \\\\sum_{e} a_e \\\\cdot X^{p e}$.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Expand\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.monomial_finsupp_sum_index\",\n      \"informal_name\": \"Monomial with Sum of Exponents Equals Product of Monomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] {α : Type u_2} {β : Type u_3} [inst_1 : Zero β] (f : α →₀ β)\\n  (g : α → β → σ →₀ ℕ) (a : R),\\n  (MvPolynomial.monomial (f.sum g)) a = MvPolynomial.C a * f.prod fun a b => (MvPolynomial.monomial (g a b)) 1\",\n      \"informal_description\": \"For any commutative semiring $ R $, types $ \\\\alpha $, $ \\\\beta $, and $ \\\\sigma $, a finite support function $ f : \\\\alpha \\\\to_0 \\\\beta $, a function $ g : \\\\alpha \\\\times \\\\beta \\\\to \\\\sigma \\\\to_0 \\\\mathbb{N} $, and an element $ a \\\\in R $, the monomial with exponent $ \\\\sum_{a \\\\in \\\\text{support}(f)} g(a, f(a)) $ and coefficient $ a $ equals the product of the constant polynomial $ a $ and the product over $ \\\\text{support}(f) $ of the monomials with exponents $ g(a, f(a)) $ and coefficient 1.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Basic\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.monomial_sum_one\",\n      \"informal_name\": \"Monomial Product Identity: Product of Monomials with Coefficient One Equals Monomial of Sum of Exponents\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] {α : Type u_2} (s : Finset α) (f : α → σ →₀ ℕ),\\n  (MvPolynomial.monomial (∑ i ∈ s, f i)) 1 = ∏ i ∈ s, (MvPolynomial.monomial (f i)) 1\",\n      \"informal_description\": \"For any finite set $ s $ of type $ \\\\alpha $ and function $ f : \\\\alpha \\\\to \\\\sigma \\\\to_0 \\\\mathbb{N} $, the monomial with exponent $ \\\\sum_{i \\\\in s} f(i) $ and coefficient 1 is equal to the product of the monomials with exponents $ f(i) $ and coefficient 1 for each $ i \\\\in s $. In symbols: $ \\\\text{monomial}\\\\left(\\\\sum_{i \\\\in s} f(i), 1\\\\right) = \\\\prod_{i \\\\in s} \\\\text{monomial}(f(i), 1) $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Basic\"\n    },\n    {\n      \"formal_name\": \"PolyEquivTensor.toFunLinear_mul_tmul_mul_aux_2\",\n      \"informal_name\": \"Polynomial Multiplication Coefficient Compatibility via Algebra Map\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (R : Type u_1) (A : Type u_2) [inst : CommSemiring R] [inst_1 : Semiring A] [inst_2 : Algebra R A] (k : ℕ) (a₁ a₂ : A)\\n  (p₁ p₂ : Polynomial R),\\n  a₁ * a₂ * (algebraMap R A) ((p₁ * p₂).coeff k) =\\n    ∑ x ∈ Finset.antidiagonal k, a₁ * (algebraMap R A) (p₁.coeff x.1) * (a₂ * (algebraMap R A) (p₂.coeff x.2))\",\n      \"informal_description\": \"For any natural number $k$ and elements $a_1, a_2$ in a semiring $A$, and polynomials $p_1, p_2$ over a commutative semiring $R$, the product $a_1 a_2$ multiplied by the algebra map of the coefficient of $p_1 p_2$ at $k$ equals the sum over all pairs $(i, j)$ with $i + j = k$ of $a_1$ times the algebra map of the coefficient of $p_1$ at $i$ multiplied by $a_2$ times the algebra map of the coefficient of $p_2$ at $j$.\",\n      \"path\": \"Mathlib.RingTheory.PolynomialAlgebra\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.sumSMulXSMulY\",\n      \"informal_name\": \"Linear combination of products of paired variables\",\n      \"kind\": \"definition\",\n      \"type\": \"{n : Type u_1} → {R : Type u_2} → [inst : CommRing R] → (n →₀ R) →ₗ[R] MvPolynomial (n ⊕ n) R\",\n      \"informal_description\": \"The linear map that sends each finite support function $ d $ to the sum $ \\\\sum_{i \\\\in \\\\text{support } d} d(i) \\\\cdot X_i \\\\cdot Y_i $, where $ X_i $ and $ Y_i $ are variables in the multivariate polynomial ring indexed by $ n \\\\oplus n $.\",\n      \"path\": \"Mathlib.RingTheory.MvPolynomial.IrreducibleQuadratic\"\n    },\n    {\n      \"formal_name\": \"PolyEquivTensor.toFunLinear_mul_tmul_mul_aux_1\",\n      \"informal_name\": \"Linearity Auxiliary Lemma for Polynomial-Tensor Equivalence\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (R : Type u_1) (A : Type u_2) [inst : CommSemiring R] [inst_1 : Semiring A] [inst_2 : Algebra R A] (p : Polynomial R)\\n  (k : ℕ) (h : Decidable ¬p.coeff k = 0) (a : A),\\n  (if ¬p.coeff k = 0 then a * (algebraMap R A) (p.coeff k) else 0) = a * (algebraMap R A) (p.coeff k)\",\n      \"informal_description\": \"For a polynomial $ p $ over a semiring $ R $, a natural number $ k $, and an element $ a $ of a semiring $ A $, if the coefficient of $ p $ at $ k $ is nonzero, then the conditional expression $ a \\\\cdot \\\\text{algebraMap}(\\\\text{coeff}_p(k)) $ equals $ a \\\\cdot \\\\text{algebraMap}(\\\\text{coeff}_p(k)) $. This equality holds trivially under the given decidable hypothesis that $ \\\\text{coeff}_p(k) \\\\neq 0 $.\",\n      \"path\": \"Mathlib.RingTheory.PolynomialAlgebra\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "MvPolynomial.bind₁_monomial",
+            "informal_name": "bind₁ Applied to a Monomial Yields Product of Substitutions",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_3} [inst : CommSemiring R] (f : σ → MvPolynomial τ R) (d : σ →₀ ℕ) (r : R),\n  (MvPolynomial.bind₁ f) ((MvPolynomial.monomial d) r) = MvPolynomial.C r * ∏ i ∈ d.support, f i ^ d i",
+            "informal_description": "For any substitution function $ f : \\sigma \\to R[\\tau] $, finite exponent vector $ d : \\sigma \\to_0 \\mathbb{N} $, and coefficient $ r \\in R $, applying the variable substitution homomorphism $ \\text{bind}_1 $ to the monomial $ \\text{monomial}(d, r) $ results in the product of the constant polynomial $ C(r) $ and the product over $ f(i)^{d(i)} $ for all $ i $ in the support of $ d $. Formally, $ \\text{bind}_1(f)(\\text{monomial}(d, r)) = C(r) \\cdot \\prod_{i \\in \\text{support}(d)} f(i)^{d(i)} $.",
+            "path": "Mathlib.Algebra.MvPolynomial.Monad"
+          },
+          {
+            "formal_name": "MvPolynomial.monomial_sum_index",
+            "informal_name": "Monomial with Summed Exponents Equals Product of Monomials",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] {α : Type u_2} (s : Finset α) (f : α → σ →₀ ℕ) (a : R),\n  (MvPolynomial.monomial (∑ i ∈ s, f i)) a = MvPolynomial.C a * ∏ i ∈ s, (MvPolynomial.monomial (f i)) 1",
+            "informal_description": "For any finite set $s$, function $f : \\alpha \\to \\sigma \\to_0 \\mathbb{N}$, and coefficient $a \\in R$, the monomial with exponent $\\sum_{i \\in s} f(i)$ and coefficient $a$ is equal to the product of the constant polynomial $C(a)$ and the product of monomials $\\prod_{i \\in s} \\text{monomial}(f(i), 1)$.",
+            "path": "Mathlib.Algebra.MvPolynomial.Basic"
+          },
+          {
+            "formal_name": "Polynomial.expand_eq_sum",
+            "informal_name": "Polynomial Expansion Equals Sum of Scaled Terms",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : CommSemiring R] (p : ℕ) {f : Polynomial R},\n  (Polynomial.expand R p) f = f.sum fun e a => Polynomial.C a * (Polynomial.X ^ p) ^ e",
+            "informal_description": "For any polynomial $ f $ over a semiring $ R $ and natural number $ p $, substituting the indeterminate $ X $ with $ X^p $ in $ f $ yields the same polynomial as summing over all terms $ a_e X^{p e} $, where $ a_e $ are the coefficients of $ f $. Formally, $\\text{expand}_p(f) = \\sum_{e} a_e \\cdot X^{p e}$.",
+            "path": "Mathlib.Algebra.Polynomial.Expand"
+          },
+          {
+            "formal_name": "MvPolynomial.monomial_finsupp_sum_index",
+            "informal_name": "Monomial with Sum of Exponents Equals Product of Monomials",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] {α : Type u_2} {β : Type u_3} [inst_1 : Zero β] (f : α →₀ β)\n  (g : α → β → σ →₀ ℕ) (a : R),\n  (MvPolynomial.monomial (f.sum g)) a = MvPolynomial.C a * f.prod fun a b => (MvPolynomial.monomial (g a b)) 1",
+            "informal_description": "For any commutative semiring $ R $, types $ \\alpha $, $ \\beta $, and $ \\sigma $, a finite support function $ f : \\alpha \\to_0 \\beta $, a function $ g : \\alpha \\times \\beta \\to \\sigma \\to_0 \\mathbb{N} $, and an element $ a \\in R $, the monomial with exponent $ \\sum_{a \\in \\text{support}(f)} g(a, f(a)) $ and coefficient $ a $ equals the product of the constant polynomial $ a $ and the product over $ \\text{support}(f) $ of the monomials with exponents $ g(a, f(a)) $ and coefficient 1.",
+            "path": "Mathlib.Algebra.MvPolynomial.Basic"
+          },
+          {
+            "formal_name": "MvPolynomial.monomial_sum_one",
+            "informal_name": "Monomial Product Identity: Product of Monomials with Coefficient One Equals Monomial of Sum of Exponents",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] {α : Type u_2} (s : Finset α) (f : α → σ →₀ ℕ),\n  (MvPolynomial.monomial (∑ i ∈ s, f i)) 1 = ∏ i ∈ s, (MvPolynomial.monomial (f i)) 1",
+            "informal_description": "For any finite set $ s $ of type $ \\alpha $ and function $ f : \\alpha \\to \\sigma \\to_0 \\mathbb{N} $, the monomial with exponent $ \\sum_{i \\in s} f(i) $ and coefficient 1 is equal to the product of the monomials with exponents $ f(i) $ and coefficient 1 for each $ i \\in s $. In symbols: $ \\text{monomial}\\left(\\sum_{i \\in s} f(i), 1\\right) = \\prod_{i \\in s} \\text{monomial}(f(i), 1) $.",
+            "path": "Mathlib.Algebra.MvPolynomial.Basic"
+          },
+          {
+            "formal_name": "PolyEquivTensor.toFunLinear_mul_tmul_mul_aux_2",
+            "informal_name": "Polynomial Multiplication Coefficient Compatibility via Algebra Map",
+            "kind": "theorem",
+            "type": "∀ (R : Type u_1) (A : Type u_2) [inst : CommSemiring R] [inst_1 : Semiring A] [inst_2 : Algebra R A] (k : ℕ) (a₁ a₂ : A)\n  (p₁ p₂ : Polynomial R),\n  a₁ * a₂ * (algebraMap R A) ((p₁ * p₂).coeff k) =\n    ∑ x ∈ Finset.antidiagonal k, a₁ * (algebraMap R A) (p₁.coeff x.1) * (a₂ * (algebraMap R A) (p₂.coeff x.2))",
+            "informal_description": "For any natural number $k$ and elements $a_1, a_2$ in a semiring $A$, and polynomials $p_1, p_2$ over a commutative semiring $R$, the product $a_1 a_2$ multiplied by the algebra map of the coefficient of $p_1 p_2$ at $k$ equals the sum over all pairs $(i, j)$ with $i + j = k$ of $a_1$ times the algebra map of the coefficient of $p_1$ at $i$ multiplied by $a_2$ times the algebra map of the coefficient of $p_2$ at $j$.",
+            "path": "Mathlib.RingTheory.PolynomialAlgebra"
+          },
+          {
+            "formal_name": "MvPolynomial.sumSMulXSMulY",
+            "informal_name": "Linear combination of products of paired variables",
+            "kind": "definition",
+            "type": "{n : Type u_1} → {R : Type u_2} → [inst : CommRing R] → (n →₀ R) →ₗ[R] MvPolynomial (n ⊕ n) R",
+            "informal_description": "The linear map that sends each finite support function $ d $ to the sum $ \\sum_{i \\in \\text{support } d} d(i) \\cdot X_i \\cdot Y_i $, where $ X_i $ and $ Y_i $ are variables in the multivariate polynomial ring indexed by $ n \\oplus n $.",
+            "path": "Mathlib.RingTheory.MvPolynomial.IrreducibleQuadratic"
+          },
+          {
+            "formal_name": "PolyEquivTensor.toFunLinear_mul_tmul_mul_aux_1",
+            "informal_name": "Linearity Auxiliary Lemma for Polynomial-Tensor Equivalence",
+            "kind": "theorem",
+            "type": "∀ (R : Type u_1) (A : Type u_2) [inst : CommSemiring R] [inst_1 : Semiring A] [inst_2 : Algebra R A] (p : Polynomial R)\n  (k : ℕ) (h : Decidable ¬p.coeff k = 0) (a : A),\n  (if ¬p.coeff k = 0 then a * (algebraMap R A) (p.coeff k) else 0) = a * (algebraMap R A) (p.coeff k)",
+            "informal_description": "For a polynomial $ p $ over a semiring $ R $, a natural number $ k $, and an element $ a $ of a semiring $ A $, if the coefficient of $ p $ at $ k $ is nonzero, then the conditional expression $ a \\cdot \\text{algebraMap}(\\text{coeff}_p(k)) $ equals $ a \\cdot \\text{algebraMap}(\\text{coeff}_p(k)) $. This equality holds trivially under the given decidable hypothesis that $ \\text{coeff}_p(k) \\neq 0 $.",
+            "path": "Mathlib.RingTheory.PolynomialAlgebra"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "current",
+    "method": "lean_loogle",
+    "request": {
+      "query": "\"kronecker\"",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Kronecker.«term_⊗ₖ_»\",\n      \"type\": \" : Lean.TrailingParserDescr\",\n      \"module\": \"Mathlib.LinearAlgebra.Matrix.Kronecker\"\n    },\n    {\n      \"name\": \"Kronecker.«term_⊗ₖₜ[_]_»\",\n      \"type\": \" : Lean.TrailingParserDescr\",\n      \"module\": \"Mathlib.LinearAlgebra.Matrix.Kronecker\"\n    },\n    {\n      \"name\": \"Kronecker.«term_⊗ₖₜ_»\",\n      \"type\": \" : Lean.TrailingParserDescr\",\n      \"module\": \"Mathlib.LinearAlgebra.Matrix.Kronecker\"\n    },\n    {\n      \"name\": \"Matrix.kronecker\",\n      \"type\": \" {α : Type u_3} {l : Type u_9} {m : Type u_10} {n : Type u_11} {p : Type u_12} [Mul α] : Matrix l m α → Matrix n p α → Matrix (l × n) (m × p) α\",\n      \"module\": \"Mathlib.LinearAlgebra.Matrix.Kronecker\"\n    },\n    {\n      \"name\": \"Matrix.kroneckerMap\",\n      \"type\": \" {α : Type u_3} {β : Type u_5} {γ : Type u_7} {l : Type u_9} {m : Type u_10} {n : Type u_11} {p : Type u_12} (f : α → β → γ) (A : Matrix l m α) (B : Matrix n p β) : Matrix (l × n) (m × p) γ\",\n      \"module\": \"Mathlib.LinearAlgebra.Matrix.Kronecker\"\n    },\n    {\n      \"name\": \"Matrix.kroneckerTMul\",\n      \"type\": \" (R : Type u_1) {α : Type u_3} {β : Type u_5} {l : Type u_9} {m : Type u_10} {n : Type u_11} {p : Type u_12} [CommSemiring R] [AddCommMonoid α] [AddCommMonoid β] [Module R α] [Module R β] : Matrix l m α → Matrix n p β → Matrix (l × n) (m × p) (TensorProduct R α β)\",\n      \"module\": \"Mathlib.LinearAlgebra.Matrix.Kronecker\"\n    },\n    {\n      \"name\": \"Matrix.kroneckerMap_apply\",\n      \"type\": \" {α : Type u_3} {β : Type u_5} {γ : Type u_7} {l : Type u_9} {m : Type u_10} {n : Type u_11} {p : Type u_12} (f : α → β → γ) (A : Matrix l m α) (B : Matrix n p β) (i : l × n) (j : m × p) : Matrix.kroneckerMap f A B i j = f (A i.1 j.1) (B i.2 j.2)\",\n      \"module\": \"Mathlib.LinearAlgebra.Matrix.Kronecker\"\n    },\n    {\n      \"name\": \"Matrix.kroneckerMap_map_left\",\n      \"type\": \" {α : Type u_3} {α' : Type u_4} {β : Type u_5} {γ : Type u_7} {l : Type u_9} {m : Type u_10} {n : Type u_11} {p : Type u_12} (f : α' → β → γ) (g : α → α') (A : Matrix l m α) (B : Matrix n p β) : Matrix.kroneckerMap f (A.map g) B = Matrix.kroneckerMap (fun a b => f (g a) b) A B\",\n      \"module\": \"Mathlib.LinearAlgebra.Matrix.Kronecker\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Kronecker.«term_⊗ₖ_»",
+            "type": " : Lean.TrailingParserDescr",
+            "module": "Mathlib.LinearAlgebra.Matrix.Kronecker"
+          },
+          {
+            "name": "Kronecker.«term_⊗ₖₜ[_]_»",
+            "type": " : Lean.TrailingParserDescr",
+            "module": "Mathlib.LinearAlgebra.Matrix.Kronecker"
+          },
+          {
+            "name": "Kronecker.«term_⊗ₖₜ_»",
+            "type": " : Lean.TrailingParserDescr",
+            "module": "Mathlib.LinearAlgebra.Matrix.Kronecker"
+          },
+          {
+            "name": "Matrix.kronecker",
+            "type": " {α : Type u_3} {l : Type u_9} {m : Type u_10} {n : Type u_11} {p : Type u_12} [Mul α] : Matrix l m α → Matrix n p α → Matrix (l × n) (m × p) α",
+            "module": "Mathlib.LinearAlgebra.Matrix.Kronecker"
+          },
+          {
+            "name": "Matrix.kroneckerMap",
+            "type": " {α : Type u_3} {β : Type u_5} {γ : Type u_7} {l : Type u_9} {m : Type u_10} {n : Type u_11} {p : Type u_12} (f : α → β → γ) (A : Matrix l m α) (B : Matrix n p β) : Matrix (l × n) (m × p) γ",
+            "module": "Mathlib.LinearAlgebra.Matrix.Kronecker"
+          },
+          {
+            "name": "Matrix.kroneckerTMul",
+            "type": " (R : Type u_1) {α : Type u_3} {β : Type u_5} {l : Type u_9} {m : Type u_10} {n : Type u_11} {p : Type u_12} [CommSemiring R] [AddCommMonoid α] [AddCommMonoid β] [Module R α] [Module R β] : Matrix l m α → Matrix n p β → Matrix (l × n) (m × p) (TensorProduct R α β)",
+            "module": "Mathlib.LinearAlgebra.Matrix.Kronecker"
+          },
+          {
+            "name": "Matrix.kroneckerMap_apply",
+            "type": " {α : Type u_3} {β : Type u_5} {γ : Type u_7} {l : Type u_9} {m : Type u_10} {n : Type u_11} {p : Type u_12} (f : α → β → γ) (A : Matrix l m α) (B : Matrix n p β) (i : l × n) (j : m × p) : Matrix.kroneckerMap f A B i j = f (A i.1 j.1) (B i.2 j.2)",
+            "module": "Mathlib.LinearAlgebra.Matrix.Kronecker"
+          },
+          {
+            "name": "Matrix.kroneckerMap_map_left",
+            "type": " {α : Type u_3} {α' : Type u_4} {β : Type u_5} {γ : Type u_7} {l : Type u_9} {m : Type u_10} {n : Type u_11} {p : Type u_12} (f : α' → β → γ) (g : α → α') (A : Matrix l m α) (B : Matrix n p β) : Matrix.kroneckerMap f (A.map g) B = Matrix.kroneckerMap (fun a b => f (g a) b) A B",
+            "module": "Mathlib.LinearAlgebra.Matrix.Kronecker"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "current",
+    "method": "lean_leansearch",
+    "request": {
+      "query": "Kronecker substitution exponent of a monomial",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPowerSeries.subst_monomial\",\n      \"module_name\": \"Mathlib.RingTheory.MvPowerSeries.Substitution\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_3} [inst : CommRing R] {τ : Type u_4} {S : Type u_5} [inst_1 : CommRing S]\\n  [inst_2 : Algebra R S] {a : σ → MvPowerSeries τ S},\\n  MvPowerSeries.HasSubst a →\\n    ∀ (e : σ →₀ ℕ) (r : R),\\n      MvPowerSeries.subst a ((MvPowerSeries.monomial e) r) =\\n        (algebraMap R (MvPowerSeries τ S)) r * e.prod fun s n => a s ^ n\"\n    },\n    {\n      \"name\": \"MvPowerSeries.substAlgHom_monomial\",\n      \"module_name\": \"Mathlib.RingTheory.MvPowerSeries.Substitution\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_3} [inst : CommRing R] {τ : Type u_4} {S : Type u_5} [inst_1 : CommRing S]\\n  [inst_2 : Algebra R S] {a : σ → MvPowerSeries τ S} (ha : MvPowerSeries.HasSubst a) (e : σ →₀ ℕ) (r : R),\\n  (MvPowerSeries.substAlgHom ha) ((MvPowerSeries.monomial e) r) =\\n    (algebraMap R (MvPowerSeries τ S)) r * e.prod fun s n => a s ^ n\"\n    },\n    {\n      \"name\": \"MvPolynomial.esymmAlgHomMonomial_single_one\",\n      \"module_name\": \"Mathlib.RingTheory.MvPolynomial.Symmetric.FundamentalTheorem\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_3} {n k : ℕ} [inst : CommSemiring R] [inst_1 : Fintype σ] {i : Fin n},\\n  MvPolynomial.esymmAlgHomMonomial σ (fun₀ | i => k) 1 = MvPolynomial.esymm σ R (↑i + 1) ^ k\"\n    },\n    {\n      \"name\": \"MvPolynomial.monomial_pow\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} {a : R} {e : ℕ} {s : σ →₀ ℕ} [inst : CommSemiring R],\\n  (MvPolynomial.monomial s) a ^ e = (MvPolynomial.monomial (e • s)) (a ^ e)\"\n    },\n    {\n      \"name\": \"MvPolynomial.degreeOf_monomial_eq\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Degrees\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] (s : σ →₀ ℕ) (i : σ) {a : R},\\n  a ≠ 0 → MvPolynomial.degreeOf i ((MvPolynomial.monomial s) a) = s i\"\n    },\n    {\n      \"name\": \"MvPolynomial.bind₁_monomial\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Monad\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_3} [inst : CommSemiring R] (f : σ → MvPolynomial τ R) (d : σ →₀ ℕ) (r : R),\\n  (MvPolynomial.bind₁ f) ((MvPolynomial.monomial d) r) = MvPolynomial.C r * ∏ i ∈ d.support, f i ^ d i\"\n    },\n    {\n      \"name\": \"PowerSeries.HasSubst.monomial\",\n      \"module_name\": \"Mathlib.RingTheory.PowerSeries.Substitution\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {τ : Type u_3} {S : Type u_4} [inst : CommRing S] {n : τ →₀ ℕ},\\n  n ≠ 0 → ∀ (s : S), PowerSeries.HasSubst ((MvPowerSeries.monomial n) s)\"\n    },\n    {\n      \"name\": \"MvPolynomial.monomial_add_single\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} {a : R} {e : ℕ} {n : σ} {s : σ →₀ ℕ} [inst : CommSemiring R],\\n  (MvPolynomial.monomial (s + Finsupp.single n e)) a = (MvPolynomial.monomial s) a * MvPolynomial.X n ^ e\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPowerSeries.subst_monomial",
+            "module_name": "Mathlib.RingTheory.MvPowerSeries.Substitution",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {R : Type u_3} [inst : CommRing R] {τ : Type u_4} {S : Type u_5} [inst_1 : CommRing S]\n  [inst_2 : Algebra R S] {a : σ → MvPowerSeries τ S},\n  MvPowerSeries.HasSubst a →\n    ∀ (e : σ →₀ ℕ) (r : R),\n      MvPowerSeries.subst a ((MvPowerSeries.monomial e) r) =\n        (algebraMap R (MvPowerSeries τ S)) r * e.prod fun s n => a s ^ n"
+          },
+          {
+            "name": "MvPowerSeries.substAlgHom_monomial",
+            "module_name": "Mathlib.RingTheory.MvPowerSeries.Substitution",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {R : Type u_3} [inst : CommRing R] {τ : Type u_4} {S : Type u_5} [inst_1 : CommRing S]\n  [inst_2 : Algebra R S] {a : σ → MvPowerSeries τ S} (ha : MvPowerSeries.HasSubst a) (e : σ →₀ ℕ) (r : R),\n  (MvPowerSeries.substAlgHom ha) ((MvPowerSeries.monomial e) r) =\n    (algebraMap R (MvPowerSeries τ S)) r * e.prod fun s n => a s ^ n"
+          },
+          {
+            "name": "MvPolynomial.esymmAlgHomMonomial_single_one",
+            "module_name": "Mathlib.RingTheory.MvPolynomial.Symmetric.FundamentalTheorem",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {R : Type u_3} {n k : ℕ} [inst : CommSemiring R] [inst_1 : Fintype σ] {i : Fin n},\n  MvPolynomial.esymmAlgHomMonomial σ (fun₀ | i => k) 1 = MvPolynomial.esymm σ R (↑i + 1) ^ k"
+          },
+          {
+            "name": "MvPolynomial.monomial_pow",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Basic",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type u_1} {a : R} {e : ℕ} {s : σ →₀ ℕ} [inst : CommSemiring R],\n  (MvPolynomial.monomial s) a ^ e = (MvPolynomial.monomial (e • s)) (a ^ e)"
+          },
+          {
+            "name": "MvPolynomial.degreeOf_monomial_eq",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Degrees",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] (s : σ →₀ ℕ) (i : σ) {a : R},\n  a ≠ 0 → MvPolynomial.degreeOf i ((MvPolynomial.monomial s) a) = s i"
+          },
+          {
+            "name": "MvPolynomial.bind₁_monomial",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Monad",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_3} [inst : CommSemiring R] (f : σ → MvPolynomial τ R) (d : σ →₀ ℕ) (r : R),\n  (MvPolynomial.bind₁ f) ((MvPolynomial.monomial d) r) = MvPolynomial.C r * ∏ i ∈ d.support, f i ^ d i"
+          },
+          {
+            "name": "PowerSeries.HasSubst.monomial",
+            "module_name": "Mathlib.RingTheory.PowerSeries.Substitution",
+            "kind": "theorem",
+            "type": "∀ {τ : Type u_3} {S : Type u_4} [inst : CommRing S] {n : τ →₀ ℕ},\n  n ≠ 0 → ∀ (s : S), PowerSeries.HasSubst ((MvPowerSeries.monomial n) s)"
+          },
+          {
+            "name": "MvPolynomial.monomial_add_single",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Basic",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type u_1} {a : R} {e : ℕ} {n : σ} {s : σ →₀ ℕ} [inst : CommSemiring R],\n  (MvPolynomial.monomial (s + Finsupp.single n e)) a = (MvPolynomial.monomial s) a * MvPolynomial.X n ^ e"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "current",
+    "method": "lean_local_search",
+    "request": {
+      "query": "kronecker",
+      "limit": 12
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Roth.kronecker\",\n      \"kind\": \"def\",\n      \"file\": \"Roth/GenWronskian.lean\"\n    },\n    {\n      \"name\": \"Matrix.GeneralLinearGroup._root_.Matrix.IsUnit.kronecker\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/GeneralLinearGroup/Defs.lean\"\n    },\n    {\n      \"name\": \"Matrix.GeneralLinearGroup.kronecker\",\n      \"kind\": \"def\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/GeneralLinearGroup/Defs.lean\"\n    },\n    {\n      \"name\": \"Matrix.IsDiag.kronecker\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/IsDiag.lean\"\n    },\n    {\n      \"name\": \"Matrix.IsHadamard.kronecker\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/HadamardMatrix.lean\"\n    },\n    {\n      \"name\": \"Matrix.PosDef.kronecker\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Analysis/Matrix/Order.lean\"\n    },\n    {\n      \"name\": \"Matrix.PosSemidef.kronecker\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Analysis/Matrix/Order.lean\"\n    },\n    {\n      \"name\": \"Matrix.kronecker\",\n      \"kind\": \"def\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/Kronecker.lean\"\n    },\n    {\n      \"name\": \"KroneckerConsumers.kroneckerExp\",\n      \"kind\": \"def\",\n      \"file\": \".lake/roth-overview-session/GenWronskianChecks.lean\"\n    },\n    {\n      \"name\": \"Roth.kroneckerExp\",\n      \"kind\": \"def\",\n      \"file\": \"Roth/GenWronskian.lean\"\n    },\n    {\n      \"name\": \"KroneckerConsumers.kroneckerExp_injOn\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/roth-overview-session/GenWronskianChecks.lean\"\n    },\n    {\n      \"name\": \"Roth.kroneckerExp_injOn\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/GenWronskian.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Roth.kronecker",
+            "kind": "def",
+            "file": "Roth/GenWronskian.lean"
+          },
+          {
+            "name": "Matrix.GeneralLinearGroup._root_.Matrix.IsUnit.kronecker",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/GeneralLinearGroup/Defs.lean"
+          },
+          {
+            "name": "Matrix.GeneralLinearGroup.kronecker",
+            "kind": "def",
+            "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/GeneralLinearGroup/Defs.lean"
+          },
+          {
+            "name": "Matrix.IsDiag.kronecker",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/IsDiag.lean"
+          },
+          {
+            "name": "Matrix.IsHadamard.kronecker",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/HadamardMatrix.lean"
+          },
+          {
+            "name": "Matrix.PosDef.kronecker",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Analysis/Matrix/Order.lean"
+          },
+          {
+            "name": "Matrix.PosSemidef.kronecker",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Analysis/Matrix/Order.lean"
+          },
+          {
+            "name": "Matrix.kronecker",
+            "kind": "def",
+            "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/Kronecker.lean"
+          },
+          {
+            "name": "KroneckerConsumers.kroneckerExp",
+            "kind": "def",
+            "file": ".lake/roth-overview-session/GenWronskianChecks.lean"
+          },
+          {
+            "name": "Roth.kroneckerExp",
+            "kind": "def",
+            "file": "Roth/GenWronskian.lean"
+          },
+          {
+            "name": "KroneckerConsumers.kroneckerExp_injOn",
+            "kind": "theorem",
+            "file": ".lake/roth-overview-session/GenWronskianChecks.lean"
+          },
+          {
+            "name": "Roth.kroneckerExp_injOn",
+            "kind": "theorem",
+            "file": "Roth/GenWronskian.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "standard",
+    "method": "lean_leanfinder",
+    "request": {
+      "query": "Weighted degree of monomial exponent vector sum coefficients times weights",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"MvPolynomial.isWeightedHomogeneous_monomial\",\n      \"informal_name\": \"Weighted Homogeneity of Monomials in Multivariate Polynomial Rings\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {M : Type u_2} [inst : CommSemiring R] {σ : Type u_3} [inst_1 : AddCommMonoid M] (w : σ → M)\\n  (d : σ →₀ ℕ) (r : R) {m : M},\\n  (Finsupp.weight w) d = m → MvPolynomial.IsWeightedHomogeneous w ((MvPolynomial.monomial d) r) m\",\n      \"informal_description\": \"For a weight function $ w : \\\\sigma \\\\to M $, a monomial $ r \\\\cdot X^d $ in the polynomial ring $ R[\\\\sigma] $, and a weight $ m \\\\in M $, if the weighted sum $ \\\\sum_{i \\\\in \\\\text{support } d} d(i) \\\\cdot w(i) = m $, then the monomial is weighted homogeneous of weight $ m $ with respect to $ w $.\",\n      \"path\": \"Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.weightedTotalDegree\",\n      \"informal_name\": \"Weighted total degree of a multivariate polynomial\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} →\\n  {M : Type u_2} →\\n    [inst : CommSemiring R] →\\n      {σ : Type u_3} → [AddCommMonoid M] → [inst_2 : SemilatticeSup M] → [OrderBot M] → (σ → M) → MvPolynomial σ R → M\",\n      \"informal_description\": \"For a multivariate polynomial $ p $ over a commutative semiring $ R $ with variables indexed by $ \\\\sigma $, and a weighting function $ w : \\\\sigma \\\\to M $ where $ M $ is a sup-semilattice, this function computes the supremum of the weights $ w(s) $ over all monomials $ s $ in the support of $ p $. The weight $ w(s) $ of a monomial $ s $ is defined as the sum $ \\\\sum_{i \\\\in \\\\text{support } s} s(i) \\\\cdot v_i $ for some fixed vectors $ v_i $ associated with indices $ i $. The result is an element of $ M $ representing the weighted total degree of $ p $.\",\n      \"path\": \"Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.weightedTotalDegree'\",\n      \"informal_name\": \"Weighted total degree of a multivariate polynomial\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} →\\n  {M : Type u_2} →\\n    [inst : CommSemiring R] →\\n      {σ : Type u_3} → [AddCommMonoid M] → [SemilatticeSup M] → (σ → M) → MvPolynomial σ R → WithBot M\",\n      \"informal_description\": \"For a multivariate polynomial $ p $ over a commutative semiring $ R $ with variables indexed by $ \\\\sigma $, and a weight function $ w : \\\\sigma \\\\to M $, the weighted total degree of $ p $ is defined as the supremum of the weights of its monomials. Each monomial's weight is computed by summing the product of its exponent on each variable and the corresponding weight assigned by $ w $. The result is an element of $ \\\\text{WithBot} \\\\, M $, where $ \\\\bot $ represents the case when $ p $ is the zero polynomial.\",\n      \"path\": \"Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous\"\n    },\n    {\n      \"formal_name\": \"MvPowerSeries.weightedOrder_monomial_of_ne_zero\",\n      \"informal_name\": \"Weighted Order of a Monomial in Multivariate Power Series with Non-Zero Coefficient\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ) {d : σ →₀ ℕ} {a : R},\\n  a ≠ 0 → MvPowerSeries.weightedOrder w ((MvPowerSeries.monomial d) a) = ↑((Finsupp.weight w) d)\",\n      \"informal_description\": \"For a multivariate power series $ f $ over a semiring $ R $ with variables indexed by $ \\\\sigma $, if $ f $ is a monomial $ \\\\text{monomial}(d, a) $ where $ a \\\\neq 0 $, then the weighted order of $ f $ with respect to a weight function $ w: \\\\sigma \\\\to \\\\mathbb{N} $ is equal to the weighted sum $ \\\\sum_{i \\\\in \\\\text{support } d} w(i) \\\\cdot d(i) $. In symbols, $ \\\\text{weightedOrder}_w(\\\\text{monomial}(d, a)) = \\\\text{weight}_w(d) $.\",\n      \"path\": \"Mathlib.RingTheory.MvPowerSeries.Order\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.le_weightedTotalDegree\",\n      \"informal_name\": \"Weighted Monomial Degree ≤ Weighted Total Degree\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {M : Type u_2} [inst : CommSemiring R] {σ : Type u_3} [inst_1 : AddCommMonoid M]\\n  [inst_2 : SemilatticeSup M] [inst_3 : OrderBot M] (w : σ → M) {φ : MvPolynomial σ R} {d : σ →₀ ℕ},\\n  d ∈ φ.support → (Finsupp.weight w) d ≤ MvPolynomial.weightedTotalDegree w φ\",\n      \"informal_description\": \"For any multivariate polynomial $\\\\varphi$ over a commutative semiring $R$ with variables indexed by $\\\\sigma$, any weighting function $w : \\\\sigma \\\\to M$ where $M$ is a sup-semilattice, and any monomial $d$ in the support of $\\\\varphi$, the weight of $d$ with respect to $w$ is less than or equal to the weighted total degree of $\\\\varphi$ with respect to $w$.\",\n      \"path\": \"Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.IsWeightedHomogeneous\",\n      \"informal_name\": \"Weighted homogeneous polynomial condition\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} →\\n  {M : Type u_2} → [inst : CommSemiring R] → {σ : Type u_3} → [AddCommMonoid M] → (σ → M) → MvPolynomial σ R → M → Prop\",\n      \"informal_description\": \"A multivariate polynomial $\\\\varphi$ is weighted homogeneous of weight $m$ with respect to the weight function $w : \\\\sigma \\\\to M$ if every monomial $d$ with nonzero coefficient in $\\\\varphi$ satisfies $\\\\sum_{i \\\\in \\\\text{support } d} d(i) \\\\cdot w(i) = m$, where $d(i)$ denotes the exponent of variable $i$ in the monomial.\",\n      \"path\": \"Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.weightedTotalDegree_coe\",\n      \"informal_name\": \"Equality of Weighted Total Degrees via Coercion for Non-zero Multivariate Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {M : Type u_2} [inst : CommSemiring R] {σ : Type u_3} [inst_1 : AddCommMonoid M]\\n  [inst_2 : SemilatticeSup M] [inst_3 : OrderBot M] (w : σ → M) (p : MvPolynomial σ R),\\n  p ≠ 0 → MvPolynomial.weightedTotalDegree' w p = ↑(MvPolynomial.weightedTotalDegree w p)\",\n      \"informal_description\": \"For a non-zero multivariate polynomial $ p $ over a commutative semiring $ R $, with variables indexed by $ \\\\sigma $ and a weight function $ w : \\\\sigma \\\\to M $ where $ M $ is a sup-semilattice, the weighted total degree $ \\\\text{weightedTotalDegree}'(w, p) $ (taking values in $ \\\\text{WithBot} \\\\, M $) equals the canonical embedding $ \\\\uparrow $ of the weighted total degree $ \\\\text{weightedTotalDegree}(w, p) $ (taking values in $ M $) into $ \\\\text{WithBot} \\\\, M $. This holds because the zero polynomial is the only case where $ \\\\text{weightedTotalDegree}' $ differs from the embedded $ \\\\text{weightedTotalDegree} $.\",\n      \"path\": \"Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.weightedHomogeneousComponent_apply\",\n      \"informal_name\": \"Weighted Homogeneous Component of a Multivariate Polynomial of Degree $ n $\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {M : Type u_2} [inst : CommSemiring R] {σ : Type u_3} [inst_1 : AddCommMonoid M] {w : σ → M} (n : M)\\n  (φ : MvPolynomial σ R) [inst_2 : DecidableEq M],\\n  (MvPolynomial.weightedHomogeneousComponent w n) φ =\\n    ∑ d ∈ φ.support with (Finsupp.weight w) d = n, (MvPolynomial.monomial d) (MvPolynomial.coeff d φ)\",\n      \"informal_description\": \"For a multivariate polynomial $ \\\\varphi $, a weight function $ w : \\\\sigma \\\\to M $, and a degree $ n \\\\in M $, the weighted homogeneous component of $ \\\\varphi $ of degree $ n $ is the sum of all monomials $ d $ in $ \\\\varphi $'s support whose weighted degree $ w(d) $ equals $ n $, each multiplied by their respective coefficient in $ \\\\varphi $. This defines a linear map extracting the homogeneous part of $ \\\\varphi $ with respect to the weighting $ w $.\",\n      \"path\": \"Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "MvPolynomial.isWeightedHomogeneous_monomial",
+            "informal_name": "Weighted Homogeneity of Monomials in Multivariate Polynomial Rings",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {M : Type u_2} [inst : CommSemiring R] {σ : Type u_3} [inst_1 : AddCommMonoid M] (w : σ → M)\n  (d : σ →₀ ℕ) (r : R) {m : M},\n  (Finsupp.weight w) d = m → MvPolynomial.IsWeightedHomogeneous w ((MvPolynomial.monomial d) r) m",
+            "informal_description": "For a weight function $ w : \\sigma \\to M $, a monomial $ r \\cdot X^d $ in the polynomial ring $ R[\\sigma] $, and a weight $ m \\in M $, if the weighted sum $ \\sum_{i \\in \\text{support } d} d(i) \\cdot w(i) = m $, then the monomial is weighted homogeneous of weight $ m $ with respect to $ w $.",
+            "path": "Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous"
+          },
+          {
+            "formal_name": "MvPolynomial.weightedTotalDegree",
+            "informal_name": "Weighted total degree of a multivariate polynomial",
+            "kind": "definition",
+            "type": "{R : Type u_1} →\n  {M : Type u_2} →\n    [inst : CommSemiring R] →\n      {σ : Type u_3} → [AddCommMonoid M] → [inst_2 : SemilatticeSup M] → [OrderBot M] → (σ → M) → MvPolynomial σ R → M",
+            "informal_description": "For a multivariate polynomial $ p $ over a commutative semiring $ R $ with variables indexed by $ \\sigma $, and a weighting function $ w : \\sigma \\to M $ where $ M $ is a sup-semilattice, this function computes the supremum of the weights $ w(s) $ over all monomials $ s $ in the support of $ p $. The weight $ w(s) $ of a monomial $ s $ is defined as the sum $ \\sum_{i \\in \\text{support } s} s(i) \\cdot v_i $ for some fixed vectors $ v_i $ associated with indices $ i $. The result is an element of $ M $ representing the weighted total degree of $ p $.",
+            "path": "Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous"
+          },
+          {
+            "formal_name": "MvPolynomial.weightedTotalDegree'",
+            "informal_name": "Weighted total degree of a multivariate polynomial",
+            "kind": "definition",
+            "type": "{R : Type u_1} →\n  {M : Type u_2} →\n    [inst : CommSemiring R] →\n      {σ : Type u_3} → [AddCommMonoid M] → [SemilatticeSup M] → (σ → M) → MvPolynomial σ R → WithBot M",
+            "informal_description": "For a multivariate polynomial $ p $ over a commutative semiring $ R $ with variables indexed by $ \\sigma $, and a weight function $ w : \\sigma \\to M $, the weighted total degree of $ p $ is defined as the supremum of the weights of its monomials. Each monomial's weight is computed by summing the product of its exponent on each variable and the corresponding weight assigned by $ w $. The result is an element of $ \\text{WithBot} \\, M $, where $ \\bot $ represents the case when $ p $ is the zero polynomial.",
+            "path": "Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous"
+          },
+          {
+            "formal_name": "MvPowerSeries.weightedOrder_monomial_of_ne_zero",
+            "informal_name": "Weighted Order of a Monomial in Multivariate Power Series with Non-Zero Coefficient",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ) {d : σ →₀ ℕ} {a : R},\n  a ≠ 0 → MvPowerSeries.weightedOrder w ((MvPowerSeries.monomial d) a) = ↑((Finsupp.weight w) d)",
+            "informal_description": "For a multivariate power series $ f $ over a semiring $ R $ with variables indexed by $ \\sigma $, if $ f $ is a monomial $ \\text{monomial}(d, a) $ where $ a \\neq 0 $, then the weighted order of $ f $ with respect to a weight function $ w: \\sigma \\to \\mathbb{N} $ is equal to the weighted sum $ \\sum_{i \\in \\text{support } d} w(i) \\cdot d(i) $. In symbols, $ \\text{weightedOrder}_w(\\text{monomial}(d, a)) = \\text{weight}_w(d) $.",
+            "path": "Mathlib.RingTheory.MvPowerSeries.Order"
+          },
+          {
+            "formal_name": "MvPolynomial.le_weightedTotalDegree",
+            "informal_name": "Weighted Monomial Degree ≤ Weighted Total Degree",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {M : Type u_2} [inst : CommSemiring R] {σ : Type u_3} [inst_1 : AddCommMonoid M]\n  [inst_2 : SemilatticeSup M] [inst_3 : OrderBot M] (w : σ → M) {φ : MvPolynomial σ R} {d : σ →₀ ℕ},\n  d ∈ φ.support → (Finsupp.weight w) d ≤ MvPolynomial.weightedTotalDegree w φ",
+            "informal_description": "For any multivariate polynomial $\\varphi$ over a commutative semiring $R$ with variables indexed by $\\sigma$, any weighting function $w : \\sigma \\to M$ where $M$ is a sup-semilattice, and any monomial $d$ in the support of $\\varphi$, the weight of $d$ with respect to $w$ is less than or equal to the weighted total degree of $\\varphi$ with respect to $w$.",
+            "path": "Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous"
+          },
+          {
+            "formal_name": "MvPolynomial.IsWeightedHomogeneous",
+            "informal_name": "Weighted homogeneous polynomial condition",
+            "kind": "definition",
+            "type": "{R : Type u_1} →\n  {M : Type u_2} → [inst : CommSemiring R] → {σ : Type u_3} → [AddCommMonoid M] → (σ → M) → MvPolynomial σ R → M → Prop",
+            "informal_description": "A multivariate polynomial $\\varphi$ is weighted homogeneous of weight $m$ with respect to the weight function $w : \\sigma \\to M$ if every monomial $d$ with nonzero coefficient in $\\varphi$ satisfies $\\sum_{i \\in \\text{support } d} d(i) \\cdot w(i) = m$, where $d(i)$ denotes the exponent of variable $i$ in the monomial.",
+            "path": "Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous"
+          },
+          {
+            "formal_name": "MvPolynomial.weightedTotalDegree_coe",
+            "informal_name": "Equality of Weighted Total Degrees via Coercion for Non-zero Multivariate Polynomials",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {M : Type u_2} [inst : CommSemiring R] {σ : Type u_3} [inst_1 : AddCommMonoid M]\n  [inst_2 : SemilatticeSup M] [inst_3 : OrderBot M] (w : σ → M) (p : MvPolynomial σ R),\n  p ≠ 0 → MvPolynomial.weightedTotalDegree' w p = ↑(MvPolynomial.weightedTotalDegree w p)",
+            "informal_description": "For a non-zero multivariate polynomial $ p $ over a commutative semiring $ R $, with variables indexed by $ \\sigma $ and a weight function $ w : \\sigma \\to M $ where $ M $ is a sup-semilattice, the weighted total degree $ \\text{weightedTotalDegree}'(w, p) $ (taking values in $ \\text{WithBot} \\, M $) equals the canonical embedding $ \\uparrow $ of the weighted total degree $ \\text{weightedTotalDegree}(w, p) $ (taking values in $ M $) into $ \\text{WithBot} \\, M $. This holds because the zero polynomial is the only case where $ \\text{weightedTotalDegree}' $ differs from the embedded $ \\text{weightedTotalDegree} $.",
+            "path": "Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous"
+          },
+          {
+            "formal_name": "MvPolynomial.weightedHomogeneousComponent_apply",
+            "informal_name": "Weighted Homogeneous Component of a Multivariate Polynomial of Degree $ n $",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {M : Type u_2} [inst : CommSemiring R] {σ : Type u_3} [inst_1 : AddCommMonoid M] {w : σ → M} (n : M)\n  (φ : MvPolynomial σ R) [inst_2 : DecidableEq M],\n  (MvPolynomial.weightedHomogeneousComponent w n) φ =\n    ∑ d ∈ φ.support with (Finsupp.weight w) d = n, (MvPolynomial.monomial d) (MvPolynomial.coeff d φ)",
+            "informal_description": "For a multivariate polynomial $ \\varphi $, a weight function $ w : \\sigma \\to M $, and a degree $ n \\in M $, the weighted homogeneous component of $ \\varphi $ of degree $ n $ is the sum of all monomials $ d $ in $ \\varphi $'s support whose weighted degree $ w(d) $ equals $ n $, each multiplied by their respective coefficient in $ \\varphi $. This defines a linear map extracting the homogeneous part of $ \\varphi $ with respect to the weighting $ w $.",
+            "path": "Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "standard",
+    "method": "lean_loogle",
+    "request": {
+      "query": "Finsupp.weight",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finsupp.weight\",\n      \"type\": \" {σ : Type u_1} {M : Type u_2} {R : Type u_3} [Semiring R] (w : σ → M) [AddCommMonoid M] [Module R M] : (σ →₀ R) →+ M\",\n      \"module\": \"Mathlib.Data.Finsupp.Weight\"\n    },\n    {\n      \"name\": \"Finsupp.degree_eq_weight_one\",\n      \"type\": \" {σ : Type u_1} {R : Type u_5} [Semiring R] : Finsupp.degree = Finsupp.weight fun x => 1\",\n      \"module\": \"Mathlib.Data.Finsupp.Weight\"\n    },\n    {\n      \"name\": \"Finsupp.finite_of_nat_weight_eq\",\n      \"type\": \" {σ : Type u_1} [Finite σ] (w : σ → ℕ) (hw : ∀ (x : σ), w x ≠ 0) (n : ℕ) : {d | (Finsupp.weight w) d = n}.Finite\",\n      \"module\": \"Mathlib.Data.Finsupp.Weight\"\n    },\n    {\n      \"name\": \"Finsupp.finite_of_nat_weight_le\",\n      \"type\": \" {σ : Type u_1} [Finite σ] (w : σ → ℕ) (hw : ∀ (x : σ), w x ≠ 0) (n : ℕ) : {d | (Finsupp.weight w) d ≤ n}.Finite\",\n      \"module\": \"Mathlib.Data.Finsupp.Weight\"\n    },\n    {\n      \"name\": \"Finsupp.finite_of_nat_weight_lt\",\n      \"type\": \" {σ : Type u_1} [Finite σ] (w : σ → ℕ) (hw : ∀ (x : σ), w x ≠ 0) (n : ℕ) : {d | (Finsupp.weight w) d < n}.Finite\",\n      \"module\": \"Mathlib.Data.Finsupp.Weight\"\n    },\n    {\n      \"name\": \"Finsupp.le_weight\",\n      \"type\": \" {σ : Type u_1} (w : σ → ℕ) {s : σ} (hs : w s ≠ 0) (f : σ →₀ ℕ) : f s ≤ (Finsupp.weight w) f\",\n      \"module\": \"Mathlib.Data.Finsupp.Weight\"\n    },\n    {\n      \"name\": \"Finsupp.le_weight_of_ne_zero'\",\n      \"type\": \" {σ : Type u_1} {M : Type u_4} [AddCommMonoid M] [PartialOrder M] [IsOrderedAddMonoid M] [CanonicallyOrderedAdd M] (w : σ → M) {s : σ} {f : σ →₀ ℕ} (hs : f s ≠ 0) : w s ≤ (Finsupp.weight w) f\",\n      \"module\": \"Mathlib.Data.Finsupp.Weight\"\n    },\n    {\n      \"name\": \"Finsupp.weight_single\",\n      \"type\": \" {σ : Type u_1} {M : Type u_2} {R : Type u_3} [Semiring R] (w : σ → M) [AddCommMonoid M] [Module R M] (s : σ) (r : R) : ((Finsupp.weight w) fun₀ | s => r) = r • w s\",\n      \"module\": \"Mathlib.Data.Finsupp.Weight\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Finsupp.weight",
+            "type": " {σ : Type u_1} {M : Type u_2} {R : Type u_3} [Semiring R] (w : σ → M) [AddCommMonoid M] [Module R M] : (σ →₀ R) →+ M",
+            "module": "Mathlib.Data.Finsupp.Weight"
+          },
+          {
+            "name": "Finsupp.degree_eq_weight_one",
+            "type": " {σ : Type u_1} {R : Type u_5} [Semiring R] : Finsupp.degree = Finsupp.weight fun x => 1",
+            "module": "Mathlib.Data.Finsupp.Weight"
+          },
+          {
+            "name": "Finsupp.finite_of_nat_weight_eq",
+            "type": " {σ : Type u_1} [Finite σ] (w : σ → ℕ) (hw : ∀ (x : σ), w x ≠ 0) (n : ℕ) : {d | (Finsupp.weight w) d = n}.Finite",
+            "module": "Mathlib.Data.Finsupp.Weight"
+          },
+          {
+            "name": "Finsupp.finite_of_nat_weight_le",
+            "type": " {σ : Type u_1} [Finite σ] (w : σ → ℕ) (hw : ∀ (x : σ), w x ≠ 0) (n : ℕ) : {d | (Finsupp.weight w) d ≤ n}.Finite",
+            "module": "Mathlib.Data.Finsupp.Weight"
+          },
+          {
+            "name": "Finsupp.finite_of_nat_weight_lt",
+            "type": " {σ : Type u_1} [Finite σ] (w : σ → ℕ) (hw : ∀ (x : σ), w x ≠ 0) (n : ℕ) : {d | (Finsupp.weight w) d < n}.Finite",
+            "module": "Mathlib.Data.Finsupp.Weight"
+          },
+          {
+            "name": "Finsupp.le_weight",
+            "type": " {σ : Type u_1} (w : σ → ℕ) {s : σ} (hs : w s ≠ 0) (f : σ →₀ ℕ) : f s ≤ (Finsupp.weight w) f",
+            "module": "Mathlib.Data.Finsupp.Weight"
+          },
+          {
+            "name": "Finsupp.le_weight_of_ne_zero'",
+            "type": " {σ : Type u_1} {M : Type u_4} [AddCommMonoid M] [PartialOrder M] [IsOrderedAddMonoid M] [CanonicallyOrderedAdd M] (w : σ → M) {s : σ} {f : σ →₀ ℕ} (hs : f s ≠ 0) : w s ≤ (Finsupp.weight w) f",
+            "module": "Mathlib.Data.Finsupp.Weight"
+          },
+          {
+            "name": "Finsupp.weight_single",
+            "type": " {σ : Type u_1} {M : Type u_2} {R : Type u_3} [Semiring R] (w : σ → M) [AddCommMonoid M] [Module R M] (s : σ) (r : R) : ((Finsupp.weight w) fun₀ | s => r) = r • w s",
+            "module": "Mathlib.Data.Finsupp.Weight"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "standard",
+    "method": "lean_leansearch",
+    "request": {
+      "query": "The weight of a finitely supported function is the sum of its entries times assigned weights",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finsupp.weight_apply\",\n      \"module_name\": \"Mathlib.Data.Finsupp.Weight\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {M : Type u_2} {R : Type u_3} [inst : Semiring R] (w : σ → M) [inst_1 : AddCommMonoid M]\\n  [inst_2 : Module R M] (f : σ →₀ R), (Finsupp.weight w) f = f.sum fun i c => c • w i\"\n    },\n    {\n      \"name\": \"Finsupp.weight\",\n      \"module_name\": \"Mathlib.Data.Finsupp.Weight\",\n      \"kind\": \"definition\",\n      \"type\": \"{σ : Type u_1} →\\n  {M : Type u_2} →\\n    {R : Type u_3} → [inst : Semiring R] → (σ → M) → [inst_1 : AddCommMonoid M] → [Module R M] → (σ →₀ R) →+ M\"\n    },\n    {\n      \"name\": \"Finsupp.weight_single\",\n      \"module_name\": \"Mathlib.Data.Finsupp.Weight\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {M : Type u_2} {R : Type u_3} [inst : Semiring R] (w : σ → M) [inst_1 : AddCommMonoid M]\\n  [inst_2 : Module R M] (s : σ) (r : R), (Finsupp.weight w) (Finsupp.single s r) = r • w s\"\n    },\n    {\n      \"name\": \"Finsupp.sum_toMultiset\",\n      \"module_name\": \"Mathlib.Data.Finsupp.Multiset\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} [inst : AddCommMonoid α] (f : α →₀ ℕ), (Finsupp.toMultiset f).sum = f.sum fun a n => n • a\"\n    },\n    {\n      \"name\": \"Finsupp.sum\",\n      \"module_name\": \"Mathlib.Algebra.BigOperators.Finsupp.Basic\",\n      \"kind\": \"definition\",\n      \"type\": \"{α : Type u_1} → {M : Type u_8} → {N : Type u_10} → [inst : Zero M] → [AddCommMonoid N] → (α →₀ M) → (α → M → N) → N\"\n    },\n    {\n      \"name\": \"Finsupp.degree_eq_weight_one\",\n      \"module_name\": \"Mathlib.Data.Finsupp.Weight\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_5} [inst : Semiring R], Finsupp.degree = Finsupp.weight fun x => 1\"\n    },\n    {\n      \"name\": \"DFinsupp.sum\",\n      \"module_name\": \"Mathlib.Data.DFinsupp.BigOperators\",\n      \"kind\": \"definition\",\n      \"type\": \"{ι : Type u} →\\n  {γ : Type w} →\\n    {β : ι → Type v} →\\n      [DecidableEq ι] →\\n        [inst : (i : ι) → Zero (β i)] →\\n          [(i : ι) → (x : β i) → Decidable (x ≠ 0)] → [AddCommMonoid γ] → (Π₀ (i : ι), β i) → ((i : ι) → β i → γ) → γ\"\n    },\n    {\n      \"name\": \"Finsupp.le_weight\",\n      \"module_name\": \"Mathlib.Data.Finsupp.Weight\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} (w : σ → ℕ) {s : σ}, w s ≠ 0 → ∀ (f : σ →₀ ℕ), f s ≤ (Finsupp.weight w) f\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Finsupp.weight_apply",
+            "module_name": "Mathlib.Data.Finsupp.Weight",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {M : Type u_2} {R : Type u_3} [inst : Semiring R] (w : σ → M) [inst_1 : AddCommMonoid M]\n  [inst_2 : Module R M] (f : σ →₀ R), (Finsupp.weight w) f = f.sum fun i c => c • w i"
+          },
+          {
+            "name": "Finsupp.weight",
+            "module_name": "Mathlib.Data.Finsupp.Weight",
+            "kind": "definition",
+            "type": "{σ : Type u_1} →\n  {M : Type u_2} →\n    {R : Type u_3} → [inst : Semiring R] → (σ → M) → [inst_1 : AddCommMonoid M] → [Module R M] → (σ →₀ R) →+ M"
+          },
+          {
+            "name": "Finsupp.weight_single",
+            "module_name": "Mathlib.Data.Finsupp.Weight",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {M : Type u_2} {R : Type u_3} [inst : Semiring R] (w : σ → M) [inst_1 : AddCommMonoid M]\n  [inst_2 : Module R M] (s : σ) (r : R), (Finsupp.weight w) (Finsupp.single s r) = r • w s"
+          },
+          {
+            "name": "Finsupp.sum_toMultiset",
+            "module_name": "Mathlib.Data.Finsupp.Multiset",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} [inst : AddCommMonoid α] (f : α →₀ ℕ), (Finsupp.toMultiset f).sum = f.sum fun a n => n • a"
+          },
+          {
+            "name": "Finsupp.sum",
+            "module_name": "Mathlib.Algebra.BigOperators.Finsupp.Basic",
+            "kind": "definition",
+            "type": "{α : Type u_1} → {M : Type u_8} → {N : Type u_10} → [inst : Zero M] → [AddCommMonoid N] → (α →₀ M) → (α → M → N) → N"
+          },
+          {
+            "name": "Finsupp.degree_eq_weight_one",
+            "module_name": "Mathlib.Data.Finsupp.Weight",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {R : Type u_5} [inst : Semiring R], Finsupp.degree = Finsupp.weight fun x => 1"
+          },
+          {
+            "name": "DFinsupp.sum",
+            "module_name": "Mathlib.Data.DFinsupp.BigOperators",
+            "kind": "definition",
+            "type": "{ι : Type u} →\n  {γ : Type w} →\n    {β : ι → Type v} →\n      [DecidableEq ι] →\n        [inst : (i : ι) → Zero (β i)] →\n          [(i : ι) → (x : β i) → Decidable (x ≠ 0)] → [AddCommMonoid γ] → (Π₀ (i : ι), β i) → ((i : ι) → β i → γ) → γ"
+          },
+          {
+            "name": "Finsupp.le_weight",
+            "module_name": "Mathlib.Data.Finsupp.Weight",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} (w : σ → ℕ) {s : σ}, w s ≠ 0 → ∀ (f : σ →₀ ℕ), f s ≤ (Finsupp.weight w) f"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "standard",
+    "method": "lean_local_search",
+    "request": {
+      "query": "Finsupp.weight",
+      "limit": 12
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finsupp.weight\",\n      \"kind\": \"def\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Data/Finsupp/Weight.lean\"\n    },\n    {\n      \"name\": \"Finsupp.weight_apply\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Data/Finsupp/Weight.lean\"\n    },\n    {\n      \"name\": \"Finsupp.weight_eq_sum\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Data/Finsupp/Weight.lean\"\n    },\n    {\n      \"name\": \"Finsupp.weight_single\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Data/Finsupp/Weight.lean\"\n    },\n    {\n      \"name\": \"Finsupp.weight_single_index\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Data/Finsupp/Weight.lean\"\n    },\n    {\n      \"name\": \"Finsupp.weight_sub_single_add\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Data/Finsupp/Weight.lean\"\n    },\n    {\n      \"name\": \"Finsupp.weight_single_one_apply\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Data/Finsupp/Weight.lean\"\n    },\n    {\n      \"name\": \"Finsupp.weight_eq_zero_iff_eq_zero\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Data/Finsupp/Weight.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Finsupp.weight",
+            "kind": "def",
+            "file": ".lake/packages/mathlib/Mathlib/Data/Finsupp/Weight.lean"
+          },
+          {
+            "name": "Finsupp.weight_apply",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Data/Finsupp/Weight.lean"
+          },
+          {
+            "name": "Finsupp.weight_eq_sum",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Data/Finsupp/Weight.lean"
+          },
+          {
+            "name": "Finsupp.weight_single",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Data/Finsupp/Weight.lean"
+          },
+          {
+            "name": "Finsupp.weight_single_index",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Data/Finsupp/Weight.lean"
+          },
+          {
+            "name": "Finsupp.weight_sub_single_add",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Data/Finsupp/Weight.lean"
+          },
+          {
+            "name": "Finsupp.weight_single_one_apply",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Data/Finsupp/Weight.lean"
+          },
+          {
+            "name": "Finsupp.weight_eq_zero_iff_eq_zero",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Data/Finsupp/Weight.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "lean_leanfinder",
+    "request": {
+      "query": "Linear combination of finitely supported coefficients in an arbitrary semiring module",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Finsupp.linearCombination_apply\",\n      \"informal_name\": \"Linear Combination of Vectors Indexed by α over R\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {M : Type u_2} (R : Type u_5) [inst : Semiring R] [inst_1 : AddCommMonoid M] [inst_2 : Module R M]\\n  {v : α → M} (l : α →₀ R), (Finsupp.linearCombination R v) l = l.sum fun i a => a • v i\",\n      \"informal_description\": \"The linear map from the space of finite support functions $ \\\\alpha \\\\to_0 R $ to the module $ M $, which sends each finite support function $ l $ to the sum $ \\\\sum_{i \\\\in \\\\text{support } l} l(i) \\\\cdot v_i $, where $ v_i $ denotes the vector associated with index $ i $. This map is constructed using the linear equivalence of summing scalar multiples of individual vectors embedded via the right scalar multiplication operation.\",\n      \"path\": \"Mathlib.LinearAlgebra.Finsupp.LinearCombination\"\n    },\n    {\n      \"formal_name\": \"Finsupp.linearCombination\",\n      \"informal_name\": \"Linear combination of vectors indexed by α over R\",\n      \"kind\": \"definition\",\n      \"type\": \"{α : Type u_1} →\\n  {M : Type u_2} →\\n    (R : Type u_5) →\\n      [inst : Semiring R] → [inst_1 : AddCommMonoid M] → [inst_2 : Module R M] → (α → M) → (α →₀ R) →ₗ[R] M\",\n      \"informal_description\": \"The linear map from the space of finite support functions $ \\\\alpha \\\\to_0 R $ to the module $ M $, which sends each finite support function $ d $ to the sum $ \\\\sum_{i \\\\in \\\\text{support } d} d(i) \\\\cdot v_i $, where $ v_i $ denotes the vector associated with index $ i $. This map is constructed using the linear equivalence of summing scalar multiples of individual vectors embedded via the right scalar multiplication operation.\",\n      \"path\": \"Mathlib.LinearAlgebra.Finsupp.LinearCombination\"\n    },\n    {\n      \"formal_name\": \"Module.DualBases.lc\",\n      \"informal_name\": \"Linear combination in a module\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} →\\n  {M : Type u_2} →\\n    [inst : CommSemiring R] → [inst_1 : AddCommMonoid M] → [Module R M] → {ι : Type u_4} → (ι → M) → (ι →₀ R) → M\",\n      \"informal_description\": \"Given an index type $\\\\iota$, a family of vectors $e : \\\\iota \\\\to M$ in a module $M$ over a semiring $R$, and a finitely supported function $l : \\\\iota \\\\to_0 R$, this function returns the linear combination $\\\\sum_{i \\\\in \\\\iota} l_i \\\\cdot e_i$, where the sum is taken over the finite support of $l$ and $\\\\cdot$ denotes scalar multiplication in the module.\",\n      \"path\": \"Mathlib.LinearAlgebra.Dual.Basis\"\n    },\n    {\n      \"formal_name\": \"Fintype.linearCombination\",\n      \"informal_name\": \"Linear combination over a finite type\",\n      \"kind\": \"definition\",\n      \"type\": \"{α : Type u_1} →\\n  {M : Type u_2} →\\n    (R : Type u_3) →\\n      [Fintype α] → [inst : Semiring R] → [inst_1 : AddCommMonoid M] → [inst_2 : Module R M] → (α → M) → (α → R) →ₗ[R] M\",\n      \"informal_description\": \"Given a finite type $\\\\alpha$, a semiring $R$, an $R$-module $M$, and a function $v : \\\\alpha \\\\to M$, this defines a linear map from the module of functions $\\\\alpha \\\\to R$ to $M$ that sends each function $f : \\\\alpha \\\\to R$ to the linear combination $\\\\sum_{i \\\\in \\\\alpha} f(i) \\\\cdot v(i)$. The map preserves addition and scalar multiplication, as shown by the distributive properties of finite sums in modules.\",\n      \"path\": \"Mathlib.LinearAlgebra.Finsupp.LinearCombination\"\n    },\n    {\n      \"formal_name\": \"Fintype.linearCombination_apply\",\n      \"informal_name\": \"Linear Combination over a Finite Type\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {M : Type u_2} (R : Type u_3) [inst : Fintype α] [inst_1 : Semiring R] [inst_2 : AddCommMonoid M]\\n  [inst_3 : Module R M] (v : α → M) (f : α → R), (Fintype.linearCombination R v) f = ∑ i, f i • v i\",\n      \"informal_description\": \"Given a finite type $\\\\alpha$, a semiring $R$, an $R$-module $M$, and a function $v : \\\\alpha \\\\to M$, the linear combination map is the linear map from the module of functions $\\\\alpha \\\\to R$ to $M$ defined by sending each function $f$ to the sum $\\\\sum_{i \\\\in \\\\alpha} f(i) \\\\cdot v(i)$. This map preserves addition and scalar multiplication.\",\n      \"path\": \"Mathlib.LinearAlgebra.Finsupp.LinearCombination\"\n    },\n    {\n      \"formal_name\": \"Module.DualBases.lc_def\",\n      \"informal_name\": \"Definition of Linear Combination via Finsupp.linearCombination\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {M : Type u_2} {ι : Type u_3} [inst : CommSemiring R] [inst_1 : AddCommMonoid M] [inst_2 : Module R M]\\n  (e : ι → M) (l : ι →₀ R), Module.DualBases.lc e l = (Finsupp.linearCombination R e) l\",\n      \"informal_description\": \"The linear combination function $ \\\\text{lc} \\\\, e \\\\, l $ is defined as the sum $ \\\\sum_{i \\\\in \\\\text{support } l} l_i \\\\cdot e_i $, which coincides with the application of the Finsupp.linearCombination map to the family of vectors $ e $ and the finitely supported coefficient function $ l $. This establishes equality between the explicitly defined linear combination and the abstract construction through finite support functions.\",\n      \"path\": \"Mathlib.LinearAlgebra.Dual.Basis\"\n    },\n    {\n      \"formal_name\": \"Finsupp.linearCombination_apply_of_mem_supported\",\n      \"informal_name\": \"Linear Combination Applied to a Function with Support in a Finite Set\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {M : Type u_2} (R : Type u_5) [inst : Semiring R] [inst_1 : AddCommMonoid M] [inst_2 : Module R M]\\n  {v : α → M} {l : α →₀ R} {s : Finset α},\\n  l ∈ Finsupp.supported R R ↑s → (Finsupp.linearCombination R v) l = ∑ i ∈ s, l i • v i\",\n      \"informal_description\": \"If $ l $ is a finite support function whose support is contained in a finite set $ s $, then the linear combination $ \\\\text{linearCombination}_R(v)(l) $ equals the sum $ \\\\sum_{i \\\\in s} l(i) \\\\cdot v_i $, where $ v_i $ denotes the vector associated with index $ i $.\",\n      \"path\": \"Mathlib.LinearAlgebra.Finsupp.LinearCombination\"\n    },\n    {\n      \"formal_name\": \"Finsupp.linearCombination_onFinset\",\n      \"informal_name\": \"Linear Combination over Finite Set Equals Sum\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {M : Type u_2} (R : Type u_5) [inst : Semiring R] [inst_1 : AddCommMonoid M] [inst_2 : Module R M]\\n  {s : Finset α} {f : α → R} (g : α → M) (hf : ∀ (a : α), f a ≠ 0 → a ∈ s),\\n  (Finsupp.linearCombination R g) (Finsupp.onFinset s f hf) = ∑ x ∈ s, f x • g x\",\n      \"informal_description\": \"For any finite set $s$ of indices, scalar function $f : \\\\alpha \\\\to R$, and vector function $g : \\\\alpha \\\\to M$, if $f$ is non-zero only on $s$, then the linear combination of $g$ using the finite support function derived from $f$ equals the sum over $s$ of $f(x) \\\\cdot g(x)$. Formally, $\\\\text{linearCombination}_R(g)(\\\\text{onFinset}(s,f)) = \\\\sum_{x \\\\in s} f(x) \\\\cdot g(x)$.\",\n      \"path\": \"Mathlib.LinearAlgebra.Finsupp.LinearCombination\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Finsupp.linearCombination_apply",
+            "informal_name": "Linear Combination of Vectors Indexed by α over R",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {M : Type u_2} (R : Type u_5) [inst : Semiring R] [inst_1 : AddCommMonoid M] [inst_2 : Module R M]\n  {v : α → M} (l : α →₀ R), (Finsupp.linearCombination R v) l = l.sum fun i a => a • v i",
+            "informal_description": "The linear map from the space of finite support functions $ \\alpha \\to_0 R $ to the module $ M $, which sends each finite support function $ l $ to the sum $ \\sum_{i \\in \\text{support } l} l(i) \\cdot v_i $, where $ v_i $ denotes the vector associated with index $ i $. This map is constructed using the linear equivalence of summing scalar multiples of individual vectors embedded via the right scalar multiplication operation.",
+            "path": "Mathlib.LinearAlgebra.Finsupp.LinearCombination"
+          },
+          {
+            "formal_name": "Finsupp.linearCombination",
+            "informal_name": "Linear combination of vectors indexed by α over R",
+            "kind": "definition",
+            "type": "{α : Type u_1} →\n  {M : Type u_2} →\n    (R : Type u_5) →\n      [inst : Semiring R] → [inst_1 : AddCommMonoid M] → [inst_2 : Module R M] → (α → M) → (α →₀ R) →ₗ[R] M",
+            "informal_description": "The linear map from the space of finite support functions $ \\alpha \\to_0 R $ to the module $ M $, which sends each finite support function $ d $ to the sum $ \\sum_{i \\in \\text{support } d} d(i) \\cdot v_i $, where $ v_i $ denotes the vector associated with index $ i $. This map is constructed using the linear equivalence of summing scalar multiples of individual vectors embedded via the right scalar multiplication operation.",
+            "path": "Mathlib.LinearAlgebra.Finsupp.LinearCombination"
+          },
+          {
+            "formal_name": "Module.DualBases.lc",
+            "informal_name": "Linear combination in a module",
+            "kind": "definition",
+            "type": "{R : Type u_1} →\n  {M : Type u_2} →\n    [inst : CommSemiring R] → [inst_1 : AddCommMonoid M] → [Module R M] → {ι : Type u_4} → (ι → M) → (ι →₀ R) → M",
+            "informal_description": "Given an index type $\\iota$, a family of vectors $e : \\iota \\to M$ in a module $M$ over a semiring $R$, and a finitely supported function $l : \\iota \\to_0 R$, this function returns the linear combination $\\sum_{i \\in \\iota} l_i \\cdot e_i$, where the sum is taken over the finite support of $l$ and $\\cdot$ denotes scalar multiplication in the module.",
+            "path": "Mathlib.LinearAlgebra.Dual.Basis"
+          },
+          {
+            "formal_name": "Fintype.linearCombination",
+            "informal_name": "Linear combination over a finite type",
+            "kind": "definition",
+            "type": "{α : Type u_1} →\n  {M : Type u_2} →\n    (R : Type u_3) →\n      [Fintype α] → [inst : Semiring R] → [inst_1 : AddCommMonoid M] → [inst_2 : Module R M] → (α → M) → (α → R) →ₗ[R] M",
+            "informal_description": "Given a finite type $\\alpha$, a semiring $R$, an $R$-module $M$, and a function $v : \\alpha \\to M$, this defines a linear map from the module of functions $\\alpha \\to R$ to $M$ that sends each function $f : \\alpha \\to R$ to the linear combination $\\sum_{i \\in \\alpha} f(i) \\cdot v(i)$. The map preserves addition and scalar multiplication, as shown by the distributive properties of finite sums in modules.",
+            "path": "Mathlib.LinearAlgebra.Finsupp.LinearCombination"
+          },
+          {
+            "formal_name": "Fintype.linearCombination_apply",
+            "informal_name": "Linear Combination over a Finite Type",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {M : Type u_2} (R : Type u_3) [inst : Fintype α] [inst_1 : Semiring R] [inst_2 : AddCommMonoid M]\n  [inst_3 : Module R M] (v : α → M) (f : α → R), (Fintype.linearCombination R v) f = ∑ i, f i • v i",
+            "informal_description": "Given a finite type $\\alpha$, a semiring $R$, an $R$-module $M$, and a function $v : \\alpha \\to M$, the linear combination map is the linear map from the module of functions $\\alpha \\to R$ to $M$ defined by sending each function $f$ to the sum $\\sum_{i \\in \\alpha} f(i) \\cdot v(i)$. This map preserves addition and scalar multiplication.",
+            "path": "Mathlib.LinearAlgebra.Finsupp.LinearCombination"
+          },
+          {
+            "formal_name": "Module.DualBases.lc_def",
+            "informal_name": "Definition of Linear Combination via Finsupp.linearCombination",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {M : Type u_2} {ι : Type u_3} [inst : CommSemiring R] [inst_1 : AddCommMonoid M] [inst_2 : Module R M]\n  (e : ι → M) (l : ι →₀ R), Module.DualBases.lc e l = (Finsupp.linearCombination R e) l",
+            "informal_description": "The linear combination function $ \\text{lc} \\, e \\, l $ is defined as the sum $ \\sum_{i \\in \\text{support } l} l_i \\cdot e_i $, which coincides with the application of the Finsupp.linearCombination map to the family of vectors $ e $ and the finitely supported coefficient function $ l $. This establishes equality between the explicitly defined linear combination and the abstract construction through finite support functions.",
+            "path": "Mathlib.LinearAlgebra.Dual.Basis"
+          },
+          {
+            "formal_name": "Finsupp.linearCombination_apply_of_mem_supported",
+            "informal_name": "Linear Combination Applied to a Function with Support in a Finite Set",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {M : Type u_2} (R : Type u_5) [inst : Semiring R] [inst_1 : AddCommMonoid M] [inst_2 : Module R M]\n  {v : α → M} {l : α →₀ R} {s : Finset α},\n  l ∈ Finsupp.supported R R ↑s → (Finsupp.linearCombination R v) l = ∑ i ∈ s, l i • v i",
+            "informal_description": "If $ l $ is a finite support function whose support is contained in a finite set $ s $, then the linear combination $ \\text{linearCombination}_R(v)(l) $ equals the sum $ \\sum_{i \\in s} l(i) \\cdot v_i $, where $ v_i $ denotes the vector associated with index $ i $.",
+            "path": "Mathlib.LinearAlgebra.Finsupp.LinearCombination"
+          },
+          {
+            "formal_name": "Finsupp.linearCombination_onFinset",
+            "informal_name": "Linear Combination over Finite Set Equals Sum",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {M : Type u_2} (R : Type u_5) [inst : Semiring R] [inst_1 : AddCommMonoid M] [inst_2 : Module R M]\n  {s : Finset α} {f : α → R} (g : α → M) (hf : ∀ (a : α), f a ≠ 0 → a ∈ s),\n  (Finsupp.linearCombination R g) (Finsupp.onFinset s f hf) = ∑ x ∈ s, f x • g x",
+            "informal_description": "For any finite set $s$ of indices, scalar function $f : \\alpha \\to R$, and vector function $g : \\alpha \\to M$, if $f$ is non-zero only on $s$, then the linear combination of $g$ using the finite support function derived from $f$ equals the sum over $s$ of $f(x) \\cdot g(x)$. Formally, $\\text{linearCombination}_R(g)(\\text{onFinset}(s,f)) = \\sum_{x \\in s} f(x) \\cdot g(x)$.",
+            "path": "Mathlib.LinearAlgebra.Finsupp.LinearCombination"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "lean_loogle",
+    "request": {
+      "query": "Finsupp.linearCombination",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "Error executing tool lean_loogle: Rate limit exceeded: 3 requests per 30s. Use --loogle-local to avoid limits."
+        }
+      ],
+      "isError": true
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "lean_leansearch",
+    "request": {
+      "query": "Finsupp linear combination as a linear map from free module",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finsupp.linearCombination_apply\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Finsupp.LinearCombination\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {M : Type u_2} (R : Type u_5) [inst : Semiring R] [inst_1 : AddCommMonoid M] [inst_2 : Module R M]\\n  {v : α → M} (l : α →₀ R), (Finsupp.linearCombination R v) l = l.sum fun i a => a • v i\"\n    },\n    {\n      \"name\": \"Finsupp.linearCombination_eq_fintype_linearCombination\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Finsupp.LinearCombination\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {M : Type u_2} (R : Type u_3) [inst : Fintype α] [inst_1 : Semiring R] [inst_2 : AddCommMonoid M]\\n  [inst_3 : Module R M] (v : α → M),\\n  Finsupp.linearCombination R v ∘ₗ ↑(Finsupp.linearEquivFunOnFinite R R α).symm = Fintype.linearCombination R v\"\n    },\n    {\n      \"name\": \"Finsupp.apply_linearCombination\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Finsupp.LinearCombination\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {M : Type u_2} (R : Type u_5) [inst : Semiring R] [inst_1 : AddCommMonoid M] [inst_2 : Module R M]\\n  {M' : Type u_8} [inst_3 : AddCommMonoid M'] [inst_4 : Module R M'] (f : M →ₗ[R] M') (v : α → M) (l : α →₀ R),\\n  f ((Finsupp.linearCombination R v) l) = (Finsupp.linearCombination R (⇑f ∘ v)) l\"\n    },\n    {\n      \"name\": \"Finsupp.lmapDomain_linearCombination\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Finsupp.LinearCombination\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {M : Type u_2} (R : Type u_5) [inst : Semiring R] [inst_1 : AddCommMonoid M] [inst_2 : Module R M]\\n  {α' : Type u_7} {M' : Type u_8} [inst_3 : AddCommMonoid M'] [inst_4 : Module R M'] {v : α → M} {v' : α' → M'}\\n  (f : α → α') (g : M →ₗ[R] M'),\\n  (∀ (i : α), g (v i) = v' (f i)) →\\n    Finsupp.linearCombination R v' ∘ₗ Finsupp.lmapDomain R R f = g ∘ₗ Finsupp.linearCombination R v\"\n    },\n    {\n      \"name\": \"Finsupp.linearCombination\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Finsupp.LinearCombination\",\n      \"kind\": \"definition\",\n      \"type\": \"{α : Type u_1} →\\n  {M : Type u_2} →\\n    (R : Type u_5) →\\n      [inst : Semiring R] → [inst_1 : AddCommMonoid M] → [inst_2 : Module R M] → (α → M) → (α →₀ R) →ₗ[R] M\"\n    },\n    {\n      \"name\": \"Finsupp.linearCombination_option\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Finsupp.LinearCombination\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {M : Type u_2} (R : Type u_5) [inst : Semiring R] [inst_1 : AddCommMonoid M] [inst_2 : Module R M]\\n  (v : Option α → M) (f : Option α →₀ R),\\n  (Finsupp.linearCombination R v) f = f none • v none + (Finsupp.linearCombination R (v ∘ some)) f.some\"\n    },\n    {\n      \"name\": \"LinearMap.map_finsupp_linearCombination\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Finsupp.LinearCombination\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {M : Type u_2} {N : Type u_3} [inst : Semiring R] [inst_1 : AddCommMonoid M] [inst_2 : Module R M]\\n  [inst_3 : AddCommMonoid N] [inst_4 : Module R N] (f : M →ₗ[R] N) {ι : Type u_4} {g : ι → M} (l : ι →₀ R),\\n  f ((Finsupp.linearCombination R g) l) = (Finsupp.linearCombination R (⇑f ∘ g)) l\"\n    },\n    {\n      \"name\": \"Module.Relations.Solution.π\",\n      \"module_name\": \"Mathlib.Algebra.Module.Presentation.Basic\",\n      \"kind\": \"definition\",\n      \"type\": \"{A : Type u} →\\n  [inst : Ring A] →\\n    {relations : Module.Relations A} →\\n      {M : Type v} →\\n        [inst_1 : AddCommGroup M] → [inst_2 : Module A M] → relations.Solution M → (relations.G →₀ A) →ₗ[A] M\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Finsupp.linearCombination_apply",
+            "module_name": "Mathlib.LinearAlgebra.Finsupp.LinearCombination",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {M : Type u_2} (R : Type u_5) [inst : Semiring R] [inst_1 : AddCommMonoid M] [inst_2 : Module R M]\n  {v : α → M} (l : α →₀ R), (Finsupp.linearCombination R v) l = l.sum fun i a => a • v i"
+          },
+          {
+            "name": "Finsupp.linearCombination_eq_fintype_linearCombination",
+            "module_name": "Mathlib.LinearAlgebra.Finsupp.LinearCombination",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {M : Type u_2} (R : Type u_3) [inst : Fintype α] [inst_1 : Semiring R] [inst_2 : AddCommMonoid M]\n  [inst_3 : Module R M] (v : α → M),\n  Finsupp.linearCombination R v ∘ₗ ↑(Finsupp.linearEquivFunOnFinite R R α).symm = Fintype.linearCombination R v"
+          },
+          {
+            "name": "Finsupp.apply_linearCombination",
+            "module_name": "Mathlib.LinearAlgebra.Finsupp.LinearCombination",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {M : Type u_2} (R : Type u_5) [inst : Semiring R] [inst_1 : AddCommMonoid M] [inst_2 : Module R M]\n  {M' : Type u_8} [inst_3 : AddCommMonoid M'] [inst_4 : Module R M'] (f : M →ₗ[R] M') (v : α → M) (l : α →₀ R),\n  f ((Finsupp.linearCombination R v) l) = (Finsupp.linearCombination R (⇑f ∘ v)) l"
+          },
+          {
+            "name": "Finsupp.lmapDomain_linearCombination",
+            "module_name": "Mathlib.LinearAlgebra.Finsupp.LinearCombination",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {M : Type u_2} (R : Type u_5) [inst : Semiring R] [inst_1 : AddCommMonoid M] [inst_2 : Module R M]\n  {α' : Type u_7} {M' : Type u_8} [inst_3 : AddCommMonoid M'] [inst_4 : Module R M'] {v : α → M} {v' : α' → M'}\n  (f : α → α') (g : M →ₗ[R] M'),\n  (∀ (i : α), g (v i) = v' (f i)) →\n    Finsupp.linearCombination R v' ∘ₗ Finsupp.lmapDomain R R f = g ∘ₗ Finsupp.linearCombination R v"
+          },
+          {
+            "name": "Finsupp.linearCombination",
+            "module_name": "Mathlib.LinearAlgebra.Finsupp.LinearCombination",
+            "kind": "definition",
+            "type": "{α : Type u_1} →\n  {M : Type u_2} →\n    (R : Type u_5) →\n      [inst : Semiring R] → [inst_1 : AddCommMonoid M] → [inst_2 : Module R M] → (α → M) → (α →₀ R) →ₗ[R] M"
+          },
+          {
+            "name": "Finsupp.linearCombination_option",
+            "module_name": "Mathlib.LinearAlgebra.Finsupp.LinearCombination",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {M : Type u_2} (R : Type u_5) [inst : Semiring R] [inst_1 : AddCommMonoid M] [inst_2 : Module R M]\n  (v : Option α → M) (f : Option α →₀ R),\n  (Finsupp.linearCombination R v) f = f none • v none + (Finsupp.linearCombination R (v ∘ some)) f.some"
+          },
+          {
+            "name": "LinearMap.map_finsupp_linearCombination",
+            "module_name": "Mathlib.LinearAlgebra.Finsupp.LinearCombination",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {M : Type u_2} {N : Type u_3} [inst : Semiring R] [inst_1 : AddCommMonoid M] [inst_2 : Module R M]\n  [inst_3 : AddCommMonoid N] [inst_4 : Module R N] (f : M →ₗ[R] N) {ι : Type u_4} {g : ι → M} (l : ι →₀ R),\n  f ((Finsupp.linearCombination R g) l) = (Finsupp.linearCombination R (⇑f ∘ g)) l"
+          },
+          {
+            "name": "Module.Relations.Solution.π",
+            "module_name": "Mathlib.Algebra.Module.Presentation.Basic",
+            "kind": "definition",
+            "type": "{A : Type u} →\n  [inst : Ring A] →\n    {relations : Module.Relations A} →\n      {M : Type v} →\n        [inst_1 : AddCommGroup M] → [inst_2 : Module A M] → relations.Solution M → (relations.G →₀ A) →ₗ[A] M"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "lean_local_search",
+    "request": {
+      "query": "Finsupp.linearCombination",
+      "limit": 12
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finsupp.linearCombination\",\n      \"kind\": \"def\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/Finsupp/LinearCombination.lean\"\n    },\n    {\n      \"name\": \"Finsupp.linearCombinationOn\",\n      \"kind\": \"def\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/Finsupp/LinearCombination.lean\"\n    },\n    {\n      \"name\": \"Finsupp.linearCombination_comp\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/Finsupp/LinearCombination.lean\"\n    },\n    {\n      \"name\": \"Finsupp.linearCombination_smul\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/Finsupp/LinearCombination.lean\"\n    },\n    {\n      \"name\": \"Finsupp.linearCombination_zero\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/Finsupp/LinearCombination.lean\"\n    },\n    {\n      \"name\": \"Finsupp.linearCombination_apply\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/Finsupp/LinearCombination.lean\"\n    },\n    {\n      \"name\": \"Finsupp.linearCombination_range\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/Finsupp/LinearCombination.lean\"\n    },\n    {\n      \"name\": \"Finsupp.linearCombination_option\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/Finsupp/LinearCombination.lean\"\n    },\n    {\n      \"name\": \"Finsupp.linearCombination_single\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/Finsupp/LinearCombination.lean\"\n    },\n    {\n      \"name\": \"Finsupp.linearCombination_unique\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/Finsupp/LinearCombination.lean\"\n    },\n    {\n      \"name\": \"Finsupp.linearCombinationOn_range\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/Finsupp/LinearCombination.lean\"\n    },\n    {\n      \"name\": \"Finsupp.linearCombination_fin_zero\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/Finsupp/LinearCombination.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Finsupp.linearCombination",
+            "kind": "def",
+            "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/Finsupp/LinearCombination.lean"
+          },
+          {
+            "name": "Finsupp.linearCombinationOn",
+            "kind": "def",
+            "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/Finsupp/LinearCombination.lean"
+          },
+          {
+            "name": "Finsupp.linearCombination_comp",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/Finsupp/LinearCombination.lean"
+          },
+          {
+            "name": "Finsupp.linearCombination_smul",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/Finsupp/LinearCombination.lean"
+          },
+          {
+            "name": "Finsupp.linearCombination_zero",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/Finsupp/LinearCombination.lean"
+          },
+          {
+            "name": "Finsupp.linearCombination_apply",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/Finsupp/LinearCombination.lean"
+          },
+          {
+            "name": "Finsupp.linearCombination_range",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/Finsupp/LinearCombination.lean"
+          },
+          {
+            "name": "Finsupp.linearCombination_option",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/Finsupp/LinearCombination.lean"
+          },
+          {
+            "name": "Finsupp.linearCombination_single",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/Finsupp/LinearCombination.lean"
+          },
+          {
+            "name": "Finsupp.linearCombination_unique",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/Finsupp/LinearCombination.lean"
+          },
+          {
+            "name": "Finsupp.linearCombinationOn_range",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/Finsupp/LinearCombination.lean"
+          },
+          {
+            "name": "Finsupp.linearCombination_fin_zero",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/Finsupp/LinearCombination.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  }
+]

@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 102/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 103/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 102; remaining: 191.
-- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 14 YES-but-generalise-first, 19 NO-mathlib-has-it, 32 BORDERLINE-needs-human, 10 SKIP.
+- Completed applicable assessments: 103; remaining: 190.
+- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 14 YES-but-generalise-first, 20 NO-mathlib-has-it, 32 BORDERLINE-needs-human, 10 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -1095,6 +1095,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: 9 explicit same-module callers;17 identifier occurrences on15 lines; zero external-to-file callers. Full declaring-module proof replay inlines existing aeval and removes the definition. Canonical293 ordered audit independently records constant consumers.
 - Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/Roth.kronecker.md).
 
+### Completed: `Roth.kroneckerExp`
+
+- Type: `∀ {σ : Type u_1} [Fintype σ], ℕ → (σ →₀ ℕ) → ℕ`
+- What: Natural positional exponent sum for Kronecker substitution under the chosen finite enumeration.
+- How: Sums d j * k ^ rank(j); existing Finsupp.weight specializes with power weights, independently of any coefficient field.
+- Hypotheses: Fintype σ supplies finite summation and chosen equivFin enumeration, k arbitrary natural, d finitely supported natural exponent vector, No K, Field K, l, characteristic, base lower bound, or digit bound in elaborated type
+- Project dependencies: None
+- Caller summary: 3 explicit source callers on6 code lines (6 occurrences), zero external-to-file; one extra docstring occurrence. Full module replay migrates all applications/unfolding lists and reaches exists_genWronskian_ne_zero. Canonical293 value audit has4 direct consumers, additionally kronecker_eq_zero_iff via elaboration.
+- Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/Roth.kroneckerExp.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -1325,6 +1335,8 @@ Completed `Roth.genWronskian`: Matrix.det and detRowAlternating are outer buildi
 
 Completed `Roth.kronecker`: Exact positive existing MvPolynomial.aeval; aeval_monomial and eval₂Hom native checked; unrelated Matrix.kronecker, expand, bind₁ and finSuccEquiv not mistaken for target.
 
+Completed `Roth.kroneckerExp`: Exact positive Finsupp.weight in Mathlib/Data/Finsupp/Weight.lean, weight_eq_sum bridge; underlying Finsupp.linearCombination read and native checked. Five actual search methods on current/standard/abstract; abstract dotted Loogle failure retried successfully, local index unavailable honestly recorded.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -1530,6 +1542,8 @@ Completed `Roth.abs_coeff_det_hasseDeriv_le`: A Hasse-specific assembly of suppo
 Completed `Roth.genWronskian`: One-line determinant wrapper, with established semantic API exemption. Raw entry-dependent derivative matrices in CoeffNorm/Separation/Theta are related but not copies of its row-order/family-column form.
 
 Completed `Roth.kronecker`: Literal one-call specialization of existing universal evaluation, with legitimate local semantic naming exemption.
+
+Completed `Roth.kroneckerExp`: Specialization of existing generic weighted exponent map. Shared generic API pattern with independently accepted Roth.weight, which instead targets Real with reciprocal weights; these project maps are not equal.
 
 ## Part 5: Generalization opportunities
 
@@ -1740,6 +1754,8 @@ Completed `Roth.genWronskian`: Native verified CommRing R and arbitrary finite s
 
 Completed `Roth.kronecker`: CommSemiring coefficients and arbitrary explicit ranks/weights verified; existing aeval is already more general. Hidden enumeration is noncanonical and changes the substitution.
 
+Completed `Roth.kroneckerExp`: Existing arbitrary-index weight removes Fintype only when explicit weights replace chosen equivFin; generic semiring coefficients/module target compiled. Original chosen positional interface retains Fintype; coefficient Field is already absent.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -1946,6 +1962,8 @@ Completed `Roth.abs_coeff_det_hasseDeriv_le`: Coefficient l1 size API for multiv
 Completed `Roth.genWronskian`: Named finite-family multivariate Hasse Wronskian; upstream multivariate Hasse prerequisite. Existing pairwise Polynomial Wronskian file has n-tuple TODO.
 
 Completed `Roth.kronecker`: No missing API for the definition itself; bounded encoding/injectivity and derivative results assessed separately.
+
+Completed `Roth.kroneckerExp`: None for this definition. Radix injectivity and substitution coefficient/derivative laws require their own assessment; arbitrary weights do not inherit injectivity.
 
 ## Part 7: Junk / removable
 
@@ -2156,6 +2174,8 @@ Completed `Roth.genWronskian`: No dead-code claim; standard named invariant with
 
 Completed `Roth.kronecker`: Useful local semantic API, not dead code. No new typeclass/coercion instance.
 
+Completed `Roth.kroneckerExp`: Useful local semantic one-line API with3 callers; not dead code. No new instance/coercion structure.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -2262,6 +2282,7 @@ Completed `Roth.kronecker`: Useful local semantic API, not dead code. No new typ
 | 100 | `Roth.abs_coeff_det_hasseDeriv_le` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.abs_coeff_det_hasseDeriv_le.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.abs_coeff_det_hasseDeriv_le/root-acceptance.json) |
 | 101 | `Roth.genWronskian` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.genWronskian.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.genWronskian/root-acceptance.json) |
 | 102 | `Roth.kronecker` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.kronecker.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.kronecker/root-acceptance.json) |
+| 103 | `Roth.kroneckerExp` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.kroneckerExp.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.kroneckerExp/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -2465,12 +2486,14 @@ Completed `Roth.genWronskian` action: YES-but-generalise-first; propose Mathlib/
 
 Completed `Roth.kronecker` action: NO-mathlib-has-it. Inline existing aeval at all9 named callers per tested migration, or retain a documented local/private helper in Roth/GenWronskian.lean; do not propose this wrapper alone upstream.
 
+Completed `Roth.kroneckerExp` action: NO-mathlib-has-it. Use Finsupp.weight power weights in kronecker_monomial, kroneckerExp_injOn, coeff_kronecker per compiled replay, or keep documented local/private helper in Roth/GenWronskian.lean. Do not upstream duplicate definition alone.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.kroneckerExp` next. Supporting identities receive their own applicable checks.
+   `Roth.kronHasse` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

@@ -1,0 +1,48 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.Polynomial.HasseDeriv\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.LinearAlgebra.Matrix.ToLinearEquiv\nimport Mathlib.RingTheory.Polynomial.Wronskian\nimport Mathlib.LinearAlgebra.Vandermonde\nimport Mathlib.Data.ZMod.Defs\nimport Mathlib.Algebra.Field.ZMod\nimport Mathlib.Algebra.Order.Group.Int.Sum\nimport Mathlib.LinearAlgebra.Matrix.Polynomial\nimport Mathlib.Algebra.Polynomial.CancelLeads\nimport Mathlib.Algebra.MvPolynomial.PDeriv\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\nimport Mathlib.Algebra.MvPolynomial.Equiv\nimport Mathlib.Analysis.Normed.Unbundled.RingSeminorm\nimport Mathlib.LinearAlgebra.Matrix.AbsoluteValue\nimport Mathlib.Data.Nat.Choose.Bounds\nimport Mathlib.RingTheory.Polynomial.Basic\nimport Mathlib.Data.Finsupp.Weight\n#check_failure Roth.kroneckerExp\n/-! Independent existing weighted-sum checks. -/\nnamespace KroneckerExpRawAssessment\ntheorem finite_sum_eq {σ : Type*} [Fintype σ] (k : ℕ) (d : σ →₀ ℕ) :\n    (∑ j, d j * k ^ (Fintype.equivFin σ j : ℕ)) =\n      Finsupp.weight (fun j ↦ k ^ (Fintype.equivFin σ j : ℕ)) d := by\n  simpa only [smul_eq_mul] using\n    (Finsupp.weight_eq_sum (fun j ↦ k ^ (Fintype.equivFin σ j : ℕ)) d).symm\ntheorem linearCombination_eq {σ M R : Type*} [Semiring R] [AddCommMonoid M] [Module R M]\n    (w : σ → M) (d : σ →₀ R) : Finsupp.weight w d = Finsupp.linearCombination R w d := rfl\n#print axioms finite_sum_eq\n#print axioms linearCombination_eq\nend KroneckerExpRawAssessment\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.kroneckerExp`\",\n      \"line\": 19,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'KroneckerExpRawAssessment.finite_sum_eq' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 29,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'KroneckerExpRawAssessment.linearCombination_eq' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 30,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.kroneckerExp`",
+          "line": 19,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'KroneckerExpRawAssessment.finite_sum_eq' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 29,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'KroneckerExpRawAssessment.linearCombination_eq' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 30,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 35876
+}

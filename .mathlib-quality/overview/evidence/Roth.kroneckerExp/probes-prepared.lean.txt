@@ -1,0 +1,23 @@
+namespace KroneckerExpAssessment
+variable {σ : Type*} [Fintype σ]
+#check @Finsupp.weight
+#check @Finsupp.weight_eq_sum
+#check @Finsupp.linearCombination
+#print Finsupp.weight
+example (k : ℕ) (d : σ →₀ ℕ) :
+    Roth.kroneckerExp k d = Finsupp.weight (fun j ↦ k ^ (Fintype.equivFin σ j : ℕ)) d := by
+  simpa only [Roth.kroneckerExp, smul_eq_mul] using
+    (Finsupp.weight_eq_sum (fun j ↦ k ^ (Fintype.equivFin σ j : ℕ)) d).symm
+example (k : ℕ) : Roth.kroneckerExp (σ := σ) k =
+    fun d ↦ Finsupp.weight (fun j ↦ k ^ (Fintype.equivFin σ j : ℕ)) d := by
+  funext d
+  simpa only [Roth.kroneckerExp, smul_eq_mul] using
+    (Finsupp.weight_eq_sum (fun j ↦ k ^ (Fintype.equivFin σ j : ℕ)) d).symm
+example {τ : Type*} (w : τ → ℕ) (d : τ →₀ ℕ) :
+    Finsupp.weight w d = Finsupp.linearCombination ℕ w d := rfl
+example {τ M : Type*} [AddCommMonoid M] (w : τ → M) (d e : τ →₀ ℕ) :
+    Finsupp.weight w (d + e) = Finsupp.weight w d + Finsupp.weight w e := map_add _ _ _
+example (k : ℕ) : Roth.kroneckerExp (σ := σ) k 0 = 0 := by
+  simp [Roth.kroneckerExp]
+#print axioms Finsupp.weight
+end KroneckerExpAssessment

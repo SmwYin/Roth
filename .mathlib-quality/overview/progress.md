@@ -3,7 +3,7 @@
 Status: **in_progress**, 2026-10-27. Branch: `ramin-cleanup`.
 Production Lean files and all pins match baseline `99f19fd`.
 
-**Completed: 102 / 293 written declarations.**
+**Completed: 103 / 293 written declarations.**
 This counts the current overview assessments, separately from the earlier code cleanup.
 
 | # | Completed declaration | Applicable workflow | Verdict | Report |
@@ -110,8 +110,9 @@ This counts the current overview assessments, separately from the earlier code c
 | 100 | `Roth.abs_coeff_det_hasseDeriv_le` | full-mathlibable; accepted complete | YES-but-generalise-first | [Detailed report](mathlibable/Roth.abs_coeff_det_hasseDeriv_le.md) |
 | 101 | `Roth.genWronskian` | full-mathlibable; accepted complete | YES-but-generalise-first | [Detailed report](mathlibable/Roth.genWronskian.md) |
 | 102 | `Roth.kronecker` | full-mathlibable; accepted complete | NO-mathlib-has-it | [Detailed report](mathlibable/Roth.kronecker.md) |
+| 103 | `Roth.kroneckerExp` | full-mathlibable; accepted complete | NO-mathlib-has-it | [Detailed report](mathlibable/Roth.kroneckerExp.md) |
 
-**Next declaration: `Roth.kroneckerExp`**, `Roth/GenWronskian.lean:57`.
+**Next declaration: `Roth.kronHasse`**, `Roth/GenWronskian.lean:145`.
 Only the listed assessments are complete. No partial assessment was committed.
 
 On restart: read [README](README.md), [machine progress](progress.json), and
