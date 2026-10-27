@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 167/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 168/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 167; remaining: 126.
-- Verdicts: 18 NO-composable-from-mathlib, 13 YES-add-as-is, 20 YES-but-generalise-first, 36 NO-mathlib-has-it, 50 BORDERLINE-needs-human, 30 SKIP.
+- Completed applicable assessments: 168; remaining: 125.
+- Verdicts: 18 NO-composable-from-mathlib, 13 YES-add-as-is, 21 YES-but-generalise-first, 36 NO-mathlib-has-it, 50 BORDERLINE-needs-human, 30 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -1883,6 +1883,29 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: 1 explicit source caller declarations, all in Separation.lean; 1 direct original value consumers. Exact separate lists retained. Entire Separation module proof bodies replay successfully with fresh target name.
 - Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.exists_coeffNone_basis_aux.md).
 
+### Completed: `Roth.exists_separated_representation`
+
+- Type: `∀ {τ : Type u_1} {K : Type u_2} [inst : Field K] {P : MvPolynomial (Option τ) K},
+  P ≠ 0 →
+    ∀ {n : ℕ},
+      MvPolynomial.degreeOf none P ≤ n →
+        ∃ (l : ℕ),
+          1 ≤ l ∧
+            l ≤ n + 1 ∧
+              ∃ (φ : Fin l → Polynomial K) (ψ : Fin l → MvPolynomial τ K),
+                LinearIndependent K φ ∧
+                  LinearIndependent K ψ ∧
+                    (∀ (ν : Fin l), (φ ν).natDegree ≤ n) ∧
+                      (∀ (ν : Fin l) (j : τ), MvPolynomial.degreeOf j (ψ ν) ≤ MvPolynomial.degreeOf (some j) P) ∧
+                        P =
+                          ∑ ν : Fin l, (Polynomial.aeval (MvPolynomial.X none)) (φ ν) * (MvPolynomial.rename some) (ψ ν)`
+- What: Every nonzero polynomial in one distinguished and arbitrary remaining variables has a bounded separated decomposition with both factor families linearly independent.
+- How: Choose a finite basis of coefficient-polynomial span; build independent univariate coordinate polynomials; reconstruct by basis expansion and preserve support-box degrees.
+- Hypotheses: τ : Type* arbitrary, K : Type* with Field K, P ≠ 0, degreeOf none P ≤ n
+- Project dependencies: Roth.coeffNone, Roth.eq_sum_X_none_pow_mul_coeffNone, Roth.exists_coeffNone_basis_aux, Roth.linearIndependent_coordinate_polynomials_aux, Roth.eq_sum_aeval_basis_coeffNone_aux
+- Caller summary: explicit use count: 1; external to file use count: 0; explicit call sites: {'file': 'Roth/Separation.lean', 'line': 522, 'declaration': 'Roth.exists_rat_factors_det_hasseDeriv_aux', 'private': True}; documentation occurrences: 31; direct kernel value consumers: _private.Roth.Separation.0.Roth.exists_rat_factors_det_hasseDeriv_aux; inline derivations: None
+- Verdict: YES-but-generalise-first; [complete report](.mathlib-quality/overview/mathlibable/Roth.exists_separated_representation.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -2243,6 +2266,8 @@ Completed `Roth.eq_sum_aeval_basis_coeffNone_aux`: Expand each coefficient polyn
 
 Completed `Roth.exists_coeffNone_basis_aux`: The finitely many coefficient polynomials span a finite-dimensional space. Nonzero input forces at least one nonzero coefficient and thus positive finrank; finrank_range_le_card gives the upper bound. The span lies in a support-restriction submodule by coefficient-support transport, so every basis vector inherits the individual degree bounds. This basis-selection helper is distinct from reconstruction and coordinate-family independence.
 
+Completed `Roth.exists_separated_representation`: formal search cells: 15; supplementary pid cells: 5; existing candidates: Module.finBasis, Module.free_of_finite_type_torsion_free', TensorProduct.exists_sum_tmul_eq, TensorProduct.eq_repr_basis_left, TensorProduct.eq_repr_basis_right, Matrix.exists_rank_normal_form; conclusion: Complete mathlib-only unconditional PID proof, complete rational caller and conditional free-span proof verified; existing finite/free/tensor/rank primitives still require substantive coordinate/degree reconstruction.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -2578,6 +2603,8 @@ Completed `Roth.linearIndependent_coordinate_polynomials_aux`: The helper has a 
 Completed `Roth.eq_sum_aeval_basis_coeffNone_aux`: The helper has a distinct role in the separated polynomial proof as described in the structural review; no duplicate full construction is introduced.
 
 Completed `Roth.exists_coeffNone_basis_aux`: The helper has a distinct role in the separated polynomial proof as described in the structural review; no duplicate full construction is introduced.
+
+Completed `Roth.exists_separated_representation`: Two-factor tensor/matrix rank factorization is abstract mathematical context; generic pure-tensor expansion loses simultaneous independence and bounds.
 
 ## Part 5: Generalization opportunities
 
@@ -2918,6 +2945,8 @@ Completed `Roth.eq_sum_aeval_basis_coeffNone_aux`: No public generality claim un
 
 Completed `Roth.exists_coeffNone_basis_aux`: No public generality claim under the private prefilter; preserve the existing definition and interface.
 
+Completed `Roth.exists_separated_representation`: status: verified sufficient scalar weakening; from: Field K; to: CommRing K + IsDomain K + IsPrincipalIdealRing K; preserved: arbitrary τ, hP nonzero, chosen n and hn, 1 ≤ l ≤ n+1, LinearIndependent K φ, LinearIndependent K ψ, all φ natDegree bounds, all ψ coordinate degree bounds, separated reconstruction; not claimed: PID is not claimed the weakest possible scalar condition; given-basis variant is conditional.; primary evidence: separated-repr-isolated-pid-executed.lean.txt / separated-repr-isolated-pid-receipt.json
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -3254,6 +3283,8 @@ Completed `Roth.linearIndependent_coordinate_polynomials_aux`: No new primitive 
 Completed `Roth.eq_sum_aeval_basis_coeffNone_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 Completed `Roth.exists_coeffNone_basis_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
+
+Completed `Roth.exists_separated_representation`: Bounded independent separated decomposition, using generic finite-free coefficient-span machinery.
 
 ## Part 7: Junk / removable
 
@@ -3594,6 +3625,8 @@ Completed `Roth.eq_sum_aeval_basis_coeffNone_aux`: Retain a live private proof i
 
 Completed `Roth.exists_coeffNone_basis_aux`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
 
+Completed `Roth.exists_separated_representation`: Not junk: substantive finite-rank decomposition, both independent factor families and degree control are used to construct nonzero Wronskians in the sole caller.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -3765,6 +3798,7 @@ Completed `Roth.exists_coeffNone_basis_aux`: Retain a live private proof interfa
 | 165 | `Roth.linearIndependent_coordinate_polynomials_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.linearIndependent_coordinate_polynomials_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.linearIndependent_coordinate_polynomials_aux/root-acceptance.json) |
 | 166 | `Roth.eq_sum_aeval_basis_coeffNone_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.eq_sum_aeval_basis_coeffNone_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.eq_sum_aeval_basis_coeffNone_aux/root-acceptance.json) |
 | 167 | `Roth.exists_coeffNone_basis_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_coeffNone_basis_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_coeffNone_basis_aux/root-acceptance.json) |
+| 168 | `Roth.exists_separated_representation` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_separated_representation.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_separated_representation/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -4098,12 +4132,14 @@ Completed `Roth.eq_sum_aeval_basis_coeffNone_aux` action: Keep unchanged; comple
 
 Completed `Roth.exists_coeffNone_basis_aux` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
 
+Completed `Roth.exists_separated_representation` action: YES-but-generalise-first; propose new Mathlib/Algebra/MvPolynomial/Separation.lean leaf, preserve complete API, then cleanup/upstream review; production unchanged.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.exists_separated_representation` next. Supporting identities receive their own applicable checks.
+   `Roth.det_hasseDeriv_separated` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

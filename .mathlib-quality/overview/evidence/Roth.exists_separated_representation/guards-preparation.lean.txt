@@ -1,0 +1,60 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
+
+#check_failure Roth.exists_separated_representation
+open MvPolynomial
+namespace Separated168Guards
+-- Linear independence is stronger than individual nonzero terms.
+theorem nonzeroNotIndependent :
+    (∀ i : Fin 2, (fun _ : Fin 2 ↦ (1 : Polynomial ℚ)) i ≠ 0) ∧
+      ¬ LinearIndependent ℚ (fun _ : Fin 2 ↦ (1 : Polynomial ℚ)) := by
+  refine ⟨fun _ ↦ one_ne_zero, ?_⟩
+  intro h
+  have he := h.injective (show (1 : Polynomial ℚ) = 1 from rfl)
+  have : (0 : Fin 2) = 1 := he
+  exact Fin.zero_ne_one this
+-- Merely keeping a nonzero summand does not preserve the original sum.
+theorem cancellationGuard :
+    (1 : Polynomial ℚ) ≠ 0 ∧ (-1 : Polynomial ℚ) ≠ 0 ∧
+      (1 : Polynomial ℚ) + -1 = 0 := by
+  simp
+-- The natural exponent/degree index has actual mathematical force.
+theorem degreeBoundNecessary :
+    ¬ degreeOf (none : Option Unit) (X none : MvPolynomial (Option Unit) ℚ) ≤ 0 := by
+  simp
+-- Faithfulness and domain structure do not provide Field.
+theorem fieldNotInferred {R : Type*} [CommRing R] [IsDomain R] : True := by
+  fail_if_success haveI : Field R := inferInstance
+  trivial
+theorem zeroCannotPositiveLength :
+    ¬ ∃ (l : ℕ) (_ : 1 ≤ l) (_ : l ≤ 1)
+        (φ : Fin l → Polynomial ℚ) (ψ : Fin l → MvPolynomial Unit ℚ),
+      LinearIndependent ℚ φ ∧ LinearIndependent ℚ ψ ∧
+      (0 : MvPolynomial (Option Unit) ℚ) =
+        ∑ ν, Polynomial.aeval (X none : MvPolynomial (Option Unit) ℚ) (φ ν) *
+          rename some (ψ ν) := by
+  rintro ⟨l, hl, hl', φ, ψ, hφ, hψ, heq⟩
+  have hle : l = 1 := Nat.le_antisymm hl' hl
+  subst l
+  have hp : φ 0 ≠ 0 := hφ.ne_zero 0
+  have hq : ψ 0 ≠ 0 := hψ.ne_zero 0
+  have he : Polynomial.aeval (X none : MvPolynomial (Option Unit) ℚ) (φ 0) ≠ 0 :=
+    (map_ne_zero_iff _ (Polynomial.toMvPolynomial_injective none)).2 hp
+  have hf : rename some (ψ 0) ≠ 0 :=
+    (rename_eq_zero_iff_of_injective _ (Option.some_injective Unit)).not.mpr hq
+  apply mul_ne_zero he hf
+  simpa using heq.symm
+#print axioms zeroCannotPositiveLength
+#print axioms nonzeroNotIndependent
+#print axioms cancellationGuard
+#print axioms degreeBoundNecessary
+#print axioms fieldNotInferred
+end Separated168Guards

@@ -1,0 +1,77 @@
+open MvPolynomial Roth
+namespace Separated168Context
+elab "linearIndependent_coordinate_polynomials_aux168" : term => do
+  Lean.Meta.mkConstWithFreshMVarLevels
+    (Lean.mkPrivateNameCore `Roth.Separation `Roth.linearIndependent_coordinate_polynomials_aux)
+elab "eq_sum_aeval_basis_coeffNone_aux168" : term => do
+  Lean.Meta.mkConstWithFreshMVarLevels
+    (Lean.mkPrivateNameCore `Roth.Separation `Roth.eq_sum_aeval_basis_coeffNone_aux)
+elab "exists_coeffNone_basis_aux168" : term => do
+  Lean.Meta.mkConstWithFreshMVarLevels
+    (Lean.mkPrivateNameCore `Roth.Separation `Roth.exists_coeffNone_basis_aux)
+variable {τ K : Type*} [Field K]
+theorem fullReplay {P : MvPolynomial (Option τ) K} (hP : P ≠ 0) {n : ℕ}
+    (hn : degreeOf none P ≤ n) :
+    ∃ l, 1 ≤ l ∧ l ≤ n + 1 ∧ ∃ (φ : Fin l → Polynomial K) (ψ : Fin l → MvPolynomial τ K),
+      LinearIndependent K φ ∧ LinearIndependent K ψ ∧ (∀ ν, (φ ν).natDegree ≤ n) ∧
+      (∀ ν j, degreeOf j (ψ ν) ≤ degreeOf (some j) P) ∧
+      P = ∑ ν, Polynomial.aeval (X none : MvPolynomial (Option τ) K) (φ ν) * rename some (ψ ν) := by
+  classical
+  let v : Fin (n + 1) → MvPolynomial τ K := fun ν ↦ coeffNone P ν
+  have hP' : P = ∑ ν : Fin (n + 1), X none ^ (ν : ℕ) * rename some (v ν) := by
+    rw [Fin.sum_univ_eq_sum_range (fun ν ↦ X none ^ ν * rename some (coeffNone P ν))]
+    exact eq_sum_X_none_pow_mul_coeffNone P hn
+  obtain ⟨l, b, hl1, hl2, hdegree⟩ := exists_coeffNone_basis_aux168 hP hP'
+  refine ⟨l, hl1, hl2, fun ρ ↦ ∑ ν : Fin (n + 1),
+      Polynomial.C (b.repr ⟨v ν, Submodule.subset_span ⟨ν, rfl⟩⟩ ρ) * Polynomial.X ^ (ν : ℕ),
+    fun ρ ↦ (b ρ : MvPolynomial τ K), linearIndependent_coordinate_polynomials_aux168 v b,
+    b.linearIndependent.map' (Submodule.span K (Set.range v)).subtype
+      (Submodule.ker_subtype _), ?_, hdegree,
+    eq_sum_aeval_basis_coeffNone_aux168 hP' b⟩
+  exact fun ρ ↦ Polynomial.natDegree_sum_le_of_forall_le _ _ fun ν _ ↦
+    (Polynomial.natDegree_C_mul_X_pow_le _ _).trans (Nat.lt_succ_iff.1 ν.2)
+
+#print axioms fullReplay
+theorem arbitraryVariables {τ K : Type*} [Field K]
+    (P : MvPolynomial (Option τ) K) (hP : P ≠ 0) :
+    ∃ l, 1 ≤ l ∧ l ≤ degreeOf none P + 1 ∧
+      ∃ (φ : Fin l → Polynomial K) (ψ : Fin l → MvPolynomial τ K),
+      LinearIndependent K φ ∧ LinearIndependent K ψ ∧
+      (∀ ν, (φ ν).natDegree ≤ degreeOf none P) ∧
+      (∀ ν j, degreeOf j (ψ ν) ≤ degreeOf (some j) P) ∧
+      P = ∑ ν, Polynomial.aeval (X none : MvPolynomial (Option τ) K) (φ ν) *
+        rename some (ψ ν) :=
+  fullReplay hP le_rfl
+#print axioms arbitraryVariables
+end Separated168Context
+
+namespace Separated168Context
+section CommRing
+variable {τ K : Type*} [CommRing K]
+theorem representationOfBasis {P : MvPolynomial (Option τ) K} {n : ℕ}
+    (hn : degreeOf none P ≤ n) {l : ℕ}
+    (b : Module.Basis (Fin l) K
+      (Submodule.span K (Set.range (fun ν : Fin (n + 1) ↦ Roth.coeffNone P ν))))
+    (hl1 : 1 ≤ l) (hl2 : l ≤ n + 1)
+    (hdegree : ∀ ρ j, degreeOf j (b ρ : MvPolynomial τ K) ≤ degreeOf (some j) P) :
+    ∃ l, 1 ≤ l ∧ l ≤ n + 1 ∧ ∃ (φ : Fin l → Polynomial K) (ψ : Fin l → MvPolynomial τ K),
+      LinearIndependent K φ ∧ LinearIndependent K ψ ∧ (∀ ν, (φ ν).natDegree ≤ n) ∧
+      (∀ ν j, degreeOf j (ψ ν) ≤ degreeOf (some j) P) ∧
+      P = ∑ ν, Polynomial.aeval (X none : MvPolynomial (Option τ) K) (φ ν) * rename some (ψ ν) := by
+  classical
+  let v : Fin (n + 1) → MvPolynomial τ K := fun ν ↦ Roth.coeffNone P ν
+  have hP' : P = ∑ ν : Fin (n + 1), X none ^ (ν : ℕ) * rename some (v ν) := by
+    rw [Fin.sum_univ_eq_sum_range (fun ν ↦ X none ^ ν * rename some (Roth.coeffNone P ν))]
+    exact Roth.eq_sum_X_none_pow_mul_coeffNone P hn
+  refine ⟨l, hl1, hl2, fun ρ ↦ ∑ ν : Fin (n + 1),
+      Polynomial.C (b.repr ⟨v ν, Submodule.subset_span ⟨ν, rfl⟩⟩ ρ) * Polynomial.X ^ (ν : ℕ),
+    fun ρ ↦ (b ρ : MvPolynomial τ K), linearIndependent_coordinate_polynomials_aux168 v b,
+    b.linearIndependent.map' (Submodule.span K (Set.range v)).subtype
+      (Submodule.ker_subtype _), ?_, hdegree,
+    eq_sum_aeval_basis_coeffNone_aux168 hP' b⟩
+  exact fun ρ ↦ Polynomial.natDegree_sum_le_of_forall_le _ _ fun ν _ ↦
+    (Polynomial.natDegree_C_mul_X_pow_le _ _).trans (Nat.lt_succ_iff.1 ν.2)
+
+#print axioms representationOfBasis
+end CommRing
+end Separated168Context

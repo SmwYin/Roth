@@ -1,0 +1,75 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\n\n#check_failure Roth.exists_separated_representation\nopen MvPolynomial\nnamespace Separated168Guards\n-- Linear independence is stronger than individual nonzero terms.\ntheorem nonzeroNotIndependent :\n    (∀ i : Fin 2, (fun _ : Fin 2 ↦ (1 : Polynomial ℚ)) i ≠ 0) ∧\n      ¬ LinearIndependent ℚ (fun _ : Fin 2 ↦ (1 : Polynomial ℚ)) := by\n  refine ⟨fun _ ↦ one_ne_zero, ?_⟩\n  intro h\n  have : (0 : Fin 2) = 1 := h.injective rfl\n  exact Fin.zero_ne_one this\n-- Merely keeping a nonzero summand does not preserve the original sum.\ntheorem cancellationGuard :\n    (1 : Polynomial ℚ) ≠ 0 ∧ (-1 : Polynomial ℚ) ≠ 0 ∧\n      (1 : Polynomial ℚ) + -1 = 0 := by\n  simp\n-- The natural exponent/degree index has actual mathematical force.\ntheorem degreeBoundNecessary :\n    ¬ degreeOf (none : Option Unit) (X none : MvPolynomial (Option Unit) ℚ) ≤ 0 := by\n  simp\n-- Faithfulness and domain structure do not provide Field.\ntheorem fieldNotInferred {R : Type*} [CommRing R] [IsDomain R] : True := by\n  fail_if_success have : Field R := inferInstance\n  trivial\ntheorem zeroCannotPositiveLength :\n    ¬ ∃ (l : ℕ) (_ : 1 ≤ l) (_ : l ≤ 1)\n        (φ : Fin l → Polynomial ℚ) (ψ : Fin l → MvPolynomial Unit ℚ),\n      LinearIndependent ℚ φ ∧ LinearIndependent ℚ ψ ∧\n      (0 : MvPolynomial (Option Unit) ℚ) =\n        ∑ ν, Polynomial.aeval (X none : MvPolynomial (Option Unit) ℚ) (φ ν) *\n          rename some (ψ ν) := by\n  rintro ⟨l, hl, hl', φ, ψ, hφ, hψ, heq⟩\n  have hle : l = 1 := Nat.le_antisymm hl' hl\n  subst l\n  have hp : φ 0 ≠ 0 := hφ.ne_zero 0\n  have hq : ψ 0 ≠ 0 := hψ.ne_zero 0\n  have he : Polynomial.aeval (X none : MvPolynomial (Option Unit) ℚ) (φ 0) ≠ 0 :=\n    (map_ne_zero_iff _ (Polynomial.toMvPolynomial_injective none)).2 hp\n  have hf : rename some (ψ 0) ≠ 0 :=\n    (rename_eq_zero_iff_of_injective _ (Option.some_injective Unit)).not.mpr hq\n  apply mul_ne_zero he hf\n  simpa using heq.symm\n#print axioms zeroCannotPositiveLength\n#print axioms nonzeroNotIndependent\n#print axioms cancellationGuard\n#print axioms degreeBoundNecessary\n#print axioms fieldNotInferred\nend Separated168Guards\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.exists_separated_representation`\",\n      \"line\": 12,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Separated168Guards.zeroCannotPositiveLength' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 54,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Separated168Guards.nonzeroNotIndependent' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 55,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Separated168Guards.cancellationGuard' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 56,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Separated168Guards.degreeBoundNecessary' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 57,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Separated168Guards.fieldNotInferred' does not depend on any axioms\",\n      \"line\": 58,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.exists_separated_representation`",
+          "line": 12,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Separated168Guards.zeroCannotPositiveLength' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 54,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Separated168Guards.nonzeroNotIndependent' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 55,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Separated168Guards.cancellationGuard' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 56,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Separated168Guards.degreeBoundNecessary' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 57,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Separated168Guards.fieldNotInferred' does not depend on any axioms",
+          "line": 58,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 265
+}

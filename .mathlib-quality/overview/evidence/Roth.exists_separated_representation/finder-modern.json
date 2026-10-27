@@ -1,0 +1,57 @@
+{
+  "id": "finder-modern",
+  "query": "Rank factorization of a finite coefficient matrix as product of full column rank and full row rank matrices",
+  "response": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Matrix.rank\",\n      \"informal_name\": \"Rank of a matrix\",\n      \"kind\": \"definition\",\n      \"type\": \"{m : Type um} → {n : Type un} → {R : Type uR} → [Fintype n] → [CommRing R] → Matrix m n R → ℕ\",\n      \"informal_description\": \"The rank of a matrix $ A $ is defined as the finite rank (converted to a natural number) of the submodule formed by the image of the linear map induced by left multiplication with $ A $. This corresponds to the dimension of the column space of $ A $, where infinite ranks are mapped to zero.\",\n      \"path\": \"Mathlib.LinearAlgebra.Matrix.Rank\"\n    },\n    {\n      \"formal_name\": \"rank_matrix\",\n      \"informal_name\": \"Rank of Matrix Module over Semiring is $|m| \\\\times |n|$\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (R : Type u) [inst : Semiring R] [StrongRankCondition R] (m : Type v) (n : Type w) [Finite m] [Finite n],\\n  Module.rank R (Matrix m n R) =\\n    Cardinal.lift.{max v w u, v} (Cardinal.mk m) * Cardinal.lift.{max v w u, w} (Cardinal.mk n)\",\n      \"informal_description\": \"For finite types $m$ and $n$, the rank of the module of $m \\\\times n$ matrices over a semiring $R$ is equal to the product of the cardinalities of $m$ and $n$.\",\n      \"path\": \"Mathlib.LinearAlgebra.Dimension.Constructions\"\n    },\n    {\n      \"formal_name\": \"Matrix.rank_add_rank_le_card_of_mul_eq_zero\",\n      \"informal_name\": \"Sylvester's Rank Inequality for Zero Product Matrices\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {l : Type ul} {m : Type um} {n : Type un} {R : Type uR} [inst : Fintype n] [inst_1 : Field R] [Finite l]\\n  [inst_3 : Fintype m] {A : Matrix l m R} {B : Matrix m n R}, A * B = 0 → A.rank + B.rank ≤ Fintype.card m\",\n      \"informal_description\": \"For matrices $A$ and $B$ over a field, where the index types $l$, $m$, and $n$ are finite, if the product $A \\\\cdot B$ is the zero matrix, then the sum of the ranks of $A$ and $B$ is less than or equal to the cardinality of $m$.\",\n      \"path\": \"Mathlib.LinearAlgebra.Matrix.Rank\"\n    },\n    {\n      \"formal_name\": \"rank_matrix''\",\n      \"informal_name\": \"Rank of Matrix Module over Semiring Equals Product of Dimensions\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (R : Type u) [inst : Semiring R] [StrongRankCondition R] (m n : Type u) [Finite m] [Finite n],\\n  Module.rank R (Matrix m n R) = Cardinal.mk m * Cardinal.mk n\",\n      \"informal_description\": \"For finite types $m$ and $n$, the rank of the module of $m \\times n$ matrices over a semiring $R$ is equal to the product of the cardinalities of $m$ and $n$, i.e., $\\\\operatorname{rank}_R(\\\\mathrm{Matrix}_{m,n}(R)) = \\\\#m \\\\cdot \\\\#n$.\",\n      \"path\": \"Mathlib.LinearAlgebra.Dimension.Constructions\"\n    },\n    {\n      \"formal_name\": \"Matrix.rank_self_mul_transpose\",\n      \"informal_name\": \"Rank of $A A^\\top$ Equals Rank of $A$\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {m : Type um} {n : Type un} {R : Type uR} [inst : Fintype n] [inst_1 : Field R] [inst_2 : LinearOrder R]\\n  [IsStrictOrderedRing R] [inst_4 : Fintype m] (A : Matrix m n R), (A * A.transpose).rank = A.rank\",\n      \"informal_description\": \"For any matrix $A$ over a field $R$ equipped with a linear order and strict ordered ring structure, and for any finite index set $m$, the rank of the product $A A^\\top$ is equal to the rank of $A$.\",\n      \"path\": \"Mathlib.LinearAlgebra.Matrix.Rank\"\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "items": [
+        {
+          "formal_name": "Matrix.rank",
+          "informal_name": "Rank of a matrix",
+          "kind": "definition",
+          "type": "{m : Type um} → {n : Type un} → {R : Type uR} → [Fintype n] → [CommRing R] → Matrix m n R → ℕ",
+          "informal_description": "The rank of a matrix $ A $ is defined as the finite rank (converted to a natural number) of the submodule formed by the image of the linear map induced by left multiplication with $ A $. This corresponds to the dimension of the column space of $ A $, where infinite ranks are mapped to zero.",
+          "path": "Mathlib.LinearAlgebra.Matrix.Rank"
+        },
+        {
+          "formal_name": "rank_matrix",
+          "informal_name": "Rank of Matrix Module over Semiring is $|m| \\times |n|$",
+          "kind": "theorem",
+          "type": "∀ (R : Type u) [inst : Semiring R] [StrongRankCondition R] (m : Type v) (n : Type w) [Finite m] [Finite n],\n  Module.rank R (Matrix m n R) =\n    Cardinal.lift.{max v w u, v} (Cardinal.mk m) * Cardinal.lift.{max v w u, w} (Cardinal.mk n)",
+          "informal_description": "For finite types $m$ and $n$, the rank of the module of $m \\times n$ matrices over a semiring $R$ is equal to the product of the cardinalities of $m$ and $n$.",
+          "path": "Mathlib.LinearAlgebra.Dimension.Constructions"
+        },
+        {
+          "formal_name": "Matrix.rank_add_rank_le_card_of_mul_eq_zero",
+          "informal_name": "Sylvester's Rank Inequality for Zero Product Matrices",
+          "kind": "theorem",
+          "type": "∀ {l : Type ul} {m : Type um} {n : Type un} {R : Type uR} [inst : Fintype n] [inst_1 : Field R] [Finite l]\n  [inst_3 : Fintype m] {A : Matrix l m R} {B : Matrix m n R}, A * B = 0 → A.rank + B.rank ≤ Fintype.card m",
+          "informal_description": "For matrices $A$ and $B$ over a field, where the index types $l$, $m$, and $n$ are finite, if the product $A \\cdot B$ is the zero matrix, then the sum of the ranks of $A$ and $B$ is less than or equal to the cardinality of $m$.",
+          "path": "Mathlib.LinearAlgebra.Matrix.Rank"
+        },
+        {
+          "formal_name": "rank_matrix''",
+          "informal_name": "Rank of Matrix Module over Semiring Equals Product of Dimensions",
+          "kind": "theorem",
+          "type": "∀ (R : Type u) [inst : Semiring R] [StrongRankCondition R] (m n : Type u) [Finite m] [Finite n],\n  Module.rank R (Matrix m n R) = Cardinal.mk m * Cardinal.mk n",
+          "informal_description": "For finite types $m$ and $n$, the rank of the module of $m \times n$ matrices over a semiring $R$ is equal to the product of the cardinalities of $m$ and $n$, i.e., $\\operatorname{rank}_R(\\mathrm{Matrix}_{m,n}(R)) = \\#m \\cdot \\#n$.",
+          "path": "Mathlib.LinearAlgebra.Dimension.Constructions"
+        },
+        {
+          "formal_name": "Matrix.rank_self_mul_transpose",
+          "informal_name": "Rank of $A A^\top$ Equals Rank of $A$",
+          "kind": "theorem",
+          "type": "∀ {m : Type um} {n : Type un} {R : Type uR} [inst : Fintype n] [inst_1 : Field R] [inst_2 : LinearOrder R]\n  [IsStrictOrderedRing R] [inst_4 : Fintype m] (A : Matrix m n R), (A * A.transpose).rank = A.rank",
+          "informal_description": "For any matrix $A$ over a field $R$ equipped with a linear order and strict ordered ring structure, and for any finite index set $m$, the rank of the product $A A^\top$ is equal to the rank of $A$.",
+          "path": "Mathlib.LinearAlgebra.Matrix.Rank"
+        }
+      ]
+    },
+    "isError": false
+  }
+}
