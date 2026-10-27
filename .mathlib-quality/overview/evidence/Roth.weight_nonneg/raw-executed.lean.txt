@@ -1,0 +1,47 @@
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.Basic.Real.Basic
+
+namespace RawWeightNonnegAssessment
+variable {σ : Type*}
+noncomputable def weight [Fintype σ] (r : σ → ℕ) (d : σ →₀ ℕ) : ℝ :=
+  ∑ j, (d j : ℝ) / r j
+theorem original_three_facts [Fintype σ] (r : σ → ℕ) (d : σ →₀ ℕ) : 0 ≤ weight r d := by
+  have hn : ∀ n : ℕ, (0 : ℝ) ≤ n := Nat.cast_nonneg
+  exact Finset.sum_nonneg fun j _ ↦ div_nonneg (hn (d j)) (hn (r j))
+theorem finite_nat_sum (s : Finset σ) (a b : σ → ℕ) :
+    0 ≤ ∑ j ∈ s, (a j : ℝ) / b j := by
+  have hn : ∀ n : ℕ, (0 : ℝ) ≤ n := Nat.cast_nonneg
+  exact Finset.sum_nonneg fun j _ ↦ div_nonneg (hn (a j)) (hn (b j))
+theorem finite_functions [Fintype σ] (a b : σ → ℕ) :
+    0 ≤ ∑ j, (a j : ℝ) / b j := finite_nat_sum Finset.univ a b
+theorem real_denominators [Fintype σ] (r : σ → ℝ) (hr : ∀ j, 0 ≤ r j) (d : σ →₀ ℕ) :
+    0 ≤ ∑ j, (d j : ℝ) / r j :=
+  Finset.sum_nonneg fun j _ ↦ div_nonneg (Nat.cast_nonneg _) (hr j)
+theorem ordered_field {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (s : Finset σ) (a b : σ → K) (ha : ∀ j ∈ s, 0 ≤ a j) (hb : ∀ j ∈ s, 0 ≤ b j) :
+    0 ≤ ∑ j ∈ s, a j / b j :=
+  Finset.sum_nonneg fun j hj ↦ div_nonneg (ha j hj) (hb j hj)
+theorem weighted_nonneg {M : Type*} [AddCommMonoid M] [Preorder M] [IsOrderedAddMonoid M]
+    (w : σ → M) (hw : ∀ j, 0 ≤ w j) (d : σ →₀ ℕ) : 0 ≤ Finsupp.weight w d := by
+  rw [Finsupp.weight_apply]
+  exact Finsupp.sum_nonneg' fun j ↦ nsmul_nonneg (hw j) (d j)
+theorem weighted_nonneg_support {M : Type*}
+    [AddCommMonoid M] [Preorder M] [IsOrderedAddMonoid M]
+    (w : σ → M) (d : σ →₀ ℕ) (hw : ∀ j ∈ d.support, 0 ≤ w j) :
+    0 ≤ Finsupp.weight w d := by
+  rw [Finsupp.weight_apply]
+  exact Finsupp.sum_nonneg fun j hj ↦ nsmul_nonneg (hw j hj) (d j)
+example : ¬ (0 : ℝ) ≤ ∑ _ : Unit, (1 : ℝ) / (-1) := by simp
+example [Fintype σ] (r : σ → ℕ) : weight r 0 = 0 := by simp [weight]
+#check @Finsupp.sum_nonneg'
+#check @Finsupp.weight_apply
+#check @nsmul_nonneg
+#check_failure Roth.weight_nonneg
+#print axioms original_three_facts
+#print axioms finite_nat_sum
+#print axioms finite_functions
+#print axioms real_denominators
+#print axioms ordered_field
+#print axioms weighted_nonneg
+#print axioms weighted_nonneg_support
+end RawWeightNonnegAssessment

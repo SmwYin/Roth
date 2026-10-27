@@ -1,0 +1,120 @@
+{
+  "request": {
+    "code": "import Mathlib.Data.Finsupp.Weight\nimport Mathlib.Basic.Real.Basic\n\nnamespace RawWeightNonnegAssessment\nvariable {σ : Type*}\nnoncomputable def weight [Fintype σ] (r : σ → ℕ) (d : σ →₀ ℕ) : ℝ :=\n  ∑ j, (d j : ℝ) / r j\ntheorem original_three_facts [Fintype σ] (r : σ → ℕ) (d : σ →₀ ℕ) : 0 ≤ weight r d := by\n  have hn : ∀ n : ℕ, (0 : ℝ) ≤ n := Nat.cast_nonneg\n  exact Finset.sum_nonneg fun j _ ↦ div_nonneg (hn (d j)) (hn (r j))\ntheorem finite_nat_sum (s : Finset σ) (a b : σ → ℕ) :\n    0 ≤ ∑ j ∈ s, (a j : ℝ) / b j := by\n  have hn : ∀ n : ℕ, (0 : ℝ) ≤ n := Nat.cast_nonneg\n  exact Finset.sum_nonneg fun j _ ↦ div_nonneg (hn (a j)) (hn (b j))\ntheorem finite_functions [Fintype σ] (a b : σ → ℕ) :\n    0 ≤ ∑ j, (a j : ℝ) / b j := finite_nat_sum Finset.univ a b\ntheorem real_denominators [Fintype σ] (r : σ → ℝ) (hr : ∀ j, 0 ≤ r j) (d : σ →₀ ℕ) :\n    0 ≤ ∑ j, (d j : ℝ) / r j :=\n  Finset.sum_nonneg fun j _ ↦ div_nonneg (Nat.cast_nonneg _) (hr j)\ntheorem ordered_field {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]\n    (s : Finset σ) (a b : σ → K) (ha : ∀ j ∈ s, 0 ≤ a j) (hb : ∀ j ∈ s, 0 ≤ b j) :\n    0 ≤ ∑ j ∈ s, a j / b j :=\n  Finset.sum_nonneg fun j hj ↦ div_nonneg (ha j hj) (hb j hj)\ntheorem weighted_nonneg {M : Type*} [AddCommMonoid M] [Preorder M] [IsOrderedAddMonoid M]\n    (w : σ → M) (hw : ∀ j, 0 ≤ w j) (d : σ →₀ ℕ) : 0 ≤ Finsupp.weight w d := by\n  rw [Finsupp.weight_apply]\n  exact Finsupp.sum_nonneg' fun j ↦ nsmul_nonneg (hw j) (d j)\ntheorem weighted_nonneg_support {M : Type*}\n    [AddCommMonoid M] [Preorder M] [IsOrderedAddMonoid M]\n    (w : σ → M) (d : σ →₀ ℕ) (hw : ∀ j ∈ d.support, 0 ≤ w j) :\n    0 ≤ Finsupp.weight w d := by\n  rw [Finsupp.weight_apply]\n  exact Finsupp.sum_nonneg fun j hj ↦ nsmul_nonneg (hw j hj) (d j)\nexample : ¬ (0 : ℝ) ≤ ∑ _ : Unit, (1 : ℝ) / (-1) := by simp\nexample [Fintype σ] (r : σ → ℕ) : weight r 0 = 0 := by simp [weight]\n#check @Finsupp.sum_nonneg'\n#check @Finsupp.weight_apply\n#check @nsmul_nonneg\n#check_failure Roth.weight_nonneg\n#print axioms original_three_facts\n#print axioms finite_nat_sum\n#print axioms finite_functions\n#print axioms real_denominators\n#print axioms ordered_field\n#print axioms weighted_nonneg\n#print axioms weighted_nonneg_support\nend RawWeightNonnegAssessment\n"
+  },
+  "elapsed_ms": 24568,
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finsupp.sum_nonneg' : ∀ {ι : Type u_2} {α : Type u_3} {β : Type u_4} [inst : Zero α] [inst_1 : AddCommMonoid β]\\n  [inst_2 : Preorder β] [IsOrderedAddMonoid β] {f : ι →₀ α} {h₁ : ι → α → β}, (∀ (i : ι), 0 ≤ h₁ i (f i)) → 0 ≤ f.sum h₁\",\n      \"line\": 36,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finsupp.weight_apply : ∀ {σ : Type u_2} {M : Type u_3} {R : Type u_4} [inst : Semiring R] (w : σ → M)\\n  [inst_1 : AddCommMonoid M] [inst_2 : Module R M] (f : σ →₀ R), (Finsupp.weight w) f = f.sum fun i c ↦ c • w i\",\n      \"line\": 37,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@nsmul_nonneg : ∀ {M : Type u_2} [inst : AddMonoid M] [inst_1 : Preorder M] [AddLeftMono M] {a : M},\\n  0 ≤ a → ∀ (n : ℕ), 0 ≤ n • a\",\n      \"line\": 38,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.weight_nonneg`\",\n      \"line\": 39,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'RawWeightNonnegAssessment.original_three_facts' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 40,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'RawWeightNonnegAssessment.finite_nat_sum' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 41,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'RawWeightNonnegAssessment.finite_functions' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 42,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'RawWeightNonnegAssessment.real_denominators' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 43,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'RawWeightNonnegAssessment.ordered_field' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 44,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'RawWeightNonnegAssessment.weighted_nonneg' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 45,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'RawWeightNonnegAssessment.weighted_nonneg_support' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 46,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "@Finsupp.sum_nonneg' : ∀ {ι : Type u_2} {α : Type u_3} {β : Type u_4} [inst : Zero α] [inst_1 : AddCommMonoid β]\n  [inst_2 : Preorder β] [IsOrderedAddMonoid β] {f : ι →₀ α} {h₁ : ι → α → β}, (∀ (i : ι), 0 ≤ h₁ i (f i)) → 0 ≤ f.sum h₁",
+          "line": 36,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finsupp.weight_apply : ∀ {σ : Type u_2} {M : Type u_3} {R : Type u_4} [inst : Semiring R] (w : σ → M)\n  [inst_1 : AddCommMonoid M] [inst_2 : Module R M] (f : σ →₀ R), (Finsupp.weight w) f = f.sum fun i c ↦ c • w i",
+          "line": 37,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@nsmul_nonneg : ∀ {M : Type u_2} [inst : AddMonoid M] [inst_1 : Preorder M] [AddLeftMono M] {a : M},\n  0 ≤ a → ∀ (n : ℕ), 0 ≤ n • a",
+          "line": 38,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.weight_nonneg`",
+          "line": 39,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'RawWeightNonnegAssessment.original_three_facts' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 40,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'RawWeightNonnegAssessment.finite_nat_sum' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 41,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'RawWeightNonnegAssessment.finite_functions' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 42,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'RawWeightNonnegAssessment.real_denominators' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 43,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'RawWeightNonnegAssessment.ordered_field' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 44,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'RawWeightNonnegAssessment.weighted_nonneg' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 45,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'RawWeightNonnegAssessment.weighted_nonneg_support' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 46,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  }
+}
