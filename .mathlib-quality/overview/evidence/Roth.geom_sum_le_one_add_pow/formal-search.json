@@ -1,0 +1,925 @@
+[
+  {
+    "id": "finder-current",
+    "tool": "mcp__lean_lsp__lean_leanfinder",
+    "form": "current",
+    "request": {
+      "query": "For a nonnegative real t and natural n, sum of t^i for i from 0 to n is at most (1+t)^n",
+      "num_results": 5
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Real.mul_add_one_le_add_one_pow\",\n      \"informal_name\": \"Inequality: $ a b + 1 \\\\leq (a + 1)^b $ for Non-Negative Real $ a $\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {a : ℝ}, 0 ≤ a → ∀ (b : ℕ), a * ↑b + 1 ≤ (a + 1) ^ b\",\n      \"informal_description\": \"For any non-negative real number $ a $ and any natural number $ b $, the inequality $ a \\\\cdot b + 1 \\\\leq (a + 1)^b $ holds.\",\n      \"path\": \"Mathlib.Data.Real.Basic\"\n    },\n    {\n      \"formal_name\": \"one_add_le_pow_of_two_add_nonneg\",\n      \"informal_name\": \"Inequality: $1 + n a \\\\leq (1 + a)^n$ for $a \\\\geq -2$\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] [inst_1 : LinearOrder R] [IsOrderedRing R] [ExistsAddOfLE R] {a : R},\\n  0 ≤ 2 + a → ∀ (n : ℕ), 1 + ↑n * a ≤ (1 + a) ^ n\",\n      \"informal_description\": \"For any element $a$ in a linearly ordered semiring $R$ satisfying $2 + a \\\\geq 0$, and for all natural numbers $n$, the inequality $1 + n a \\\\leq (1 + a)^n$ holds.\",\n      \"path\": \"Mathlib.Algebra.Order.Ring.Pow\"\n    },\n    {\n      \"formal_name\": \"one_add_mul_le_pow'\",\n      \"informal_name\": \"Bernoulli Inequality in Ordered Semirings\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] [inst_1 : PartialOrder R] [IsOrderedRing R] {a : R},\\n  0 ≤ a * a → 0 ≤ (1 + a) * (1 + a) → 0 ≤ 2 + a → ∀ (n : ℕ), 1 + ↑n * a ≤ (1 + a) ^ n\",\n      \"informal_description\": \"In an ordered semiring, for any element $ a $ satisfying $ 0 \\\\leq a^2 $, $ 0 \\\\leq (1 + a)^2 $, and $ 0 \\\\leq 2 + a $, and for any natural number $ n $, it holds that $ 1 + n \\\\cdot a \\\\leq (1 + a)^n $.\",\n      \"path\": \"Mathlib.Algebra.Order.Ring.Pow\"\n    },\n    {\n      \"formal_name\": \"Real.sum_le_exp_of_nonneg\",\n      \"informal_name\": \"Partial Sum of Exponential Series Bounded by $ e^x $ for Non-Negative $ x $\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {x : ℝ}, 0 ≤ x → ∀ (n : ℕ), ∑ i ∈ Finset.range n, x ^ i / ↑i.factorial ≤ Real.exp x\",\n      \"informal_description\": \"For any non-negative real number $ x $ and natural number $ n $, the sum $ \\\\sum_{i=0}^{n-1} \\\\frac{x^i}{i!} $ is less than or equal to the exponential function $ e^x $. This inequality holds because the partial sums of the Taylor series expansion of $ e^x $ form an increasing sequence that converges to $ e^x $ itself when $ x \\\\geq 0 $.\",\n      \"path\": \"Mathlib.Analysis.Complex.Exponential\"\n    },\n    {\n      \"formal_name\": \"one_add_mul_le_pow\",\n      \"informal_name\": \"Inequality: $1 + n a \\\\leq (1 + a)^n$ for $a \\\\geq -2$\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Ring R] [inst_1 : LinearOrder R] [IsStrictOrderedRing R] {a : R},\\n  -2 ≤ a → ∀ (n : ℕ), 1 + ↑n * a ≤ (1 + a) ^ n\",\n      \"informal_description\": \"For any element $a$ in an ordered ring satisfying $a \\\\geq -2$ and any natural number $n$, it holds that $1 + n a \\\\leq (1 + a)^n$.\",\n      \"path\": \"Mathlib.Algebra.Order.Ring.Pow\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Real.mul_add_one_le_add_one_pow",
+            "informal_name": "Inequality: $ a b + 1 \\leq (a + 1)^b $ for Non-Negative Real $ a $",
+            "kind": "theorem",
+            "type": "∀ {a : ℝ}, 0 ≤ a → ∀ (b : ℕ), a * ↑b + 1 ≤ (a + 1) ^ b",
+            "informal_description": "For any non-negative real number $ a $ and any natural number $ b $, the inequality $ a \\cdot b + 1 \\leq (a + 1)^b $ holds.",
+            "path": "Mathlib.Data.Real.Basic"
+          },
+          {
+            "formal_name": "one_add_le_pow_of_two_add_nonneg",
+            "informal_name": "Inequality: $1 + n a \\leq (1 + a)^n$ for $a \\geq -2$",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] [inst_1 : LinearOrder R] [IsOrderedRing R] [ExistsAddOfLE R] {a : R},\n  0 ≤ 2 + a → ∀ (n : ℕ), 1 + ↑n * a ≤ (1 + a) ^ n",
+            "informal_description": "For any element $a$ in a linearly ordered semiring $R$ satisfying $2 + a \\geq 0$, and for all natural numbers $n$, the inequality $1 + n a \\leq (1 + a)^n$ holds.",
+            "path": "Mathlib.Algebra.Order.Ring.Pow"
+          },
+          {
+            "formal_name": "one_add_mul_le_pow'",
+            "informal_name": "Bernoulli Inequality in Ordered Semirings",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] [inst_1 : PartialOrder R] [IsOrderedRing R] {a : R},\n  0 ≤ a * a → 0 ≤ (1 + a) * (1 + a) → 0 ≤ 2 + a → ∀ (n : ℕ), 1 + ↑n * a ≤ (1 + a) ^ n",
+            "informal_description": "In an ordered semiring, for any element $ a $ satisfying $ 0 \\leq a^2 $, $ 0 \\leq (1 + a)^2 $, and $ 0 \\leq 2 + a $, and for any natural number $ n $, it holds that $ 1 + n \\cdot a \\leq (1 + a)^n $.",
+            "path": "Mathlib.Algebra.Order.Ring.Pow"
+          },
+          {
+            "formal_name": "Real.sum_le_exp_of_nonneg",
+            "informal_name": "Partial Sum of Exponential Series Bounded by $ e^x $ for Non-Negative $ x $",
+            "kind": "theorem",
+            "type": "∀ {x : ℝ}, 0 ≤ x → ∀ (n : ℕ), ∑ i ∈ Finset.range n, x ^ i / ↑i.factorial ≤ Real.exp x",
+            "informal_description": "For any non-negative real number $ x $ and natural number $ n $, the sum $ \\sum_{i=0}^{n-1} \\frac{x^i}{i!} $ is less than or equal to the exponential function $ e^x $. This inequality holds because the partial sums of the Taylor series expansion of $ e^x $ form an increasing sequence that converges to $ e^x $ itself when $ x \\geq 0 $.",
+            "path": "Mathlib.Analysis.Complex.Exponential"
+          },
+          {
+            "formal_name": "one_add_mul_le_pow",
+            "informal_name": "Inequality: $1 + n a \\leq (1 + a)^n$ for $a \\geq -2$",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Ring R] [inst_1 : LinearOrder R] [IsStrictOrderedRing R] {a : R},\n  -2 ≤ a → ∀ (n : ℕ), 1 + ↑n * a ≤ (1 + a) ^ n",
+            "informal_description": "For any element $a$ in an ordered ring satisfying $a \\geq -2$ and any natural number $n$, it holds that $1 + n a \\leq (1 + a)^n$.",
+            "path": "Mathlib.Algebra.Order.Ring.Pow"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "id": "loogle-current",
+    "tool": "mcp__lean_lsp__lean_loogle",
+    "form": "current",
+    "request": {
+      "query": "\"geom\", _ ≤ (1 + _) ^ _",
+      "num_results": 10
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": []\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": []
+      },
+      "isError": false
+    }
+  },
+  {
+    "id": "leansearch-current",
+    "tool": "mcp__lean_lsp__lean_leansearch",
+    "form": "current",
+    "request": {
+      "query": "The sum of powers of a nonnegative real number up to n is at most (1 plus that number) to the power n.",
+      "num_results": 5
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Real.sum_le_exp_of_nonneg\",\n      \"module_name\": \"Mathlib.Analysis.Complex.Exponential\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {x : ℝ}, 0 ≤ x → ∀ (n : ℕ), ∑ i ∈ Finset.range n, x ^ i / ↑i.factorial ≤ Real.exp x\"\n    },\n    {\n      \"name\": \"NNReal.summable_geometric\",\n      \"module_name\": \"Mathlib.Analysis.SpecificLimits.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {r : NNReal}, r < 1 → Summable fun n => r ^ n\"\n    },\n    {\n      \"name\": \"Nat.geom_sum_le\",\n      \"module_name\": \"Mathlib.Algebra.Order.Ring.GeomSum\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {b : ℕ}, 2 ≤ b → ∀ (a n : ℕ), ∑ i ∈ Finset.range n, a / b ^ i ≤ a * b / (b - 1)\"\n    },\n    {\n      \"name\": \"pow_add_pow_le'\",\n      \"module_name\": \"Mathlib.Algebra.Order.Ring.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_3} [inst : Semiring R] [inst_1 : PartialOrder R] [IsOrderedRing R] {a b : R} {n : ℕ},\\n  0 ≤ a → 0 ≤ b → a ^ n + b ^ n ≤ 2 * (a + b) ^ n\"\n    },\n    {\n      \"name\": \"tsum_geometric_nnreal\",\n      \"module_name\": \"Mathlib.Analysis.SpecificLimits.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {r : NNReal}, r < 1 → ∑' (n : ℕ), r ^ n = (1 - r)⁻¹\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Real.sum_le_exp_of_nonneg",
+            "module_name": "Mathlib.Analysis.Complex.Exponential",
+            "kind": "theorem",
+            "type": "∀ {x : ℝ}, 0 ≤ x → ∀ (n : ℕ), ∑ i ∈ Finset.range n, x ^ i / ↑i.factorial ≤ Real.exp x"
+          },
+          {
+            "name": "NNReal.summable_geometric",
+            "module_name": "Mathlib.Analysis.SpecificLimits.Basic",
+            "kind": "theorem",
+            "type": "∀ {r : NNReal}, r < 1 → Summable fun n => r ^ n"
+          },
+          {
+            "name": "Nat.geom_sum_le",
+            "module_name": "Mathlib.Algebra.Order.Ring.GeomSum",
+            "kind": "theorem",
+            "type": "∀ {b : ℕ}, 2 ≤ b → ∀ (a n : ℕ), ∑ i ∈ Finset.range n, a / b ^ i ≤ a * b / (b - 1)"
+          },
+          {
+            "name": "pow_add_pow_le'",
+            "module_name": "Mathlib.Algebra.Order.Ring.Basic",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_3} [inst : Semiring R] [inst_1 : PartialOrder R] [IsOrderedRing R] {a b : R} {n : ℕ},\n  0 ≤ a → 0 ≤ b → a ^ n + b ^ n ≤ 2 * (a + b) ^ n"
+          },
+          {
+            "name": "tsum_geometric_nnreal",
+            "module_name": "Mathlib.Analysis.SpecificLimits.Basic",
+            "kind": "theorem",
+            "type": "∀ {r : NNReal}, r < 1 → ∑' (n : ℕ), r ^ n = (1 - r)⁻¹"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "id": "local-current",
+    "tool": "mcp__lean_lsp__lean_local_search",
+    "form": "current",
+    "request": {
+      "query": "geom_sum",
+      "limit": 40
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.Monic.geom_sum\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/Polynomial/Basic.lean\"\n    },\n    {\n      \"name\": \"Roth.geom_sum_le_one_add_pow\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/CoeffNorm.lean\"\n    },\n    {\n      \"name\": \"Polynomial.Monic.geom_sum'\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/Polynomial/Basic.lean\"\n    },\n    {\n      \"name\": \"geom_sum_eq\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Field/GeomSum.lean\"\n    },\n    {\n      \"name\": \"Nat.geom_sum_le\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Order/Ring/GeomSum.lean\"\n    },\n    {\n      \"name\": \"geom_sum_lt\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Order/Field/GeomSum.lean\"\n    },\n    {\n      \"name\": \"geom_sum_Ico\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Field/GeomSum.lean\"\n    },\n    {\n      \"name\": \"geom_sum_inv\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Field/GeomSum.lean\"\n    },\n    {\n      \"name\": \"geom_sum_mul\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Ring/GeomSum.lean\"\n    },\n    {\n      \"name\": \"geom_sum_one\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Ring/GeomSum.lean\"\n    },\n    {\n      \"name\": \"Odd.geom_sum_pos\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Order/Ring/GeomSum.lean\"\n    },\n    {\n      \"name\": \"geom_sum_pos\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Order/Ring/GeomSum.lean\"\n    },\n    {\n      \"name\": \"geom_sum_two\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Ring/GeomSum.lean\"\n    },\n    {\n      \"name\": \"geom_sum_Ico'\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Field/GeomSum.lean\"\n    },\n    {\n      \"name\": \"Counterexample.GrothendieckPower.geom_sum_four\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Counterexamples/GrothendieckPower.lean\"\n    },\n    {\n      \"name\": \"geom_sum_pos'\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Order/Ring/GeomSum.lean\"\n    },\n    {\n      \"name\": \"geom_sum_succ\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Ring/GeomSum.lean\"\n    },\n    {\n      \"name\": \"geom_sum_zero\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Ring/GeomSum.lean\"\n    },\n    {\n      \"name\": \"Counterexample.GrothendieckPower.geom_sum_eight\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Counterexamples/GrothendieckPower.lean\"\n    },\n    {\n      \"name\": \"geom_sum_succ'\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Ring/GeomSum.lean\"\n    },\n    {\n      \"name\": \"Nat.geom_sum_Ico_le\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Order/Ring/GeomSum.lean\"\n    },\n    {\n      \"name\": \"IsPrimitiveRoot.geom_sum_isUnit\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/RootsOfUnity/CyclotomicUnits.lean\"\n    },\n    {\n      \"name\": \"geom_sum_Ico_mul\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Ring/GeomSum.lean\"\n    },\n    {\n      \"name\": \"IsPrimitiveRoot.geom_sum_eq_zero\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/RootsOfUnity/PrimitiveRoots.lean\"\n    },\n    {\n      \"name\": \"IsPrimitiveRoot.geom_sum_isUnit'\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/RootsOfUnity/CyclotomicUnits.lean\"\n    },\n    {\n      \"name\": \"geom_sum_mul_add\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Ring/GeomSum.lean\"\n    },\n    {\n      \"name\": \"geom_sum_mul_neg\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Ring/GeomSum.lean\"\n    },\n    {\n      \"name\": \"geom_sum_ne_zero\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Order/Ring/GeomSum.lean\"\n    },\n    {\n      \"name\": \"geom_sum_neg_iff\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Order/Ring/GeomSum.lean\"\n    },\n    {\n      \"name\": \"geom_sum_pos_iff\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Order/Ring/GeomSum.lean\"\n    },\n    {\n      \"name\": \"geom_sum_of_lt_one\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Order/Field/GeomSum.lean\"\n    },\n    {\n      \"name\": \"geom_sum_of_one_lt\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Order/Field/GeomSum.lean\"\n    },\n    {\n      \"name\": \"geom_sum_Ico_mul_neg\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Ring/GeomSum.lean\"\n    },\n    {\n      \"name\": \"geom_sum_mul_of_le_one\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Ring/GeomSum.lean\"\n    },\n    {\n      \"name\": \"geom_sum_mul_of_one_le\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Ring/GeomSum.lean\"\n    },\n    {\n      \"name\": \"geom_sum_pos_and_lt_one\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Order/Ring/GeomSum.lean\"\n    },\n    {\n      \"name\": \"geom_sum_Ico_le_of_lt_one\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Order/Field/GeomSum.lean\"\n    },\n    {\n      \"name\": \"geom_sum_eq_zero_iff_neg_one\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Order/Ring/GeomSum.lean\"\n    },\n    {\n      \"name\": \"Polynomial.geom_sum_X_comp_X_add_one_eq_sum\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/Polynomial/Basic.lean\"\n    },\n    {\n      \"name\": \"geom_sum_alternating_of_le_neg_one\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Order/Ring/GeomSum.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.Monic.geom_sum",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/RingTheory/Polynomial/Basic.lean"
+          },
+          {
+            "name": "Roth.geom_sum_le_one_add_pow",
+            "kind": "theorem",
+            "file": "Roth/CoeffNorm.lean"
+          },
+          {
+            "name": "Polynomial.Monic.geom_sum'",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/RingTheory/Polynomial/Basic.lean"
+          },
+          {
+            "name": "geom_sum_eq",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Field/GeomSum.lean"
+          },
+          {
+            "name": "Nat.geom_sum_le",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Order/Ring/GeomSum.lean"
+          },
+          {
+            "name": "geom_sum_lt",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Order/Field/GeomSum.lean"
+          },
+          {
+            "name": "geom_sum_Ico",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Field/GeomSum.lean"
+          },
+          {
+            "name": "geom_sum_inv",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Field/GeomSum.lean"
+          },
+          {
+            "name": "geom_sum_mul",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Ring/GeomSum.lean"
+          },
+          {
+            "name": "geom_sum_one",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Ring/GeomSum.lean"
+          },
+          {
+            "name": "Odd.geom_sum_pos",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Order/Ring/GeomSum.lean"
+          },
+          {
+            "name": "geom_sum_pos",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Order/Ring/GeomSum.lean"
+          },
+          {
+            "name": "geom_sum_two",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Ring/GeomSum.lean"
+          },
+          {
+            "name": "geom_sum_Ico'",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Field/GeomSum.lean"
+          },
+          {
+            "name": "Counterexample.GrothendieckPower.geom_sum_four",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Counterexamples/GrothendieckPower.lean"
+          },
+          {
+            "name": "geom_sum_pos'",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Order/Ring/GeomSum.lean"
+          },
+          {
+            "name": "geom_sum_succ",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Ring/GeomSum.lean"
+          },
+          {
+            "name": "geom_sum_zero",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Ring/GeomSum.lean"
+          },
+          {
+            "name": "Counterexample.GrothendieckPower.geom_sum_eight",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Counterexamples/GrothendieckPower.lean"
+          },
+          {
+            "name": "geom_sum_succ'",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Ring/GeomSum.lean"
+          },
+          {
+            "name": "Nat.geom_sum_Ico_le",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Order/Ring/GeomSum.lean"
+          },
+          {
+            "name": "IsPrimitiveRoot.geom_sum_isUnit",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/RingTheory/RootsOfUnity/CyclotomicUnits.lean"
+          },
+          {
+            "name": "geom_sum_Ico_mul",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Ring/GeomSum.lean"
+          },
+          {
+            "name": "IsPrimitiveRoot.geom_sum_eq_zero",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/RingTheory/RootsOfUnity/PrimitiveRoots.lean"
+          },
+          {
+            "name": "IsPrimitiveRoot.geom_sum_isUnit'",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/RingTheory/RootsOfUnity/CyclotomicUnits.lean"
+          },
+          {
+            "name": "geom_sum_mul_add",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Ring/GeomSum.lean"
+          },
+          {
+            "name": "geom_sum_mul_neg",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Ring/GeomSum.lean"
+          },
+          {
+            "name": "geom_sum_ne_zero",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Order/Ring/GeomSum.lean"
+          },
+          {
+            "name": "geom_sum_neg_iff",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Order/Ring/GeomSum.lean"
+          },
+          {
+            "name": "geom_sum_pos_iff",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Order/Ring/GeomSum.lean"
+          },
+          {
+            "name": "geom_sum_of_lt_one",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Order/Field/GeomSum.lean"
+          },
+          {
+            "name": "geom_sum_of_one_lt",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Order/Field/GeomSum.lean"
+          },
+          {
+            "name": "geom_sum_Ico_mul_neg",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Ring/GeomSum.lean"
+          },
+          {
+            "name": "geom_sum_mul_of_le_one",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Ring/GeomSum.lean"
+          },
+          {
+            "name": "geom_sum_mul_of_one_le",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Ring/GeomSum.lean"
+          },
+          {
+            "name": "geom_sum_pos_and_lt_one",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Order/Ring/GeomSum.lean"
+          },
+          {
+            "name": "geom_sum_Ico_le_of_lt_one",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Order/Field/GeomSum.lean"
+          },
+          {
+            "name": "geom_sum_eq_zero_iff_neg_one",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Order/Ring/GeomSum.lean"
+          },
+          {
+            "name": "Polynomial.geom_sum_X_comp_X_add_one_eq_sum",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/RingTheory/Polynomial/Basic.lean"
+          },
+          {
+            "name": "geom_sum_alternating_of_le_neg_one",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Order/Ring/GeomSum.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "id": "finder-standard",
+    "tool": "mcp__lean_lsp__lean_leanfinder",
+    "form": "standard",
+    "request": {
+      "query": "Finite geometric sum bounded by binomial expansion (1+x)^n in ordered semirings",
+      "num_results": 7,
+      "limit": 30
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"one_add_mul_le_pow'\",\n      \"informal_name\": \"Bernoulli Inequality in Ordered Semirings\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] [inst_1 : PartialOrder R] [IsOrderedRing R] {a : R},\\n  0 ≤ a * a → 0 ≤ (1 + a) * (1 + a) → 0 ≤ 2 + a → ∀ (n : ℕ), 1 + ↑n * a ≤ (1 + a) ^ n\",\n      \"informal_description\": \"In an ordered semiring, for any element $ a $ satisfying $ 0 \\\\leq a^2 $, $ 0 \\\\leq (1 + a)^2 $, and $ 0 \\\\leq 2 + a $, and for any natural number $ n $, it holds that $ 1 + n \\\\cdot a \\\\leq (1 + a)^n $.\",\n      \"path\": \"Mathlib.Algebra.Order.Ring.Pow\"\n    },\n    {\n      \"formal_name\": \"one_add_mul_le_pow\",\n      \"informal_name\": \"Inequality: $1 + n a \\\\leq (1 + a)^n$ for $a \\\\geq -2$\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Ring R] [inst_1 : LinearOrder R] [IsStrictOrderedRing R] {a : R},\\n  -2 ≤ a → ∀ (n : ℕ), 1 + ↑n * a ≤ (1 + a) ^ n\",\n      \"informal_description\": \"For any element $a$ in an ordered ring satisfying $a \\\\geq -2$ and any natural number $n$, it holds that $1 + n a \\\\leq (1 + a)^n$.\",\n      \"path\": \"Mathlib.Algebra.Order.Ring.Pow\"\n    },\n    {\n      \"formal_name\": \"one_add_le_pow_of_two_add_nonneg\",\n      \"informal_name\": \"Inequality: $1 + n a \\\\leq (1 + a)^n$ for $a \\\\geq -2$\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] [inst_1 : LinearOrder R] [IsOrderedRing R] [ExistsAddOfLE R] {a : R},\\n  0 ≤ 2 + a → ∀ (n : ℕ), 1 + ↑n * a ≤ (1 + a) ^ n\",\n      \"informal_description\": \"For any element $a$ in a linearly ordered semiring $R$ satisfying $2 + a \\\\geq 0$, and for all natural numbers $n$, the inequality $1 + n a \\\\leq (1 + a)^n$ holds.\",\n      \"path\": \"Mathlib.Algebra.Order.Ring.Pow\"\n    },\n    {\n      \"formal_name\": \"one_add_mul_le_pow_of_sq_nonneg\",\n      \"informal_name\": \"Inequality: $1 + n a \\\\leq (1 + a)^n$ under Non-negative Squares and $a \\\\geq -2$\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] [inst_1 : PartialOrder R] [IsOrderedRing R] {a : R},\\n  0 ≤ a ^ 2 → 0 ≤ (1 + a) ^ 2 → 0 ≤ 2 + a → ∀ (n : ℕ), 1 + ↑n * a ≤ (1 + a) ^ n\",\n      \"informal_description\": \"For any element $a$ in an ordered semiring where $0 \\\\leq a^2$, $0 \\\\leq (1 + a)^2$, and $0 \\\\leq 2 + a$, and for any natural number $n$, the inequality $1 + n \\\\cdot a \\\\leq (1 + a)^n$ holds.\",\n      \"path\": \"Mathlib.Algebra.Order.Ring.Pow\"\n    },\n    {\n      \"formal_name\": \"pow_add_mul_le_add_pow\",\n      \"informal_name\": \"Binomial Inequality for Non-negative Elements in Ordered Commutative Semirings\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommSemiring R] [inst_1 : LinearOrder R] [IsOrderedRing R] [ExistsAddOfLE R] {a b : R},\\n  0 ≤ a → 0 ≤ 2 * a + b → ∀ (n : ℕ), a ^ n + ↑n * a ^ (n - 1) * b ≤ (a + b) ^ n\",\n      \"informal_description\": \"For any non-negative element $a$ and element $b$ in an ordered commutative semiring $R$ with a linear order, if $2a + b$ is non-negative, then for all natural numbers $n$, the inequality $a^n + n a^{n-1} b \\\\leq (a + b)^n$ holds.\",\n      \"path\": \"Mathlib.Algebra.Order.Ring.Pow\"\n    },\n    {\n      \"formal_name\": \"geom_sum_Ico_le_of_lt_one\",\n      \"informal_name\": \"Geometric Sum Inequality for x < 1: $\\\\sum_{i=m}^{n-1} x^i \\\\leq \\\\frac{x^m}{1 - x}$\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {K : Type u_1} [inst : Field K] [inst_1 : LinearOrder K] [IsStrictOrderedRing K] {x : K} {m n : ℕ},\\n  0 ≤ x → x < 1 → ∑ i ∈ Finset.Ico m n, x ^ i ≤ x ^ m / (1 - x)\",\n      \"informal_description\": \"For any $0 \\\\leq x < 1$ and natural numbers $m \\\\leq n$, the sum of $x^i$ over the half-open interval $[m, n)$ satisfies $\\\\sum_{i=m}^{n-1} x^i \\\\leq \\\\frac{x^m}{1 - x}$.\",\n      \"path\": \"Mathlib.Algebra.Order.Field.GeomSum\"\n    },\n    {\n      \"formal_name\": \"pow_add_mul_le_add_pow_of_sq_nonneg\",\n      \"informal_name\": \"Binomial Inequality in Ordered Commutative Semirings: $a^n + n a^{n-1} b \\\\leq (a + b)^n$\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommSemiring R] [inst_1 : PartialOrder R] [IsOrderedRing R] {a b : R},\\n  0 ≤ a → 0 ≤ b ^ 2 → 0 ≤ (a + b) ^ 2 → 0 ≤ 2 * a + b → ∀ (n : ℕ), a ^ n + ↑n * a ^ (n - 1) * b ≤ (a + b) ^ n\",\n      \"informal_description\": \"For any commutative semiring $R$ with a partial order and ordered ring structure, and for elements $a, b \\\\in R$ satisfying $0 \\\\leq a$, $0 \\\\leq b^2$, $0 \\\\leq (a + b)^2$, and $0 \\\\leq 2a + b$, it holds that for all natural numbers $n$, $a^n + n a^{n-1} b \\\\leq (a + b)^n$.\",\n      \"path\": \"Mathlib.Algebra.Order.Ring.Pow\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "one_add_mul_le_pow'",
+            "informal_name": "Bernoulli Inequality in Ordered Semirings",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] [inst_1 : PartialOrder R] [IsOrderedRing R] {a : R},\n  0 ≤ a * a → 0 ≤ (1 + a) * (1 + a) → 0 ≤ 2 + a → ∀ (n : ℕ), 1 + ↑n * a ≤ (1 + a) ^ n",
+            "informal_description": "In an ordered semiring, for any element $ a $ satisfying $ 0 \\leq a^2 $, $ 0 \\leq (1 + a)^2 $, and $ 0 \\leq 2 + a $, and for any natural number $ n $, it holds that $ 1 + n \\cdot a \\leq (1 + a)^n $.",
+            "path": "Mathlib.Algebra.Order.Ring.Pow"
+          },
+          {
+            "formal_name": "one_add_mul_le_pow",
+            "informal_name": "Inequality: $1 + n a \\leq (1 + a)^n$ for $a \\geq -2$",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Ring R] [inst_1 : LinearOrder R] [IsStrictOrderedRing R] {a : R},\n  -2 ≤ a → ∀ (n : ℕ), 1 + ↑n * a ≤ (1 + a) ^ n",
+            "informal_description": "For any element $a$ in an ordered ring satisfying $a \\geq -2$ and any natural number $n$, it holds that $1 + n a \\leq (1 + a)^n$.",
+            "path": "Mathlib.Algebra.Order.Ring.Pow"
+          },
+          {
+            "formal_name": "one_add_le_pow_of_two_add_nonneg",
+            "informal_name": "Inequality: $1 + n a \\leq (1 + a)^n$ for $a \\geq -2$",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] [inst_1 : LinearOrder R] [IsOrderedRing R] [ExistsAddOfLE R] {a : R},\n  0 ≤ 2 + a → ∀ (n : ℕ), 1 + ↑n * a ≤ (1 + a) ^ n",
+            "informal_description": "For any element $a$ in a linearly ordered semiring $R$ satisfying $2 + a \\geq 0$, and for all natural numbers $n$, the inequality $1 + n a \\leq (1 + a)^n$ holds.",
+            "path": "Mathlib.Algebra.Order.Ring.Pow"
+          },
+          {
+            "formal_name": "one_add_mul_le_pow_of_sq_nonneg",
+            "informal_name": "Inequality: $1 + n a \\leq (1 + a)^n$ under Non-negative Squares and $a \\geq -2$",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] [inst_1 : PartialOrder R] [IsOrderedRing R] {a : R},\n  0 ≤ a ^ 2 → 0 ≤ (1 + a) ^ 2 → 0 ≤ 2 + a → ∀ (n : ℕ), 1 + ↑n * a ≤ (1 + a) ^ n",
+            "informal_description": "For any element $a$ in an ordered semiring where $0 \\leq a^2$, $0 \\leq (1 + a)^2$, and $0 \\leq 2 + a$, and for any natural number $n$, the inequality $1 + n \\cdot a \\leq (1 + a)^n$ holds.",
+            "path": "Mathlib.Algebra.Order.Ring.Pow"
+          },
+          {
+            "formal_name": "pow_add_mul_le_add_pow",
+            "informal_name": "Binomial Inequality for Non-negative Elements in Ordered Commutative Semirings",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommSemiring R] [inst_1 : LinearOrder R] [IsOrderedRing R] [ExistsAddOfLE R] {a b : R},\n  0 ≤ a → 0 ≤ 2 * a + b → ∀ (n : ℕ), a ^ n + ↑n * a ^ (n - 1) * b ≤ (a + b) ^ n",
+            "informal_description": "For any non-negative element $a$ and element $b$ in an ordered commutative semiring $R$ with a linear order, if $2a + b$ is non-negative, then for all natural numbers $n$, the inequality $a^n + n a^{n-1} b \\leq (a + b)^n$ holds.",
+            "path": "Mathlib.Algebra.Order.Ring.Pow"
+          },
+          {
+            "formal_name": "geom_sum_Ico_le_of_lt_one",
+            "informal_name": "Geometric Sum Inequality for x < 1: $\\sum_{i=m}^{n-1} x^i \\leq \\frac{x^m}{1 - x}$",
+            "kind": "theorem",
+            "type": "∀ {K : Type u_1} [inst : Field K] [inst_1 : LinearOrder K] [IsStrictOrderedRing K] {x : K} {m n : ℕ},\n  0 ≤ x → x < 1 → ∑ i ∈ Finset.Ico m n, x ^ i ≤ x ^ m / (1 - x)",
+            "informal_description": "For any $0 \\leq x < 1$ and natural numbers $m \\leq n$, the sum of $x^i$ over the half-open interval $[m, n)$ satisfies $\\sum_{i=m}^{n-1} x^i \\leq \\frac{x^m}{1 - x}$.",
+            "path": "Mathlib.Algebra.Order.Field.GeomSum"
+          },
+          {
+            "formal_name": "pow_add_mul_le_add_pow_of_sq_nonneg",
+            "informal_name": "Binomial Inequality in Ordered Commutative Semirings: $a^n + n a^{n-1} b \\leq (a + b)^n$",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommSemiring R] [inst_1 : PartialOrder R] [IsOrderedRing R] {a b : R},\n  0 ≤ a → 0 ≤ b ^ 2 → 0 ≤ (a + b) ^ 2 → 0 ≤ 2 * a + b → ∀ (n : ℕ), a ^ n + ↑n * a ^ (n - 1) * b ≤ (a + b) ^ n",
+            "informal_description": "For any commutative semiring $R$ with a partial order and ordered ring structure, and for elements $a, b \\in R$ satisfying $0 \\leq a$, $0 \\leq b^2$, $0 \\leq (a + b)^2$, and $0 \\leq 2a + b$, it holds that for all natural numbers $n$, $a^n + n a^{n-1} b \\leq (a + b)^n$.",
+            "path": "Mathlib.Algebra.Order.Ring.Pow"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "id": "loogle-standard",
+    "tool": "mcp__lean_lsp__lean_loogle",
+    "form": "standard",
+    "request": {
+      "query": "Finset.sum, Nat.choose, _ ≤ _ ^ _",
+      "num_results": 7,
+      "limit": 30
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": []\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": []
+      },
+      "isError": false
+    }
+  },
+  {
+    "id": "leansearch-standard",
+    "tool": "mcp__lean_lsp__lean_leansearch",
+    "form": "standard",
+    "request": {
+      "query": "For any nonnegative element t of an ordered semiring the sum of t^k over k ≤ n is bounded by (1+t)^n, by positivity of binomial coefficients.",
+      "num_results": 7,
+      "limit": 30
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"geom_sum_alternating_of_le_neg_one\",\n      \"module_name\": \"Mathlib.Algebra.Order.Ring.GeomSum\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Ring R] [inst_1 : PartialOrder R] [IsOrderedRing R] {x : R},\\n  x + 1 ≤ 0 → ∀ (n : ℕ), if Even n then ∑ i ∈ Finset.range n, x ^ i ≤ 0 else 1 ≤ ∑ i ∈ Finset.range n, x ^ i\"\n    },\n    {\n      \"name\": \"geom_sum_lt\",\n      \"module_name\": \"Mathlib.Algebra.Order.Field.GeomSum\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {K : Type u_1} [inst : Semifield K] [inst_1 : LinearOrder K] [IsStrictOrderedRing K] [CanonicallyOrderedAdd K]\\n  [inst_4 : Sub K] [OrderedSub K] {x : K}, x ≠ 0 → x < 1 → ∀ (n : ℕ), ∑ i ∈ Finset.range n, x ^ i < (1 - x)⁻¹\"\n    },\n    {\n      \"name\": \"pow_add_mul_le_add_pow\",\n      \"module_name\": \"Mathlib.Algebra.Order.Ring.Pow\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommSemiring R] [inst_1 : LinearOrder R] [IsOrderedRing R] [ExistsAddOfLE R] {a b : R},\\n  0 ≤ a → 0 ≤ 2 * a + b → ∀ (n : ℕ), a ^ n + ↑n * a ^ (n - 1) * b ≤ (a + b) ^ n\"\n    },\n    {\n      \"name\": \"add_pow_le\",\n      \"module_name\": \"Mathlib.Algebra.Order.Ring.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_3} [inst : Semiring R] [inst_1 : LinearOrder R] [IsStrictOrderedRing R] {a b : R} [ExistsAddOfLE R],\\n  0 ≤ a → 0 ≤ b → ∀ (n : ℕ), (a + b) ^ n ≤ 2 ^ (n - 1) * (a ^ n + b ^ n)\"\n    },\n    {\n      \"name\": \"geom_sum_Ico_le_of_lt_one\",\n      \"module_name\": \"Mathlib.Algebra.Order.Field.GeomSum\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {K : Type u_1} [inst : Field K] [inst_1 : LinearOrder K] [IsStrictOrderedRing K] {x : K} {m n : ℕ},\\n  0 ≤ x → x < 1 → ∑ i ∈ Finset.Ico m n, x ^ i ≤ x ^ m / (1 - x)\"\n    },\n    {\n      \"name\": \"pow_add_mul_le_add_pow_of_sq_nonneg\",\n      \"module_name\": \"Mathlib.Algebra.Order.Ring.Pow\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommSemiring R] [inst_1 : PartialOrder R] [IsOrderedRing R] {a b : R},\\n  0 ≤ a → 0 ≤ b ^ 2 → 0 ≤ (a + b) ^ 2 → 0 ≤ 2 * a + b → ∀ (n : ℕ), a ^ n + ↑n * a ^ (n - 1) * b ≤ (a + b) ^ n\"\n    },\n    {\n      \"name\": \"geom_sum_pos\",\n      \"module_name\": \"Mathlib.Algebra.Order.Ring.GeomSum\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] [inst_1 : PartialOrder R] [IsStrictOrderedRing R] {n : ℕ} {x : R},\\n  0 ≤ x → n ≠ 0 → 0 < ∑ i ∈ Finset.range n, x ^ i\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "geom_sum_alternating_of_le_neg_one",
+            "module_name": "Mathlib.Algebra.Order.Ring.GeomSum",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Ring R] [inst_1 : PartialOrder R] [IsOrderedRing R] {x : R},\n  x + 1 ≤ 0 → ∀ (n : ℕ), if Even n then ∑ i ∈ Finset.range n, x ^ i ≤ 0 else 1 ≤ ∑ i ∈ Finset.range n, x ^ i"
+          },
+          {
+            "name": "geom_sum_lt",
+            "module_name": "Mathlib.Algebra.Order.Field.GeomSum",
+            "kind": "theorem",
+            "type": "∀ {K : Type u_1} [inst : Semifield K] [inst_1 : LinearOrder K] [IsStrictOrderedRing K] [CanonicallyOrderedAdd K]\n  [inst_4 : Sub K] [OrderedSub K] {x : K}, x ≠ 0 → x < 1 → ∀ (n : ℕ), ∑ i ∈ Finset.range n, x ^ i < (1 - x)⁻¹"
+          },
+          {
+            "name": "pow_add_mul_le_add_pow",
+            "module_name": "Mathlib.Algebra.Order.Ring.Pow",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommSemiring R] [inst_1 : LinearOrder R] [IsOrderedRing R] [ExistsAddOfLE R] {a b : R},\n  0 ≤ a → 0 ≤ 2 * a + b → ∀ (n : ℕ), a ^ n + ↑n * a ^ (n - 1) * b ≤ (a + b) ^ n"
+          },
+          {
+            "name": "add_pow_le",
+            "module_name": "Mathlib.Algebra.Order.Ring.Basic",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_3} [inst : Semiring R] [inst_1 : LinearOrder R] [IsStrictOrderedRing R] {a b : R} [ExistsAddOfLE R],\n  0 ≤ a → 0 ≤ b → ∀ (n : ℕ), (a + b) ^ n ≤ 2 ^ (n - 1) * (a ^ n + b ^ n)"
+          },
+          {
+            "name": "geom_sum_Ico_le_of_lt_one",
+            "module_name": "Mathlib.Algebra.Order.Field.GeomSum",
+            "kind": "theorem",
+            "type": "∀ {K : Type u_1} [inst : Field K] [inst_1 : LinearOrder K] [IsStrictOrderedRing K] {x : K} {m n : ℕ},\n  0 ≤ x → x < 1 → ∑ i ∈ Finset.Ico m n, x ^ i ≤ x ^ m / (1 - x)"
+          },
+          {
+            "name": "pow_add_mul_le_add_pow_of_sq_nonneg",
+            "module_name": "Mathlib.Algebra.Order.Ring.Pow",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommSemiring R] [inst_1 : PartialOrder R] [IsOrderedRing R] {a b : R},\n  0 ≤ a → 0 ≤ b ^ 2 → 0 ≤ (a + b) ^ 2 → 0 ≤ 2 * a + b → ∀ (n : ℕ), a ^ n + ↑n * a ^ (n - 1) * b ≤ (a + b) ^ n"
+          },
+          {
+            "name": "geom_sum_pos",
+            "module_name": "Mathlib.Algebra.Order.Ring.GeomSum",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] [inst_1 : PartialOrder R] [IsStrictOrderedRing R] {n : ℕ} {x : R},\n  0 ≤ x → n ≠ 0 → 0 < ∑ i ∈ Finset.range n, x ^ i"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "id": "local-standard",
+    "tool": "mcp__lean_lsp__lean_local_search",
+    "form": "standard",
+    "request": {
+      "query": "sum_le_pow",
+      "num_results": 7,
+      "limit": 30
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "id": "finder-abstract",
+    "tool": "mcp__lean_lsp__lean_leanfinder",
+    "form": "abstract",
+    "request": {
+      "query": "Commute.add_pow noncommutative ordered semiring sum of powers bound",
+      "num_results": 7,
+      "limit": 30
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Commute.pow_add_mul_le_add_pow\",\n      \"informal_name\": \"Commuting Elements Power Inequality: $a^n + n a^{n-1} b \\\\leq (a + b)^n$\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] [inst_1 : LinearOrder R] [IsOrderedRing R] [ExistsAddOfLE R] {a b : R},\\n  Commute a b → 0 ≤ a → 0 ≤ 2 * a + b → ∀ (n : ℕ), a ^ n + ↑n * a ^ (n - 1) * b ≤ (a + b) ^ n\",\n      \"informal_description\": \"For any non-negative element $a$ and element $b$ in a linearly ordered semiring $R$ that is an ordered ring, if $a$ and $b$ commute and $2a + b \\\\geq 0$, then for all natural numbers $n$, the inequality $a^n + n a^{n-1} b \\\\leq (a + b)^n$ holds.\",\n      \"path\": \"Mathlib.Algebra.Order.Ring.Pow\"\n    },\n    {\n      \"formal_name\": \"Commute.pow_add_mul_le_add_pow_of_sq_nonneg\",\n      \"informal_name\": \"Inequality for Powers of Commuting Non-Negative Elements in Ordered Rings\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] [inst_1 : PartialOrder R] [IsOrderedRing R] {a b : R},\\n  Commute a b →\\n    0 ≤ a → 0 ≤ b ^ 2 → 0 ≤ (a + b) ^ 2 → 0 ≤ 2 * a + b → ∀ (n : ℕ), a ^ n + ↑n * a ^ (n - 1) * b ≤ (a + b) ^ n\",\n      \"informal_description\": \"Let $ a $ and $ b $ be commuting elements in an ordered ring, with $ a \\\\geq 0 $, $ b^2 \\\\geq 0 $, $ (a + b)^2 \\\\geq 0 $, and $ 2a + b \\\\geq 0 $. For all natural numbers $ n $, the inequality $ a^n + n a^{n-1} b \\\\leq (a + b)^n $ holds.\",\n      \"path\": \"Mathlib.Algebra.Order.Ring.Pow\"\n    },\n    {\n      \"formal_name\": \"add_pow_le\",\n      \"informal_name\": \"Power Inequality for Sums in Linearly Ordered Semirings\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_3} [inst : Semiring R] [inst_1 : LinearOrder R] [IsStrictOrderedRing R] {a b : R} [ExistsAddOfLE R],\\n  0 ≤ a → 0 ≤ b → ∀ (n : ℕ), (a + b) ^ n ≤ 2 ^ (n - 1) * (a ^ n + b ^ n)\",\n      \"informal_description\": \"For any non-negative elements $ a $ and $ b $ in a linearly ordered semiring and for all natural numbers $ n $, the inequality $ (a + b)^n \\\\leq 2^{n-1}(a^n + b^n) $ holds.\",\n      \"path\": \"Mathlib.Algebra.Order.Ring.Basic\"\n    },\n    {\n      \"formal_name\": \"pow_add_mul_le_add_pow\",\n      \"informal_name\": \"Binomial Inequality for Non-negative Elements in Ordered Commutative Semirings\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommSemiring R] [inst_1 : LinearOrder R] [IsOrderedRing R] [ExistsAddOfLE R] {a b : R},\\n  0 ≤ a → 0 ≤ 2 * a + b → ∀ (n : ℕ), a ^ n + ↑n * a ^ (n - 1) * b ≤ (a + b) ^ n\",\n      \"informal_description\": \"For any non-negative element $a$ and element $b$ in an ordered commutative semiring $R$ with a linear order, if $2a + b$ is non-negative, then for all natural numbers $n$, the inequality $a^n + n a^{n-1} b \\\\leq (a + b)^n$ holds.\",\n      \"path\": \"Mathlib.Algebra.Order.Ring.Pow\"\n    },\n    {\n      \"formal_name\": \"pow_add_pow_le'\",\n      \"informal_name\": \"Sum of Powers Inequality for Non-negative Elements: $a^n + b^n \\\\leq 2(a + b)^n$\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_3} [inst : Semiring R] [inst_1 : PartialOrder R] [IsOrderedRing R] {a b : R} {n : ℕ},\\n  0 ≤ a → 0 ≤ b → a ^ n + b ^ n ≤ 2 * (a + b) ^ n\",\n      \"informal_description\": \"For non-negative elements $a$ and $b$, and for any natural number $n$, the inequality $a^n + b^n \\\\leq 2(a + b)^n$ holds.\",\n      \"path\": \"Mathlib.Algebra.Order.Ring.Basic\"\n    },\n    {\n      \"formal_name\": \"Even.add_pow_le\",\n      \"informal_name\": \"Inequality for Even Exponents: $(a + b)^n \\\\leq 2^{n-1}(a^n + b^n)$\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_3} [inst : Semiring R] [inst_1 : LinearOrder R] [IsStrictOrderedRing R] {a b : R} {n : ℕ}\\n  [ExistsAddOfLE R], Even n → (a + b) ^ n ≤ 2 ^ (n - 1) * (a ^ n + b ^ n)\",\n      \"informal_description\": \"For any elements $a$ and $b$ in a strict ordered ring and any even natural number $n$, the inequality $(a + b)^n \\\\leq 2^{n-1} (a^n + b^n)$ holds.\",\n      \"path\": \"Mathlib.Algebra.Order.Ring.Basic\"\n    },\n    {\n      \"formal_name\": \"pow_add_pow_le\",\n      \"informal_name\": \"Inequality: $x^n + y^n \\\\leq (x + y)^n$ for Non-negative $x, y$ and Positive Integer $n$\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_3} [inst : Semiring R] [inst_1 : PartialOrder R] [IsOrderedRing R] {x y : R} {n : ℕ},\\n  0 ≤ x → 0 ≤ y → n ≠ 0 → x ^ n + y ^ n ≤ (x + y) ^ n\",\n      \"informal_description\": \"For non-negative real numbers $x$ and $y$, and a positive integer $n$, the inequality $x^n + y^n \\\\leq (x + y)^n$ holds.\",\n      \"path\": \"Mathlib.Algebra.Order.Ring.Basic\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Commute.pow_add_mul_le_add_pow",
+            "informal_name": "Commuting Elements Power Inequality: $a^n + n a^{n-1} b \\leq (a + b)^n$",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] [inst_1 : LinearOrder R] [IsOrderedRing R] [ExistsAddOfLE R] {a b : R},\n  Commute a b → 0 ≤ a → 0 ≤ 2 * a + b → ∀ (n : ℕ), a ^ n + ↑n * a ^ (n - 1) * b ≤ (a + b) ^ n",
+            "informal_description": "For any non-negative element $a$ and element $b$ in a linearly ordered semiring $R$ that is an ordered ring, if $a$ and $b$ commute and $2a + b \\geq 0$, then for all natural numbers $n$, the inequality $a^n + n a^{n-1} b \\leq (a + b)^n$ holds.",
+            "path": "Mathlib.Algebra.Order.Ring.Pow"
+          },
+          {
+            "formal_name": "Commute.pow_add_mul_le_add_pow_of_sq_nonneg",
+            "informal_name": "Inequality for Powers of Commuting Non-Negative Elements in Ordered Rings",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] [inst_1 : PartialOrder R] [IsOrderedRing R] {a b : R},\n  Commute a b →\n    0 ≤ a → 0 ≤ b ^ 2 → 0 ≤ (a + b) ^ 2 → 0 ≤ 2 * a + b → ∀ (n : ℕ), a ^ n + ↑n * a ^ (n - 1) * b ≤ (a + b) ^ n",
+            "informal_description": "Let $ a $ and $ b $ be commuting elements in an ordered ring, with $ a \\geq 0 $, $ b^2 \\geq 0 $, $ (a + b)^2 \\geq 0 $, and $ 2a + b \\geq 0 $. For all natural numbers $ n $, the inequality $ a^n + n a^{n-1} b \\leq (a + b)^n $ holds.",
+            "path": "Mathlib.Algebra.Order.Ring.Pow"
+          },
+          {
+            "formal_name": "add_pow_le",
+            "informal_name": "Power Inequality for Sums in Linearly Ordered Semirings",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_3} [inst : Semiring R] [inst_1 : LinearOrder R] [IsStrictOrderedRing R] {a b : R} [ExistsAddOfLE R],\n  0 ≤ a → 0 ≤ b → ∀ (n : ℕ), (a + b) ^ n ≤ 2 ^ (n - 1) * (a ^ n + b ^ n)",
+            "informal_description": "For any non-negative elements $ a $ and $ b $ in a linearly ordered semiring and for all natural numbers $ n $, the inequality $ (a + b)^n \\leq 2^{n-1}(a^n + b^n) $ holds.",
+            "path": "Mathlib.Algebra.Order.Ring.Basic"
+          },
+          {
+            "formal_name": "pow_add_mul_le_add_pow",
+            "informal_name": "Binomial Inequality for Non-negative Elements in Ordered Commutative Semirings",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommSemiring R] [inst_1 : LinearOrder R] [IsOrderedRing R] [ExistsAddOfLE R] {a b : R},\n  0 ≤ a → 0 ≤ 2 * a + b → ∀ (n : ℕ), a ^ n + ↑n * a ^ (n - 1) * b ≤ (a + b) ^ n",
+            "informal_description": "For any non-negative element $a$ and element $b$ in an ordered commutative semiring $R$ with a linear order, if $2a + b$ is non-negative, then for all natural numbers $n$, the inequality $a^n + n a^{n-1} b \\leq (a + b)^n$ holds.",
+            "path": "Mathlib.Algebra.Order.Ring.Pow"
+          },
+          {
+            "formal_name": "pow_add_pow_le'",
+            "informal_name": "Sum of Powers Inequality for Non-negative Elements: $a^n + b^n \\leq 2(a + b)^n$",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_3} [inst : Semiring R] [inst_1 : PartialOrder R] [IsOrderedRing R] {a b : R} {n : ℕ},\n  0 ≤ a → 0 ≤ b → a ^ n + b ^ n ≤ 2 * (a + b) ^ n",
+            "informal_description": "For non-negative elements $a$ and $b$, and for any natural number $n$, the inequality $a^n + b^n \\leq 2(a + b)^n$ holds.",
+            "path": "Mathlib.Algebra.Order.Ring.Basic"
+          },
+          {
+            "formal_name": "Even.add_pow_le",
+            "informal_name": "Inequality for Even Exponents: $(a + b)^n \\leq 2^{n-1}(a^n + b^n)$",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_3} [inst : Semiring R] [inst_1 : LinearOrder R] [IsStrictOrderedRing R] {a b : R} {n : ℕ}\n  [ExistsAddOfLE R], Even n → (a + b) ^ n ≤ 2 ^ (n - 1) * (a ^ n + b ^ n)",
+            "informal_description": "For any elements $a$ and $b$ in a strict ordered ring and any even natural number $n$, the inequality $(a + b)^n \\leq 2^{n-1} (a^n + b^n)$ holds.",
+            "path": "Mathlib.Algebra.Order.Ring.Basic"
+          },
+          {
+            "formal_name": "pow_add_pow_le",
+            "informal_name": "Inequality: $x^n + y^n \\leq (x + y)^n$ for Non-negative $x, y$ and Positive Integer $n$",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_3} [inst : Semiring R] [inst_1 : PartialOrder R] [IsOrderedRing R] {x y : R} {n : ℕ},\n  0 ≤ x → 0 ≤ y → n ≠ 0 → x ^ n + y ^ n ≤ (x + y) ^ n",
+            "informal_description": "For non-negative real numbers $x$ and $y$, and a positive integer $n$, the inequality $x^n + y^n \\leq (x + y)^n$ holds.",
+            "path": "Mathlib.Algebra.Order.Ring.Basic"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "id": "loogle-abstract",
+    "tool": "mcp__lean_lsp__lean_loogle",
+    "form": "abstract",
+    "request": {
+      "query": "Commute, (_ + _) ^ _ = _",
+      "num_results": 7,
+      "limit": 30
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Commute.add_sq\",\n      \"type\": \" {R : Type u} [Semiring R] {a b : R} (h : Commute a b) : (a + b) ^ 2 = a ^ 2 + 2 * a * b + b ^ 2\",\n      \"module\": \"Mathlib.Algebra.Ring.Commute\"\n    },\n    {\n      \"name\": \"Commute.add_pow'\",\n      \"type\": \" {R : Type u_1} [Semiring R] {x y : R} (h : Commute x y) (n : ℕ) : (x + y) ^ n = ∑ m ∈ Finset.HasAntidiagonal.antidiagonal n, n.choose m.1 • (x ^ m.1 * y ^ m.2)\",\n      \"module\": \"Mathlib.Data.Nat.Choose.Sum\"\n    },\n    {\n      \"name\": \"Commute.add_pow\",\n      \"type\": \" {R : Type u_1} [Semiring R] {x y : R} (h : Commute x y) (n : ℕ) : (x + y) ^ n = ∑ m ∈ Finset.range (n + 1), x ^ m * y ^ (n - m) * ↑(n.choose m)\",\n      \"module\": \"Mathlib.Data.Nat.Choose.Sum\"\n    },\n    {\n      \"name\": \"add_pow_expChar_of_commute\",\n      \"type\": \" {R : Type u_1} [Semiring R] {x y : R} (p : ℕ) [hR : ExpChar R p] (h : Commute x y) : (x + y) ^ p = x ^ p + y ^ p\",\n      \"module\": \"Mathlib.Algebra.CharP.Lemmas\"\n    },\n    {\n      \"name\": \"add_pow_char_of_commute\",\n      \"type\": \" {R : Type u_1} [Semiring R] {x y : R} (p : ℕ) [hp : Fact (Nat.Prime p)] [CharP R p] (h : Commute x y) : (x + y) ^ p = x ^ p + y ^ p\",\n      \"module\": \"Mathlib.Algebra.CharP.Lemmas\"\n    },\n    {\n      \"name\": \"add_pow_expChar_pow_of_commute\",\n      \"type\": \" {R : Type u_1} [Semiring R] {x y : R} (p n : ℕ) [hR : ExpChar R p] (h : Commute x y) : (x + y) ^ p ^ n = x ^ p ^ n + y ^ p ^ n\",\n      \"module\": \"Mathlib.Algebra.CharP.Lemmas\"\n    },\n    {\n      \"name\": \"add_pow_char_pow_of_commute\",\n      \"type\": \" {R : Type u_1} [Semiring R] {x y : R} (p n : ℕ) [hp : Fact (Nat.Prime p)] [CharP R p] (h : Commute x y) : (x + y) ^ p ^ n = x ^ p ^ n + y ^ p ^ n\",\n      \"module\": \"Mathlib.Algebra.CharP.Lemmas\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Commute.add_sq",
+            "type": " {R : Type u} [Semiring R] {a b : R} (h : Commute a b) : (a + b) ^ 2 = a ^ 2 + 2 * a * b + b ^ 2",
+            "module": "Mathlib.Algebra.Ring.Commute"
+          },
+          {
+            "name": "Commute.add_pow'",
+            "type": " {R : Type u_1} [Semiring R] {x y : R} (h : Commute x y) (n : ℕ) : (x + y) ^ n = ∑ m ∈ Finset.HasAntidiagonal.antidiagonal n, n.choose m.1 • (x ^ m.1 * y ^ m.2)",
+            "module": "Mathlib.Data.Nat.Choose.Sum"
+          },
+          {
+            "name": "Commute.add_pow",
+            "type": " {R : Type u_1} [Semiring R] {x y : R} (h : Commute x y) (n : ℕ) : (x + y) ^ n = ∑ m ∈ Finset.range (n + 1), x ^ m * y ^ (n - m) * ↑(n.choose m)",
+            "module": "Mathlib.Data.Nat.Choose.Sum"
+          },
+          {
+            "name": "add_pow_expChar_of_commute",
+            "type": " {R : Type u_1} [Semiring R] {x y : R} (p : ℕ) [hR : ExpChar R p] (h : Commute x y) : (x + y) ^ p = x ^ p + y ^ p",
+            "module": "Mathlib.Algebra.CharP.Lemmas"
+          },
+          {
+            "name": "add_pow_char_of_commute",
+            "type": " {R : Type u_1} [Semiring R] {x y : R} (p : ℕ) [hp : Fact (Nat.Prime p)] [CharP R p] (h : Commute x y) : (x + y) ^ p = x ^ p + y ^ p",
+            "module": "Mathlib.Algebra.CharP.Lemmas"
+          },
+          {
+            "name": "add_pow_expChar_pow_of_commute",
+            "type": " {R : Type u_1} [Semiring R] {x y : R} (p n : ℕ) [hR : ExpChar R p] (h : Commute x y) : (x + y) ^ p ^ n = x ^ p ^ n + y ^ p ^ n",
+            "module": "Mathlib.Algebra.CharP.Lemmas"
+          },
+          {
+            "name": "add_pow_char_pow_of_commute",
+            "type": " {R : Type u_1} [Semiring R] {x y : R} (p n : ℕ) [hp : Fact (Nat.Prime p)] [CharP R p] (h : Commute x y) : (x + y) ^ p ^ n = x ^ p ^ n + y ^ p ^ n",
+            "module": "Mathlib.Algebra.CharP.Lemmas"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "id": "leansearch-abstract",
+    "tool": "mcp__lean_lsp__lean_leansearch",
+    "form": "abstract",
+    "request": {
+      "query": "Binomial theorem for two commuting elements in a noncommutative semiring.",
+      "num_results": 7,
+      "limit": 30
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Commute.add_pow'\",\n      \"module_name\": \"Mathlib.Data.Nat.Choose.Sum\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] {x y : R},\\n  Commute x y → ∀ (n : ℕ), (x + y) ^ n = ∑ m ∈ Finset.antidiagonal n, n.choose m.1 • (x ^ m.1 * y ^ m.2)\"\n    },\n    {\n      \"name\": \"Commute.add_pow\",\n      \"module_name\": \"Mathlib.Data.Nat.Choose.Sum\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] {x y : R},\\n  Commute x y → ∀ (n : ℕ), (x + y) ^ n = ∑ m ∈ Finset.range (n + 1), x ^ m * y ^ (n - m) * ↑(n.choose m)\"\n    },\n    {\n      \"name\": \"Ring.add_choose_eq\",\n      \"module_name\": \"Mathlib.RingTheory.Binomial\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Ring R] [inst_1 : BinomialRing R] {r s : R} (k : ℕ),\\n  Commute r s → Ring.choose (r + s) k = ∑ ij ∈ Finset.antidiagonal k, Ring.choose r ij.1 * Ring.choose s ij.2\"\n    },\n    {\n      \"name\": \"add_pow\",\n      \"module_name\": \"Mathlib.Data.Nat.Choose.Sum\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommSemiring R] (x y : R) (n : ℕ),\\n  (x + y) ^ n = ∑ m ∈ Finset.range (n + 1), x ^ m * y ^ (n - m) * ↑(n.choose m)\"\n    },\n    {\n      \"name\": \"Commute.exists_add_pow_prime_pow_eq\",\n      \"module_name\": \"Mathlib.Algebra.CharP.Lemmas\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] {p : ℕ},\\n  Nat.Prime p → ∀ {x y : R}, Commute x y → ∀ (n : ℕ), ∃ r, (x + y) ^ p ^ n = x ^ p ^ n + y ^ p ^ n + ↑p * x * y * r\"\n    },\n    {\n      \"name\": \"sub_pow\",\n      \"module_name\": \"Mathlib.Data.Nat.Choose.Sum\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] (x y : R) (n : ℕ),\\n  (x - y) ^ n = ∑ m ∈ Finset.range (n + 1), (-1) ^ (m + n) * x ^ m * y ^ (n - m) * ↑(n.choose m)\"\n    },\n    {\n      \"name\": \"Fintype.sum_pow_mul_eq_add_pow\",\n      \"module_name\": \"Mathlib.Algebra.BigOperators.Ring.Finset\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_4} [inst : CommSemiring R] (ι : Type u_5) [inst_1 : Fintype ι] (a b : R),\\n  ∑ s, a ^ s.card * b ^ (Fintype.card ι - s.card) = (a + b) ^ Fintype.card ι\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Commute.add_pow'",
+            "module_name": "Mathlib.Data.Nat.Choose.Sum",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] {x y : R},\n  Commute x y → ∀ (n : ℕ), (x + y) ^ n = ∑ m ∈ Finset.antidiagonal n, n.choose m.1 • (x ^ m.1 * y ^ m.2)"
+          },
+          {
+            "name": "Commute.add_pow",
+            "module_name": "Mathlib.Data.Nat.Choose.Sum",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] {x y : R},\n  Commute x y → ∀ (n : ℕ), (x + y) ^ n = ∑ m ∈ Finset.range (n + 1), x ^ m * y ^ (n - m) * ↑(n.choose m)"
+          },
+          {
+            "name": "Ring.add_choose_eq",
+            "module_name": "Mathlib.RingTheory.Binomial",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Ring R] [inst_1 : BinomialRing R] {r s : R} (k : ℕ),\n  Commute r s → Ring.choose (r + s) k = ∑ ij ∈ Finset.antidiagonal k, Ring.choose r ij.1 * Ring.choose s ij.2"
+          },
+          {
+            "name": "add_pow",
+            "module_name": "Mathlib.Data.Nat.Choose.Sum",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommSemiring R] (x y : R) (n : ℕ),\n  (x + y) ^ n = ∑ m ∈ Finset.range (n + 1), x ^ m * y ^ (n - m) * ↑(n.choose m)"
+          },
+          {
+            "name": "Commute.exists_add_pow_prime_pow_eq",
+            "module_name": "Mathlib.Algebra.CharP.Lemmas",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] {p : ℕ},\n  Nat.Prime p → ∀ {x y : R}, Commute x y → ∀ (n : ℕ), ∃ r, (x + y) ^ p ^ n = x ^ p ^ n + y ^ p ^ n + ↑p * x * y * r"
+          },
+          {
+            "name": "sub_pow",
+            "module_name": "Mathlib.Data.Nat.Choose.Sum",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommRing R] (x y : R) (n : ℕ),\n  (x - y) ^ n = ∑ m ∈ Finset.range (n + 1), (-1) ^ (m + n) * x ^ m * y ^ (n - m) * ↑(n.choose m)"
+          },
+          {
+            "name": "Fintype.sum_pow_mul_eq_add_pow",
+            "module_name": "Mathlib.Algebra.BigOperators.Ring.Finset",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_4} [inst : CommSemiring R] (ι : Type u_5) [inst_1 : Fintype ι] (a b : R),\n  ∑ s, a ^ s.card * b ^ (Fintype.card ι - s.card) = (a + b) ^ Fintype.card ι"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "id": "local-abstract",
+    "tool": "mcp__lean_lsp__lean_local_search",
+    "form": "abstract",
+    "request": {
+      "query": "add_pow",
+      "num_results": 7,
+      "limit": 30
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Commute.add_pow\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Data/Nat/Choose/Sum.lean\"\n    },\n    {\n      \"name\": \"MinTropical.add_pow\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Tropical/Basic.lean\"\n    },\n    {\n      \"name\": \"add_pow\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Data/Nat/Choose/Sum.lean\"\n    },\n    {\n      \"name\": \"Commute.add_pow'\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Data/Nat/Choose/Sum.lean\"\n    },\n    {\n      \"name\": \"Even.add_pow_le\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Order/Ring/Basic.lean\"\n    },\n    {\n      \"name\": \"IsNonarchimedean.add_pow_le\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Order/Ring/IsNonarchimedean.lean\"\n    },\n    {\n      \"name\": \"add_pow_le\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Order/Ring/Basic.lean\"\n    },\n    {\n      \"name\": \"add_pow_char\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/CharP/Lemmas.lean\"\n    },\n    {\n      \"name\": \"add_pow_expChar\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/CharP/Lemmas.lean\"\n    },\n    {\n      \"name\": \"add_pow_char_pow\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/CharP/Lemmas.lean\"\n    },\n    {\n      \"name\": \"Commute.add_pow_prime_eq\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/CharP/Lemmas.lean\"\n    },\n    {\n      \"name\": \"add_pow_prime_eq\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/CharP/Lemmas.lean\"\n    },\n    {\n      \"name\": \"Commute.add_pow_prime_eq'\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/CharP/Lemmas.lean\"\n    },\n    {\n      \"name\": \"add_pow_prime_eq'\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/CharP/Lemmas.lean\"\n    },\n    {\n      \"name\": \"add_pow_expChar_pow\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/CharP/Lemmas.lean\"\n    },\n    {\n      \"name\": \"Commute.add_pow_prime_pow_eq\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/CharP/Lemmas.lean\"\n    },\n    {\n      \"name\": \"add_pow_prime_pow_eq\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/CharP/Lemmas.lean\"\n    },\n    {\n      \"name\": \"Commute.add_pow_prime_pow_eq'\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/CharP/Lemmas.lean\"\n    },\n    {\n      \"name\": \"add_pow_prime_pow_eq'\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/CharP/Lemmas.lean\"\n    },\n    {\n      \"name\": \"add_pow_char_of_commute\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/CharP/Lemmas.lean\"\n    },\n    {\n      \"name\": \"add_pow_expChar_of_commute\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/CharP/Lemmas.lean\"\n    },\n    {\n      \"name\": \"add_pow_char_pow_of_commute\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/CharP/Lemmas.lean\"\n    },\n    {\n      \"name\": \"Ideal.add_pow_mem_of_pow_mem_of_le\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/Ideal/Basic.lean\"\n    },\n    {\n      \"name\": \"add_pow_expChar_pow_of_commute\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/CharP/Lemmas.lean\"\n    },\n    {\n      \"name\": \"Ideal.add_pow_add_pred_mem_of_pow_mem\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/Ideal/Basic.lean\"\n    },\n    {\n      \"name\": \"Commute.add_pow_add_eq_zero_of_pow_eq_zero\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/Nilpotent/Basic.lean\"\n    },\n    {\n      \"name\": \"Commute.add_pow_dvd_pow_of_pow_eq_zero_left\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Ring/Divisibility/Lemmas.lean\"\n    },\n    {\n      \"name\": \"add_pow_eq_mul_pow_add_pow_div_char\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/CharP/Lemmas.lean\"\n    },\n    {\n      \"name\": \"Commute.add_pow_dvd_pow_of_pow_eq_zero_right\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Ring/Divisibility/Lemmas.lean\"\n    },\n    {\n      \"name\": \"add_pow_eq_mul_pow_add_pow_div_expChar\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/CharP/Lemmas.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Commute.add_pow",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Data/Nat/Choose/Sum.lean"
+          },
+          {
+            "name": "MinTropical.add_pow",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Tropical/Basic.lean"
+          },
+          {
+            "name": "add_pow",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Data/Nat/Choose/Sum.lean"
+          },
+          {
+            "name": "Commute.add_pow'",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Data/Nat/Choose/Sum.lean"
+          },
+          {
+            "name": "Even.add_pow_le",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Order/Ring/Basic.lean"
+          },
+          {
+            "name": "IsNonarchimedean.add_pow_le",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Order/Ring/IsNonarchimedean.lean"
+          },
+          {
+            "name": "add_pow_le",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Order/Ring/Basic.lean"
+          },
+          {
+            "name": "add_pow_char",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/CharP/Lemmas.lean"
+          },
+          {
+            "name": "add_pow_expChar",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/CharP/Lemmas.lean"
+          },
+          {
+            "name": "add_pow_char_pow",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/CharP/Lemmas.lean"
+          },
+          {
+            "name": "Commute.add_pow_prime_eq",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/CharP/Lemmas.lean"
+          },
+          {
+            "name": "add_pow_prime_eq",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/CharP/Lemmas.lean"
+          },
+          {
+            "name": "Commute.add_pow_prime_eq'",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/CharP/Lemmas.lean"
+          },
+          {
+            "name": "add_pow_prime_eq'",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/CharP/Lemmas.lean"
+          },
+          {
+            "name": "add_pow_expChar_pow",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/CharP/Lemmas.lean"
+          },
+          {
+            "name": "Commute.add_pow_prime_pow_eq",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/CharP/Lemmas.lean"
+          },
+          {
+            "name": "add_pow_prime_pow_eq",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/CharP/Lemmas.lean"
+          },
+          {
+            "name": "Commute.add_pow_prime_pow_eq'",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/CharP/Lemmas.lean"
+          },
+          {
+            "name": "add_pow_prime_pow_eq'",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/CharP/Lemmas.lean"
+          },
+          {
+            "name": "add_pow_char_of_commute",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/CharP/Lemmas.lean"
+          },
+          {
+            "name": "add_pow_expChar_of_commute",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/CharP/Lemmas.lean"
+          },
+          {
+            "name": "add_pow_char_pow_of_commute",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/CharP/Lemmas.lean"
+          },
+          {
+            "name": "Ideal.add_pow_mem_of_pow_mem_of_le",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/RingTheory/Ideal/Basic.lean"
+          },
+          {
+            "name": "add_pow_expChar_pow_of_commute",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/CharP/Lemmas.lean"
+          },
+          {
+            "name": "Ideal.add_pow_add_pred_mem_of_pow_mem",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/RingTheory/Ideal/Basic.lean"
+          },
+          {
+            "name": "Commute.add_pow_add_eq_zero_of_pow_eq_zero",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/RingTheory/Nilpotent/Basic.lean"
+          },
+          {
+            "name": "Commute.add_pow_dvd_pow_of_pow_eq_zero_left",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Ring/Divisibility/Lemmas.lean"
+          },
+          {
+            "name": "add_pow_eq_mul_pow_add_pow_div_char",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/CharP/Lemmas.lean"
+          },
+          {
+            "name": "Commute.add_pow_dvd_pow_of_pow_eq_zero_right",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Ring/Divisibility/Lemmas.lean"
+          },
+          {
+            "name": "add_pow_eq_mul_pow_add_pow_div_expChar",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/CharP/Lemmas.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  }
+]

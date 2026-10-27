@@ -1,0 +1,41 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+import Mathlib.Algebra.Polynomial.CancelLeads
+import Mathlib.Algebra.MvPolynomial.PDeriv
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+import Mathlib.Algebra.MvPolynomial.Equiv
+import Mathlib.Analysis.Normed.Unbundled.RingSeminorm
+import Mathlib.LinearAlgebra.Matrix.AbsoluteValue
+import Mathlib.Data.Nat.Choose.Bounds
+import Mathlib.RingTheory.Polynomial.Basic
+#check_failure Roth.geom_sum_le_one_add_pow
+namespace MvPolynomial.GeomSumRaw
+#check @Commute.add_pow
+#check @add_pow
+#check @Nat.choose_pos
+#check @le_mul_of_one_le_right
+#check @Finset.sum_le_sum
+#check @Nat.one_le_cast
+#check @Nat.mono_cast
+ theorem generic [Semiring R] [PartialOrder R] [IsOrderedRing R]
+    {t : R} (ht : 0 ≤ t) (r : ℕ) :
+    ∑ s ∈ Finset.range (r + 1), t ^ s ≤ (1 + t) ^ r := by
+  rw [add_comm (1 : R) t, (Commute.one_right t).add_pow]
+  refine Finset.sum_le_sum fun m hm ↦ ?_
+  rw [one_pow, mul_one]
+  refine le_mul_of_one_le_right (pow_nonneg ht m) ?_
+  simpa only [Nat.cast_one] using
+    (Nat.mono_cast (α := R) (Nat.choose_pos (Finset.mem_range_succ_iff.1 hm)))
+#print axioms generic
+example {t : ℝ} (ht : 0 ≤ t) (r : ℕ) :
+    ∑ s ∈ Finset.range (r + 1), t ^ s ≤ (1 + t) ^ r := generic ht r
+example : ¬ ((∑ s ∈ Finset.range (2 + 1), (-1 : ℝ) ^ s) ≤ (1 + (-1 : ℝ)) ^ 2) := by
+  norm_num [Finset.sum_range_succ]
+end MvPolynomial.GeomSumRaw
