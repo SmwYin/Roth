@@ -1,0 +1,21 @@
+# Exhaustive literature protocol
+
+Every named channel ran. The informal nine-channel label does not replace any named row.
+Exact requests, returned serialization SHA256/bytes, titles, URLs and access limits are in web1–web4 metadata. Full web bodies are not archived.
+
+| Channel | Actual query/request | Outcome and locator |
+|---|---|---|
+| General web, specific | Hasse Wronskian determinant divided derivatives polynomial finite family | Guruswami–Kopparty, Explicit Subspace Designs, §3 Definition9 and Lemma10, PDF p7: Hasse derivative matrix and its determinant. web1, web4. |
+| General web, general | Wronskian determinant differential ring Hasse Schmidt derivatives positive characteristic | Differential-ring Wronskians and Hasse–Schmidt generality; Magma handbook documents determinant and matrix. Supplementary implementation evidence, not proof of an upstream mathematical API. web1. |
+| General web, aliases | generalized Wronskian divided derivative polynomial independence factorial normalization | Same primary subspace-design paper explicitly distinguishes factorial scaling; ordinary-derivative literature also returned. web1. |
+| ChatGPT MCP | n/a: ask_chatgpt_math unavailable | Optional mathematical second-opinion tool absent; no response invented. |
+| Local references | Read clean.tex §2 lines157–185 | Defines determinant of (1/μ!) d^μ φν; rational polynomial independence theorem follows separately. Local source-l≥1 restriction is unnecessary for the definition's empty determinant convention. |
+| nLab | site:ncatlab.org/nlab Wronskian Hasse derivative; direct open Hasse-Schmidt+derivative | Indexed page defines Hasse derivatives over commutative rigs; direct open failed400 unsupported application/xhtml+xml. Successful indexed evidence retained, access failure explicit. web2, web4. |
+| nCatLab | site:ncatlab.org Wronskian determinant | Related derivative/differentiation pages and a differential-equations PDF; no categorical Wronskian definition found in returned results. No categorical generalization asserted. web2. |
+| Stacks | site:stacks.math.columbia.edu Wronskian principal parts; retry principal parts differential operators universal property | Tag09CH §10.133 Lemma3 represents finite-order differential operators by principal parts. Relevant jet background, not this determinant and not an exact replacement. web2, web3. |
+| MathOverflow | site:mathoverflow.net Wronskian Hasse derivatives positive characteristic; retry wronskian positive characteristic Hasse | Geometric meaning of the Wronskian, question498824 (Aug2025), opened successfully; jet/global-section perspective, distinct from polynomial determinant. web2–web4. |
+| Recent arXiv, last five years | site:arxiv.org Wronskian Hasse 2022 2023 2024 2025 2026 | Kiselev, arXiv2510.02145, submitted2025-10-02, opened abstract: Wronskian determinants as N-ary brackets on polynomial algebras. Date within2021-10-26–2026-10-26. Confirms ongoing n-ary usage, not a claim of Hasse normalization. web3, web4. |
+
+Concept: Hasse/divided-derivative Wronskian determinant of a finite polynomial family. Standard forms vary: ordinary iterated derivatives; Hasse derivatives defined integrally; chosen differential-operator rows; geometric jets; folded Wronskians. The Hasse and ordinary determinant forms differ by the product of row factorials. The existing binary Wronskian agrees because its rows have orders0 and1. Polynomial coefficients need only a commutative ring for the present determinant expression, while vanishing/independence criteria need stronger hypotheses. General differential-ring and multivariate variants are larger interfaces rather than literal deletions of hypotheses. None of the jet/geometric references supplies an existing Lean replacement.
+
+Primary locators: https://www.math.toronto.edu/swastik/subspace-designs.pdf §3 pp7–8; https://stacks.math.columbia.edu/tag/09CH Lemma10.133.3; https://arxiv.org/abs/2510.02145 abstract. Non-primary supplementary discussion: https://mathoverflow.net/questions/498824/geometric-meaning-of-the-wronskian and https://ncatlab.org/nlab/show/Hasse-Schmidt+derivative. No source claims the unrestricted independence criterion in positive characteristic.

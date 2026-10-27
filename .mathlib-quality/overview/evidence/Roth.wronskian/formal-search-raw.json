@@ -1,0 +1,609 @@
+[
+  {
+    "form": 0,
+    "method": "lean_leanfinder",
+    "request": {
+      "query": "Hasse derivative Wronskian determinant of a finite family of univariate polynomials"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.wronskian\",\n      \"informal_name\": \"Wronskian of two polynomials\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : CommRing R] → Polynomial R → Polynomial R → Polynomial R\",\n      \"informal_description\": \"The Wronskian of two polynomials $ a $ and $ b $ is defined as $ a \\\\cdot b' - a' \\\\cdot b $, where $ b' $ and $ a' $ denote the formal derivatives of $ b $ and $ a $, respectively. This results in a polynomial in $ R[X] $.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.Wronskian\"\n    },\n    {\n      \"formal_name\": \"Polynomial.wronskianBilin\",\n      \"informal_name\": \"Wronskian Bilinear Form on Polynomial Rings\",\n      \"kind\": \"definition\",\n      \"type\": \"(R : Type u_1) → [inst : CommRing R] → Polynomial R →ₗ[R] Polynomial R →ₗ[R] Polynomial R\",\n      \"informal_description\": \"For any commutative ring $ R $, this bilinear form on the polynomial ring $ R[X] $ maps a pair of polynomials $ (f, g) $ to their Wronskian $ f'g - fg' $, where $ f' $ and $ g' $ denote the formal derivatives of $ f $ and $ g $, respectively. It is defined as the difference between the composition of left multiplication by the derivative and the flipped composition of derivative with left multiplication.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.Wronskian\"\n    },\n    {\n      \"formal_name\": \"Polynomial.wronskianBilin_apply\",\n      \"informal_name\": \"Wronskian Bilinear Form Evaluation Equals Wronskian\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] (a b : Polynomial R), ((Polynomial.wronskianBilin R) a) b = a.wronskian b\",\n      \"informal_description\": \"For any commutative ring $ R $ and polynomials $ a, b \\\\in R[X] $, the Wronskian bilinear form evaluated at $ (a, b) $ is equal to the Wronskian of $ a $ and $ b $, i.e., $ \\\\text{wronskianBilin}_R(a, b) = a \\\\cdot b' - a' \\\\cdot b $.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.Wronskian\"\n    },\n    {\n      \"formal_name\": \"Polynomial.wronskian_self_eq_zero\",\n      \"informal_name\": \"Wronskian of a Polynomial with Itself is Zero\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] (a : Polynomial R), a.wronskian a = 0\",\n      \"informal_description\": \"For any polynomial $ a $ in the polynomial ring $ R[X] $ over a commutative ring $ R $, the Wronskian of $ a $ with itself is zero, i.e., $ \\\\operatorname{Wronskian}(a, a) = 0 $. The Wronskian is defined as $ a \\\\cdot a' - a' \\\\cdot a $, where $ a' $ denotes the formal derivative of $ a $. This simplifies to zero due to the anti-commutative nature of the subtraction.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.Wronskian\"\n    },\n    {\n      \"formal_name\": \"Polynomial.sylvesterDeriv\",\n      \"informal_name\": \"Sylvester matrix of a polynomial and its derivative\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} →\\n  [inst : Semiring R] →\\n    (f : Polynomial R) → Matrix (Fin (f.natDegree - 1 + f.natDegree)) (Fin (f.natDegree - 1 + f.natDegree)) R\",\n      \"informal_description\": \"For a polynomial $ f $ of degree $ n $, this is a square matrix of size $ (2n - 2) \\\\times (2n - 2) $ constructed from the Sylvester matrix of $ f' $ (the derivative of $ f $) and $ f $. The final row is modified to have a 1 at column $ n-2 $, the value $ n $ at column $ 2n-2 $, and zeros elsewhere. This matrix is used in resultant computations involving polynomials and their derivatives.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.Resultant.Basic\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Polynomial.wronskian",
+            "informal_name": "Wronskian of two polynomials",
+            "kind": "definition",
+            "type": "{R : Type u_1} → [inst : CommRing R] → Polynomial R → Polynomial R → Polynomial R",
+            "informal_description": "The Wronskian of two polynomials $ a $ and $ b $ is defined as $ a \\cdot b' - a' \\cdot b $, where $ b' $ and $ a' $ denote the formal derivatives of $ b $ and $ a $, respectively. This results in a polynomial in $ R[X] $.",
+            "path": "Mathlib.RingTheory.Polynomial.Wronskian"
+          },
+          {
+            "formal_name": "Polynomial.wronskianBilin",
+            "informal_name": "Wronskian Bilinear Form on Polynomial Rings",
+            "kind": "definition",
+            "type": "(R : Type u_1) → [inst : CommRing R] → Polynomial R →ₗ[R] Polynomial R →ₗ[R] Polynomial R",
+            "informal_description": "For any commutative ring $ R $, this bilinear form on the polynomial ring $ R[X] $ maps a pair of polynomials $ (f, g) $ to their Wronskian $ f'g - fg' $, where $ f' $ and $ g' $ denote the formal derivatives of $ f $ and $ g $, respectively. It is defined as the difference between the composition of left multiplication by the derivative and the flipped composition of derivative with left multiplication.",
+            "path": "Mathlib.RingTheory.Polynomial.Wronskian"
+          },
+          {
+            "formal_name": "Polynomial.wronskianBilin_apply",
+            "informal_name": "Wronskian Bilinear Form Evaluation Equals Wronskian",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommRing R] (a b : Polynomial R), ((Polynomial.wronskianBilin R) a) b = a.wronskian b",
+            "informal_description": "For any commutative ring $ R $ and polynomials $ a, b \\in R[X] $, the Wronskian bilinear form evaluated at $ (a, b) $ is equal to the Wronskian of $ a $ and $ b $, i.e., $ \\text{wronskianBilin}_R(a, b) = a \\cdot b' - a' \\cdot b $.",
+            "path": "Mathlib.RingTheory.Polynomial.Wronskian"
+          },
+          {
+            "formal_name": "Polynomial.wronskian_self_eq_zero",
+            "informal_name": "Wronskian of a Polynomial with Itself is Zero",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommRing R] (a : Polynomial R), a.wronskian a = 0",
+            "informal_description": "For any polynomial $ a $ in the polynomial ring $ R[X] $ over a commutative ring $ R $, the Wronskian of $ a $ with itself is zero, i.e., $ \\operatorname{Wronskian}(a, a) = 0 $. The Wronskian is defined as $ a \\cdot a' - a' \\cdot a $, where $ a' $ denotes the formal derivative of $ a $. This simplifies to zero due to the anti-commutative nature of the subtraction.",
+            "path": "Mathlib.RingTheory.Polynomial.Wronskian"
+          },
+          {
+            "formal_name": "Polynomial.sylvesterDeriv",
+            "informal_name": "Sylvester matrix of a polynomial and its derivative",
+            "kind": "definition",
+            "type": "{R : Type u_1} →\n  [inst : Semiring R] →\n    (f : Polynomial R) → Matrix (Fin (f.natDegree - 1 + f.natDegree)) (Fin (f.natDegree - 1 + f.natDegree)) R",
+            "informal_description": "For a polynomial $ f $ of degree $ n $, this is a square matrix of size $ (2n - 2) \\times (2n - 2) $ constructed from the Sylvester matrix of $ f' $ (the derivative of $ f $) and $ f $. The final row is modified to have a 1 at column $ n-2 $, the value $ n $ at column $ 2n-2 $, and zeros elsewhere. This matrix is used in resultant computations involving polynomials and their derivatives.",
+            "path": "Mathlib.RingTheory.Polynomial.Resultant.Basic"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": 0,
+    "method": "lean_leansearch",
+    "request": {
+      "query": "Hasse derivative Wronskian determinant of a finite family of univariate polynomials"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.wronskian\",\n      \"module_name\": \"Mathlib.RingTheory.Polynomial.Wronskian\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : CommRing R] → Polynomial R → Polynomial R → Polynomial R\"\n    },\n    {\n      \"name\": \"Polynomial.hasseDeriv\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.HasseDeriv\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : Semiring R] → ℕ → Polynomial R →ₗ[R] Polynomial R\"\n    },\n    {\n      \"name\": \"IsCoprime.wronskian_eq_zero_iff\",\n      \"module_name\": \"Mathlib.RingTheory.Polynomial.Wronskian\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] [NoZeroDivisors R] {a b : Polynomial R},\\n  IsCoprime a b → (a.wronskian b = 0 ↔ Polynomial.derivative a = 0 ∧ Polynomial.derivative b = 0)\"\n    },\n    {\n      \"name\": \"Polynomial.wronskian_add_left\",\n      \"module_name\": \"Mathlib.RingTheory.Polynomial.Wronskian\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] (a b c : Polynomial R), (a + b).wronskian c = a.wronskian c + b.wronskian c\"\n    },\n    {\n      \"name\": \"Polynomial.wronskian_neg_left\",\n      \"module_name\": \"Mathlib.RingTheory.Polynomial.Wronskian\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] (a b : Polynomial R), (-a).wronskian b = -a.wronskian b\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.wronskian",
+            "module_name": "Mathlib.RingTheory.Polynomial.Wronskian",
+            "kind": "definition",
+            "type": "{R : Type u_1} → [inst : CommRing R] → Polynomial R → Polynomial R → Polynomial R"
+          },
+          {
+            "name": "Polynomial.hasseDeriv",
+            "module_name": "Mathlib.Algebra.Polynomial.HasseDeriv",
+            "kind": "definition",
+            "type": "{R : Type u_1} → [inst : Semiring R] → ℕ → Polynomial R →ₗ[R] Polynomial R"
+          },
+          {
+            "name": "IsCoprime.wronskian_eq_zero_iff",
+            "module_name": "Mathlib.RingTheory.Polynomial.Wronskian",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommRing R] [NoZeroDivisors R] {a b : Polynomial R},\n  IsCoprime a b → (a.wronskian b = 0 ↔ Polynomial.derivative a = 0 ∧ Polynomial.derivative b = 0)"
+          },
+          {
+            "name": "Polynomial.wronskian_add_left",
+            "module_name": "Mathlib.RingTheory.Polynomial.Wronskian",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommRing R] (a b c : Polynomial R), (a + b).wronskian c = a.wronskian c + b.wronskian c"
+          },
+          {
+            "name": "Polynomial.wronskian_neg_left",
+            "module_name": "Mathlib.RingTheory.Polynomial.Wronskian",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommRing R] (a b : Polynomial R), (-a).wronskian b = -a.wronskian b"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": 0,
+    "method": "lean_loogle",
+    "request": {
+      "query": "Polynomial.hasseDeriv, Matrix.det"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": []\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": []
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": 0,
+    "method": "lean_local_search",
+    "request": {
+      "query": "wronskian"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Roth.wronskian\",\n      \"kind\": \"def\",\n      \"file\": \"Roth/Wronskian.lean\"\n    },\n    {\n      \"name\": \"Polynomial.wronskian\",\n      \"kind\": \"def\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/Polynomial/Wronskian.lean\"\n    },\n    {\n      \"name\": \"Roth.wronskianMatrix\",\n      \"kind\": \"def\",\n      \"file\": \"Roth/Wronskian.lean\"\n    },\n    {\n      \"name\": \"Roth.wronskian_eq_zero_iff\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/Wronskian.lean\"\n    },\n    {\n      \"name\": \"Roth.wronskian_update_sub_smul\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/Wronskian.lean\"\n    },\n    {\n      \"name\": \"Roth.wronskian_kronecker_eq_sum_aux\",\n      \"kind\": \"lemma\",\n      \"file\": \"Roth/GenWronskian.lean\"\n    },\n    {\n      \"name\": \"Roth.wronskian_ne_zero_of_linearIndependent\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/Wronskian.lean\"\n    },\n    {\n      \"name\": \"Roth.wronskian_ne_zero_of_natDegree_injective\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/Wronskian.lean\"\n    },\n    {\n      \"name\": \"Roth.wronskian_eq_zero_of_not_linearIndependent\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/Wronskian.lean\"\n    },\n    {\n      \"name\": \"Polynomial.wronskianBilin\",\n      \"kind\": \"def\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/Polynomial/Wronskian.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Roth.wronskian",
+            "kind": "def",
+            "file": "Roth/Wronskian.lean"
+          },
+          {
+            "name": "Polynomial.wronskian",
+            "kind": "def",
+            "file": ".lake/packages/mathlib/Mathlib/RingTheory/Polynomial/Wronskian.lean"
+          },
+          {
+            "name": "Roth.wronskianMatrix",
+            "kind": "def",
+            "file": "Roth/Wronskian.lean"
+          },
+          {
+            "name": "Roth.wronskian_eq_zero_iff",
+            "kind": "theorem",
+            "file": "Roth/Wronskian.lean"
+          },
+          {
+            "name": "Roth.wronskian_update_sub_smul",
+            "kind": "theorem",
+            "file": "Roth/Wronskian.lean"
+          },
+          {
+            "name": "Roth.wronskian_kronecker_eq_sum_aux",
+            "kind": "lemma",
+            "file": "Roth/GenWronskian.lean"
+          },
+          {
+            "name": "Roth.wronskian_ne_zero_of_linearIndependent",
+            "kind": "theorem",
+            "file": "Roth/Wronskian.lean"
+          },
+          {
+            "name": "Roth.wronskian_ne_zero_of_natDegree_injective",
+            "kind": "theorem",
+            "file": "Roth/Wronskian.lean"
+          },
+          {
+            "name": "Roth.wronskian_eq_zero_of_not_linearIndependent",
+            "kind": "theorem",
+            "file": "Roth/Wronskian.lean"
+          },
+          {
+            "name": "Polynomial.wronskianBilin",
+            "kind": "def",
+            "file": ".lake/packages/mathlib/Mathlib/RingTheory/Polynomial/Wronskian.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": 1,
+    "method": "lean_leanfinder",
+    "request": {
+      "query": "Generalized Wronskian determinant divided derivatives over a commutative ring"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.wronskian\",\n      \"informal_name\": \"Wronskian of two polynomials\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : CommRing R] → Polynomial R → Polynomial R → Polynomial R\",\n      \"informal_description\": \"The Wronskian of two polynomials $ a $ and $ b $ is defined as $ a \\\\cdot b' - a' \\\\cdot b $, where $ b' $ and $ a' $ denote the formal derivatives of $ b $ and $ a $, respectively. This results in a polynomial in $ R[X] $.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.Wronskian\"\n    },\n    {\n      \"formal_name\": \"Polynomial.wronskianBilin_apply\",\n      \"informal_name\": \"Wronskian Bilinear Form Evaluation Equals Wronskian\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] (a b : Polynomial R), ((Polynomial.wronskianBilin R) a) b = a.wronskian b\",\n      \"informal_description\": \"For any commutative ring $ R $ and polynomials $ a, b \\\\in R[X] $, the Wronskian bilinear form evaluated at $ (a, b) $ is equal to the Wronskian of $ a $ and $ b $, i.e., $ \\\\text{wronskianBilin}_R(a, b) = a \\\\cdot b' - a' \\\\cdot b $.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.Wronskian\"\n    },\n    {\n      \"formal_name\": \"Polynomial.wronskianBilin\",\n      \"informal_name\": \"Wronskian Bilinear Form on Polynomial Rings\",\n      \"kind\": \"definition\",\n      \"type\": \"(R : Type u_1) → [inst : CommRing R] → Polynomial R →ₗ[R] Polynomial R →ₗ[R] Polynomial R\",\n      \"informal_description\": \"For any commutative ring $ R $, this bilinear form on the polynomial ring $ R[X] $ maps a pair of polynomials $ (f, g) $ to their Wronskian $ f'g - fg' $, where $ f' $ and $ g' $ denote the formal derivatives of $ f $ and $ g $, respectively. It is defined as the difference between the composition of left multiplication by the derivative and the flipped composition of derivative with left multiplication.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.Wronskian\"\n    },\n    {\n      \"formal_name\": \"Polynomial.isAlt_wronskianBilin\",\n      \"informal_name\": \"Alternating Wronskian Bilinear Form on Polynomial Rings\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R], (Polynomial.wronskianBilin R).IsAlt\",\n      \"informal_description\": \"For any commutative ring $ R $, the Wronskian bilinear form on the polynomial ring $ R[X] $ is alternating, meaning that the Wronskian of any polynomial $ f $ with itself satisfies $ W(f, f) = f'f - ff' = 0 $. This follows from the antisymmetry of the derivative terms in the Wronskian definition.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.Wronskian\"\n    },\n    {\n      \"formal_name\": \"Polynomial.wronskian_self_eq_zero\",\n      \"informal_name\": \"Wronskian of a Polynomial with Itself is Zero\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] (a : Polynomial R), a.wronskian a = 0\",\n      \"informal_description\": \"For any polynomial $ a $ in the polynomial ring $ R[X] $ over a commutative ring $ R $, the Wronskian of $ a $ with itself is zero, i.e., $ \\\\operatorname{Wronskian}(a, a) = 0 $. The Wronskian is defined as $ a \\\\cdot a' - a' \\\\cdot a $, where $ a' $ denotes the formal derivative of $ a $. This simplifies to zero due to the anti-commutative nature of the subtraction.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.Wronskian\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Polynomial.wronskian",
+            "informal_name": "Wronskian of two polynomials",
+            "kind": "definition",
+            "type": "{R : Type u_1} → [inst : CommRing R] → Polynomial R → Polynomial R → Polynomial R",
+            "informal_description": "The Wronskian of two polynomials $ a $ and $ b $ is defined as $ a \\cdot b' - a' \\cdot b $, where $ b' $ and $ a' $ denote the formal derivatives of $ b $ and $ a $, respectively. This results in a polynomial in $ R[X] $.",
+            "path": "Mathlib.RingTheory.Polynomial.Wronskian"
+          },
+          {
+            "formal_name": "Polynomial.wronskianBilin_apply",
+            "informal_name": "Wronskian Bilinear Form Evaluation Equals Wronskian",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommRing R] (a b : Polynomial R), ((Polynomial.wronskianBilin R) a) b = a.wronskian b",
+            "informal_description": "For any commutative ring $ R $ and polynomials $ a, b \\in R[X] $, the Wronskian bilinear form evaluated at $ (a, b) $ is equal to the Wronskian of $ a $ and $ b $, i.e., $ \\text{wronskianBilin}_R(a, b) = a \\cdot b' - a' \\cdot b $.",
+            "path": "Mathlib.RingTheory.Polynomial.Wronskian"
+          },
+          {
+            "formal_name": "Polynomial.wronskianBilin",
+            "informal_name": "Wronskian Bilinear Form on Polynomial Rings",
+            "kind": "definition",
+            "type": "(R : Type u_1) → [inst : CommRing R] → Polynomial R →ₗ[R] Polynomial R →ₗ[R] Polynomial R",
+            "informal_description": "For any commutative ring $ R $, this bilinear form on the polynomial ring $ R[X] $ maps a pair of polynomials $ (f, g) $ to their Wronskian $ f'g - fg' $, where $ f' $ and $ g' $ denote the formal derivatives of $ f $ and $ g $, respectively. It is defined as the difference between the composition of left multiplication by the derivative and the flipped composition of derivative with left multiplication.",
+            "path": "Mathlib.RingTheory.Polynomial.Wronskian"
+          },
+          {
+            "formal_name": "Polynomial.isAlt_wronskianBilin",
+            "informal_name": "Alternating Wronskian Bilinear Form on Polynomial Rings",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommRing R], (Polynomial.wronskianBilin R).IsAlt",
+            "informal_description": "For any commutative ring $ R $, the Wronskian bilinear form on the polynomial ring $ R[X] $ is alternating, meaning that the Wronskian of any polynomial $ f $ with itself satisfies $ W(f, f) = f'f - ff' = 0 $. This follows from the antisymmetry of the derivative terms in the Wronskian definition.",
+            "path": "Mathlib.RingTheory.Polynomial.Wronskian"
+          },
+          {
+            "formal_name": "Polynomial.wronskian_self_eq_zero",
+            "informal_name": "Wronskian of a Polynomial with Itself is Zero",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommRing R] (a : Polynomial R), a.wronskian a = 0",
+            "informal_description": "For any polynomial $ a $ in the polynomial ring $ R[X] $ over a commutative ring $ R $, the Wronskian of $ a $ with itself is zero, i.e., $ \\operatorname{Wronskian}(a, a) = 0 $. The Wronskian is defined as $ a \\cdot a' - a' \\cdot a $, where $ a' $ denotes the formal derivative of $ a $. This simplifies to zero due to the anti-commutative nature of the subtraction.",
+            "path": "Mathlib.RingTheory.Polynomial.Wronskian"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": 1,
+    "method": "lean_leansearch",
+    "request": {
+      "query": "Generalized Wronskian determinant divided derivatives over a commutative ring"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.wronskian\",\n      \"module_name\": \"Mathlib.RingTheory.Polynomial.Wronskian\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : CommRing R] → Polynomial R → Polynomial R → Polynomial R\"\n    },\n    {\n      \"name\": \"Polynomial.wronskianBilin\",\n      \"module_name\": \"Mathlib.RingTheory.Polynomial.Wronskian\",\n      \"kind\": \"definition\",\n      \"type\": \"(R : Type u_1) → [inst : CommRing R] → Polynomial R →ₗ[R] Polynomial R →ₗ[R] Polynomial R\"\n    },\n    {\n      \"name\": \"IsCoprime.wronskian_eq_zero_iff\",\n      \"module_name\": \"Mathlib.RingTheory.Polynomial.Wronskian\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] [NoZeroDivisors R] {a b : Polynomial R},\\n  IsCoprime a b → (a.wronskian b = 0 ↔ Polynomial.derivative a = 0 ∧ Polynomial.derivative b = 0)\"\n    },\n    {\n      \"name\": \"Polynomial.wronskian_add_right\",\n      \"module_name\": \"Mathlib.RingTheory.Polynomial.Wronskian\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] (a b c : Polynomial R), a.wronskian (b + c) = a.wronskian b + a.wronskian c\"\n    },\n    {\n      \"name\": \"Polynomial.wronskian_neg_right\",\n      \"module_name\": \"Mathlib.RingTheory.Polynomial.Wronskian\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] (a b : Polynomial R), a.wronskian (-b) = -a.wronskian b\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.wronskian",
+            "module_name": "Mathlib.RingTheory.Polynomial.Wronskian",
+            "kind": "definition",
+            "type": "{R : Type u_1} → [inst : CommRing R] → Polynomial R → Polynomial R → Polynomial R"
+          },
+          {
+            "name": "Polynomial.wronskianBilin",
+            "module_name": "Mathlib.RingTheory.Polynomial.Wronskian",
+            "kind": "definition",
+            "type": "(R : Type u_1) → [inst : CommRing R] → Polynomial R →ₗ[R] Polynomial R →ₗ[R] Polynomial R"
+          },
+          {
+            "name": "IsCoprime.wronskian_eq_zero_iff",
+            "module_name": "Mathlib.RingTheory.Polynomial.Wronskian",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommRing R] [NoZeroDivisors R] {a b : Polynomial R},\n  IsCoprime a b → (a.wronskian b = 0 ↔ Polynomial.derivative a = 0 ∧ Polynomial.derivative b = 0)"
+          },
+          {
+            "name": "Polynomial.wronskian_add_right",
+            "module_name": "Mathlib.RingTheory.Polynomial.Wronskian",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommRing R] (a b c : Polynomial R), a.wronskian (b + c) = a.wronskian b + a.wronskian c"
+          },
+          {
+            "name": "Polynomial.wronskian_neg_right",
+            "module_name": "Mathlib.RingTheory.Polynomial.Wronskian",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommRing R] (a b : Polynomial R), a.wronskian (-b) = -a.wronskian b"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": 1,
+    "method": "lean_loogle",
+    "request": {
+      "query": "\"wronskian\""
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.wronskian\",\n      \"type\": \" {R : Type u_1} [CommRing R] (a b : Polynomial R) : Polynomial R\",\n      \"module\": \"Mathlib.RingTheory.Polynomial.Wronskian\"\n    },\n    {\n      \"name\": \"Polynomial.wronskian_self_eq_zero\",\n      \"type\": \" {R : Type u_1} [CommRing R] (a : Polynomial R) : a.wronskian a = 0\",\n      \"module\": \"Mathlib.RingTheory.Polynomial.Wronskian\"\n    },\n    {\n      \"name\": \"Polynomial.wronskian_neg_eq\",\n      \"type\": \" {R : Type u_1} [CommRing R] (a b : Polynomial R) : -a.wronskian b = b.wronskian a\",\n      \"module\": \"Mathlib.RingTheory.Polynomial.Wronskian\"\n    },\n    {\n      \"name\": \"Polynomial.wronskian_neg_left\",\n      \"type\": \" {R : Type u_1} [CommRing R] (a b : Polynomial R) : (-a).wronskian b = -a.wronskian b\",\n      \"module\": \"Mathlib.RingTheory.Polynomial.Wronskian\"\n    },\n    {\n      \"name\": \"Polynomial.wronskian_neg_right\",\n      \"type\": \" {R : Type u_1} [CommRing R] (a b : Polynomial R) : a.wronskian (-b) = -a.wronskian b\",\n      \"module\": \"Mathlib.RingTheory.Polynomial.Wronskian\"\n    },\n    {\n      \"name\": \"Polynomial.wronskian_zero_left\",\n      \"type\": \" {R : Type u_1} [CommRing R] (a : Polynomial R) : Polynomial.wronskian 0 a = 0\",\n      \"module\": \"Mathlib.RingTheory.Polynomial.Wronskian\"\n    },\n    {\n      \"name\": \"Polynomial.wronskian_zero_right\",\n      \"type\": \" {R : Type u_1} [CommRing R] (a : Polynomial R) : a.wronskian 0 = 0\",\n      \"module\": \"Mathlib.RingTheory.Polynomial.Wronskian\"\n    },\n    {\n      \"name\": \"Polynomial.natDegree_wronskian_lt_add\",\n      \"type\": \" {R : Type u_1} [CommRing R] {a b : Polynomial R} (hw : a.wronskian b ≠ 0) : (a.wronskian b).natDegree < a.natDegree + b.natDegree\",\n      \"module\": \"Mathlib.RingTheory.Polynomial.Wronskian\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.wronskian",
+            "type": " {R : Type u_1} [CommRing R] (a b : Polynomial R) : Polynomial R",
+            "module": "Mathlib.RingTheory.Polynomial.Wronskian"
+          },
+          {
+            "name": "Polynomial.wronskian_self_eq_zero",
+            "type": " {R : Type u_1} [CommRing R] (a : Polynomial R) : a.wronskian a = 0",
+            "module": "Mathlib.RingTheory.Polynomial.Wronskian"
+          },
+          {
+            "name": "Polynomial.wronskian_neg_eq",
+            "type": " {R : Type u_1} [CommRing R] (a b : Polynomial R) : -a.wronskian b = b.wronskian a",
+            "module": "Mathlib.RingTheory.Polynomial.Wronskian"
+          },
+          {
+            "name": "Polynomial.wronskian_neg_left",
+            "type": " {R : Type u_1} [CommRing R] (a b : Polynomial R) : (-a).wronskian b = -a.wronskian b",
+            "module": "Mathlib.RingTheory.Polynomial.Wronskian"
+          },
+          {
+            "name": "Polynomial.wronskian_neg_right",
+            "type": " {R : Type u_1} [CommRing R] (a b : Polynomial R) : a.wronskian (-b) = -a.wronskian b",
+            "module": "Mathlib.RingTheory.Polynomial.Wronskian"
+          },
+          {
+            "name": "Polynomial.wronskian_zero_left",
+            "type": " {R : Type u_1} [CommRing R] (a : Polynomial R) : Polynomial.wronskian 0 a = 0",
+            "module": "Mathlib.RingTheory.Polynomial.Wronskian"
+          },
+          {
+            "name": "Polynomial.wronskian_zero_right",
+            "type": " {R : Type u_1} [CommRing R] (a : Polynomial R) : a.wronskian 0 = 0",
+            "module": "Mathlib.RingTheory.Polynomial.Wronskian"
+          },
+          {
+            "name": "Polynomial.natDegree_wronskian_lt_add",
+            "type": " {R : Type u_1} [CommRing R] {a b : Polynomial R} (hw : a.wronskian b ≠ 0) : (a.wronskian b).natDegree < a.natDegree + b.natDegree",
+            "module": "Mathlib.RingTheory.Polynomial.Wronskian"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": 1,
+    "method": "lean_local_search",
+    "request": {
+      "query": "hasseDeriv"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.hasseDeriv\",\n      \"kind\": \"def\",\n      \"file\": \"Roth/HasseDeriv.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.hasseDeriv\",\n      \"kind\": \"def\",\n      \"file\": \".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_zero_apply/target-excerpt.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.hasseDeriv\",\n      \"kind\": \"def\",\n      \"file\": \".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_zero/target-excerpt.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.hasseDeriv\",\n      \"kind\": \"def\",\n      \"file\": \".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_rename/target-excerpt.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.hasseDeriv\",\n      \"kind\": \"def\",\n      \"file\": \".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_apply/evidence/target-source.lean\"\n    },\n    {\n      \"name\": \"Polynomial.hasseDeriv\",\n      \"kind\": \"def\",\n      \"file\": \".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_zero_apply/mathlib-hasse-excerpt.lean\"\n    },\n    {\n      \"name\": \"Polynomial.hasseDeriv\",\n      \"kind\": \"def\",\n      \"file\": \".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_zero/mathlib-hasse-excerpt.lean\"\n    },\n    {\n      \"name\": \"Polynomial.hasseDeriv\",\n      \"kind\": \"def\",\n      \"file\": \".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_apply/evidence/polynomial-source.lean\"\n    },\n    {\n      \"name\": \"hasseDeriv\",\n      \"kind\": \"def\",\n      \"file\": \".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_map/target-excerpt.lean\"\n    },\n    {\n      \"name\": \"hasseDeriv\",\n      \"kind\": \"def\",\n      \"file\": \".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_C/mathlib-hasse-excerpt.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.hasseDeriv",
+            "kind": "def",
+            "file": "Roth/HasseDeriv.lean"
+          },
+          {
+            "name": "MvPolynomial.hasseDeriv",
+            "kind": "def",
+            "file": ".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_zero_apply/target-excerpt.lean"
+          },
+          {
+            "name": "MvPolynomial.hasseDeriv",
+            "kind": "def",
+            "file": ".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_zero/target-excerpt.lean"
+          },
+          {
+            "name": "MvPolynomial.hasseDeriv",
+            "kind": "def",
+            "file": ".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_rename/target-excerpt.lean"
+          },
+          {
+            "name": "MvPolynomial.hasseDeriv",
+            "kind": "def",
+            "file": ".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_apply/evidence/target-source.lean"
+          },
+          {
+            "name": "Polynomial.hasseDeriv",
+            "kind": "def",
+            "file": ".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_zero_apply/mathlib-hasse-excerpt.lean"
+          },
+          {
+            "name": "Polynomial.hasseDeriv",
+            "kind": "def",
+            "file": ".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_zero/mathlib-hasse-excerpt.lean"
+          },
+          {
+            "name": "Polynomial.hasseDeriv",
+            "kind": "def",
+            "file": ".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_apply/evidence/polynomial-source.lean"
+          },
+          {
+            "name": "hasseDeriv",
+            "kind": "def",
+            "file": ".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_map/target-excerpt.lean"
+          },
+          {
+            "name": "hasseDeriv",
+            "kind": "def",
+            "file": ".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_C/mathlib-hasse-excerpt.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": 2,
+    "method": "lean_leanfinder",
+    "request": {
+      "query": "Alternating multilinear determinant of linear maps applied to a finite family, Taylor jet determinant"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"LinearMap.detAux\",\n      \"informal_name\": \"Auxiliary Determinant Function\",\n      \"kind\": \"definition\",\n      \"type\": \"{M : Type u_7} →\\n  [inst : AddCommGroup M] →\\n    {ι : Type u_8} →\\n      [DecidableEq ι] →\\n        [Fintype ι] →\\n          {A : Type u_9} → [inst_3 : CommRing A] → [inst_4 : Module A M] → Trunc (Module.Basis ι A M) → (M →ₗ[A] M) →* A\",\n      \"informal_description\": \"For a commutative ring $ A $, an $ A $-module $ M $, and a finite type $ \\\\iota $ with decidable equality, this function constructs a ring homomorphism from the endomorphism ring $ \\\\mathrm{End}_A(M) $ to $ A $ using a truncated basis of $ M $. The truncation ensures basis independence, making the determinant well-defined as a ring element.\",\n      \"path\": \"Mathlib.LinearAlgebra.Determinant\"\n    },\n    {\n      \"formal_name\": \"Matrix.detRowAlternating\",\n      \"informal_name\": \"Determinant as an alternating multilinear map\",\n      \"kind\": \"definition\",\n      \"type\": \"{n : Type u_2} → [DecidableEq n] → [Fintype n] → {R : Type v} → [inst : CommRing R] → (n → R) [⋀^n]→ₗ[R] R\",\n      \"informal_description\": \"The determinant is defined as the alternatization of the multilinear map that takes the product of the projections of $ n $ vectors in an $ R $-module, resulting in an alternating multilinear map from $ R^n $ to $ R $. This construction yields the standard determinant function, which is linear in each row, alternating under row swaps, and equal to the product of the diagonal entries for diagonal matrices.\",\n      \"path\": \"Mathlib.LinearAlgebra.Matrix.Determinant.Basic\"\n    },\n    {\n      \"formal_name\": \"Polynomial.det_taylorLinearEquiv_toLinearMap\",\n      \"informal_name\": \"Determinant of Taylor's Linear Equivalence on Degree-Less-Than Submodule is One\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] {r : R} {n : ℕ}, LinearMap.det ↑(Polynomial.taylorLinearEquiv r n) = 1\",\n      \"informal_description\": \"For any element $ r $ in a commutative ring $ R $ and natural number $ n $, the determinant of the linear map associated with the Taylor equivalence (which maps $ f(X) $ to $ f(X + r) $) acting on the submodule of polynomials of degree less than $ n $ is equal to 1.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.DegreeLT\"\n    },\n    {\n      \"formal_name\": \"Polynomial.det_taylorLinearEquiv\",\n      \"informal_name\": \"Determinant of Taylor's Linear Equivalence is One\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] {r : R} {n : ℕ}, LinearEquiv.det (Polynomial.taylorLinearEquiv r n) = 1\",\n      \"informal_description\": \"For any element $ r $ in a commutative ring $ R $ and natural number $ n $, the determinant of the $ R $-linear equivalence defined by Taylor expansion (mapping $ f(X) $ to $ f(X + r) $) on the submodule of polynomials of degree less than $ n $ is equal to $ 1 $ in the unit group $ R^\\times $.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.DegreeLT\"\n    },\n    {\n      \"formal_name\": \"LinearMap.detAux_def\",\n      \"informal_name\": \"Determinant of a Linear Map\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {M : Type u_7} [inst : AddCommGroup M] {ι : Type u_8} [inst_1 : DecidableEq ι] [inst_2 : Fintype ι] {A : Type u_9}\\n  [inst_3 : CommRing A] [inst_4 : Module A M],\\n  LinearMap.detAux = Trunc.lift (fun b => Matrix.detMonoidHom.comp ↑(LinearMap.toMatrixAlgEquiv b)) ⋯\",\n      \"informal_description\": \"The determinant of a linear map on a finite-dimensional module over a commutative ring is defined as the determinant of its matrix representation with respect to any basis, and this definition is independent of the choice of basis. This is achieved by lifting the determinant function through the matrix representation isomorphism, ensuring basis invariance via quotienting out basis choices with the truncated type.\",\n      \"path\": \"Mathlib.LinearAlgebra.Determinant\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "LinearMap.detAux",
+            "informal_name": "Auxiliary Determinant Function",
+            "kind": "definition",
+            "type": "{M : Type u_7} →\n  [inst : AddCommGroup M] →\n    {ι : Type u_8} →\n      [DecidableEq ι] →\n        [Fintype ι] →\n          {A : Type u_9} → [inst_3 : CommRing A] → [inst_4 : Module A M] → Trunc (Module.Basis ι A M) → (M →ₗ[A] M) →* A",
+            "informal_description": "For a commutative ring $ A $, an $ A $-module $ M $, and a finite type $ \\iota $ with decidable equality, this function constructs a ring homomorphism from the endomorphism ring $ \\mathrm{End}_A(M) $ to $ A $ using a truncated basis of $ M $. The truncation ensures basis independence, making the determinant well-defined as a ring element.",
+            "path": "Mathlib.LinearAlgebra.Determinant"
+          },
+          {
+            "formal_name": "Matrix.detRowAlternating",
+            "informal_name": "Determinant as an alternating multilinear map",
+            "kind": "definition",
+            "type": "{n : Type u_2} → [DecidableEq n] → [Fintype n] → {R : Type v} → [inst : CommRing R] → (n → R) [⋀^n]→ₗ[R] R",
+            "informal_description": "The determinant is defined as the alternatization of the multilinear map that takes the product of the projections of $ n $ vectors in an $ R $-module, resulting in an alternating multilinear map from $ R^n $ to $ R $. This construction yields the standard determinant function, which is linear in each row, alternating under row swaps, and equal to the product of the diagonal entries for diagonal matrices.",
+            "path": "Mathlib.LinearAlgebra.Matrix.Determinant.Basic"
+          },
+          {
+            "formal_name": "Polynomial.det_taylorLinearEquiv_toLinearMap",
+            "informal_name": "Determinant of Taylor's Linear Equivalence on Degree-Less-Than Submodule is One",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommRing R] {r : R} {n : ℕ}, LinearMap.det ↑(Polynomial.taylorLinearEquiv r n) = 1",
+            "informal_description": "For any element $ r $ in a commutative ring $ R $ and natural number $ n $, the determinant of the linear map associated with the Taylor equivalence (which maps $ f(X) $ to $ f(X + r) $) acting on the submodule of polynomials of degree less than $ n $ is equal to 1.",
+            "path": "Mathlib.RingTheory.Polynomial.DegreeLT"
+          },
+          {
+            "formal_name": "Polynomial.det_taylorLinearEquiv",
+            "informal_name": "Determinant of Taylor's Linear Equivalence is One",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommRing R] {r : R} {n : ℕ}, LinearEquiv.det (Polynomial.taylorLinearEquiv r n) = 1",
+            "informal_description": "For any element $ r $ in a commutative ring $ R $ and natural number $ n $, the determinant of the $ R $-linear equivalence defined by Taylor expansion (mapping $ f(X) $ to $ f(X + r) $) on the submodule of polynomials of degree less than $ n $ is equal to $ 1 $ in the unit group $ R^\times $.",
+            "path": "Mathlib.RingTheory.Polynomial.DegreeLT"
+          },
+          {
+            "formal_name": "LinearMap.detAux_def",
+            "informal_name": "Determinant of a Linear Map",
+            "kind": "theorem",
+            "type": "∀ {M : Type u_7} [inst : AddCommGroup M] {ι : Type u_8} [inst_1 : DecidableEq ι] [inst_2 : Fintype ι] {A : Type u_9}\n  [inst_3 : CommRing A] [inst_4 : Module A M],\n  LinearMap.detAux = Trunc.lift (fun b => Matrix.detMonoidHom.comp ↑(LinearMap.toMatrixAlgEquiv b)) ⋯",
+            "informal_description": "The determinant of a linear map on a finite-dimensional module over a commutative ring is defined as the determinant of its matrix representation with respect to any basis, and this definition is independent of the choice of basis. This is achieved by lifting the determinant function through the matrix representation isomorphism, ensuring basis invariance via quotienting out basis choices with the truncated type.",
+            "path": "Mathlib.LinearAlgebra.Determinant"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": 2,
+    "method": "lean_leansearch",
+    "request": {
+      "query": "Alternating multilinear determinant of linear maps applied to a finite family, Taylor jet determinant"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MultilinearMap.alternatization_coe\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Alternating.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] {M : Type u_2} [inst_1 : AddCommMonoid M] [inst_2 : Module R M] {N' : Type u_6}\\n  [inst_3 : AddCommGroup N'] [inst_4 : Module R N'] {ι : Type u_7} [inst_5 : Fintype ι] [inst_6 : DecidableEq ι]\\n  (m : MultilinearMap R (fun x => M) N'),\\n  ↑(MultilinearMap.alternatization m) = ∑ σ, Equiv.Perm.sign σ • MultilinearMap.domDomCongr σ m\"\n    },\n    {\n      \"name\": \"MultilinearMap.alternatization_def\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Alternating.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] {M : Type u_2} [inst_1 : AddCommMonoid M] [inst_2 : Module R M] {N' : Type u_6}\\n  [inst_3 : AddCommGroup N'] [inst_4 : Module R N'] {ι : Type u_7} [inst_5 : Fintype ι] [inst_6 : DecidableEq ι]\\n  (m : MultilinearMap R (fun x => M) N'),\\n  ⇑(MultilinearMap.alternatization m) = ⇑(∑ σ, Equiv.Perm.sign σ • MultilinearMap.domDomCongr σ m)\"\n    },\n    {\n      \"name\": \"MultilinearMap.alternatization_apply\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Alternating.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] {M : Type u_2} [inst_1 : AddCommMonoid M] [inst_2 : Module R M] {N' : Type u_6}\\n  [inst_3 : AddCommGroup N'] [inst_4 : Module R N'] {ι : Type u_7} [inst_5 : Fintype ι] [inst_6 : DecidableEq ι]\\n  (m : MultilinearMap R (fun x => M) N') (v : ι → M),\\n  (MultilinearMap.alternatization m) v = ∑ σ, Equiv.Perm.sign σ • (MultilinearMap.domDomCongr σ m) v\"\n    },\n    {\n      \"name\": \"LinearMap.det_pi\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Determinant\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] {M : Type u_2} [inst_1 : AddCommGroup M] [inst_2 : Module R M] {ι : Type u_4}\\n  [inst_3 : Fintype ι] [Module.Free R M] [Module.Finite R M] (f : ι → M →ₗ[R] M),\\n  LinearMap.det (LinearMap.pi fun i => f i ∘ₗ LinearMap.proj i) = ∏ i, LinearMap.det (f i)\"\n    },\n    {\n      \"name\": \"Matrix.detRowAlternating\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Matrix.Determinant.Basic\",\n      \"kind\": \"definition\",\n      \"type\": \"{n : Type u_2} → [DecidableEq n] → [Fintype n] → {R : Type v} → [inst : CommRing R] → (n → R) [⋀^n]→ₗ[R] R\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MultilinearMap.alternatization_coe",
+            "module_name": "Mathlib.LinearAlgebra.Alternating.Basic",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] {M : Type u_2} [inst_1 : AddCommMonoid M] [inst_2 : Module R M] {N' : Type u_6}\n  [inst_3 : AddCommGroup N'] [inst_4 : Module R N'] {ι : Type u_7} [inst_5 : Fintype ι] [inst_6 : DecidableEq ι]\n  (m : MultilinearMap R (fun x => M) N'),\n  ↑(MultilinearMap.alternatization m) = ∑ σ, Equiv.Perm.sign σ • MultilinearMap.domDomCongr σ m"
+          },
+          {
+            "name": "MultilinearMap.alternatization_def",
+            "module_name": "Mathlib.LinearAlgebra.Alternating.Basic",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] {M : Type u_2} [inst_1 : AddCommMonoid M] [inst_2 : Module R M] {N' : Type u_6}\n  [inst_3 : AddCommGroup N'] [inst_4 : Module R N'] {ι : Type u_7} [inst_5 : Fintype ι] [inst_6 : DecidableEq ι]\n  (m : MultilinearMap R (fun x => M) N'),\n  ⇑(MultilinearMap.alternatization m) = ⇑(∑ σ, Equiv.Perm.sign σ • MultilinearMap.domDomCongr σ m)"
+          },
+          {
+            "name": "MultilinearMap.alternatization_apply",
+            "module_name": "Mathlib.LinearAlgebra.Alternating.Basic",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] {M : Type u_2} [inst_1 : AddCommMonoid M] [inst_2 : Module R M] {N' : Type u_6}\n  [inst_3 : AddCommGroup N'] [inst_4 : Module R N'] {ι : Type u_7} [inst_5 : Fintype ι] [inst_6 : DecidableEq ι]\n  (m : MultilinearMap R (fun x => M) N') (v : ι → M),\n  (MultilinearMap.alternatization m) v = ∑ σ, Equiv.Perm.sign σ • (MultilinearMap.domDomCongr σ m) v"
+          },
+          {
+            "name": "LinearMap.det_pi",
+            "module_name": "Mathlib.LinearAlgebra.Determinant",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommRing R] {M : Type u_2} [inst_1 : AddCommGroup M] [inst_2 : Module R M] {ι : Type u_4}\n  [inst_3 : Fintype ι] [Module.Free R M] [Module.Finite R M] (f : ι → M →ₗ[R] M),\n  LinearMap.det (LinearMap.pi fun i => f i ∘ₗ LinearMap.proj i) = ∏ i, LinearMap.det (f i)"
+          },
+          {
+            "name": "Matrix.detRowAlternating",
+            "module_name": "Mathlib.LinearAlgebra.Matrix.Determinant.Basic",
+            "kind": "definition",
+            "type": "{n : Type u_2} → [DecidableEq n] → [Fintype n] → {R : Type v} → [inst : CommRing R] → (n → R) [⋀^n]→ₗ[R] R"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": 2,
+    "method": "lean_loogle",
+    "request": {
+      "query": "Matrix.detRowAlternating"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Matrix.detRowAlternating\",\n      \"type\": \" {n : Type u_2} [DecidableEq n] [Fintype n] {R : Type v} [CommRing R] : (n → R) [⋀^n]→ₗ[R] R\",\n      \"module\": \"Mathlib.LinearAlgebra.Matrix.Determinant.Basic\"\n    },\n    {\n      \"name\": \"Pi.basisFun_det\",\n      \"type\": \" {R : Type u_1} [CommRing R] {ι : Type u_4} [DecidableEq ι] [Fintype ι] : (Pi.basisFun R ι).det = Matrix.detRowAlternating\",\n      \"module\": \"Mathlib.LinearAlgebra.Determinant\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Matrix.detRowAlternating",
+            "type": " {n : Type u_2} [DecidableEq n] [Fintype n] {R : Type v} [CommRing R] : (n → R) [⋀^n]→ₗ[R] R",
+            "module": "Mathlib.LinearAlgebra.Matrix.Determinant.Basic"
+          },
+          {
+            "name": "Pi.basisFun_det",
+            "type": " {R : Type u_1} [CommRing R] {ι : Type u_4} [DecidableEq ι] [Fintype ι] : (Pi.basisFun R ι).det = Matrix.detRowAlternating",
+            "module": "Mathlib.LinearAlgebra.Determinant"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": 2,
+    "method": "lean_local_search",
+    "request": {
+      "query": "detRowAlternating"
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Matrix.detRowAlternating\",\n      \"kind\": \"def\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/Determinant/Basic.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Matrix.detRowAlternating",
+            "kind": "def",
+            "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/Determinant/Basic.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  }
+]

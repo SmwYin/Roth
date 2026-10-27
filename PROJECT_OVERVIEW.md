@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 40/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 41/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 40; remaining: 253.
-- Verdicts: 8 NO-composable-from-mathlib, 11 YES-add-as-is, 0 YES-but-generalise-first, 6 NO-mathlib-has-it, 12 BORDERLINE-needs-human, 3 SKIP.
+- Completed applicable assessments: 41; remaining: 252.
+- Verdicts: 8 NO-composable-from-mathlib, 11 YES-add-as-is, 0 YES-but-generalise-first, 6 NO-mathlib-has-it, 13 BORDERLINE-needs-human, 3 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -445,6 +445,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: declarations: 6; executable occurrences: 7; external to declaring file occurrences: 2; external files: 2; scope: Explicit source references only; not kernel/simp closure.; callers: {'name': 'Roth.wronskian_kronecker_eq_sum_aux', 'file': 'Roth/GenWronskian.lean', 'line': 238}, {'name': 'Roth.det_hasseDeriv_separated', 'file': 'Roth/Separation.lean', 'line': 351}, {'name': 'Roth.wronskian', 'file': 'Roth/Wronskian.lean', 'line': 60}, {'name': 'Roth.wronskian_eq_zero_of_not_linearIndependent', 'file': 'Roth/Wronskian.lean', 'line': 65}, {'name': 'Roth.coeff_wronskian_of_natDegree_injective', 'file': 'Roth/Wronskian.lean', 'line': 122}, {'name': 'Roth.wronskian_update_sub_smul', 'file': 'Roth/Wronskian.lean', 'line': 158}
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.wronskianMatrix.md).
 
+### Completed: `Roth.wronskian`
+
+- Type: `@Roth.wronskian : {K : Type u_1} → [inst : Field K] → {l : ℕ} → (Fin l → K[X]) → K[X]`
+- What: Determinant of consecutive Hasse derivatives of a finite polynomial family.
+- How: Matrix.det of Roth.wronskianMatrix; exact expanded mathlib expression verified.
+- Hypotheses: Field K in unchanged parent interface, implicit l : ℕ, arbitrary including0, explicit φ : Fin l → K[X]
+- Project dependencies: Roth.wronskianMatrix
+- Caller summary: 13 executable occurrences in9 caller declarations;5 in3 declarations outside declaring module,2 files. Source-level audit only.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.wronskian.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -551,6 +561,8 @@ Completed `Roth.weight_mapDomain`: Finsupp.linearCombination_mapDomain at Mathli
 
 Completed `Roth.wronskianMatrix`: verdict: BORDERLINE-needs-human; building blocks: Matrix.of, Polynomial.hasseDeriv; near matches: Polynomial.wronskian (binary polynomial output), Polynomial.taylor_coeff (evaluated entries), LinearMap.toMatrix (basis-coordinates, not arbitrary-family constructor); gap anchor: Mathlib/RingTheory/Polynomial/Wronskian.lean TODO: define Wronskian for n-tuple, not necessarily two.; formal methods: Finder, Loogle, LeanSearch, rg, local each on current/standard/abstract forms.; local index: unavailable; no absence inference.
 
+Completed `Roth.wronskian`: Binary Polynomial.wronskian exact Fin2 bridge; arbitrary n-tuple TODO pinned. Raw det/of/hasseDeriv three-building-block construction compiled.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -632,6 +644,8 @@ Completed `Roth.weight_le_degree_div`: Finset.sum_le_sum + div_le_div_of_nonneg_
 Completed `Roth.weight_mapDomain`: Naturality of free-module evaluation under generator relabelling, Finsupp.linearCombination_comp_lmapDomain bundled companion
 
 Completed `Roth.wronskianMatrix`: Direct construction is a verified two-block composition; meaningful semantic API exemption., Multivariate genWronskian constructs related selected-operator matrix, not identical target.
+
+Completed `Roth.wronskian`: Binary Wronskian specializes at l2, not arbitrary arity, Generic determinant infrastructure already handles raw data construction
 
 ## Part 5: Generalization opportunities
 
@@ -718,6 +732,8 @@ Completed `Roth.weight_mapDomain`: Drop hf in unchanged statement; on existing p
 
 Completed `Roth.wronskianMatrix`: Verified Field→Semiring for standalone same-body definition., Verified arbitrary rectangular row-order matrix specializes by rfl., Verified bundled R-linear operator specializes by rfl and provides map_add.
 
+Completed `Roth.wronskian`: Expanded standalone body CommRing verified; unchanged Field-only matrix parent prevents literal binder-only drop. Arbitrary finite selected orders verified separately.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -800,6 +816,8 @@ Completed `Roth.weight_le_degree_div`: Potential support-local weight monotonici
 Completed `Roth.weight_mapDomain`: None
 
 Completed `Roth.wronskianMatrix`: Coherent named n-ary normalized Wronskian API; existing pinned TODO. No absolute absence theorem claimed.
+
+Completed `Roth.wronskian`: Coherent normalized n-ary Wronskian name/compatibility/scaling API subject to upstream design.
 
 ## Part 7: Junk / removable
 
@@ -886,6 +904,8 @@ Completed `Roth.weight_mapDomain`: Useful local API with three callers; redundan
 
 Completed `Roth.wronskianMatrix`: False
 
+Completed `Roth.wronskian`: False
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -930,6 +950,7 @@ Completed `Roth.wronskianMatrix`: False
 | 38 | `Roth.weight_le_degree_div` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.weight_le_degree_div.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.weight_le_degree_div/root-acceptance.json) |
 | 39 | `Roth.weight_mapDomain` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.weight_mapDomain.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.weight_mapDomain/root-acceptance.json) |
 | 40 | `Roth.wronskianMatrix` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.wronskianMatrix.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.wronskianMatrix/root-acceptance.json) |
+| 41 | `Roth.wronskian` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.wronskian.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.wronskian/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -1009,11 +1030,13 @@ Completed `Roth.weight_mapDomain` action: NO-mathlib-has-it. Future recommendati
 
 Completed `Roth.wronskianMatrix` action: Retain useful local name pending future upstream granularity/normalization choice. No implementation authorized; if anchor rejected, report lists all caller inlining plans.
 
+Completed `Roth.wronskian` action: BORDERLINE-needs-human: retain active local anchor pending coherent upstream API decision; read-only future recommendations.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.wronskian` next. Supporting identities receive their own applicable checks.
+   `Roth.wronskian_eq_zero_of_not_linearIndependent` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.

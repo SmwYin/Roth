@@ -1,0 +1,57 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+#check_failure Roth.wronskian
+open Polynomial
+noncomputable section
+namespace WronskianRaw
+def W {R : Type*} [CommRing R] {l : ℕ} (φ : Fin l → R[X]) : R[X] :=
+  (Matrix.of fun i j : Fin l ↦ Polynomial.hasseDeriv i (φ j)).det
+theorem direct {R : Type*} [CommRing R] {l : ℕ} (φ : Fin l → R[X]) :
+    W φ = (Matrix.of fun i j : Fin l ↦ Polynomial.hasseDeriv i (φ j)).det := rfl
+theorem fin2 {R : Type*} [CommRing R] (a b : R[X]) :
+    W ![a, b] = Polynomial.wronskian a b := by
+  simp [W, Matrix.det_fin_two, Polynomial.hasseDeriv_zero,
+    Polynomial.hasseDeriv_one, Polynomial.wronskian, mul_comm]
+theorem fin0 {R : Type*} [CommRing R] (φ : Fin 0 → R[X]) : W φ = 1 := by
+  simp [W]
+theorem fin1 {R : Type*} [CommRing R] (φ : Fin 1 → R[X]) : W φ = φ 0 := by
+  simp [W]
+example : ℤ[X] := W ![1, X, X ^ 2]
+universe u
+example {R : Type u} [CommRing R] {l : ℕ} (φ : Fin l → R[X]) : R[X] := W φ
+#check @Matrix.det
+#check @Matrix.detRowAlternating
+#check @Polynomial.factorial_smul_hasseDeriv
+#check @Polynomial.wronskian
+#print axioms W
+#print axioms direct
+#print axioms fin2
+#print axioms fin0
+#print axioms fin1
+
+def ordinary {R : Type*} [CommRing R] {l : ℕ} (φ : Fin l → R[X]) : R[X] :=
+  (Matrix.of fun i j : Fin l ↦ (Polynomial.derivative^[i.val]) (φ j)).det
+theorem normalized_three :
+    W (![1, X, X ^ 2] : Fin 3 → ℤ[X]) = 1 := by
+  have ht : hasseDeriv 2 (X ^ 2 : ℤ[X]) = 1 := by
+    rw [X_pow_eq_monomial, hasseDeriv_monomial]
+    norm_num
+  norm_num [W, Matrix.det_fin_three, ht, hasseDeriv_X, hasseDeriv_apply_one]
+theorem ordinary_three :
+    ordinary (![1, X, X ^ 2] : Fin 3 → ℤ[X]) = 2 := by
+  norm_num [ordinary, Matrix.det_fin_three, Function.iterate_succ_apply']
+#synth CommRing (Polynomial ℤ)
+example {R : Type 1} [CommRing R] {l : ℕ} (φ : Fin l → R[X]) : R[X] := W φ
+#print axioms normalized_three
+#print axioms ordinary_three
+
+def WOrder {R : Type*} [CommRing R] {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (order : ι → ℕ) (φ : ι → R[X]) : R[X] :=
+  (Matrix.of fun i j ↦ hasseDeriv (order i) (φ j)).det
+theorem W_order_bridge {R : Type*} [CommRing R] {l : ℕ} (φ : Fin l → R[X]) :
+    W φ = WOrder (fun i : Fin l ↦ (i : ℕ)) φ := rfl
+#print axioms WOrder
+#print axioms W_order_bridge
+end WronskianRaw

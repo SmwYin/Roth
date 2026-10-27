@@ -1,0 +1,33 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+#check_failure Roth.wronskian
+open Polynomial
+noncomputable section
+namespace WronskianRaw
+def W {R : Type*} [CommRing R] {l : ℕ} (φ : Fin l → R[X]) : R[X] :=
+  (Matrix.of fun i j : Fin l ↦ Polynomial.hasseDeriv i (φ j)).det
+theorem direct {R : Type*} [CommRing R] {l : ℕ} (φ : Fin l → R[X]) :
+    W φ = (Matrix.of fun i j : Fin l ↦ Polynomial.hasseDeriv i (φ j)).det := rfl
+theorem fin2 {R : Type*} [CommRing R] (a b : R[X]) :
+    W ![a, b] = Polynomial.wronskian a b := by
+  simp [W, Matrix.det_fin_two, Polynomial.hasseDeriv_zero,
+    Polynomial.hasseDeriv_one, Polynomial.wronskian, mul_comm]
+theorem fin0 {R : Type*} [CommRing R] (φ : Fin 0 → R[X]) : W φ = 1 := by
+  simp [W]
+theorem fin1 {R : Type*} [CommRing R] (φ : Fin 1 → R[X]) : W φ = φ 0 := by
+  simp [W]
+example : ℤ[X] := W ![1, X, X ^ 2]
+universe u
+example {R : Type u} [CommRing R] {l : ℕ} (φ : Fin l → R[X]) : R[X] := W φ
+#check @Matrix.det
+#check @Matrix.detRowAlternating
+#check @Polynomial.factorial_smul_hasseDeriv
+#check @Polynomial.wronskian
+#print axioms W
+#print axioms direct
+#print axioms fin2
+#print axioms fin0
+#print axioms fin1
+end WronskianRaw
