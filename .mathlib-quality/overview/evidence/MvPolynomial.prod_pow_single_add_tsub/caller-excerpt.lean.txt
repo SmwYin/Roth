@@ -1,0 +1,18 @@
+private lemma coeff_taylor_monomial_single_add_aux (α : σ → R) (a : R) {i : σ} (n : ℕ) {k : σ →₀ ℕ}
+    (hi : k i = 0)
+    (ih : ∀ d, (taylor α (monomial k a)).coeff d = eval α (hasseDeriv d (monomial k a)))
+    (d : σ →₀ ℕ) : (taylor α (monomial (Finsupp.single i n + k) a)).coeff d =
+      eval α (hasseDeriv d (monomial (Finsupp.single i n + k) a)) := by
+  have hXC : (X i + C (α i) : MvPolynomial σ R) ^ n =
+      Polynomial.aeval (X i) ((Polynomial.X + Polynomial.C (α i)) ^ n) := by
+    simp
+  have hsupp : ∀ e ∈ (taylor α (monomial k a)).support, e i = 0 := by
+    intro e he
+    rw [mem_support_iff, ih e, hasseDeriv_monomial] at he
+    by_contra h
+    simp [(hasseCoeff_eq_zero_iff e k).2 fun hle ↦ h (le_zero_iff.1 (hi ▸ hle i))] at he
+  rw [monomial_single_add, map_mul, map_pow, taylor_X, hXC,
+    coeff_aeval_X_mul i _ _ hsupp, ih, Polynomial.coeff_X_add_C_pow,
+    ← monomial_single_add, hasseDeriv_monomial, hasseDeriv_monomial, eval_monomial,
+    eval_monomial, hasseCoeff_single_add_eq hi, prod_pow_single_add_tsub α hi]
+  simp [mul_assoc, mul_comm, mul_left_comm]

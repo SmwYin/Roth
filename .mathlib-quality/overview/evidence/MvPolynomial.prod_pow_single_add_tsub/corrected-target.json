@@ -1,0 +1,38 @@
+{
+  "file": "Roth/Taylor.lean",
+  "line": 92,
+  "name": "MvPolynomial.prod_pow_single_add_tsub",
+  "short": "prod_pow_single_add_tsub",
+  "kind": "lemma",
+  "visibility": "private",
+  "end_line": 99,
+  "source": "private lemma prod_pow_single_add_tsub (α : σ → R) {i : σ} {n : ℕ} {k' : σ →₀ ℕ} (hi : k' i = 0)\n    (d : σ →₀ ℕ) : ((Finsupp.single i n + k') - d).prod (fun j e ↦ α j ^ e) = α i ^ (n - d i) *\n      (k' - d.erase i).prod (fun j e ↦ α j ^ e) := by\n  classical\n  have h : Finsupp.single i n + k' - d = Finsupp.single i (n - d i) + (k' - d.erase i) := by\n    ext j\n    obtain rfl | hj := eq_or_ne j i <;> simp [*, Finsupp.erase_ne]\n  simp [h, Finsupp.prod_add_index', pow_add, -Finsupp.single_tsub]",
+  "signature": "private lemma prod_pow_single_add_tsub (α : σ → R) {i : σ} {n : ℕ} {k' : σ →₀ ℕ} (hi : k' i = 0)\n    (d : σ →₀ ℕ) : ((Finsupp.single i n + k') - d).prod (fun j e ↦ α j ^ e) = α i ^ (n - d i) *\n      (k' - d.erase i).prod (fun j e ↦ α j ^ e)",
+  "body": "by\n  classical\n  have h : Finsupp.single i n + k' - d = Finsupp.single i (n - d i) + (k' - d.erase i) := by\n    ext j\n    obtain rfl | hj := eq_or_ne j i <;> simp [*, Finsupp.erase_ne]\n  simp [h, Finsupp.prod_add_index', pow_add, -Finsupp.single_tsub]",
+  "proof_lines": 6,
+  "sha256": "0e32132705a00002426676f3a9ab7b0e3402dfe5e954bd3bf91424df862c84d6",
+  "what": "Factors the evaluation of a lowered single-coordinate-plus-residual monomial into the selected coordinate power and the erased residual product.",
+  "how": "Coordinate extensionality identifies the truncated exponent subtraction; Finsupp.prod_add_index' and pow_add split the resulting product.",
+  "hypotheses": "Commutative coefficients and residual exponent zero at the selected coordinate.",
+  "uses_from_project": [],
+  "used_by_in_file": [
+    "MvPolynomial.coeff_taylor_monomial_single_add_aux"
+  ],
+  "project_callers": [
+    {
+      "name": "MvPolynomial.coeff_taylor_monomial_single_add_aux",
+      "file": "Roth/Taylor.lean",
+      "line": 101
+    }
+  ],
+  "type_context": "{σ R : Type*} [CommSemiring R]",
+  "type_provenance": "Exact written signature with section binders made explicit from source; not claimed as a fresh #check output. Minimal hasseCoeff #check succeeded; full Meta inspector timed out.",
+  "reference_provenance": "Manually disambiguated source-level direct project references in declaration bodies; callers include signature and body occurrences. Includes explicit references only, not an exhaustive kernel/simp dependency closure.",
+  "notes": [
+    "No set_option, sorry, TODO, or proof over 30 lines in declaration."
+  ],
+  "assignment_offset": 241,
+  "project_body_refs": [],
+  "project_type_refs": [],
+  "section_context": "{σ R : Type*} [CommSemiring R]"
+}

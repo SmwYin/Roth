@@ -1,0 +1,8 @@
+private lemma prod_pow_single_add_tsub (α : σ → R) {i : σ} {n : ℕ} {k' : σ →₀ ℕ} (hi : k' i = 0)
+    (d : σ →₀ ℕ) : ((Finsupp.single i n + k') - d).prod (fun j e ↦ α j ^ e) = α i ^ (n - d i) *
+      (k' - d.erase i).prod (fun j e ↦ α j ^ e) := by
+  classical
+  have h : Finsupp.single i n + k' - d = Finsupp.single i (n - d i) + (k' - d.erase i) := by
+    ext j
+    obtain rfl | hj := eq_or_ne j i <;> simp [*, Finsupp.erase_ne]
+  simp [h, Finsupp.prod_add_index', pow_add, -Finsupp.single_tsub]

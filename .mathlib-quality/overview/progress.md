@@ -3,7 +3,7 @@
 Status: **in_progress**, 2026-10-27. Branch: `ramin-cleanup`.
 Production Lean files and all pins match baseline `99f19fd`.
 
-**Completed: 59 / 293 written declarations.**
+**Completed: 60 / 293 written declarations.**
 This counts the current overview assessments, separately from the earlier code cleanup.
 
 | # | Completed declaration | Applicable workflow | Verdict | Report |
@@ -67,8 +67,9 @@ This counts the current overview assessments, separately from the earlier code c
 | 57 | `MvPolynomial.taylor_monomial` | full-mathlibable; accepted complete | NO-mathlib-has-it | [Detailed report](mathlibable/MvPolynomial.taylor_monomial.md) |
 | 58 | `MvPolynomial.coeff_aeval_X_mul` | overview-private-prefilter; accepted complete | SKIP | [Detailed report](mathlibable/MvPolynomial.coeff_aeval_X_mul.md) |
 | 59 | `MvPolynomial.hasseCoeff_single_add_eq` | overview-private-prefilter; accepted complete | SKIP | [Detailed report](mathlibable/MvPolynomial.hasseCoeff_single_add_eq.md) |
+| 60 | `MvPolynomial.prod_pow_single_add_tsub` | overview-private-prefilter; accepted complete | SKIP | [Detailed report](mathlibable/MvPolynomial.prod_pow_single_add_tsub.md) |
 
-**Next declaration: `MvPolynomial.prod_pow_single_add_tsub`**, `Roth/Taylor.lean:92`.
+**Next declaration: `MvPolynomial.coeff_taylor_monomial_single_add_aux`**, `Roth/Taylor.lean:101`.
 Only the listed assessments are complete. No partial assessment was committed.
 
 On restart: read [README](README.md), [machine progress](progress.json), and
