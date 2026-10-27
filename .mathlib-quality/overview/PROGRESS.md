@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-27
 
-- Declarations completed: **247/293**
-- Next declaration: **#248 `Roth.pigeonhole_count`** (Roth/MainLemma.lean:334)
+- Declarations completed: **248/293**
+- Next declaration: **#249 `Roth.exists_ne_modByMonic_eq`** (Roth/MainLemma.lean:359)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -266,10 +266,10 @@ Last regenerated: 2026-10-27
 | 245 | `Roth.boxFamily_finite` | Roth/MainLemma.lean:301 | YES-but-generalise-first | [report](mathlibable/Roth.boxFamily_finite.md) |
 | 246 | `Roth.ncard_boxFamily` | Roth/MainLemma.lean:311 | YES-but-generalise-first | [report](mathlibable/Roth.ncard_boxFamily.md) |
 | 247 | `Roth.floor_rpow_count_lt_aux` | Roth/MainLemma.lean:320 | SKIP | [report](mathlibable/Roth.floor_rpow_count_lt_aux.md) |
+| 248 | `Roth.pigeonhole_count` | Roth/MainLemma.lean:334 | BORDERLINE-needs-human | [report](mathlibable/Roth.pigeonhole_count.md) |
 
 ## Remaining declarations (in processing order)
 
-- #248 `Roth.pigeonhole_count` (Roth/MainLemma.lean:334, public theorem)
 - #249 `Roth.exists_ne_modByMonic_eq` (Roth/MainLemma.lean:359, public theorem)
 - #250 `Roth.sub_mem_RSet` (Roth/MainLemma.lean:388, public theorem)
 - #251 `Roth.eval_hasseDeriv_sub_eq_zero` (Roth/MainLemma.lean:402, public theorem)
