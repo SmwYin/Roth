@@ -1,0 +1,33 @@
+{
+  "declaration": "Roth.linearIndependent_update_sub_smul",
+  "canonical": 49,
+  "kind": "theorem",
+  "type": "∀ {K : Type u_1} [Field K] {l : ℕ} {φ : Fin l → K[X]} {ν ν' : Fin l}, ν ≠ ν' → ∀ c : K, LinearIndependent K φ → LinearIndependent K (Function.update φ ν' (φ ν' - Polynomial.C c * φ ν))",
+  "what": "Elementary column subtraction preserves independence of a polynomial family.",
+  "how": "Rewrite independence as family cardinality equals span finrank; use span_range_update_sub_smul.",
+  "hypotheses": [
+    "Field K (weakenable to Ring/module)",
+    "distinct source/destination (necessary uniformly)",
+    "initial independence (necessary)"
+  ],
+  "project_dependencies": [],
+  "caller_summary": {
+    "total_explicit": 2,
+    "internal_excluding_declaring_file": 0,
+    "external_files": 0,
+    "callers": [
+      "Roth.sum_natDegree_update_lt:190",
+      "Roth.wronskian_ne_zero_of_linearIndependent:214"
+    ],
+    "verified_rebuilds": true
+  },
+  "mathlib_api_audit": "More-general existing linearIndependent_add_smul_iff; generic update bridge and exact old-form polynomial bridge compiled.",
+  "moral_duplications": [
+    "linearIndependent_add_smul_iff, Mathlib/LinearAlgebra/LinearIndependent/Defs.lean:751"
+  ],
+  "generalization": "Ring R; arbitrary AddCommGroup M with Module R M; arbitrary index; arbitrary coefficient function vanishing at source; iff. Already available.",
+  "missing_api": "No mathematical gap; generic update spelling is optional convenience.",
+  "junk": "Used twice; not dead code, but public polynomial-specific theorem duplicates existing generic law.",
+  "action": "Delete public specialised wrapper during refactor; use existing shear iff and checked normalisation at both callers.",
+  "verdict": "NO-mathlib-has-it"
+}

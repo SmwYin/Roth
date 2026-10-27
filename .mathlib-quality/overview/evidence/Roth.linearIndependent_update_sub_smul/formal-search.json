@@ -1,0 +1,566 @@
+[
+  {
+    "status": "fulfilled",
+    "value": {
+      "form": "current",
+      "method": "finder",
+      "request": {
+        "query": "Subtracting a constant polynomial multiple of another polynomial from a linearly independent finite polynomial family preserves linear independence",
+        "num_results": 6
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.Sequence.linearIndependent\",\n      \"informal_name\": \"Linear Independence of Polynomial Sequence Basis\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Ring R] (S : Polynomial.Sequence R) [IsDomain R], LinearIndependent R ↑S\",\n      \"informal_description\": \"The family of monomials in the sequence representation of polynomials forms a linearly independent set in the module structure over the semiring $ R $. Specifically, no non-trivial linear combination of these monomials with coefficients in $ R $ yields the zero polynomial.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Sequence\"\n    },\n    {\n      \"formal_name\": \"linearIndependent_add_smul_iff\",\n      \"informal_name\": \"Linear Independence Under Addition of Zero Scalar Multiple\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u'} {R : Type u_2} {M : Type u_4} [inst : Ring R] [inst_1 : AddCommGroup M] [inst_2 : Module R M]\\n  {v : ι → M} {c : ι → R} {i : ι}, c i = 0 → (LinearIndependent R (v + fun x => c x • v i) ↔ LinearIndependent R v)\",\n      \"informal_description\": \"If the coefficient $c_i$ is zero, then the linear independence of the vector family $v + (c_j \\\\cdot v_i)_{j \\\\in \\\\iota}$ is equivalent to the linear independence of the original family $v$. In symbols, $\\\\mathrm{LinearIndependent}(R, v + (c \\\\cdot \\\\bullet v_i)) \\\\leftrightarrow \\\\mathrm{LinearIndependent}(R, v)$ when $c_i = 0$.\",\n      \"path\": \"Mathlib.LinearAlgebra.LinearIndependent.Defs\"\n    },\n    {\n      \"formal_name\": \"LinearIndependent.fin_cons'\",\n      \"informal_name\": \"Linear Independence of Extended Family with Vector Not in Span\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_2} {M : Type u_4} [inst : Ring R] [inst_1 : AddCommGroup M] [inst_2 : Module R M] {m : ℕ} (x : M)\\n  (v : Fin m → M),\\n  LinearIndependent R v →\\n    (∀ (c : R) (y : ↥(Submodule.span R (Set.range v))), c • x + ↑y = 0 → c = 0) → LinearIndependent R (Fin.cons x v)\",\n      \"informal_description\": \"If a vector $x$ is not in the span of a linearly independent family $v : \\text{Fin}(m) \\to M$, then the family obtained by prepending $x$ to $v$ remains linearly independent over the semiring $R$.\",\n      \"path\": \"Mathlib.LinearAlgebra.LinearIndependent.Basic\"\n    },\n    {\n      \"formal_name\": \"LinearIndependent.pair_add_smul_left_iff\",\n      \"informal_name\": \"Linear Independence of $\\\\{x + b \\\\cdot y, y\\\\}$ iff $\\\\{x, y\\\\}$ is Linearly Independent\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_2} {M : Type u_4} [inst : Ring R] [inst_1 : AddCommGroup M] [inst_2 : Module R M] {x y : M} {S : Type u_6}\\n  [inst_3 : CommRing S] [IsDomain S] [inst_5 : Module S R] [inst_6 : Module S M] [SMulCommClass S R M]\\n  [IsScalarTower S R M] [Module.IsTorsionFree S R] (b : S),\\n  LinearIndependent R ![x + b • y, y] ↔ LinearIndependent R ![x, y]\",\n      \"informal_description\": \"The set of vectors $\\\\{x + b \\\\cdot y, y\\\\}$ is linearly independent over the ring $R$ if and only if the set $\\\\{x, y\\\\}$ is linearly independent over $R$.\",\n      \"path\": \"Mathlib.LinearAlgebra.LinearIndependent.Lemmas\"\n    },\n    {\n      \"formal_name\": \"LinearIndependent.pair_add_smul_right_iff\",\n      \"informal_name\": \"Linear Independence of $\\\\{x, c x + y\\\\}$ iff $\\\\{x, y\\\\}$ is Linearly Independent\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_2} {M : Type u_4} [inst : Ring R] [inst_1 : AddCommGroup M] [inst_2 : Module R M] {x y : M} {S : Type u_6}\\n  [inst_3 : CommRing S] [IsDomain S] [inst_5 : Module S R] [inst_6 : Module S M] [SMulCommClass S R M]\\n  [IsScalarTower S R M] [Module.IsTorsionFree S R] (c : S),\\n  LinearIndependent R ![x, c • x + y] ↔ LinearIndependent R ![x, y]\",\n      \"informal_description\": \"For a ring $R$, the set $\\\\{x, c x + y\\\\}$ is linearly independent over $R$ if and only if the set $\\\\{x, y\\\\}$ is linearly independent over $R$.\",\n      \"path\": \"Mathlib.LinearAlgebra.LinearIndependent.Lemmas\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.linearIndependent_X\",\n      \"informal_name\": \"Linear Independence of Variables in Multivariate Polynomial Ring\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (σ : Type u) (R : Type v) [inst : CommSemiring R], LinearIndependent R MvPolynomial.X\",\n      \"informal_description\": \"The family of variables in the multivariate polynomial ring $ R[\\\\sigma] $ is linearly independent over $ R $, meaning that no non-trivial finite $ R $-linear combination of these variables equals zero.\",\n      \"path\": \"Mathlib.RingTheory.MvPolynomial.Basic\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "formal_name": "Polynomial.Sequence.linearIndependent",
+              "informal_name": "Linear Independence of Polynomial Sequence Basis",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} [inst : Ring R] (S : Polynomial.Sequence R) [IsDomain R], LinearIndependent R ↑S",
+              "informal_description": "The family of monomials in the sequence representation of polynomials forms a linearly independent set in the module structure over the semiring $ R $. Specifically, no non-trivial linear combination of these monomials with coefficients in $ R $ yields the zero polynomial.",
+              "path": "Mathlib.Algebra.Polynomial.Sequence"
+            },
+            {
+              "formal_name": "linearIndependent_add_smul_iff",
+              "informal_name": "Linear Independence Under Addition of Zero Scalar Multiple",
+              "kind": "theorem",
+              "type": "∀ {ι : Type u'} {R : Type u_2} {M : Type u_4} [inst : Ring R] [inst_1 : AddCommGroup M] [inst_2 : Module R M]\n  {v : ι → M} {c : ι → R} {i : ι}, c i = 0 → (LinearIndependent R (v + fun x => c x • v i) ↔ LinearIndependent R v)",
+              "informal_description": "If the coefficient $c_i$ is zero, then the linear independence of the vector family $v + (c_j \\cdot v_i)_{j \\in \\iota}$ is equivalent to the linear independence of the original family $v$. In symbols, $\\mathrm{LinearIndependent}(R, v + (c \\cdot \\bullet v_i)) \\leftrightarrow \\mathrm{LinearIndependent}(R, v)$ when $c_i = 0$.",
+              "path": "Mathlib.LinearAlgebra.LinearIndependent.Defs"
+            },
+            {
+              "formal_name": "LinearIndependent.fin_cons'",
+              "informal_name": "Linear Independence of Extended Family with Vector Not in Span",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_2} {M : Type u_4} [inst : Ring R] [inst_1 : AddCommGroup M] [inst_2 : Module R M] {m : ℕ} (x : M)\n  (v : Fin m → M),\n  LinearIndependent R v →\n    (∀ (c : R) (y : ↥(Submodule.span R (Set.range v))), c • x + ↑y = 0 → c = 0) → LinearIndependent R (Fin.cons x v)",
+              "informal_description": "If a vector $x$ is not in the span of a linearly independent family $v : \text{Fin}(m) \to M$, then the family obtained by prepending $x$ to $v$ remains linearly independent over the semiring $R$.",
+              "path": "Mathlib.LinearAlgebra.LinearIndependent.Basic"
+            },
+            {
+              "formal_name": "LinearIndependent.pair_add_smul_left_iff",
+              "informal_name": "Linear Independence of $\\{x + b \\cdot y, y\\}$ iff $\\{x, y\\}$ is Linearly Independent",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_2} {M : Type u_4} [inst : Ring R] [inst_1 : AddCommGroup M] [inst_2 : Module R M] {x y : M} {S : Type u_6}\n  [inst_3 : CommRing S] [IsDomain S] [inst_5 : Module S R] [inst_6 : Module S M] [SMulCommClass S R M]\n  [IsScalarTower S R M] [Module.IsTorsionFree S R] (b : S),\n  LinearIndependent R ![x + b • y, y] ↔ LinearIndependent R ![x, y]",
+              "informal_description": "The set of vectors $\\{x + b \\cdot y, y\\}$ is linearly independent over the ring $R$ if and only if the set $\\{x, y\\}$ is linearly independent over $R$.",
+              "path": "Mathlib.LinearAlgebra.LinearIndependent.Lemmas"
+            },
+            {
+              "formal_name": "LinearIndependent.pair_add_smul_right_iff",
+              "informal_name": "Linear Independence of $\\{x, c x + y\\}$ iff $\\{x, y\\}$ is Linearly Independent",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_2} {M : Type u_4} [inst : Ring R] [inst_1 : AddCommGroup M] [inst_2 : Module R M] {x y : M} {S : Type u_6}\n  [inst_3 : CommRing S] [IsDomain S] [inst_5 : Module S R] [inst_6 : Module S M] [SMulCommClass S R M]\n  [IsScalarTower S R M] [Module.IsTorsionFree S R] (c : S),\n  LinearIndependent R ![x, c • x + y] ↔ LinearIndependent R ![x, y]",
+              "informal_description": "For a ring $R$, the set $\\{x, c x + y\\}$ is linearly independent over $R$ if and only if the set $\\{x, y\\}$ is linearly independent over $R$.",
+              "path": "Mathlib.LinearAlgebra.LinearIndependent.Lemmas"
+            },
+            {
+              "formal_name": "MvPolynomial.linearIndependent_X",
+              "informal_name": "Linear Independence of Variables in Multivariate Polynomial Ring",
+              "kind": "theorem",
+              "type": "∀ (σ : Type u) (R : Type v) [inst : CommSemiring R], LinearIndependent R MvPolynomial.X",
+              "informal_description": "The family of variables in the multivariate polynomial ring $ R[\\sigma] $ is linearly independent over $ R $, meaning that no non-trivial finite $ R $-linear combination of these variables equals zero.",
+              "path": "Mathlib.RingTheory.MvPolynomial.Basic"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "form": "current",
+      "method": "leansearch",
+      "request": {
+        "query": "Subtracting a constant polynomial multiple of another polynomial from a linearly independent finite polynomial family preserves linear independence",
+        "num_results": 6
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"linearIndependent_iff_finset_linearIndependent\",\n      \"module_name\": \"Mathlib.LinearAlgebra.LinearIndependent.Defs\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u'} {R : Type u_2} {M : Type u_4} {v : ι → M} [inst : Semiring R] [inst_1 : AddCommMonoid M]\\n  [inst_2 : Module R M], LinearIndependent R v ↔ ∀ (s : Finset ι), LinearIndependent R (v ∘ Subtype.val)\"\n    },\n    {\n      \"name\": \"LinearIndependent\",\n      \"module_name\": \"Mathlib.LinearAlgebra.LinearIndependent.Defs\",\n      \"kind\": \"definition\",\n      \"type\": \"{ι : Type u'} →\\n  (R : Type u_2) → {M : Type u_4} → (ι → M) → [inst : Semiring R] → [inst_1 : AddCommMonoid M] → [Module R M] → Prop\"\n    },\n    {\n      \"name\": \"linearIndependent_add_smul_iff\",\n      \"module_name\": \"Mathlib.LinearAlgebra.LinearIndependent.Defs\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u'} {R : Type u_2} {M : Type u_4} [inst : Ring R] [inst_1 : AddCommGroup M] [inst_2 : Module R M]\\n  {v : ι → M} {c : ι → R} {i : ι}, c i = 0 → (LinearIndependent R (v + fun x => c x • v i) ↔ LinearIndependent R v)\"\n    },\n    {\n      \"name\": \"LinearIndependent.units_smul\",\n      \"module_name\": \"Mathlib.LinearAlgebra.LinearIndependent.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u'} {R : Type u_2} {M : Type u_4} [inst : Semiring R] [inst_1 : AddCommMonoid M] [inst_2 : Module R M]\\n  {v : ι → M}, LinearIndependent R v → ∀ (w : ι → Rˣ), LinearIndependent R (w • v)\"\n    },\n    {\n      \"name\": \"Polynomial.Sequence.linearIndependent\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Sequence\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Ring R] (S : Polynomial.Sequence R) [IsDomain R], LinearIndependent R ↑S\"\n    },\n    {\n      \"name\": \"linearIndependent_option'\",\n      \"module_name\": \"Mathlib.LinearAlgebra.LinearIndependent.Lemmas\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u'} {K : Type u_3} {V : Type u} [inst : DivisionRing K] [inst_1 : AddCommGroup V] [inst_2 : Module K V]\\n  {v : ι → V} {x : V},\\n  (LinearIndependent K fun o => o.casesOn' x v) ↔ LinearIndependent K v ∧ x ∉ Submodule.span K (Set.range v)\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "linearIndependent_iff_finset_linearIndependent",
+              "module_name": "Mathlib.LinearAlgebra.LinearIndependent.Defs",
+              "kind": "theorem",
+              "type": "∀ {ι : Type u'} {R : Type u_2} {M : Type u_4} {v : ι → M} [inst : Semiring R] [inst_1 : AddCommMonoid M]\n  [inst_2 : Module R M], LinearIndependent R v ↔ ∀ (s : Finset ι), LinearIndependent R (v ∘ Subtype.val)"
+            },
+            {
+              "name": "LinearIndependent",
+              "module_name": "Mathlib.LinearAlgebra.LinearIndependent.Defs",
+              "kind": "definition",
+              "type": "{ι : Type u'} →\n  (R : Type u_2) → {M : Type u_4} → (ι → M) → [inst : Semiring R] → [inst_1 : AddCommMonoid M] → [Module R M] → Prop"
+            },
+            {
+              "name": "linearIndependent_add_smul_iff",
+              "module_name": "Mathlib.LinearAlgebra.LinearIndependent.Defs",
+              "kind": "theorem",
+              "type": "∀ {ι : Type u'} {R : Type u_2} {M : Type u_4} [inst : Ring R] [inst_1 : AddCommGroup M] [inst_2 : Module R M]\n  {v : ι → M} {c : ι → R} {i : ι}, c i = 0 → (LinearIndependent R (v + fun x => c x • v i) ↔ LinearIndependent R v)"
+            },
+            {
+              "name": "LinearIndependent.units_smul",
+              "module_name": "Mathlib.LinearAlgebra.LinearIndependent.Basic",
+              "kind": "theorem",
+              "type": "∀ {ι : Type u'} {R : Type u_2} {M : Type u_4} [inst : Semiring R] [inst_1 : AddCommMonoid M] [inst_2 : Module R M]\n  {v : ι → M}, LinearIndependent R v → ∀ (w : ι → Rˣ), LinearIndependent R (w • v)"
+            },
+            {
+              "name": "Polynomial.Sequence.linearIndependent",
+              "module_name": "Mathlib.Algebra.Polynomial.Sequence",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} [inst : Ring R] (S : Polynomial.Sequence R) [IsDomain R], LinearIndependent R ↑S"
+            },
+            {
+              "name": "linearIndependent_option'",
+              "module_name": "Mathlib.LinearAlgebra.LinearIndependent.Lemmas",
+              "kind": "theorem",
+              "type": "∀ {ι : Type u'} {K : Type u_3} {V : Type u} [inst : DivisionRing K] [inst_1 : AddCommGroup V] [inst_2 : Module K V]\n  {v : ι → V} {x : V},\n  (LinearIndependent K fun o => o.casesOn' x v) ↔ LinearIndependent K v ∧ x ∉ Submodule.span K (Set.range v)"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "form": "standard",
+      "method": "finder",
+      "request": {
+        "query": "Elementary column operation adding a scalar multiple of one vector to another preserves linear independence",
+        "num_results": 6
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"LinearIndependent.pair_add_smul_left_iff\",\n      \"informal_name\": \"Linear Independence of $\\\\{x + b \\\\cdot y, y\\\\}$ iff $\\\\{x, y\\\\}$ is Linearly Independent\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_2} {M : Type u_4} [inst : Ring R] [inst_1 : AddCommGroup M] [inst_2 : Module R M] {x y : M} {S : Type u_6}\\n  [inst_3 : CommRing S] [IsDomain S] [inst_5 : Module S R] [inst_6 : Module S M] [SMulCommClass S R M]\\n  [IsScalarTower S R M] [Module.IsTorsionFree S R] (b : S),\\n  LinearIndependent R ![x + b • y, y] ↔ LinearIndependent R ![x, y]\",\n      \"informal_description\": \"The set of vectors $\\\\{x + b \\\\cdot y, y\\\\}$ is linearly independent over the ring $R$ if and only if the set $\\\\{x, y\\\\}$ is linearly independent over $R$.\",\n      \"path\": \"Mathlib.LinearAlgebra.LinearIndependent.Lemmas\"\n    },\n    {\n      \"formal_name\": \"LinearIndependent.pair_add_smul_right_iff\",\n      \"informal_name\": \"Linear Independence of $\\\\{x, c x + y\\\\}$ iff $\\\\{x, y\\\\}$ is Linearly Independent\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_2} {M : Type u_4} [inst : Ring R] [inst_1 : AddCommGroup M] [inst_2 : Module R M] {x y : M} {S : Type u_6}\\n  [inst_3 : CommRing S] [IsDomain S] [inst_5 : Module S R] [inst_6 : Module S M] [SMulCommClass S R M]\\n  [IsScalarTower S R M] [Module.IsTorsionFree S R] (c : S),\\n  LinearIndependent R ![x, c • x + y] ↔ LinearIndependent R ![x, y]\",\n      \"informal_description\": \"For a ring $R$, the set $\\\\{x, c x + y\\\\}$ is linearly independent over $R$ if and only if the set $\\\\{x, y\\\\}$ is linearly independent over $R$.\",\n      \"path\": \"Mathlib.LinearAlgebra.LinearIndependent.Lemmas\"\n    },\n    {\n      \"formal_name\": \"linearIndependent_add_smul_iff\",\n      \"informal_name\": \"Linear Independence Under Addition of Zero Scalar Multiple\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u'} {R : Type u_2} {M : Type u_4} [inst : Ring R] [inst_1 : AddCommGroup M] [inst_2 : Module R M]\\n  {v : ι → M} {c : ι → R} {i : ι}, c i = 0 → (LinearIndependent R (v + fun x => c x • v i) ↔ LinearIndependent R v)\",\n      \"informal_description\": \"If the coefficient $c_i$ is zero, then the linear independence of the vector family $v + (c_j \\\\cdot v_i)_{j \\\\in \\\\iota}$ is equivalent to the linear independence of the original family $v$. In symbols, $\\\\mathrm{LinearIndependent}(R, v + (c \\\\cdot \\\\bullet v_i)) \\\\leftrightarrow \\\\mathrm{LinearIndependent}(R, v)$ when $c_i = 0$.\",\n      \"path\": \"Mathlib.LinearAlgebra.LinearIndependent.Defs\"\n    },\n    {\n      \"formal_name\": \"LinearIndependent.pair_add_right_iff\",\n      \"informal_name\": \"Equivalence of Linear Independence for Pairs with a Right Sum\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_2} {M : Type u_4} [inst : Ring R] [inst_1 : AddCommGroup M] [inst_2 : Module R M] {x y : M},\\n  LinearIndependent R ![x, x + y] ↔ LinearIndependent R ![x, y]\",\n      \"informal_description\": \"The pair of vectors $x$ and $x + y$ is linearly independent over a ring $R$ if and only if the pair $x$ and $y$ is linearly independent over $R$.\",\n      \"path\": \"Mathlib.LinearAlgebra.LinearIndependent.Lemmas\"\n    },\n    {\n      \"formal_name\": \"LinearIndependent.pair_add_left_iff\",\n      \"informal_name\": \"Linear Independence Equivalence for [x + y, y] and [x, y]\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_2} {M : Type u_4} [inst : Ring R] [inst_1 : AddCommGroup M] [inst_2 : Module R M] {x y : M},\\n  LinearIndependent R ![x + y, y] ↔ LinearIndependent R ![x, y]\",\n      \"informal_description\": \"The family of vectors $[x + y, y]$ is linearly independent over a ring $R$ if and only if the family $[x, y]$ is linearly independent over $R$.\",\n      \"path\": \"Mathlib.LinearAlgebra.LinearIndependent.Lemmas\"\n    },\n    {\n      \"formal_name\": \"LinearIndependent.pair_add_smul_add_smul_iff\",\n      \"informal_name\": \"Linear Independence Criterion for Two Linear Combinations\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_2} {M : Type u_4} [inst : Ring R] [inst_1 : AddCommGroup M] [inst_2 : Module R M] {x y : M} {S : Type u_6}\\n  [inst_3 : CommRing S] [IsDomain S] [inst_5 : Module S R] [inst_6 : Module S M] [SMulCommClass S R M]\\n  [IsScalarTower S R M] [Module.IsTorsionFree S R] (a b c d : S) [Nontrivial R],\\n  LinearIndependent R ![a • x + b • y, c • x + d • y] ↔ LinearIndependent R ![x, y] ∧ a * d ≠ b * c\",\n      \"informal_description\": \"For a nontrivial semiring $ R $, the vectors $ a x + b y $ and $ c x + d y $ are linearly independent over $ R $ if and only if the original vectors $ x $ and $ y $ are linearly independent and the determinant condition $ a d \\neq b c $ holds.\",\n      \"path\": \"Mathlib.LinearAlgebra.LinearIndependent.Lemmas\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "formal_name": "LinearIndependent.pair_add_smul_left_iff",
+              "informal_name": "Linear Independence of $\\{x + b \\cdot y, y\\}$ iff $\\{x, y\\}$ is Linearly Independent",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_2} {M : Type u_4} [inst : Ring R] [inst_1 : AddCommGroup M] [inst_2 : Module R M] {x y : M} {S : Type u_6}\n  [inst_3 : CommRing S] [IsDomain S] [inst_5 : Module S R] [inst_6 : Module S M] [SMulCommClass S R M]\n  [IsScalarTower S R M] [Module.IsTorsionFree S R] (b : S),\n  LinearIndependent R ![x + b • y, y] ↔ LinearIndependent R ![x, y]",
+              "informal_description": "The set of vectors $\\{x + b \\cdot y, y\\}$ is linearly independent over the ring $R$ if and only if the set $\\{x, y\\}$ is linearly independent over $R$.",
+              "path": "Mathlib.LinearAlgebra.LinearIndependent.Lemmas"
+            },
+            {
+              "formal_name": "LinearIndependent.pair_add_smul_right_iff",
+              "informal_name": "Linear Independence of $\\{x, c x + y\\}$ iff $\\{x, y\\}$ is Linearly Independent",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_2} {M : Type u_4} [inst : Ring R] [inst_1 : AddCommGroup M] [inst_2 : Module R M] {x y : M} {S : Type u_6}\n  [inst_3 : CommRing S] [IsDomain S] [inst_5 : Module S R] [inst_6 : Module S M] [SMulCommClass S R M]\n  [IsScalarTower S R M] [Module.IsTorsionFree S R] (c : S),\n  LinearIndependent R ![x, c • x + y] ↔ LinearIndependent R ![x, y]",
+              "informal_description": "For a ring $R$, the set $\\{x, c x + y\\}$ is linearly independent over $R$ if and only if the set $\\{x, y\\}$ is linearly independent over $R$.",
+              "path": "Mathlib.LinearAlgebra.LinearIndependent.Lemmas"
+            },
+            {
+              "formal_name": "linearIndependent_add_smul_iff",
+              "informal_name": "Linear Independence Under Addition of Zero Scalar Multiple",
+              "kind": "theorem",
+              "type": "∀ {ι : Type u'} {R : Type u_2} {M : Type u_4} [inst : Ring R] [inst_1 : AddCommGroup M] [inst_2 : Module R M]\n  {v : ι → M} {c : ι → R} {i : ι}, c i = 0 → (LinearIndependent R (v + fun x => c x • v i) ↔ LinearIndependent R v)",
+              "informal_description": "If the coefficient $c_i$ is zero, then the linear independence of the vector family $v + (c_j \\cdot v_i)_{j \\in \\iota}$ is equivalent to the linear independence of the original family $v$. In symbols, $\\mathrm{LinearIndependent}(R, v + (c \\cdot \\bullet v_i)) \\leftrightarrow \\mathrm{LinearIndependent}(R, v)$ when $c_i = 0$.",
+              "path": "Mathlib.LinearAlgebra.LinearIndependent.Defs"
+            },
+            {
+              "formal_name": "LinearIndependent.pair_add_right_iff",
+              "informal_name": "Equivalence of Linear Independence for Pairs with a Right Sum",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_2} {M : Type u_4} [inst : Ring R] [inst_1 : AddCommGroup M] [inst_2 : Module R M] {x y : M},\n  LinearIndependent R ![x, x + y] ↔ LinearIndependent R ![x, y]",
+              "informal_description": "The pair of vectors $x$ and $x + y$ is linearly independent over a ring $R$ if and only if the pair $x$ and $y$ is linearly independent over $R$.",
+              "path": "Mathlib.LinearAlgebra.LinearIndependent.Lemmas"
+            },
+            {
+              "formal_name": "LinearIndependent.pair_add_left_iff",
+              "informal_name": "Linear Independence Equivalence for [x + y, y] and [x, y]",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_2} {M : Type u_4} [inst : Ring R] [inst_1 : AddCommGroup M] [inst_2 : Module R M] {x y : M},\n  LinearIndependent R ![x + y, y] ↔ LinearIndependent R ![x, y]",
+              "informal_description": "The family of vectors $[x + y, y]$ is linearly independent over a ring $R$ if and only if the family $[x, y]$ is linearly independent over $R$.",
+              "path": "Mathlib.LinearAlgebra.LinearIndependent.Lemmas"
+            },
+            {
+              "formal_name": "LinearIndependent.pair_add_smul_add_smul_iff",
+              "informal_name": "Linear Independence Criterion for Two Linear Combinations",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_2} {M : Type u_4} [inst : Ring R] [inst_1 : AddCommGroup M] [inst_2 : Module R M] {x y : M} {S : Type u_6}\n  [inst_3 : CommRing S] [IsDomain S] [inst_5 : Module S R] [inst_6 : Module S M] [SMulCommClass S R M]\n  [IsScalarTower S R M] [Module.IsTorsionFree S R] (a b c d : S) [Nontrivial R],\n  LinearIndependent R ![a • x + b • y, c • x + d • y] ↔ LinearIndependent R ![x, y] ∧ a * d ≠ b * c",
+              "informal_description": "For a nontrivial semiring $ R $, the vectors $ a x + b y $ and $ c x + d y $ are linearly independent over $ R $ if and only if the original vectors $ x $ and $ y $ are linearly independent and the determinant condition $ a d \neq b c $ holds.",
+              "path": "Mathlib.LinearAlgebra.LinearIndependent.Lemmas"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "form": "standard",
+      "method": "leansearch",
+      "request": {
+        "query": "Elementary column operation adding a scalar multiple of one vector to another preserves linear independence",
+        "num_results": 6
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"LinearIndependent.pair_add_smul_left_iff\",\n      \"module_name\": \"Mathlib.LinearAlgebra.LinearIndependent.Lemmas\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_2} {M : Type u_4} [inst : Ring R] [inst_1 : AddCommGroup M] [inst_2 : Module R M] {x y : M} {S : Type u_6}\\n  [inst_3 : CommRing S] [IsDomain S] [inst_5 : Module S R] [inst_6 : Module S M] [SMulCommClass S R M]\\n  [IsScalarTower S R M] [Module.IsTorsionFree S R] (b : S),\\n  LinearIndependent R ![x + b • y, y] ↔ LinearIndependent R ![x, y]\"\n    },\n    {\n      \"name\": \"LinearIndependent.pair_add_smul_right_iff\",\n      \"module_name\": \"Mathlib.LinearAlgebra.LinearIndependent.Lemmas\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_2} {M : Type u_4} [inst : Ring R] [inst_1 : AddCommGroup M] [inst_2 : Module R M] {x y : M} {S : Type u_6}\\n  [inst_3 : CommRing S] [IsDomain S] [inst_5 : Module S R] [inst_6 : Module S M] [SMulCommClass S R M]\\n  [IsScalarTower S R M] [Module.IsTorsionFree S R] (c : S),\\n  LinearIndependent R ![x, c • x + y] ↔ LinearIndependent R ![x, y]\"\n    },\n    {\n      \"name\": \"linearIndependent_add_smul_iff\",\n      \"module_name\": \"Mathlib.LinearAlgebra.LinearIndependent.Defs\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u'} {R : Type u_2} {M : Type u_4} [inst : Ring R] [inst_1 : AddCommGroup M] [inst_2 : Module R M]\\n  {v : ι → M} {c : ι → R} {i : ι}, c i = 0 → (LinearIndependent R (v + fun x => c x • v i) ↔ LinearIndependent R v)\"\n    },\n    {\n      \"name\": \"Matrix.det_updateCol_add_smul_self\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Matrix.Determinant.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {n : Type u_2} [inst : DecidableEq n] [inst_1 : Fintype n] {R : Type v} [inst_2 : CommRing R] (A : Matrix n n R)\\n  {i j : n}, i ≠ j → ∀ (c : R), (A.updateCol i fun k => A k i + c • A k j).det = A.det\"\n    },\n    {\n      \"name\": \"LinearIndependent\",\n      \"module_name\": \"Mathlib.LinearAlgebra.LinearIndependent.Defs\",\n      \"kind\": \"definition\",\n      \"type\": \"{ι : Type u'} →\\n  (R : Type u_2) → {M : Type u_4} → (ι → M) → [inst : Semiring R] → [inst_1 : AddCommMonoid M] → [Module R M] → Prop\"\n    },\n    {\n      \"name\": \"LinearIndepOn.insert\",\n      \"module_name\": \"Mathlib.LinearAlgebra.LinearIndependent.Lemmas\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u'} {K : Type u_3} {V : Type u} [inst : DivisionRing K] [inst_1 : AddCommGroup V] [inst_2 : Module K V]\\n  {v : ι → V} {s : Set ι} {x : ι},\\n  LinearIndepOn K v s → v x ∉ Submodule.span K (v '' s) → LinearIndepOn K v (insert x s)\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "LinearIndependent.pair_add_smul_left_iff",
+              "module_name": "Mathlib.LinearAlgebra.LinearIndependent.Lemmas",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_2} {M : Type u_4} [inst : Ring R] [inst_1 : AddCommGroup M] [inst_2 : Module R M] {x y : M} {S : Type u_6}\n  [inst_3 : CommRing S] [IsDomain S] [inst_5 : Module S R] [inst_6 : Module S M] [SMulCommClass S R M]\n  [IsScalarTower S R M] [Module.IsTorsionFree S R] (b : S),\n  LinearIndependent R ![x + b • y, y] ↔ LinearIndependent R ![x, y]"
+            },
+            {
+              "name": "LinearIndependent.pair_add_smul_right_iff",
+              "module_name": "Mathlib.LinearAlgebra.LinearIndependent.Lemmas",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_2} {M : Type u_4} [inst : Ring R] [inst_1 : AddCommGroup M] [inst_2 : Module R M] {x y : M} {S : Type u_6}\n  [inst_3 : CommRing S] [IsDomain S] [inst_5 : Module S R] [inst_6 : Module S M] [SMulCommClass S R M]\n  [IsScalarTower S R M] [Module.IsTorsionFree S R] (c : S),\n  LinearIndependent R ![x, c • x + y] ↔ LinearIndependent R ![x, y]"
+            },
+            {
+              "name": "linearIndependent_add_smul_iff",
+              "module_name": "Mathlib.LinearAlgebra.LinearIndependent.Defs",
+              "kind": "theorem",
+              "type": "∀ {ι : Type u'} {R : Type u_2} {M : Type u_4} [inst : Ring R] [inst_1 : AddCommGroup M] [inst_2 : Module R M]\n  {v : ι → M} {c : ι → R} {i : ι}, c i = 0 → (LinearIndependent R (v + fun x => c x • v i) ↔ LinearIndependent R v)"
+            },
+            {
+              "name": "Matrix.det_updateCol_add_smul_self",
+              "module_name": "Mathlib.LinearAlgebra.Matrix.Determinant.Basic",
+              "kind": "theorem",
+              "type": "∀ {n : Type u_2} [inst : DecidableEq n] [inst_1 : Fintype n] {R : Type v} [inst_2 : CommRing R] (A : Matrix n n R)\n  {i j : n}, i ≠ j → ∀ (c : R), (A.updateCol i fun k => A k i + c • A k j).det = A.det"
+            },
+            {
+              "name": "LinearIndependent",
+              "module_name": "Mathlib.LinearAlgebra.LinearIndependent.Defs",
+              "kind": "definition",
+              "type": "{ι : Type u'} →\n  (R : Type u_2) → {M : Type u_4} → (ι → M) → [inst : Semiring R] → [inst_1 : AddCommMonoid M] → [Module R M] → Prop"
+            },
+            {
+              "name": "LinearIndepOn.insert",
+              "module_name": "Mathlib.LinearAlgebra.LinearIndependent.Lemmas",
+              "kind": "theorem",
+              "type": "∀ {ι : Type u'} {K : Type u_3} {V : Type u} [inst : DivisionRing K] [inst_1 : AddCommGroup V] [inst_2 : Module K V]\n  {v : ι → V} {s : Set ι} {x : ι},\n  LinearIndepOn K v s → v x ∉ Submodule.span K (v '' s) → LinearIndepOn K v (insert x s)"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "form": "abstract",
+      "method": "finder",
+      "request": {
+        "query": "LinearIndependent R (v + (fun j => c j • v i)) iff LinearIndependent R v when c i = 0 over a ring module arbitrary index",
+        "num_results": 6
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"linearIndependent_add_smul_iff\",\n      \"informal_name\": \"Linear Independence Under Addition of Zero Scalar Multiple\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u'} {R : Type u_2} {M : Type u_4} [inst : Ring R] [inst_1 : AddCommGroup M] [inst_2 : Module R M]\\n  {v : ι → M} {c : ι → R} {i : ι}, c i = 0 → (LinearIndependent R (v + fun x => c x • v i) ↔ LinearIndependent R v)\",\n      \"informal_description\": \"If the coefficient $c_i$ is zero, then the linear independence of the vector family $v + (c_j \\\\cdot v_i)_{j \\\\in \\\\iota}$ is equivalent to the linear independence of the original family $v$. In symbols, $\\\\mathrm{LinearIndependent}(R, v + (c \\\\cdot \\\\bullet v_i)) \\\\leftrightarrow \\\\mathrm{LinearIndependent}(R, v)$ when $c_i = 0$.\",\n      \"path\": \"Mathlib.LinearAlgebra.LinearIndependent.Defs\"\n    },\n    {\n      \"formal_name\": \"LinearIndependent.pair_add_smul_left_iff\",\n      \"informal_name\": \"Linear Independence of $\\\\{x + b \\\\cdot y, y\\\\}$ iff $\\\\{x, y\\\\}$ is Linearly Independent\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_2} {M : Type u_4} [inst : Ring R] [inst_1 : AddCommGroup M] [inst_2 : Module R M] {x y : M} {S : Type u_6}\\n  [inst_3 : CommRing S] [IsDomain S] [inst_5 : Module S R] [inst_6 : Module S M] [SMulCommClass S R M]\\n  [IsScalarTower S R M] [Module.IsTorsionFree S R] (b : S),\\n  LinearIndependent R ![x + b • y, y] ↔ LinearIndependent R ![x, y]\",\n      \"informal_description\": \"The set of vectors $\\\\{x + b \\\\cdot y, y\\\\}$ is linearly independent over the ring $R$ if and only if the set $\\\\{x, y\\\\}$ is linearly independent over $R$.\",\n      \"path\": \"Mathlib.LinearAlgebra.LinearIndependent.Lemmas\"\n    },\n    {\n      \"formal_name\": \"LinearIndependent.pair_add_left_iff\",\n      \"informal_name\": \"Linear Independence Equivalence for [x + y, y] and [x, y]\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_2} {M : Type u_4} [inst : Ring R] [inst_1 : AddCommGroup M] [inst_2 : Module R M] {x y : M},\\n  LinearIndependent R ![x + y, y] ↔ LinearIndependent R ![x, y]\",\n      \"informal_description\": \"The family of vectors $[x + y, y]$ is linearly independent over a ring $R$ if and only if the family $[x, y]$ is linearly independent over $R$.\",\n      \"path\": \"Mathlib.LinearAlgebra.LinearIndependent.Lemmas\"\n    },\n    {\n      \"formal_name\": \"LinearIndependent.pair_add_right_iff\",\n      \"informal_name\": \"Equivalence of Linear Independence for Pairs with a Right Sum\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_2} {M : Type u_4} [inst : Ring R] [inst_1 : AddCommGroup M] [inst_2 : Module R M] {x y : M},\\n  LinearIndependent R ![x, x + y] ↔ LinearIndependent R ![x, y]\",\n      \"informal_description\": \"The pair of vectors $x$ and $x + y$ is linearly independent over a ring $R$ if and only if the pair $x$ and $y$ is linearly independent over $R$.\",\n      \"path\": \"Mathlib.LinearAlgebra.LinearIndependent.Lemmas\"\n    },\n    {\n      \"formal_name\": \"LinearIndepOn.insert'\",\n      \"informal_name\": \"Linear Independence Preserved by Insertion of Non-Span Element\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u'} {R : Type u_2} {M : Type u_4} {v : ι → M} [inst : Ring R] [inst_1 : AddCommGroup M]\\n  [inst_2 : Module R M] {s : Set ι} {i : ι},\\n  LinearIndepOn R v s → (∀ (r : R), r • v i ∈ Submodule.span R (v '' s) → r = 0) → LinearIndepOn R v (insert i s)\",\n      \"informal_description\": \"If a family of vectors $ v $ is linearly independent on a set $ S $, and the vector $ v(i) $ is not in the span of $ v(S) $, then the family remains linearly independent after inserting $ i $ into $ S $. Formally, if $ \\\\forall r \\\\in R, r \\\\cdot v(i) \\\\in \\\\operatorname{span}(v(S)) \\\\Rightarrow r = 0 $, then $ v $ is linearly independent on $ S \\\\cup \\\\{i\\\\} $.\",\n      \"path\": \"Mathlib.LinearAlgebra.LinearIndependent.Lemmas\"\n    },\n    {\n      \"formal_name\": \"LinearIndependent.pair_add_smul_right_iff\",\n      \"informal_name\": \"Linear Independence of $\\\\{x, c x + y\\\\}$ iff $\\\\{x, y\\\\}$ is Linearly Independent\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_2} {M : Type u_4} [inst : Ring R] [inst_1 : AddCommGroup M] [inst_2 : Module R M] {x y : M} {S : Type u_6}\\n  [inst_3 : CommRing S] [IsDomain S] [inst_5 : Module S R] [inst_6 : Module S M] [SMulCommClass S R M]\\n  [IsScalarTower S R M] [Module.IsTorsionFree S R] (c : S),\\n  LinearIndependent R ![x, c • x + y] ↔ LinearIndependent R ![x, y]\",\n      \"informal_description\": \"For a ring $R$, the set $\\\\{x, c x + y\\\\}$ is linearly independent over $R$ if and only if the set $\\\\{x, y\\\\}$ is linearly independent over $R$.\",\n      \"path\": \"Mathlib.LinearAlgebra.LinearIndependent.Lemmas\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "formal_name": "linearIndependent_add_smul_iff",
+              "informal_name": "Linear Independence Under Addition of Zero Scalar Multiple",
+              "kind": "theorem",
+              "type": "∀ {ι : Type u'} {R : Type u_2} {M : Type u_4} [inst : Ring R] [inst_1 : AddCommGroup M] [inst_2 : Module R M]\n  {v : ι → M} {c : ι → R} {i : ι}, c i = 0 → (LinearIndependent R (v + fun x => c x • v i) ↔ LinearIndependent R v)",
+              "informal_description": "If the coefficient $c_i$ is zero, then the linear independence of the vector family $v + (c_j \\cdot v_i)_{j \\in \\iota}$ is equivalent to the linear independence of the original family $v$. In symbols, $\\mathrm{LinearIndependent}(R, v + (c \\cdot \\bullet v_i)) \\leftrightarrow \\mathrm{LinearIndependent}(R, v)$ when $c_i = 0$.",
+              "path": "Mathlib.LinearAlgebra.LinearIndependent.Defs"
+            },
+            {
+              "formal_name": "LinearIndependent.pair_add_smul_left_iff",
+              "informal_name": "Linear Independence of $\\{x + b \\cdot y, y\\}$ iff $\\{x, y\\}$ is Linearly Independent",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_2} {M : Type u_4} [inst : Ring R] [inst_1 : AddCommGroup M] [inst_2 : Module R M] {x y : M} {S : Type u_6}\n  [inst_3 : CommRing S] [IsDomain S] [inst_5 : Module S R] [inst_6 : Module S M] [SMulCommClass S R M]\n  [IsScalarTower S R M] [Module.IsTorsionFree S R] (b : S),\n  LinearIndependent R ![x + b • y, y] ↔ LinearIndependent R ![x, y]",
+              "informal_description": "The set of vectors $\\{x + b \\cdot y, y\\}$ is linearly independent over the ring $R$ if and only if the set $\\{x, y\\}$ is linearly independent over $R$.",
+              "path": "Mathlib.LinearAlgebra.LinearIndependent.Lemmas"
+            },
+            {
+              "formal_name": "LinearIndependent.pair_add_left_iff",
+              "informal_name": "Linear Independence Equivalence for [x + y, y] and [x, y]",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_2} {M : Type u_4} [inst : Ring R] [inst_1 : AddCommGroup M] [inst_2 : Module R M] {x y : M},\n  LinearIndependent R ![x + y, y] ↔ LinearIndependent R ![x, y]",
+              "informal_description": "The family of vectors $[x + y, y]$ is linearly independent over a ring $R$ if and only if the family $[x, y]$ is linearly independent over $R$.",
+              "path": "Mathlib.LinearAlgebra.LinearIndependent.Lemmas"
+            },
+            {
+              "formal_name": "LinearIndependent.pair_add_right_iff",
+              "informal_name": "Equivalence of Linear Independence for Pairs with a Right Sum",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_2} {M : Type u_4} [inst : Ring R] [inst_1 : AddCommGroup M] [inst_2 : Module R M] {x y : M},\n  LinearIndependent R ![x, x + y] ↔ LinearIndependent R ![x, y]",
+              "informal_description": "The pair of vectors $x$ and $x + y$ is linearly independent over a ring $R$ if and only if the pair $x$ and $y$ is linearly independent over $R$.",
+              "path": "Mathlib.LinearAlgebra.LinearIndependent.Lemmas"
+            },
+            {
+              "formal_name": "LinearIndepOn.insert'",
+              "informal_name": "Linear Independence Preserved by Insertion of Non-Span Element",
+              "kind": "theorem",
+              "type": "∀ {ι : Type u'} {R : Type u_2} {M : Type u_4} {v : ι → M} [inst : Ring R] [inst_1 : AddCommGroup M]\n  [inst_2 : Module R M] {s : Set ι} {i : ι},\n  LinearIndepOn R v s → (∀ (r : R), r • v i ∈ Submodule.span R (v '' s) → r = 0) → LinearIndepOn R v (insert i s)",
+              "informal_description": "If a family of vectors $ v $ is linearly independent on a set $ S $, and the vector $ v(i) $ is not in the span of $ v(S) $, then the family remains linearly independent after inserting $ i $ into $ S $. Formally, if $ \\forall r \\in R, r \\cdot v(i) \\in \\operatorname{span}(v(S)) \\Rightarrow r = 0 $, then $ v $ is linearly independent on $ S \\cup \\{i\\} $.",
+              "path": "Mathlib.LinearAlgebra.LinearIndependent.Lemmas"
+            },
+            {
+              "formal_name": "LinearIndependent.pair_add_smul_right_iff",
+              "informal_name": "Linear Independence of $\\{x, c x + y\\}$ iff $\\{x, y\\}$ is Linearly Independent",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_2} {M : Type u_4} [inst : Ring R] [inst_1 : AddCommGroup M] [inst_2 : Module R M] {x y : M} {S : Type u_6}\n  [inst_3 : CommRing S] [IsDomain S] [inst_5 : Module S R] [inst_6 : Module S M] [SMulCommClass S R M]\n  [IsScalarTower S R M] [Module.IsTorsionFree S R] (c : S),\n  LinearIndependent R ![x, c • x + y] ↔ LinearIndependent R ![x, y]",
+              "informal_description": "For a ring $R$, the set $\\{x, c x + y\\}$ is linearly independent over $R$ if and only if the set $\\{x, y\\}$ is linearly independent over $R$.",
+              "path": "Mathlib.LinearAlgebra.LinearIndependent.Lemmas"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "form": "abstract",
+      "method": "leansearch",
+      "request": {
+        "query": "LinearIndependent R (v + (fun j => c j • v i)) iff LinearIndependent R v when c i = 0 over a ring module arbitrary index",
+        "num_results": 6
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"linearIndependent_add_smul_iff\",\n      \"module_name\": \"Mathlib.LinearAlgebra.LinearIndependent.Defs\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u'} {R : Type u_2} {M : Type u_4} [inst : Ring R] [inst_1 : AddCommGroup M] [inst_2 : Module R M]\\n  {v : ι → M} {c : ι → R} {i : ι}, c i = 0 → (LinearIndependent R (v + fun x => c x • v i) ↔ LinearIndependent R v)\"\n    },\n    {\n      \"name\": \"LinearIndependent\",\n      \"module_name\": \"Mathlib.LinearAlgebra.LinearIndependent.Defs\",\n      \"kind\": \"definition\",\n      \"type\": \"{ι : Type u'} →\\n  (R : Type u_2) → {M : Type u_4} → (ι → M) → [inst : Semiring R] → [inst_1 : AddCommMonoid M] → [Module R M] → Prop\"\n    },\n    {\n      \"name\": \"LinearIndependent.pair_add_smul_right_iff\",\n      \"module_name\": \"Mathlib.LinearAlgebra.LinearIndependent.Lemmas\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_2} {M : Type u_4} [inst : Ring R] [inst_1 : AddCommGroup M] [inst_2 : Module R M] {x y : M} {S : Type u_6}\\n  [inst_3 : CommRing S] [IsDomain S] [inst_5 : Module S R] [inst_6 : Module S M] [SMulCommClass S R M]\\n  [IsScalarTower S R M] [Module.IsTorsionFree S R] (c : S),\\n  LinearIndependent R ![x, c • x + y] ↔ LinearIndependent R ![x, y]\"\n    },\n    {\n      \"name\": \"linearIndependent_comp_subtype_iff\",\n      \"module_name\": \"Mathlib.LinearAlgebra.LinearIndependent.Defs\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u'} {R : Type u_2} {s : Set ι} {M : Type u_4} {v : ι → M} [inst : Semiring R] [inst_1 : AddCommMonoid M]\\n  [inst_2 : Module R M], LinearIndependent (ι := ↑s) R (v ∘ Subtype.val) ↔ LinearIndepOn R v s\"\n    },\n    {\n      \"name\": \"linearIndependent_iff''\",\n      \"module_name\": \"Mathlib.LinearAlgebra.LinearIndependent.Defs\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u'} {R : Type u_2} {M : Type u_4} [inst : Ring R] [inst_1 : AddCommGroup M] [inst_2 : Module R M]\\n  {v : ι → M},\\n  LinearIndependent R v ↔ ∀ (s : Finset ι) (g : ι → R), (∀ i ∉ s, g i = 0) → ∑ i ∈ s, g i • v i = 0 → ∀ (i : ι), g i = 0\"\n    },\n    {\n      \"name\": \"linearDepOn_iff'\",\n      \"module_name\": \"Mathlib.LinearAlgebra.LinearIndependent.Defs\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u'} {R : Type u_2} {s : Set ι} {M : Type u_4} [inst : Ring R] [inst_1 : AddCommGroup M]\\n  [inst_2 : Module R M] {v : ι → M},\\n  ¬LinearIndepOn R v s ↔ ∃ f ∈ Finsupp.supported R R s, (Finsupp.linearCombination R v) f = 0 ∧ f ≠ 0\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "linearIndependent_add_smul_iff",
+              "module_name": "Mathlib.LinearAlgebra.LinearIndependent.Defs",
+              "kind": "theorem",
+              "type": "∀ {ι : Type u'} {R : Type u_2} {M : Type u_4} [inst : Ring R] [inst_1 : AddCommGroup M] [inst_2 : Module R M]\n  {v : ι → M} {c : ι → R} {i : ι}, c i = 0 → (LinearIndependent R (v + fun x => c x • v i) ↔ LinearIndependent R v)"
+            },
+            {
+              "name": "LinearIndependent",
+              "module_name": "Mathlib.LinearAlgebra.LinearIndependent.Defs",
+              "kind": "definition",
+              "type": "{ι : Type u'} →\n  (R : Type u_2) → {M : Type u_4} → (ι → M) → [inst : Semiring R] → [inst_1 : AddCommMonoid M] → [Module R M] → Prop"
+            },
+            {
+              "name": "LinearIndependent.pair_add_smul_right_iff",
+              "module_name": "Mathlib.LinearAlgebra.LinearIndependent.Lemmas",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_2} {M : Type u_4} [inst : Ring R] [inst_1 : AddCommGroup M] [inst_2 : Module R M] {x y : M} {S : Type u_6}\n  [inst_3 : CommRing S] [IsDomain S] [inst_5 : Module S R] [inst_6 : Module S M] [SMulCommClass S R M]\n  [IsScalarTower S R M] [Module.IsTorsionFree S R] (c : S),\n  LinearIndependent R ![x, c • x + y] ↔ LinearIndependent R ![x, y]"
+            },
+            {
+              "name": "linearIndependent_comp_subtype_iff",
+              "module_name": "Mathlib.LinearAlgebra.LinearIndependent.Defs",
+              "kind": "theorem",
+              "type": "∀ {ι : Type u'} {R : Type u_2} {s : Set ι} {M : Type u_4} {v : ι → M} [inst : Semiring R] [inst_1 : AddCommMonoid M]\n  [inst_2 : Module R M], LinearIndependent (ι := ↑s) R (v ∘ Subtype.val) ↔ LinearIndepOn R v s"
+            },
+            {
+              "name": "linearIndependent_iff''",
+              "module_name": "Mathlib.LinearAlgebra.LinearIndependent.Defs",
+              "kind": "theorem",
+              "type": "∀ {ι : Type u'} {R : Type u_2} {M : Type u_4} [inst : Ring R] [inst_1 : AddCommGroup M] [inst_2 : Module R M]\n  {v : ι → M},\n  LinearIndependent R v ↔ ∀ (s : Finset ι) (g : ι → R), (∀ i ∉ s, g i = 0) → ∑ i ∈ s, g i • v i = 0 → ∀ (i : ι), g i = 0"
+            },
+            {
+              "name": "linearDepOn_iff'",
+              "module_name": "Mathlib.LinearAlgebra.LinearIndependent.Defs",
+              "kind": "theorem",
+              "type": "∀ {ι : Type u'} {R : Type u_2} {s : Set ι} {M : Type u_4} [inst : Ring R] [inst_1 : AddCommGroup M]\n  [inst_2 : Module R M] {v : ι → M},\n  ¬LinearIndepOn R v s ↔ ∃ f ∈ Finsupp.supported R R s, (Finsupp.linearCombination R v) f = 0 ∧ f ≠ 0"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "form": "current",
+      "method": "loogle",
+      "request": {
+        "query": "LinearIndependent _, Function.update, Polynomial.C",
+        "num_results": 8
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": []\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": []
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "form": "standard",
+      "method": "loogle",
+      "request": {
+        "query": "LinearIndependent _, Function.update",
+        "num_results": 8
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"LinearIndependent.update\",\n      \"type\": \" {ι : Type u'} {R : Type u_2} {M : Type u_4} [DecidableEq ι] [CommRing R] [AddCommGroup M] [Module R M] {f : ι → M} (hf : LinearIndependent R f) (i : ι) (m : M) (hg : ∃ r ∈ nonZeroDivisors R, ∃ l, l i ∈ nonZeroDivisors R ∧ r • m = (Finsupp.linearCombination R f) l) : LinearIndependent R (Function.update f i m)\",\n      \"module\": \"Mathlib.LinearAlgebra.LinearIndependent.Lemmas\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "LinearIndependent.update",
+              "type": " {ι : Type u'} {R : Type u_2} {M : Type u_4} [DecidableEq ι] [CommRing R] [AddCommGroup M] [Module R M] {f : ι → M} (hf : LinearIndependent R f) (i : ι) (m : M) (hg : ∃ r ∈ nonZeroDivisors R, ∃ l, l i ∈ nonZeroDivisors R ∧ r • m = (Finsupp.linearCombination R f) l) : LinearIndependent R (Function.update f i m)",
+              "module": "Mathlib.LinearAlgebra.LinearIndependent.Lemmas"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "form": "abstract",
+      "method": "loogle",
+      "request": {
+        "query": "LinearIndependent (_ + fun _ => _ • _)",
+        "num_results": 8
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": []\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": []
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "form": "current",
+      "method": "local",
+      "request": {
+        "query": "linearIndependent_update",
+        "limit": 10,
+        "project_root": "/Users/ramin/LEAN/Roth"
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"Roth.linearIndependent_update_sub_smul\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/Wronskian.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "Roth.linearIndependent_update_sub_smul",
+              "kind": "theorem",
+              "file": "Roth/Wronskian.lean"
+            }
+          ],
+          "index": "unavailable"
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "form": "standard",
+      "method": "local",
+      "request": {
+        "query": "LinearIndependent.update",
+        "limit": 10,
+        "project_root": "/Users/ramin/LEAN/Roth"
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"LinearIndependent.update\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/LinearIndependent/Lemmas.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "LinearIndependent.update",
+              "kind": "lemma",
+              "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/LinearIndependent/Lemmas.lean"
+            }
+          ],
+          "index": "unavailable"
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "form": "abstract",
+      "method": "local",
+      "request": {
+        "query": "linearIndependent_add_smul_iff",
+        "limit": 10,
+        "project_root": "/Users/ramin/LEAN/Roth"
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"linearIndependent_add_smul_iff\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/LinearIndependent/Defs.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "linearIndependent_add_smul_iff",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/LinearIndependent/Defs.lean"
+            }
+          ],
+          "index": "unavailable"
+        },
+        "isError": false
+      }
+    }
+  }
+]

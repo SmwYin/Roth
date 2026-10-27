@@ -1,0 +1,24 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+#check_failure Roth.linearIndependent_update_sub_smul
+#check @linearIndependent_add_smul_iff
+namespace IndependentUpdateProbe
+theorem generic {R M ι : Type*} [Ring R] [AddCommGroup M] [Module R M] [DecidableEq ι]
+    {v : ι → M} {i j : ι} (h : i ≠ j) (c : R) (hv : LinearIndependent R v) :
+    LinearIndependent R (Function.update v j (v j - c • v i)) := by
+  have hc : (Function.update (fun _ : ι ↦ (0 : R)) j (-c)) i = 0 := by
+    simp [Function.update_of_ne h]
+  have hx := (linearIndependent_add_smul_iff (v := v) hc).2 hv
+  convert hx using 1
+  funext k
+  by_cases hk : k = j <;> simp [hk, Function.update_of_ne, sub_eq_add_neg]
+#print axioms generic
+end IndependentUpdateProbe
+

@@ -1,0 +1,48 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.Polynomial.HasseDeriv\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.LinearAlgebra.Matrix.ToLinearEquiv\nimport Mathlib.RingTheory.Polynomial.Wronskian\nimport Mathlib.LinearAlgebra.Vandermonde\nimport Mathlib.Data.ZMod.Defs\nimport Mathlib.Algebra.Field.ZMod\nimport Mathlib.Algebra.Order.Group.Int.Sum\nimport Mathlib.LinearAlgebra.Matrix.Polynomial\n#check_failure Roth.linearIndependent_update_sub_smul\n#check @linearIndependent_add_smul_iff\nnamespace IndependentUpdateProbe\ntheorem generic {R M ι : Type*} [Ring R] [AddCommGroup M] [Module R M] [DecidableEq ι]\n    {v : ι → M} {i j : ι} (h : i ≠ j) (c : R) (hv : LinearIndependent R v) :\n    LinearIndependent R (Function.update v j (v j - c • v i)) := by\n  have hc : (Function.update (fun _ : ι ↦ (0 : R)) j (-c)) i = 0 := by\n    simp [Function.update_of_ne h]\n  have hx := (linearIndependent_add_smul_iff (v := v) hc).2 hv\n  convert hx using 1\n  funext k\n  by_cases hk : k = j <;> simp [hk, Function.update_of_ne, sub_eq_add_neg]\n#print axioms generic\nend IndependentUpdateProbe\n\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.linearIndependent_update_sub_smul`\",\n      \"line\": 10,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@linearIndependent_add_smul_iff : ∀ {ι : Type u_1} {R : Type u_2} {M : Type u_3} [inst : Ring R]\\n  [inst_1 : AddCommGroup M] [inst_2 : Module R M] {v : ι → M} {c : ι → R} {i : ι},\\n  c i = 0 → (LinearIndependent R (v + fun x ↦ c x • v i) ↔ LinearIndependent R v)\",\n      \"line\": 11,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'IndependentUpdateProbe.generic' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 22,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.linearIndependent_update_sub_smul`",
+          "line": 10,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@linearIndependent_add_smul_iff : ∀ {ι : Type u_1} {R : Type u_2} {M : Type u_3} [inst : Ring R]\n  [inst_1 : AddCommGroup M] [inst_2 : Module R M] {v : ι → M} {c : ι → R} {i : ι},\n  c i = 0 → (LinearIndependent R (v + fun x ↦ c x • v i) ↔ LinearIndependent R v)",
+          "line": 11,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'IndependentUpdateProbe.generic' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 22,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 946
+}

@@ -1,0 +1,19 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+#check_failure Roth.linearIndependent_update_sub_smul
+namespace IndependentUpdateGuards
+theorem same_index :
+    LinearIndependent ℚ (fun _ : Fin 1 ↦ (1 : ℚ)) ∧
+      ¬ LinearIndependent ℚ
+        (Function.update (fun _ : Fin 1 ↦ (1 : ℚ)) 0 (1 - (1 : ℚ) • 1)) := by
+  simp
+#print axioms same_index
+end IndependentUpdateGuards
+
