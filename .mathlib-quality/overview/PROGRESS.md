@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-27
 
-- Declarations completed: **223/293**
-- Next declaration: **#224 `Roth.theta_denominators_one_lt_aux`** (Roth/Theta.lean:833)
+- Declarations completed: **224/293**
+- Next declaration: **#225 `Roth.theta_phi_lt_aux`** (Roth/Theta.lean:840)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -242,10 +242,10 @@ Last regenerated: 2026-10-27
 | 221 | `Roth.theta_delta_succ_lt_aux` | Roth/Theta.lean:767 | SKIP | [report](mathlibable/Roth.theta_delta_succ_lt_aux.md) |
 | 222 | `Roth.theta_prefix_lt_aux` | Roth/Theta.lean:776 | SKIP | [report](mathlibable/Roth.theta_prefix_lt_aux.md) |
 | 223 | `Roth.theta_lt_base_aux` | Roth/Theta.lean:818 | SKIP | [report](mathlibable/Roth.theta_lt_base_aux.md) |
+| 224 | `Roth.theta_denominators_one_lt_aux` | Roth/Theta.lean:833 | SKIP | [report](mathlibable/Roth.theta_denominators_one_lt_aux.md) |
 
 ## Remaining declarations (in processing order)
 
-- #224 `Roth.theta_denominators_one_lt_aux` (Roth/Theta.lean:833, private lemma)
 - #225 `Roth.theta_phi_lt_aux` (Roth/Theta.lean:840, private lemma)
 - #226 `Roth.theta_lt_succ_aux` (Roth/Theta.lean:891, private lemma)
 - #227 `Roth.theta_lt_of_large_delta_aux` (Roth/Theta.lean:932, private lemma)
