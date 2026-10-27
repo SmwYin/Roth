@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 70/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 71/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 70; remaining: 223.
-- Verdicts: 10 NO-composable-from-mathlib, 13 YES-add-as-is, 3 YES-but-generalise-first, 11 NO-mathlib-has-it, 24 BORDERLINE-needs-human, 9 SKIP.
+- Completed applicable assessments: 71; remaining: 222.
+- Verdicts: 10 NO-composable-from-mathlib, 13 YES-add-as-is, 3 YES-but-generalise-first, 11 NO-mathlib-has-it, 25 BORDERLINE-needs-human, 9 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -759,6 +759,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: Two explicit callers, taylor_injective Taylor188 and eq_sum_box_hasseDeriv Taylor208; native full replays use fresh inverse proof.
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor_neg_taylor.md).
 
+### Completed: `MvPolynomial.taylor_injective`
+
+- Type: `∀ {σ : Type u_1} {A : Type u_2} [CommRing A] (α : σ → A), Function.Injective (MvPolynomial.taylor α : MvPolynomial σ A → MvPolynomial σ A)`
+- What: Translation by any coefficient vector is injective on formal multivariate polynomials over a commutative ring.
+- How: Apply generic Function.LeftInverse.injective to opposite-shift cancellation.
+- Hypotheses: Arbitrary independent-universe variables and coefficients, CommRing, every shift. No finiteness, field, domain, characteristic or nontriviality hypotheses.
+- Project dependencies: MvPolynomial.taylor, MvPolynomial.taylor_neg_taylor
+- Caller summary: One explicit caller: taylor_eq_zero_iff, Taylor193; full fresh caller proof verified. Index zero-iff uses are transitive.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor_injective.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -925,6 +935,8 @@ Completed `MvPolynomial.degreeOf_taylor_le`: Existing degreeOf_le_iff and degree
 
 Completed `MvPolynomial.taylor_neg_taylor`: Univariate Polynomial.taylorEquiv and algEquivAevalXAddC are close analogues, not multivariate replacements. Generic inverse-application law needs an already verified multivariate equivalence.
 
+Completed `MvPolynomial.taylor_injective`: Function.LeftInverse.injective exists but requires the project-specific inverse premise. Polynomial.taylor_injective works over Ring, univariate only. New translation AlgEquiv would supply injectivity generically, after proving its inverse fields.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -1066,6 +1078,8 @@ Completed `MvPolynomial.taylor_rename`: Generic substitution naturality speciali
 Completed `MvPolynomial.degreeOf_taylor_le`: Univariate Taylor degree invariance is analogous but not direct replacement. Direct aeval spelling is definitionally equivalent.
 
 Completed `MvPolynomial.taylor_neg_taylor`: Specializes additive composition to mutually cancelling shifts, and is a left-inverse interface for injectivity. Neither is a duplicate of composition or injectivity.
+
+Completed `MvPolynomial.taylor_injective`: A generic left-inverse corollary, analogous to univariate Taylor injectivity. Not an independently available multivariate all-mathlib one-call term.
 
 ## Part 5: Generalization opportunities
 
@@ -1212,6 +1226,8 @@ Completed `MvPolynomial.degreeOf_taylor_le`: Maximal within CommSemiring parent 
 
 Completed `MvPolynomial.taylor_neg_taylor`: CommRing is the fixed negation/cancellation interface floor. Conditional mutually cancelling shifts over CommSemiring are an expanded statement, not dropping ring assumptions from unchanged negative-shift law.
 
+Completed `MvPolynomial.taylor_injective`: No verified unchanged-signature mechanical weakening. Conditional semiring inverse-pair injectivity verified. Bare CommSemiring weakening refuted by WithTop Nat shift top colliding X+C1 and X+C2. Cancellative semiring alternatives not tested; no absolute minimality claim.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -1354,6 +1370,8 @@ Completed `MvPolynomial.taylor_rename`: No generic substitution gap; decision wh
 Completed `MvPolynomial.degreeOf_taylor_le`: Coordinate-degree control under multivariate constant-shift substitution, with arbitrary variable type and commutative-semiring coefficients.
 
 Completed `MvPolynomial.taylor_neg_taylor`: Potential bundled multivariate translation algebra equivalence; its inverse fields are new obligations, not a missing generic equivalence theorem.
+
+Completed `MvPolynomial.taylor_injective`: Potential multivariate translation AlgEquiv; no missing generic left-inverse theorem.
 
 ## Part 7: Junk / removable
 
@@ -1500,6 +1518,8 @@ Completed `MvPolynomial.degreeOf_taylor_le`: Used by index/cardinality bound; no
 
 Completed `MvPolynomial.taylor_neg_taylor`: Two live mathematical callers, so not dead code; optional inlining depends on retaining or replacing the named translation API.
 
+Completed `MvPolynomial.taylor_injective`: Live zero-reflection caller; named convenience corollary status depends on future translation API.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -1574,6 +1594,7 @@ Completed `MvPolynomial.taylor_neg_taylor`: Two live mathematical callers, so no
 | 68 | `MvPolynomial.taylor_rename` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor_rename.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.taylor_rename/root-acceptance.json) |
 | 69 | `MvPolynomial.degreeOf_taylor_le` | YES-add-as-is | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.degreeOf_taylor_le.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.degreeOf_taylor_le/root-acceptance.json) |
 | 70 | `MvPolynomial.taylor_neg_taylor` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor_neg_taylor.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.taylor_neg_taylor/root-acceptance.json) |
+| 71 | `MvPolynomial.taylor_injective` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor_injective.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.taylor_injective/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -1713,11 +1734,13 @@ Completed `MvPolynomial.degreeOf_taylor_le` action: Propose in Mathlib/Algebra/M
 
 Completed `MvPolynomial.taylor_neg_taylor` action: BORDERLINE: choose pointwise inverse law versus bundled translation equivalence, then decide simp/name policy. Assessment complete; no production edits.
 
+Completed `MvPolynomial.taylor_injective` action: BORDERLINE: retain locally during read-only survey; decide bundled equivalence versus separate injectivity corollary upstream. Inline the tested generic term at Taylor193 if the concrete corollary is declined.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `MvPolynomial.taylor_injective` next. Supporting identities receive their own applicable checks.
+   `MvPolynomial.taylor_eq_zero_iff` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.

@@ -1,0 +1,23 @@
+#check @MvPolynomial.taylor_injective
+#print MvPolynomial.taylor_injective
+#print axioms MvPolynomial.taylor_injective
+#check @Function.LeftInverse.injective
+namespace MvPolynomial.TaylorInjectiveAssessment
+variable {σ A : Type*} [CommRing A]
+theorem replay (α : σ → A) : Function.Injective (taylor α : MvPolynomial σ A → _) :=
+  Function.LeftInverse.injective (taylor_neg_taylor α)
+theorem independent (α : σ → A) : Function.Injective (taylor α : MvPolynomial σ A → _) :=
+  Function.LeftInverse.injective (TaylorInverseAssessment.replay α)
+theorem bundled (α : σ → A) : Function.Injective (taylor α : MvPolynomial σ A → _) :=
+  (TaylorInverseExtra.equivalence α).injective
+theorem zeroCaller (α : σ → A) (P : MvPolynomial σ A) : taylor α P = 0 ↔ P = 0 :=
+  (replay α).eq_iff' (map_zero _)
+#print axioms replay
+#print axioms independent
+#print axioms bundled
+#print axioms zeroCaller
+end MvPolynomial.TaylorInjectiveAssessment
+run_cmd do
+  let ci ← Lean.getConstInfo `MvPolynomial.TaylorInjectiveAssessment.replay
+  let constants := (ci.value! (allowOpaque := true)).getUsedConstants
+  Lean.logInfo m!"INJECTIVE_REPLAY_CONSTANTS: {constants}"

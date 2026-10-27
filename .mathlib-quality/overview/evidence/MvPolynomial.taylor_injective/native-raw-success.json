@@ -1,0 +1,120 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.Polynomial.HasseDeriv\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.LinearAlgebra.Matrix.ToLinearEquiv\nimport Mathlib.RingTheory.Polynomial.Wronskian\nimport Mathlib.LinearAlgebra.Vandermonde\nimport Mathlib.Data.ZMod.Defs\nimport Mathlib.Algebra.Field.ZMod\nimport Mathlib.Algebra.Order.Group.Int.Sum\nimport Mathlib.LinearAlgebra.Matrix.Polynomial\nimport Mathlib.Algebra.Polynomial.CancelLeads\nimport Mathlib.Algebra.MvPolynomial.PDeriv\nimport Mathlib.Algebra.Order.Ring.WithTop\n#check_failure MvPolynomial.taylor_neg_taylor\nnoncomputable section\nnamespace MvPolynomial.TaylorInverseRaw\nvariable {σ R : Type*} [CommSemiring R]\ndef shift (α : σ → R) : MvPolynomial σ R →ₐ[R] MvPolynomial σ R :=\n  aeval fun j ↦ X j + C (α j)\ntheorem conditional (α β : σ → R) (h : ∀ j, β j + α j = 0)\n    (P : MvPolynomial σ R) : shift β (shift α P) = P := by\n  have hg : (fun j ↦ (X j + C (β j)) + C (α j)) = (X : σ → MvPolynomial σ R) := by\n    funext j\n    rw [add_assoc, ← map_add, h j, map_zero, add_zero]\n  simp only [shift, comp_aeval_apply, map_add, aeval_X, algHom_C]\n  exact (congrArg (fun g : σ → MvPolynomial σ R ↦ aeval g P) hg).trans\n    (aeval_X_left_apply P)\nvariable {A : Type*} [CommRing A]\ntheorem inverse (α : σ → A) (P : MvPolynomial σ A) :\n    shift (fun j ↦ -α j) (shift α P) = P :=\n  conditional α (fun j ↦ -α j) (fun j ↦ neg_add_cancel (α j)) P\ntheorem directInverse (α : σ → A) (P : MvPolynomial σ A) :\n    shift (fun j ↦ -α j) (shift α P) = P := by\n  simp [shift, comp_aeval_apply, add_assoc, aeval_X_left_apply]\n#print axioms directInverse\nexample (a : A) (P : Polynomial A) :\n    Polynomial.taylor (-a) (Polynomial.taylor a P) = P :=\n  (Polynomial.taylorEquiv a).symm_apply_apply P\n#print axioms conditional\n#print axioms inverse\nend MvPolynomial.TaylorInverseRaw\n#check_failure MvPolynomial.taylor_injective\nnamespace MvPolynomial.TaylorInjectiveRaw\nopen TaylorInverseRaw\nvariable {σ R : Type*} [CommSemiring R]\ntheorem conditionalInjective (α β : σ → R) (h : ∀ j, β j + α j = 0) :\n    Function.Injective (shift α : MvPolynomial σ R → _) :=\n  Function.LeftInverse.injective (conditional α β h)\ntheorem ringInjective {A : Type*} [CommRing A] (α : σ → A) :\n    Function.Injective (shift α : MvPolynomial σ A → _) :=\n  Function.LeftInverse.injective (inverse α)\n#print axioms ringInjective\ntheorem generic (α : σ → R) (g : MvPolynomial σ R → MvPolynomial σ R)\n    (h : Function.LeftInverse g (shift α)) : Function.Injective (shift α) :=\n  Function.LeftInverse.injective h\nexample {A : Type*} [Ring A] (a : A) : Function.Injective (Polynomial.taylor a) :=\n  Polynomial.taylor_injective a\n#check @Polynomial.taylor_injective\ntheorem topCollision :\n    shift (fun _ : Unit ↦ (⊤ : WithTop ℕ)) (X () + C 1) =\n      shift (fun _ : Unit ↦ (⊤ : WithTop ℕ)) (X () + C 2) := by\n  simp only [shift, map_add, aeval_X, algHom_C, algebraMap_eq]\n  rw [add_assoc, ← map_add, WithTop.top_add, add_assoc, ← map_add, WithTop.top_add]\ntheorem topNotInjective :\n    ¬ Function.Injective (shift (fun _ : Unit ↦ (⊤ : WithTop ℕ))) := by\n  intro h\n  have heq := h topCollision\n  have hv := congrArg (fun Q : MvPolynomial Unit (WithTop ℕ) ↦ eval (fun _ ↦ 0) Q) heq\n  norm_num at hv\n#print axioms conditionalInjective\n#print axioms generic\n#print axioms topCollision\n#print axioms topNotInjective\nend MvPolynomial.TaylorInjectiveRaw\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown constant `MvPolynomial.taylor_neg_taylor`\",\n      \"line\": 13,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'MvPolynomial.TaylorInverseRaw.directInverse' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 34,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'MvPolynomial.TaylorInverseRaw.conditional' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 38,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'MvPolynomial.TaylorInverseRaw.inverse' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 39,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown constant `MvPolynomial.taylor_injective`\",\n      \"line\": 41,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'MvPolynomial.TaylorInjectiveRaw.ringInjective' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 51,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.taylor_injective : ∀ {R : Type u_3} [inst : Ring R] (r : R), Function.Injective ⇑(Polynomial.taylor r)\",\n      \"line\": 57,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'MvPolynomial.TaylorInjectiveRaw.conditionalInjective' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 69,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'MvPolynomial.TaylorInjectiveRaw.generic' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 70,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'MvPolynomial.TaylorInjectiveRaw.topCollision' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 71,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'MvPolynomial.TaylorInjectiveRaw.topNotInjective' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 72,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown constant `MvPolynomial.taylor_neg_taylor`",
+          "line": 13,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'MvPolynomial.TaylorInverseRaw.directInverse' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 34,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'MvPolynomial.TaylorInverseRaw.conditional' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 38,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'MvPolynomial.TaylorInverseRaw.inverse' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 39,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown constant `MvPolynomial.taylor_injective`",
+          "line": 41,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'MvPolynomial.TaylorInjectiveRaw.ringInjective' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 51,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.taylor_injective : ∀ {R : Type u_3} [inst : Ring R] (r : R), Function.Injective ⇑(Polynomial.taylor r)",
+          "line": 57,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'MvPolynomial.TaylorInjectiveRaw.conditionalInjective' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 69,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'MvPolynomial.TaylorInjectiveRaw.generic' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 70,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'MvPolynomial.TaylorInjectiveRaw.topCollision' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 71,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'MvPolynomial.TaylorInjectiveRaw.topNotInjective' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 72,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 556
+}

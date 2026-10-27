@@ -1,0 +1,13 @@
+namespace MvPolynomial.TaylorInjectiveExtra
+variable {σ A : Type*} [CommRing A]
+#check @injective_iff_map_eq_zero'
+#print Function.LeftInverse.injective
+#check @Polynomial.taylor_injective
+example {S : Type*} [CommSemiring S] : True := by
+  fail_if_success let _ := (MvPolynomial.taylor_injective (σ := σ) (A := S))
+  trivial
+theorem expanded (α : σ → A) :
+    Function.Injective (aeval (fun j ↦ X j + C (α j))) :=
+  TaylorInjectiveAssessment.independent α
+#print axioms expanded
+end MvPolynomial.TaylorInjectiveExtra
