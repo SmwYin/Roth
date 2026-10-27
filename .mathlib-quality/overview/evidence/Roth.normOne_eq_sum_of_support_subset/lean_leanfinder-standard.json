@@ -1,0 +1,85 @@
+{
+  "method": "lean_leanfinder",
+  "form": "standard",
+  "request": {
+    "query": "The length or l1 norm of a finitely supported coefficient vector is unchanged by padding with zeros",
+    "num_results": 8
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"hammingNorm_comp\",\n      \"informal_name\": \"Hamming Norm Preservation under Component-wise Injective Zero-Preserving Maps\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_2} {β : ι → Type u_3} [inst : Fintype ι] [inst_1 : (i : ι) → DecidableEq (β i)] {γ : ι → Type u_4}\\n  [inst_2 : (i : ι) → DecidableEq (γ i)] [inst_3 : (i : ι) → Zero (β i)] [inst_4 : (i : ι) → Zero (γ i)]\\n  (f : (i : ι) → γ i → β i) {x : (i : ι) → γ i},\\n  (∀ (i : ι), Function.Injective (f i)) → (∀ (i : ι), f i 0 = 0) → (hammingNorm fun i => f i (x i)) = hammingNorm x\",\n      \"informal_description\": \"For any family of injective functions $ f_i : \\\\gamma_i \\\\to \\\\beta_i $ satisfying $ f_i(0) = 0 $, the Hamming norm of the component-wise application $ i \\\\mapsto f_i(x_i) $ equals the Hamming norm of the original function $ x $, i.e., $ \\\\|f \\\\circ x\\\\|_\\\\text{H} = \\\\|x\\\\|_\\\\text{H} $.\",\n      \"path\": \"Mathlib.InformationTheory.Hamming\"\n    },\n    {\n      \"formal_name\": \"Module.length_finsupp\",\n      \"informal_name\": \"Krull Dimension of Finitely Supported Module Equals Cardinality Times Module Length\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {M : Type u_2} [inst : Ring R] [inst_1 : AddCommGroup M] [inst_2 : Module R M] {ι : Type u_5},\\n  Module.length R (ι →₀ M) = ENat.card ι * Module.length R M\",\n      \"informal_description\": \"For a semiring $ R $, an $ R $-module $ M $, and an index type $ \\\\iota $, the Krull dimension of the module of finite support functions $ \\\\iota \\\\to_0 M $ is equal to the product of the cardinality of $ \\\\iota $ (in extended natural numbers) and the Krull dimension of $ M $. This expresses that the length of the finsupp module is multiplicatively determined by the size of the index set and the original module's length.\",\n      \"path\": \"Mathlib.RingTheory.Length\"\n    },\n    {\n      \"formal_name\": \"hammingNorm\",\n      \"informal_name\": \"Hamming norm\",\n      \"kind\": \"definition\",\n      \"type\": \"{ι : Type u_2} →\\n  {β : ι → Type u_3} → [Fintype ι] → [(i : ι) → DecidableEq (β i)] → [(i : ι) → Zero (β i)] → ((i : ι) → β i) → ℕ\",\n      \"informal_description\": \"The Hamming norm of a function $ x $ is the cardinality of the set of indices $ i $ for which $ x(i) \\\\neq 0 $, i.e., the number of non-zero entries in $ x $.\",\n      \"path\": \"Mathlib.InformationTheory.Hamming\"\n    },\n    {\n      \"formal_name\": \"lp.norm_eq_card_dsupport\",\n      \"informal_name\": \"Norm in $L^0$ Space Equals Support Cardinality\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_3} {E : α → Type u_4} [inst : (i : α) → NormedAddCommGroup (E i)] (f : ↥(lp E 0)), ‖f‖ = ↑⋯.toFinset.card\",\n      \"informal_description\": \"For any function $f$ in the $L^0$ space (with $p = 0$), the norm $\\\\|f\\\\|$ is equal to the cardinality of the finite set of indices where $f(i) \\\\neq 0$.\",\n      \"path\": \"Mathlib.Analysis.Normed.Lp.lpSpace\"\n    },\n    {\n      \"formal_name\": \"hammingNorm_comp_le_hammingNorm\",\n      \"informal_name\": \"Hamming Norm Non-Increasing Under Zero-Preserving Transformation\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_2} {β : ι → Type u_3} [inst : Fintype ι] [inst_1 : (i : ι) → DecidableEq (β i)] {γ : ι → Type u_4}\\n  [inst_2 : (i : ι) → DecidableEq (γ i)] [inst_3 : (i : ι) → Zero (β i)] [inst_4 : (i : ι) → Zero (γ i)]\\n  (f : (i : ι) → γ i → β i) {x : (i : ι) → γ i},\\n  (∀ (i : ι), f i 0 = 0) → (hammingNorm fun i => f i (x i)) ≤ hammingNorm x\",\n      \"informal_description\": \"For a finite index set $\\\\alpha$, if each component function $f_i : \\\\gamma_i \\\\to \\\\beta_i$ preserves zero (i.e., $f_i(0) = 0$), then the Hamming norm of the function $i \\\\mapsto f_i(x_i)$ is less than or equal to the Hamming norm of the original function $x$.\",\n      \"path\": \"Mathlib.InformationTheory.Hamming\"\n    },\n    {\n      \"formal_name\": \"hammingDist_zero_right\",\n      \"informal_name\": \"Hamming Distance to Zero Equals Hamming Norm\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_2} {β : ι → Type u_3} [inst : Fintype ι] [inst_1 : (i : ι) → DecidableEq (β i)]\\n  [inst_2 : (i : ι) → Zero (β i)] (x : (i : ι) → β i), hammingDist x 0 = hammingNorm x\",\n      \"informal_description\": \"For any function $x$ over a finite index type, the Hamming distance between $x$ and the zero function is equal to the Hamming norm of $x$, i.e., $\\\\text{hammingDist}(x, 0) = \\\\text{hammingNorm}(x)$.\",\n      \"path\": \"Mathlib.InformationTheory.Hamming\"\n    },\n    {\n      \"formal_name\": \"Hamming.norm_eq_hammingNorm\",\n      \"informal_name\": \"Hamming Norm Equals Norm\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_2} {β : ι → Type u_3} [inst : Fintype ι] [inst_1 : (i : ι) → DecidableEq (β i)]\\n  [inst_2 : (i : ι) → Zero (β i)] (x : Hamming β), ‖x‖ = ↑(hammingNorm (Hamming.ofHamming x))\",\n      \"informal_description\": \"For any element $ x $ in the Hamming space $ \\\\prod_{i \\\\in \\\\iota} \\\\beta(i) $, the norm $ \\\\|x\\\\| $ is equal to the Hamming norm of $ x $, which counts the number of indices $ i $ where $ x(i) \\\\neq 0 $.\",\n      \"path\": \"Mathlib.InformationTheory.Hamming\"\n    },\n    {\n      \"formal_name\": \"hammingDist_zero_left\",\n      \"informal_name\": \"Hamming Distance from Zero Function Equals Hamming Norm\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_2} {β : ι → Type u_3} [inst : Fintype ι] [inst_1 : (i : ι) → DecidableEq (β i)]\\n  [inst_2 : (i : ι) → Zero (β i)], hammingDist 0 = hammingNorm\",\n      \"informal_description\": \"The Hamming distance between the zero function (which maps every index to zero) and any function $x$ is equal to the Hamming norm of $x$, i.e., $\\\\operatorname{hammingDist}(0, x) = \\\\operatorname{hammingNorm}(x)$.\",\n      \"path\": \"Mathlib.InformationTheory.Hamming\"\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "items": [
+        {
+          "formal_name": "hammingNorm_comp",
+          "informal_name": "Hamming Norm Preservation under Component-wise Injective Zero-Preserving Maps",
+          "kind": "theorem",
+          "type": "∀ {ι : Type u_2} {β : ι → Type u_3} [inst : Fintype ι] [inst_1 : (i : ι) → DecidableEq (β i)] {γ : ι → Type u_4}\n  [inst_2 : (i : ι) → DecidableEq (γ i)] [inst_3 : (i : ι) → Zero (β i)] [inst_4 : (i : ι) → Zero (γ i)]\n  (f : (i : ι) → γ i → β i) {x : (i : ι) → γ i},\n  (∀ (i : ι), Function.Injective (f i)) → (∀ (i : ι), f i 0 = 0) → (hammingNorm fun i => f i (x i)) = hammingNorm x",
+          "informal_description": "For any family of injective functions $ f_i : \\gamma_i \\to \\beta_i $ satisfying $ f_i(0) = 0 $, the Hamming norm of the component-wise application $ i \\mapsto f_i(x_i) $ equals the Hamming norm of the original function $ x $, i.e., $ \\|f \\circ x\\|_\\text{H} = \\|x\\|_\\text{H} $.",
+          "path": "Mathlib.InformationTheory.Hamming"
+        },
+        {
+          "formal_name": "Module.length_finsupp",
+          "informal_name": "Krull Dimension of Finitely Supported Module Equals Cardinality Times Module Length",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} {M : Type u_2} [inst : Ring R] [inst_1 : AddCommGroup M] [inst_2 : Module R M] {ι : Type u_5},\n  Module.length R (ι →₀ M) = ENat.card ι * Module.length R M",
+          "informal_description": "For a semiring $ R $, an $ R $-module $ M $, and an index type $ \\iota $, the Krull dimension of the module of finite support functions $ \\iota \\to_0 M $ is equal to the product of the cardinality of $ \\iota $ (in extended natural numbers) and the Krull dimension of $ M $. This expresses that the length of the finsupp module is multiplicatively determined by the size of the index set and the original module's length.",
+          "path": "Mathlib.RingTheory.Length"
+        },
+        {
+          "formal_name": "hammingNorm",
+          "informal_name": "Hamming norm",
+          "kind": "definition",
+          "type": "{ι : Type u_2} →\n  {β : ι → Type u_3} → [Fintype ι] → [(i : ι) → DecidableEq (β i)] → [(i : ι) → Zero (β i)] → ((i : ι) → β i) → ℕ",
+          "informal_description": "The Hamming norm of a function $ x $ is the cardinality of the set of indices $ i $ for which $ x(i) \\neq 0 $, i.e., the number of non-zero entries in $ x $.",
+          "path": "Mathlib.InformationTheory.Hamming"
+        },
+        {
+          "formal_name": "lp.norm_eq_card_dsupport",
+          "informal_name": "Norm in $L^0$ Space Equals Support Cardinality",
+          "kind": "theorem",
+          "type": "∀ {α : Type u_3} {E : α → Type u_4} [inst : (i : α) → NormedAddCommGroup (E i)] (f : ↥(lp E 0)), ‖f‖ = ↑⋯.toFinset.card",
+          "informal_description": "For any function $f$ in the $L^0$ space (with $p = 0$), the norm $\\|f\\|$ is equal to the cardinality of the finite set of indices where $f(i) \\neq 0$.",
+          "path": "Mathlib.Analysis.Normed.Lp.lpSpace"
+        },
+        {
+          "formal_name": "hammingNorm_comp_le_hammingNorm",
+          "informal_name": "Hamming Norm Non-Increasing Under Zero-Preserving Transformation",
+          "kind": "theorem",
+          "type": "∀ {ι : Type u_2} {β : ι → Type u_3} [inst : Fintype ι] [inst_1 : (i : ι) → DecidableEq (β i)] {γ : ι → Type u_4}\n  [inst_2 : (i : ι) → DecidableEq (γ i)] [inst_3 : (i : ι) → Zero (β i)] [inst_4 : (i : ι) → Zero (γ i)]\n  (f : (i : ι) → γ i → β i) {x : (i : ι) → γ i},\n  (∀ (i : ι), f i 0 = 0) → (hammingNorm fun i => f i (x i)) ≤ hammingNorm x",
+          "informal_description": "For a finite index set $\\alpha$, if each component function $f_i : \\gamma_i \\to \\beta_i$ preserves zero (i.e., $f_i(0) = 0$), then the Hamming norm of the function $i \\mapsto f_i(x_i)$ is less than or equal to the Hamming norm of the original function $x$.",
+          "path": "Mathlib.InformationTheory.Hamming"
+        },
+        {
+          "formal_name": "hammingDist_zero_right",
+          "informal_name": "Hamming Distance to Zero Equals Hamming Norm",
+          "kind": "theorem",
+          "type": "∀ {ι : Type u_2} {β : ι → Type u_3} [inst : Fintype ι] [inst_1 : (i : ι) → DecidableEq (β i)]\n  [inst_2 : (i : ι) → Zero (β i)] (x : (i : ι) → β i), hammingDist x 0 = hammingNorm x",
+          "informal_description": "For any function $x$ over a finite index type, the Hamming distance between $x$ and the zero function is equal to the Hamming norm of $x$, i.e., $\\text{hammingDist}(x, 0) = \\text{hammingNorm}(x)$.",
+          "path": "Mathlib.InformationTheory.Hamming"
+        },
+        {
+          "formal_name": "Hamming.norm_eq_hammingNorm",
+          "informal_name": "Hamming Norm Equals Norm",
+          "kind": "theorem",
+          "type": "∀ {ι : Type u_2} {β : ι → Type u_3} [inst : Fintype ι] [inst_1 : (i : ι) → DecidableEq (β i)]\n  [inst_2 : (i : ι) → Zero (β i)] (x : Hamming β), ‖x‖ = ↑(hammingNorm (Hamming.ofHamming x))",
+          "informal_description": "For any element $ x $ in the Hamming space $ \\prod_{i \\in \\iota} \\beta(i) $, the norm $ \\|x\\| $ is equal to the Hamming norm of $ x $, which counts the number of indices $ i $ where $ x(i) \\neq 0 $.",
+          "path": "Mathlib.InformationTheory.Hamming"
+        },
+        {
+          "formal_name": "hammingDist_zero_left",
+          "informal_name": "Hamming Distance from Zero Function Equals Hamming Norm",
+          "kind": "theorem",
+          "type": "∀ {ι : Type u_2} {β : ι → Type u_3} [inst : Fintype ι] [inst_1 : (i : ι) → DecidableEq (β i)]\n  [inst_2 : (i : ι) → Zero (β i)], hammingDist 0 = hammingNorm",
+          "informal_description": "The Hamming distance between the zero function (which maps every index to zero) and any function $x$ is equal to the Hamming norm of $x$, i.e., $\\operatorname{hammingDist}(0, x) = \\operatorname{hammingNorm}(x)$.",
+          "path": "Mathlib.InformationTheory.Hamming"
+        }
+      ]
+    },
+    "isError": false
+  }
+}

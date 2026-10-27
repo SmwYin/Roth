@@ -1,0 +1,9 @@
+
+namespace MvPolynomial.NormSupportExtra
+variable {σ : Type*}
+theorem normCoefficients {R : Type*} [SeminormedCommRing R]
+    {P : MvPolynomial σ R} {s : Finset (σ →₀ ℕ)} (hs : P.support ⊆ s) :
+    P.coeff.sum (fun _ z ↦ ‖z‖) = ∑ d ∈ s, ‖P.coeff d‖ :=
+  Finsupp.sum_of_support_subset P.coeff hs (fun _ z ↦ ‖z‖) (by simp)
+#print axioms normCoefficients
+end MvPolynomial.NormSupportExtra

@@ -1,0 +1,721 @@
+[
+  {
+    "method": "lean_leanfinder",
+    "form": "abstract",
+    "request": {
+      "query": "For a finitely supported function and a zero preserving size function its sum is equal to sum over any finite superset of support",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Finsupp.sum_of_support_subset\",\n      \"informal_name\": \"Sum over Finite Support Subset with Zero-Respecting Function\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {M : Type u_8} {N : Type u_10} [inst : Zero M] [inst_1 : AddCommMonoid N] (f : α →₀ M) {s : Finset α},\\n  f.support ⊆ s → ∀ (g : α → M → N), (∀ i ∈ s, g i 0 = 0) → f.sum g = ∑ x ∈ s, g x (f x)\",\n      \"informal_description\": \"Let $\\\\alpha$ and $M$ be types with $M$ equipped with a zero element, and let $N$ be an additive commutative monoid. For any finite support function $f : \\\\alpha \\\\to_0 M$ whose support is contained in a finite set $s \\\\subseteq \\\\alpha$, and for any function $g : \\\\alpha \\\\to M \\\\to N$ satisfying $g(i, 0) = 0$ for all $i \\\\in s$, the sum of $g$ applied to $f$ equals the sum of $g(x, f(x))$ over all $x \\\\in s$. Formally, $\\\\sum_{x \\\\in s} g(x, f(x)) = f.\\\\text{sum}(g)$.\",\n      \"path\": \"Mathlib.Algebra.BigOperators.Finsupp.Basic\"\n    },\n    {\n      \"formal_name\": \"finsum_eq_sum_of_support_toFinset_subset\",\n      \"informal_name\": \"Equality of Finite Sums When Support is Contained in a Finset\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {M : Type u_5} [inst : AddCommMonoid M] (f : α → M) (hf : (Function.support f).Finite) {s : Finset α},\\n  hf.toFinset ⊆ s → ∑ᶠ (i : α), f i = ∑ i ∈ s, f i\",\n      \"informal_description\": \"For a function $ f : \\\\alpha \\\\to M $ with finite support in an additive commutative monoid $ M $, if the Finset corresponding to the support of $ f $ is a subset of a Finset $ s $, then the finite sum $ \\\\sum^\\\\ast_{i} f(i) $ equals the sum $ \\\\sum_{i \\\\in s} f(i) $.\",\n      \"path\": \"Mathlib.Algebra.BigOperators.Finprod\"\n    },\n    {\n      \"formal_name\": \"finsum_mem_support\",\n      \"informal_name\": \"Finite Sum over Support Equals Total Sum in Additive Commutative Monoid\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {M : Type u_5} [inst : AddCommMonoid M] (f : α → M),\\n  ∑ᶠ (a : α) (_ : a ∈ Function.support f), f a = ∑ᶠ (a : α), f a\",\n      \"informal_description\": \"For any function $ f : \\\\alpha \\\\to M $ where $ M $ is an additive commutative monoid, the finite sum $ \\\\sum_{a \\\\in \\\\alpha} f(a) $ is equal to the finite sum $ \\\\sum_{a \\\\in \\\\text{supp}(f)} f(a) $, where $ \\\\text{supp}(f) = \\\\{a \\\\in \\\\alpha \\\\mid f(a) \\\\neq 0\\\\} $.\",\n      \"path\": \"Mathlib.Algebra.BigOperators.Finprod\"\n    },\n    {\n      \"formal_name\": \"finsum_eq_sum_of_support_subset_of_finite\",\n      \"informal_name\": \"Equality of Finsum and Finite Sum When Support is Contained in a Finite Set\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {M : Type u_5} [inst : AddCommMonoid M] (f : α → M) {s : Set α},\\n  Function.support f ⊆ s → ∀ (hs : s.Finite), ∑ᶠ (i : α), f i = ∑ i ∈ hs.toFinset, f i\",\n      \"informal_description\": \"For any function $ f : \\\\alpha \\\\to M $ where $ M $ is an additive commutative monoid, if the support of $ f $ (i.e., the set $ \\\\{x \\\\in \\\\alpha \\\\mid f(x) \\\\neq 0\\\\} $) is contained in a finite set $ s $, then the finsum $ \\\\sum^\\\\mathrlap{f} f(i) $ over $ \\\\alpha $ equals the finite sum $ \\\\sum_{i \\\\in s} f(i) $.\",\n      \"path\": \"Mathlib.Algebra.BigOperators.Finprod\"\n    },\n    {\n      \"formal_name\": \"finsum_eq_finset_sum_of_support_subset\",\n      \"informal_name\": \"Equality of Finsum and Finset Sum When Support is Contained\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {M : Type u_5} [inst : AddCommMonoid M] (f : α → M) {s : Finset α},\\n  Function.support f ⊆ ↑s → ∑ᶠ (i : α), f i = ∑ i ∈ s, f i\",\n      \"informal_description\": \"If the support of a function $ f : \\\\alpha \\\\to M $ is contained within a finite set $ s $, then the finsum of $ f $ is equal to the sum of $ f $ over $ s $. Formally, $ \\\\sum^\\\\infty_{i \\\\in \\\\alpha} f(i) = \\\\sum_{i \\\\in s} f(i) $ provided $ \\\\mathrm{supp}(f) \\\\subseteq s $.\",\n      \"path\": \"Mathlib.Algebra.BigOperators.Finprod\"\n    },\n    {\n      \"formal_name\": \"Finsupp.onFinset_sum\",\n      \"informal_name\": \"Equality of Sums over Finite Support and Finite Set\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {M : Type u_8} {N : Type u_10} [inst : Zero M] [inst_1 : AddCommMonoid N] {s : Finset α} {f : α → M}\\n  {g : α → M → N} (hf : ∀ (a : α), f a ≠ 0 → a ∈ s),\\n  (∀ (a : α), g a 0 = 0) → (Finsupp.onFinset s f hf).sum g = ∑ a ∈ s, g a (f a)\",\n      \"informal_description\": \"For a finite set $ s $ of elements of type $ \\\\alpha $, a function $ f : \\\\alpha \\\\to M $, and a function $ g : \\\\alpha \\\\to M \\\\to N $ satisfying $ g(a, 0) = 0 $ for all $ a $, the sum of $ g $ evaluated on the finite support function constructed from $ s $ and $ f $ (which is non-zero only on $ s $) equals the sum over $ s $ of $ g(a, f(a)) $. This holds under the condition that $ f(a) \\\\neq 0 $ implies $ a \\\\in s $.\",\n      \"path\": \"Mathlib.Algebra.BigOperators.Finsupp.Basic\"\n    },\n    {\n      \"formal_name\": \"finsum_eq_sum_of_support_subset\",\n      \"informal_name\": \"Equality of finsum and sum over finite set containing support\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {M : Type u_5} [inst : AddCommMonoid M] (f : α → M) {s : Finset α},\\n  Function.support f ⊆ ↑s → ∑ᶠ (i : α), f i = ∑ i ∈ s, f i\",\n      \"informal_description\": \"For any function $f : \\\\alpha \\\\to M$ where $M$ is an additive commutative monoid, if the support of $f$ is contained in a finite set $s$, then the finsum of $f$ equals the sum of $f$ over $s$. Formally, if $\\\\operatorname{supp}(f) \\\\subseteq s$, then $\\\\sum^\\\\mathsf{fin} f(i) = \\\\sum_{i \\\\in s} f(i)$.\",\n      \"path\": \"Mathlib.Algebra.BigOperators.Finprod\"\n    },\n    {\n      \"formal_name\": \"finsum_eq_sum_plift_of_support_toFinset_subset\",\n      \"informal_name\": \"Equality of Finite Sums When Support is Contained in a Finset\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {M : Type u_2} {α : Sort u_4} [inst : AddCommMonoid M] {f : α → M} (hf : (Function.support (f ∘ PLift.down)).Finite)\\n  {s : Finset (PLift α)}, hf.toFinset ⊆ s → ∑ᶠ (i : α), f i = ∑ i ∈ s, f i.down\",\n      \"informal_description\": \"Let $ M $ be an additive commutative monoid and $ \\\\alpha $ a type. For any function $ f : \\\\alpha \\\\to M $ with finite support, if the support of $ f $ (converted to a finite set) is a subset of a finite set $ s $, then the sum of $ f $ over all $ \\\\alpha $ (denoted $ \\\\sum^\\\\infty f(i) $) equals the sum of $ f $ over the elements of $ s $, i.e., $ \\\\sum_{i \\\\in s} f(i) $.\",\n      \"path\": \"Mathlib.Algebra.BigOperators.Finprod\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Finsupp.sum_of_support_subset",
+            "informal_name": "Sum over Finite Support Subset with Zero-Respecting Function",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {M : Type u_8} {N : Type u_10} [inst : Zero M] [inst_1 : AddCommMonoid N] (f : α →₀ M) {s : Finset α},\n  f.support ⊆ s → ∀ (g : α → M → N), (∀ i ∈ s, g i 0 = 0) → f.sum g = ∑ x ∈ s, g x (f x)",
+            "informal_description": "Let $\\alpha$ and $M$ be types with $M$ equipped with a zero element, and let $N$ be an additive commutative monoid. For any finite support function $f : \\alpha \\to_0 M$ whose support is contained in a finite set $s \\subseteq \\alpha$, and for any function $g : \\alpha \\to M \\to N$ satisfying $g(i, 0) = 0$ for all $i \\in s$, the sum of $g$ applied to $f$ equals the sum of $g(x, f(x))$ over all $x \\in s$. Formally, $\\sum_{x \\in s} g(x, f(x)) = f.\\text{sum}(g)$.",
+            "path": "Mathlib.Algebra.BigOperators.Finsupp.Basic"
+          },
+          {
+            "formal_name": "finsum_eq_sum_of_support_toFinset_subset",
+            "informal_name": "Equality of Finite Sums When Support is Contained in a Finset",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {M : Type u_5} [inst : AddCommMonoid M] (f : α → M) (hf : (Function.support f).Finite) {s : Finset α},\n  hf.toFinset ⊆ s → ∑ᶠ (i : α), f i = ∑ i ∈ s, f i",
+            "informal_description": "For a function $ f : \\alpha \\to M $ with finite support in an additive commutative monoid $ M $, if the Finset corresponding to the support of $ f $ is a subset of a Finset $ s $, then the finite sum $ \\sum^\\ast_{i} f(i) $ equals the sum $ \\sum_{i \\in s} f(i) $.",
+            "path": "Mathlib.Algebra.BigOperators.Finprod"
+          },
+          {
+            "formal_name": "finsum_mem_support",
+            "informal_name": "Finite Sum over Support Equals Total Sum in Additive Commutative Monoid",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {M : Type u_5} [inst : AddCommMonoid M] (f : α → M),\n  ∑ᶠ (a : α) (_ : a ∈ Function.support f), f a = ∑ᶠ (a : α), f a",
+            "informal_description": "For any function $ f : \\alpha \\to M $ where $ M $ is an additive commutative monoid, the finite sum $ \\sum_{a \\in \\alpha} f(a) $ is equal to the finite sum $ \\sum_{a \\in \\text{supp}(f)} f(a) $, where $ \\text{supp}(f) = \\{a \\in \\alpha \\mid f(a) \\neq 0\\} $.",
+            "path": "Mathlib.Algebra.BigOperators.Finprod"
+          },
+          {
+            "formal_name": "finsum_eq_sum_of_support_subset_of_finite",
+            "informal_name": "Equality of Finsum and Finite Sum When Support is Contained in a Finite Set",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {M : Type u_5} [inst : AddCommMonoid M] (f : α → M) {s : Set α},\n  Function.support f ⊆ s → ∀ (hs : s.Finite), ∑ᶠ (i : α), f i = ∑ i ∈ hs.toFinset, f i",
+            "informal_description": "For any function $ f : \\alpha \\to M $ where $ M $ is an additive commutative monoid, if the support of $ f $ (i.e., the set $ \\{x \\in \\alpha \\mid f(x) \\neq 0\\} $) is contained in a finite set $ s $, then the finsum $ \\sum^\\mathrlap{f} f(i) $ over $ \\alpha $ equals the finite sum $ \\sum_{i \\in s} f(i) $.",
+            "path": "Mathlib.Algebra.BigOperators.Finprod"
+          },
+          {
+            "formal_name": "finsum_eq_finset_sum_of_support_subset",
+            "informal_name": "Equality of Finsum and Finset Sum When Support is Contained",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {M : Type u_5} [inst : AddCommMonoid M] (f : α → M) {s : Finset α},\n  Function.support f ⊆ ↑s → ∑ᶠ (i : α), f i = ∑ i ∈ s, f i",
+            "informal_description": "If the support of a function $ f : \\alpha \\to M $ is contained within a finite set $ s $, then the finsum of $ f $ is equal to the sum of $ f $ over $ s $. Formally, $ \\sum^\\infty_{i \\in \\alpha} f(i) = \\sum_{i \\in s} f(i) $ provided $ \\mathrm{supp}(f) \\subseteq s $.",
+            "path": "Mathlib.Algebra.BigOperators.Finprod"
+          },
+          {
+            "formal_name": "Finsupp.onFinset_sum",
+            "informal_name": "Equality of Sums over Finite Support and Finite Set",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {M : Type u_8} {N : Type u_10} [inst : Zero M] [inst_1 : AddCommMonoid N] {s : Finset α} {f : α → M}\n  {g : α → M → N} (hf : ∀ (a : α), f a ≠ 0 → a ∈ s),\n  (∀ (a : α), g a 0 = 0) → (Finsupp.onFinset s f hf).sum g = ∑ a ∈ s, g a (f a)",
+            "informal_description": "For a finite set $ s $ of elements of type $ \\alpha $, a function $ f : \\alpha \\to M $, and a function $ g : \\alpha \\to M \\to N $ satisfying $ g(a, 0) = 0 $ for all $ a $, the sum of $ g $ evaluated on the finite support function constructed from $ s $ and $ f $ (which is non-zero only on $ s $) equals the sum over $ s $ of $ g(a, f(a)) $. This holds under the condition that $ f(a) \\neq 0 $ implies $ a \\in s $.",
+            "path": "Mathlib.Algebra.BigOperators.Finsupp.Basic"
+          },
+          {
+            "formal_name": "finsum_eq_sum_of_support_subset",
+            "informal_name": "Equality of finsum and sum over finite set containing support",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {M : Type u_5} [inst : AddCommMonoid M] (f : α → M) {s : Finset α},\n  Function.support f ⊆ ↑s → ∑ᶠ (i : α), f i = ∑ i ∈ s, f i",
+            "informal_description": "For any function $f : \\alpha \\to M$ where $M$ is an additive commutative monoid, if the support of $f$ is contained in a finite set $s$, then the finsum of $f$ equals the sum of $f$ over $s$. Formally, if $\\operatorname{supp}(f) \\subseteq s$, then $\\sum^\\mathsf{fin} f(i) = \\sum_{i \\in s} f(i)$.",
+            "path": "Mathlib.Algebra.BigOperators.Finprod"
+          },
+          {
+            "formal_name": "finsum_eq_sum_plift_of_support_toFinset_subset",
+            "informal_name": "Equality of Finite Sums When Support is Contained in a Finset",
+            "kind": "theorem",
+            "type": "∀ {M : Type u_2} {α : Sort u_4} [inst : AddCommMonoid M] {f : α → M} (hf : (Function.support (f ∘ PLift.down)).Finite)\n  {s : Finset (PLift α)}, hf.toFinset ⊆ s → ∑ᶠ (i : α), f i = ∑ i ∈ s, f i.down",
+            "informal_description": "Let $ M $ be an additive commutative monoid and $ \\alpha $ a type. For any function $ f : \\alpha \\to M $ with finite support, if the support of $ f $ (converted to a finite set) is a subset of a finite set $ s $, then the sum of $ f $ over all $ \\alpha $ (denoted $ \\sum^\\infty f(i) $) equals the sum of $ f $ over the elements of $ s $, i.e., $ \\sum_{i \\in s} f(i) $.",
+            "path": "Mathlib.Algebra.BigOperators.Finprod"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_leanfinder",
+    "form": "current",
+    "request": {
+      "query": "The sum of absolute values of coefficients of a multivariate polynomial over its support equals the sum over a finite set containing its support",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"MvPolynomial.sum_def\",\n      \"informal_name\": \"Sum of a Multivariate Polynomial Over Its Support\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] {A : Type u_2} [inst_1 : AddCommMonoid A] {p : MvPolynomial σ R}\\n  {b : (σ →₀ ℕ) → R → A}, Finsupp.sum p b = ∑ m ∈ p.support, b m (MvPolynomial.coeff m p)\",\n      \"informal_description\": \"For any additive commutative monoid $ A $, multivariate polynomial $ p $, and function $ b : (\\\\sigma \\\\to_0 \\\\mathbb{N}) \\\\to R \\\\to A $, the sum $ p.\\\\text{sum}\\\\, b $ equals the summation over all monomials $ m $ in the support of $ p $ of $ b(m, \\\\text{coeff}_p(m)) $. This expresses the polynomial's sum as a finite combination of its non-zero monomials weighted by $ b $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Basic\"\n    },\n    {\n      \"formal_name\": \"Polynomial.sum_eq_of_subset\",\n      \"informal_name\": \"Polynomial Sum Equality with Subset Support\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Semiring R] {S : Type u_1} [inst_1 : AddCommMonoid S] {p : Polynomial R} (f : ℕ → R → S),\\n  (∀ (i : ℕ), f i 0 = 0) → ∀ {s : Finset ℕ}, p.support ⊆ s → p.sum f = ∑ n ∈ s, f n (p.coeff n)\",\n      \"informal_description\": \"For any polynomial $ p $ over a semiring $ R $, and any function $ f : \\\\mathbb{N} \\\\to R \\\\to S $ where $ S $ is an additive commutative monoid, if $ f(i)(0) = 0 $ for all $ i \\\\in \\\\mathbb{N} $, and $ s $ is a finite set of natural numbers containing the support of $ p $, then the sum of $ p $ with respect to $ f $ equals $ \\\\sum_{n \\\\in s} f(n)(a_n) $, where $ a_n $ denotes the coefficient of $ X^n $ in $ p $. The support of $ p $ is the set of exponents with non-zero coefficients.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Basic\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.support_sum_monomial_coeff\",\n      \"informal_name\": \"Sum over Support of Monomials Equals Polynomial\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] (p : MvPolynomial σ R),\\n  ∑ v ∈ p.support, (MvPolynomial.monomial v) (MvPolynomial.coeff v p) = p\",\n      \"informal_description\": \"For any multivariate polynomial $ p $ over a commutative semiring $ R $ with variables indexed by $ \\\\sigma $, the sum of the monomials $ v $ in the support of $ p $ multiplied by their respective coefficients equals $ p $. In symbols, $ p = \\\\sum_{v \\\\in \\\\text{support}(p)} \\\\text{monomial}(v) \\\\cdot \\\\text{coeff}(v, p) $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Basic\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.as_sum\",\n      \"informal_name\": \"Multivariate Polynomial as Sum of Monomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] (p : MvPolynomial σ R),\\n  p = ∑ v ∈ p.support, (MvPolynomial.monomial v) (MvPolynomial.coeff v p)\",\n      \"informal_description\": \"For any multivariate polynomial $ p $ over a commutative semiring $ R $ with variables indexed by $ \\\\sigma $, $ p $ can be expressed as the finite sum $ p = \\\\sum_{v \\\\in \\\\text{support}(p)} \\\\text{monomial}(v) \\\\cdot \\\\text{coeff}(v, p) $, where $ \\\\text{support}(p) $ denotes the finite set of monomials with non-zero coefficients in $ p $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Basic\"\n    },\n    {\n      \"formal_name\": \"Polynomial.sum_def\",\n      \"informal_name\": \"Definition of Polynomial Sum Using Coefficients and Support\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Semiring R] {S : Type u_1} [inst_1 : AddCommMonoid S] (p : Polynomial R) (f : ℕ → R → S),\\n  p.sum f = ∑ n ∈ p.support, f n (p.coeff n)\",\n      \"informal_description\": \"For any polynomial $ p $ over a semiring $ R $ and any function $ f : \\\\mathbb{N} \\\\to R \\\\to S $ where $ S $ is an additive commutative monoid, the sum of $ p $ with respect to $ f $ is equal to the sum over all exponents $ n $ in the support of $ p $ of $ f(n)(a_n) $, where $ a_n $ denotes the coefficient of $ X^n $ in $ p $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Basic\"\n    },\n    {\n      \"formal_name\": \"Polynomial.as_sum_support\",\n      \"informal_name\": \"Polynomial as Sum of Monomials over Support\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Semiring R] (p : Polynomial R), p = ∑ i ∈ p.support, (Polynomial.monomial i) (p.coeff i)\",\n      \"informal_description\": \"For any polynomial $ p $ over a semiring $ R $, $ p $ is equal to the sum of $ \\\\text{coeff}(p, i) \\\\cdot X^i $ for all $ i $ in the support of $ p $, where the support denotes the finite set of exponents with non-zero coefficients.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Degree.Support\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.weightedTotalDegree\",\n      \"informal_name\": \"Weighted total degree of a multivariate polynomial\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} →\\n  {M : Type u_2} →\\n    [inst : CommSemiring R] →\\n      {σ : Type u_3} → [AddCommMonoid M] → [inst_2 : SemilatticeSup M] → [OrderBot M] → (σ → M) → MvPolynomial σ R → M\",\n      \"informal_description\": \"For a multivariate polynomial $ p $ over a commutative semiring $ R $ with variables indexed by $ \\\\sigma $, and a weighting function $ w : \\\\sigma \\\\to M $ where $ M $ is a sup-semilattice, this function computes the supremum of the weights $ w(s) $ over all monomials $ s $ in the support of $ p $. The weight $ w(s) $ of a monomial $ s $ is defined as the sum $ \\\\sum_{i \\\\in \\\\text{support } s} s(i) \\\\cdot v_i $ for some fixed vectors $ v_i $ associated with indices $ i $. The result is an element of $ M $ representing the weighted total degree of $ p $.\",\n      \"path\": \"Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.sum_monomial_eq\",\n      \"informal_name\": \"Sum of a Monomial in Multivariate Polynomial Ring Equals Its Term\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] {A : Type u_2} [inst_1 : AddCommMonoid A] {u : σ →₀ ℕ} {r : R}\\n  {b : (σ →₀ ℕ) → R → A}, b u 0 = 0 → Finsupp.sum ((MvPolynomial.monomial u) r) b = b u r\",\n      \"informal_description\": \"For any additive commutative monoid $A$, commutative semiring $R$, and type $\\\\sigma$, if $b : (\\\\sigma \\\\to₀ \\\\mathbb{N}) \\\\to R \\\\to A$ satisfies $b(u, 0) = 0$ for a monomial $u$, then the sum of the monomial $\\\\text{monomial}(u, r)$ over $b$ equals $b(u, r)$. This expresses that summing a single monomial term in the multivariate polynomial ring $R[\\\\sigma]$ reduces to evaluating $b$ at the monomial's exponent vector and coefficient, provided $b$ annihilates zero coefficients.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Basic\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "MvPolynomial.sum_def",
+            "informal_name": "Sum of a Multivariate Polynomial Over Its Support",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] {A : Type u_2} [inst_1 : AddCommMonoid A] {p : MvPolynomial σ R}\n  {b : (σ →₀ ℕ) → R → A}, Finsupp.sum p b = ∑ m ∈ p.support, b m (MvPolynomial.coeff m p)",
+            "informal_description": "For any additive commutative monoid $ A $, multivariate polynomial $ p $, and function $ b : (\\sigma \\to_0 \\mathbb{N}) \\to R \\to A $, the sum $ p.\\text{sum}\\, b $ equals the summation over all monomials $ m $ in the support of $ p $ of $ b(m, \\text{coeff}_p(m)) $. This expresses the polynomial's sum as a finite combination of its non-zero monomials weighted by $ b $.",
+            "path": "Mathlib.Algebra.MvPolynomial.Basic"
+          },
+          {
+            "formal_name": "Polynomial.sum_eq_of_subset",
+            "informal_name": "Polynomial Sum Equality with Subset Support",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : Semiring R] {S : Type u_1} [inst_1 : AddCommMonoid S] {p : Polynomial R} (f : ℕ → R → S),\n  (∀ (i : ℕ), f i 0 = 0) → ∀ {s : Finset ℕ}, p.support ⊆ s → p.sum f = ∑ n ∈ s, f n (p.coeff n)",
+            "informal_description": "For any polynomial $ p $ over a semiring $ R $, and any function $ f : \\mathbb{N} \\to R \\to S $ where $ S $ is an additive commutative monoid, if $ f(i)(0) = 0 $ for all $ i \\in \\mathbb{N} $, and $ s $ is a finite set of natural numbers containing the support of $ p $, then the sum of $ p $ with respect to $ f $ equals $ \\sum_{n \\in s} f(n)(a_n) $, where $ a_n $ denotes the coefficient of $ X^n $ in $ p $. The support of $ p $ is the set of exponents with non-zero coefficients.",
+            "path": "Mathlib.Algebra.Polynomial.Basic"
+          },
+          {
+            "formal_name": "MvPolynomial.support_sum_monomial_coeff",
+            "informal_name": "Sum over Support of Monomials Equals Polynomial",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] (p : MvPolynomial σ R),\n  ∑ v ∈ p.support, (MvPolynomial.monomial v) (MvPolynomial.coeff v p) = p",
+            "informal_description": "For any multivariate polynomial $ p $ over a commutative semiring $ R $ with variables indexed by $ \\sigma $, the sum of the monomials $ v $ in the support of $ p $ multiplied by their respective coefficients equals $ p $. In symbols, $ p = \\sum_{v \\in \\text{support}(p)} \\text{monomial}(v) \\cdot \\text{coeff}(v, p) $.",
+            "path": "Mathlib.Algebra.MvPolynomial.Basic"
+          },
+          {
+            "formal_name": "MvPolynomial.as_sum",
+            "informal_name": "Multivariate Polynomial as Sum of Monomials",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] (p : MvPolynomial σ R),\n  p = ∑ v ∈ p.support, (MvPolynomial.monomial v) (MvPolynomial.coeff v p)",
+            "informal_description": "For any multivariate polynomial $ p $ over a commutative semiring $ R $ with variables indexed by $ \\sigma $, $ p $ can be expressed as the finite sum $ p = \\sum_{v \\in \\text{support}(p)} \\text{monomial}(v) \\cdot \\text{coeff}(v, p) $, where $ \\text{support}(p) $ denotes the finite set of monomials with non-zero coefficients in $ p $.",
+            "path": "Mathlib.Algebra.MvPolynomial.Basic"
+          },
+          {
+            "formal_name": "Polynomial.sum_def",
+            "informal_name": "Definition of Polynomial Sum Using Coefficients and Support",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : Semiring R] {S : Type u_1} [inst_1 : AddCommMonoid S] (p : Polynomial R) (f : ℕ → R → S),\n  p.sum f = ∑ n ∈ p.support, f n (p.coeff n)",
+            "informal_description": "For any polynomial $ p $ over a semiring $ R $ and any function $ f : \\mathbb{N} \\to R \\to S $ where $ S $ is an additive commutative monoid, the sum of $ p $ with respect to $ f $ is equal to the sum over all exponents $ n $ in the support of $ p $ of $ f(n)(a_n) $, where $ a_n $ denotes the coefficient of $ X^n $ in $ p $.",
+            "path": "Mathlib.Algebra.Polynomial.Basic"
+          },
+          {
+            "formal_name": "Polynomial.as_sum_support",
+            "informal_name": "Polynomial as Sum of Monomials over Support",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : Semiring R] (p : Polynomial R), p = ∑ i ∈ p.support, (Polynomial.monomial i) (p.coeff i)",
+            "informal_description": "For any polynomial $ p $ over a semiring $ R $, $ p $ is equal to the sum of $ \\text{coeff}(p, i) \\cdot X^i $ for all $ i $ in the support of $ p $, where the support denotes the finite set of exponents with non-zero coefficients.",
+            "path": "Mathlib.Algebra.Polynomial.Degree.Support"
+          },
+          {
+            "formal_name": "MvPolynomial.weightedTotalDegree",
+            "informal_name": "Weighted total degree of a multivariate polynomial",
+            "kind": "definition",
+            "type": "{R : Type u_1} →\n  {M : Type u_2} →\n    [inst : CommSemiring R] →\n      {σ : Type u_3} → [AddCommMonoid M] → [inst_2 : SemilatticeSup M] → [OrderBot M] → (σ → M) → MvPolynomial σ R → M",
+            "informal_description": "For a multivariate polynomial $ p $ over a commutative semiring $ R $ with variables indexed by $ \\sigma $, and a weighting function $ w : \\sigma \\to M $ where $ M $ is a sup-semilattice, this function computes the supremum of the weights $ w(s) $ over all monomials $ s $ in the support of $ p $. The weight $ w(s) $ of a monomial $ s $ is defined as the sum $ \\sum_{i \\in \\text{support } s} s(i) \\cdot v_i $ for some fixed vectors $ v_i $ associated with indices $ i $. The result is an element of $ M $ representing the weighted total degree of $ p $.",
+            "path": "Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous"
+          },
+          {
+            "formal_name": "MvPolynomial.sum_monomial_eq",
+            "informal_name": "Sum of a Monomial in Multivariate Polynomial Ring Equals Its Term",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] {A : Type u_2} [inst_1 : AddCommMonoid A] {u : σ →₀ ℕ} {r : R}\n  {b : (σ →₀ ℕ) → R → A}, b u 0 = 0 → Finsupp.sum ((MvPolynomial.monomial u) r) b = b u r",
+            "informal_description": "For any additive commutative monoid $A$, commutative semiring $R$, and type $\\sigma$, if $b : (\\sigma \\to₀ \\mathbb{N}) \\to R \\to A$ satisfies $b(u, 0) = 0$ for a monomial $u$, then the sum of the monomial $\\text{monomial}(u, r)$ over $b$ equals $b(u, r)$. This expresses that summing a single monomial term in the multivariate polynomial ring $R[\\sigma]$ reduces to evaluating $b$ at the monomial's exponent vector and coefficient, provided $b$ annihilates zero coefficients.",
+            "path": "Mathlib.Algebra.MvPolynomial.Basic"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_leanfinder",
+    "form": "standard",
+    "request": {
+      "query": "The length or l1 norm of a finitely supported coefficient vector is unchanged by padding with zeros",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"hammingNorm_comp\",\n      \"informal_name\": \"Hamming Norm Preservation under Component-wise Injective Zero-Preserving Maps\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_2} {β : ι → Type u_3} [inst : Fintype ι] [inst_1 : (i : ι) → DecidableEq (β i)] {γ : ι → Type u_4}\\n  [inst_2 : (i : ι) → DecidableEq (γ i)] [inst_3 : (i : ι) → Zero (β i)] [inst_4 : (i : ι) → Zero (γ i)]\\n  (f : (i : ι) → γ i → β i) {x : (i : ι) → γ i},\\n  (∀ (i : ι), Function.Injective (f i)) → (∀ (i : ι), f i 0 = 0) → (hammingNorm fun i => f i (x i)) = hammingNorm x\",\n      \"informal_description\": \"For any family of injective functions $ f_i : \\\\gamma_i \\\\to \\\\beta_i $ satisfying $ f_i(0) = 0 $, the Hamming norm of the component-wise application $ i \\\\mapsto f_i(x_i) $ equals the Hamming norm of the original function $ x $, i.e., $ \\\\|f \\\\circ x\\\\|_\\\\text{H} = \\\\|x\\\\|_\\\\text{H} $.\",\n      \"path\": \"Mathlib.InformationTheory.Hamming\"\n    },\n    {\n      \"formal_name\": \"Module.length_finsupp\",\n      \"informal_name\": \"Krull Dimension of Finitely Supported Module Equals Cardinality Times Module Length\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {M : Type u_2} [inst : Ring R] [inst_1 : AddCommGroup M] [inst_2 : Module R M] {ι : Type u_5},\\n  Module.length R (ι →₀ M) = ENat.card ι * Module.length R M\",\n      \"informal_description\": \"For a semiring $ R $, an $ R $-module $ M $, and an index type $ \\\\iota $, the Krull dimension of the module of finite support functions $ \\\\iota \\\\to_0 M $ is equal to the product of the cardinality of $ \\\\iota $ (in extended natural numbers) and the Krull dimension of $ M $. This expresses that the length of the finsupp module is multiplicatively determined by the size of the index set and the original module's length.\",\n      \"path\": \"Mathlib.RingTheory.Length\"\n    },\n    {\n      \"formal_name\": \"hammingNorm\",\n      \"informal_name\": \"Hamming norm\",\n      \"kind\": \"definition\",\n      \"type\": \"{ι : Type u_2} →\\n  {β : ι → Type u_3} → [Fintype ι] → [(i : ι) → DecidableEq (β i)] → [(i : ι) → Zero (β i)] → ((i : ι) → β i) → ℕ\",\n      \"informal_description\": \"The Hamming norm of a function $ x $ is the cardinality of the set of indices $ i $ for which $ x(i) \\\\neq 0 $, i.e., the number of non-zero entries in $ x $.\",\n      \"path\": \"Mathlib.InformationTheory.Hamming\"\n    },\n    {\n      \"formal_name\": \"lp.norm_eq_card_dsupport\",\n      \"informal_name\": \"Norm in $L^0$ Space Equals Support Cardinality\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_3} {E : α → Type u_4} [inst : (i : α) → NormedAddCommGroup (E i)] (f : ↥(lp E 0)), ‖f‖ = ↑⋯.toFinset.card\",\n      \"informal_description\": \"For any function $f$ in the $L^0$ space (with $p = 0$), the norm $\\\\|f\\\\|$ is equal to the cardinality of the finite set of indices where $f(i) \\\\neq 0$.\",\n      \"path\": \"Mathlib.Analysis.Normed.Lp.lpSpace\"\n    },\n    {\n      \"formal_name\": \"hammingNorm_comp_le_hammingNorm\",\n      \"informal_name\": \"Hamming Norm Non-Increasing Under Zero-Preserving Transformation\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_2} {β : ι → Type u_3} [inst : Fintype ι] [inst_1 : (i : ι) → DecidableEq (β i)] {γ : ι → Type u_4}\\n  [inst_2 : (i : ι) → DecidableEq (γ i)] [inst_3 : (i : ι) → Zero (β i)] [inst_4 : (i : ι) → Zero (γ i)]\\n  (f : (i : ι) → γ i → β i) {x : (i : ι) → γ i},\\n  (∀ (i : ι), f i 0 = 0) → (hammingNorm fun i => f i (x i)) ≤ hammingNorm x\",\n      \"informal_description\": \"For a finite index set $\\\\alpha$, if each component function $f_i : \\\\gamma_i \\\\to \\\\beta_i$ preserves zero (i.e., $f_i(0) = 0$), then the Hamming norm of the function $i \\\\mapsto f_i(x_i)$ is less than or equal to the Hamming norm of the original function $x$.\",\n      \"path\": \"Mathlib.InformationTheory.Hamming\"\n    },\n    {\n      \"formal_name\": \"hammingDist_zero_right\",\n      \"informal_name\": \"Hamming Distance to Zero Equals Hamming Norm\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_2} {β : ι → Type u_3} [inst : Fintype ι] [inst_1 : (i : ι) → DecidableEq (β i)]\\n  [inst_2 : (i : ι) → Zero (β i)] (x : (i : ι) → β i), hammingDist x 0 = hammingNorm x\",\n      \"informal_description\": \"For any function $x$ over a finite index type, the Hamming distance between $x$ and the zero function is equal to the Hamming norm of $x$, i.e., $\\\\text{hammingDist}(x, 0) = \\\\text{hammingNorm}(x)$.\",\n      \"path\": \"Mathlib.InformationTheory.Hamming\"\n    },\n    {\n      \"formal_name\": \"Hamming.norm_eq_hammingNorm\",\n      \"informal_name\": \"Hamming Norm Equals Norm\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_2} {β : ι → Type u_3} [inst : Fintype ι] [inst_1 : (i : ι) → DecidableEq (β i)]\\n  [inst_2 : (i : ι) → Zero (β i)] (x : Hamming β), ‖x‖ = ↑(hammingNorm (Hamming.ofHamming x))\",\n      \"informal_description\": \"For any element $ x $ in the Hamming space $ \\\\prod_{i \\\\in \\\\iota} \\\\beta(i) $, the norm $ \\\\|x\\\\| $ is equal to the Hamming norm of $ x $, which counts the number of indices $ i $ where $ x(i) \\\\neq 0 $.\",\n      \"path\": \"Mathlib.InformationTheory.Hamming\"\n    },\n    {\n      \"formal_name\": \"hammingDist_zero_left\",\n      \"informal_name\": \"Hamming Distance from Zero Function Equals Hamming Norm\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_2} {β : ι → Type u_3} [inst : Fintype ι] [inst_1 : (i : ι) → DecidableEq (β i)]\\n  [inst_2 : (i : ι) → Zero (β i)], hammingDist 0 = hammingNorm\",\n      \"informal_description\": \"The Hamming distance between the zero function (which maps every index to zero) and any function $x$ is equal to the Hamming norm of $x$, i.e., $\\\\operatorname{hammingDist}(0, x) = \\\\operatorname{hammingNorm}(x)$.\",\n      \"path\": \"Mathlib.InformationTheory.Hamming\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "hammingNorm_comp",
+            "informal_name": "Hamming Norm Preservation under Component-wise Injective Zero-Preserving Maps",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_2} {β : ι → Type u_3} [inst : Fintype ι] [inst_1 : (i : ι) → DecidableEq (β i)] {γ : ι → Type u_4}\n  [inst_2 : (i : ι) → DecidableEq (γ i)] [inst_3 : (i : ι) → Zero (β i)] [inst_4 : (i : ι) → Zero (γ i)]\n  (f : (i : ι) → γ i → β i) {x : (i : ι) → γ i},\n  (∀ (i : ι), Function.Injective (f i)) → (∀ (i : ι), f i 0 = 0) → (hammingNorm fun i => f i (x i)) = hammingNorm x",
+            "informal_description": "For any family of injective functions $ f_i : \\gamma_i \\to \\beta_i $ satisfying $ f_i(0) = 0 $, the Hamming norm of the component-wise application $ i \\mapsto f_i(x_i) $ equals the Hamming norm of the original function $ x $, i.e., $ \\|f \\circ x\\|_\\text{H} = \\|x\\|_\\text{H} $.",
+            "path": "Mathlib.InformationTheory.Hamming"
+          },
+          {
+            "formal_name": "Module.length_finsupp",
+            "informal_name": "Krull Dimension of Finitely Supported Module Equals Cardinality Times Module Length",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {M : Type u_2} [inst : Ring R] [inst_1 : AddCommGroup M] [inst_2 : Module R M] {ι : Type u_5},\n  Module.length R (ι →₀ M) = ENat.card ι * Module.length R M",
+            "informal_description": "For a semiring $ R $, an $ R $-module $ M $, and an index type $ \\iota $, the Krull dimension of the module of finite support functions $ \\iota \\to_0 M $ is equal to the product of the cardinality of $ \\iota $ (in extended natural numbers) and the Krull dimension of $ M $. This expresses that the length of the finsupp module is multiplicatively determined by the size of the index set and the original module's length.",
+            "path": "Mathlib.RingTheory.Length"
+          },
+          {
+            "formal_name": "hammingNorm",
+            "informal_name": "Hamming norm",
+            "kind": "definition",
+            "type": "{ι : Type u_2} →\n  {β : ι → Type u_3} → [Fintype ι] → [(i : ι) → DecidableEq (β i)] → [(i : ι) → Zero (β i)] → ((i : ι) → β i) → ℕ",
+            "informal_description": "The Hamming norm of a function $ x $ is the cardinality of the set of indices $ i $ for which $ x(i) \\neq 0 $, i.e., the number of non-zero entries in $ x $.",
+            "path": "Mathlib.InformationTheory.Hamming"
+          },
+          {
+            "formal_name": "lp.norm_eq_card_dsupport",
+            "informal_name": "Norm in $L^0$ Space Equals Support Cardinality",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_3} {E : α → Type u_4} [inst : (i : α) → NormedAddCommGroup (E i)] (f : ↥(lp E 0)), ‖f‖ = ↑⋯.toFinset.card",
+            "informal_description": "For any function $f$ in the $L^0$ space (with $p = 0$), the norm $\\|f\\|$ is equal to the cardinality of the finite set of indices where $f(i) \\neq 0$.",
+            "path": "Mathlib.Analysis.Normed.Lp.lpSpace"
+          },
+          {
+            "formal_name": "hammingNorm_comp_le_hammingNorm",
+            "informal_name": "Hamming Norm Non-Increasing Under Zero-Preserving Transformation",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_2} {β : ι → Type u_3} [inst : Fintype ι] [inst_1 : (i : ι) → DecidableEq (β i)] {γ : ι → Type u_4}\n  [inst_2 : (i : ι) → DecidableEq (γ i)] [inst_3 : (i : ι) → Zero (β i)] [inst_4 : (i : ι) → Zero (γ i)]\n  (f : (i : ι) → γ i → β i) {x : (i : ι) → γ i},\n  (∀ (i : ι), f i 0 = 0) → (hammingNorm fun i => f i (x i)) ≤ hammingNorm x",
+            "informal_description": "For a finite index set $\\alpha$, if each component function $f_i : \\gamma_i \\to \\beta_i$ preserves zero (i.e., $f_i(0) = 0$), then the Hamming norm of the function $i \\mapsto f_i(x_i)$ is less than or equal to the Hamming norm of the original function $x$.",
+            "path": "Mathlib.InformationTheory.Hamming"
+          },
+          {
+            "formal_name": "hammingDist_zero_right",
+            "informal_name": "Hamming Distance to Zero Equals Hamming Norm",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_2} {β : ι → Type u_3} [inst : Fintype ι] [inst_1 : (i : ι) → DecidableEq (β i)]\n  [inst_2 : (i : ι) → Zero (β i)] (x : (i : ι) → β i), hammingDist x 0 = hammingNorm x",
+            "informal_description": "For any function $x$ over a finite index type, the Hamming distance between $x$ and the zero function is equal to the Hamming norm of $x$, i.e., $\\text{hammingDist}(x, 0) = \\text{hammingNorm}(x)$.",
+            "path": "Mathlib.InformationTheory.Hamming"
+          },
+          {
+            "formal_name": "Hamming.norm_eq_hammingNorm",
+            "informal_name": "Hamming Norm Equals Norm",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_2} {β : ι → Type u_3} [inst : Fintype ι] [inst_1 : (i : ι) → DecidableEq (β i)]\n  [inst_2 : (i : ι) → Zero (β i)] (x : Hamming β), ‖x‖ = ↑(hammingNorm (Hamming.ofHamming x))",
+            "informal_description": "For any element $ x $ in the Hamming space $ \\prod_{i \\in \\iota} \\beta(i) $, the norm $ \\|x\\| $ is equal to the Hamming norm of $ x $, which counts the number of indices $ i $ where $ x(i) \\neq 0 $.",
+            "path": "Mathlib.InformationTheory.Hamming"
+          },
+          {
+            "formal_name": "hammingDist_zero_left",
+            "informal_name": "Hamming Distance from Zero Function Equals Hamming Norm",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_2} {β : ι → Type u_3} [inst : Fintype ι] [inst_1 : (i : ι) → DecidableEq (β i)]\n  [inst_2 : (i : ι) → Zero (β i)], hammingDist 0 = hammingNorm",
+            "informal_description": "The Hamming distance between the zero function (which maps every index to zero) and any function $x$ is equal to the Hamming norm of $x$, i.e., $\\operatorname{hammingDist}(0, x) = \\operatorname{hammingNorm}(x)$.",
+            "path": "Mathlib.InformationTheory.Hamming"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_leansearch",
+    "form": "abstract",
+    "request": {
+      "query": "Finsupp sum over finite superset support zero preserving function",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finsupp.sum_of_support_subset\",\n      \"module_name\": \"Mathlib.Algebra.BigOperators.Finsupp.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {M : Type u_8} {N : Type u_10} [inst : Zero M] [inst_1 : AddCommMonoid N] (f : α →₀ M) {s : Finset α},\\n  f.support ⊆ s → ∀ (g : α → M → N), (∀ i ∈ s, g i 0 = 0) → f.sum g = ∑ x ∈ s, g x (f x)\"\n    },\n    {\n      \"name\": \"DFinsupp.sumZeroHom\",\n      \"module_name\": \"Mathlib.Data.DFinsupp.BigOperators\",\n      \"kind\": \"definition\",\n      \"type\": \"{ι : Type u} →\\n  {γ : Type w} →\\n    {β : ι → Type v} →\\n      [DecidableEq ι] →\\n        [inst : (i : ι) → Zero (β i)] →\\n          [inst_1 : AddCommMonoid γ] → ((i : ι) → ZeroHom (β i) γ) → ZeroHom (Π₀ (i : ι), β i) γ\"\n    },\n    {\n      \"name\": \"tsum_eq_sum\",\n      \"module_name\": \"Mathlib.Topology.Algebra.InfiniteSum.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_2} [inst : AddCommMonoid α] [inst_1 : TopologicalSpace α] {f : β → α}\\n  {L : SummationFilter β} [L.LeAtTop] {s : Finset β}, (∀ b ∉ s, f b = 0) → ∑'[L] (b : β), f b = ∑ b ∈ s, f b\"\n    },\n    {\n      \"name\": \"Finsupp.sum\",\n      \"module_name\": \"Mathlib.Algebra.BigOperators.Finsupp.Basic\",\n      \"kind\": \"definition\",\n      \"type\": \"{α : Type u_1} → {M : Type u_8} → {N : Type u_10} → [inst : Zero M] → [AddCommMonoid N] → (α →₀ M) → (α → M → N) → N\"\n    },\n    {\n      \"name\": \"finsum\",\n      \"module_name\": \"Mathlib.Algebra.BigOperators.Finprod\",\n      \"kind\": \"definition\",\n      \"type\": \"{M : Type u_7} → {α : Sort u_8} → [AddCommMonoid M] → (α → M) → M\"\n    },\n    {\n      \"name\": \"Finsupp.onFinset\",\n      \"module_name\": \"Mathlib.Data.Finsupp.Defs\",\n      \"kind\": \"definition\",\n      \"type\": \"{α : Type u_1} → {M : Type u_4} → [inst : Zero M] → (s : Finset α) → (f : α → M) → (∀ (a : α), f a ≠ 0 → a ∈ s) → α →₀ M\"\n    },\n    {\n      \"name\": \"finsum_def'\",\n      \"module_name\": \"Mathlib.Algebra.BigOperators.Finprod\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {M : Type u_7} {α : Sort u_8} [inst : AddCommMonoid M] (f : α → M),\\n  finsum f = if h : (Function.support (f ∘ PLift.down)).Finite then ∑ i ∈ h.toFinset, f i.down else 0\"\n    },\n    {\n      \"name\": \"Finsupp.mapRange\",\n      \"module_name\": \"Mathlib.Data.Finsupp.Defs\",\n      \"kind\": \"definition\",\n      \"type\": \"{α : Type u_1} →\\n  {M : Type u_4} → {N : Type u_5} → [inst : Zero M] → [inst_1 : Zero N] → (f : M → N) → f 0 = 0 → (α →₀ M) → α →₀ N\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Finsupp.sum_of_support_subset",
+            "module_name": "Mathlib.Algebra.BigOperators.Finsupp.Basic",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {M : Type u_8} {N : Type u_10} [inst : Zero M] [inst_1 : AddCommMonoid N] (f : α →₀ M) {s : Finset α},\n  f.support ⊆ s → ∀ (g : α → M → N), (∀ i ∈ s, g i 0 = 0) → f.sum g = ∑ x ∈ s, g x (f x)"
+          },
+          {
+            "name": "DFinsupp.sumZeroHom",
+            "module_name": "Mathlib.Data.DFinsupp.BigOperators",
+            "kind": "definition",
+            "type": "{ι : Type u} →\n  {γ : Type w} →\n    {β : ι → Type v} →\n      [DecidableEq ι] →\n        [inst : (i : ι) → Zero (β i)] →\n          [inst_1 : AddCommMonoid γ] → ((i : ι) → ZeroHom (β i) γ) → ZeroHom (Π₀ (i : ι), β i) γ"
+          },
+          {
+            "name": "tsum_eq_sum",
+            "module_name": "Mathlib.Topology.Algebra.InfiniteSum.Basic",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {β : Type u_2} [inst : AddCommMonoid α] [inst_1 : TopologicalSpace α] {f : β → α}\n  {L : SummationFilter β} [L.LeAtTop] {s : Finset β}, (∀ b ∉ s, f b = 0) → ∑'[L] (b : β), f b = ∑ b ∈ s, f b"
+          },
+          {
+            "name": "Finsupp.sum",
+            "module_name": "Mathlib.Algebra.BigOperators.Finsupp.Basic",
+            "kind": "definition",
+            "type": "{α : Type u_1} → {M : Type u_8} → {N : Type u_10} → [inst : Zero M] → [AddCommMonoid N] → (α →₀ M) → (α → M → N) → N"
+          },
+          {
+            "name": "finsum",
+            "module_name": "Mathlib.Algebra.BigOperators.Finprod",
+            "kind": "definition",
+            "type": "{M : Type u_7} → {α : Sort u_8} → [AddCommMonoid M] → (α → M) → M"
+          },
+          {
+            "name": "Finsupp.onFinset",
+            "module_name": "Mathlib.Data.Finsupp.Defs",
+            "kind": "definition",
+            "type": "{α : Type u_1} → {M : Type u_4} → [inst : Zero M] → (s : Finset α) → (f : α → M) → (∀ (a : α), f a ≠ 0 → a ∈ s) → α →₀ M"
+          },
+          {
+            "name": "finsum_def'",
+            "module_name": "Mathlib.Algebra.BigOperators.Finprod",
+            "kind": "theorem",
+            "type": "∀ {M : Type u_7} {α : Sort u_8} [inst : AddCommMonoid M] (f : α → M),\n  finsum f = if h : (Function.support (f ∘ PLift.down)).Finite then ∑ i ∈ h.toFinset, f i.down else 0"
+          },
+          {
+            "name": "Finsupp.mapRange",
+            "module_name": "Mathlib.Data.Finsupp.Defs",
+            "kind": "definition",
+            "type": "{α : Type u_1} →\n  {M : Type u_4} → {N : Type u_5} → [inst : Zero M] → [inst_1 : Zero N] → (f : M → N) → f 0 = 0 → (α →₀ M) → α →₀ N"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_leansearch",
+    "form": "current",
+    "request": {
+      "query": "polynomial coefficient l1 norm sum over finite superset of support",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.sum_eq_of_subset\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Semiring R] {S : Type u_1} [inst_1 : AddCommMonoid S] {p : Polynomial R} (f : ℕ → R → S),\\n  (∀ (i : ℕ), f i 0 = 0) → ∀ {s : Finset ℕ}, p.support ⊆ s → p.sum f = ∑ n ∈ s, f n (p.coeff n)\"\n    },\n    {\n      \"name\": \"FirstOrder.Ring.mvPolynomialSupportLEEquiv\",\n      \"module_name\": \"Mathlib.RingTheory.MvPolynomial.FreeCommRing\",\n      \"kind\": \"definition\",\n      \"type\": \"{ι : Type u_1} →\\n  {κ : Type u_2} →\\n    {R : Type u_3} →\\n      [DecidableEq κ] →\\n        [inst : CommRing R] →\\n          [DecidableEq R] →\\n            (monoms : ι → Finset (κ →₀ ℕ)) → { p // ∀ (i : ι), (p i).support ⊆ monoms i } ≃ ((i : ι) × ↥(monoms i) → R)\"\n    },\n    {\n      \"name\": \"MvPolynomial.coeffs\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Basic\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} → {σ : Type u_1} → [inst : CommSemiring R] → MvPolynomial σ R → Finset R\"\n    },\n    {\n      \"name\": \"Polynomial.finset_sum_coeff\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Coeff\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Semiring R] {ι : Type u_1} (s : Finset ι) (f : ι → Polynomial R) (n : ℕ),\\n  (∑ b ∈ s, f b).coeff n = ∑ b ∈ s, (f b).coeff n\"\n    },\n    {\n      \"name\": \"MvPolynomial.sum_def\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] {A : Type u_2} [inst_1 : AddCommMonoid A] {p : MvPolynomial σ R}\\n  {b : (σ →₀ ℕ) → R → A}, Finsupp.sum p b = ∑ m ∈ p.support, b m (MvPolynomial.coeff m p)\"\n    },\n    {\n      \"name\": \"Polynomial.sum_def\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Semiring R] {S : Type u_1} [inst_1 : AddCommMonoid S] (p : Polynomial R) (f : ℕ → R → S),\\n  p.sum f = ∑ n ∈ p.support, f n (p.coeff n)\"\n    },\n    {\n      \"name\": \"Polynomial.sum\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Basic\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} → [inst : Semiring R] → {S : Type u_1} → [AddCommMonoid S] → Polynomial R → (ℕ → R → S) → S\"\n    },\n    {\n      \"name\": \"Polynomial.sum_over_range\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Degree.Support\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S : Type v} [inst : Semiring R] [inst_1 : AddCommMonoid S] (p : Polynomial R) {f : ℕ → R → S},\\n  (∀ (n : ℕ), f n 0 = 0) → p.sum f = ∑ a ∈ Finset.range (p.natDegree + 1), f a (p.coeff a)\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.sum_eq_of_subset",
+            "module_name": "Mathlib.Algebra.Polynomial.Basic",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : Semiring R] {S : Type u_1} [inst_1 : AddCommMonoid S] {p : Polynomial R} (f : ℕ → R → S),\n  (∀ (i : ℕ), f i 0 = 0) → ∀ {s : Finset ℕ}, p.support ⊆ s → p.sum f = ∑ n ∈ s, f n (p.coeff n)"
+          },
+          {
+            "name": "FirstOrder.Ring.mvPolynomialSupportLEEquiv",
+            "module_name": "Mathlib.RingTheory.MvPolynomial.FreeCommRing",
+            "kind": "definition",
+            "type": "{ι : Type u_1} →\n  {κ : Type u_2} →\n    {R : Type u_3} →\n      [DecidableEq κ] →\n        [inst : CommRing R] →\n          [DecidableEq R] →\n            (monoms : ι → Finset (κ →₀ ℕ)) → { p // ∀ (i : ι), (p i).support ⊆ monoms i } ≃ ((i : ι) × ↥(monoms i) → R)"
+          },
+          {
+            "name": "MvPolynomial.coeffs",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Basic",
+            "kind": "definition",
+            "type": "{R : Type u} → {σ : Type u_1} → [inst : CommSemiring R] → MvPolynomial σ R → Finset R"
+          },
+          {
+            "name": "Polynomial.finset_sum_coeff",
+            "module_name": "Mathlib.Algebra.Polynomial.Coeff",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : Semiring R] {ι : Type u_1} (s : Finset ι) (f : ι → Polynomial R) (n : ℕ),\n  (∑ b ∈ s, f b).coeff n = ∑ b ∈ s, (f b).coeff n"
+          },
+          {
+            "name": "MvPolynomial.sum_def",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Basic",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] {A : Type u_2} [inst_1 : AddCommMonoid A] {p : MvPolynomial σ R}\n  {b : (σ →₀ ℕ) → R → A}, Finsupp.sum p b = ∑ m ∈ p.support, b m (MvPolynomial.coeff m p)"
+          },
+          {
+            "name": "Polynomial.sum_def",
+            "module_name": "Mathlib.Algebra.Polynomial.Basic",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : Semiring R] {S : Type u_1} [inst_1 : AddCommMonoid S] (p : Polynomial R) (f : ℕ → R → S),\n  p.sum f = ∑ n ∈ p.support, f n (p.coeff n)"
+          },
+          {
+            "name": "Polynomial.sum",
+            "module_name": "Mathlib.Algebra.Polynomial.Basic",
+            "kind": "definition",
+            "type": "{R : Type u} → [inst : Semiring R] → {S : Type u_1} → [AddCommMonoid S] → Polynomial R → (ℕ → R → S) → S"
+          },
+          {
+            "name": "Polynomial.sum_over_range",
+            "module_name": "Mathlib.Algebra.Polynomial.Degree.Support",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {S : Type v} [inst : Semiring R] [inst_1 : AddCommMonoid S] (p : Polynomial R) {f : ℕ → R → S},\n  (∀ (n : ℕ), f n 0 = 0) → p.sum f = ∑ a ∈ Finset.range (p.natDegree + 1), f a (p.coeff a)"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_leansearch",
+    "form": "standard",
+    "request": {
+      "query": "sum norm coefficients over finite set containing support padding zeros",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"finsum_def'\",\n      \"module_name\": \"Mathlib.Algebra.BigOperators.Finprod\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {M : Type u_7} {α : Sort u_8} [inst : AddCommMonoid M] (f : α → M),\\n  finsum f = if h : (Function.support (f ∘ PLift.down)).Finite then ∑ i ∈ h.toFinset, f i.down else 0\"\n    },\n    {\n      \"name\": \"finsum_mem_eq_sum\",\n      \"module_name\": \"Mathlib.Algebra.BigOperators.Finprod\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {M : Type u_5} [inst : AddCommMonoid M] (f : α → M) {s : Set α} (hf : (s ∩ Function.support f).Finite),\\n  ∑ᶠ (i : α) (_ : i ∈ s), f i = ∑ i ∈ hf.toFinset, f i\"\n    },\n    {\n      \"name\": \"Finsupp.sum_fintype\",\n      \"module_name\": \"Mathlib.Algebra.BigOperators.Finsupp.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {M : Type u_8} {N : Type u_10} [inst : Zero M] [inst_1 : AddCommMonoid N] [inst_2 : Fintype α]\\n  (f : α →₀ M) (g : α → M → N), (∀ (i : α), g i 0 = 0) → f.sum g = ∑ i, g i (f i)\"\n    },\n    {\n      \"name\": \"finsum\",\n      \"module_name\": \"Mathlib.Algebra.BigOperators.Finprod\",\n      \"kind\": \"definition\",\n      \"type\": \"{M : Type u_7} → {α : Sort u_8} → [AddCommMonoid M] → (α → M) → M\"\n    },\n    {\n      \"name\": \"Fintype.sum_subset\",\n      \"module_name\": \"Mathlib.Algebra.BigOperators.Group.Finset.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {M : Type u_4} {ι : Type u_7} [inst : Fintype ι] [inst_1 : AddCommMonoid M] {s : Finset ι} {f : ι → M},\\n  (∀ (i : ι), f i ≠ 0 → i ∈ s) → ∑ i ∈ s, f i = ∑ i, f i\"\n    },\n    {\n      \"name\": \"Finsupp.sum_of_support_subset\",\n      \"module_name\": \"Mathlib.Algebra.BigOperators.Finsupp.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {M : Type u_8} {N : Type u_10} [inst : Zero M] [inst_1 : AddCommMonoid N] (f : α →₀ M) {s : Finset α},\\n  f.support ⊆ s → ∀ (g : α → M → N), (∀ i ∈ s, g i 0 = 0) → f.sum g = ∑ x ∈ s, g x (f x)\"\n    },\n    {\n      \"name\": \"Finsupp.onFinset_sum\",\n      \"module_name\": \"Mathlib.Algebra.BigOperators.Finsupp.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {M : Type u_8} {N : Type u_10} [inst : Zero M] [inst_1 : AddCommMonoid N] {s : Finset α} {f : α → M}\\n  {g : α → M → N} (hf : ∀ (a : α), f a ≠ 0 → a ∈ s),\\n  (∀ (a : α), g a 0 = 0) → (Finsupp.onFinset s f hf).sum g = ∑ a ∈ s, g a (f a)\"\n    },\n    {\n      \"name\": \"tsum_eq_sum'\",\n      \"module_name\": \"Mathlib.Topology.Algebra.InfiniteSum.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_2} [inst : AddCommMonoid α] [inst_1 : TopologicalSpace α] {f : β → α}\\n  {L : SummationFilter β} [L.LeAtTop] {s : Finset β}, Function.support f ⊆ ↑s → ∑'[L] (b : β), f b = ∑ b ∈ s, f b\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "finsum_def'",
+            "module_name": "Mathlib.Algebra.BigOperators.Finprod",
+            "kind": "theorem",
+            "type": "∀ {M : Type u_7} {α : Sort u_8} [inst : AddCommMonoid M] (f : α → M),\n  finsum f = if h : (Function.support (f ∘ PLift.down)).Finite then ∑ i ∈ h.toFinset, f i.down else 0"
+          },
+          {
+            "name": "finsum_mem_eq_sum",
+            "module_name": "Mathlib.Algebra.BigOperators.Finprod",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {M : Type u_5} [inst : AddCommMonoid M] (f : α → M) {s : Set α} (hf : (s ∩ Function.support f).Finite),\n  ∑ᶠ (i : α) (_ : i ∈ s), f i = ∑ i ∈ hf.toFinset, f i"
+          },
+          {
+            "name": "Finsupp.sum_fintype",
+            "module_name": "Mathlib.Algebra.BigOperators.Finsupp.Basic",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {M : Type u_8} {N : Type u_10} [inst : Zero M] [inst_1 : AddCommMonoid N] [inst_2 : Fintype α]\n  (f : α →₀ M) (g : α → M → N), (∀ (i : α), g i 0 = 0) → f.sum g = ∑ i, g i (f i)"
+          },
+          {
+            "name": "finsum",
+            "module_name": "Mathlib.Algebra.BigOperators.Finprod",
+            "kind": "definition",
+            "type": "{M : Type u_7} → {α : Sort u_8} → [AddCommMonoid M] → (α → M) → M"
+          },
+          {
+            "name": "Fintype.sum_subset",
+            "module_name": "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+            "kind": "theorem",
+            "type": "∀ {M : Type u_4} {ι : Type u_7} [inst : Fintype ι] [inst_1 : AddCommMonoid M] {s : Finset ι} {f : ι → M},\n  (∀ (i : ι), f i ≠ 0 → i ∈ s) → ∑ i ∈ s, f i = ∑ i, f i"
+          },
+          {
+            "name": "Finsupp.sum_of_support_subset",
+            "module_name": "Mathlib.Algebra.BigOperators.Finsupp.Basic",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {M : Type u_8} {N : Type u_10} [inst : Zero M] [inst_1 : AddCommMonoid N] (f : α →₀ M) {s : Finset α},\n  f.support ⊆ s → ∀ (g : α → M → N), (∀ i ∈ s, g i 0 = 0) → f.sum g = ∑ x ∈ s, g x (f x)"
+          },
+          {
+            "name": "Finsupp.onFinset_sum",
+            "module_name": "Mathlib.Algebra.BigOperators.Finsupp.Basic",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {M : Type u_8} {N : Type u_10} [inst : Zero M] [inst_1 : AddCommMonoid N] {s : Finset α} {f : α → M}\n  {g : α → M → N} (hf : ∀ (a : α), f a ≠ 0 → a ∈ s),\n  (∀ (a : α), g a 0 = 0) → (Finsupp.onFinset s f hf).sum g = ∑ a ∈ s, g a (f a)"
+          },
+          {
+            "name": "tsum_eq_sum'",
+            "module_name": "Mathlib.Topology.Algebra.InfiniteSum.Basic",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {β : Type u_2} [inst : AddCommMonoid α] [inst_1 : TopologicalSpace α] {f : β → α}\n  {L : SummationFilter β} [L.LeAtTop] {s : Finset β}, Function.support f ⊆ ↑s → ∑'[L] (b : β), f b = ∑ b ∈ s, f b"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_local_search",
+    "form": "abstract",
+    "request": {
+      "query": "Finset.sum_subset",
+      "project_root": "/Users/ramin/LEAN/Roth",
+      "limit": 12
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_local_search",
+    "form": "current",
+    "request": {
+      "query": "normOne_eq_sum_of_support_subset",
+      "project_root": "/Users/ramin/LEAN/Roth",
+      "limit": 12
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Roth.normOne_eq_sum_of_support_subset\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/CoeffNorm.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Roth.normOne_eq_sum_of_support_subset",
+            "kind": "theorem",
+            "file": "Roth/CoeffNorm.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_local_search",
+    "form": "standard",
+    "request": {
+      "query": "sum_of_support_subset",
+      "project_root": "/Users/ramin/LEAN/Roth",
+      "limit": 12
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_loogle",
+    "form": "abstract",
+    "request": {
+      "query": "\"sum_of_support_subset\"",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finsupp.sum_of_support_subset\",\n      \"type\": \" {α : Type u_1} {M : Type u_8} {N : Type u_10} [Zero M] [AddCommMonoid N] (f : α →₀ M) {s : Finset α} (hs : f.support ⊆ s) (g : α → M → N) (h : ∀ i ∈ s, g i 0 = 0) : f.sum g = ∑ x ∈ s, g x (f x)\",\n      \"module\": \"Mathlib.Algebra.BigOperators.Finsupp.Basic\"\n    },\n    {\n      \"name\": \"finsum_eq_finsetSum_of_support_subset\",\n      \"type\": \" {α : Type u_1} {M : Type u_5} [AddCommMonoid M] (f : α → M) {s : Finset α} (h : Function.support f ⊆ ↑s) : ∑ᶠ (i : α), f i = ∑ i ∈ s, f i\",\n      \"module\": \"Mathlib.Algebra.BigOperators.Finprod\"\n    },\n    {\n      \"name\": \"finsum_eq_sum_of_support_subset\",\n      \"type\": \" {α : Type u_1} {M : Type u_5} [AddCommMonoid M] (f : α → M) {s : Finset α} (h : Function.support f ⊆ ↑s) : ∑ᶠ (i : α), f i = ∑ i ∈ s, f i\",\n      \"module\": \"Mathlib.Algebra.BigOperators.Finprod\"\n    },\n    {\n      \"name\": \"finsum_eq_sum_of_support_subset_of_finite\",\n      \"type\": \" {α : Type u_1} {M : Type u_5} [AddCommMonoid M] (f : α → M) {s : Set α} (h : Function.support f ⊆ s) (hs : s.Finite) : ∑ᶠ (i : α), f i = ∑ i ∈ hs.toFinset, f i\",\n      \"module\": \"Mathlib.Algebra.BigOperators.Finprod\"\n    },\n    {\n      \"name\": \"DFinsupp.sum_of_support_subset\",\n      \"type\": \" {ι : Type u} {γ : Type w} {β : ι → Type v} [DecidableEq ι] [(i : ι) → Zero (β i)] [(i : ι) → (x : β i) → Decidable (x ≠ 0)] [AddCommMonoid γ] {f : Π₀ (i : ι), β i} {g : (i : ι) → β i → γ} {s : Finset ι} (hs : f.support ⊆ s) (map_zero : ∀ i ∈ s, g i 0 = 0) : f.sum g = ∑ i ∈ s, g i (f i)\",\n      \"module\": \"Mathlib.Data.DFinsupp.BigOperators\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Finsupp.sum_of_support_subset",
+            "type": " {α : Type u_1} {M : Type u_8} {N : Type u_10} [Zero M] [AddCommMonoid N] (f : α →₀ M) {s : Finset α} (hs : f.support ⊆ s) (g : α → M → N) (h : ∀ i ∈ s, g i 0 = 0) : f.sum g = ∑ x ∈ s, g x (f x)",
+            "module": "Mathlib.Algebra.BigOperators.Finsupp.Basic"
+          },
+          {
+            "name": "finsum_eq_finsetSum_of_support_subset",
+            "type": " {α : Type u_1} {M : Type u_5} [AddCommMonoid M] (f : α → M) {s : Finset α} (h : Function.support f ⊆ ↑s) : ∑ᶠ (i : α), f i = ∑ i ∈ s, f i",
+            "module": "Mathlib.Algebra.BigOperators.Finprod"
+          },
+          {
+            "name": "finsum_eq_sum_of_support_subset",
+            "type": " {α : Type u_1} {M : Type u_5} [AddCommMonoid M] (f : α → M) {s : Finset α} (h : Function.support f ⊆ ↑s) : ∑ᶠ (i : α), f i = ∑ i ∈ s, f i",
+            "module": "Mathlib.Algebra.BigOperators.Finprod"
+          },
+          {
+            "name": "finsum_eq_sum_of_support_subset_of_finite",
+            "type": " {α : Type u_1} {M : Type u_5} [AddCommMonoid M] (f : α → M) {s : Set α} (h : Function.support f ⊆ s) (hs : s.Finite) : ∑ᶠ (i : α), f i = ∑ i ∈ hs.toFinset, f i",
+            "module": "Mathlib.Algebra.BigOperators.Finprod"
+          },
+          {
+            "name": "DFinsupp.sum_of_support_subset",
+            "type": " {ι : Type u} {γ : Type w} {β : ι → Type v} [DecidableEq ι] [(i : ι) → Zero (β i)] [(i : ι) → (x : β i) → Decidable (x ≠ 0)] [AddCommMonoid γ] {f : Π₀ (i : ι), β i} {g : (i : ι) → β i → γ} {s : Finset ι} (hs : f.support ⊆ s) (map_zero : ∀ i ∈ s, g i 0 = 0) : f.sum g = ∑ i ∈ s, g i (f i)",
+            "module": "Mathlib.Data.DFinsupp.BigOperators"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_loogle",
+    "form": "current-retry",
+    "request": {
+      "query": "Finset.sum, abs",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finset.abs_sum_le_sum_abs\",\n      \"type\": \" {ι : Type u_1} {G : Type u_8} [AddCommGroup G] [LinearOrder G] [IsOrderedAddMonoid G] (f : ι → G) (s : Finset ι) : |∑ i ∈ s, f i| ≤ ∑ i ∈ s, |f i|\",\n      \"module\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    },\n    {\n      \"name\": \"Finset.abs_sum_of_nonneg'\",\n      \"type\": \" {ι : Type u_1} {G : Type u_8} [AddCommGroup G] [LinearOrder G] [AddLeftMono G] {f : ι → G} {s : Finset ι} (hf : ∀ (i : ι), 0 ≤ f i) : |∑ i ∈ s, f i| = ∑ i ∈ s, f i\",\n      \"module\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    },\n    {\n      \"name\": \"Finset.abs_sum_of_nonneg\",\n      \"type\": \" {ι : Type u_1} {G : Type u_8} [AddCommGroup G] [LinearOrder G] [AddLeftMono G] {f : ι → G} {s : Finset ι} (hf : ∀ i ∈ s, 0 ≤ f i) : |∑ i ∈ s, f i| = ∑ i ∈ s, f i\",\n      \"module\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    },\n    {\n      \"name\": \"IsCauSeq.of_abv\",\n      \"type\": \" {α : Type u_1} {β : Type u_2} [Field α] [LinearOrder α] [IsStrictOrderedRing α] [Ring β] {abv : β → α} [IsAbsoluteValue abv] {f : ℕ → β} (hf : IsCauSeq abs fun m => ∑ n ∈ Finset.range m, abv (f n)) : IsCauSeq abv fun m => ∑ n ∈ Finset.range m, f n\",\n      \"module\": \"Mathlib.Algebra.Order.CauSeq.BigOperators\"\n    },\n    {\n      \"name\": \"IsCauSeq.of_abv_le\",\n      \"type\": \" {α : Type u_1} {β : Type u_2} [Field α] [LinearOrder α] [IsStrictOrderedRing α] [Ring β] {abv : β → α} [IsAbsoluteValue abv] {f : ℕ → β} {a : ℕ → α} (n : ℕ) (hm : ∀ (m : ℕ), n ≤ m → abv (f m) ≤ a m) : (IsCauSeq abs fun n => ∑ i ∈ Finset.range n, a i) → IsCauSeq abv fun n => ∑ i ∈ Finset.range n, f i\",\n      \"module\": \"Mathlib.Algebra.Order.CauSeq.BigOperators\"\n    },\n    {\n      \"name\": \"IsCauSeq.geo_series_const\",\n      \"type\": \" {α : Type u_1} [Field α] [LinearOrder α] [IsStrictOrderedRing α] [Archimedean α] (a : α) {x : α} (hx1 : |x| < 1) : IsCauSeq abs fun m => ∑ n ∈ Finset.range m, a * x ^ n\",\n      \"module\": \"Mathlib.Algebra.Order.CauSeq.BigOperators\"\n    },\n    {\n      \"name\": \"cauchy_product\",\n      \"type\": \" {α : Type u_1} {β : Type u_2} [Field α] [LinearOrder α] [IsStrictOrderedRing α] [Ring β] {abv : β → α} [IsAbsoluteValue abv] {f g : ℕ → β} (ha : IsCauSeq abs fun m => ∑ n ∈ Finset.range m, abv (f n)) (hb : IsCauSeq abv fun m => ∑ n ∈ Finset.range m, g n) (ε : α) (ε0 : 0 < ε) : ∃ i, ∀ j ≥ i, abv ((∑ k ∈ Finset.range j, f k) * ∑ k ∈ Finset.range j, g k - ∑ n ∈ Finset.range j, ∑ m ∈ Finset.range (n + 1), f m * g (n - m)) < ε\",\n      \"module\": \"Mathlib.Algebra.Order.CauSeq.BigOperators\"\n    },\n    {\n      \"name\": \"Complex.isCauSeq_norm_exp\",\n      \"type\": \" (z : ℂ) : IsCauSeq abs fun n => ∑ m ∈ Finset.range n, ‖z ^ m / ↑m.factorial‖\",\n      \"module\": \"Mathlib.Analysis.Complex.Exponential\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Finset.abs_sum_le_sum_abs",
+            "type": " {ι : Type u_1} {G : Type u_8} [AddCommGroup G] [LinearOrder G] [IsOrderedAddMonoid G] (f : ι → G) (s : Finset ι) : |∑ i ∈ s, f i| ≤ ∑ i ∈ s, |f i|",
+            "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+          },
+          {
+            "name": "Finset.abs_sum_of_nonneg'",
+            "type": " {ι : Type u_1} {G : Type u_8} [AddCommGroup G] [LinearOrder G] [AddLeftMono G] {f : ι → G} {s : Finset ι} (hf : ∀ (i : ι), 0 ≤ f i) : |∑ i ∈ s, f i| = ∑ i ∈ s, f i",
+            "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+          },
+          {
+            "name": "Finset.abs_sum_of_nonneg",
+            "type": " {ι : Type u_1} {G : Type u_8} [AddCommGroup G] [LinearOrder G] [AddLeftMono G] {f : ι → G} {s : Finset ι} (hf : ∀ i ∈ s, 0 ≤ f i) : |∑ i ∈ s, f i| = ∑ i ∈ s, f i",
+            "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+          },
+          {
+            "name": "IsCauSeq.of_abv",
+            "type": " {α : Type u_1} {β : Type u_2} [Field α] [LinearOrder α] [IsStrictOrderedRing α] [Ring β] {abv : β → α} [IsAbsoluteValue abv] {f : ℕ → β} (hf : IsCauSeq abs fun m => ∑ n ∈ Finset.range m, abv (f n)) : IsCauSeq abv fun m => ∑ n ∈ Finset.range m, f n",
+            "module": "Mathlib.Algebra.Order.CauSeq.BigOperators"
+          },
+          {
+            "name": "IsCauSeq.of_abv_le",
+            "type": " {α : Type u_1} {β : Type u_2} [Field α] [LinearOrder α] [IsStrictOrderedRing α] [Ring β] {abv : β → α} [IsAbsoluteValue abv] {f : ℕ → β} {a : ℕ → α} (n : ℕ) (hm : ∀ (m : ℕ), n ≤ m → abv (f m) ≤ a m) : (IsCauSeq abs fun n => ∑ i ∈ Finset.range n, a i) → IsCauSeq abv fun n => ∑ i ∈ Finset.range n, f i",
+            "module": "Mathlib.Algebra.Order.CauSeq.BigOperators"
+          },
+          {
+            "name": "IsCauSeq.geo_series_const",
+            "type": " {α : Type u_1} [Field α] [LinearOrder α] [IsStrictOrderedRing α] [Archimedean α] (a : α) {x : α} (hx1 : |x| < 1) : IsCauSeq abs fun m => ∑ n ∈ Finset.range m, a * x ^ n",
+            "module": "Mathlib.Algebra.Order.CauSeq.BigOperators"
+          },
+          {
+            "name": "cauchy_product",
+            "type": " {α : Type u_1} {β : Type u_2} [Field α] [LinearOrder α] [IsStrictOrderedRing α] [Ring β] {abv : β → α} [IsAbsoluteValue abv] {f g : ℕ → β} (ha : IsCauSeq abs fun m => ∑ n ∈ Finset.range m, abv (f n)) (hb : IsCauSeq abv fun m => ∑ n ∈ Finset.range m, g n) (ε : α) (ε0 : 0 < ε) : ∃ i, ∀ j ≥ i, abv ((∑ k ∈ Finset.range j, f k) * ∑ k ∈ Finset.range j, g k - ∑ n ∈ Finset.range j, ∑ m ∈ Finset.range (n + 1), f m * g (n - m)) < ε",
+            "module": "Mathlib.Algebra.Order.CauSeq.BigOperators"
+          },
+          {
+            "name": "Complex.isCauSeq_norm_exp",
+            "type": " (z : ℂ) : IsCauSeq abs fun n => ∑ m ∈ Finset.range n, ‖z ^ m / ↑m.factorial‖",
+            "module": "Mathlib.Analysis.Complex.Exponential"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_loogle",
+    "form": "current",
+    "request": {
+      "query": "Finset.sum, abs, Finset.Subset",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "Error executing tool lean_loogle: loogle query error: unknown identifier 'Finset.Subset' Suggestions: Finset.sum, abs, \"Finset.Subset\""
+        }
+      ],
+      "isError": true
+    }
+  },
+  {
+    "method": "lean_loogle",
+    "form": "standard",
+    "request": {
+      "query": "Finsupp.sum, Finset.sum",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finsupp.sum_finsetSum_comm\",\n      \"type\": \" {α : Type u_1} {β : Type u_7} {M : Type u_8} {N : Type u_10} [Zero M] [AddCommMonoid N] {s : Finset β} (f : α →₀ M) (h : α → M → β → N) : (f.sum fun a m => ∑ b ∈ s, h a m b) = ∑ b ∈ s, f.sum fun a m => h a m b\",\n      \"module\": \"Mathlib.Algebra.BigOperators.Finsupp.Basic\"\n    },\n    {\n      \"name\": \"Finsupp.sum_fintype\",\n      \"type\": \" {α : Type u_1} {M : Type u_8} {N : Type u_10} [Zero M] [AddCommMonoid N] [Fintype α] (f : α →₀ M) (g : α → M → N) (h : ∀ (i : α), g i 0 = 0) : f.sum g = ∑ i, g i (f i)\",\n      \"module\": \"Mathlib.Algebra.BigOperators.Finsupp.Basic\"\n    },\n    {\n      \"name\": \"Finsupp.sum_nsmul\",\n      \"type\": \" {α : Type u_1} {N : Type u_10} [AddCommMonoid N] [Fintype α] (f : α →₀ ℕ) (g : α → N) : (f.sum fun a b => b • g a) = ∑ a, f a • g a\",\n      \"module\": \"Mathlib.Algebra.BigOperators.Finsupp.Basic\"\n    },\n    {\n      \"name\": \"Finsupp.onFinset_sum\",\n      \"type\": \" {α : Type u_1} {M : Type u_8} {N : Type u_10} [Zero M] [AddCommMonoid N] {s : Finset α} {f : α → M} {g : α → M → N} (hf : ∀ (a : α), f a ≠ 0 → a ∈ s) (hg : ∀ (a : α), g a 0 = 0) : (Finsupp.onFinset s f hf).sum g = ∑ a ∈ s, g a (f a)\",\n      \"module\": \"Mathlib.Algebra.BigOperators.Finsupp.Basic\"\n    },\n    {\n      \"name\": \"Finsupp.sum_indicator_index\",\n      \"type\": \" {α : Type u_1} {M : Type u_8} {N : Type u_10} [Zero M] [AddCommMonoid N] {s : Finset α} (f : α → M) {h : α → M → N} (h_zero : ∀ a ∈ s, h a 0 = 0) : (Finsupp.indicator s fun x x_1 => f x).sum h = ∑ x ∈ s, h x (f x)\",\n      \"module\": \"Mathlib.Algebra.BigOperators.Finsupp.Basic\"\n    },\n    {\n      \"name\": \"Finsupp.sum_onFinset\",\n      \"type\": \" {α : Type u_1} {M : Type u_8} {N : Type u_10} [Zero M] [AddCommMonoid N] (s : Finset α) (f : α → M) (hf : ∀ (a : α), f a ≠ 0 → a ∈ s) (g : α → M → N) (hg : ∀ i ∈ s, g i 0 = 0) : (Finsupp.onFinset s f hf).sum g = ∑ a ∈ s, g a (f a)\",\n      \"module\": \"Mathlib.Algebra.BigOperators.Finsupp.Basic\"\n    },\n    {\n      \"name\": \"Finsupp.sum_of_support_subset\",\n      \"type\": \" {α : Type u_1} {M : Type u_8} {N : Type u_10} [Zero M] [AddCommMonoid N] (f : α →₀ M) {s : Finset α} (hs : f.support ⊆ s) (g : α → M → N) (h : ∀ i ∈ s, g i 0 = 0) : f.sum g = ∑ x ∈ s, g x (f x)\",\n      \"module\": \"Mathlib.Algebra.BigOperators.Finsupp.Basic\"\n    },\n    {\n      \"name\": \"Finsupp.sum_zsmul\",\n      \"type\": \" {α : Type u_1} {N : Type u_16} [SubtractionCommMonoid N] [Fintype α] (f : α →₀ ℤ) (g : α → N) : (f.sum fun a b => b • g a) = ∑ a, f a • g a\",\n      \"module\": \"Mathlib.Algebra.BigOperators.Finsupp.Basic\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Finsupp.sum_finsetSum_comm",
+            "type": " {α : Type u_1} {β : Type u_7} {M : Type u_8} {N : Type u_10} [Zero M] [AddCommMonoid N] {s : Finset β} (f : α →₀ M) (h : α → M → β → N) : (f.sum fun a m => ∑ b ∈ s, h a m b) = ∑ b ∈ s, f.sum fun a m => h a m b",
+            "module": "Mathlib.Algebra.BigOperators.Finsupp.Basic"
+          },
+          {
+            "name": "Finsupp.sum_fintype",
+            "type": " {α : Type u_1} {M : Type u_8} {N : Type u_10} [Zero M] [AddCommMonoid N] [Fintype α] (f : α →₀ M) (g : α → M → N) (h : ∀ (i : α), g i 0 = 0) : f.sum g = ∑ i, g i (f i)",
+            "module": "Mathlib.Algebra.BigOperators.Finsupp.Basic"
+          },
+          {
+            "name": "Finsupp.sum_nsmul",
+            "type": " {α : Type u_1} {N : Type u_10} [AddCommMonoid N] [Fintype α] (f : α →₀ ℕ) (g : α → N) : (f.sum fun a b => b • g a) = ∑ a, f a • g a",
+            "module": "Mathlib.Algebra.BigOperators.Finsupp.Basic"
+          },
+          {
+            "name": "Finsupp.onFinset_sum",
+            "type": " {α : Type u_1} {M : Type u_8} {N : Type u_10} [Zero M] [AddCommMonoid N] {s : Finset α} {f : α → M} {g : α → M → N} (hf : ∀ (a : α), f a ≠ 0 → a ∈ s) (hg : ∀ (a : α), g a 0 = 0) : (Finsupp.onFinset s f hf).sum g = ∑ a ∈ s, g a (f a)",
+            "module": "Mathlib.Algebra.BigOperators.Finsupp.Basic"
+          },
+          {
+            "name": "Finsupp.sum_indicator_index",
+            "type": " {α : Type u_1} {M : Type u_8} {N : Type u_10} [Zero M] [AddCommMonoid N] {s : Finset α} (f : α → M) {h : α → M → N} (h_zero : ∀ a ∈ s, h a 0 = 0) : (Finsupp.indicator s fun x x_1 => f x).sum h = ∑ x ∈ s, h x (f x)",
+            "module": "Mathlib.Algebra.BigOperators.Finsupp.Basic"
+          },
+          {
+            "name": "Finsupp.sum_onFinset",
+            "type": " {α : Type u_1} {M : Type u_8} {N : Type u_10} [Zero M] [AddCommMonoid N] (s : Finset α) (f : α → M) (hf : ∀ (a : α), f a ≠ 0 → a ∈ s) (g : α → M → N) (hg : ∀ i ∈ s, g i 0 = 0) : (Finsupp.onFinset s f hf).sum g = ∑ a ∈ s, g a (f a)",
+            "module": "Mathlib.Algebra.BigOperators.Finsupp.Basic"
+          },
+          {
+            "name": "Finsupp.sum_of_support_subset",
+            "type": " {α : Type u_1} {M : Type u_8} {N : Type u_10} [Zero M] [AddCommMonoid N] (f : α →₀ M) {s : Finset α} (hs : f.support ⊆ s) (g : α → M → N) (h : ∀ i ∈ s, g i 0 = 0) : f.sum g = ∑ x ∈ s, g x (f x)",
+            "module": "Mathlib.Algebra.BigOperators.Finsupp.Basic"
+          },
+          {
+            "name": "Finsupp.sum_zsmul",
+            "type": " {α : Type u_1} {N : Type u_16} [SubtractionCommMonoid N] [Fintype α] (f : α →₀ ℤ) (g : α → N) : (f.sum fun a b => b • g a) = ∑ a, f a • g a",
+            "module": "Mathlib.Algebra.BigOperators.Finsupp.Basic"
+          }
+        ]
+      },
+      "isError": false
+    }
+  }
+]

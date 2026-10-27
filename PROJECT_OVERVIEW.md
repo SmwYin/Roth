@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 77/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 78/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 77; remaining: 216.
-- Verdicts: 13 NO-composable-from-mathlib, 13 YES-add-as-is, 6 YES-but-generalise-first, 11 NO-mathlib-has-it, 25 BORDERLINE-needs-human, 9 SKIP.
+- Completed applicable assessments: 78; remaining: 215.
+- Verdicts: 13 NO-composable-from-mathlib, 13 YES-add-as-is, 6 YES-but-generalise-first, 12 NO-mathlib-has-it, 25 BORDERLINE-needs-human, 9 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -829,6 +829,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: Two named consumers, normOne_prod_le107 and normOne_det_le128, both full proof replays validated with fresh replacement.
 - Verdict: NO-composable-from-mathlib; [complete report](.mathlib-quality/overview/mathlibable/Roth.normOne_nonneg.md).
 
+### Completed: `Roth.normOne_eq_sum_of_support_subset`
+
+- Type: `∀ {σ : Type u_1} {P : MvPolynomial σ ℤ} {s : Finset (σ →₀ ℕ)}, P.support ⊆ s → Roth.normOne P = ∑ d ∈ s, |((P.coeff d : ℤ) : ℝ)|`
+- What: Coefficient ℓ¹ norm can be computed on any finite superset of polynomial support.
+- How: Add only terms whose coefficient is zero; existing Finsupp.sum_of_support_subset specializes exactly after Int.cast_zero and abs_zero.
+- Hypotheses: Arbitrary universe-polymorphic variable type; implicit integer polynomial and finite exponent set; support inclusion. No finite-variable, degree, norm-instance, sign or nonzero assumptions.
+- Project dependencies: Roth.normOne
+- Caller summary: Two named consumers in declaring module, four source applications: normOne_monomial61 and normOne_add_le79–81. Full replacement proof bodies native checked.
+- Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/Roth.normOne_eq_sum_of_support_subset.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -1009,6 +1019,8 @@ Completed `Roth.diag`: MvPolynomial.aeval (Eval569) gives exact construction; co
 
 Completed `Roth.normOne_nonneg`: Finset.sum_nonneg and abs_nonneg close exact expanded statement; Finsupp.sum_nonneg supplies generalized arbitrary-index ordered-codomain aggregation. No exact generic norm_nonneg application without correct norm structure bridge.
 
+Completed `Roth.normOne_eq_sum_of_support_subset`: Existing same padding theorem Finsupp.sum_of_support_subset at arbitrary index/Zero coefficient/AddCommMonoid codomain; MvPolynomial sum definition provides representation. Finset.sum_subset and coefficient-vanishing give original proof. All5 methods/3forms checked.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -1164,6 +1176,8 @@ Completed `Roth.normOne`: No second full coefficient-L1 definition found. Diagon
 Completed `Roth.diag`: No second arbitrary-variable diagonal implementation found; HasseDeriv unique-variable transport is different. Not generating-series coefficient diagonal extraction. Bounds need independent assessments.
 
 Completed `Roth.normOne_nonneg`: Generic finite-sum nonnegativity; individual abs_nonneg uses elsewhere are not duplicate full theorem.
+
+Completed `Roth.normOne_eq_sum_of_support_subset`: Support-padding law already in Finsupp API. Univariate Polynomial.sum_eq_of_subset is analogous, not direct multivariate replacement. Hamming norm and module length semantic hits measure different objects.
 
 ## Part 5: Generalization opportunities
 
@@ -1324,6 +1338,8 @@ Completed `Roth.diag`: Verified CommSemiring R, independent arbitrary variable u
 
 Completed `Roth.normOne_nonneg`: Fixed parent interface has no removable assumptions. Verified expanded formula to arbitrary Zero coefficients and ordered additive monoid sizes, requiring nonnegativity only on support; norm-coefficient specialization also verified.
 
+Completed `Roth.normOne_eq_sum_of_support_subset`: No removable assumptions at fixed normOne interface. Expanded indexed zero-preserving coefficient size over Zero R/AddCommMonoid S verified; zero premise can be restricted further to added positions; norm-coefficient version verified.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -1480,6 +1496,8 @@ Completed `Roth.normOne`: No missing scalar construction established; general co
 Completed `Roth.diag`: No missing scalar construction, hom bundle or evaluation-composition API established. Specialized coefficient/degree bounds remain separate assessment candidates.
 
 Completed `Roth.normOne_nonneg`: None established for nonnegativity; full bundled coefficient/convolution norm structure is separate from this law.
+
+Completed `Roth.normOne_eq_sum_of_support_subset`: None needed for support padding. No global coefficient norm instance proposed.
 
 ## Part 7: Junk / removable
 
@@ -1640,6 +1658,8 @@ Completed `Roth.diag`: Useful one-line semantic local API with eleven consumers;
 
 Completed `Roth.normOne_nonneg`: Useful local convenience with two consumers, not dead code. No production deletion in read-only survey.
 
+Completed `Roth.normOne_eq_sum_of_support_subset`: Useful local convenience with two consumers/four rewrites; not dead code. No source changes in assessment.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -1721,6 +1741,7 @@ Completed `Roth.normOne_nonneg`: Useful local convenience with two consumers, no
 | 75 | `Roth.normOne` | NO-composable-from-mathlib | [Report](.mathlib-quality/overview/mathlibable/Roth.normOne.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.normOne/root-acceptance.json) |
 | 76 | `Roth.diag` | NO-composable-from-mathlib | [Report](.mathlib-quality/overview/mathlibable/Roth.diag.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.diag/root-acceptance.json) |
 | 77 | `Roth.normOne_nonneg` | NO-composable-from-mathlib | [Report](.mathlib-quality/overview/mathlibable/Roth.normOne_nonneg.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.normOne_nonneg/root-acceptance.json) |
+| 78 | `Roth.normOne_eq_sum_of_support_subset` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.normOne_eq_sum_of_support_subset.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.normOne_eq_sum_of_support_subset/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -1874,11 +1895,13 @@ Completed `Roth.diag` action: NO-composable-from-mathlib upstream wrapper. Reuse
 
 Completed `Roth.normOne_nonneg` action: NO-composable-from-mathlib upstream. Keep local CoeffNorm convenience or inline exact two-call proof at two specified callers after separate authorized source refactor.
 
+Completed `Roth.normOne_eq_sum_of_support_subset` action: NO-mathlib-has-it. Use Finsupp.sum_of_support_subset with explicit absolute-value function and zero normalization at all four uses, or retain project-local CoeffNorm convenience pending separately authorized refactor; no upstream PR.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.normOne_eq_sum_of_support_subset` next. Supporting identities receive their own applicable checks.
+   `Roth.normOne_monomial` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.

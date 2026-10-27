@@ -1,0 +1,20 @@
+namespace MvPolynomial.NormSupportAssessment
+variable {σ : Type*}
+#check @Roth.normOne_eq_sum_of_support_subset
+#print Roth.normOne_eq_sum_of_support_subset
+#print axioms Roth.normOne_eq_sum_of_support_subset
+theorem replay {P : MvPolynomial σ ℤ} {s : Finset (σ →₀ ℕ)} (hs : P.support ⊆ s) :
+    Roth.normOne P = ∑ d ∈ s, |((P.coeff d : ℤ) : ℝ)| :=
+  Finset.sum_subset hs fun d _ hd ↦ by simp [notMem_support_iff.1 hd]
+theorem viaFinsupp {P : MvPolynomial σ ℤ} {s : Finset (σ →₀ ℕ)} (hs : P.support ⊆ s) :
+    Roth.normOne P = ∑ d ∈ s, |((P.coeff d : ℤ) : ℝ)| :=
+  Finsupp.sum_of_support_subset P.coeff hs (fun _ z ↦ |(z : ℝ)|) (by simp)
+theorem genericPadding {ι R S : Type*} [Zero R] [AddCommMonoid S]
+    (f : ι →₀ R) (s : Finset ι) (hs : f.support ⊆ s) (size : ι → R → S)
+    (hsize : ∀ i, size i 0 = 0) : f.sum size = ∑ i ∈ s, size i (f i) :=
+  Finsupp.sum_of_support_subset f hs size (fun i _ ↦ hsize i)
+#print axioms replay
+#print axioms viaFinsupp
+#print axioms genericPadding
+#check @Finsupp.sum_of_support_subset
+end MvPolynomial.NormSupportAssessment

@@ -1,0 +1,17 @@
+namespace MvPolynomial.NormSupportConsumers
+open Roth
+variable {σ : Type*}
+theorem monomialValue (e : σ →₀ ℕ) (c : ℤ) : normOne (monomial e c) = |(c : ℝ)| := by
+  classical
+  rw [NormSupportAssessment.viaFinsupp support_monomial_subset]
+  simp
+theorem addition (P Q : MvPolynomial σ ℤ) : normOne (P + Q) ≤ normOne P + normOne Q := by
+  classical
+  rw [NormSupportAssessment.viaFinsupp support_add,
+    NormSupportAssessment.viaFinsupp (s := P.support ∪ Q.support) Finset.subset_union_left,
+    NormSupportAssessment.viaFinsupp (s := P.support ∪ Q.support) Finset.subset_union_right,
+    ← Finset.sum_add_distrib]
+  exact Finset.sum_le_sum fun d _ ↦ by simpa using abs_add_le (P.coeff d : ℝ) (Q.coeff d)
+#print axioms monomialValue
+#print axioms addition
+end MvPolynomial.NormSupportConsumers
