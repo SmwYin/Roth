@@ -1,0 +1,15 @@
+namespace MvPolynomial.NormMulAssessment
+variable {σ : Type*}
+#check @Roth.normOne_mul_le
+#print Roth.normOne_mul_le
+#print axioms Roth.normOne_mul_le
+theorem replay (P Q : MvPolynomial σ ℤ) :
+    Roth.normOne (P * Q) ≤ Roth.normOne P * Roth.normOne Q := by
+  classical
+  rw [MvPolynomial.mul_def]
+  refine (Roth.normOne_sum_le _ _).trans ?_
+  rw [Roth.normOne, Roth.normOne, Finset.sum_mul_sum]
+  exact Finset.sum_le_sum fun a _ ↦ (Roth.normOne_sum_le _ _).trans_eq <|
+    Finset.sum_congr rfl fun b _ ↦ by simp [Roth.normOne_monomial, abs_mul]
+#print axioms replay
+end MvPolynomial.NormMulAssessment

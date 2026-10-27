@@ -1,0 +1,51 @@
+{
+  "file": "Roth/CoeffNorm.lean",
+  "line": 96,
+  "name": "Roth.normOne_mul_le",
+  "short": "normOne_mul_le",
+  "kind": "theorem",
+  "visibility": "public",
+  "end_line": 102,
+  "source": "theorem normOne_mul_le (P Q : MvPolynomial σ ℤ) : normOne (P * Q) ≤ normOne P * normOne Q := by\n  classical\n  rw [MvPolynomial.mul_def]\n  refine (normOne_sum_le _ _).trans ?_\n  rw [normOne, normOne, Finset.sum_mul_sum]\n  exact Finset.sum_le_sum fun a _ ↦ (normOne_sum_le _ _).trans_eq <|\n    Finset.sum_congr rfl fun b _ ↦ by simp [normOne_monomial, abs_mul]",
+  "signature": "theorem normOne_mul_le (P Q : MvPolynomial σ ℤ) : normOne (P * Q) ≤ normOne P * normOne Q",
+  "body": "by\n  classical\n  rw [MvPolynomial.mul_def]\n  refine (normOne_sum_le _ _).trans ?_\n  rw [normOne, normOne, Finset.sum_mul_sum]\n  exact Finset.sum_le_sum fun a _ ↦ (normOne_sum_le _ _).trans_eq <|\n    Finset.sum_congr rfl fun b _ ↦ by simp [normOne_monomial, abs_mul]",
+  "proof_lines": 7,
+  "sha256": "ffcbf76f5f96927edddcb17d1256ebffbbe5d61c0fea13726e5291c6bb6dc48a",
+  "source_body_project_refs": [
+    "Roth.normOne",
+    "Roth.normOne_monomial",
+    "Roth.normOne_sum_le"
+  ],
+  "source_type_project_refs": [
+    "Roth.normOne"
+  ],
+  "what": "The coefficient norm is submultiplicative.",
+  "how": "Expands MvPolynomial.mul_def into pairs of monomials, applies normOne_sum_le twice, and uses normOne_monomial and multiplicativity of absolute value.",
+  "hypotheses": "Two integer polynomials; arbitrary variable type.",
+  "source_used_by_project": [
+    "Roth.normOne_prod_le"
+  ],
+  "source_used_by_file": [
+    "Roth.normOne_prod_le"
+  ],
+  "section_binders": "{σ : Type*}",
+  "type_provenance": "Exact written signature plus manually identified captured section binders. Root cached full build succeeds; global opaque/type inspector timed out, so no kernel dump is claimed.",
+  "notes": "No sorry, TODO, or set_option in this declaration.",
+  "assignment_offset": 90,
+  "project_body_refs": [
+    "Roth.normOne",
+    "Roth.normOne_monomial",
+    "Roth.normOne_sum_le"
+  ],
+  "project_type_refs": [
+    "Roth.normOne"
+  ],
+  "project_callers": [
+    {
+      "name": "Roth.normOne_prod_le",
+      "file": "Roth/CoeffNorm.lean",
+      "line": 105
+    }
+  ],
+  "section_context": "{σ : Type*}"
+}

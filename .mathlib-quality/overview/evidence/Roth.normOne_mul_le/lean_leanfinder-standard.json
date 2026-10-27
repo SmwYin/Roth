@@ -1,0 +1,85 @@
+{
+  "method": "lean_leanfinder",
+  "form": "standard",
+  "request": {
+    "query": "polynomial length l1 coefficient norm product submultiplicativity",
+    "num_results": 8
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.cauchyBound\",\n      \"informal_name\": \"Cauchy bound for polynomial roots\",\n      \"kind\": \"definition\",\n      \"type\": \"{K : Type u_1} → [inst : NormedDivisionRing K] → Polynomial K → NNReal\",\n      \"informal_description\": \"The Cauchy bound of a polynomial $ p $ over a normed division ring $ K $ is defined as $ 1 + \\\\frac{\\\\sup_{0 \\\\leq i < \\\\deg p} \\\\|\\\\text{coeff}_i(p)\\\\|}{\\\\|\\\\text{leadingCoeff}(p)\\\\|} $, where $ \\\\sup $ denotes the supremum of the absolute values of the coefficients excluding the leading term, and $ \\\\|\\\\cdot\\\\| $ is the norm on $ K $. This provides an upper bound on the absolute values of the roots of $ p $.\",\n      \"path\": \"Mathlib.Analysis.Polynomial.CauchyBound\"\n    },\n    {\n      \"formal_name\": \"spectralValueTerms\",\n      \"informal_name\": \"Spectral value terms sequence\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : SeminormedRing R] → Polynomial R → ℕ → ℝ\",\n      \"informal_description\": \"For a polynomial $ p $ over a seminormed ring $ R $, this function returns a sequence indexed by $ \\\\mathbb{N} $ where each term is defined as $ \\\\|p_n\\\\|^{1/(d - n)} $ if $ n < d $, and $ 0 $ otherwise. Here, $ p_n $ denotes the coefficient of $ X^n $ in $ p $, $ d $ is the natural degree of $ p $, and $ \\\\|\\\\cdot\\\\| $ is the seminorm on $ R $. This sequence captures the normed coefficients' growth rates relative to their distance from the polynomial's degree.\",\n      \"path\": \"Mathlib.Analysis.Normed.Unbundled.SpectralNorm\"\n    },\n    {\n      \"formal_name\": \"Polynomial.mahlerMeasure_le_sum_norm_coeff\",\n      \"informal_name\": \"Mahler Measure Upper Bound by Coefficient Norms\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (p : Polynomial ℂ), p.mahlerMeasure ≤ p.sum fun x a => ‖a‖\",\n      \"informal_description\": \"For any complex polynomial $ p $, its Mahler measure satisfies $ \\\\text{Mahler}(p) \\\\leq \\\\sum_{n} \\\\|a_n\\\\| $, where $ a_n $ are the coefficients of $ p $ and $ \\\\|\\\\cdot\\\\| $ denotes the complex norm.\",\n      \"path\": \"Mathlib.Analysis.Polynomial.MahlerMeasure\"\n    },\n    {\n      \"formal_name\": \"Polynomial.norm_coeff_le_choose_mul_mahlerMeasure\",\n      \"informal_name\": \"Norm of Coefficient Bound via Binomial Coefficient and Mahler Measure\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (n : ℕ) (p : Polynomial ℂ), ‖p.coeff n‖ ≤ ↑(p.natDegree.choose n) * p.mahlerMeasure\",\n      \"informal_description\": \"For any natural number $ n $ and complex polynomial $ p $, the norm of the coefficient of $ X^n $ in $ p $ satisfies $ \\\\|p.coeff\\\\,n\\\\| \\\\leq \\\\binom{d}{n} \\\\cdot p.mahlerMeasure $, where $ d $ denotes the natural degree of $ p $.\",\n      \"path\": \"Mathlib.Analysis.Polynomial.MahlerMeasure\"\n    },\n    {\n      \"formal_name\": \"Polynomial.le_gaussNorm\",\n      \"informal_name\": \"Gauss Norm Upper Bound for Coefficient Terms\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {F : Type u_2} [inst : Semiring R] [inst_1 : FunLike F R ℝ] (v : F) {c : ℝ} (p : Polynomial R)\\n  [ZeroHomClass F R ℝ] [NonnegHomClass F R ℝ], 0 ≤ c → ∀ (i : ℕ), v (p.coeff i) * c ^ i ≤ Polynomial.gaussNorm v c p\",\n      \"informal_description\": \"For any polynomial $ p $ over a semiring $ R $, valuation $ v $ (preserving zero and non-negative), non-negative real number $ c $, and natural number $ i $, the product $ v(a_i) \\\\cdot c^i $ (where $ a_i $ is the coefficient of $ X^i $ in $ p $) satisfies $ v(a_i) \\\\cdot c^i \\\\leq \\\\|p\\\\|_{v,c} $, where $ \\\\|p\\\\|_{v,c} $ denotes the Gauss norm of $ p $ with respect to $ v $ and $ c $.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.GaussNorm\"\n    },\n    {\n      \"formal_name\": \"Polynomial.card_mahlerMeasure_le_prod\",\n      \"informal_name\": \"Cardinality Bound for Integer Polynomials with Bounded Mahler Measure and Degree\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (n : ℕ) (B : NNReal),\\n  {p | p.natDegree ≤ n ∧ (Polynomial.map (Int.castRingHom ℂ) p).mahlerMeasure ≤ ↑B}.ncard ≤\\n    ∏ i, (2 * ⌊↑(n.choose ↑i) * B⌋₊ + 1)\",\n      \"informal_description\": \"For any natural number $ n $ and non-negative real number $ B $, the number of integer polynomials $ p $ with natural degree at most $ n $ and Mahler measure $ \\\\mathcal{M}(p) \\\\leq B $ is at most the product over $ i = 0 $ to $ n $ of $ 2 \\\\left\\\\lfloor \\\\binom{n}{i} B \\\\right\\\\rfloor + 1 $.\",\n      \"path\": \"Mathlib.NumberTheory.MahlerMeasure\"\n    },\n    {\n      \"formal_name\": \"Polynomial.leading_coeff_le_mahlerMeasure\",\n      \"informal_name\": \"Leading Coefficient Inequality for Mahler Measure\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (p : Polynomial ℂ), ‖p.leadingCoeff‖ ≤ p.mahlerMeasure\",\n      \"informal_description\": \"For any complex polynomial $ p $, the modulus of its leading coefficient satisfies $ \\\\|\\\\text{leadingCoeff}(p)\\\\| \\\\leq \\\\text{mahlerMeasure}(p) $.\",\n      \"path\": \"Mathlib.Analysis.Polynomial.MahlerMeasure\"\n    },\n    {\n      \"formal_name\": \"Polynomial.gaussNorm\",\n      \"informal_name\": \"Gauss norm of a polynomial\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → {F : Type u_2} → [inst : Semiring R] → [FunLike F R ℝ] → F → ℝ → Polynomial R → ℝ\",\n      \"informal_description\": \"The Gauss norm of a polynomial $ p $ is defined as the supremum of $ v(a_i) \\\\cdot c^i $ over all exponents $ i $ in the support of $ p $, where $ a_i $ is the coefficient of $ X^i $ in $ p $. If $ p $ is the zero polynomial (with empty support), the Gauss norm is defined to be $ 0 $. Here, $ v $ denotes a valuation and $ c $ is a real number parameter.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.GaussNorm\"\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "items": [
+        {
+          "formal_name": "Polynomial.cauchyBound",
+          "informal_name": "Cauchy bound for polynomial roots",
+          "kind": "definition",
+          "type": "{K : Type u_1} → [inst : NormedDivisionRing K] → Polynomial K → NNReal",
+          "informal_description": "The Cauchy bound of a polynomial $ p $ over a normed division ring $ K $ is defined as $ 1 + \\frac{\\sup_{0 \\leq i < \\deg p} \\|\\text{coeff}_i(p)\\|}{\\|\\text{leadingCoeff}(p)\\|} $, where $ \\sup $ denotes the supremum of the absolute values of the coefficients excluding the leading term, and $ \\|\\cdot\\| $ is the norm on $ K $. This provides an upper bound on the absolute values of the roots of $ p $.",
+          "path": "Mathlib.Analysis.Polynomial.CauchyBound"
+        },
+        {
+          "formal_name": "spectralValueTerms",
+          "informal_name": "Spectral value terms sequence",
+          "kind": "definition",
+          "type": "{R : Type u_1} → [inst : SeminormedRing R] → Polynomial R → ℕ → ℝ",
+          "informal_description": "For a polynomial $ p $ over a seminormed ring $ R $, this function returns a sequence indexed by $ \\mathbb{N} $ where each term is defined as $ \\|p_n\\|^{1/(d - n)} $ if $ n < d $, and $ 0 $ otherwise. Here, $ p_n $ denotes the coefficient of $ X^n $ in $ p $, $ d $ is the natural degree of $ p $, and $ \\|\\cdot\\| $ is the seminorm on $ R $. This sequence captures the normed coefficients' growth rates relative to their distance from the polynomial's degree.",
+          "path": "Mathlib.Analysis.Normed.Unbundled.SpectralNorm"
+        },
+        {
+          "formal_name": "Polynomial.mahlerMeasure_le_sum_norm_coeff",
+          "informal_name": "Mahler Measure Upper Bound by Coefficient Norms",
+          "kind": "theorem",
+          "type": "∀ (p : Polynomial ℂ), p.mahlerMeasure ≤ p.sum fun x a => ‖a‖",
+          "informal_description": "For any complex polynomial $ p $, its Mahler measure satisfies $ \\text{Mahler}(p) \\leq \\sum_{n} \\|a_n\\| $, where $ a_n $ are the coefficients of $ p $ and $ \\|\\cdot\\| $ denotes the complex norm.",
+          "path": "Mathlib.Analysis.Polynomial.MahlerMeasure"
+        },
+        {
+          "formal_name": "Polynomial.norm_coeff_le_choose_mul_mahlerMeasure",
+          "informal_name": "Norm of Coefficient Bound via Binomial Coefficient and Mahler Measure",
+          "kind": "theorem",
+          "type": "∀ (n : ℕ) (p : Polynomial ℂ), ‖p.coeff n‖ ≤ ↑(p.natDegree.choose n) * p.mahlerMeasure",
+          "informal_description": "For any natural number $ n $ and complex polynomial $ p $, the norm of the coefficient of $ X^n $ in $ p $ satisfies $ \\|p.coeff\\,n\\| \\leq \\binom{d}{n} \\cdot p.mahlerMeasure $, where $ d $ denotes the natural degree of $ p $.",
+          "path": "Mathlib.Analysis.Polynomial.MahlerMeasure"
+        },
+        {
+          "formal_name": "Polynomial.le_gaussNorm",
+          "informal_name": "Gauss Norm Upper Bound for Coefficient Terms",
+          "kind": "theorem",
+          "type": "∀ {R : Type u_1} {F : Type u_2} [inst : Semiring R] [inst_1 : FunLike F R ℝ] (v : F) {c : ℝ} (p : Polynomial R)\n  [ZeroHomClass F R ℝ] [NonnegHomClass F R ℝ], 0 ≤ c → ∀ (i : ℕ), v (p.coeff i) * c ^ i ≤ Polynomial.gaussNorm v c p",
+          "informal_description": "For any polynomial $ p $ over a semiring $ R $, valuation $ v $ (preserving zero and non-negative), non-negative real number $ c $, and natural number $ i $, the product $ v(a_i) \\cdot c^i $ (where $ a_i $ is the coefficient of $ X^i $ in $ p $) satisfies $ v(a_i) \\cdot c^i \\leq \\|p\\|_{v,c} $, where $ \\|p\\|_{v,c} $ denotes the Gauss norm of $ p $ with respect to $ v $ and $ c $.",
+          "path": "Mathlib.RingTheory.Polynomial.GaussNorm"
+        },
+        {
+          "formal_name": "Polynomial.card_mahlerMeasure_le_prod",
+          "informal_name": "Cardinality Bound for Integer Polynomials with Bounded Mahler Measure and Degree",
+          "kind": "theorem",
+          "type": "∀ (n : ℕ) (B : NNReal),\n  {p | p.natDegree ≤ n ∧ (Polynomial.map (Int.castRingHom ℂ) p).mahlerMeasure ≤ ↑B}.ncard ≤\n    ∏ i, (2 * ⌊↑(n.choose ↑i) * B⌋₊ + 1)",
+          "informal_description": "For any natural number $ n $ and non-negative real number $ B $, the number of integer polynomials $ p $ with natural degree at most $ n $ and Mahler measure $ \\mathcal{M}(p) \\leq B $ is at most the product over $ i = 0 $ to $ n $ of $ 2 \\left\\lfloor \\binom{n}{i} B \\right\\rfloor + 1 $.",
+          "path": "Mathlib.NumberTheory.MahlerMeasure"
+        },
+        {
+          "formal_name": "Polynomial.leading_coeff_le_mahlerMeasure",
+          "informal_name": "Leading Coefficient Inequality for Mahler Measure",
+          "kind": "theorem",
+          "type": "∀ (p : Polynomial ℂ), ‖p.leadingCoeff‖ ≤ p.mahlerMeasure",
+          "informal_description": "For any complex polynomial $ p $, the modulus of its leading coefficient satisfies $ \\|\\text{leadingCoeff}(p)\\| \\leq \\text{mahlerMeasure}(p) $.",
+          "path": "Mathlib.Analysis.Polynomial.MahlerMeasure"
+        },
+        {
+          "formal_name": "Polynomial.gaussNorm",
+          "informal_name": "Gauss norm of a polynomial",
+          "kind": "definition",
+          "type": "{R : Type u_1} → {F : Type u_2} → [inst : Semiring R] → [FunLike F R ℝ] → F → ℝ → Polynomial R → ℝ",
+          "informal_description": "The Gauss norm of a polynomial $ p $ is defined as the supremum of $ v(a_i) \\cdot c^i $ over all exponents $ i $ in the support of $ p $, where $ a_i $ is the coefficient of $ X^i $ in $ p $. If $ p $ is the zero polynomial (with empty support), the Gauss norm is defined to be $ 0 $. Here, $ v $ denotes a valuation and $ c $ is a real number parameter.",
+          "path": "Mathlib.RingTheory.Polynomial.GaussNorm"
+        }
+      ]
+    },
+    "isError": false
+  }
+}

@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 84/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 85/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 84; remaining: 209.
-- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 6 YES-but-generalise-first, 15 NO-mathlib-has-it, 27 BORDERLINE-needs-human, 9 SKIP.
+- Completed applicable assessments: 85; remaining: 208.
+- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 6 YES-but-generalise-first, 15 NO-mathlib-has-it, 28 BORDERLINE-needs-human, 9 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -899,6 +899,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: 3 named direct consumers,4 source occurrences, all in CoeffNorm: normOne_mul_le99/101, normOne_det_le123, normOne_hasseDeriv_le152; full293 unique direct-proof audit.
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.normOne_sum_le.md).
 
+### Completed: `Roth.normOne_mul_le`
+
+- Type: `∀ {σ : Type u_1} (P Q : MvPolynomial σ ℤ), Roth.normOne (P * Q) ≤ Roth.normOne P * Roth.normOne Q`
+- What: Coefficient L1 size of a product is at most the product of sizes.
+- How: Expand convolution, apply finite triangle twice and monomial size, then factor double scalar sum.
+- Hypotheses: Arbitrary variable type σ and integer polynomials P,Q; no additional hypotheses.
+- Project dependencies: Roth.normOne, Roth.normOne_sum_le, Roth.normOne_monomial
+- Caller summary: One explicit use in normOne_prod_le; full caller replay and direct proof-value audit of293 canonical declarations agree.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.normOne_mul_le.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -1093,6 +1103,8 @@ Completed `Roth.normOne_neg`: Finsupp.sum_neg_index generated from prod_neg_inde
 
 Completed `Roth.normOne_sum_le`: Existing Finset.le_sum_of_subadditive supplies finite induction; norm_sum_le needs a seminormed additive group compatible with this coefficient size. Project triangle is not an existing mathlib building block.
 
+Completed `Roth.normOne_mul_le`: Existing convolution expansion, finite sums and scalar size identities; norm_mul_le needs an L1-compatible seminormed multiplication structure absent from tested environment.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -1262,6 +1274,8 @@ Completed `Roth.normOne_add_le`: Mathematically an l1 triangle inequality, but e
 Completed `Roth.normOne_neg`: Standard norm sign invariance; existing Finsupp coordinate reindexing is sufficient. Height/integralL1/fieldnorm are different objects.
 
 Completed `Roth.normOne_sum_le`: Abstract subadditive finite-sum bound and norm_sum_le; direct existing theorem specializes once the project zero/triangle witnesses are supplied.
+
+Completed `Roth.normOne_mul_le`: Discrete Young L1 convolution inequality; standard normed-ring law is analogous but no verified representation bridge.
 
 ## Part 5: Generalization opportunities
 
@@ -1436,6 +1450,8 @@ Completed `Roth.normOne_neg`: Fixed parent interface has no droppable premises. 
 
 Completed `Roth.normOne_sum_le`: Fixed normOne interface maximal; expanded generic Finsupp-weight finite bound verified over arbitrary additive commutative coefficient monoid and ordered additive target.
 
+Completed `Roth.normOne_mul_le`: Verified expanded CommSemiring coefficient size with zero/subadditivity/submultiplicativity; parent fixed interface has no droppable hypotheses.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -1606,6 +1622,8 @@ Completed `Roth.normOne_add_le`: Design candidate: generic Finsupp support-sum s
 Completed `Roth.normOne_neg`: None required for the verified replacement; new assessment generic helper is not counted as existing mathlib.
 
 Completed `Roth.normOne_sum_le`: Potential generic Finsupp sum subadditivity/coefficient-size bridge; existing finite induction itself has no gap.
+
+Completed `Roth.normOne_mul_le`: Candidate shared coefficient-size convolution/RingSeminorm API; broad AddMonoidAlgebra endpoint is a future design question.
 
 ## Part 7: Junk / removable
 
@@ -1780,6 +1798,8 @@ Completed `Roth.normOne_neg`: Useful local sign simplification used in determina
 
 Completed `Roth.normOne_sum_le`: Not dead:4 occurrences in3 consumers. One-call local convenience whose upstream role follows coefficient-size API design.
 
+Completed `Roth.normOne_mul_le`: Live main-result helper; not dead or junk.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -1868,6 +1888,7 @@ Completed `Roth.normOne_sum_le`: Not dead:4 occurrences in3 consumers. One-call 
 | 82 | `Roth.normOne_add_le` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.normOne_add_le.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.normOne_add_le/root-acceptance.json) |
 | 83 | `Roth.normOne_neg` | NO-composable-from-mathlib | [Report](.mathlib-quality/overview/mathlibable/Roth.normOne_neg.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.normOne_neg/root-acceptance.json) |
 | 84 | `Roth.normOne_sum_le` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.normOne_sum_le.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.normOne_sum_le/root-acceptance.json) |
+| 85 | `Roth.normOne_mul_le` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.normOne_mul_le.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.normOne_mul_le/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -2035,12 +2056,14 @@ Completed `Roth.normOne_neg` action: NO-composable-from-mathlib: recommended fut
 
 Completed `Roth.normOne_sum_le` action: BORDERLINE-needs-human: retain local finite wrapper for now; settle common coefficient-size API and discoverability question. No production change made.
 
+Completed `Roth.normOne_mul_le` action: BORDERLINE: retain local API pending generic coefficient-size convolution/representation design; no production edit.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.normOne_mul_le` next. Supporting identities receive their own applicable checks.
+   `Roth.normOne_prod_le` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

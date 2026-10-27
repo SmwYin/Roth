@@ -1,0 +1,782 @@
+[
+  {
+    "method": "lean_leanfinder",
+    "form": "abstract",
+    "request": {
+      "query": "finitely supported monoid algebra convolution l1 norm submultiplicative coefficient seminorm",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"MonoidAlgebra.mul_apply_left\",\n      \"informal_name\": \"Left Evaluation of Monoid Algebra Multiplication\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {G : Type u_1} {R : Type u_6} [inst : Semiring R] [inst_1 : Group G] (x y : MonoidAlgebra R G) (g : G),\\n  (x * y) g = Finsupp.sum x fun h r => r * y (h⁻¹ * g)\",\n      \"informal_description\": \"For any elements $x, y$ in the monoid algebra $R[G]$ and any $g \\\\in G$, the product $x \\\\cdot y$ evaluated at $g$ equals the sum over all $h \\\\in G$ of $x(h) \\\\cdot y(h^{-1}g)$, i.e., $(x \\\\cdot y)(g) = \\\\sum_{h \\\\in G} x(h) \\\\cdot y(h^{-1}g)$.\",\n      \"path\": \"Mathlib.Algebra.MonoidAlgebra.Defs\"\n    },\n    {\n      \"formal_name\": \"MonoidAlgebra.mul_def\",\n      \"informal_name\": \"Multiplication in the Monoid Algebra\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {M : Type u_2} {R : Type u_6} [inst : Semiring R] [inst_1 : Mul M] (x y : MonoidAlgebra R M),\\n  x * y = Finsupp.sum x fun m₁ r₁ => Finsupp.sum y fun m₂ r₂ => MonoidAlgebra.single (m₁ * m₂) (r₁ * r₂)\",\n      \"informal_description\": \"The product of two elements $\\\\sum r_m m$ and $\\\\sum s_n n$ in the monoid algebra $R[M]$ is defined as $\\\\sum_{m,n} (r_m \\\\cdot s_n)(m \\\\cdot n)$, where coefficients are multiplied in the semiring $R$ and monoid elements are combined via the monoid operation.\",\n      \"path\": \"Mathlib.Algebra.MonoidAlgebra.Defs\"\n    },\n    {\n      \"formal_name\": \"MonoidAlgebra.mul_apply\",\n      \"informal_name\": \"Multiplication in Monoid Algebra: $(x \\\\cdot y)(m) = \\\\sum_{m_1 m_2 = m} x(m_1) y(m_2)$\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {M : Type u_2} {R : Type u_6} [inst : Semiring R] [inst_1 : Mul M] [inst_2 : DecidableEq M] (x y : MonoidAlgebra R M)\\n  (m : M), (x * y) m = Finsupp.sum x fun m₁ r₁ => Finsupp.sum y fun m₂ r₂ => if m₁ * m₂ = m then r₁ * r₂ else 0\",\n      \"informal_description\": \"For a monoid $ M $ with decidable equality and a semiring $ R $, the multiplication in the monoid algebra $ R[M] $ is defined such that for all $ x, y \\\\in R[M] $ and $ m \\\\in M $, the coefficient of $ m $ in the product $ x \\\\cdot y $ is the sum over all pairs $ (m_1, m_2) $ with $ m_1 m_2 = m $ of the products $ x(m_1) \\\\cdot y(m_2) $.\",\n      \"path\": \"Mathlib.Algebra.MonoidAlgebra.Defs\"\n    },\n    {\n      \"formal_name\": \"MonoidAlgebra.mul_apply_right\",\n      \"informal_name\": \"Right Evaluation of Monoid Algebra Multiplication\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {G : Type u_1} {R : Type u_6} [inst : Semiring R] [inst_1 : Group G] (x y : MonoidAlgebra R G) (g : G),\\n  (x * y) g = Finsupp.sum y fun h r => x (g * h⁻¹) * r\",\n      \"informal_description\": \"For elements $x, y$ in the monoid algebra $R[G]$ over a semiring $R$ with monoid $G$, the product $x \\\\cdot y$ evaluated at $g \\\\in G$ equals the sum over $h \\\\in G$ of $x(g h^{-1}) \\\\cdot y(h)$, i.e., $(x \\\\cdot y)(g) = \\\\sum_{h \\\\in G} x(g h^{-1}) \\\\cdot y(h)$.\",\n      \"path\": \"Mathlib.Algebra.MonoidAlgebra.Defs\"\n    },\n    {\n      \"formal_name\": \"MonoidAlgebra.mul'\",\n      \"informal_name\": \"Multiplication in the monoid algebra\",\n      \"kind\": \"definition\",\n      \"type\": \"{M : Type u_2} →\\n  {R : Type u_6} → [inst : Semiring R] → [Mul M] → MonoidAlgebra R M → MonoidAlgebra R M → MonoidAlgebra R M\",\n      \"informal_description\": \"The multiplication operation in the monoid algebra $ R[M] $, defined for any two elements $ x $ and $ y $ as the sum over all pairs $ (m_1, r_1) $ in $ x $ and $ (m_2, r_2) $ in $ y $ of the monomial with coefficient $ r_1 \\\\cdot r_2 $ at the monoid element $ m_1 \\\\cdot m_2 $.\",\n      \"path\": \"Mathlib.Algebra.MonoidAlgebra.Defs\"\n    },\n    {\n      \"formal_name\": \"AddMonoidAlgebra.mul_apply_left\",\n      \"informal_name\": \"Convolution Formula for Product in Additive Group Algebra\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {G : Type u_1} {R : Type u_6} [inst : Semiring R] [inst_1 : AddGroup G] (x y : AddMonoidAlgebra R G) (g : G),\\n  (x * y) g = Finsupp.sum x fun h r => r * y (-h + g)\",\n      \"informal_description\": \"Let $R$ be a semiring and $G$ be an additive group. For any two elements $x, y$ in the additive monoid algebra $R[G]$, the coefficient of an element $g \\\\in G$ in their product $x * y$ is given by the formula:\\n$$ (x * y)(g) = \\\\sum_{h \\\\in G} x(h) \\\\cdot y(-h + g) $$\\nHere, $x$ and $y$ are viewed as functions from $G$ to $R$ with finite support, and the sum is taken over the support of $x$.\",\n      \"path\": \"Mathlib.Algebra.MonoidAlgebra.Defs\"\n    },\n    {\n      \"formal_name\": \"MonoidAlgebra.single_mul_apply_aux\",\n      \"informal_name\": \"Evaluation of Monomial Multiplication in Monoid Algebra under Support Condition\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {M : Type u_2} {R : Type u_6} [inst : Semiring R] {x : MonoidAlgebra R M} {r : R} {m m₁ m₂ : M} [inst_1 : Mul M],\\n  (∀ m' ∈ x.support, m * m' = m₁ ↔ m' = m₂) → (MonoidAlgebra.single m r * x) m₁ = r * x m₂\",\n      \"informal_description\": \"In the monoid algebra $ R[M] $ over a semiring $ R $ with basis a monoid $ M $, suppose that for all $ m' \\\\in \\\\text{support}(x) $, the equation $ m \\\\cdot m' = m_1 $ holds if and only if $ m' = m_2 $. Then, the product of the monomial $ r \\\\cdot m $ with $ x $, evaluated at $ m_1 $, is equal to $ r \\\\times x(m_2) $.\",\n      \"path\": \"Mathlib.Algebra.MonoidAlgebra.Defs\"\n    },\n    {\n      \"formal_name\": \"MonoidAlgebra.mul_single_apply_aux\",\n      \"informal_name\": \"Coefficient of Monomial Product in Monoid Algebra under Unique Support Condition\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {M : Type u_2} {R : Type u_6} [inst : Semiring R] {x : MonoidAlgebra R M} {r : R} {m m₁ m₂ : M} [inst_1 : Mul M],\\n  (∀ m' ∈ x.support, m' * m = m₁ ↔ m' = m₂) → (x * MonoidAlgebra.single m r) m₁ = x m₂ * r\",\n      \"informal_description\": \"In the monoid algebra $ R[M] $ over a semiring $ R $ with basis monoid $ M $, for any element $ x \\\\in R[M] $, scalar $ r \\\\in R $, and monoid elements $ m, m_1, m_2 \\\\in M $, if the only element $ m' $ in the support of $ x $ satisfying $ m' \\\\cdot m = m_1 $ is $ m_2 $, then the coefficient of $ m_1 $ in the product $ x \\\\cdot (\\\\text{single}\\\\, m\\\\, r) $ is equal to $ x(m_2) \\\\cdot r $.\",\n      \"path\": \"Mathlib.Algebra.MonoidAlgebra.Defs\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "MonoidAlgebra.mul_apply_left",
+            "informal_name": "Left Evaluation of Monoid Algebra Multiplication",
+            "kind": "theorem",
+            "type": "∀ {G : Type u_1} {R : Type u_6} [inst : Semiring R] [inst_1 : Group G] (x y : MonoidAlgebra R G) (g : G),\n  (x * y) g = Finsupp.sum x fun h r => r * y (h⁻¹ * g)",
+            "informal_description": "For any elements $x, y$ in the monoid algebra $R[G]$ and any $g \\in G$, the product $x \\cdot y$ evaluated at $g$ equals the sum over all $h \\in G$ of $x(h) \\cdot y(h^{-1}g)$, i.e., $(x \\cdot y)(g) = \\sum_{h \\in G} x(h) \\cdot y(h^{-1}g)$.",
+            "path": "Mathlib.Algebra.MonoidAlgebra.Defs"
+          },
+          {
+            "formal_name": "MonoidAlgebra.mul_def",
+            "informal_name": "Multiplication in the Monoid Algebra",
+            "kind": "theorem",
+            "type": "∀ {M : Type u_2} {R : Type u_6} [inst : Semiring R] [inst_1 : Mul M] (x y : MonoidAlgebra R M),\n  x * y = Finsupp.sum x fun m₁ r₁ => Finsupp.sum y fun m₂ r₂ => MonoidAlgebra.single (m₁ * m₂) (r₁ * r₂)",
+            "informal_description": "The product of two elements $\\sum r_m m$ and $\\sum s_n n$ in the monoid algebra $R[M]$ is defined as $\\sum_{m,n} (r_m \\cdot s_n)(m \\cdot n)$, where coefficients are multiplied in the semiring $R$ and monoid elements are combined via the monoid operation.",
+            "path": "Mathlib.Algebra.MonoidAlgebra.Defs"
+          },
+          {
+            "formal_name": "MonoidAlgebra.mul_apply",
+            "informal_name": "Multiplication in Monoid Algebra: $(x \\cdot y)(m) = \\sum_{m_1 m_2 = m} x(m_1) y(m_2)$",
+            "kind": "theorem",
+            "type": "∀ {M : Type u_2} {R : Type u_6} [inst : Semiring R] [inst_1 : Mul M] [inst_2 : DecidableEq M] (x y : MonoidAlgebra R M)\n  (m : M), (x * y) m = Finsupp.sum x fun m₁ r₁ => Finsupp.sum y fun m₂ r₂ => if m₁ * m₂ = m then r₁ * r₂ else 0",
+            "informal_description": "For a monoid $ M $ with decidable equality and a semiring $ R $, the multiplication in the monoid algebra $ R[M] $ is defined such that for all $ x, y \\in R[M] $ and $ m \\in M $, the coefficient of $ m $ in the product $ x \\cdot y $ is the sum over all pairs $ (m_1, m_2) $ with $ m_1 m_2 = m $ of the products $ x(m_1) \\cdot y(m_2) $.",
+            "path": "Mathlib.Algebra.MonoidAlgebra.Defs"
+          },
+          {
+            "formal_name": "MonoidAlgebra.mul_apply_right",
+            "informal_name": "Right Evaluation of Monoid Algebra Multiplication",
+            "kind": "theorem",
+            "type": "∀ {G : Type u_1} {R : Type u_6} [inst : Semiring R] [inst_1 : Group G] (x y : MonoidAlgebra R G) (g : G),\n  (x * y) g = Finsupp.sum y fun h r => x (g * h⁻¹) * r",
+            "informal_description": "For elements $x, y$ in the monoid algebra $R[G]$ over a semiring $R$ with monoid $G$, the product $x \\cdot y$ evaluated at $g \\in G$ equals the sum over $h \\in G$ of $x(g h^{-1}) \\cdot y(h)$, i.e., $(x \\cdot y)(g) = \\sum_{h \\in G} x(g h^{-1}) \\cdot y(h)$.",
+            "path": "Mathlib.Algebra.MonoidAlgebra.Defs"
+          },
+          {
+            "formal_name": "MonoidAlgebra.mul'",
+            "informal_name": "Multiplication in the monoid algebra",
+            "kind": "definition",
+            "type": "{M : Type u_2} →\n  {R : Type u_6} → [inst : Semiring R] → [Mul M] → MonoidAlgebra R M → MonoidAlgebra R M → MonoidAlgebra R M",
+            "informal_description": "The multiplication operation in the monoid algebra $ R[M] $, defined for any two elements $ x $ and $ y $ as the sum over all pairs $ (m_1, r_1) $ in $ x $ and $ (m_2, r_2) $ in $ y $ of the monomial with coefficient $ r_1 \\cdot r_2 $ at the monoid element $ m_1 \\cdot m_2 $.",
+            "path": "Mathlib.Algebra.MonoidAlgebra.Defs"
+          },
+          {
+            "formal_name": "AddMonoidAlgebra.mul_apply_left",
+            "informal_name": "Convolution Formula for Product in Additive Group Algebra",
+            "kind": "theorem",
+            "type": "∀ {G : Type u_1} {R : Type u_6} [inst : Semiring R] [inst_1 : AddGroup G] (x y : AddMonoidAlgebra R G) (g : G),\n  (x * y) g = Finsupp.sum x fun h r => r * y (-h + g)",
+            "informal_description": "Let $R$ be a semiring and $G$ be an additive group. For any two elements $x, y$ in the additive monoid algebra $R[G]$, the coefficient of an element $g \\in G$ in their product $x * y$ is given by the formula:\n$$ (x * y)(g) = \\sum_{h \\in G} x(h) \\cdot y(-h + g) $$\nHere, $x$ and $y$ are viewed as functions from $G$ to $R$ with finite support, and the sum is taken over the support of $x$.",
+            "path": "Mathlib.Algebra.MonoidAlgebra.Defs"
+          },
+          {
+            "formal_name": "MonoidAlgebra.single_mul_apply_aux",
+            "informal_name": "Evaluation of Monomial Multiplication in Monoid Algebra under Support Condition",
+            "kind": "theorem",
+            "type": "∀ {M : Type u_2} {R : Type u_6} [inst : Semiring R] {x : MonoidAlgebra R M} {r : R} {m m₁ m₂ : M} [inst_1 : Mul M],\n  (∀ m' ∈ x.support, m * m' = m₁ ↔ m' = m₂) → (MonoidAlgebra.single m r * x) m₁ = r * x m₂",
+            "informal_description": "In the monoid algebra $ R[M] $ over a semiring $ R $ with basis a monoid $ M $, suppose that for all $ m' \\in \\text{support}(x) $, the equation $ m \\cdot m' = m_1 $ holds if and only if $ m' = m_2 $. Then, the product of the monomial $ r \\cdot m $ with $ x $, evaluated at $ m_1 $, is equal to $ r \\times x(m_2) $.",
+            "path": "Mathlib.Algebra.MonoidAlgebra.Defs"
+          },
+          {
+            "formal_name": "MonoidAlgebra.mul_single_apply_aux",
+            "informal_name": "Coefficient of Monomial Product in Monoid Algebra under Unique Support Condition",
+            "kind": "theorem",
+            "type": "∀ {M : Type u_2} {R : Type u_6} [inst : Semiring R] {x : MonoidAlgebra R M} {r : R} {m m₁ m₂ : M} [inst_1 : Mul M],\n  (∀ m' ∈ x.support, m' * m = m₁ ↔ m' = m₂) → (x * MonoidAlgebra.single m r) m₁ = x m₂ * r",
+            "informal_description": "In the monoid algebra $ R[M] $ over a semiring $ R $ with basis monoid $ M $, for any element $ x \\in R[M] $, scalar $ r \\in R $, and monoid elements $ m, m_1, m_2 \\in M $, if the only element $ m' $ in the support of $ x $ satisfying $ m' \\cdot m = m_1 $ is $ m_2 $, then the coefficient of $ m_1 $ in the product $ x \\cdot (\\text{single}\\, m\\, r) $ is equal to $ x(m_2) \\cdot r $.",
+            "path": "Mathlib.Algebra.MonoidAlgebra.Defs"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_leanfinder",
+    "form": "current",
+    "request": {
+      "query": "multivariate integer polynomial sum absolute coefficients norm submultiplicative product",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.numBound\",\n      \"informal_name\": \"Numerical Bound for Multivariate Polynomials in Chevalley's Theorem\",\n      \"kind\": \"definition\",\n      \"type\": \"ℕ → (ℕ → ℕ) → ℕ → ℕ\",\n      \"informal_description\": \"A function that takes a natural number $n$, a function $f : \\\\mathbb{N} \\\\to \\\\mathbb{N}$, and another natural number $m$, returning a natural number used to establish well-founded recursion in the context of multivariate polynomials and Chevalley's theorem. It computes bounds by recursively applying $f$ to $n$ and decrementing $m$.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"Polynomial.mahlerMeasure_le_sum_norm_coeff\",\n      \"informal_name\": \"Mahler Measure Upper Bound by Coefficient Norms\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (p : Polynomial ℂ), p.mahlerMeasure ≤ p.sum fun x a => ‖a‖\",\n      \"informal_description\": \"For any complex polynomial $ p $, its Mahler measure satisfies $ \\\\text{Mahler}(p) \\\\leq \\\\sum_{n} \\\\|a_n\\\\| $, where $ a_n $ are the coefficients of $ p $ and $ \\\\|\\\\cdot\\\\| $ denotes the complex norm.\",\n      \"path\": \"Mathlib.Analysis.Polynomial.MahlerMeasure\"\n    },\n    {\n      \"formal_name\": \"Polynomial.gaussNorm\",\n      \"informal_name\": \"Gauss norm of a polynomial\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → {F : Type u_2} → [inst : Semiring R] → [FunLike F R ℝ] → F → ℝ → Polynomial R → ℝ\",\n      \"informal_description\": \"The Gauss norm of a polynomial $ p $ is defined as the supremum of $ v(a_i) \\\\cdot c^i $ over all exponents $ i $ in the support of $ p $, where $ a_i $ is the coefficient of $ X^i $ in $ p $. If $ p $ is the zero polynomial (with empty support), the Gauss norm is defined to be $ 0 $. Here, $ v $ denotes a valuation and $ c $ is a real number parameter.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.GaussNorm\"\n    },\n    {\n      \"formal_name\": \"Polynomial.card_mahlerMeasure_le_prod\",\n      \"informal_name\": \"Cardinality Bound for Integer Polynomials with Bounded Mahler Measure and Degree\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (n : ℕ) (B : NNReal),\\n  {p | p.natDegree ≤ n ∧ (Polynomial.map (Int.castRingHom ℂ) p).mahlerMeasure ≤ ↑B}.ncard ≤\\n    ∏ i, (2 * ⌊↑(n.choose ↑i) * B⌋₊ + 1)\",\n      \"informal_description\": \"For any natural number $ n $ and non-negative real number $ B $, the number of integer polynomials $ p $ with natural degree at most $ n $ and Mahler measure $ \\\\mathcal{M}(p) \\\\leq B $ is at most the product over $ i = 0 $ to $ n $ of $ 2 \\\\left\\\\lfloor \\\\binom{n}{i} B \\\\right\\\\rfloor + 1 $.\",\n      \"path\": \"Mathlib.NumberTheory.MahlerMeasure\"\n    },\n    {\n      \"formal_name\": \"Polynomial.le_gaussNorm\",\n      \"informal_name\": \"Gauss Norm Upper Bound for Coefficient Terms\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {F : Type u_2} [inst : Semiring R] [inst_1 : FunLike F R ℝ] (v : F) {c : ℝ} (p : Polynomial R)\\n  [ZeroHomClass F R ℝ] [NonnegHomClass F R ℝ], 0 ≤ c → ∀ (i : ℕ), v (p.coeff i) * c ^ i ≤ Polynomial.gaussNorm v c p\",\n      \"informal_description\": \"For any polynomial $ p $ over a semiring $ R $, valuation $ v $ (preserving zero and non-negative), non-negative real number $ c $, and natural number $ i $, the product $ v(a_i) \\\\cdot c^i $ (where $ a_i $ is the coefficient of $ X^i $ in $ p $) satisfies $ v(a_i) \\\\cdot c^i \\\\leq \\\\|p\\\\|_{v,c} $, where $ \\\\|p\\\\|_{v,c} $ denotes the Gauss norm of $ p $ with respect to $ v $ and $ c $.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.GaussNorm\"\n    },\n    {\n      \"formal_name\": \"Polynomial.mahlerMeasure_mul\",\n      \"informal_name\": \"Multiplicativity of Mahler Measure for Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (p q : Polynomial ℂ), (p * q).mahlerMeasure = p.mahlerMeasure * q.mahlerMeasure\",\n      \"informal_description\": \"For any two complex polynomials $ p $ and $ q $, the Mahler measure of their product $ pq $ is equal to the product of their Mahler measures, i.e., $ M(pq) = M(p) \\\\cdot M(q) $.\",\n      \"path\": \"Mathlib.Analysis.Polynomial.MahlerMeasure\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.degBound\",\n      \"informal_name\": \"Degree Bound for Multivariate Polynomials in Chevalley's Theorem\",\n      \"kind\": \"definition\",\n      \"type\": \"ℕ → (ℕ → ℕ) → ℕ → ℕ\",\n      \"informal_description\": \"A function that computes a degree bound for multivariate polynomials, taking a natural number $n$, a function $f : \\\\mathbb{N} \\\\to \\\\mathbb{N}$, and an element of the sum type $\\\\mathbb{N} \\\\oplus \\\\mathbb{N}$. For left components, it applies $f$ to $n$, and for right components, it returns $n$ directly. This is used in the proof of Chevalley's theorem to establish well-founded recursion for multivariate polynomial constructions.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.numBound\",\n      \"informal_name\": \"Numerical Bound for Chevalley's Theorem in Multivariate Polynomials with Multiset Counts\",\n      \"kind\": \"definition\",\n      \"type\": \"ℕ → (m : ℕ) → ℕ → Multiset (Fin m) → ℕ\",\n      \"informal_description\": \"A function that computes a numerical bound used in the context of Chevalley's theorem for multivariate polynomials. It takes natural numbers $k$, $m$, $n$ and a multiset $d$ of elements of type $\\\\text{Fin}\\\\, m$, and returns a natural number obtained by applying the multivariate polynomial bound function to $k + n$ and a function that counts the occurrences of each element in the multiset $d$ after mapping each element to its value in $\\\\mathbb{N}$, then adding 1.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "ChevalleyThm.MvPolynomialC.numBound",
+            "informal_name": "Numerical Bound for Multivariate Polynomials in Chevalley's Theorem",
+            "kind": "definition",
+            "type": "ℕ → (ℕ → ℕ) → ℕ → ℕ",
+            "informal_description": "A function that takes a natural number $n$, a function $f : \\mathbb{N} \\to \\mathbb{N}$, and another natural number $m$, returning a natural number used to establish well-founded recursion in the context of multivariate polynomials and Chevalley's theorem. It computes bounds by recursively applying $f$ to $n$ and decrementing $m$.",
+            "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+          },
+          {
+            "formal_name": "Polynomial.mahlerMeasure_le_sum_norm_coeff",
+            "informal_name": "Mahler Measure Upper Bound by Coefficient Norms",
+            "kind": "theorem",
+            "type": "∀ (p : Polynomial ℂ), p.mahlerMeasure ≤ p.sum fun x a => ‖a‖",
+            "informal_description": "For any complex polynomial $ p $, its Mahler measure satisfies $ \\text{Mahler}(p) \\leq \\sum_{n} \\|a_n\\| $, where $ a_n $ are the coefficients of $ p $ and $ \\|\\cdot\\| $ denotes the complex norm.",
+            "path": "Mathlib.Analysis.Polynomial.MahlerMeasure"
+          },
+          {
+            "formal_name": "Polynomial.gaussNorm",
+            "informal_name": "Gauss norm of a polynomial",
+            "kind": "definition",
+            "type": "{R : Type u_1} → {F : Type u_2} → [inst : Semiring R] → [FunLike F R ℝ] → F → ℝ → Polynomial R → ℝ",
+            "informal_description": "The Gauss norm of a polynomial $ p $ is defined as the supremum of $ v(a_i) \\cdot c^i $ over all exponents $ i $ in the support of $ p $, where $ a_i $ is the coefficient of $ X^i $ in $ p $. If $ p $ is the zero polynomial (with empty support), the Gauss norm is defined to be $ 0 $. Here, $ v $ denotes a valuation and $ c $ is a real number parameter.",
+            "path": "Mathlib.RingTheory.Polynomial.GaussNorm"
+          },
+          {
+            "formal_name": "Polynomial.card_mahlerMeasure_le_prod",
+            "informal_name": "Cardinality Bound for Integer Polynomials with Bounded Mahler Measure and Degree",
+            "kind": "theorem",
+            "type": "∀ (n : ℕ) (B : NNReal),\n  {p | p.natDegree ≤ n ∧ (Polynomial.map (Int.castRingHom ℂ) p).mahlerMeasure ≤ ↑B}.ncard ≤\n    ∏ i, (2 * ⌊↑(n.choose ↑i) * B⌋₊ + 1)",
+            "informal_description": "For any natural number $ n $ and non-negative real number $ B $, the number of integer polynomials $ p $ with natural degree at most $ n $ and Mahler measure $ \\mathcal{M}(p) \\leq B $ is at most the product over $ i = 0 $ to $ n $ of $ 2 \\left\\lfloor \\binom{n}{i} B \\right\\rfloor + 1 $.",
+            "path": "Mathlib.NumberTheory.MahlerMeasure"
+          },
+          {
+            "formal_name": "Polynomial.le_gaussNorm",
+            "informal_name": "Gauss Norm Upper Bound for Coefficient Terms",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {F : Type u_2} [inst : Semiring R] [inst_1 : FunLike F R ℝ] (v : F) {c : ℝ} (p : Polynomial R)\n  [ZeroHomClass F R ℝ] [NonnegHomClass F R ℝ], 0 ≤ c → ∀ (i : ℕ), v (p.coeff i) * c ^ i ≤ Polynomial.gaussNorm v c p",
+            "informal_description": "For any polynomial $ p $ over a semiring $ R $, valuation $ v $ (preserving zero and non-negative), non-negative real number $ c $, and natural number $ i $, the product $ v(a_i) \\cdot c^i $ (where $ a_i $ is the coefficient of $ X^i $ in $ p $) satisfies $ v(a_i) \\cdot c^i \\leq \\|p\\|_{v,c} $, where $ \\|p\\|_{v,c} $ denotes the Gauss norm of $ p $ with respect to $ v $ and $ c $.",
+            "path": "Mathlib.RingTheory.Polynomial.GaussNorm"
+          },
+          {
+            "formal_name": "Polynomial.mahlerMeasure_mul",
+            "informal_name": "Multiplicativity of Mahler Measure for Polynomials",
+            "kind": "theorem",
+            "type": "∀ (p q : Polynomial ℂ), (p * q).mahlerMeasure = p.mahlerMeasure * q.mahlerMeasure",
+            "informal_description": "For any two complex polynomials $ p $ and $ q $, the Mahler measure of their product $ pq $ is equal to the product of their Mahler measures, i.e., $ M(pq) = M(p) \\cdot M(q) $.",
+            "path": "Mathlib.Analysis.Polynomial.MahlerMeasure"
+          },
+          {
+            "formal_name": "ChevalleyThm.MvPolynomialC.degBound",
+            "informal_name": "Degree Bound for Multivariate Polynomials in Chevalley's Theorem",
+            "kind": "definition",
+            "type": "ℕ → (ℕ → ℕ) → ℕ → ℕ",
+            "informal_description": "A function that computes a degree bound for multivariate polynomials, taking a natural number $n$, a function $f : \\mathbb{N} \\to \\mathbb{N}$, and an element of the sum type $\\mathbb{N} \\oplus \\mathbb{N}$. For left components, it applies $f$ to $n$, and for right components, it returns $n$ directly. This is used in the proof of Chevalley's theorem to establish well-founded recursion for multivariate polynomial constructions.",
+            "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+          },
+          {
+            "formal_name": "ChevalleyThm.numBound",
+            "informal_name": "Numerical Bound for Chevalley's Theorem in Multivariate Polynomials with Multiset Counts",
+            "kind": "definition",
+            "type": "ℕ → (m : ℕ) → ℕ → Multiset (Fin m) → ℕ",
+            "informal_description": "A function that computes a numerical bound used in the context of Chevalley's theorem for multivariate polynomials. It takes natural numbers $k$, $m$, $n$ and a multiset $d$ of elements of type $\\text{Fin}\\, m$, and returns a natural number obtained by applying the multivariate polynomial bound function to $k + n$ and a function that counts the occurrences of each element in the multiset $d$ after mapping each element to its value in $\\mathbb{N}$, then adding 1.",
+            "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_leanfinder",
+    "form": "standard",
+    "request": {
+      "query": "polynomial length l1 coefficient norm product submultiplicativity",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.cauchyBound\",\n      \"informal_name\": \"Cauchy bound for polynomial roots\",\n      \"kind\": \"definition\",\n      \"type\": \"{K : Type u_1} → [inst : NormedDivisionRing K] → Polynomial K → NNReal\",\n      \"informal_description\": \"The Cauchy bound of a polynomial $ p $ over a normed division ring $ K $ is defined as $ 1 + \\\\frac{\\\\sup_{0 \\\\leq i < \\\\deg p} \\\\|\\\\text{coeff}_i(p)\\\\|}{\\\\|\\\\text{leadingCoeff}(p)\\\\|} $, where $ \\\\sup $ denotes the supremum of the absolute values of the coefficients excluding the leading term, and $ \\\\|\\\\cdot\\\\| $ is the norm on $ K $. This provides an upper bound on the absolute values of the roots of $ p $.\",\n      \"path\": \"Mathlib.Analysis.Polynomial.CauchyBound\"\n    },\n    {\n      \"formal_name\": \"spectralValueTerms\",\n      \"informal_name\": \"Spectral value terms sequence\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [inst : SeminormedRing R] → Polynomial R → ℕ → ℝ\",\n      \"informal_description\": \"For a polynomial $ p $ over a seminormed ring $ R $, this function returns a sequence indexed by $ \\\\mathbb{N} $ where each term is defined as $ \\\\|p_n\\\\|^{1/(d - n)} $ if $ n < d $, and $ 0 $ otherwise. Here, $ p_n $ denotes the coefficient of $ X^n $ in $ p $, $ d $ is the natural degree of $ p $, and $ \\\\|\\\\cdot\\\\| $ is the seminorm on $ R $. This sequence captures the normed coefficients' growth rates relative to their distance from the polynomial's degree.\",\n      \"path\": \"Mathlib.Analysis.Normed.Unbundled.SpectralNorm\"\n    },\n    {\n      \"formal_name\": \"Polynomial.mahlerMeasure_le_sum_norm_coeff\",\n      \"informal_name\": \"Mahler Measure Upper Bound by Coefficient Norms\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (p : Polynomial ℂ), p.mahlerMeasure ≤ p.sum fun x a => ‖a‖\",\n      \"informal_description\": \"For any complex polynomial $ p $, its Mahler measure satisfies $ \\\\text{Mahler}(p) \\\\leq \\\\sum_{n} \\\\|a_n\\\\| $, where $ a_n $ are the coefficients of $ p $ and $ \\\\|\\\\cdot\\\\| $ denotes the complex norm.\",\n      \"path\": \"Mathlib.Analysis.Polynomial.MahlerMeasure\"\n    },\n    {\n      \"formal_name\": \"Polynomial.norm_coeff_le_choose_mul_mahlerMeasure\",\n      \"informal_name\": \"Norm of Coefficient Bound via Binomial Coefficient and Mahler Measure\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (n : ℕ) (p : Polynomial ℂ), ‖p.coeff n‖ ≤ ↑(p.natDegree.choose n) * p.mahlerMeasure\",\n      \"informal_description\": \"For any natural number $ n $ and complex polynomial $ p $, the norm of the coefficient of $ X^n $ in $ p $ satisfies $ \\\\|p.coeff\\\\,n\\\\| \\\\leq \\\\binom{d}{n} \\\\cdot p.mahlerMeasure $, where $ d $ denotes the natural degree of $ p $.\",\n      \"path\": \"Mathlib.Analysis.Polynomial.MahlerMeasure\"\n    },\n    {\n      \"formal_name\": \"Polynomial.le_gaussNorm\",\n      \"informal_name\": \"Gauss Norm Upper Bound for Coefficient Terms\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {F : Type u_2} [inst : Semiring R] [inst_1 : FunLike F R ℝ] (v : F) {c : ℝ} (p : Polynomial R)\\n  [ZeroHomClass F R ℝ] [NonnegHomClass F R ℝ], 0 ≤ c → ∀ (i : ℕ), v (p.coeff i) * c ^ i ≤ Polynomial.gaussNorm v c p\",\n      \"informal_description\": \"For any polynomial $ p $ over a semiring $ R $, valuation $ v $ (preserving zero and non-negative), non-negative real number $ c $, and natural number $ i $, the product $ v(a_i) \\\\cdot c^i $ (where $ a_i $ is the coefficient of $ X^i $ in $ p $) satisfies $ v(a_i) \\\\cdot c^i \\\\leq \\\\|p\\\\|_{v,c} $, where $ \\\\|p\\\\|_{v,c} $ denotes the Gauss norm of $ p $ with respect to $ v $ and $ c $.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.GaussNorm\"\n    },\n    {\n      \"formal_name\": \"Polynomial.card_mahlerMeasure_le_prod\",\n      \"informal_name\": \"Cardinality Bound for Integer Polynomials with Bounded Mahler Measure and Degree\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (n : ℕ) (B : NNReal),\\n  {p | p.natDegree ≤ n ∧ (Polynomial.map (Int.castRingHom ℂ) p).mahlerMeasure ≤ ↑B}.ncard ≤\\n    ∏ i, (2 * ⌊↑(n.choose ↑i) * B⌋₊ + 1)\",\n      \"informal_description\": \"For any natural number $ n $ and non-negative real number $ B $, the number of integer polynomials $ p $ with natural degree at most $ n $ and Mahler measure $ \\\\mathcal{M}(p) \\\\leq B $ is at most the product over $ i = 0 $ to $ n $ of $ 2 \\\\left\\\\lfloor \\\\binom{n}{i} B \\\\right\\\\rfloor + 1 $.\",\n      \"path\": \"Mathlib.NumberTheory.MahlerMeasure\"\n    },\n    {\n      \"formal_name\": \"Polynomial.leading_coeff_le_mahlerMeasure\",\n      \"informal_name\": \"Leading Coefficient Inequality for Mahler Measure\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (p : Polynomial ℂ), ‖p.leadingCoeff‖ ≤ p.mahlerMeasure\",\n      \"informal_description\": \"For any complex polynomial $ p $, the modulus of its leading coefficient satisfies $ \\\\|\\\\text{leadingCoeff}(p)\\\\| \\\\leq \\\\text{mahlerMeasure}(p) $.\",\n      \"path\": \"Mathlib.Analysis.Polynomial.MahlerMeasure\"\n    },\n    {\n      \"formal_name\": \"Polynomial.gaussNorm\",\n      \"informal_name\": \"Gauss norm of a polynomial\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → {F : Type u_2} → [inst : Semiring R] → [FunLike F R ℝ] → F → ℝ → Polynomial R → ℝ\",\n      \"informal_description\": \"The Gauss norm of a polynomial $ p $ is defined as the supremum of $ v(a_i) \\\\cdot c^i $ over all exponents $ i $ in the support of $ p $, where $ a_i $ is the coefficient of $ X^i $ in $ p $. If $ p $ is the zero polynomial (with empty support), the Gauss norm is defined to be $ 0 $. Here, $ v $ denotes a valuation and $ c $ is a real number parameter.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.GaussNorm\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Polynomial.cauchyBound",
+            "informal_name": "Cauchy bound for polynomial roots",
+            "kind": "definition",
+            "type": "{K : Type u_1} → [inst : NormedDivisionRing K] → Polynomial K → NNReal",
+            "informal_description": "The Cauchy bound of a polynomial $ p $ over a normed division ring $ K $ is defined as $ 1 + \\frac{\\sup_{0 \\leq i < \\deg p} \\|\\text{coeff}_i(p)\\|}{\\|\\text{leadingCoeff}(p)\\|} $, where $ \\sup $ denotes the supremum of the absolute values of the coefficients excluding the leading term, and $ \\|\\cdot\\| $ is the norm on $ K $. This provides an upper bound on the absolute values of the roots of $ p $.",
+            "path": "Mathlib.Analysis.Polynomial.CauchyBound"
+          },
+          {
+            "formal_name": "spectralValueTerms",
+            "informal_name": "Spectral value terms sequence",
+            "kind": "definition",
+            "type": "{R : Type u_1} → [inst : SeminormedRing R] → Polynomial R → ℕ → ℝ",
+            "informal_description": "For a polynomial $ p $ over a seminormed ring $ R $, this function returns a sequence indexed by $ \\mathbb{N} $ where each term is defined as $ \\|p_n\\|^{1/(d - n)} $ if $ n < d $, and $ 0 $ otherwise. Here, $ p_n $ denotes the coefficient of $ X^n $ in $ p $, $ d $ is the natural degree of $ p $, and $ \\|\\cdot\\| $ is the seminorm on $ R $. This sequence captures the normed coefficients' growth rates relative to their distance from the polynomial's degree.",
+            "path": "Mathlib.Analysis.Normed.Unbundled.SpectralNorm"
+          },
+          {
+            "formal_name": "Polynomial.mahlerMeasure_le_sum_norm_coeff",
+            "informal_name": "Mahler Measure Upper Bound by Coefficient Norms",
+            "kind": "theorem",
+            "type": "∀ (p : Polynomial ℂ), p.mahlerMeasure ≤ p.sum fun x a => ‖a‖",
+            "informal_description": "For any complex polynomial $ p $, its Mahler measure satisfies $ \\text{Mahler}(p) \\leq \\sum_{n} \\|a_n\\| $, where $ a_n $ are the coefficients of $ p $ and $ \\|\\cdot\\| $ denotes the complex norm.",
+            "path": "Mathlib.Analysis.Polynomial.MahlerMeasure"
+          },
+          {
+            "formal_name": "Polynomial.norm_coeff_le_choose_mul_mahlerMeasure",
+            "informal_name": "Norm of Coefficient Bound via Binomial Coefficient and Mahler Measure",
+            "kind": "theorem",
+            "type": "∀ (n : ℕ) (p : Polynomial ℂ), ‖p.coeff n‖ ≤ ↑(p.natDegree.choose n) * p.mahlerMeasure",
+            "informal_description": "For any natural number $ n $ and complex polynomial $ p $, the norm of the coefficient of $ X^n $ in $ p $ satisfies $ \\|p.coeff\\,n\\| \\leq \\binom{d}{n} \\cdot p.mahlerMeasure $, where $ d $ denotes the natural degree of $ p $.",
+            "path": "Mathlib.Analysis.Polynomial.MahlerMeasure"
+          },
+          {
+            "formal_name": "Polynomial.le_gaussNorm",
+            "informal_name": "Gauss Norm Upper Bound for Coefficient Terms",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {F : Type u_2} [inst : Semiring R] [inst_1 : FunLike F R ℝ] (v : F) {c : ℝ} (p : Polynomial R)\n  [ZeroHomClass F R ℝ] [NonnegHomClass F R ℝ], 0 ≤ c → ∀ (i : ℕ), v (p.coeff i) * c ^ i ≤ Polynomial.gaussNorm v c p",
+            "informal_description": "For any polynomial $ p $ over a semiring $ R $, valuation $ v $ (preserving zero and non-negative), non-negative real number $ c $, and natural number $ i $, the product $ v(a_i) \\cdot c^i $ (where $ a_i $ is the coefficient of $ X^i $ in $ p $) satisfies $ v(a_i) \\cdot c^i \\leq \\|p\\|_{v,c} $, where $ \\|p\\|_{v,c} $ denotes the Gauss norm of $ p $ with respect to $ v $ and $ c $.",
+            "path": "Mathlib.RingTheory.Polynomial.GaussNorm"
+          },
+          {
+            "formal_name": "Polynomial.card_mahlerMeasure_le_prod",
+            "informal_name": "Cardinality Bound for Integer Polynomials with Bounded Mahler Measure and Degree",
+            "kind": "theorem",
+            "type": "∀ (n : ℕ) (B : NNReal),\n  {p | p.natDegree ≤ n ∧ (Polynomial.map (Int.castRingHom ℂ) p).mahlerMeasure ≤ ↑B}.ncard ≤\n    ∏ i, (2 * ⌊↑(n.choose ↑i) * B⌋₊ + 1)",
+            "informal_description": "For any natural number $ n $ and non-negative real number $ B $, the number of integer polynomials $ p $ with natural degree at most $ n $ and Mahler measure $ \\mathcal{M}(p) \\leq B $ is at most the product over $ i = 0 $ to $ n $ of $ 2 \\left\\lfloor \\binom{n}{i} B \\right\\rfloor + 1 $.",
+            "path": "Mathlib.NumberTheory.MahlerMeasure"
+          },
+          {
+            "formal_name": "Polynomial.leading_coeff_le_mahlerMeasure",
+            "informal_name": "Leading Coefficient Inequality for Mahler Measure",
+            "kind": "theorem",
+            "type": "∀ (p : Polynomial ℂ), ‖p.leadingCoeff‖ ≤ p.mahlerMeasure",
+            "informal_description": "For any complex polynomial $ p $, the modulus of its leading coefficient satisfies $ \\|\\text{leadingCoeff}(p)\\| \\leq \\text{mahlerMeasure}(p) $.",
+            "path": "Mathlib.Analysis.Polynomial.MahlerMeasure"
+          },
+          {
+            "formal_name": "Polynomial.gaussNorm",
+            "informal_name": "Gauss norm of a polynomial",
+            "kind": "definition",
+            "type": "{R : Type u_1} → {F : Type u_2} → [inst : Semiring R] → [FunLike F R ℝ] → F → ℝ → Polynomial R → ℝ",
+            "informal_description": "The Gauss norm of a polynomial $ p $ is defined as the supremum of $ v(a_i) \\cdot c^i $ over all exponents $ i $ in the support of $ p $, where $ a_i $ is the coefficient of $ X^i $ in $ p $. If $ p $ is the zero polynomial (with empty support), the Gauss norm is defined to be $ 0 $. Here, $ v $ denotes a valuation and $ c $ is a real number parameter.",
+            "path": "Mathlib.RingTheory.Polynomial.GaussNorm"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_leansearch",
+    "form": "abstract",
+    "request": {
+      "query": "finitely supported monoid algebra convolution l1 norm submultiplicative coefficient seminorm",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"AddMonoidAlgebra.mul_apply_antidiagonal\",\n      \"module_name\": \"Mathlib.Algebra.MonoidAlgebra.Defs\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {M : Type u_2} {R : Type u_6} [inst : Semiring R] [inst_1 : Add M] (x y : AddMonoidAlgebra R M) (m : M)\\n  (s : Finset (M × M)), (∀ {p : M × M}, p ∈ s ↔ p.1 + p.2 = m) → (x * y) m = ∑ p ∈ s, x p.1 * y p.2\"\n    },\n    {\n      \"name\": \"AddMonoidAlgebra.mul_apply\",\n      \"module_name\": \"Mathlib.Algebra.MonoidAlgebra.Defs\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {M : Type u_2} {R : Type u_6} [inst : Semiring R] [inst_1 : Add M] [inst_2 : DecidableEq M]\\n  (x y : AddMonoidAlgebra R M) (m : M),\\n  (x * y) m = Finsupp.sum x fun m₁ r₁ => Finsupp.sum y fun m₂ r₂ => if m₁ + m₂ = m then r₁ * r₂ else 0\"\n    },\n    {\n      \"name\": \"AddMonoidAlgebra.mul_apply_left\",\n      \"module_name\": \"Mathlib.Algebra.MonoidAlgebra.Defs\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {G : Type u_1} {R : Type u_6} [inst : Semiring R] [inst_1 : AddGroup G] (x y : AddMonoidAlgebra R G) (g : G),\\n  (x * y) g = Finsupp.sum x fun h r => r * y (-h + g)\"\n    },\n    {\n      \"name\": \"MonoidAlgebra.ring\",\n      \"module_name\": \"Mathlib.Algebra.MonoidAlgebra.Defs\",\n      \"kind\": \"instance\",\n      \"type\": \"{M : Type u_2} → {R : Type u_6} → [inst : Ring R] → [Monoid M] → Ring (MonoidAlgebra R M)\"\n    },\n    {\n      \"name\": \"WithLp.instUnitizationNormedAlgebra\",\n      \"module_name\": \"Mathlib.Analysis.Normed.Algebra.UnitizationL1\",\n      \"kind\": \"instance\",\n      \"type\": \"{𝕜 : Type u_1} →\\n  {A : Type u_2} →\\n    [inst : NormedField 𝕜] →\\n      [inst_1 : NonUnitalNormedRing A] →\\n        [inst_2 : NormedSpace 𝕜 A] →\\n          [inst_3 : IsScalarTower 𝕜 A A] → [inst_4 : SMulCommClass 𝕜 A A] → NormedAlgebra 𝕜 (WithLp 1 (Unitization 𝕜 A))\"\n    },\n    {\n      \"name\": \"MonoidAlgebra.nonUnitalCommSemiring\",\n      \"module_name\": \"Mathlib.Algebra.MonoidAlgebra.Defs\",\n      \"kind\": \"instance\",\n      \"type\": \"{M : Type u_2} →\\n  {R : Type u_6} → [inst : CommSemiring R] → [CommSemigroup M] → NonUnitalCommSemiring (MonoidAlgebra R M)\"\n    },\n    {\n      \"name\": \"MonoidAlgebra.nonUnitalCommRing\",\n      \"module_name\": \"Mathlib.Algebra.MonoidAlgebra.Defs\",\n      \"kind\": \"instance\",\n      \"type\": \"{M : Type u_2} → {R : Type u_6} → [inst : CommRing R] → [CommSemigroup M] → NonUnitalCommRing (MonoidAlgebra R M)\"\n    },\n    {\n      \"name\": \"MonoidAlgebra.semiring\",\n      \"module_name\": \"Mathlib.Algebra.MonoidAlgebra.Defs\",\n      \"kind\": \"instance\",\n      \"type\": \"{M : Type u_2} → {R : Type u_6} → [inst : Semiring R] → [Monoid M] → Semiring (MonoidAlgebra R M)\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "AddMonoidAlgebra.mul_apply_antidiagonal",
+            "module_name": "Mathlib.Algebra.MonoidAlgebra.Defs",
+            "kind": "theorem",
+            "type": "∀ {M : Type u_2} {R : Type u_6} [inst : Semiring R] [inst_1 : Add M] (x y : AddMonoidAlgebra R M) (m : M)\n  (s : Finset (M × M)), (∀ {p : M × M}, p ∈ s ↔ p.1 + p.2 = m) → (x * y) m = ∑ p ∈ s, x p.1 * y p.2"
+          },
+          {
+            "name": "AddMonoidAlgebra.mul_apply",
+            "module_name": "Mathlib.Algebra.MonoidAlgebra.Defs",
+            "kind": "theorem",
+            "type": "∀ {M : Type u_2} {R : Type u_6} [inst : Semiring R] [inst_1 : Add M] [inst_2 : DecidableEq M]\n  (x y : AddMonoidAlgebra R M) (m : M),\n  (x * y) m = Finsupp.sum x fun m₁ r₁ => Finsupp.sum y fun m₂ r₂ => if m₁ + m₂ = m then r₁ * r₂ else 0"
+          },
+          {
+            "name": "AddMonoidAlgebra.mul_apply_left",
+            "module_name": "Mathlib.Algebra.MonoidAlgebra.Defs",
+            "kind": "theorem",
+            "type": "∀ {G : Type u_1} {R : Type u_6} [inst : Semiring R] [inst_1 : AddGroup G] (x y : AddMonoidAlgebra R G) (g : G),\n  (x * y) g = Finsupp.sum x fun h r => r * y (-h + g)"
+          },
+          {
+            "name": "MonoidAlgebra.ring",
+            "module_name": "Mathlib.Algebra.MonoidAlgebra.Defs",
+            "kind": "instance",
+            "type": "{M : Type u_2} → {R : Type u_6} → [inst : Ring R] → [Monoid M] → Ring (MonoidAlgebra R M)"
+          },
+          {
+            "name": "WithLp.instUnitizationNormedAlgebra",
+            "module_name": "Mathlib.Analysis.Normed.Algebra.UnitizationL1",
+            "kind": "instance",
+            "type": "{𝕜 : Type u_1} →\n  {A : Type u_2} →\n    [inst : NormedField 𝕜] →\n      [inst_1 : NonUnitalNormedRing A] →\n        [inst_2 : NormedSpace 𝕜 A] →\n          [inst_3 : IsScalarTower 𝕜 A A] → [inst_4 : SMulCommClass 𝕜 A A] → NormedAlgebra 𝕜 (WithLp 1 (Unitization 𝕜 A))"
+          },
+          {
+            "name": "MonoidAlgebra.nonUnitalCommSemiring",
+            "module_name": "Mathlib.Algebra.MonoidAlgebra.Defs",
+            "kind": "instance",
+            "type": "{M : Type u_2} →\n  {R : Type u_6} → [inst : CommSemiring R] → [CommSemigroup M] → NonUnitalCommSemiring (MonoidAlgebra R M)"
+          },
+          {
+            "name": "MonoidAlgebra.nonUnitalCommRing",
+            "module_name": "Mathlib.Algebra.MonoidAlgebra.Defs",
+            "kind": "instance",
+            "type": "{M : Type u_2} → {R : Type u_6} → [inst : CommRing R] → [CommSemigroup M] → NonUnitalCommRing (MonoidAlgebra R M)"
+          },
+          {
+            "name": "MonoidAlgebra.semiring",
+            "module_name": "Mathlib.Algebra.MonoidAlgebra.Defs",
+            "kind": "instance",
+            "type": "{M : Type u_2} → {R : Type u_6} → [inst : Semiring R] → [Monoid M] → Semiring (MonoidAlgebra R M)"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_leansearch",
+    "form": "current",
+    "request": {
+      "query": "multivariate integer polynomial sum absolute coefficients norm submultiplicative product",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finset.nnnorm_prod_le\",\n      \"module_name\": \"Mathlib.Analysis.Normed.Ring.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_4} {α : Type u_5} [inst : NormedCommRing α] [NormOneClass α] (s : Finset ι) (f : ι → α),\\n  ‖∏ i ∈ s, f i‖₊ ≤ ∏ i ∈ s, ‖f i‖₊\"\n    },\n    {\n      \"name\": \"MvPolynomial.coeff_mul\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : DecidableEq σ] (p q : MvPolynomial σ R) (n : σ →₀ ℕ),\\n  MvPolynomial.coeff n (p * q) = ∑ x ∈ Finset.antidiagonal n, MvPolynomial.coeff x.1 p * MvPolynomial.coeff x.2 q\"\n    },\n    {\n      \"name\": \"Int.instNormMulClass\",\n      \"module_name\": \"Mathlib.Analysis.Normed.Ring.Lemmas\",\n      \"kind\": \"instance\",\n      \"type\": \"NormMulClass ℤ\"\n    },\n    {\n      \"name\": \"norm_prod\",\n      \"module_name\": \"Mathlib.Analysis.Normed.Ring.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_2} {β : Type u_3} [inst : SeminormedCommRing α] [NormMulClass α] [NormOneClass α] (s : Finset β)\\n  (f : β → α), ‖∏ b ∈ s, f b‖ = ∏ b ∈ s, ‖f b‖\"\n    },\n    {\n      \"name\": \"NormedDivisionRing.toNormMulClass\",\n      \"module_name\": \"Mathlib.Analysis.Normed.Field.Basic\",\n      \"kind\": \"instance\",\n      \"type\": \"∀ {α : Type u_2} [inst : NormedDivisionRing α], NormMulClass α\"\n    },\n    {\n      \"name\": \"Finset.nnnorm_prod_le'\",\n      \"module_name\": \"Mathlib.Analysis.Normed.Ring.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_4} {α : Type u_5} [inst : NormedCommRing α] (s : Finset ι),\\n  s.Nonempty → ∀ (f : ι → α), ‖∏ i ∈ s, f i‖₊ ≤ ∏ i ∈ s, ‖f i‖₊\"\n    },\n    {\n      \"name\": \"MvPolynomial.mul_def\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] {p q : MvPolynomial σ R},\\n  p * q = Finsupp.sum p fun m a => Finsupp.sum q fun n b => (MvPolynomial.monomial (m + n)) (a * b)\"\n    },\n    {\n      \"name\": \"Multipliable.norm_tprod\",\n      \"module_name\": \"Mathlib.Topology.Algebra.InfiniteSum.Field\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {E : Type u_2} [inst : SeminormedCommRing E] [NormMulClass E] [NormOneClass E] {f : α → E},\\n  Multipliable f → ‖∏' (i : α), f i‖ = ∏' (i : α), ‖f i‖\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Finset.nnnorm_prod_le",
+            "module_name": "Mathlib.Analysis.Normed.Ring.Basic",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_4} {α : Type u_5} [inst : NormedCommRing α] [NormOneClass α] (s : Finset ι) (f : ι → α),\n  ‖∏ i ∈ s, f i‖₊ ≤ ∏ i ∈ s, ‖f i‖₊"
+          },
+          {
+            "name": "MvPolynomial.coeff_mul",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Basic",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : DecidableEq σ] (p q : MvPolynomial σ R) (n : σ →₀ ℕ),\n  MvPolynomial.coeff n (p * q) = ∑ x ∈ Finset.antidiagonal n, MvPolynomial.coeff x.1 p * MvPolynomial.coeff x.2 q"
+          },
+          {
+            "name": "Int.instNormMulClass",
+            "module_name": "Mathlib.Analysis.Normed.Ring.Lemmas",
+            "kind": "instance",
+            "type": "NormMulClass ℤ"
+          },
+          {
+            "name": "norm_prod",
+            "module_name": "Mathlib.Analysis.Normed.Ring.Basic",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_2} {β : Type u_3} [inst : SeminormedCommRing α] [NormMulClass α] [NormOneClass α] (s : Finset β)\n  (f : β → α), ‖∏ b ∈ s, f b‖ = ∏ b ∈ s, ‖f b‖"
+          },
+          {
+            "name": "NormedDivisionRing.toNormMulClass",
+            "module_name": "Mathlib.Analysis.Normed.Field.Basic",
+            "kind": "instance",
+            "type": "∀ {α : Type u_2} [inst : NormedDivisionRing α], NormMulClass α"
+          },
+          {
+            "name": "Finset.nnnorm_prod_le'",
+            "module_name": "Mathlib.Analysis.Normed.Ring.Basic",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_4} {α : Type u_5} [inst : NormedCommRing α] (s : Finset ι),\n  s.Nonempty → ∀ (f : ι → α), ‖∏ i ∈ s, f i‖₊ ≤ ∏ i ∈ s, ‖f i‖₊"
+          },
+          {
+            "name": "MvPolynomial.mul_def",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Basic",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] {p q : MvPolynomial σ R},\n  p * q = Finsupp.sum p fun m a => Finsupp.sum q fun n b => (MvPolynomial.monomial (m + n)) (a * b)"
+          },
+          {
+            "name": "Multipliable.norm_tprod",
+            "module_name": "Mathlib.Topology.Algebra.InfiniteSum.Field",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {E : Type u_2} [inst : SeminormedCommRing E] [NormMulClass E] [NormOneClass E] {f : α → E},\n  Multipliable f → ‖∏' (i : α), f i‖ = ∏' (i : α), ‖f i‖"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_leansearch",
+    "form": "standard",
+    "request": {
+      "query": "polynomial length l1 coefficient norm product submultiplicativity",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finset.nnnorm_prod_le\",\n      \"module_name\": \"Mathlib.Analysis.Normed.Ring.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_4} {α : Type u_5} [inst : NormedCommRing α] [NormOneClass α] (s : Finset ι) (f : ι → α),\\n  ‖∏ i ∈ s, f i‖₊ ≤ ∏ i ∈ s, ‖f i‖₊\"\n    },\n    {\n      \"name\": \"List.nnnorm_prod_le\",\n      \"module_name\": \"Mathlib.Analysis.Normed.Ring.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_2} [inst : SeminormedRing α] [NormOneClass α] (l : List α), ‖l.prod‖₊ ≤ (List.map nnnorm l).prod\"\n    },\n    {\n      \"name\": \"Multipliable.norm_tprod\",\n      \"module_name\": \"Mathlib.Topology.Algebra.InfiniteSum.Field\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {E : Type u_2} [inst : SeminormedCommRing E] [NormMulClass E] [NormOneClass E] {f : α → E},\\n  Multipliable f → ‖∏' (i : α), f i‖ = ∏' (i : α), ‖f i‖\"\n    },\n    {\n      \"name\": \"NormedDivisionRing.toNormMulClass\",\n      \"module_name\": \"Mathlib.Analysis.Normed.Field.Basic\",\n      \"kind\": \"instance\",\n      \"type\": \"∀ {α : Type u_2} [inst : NormedDivisionRing α], NormMulClass α\"\n    },\n    {\n      \"name\": \"Multipliable.norm\",\n      \"module_name\": \"Mathlib.Topology.Algebra.InfiniteSum.Field\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {E : Type u_2} [inst : SeminormedCommRing E] [NormMulClass E] [NormOneClass E] {f : α → E},\\n  Multipliable f → Multipliable fun x => ‖f x‖\"\n    },\n    {\n      \"name\": \"Polynomial.coeff_mul\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Coeff\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Semiring R] (p q : Polynomial R) (n : ℕ),\\n  (p * q).coeff n = ∑ x ∈ Finset.antidiagonal n, p.coeff x.1 * q.coeff x.2\"\n    },\n    {\n      \"name\": \"Prod.normedRing\",\n      \"module_name\": \"Mathlib.Analysis.Normed.Ring.Basic\",\n      \"kind\": \"instance\",\n      \"type\": \"{α : Type u_2} → {β : Type u_3} → [NormedRing α] → [NormedRing β] → NormedRing (α × β)\"\n    },\n    {\n      \"name\": \"PadicInt.instNormMulClass\",\n      \"module_name\": \"Mathlib.NumberTheory.Padics.PadicIntegers\",\n      \"kind\": \"instance\",\n      \"type\": \"∀ (p : ℕ) [hp : Fact (Nat.Prime p)], NormMulClass ℤ_[p]\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Finset.nnnorm_prod_le",
+            "module_name": "Mathlib.Analysis.Normed.Ring.Basic",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_4} {α : Type u_5} [inst : NormedCommRing α] [NormOneClass α] (s : Finset ι) (f : ι → α),\n  ‖∏ i ∈ s, f i‖₊ ≤ ∏ i ∈ s, ‖f i‖₊"
+          },
+          {
+            "name": "List.nnnorm_prod_le",
+            "module_name": "Mathlib.Analysis.Normed.Ring.Basic",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_2} [inst : SeminormedRing α] [NormOneClass α] (l : List α), ‖l.prod‖₊ ≤ (List.map nnnorm l).prod"
+          },
+          {
+            "name": "Multipliable.norm_tprod",
+            "module_name": "Mathlib.Topology.Algebra.InfiniteSum.Field",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {E : Type u_2} [inst : SeminormedCommRing E] [NormMulClass E] [NormOneClass E] {f : α → E},\n  Multipliable f → ‖∏' (i : α), f i‖ = ∏' (i : α), ‖f i‖"
+          },
+          {
+            "name": "NormedDivisionRing.toNormMulClass",
+            "module_name": "Mathlib.Analysis.Normed.Field.Basic",
+            "kind": "instance",
+            "type": "∀ {α : Type u_2} [inst : NormedDivisionRing α], NormMulClass α"
+          },
+          {
+            "name": "Multipliable.norm",
+            "module_name": "Mathlib.Topology.Algebra.InfiniteSum.Field",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {E : Type u_2} [inst : SeminormedCommRing E] [NormMulClass E] [NormOneClass E] {f : α → E},\n  Multipliable f → Multipliable fun x => ‖f x‖"
+          },
+          {
+            "name": "Polynomial.coeff_mul",
+            "module_name": "Mathlib.Algebra.Polynomial.Coeff",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : Semiring R] (p q : Polynomial R) (n : ℕ),\n  (p * q).coeff n = ∑ x ∈ Finset.antidiagonal n, p.coeff x.1 * q.coeff x.2"
+          },
+          {
+            "name": "Prod.normedRing",
+            "module_name": "Mathlib.Analysis.Normed.Ring.Basic",
+            "kind": "instance",
+            "type": "{α : Type u_2} → {β : Type u_3} → [NormedRing α] → [NormedRing β] → NormedRing (α × β)"
+          },
+          {
+            "name": "PadicInt.instNormMulClass",
+            "module_name": "Mathlib.NumberTheory.Padics.PadicIntegers",
+            "kind": "instance",
+            "type": "∀ (p : ℕ) [hp : Fact (Nat.Prime p)], NormMulClass ℤ_[p]"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_local_search",
+    "form": "abstract",
+    "request": {
+      "query": "sum_mul",
+      "limit": 20
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finset.sum_mul\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/BigOperators/Ring/Finset.lean\"\n    },\n    {\n      \"name\": \"Finsupp.sum_mul\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/BigOperators/Finsupp/Basic.lean\"\n    },\n    {\n      \"name\": \"Matrix.sum_mul\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Data/Matrix/Mul.lean\"\n    },\n    {\n      \"name\": \"SkewMonoidAlgebra.sum_mul\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/SkewMonoidAlgebra/Basic.lean\"\n    },\n    {\n      \"name\": \"Matrix.sum_mulVec\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Data/Matrix/Basic.lean\"\n    },\n    {\n      \"name\": \"MeasureTheory.Submartingale.sum_mul_sub\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Probability/Martingale/Basic.lean\"\n    },\n    {\n      \"name\": \"Finset._root_.Fintype.sum_mul_sum\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/BigOperators/Ring/Finset.lean\"\n    },\n    {\n      \"name\": \"Finset.sum_mul_sum\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/BigOperators/Ring/Finset.lean\"\n    },\n    {\n      \"name\": \"NumberField.InfinitePlace.sum_mult_eq\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/NumberTheory/NumberField/InfinitePlace/Basic.lean\"\n    },\n    {\n      \"name\": \"AddChar.sum_mulShift\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/NumberTheory/LegendreSymbol/AddCharacter.lean\"\n    },\n    {\n      \"name\": \"CharTwo.sum_mul_self\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/CharP/Two.lean\"\n    },\n    {\n      \"name\": \"IsSumSq.sum_mul_self\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Ring/SumsOfSquares.lean\"\n    },\n    {\n      \"name\": \"bernsteinPolynomial.sum_mul_smul\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/Polynomial/Bernstein.lean\"\n    },\n    {\n      \"name\": \"MeasureTheory.Submartingale.sum_mul_sub'\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Probability/Martingale/Basic.lean\"\n    },\n    {\n      \"name\": \"Finset.sum_mul_boole\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/BigOperators/Ring/Finset.lean\"\n    },\n    {\n      \"name\": \"NumberField.Units.sum_mult_mul_log\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/NumberTheory/NumberField/Units/Basic.lean\"\n    },\n    {\n      \"name\": \"Finset.sum_multiset_singleton\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/BigOperators/Group/Finset/Defs.lean\"\n    },\n    {\n      \"name\": \"Finset.sum_mul_sq_le_sq_mul_sq\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Order/BigOperators/Ring/Finset.lean\"\n    },\n    {\n      \"name\": \"Finset.sum_mul_sum_eq_sum_perm\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/GroupTheory/Perm/Cycle/Basic.lean\"\n    },\n    {\n      \"name\": \"HopfAlgebra.sum_mul_antipode_eq_smul\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/HopfAlgebra/Basic.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Finset.sum_mul",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/BigOperators/Ring/Finset.lean"
+          },
+          {
+            "name": "Finsupp.sum_mul",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/BigOperators/Finsupp/Basic.lean"
+          },
+          {
+            "name": "Matrix.sum_mul",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Data/Matrix/Mul.lean"
+          },
+          {
+            "name": "SkewMonoidAlgebra.sum_mul",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/SkewMonoidAlgebra/Basic.lean"
+          },
+          {
+            "name": "Matrix.sum_mulVec",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Data/Matrix/Basic.lean"
+          },
+          {
+            "name": "MeasureTheory.Submartingale.sum_mul_sub",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Probability/Martingale/Basic.lean"
+          },
+          {
+            "name": "Finset._root_.Fintype.sum_mul_sum",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/BigOperators/Ring/Finset.lean"
+          },
+          {
+            "name": "Finset.sum_mul_sum",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/BigOperators/Ring/Finset.lean"
+          },
+          {
+            "name": "NumberField.InfinitePlace.sum_mult_eq",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/NumberTheory/NumberField/InfinitePlace/Basic.lean"
+          },
+          {
+            "name": "AddChar.sum_mulShift",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/NumberTheory/LegendreSymbol/AddCharacter.lean"
+          },
+          {
+            "name": "CharTwo.sum_mul_self",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/CharP/Two.lean"
+          },
+          {
+            "name": "IsSumSq.sum_mul_self",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Ring/SumsOfSquares.lean"
+          },
+          {
+            "name": "bernsteinPolynomial.sum_mul_smul",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/RingTheory/Polynomial/Bernstein.lean"
+          },
+          {
+            "name": "MeasureTheory.Submartingale.sum_mul_sub'",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Probability/Martingale/Basic.lean"
+          },
+          {
+            "name": "Finset.sum_mul_boole",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/BigOperators/Ring/Finset.lean"
+          },
+          {
+            "name": "NumberField.Units.sum_mult_mul_log",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/NumberTheory/NumberField/Units/Basic.lean"
+          },
+          {
+            "name": "Finset.sum_multiset_singleton",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/BigOperators/Group/Finset/Defs.lean"
+          },
+          {
+            "name": "Finset.sum_mul_sq_le_sq_mul_sq",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Order/BigOperators/Ring/Finset.lean"
+          },
+          {
+            "name": "Finset.sum_mul_sum_eq_sum_perm",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/GroupTheory/Perm/Cycle/Basic.lean"
+          },
+          {
+            "name": "HopfAlgebra.sum_mul_antipode_eq_smul",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/RingTheory/HopfAlgebra/Basic.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_local_search",
+    "form": "current",
+    "request": {
+      "query": "normOne_mul_le",
+      "limit": 20
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Roth.normOne_mul_le\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/CoeffNorm.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.NormSumConsumers.normOne_mul_le_inline\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/roth-overview-session/NextHasseChecks.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Roth.normOne_mul_le",
+            "kind": "theorem",
+            "file": "Roth/CoeffNorm.lean"
+          },
+          {
+            "name": "MvPolynomial.NormSumConsumers.normOne_mul_le_inline",
+            "kind": "theorem",
+            "file": ".lake/roth-overview-session/NextHasseChecks.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_local_search",
+    "form": "standard",
+    "request": {
+      "query": "norm_mul_le",
+      "limit": 20
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"FreeGroup.norm_mul_le\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/GroupTheory/FreeGroup/Reduce.lean\"\n    },\n    {\n      \"name\": \"norm_mul_le\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Analysis/Normed/Ring/Basic.lean\"\n    },\n    {\n      \"name\": \"norm_mul_le'\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Analysis/Normed/Group/Basic.lean\"\n    },\n    {\n      \"name\": \"IsUltrametricDist.norm_mul_le_max\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Analysis/Normed/Group/Ultra.lean\"\n    },\n    {\n      \"name\": \"norm_mul_le_of_le\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Analysis/Normed/Ring/Basic.lean\"\n    },\n    {\n      \"name\": \"norm_mul_le_of_le'\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Analysis/Normed/Group/Basic.lean\"\n    },\n    {\n      \"name\": \"Module.Basis.norm_mul_le_const_mul_norm\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Analysis/Normed/Unbundled/FiniteExtension.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "FreeGroup.norm_mul_le",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/GroupTheory/FreeGroup/Reduce.lean"
+          },
+          {
+            "name": "norm_mul_le",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Analysis/Normed/Ring/Basic.lean"
+          },
+          {
+            "name": "norm_mul_le'",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Analysis/Normed/Group/Basic.lean"
+          },
+          {
+            "name": "IsUltrametricDist.norm_mul_le_max",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Analysis/Normed/Group/Ultra.lean"
+          },
+          {
+            "name": "norm_mul_le_of_le",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Analysis/Normed/Ring/Basic.lean"
+          },
+          {
+            "name": "norm_mul_le_of_le'",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Analysis/Normed/Group/Basic.lean"
+          },
+          {
+            "name": "Module.Basis.norm_mul_le_const_mul_norm",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Analysis/Normed/Unbundled/FiniteExtension.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_loogle",
+    "form": "abstract",
+    "request": {
+      "query": "Finsupp.sum, _ ≤ _ * _",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"AbsoluteValue.eval_mvPolynomial_le\",\n      \"type\": \" {K : Type u_4} [Field K] {ι : Type u_5} [Finite ι] (v : AbsoluteValue K ℝ) {p : MvPolynomial ι K} {N : ℕ} (hp : p.IsHomogeneous N) (x : ι → K) : v ((MvPolynomial.eval x) p) ≤ (p.coeff.sum fun x c => v c) * (⨆ i, v (x i)) ^ N\",\n      \"module\": \"Mathlib.NumberTheory.Height.MvPolynomial\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "AbsoluteValue.eval_mvPolynomial_le",
+            "type": " {K : Type u_4} [Field K] {ι : Type u_5} [Finite ι] (v : AbsoluteValue K ℝ) {p : MvPolynomial ι K} {N : ℕ} (hp : p.IsHomogeneous N) (x : ι → K) : v ((MvPolynomial.eval x) p) ≤ (p.coeff.sum fun x c => v c) * (⨆ i, v (x i)) ^ N",
+            "module": "Mathlib.NumberTheory.Height.MvPolynomial"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_loogle",
+    "form": "current",
+    "request": {
+      "query": "MvPolynomial, _ * _ ≤ _ * _",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": []\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": []
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_loogle",
+    "form": "standard",
+    "request": {
+      "query": "‖_ * _‖ ≤ ‖_‖ * ‖_‖",
+      "num_results": 8
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"NonUnitalNormedRing.norm_mul_le\",\n      \"type\": \" {α : Type u_5} [self : NonUnitalNormedRing α] (a b : α) : ‖a * b‖ ≤ ‖a‖ * ‖b‖\",\n      \"module\": \"Mathlib.Analysis.Normed.Ring.Basic\"\n    },\n    {\n      \"name\": \"NonUnitalSeminormedRing.norm_mul_le\",\n      \"type\": \" {α : Type u_5} [self : NonUnitalSeminormedRing α] (a b : α) : ‖a * b‖ ≤ ‖a‖ * ‖b‖\",\n      \"module\": \"Mathlib.Analysis.Normed.Ring.Basic\"\n    },\n    {\n      \"name\": \"NormedRing.norm_mul_le\",\n      \"type\": \" {α : Type u_5} [self : NormedRing α] (a b : α) : ‖a * b‖ ≤ ‖a‖ * ‖b‖\",\n      \"module\": \"Mathlib.Analysis.Normed.Ring.Basic\"\n    },\n    {\n      \"name\": \"SeminormedRing.norm_mul_le\",\n      \"type\": \" {α : Type u_5} [self : SeminormedRing α] (a b : α) : ‖a * b‖ ≤ ‖a‖ * ‖b‖\",\n      \"module\": \"Mathlib.Analysis.Normed.Ring.Basic\"\n    },\n    {\n      \"name\": \"norm_mul_le\",\n      \"type\": \" {α : Type u_2} [NonUnitalSeminormedRing α] (a b : α) : ‖a * b‖ ≤ ‖a‖ * ‖b‖\",\n      \"module\": \"Mathlib.Analysis.Normed.Ring.Basic\"\n    },\n    {\n      \"name\": \"SeminormedRing.mk\",\n      \"type\": \" {α : Type u_5} [toNorm : Norm α] [toRing : Ring α] [toPseudoMetricSpace : PseudoMetricSpace α] (dist_eq : ∀ (x y : α), dist x y = ‖-x + y‖) (norm_mul_le : ∀ (a b : α), ‖a * b‖ ≤ ‖a‖ * ‖b‖) : SeminormedRing α\",\n      \"module\": \"Mathlib.Analysis.Normed.Ring.Basic\"\n    },\n    {\n      \"name\": \"NormedRing.mk\",\n      \"type\": \" {α : Type u_5} [toNorm : Norm α] [toRing : Ring α] [toMetricSpace : MetricSpace α] (dist_eq : ∀ (x y : α), dist x y = ‖-x + y‖) (norm_mul_le : ∀ (a b : α), ‖a * b‖ ≤ ‖a‖ * ‖b‖) : NormedRing α\",\n      \"module\": \"Mathlib.Analysis.Normed.Ring.Basic\"\n    },\n    {\n      \"name\": \"NonUnitalSeminormedRing.mk\",\n      \"type\": \" {α : Type u_5} [toNorm : Norm α] [toNonUnitalRing : NonUnitalRing α] [toPseudoMetricSpace : PseudoMetricSpace α] (dist_eq : ∀ (x y : α), dist x y = ‖-x + y‖) (norm_mul_le : ∀ (a b : α), ‖a * b‖ ≤ ‖a‖ * ‖b‖) : NonUnitalSeminormedRing α\",\n      \"module\": \"Mathlib.Analysis.Normed.Ring.Basic\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "NonUnitalNormedRing.norm_mul_le",
+            "type": " {α : Type u_5} [self : NonUnitalNormedRing α] (a b : α) : ‖a * b‖ ≤ ‖a‖ * ‖b‖",
+            "module": "Mathlib.Analysis.Normed.Ring.Basic"
+          },
+          {
+            "name": "NonUnitalSeminormedRing.norm_mul_le",
+            "type": " {α : Type u_5} [self : NonUnitalSeminormedRing α] (a b : α) : ‖a * b‖ ≤ ‖a‖ * ‖b‖",
+            "module": "Mathlib.Analysis.Normed.Ring.Basic"
+          },
+          {
+            "name": "NormedRing.norm_mul_le",
+            "type": " {α : Type u_5} [self : NormedRing α] (a b : α) : ‖a * b‖ ≤ ‖a‖ * ‖b‖",
+            "module": "Mathlib.Analysis.Normed.Ring.Basic"
+          },
+          {
+            "name": "SeminormedRing.norm_mul_le",
+            "type": " {α : Type u_5} [self : SeminormedRing α] (a b : α) : ‖a * b‖ ≤ ‖a‖ * ‖b‖",
+            "module": "Mathlib.Analysis.Normed.Ring.Basic"
+          },
+          {
+            "name": "norm_mul_le",
+            "type": " {α : Type u_2} [NonUnitalSeminormedRing α] (a b : α) : ‖a * b‖ ≤ ‖a‖ * ‖b‖",
+            "module": "Mathlib.Analysis.Normed.Ring.Basic"
+          },
+          {
+            "name": "SeminormedRing.mk",
+            "type": " {α : Type u_5} [toNorm : Norm α] [toRing : Ring α] [toPseudoMetricSpace : PseudoMetricSpace α] (dist_eq : ∀ (x y : α), dist x y = ‖-x + y‖) (norm_mul_le : ∀ (a b : α), ‖a * b‖ ≤ ‖a‖ * ‖b‖) : SeminormedRing α",
+            "module": "Mathlib.Analysis.Normed.Ring.Basic"
+          },
+          {
+            "name": "NormedRing.mk",
+            "type": " {α : Type u_5} [toNorm : Norm α] [toRing : Ring α] [toMetricSpace : MetricSpace α] (dist_eq : ∀ (x y : α), dist x y = ‖-x + y‖) (norm_mul_le : ∀ (a b : α), ‖a * b‖ ≤ ‖a‖ * ‖b‖) : NormedRing α",
+            "module": "Mathlib.Analysis.Normed.Ring.Basic"
+          },
+          {
+            "name": "NonUnitalSeminormedRing.mk",
+            "type": " {α : Type u_5} [toNorm : Norm α] [toNonUnitalRing : NonUnitalRing α] [toPseudoMetricSpace : PseudoMetricSpace α] (dist_eq : ∀ (x y : α), dist x y = ‖-x + y‖) (norm_mul_le : ∀ (a b : α), ‖a * b‖ ≤ ‖a‖ * ‖b‖) : NonUnitalSeminormedRing α",
+            "module": "Mathlib.Analysis.Normed.Ring.Basic"
+          }
+        ]
+      },
+      "isError": false
+    }
+  }
+]
