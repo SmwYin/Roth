@@ -1,0 +1,19 @@
+open Polynomial
+namespace DetChooseRingProbe
+theorem factorial_mul_det {R : Type*} [CommRing R] {l : ℕ} (d : Fin l → ℕ) :
+    (∏ μ : Fin l, ((μ : ℕ).factorial : R)) *
+      (Matrix.of fun μ ν : Fin l ↦ ((d ν).choose μ : R)).det =
+        ∏ i : Fin l, ∏ j ∈ Finset.Ioi i, ((d j : R) - d i) := by
+  nontriviality R
+  have h1 : (Matrix.of fun i j : Fin l ↦ (descPochhammer R j).eval (d i : R)) =
+      (Matrix.of fun μ ν : Fin l ↦ ((μ : ℕ).factorial : R) * ((d ν).choose μ : R)).transpose := by
+    ext i j
+    simp only [Matrix.of_apply, Matrix.transpose_apply,
+      descPochhammer_eval_eq_descFactorial, Nat.descFactorial_eq_factorial_mul_choose,
+      Nat.cast_mul]
+  rw [← Matrix.det_mul_column, ← Matrix.det_transpose, ← h1,
+    ← Matrix.det_eval_matrixOfPolynomials_eq_det_vandermonde (fun i ↦ (d i : R))
+      (fun j ↦ descPochhammer R j) (fun i ↦ descPochhammer_natDegree R _)
+      (fun i ↦ monic_descPochhammer R _), Matrix.det_vandermonde]
+#print axioms factorial_mul_det
+end DetChooseRingProbe

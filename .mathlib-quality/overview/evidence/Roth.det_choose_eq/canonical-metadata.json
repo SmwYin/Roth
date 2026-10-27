@@ -1,0 +1,40 @@
+[
+  {
+    "file": "Roth/Wronskian.lean",
+    "line": 79,
+    "name": "Roth.det_choose_eq",
+    "short": "det_choose_eq",
+    "kind": "theorem",
+    "visibility": "public",
+    "end_line": 91,
+    "source": "theorem det_choose_eq [CharZero K] (d : Fin l \u2192 \u2115) :\n    (Matrix.of fun \u03bc \u03bd : Fin l \u21a6 ((d \u03bd).choose \u03bc : K)).det =\n      (\u220f \u03bc : Fin l, ((\u03bc : \u2115).factorial : K)\u207b\u00b9) *\n        \u220f i : Fin l, \u220f j \u2208 Finset.Ioi i, ((d j : K) - d i) := by\n  have h1 : (Matrix.of fun \u03bc \u03bd : Fin l \u21a6 ((d \u03bd).choose \u03bc : K)) =\n      Matrix.of fun \u03bc \u03bd : Fin l \u21a6 ((\u03bc : \u2115).factorial : K)\u207b\u00b9 *\n        (Matrix.of fun i j : Fin l \u21a6 (descPochhammer K j).eval (d i : K)).transpose \u03bc \u03bd := by\n    ext \u03bc \u03bd\n    simp [Nat.cast_choose_eq_descPochhammer_div, div_eq_inv_mul]\n  rw [h1, Matrix.det_mul_column, Matrix.det_transpose,\n    \u2190 Matrix.det_eval_matrixOfPolynomials_eq_det_vandermonde (fun i \u21a6 (d i : K))\n      (fun j \u21a6 descPochhammer K j) (fun i \u21a6 descPochhammer_natDegree K _)\n      (fun i \u21a6 monic_descPochhammer K _), Matrix.det_vandermonde]",
+    "signature": "theorem det_choose_eq [CharZero K] (d : Fin l \u2192 \u2115) :\n    (Matrix.of fun \u03bc \u03bd : Fin l \u21a6 ((d \u03bd).choose \u03bc : K)).det =\n      (\u220f \u03bc : Fin l, ((\u03bc : \u2115).factorial : K)\u207b\u00b9) *\n        \u220f i : Fin l, \u220f j \u2208 Finset.Ioi i, ((d j : K) - d i)",
+    "body": "by\n  have h1 : (Matrix.of fun \u03bc \u03bd : Fin l \u21a6 ((d \u03bd).choose \u03bc : K)) =\n      Matrix.of fun \u03bc \u03bd : Fin l \u21a6 ((\u03bc : \u2115).factorial : K)\u207b\u00b9 *\n        (Matrix.of fun i j : Fin l \u21a6 (descPochhammer K j).eval (d i : K)).transpose \u03bc \u03bd := by\n    ext \u03bc \u03bd\n    simp [Nat.cast_choose_eq_descPochhammer_div, div_eq_inv_mul]\n  rw [h1, Matrix.det_mul_column, Matrix.det_transpose,\n    \u2190 Matrix.det_eval_matrixOfPolynomials_eq_det_vandermonde (fun i \u21a6 (d i : K))\n      (fun j \u21a6 descPochhammer K j) (fun i \u21a6 descPochhammer_natDegree K _)\n      (fun i \u21a6 monic_descPochhammer K _), Matrix.det_vandermonde]",
+    "proof_lines": 10,
+    "sha256": "bad0064a8d8a23f04976027feb1201935375a830685803eefeb2adb4e7b9dfbd",
+    "what": "Computes the determinant of the matrix of binomial coefficients as a Vandermonde product divided by the row factorials.",
+    "how": "Uses Nat.cast_choose_eq_descPochhammer_div to express rows through descending Pochhammer polynomials; Matrix.det_eval_matrixOfPolynomials_eq_det_vandermonde and Matrix.det_vandermonde compute the remaining determinant.",
+    "hypotheses": "A characteristic-zero coefficient field and arbitrary natural degree values; distinctness is not needed for the identity.",
+    "uses_from_project": [],
+    "used_by_in_file": [
+      "Roth.wronskian_ne_zero_of_natDegree_injective"
+    ],
+    "project_callers": [
+      {
+        "name": "Roth.wronskian_ne_zero_of_natDegree_injective",
+        "file": "Roth/Wronskian.lean",
+        "line": 148
+      }
+    ],
+    "type_context": "{K : Type*} [Field K] {l : \u2115}",
+    "type_provenance": "Exact written signature with section binders made explicit from source; not claimed as a fresh #check output. Minimal hasseCoeff #check succeeded; full Meta inspector timed out.",
+    "reference_provenance": "Manually disambiguated source-level direct project references in declaration bodies; callers include signature and body occurrences. Includes explicit references only, not an exhaustive kernel/simp dependency closure.",
+    "notes": [
+      "No set_option, sorry, TODO, or proof over 30 lines in declaration."
+    ],
+    "assignment_offset": 222,
+    "project_body_refs": [],
+    "project_type_refs": [],
+    "section_context": "{K : Type*} [Field K] {l : \u2115}"
+  }
+]

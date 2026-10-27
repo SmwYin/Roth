@@ -1,0 +1,110 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+#check_failure Roth.det_choose_eq
+open Polynomial
+namespace DetChooseProbe
+variable {K : Type*} [Field K] {l : ℕ}
+theorem local_choose (a b : ℕ) (h : (b.factorial : K) ≠ 0) :
+    (a.choose b : K) = (descPochhammer K b).eval ↑a / b.factorial := by
+  rw [eq_div_iff_mul_eq h, ← Nat.cast_mul, mul_comm,
+    ← Nat.descFactorial_eq_factorial_mul_choose, descPochhammer_eval_eq_descFactorial]
+theorem factorial_nonzero (d : Fin l → ℕ)
+    (hf : ∀ μ : Fin l, ((μ : ℕ).factorial : K) ≠ 0) :
+    (Matrix.of fun μ ν : Fin l ↦ ((d ν).choose μ : K)).det =
+      (∏ μ : Fin l, ((μ : ℕ).factorial : K)⁻¹) *
+        ∏ i : Fin l, ∏ j ∈ Finset.Ioi i, ((d j : K) - d i) := by
+  have h1 : (Matrix.of fun μ ν : Fin l ↦ ((d ν).choose μ : K)) =
+      Matrix.of fun μ ν : Fin l ↦ ((μ : ℕ).factorial : K)⁻¹ *
+        (Matrix.of fun i j : Fin l ↦ (descPochhammer K j).eval (d i : K)).transpose μ ν := by
+    ext μ ν
+    simp only [Matrix.of_apply, Matrix.transpose_apply,
+      local_choose (d ν) μ (hf μ), div_eq_inv_mul]
+  rw [h1, Matrix.det_mul_column, Matrix.det_transpose,
+    ← Matrix.det_eval_matrixOfPolynomials_eq_det_vandermonde (fun i ↦ (d i : K))
+      (fun j ↦ descPochhammer K j) (fun i ↦ descPochhammer_natDegree K _)
+      (fun i ↦ monic_descPochhammer K _), Matrix.det_vandermonde]
+theorem abstract_existing {R : Type*} [CommRing R] {n : ℕ} (v : Fin n → R)
+    (p : Fin n → R[X]) (hdeg : ∀ i, (p i).natDegree = i) (hmonic : ∀ i, (p i).Monic) :
+    (Matrix.vandermonde v).det = (Matrix.of fun i j ↦ (p j).eval (v i)).det :=
+  Matrix.det_eval_matrixOfPolynomials_eq_det_vandermonde v p hdeg hmonic
+#print axioms local_choose
+#print axioms factorial_nonzero
+#print axioms abstract_existing
+end DetChooseProbe
+
+namespace DetChooseCharGuard
+theorem small_factorials :
+    ∀ μ : Fin 2, ((μ : ℕ).factorial : ZMod 2) ≠ 0 := by decide
+theorem positive_char_formula (d : Fin 2 → ℕ) :
+    (Matrix.of fun μ ν : Fin 2 ↦ ((d ν).choose μ : ZMod 2)).det =
+      (∏ μ : Fin 2, ((μ : ℕ).factorial : ZMod 2)⁻¹) *
+        ∏ i : Fin 2, ∏ j ∈ Finset.Ioi i, ((d j : ZMod 2) - d i) :=
+  DetChooseProbe.factorial_nonzero (K := ZMod 2) d small_factorials
+theorem large_characteristic_failure :
+    (Matrix.of fun μ ν : Fin 3 ↦ (((ν : ℕ).choose μ) : ZMod 2)).det ≠
+      (∏ μ : Fin 3, ((μ : ℕ).factorial : ZMod 2)⁻¹) *
+        ∏ i : Fin 3, ∏ j ∈ Finset.Ioi i, (((j : ℕ) : ZMod 2) - ((i : ℕ) : ZMod 2)) := by
+  have hprod : (∏ μ : Fin 3, ((μ : ℕ).factorial : ZMod 2)⁻¹) = 0 :=
+    Finset.prod_eq_zero (Finset.mem_univ (2 : Fin 3)) (by
+      change (2 : ZMod 2)⁻¹ = 0
+      rw [show (2 : ZMod 2) = 0 from by decide, inv_zero])
+  have hdet : (Matrix.of fun μ ν : Fin 3 ↦ (((ν : ℕ).choose μ) : ZMod 2)).det = 1 := by
+    norm_num [Matrix.det_fin_three]
+  rw [hprod, zero_mul, hdet]
+  exact one_ne_zero
+#print axioms small_factorials
+#print axioms positive_char_formula
+#print axioms large_characteristic_failure
+end DetChooseCharGuard
+
+open Polynomial
+namespace DetChooseRingProbe
+theorem factorial_mul_det {R : Type*} [CommRing R] {l : ℕ} (d : Fin l → ℕ) :
+    (∏ μ : Fin l, ((μ : ℕ).factorial : R)) *
+      (Matrix.of fun μ ν : Fin l ↦ ((d ν).choose μ : R)).det =
+        ∏ i : Fin l, ∏ j ∈ Finset.Ioi i, ((d j : R) - d i) := by
+  nontriviality R
+  have hm (n : ℕ) : (descPochhammer R n).Monic := by
+    simpa only [descPochhammer_map] using
+      Polynomial.Monic.map (Int.castRingHom R) (monic_descPochhammer ℤ n)
+  have hd (n : ℕ) : (descPochhammer R n).natDegree = n := by
+    simpa only [descPochhammer_map] using
+      ((monic_descPochhammer ℤ n).natDegree_map (Int.castRingHom R)).trans
+        (descPochhammer_natDegree ℤ n)
+  have h1 : (Matrix.of fun i j : Fin l ↦ (descPochhammer R j).eval (d i : R)) =
+      (Matrix.of fun μ ν : Fin l ↦ ((μ : ℕ).factorial : R) * ((d ν).choose μ : R)).transpose := by
+    ext i j
+    simp only [Matrix.of_apply, Matrix.transpose_apply,
+      descPochhammer_eval_eq_descFactorial, Nat.descFactorial_eq_factorial_mul_choose,
+      Nat.cast_mul]
+  rw [← Matrix.det_mul_column, ← Matrix.det_transpose]
+  simp only [Matrix.of_apply]
+  rw [← h1, ← Matrix.det_eval_matrixOfPolynomials_eq_det_vandermonde (fun i ↦ (d i : R))
+      (fun j ↦ descPochhammer R j) (fun i ↦ hd i)
+      (fun i ↦ hm i), Matrix.det_vandermonde]
+#print axioms factorial_mul_det
+end DetChooseRingProbe
+
+namespace DetChooseRecover
+theorem inverse_from_ring {K : Type*} [Field K] {l : ℕ} (d : Fin l → ℕ)
+    (hf : ∀ μ : Fin l, ((μ : ℕ).factorial : K) ≠ 0) :
+    (Matrix.of fun μ ν : Fin l ↦ ((d ν).choose μ : K)).det =
+      (∏ μ : Fin l, ((μ : ℕ).factorial : K)⁻¹) *
+        ∏ i : Fin l, ∏ j ∈ Finset.Ioi i, ((d j : K) - d i) := by
+  have hP : (∏ μ : Fin l, ((μ : ℕ).factorial : K)) ≠ 0 :=
+    Finset.prod_ne_zero_iff.mpr (fun i _ ↦ hf i)
+  rw [Finset.prod_inv_distrib]
+  exact (eq_inv_mul_iff₀ hP).2 (DetChooseRingProbe.factorial_mul_det d)
+theorem charzero_from_ring {K : Type*} [Field K] [CharZero K] {l : ℕ} (d : Fin l → ℕ) :
+    (Matrix.of fun μ ν : Fin l ↦ ((d ν).choose μ : K)).det =
+      (∏ μ : Fin l, ((μ : ℕ).factorial : K)⁻¹) *
+        ∏ i : Fin l, ∏ j ∈ Finset.Ioi i, ((d j : K) - d i) :=
+  inverse_from_ring d (fun μ ↦ Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero (μ : ℕ)))
+#print axioms inverse_from_ring
+#print axioms charzero_from_ring
+end DetChooseRecover

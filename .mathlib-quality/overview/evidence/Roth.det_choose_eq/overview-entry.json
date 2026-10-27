@@ -1,0 +1,43 @@
+{
+  "declaration": "Roth.det_choose_eq",
+  "canonical": 43,
+  "kind": "theorem",
+  "type": "∀ {K : Type u_1} [inst : Field K] {l : ℕ} [CharZero K] (d : Fin l → ℕ), (Matrix.of fun μ ν : Fin l ↦ ((d ν).choose μ : K)).det = (∏ μ : Fin l, ((μ : ℕ).factorial : K)⁻¹) * ∏ i : Fin l, ∏ j ∈ Finset.Ioi i, ((d j : K) - d i)",
+  "what": "Evaluates the natural-binomial matrix determinant as the Vandermonde difference product divided by the product of row factorials.",
+  "how": "Proves the entrywise falling-factorial evaluation/row-scaling bridge, then uses det scaling, transpose, existing monic evaluation determinant law and det_vandermonde.",
+  "hypotheses": "Field K; CharZero K; arbitrary l and natural tops d. CharZero can be replaced by local factorial nonvanishing; arbitrary CommRing cancellation-free form is also verified.",
+  "project_dependencies": [],
+  "caller_summary": {
+    "explicit_proof_callers": 1,
+    "within_file": 1,
+    "outside_file": 0,
+    "command_internal_K_excluding_declaring_file": 0,
+    "callers": [
+      {
+        "file": "Roth/Wronskian.lean",
+        "line": 151,
+        "name": "Roth.wronskian_ne_zero_of_natDegree_injective",
+        "pattern": "simp rewrite in top-coefficient nonvanishing proof"
+      }
+    ],
+    "opaque_kernel_simp_closure_claimed": false
+  },
+  "mathlib_api_audit": {
+    "generic_law": "Matrix.det_eval_matrixOfPolynomials_eq_det_vandermonde already exists; native checked one-call abstract form",
+    "building_blocks": [
+      "Nat.cast_choose_eq_descPochhammer_div",
+      "Matrix.det_mul_column",
+      "Matrix.det_transpose",
+      "Matrix.det_vandermonde",
+      "Polynomial.monic_descPochhammer",
+      "Polynomial.descPochhammer_natDegree"
+    ],
+    "private_near_match": "Vandermonde.lean:301 of_eval_descPochhammer_eq_mul_of_choose is private over ℤ; not an accessible replacement",
+    "all_five_methods_all_three_forms": true
+  },
+  "moral_duplications": "Generic monic evaluation content is already in mathlib; specific binomial normalization resembles an existing private integer bridge. Do not add another generic evaluation theorem.",
+  "generalization": "Verified exact quotient under local nonzero factorials; stronger arbitrary CommRing identity factorial-product * det(choose) = Vandermonde product, including zero ring. Char2 size2 positive specialization and size3 failure guard compile.",
+  "missing_api": "Public characteristic-aware binomial evaluation determinant API; Pochhammer monicity/degree can be transferred from ℤ to remove pinned NoZeroDivisors assumptions.",
+  "junk": "No; explicitly used once in Wronskian nonvanishing. No external-to-file reference claim or simp-closure inference.",
+  "action": "YES-but-generalise-first: expose cancellation-free ring identity and local-factorial quotient corollary in Mathlib/LinearAlgebra/Vandermonde.lean; existing abstract law reused; focused separate PR; run /generalise and /cleanup before submission."
+}

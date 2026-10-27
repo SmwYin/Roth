@@ -1,0 +1,52 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+#check_failure Roth.det_choose_eq
+open Polynomial
+namespace DetChooseProbe
+variable {K : Type*} [Field K] {l : ℕ}
+theorem local_choose (a b : ℕ) (h : (b.factorial : K) ≠ 0) :
+    (a.choose b : K) = (descPochhammer K b).eval ↑a / b.factorial := by
+  rw [eq_div_iff_mul_eq h, ← Nat.cast_mul, mul_comm,
+    ← Nat.descFactorial_eq_factorial_mul_choose, descPochhammer_eval_eq_descFactorial]
+theorem factorial_nonzero (d : Fin l → ℕ)
+    (hf : ∀ μ : Fin l, ((μ : ℕ).factorial : K) ≠ 0) :
+    (Matrix.of fun μ ν : Fin l ↦ ((d ν).choose μ : K)).det =
+      (∏ μ : Fin l, ((μ : ℕ).factorial : K)⁻¹) *
+        ∏ i : Fin l, ∏ j ∈ Finset.Ioi i, ((d j : K) - d i) := by
+  have h1 : (Matrix.of fun μ ν : Fin l ↦ ((d ν).choose μ : K)) =
+      Matrix.of fun μ ν : Fin l ↦ ((μ : ℕ).factorial : K)⁻¹ *
+        (Matrix.of fun i j : Fin l ↦ (descPochhammer K j).eval (d i : K)).transpose μ ν := by
+    ext μ ν
+    simp only [Matrix.of_apply, Matrix.transpose_apply,
+      local_choose (d ν) μ (hf μ), div_eq_inv_mul]
+  rw [h1, Matrix.det_mul_column, Matrix.det_transpose,
+    ← Matrix.det_eval_matrixOfPolynomials_eq_det_vandermonde (fun i ↦ (d i : K))
+      (fun j ↦ descPochhammer K j) (fun i ↦ descPochhammer_natDegree K _)
+      (fun i ↦ monic_descPochhammer K _), Matrix.det_vandermonde]
+theorem abstract_existing {R : Type*} [CommRing R] {n : ℕ} (v : Fin n → R)
+    (p : Fin n → R[X]) (hdeg : ∀ i, (p i).natDegree = i) (hmonic : ∀ i, (p i).Monic) :
+    (Matrix.vandermonde v).det = (Matrix.of fun i j ↦ (p j).eval (v i)).det :=
+  Matrix.det_eval_matrixOfPolynomials_eq_det_vandermonde v p hdeg hmonic
+#print axioms local_choose
+#print axioms factorial_nonzero
+#print axioms abstract_existing
+end DetChooseProbe
+
+namespace DetChooseComposition
+open Polynomial
+theorem attempt {K : Type*} [Field K] [CharZero K] {l : ℕ} (d : Fin l → ℕ) :
+    (Matrix.of fun μ ν : Fin l ↦ ((d ν).choose μ : K)).det =
+      (∏ μ : Fin l, ((μ : ℕ).factorial : K)⁻¹) *
+        ∏ i : Fin l, ∏ j ∈ Finset.Ioi i, ((d j : K) - d i) := by
+  simpa only [Nat.cast_choose_eq_descPochhammer_div, div_eq_inv_mul,
+    Matrix.det_mul_column, Matrix.det_transpose, Matrix.det_vandermonde] using
+    congrArg (fun z : K ↦ (∏ μ : Fin l, ((μ : ℕ).factorial : K)⁻¹) * z)
+      (Matrix.det_eval_matrixOfPolynomials_eq_det_vandermonde (fun i ↦ (d i : K))
+        (fun j ↦ descPochhammer K j) (fun i ↦ descPochhammer_natDegree K _)
+        (fun i ↦ monic_descPochhammer K _)).symm
+#print axioms attempt
+end DetChooseComposition

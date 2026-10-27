@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 42/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 43/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 42; remaining: 251.
-- Verdicts: 8 NO-composable-from-mathlib, 11 YES-add-as-is, 0 YES-but-generalise-first, 6 NO-mathlib-has-it, 14 BORDERLINE-needs-human, 3 SKIP.
+- Completed applicable assessments: 43; remaining: 250.
+- Verdicts: 8 NO-composable-from-mathlib, 11 YES-add-as-is, 1 YES-but-generalise-first, 6 NO-mathlib-has-it, 14 BORDERLINE-needs-human, 3 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -465,6 +465,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: explicit uses: 1; external to declaring file uses: 0; callers: Roth/Wronskian.lean:222 (wronskian_eq_zero_iff); inline analogues: Roth/GenWronskian.lean:40–50 (multivariate; different representation); caller experiment: PASS fragment; no production migration
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.wronskian_eq_zero_of_not_linearIndependent.md).
 
+### Completed: `Roth.det_choose_eq`
+
+- Type: `∀ {K : Type u_1} [inst : Field K] {l : ℕ} [CharZero K] (d : Fin l → ℕ), (Matrix.of fun μ ν : Fin l ↦ ((d ν).choose μ : K)).det = (∏ μ : Fin l, ((μ : ℕ).factorial : K)⁻¹) * ∏ i : Fin l, ∏ j ∈ Finset.Ioi i, ((d j : K) - d i)`
+- What: Evaluates the natural-binomial matrix determinant as the Vandermonde difference product divided by the product of row factorials.
+- How: Proves the entrywise falling-factorial evaluation/row-scaling bridge, then uses det scaling, transpose, existing monic evaluation determinant law and det_vandermonde.
+- Hypotheses: Field K; CharZero K; arbitrary l and natural tops d. CharZero can be replaced by local factorial nonvanishing; arbitrary CommRing cancellation-free form is also verified.
+- Project dependencies: None
+- Caller summary: explicit proof callers: 1; within file: 1; outside file: 0; command internal K excluding declaring file: 0; callers: {'file': 'Roth/Wronskian.lean', 'line': 151, 'name': 'Roth.wronskian_ne_zero_of_natDegree_injective', 'pattern': 'simp rewrite in top-coefficient nonvanishing proof'}; opaque kernel simp closure claimed: False
+- Verdict: YES-but-generalise-first; [complete report](.mathlib-quality/overview/mathlibable/Roth.det_choose_eq.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -575,6 +585,8 @@ Completed `Roth.wronskian`: Binary Polynomial.wronskian exact Fin2 bridge; arbit
 
 Completed `Roth.wronskian_eq_zero_of_not_linearIndependent`: AlternatingMap.map_linearDependent existing abstract law, Matrix.det_eq_zero_of_not_linearIndependent_cols, LinearIndependent.restrict_scalars', LinearIndependent.of_comp, LinearMap.pi
 
+Completed `Roth.det_choose_eq`: generic law: Matrix.det_eval_matrixOfPolynomials_eq_det_vandermonde already exists; native checked one-call abstract form; building blocks: Nat.cast_choose_eq_descPochhammer_div, Matrix.det_mul_column, Matrix.det_transpose, Matrix.det_vandermonde, Polynomial.monic_descPochhammer, Polynomial.descPochhammer_natDegree; private near match: Vandermonde.lean:301 of_eval_descPochhammer_eq_mul_of_choose is private over ℤ; not an accessible replacement; all five methods all three forms: True
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -660,6 +672,8 @@ Completed `Roth.wronskianMatrix`: Direct construction is a verified two-block co
 Completed `Roth.wronskian`: Binary Wronskian specializes at l2, not arbitrary arity, Generic determinant infrastructure already handles raw data construction
 
 Completed `Roth.wronskian_eq_zero_of_not_linearIndependent`: Multivariate easy direction repeats relation/kernel argument; generic operator-family route can unify.
+
+Completed `Roth.det_choose_eq`: Generic monic evaluation content is already in mathlib; specific binomial normalization resembles an existing private integer bridge. Do not add another generic evaluation theorem.
 
 ## Part 5: Generalization opportunities
 
@@ -750,6 +764,8 @@ Completed `Roth.wronskian`: Expanded standalone body CommRing verified; unchange
 
 Completed `Roth.wronskian_eq_zero_of_not_linearIndependent`: Expanded determinant theorem verifies CommRing+NoZeroDivisors including zero ring; fixed public parents still require Field. Generic scalar-linear-family version verifies CommSemiring base, domain CommRing target, AddCommMonoid source, faithful algebra action.
 
+Completed `Roth.det_choose_eq`: Verified exact quotient under local nonzero factorials; stronger arbitrary CommRing identity factorial-product * det(choose) = Vandermonde product, including zero ring. Char2 size2 positive specialization and size3 failure guard compile.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -836,6 +852,8 @@ Completed `Roth.wronskianMatrix`: Coherent named n-ary normalized Wronskian API;
 Completed `Roth.wronskian`: Coherent normalized n-ary Wronskian name/compatibility/scaling API subject to upstream design.
 
 Completed `Roth.wronskian_eq_zero_of_not_linearIndependent`: Design-dependent packaging of finite Hasse alternating map or generic operator-family determinant law; abstract vanishing law already exists.
+
+Completed `Roth.det_choose_eq`: Public characteristic-aware binomial evaluation determinant API; Pochhammer monicity/degree can be transferred from ℤ to remove pinned NoZeroDivisors assumptions.
 
 ## Part 7: Junk / removable
 
@@ -926,6 +944,8 @@ Completed `Roth.wronskian`: False
 
 Completed `Roth.wronskian_eq_zero_of_not_linearIndependent`: False
 
+Completed `Roth.det_choose_eq`: No; explicitly used once in Wronskian nonvanishing. No external-to-file reference claim or simp-closure inference.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -972,6 +992,7 @@ Completed `Roth.wronskian_eq_zero_of_not_linearIndependent`: False
 | 40 | `Roth.wronskianMatrix` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.wronskianMatrix.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.wronskianMatrix/root-acceptance.json) |
 | 41 | `Roth.wronskian` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.wronskian.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.wronskian/root-acceptance.json) |
 | 42 | `Roth.wronskian_eq_zero_of_not_linearIndependent` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.wronskian_eq_zero_of_not_linearIndependent.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.wronskian_eq_zero_of_not_linearIndependent/root-acceptance.json) |
+| 43 | `Roth.det_choose_eq` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.det_choose_eq.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.det_choose_eq/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -1055,11 +1076,13 @@ Completed `Roth.wronskian` action: BORDERLINE-needs-human: retain active local a
 
 Completed `Roth.wronskian_eq_zero_of_not_linearIndependent` action: Retain locally pending upstream API choice; optional verified four-call proof cleanup.
 
+Completed `Roth.det_choose_eq` action: YES-but-generalise-first: expose cancellation-free ring identity and local-factorial quotient corollary in Mathlib/LinearAlgebra/Vandermonde.lean; existing abstract law reused; focused separate PR; run /generalise and /cleanup before submission.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.det_choose_eq` next. Supporting identities receive their own applicable checks.
+   `Roth.coeff_prod_of_natDegree_le'` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
