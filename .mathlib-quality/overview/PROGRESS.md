@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-27
 
-- Declarations completed: **211/293**
-- Next declaration: **#212 `Roth.index_numeric_bound_aux`** (Roth/Theta.lean:531)
+- Declarations completed: **212/293**
+- Next declaration: **#213 `Roth.index_le_lem6`** (Roth/Theta.lean:556)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -230,10 +230,10 @@ Last regenerated: 2026-10-27
 | 209 | `Roth.index_det_le` | Roth/Theta.lean:457 | BORDERLINE-needs-human | [report](mathlibable/Roth.index_det_le.md) |
 | 210 | `Roth.weight_le_delta_aux` | Roth/Theta.lean:494 | SKIP | [report](mathlibable/Roth.weight_le_delta_aux.md) |
 | 211 | `Roth.mapped_det_ne_zero_aux` | Roth/Theta.lean:511 | SKIP | [report](mathlibable/Roth.mapped_det_ne_zero_aux.md) |
+| 212 | `Roth.index_numeric_bound_aux` | Roth/Theta.lean:531 | SKIP | [report](mathlibable/Roth.index_numeric_bound_aux.md) |
 
 ## Remaining declarations (in processing order)
 
-- #212 `Roth.index_numeric_bound_aux` (Roth/Theta.lean:531, private lemma)
 - #213 `Roth.index_le_lem6` (Roth/Theta.lean:556, public theorem)
 - #214 `Roth.Θ_option_le` (Roth/Theta.lean:593, public theorem)
 - #215 `Roth.factorial_coefficient_le_two_pow_aux` (Roth/Theta.lean:609, private lemma)
