@@ -1,0 +1,75 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.Polynomial.HasseDeriv\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.LinearAlgebra.Matrix.ToLinearEquiv\nimport Mathlib.RingTheory.Polynomial.Wronskian\nimport Mathlib.LinearAlgebra.Vandermonde\nimport Mathlib.Data.ZMod.Defs\nimport Mathlib.Algebra.Field.ZMod\nimport Mathlib.Algebra.Order.Group.Int.Sum\nimport Mathlib.LinearAlgebra.Matrix.Polynomial\n-- Append to the raw warm mathlib-only imports; no Roth imports.\n#check_failure Roth.wronskian_update_sub_smul\n#check @Matrix.det_updateCol_add_smul_self\n#check @Polynomial.hasseDeriv\nopen Polynomial\ntheorem roth48_ring {R : Type*} [CommRing R] {l : ℕ}\n    {φ : Fin l → R[X]} {ν ν' : Fin l} (h : ν ≠ ν') (c : R) :\n    (Matrix.of fun μ ρ : Fin l ↦ hasseDeriv μ\n      ((Function.update φ ν' (φ ν' - C c * φ ν)) ρ)).det =\n    (Matrix.of fun μ ρ : Fin l ↦ hasseDeriv μ (φ ρ)).det := by\n  refine (congrArg Matrix.det ?_).trans\n    (Matrix.det_updateCol_add_smul_self\n      (Matrix.of fun μ ρ : Fin l ↦ hasseDeriv μ (φ ρ)) h.symm (-C c))\n  ext μ ρ\n  simp [Matrix.updateCol_apply, Function.update_apply, apply_ite,\n    ← smul_eq_C_mul, sub_eq_add_neg]\n#print axioms roth48_ring\n-- Pure existing-call bridge candidate, with no new helper in the proof.\ntheorem roth48_compose {R : Type*} [CommRing R] {l : ℕ}\n    {φ : Fin l → R[X]} {ν ν' : Fin l} (h : ν ≠ ν') (c : R) :\n    (Matrix.of fun μ ρ : Fin l ↦ hasseDeriv μ\n      ((Function.update φ ν' (φ ν' - C c * φ ν)) ρ)).det =\n    (Matrix.of fun μ ρ : Fin l ↦ hasseDeriv μ (φ ρ)).det := by\n  simpa [Matrix.updateCol, Function.update_apply, apply_ite,\n    ← smul_eq_C_mul, sub_eq_add_neg] using\n    (Matrix.det_updateCol_add_smul_self\n      (Matrix.of fun μ ρ : Fin l ↦ hasseDeriv μ (φ ρ)) h.symm (-C c))\n#print axioms roth48_compose\n\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": false,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.wronskian_update_sub_smul`\",\n      \"line\": 11,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Matrix.det_updateCol_add_smul_self : ∀ {n : Type u_2} [inst : DecidableEq n] [inst_1 : Fintype n] {R : Type u_1}\\n  [inst_2 : CommRing R] (A : Matrix n n R) {i j : n},\\n  i ≠ j → ∀ (c : R), (A.updateCol i fun k ↦ A k i + c • A k j).det = A.det\",\n      \"line\": 12,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.hasseDeriv : {R : Type u_1} → [inst : Semiring R] → ℕ → Polynomial R →ₗ[R] Polynomial R\",\n      \"line\": 13,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'roth48_ring' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 26,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"Type mismatch: After simplification, term\\n  Matrix.det_updateCol_add_smul_self (Matrix.of fun μ ρ ↦ (hasseDeriv ↑μ) (φ ρ)) (Ne.symm h) (-C c)\\n has type\\n  (Matrix.of fun i ↦\\n        Function.update (Matrix.of (fun μ ρ ↦ (hasseDeriv ↑μ) (φ ρ)) i) ν'\\n          ((hasseDeriv ↑i) (φ ν') + -(c • (hasseDeriv ↑i) (φ ν)))).det =\\n    (Matrix.of fun μ ρ ↦ (hasseDeriv ↑μ) (φ ρ)).det\\nbut is expected to have type\\n  (Matrix.of fun μ ρ ↦\\n        if ρ = ν' then (hasseDeriv ↑μ) (φ ν') + -(c • (hasseDeriv ↑μ) (φ ν)) else (hasseDeriv ↑μ) (φ ρ)).det =\\n    (Matrix.of fun μ ρ ↦ (hasseDeriv ↑μ) (φ ρ)).det\",\n      \"line\": 33,\n      \"column\": 3,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'roth48_compose' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 37,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": false,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.wronskian_update_sub_smul`",
+          "line": 11,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Matrix.det_updateCol_add_smul_self : ∀ {n : Type u_2} [inst : DecidableEq n] [inst_1 : Fintype n] {R : Type u_1}\n  [inst_2 : CommRing R] (A : Matrix n n R) {i j : n},\n  i ≠ j → ∀ (c : R), (A.updateCol i fun k ↦ A k i + c • A k j).det = A.det",
+          "line": 12,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.hasseDeriv : {R : Type u_1} → [inst : Semiring R] → ℕ → Polynomial R →ₗ[R] Polynomial R",
+          "line": 13,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'roth48_ring' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 26,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "Type mismatch: After simplification, term\n  Matrix.det_updateCol_add_smul_self (Matrix.of fun μ ρ ↦ (hasseDeriv ↑μ) (φ ρ)) (Ne.symm h) (-C c)\n has type\n  (Matrix.of fun i ↦\n        Function.update (Matrix.of (fun μ ρ ↦ (hasseDeriv ↑μ) (φ ρ)) i) ν'\n          ((hasseDeriv ↑i) (φ ν') + -(c • (hasseDeriv ↑i) (φ ν)))).det =\n    (Matrix.of fun μ ρ ↦ (hasseDeriv ↑μ) (φ ρ)).det\nbut is expected to have type\n  (Matrix.of fun μ ρ ↦\n        if ρ = ν' then (hasseDeriv ↑μ) (φ ν') + -(c • (hasseDeriv ↑μ) (φ ν)) else (hasseDeriv ↑μ) (φ ρ)).det =\n    (Matrix.of fun μ ρ ↦ (hasseDeriv ↑μ) (φ ρ)).det",
+          "line": 33,
+          "column": 3,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'roth48_compose' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 37,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 532
+}

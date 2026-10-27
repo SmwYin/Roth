@@ -1,0 +1,44 @@
+{
+  "file": "Roth/Wronskian.lean",
+  "line": 158,
+  "name": "Roth.wronskian_update_sub_smul",
+  "short": "wronskian_update_sub_smul",
+  "kind": "theorem",
+  "visibility": "public",
+  "end_line": 164,
+  "source": "theorem wronskian_update_sub_smul {φ : Fin l → K[X]} {ν ν' : Fin l} (h : ν ≠ ν') (c : K) :\n    wronskian (Function.update φ ν' (φ ν' - C c * φ ν)) = wronskian φ := by\n  refine (congrArg Matrix.det ?_).trans\n    (Matrix.det_updateCol_add_smul_self (wronskianMatrix φ) h.symm (-C c))\n  ext μ ρ\n  simp [wronskianMatrix, Matrix.updateCol_apply, Function.update_apply, apply_ite,\n    ← smul_eq_C_mul, sub_eq_add_neg]",
+  "signature": "theorem wronskian_update_sub_smul {φ : Fin l → K[X]} {ν ν' : Fin l} (h : ν ≠ ν') (c : K) :\n    wronskian (Function.update φ ν' (φ ν' - C c * φ ν)) = wronskian φ",
+  "body": "by\n  refine (congrArg Matrix.det ?_).trans\n    (Matrix.det_updateCol_add_smul_self (wronskianMatrix φ) h.symm (-C c))\n  ext μ ρ\n  simp [wronskianMatrix, Matrix.updateCol_apply, Function.update_apply, apply_ite,\n    ← smul_eq_C_mul, sub_eq_add_neg]",
+  "proof_lines": 6,
+  "sha256": "7c8ecdb8a0b0579caaa49a8afd2b4d244c9780b6b06b8a7a494a48a7b352bbb5",
+  "what": "Subtracting a constant multiple of one column polynomial from another preserves the Wronskian.",
+  "how": "Linearity of Hasse derivatives identifies the updated matrix with a column addition; Matrix.det_updateCol_add_smul_self proves its determinant is unchanged.",
+  "hypotheses": "A coefficient field, two distinct column indices, and any scalar.",
+  "uses_from_project": [
+    "Roth.wronskianMatrix"
+  ],
+  "used_by_in_file": [
+    "Roth.wronskian_ne_zero_of_linearIndependent"
+  ],
+  "project_callers": [
+    {
+      "name": "Roth.wronskian_ne_zero_of_linearIndependent",
+      "file": "Roth/Wronskian.lean",
+      "line": 205
+    }
+  ],
+  "type_context": "{K : Type*} [Field K] {l : ℕ}",
+  "type_provenance": "Exact written signature with section binders made explicit from source; not claimed as a fresh #check output. Minimal hasseCoeff #check succeeded; full Meta inspector timed out.",
+  "reference_provenance": "Manually disambiguated source-level direct project references in declaration bodies; callers include signature and body occurrences. Includes explicit references only, not an exhaustive kernel/simp dependency closure.",
+  "notes": [
+    "No set_option, sorry, TODO, or proof over 30 lines in declaration."
+  ],
+  "assignment_offset": 161,
+  "project_body_refs": [
+    "Roth.wronskianMatrix"
+  ],
+  "project_type_refs": [
+    "Roth.wronskian"
+  ],
+  "section_context": "{K : Type*} [Field K] {l : ℕ}"
+}

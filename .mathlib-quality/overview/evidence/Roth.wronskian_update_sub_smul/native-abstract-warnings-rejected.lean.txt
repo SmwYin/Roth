@@ -1,0 +1,30 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+open Polynomial
+#check_failure Roth.wronskian_update_sub_smul
+#check @AlternatingMap.map_update_sub
+#check @AlternatingMap.map_update_smul
+#check @AlternatingMap.map_update_self
+-- Actual fully abstract transvection proof: primitive laws plus normalization.
+theorem roth48_abstract {R M N ι : Type*} [CommRing R] [AddCommGroup M]
+    [AddCommGroup N] [Module R M] [Module R N] [DecidableEq ι]
+    (f : M [⋀^ι]→ₗ[R] N) (v : ι → M) {i j : ι} (h : i ≠ j) (c : R) :
+    f (Function.update v i (v i - c • v j)) = f v := by
+  rw [f.map_update_sub, f.map_update_smul, f.map_update_self _ h]
+  simp
+#print axioms roth48_abstract
+-- Distinctness is essential: updating only polynomial to itself minus itself annihilates it.
+theorem roth48_same_index_guard :
+    (Matrix.of fun μ ρ : Fin 1 ↦ Polynomial.hasseDeriv μ
+      ((Function.update (fun _ : Fin 1 ↦ (1 : ℚ[X])) 0 (1 - Polynomial.C 1 * 1)) ρ)).det ≠
+    (Matrix.of fun μ ρ : Fin 1 ↦ Polynomial.hasseDeriv μ (1 : ℚ[X])).det := by
+  simp [Matrix.det_fin_one]
+#print axioms roth48_same_index_guard
+

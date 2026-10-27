@@ -1,0 +1,120 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.Polynomial.HasseDeriv\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.LinearAlgebra.Matrix.ToLinearEquiv\nimport Mathlib.RingTheory.Polynomial.Wronskian\nimport Mathlib.LinearAlgebra.Vandermonde\nimport Mathlib.Data.ZMod.Defs\nimport Mathlib.Algebra.Field.ZMod\nimport Mathlib.Algebra.Order.Group.Int.Sum\nimport Mathlib.LinearAlgebra.Matrix.Polynomial\n#check_failure Roth.wronskian_update_sub_smul\n#check @AlternatingMap.map_update_sub\n#check @AlternatingMap.map_update_smul\n#check @AlternatingMap.map_update_self\n-- Actual fully abstract transvection proof: primitive laws plus normalization.\ntheorem roth48_abstract {R M N ι : Type*} [CommRing R] [AddCommGroup M]\n    [AddCommGroup N] [Module R M] [Module R N] [DecidableEq ι]\n    (f : M [⋀^ι]→ₗ[R] N) (v : ι → M) {i j : ι} (h : i ≠ j) (c : R) :\n    f (Function.update v i (v i - c • v j)) = f v := by\n  rw [f.map_update_sub, f.map_update_smul, f.map_update_self _ h]\n  simp\n#print axioms roth48_abstract\n-- Distinctness is essential: updating only polynomial to itself minus itself annihilates it.\ntheorem roth48_same_index_guard :\n    (Matrix.of fun μ ρ : Fin 1 ↦ Polynomial.hasseDeriv μ\n      ((Function.update (fun _ : Fin 1 ↦ (1 : ℚ[X])) 0 (1 - Polynomial.C 1 * 1)) ρ)).det ≠\n    (Matrix.of fun μ ρ : Fin 1 ↦ Polynomial.hasseDeriv μ (1 : ℚ[X])).det := by\n  simp [Matrix.det_fin_one]\n#print axioms roth48_same_index_guard\n\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": false,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.wronskian_update_sub_smul`\",\n      \"line\": 10,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@AlternatingMap.map_update_sub : ∀ {R : Type u_1} [inst : Semiring R] {M' : Type u_2} [inst_1 : AddCommGroup M']\\n  [inst_2 : Module R M'] {N' : Type u_3} [inst_3 : AddCommGroup N'] [inst_4 : Module R N'] {ι : Type u_4}\\n  (g' : M' [⋀^ι]→ₗ[R] N') (v' : ι → M') [inst_5 : DecidableEq ι] (i : ι) (x y : M'),\\n  g' (Function.update v' i (x - y)) = g' (Function.update v' i x) - g' (Function.update v' i y)\",\n      \"line\": 11,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@AlternatingMap.map_update_smul : ∀ {R : Type u_1} [inst : Semiring R] {M : Type u_2} [inst_1 : AddCommMonoid M]\\n  [inst_2 : Module R M] {N : Type u_3} [inst_3 : AddCommMonoid N] [inst_4 : Module R N] {ι : Type u_4}\\n  (f : M [⋀^ι]→ₗ[R] N) (v : ι → M) [inst_5 : DecidableEq ι] (i : ι) (r : R) (x : M),\\n  f (Function.update v i (r • x)) = r • f (Function.update v i x)\",\n      \"line\": 12,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@AlternatingMap.map_update_self : ∀ {R : Type u_1} [inst : Semiring R] {M : Type u_2} [inst_1 : AddCommMonoid M]\\n  [inst_2 : Module R M] {N : Type u_3} [inst_3 : AddCommMonoid N] [inst_4 : Module R N] {ι : Type u_4}\\n  (f : M [⋀^ι]→ₗ[R] N) (v : ι → M) [inst_5 : DecidableEq ι] {i j : ι}, i ≠ j → f (Function.update v i (v j)) = 0\",\n      \"line\": 13,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'roth48_abstract' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 21,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"failed to synthesize instance of type class\\n  OfNat ℚ[X] 1\\nnumerals are polymorphic in Lean, but the numeral `1` cannot be used in a context where the expected type is\\n  ℚ[X]\\ndue to the absence of the instance above\\n\\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.\",\n      \"line\": 25,\n      \"column\": 43,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"failed to synthesize instance of type class\\n  OfNat ℚ[X] 1\\nnumerals are polymorphic in Lean, but the numeral `1` cannot be used in a context where the expected type is\\n  ℚ[X]\\ndue to the absence of the instance above\\n\\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.\",\n      \"line\": 26,\n      \"column\": 59,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"failed to synthesize instance of type class\\n  HSub ℕ (Polynomial ?m.39) ℚ[X]\\n\\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.\",\n      \"line\": 25,\n      \"column\": 57,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"failed to prove index is valid, possible solutions:\\n  - Use `have`-expressions to prove the index is valid\\n  - Use `a[i]!` notation instead, runtime check is performed, and 'Panic' error message is produced if index is not valid\\n  - Use `a[i]?` notation instead, result is an `Option` type\\n  - Use `a[i]'h` notation instead, where `h` is a proof that index is valid\\nX : ?m.1\\nμ ρ x✝ : Fin 1\\n⊢ ?m.28 x✝ ℚ X\",\n      \"line\": 25,\n      \"column\": 47,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"failed to prove index is valid, possible solutions:\\n  - Use `have`-expressions to prove the index is valid\\n  - Use `a[i]!` notation instead, runtime check is performed, and 'Panic' error message is produced if index is not valid\\n  - Use `a[i]?` notation instead, result is an `Option` type\\n  - Use `a[i]'h` notation instead, where `h` is a proof that index is valid\\nX : ?m.1\\nμ ρ : Fin 1\\n⊢ ?m.74 ℚ X\",\n      \"line\": 26,\n      \"column\": 63,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"Unknown constant `roth48_same_index_guard`\",\n      \"line\": 28,\n      \"column\": 15,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": false,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.wronskian_update_sub_smul`",
+          "line": 10,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@AlternatingMap.map_update_sub : ∀ {R : Type u_1} [inst : Semiring R] {M' : Type u_2} [inst_1 : AddCommGroup M']\n  [inst_2 : Module R M'] {N' : Type u_3} [inst_3 : AddCommGroup N'] [inst_4 : Module R N'] {ι : Type u_4}\n  (g' : M' [⋀^ι]→ₗ[R] N') (v' : ι → M') [inst_5 : DecidableEq ι] (i : ι) (x y : M'),\n  g' (Function.update v' i (x - y)) = g' (Function.update v' i x) - g' (Function.update v' i y)",
+          "line": 11,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@AlternatingMap.map_update_smul : ∀ {R : Type u_1} [inst : Semiring R] {M : Type u_2} [inst_1 : AddCommMonoid M]\n  [inst_2 : Module R M] {N : Type u_3} [inst_3 : AddCommMonoid N] [inst_4 : Module R N] {ι : Type u_4}\n  (f : M [⋀^ι]→ₗ[R] N) (v : ι → M) [inst_5 : DecidableEq ι] (i : ι) (r : R) (x : M),\n  f (Function.update v i (r • x)) = r • f (Function.update v i x)",
+          "line": 12,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@AlternatingMap.map_update_self : ∀ {R : Type u_1} [inst : Semiring R] {M : Type u_2} [inst_1 : AddCommMonoid M]\n  [inst_2 : Module R M] {N : Type u_3} [inst_3 : AddCommMonoid N] [inst_4 : Module R N] {ι : Type u_4}\n  (f : M [⋀^ι]→ₗ[R] N) (v : ι → M) [inst_5 : DecidableEq ι] {i j : ι}, i ≠ j → f (Function.update v i (v j)) = 0",
+          "line": 13,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'roth48_abstract' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 21,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "failed to synthesize instance of type class\n  OfNat ℚ[X] 1\nnumerals are polymorphic in Lean, but the numeral `1` cannot be used in a context where the expected type is\n  ℚ[X]\ndue to the absence of the instance above\n\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.",
+          "line": 25,
+          "column": 43,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "failed to synthesize instance of type class\n  OfNat ℚ[X] 1\nnumerals are polymorphic in Lean, but the numeral `1` cannot be used in a context where the expected type is\n  ℚ[X]\ndue to the absence of the instance above\n\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.",
+          "line": 26,
+          "column": 59,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "failed to synthesize instance of type class\n  HSub ℕ (Polynomial ?m.39) ℚ[X]\n\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.",
+          "line": 25,
+          "column": 57,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "failed to prove index is valid, possible solutions:\n  - Use `have`-expressions to prove the index is valid\n  - Use `a[i]!` notation instead, runtime check is performed, and 'Panic' error message is produced if index is not valid\n  - Use `a[i]?` notation instead, result is an `Option` type\n  - Use `a[i]'h` notation instead, where `h` is a proof that index is valid\nX : ?m.1\nμ ρ x✝ : Fin 1\n⊢ ?m.28 x✝ ℚ X",
+          "line": 25,
+          "column": 47,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "failed to prove index is valid, possible solutions:\n  - Use `have`-expressions to prove the index is valid\n  - Use `a[i]!` notation instead, runtime check is performed, and 'Panic' error message is produced if index is not valid\n  - Use `a[i]?` notation instead, result is an `Option` type\n  - Use `a[i]'h` notation instead, where `h` is a proof that index is valid\nX : ?m.1\nμ ρ : Fin 1\n⊢ ?m.74 ℚ X",
+          "line": 26,
+          "column": 63,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "Unknown constant `roth48_same_index_guard`",
+          "line": 28,
+          "column": 15,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 599
+}

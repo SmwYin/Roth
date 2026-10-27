@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 47/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 48/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 47; remaining: 246.
-- Verdicts: 8 NO-composable-from-mathlib, 11 YES-add-as-is, 3 YES-but-generalise-first, 7 NO-mathlib-has-it, 14 BORDERLINE-needs-human, 4 SKIP.
+- Completed applicable assessments: 48; remaining: 245.
+- Verdicts: 8 NO-composable-from-mathlib, 11 YES-add-as-is, 3 YES-but-generalise-first, 7 NO-mathlib-has-it, 15 BORDERLINE-needs-human, 4 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -516,6 +516,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: total explicit proof callers: 1; within file: 1; outside file: 0; internal use count excluding declaring file: 0; callers: Roth/Wronskian.lean:210 Roth.wronskian_ne_zero_of_linearIndependent; inline rederivations: None
 - Verdict: YES-but-generalise-first; [complete report](.mathlib-quality/overview/mathlibable/Roth.wronskian_ne_zero_of_natDegree_injective.md).
 
+### Completed: `Roth.wronskian_update_sub_smul`
+
+- Type: `∀ {K : Type u_1} [Field K] {l : ℕ} {φ : Fin l → K[X]} {ν ν' : Fin l}, ν ≠ ν' → ∀ (c : K), Roth.wronskian (Function.update φ ν' (φ ν' - C c * φ ν)) = Roth.wronskian φ`
+- What: Subtracting a constant multiple of one distinct family member preserves its Hasse-Wronskian.
+- How: Identify the updated Hasse matrix entrywise using coefficient linearity, then apply Matrix.det_updateCol_add_smul_self with negative constant scalar.
+- Hypotheses: Field K fixed by parent interface; distinct Fin l indices; any constant c. No CharZero, independence, degree or nonzero assumptions.
+- Project dependencies: Roth.wronskian, Roth.wronskianMatrix
+- Caller summary: One explicit executable reference, Wronskian.lean:212 inside wronskian_ne_zero_of_linearIndependent; no external-to-file callers; documentation reference at 38 excluded.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.wronskian_update_sub_smul.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -636,6 +646,8 @@ Completed `Roth.coeff_wronskian_of_natDegree_injective`: Five actual methods on 
 
 Completed `Roth.wronskian_ne_zero_of_natDegree_injective`: Mathlib has binary Polynomial.wronskian, an explicit n-tuple TODO, and generic Matrix.det_vandermonde_ne_zero_iff. All five actual methods searched current/literature/abstract forms; no direct family replacement. Local index unavailable does not prove absence.
 
+Completed `Roth.wronskian_update_sub_smul`: Generic column law exists at Matrix/Determinant/Basic.lean:478. Binary Polynomial.wronskian differs. Three actual direct simpa routes fail; explicit representation bridge verified.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -731,6 +743,8 @@ Completed `Roth.sum_range_le_sum_of_injective`: Existing sharper lower-bounded f
 Completed `Roth.coeff_wronskian_of_natDegree_injective`: Classical leading-monomial/Vandermonde calculation; existing common-bound product coefficient theorem does not directly give varying bounds. No exact pinned replacement found.
 
 Completed `Roth.wronskian_ne_zero_of_natDegree_injective`: Generic coefficient nonzero and Vandermonde nonzero steps already abstract. Hasse coefficient and binomial conversion bridges remain new mathematical helpers; downstream criterion cannot be used circularly.
+
+Completed `Roth.wronskian_update_sub_smul`: Elementary determinant transvection, but not a defeq or strict <=3-existing-call replacement for the family statement.
 
 ## Part 5: Generalization opportunities
 
@@ -831,6 +845,8 @@ Completed `Roth.coeff_wronskian_of_natDegree_injective`: Native verified expande
 
 Completed `Roth.wronskian_ne_zero_of_natDegree_injective`: Verified same-parent Field weakening removes global CharZero in favor of cast-degree injectivity. Separately verified expanded CommRing+IsDomain form. No factorial-nonzero premise needed. ZMod2 positive and negative guards; ZxZ zero-divisor guard.
 
+Completed `Roth.wronskian_update_sub_smul`: Raw [CommRing R], arbitrary finite index and selected Hasse orders verified; existing parent interface remains Field-bound.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -927,6 +943,8 @@ Completed `Roth.sum_range_le_sum_of_injective`: None
 Completed `Roth.coeff_wronskian_of_natDegree_injective`: Coefficient of determinant of arbitrary finite Hasse derivative matrix at sum degrees minus sum orders; varying-bound coefficient-product helper supports its proof.
 
 Completed `Roth.wronskian_ne_zero_of_natDegree_injective`: N-ary Hasse Wronskian top-coefficient/nonvanishing API, supported by cancellation-free binomial determinant identity.
+
+Completed `Roth.wronskian_update_sub_smul`: Conditional on parent acceptance: finite-family Hasse-Wronskian alternating-map interface or family-to-matrix update compatibility. No missing generic determinant column law.
 
 ## Part 7: Junk / removable
 
@@ -1027,6 +1045,8 @@ Completed `Roth.coeff_wronskian_of_natDegree_injective`: No: sole local caller s
 
 Completed `Roth.wronskian_ne_zero_of_natDegree_injective`: False
 
+Completed `Roth.wronskian_update_sub_smul`: Useful sole induction caller; not dead code.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -1078,6 +1098,7 @@ Completed `Roth.wronskian_ne_zero_of_natDegree_injective`: False
 | 45 | `Roth.sum_range_le_sum_of_injective` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.sum_range_le_sum_of_injective.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.sum_range_le_sum_of_injective/root-acceptance.json) |
 | 46 | `Roth.coeff_wronskian_of_natDegree_injective` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.coeff_wronskian_of_natDegree_injective.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.coeff_wronskian_of_natDegree_injective/root-acceptance.json) |
 | 47 | `Roth.wronskian_ne_zero_of_natDegree_injective` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.wronskian_ne_zero_of_natDegree_injective.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.wronskian_ne_zero_of_natDegree_injective/root-acceptance.json) |
+| 48 | `Roth.wronskian_update_sub_smul` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.wronskian_update_sub_smul.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.wronskian_update_sub_smul/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -1171,11 +1192,13 @@ Completed `Roth.coeff_wronskian_of_natDegree_injective` action: YES-but-generali
 
 Completed `Roth.wronskian_ne_zero_of_natDegree_injective` action: YES-but-generalise-first: /generalise target for cast-degree hypothesis; group with accepted coefficient theorem and coordinate determinant support; /cleanup before upstream Wronskian.lean PR. Sole caller supplies Nat.cast_injective.comp hinj.
 
+Completed `Roth.wronskian_update_sub_smul` action: Retain local theorem pending three concrete upstream family-API questions; do not submit a duplicate generic determinant law.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.wronskian_update_sub_smul` next. Supporting identities receive their own applicable checks.
+   `Roth.linearIndependent_update_sub_smul` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.

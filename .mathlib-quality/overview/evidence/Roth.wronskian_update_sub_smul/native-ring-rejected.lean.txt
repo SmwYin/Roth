@@ -1,0 +1,38 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+-- Append to the raw warm mathlib-only imports; no Roth imports.
+#check_failure Roth.wronskian_update_sub_smul
+#check @Matrix.det_updateCol_add_smul_self
+#check @Polynomial.hasseDeriv
+open Polynomial
+ theorem roth48_ring {R : Type*} [CommRing R] {l : ℕ}
+    {φ : Fin l → R[X]} {ν ν' : Fin l} (h : ν ≠ ν') (c : R) :
+    (Matrix.of fun μ ρ : Fin l ↦ hasseDeriv μ
+      ((Function.update φ ν' (φ ν' - C c * φ ν)) ρ)).det =
+    (Matrix.of fun μ ρ : Fin l ↦ hasseDeriv μ (φ ρ)).det := by
+  refine (congrArg Matrix.det ?_).trans
+    (Matrix.det_updateCol_add_smul_self
+      (Matrix.of fun μ ρ : Fin l ↦ hasseDeriv μ (φ ρ)) h.symm (-C c))
+  ext μ ρ
+  simp [Matrix.updateCol_apply, Function.update_apply, apply_ite,
+    ← smul_eq_C_mul, sub_eq_add_neg]
+#print axioms roth48_ring
+-- Pure existing-call bridge candidate, with no new helper in the proof.
+ theorem roth48_compose {R : Type*} [CommRing R] {l : ℕ}
+    {φ : Fin l → R[X]} {ν ν' : Fin l} (h : ν ≠ ν') (c : R) :
+    (Matrix.of fun μ ρ : Fin l ↦ hasseDeriv μ
+      ((Function.update φ ν' (φ ν' - C c * φ ν)) ρ)).det =
+    (Matrix.of fun μ ρ : Fin l ↦ hasseDeriv μ (φ ρ)).det := by
+  simpa [Matrix.updateCol_apply, Function.update_apply, apply_ite,
+    ← smul_eq_C_mul, sub_eq_add_neg] using
+    (Matrix.det_updateCol_add_smul_self
+      (Matrix.of fun μ ρ : Fin l ↦ hasseDeriv μ (φ ρ)) h.symm (-C c))
+#print axioms roth48_compose
+

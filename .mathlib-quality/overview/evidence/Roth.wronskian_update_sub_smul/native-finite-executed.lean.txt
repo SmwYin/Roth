@@ -1,0 +1,33 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+open Polynomial
+#check_failure Roth.wronskian_update_sub_smul
+namespace WronskianUpdateFinite
+theorem generic {R : Type*} [CommRing R] {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (r : ι → ℕ) {φ : ι → R[X]} {ν ν' : ι} (h : ν ≠ ν') (c : R) :
+    (Matrix.of fun μ ρ : ι ↦ hasseDeriv (r μ)
+      ((Function.update φ ν' (φ ν' - C c * φ ν)) ρ)).det =
+    (Matrix.of fun μ ρ : ι ↦ hasseDeriv (r μ) (φ ρ)).det := by
+  refine (congrArg Matrix.det ?_).trans
+    (Matrix.det_updateCol_add_smul_self
+      (Matrix.of fun μ ρ : ι ↦ hasseDeriv (r μ) (φ ρ)) h.symm (-C c))
+  ext μ ρ
+  simp [Matrix.updateCol_apply, Function.update_apply, apply_ite,
+    ← smul_eq_C_mul, sub_eq_add_neg]
+
+theorem polynomial_multiplier_guard :
+    (Matrix.of fun μ ν : Fin 2 ↦ hasseDeriv (μ : ℕ)
+      ((Function.update (![1, X] : Fin 2 → ℚ[X]) 1 (X - X * 1)) ν)).det ≠
+    (Matrix.of fun μ ν : Fin 2 ↦ hasseDeriv (μ : ℕ) (![1, X] ν : ℚ[X])).det := by
+  norm_num [Matrix.det_fin_two]
+#print axioms generic
+#print axioms polynomial_multiplier_guard
+end WronskianUpdateFinite
+

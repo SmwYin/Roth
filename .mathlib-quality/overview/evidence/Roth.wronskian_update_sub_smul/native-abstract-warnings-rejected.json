@@ -1,0 +1,93 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.Polynomial.HasseDeriv\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.LinearAlgebra.Matrix.ToLinearEquiv\nimport Mathlib.RingTheory.Polynomial.Wronskian\nimport Mathlib.LinearAlgebra.Vandermonde\nimport Mathlib.Data.ZMod.Defs\nimport Mathlib.Algebra.Field.ZMod\nimport Mathlib.Algebra.Order.Group.Int.Sum\nimport Mathlib.LinearAlgebra.Matrix.Polynomial\nopen Polynomial\n#check_failure Roth.wronskian_update_sub_smul\n#check @AlternatingMap.map_update_sub\n#check @AlternatingMap.map_update_smul\n#check @AlternatingMap.map_update_self\n-- Actual fully abstract transvection proof: primitive laws plus normalization.\ntheorem roth48_abstract {R M N ι : Type*} [CommRing R] [AddCommGroup M]\n    [AddCommGroup N] [Module R M] [Module R N] [DecidableEq ι]\n    (f : M [⋀^ι]→ₗ[R] N) (v : ι → M) {i j : ι} (h : i ≠ j) (c : R) :\n    f (Function.update v i (v i - c • v j)) = f v := by\n  rw [f.map_update_sub, f.map_update_smul, f.map_update_self _ h]\n  simp\n#print axioms roth48_abstract\n-- Distinctness is essential: updating only polynomial to itself minus itself annihilates it.\ntheorem roth48_same_index_guard :\n    (Matrix.of fun μ ρ : Fin 1 ↦ Polynomial.hasseDeriv μ\n      ((Function.update (fun _ : Fin 1 ↦ (1 : ℚ[X])) 0 (1 - Polynomial.C 1 * 1)) ρ)).det ≠\n    (Matrix.of fun μ ρ : Fin 1 ↦ Polynomial.hasseDeriv μ (1 : ℚ[X])).det := by\n  simp [Matrix.det_fin_one]\n#print axioms roth48_same_index_guard\n\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.wronskian_update_sub_smul`\",\n      \"line\": 11,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@AlternatingMap.map_update_sub : ∀ {R : Type u_1} [inst : Semiring R] {M' : Type u_2} [inst_1 : AddCommGroup M']\\n  [inst_2 : Module R M'] {N' : Type u_3} [inst_3 : AddCommGroup N'] [inst_4 : Module R N'] {ι : Type u_4}\\n  (g' : M' [⋀^ι]→ₗ[R] N') (v' : ι → M') [inst_5 : DecidableEq ι] (i : ι) (x y : M'),\\n  g' (Function.update v' i (x - y)) = g' (Function.update v' i x) - g' (Function.update v' i y)\",\n      \"line\": 12,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@AlternatingMap.map_update_smul : ∀ {R : Type u_1} [inst : Semiring R] {M : Type u_2} [inst_1 : AddCommMonoid M]\\n  [inst_2 : Module R M] {N : Type u_3} [inst_3 : AddCommMonoid N] [inst_4 : Module R N] {ι : Type u_4}\\n  (f : M [⋀^ι]→ₗ[R] N) (v : ι → M) [inst_5 : DecidableEq ι] (i : ι) (r : R) (x : M),\\n  f (Function.update v i (r • x)) = r • f (Function.update v i x)\",\n      \"line\": 13,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@AlternatingMap.map_update_self : ∀ {R : Type u_1} [inst : Semiring R] {M : Type u_2} [inst_1 : AddCommMonoid M]\\n  [inst_2 : Module R M] {N : Type u_3} [inst_3 : AddCommMonoid N] [inst_4 : Module R N] {ι : Type u_4}\\n  (f : M [⋀^ι]→ₗ[R] N) (v : ι → M) [inst_5 : DecidableEq ι] {i j : ι}, i ≠ j → f (Function.update v i (v j)) = 0\",\n      \"line\": 14,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'roth48_abstract' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 22,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'roth48_same_index_guard' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 29,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"warning\",\n      \"message\": \"Variable name `ρ` is not explicitly referenced.\\n\\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\\n  [apply] _ρ\\n\\nNote: This linter can be disabled with `set_option linter.unusedVariables false`\",\n      \"line\": 27,\n      \"column\": 22,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"warning\",\n      \"message\": \"This simp argument is unused:\\n  Matrix.det_fin_one\\n\\nHint: Omit it from the simp argument list.\\n  [apply] simp\\n\\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`\",\n      \"line\": 28,\n      \"column\": 9,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.wronskian_update_sub_smul`",
+          "line": 11,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@AlternatingMap.map_update_sub : ∀ {R : Type u_1} [inst : Semiring R] {M' : Type u_2} [inst_1 : AddCommGroup M']\n  [inst_2 : Module R M'] {N' : Type u_3} [inst_3 : AddCommGroup N'] [inst_4 : Module R N'] {ι : Type u_4}\n  (g' : M' [⋀^ι]→ₗ[R] N') (v' : ι → M') [inst_5 : DecidableEq ι] (i : ι) (x y : M'),\n  g' (Function.update v' i (x - y)) = g' (Function.update v' i x) - g' (Function.update v' i y)",
+          "line": 12,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@AlternatingMap.map_update_smul : ∀ {R : Type u_1} [inst : Semiring R] {M : Type u_2} [inst_1 : AddCommMonoid M]\n  [inst_2 : Module R M] {N : Type u_3} [inst_3 : AddCommMonoid N] [inst_4 : Module R N] {ι : Type u_4}\n  (f : M [⋀^ι]→ₗ[R] N) (v : ι → M) [inst_5 : DecidableEq ι] (i : ι) (r : R) (x : M),\n  f (Function.update v i (r • x)) = r • f (Function.update v i x)",
+          "line": 13,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@AlternatingMap.map_update_self : ∀ {R : Type u_1} [inst : Semiring R] {M : Type u_2} [inst_1 : AddCommMonoid M]\n  [inst_2 : Module R M] {N : Type u_3} [inst_3 : AddCommMonoid N] [inst_4 : Module R N] {ι : Type u_4}\n  (f : M [⋀^ι]→ₗ[R] N) (v : ι → M) [inst_5 : DecidableEq ι] {i j : ι}, i ≠ j → f (Function.update v i (v j)) = 0",
+          "line": 14,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'roth48_abstract' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 22,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'roth48_same_index_guard' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 29,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "warning",
+          "message": "Variable name `ρ` is not explicitly referenced.\n\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\n  [apply] _ρ\n\nNote: This linter can be disabled with `set_option linter.unusedVariables false`",
+          "line": 27,
+          "column": 22,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "warning",
+          "message": "This simp argument is unused:\n  Matrix.det_fin_one\n\nHint: Omit it from the simp argument list.\n  [apply] simp\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`",
+          "line": 28,
+          "column": 9,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 403
+}
