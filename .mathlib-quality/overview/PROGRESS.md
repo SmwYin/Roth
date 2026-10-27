@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-27
 
-- Declarations completed: **250/293**
-- Next declaration: **#251 `Roth.eval_hasseDeriv_sub_eq_zero`** (Roth/MainLemma.lean:402)
+- Declarations completed: **251/293**
+- Next declaration: **#252 `Roth.le_index_of_forall_eval_eq_zero`** (Roth/MainLemma.lean:419)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -269,10 +269,10 @@ Last regenerated: 2026-10-27
 | 248 | `Roth.pigeonhole_count` | Roth/MainLemma.lean:334 | BORDERLINE-needs-human | [report](mathlibable/Roth.pigeonhole_count.md) |
 | 249 | `Roth.exists_ne_modByMonic_eq` | Roth/MainLemma.lean:359 | BORDERLINE-needs-human | [report](mathlibable/Roth.exists_ne_modByMonic_eq.md) |
 | 250 | `Roth.sub_mem_RSet` | Roth/MainLemma.lean:388 | NO-composable-from-mathlib | [report](mathlibable/Roth.sub_mem_RSet.md) |
+| 251 | `Roth.eval_hasseDeriv_sub_eq_zero` | Roth/MainLemma.lean:402 | NO-composable-from-mathlib | [report](mathlibable/Roth.eval_hasseDeriv_sub_eq_zero.md) |
 
 ## Remaining declarations (in processing order)
 
-- #251 `Roth.eval_hasseDeriv_sub_eq_zero` (Roth/MainLemma.lean:402, public theorem)
 - #252 `Roth.le_index_of_forall_eval_eq_zero` (Roth/MainLemma.lean:419, public theorem)
 - #253 `Roth.mul_two_mul_add_one_div_lt_of_le_sq_mul` (Roth/MainLemma.lean:433, public theorem)
 - #254 `Roth.exists_hasseDeriv_eval_ne_zero` (Roth/MainLemma.lean:454, public theorem)
