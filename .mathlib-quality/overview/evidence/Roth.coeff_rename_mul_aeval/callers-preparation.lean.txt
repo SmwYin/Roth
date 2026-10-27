@@ -1,0 +1,78 @@
+open MvPolynomial Roth
+namespace SeparatedProductReplay158
+variable {τ R : Type*} [CommSemiring R]
+open Lean Elab Term in
+elab "originalIndexSeparated158" : term => do
+  return ← Lean.Meta.mkConstWithFreshMVarLevels
+    (Lean.mkPrivateNameCore `Roth.Theta `Roth.index_separated_mul_le_aux)
+theorem oldForm (U : MvPolynomial τ R) (V : Polynomial R) (a : τ →₀ ℕ) (b : ℕ) :
+    (rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) R) V).coeff
+        (a.mapDomain some + Finsupp.single none b) = U.coeff a * V.coeff b := by
+  have h : (optionEquivLeft R τ).toAlgHom.comp (rename some) = Polynomial.CAlgHom := by
+    ext i
+    simp
+  have he : a.optionElim b = a.mapDomain some + Finsupp.single none b :=
+    (Finsupp.update_eq_add_single (Finsupp.embDomain_some_none a) b).trans
+      (congrArg (fun e ↦ e + Finsupp.single none b) (Finsupp.embDomain_eq_mapDomain .some a))
+  rw [← he, ← optionEquivLeft_coeff_coeff, map_mul,
+    (show optionEquivLeft R τ (rename some U) = Polynomial.C U from AlgHom.congr_fun h U),
+    ← Polynomial.aeval_algHom_apply, optionEquivLeft_X_none, Polynomial.aeval_X_left_eq_map,
+    Polynomial.coeff_C_mul, Polynomial.coeff_map, algebraMap_eq, mul_comm U, coeff_C_mul, mul_comm]
+
+#print axioms oldForm
+theorem exists_int_polynomial_of_primitive_factor_aux {U : MvPolynomial τ ℤ}
+    {V' : Polynomial ℚ} {F : MvPolynomial (Option τ) ℤ} (hgcd : U.support.gcd U.coeff = 1)
+    (hF : map (Int.castRingHom ℚ) F = rename some (map (Int.castRingHom ℚ) U) *
+      Polynomial.aeval (X none : MvPolynomial (Option τ) ℚ) V') :
+    ∃ V : Polynomial ℤ, V.map (Int.castRingHom ℚ) = V' := by
+  apply (Polynomial.mem_map_range (Int.castRingHom ℚ)).2
+  intro b
+  obtain ⟨z, hz⟩ := exists_int_eq_of_gcd_eq_one hgcd fun a _ ↦
+    ⟨F.coeff (a.mapDomain some + Finsupp.single none b), by
+      have h := congrArg (fun P ↦ P.coeff (a.mapDomain some + Finsupp.single none b)) hF
+      simp only [oldForm, coeff_map] at h
+      simpa using h.symm⟩
+  exact ⟨z, hz.symm⟩
+
+
+#print axioms exists_int_polynomial_of_primitive_factor_aux
+variable [Fintype τ]
+theorem index_det_le {r : Option τ → ℕ} (hr0 : ∀ j, 0 < r j) {r₁ : ℕ} (hr₁ : ∀ j, r j ≤ r₁)
+    {q : Option τ → ℕ} {B : ℝ} {R : MvPolynomial (Option τ) ℤ} (hR : R ∈ RSet B r)
+    {h : Option τ → ℤ} (hh : ∀ j, IsCoprime (h j) (q j : ℤ)) {l : ℕ} (hl : 1 ≤ l)
+    {D : Fin l → (τ →₀ ℕ)} {U : MvPolynomial τ ℤ} {V : Polynomial ℤ} (hU : U ≠ 0) (hV : V ≠ 0)
+    (hUd : ∀ j, degreeOf j U ≤ l * r (some j)) (hVd : V.natDegree ≤ l * r none)
+    (hF : (Matrix.of fun μ ν : Fin l ↦
+        hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) R).det =
+      rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) ℤ) V) :
+    index (map (Int.castRingHom ℝ) (Matrix.of fun μ ν : Fin l ↦
+        hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) R).det)
+      (fun j ↦ (h j : ℝ) / q j) r ≤ l * lem6Φ q r (lem6M (Fintype.card τ + 1) r₁ B l) l := by
+  classical
+  -- Step 1: the coefficients of `F` are bounded by `M`.
+  have hFcoef (d) : |(((Matrix.of fun μ ν : Fin l ↦ hasseDeriv
+      ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) R).det.coeff d : ℤ) : ℝ)| ≤
+      lem6M (Fintype.card τ + 1) r₁ B l := by
+    simpa only [lem6M, Finset.prod_const, Finset.sum_const, Finset.card_univ,
+      Fintype.card_option, nsmul_eq_mul, Nat.cast_id, pow_mul, mul_right_comm] using
+      abs_coeff_det_hasseDeriv_le _ R (r := fun _ ↦ r₁) (fun j ↦ (hR.2.1 j).trans (hr₁ j))
+        ((abs_nonneg ((R.coeff 0 : ℤ) : ℝ)).trans (hR.2.2 0)) hR.2.2 d
+  -- Step 2: the coefficients of `U` and `V` are bounded by `M`.
+  have hUc : ∀ a, |((U.coeff a : ℤ) : ℝ)| ≤ lem6M (Fintype.card τ + 1) r₁ B l := fun a ↦ by
+    have h1 := hFcoef (a.mapDomain some + Finsupp.single none V.natDegree)
+    rw [hF, oldForm, Int.cast_mul, abs_mul] at h1
+    exact (le_mul_of_one_le_right (abs_nonneg _) (by
+      exact_mod_cast Int.one_le_abs (Polynomial.leadingCoeff_ne_zero.2 hV))).trans h1
+  have hVc : ∀ b, |((V.coeff b : ℤ) : ℝ)| ≤ lem6M (Fintype.card τ + 1) r₁ B l := fun b ↦ by
+    obtain ⟨a₀, ha₀⟩ := MvPolynomial.ne_zero_iff.1 hU
+    have h1 := hFcoef (a₀.mapDomain some + Finsupp.single none b)
+    rw [hF, oldForm, Int.cast_mul, abs_mul] at h1
+    exact (le_mul_of_one_le_left (abs_nonneg _) (by
+      exact_mod_cast Int.one_le_abs ha₀)).trans h1
+  -- Step 3: Lemma 4-2, the index of the product of polynomials in separate variables.
+  rw [hF]
+  exact originalIndexSeparated158 hr0 hh hl ⟨hU, hUd, hUc⟩ hV hVd hVc
+
+
+#print axioms index_det_le
+end SeparatedProductReplay158

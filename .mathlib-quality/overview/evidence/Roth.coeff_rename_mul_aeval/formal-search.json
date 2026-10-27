@@ -1,0 +1,664 @@
+[
+  {
+    "status": "fulfilled",
+    "value": {
+      "form": "current",
+      "method": "Finder",
+      "request": {
+        "query": "coefficient of rename some U times aeval X none V at a mapDomain some plus single none b equals coefficient U a times coefficient V b",
+        "num_results": 6
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"MvPolynomial.coeff_rename_mapDomain\",\n      \"informal_name\": \"Coefficient Preservation Under Injective Variable Renaming in Multivariate Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_4} [inst : CommSemiring R] (f : σ → τ),\\n  Function.Injective f →\\n    ∀ (φ : MvPolynomial σ R) (d : σ →₀ ℕ),\\n      MvPolynomial.coeff (Finsupp.mapDomain f d) ((MvPolynomial.rename f) φ) = MvPolynomial.coeff d φ\",\n      \"informal_description\": \"For an injective function $ f : \\\\sigma \\\\to \\\\tau $, a multivariate polynomial $ \\\\varphi \\\\in R[\\\\sigma] $, and a finite support function $ d : \\\\sigma \\\\to_0 \\\\mathbb{N} $, the coefficient of the monomial $ d.\\\\text{mapDomain}(f) $ in the renamed polynomial $ \\\\text{rename}(f, \\\\varphi) $ equals the coefficient of $ d $ in $ \\\\varphi $. This holds because injective renaming preserves monomial coefficients when variables are relabeled without collision.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Rename\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.coeff_rename_embDomain\",\n      \"informal_name\": \"Coefficient Preservation Under Variable Renaming in Multivariate Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_4} [inst : CommSemiring R] (f : σ ↪ τ) (φ : MvPolynomial σ R) (d : σ →₀ ℕ),\\n  MvPolynomial.coeff (Finsupp.embDomain f d) ((MvPolynomial.rename ⇑f) φ) = MvPolynomial.coeff d φ\",\n      \"informal_description\": \"For any injective function $ f : \\\\sigma \\\\to \\\\tau $, multivariate polynomial $ \\\\varphi \\\\in R[\\\\sigma] $, and finite support function $ d : \\\\sigma \\\\to_0 \\\\mathbb{N} $, the coefficient of the monomial $ d.\\\\text{embDomain}(f) $ in the renamed polynomial $ \\\\text{rename}(f, \\\\varphi) $ equals the coefficient of $ d $ in $ \\\\varphi $. This equality reflects that renaming variables via an injective map preserves coefficients when monomials are adjusted by applying the map to their exponents.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Rename\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.coeff_rename_eq_zero\",\n      \"informal_name\": \"Coefficient of Renamed Multivariate Polynomial is Zero\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_4} [inst : CommSemiring R] (f : σ → τ) (φ : MvPolynomial σ R) (d : τ →₀ ℕ),\\n  (∀ (u : σ →₀ ℕ), Finsupp.mapDomain f u = d → MvPolynomial.coeff u φ = 0) →\\n    MvPolynomial.coeff d ((MvPolynomial.rename f) φ) = 0\",\n      \"informal_description\": \"Let $ R $ be a commutative semiring, $ \\\\sigma, \\\\tau $ be types, and $ f : \\\\sigma \\\\to \\\\tau $ a function. For any multivariate polynomial $ \\\\varphi \\\\in R[\\\\sigma] $ and finite support function $ d : \\\\tau \\\\to_0 \\\\mathbb{N} $, if every monomial $ u : \\\\sigma \\\\to_0 \\\\mathbb{N} $ satisfying $ u.mapDomain(f) = d $ has coefficient $ \\\\varphi.coeff(u) = 0 $, then the coefficient of $ d $ in the renamed polynomial $ rename(f)(\\\\varphi) $ is zero.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Rename\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.rename_polynomial_aeval_X\",\n      \"informal_name\": \"Compatibility of Variable Renaming with Polynomial Evaluation in Multivariate Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (R : Type u) [inst : CommSemiring R] {σ : Type u_2} {τ : Type u_3} (f : σ → τ) (i : σ) (p : Polynomial R),\\n  (MvPolynomial.rename f) ((Polynomial.aeval (MvPolynomial.X i)) p) = (Polynomial.aeval (MvPolynomial.X (f i))) p\",\n      \"informal_description\": \"For any function $ f : \\\\sigma \\\\to \\\\tau $, variable $ i \\\\in \\\\sigma $, and polynomial $ p \\\\in R[X] $, renaming the variables in the evaluation of $ p $ at $ X_i $ via $ f $ yields the same result as evaluating $ p $ at the renamed variable $ X_{f(i)} $ in $ R[\\\\tau] $. Formally, $ \\\\text{rename} \\\\, f \\\\, (\\\\text{aeval}(X_i, p)) = \\\\text{aeval}(X_{f(i)}, p) $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.rename_prod_mk_eval₂\",\n      \"informal_name\": \"Commutativity of Renaming and Evaluation in Multivariate Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_4} [inst : CommSemiring R] (p : MvPolynomial σ R) (j : τ)\\n  (g : σ → MvPolynomial σ R),\\n  (MvPolynomial.rename (Prod.mk j)) (MvPolynomial.eval₂ MvPolynomial.C g p) =\\n    MvPolynomial.eval₂ MvPolynomial.C (fun x => (MvPolynomial.rename (Prod.mk j)) (g x)) p\",\n      \"informal_description\": \"For any commutative semiring $ R $, types $ \\\\sigma $ and $ \\\\tau $, polynomial $ p \\\\in R[\\\\sigma] $, and variable mapping $ g : \\\\sigma \\\\to R[\\\\tau] $, renaming the evaluation of $ p $ with coefficients via the constant polynomial embedding $ C $ and variables via $ g $ using the product map $ \\\\prod.mk j $ is equivalent to evaluating $ p $ after renaming each variable in $ g $ with $ \\\\prod.mk j $. Formally, $ \\\\text{rename}(\\\\prod.mk j, p.\\\\text{eval}_2(C, g)) = p.\\\\text{eval}_2(C, \\\\lambda x. \\\\text{rename}(\\\\prod.mk j, g(x))) $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Rename\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.coeff_rename_ne_zero\",\n      \"informal_name\": \"Non-zero Coefficients Under Variable Renaming in Multivariate Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_4} [inst : CommSemiring R] (f : σ → τ) (φ : MvPolynomial σ R) (d : τ →₀ ℕ),\\n  MvPolynomial.coeff d ((MvPolynomial.rename f) φ) ≠ 0 → ∃ u, Finsupp.mapDomain f u = d ∧ MvPolynomial.coeff u φ ≠ 0\",\n      \"informal_description\": \"If the coefficient of a monomial $ d $ in the renamed polynomial $ \\\\varphi $ (with variables renamed via $ f : \\\\sigma \\\\to \\\\tau $) is non-zero, then there exists a monomial $ u $ in the original polynomial $ \\\\varphi $ such that $ u $ maps to $ d $ under $ f $ (i.e., $ \\\\text{mapDomain}(f, u) = d $) and the coefficient of $ u $ in $ \\\\varphi $ is non-zero.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Rename\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "formal_name": "MvPolynomial.coeff_rename_mapDomain",
+              "informal_name": "Coefficient Preservation Under Injective Variable Renaming in Multivariate Polynomials",
+              "kind": "theorem",
+              "type": "∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_4} [inst : CommSemiring R] (f : σ → τ),\n  Function.Injective f →\n    ∀ (φ : MvPolynomial σ R) (d : σ →₀ ℕ),\n      MvPolynomial.coeff (Finsupp.mapDomain f d) ((MvPolynomial.rename f) φ) = MvPolynomial.coeff d φ",
+              "informal_description": "For an injective function $ f : \\sigma \\to \\tau $, a multivariate polynomial $ \\varphi \\in R[\\sigma] $, and a finite support function $ d : \\sigma \\to_0 \\mathbb{N} $, the coefficient of the monomial $ d.\\text{mapDomain}(f) $ in the renamed polynomial $ \\text{rename}(f, \\varphi) $ equals the coefficient of $ d $ in $ \\varphi $. This holds because injective renaming preserves monomial coefficients when variables are relabeled without collision.",
+              "path": "Mathlib.Algebra.MvPolynomial.Rename"
+            },
+            {
+              "formal_name": "MvPolynomial.coeff_rename_embDomain",
+              "informal_name": "Coefficient Preservation Under Variable Renaming in Multivariate Polynomials",
+              "kind": "theorem",
+              "type": "∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_4} [inst : CommSemiring R] (f : σ ↪ τ) (φ : MvPolynomial σ R) (d : σ →₀ ℕ),\n  MvPolynomial.coeff (Finsupp.embDomain f d) ((MvPolynomial.rename ⇑f) φ) = MvPolynomial.coeff d φ",
+              "informal_description": "For any injective function $ f : \\sigma \\to \\tau $, multivariate polynomial $ \\varphi \\in R[\\sigma] $, and finite support function $ d : \\sigma \\to_0 \\mathbb{N} $, the coefficient of the monomial $ d.\\text{embDomain}(f) $ in the renamed polynomial $ \\text{rename}(f, \\varphi) $ equals the coefficient of $ d $ in $ \\varphi $. This equality reflects that renaming variables via an injective map preserves coefficients when monomials are adjusted by applying the map to their exponents.",
+              "path": "Mathlib.Algebra.MvPolynomial.Rename"
+            },
+            {
+              "formal_name": "MvPolynomial.coeff_rename_eq_zero",
+              "informal_name": "Coefficient of Renamed Multivariate Polynomial is Zero",
+              "kind": "theorem",
+              "type": "∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_4} [inst : CommSemiring R] (f : σ → τ) (φ : MvPolynomial σ R) (d : τ →₀ ℕ),\n  (∀ (u : σ →₀ ℕ), Finsupp.mapDomain f u = d → MvPolynomial.coeff u φ = 0) →\n    MvPolynomial.coeff d ((MvPolynomial.rename f) φ) = 0",
+              "informal_description": "Let $ R $ be a commutative semiring, $ \\sigma, \\tau $ be types, and $ f : \\sigma \\to \\tau $ a function. For any multivariate polynomial $ \\varphi \\in R[\\sigma] $ and finite support function $ d : \\tau \\to_0 \\mathbb{N} $, if every monomial $ u : \\sigma \\to_0 \\mathbb{N} $ satisfying $ u.mapDomain(f) = d $ has coefficient $ \\varphi.coeff(u) = 0 $, then the coefficient of $ d $ in the renamed polynomial $ rename(f)(\\varphi) $ is zero.",
+              "path": "Mathlib.Algebra.MvPolynomial.Rename"
+            },
+            {
+              "formal_name": "MvPolynomial.rename_polynomial_aeval_X",
+              "informal_name": "Compatibility of Variable Renaming with Polynomial Evaluation in Multivariate Polynomials",
+              "kind": "theorem",
+              "type": "∀ (R : Type u) [inst : CommSemiring R] {σ : Type u_2} {τ : Type u_3} (f : σ → τ) (i : σ) (p : Polynomial R),\n  (MvPolynomial.rename f) ((Polynomial.aeval (MvPolynomial.X i)) p) = (Polynomial.aeval (MvPolynomial.X (f i))) p",
+              "informal_description": "For any function $ f : \\sigma \\to \\tau $, variable $ i \\in \\sigma $, and polynomial $ p \\in R[X] $, renaming the variables in the evaluation of $ p $ at $ X_i $ via $ f $ yields the same result as evaluating $ p $ at the renamed variable $ X_{f(i)} $ in $ R[\\tau] $. Formally, $ \\text{rename} \\, f \\, (\\text{aeval}(X_i, p)) = \\text{aeval}(X_{f(i)}, p) $.",
+              "path": "Mathlib.Algebra.MvPolynomial.Equiv"
+            },
+            {
+              "formal_name": "MvPolynomial.rename_prod_mk_eval₂",
+              "informal_name": "Commutativity of Renaming and Evaluation in Multivariate Polynomials",
+              "kind": "theorem",
+              "type": "∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_4} [inst : CommSemiring R] (p : MvPolynomial σ R) (j : τ)\n  (g : σ → MvPolynomial σ R),\n  (MvPolynomial.rename (Prod.mk j)) (MvPolynomial.eval₂ MvPolynomial.C g p) =\n    MvPolynomial.eval₂ MvPolynomial.C (fun x => (MvPolynomial.rename (Prod.mk j)) (g x)) p",
+              "informal_description": "For any commutative semiring $ R $, types $ \\sigma $ and $ \\tau $, polynomial $ p \\in R[\\sigma] $, and variable mapping $ g : \\sigma \\to R[\\tau] $, renaming the evaluation of $ p $ with coefficients via the constant polynomial embedding $ C $ and variables via $ g $ using the product map $ \\prod.mk j $ is equivalent to evaluating $ p $ after renaming each variable in $ g $ with $ \\prod.mk j $. Formally, $ \\text{rename}(\\prod.mk j, p.\\text{eval}_2(C, g)) = p.\\text{eval}_2(C, \\lambda x. \\text{rename}(\\prod.mk j, g(x))) $.",
+              "path": "Mathlib.Algebra.MvPolynomial.Rename"
+            },
+            {
+              "formal_name": "MvPolynomial.coeff_rename_ne_zero",
+              "informal_name": "Non-zero Coefficients Under Variable Renaming in Multivariate Polynomials",
+              "kind": "theorem",
+              "type": "∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_4} [inst : CommSemiring R] (f : σ → τ) (φ : MvPolynomial σ R) (d : τ →₀ ℕ),\n  MvPolynomial.coeff d ((MvPolynomial.rename f) φ) ≠ 0 → ∃ u, Finsupp.mapDomain f u = d ∧ MvPolynomial.coeff u φ ≠ 0",
+              "informal_description": "If the coefficient of a monomial $ d $ in the renamed polynomial $ \\varphi $ (with variables renamed via $ f : \\sigma \\to \\tau $) is non-zero, then there exists a monomial $ u $ in the original polynomial $ \\varphi $ such that $ u $ maps to $ d $ under $ f $ (i.e., $ \\text{mapDomain}(f, u) = d $) and the coefficient of $ u $ in $ \\varphi $ is non-zero.",
+              "path": "Mathlib.Algebra.MvPolynomial.Rename"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "form": "current",
+      "method": "Loogle",
+      "request": {
+        "query": "MvPolynomial.coeff, MvPolynomial.rename, Polynomial.aeval",
+        "num_results": 6
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "Error executing tool lean_loogle: loogle query error: unknown identifier 'MvPolynomial.coeff' Suggestions: \"MvPolynomial.coeff\", MvPolynomial.rename, Polynomial.aeval"
+          }
+        ],
+        "isError": true
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "form": "current",
+      "method": "LeanSearch",
+      "request": {
+        "query": "coefficient of rename some U times aeval X none V at a mapDomain some plus single none b equals coefficient U a times coefficient V b",
+        "num_results": 6
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.coeff\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Basic\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} → [inst : Semiring R] → Polynomial R → ℕ → R\"\n    },\n    {\n      \"name\": \"MvPolynomial.coeff_rename_embDomain\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Rename\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_4} [inst : CommSemiring R] (f : σ ↪ τ) (φ : MvPolynomial σ R) (d : σ →₀ ℕ),\\n  MvPolynomial.coeff (Finsupp.embDomain f d) ((MvPolynomial.rename ⇑f) φ) = MvPolynomial.coeff d φ\"\n    },\n    {\n      \"name\": \"MvPolynomial.coeff_rename_mapDomain\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Rename\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_4} [inst : CommSemiring R] (f : σ → τ),\\n  Function.Injective f →\\n    ∀ (φ : MvPolynomial σ R) (d : σ →₀ ℕ),\\n      MvPolynomial.coeff (Finsupp.mapDomain f d) ((MvPolynomial.rename f) φ) = MvPolynomial.coeff d φ\"\n    },\n    {\n      \"name\": \"MvPolynomial.coeff\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Basic\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} → {σ : Type u_1} → [inst : CommSemiring R] → (σ →₀ ℕ) → MvPolynomial σ R → R\"\n    },\n    {\n      \"name\": \"MvPowerSeries.coeff\",\n      \"module_name\": \"Mathlib.RingTheory.MvPowerSeries.Basic\",\n      \"kind\": \"definition\",\n      \"type\": \"{σ : Type u_1} → {R : Type u_2} → [inst : Semiring R] → (σ →₀ ℕ) → MvPowerSeries σ R →ₗ[R] R\"\n    },\n    {\n      \"name\": \"MvPolynomial.constantCoeff_rename\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Rename\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_4} [inst : CommSemiring R] {τ : Type u_6} (f : σ → τ) (φ : MvPolynomial σ R),\\n  MvPolynomial.constantCoeff ((MvPolynomial.rename f) φ) = MvPolynomial.constantCoeff φ\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "Polynomial.coeff",
+              "module_name": "Mathlib.Algebra.Polynomial.Basic",
+              "kind": "definition",
+              "type": "{R : Type u} → [inst : Semiring R] → Polynomial R → ℕ → R"
+            },
+            {
+              "name": "MvPolynomial.coeff_rename_embDomain",
+              "module_name": "Mathlib.Algebra.MvPolynomial.Rename",
+              "kind": "theorem",
+              "type": "∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_4} [inst : CommSemiring R] (f : σ ↪ τ) (φ : MvPolynomial σ R) (d : σ →₀ ℕ),\n  MvPolynomial.coeff (Finsupp.embDomain f d) ((MvPolynomial.rename ⇑f) φ) = MvPolynomial.coeff d φ"
+            },
+            {
+              "name": "MvPolynomial.coeff_rename_mapDomain",
+              "module_name": "Mathlib.Algebra.MvPolynomial.Rename",
+              "kind": "theorem",
+              "type": "∀ {σ : Type u_1} {τ : Type u_2} {R : Type u_4} [inst : CommSemiring R] (f : σ → τ),\n  Function.Injective f →\n    ∀ (φ : MvPolynomial σ R) (d : σ →₀ ℕ),\n      MvPolynomial.coeff (Finsupp.mapDomain f d) ((MvPolynomial.rename f) φ) = MvPolynomial.coeff d φ"
+            },
+            {
+              "name": "MvPolynomial.coeff",
+              "module_name": "Mathlib.Algebra.MvPolynomial.Basic",
+              "kind": "definition",
+              "type": "{R : Type u} → {σ : Type u_1} → [inst : CommSemiring R] → (σ →₀ ℕ) → MvPolynomial σ R → R"
+            },
+            {
+              "name": "MvPowerSeries.coeff",
+              "module_name": "Mathlib.RingTheory.MvPowerSeries.Basic",
+              "kind": "definition",
+              "type": "{σ : Type u_1} → {R : Type u_2} → [inst : Semiring R] → (σ →₀ ℕ) → MvPowerSeries σ R →ₗ[R] R"
+            },
+            {
+              "name": "MvPolynomial.constantCoeff_rename",
+              "module_name": "Mathlib.Algebra.MvPolynomial.Rename",
+              "kind": "theorem",
+              "type": "∀ {σ : Type u_1} {R : Type u_4} [inst : CommSemiring R] {τ : Type u_6} (f : σ → τ) (φ : MvPolynomial σ R),\n  MvPolynomial.constantCoeff ((MvPolynomial.rename f) φ) = MvPolynomial.constantCoeff φ"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "form": "current",
+      "method": "local",
+      "request": {
+        "query": "coeff_rename_mul",
+        "limit": 20,
+        "project_root": "/Users/ramin/LEAN/Roth"
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"CoeffCoeffNone155Replay.coeff_rename_mul_aeval\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/roth-overview-session/GenWronskianChecks.lean\"\n    },\n    {\n      \"name\": \"CoeffNone152Replay.coeff_rename_mul_aeval\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/roth-overview-session/GenWronskianChecks.lean\"\n    },\n    {\n      \"name\": \"Roth.coeff_rename_mul_aeval\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/Separation.lean\"\n    },\n    {\n      \"name\": \"SeparationPrivate154.coeff_rename_mul_aeval\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/roth-overview-session/GenWronskianChecks.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "CoeffCoeffNone155Replay.coeff_rename_mul_aeval",
+              "kind": "theorem",
+              "file": ".lake/roth-overview-session/GenWronskianChecks.lean"
+            },
+            {
+              "name": "CoeffNone152Replay.coeff_rename_mul_aeval",
+              "kind": "theorem",
+              "file": ".lake/roth-overview-session/GenWronskianChecks.lean"
+            },
+            {
+              "name": "Roth.coeff_rename_mul_aeval",
+              "kind": "theorem",
+              "file": "Roth/Separation.lean"
+            },
+            {
+              "name": "SeparationPrivate154.coeff_rename_mul_aeval",
+              "kind": "theorem",
+              "file": ".lake/roth-overview-session/GenWronskianChecks.lean"
+            }
+          ],
+          "index": "unavailable"
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "form": "standard",
+      "method": "Finder",
+      "request": {
+        "query": "coefficient of product of polynomials in disjoint sets of variables is product of coefficients",
+        "num_results": 6
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.coeff_prod_of_natDegree_le\",\n      \"informal_name\": \"Coefficient at Degree $ |s|n $ in Product of Polynomials with Bounded Natural Degree\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {ι : Type w} (s : Finset ι) [inst : CommSemiring R] (f : ι → Polynomial R) (n : ℕ),\\n  (∀ p ∈ s, (f p).natDegree ≤ n) → (∏ i ∈ s, f i).coeff (s.card * n) = ∏ i ∈ s, (f i).coeff n\",\n      \"informal_description\": \"For a finite set $ s $ and a function $ f $ mapping elements of $ s $ to polynomials in $ R[X] $, if each polynomial $ f(i) $ has natural degree at most $ n $, then the coefficient of the product $ \\\\prod_{i \\\\in s} f(i) $ at degree $ |s| \\\\cdot n $ is equal to the product of the coefficients of each $ f(i) $ at degree $ n $. Formally, $ \\\\operatorname{coeff}\\\\left(\\\\prod_{i \\\\in s} f(i)\\\\right)(|s| \\\\cdot n) = \\\\prod_{i \\\\in s} \\\\operatorname{coeff}(f(i))(n) $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.BigOperators\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.coeff_mul\",\n      \"informal_name\": \"Coefficient Formula for Product of Multivariate Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : DecidableEq σ] (p q : MvPolynomial σ R) (n : σ →₀ ℕ),\\n  MvPolynomial.coeff n (p * q) = ∑ x ∈ Finset.antidiagonal n, MvPolynomial.coeff x.1 p * MvPolynomial.coeff x.2 q\",\n      \"informal_description\": \"For any commutative semiring $ R $ and type $ \\\\sigma $ with decidable equality, and for any multivariate polynomials $ p $ and $ q $ over $ R $ in variables $ \\\\sigma $, the coefficient of a monomial $ n $ in the product $ p \\\\cdot q $ is equal to the sum over all pairs $ (x, y) $ such that $ x + y = n $ of the product of the coefficients of $ x $ in $ p $ and $ y $ in $ q $. Formally, $ \\\\operatorname{coeff}_n(pq) = \\\\sum_{\\\\substack{x + y = n\\\\\\\\x,y \\\\in \\\\operatorname{Monomials}}} \\\\operatorname{coeff}_x(p) \\\\cdot \\\\operatorname{coeff}_y(q) $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Basic\"\n    },\n    {\n      \"formal_name\": \"MonomialOrder.coeff_mul_of_add_of_degree_le\",\n      \"informal_name\": \"Multiplicative Coefficient Property in Multivariate Polynomial Products under Monomial Order\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {m : MonomialOrder σ} {R : Type u_2} [inst : CommSemiring R] {f g : MvPolynomial σ R} {a b : σ →₀ ℕ},\\n  m.toSyn (m.degree f) ≤ m.toSyn a →\\n    m.toSyn (m.degree g) ≤ m.toSyn b →\\n      MvPolynomial.coeff (a + b) (f * g) = MvPolynomial.coeff a f * MvPolynomial.coeff b g\",\n      \"informal_description\": \"For multivariate polynomials $ f $ and $ g $ over a commutative semiring $ R $, indexed by a type $ \\\\sigma $, and under a monomial order $ m $, if the leading monomials of $ f $ and $ g $ are less than or equal to $ a $ and $ b $ respectively, then the coefficient of $ a + b $ in the product $ f \\\\cdot g $ is equal to the product of the coefficients of $ a $ in $ f $ and $ b $ in $ g $. That is, $ (f \\\\cdot g)_{a + b} = f_a \\\\cdot g_b $.\",\n      \"path\": \"Mathlib.RingTheory.MvPolynomial.MonomialOrder\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.coeff_monomial_mul\",\n      \"informal_name\": \"Coefficient Formula for Monomial-Polynomial Multiplication in Multivariate Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] (m s : σ →₀ ℕ) (r : R) (p : MvPolynomial σ R),\\n  MvPolynomial.coeff (s + m) ((MvPolynomial.monomial s) r * p) = r * MvPolynomial.coeff m p\",\n      \"informal_description\": \"For any commutative semiring $ R $, type $ \\\\sigma $, exponent vectors $ s, m : \\\\sigma \\\\to₀ \\\\mathbb{N} $, element $ r \\\\in R $, and polynomial $ p \\\\in R[\\\\sigma] $, the coefficient of the exponent vector $ s + m $ in the product of the monomial $ r \\\\cdot X^s $ and $ p $ is equal to $ r $ multiplied by the coefficient of $ m $ in $ p $. Symbolically, $ \\\\text{coeff}(s + m, (r \\\\cdot X^s) \\\\cdot p) = r \\\\cdot \\\\text{coeff}(m, p) $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Basic\"\n    },\n    {\n      \"formal_name\": \"Polynomial.coeff_multiset_prod_of_natDegree_le\",\n      \"informal_name\": \"Coefficient Identity for Product of Polynomials with Bounded Degree\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : CommSemiring R] (t : Multiset (Polynomial R)) (n : ℕ),\\n  (∀ p ∈ t, p.natDegree ≤ n) → t.prod.coeff (t.card * n) = (Multiset.map (fun p => p.coeff n) t).prod\",\n      \"informal_description\": \"For a commutative semiring $ R $, given a multiset $ t $ of polynomials in $ R[X] $ where each polynomial has natural degree $ \\\\leq n $, the coefficient of $ X^{(\\\\#t) \\\\cdot n} $ in the product of all polynomials in $ t $ is equal to the product of the coefficients of $ X^n $ in each polynomial of $ t $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.BigOperators\"\n    },\n    {\n      \"formal_name\": \"MonomialOrder.coeff_prod_sum_degree\",\n      \"informal_name\": \"Leading Coefficient Product in Multivariate Polynomial Multiplication under Monomial Order\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {m : MonomialOrder σ} {R : Type u_2} [inst : CommSemiring R] {ι : Type u_3} (P : ι → MvPolynomial σ R)\\n  (s : Finset ι), MvPolynomial.coeff (∑ i ∈ s, m.degree (P i)) (∏ i ∈ s, P i) = ∏ i ∈ s, m.leadingCoeff (P i)\",\n      \"informal_description\": \"For a finite set $s$ of indices and a family of multivariate polynomials $P_i$ over a commutative semiring $R$ indexed by $s$, the coefficient of the monomial corresponding to the sum of the leading degrees $\\\\deg_m(P_i)$ (under a monomial order $m$) in the product $\\\\prod_{i \\\\in s} P_i$ equals the product of the leading coefficients $\\\\mathrm{lc}_m(P_i)$ of each polynomial $P_i$.\",\n      \"path\": \"Mathlib.RingTheory.MvPolynomial.MonomialOrder\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "formal_name": "Polynomial.coeff_prod_of_natDegree_le",
+              "informal_name": "Coefficient at Degree $ |s|n $ in Product of Polynomials with Bounded Natural Degree",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} {ι : Type w} (s : Finset ι) [inst : CommSemiring R] (f : ι → Polynomial R) (n : ℕ),\n  (∀ p ∈ s, (f p).natDegree ≤ n) → (∏ i ∈ s, f i).coeff (s.card * n) = ∏ i ∈ s, (f i).coeff n",
+              "informal_description": "For a finite set $ s $ and a function $ f $ mapping elements of $ s $ to polynomials in $ R[X] $, if each polynomial $ f(i) $ has natural degree at most $ n $, then the coefficient of the product $ \\prod_{i \\in s} f(i) $ at degree $ |s| \\cdot n $ is equal to the product of the coefficients of each $ f(i) $ at degree $ n $. Formally, $ \\operatorname{coeff}\\left(\\prod_{i \\in s} f(i)\\right)(|s| \\cdot n) = \\prod_{i \\in s} \\operatorname{coeff}(f(i))(n) $.",
+              "path": "Mathlib.Algebra.Polynomial.BigOperators"
+            },
+            {
+              "formal_name": "MvPolynomial.coeff_mul",
+              "informal_name": "Coefficient Formula for Product of Multivariate Polynomials",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : DecidableEq σ] (p q : MvPolynomial σ R) (n : σ →₀ ℕ),\n  MvPolynomial.coeff n (p * q) = ∑ x ∈ Finset.antidiagonal n, MvPolynomial.coeff x.1 p * MvPolynomial.coeff x.2 q",
+              "informal_description": "For any commutative semiring $ R $ and type $ \\sigma $ with decidable equality, and for any multivariate polynomials $ p $ and $ q $ over $ R $ in variables $ \\sigma $, the coefficient of a monomial $ n $ in the product $ p \\cdot q $ is equal to the sum over all pairs $ (x, y) $ such that $ x + y = n $ of the product of the coefficients of $ x $ in $ p $ and $ y $ in $ q $. Formally, $ \\operatorname{coeff}_n(pq) = \\sum_{\\substack{x + y = n\\\\x,y \\in \\operatorname{Monomials}}} \\operatorname{coeff}_x(p) \\cdot \\operatorname{coeff}_y(q) $.",
+              "path": "Mathlib.Algebra.MvPolynomial.Basic"
+            },
+            {
+              "formal_name": "MonomialOrder.coeff_mul_of_add_of_degree_le",
+              "informal_name": "Multiplicative Coefficient Property in Multivariate Polynomial Products under Monomial Order",
+              "kind": "theorem",
+              "type": "∀ {σ : Type u_1} {m : MonomialOrder σ} {R : Type u_2} [inst : CommSemiring R] {f g : MvPolynomial σ R} {a b : σ →₀ ℕ},\n  m.toSyn (m.degree f) ≤ m.toSyn a →\n    m.toSyn (m.degree g) ≤ m.toSyn b →\n      MvPolynomial.coeff (a + b) (f * g) = MvPolynomial.coeff a f * MvPolynomial.coeff b g",
+              "informal_description": "For multivariate polynomials $ f $ and $ g $ over a commutative semiring $ R $, indexed by a type $ \\sigma $, and under a monomial order $ m $, if the leading monomials of $ f $ and $ g $ are less than or equal to $ a $ and $ b $ respectively, then the coefficient of $ a + b $ in the product $ f \\cdot g $ is equal to the product of the coefficients of $ a $ in $ f $ and $ b $ in $ g $. That is, $ (f \\cdot g)_{a + b} = f_a \\cdot g_b $.",
+              "path": "Mathlib.RingTheory.MvPolynomial.MonomialOrder"
+            },
+            {
+              "formal_name": "MvPolynomial.coeff_monomial_mul",
+              "informal_name": "Coefficient Formula for Monomial-Polynomial Multiplication in Multivariate Polynomials",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] (m s : σ →₀ ℕ) (r : R) (p : MvPolynomial σ R),\n  MvPolynomial.coeff (s + m) ((MvPolynomial.monomial s) r * p) = r * MvPolynomial.coeff m p",
+              "informal_description": "For any commutative semiring $ R $, type $ \\sigma $, exponent vectors $ s, m : \\sigma \\to₀ \\mathbb{N} $, element $ r \\in R $, and polynomial $ p \\in R[\\sigma] $, the coefficient of the exponent vector $ s + m $ in the product of the monomial $ r \\cdot X^s $ and $ p $ is equal to $ r $ multiplied by the coefficient of $ m $ in $ p $. Symbolically, $ \\text{coeff}(s + m, (r \\cdot X^s) \\cdot p) = r \\cdot \\text{coeff}(m, p) $.",
+              "path": "Mathlib.Algebra.MvPolynomial.Basic"
+            },
+            {
+              "formal_name": "Polynomial.coeff_multiset_prod_of_natDegree_le",
+              "informal_name": "Coefficient Identity for Product of Polynomials with Bounded Degree",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} [inst : CommSemiring R] (t : Multiset (Polynomial R)) (n : ℕ),\n  (∀ p ∈ t, p.natDegree ≤ n) → t.prod.coeff (t.card * n) = (Multiset.map (fun p => p.coeff n) t).prod",
+              "informal_description": "For a commutative semiring $ R $, given a multiset $ t $ of polynomials in $ R[X] $ where each polynomial has natural degree $ \\leq n $, the coefficient of $ X^{(\\#t) \\cdot n} $ in the product of all polynomials in $ t $ is equal to the product of the coefficients of $ X^n $ in each polynomial of $ t $.",
+              "path": "Mathlib.Algebra.Polynomial.BigOperators"
+            },
+            {
+              "formal_name": "MonomialOrder.coeff_prod_sum_degree",
+              "informal_name": "Leading Coefficient Product in Multivariate Polynomial Multiplication under Monomial Order",
+              "kind": "theorem",
+              "type": "∀ {σ : Type u_1} {m : MonomialOrder σ} {R : Type u_2} [inst : CommSemiring R] {ι : Type u_3} (P : ι → MvPolynomial σ R)\n  (s : Finset ι), MvPolynomial.coeff (∑ i ∈ s, m.degree (P i)) (∏ i ∈ s, P i) = ∏ i ∈ s, m.leadingCoeff (P i)",
+              "informal_description": "For a finite set $s$ of indices and a family of multivariate polynomials $P_i$ over a commutative semiring $R$ indexed by $s$, the coefficient of the monomial corresponding to the sum of the leading degrees $\\deg_m(P_i)$ (under a monomial order $m$) in the product $\\prod_{i \\in s} P_i$ equals the product of the leading coefficients $\\mathrm{lc}_m(P_i)$ of each polynomial $P_i$.",
+              "path": "Mathlib.RingTheory.MvPolynomial.MonomialOrder"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "form": "standard",
+      "method": "Loogle",
+      "request": {
+        "query": "Polynomial.coeff, Polynomial.C, _ * _",
+        "num_results": 6
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.coeff_C_mul_X\",\n      \"type\": \" {R : Type u} [Semiring R] (x : R) (n : ℕ) : (Polynomial.C x * Polynomial.X).coeff n = if n = 1 then x else 0\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Coeff\"\n    },\n    {\n      \"name\": \"Polynomial.coeff_C_mul\",\n      \"type\": \" {R : Type u} {a : R} {n : ℕ} [Semiring R] (p : Polynomial R) : (Polynomial.C a * p).coeff n = a * p.coeff n\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Coeff\"\n    },\n    {\n      \"name\": \"Polynomial.coeff_mul_C\",\n      \"type\": \" {R : Type u} [Semiring R] (p : Polynomial R) (n : ℕ) (a : R) : (p * Polynomial.C a).coeff n = p.coeff n * a\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Coeff\"\n    },\n    {\n      \"name\": \"Polynomial.coeff_C_mul_X_pow\",\n      \"type\": \" {R : Type u} [Semiring R] (x : R) (k n : ℕ) : (Polynomial.C x * Polynomial.X ^ k).coeff n = if n = k then x else 0\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Coeff\"\n    },\n    {\n      \"name\": \"Polynomial.coeff_X_add_C_pow\",\n      \"type\": \" {R : Type u} [Semiring R] (r : R) (n k : ℕ) : ((Polynomial.X + Polynomial.C r) ^ n).coeff k = r ^ (n - k) * ↑(n.choose k)\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Coeff\"\n    },\n    {\n      \"name\": \"Polynomial.update_eq_add_sub_coeff\",\n      \"type\": \" {R : Type u_1} [Ring R] (p : Polynomial R) (n : ℕ) (a : R) : p.update n a = p + Polynomial.C (a - p.coeff n) * Polynomial.X ^ n\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Coeff\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "Polynomial.coeff_C_mul_X",
+              "type": " {R : Type u} [Semiring R] (x : R) (n : ℕ) : (Polynomial.C x * Polynomial.X).coeff n = if n = 1 then x else 0",
+              "module": "Mathlib.Algebra.Polynomial.Coeff"
+            },
+            {
+              "name": "Polynomial.coeff_C_mul",
+              "type": " {R : Type u} {a : R} {n : ℕ} [Semiring R] (p : Polynomial R) : (Polynomial.C a * p).coeff n = a * p.coeff n",
+              "module": "Mathlib.Algebra.Polynomial.Coeff"
+            },
+            {
+              "name": "Polynomial.coeff_mul_C",
+              "type": " {R : Type u} [Semiring R] (p : Polynomial R) (n : ℕ) (a : R) : (p * Polynomial.C a).coeff n = p.coeff n * a",
+              "module": "Mathlib.Algebra.Polynomial.Coeff"
+            },
+            {
+              "name": "Polynomial.coeff_C_mul_X_pow",
+              "type": " {R : Type u} [Semiring R] (x : R) (k n : ℕ) : (Polynomial.C x * Polynomial.X ^ k).coeff n = if n = k then x else 0",
+              "module": "Mathlib.Algebra.Polynomial.Coeff"
+            },
+            {
+              "name": "Polynomial.coeff_X_add_C_pow",
+              "type": " {R : Type u} [Semiring R] (r : R) (n k : ℕ) : ((Polynomial.X + Polynomial.C r) ^ n).coeff k = r ^ (n - k) * ↑(n.choose k)",
+              "module": "Mathlib.Algebra.Polynomial.Coeff"
+            },
+            {
+              "name": "Polynomial.update_eq_add_sub_coeff",
+              "type": " {R : Type u_1} [Ring R] (p : Polynomial R) (n : ℕ) (a : R) : p.update n a = p + Polynomial.C (a - p.coeff n) * Polynomial.X ^ n",
+              "module": "Mathlib.Algebra.Polynomial.Coeff"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "form": "standard",
+      "method": "LeanSearch",
+      "request": {
+        "query": "coefficient of product of polynomials in disjoint sets of variables is product of coefficients",
+        "num_results": 6
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"Poly.mul_apply\",\n      \"module_name\": \"Mathlib.NumberTheory.Dioph\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} (f g : Poly α) (x : α → ℕ), (f * g) x = f x * g x\"\n    },\n    {\n      \"name\": \"MvPolynomial.coeff_mul\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : DecidableEq σ] (p q : MvPolynomial σ R) (n : σ →₀ ℕ),\\n  MvPolynomial.coeff n (p * q) = ∑ x ∈ Finset.antidiagonal n, MvPolynomial.coeff x.1 p * MvPolynomial.coeff x.2 q\"\n    },\n    {\n      \"name\": \"Polynomial.coeff_mul\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Coeff\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Semiring R] (p q : Polynomial R) (n : ℕ),\\n  (p * q).coeff n = ∑ x ∈ Finset.antidiagonal n, p.coeff x.1 * q.coeff x.2\"\n    },\n    {\n      \"name\": \"MonomialOrder.coeff_mul_of_add_of_degree_le\",\n      \"module_name\": \"Mathlib.RingTheory.MvPolynomial.MonomialOrder\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {m : MonomialOrder σ} {R : Type u_2} [inst : CommSemiring R] {f g : MvPolynomial σ R} {a b : σ →₀ ℕ},\\n  m.toSyn (m.degree f) ≤ m.toSyn a →\\n    m.toSyn (m.degree g) ≤ m.toSyn b →\\n      MvPolynomial.coeff (a + b) (f * g) = MvPolynomial.coeff a f * MvPolynomial.coeff b g\"\n    },\n    {\n      \"name\": \"Polynomial.leadingCoeff_prod\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.BigOperators\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {ι : Type w} (s : Finset ι) [inst : CommSemiring R] [NoZeroDivisors R] (f : ι → Polynomial R),\\n  (∏ i ∈ s, f i).leadingCoeff = ∏ i ∈ s, (f i).leadingCoeff\"\n    },\n    {\n      \"name\": \"Polynomial.leadingCoeff_multiset_prod\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.BigOperators\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : CommSemiring R] [NoZeroDivisors R] (t : Multiset (Polynomial R)),\\n  t.prod.leadingCoeff = (Multiset.map (fun f => f.leadingCoeff) t).prod\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "Poly.mul_apply",
+              "module_name": "Mathlib.NumberTheory.Dioph",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} (f g : Poly α) (x : α → ℕ), (f * g) x = f x * g x"
+            },
+            {
+              "name": "MvPolynomial.coeff_mul",
+              "module_name": "Mathlib.Algebra.MvPolynomial.Basic",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : DecidableEq σ] (p q : MvPolynomial σ R) (n : σ →₀ ℕ),\n  MvPolynomial.coeff n (p * q) = ∑ x ∈ Finset.antidiagonal n, MvPolynomial.coeff x.1 p * MvPolynomial.coeff x.2 q"
+            },
+            {
+              "name": "Polynomial.coeff_mul",
+              "module_name": "Mathlib.Algebra.Polynomial.Coeff",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} [inst : Semiring R] (p q : Polynomial R) (n : ℕ),\n  (p * q).coeff n = ∑ x ∈ Finset.antidiagonal n, p.coeff x.1 * q.coeff x.2"
+            },
+            {
+              "name": "MonomialOrder.coeff_mul_of_add_of_degree_le",
+              "module_name": "Mathlib.RingTheory.MvPolynomial.MonomialOrder",
+              "kind": "theorem",
+              "type": "∀ {σ : Type u_1} {m : MonomialOrder σ} {R : Type u_2} [inst : CommSemiring R] {f g : MvPolynomial σ R} {a b : σ →₀ ℕ},\n  m.toSyn (m.degree f) ≤ m.toSyn a →\n    m.toSyn (m.degree g) ≤ m.toSyn b →\n      MvPolynomial.coeff (a + b) (f * g) = MvPolynomial.coeff a f * MvPolynomial.coeff b g"
+            },
+            {
+              "name": "Polynomial.leadingCoeff_prod",
+              "module_name": "Mathlib.Algebra.Polynomial.BigOperators",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} {ι : Type w} (s : Finset ι) [inst : CommSemiring R] [NoZeroDivisors R] (f : ι → Polynomial R),\n  (∏ i ∈ s, f i).leadingCoeff = ∏ i ∈ s, (f i).leadingCoeff"
+            },
+            {
+              "name": "Polynomial.leadingCoeff_multiset_prod",
+              "module_name": "Mathlib.Algebra.Polynomial.BigOperators",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} [inst : CommSemiring R] [NoZeroDivisors R] (t : Multiset (Polynomial R)),\n  t.prod.leadingCoeff = (Multiset.map (fun f => f.leadingCoeff) t).prod"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "form": "standard",
+      "method": "local",
+      "request": {
+        "query": "coeff_C_mul",
+        "limit": 20,
+        "project_root": "/Users/ramin/LEAN/Roth"
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.coeff_C_mul\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Basic.lean\"\n    },\n    {\n      \"name\": \"MvPowerSeries.coeff_C_mul\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Basic.lean\"\n    },\n    {\n      \"name\": \"Polynomial.coeff_C_mul\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Coeff.lean\"\n    },\n    {\n      \"name\": \"PowerSeries.coeff_C_mul\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/PowerSeries/Basic.lean\"\n    },\n    {\n      \"name\": \"Polynomial.coeff_C_mul_X\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Coeff.lean\"\n    },\n    {\n      \"name\": \"Polynomial.coeff_C_mul_X_pow\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Coeff.lean\"\n    },\n    {\n      \"name\": \"PowerSeries.coeff_C_mul_X_pow\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/PowerSeries/Basic.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "MvPolynomial.coeff_C_mul",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Basic.lean"
+            },
+            {
+              "name": "MvPowerSeries.coeff_C_mul",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Basic.lean"
+            },
+            {
+              "name": "Polynomial.coeff_C_mul",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Coeff.lean"
+            },
+            {
+              "name": "PowerSeries.coeff_C_mul",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/PowerSeries/Basic.lean"
+            },
+            {
+              "name": "Polynomial.coeff_C_mul_X",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Coeff.lean"
+            },
+            {
+              "name": "Polynomial.coeff_C_mul_X_pow",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Coeff.lean"
+            },
+            {
+              "name": "PowerSeries.coeff_C_mul_X_pow",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/PowerSeries/Basic.lean"
+            }
+          ],
+          "index": "unavailable"
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "form": "abstract",
+      "method": "Finder",
+      "request": {
+        "query": "coefficient in polynomial ring over an algebra of constant times mapped polynomial equals constant times mapped coefficient",
+        "num_results": 6
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.coeff_zero_of_isScalarTower\",\n      \"informal_name\": \"Constant Term Compatibility in Composed Algebra Maps for Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {A : Type u_3} (B : Type u_4) (C : Type u_5) [inst : CommSemiring A] [inst_1 : CommSemiring B] [inst_2 : Semiring C]\\n  [inst_3 : Algebra A B] [inst_4 : Algebra A C] [inst_5 : Algebra B C] [IsScalarTower A B C] (p : Polynomial A),\\n  (algebraMap B C) ((algebraMap A B) (p.coeff 0)) = ((Polynomial.mapAlg A C) p).coeff 0\",\n      \"informal_description\": \"For any polynomial $ p $ over a semiring $ A $, the constant term of the polynomial obtained by applying the algebra homomorphism $ A \\\\to C $ (induced by a scalar tower $ A \\\\to B \\\\to C $) to $ p $ is equal to the composition of the algebra homomorphisms $ A \\\\to B $ and $ B \\\\to C $ applied to the constant term of $ p $. In symbols, $ (\\\\mathrm{algebraMap}\\\\, B\\\\, C) \\\\circ (\\\\mathrm{algebraMap}\\\\, A\\\\, B)(p_0) = (\\\\mathrm{mapAlg}\\\\, A\\\\, C\\\\, p)_0 $, where $ p_0 $ denotes the constant term of $ p $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.AlgebraMap\"\n    },\n    {\n      \"formal_name\": \"PolyEquivTensor.toFunLinear_mul_tmul_mul_aux_1\",\n      \"informal_name\": \"Linearity Auxiliary Lemma for Polynomial-Tensor Equivalence\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (R : Type u_1) (A : Type u_2) [inst : CommSemiring R] [inst_1 : Semiring A] [inst_2 : Algebra R A] (p : Polynomial R)\\n  (k : ℕ) (h : Decidable ¬p.coeff k = 0) (a : A),\\n  (if ¬p.coeff k = 0 then a * (algebraMap R A) (p.coeff k) else 0) = a * (algebraMap R A) (p.coeff k)\",\n      \"informal_description\": \"For a polynomial $ p $ over a semiring $ R $, a natural number $ k $, and an element $ a $ of a semiring $ A $, if the coefficient of $ p $ at $ k $ is nonzero, then the conditional expression $ a \\\\cdot \\\\text{algebraMap}(\\\\text{coeff}_p(k)) $ equals $ a \\\\cdot \\\\text{algebraMap}(\\\\text{coeff}_p(k)) $. This equality holds trivially under the given decidable hypothesis that $ \\\\text{coeff}_p(k) \\\\neq 0 $.\",\n      \"path\": \"Mathlib.RingTheory.PolynomialAlgebra\"\n    },\n    {\n      \"formal_name\": \"Polynomial.coeff_C_mul\",\n      \"informal_name\": \"Coefficient of $ C(a) \\\\cdot p $ at $ n $ equals $ a \\\\cdot \\\\text{coeff}(p, n) $\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {a : R} {n : ℕ} [inst : Semiring R] (p : Polynomial R), (Polynomial.C a * p).coeff n = a * p.coeff n\",\n      \"informal_description\": \"For any polynomial $ p $ over a semiring $ R $, natural number $ n $, and element $ a \\\\in R $, the coefficient of $ X^n $ in the product of the constant polynomial $ C(a) $ and $ p $ is equal to $ a $ multiplied by the coefficient of $ X^n $ in $ p $. Formally, $ \\\\text{coeff}(C(a) \\\\cdot p, n) = a \\\\cdot \\\\text{coeff}(p, n) $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Coeff\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.coeff_C_mul\",\n      \"informal_name\": \"Coefficient of Product with Constant Polynomial Equals Scalar Times Original Coefficient\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] (m : σ →₀ ℕ) (a : R) (p : MvPolynomial σ R),\\n  MvPolynomial.coeff m (MvPolynomial.C a * p) = a * MvPolynomial.coeff m p\",\n      \"informal_description\": \"For any commutative semiring $ R $, type $ \\\\sigma $, monomial $ m $, element $ a \\\\in R $, and polynomial $ p \\\\in R[\\\\sigma] $, the coefficient of $ m $ in the product of the constant polynomial $ a $ and $ p $ is equal to $ a $ multiplied by the coefficient of $ m $ in $ p $. That is, $ \\\\text{coeff}(C(a) \\\\cdot p, m) = a \\\\cdot \\\\text{coeff}(p, m) $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.Basic\"\n    },\n    {\n      \"formal_name\": \"Polynomial.map_smul\",\n      \"informal_name\": \"Compatibility of Scalar Multiplication with Polynomial Coefficient Mapping\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S : Type v} [inst : Semiring R] {p : Polynomial R} [inst_1 : Semiring S] (f : R →+* S) (r : R),\\n  Polynomial.map f (r • p) = f r • Polynomial.map f p\",\n      \"informal_description\": \"For any scalar $ r \\\\in R $, polynomial $ p \\\\in R[X] $, and ring homomorphism $ f : R \\\\to S $, the polynomial obtained by first scaling $ p $ by $ r $ and then applying $ f $ to its coefficients is equal to the polynomial obtained by scaling the mapped polynomial $ p $ by $ f(r) $. In symbols, $ \\\\text{map}_f (r \\\\cdot p) = f(r) \\\\cdot \\\\text{map}_f p $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Eval.SMul\"\n    },\n    {\n      \"formal_name\": \"Polynomial.coeff_smul\",\n      \"informal_name\": \"$\\\\operatorname{coeff}(r \\\\cdot p, n) = r \\\\cdot \\\\operatorname{coeff}(p, n)$\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S : Type v} [inst : Semiring R] [inst_1 : SMulZeroClass S R] (r : S) (p : Polynomial R) (n : ℕ),\\n  (r • p).coeff n = r • p.coeff n\",\n      \"informal_description\": \"Let $ R $ be a semiring and $ S $ a type equipped with a scalar multiplication operation preserving zero. For any scalar $ r \\\\in S $, polynomial $ p \\\\in R[X] $, and natural number $ n $, the coefficient of $ X^n $ in the scalar-multiplication $ r \\\\cdot p $ is equal to $ r \\\\cdot \\\\operatorname{coeff}(p, n) $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Coeff\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "formal_name": "Polynomial.coeff_zero_of_isScalarTower",
+              "informal_name": "Constant Term Compatibility in Composed Algebra Maps for Polynomials",
+              "kind": "theorem",
+              "type": "∀ {A : Type u_3} (B : Type u_4) (C : Type u_5) [inst : CommSemiring A] [inst_1 : CommSemiring B] [inst_2 : Semiring C]\n  [inst_3 : Algebra A B] [inst_4 : Algebra A C] [inst_5 : Algebra B C] [IsScalarTower A B C] (p : Polynomial A),\n  (algebraMap B C) ((algebraMap A B) (p.coeff 0)) = ((Polynomial.mapAlg A C) p).coeff 0",
+              "informal_description": "For any polynomial $ p $ over a semiring $ A $, the constant term of the polynomial obtained by applying the algebra homomorphism $ A \\to C $ (induced by a scalar tower $ A \\to B \\to C $) to $ p $ is equal to the composition of the algebra homomorphisms $ A \\to B $ and $ B \\to C $ applied to the constant term of $ p $. In symbols, $ (\\mathrm{algebraMap}\\, B\\, C) \\circ (\\mathrm{algebraMap}\\, A\\, B)(p_0) = (\\mathrm{mapAlg}\\, A\\, C\\, p)_0 $, where $ p_0 $ denotes the constant term of $ p $.",
+              "path": "Mathlib.Algebra.Polynomial.AlgebraMap"
+            },
+            {
+              "formal_name": "PolyEquivTensor.toFunLinear_mul_tmul_mul_aux_1",
+              "informal_name": "Linearity Auxiliary Lemma for Polynomial-Tensor Equivalence",
+              "kind": "theorem",
+              "type": "∀ (R : Type u_1) (A : Type u_2) [inst : CommSemiring R] [inst_1 : Semiring A] [inst_2 : Algebra R A] (p : Polynomial R)\n  (k : ℕ) (h : Decidable ¬p.coeff k = 0) (a : A),\n  (if ¬p.coeff k = 0 then a * (algebraMap R A) (p.coeff k) else 0) = a * (algebraMap R A) (p.coeff k)",
+              "informal_description": "For a polynomial $ p $ over a semiring $ R $, a natural number $ k $, and an element $ a $ of a semiring $ A $, if the coefficient of $ p $ at $ k $ is nonzero, then the conditional expression $ a \\cdot \\text{algebraMap}(\\text{coeff}_p(k)) $ equals $ a \\cdot \\text{algebraMap}(\\text{coeff}_p(k)) $. This equality holds trivially under the given decidable hypothesis that $ \\text{coeff}_p(k) \\neq 0 $.",
+              "path": "Mathlib.RingTheory.PolynomialAlgebra"
+            },
+            {
+              "formal_name": "Polynomial.coeff_C_mul",
+              "informal_name": "Coefficient of $ C(a) \\cdot p $ at $ n $ equals $ a \\cdot \\text{coeff}(p, n) $",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} {a : R} {n : ℕ} [inst : Semiring R] (p : Polynomial R), (Polynomial.C a * p).coeff n = a * p.coeff n",
+              "informal_description": "For any polynomial $ p $ over a semiring $ R $, natural number $ n $, and element $ a \\in R $, the coefficient of $ X^n $ in the product of the constant polynomial $ C(a) $ and $ p $ is equal to $ a $ multiplied by the coefficient of $ X^n $ in $ p $. Formally, $ \\text{coeff}(C(a) \\cdot p, n) = a \\cdot \\text{coeff}(p, n) $.",
+              "path": "Mathlib.Algebra.Polynomial.Coeff"
+            },
+            {
+              "formal_name": "MvPolynomial.coeff_C_mul",
+              "informal_name": "Coefficient of Product with Constant Polynomial Equals Scalar Times Original Coefficient",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] (m : σ →₀ ℕ) (a : R) (p : MvPolynomial σ R),\n  MvPolynomial.coeff m (MvPolynomial.C a * p) = a * MvPolynomial.coeff m p",
+              "informal_description": "For any commutative semiring $ R $, type $ \\sigma $, monomial $ m $, element $ a \\in R $, and polynomial $ p \\in R[\\sigma] $, the coefficient of $ m $ in the product of the constant polynomial $ a $ and $ p $ is equal to $ a $ multiplied by the coefficient of $ m $ in $ p $. That is, $ \\text{coeff}(C(a) \\cdot p, m) = a \\cdot \\text{coeff}(p, m) $.",
+              "path": "Mathlib.Algebra.MvPolynomial.Basic"
+            },
+            {
+              "formal_name": "Polynomial.map_smul",
+              "informal_name": "Compatibility of Scalar Multiplication with Polynomial Coefficient Mapping",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} {S : Type v} [inst : Semiring R] {p : Polynomial R} [inst_1 : Semiring S] (f : R →+* S) (r : R),\n  Polynomial.map f (r • p) = f r • Polynomial.map f p",
+              "informal_description": "For any scalar $ r \\in R $, polynomial $ p \\in R[X] $, and ring homomorphism $ f : R \\to S $, the polynomial obtained by first scaling $ p $ by $ r $ and then applying $ f $ to its coefficients is equal to the polynomial obtained by scaling the mapped polynomial $ p $ by $ f(r) $. In symbols, $ \\text{map}_f (r \\cdot p) = f(r) \\cdot \\text{map}_f p $.",
+              "path": "Mathlib.Algebra.Polynomial.Eval.SMul"
+            },
+            {
+              "formal_name": "Polynomial.coeff_smul",
+              "informal_name": "$\\operatorname{coeff}(r \\cdot p, n) = r \\cdot \\operatorname{coeff}(p, n)$",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} {S : Type v} [inst : Semiring R] [inst_1 : SMulZeroClass S R] (r : S) (p : Polynomial R) (n : ℕ),\n  (r • p).coeff n = r • p.coeff n",
+              "informal_description": "Let $ R $ be a semiring and $ S $ a type equipped with a scalar multiplication operation preserving zero. For any scalar $ r \\in S $, polynomial $ p \\in R[X] $, and natural number $ n $, the coefficient of $ X^n $ in the scalar-multiplication $ r \\cdot p $ is equal to $ r \\cdot \\operatorname{coeff}(p, n) $.",
+              "path": "Mathlib.Algebra.Polynomial.Coeff"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "form": "abstract",
+      "method": "Loogle",
+      "request": {
+        "query": "Polynomial.coeff, Polynomial.map",
+        "num_results": 6
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.coeff_map\",\n      \"type\": \" {R : Type u} {S : Type v} [Semiring R] {p : Polynomial R} [Semiring S] (f : R →+* S) (n : ℕ) : (Polynomial.map f p).coeff n = f (p.coeff n)\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Eval.Coeff\"\n    },\n    {\n      \"name\": \"Polynomial.coeff_map_eq_comp\",\n      \"type\": \" {R : Type u} {S : Type v} [Semiring R] [Semiring S] (p : Polynomial R) (f : R →+* S) : ⇑(Polynomial.map f p).coeff = ⇑f ∘ ⇑p.coeff\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Eval.Coeff\"\n    },\n    {\n      \"name\": \"MvPolynomial.coeff_eval_eq_eval_coeff\",\n      \"type\": \" {R : Type u} (S₁ : Type v) [CommSemiring R] (s' : S₁ → R) (f : Polynomial (MvPolynomial S₁ R)) (i : ℕ) : (Polynomial.map (MvPolynomial.eval s') f).coeff i = (MvPolynomial.eval s') (f.coeff i)\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Equiv\"\n    },\n    {\n      \"name\": \"Polynomial.MonicDegreeEq.map_coe\",\n      \"type\": \" {R : Type u} {S : Type v} {n : ℕ} [Semiring R] [Semiring S] (p : Polynomial.MonicDegreeEq R n) (f : R →+* S) : ↑(p.map f) = Polynomial.map f ↑p\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Monic\"\n    },\n    {\n      \"name\": \"Polynomial.bUnion_roots_finite\",\n      \"type\": \" {R : Type u_1} {S : Type u_2} [Semiring R] [CommRing S] [IsDomain S] [DecidableEq S] (m : R →+* S) (d : ℕ) {U : Set R} (h : U.Finite) : (⋃ f, ⋃ (_ : f.natDegree ≤ d ∧ ∀ (i : ℕ), f.coeff i ∈ U), ↑(Polynomial.map m f).roots.toFinset).Finite\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Roots\"\n    },\n    {\n      \"name\": \"Ideal.exists_coeff_mem_comap_sdiff_comap_of_root_mem_sdiff\",\n      \"type\": \" {R : Type u_1} [CommRing R] {S : Type u_2} [CommRing S] {f : R →+* S} {I J : Ideal S} [I.IsPrime] (hIJ : I ≤ J) {r : S} (hr : r ∈ ↑J \\\\ ↑I) {p : Polynomial R} (p_ne_zero : Polynomial.map (Ideal.Quotient.mk (Ideal.comap f I)) p ≠ 0) (hpI : Polynomial.eval₂ f r p ∈ I) : ∃ i, p.coeff i ∈ ↑(Ideal.comap f J) \\\\ ↑(Ideal.comap f I)\",\n      \"module\": \"Mathlib.RingTheory.Ideal.GoingUp\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "Polynomial.coeff_map",
+              "type": " {R : Type u} {S : Type v} [Semiring R] {p : Polynomial R} [Semiring S] (f : R →+* S) (n : ℕ) : (Polynomial.map f p).coeff n = f (p.coeff n)",
+              "module": "Mathlib.Algebra.Polynomial.Eval.Coeff"
+            },
+            {
+              "name": "Polynomial.coeff_map_eq_comp",
+              "type": " {R : Type u} {S : Type v} [Semiring R] [Semiring S] (p : Polynomial R) (f : R →+* S) : ⇑(Polynomial.map f p).coeff = ⇑f ∘ ⇑p.coeff",
+              "module": "Mathlib.Algebra.Polynomial.Eval.Coeff"
+            },
+            {
+              "name": "MvPolynomial.coeff_eval_eq_eval_coeff",
+              "type": " {R : Type u} (S₁ : Type v) [CommSemiring R] (s' : S₁ → R) (f : Polynomial (MvPolynomial S₁ R)) (i : ℕ) : (Polynomial.map (MvPolynomial.eval s') f).coeff i = (MvPolynomial.eval s') (f.coeff i)",
+              "module": "Mathlib.Algebra.MvPolynomial.Equiv"
+            },
+            {
+              "name": "Polynomial.MonicDegreeEq.map_coe",
+              "type": " {R : Type u} {S : Type v} {n : ℕ} [Semiring R] [Semiring S] (p : Polynomial.MonicDegreeEq R n) (f : R →+* S) : ↑(p.map f) = Polynomial.map f ↑p",
+              "module": "Mathlib.Algebra.Polynomial.Monic"
+            },
+            {
+              "name": "Polynomial.bUnion_roots_finite",
+              "type": " {R : Type u_1} {S : Type u_2} [Semiring R] [CommRing S] [IsDomain S] [DecidableEq S] (m : R →+* S) (d : ℕ) {U : Set R} (h : U.Finite) : (⋃ f, ⋃ (_ : f.natDegree ≤ d ∧ ∀ (i : ℕ), f.coeff i ∈ U), ↑(Polynomial.map m f).roots.toFinset).Finite",
+              "module": "Mathlib.Algebra.Polynomial.Roots"
+            },
+            {
+              "name": "Ideal.exists_coeff_mem_comap_sdiff_comap_of_root_mem_sdiff",
+              "type": " {R : Type u_1} [CommRing R] {S : Type u_2} [CommRing S] {f : R →+* S} {I J : Ideal S} [I.IsPrime] (hIJ : I ≤ J) {r : S} (hr : r ∈ ↑J \\ ↑I) {p : Polynomial R} (p_ne_zero : Polynomial.map (Ideal.Quotient.mk (Ideal.comap f I)) p ≠ 0) (hpI : Polynomial.eval₂ f r p ∈ I) : ∃ i, p.coeff i ∈ ↑(Ideal.comap f J) \\ ↑(Ideal.comap f I)",
+              "module": "Mathlib.RingTheory.Ideal.GoingUp"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "form": "abstract",
+      "method": "LeanSearch",
+      "request": {
+        "query": "coefficient in polynomial ring over an algebra of constant times mapped polynomial equals constant times mapped coefficient",
+        "num_results": 6
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.coeff_C_mul\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Coeff\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {a : R} {n : ℕ} [inst : Semiring R] (p : Polynomial R), (Polynomial.C a * p).coeff n = a * p.coeff n\"\n    },\n    {\n      \"name\": \"Polynomial.map_smul\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Eval.SMul\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S : Type v} [inst : Semiring R] {p : Polynomial R} [inst_1 : Semiring S] (f : R →+* S) (r : R),\\n  Polynomial.map f (r • p) = f r • Polynomial.map f p\"\n    },\n    {\n      \"name\": \"Polynomial.coeff_mul_C\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Coeff\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Semiring R] (p : Polynomial R) (n : ℕ) (a : R), (p * Polynomial.C a).coeff n = p.coeff n * a\"\n    },\n    {\n      \"name\": \"Polynomial.coeff_mapAlgHom_apply\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.AlgebraMap\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {A : Type z} {B : Type u_2} [inst : CommSemiring R] [inst_1 : Semiring A] [inst_2 : Semiring B]\\n  [inst_3 : Algebra R A] [inst_4 : Algebra R B] (f : A →ₐ[R] B) (p : Polynomial A) (n : ℕ),\\n  ((Polynomial.mapAlgHom f) p).coeff n = f (p.coeff n)\"\n    },\n    {\n      \"name\": \"MvPolynomial.constantCoeff_map\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Eval\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] (f : R →+* S₁)\\n  (φ : MvPolynomial σ R), MvPolynomial.constantCoeff ((MvPolynomial.map f) φ) = f (MvPolynomial.constantCoeff φ)\"\n    },\n    {\n      \"name\": \"MvPolynomial.constantCoeff_smul\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring S₁] {R : Type u_2} [inst_1 : SMulZeroClass R S₁] (a : R)\\n  (f : MvPolynomial σ S₁), MvPolynomial.constantCoeff (a • f) = a • MvPolynomial.constantCoeff f\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "Polynomial.coeff_C_mul",
+              "module_name": "Mathlib.Algebra.Polynomial.Coeff",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} {a : R} {n : ℕ} [inst : Semiring R] (p : Polynomial R), (Polynomial.C a * p).coeff n = a * p.coeff n"
+            },
+            {
+              "name": "Polynomial.map_smul",
+              "module_name": "Mathlib.Algebra.Polynomial.Eval.SMul",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} {S : Type v} [inst : Semiring R] {p : Polynomial R} [inst_1 : Semiring S] (f : R →+* S) (r : R),\n  Polynomial.map f (r • p) = f r • Polynomial.map f p"
+            },
+            {
+              "name": "Polynomial.coeff_mul_C",
+              "module_name": "Mathlib.Algebra.Polynomial.Coeff",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} [inst : Semiring R] (p : Polynomial R) (n : ℕ) (a : R), (p * Polynomial.C a).coeff n = p.coeff n * a"
+            },
+            {
+              "name": "Polynomial.coeff_mapAlgHom_apply",
+              "module_name": "Mathlib.Algebra.Polynomial.AlgebraMap",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} {A : Type z} {B : Type u_2} [inst : CommSemiring R] [inst_1 : Semiring A] [inst_2 : Semiring B]\n  [inst_3 : Algebra R A] [inst_4 : Algebra R B] (f : A →ₐ[R] B) (p : Polynomial A) (n : ℕ),\n  ((Polynomial.mapAlgHom f) p).coeff n = f (p.coeff n)"
+            },
+            {
+              "name": "MvPolynomial.constantCoeff_map",
+              "module_name": "Mathlib.Algebra.MvPolynomial.Eval",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring R] [inst_1 : CommSemiring S₁] (f : R →+* S₁)\n  (φ : MvPolynomial σ R), MvPolynomial.constantCoeff ((MvPolynomial.map f) φ) = f (MvPolynomial.constantCoeff φ)"
+            },
+            {
+              "name": "MvPolynomial.constantCoeff_smul",
+              "module_name": "Mathlib.Algebra.MvPolynomial.Basic",
+              "kind": "theorem",
+              "type": "∀ {S₁ : Type v} {σ : Type u_1} [inst : CommSemiring S₁] {R : Type u_2} [inst_1 : SMulZeroClass R S₁] (a : R)\n  (f : MvPolynomial σ S₁), MvPolynomial.constantCoeff (a • f) = a • MvPolynomial.constantCoeff f"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "form": "abstract",
+      "method": "local",
+      "request": {
+        "query": "optionEquivLeft_coeff_coeff",
+        "limit": 20,
+        "project_root": "/Users/ramin/LEAN/Roth"
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.optionEquivLeft_coeff_coeff\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "MvPolynomial.optionEquivLeft_coeff_coeff",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Equiv.lean"
+            }
+          ],
+          "index": "unavailable"
+        },
+        "isError": false
+      }
+    }
+  }
+]

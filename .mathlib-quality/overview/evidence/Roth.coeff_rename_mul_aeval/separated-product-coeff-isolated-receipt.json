@@ -1,0 +1,84 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nopen MvPolynomial\nnamespace SeparatedProduct158\nvariable {τ R : Type*} [CommSemiring R]\n#check @Polynomial.coeff_C_mul\n#check @MvPolynomial.coeff_C_mul\n#check @MvPolynomial.optionEquivLeft_coeff_coeff\n#check_failure Roth.coeff_rename_mul_aeval\n-- Existing canonical law in iterated-polynomial coordinates.\ntheorem canonical (U : MvPolynomial τ R) (V : Polynomial R) (b : ℕ) :\n    (Polynomial.C U * V.map (MvPolynomial.C : R →+* MvPolynomial τ R)).coeff b =\n      U * MvPolynomial.C (V.coeff b) := by\n  rw [Polynomial.coeff_C_mul, Polynomial.coeff_map]\n#print axioms canonical\n-- Exact old-form bridge: no imported project coefficient helper.\ntheorem oldForm (U : MvPolynomial τ R) (V : Polynomial R) (a : τ →₀ ℕ) (b : ℕ) :\n    (rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) R) V).coeff\n        (a.mapDomain some + Finsupp.single none b) = U.coeff a * V.coeff b := by\n  have h : (optionEquivLeft R τ).toAlgHom.comp (rename some) = Polynomial.CAlgHom := by\n    ext i\n    simp\n  have he : a.optionElim b = a.mapDomain some + Finsupp.single none b :=\n    (Finsupp.update_eq_add_single (Finsupp.embDomain_some_none a) b).trans\n      (congrArg (fun e ↦ e + Finsupp.single none b) (Finsupp.embDomain_eq_mapDomain .some a))\n  rw [← he, ← optionEquivLeft_coeff_coeff, map_mul,\n    (show optionEquivLeft R τ (rename some U) = Polynomial.C U from AlgHom.congr_fun h U),\n    ← Polynomial.aeval_algHom_apply, optionEquivLeft_X_none, Polynomial.aeval_X_left_eq_map,\n    Polynomial.coeff_C_mul, Polynomial.coeff_map, algebraMap_eq, mul_comm U, coeff_C_mul, mul_comm]\n#print axioms oldForm\n-- Collision destroys factorwise coefficients: (X * X)[X] differs from 1*1.\ntheorem collision_guard :\n    ((X () : MvPolynomial Unit ℕ) * X ()).coeff (Finsupp.single () 1) ≠\n      (X () : MvPolynomial Unit ℕ).coeff (Finsupp.single () 1) *\n      (X () : MvPolynomial Unit ℕ).coeff (Finsupp.single () 1) := by\n  simp [← pow_two, X_pow_eq_monomial]\n#print axioms collision_guard\nend SeparatedProduct158\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.coeff_C_mul : ∀ {R : Type u_3} {a : R} {n : ℕ} [inst : Semiring R] (p : Polynomial R),\\n  (Polynomial.C a * p).coeff n = a * p.coeff n\",\n      \"line\": 13,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@coeff_C_mul : ∀ {R : Type u_3} {σ : Type u_4} [inst : CommSemiring R] (m : σ →₀ ℕ) (a : R) (p : MvPolynomial σ R),\\n  (C a * p).coeff m = a * p.coeff m\",\n      \"line\": 14,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"optionEquivLeft_coeff_coeff : ∀ (R : Type u_3) {σ : Type u_4} [inst : CommSemiring R] (p : MvPolynomial (Option σ) R)\\n  (m : ℕ) (d : σ →₀ ℕ), (((optionEquivLeft R σ) p).coeff m).coeff d = p.coeff (Finsupp.optionElim m d)\",\n      \"line\": 15,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.coeff_rename_mul_aeval`\",\n      \"line\": 16,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'SeparatedProduct158.canonical' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 22,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'SeparatedProduct158.oldForm' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 37,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'SeparatedProduct158.collision_guard' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 44,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "@Polynomial.coeff_C_mul : ∀ {R : Type u_3} {a : R} {n : ℕ} [inst : Semiring R] (p : Polynomial R),\n  (Polynomial.C a * p).coeff n = a * p.coeff n",
+          "line": 13,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@coeff_C_mul : ∀ {R : Type u_3} {σ : Type u_4} [inst : CommSemiring R] (m : σ →₀ ℕ) (a : R) (p : MvPolynomial σ R),\n  (C a * p).coeff m = a * p.coeff m",
+          "line": 14,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "optionEquivLeft_coeff_coeff : ∀ (R : Type u_3) {σ : Type u_4} [inst : CommSemiring R] (p : MvPolynomial (Option σ) R)\n  (m : ℕ) (d : σ →₀ ℕ), (((optionEquivLeft R σ) p).coeff m).coeff d = p.coeff (Finsupp.optionElim m d)",
+          "line": 15,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.coeff_rename_mul_aeval`",
+          "line": 16,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'SeparatedProduct158.canonical' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 22,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'SeparatedProduct158.oldForm' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 37,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'SeparatedProduct158.collision_guard' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 44,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 1026
+}

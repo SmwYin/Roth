@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 157/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 158/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 157; remaining: 136.
-- Verdicts: 18 NO-composable-from-mathlib, 13 YES-add-as-is, 19 YES-but-generalise-first, 34 NO-mathlib-has-it, 46 BORDERLINE-needs-human, 27 SKIP.
+- Completed applicable assessments: 158; remaining: 135.
+- Verdicts: 18 NO-composable-from-mathlib, 13 YES-add-as-is, 19 YES-but-generalise-first, 34 NO-mathlib-has-it, 47 BORDERLINE-needs-human, 27 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -1736,6 +1736,20 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: explicit call sites: None; internal use count excluding declaring file: 0; same file count: 0; direct kernel value consumers: None; inline derivations: {'file': 'Roth/Separation.lean', 'line': 310, 'caller': 'private Roth.exists_coeffNone_basis_aux', 'detail': 'Span generator coordinate bound uses the same support insertion/monomial estimate inline at lines312–313. Full auxiliary replay through canonical degree bound checked.'}
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.degreeOf_coeffNone_le.md).
 
+### Completed: `Roth.coeff_rename_mul_aeval`
+
+- Type: `@Roth.coeff_rename_mul_aeval : ∀ {τ : Type u_1} {R : Type u_2} [inst : CommSemiring R] (U : MvPolynomial τ R)
+  (V : Polynomial R) (a : τ →₀ ℕ) (b : ℕ),
+  ((MvPolynomial.rename some) U * (Polynomial.aeval (MvPolynomial.X none)) V).coeff
+      (Finsupp.mapDomain some a + Finsupp.single none b) =
+    U.coeff a * V.coeff b`
+- What: A coefficient of a product of polynomials in separate variable blocks is the product of the two corresponding coefficients.
+- How: Transport through optionEquivLeft to a univariate polynomial over MvPolynomial τ R; normalize rename to C and aeval to map, then extract the two coefficients.
+- Hypotheses: τ arbitrary Type u_1, R arbitrary Type u_2 with CommSemiring R, U : MvPolynomial τ R, V : Polynomial R, a : τ →₀ ℕ, b : ℕ, No Fintype/DecidableEq/domain/nonzero/characteristic assumptions
+- Project dependencies: Roth.coeffNone, Roth.coeff_coeffNone
+- Caller summary: explicit call sites: {'file': 'Roth/Separation.lean', 'line': 476, 'caller': 'Roth.exists_int_polynomial_of_primitive_factor_aux', 'visibility': 'private'}, {'file': 'Roth/Theta.lean', 'line': 480, 'caller': 'Roth.index_det_le'}, {'file': 'Roth/Theta.lean', 'line': 486, 'caller': 'Roth.index_det_le'}; direct kernel value consumers: _private.Roth.Separation.0.Roth.exists_int_polynomial_of_primitive_factor_aux, Roth.index_det_le; inline derivations: None; notes: Three source uses, two full callers; two external-to-declaring-file uses in one file. Both full callers replayed without assessed target or parent coefficient bridge.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.coeff_rename_mul_aeval.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -2076,6 +2090,8 @@ Completed `Roth.eq_sum_X_none_pow_mul_coeffNone`: canonical: Polynomial.as_sum_r
 
 Completed `Roth.degreeOf_coeffNone_le`: structural building blocks: MvPolynomial.degreeOf_le_iff, MvPolynomial.monomial_le_degreeOf, MvPolynomial.mem_support_coeff_optionEquivLeft; normalization: Finsupp.optionElim_apply_eq_elim, Option.elim_some; finite analog: MvPolynomial.degreeOf_coeff_finSuccEquiv; finite analog path: Mathlib/Algebra/MvPolynomial/Equiv.lean:834; old form calls: 3 structural calls plus nondefinitional projection rewrite; >3 named dependencies; canonical form calls: Same proof and normalization after replacing coeffNone with Polynomial.coeff of optionEquivLeft; search limitations: Local source search positive but index unavailable; external snapshots may differ. No absence claim inferred from empty queries.
 
+Completed `Roth.coeff_rename_mul_aeval`: existing core: Polynomial.coeff_C_mul, Polynomial.coeff_map, AddMonoidAlgebra.coeff_mul_single_zero; coordinate transport: MvPolynomial.optionEquivLeft_coeff_coeff, Finsupp.update_eq_add_single, Finsupp.embDomain_some_none, Finsupp.embDomain_eq_mapDomain, MvPolynomial.optionEquivLeft_X_none, Polynomial.aeval_algHom_apply, Polynomial.aeval_X_left_eq_map; methods: Finder, Loogle, LeanSearch, rg, local; forms: current, standard, abstract; limits: Initial current Loogle query rejected unknown MvPolynomial.coeff; successful quoted-coeff retry empty. Local index unavailable with source fallback hits, no absence claim. External revisions differ from pinned source.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -2391,6 +2407,8 @@ Completed `Roth.coeff_coeffNone`: The existing canonical coefficient corresponde
 Completed `Roth.eq_sum_X_none_pow_mul_coeffNone`: Polynomial coefficient reconstruction under the existing iterated polynomial-ring algebra equivalence.
 
 Completed `Roth.degreeOf_coeffNone_le`: Arbitrary Option analogue of existing finite degreeOf_coeff_finSuccEquiv., Support insertion preserves remaining coordinate bounds; abstract finite supremum proof verified as a component, not existing full replacement.
+
+Completed `Roth.coeff_rename_mul_aeval`: Canonical double coefficient law is exactly three existing calls; first-coefficient-only law is insufficient for the full theorem., No exact original Option/aeval law was verified as a single existing theorem.
 
 ## Part 5: Generalization opportunities
 
@@ -2711,6 +2729,8 @@ Completed `Roth.eq_sum_X_none_pow_mul_coeffNone`: status: MAXIMALLY GENERAL for 
 
 Completed `Roth.degreeOf_coeffNone_le`: status: MAXIMALLY GENERAL for fixed interface; canonical surface: degreeOf j ((optionEquivLeft R τ P).coeff ν) ≤ degreeOf (some j) P; abstract component: Finset support transport with pointwise weight bound implies supremum bound; independently compiled without DecidableEq or coefficient algebra. This is an expanded representation, not weakening CommSemiring in the original.
 
+Completed `Roth.coeff_rename_mul_aeval`: status: MAXIMALLY GENERAL for fixed polynomial representation; verified: Underlying coefficient-times-singleton law holds for arbitrary Semiring S and AddZeroClass M, not just natural multidegrees.; boundary: CommSemiring R is required by existing MvPolynomial interface; abstract AddMonoidAlgebra restatement changes representation. Variable-disjointness cannot be removed, as collision_guard proves.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -3027,6 +3047,8 @@ Completed `Roth.coeff_coeffNone`: No missing coefficient law. An optional named 
 Completed `Roth.eq_sum_X_none_pow_mul_coeffNone`: No missing reconstruction theorem. A named inverse-C/rename bridge is optional convenience API; scratch bridge is new proof, not a counted mathlib call.
 
 Completed `Roth.degreeOf_coeffNone_le`: Candidate Option-variable coordinate-degree coefficient law beside existing Fin analogue; whether to expose it directly or via a more general support-degree transport API is an upstream design question.
+
+Completed `Roth.coeff_rename_mul_aeval`: Potential MvPolynomial coefficient adapter for separated Option-variable product, or reusable optionEquivLeft rename/aeval transport law; upstream API design question, not an absence theorem.
 
 ## Part 7: Junk / removable
 
@@ -3347,6 +3369,8 @@ Completed `Roth.eq_sum_X_none_pow_mul_coeffNone`: Useful: one source caller and 
 
 Completed `Roth.degreeOf_coeffNone_le`: Zero explicit/kernel callers; one mathematically relevant inline derivation. Not automatically dead or automatically public API.
 
+Completed `Roth.coeff_rename_mul_aeval`: Useful local adapter: three uses in two callers; not junk.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -3508,6 +3532,7 @@ Completed `Roth.degreeOf_coeffNone_le`: Zero explicit/kernel callers; one mathem
 | 155 | `Roth.coeff_coeffNone` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.coeff_coeffNone.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.coeff_coeffNone/root-acceptance.json) |
 | 156 | `Roth.eq_sum_X_none_pow_mul_coeffNone` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.eq_sum_X_none_pow_mul_coeffNone.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.eq_sum_X_none_pow_mul_coeffNone/root-acceptance.json) |
 | 157 | `Roth.degreeOf_coeffNone_le` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.degreeOf_coeffNone_le.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.degreeOf_coeffNone_le/root-acceptance.json) |
+| 158 | `Roth.coeff_rename_mul_aeval` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.coeff_rename_mul_aeval.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.coeff_rename_mul_aeval/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -3821,12 +3846,14 @@ Completed `Roth.eq_sum_X_none_pow_mul_coeffNone` action: Refactor sole full call
 
 Completed `Roth.degreeOf_coeffNone_le` action: Keep local pending the two documented upstream API choices; if Option law accepted, rename to MvPolynomial.degreeOf_coeff_optionEquivLeft_le, remove coeffNone alias from statement and use it in private basis auxiliary.
 
+Completed `Roth.coeff_rename_mul_aeval` action: verdict: BORDERLINE-needs-human; local: Keep current theorem in Roth/Separation.lean while deciding reusable coordinate bridge API. No production changes made.; future questions: Should mathlib expose a coefficient theorem for separated products in Option variables, despite its three-call iterated-polynomial core?, Should upstream instead expose the optionEquivLeft rename/aeval transport law and have users derive scalar coefficients through existing coefficient APIs?; possible home: Mathlib/Algebra/MvPolynomial/Equiv.lean, subject to import-layer review; no PR yet; caller refactor: If adapter is added, replace the simp/rw lemma at all three call sites; full caller replay demonstrates original signatures can be preserved.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.coeff_rename_mul_aeval` next. Supporting identities receive their own applicable checks.
+   `Roth.aeval_X_eq_rename` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

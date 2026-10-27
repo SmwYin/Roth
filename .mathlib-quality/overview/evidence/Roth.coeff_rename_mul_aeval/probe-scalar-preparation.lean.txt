@@ -1,0 +1,18 @@
+open MvPolynomial
+namespace SeparatedProductScalar158
+variable {τ R : Type*} [CommSemiring R]
+#check @AddMonoidAlgebra.coeff_mul_single_zero
+-- Full scalar identity in canonical iterated coordinates, three existing laws.
+theorem scalar (U : MvPolynomial τ R) (V : Polynomial R) (a : τ →₀ ℕ) (b : ℕ) :
+    ((Polynomial.C U * V.map (MvPolynomial.C : R →+* MvPolynomial τ R)).coeff b).coeff a =
+      U.coeff a * V.coeff b := by
+  rw [Polynomial.coeff_C_mul, Polynomial.coeff_map]
+  exact AddMonoidAlgebra.coeff_mul_single_zero U (V.coeff b) a
+#print axioms scalar
+-- Same coefficient-scaling law already holds in noncommutative semiring monoid algebra.
+theorem abstractScalar {S M : Type*} [Semiring S] [AddMonoid M]
+    (U : AddMonoidAlgebra S M) (v : S) (a : M) :
+    (U * AddMonoidAlgebra.single 0 v).coeff a = U.coeff a * v :=
+  AddMonoidAlgebra.coeff_mul_single_zero U v a
+#print axioms abstractScalar
+end SeparatedProductScalar158

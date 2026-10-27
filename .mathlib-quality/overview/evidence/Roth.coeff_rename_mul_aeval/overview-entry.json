@@ -1,0 +1,98 @@
+{
+  "declaration": "Roth.coeff_rename_mul_aeval",
+  "kind": "theorem",
+  "type": "@Roth.coeff_rename_mul_aeval : ∀ {τ : Type u_1} {R : Type u_2} [inst : CommSemiring R] (U : MvPolynomial τ R)\n  (V : Polynomial R) (a : τ →₀ ℕ) (b : ℕ),\n  ((MvPolynomial.rename some) U * (Polynomial.aeval (MvPolynomial.X none)) V).coeff\n      (Finsupp.mapDomain some a + Finsupp.single none b) =\n    U.coeff a * V.coeff b",
+  "what": "A coefficient of a product of polynomials in separate variable blocks is the product of the two corresponding coefficients.",
+  "how": "Transport through optionEquivLeft to a univariate polynomial over MvPolynomial τ R; normalize rename to C and aeval to map, then extract the two coefficients.",
+  "hypotheses": [
+    "τ arbitrary Type u_1",
+    "R arbitrary Type u_2 with CommSemiring R",
+    "U : MvPolynomial τ R",
+    "V : Polynomial R",
+    "a : τ →₀ ℕ",
+    "b : ℕ",
+    "No Fintype/DecidableEq/domain/nonzero/characteristic assumptions"
+  ],
+  "project_dependencies": [
+    "Roth.coeffNone",
+    "Roth.coeff_coeffNone"
+  ],
+  "caller_summary": {
+    "explicit_call_sites": [
+      {
+        "file": "Roth/Separation.lean",
+        "line": 476,
+        "caller": "Roth.exists_int_polynomial_of_primitive_factor_aux",
+        "visibility": "private"
+      },
+      {
+        "file": "Roth/Theta.lean",
+        "line": 480,
+        "caller": "Roth.index_det_le"
+      },
+      {
+        "file": "Roth/Theta.lean",
+        "line": 486,
+        "caller": "Roth.index_det_le"
+      }
+    ],
+    "direct_kernel_value_consumers": [
+      "_private.Roth.Separation.0.Roth.exists_int_polynomial_of_primitive_factor_aux",
+      "Roth.index_det_le"
+    ],
+    "inline_derivations": [],
+    "notes": "Three source uses, two full callers; two external-to-declaring-file uses in one file. Both full callers replayed without assessed target or parent coefficient bridge."
+  },
+  "mathlib_api_audit": {
+    "existing_core": [
+      "Polynomial.coeff_C_mul",
+      "Polynomial.coeff_map",
+      "AddMonoidAlgebra.coeff_mul_single_zero"
+    ],
+    "coordinate_transport": [
+      "MvPolynomial.optionEquivLeft_coeff_coeff",
+      "Finsupp.update_eq_add_single",
+      "Finsupp.embDomain_some_none",
+      "Finsupp.embDomain_eq_mapDomain",
+      "MvPolynomial.optionEquivLeft_X_none",
+      "Polynomial.aeval_algHom_apply",
+      "Polynomial.aeval_X_left_eq_map"
+    ],
+    "methods": [
+      "Finder",
+      "Loogle",
+      "LeanSearch",
+      "rg",
+      "local"
+    ],
+    "forms": [
+      "current",
+      "standard",
+      "abstract"
+    ],
+    "limits": "Initial current Loogle query rejected unknown MvPolynomial.coeff; successful quoted-coeff retry empty. Local index unavailable with source fallback hits, no absence claim. External revisions differ from pinned source."
+  },
+  "moral_duplications": [
+    "Canonical double coefficient law is exactly three existing calls; first-coefficient-only law is insufficient for the full theorem.",
+    "No exact original Option/aeval law was verified as a single existing theorem."
+  ],
+  "generalization": {
+    "status": "MAXIMALLY GENERAL for fixed polynomial representation",
+    "verified": "Underlying coefficient-times-singleton law holds for arbitrary Semiring S and AddZeroClass M, not just natural multidegrees.",
+    "boundary": "CommSemiring R is required by existing MvPolynomial interface; abstract AddMonoidAlgebra restatement changes representation. Variable-disjointness cannot be removed, as collision_guard proves."
+  },
+  "missing_api": [
+    "Potential MvPolynomial coefficient adapter for separated Option-variable product, or reusable optionEquivLeft rename/aeval transport law; upstream API design question, not an absence theorem."
+  ],
+  "junk": "Useful local adapter: three uses in two callers; not junk.",
+  "action": {
+    "verdict": "BORDERLINE-needs-human",
+    "local": "Keep current theorem in Roth/Separation.lean while deciding reusable coordinate bridge API. No production changes made.",
+    "future_questions": [
+      "Should mathlib expose a coefficient theorem for separated products in Option variables, despite its three-call iterated-polynomial core?",
+      "Should upstream instead expose the optionEquivLeft rename/aeval transport law and have users derive scalar coefficients through existing coefficient APIs?"
+    ],
+    "possible_home": "Mathlib/Algebra/MvPolynomial/Equiv.lean, subject to import-layer review; no PR yet",
+    "caller_refactor": "If adapter is added, replace the simp/rw lemma at all three call sites; full caller replay demonstrates original signatures can be preserved."
+  }
+}

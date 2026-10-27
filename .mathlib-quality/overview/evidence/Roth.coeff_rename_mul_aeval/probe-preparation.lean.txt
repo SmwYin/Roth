@@ -1,0 +1,36 @@
+open MvPolynomial
+namespace SeparatedProduct158
+variable {τ R : Type*} [CommSemiring R]
+#check @Polynomial.coeff_C_mul
+#check @MvPolynomial.coeff_C_mul
+#check @MvPolynomial.optionEquivLeft_coeff_coeff
+#check_failure Roth.coeff_rename_mul_aeval
+-- Existing canonical law in iterated-polynomial coordinates.
+theorem canonical (U : MvPolynomial τ R) (V : Polynomial R) (b : ℕ) :
+    (Polynomial.C U * V.map (MvPolynomial.C : R →+* MvPolynomial τ R)).coeff b =
+      U * MvPolynomial.C (V.coeff b) := by
+  rw [Polynomial.coeff_C_mul, Polynomial.coeff_map]
+#print axioms canonical
+-- Exact old-form bridge: no imported project coefficient helper.
+theorem oldForm (U : MvPolynomial τ R) (V : Polynomial R) (a : τ →₀ ℕ) (b : ℕ) :
+    (rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) R) V).coeff
+        (a.mapDomain some + Finsupp.single none b) = U.coeff a * V.coeff b := by
+  have h : (optionEquivLeft R τ).toAlgHom.comp (rename some) = Polynomial.CAlgHom := by
+    ext i
+    simp
+  have he : a.optionElim b = a.mapDomain some + Finsupp.single none b :=
+    (Finsupp.update_eq_add_single (Finsupp.embDomain_some_none a) b).trans
+      (congrArg (fun e ↦ e + Finsupp.single none b) (Finsupp.embDomain_eq_mapDomain .some a))
+  rw [← he, ← optionEquivLeft_coeff_coeff, map_mul,
+    (show optionEquivLeft R τ (rename some U) = Polynomial.C U from AlgHom.congr_fun h U),
+    ← Polynomial.aeval_algHom_apply, optionEquivLeft_X_none, Polynomial.aeval_X_left_eq_map,
+    Polynomial.coeff_C_mul, Polynomial.coeff_map, algebraMap_eq, mul_comm U, coeff_C_mul, mul_comm]
+#print axioms oldForm
+-- Collision destroys factorwise coefficients: (X * X)[X] differs from 1*1.
+theorem collision_guard :
+    ((X () : MvPolynomial Unit ℕ) * X ()).coeff (Finsupp.single () 1) ≠
+      (X () : MvPolynomial Unit ℕ).coeff (Finsupp.single () 1) *
+      (X () : MvPolynomial Unit ℕ).coeff (Finsupp.single () 1) := by
+  simp [← pow_two, X_pow_eq_monomial]
+#print axioms collision_guard
+end SeparatedProduct158
