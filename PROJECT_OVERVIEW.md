@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 46/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 47/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 46; remaining: 247.
-- Verdicts: 8 NO-composable-from-mathlib, 11 YES-add-as-is, 2 YES-but-generalise-first, 7 NO-mathlib-has-it, 14 BORDERLINE-needs-human, 4 SKIP.
+- Completed applicable assessments: 47; remaining: 246.
+- Verdicts: 8 NO-composable-from-mathlib, 11 YES-add-as-is, 3 YES-but-generalise-first, 7 NO-mathlib-has-it, 14 BORDERLINE-needs-human, 4 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -505,6 +505,17 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: One explicit same-file proof caller: Wronskian.lean:152 in wronskian_ne_zero_of_natDegree_injective; no external-file callers; implementation-note prose excluded; not a kernel/simp dependency closure.
 - Verdict: YES-but-generalise-first; [complete report](.mathlib-quality/overview/mathlibable/Roth.coeff_wronskian_of_natDegree_injective.md).
 
+### Completed: `Roth.wronskian_ne_zero_of_natDegree_injective`
+
+- Type: `∀ {K : Type u_1} [inst : Field K] {l : ℕ} [CharZero K]
+  {φ : Fin l → K[X]}, (∀ (ν : Fin l), φ ν ≠ 0) → (Function.Injective fun ν ↦ (φ ν).natDegree) → Roth.wronskian φ ≠ 0`
+- What: Nonzero polynomials of distinct degrees have nonzero normalized Hasse Wronskian in characteristic zero.
+- How: One coefficient equals product of leading coefficients times a binomial determinant; Vandermonde gives nonvanishing.
+- Hypotheses: Field K, CharZero K, all family members nonzero, natural-degree function injective
+- Project dependencies: Roth.wronskian, Roth.coeff_wronskian_of_natDegree_injective, Roth.det_choose_eq
+- Caller summary: total explicit proof callers: 1; within file: 1; outside file: 0; internal use count excluding declaring file: 0; callers: Roth/Wronskian.lean:210 Roth.wronskian_ne_zero_of_linearIndependent; inline rederivations: None
+- Verdict: YES-but-generalise-first; [complete report](.mathlib-quality/overview/mathlibable/Roth.wronskian_ne_zero_of_natDegree_injective.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -623,6 +634,8 @@ Completed `Roth.sum_range_le_sum_of_injective`: replacement: Finset.sum_range_le
 
 Completed `Roth.coeff_wronskian_of_natDegree_injective`: Five actual methods on current/literature/abstract forms. Binary Wronskian and affine/triangular determinant coefficient candidates are partial matches. Native exact? and simp attempts fail with residual mathematical work.
 
+Completed `Roth.wronskian_ne_zero_of_natDegree_injective`: Mathlib has binary Polynomial.wronskian, an explicit n-tuple TODO, and generic Matrix.det_vandermonde_ne_zero_iff. All five actual methods searched current/literature/abstract forms; no direct family replacement. Local index unavailable does not prove absence.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -716,6 +729,8 @@ Completed `Roth.coeff_prod_of_natDegree_le'`: Related public common-bound API, n
 Completed `Roth.sum_range_le_sum_of_injective`: Existing sharper lower-bounded finite integer-set sum theorem already contains the Nat/Fin c=0 case.
 
 Completed `Roth.coeff_wronskian_of_natDegree_injective`: Classical leading-monomial/Vandermonde calculation; existing common-bound product coefficient theorem does not directly give varying bounds. No exact pinned replacement found.
+
+Completed `Roth.wronskian_ne_zero_of_natDegree_injective`: Generic coefficient nonzero and Vandermonde nonzero steps already abstract. Hasse coefficient and binomial conversion bridges remain new mathematical helpers; downstream criterion cannot be used circularly.
 
 ## Part 5: Generalization opportunities
 
@@ -814,6 +829,8 @@ Completed `Roth.sum_range_le_sum_of_injective`: Arbitrary finite index type and 
 
 Completed `Roth.coeff_wronskian_of_natDegree_injective`: Native verified expanded CommRing identity for arbitrary finite ι and arbitrary r : ι → ℕ; original Field form and sole caller recovered. Does not claim literal Field deletion through project parent interface.
 
+Completed `Roth.wronskian_ne_zero_of_natDegree_injective`: Verified same-parent Field weakening removes global CharZero in favor of cast-degree injectivity. Separately verified expanded CommRing+IsDomain form. No factorial-nonzero premise needed. ZMod2 positive and negative guards; ZxZ zero-divisor guard.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -908,6 +925,8 @@ Completed `Roth.coeff_prod_of_natDegree_le'`: Potential varying-bound public coe
 Completed `Roth.sum_range_le_sum_of_injective`: None
 
 Completed `Roth.coeff_wronskian_of_natDegree_injective`: Coefficient of determinant of arbitrary finite Hasse derivative matrix at sum degrees minus sum orders; varying-bound coefficient-product helper supports its proof.
+
+Completed `Roth.wronskian_ne_zero_of_natDegree_injective`: N-ary Hasse Wronskian top-coefficient/nonvanishing API, supported by cancellation-free binomial determinant identity.
 
 ## Part 7: Junk / removable
 
@@ -1006,6 +1025,8 @@ Completed `Roth.sum_range_le_sum_of_injective`: Unused public convenience wrappe
 
 Completed `Roth.coeff_wronskian_of_natDegree_injective`: No: sole local caller supplies nonvanishing induction base. Historical name can be improved.
 
+Completed `Roth.wronskian_ne_zero_of_natDegree_injective`: False
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -1056,6 +1077,7 @@ Completed `Roth.coeff_wronskian_of_natDegree_injective`: No: sole local caller s
 | 44 | `Roth.coeff_prod_of_natDegree_le'` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.coeff_prod_of_natDegree_le'.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.coeff_prod_of_natDegree_le'/root-acceptance.json) |
 | 45 | `Roth.sum_range_le_sum_of_injective` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.sum_range_le_sum_of_injective.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.sum_range_le_sum_of_injective/root-acceptance.json) |
 | 46 | `Roth.coeff_wronskian_of_natDegree_injective` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.coeff_wronskian_of_natDegree_injective.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.coeff_wronskian_of_natDegree_injective/root-acceptance.json) |
+| 47 | `Roth.wronskian_ne_zero_of_natDegree_injective` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.wronskian_ne_zero_of_natDegree_injective.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.wronskian_ne_zero_of_natDegree_injective/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -1147,11 +1169,13 @@ Completed `Roth.sum_range_le_sum_of_injective` action: Delete wrapper in follow-
 
 Completed `Roth.coeff_wronskian_of_natDegree_injective` action: YES-but-generalise-first MODERN-IDIOM: upstream raw coefficient determinant formula to Mathlib/RingTheory/Polynomial/Wronskian.lean with det_choose_eq; keep parent interfaces unchanged during local specialization.
 
+Completed `Roth.wronskian_ne_zero_of_natDegree_injective` action: YES-but-generalise-first: /generalise target for cast-degree hypothesis; group with accepted coefficient theorem and coordinate determinant support; /cleanup before upstream Wronskian.lean PR. Sole caller supplies Nat.cast_injective.comp hinj.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.wronskian_ne_zero_of_natDegree_injective` next. Supporting identities receive their own applicable checks.
+   `Roth.wronskian_update_sub_smul` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.

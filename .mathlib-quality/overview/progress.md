@@ -3,7 +3,7 @@
 Status: **in_progress**, 2026-10-26. Branch: `ramin-cleanup`.
 Production Lean files and all pins match baseline `99f19fd`.
 
-**Completed: 46 / 293 written declarations.**
+**Completed: 47 / 293 written declarations.**
 This counts the current overview assessments, separately from the earlier code cleanup.
 
 | # | Completed declaration | Applicable workflow | Verdict | Report |
@@ -54,8 +54,9 @@ This counts the current overview assessments, separately from the earlier code c
 | 44 | `Roth.coeff_prod_of_natDegree_le'` | overview-private-prefilter; accepted complete | SKIP | [Detailed report](mathlibable/Roth.coeff_prod_of_natDegree_le'.md) |
 | 45 | `Roth.sum_range_le_sum_of_injective` | full-mathlibable; accepted complete | NO-mathlib-has-it | [Detailed report](mathlibable/Roth.sum_range_le_sum_of_injective.md) |
 | 46 | `Roth.coeff_wronskian_of_natDegree_injective` | full-mathlibable; accepted complete | YES-but-generalise-first | [Detailed report](mathlibable/Roth.coeff_wronskian_of_natDegree_injective.md) |
+| 47 | `Roth.wronskian_ne_zero_of_natDegree_injective` | full-mathlibable; accepted complete | YES-but-generalise-first | [Detailed report](mathlibable/Roth.wronskian_ne_zero_of_natDegree_injective.md) |
 
-**Next declaration: `Roth.wronskian_ne_zero_of_natDegree_injective`**, `Roth/Wronskian.lean:148`.
+**Next declaration: `Roth.wronskian_update_sub_smul`**, `Roth/Wronskian.lean:158`.
 Only the listed assessments are complete. No partial assessment was committed.
 
 On restart: read [README](README.md), [machine progress](progress.json), and

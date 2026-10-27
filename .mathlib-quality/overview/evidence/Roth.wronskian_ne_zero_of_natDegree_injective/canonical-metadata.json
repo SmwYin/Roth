@@ -1,0 +1,46 @@
+{
+  "file": "Roth/Wronskian.lean",
+  "line": 148,
+  "name": "Roth.wronskian_ne_zero_of_natDegree_injective",
+  "short": "wronskian_ne_zero_of_natDegree_injective",
+  "kind": "theorem",
+  "visibility": "public",
+  "end_line": 152,
+  "source": "theorem wronskian_ne_zero_of_natDegree_injective [CharZero K] {φ : Fin l → K[X]} (hφ : ∀ ν, φ ν ≠ 0)\n    (hd : Function.Injective fun ν ↦ (φ ν).natDegree) : wronskian φ ≠ 0 := by\n  intro h0\n  simpa [h0, det_choose_eq, eq_comm (a := 0), Finset.prod_eq_zero_iff, sub_eq_zero, hφ,\n    Nat.factorial_ne_zero, hd.eq_iff] using coeff_wronskian_of_natDegree_injective (φ := φ)",
+  "signature": "theorem wronskian_ne_zero_of_natDegree_injective [CharZero K] {φ : Fin l → K[X]} (hφ : ∀ ν, φ ν ≠ 0)\n    (hd : Function.Injective fun ν ↦ (φ ν).natDegree) : wronskian φ ≠ 0",
+  "body": "by\n  intro h0\n  simpa [h0, det_choose_eq, eq_comm (a := 0), Finset.prod_eq_zero_iff, sub_eq_zero, hφ,\n    Nat.factorial_ne_zero, hd.eq_iff] using coeff_wronskian_of_natDegree_injective (φ := φ)",
+  "proof_lines": 4,
+  "sha256": "c9f517f50e4927a7bb102a33852c426c8d1cae05fde622397f72ccad9b6b1b75",
+  "what": "A nonzero polynomial family of pairwise-distinct degrees has nonzero Wronskian in characteristic zero.",
+  "how": "Combines coeff_wronskian_of_natDegree_injective with det_choose_eq; leading coefficients, factorials, and Vandermonde differences are all nonzero, contradicting a zero Wronskian.",
+  "hypotheses": "A characteristic-zero field, all family members nonzero, and injective natural degree function.",
+  "uses_from_project": [
+    "Roth.coeff_wronskian_of_natDegree_injective",
+    "Roth.det_choose_eq"
+  ],
+  "used_by_in_file": [
+    "Roth.wronskian_ne_zero_of_linearIndependent"
+  ],
+  "project_callers": [
+    {
+      "name": "Roth.wronskian_ne_zero_of_linearIndependent",
+      "file": "Roth/Wronskian.lean",
+      "line": 205
+    }
+  ],
+  "type_context": "{K : Type*} [Field K] {l : ℕ}",
+  "type_provenance": "Exact written signature with section binders made explicit from source; not claimed as a fresh #check output. Minimal hasseCoeff #check succeeded; full Meta inspector timed out.",
+  "reference_provenance": "Manually disambiguated source-level direct project references in declaration bodies; callers include signature and body occurrences. Includes explicit references only, not an exhaustive kernel/simp dependency closure.",
+  "notes": [
+    "No set_option, sorry, TODO, or proof over 30 lines in declaration."
+  ],
+  "assignment_offset": 173,
+  "project_body_refs": [
+    "Roth.coeff_wronskian_of_natDegree_injective",
+    "Roth.det_choose_eq"
+  ],
+  "project_type_refs": [
+    "Roth.wronskian"
+  ],
+  "section_context": "{K : Type*} [Field K] {l : ℕ}"
+}

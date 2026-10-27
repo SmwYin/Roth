@@ -1,0 +1,34 @@
+{
+  "declaration": "Roth.wronskian_ne_zero_of_natDegree_injective",
+  "kind": "theorem",
+  "type": "∀ {K : Type u_1} [inst : Field K] {l : ℕ} [CharZero K]\n  {φ : Fin l → K[X]}, (∀ (ν : Fin l), φ ν ≠ 0) → (Function.Injective fun ν ↦ (φ ν).natDegree) → Roth.wronskian φ ≠ 0",
+  "what": "Nonzero polynomials of distinct degrees have nonzero normalized Hasse Wronskian in characteristic zero.",
+  "how": "One coefficient equals product of leading coefficients times a binomial determinant; Vandermonde gives nonvanishing.",
+  "hypotheses": [
+    "Field K",
+    "CharZero K",
+    "all family members nonzero",
+    "natural-degree function injective"
+  ],
+  "project_dependencies": [
+    "Roth.wronskian",
+    "Roth.coeff_wronskian_of_natDegree_injective",
+    "Roth.det_choose_eq"
+  ],
+  "caller_summary": {
+    "total_explicit_proof_callers": 1,
+    "within_file": 1,
+    "outside_file": 0,
+    "internal_use_count_excluding_declaring_file": 0,
+    "callers": [
+      "Roth/Wronskian.lean:210 Roth.wronskian_ne_zero_of_linearIndependent"
+    ],
+    "inline_rederivations": []
+  },
+  "mathlib_api_audit": "Mathlib has binary Polynomial.wronskian, an explicit n-tuple TODO, and generic Matrix.det_vandermonde_ne_zero_iff. All five actual methods searched current/literature/abstract forms; no direct family replacement. Local index unavailable does not prove absence.",
+  "moral_duplications": "Generic coefficient nonzero and Vandermonde nonzero steps already abstract. Hasse coefficient and binomial conversion bridges remain new mathematical helpers; downstream criterion cannot be used circularly.",
+  "generalization": "Verified same-parent Field weakening removes global CharZero in favor of cast-degree injectivity. Separately verified expanded CommRing+IsDomain form. No factorial-nonzero premise needed. ZMod2 positive and negative guards; ZxZ zero-divisor guard.",
+  "missing_api": "N-ary Hasse Wronskian top-coefficient/nonvanishing API, supported by cancellation-free binomial determinant identity.",
+  "junk": false,
+  "action": "YES-but-generalise-first: /generalise target for cast-degree hypothesis; group with accepted coefficient theorem and coordinate determinant support; /cleanup before upstream Wronskian.lean PR. Sole caller supplies Nat.cast_injective.comp hinj."
+}

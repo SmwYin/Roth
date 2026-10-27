@@ -1,0 +1,27 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+namespace DistinctDegreeGuards
+open Polynomial
+noncomputable abbrev family : Fin 2 → (ℤ × ℤ)[X] := ![monomial 0 (1, 0), monomial 1 (0, 1)]
+theorem domain_needed :
+    (∀ ν, family ν ≠ 0) ∧
+    Function.Injective (fun ν ↦ ((family ν).natDegree : ℤ × ℤ)) ∧
+    (Matrix.of fun μ ν : Fin 2 ↦ hasseDeriv (μ : ℕ) (family ν)).det = 0 := by
+  constructor
+  · intro ν
+    fin_cases ν <;> simp [family]
+  constructor
+  · intro i j hij
+    fin_cases i <;> fin_cases j <;> simp_all [family]
+  · norm_num [family, Matrix.det_fin_two, hasseDeriv_monomial]
+    rw [← C_mul]
+    rfl
+#print axioms domain_needed
+end DistinctDegreeGuards

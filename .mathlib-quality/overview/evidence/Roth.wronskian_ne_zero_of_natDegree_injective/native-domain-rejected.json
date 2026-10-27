@@ -1,0 +1,185 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.Polynomial.HasseDeriv\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.LinearAlgebra.Matrix.ToLinearEquiv\nimport Mathlib.RingTheory.Polynomial.Wronskian\nimport Mathlib.LinearAlgebra.Vandermonde\nimport Mathlib.Data.ZMod.Defs\nimport Mathlib.Algebra.Field.ZMod\nimport Mathlib.Algebra.Order.Group.Int.Sum\nimport Mathlib.LinearAlgebra.Matrix.Polynomial\n#check_failure Roth.coeff_wronskian_of_natDegree_injective\nnamespace PrivateCoeffProductAssessment\nopen Polynomial\ntheorem replay {R : Type*} [CommSemiring R] {ι : Type*}\n    (s : Finset ι) (f : ι → R[X]) (n : ι → ℕ)\n    (h : ∀ i ∈ s, (f i).natDegree ≤ n i) :\n    (∏ i ∈ s, f i).coeff (∑ i ∈ s, n i) = ∏ i ∈ s, (f i).coeff (n i) := by\n  classical\n  induction s using Finset.induction_on with\n  | empty => simp\n  | insert a s has ih =>\n    simp only [Finset.forall_mem_insert] at h\n    rw [Finset.prod_insert has, Finset.sum_insert has, Finset.prod_insert has,\n      coeff_mul_add_eq_of_natDegree_le h.1 ((natDegree_prod_le _ _).trans (Finset.sum_le_sum h.2)),\n      ih h.2]\n#check @replay\n#print axioms replay\n#check @Polynomial.coeff_prod_of_natDegree_le\nend PrivateCoeffProductAssessment\nnamespace CoeffWronskianFiniteProbe\nopen Polynomial\nnoncomputable def W {K : Type*} [CommRing K] {ι : Type*} [Fintype ι] [DecidableEq ι]\n    (r : ι → ℕ) (φ : ι → K[X]) : K[X] :=\n  (Matrix.of fun μ ν : ι ↦ hasseDeriv (r μ) (φ ν)).det\ntheorem replay {K : Type*} [CommRing K] {ι : Type*} [Fintype ι] [DecidableEq ι]\n    (r : ι → ℕ) {φ : ι → K[X]} :\n    (W r φ).coeff (∑ ν, (φ ν).natDegree - ∑ ν : ι, r ν) =\n      (∏ ν, (φ ν).leadingCoeff) *\n        (Matrix.of fun μ ν : ι ↦ ((φ ν).natDegree.choose (r μ) : K)).det := by\n  classical\n  have key (σ : Equiv.Perm (ι)) : (∏ i, hasseDeriv (r (σ i)) (φ i)).coeff\n      (∑ ν, (φ ν).natDegree - ∑ ν : ι, r ν) =\n      ∏ i, ((φ i).natDegree.choose (r (σ i)) : K) * (φ i).leadingCoeff := by\n    by_cases h : ∀ i, r (σ i) ≤ (φ i).natDegree\n    · rw [← Equiv.sum_comp σ r,\n        ← Finset.sum_tsub_distrib _ fun i _ ↦ h i,\n        PrivateCoeffProductAssessment.replay _ _ _ fun i _ ↦ natDegree_hasseDeriv_le _ _]\n      refine Finset.prod_congr rfl fun i _ ↦ ?_\n      rw [hasseDeriv_coeff, Nat.sub_add_cancel (h i), leadingCoeff]\n    · push Not at h\n      obtain ⟨i, hi⟩ := h\n      rw [Finset.prod_eq_zero (Finset.mem_univ i) (hasseDeriv_eq_zero_of_lt_natDegree _ _ hi),\n        coeff_zero]\n      exact (Finset.prod_eq_zero (Finset.mem_univ i)\n        (by simp [Nat.choose_eq_zero_of_lt hi])).symm\n  rw [W, Matrix.det_apply', Matrix.det_apply', finsetSum_coeff,\n    Finset.mul_sum]\n  refine Finset.sum_congr rfl fun σ _ ↦ ?_\n  simp [coeff_intCast_mul, key, Finset.prod_mul_distrib, mul_comm, mul_assoc]\n#check @replay\n#print axioms replay\n\ntheorem expanded {K : Type*} [CommRing K] {ι : Type*} [Fintype ι] [DecidableEq ι]\n    (r : ι → ℕ) {φ : ι → K[X]} :\n    (Matrix.of fun μ ν : ι ↦ hasseDeriv (r μ) (φ ν)).det.coeff\n        (∑ ν, (φ ν).natDegree - ∑ ν, r ν) =\n      (∏ ν, (φ ν).leadingCoeff) *\n        (Matrix.of fun μ ν : ι ↦ ((φ ν).natDegree.choose (r μ) : K)).det := by\n  simpa only [W] using (replay (φ := φ) r)\n#print axioms expanded\nend CoeffWronskianFiniteProbe\n\nnamespace DetChooseRingProbe\ntheorem factorial_mul_det {R : Type*} [CommRing R] {l : ℕ} (d : Fin l → ℕ) :\n    (∏ μ : Fin l, ((μ : ℕ).factorial : R)) *\n      (Matrix.of fun μ ν : Fin l ↦ ((d ν).choose μ : R)).det =\n        ∏ i : Fin l, ∏ j ∈ Finset.Ioi i, ((d j : R) - d i) := by\n  nontriviality R\n  have hm (n : ℕ) : (descPochhammer R n).Monic := by\n    simpa only [descPochhammer_map] using\n      Polynomial.Monic.map (Int.castRingHom R) (monic_descPochhammer ℤ n)\n  have hd (n : ℕ) : (descPochhammer R n).natDegree = n := by\n    simpa only [descPochhammer_map] using\n      ((monic_descPochhammer ℤ n).natDegree_map (Int.castRingHom R)).trans\n        (descPochhammer_natDegree ℤ n)\n  have h1 : (Matrix.of fun i j : Fin l ↦ (descPochhammer R j).eval (d i : R)) =\n      (Matrix.of fun μ ν : Fin l ↦ ((μ : ℕ).factorial : R) * ((d ν).choose μ : R)).transpose := by\n    ext i j\n    simp only [Matrix.of_apply, Matrix.transpose_apply,\n      descPochhammer_eval_eq_descFactorial, Nat.descFactorial_eq_factorial_mul_choose,\n      Nat.cast_mul]\n  rw [← Matrix.det_mul_column, ← Matrix.det_transpose]\n  simp only [Matrix.of_apply]\n  rw [← h1, ← Matrix.det_eval_matrixOfPolynomials_eq_det_vandermonde (fun i ↦ (d i : R))\n      (fun j ↦ descPochhammer R j) (fun i ↦ hd i)\n      (fun i ↦ hm i), Matrix.det_vandermonde]\n#print axioms factorial_mul_det\nend DetChooseRingProbe\n\n#check_failure Roth.wronskian_ne_zero_of_natDegree_injective\nnamespace DistinctDegreeProbe\nopen Polynomial\ntheorem generalized {K : Type*} [CommRing K] [IsDomain K] {l : ℕ} {φ : Fin l → K[X]}\n    (hφ : ∀ ν, φ ν ≠ 0)\n    (hd : Function.Injective fun ν ↦ ((φ ν).natDegree : K)) :\n    (Matrix.of fun μ ν : Fin l ↦ hasseDeriv (μ : ℕ) (φ ν)).det ≠ 0 := by\n  have hdet : (Matrix.of fun μ ν : Fin l ↦ ((φ ν).natDegree.choose μ : K)).det ≠ 0 := by\n    intro hzero\n    have h := DetChooseRingProbe.factorial_mul_det (R := K) (fun ν ↦ (φ ν).natDegree)\n    simpa [hzero, eq_comm (a := 0), Finset.prod_eq_zero_iff, sub_eq_zero, hd.eq_iff] using h\n  intro hzero\n  have h := CoeffWronskianFiniteProbe.expanded (φ := φ) (fun μ : Fin l ↦ (μ : ℕ))\n  simpa [hzero, Finset.prod_ne_zero_iff, leadingCoeff_ne_zero, hφ, hdet] using h\n\ntheorem original_corollary {K : Type*} [Field K] [CharZero K] {l : ℕ}\n    {φ : Fin l → K[X]} (hφ : ∀ ν, φ ν ≠ 0)\n    (hd : Function.Injective fun ν ↦ (φ ν).natDegree) :\n    (Matrix.of fun μ ν : Fin l ↦ hasseDeriv (μ : ℕ) (φ ν)).det ≠ 0 :=\n  generalized hφ (Nat.cast_injective.comp hd)\n\n-- Concrete improvement: characteristic two with separated degree casts.\ntheorem positive_char :\n    (Matrix.of fun μ ν : Fin 2 ↦ hasseDeriv (μ : ℕ)\n      (![1, X] ν : (ZMod 2)[X])).det ≠ 0 := by\n  apply generalized\n  · intro ν\n    fin_cases ν <;> simp\n  · intro i j hij\n    fin_cases i <;> fin_cases j <;> simp_all\n\n-- Natural-degree separation alone does not suffice in characteristic two.\ntheorem char_two_guard :\n    Function.Injective (fun ν : Fin 2 ↦ (![1, X^2] ν : (ZMod 2)[X]).natDegree) ∧\n      (Matrix.of fun μ ν : Fin 2 ↦ hasseDeriv (μ : ℕ)\n        (![1, X^2] ν : (ZMod 2)[X])).det = 0 := by\n  constructor\n  · intro i j hij\n    fin_cases i <;> fin_cases j <;> simp_all\n  · simp [Matrix.det_fin_two, hasseDeriv_one, hasseDeriv_X_pow]\n#print axioms generalized\n#print axioms original_corollary\n#print axioms positive_char\n#print axioms char_two_guard\n#check @Matrix.det_vandermonde_ne_zero_iff\nend DistinctDegreeProbe\n\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": false,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.coeff_wronskian_of_natDegree_injective`\",\n      \"line\": 10,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@replay : ∀ {R : Type u_1} [inst : CommSemiring R] {ι : Type u_2} (s : Finset ι) (f : ι → R[X]) (n : ι → ℕ),\\n  (∀ i ∈ s, (f i).natDegree ≤ n i) → (∏ i ∈ s, f i).coeff (∑ i ∈ s, n i) = ∏ i ∈ s, (f i).coeff (n i)\",\n      \"line\": 25,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'PrivateCoeffProductAssessment.replay' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 26,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@coeff_prod_of_natDegree_le : ∀ {R : Type u_1} {ι : Type u_2} (s : Finset ι) [inst : CommSemiring R] (f : ι → R[X])\\n  (n : ℕ), (∀ p ∈ s, (f p).natDegree ≤ n) → (∏ i ∈ s, f i).coeff (s.card * n) = ∏ i ∈ s, (f i).coeff n\",\n      \"line\": 27,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@replay : ∀ {K : Type u_1} [inst : CommRing K] {ι : Type u_2} [inst_1 : Fintype ι] [inst_2 : DecidableEq ι] (r : ι → ℕ)\\n  {φ : ι → K[X]},\\n  (W r φ).coeff (∑ ν, (φ ν).natDegree - ∑ ν, r ν) =\\n    (∏ ν, (φ ν).leadingCoeff) * (Matrix.of fun μ ν ↦ ↑((φ ν).natDegree.choose (r μ))).det\",\n      \"line\": 59,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'CoeffWronskianFiniteProbe.replay' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 60,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'CoeffWronskianFiniteProbe.expanded' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 69,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'DetChooseRingProbe.factorial_mul_det' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 96,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.wronskian_ne_zero_of_natDegree_injective`\",\n      \"line\": 99,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"Type mismatch: After simplification, term\\n  h\\n has type\\n  0 = ∏ i, ∏ j > i, (↑(φ j).natDegree - ↑(φ i).natDegree)\\nbut is expected to have type\\n  False\",\n      \"line\": 109,\n      \"column\": 5,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"Type mismatch: After simplification, term\\n  h\\n has type\\n  ∏ ν, (φ ν).leadingCoeff = 0\\nbut is expected to have type\\n  False\",\n      \"line\": 112,\n      \"column\": 3,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"Unknown identifier `hasseDeriv_X_pow`\",\n      \"line\": 138,\n      \"column\": 47,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"unsolved goals\\ncase right\\n⊢ 1 + 1 = 0\",\n      \"line\": 138,\n      \"column\": 3,\n      \"lean_tags\": [\n        \"unsolvedGoals\"\n      ],\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'DistinctDegreeProbe.generalized' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 139,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'DistinctDegreeProbe.original_corollary' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 140,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'DistinctDegreeProbe.positive_char' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 141,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'DistinctDegreeProbe.char_two_guard' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 142,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Matrix.det_vandermonde_ne_zero_iff : ∀ {R : Type u_1} [inst : CommRing R] {n : ℕ} [IsDomain R] {v : Fin n → R},\\n  (Matrix.vandermonde v).det ≠ 0 ↔ Function.Injective v\",\n      \"line\": 143,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": false,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.coeff_wronskian_of_natDegree_injective`",
+          "line": 10,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@replay : ∀ {R : Type u_1} [inst : CommSemiring R] {ι : Type u_2} (s : Finset ι) (f : ι → R[X]) (n : ι → ℕ),\n  (∀ i ∈ s, (f i).natDegree ≤ n i) → (∏ i ∈ s, f i).coeff (∑ i ∈ s, n i) = ∏ i ∈ s, (f i).coeff (n i)",
+          "line": 25,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'PrivateCoeffProductAssessment.replay' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 26,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@coeff_prod_of_natDegree_le : ∀ {R : Type u_1} {ι : Type u_2} (s : Finset ι) [inst : CommSemiring R] (f : ι → R[X])\n  (n : ℕ), (∀ p ∈ s, (f p).natDegree ≤ n) → (∏ i ∈ s, f i).coeff (s.card * n) = ∏ i ∈ s, (f i).coeff n",
+          "line": 27,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@replay : ∀ {K : Type u_1} [inst : CommRing K] {ι : Type u_2} [inst_1 : Fintype ι] [inst_2 : DecidableEq ι] (r : ι → ℕ)\n  {φ : ι → K[X]},\n  (W r φ).coeff (∑ ν, (φ ν).natDegree - ∑ ν, r ν) =\n    (∏ ν, (φ ν).leadingCoeff) * (Matrix.of fun μ ν ↦ ↑((φ ν).natDegree.choose (r μ))).det",
+          "line": 59,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'CoeffWronskianFiniteProbe.replay' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 60,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'CoeffWronskianFiniteProbe.expanded' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 69,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'DetChooseRingProbe.factorial_mul_det' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 96,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.wronskian_ne_zero_of_natDegree_injective`",
+          "line": 99,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "Type mismatch: After simplification, term\n  h\n has type\n  0 = ∏ i, ∏ j > i, (↑(φ j).natDegree - ↑(φ i).natDegree)\nbut is expected to have type\n  False",
+          "line": 109,
+          "column": 5,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "Type mismatch: After simplification, term\n  h\n has type\n  ∏ ν, (φ ν).leadingCoeff = 0\nbut is expected to have type\n  False",
+          "line": 112,
+          "column": 3,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "Unknown identifier `hasseDeriv_X_pow`",
+          "line": 138,
+          "column": 47,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "unsolved goals\ncase right\n⊢ 1 + 1 = 0",
+          "line": 138,
+          "column": 3,
+          "lean_tags": [
+            "unsolvedGoals"
+          ],
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'DistinctDegreeProbe.generalized' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 139,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'DistinctDegreeProbe.original_corollary' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 140,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'DistinctDegreeProbe.positive_char' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 141,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'DistinctDegreeProbe.char_two_guard' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 142,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Matrix.det_vandermonde_ne_zero_iff : ∀ {R : Type u_1} [inst : CommRing R] {n : ℕ} [IsDomain R] {v : Fin n → R},\n  (Matrix.vandermonde v).det ≠ 0 ↔ Function.Injective v",
+          "line": 143,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 1327
+}

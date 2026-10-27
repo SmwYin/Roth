@@ -1,0 +1,212 @@
+{
+  "requests": {
+    "finder": {
+      "query": "Determinant Vandermonde is nonzero if and only if evaluation nodes are injective over an integral domain",
+      "num_results": 6
+    },
+    "loogle": {
+      "query": "Matrix.vandermonde, Ne",
+      "num_results": 10
+    },
+    "leansearch": {
+      "query": "Determinant Vandermonde is nonzero if and only if evaluation nodes are injective over an integral domain",
+      "num_results": 6
+    },
+    "local": {
+      "query": "det_vandermonde",
+      "project_root": "/Users/ramin/LEAN/Roth",
+      "limit": 30
+    }
+  },
+  "results": [
+    {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Matrix.det_vandermonde_ne_zero_iff\",\n      \"informal_name\": \"Vandermonde Determinant Non-Zero If and Only If Vector is Injective\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] {n : ℕ} [IsDomain R] {v : Fin n → R},\\n  (Matrix.vandermonde v).det ≠ 0 ↔ Function.Injective v\",\n      \"informal_description\": \"Let $ R $ be a commutative ring with no zero divisors (a domain), and let $ v : \\\\mathrm{Fin}(n) \\\\to R $ be a vector of length $ n $. The determinant of the $ n \\\\times n $ Vandermonde matrix constructed from $ v $, whose $(i,j)$-entry is $ v_i^j $, is non-zero if and only if the function $ v $ is injective (i.e., all elements $ v_0, v_1, \\\\ldots, v_{n-1} $ are distinct in $ R $).\",\n      \"path\": \"Mathlib.LinearAlgebra.Vandermonde\"\n    },\n    {\n      \"formal_name\": \"Matrix.det_vandermonde_eq_zero_iff\",\n      \"informal_name\": \"Determinant of Vandermonde Matrix is Zero iff Two Entries are Equal\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] {n : ℕ} [IsDomain R] {v : Fin n → R},\\n  (Matrix.vandermonde v).det = 0 ↔ ∃ i j, v i = v j ∧ i ≠ j\",\n      \"informal_description\": \"For a domain $ R $ and a vector $ v $ of length $ n $ with entries in $ R $, the determinant of the Vandermonde matrix $ V $ formed by $ v $ is zero if and only if there exist distinct indices $ i, j $ such that $ v_i = v_j $.\",\n      \"path\": \"Mathlib.LinearAlgebra.Vandermonde\"\n    },\n    {\n      \"formal_name\": \"Matrix.det_mvPolynomialX_ne_zero\",\n      \"informal_name\": \"Non-vanishing Determinant of Square Matrix of Variables in Multivariate Polynomial Ring\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (m : Type u_1) (R : Type u_3) [inst : DecidableEq m] [inst_1 : Fintype m] [inst_2 : CommRing R] [Nontrivial R],\\n  (Matrix.mvPolynomialX m m R).det ≠ 0\",\n      \"informal_description\": \"Given a finite type $ m $ with decidable equality and a non-trivial commutative ring $ R $, the determinant of the $ m \\\\times m $ matrix whose $(i,j)$-entries are distinct indeterminates $ X_{(i,j)} $ in the multivariate polynomial ring $ R[X_{(i,j)}] $ is non-zero. This holds because the determinant evaluates to a monomial that cannot be zero in the polynomial ring over a non-trivial ring.\",\n      \"path\": \"Mathlib.LinearAlgebra.Matrix.MvPolynomial\"\n    },\n    {\n      \"formal_name\": \"Matrix.det_vandermonde\",\n      \"informal_name\": \"Vandermonde Determinant Formula\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] {n : ℕ} (v : Fin n → R),\\n  (Matrix.vandermonde v).det = ∏ i, ∏ j ∈ Finset.Ioi i, (v j - v i)\",\n      \"informal_description\": \"The determinant of the Vandermonde matrix constructed from a vector $ v $ of length $ n $ with entries in a commutative ring $ R $ is equal to the product of $ (v_j - v_i) $ for all $ 0 \\\\leq i < j < n $. Formally, $ \\\\det(\\\\text{vandermonde}(v)) = \\\\prod_{0 \\\\leq i < j < n} (v_j - v_i) $.\",\n      \"path\": \"Mathlib.LinearAlgebra.Vandermonde\"\n    },\n    {\n      \"formal_name\": \"Matrix.det_eval_matrixOfPolynomials_eq_det_vandermonde\",\n      \"informal_name\": \"Vandermonde Determinant Equals Monic Polynomial Evaluation Determinant\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] {n : ℕ} (v : Fin n → R) (p : Fin n → Polynomial R),\\n  (∀ (i : Fin n), (p i).natDegree = ↑i) →\\n    (∀ (i : Fin n), (p i).Monic) → (Matrix.vandermonde v).det = (Matrix.of fun i j => Polynomial.eval (v i) (p j)).det\",\n      \"informal_description\": \"For a commutative ring $ R $, a vector $ v $ of length $ n $ with entries in $ R $, and a sequence of monic polynomials $ p_0, p_1, \\\\ldots, p_{n-1} $ over $ R $ where each $ p_i $ has degree $ i $, the determinant of the $ n \\\\times n $ Vandermonde matrix formed by $ v $ is equal to the determinant of the matrix whose $ (i,j) $-entry is $ p_j(v_i) $, the evaluation of polynomial $ p_j $ at $ v_i $. This equality holds under the conditions that each polynomial is monic and has natural degree equal to its index.\",\n      \"path\": \"Mathlib.LinearAlgebra.Vandermonde\"\n    },\n    {\n      \"formal_name\": \"Matrix.det_projVandermonde\",\n      \"informal_name\": \"Determinant of Generalized Vandermonde Matrix\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] {n : ℕ} (v w : Fin n → R),\\n  (Matrix.projVandermonde v w).det = ∏ i, ∏ j ∈ Finset.Ioi i, (v j * w i - v i * w j)\",\n      \"informal_description\": \"The determinant of the $n \\\\times n$ generalized Vandermonde matrix with entries $(v_i^j w_i^{n-1-j})$ is equal to the product over all $0 \\\\le i < j < n$ of $(v_j w_i - v_i w_j)$, i.e., $\\\\det(\\\\text{Vandermonde}(v,w)) = \\\\prod_{0 \\\\le i < j < n} (v_j w_i - v_i w_j)$.\",\n      \"path\": \"Mathlib.LinearAlgebra.Vandermonde\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "formal_name": "Matrix.det_vandermonde_ne_zero_iff",
+              "informal_name": "Vandermonde Determinant Non-Zero If and Only If Vector is Injective",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} [inst : CommRing R] {n : ℕ} [IsDomain R] {v : Fin n → R},\n  (Matrix.vandermonde v).det ≠ 0 ↔ Function.Injective v",
+              "informal_description": "Let $ R $ be a commutative ring with no zero divisors (a domain), and let $ v : \\mathrm{Fin}(n) \\to R $ be a vector of length $ n $. The determinant of the $ n \\times n $ Vandermonde matrix constructed from $ v $, whose $(i,j)$-entry is $ v_i^j $, is non-zero if and only if the function $ v $ is injective (i.e., all elements $ v_0, v_1, \\ldots, v_{n-1} $ are distinct in $ R $).",
+              "path": "Mathlib.LinearAlgebra.Vandermonde"
+            },
+            {
+              "formal_name": "Matrix.det_vandermonde_eq_zero_iff",
+              "informal_name": "Determinant of Vandermonde Matrix is Zero iff Two Entries are Equal",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} [inst : CommRing R] {n : ℕ} [IsDomain R] {v : Fin n → R},\n  (Matrix.vandermonde v).det = 0 ↔ ∃ i j, v i = v j ∧ i ≠ j",
+              "informal_description": "For a domain $ R $ and a vector $ v $ of length $ n $ with entries in $ R $, the determinant of the Vandermonde matrix $ V $ formed by $ v $ is zero if and only if there exist distinct indices $ i, j $ such that $ v_i = v_j $.",
+              "path": "Mathlib.LinearAlgebra.Vandermonde"
+            },
+            {
+              "formal_name": "Matrix.det_mvPolynomialX_ne_zero",
+              "informal_name": "Non-vanishing Determinant of Square Matrix of Variables in Multivariate Polynomial Ring",
+              "kind": "theorem",
+              "type": "∀ (m : Type u_1) (R : Type u_3) [inst : DecidableEq m] [inst_1 : Fintype m] [inst_2 : CommRing R] [Nontrivial R],\n  (Matrix.mvPolynomialX m m R).det ≠ 0",
+              "informal_description": "Given a finite type $ m $ with decidable equality and a non-trivial commutative ring $ R $, the determinant of the $ m \\times m $ matrix whose $(i,j)$-entries are distinct indeterminates $ X_{(i,j)} $ in the multivariate polynomial ring $ R[X_{(i,j)}] $ is non-zero. This holds because the determinant evaluates to a monomial that cannot be zero in the polynomial ring over a non-trivial ring.",
+              "path": "Mathlib.LinearAlgebra.Matrix.MvPolynomial"
+            },
+            {
+              "formal_name": "Matrix.det_vandermonde",
+              "informal_name": "Vandermonde Determinant Formula",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} [inst : CommRing R] {n : ℕ} (v : Fin n → R),\n  (Matrix.vandermonde v).det = ∏ i, ∏ j ∈ Finset.Ioi i, (v j - v i)",
+              "informal_description": "The determinant of the Vandermonde matrix constructed from a vector $ v $ of length $ n $ with entries in a commutative ring $ R $ is equal to the product of $ (v_j - v_i) $ for all $ 0 \\leq i < j < n $. Formally, $ \\det(\\text{vandermonde}(v)) = \\prod_{0 \\leq i < j < n} (v_j - v_i) $.",
+              "path": "Mathlib.LinearAlgebra.Vandermonde"
+            },
+            {
+              "formal_name": "Matrix.det_eval_matrixOfPolynomials_eq_det_vandermonde",
+              "informal_name": "Vandermonde Determinant Equals Monic Polynomial Evaluation Determinant",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} [inst : CommRing R] {n : ℕ} (v : Fin n → R) (p : Fin n → Polynomial R),\n  (∀ (i : Fin n), (p i).natDegree = ↑i) →\n    (∀ (i : Fin n), (p i).Monic) → (Matrix.vandermonde v).det = (Matrix.of fun i j => Polynomial.eval (v i) (p j)).det",
+              "informal_description": "For a commutative ring $ R $, a vector $ v $ of length $ n $ with entries in $ R $, and a sequence of monic polynomials $ p_0, p_1, \\ldots, p_{n-1} $ over $ R $ where each $ p_i $ has degree $ i $, the determinant of the $ n \\times n $ Vandermonde matrix formed by $ v $ is equal to the determinant of the matrix whose $ (i,j) $-entry is $ p_j(v_i) $, the evaluation of polynomial $ p_j $ at $ v_i $. This equality holds under the conditions that each polynomial is monic and has natural degree equal to its index.",
+              "path": "Mathlib.LinearAlgebra.Vandermonde"
+            },
+            {
+              "formal_name": "Matrix.det_projVandermonde",
+              "informal_name": "Determinant of Generalized Vandermonde Matrix",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} [inst : CommRing R] {n : ℕ} (v w : Fin n → R),\n  (Matrix.projVandermonde v w).det = ∏ i, ∏ j ∈ Finset.Ioi i, (v j * w i - v i * w j)",
+              "informal_description": "The determinant of the $n \\times n$ generalized Vandermonde matrix with entries $(v_i^j w_i^{n-1-j})$ is equal to the product over all $0 \\le i < j < n$ of $(v_j w_i - v_i w_j)$, i.e., $\\det(\\text{Vandermonde}(v,w)) = \\prod_{0 \\le i < j < n} (v_j w_i - v_i w_j)$.",
+              "path": "Mathlib.LinearAlgebra.Vandermonde"
+            }
+          ]
+        },
+        "isError": false
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"Matrix.det_vandermonde_ne_zero_iff\",\n      \"type\": \" {R : Type u_1} [CommRing R] {n : ℕ} [IsDomain R] {v : Fin n → R} : (Matrix.vandermonde v).det ≠ 0 ↔ Function.Injective v\",\n      \"module\": \"Mathlib.LinearAlgebra.Vandermonde\"\n    },\n    {\n      \"name\": \"Matrix.det_vandermonde_eq_zero_iff\",\n      \"type\": \" {R : Type u_1} [CommRing R] {n : ℕ} [IsDomain R] {v : Fin n → R} : (Matrix.vandermonde v).det = 0 ↔ ∃ i j, v i = v j ∧ i ≠ j\",\n      \"module\": \"Mathlib.LinearAlgebra.Vandermonde\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "Matrix.det_vandermonde_ne_zero_iff",
+              "type": " {R : Type u_1} [CommRing R] {n : ℕ} [IsDomain R] {v : Fin n → R} : (Matrix.vandermonde v).det ≠ 0 ↔ Function.Injective v",
+              "module": "Mathlib.LinearAlgebra.Vandermonde"
+            },
+            {
+              "name": "Matrix.det_vandermonde_eq_zero_iff",
+              "type": " {R : Type u_1} [CommRing R] {n : ℕ} [IsDomain R] {v : Fin n → R} : (Matrix.vandermonde v).det = 0 ↔ ∃ i j, v i = v j ∧ i ≠ j",
+              "module": "Mathlib.LinearAlgebra.Vandermonde"
+            }
+          ]
+        },
+        "isError": false
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"Matrix.det_vandermonde_ne_zero_iff\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Vandermonde\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] {n : ℕ} [IsDomain R] {v : Fin n → R},\\n  (Matrix.vandermonde v).det ≠ 0 ↔ Function.Injective v\"\n    },\n    {\n      \"name\": \"Matrix.det_vandermonde_eq_zero_iff\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Vandermonde\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] {n : ℕ} [IsDomain R] {v : Fin n → R},\\n  (Matrix.vandermonde v).det = 0 ↔ ∃ i j, v i = v j ∧ i ≠ j\"\n    },\n    {\n      \"name\": \"Lagrange.nodalWeight_ne_zero\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Lagrange\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {F : Type u_1} [inst : Field F] {ι : Type u_2} [inst_1 : DecidableEq ι] {s : Finset ι} {v : ι → F} {i : ι},\\n  Set.InjOn v ↑s → i ∈ s → Lagrange.nodalWeight s v i ≠ 0\"\n    },\n    {\n      \"name\": \"Matrix.det_vandermonde\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Vandermonde\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] {n : ℕ} (v : Fin n → R),\\n  (Matrix.vandermonde v).det = ∏ i, ∏ j ∈ Finset.Ioi i, (v j - v i)\"\n    },\n    {\n      \"name\": \"Matrix.nondegenerate_iff_det_ne_zero\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Matrix.ToLinearEquiv\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {n : Type u_1} [inst : Fintype n] {A : Type u_4} [inst_1 : DecidableEq n] [inst_2 : CommRing A] [IsDomain A]\\n  {M : Matrix n n A}, M.Nondegenerate ↔ M.det ≠ 0\"\n    },\n    {\n      \"name\": \"Matrix.vandermonde\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Vandermonde\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} → [CommRing R] → {n : ℕ} → (Fin n → R) → Matrix (Fin n) (Fin n) R\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "Matrix.det_vandermonde_ne_zero_iff",
+              "module_name": "Mathlib.LinearAlgebra.Vandermonde",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} [inst : CommRing R] {n : ℕ} [IsDomain R] {v : Fin n → R},\n  (Matrix.vandermonde v).det ≠ 0 ↔ Function.Injective v"
+            },
+            {
+              "name": "Matrix.det_vandermonde_eq_zero_iff",
+              "module_name": "Mathlib.LinearAlgebra.Vandermonde",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} [inst : CommRing R] {n : ℕ} [IsDomain R] {v : Fin n → R},\n  (Matrix.vandermonde v).det = 0 ↔ ∃ i j, v i = v j ∧ i ≠ j"
+            },
+            {
+              "name": "Lagrange.nodalWeight_ne_zero",
+              "module_name": "Mathlib.LinearAlgebra.Lagrange",
+              "kind": "theorem",
+              "type": "∀ {F : Type u_1} [inst : Field F] {ι : Type u_2} [inst_1 : DecidableEq ι] {s : Finset ι} {v : ι → F} {i : ι},\n  Set.InjOn v ↑s → i ∈ s → Lagrange.nodalWeight s v i ≠ 0"
+            },
+            {
+              "name": "Matrix.det_vandermonde",
+              "module_name": "Mathlib.LinearAlgebra.Vandermonde",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} [inst : CommRing R] {n : ℕ} (v : Fin n → R),\n  (Matrix.vandermonde v).det = ∏ i, ∏ j ∈ Finset.Ioi i, (v j - v i)"
+            },
+            {
+              "name": "Matrix.nondegenerate_iff_det_ne_zero",
+              "module_name": "Mathlib.LinearAlgebra.Matrix.ToLinearEquiv",
+              "kind": "theorem",
+              "type": "∀ {n : Type u_1} [inst : Fintype n] {A : Type u_4} [inst_1 : DecidableEq n] [inst_2 : CommRing A] [IsDomain A]\n  {M : Matrix n n A}, M.Nondegenerate ↔ M.det ≠ 0"
+            },
+            {
+              "name": "Matrix.vandermonde",
+              "module_name": "Mathlib.LinearAlgebra.Vandermonde",
+              "kind": "definition",
+              "type": "{R : Type u_1} → [CommRing R] → {n : ℕ} → (Fin n → R) → Matrix (Fin n) (Fin n) R"
+            }
+          ]
+        },
+        "isError": false
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"Matrix.det_vandermonde\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/Vandermonde.lean\"\n    },\n    {\n      \"name\": \"Matrix.det_vandermonde_add\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/Vandermonde.lean\"\n    },\n    {\n      \"name\": \"Matrix.det_vandermonde_sub\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/Vandermonde.lean\"\n    },\n    {\n      \"name\": \"Matrix.det_vandermonde_eq_zero_iff\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/Vandermonde.lean\"\n    },\n    {\n      \"name\": \"Matrix.det_vandermonde_ne_zero_iff\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/Vandermonde.lean\"\n    },\n    {\n      \"name\": \"Matrix.det_vandermonde_id_eq_superFactorial\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/Vandermonde.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "Matrix.det_vandermonde",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/Vandermonde.lean"
+            },
+            {
+              "name": "Matrix.det_vandermonde_add",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/Vandermonde.lean"
+            },
+            {
+              "name": "Matrix.det_vandermonde_sub",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/Vandermonde.lean"
+            },
+            {
+              "name": "Matrix.det_vandermonde_eq_zero_iff",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/Vandermonde.lean"
+            },
+            {
+              "name": "Matrix.det_vandermonde_ne_zero_iff",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/Vandermonde.lean"
+            },
+            {
+              "name": "Matrix.det_vandermonde_id_eq_superFactorial",
+              "kind": "lemma",
+              "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/Vandermonde.lean"
+            }
+          ],
+          "index": "unavailable"
+        },
+        "isError": false
+      }
+    }
+  ]
+}
