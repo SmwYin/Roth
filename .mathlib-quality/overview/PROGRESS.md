@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-27
 
-- Declarations completed: **282/293**
-- Next declaration: **#283 `Roth.exists_roth_approximants_aux`** (Roth/Main.lean:429)
+- Declarations completed: **283/293**
+- Next declaration: **#284 `Roth.one_lt_roth_eval_bound_aux`** (Roth/Main.lean:453)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -301,10 +301,10 @@ Last regenerated: 2026-10-27
 | 280 | `Roth.abs_prod_pow_le_rpow_of_le_weight` | Roth/Main.lean:347 | SKIP | [report](mathlibable/Roth.abs_prod_pow_le_rpow_of_le_weight.md) |
 | 281 | `Roth.abs_eval_lt_of_le_index` | Roth/Main.lean:380 | BORDERLINE-needs-human | [report](mathlibable/Roth.abs_eval_lt_of_le_index.md) |
 | 282 | `Roth.exists_roth_parameters_aux` | Roth/Main.lean:410 | SKIP | [report](mathlibable/Roth.exists_roth_parameters_aux.md) |
+| 283 | `Roth.exists_roth_approximants_aux` | Roth/Main.lean:429 | SKIP | [report](mathlibable/Roth.exists_roth_approximants_aux.md) |
 
 ## Remaining declarations (in processing order)
 
-- #283 `Roth.exists_roth_approximants_aux` (Roth/Main.lean:429, private lemma)
 - #284 `Roth.one_lt_roth_eval_bound_aux` (Roth/Main.lean:453, private lemma)
 - #285 `Roth.roth_product_bound_aux` (Roth/Main.lean:481, private lemma)
 - #286 `Roth.roth_log_bound_aux` (Roth/Main.lean:505, private lemma)
