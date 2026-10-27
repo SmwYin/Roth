@@ -1,0 +1,35 @@
+import Mathlib.Analysis.Real.Sqrt
+import Mathlib.Tactic
+#check_failure Roth.sqrt_one_sub_inv_lt
+#check @Real.sqrt_one_add_le
+#check @Real.sqrt_lt'
+#check @one_div_lt_one_div_of_lt
+namespace SqrtAssessment
+ theorem realWeak {m lam : ℝ} (hm : 1 ≤ m) (hlam : 2 * √m ≤ lam) :
+    √(1 - 1 / m) < 1 - lam⁻¹ ^ 2 := by
+  have hsq : 4 * m ≤ lam ^ 2 := by
+    nlinarith [Real.sqrt_nonneg m, Real.sq_sqrt (by linarith : 0 ≤ m)]
+  have hu : lam⁻¹ ^ 2 ≤ 1 / m / 4 := by
+    rw [inv_pow, div_div, ← one_div]
+    exact one_div_le_one_div_of_le (by positivity) (by linarith)
+  rw [Real.sqrt_lt' (by nlinarith [one_div_le_one_div_of_le zero_lt_one hm])]
+  nlinarith [sq_nonneg (lam⁻¹ ^ 2)]
+ theorem tangent {x : ℝ} (hx : x ≤ 1) : √(1 - x) ≤ 1 - x / 2 := by
+  simpa only [neg_div, add_neg_cancel_right, sub_eq_add_neg] using
+    (Real.sqrt_one_add_le (x := -x) (by linarith))
+ theorem originalViaTangent {m : ℕ} (hm : 2 ≤ m) {lam : ℝ}
+    (hlam : 2 * √(m : ℝ) < lam) : √(1 - 1 / (m : ℝ)) < 1 - lam⁻¹ ^ 2 := by
+  have hm' : (2 : ℝ) ≤ m := by exact_mod_cast hm
+  have hsq : 4 * (m : ℝ) < lam ^ 2 := by
+    nlinarith [Real.sqrt_nonneg (m : ℝ), Real.sq_sqrt (Nat.cast_nonneg m)]
+  have hu : lam⁻¹ ^ 2 < 1 / m / 4 := by
+    rw [inv_pow, div_div, ← one_div]
+    exact one_div_lt_one_div_of_lt (by positivity) (by linarith)
+  have ht := Real.sqrt_one_add_le (x := -(1 / (m : ℝ)))
+    (by linarith [one_div_le_one_div_of_le two_pos hm'])
+  simp only [neg_div, sub_eq_add_neg] at *
+  linarith
+end SqrtAssessment
+#print axioms SqrtAssessment.realWeak
+#print axioms SqrtAssessment.tangent
+#print axioms SqrtAssessment.originalViaTangent

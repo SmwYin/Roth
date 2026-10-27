@@ -1,0 +1,143 @@
+{
+  "declaration": "Roth.sqrt_one_sub_inv_lt",
+  "accepted": [
+    {
+      "label": "original",
+      "source": "sqrt-one-sub-inv-original-executed.lean.txt",
+      "source_sha256": "9976863d77a0c799fa41cee01088e411a2dd44120b2ee303f7d25387bb254a48",
+      "receipt": "sqrt-one-sub-inv-original-receipt.json",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "execution_kind": "persistent-disk",
+      "native_region_start_line": 9545,
+      "expected_axiom_declarations": [
+        "Roth.sqrt_one_sub_inv_lt"
+      ]
+    },
+    {
+      "label": "audit",
+      "source": "sqrt-one-sub-inv-audit-executed.lean.txt",
+      "source_sha256": "8dfa090b2b1bbd02a6fb048a527e98baa1c6bb112252abc644a3ba248022abe9",
+      "receipt": "sqrt-one-sub-inv-audit-receipt.json",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "execution_kind": "persistent-disk",
+      "native_region_start_line": 9549,
+      "expected_axiom_declarations": []
+    },
+    {
+      "label": "raw-clean",
+      "source": "sqrt-one-sub-inv-raw-clean-executed.lean.txt",
+      "source_sha256": "dae1acb8b8e1b29bb49f9810768d9a4ab141bdcabb74472d0a42a47cfa4a0ee7",
+      "receipt": "sqrt-one-sub-inv-raw-clean-receipt.json",
+      "original_execution_request": {
+        "code": "import Mathlib.Analysis.Real.Sqrt\nimport Mathlib.Tactic\n#check_failure Roth.sqrt_one_sub_inv_lt\n#check @Real.sqrt_one_add_le\n#check @Real.sqrt_lt'\n#check @one_div_lt_one_div_of_lt\nnamespace SqrtAssessment\ntheorem realWeak {m lam : \u211d} (hm : 1 \u2264 m) (hlam : 2 * \u221am \u2264 lam) :\n    \u221a(1 - 1 / m) < 1 - lam\u207b\u00b9 ^ 2 := by\n  have hsq : 4 * m \u2264 lam ^ 2 := by\n    nlinarith [Real.sqrt_nonneg m, Real.sq_sqrt (by linarith : 0 \u2264 m)]\n  have hu : lam\u207b\u00b9 ^ 2 \u2264 1 / m / 4 := by\n    rw [inv_pow, div_div, \u2190 one_div]\n    exact one_div_le_one_div_of_le (by positivity) (by linarith)\n  rw [Real.sqrt_lt' (by nlinarith [one_div_le_one_div_of_le zero_lt_one hm])]\n  nlinarith [sq_nonneg (lam\u207b\u00b9 ^ 2), one_div_pos.mpr (by linarith : 0 < m)]\ntheorem tangent {x : \u211d} (hx : x \u2264 1) : \u221a(1 - x) \u2264 1 - x / 2 := by\n  simpa only [neg_div, add_neg_cancel_right, sub_eq_add_neg] using\n    (Real.sqrt_one_add_le (x := -x) (by linarith))\ntheorem originalViaTangent {m : \u2115} (hm : 2 \u2264 m) {lam : \u211d}\n    (hlam : 2 * \u221a(m : \u211d) < lam) : \u221a(1 - 1 / (m : \u211d)) < 1 - lam\u207b\u00b9 ^ 2 := by\n  have hm' : (2 : \u211d) \u2264 m := by exact_mod_cast hm\n  have hsq : 4 * (m : \u211d) < lam ^ 2 := by\n    nlinarith [Real.sqrt_nonneg (m : \u211d), Real.sq_sqrt (Nat.cast_nonneg m)]\n  have hu : lam\u207b\u00b9 ^ 2 < 1 / m / 4 := by\n    rw [inv_pow, div_div, \u2190 one_div]\n    exact one_div_lt_one_div_of_lt (by positivity) (by linarith)\n  have ht := Real.sqrt_one_add_le (x := -(1 / (m : \u211d)))\n    (by linarith [one_div_le_one_div_of_le two_pos hm'])\n  simp only [neg_div, sub_eq_add_neg] at *\n  linarith [one_div_pos.mpr (by linarith : 0 < (m : \u211d))]\nend SqrtAssessment\n#print axioms SqrtAssessment.realWeak\n#print axioms SqrtAssessment.tangent\n#print axioms SqrtAssessment.originalViaTangent\n"
+      },
+      "execution_kind": "run-code",
+      "native_region_start_line": 1,
+      "expected_axiom_declarations": [
+        "SqrtAssessment.realWeak",
+        "SqrtAssessment.tangent",
+        "SqrtAssessment.originalViaTangent"
+      ]
+    },
+    {
+      "label": "actual-caller",
+      "source": "sqrt-one-sub-inv-consumer-executed.lean.txt",
+      "source_sha256": "733d71e716fa3f46a542a7a9000a30a52806e26ca75aafe307dd38a982319a76",
+      "receipt": "sqrt-one-sub-inv-consumer-receipt.json",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "execution_kind": "persistent-disk",
+      "native_region_start_line": 9898,
+      "expected_axiom_declarations": [
+        "Roth.SqrtActualCaller.actualCaller"
+      ]
+    },
+    {
+      "label": "warm-support",
+      "source": "sqrt-one-sub-inv-warm-executed.lean.txt",
+      "source_sha256": "1d2a56ff9d9f3b90a921f3f5249b8824edc28ed307fde5315010cacbe3f83ba0",
+      "receipt": "sqrt-one-sub-inv-warm-receipt.json",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "execution_kind": "persistent-disk",
+      "native_region_start_line": 9868,
+      "expected_axiom_declarations": [
+        "SqrtAssessment.realWeak",
+        "SqrtAssessment.tangent",
+        "SqrtAssessment.originalViaTangent"
+      ]
+    },
+    {
+      "label": "guards",
+      "source": "sqrt-one-sub-inv-guards-executed.lean.txt",
+      "source_sha256": "3c9521c73b7b467142715b0aef36c6ba1cd72bd8c190c7318360811ae197c572",
+      "receipt": "sqrt-one-sub-inv-guards-receipt.json",
+      "original_execution_request": {
+        "code": "import Mathlib.Analysis.Real.Sqrt\nimport Mathlib.Tactic\n#check_failure Roth.sqrt_one_sub_inv_lt\nnamespace SqrtGuards\ntheorem zero_m_false : \u00ac (\u221a(1 - 1 / (0 : \u211d)) < 1 - (1 : \u211d)\u207b\u00b9 ^ 2) := by\n  norm_num\ntheorem no_lambda_bound : \u00ac (\u221a(1 - 1 / (2 : \u211d)) < 1 - (1 : \u211d)\u207b\u00b9 ^ 2) := by\n  norm_num\ntheorem generic_square {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K] {x y : K}\n    (hx : 0 \u2264 x) (hy : 0 < y) (hsq : x ^ 2 < y ^ 2) : x < y := by\n  nlinarith\nend SqrtGuards\n#print axioms SqrtGuards.zero_m_false\n#print axioms SqrtGuards.no_lambda_bound\n#print axioms SqrtGuards.generic_square\n"
+      },
+      "execution_kind": "run-code",
+      "native_region_start_line": 1,
+      "expected_axiom_declarations": [
+        "SqrtGuards.zero_m_false",
+        "SqrtGuards.no_lambda_bound",
+        "SqrtGuards.generic_square"
+      ]
+    }
+  ],
+  "rejected": [
+    {
+      "label": "initial-proof",
+      "source": "sqrt-one-sub-inv-raw-executed.lean.txt",
+      "source_sha256": "14fa743dd54bc803e1385d308affe44a60ee3efab38d87d20a0157e6599141e0",
+      "receipt": "sqrt-one-sub-inv-raw-receipt.json",
+      "original_execution_request": {
+        "code": "import Mathlib.Analysis.Real.Sqrt\nimport Mathlib.Tactic\n#check_failure Roth.sqrt_one_sub_inv_lt\n#check @Real.sqrt_one_add_le\n#check @Real.sqrt_lt'\n#check @one_div_lt_one_div_of_lt\nnamespace SqrtAssessment\n theorem realWeak {m lam : \u211d} (hm : 1 \u2264 m) (hlam : 2 * \u221am \u2264 lam) :\n    \u221a(1 - 1 / m) < 1 - lam\u207b\u00b9 ^ 2 := by\n  have hsq : 4 * m \u2264 lam ^ 2 := by\n    nlinarith [Real.sqrt_nonneg m, Real.sq_sqrt (by linarith : 0 \u2264 m)]\n  have hu : lam\u207b\u00b9 ^ 2 \u2264 1 / m / 4 := by\n    rw [inv_pow, div_div, \u2190 one_div]\n    exact one_div_le_one_div_of_le (by positivity) (by linarith)\n  rw [Real.sqrt_lt' (by nlinarith [one_div_le_one_div_of_le zero_lt_one hm])]\n  nlinarith [sq_nonneg (lam\u207b\u00b9 ^ 2)]\n theorem tangent {x : \u211d} (hx : x \u2264 1) : \u221a(1 - x) \u2264 1 - x / 2 := by\n  simpa only [neg_div, add_neg_cancel_right, sub_eq_add_neg] using\n    (Real.sqrt_one_add_le (x := -x) (by linarith))\n theorem originalViaTangent {m : \u2115} (hm : 2 \u2264 m) {lam : \u211d}\n    (hlam : 2 * \u221a(m : \u211d) < lam) : \u221a(1 - 1 / (m : \u211d)) < 1 - lam\u207b\u00b9 ^ 2 := by\n  have hm' : (2 : \u211d) \u2264 m := by exact_mod_cast hm\n  have hsq : 4 * (m : \u211d) < lam ^ 2 := by\n    nlinarith [Real.sqrt_nonneg (m : \u211d), Real.sq_sqrt (Nat.cast_nonneg m)]\n  have hu : lam\u207b\u00b9 ^ 2 < 1 / m / 4 := by\n    rw [inv_pow, div_div, \u2190 one_div]\n    exact one_div_lt_one_div_of_lt (by positivity) (by linarith)\n  have ht := Real.sqrt_one_add_le (x := -(1 / (m : \u211d)))\n    (by linarith [one_div_le_one_div_of_le two_pos hm'])\n  simp only [neg_div, sub_eq_add_neg] at *\n  linarith\nend SqrtAssessment\n#print axioms SqrtAssessment.realWeak\n#print axioms SqrtAssessment.tangent\n#print axioms SqrtAssessment.originalViaTangent\n"
+      },
+      "execution_kind": "run-code",
+      "native_region_start_line": 1,
+      "expected_axiom_declarations": [],
+      "reason": "Initial realWeak and Bernoulli proof omitted explicit positivity of 1/m needed by arithmetic automation; theorem indentation linter warning. Rejected receipt contains recovered sorryAx; no part is accepted proof evidence. Clean rerun includes one_div_pos."
+    },
+    {
+      "label": "direct-search",
+      "source": "sqrt-one-sub-inv-direct-search-executed.lean.txt",
+      "source_sha256": "09359cd518a773869f18aa1c7b911e94f2abe711255bdc260aaaab0edfc503a9",
+      "receipt": "sqrt-one-sub-inv-direct-search-receipt.json",
+      "original_execution_request": {
+        "code": "import Mathlib.Analysis.Real.Sqrt\nimport Mathlib.Tactic\n#check_failure Roth.sqrt_one_sub_inv_lt\n#check_failure SqrtAssessment.realWeak\n#check_failure SqrtAssessment.originalViaTangent\nexample {m : \u2115} (hm : 2 \u2264 m) {lam : \u211d} (hlam : 2 * \u221a(m : \u211d) < lam) :\n    \u221a(1 - 1 / (m : \u211d)) < 1 - lam\u207b\u00b9 ^ 2 := by\n  exact?\nexample {m lam : \u211d} (hm : 1 \u2264 m) (hlam : 2 * \u221am \u2264 lam) :\n    \u221a(1 - 1 / m) < 1 - lam\u207b\u00b9 ^ 2 := by\n  exact?\nexample {x : \u211d} (hx : -1 \u2264 x) : \u221a(1 + x) \u2264 1 + x / 2 := by\n  exact?\n"
+      },
+      "execution_kind": "run-code",
+      "native_region_start_line": 1,
+      "expected_axiom_declarations": [],
+      "reason": "Direct exact? experiments on original and real-m shape; these do not prove absence. Existing standard tangent query is a positive search within the same run."
+    }
+  ],
+  "unresolved": [],
+  "production_unchanged": true,
+  "standard_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "canonical_direct_consumers": [
+    "Roth.sum_inv_lt"
+  ],
+  "notes": [
+    "Persistent disk includes historical info: required assertions scoped to fresh region; full-file errors/warnings/axioms still checked.",
+    "Original print body elides94563 characters at MCP output limit; complete source, full type, standard axioms and canonical kernel-value existence audited.",
+    "Minimal isolated Mathlib.Analysis.Real.Sqrt+Tactic has guarded missing Roth target.",
+    "No self-import supplies accepted generic realWeak proof. Actual caller uses its already verified independent proof.",
+    "Preparation-only guards changed obsolete LinearOrderedField syntax before native execution; the old guards.lean.txt is preparation, not a rejected native run.",
+    "Exact? failures are limited direct search experiments, not proofs of absence."
+  ]
+}

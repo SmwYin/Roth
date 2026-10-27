@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 119/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 120/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 119; remaining: 174.
-- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 17 YES-but-generalise-first, 21 NO-mathlib-has-it, 38 BORDERLINE-needs-human, 16 SKIP.
+- Completed applicable assessments: 120; remaining: 173.
+- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 17 YES-but-generalise-first, 21 NO-mathlib-has-it, 39 BORDERLINE-needs-human, 16 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -1301,6 +1301,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: One explicit external-to-file caller: private Roth.exists_rat_factors_det_hasseDeriv_aux, Separation:524; exact293 canonical direct-consumer audit agrees; full caller replay with stronger theorem passes.
 - Verdict: YES-but-generalise-first; [complete report](.mathlib-quality/overview/mathlibable/Roth.exists_genWronskian_ne_zero.md).
 
+### Completed: `Roth.sqrt_one_sub_inv_lt`
+
+- Type: `Roth.sqrt_one_sub_inv_lt {m : ℕ} (hm : 2 ≤ m) {lam : ℝ} (hlam : 2 * √↑m < lam) : √(1 - 1 / ↑m) < 1 - lam⁻¹ ^ 2`
+- What: Strict square-root bound by an inverse-square threshold for a dimension parameter.
+- How: Square the positive λ bound, compare reciprocals, reduce sqrt inequality to a polynomial inequality.
+- Hypotheses: m : ℕ, 2 ≤ m, lam : ℝ, 2 * √(m : ℝ) < lam
+- Project dependencies: None
+- Caller summary: Exactly one explicit and canonical direct caller: Roth.sum_inv_lt, Lattice.lean:87. No separate inline rederivation found.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.sqrt_one_sub_inv_lt.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -1565,6 +1575,8 @@ Completed `Roth.wronskian_kronecker_eq_sum_aux`: The supplied uniform derivative
 
 Completed `Roth.exists_genWronskian_ne_zero`: Pinned pairwise Polynomial.Wronskian TODO explicitly requests n-tuples. Generic matrix determinant nonvanishing and Jacobian criteria do not select bounded derivative rows from coefficient-field independence. All five search methods executed on three forms.
 
+Completed `Roth.sqrt_one_sub_inv_lt`: Real.sqrt_one_add_le supplies the standard tangent estimate; Real.sqrt_lt' and reciprocal comparison supply proof blocks. No ≤3-call exact threshold derivation verified.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -1804,6 +1816,8 @@ Completed `Roth.det_sum_rows`: Standard multilinearity, already represented by t
 Completed `Roth.wronskian_kronecker_eq_sum_aux`: The determinant transport is distinct from the standalone row-multilinearity expansion and from the final nonvanishing implication; no duplicate full construction.
 
 Completed `Roth.exists_genWronskian_ne_zero`: Classical Bostan–Dumas Theorem3 polynomial specialization, with Hasse normalization; not duplicated by existing two-polynomial Wronskian API.
+
+Completed `Roth.sqrt_one_sub_inv_lt`: A specialized Bernoulli/AM-GM consequence, not an identical theorem.
 
 ## Part 5: Generalization opportunities
 
@@ -2048,6 +2062,8 @@ Completed `Roth.wronskian_kronecker_eq_sum_aux`: No public generality claim unde
 
 Completed `Roth.exists_genWronskian_ne_zero`: Verified deletion of Finite σ, using finite union of vars, LI.of_comp, derivative rename, degree_mapDomain and determinant rename. Direct one-edit replay fails at Fintype.ofFinite. Domain/fraction-field and formal-series extensions remain distinct unverified proposals.
 
+Completed `Roth.sqrt_one_sub_inv_lt`: Verified candidate: real m≥1, nonstrict 2√m≤lam, still strict conclusion. Does not claim optimal hypotheses.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -2288,6 +2304,8 @@ Completed `Roth.det_sum_rows`: Possible named weighted multilinear finite-sum co
 Completed `Roth.wronskian_kronecker_eq_sum_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 Completed `Roth.exists_genWronskian_ne_zero`: Bounded generalized Hasse-Wronskian nonvanishing criterion for independent finite polynomial families; finite-family univariate criterion and multivariate Hasse interface are prerequisite API.
+
+Completed `Roth.sqrt_one_sub_inv_lt`: No missing generic tangent API; whether to add the extra threshold convenience API is an upstream design question.
 
 ## Part 7: Junk / removable
 
@@ -2532,6 +2550,8 @@ Completed `Roth.wronskian_kronecker_eq_sum_aux`: Retain a live private proof int
 
 Completed `Roth.exists_genWronskian_ne_zero`: Live module main theorem, substantive classical result; not junk despite a single direct consumer.
 
+Completed `Roth.sqrt_one_sub_inv_lt`: Live single-use scalar helper; retain locally while upstream scope is undecided.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -2655,6 +2675,7 @@ Completed `Roth.exists_genWronskian_ne_zero`: Live module main theorem, substant
 | 117 | `Roth.det_sum_rows` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.det_sum_rows.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.det_sum_rows/root-acceptance.json) |
 | 118 | `Roth.wronskian_kronecker_eq_sum_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.wronskian_kronecker_eq_sum_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.wronskian_kronecker_eq_sum_aux/root-acceptance.json) |
 | 119 | `Roth.exists_genWronskian_ne_zero` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_genWronskian_ne_zero.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_genWronskian_ne_zero/root-acceptance.json) |
+| 120 | `Roth.sqrt_one_sub_inv_lt` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.sqrt_one_sub_inv_lt.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.sqrt_one_sub_inv_lt/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -2892,12 +2913,14 @@ Completed `Roth.wronskian_kronecker_eq_sum_aux` action: Keep unchanged; complete
 
 Completed `Roth.exists_genWronskian_ne_zero` action: YES-but-generalise-first: remove global variable finiteness with accepted support bridge, prepare new Mathlib/RingTheory/MvPolynomial/Wronskian.lean beside accepted parent proposal; retain CharZero/Field/row bounds; independently develop any domain or power-series extension.
 
+Completed `Roth.sqrt_one_sub_inv_lt` action: BORDERLINE-needs-human: decide threshold API versus existing Bernoulli tangent theorem; keep local helper, consider private real-parameter form.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.sqrt_one_sub_inv_lt` next. Supporting identities receive their own applicable checks.
+   `Roth.inv_add_inv_le` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

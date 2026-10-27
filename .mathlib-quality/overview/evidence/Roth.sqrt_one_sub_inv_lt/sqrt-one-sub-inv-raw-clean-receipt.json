@@ -1,0 +1,84 @@
+{
+  "request": {
+    "code": "import Mathlib.Analysis.Real.Sqrt\nimport Mathlib.Tactic\n#check_failure Roth.sqrt_one_sub_inv_lt\n#check @Real.sqrt_one_add_le\n#check @Real.sqrt_lt'\n#check @one_div_lt_one_div_of_lt\nnamespace SqrtAssessment\ntheorem realWeak {m lam : ℝ} (hm : 1 ≤ m) (hlam : 2 * √m ≤ lam) :\n    √(1 - 1 / m) < 1 - lam⁻¹ ^ 2 := by\n  have hsq : 4 * m ≤ lam ^ 2 := by\n    nlinarith [Real.sqrt_nonneg m, Real.sq_sqrt (by linarith : 0 ≤ m)]\n  have hu : lam⁻¹ ^ 2 ≤ 1 / m / 4 := by\n    rw [inv_pow, div_div, ← one_div]\n    exact one_div_le_one_div_of_le (by positivity) (by linarith)\n  rw [Real.sqrt_lt' (by nlinarith [one_div_le_one_div_of_le zero_lt_one hm])]\n  nlinarith [sq_nonneg (lam⁻¹ ^ 2), one_div_pos.mpr (by linarith : 0 < m)]\ntheorem tangent {x : ℝ} (hx : x ≤ 1) : √(1 - x) ≤ 1 - x / 2 := by\n  simpa only [neg_div, add_neg_cancel_right, sub_eq_add_neg] using\n    (Real.sqrt_one_add_le (x := -x) (by linarith))\ntheorem originalViaTangent {m : ℕ} (hm : 2 ≤ m) {lam : ℝ}\n    (hlam : 2 * √(m : ℝ) < lam) : √(1 - 1 / (m : ℝ)) < 1 - lam⁻¹ ^ 2 := by\n  have hm' : (2 : ℝ) ≤ m := by exact_mod_cast hm\n  have hsq : 4 * (m : ℝ) < lam ^ 2 := by\n    nlinarith [Real.sqrt_nonneg (m : ℝ), Real.sq_sqrt (Nat.cast_nonneg m)]\n  have hu : lam⁻¹ ^ 2 < 1 / m / 4 := by\n    rw [inv_pow, div_div, ← one_div]\n    exact one_div_lt_one_div_of_lt (by positivity) (by linarith)\n  have ht := Real.sqrt_one_add_le (x := -(1 / (m : ℝ)))\n    (by linarith [one_div_le_one_div_of_le two_pos hm'])\n  simp only [neg_div, sub_eq_add_neg] at *\n  linarith [one_div_pos.mpr (by linarith : 0 < (m : ℝ))]\nend SqrtAssessment\n#print axioms SqrtAssessment.realWeak\n#print axioms SqrtAssessment.tangent\n#print axioms SqrtAssessment.originalViaTangent\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.sqrt_one_sub_inv_lt`\",\n      \"line\": 3,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.sqrt_one_add_le : ∀ {x : ℝ}, -1 ≤ x → √(1 + x) ≤ 1 + x / 2\",\n      \"line\": 4,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.sqrt_lt' : ∀ {x y : ℝ}, 0 < y → (√x < y ↔ x < y ^ 2)\",\n      \"line\": 5,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@one_div_lt_one_div_of_lt : ∀ {α : Type u_1} [inst : Semifield α] [inst_1 : PartialOrder α] [PosMulReflectLT α]\\n  {a b : α}, 0 < a → a < b → 1 / b < 1 / a\",\n      \"line\": 6,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'SqrtAssessment.realWeak' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 33,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'SqrtAssessment.tangent' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 34,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'SqrtAssessment.originalViaTangent' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 35,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.sqrt_one_sub_inv_lt`",
+          "line": 3,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.sqrt_one_add_le : ∀ {x : ℝ}, -1 ≤ x → √(1 + x) ≤ 1 + x / 2",
+          "line": 4,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.sqrt_lt' : ∀ {x y : ℝ}, 0 < y → (√x < y ↔ x < y ^ 2)",
+          "line": 5,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@one_div_lt_one_div_of_lt : ∀ {α : Type u_1} [inst : Semifield α] [inst_1 : PartialOrder α] [PosMulReflectLT α]\n  {a b : α}, 0 < a → a < b → 1 / b < 1 / a",
+          "line": 6,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'SqrtAssessment.realWeak' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 33,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'SqrtAssessment.tangent' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 34,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'SqrtAssessment.originalViaTangent' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 35,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 942
+}
