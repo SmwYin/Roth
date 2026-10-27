@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 43/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 44/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 43; remaining: 250.
-- Verdicts: 8 NO-composable-from-mathlib, 11 YES-add-as-is, 1 YES-but-generalise-first, 6 NO-mathlib-has-it, 14 BORDERLINE-needs-human, 3 SKIP.
+- Completed applicable assessments: 44; remaining: 249.
+- Verdicts: 8 NO-composable-from-mathlib, 11 YES-add-as-is, 1 YES-but-generalise-first, 6 NO-mathlib-has-it, 14 BORDERLINE-needs-human, 4 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -475,6 +475,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: explicit proof callers: 1; within file: 1; outside file: 0; command internal K excluding declaring file: 0; callers: {'file': 'Roth/Wronskian.lean', 'line': 151, 'name': 'Roth.wronskian_ne_zero_of_natDegree_injective', 'pattern': 'simp rewrite in top-coefficient nonvanishing proof'}; opaque kernel simp closure claimed: False
 - Verdict: YES-but-generalise-first; [complete report](.mathlib-quality/overview/mathlibable/Roth.det_choose_eq.md).
 
+### Completed: `Roth.coeff_prod_of_natDegree_le'`
+
+- Type: `{K : Type*} [Field K] {ι : Type*} (s : Finset ι) (f : ι → K[X]) (n : ι → ℕ) (h : ∀ i ∈ s, (f i).natDegree ≤ n i) : (∏ i ∈ s, f i).coeff (∑ i ∈ s, n i) = ∏ i ∈ s, (f i).coeff (n i)`
+- What: Boundary coefficient of a finite polynomial product with per-factor degree bounds is the product of boundary coefficients.
+- How: Finite-set induction, two-factor coefficient identity and product-degree bound.
+- Hypotheses: Field source interface, same proof verified over CommSemiring. Arbitrary ambient indices and per-factor natural bounds on the finite set.
+- Project dependencies: None
+- Caller summary: One explicit same-file call at131 inside coeff_wronskian_of_natDegree_injective; no external calls.
+- Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.coeff_prod_of_natDegree_le'.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -587,6 +597,8 @@ Completed `Roth.wronskian_eq_zero_of_not_linearIndependent`: AlternatingMap.map_
 
 Completed `Roth.det_choose_eq`: generic law: Matrix.det_eval_matrixOfPolynomials_eq_det_vandermonde already exists; native checked one-call abstract form; building blocks: Nat.cast_choose_eq_descPochhammer_div, Matrix.det_mul_column, Matrix.det_transpose, Matrix.det_vandermonde, Polynomial.monic_descPochhammer, Polynomial.descPochhammer_natDegree; private near match: Vandermonde.lean:301 of_eval_descPochhammer_eq_mul_of_choose is private over ℤ; not an accessible replacement; all five methods all three forms: True
 
+Completed `Roth.coeff_prod_of_natDegree_le'`: Public coeff_prod_of_natDegree_le uses one common bound; this variant uses n i. Native signature comparison and replay verified.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -674,6 +686,8 @@ Completed `Roth.wronskian`: Binary Wronskian specializes at l2, not arbitrary ar
 Completed `Roth.wronskian_eq_zero_of_not_linearIndependent`: Multivariate easy direction repeats relation/kernel argument; generic operator-family route can unify.
 
 Completed `Roth.det_choose_eq`: Generic monic evaluation content is already in mathlib; specific binomial normalization resembles an existing private integer bridge. Do not add another generic evaluation theorem.
+
+Completed `Roth.coeff_prod_of_natDegree_le'`: Related public common-bound API, not the same statement; no project duplicate found.
 
 ## Part 5: Generalization opportunities
 
@@ -766,6 +780,8 @@ Completed `Roth.wronskian_eq_zero_of_not_linearIndependent`: Expanded determinan
 
 Completed `Roth.det_choose_eq`: Verified exact quotient under local nonzero factorials; stronger arbitrary CommRing identity factorial-product * det(choose) = Vandermonde product, including zero ring. Char2 size2 positive specialization and size3 failure guard compile.
 
+Completed `Roth.coeff_prod_of_natDegree_le'`: Verified same-body Field→CommSemiring, no domain/nontriviality/characteristic/finite-ambient restriction.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -854,6 +870,8 @@ Completed `Roth.wronskian`: Coherent normalized n-ary Wronskian name/compatibili
 Completed `Roth.wronskian_eq_zero_of_not_linearIndependent`: Design-dependent packaging of finite Hasse alternating map or generic operator-family determinant law; abstract vanishing law already exists.
 
 Completed `Roth.det_choose_eq`: Public characteristic-aware binomial evaluation determinant API; Pochhammer monicity/degree can be transferred from ℤ to remove pinned NoZeroDivisors assumptions.
+
+Completed `Roth.coeff_prod_of_natDegree_le'`: Potential varying-bound public coefficient generalization; full public contribution verdict n/a under private prefilter.
 
 ## Part 7: Junk / removable
 
@@ -946,6 +964,8 @@ Completed `Roth.wronskian_eq_zero_of_not_linearIndependent`: False
 
 Completed `Roth.det_choose_eq`: No; explicitly used once in Wronskian nonvanishing. No external-to-file reference claim or simp-closure inference.
 
+Completed `Roth.coeff_prod_of_natDegree_le'`: Retain focused private induction helper for sole actual caller; prime distinguishes common-bound theorem.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -993,6 +1013,7 @@ Completed `Roth.det_choose_eq`: No; explicitly used once in Wronskian nonvanishi
 | 41 | `Roth.wronskian` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.wronskian.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.wronskian/root-acceptance.json) |
 | 42 | `Roth.wronskian_eq_zero_of_not_linearIndependent` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.wronskian_eq_zero_of_not_linearIndependent.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.wronskian_eq_zero_of_not_linearIndependent/root-acceptance.json) |
 | 43 | `Roth.det_choose_eq` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.det_choose_eq.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.det_choose_eq/root-acceptance.json) |
+| 44 | `Roth.coeff_prod_of_natDegree_le'` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.coeff_prod_of_natDegree_le'.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.coeff_prod_of_natDegree_le'/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -1078,11 +1099,13 @@ Completed `Roth.wronskian_eq_zero_of_not_linearIndependent` action: Retain local
 
 Completed `Roth.det_choose_eq` action: YES-but-generalise-first: expose cancellation-free ring identity and local-factorial quotient corollary in Mathlib/LinearAlgebra/Vandermonde.lean; existing abstract law reused; focused separate PR; run /generalise and /cleanup before submission.
 
+Completed `Roth.coeff_prod_of_natDegree_le'` action: SKIP-private under overview9a after complete applicable review/native verification. Future generalization recorded; production unchanged.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.coeff_prod_of_natDegree_le'` next. Supporting identities receive their own applicable checks.
+   `Roth.sum_range_le_sum_of_injective` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.

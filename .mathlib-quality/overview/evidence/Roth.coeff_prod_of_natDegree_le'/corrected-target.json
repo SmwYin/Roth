@@ -1,0 +1,38 @@
+{
+  "file": "Roth/Wronskian.lean",
+  "line": 93,
+  "name": "Roth.coeff_prod_of_natDegree_le'",
+  "short": "coeff_prod_of_natDegree_le'",
+  "kind": "lemma",
+  "visibility": "private",
+  "end_line": 103,
+  "source": "private lemma coeff_prod_of_natDegree_le' {ι : Type*} (s : Finset ι) (f : ι → K[X]) (n : ι → ℕ)\n    (h : ∀ i ∈ s, (f i).natDegree ≤ n i) :\n    (∏ i ∈ s, f i).coeff (∑ i ∈ s, n i) = ∏ i ∈ s, (f i).coeff (n i) := by\n  classical\n  induction s using Finset.induction_on with\n  | empty => simp\n  | insert a s has ih =>\n    simp only [Finset.forall_mem_insert] at h\n    rw [Finset.prod_insert has, Finset.sum_insert has, Finset.prod_insert has,\n      coeff_mul_add_eq_of_natDegree_le h.1 ((natDegree_prod_le _ _).trans (Finset.sum_le_sum h.2)),\n      ih h.2]",
+  "signature": "private lemma coeff_prod_of_natDegree_le' {ι : Type*} (s : Finset ι) (f : ι → K[X]) (n : ι → ℕ)\n    (h : ∀ i ∈ s, (f i).natDegree ≤ n i) :\n    (∏ i ∈ s, f i).coeff (∑ i ∈ s, n i) = ∏ i ∈ s, (f i).coeff (n i)",
+  "body": "by\n  classical\n  induction s using Finset.induction_on with\n  | empty => simp\n  | insert a s has ih =>\n    simp only [Finset.forall_mem_insert] at h\n    rw [Finset.prod_insert has, Finset.sum_insert has, Finset.prod_insert has,\n      coeff_mul_add_eq_of_natDegree_le h.1 ((natDegree_prod_le _ _).trans (Finset.sum_le_sum h.2)),\n      ih h.2]",
+  "proof_lines": 9,
+  "sha256": "f9fcc07fc0275351726cc920e49f12f88d471537beaf01578450361b959ec7c5",
+  "what": "The coefficient of a product at the sum of upper degree bounds equals the product of the coefficients at those bounds.",
+  "how": "Finset induction applies coeff_mul_add_eq_of_natDegree_le at each insertion; natDegree_prod_le controls the remaining product degree.",
+  "hypotheses": "A coefficient field, finite product index set, and a natural degree upper bound on each polynomial factor.",
+  "uses_from_project": [],
+  "used_by_in_file": [
+    "Roth.coeff_wronskian_of_natDegree_injective"
+  ],
+  "project_callers": [
+    {
+      "name": "Roth.coeff_wronskian_of_natDegree_injective",
+      "file": "Roth/Wronskian.lean",
+      "line": 122
+    }
+  ],
+  "type_context": "{K : Type*} [Field K]",
+  "type_provenance": "Exact written signature with section binders made explicit from source; not claimed as a fresh #check output. Minimal hasseCoeff #check succeeded; full Meta inspector timed out.",
+  "reference_provenance": "Manually disambiguated source-level direct project references in declaration bodies; callers include signature and body occurrences. Includes explicit references only, not an exhaustive kernel/simp dependency closure.",
+  "notes": [
+    "No set_option, sorry, TODO, or proof over 30 lines in declaration."
+  ],
+  "assignment_offset": 208,
+  "project_body_refs": [],
+  "project_type_refs": [],
+  "section_context": "{K : Type*} [Field K]"
+}
