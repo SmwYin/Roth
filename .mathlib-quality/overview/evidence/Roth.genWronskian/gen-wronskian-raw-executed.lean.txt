@@ -1,0 +1,38 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+import Mathlib.Algebra.Polynomial.CancelLeads
+import Mathlib.Algebra.MvPolynomial.PDeriv
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+import Mathlib.Algebra.MvPolynomial.Equiv
+import Mathlib.Analysis.Normed.Unbundled.RingSeminorm
+import Mathlib.LinearAlgebra.Matrix.AbsoluteValue
+import Mathlib.Data.Nat.Choose.Bounds
+import Mathlib.RingTheory.Polynomial.Basic
+/-! Isolated mathlib-only representation and candidate checks. -/
+#check_failure Roth.genWronskian
+#check_failure MvPolynomial.hasseDeriv
+#check @Matrix.det
+#check @Matrix.detRowAlternating
+#check @Polynomial.wronskian
+#check @Polynomial.hasseDeriv
+#check_failure (inferInstance : CommRing ℕ)
+namespace GenWronskianRaw
+open MvPolynomial
+noncomputable def coefficientOperator {R σ : Type*} [CommSemiring R]
+    (d : σ →₀ ℕ) (P : MvPolynomial σ R) : MvPolynomial σ R := by
+  classical
+  exact ∑ k ∈ P.support, monomial (k - d)
+    (((d.prod fun j n ↦ (k j).choose n : ℕ) : R) * P.coeff k)
+noncomputable def raw {R σ ι : Type*} [CommRing R] [Fintype ι] [DecidableEq ι]
+    (D : ι → σ →₀ ℕ) (φ : ι → MvPolynomial σ R) : MvPolynomial σ R :=
+  (Matrix.of fun i j ↦ coefficientOperator (D i) (φ j)).det
+#print axioms raw
+end GenWronskianRaw
+

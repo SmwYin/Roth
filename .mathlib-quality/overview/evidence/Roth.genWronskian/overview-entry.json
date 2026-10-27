@@ -1,0 +1,23 @@
+{
+  "declaration": "Roth.genWronskian",
+  "kind": "def",
+  "type": "∀ {K : Type u_1} [Field K] {σ : Type u_2} {l : ℕ}, (Fin l → σ →₀ ℕ) → (Fin l → MvPolynomial σ K) → MvPolynomial σ K",
+  "what": "Generalized Hasse Wronskian of a finite polynomial family, with selected row multiorders.",
+  "how": "Determinant of the square matrix (μ,ν) ↦ hasseDeriv (D μ) (φ ν).",
+  "hypotheses": [
+    "Field K (can weaken to CommRing)",
+    "arbitrary variables σ, no Fintype parameter",
+    "finite square family Fin l, can generalize to arbitrary Fintype index with DecidableEq",
+    "no independence, order bound, nonemptiness or characteristic restriction"
+  ],
+  "project_dependencies": [
+    "MvPolynomial.hasseDeriv"
+  ],
+  "caller_summary": "5 explicit caller declarations (3 internal,2 external);7 textual occurrences; all5 full bodies replay after mechanical signature generalization; native exact293-name audit independently matches5 direct constant consumers.",
+  "mathlib_api_audit": "Matrix.det and detRowAlternating are outer building blocks; Polynomial.wronskian is pairwise univariate; Polynomial.hasseDeriv univariate. All5 search methods/current,standard,abstract forms run; external/local-index completeness caveats retained.",
+  "moral_duplications": "One-line determinant wrapper, with established semantic API exemption. Raw entry-dependent derivative matrices in CoeffNorm/Separation/Theta are related but not copies of its row-order/family-column form.",
+  "generalization": "Native verified CommRing R and arbitrary finite square index; original specialization rfl. Variables already arbitrary. Semiring-N signed determinant guard rejects further weakening.",
+  "missing_api": "Named finite-family multivariate Hasse Wronskian; upstream multivariate Hasse prerequisite. Existing pairwise Polynomial Wronskian file has n-tuple TODO.",
+  "junk": "No dead-code claim; standard named invariant with5 explicit consumers and stable nonvanishing interface.",
+  "action": "YES-but-generalise-first; propose Mathlib/RingTheory/MvPolynomial/Wronskian.lean after upstream Hasse API; /generalise target then /cleanup target; root review pending."
+}

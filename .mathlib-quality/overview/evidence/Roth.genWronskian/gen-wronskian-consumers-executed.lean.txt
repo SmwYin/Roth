@@ -1,0 +1,98 @@
+namespace GenWronskianConsumers
+open Roth MvPolynomial GenWronskianAssessment
+variable {K σ τ : Type*} [Field K] {l : ℕ}
+
+theorem genWronskian_eq_zero_of_not_linearIndependent (D : Fin l → (σ →₀ ℕ))
+    {φ : Fin l → MvPolynomial σ K} (h : ¬ LinearIndependent K φ) : generalized D φ = 0 := by
+  classical
+  obtain ⟨g, hg, ν₀, hν₀⟩ := Fintype.not_linearIndependent_iff.1 h
+  refine Matrix.exists_mulVec_eq_zero_iff.1 ⟨fun ν ↦ C (g ν), fun h0 ↦ hν₀ ?_, ?_⟩
+  · simpa using congrFun h0 ν₀
+  · ext1 μ
+    simpa [Matrix.mulVec, dotProduct, map_smul, ← smul_eq_C_mul, mul_comm] using
+      congrArg (hasseDeriv (D μ)) hg
+
+variable [Fintype σ]
+theorem wronskian_kronecker_eq_sum_aux (k : ℕ) (φ : Fin l → MvPolynomial σ K)
+    (s : Fin l → Finset (σ →₀ ℕ)) (c : Fin l → (σ →₀ ℕ) → Polynomial K)
+    (hc : ∀ μ ν : Fin l, Polynomial.hasseDeriv μ (kronecker k (φ ν)) =
+      ∑ d ∈ s μ, c μ d * kronecker k (hasseDeriv d (φ ν))) : wronskian (fun ν ↦ kronecker k (φ ν)) =
+    ∑ f ∈ Fintype.piFinset s, (∏ μ, c μ (f μ)) * kronecker k (generalized f φ) := by
+  classical
+  simpa [wronskian, wronskianMatrix, hc, generalized, AlgHom.map_det, Matrix.map] using
+    det_sum_rows s c (fun μ d ν ↦ kronecker k (hasseDeriv d (φ ν)))
+
+omit [Fintype σ] in
+theorem exists_genWronskian_ne_zero [Finite σ] [CharZero K] {φ : Fin l → MvPolynomial σ K}
+    (h : LinearIndependent K φ) :
+    ∃ D : Fin l → (σ →₀ ℕ), (∀ μ, (D μ).degree ≤ μ) ∧ generalized D φ ≠ 0 := by
+  classical
+  let := Fintype.ofFinite σ
+  let k := 2 + ∑ ν, ∑ j, degreeOf j (φ ν)
+  choose s c hs hc using fun μ : Fin l ↦ exists_hasseDeriv_kronecker_eq_sum (K := K) (σ := σ) k μ
+  by_contra! hcon
+  apply wronskian_ne_zero_of_linearIndependent
+    (linearIndependent_kronecker (Nat.lt_add_right _ (by decide)) (fun ν j ↦
+      lt_of_le_of_lt ((Finset.single_le_sum (f := fun j ↦ degreeOf j (φ ν))
+        (by simp) (Finset.mem_univ j)).trans (Finset.single_le_sum
+          (f := fun ν ↦ ∑ j, degreeOf j (φ ν)) (by simp) (Finset.mem_univ ν)))
+        (Nat.lt_add_of_pos_left two_pos)) h)
+  rw [wronskian_kronecker_eq_sum_aux k φ s c (fun μ ν ↦ hc μ (φ ν))]
+  refine Finset.sum_eq_zero fun f hf ↦ ?_
+  rw [hcon f fun μ ↦ hs μ _ (Fintype.mem_piFinset.1 hf μ), map_zero, mul_zero]
+
+theorem det_hasseDeriv_separated {l : ℕ} (D : Fin l → (τ →₀ ℕ)) (φ : Fin l → Polynomial K)
+    (ψ : Fin l → MvPolynomial τ K) :
+    (Matrix.of fun μ ν : Fin l ↦ hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ))
+        (∑ ρ, Polynomial.aeval (X none : MvPolynomial (Option τ) K) (φ ρ) *
+          rename some (ψ ρ))).det = rename some (generalized D ψ) *
+      Polynomial.aeval (X none : MvPolynomial (Option τ) K) (wronskian φ) := by
+  rw [generalized, wronskian, AlgHom.map_det, AlgHom.map_det,
+    ← Matrix.det_transpose ((Polynomial.aeval (X none)).mapMatrix (wronskianMatrix φ)),
+    ← Matrix.det_mul]
+  congr 1
+  refine Matrix.ext fun μ ν ↦ ?_
+  rw [Matrix.of_apply, map_sum, Matrix.mul_apply]
+  refine Finset.sum_congr rfl fun ρ _ ↦ ?_
+  rw [mul_comm (Polynomial.aeval (X none : MvPolynomial (Option τ) K) (φ ρ)),
+    hasseDeriv_rename_mul_aeval]
+  rfl
+
+omit [Fintype σ] in
+theorem exists_rat_factors_det_hasseDeriv_aux [Finite τ] {P : MvPolynomial (Option τ) ℤ}
+    (hP : P ≠ 0) {n : ℕ} (hn : degreeOf none P ≤ n) : ∃ l, 1 ≤ l ∧ l ≤ n + 1 ∧
+      ∃ D : Fin l → (τ →₀ ℕ), (∀ μ, (D μ).degree ≤ μ) ∧ ∃ (U : MvPolynomial τ ℚ) (V : Polynomial ℚ),
+        U ≠ 0 ∧ V ≠ 0 ∧ map (Int.castRingHom ℚ) (Matrix.of fun μ ν : Fin l ↦
+          hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) P).det = rename some U *
+          Polynomial.aeval (X none : MvPolynomial (Option τ) ℚ) V := by
+  classical
+  set PQ := map (Int.castRingHom ℚ) P with hPQdef
+  have hdeg : degreeOf none PQ ≤ n := by
+    simpa [degreeOf_def, hPQdef,
+      degrees_map_of_injective P (f := Int.castRingHom ℚ) Int.cast_injective] using hn
+  obtain ⟨l, hl1, hl2, φ, ψ, hφ, hψ, -, -, hPQ⟩ :=
+    exists_separated_representation (fun h ↦
+      hP (MvPolynomial.map_injective _ Int.cast_injective (h.trans (map_zero _).symm))) hdeg
+  obtain ⟨D, hD, hG⟩ := exists_genWronskian_ne_zero hψ
+  set F := (Matrix.of fun μ ν : Fin l ↦
+    hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) P).det with hFdef
+  have hFmap : map (Int.castRingHom ℚ) F = rename some (generalized D ψ) *
+      Polynomial.aeval (X none : MvPolynomial (Option τ) ℚ) (wronskian φ) := by
+    rw [hFdef, RingHom.map_det, ← det_hasseDeriv_separated D φ ψ, ← hPQ]
+    congr 1
+    refine Matrix.ext fun μ ν ↦ ?_
+    rw [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, Matrix.of_apply,
+      hasseDeriv_map]
+  exact ⟨l, hl1, hl2, D, hD, _, _, hG, wronskian_ne_zero_of_linearIndependent hφ, hFmap⟩
+
+#print axioms genWronskian_eq_zero_of_not_linearIndependent
+
+#print axioms wronskian_kronecker_eq_sum_aux
+
+#print axioms exists_genWronskian_ne_zero
+
+#print axioms det_hasseDeriv_separated
+
+#print axioms exists_rat_factors_det_hasseDeriv_aux
+
+end GenWronskianConsumers

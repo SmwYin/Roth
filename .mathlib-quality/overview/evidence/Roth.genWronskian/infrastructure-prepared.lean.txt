@@ -1,0 +1,17 @@
+namespace GenWronskianInfrastructure
+open MvPolynomial GenWronskianAssessment
+universe u v w
+#synth CommRing (MvPolynomial ℕ ℤ)
+#synth Module ℤ (MvPolynomial ℕ ℤ)
+#synth DecidableEq (Fin 2)
+#check generalized (R := ℤ) (σ := PEmpty) (ι := Fin 0)
+#check generalized (R := ℤ) (σ := ULift.{u} ℕ) (ι := Fin 2)
+#check generalized (R := ULift.{v} ℤ) (σ := ULift.{u} ℕ)
+  (ι := ULift.{w} (Fin 2))
+example {K σ : Type*} [Field K] {l : ℕ}
+    (D : Fin l → σ →₀ ℕ) (φ : Fin l → MvPolynomial σ K) :
+    Roth.genWronskian D φ = (Matrix.of fun i j ↦ hasseDeriv (D i) (φ j)).det := rfl
+-- Result is an ordinary polynomial: only its existing coefficient function is coerced.
+#check fun (P : MvPolynomial ℕ ℤ) (d : ℕ →₀ ℕ) ↦ P.coeff d
+end GenWronskianInfrastructure
+

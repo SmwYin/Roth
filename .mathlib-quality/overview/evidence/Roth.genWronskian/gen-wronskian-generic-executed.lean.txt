@@ -1,0 +1,34 @@
+import Roth.LeanEval
+
+/-! Generalized Wronskian assessment scratch checks. -/
+
+#check @Roth.genWronskian
+#print Roth.genWronskian
+#print axioms Roth.genWronskian
+
+namespace GenWronskianAssessment
+open MvPolynomial
+noncomputable def generalized {R σ ι : Type*} [CommRing R] [Fintype ι]
+    [DecidableEq ι] (D : ι → σ →₀ ℕ) (φ : ι → MvPolynomial σ R) :
+    MvPolynomial σ R :=
+  (Matrix.of fun μ ν ↦ hasseDeriv (D μ) (φ ν)).det
+theorem original_eq {K σ : Type*} [Field K] {l : ℕ}
+    (D : Fin l → σ →₀ ℕ) (φ : Fin l → MvPolynomial σ K) :
+    Roth.genWronskian D φ = generalized D φ := rfl
+theorem direct_eq {K σ : Type*} [Field K] {l : ℕ}
+    (D : Fin l → σ →₀ ℕ) (φ : Fin l → MvPolynomial σ K) :
+    Roth.genWronskian D φ = (Matrix.of fun μ ν ↦ hasseDeriv (D μ) (φ ν)).det := rfl
+-- Definition can use an infinite variable type over a nonfield.
+#check generalized (R := ℤ) (σ := ℕ) (ι := Fin 2)
+-- Abstract determinant-of-evaluations presentation, no new mathlib primitive.
+noncomputable def ofOperators {A M ι : Type*} [CommRing A] [Fintype ι] [DecidableEq ι]
+    (δ : ι → M → A) (φ : ι → M) : A :=
+  (Matrix.of fun i j ↦ δ i (φ j)).det
+theorem abstract_eq {R σ ι : Type*} [CommRing R] [Fintype ι] [DecidableEq ι]
+    (D : ι → σ →₀ ℕ) (φ : ι → MvPolynomial σ R) :
+    generalized D φ = ofOperators (fun i ↦ hasseDeriv (D i)) φ := rfl
+#print axioms original_eq
+#print axioms direct_eq
+#print axioms abstract_eq
+end GenWronskianAssessment
+

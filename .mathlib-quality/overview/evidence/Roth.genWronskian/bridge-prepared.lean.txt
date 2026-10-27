@@ -1,0 +1,19 @@
+namespace GenWronskianAssessment
+open MvPolynomial
+noncomputable def expanded {R σ : Type*} [CommSemiring R]
+    (d : σ →₀ ℕ) (P : MvPolynomial σ R) : MvPolynomial σ R := by
+  classical
+  exact ∑ k ∈ P.support, monomial (k - d)
+    (((d.prod fun j n ↦ (k j).choose n : ℕ) : R) * P.coeff k)
+theorem expanded_eq {R σ : Type*} [CommSemiring R]
+    (d : σ →₀ ℕ) (P : MvPolynomial σ R) : expanded d P = hasseDeriv d P := by
+  classical
+  exact (hasseDeriv_apply d P).symm
+theorem generalized_eq_expanded {R σ ι : Type*} [CommRing R] [Fintype ι]
+    [DecidableEq ι] (D : ι → σ →₀ ℕ) (φ : ι → MvPolynomial σ R) :
+    generalized D φ = (Matrix.of fun i j ↦ expanded (D i) (φ j)).det := by
+  simp only [generalized, expanded_eq]
+#print axioms expanded_eq
+#print axioms generalized_eq_expanded
+end GenWronskianAssessment
+

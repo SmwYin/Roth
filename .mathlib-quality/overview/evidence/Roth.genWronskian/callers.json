@@ -1,0 +1,64 @@
+{
+  "declaration": "Roth.genWronskian",
+  "named_count": 5,
+  "internal_to_declaring_file": 3,
+  "external_to_declaring_file": 2,
+  "occurrence_count_excluding_def": 7,
+  "callers": [
+    {
+      "name": "Roth.genWronskian_eq_zero_of_not_linearIndependent",
+      "file": "Roth/GenWronskian.lean",
+      "line": 41,
+      "occurrence_lines": [
+        42
+      ],
+      "role": "statement; body relies on definitional determinant reduction",
+      "refactor": "Use generalized D φ; identical proof body."
+    },
+    {
+      "name": "Roth.wronskian_kronecker_eq_sum_aux",
+      "file": "Roth/GenWronskian.lean",
+      "line": 238,
+      "occurrence_lines": [
+        242,
+        244
+      ],
+      "role": "statement and explicit unfolding in simp",
+      "refactor": "Use generalized f φ in statement and generalized in simp unfolding list."
+    },
+    {
+      "name": "Roth.exists_genWronskian_ne_zero",
+      "file": "Roth/GenWronskian.lean",
+      "line": 254,
+      "occurrence_lines": [
+        256
+      ],
+      "role": "statement and nonvanishing API",
+      "refactor": "Use generalized D φ; use re-aimed private sum caller, same full proof."
+    },
+    {
+      "name": "Roth.det_hasseDeriv_separated",
+      "file": "Roth/Separation.lean",
+      "line": 351,
+      "occurrence_lines": [
+        355,
+        357
+      ],
+      "role": "statement and explicit unfolding in rw",
+      "refactor": "Use generalized D ψ; replace rw [genWronskian] with rw [generalized]."
+    },
+    {
+      "name": "Roth.exists_rat_factors_det_hasseDeriv_aux",
+      "file": "Roth/Separation.lean",
+      "line": 510,
+      "occurrence_lines": [
+        527
+      ],
+      "role": "local intermediate factor polynomial",
+      "refactor": "Use generalized D ψ in hFmap and re-aimed existence/factorization theorems; same proof."
+    }
+  ],
+  "inline_audit": "Wronskian.lean uses univariate Polynomial.hasseDeriv; CoeffNorm, Separation and Theta raw matrices use entry-dependent orders E μ ν on a single polynomial. They are not the row-index-only multioperator/family pattern; no additional literal duplicate of the exact target RHS found.",
+  "native_replay": "gen-wronskian-consumers-executed.lean.txt",
+  "kernel_closure_note": "Canonical audit describes opaque expression constant references; this is distinguished from5 explicit source callers."
+}

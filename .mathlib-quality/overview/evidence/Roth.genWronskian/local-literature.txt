@@ -1,0 +1,30 @@
+196: 
+197: \lean{Index both rows and columns by \texttt{Fin l}, the type of integers
+198: $0,\ldots,l-1$, and take the determinant of the matrix with entries
+199: $\Delta_\mu\phi_\nu$ in $\Q[t]$. Using the
+200: matrix determinant API\footnote{\url{https://leanprover-community.github.io/mathlib4_docs/Mathlib/LinearAlgebra/Matrix/Determinant/Basic.html}},
+201: split the independence criterion into change of basis, construction of a
+202: basis with distinct degrees, and the Vandermonde leading-coefficient
+203: calculation. This keeps the construction valid for arbitrary finite
+204: families, rather than just two polynomials.}
+205: 
+206: Suppose $l\geq1$ and $\phi_0(x_1, \dots, x_p), \phi_1(x_1, \dots, x_p), \dots, \phi_{l-1}(x_1, \dots, x_p)$ are $l$ polynomials in the $p$ variables $x_1, \dots, x_p$. Also suppose $\Delta_0, \Delta_1, \dots, \Delta_{l-1}$ are $l$ differential operators such that for each $i$, $0 \leq i \leq l-1$, the order of $\Delta_i$ is at most $i$. We call the determinant
+207: $$
+208: W(\phi_0, \dots, \phi_{l-1}; \Delta_0, \dots, \Delta_{l-1}) = \det \left(\Delta_\mu \phi_\nu (x_1, \dots, x_p) \right)_{ 0 \leq \mu \leq l-1 \atop 0 \leq \nu \leq l-1}
+209: $$
+210: a generalized Wronskian. This is understood as a polynomial in the variables $x_1, \dots, x_p$.  If $p > 1$ and $l >1$ we have more than one generalized Wronskian.
+211: 
+212: \begin{lem}
+213:     If $\phi_0, \dots, \phi_{l-1}$ are polynomials over a characteristic-zero field and are linearly dependent over that field, then all of their generalized Wronskians are identically zero.
+214: \end{lem}
+215: \begin{proof}
+216:     Let $\sum_\nu c_\nu\phi_\nu=0$ be a nontrivial dependence relation
+217:     over the coefficient field. Applying each $\Delta_\mu$ gives
+218:     $\sum_\nu c_\nu\Delta_\mu\phi_\nu=0$. Choose $\nu_0$ with
+219:     $c_{\nu_0}\ne0$ and express that column as a linear combination of the
+220:     other columns. Multilinearity and alternation of the determinant then
+221:     give zero.
+222: \end{proof}
+223: 
+224: \begin{lem}\label{roth:lem1}
+225:     If $\phi_0(x_1, \dots, x_p), \dots, \phi_{l-1}(x_1, \dots, x_p)$ are $l$ linearly independent polynomials in $p$ variables with rational coefficients, then at least one of their generalized Wronskians is not identically zero.

@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 100/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 101/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 100; remaining: 193.
-- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 13 YES-but-generalise-first, 18 NO-mathlib-has-it, 32 BORDERLINE-needs-human, 10 SKIP.
+- Completed applicable assessments: 101; remaining: 192.
+- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 14 YES-but-generalise-first, 18 NO-mathlib-has-it, 32 BORDERLINE-needs-human, 10 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -1075,6 +1075,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: One explicit use in Roth.index_det_le at Theta.lean475; canonical293 audit confirms sole direct consumer. Entire caller recompiled through strongest generic specialization.
 - Verdict: YES-but-generalise-first; [complete report](.mathlib-quality/overview/mathlibable/Roth.abs_coeff_det_hasseDeriv_le.md).
 
+### Completed: `Roth.genWronskian`
+
+- Type: `∀ {K : Type u_1} [Field K] {σ : Type u_2} {l : ℕ}, (Fin l → σ →₀ ℕ) → (Fin l → MvPolynomial σ K) → MvPolynomial σ K`
+- What: Generalized Hasse Wronskian of a finite polynomial family, with selected row multiorders.
+- How: Determinant of the square matrix (μ,ν) ↦ hasseDeriv (D μ) (φ ν).
+- Hypotheses: Field K (can weaken to CommRing), arbitrary variables σ, no Fintype parameter, finite square family Fin l, can generalize to arbitrary Fintype index with DecidableEq, no independence, order bound, nonemptiness or characteristic restriction
+- Project dependencies: MvPolynomial.hasseDeriv
+- Caller summary: 5 explicit caller declarations (3 internal,2 external);7 textual occurrences; all5 full bodies replay after mechanical signature generalization; native exact293-name audit independently matches5 direct constant consumers.
+- Verdict: YES-but-generalise-first; [complete report](.mathlib-quality/overview/mathlibable/Roth.genWronskian.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -1301,6 +1311,8 @@ Completed `Roth.degreeOf_det_hasseDeriv_le`: Existing degreeOf_sum_le, degreeOf_
 
 Completed `Roth.abs_coeff_det_hasseDeriv_le`: Matrix.det_le requires multiplicative AbsoluteValue; coefficient length is submultiplicative RingSeminorm. Polynomial.hasseDeriv_coeff is univariate. Finsupp and Finset size inequalities supply steps, not a≤3-call replacement.
 
+Completed `Roth.genWronskian`: Matrix.det and detRowAlternating are outer building blocks; Polynomial.wronskian is pairwise univariate; Polynomial.hasseDeriv univariate. All5 search methods/current,standard,abstract forms run; external/local-index completeness caveats retained.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -1502,6 +1514,8 @@ Completed `Roth.abs_eval_le`: No duplicate: abs_coeff_diag_le handles coefficien
 Completed `Roth.degreeOf_det_hasseDeriv_le`: Generic polynomial determinant degree bound underlies this Hasse specialization; no current mathlib exact replacement verified.
 
 Completed `Roth.abs_coeff_det_hasseDeriv_le`: A Hasse-specific assembly of support-cardinality, derivative-length and determinant seminorm estimates. Prior accepted project assessments do not make these existing mathlib lemmas.
+
+Completed `Roth.genWronskian`: One-line determinant wrapper, with established semantic API exemption. Raw entry-dependent derivative matrices in CoeffNorm/Separation/Theta are related but not copies of its row-order/family-column form.
 
 ## Part 5: Generalization opportunities
 
@@ -1708,6 +1722,8 @@ Completed `Roth.degreeOf_det_hasseDeriv_le`: CommRing coefficients, arbitrary fi
 
 Completed `Roth.abs_coeff_det_hasseDeriv_le`: Verified RingSeminorm over arbitrary CommRing, normalized at1, arbitrary finite matrix index; omit hB0.
 
+Completed `Roth.genWronskian`: Native verified CommRing R and arbitrary finite square index; original specialization rfl. Variables already arbitrary. Semiring-N signed determinant guard rejects further weakening.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -1910,6 +1926,8 @@ Completed `Roth.abs_eval_le`: Nonhomogeneous rectangular coordinate-degree polyn
 Completed `Roth.degreeOf_det_hasseDeriv_le`: MvPolynomial coordinate degree bound on arbitrary polynomial matrix determinants; Hasse corollary after upstream multivariate Hasse API.
 
 Completed `Roth.abs_coeff_det_hasseDeriv_le`: Coefficient l1 size API for multivariate polynomials, its Hasse estimate, and normalized RingSeminorm determinant estimate. Pinned Polynomial/Norm TODO documents missing lp norm API.
+
+Completed `Roth.genWronskian`: Named finite-family multivariate Hasse Wronskian; upstream multivariate Hasse prerequisite. Existing pairwise Polynomial Wronskian file has n-tuple TODO.
 
 ## Part 7: Junk / removable
 
@@ -2116,6 +2134,8 @@ Completed `Roth.degreeOf_det_hasseDeriv_le`: Used twice; sound nonvacuous inequa
 
 Completed `Roth.abs_coeff_det_hasseDeriv_le`: Sound, used main-result lemma with nonempty and empty determinant cases; no junk finding.
 
+Completed `Roth.genWronskian`: No dead-code claim; standard named invariant with5 explicit consumers and stable nonvanishing interface.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -2220,6 +2240,7 @@ Completed `Roth.abs_coeff_det_hasseDeriv_le`: Sound, used main-result lemma with
 | 98 | `Roth.abs_eval_le` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.abs_eval_le.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.abs_eval_le/root-acceptance.json) |
 | 99 | `Roth.degreeOf_det_hasseDeriv_le` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.degreeOf_det_hasseDeriv_le.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.degreeOf_det_hasseDeriv_le/root-acceptance.json) |
 | 100 | `Roth.abs_coeff_det_hasseDeriv_le` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.abs_coeff_det_hasseDeriv_le.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.abs_coeff_det_hasseDeriv_le/root-acceptance.json) |
+| 101 | `Roth.genWronskian` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.genWronskian.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.genWronskian/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -2419,12 +2440,14 @@ Completed `Roth.degreeOf_det_hasseDeriv_le` action: YES-but-generalise-first; co
 
 Completed `Roth.abs_coeff_det_hasseDeriv_le` action: YES-but-generalise-first; upstream generalized norm/Hasse infrastructure and coefficient bound, update sole caller to omit hB0.
 
+Completed `Roth.genWronskian` action: YES-but-generalise-first; propose Mathlib/RingTheory/MvPolynomial/Wronskian.lean after upstream Hasse API; /generalise target then /cleanup target; root review pending.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.genWronskian` next. Supporting identities receive their own applicable checks.
+   `Roth.kronecker` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 
