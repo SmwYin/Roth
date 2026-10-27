@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 123/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 124/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 123; remaining: 170.
-- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 17 YES-but-generalise-first, 21 NO-mathlib-has-it, 40 BORDERLINE-needs-human, 18 SKIP.
+- Completed applicable assessments: 124; remaining: 169.
+- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 17 YES-but-generalise-first, 21 NO-mathlib-has-it, 40 BORDERLINE-needs-human, 19 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -1344,6 +1344,17 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: explicit source callers: {'file': 'Roth/Lattice.lean', 'line': 173, 'declaration': 'Roth.card_filter_weight_le_succ_aux', 'visibility': 'private'}; external to file: 0; canonical kernel direct consumers: _private.Roth.Lattice.0.Roth.card_filter_weight_le_succ_aux; scope: Source refs and exact canonical direct value dependencies; not transitive simp/kernel closure.
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.sum_inv_lt.md).
 
+### Completed: `Roth.extend_apply_castSucc`
+
+- Type: `∀ {m : ℕ} (d : Fin m →₀ ℕ) (i : ℕ) (j : Fin m),
+  (Finsupp.mapDomain Fin.castSucc d + Finsupp.single (Fin.last m) i) j.castSucc = d j`
+- What: Extending a vector by a last coordinate preserves all earlier coordinates.
+- How: Finsupp.mapDomain_apply_of_injective computes the embedded earlier coordinate and the disjoint single last-coordinate contribution vanishes.
+- Hypotheses: A finite coordinate set Fin m, a finitely supported vector, and a natural last coordinate. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.
+- Project dependencies: None
+- Caller summary: 1 explicit source caller declarations, all in Lattice.lean; 1 direct original value consumers. Exact separate lists retained. Entire module proof bodies replay successfully with fresh target name.
+- Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.extend_apply_castSucc.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -1616,6 +1627,8 @@ Completed `Roth.sum_inv_le`: The preceding private complementary-pair bound is s
 
 Completed `Roth.sum_inv_lt`: All five methods on current, convex-endpoint literature and abstract symmetric-pair forms; local index unavailable. Pinned convexOn_zpow, chord and reflection APIs provide partial blocks; no existing ≤3-call replacement established. Three exact? failures not treated as absence proof.
 
+Completed `Roth.extend_apply_castSucc`: Embedding a finitely supported vector along the injective Fin.castSucc map preserves each old coordinate. The added singleton at Fin.last has zero contribution at every castSucc coordinate. Finsupp.mapDomain_apply_of_injective and simplification prove the formula. This complements the last-coordinate helper and supports the filtered-box fiber bijection; it registers no instance or coercion.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -1863,6 +1876,8 @@ Completed `Roth.inv_add_inv_le`: Complementary-pair and whole-grid reciprocal es
 Completed `Roth.sum_inv_le`: Complementary-pair and whole-grid reciprocal estimates are distinct steps of the lattice proof, not duplicate full constructions.
 
 Completed `Roth.sum_inv_lt`: Reciprocal convexity already follows from convexOn_zpow(-1); sum reindexing exists. Grid rational upper bound and sqrt comparison still need proof.
+
+Completed `Roth.extend_apply_castSucc`: The helper has a distinct role in the lattice proof as described in the structural review; no duplicate full construction is introduced.
 
 ## Part 5: Generalization opportunities
 
@@ -2115,6 +2130,8 @@ Completed `Roth.sum_inv_le`: No public generality claim under the private prefil
 
 Completed `Roth.sum_inv_lt`: Verified real m>1 and weak2√m≤lam preserve strict conclusion; both private pair/grid proofs work for1<lam. Independent raw proof and sole caller replay clean.
 
+Completed `Roth.extend_apply_castSucc`: No public generality claim under the private prefilter; preserve the existing definition and interface.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -2363,6 +2380,8 @@ Completed `Roth.inv_add_inv_le`: No new primitive is needed for this internal or
 Completed `Roth.sum_inv_le`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 Completed `Roth.sum_inv_lt`: Candidate generic convex symmetric-average endpoint theorem or positive reciprocal-grid rational bound; exact sqrt corollary may remain downstream.
+
+Completed `Roth.extend_apply_castSucc`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 ## Part 7: Junk / removable
 
@@ -2615,6 +2634,8 @@ Completed `Roth.sum_inv_le`: Retain a live private proof interface. No placehold
 
 Completed `Roth.sum_inv_lt`: Not dead: one private induction caller supports public lattice-count estimate. No duplicate full inline derivation found.
 
+Completed `Roth.extend_apply_castSucc`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -2742,6 +2763,7 @@ Completed `Roth.sum_inv_lt`: Not dead: one private induction caller supports pub
 | 121 | `Roth.inv_add_inv_le` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.inv_add_inv_le.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.inv_add_inv_le/root-acceptance.json) |
 | 122 | `Roth.sum_inv_le` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.sum_inv_le.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.sum_inv_le/root-acceptance.json) |
 | 123 | `Roth.sum_inv_lt` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.sum_inv_lt.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.sum_inv_lt/root-acceptance.json) |
+| 124 | `Roth.extend_apply_castSucc` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.extend_apply_castSucc.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.extend_apply_castSucc/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -2987,12 +3009,14 @@ Completed `Roth.sum_inv_le` action: Keep unchanged; complete private-prefilter S
 
 Completed `Roth.sum_inv_lt` action: BORDERLINE-needs-human: decide generic convex versus rational-grid API and whether sqrt corollary belongs upstream; preserve verified real/weak threshold if exposed.
 
+Completed `Roth.extend_apply_castSucc` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.extend_apply_castSucc` next. Supporting identities receive their own applicable checks.
+   `Roth.extend_apply_last` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 
