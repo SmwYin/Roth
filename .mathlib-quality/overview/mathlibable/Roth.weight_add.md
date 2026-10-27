@@ -1,6 +1,6 @@
 # `Roth.weight_add` — full assessment (canonical 33)
 
-**Verdict: NO-composable-from-mathlib.** The exact present theorem has a verified term using three existing mathematical facts: `Nat.cast_add`, `add_div`, and `Finset.sum_add_distrib`. The abstract weighted-sum theorem is already `map_add (Finsupp.weight w)`. This assessment changes no production Lean files.
+**Verdict: NO-mathlib-has-it**, under the verified parent re-aim rule. The exact present theorem has a verified term using three existing mathematical facts: `Nat.cast_add`, `add_div`, and `Finset.sum_add_distrib`. The abstract weighted-sum theorem is already `map_add (Finsupp.weight w)`. This assessment changes no production Lean files.
 
 ## Phase 0 — baseline and source
 
@@ -145,7 +145,7 @@ Inline-derivation audit: rg of weight-plus-weight expressions, add_div and sum_a
 
 Attempt 1: the original `simp [weight, add_div, Finset.sum_add_distrib]` succeeds. Under Phase 6b this alone is only a trivial-simp **borderline** signal; it does not justify NO by itself.
 
-Attempt 2, decisive: the exact current statement elaborates with this term (line wrapping only; exact executed version is archived):
+Attempt 2, exact old-form composition: the exact current statement elaborates with this term (line wrapping only; exact executed version is archived):
 
 ```lean
 (congrArg (fun f : σ → ℝ ↦ ∑ j, f j)
@@ -153,7 +153,7 @@ Attempt 2, decisive: the exact current statement elaborates with this term (line
     (Nat.cast_add (d j) (e j))).trans (add_div _ _ _))).trans Finset.sum_add_distrib
 ```
 
-There are exactly **three instantiated mathematical library theorem applications**, in dependency order: Nat.cast_add, add_div, Finset.sum_add_distrib. Core `congrArg`, `funext`, and `Eq.trans` only transport/compose these equalities; they supply no new arithmetic premise. The function-extensionality step establishes the pointwise normalization premise explicitly. `Roth.weight` unfolding and `(d+e) j = d j + e j` are definitional reductions in this term. In particular **Finsupp.add_apply is not an additional theorem application here**: the elaborator reduces it without rewriting. Nat.cast_add and add_div are not definitional and are both counted. The decisive proof uses neither simp nor the target theorem nor a downstream lemma.
+There are exactly **three instantiated mathematical library theorem applications**, in dependency order: Nat.cast_add, add_div, Finset.sum_add_distrib. Core `congrArg`, `funext`, and `Eq.trans` only transport/compose these equalities; they supply no new arithmetic premise. The function-extensionality step establishes the pointwise normalization premise explicitly. `Roth.weight` unfolding and `(d+e) j = d j + e j` are definitional reductions in this term. In particular **Finsupp.add_apply is not an additional theorem application here**: the elaborator reduces it without rewriting. Nat.cast_add and add_div are not definitional and are both counted. This old-form proof uses neither simp nor the target theorem nor a downstream lemma.
 
 The proof is `WeightAddAssessment.three_named_facts` in the project receipt, and `RawWeightAddAssessment.original_three_facts` independently repeats the formula with mathlib-only imports and `#check_failure Roth.weight_add`. The native root returned terminal success, no errors, no warnings, no timeout, project partial=false; all printed proof axioms are within propext/Classical.choice/Quot.sound. [Verification map](../evidence/Roth.weight_add/verification.json) ties exact executed sources to raw complete receipts and source checks.
 
@@ -163,8 +163,37 @@ Conclusion: **COMPOSABLE**, based on Attempt 2, beyond the original simp-only ev
 
 ## Phases 7–8 — verdict and action
 
-**NO-composable-from-mathlib.** The finite ratio form has the exact three-fact proof above, while the broader weighted-monoid content is already organized as an additive homomorphism. This is not inherited from the prior parent assessment, and no cost consideration is used. The fixed ratio representation requires cast/division normalization, so NO-mathlib-has-it would overstate how directly a single upstream theorem matches the exact current statement.
+**NO-mathlib-has-it.** The generic replacement parent `Finsupp.weight` already satisfies existing `map_add`. The explicit parent re-aim rule requires this verdict once that analogous law and its reciprocal-weight specialization have been verified. Cast/division normalization is a real bridge, not definitional equality; it does not turn the existing abstract law into a new upstream gap. The three-fact old-form proof remains valid but does not determine the final routing.
 
 The alternative local destination is the existing `Roth/Box.lean`: a short named helper remains reasonable for three project rewrite sites if retaining the current parent interface. This mathematical assessment recommends no independent mathlib PR for it. If the project chooses wrapper removal, inline Attempt 2 via a local equality at **each of the three named callers**, as specified above, then delete weight_add and rebuild the affected modules. If the project instead migrates the parent to the existing Finsupp.weight reciprocal specialization, use `map_add` at those sites after proving/using the representation bridge. Neither migration is performed by this read-only overview.
 
 All mandatory phases are complete; unresolved verification items: **[]**. Root independent acceptance remains pending. [Portable validator](../evidence/Roth.weight_add/validate.py) checks current manifest hashes/bytes, source/pin hashes, terminal native success, standard axioms, exact source bindings and report links in scratch or integrated layout.
+
+## Re-aim rule correction and supplemental verification
+
+The initial report classified the old ratio representation by its three-fact
+composition. That classification overlooked `mathlibable.md`, Mode B,
+**Re-aim rule** (installed lines 1192–1207): when a parent is NO-mathlib-has-it
+because a more general definition D′ exists, and D′ has the analogous law,
+record the dependent lemma as NO-mathlib-has-it citing that law.
+Parent `Roth.weight` was already verified against `Finsupp.weight`.
+Its analogous law is existing `map_add` for that bundled additive map.
+This is a checked re-aim, not blind inheritance or an unsupported absence claim.
+
+The [exact supplemental source](../evidence/Roth.weight_add/reaim-executed.lean.txt)
+proves the reciprocal bridge and `RawWeightReaimChecks.add_via_existing_map` with
+mathlib-only imports; [native receipt](../evidence/Roth.weight_add/native-reaim.json)
+has terminal success, no errors/warnings, and standard axioms only.
+No Roth import or target theorem is used. The bridge is explicitly a proved
+normalization step and is not counted as an existing library lemma.
+At the re-aimed interface the law is one existing `map_add` application.
+
+Future action: coordinate parent migration to reciprocal `Finsupp.weight`,
+then use `map_add` and the existing quotient bridge at the consumers already
+audited above. Keep a project-local compatibility wrapper until the parent
+and complete dependent modules compile. No independent upstream preservation
+theorem is needed. Existing original-form composition, caller fragments,
+generality checks, literature and searches remain valid; production is unchanged.
+The [correction record](../evidence/Roth.weight_add/verdict-correction.json) preserves
+the prior verdict and report hash. This changes the bucket, not the number
+of completed declarations or the next declaration.

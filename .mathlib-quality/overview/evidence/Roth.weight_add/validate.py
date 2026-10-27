@@ -42,7 +42,7 @@ def main():
     phases = assessment['phases']
     for phase in ['0', '1', '2', '3', '4a', '4b', '4c', '4.5', '4.6', '5', '5.5', '6.0', '6', '7', '8']:
         assert phases[phase] == 'PASS' or phases[phase].startswith('n/a:'), phase
-    assert assessment['verdict'] == 'NO-composable-from-mathlib'
+    assert assessment['verdict'] == 'NO-mathlib-has-it'
     for name, entry in read('source-hashes.json').items():
         assert sha(REPO / name) == entry['sha256'], name
         assert (REPO / name).stat().st_size == entry['bytes'], name
@@ -94,3 +94,7 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+import runpy
+from pathlib import Path as ReaimPath
+runpy.run_path(str(ReaimPath(__file__).resolve().parent / 'validate_reaim.py'), run_name='__main__')
