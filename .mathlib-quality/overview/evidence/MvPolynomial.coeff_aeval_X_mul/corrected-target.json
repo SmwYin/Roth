@@ -1,0 +1,38 @@
+{
+  "file": "Roth/Taylor.lean",
+  "line": 63,
+  "name": "MvPolynomial.coeff_aeval_X_mul",
+  "short": "coeff_aeval_X_mul",
+  "kind": "lemma",
+  "visibility": "private",
+  "end_line": 80,
+  "source": "private lemma coeff_aeval_X_mul (i : σ) (f : Polynomial R) (B : MvPolynomial σ R)\n    (hB : ∀ e ∈ B.support, e i = 0) (d : σ →₀ ℕ) :\n    (Polynomial.aeval (X i : MvPolynomial σ R) f * B).coeff d =\n      f.coeff (d i) * B.coeff (d.erase i) := by\n  classical\n  rw [Polynomial.aeval_def, Polynomial.eval₂_eq_sum, Polynomial.sum_def, Finset.sum_mul,\n    coeff_sum]\n  simp_rw [algebraMap_eq, X_pow_eq_monomial, C_mul_monomial, coeff_monomial_mul']\n  rw [Finset.sum_eq_single (d i)]\n  · simp [tsub_eq_of_eq_add (Finsupp.erase_add_single i d).symm]\n  · intro m _ hne\n    split_ifs with hle\n    · rw [notMem_support_iff.1 fun h ↦ by\n        simpa [Nat.sub_eq_zero_iff_le,\n          ((Finsupp.single_le_iff.1 hle).lt_of_ne hne).not_ge] using hB _ h, mul_zero]\n    · rfl\n  · intro hnot\n    simp [Polynomial.notMem_support_iff.1 hnot]",
+  "signature": "private lemma coeff_aeval_X_mul (i : σ) (f : Polynomial R) (B : MvPolynomial σ R)\n    (hB : ∀ e ∈ B.support, e i = 0) (d : σ →₀ ℕ) :\n    (Polynomial.aeval (X i : MvPolynomial σ R) f * B).coeff d =\n      f.coeff (d i) * B.coeff (d.erase i)",
+  "body": "by\n  classical\n  rw [Polynomial.aeval_def, Polynomial.eval₂_eq_sum, Polynomial.sum_def, Finset.sum_mul,\n    coeff_sum]\n  simp_rw [algebraMap_eq, X_pow_eq_monomial, C_mul_monomial, coeff_monomial_mul']\n  rw [Finset.sum_eq_single (d i)]\n  · simp [tsub_eq_of_eq_add (Finsupp.erase_add_single i d).symm]\n  · intro m _ hne\n    split_ifs with hle\n    · rw [notMem_support_iff.1 fun h ↦ by\n        simpa [Nat.sub_eq_zero_iff_le,\n          ((Finsupp.single_le_iff.1 hle).lt_of_ne hne).not_ge] using hB _ h, mul_zero]\n    · rfl\n  · intro hnot\n    simp [Polynomial.notMem_support_iff.1 hnot]",
+  "proof_lines": 15,
+  "sha256": "f8ee05ba4a7b1ca755fa41f186ca2814a8849281a9e48fe1e1be28e2843a37e4",
+  "what": "Computes the coefficient of the product of a univariate polynomial in one variable and a multivariate polynomial independent of that variable.",
+  "how": "Expands Polynomial.eval₂_eq_sum and coeff_monomial_mul', then Finset.sum_eq_single selects the only possible univariate exponent; the support-independence hypothesis kills every other summand.",
+  "hypotheses": "Commutative coefficients and a second factor whose every supported exponent is zero in the selected coordinate.",
+  "uses_from_project": [],
+  "used_by_in_file": [
+    "MvPolynomial.coeff_taylor_monomial_single_add_aux"
+  ],
+  "project_callers": [
+    {
+      "name": "MvPolynomial.coeff_taylor_monomial_single_add_aux",
+      "file": "Roth/Taylor.lean",
+      "line": 101
+    }
+  ],
+  "type_context": "{σ R : Type*} [CommSemiring R]",
+  "type_provenance": "Exact written signature with section binders made explicit from source; not claimed as a fresh #check output. Minimal hasseCoeff #check succeeded; full Meta inspector timed out.",
+  "reference_provenance": "Manually disambiguated source-level direct project references in declaration bodies; callers include signature and body occurrences. Includes explicit references only, not an exhaustive kernel/simp dependency closure.",
+  "notes": [
+    "No set_option, sorry, TODO, or proof over 30 lines in declaration."
+  ],
+  "assignment_offset": 239,
+  "project_body_refs": [],
+  "project_type_refs": [],
+  "section_context": "{σ R : Type*} [CommSemiring R]"
+}

@@ -1,0 +1,14 @@
+{
+  "type": "∀ {σ : Type u_3} {R : Type u_4} [inst : CommSemiring R] (i : σ) (f : R[X]) (B : MvPolynomial σ R),\n  (∀ e ∈ B.support, e i = 0) →\n    ∀ (d : σ →₀ ℕ), ((Polynomial.aeval (X i)) f * B).coeff d = f.coeff (d i) * B.coeff (Finsupp.erase i d)",
+  "what": "Computes the coefficient of the product of a univariate polynomial in one variable and a multivariate polynomial independent of that variable.",
+  "how": "Expands Polynomial.eval₂_eq_sum and coeff_monomial_mul', then Finset.sum_eq_single selects the only possible univariate exponent; the support-independence hypothesis kills every other summand.",
+  "hypotheses": "Arbitrary variable type and commutative semiring; second factor has zero selected-coordinate exponent throughout its support. No finiteness or nonzero assumptions.",
+  "project_dependencies": [],
+  "caller_summary": "One explicit caller, private coeff_taylor_monomial_single_add_aux at Taylor115; no explicit outside-file references. Full caller replay uses fresh target replay.",
+  "mathlib_api_audit": "Private coefficient-convolution reduction using polynomial evaluation sum and coeff_monomial_mul′; no public contribution verdict inferred.",
+  "moral_duplications": "One implementation and one direct caller; isolates the support-independent coefficient extraction, not the full Hasse/Taylor theorem.",
+  "generalization": "Already arbitrary variables/commutative semiring, f,B,d; no successful weakening proposed. hB is the coordinate-independence premise used to discard other summands.",
+  "missing_api": "No missing primitive blocks existing proof; public extraction API suitability is unassessed under private prefilter.",
+  "junk": "Retain private helper; useful boundary in monomial-induction proof. No sorry, resource raise, TODO or excessive proof size.",
+  "action": "Keep unchanged; private prefilter SKIP after full applicable inventory/structural/native assessment."
+}

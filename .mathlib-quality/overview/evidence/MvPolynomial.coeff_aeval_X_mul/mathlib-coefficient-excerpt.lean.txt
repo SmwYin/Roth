@@ -1,0 +1,12 @@
+theorem coeff_monomial_mul' (m) (s : σ →₀ ℕ) (r : R) (p : MvPolynomial σ R) :
+    (monomial s r * p).coeff m = if s ≤ m then r * p.coeff (m - s) else 0 := by
+  -- note that if we allow `R` to be non-commutative we will have to duplicate the proof above.
+  rw [mul_comm, mul_comm r]
+  exact coeff_mul_monomial' _ _ _ _
+
+theorem coeff_mul_X' [DecidableEq σ] (m) (s : σ) (p : MvPolynomial σ R) :
+    (p * X s).coeff m = if s ∈ m.support then p.coeff (m - Finsupp.single s 1) else 0 := by
+  refine (coeff_mul_monomial' _ _ _ _).trans ?_
+  simp_rw [Finsupp.single_le_iff, Finsupp.mem_support_iff, Nat.succ_le_iff, pos_iff_ne_zero,
+    mul_one]
+

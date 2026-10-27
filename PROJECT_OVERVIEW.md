@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 57/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 58/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 57; remaining: 236.
-- Verdicts: 9 NO-composable-from-mathlib, 11 YES-add-as-is, 3 YES-but-generalise-first, 11 NO-mathlib-has-it, 19 BORDERLINE-needs-human, 4 SKIP.
+- Completed applicable assessments: 58; remaining: 235.
+- Verdicts: 9 NO-composable-from-mathlib, 11 YES-add-as-is, 3 YES-but-generalise-first, 11 NO-mathlib-has-it, 19 BORDERLINE-needs-human, 5 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -616,6 +616,18 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: all explicit: 1; internal excluding declaring file: 0; external files: 0; callers: MvPolynomial.eq_sum_box_hasseDeriv at Roth/Taylor.lean:212; simp: False; opaque closure claimed: False
 - Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor_monomial.md).
 
+### Completed: `MvPolynomial.coeff_aeval_X_mul`
+
+- Type: `∀ {σ : Type u_3} {R : Type u_4} [inst : CommSemiring R] (i : σ) (f : R[X]) (B : MvPolynomial σ R),
+  (∀ e ∈ B.support, e i = 0) →
+    ∀ (d : σ →₀ ℕ), ((Polynomial.aeval (X i)) f * B).coeff d = f.coeff (d i) * B.coeff (Finsupp.erase i d)`
+- What: Computes the coefficient of the product of a univariate polynomial in one variable and a multivariate polynomial independent of that variable.
+- How: Expands Polynomial.eval₂_eq_sum and coeff_monomial_mul', then Finset.sum_eq_single selects the only possible univariate exponent; the support-independence hypothesis kills every other summand.
+- Hypotheses: Arbitrary variable type and commutative semiring; second factor has zero selected-coordinate exponent throughout its support. No finiteness or nonzero assumptions.
+- Project dependencies: None
+- Caller summary: One explicit caller, private coeff_taylor_monomial_single_add_aux at Taylor115; no explicit outside-file references. Full caller replay uses fresh target replay.
+- Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/MvPolynomial.coeff_aeval_X_mul.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -756,6 +768,8 @@ Completed `MvPolynomial.taylor_C`: existing: MvPolynomial.algHom_C; file: Mathli
 
 Completed `MvPolynomial.taylor_monomial`: NO-mathlib-has-it: aeval_monomial at Mathlib/Algebra/MvPolynomial/Eval.lean:681; one-call exact target and independent mathlib-only arbitrary-algebra proof checked. Five actual methods × three forms.
 
+Completed `MvPolynomial.coeff_aeval_X_mul`: Private coefficient-convolution reduction using polynomial evaluation sum and coeff_monomial_mul′; no public contribution verdict inferred.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -871,6 +885,8 @@ Completed `MvPolynomial.taylor_X`: MvPolynomial.aeval_X specialized definitional
 Completed `MvPolynomial.taylor_C`: Specialization of generic AlgHom coefficient preservation; univariate Polynomial.taylor_C is analogous but not identical.
 
 Completed `MvPolynomial.taylor_monomial`: Existing aeval_monomial specialized to g j=X j+C(α j), A=MvPolynomial σ R.
+
+Completed `MvPolynomial.coeff_aeval_X_mul`: One implementation and one direct caller; isolates the support-independent coefficient extraction, not the full Hasse/Taylor theorem.
 
 ## Part 5: Generalization opportunities
 
@@ -991,6 +1007,8 @@ Completed `MvPolynomial.taylor_C`: No same-interface assumption-drop opportuniti
 
 Completed `MvPolynomial.taylor_monomial`: Already general over CommSemiring at fixed taylor interface; arbitrary assignment and target commutative algebra form already exists.
 
+Completed `MvPolynomial.coeff_aeval_X_mul`: Already arbitrary variables/commutative semiring, f,B,d; no successful weakening proposed. hB is the coordinate-independence premise used to discard other summands.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -1107,6 +1125,8 @@ Completed `MvPolynomial.taylor_X`: No mathematical gap for this law. A future tr
 Completed `MvPolynomial.taylor_C`: None
 
 Completed `MvPolynomial.taylor_monomial`: None
+
+Completed `MvPolynomial.coeff_aeval_X_mul`: No missing primitive blocks existing proof; public extraction API suitability is unassessed under private prefilter.
 
 ## Part 7: Junk / removable
 
@@ -1227,6 +1247,8 @@ Completed `MvPolynomial.taylor_C`: Not dead code: one explicit named caller plus
 
 Completed `MvPolynomial.taylor_monomial`: Redundant local specialization with one explicit caller; no dead-code inference.
 
+Completed `MvPolynomial.coeff_aeval_X_mul`: Retain private helper; useful boundary in monomial-induction proof. No sorry, resource raise, TODO or excessive proof size.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -1288,6 +1310,7 @@ Completed `MvPolynomial.taylor_monomial`: Redundant local specialization with on
 | 55 | `MvPolynomial.taylor_X` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor_X.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.taylor_X/root-acceptance.json) |
 | 56 | `MvPolynomial.taylor_C` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor_C.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.taylor_C/root-acceptance.json) |
 | 57 | `MvPolynomial.taylor_monomial` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor_monomial.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.taylor_monomial/root-acceptance.json) |
+| 58 | `MvPolynomial.coeff_aeval_X_mul` | SKIP | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.coeff_aeval_X_mul.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.coeff_aeval_X_mul/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -1401,11 +1424,13 @@ Completed `MvPolynomial.taylor_C` action: NO-mathlib-has-it: delete specialized 
 
 Completed `MvPolynomial.taylor_monomial` action: Delete taylor_monomial and replace sole named rewrite at eq_sum_box_hasseDeriv with typed show equality from aeval_monomial _ _ _, as accepted full caller replay. Parent taylor and caller content remain separately assessed.
 
+Completed `MvPolynomial.coeff_aeval_X_mul` action: Keep unchanged; private prefilter SKIP after full applicable inventory/structural/native assessment.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `MvPolynomial.coeff_aeval_X_mul` next. Supporting identities receive their own applicable checks.
+   `MvPolynomial.hasseCoeff_single_add_eq` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
