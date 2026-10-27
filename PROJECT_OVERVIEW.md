@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 131/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 132/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 131; remaining: 162.
-- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 17 YES-but-generalise-first, 21 NO-mathlib-has-it, 41 BORDERLINE-needs-human, 25 SKIP.
+- Completed applicable assessments: 132; remaining: 161.
+- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 17 YES-but-generalise-first, 21 NO-mathlib-has-it, 42 BORDERLINE-needs-human, 25 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -1451,6 +1451,19 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: 1 explicit source caller declarations, all in Lattice.lean; 1 direct original value consumers. Exact separate lists retained. Entire module proof bodies replay successfully with fresh target name.
 - Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.card_filter_weight_le_succ_aux.md).
 
+### Completed: `Roth.card_filter_weight_le`
+
+- Type: `∀ (m : ℕ) (r : Fin m → ℕ),
+  (∀ (j : Fin m), 0 < r j) →
+    ∀ {lam : ℝ},
+      0 < lam → ↑{d ∈ Roth.box r | Roth.weight r d ≤ (↑m - lam) / 2}.card ≤ 2 * √↑m / lam * ∏ j, (↑(r j) + 1)`
+- What: Lemma8: lower-tail count of normalized natural lattice vectors in a finite positive rectangular box is at most2sqrt(m)/lambda times total cardinality.
+- How: Dimension induction; trivial total-count regime; empty zero/one-dimensional cases; last-coordinate fibres and shifted reciprocal sum in large-tail regime.
+- Hypotheses: m natural includes0; r:Fin m→Nat; every rj positive; lambda real strictly positive. Both positivity premises essential by native counterexamples.
+- Project dependencies: Roth.box, Roth.weight, Roth.filter_weight_le_eq_empty, Roth.card_filter_weight_le_of_le_sqrt_aux, Roth.card_filter_weight_le_succ_aux
+- Caller summary: One explicit source caller MainLemma574 private mul_card_filter_weight_le_aux; same sole direct canonical kernel consumer. Original theorem with actual private helper constants and complete consumer body replayed natively.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.card_filter_weight_le.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -1739,6 +1752,8 @@ Completed `Roth.card_filter_weight_le_of_le_sqrt_aux`: A filtered box has cardin
 
 Completed `Roth.card_filter_weight_le_succ_aux`: Count by the last-coordinate fibers, rewrite each weighted predicate with the shifted lambda, and apply the full smaller-box induction hypothesis at each positive shifted parameter. Factor out the smaller-side product and use the harmonic reciprocal-grid estimate sum_inv_lt with positive last side and dimension at least two. Splitting the full product along Fin.castSucc and Fin.last cancels the square-root and side factors. This is the large-lambda inductive case, distinct from the direct small-lambda bound and empty-tail case.
 
+Completed `Roth.card_filter_weight_le`: Five actual methods on current/literature/probability forms; generic cardinality and Chebyshev/variance/uniform APIs are partial matches. Pinned positive signatures and named Chebyshev application checked, no complete original specialization claimed. Bounded exact? nonclosure is not absence proof.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -2002,6 +2017,8 @@ Completed `Roth.card_filter_fiber_eq`: The helper has a distinct role in the lat
 Completed `Roth.card_filter_weight_le_of_le_sqrt_aux`: The helper has a distinct role in the lattice proof as described in the structural review; no duplicate full construction is introduced.
 
 Completed `Roth.card_filter_weight_le_succ_aux`: The helper has a distinct role in the lattice proof as described in the structural review; no duplicate full construction is introduced.
+
+Completed `Roth.card_filter_weight_le`: Not Roth arithmetic-progression/Behrend results. Generic fibre count handles decomposition, probability theory supplies a potential stronger route requiring new uniform-box moment/count bridges.
 
 ## Part 5: Generalization opportunities
 
@@ -2270,6 +2287,8 @@ Completed `Roth.card_filter_weight_le_of_le_sqrt_aux`: No public generality clai
 
 Completed `Roth.card_filter_weight_le_succ_aux`: No public generality claim under the private prefilter; preserve the existing definition and interface.
 
+Completed `Roth.card_filter_weight_le`: Arbitrary universe-polymorphic Fintype index transport actually compiled; expanded piFinset ordinary-sum form with DecidableEq and original Fin/Finsupp recovery compiled. These are new project-dependent proofs; no droppable original premise found.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -2534,6 +2553,8 @@ Completed `Roth.card_filter_fiber_eq`: No new primitive is needed for this inter
 Completed `Roth.card_filter_weight_le_of_le_sqrt_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 Completed `Roth.card_filter_weight_le_succ_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
+
+Completed `Roth.card_filter_weight_le`: Design choice: named finite-product normalized lower-tail count versus primary stronger product-measure concentration with local count corollary; retain redundant project box/weight aliases outside mathlib.
 
 ## Part 7: Junk / removable
 
@@ -2802,6 +2823,8 @@ Completed `Roth.card_filter_weight_le_of_le_sqrt_aux`: Retain a live private pro
 
 Completed `Roth.card_filter_weight_le_succ_aux`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
 
+Completed `Roth.card_filter_weight_le`: No: live sole count estimate on the auxiliary-polynomial/main-lemma path.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -2937,6 +2960,7 @@ Completed `Roth.card_filter_weight_le_succ_aux`: Retain a live private proof int
 | 129 | `Roth.card_filter_fiber_eq` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.card_filter_fiber_eq.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.card_filter_fiber_eq/root-acceptance.json) |
 | 130 | `Roth.card_filter_weight_le_of_le_sqrt_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.card_filter_weight_le_of_le_sqrt_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.card_filter_weight_le_of_le_sqrt_aux/root-acceptance.json) |
 | 131 | `Roth.card_filter_weight_le_succ_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.card_filter_weight_le_succ_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.card_filter_weight_le_succ_aux/root-acceptance.json) |
+| 132 | `Roth.card_filter_weight_le` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.card_filter_weight_le.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.card_filter_weight_le/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -3198,12 +3222,14 @@ Completed `Roth.card_filter_weight_le_of_le_sqrt_aux` action: Keep unchanged; co
 
 Completed `Roth.card_filter_weight_le_succ_aux` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
 
+Completed `Roth.card_filter_weight_le` action: Retain local theorem and caller pending3 concrete upstream API questions; no production refactor now, no cost-based downgrade, prior helper verdicts not inherited.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.card_filter_weight_le` next. Supporting identities receive their own applicable checks.
+   `Roth.index` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

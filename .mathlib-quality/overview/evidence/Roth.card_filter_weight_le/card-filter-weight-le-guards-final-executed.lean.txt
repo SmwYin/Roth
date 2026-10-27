@@ -1,0 +1,16 @@
+open scoped BigOperators
+open Finset
+namespace Audit132
+theorem positive_bounds_necessary : ¬ ((((Roth.box (fun _ : Fin 9 ↦ 0)).filter
+    fun d ↦ Roth.weight (fun _ : Fin 9 ↦ 0) d ≤ ((9 : ℝ) - 9) / 2).card : ℝ) ≤
+      2 * Real.sqrt (9 : ℝ) / 9 * ∏ _j : Fin 9, ((0 : ℝ) + 1)) := by
+  have hs : Real.sqrt (9 : ℝ) = 3 :=
+    (Real.sqrt_eq_iff_eq_sq (by norm_num) (by norm_num)).2 (by norm_num)
+  norm_num [Roth.box, Roth.weight, hs]
+theorem positive_lam_necessary : ¬ ((((Roth.box (fun _ : Fin 0 ↦ 1)).filter
+    fun d ↦ Roth.weight (fun _ : Fin 0 ↦ 1) d ≤ ((0 : ℝ) - 0) / 2).card : ℝ) ≤
+      2 * Real.sqrt (0 : ℝ) / 0 * ∏ _j : Fin 0, ((1 : ℝ) + 1)) := by
+  norm_num [Roth.box, Roth.weight]
+#print axioms positive_bounds_necessary
+#print axioms positive_lam_necessary
+end Audit132

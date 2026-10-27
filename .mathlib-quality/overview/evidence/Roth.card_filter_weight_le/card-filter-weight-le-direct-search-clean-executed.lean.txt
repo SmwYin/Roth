@@ -1,0 +1,30 @@
+import Mathlib.Algebra.BigOperators.Fin
+import Mathlib.Analysis.Real.Sqrt
+import Mathlib.Data.Finsupp.Interval
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.Tactic
+#check_failure Roth.card_filter_weight_le
+open scoped BigOperators
+open Finset
+namespace Audit132Search
+example (m : ℕ) (r : Fin m → ℕ) (_hr : ∀ j, 0 < r j) {lam : ℝ} (_hlam : 0 < lam) :
+    True := by
+  classical
+  fail_if_success have :
+      ((((Fintype.piFinset fun j ↦ Finset.range (r j + 1)).map
+        Finsupp.equivFunOnFinite.symm.toEmbedding).filter fun d ↦
+          (∑ j, (d j : ℝ) / r j) ≤ ((m : ℝ) - lam) / 2).card : ℝ) ≤
+          2 * Real.sqrt (m : ℝ) / lam * ∏ j, ((r j : ℝ) + 1) := by exact?
+  trivial
+example {σ : Type*} [Fintype σ] (r : σ → ℕ) (_hr : ∀ j, 0 < r j)
+    {lam : ℝ} (_hlam : 0 < lam) : True := by
+  classical
+  fail_if_success have : (((Fintype.piFinset fun j ↦ Finset.range (r j + 1)).filter
+      fun d ↦ (∑ j, (d j : ℝ) / r j) ≤ ((Fintype.card σ : ℝ) - lam) / 2).card : ℝ) ≤
+      2 * Real.sqrt (Fintype.card σ : ℝ) / lam * ∏ j, ((r j : ℝ) + 1) := by exact?
+  trivial
+#check @Finset.card_filter_le
+#check @Finset.card_eq_sum_card_fiberwise
+#check @Finset.card_equiv
+#check @Fintype.prod_equiv
+end Audit132Search

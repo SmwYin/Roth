@@ -1,0 +1,20 @@
+open scoped BigOperators
+namespace Audit132
+open Finset
+theorem function_box {σ : Type*} [Fintype σ] [DecidableEq σ]
+    (r : σ → ℕ) (hr : ∀ j, 0 < r j)
+    {lam : ℝ} (hlam : 0 < lam) :
+    (((Fintype.piFinset fun j ↦ Finset.range (r j + 1)).filter
+      fun d ↦ (∑ j, (d j : ℝ) / r j) ≤ ((Fintype.card σ : ℝ) - lam) / 2).card : ℝ) ≤
+      2 * Real.sqrt (Fintype.card σ : ℝ) / lam * ∏ j, ((r j : ℝ) + 1) := by
+  classical
+  simpa [Roth.box, Roth.weight, Finset.filter_map] using finite_index r hr hlam
+theorem recover_original (m : ℕ) (r : Fin m → ℕ) (hr : ∀ j, 0 < r j)
+    {lam : ℝ} (hlam : 0 < lam) :
+    (((Roth.box r).filter fun d ↦ Roth.weight r d ≤ ((m : ℝ) - lam) / 2).card : ℝ) ≤
+      2 * Real.sqrt (m : ℝ) / lam * ∏ j, ((r j : ℝ) + 1) := by
+  classical
+  simpa [Roth.box, Roth.weight, Finset.filter_map] using function_box r hr hlam
+#print axioms function_box
+#print axioms recover_original
+end Audit132

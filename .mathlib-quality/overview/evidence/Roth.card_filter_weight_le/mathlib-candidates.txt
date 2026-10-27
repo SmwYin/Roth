@@ -1,0 +1,258 @@
+.lake/packages/mathlib/Mathlib/Probability/Moments/Variance.lean
+380: theorem meas_ge_le_evariance_div_sq {X : Ω → ℝ} (hX : AEStronglyMeasurable X μ) {c : ℝ≥0}
+381:     (hc : c ≠ 0) : μ {ω | ↑c ≤ |X ω - μ[X]|} ≤ evariance X μ / c ^ 2 := by
+382:   have A : (c : ℝ≥0∞) ≠ 0 := by rwa [Ne, ENNReal.coe_eq_zero]
+383:   have B : AEStronglyMeasurable (fun _ : Ω => μ[X]) μ := aestronglyMeasurable_const
+384:   convert!
+385:       meas_ge_le_mul_pow_eLpNorm_enorm μ two_ne_zero ENNReal.ofNat_ne_top
+386:         (f := X - fun _ ↦ μ[X]) A (by simp)
+387:     using 1
+388:   · norm_cast
+389:   rw [eLpNorm_eq_lintegral_rpow_enorm_toReal two_ne_zero ENNReal.ofNat_ne_top (hX.sub B)]
+390:   simp only [ENNReal.toReal_ofNat, one_div, Pi.sub_apply]
+391:   rw [div_eq_mul_inv, ENNReal.inv_pow, mul_comm, ENNReal.rpow_two]
+392:   congr
+393:   simp_rw [← ENNReal.rpow_mul, inv_mul_cancel₀ (two_ne_zero : (2 : ℝ) ≠ 0), ENNReal.rpow_two,
+394:     ENNReal.rpow_one, evariance]
+395: 
+396: /-- **Chebyshev's inequality**: one can control the deviation probability of a real random variable
+397: from its expectation in terms of the variance. -/
+398: theorem meas_ge_le_variance_div_sq [IsFiniteMeasure μ] {X : Ω → ℝ} (hX : MemLp X 2 μ) {c : ℝ}
+399:     (hc : 0 < c) : μ {ω | c ≤ |X ω - μ[X]|} ≤ ENNReal.ofReal (variance X μ / c ^ 2) := by
+400:   rw [ENNReal.ofReal_div_of_pos (sq_pos_of_ne_zero hc.ne.symm), hX.ofReal_variance_eq]
+401:   convert! @meas_ge_le_evariance_div_sq _ _ _ _ hX.aestronglyMeasurable c.toNNReal
+402:     (by simp [hc]) using 1
+403:   · simp
+404:   · rw [ENNReal.ofReal_pow hc.le]
+405:     rfl
+406: 
+407: /-- The variance of the sum of two independent random variables is the sum of the variances. -/
+408: nonrec theorem IndepFun.variance_add {X Y : Ω → ℝ} (hX : MemLp X 2 μ)
+409:     (hY : MemLp Y 2 μ) (h : X ⟂ᵢ[μ] Y) : Var[X + Y; μ] = Var[X; μ] + Var[Y; μ] := by
+410:   by_cases h' : X =ᵐ[μ] 0
+411:   · rw [variance_congr h', variance_congr h'.add_right]
+412:     simp
+413:   have := hX.isProbabilityMeasure_of_indepFun X Y (by simp) (by simp) h' h
+414:   rw [variance_add hX hY, h.covariance_eq_zero hX hY]
+415:   simp
+416: 
+417: /-- The variance of the sum of two independent random variables is the sum of the variances. -/
+418: lemma IndepFun.variance_fun_add {X Y : Ω → ℝ} (hX : MemLp X 2 μ)
+419:     (hY : MemLp Y 2 μ) (h : X ⟂ᵢ[μ] Y) : Var[fun ω ↦ X ω + Y ω; μ] = Var[X; μ] + Var[Y; μ] :=
+420:   h.variance_add hX hY
+421: 
+422: /-- The variance of a finite sum of pairwise independent random variables is the sum of the
+423: variances. -/
+424: nonrec theorem IndepFun.variance_sum {ι : Type*} {X : ι → Ω → ℝ} {s : Finset ι}
+425:     (hs : ∀ i ∈ s, MemLp (X i) 2 μ)
+426:     (h : Set.Pairwise ↑s fun i j => X i ⟂ᵢ[μ] X j) :
+427:     variance (∑ i ∈ s, X i) μ = ∑ i ∈ s, variance (X i) μ := by
+428:   by_cases h'' : ∀ i ∈ s, X i =ᵐ[μ] 0
+429:   · rw [variance_congr (Y := 0), variance_zero]
+430:     · symm
+431:       refine Finset.sum_eq_zero fun i hi ↦ ?_
+432:       simp [variance_congr (h'' i hi)]
+433:     · have := fun (i : s) ↦ h'' i.1 i.2
+434:       filter_upwards [ae_all_iff.2 this] with ω hω
+435:       simp only [Finset.sum_apply, Pi.zero_apply]
+436:       exact Finset.sum_eq_zero fun i hi ↦ hω ⟨i, hi⟩
+437:   obtain ⟨j, hj1, hj2⟩ := not_forall₂.1 h''
+438:   obtain rfl | h' := s.eq_singleton_or_nontrivial hj1
+439:   · simp
+440:   obtain ⟨k, hk1, hk2⟩ := h'.exists_ne j
+441:   have := (hs j hj1).isProbabilityMeasure_of_indepFun (X j) (X k) (by simp) (by simp) hj2
+442:     (h hj1 hk1 hk2.symm)
+443:   rw [variance_sum' hs]
+444:   refine Finset.sum_congr rfl (fun i hi ↦ ?_)
+445:   rw [← covariance_self (hs i hi).aemeasurable]
+446:   refine Finset.sum_eq_single_of_mem i hi fun j hj1 hj2 ↦ ?_
+447:   exact (h hi hj1 hj2.symm).covariance_eq_zero (hs i hi) (hs j hj1)
+448: 
+449: lemma variance_sum_pi [Fintype ι] {Ω : ι → Type*} {mΩ : ∀ i, MeasurableSpace (Ω i)}
+450:     {μ : (i : ι) → Measure (Ω i)} [∀ i, IsProbabilityMeasure (μ i)]
+451:     {X : Π i, Ω i → ℝ} (h : ∀ i, MemLp (X i) 2 (μ i)) :
+452:     Var[∑ i, fun ω ↦ X i (ω i); Measure.pi μ] = ∑ i, Var[X i; μ i] := by
+453:   rw [IndepFun.variance_sum]
+454:   · congr with i
+455:     change Var[(X i) ∘ (fun ω ↦ ω i); Measure.pi μ] = _
+456:     rw [← variance_map, (measurePreserving_eval _ i).map_eq]
+457:     · rw [(measurePreserving_eval _ i).map_eq]
+458:       exact (h i).aestronglyMeasurable.aemeasurable
+459:     · exact Measurable.aemeasurable (by fun_prop)
+460:   · exact fun i _ ↦ (h i).comp_measurePreserving (measurePreserving_eval _ i)
+461:   · exact fun i _ j _ hij ↦
+462:       (iIndepFun_pi fun i ↦ (h i).aestronglyMeasurable.aemeasurable).indepFun hij
+463: 
+464: /-- **The Bhatia-Davis inequality on variance**
+465: 
+466: The variance of a random variable `X` satisfying `a ≤ X ≤ b` almost everywhere is at most
+467: `(b - 𝔼 X) * (𝔼 X - a)`. -/
+468: lemma variance_le_sub_mul_sub [IsProbabilityMeasure μ] {a b : ℝ} {X : Ω → ℝ}
+469:     (h : ∀ᵐ ω ∂μ, X ω ∈ Set.Icc a b) (hX : AEMeasurable X μ) :
+470:     variance X μ ≤ (b - μ[X]) * (μ[X] - a) := by
+471:   have ha : ∀ᵐ ω ∂μ, a ≤ X ω := h.mono fun ω h => h.1
+472:   have hb : ∀ᵐ ω ∂μ, X ω ≤ b := h.mono fun ω h => h.2
+473:   have hX_int₂ : Integrable (fun ω ↦ -X ω ^ 2) μ :=
+474:     (memLp_of_bounded h hX.aestronglyMeasurable 2).integrable_sq.neg
+475:   have hX_int₁ : Integrable (fun ω ↦ (a + b) * X ω) μ :=
+476:     ((integrable_const (max |a| |b|)).mono' hX.aestronglyMeasurable
+477:       (by filter_upwards [ha, hb] with ω using abs_le_max_abs_abs)).const_mul (a + b)
+478:   have h0 : 0 ≤ -μ[X ^ 2] + (a + b) * μ[X] - a * b :=
+479:     calc
+480:       _ ≤ ∫ ω, (b - X ω) * (X ω - a) ∂μ := by
+481:         apply integral_nonneg_of_ae
+482:         filter_upwards [ha, hb] with ω ha' hb'
+483:         exact mul_nonneg (by linarith : 0 ≤ b - X ω) (by linarith : 0 ≤ X ω - a)
+484:       _ = ∫ ω, -X ω ^ 2 + (a + b) * X ω - a * b ∂μ :=
+485:         integral_congr_ae <| ae_of_all μ fun ω ↦ by ring
+486:       _ = ∫ ω, - X ω ^ 2 + (a + b) * X ω ∂μ - ∫ _, a * b ∂μ :=
+487:         integral_sub (by fun_prop) (integrable_const (a * b))
+488:       _ = ∫ ω, - X ω ^ 2 + (a + b) * X ω ∂μ - a * b := by simp
+489:       _ = - μ[X ^ 2] + (a + b) * μ[X] - a * b := by
+490:         simp [← integral_neg, ← integral_const_mul, integral_add hX_int₂ hX_int₁]
+491:   calc
+492:     _ ≤ (a + b) * μ[X] - a * b - μ[X] ^ 2 := by
+493:       rw [variance_eq_sub (memLp_of_bounded h hX.aestronglyMeasurable 2)]
+494:       linarith
+495:     _ = (b - μ[X]) * (μ[X] - a) := by ring
+496: 
+497: /-- **Popoviciu's inequality on variances**
+498: 
+499: The variance of a random variable `X` satisfying `a ≤ X ≤ b` almost everywhere is at most
+500: `((b - a) / 2) ^ 2`. -/
+501: lemma variance_le_sq_of_bounded [IsProbabilityMeasure μ] {a b : ℝ} {X : Ω → ℝ}
+502:     (h : ∀ᵐ ω ∂μ, X ω ∈ Set.Icc a b) (hX : AEMeasurable X μ) :
+503:     variance X μ ≤ ((b - a) / 2) ^ 2 :=
+504:   calc
+505:     _ ≤ (b - μ[X]) * (μ[X] - a) := variance_le_sub_mul_sub h hX
+506:     _ = ((b - a) / 2) ^ 2 - (μ[X] - (b + a) / 2) ^ 2 := by ring
+507:     _ ≤ ((b - a) / 2) ^ 2 := sub_le_self _ (sq_nonneg _)
+508: 
+509: section Prod
+.lake/packages/mathlib/Mathlib/Probability/Distributions/Uniform.lean
+270: end UniformOfFinset
+271: 
+272: section UniformOfFintype
+273: 
+274: /-- The uniform pmf taking the same uniform value on all of the fintype `α` -/
+275: def uniformOfFintype (α : Type*) [Fintype α] [Nonempty α] : PMF α :=
+276:   uniformOfFinset Finset.univ Finset.univ_nonempty
+277: 
+278: variable [Fintype α] [Nonempty α]
+279: 
+280: @[simp]
+281: theorem uniformOfFintype_apply (a : α) : uniformOfFintype α a = (Fintype.card α : ℝ≥0∞)⁻¹ := by
+282:   simp [uniformOfFintype, Finset.mem_univ, uniformOfFinset_apply]
+283: 
+284: @[simp]
+285: theorem support_uniformOfFintype (α : Type*) [Fintype α] [Nonempty α] :
+286:     (uniformOfFintype α).support = ⊤ :=
+287:   Set.ext fun x => by simp [mem_support_iff]
+288: 
+289: theorem mem_support_uniformOfFintype (a : α) : a ∈ (uniformOfFintype α).support := by simp
+290: 
+291: section Measure
+292: 
+293: variable (s : Set α)
+294: 
+295: theorem toOuterMeasure_uniformOfFintype_apply [Fintype s] :
+296:     (uniformOfFintype α).toOuterMeasure s = Fintype.card s / Fintype.card α := by
+297:   classical
+298:   rw [uniformOfFintype, toOuterMeasure_uniformOfFinset_apply, Fintype.card_subtype,
+299:     Finset.card_univ]
+300: 
+301: theorem toMeasure_uniformOfFintype_apply [MeasurableSpace α] (hs : MeasurableSet s) [Fintype s] :
+302:     (uniformOfFintype α).toMeasure s = Fintype.card s / Fintype.card α := by
+303:   classical
+304:   simp [uniformOfFintype, Fintype.card_subtype, hs]
+305: 
+306: end Measure
+307: 
+.lake/packages/mathlib/Mathlib/Data/Finsupp/Basic.lean
+144: /-- Given `f : α ≃ β`, we can map `l : α →₀ M` to `equivMapDomain f l : β →₀ M` (computably)
+145: by mapping the support forwards and the function backwards. -/
+146: def equivMapDomain (f : α ≃ β) (l : α →₀ M) : β →₀ M where
+147:   support := l.support.map f.toEmbedding
+148:   toFun a := l (f.symm a)
+149:   mem_support_toFun a := by simp only [Finset.mem_map_equiv, mem_support_toFun]; rfl
+150: 
+151: @[simp]
+152: theorem equivMapDomain_apply (f : α ≃ β) (l : α →₀ M) (b : β) :
+153:     equivMapDomain f l b = l (f.symm b) :=
+154:   rfl
+155: 
+156: theorem equivMapDomain_symm_apply (f : α ≃ β) (l : β →₀ M) (a : α) :
+157:     equivMapDomain f.symm l a = l (f a) :=
+158:   rfl
+159: 
+160: @[simp]
+161: theorem equivMapDomain_refl (l : α →₀ M) : equivMapDomain (Equiv.refl _) l = l := by ext x; rfl
+162: 
+163: theorem equivMapDomain_refl' : equivMapDomain (Equiv.refl _) = @id (α →₀ M) := by ext x; rfl
+164: 
+165: theorem equivMapDomain_trans (f : α ≃ β) (g : β ≃ γ) (l : α →₀ M) :
+166:     equivMapDomain (f.trans g) l = equivMapDomain g (equivMapDomain f l) := by ext x; rfl
+167: 
+168: theorem equivMapDomain_trans' (f : α ≃ β) (g : β ≃ γ) :
+169:     @equivMapDomain _ _ M _ (f.trans g) = equivMapDomain g ∘ equivMapDomain f := by ext x; rfl
+170: 
+171: @[simp]
+172: theorem equivMapDomain_single (f : α ≃ β) (a : α) (b : M) :
+173:     equivMapDomain f (single a b) = single (f a) b := by
+174:   classical
+175:     ext x
+176:     simp only [single_apply, ← Equiv.eq_symm_apply, equivMapDomain_apply]
+177: 
+178: @[simp]
+179: theorem equivMapDomain_zero {f : α ≃ β} : equivMapDomain f (0 : α →₀ M) = (0 : β →₀ M) := by
+180:   ext; simp only [equivMapDomain_apply, coe_zero, Pi.zero_apply]
+181: 
+182: @[to_additive (attr := simp)]
+183: theorem prod_equivMapDomain [CommMonoid N] (f : α ≃ β) (l : α →₀ M) (g : β → M → N) :
+184:     prod (equivMapDomain f l) g = prod l (fun a m => g (f a) m) := by
+185:   simp [prod, equivMapDomain]
+186: 
+187: /-- Given `f : α ≃ β`, the finitely supported function spaces are also in bijection:
+188: `(α →₀ M) ≃ (β →₀ M)`.
+189: 
+190: This is the finitely-supported version of `Equiv.piCongrLeft`. -/
+191: def equivCongrLeft (f : α ≃ β) : (α →₀ M) ≃ (β →₀ M) := by
+192:   refine ⟨equivMapDomain f, equivMapDomain f.symm, fun f => ?_, fun f => ?_⟩ <;> ext x <;>
+193:     simp only [equivMapDomain_apply, Equiv.symm_symm, Equiv.symm_apply_apply,
+194:       Equiv.apply_symm_apply]
+195: 
+196: @[simp]
+197: theorem equivCongrLeft_apply (f : α ≃ β) (l : α →₀ M) : equivCongrLeft f l = equivMapDomain f l :=
+198:   rfl
+493: theorem equivMapDomain_eq_mapDomain {M} [AddCommMonoid M] (f : α ≃ β) (l : α →₀ M) :
+494:     equivMapDomain f l = mapDomain f l := by ext x; simp
+495: 
+.lake/packages/mathlib/Mathlib/Data/Finset/Card.lean
+414: 
+415: /-- Specialization of `Finset.card_nbij'` that automatically fills in most arguments.
+416: 
+417: See `Fintype.card_equiv` for the version where `s` and `t` are `univ`. -/
+418: lemma card_equiv (e : α ≃ β) (hst : ∀ i, i ∈ s ↔ e i ∈ t) : #s = #t := by
+419:   refine card_nbij' e e.symm ?_ ?_ ?_ ?_ <;> simp [hst, Set.MapsTo, Set.LeftInvOn, Set.RightInvOn]
+420: 
+.lake/packages/mathlib/Mathlib/Algebra/BigOperators/Group/Finset/Defs.lean
+733: /-- `Fintype.prod_equiv` is a specialization of `Finset.prod_bij` that
+734: automatically fills in most arguments.
+735: 
+736: See `Equiv.prod_comp` for a version without `h`.
+737: -/
+738: @[to_additive /-- `Fintype.sum_equiv` is a specialization of `Finset.sum_bij` that
+739: automatically fills in most arguments.
+740: 
+741: See `Equiv.sum_comp` for a version without `h`. -/]
+742: lemma prod_equiv (e : ι ≃ κ) (f : ι → M) (g : κ → M) (h : ∀ x, f x = g (e x)) :
+743:     ∏ x, f x = ∏ x, g x := prod_bijective _ e.bijective _ _ h
+744: 
+745: @[to_additive]
+746: lemma _root_.Function.Bijective.prod_comp {e : ι → κ} (he : e.Bijective) (g : κ → M) :
+747:     ∏ i, g (e i) = ∏ i, g i := prod_bijective _ he _ _ fun _ ↦ rfl
+748: 
+749: @[to_additive]
+750: lemma _root_.Equiv.prod_comp (e : ι ≃ κ) (g : κ → M) : ∏ i, g (e i) = ∏ i, g i :=
+751:   prod_equiv e _ _ fun _ ↦ rfl
+752: 

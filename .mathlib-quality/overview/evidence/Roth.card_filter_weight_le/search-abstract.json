@@ -1,0 +1,171 @@
+[
+  {
+    "method": "lean_leanfinder",
+    "query": "A finite uniform product distribution of independent bounded random variables has lower tail probability at most variance divided by the square of the deviation, Chebyshev inequality.",
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"ProbabilityTheory.meas_ge_le_variance_div_sq\",\n      \"informal_name\": \"Chebyshev's Inequality\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {Ω : Type u_1} {mΩ : MeasurableSpace Ω} {μ : MeasureTheory.Measure Ω} [MeasureTheory.IsFiniteMeasure μ] {X : Ω → ℝ},\\n  MeasureTheory.MemLp X 2 μ →\\n    ∀ {c : ℝ}, 0 < c → μ {ω | c ≤ |X ω - ∫ (x : Ω), X x ∂μ|} ≤ ENNReal.ofReal (ProbabilityTheory.variance X μ / c ^ 2)\",\n      \"informal_description\": \"For a finite measure space $(\\\\Omega, \\\\mu)$ and a square-integrable real-valued random variable $X : \\\\Omega \\\\to \\\\mathbb{R}$, the measure of the set where $|X(\\\\omega) - \\\\mathbb{E}[X]| \\\\geq c$ is bounded above by $\\\\frac{\\\\operatorname{Var}(X)}{c^2}$ for any $c > 0$. Formally, $\\\\mu\\\\left(\\\\{\\\\omega \\\\mid |X(\\\\omega) - \\\\mathbb{E}[X]| \\\\geq c\\\\}\\\\right) \\\\leq \\\\frac{\\\\operatorname{Var}(X)}{c^2}$.\",\n      \"path\": \"Mathlib.Probability.Moments.Variance\"\n    },\n    {\n      \"formal_name\": \"ProbabilityTheory.meas_ge_le_evariance_div_sq\",\n      \"informal_name\": \"Extended Chebyshev's Inequality for Real-Valued Random Variables\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {Ω : Type u_1} {mΩ : MeasurableSpace Ω} {μ : MeasureTheory.Measure Ω} {X : Ω → ℝ},\\n  MeasureTheory.AEStronglyMeasurable X μ →\\n    ∀ {c : NNReal}, c ≠ 0 → μ {ω | ↑c ≤ |X ω - ∫ (x : Ω), X x ∂μ|} ≤ ProbabilityTheory.evariance X μ / ↑c ^ 2\",\n      \"informal_description\": \"For any almost everywhere strongly measurable real-valued random variable $X$ and any positive real number $c > 0$, the measure of the set of outcomes $\\\\{\\\\omega \\\\mid |X(\\\\omega) - \\\\mathbb{E}[X]| \\\\geq c\\\\}$ is bounded above by the extended variance of $X$ divided by $c^2$, i.e., $\\\\mu(\\\\{\\\\omega \\\\mid |X(\\\\omega) - \\\\mathbb{E}[X]| \\\\geq c\\\\}) \\\\leq \\\\frac{\\\\text{evariance}(X, \\\\mu)}{c^2}$.\",\n      \"path\": \"Mathlib.Probability.Moments.Variance\"\n    },\n    {\n      \"formal_name\": \"ProbabilityTheory.strong_law_aux1\",\n      \"informal_name\": \"Almost Sure Convergence of Truncated Sums in Strong Law of Large Numbers\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {Ω : Type u_1} [inst : MeasureTheory.MeasureSpace Ω] [MeasureTheory.IsProbabilityMeasure MeasureTheory.volume]\\n  (X : ℕ → Ω → ℝ),\\n  MeasureTheory.Integrable (X 0) MeasureTheory.volume →\\n    Pairwise (Function.onFun (fun f g => ProbabilityTheory.IndepFun f g MeasureTheory.volume) X) →\\n      (∀ (i : ℕ), ProbabilityTheory.IdentDistrib (X i) (X 0) MeasureTheory.volume MeasureTheory.volume) →\\n        (∀ (i : ℕ) (ω : Ω), 0 ≤ X i ω) →\\n          ∀ {c : ℝ},\\n            1 < c →\\n              ∀ {ε : ℝ...\",\n      \"informal_description\": \"For any real number $ c > 1 $ and $ \\\\varepsilon > 0 $, it holds almost surely that for sufficiently large $ n $, the absolute difference between the sum of truncated random variables $ \\\\sum_{i=1}^{\\\\lfloor c^n \\\\rfloor} \\\\text{truncation}(X_i, i) $ and its expectation is less than $ \\\\varepsilon \\\\cdot \\\\lfloor c^n \\\\rfloor $. This establishes a key step in proving the strong law of large numbers via truncation techniques.\",\n      \"path\": \"Mathlib.Probability.StrongLaw\"\n    },\n    {\n      \"formal_name\": \"ProbabilityTheory.strong_law_aux6\",\n      \"informal_name\": \"Almost Sure Convergence of Averages with Exponential Block Sizes\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {Ω : Type u_1} [inst : MeasureTheory.MeasureSpace Ω] [MeasureTheory.IsProbabilityMeasure MeasureTheory.volume]\\n  (X : ℕ → Ω → ℝ),\\n  MeasureTheory.Integrable (X 0) MeasureTheory.volume →\\n    Pairwise (Function.onFun (fun f g => ProbabilityTheory.IndepFun f g MeasureTheory.volume) X) →\\n      (∀ (i : ℕ), ProbabilityTheory.IdentDistrib (X i) (X 0) MeasureTheory.volume MeasureTheory.volume) →\\n        (∀ (i : ℕ) (ω : Ω), 0 ≤ X i ω) →\\n          ∀ {c : ℝ},\\n            1 < c →\\n              ∀ᵐ (ω : ...\",\n      \"informal_description\": \"For any real number $ c > 1 $, the average of the first $ \\\\lfloor c^n \\\\rfloor $ random variables $ X_i(\\\\omega) $ converges almost surely to the expected value $ \\\\mathbb{E}[X_0] $ as $ n \\\\to \\\\infty $. Formally, for almost every $ \\\\omega $, $ \\\\lim_{n \\\\to \\\\infty} \\\\frac{1}{\\\\lfloor c^n \\\\rfloor} \\\\sum_{i=0}^{\\\\lfloor c^n \\\\rfloor - 1} X_i(\\\\omega) = \\\\mathbb{E}[X_0] $.\",\n      \"path\": \"Mathlib.Probability.StrongLaw\"\n    },\n    {\n      \"formal_name\": \"ProbabilityTheory.strong_law_aux4\",\n      \"informal_name\": \"Auxiliary Lemma for Strong Law of Large Numbers with Exponential Growth Rate\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {Ω : Type u_1} [inst : MeasureTheory.MeasureSpace Ω] [MeasureTheory.IsProbabilityMeasure MeasureTheory.volume]\\n  (X : ℕ → Ω → ℝ),\\n  MeasureTheory.Integrable (X 0) MeasureTheory.volume →\\n    Pairwise (Function.onFun (fun f g => ProbabilityTheory.IndepFun f g MeasureTheory.volume) X) →\\n      (∀ (i : ℕ), ProbabilityTheory.IdentDistrib (X i) (X 0) MeasureTheory.volume MeasureTheory.volume) →\\n        (∀ (i : ℕ) (ω : Ω), 0 ≤ X i ω) →\\n          ∀ {c : ℝ},\\n            1 < c →\\n              ∀ᵐ (ω : ...\",\n      \"informal_description\": \"For any real number $ c > 1 $, it holds almost everywhere that the difference between the sum of truncated random variables $ \\\\sum_{i=1}^{\\\\lfloor c^n \\\\rfloor} \\\\text{truncation}(X_i, i, \\\\omega) $ and the product $ \\\\lfloor c^n \\\\rfloor \\\\cdot \\\\mathbb{E}[X_0] $ is asymptotically negligible compared to $ c^n $ as $ n \\\\to \\\\infty $. Formally, $ \\\\frac{1}{\\\\lfloor c^n \\\\rfloor} \\\\sum_{i=1}^{\\\\lfloor c^n \\\\rfloor} \\\\text{truncation}(X_i, i, \\\\omega) - \\\\mathbb{E}[X_0] = o(1) $ almost surely, where the truncation function sets $ X_i(\\\\omega) $ to zero if it exceeds $ \\\\pm i $.\",\n      \"path\": \"Mathlib.Probability.StrongLaw\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "ProbabilityTheory.meas_ge_le_variance_div_sq",
+            "informal_name": "Chebyshev's Inequality",
+            "kind": "theorem",
+            "type": "∀ {Ω : Type u_1} {mΩ : MeasurableSpace Ω} {μ : MeasureTheory.Measure Ω} [MeasureTheory.IsFiniteMeasure μ] {X : Ω → ℝ},\n  MeasureTheory.MemLp X 2 μ →\n    ∀ {c : ℝ}, 0 < c → μ {ω | c ≤ |X ω - ∫ (x : Ω), X x ∂μ|} ≤ ENNReal.ofReal (ProbabilityTheory.variance X μ / c ^ 2)",
+            "informal_description": "For a finite measure space $(\\Omega, \\mu)$ and a square-integrable real-valued random variable $X : \\Omega \\to \\mathbb{R}$, the measure of the set where $|X(\\omega) - \\mathbb{E}[X]| \\geq c$ is bounded above by $\\frac{\\operatorname{Var}(X)}{c^2}$ for any $c > 0$. Formally, $\\mu\\left(\\{\\omega \\mid |X(\\omega) - \\mathbb{E}[X]| \\geq c\\}\\right) \\leq \\frac{\\operatorname{Var}(X)}{c^2}$.",
+            "path": "Mathlib.Probability.Moments.Variance"
+          },
+          {
+            "formal_name": "ProbabilityTheory.meas_ge_le_evariance_div_sq",
+            "informal_name": "Extended Chebyshev's Inequality for Real-Valued Random Variables",
+            "kind": "theorem",
+            "type": "∀ {Ω : Type u_1} {mΩ : MeasurableSpace Ω} {μ : MeasureTheory.Measure Ω} {X : Ω → ℝ},\n  MeasureTheory.AEStronglyMeasurable X μ →\n    ∀ {c : NNReal}, c ≠ 0 → μ {ω | ↑c ≤ |X ω - ∫ (x : Ω), X x ∂μ|} ≤ ProbabilityTheory.evariance X μ / ↑c ^ 2",
+            "informal_description": "For any almost everywhere strongly measurable real-valued random variable $X$ and any positive real number $c > 0$, the measure of the set of outcomes $\\{\\omega \\mid |X(\\omega) - \\mathbb{E}[X]| \\geq c\\}$ is bounded above by the extended variance of $X$ divided by $c^2$, i.e., $\\mu(\\{\\omega \\mid |X(\\omega) - \\mathbb{E}[X]| \\geq c\\}) \\leq \\frac{\\text{evariance}(X, \\mu)}{c^2}$.",
+            "path": "Mathlib.Probability.Moments.Variance"
+          },
+          {
+            "formal_name": "ProbabilityTheory.strong_law_aux1",
+            "informal_name": "Almost Sure Convergence of Truncated Sums in Strong Law of Large Numbers",
+            "kind": "theorem",
+            "type": "∀ {Ω : Type u_1} [inst : MeasureTheory.MeasureSpace Ω] [MeasureTheory.IsProbabilityMeasure MeasureTheory.volume]\n  (X : ℕ → Ω → ℝ),\n  MeasureTheory.Integrable (X 0) MeasureTheory.volume →\n    Pairwise (Function.onFun (fun f g => ProbabilityTheory.IndepFun f g MeasureTheory.volume) X) →\n      (∀ (i : ℕ), ProbabilityTheory.IdentDistrib (X i) (X 0) MeasureTheory.volume MeasureTheory.volume) →\n        (∀ (i : ℕ) (ω : Ω), 0 ≤ X i ω) →\n          ∀ {c : ℝ},\n            1 < c →\n              ∀ {ε : ℝ...",
+            "informal_description": "For any real number $ c > 1 $ and $ \\varepsilon > 0 $, it holds almost surely that for sufficiently large $ n $, the absolute difference between the sum of truncated random variables $ \\sum_{i=1}^{\\lfloor c^n \\rfloor} \\text{truncation}(X_i, i) $ and its expectation is less than $ \\varepsilon \\cdot \\lfloor c^n \\rfloor $. This establishes a key step in proving the strong law of large numbers via truncation techniques.",
+            "path": "Mathlib.Probability.StrongLaw"
+          },
+          {
+            "formal_name": "ProbabilityTheory.strong_law_aux6",
+            "informal_name": "Almost Sure Convergence of Averages with Exponential Block Sizes",
+            "kind": "theorem",
+            "type": "∀ {Ω : Type u_1} [inst : MeasureTheory.MeasureSpace Ω] [MeasureTheory.IsProbabilityMeasure MeasureTheory.volume]\n  (X : ℕ → Ω → ℝ),\n  MeasureTheory.Integrable (X 0) MeasureTheory.volume →\n    Pairwise (Function.onFun (fun f g => ProbabilityTheory.IndepFun f g MeasureTheory.volume) X) →\n      (∀ (i : ℕ), ProbabilityTheory.IdentDistrib (X i) (X 0) MeasureTheory.volume MeasureTheory.volume) →\n        (∀ (i : ℕ) (ω : Ω), 0 ≤ X i ω) →\n          ∀ {c : ℝ},\n            1 < c →\n              ∀ᵐ (ω : ...",
+            "informal_description": "For any real number $ c > 1 $, the average of the first $ \\lfloor c^n \\rfloor $ random variables $ X_i(\\omega) $ converges almost surely to the expected value $ \\mathbb{E}[X_0] $ as $ n \\to \\infty $. Formally, for almost every $ \\omega $, $ \\lim_{n \\to \\infty} \\frac{1}{\\lfloor c^n \\rfloor} \\sum_{i=0}^{\\lfloor c^n \\rfloor - 1} X_i(\\omega) = \\mathbb{E}[X_0] $.",
+            "path": "Mathlib.Probability.StrongLaw"
+          },
+          {
+            "formal_name": "ProbabilityTheory.strong_law_aux4",
+            "informal_name": "Auxiliary Lemma for Strong Law of Large Numbers with Exponential Growth Rate",
+            "kind": "theorem",
+            "type": "∀ {Ω : Type u_1} [inst : MeasureTheory.MeasureSpace Ω] [MeasureTheory.IsProbabilityMeasure MeasureTheory.volume]\n  (X : ℕ → Ω → ℝ),\n  MeasureTheory.Integrable (X 0) MeasureTheory.volume →\n    Pairwise (Function.onFun (fun f g => ProbabilityTheory.IndepFun f g MeasureTheory.volume) X) →\n      (∀ (i : ℕ), ProbabilityTheory.IdentDistrib (X i) (X 0) MeasureTheory.volume MeasureTheory.volume) →\n        (∀ (i : ℕ) (ω : Ω), 0 ≤ X i ω) →\n          ∀ {c : ℝ},\n            1 < c →\n              ∀ᵐ (ω : ...",
+            "informal_description": "For any real number $ c > 1 $, it holds almost everywhere that the difference between the sum of truncated random variables $ \\sum_{i=1}^{\\lfloor c^n \\rfloor} \\text{truncation}(X_i, i, \\omega) $ and the product $ \\lfloor c^n \\rfloor \\cdot \\mathbb{E}[X_0] $ is asymptotically negligible compared to $ c^n $ as $ n \\to \\infty $. Formally, $ \\frac{1}{\\lfloor c^n \\rfloor} \\sum_{i=1}^{\\lfloor c^n \\rfloor} \\text{truncation}(X_i, i, \\omega) - \\mathbb{E}[X_0] = o(1) $ almost surely, where the truncation function sets $ X_i(\\omega) $ to zero if it exceeds $ \\pm i $.",
+            "path": "Mathlib.Probability.StrongLaw"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_loogle",
+    "query": "ProbabilityTheory.variance, MeasureTheory.Measure",
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"ProbabilityTheory.variance\",\n      \"type\": \" {Ω : Type u_1} {mΩ : MeasurableSpace Ω} (X : Ω → ℝ) (μ : MeasureTheory.Measure Ω) : ℝ\",\n      \"module\": \"Mathlib.Probability.Moments.Variance\"\n    },\n    {\n      \"name\": \"ProbabilityTheory.variance_nonneg\",\n      \"type\": \" {Ω : Type u_1} {mΩ : MeasurableSpace Ω} (X : Ω → ℝ) (μ : MeasureTheory.Measure Ω) : 0 ≤ ProbabilityTheory.variance X μ\",\n      \"module\": \"Mathlib.Probability.Moments.Variance\"\n    },\n    {\n      \"name\": \"ProbabilityTheory.variance_fun_neg\",\n      \"type\": \" {Ω : Type u_1} {mΩ : MeasurableSpace Ω} {X : Ω → ℝ} {μ : MeasureTheory.Measure Ω} : ProbabilityTheory.variance (fun ω => -X ω) μ = ProbabilityTheory.variance X μ\",\n      \"module\": \"Mathlib.Probability.Moments.Variance\"\n    },\n    {\n      \"name\": \"ProbabilityTheory.covariance_self\",\n      \"type\": \" {Ω : Type u_1} {mΩ : MeasurableSpace Ω} {μ : MeasureTheory.Measure Ω} {X : Ω → ℝ} (hX : AEMeasurable X μ) : ProbabilityTheory.covariance X X μ = ProbabilityTheory.variance X μ\",\n      \"module\": \"Mathlib.Probability.Moments.Variance\"\n    },\n    {\n      \"name\": \"ProbabilityTheory.variance_neg\",\n      \"type\": \" {Ω : Type u_1} {mΩ : MeasurableSpace Ω} {X : Ω → ℝ} {μ : MeasureTheory.Measure Ω} : ProbabilityTheory.variance (-X) μ = ProbabilityTheory.variance X μ\",\n      \"module\": \"Mathlib.Probability.Moments.Variance\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "ProbabilityTheory.variance",
+            "type": " {Ω : Type u_1} {mΩ : MeasurableSpace Ω} (X : Ω → ℝ) (μ : MeasureTheory.Measure Ω) : ℝ",
+            "module": "Mathlib.Probability.Moments.Variance"
+          },
+          {
+            "name": "ProbabilityTheory.variance_nonneg",
+            "type": " {Ω : Type u_1} {mΩ : MeasurableSpace Ω} (X : Ω → ℝ) (μ : MeasureTheory.Measure Ω) : 0 ≤ ProbabilityTheory.variance X μ",
+            "module": "Mathlib.Probability.Moments.Variance"
+          },
+          {
+            "name": "ProbabilityTheory.variance_fun_neg",
+            "type": " {Ω : Type u_1} {mΩ : MeasurableSpace Ω} {X : Ω → ℝ} {μ : MeasureTheory.Measure Ω} : ProbabilityTheory.variance (fun ω => -X ω) μ = ProbabilityTheory.variance X μ",
+            "module": "Mathlib.Probability.Moments.Variance"
+          },
+          {
+            "name": "ProbabilityTheory.covariance_self",
+            "type": " {Ω : Type u_1} {mΩ : MeasurableSpace Ω} {μ : MeasureTheory.Measure Ω} {X : Ω → ℝ} (hX : AEMeasurable X μ) : ProbabilityTheory.covariance X X μ = ProbabilityTheory.variance X μ",
+            "module": "Mathlib.Probability.Moments.Variance"
+          },
+          {
+            "name": "ProbabilityTheory.variance_neg",
+            "type": " {Ω : Type u_1} {mΩ : MeasurableSpace Ω} {X : Ω → ℝ} {μ : MeasureTheory.Measure Ω} : ProbabilityTheory.variance (-X) μ = ProbabilityTheory.variance X μ",
+            "module": "Mathlib.Probability.Moments.Variance"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_leansearch",
+    "query": "Chebyshev inequality bounds the probability of a deviation of a sum of independent random variables using the sum of their variances.",
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"ProbabilityTheory.meas_ge_le_variance_div_sq\",\n      \"module_name\": \"Mathlib.Probability.Moments.Variance\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {Ω : Type u_1} {mΩ : MeasurableSpace Ω} {μ : MeasureTheory.Measure Ω} [MeasureTheory.IsFiniteMeasure μ] {X : Ω → ℝ},\\n  MeasureTheory.MemLp X 2 μ →\\n    ∀ {c : ℝ}, 0 < c → μ {ω | c ≤ |X ω - ∫ (x : Ω), X x ∂μ|} ≤ ENNReal.ofReal (ProbabilityTheory.variance X μ / c ^ 2)\"\n    },\n    {\n      \"name\": \"ProbabilityTheory.meas_ge_le_evariance_div_sq\",\n      \"module_name\": \"Mathlib.Probability.Moments.Variance\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {Ω : Type u_1} {mΩ : MeasurableSpace Ω} {μ : MeasureTheory.Measure Ω} {X : Ω → ℝ},\\n  MeasureTheory.AEStronglyMeasurable X μ →\\n    ∀ {c : NNReal}, c ≠ 0 → μ {ω | ↑c ≤ |X ω - ∫ (x : Ω), X x ∂μ|} ≤ ProbabilityTheory.evariance X μ / ↑c ^ 2\"\n    },\n    {\n      \"name\": \"ProbabilityTheory.IndepFun.variance_add\",\n      \"module_name\": \"Mathlib.Probability.Moments.Variance\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {Ω : Type u_1} {mΩ : MeasurableSpace Ω} {μ : MeasureTheory.Measure Ω} {X Y : Ω → ℝ},\\n  MeasureTheory.MemLp X 2 μ →\\n    MeasureTheory.MemLp Y 2 μ →\\n      ProbabilityTheory.IndepFun X Y μ →\\n        ProbabilityTheory.variance (X + Y) μ = ProbabilityTheory.variance X μ + ProbabilityTheory.variance Y μ\"\n    },\n    {\n      \"name\": \"ProbabilityTheory.IndepFun.variance_sum\",\n      \"module_name\": \"Mathlib.Probability.Moments.Variance\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {Ω : Type u_1} {mΩ : MeasurableSpace Ω} {μ : MeasureTheory.Measure Ω} {ι : Type u_3} {X : ι → Ω → ℝ} {s : Finset ι},\\n  (∀ i ∈ s, MeasureTheory.MemLp (X i) 2 μ) →\\n    ((↑s).Pairwise fun i j => ProbabilityTheory.IndepFun (X i) (X j) μ) →\\n      ProbabilityTheory.variance (∑ i ∈ s, X i) μ = ∑ i ∈ s, ProbabilityTheory.variance (X i) μ\"\n    },\n    {\n      \"name\": \"ProbabilityTheory.IndepFun.variance_fun_add\",\n      \"module_name\": \"Mathlib.Probability.Moments.Variance\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {Ω : Type u_1} {mΩ : MeasurableSpace Ω} {μ : MeasureTheory.Measure Ω} {X Y : Ω → ℝ},\\n  MeasureTheory.MemLp X 2 μ →\\n    MeasureTheory.MemLp Y 2 μ →\\n      ProbabilityTheory.IndepFun X Y μ →\\n        ProbabilityTheory.variance (fun ω => X ω + Y ω) μ =\\n          ProbabilityTheory.variance X μ + ProbabilityTheory.variance Y μ\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "ProbabilityTheory.meas_ge_le_variance_div_sq",
+            "module_name": "Mathlib.Probability.Moments.Variance",
+            "kind": "theorem",
+            "type": "∀ {Ω : Type u_1} {mΩ : MeasurableSpace Ω} {μ : MeasureTheory.Measure Ω} [MeasureTheory.IsFiniteMeasure μ] {X : Ω → ℝ},\n  MeasureTheory.MemLp X 2 μ →\n    ∀ {c : ℝ}, 0 < c → μ {ω | c ≤ |X ω - ∫ (x : Ω), X x ∂μ|} ≤ ENNReal.ofReal (ProbabilityTheory.variance X μ / c ^ 2)"
+          },
+          {
+            "name": "ProbabilityTheory.meas_ge_le_evariance_div_sq",
+            "module_name": "Mathlib.Probability.Moments.Variance",
+            "kind": "theorem",
+            "type": "∀ {Ω : Type u_1} {mΩ : MeasurableSpace Ω} {μ : MeasureTheory.Measure Ω} {X : Ω → ℝ},\n  MeasureTheory.AEStronglyMeasurable X μ →\n    ∀ {c : NNReal}, c ≠ 0 → μ {ω | ↑c ≤ |X ω - ∫ (x : Ω), X x ∂μ|} ≤ ProbabilityTheory.evariance X μ / ↑c ^ 2"
+          },
+          {
+            "name": "ProbabilityTheory.IndepFun.variance_add",
+            "module_name": "Mathlib.Probability.Moments.Variance",
+            "kind": "theorem",
+            "type": "∀ {Ω : Type u_1} {mΩ : MeasurableSpace Ω} {μ : MeasureTheory.Measure Ω} {X Y : Ω → ℝ},\n  MeasureTheory.MemLp X 2 μ →\n    MeasureTheory.MemLp Y 2 μ →\n      ProbabilityTheory.IndepFun X Y μ →\n        ProbabilityTheory.variance (X + Y) μ = ProbabilityTheory.variance X μ + ProbabilityTheory.variance Y μ"
+          },
+          {
+            "name": "ProbabilityTheory.IndepFun.variance_sum",
+            "module_name": "Mathlib.Probability.Moments.Variance",
+            "kind": "theorem",
+            "type": "∀ {Ω : Type u_1} {mΩ : MeasurableSpace Ω} {μ : MeasureTheory.Measure Ω} {ι : Type u_3} {X : ι → Ω → ℝ} {s : Finset ι},\n  (∀ i ∈ s, MeasureTheory.MemLp (X i) 2 μ) →\n    ((↑s).Pairwise fun i j => ProbabilityTheory.IndepFun (X i) (X j) μ) →\n      ProbabilityTheory.variance (∑ i ∈ s, X i) μ = ∑ i ∈ s, ProbabilityTheory.variance (X i) μ"
+          },
+          {
+            "name": "ProbabilityTheory.IndepFun.variance_fun_add",
+            "module_name": "Mathlib.Probability.Moments.Variance",
+            "kind": "theorem",
+            "type": "∀ {Ω : Type u_1} {mΩ : MeasurableSpace Ω} {μ : MeasureTheory.Measure Ω} {X Y : Ω → ℝ},\n  MeasureTheory.MemLp X 2 μ →\n    MeasureTheory.MemLp Y 2 μ →\n      ProbabilityTheory.IndepFun X Y μ →\n        ProbabilityTheory.variance (fun ω => X ω + Y ω) μ =\n          ProbabilityTheory.variance X μ + ProbabilityTheory.variance Y μ"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_local_search",
+    "query": "meas_ge_le_variance_div_sq",
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"ProbabilityTheory.meas_ge_le_variance_div_sq\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Probability/Moments/Variance.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "ProbabilityTheory.meas_ge_le_variance_div_sq",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Probability/Moments/Variance.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  }
+]

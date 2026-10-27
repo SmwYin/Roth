@@ -1,0 +1,23 @@
+{
+  "declaration": "Roth.card_filter_weight_le",
+  "kind": "theorem",
+  "type": "∀ (m : ℕ) (r : Fin m → ℕ),\n  (∀ (j : Fin m), 0 < r j) →\n    ∀ {lam : ℝ},\n      0 < lam → ↑{d ∈ Roth.box r | Roth.weight r d ≤ (↑m - lam) / 2}.card ≤ 2 * √↑m / lam * ∏ j, (↑(r j) + 1)",
+  "verdict": "BORDERLINE-needs-human",
+  "what": "Lemma8: lower-tail count of normalized natural lattice vectors in a finite positive rectangular box is at most2sqrt(m)/lambda times total cardinality.",
+  "how": "Dimension induction; trivial total-count regime; empty zero/one-dimensional cases; last-coordinate fibres and shifted reciprocal sum in large-tail regime.",
+  "hypotheses": "m natural includes0; r:Fin m→Nat; every rj positive; lambda real strictly positive. Both positivity premises essential by native counterexamples.",
+  "project_dependencies": [
+    "Roth.box",
+    "Roth.weight",
+    "Roth.filter_weight_le_eq_empty",
+    "Roth.card_filter_weight_le_of_le_sqrt_aux",
+    "Roth.card_filter_weight_le_succ_aux"
+  ],
+  "caller_summary": "One explicit source caller MainLemma574 private mul_card_filter_weight_le_aux; same sole direct canonical kernel consumer. Original theorem with actual private helper constants and complete consumer body replayed natively.",
+  "mathlib_api_audit": "Five actual methods on current/literature/probability forms; generic cardinality and Chebyshev/variance/uniform APIs are partial matches. Pinned positive signatures and named Chebyshev application checked, no complete original specialization claimed. Bounded exact? nonclosure is not absence proof.",
+  "moral_duplications": "Not Roth arithmetic-progression/Behrend results. Generic fibre count handles decomposition, probability theory supplies a potential stronger route requiring new uniform-box moment/count bridges.",
+  "generalization": "Arbitrary universe-polymorphic Fintype index transport actually compiled; expanded piFinset ordinary-sum form with DecidableEq and original Fin/Finsupp recovery compiled. These are new project-dependent proofs; no droppable original premise found.",
+  "missing_api": "Design choice: named finite-product normalized lower-tail count versus primary stronger product-measure concentration with local count corollary; retain redundant project box/weight aliases outside mathlib.",
+  "junk": "No: live sole count estimate on the auxiliary-polynomial/main-lemma path.",
+  "action": "Retain local theorem and caller pending3 concrete upstream API questions; no production refactor now, no cost-based downgrade, prior helper verdicts not inherited."
+}

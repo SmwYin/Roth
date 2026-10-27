@@ -1,0 +1,38 @@
+open scoped BigOperators
+open Finset
+namespace Audit132
+theorem finite_index {σ : Type*} [Fintype σ] [DecidableEq σ]
+    (r : σ → ℕ) (hr : ∀ j, 0 < r j) {lam : ℝ} (hlam : 0 < lam) :
+    (((Roth.box r).filter fun d ↦ Roth.weight r d ≤ ((Fintype.card σ : ℝ) - lam) / 2).card : ℝ) ≤
+      2 * Real.sqrt (Fintype.card σ : ℝ) / lam * ∏ j, ((r j : ℝ) + 1) := by
+  classical
+  let e : Fin (Fintype.card σ) ≃ σ := (Fintype.equivFin σ).symm
+  let E : (Fin (Fintype.card σ) →₀ ℕ) ≃ (σ →₀ ℕ) := Finsupp.equivCongrLeft e
+  have hw (d : Fin (Fintype.card σ) →₀ ℕ) : Roth.weight r (E d) = Roth.weight (r ∘ e) d := by
+    change Roth.weight r (Finsupp.equivMapDomain e d) = _
+    rw [Finsupp.equivMapDomain_eq_mapDomain]
+    exact Roth.weight_mapDomain e.injective r d
+  have hc : ((Roth.box (r ∘ e)).filter fun d ↦ Roth.weight (r ∘ e) d ≤
+      ((Fintype.card σ : ℝ) - lam) / 2).card =
+      ((Roth.box r).filter fun d ↦ Roth.weight r d ≤
+      ((Fintype.card σ : ℝ) - lam) / 2).card := by
+    apply Finset.card_equiv E
+    intro d
+    simp only [Finset.mem_filter, Roth.mem_box, ← hw]
+    constructor
+    · rintro ⟨h, hwgt⟩
+      refine ⟨?_, hwgt⟩
+      intro j
+      simpa [E, Finsupp.equivCongrLeft_apply, Finsupp.equivMapDomain_apply,
+        Function.comp_apply] using h (e.symm j)
+    · rintro ⟨h, hwgt⟩
+      refine ⟨?_, hwgt⟩
+      intro j
+      simpa [E, Finsupp.equivCongrLeft_apply, Finsupp.equivMapDomain_apply,
+        Function.comp_apply] using h (e j)
+  have hp : (∏ j, (((r ∘ e) j : ℝ) + 1)) = ∏ j, ((r j : ℝ) + 1) :=
+    Fintype.prod_equiv e _ _ fun _ ↦ rfl
+  simpa only [hc, hp] using Roth.card_filter_weight_le (Fintype.card σ) (r ∘ e)
+    (fun j ↦ hr (e j)) hlam
+#print axioms finite_index
+end Audit132

@@ -1,0 +1,102 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.BigOperators.Fin\nimport Mathlib.Analysis.Real.Sqrt\nimport Mathlib.Data.Finsupp.Interval\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.Tactic\n#check_failure Roth.card_filter_weight_le\nopen scoped BigOperators\nopen Finset\nnamespace Audit132Search\nexample (m : ℕ) (r : Fin m → ℕ) (hr : ∀ j, 0 < r j) {lam : ℝ} (hlam : 0 < lam) :\n    True := by\n  classical\n  fail_if_success have :\n      ((((Fintype.piFinset fun j ↦ Finset.range (r j + 1)).map\n        Finsupp.equivFunOnFinite.symm.toEmbedding).filter fun d ↦\n          (∑ j, (d j : ℝ) / r j) ≤ ((m : ℝ) - lam) / 2).card : ℝ) ≤\n          2 * Real.sqrt (m : ℝ) / lam * ∏ j, ((r j : ℝ) + 1) := by exact?\n  trivial\nexample {σ : Type*} [Fintype σ] (r : σ → ℕ) (hr : ∀ j, 0 < r j)\n    {lam : ℝ} (hlam : 0 < lam) : True := by\n  classical\n  fail_if_success have : (((Fintype.piFinset fun j ↦ Finset.range (r j + 1)).filter\n      fun d ↦ (∑ j, (d j : ℝ) / r j) ≤ ((Fintype.card σ : ℝ) - lam) / 2).card : ℝ) ≤\n      2 * Real.sqrt (Fintype.card σ : ℝ) / lam * ∏ j, ((r j : ℝ) + 1) := by exact?\n  trivial\n#check @Finset.card_filter_le\n#check @Finset.card_eq_sum_card_fiberwise\n#check @Finset.card_equiv\n#check @Fintype.prod_equiv\nend Audit132Search\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.card_filter_weight_le`\",\n      \"line\": 6,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"warning\",\n      \"message\": \"Variable name `hr` is not explicitly referenced.\\n\\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\\n  [apply] _hr\\n\\nNote: This linter can be disabled with `set_option linter.unusedVariables false`\",\n      \"line\": 10,\n      \"column\": 34,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"warning\",\n      \"message\": \"Variable name `hlam` is not explicitly referenced.\\n\\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\\n  [apply] _hlam\\n\\nNote: This linter can be disabled with `set_option linter.unusedVariables false`\",\n      \"line\": 10,\n      \"column\": 64,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@card_filter_le : ∀ {α : Type u_1} (s : Finset α) (p : α → Prop) [inst : DecidablePred p], #(filter p s) ≤ #s\",\n      \"line\": 26,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@card_eq_sum_card_fiberwise : ∀ {ι : Type u_1} {M : Type u_2} [inst : DecidableEq M] {f : ι → M} {s : Finset ι}\\n  {t : Finset M}, Set.MapsTo f ↑s ↑t → #s = ∑ b ∈ t, #({a ∈ s | f a = b})\",\n      \"line\": 27,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@card_equiv : ∀ {α : Type u_1} {β : Type u_2} {s : Finset α} {t : Finset β} (e : α ≃ β),\\n  (∀ (i : α), i ∈ s ↔ e i ∈ t) → #s = #t\",\n      \"line\": 28,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Fintype.prod_equiv : ∀ {ι : Type u_1} {κ : Type u_2} {M : Type u_3} [inst : Fintype ι] [inst_1 : Fintype κ]\\n  [inst_2 : CommMonoid M] (e : ι ≃ κ) (f : ι → M) (g : κ → M), (∀ (x : ι), f x = g (e x)) → ∏ x, f x = ∏ x, g x\",\n      \"line\": 29,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"warning\",\n      \"message\": \"Variable name `hr` is not explicitly referenced.\\n\\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\\n  [apply] _hr\\n\\nNote: This linter can be disabled with `set_option linter.unusedVariables false`\",\n      \"line\": 19,\n      \"column\": 46,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"warning\",\n      \"message\": \"Variable name `hlam` is not explicitly referenced.\\n\\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\\n  [apply] _hlam\\n\\nNote: This linter can be disabled with `set_option linter.unusedVariables false`\",\n      \"line\": 20,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.card_filter_weight_le`",
+          "line": 6,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "warning",
+          "message": "Variable name `hr` is not explicitly referenced.\n\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\n  [apply] _hr\n\nNote: This linter can be disabled with `set_option linter.unusedVariables false`",
+          "line": 10,
+          "column": 34,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "warning",
+          "message": "Variable name `hlam` is not explicitly referenced.\n\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\n  [apply] _hlam\n\nNote: This linter can be disabled with `set_option linter.unusedVariables false`",
+          "line": 10,
+          "column": 64,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@card_filter_le : ∀ {α : Type u_1} (s : Finset α) (p : α → Prop) [inst : DecidablePred p], #(filter p s) ≤ #s",
+          "line": 26,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@card_eq_sum_card_fiberwise : ∀ {ι : Type u_1} {M : Type u_2} [inst : DecidableEq M] {f : ι → M} {s : Finset ι}\n  {t : Finset M}, Set.MapsTo f ↑s ↑t → #s = ∑ b ∈ t, #({a ∈ s | f a = b})",
+          "line": 27,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@card_equiv : ∀ {α : Type u_1} {β : Type u_2} {s : Finset α} {t : Finset β} (e : α ≃ β),\n  (∀ (i : α), i ∈ s ↔ e i ∈ t) → #s = #t",
+          "line": 28,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Fintype.prod_equiv : ∀ {ι : Type u_1} {κ : Type u_2} {M : Type u_3} [inst : Fintype ι] [inst_1 : Fintype κ]\n  [inst_2 : CommMonoid M] (e : ι ≃ κ) (f : ι → M) (g : κ → M), (∀ (x : ι), f x = g (e x)) → ∏ x, f x = ∏ x, g x",
+          "line": 29,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "warning",
+          "message": "Variable name `hr` is not explicitly referenced.\n\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\n  [apply] _hr\n\nNote: This linter can be disabled with `set_option linter.unusedVariables false`",
+          "line": 19,
+          "column": 46,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "warning",
+          "message": "Variable name `hlam` is not explicitly referenced.\n\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\n  [apply] _hlam\n\nNote: This linter can be disabled with `set_option linter.unusedVariables false`",
+          "line": 20,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 61742
+}

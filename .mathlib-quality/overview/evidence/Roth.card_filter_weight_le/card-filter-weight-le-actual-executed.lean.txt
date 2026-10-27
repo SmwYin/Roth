@@ -1,0 +1,44 @@
+open Lean Elab Term
+elab "lattice132Empty" : term => do
+  Lean.Meta.mkConstWithFreshMVarLevels
+    (Lean.mkPrivateNameCore `Roth.Lattice `Roth.filter_weight_le_eq_empty)
+elab "lattice132Small" : term => do
+  Lean.Meta.mkConstWithFreshMVarLevels
+    (Lean.mkPrivateNameCore `Roth.Lattice `Roth.card_filter_weight_le_of_le_sqrt_aux)
+elab "lattice132Succ" : term => do
+  Lean.Meta.mkConstWithFreshMVarLevels
+    (Lean.mkPrivateNameCore `Roth.Lattice `Roth.card_filter_weight_le_succ_aux)
+namespace CardFilterWeightLeActual
+open Roth Finset
+theorem replay (m : ℕ) (r : Fin m → ℕ) (hr : ∀ j, 0 < r j) {lam : ℝ} (hlam : 0 < lam)
+    : (((box r).filter fun d ↦ weight r d ≤ ((m : ℝ) - lam) / 2).card : ℝ) ≤
+      2 * √(m : ℝ) / lam * ∏ j, ((r j : ℝ) + 1) := by
+  classical
+  induction m generalizing lam with
+  | zero =>
+    rw [lattice132Empty r (by simpa using hlam)]
+    simp
+  | succ n ih =>
+    by_cases h : lam ≤ 2 * √(((n + 1 : ℕ) : ℝ))
+    · exact lattice132Small (n + 1) r hlam h
+    rcases Nat.eq_zero_or_pos n with rfl | hn
+    · rw [lattice132Empty r (by
+        norm_num at h ⊢
+        linarith), card_empty, Nat.cast_zero]
+      positivity
+    exact lattice132Succ r (hr _) hn (lt_of_not_ge h) (ih _ fun j ↦ hr _)
+
+theorem actualConsumer {m : ℕ} (hm : 0 < m) (r : Fin m → ℕ) (hr : ∀ j, 0 < r j)
+    (a : ℝ) : a * (((box r).filter fun d ↦ weight r d ≤ ((m : ℝ) - 4 * a * √(m : ℝ)) / 2).card : ℝ)
+      ≤ ((∏ j, (r j + 1) : ℕ) : ℝ) / 2 := by
+  by_cases ha : 0 < a
+  · refine (mul_le_mul_of_nonneg_left
+      (replay m r hr (by positivity)) ha.le).trans_eq ?_
+    push_cast
+    field_simp [ha.ne', (Real.sqrt_pos.2 (Nat.cast_pos.2 hm)).ne']
+    ring
+  · exact (mul_nonpos_of_nonpos_of_nonneg (le_of_not_gt ha) (Nat.cast_nonneg _)).trans
+      (by positivity)
+end CardFilterWeightLeActual
+#print axioms CardFilterWeightLeActual.replay
+#print axioms CardFilterWeightLeActual.actualConsumer
