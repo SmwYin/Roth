@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 66/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 67/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 66; remaining: 227.
-- Verdicts: 10 NO-composable-from-mathlib, 12 YES-add-as-is, 3 YES-but-generalise-first, 11 NO-mathlib-has-it, 21 BORDERLINE-needs-human, 9 SKIP.
+- Completed applicable assessments: 67; remaining: 226.
+- Verdicts: 10 NO-composable-from-mathlib, 12 YES-add-as-is, 3 YES-but-generalise-first, 11 NO-mathlib-has-it, 22 BORDERLINE-needs-human, 9 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -719,6 +719,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: 0 explicit refs; actual simp dependency in taylor_neg_taylor confirmed by disabling target and inspecting constants. Replacement inverse/injective/zero_iff chain verified.
 - Verdict: NO-composable-from-mathlib; [complete report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor_zero.md).
 
+### Completed: `MvPolynomial.taylor_map`
+
+- Type: `∀ {σ : Type u} {R : Type v} [CommSemiring R] {S : Type w} [CommSemiring S] (f : R →+* S) (α : σ → R) (P : MvPolynomial σ R), MvPolynomial.taylor (fun j ↦ f (α j)) (MvPolynomial.map f P) = MvPolynomial.map f (MvPolynomial.taylor α P)`
+- What: Translation commutes with coefficient change, mapping the translation vector as well as the polynomial.
+- How: Generic substitution-map naturality followed by normalization of mapped generators using map_add/map_X/map_C.
+- Hypotheses: Arbitrary independent-universe variable/source/target types, commutative semirings R and S, arbitrary unital semiring homomorphism f, translation vector and polynomial. No injectivity, characteristic or finite-variable conditions.
+- Project dependencies: MvPolynomial.taylor
+- Caller summary: 0 named production callers; no independent inline derivation found. Not simp-tagged; no exhaustive implicit dependency closure claimed.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor_map.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -877,6 +887,8 @@ Completed `MvPolynomial.taylor_taylor`: comp_aeval_apply, comp_aeval, map_add, a
 
 Completed `MvPolynomial.taylor_zero`: Existing map_zero(C), add_zero, aeval_X_left_apply compose exact old form; structural congrArg×2/funext/Eq.trans×2 explicit. aeval_X_left is bundled canonical identity. Univariate Polynomial.taylor_zero is only analogue.
 
+Completed `MvPolynomial.taylor_map`: map_eval₂ is exact generic substitution law; map_aeval/eval₂_map and Monad.map_bind₁ are related. Original translated-generator normalization is propositional, not a direct exact call. Polynomial.map_taylor is univariate analogue over Semiring.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -1010,6 +1022,8 @@ Completed `MvPolynomial.eval_taylor`: Abstract substitution-evaluation law alrea
 Completed `MvPolynomial.taylor_taylor`: Polynomial.taylor_taylor is only a univariate analogue; generic comp_aeval_apply needs nondefinitional generator normalization.
 
 Completed `MvPolynomial.taylor_zero`: Elementary identity-assignment law after zero normalization; not a direct definitional specialization.
+
+Completed `MvPolynomial.taylor_map`: Naturality of substitution specialized to translations; no distinct new mathematical argument.
 
 ## Part 5: Generalization opportunities
 
@@ -1148,6 +1162,8 @@ Completed `MvPolynomial.taylor_taylor`: Already arbitrary-variable CommSemiring 
 
 Completed `MvPolynomial.taylor_zero`: Already general within parent CommSemiring interface. Arbitrary-algebra zero-perturbation of any assignment verified separately; no unverified class weakening.
 
+Completed `MvPolynomial.taylor_map`: Maximal within fixed parent CommSemiring interface; arbitrary substitution/variable target is already existing mathlib. Bundled RingHom square verified without adding assumptions; no verified parent weakening.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -1282,6 +1298,8 @@ Completed `MvPolynomial.eval_taylor`: Translation-specific convenience API is an
 Completed `MvPolynomial.taylor_taylor`: Design question: package translation composition as named law or structural action API; no missing generic composition engine.
 
 Completed `MvPolynomial.taylor_zero`: No mathematical API gap; parent translation naming/simp design independently assessed.
+
+Completed `MvPolynomial.taylor_map`: Design choice whether a named multivariate translation API merits coefficient-map convenience law; no generic substitution gap.
 
 ## Part 7: Junk / removable
 
@@ -1420,6 +1438,8 @@ Completed `MvPolynomial.taylor_taylor`: Live: sole direct caller supplies negati
 
 Completed `MvPolynomial.taylor_zero`: Not dead: simp attribute has verified implicit inverse-translation caller despite zero explicit references.
 
+Completed `MvPolynomial.taylor_map`: Unused by explicit project source references, but standard base-change convenience law; zero references alone does not establish dead code.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -1490,6 +1510,7 @@ Completed `MvPolynomial.taylor_zero`: Not dead: simp attribute has verified impl
 | 64 | `MvPolynomial.eval_taylor` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.eval_taylor.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.eval_taylor/root-acceptance.json) |
 | 65 | `MvPolynomial.taylor_taylor` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor_taylor.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.taylor_taylor/root-acceptance.json) |
 | 66 | `MvPolynomial.taylor_zero` | NO-composable-from-mathlib | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor_zero.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.taylor_zero/root-acceptance.json) |
+| 67 | `MvPolynomial.taylor_map` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/MvPolynomial.taylor_map.md) · [Acceptance](.mathlib-quality/overview/evidence/MvPolynomial.taylor_map/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -1621,11 +1642,13 @@ Completed `MvPolynomial.taylor_taylor` action: BORDERLINE-needs-human: keep in R
 
 Completed `MvPolynomial.taylor_zero` action: NO-composable-from-mathlib: decline separate upstream theorem. If removing local lemma, inline three-fact composition in taylor_neg_taylor proof after taylor_taylor/neg_add_cancel normalization and rebuild project; retain locally while named translation simp API is desired. Read-only assessment, no production edits.
 
+Completed `MvPolynomial.taylor_map` action: BORDERLINE: decide translation convenience API, orientation/naming and whether to expose only generic substitution law. Keep production unchanged; no user input needed to complete this read-only assessment.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `MvPolynomial.taylor_map` next. Supporting identities receive their own applicable checks.
+   `MvPolynomial.taylor_rename` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.

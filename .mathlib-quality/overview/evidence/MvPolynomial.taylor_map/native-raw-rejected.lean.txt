@@ -1,0 +1,28 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+import Mathlib.Algebra.Polynomial.CancelLeads
+import Mathlib.Algebra.MvPolynomial.PDeriv
+#check_failure MvPolynomial.taylor_map
+namespace MvPolynomial.TaylorMapRaw
+variable {σ τ R S : Type*} [CommSemiring R] [CommSemiring S]
+def shift (α : σ → R) : MvPolynomial σ R →ₐ[R] MvPolynomial σ R :=
+  aeval fun j ↦ X j + C (α j)
+theorem substitution (f : R →+* S) (g : σ → MvPolynomial τ R)
+    (P : MvPolynomial σ R) :
+    map f (aeval g P) = aeval (map f ∘ g) (map f P) :=
+  map_eval₂ f g P
+theorem oldForm (f : R →+* S) (α : σ → R) (P : MvPolynomial σ R) :
+    shift (fun j ↦ f (α j)) (map f P) = map f (shift α P) := by
+  simpa only [shift, Function.comp_apply, map_add, map_X, map_C] using
+    (map_eval₂ f (fun j ↦ X j + C (α j)) P).symm
+#print axioms substitution
+#print axioms oldForm
+#print oldForm
+end MvPolynomial.TaylorMapRaw

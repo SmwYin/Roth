@@ -1,0 +1,18 @@
+namespace MvPolynomial.TaylorMapExtra
+universe u v w
+variable {σ : Type u} {R : Type v} {S : Type w} [CommSemiring R] [CommSemiring S]
+theorem square (f : R →+* S) (α : σ → R) :
+    (taylor (fun j ↦ f (α j))).toRingHom.comp (map f) =
+      (map f).comp (taylor α).toRingHom := by
+  apply RingHom.ext
+  intro P
+  exact TaylorMapAssessment.replay f α P
+#print axioms square
+#check @Polynomial.map_taylor
+example {T : Type*} [Semiring T] : True := by
+  fail_if_success let _ := (MvPolynomial.taylor (σ := σ) (R := T))
+  trivial
+example {T : Type*} [Semiring T] : True := by
+  fail_if_success let _ := (MvPolynomial.taylor_map (σ := σ) (R := R) (S := T))
+  trivial
+end MvPolynomial.TaylorMapExtra

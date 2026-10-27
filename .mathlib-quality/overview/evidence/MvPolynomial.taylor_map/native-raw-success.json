@@ -1,0 +1,57 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.Polynomial.HasseDeriv\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.LinearAlgebra.Matrix.ToLinearEquiv\nimport Mathlib.RingTheory.Polynomial.Wronskian\nimport Mathlib.LinearAlgebra.Vandermonde\nimport Mathlib.Data.ZMod.Defs\nimport Mathlib.Algebra.Field.ZMod\nimport Mathlib.Algebra.Order.Group.Int.Sum\nimport Mathlib.LinearAlgebra.Matrix.Polynomial\nimport Mathlib.Algebra.Polynomial.CancelLeads\nimport Mathlib.Algebra.MvPolynomial.PDeriv\n#check_failure MvPolynomial.taylor_map\nnoncomputable section\nnamespace MvPolynomial.TaylorMapRaw\nvariable {σ τ R S : Type*} [CommSemiring R] [CommSemiring S]\ndef shift (α : σ → R) : MvPolynomial σ R →ₐ[R] MvPolynomial σ R :=\n  aeval fun j ↦ X j + C (α j)\ntheorem substitution (f : R →+* S) (g : σ → MvPolynomial τ R)\n    (P : MvPolynomial σ R) :\n    map f (aeval g P) = aeval (map f ∘ g) (map f P) :=\n  map_eval₂ f g P\ntheorem oldForm (f : R →+* S) (α : σ → R) (P : MvPolynomial σ R) :\n    shift (fun j ↦ f (α j)) (map f P) = map f (shift α P) := by\n  change eval₂ C (fun j ↦ X j + C (f (α j))) (map f P) =\n    map f (eval₂ C (fun j ↦ X j + C (α j)) P)\n  rw [map_eval₂]\n  congr 1\n  funext j\n  simp only [Function.comp_apply, map_add, map_X, map_C]\n#print axioms substitution\n#print axioms oldForm\n#print oldForm\nend MvPolynomial.TaylorMapRaw\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown constant `MvPolynomial.taylor_map`\",\n      \"line\": 12,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'MvPolynomial.TaylorMapRaw.substitution' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 30,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'MvPolynomial.TaylorMapRaw.oldForm' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 31,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"theorem MvPolynomial.TaylorMapRaw.oldForm.{u_1, u_3, u_4} : ∀ {σ : Type u_1} {R : Type u_3} {S : Type u_4}\\n  [inst : CommSemiring R] [inst_1 : CommSemiring S] (f : R →+* S) (α : σ → R) (P : MvPolynomial σ R),\\n  (shift fun j ↦ f (α j)) ((map f) P) = (map f) ((shift α) P) :=\\nfun {σ} {R} {S} [CommSemiring R] [CommSemiring S] f α P ↦\\n  id\\n    (Eq.mpr\\n      (id\\n        (congrArg (fun _a ↦ eval₂ C (fun j ↦ X j + C (f (α j))) ((map f) P) = _a)\\n          (map_eval₂ f (fun j ↦ X j + C (α j)) P)))\\n      ((fun {R} {S₁} {σ} [CommSemiring R] [CommSemiring S₁] f f_1 e_f ↦\\n          Eq.rec (motive := fun f_2 e_f ↦\\n            ∀ (g g_1 : σ → S₁), g = g_1 → ∀ (p p_1 : MvPolynomial σ R), p = p_1 → eval₂ f g p = eval₂ f_2 g_1 p_1)\\n            (fun g g_1 e_g ↦\\n              Eq.rec (motive := fun g_2 e_g ↦ ∀ (p p_1 : MvPolynomial σ R), p = p_1 → eval₂ f g p = eval₂ f g_2 p_1)\\n                (fun p p_1 e_p ↦ e_p ▸ Eq.refl (eval₂ f g p)) e_g)\\n            e_f)\\n        C C (Eq.refl C) (fun j ↦ X j + C (f (α j))) (⇑(map f) ∘ fun j ↦ X j + C (α j))\\n        (funext fun j ↦\\n          of_eq_true\\n            (Eq.trans\\n              (congrArg (Eq (X j + C (f (α j))))\\n                (Eq.trans (map_add (map f) (X j) (C (α j))) (congr (congrArg HAdd.hAdd (map_X f j)) (map_C f (α j)))))\\n              (eq_self (X j + C (f (α j))))))\\n        ((map f) P) ((map f) P) (Eq.refl ((map f) P))))\",\n      \"line\": 32,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown constant `MvPolynomial.taylor_map`",
+          "line": 12,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'MvPolynomial.TaylorMapRaw.substitution' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 30,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'MvPolynomial.TaylorMapRaw.oldForm' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 31,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "theorem MvPolynomial.TaylorMapRaw.oldForm.{u_1, u_3, u_4} : ∀ {σ : Type u_1} {R : Type u_3} {S : Type u_4}\n  [inst : CommSemiring R] [inst_1 : CommSemiring S] (f : R →+* S) (α : σ → R) (P : MvPolynomial σ R),\n  (shift fun j ↦ f (α j)) ((map f) P) = (map f) ((shift α) P) :=\nfun {σ} {R} {S} [CommSemiring R] [CommSemiring S] f α P ↦\n  id\n    (Eq.mpr\n      (id\n        (congrArg (fun _a ↦ eval₂ C (fun j ↦ X j + C (f (α j))) ((map f) P) = _a)\n          (map_eval₂ f (fun j ↦ X j + C (α j)) P)))\n      ((fun {R} {S₁} {σ} [CommSemiring R] [CommSemiring S₁] f f_1 e_f ↦\n          Eq.rec (motive := fun f_2 e_f ↦\n            ∀ (g g_1 : σ → S₁), g = g_1 → ∀ (p p_1 : MvPolynomial σ R), p = p_1 → eval₂ f g p = eval₂ f_2 g_1 p_1)\n            (fun g g_1 e_g ↦\n              Eq.rec (motive := fun g_2 e_g ↦ ∀ (p p_1 : MvPolynomial σ R), p = p_1 → eval₂ f g p = eval₂ f g_2 p_1)\n                (fun p p_1 e_p ↦ e_p ▸ Eq.refl (eval₂ f g p)) e_g)\n            e_f)\n        C C (Eq.refl C) (fun j ↦ X j + C (f (α j))) (⇑(map f) ∘ fun j ↦ X j + C (α j))\n        (funext fun j ↦\n          of_eq_true\n            (Eq.trans\n              (congrArg (Eq (X j + C (f (α j))))\n                (Eq.trans (map_add (map f) (X j) (C (α j))) (congr (congrArg HAdd.hAdd (map_X f j)) (map_C f (α j)))))\n              (eq_self (X j + C (f (α j))))))\n        ((map f) P) ((map f) P) (Eq.refl ((map f) P))))",
+          "line": 32,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 324
+}

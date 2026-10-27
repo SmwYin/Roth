@@ -1,0 +1,75 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.Polynomial.HasseDeriv\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.LinearAlgebra.Matrix.ToLinearEquiv\nimport Mathlib.RingTheory.Polynomial.Wronskian\nimport Mathlib.LinearAlgebra.Vandermonde\nimport Mathlib.Data.ZMod.Defs\nimport Mathlib.Algebra.Field.ZMod\nimport Mathlib.Algebra.Order.Group.Int.Sum\nimport Mathlib.LinearAlgebra.Matrix.Polynomial\nimport Mathlib.Algebra.Polynomial.CancelLeads\nimport Mathlib.Algebra.MvPolynomial.PDeriv\n#check_failure MvPolynomial.taylor_map\nnamespace MvPolynomial.TaylorMapRaw\nvariable {σ τ R S : Type*} [CommSemiring R] [CommSemiring S]\ndef shift (α : σ → R) : MvPolynomial σ R →ₐ[R] MvPolynomial σ R :=\n  aeval fun j ↦ X j + C (α j)\ntheorem substitution (f : R →+* S) (g : σ → MvPolynomial τ R)\n    (P : MvPolynomial σ R) :\n    map f (aeval g P) = aeval (map f ∘ g) (map f P) :=\n  map_eval₂ f g P\ntheorem oldForm (f : R →+* S) (α : σ → R) (P : MvPolynomial σ R) :\n    shift (fun j ↦ f (α j)) (map f P) = map f (shift α P) := by\n  simpa only [shift, Function.comp_apply, map_add, map_X, map_C] using\n    (map_eval₂ f (fun j ↦ X j + C (α j)) P).symm\n#print axioms substitution\n#print axioms oldForm\n#print oldForm\nend MvPolynomial.TaylorMapRaw\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": false,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown constant `MvPolynomial.taylor_map`\",\n      \"line\": 12,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"failed to compile definition, consider marking it as 'noncomputable' because it depends on 'AddMonoidAlgebra.commSemiring', which is 'noncomputable'\",\n      \"line\": 15,\n      \"column\": 5,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"(deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached\\n\\nNote: Use `set_option maxHeartbeats <num>` to set the limit.\\n\\nHint: Additional diagnostic information may be available using the `set_option diagnostics true` command.\",\n      \"line\": 23,\n      \"column\": 3,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'MvPolynomial.TaylorMapRaw.substitution' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 25,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'MvPolynomial.TaylorMapRaw.oldForm' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 26,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"theorem MvPolynomial.TaylorMapRaw.oldForm.{u_1, u_3, u_4} : ∀ {σ : Type u_1} {R : Type u_3} {S : Type u_4}\\n  [inst : CommSemiring R] [inst_1 : CommSemiring S] (f : R →+* S) (α : σ → R) (P : MvPolynomial σ R),\\n  (shift fun j ↦ f (α j)) ((map f) P) = (map f) ((shift α) P) :=\\nfun {σ} {R} {S} [CommSemiring R] [CommSemiring S] f α P ↦ id sorry\",\n      \"line\": 27,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": false,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown constant `MvPolynomial.taylor_map`",
+          "line": 12,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "failed to compile definition, consider marking it as 'noncomputable' because it depends on 'AddMonoidAlgebra.commSemiring', which is 'noncomputable'",
+          "line": 15,
+          "column": 5,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "(deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached\n\nNote: Use `set_option maxHeartbeats <num>` to set the limit.\n\nHint: Additional diagnostic information may be available using the `set_option diagnostics true` command.",
+          "line": 23,
+          "column": 3,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'MvPolynomial.TaylorMapRaw.substitution' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 25,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'MvPolynomial.TaylorMapRaw.oldForm' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 26,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "theorem MvPolynomial.TaylorMapRaw.oldForm.{u_1, u_3, u_4} : ∀ {σ : Type u_1} {R : Type u_3} {S : Type u_4}\n  [inst : CommSemiring R] [inst_1 : CommSemiring S] (f : R →+* S) (α : σ → R) (P : MvPolynomial σ R),\n  (shift fun j ↦ f (α j)) ((map f) P) = (map f) ((shift α) P) :=\nfun {σ} {R} {S} [CommSemiring R] [CommSemiring S] f α P ↦ id sorry",
+          "line": 27,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 8941
+}

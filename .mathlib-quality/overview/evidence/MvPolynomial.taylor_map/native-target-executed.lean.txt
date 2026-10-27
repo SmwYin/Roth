@@ -1,0 +1,18 @@
+#check @MvPolynomial.taylor_map
+#print MvPolynomial.taylor_map
+#print axioms MvPolynomial.taylor_map
+#check @MvPolynomial.map_eval₂
+#check @MvPolynomial.map_aeval
+#print MvPolynomial.map_eval₂
+#print MvPolynomial.map_aeval
+namespace MvPolynomial.TaylorMapAssessment
+variable {σ R S : Type*} [CommSemiring R] [CommSemiring S]
+theorem replay (f : R →+* S) (α : σ → R) (P : MvPolynomial σ R) :
+    taylor (fun j ↦ f (α j)) (map f P) = map f (taylor α P) := by
+  simp [taylor, aeval_def, map_eval₂, Function.comp_def]
+#print axioms replay
+end MvPolynomial.TaylorMapAssessment
+run_cmd do
+  let ci ← Lean.getConstInfo `MvPolynomial.TaylorMapAssessment.replay
+  let constants := (ci.value! (allowOpaque := true)).getUsedConstants
+  Lean.logInfo m!"MAP_REPLAY_CONSTANTS: {constants}"

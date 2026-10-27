@@ -1,0 +1,69 @@
+145: This algebraic definition avoids the technicalities of Fr\'echet derivatives.
+146: 
+147: \lean{Represent polynomials by \texttt{MvPolynomial} and multi-indices
+148: by finitely supported maps $\sigma\to_0\N$. Define each $\Delta_d$ as a
+149: linear map and prove the coefficient identity
+150: $[X^e]\Delta_dP=(\prod_j\binom{e_j+d_j}{d_j})[X^{e+d}]P$,
+151: where $[X^e]$ denotes coefficient extraction; this shows that distinct
+152: surviving monomials do not merge under differentiation. Use the univariate
+153: \texttt{Polynomial.hasseDeriv}\footnote{\url{https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/Polynomial/HasseDeriv.html}}
+154: as a model, and prove compatibility with coefficient maps before passing
+155: between $\Z$, $\Q$ and $\R$.}
+156: 
+157: \section{Wronskians}
+158: 
+159: If $l\geq1$ and $\phi_0(t), \dots, \phi_{l-1}(t)$ are $l$ polynomials in the variable $t$, we call the determinant
+500: \section{Index}
+501: We start with the Taylor expansion of a polynomial in several variables.
+502: \begin{thm}[Taylor's expansion for polynomials in several variables]
+503:     Let $P(x_1, \dots, x_p)$ be a polynomial with real coefficients in the variables $x_1, \dots, x_p$ of degree at most $r_i$ in $x_i$ for $1 \leq i \leq p$. For each $1 \leq i \leq p$, pick a natural number $d_i \geq r_i$. Let $(\alpha_1, \dots, \alpha_p) \in \R^p$. Then
+504:     $$
+505:     P(x_1, \dots, x_p) = \sum_{i_1=0}^{d_1} \cdots \sum_{i_p=0}^{d_p} (\Delta_{i_1, \dots, i_p} P)(\alpha_1, \dots, \alpha_p) \prod_{j=1}^p ( x_j - \alpha_j)^{i_j}.
+506:     $$
+507: \end{thm}
+508: \begin{proof}
+509:     For a polynomial $P$ let
+510:     $$
+511:     T_{d_1, \dots, d_p} P(x_1, \dots, x_p) = \sum_{i_1=0}^{d_1} \cdots \sum_{i_p=0}^{d_p} (\Delta_{i_1, \dots, i_p} P)(\alpha_1, \dots, \alpha_p) \prod_{j=1}^p ( x_j - \alpha_j)^{i_j}
+512:     $$
+513: It is clear that
+514: $$
+515: T_{d_1, \dots, d_p} (P_1 + P_2) = T_{d_1, \dots, d_p} (P_1) + T_{d_1, \dots, d_p}(P_2)
+516: $$
+517: and for any constant $c$,
+518: $$
+519: T_{d_1, \dots, d_p}(c P) = c T_{d_1, \dots, d_p}(P).
+520: $$
+521: So it suffices to prove the theorem for monomials. For any tuple
+522: $0\leq s_i\leq r_i\leq d_i$, distribution gives
+523: $$
+524: T_{d_1,\dots,d_p}(x_1^{s_1}\cdots x_p^{s_p})
+525:  =\prod_{i=1}^pT_{d_i}(x_i^{s_i})=\prod_{i=1}^px_i^{s_i}
+526: $$
+527: by the one-variable binomial expansion $x_i^{s_i}=((x_i-\alpha_i)+\alpha_i)^{s_i}$.
+528: \end{proof}
+529: 
+530: Let $P(x_1, \dots, x_p)$ be a nonzero polynomial with real coefficients in $p$ variables. Let $\alpha_1, \dots, \alpha_p$ be any real numbers. Let $r_1, \dots, r_p$ be any positive numbers. We define the {\it index} $\theta$ of $P$ at the point $(\alpha_1, \dots, \alpha_p)$ relative to $r_1, \dots, r_p$ as follows: We define $\theta$ to be the minimum of all numbers of the form
+531: $$
+532: \frac{i_1}{r_1} + \cdots + \frac{i_p}{r_p}
+533: $$
+534: where the minimum is over all tuples $(i_1, \dots, i_p)$ such that
+535: $$
+536: \Delta_{i_1, \dots, i_p} P(\alpha_1, \dots, \alpha_p) \ne 0.
+537: $$
+538: When we want to keep track of all data we write
+539: $$
+540: \ind(P; \alpha_1, \dots, \alpha_p; r_1, \dots, r_p).
+541: $$
+542: When there is no confusion about the data, we simply write $\ind(P)$.
+543: Taylor's theorem shows that at least one derivative at the chosen point is
+544: nonzero; only finitely many derivative multi-indices can be nonzero. Thus
+545: this is an attained minimum. We additionally set $\ind(0)=+\infty$.
+546: All comparisons involving zero polynomials below use this convention.
+547: \lean{Let $P_\alpha(X)=P(X+\alpha)$, whose coefficient at $d$ is
+548: $(\Delta_dP)(\alpha)$. Define the index as the minimum of
+549: $\sum_jd_j/r_j$ over its nonzero coefficients, with values in
+550: $[0,+\infty]$ and value $+\infty$ for the zero polynomial. For positive
+551: integral $r_j$, an alternative is to set $D=\prod_jr_j$ and use the
+552: natural weights $w_j=D/r_j$ in
+553: \texttt{MvPowerSeries.weightedOrder}\footnote{\url{https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/MvPowerSeries/Order.html}},
