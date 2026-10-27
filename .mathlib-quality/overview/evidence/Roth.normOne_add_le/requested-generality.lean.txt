@@ -1,0 +1,33 @@
+namespace MvPolynomial.NormAddGenerality
+theorem genericNonnegativeAtZero {ι M N : Type*} [AddZeroClass M] [AddCommMonoid N]
+    [Preorder N] [IsOrderedAddMonoid N] (size : ι → M → N)
+    (hzero : ∀ i, 0 ≤ size i 0)
+    (hadd : ∀ i a b, size i (a + b) ≤ size i a + size i b)
+    (f g : ι →₀ M) : (f + g).sum size ≤ f.sum size + g.sum size := by
+  classical
+  let adjusted : ι → M → N := fun i a ↦ if a = 0 then 0 else size i a
+  have hz : ∀ i, adjusted i 0 = 0 := by simp [adjusted]
+  have ha : ∀ i a b, adjusted i (a + b) ≤ adjusted i a + adjusted i b := by
+    intro i a b
+    by_cases h₁ : a = 0
+    · subst a
+      simp [adjusted]
+    by_cases h₂ : b = 0
+    · subst b
+      simp [adjusted]
+    by_cases h₃ : a + b = 0
+    · simp only [adjusted, if_pos h₃, if_neg h₁, if_neg h₂]
+      exact (hzero i).trans (by simpa only [h₃] using hadd i a b)
+    · simpa only [adjusted, if_neg h₁, if_neg h₂, if_neg h₃] using hadd i a b
+  have bridge (k : ι →₀ M) : k.sum adjusted = k.sum size := by
+    apply Finset.sum_congr rfl
+    intro i hi
+    simp only [adjusted, if_neg (Finsupp.mem_support_iff.mp hi)]
+  simpa only [bridge] using NormAddAssessment.generic adjusted hz ha f g
+theorem supportCard {ι : Type*} (f g : ι →₀ ℤ) :
+    (f + g).sum (fun _ _ ↦ (1 : ℕ)) ≤
+      f.sum (fun _ _ ↦ (1 : ℕ)) + g.sum (fun _ _ ↦ (1 : ℕ)) :=
+  genericNonnegativeAtZero (fun _ _ ↦ (1 : ℕ)) (by simp) (by simp) f g
+#print axioms genericNonnegativeAtZero
+#print axioms supportCard
+end MvPolynomial.NormAddGenerality

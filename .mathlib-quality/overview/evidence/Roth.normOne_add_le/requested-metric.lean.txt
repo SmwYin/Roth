@@ -1,0 +1,13 @@
+namespace MvPolynomial.NormAddMetricProbe
+open WithLp
+variable {ι : Type*}
+#synth MetricSpace (WithLp (1 : ℝ≥0) (ι →₀ ℝ))
+-- No normed group is supplied by this metric-only module:
+#check_failure (inferInstance : SeminormedAddCommGroup (WithLp (1 : ℝ≥0) (ι →₀ ℝ)))
+theorem zeroDist (f : ι →₀ ℝ) :
+    dist (toLp (1 : ℝ≥0) f) (toLp 1 0) = f.sum (fun _ x ↦ |x|) := by
+  simp [Finsupp.dist_def, Finsupp.sum, Real.dist_eq]
+theorem addDist (f g : ι →₀ ℝ) :
+    dist (toLp (1 : ℝ≥0) (f + g)) (toLp 1 f) = g.sum (fun _ x ↦ |x|) := by
+  simp [Finsupp.dist_def, Finsupp.sum, Real.dist_eq]
+end MvPolynomial.NormAddMetricProbe

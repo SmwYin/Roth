@@ -1,0 +1,36 @@
+namespace MvPolynomial.NormAddAssessment
+variable {σ : Type*}
+#check @Roth.normOne_add_le
+#print Roth.normOne_add_le
+#print axioms Roth.normOne_add_le
+#check @Finsupp.sum_of_support_subset
+#check @Finsupp.sum_add_index'
+#check @Finsupp.sum_le_sum
+#check @Finsupp.dist_def
+#check @dist_triangle
+#check @norm_add_le
+theorem direct (P Q : MvPolynomial σ ℤ) :
+    Roth.normOne (P + Q) ≤ Roth.normOne P + Roth.normOne Q := by
+  classical
+  change (P.coeff + Q.coeff).sum (fun _ z ↦ |(z : ℝ)|) ≤
+    P.coeff.sum (fun _ z ↦ |(z : ℝ)|) + Q.coeff.sum (fun _ z ↦ |(z : ℝ)|)
+  rw [Finsupp.sum_of_support_subset _ Finsupp.support_add _ (by simp),
+    Finsupp.sum_of_support_subset _ Finset.subset_union_left _ (by simp),
+    Finsupp.sum_of_support_subset _ Finset.subset_union_right _ (by simp),
+    ← Finset.sum_add_distrib]
+  exact Finset.sum_le_sum fun d _ ↦ by simpa using abs_add_le (P.coeff d : ℝ) (Q.coeff d)
+theorem generic {ι M N : Type*} [AddZeroClass M] [AddCommMonoid N] [PartialOrder N]
+    [IsOrderedAddMonoid N] (size : ι → M → N)
+    (hzero : ∀ i, size i 0 = 0)
+    (hadd : ∀ i a b, size i (a + b) ≤ size i a + size i b)
+    (f g : ι →₀ M) :
+    (f + g).sum size ≤ f.sum size + g.sum size := by
+  classical
+  rw [Finsupp.sum_of_support_subset _ Finsupp.support_add _ (fun i _ ↦ hzero i),
+    Finsupp.sum_of_support_subset _ Finset.subset_union_left _ (fun i _ ↦ hzero i),
+    Finsupp.sum_of_support_subset _ Finset.subset_union_right _ (fun i _ ↦ hzero i),
+    ← Finset.sum_add_distrib]
+  exact Finset.sum_le_sum fun i _ ↦ hadd i (f i) (g i)
+#print axioms direct
+#print axioms generic
+end MvPolynomial.NormAddAssessment

@@ -1,0 +1,69 @@
+{
+  "method": "lean_leanfinder",
+  "form": "abstract",
+  "request": {
+    "query": "sum of subadditive nonnegative size over Finsupp is subadditive",
+    "num_results": 6
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Finset.le_sum_of_subadditive\",\n      \"informal_name\": \"Subadditive Function Inequality for Finite Sums\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {M : Type u_4} {N : Type u_5} [inst : AddCommMonoid M] [inst_1 : AddCommMonoid N]\\n  [inst_2 : PartialOrder N] [IsOrderedAddMonoid N] (f : M → N),\\n  f 0 ≤ 0 → (∀ (x y : M), f (x + y) ≤ f x + f y) → ∀ (s : Finset ι) (g : ι → M), f (∑ i ∈ s, g i) ≤ ∑ i ∈ s, f (g i)\",\n      \"informal_description\": \"Let $M$ and $N$ be additive commutative monoids, where $N$ is equipped with a partial order compatible with addition. For any subadditive function $f : M \\\\to N$ satisfying $f(0) \\\\leq 0$, and for any finite set $s$ of indices and function $g : s \\\\to M$, it holds that $f\\\\left(\\\\sum_{i \\\\in s} g(i)\\\\right) \\\\leq \\\\sum_{i \\\\in s} f(g(i))$.\",\n      \"path\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    },\n    {\n      \"formal_name\": \"Finsupp.sum_le_sum\",\n      \"informal_name\": \"Sum of Finite Support Functions Preserves Inequality\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {α : Type u_3} {β : Type u_4} [inst : Zero α] [inst_1 : AddCommMonoid β] [inst_2 : PartialOrder β]\\n  [IsOrderedAddMonoid β] {f : ι →₀ α} {h₁ h₂ : ι → α → β},\\n  (∀ i ∈ f.support, h₁ i (f i) ≤ h₂ i (f i)) → f.sum h₁ ≤ f.sum h₂\",\n      \"informal_description\": \"For any finite support function $ f : \\\\alpha \\\\to₀ M $ in an ordered additive commutative monoid $ M $, if $ h₁(i, f(i)) \\\\leq h₂(i, f(i)) $ for all $ i $ in the support of $ f $, then the sum of $ h₁ $ over $ f $ satisfies $ \\\\sum_{i \\\\in \\\\text{supp}(f)} h₁(i, f(i)) \\\\leq \\\\sum_{i \\\\in \\\\text{supp}(f)} h₂(i, f(i)) $.\",\n      \"path\": \"Mathlib.Data.Finsupp.Order\"\n    },\n    {\n      \"formal_name\": \"Finsupp.sum_id_lt_of_lt\",\n      \"informal_name\": \"Sum Preserves Strict Inequality for Finite Support Functions\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_3} (m n : ι →₀ ℕ), m < n → (m.sum fun x => id) < n.sum fun x => id\",\n      \"informal_description\": \"For any finite support functions $m$ and $n$ from a type $\\\\iota$ to the natural numbers $\\\\mathbb{N}$, if $m < n$ under the pointwise preorder (i.e., $m(i) \\\\leq n(i)$ for all $i$ and $m(i) < n(i)$ for at least one $i$), then the sum of the values of $m$ is strictly less than the sum of the values of $n$. Formally, $\\\\sum_{i \\\\in \\\\iota} m(i) < \\\\sum_{i \\\\in \\\\iota} n(i)$.\",\n      \"path\": \"Mathlib.Data.Finsupp.Multiset\"\n    },\n    {\n      \"formal_name\": \"Finsupp.sum_le_sum_index\",\n      \"informal_name\": \"Sum Inequality for Finite Support Functions under Monotonicity\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {α : Type u_3} {β : Type u_4} [inst : Zero α] [inst_1 : Preorder α] [inst_2 : AddCommMonoid β]\\n  [inst_3 : PartialOrder β] [IsOrderedAddMonoid β] [inst_5 : DecidableEq ι] {f₁ f₂ : ι →₀ α} {h : ι → α → β},\\n  f₁ ≤ f₂ →\\n    (∀ i ∈ f₁.support ∪ f₂.support, Monotone (h i)) → (∀ i ∈ f₁.support ∪ f₂.support, h i 0 = 0) → f₁.sum h ≤ f₂.sum h\",\n      \"informal_description\": \"Let $\\\\iota$ be an index type and $\\\\alpha, \\\\beta$ be types with $\\\\alpha$ an ordered additive commutative monoid. For finite support functions $f_1, f_2 : \\\\iota \\\\to_0 \\\\alpha$ satisfying $f_1 \\\\le f_2$ pointwise, and a family of functions $h_i : \\\\alpha \\\\to \\\\beta$ that are monotone on $\\\\mathrm{supp}(f_1) \\\\cup \\\\mathrm{supp}(f_2)$ with $h_i(0) = 0$, the inequality $\\\\sum h(f_1) \\\\le \\\\sum h(f_2)$ holds, where the sums are taken over the respective supports.\",\n      \"path\": \"Mathlib.Data.Finsupp.Order\"\n    },\n    {\n      \"formal_name\": \"Finset.le_sum_of_subadditive_on_pred\",\n      \"informal_name\": \"Subadditive Function Inequality on Finite Sets\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {M : Type u_4} {N : Type u_5} [inst : AddCommMonoid M] [inst_1 : AddCommMonoid N]\\n  [inst_2 : PartialOrder N] [IsOrderedAddMonoid N] (f : M → N) (p : M → Prop),\\n  f 0 ≤ 0 →\\n    (∀ (x y : M), p x → p y → f (x + y) ≤ f x + f y) →\\n      (∀ (x y : M), p x → p y → p (x + y)) →\\n        ∀ (g : ι → M) {s : Finset ι}, (∀ i ∈ s, p (g i)) → f (∑ i ∈ s, g i) ≤ ∑ i ∈ s, f (g i)\",\n      \"informal_description\": \"Let $ M $ and $ N $ be additive commutative monoids with $ N $ equipped with a partial order compatible with addition. For any function $ f : M → N $ satisfying $ f(0) ≤ 0 $, and predicate $ p : M → \\text{Prop} $ such that:\\n1. $ f $ is subadditive on $ p $-elements: $ p(x) ∧ p(y) ⇒ f(x + y) ≤ f(x) + f(y) $,\\n2. $ p $-elements are closed under addition: $ p(x) ∧ p(y) ⇒ p(x + y) $,\\nthen for any finite set $ s $ and function $ g : ι → M $ with $ p(g(i)) $ for all $ i ∈ s $, we have:\\n$$\\n f\\\\left(\\\\sum_{i ∈ s} g(i)\\\\right) ≤ \\\\sum_{i ∈ s} f(g(i)).\\n$$\",\n      \"path\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    },\n    {\n      \"formal_name\": \"Finset.le_sum_nonempty_of_subadditive\",\n      \"informal_name\": \"Subadditive Function Inequality for Non-Empty Finite Sums\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {M : Type u_4} {N : Type u_5} [inst : AddCommMonoid M] [inst_1 : AddCommMonoid N]\\n  [inst_2 : PartialOrder N] [IsOrderedAddMonoid N] (f : M → N),\\n  (∀ (x y : M), f (x + y) ≤ f x + f y) →\\n    ∀ {s : Finset ι}, s.Nonempty → ∀ (g : ι → M), f (∑ i ∈ s, g i) ≤ ∑ i ∈ s, f (g i)\",\n      \"informal_description\": \"Let $ M $ and $ N $ be additive commutative monoids, with $ N $ equipped with a partial order compatible with addition. For any subadditive function $ f : M \\\\to N $ (i.e., $ f(x + y) \\\\leq f(x) + f(y) $ for all $ x, y \\\\in M $), any non-empty finite set $ s $, and any function $ g : s \\\\to M $, it holds that $ f\\\\left(\\\\sum_{i \\\\in s} g(i)\\\\right) \\\\leq \\\\sum_{i \\\\in s} f(g(i)) $.\",\n      \"path\": \"Mathlib.Algebra.Order.BigOperators.Group.Finset\"\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "items": [
+        {
+          "formal_name": "Finset.le_sum_of_subadditive",
+          "informal_name": "Subadditive Function Inequality for Finite Sums",
+          "kind": "theorem",
+          "type": "∀ {ι : Type u_1} {M : Type u_4} {N : Type u_5} [inst : AddCommMonoid M] [inst_1 : AddCommMonoid N]\n  [inst_2 : PartialOrder N] [IsOrderedAddMonoid N] (f : M → N),\n  f 0 ≤ 0 → (∀ (x y : M), f (x + y) ≤ f x + f y) → ∀ (s : Finset ι) (g : ι → M), f (∑ i ∈ s, g i) ≤ ∑ i ∈ s, f (g i)",
+          "informal_description": "Let $M$ and $N$ be additive commutative monoids, where $N$ is equipped with a partial order compatible with addition. For any subadditive function $f : M \\to N$ satisfying $f(0) \\leq 0$, and for any finite set $s$ of indices and function $g : s \\to M$, it holds that $f\\left(\\sum_{i \\in s} g(i)\\right) \\leq \\sum_{i \\in s} f(g(i))$.",
+          "path": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+        },
+        {
+          "formal_name": "Finsupp.sum_le_sum",
+          "informal_name": "Sum of Finite Support Functions Preserves Inequality",
+          "kind": "theorem",
+          "type": "∀ {ι : Type u_1} {α : Type u_3} {β : Type u_4} [inst : Zero α] [inst_1 : AddCommMonoid β] [inst_2 : PartialOrder β]\n  [IsOrderedAddMonoid β] {f : ι →₀ α} {h₁ h₂ : ι → α → β},\n  (∀ i ∈ f.support, h₁ i (f i) ≤ h₂ i (f i)) → f.sum h₁ ≤ f.sum h₂",
+          "informal_description": "For any finite support function $ f : \\alpha \\to₀ M $ in an ordered additive commutative monoid $ M $, if $ h₁(i, f(i)) \\leq h₂(i, f(i)) $ for all $ i $ in the support of $ f $, then the sum of $ h₁ $ over $ f $ satisfies $ \\sum_{i \\in \\text{supp}(f)} h₁(i, f(i)) \\leq \\sum_{i \\in \\text{supp}(f)} h₂(i, f(i)) $.",
+          "path": "Mathlib.Data.Finsupp.Order"
+        },
+        {
+          "formal_name": "Finsupp.sum_id_lt_of_lt",
+          "informal_name": "Sum Preserves Strict Inequality for Finite Support Functions",
+          "kind": "theorem",
+          "type": "∀ {ι : Type u_3} (m n : ι →₀ ℕ), m < n → (m.sum fun x => id) < n.sum fun x => id",
+          "informal_description": "For any finite support functions $m$ and $n$ from a type $\\iota$ to the natural numbers $\\mathbb{N}$, if $m < n$ under the pointwise preorder (i.e., $m(i) \\leq n(i)$ for all $i$ and $m(i) < n(i)$ for at least one $i$), then the sum of the values of $m$ is strictly less than the sum of the values of $n$. Formally, $\\sum_{i \\in \\iota} m(i) < \\sum_{i \\in \\iota} n(i)$.",
+          "path": "Mathlib.Data.Finsupp.Multiset"
+        },
+        {
+          "formal_name": "Finsupp.sum_le_sum_index",
+          "informal_name": "Sum Inequality for Finite Support Functions under Monotonicity",
+          "kind": "theorem",
+          "type": "∀ {ι : Type u_1} {α : Type u_3} {β : Type u_4} [inst : Zero α] [inst_1 : Preorder α] [inst_2 : AddCommMonoid β]\n  [inst_3 : PartialOrder β] [IsOrderedAddMonoid β] [inst_5 : DecidableEq ι] {f₁ f₂ : ι →₀ α} {h : ι → α → β},\n  f₁ ≤ f₂ →\n    (∀ i ∈ f₁.support ∪ f₂.support, Monotone (h i)) → (∀ i ∈ f₁.support ∪ f₂.support, h i 0 = 0) → f₁.sum h ≤ f₂.sum h",
+          "informal_description": "Let $\\iota$ be an index type and $\\alpha, \\beta$ be types with $\\alpha$ an ordered additive commutative monoid. For finite support functions $f_1, f_2 : \\iota \\to_0 \\alpha$ satisfying $f_1 \\le f_2$ pointwise, and a family of functions $h_i : \\alpha \\to \\beta$ that are monotone on $\\mathrm{supp}(f_1) \\cup \\mathrm{supp}(f_2)$ with $h_i(0) = 0$, the inequality $\\sum h(f_1) \\le \\sum h(f_2)$ holds, where the sums are taken over the respective supports.",
+          "path": "Mathlib.Data.Finsupp.Order"
+        },
+        {
+          "formal_name": "Finset.le_sum_of_subadditive_on_pred",
+          "informal_name": "Subadditive Function Inequality on Finite Sets",
+          "kind": "theorem",
+          "type": "∀ {ι : Type u_1} {M : Type u_4} {N : Type u_5} [inst : AddCommMonoid M] [inst_1 : AddCommMonoid N]\n  [inst_2 : PartialOrder N] [IsOrderedAddMonoid N] (f : M → N) (p : M → Prop),\n  f 0 ≤ 0 →\n    (∀ (x y : M), p x → p y → f (x + y) ≤ f x + f y) →\n      (∀ (x y : M), p x → p y → p (x + y)) →\n        ∀ (g : ι → M) {s : Finset ι}, (∀ i ∈ s, p (g i)) → f (∑ i ∈ s, g i) ≤ ∑ i ∈ s, f (g i)",
+          "informal_description": "Let $ M $ and $ N $ be additive commutative monoids with $ N $ equipped with a partial order compatible with addition. For any function $ f : M → N $ satisfying $ f(0) ≤ 0 $, and predicate $ p : M → \text{Prop} $ such that:\n1. $ f $ is subadditive on $ p $-elements: $ p(x) ∧ p(y) ⇒ f(x + y) ≤ f(x) + f(y) $,\n2. $ p $-elements are closed under addition: $ p(x) ∧ p(y) ⇒ p(x + y) $,\nthen for any finite set $ s $ and function $ g : ι → M $ with $ p(g(i)) $ for all $ i ∈ s $, we have:\n$$\n f\\left(\\sum_{i ∈ s} g(i)\\right) ≤ \\sum_{i ∈ s} f(g(i)).\n$$",
+          "path": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+        },
+        {
+          "formal_name": "Finset.le_sum_nonempty_of_subadditive",
+          "informal_name": "Subadditive Function Inequality for Non-Empty Finite Sums",
+          "kind": "theorem",
+          "type": "∀ {ι : Type u_1} {M : Type u_4} {N : Type u_5} [inst : AddCommMonoid M] [inst_1 : AddCommMonoid N]\n  [inst_2 : PartialOrder N] [IsOrderedAddMonoid N] (f : M → N),\n  (∀ (x y : M), f (x + y) ≤ f x + f y) →\n    ∀ {s : Finset ι}, s.Nonempty → ∀ (g : ι → M), f (∑ i ∈ s, g i) ≤ ∑ i ∈ s, f (g i)",
+          "informal_description": "Let $ M $ and $ N $ be additive commutative monoids, with $ N $ equipped with a partial order compatible with addition. For any subadditive function $ f : M \\to N $ (i.e., $ f(x + y) \\leq f(x) + f(y) $ for all $ x, y \\in M $), any non-empty finite set $ s $, and any function $ g : s \\to M $, it holds that $ f\\left(\\sum_{i \\in s} g(i)\\right) \\leq \\sum_{i \\in s} f(g(i)) $.",
+          "path": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+        }
+      ]
+    },
+    "isError": false
+  }
+}

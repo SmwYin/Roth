@@ -1,0 +1,15 @@
+namespace MvPolynomial.NormTriangleAssessment
+open Roth
+variable {σ : Type*}
+#check @Roth.normOne_add_le
+#print Roth.normOne_add_le
+#print axioms Roth.normOne_add_le
+theorem replay (P Q : MvPolynomial σ ℤ) : normOne (P + Q) ≤ normOne P + normOne Q := by
+  classical
+  rw [normOne_eq_sum_of_support_subset support_add,
+    normOne_eq_sum_of_support_subset (s := P.support ∪ Q.support) Finset.subset_union_left,
+    normOne_eq_sum_of_support_subset (s := P.support ∪ Q.support) Finset.subset_union_right,
+    ← Finset.sum_add_distrib]
+  exact Finset.sum_le_sum fun d _ ↦ by simpa using abs_add_le (P.coeff d : ℝ) (Q.coeff d)
+#print axioms replay
+end MvPolynomial.NormTriangleAssessment

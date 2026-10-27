@@ -1,0 +1,36 @@
+open scoped NNReal
+namespace MvPolynomial.NormAddMetric
+local instance : Fact (1 ≤ (1 : ℝ≥0)) := ⟨le_rfl⟩
+variable {ι : Type*}
+#synth MetricSpace (WithLp (1 : ℝ≥0) (ι →₀ ℤ))
+#check_failure (inferInstance : SeminormedAddCommGroup (WithLp (1 : ℝ≥0) (ι →₀ ℤ)))
+theorem zeroDistance (f : ι →₀ ℤ) :
+    dist (WithLp.toLp (1 : ℝ≥0) f) (WithLp.toLp (1 : ℝ≥0) (0 : ι →₀ ℤ)) =
+      f.sum (fun _ z ↦ |(z : ℝ)|) := by
+  have hz : f.zipWith dist (dist_self 0) 0 =
+      f.mapRange (fun z : ℤ ↦ dist z 0) (dist_self 0) := by
+    ext i
+    simp
+  simp only [Finsupp.dist_def, inv_one, NNReal.coe_one, Real.rpow_one, hz]
+  rw [Finsupp.sum_mapRange_index (by simp)]
+  simp only [dist_zero_right, Int.norm_eq_abs]
+theorem addDistance (f g : ι →₀ ℤ) :
+    dist (WithLp.toLp (1 : ℝ≥0) (f + g)) (WithLp.toLp (1 : ℝ≥0) f) =
+      g.sum (fun _ z ↦ |(z : ℝ)|) := by
+  have hz : (f + g).zipWith dist (dist_self 0) f =
+      g.mapRange (fun z : ℤ ↦ dist z 0) (dist_self 0) := by
+    ext i
+    simp [dist_eq_norm]
+  simp only [Finsupp.dist_def, inv_one, NNReal.coe_one, Real.rpow_one, hz]
+  rw [Finsupp.sum_mapRange_index (by simp)]
+  simp only [dist_zero_right, Int.norm_eq_abs]
+theorem triangle (f g : ι →₀ ℤ) :
+    (f + g).sum (fun _ z ↦ |(z : ℝ)|) ≤
+      f.sum (fun _ z ↦ |(z : ℝ)|) + g.sum (fun _ z ↦ |(z : ℝ)|) := by
+  have h := dist_triangle (WithLp.toLp (1 : ℝ≥0) (f + g))
+    (WithLp.toLp (1 : ℝ≥0) f) (WithLp.toLp (1 : ℝ≥0) (0 : ι →₀ ℤ))
+  simpa only [zeroDistance, addDistance, add_comm] using h
+#print axioms zeroDistance
+#print axioms addDistance
+#print axioms triangle
+end MvPolynomial.NormAddMetric

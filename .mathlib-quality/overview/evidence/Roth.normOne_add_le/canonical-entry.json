@@ -1,0 +1,47 @@
+{
+  "file": "Roth/CoeffNorm.lean",
+  "line": 77,
+  "name": "Roth.normOne_add_le",
+  "short": "normOne_add_le",
+  "kind": "theorem",
+  "visibility": "public",
+  "end_line": 83,
+  "source": "theorem normOne_add_le (P Q : MvPolynomial σ ℤ) : normOne (P + Q) ≤ normOne P + normOne Q := by\n  classical\n  rw [normOne_eq_sum_of_support_subset support_add,\n    normOne_eq_sum_of_support_subset (s := P.support ∪ Q.support) Finset.subset_union_left,\n    normOne_eq_sum_of_support_subset (s := P.support ∪ Q.support) Finset.subset_union_right,\n    ← Finset.sum_add_distrib]\n  exact Finset.sum_le_sum fun d _ ↦ by simpa using abs_add_le (P.coeff d : ℝ) (Q.coeff d)",
+  "signature": "theorem normOne_add_le (P Q : MvPolynomial σ ℤ) : normOne (P + Q) ≤ normOne P + normOne Q",
+  "body": "by\n  classical\n  rw [normOne_eq_sum_of_support_subset support_add,\n    normOne_eq_sum_of_support_subset (s := P.support ∪ Q.support) Finset.subset_union_left,\n    normOne_eq_sum_of_support_subset (s := P.support ∪ Q.support) Finset.subset_union_right,\n    ← Finset.sum_add_distrib]\n  exact Finset.sum_le_sum fun d _ ↦ by simpa using abs_add_le (P.coeff d : ℝ) (Q.coeff d)",
+  "proof_lines": 7,
+  "sha256": "6c4adb0863cc88c3486be57697d6888ffcf398628f81bf3744a977c61451491f",
+  "source_body_project_refs": [
+    "Roth.normOne_eq_sum_of_support_subset"
+  ],
+  "source_type_project_refs": [
+    "Roth.normOne"
+  ],
+  "what": "The coefficient norm satisfies the triangle inequality.",
+  "how": "Uses normOne_eq_sum_of_support_subset to put all three sums over the union of supports, then applies abs_add_le termwise.",
+  "hypotheses": "Two integer polynomials in the same variable type.",
+  "source_used_by_project": [
+    "Roth.normOne_sum_le"
+  ],
+  "source_used_by_file": [
+    "Roth.normOne_sum_le"
+  ],
+  "section_binders": "{σ : Type*}",
+  "type_provenance": "Exact written signature plus manually identified captured section binders. Root cached full build succeeds; global opaque/type inspector timed out, so no kernel dump is claimed.",
+  "notes": "No sorry, TODO, or set_option in this declaration.",
+  "assignment_offset": 90,
+  "project_body_refs": [
+    "Roth.normOne_eq_sum_of_support_subset"
+  ],
+  "project_type_refs": [
+    "Roth.normOne"
+  ],
+  "project_callers": [
+    {
+      "name": "Roth.normOne_sum_le",
+      "file": "Roth/CoeffNorm.lean",
+      "line": 90
+    }
+  ],
+  "section_context": "{σ : Type*}"
+}

@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 81/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 82/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 81; remaining: 212.
-- Verdicts: 13 NO-composable-from-mathlib, 13 YES-add-as-is, 6 YES-but-generalise-first, 15 NO-mathlib-has-it, 25 BORDERLINE-needs-human, 9 SKIP.
+- Completed applicable assessments: 82; remaining: 211.
+- Verdicts: 13 NO-composable-from-mathlib, 13 YES-add-as-is, 6 YES-but-generalise-first, 15 NO-mathlib-has-it, 26 BORDERLINE-needs-human, 9 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -869,6 +869,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: One explicit caller: Roth.abs_coeff_det_hasseDeriv_le at CoeffNorm.lean:266; zero external-to-file refs. Full fresh determinant proof replay succeeds with direct generic call. Main.lean:424 independently uses analogous generic bound for univariate coefficients.
 - Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/Roth.abs_coeff_le_normOne.md).
 
+### Completed: `Roth.normOne_add_le`
+
+- Type: `∀ {σ : Type u_1} (P Q : MvPolynomial σ ℤ), Roth.normOne (P + Q) ≤ Roth.normOne P + Roth.normOne Q`
+- What: The coefficient absolute sum of P+Q is bounded by the sum of their coefficient lengths.
+- How: Pad all three coefficient sums to the union of supports and sum the scalar absolute-value triangle inequality.
+- Hypotheses: Arbitrary variable type σ; two integer polynomials P,Q. No finite-variable, degree, sign or coefficient-bound premise. Parent fixes integer coefficients and real-valued absolute sum.
+- Project dependencies: type: Roth.normOne; proof: Roth.normOne_eq_sum_of_support_subset
+- Caller summary: One explicit source caller Roth.normOne_sum_le in the same module; fresh293-value direct-proof audit finds precisely that caller. Not a transitive/generated-helper or external-user closure.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.normOne_add_le.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -1057,6 +1067,8 @@ Completed `Roth.normOne_zero`: Pinned Finsupp.sum_zero_index generated at Algebr
 
 Completed `Roth.abs_coeff_le_normOne`: NO-mathlib-has-it: Finsupp.single_eval_le_sum, Mathlib/Data/Finsupp/Order.lean:165–170; independently pinned type and exact specialization verified. Four external/local formal methods × three forms plus rg on each; current Loogle syntax/rate failures retained and corrected query succeeded.
 
+Completed `Roth.normOne_add_le`: Finsupp.sum_of_support_subset, Finset.sum_add_distrib, Finset.sum_le_sum and abs_add_le give a real common-support proof. sum_add_index requires equality; norm_add_le needs correct bundled structure. WithLp1 Finsupp has metric structure, and two freshly proved bridges recover triangle. No checked≤3-existing-call replacement.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -1220,6 +1232,8 @@ Completed `Roth.normOne_monomial`: Exact singleton sum law already in MvPolynomi
 Completed `Roth.normOne_zero`: Exact empty finite-support aggregate law already in mathlib; Polynomial.sum_zero_index analogous; support_zero+sum_empty alternative. Generic norm_zero requires a correct norm structure. Nearby normOne_neg/cardinality proofs are not inline duplicate zero laws.
 
 Completed `Roth.abs_coeff_le_normOne`: A direct specialization of an existing general finite-support nonnegative coordinate bound. Mathlib NumberTheory/Height/MvPolynomial.lean:277 uses same generic law for absolute values.
+
+Completed `Roth.normOne_add_le`: Mathematically an l1 triangle inequality, but existing sup-norm and integral norm theorems concern different objects; no inherited has-it result from parent.
 
 ## Part 5: Generalization opportunities
 
@@ -1388,6 +1402,8 @@ Completed `Roth.normOne_zero`: Fixed parent interface no assumptions to weaken. 
 
 Completed `Roth.abs_coeff_le_normOne`: Existing law permits arbitrary index α, Zero M, AddCommMonoid N, PartialOrder N, IsOrderedAddMonoid N, zero-preserving nonnegative g. Fresh lattice-ordered additive-group abs form compiled. New exploratory helper further weakens target order to Preorder/AddLeftMono and nonnegativity to actual support values, verified in isolated native general set; this new proof is not an existing replacement and does not alter original exact-hit verdict.
 
+Completed `Roth.normOne_add_le`: Fresh generic AddZeroClass coefficient/ordered additive Preorder output indexed-size theorem; broader nonnegative-at-zero form also verified, including constant1 support cardinality. No claim of class-minimality.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -1552,6 +1568,8 @@ Completed `Roth.normOne_monomial`: None needed. No new coefficient norm instance
 Completed `Roth.normOne_zero`: None. No proposed new global polynomial norm instance.
 
 Completed `Roth.abs_coeff_le_normOne`: No missing API for this declaration. Optional separate generalization of existing single_eval_le_sum to Preorder/AddLeftMono/support-local nonnegativity now has a proof witness; no absence/novelty claim or new upstream verdict for that separate API.
+
+Completed `Roth.normOne_add_le`: Design candidate: generic Finsupp support-sum subadditivity versus compatible L1 normed-group or translation-distance API. Searches establish candidates, not formal absence.
 
 ## Part 7: Junk / removable
 
@@ -1720,6 +1738,8 @@ Completed `Roth.normOne_zero`: Useful local public simp convenience with one exp
 
 Completed `Roth.abs_coeff_le_normOne`: Useful local convenience, not dead mathematics; no simp attribute, one explicit caller. Redundant as upstream theorem.
 
+Completed `Roth.normOne_add_le`: Useful local subadditivity witness; one actual caller precludes dead-code classification.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -1805,6 +1825,7 @@ Completed `Roth.abs_coeff_le_normOne`: Useful local convenience, not dead mathem
 | 79 | `Roth.normOne_monomial` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.normOne_monomial.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.normOne_monomial/root-acceptance.json) |
 | 80 | `Roth.normOne_zero` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.normOne_zero.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.normOne_zero/root-acceptance.json) |
 | 81 | `Roth.abs_coeff_le_normOne` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.abs_coeff_le_normOne.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.abs_coeff_le_normOne/root-acceptance.json) |
+| 82 | `Roth.normOne_add_le` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.normOne_add_le.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.normOne_add_le/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -1966,11 +1987,13 @@ Completed `Roth.normOne_zero` action: NO-mathlib-has-it. Use existing sum_zero_i
 
 Completed `Roth.abs_coeff_le_normOne` action: During an authorized code cleanup, delete local theorem and replace the one CoeffNorm.lean:266 reference by Finsupp.single_eval_le_sum _ (g := fun z : ℤ ↦ |(z : ℝ)|) (by simp) (fun _ ↦ abs_nonneg _) _. Keep Roth/CoeffNorm.lean as alternative project-local destination if pedagogical naming is retained. Assessment only; production unchanged.
 
+Completed `Roth.normOne_add_le` action: BORDERLINE-needs-human: preserve local theorem; decide generic Finsupp inequality versus compatible L1 structure before upstreaming. Full read-only assessment complete; no production edits.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.normOne_add_le` next. Supporting identities receive their own applicable checks.
+   `Roth.normOne_neg` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
