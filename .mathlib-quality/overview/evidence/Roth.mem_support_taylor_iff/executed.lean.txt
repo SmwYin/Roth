@@ -1,0 +1,550 @@
+namespace IndexSupportAssessment
+open Roth
+
+open MvPolynomial
+open scoped Pointwise
+
+variable {σ : Type*} [Fintype σ]
+
+/-- The index of `P` at `α` relative to `r`. Source: §4, definition of the index and the Lean
+implementation note ("Define the index as the minimum of `∑ d_j/r_j` over its nonzero
+coefficients"). -/
+noncomputable def index (P : MvPolynomial σ ℝ) (α : σ → ℝ) (r : σ → ℕ) : ℝ :=
+  sInf (weight r '' ((taylor α P).support : Set (σ →₀ ℕ)))
+
+omit [Fintype σ] in
+theorem replay {P : MvPolynomial σ ℝ} {α : σ → ℝ} {d : σ →₀ ℕ} :
+    d ∈ (taylor α P).support ↔ eval α (hasseDeriv d P) ≠ 0 := by
+  rw [mem_support_iff, coeff_taylor]
+
+/-- The index is at most the weight of any multi-index `d` with `(Δ_d P)(α) ≠ 0`.
+Source: §4, definition of the index ("the minimum ... over all tuples `(i_1, …, i_p)` such
+that `Δ_i P(α) ≠ 0`"). -/
+theorem index_le_weight {P : MvPolynomial σ ℝ} {α : σ → ℝ} {r : σ → ℕ} {d : σ →₀ ℕ}
+    (h : eval α (hasseDeriv d P) ≠ 0) : index P α r ≤ weight r d :=
+  csInf_le ((taylor α P).support.finite_toSet.image (weight r)).bddBelow
+    (Set.mem_image_of_mem _ (Finset.mem_coe.2 (replay.2 h)))
+
+/-- For nonzero `P`, the index is attained by some multi-index `d` with `(Δ_d P)(α) ≠ 0`.
+Source: §4, definition of the index ("Thus this is an attained minimum"). -/
+theorem exists_weight_eq_index {P : MvPolynomial σ ℝ} (hP : P ≠ 0) (α : σ → ℝ) (r : σ → ℕ) :
+    ∃ d, eval α (hasseDeriv d P) ≠ 0 ∧ weight r d = index P α r := by
+  obtain ⟨d, hd, hdw⟩ :=
+    (show (weight r '' ((taylor α P).support : Set (σ →₀ ℕ))).Nonempty by
+      simpa using hP).csInf_mem ((taylor α P).support.finite_toSet.image (weight r))
+  exact ⟨d, replay.1 hd, hdw⟩
+
+/-- The characterisation of lower bounds for the index of a nonzero polynomial: `c ≤ index P α r`
+iff every multi-index `d` with `(Δ_d P)(α) ≠ 0` has weight at least `c`. -/
+theorem le_index_iff {P : MvPolynomial σ ℝ} (hP : P ≠ 0) {α : σ → ℝ} {r : σ → ℕ} {c : ℝ} :
+    c ≤ index P α r ↔ ∀ d, eval α (hasseDeriv d P) ≠ 0 → c ≤ weight r d := by
+  refine ⟨fun h d hd ↦ h.trans (index_le_weight hd), fun h ↦ ?_⟩
+  refine le_csInf (by simpa using hP) ?_
+  rintro _ ⟨d, hd, rfl⟩
+  exact h d (replay.1 hd)
+
+/-- The index is nonnegative. Source: §4, first lemma on the index ("We have `ind(P) ≥ 0`"). -/
+theorem index_nonneg (P : MvPolynomial σ ℝ) (α : σ → ℝ) (r : σ → ℕ) : 0 ≤ index P α r :=
+  Real.sInf_nonneg (Set.forall_mem_image.mpr fun d _ ↦ weight_nonneg r d)
+
+/-- For nonzero `P` and positive weights, the index vanishes iff `P(α) ≠ 0`.
+Source: §4, first lemma on the index ("`ind(P) = 0` if and only if `P(α_1, …, α_p) ≠ 0`"). -/
+theorem index_eq_zero_iff {P : MvPolynomial σ ℝ} (hP : P ≠ 0) {r : σ → ℕ} (hr : ∀ j, 0 < r j)
+    (α : σ → ℝ) : index P α r = 0 ↔ eval α P ≠ 0 := by
+  refine ⟨fun h ↦ ?_, fun h ↦ (index_nonneg P α r).antisymm' ?_⟩
+  · obtain ⟨d, hd, hdw⟩ := exists_weight_eq_index hP α r
+    rw [h, weight_eq_zero_iff hr] at hdw
+    subst hdw
+    simpa [hasseDeriv_zero_apply] using hd
+  · simpa using index_le_weight (r := r) (d := 0) (by simpa [hasseDeriv_zero_apply] using h)
+
+/-- Applying `Δ_k` lowers the index by at most the weight of `k`.
+Source: §4, Lemma `lem:index-of-derivative` ("`ind(Δ_k P) ≥ ind(P) - ∑ k_j / r_j`"). -/
+theorem index_sub_weight_le_index_hasseDeriv {P : MvPolynomial σ ℝ} {k : σ →₀ ℕ}
+    (hk : hasseDeriv k P ≠ 0) (α : σ → ℝ) (r : σ → ℕ) :
+    index P α r - weight r k ≤ index (hasseDeriv k P) α r := by
+  obtain ⟨i, hi, hiw⟩ := exists_weight_eq_index hk α r
+  rw [hasseDeriv_hasseDeriv, smul_eq_C_mul, map_mul, eval_C, mul_ne_zero_iff] at hi
+  exact sub_le_iff_le_add.2 (by simpa [weight_add, hiw] using index_le_weight (r := r) hi.2)
+
+/-- Source: §4, Lemma 4-1 ("`ind(P + Q) ≥ min(ind P, ind Q)`"), in the form used in the proof of
+Lemma 6 (a common lower bound for the nonzero summands is a lower bound for a nonzero sum). -/
+theorem le_index_sum {ι : Type*} {s : Finset ι} {f : ι → MvPolynomial σ ℝ} {α : σ → ℝ} {r : σ → ℕ}
+    (hs : ∑ i ∈ s, f i ≠ 0) {c : ℝ} (hf : ∀ i ∈ s, f i ≠ 0 → c ≤ index (f i) α r) :
+    c ≤ index (∑ i ∈ s, f i) α r := by
+  refine (le_index_iff hs).2 fun d hd ↦ ?_
+  rw [map_sum, map_sum] at hd
+  obtain ⟨i, hi, hid⟩ := Finset.exists_ne_zero_of_sum_ne_zero hd
+  have hfi : f i ≠ 0 := fun h0 ↦ hid (by rw [h0, map_zero, map_zero])
+  exact (le_index_iff hfi).1 (hf i hi hfi) d hid
+
+/-- The rational weight of `d` as a natural-number weight divided by `D = ∏ r_j`.
+Source: §4, Lean implementation note ("set `D = ∏ r_j` and use the natural weights
+`w_j = D / r_j`"). -/
+theorem weight_eq_finsuppWeight_div {r : σ → ℕ} (hr : ∀ j, 0 < r j) (d : σ →₀ ℕ) :
+    weight r d = (Finsupp.weight (fun j ↦ (∏ i, r i) / r j) d : ℝ) / ∏ i, r i := by
+  have hD : (0 : ℝ) < ∏ i, (r i : ℝ) := Finset.prod_pos fun i _ ↦ by exact_mod_cast hr i
+  rw [weight, Finsupp.weight_eq_sum, Nat.cast_sum, Finset.sum_div, Nat.cast_prod]
+  refine Finset.sum_congr rfl fun j _ ↦ ?_
+  rw [smul_eq_mul, Nat.cast_mul,
+    Nat.cast_div_charZero (Finset.dvd_prod_of_mem _ (Finset.mem_univ j)), Nat.cast_prod,
+    ← mul_div_assoc, div_right_comm, mul_div_cancel_right₀ _ hD.ne']
+
+/-- The index as the weighted order of the Taylor expansion `P(X + α)`, viewed as a power series,
+divided by `D = ∏ r_j`. Source: §4, Lean implementation note ("use the natural weights in
+`MvPowerSeries.weightedOrder`, then divide the finite value by `D` after embedding `P_α` as a
+power series"). -/
+theorem index_eq_weightedOrder_div {P : MvPolynomial σ ℝ} (hP : P ≠ 0) {r : σ → ℕ}
+    (hr : ∀ j, 0 < r j) (α : σ → ℝ) : index P α r =
+      (((taylor α P : MvPowerSeries σ ℝ).weightedOrder fun j ↦ (∏ i, r i) / r j).toNat : ℝ) /
+        ∏ i, r i := by
+  set w : σ → ℕ := fun j ↦ (∏ i, r i) / r j
+  set F : MvPowerSeries σ ℝ := ↑(taylor α P)
+  obtain ⟨d, hd, hdw⟩ := MvPowerSeries.exists_coeff_ne_zero_and_weightedOrder w (f := F)
+    ((MvPowerSeries.ne_zero_iff_weightedOrder_finite w).1 (by simpa [F] using hP))
+  apply le_antisymm
+  · rw [← hdw, ENat.toNat_natCast, ← weight_eq_finsuppWeight_div hr]
+    exact index_le_weight (by simpa [F, MvPolynomial.coeff_coe, coeff_taylor] using hd)
+  · refine (le_index_iff hP).2 fun e he ↦ ?_
+    rw [weight_eq_finsuppWeight_div hr]
+    refine div_le_div_of_nonneg_right ?_ (Nat.cast_nonneg _)
+    exact_mod_cast ENat.toNat_le_toNat (MvPowerSeries.weightedOrder_le w (f := F) (d := e)
+      (by simpa [F, MvPolynomial.coeff_coe, coeff_taylor] using he)) (by simp)
+
+/-- The index is additive on products of nonzero polynomials.
+Source: §4, Lemma 4-1 ("`ind(P Q) = ind(P) + ind(Q)`"). -/
+theorem index_mul {P Q : MvPolynomial σ ℝ} (hP : P ≠ 0) (hQ : Q ≠ 0) (α : σ → ℝ) {r : σ → ℕ}
+    (hr : ∀ j, 0 < r j) : index (P * Q) α r = index P α r + index Q α r := by
+  rw [index_eq_weightedOrder_div hP hr, index_eq_weightedOrder_div hQ hr,
+    index_eq_weightedOrder_div (mul_ne_zero hP hQ) hr, ← add_div, map_mul, MvPolynomial.coe_mul,
+    MvPowerSeries.weightedOrder_mul]
+  congr 1
+  have hfin : ∀ R : MvPolynomial σ ℝ, R ≠ 0 →
+      ((taylor α R : MvPowerSeries σ ℝ).weightedOrder fun j ↦ (∏ i, r i) / r j) ≠ ⊤ := by simp
+  rw [ENat.toNat_add (hfin P hP) (hfin Q hQ), Nat.cast_add]
+
+/-- The index is additive on finite products of nonzero polynomials.
+Source: §4, Lemma 4-1, iterated ("`ind ∏_ν ... = ∑_ν ind ...`", as used in the proof of
+Lemma 6). -/
+theorem index_prod {ι : Type*} (s : Finset ι) {f : ι → MvPolynomial σ ℝ} (hf : ∀ i ∈ s, f i ≠ 0)
+    (α : σ → ℝ) {r : σ → ℕ} (hr : ∀ j, 0 < r j) :
+    index (∏ i ∈ s, f i) α r = ∑ i ∈ s, index (f i) α r := by
+  classical
+  induction s using Finset.induction_on with
+  | empty =>
+    rw [Finset.prod_empty, Finset.sum_empty]
+    exact (index_eq_zero_iff one_ne_zero hr α).2 (by simp)
+  | insert a s has ih =>
+    rw [Finset.prod_insert has, Finset.sum_insert has,
+      index_mul (hf a (Finset.mem_insert_self a s))
+        (Finset.prod_ne_zero_iff.2 fun i hi ↦ hf i (Finset.mem_insert_of_mem hi)) α hr,
+      ih fun i hi ↦ hf i (Finset.mem_insert_of_mem hi)]
+
+/-- Source: §5, proof of Lemma 6 ("Multiplication by a sign does not change the index"). -/
+theorem index_neg (P : MvPolynomial σ ℝ) (α : σ → ℝ) (r : σ → ℕ) :
+    index (-P) α r = index P α r := by
+  simp [index, support_neg]
+
+/-- Source: §4, end ("`ind(cP; α; r) = ind(P; α; r)`" for nonzero `c`). -/
+theorem index_C_mul {c : ℝ} (hc : c ≠ 0) (P : MvPolynomial σ ℝ) (α : σ → ℝ) (r : σ → ℕ) :
+    index (C c * P) α r = index P α r := by
+  rw [index, index, map_mul, taylor_C, ← smul_eq_C_mul, support_smul_eq hc]
+
+/-- Source: §4, end ("`ind(P; α; l r) = (1/l) ind(P; α; r)`"). -/
+theorem index_mul_left_weights {l : ℕ} (P : MvPolynomial σ ℝ) (α : σ → ℝ) (r : σ → ℕ) :
+    index P α (fun j ↦ l * r j) = index P α r / l := by
+  have himg : weight (fun j ↦ l * r j) '' ((taylor α P).support : Set (σ →₀ ℕ)) =
+      (l : ℝ)⁻¹ • (weight r '' ((taylor α P).support : Set (σ →₀ ℕ))) := by
+    rw [← Set.image_smul, Set.image_image]
+    refine Set.image_congr fun d _ ↦ ?_
+    rw [weight_mul_left, smul_eq_mul, div_eq_inv_mul]
+  rw [index, index, himg, Real.sInf_smul_of_nonneg (by positivity), smul_eq_mul, div_eq_inv_mul]
+
+/-- The index is invariant under injective renaming of variables.
+Source: §4, Lemma 4-2 and its Lean note ("invariance under ... variable renaming": the index
+of a polynomial embedded into a larger set of variables is its index in its own variables). -/
+theorem index_rename {τ : Type*} [Fintype τ] {f : σ → τ} (hf : Function.Injective f)
+    (P : MvPolynomial σ ℝ) (α : τ → ℝ) (r : τ → ℕ) :
+    index (rename f P) α r = index P (α ∘ f) (r ∘ f) := by
+  classical
+  rw [index, index, taylor_rename, support_rename_of_injective hf, Finset.coe_image,
+    Set.image_image]
+  refine congrArg sInf (Set.image_congr fun d _ ↦ ?_)
+  exact weight_mapDomain hf r d
+
+/-- If `P` has degree at most `r j` in each `x_j`, its index is at most the number of variables.
+Source: §5 ("Taylor's theorem gives a nonzero derivative with `0 ≤ i_j ≤ r_j`, of weight at
+most `m`"). -/
+theorem index_le_card {P : MvPolynomial σ ℝ} (hP : P ≠ 0) {r : σ → ℕ} (hd : ∀ j, degreeOf j P ≤ r j)
+    (α : σ → ℝ) : index P α r ≤ Fintype.card σ := by
+  obtain ⟨d, hd0, hdw⟩ := exists_weight_eq_index hP α r
+  exact hdw ▸ weight_le_card fun j ↦
+    (monomial_le_degreeOf j (replay.2 hd0)).trans
+      ((degreeOf_taylor_le α j P).trans (hd j))
+
+/-- In one variable, the index is the multiplicity of `α` as a root divided by the weight.
+Source: §5, proof of Lemma 5 ("Let `t` be the multiplicity of `h_1/q_1` as a root of `R`;
+Taylor's theorem gives `ind(R; h_1/q_1; r_1) = t/r_1`"). -/
+theorem index_unique [Unique σ] {P : MvPolynomial σ ℝ} (hP : P ≠ 0) (α : σ → ℝ) (r : σ → ℕ) :
+    index P α r =
+      (Polynomial.rootMultiplicity (α default) (uniqueAlgEquiv ℝ σ P) : ℝ) / r default := by
+  set q := Polynomial.taylor (α default) (uniqueAlgEquiv ℝ σ P) with hqdef
+  have key (d : σ →₀ ℕ) : eval α (hasseDeriv d P) = q.coeff (d default) := by
+    rw [Polynomial.taylor_coeff, ← uniqueAlgEquiv_hasseDeriv, ← Finsupp.unique_single d]
+    exact (eval₂_uniqueAlgEquiv (f := hasseDeriv d P) (φ := RingHom.id ℝ) (a := α)).symm
+  have hq : q ≠ 0 := by
+    rwa [hqdef, Ne, Polynomial.taylor_eq_zero, map_eq_zero_iff _ (uniqueAlgEquiv ℝ σ).injective]
+  rw [Polynomial.rootMultiplicity_eq_natTrailingDegree, ← Polynomial.taylor_apply]
+  apply le_antisymm
+  · simpa [weight, hqdef] using index_le_weight (P := P) (α := α) (r := r)
+      (d := Finsupp.single default q.natTrailingDegree)
+      (by simpa [key] using Polynomial.trailingCoeff_nonzero_iff_nonzero.2 hq)
+  · refine (le_index_iff hP).2 fun d hd ↦ ?_
+    simpa [weight, hqdef] using div_le_div_of_nonneg_right
+      (by exact_mod_cast Polynomial.natTrailingDegree_le_of_ne_zero (key d ▸ hd))
+      (Nat.cast_nonneg (r default))
+
+end IndexSupportAssessment
+
+#print axioms IndexSupportAssessment.index
+#print axioms IndexSupportAssessment.replay
+#print axioms IndexSupportAssessment.index_le_weight
+#print axioms IndexSupportAssessment.exists_weight_eq_index
+#print axioms IndexSupportAssessment.le_index_iff
+#print axioms IndexSupportAssessment.index_nonneg
+#print axioms IndexSupportAssessment.index_eq_zero_iff
+#print axioms IndexSupportAssessment.index_sub_weight_le_index_hasseDeriv
+#print axioms IndexSupportAssessment.le_index_sum
+#print axioms IndexSupportAssessment.weight_eq_finsuppWeight_div
+#print axioms IndexSupportAssessment.index_eq_weightedOrder_div
+#print axioms IndexSupportAssessment.index_mul
+#print axioms IndexSupportAssessment.index_prod
+#print axioms IndexSupportAssessment.index_neg
+#print axioms IndexSupportAssessment.index_C_mul
+#print axioms IndexSupportAssessment.index_mul_left_weights
+#print axioms IndexSupportAssessment.index_rename
+#print axioms IndexSupportAssessment.index_le_card
+#print axioms IndexSupportAssessment.index_unique
+run_cmd do
+  let n := Lean.mkPrivateNameCore `Roth.Index `Roth.mem_support_taylor_iff
+  Lean.Elab.Command.elabCommand (← `(#check $(Lean.mkIdent n)))
+  Lean.Elab.Command.elabCommand (← `(#print $(Lean.mkIdent n)))
+  Lean.Elab.Command.elabCommand (← `(#print axioms $(Lean.mkIdent n)))
+namespace IndexSupportAssessmentAudit
+run_cmd do
+  let env ← Lean.getEnv
+  let target := Lean.mkPrivateNameCore `Roth.Index `Roth.mem_support_taylor_iff
+  let names : Array Lean.Name := #[
+    `MvPolynomial.hasseCoeff,
+    `MvPolynomial.hasseDeriv,
+    `MvPolynomial.hasseDeriv_monomial,
+    `MvPolynomial.hasseDeriv_apply,
+    `MvPolynomial.hasseCoeff_eq_zero_iff,
+    `MvPolynomial.coeff_hasseDeriv,
+    `MvPolynomial.hasseCoeff_eq_prod,
+    `MvPolynomial.hasseDeriv_zero_apply,
+    `MvPolynomial.hasseDeriv_zero,
+    `MvPolynomial.hasseDeriv_C,
+    `MvPolynomial.hasseDeriv_map,
+    `MvPolynomial.hasseDeriv_rename,
+    Lean.mkPrivateNameCore `Roth.HasseDeriv `MvPolynomial.hasseCoeff_mul_hasseCoeff,
+    `MvPolynomial.hasseDeriv_hasseDeriv,
+    `MvPolynomial.hasseDeriv_hasseDeriv_of_disjoint,
+    Lean.mkPrivateNameCore `Roth.HasseDeriv `MvPolynomial.hasseCoeff_mul_succ,
+    `MvPolynomial.pderiv_hasseDeriv,
+    `MvPolynomial.degreeOf_hasseDeriv_le,
+    `MvPolynomial.hasseDeriv_eq_zero_of_degreeOf_lt,
+    Lean.mkPrivateNameCore `Roth.HasseDeriv `MvPolynomial.hasseDeriv_monomial_mul,
+    `MvPolynomial.hasseDeriv_mul_of_degreeOf_eq_zero,
+    `MvPolynomial.hasseDeriv_single_aeval_X,
+    `MvPolynomial.uniqueAlgEquiv_hasseDeriv,
+    `MvPolynomial.hasseCoeff_le_two_pow,
+    `MvPolynomial.factorial_smul_hasseDeriv_single,
+    `Roth.box,
+    `Roth.weight,
+    `Roth.mem_box,
+    `Roth.card_box,
+    `Roth.card_le_card_box,
+    `Roth.weight_nonneg,
+    `Roth.weight_zero,
+    `Roth.weight_add,
+    `Roth.weight_eq_zero_iff,
+    `Roth.weight_single,
+    `Roth.weight_le_card,
+    `Roth.weight_mul_left,
+    `Roth.weight_le_degree_div,
+    `Roth.weight_mapDomain,
+    `Roth.wronskianMatrix,
+    `Roth.wronskian,
+    `Roth.wronskian_eq_zero_of_not_linearIndependent,
+    `Roth.det_choose_eq,
+    Lean.mkPrivateNameCore `Roth.Wronskian `Roth.coeff_prod_of_natDegree_le',
+    `Roth.sum_range_le_sum_of_injective,
+    `Roth.coeff_wronskian_of_natDegree_injective,
+    `Roth.wronskian_ne_zero_of_natDegree_injective,
+    `Roth.wronskian_update_sub_smul,
+    `Roth.linearIndependent_update_sub_smul,
+    `Roth.sum_natDegree_update_lt,
+    `Roth.wronskian_ne_zero_of_linearIndependent,
+    `Roth.wronskian_eq_zero_iff,
+    `MvPolynomial.taylor,
+    `MvPolynomial.taylor_apply,
+    `MvPolynomial.taylor_X,
+    `MvPolynomial.taylor_C,
+    `MvPolynomial.taylor_monomial,
+    Lean.mkPrivateNameCore `Roth.Taylor `MvPolynomial.coeff_aeval_X_mul,
+    Lean.mkPrivateNameCore `Roth.Taylor `MvPolynomial.hasseCoeff_single_add_eq,
+    Lean.mkPrivateNameCore `Roth.Taylor `MvPolynomial.prod_pow_single_add_tsub,
+    Lean.mkPrivateNameCore `Roth.Taylor `MvPolynomial.coeff_taylor_monomial_single_add_aux,
+    Lean.mkPrivateNameCore `Roth.Taylor `MvPolynomial.coeff_taylor_monomial_aux,
+    `MvPolynomial.coeff_taylor,
+    `MvPolynomial.eval_taylor,
+    `MvPolynomial.taylor_taylor,
+    `MvPolynomial.taylor_zero,
+    `MvPolynomial.taylor_map,
+    `MvPolynomial.taylor_rename,
+    `MvPolynomial.degreeOf_taylor_le,
+    `MvPolynomial.taylor_neg_taylor,
+    `MvPolynomial.taylor_injective,
+    `MvPolynomial.taylor_eq_zero_iff,
+    `MvPolynomial.eq_sum_box_hasseDeriv,
+    `MvPolynomial.eval_eq_sum_box,
+    `Roth.normOne,
+    `Roth.diag,
+    `Roth.normOne_nonneg,
+    `Roth.normOne_eq_sum_of_support_subset,
+    `Roth.normOne_monomial,
+    `Roth.normOne_zero,
+    `Roth.abs_coeff_le_normOne,
+    `Roth.normOne_add_le,
+    `Roth.normOne_neg,
+    `Roth.normOne_sum_le,
+    `Roth.normOne_mul_le,
+    `Roth.normOne_prod_le,
+    `Roth.normOne_le_card_mul,
+    `Roth.normOne_det_le,
+    `Roth.abs_coeff_hasseDeriv_le,
+    `Roth.normOne_hasseDeriv_le,
+    `Roth.diag_eq_sum,
+    `Roth.abs_coeff_diag_le,
+    `Roth.natDegree_diag_le,
+    `Roth.eval_diag,
+    `Roth.diag_sub,
+    `Roth.geom_sum_le_one_add_pow,
+    Lean.mkPrivateNameCore `Roth.CoeffNorm `Roth.sum_box_prod_pow_le_aux,
+    `Roth.abs_eval_le,
+    `Roth.degreeOf_det_hasseDeriv_le,
+    `Roth.abs_coeff_det_hasseDeriv_le,
+    `Roth.genWronskian,
+    `Roth.kronecker,
+    `Roth.kroneckerExp,
+    Lean.mkPrivateNameCore `Roth.GenWronskian `Roth.kronHasse,
+    Lean.mkPrivateNameCore `Roth.GenWronskian `Roth.kronSpan,
+    `Roth.genWronskian_eq_zero_of_not_linearIndependent,
+    `Roth.kronecker_monomial,
+    `Roth.kroneckerExp_injOn,
+    `Roth.coeff_kronecker,
+    `Roth.kronecker_eq_zero_iff,
+    `Roth.linearIndependent_kronecker,
+    `Roth.derivative_aeval,
+    Lean.mkPrivateNameCore `Roth.GenWronskian `Roth.derivative_kronHasse_aux,
+    Lean.mkPrivateNameCore `Roth.GenWronskian `Roth.derivative_mem_kronSpan,
+    Lean.mkPrivateNameCore `Roth.GenWronskian `Roth.hasseDeriv_kronecker_mem,
+    `Roth.exists_hasseDeriv_kronecker_eq_sum,
+    `Roth.det_sum_rows,
+    Lean.mkPrivateNameCore `Roth.GenWronskian `Roth.wronskian_kronecker_eq_sum_aux,
+    `Roth.exists_genWronskian_ne_zero,
+    `Roth.sqrt_one_sub_inv_lt,
+    Lean.mkPrivateNameCore `Roth.Lattice `Roth.inv_add_inv_le,
+    Lean.mkPrivateNameCore `Roth.Lattice `Roth.sum_inv_le,
+    `Roth.sum_inv_lt,
+    Lean.mkPrivateNameCore `Roth.Lattice `Roth.extend_apply_castSucc,
+    Lean.mkPrivateNameCore `Roth.Lattice `Roth.extend_apply_last,
+    Lean.mkPrivateNameCore `Roth.Lattice `Roth.card_filter_box_fiber_aux,
+    `Roth.card_filter_box_last,
+    Lean.mkPrivateNameCore `Roth.Lattice `Roth.filter_weight_le_eq_empty,
+    Lean.mkPrivateNameCore `Roth.Lattice `Roth.card_filter_fiber_eq,
+    Lean.mkPrivateNameCore `Roth.Lattice `Roth.card_filter_weight_le_of_le_sqrt_aux,
+    Lean.mkPrivateNameCore `Roth.Lattice `Roth.card_filter_weight_le_succ_aux,
+    `Roth.card_filter_weight_le,
+    `Roth.index,
+    Lean.mkPrivateNameCore `Roth.Index `Roth.mem_support_taylor_iff,
+    `Roth.index_le_weight,
+    `Roth.exists_weight_eq_index,
+    `Roth.le_index_iff,
+    `Roth.index_nonneg,
+    `Roth.index_eq_zero_iff,
+    `Roth.index_sub_weight_le_index_hasseDeriv,
+    `Roth.le_index_sum,
+    `Roth.weight_eq_finsuppWeight_div,
+    `Roth.index_eq_weightedOrder_div,
+    `Roth.index_mul,
+    `Roth.index_prod,
+    `Roth.index_neg,
+    `Roth.index_C_mul,
+    `Roth.index_mul_left_weights,
+    `Roth.index_rename,
+    `Roth.index_le_card,
+    `Roth.index_unique,
+    `Roth.coeffNone,
+    `Roth.eq_mapDomain_some_add_single,
+    Lean.mkPrivateNameCore `Roth.Separation `Roth.coeff_X_none_pow_mul_rename,
+    `Roth.coeff_coeffNone,
+    `Roth.eq_sum_X_none_pow_mul_coeffNone,
+    `Roth.degreeOf_coeffNone_le,
+    `Roth.coeff_rename_mul_aeval,
+    `Roth.aeval_X_eq_rename,
+    `Roth.hasseDeriv_rename_mul_aeval,
+    `Roth.coeff_uniqueAlgEquiv_symm,
+    `Roth.degreeOf_uniqueAlgEquiv_symm,
+    `Roth.degreeOf_rename_mul_aeval,
+    `Roth.degreeOf_none_rename_mul_aeval,
+    Lean.mkPrivateNameCore `Roth.Separation `Roth.linearIndependent_coordinate_polynomials_aux,
+    Lean.mkPrivateNameCore `Roth.Separation `Roth.eq_sum_aeval_basis_coeffNone_aux,
+    Lean.mkPrivateNameCore `Roth.Separation `Roth.exists_coeffNone_basis_aux,
+    `Roth.exists_separated_representation,
+    `Roth.det_hasseDeriv_separated,
+    `Roth.exists_sum_mul_eq_gcd,
+    `Roth.exists_nat_smul_eq_map,
+    `Roth.exists_primitive_smul_eq,
+    `Roth.exists_int_eq_of_gcd_eq_one,
+    Lean.mkPrivateNameCore `Roth.Separation `Roth.rescale_separated_factor_aux,
+    Lean.mkPrivateNameCore `Roth.Separation `Roth.exists_int_polynomial_of_primitive_factor_aux,
+    `Roth.exists_int_factors,
+    Lean.mkPrivateNameCore `Roth.Separation `Roth.exists_rat_factors_det_hasseDeriv_aux,
+    `Roth.exists_det_eq_mul,
+    `Roth.RSet,
+    `Roth.indexSet,
+    `Roth.Θ,
+    `Roth.lem6M,
+    `Roth.lem6Φ,
+    `Roth.one_mem_RSet,
+    `Roth.indexSet_nonempty,
+    `Roth.indexSet_bddAbove,
+    `Roth.index_le_Θ,
+    `Roth.Θ_nonneg,
+    `Roth.Θ_le_card,
+    `Roth.Θ_le_of_forall_index_le,
+    `Roth.Θ_mono,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.indexSet_comp_subset,
+    `Roth.Θ_equiv,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.isPrimitive_linear,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.isPrimitive_pow,
+    `Roth.exists_eq_pow_mul_of_rootMultiplicity,
+    `Roth.pow_rootMultiplicity_le,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.index_unique_le_log_div,
+    `Roth.Θ_unique_le,
+    `Roth.one_le_lem6M,
+    `Roth.floor_sq_div_two_le_sum,
+    `Roth.sq_div_three_lt_floor_sq_div_two,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.mul_div_two_le_sum_max_aux,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.mul_sq_div_three_le_sum_max_of_pos_aux,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.mul_sq_div_three_le_sum_max_aux,
+    `Roth.min_le_sum_max,
+    `Roth.sum_max_sub_le_index_det,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.index_separated_mul_le_aux,
+    `Roth.index_det_le,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.weight_le_delta_aux,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.mapped_det_ne_zero_aux,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.index_numeric_bound_aux,
+    `Roth.index_le_lem6,
+    `Roth.Θ_option_le,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.factorial_coefficient_le_two_pow_aux,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.two_pow_lt_rpow_aux,
+    `Roth.lem6M_lt,
+    `Roth.lem7_Φ_bound,
+    `Roth.lem7_numeric,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.theta_scaled_unique_le_aux,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.theta_delta_succ_lt_aux,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.theta_prefix_lt_aux,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.theta_lt_base_aux,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.theta_denominators_one_lt_aux,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.theta_phi_lt_aux,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.theta_lt_succ_aux,
+    Lean.mkPrivateNameCore `Roth.Theta `Roth.theta_lt_of_large_delta_aux,
+    `Roth.Θ_lt,
+    `Roth.lam,
+    `Roth.gam,
+    `Roth.eta,
+    `Roth.mainCoeffBound,
+    `Roth.boxFamily,
+    `Roth.exists_delta_bound,
+    `Roth.eta_lt_gam_iff,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.sqrt_lt_nat_floor_aux,
+    `Roth.sqrt_lt_floor,
+    `Roth.four_lt_rpow,
+    `Roth.mul_log_div_two_lt_log_mainCoeffBound,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.two_lt_rpow_aux,
+    `Roth.three_small_factors,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.exists_norm_coeff_reduction_aux,
+    `Roth.norm_coeff_modByMonic_le,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.boxFamily_eq_image_finsupp_aux,
+    `Roth.boxFamily_finite,
+    `Roth.ncard_boxFamily,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.floor_rpow_count_lt_aux,
+    `Roth.pigeonhole_count,
+    `Roth.exists_ne_modByMonic_eq,
+    `Roth.sub_mem_RSet,
+    `Roth.eval_hasseDeriv_sub_eq_zero,
+    `Roth.le_index_of_forall_eval_eq_zero,
+    `Roth.mul_two_mul_add_one_div_lt_of_le_sq_mul,
+    `Roth.exists_hasseDeriv_eval_ne_zero,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.abs_eval_iterated_hasseDeriv_lt_aux,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.exists_hasseDeriv_index_eval_bound_aux,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_aux,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.exists_mem_RSet_le_index_aux,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.mul_card_filter_weight_le_aux,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.exists_mem_RSet_le_index_of_rpow_bound_aux,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.exists_mem_RSet_le_index_of_log_bound_aux,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.exists_auxiliary_polynomial_of_log_bound_aux,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.theta_lt_eta_of_sq_log_bound_aux,
+    Lean.mkPrivateNameCore `Roth.MainLemma `Roth.exists_auxiliary_polynomial_with_index_gap_aux,
+    `Roth.main_lemma,
+    `Roth.approxSet,
+    `Roth.exists_nat_mul_isIntegral,
+    `Roth.approxSet_den_le_finite,
+    `Roth.eventually_div_rpow_lt,
+    `Roth.reduction,
+    `Roth.exists_monic_aeval_eq_zero,
+    Lean.mkPrivateNameCore `Roth.Main `Roth.approxSet_num_den_mem_aux,
+    `Roth.exists_reduced_approx,
+    `Roth.exists_m,
+    `Roth.exists_delta,
+    `Roth.exists_approximants,
+    `Roth.exists_degrees,
+    `Roth.one_le_prod_pow_mul_abs_eval,
+    Lean.mkPrivateNameCore `Roth.Main `Roth.abs_prod_pow_le_rpow_of_le_weight,
+    `Roth.abs_eval_lt_of_le_index,
+    Lean.mkPrivateNameCore `Roth.Main `Roth.exists_roth_parameters_aux,
+    Lean.mkPrivateNameCore `Roth.Main `Roth.exists_roth_approximants_aux,
+    Lean.mkPrivateNameCore `Roth.Main `Roth.one_lt_roth_eval_bound_aux,
+    Lean.mkPrivateNameCore `Roth.Main `Roth.roth_product_bound_aux,
+    Lean.mkPrivateNameCore `Roth.Main `Roth.roth_log_bound_aux,
+    `Roth.roth_of_isIntegral,
+    `Roth.roth,
+    `Roth.roth_rat,
+    `LeanEval.NumberTheory.ThueSiegelRothProblem.IsDiophantine,
+    Lean.mkPrivateNameCore `Roth.LeanEval
+      `LeanEval.NumberTheory.ThueSiegelRothProblem.exists_pos_div_rpow_lt_aux,
+    `LeanEval.NumberTheory.ThueSiegelRothProblem.isDiophantine_iff,
+    `LeanEval.NumberTheory.ThueSiegelRothProblem.thueSiegelRoth]
+  let unique := names.toList.eraseDups.length
+  unless names.size == 293 && unique == 293 do
+    throwError "INDEX_SUPPORT_BAD_CANONICAL_ARRAY"
+  let mut present : Nat := 0
+  let mut values : Nat := 0
+  for n in names do
+    match env.find? n with
+    | none => throwError "INDEX_SUPPORT_NOT_LOADED: {n}"
+    | some ci =>
+      present := present + 1
+      match ci.value? (allowOpaque := true) with
+      | none => pure ()
+      | some val =>
+        values := values + 1
+        if val.getUsedConstants.any (fun c ↦ c == target) then
+          Lean.logInfo m!"INDEX_SUPPORT_DIRECT_CONSUMER: {n}"
+  Lean.logInfo m!"INDEX_SUPPORT_AUDIT: requested={names.size}; unique={unique}"
+  Lean.logInfo m!"INDEX_SUPPORT_AUDIT_PRESENT: present={present}; values={values}"
+end IndexSupportAssessmentAudit

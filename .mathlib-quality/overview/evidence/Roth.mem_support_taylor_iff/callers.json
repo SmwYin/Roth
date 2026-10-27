@@ -1,0 +1,296 @@
+[
+  {
+    "file": "Roth/Index.lean",
+    "line": 69,
+    "name": "Roth.index_le_weight",
+    "short": "index_le_weight",
+    "kind": "theorem",
+    "visibility": "public",
+    "end_line": 72,
+    "source": "theorem index_le_weight {P : MvPolynomial σ ℝ} {α : σ → ℝ} {r : σ → ℕ} {d : σ →₀ ℕ}\n    (h : eval α (hasseDeriv d P) ≠ 0) : index P α r ≤ weight r d :=\n  csInf_le ((taylor α P).support.finite_toSet.image (weight r)).bddBelow\n    (Set.mem_image_of_mem _ (Finset.mem_coe.2 (mem_support_taylor_iff.2 h)))",
+    "signature": "theorem index_le_weight {P : MvPolynomial σ ℝ} {α : σ → ℝ} {r : σ → ℕ} {d : σ →₀ ℕ}\n    (h : eval α (hasseDeriv d P) ≠ 0) : index P α r ≤ weight r d",
+    "body": "csInf_le ((taylor α P).support.finite_toSet.image (weight r)).bddBelow\n    (Set.mem_image_of_mem _ (Finset.mem_coe.2 (mem_support_taylor_iff.2 h)))",
+    "proof_lines": 2,
+    "sha256": "29cd1d2c64fbba551f22c4c5ebc08b1b00ceaae86c589b66b9c20b7315f938d3",
+    "source_body_project_refs": [
+      "MvPolynomial.taylor",
+      "Roth.mem_support_taylor_iff",
+      "Roth.weight"
+    ],
+    "source_type_project_refs": [
+      "MvPolynomial.hasseDeriv",
+      "Roth.index",
+      "Roth.weight"
+    ],
+    "what": "The index is at most the weight of any Hasse derivative nonvanishing at the point.",
+    "how": "Applies csInf_le to the finite image support after mem_support_taylor_iff establishes membership.",
+    "hypotheses": "Finitely many variables and one derivative evaluation known to be nonzero; coordinate weights may vanish.",
+    "source_used_by_project": [
+      "Roth.le_index_iff",
+      "Roth.index_eq_zero_iff",
+      "Roth.index_sub_weight_le_index_hasseDeriv",
+      "Roth.index_eq_weightedOrder_div",
+      "Roth.index_unique",
+      "Roth.abs_eval_lt_of_le_index"
+    ],
+    "source_used_by_file": [
+      "Roth.le_index_iff",
+      "Roth.index_eq_zero_iff",
+      "Roth.index_sub_weight_le_index_hasseDeriv",
+      "Roth.index_eq_weightedOrder_div",
+      "Roth.index_unique"
+    ],
+    "section_binders": "{σ : Type*} [Fintype σ]",
+    "type_provenance": "Exact written signature plus manually identified captured section binders. Root cached full build succeeds; global opaque/type inspector timed out, so no kernel dump is claimed.",
+    "notes": "No sorry, TODO, or set_option in this declaration.",
+    "assignment_offset": 149,
+    "project_body_refs": [
+      "MvPolynomial.taylor",
+      "Roth.mem_support_taylor_iff",
+      "Roth.weight"
+    ],
+    "project_type_refs": [
+      "MvPolynomial.hasseDeriv",
+      "Roth.index",
+      "Roth.weight"
+    ],
+    "project_callers": [
+      {
+        "name": "Roth.le_index_iff",
+        "file": "Roth/Index.lean",
+        "line": 85
+      },
+      {
+        "name": "Roth.index_eq_zero_iff",
+        "file": "Roth/Index.lean",
+        "line": 98
+      },
+      {
+        "name": "Roth.index_sub_weight_le_index_hasseDeriv",
+        "file": "Roth/Index.lean",
+        "line": 109
+      },
+      {
+        "name": "Roth.index_eq_weightedOrder_div",
+        "file": "Roth/Index.lean",
+        "line": 143
+      },
+      {
+        "name": "Roth.index_unique",
+        "file": "Roth/Index.lean",
+        "line": 234
+      },
+      {
+        "name": "Roth.abs_eval_lt_of_le_index",
+        "file": "Roth/Main.lean",
+        "line": 380
+      }
+    ],
+    "section_context": "{σ : Type*} [Fintype σ]"
+  },
+  {
+    "file": "Roth/Index.lean",
+    "line": 76,
+    "name": "Roth.exists_weight_eq_index",
+    "short": "exists_weight_eq_index",
+    "kind": "theorem",
+    "visibility": "public",
+    "end_line": 81,
+    "source": "theorem exists_weight_eq_index {P : MvPolynomial σ ℝ} (hP : P ≠ 0) (α : σ → ℝ) (r : σ → ℕ) :\n    ∃ d, eval α (hasseDeriv d P) ≠ 0 ∧ weight r d = index P α r := by\n  obtain ⟨d, hd, hdw⟩ :=\n    (show (weight r '' ((taylor α P).support : Set (σ →₀ ℕ))).Nonempty by\n      simpa using hP).csInf_mem ((taylor α P).support.finite_toSet.image (weight r))\n  exact ⟨d, mem_support_taylor_iff.1 hd, hdw⟩",
+    "signature": "theorem exists_weight_eq_index {P : MvPolynomial σ ℝ} (hP : P ≠ 0) (α : σ → ℝ) (r : σ → ℕ) :\n    ∃ d, eval α (hasseDeriv d P) ≠ 0 ∧ weight r d = index P α r",
+    "body": "by\n  obtain ⟨d, hd, hdw⟩ :=\n    (show (weight r '' ((taylor α P).support : Set (σ →₀ ℕ))).Nonempty by\n      simpa using hP).csInf_mem ((taylor α P).support.finite_toSet.image (weight r))\n  exact ⟨d, mem_support_taylor_iff.1 hd, hdw⟩",
+    "proof_lines": 5,
+    "sha256": "62e9454da2099dcfab21de9ee483932c8c0a59a24cab8625edc8c1422a1e68d9",
+    "source_body_project_refs": [
+      "MvPolynomial.taylor",
+      "Roth.mem_support_taylor_iff",
+      "Roth.weight"
+    ],
+    "source_type_project_refs": [
+      "MvPolynomial.hasseDeriv",
+      "Roth.index",
+      "Roth.weight"
+    ],
+    "what": "For a nonzero polynomial, some nonvanishing Hasse derivative attains its index.",
+    "how": "The finite nonempty Taylor-support image contains its infimum by Set.Nonempty.csInf_mem, then mem_support_taylor_iff translates the witness.",
+    "hypotheses": "A nonzero real polynomial on finitely many variables; natural weights need not be positive.",
+    "source_used_by_project": [
+      "Roth.index_eq_zero_iff",
+      "Roth.index_sub_weight_le_index_hasseDeriv",
+      "Roth.index_le_card",
+      "Roth.exists_hasseDeriv_eval_ne_zero"
+    ],
+    "source_used_by_file": [
+      "Roth.index_eq_zero_iff",
+      "Roth.index_sub_weight_le_index_hasseDeriv",
+      "Roth.index_le_card"
+    ],
+    "section_binders": "{σ : Type*} [Fintype σ]",
+    "type_provenance": "Exact written signature plus manually identified captured section binders. Root cached full build succeeds; global opaque/type inspector timed out, so no kernel dump is claimed.",
+    "notes": "No sorry, TODO, or set_option in this declaration.",
+    "assignment_offset": 157,
+    "project_body_refs": [
+      "MvPolynomial.taylor",
+      "Roth.mem_support_taylor_iff",
+      "Roth.weight"
+    ],
+    "project_type_refs": [
+      "MvPolynomial.hasseDeriv",
+      "Roth.index",
+      "Roth.weight"
+    ],
+    "project_callers": [
+      {
+        "name": "Roth.index_eq_zero_iff",
+        "file": "Roth/Index.lean",
+        "line": 98
+      },
+      {
+        "name": "Roth.index_sub_weight_le_index_hasseDeriv",
+        "file": "Roth/Index.lean",
+        "line": 109
+      },
+      {
+        "name": "Roth.index_le_card",
+        "file": "Roth/Index.lean",
+        "line": 224
+      },
+      {
+        "name": "Roth.exists_hasseDeriv_eval_ne_zero",
+        "file": "Roth/MainLemma.lean",
+        "line": 454
+      }
+    ],
+    "section_context": "{σ : Type*} [Fintype σ]"
+  },
+  {
+    "file": "Roth/Index.lean",
+    "line": 85,
+    "name": "Roth.le_index_iff",
+    "short": "le_index_iff",
+    "kind": "theorem",
+    "visibility": "public",
+    "end_line": 90,
+    "source": "theorem le_index_iff {P : MvPolynomial σ ℝ} (hP : P ≠ 0) {α : σ → ℝ} {r : σ → ℕ} {c : ℝ} :\n    c ≤ index P α r ↔ ∀ d, eval α (hasseDeriv d P) ≠ 0 → c ≤ weight r d := by\n  refine ⟨fun h d hd ↦ h.trans (index_le_weight hd), fun h ↦ ?_⟩\n  refine le_csInf (by simpa using hP) ?_\n  rintro _ ⟨d, hd, rfl⟩\n  exact h d (mem_support_taylor_iff.1 hd)",
+    "signature": "theorem le_index_iff {P : MvPolynomial σ ℝ} (hP : P ≠ 0) {α : σ → ℝ} {r : σ → ℕ} {c : ℝ} :\n    c ≤ index P α r ↔ ∀ d, eval α (hasseDeriv d P) ≠ 0 → c ≤ weight r d",
+    "body": "by\n  refine ⟨fun h d hd ↦ h.trans (index_le_weight hd), fun h ↦ ?_⟩\n  refine le_csInf (by simpa using hP) ?_\n  rintro _ ⟨d, hd, rfl⟩\n  exact h d (mem_support_taylor_iff.1 hd)",
+    "proof_lines": 5,
+    "sha256": "e2f891b05c726ecfee64bd368109f513cb1f396b32c13c99d0d44d656981a070",
+    "source_body_project_refs": [
+      "Roth.index_le_weight",
+      "Roth.mem_support_taylor_iff"
+    ],
+    "source_type_project_refs": [
+      "MvPolynomial.hasseDeriv",
+      "Roth.index",
+      "Roth.weight"
+    ],
+    "what": "A real number bounds the nonzero polynomial’s index below exactly when it bounds every nonvanishing derivative’s weight below.",
+    "how": "The forward direction uses index_le_weight; the converse applies le_csInf to the nonempty image support and mem_support_taylor_iff.",
+    "hypotheses": "A nonzero real polynomial, a point, and natural weights on finitely many variables.",
+    "source_used_by_project": [
+      "Roth.le_index_sum",
+      "Roth.index_eq_weightedOrder_div",
+      "Roth.index_unique",
+      "Roth.le_index_of_forall_eval_eq_zero"
+    ],
+    "source_used_by_file": [
+      "Roth.le_index_sum",
+      "Roth.index_eq_weightedOrder_div",
+      "Roth.index_unique"
+    ],
+    "section_binders": "{σ : Type*} [Fintype σ]",
+    "type_provenance": "Exact written signature plus manually identified captured section binders. Root cached full build succeeds; global opaque/type inspector timed out, so no kernel dump is claimed.",
+    "notes": "No sorry, TODO, or set_option in this declaration.",
+    "assignment_offset": 163,
+    "project_body_refs": [
+      "Roth.index_le_weight",
+      "Roth.mem_support_taylor_iff"
+    ],
+    "project_type_refs": [
+      "MvPolynomial.hasseDeriv",
+      "Roth.index",
+      "Roth.weight"
+    ],
+    "project_callers": [
+      {
+        "name": "Roth.le_index_sum",
+        "file": "Roth/Index.lean",
+        "line": 118
+      },
+      {
+        "name": "Roth.index_eq_weightedOrder_div",
+        "file": "Roth/Index.lean",
+        "line": 143
+      },
+      {
+        "name": "Roth.index_unique",
+        "file": "Roth/Index.lean",
+        "line": 234
+      },
+      {
+        "name": "Roth.le_index_of_forall_eval_eq_zero",
+        "file": "Roth/MainLemma.lean",
+        "line": 419
+      }
+    ],
+    "section_context": "{σ : Type*} [Fintype σ]"
+  },
+  {
+    "file": "Roth/Index.lean",
+    "line": 224,
+    "name": "Roth.index_le_card",
+    "short": "index_le_card",
+    "kind": "theorem",
+    "visibility": "public",
+    "end_line": 229,
+    "source": "theorem index_le_card {P : MvPolynomial σ ℝ} (hP : P ≠ 0) {r : σ → ℕ} (hd : ∀ j, degreeOf j P ≤ r j)\n    (α : σ → ℝ) : index P α r ≤ Fintype.card σ := by\n  obtain ⟨d, hd0, hdw⟩ := exists_weight_eq_index hP α r\n  exact hdw ▸ weight_le_card fun j ↦\n    (monomial_le_degreeOf j (mem_support_taylor_iff.2 hd0)).trans\n      ((degreeOf_taylor_le α j P).trans (hd j))",
+    "signature": "theorem index_le_card {P : MvPolynomial σ ℝ} (hP : P ≠ 0) {r : σ → ℕ} (hd : ∀ j, degreeOf j P ≤ r j)\n    (α : σ → ℝ) : index P α r ≤ Fintype.card σ",
+    "body": "by\n  obtain ⟨d, hd0, hdw⟩ := exists_weight_eq_index hP α r\n  exact hdw ▸ weight_le_card fun j ↦\n    (monomial_le_degreeOf j (mem_support_taylor_iff.2 hd0)).trans\n      ((degreeOf_taylor_le α j P).trans (hd j))",
+    "proof_lines": 5,
+    "sha256": "6c741adb35043cd06e03b067465499735149beed51f135fc919ad174310f0f1a",
+    "source_body_project_refs": [
+      "MvPolynomial.degreeOf_taylor_le",
+      "Roth.exists_weight_eq_index",
+      "Roth.mem_support_taylor_iff",
+      "Roth.weight_le_card"
+    ],
+    "source_type_project_refs": [
+      "Roth.index"
+    ],
+    "what": "A nonzero polynomial whose partial degrees are bounded by r has index at most the number of variables.",
+    "how": "Uses an attaining exponent from exists_weight_eq_index, bounds it with monomial_le_degreeOf and degreeOf_taylor_le, then applies weight_le_card.",
+    "hypotheses": "A nonzero real polynomial and natural coordinate degree bounds r.",
+    "source_used_by_project": [
+      "Roth.indexSet_bddAbove",
+      "Roth.Θ_le_card"
+    ],
+    "source_used_by_file": [],
+    "section_binders": "{σ : Type*} [Fintype σ]",
+    "type_provenance": "Exact written signature plus manually identified captured section binders. Root cached full build succeeds; global opaque/type inspector timed out, so no kernel dump is claimed.",
+    "notes": "No sorry, TODO, or set_option in this declaration.",
+    "assignment_offset": 148,
+    "project_body_refs": [
+      "MvPolynomial.degreeOf_taylor_le",
+      "Roth.exists_weight_eq_index",
+      "Roth.mem_support_taylor_iff",
+      "Roth.weight_le_card"
+    ],
+    "project_type_refs": [
+      "Roth.index"
+    ],
+    "project_callers": [
+      {
+        "name": "Roth.indexSet_bddAbove",
+        "file": "Roth/Theta.lean",
+        "line": 87
+      },
+      {
+        "name": "Roth.Θ_le_card",
+        "file": "Roth/Theta.lean",
+        "line": 114
+      }
+    ],
+    "section_context": "{σ : Type*} [Fintype σ]"
+  }
+]
