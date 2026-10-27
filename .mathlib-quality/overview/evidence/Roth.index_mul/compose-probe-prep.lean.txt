@@ -1,0 +1,13 @@
+namespace IndexMulComposition144
+open Roth MvPolynomial
+variable {σ : Type*} [Fintype σ]
+theorem exactAttempt {P Q : MvPolynomial σ ℝ} (hP : P ≠ 0) (hQ : Q ≠ 0)
+    (α : σ → ℝ) (r : σ → ℕ) : index (P * Q) α r = index P α r + index Q α r := by
+  fail_if_success exact MvPowerSeries.weightedOrder_mul
+    (fun j ↦ (∏ i, max 1 (r i)) / r j)
+    (taylor α P : MvPowerSeries σ ℝ) (taylor α Q : MvPowerSeries σ ℝ)
+  fail_if_success (solve | simp only [index, map_mul, MvPolynomial.coe_mul,
+    MvPowerSeries.weightedOrder_mul])
+  exact IndexMul144.replacement hP hQ α r
+#print axioms exactAttempt
+end IndexMulComposition144

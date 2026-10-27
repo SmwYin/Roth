@@ -1,0 +1,24 @@
+[
+  {
+    "declaration": "Roth.index_prod",
+    "file": "Roth/Index.lean",
+    "source_sha256": "e22ab0acd820d9ae765e6f70279edbc0d626052372611806c4d5464ca3d377f1",
+    "identifier_occurrences": 1,
+    "reference_lines": [
+      185
+    ],
+    "source_fragment": "theorem index_prod {ι : Type*} (s : Finset ι) {f : ι → MvPolynomial σ ℝ} (hf : ∀ i ∈ s, f i ≠ 0)\n    (α : σ → ℝ) {r : σ → ℕ} (hr : ∀ j, 0 < r j) :\n    index (∏ i ∈ s, f i) α r = ∑ i ∈ s, index (f i) α r := by\n  classical\n  induction s using Finset.induction_on with\n  | empty =>\n    rw [Finset.prod_empty, Finset.sum_empty]\n    exact (index_eq_zero_iff one_ne_zero hr α).2 (by simp)\n  | insert a s has ih =>\n    rw [Finset.prod_insert has, Finset.sum_insert has,\n      index_mul (hf a (Finset.mem_insert_self a s))\n        (Finset.prod_ne_zero_iff.2 fun i hi ↦ hf i (Finset.mem_insert_of_mem hi)) α hr,\n      ih fun i hi ↦ hf i (Finset.mem_insert_of_mem hi)]\n\n",
+    "plan": "Retain the factor nonvanishing certificates; replace index_mul by independently proved IndexMul144.replacement with explicit r and omit hr argument. Entire caller replay compiled. For upstream migration use projected infDegree with the natural-weight coe/scaling bridge; do not count these new bridge proofs as existing library calls."
+  },
+  {
+    "declaration": "Roth.index_separated_mul_le_aux",
+    "file": "Roth/Theta.lean",
+    "source_sha256": "ea447150977f3acf5259cb27889019b9ac32195614f91bc78ed3454c26ca82f5",
+    "identifier_occurrences": 1,
+    "reference_lines": [
+      438
+    ],
+    "source_fragment": "private lemma index_separated_mul_le_aux {r : Option τ → ℕ} (hr0 : ∀ j, 0 < r j) {q : Option τ → ℕ}\n    {h : Option τ → ℤ} (hh : ∀ j, IsCoprime (h j) (q j : ℤ)) {M : ℝ} {l : ℕ} (hl : 0 < l)\n    {U : MvPolynomial τ ℤ} (hU : U ∈ RSet M (fun j ↦ l * r (some j))) {V : Polynomial ℤ}\n    (hV : V ≠ 0) (hVd : V.natDegree ≤ l * r none) (hVc : ∀ b, |(V.coeff b : ℝ)| ≤ M) :\n    index (map (Int.castRingHom ℝ)\n        (rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) ℤ) V))\n      (fun j ↦ (h j : ℝ) / q j) r ≤ l * lem6Φ q r M l := by\n  classical\n  set V' : MvPolynomial Unit ℤ := (uniqueAlgEquiv ℤ Unit).symm V with hV'\n  have hV'0 : V' ≠ 0 := by\n    rwa [hV', ne_eq, map_eq_zero_iff _ (uniqueAlgEquiv ℤ Unit).symm.injective]\n  have hVmem : V' ∈ RSet M (fun _ : Unit ↦ l * r none) := by\n    refine ⟨hV'0, fun j ↦ ?_, fun d ↦ ?_⟩\n    · rw [Subsingleton.elim j default, hV', degreeOf_uniqueAlgEquiv_symm]\n      exact hVd\n    · rw [hV', MvPolynomial.coeff_uniqueAlgEquiv_symm]\n      exact hVc _\n  have hinjV : Function.Injective (fun _ : Unit ↦ (none : Option τ)) :=\n    fun a b _ ↦ Subsingleton.elim a b\n  have hmU : map (Int.castRingHom ℝ) U ≠ 0 := fun h0 ↦\n    hU.1 (map_injective _ Int.cast_injective (h0.trans (map_zero _).symm))\n  have hmV : map (Int.castRingHom ℝ) V' ≠ 0 := fun h0 ↦\n    hV'0 (map_injective _ Int.cast_injective (h0.trans (map_zero _).symm))\n  rw [aeval_X_eq_rename, _root_.map_mul, map_rename, map_rename,\n    index_mul ((map_ne_zero_iff (rename (R := ℝ) some)\n      (rename_injective _ (Option.some_injective _))).2 hmU)\n      ((map_ne_zero_iff (rename (R := ℝ) (fun _ : Unit ↦ (none : Option τ)))\n        (rename_injective _ hinjV)).2 hmV) _ hr0,\n    index_rename (Option.some_injective _), index_rename hinjV]\n  have hUΘ := index_le_Θ hU (h := h ∘ some)\n    fun j ↦ hh (some j)\n  have hVΘ := index_le_Θ hVmem\n    (q := fun _ : Unit ↦ q none) (h := fun _ ↦ h none) fun _ ↦ hh none\n  rw [index_mul_left_weights] at hUΘ hVΘ\n  have hlR : (0 : ℝ) < l := by exact_mod_cast hl\n  rw [lem6Φ, mul_add, add_comm]\n  exact add_le_add ((div_le_iff₀' hlR).1 hVΘ) ((div_le_iff₀' hlR).1 hUΘ)\n",
+    "plan": "Retain the factor nonvanishing certificates; replace index_mul by independently proved IndexMul144.replacement with explicit r and omit hr argument. Entire caller replay compiled. For upstream migration use projected infDegree with the natural-weight coe/scaling bridge; do not count these new bridge proofs as existing library calls."
+  }
+]

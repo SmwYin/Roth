@@ -1,0 +1,111 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\n#check_failure Roth.index_mul\nnamespace IndexMulMathlib144\nuniverse u v\ntheorem modern {σ : Type u} {R : Type v} [Semiring R] [NoZeroDivisors R]\n    (w : σ → ℕ) (f g : MvPowerSeries σ R) :\n    (f * g).weightedOrder w = f.weightedOrder w + g.weightedOrder w :=\n  MvPowerSeries.weightedOrder_mul w f g\ntheorem polynomial {σ : Type u} {R : Type v} [CommSemiring R] [NoZeroDivisors R]\n    (w : σ → ℕ) (P Q : MvPolynomial σ R) :\n    ((P * Q : MvPolynomial σ R) : MvPowerSeries σ R).weightedOrder w =\n      (P : MvPowerSeries σ R).weightedOrder w + (Q : MvPowerSeries σ R).weightedOrder w := by\n  rw [MvPolynomial.coe_mul, MvPowerSeries.weightedOrder_mul]\ntheorem finiteScale {σ : Type u} {R : Type v} [CommSemiring R] [NoZeroDivisors R]\n    (w : σ → ℕ) {P Q : MvPolynomial σ R} (hP : P ≠ 0) (hQ : Q ≠ 0) (D : ℝ) :\n    ((((P * Q : MvPolynomial σ R) : MvPowerSeries σ R).weightedOrder w).toNat : ℝ) / D =\n      (((P : MvPowerSeries σ R).weightedOrder w).toNat : ℝ) / D +\n        (((Q : MvPowerSeries σ R).weightedOrder w).toNat : ℝ) / D := by\n  rw [MvPolynomial.coe_mul, MvPowerSeries.weightedOrder_mul]\n  have hf : (P : MvPowerSeries σ R).weightedOrder w ≠ ⊤ := by simp [hP]\n  have hg : (Q : MvPowerSeries σ R).weightedOrder w ≠ ⊤ := by simp [hQ]\n  rw [ENat.toNat_add hf hg, Nat.cast_add, add_div]\n#check @MvPowerSeries.weightedOrder_mul\n#check @MvPowerSeries.ne_zero_iff_weightedOrder_finite\n#check @MvPolynomial.coe_mul\n#check @ENat.toNat_add\n#check @AddMonoidAlgebra.le_infDegree_mul\n#check @AddMonoidAlgebra.supDegree_mul\n#print axioms modern\n#print axioms polynomial\n#print axioms finiteScale\nend IndexMulMathlib144\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.index_mul`\",\n      \"line\": 8,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPowerSeries.weightedOrder_mul : ∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] [NoZeroDivisors R] (w : σ → ℕ)\\n  (f g : MvPowerSeries σ R),\\n  MvPowerSeries.weightedOrder w (f * g) = MvPowerSeries.weightedOrder w f + MvPowerSeries.weightedOrder w g\",\n      \"line\": 29,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPowerSeries.ne_zero_iff_weightedOrder_finite : ∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ)\\n  {f : MvPowerSeries σ R}, f ≠ 0 ↔ ↑(MvPowerSeries.weightedOrder w f).toNat = MvPowerSeries.weightedOrder w f\",\n      \"line\": 30,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPolynomial.coe_mul : ∀ {σ : Type u_1} {R : Type u_2} [inst : CommSemiring R] (φ ψ : MvPolynomial σ R),\\n  ↑(φ * ψ) = ↑φ * ↑ψ\",\n      \"line\": 31,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@ENat.toNat_add : ∀ {m n : ℕ∞}, m ≠ ⊤ → n ≠ ⊤ → (m + n).toNat = m.toNat + n.toNat\",\n      \"line\": 32,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@AddMonoidAlgebra.le_infDegree_mul : ∀ {R : Type u_1} {A : Type u_2} {T : Type u_3} [inst : Semiring R]\\n  [inst_1 : SemilatticeInf T] [inst_2 : OrderTop T] [inst_3 : AddZeroClass A] [inst_4 : Add T] [AddLeftMono T]\\n  [AddRightMono T] (D : A →ₙ+ T) (f g : AddMonoidAlgebra R A),\\n  AddMonoidAlgebra.infDegree (⇑D) f + AddMonoidAlgebra.infDegree (⇑D) g ≤ AddMonoidAlgebra.infDegree (⇑D) (f * g)\",\n      \"line\": 33,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@AddMonoidAlgebra.supDegree_mul : ∀ {R : Type u_1} {A : Type u_2} {B : Type u_3} [inst : Semiring R]\\n  [inst_1 : LinearOrder B] [inst_2 : OrderBot B] {p q : AddMonoidAlgebra R A} {D : A → B} [inst_3 : AddZeroClass A]\\n  [inst_4 : Add B] [AddLeftStrictMono B] [AddRightStrictMono B],\\n  Function.Injective D →\\n    (∀ (a1 a2 : A), D (a1 + a2) = D a1 + D a2) →\\n      AddMonoidAlgebra.leadingCoeff D p * AddMonoidAlgebra.leadingCoeff D q ≠ 0 →\\n        p ≠ 0 →\\n          q ≠ 0 → AddMonoidAlgebra.supDegree D (p * q) = AddMonoidAlgebra.supDegree D p + AddMonoidAlgebra.supDegree D q\",\n      \"line\": 34,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'IndexMulMathlib144.modern' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 35,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'IndexMulMathlib144.polynomial' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 36,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'IndexMulMathlib144.finiteScale' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 37,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.index_mul`",
+          "line": 8,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPowerSeries.weightedOrder_mul : ∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] [NoZeroDivisors R] (w : σ → ℕ)\n  (f g : MvPowerSeries σ R),\n  MvPowerSeries.weightedOrder w (f * g) = MvPowerSeries.weightedOrder w f + MvPowerSeries.weightedOrder w g",
+          "line": 29,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPowerSeries.ne_zero_iff_weightedOrder_finite : ∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ)\n  {f : MvPowerSeries σ R}, f ≠ 0 ↔ ↑(MvPowerSeries.weightedOrder w f).toNat = MvPowerSeries.weightedOrder w f",
+          "line": 30,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPolynomial.coe_mul : ∀ {σ : Type u_1} {R : Type u_2} [inst : CommSemiring R] (φ ψ : MvPolynomial σ R),\n  ↑(φ * ψ) = ↑φ * ↑ψ",
+          "line": 31,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@ENat.toNat_add : ∀ {m n : ℕ∞}, m ≠ ⊤ → n ≠ ⊤ → (m + n).toNat = m.toNat + n.toNat",
+          "line": 32,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@AddMonoidAlgebra.le_infDegree_mul : ∀ {R : Type u_1} {A : Type u_2} {T : Type u_3} [inst : Semiring R]\n  [inst_1 : SemilatticeInf T] [inst_2 : OrderTop T] [inst_3 : AddZeroClass A] [inst_4 : Add T] [AddLeftMono T]\n  [AddRightMono T] (D : A →ₙ+ T) (f g : AddMonoidAlgebra R A),\n  AddMonoidAlgebra.infDegree (⇑D) f + AddMonoidAlgebra.infDegree (⇑D) g ≤ AddMonoidAlgebra.infDegree (⇑D) (f * g)",
+          "line": 33,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@AddMonoidAlgebra.supDegree_mul : ∀ {R : Type u_1} {A : Type u_2} {B : Type u_3} [inst : Semiring R]\n  [inst_1 : LinearOrder B] [inst_2 : OrderBot B] {p q : AddMonoidAlgebra R A} {D : A → B} [inst_3 : AddZeroClass A]\n  [inst_4 : Add B] [AddLeftStrictMono B] [AddRightStrictMono B],\n  Function.Injective D →\n    (∀ (a1 a2 : A), D (a1 + a2) = D a1 + D a2) →\n      AddMonoidAlgebra.leadingCoeff D p * AddMonoidAlgebra.leadingCoeff D q ≠ 0 →\n        p ≠ 0 →\n          q ≠ 0 → AddMonoidAlgebra.supDegree D (p * q) = AddMonoidAlgebra.supDegree D p + AddMonoidAlgebra.supDegree D q",
+          "line": 34,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'IndexMulMathlib144.modern' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 35,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'IndexMulMathlib144.polynomial' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 36,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'IndexMulMathlib144.finiteScale' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 37,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 1397
+}

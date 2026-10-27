@@ -1,0 +1,58 @@
+namespace IndexMul144
+open MvPolynomial Roth
+variable {σ : Type*} [Fintype σ]
+theorem clearedWeight (r : σ → ℕ) (d : σ →₀ ℕ) :
+    weight r d = (Finsupp.weight (fun j ↦ (∏ i, max 1 (r i)) / r j) d : ℝ) /
+      ((∏ i, max 1 (r i) : ℕ) : ℝ) := by
+  classical
+  have hD : (0 : ℝ) < ((∏ i, max 1 (r i) : ℕ) : ℝ) := by
+    exact_mod_cast Finset.prod_pos (fun i _ ↦ lt_of_lt_of_le Nat.zero_lt_one (le_max_left _ _))
+  rw [weight, Finsupp.weight_eq_sum, Nat.cast_sum, Finset.sum_div]
+  refine Finset.sum_congr rfl fun j _ ↦ ?_
+  by_cases hj : r j = 0
+  · simp [hj]
+  · have hdiv : r j ∣ ∏ i, max 1 (r i) := by
+      have hm : max 1 (r j) = r j := max_eq_right (Nat.one_le_iff_ne_zero.2 hj)
+      rw [← hm]
+      exact Finset.dvd_prod_of_mem _ (Finset.mem_univ j)
+    rw [smul_eq_mul, Nat.cast_mul, Nat.cast_div_charZero hdiv,
+      ← mul_div_assoc, div_right_comm, mul_div_cancel_right₀ _ hD.ne']
+theorem comparison (P : MvPolynomial σ ℝ) (α : σ → ℝ) (r : σ → ℕ) :
+    index P α r =
+      (((taylor α P : MvPowerSeries σ ℝ).weightedOrder
+        (fun j ↦ (∏ i, max 1 (r i)) / r j)).toNat : ℝ) /
+        ((∏ i, max 1 (r i) : ℕ) : ℝ) := by
+  rw [IndexConsumers133.targetBridge]
+  have hw : (fun d ↦ (weight r d : WithTop ℝ)) =
+      (fun d ↦ (((Finsupp.weight (fun j ↦ (∏ i, max 1 (r i)) / r j) d : ℝ) /
+        ((∏ i, max 1 (r i) : ℕ) : ℝ)) : WithTop ℝ)) := by
+    funext d
+    rw [clearedWeight]
+  rw [hw]
+  exact IndexWeightedScale143.scaledInfDegree (taylor α P)
+    (fun j ↦ (∏ i, max 1 (r i)) / r j) _ (Nat.cast_nonneg _)
+theorem replacement {P Q : MvPolynomial σ ℝ} (hP : P ≠ 0) (hQ : Q ≠ 0)
+    (α : σ → ℝ) (r : σ → ℕ) : index (P * Q) α r = index P α r + index Q α r := by
+  rw [comparison, comparison, comparison, ← add_div, map_mul, MvPolynomial.coe_mul,
+    MvPowerSeries.weightedOrder_mul]
+  congr 1
+  have hfin : ∀ R : MvPolynomial σ ℝ, R ≠ 0 →
+      ((taylor α R : MvPowerSeries σ ℝ).weightedOrder
+        (fun j ↦ (∏ i, max 1 (r i)) / r j)) ≠ ⊤ := by simp
+  rw [ENat.toNat_add (hfin P hP) (hfin Q hQ), Nat.cast_add]
+theorem zeroLeftGuard :
+    index (0 * (X () : MvPolynomial Unit ℝ)) (fun _ ↦ 0) (fun _ ↦ 1) ≠
+      index 0 (fun _ ↦ 0) (fun _ ↦ 1) +
+        index (X () : MvPolynomial Unit ℝ) (fun _ ↦ 0) (fun _ ↦ 1) := by
+  simp [index, taylor_X, support_X, weight]
+theorem zeroRightGuard :
+    index ((X () : MvPolynomial Unit ℝ) * 0) (fun _ ↦ 0) (fun _ ↦ 1) ≠
+      index (X () : MvPolynomial Unit ℝ) (fun _ ↦ 0) (fun _ ↦ 1) +
+        index 0 (fun _ ↦ 0) (fun _ ↦ 1) := by
+  simp [index, taylor_X, support_X, weight]
+#print axioms clearedWeight
+#print axioms comparison
+#print axioms replacement
+#print axioms zeroLeftGuard
+#print axioms zeroRightGuard
+end IndexMul144

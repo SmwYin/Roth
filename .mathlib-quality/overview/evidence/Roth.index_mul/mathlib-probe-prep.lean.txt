@@ -1,0 +1,38 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+#check_failure Roth.index_mul
+namespace IndexMulMathlib144
+universe u v
+theorem modern {σ : Type u} {R : Type v} [Semiring R] [NoZeroDivisors R]
+    (w : σ → ℕ) (f g : MvPowerSeries σ R) :
+    (f * g).weightedOrder w = f.weightedOrder w + g.weightedOrder w :=
+  MvPowerSeries.weightedOrder_mul w f g
+theorem polynomial {σ : Type u} {R : Type v} [CommSemiring R] [NoZeroDivisors R]
+    (w : σ → ℕ) (P Q : MvPolynomial σ R) :
+    ((P * Q : MvPolynomial σ R) : MvPowerSeries σ R).weightedOrder w =
+      (P : MvPowerSeries σ R).weightedOrder w + (Q : MvPowerSeries σ R).weightedOrder w := by
+  rw [MvPolynomial.coe_mul, MvPowerSeries.weightedOrder_mul]
+theorem finiteScale {σ : Type u} {R : Type v} [CommSemiring R] [NoZeroDivisors R]
+    (w : σ → ℕ) {P Q : MvPolynomial σ R} (hP : P ≠ 0) (hQ : Q ≠ 0) (D : ℝ) :
+    ((((P * Q : MvPolynomial σ R) : MvPowerSeries σ R).weightedOrder w).toNat : ℝ) / D =
+      (((P : MvPowerSeries σ R).weightedOrder w).toNat : ℝ) / D +
+        (((Q : MvPowerSeries σ R).weightedOrder w).toNat : ℝ) / D := by
+  rw [MvPolynomial.coe_mul, MvPowerSeries.weightedOrder_mul]
+  have hf : (P : MvPowerSeries σ R).weightedOrder w ≠ ⊤ := by simp [hP]
+  have hg : (Q : MvPowerSeries σ R).weightedOrder w ≠ ⊤ := by simp [hQ]
+  rw [ENat.toNat_add hf hg, Nat.cast_add, add_div]
+#check @MvPowerSeries.weightedOrder_mul
+#check @MvPowerSeries.ne_zero_iff_weightedOrder_finite
+#check @MvPolynomial.coe_mul
+#check @ENat.toNat_add
+#check @AddMonoidAlgebra.le_infDegree_mul
+#check @AddMonoidAlgebra.supDegree_mul
+#print axioms modern
+#print axioms polynomial
+#print axioms finiteScale
+end IndexMulMathlib144
