@@ -1,0 +1,23 @@
+namespace MvPolynomial.CoefficientNormConsumer
+open Roth MvPolynomial
+variable {σ : Type*}
+theorem determinant [Fintype σ] {l : ℕ} (E : Fin l → Fin l → (σ →₀ ℕ))
+    (P : MvPolynomial σ ℤ) {r : σ → ℕ} (hP : ∀ j, degreeOf j P ≤ r j) {B : ℝ} (hB0 : 0 ≤ B)
+    (hB : ∀ d, |((P.coeff d : ℤ) : ℝ)| ≤ B) (d : σ →₀ ℕ) :
+    |(((Matrix.of fun μ ν : Fin l ↦ hasseDeriv (E μ ν) P).det.coeff d : ℤ) : ℝ)| ≤
+      (∏ j, ((r j : ℝ) + 1)) ^ l * l.factorial * B ^ l * 2 ^ ((∑ j, r j) * l) := by
+  have hsupp : (P.support.card : ℝ) ≤ ∏ j, ((r j : ℝ) + 1) := by
+    exact_mod_cast card_le_card_box fun d hd j ↦ (monomial_le_degreeOf j hd).trans (hP j)
+  calc _ ≤ normOne (Matrix.of fun μ ν : Fin l ↦ hasseDeriv (E μ ν) P).det :=
+        Finsupp.single_eval_le_sum _ (g := fun z : ℤ ↦ |(z : ℝ)|)
+          (by simp) (fun _ ↦ abs_nonneg _) _
+    _ ≤ l.factorial * (2 ^ (∑ j, r j) * ((∏ j, ((r j : ℝ) + 1)) * B)) ^ l :=
+        normOne_det_le _ fun μ ν ↦
+          (normOne_hasseDeriv_le _ P hP).trans (mul_le_mul_of_nonneg_left
+            ((normOne_le_card_mul P hB).trans (mul_le_mul_of_nonneg_right hsupp hB0))
+            (by positivity))
+    _ = _ := by ring
+
+
+#print axioms determinant
+end MvPolynomial.CoefficientNormConsumer

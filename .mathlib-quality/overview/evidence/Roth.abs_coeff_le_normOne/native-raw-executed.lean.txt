@@ -1,0 +1,43 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+import Mathlib.Algebra.Polynomial.CancelLeads
+import Mathlib.Algebra.MvPolynomial.PDeriv
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+import Mathlib.Algebra.MvPolynomial.Equiv
+#check_failure Roth.abs_coeff_le_normOne
+namespace CoeffBoundAssessment
+open MvPolynomial
+noncomputable def normOne {σ : Type*} (P : MvPolynomial σ ℤ) : ℝ :=
+  ∑ d ∈ P.support, |((P.coeff d : ℤ) : ℝ)|
+theorem raw {σ : Type*} (P : MvPolynomial σ ℤ) (d : σ →₀ ℕ) :
+    |((P.coeff d : ℤ) : ℝ)| ≤ normOne P :=
+  Finsupp.single_eval_le_sum P.coeff (g := fun z ↦ |(z : ℝ)|) (by simp) (fun _ ↦ abs_nonneg _) d
+theorem generic {α M N : Type*} [Zero M] [AddCommMonoid N] [PartialOrder N]
+    [IsOrderedAddMonoid N] (f : α →₀ M) {g : M → N} (hg : g 0 = 0)
+    (h : ∀ m, 0 ≤ g m) (a : α) : g (f a) ≤ f.sum (fun _ m ↦ g m) :=
+  Finsupp.single_eval_le_sum f hg h a
+theorem orderedAbs {α G : Type*} [AddCommGroup G] [Lattice G] [IsOrderedAddMonoid G]
+    (f : α →₀ G) (a : α) : |f a| ≤ f.sum (fun _ m ↦ |m|) :=
+  Finsupp.single_eval_le_sum f abs_zero (fun _ ↦ abs_nonneg _) a
+theorem preorderGeneric {α M N : Type*} [Zero M] [AddCommMonoid N] [Preorder N]
+    [IsOrderedAddMonoid N] (f : α →₀ M) {g : M → N} (hg : g 0 = 0)
+    (h : ∀ m, 0 ≤ g m) (a : α) : g (f a) ≤ f.sum (fun _ m ↦ g m) := by
+  classical
+  by_cases ha : a ∈ f.support
+  · exact Finset.single_le_sum (fun _ _ ↦ h _) ha
+  · rw [Finsupp.notMem_support_iff.mp ha, hg]
+    exact Finset.sum_nonneg fun _ _ ↦ h _
+#print axioms preorderGeneric
+#check @Finsupp.single_eval_le_sum
+#check @Finsupp.single_le_sum
+#print axioms raw
+#print axioms generic
+#print axioms orderedAbs
+end CoeffBoundAssessment

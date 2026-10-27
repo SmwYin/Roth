@@ -1,0 +1,8 @@
+namespace CoeffBoundTargetAssessment
+#print Roth.abs_coeff_le_normOne
+#check @Finsupp.single_eval_le_sum
+theorem replay {σ : Type*} (P : MvPolynomial σ ℤ) (d : σ →₀ ℕ) :
+    |((P.coeff d : ℤ) : ℝ)| ≤ Roth.normOne P :=
+  Finsupp.single_eval_le_sum P.coeff (g := fun z ↦ |(z : ℝ)|) (by simp) (fun _ ↦ abs_nonneg _) d
+#print axioms replay
+end CoeffBoundTargetAssessment

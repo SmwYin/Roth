@@ -1,0 +1,18 @@
+
+open Real Multiset Finsupp in
+private lemma mulHeight_constantCoeff_le_mulHeightBound {p : ι' → MvPolynomial ι K}
+    (h : (fun j ↦ constantCoeff (p j)) ≠ 0) :
+    mulHeight (fun j ↦ constantCoeff (p j)) ≤ mulHeightBound p := by
+  simp only [mulHeight_eq h, mulHeightBound_eq]
+  gcongr
+  · exact finprod_nonneg fun v ↦ Real.iSup_nonneg_of_nonnegHomClass ..
+  · exact prod_map_nonneg fun v _ ↦ iSup_nonneg fun _ ↦ sum_nonneg fun _ _ ↦ by positivity
+  · have H (v : AbsoluteValue K ℝ) (j : ι') :
+        v (constantCoeff (p j)) ≤ (AddMonoidAlgebra.coeff <| p j).sum fun _ c ↦ v c :=
+      single_eval_le_sum _ v.map_zero (fun _ ↦ by positivity) _
+    exact prod_map_le_prod_map₀ _ _ (fun v _ ↦ Real.iSup_nonneg_of_nonnegHomClass ..)
+      fun v _ ↦ Finite.ciSup_mono (H v)
+  · have := (Function.ne_iff.mp h).nonempty
+    refine finprod_le_finprod₀ (by fun_prop)
+      (fun v ↦ Real.iSup_nonneg_of_nonnegHomClass ..) (by fun_prop) ?_
+    refine fun v ↦ Finite.ciSup_mono fun j ↦ ?_

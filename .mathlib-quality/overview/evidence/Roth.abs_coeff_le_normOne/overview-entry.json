@@ -1,0 +1,18 @@
+{
+  "name": "Roth.abs_coeff_le_normOne",
+  "kind": "theorem",
+  "type": "∀ {σ : Type u_2} (P : MvPolynomial σ ℤ) (d : σ →₀ ℕ), |↑(P.coeff d)| ≤ Roth.normOne P",
+  "what": "Every integer multivariate polynomial coefficient has absolute real value bounded by its coefficient ℓ1 sum.",
+  "how": "Direct Finsupp.single_eval_le_sum specialization, g z = |(z : ℝ)|; zero and nonnegativity are elementary abs facts.",
+  "hypotheses": "No explicit hypotheses or typeclasses on σ; σ universe-polymorphic, P and d arbitrary. Integer coefficients and real output fixed by normOne.",
+  "project_dependencies": [
+    "Roth.normOne (statement only; transparent definitional coefficient-sum representation)"
+  ],
+  "caller_summary": "One explicit caller: Roth.abs_coeff_det_hasseDeriv_le at CoeffNorm.lean:266; zero external-to-file refs. Full fresh determinant proof replay succeeds with direct generic call. Main.lean:424 independently uses analogous generic bound for univariate coefficients.",
+  "mathlib_api_audit": "NO-mathlib-has-it: Finsupp.single_eval_le_sum, Mathlib/Data/Finsupp/Order.lean:165–170; independently pinned type and exact specialization verified. Four external/local formal methods × three forms plus rg on each; current Loogle syntax/rate failures retained and corrected query succeeded.",
+  "moral_duplications": "A direct specialization of an existing general finite-support nonnegative coordinate bound. Mathlib NumberTheory/Height/MvPolynomial.lean:277 uses same generic law for absolute values.",
+  "generalization": "Existing law permits arbitrary index α, Zero M, AddCommMonoid N, PartialOrder N, IsOrderedAddMonoid N, zero-preserving nonnegative g. Fresh lattice-ordered additive-group abs form compiled. New exploratory helper further weakens target order to Preorder/AddLeftMono and nonnegativity to actual support values, verified in isolated native general set; this new proof is not an existing replacement and does not alter original exact-hit verdict.",
+  "missing_api": "No missing API for this declaration. Optional separate generalization of existing single_eval_le_sum to Preorder/AddLeftMono/support-local nonnegativity now has a proof witness; no absence/novelty claim or new upstream verdict for that separate API.",
+  "junk": "Useful local convenience, not dead mathematics; no simp attribute, one explicit caller. Redundant as upstream theorem.",
+  "action": "During an authorized code cleanup, delete local theorem and replace the one CoeffNorm.lean:266 reference by Finsupp.single_eval_le_sum _ (g := fun z : ℤ ↦ |(z : ℝ)|) (by simp) (fun _ ↦ abs_nonneg _) _. Keep Roth/CoeffNorm.lean as alternative project-local destination if pedagogical naming is retained. Assessment only; production unchanged."
+}

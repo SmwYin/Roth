@@ -1,0 +1,26 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+import Mathlib.Algebra.Polynomial.CancelLeads
+import Mathlib.Algebra.MvPolynomial.PDeriv
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+import Mathlib.Algebra.MvPolynomial.Equiv
+#check_failure Roth.abs_coeff_le_normOne
+namespace CoeffBoundSupportGenerality
+theorem supportLocal {α M N : Type*} [Zero M] [AddCommMonoid N] [Preorder N]
+    [AddLeftMono N] (f : α →₀ M) {g : M → N} (hg : g 0 = 0)
+    (h : ∀ i ∈ f.support, 0 ≤ g (f i)) (a : α) : g (f a) ≤ f.sum (fun _ m ↦ g m) := by
+  classical
+  by_cases ha : a ∈ f.support
+  · exact Finset.single_le_sum h ha
+  · rw [Finsupp.notMem_support_iff.mp ha, hg]
+    exact Finset.sum_nonneg h
+#print axioms supportLocal
+#check @supportLocal
+end CoeffBoundSupportGenerality
