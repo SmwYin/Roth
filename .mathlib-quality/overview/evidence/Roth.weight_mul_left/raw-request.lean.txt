@@ -1,0 +1,28 @@
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.Basic.Real.Basic
+#check_failure Roth.weight_mul_left
+namespace WeightScaleRaw
+theorem generator_scale {σ : Type*} (c : ℝ) (w : σ → ℝ) (d : σ →₀ ℕ) :
+    Finsupp.weight (c • w) d = c • Finsupp.weight w d := by
+  exact congrArg (fun f : (σ →₀ ℕ) →ₗ[ℕ] ℝ => f d)
+    ((Finsupp.bilinearCombination ℕ ℝ).map_smul c w)
+theorem bridge {σ : Type*} [Fintype σ] (r : σ → ℕ) (d : σ →₀ ℕ) :
+    (∑ j, (d j : ℝ) / r j) = Finsupp.weight (fun j ↦ (r j : ℝ)⁻¹) d := by
+  simp [Finsupp.weight_eq_sum, nsmul_eq_mul, div_eq_mul_inv]
+theorem raw {σ : Type*} [Fintype σ] (l : ℕ) (r : σ → ℕ) (d : σ →₀ ℕ) :
+    (∑ j, (d j : ℝ) / (l * r j : ℕ)) = (∑ j, (d j : ℝ) / r j) / l := by
+  simp only [Nat.cast_mul, Finset.sum_div, div_div, mul_comm]
+theorem scaled_family {σ : Type*} (l : ℕ) (r : σ → ℕ) :
+    (fun j ↦ ((l * r j : ℕ) : ℝ)⁻¹) = (l : ℝ)⁻¹ • (fun j ↦ (r j : ℝ)⁻¹) := by
+  funext j
+  simp [mul_comm]
+theorem reaim {σ : Type*} [Fintype σ] (l : ℕ) (r : σ → ℕ) (d : σ →₀ ℕ) :
+    (∑ j, (d j : ℝ) / (l * r j : ℕ)) = (∑ j, (d j : ℝ) / r j) / l := by
+  rw [bridge, scaled_family, generator_scale, ← bridge]
+  simp [smul_eq_mul, div_eq_mul_inv, mul_comm]
+#print axioms generator_scale
+#print axioms bridge
+#print axioms raw
+#print axioms reaim
+end WeightScaleRaw
+

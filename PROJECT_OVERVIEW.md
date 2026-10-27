@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 36/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 37/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 36; remaining: 257.
-- Verdicts: 8 NO-composable-from-mathlib, 11 YES-add-as-is, 0 YES-but-generalise-first, 4 NO-mathlib-has-it, 10 BORDERLINE-needs-human, 3 SKIP.
+- Completed applicable assessments: 37; remaining: 256.
+- Verdicts: 8 NO-composable-from-mathlib, 11 YES-add-as-is, 0 YES-but-generalise-first, 5 NO-mathlib-has-it, 10 BORDERLINE-needs-human, 3 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -405,6 +405,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: explicit count: 1; callers: {'name': 'Roth.index_le_card', 'file': 'Roth/Index.lean', 'line': 227}; inline derivations found: 0; not kernel or simp closure: True
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.weight_le_card.md).
 
+### Completed: `Roth.weight_mul_left`
+
+- Type: `{σ : Type u} → [Fintype σ] → {l : ℕ} → (r : σ → ℕ) → (d : σ →₀ ℕ) → Roth.weight (fun j ↦ l * r j) d = Roth.weight r d / ↑l`
+- What: Uniformly multiplying denominator parameters divides monomial weight by that scale.
+- How: Cast product, distribute division over sum, reassociate division, commute denominator factors.
+- Hypotheses: Finite variable enumeration; arbitrary natural scale and parameter family including zeros; no positivity or DecidableEq.
+- Project dependencies: Roth.weight
+- Caller summary: One explicit caller Roth.index_mul_left_weights at Index.lean:206; native complete Set.image equality fragment verified. Source references only, not kernel/simp closure.
+- Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/Roth.weight_mul_left.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -503,6 +513,8 @@ Completed `Roth.weight_single`: Finsupp.weight_single already supplies arbitrary
 
 Completed `Roth.weight_le_card`: Finset.sum_le_card_nsmul + div_le_one_of_le₀ + Nat.cast_le + Nat.cast_nonneg + nsmul_one. Generic field form uses three facts; original requires casts.
 
+Completed `Roth.weight_mul_left`: Genuine generator-family law supplied by (Finsupp.bilinearCombination R S).map_smul; Finsupp.weight underlying linearCombination. Reciprocal bridge independently compiled.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -576,6 +588,8 @@ Completed `Roth.weight_eq_zero_iff`: Positive sum zero principle already exists;
 Completed `Roth.weight_single`: Finsupp.weight_single, Finsupp.sum_single_index
 
 Completed `Roth.weight_le_card`: Instance of generic finite-sum upper bound. Parent Finsupp.weight bridge verified; no matching dedicated upper-cardinality law established.
+
+Completed `Roth.weight_mul_left`: Finsupp.bilinearCombination.map_smul, Finsupp.linearCombination generator linearity
 
 ## Part 5: Generalization opportunities
 
@@ -654,6 +668,8 @@ Completed `Roth.weight_single`: Native finite_kernel permits arbitrary zero-pres
 
 Completed `Roth.weight_le_card`: Strictly weaken bounds to nonzero-denominator coordinates; support localization equivalent; support.card stronger conclusion; Finsupp representation drops ambient finiteness; ordered-field finite-function representation compiled.
 
+Completed `Roth.weight_mul_left`: Native arbitrary semiring/module generator scaling without Fintype; arbitrary Field finite-set denominator identity; unchanged Roth interface is maximally general in hypotheses.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -728,6 +744,8 @@ Completed `Roth.weight_eq_zero_iff`: Candidate positive-weight zero-fiber theore
 Completed `Roth.weight_single`: No demonstrated missing singleton-evaluation mathematics; design issue is whether to expose finite cast/division convenience API or migrate parent weight to bundled support sums.
 
 Completed `Roth.weight_le_card`: Potential ordered Finsupp.weight upper bound by support.card • b; API design question, not established absence.
+
+Completed `Roth.weight_mul_left`: No mathematical API gap established; dedicated weight_smul spelling would wrap bundled linearity.
 
 ## Part 7: Junk / removable
 
@@ -806,6 +824,8 @@ Completed `Roth.weight_single`: Not dead: two explicit caller files; no simp att
 
 Completed `Roth.weight_le_card`: One real caller; not dead code.
 
+Completed `Roth.weight_mul_left`: No sorry/unsafe/raised limits; active one-consumer local convenience theorem.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -846,6 +866,7 @@ Completed `Roth.weight_le_card`: One real caller; not dead code.
 | 34 | `Roth.weight_eq_zero_iff` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.weight_eq_zero_iff.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.weight_eq_zero_iff/root-acceptance.json) |
 | 35 | `Roth.weight_single` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.weight_single.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.weight_single/root-acceptance.json) |
 | 36 | `Roth.weight_le_card` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.weight_le_card.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.weight_le_card/root-acceptance.json) |
+| 37 | `Roth.weight_mul_left` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.weight_mul_left.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.weight_mul_left/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -917,11 +938,13 @@ Completed `Roth.weight_single` action: Re-aim at Finsupp.weight_single after coo
 
 Completed `Roth.weight_le_card` action: BORDERLINE-needs-human: decide upstream convenience API versus sole-caller inline after parent migration. Keep local until that decision.
 
+Completed `Roth.weight_mul_left` action: NO-mathlib-has-it via verified parent re-aim. Migrate sole Index pointwise image step to existing generator law and reciprocal normalization; remove local theorem during parent migration; retain locally in Box only if old interface remains.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.weight_mul_left` next. Supporting identities receive their own applicable checks.
+   `Roth.weight_le_degree_div` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.

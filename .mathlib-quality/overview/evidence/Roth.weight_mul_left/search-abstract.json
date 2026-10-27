@@ -1,0 +1,180 @@
+{
+  "form": "abstract",
+  "queries": {
+    "natural": "Finsupp weighted linear combination is linear in generator family: weight (c • w) d = c • weight w d",
+    "loogle": "Finsupp.bilinearCombination",
+    "local": "bilinearCombination"
+  },
+  "results": [
+    {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Finsupp.weight_apply\",\n      \"informal_name\": \"Weighted Sum Evaluation: $ \\\\text{weight } w f = \\\\sum_{i \\\\in \\\\text{support } f} c_i \\\\cdot w(i) $\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {M : Type u_2} {R : Type u_3} [inst : Semiring R] (w : σ → M) [inst_1 : AddCommMonoid M]\\n  [inst_2 : Module R M] (f : σ →₀ R), (Finsupp.weight w) f = f.sum fun i c => c • w i\",\n      \"informal_description\": \"For any finite support function $ f : \\\\sigma \\\\to_0 R $, the weight function applied to $ f $ is equal to the sum over all $ i $ in the support of $ f $ of $ c \\\\cdot w(i) $, where $ c $ is the coefficient of $ i $ in $ f $ and $ w : \\\\sigma \\\\to M $ is a function assigning vectors to indices.\",\n      \"path\": \"Mathlib.Data.Finsupp.Weight\"\n    },\n    {\n      \"formal_name\": \"Finsupp.weight\",\n      \"informal_name\": \"Weighted sum of vectors indexed by σ over R\",\n      \"kind\": \"definition\",\n      \"type\": \"{σ : Type u_1} →\\n  {M : Type u_2} →\\n    {R : Type u_3} → [inst : Semiring R] → (σ → M) → [inst_1 : AddCommMonoid M] → [Module R M] → (σ →₀ R) →+ M\",\n      \"informal_description\": \"The additive homomorphism from the space of finite support functions $ \\\\sigma \\\\to_0 R $ to the module $ M $, which maps each finite support function $ d $ to the sum $ \\\\sum_{i \\\\in \\\\text{support } d} d(i) \\\\cdot v_i $, where $ v_i $ denotes the vector associated with index $ i $.\",\n      \"path\": \"Mathlib.Data.Finsupp.Weight\"\n    },\n    {\n      \"formal_name\": \"Finsupp.weight_single\",\n      \"informal_name\": \"Weight Homomorphism on Single Finite Support Function\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {M : Type u_2} {R : Type u_3} [inst : Semiring R] (w : σ → M) [inst_1 : AddCommMonoid M]\\n  [inst_2 : Module R M] (s : σ) (r : R), (Finsupp.weight w) (Finsupp.single s r) = r • w s\",\n      \"informal_description\": \"For any index $ s $ and scalar $ r $, the weighted sum homomorphism $ \\\\text{weight}_w $ applied to the finite support function that assigns $ r $ to $ s $ and zero to all other indices equals $ r \\\\cdot w(s) $.\",\n      \"path\": \"Mathlib.Data.Finsupp.Weight\"\n    },\n    {\n      \"formal_name\": \"Finsupp.linearCombination\",\n      \"informal_name\": \"Linear combination of vectors indexed by α over R\",\n      \"kind\": \"definition\",\n      \"type\": \"{α : Type u_1} →\\n  {M : Type u_2} →\\n    (R : Type u_5) →\\n      [inst : Semiring R] → [inst_1 : AddCommMonoid M] → [inst_2 : Module R M] → (α → M) → (α →₀ R) →ₗ[R] M\",\n      \"informal_description\": \"The linear map from the space of finite support functions $ \\\\alpha \\\\to_0 R $ to the module $ M $, which sends each finite support function $ d $ to the sum $ \\\\sum_{i \\\\in \\\\text{support } d} d(i) \\\\cdot v_i $, where $ v_i $ denotes the vector associated with index $ i $. This map is constructed using the linear equivalence of summing scalar multiples of individual vectors embedded via the right scalar multiplication operation.\",\n      \"path\": \"Mathlib.LinearAlgebra.Finsupp.LinearCombination\"\n    },\n    {\n      \"formal_name\": \"Finsupp.weight_single_index\",\n      \"informal_name\": \"Weight Homomorphism on Single Index: $\\\\text{weight}(\\\\delta_s^c, f) = f(s) \\\\cdot c$\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {M : Type u_2} {R : Type u_3} [inst : Semiring R] [inst_1 : AddCommMonoid M] [inst_2 : Module R M]\\n  [inst_3 : DecidableEq σ] (s : σ) (c : M) (f : σ →₀ R), (Finsupp.weight (Pi.single s c)) f = f s • c\",\n      \"informal_description\": \"For any index $ s \\\\in \\\\sigma $, element $ c \\\\in M $, and finite support function $ f : \\\\sigma \\\\to_0 R $, the weighted sum homomorphism evaluated at the function $ \\\\delta_s^c $ (which is $ c $ at $ s $ and zero elsewhere) applied to $ f $ equals $ f(s) \\\\cdot c $. This expresses that the homomorphism acts as scalar multiplication at the specified index when restricted to single-index functions.\",\n      \"path\": \"Mathlib.Data.Finsupp.Weight\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "formal_name": "Finsupp.weight_apply",
+              "informal_name": "Weighted Sum Evaluation: $ \\text{weight } w f = \\sum_{i \\in \\text{support } f} c_i \\cdot w(i) $",
+              "kind": "theorem",
+              "type": "∀ {σ : Type u_1} {M : Type u_2} {R : Type u_3} [inst : Semiring R] (w : σ → M) [inst_1 : AddCommMonoid M]\n  [inst_2 : Module R M] (f : σ →₀ R), (Finsupp.weight w) f = f.sum fun i c => c • w i",
+              "informal_description": "For any finite support function $ f : \\sigma \\to_0 R $, the weight function applied to $ f $ is equal to the sum over all $ i $ in the support of $ f $ of $ c \\cdot w(i) $, where $ c $ is the coefficient of $ i $ in $ f $ and $ w : \\sigma \\to M $ is a function assigning vectors to indices.",
+              "path": "Mathlib.Data.Finsupp.Weight"
+            },
+            {
+              "formal_name": "Finsupp.weight",
+              "informal_name": "Weighted sum of vectors indexed by σ over R",
+              "kind": "definition",
+              "type": "{σ : Type u_1} →\n  {M : Type u_2} →\n    {R : Type u_3} → [inst : Semiring R] → (σ → M) → [inst_1 : AddCommMonoid M] → [Module R M] → (σ →₀ R) →+ M",
+              "informal_description": "The additive homomorphism from the space of finite support functions $ \\sigma \\to_0 R $ to the module $ M $, which maps each finite support function $ d $ to the sum $ \\sum_{i \\in \\text{support } d} d(i) \\cdot v_i $, where $ v_i $ denotes the vector associated with index $ i $.",
+              "path": "Mathlib.Data.Finsupp.Weight"
+            },
+            {
+              "formal_name": "Finsupp.weight_single",
+              "informal_name": "Weight Homomorphism on Single Finite Support Function",
+              "kind": "theorem",
+              "type": "∀ {σ : Type u_1} {M : Type u_2} {R : Type u_3} [inst : Semiring R] (w : σ → M) [inst_1 : AddCommMonoid M]\n  [inst_2 : Module R M] (s : σ) (r : R), (Finsupp.weight w) (Finsupp.single s r) = r • w s",
+              "informal_description": "For any index $ s $ and scalar $ r $, the weighted sum homomorphism $ \\text{weight}_w $ applied to the finite support function that assigns $ r $ to $ s $ and zero to all other indices equals $ r \\cdot w(s) $.",
+              "path": "Mathlib.Data.Finsupp.Weight"
+            },
+            {
+              "formal_name": "Finsupp.linearCombination",
+              "informal_name": "Linear combination of vectors indexed by α over R",
+              "kind": "definition",
+              "type": "{α : Type u_1} →\n  {M : Type u_2} →\n    (R : Type u_5) →\n      [inst : Semiring R] → [inst_1 : AddCommMonoid M] → [inst_2 : Module R M] → (α → M) → (α →₀ R) →ₗ[R] M",
+              "informal_description": "The linear map from the space of finite support functions $ \\alpha \\to_0 R $ to the module $ M $, which sends each finite support function $ d $ to the sum $ \\sum_{i \\in \\text{support } d} d(i) \\cdot v_i $, where $ v_i $ denotes the vector associated with index $ i $. This map is constructed using the linear equivalence of summing scalar multiples of individual vectors embedded via the right scalar multiplication operation.",
+              "path": "Mathlib.LinearAlgebra.Finsupp.LinearCombination"
+            },
+            {
+              "formal_name": "Finsupp.weight_single_index",
+              "informal_name": "Weight Homomorphism on Single Index: $\\text{weight}(\\delta_s^c, f) = f(s) \\cdot c$",
+              "kind": "theorem",
+              "type": "∀ {σ : Type u_1} {M : Type u_2} {R : Type u_3} [inst : Semiring R] [inst_1 : AddCommMonoid M] [inst_2 : Module R M]\n  [inst_3 : DecidableEq σ] (s : σ) (c : M) (f : σ →₀ R), (Finsupp.weight (Pi.single s c)) f = f s • c",
+              "informal_description": "For any index $ s \\in \\sigma $, element $ c \\in M $, and finite support function $ f : \\sigma \\to_0 R $, the weighted sum homomorphism evaluated at the function $ \\delta_s^c $ (which is $ c $ at $ s $ and zero elsewhere) applied to $ f $ equals $ f(s) \\cdot c $. This expresses that the homomorphism acts as scalar multiplication at the specified index when restricted to single-index functions.",
+              "path": "Mathlib.Data.Finsupp.Weight"
+            }
+          ]
+        },
+        "isError": false
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"Module.DualBases.lc\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Dual.Basis\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} →\\n  {M : Type u_2} →\\n    [inst : CommSemiring R] → [inst_1 : AddCommMonoid M] → [Module R M] → {ι : Type u_4} → (ι → M) → (ι →₀ R) → M\"\n    },\n    {\n      \"name\": \"Finsupp.linearCombination\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Finsupp.LinearCombination\",\n      \"kind\": \"definition\",\n      \"type\": \"{α : Type u_1} →\\n  {M : Type u_2} →\\n    (R : Type u_5) →\\n      [inst : Semiring R] → [inst_1 : AddCommMonoid M] → [inst_2 : Module R M] → (α → M) → (α →₀ R) →ₗ[R] M\"\n    },\n    {\n      \"name\": \"Finsupp.linearCombination_single\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Finsupp.LinearCombination\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {M : Type u_2} (R : Type u_5) [inst : Semiring R] [inst_1 : AddCommMonoid M] [inst_2 : Module R M]\\n  {v : α → M} (c : R) (a : α), (Finsupp.linearCombination R v) (Finsupp.single a c) = c • v a\"\n    },\n    {\n      \"name\": \"Finsupp.lmapDomain_linearCombination\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Finsupp.LinearCombination\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {M : Type u_2} (R : Type u_5) [inst : Semiring R] [inst_1 : AddCommMonoid M] [inst_2 : Module R M]\\n  {α' : Type u_7} {M' : Type u_8} [inst_3 : AddCommMonoid M'] [inst_4 : Module R M'] {v : α → M} {v' : α' → M'}\\n  (f : α → α') (g : M →ₗ[R] M'),\\n  (∀ (i : α), g (v i) = v' (f i)) →\\n    Finsupp.linearCombination R v' ∘ₗ Finsupp.lmapDomain R R f = g ∘ₗ Finsupp.linearCombination R v\"\n    },\n    {\n      \"name\": \"Finset.weightedVSub_const_smul\",\n      \"module_name\": \"Mathlib.LinearAlgebra.AffineSpace.Combination\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {k : Type u_1} {V : Type u_2} {P : Type u_3} [inst : Ring k] [inst_1 : AddCommGroup V] [inst_2 : Module k V]\\n  [S : AddTorsor V P] {ι : Type u_4} (s : Finset ι) (w : ι → k) (p : ι → P) (c : k),\\n  (s.weightedVSub p) (c • w) = c • (s.weightedVSub p) w\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "Module.DualBases.lc",
+              "module_name": "Mathlib.LinearAlgebra.Dual.Basis",
+              "kind": "definition",
+              "type": "{R : Type u_1} →\n  {M : Type u_2} →\n    [inst : CommSemiring R] → [inst_1 : AddCommMonoid M] → [Module R M] → {ι : Type u_4} → (ι → M) → (ι →₀ R) → M"
+            },
+            {
+              "name": "Finsupp.linearCombination",
+              "module_name": "Mathlib.LinearAlgebra.Finsupp.LinearCombination",
+              "kind": "definition",
+              "type": "{α : Type u_1} →\n  {M : Type u_2} →\n    (R : Type u_5) →\n      [inst : Semiring R] → [inst_1 : AddCommMonoid M] → [inst_2 : Module R M] → (α → M) → (α →₀ R) →ₗ[R] M"
+            },
+            {
+              "name": "Finsupp.linearCombination_single",
+              "module_name": "Mathlib.LinearAlgebra.Finsupp.LinearCombination",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} {M : Type u_2} (R : Type u_5) [inst : Semiring R] [inst_1 : AddCommMonoid M] [inst_2 : Module R M]\n  {v : α → M} (c : R) (a : α), (Finsupp.linearCombination R v) (Finsupp.single a c) = c • v a"
+            },
+            {
+              "name": "Finsupp.lmapDomain_linearCombination",
+              "module_name": "Mathlib.LinearAlgebra.Finsupp.LinearCombination",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} {M : Type u_2} (R : Type u_5) [inst : Semiring R] [inst_1 : AddCommMonoid M] [inst_2 : Module R M]\n  {α' : Type u_7} {M' : Type u_8} [inst_3 : AddCommMonoid M'] [inst_4 : Module R M'] {v : α → M} {v' : α' → M'}\n  (f : α → α') (g : M →ₗ[R] M'),\n  (∀ (i : α), g (v i) = v' (f i)) →\n    Finsupp.linearCombination R v' ∘ₗ Finsupp.lmapDomain R R f = g ∘ₗ Finsupp.linearCombination R v"
+            },
+            {
+              "name": "Finset.weightedVSub_const_smul",
+              "module_name": "Mathlib.LinearAlgebra.AffineSpace.Combination",
+              "kind": "theorem",
+              "type": "∀ {k : Type u_1} {V : Type u_2} {P : Type u_3} [inst : Ring k] [inst_1 : AddCommGroup V] [inst_2 : Module k V]\n  [S : AddTorsor V P] {ι : Type u_4} (s : Finset ι) (w : ι → k) (p : ι → P) (c : k),\n  (s.weightedVSub p) (c • w) = c • (s.weightedVSub p) w"
+            }
+          ]
+        },
+        "isError": false
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finsupp.bilinearCombination\",\n      \"type\": \" {α : Type u_1} {M : Type u_2} (R : Type u_3) (S : Type u_4) [Semiring R] [Semiring S] [AddCommMonoid M] [Module R M] [Module S M] [SMulCommClass R S M] : (α → M) →ₗ[S] (α →₀ R) →ₗ[R] M\",\n      \"module\": \"Mathlib.LinearAlgebra.Finsupp.LinearCombination\"\n    },\n    {\n      \"name\": \"Finsupp.bilinearCombination_apply\",\n      \"type\": \" {α : Type u_1} {M : Type u_2} (R : Type u_3) {S : Type u_4} [Semiring R] [Semiring S] [AddCommMonoid M] [Module R M] {v : α → M} [Module S M] [SMulCommClass R S M] : (Finsupp.bilinearCombination R S) v = Finsupp.linearCombination R v\",\n      \"module\": \"Mathlib.LinearAlgebra.Finsupp.LinearCombination\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "Finsupp.bilinearCombination",
+              "type": " {α : Type u_1} {M : Type u_2} (R : Type u_3) (S : Type u_4) [Semiring R] [Semiring S] [AddCommMonoid M] [Module R M] [Module S M] [SMulCommClass R S M] : (α → M) →ₗ[S] (α →₀ R) →ₗ[R] M",
+              "module": "Mathlib.LinearAlgebra.Finsupp.LinearCombination"
+            },
+            {
+              "name": "Finsupp.bilinearCombination_apply",
+              "type": " {α : Type u_1} {M : Type u_2} (R : Type u_3) {S : Type u_4} [Semiring R] [Semiring S] [AddCommMonoid M] [Module R M] {v : α → M} [Module S M] [SMulCommClass R S M] : (Finsupp.bilinearCombination R S) v = Finsupp.linearCombination R v",
+              "module": "Mathlib.LinearAlgebra.Finsupp.LinearCombination"
+            }
+          ]
+        },
+        "isError": false
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finsupp.bilinearCombination\",\n      \"kind\": \"def\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/Finsupp/LinearCombination.lean\"\n    },\n    {\n      \"name\": \"Fintype.bilinearCombination\",\n      \"kind\": \"def\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/Finsupp/LinearCombination.lean\"\n    },\n    {\n      \"name\": \"Finsupp.bilinearCombination_apply\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/Finsupp/LinearCombination.lean\"\n    },\n    {\n      \"name\": \"Fintype.bilinearCombination_apply\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/Finsupp/LinearCombination.lean\"\n    },\n    {\n      \"name\": \"Fintype.bilinearCombination_apply_single\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/Finsupp/LinearCombination.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "Finsupp.bilinearCombination",
+              "kind": "def",
+              "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/Finsupp/LinearCombination.lean"
+            },
+            {
+              "name": "Fintype.bilinearCombination",
+              "kind": "def",
+              "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/Finsupp/LinearCombination.lean"
+            },
+            {
+              "name": "Finsupp.bilinearCombination_apply",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/Finsupp/LinearCombination.lean"
+            },
+            {
+              "name": "Fintype.bilinearCombination_apply",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/Finsupp/LinearCombination.lean"
+            },
+            {
+              "name": "Fintype.bilinearCombination_apply_single",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/Finsupp/LinearCombination.lean"
+            }
+          ],
+          "index": "unavailable"
+        },
+        "isError": false
+      }
+    }
+  ]
+}
