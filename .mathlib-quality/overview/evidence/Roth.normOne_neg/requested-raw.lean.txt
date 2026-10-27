@@ -1,0 +1,31 @@
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
+import Mathlib.RingTheory.Polynomial.Wronskian
+import Mathlib.LinearAlgebra.Vandermonde
+import Mathlib.Data.ZMod.Defs
+import Mathlib.Algebra.Field.ZMod
+import Mathlib.Algebra.Order.Group.Int.Sum
+import Mathlib.LinearAlgebra.Matrix.Polynomial
+import Mathlib.Algebra.Polynomial.CancelLeads
+import Mathlib.Algebra.MvPolynomial.PDeriv
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+import Mathlib.Algebra.MvPolynomial.Equiv
+#check_failure Roth.normOne_neg
+namespace NormNegRaw
+open MvPolynomial
+variable {σ : Type*}
+noncomputable def replacement (P : MvPolynomial σ ℤ) : ℝ :=
+  ∑ d ∈ P.support, |((P.coeff d : ℤ) : ℝ)|
+theorem direct (P : MvPolynomial σ ℤ) : replacement (-P) = replacement P := by
+  change (-P.coeff).sum (fun _ (z : ℤ) ↦ |(z : ℝ)|) = P.coeff.sum (fun _ (z : ℤ) ↦ |(z : ℝ)|)
+  simpa only [Int.cast_neg, abs_neg] using
+    (Finsupp.sum_neg_index (g := P.coeff) (h := fun _ (z : ℤ) ↦ |(z : ℝ)|) (by simp))
+theorem generic {ι G M : Type*} [SubtractionMonoid G] [AddCommMonoid M]
+    (size : ι → G → M) (hzero : ∀ i, size i 0 = 0)
+    (hneg : ∀ i x, size i (-x) = size i x) (f : ι →₀ G) :
+    (-f).sum size = f.sum size := by
+  simpa only [hneg] using (Finsupp.sum_neg_index (g := f) (h := size) hzero)
+#print axioms direct
+#print axioms generic
+end NormNegRaw

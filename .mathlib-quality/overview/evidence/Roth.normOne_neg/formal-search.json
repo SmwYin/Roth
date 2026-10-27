@@ -1,0 +1,622 @@
+[
+  {
+    "method": "lean_leanfinder",
+    "form": "abstract",
+    "request": {
+      "query": "sum over finitely supported function negated argument sum_neg_index",
+      "num_results": 6
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Finsupp.sum_neg_index\",\n      \"informal_name\": \"Sum of Negated Finite Support Function\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {M : Type u_8} {G : Type u_12} [inst : SubtractionMonoid G] [inst_1 : AddCommMonoid M] {g : α →₀ G}\\n  {h : α → G → M}, (∀ (a : α), h a 0 = 0) → (-g).sum h = g.sum fun a b => h a (-b)\",\n      \"informal_description\": \"For any finite support function $ g : \\\\alpha \\\\to G $ where $ G $ is a subtraction monoid and $ M $ is an additive commutative monoid, and for any function $ h : \\\\alpha \\\\to G \\\\to M $ satisfying $ h(a, 0) = 0 $ for all $ a $, the sum of $ h(a, -g(a)) $ over $ \\\\alpha $ equals the sum of $ h(a, -b) $ over the support of $ g $. This establishes that negating a finite support function and summing with $ h $ is equivalent to summing the original function with $ h $ applied to negated values.\",\n      \"path\": \"Mathlib.Algebra.BigOperators.Finsupp.Basic\"\n    },\n    {\n      \"formal_name\": \"DFinsupp.sum_neg_index\",\n      \"informal_name\": \"Negation of Sum Equals Sum of Negations for Dependent Finite Support Functions\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u} {γ : Type w} {β : ι → Type v} [inst : DecidableEq ι] [inst_1 : (i : ι) → AddGroup (β i)]\\n  [inst_2 : (i : ι) → (x : β i) → Decidable (x ≠ 0)] [inst_3 : AddCommMonoid γ] {g : Π₀ (i : ι), β i}\\n  {h : (i : ι) → β i → γ}, (∀ (i : ι), h i 0 = 0) → (-g).sum h = g.sum fun i b => h i (-b)\",\n      \"informal_description\": \"For any dependent finite support function $ g $ from an index type $ \\\\iota $ to a family of additive groups $ \\\\beta(i) $, and for any function $ h $ mapping each index $ i $ and value $ b $ to an additive commutative monoid $ \\\\gamma $ such that $ h(i, 0) = 0 $ for all $ i $, the sum of $ h $ over the negated function $ -g $ equals the sum of $ h(i, -b) $ over the support of $ g $.\",\n      \"path\": \"Mathlib.Data.DFinsupp.BigOperators\"\n    },\n    {\n      \"formal_name\": \"Finsupp.sum_neg\",\n      \"informal_name\": \"Negation of Sum over Finite Support Function\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {M : Type u_8} {G : Type u_12} [inst : Zero M] [inst_1 : AddCommGroup G] {f : α →₀ M} {h : α → M → G},\\n  (f.sum fun a b => -h a b) = -f.sum h\",\n      \"informal_description\": \"For any finite support function $ f : \\\\alpha \\\\to₀ M $ and function $ h : \\\\alpha \\\\to M \\\\to G $ where $ G $ is an additive commutative group, the sum of $ -h(a, b) $ over $ f $ equals the negation of the sum of $ h(a, b) $ over $ f $. Formally, $ \\\\sum_{a \\\\in \\\\text{support}(f)} -h(a, f(a)) = -\\\\sum_{a \\\\in \\\\text{support}(f)} h(a, f(a)) $.\",\n      \"path\": \"Mathlib.Algebra.BigOperators.Finsupp.Basic\"\n    },\n    {\n      \"formal_name\": \"DFinsupp.sum_neg\",\n      \"informal_name\": \"Negation of Sum over Support Equals Sum of Negations for Dependent Finite Support Functions\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u} {γ : Type w} {β : ι → Type v} [inst : DecidableEq ι] [inst_1 : (i : ι) → AddCommMonoid (β i)]\\n  [inst_2 : (i : ι) → (x : β i) → Decidable (x ≠ 0)] [inst_3 : SubtractionCommMonoid γ] {f : Π₀ (i : ι), β i}\\n  {h : (i : ι) → β i → γ}, (f.sum fun i b => -h i b) = -f.sum h\",\n      \"informal_description\": \"For any dependent finite support function $ f $ from an index type $ \\\\iota $ to a family of types $ \\\\beta(i) $, and any function $ h $ mapping each index $ i $ and value $ f(i) $ to an element of an additive commutative monoid $ \\\\gamma $ equipped with subtraction, the sum of $ -h(i, f(i)) $ over the support of $ f $ is equal to the negative of the sum of $ h(i, f(i)) $ over the support of $ f $. Formally, $ \\\\sum_{i \\\\in \\\\text{supp}(f)} -h(i, f(i)) = -\\\\sum_{i \\\\in \\\\text{supp}(f)} h(i, f(i)) $.\",\n      \"path\": \"Mathlib.Data.DFinsupp.BigOperators\"\n    },\n    {\n      \"formal_name\": \"Finset.sum_neg_index\",\n      \"informal_name\": \"Sum over Negated Finite Set Equals Sum of Negated Elements\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {ι : Type u_2} [inst : AddCommMonoid α] [inst_1 : DecidableEq ι] [inst_2 : InvolutiveNeg ι]\\n  (s : Finset ι) (f : ι → α), ∑ i ∈ -s, f i = ∑ i ∈ s, f (-i)\",\n      \"informal_description\": \"For any finite set $ s $ over a type $ \\\\iota $ with involutive negation and a function $ f : \\\\iota \\\\to \\\\alpha $ where $ \\\\alpha $ is an additive commutative monoid, the sum of $ f(i) $ over the negated set $ -s $ is equal to the sum of $ f(-i) $ over the original set $ s $. Formally, $ \\\\sum_{i \\\\in -s} f(i) = \\\\sum_{i \\\\in s} f(-i) $.\",\n      \"path\": \"Mathlib.Algebra.Group.Pointwise.Finset.BigOperators\"\n    },\n    {\n      \"formal_name\": \"Finsupp.prod_neg_index\",\n      \"informal_name\": \"Product identity for a negated function with finite support\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {M : Type u_8} {G : Type u_12} [inst : SubtractionMonoid G] [inst_1 : CommMonoid M] {g : α →₀ G}\\n  {h : α → G → M}, (∀ (a : α), h a 0 = 1) → (-g).prod h = g.prod fun a b => h a (-b)\",\n      \"informal_description\": \"Let $G$ be a subtraction monoid and $M$ be a commutative monoid. Let $g$ be a function from a type $\\\\alpha$ to $G$ with finite support. Let $h$ be a function that maps an element $a \\\\in \\\\alpha$ and an element $b \\\\in G$ to an element $h(a, b) \\\\in M$, such that for all $a \\\\in \\\\alpha$, $h(a, 0) = 1$. Then the product associated with the pointwise negation of $g$ is given by the formula:\\n$$ \\\\prod_{a \\\\in \\\\text{supp}(-g)} h(a, (-g)(a)) = \\\\prod_{a \\\\in \\\\text{supp}(g)} h(a, -(g(a))) $$\\nHere, $\\\\text{supp}(f)$ denotes the support of a function $f$ (the set of points where it is non-zero), and $(-g)(a) = -(g(a))$.\",\n      \"path\": \"Mathlib.Algebra.BigOperators.Finsupp.Basic\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Finsupp.sum_neg_index",
+            "informal_name": "Sum of Negated Finite Support Function",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {M : Type u_8} {G : Type u_12} [inst : SubtractionMonoid G] [inst_1 : AddCommMonoid M] {g : α →₀ G}\n  {h : α → G → M}, (∀ (a : α), h a 0 = 0) → (-g).sum h = g.sum fun a b => h a (-b)",
+            "informal_description": "For any finite support function $ g : \\alpha \\to G $ where $ G $ is a subtraction monoid and $ M $ is an additive commutative monoid, and for any function $ h : \\alpha \\to G \\to M $ satisfying $ h(a, 0) = 0 $ for all $ a $, the sum of $ h(a, -g(a)) $ over $ \\alpha $ equals the sum of $ h(a, -b) $ over the support of $ g $. This establishes that negating a finite support function and summing with $ h $ is equivalent to summing the original function with $ h $ applied to negated values.",
+            "path": "Mathlib.Algebra.BigOperators.Finsupp.Basic"
+          },
+          {
+            "formal_name": "DFinsupp.sum_neg_index",
+            "informal_name": "Negation of Sum Equals Sum of Negations for Dependent Finite Support Functions",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u} {γ : Type w} {β : ι → Type v} [inst : DecidableEq ι] [inst_1 : (i : ι) → AddGroup (β i)]\n  [inst_2 : (i : ι) → (x : β i) → Decidable (x ≠ 0)] [inst_3 : AddCommMonoid γ] {g : Π₀ (i : ι), β i}\n  {h : (i : ι) → β i → γ}, (∀ (i : ι), h i 0 = 0) → (-g).sum h = g.sum fun i b => h i (-b)",
+            "informal_description": "For any dependent finite support function $ g $ from an index type $ \\iota $ to a family of additive groups $ \\beta(i) $, and for any function $ h $ mapping each index $ i $ and value $ b $ to an additive commutative monoid $ \\gamma $ such that $ h(i, 0) = 0 $ for all $ i $, the sum of $ h $ over the negated function $ -g $ equals the sum of $ h(i, -b) $ over the support of $ g $.",
+            "path": "Mathlib.Data.DFinsupp.BigOperators"
+          },
+          {
+            "formal_name": "Finsupp.sum_neg",
+            "informal_name": "Negation of Sum over Finite Support Function",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {M : Type u_8} {G : Type u_12} [inst : Zero M] [inst_1 : AddCommGroup G] {f : α →₀ M} {h : α → M → G},\n  (f.sum fun a b => -h a b) = -f.sum h",
+            "informal_description": "For any finite support function $ f : \\alpha \\to₀ M $ and function $ h : \\alpha \\to M \\to G $ where $ G $ is an additive commutative group, the sum of $ -h(a, b) $ over $ f $ equals the negation of the sum of $ h(a, b) $ over $ f $. Formally, $ \\sum_{a \\in \\text{support}(f)} -h(a, f(a)) = -\\sum_{a \\in \\text{support}(f)} h(a, f(a)) $.",
+            "path": "Mathlib.Algebra.BigOperators.Finsupp.Basic"
+          },
+          {
+            "formal_name": "DFinsupp.sum_neg",
+            "informal_name": "Negation of Sum over Support Equals Sum of Negations for Dependent Finite Support Functions",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u} {γ : Type w} {β : ι → Type v} [inst : DecidableEq ι] [inst_1 : (i : ι) → AddCommMonoid (β i)]\n  [inst_2 : (i : ι) → (x : β i) → Decidable (x ≠ 0)] [inst_3 : SubtractionCommMonoid γ] {f : Π₀ (i : ι), β i}\n  {h : (i : ι) → β i → γ}, (f.sum fun i b => -h i b) = -f.sum h",
+            "informal_description": "For any dependent finite support function $ f $ from an index type $ \\iota $ to a family of types $ \\beta(i) $, and any function $ h $ mapping each index $ i $ and value $ f(i) $ to an element of an additive commutative monoid $ \\gamma $ equipped with subtraction, the sum of $ -h(i, f(i)) $ over the support of $ f $ is equal to the negative of the sum of $ h(i, f(i)) $ over the support of $ f $. Formally, $ \\sum_{i \\in \\text{supp}(f)} -h(i, f(i)) = -\\sum_{i \\in \\text{supp}(f)} h(i, f(i)) $.",
+            "path": "Mathlib.Data.DFinsupp.BigOperators"
+          },
+          {
+            "formal_name": "Finset.sum_neg_index",
+            "informal_name": "Sum over Negated Finite Set Equals Sum of Negated Elements",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {ι : Type u_2} [inst : AddCommMonoid α] [inst_1 : DecidableEq ι] [inst_2 : InvolutiveNeg ι]\n  (s : Finset ι) (f : ι → α), ∑ i ∈ -s, f i = ∑ i ∈ s, f (-i)",
+            "informal_description": "For any finite set $ s $ over a type $ \\iota $ with involutive negation and a function $ f : \\iota \\to \\alpha $ where $ \\alpha $ is an additive commutative monoid, the sum of $ f(i) $ over the negated set $ -s $ is equal to the sum of $ f(-i) $ over the original set $ s $. Formally, $ \\sum_{i \\in -s} f(i) = \\sum_{i \\in s} f(-i) $.",
+            "path": "Mathlib.Algebra.Group.Pointwise.Finset.BigOperators"
+          },
+          {
+            "formal_name": "Finsupp.prod_neg_index",
+            "informal_name": "Product identity for a negated function with finite support",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {M : Type u_8} {G : Type u_12} [inst : SubtractionMonoid G] [inst_1 : CommMonoid M] {g : α →₀ G}\n  {h : α → G → M}, (∀ (a : α), h a 0 = 1) → (-g).prod h = g.prod fun a b => h a (-b)",
+            "informal_description": "Let $G$ be a subtraction monoid and $M$ be a commutative monoid. Let $g$ be a function from a type $\\alpha$ to $G$ with finite support. Let $h$ be a function that maps an element $a \\in \\alpha$ and an element $b \\in G$ to an element $h(a, b) \\in M$, such that for all $a \\in \\alpha$, $h(a, 0) = 1$. Then the product associated with the pointwise negation of $g$ is given by the formula:\n$$ \\prod_{a \\in \\text{supp}(-g)} h(a, (-g)(a)) = \\prod_{a \\in \\text{supp}(g)} h(a, -(g(a))) $$\nHere, $\\text{supp}(f)$ denotes the support of a function $f$ (the set of points where it is non-zero), and $(-g)(a) = -(g(a))$.",
+            "path": "Mathlib.Algebra.BigOperators.Finsupp.Basic"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_leanfinder",
+    "form": "current",
+    "request": {
+      "query": "negation invariance of sum absolute values of integer multivariate polynomial coefficients",
+      "num_results": 6
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"MvPolynomial.IsSymmetric.neg\",\n      \"informal_name\": \"Negation of a Symmetric Multivariate Polynomial is Symmetric\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_3} [inst : CommRing R] {φ : MvPolynomial σ R}, φ.IsSymmetric → (-φ).IsSymmetric\",\n      \"informal_description\": \"For any symmetric multivariate polynomial $\\\\varphi$ over a commutative ring $R$, its negation $-\\\\varphi$ is also symmetric.\",\n      \"path\": \"Mathlib.RingTheory.MvPolynomial.Symmetric.Defs\"\n    },\n    {\n      \"formal_name\": \"Polynomial.signVariations_neg\",\n      \"informal_name\": \"Invariance of Sign Variations Under Polynomial Negation\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Ring R] [inst_1 : LinearOrder R] [IsOrderedRing R] (P : Polynomial R),\\n  (-P).signVariations = P.signVariations\",\n      \"informal_description\": \"For any polynomial $ P $, the number of sign variations in $ -P $ is equal to the number of sign variations in $ P $, i.e., $ \\\\operatorname{signVariations}(-P) = \\\\operatorname{signVariations}(P) $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.RuleOfSigns\"\n    },\n    {\n      \"formal_name\": \"IsPoly.neg\",\n      \"informal_name\": \"Negation of Polynomial is Polynomial\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {f : (α → ℕ) → ℤ}, IsPoly f → IsPoly (-f)\",\n      \"informal_description\": \"If $ f $ is a polynomial (i.e., a function from exponent vectors $ \\\\alpha \\\\to \\\\mathbb{N} $ to integers $ \\\\mathbb{Z} $ with finite support), then its negation $ -f $ is also a polynomial.\",\n      \"path\": \"Mathlib.NumberTheory.Dioph\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.degrees_neg\",\n      \"informal_name\": \"Negation Preserves Degrees of Multivariate Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommRing R] (p : MvPolynomial σ R), (-p).degrees = p.degrees\",\n      \"informal_description\": \"For any multivariate polynomial $ p $, the multiset of variables (degrees) in $ -p $ is equal to the multiset of variables in $ p $, i.e., $ (-p).\\\\text{degrees} = p.\\\\text{degrees} $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.CommRing\"\n    },\n    {\n      \"formal_name\": \"Polynomial.smeval_neg_nat\",\n      \"informal_name\": \"Polynomial Evaluation at Negative Natural Numbers in Non-Associative Rings\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (S : Type u_3) [inst : NonAssocRing S] [inst_1 : Pow S ℕ] [NatPowAssoc S] (q : Polynomial ℕ) (n : ℕ),\\n  q.smeval (-↑n) = ↑(q.smeval (-↑n))\",\n      \"informal_description\": \"For any polynomial $ q $ with natural number coefficients and any natural number $ n $, evaluating $ q $ at the additive inverse of $ n $ in a non-associative ring $ S $ equipped with a compatible power operation yields the same result as evaluating $ q $ at the integer $ -n $. Formally, $ q.\\\\text{smeval}(-n) = q.\\\\text{smeval}(-n : \\\\mathbb{Z}) $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Smeval\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.totalDegree_neg\",\n      \"informal_name\": \"Total Degree of Negative Polynomial: $\\\\operatorname{totalDegree}(-a) = \\\\operatorname{totalDegree}(a)$\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommRing R] (a : MvPolynomial σ R), (-a).totalDegree = a.totalDegree\",\n      \"informal_description\": \"For any multivariate polynomial $ a $, the total degree of $ -a $ is equal to the total degree of $ a $, i.e., $ \\\\operatorname{totalDegree}(-a) = \\\\operatorname{totalDegree}(a) $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.CommRing\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "MvPolynomial.IsSymmetric.neg",
+            "informal_name": "Negation of a Symmetric Multivariate Polynomial is Symmetric",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {R : Type u_3} [inst : CommRing R] {φ : MvPolynomial σ R}, φ.IsSymmetric → (-φ).IsSymmetric",
+            "informal_description": "For any symmetric multivariate polynomial $\\varphi$ over a commutative ring $R$, its negation $-\\varphi$ is also symmetric.",
+            "path": "Mathlib.RingTheory.MvPolynomial.Symmetric.Defs"
+          },
+          {
+            "formal_name": "Polynomial.signVariations_neg",
+            "informal_name": "Invariance of Sign Variations Under Polynomial Negation",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Ring R] [inst_1 : LinearOrder R] [IsOrderedRing R] (P : Polynomial R),\n  (-P).signVariations = P.signVariations",
+            "informal_description": "For any polynomial $ P $, the number of sign variations in $ -P $ is equal to the number of sign variations in $ P $, i.e., $ \\operatorname{signVariations}(-P) = \\operatorname{signVariations}(P) $.",
+            "path": "Mathlib.Algebra.Polynomial.RuleOfSigns"
+          },
+          {
+            "formal_name": "IsPoly.neg",
+            "informal_name": "Negation of Polynomial is Polynomial",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {f : (α → ℕ) → ℤ}, IsPoly f → IsPoly (-f)",
+            "informal_description": "If $ f $ is a polynomial (i.e., a function from exponent vectors $ \\alpha \\to \\mathbb{N} $ to integers $ \\mathbb{Z} $ with finite support), then its negation $ -f $ is also a polynomial.",
+            "path": "Mathlib.NumberTheory.Dioph"
+          },
+          {
+            "formal_name": "MvPolynomial.degrees_neg",
+            "informal_name": "Negation Preserves Degrees of Multivariate Polynomials",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommRing R] (p : MvPolynomial σ R), (-p).degrees = p.degrees",
+            "informal_description": "For any multivariate polynomial $ p $, the multiset of variables (degrees) in $ -p $ is equal to the multiset of variables in $ p $, i.e., $ (-p).\\text{degrees} = p.\\text{degrees} $.",
+            "path": "Mathlib.Algebra.MvPolynomial.CommRing"
+          },
+          {
+            "formal_name": "Polynomial.smeval_neg_nat",
+            "informal_name": "Polynomial Evaluation at Negative Natural Numbers in Non-Associative Rings",
+            "kind": "theorem",
+            "type": "∀ (S : Type u_3) [inst : NonAssocRing S] [inst_1 : Pow S ℕ] [NatPowAssoc S] (q : Polynomial ℕ) (n : ℕ),\n  q.smeval (-↑n) = ↑(q.smeval (-↑n))",
+            "informal_description": "For any polynomial $ q $ with natural number coefficients and any natural number $ n $, evaluating $ q $ at the additive inverse of $ n $ in a non-associative ring $ S $ equipped with a compatible power operation yields the same result as evaluating $ q $ at the integer $ -n $. Formally, $ q.\\text{smeval}(-n) = q.\\text{smeval}(-n : \\mathbb{Z}) $.",
+            "path": "Mathlib.Algebra.Polynomial.Smeval"
+          },
+          {
+            "formal_name": "MvPolynomial.totalDegree_neg",
+            "informal_name": "Total Degree of Negative Polynomial: $\\operatorname{totalDegree}(-a) = \\operatorname{totalDegree}(a)$",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommRing R] (a : MvPolynomial σ R), (-a).totalDegree = a.totalDegree",
+            "informal_description": "For any multivariate polynomial $ a $, the total degree of $ -a $ is equal to the total degree of $ a $, i.e., $ \\operatorname{totalDegree}(-a) = \\operatorname{totalDegree}(a) $.",
+            "path": "Mathlib.Algebra.MvPolynomial.CommRing"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_leanfinder",
+    "form": "standard",
+    "request": {
+      "query": "norm_neg",
+      "num_results": 6
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"norm_neg\",\n      \"informal_name\": \"Norm of Negation Equals Norm\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {E : Type u_5} [inst : SeminormedAddGroup E] (a : E), ‖-a‖ = ‖a‖\",\n      \"informal_description\": \"For any element $ a $ in a seminormed additive group, the norm of $ -a $ is equal to the norm of $ a $, i.e., $ \\\\| -a \\\\| = \\\\| a \\\\| $.\",\n      \"path\": \"Mathlib.Analysis.Normed.Group.Basic\"\n    },\n    {\n      \"formal_name\": \"nnnorm_neg\",\n      \"informal_name\": \"Norm of Negative Element in Seminormed Additive Group\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {E : Type u_5} [inst : SeminormedAddGroup E] (a : E), ‖-a‖₊ = ‖a‖₊\",\n      \"informal_description\": \"For any element $ a $ in a seminormed additive group $ E $, the non-negative norm of $ -a $ equals the non-negative norm of $ a $, i.e., $ \\\\|-a\\\\|_+ = \\\\|a\\\\|_+ $.\",\n      \"path\": \"Mathlib.Analysis.Normed.Group.Basic\"\n    },\n    {\n      \"formal_name\": \"enorm_neg\",\n      \"informal_name\": \"Extended Norm of Negation Equals Extended Norm\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {E : Type u_5} [inst : SeminormedAddGroup E] (a : E), ‖-a‖ₑ = ‖a‖ₑ\",\n      \"informal_description\": \"For any element $a$ in a seminormed additive group $E$, the extended norm of $-a$ is equal to the extended norm of $a$, i.e., $\\\\| -a \\\\|_\\\\mathrm{e} = \\\\| a \\\\|_\\\\mathrm{e}$.\",\n      \"path\": \"Mathlib.Analysis.Normed.Group.Basic\"\n    },\n    {\n      \"formal_name\": \"FreeAddGroup.norm_neg_eq\",\n      \"informal_name\": \"Norm of Negation Equals Norm: $\\\\| -x \\\\| = \\\\| x \\\\|$\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} [inst : DecidableEq α] {x : FreeAddGroup α}, (-x).norm = x.norm\",\n      \"informal_description\": \"For any element $x$ in the free abelian group over a type $\\\\alpha$ with decidable equality, the norm of the additive inverse of $x$ is equal to the norm of $x$, i.e., $\\\\| -x \\\\| = \\\\| x \\\\|$. The norm is defined as the sum of the absolute values of coefficients in the reduced representation of the element.\",\n      \"path\": \"Mathlib.GroupTheory.FreeGroup.Reduce\"\n    },\n    {\n      \"formal_name\": \"Module.Basis.norm_neg\",\n      \"informal_name\": \"Norm of Negative Element Equals Norm in Basis-Induced Module\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {K : Type u_1} {L : Type u_2} [inst : NormedField K] [inst_1 : Ring L] [inst_2 : Algebra K L] {ι : Type u_3}\\n  [inst_3 : Fintype ι] [inst_4 : Nonempty ι] (B : Module.Basis ι K L) (x : L), B.norm (-x) = B.norm x\",\n      \"informal_description\": \"For any element $x$ in the module $L$, the norm of $-x$ induced by the basis $B$ is equal to the norm of $x$, i.e., $\\\\| -x \\\\| = \\\\| x \\\\|$.\",\n      \"path\": \"Mathlib.Analysis.Normed.Unbundled.FiniteExtension\"\n    },\n    {\n      \"formal_name\": \"NormedAddGroupHom.opNorm_neg\",\n      \"informal_name\": \"Operator Norm of Negated Homomorphism Equals Original\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {V₁ : Type u_2} {V₂ : Type u_3} [inst : SeminormedAddCommGroup V₁] [inst_1 : SeminormedAddCommGroup V₂]\\n  (f : NormedAddGroupHom V₁ V₂), ‖-f‖ = ‖f‖\",\n      \"informal_description\": \"For any normed additive group homomorphism $ f : V_1 \\\\to V_2 $ between seminormed additive commutative groups $ V_1 $ and $ V_2 $, the operator norm of the negation $-f$ is equal to the operator norm of $ f $, i.e., $\\\\| -f \\\\| = \\\\| f \\\\|$.\",\n      \"path\": \"Mathlib.Analysis.Normed.Group.Hom\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "norm_neg",
+            "informal_name": "Norm of Negation Equals Norm",
+            "kind": "theorem",
+            "type": "∀ {E : Type u_5} [inst : SeminormedAddGroup E] (a : E), ‖-a‖ = ‖a‖",
+            "informal_description": "For any element $ a $ in a seminormed additive group, the norm of $ -a $ is equal to the norm of $ a $, i.e., $ \\| -a \\| = \\| a \\| $.",
+            "path": "Mathlib.Analysis.Normed.Group.Basic"
+          },
+          {
+            "formal_name": "nnnorm_neg",
+            "informal_name": "Norm of Negative Element in Seminormed Additive Group",
+            "kind": "theorem",
+            "type": "∀ {E : Type u_5} [inst : SeminormedAddGroup E] (a : E), ‖-a‖₊ = ‖a‖₊",
+            "informal_description": "For any element $ a $ in a seminormed additive group $ E $, the non-negative norm of $ -a $ equals the non-negative norm of $ a $, i.e., $ \\|-a\\|_+ = \\|a\\|_+ $.",
+            "path": "Mathlib.Analysis.Normed.Group.Basic"
+          },
+          {
+            "formal_name": "enorm_neg",
+            "informal_name": "Extended Norm of Negation Equals Extended Norm",
+            "kind": "theorem",
+            "type": "∀ {E : Type u_5} [inst : SeminormedAddGroup E] (a : E), ‖-a‖ₑ = ‖a‖ₑ",
+            "informal_description": "For any element $a$ in a seminormed additive group $E$, the extended norm of $-a$ is equal to the extended norm of $a$, i.e., $\\| -a \\|_\\mathrm{e} = \\| a \\|_\\mathrm{e}$.",
+            "path": "Mathlib.Analysis.Normed.Group.Basic"
+          },
+          {
+            "formal_name": "FreeAddGroup.norm_neg_eq",
+            "informal_name": "Norm of Negation Equals Norm: $\\| -x \\| = \\| x \\|$",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} [inst : DecidableEq α] {x : FreeAddGroup α}, (-x).norm = x.norm",
+            "informal_description": "For any element $x$ in the free abelian group over a type $\\alpha$ with decidable equality, the norm of the additive inverse of $x$ is equal to the norm of $x$, i.e., $\\| -x \\| = \\| x \\|$. The norm is defined as the sum of the absolute values of coefficients in the reduced representation of the element.",
+            "path": "Mathlib.GroupTheory.FreeGroup.Reduce"
+          },
+          {
+            "formal_name": "Module.Basis.norm_neg",
+            "informal_name": "Norm of Negative Element Equals Norm in Basis-Induced Module",
+            "kind": "theorem",
+            "type": "∀ {K : Type u_1} {L : Type u_2} [inst : NormedField K] [inst_1 : Ring L] [inst_2 : Algebra K L] {ι : Type u_3}\n  [inst_3 : Fintype ι] [inst_4 : Nonempty ι] (B : Module.Basis ι K L) (x : L), B.norm (-x) = B.norm x",
+            "informal_description": "For any element $x$ in the module $L$, the norm of $-x$ induced by the basis $B$ is equal to the norm of $x$, i.e., $\\| -x \\| = \\| x \\|$.",
+            "path": "Mathlib.Analysis.Normed.Unbundled.FiniteExtension"
+          },
+          {
+            "formal_name": "NormedAddGroupHom.opNorm_neg",
+            "informal_name": "Operator Norm of Negated Homomorphism Equals Original",
+            "kind": "theorem",
+            "type": "∀ {V₁ : Type u_2} {V₂ : Type u_3} [inst : SeminormedAddCommGroup V₁] [inst_1 : SeminormedAddCommGroup V₂]\n  (f : NormedAddGroupHom V₁ V₂), ‖-f‖ = ‖f‖",
+            "informal_description": "For any normed additive group homomorphism $ f : V_1 \\to V_2 $ between seminormed additive commutative groups $ V_1 $ and $ V_2 $, the operator norm of the negation $-f$ is equal to the operator norm of $ f $, i.e., $\\| -f \\| = \\| f \\|$.",
+            "path": "Mathlib.Analysis.Normed.Group.Hom"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_leansearch",
+    "form": "abstract",
+    "request": {
+      "query": "sum over finitely supported function negated argument sum_neg_index",
+      "num_results": 6
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"DFinsupp.sum_neg_index\",\n      \"module_name\": \"Mathlib.Data.DFinsupp.BigOperators\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u} {γ : Type w} {β : ι → Type v} [inst : DecidableEq ι] [inst_1 : (i : ι) → AddGroup (β i)]\\n  [inst_2 : (i : ι) → (x : β i) → Decidable (x ≠ 0)] [inst_3 : AddCommMonoid γ] {g : Π₀ (i : ι), β i}\\n  {h : (i : ι) → β i → γ}, (∀ (i : ι), h i 0 = 0) → (-g).sum h = g.sum fun i b => h i (-b)\"\n    },\n    {\n      \"name\": \"DFinsupp.sum_neg\",\n      \"module_name\": \"Mathlib.Data.DFinsupp.BigOperators\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u} {γ : Type w} {β : ι → Type v} [inst : DecidableEq ι] [inst_1 : (i : ι) → AddCommMonoid (β i)]\\n  [inst_2 : (i : ι) → (x : β i) → Decidable (x ≠ 0)] [inst_3 : SubtractionCommMonoid γ] {f : Π₀ (i : ι), β i}\\n  {h : (i : ι) → β i → γ}, (f.sum fun i b => -h i b) = -f.sum h\"\n    },\n    {\n      \"name\": \"Finsupp.sum_neg\",\n      \"module_name\": \"Mathlib.Algebra.BigOperators.Finsupp.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {M : Type u_8} {G : Type u_12} [inst : Zero M] [inst_1 : AddCommGroup G] {f : α →₀ M} {h : α → M → G},\\n  (f.sum fun a b => -h a b) = -f.sum h\"\n    },\n    {\n      \"name\": \"Finsupp.sum_neg_index\",\n      \"module_name\": \"Mathlib.Algebra.BigOperators.Finsupp.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {M : Type u_8} {G : Type u_12} [inst : SubtractionMonoid G] [inst_1 : AddCommMonoid M] {g : α →₀ G}\\n  {h : α → G → M}, (∀ (a : α), h a 0 = 0) → (-g).sum h = g.sum fun a b => h a (-b)\"\n    },\n    {\n      \"name\": \"Finset.sum_neg_index\",\n      \"module_name\": \"Mathlib.Algebra.Group.Pointwise.Finset.BigOperators\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {ι : Type u_2} [inst : AddCommMonoid α] [inst_1 : DecidableEq ι] [inst_2 : InvolutiveNeg ι]\\n  (s : Finset ι) (f : ι → α), ∑ i ∈ -s, f i = ∑ i ∈ s, f (-i)\"\n    },\n    {\n      \"name\": \"Finset.sum_neg_distrib\",\n      \"module_name\": \"Mathlib.Algebra.BigOperators.Group.Finset.Defs\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {G : Type u_5} {s : Finset ι} [inst : SubtractionCommMonoid G] (f : ι → G),\\n  ∑ x ∈ s, -f x = -∑ x ∈ s, f x\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "DFinsupp.sum_neg_index",
+            "module_name": "Mathlib.Data.DFinsupp.BigOperators",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u} {γ : Type w} {β : ι → Type v} [inst : DecidableEq ι] [inst_1 : (i : ι) → AddGroup (β i)]\n  [inst_2 : (i : ι) → (x : β i) → Decidable (x ≠ 0)] [inst_3 : AddCommMonoid γ] {g : Π₀ (i : ι), β i}\n  {h : (i : ι) → β i → γ}, (∀ (i : ι), h i 0 = 0) → (-g).sum h = g.sum fun i b => h i (-b)"
+          },
+          {
+            "name": "DFinsupp.sum_neg",
+            "module_name": "Mathlib.Data.DFinsupp.BigOperators",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u} {γ : Type w} {β : ι → Type v} [inst : DecidableEq ι] [inst_1 : (i : ι) → AddCommMonoid (β i)]\n  [inst_2 : (i : ι) → (x : β i) → Decidable (x ≠ 0)] [inst_3 : SubtractionCommMonoid γ] {f : Π₀ (i : ι), β i}\n  {h : (i : ι) → β i → γ}, (f.sum fun i b => -h i b) = -f.sum h"
+          },
+          {
+            "name": "Finsupp.sum_neg",
+            "module_name": "Mathlib.Algebra.BigOperators.Finsupp.Basic",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {M : Type u_8} {G : Type u_12} [inst : Zero M] [inst_1 : AddCommGroup G] {f : α →₀ M} {h : α → M → G},\n  (f.sum fun a b => -h a b) = -f.sum h"
+          },
+          {
+            "name": "Finsupp.sum_neg_index",
+            "module_name": "Mathlib.Algebra.BigOperators.Finsupp.Basic",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {M : Type u_8} {G : Type u_12} [inst : SubtractionMonoid G] [inst_1 : AddCommMonoid M] {g : α →₀ G}\n  {h : α → G → M}, (∀ (a : α), h a 0 = 0) → (-g).sum h = g.sum fun a b => h a (-b)"
+          },
+          {
+            "name": "Finset.sum_neg_index",
+            "module_name": "Mathlib.Algebra.Group.Pointwise.Finset.BigOperators",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {ι : Type u_2} [inst : AddCommMonoid α] [inst_1 : DecidableEq ι] [inst_2 : InvolutiveNeg ι]\n  (s : Finset ι) (f : ι → α), ∑ i ∈ -s, f i = ∑ i ∈ s, f (-i)"
+          },
+          {
+            "name": "Finset.sum_neg_distrib",
+            "module_name": "Mathlib.Algebra.BigOperators.Group.Finset.Defs",
+            "kind": "theorem",
+            "type": "∀ {ι : Type u_1} {G : Type u_5} {s : Finset ι} [inst : SubtractionCommMonoid G] (f : ι → G),\n  ∑ x ∈ s, -f x = -∑ x ∈ s, f x"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_leansearch",
+    "form": "current",
+    "request": {
+      "query": "negation invariance of sum absolute values of integer multivariate polynomial coefficients",
+      "num_results": 6
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"IsAbsoluteValue.abv_neg\",\n      \"module_name\": \"Mathlib.Algebra.Order.AbsoluteValue.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_3} {S : Type u_4} [inst : CommRing S] [inst_1 : PartialOrder S] [IsOrderedRing S] [NoZeroDivisors S]\\n  [inst_4 : Ring R] (abv : R → S) [IsAbsoluteValue abv] (a : R), abv (-a) = abv a\"\n    },\n    {\n      \"name\": \"tsum_comp_neg\",\n      \"module_name\": \"Mathlib.Topology.Algebra.InfiniteSum.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} [inst : AddCommMonoid α] [inst_1 : TopologicalSpace α] {β : Type u_4} [inst_2 : InvolutiveNeg β]\\n  (f : β → α), ∑' (d : β), f (-d) = ∑' (d : β), f d\"\n    },\n    {\n      \"name\": \"Polynomial.smeval_neg\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Smeval\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (R : Type u_1) [inst : Ring R] {S : Type u_2} [inst_1 : AddCommGroup S] [inst_2 : Pow S ℕ] [inst_3 : Module R S]\\n  (p : Polynomial R) (x : S), (-p).smeval x = -p.smeval x\"\n    },\n    {\n      \"name\": \"Polynomial.roots_neg\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Roots\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : CommRing R] [inst_1 : IsDomain R] (p : Polynomial R), (-p).roots = p.roots\"\n    },\n    {\n      \"name\": \"Polynomial.toFinsupp_neg\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Ring R] (a : Polynomial R), (-a).toFinsupp = -a.toFinsupp\"\n    },\n    {\n      \"name\": \"MonomialOrder.degree_neg\",\n      \"module_name\": \"Mathlib.RingTheory.MvPolynomial.MonomialOrder\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {m : MonomialOrder σ} {R : Type u_2} [inst : CommRing R] {f : MvPolynomial σ R},\\n  m.degree (-f) = m.degree f\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "IsAbsoluteValue.abv_neg",
+            "module_name": "Mathlib.Algebra.Order.AbsoluteValue.Basic",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_3} {S : Type u_4} [inst : CommRing S] [inst_1 : PartialOrder S] [IsOrderedRing S] [NoZeroDivisors S]\n  [inst_4 : Ring R] (abv : R → S) [IsAbsoluteValue abv] (a : R), abv (-a) = abv a"
+          },
+          {
+            "name": "tsum_comp_neg",
+            "module_name": "Mathlib.Topology.Algebra.InfiniteSum.Basic",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} [inst : AddCommMonoid α] [inst_1 : TopologicalSpace α] {β : Type u_4} [inst_2 : InvolutiveNeg β]\n  (f : β → α), ∑' (d : β), f (-d) = ∑' (d : β), f d"
+          },
+          {
+            "name": "Polynomial.smeval_neg",
+            "module_name": "Mathlib.Algebra.Polynomial.Smeval",
+            "kind": "theorem",
+            "type": "∀ (R : Type u_1) [inst : Ring R] {S : Type u_2} [inst_1 : AddCommGroup S] [inst_2 : Pow S ℕ] [inst_3 : Module R S]\n  (p : Polynomial R) (x : S), (-p).smeval x = -p.smeval x"
+          },
+          {
+            "name": "Polynomial.roots_neg",
+            "module_name": "Mathlib.Algebra.Polynomial.Roots",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : CommRing R] [inst_1 : IsDomain R] (p : Polynomial R), (-p).roots = p.roots"
+          },
+          {
+            "name": "Polynomial.toFinsupp_neg",
+            "module_name": "Mathlib.Algebra.Polynomial.Basic",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : Ring R] (a : Polynomial R), (-a).toFinsupp = -a.toFinsupp"
+          },
+          {
+            "name": "MonomialOrder.degree_neg",
+            "module_name": "Mathlib.RingTheory.MvPolynomial.MonomialOrder",
+            "kind": "theorem",
+            "type": "∀ {σ : Type u_1} {m : MonomialOrder σ} {R : Type u_2} [inst : CommRing R] {f : MvPolynomial σ R},\n  m.degree (-f) = m.degree f"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_leansearch",
+    "form": "standard",
+    "request": {
+      "query": "norm_neg",
+      "num_results": 6
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"lp.norm_neg\",\n      \"module_name\": \"Mathlib.Analysis.Normed.Lp.lpSpace\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_3} {E : α → Type u_4} {p : ENNReal} [inst : (i : α) → NormedAddCommGroup (E i)] ⦃f : ↥(lp E p)⦄,\\n  ‖-f‖ = ‖f‖\"\n    },\n    {\n      \"name\": \"PadicSeq.norm_neg\",\n      \"module_name\": \"Mathlib.NumberTheory.Padics.PadicNumbers\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {p : ℕ} [hp : Fact (Nat.Prime p)] (a : PadicSeq p), (-a).norm = a.norm\"\n    },\n    {\n      \"name\": \"nnnorm_neg\",\n      \"module_name\": \"Mathlib.Analysis.Normed.Group.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {E : Type u_5} [inst : SeminormedAddGroup E] (a : E), ‖-a‖₊ = ‖a‖₊\"\n    },\n    {\n      \"name\": \"MeasureTheory.Lp.norm_neg\",\n      \"module_name\": \"Mathlib.MeasureTheory.Function.LpSpace.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {E : Type u_4} {m : MeasurableSpace α} {p : ENNReal} {μ : MeasureTheory.Measure α}\\n  [inst : NormedAddCommGroup E] (f : ↥(MeasureTheory.Lp E p μ)), ‖-f‖ = ‖f‖\"\n    },\n    {\n      \"name\": \"Zsqrtd.norm_neg\",\n      \"module_name\": \"Mathlib.NumberTheory.Zsqrtd.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {d : ℤ} (x : ℤ√d), (-x).norm = x.norm\"\n    },\n    {\n      \"name\": \"ContinuousLinearMap.opNorm_neg\",\n      \"module_name\": \"Mathlib.Analysis.Normed.Operator.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {𝕜 : Type u_1} {𝕜₂ : Type u_2} {E : Type u_4} {F : Type u_5} [inst : SeminormedAddCommGroup E]\\n  [inst_1 : SeminormedAddCommGroup F] [inst_2 : NontriviallyNormedField 𝕜] [inst_3 : NontriviallyNormedField 𝕜₂]\\n  [inst_4 : NormedSpace 𝕜 E] [inst_5 : NormedSpace 𝕜₂ F] {σ₁₂ : 𝕜 →+* 𝕜₂} (f : E →SL[σ₁₂] F), ‖-f‖ = ‖f‖\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "lp.norm_neg",
+            "module_name": "Mathlib.Analysis.Normed.Lp.lpSpace",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_3} {E : α → Type u_4} {p : ENNReal} [inst : (i : α) → NormedAddCommGroup (E i)] ⦃f : ↥(lp E p)⦄,\n  ‖-f‖ = ‖f‖"
+          },
+          {
+            "name": "PadicSeq.norm_neg",
+            "module_name": "Mathlib.NumberTheory.Padics.PadicNumbers",
+            "kind": "theorem",
+            "type": "∀ {p : ℕ} [hp : Fact (Nat.Prime p)] (a : PadicSeq p), (-a).norm = a.norm"
+          },
+          {
+            "name": "nnnorm_neg",
+            "module_name": "Mathlib.Analysis.Normed.Group.Basic",
+            "kind": "theorem",
+            "type": "∀ {E : Type u_5} [inst : SeminormedAddGroup E] (a : E), ‖-a‖₊ = ‖a‖₊"
+          },
+          {
+            "name": "MeasureTheory.Lp.norm_neg",
+            "module_name": "Mathlib.MeasureTheory.Function.LpSpace.Basic",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} {E : Type u_4} {m : MeasurableSpace α} {p : ENNReal} {μ : MeasureTheory.Measure α}\n  [inst : NormedAddCommGroup E] (f : ↥(MeasureTheory.Lp E p μ)), ‖-f‖ = ‖f‖"
+          },
+          {
+            "name": "Zsqrtd.norm_neg",
+            "module_name": "Mathlib.NumberTheory.Zsqrtd.Basic",
+            "kind": "theorem",
+            "type": "∀ {d : ℤ} (x : ℤ√d), (-x).norm = x.norm"
+          },
+          {
+            "name": "ContinuousLinearMap.opNorm_neg",
+            "module_name": "Mathlib.Analysis.Normed.Operator.Basic",
+            "kind": "theorem",
+            "type": "∀ {𝕜 : Type u_1} {𝕜₂ : Type u_2} {E : Type u_4} {F : Type u_5} [inst : SeminormedAddCommGroup E]\n  [inst_1 : SeminormedAddCommGroup F] [inst_2 : NontriviallyNormedField 𝕜] [inst_3 : NontriviallyNormedField 𝕜₂]\n  [inst_4 : NormedSpace 𝕜 E] [inst_5 : NormedSpace 𝕜₂ F] {σ₁₂ : 𝕜 →+* 𝕜₂} (f : E →SL[σ₁₂] F), ‖-f‖ = ‖f‖"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_local_search",
+    "form": "abstract",
+    "request": {
+      "query": "sum_neg_index",
+      "num_results": 6
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_local_search",
+    "form": "current",
+    "request": {
+      "query": "normOne_neg",
+      "num_results": 6
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Roth.normOne_neg\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/CoeffNorm.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Roth.normOne_neg",
+            "kind": "theorem",
+            "file": "Roth/CoeffNorm.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_local_search",
+    "form": "standard",
+    "request": {
+      "query": "norm_neg",
+      "num_results": 6
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MeasureTheory.Lp.norm_neg\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/MeasureTheory/Function/LpSpace/Basic.lean\"\n    },\n    {\n      \"name\": \"Module.Basis.norm_neg\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Analysis/Normed/Unbundled/FiniteExtension.lean\"\n    },\n    {\n      \"name\": \"PadicSeq.norm_neg\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/NumberTheory/Padics/PadicNumbers.lean\"\n    },\n    {\n      \"name\": \"QuadraticAlgebra.norm_neg\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/QuadraticAlgebra/Basic.lean\"\n    },\n    {\n      \"name\": \"Zsqrtd.norm_neg\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/NumberTheory/Zsqrtd/Basic.lean\"\n    },\n    {\n      \"name\": \"lp.norm_neg\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Analysis/Normed/Lp/lpSpace.lean\"\n    },\n    {\n      \"name\": \"Complex.norm_neg'\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Analysis/Complex/Norm.lean\"\n    },\n    {\n      \"name\": \"norm_negAt\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/NumberTheory/NumberField/CanonicalEmbedding/Basic.lean\"\n    },\n    {\n      \"name\": \"norm_neg_pow\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Analysis/Normed/Ring/Basic.lean\"\n    },\n    {\n      \"name\": \"CStarAlgebra.norm_negPart_le\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Analysis/SpecialFunctions/ContinuousFunctionalCalculus/PosPart/Isometric.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MeasureTheory.Lp.norm_neg",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/MeasureTheory/Function/LpSpace/Basic.lean"
+          },
+          {
+            "name": "Module.Basis.norm_neg",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Analysis/Normed/Unbundled/FiniteExtension.lean"
+          },
+          {
+            "name": "PadicSeq.norm_neg",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/NumberTheory/Padics/PadicNumbers.lean"
+          },
+          {
+            "name": "QuadraticAlgebra.norm_neg",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/QuadraticAlgebra/Basic.lean"
+          },
+          {
+            "name": "Zsqrtd.norm_neg",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/NumberTheory/Zsqrtd/Basic.lean"
+          },
+          {
+            "name": "lp.norm_neg",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Analysis/Normed/Lp/lpSpace.lean"
+          },
+          {
+            "name": "Complex.norm_neg'",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Analysis/Complex/Norm.lean"
+          },
+          {
+            "name": "norm_negAt",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/NumberTheory/NumberField/CanonicalEmbedding/Basic.lean"
+          },
+          {
+            "name": "norm_neg_pow",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Analysis/Normed/Ring/Basic.lean"
+          },
+          {
+            "name": "CStarAlgebra.norm_negPart_le",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Analysis/SpecialFunctions/ContinuousFunctionalCalculus/PosPart/Isometric.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_loogle",
+    "form": "abstract",
+    "request": {
+      "query": "Finsupp.sum_neg_index",
+      "num_results": 6
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finsupp.sum_neg_index\",\n      \"type\": \" {α : Type u_1} {M : Type u_8} {G : Type u_12} [SubtractionMonoid G] [AddCommMonoid M] {g : α →₀ G} {h : α → G → M} (h0 : ∀ (a : α), h a 0 = 0) : (-g).sum h = g.sum fun a b => h a (-b)\",\n      \"module\": \"Mathlib.Algebra.BigOperators.Finsupp.Basic\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Finsupp.sum_neg_index",
+            "type": " {α : Type u_1} {M : Type u_8} {G : Type u_12} [SubtractionMonoid G] [AddCommMonoid M] {g : α →₀ G} {h : α → G → M} (h0 : ∀ (a : α), h a 0 = 0) : (-g).sum h = g.sum fun a b => h a (-b)",
+            "module": "Mathlib.Algebra.BigOperators.Finsupp.Basic"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_loogle",
+    "form": "current-retry",
+    "request": {
+      "query": "MvPolynomial.coeff_neg",
+      "num_results": 6
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "Error executing tool lean_loogle: Rate limit exceeded: 3 requests per 30s. Use --loogle-local to avoid limits."
+        }
+      ],
+      "isError": true
+    }
+  },
+  {
+    "method": "lean_loogle",
+    "form": "current-retry2",
+    "request": {
+      "query": "MvPolynomial.coeff_neg",
+      "num_results": 6
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.coeff_neg\",\n      \"type\": \" {R : Type u} (σ : Type u_1) [CommRing R] (m : σ →₀ ℕ) (p : MvPolynomial σ R) : (-p).coeff m = -p.coeff m\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.CommRing\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.coeff_neg",
+            "type": " {R : Type u} (σ : Type u_1) [CommRing R] (m : σ →₀ ℕ) (p : MvPolynomial σ R) : (-p).coeff m = -p.coeff m",
+            "module": "Mathlib.Algebra.MvPolynomial.CommRing"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "method": "lean_loogle",
+    "form": "current",
+    "request": {
+      "query": "\"MvPolynomial\" \"neg\"",
+      "num_results": 6
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "Error executing tool lean_loogle: loogle query error: Function expected at\n  \"MvPolynomial\"\nbut this term has type\n  String\n\nNote: Expected a function because this term is being applied to the argument\n  \"neg\""
+        }
+      ],
+      "isError": true
+    }
+  },
+  {
+    "method": "lean_loogle",
+    "form": "standard",
+    "request": {
+      "query": "norm_neg",
+      "num_results": 6
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"norm_neg\",\n      \"type\": \" {E : Type u_4} [SeminormedAddGroup E] (a : E) : ‖-a‖ = ‖a‖\",\n      \"module\": \"Mathlib.Analysis.Normed.Group.Basic\"\n    },\n    {\n      \"name\": \"Complex.UnitDisc.mk_neg\",\n      \"type\": \" (z : ℂ) (hz : ‖-z‖ < 1) : Complex.UnitDisc.mk (-z) hz = -Complex.UnitDisc.mk z ⋯\",\n      \"module\": \"Mathlib.Analysis.Complex.UnitDisc.Basic\"\n    },\n    {\n      \"name\": \"Complex.UnitClosedDisc.mk_neg\",\n      \"type\": \" (z : ℂ) (hz : ‖-z‖ ≤ 1) : Complex.UnitClosedDisc.mk (-z) hz = -Complex.UnitClosedDisc.mk z ⋯\",\n      \"module\": \"Mathlib.Analysis.Complex.UnitDisc.Basic\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "norm_neg",
+            "type": " {E : Type u_4} [SeminormedAddGroup E] (a : E) : ‖-a‖ = ‖a‖",
+            "module": "Mathlib.Analysis.Normed.Group.Basic"
+          },
+          {
+            "name": "Complex.UnitDisc.mk_neg",
+            "type": " (z : ℂ) (hz : ‖-z‖ < 1) : Complex.UnitDisc.mk (-z) hz = -Complex.UnitDisc.mk z ⋯",
+            "module": "Mathlib.Analysis.Complex.UnitDisc.Basic"
+          },
+          {
+            "name": "Complex.UnitClosedDisc.mk_neg",
+            "type": " (z : ℂ) (hz : ‖-z‖ ≤ 1) : Complex.UnitClosedDisc.mk (-z) hz = -Complex.UnitClosedDisc.mk z ⋯",
+            "module": "Mathlib.Analysis.Complex.UnitDisc.Basic"
+          }
+        ]
+      },
+      "isError": false
+    }
+  }
+]

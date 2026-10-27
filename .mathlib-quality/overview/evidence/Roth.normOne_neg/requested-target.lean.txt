@@ -1,0 +1,22 @@
+namespace MvPolynomial.NormNegAssessment
+variable {σ : Type*}
+#check @Roth.normOne_neg
+#print Roth.normOne_neg
+#print axioms Roth.normOne_neg
+#check @Finsupp.sum_neg_index
+#check @Finsupp.support_neg
+#check @Finset.sum_congr
+#check @Int.cast_neg
+#check @abs_neg
+theorem direct (P : MvPolynomial σ ℤ) : Roth.normOne (-P) = Roth.normOne P := by
+  change (-P.coeff).sum (fun _ (z : ℤ) ↦ |(z : ℝ)|) = P.coeff.sum (fun _ (z : ℤ) ↦ |(z : ℝ)|)
+  simpa only [Int.cast_neg, abs_neg] using
+    (Finsupp.sum_neg_index (g := P.coeff) (h := fun _ (z : ℤ) ↦ |(z : ℝ)|) (by simp))
+theorem generic {ι G M : Type*} [SubtractionMonoid G] [AddCommMonoid M]
+    (size : ι → G → M) (hzero : ∀ i, size i 0 = 0)
+    (hneg : ∀ i x, size i (-x) = size i x) (f : ι →₀ G) :
+    (-f).sum size = f.sum size := by
+  simpa only [hneg] using (Finsupp.sum_neg_index (g := f) (h := size) hzero)
+#print axioms direct
+#print axioms generic
+end MvPolynomial.NormNegAssessment
