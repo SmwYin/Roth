@@ -1,0 +1,93 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\n#check_failure Roth.index_C_mul\n#check @MvPolynomial.support_smul_eq\n#check @Finsupp.support_smul_eq\n#check @AddMonoidAlgebra.coeff_smul\n#check_failure AddMonoidAlgebra.supDegree_smul\n#check_failure AddMonoidAlgebra.infDegree_smul\nnamespace IndexCMulMathlib147\nuniverse u v w z\ntheorem modern {A : Type u} {R : Type v} {S : Type w} {T : Type z}\n    [Semiring R] [Semiring S] [IsDomain S] [Module S R] [Module.IsTorsionFree S R]\n    [SemilatticeInf T] [OrderTop T] (D : A → T) {c : S} (hc : c ≠ 0)\n    (f : AddMonoidAlgebra R A) :\n    AddMonoidAlgebra.infDegree D (c • f) = AddMonoidAlgebra.infDegree D f := by\n  classical\n  fail_if_success exact?\n  exact congrArg (fun s : Finset A ↦ s.inf D)\n    (Finsupp.support_smul_eq hc (g := f.coeff))\ntheorem supportGeneral {A : Type u} {M : Type v} {S : Type w}\n    [Semiring S] [IsDomain S] [AddCommMonoid M] [Module S M]\n    [Module.IsTorsionFree S M] {c : S} (hc : c ≠ 0) (f : A →₀ M) :\n    (c • f).support = f.support := Finsupp.support_smul_eq hc\n#print axioms modern\n#print axioms supportGeneral\nend IndexCMulMathlib147\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.index_C_mul`\",\n      \"line\": 8,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPolynomial.support_smul_eq : ∀ {R : Type u_1} {σ : Type u_2} [inst : CommSemiring R] {S : Type u_3}\\n  [inst_1 : Semiring S] [IsDomain S] [inst_3 : Module S R] [Module.IsTorsionFree S R] {a : S},\\n  a ≠ 0 → ∀ (p : MvPolynomial σ R), (a • p).support = p.support\",\n      \"line\": 9,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finsupp.support_smul_eq : ∀ {α : Type u_1} {M : Type u_2} {R : Type u_3} [inst : Semiring R] [IsDomain R]\\n  [inst_2 : AddCommMonoid M] [inst_3 : Module R M] [Module.IsTorsionFree R M] {b : R},\\n  b ≠ 0 → ∀ {g : α →₀ M}, (b • g).support = g.support\",\n      \"line\": 10,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@AddMonoidAlgebra.coeff_smul : ∀ {R : Type u_1} {M : Type u_2} [inst : Semiring R] {A : Type u_3}\\n  [inst_1 : SMulZeroClass A R] (a : A) (x : AddMonoidAlgebra R M), (a • x).coeff = a • x.coeff\",\n      \"line\": 11,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown constant `AddMonoidAlgebra.supDegree_smul`\",\n      \"line\": 12,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown constant `AddMonoidAlgebra.infDegree_smul`\",\n      \"line\": 13,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'IndexCMulMathlib147.modern' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 29,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'IndexCMulMathlib147.supportGeneral' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 30,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.index_C_mul`",
+          "line": 8,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPolynomial.support_smul_eq : ∀ {R : Type u_1} {σ : Type u_2} [inst : CommSemiring R] {S : Type u_3}\n  [inst_1 : Semiring S] [IsDomain S] [inst_3 : Module S R] [Module.IsTorsionFree S R] {a : S},\n  a ≠ 0 → ∀ (p : MvPolynomial σ R), (a • p).support = p.support",
+          "line": 9,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finsupp.support_smul_eq : ∀ {α : Type u_1} {M : Type u_2} {R : Type u_3} [inst : Semiring R] [IsDomain R]\n  [inst_2 : AddCommMonoid M] [inst_3 : Module R M] [Module.IsTorsionFree R M] {b : R},\n  b ≠ 0 → ∀ {g : α →₀ M}, (b • g).support = g.support",
+          "line": 10,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@AddMonoidAlgebra.coeff_smul : ∀ {R : Type u_1} {M : Type u_2} [inst : Semiring R] {A : Type u_3}\n  [inst_1 : SMulZeroClass A R] (a : A) (x : AddMonoidAlgebra R M), (a • x).coeff = a • x.coeff",
+          "line": 11,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown constant `AddMonoidAlgebra.supDegree_smul`",
+          "line": 12,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown constant `AddMonoidAlgebra.infDegree_smul`",
+          "line": 13,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'IndexCMulMathlib147.modern' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 29,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'IndexCMulMathlib147.supportGeneral' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 30,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 8684
+}

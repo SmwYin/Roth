@@ -1,0 +1,31 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+#check_failure Roth.index_C_mul
+#check @MvPolynomial.support_smul_eq
+#check @Finsupp.support_smul_eq
+#check @AddMonoidAlgebra.coeff_smul
+#check_failure AddMonoidAlgebra.supDegree_smul
+#check_failure AddMonoidAlgebra.infDegree_smul
+namespace IndexCMulMathlib147
+universe u v w z
+theorem modern {A : Type u} {R : Type v} {S : Type w} {T : Type z}
+    [Semiring R] [Semiring S] [IsDomain S] [Module S R] [Module.IsTorsionFree S R]
+    [SemilatticeInf T] [OrderTop T] (D : A → T) {c : S} (hc : c ≠ 0)
+    (f : AddMonoidAlgebra R A) :
+    AddMonoidAlgebra.infDegree D (c • f) = AddMonoidAlgebra.infDegree D f := by
+  classical
+  fail_if_success exact?
+  exact congrArg (fun s : Finset A ↦ s.inf D)
+    (Finsupp.support_smul_eq hc (g := f.coeff))
+theorem supportGeneral {A : Type u} {M : Type v} {S : Type w}
+    [Semiring S] [IsDomain S] [AddCommMonoid M] [Module S M]
+    [Module.IsTorsionFree S M] {c : S} (hc : c ≠ 0) (f : A →₀ M) :
+    (c • f).support = f.support := Finsupp.support_smul_eq hc
+#print axioms modern
+#print axioms supportGeneral
+end IndexCMulMathlib147

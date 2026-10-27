@@ -1,0 +1,13 @@
+namespace IndexCMulBridge147
+open MvPolynomial Roth
+variable {σ : Type*} [Fintype σ]
+theorem replacement {c : ℝ} (hc : c ≠ 0) (P : MvPolynomial σ ℝ)
+    (α : σ → ℝ) (r : σ → ℕ) : index (C c * P) α r = index P α r := by
+  classical
+  rw [IndexConsumers133.targetBridge, IndexConsumers133.targetBridge,
+    map_mul, taylor_C, ← smul_eq_C_mul]
+  exact congrArg (WithTop.untopD 0)
+    (congrArg (fun s : Finset (σ →₀ ℕ) ↦ s.inf (fun d ↦ (weight r d : WithTop ℝ)))
+      (Finsupp.support_smul_eq hc (g := (taylor α P).coeff)))
+#print axioms replacement
+end IndexCMulBridge147

@@ -1,0 +1,14 @@
+namespace IndexCMul147
+open MvPolynomial Roth
+variable {σ : Type*} [Fintype σ]
+theorem replacement {c : ℝ} (hc : c ≠ 0) (P : MvPolynomial σ ℝ)
+    (α : σ → ℝ) (r : σ → ℕ) : index (C c * P) α r = index P α r := by
+  rw [index, index, map_mul, taylor_C, ← smul_eq_C_mul, support_smul_eq hc]
+theorem zero (c : ℝ) (α : σ → ℝ) (r : σ → ℕ) :
+    index (C c * (0 : MvPolynomial σ ℝ)) α r = index 0 α r := by simp
+example : index (C (0 : ℝ) * (X () : MvPolynomial Unit ℝ)) (fun _ ↦ 0) (fun _ ↦ 1) ≠
+    index (X () : MvPolynomial Unit ℝ) (fun _ ↦ 0) (fun _ ↦ 1) := by
+  simp [index, weight]
+#print axioms replacement
+#print axioms zero
+end IndexCMul147

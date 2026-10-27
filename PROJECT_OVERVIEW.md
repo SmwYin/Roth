@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 146/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 147/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 146; remaining: 147.
-- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 19 YES-but-generalise-first, 30 NO-mathlib-has-it, 44 BORDERLINE-needs-human, 26 SKIP.
+- Completed applicable assessments: 147; remaining: 146.
+- Verdicts: 15 NO-composable-from-mathlib, 13 YES-add-as-is, 19 YES-but-generalise-first, 30 NO-mathlib-has-it, 44 BORDERLINE-needs-human, 26 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -1615,6 +1615,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: 0 explicit statement/body uses, 0 direct kernel consumers among exact canonical293; Theta sign bypasses via broader index_C_mul.
 - Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/Roth.index_neg.md).
 
+### Completed: `Roth.index_C_mul`
+
+- Type: `Roth.index_C_mul.{u_1} {σ : Type u_1} [Fintype σ] {c : ℝ} (hc : c ≠ 0) (P : MvPolynomial σ ℝ) (α : σ → ℝ) (r : σ → ℕ) : Roth.index (MvPolynomial.C c * P) α r = Roth.index P α r`
+- What: Nonzero constant multiplication preserves the weighted Taylor index, including zero polynomials and zero weights.
+- How: Taylor multiplication and constant compatibility reduce to support_smul_eq.
+- Hypotheses: Fintype fixed by parent; c≠0 essential uniformly by P=X guard; P, α and r arbitrary.
+- Project dependencies: Roth.index, Roth.weight, MvPolynomial.taylor, MvPolynomial.taylor_C
+- Caller summary: 1 explicit body use at Theta405 in sum_max_sub_le_index_det; same sole direct consumer among exact canonical293; full caller replay passes.
+- Verdict: NO-composable-from-mathlib; [complete report](.mathlib-quality/overview/mathlibable/Roth.index_C_mul.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -1933,6 +1943,8 @@ Completed `Roth.index_prod`: Existing MvPowerSeries.weightedOrder_prod independe
 
 Completed `Roth.index_neg`: Existing AddMonoidAlgebra.supDegree_neg on OrderDual gives exact infDegree negation law. Independent isolated Ring/semilatticeinf/top and projected proof compiled.
 
+Completed `Roth.index_C_mul`: Reaimed infDegree scalar law is core congrArg applied to existing Finsupp.support_smul_eq; independently compiled explicit existing-call term and canonical133 bridge transport.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -2226,6 +2238,8 @@ Completed `Roth.index_mul`: The natural-weight algebraic core is exactly the exi
 Completed `Roth.index_prod`: Natural-series finite-product additivity is already mathlib. Old real default-zero form needs genuine normalization, finite projection and casting. Parent local binary law and earlier new bridge proofs are not existing mathlib calls.
 
 Completed `Roth.index_neg`: Degree support-negation law; weightedOrder_neg/order_neg are related alternative APIs.
+
+Completed `Roth.index_C_mul`: Scalar support invariance; related weightedOrder inequality/multiplication and negation API.
 
 ## Part 5: Generalization opportunities
 
@@ -2524,6 +2538,8 @@ Completed `Roth.index_prod`: Verified deletion of hr while preserving the exact 
 
 Completed `Roth.index_neg`: Verified expanded representation arbitrary Ring coefficients, exponent type and degree map into semilatticeinf/top. No claim Fintype can drop from unchanged parent signature.
 
+Completed `Roth.index_C_mul`: Verified arbitrary exponent/degree semilatticeinf/top and coefficient semiring acted on by scalar domain with torsion-free module. This library interface is not logical minimum; zero-preserving injective coefficient maps have existing support_mapRange_of_injective; unit/regular scalar extension not claimed compiled.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -2818,6 +2834,8 @@ Completed `Roth.index_mul`: Potential extremal weighted-homogeneous component mu
 Completed `Roth.index_prod`: Potential polynomial infDegree finite-product equality for real additive weights, likely grouped with binary equality and extremal weighted homogeneous component multiplication. No proof of absence claimed.
 
 Completed `Roth.index_neg`: No essential gap; infDegree_neg name absent in loaded pin but exact law exists on OrderDual.
+
+Completed `Roth.index_C_mul`: No essential mathematical gap. Named degree_smul convenience not identified; explicit congruence composition sufficient.
 
 ## Part 7: Junk / removable
 
@@ -3116,6 +3134,8 @@ Completed `Roth.index_prod`: Not junk: module main result and one determinant ca
 
 Completed `Roth.index_neg`: Currently unused theorem without simp attribute; harmless local compatibility helper, not evidence of external deadness.
 
+Completed `Roth.index_C_mul`: Used compatibility adapter; not dead code. No proof holes or infrastructure changes.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -3266,6 +3286,7 @@ Completed `Roth.index_neg`: Currently unused theorem without simp attribute; har
 | 144 | `Roth.index_mul` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.index_mul.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.index_mul/root-acceptance.json) |
 | 145 | `Roth.index_prod` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.index_prod.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.index_prod/root-acceptance.json) |
 | 146 | `Roth.index_neg` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.index_neg.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.index_neg/root-acceptance.json) |
+| 147 | `Roth.index_C_mul` | NO-composable-from-mathlib | [Report](.mathlib-quality/overview/mathlibable/Roth.index_C_mul.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.index_C_mul/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -3557,12 +3578,14 @@ Completed `Roth.index_prod` action: verdict: BORDERLINE-needs-human; questions: 
 
 Completed `Roth.index_neg` action: NO-mathlib-has-it via parent re-aim; do not upstream this specialization. Retain local adapter in Roth/Index.lean if parent retained; no explicit callers to refactor.
 
+Completed `Roth.index_C_mul` action: NO-composable-from-mathlib on generic parent reaim. Do not upstream concrete specialization. At sole Theta405 caller, inline verified original-form support proof if removing wrapper; retain map_intCast and Taylor/parent bridge normalization. Alternative local home Roth/Index.lean during parent migration.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.index_C_mul` next. Supporting identities receive their own applicable checks.
+   `Roth.index_mul_left_weights` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 
