@@ -1,0 +1,185 @@
+{
+  "declaration": "Roth.sum_inv_lt",
+  "accepted": [
+    {
+      "label": "original",
+      "source": "sum-inv-lt-original-executed.lean.txt",
+      "source_sha256": "1a4dd97b0da3d3aa72e9f23d759d2ed3bdbc7ec05a229f11409e458af31ed143",
+      "receipt": "sum-inv-lt-original-receipt.json",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "execution_kind": "persistent-disk",
+      "native_region_start_line": 10991,
+      "expected_axiom_declarations": [
+        "Roth.sum_inv_lt"
+      ]
+    },
+    {
+      "label": "audit",
+      "source": "sum-inv-lt-audit-executed.lean.txt",
+      "source_sha256": "31473cabd24551a2ccdb9d46735f30aa83983852ee71167ac6b5e0798014c7cf",
+      "receipt": "sum-inv-lt-audit-receipt.json",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "execution_kind": "persistent-disk",
+      "native_region_start_line": 10995,
+      "expected_axiom_declarations": []
+    },
+    {
+      "label": "real-generalization",
+      "source": "sum-inv-lt-real-executed.lean.txt",
+      "source_sha256": "2b54da54b6a06570f2a7c5848a8b4f6feb12416b0b0e6b6df2d3dcfb09ffdeb8",
+      "receipt": "sum-inv-lt-real-receipt.json",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "execution_kind": "persistent-disk",
+      "native_region_start_line": 11314,
+      "expected_axiom_declarations": [
+        "Roth.SumInvAssessment.realWeak"
+      ]
+    },
+    {
+      "label": "actual-caller",
+      "source": "sum-inv-lt-consumer-executed.lean.txt",
+      "source_sha256": "262e1383cadffe099c8bbf70e2eab9a7d4921e5b782422383efb856af0d7a4d2",
+      "receipt": "sum-inv-lt-consumer-receipt.json",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "execution_kind": "persistent-disk",
+      "native_region_start_line": 11349,
+      "expected_axiom_declarations": [
+        "Roth.SumInvCaller.actualCaller"
+      ]
+    },
+    {
+      "label": "helpers",
+      "source": "sum-inv-lt-helpers-executed.lean.txt",
+      "source_sha256": "1f6bc3f2594754f4186b10889d46062e03f8572f8a2e24fb0b5f3d29988472fe",
+      "receipt": "sum-inv-lt-helpers-receipt.json",
+      "original_execution_request": {
+        "code": "import Mathlib.Analysis.Real.Sqrt\nimport Mathlib.Tactic\n#check_failure Roth.sum_inv_lt\nnamespace SumInvHelpers\nopen Finset\ntheorem inv_add_inv_le {lam x : \u211d} (hlam : 1 < lam) (hx0 : 0 \u2264 x) (hx2 : x \u2264 2) :\n    (lam - 1 + x)\u207b\u00b9 + (lam - 1 + (2 - x))\u207b\u00b9 \u2264 2 * lam / (lam ^ 2 - 1) := by\n  have ha : 0 < lam - 1 + x := by linarith\n  have hb : 0 < lam - 1 + (2 - x) := by linarith\n  rw [inv_add_inv ha.ne' hb.ne', div_le_div_iff\u2080 (mul_pos ha hb) (by nlinarith)]\n  nlinarith [mul_nonneg hx0 (sub_nonneg.2 hx2)]\n\ntheorem sum_inv_le {r : \u2115} (hr : 1 \u2264 r) {lam : \u211d} (hlam : 1 < lam) :\n    \u2211 j \u2208 range (r + 1), (lam - 1 + 2 * (j : \u211d) / r)\u207b\u00b9 \u2264 (r + 1) * (lam / (lam ^ 2 - 1)) := by\n  have hr' : (0 : \u211d) < r := by exact_mod_cast hr\n  have h := Finset.sum_le_sum fun j (hj : j \u2208 range (r + 1)) \u21a6 by\n    have hjr : j \u2264 r := Nat.lt_succ_iff.1 (mem_range.1 hj)\n    have hx2 : 2 * (j : \u211d) / r \u2264 2 := by\n      rw [div_le_iff\u2080 hr']\n      gcongr\n    simpa only [show 2 - 2 * (j : \u211d) / r = 2 * ((r + 1 - 1 - j : \u2115) : \u211d) / r by\n      rw [Nat.add_sub_cancel, Nat.cast_sub hjr]\n      field_simp] using inv_add_inv_le hlam (by positivity) hx2\n  rw [Finset.sum_add_distrib, Finset.sum_range_reflect (fun j : \u2115 \u21a6 (lam - 1 + 2 * (j : \u211d) / r)\u207b\u00b9),\n    Finset.sum_const, card_range, nsmul_eq_mul, mul_div_assoc] at h\n  push_cast at h\n  linarith\n\nend SumInvHelpers\n#print axioms SumInvHelpers.inv_add_inv_le\n#print axioms SumInvHelpers.sum_inv_le\n"
+      },
+      "execution_kind": "run-code",
+      "native_region_start_line": 1,
+      "expected_axiom_declarations": [
+        "SumInvHelpers.inv_add_inv_le",
+        "SumInvHelpers.sum_inv_le"
+      ]
+    },
+    {
+      "label": "guards",
+      "source": "sum-inv-lt-guards-executed.lean.txt",
+      "source_sha256": "9e86746849fb3514f059cb40e49666556cf812e9d641cf0bc993ccabcebdd8ac",
+      "receipt": "sum-inv-lt-guards-receipt.json",
+      "original_execution_request": {
+        "code": "import Mathlib.Analysis.Real.Sqrt\nimport Mathlib.Tactic\n#check_failure Roth.sum_inv_lt\nnamespace SumInvGuards\nopen Finset\ntheorem r_zero_false : \u00ac (\u2211 j \u2208 range (0 + 1), ((3 : \u211d) - 1 + 2 * (j : \u211d) / 0)\u207b\u00b9 <\n    (3 : \u211d)\u207b\u00b9 * (\u221a((2 : \u211d) - 1))\u207b\u00b9 * \u221a(2 : \u211d) * (0 + 1)) := by\n  norm_num\n  nlinarith [Real.sq_sqrt (by norm_num : (0 : \u211d) \u2264 2), Real.sqrt_nonneg (2 : \u211d)]\ntheorem m_one_false : \u00ac (\u2211 j \u2208 range (1 + 1), ((3 : \u211d) - 1 + 2 * (j : \u211d) / 1)\u207b\u00b9 <\n    (3 : \u211d)\u207b\u00b9 * (\u221a((1 : \u211d) - 1))\u207b\u00b9 * \u221a(1 : \u211d) * (1 + 1)) := by norm_num [sum_range_succ]\ntheorem no_lambda_bound : \u00ac (\u2211 j \u2208 range (1 + 1), ((3 / 2 : \u211d) - 1 +\n    2 * (j : \u211d) / 1)\u207b\u00b9 < (3 / 2 : \u211d)\u207b\u00b9 * (\u221a((2 : \u211d) - 1))\u207b\u00b9 * \u221a(2 : \u211d) * (1 + 1)) := by\n  norm_num [sum_range_succ]\n  nlinarith [Real.sq_sqrt (by norm_num : (0 : \u211d) \u2264 2), Real.sqrt_nonneg (2 : \u211d)]\nend SumInvGuards\n#print axioms SumInvGuards.r_zero_false\n#print axioms SumInvGuards.m_one_false\n#print axioms SumInvGuards.no_lambda_bound\n"
+      },
+      "execution_kind": "run-code",
+      "native_region_start_line": 1,
+      "expected_axiom_declarations": [
+        "SumInvGuards.r_zero_false",
+        "SumInvGuards.m_one_false",
+        "SumInvGuards.no_lambda_bound"
+      ]
+    },
+    {
+      "label": "raw-generalization",
+      "source": "sum-inv-lt-raw-generalization-clean-executed.lean.txt",
+      "source_sha256": "846f175db394daefa38739d00a1c459803889c9cde6f74fa399eb3bcc08ceaf4",
+      "receipt": "sum-inv-lt-raw-generalization-clean-receipt.json",
+      "original_execution_request": {
+        "code": "import Mathlib.Analysis.Real.Sqrt\nimport Mathlib.Tactic\n#check_failure Roth.sum_inv_lt\nnamespace SumInvHelpers\nopen Finset\ntheorem inv_add_inv_le {lam x : \u211d} (hlam : 1 < lam) (hx0 : 0 \u2264 x) (hx2 : x \u2264 2) :\n    (lam - 1 + x)\u207b\u00b9 + (lam - 1 + (2 - x))\u207b\u00b9 \u2264 2 * lam / (lam ^ 2 - 1) := by\n  have ha : 0 < lam - 1 + x := by linarith\n  have hb : 0 < lam - 1 + (2 - x) := by linarith\n  rw [inv_add_inv ha.ne' hb.ne', div_le_div_iff\u2080 (mul_pos ha hb) (by nlinarith)]\n  nlinarith [mul_nonneg hx0 (sub_nonneg.2 hx2)]\n\ntheorem sum_inv_le {r : \u2115} (hr : 1 \u2264 r) {lam : \u211d} (hlam : 1 < lam) :\n    \u2211 j \u2208 range (r + 1), (lam - 1 + 2 * (j : \u211d) / r)\u207b\u00b9 \u2264 (r + 1) * (lam / (lam ^ 2 - 1)) := by\n  have hr' : (0 : \u211d) < r := by exact_mod_cast hr\n  have h := Finset.sum_le_sum fun j (hj : j \u2208 range (r + 1)) \u21a6 by\n    have hjr : j \u2264 r := Nat.lt_succ_iff.1 (mem_range.1 hj)\n    have hx2 : 2 * (j : \u211d) / r \u2264 2 := by\n      rw [div_le_iff\u2080 hr']\n      gcongr\n    simpa only [show 2 - 2 * (j : \u211d) / r = 2 * ((r + 1 - 1 - j : \u2115) : \u211d) / r by\n      rw [Nat.add_sub_cancel, Nat.cast_sub hjr]\n      field_simp] using inv_add_inv_le hlam (by positivity) hx2\n  rw [Finset.sum_add_distrib, Finset.sum_range_reflect (fun j : \u2115 \u21a6 (lam - 1 + 2 * (j : \u211d) / r)\u207b\u00b9),\n    Finset.sum_const, card_range, nsmul_eq_mul, mul_div_assoc] at h\n  push_cast at h\n  linarith\n\n\ntheorem sqrtWeak {m lam : \u211d} (hm : 1 \u2264 m) (hlam : 2 * \u221am \u2264 lam) :\n    \u221a(1 - 1 / m) < 1 - lam\u207b\u00b9 ^ 2 := by\n  have hsq : 4 * m \u2264 lam ^ 2 := by\n    nlinarith [Real.sqrt_nonneg m, Real.sq_sqrt (by linarith : 0 \u2264 m)]\n  have hu : lam\u207b\u00b9 ^ 2 \u2264 1 / m / 4 := by\n    rw [inv_pow, div_div, \u2190 one_div]\n    exact one_div_le_one_div_of_le (by positivity) (by linarith)\n  rw [Real.sqrt_lt' (by nlinarith [one_div_le_one_div_of_le zero_lt_one hm])]\n  nlinarith [sq_nonneg (lam\u207b\u00b9 ^ 2), one_div_pos.mpr (by linarith : 0 < m)]\ntheorem realWeak {r : \u2115} {m : \u211d} (hr : 1 \u2264 r) (hm : 1 < m) {lam : \u211d}\n    (hlam : 2 * \u221am \u2264 lam) :\n    \u2211 j \u2208 range (r + 1), (lam - 1 + 2 * (j : \u211d) / r)\u207b\u00b9 <\n      lam\u207b\u00b9 * (\u221a((m : \u211d) - 1))\u207b\u00b9 * \u221a(m : \u211d) * (r + 1) := by\n  have hlam2 : 2 < lam := by\n    have h := Real.lt_sqrt_of_sq_lt (by linarith : (1 : \u211d) ^ 2 < m)\n    linarith\n  have hpos1 : 0 < \u221a(1 - 1 / (m : \u211d)) := by\n    rw [Real.sqrt_pos, sub_pos, div_lt_one (by linarith)]\n    linarith\n  have hsqrt : \u221a(1 - 1 / (m : \u211d)) = \u221a((m : \u211d) - 1) / \u221a(m : \u211d) := by\n    rw [\u2190 Real.sqrt_div' _ (by linarith : 0 \u2264 m)]\n    congr 1\n    field_simp\n  have hlam' : lam / (lam ^ 2 - 1) = lam\u207b\u00b9 / (1 - lam\u207b\u00b9 ^ 2) := by\n    have : lam \u2260 0 := by linarith\n    field_simp\n  calc _ \u2264 (r + 1) * (lam / (lam ^ 2 - 1)) := sum_inv_le hr (by linarith : 1 < lam)\n    _ < (r + 1) * (lam\u207b\u00b9 / \u221a(1 - 1 / (m : \u211d))) := by\n      rw [hlam']\n      gcongr\n      exact sqrtWeak (by linarith : (1 : \u211d) \u2264 m) hlam\n    _ = _ := by\n      rw [hsqrt]\n      field_simp\n\nend SumInvHelpers\n#print axioms SumInvHelpers.inv_add_inv_le\n#print axioms SumInvHelpers.sum_inv_le\n#print axioms SumInvHelpers.sqrtWeak\n#print axioms SumInvHelpers.realWeak\n"
+      },
+      "execution_kind": "run-code",
+      "native_region_start_line": 1,
+      "expected_axiom_declarations": [
+        "SumInvHelpers.inv_add_inv_le",
+        "SumInvHelpers.sum_inv_le",
+        "SumInvHelpers.sqrtWeak",
+        "SumInvHelpers.realWeak"
+      ]
+    },
+    {
+      "label": "abstract-convex",
+      "source": "sum-inv-lt-abstract-convex-clean-executed.lean.txt",
+      "source_sha256": "9105a1f3e2bf6cc7475413dab5f4f9c2c6f5321885407373c9fcd7585453672b",
+      "receipt": "sum-inv-lt-abstract-convex-clean-receipt.json",
+      "original_execution_request": {
+        "code": "import Mathlib.Analysis.Convex.Mul\nimport Mathlib.Analysis.Real.Sqrt\nimport Mathlib.Tactic\n#check_failure Roth.sum_inv_lt\n#check @convexOn_zpow\n#check @ConvexOn.le_on_segment'\n#check @Finset.sum_range_reflect\n#check @Finset.sum_involution\n#check @Finset.sum_le_sum\nnamespace SumInvAbstract\nopen Finset\ntheorem inverseConvex : ConvexOn \u211d (Set.Ioi 0) (fun x : \u211d \u21a6 x\u207b\u00b9) := by\n  simpa using (convexOn_zpow (\ud835\udd5c := \u211d) (-1))\ntheorem convexPair {s : Set \u211d} {f : \u211d \u2192 \u211d} (hf : ConvexOn \u211d s f)\n    {a b t : \u211d} (ha : a \u2208 s) (hb : b \u2208 s) (ht0 : 0 \u2264 t) (ht1 : t \u2264 1) :\n    f ((1 - t) * a + t * b) + f (t * a + (1 - t) * b) \u2264 f a + f b := by\n  have h1 := hf.2 ha hb (sub_nonneg.mpr ht1) ht0 (by ring : 1 - t + t = 1)\n  have h2 := hf.2 ha hb ht0 (sub_nonneg.mpr ht1) (by ring : t + (1 - t) = 1)\n  simp only [smul_eq_mul] at h1 h2\n  nlinarith\ntheorem reflectedSum {r : \u2115} {f : \u2115 \u2192 \u211d} {C : \u211d}\n    (h : \u2200 j \u2208 range (r + 1), f j + f (r - j) \u2264 C) :\n    2 * \u2211 j \u2208 range (r + 1), f j \u2264 (r + 1) * C := by\n  have hh := Finset.sum_le_sum h\n  simp only [Finset.sum_add_distrib, Finset.sum_const, card_range, nsmul_eq_mul] at hh\n  have he : (\u2211 j \u2208 range (r + 1), f (r - j)) = \u2211 j \u2208 range (r + 1), f j := by\n    simpa only [Nat.add_sub_cancel] using (Finset.sum_range_reflect f (r + 1))\n  rw [he] at hh\n  push_cast at hh\n  exact (by linarith : 2 * \u2211 j \u2208 range (r + 1), f j \u2264 (r + 1) * C)\nend SumInvAbstract\n#print axioms SumInvAbstract.inverseConvex\n#print axioms SumInvAbstract.convexPair\n#print axioms SumInvAbstract.reflectedSum\n"
+      },
+      "execution_kind": "run-code",
+      "native_region_start_line": 1,
+      "expected_axiom_declarations": [
+        "SumInvAbstract.inverseConvex",
+        "SumInvAbstract.convexPair",
+        "SumInvAbstract.reflectedSum"
+      ]
+    }
+  ],
+  "rejected": [
+    {
+      "label": "direct-search",
+      "source": "sum-inv-lt-direct-search-executed.lean.txt",
+      "source_sha256": "c78cb49e3bfd1ce5d7b3986c23d7fd8be25c47a48e213583be80e97ae057dfc4",
+      "receipt": "sum-inv-lt-direct-search-receipt.json",
+      "original_execution_request": {
+        "code": "import Mathlib.Analysis.Real.Sqrt\nimport Mathlib.Tactic\n#check_failure Roth.sum_inv_lt\n#check_failure SumInvHelpers.sum_inv_le\n#check_failure Roth.SumInvAssessment.realWeak\n#check_failure SqrtAssessment.realWeak\nopen Finset\nexample {r m : \u2115} (hr : 1 \u2264 r) (hm : 2 \u2264 m) {lam : \u211d} (hlam : 2 * \u221a(m : \u211d) < lam) :\n    \u2211 j \u2208 range (r + 1), (lam - 1 + 2 * (j : \u211d) / r)\u207b\u00b9 <\n      lam\u207b\u00b9 * (\u221a((m : \u211d) - 1))\u207b\u00b9 * \u221a(m : \u211d) * (r + 1) := by\n  exact?\n\nexample {r : \u2115} (hr : 1 \u2264 r) {lam : \u211d} (hlam : 1 < lam) :\n    \u2211 j \u2208 range (r + 1), (lam - 1 + 2 * (j : \u211d) / r)\u207b\u00b9 \u2264\n      (r + 1) * (lam / (lam ^ 2 - 1)) := by\n  exact?\n\nexample {r : \u2115} {f : \u2115 \u2192 \u211d} {C : \u211d}\n    (h : \u2200 j \u2208 range (r + 1), f j + f (r - j) \u2264 C) :\n    2 * \u2211 j \u2208 range (r + 1), f j \u2264 (r + 1) * C := by\n  exact?\n"
+      },
+      "execution_kind": "run-code",
+      "native_region_start_line": 1,
+      "expected_axiom_declarations": [],
+      "reason": "Three limited exact? attempts on original, rational-grid and abstract reflected-pair shapes failed; not proof of global absence."
+    },
+    {
+      "label": "initial-raw-generalization",
+      "source": "sum-inv-lt-raw-generalization-executed.lean.txt",
+      "source_sha256": "b3e1d23814e9308747b42aa66a1dd646e3222554374aea86e53469e64a1ac23f",
+      "receipt": "sum-inv-lt-raw-generalization-receipt.json",
+      "original_execution_request": {
+        "code": "import Mathlib.Analysis.Real.Sqrt\nimport Mathlib.Tactic\n#check_failure Roth.sum_inv_lt\nnamespace SumInvHelpers\nopen Finset\ntheorem inv_add_inv_le {lam x : \u211d} (hlam : 1 < lam) (hx0 : 0 \u2264 x) (hx2 : x \u2264 2) :\n    (lam - 1 + x)\u207b\u00b9 + (lam - 1 + (2 - x))\u207b\u00b9 \u2264 2 * lam / (lam ^ 2 - 1) := by\n  have ha : 0 < lam - 1 + x := by linarith\n  have hb : 0 < lam - 1 + (2 - x) := by linarith\n  rw [inv_add_inv ha.ne' hb.ne', div_le_div_iff\u2080 (mul_pos ha hb) (by nlinarith)]\n  nlinarith [mul_nonneg hx0 (sub_nonneg.2 hx2)]\n\ntheorem sum_inv_le {r : \u2115} (hr : 1 \u2264 r) {lam : \u211d} (hlam : 1 < lam) :\n    \u2211 j \u2208 range (r + 1), (lam - 1 + 2 * (j : \u211d) / r)\u207b\u00b9 \u2264 (r + 1) * (lam / (lam ^ 2 - 1)) := by\n  have hr' : (0 : \u211d) < r := by exact_mod_cast hr\n  have h := Finset.sum_le_sum fun j (hj : j \u2208 range (r + 1)) \u21a6 by\n    have hjr : j \u2264 r := Nat.lt_succ_iff.1 (mem_range.1 hj)\n    have hx2 : 2 * (j : \u211d) / r \u2264 2 := by\n      rw [div_le_iff\u2080 hr']\n      gcongr\n    simpa only [show 2 - 2 * (j : \u211d) / r = 2 * ((r + 1 - 1 - j : \u2115) : \u211d) / r by\n      rw [Nat.add_sub_cancel, Nat.cast_sub hjr]\n      field_simp] using inv_add_inv_le hlam (by positivity) hx2\n  rw [Finset.sum_add_distrib, Finset.sum_range_reflect (fun j : \u2115 \u21a6 (lam - 1 + 2 * (j : \u211d) / r)\u207b\u00b9),\n    Finset.sum_const, card_range, nsmul_eq_mul, mul_div_assoc] at h\n  push_cast at h\n  linarith\n\n\ntheorem sqrtWeak {m lam : \u211d} (hm : 1 \u2264 m) (hlam : 2 * \u221am \u2264 lam) :\n    \u221a(1 - 1 / m) < 1 - lam\u207b\u00b9 ^ 2 := by\n  have hsq : 4 * m \u2264 lam ^ 2 := by\n    nlinarith [Real.sqrt_nonneg m, Real.sq_sqrt (by linarith : 0 \u2264 m)]\n  have hu : lam\u207b\u00b9 ^ 2 \u2264 1 / m / 4 := by\n    rw [inv_pow, div_div, \u2190 one_div]\n    exact one_div_le_one_div_of_le (by positivity) (by linarith)\n  rw [Real.sqrt_lt' (by nlinarith [one_div_le_one_div_of_le zero_lt_one hm])]\n  nlinarith [sq_nonneg (lam\u207b\u00b9 ^ 2), one_div_pos.mpr (by linarith : 0 < m)]\ntheorem realWeak {r : \u2115} {m : \u211d} (hr : 1 \u2264 r) (hm : 1 < m) {lam : \u211d}\n    (hlam : 2 * \u221am \u2264 lam) :\n    \u2211 j \u2208 range (r + 1), (lam - 1 + 2 * (j : \u211d) / r)\u207b\u00b9 <\n      lam\u207b\u00b9 * (\u221a((m : \u211d) - 1))\u207b\u00b9 * \u221a(m : \u211d) * (r + 1) := by\n  have hlam2 : 2 < lam := by\n    have h := Real.lt_sqrt_of_sq_lt (by linarith : (1 : \u211d) ^ 2 < m)\n    linarith\n  have hpos1 : 0 < \u221a(1 - 1 / (m : \u211d)) := by\n    rw [Real.sqrt_pos, sub_pos, div_lt_one (by linarith)]\n    linarith\n  have hsqrt : \u221a(1 - 1 / (m : \u211d)) = \u221a((m : \u211d) - 1) / \u221a(m : \u211d) := by\n    rw [\u2190 Real.sqrt_div' _ (by linarith : 0 \u2264 m)]\n    congr 1\n    field_simp\n  have hlam' : lam / (lam ^ 2 - 1) = lam\u207b\u00b9 / (1 - lam\u207b\u00b9 ^ 2) := by\n    have : lam \u2260 0 := by linarith\n    field_simp\n  calc _ \u2264 (r + 1) * (lam / (lam ^ 2 - 1)) := sum_inv_le hr hlam2\n    _ < (r + 1) * (lam\u207b\u00b9 / \u221a(1 - 1 / (m : \u211d))) := by\n      rw [hlam']\n      gcongr\n      exact sqrtWeak (by linarith : (1 : \u211d) \u2264 m) hlam\n    _ = _ := by\n      rw [hsqrt]\n      field_simp\n\nend SumInvHelpers\n#print axioms SumInvHelpers.inv_add_inv_le\n#print axioms SumInvHelpers.sum_inv_le\n#print axioms SumInvHelpers.sqrtWeak\n#print axioms SumInvHelpers.realWeak\n"
+      },
+      "execution_kind": "run-code",
+      "native_region_start_line": 1,
+      "expected_axiom_declarations": [],
+      "reason": "New helper requires 1<lam but initial argument was hlam2:2<lam. Failed theorem contains recovered sorryAx and is rejected. Explicit linarith implication is used in accepted clean run."
+    },
+    {
+      "label": "initial-abstract-convex",
+      "source": "sum-inv-lt-abstract-convex-executed.lean.txt",
+      "source_sha256": "ad438a67f632fcd35bfc496113a5abb10ecaf3780b74eaf5fbabf1b80116962d",
+      "receipt": "sum-inv-lt-abstract-convex-receipt.json",
+      "original_execution_request": {
+        "code": "import Mathlib.Analysis.Convex.Mul\nimport Mathlib.Analysis.Real.Sqrt\nimport Mathlib.Tactic\n#check_failure Roth.sum_inv_lt\n#check @convexOn_zpow\n#check @ConvexOn.le_on_segment'\n#check @Finset.sum_range_reflect\n#check @Finset.sum_involution\n#check @Finset.sum_le_sum\nnamespace SumInvAbstract\nopen Finset\ntheorem inverseConvex : ConvexOn \u211d (Set.Ioi 0) (fun x : \u211d \u21a6 x\u207b\u00b9) := by\n  simpa using (convexOn_zpow (\ud835\udd5c := \u211d) (-1))\ntheorem convexPair {s : Set \u211d} {f : \u211d \u2192 \u211d} (hf : ConvexOn \u211d s f)\n    {a b t : \u211d} (ha : a \u2208 s) (hb : b \u2208 s) (ht0 : 0 \u2264 t) (ht1 : t \u2264 1) :\n    f ((1 - t) * a + t * b) + f (t * a + (1 - t) * b) \u2264 f a + f b := by\n  have h1 := hf.2 ha hb (sub_nonneg.mpr ht1) ht0 (by ring : 1 - t + t = 1)\n  have h2 := hf.2 ha hb ht0 (sub_nonneg.mpr ht1) (by ring : t + (1 - t) = 1)\n  simp only [smul_eq_mul] at h1 h2\n  nlinarith\ntheorem reflectedSum {r : \u2115} {f : \u2115 \u2192 \u211d} {C : \u211d}\n    (h : \u2200 j \u2208 range (r + 1), f j + f (r - j) \u2264 C) :\n    2 * \u2211 j \u2208 range (r + 1), f j \u2264 (r + 1) * C := by\n  have hh := Finset.sum_le_sum h\n  simp only [Finset.sum_add_distrib, Finset.sum_const, card_range, nsmul_eq_mul] at hh\n  have he : (\u2211 j \u2208 range (r + 1), f (r - j)) = \u2211 j \u2208 range (r + 1), f j := by\n    simpa only [Nat.add_sub_cancel] using (Finset.sum_range_reflect f (r + 1))\n  rw [he] at hh\n  exact (by linarith : 2 * \u2211 j \u2208 range (r + 1), f j \u2264 (r + 1) * C)\nend SumInvAbstract\n#print axioms SumInvAbstract.inverseConvex\n#print axioms SumInvAbstract.convexPair\n#print axioms SumInvAbstract.reflectedSum\n"
+      },
+      "execution_kind": "run-code",
+      "native_region_start_line": 1,
+      "expected_axiom_declarations": [],
+      "reason": "ReflectedSum initial arithmetic goal retained Nat.cast(r+1) rather than cast(r)+1. Failed theorem contains recovered sorryAx and is rejected. Accepted rerun adds push_cast at hh."
+    }
+  ],
+  "unresolved": [],
+  "production_unchanged": true,
+  "standard_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "canonical_direct_consumers": [
+    "_private.Roth.Lattice.0.Roth.card_filter_weight_le_succ_aux"
+  ],
+  "notes": [
+    "Full type/check/standard axioms/kernel value verified; original print body internally elides53225 characters at MCP output limit. Complete production source preserved.",
+    "Required fresh assertions scoped to native_region_start_line; full native error/warning/axiom checks retained.",
+    "Fully isolated accepted raw theorem guards missing Roth target and independently reproves all helpers; original Roth not imported.",
+    "Abstract inverse convexity uses existing convexOn_zpow; convexPair/reflectedSum are NEW proof content, not existing replacements.",
+    "Sole actual consumer fully replayed with only target-call replacement and actual private fiber access elaborator."
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "request": {
+    "code": "import Mathlib.Analysis.Real.Sqrt\nimport Mathlib.Tactic\n#check_failure Roth.sum_inv_lt\nnamespace SumInvHelpers\nopen Finset\ntheorem inv_add_inv_le {lam x : ℝ} (hlam : 1 < lam) (hx0 : 0 ≤ x) (hx2 : x ≤ 2) :\n    (lam - 1 + x)⁻¹ + (lam - 1 + (2 - x))⁻¹ ≤ 2 * lam / (lam ^ 2 - 1) := by\n  have ha : 0 < lam - 1 + x := by linarith\n  have hb : 0 < lam - 1 + (2 - x) := by linarith\n  rw [inv_add_inv ha.ne' hb.ne', div_le_div_iff₀ (mul_pos ha hb) (by nlinarith)]\n  nlinarith [mul_nonneg hx0 (sub_nonneg.2 hx2)]\n\ntheorem sum_inv_le {r : ℕ} (hr : 1 ≤ r) {lam : ℝ} (hlam : 1 < lam) :\n    ∑ j ∈ range (r + 1), (lam - 1 + 2 * (j : ℝ) / r)⁻¹ ≤ (r + 1) * (lam / (lam ^ 2 - 1)) := by\n  have hr' : (0 : ℝ) < r := by exact_mod_cast hr\n  have h := Finset.sum_le_sum fun j (hj : j ∈ range (r + 1)) ↦ by\n    have hjr : j ≤ r := Nat.lt_succ_iff.1 (mem_range.1 hj)\n    have hx2 : 2 * (j : ℝ) / r ≤ 2 := by\n      rw [div_le_iff₀ hr']\n      gcongr\n    simpa only [show 2 - 2 * (j : ℝ) / r = 2 * ((r + 1 - 1 - j : ℕ) : ℝ) / r by\n      rw [Nat.add_sub_cancel, Nat.cast_sub hjr]\n      field_simp] using inv_add_inv_le hlam (by positivity) hx2\n  rw [Finset.sum_add_distrib, Finset.sum_range_reflect (fun j : ℕ ↦ (lam - 1 + 2 * (j : ℝ) / r)⁻¹),\n    Finset.sum_const, card_range, nsmul_eq_mul, mul_div_assoc] at h\n  push_cast at h\n  linarith\n\nend SumInvHelpers\n#print axioms SumInvHelpers.inv_add_inv_le\n#print axioms SumInvHelpers.sum_inv_le\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.sum_inv_lt`\",\n      \"line\": 3,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'SumInvHelpers.inv_add_inv_le' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 30,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'SumInvHelpers.sum_inv_le' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 31,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.sum_inv_lt`",
+          "line": 3,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'SumInvHelpers.inv_add_inv_le' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 30,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'SumInvHelpers.sum_inv_le' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 31,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 1798
+}

@@ -1,0 +1,18 @@
+import Mathlib.Analysis.Real.Sqrt
+import Mathlib.Tactic
+#check_failure Roth.sum_inv_lt
+open Finset
+example {r m : ℕ} (hr : 1 ≤ r) (hm : 2 ≤ m) {lam : ℝ} (hlam : 2 * √(m : ℝ) < lam) :
+    ∑ j ∈ range (r + 1), (lam - 1 + 2 * (j : ℝ) / r)⁻¹ <
+      lam⁻¹ * (√((m : ℝ) - 1))⁻¹ * √(m : ℝ) * (r + 1) := by
+  exact?
+
+example {r : ℕ} (hr : 1 ≤ r) {lam : ℝ} (hlam : 1 < lam) :
+    ∑ j ∈ range (r + 1), (lam - 1 + 2 * (j : ℝ) / r)⁻¹ ≤
+      (r + 1) * (lam / (lam ^ 2 - 1)) := by
+  exact?
+
+example {r : ℕ} {f : ℕ → ℝ} {C : ℝ}
+    (h : ∀ j ∈ range (r + 1), f j + f (r - j) ≤ C) :
+    2 * ∑ j ∈ range (r + 1), f j ≤ (r + 1) * C := by
+  exact?

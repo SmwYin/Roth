@@ -1,0 +1,57 @@
+{
+  "request": {
+    "code": "import Mathlib.Analysis.Real.Sqrt\nimport Mathlib.Tactic\n#check_failure Roth.sum_inv_lt\nnamespace SumInvGuards\nopen Finset\ntheorem r_zero_false : ¬ (∑ j ∈ range (0 + 1), ((3 : ℝ) - 1 + 2 * (j : ℝ) / 0)⁻¹ <\n    (3 : ℝ)⁻¹ * (√((2 : ℝ) - 1))⁻¹ * √(2 : ℝ) * (0 + 1)) := by\n  norm_num\n  nlinarith [Real.sq_sqrt (by norm_num : (0 : ℝ) ≤ 2), Real.sqrt_nonneg (2 : ℝ)]\ntheorem m_one_false : ¬ (∑ j ∈ range (1 + 1), ((3 : ℝ) - 1 + 2 * (j : ℝ) / 1)⁻¹ <\n    (3 : ℝ)⁻¹ * (√((1 : ℝ) - 1))⁻¹ * √(1 : ℝ) * (1 + 1)) := by norm_num [sum_range_succ]\ntheorem no_lambda_bound : ¬ (∑ j ∈ range (1 + 1), ((3 / 2 : ℝ) - 1 +\n    2 * (j : ℝ) / 1)⁻¹ < (3 / 2 : ℝ)⁻¹ * (√((2 : ℝ) - 1))⁻¹ * √(2 : ℝ) * (1 + 1)) := by\n  norm_num [sum_range_succ]\n  nlinarith [Real.sq_sqrt (by norm_num : (0 : ℝ) ≤ 2), Real.sqrt_nonneg (2 : ℝ)]\nend SumInvGuards\n#print axioms SumInvGuards.r_zero_false\n#print axioms SumInvGuards.m_one_false\n#print axioms SumInvGuards.no_lambda_bound\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.sum_inv_lt`\",\n      \"line\": 3,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'SumInvGuards.r_zero_false' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 17,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'SumInvGuards.m_one_false' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 18,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'SumInvGuards.no_lambda_bound' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 19,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.sum_inv_lt`",
+          "line": 3,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'SumInvGuards.r_zero_false' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 17,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'SumInvGuards.m_one_false' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 18,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'SumInvGuards.no_lambda_bound' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 19,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 999
+}

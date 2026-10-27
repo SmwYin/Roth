@@ -1,0 +1,34 @@
+import Mathlib.Analysis.Convex.Mul
+import Mathlib.Analysis.Real.Sqrt
+import Mathlib.Tactic
+#check_failure Roth.sum_inv_lt
+#check @convexOn_zpow
+#check @ConvexOn.le_on_segment'
+#check @Finset.sum_range_reflect
+#check @Finset.sum_involution
+#check @Finset.sum_le_sum
+namespace SumInvAbstract
+open Finset
+theorem inverseConvex : ConvexOn ℝ (Set.Ioi 0) (fun x : ℝ ↦ x⁻¹) := by
+  simpa using (convexOn_zpow (𝕜 := ℝ) (-1))
+theorem convexPair {s : Set ℝ} {f : ℝ → ℝ} (hf : ConvexOn ℝ s f)
+    {a b t : ℝ} (ha : a ∈ s) (hb : b ∈ s) (ht0 : 0 ≤ t) (ht1 : t ≤ 1) :
+    f ((1 - t) * a + t * b) + f (t * a + (1 - t) * b) ≤ f a + f b := by
+  have h1 := hf.2 ha hb (sub_nonneg.mpr ht1) ht0 (by ring : 1 - t + t = 1)
+  have h2 := hf.2 ha hb ht0 (sub_nonneg.mpr ht1) (by ring : t + (1 - t) = 1)
+  simp only [smul_eq_mul] at h1 h2
+  nlinarith
+theorem reflectedSum {r : ℕ} {f : ℕ → ℝ} {C : ℝ}
+    (h : ∀ j ∈ range (r + 1), f j + f (r - j) ≤ C) :
+    2 * ∑ j ∈ range (r + 1), f j ≤ (r + 1) * C := by
+  have hh := Finset.sum_le_sum h
+  simp only [Finset.sum_add_distrib, Finset.sum_const, card_range, nsmul_eq_mul] at hh
+  have he : (∑ j ∈ range (r + 1), f (r - j)) = ∑ j ∈ range (r + 1), f j := by
+    simpa only [Nat.add_sub_cancel] using (Finset.sum_range_reflect f (r + 1))
+  rw [he] at hh
+  push_cast at hh
+  exact (by linarith : 2 * ∑ j ∈ range (r + 1), f j ≤ (r + 1) * C)
+end SumInvAbstract
+#print axioms SumInvAbstract.inverseConvex
+#print axioms SumInvAbstract.convexPair
+#print axioms SumInvAbstract.reflectedSum

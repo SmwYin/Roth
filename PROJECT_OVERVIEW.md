@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 122/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 123/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 122; remaining: 171.
-- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 17 YES-but-generalise-first, 21 NO-mathlib-has-it, 39 BORDERLINE-needs-human, 18 SKIP.
+- Completed applicable assessments: 123; remaining: 170.
+- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 17 YES-but-generalise-first, 21 NO-mathlib-has-it, 40 BORDERLINE-needs-human, 18 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -1334,6 +1334,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: 1 explicit source caller declarations, all in Lattice.lean; 1 direct original value consumers. Exact separate lists retained. Entire module proof bodies replay successfully with fresh target name.
 - Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.sum_inv_le.md).
 
+### Completed: `Roth.sum_inv_lt`
+
+- Type: `Roth.sum_inv_lt {r m : ℕ} (hr : 1 ≤ r) (hm : 2 ≤ m) {lam : ℝ} (hlam : 2 * √↑m < lam) : ∑ j ∈ Finset.range (r + 1), (lam - 1 + 2 * ↑j / ↑r)⁻¹ < lam⁻¹ * (√(↑m - 1))⁻¹ * √↑m * (↑r + 1)`
+- What: Strict bound for reciprocal arithmetic-grid sum by (r+1)√m/(λ√(m−1)), for r≥1,m≥2,λ>2√m.
+- How: Pair j with r−j to obtain rational endpoint bound; compare 1−λ⁻² with √(1−1/m), then normalize roots/inverses.
+- Hypotheses: r,m:ℕ, 1≤r, 2≤m, lam:ℝ, 2√m<lam
+- Project dependencies: private Roth.sum_inv_le, Roth.sqrt_one_sub_inv_lt
+- Caller summary: explicit source callers: {'file': 'Roth/Lattice.lean', 'line': 173, 'declaration': 'Roth.card_filter_weight_le_succ_aux', 'visibility': 'private'}; external to file: 0; canonical kernel direct consumers: _private.Roth.Lattice.0.Roth.card_filter_weight_le_succ_aux; scope: Source refs and exact canonical direct value dependencies; not transitive simp/kernel closure.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.sum_inv_lt.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -1604,6 +1614,8 @@ Completed `Roth.inv_add_inv_le`: The two reciprocal denominators are positive un
 
 Completed `Roth.sum_inv_le`: The preceding private complementary-pair bound is summed over the finite grid. Finset.sum_range_reflect identifies the reflected grid sum with the original one, and ordinary finite-sum distribution and arithmetic divide the resulting estimate by two. This upgrades the pointwise pair estimate to the whole reciprocal grid sum, without duplicating the public strict square-root bound.
 
+Completed `Roth.sum_inv_lt`: All five methods on current, convex-endpoint literature and abstract symmetric-pair forms; local index unavailable. Pinned convexOn_zpow, chord and reflection APIs provide partial blocks; no existing ≤3-call replacement established. Three exact? failures not treated as absence proof.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -1849,6 +1861,8 @@ Completed `Roth.sqrt_one_sub_inv_lt`: A specialized Bernoulli/AM-GM consequence,
 Completed `Roth.inv_add_inv_le`: Complementary-pair and whole-grid reciprocal estimates are distinct steps of the lattice proof, not duplicate full constructions.
 
 Completed `Roth.sum_inv_le`: Complementary-pair and whole-grid reciprocal estimates are distinct steps of the lattice proof, not duplicate full constructions.
+
+Completed `Roth.sum_inv_lt`: Reciprocal convexity already follows from convexOn_zpow(-1); sum reindexing exists. Grid rational upper bound and sqrt comparison still need proof.
 
 ## Part 5: Generalization opportunities
 
@@ -2099,6 +2113,8 @@ Completed `Roth.inv_add_inv_le`: No public generality claim under the private pr
 
 Completed `Roth.sum_inv_le`: No public generality claim under the private prefilter; preserve the existing definition and interface.
 
+Completed `Roth.sum_inv_lt`: Verified real m>1 and weak2√m≤lam preserve strict conclusion; both private pair/grid proofs work for1<lam. Independent raw proof and sole caller replay clean.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -2345,6 +2361,8 @@ Completed `Roth.sqrt_one_sub_inv_lt`: No missing generic tangent API; whether to
 Completed `Roth.inv_add_inv_le`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 Completed `Roth.sum_inv_le`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
+
+Completed `Roth.sum_inv_lt`: Candidate generic convex symmetric-average endpoint theorem or positive reciprocal-grid rational bound; exact sqrt corollary may remain downstream.
 
 ## Part 7: Junk / removable
 
@@ -2595,6 +2613,8 @@ Completed `Roth.inv_add_inv_le`: Retain a live private proof interface. No place
 
 Completed `Roth.sum_inv_le`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
 
+Completed `Roth.sum_inv_lt`: Not dead: one private induction caller supports public lattice-count estimate. No duplicate full inline derivation found.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -2721,6 +2741,7 @@ Completed `Roth.sum_inv_le`: Retain a live private proof interface. No placehold
 | 120 | `Roth.sqrt_one_sub_inv_lt` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.sqrt_one_sub_inv_lt.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.sqrt_one_sub_inv_lt/root-acceptance.json) |
 | 121 | `Roth.inv_add_inv_le` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.inv_add_inv_le.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.inv_add_inv_le/root-acceptance.json) |
 | 122 | `Roth.sum_inv_le` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.sum_inv_le.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.sum_inv_le/root-acceptance.json) |
+| 123 | `Roth.sum_inv_lt` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.sum_inv_lt.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.sum_inv_lt/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -2964,12 +2985,14 @@ Completed `Roth.inv_add_inv_le` action: Keep unchanged; complete private-prefilt
 
 Completed `Roth.sum_inv_le` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
 
+Completed `Roth.sum_inv_lt` action: BORDERLINE-needs-human: decide generic convex versus rational-grid API and whether sqrt corollary belongs upstream; preserve verified real/weak threshold if exposed.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.sum_inv_lt` next. Supporting identities receive their own applicable checks.
+   `Roth.extend_apply_castSucc` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

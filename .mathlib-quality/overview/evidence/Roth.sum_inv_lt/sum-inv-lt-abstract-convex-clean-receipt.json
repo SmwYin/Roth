@@ -1,0 +1,102 @@
+{
+  "request": {
+    "code": "import Mathlib.Analysis.Convex.Mul\nimport Mathlib.Analysis.Real.Sqrt\nimport Mathlib.Tactic\n#check_failure Roth.sum_inv_lt\n#check @convexOn_zpow\n#check @ConvexOn.le_on_segment'\n#check @Finset.sum_range_reflect\n#check @Finset.sum_involution\n#check @Finset.sum_le_sum\nnamespace SumInvAbstract\nopen Finset\ntheorem inverseConvex : ConvexOn ℝ (Set.Ioi 0) (fun x : ℝ ↦ x⁻¹) := by\n  simpa using (convexOn_zpow (𝕜 := ℝ) (-1))\ntheorem convexPair {s : Set ℝ} {f : ℝ → ℝ} (hf : ConvexOn ℝ s f)\n    {a b t : ℝ} (ha : a ∈ s) (hb : b ∈ s) (ht0 : 0 ≤ t) (ht1 : t ≤ 1) :\n    f ((1 - t) * a + t * b) + f (t * a + (1 - t) * b) ≤ f a + f b := by\n  have h1 := hf.2 ha hb (sub_nonneg.mpr ht1) ht0 (by ring : 1 - t + t = 1)\n  have h2 := hf.2 ha hb ht0 (sub_nonneg.mpr ht1) (by ring : t + (1 - t) = 1)\n  simp only [smul_eq_mul] at h1 h2\n  nlinarith\ntheorem reflectedSum {r : ℕ} {f : ℕ → ℝ} {C : ℝ}\n    (h : ∀ j ∈ range (r + 1), f j + f (r - j) ≤ C) :\n    2 * ∑ j ∈ range (r + 1), f j ≤ (r + 1) * C := by\n  have hh := Finset.sum_le_sum h\n  simp only [Finset.sum_add_distrib, Finset.sum_const, card_range, nsmul_eq_mul] at hh\n  have he : (∑ j ∈ range (r + 1), f (r - j)) = ∑ j ∈ range (r + 1), f j := by\n    simpa only [Nat.add_sub_cancel] using (Finset.sum_range_reflect f (r + 1))\n  rw [he] at hh\n  push_cast at hh\n  exact (by linarith : 2 * ∑ j ∈ range (r + 1), f j ≤ (r + 1) * C)\nend SumInvAbstract\n#print axioms SumInvAbstract.inverseConvex\n#print axioms SumInvAbstract.convexPair\n#print axioms SumInvAbstract.reflectedSum\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.sum_inv_lt`\",\n      \"line\": 4,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@convexOn_zpow : ∀ {𝕜 : Type u_1} [inst : Field 𝕜] [inst_1 : LinearOrder 𝕜] [IsStrictOrderedRing 𝕜] (n : ℤ),\\n  ConvexOn 𝕜 (Set.Ioi 0) fun x ↦ x ^ n\",\n      \"line\": 5,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@ConvexOn.le_on_segment' : ∀ {𝕜 : Type u_1} {E : Type u_2} {β : Type u_3} [inst : Semiring 𝕜] [inst_1 : PartialOrder 𝕜]\\n  [inst_2 : AddCommMonoid E] [inst_3 : AddCommMonoid β] [inst_4 : LinearOrder β] [IsOrderedAddMonoid β]\\n  [inst_6 : SMul 𝕜 E] [inst_7 : Module 𝕜 β] [PosSMulStrictMono 𝕜 β] {s : Set E} {f : E → β},\\n  ConvexOn 𝕜 s f →\\n    ∀ {x y : E}, x ∈ s → y ∈ s → ∀ {a b : 𝕜}, 0 ≤ a → 0 ≤ b → a + b = 1 → f (a • x + b • y) ≤ max (f x) (f y)\",\n      \"line\": 6,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finset.sum_range_reflect : ∀ {M : Type u_1} [inst : AddCommMonoid M] (f : ℕ → M) (n : ℕ),\\n  ∑ j ∈ Finset.range n, f (n - 1 - j) = ∑ j ∈ Finset.range n, f j\",\n      \"line\": 7,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finset.sum_involution : ∀ {ι : Type u_1} {M : Type u_2} {s : Finset ι} [inst : AddCommMonoid M] {f : ι → M}\\n  (g : (a : ι) → a ∈ s → ι),\\n  (∀ (a : ι) (ha : a ∈ s), f a + f (g a ha) = 0) →\\n    (∀ (a : ι) (ha : a ∈ s), f a ≠ 0 → g a ha ≠ a) →\\n      ∀ (g_mem : ∀ (a : ι) (ha : a ∈ s), g a ha ∈ s), (∀ (a : ι) (ha : a ∈ s), g (g a ha) ⋯ = a) → ∑ x ∈ s, f x = 0\",\n      \"line\": 8,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finset.sum_le_sum : ∀ {ι : Type u_1} {N : Type u_2} [inst : AddCommMonoid N] [inst_1 : Preorder N] {f g : ι → N}\\n  {s : Finset ι} [AddLeftMono N], (∀ i ∈ s, f i ≤ g i) → ∑ i ∈ s, f i ≤ ∑ i ∈ s, g i\",\n      \"line\": 9,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'SumInvAbstract.inverseConvex' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 32,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'SumInvAbstract.convexPair' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 33,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'SumInvAbstract.reflectedSum' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 34,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.sum_inv_lt`",
+          "line": 4,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@convexOn_zpow : ∀ {𝕜 : Type u_1} [inst : Field 𝕜] [inst_1 : LinearOrder 𝕜] [IsStrictOrderedRing 𝕜] (n : ℤ),\n  ConvexOn 𝕜 (Set.Ioi 0) fun x ↦ x ^ n",
+          "line": 5,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@ConvexOn.le_on_segment' : ∀ {𝕜 : Type u_1} {E : Type u_2} {β : Type u_3} [inst : Semiring 𝕜] [inst_1 : PartialOrder 𝕜]\n  [inst_2 : AddCommMonoid E] [inst_3 : AddCommMonoid β] [inst_4 : LinearOrder β] [IsOrderedAddMonoid β]\n  [inst_6 : SMul 𝕜 E] [inst_7 : Module 𝕜 β] [PosSMulStrictMono 𝕜 β] {s : Set E} {f : E → β},\n  ConvexOn 𝕜 s f →\n    ∀ {x y : E}, x ∈ s → y ∈ s → ∀ {a b : 𝕜}, 0 ≤ a → 0 ≤ b → a + b = 1 → f (a • x + b • y) ≤ max (f x) (f y)",
+          "line": 6,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finset.sum_range_reflect : ∀ {M : Type u_1} [inst : AddCommMonoid M] (f : ℕ → M) (n : ℕ),\n  ∑ j ∈ Finset.range n, f (n - 1 - j) = ∑ j ∈ Finset.range n, f j",
+          "line": 7,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finset.sum_involution : ∀ {ι : Type u_1} {M : Type u_2} {s : Finset ι} [inst : AddCommMonoid M] {f : ι → M}\n  (g : (a : ι) → a ∈ s → ι),\n  (∀ (a : ι) (ha : a ∈ s), f a + f (g a ha) = 0) →\n    (∀ (a : ι) (ha : a ∈ s), f a ≠ 0 → g a ha ≠ a) →\n      ∀ (g_mem : ∀ (a : ι) (ha : a ∈ s), g a ha ∈ s), (∀ (a : ι) (ha : a ∈ s), g (g a ha) ⋯ = a) → ∑ x ∈ s, f x = 0",
+          "line": 8,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finset.sum_le_sum : ∀ {ι : Type u_1} {N : Type u_2} [inst : AddCommMonoid N] [inst_1 : Preorder N] {f g : ι → N}\n  {s : Finset ι} [AddLeftMono N], (∀ i ∈ s, f i ≤ g i) → ∑ i ∈ s, f i ≤ ∑ i ∈ s, g i",
+          "line": 9,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'SumInvAbstract.inverseConvex' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 32,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'SumInvAbstract.convexPair' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 33,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'SumInvAbstract.reflectedSum' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 34,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 341
+}

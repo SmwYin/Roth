@@ -1,0 +1,30 @@
+namespace Roth.SumInvAssessment
+open Finset
+theorem realWeak {r : ℕ} {m : ℝ} (hr : 1 ≤ r) (hm : 1 < m) {lam : ℝ}
+    (hlam : 2 * √m ≤ lam) :
+    ∑ j ∈ range (r + 1), (lam - 1 + 2 * (j : ℝ) / r)⁻¹ <
+      lam⁻¹ * (√((m : ℝ) - 1))⁻¹ * √(m : ℝ) * (r + 1) := by
+  have hlam2 : 2 < lam := by
+    have h := Real.lt_sqrt_of_sq_lt (by linarith : (1 : ℝ) ^ 2 < m)
+    linarith
+  have hpos1 : 0 < √(1 - 1 / (m : ℝ)) := by
+    rw [Real.sqrt_pos, sub_pos, div_lt_one (by linarith)]
+    linarith
+  have hsqrt : √(1 - 1 / (m : ℝ)) = √((m : ℝ) - 1) / √(m : ℝ) := by
+    rw [← Real.sqrt_div' _ (by linarith : 0 ≤ m)]
+    congr 1
+    field_simp
+  have hlam' : lam / (lam ^ 2 - 1) = lam⁻¹ / (1 - lam⁻¹ ^ 2) := by
+    have : lam ≠ 0 := by linarith
+    field_simp
+  calc _ ≤ (r + 1) * (lam / (lam ^ 2 - 1)) := sum_inv_le hr hlam2
+    _ < (r + 1) * (lam⁻¹ / √(1 - 1 / (m : ℝ))) := by
+      rw [hlam']
+      gcongr
+      exact SqrtAssessment.realWeak (by linarith : (1 : ℝ) ≤ m) hlam
+    _ = _ := by
+      rw [hsqrt]
+      field_simp
+
+end Roth.SumInvAssessment
+#print axioms Roth.SumInvAssessment.realWeak

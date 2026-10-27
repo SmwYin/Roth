@@ -1,0 +1,41 @@
+{
+  "declaration": "Roth.sum_inv_lt",
+  "canonical_index": 123,
+  "kind": "theorem",
+  "type": "Roth.sum_inv_lt {r m : \u2115} (hr : 1 \u2264 r) (hm : 2 \u2264 m) {lam : \u211d} (hlam : 2 * \u221a\u2191m < lam) : \u2211 j \u2208 Finset.range (r + 1), (lam - 1 + 2 * \u2191j / \u2191r)\u207b\u00b9 < lam\u207b\u00b9 * (\u221a(\u2191m - 1))\u207b\u00b9 * \u221a\u2191m * (\u2191r + 1)",
+  "what": "Strict bound for reciprocal arithmetic-grid sum by (r+1)\u221am/(\u03bb\u221a(m\u22121)), for r\u22651,m\u22652,\u03bb>2\u221am.",
+  "how": "Pair j with r\u2212j to obtain rational endpoint bound; compare 1\u2212\u03bb\u207b\u00b2 with \u221a(1\u22121/m), then normalize roots/inverses.",
+  "hypotheses": [
+    "r,m:\u2115",
+    "1\u2264r",
+    "2\u2264m",
+    "lam:\u211d",
+    "2\u221am<lam"
+  ],
+  "project_dependencies": [
+    "private Roth.sum_inv_le",
+    "Roth.sqrt_one_sub_inv_lt"
+  ],
+  "caller_summary": {
+    "explicit_source_callers": [
+      {
+        "file": "Roth/Lattice.lean",
+        "line": 173,
+        "declaration": "Roth.card_filter_weight_le_succ_aux",
+        "visibility": "private"
+      }
+    ],
+    "external_to_file": 0,
+    "canonical_kernel_direct_consumers": [
+      "_private.Roth.Lattice.0.Roth.card_filter_weight_le_succ_aux"
+    ],
+    "scope": "Source refs and exact canonical direct value dependencies; not transitive simp/kernel closure."
+  },
+  "mathlib_api_audit": "All five methods on current, convex-endpoint literature and abstract symmetric-pair forms; local index unavailable. Pinned convexOn_zpow, chord and reflection APIs provide partial blocks; no existing \u22643-call replacement established. Three exact? failures not treated as absence proof.",
+  "moral_duplications": "Reciprocal convexity already follows from convexOn_zpow(-1); sum reindexing exists. Grid rational upper bound and sqrt comparison still need proof.",
+  "generalization": "Verified real m>1 and weak2\u221am\u2264lam preserve strict conclusion; both private pair/grid proofs work for1<lam. Independent raw proof and sole caller replay clean.",
+  "missing_api": "Candidate generic convex symmetric-average endpoint theorem or positive reciprocal-grid rational bound; exact sqrt corollary may remain downstream.",
+  "junk": "Not dead: one private induction caller supports public lattice-count estimate. No duplicate full inline derivation found.",
+  "action": "BORDERLINE-needs-human: decide generic convex versus rational-grid API and whether sqrt corollary belongs upstream; preserve verified real/weak threshold if exposed.",
+  "verdict": "BORDERLINE-needs-human"
+}

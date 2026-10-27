@@ -1,0 +1,19 @@
+import Mathlib.Analysis.Real.Sqrt
+import Mathlib.Tactic
+#check_failure Roth.sum_inv_lt
+namespace SumInvGuards
+open Finset
+theorem r_zero_false : ¬ (∑ j ∈ range (0 + 1), ((3 : ℝ) - 1 + 2 * (j : ℝ) / 0)⁻¹ <
+    (3 : ℝ)⁻¹ * (√((2 : ℝ) - 1))⁻¹ * √(2 : ℝ) * (0 + 1)) := by
+  norm_num
+  nlinarith [Real.sq_sqrt (by norm_num : (0 : ℝ) ≤ 2), Real.sqrt_nonneg (2 : ℝ)]
+theorem m_one_false : ¬ (∑ j ∈ range (1 + 1), ((3 : ℝ) - 1 + 2 * (j : ℝ) / 1)⁻¹ <
+    (3 : ℝ)⁻¹ * (√((1 : ℝ) - 1))⁻¹ * √(1 : ℝ) * (1 + 1)) := by norm_num [sum_range_succ]
+theorem no_lambda_bound : ¬ (∑ j ∈ range (1 + 1), ((3 / 2 : ℝ) - 1 +
+    2 * (j : ℝ) / 1)⁻¹ < (3 / 2 : ℝ)⁻¹ * (√((2 : ℝ) - 1))⁻¹ * √(2 : ℝ) * (1 + 1)) := by
+  norm_num [sum_range_succ]
+  nlinarith [Real.sq_sqrt (by norm_num : (0 : ℝ) ≤ 2), Real.sqrt_nonneg (2 : ℝ)]
+end SumInvGuards
+#print axioms SumInvGuards.r_zero_false
+#print axioms SumInvGuards.m_one_false
+#print axioms SumInvGuards.no_lambda_bound
