@@ -1,0 +1,187 @@
+{
+  "verdict": "STRICTLY NARROWER THAN STANDARD",
+  "expanded_forms": [
+    {
+      "name": "CommRing arbitrary finite index local single-coordinate bound",
+      "status": "PASS",
+      "verified": true,
+      "source": "native-consumers-executed.lean.txt"
+    },
+    {
+      "name": "mathlib-only generic entry and column degree bound",
+      "status": "PASS",
+      "verified": true,
+      "source": "native-raw-executed.lean.txt"
+    }
+  ],
+  "parameter_rows": [
+    {
+      "parameter": "σ",
+      "finding": "Already arbitrary Type*, no Fintype or DecidableEq required."
+    },
+    {
+      "parameter": "ℤ",
+      "finding": "Weaken to CommRing R; proof uses only determinant sign and commutative ring structure."
+    },
+    {
+      "parameter": "l",
+      "finding": "Allow arbitrary finite square type ι."
+    },
+    {
+      "parameter": "E",
+      "finding": "Arbitrary indices; no derivative-order restriction needed."
+    },
+    {
+      "parameter": "P",
+      "finding": "No nonzero hypothesis; zero allowed."
+    },
+    {
+      "parameter": "r",
+      "finding": "For fixed j only one scalar bound b is needed."
+    },
+    {
+      "parameter": "hP",
+      "finding": "Global hypothesis localizes to degreeOf j P ≤ b."
+    },
+    {
+      "parameter": "j",
+      "finding": "Essential coordinate; retain explicitly."
+    }
+  ],
+  "modern_rows": [
+    {
+      "row": 1,
+      "question": "typeclasses",
+      "applies": "yes",
+      "restatement": "ℤ → [CommRing R]; no nontriviality or domain hypothesis",
+      "downstream": "Includes positive characteristic and zero-divisor coefficient rings."
+    },
+    {
+      "row": 2,
+      "question": "filters",
+      "applies": "no",
+      "restatement": "Finite algebraic determinant; no limits",
+      "downstream": "n/a"
+    },
+    {
+      "row": 3,
+      "question": "universal property",
+      "applies": "no",
+      "restatement": "MvPolynomial and Matrix.det are already canonical constructions",
+      "downstream": "No new class needed."
+    },
+    {
+      "row": 4,
+      "question": "bundled substructures",
+      "applies": "no",
+      "restatement": "No set-closure predicate in statement",
+      "downstream": "n/a"
+    },
+    {
+      "row": 5,
+      "question": "hierarchy",
+      "applies": "yes",
+      "restatement": "CommRing coefficients are sufficient; CommSemiring does not support existing determinant interface",
+      "downstream": "Works beyond integer coefficients without field assumptions."
+    },
+    {
+      "row": 6,
+      "question": "higher categories",
+      "applies": "no",
+      "restatement": "Scalar determinant bound, not categorical construction",
+      "downstream": "n/a"
+    },
+    {
+      "row": 7,
+      "question": "indices",
+      "applies": "yes",
+      "restatement": "Fin l → arbitrary finite square ι; σ already arbitrary and need not be finite",
+      "downstream": "Directly composes with Matrix.det arbitrary finite indices."
+    },
+    {
+      "row": 8,
+      "question": "concrete-via-abstract",
+      "applies": "yes",
+      "restatement": "After determinant expansion the only Hasse-specific input is degreeOf_hasseDeriv_le in final summand; ℤ only casts sign",
+      "downstream": "Mathlib-only generic entry and column degree bound is reusable for unrelated polynomial matrices."
+    },
+    {
+      "row": 9,
+      "question": "false-generalization guard",
+      "applies": "no false generalization",
+      "restatement": "Same determinant, same coordinate degree, same Hasse derivative; original verified by specialization",
+      "downstream": "Do not replace determinant by permanent over semirings or claim equality in presence of cancellation."
+    }
+  ],
+  "strategy_rows": [
+    {
+      "row": 1,
+      "question": "topology",
+      "status": "n/a",
+      "reason": "No topology"
+    },
+    {
+      "row": 2,
+      "question": "algebra",
+      "status": "current proof idiomatic",
+      "reason": "Finite Leibniz expansion with ordered degree inequalities; no ideal/submodule abstraction required"
+    },
+    {
+      "row": 3,
+      "question": "analysis",
+      "status": "n/a",
+      "reason": "No sequences or limits"
+    },
+    {
+      "row": 4,
+      "question": "category theory",
+      "status": "n/a",
+      "reason": "No universal-property construction"
+    },
+    {
+      "row": 5,
+      "question": "missing helper",
+      "status": "yes",
+      "reason": "Generic determinant coordinate degree bound; raw entry_bound and column-bound row_bound are NEW proofs, not existing mathlib facts"
+    }
+  ],
+  "strategy_verdict": "Current finite algebra proof is idiomatic; factor generic determinant degree helper before Hasse corollary.",
+  "infrastructure_rows": [
+    {
+      "row": 1,
+      "risk": "typeclass diamond",
+      "status": "n/a: theorem; introduces no data or instances"
+    },
+    {
+      "row": 2,
+      "risk": "reducibility leak",
+      "status": "n/a: theorem; introduces no data or instances"
+    },
+    {
+      "row": 3,
+      "risk": "non-canonical unfolding",
+      "status": "n/a: theorem; introduces no data or instances"
+    },
+    {
+      "row": 4,
+      "risk": "instance priority",
+      "status": "n/a: theorem; introduces no data or instances"
+    },
+    {
+      "row": 5,
+      "risk": "universes",
+      "status": "n/a: theorem; introduces no data or instances"
+    },
+    {
+      "row": 6,
+      "risk": "coercion ambiguity",
+      "status": "n/a: theorem; introduces no data or instances"
+    }
+  ],
+  "statement_shape": {
+    "normal_form": "Scalar coordinate bound avoids global r and Matrix.of may be omitted for Matrix-as-function.",
+    "syntactic_generality": "Arbitrary finite matrix index and single-coordinate hP compiled; column bound compiled independently.",
+    "superfluous": "All original parameters occur; hP at coordinates other than j is unused, localized in compiled hasse_generic.",
+    "verdict": "RESTATE-BEFORE-SHIP"
+  }
+}

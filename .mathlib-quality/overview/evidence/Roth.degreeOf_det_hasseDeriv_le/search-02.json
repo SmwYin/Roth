@@ -1,0 +1,69 @@
+{
+  "tool": "mcp__lean_lsp__lean_leanfinder",
+  "form": "standard",
+  "request": {
+    "query": "degree of determinant of polynomial matrix at most sum column degrees",
+    "num_results": 6
+  },
+  "response": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.natDegree_det_X_add_C_le\",\n      \"informal_name\": \"Natural Degree of Determinant of X•A + B is Bounded by Index Type Cardinality\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {n : Type u_1} {α : Type u_2} [inst : DecidableEq n] [inst_1 : Fintype n] [inst_2 : CommRing α] (A B : Matrix n n α),\\n  (Polynomial.X • A.map ⇑Polynomial.C + B.map ⇑Polynomial.C).det.natDegree ≤ Fintype.card n\",\n      \"informal_description\": \"For any commutative ring $\\\\alpha$ and finite type $n$, and for any $n \\\\times n$ matrices $A$ and $B$ with entries in $\\\\alpha$, the natural degree of the determinant of the matrix $X \\\\cdot A + B$ (where $X$ is the indeterminate and entries are embedded as constant polynomials) is at most the cardinality of $n$.\",\n      \"path\": \"Mathlib.LinearAlgebra.Matrix.Polynomial\"\n    },\n    {\n      \"formal_name\": \"Matrix.toMvPolynomial_totalDegree_le\",\n      \"informal_name\": \"Total Degree of Matrix Row Polynomial is At Most One\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {m : Type u_1} {n : Type u_2} {R : Type u_4} [inst : Fintype n] [inst_1 : CommSemiring R] (M : Matrix m n R) (i : m),\\n  (M.toMvPolynomial i).totalDegree ≤ 1\",\n      \"informal_description\": \"For any matrix $ M $ with entries in a commutative semiring $ R $ and any row index $ i $, the total degree of the multivariate polynomial constructed from the $ i $-th row of $ M $ is at most 1. This polynomial is defined as the linear combination $ \\\\sum_j M_{i,j} x_j $, where each term corresponds to a column entry multiplied by its respective variable.\",\n      \"path\": \"Mathlib.Algebra.Module.LinearMap.Polynomial\"\n    },\n    {\n      \"formal_name\": \"Matrix.det_matrixOfPolynomials\",\n      \"informal_name\": \"Determinant of a Matrix of Monic Polynomials with Degree Conditions Equals One\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type v} [inst : CommRing R] {n : ℕ} (p : Fin n → Polynomial R),\\n  (∀ (i : Fin n), (p i).natDegree = ↑i) → (∀ (i : Fin n), (p i).Monic) → (Matrix.of fun i j => (p j).coeff ↑i).det = 1\",\n      \"informal_description\": \"For a commutative ring $ R $ and natural number $ n $, consider monic polynomials $ p_0, p_1, \\\\ldots, p_{n-1} $ in $ R[X] $ where each $ p_i $ has degree $ i $. Construct an $ n \\\\times n $ matrix $ M $ such that the entry in row $ i $ and column $ j $ is the coefficient of $ X^i $ in $ p_j $. Then the determinant of $ M $ is equal to 1.\",\n      \"path\": \"Mathlib.LinearAlgebra.Matrix.Block\"\n    },\n    {\n      \"formal_name\": \"Matrix.charmatrix_apply_natDegree_le\",\n      \"informal_name\": \"Natural Degree Bound for Characteristic Matrix Entries\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : CommRing R] {n : Type v} [inst_1 : DecidableEq n] [inst_2 : Fintype n] {M : Matrix n n R}\\n  (i j : n), (M.charmatrix i j).natDegree ≤ if i = j then 1 else 0\",\n      \"informal_description\": \"For a matrix $ M $ over a commutative ring with finite index type $ n $, the natural degree of the polynomial entry at position $ (i,j) $ in the characteristic matrix $ tI - M $ satisfies: it is at most $ 1 $ if $ i = j $, and at most $ 0 $ otherwise.\",\n      \"path\": \"Mathlib.LinearAlgebra.Matrix.Charpoly.Coeff\"\n    },\n    {\n      \"formal_name\": \"Polynomial.coeff_det_X_add_C_card\",\n      \"informal_name\": \"Leading Coefficient of Determinant of $ XA + B $ is Determinant of $ A $\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {n : Type u_1} {α : Type u_2} [inst : DecidableEq n] [inst_1 : Fintype n] [inst_2 : CommRing α] (A B : Matrix n n α),\\n  (Polynomial.X • A.map ⇑Polynomial.C + B.map ⇑Polynomial.C).det.coeff (Fintype.card n) = A.det\",\n      \"informal_description\": \"For square matrices $ A $ and $ B $ over a commutative ring $ \\\\alpha $, the coefficient of $ X^{\\\\#n} $ in the determinant of the matrix $ X \\\\cdot A + B $ (where entries are lifted to polynomials via constant embedding) is equal to the determinant of $ A $. Here $ \\\\#n $ denotes the cardinality of the finite type $ n $.\",\n      \"path\": \"Mathlib.LinearAlgebra.Matrix.Polynomial\"\n    },\n    {\n      \"formal_name\": \"Matrix.det_mvPolynomialX_ne_zero\",\n      \"informal_name\": \"Non-vanishing Determinant of Square Matrix of Variables in Multivariate Polynomial Ring\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (m : Type u_1) (R : Type u_3) [inst : DecidableEq m] [inst_1 : Fintype m] [inst_2 : CommRing R] [Nontrivial R],\\n  (Matrix.mvPolynomialX m m R).det ≠ 0\",\n      \"informal_description\": \"Given a finite type $ m $ with decidable equality and a non-trivial commutative ring $ R $, the determinant of the $ m \\\\times m $ matrix whose $(i,j)$-entries are distinct indeterminates $ X_{(i,j)} $ in the multivariate polynomial ring $ R[X_{(i,j)}] $ is non-zero. This holds because the determinant evaluates to a monomial that cannot be zero in the polynomial ring over a non-trivial ring.\",\n      \"path\": \"Mathlib.LinearAlgebra.Matrix.MvPolynomial\"\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "items": [
+        {
+          "formal_name": "Polynomial.natDegree_det_X_add_C_le",
+          "informal_name": "Natural Degree of Determinant of X•A + B is Bounded by Index Type Cardinality",
+          "kind": "theorem",
+          "type": "∀ {n : Type u_1} {α : Type u_2} [inst : DecidableEq n] [inst_1 : Fintype n] [inst_2 : CommRing α] (A B : Matrix n n α),\n  (Polynomial.X • A.map ⇑Polynomial.C + B.map ⇑Polynomial.C).det.natDegree ≤ Fintype.card n",
+          "informal_description": "For any commutative ring $\\alpha$ and finite type $n$, and for any $n \\times n$ matrices $A$ and $B$ with entries in $\\alpha$, the natural degree of the determinant of the matrix $X \\cdot A + B$ (where $X$ is the indeterminate and entries are embedded as constant polynomials) is at most the cardinality of $n$.",
+          "path": "Mathlib.LinearAlgebra.Matrix.Polynomial"
+        },
+        {
+          "formal_name": "Matrix.toMvPolynomial_totalDegree_le",
+          "informal_name": "Total Degree of Matrix Row Polynomial is At Most One",
+          "kind": "theorem",
+          "type": "∀ {m : Type u_1} {n : Type u_2} {R : Type u_4} [inst : Fintype n] [inst_1 : CommSemiring R] (M : Matrix m n R) (i : m),\n  (M.toMvPolynomial i).totalDegree ≤ 1",
+          "informal_description": "For any matrix $ M $ with entries in a commutative semiring $ R $ and any row index $ i $, the total degree of the multivariate polynomial constructed from the $ i $-th row of $ M $ is at most 1. This polynomial is defined as the linear combination $ \\sum_j M_{i,j} x_j $, where each term corresponds to a column entry multiplied by its respective variable.",
+          "path": "Mathlib.Algebra.Module.LinearMap.Polynomial"
+        },
+        {
+          "formal_name": "Matrix.det_matrixOfPolynomials",
+          "informal_name": "Determinant of a Matrix of Monic Polynomials with Degree Conditions Equals One",
+          "kind": "theorem",
+          "type": "∀ {R : Type v} [inst : CommRing R] {n : ℕ} (p : Fin n → Polynomial R),\n  (∀ (i : Fin n), (p i).natDegree = ↑i) → (∀ (i : Fin n), (p i).Monic) → (Matrix.of fun i j => (p j).coeff ↑i).det = 1",
+          "informal_description": "For a commutative ring $ R $ and natural number $ n $, consider monic polynomials $ p_0, p_1, \\ldots, p_{n-1} $ in $ R[X] $ where each $ p_i $ has degree $ i $. Construct an $ n \\times n $ matrix $ M $ such that the entry in row $ i $ and column $ j $ is the coefficient of $ X^i $ in $ p_j $. Then the determinant of $ M $ is equal to 1.",
+          "path": "Mathlib.LinearAlgebra.Matrix.Block"
+        },
+        {
+          "formal_name": "Matrix.charmatrix_apply_natDegree_le",
+          "informal_name": "Natural Degree Bound for Characteristic Matrix Entries",
+          "kind": "theorem",
+          "type": "∀ {R : Type u} [inst : CommRing R] {n : Type v} [inst_1 : DecidableEq n] [inst_2 : Fintype n] {M : Matrix n n R}\n  (i j : n), (M.charmatrix i j).natDegree ≤ if i = j then 1 else 0",
+          "informal_description": "For a matrix $ M $ over a commutative ring with finite index type $ n $, the natural degree of the polynomial entry at position $ (i,j) $ in the characteristic matrix $ tI - M $ satisfies: it is at most $ 1 $ if $ i = j $, and at most $ 0 $ otherwise.",
+          "path": "Mathlib.LinearAlgebra.Matrix.Charpoly.Coeff"
+        },
+        {
+          "formal_name": "Polynomial.coeff_det_X_add_C_card",
+          "informal_name": "Leading Coefficient of Determinant of $ XA + B $ is Determinant of $ A $",
+          "kind": "theorem",
+          "type": "∀ {n : Type u_1} {α : Type u_2} [inst : DecidableEq n] [inst_1 : Fintype n] [inst_2 : CommRing α] (A B : Matrix n n α),\n  (Polynomial.X • A.map ⇑Polynomial.C + B.map ⇑Polynomial.C).det.coeff (Fintype.card n) = A.det",
+          "informal_description": "For square matrices $ A $ and $ B $ over a commutative ring $ \\alpha $, the coefficient of $ X^{\\#n} $ in the determinant of the matrix $ X \\cdot A + B $ (where entries are lifted to polynomials via constant embedding) is equal to the determinant of $ A $. Here $ \\#n $ denotes the cardinality of the finite type $ n $.",
+          "path": "Mathlib.LinearAlgebra.Matrix.Polynomial"
+        },
+        {
+          "formal_name": "Matrix.det_mvPolynomialX_ne_zero",
+          "informal_name": "Non-vanishing Determinant of Square Matrix of Variables in Multivariate Polynomial Ring",
+          "kind": "theorem",
+          "type": "∀ (m : Type u_1) (R : Type u_3) [inst : DecidableEq m] [inst_1 : Fintype m] [inst_2 : CommRing R] [Nontrivial R],\n  (Matrix.mvPolynomialX m m R).det ≠ 0",
+          "informal_description": "Given a finite type $ m $ with decidable equality and a non-trivial commutative ring $ R $, the determinant of the $ m \\times m $ matrix whose $(i,j)$-entries are distinct indeterminates $ X_{(i,j)} $ in the multivariate polynomial ring $ R[X_{(i,j)}] $ is non-zero. This holds because the determinant evaluates to a monomial that cannot be zero in the polynomial ring over a non-trivial ring.",
+          "path": "Mathlib.LinearAlgebra.Matrix.MvPolynomial"
+        }
+      ]
+    },
+    "isError": false
+  }
+}

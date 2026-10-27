@@ -1,0 +1,31 @@
+import Mathlib.Algebra.MvPolynomial.PDeriv
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Data.Nat.Choose.Bounds
+import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
+#check_failure Roth.degreeOf_det_hasseDeriv_le
+#check @MvPolynomial.degreeOf_sum_le
+#check @MvPolynomial.degreeOf_C_mul_le
+#check @MvPolynomial.degreeOf_prod_le
+#check @Matrix.det_apply'
+namespace MvPolynomial.DetDegreeRaw
+variable {σ R ι : Type*} [CommRing R] [Fintype ι] [DecidableEq ι]
+theorem entry_bound (M : Matrix ι ι (MvPolynomial σ R)) (j : σ) {b : ℕ}
+    (hM : ∀ μ ν, degreeOf j (M μ ν) ≤ b) :
+    degreeOf j M.det ≤ Fintype.card ι * b := by
+  classical
+  rw [Matrix.det_apply']
+  refine (degreeOf_sum_le _ _ _).trans (Finset.sup_le fun τ _ ↦ ?_)
+  refine (degreeOf_C_mul_le _ j (Equiv.Perm.sign τ : R)).trans ?_
+  refine (degreeOf_prod_le _ _ _).trans ?_
+  simpa using Finset.sum_le_sum (s := Finset.univ) (fun i _ ↦ hM (τ i) i)
+theorem row_bound (M : Matrix ι ι (MvPolynomial σ R)) (j : σ) {b : ι → ℕ}
+    (hM : ∀ μ ν, degreeOf j (M μ ν) ≤ b ν) :
+    degreeOf j M.det ≤ ∑ ν, b ν := by
+  classical
+  rw [Matrix.det_apply']
+  refine (degreeOf_sum_le _ _ _).trans (Finset.sup_le fun τ _ ↦ ?_)
+  refine (degreeOf_C_mul_le _ j (Equiv.Perm.sign τ : R)).trans ?_
+  exact (degreeOf_prod_le _ _ _).trans (Finset.sum_le_sum fun i _ ↦ hM (τ i) i)
+#print axioms entry_bound
+#print axioms row_bound
+end MvPolynomial.DetDegreeRaw

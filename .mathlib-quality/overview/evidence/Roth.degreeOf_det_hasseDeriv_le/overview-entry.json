@@ -1,0 +1,19 @@
+{
+  "declaration": "Roth.degreeOf_det_hasseDeriv_le",
+  "kind": "theorem",
+  "type": "∀ {σ : Type u_1} {l : ℕ} (E : Fin l → Fin l → σ →₀ ℕ) (P : MvPolynomial σ ℤ) {r : σ → ℕ}, (∀ (j : σ), MvPolynomial.degreeOf j P ≤ r j) → ∀ (j : σ), MvPolynomial.degreeOf j (Matrix.of fun μ ν ↦ (MvPolynomial.hasseDeriv (E μ ν)) P).det ≤ l * r j",
+  "what": "A determinant of l×l Hasse derivatives of a polynomial of coordinate degrees ≤r has coordinate degrees ≤l*r.",
+  "how": "Expand determinant; degree of sum bounded by supremum; constants do not increase degree; products bounded by sums; Hasse derivatives do not increase coordinate degrees.",
+  "hypotheses": "Arbitrary σ, l, E and P over ℤ; global coordinate upper bound hP; no nonzero, finite-variable or derivative-order restriction.",
+  "project_dependencies": [
+    "MvPolynomial.hasseDeriv",
+    "MvPolynomial.degreeOf_hasseDeriv_le"
+  ],
+  "caller_summary": "Two explicit calls in Roth.exists_det_eq_mul at Separation.lean555/558; canonical293 audit confirms one direct consumer.",
+  "mathlib_api_audit": "Existing degreeOf_sum_le, degreeOf_C_mul_le, degreeOf_prod_le and det_apply' supply proof steps, not ≤3-call replacement. Closest natDegree_det_X_add_C_le is affine univariate matrix only.",
+  "moral_duplications": "Generic polynomial determinant degree bound underlies this Hasse specialization; no current mathlib exact replacement verified.",
+  "generalization": "CommRing coefficients, arbitrary finite matrix index, fixed-coordinate scalar bound verified. Factor generic entry/column determinant bounds.",
+  "missing_api": "MvPolynomial coordinate degree bound on arbitrary polynomial matrix determinants; Hasse corollary after upstream multivariate Hasse API.",
+  "junk": "Used twice; sound nonvacuous inequality; no junk classification.",
+  "action": "YES-but-generalise-first; contribute generic determinant-degree API, then Hasse corollary with parent Hasse API; retain project convenience specialization if useful."
+}

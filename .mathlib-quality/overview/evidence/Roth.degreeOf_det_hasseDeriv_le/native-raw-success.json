@@ -1,0 +1,84 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.Polynomial.HasseDeriv\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.LinearAlgebra.Matrix.ToLinearEquiv\nimport Mathlib.RingTheory.Polynomial.Wronskian\nimport Mathlib.LinearAlgebra.Vandermonde\nimport Mathlib.Data.ZMod.Defs\nimport Mathlib.Algebra.Field.ZMod\nimport Mathlib.Algebra.Order.Group.Int.Sum\nimport Mathlib.LinearAlgebra.Matrix.Polynomial\nimport Mathlib.Algebra.Polynomial.CancelLeads\nimport Mathlib.Algebra.MvPolynomial.PDeriv\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\nimport Mathlib.Algebra.MvPolynomial.Equiv\nimport Mathlib.Analysis.Normed.Unbundled.RingSeminorm\nimport Mathlib.LinearAlgebra.Matrix.AbsoluteValue\nimport Mathlib.Data.Nat.Choose.Bounds\nimport Mathlib.RingTheory.Polynomial.Basic\n#check_failure Roth.degreeOf_det_hasseDeriv_le\n#check @MvPolynomial.degreeOf_sum_le\n#check @MvPolynomial.degreeOf_C_mul_le\n#check @MvPolynomial.degreeOf_prod_le\n#check @Matrix.det_apply'\nnamespace MvPolynomial.DetDegreeRaw\nvariable {σ R ι : Type*} [CommRing R] [Fintype ι] [DecidableEq ι]\ntheorem entry_bound (M : Matrix ι ι (MvPolynomial σ R)) (j : σ) {b : ℕ}\n    (hM : ∀ μ ν, degreeOf j (M μ ν) ≤ b) :\n    degreeOf j M.det ≤ Fintype.card ι * b := by\n  classical\n  rw [Matrix.det_apply']\n  refine (degreeOf_sum_le _ _ _).trans (Finset.sup_le fun τ _ ↦ ?_)\n  refine (degreeOf_C_mul_le _ j (Equiv.Perm.sign τ : R)).trans ?_\n  refine (degreeOf_prod_le _ _ _).trans ?_\n  simpa using Finset.sum_le_sum (s := Finset.univ) (fun i _ ↦ hM (τ i) i)\ntheorem row_bound (M : Matrix ι ι (MvPolynomial σ R)) (j : σ) {b : ι → ℕ}\n    (hM : ∀ μ ν, degreeOf j (M μ ν) ≤ b ν) :\n    degreeOf j M.det ≤ ∑ ν, b ν := by\n  classical\n  rw [Matrix.det_apply']\n  refine (degreeOf_sum_le _ _ _).trans (Finset.sup_le fun τ _ ↦ ?_)\n  refine (degreeOf_C_mul_le _ j (Equiv.Perm.sign τ : R)).trans ?_\n  exact (degreeOf_prod_le _ _ _).trans (Finset.sum_le_sum fun i _ ↦ hM (τ i) i)\n#print axioms entry_bound\n#print axioms row_bound\nend MvPolynomial.DetDegreeRaw\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.degreeOf_det_hasseDeriv_le`\",\n      \"line\": 18,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPolynomial.degreeOf_sum_le : ∀ {R : Type u_1} {σ : Type u_2} [inst : CommSemiring R] {ι : Type u_3} (i : σ)\\n  (s : Finset ι) (f : ι → MvPolynomial σ R),\\n  MvPolynomial.degreeOf i (∑ j ∈ s, f j) ≤ s.sup fun j ↦ MvPolynomial.degreeOf i (f j)\",\n      \"line\": 19,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPolynomial.degreeOf_C_mul_le : ∀ {R : Type u_1} {σ : Type u_2} [inst : CommSemiring R] (p : MvPolynomial σ R) (i : σ)\\n  (c : R), MvPolynomial.degreeOf i (MvPolynomial.C c * p) ≤ MvPolynomial.degreeOf i p\",\n      \"line\": 20,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPolynomial.degreeOf_prod_le : ∀ {R : Type u_1} {σ : Type u_2} [inst : CommSemiring R] {ι : Type u_3} (i : σ)\\n  (s : Finset ι) (f : ι → MvPolynomial σ R),\\n  MvPolynomial.degreeOf i (∏ j ∈ s, f j) ≤ ∑ j ∈ s, MvPolynomial.degreeOf i (f j)\",\n      \"line\": 21,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Matrix.det_apply' : ∀ {n : Type u_2} [inst : DecidableEq n] [inst_1 : Fintype n] {R : Type u_1} [inst_2 : CommRing R]\\n  (M : Matrix n n R), M.det = ∑ σ, ↑↑(Equiv.Perm.sign σ) * ∏ i, M (σ i) i\",\n      \"line\": 22,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'MvPolynomial.DetDegreeRaw.entry_bound' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 42,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'MvPolynomial.DetDegreeRaw.row_bound' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 43,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.degreeOf_det_hasseDeriv_le`",
+          "line": 18,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPolynomial.degreeOf_sum_le : ∀ {R : Type u_1} {σ : Type u_2} [inst : CommSemiring R] {ι : Type u_3} (i : σ)\n  (s : Finset ι) (f : ι → MvPolynomial σ R),\n  MvPolynomial.degreeOf i (∑ j ∈ s, f j) ≤ s.sup fun j ↦ MvPolynomial.degreeOf i (f j)",
+          "line": 19,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPolynomial.degreeOf_C_mul_le : ∀ {R : Type u_1} {σ : Type u_2} [inst : CommSemiring R] (p : MvPolynomial σ R) (i : σ)\n  (c : R), MvPolynomial.degreeOf i (MvPolynomial.C c * p) ≤ MvPolynomial.degreeOf i p",
+          "line": 20,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPolynomial.degreeOf_prod_le : ∀ {R : Type u_1} {σ : Type u_2} [inst : CommSemiring R] {ι : Type u_3} (i : σ)\n  (s : Finset ι) (f : ι → MvPolynomial σ R),\n  MvPolynomial.degreeOf i (∏ j ∈ s, f j) ≤ ∑ j ∈ s, MvPolynomial.degreeOf i (f j)",
+          "line": 21,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Matrix.det_apply' : ∀ {n : Type u_2} [inst : DecidableEq n] [inst_1 : Fintype n] {R : Type u_1} [inst_2 : CommRing R]\n  (M : Matrix n n R), M.det = ∑ σ, ↑↑(Equiv.Perm.sign σ) * ∏ i, M (σ i) i",
+          "line": 22,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'MvPolynomial.DetDegreeRaw.entry_bound' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 42,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'MvPolynomial.DetDegreeRaw.row_bound' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 43,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 33536
+}

@@ -1,0 +1,723 @@
+[
+  {
+    "tool": "mcp__lean_lsp__lean_leanfinder",
+    "form": "current",
+    "request": {
+      "query": "degree bound for determinant of Hasse derivatives multivariate integer polynomial",
+      "num_results": 6
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.degBound\",\n      \"informal_name\": \"Degree Bound for Multivariate Polynomials in Chevalley's Theorem\",\n      \"kind\": \"definition\",\n      \"type\": \"ℕ → (ℕ → ℕ) → ℕ → ℕ\",\n      \"informal_description\": \"A function that computes a degree bound for multivariate polynomials, taking a natural number $n$, a function $f : \\\\mathbb{N} \\\\to \\\\mathbb{N}$, and an element of the sum type $\\\\mathbb{N} \\\\oplus \\\\mathbb{N}$. For left components, it applies $f$ to $n$, and for right components, it returns $n$ directly. This is used in the proof of Chevalley's theorem to establish well-founded recursion for multivariate polynomial constructions.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.degBound\",\n      \"informal_name\": \"Degree Bound for Chevalley's Theorem Using Multiset of Finite Elements\",\n      \"kind\": \"definition\",\n      \"type\": \"ℕ → (m : ℕ) → ℕ → Multiset (Fin m) → ℕ\",\n      \"informal_description\": \"The function computes a degree bound for Chevalley's theorem by taking $k + n$ and a function that adds 1 to the count of each natural number obtained from mapping $\\\\text{Fin.val}$ over the multiset $d$ of type $\\\\text{Fin} \\\\, m$. This constructs a degree bound used in the proof of Chevalley's theorem for multivariate polynomial recursions.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.numBound\",\n      \"informal_name\": \"Numerical Bound for Multivariate Polynomials in Chevalley's Theorem\",\n      \"kind\": \"definition\",\n      \"type\": \"ℕ → (ℕ → ℕ) → ℕ → ℕ\",\n      \"informal_description\": \"A function that takes a natural number $n$, a function $f : \\\\mathbb{N} \\\\to \\\\mathbb{N}$, and another natural number $m$, returning a natural number used to establish well-founded recursion in the context of multivariate polynomials and Chevalley's theorem. It computes bounds by recursively applying $f$ to $n$ and decrementing $m$.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.degBound_succ\",\n      \"informal_name\": \"Recursive Successor Formula for Degree Bound in Chevalley's Theorem\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (k : ℕ) (D : ℕ → ℕ) (n : ℕ),\\n  ChevalleyThm.MvPolynomialC.degBound k D (n + 1) =\\n    ChevalleyThm.MvPolynomialC.numBound k D (n + 1) ^ ChevalleyThm.MvPolynomialC.numBound k D (n + 1) *\\n      ChevalleyThm.MvPolynomialC.degBound k D n\",\n      \"informal_description\": \"For natural numbers $k$, $D$, and $n$, the degree bound $\\\\operatorname{degBound}(k, D, n+1)$ satisfies the recursive relation $\\\\operatorname{degBound}(k, D, n+1) = \\\\operatorname{numBound}(k, D, n+1)^{\\\\operatorname{numBound}(k, D, n+1)} \\\\cdot \\\\operatorname{degBound}(k, D, n)$, where $\\\\operatorname{numBound}$ computes numerical bounds for multivariate polynomials in the context of Chevalley's theorem.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"Polynomial.natDegree_hasseDeriv_le\",\n      \"informal_name\": \"Degree Bound for Hasse Derivative of Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (p : Polynomial R) (n : ℕ),\\n  ((Polynomial.hasseDeriv n) p).natDegree ≤ p.natDegree - n\",\n      \"informal_description\": \"For any polynomial $ p $ over a semiring $ R $ and any natural number $ n $, the natural degree of the $ n $-th Hasse derivative of $ p $ satisfies $ \\\\deg(D^{(n)}(p)) \\\\leq \\\\deg(p) - n $, where $ D^{(n)} $ denotes the Hasse derivative of order $ n $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.HasseDeriv\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.degBound_pos\",\n      \"informal_name\": \"Positivity of Degree Bound in Chevalley's Theorem\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (k : ℕ) (D : ℕ → ℕ) (n : ℕ), 0 < ChevalleyThm.MvPolynomialC.degBound k D n\",\n      \"informal_description\": \"For any natural number $k$ and function $D : \\\\mathbb{N} \\\\to \\\\mathbb{N}$, the degree bound $\\\\text{degBound}\\\\,k\\\\,D\\\\,n$ satisfies $0 < \\\\text{degBound}\\\\,k\\\\,D\\\\,n$ for all $n \\\\in \\\\mathbb{N}$.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "ChevalleyThm.MvPolynomialC.degBound",
+            "informal_name": "Degree Bound for Multivariate Polynomials in Chevalley's Theorem",
+            "kind": "definition",
+            "type": "ℕ → (ℕ → ℕ) → ℕ → ℕ",
+            "informal_description": "A function that computes a degree bound for multivariate polynomials, taking a natural number $n$, a function $f : \\mathbb{N} \\to \\mathbb{N}$, and an element of the sum type $\\mathbb{N} \\oplus \\mathbb{N}$. For left components, it applies $f$ to $n$, and for right components, it returns $n$ directly. This is used in the proof of Chevalley's theorem to establish well-founded recursion for multivariate polynomial constructions.",
+            "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+          },
+          {
+            "formal_name": "ChevalleyThm.degBound",
+            "informal_name": "Degree Bound for Chevalley's Theorem Using Multiset of Finite Elements",
+            "kind": "definition",
+            "type": "ℕ → (m : ℕ) → ℕ → Multiset (Fin m) → ℕ",
+            "informal_description": "The function computes a degree bound for Chevalley's theorem by taking $k + n$ and a function that adds 1 to the count of each natural number obtained from mapping $\\text{Fin.val}$ over the multiset $d$ of type $\\text{Fin} \\, m$. This constructs a degree bound used in the proof of Chevalley's theorem for multivariate polynomial recursions.",
+            "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+          },
+          {
+            "formal_name": "ChevalleyThm.MvPolynomialC.numBound",
+            "informal_name": "Numerical Bound for Multivariate Polynomials in Chevalley's Theorem",
+            "kind": "definition",
+            "type": "ℕ → (ℕ → ℕ) → ℕ → ℕ",
+            "informal_description": "A function that takes a natural number $n$, a function $f : \\mathbb{N} \\to \\mathbb{N}$, and another natural number $m$, returning a natural number used to establish well-founded recursion in the context of multivariate polynomials and Chevalley's theorem. It computes bounds by recursively applying $f$ to $n$ and decrementing $m$.",
+            "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+          },
+          {
+            "formal_name": "ChevalleyThm.MvPolynomialC.degBound_succ",
+            "informal_name": "Recursive Successor Formula for Degree Bound in Chevalley's Theorem",
+            "kind": "theorem",
+            "type": "∀ (k : ℕ) (D : ℕ → ℕ) (n : ℕ),\n  ChevalleyThm.MvPolynomialC.degBound k D (n + 1) =\n    ChevalleyThm.MvPolynomialC.numBound k D (n + 1) ^ ChevalleyThm.MvPolynomialC.numBound k D (n + 1) *\n      ChevalleyThm.MvPolynomialC.degBound k D n",
+            "informal_description": "For natural numbers $k$, $D$, and $n$, the degree bound $\\operatorname{degBound}(k, D, n+1)$ satisfies the recursive relation $\\operatorname{degBound}(k, D, n+1) = \\operatorname{numBound}(k, D, n+1)^{\\operatorname{numBound}(k, D, n+1)} \\cdot \\operatorname{degBound}(k, D, n)$, where $\\operatorname{numBound}$ computes numerical bounds for multivariate polynomials in the context of Chevalley's theorem.",
+            "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+          },
+          {
+            "formal_name": "Polynomial.natDegree_hasseDeriv_le",
+            "informal_name": "Degree Bound for Hasse Derivative of Polynomials",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (p : Polynomial R) (n : ℕ),\n  ((Polynomial.hasseDeriv n) p).natDegree ≤ p.natDegree - n",
+            "informal_description": "For any polynomial $ p $ over a semiring $ R $ and any natural number $ n $, the natural degree of the $ n $-th Hasse derivative of $ p $ satisfies $ \\deg(D^{(n)}(p)) \\leq \\deg(p) - n $, where $ D^{(n)} $ denotes the Hasse derivative of order $ n $.",
+            "path": "Mathlib.Algebra.Polynomial.HasseDeriv"
+          },
+          {
+            "formal_name": "ChevalleyThm.MvPolynomialC.degBound_pos",
+            "informal_name": "Positivity of Degree Bound in Chevalley's Theorem",
+            "kind": "theorem",
+            "type": "∀ (k : ℕ) (D : ℕ → ℕ) (n : ℕ), 0 < ChevalleyThm.MvPolynomialC.degBound k D n",
+            "informal_description": "For any natural number $k$ and function $D : \\mathbb{N} \\to \\mathbb{N}$, the degree bound $\\text{degBound}\\,k\\,D\\,n$ satisfies $0 < \\text{degBound}\\,k\\,D\\,n$ for all $n \\in \\mathbb{N}$.",
+            "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "tool": "mcp__lean_lsp__lean_leanfinder",
+    "form": "standard",
+    "request": {
+      "query": "degree of determinant of polynomial matrix at most sum column degrees",
+      "num_results": 6
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.natDegree_det_X_add_C_le\",\n      \"informal_name\": \"Natural Degree of Determinant of X•A + B is Bounded by Index Type Cardinality\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {n : Type u_1} {α : Type u_2} [inst : DecidableEq n] [inst_1 : Fintype n] [inst_2 : CommRing α] (A B : Matrix n n α),\\n  (Polynomial.X • A.map ⇑Polynomial.C + B.map ⇑Polynomial.C).det.natDegree ≤ Fintype.card n\",\n      \"informal_description\": \"For any commutative ring $\\\\alpha$ and finite type $n$, and for any $n \\\\times n$ matrices $A$ and $B$ with entries in $\\\\alpha$, the natural degree of the determinant of the matrix $X \\\\cdot A + B$ (where $X$ is the indeterminate and entries are embedded as constant polynomials) is at most the cardinality of $n$.\",\n      \"path\": \"Mathlib.LinearAlgebra.Matrix.Polynomial\"\n    },\n    {\n      \"formal_name\": \"Matrix.toMvPolynomial_totalDegree_le\",\n      \"informal_name\": \"Total Degree of Matrix Row Polynomial is At Most One\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {m : Type u_1} {n : Type u_2} {R : Type u_4} [inst : Fintype n] [inst_1 : CommSemiring R] (M : Matrix m n R) (i : m),\\n  (M.toMvPolynomial i).totalDegree ≤ 1\",\n      \"informal_description\": \"For any matrix $ M $ with entries in a commutative semiring $ R $ and any row index $ i $, the total degree of the multivariate polynomial constructed from the $ i $-th row of $ M $ is at most 1. This polynomial is defined as the linear combination $ \\\\sum_j M_{i,j} x_j $, where each term corresponds to a column entry multiplied by its respective variable.\",\n      \"path\": \"Mathlib.Algebra.Module.LinearMap.Polynomial\"\n    },\n    {\n      \"formal_name\": \"Matrix.det_matrixOfPolynomials\",\n      \"informal_name\": \"Determinant of a Matrix of Monic Polynomials with Degree Conditions Equals One\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type v} [inst : CommRing R] {n : ℕ} (p : Fin n → Polynomial R),\\n  (∀ (i : Fin n), (p i).natDegree = ↑i) → (∀ (i : Fin n), (p i).Monic) → (Matrix.of fun i j => (p j).coeff ↑i).det = 1\",\n      \"informal_description\": \"For a commutative ring $ R $ and natural number $ n $, consider monic polynomials $ p_0, p_1, \\\\ldots, p_{n-1} $ in $ R[X] $ where each $ p_i $ has degree $ i $. Construct an $ n \\\\times n $ matrix $ M $ such that the entry in row $ i $ and column $ j $ is the coefficient of $ X^i $ in $ p_j $. Then the determinant of $ M $ is equal to 1.\",\n      \"path\": \"Mathlib.LinearAlgebra.Matrix.Block\"\n    },\n    {\n      \"formal_name\": \"Matrix.charmatrix_apply_natDegree_le\",\n      \"informal_name\": \"Natural Degree Bound for Characteristic Matrix Entries\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : CommRing R] {n : Type v} [inst_1 : DecidableEq n] [inst_2 : Fintype n] {M : Matrix n n R}\\n  (i j : n), (M.charmatrix i j).natDegree ≤ if i = j then 1 else 0\",\n      \"informal_description\": \"For a matrix $ M $ over a commutative ring with finite index type $ n $, the natural degree of the polynomial entry at position $ (i,j) $ in the characteristic matrix $ tI - M $ satisfies: it is at most $ 1 $ if $ i = j $, and at most $ 0 $ otherwise.\",\n      \"path\": \"Mathlib.LinearAlgebra.Matrix.Charpoly.Coeff\"\n    },\n    {\n      \"formal_name\": \"Polynomial.coeff_det_X_add_C_card\",\n      \"informal_name\": \"Leading Coefficient of Determinant of $ XA + B $ is Determinant of $ A $\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {n : Type u_1} {α : Type u_2} [inst : DecidableEq n] [inst_1 : Fintype n] [inst_2 : CommRing α] (A B : Matrix n n α),\\n  (Polynomial.X • A.map ⇑Polynomial.C + B.map ⇑Polynomial.C).det.coeff (Fintype.card n) = A.det\",\n      \"informal_description\": \"For square matrices $ A $ and $ B $ over a commutative ring $ \\\\alpha $, the coefficient of $ X^{\\\\#n} $ in the determinant of the matrix $ X \\\\cdot A + B $ (where entries are lifted to polynomials via constant embedding) is equal to the determinant of $ A $. Here $ \\\\#n $ denotes the cardinality of the finite type $ n $.\",\n      \"path\": \"Mathlib.LinearAlgebra.Matrix.Polynomial\"\n    },\n    {\n      \"formal_name\": \"Matrix.det_mvPolynomialX_ne_zero\",\n      \"informal_name\": \"Non-vanishing Determinant of Square Matrix of Variables in Multivariate Polynomial Ring\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (m : Type u_1) (R : Type u_3) [inst : DecidableEq m] [inst_1 : Fintype m] [inst_2 : CommRing R] [Nontrivial R],\\n  (Matrix.mvPolynomialX m m R).det ≠ 0\",\n      \"informal_description\": \"Given a finite type $ m $ with decidable equality and a non-trivial commutative ring $ R $, the determinant of the $ m \\\\times m $ matrix whose $(i,j)$-entries are distinct indeterminates $ X_{(i,j)} $ in the multivariate polynomial ring $ R[X_{(i,j)}] $ is non-zero. This holds because the determinant evaluates to a monomial that cannot be zero in the polynomial ring over a non-trivial ring.\",\n      \"path\": \"Mathlib.LinearAlgebra.Matrix.MvPolynomial\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Polynomial.natDegree_det_X_add_C_le",
+            "informal_name": "Natural Degree of Determinant of X•A + B is Bounded by Index Type Cardinality",
+            "kind": "theorem",
+            "type": "∀ {n : Type u_1} {α : Type u_2} [inst : DecidableEq n] [inst_1 : Fintype n] [inst_2 : CommRing α] (A B : Matrix n n α),\n  (Polynomial.X • A.map ⇑Polynomial.C + B.map ⇑Polynomial.C).det.natDegree ≤ Fintype.card n",
+            "informal_description": "For any commutative ring $\\alpha$ and finite type $n$, and for any $n \\times n$ matrices $A$ and $B$ with entries in $\\alpha$, the natural degree of the determinant of the matrix $X \\cdot A + B$ (where $X$ is the indeterminate and entries are embedded as constant polynomials) is at most the cardinality of $n$.",
+            "path": "Mathlib.LinearAlgebra.Matrix.Polynomial"
+          },
+          {
+            "formal_name": "Matrix.toMvPolynomial_totalDegree_le",
+            "informal_name": "Total Degree of Matrix Row Polynomial is At Most One",
+            "kind": "theorem",
+            "type": "∀ {m : Type u_1} {n : Type u_2} {R : Type u_4} [inst : Fintype n] [inst_1 : CommSemiring R] (M : Matrix m n R) (i : m),\n  (M.toMvPolynomial i).totalDegree ≤ 1",
+            "informal_description": "For any matrix $ M $ with entries in a commutative semiring $ R $ and any row index $ i $, the total degree of the multivariate polynomial constructed from the $ i $-th row of $ M $ is at most 1. This polynomial is defined as the linear combination $ \\sum_j M_{i,j} x_j $, where each term corresponds to a column entry multiplied by its respective variable.",
+            "path": "Mathlib.Algebra.Module.LinearMap.Polynomial"
+          },
+          {
+            "formal_name": "Matrix.det_matrixOfPolynomials",
+            "informal_name": "Determinant of a Matrix of Monic Polynomials with Degree Conditions Equals One",
+            "kind": "theorem",
+            "type": "∀ {R : Type v} [inst : CommRing R] {n : ℕ} (p : Fin n → Polynomial R),\n  (∀ (i : Fin n), (p i).natDegree = ↑i) → (∀ (i : Fin n), (p i).Monic) → (Matrix.of fun i j => (p j).coeff ↑i).det = 1",
+            "informal_description": "For a commutative ring $ R $ and natural number $ n $, consider monic polynomials $ p_0, p_1, \\ldots, p_{n-1} $ in $ R[X] $ where each $ p_i $ has degree $ i $. Construct an $ n \\times n $ matrix $ M $ such that the entry in row $ i $ and column $ j $ is the coefficient of $ X^i $ in $ p_j $. Then the determinant of $ M $ is equal to 1.",
+            "path": "Mathlib.LinearAlgebra.Matrix.Block"
+          },
+          {
+            "formal_name": "Matrix.charmatrix_apply_natDegree_le",
+            "informal_name": "Natural Degree Bound for Characteristic Matrix Entries",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : CommRing R] {n : Type v} [inst_1 : DecidableEq n] [inst_2 : Fintype n] {M : Matrix n n R}\n  (i j : n), (M.charmatrix i j).natDegree ≤ if i = j then 1 else 0",
+            "informal_description": "For a matrix $ M $ over a commutative ring with finite index type $ n $, the natural degree of the polynomial entry at position $ (i,j) $ in the characteristic matrix $ tI - M $ satisfies: it is at most $ 1 $ if $ i = j $, and at most $ 0 $ otherwise.",
+            "path": "Mathlib.LinearAlgebra.Matrix.Charpoly.Coeff"
+          },
+          {
+            "formal_name": "Polynomial.coeff_det_X_add_C_card",
+            "informal_name": "Leading Coefficient of Determinant of $ XA + B $ is Determinant of $ A $",
+            "kind": "theorem",
+            "type": "∀ {n : Type u_1} {α : Type u_2} [inst : DecidableEq n] [inst_1 : Fintype n] [inst_2 : CommRing α] (A B : Matrix n n α),\n  (Polynomial.X • A.map ⇑Polynomial.C + B.map ⇑Polynomial.C).det.coeff (Fintype.card n) = A.det",
+            "informal_description": "For square matrices $ A $ and $ B $ over a commutative ring $ \\alpha $, the coefficient of $ X^{\\#n} $ in the determinant of the matrix $ X \\cdot A + B $ (where entries are lifted to polynomials via constant embedding) is equal to the determinant of $ A $. Here $ \\#n $ denotes the cardinality of the finite type $ n $.",
+            "path": "Mathlib.LinearAlgebra.Matrix.Polynomial"
+          },
+          {
+            "formal_name": "Matrix.det_mvPolynomialX_ne_zero",
+            "informal_name": "Non-vanishing Determinant of Square Matrix of Variables in Multivariate Polynomial Ring",
+            "kind": "theorem",
+            "type": "∀ (m : Type u_1) (R : Type u_3) [inst : DecidableEq m] [inst_1 : Fintype m] [inst_2 : CommRing R] [Nontrivial R],\n  (Matrix.mvPolynomialX m m R).det ≠ 0",
+            "informal_description": "Given a finite type $ m $ with decidable equality and a non-trivial commutative ring $ R $, the determinant of the $ m \\times m $ matrix whose $(i,j)$-entries are distinct indeterminates $ X_{(i,j)} $ in the multivariate polynomial ring $ R[X_{(i,j)}] $ is non-zero. This holds because the determinant evaluates to a monomial that cannot be zero in the polynomial ring over a non-trivial ring.",
+            "path": "Mathlib.LinearAlgebra.Matrix.MvPolynomial"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "tool": "mcp__lean_lsp__lean_leanfinder",
+    "form": "abstract",
+    "request": {
+      "query": "degreeOf determinant matrix multivariate polynomials commutative ring",
+      "num_results": 6
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.natDegree_det_X_add_C_le\",\n      \"informal_name\": \"Natural Degree of Determinant of X•A + B is Bounded by Index Type Cardinality\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {n : Type u_1} {α : Type u_2} [inst : DecidableEq n] [inst_1 : Fintype n] [inst_2 : CommRing α] (A B : Matrix n n α),\\n  (Polynomial.X • A.map ⇑Polynomial.C + B.map ⇑Polynomial.C).det.natDegree ≤ Fintype.card n\",\n      \"informal_description\": \"For any commutative ring $\\\\alpha$ and finite type $n$, and for any $n \\\\times n$ matrices $A$ and $B$ with entries in $\\\\alpha$, the natural degree of the determinant of the matrix $X \\\\cdot A + B$ (where $X$ is the indeterminate and entries are embedded as constant polynomials) is at most the cardinality of $n$.\",\n      \"path\": \"Mathlib.LinearAlgebra.Matrix.Polynomial\"\n    },\n    {\n      \"formal_name\": \"Matrix.det_matrixOfPolynomials\",\n      \"informal_name\": \"Determinant of a Matrix of Monic Polynomials with Degree Conditions Equals One\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type v} [inst : CommRing R] {n : ℕ} (p : Fin n → Polynomial R),\\n  (∀ (i : Fin n), (p i).natDegree = ↑i) → (∀ (i : Fin n), (p i).Monic) → (Matrix.of fun i j => (p j).coeff ↑i).det = 1\",\n      \"informal_description\": \"For a commutative ring $ R $ and natural number $ n $, consider monic polynomials $ p_0, p_1, \\\\ldots, p_{n-1} $ in $ R[X] $ where each $ p_i $ has degree $ i $. Construct an $ n \\\\times n $ matrix $ M $ such that the entry in row $ i $ and column $ j $ is the coefficient of $ X^i $ in $ p_j $. Then the determinant of $ M $ is equal to 1.\",\n      \"path\": \"Mathlib.LinearAlgebra.Matrix.Block\"\n    },\n    {\n      \"formal_name\": \"Matrix.toMvPolynomial_totalDegree_le\",\n      \"informal_name\": \"Total Degree of Matrix Row Polynomial is At Most One\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {m : Type u_1} {n : Type u_2} {R : Type u_4} [inst : Fintype n] [inst_1 : CommSemiring R] (M : Matrix m n R) (i : m),\\n  (M.toMvPolynomial i).totalDegree ≤ 1\",\n      \"informal_description\": \"For any matrix $ M $ with entries in a commutative semiring $ R $ and any row index $ i $, the total degree of the multivariate polynomial constructed from the $ i $-th row of $ M $ is at most 1. This polynomial is defined as the linear combination $ \\\\sum_j M_{i,j} x_j $, where each term corresponds to a column entry multiplied by its respective variable.\",\n      \"path\": \"Mathlib.Algebra.Module.LinearMap.Polynomial\"\n    },\n    {\n      \"formal_name\": \"Matrix.det_mvPolynomialX_ne_zero\",\n      \"informal_name\": \"Non-vanishing Determinant of Square Matrix of Variables in Multivariate Polynomial Ring\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (m : Type u_1) (R : Type u_3) [inst : DecidableEq m] [inst_1 : Fintype m] [inst_2 : CommRing R] [Nontrivial R],\\n  (Matrix.mvPolynomialX m m R).det ≠ 0\",\n      \"informal_description\": \"Given a finite type $ m $ with decidable equality and a non-trivial commutative ring $ R $, the determinant of the $ m \\\\times m $ matrix whose $(i,j)$-entries are distinct indeterminates $ X_{(i,j)} $ in the multivariate polynomial ring $ R[X_{(i,j)}] $ is non-zero. This holds because the determinant evaluates to a monomial that cannot be zero in the polynomial ring over a non-trivial ring.\",\n      \"path\": \"Mathlib.LinearAlgebra.Matrix.MvPolynomial\"\n    },\n    {\n      \"formal_name\": \"Polynomial.coeff_det_X_add_C_card\",\n      \"informal_name\": \"Leading Coefficient of Determinant of $ XA + B $ is Determinant of $ A $\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {n : Type u_1} {α : Type u_2} [inst : DecidableEq n] [inst_1 : Fintype n] [inst_2 : CommRing α] (A B : Matrix n n α),\\n  (Polynomial.X • A.map ⇑Polynomial.C + B.map ⇑Polynomial.C).det.coeff (Fintype.card n) = A.det\",\n      \"informal_description\": \"For square matrices $ A $ and $ B $ over a commutative ring $ \\\\alpha $, the coefficient of $ X^{\\\\#n} $ in the determinant of the matrix $ X \\\\cdot A + B $ (where entries are lifted to polynomials via constant embedding) is equal to the determinant of $ A $. Here $ \\\\#n $ denotes the cardinality of the finite type $ n $.\",\n      \"path\": \"Mathlib.LinearAlgebra.Matrix.Polynomial\"\n    },\n    {\n      \"formal_name\": \"Matrix.det_eval_matrixOfPolynomials_eq_det_vandermonde\",\n      \"informal_name\": \"Vandermonde Determinant Equals Monic Polynomial Evaluation Determinant\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] {n : ℕ} (v : Fin n → R) (p : Fin n → Polynomial R),\\n  (∀ (i : Fin n), (p i).natDegree = ↑i) →\\n    (∀ (i : Fin n), (p i).Monic) → (Matrix.vandermonde v).det = (Matrix.of fun i j => Polynomial.eval (v i) (p j)).det\",\n      \"informal_description\": \"For a commutative ring $ R $, a vector $ v $ of length $ n $ with entries in $ R $, and a sequence of monic polynomials $ p_0, p_1, \\\\ldots, p_{n-1} $ over $ R $ where each $ p_i $ has degree $ i $, the determinant of the $ n \\\\times n $ Vandermonde matrix formed by $ v $ is equal to the determinant of the matrix whose $ (i,j) $-entry is $ p_j(v_i) $, the evaluation of polynomial $ p_j $ at $ v_i $. This equality holds under the conditions that each polynomial is monic and has natural degree equal to its index.\",\n      \"path\": \"Mathlib.LinearAlgebra.Vandermonde\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Polynomial.natDegree_det_X_add_C_le",
+            "informal_name": "Natural Degree of Determinant of X•A + B is Bounded by Index Type Cardinality",
+            "kind": "theorem",
+            "type": "∀ {n : Type u_1} {α : Type u_2} [inst : DecidableEq n] [inst_1 : Fintype n] [inst_2 : CommRing α] (A B : Matrix n n α),\n  (Polynomial.X • A.map ⇑Polynomial.C + B.map ⇑Polynomial.C).det.natDegree ≤ Fintype.card n",
+            "informal_description": "For any commutative ring $\\alpha$ and finite type $n$, and for any $n \\times n$ matrices $A$ and $B$ with entries in $\\alpha$, the natural degree of the determinant of the matrix $X \\cdot A + B$ (where $X$ is the indeterminate and entries are embedded as constant polynomials) is at most the cardinality of $n$.",
+            "path": "Mathlib.LinearAlgebra.Matrix.Polynomial"
+          },
+          {
+            "formal_name": "Matrix.det_matrixOfPolynomials",
+            "informal_name": "Determinant of a Matrix of Monic Polynomials with Degree Conditions Equals One",
+            "kind": "theorem",
+            "type": "∀ {R : Type v} [inst : CommRing R] {n : ℕ} (p : Fin n → Polynomial R),\n  (∀ (i : Fin n), (p i).natDegree = ↑i) → (∀ (i : Fin n), (p i).Monic) → (Matrix.of fun i j => (p j).coeff ↑i).det = 1",
+            "informal_description": "For a commutative ring $ R $ and natural number $ n $, consider monic polynomials $ p_0, p_1, \\ldots, p_{n-1} $ in $ R[X] $ where each $ p_i $ has degree $ i $. Construct an $ n \\times n $ matrix $ M $ such that the entry in row $ i $ and column $ j $ is the coefficient of $ X^i $ in $ p_j $. Then the determinant of $ M $ is equal to 1.",
+            "path": "Mathlib.LinearAlgebra.Matrix.Block"
+          },
+          {
+            "formal_name": "Matrix.toMvPolynomial_totalDegree_le",
+            "informal_name": "Total Degree of Matrix Row Polynomial is At Most One",
+            "kind": "theorem",
+            "type": "∀ {m : Type u_1} {n : Type u_2} {R : Type u_4} [inst : Fintype n] [inst_1 : CommSemiring R] (M : Matrix m n R) (i : m),\n  (M.toMvPolynomial i).totalDegree ≤ 1",
+            "informal_description": "For any matrix $ M $ with entries in a commutative semiring $ R $ and any row index $ i $, the total degree of the multivariate polynomial constructed from the $ i $-th row of $ M $ is at most 1. This polynomial is defined as the linear combination $ \\sum_j M_{i,j} x_j $, where each term corresponds to a column entry multiplied by its respective variable.",
+            "path": "Mathlib.Algebra.Module.LinearMap.Polynomial"
+          },
+          {
+            "formal_name": "Matrix.det_mvPolynomialX_ne_zero",
+            "informal_name": "Non-vanishing Determinant of Square Matrix of Variables in Multivariate Polynomial Ring",
+            "kind": "theorem",
+            "type": "∀ (m : Type u_1) (R : Type u_3) [inst : DecidableEq m] [inst_1 : Fintype m] [inst_2 : CommRing R] [Nontrivial R],\n  (Matrix.mvPolynomialX m m R).det ≠ 0",
+            "informal_description": "Given a finite type $ m $ with decidable equality and a non-trivial commutative ring $ R $, the determinant of the $ m \\times m $ matrix whose $(i,j)$-entries are distinct indeterminates $ X_{(i,j)} $ in the multivariate polynomial ring $ R[X_{(i,j)}] $ is non-zero. This holds because the determinant evaluates to a monomial that cannot be zero in the polynomial ring over a non-trivial ring.",
+            "path": "Mathlib.LinearAlgebra.Matrix.MvPolynomial"
+          },
+          {
+            "formal_name": "Polynomial.coeff_det_X_add_C_card",
+            "informal_name": "Leading Coefficient of Determinant of $ XA + B $ is Determinant of $ A $",
+            "kind": "theorem",
+            "type": "∀ {n : Type u_1} {α : Type u_2} [inst : DecidableEq n] [inst_1 : Fintype n] [inst_2 : CommRing α] (A B : Matrix n n α),\n  (Polynomial.X • A.map ⇑Polynomial.C + B.map ⇑Polynomial.C).det.coeff (Fintype.card n) = A.det",
+            "informal_description": "For square matrices $ A $ and $ B $ over a commutative ring $ \\alpha $, the coefficient of $ X^{\\#n} $ in the determinant of the matrix $ X \\cdot A + B $ (where entries are lifted to polynomials via constant embedding) is equal to the determinant of $ A $. Here $ \\#n $ denotes the cardinality of the finite type $ n $.",
+            "path": "Mathlib.LinearAlgebra.Matrix.Polynomial"
+          },
+          {
+            "formal_name": "Matrix.det_eval_matrixOfPolynomials_eq_det_vandermonde",
+            "informal_name": "Vandermonde Determinant Equals Monic Polynomial Evaluation Determinant",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommRing R] {n : ℕ} (v : Fin n → R) (p : Fin n → Polynomial R),\n  (∀ (i : Fin n), (p i).natDegree = ↑i) →\n    (∀ (i : Fin n), (p i).Monic) → (Matrix.vandermonde v).det = (Matrix.of fun i j => Polynomial.eval (v i) (p j)).det",
+            "informal_description": "For a commutative ring $ R $, a vector $ v $ of length $ n $ with entries in $ R $, and a sequence of monic polynomials $ p_0, p_1, \\ldots, p_{n-1} $ over $ R $ where each $ p_i $ has degree $ i $, the determinant of the $ n \\times n $ Vandermonde matrix formed by $ v $ is equal to the determinant of the matrix whose $ (i,j) $-entry is $ p_j(v_i) $, the evaluation of polynomial $ p_j $ at $ v_i $. This equality holds under the conditions that each polynomial is monic and has natural degree equal to its index.",
+            "path": "Mathlib.LinearAlgebra.Vandermonde"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "tool": "mcp__lean_lsp__lean_loogle",
+    "form": "current",
+    "request": {
+      "query": "MvPolynomial.degreeOf, Matrix.det",
+      "num_results": 8
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": []\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": []
+      },
+      "isError": false
+    }
+  },
+  {
+    "tool": "mcp__lean_lsp__lean_loogle",
+    "form": "standard",
+    "request": {
+      "query": "Polynomial.natDegree, Matrix.det",
+      "num_results": 8
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.natDegree_det_X_add_C_le\",\n      \"type\": \" {n : Type u_1} {α : Type u_2} [DecidableEq n] [Fintype n] [CommRing α] (A B : Matrix n n α) : (Polynomial.X • A.map ⇑Polynomial.C + B.map ⇑Polynomial.C).det.natDegree ≤ Fintype.card n\",\n      \"module\": \"Mathlib.LinearAlgebra.Matrix.Polynomial\"\n    },\n    {\n      \"name\": \"Matrix.det_matrixOfPolynomials\",\n      \"type\": \" {R : Type v} [CommRing R] {n : ℕ} (p : Fin n → Polynomial R) (h_deg : ∀ (i : Fin n), (p i).natDegree = ↑i) (h_monic : ∀ (i : Fin n), (p i).Monic) : (Matrix.of fun i j => (p j).coeff ↑i).det = 1\",\n      \"module\": \"Mathlib.LinearAlgebra.Matrix.Block\"\n    },\n    {\n      \"name\": \"Matrix.det_eval_matrixOfPolynomials_eq_det_vandermonde\",\n      \"type\": \" {R : Type u_1} [CommRing R] {n : ℕ} (v : Fin n → R) (p : Fin n → Polynomial R) (h_deg : ∀ (i : Fin n), (p i).natDegree = ↑i) (h_monic : ∀ (i : Fin n), (p i).Monic) : (Matrix.vandermonde v).det = (Matrix.of fun i j => Polynomial.eval (v i) (p j)).det\",\n      \"module\": \"Mathlib.LinearAlgebra.Vandermonde\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.natDegree_det_X_add_C_le",
+            "type": " {n : Type u_1} {α : Type u_2} [DecidableEq n] [Fintype n] [CommRing α] (A B : Matrix n n α) : (Polynomial.X • A.map ⇑Polynomial.C + B.map ⇑Polynomial.C).det.natDegree ≤ Fintype.card n",
+            "module": "Mathlib.LinearAlgebra.Matrix.Polynomial"
+          },
+          {
+            "name": "Matrix.det_matrixOfPolynomials",
+            "type": " {R : Type v} [CommRing R] {n : ℕ} (p : Fin n → Polynomial R) (h_deg : ∀ (i : Fin n), (p i).natDegree = ↑i) (h_monic : ∀ (i : Fin n), (p i).Monic) : (Matrix.of fun i j => (p j).coeff ↑i).det = 1",
+            "module": "Mathlib.LinearAlgebra.Matrix.Block"
+          },
+          {
+            "name": "Matrix.det_eval_matrixOfPolynomials_eq_det_vandermonde",
+            "type": " {R : Type u_1} [CommRing R] {n : ℕ} (v : Fin n → R) (p : Fin n → Polynomial R) (h_deg : ∀ (i : Fin n), (p i).natDegree = ↑i) (h_monic : ∀ (i : Fin n), (p i).Monic) : (Matrix.vandermonde v).det = (Matrix.of fun i j => Polynomial.eval (v i) (p j)).det",
+            "module": "Mathlib.LinearAlgebra.Vandermonde"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "tool": "mcp__lean_lsp__lean_loogle",
+    "form": "abstract",
+    "request": {
+      "query": "MvPolynomial.degreeOf, _ ≤ _",
+      "num_results": 8
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.degreeOf_le_totalDegree\",\n      \"type\": \" {R : Type u} {σ : Type u_1} [CommSemiring R] (f : MvPolynomial σ R) (i : σ) : MvPolynomial.degreeOf i f ≤ f.totalDegree\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Degrees\"\n    },\n    {\n      \"name\": \"MvPolynomial.degreeOf_sum_le\",\n      \"type\": \" {R : Type u} {σ : Type u_1} [CommSemiring R] {ι : Type u_3} (i : σ) (s : Finset ι) (f : ι → MvPolynomial σ R) : MvPolynomial.degreeOf i (∑ j ∈ s, f j) ≤ s.sup fun j => MvPolynomial.degreeOf i (f j)\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Degrees\"\n    },\n    {\n      \"name\": \"MvPolynomial.degreeOf_prod_le\",\n      \"type\": \" {R : Type u} {σ : Type u_1} [CommSemiring R] {ι : Type u_3} (i : σ) (s : Finset ι) (f : ι → MvPolynomial σ R) : MvPolynomial.degreeOf i (∏ j ∈ s, f j) ≤ ∑ j ∈ s, MvPolynomial.degreeOf i (f j)\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Degrees\"\n    },\n    {\n      \"name\": \"MvPolynomial.degreeOf_mul_X_self\",\n      \"type\": \" {R : Type u} {σ : Type u_1} [CommSemiring R] (j : σ) (f : MvPolynomial σ R) : MvPolynomial.degreeOf j (f * MvPolynomial.X j) ≤ MvPolynomial.degreeOf j f + 1\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Degrees\"\n    },\n    {\n      \"name\": \"MvPolynomial.degreeOf_mul_le\",\n      \"type\": \" {R : Type u} {σ : Type u_1} [CommSemiring R] (i : σ) (f g : MvPolynomial σ R) : MvPolynomial.degreeOf i (f * g) ≤ MvPolynomial.degreeOf i f + MvPolynomial.degreeOf i g\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Degrees\"\n    },\n    {\n      \"name\": \"MvPolynomial.degreeOf_pow_le\",\n      \"type\": \" {R : Type u} {σ : Type u_1} [CommSemiring R] (i : σ) (p : MvPolynomial σ R) (n : ℕ) : MvPolynomial.degreeOf i (p ^ n) ≤ n * MvPolynomial.degreeOf i p\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Degrees\"\n    },\n    {\n      \"name\": \"MvPolynomial.degreeOf_add_le\",\n      \"type\": \" {R : Type u} {σ : Type u_1} [CommSemiring R] (n : σ) (f g : MvPolynomial σ R) : MvPolynomial.degreeOf n (f + g) ≤ max (MvPolynomial.degreeOf n f) (MvPolynomial.degreeOf n g)\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Degrees\"\n    },\n    {\n      \"name\": \"MvPolynomial.le_degreeOf_of_mem_support\",\n      \"type\": \" {R : Type u} {σ : Type u_1} [CommSemiring R] {p : MvPolynomial σ R} (i : σ) {s : σ →₀ ℕ} : s ∈ p.support → s i ≤ MvPolynomial.degreeOf i p\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Degrees\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.degreeOf_le_totalDegree",
+            "type": " {R : Type u} {σ : Type u_1} [CommSemiring R] (f : MvPolynomial σ R) (i : σ) : MvPolynomial.degreeOf i f ≤ f.totalDegree",
+            "module": "Mathlib.Algebra.MvPolynomial.Degrees"
+          },
+          {
+            "name": "MvPolynomial.degreeOf_sum_le",
+            "type": " {R : Type u} {σ : Type u_1} [CommSemiring R] {ι : Type u_3} (i : σ) (s : Finset ι) (f : ι → MvPolynomial σ R) : MvPolynomial.degreeOf i (∑ j ∈ s, f j) ≤ s.sup fun j => MvPolynomial.degreeOf i (f j)",
+            "module": "Mathlib.Algebra.MvPolynomial.Degrees"
+          },
+          {
+            "name": "MvPolynomial.degreeOf_prod_le",
+            "type": " {R : Type u} {σ : Type u_1} [CommSemiring R] {ι : Type u_3} (i : σ) (s : Finset ι) (f : ι → MvPolynomial σ R) : MvPolynomial.degreeOf i (∏ j ∈ s, f j) ≤ ∑ j ∈ s, MvPolynomial.degreeOf i (f j)",
+            "module": "Mathlib.Algebra.MvPolynomial.Degrees"
+          },
+          {
+            "name": "MvPolynomial.degreeOf_mul_X_self",
+            "type": " {R : Type u} {σ : Type u_1} [CommSemiring R] (j : σ) (f : MvPolynomial σ R) : MvPolynomial.degreeOf j (f * MvPolynomial.X j) ≤ MvPolynomial.degreeOf j f + 1",
+            "module": "Mathlib.Algebra.MvPolynomial.Degrees"
+          },
+          {
+            "name": "MvPolynomial.degreeOf_mul_le",
+            "type": " {R : Type u} {σ : Type u_1} [CommSemiring R] (i : σ) (f g : MvPolynomial σ R) : MvPolynomial.degreeOf i (f * g) ≤ MvPolynomial.degreeOf i f + MvPolynomial.degreeOf i g",
+            "module": "Mathlib.Algebra.MvPolynomial.Degrees"
+          },
+          {
+            "name": "MvPolynomial.degreeOf_pow_le",
+            "type": " {R : Type u} {σ : Type u_1} [CommSemiring R] (i : σ) (p : MvPolynomial σ R) (n : ℕ) : MvPolynomial.degreeOf i (p ^ n) ≤ n * MvPolynomial.degreeOf i p",
+            "module": "Mathlib.Algebra.MvPolynomial.Degrees"
+          },
+          {
+            "name": "MvPolynomial.degreeOf_add_le",
+            "type": " {R : Type u} {σ : Type u_1} [CommSemiring R] (n : σ) (f g : MvPolynomial σ R) : MvPolynomial.degreeOf n (f + g) ≤ max (MvPolynomial.degreeOf n f) (MvPolynomial.degreeOf n g)",
+            "module": "Mathlib.Algebra.MvPolynomial.Degrees"
+          },
+          {
+            "name": "MvPolynomial.le_degreeOf_of_mem_support",
+            "type": " {R : Type u} {σ : Type u_1} [CommSemiring R] {p : MvPolynomial σ R} (i : σ) {s : σ →₀ ℕ} : s ∈ p.support → s i ≤ MvPolynomial.degreeOf i p",
+            "module": "Mathlib.Algebra.MvPolynomial.Degrees"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "tool": "mcp__lean_lsp__lean_leansearch",
+    "form": "current",
+    "request": {
+      "query": "The degree in a variable of the determinant of Hasse derivatives is bounded by the size times the degree of the polynomial.",
+      "num_results": 6
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.natDegree_hasseDeriv_le\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.HasseDeriv\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : Semiring R] (p : Polynomial R) (n : ℕ),\\n  ((Polynomial.hasseDeriv n) p).natDegree ≤ p.natDegree - n\"\n    },\n    {\n      \"name\": \"MvPolynomial.degreeOf_pow_le\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Degrees\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] (i : σ) (p : MvPolynomial σ R) (n : ℕ),\\n  MvPolynomial.degreeOf i (p ^ n) ≤ n * MvPolynomial.degreeOf i p\"\n    },\n    {\n      \"name\": \"Polynomial.degree_derivative_lt\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Derivative\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Semiring R] {p : Polynomial R}, p ≠ 0 → (Polynomial.derivative p).degree < p.degree\"\n    },\n    {\n      \"name\": \"Polynomial.natDegree_derivative_le\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Derivative\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Semiring R] (p : Polynomial R), (Polynomial.derivative p).natDegree ≤ p.natDegree - 1\"\n    },\n    {\n      \"name\": \"MvPolynomial.degreeOf_le_totalDegree\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Degrees\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] (f : MvPolynomial σ R) (i : σ),\\n  MvPolynomial.degreeOf i f ≤ f.totalDegree\"\n    },\n    {\n      \"name\": \"Polynomial.natDegree_det_X_add_C_le\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Matrix.Polynomial\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {n : Type u_1} {α : Type u_2} [inst : DecidableEq n] [inst_1 : Fintype n] [inst_2 : CommRing α] (A B : Matrix n n α),\\n  (Polynomial.X • A.map ⇑Polynomial.C + B.map ⇑Polynomial.C).det.natDegree ≤ Fintype.card n\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.natDegree_hasseDeriv_le",
+            "module_name": "Mathlib.Algebra.Polynomial.HasseDeriv",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : Semiring R] (p : Polynomial R) (n : ℕ),\n  ((Polynomial.hasseDeriv n) p).natDegree ≤ p.natDegree - n"
+          },
+          {
+            "name": "MvPolynomial.degreeOf_pow_le",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Degrees",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] (i : σ) (p : MvPolynomial σ R) (n : ℕ),\n  MvPolynomial.degreeOf i (p ^ n) ≤ n * MvPolynomial.degreeOf i p"
+          },
+          {
+            "name": "Polynomial.degree_derivative_lt",
+            "module_name": "Mathlib.Algebra.Polynomial.Derivative",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : Semiring R] {p : Polynomial R}, p ≠ 0 → (Polynomial.derivative p).degree < p.degree"
+          },
+          {
+            "name": "Polynomial.natDegree_derivative_le",
+            "module_name": "Mathlib.Algebra.Polynomial.Derivative",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : Semiring R] (p : Polynomial R), (Polynomial.derivative p).natDegree ≤ p.natDegree - 1"
+          },
+          {
+            "name": "MvPolynomial.degreeOf_le_totalDegree",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Degrees",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] (f : MvPolynomial σ R) (i : σ),\n  MvPolynomial.degreeOf i f ≤ f.totalDegree"
+          },
+          {
+            "name": "Polynomial.natDegree_det_X_add_C_le",
+            "module_name": "Mathlib.LinearAlgebra.Matrix.Polynomial",
+            "kind": "theorem",
+            "type": "∀ {n : Type u_1} {α : Type u_2} [inst : DecidableEq n] [inst_1 : Fintype n] [inst_2 : CommRing α] (A B : Matrix n n α),\n  (Polynomial.X • A.map ⇑Polynomial.C + B.map ⇑Polynomial.C).det.natDegree ≤ Fintype.card n"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "tool": "mcp__lean_lsp__lean_leansearch",
+    "form": "standard",
+    "request": {
+      "query": "The degree of the determinant of a polynomial matrix is at most the sum of the column degrees.",
+      "num_results": 6
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.degree_multiset_prod_le\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.BigOperators\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : CommSemiring R] (t : Multiset (Polynomial R)),\\n  t.prod.degree ≤ (Multiset.map Polynomial.degree t).sum\"\n    },\n    {\n      \"name\": \"Polynomial.degree_prod_le\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.BigOperators\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {ι : Type w} (s : Finset ι) [inst : CommSemiring R] (f : ι → Polynomial R),\\n  (∏ i ∈ s, f i).degree ≤ ∑ i ∈ s, (f i).degree\"\n    },\n    {\n      \"name\": \"Polynomial.natDegree_prod_le\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.BigOperators\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {ι : Type w} (s : Finset ι) [inst : CommSemiring R] (f : ι → Polynomial R),\\n  (∏ i ∈ s, f i).natDegree ≤ ∑ i ∈ s, (f i).natDegree\"\n    },\n    {\n      \"name\": \"Matrix.det_matrixOfPolynomials\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Matrix.Block\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type v} [inst : CommRing R] {n : ℕ} (p : Fin n → Polynomial R),\\n  (∀ (i : Fin n), (p i).natDegree = ↑i) → (∀ (i : Fin n), (p i).Monic) → (Matrix.of fun i j => (p j).coeff ↑i).det = 1\"\n    },\n    {\n      \"name\": \"eval_det\",\n      \"module_name\": \"Mathlib.RingTheory.MatrixPolynomialAlgebra\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {n : Type w} [inst : DecidableEq n] [inst_1 : Fintype n] {R : Type u_3} [inst_2 : CommRing R]\\n  (M : Matrix n n (Polynomial R)) (r : R),\\n  Polynomial.eval r M.det = (Polynomial.eval ((Matrix.scalar n) r) (matPolyEquiv M)).det\"\n    },\n    {\n      \"name\": \"MvPolynomial.degreeOf_prod_le\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Degrees\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] {ι : Type u_3} (i : σ) (s : Finset ι) (f : ι → MvPolynomial σ R),\\n  MvPolynomial.degreeOf i (∏ j ∈ s, f j) ≤ ∑ j ∈ s, MvPolynomial.degreeOf i (f j)\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.degree_multiset_prod_le",
+            "module_name": "Mathlib.Algebra.Polynomial.BigOperators",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : CommSemiring R] (t : Multiset (Polynomial R)),\n  t.prod.degree ≤ (Multiset.map Polynomial.degree t).sum"
+          },
+          {
+            "name": "Polynomial.degree_prod_le",
+            "module_name": "Mathlib.Algebra.Polynomial.BigOperators",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {ι : Type w} (s : Finset ι) [inst : CommSemiring R] (f : ι → Polynomial R),\n  (∏ i ∈ s, f i).degree ≤ ∑ i ∈ s, (f i).degree"
+          },
+          {
+            "name": "Polynomial.natDegree_prod_le",
+            "module_name": "Mathlib.Algebra.Polynomial.BigOperators",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {ι : Type w} (s : Finset ι) [inst : CommSemiring R] (f : ι → Polynomial R),\n  (∏ i ∈ s, f i).natDegree ≤ ∑ i ∈ s, (f i).natDegree"
+          },
+          {
+            "name": "Matrix.det_matrixOfPolynomials",
+            "module_name": "Mathlib.LinearAlgebra.Matrix.Block",
+            "kind": "theorem",
+            "type": "∀ {R : Type v} [inst : CommRing R] {n : ℕ} (p : Fin n → Polynomial R),\n  (∀ (i : Fin n), (p i).natDegree = ↑i) → (∀ (i : Fin n), (p i).Monic) → (Matrix.of fun i j => (p j).coeff ↑i).det = 1"
+          },
+          {
+            "name": "eval_det",
+            "module_name": "Mathlib.RingTheory.MatrixPolynomialAlgebra",
+            "kind": "theorem",
+            "type": "∀ {n : Type w} [inst : DecidableEq n] [inst_1 : Fintype n] {R : Type u_3} [inst_2 : CommRing R]\n  (M : Matrix n n (Polynomial R)) (r : R),\n  Polynomial.eval r M.det = (Polynomial.eval ((Matrix.scalar n) r) (matPolyEquiv M)).det"
+          },
+          {
+            "name": "MvPolynomial.degreeOf_prod_le",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Degrees",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] {ι : Type u_3} (i : σ) (s : Finset ι) (f : ι → MvPolynomial σ R),\n  MvPolynomial.degreeOf i (∏ j ∈ s, f j) ≤ ∑ j ∈ s, MvPolynomial.degreeOf i (f j)"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "tool": "mcp__lean_lsp__lean_leansearch",
+    "form": "abstract",
+    "request": {
+      "query": "The degreeOf a determinant of a matrix of multivariate polynomials over a commutative ring is bounded by the sum of degreeOf of entries.",
+      "num_results": 6
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.degreeOf_mul_le\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Degrees\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] (i : σ) (f g : MvPolynomial σ R),\\n  MvPolynomial.degreeOf i (f * g) ≤ MvPolynomial.degreeOf i f + MvPolynomial.degreeOf i g\"\n    },\n    {\n      \"name\": \"Matrix.det_matrixOfPolynomials\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Matrix.Block\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type v} [inst : CommRing R] {n : ℕ} (p : Fin n → Polynomial R),\\n  (∀ (i : Fin n), (p i).natDegree = ↑i) → (∀ (i : Fin n), (p i).Monic) → (Matrix.of fun i j => (p j).coeff ↑i).det = 1\"\n    },\n    {\n      \"name\": \"Matrix.det_le\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Matrix.AbsoluteValue\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {S : Type u_2} [inst : CommRing R] [Nontrivial R] [inst_2 : CommRing S] [inst_3 : LinearOrder S]\\n  [IsStrictOrderedRing S] {n : Type u_3} [inst_5 : Fintype n] [inst_6 : DecidableEq n] {A : Matrix n n R}\\n  {abv : AbsoluteValue R S} {x : S},\\n  (∀ (i j : n), abv (A i j) ≤ x) → abv A.det ≤ (Fintype.card n).factorial • x ^ Fintype.card n\"\n    },\n    {\n      \"name\": \"Matrix.charmatrix_apply_natDegree_le\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Matrix.Charpoly.Coeff\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : CommRing R] {n : Type v} [inst_1 : DecidableEq n] [inst_2 : Fintype n] {M : Matrix n n R}\\n  (i j : n), (M.charmatrix i j).natDegree ≤ if i = j then 1 else 0\"\n    },\n    {\n      \"name\": \"Matrix.det\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Matrix.Determinant.Basic\",\n      \"kind\": \"definition\",\n      \"type\": \"{n : Type u_2} → [DecidableEq n] → [Fintype n] → {R : Type v} → [CommRing R] → Matrix n n R → R\"\n    },\n    {\n      \"name\": \"Polynomial.natDegree_prod_le\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.BigOperators\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {ι : Type w} (s : Finset ι) [inst : CommSemiring R] (f : ι → Polynomial R),\\n  (∏ i ∈ s, f i).natDegree ≤ ∑ i ∈ s, (f i).natDegree\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "MvPolynomial.degreeOf_mul_le",
+            "module_name": "Mathlib.Algebra.MvPolynomial.Degrees",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] (i : σ) (f g : MvPolynomial σ R),\n  MvPolynomial.degreeOf i (f * g) ≤ MvPolynomial.degreeOf i f + MvPolynomial.degreeOf i g"
+          },
+          {
+            "name": "Matrix.det_matrixOfPolynomials",
+            "module_name": "Mathlib.LinearAlgebra.Matrix.Block",
+            "kind": "theorem",
+            "type": "∀ {R : Type v} [inst : CommRing R] {n : ℕ} (p : Fin n → Polynomial R),\n  (∀ (i : Fin n), (p i).natDegree = ↑i) → (∀ (i : Fin n), (p i).Monic) → (Matrix.of fun i j => (p j).coeff ↑i).det = 1"
+          },
+          {
+            "name": "Matrix.det_le",
+            "module_name": "Mathlib.LinearAlgebra.Matrix.AbsoluteValue",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} {S : Type u_2} [inst : CommRing R] [Nontrivial R] [inst_2 : CommRing S] [inst_3 : LinearOrder S]\n  [IsStrictOrderedRing S] {n : Type u_3} [inst_5 : Fintype n] [inst_6 : DecidableEq n] {A : Matrix n n R}\n  {abv : AbsoluteValue R S} {x : S},\n  (∀ (i j : n), abv (A i j) ≤ x) → abv A.det ≤ (Fintype.card n).factorial • x ^ Fintype.card n"
+          },
+          {
+            "name": "Matrix.charmatrix_apply_natDegree_le",
+            "module_name": "Mathlib.LinearAlgebra.Matrix.Charpoly.Coeff",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : CommRing R] {n : Type v} [inst_1 : DecidableEq n] [inst_2 : Fintype n] {M : Matrix n n R}\n  (i j : n), (M.charmatrix i j).natDegree ≤ if i = j then 1 else 0"
+          },
+          {
+            "name": "Matrix.det",
+            "module_name": "Mathlib.LinearAlgebra.Matrix.Determinant.Basic",
+            "kind": "definition",
+            "type": "{n : Type u_2} → [DecidableEq n] → [Fintype n] → {R : Type v} → [CommRing R] → Matrix n n R → R"
+          },
+          {
+            "name": "Polynomial.natDegree_prod_le",
+            "module_name": "Mathlib.Algebra.Polynomial.BigOperators",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} {ι : Type w} (s : Finset ι) [inst : CommSemiring R] (f : ι → Polynomial R),\n  (∏ i ∈ s, f i).natDegree ≤ ∑ i ∈ s, (f i).natDegree"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "tool": "mcp__lean_lsp__lean_local_search",
+    "form": "current",
+    "request": {
+      "query": "degreeOf_det",
+      "limit": 20
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Roth.degreeOf_det_hasseDeriv_le\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/CoeffNorm.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Roth.degreeOf_det_hasseDeriv_le",
+            "kind": "theorem",
+            "file": "Roth/CoeffNorm.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "tool": "mcp__lean_lsp__lean_local_search",
+    "form": "standard",
+    "request": {
+      "query": "natDegree_det",
+      "limit": 20
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.natDegree_det_X_add_C_le\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/Polynomial.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.natDegree_det_X_add_C_le",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/Polynomial.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "tool": "mcp__lean_lsp__lean_local_search",
+    "form": "abstract",
+    "request": {
+      "query": "degreeOf",
+      "limit": 30
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Lean.Grind.CommRing.Mon.degreeOf\",\n      \"kind\": \"def\",\n      \"file\": \".lean-stdlib/lean/Init/Grind/Ring/CommSolver.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.degreeOf\",\n      \"kind\": \"def\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Degrees.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.degreeOf_taylor_le\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/Taylor.lean\"\n    },\n    {\n      \"name\": \"Roth.degreeOf_coeffNone_le\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/Separation.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.degreeOf_hasseDeriv_le\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/HasseDeriv.lean\"\n    },\n    {\n      \"name\": \"Roth.degreeOf_rename_mul_aeval\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/Separation.lean\"\n    },\n    {\n      \"name\": \"Roth.degreeOf_det_hasseDeriv_le\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/CoeffNorm.lean\"\n    },\n    {\n      \"name\": \"Roth.degreeOf_uniqueAlgEquiv_symm\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/Separation.lean\"\n    },\n    {\n      \"name\": \"Roth.degreeOf_none_rename_mul_aeval\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/Separation.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.degreeOf_C\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Degrees.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.degreeOf_X\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Degrees.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.degreeOf_def\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Degrees.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.degreeOf_neg\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/CommRing.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.degreeOf_one\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Degrees.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.degreeOf_zero\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Degrees.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.degreeOf_C_mul\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/NoZeroDivisors.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.degreeOf_X_self\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Degrees.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.degreeOf_add_le\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Degrees.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.degreeOf_eq_sup\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Degrees.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.degreeOf_le_iff\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Degrees.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.degreeOf_lt_iff\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Degrees.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.degreeOf_mul_eq\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/NoZeroDivisors.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.degreeOf_mul_le\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Degrees.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.degreeOf_pow_eq\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/NoZeroDivisors.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.degreeOf_pow_le\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Degrees.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.degreeOf_sub_le\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/CommRing.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.degreeOf_sub_lt\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/CommRing.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.degreeOf_sum_le\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Degrees.lean\"\n    },\n    {\n      \"name\": \"NoetherNormalization.degreeOf_zero_t\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/NoetherNormalization.lean\"\n    },\n    {\n      \"name\": \"MvPolynomial.degreeOf_X_of_ne\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Degrees.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Lean.Grind.CommRing.Mon.degreeOf",
+            "kind": "def",
+            "file": ".lean-stdlib/lean/Init/Grind/Ring/CommSolver.lean"
+          },
+          {
+            "name": "MvPolynomial.degreeOf",
+            "kind": "def",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Degrees.lean"
+          },
+          {
+            "name": "MvPolynomial.degreeOf_taylor_le",
+            "kind": "theorem",
+            "file": "Roth/Taylor.lean"
+          },
+          {
+            "name": "Roth.degreeOf_coeffNone_le",
+            "kind": "theorem",
+            "file": "Roth/Separation.lean"
+          },
+          {
+            "name": "MvPolynomial.degreeOf_hasseDeriv_le",
+            "kind": "theorem",
+            "file": "Roth/HasseDeriv.lean"
+          },
+          {
+            "name": "Roth.degreeOf_rename_mul_aeval",
+            "kind": "theorem",
+            "file": "Roth/Separation.lean"
+          },
+          {
+            "name": "Roth.degreeOf_det_hasseDeriv_le",
+            "kind": "theorem",
+            "file": "Roth/CoeffNorm.lean"
+          },
+          {
+            "name": "Roth.degreeOf_uniqueAlgEquiv_symm",
+            "kind": "theorem",
+            "file": "Roth/Separation.lean"
+          },
+          {
+            "name": "Roth.degreeOf_none_rename_mul_aeval",
+            "kind": "theorem",
+            "file": "Roth/Separation.lean"
+          },
+          {
+            "name": "MvPolynomial.degreeOf_C",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Degrees.lean"
+          },
+          {
+            "name": "MvPolynomial.degreeOf_X",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Degrees.lean"
+          },
+          {
+            "name": "MvPolynomial.degreeOf_def",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Degrees.lean"
+          },
+          {
+            "name": "MvPolynomial.degreeOf_neg",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/CommRing.lean"
+          },
+          {
+            "name": "MvPolynomial.degreeOf_one",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Degrees.lean"
+          },
+          {
+            "name": "MvPolynomial.degreeOf_zero",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Degrees.lean"
+          },
+          {
+            "name": "MvPolynomial.degreeOf_C_mul",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/NoZeroDivisors.lean"
+          },
+          {
+            "name": "MvPolynomial.degreeOf_X_self",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Degrees.lean"
+          },
+          {
+            "name": "MvPolynomial.degreeOf_add_le",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Degrees.lean"
+          },
+          {
+            "name": "MvPolynomial.degreeOf_eq_sup",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Degrees.lean"
+          },
+          {
+            "name": "MvPolynomial.degreeOf_le_iff",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Degrees.lean"
+          },
+          {
+            "name": "MvPolynomial.degreeOf_lt_iff",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Degrees.lean"
+          },
+          {
+            "name": "MvPolynomial.degreeOf_mul_eq",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/NoZeroDivisors.lean"
+          },
+          {
+            "name": "MvPolynomial.degreeOf_mul_le",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Degrees.lean"
+          },
+          {
+            "name": "MvPolynomial.degreeOf_pow_eq",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/NoZeroDivisors.lean"
+          },
+          {
+            "name": "MvPolynomial.degreeOf_pow_le",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Degrees.lean"
+          },
+          {
+            "name": "MvPolynomial.degreeOf_sub_le",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/CommRing.lean"
+          },
+          {
+            "name": "MvPolynomial.degreeOf_sub_lt",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/CommRing.lean"
+          },
+          {
+            "name": "MvPolynomial.degreeOf_sum_le",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Degrees.lean"
+          },
+          {
+            "name": "NoetherNormalization.degreeOf_zero_t",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/RingTheory/NoetherNormalization.lean"
+          },
+          {
+            "name": "MvPolynomial.degreeOf_X_of_ne",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/MvPolynomial/Degrees.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  }
+]

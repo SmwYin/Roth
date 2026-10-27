@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 98/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 99/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 98; remaining: 195.
-- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 11 YES-but-generalise-first, 18 NO-mathlib-has-it, 32 BORDERLINE-needs-human, 10 SKIP.
+- Completed applicable assessments: 99; remaining: 194.
+- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 12 YES-but-generalise-first, 18 NO-mathlib-has-it, 32 BORDERLINE-needs-human, 10 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -1047,6 +1047,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: source calls: 1; files: Roth/MainLemma.lean; explicit callers: _private.Roth.MainLemma.0.Roth.abs_eval_iterated_hasseDeriv_lt_aux; canonical audit: 293 requested, unique, present and values; the same sole direct proof consumer; inline rederivations: None
 - Verdict: YES-but-generalise-first; [complete report](.mathlib-quality/overview/mathlibable/Roth.abs_eval_le.md).
 
+### Completed: `Roth.degreeOf_det_hasseDeriv_le`
+
+- Type: `∀ {σ : Type u_1} {l : ℕ} (E : Fin l → Fin l → σ →₀ ℕ) (P : MvPolynomial σ ℤ) {r : σ → ℕ}, (∀ (j : σ), MvPolynomial.degreeOf j P ≤ r j) → ∀ (j : σ), MvPolynomial.degreeOf j (Matrix.of fun μ ν ↦ (MvPolynomial.hasseDeriv (E μ ν)) P).det ≤ l * r j`
+- What: A determinant of l×l Hasse derivatives of a polynomial of coordinate degrees ≤r has coordinate degrees ≤l*r.
+- How: Expand determinant; degree of sum bounded by supremum; constants do not increase degree; products bounded by sums; Hasse derivatives do not increase coordinate degrees.
+- Hypotheses: Arbitrary σ, l, E and P over ℤ; global coordinate upper bound hP; no nonzero, finite-variable or derivative-order restriction.
+- Project dependencies: MvPolynomial.hasseDeriv, MvPolynomial.degreeOf_hasseDeriv_le
+- Caller summary: Two explicit calls in Roth.exists_det_eq_mul at Separation.lean555/558; canonical293 audit confirms one direct consumer.
+- Verdict: YES-but-generalise-first; [complete report](.mathlib-quality/overview/mathlibable/Roth.degreeOf_det_hasseDeriv_le.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -1269,6 +1279,8 @@ Completed `Roth.sum_box_prod_pow_le_aux`: Finset.prod_univ_sum factors the recta
 
 Completed `Roth.abs_eval_le`: Prefer eval₂ and existing size-hom classes. AbsoluteValue.eval_mvPolynomial_le is a homogeneous/coefficient-l1/sup bound, not the rectangular common-coefficient bound. GaussNorm estimates concern weighted coefficient suprema, not arbitrary real evaluation.
 
+Completed `Roth.degreeOf_det_hasseDeriv_le`: Existing degreeOf_sum_le, degreeOf_C_mul_le, degreeOf_prod_le and det_apply' supply proof steps, not ≤3-call replacement. Closest natDegree_det_X_add_C_le is affine univariate matrix only.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -1466,6 +1478,8 @@ Completed `Roth.geom_sum_le_one_add_pow`: No project duplicate or inspected exac
 Completed `Roth.sum_box_prod_pow_le_aux`: Finite-box product estimate is an internal factorization stage, distinct from scalar geometric sum and polynomial support/evaluation bound. No duplicate full argument found in this source review.
 
 Completed `Roth.abs_eval_le`: No duplicate: abs_coeff_diag_le handles coefficient collisions; normOne_le_card_mul is unweighted; Main.abs_eval_lt_of_le_index is a Taylor/index estimate. A future weighted-support majorant can share proof stages with the homogeneous bound.
+
+Completed `Roth.degreeOf_det_hasseDeriv_le`: Generic polynomial determinant degree bound underlies this Hasse specialization; no current mathlib exact replacement verified.
 
 ## Part 5: Generalization opportunities
 
@@ -1668,6 +1682,8 @@ Completed `Roth.sum_box_prod_pow_le_aux`: Finite variable enumeration, natural c
 
 Completed `Roth.abs_eval_le`: Verified strongest primary form: arbitrary CommSemiring R coefficients, CommSemiring S evaluation, ordered CommSemiring T output with PartialOrder and IsOrderedRing, FunLike F S T and existing Zero/Nonneg/Subadditive/Submultiplicative hom classes. Original ℤ/ℝ map input and full private caller specialize cleanly. No unit-size bound, injectivity, domain, total order, strict order or negation premise.
 
+Completed `Roth.degreeOf_det_hasseDeriv_le`: CommRing coefficients, arbitrary finite matrix index, fixed-coordinate scalar bound verified. Factor generic entry/column determinant bounds.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -1866,6 +1882,8 @@ Completed `Roth.geom_sum_le_one_add_pow`: Finite geometric/binomial unweighted c
 Completed `Roth.sum_box_prod_pow_le_aux`: Existing finite-product, finite-sum and order primitives support the decomposition; prospective public geometric bound is independently assessed at96.
 
 Completed `Roth.abs_eval_le`: Nonhomogeneous rectangular coordinate-degree polynomial evaluation majorant; generic geometric-sum bound from declaration96 is a separate new prerequisite.
+
+Completed `Roth.degreeOf_det_hasseDeriv_le`: MvPolynomial coordinate degree bound on arbitrary polynomial matrix determinants; Hasse corollary after upstream multivariate Hasse API.
 
 ## Part 7: Junk / removable
 
@@ -2068,6 +2086,8 @@ Completed `Roth.sum_box_prod_pow_le_aux`: Retain this four-line private proof bo
 
 Completed `Roth.abs_eval_le`: Not junk: live main-lemma dependency and nontrivial finite weighted-support reasoning.
 
+Completed `Roth.degreeOf_det_hasseDeriv_le`: Used twice; sound nonvacuous inequality; no junk classification.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -2170,6 +2190,7 @@ Completed `Roth.abs_eval_le`: Not junk: live main-lemma dependency and nontrivia
 | 96 | `Roth.geom_sum_le_one_add_pow` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.geom_sum_le_one_add_pow.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.geom_sum_le_one_add_pow/root-acceptance.json) |
 | 97 | `Roth.sum_box_prod_pow_le_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.sum_box_prod_pow_le_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.sum_box_prod_pow_le_aux/root-acceptance.json) |
 | 98 | `Roth.abs_eval_le` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.abs_eval_le.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.abs_eval_le/root-acceptance.json) |
+| 99 | `Roth.degreeOf_det_hasseDeriv_le` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.degreeOf_det_hasseDeriv_le.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.degreeOf_det_hasseDeriv_le/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -2365,12 +2386,14 @@ Completed `Roth.sum_box_prod_pow_le_aux` action: Keep unchanged; completed priva
 
 Completed `Roth.abs_eval_le` action: YES-but-generalise-first (MODERN-IDIOM); contribute a generic size-hom eval₂ theorem in Mathlib/Analysis/Polynomial/MvPolynomial.lean, then specialize the sole project caller.
 
+Completed `Roth.degreeOf_det_hasseDeriv_le` action: YES-but-generalise-first; contribute generic determinant-degree API, then Hasse corollary with parent Hasse API; retain project convenience specialization if useful.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.degreeOf_det_hasseDeriv_le` next. Supporting identities receive their own applicable checks.
+   `Roth.abs_coeff_det_hasseDeriv_le` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 
