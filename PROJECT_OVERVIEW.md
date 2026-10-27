@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 177/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 178/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 177; remaining: 116.
-- Verdicts: 18 NO-composable-from-mathlib, 13 YES-add-as-is, 24 YES-but-generalise-first, 37 NO-mathlib-has-it, 52 BORDERLINE-needs-human, 33 SKIP.
+- Completed applicable assessments: 178; remaining: 115.
+- Verdicts: 18 NO-composable-from-mathlib, 13 YES-add-as-is, 25 YES-but-generalise-first, 37 NO-mathlib-has-it, 52 BORDERLINE-needs-human, 33 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -2038,6 +2038,32 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: 1 explicit source caller declarations, all in Separation.lean; 1 direct original value consumers. Exact separate lists retained. Entire Separation module proof bodies replay successfully with fresh target name.
 - Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.exists_rat_factors_det_hasseDeriv_aux.md).
 
+### Completed: `Roth.exists_det_eq_mul`
+
+- Type: `∀ {τ : Type u_1} [Finite τ] {P : MvPolynomial (Option τ) ℤ},
+  P ≠ 0 →
+    ∀ {r : Option τ → ℕ},
+      (∀ (j : Option τ), degreeOf j P ≤ r j) →
+        ∃ (l : ℕ),
+          1 ≤ l ∧
+            l ≤ r none + 1 ∧
+              ∃ (D : Fin l → τ →₀ ℕ),
+                (∀ (μ : Fin l), Finsupp.degree (D μ) ≤ ↑μ) ∧
+                  ∃ (U : MvPolynomial τ ℤ) (V : Polynomial ℤ),
+                    U ≠ 0 ∧
+                      V ≠ 0 ∧
+                        (∀ (j : τ), degreeOf j U ≤ l * r (some j)) ∧
+                          V.natDegree ≤ l * r none ∧
+                            (Matrix.of fun (μ ν : Fin l) ↦
+                                  (hasseDeriv (Finsupp.mapDomain some (D μ) + Finsupp.single none ↑ν)) P).det =
+                              (rename some) U * (Polynomial.aeval (X none)) V`
+- What: A nonzero integer polynomial admits an order-bounded mixed Hasse-derivative determinant that factors into nonzero integer polynomials in disjoint variable groups, with l and both individual degree bounds.
+- How: exists_rat_factors_det_hasseDeriv_aux uses exists_separated_representation, exists_genWronskian_ne_zero, wronskian_ne_zero_of_linearIndependent and det_hasseDeriv_separated; exists_int_factors descends to integers; degreeOf_rename_mul_aeval, degreeOf_none_rename_mul_aeval and degreeOf_det_hasseDeriv_le prove the bounds.
+- Hypotheses: τ : Type*; Finite τ in original; verified arbitrary ambient τ, P ≠ 0, r : Option τ → ℕ; ∀ j, degreeOf j P ≤ r j, original coefficients ℤ; verified CommRing/IsDomain/NormalizedGCDMonoid/CharZero R
+- Project dependencies: Roth.exists_rat_factors_det_hasseDeriv_aux, Roth.exists_int_factors, Roth.degreeOf_rename_mul_aeval, Roth.degreeOf_none_rename_mul_aeval, Roth.degreeOf_det_hasseDeriv_le, MvPolynomial.hasseDeriv
+- Caller summary: source calls: 1; files: 1; callers: {'name': 'Roth.index_le_lem6', 'file': 'Roth/Theta.lean', 'declaration_line': 556, 'call_line': 571, 'plan': 'Apply generic theorem at R=ℤ; full caller replay verified with every original bound and hypothesis.'}; kernel direct consumers: Roth.index_le_lem6; inline rederivations: None
+- Verdict: YES-but-generalise-first; [complete report](.mathlib-quality/overview/mathlibable/Roth.exists_det_eq_mul.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -2418,6 +2444,8 @@ Completed `Roth.exists_int_factors`: status: Partial Gauss/localization/reduced-
 
 Completed `Roth.exists_rat_factors_det_hasseDeriv_aux`: Map the polynomial injectively to the rationals, apply exists_separated_representation, choose bounded derivative indices using exists_genWronskian_ne_zero, and factor the resulting determinant by det_hasseDeriv_separated. Independent univariate factors give wronskian_ne_zero_of_linearIndependent, while hasseDeriv_map transports the determinant back to the mapped integer determinant. This rational factor construction is distinct from the subsequent integer factor descent.
 
+Completed `Roth.exists_det_eq_mul`: 15 actual search cells; positive univariate Hasse/binary Wronskian/matrix determinant/localization/degree-map building blocks inspected and native checked; no verified ≤3 existing-call replacement. Index unavailable is recorded, not absence.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -2773,6 +2801,8 @@ Completed `Roth.exists_int_polynomial_of_primitive_factor_aux`: The helper has a
 Completed `Roth.exists_int_factors`: Gauss-type descent; univariate Gauss integrality is a partial match requiring actual multivariate and support/primitivity bridges.
 
 Completed `Roth.exists_rat_factors_det_hasseDeriv_aux`: The helper has a distinct role in the separated polynomial proof as described in the structural review; no duplicate full construction is introduced.
+
+Completed `Roth.exists_det_eq_mul`: det_mul and map_det cover transport but not bounded derivative-row selection, nonvanishing and original-ring separated descent. Binary Polynomial.wronskian is not the finite-family construction.
 
 ## Part 5: Generalization opportunities
 
@@ -3140,6 +3170,8 @@ theorem exists_separated_factors {U' : MvPolynomial τ K} {V' : Polynomial K} (h
 
 Completed `Roth.exists_rat_factors_det_hasseDeriv_aux`: No public generality claim under the private prefilter; preserve the existing definition and interface.
 
+Completed `Roth.exists_det_eq_mul`: verified: True; coefficient ring: [CommRing R] [IsDomain R] [NormalizedGCDMonoid R] [CharZero R]; variables: arbitrary τ; remove Finite τ by finite-support bridge; fraction field: FractionRing R internal; arbitrary external K variant also proved; preserved: 1 ≤ l, l ≤ r none + 1, ∀ μ, (D μ).degree ≤ μ, U ≠ 0, V ≠ 0, ∀ j, degreeOf j U ≤ l * r (some j), V.natDegree ≤ l * r none, exact determinant factorization; parent interface: Field-only genWronskian remains over fraction field; base-ring Hasse API already valid.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -3496,6 +3528,8 @@ Completed `Roth.exists_int_polynomial_of_primitive_factor_aux`: No new primitive
 Completed `Roth.exists_int_factors`: Generic multivariate primitive representative (accepted172 proposal)., Finite primitive coefficient scalar descent over GCD domains (new reduced-fraction proof)., Separated polynomial factor descent with all degree conclusions.
 
 Completed `Roth.exists_rat_factors_det_hasseDeriv_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
+
+Completed `Roth.exists_det_eq_mul`: Finite-family Hasse Wronskian nonvanishing with bounded row orders, Separated original-ring factor descent over normalized GCD domains, Generic CommRing degree bound for Hasse derivative determinants, Synthesis theorem preserving separated nonzero factors and all individual bounds
 
 ## Part 7: Junk / removable
 
@@ -3856,6 +3890,8 @@ Completed `Roth.exists_int_factors`: status: False; reason: Main module result u
 
 Completed `Roth.exists_rat_factors_det_hasseDeriv_aux`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
 
+Completed `Roth.exists_det_eq_mul`: False
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -4037,6 +4073,7 @@ Completed `Roth.exists_rat_factors_det_hasseDeriv_aux`: Retain a live private pr
 | 175 | `Roth.exists_int_polynomial_of_primitive_factor_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_int_polynomial_of_primitive_factor_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_int_polynomial_of_primitive_factor_aux/root-acceptance.json) |
 | 176 | `Roth.exists_int_factors` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_int_factors.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_int_factors/root-acceptance.json) |
 | 177 | `Roth.exists_rat_factors_det_hasseDeriv_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_rat_factors_det_hasseDeriv_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_rat_factors_det_hasseDeriv_aux/root-acceptance.json) |
+| 178 | `Roth.exists_det_eq_mul` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_det_eq_mul.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_det_eq_mul/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -4390,12 +4427,14 @@ Completed `Roth.exists_int_factors` action: verdict: YES-but-generalise-first; u
 
 Completed `Roth.exists_rat_factors_det_hasseDeriv_aux` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
 
+Completed `Roth.exists_det_eq_mul` action: verdict: YES-but-generalise-first; location: Mathlib/RingTheory/MvPolynomial/Separation.lean; title: feat(MvPolynomial): bounded Hasse determinants with separated factors; grouping: Roth.genWronskian, Roth.exists_genWronskian_ne_zero, Roth.exists_separated_representation, Roth.exists_primitive_smul_eq, Roth.exists_int_factors; checklist: /generalise Roth.exists_det_eq_mul: adopt exact verified arbitraryτ GCD-domain theorem, /cleanup Mathlib/RingTheory/MvPolynomial/Separation.lean MvPolynomial.exists_det_eq_mul, Reviewers Justus Springer and Junyan Xu based on focused relevant history; local destination: Roth/Separation.lean until layered API is upstreamed
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.exists_det_eq_mul` next. Supporting identities receive their own applicable checks.
+   `Roth.RSet` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

@@ -1,0 +1,81 @@
+{
+  "type": "\u2200 {\u03c4 : Type u_1} [Finite \u03c4] {P : MvPolynomial (Option \u03c4) \u2124},\n  P \u2260 0 \u2192\n    \u2200 {r : Option \u03c4 \u2192 \u2115},\n      (\u2200 (j : Option \u03c4), degreeOf j P \u2264 r j) \u2192\n        \u2203 (l : \u2115),\n          1 \u2264 l \u2227\n            l \u2264 r none + 1 \u2227\n              \u2203 (D : Fin l \u2192 \u03c4 \u2192\u2080 \u2115),\n                (\u2200 (\u03bc : Fin l), Finsupp.degree (D \u03bc) \u2264 \u2191\u03bc) \u2227\n                  \u2203 (U : MvPolynomial \u03c4 \u2124) (V : Polynomial \u2124),\n                    U \u2260 0 \u2227\n                      V \u2260 0 \u2227\n                        (\u2200 (j : \u03c4), degreeOf j U \u2264 l * r (some j)) \u2227\n                          V.natDegree \u2264 l * r none \u2227\n                            (Matrix.of fun (\u03bc \u03bd : Fin l) \u21a6\n                                  (hasseDeriv (Finsupp.mapDomain some (D \u03bc) + Finsupp.single none \u2191\u03bd)) P).det =\n                              (rename some) U * (Polynomial.aeval (X none)) V",
+  "kind": "theorem",
+  "what": "A nonzero integer polynomial admits an order-bounded mixed Hasse-derivative determinant that factors into nonzero integer polynomials in disjoint variable groups, with l and both individual degree bounds.",
+  "how": "exists_rat_factors_det_hasseDeriv_aux uses exists_separated_representation, exists_genWronskian_ne_zero, wronskian_ne_zero_of_linearIndependent and det_hasseDeriv_separated; exists_int_factors descends to integers; degreeOf_rename_mul_aeval, degreeOf_none_rename_mul_aeval and degreeOf_det_hasseDeriv_le prove the bounds.",
+  "hypotheses": [
+    "\u03c4 : Type*; Finite \u03c4 in original; verified arbitrary ambient \u03c4",
+    "P \u2260 0",
+    "r : Option \u03c4 \u2192 \u2115; \u2200 j, degreeOf j P \u2264 r j",
+    "original coefficients \u2124; verified CommRing/IsDomain/NormalizedGCDMonoid/CharZero R"
+  ],
+  "project_dependencies": [
+    "Roth.exists_rat_factors_det_hasseDeriv_aux",
+    "Roth.exists_int_factors",
+    "Roth.degreeOf_rename_mul_aeval",
+    "Roth.degreeOf_none_rename_mul_aeval",
+    "Roth.degreeOf_det_hasseDeriv_le",
+    "MvPolynomial.hasseDeriv"
+  ],
+  "caller_summary": {
+    "source_calls": 1,
+    "files": 1,
+    "callers": [
+      {
+        "name": "Roth.index_le_lem6",
+        "file": "Roth/Theta.lean",
+        "declaration_line": 556,
+        "call_line": 571,
+        "plan": "Apply generic theorem at R=\u2124; full caller replay verified with every original bound and hypothesis."
+      }
+    ],
+    "kernel_direct_consumers": [
+      "Roth.index_le_lem6"
+    ],
+    "inline_rederivations": []
+  },
+  "mathlib_api_audit": "15 actual search cells; positive univariate Hasse/binary Wronskian/matrix determinant/localization/degree-map building blocks inspected and native checked; no verified \u22643 existing-call replacement. Index unavailable is recorded, not absence.",
+  "moral_duplications": "det_mul and map_det cover transport but not bounded derivative-row selection, nonvanishing and original-ring separated descent. Binary Polynomial.wronskian is not the finite-family construction.",
+  "generalization": {
+    "verified": true,
+    "coefficient_ring": "[CommRing R] [IsDomain R] [NormalizedGCDMonoid R] [CharZero R]",
+    "variables": "arbitrary \u03c4; remove Finite \u03c4 by finite-support bridge",
+    "fraction_field": "FractionRing R internal; arbitrary external K variant also proved",
+    "preserved": [
+      "1 \u2264 l",
+      "l \u2264 r none + 1",
+      "\u2200 \u03bc, (D \u03bc).degree \u2264 \u03bc",
+      "U \u2260 0",
+      "V \u2260 0",
+      "\u2200 j, degreeOf j U \u2264 l * r (some j)",
+      "V.natDegree \u2264 l * r none",
+      "exact determinant factorization"
+    ],
+    "parent_interface": "Field-only genWronskian remains over fraction field; base-ring Hasse API already valid."
+  },
+  "missing_api": [
+    "Finite-family Hasse Wronskian nonvanishing with bounded row orders",
+    "Separated original-ring factor descent over normalized GCD domains",
+    "Generic CommRing degree bound for Hasse derivative determinants",
+    "Synthesis theorem preserving separated nonzero factors and all individual bounds"
+  ],
+  "junk": false,
+  "action": {
+    "verdict": "YES-but-generalise-first",
+    "location": "Mathlib/RingTheory/MvPolynomial/Separation.lean",
+    "title": "feat(MvPolynomial): bounded Hasse determinants with separated factors",
+    "grouping": [
+      "Roth.genWronskian",
+      "Roth.exists_genWronskian_ne_zero",
+      "Roth.exists_separated_representation",
+      "Roth.exists_primitive_smul_eq",
+      "Roth.exists_int_factors"
+    ],
+    "checklist": [
+      "/generalise Roth.exists_det_eq_mul: adopt exact verified arbitrary\u03c4 GCD-domain theorem",
+      "/cleanup Mathlib/RingTheory/MvPolynomial/Separation.lean MvPolynomial.exists_det_eq_mul",
+      "Reviewers Justus Springer and Junyan Xu based on focused relevant history"
+    ],
+    "local_destination": "Roth/Separation.lean until layered API is upstreamed"
+  }
+}

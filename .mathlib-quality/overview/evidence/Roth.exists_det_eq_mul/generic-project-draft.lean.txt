@@ -1,0 +1,63 @@
+open MvPolynomial Roth
+namespace DetFactors178Generic
+variable {τ R K : Type*} [CommRing R] [IsDomain R] [NormalizedGCDMonoid R]
+    [Field K] [CharZero K] [Algebra R K] [IsFractionRing R K]
+theorem degreeOf_det_hasseDeriv_le_generic {l : ℕ} (E : Fin l → Fin l → (τ →₀ ℕ)) (P : MvPolynomial τ R)
+    {r : τ → ℕ} (hP : ∀ j, degreeOf j P ≤ r j) (j : τ) :
+    degreeOf j (Matrix.of fun μ ν : Fin l ↦ hasseDeriv (E μ ν) P).det ≤ l * r j := by
+  rw [Matrix.det_apply']
+  refine (degreeOf_sum_le _ _ _).trans (Finset.sup_le fun τ _ ↦ ?_)
+  refine (degreeOf_C_mul_le _ j (Equiv.Perm.sign τ : R)).trans ?_
+  refine (degreeOf_prod_le _ _ _).trans ?_
+  simpa using Finset.sum_le_sum (s := Finset.univ)
+    (fun (i : Fin l) _ ↦ (degreeOf_hasseDeriv_le _ _ _).trans (hP j))
+
+
+theorem exists_fraction_factors_det_hasseDeriv_aux [Finite τ] {P : MvPolynomial (Option τ) R}
+    (hP : P ≠ 0) {n : ℕ} (hn : degreeOf none P ≤ n) : ∃ l, 1 ≤ l ∧ l ≤ n + 1 ∧
+      ∃ D : Fin l → (τ →₀ ℕ), (∀ μ, (D μ).degree ≤ μ) ∧ ∃ (U : MvPolynomial τ K) (V : Polynomial K),
+        U ≠ 0 ∧ V ≠ 0 ∧ map (algebraMap R K) (Matrix.of fun μ ν : Fin l ↦
+          hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) P).det = rename some U *
+          Polynomial.aeval (X none : MvPolynomial (Option τ) K) V := by
+  classical
+  set PQ := map (algebraMap R K) P with hPQdef
+  have hdeg : degreeOf none PQ ≤ n := by
+    simpa [degreeOf_def, hPQdef,
+      degrees_map_of_injective P (f := algebraMap R K) (IsFractionRing.injective R K)] using hn
+  obtain ⟨l, hl1, hl2, φ, ψ, hφ, hψ, -, -, hPQ⟩ :=
+    exists_separated_representation (fun h ↦
+      hP (MvPolynomial.map_injective _ (IsFractionRing.injective R K) (h.trans (map_zero _).symm))) hdeg
+  obtain ⟨D, hD, hG⟩ := exists_genWronskian_ne_zero hψ
+  set F := (Matrix.of fun μ ν : Fin l ↦
+    hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) P).det with hFdef
+  have hFmap : map (algebraMap R K) F = rename some (genWronskian D ψ) *
+      Polynomial.aeval (X none : MvPolynomial (Option τ) K) (wronskian φ) := by
+    rw [hFdef, RingHom.map_det, ← det_hasseDeriv_separated D φ ψ, ← hPQ]
+    congr 1
+    refine Matrix.ext fun μ ν ↦ ?_
+    rw [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, Matrix.of_apply,
+      hasseDeriv_map]
+  exact ⟨l, hl1, hl2, D, hD, _, _, hG, wronskian_ne_zero_of_linearIndependent hφ, hFmap⟩
+
+
+theorem exists_det_eq_mul [Finite τ] {P : MvPolynomial (Option τ) R} (hP : P ≠ 0) {r : Option τ → ℕ}
+    (hr : ∀ j, degreeOf j P ≤ r j) : ∃ l, 1 ≤ l ∧ l ≤ r none + 1 ∧ ∃ D : Fin l → (τ →₀ ℕ),
+      (∀ μ, (D μ).degree ≤ μ) ∧ ∃ (U : MvPolynomial τ R) (V : Polynomial R), U ≠ 0 ∧ V ≠ 0 ∧
+        (∀ j, degreeOf j U ≤ l * r (some j)) ∧ V.natDegree ≤ l * r none ∧
+        (Matrix.of fun μ ν : Fin l ↦
+            hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) P).det = rename some U *
+          Polynomial.aeval (X none : MvPolynomial (Option τ) R) V := by
+  classical
+  obtain ⟨l, hl1, hl2, D, hD, U', V', hU', hV', hFmap⟩ :=
+    exists_fraction_factors_det_hasseDeriv_aux (K := K) hP (hr none)
+  obtain ⟨U, V, hU, hV, hFUV, -, -⟩ := Factors176GCD.exists_int_factors hU' hV' hFmap
+  refine ⟨l, hl1, hl2, D, hD, U, V, hU, hV, fun j ↦ ?_, ?_, hFUV⟩
+  · rw [← degreeOf_rename_mul_aeval U hV j, ← hFUV]
+    exact degreeOf_det_hasseDeriv_le_generic
+      (fun μ ν : Fin l ↦ (D μ).mapDomain some + Finsupp.single none (ν : ℕ)) P hr (some j)
+  · rw [← degreeOf_none_rename_mul_aeval hU V, ← hFUV]
+    exact degreeOf_det_hasseDeriv_le_generic
+      (fun μ ν : Fin l ↦ (D μ).mapDomain some + Finsupp.single none (ν : ℕ)) P hr none
+
+#print axioms exists_det_eq_mul
+end DetFactors178Generic

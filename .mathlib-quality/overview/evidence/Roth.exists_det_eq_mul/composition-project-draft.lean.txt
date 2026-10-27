@@ -1,0 +1,17 @@
+
+namespace Det178Composition
+open MvPolynomial
+variable {τ : Type*}
+theorem existingCallGuard {P : MvPolynomial (Option τ) ℤ} (hP : P ≠ 0) {r : Option τ → ℕ}
+    (hr : ∀ j, degreeOf j P ≤ r j) : ∃ l, 1 ≤ l ∧ l ≤ r none + 1 ∧ ∃ D : Fin l → (τ →₀ ℕ),
+      (∀ μ, (D μ).degree ≤ μ) ∧ ∃ (U : MvPolynomial τ ℤ) (V : Polynomial ℤ), U ≠ 0 ∧ V ≠ 0 ∧
+        (∀ j, degreeOf j U ≤ l * r (some j)) ∧ V.natDegree ≤ l * r none ∧
+        (Matrix.of fun μ ν : Fin l ↦
+            hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) P).det = rename some U *
+          Polynomial.aeval (X none : MvPolynomial (Option τ) ℤ) V := by
+  fail_if_success exact Matrix.det_mul _ _
+  fail_if_success exact Matrix.det_transpose _
+  fail_if_success exact IsLocalization.exists_integer_multiple (nonZeroDivisors ℤ) P
+  exact DetFactors178Canonical.exists_det_eq_mul_gcd_domain hP hr
+#print axioms existingCallGuard
+end Det178Composition

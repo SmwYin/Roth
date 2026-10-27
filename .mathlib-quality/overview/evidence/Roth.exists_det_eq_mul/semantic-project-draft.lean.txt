@@ -1,0 +1,32 @@
+namespace DetFactors178Semantic
+open MvPolynomial
+variable {τ : Type*}
+theorem zero_input_cannot_have_nonzero_factors {l : ℕ} (hl : 1 ≤ l)
+    (D : Fin l → (τ →₀ ℕ)) (U : MvPolynomial τ ℤ) (V : Polynomial ℤ)
+    (hU : U ≠ 0) (hV : V ≠ 0) :
+    (Matrix.of fun μ ν : Fin l ↦
+      hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ))
+        (0 : MvPolynomial (Option τ) ℤ)).det ≠
+          rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) ℤ) V := by
+  classical
+  let : Nonempty (Fin l) := ⟨⟨0, by omega⟩⟩
+  have hzero : (Matrix.of fun μ ν : Fin l ↦
+      hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ))
+        (0 : MvPolynomial (Option τ) ℤ)).det = 0 := by
+    simp
+  rw [hzero]
+  exact Ne.symm (mul_ne_zero
+    ((rename_eq_zero_iff_of_injective U (Option.some_injective τ)).not.mpr hU)
+    ((map_ne_zero_iff (Polynomial.aeval (X none))
+      (Polynomial.toMvPolynomial_injective none)).2 hV))
+#print axioms zero_input_cannot_have_nonzero_factors
+
+theorem characteristic_two_first_hasse_column :
+    Polynomial.hasseDeriv 1 ((Polynomial.X : Polynomial (ZMod 2)) ^ 2) = 0 := by
+  rw [Polynomial.hasseDeriv_one, Polynomial.derivative_pow]
+  simp only [Nat.cast_ofNat, Nat.add_one_sub_one, pow_one, Polynomial.derivative_X, mul_one,
+    Polynomial.isRegular_X, IsRegular.right, IsRightRegular.mul_right_eq_zero_iff,
+    Polynomial.C_eq_zero]
+  decide
+#print axioms characteristic_two_first_hasse_column
+end DetFactors178Semantic

@@ -1,0 +1,14 @@
+
+namespace DetFactors178Canonical
+open MvPolynomial
+variable {τ R : Type*} [CommRing R] [IsDomain R] [NormalizedGCDMonoid R] [CharZero R]
+theorem exists_det_eq_mul_gcd_domain {P : MvPolynomial (Option τ) R} (hP : P ≠ 0) {r : Option τ → ℕ}
+    (hr : ∀ j, degreeOf j P ≤ r j) : ∃ l, 1 ≤ l ∧ l ≤ r none + 1 ∧ ∃ D : Fin l → (τ →₀ ℕ),
+      (∀ μ, (D μ).degree ≤ μ) ∧ ∃ (U : MvPolynomial τ R) (V : Polynomial R), U ≠ 0 ∧ V ≠ 0 ∧
+        (∀ j, degreeOf j U ≤ l * r (some j)) ∧ V.natDegree ≤ l * r none ∧
+        (Matrix.of fun μ ν : Fin l ↦
+            hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) P).det = rename some U *
+          Polynomial.aeval (X none : MvPolynomial (Option τ) R) V :=
+  DetFactors178Arbitrary.exists_det_eq_mul (K := FractionRing R) hP hr
+#print axioms exists_det_eq_mul_gcd_domain
+end DetFactors178Canonical
