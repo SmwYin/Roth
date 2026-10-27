@@ -1,0 +1,52 @@
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.Basic.Real.Basic
+#check_failure Roth.weight_single
+namespace RawWeightSingleAssessment
+variable {σ : Type*}
+noncomputable def original [Fintype σ] (r : σ → ℕ) (d : σ →₀ ℕ) : ℝ :=
+  ∑ j, (d j : ℝ) / r j
+theorem original_four_facts [Fintype σ] (r : σ → ℕ) (j : σ) (n : ℕ) :
+    original r (Finsupp.single j n) = n / r j := by
+  have hzero : ∀ i : σ, ((0 : ℕ) : ℝ) / (r i : ℝ) = 0 := fun i ↦
+    (congrArg (fun x : ℝ ↦ x / (r i : ℝ)) (Nat.cast_zero (R := ℝ))).trans (zero_div _)
+  exact (Finsupp.sum_fintype (Finsupp.single j n)
+    (fun i m ↦ (m : ℝ) / r i) hzero).symm.trans
+      (Finsupp.sum_single_index (hzero j))
+theorem arbitrary_weight {M K : Type*} [Semiring K] [AddCommMonoid M] [Module K M]
+    (w : σ → M) (j : σ) (n : K) :
+    Finsupp.weight w (Finsupp.single j n) = n • w j :=
+  Finsupp.weight_single w j n
+theorem finite_kernel [Fintype σ] {A B : Type*} [Zero A] [AddCommMonoid B]
+    (g : σ → A → B) (hg : ∀ i, g i 0 = 0) (j : σ) (a : A) :
+    (∑ i, g i ((Finsupp.single j a) i)) = g j a :=
+  (Finsupp.sum_fintype (Finsupp.single j a) g hg).symm.trans
+    (Finsupp.sum_single_index (hg j))
+theorem finite_division [Fintype σ] {K : Type*} [DivisionSemiring K]
+    (r : σ → K) (j : σ) (n : K) :
+    (∑ i, (Finsupp.single j n) i / r i) = n / r j :=
+  (Finsupp.sum_fintype (Finsupp.single j n) (fun i a ↦ a / r i)
+    (fun i ↦ zero_div (r i))).symm.trans
+      (Finsupp.sum_single_index (zero_div (r j)))
+theorem support_division {K : Type*} [DivisionSemiring K]
+    (r : σ → K) (j : σ) (n : K) :
+    (Finsupp.single j n).sum (fun i a ↦ a / r i) = n / r j :=
+  Finsupp.sum_single_index (zero_div (r j))
+theorem via_bundled [Fintype σ] (r : σ → ℕ) (j : σ) (n : ℕ) :
+    original r (Finsupp.single j n) = n / r j := by
+  simpa [original, Finsupp.weight_eq_sum, nsmul_eq_mul, div_eq_mul_inv] using
+    Finsupp.weight_single (fun i ↦ (r i : ℝ)⁻¹) j n
+example : Finsupp.weight (fun n : ℕ ↦ (n : ℝ)) (Finsupp.single 100 3) = 3 • (100 : ℝ) :=
+  Finsupp.weight_single _ _ _
+example : original (fun _ : Unit ↦ 0) (Finsupp.single () 1) = 0 := by
+  simp [original]
+example : original (fun _ : Unit ↦ 1) (Finsupp.single () 1) = 1 := by
+  simp [original]
+example : ¬ original (fun _ : Unit ↦ 1) (Finsupp.single () 1) = 0 := by
+  simp [original]
+#print axioms original_four_facts
+#print axioms arbitrary_weight
+#print axioms finite_kernel
+#print axioms finite_division
+#print axioms support_division
+#print axioms via_bundled
+end RawWeightSingleAssessment

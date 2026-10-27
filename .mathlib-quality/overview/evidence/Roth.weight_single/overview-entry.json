@@ -1,0 +1,28 @@
+{
+  "declaration": "Roth.weight_single",
+  "type": "theorem",
+  "what": "A single-coordinate multi-index has weight n/r j, with real division.",
+  "how": "Unfold finite weighted sum, evaluate the single coordinate; independently checked support-sum composition uses four distinct facts including cast-zero and zero-division.",
+  "hypotheses": "Universe-polymorphic sigma with Fintype; r:sigma\u2192Nat, j:sigma, n:Nat. No DecidableEq or denominator positivity.",
+  "project_dependencies": [
+    "Roth.weight"
+  ],
+  "caller_summary": {
+    "explicit": 2,
+    "sites": [
+      "Roth/Lattice.lean:155 card_filter_fiber_eq",
+      "Roth/Theta.lean:391 sum_max_sub_le_index_det"
+    ],
+    "kernel_closure_not_counted": true
+  },
+  "mathlib_api_audit": "Finsupp.weight_single already supplies arbitrary semiring/module basis evaluation; original finite division sum requires ratio bridge. Finsupp.sum_single_index plus sum_fintype are generic primitives.",
+  "moral_duplications": [
+    "Finsupp.weight_single",
+    "Finsupp.sum_single_index"
+  ],
+  "generalization": "Native finite_kernel permits arbitrary zero-preserving kernels; finite_division permits DivisionSemiring values and arbitrary denominators. Bundled Finsupp.weight drops ambient finiteness and has existing API. These replace the parent representation, not a mechanical weakening of Roth.weight.",
+  "missing_api": "No demonstrated missing singleton-evaluation mathematics; design issue is whether to expose finite cast/division convenience API or migrate parent weight to bundled support sums.",
+  "junk": "Not dead: two explicit caller files; no simp attribute.",
+  "action": "Re-aim at Finsupp.weight_single after coordinated parent weight migration; normalize smul/inverse to quotient at both Lattice155 and Theta391, then remove duplicate local singleton theorem once full caller modules compile. Transitional quotient wrapper belongs in Roth/Box.lean.",
+  "verdict": "NO-mathlib-has-it"
+}

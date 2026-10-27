@@ -1,0 +1,21 @@
+namespace WeightSingleAssessment
+variable {σ : Type*} [Fintype σ]
+#check @Roth.weight_single
+#check @Finsupp.sum_fintype
+#check @Finsupp.sum_single_index
+#check @Finsupp.weight_single
+#print axioms Roth.weight_single
+theorem replay (r : σ → ℕ) (j : σ) (n : ℕ) :
+    Roth.weight r (Finsupp.single j n) = n / r j := by
+  classical
+  simp [Roth.weight, Finsupp.single_apply, ite_div]
+theorem four_named_facts (r : σ → ℕ) (j : σ) (n : ℕ) :
+    Roth.weight r (Finsupp.single j n) = n / r j := by
+  have hzero : ∀ i : σ, ((0 : ℕ) : ℝ) / (r i : ℝ) = 0 := fun i ↦
+    (congrArg (fun x : ℝ ↦ x / (r i : ℝ)) (Nat.cast_zero (R := ℝ))).trans (zero_div _)
+  exact (Finsupp.sum_fintype (Finsupp.single j n)
+    (fun i m ↦ (m : ℝ) / r i) hzero).symm.trans
+      (Finsupp.sum_single_index (hzero j))
+#print axioms replay
+#print axioms four_named_facts
+end WeightSingleAssessment

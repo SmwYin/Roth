@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 34/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 35/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 34; remaining: 259.
-- Verdicts: 10 NO-composable-from-mathlib, 11 YES-add-as-is, 0 YES-but-generalise-first, 1 NO-mathlib-has-it, 9 BORDERLINE-needs-human, 3 SKIP.
+- Completed applicable assessments: 35; remaining: 258.
+- Verdicts: 10 NO-composable-from-mathlib, 11 YES-add-as-is, 0 YES-but-generalise-first, 2 NO-mathlib-has-it, 9 BORDERLINE-needs-human, 3 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -385,6 +385,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: One explicit caller Index.index_eq_zero_iff:102; no simp attribute; no inline duplicate found.
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.weight_eq_zero_iff.md).
 
+### Completed: `Roth.weight_single`
+
+- Type: `theorem`
+- What: A single-coordinate multi-index has weight n/r j, with real division.
+- How: Unfold finite weighted sum, evaluate the single coordinate; independently checked support-sum composition uses four distinct facts including cast-zero and zero-division.
+- Hypotheses: Universe-polymorphic sigma with Fintype; r:sigma→Nat, j:sigma, n:Nat. No DecidableEq or denominator positivity.
+- Project dependencies: Roth.weight
+- Caller summary: explicit: 2; sites: Roth/Lattice.lean:155 card_filter_fiber_eq, Roth/Theta.lean:391 sum_max_sub_le_index_det; kernel closure not counted: True
+- Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/Roth.weight_single.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -479,6 +489,8 @@ Completed `Roth.weight_add`: Three existing arithmetic facts compose at current 
 
 Completed `Roth.weight_eq_zero_iff`: Finsupp.weight_eq_zero_iff_eq_zero needs canonical order, not applicable directly to ℝ. le_weight_of_ne_zero enables verified new ordered-monoid positive-weight helper.
 
+Completed `Roth.weight_single`: Finsupp.weight_single already supplies arbitrary semiring/module basis evaluation; original finite division sum requires ratio bridge. Finsupp.sum_single_index plus sum_fintype are generic primitives.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -548,6 +560,8 @@ Completed `Roth.weight_zero`: Zero preservation already structural for bundled F
 Completed `Roth.weight_add`: Weighted monomial degree is an additive homomorphism; current ratio representation requires normalization.
 
 Completed `Roth.weight_eq_zero_iff`: Positive sum zero principle already exists; reciprocal/cast/finsupp packaging is project API.
+
+Completed `Roth.weight_single`: Finsupp.weight_single, Finsupp.sum_single_index
 
 ## Part 5: Generalization opportunities
 
@@ -622,6 +636,8 @@ Completed `Roth.weight_add`: Current parent-interface constraints fixed; verifie
 
 Completed `Roth.weight_eq_zero_iff`: Verified support-local positivity; verified generic ordered-additive Finsupp.weight and ordered-field denominator representations.
 
+Completed `Roth.weight_single`: Native finite_kernel permits arbitrary zero-preserving kernels; finite_division permits DivisionSemiring values and arbitrary denominators. Bundled Finsupp.weight drops ambient finiteness and has existing API. These replace the parent representation, not a mechanical weakening of Roth.weight.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -692,6 +708,8 @@ Completed `Roth.weight_zero`: No required missing upstream zero-preservation fac
 Completed `Roth.weight_add`: No new missing mathlib theorem identified; existing Finsupp.weight/map_add cover abstract content.
 
 Completed `Roth.weight_eq_zero_iff`: Candidate positive-weight zero-fiber theorem without canonical-order assumption; design unresolved, absence not proven.
+
+Completed `Roth.weight_single`: No demonstrated missing singleton-evaluation mathematics; design issue is whether to expose finite cast/division convenience API or migrate parent weight to bundled support sums.
 
 ## Part 7: Junk / removable
 
@@ -766,6 +784,8 @@ Completed `Roth.weight_add`: Useful local rewrite API (three callers), not dead 
 
 Completed `Roth.weight_eq_zero_iff`: False
 
+Completed `Roth.weight_single`: Not dead: two explicit caller files; no simp attribute.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -804,6 +824,7 @@ Completed `Roth.weight_eq_zero_iff`: False
 | 32 | `Roth.weight_zero` | NO-composable-from-mathlib | [Report](.mathlib-quality/overview/mathlibable/Roth.weight_zero.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.weight_zero/root-acceptance.json) |
 | 33 | `Roth.weight_add` | NO-composable-from-mathlib | [Report](.mathlib-quality/overview/mathlibable/Roth.weight_add.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.weight_add/root-acceptance.json) |
 | 34 | `Roth.weight_eq_zero_iff` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.weight_eq_zero_iff.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.weight_eq_zero_iff/root-acceptance.json) |
+| 35 | `Roth.weight_single` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.weight_single.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.weight_single/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -871,11 +892,13 @@ Completed `Roth.weight_add` action: NO-composable-from-mathlib. If removing wrap
 
 Completed `Roth.weight_eq_zero_iff` action: BORDERLINE-needs-human; retain local theorem pending three API-design choices in report.
 
+Completed `Roth.weight_single` action: Re-aim at Finsupp.weight_single after coordinated parent weight migration; normalize smul/inverse to quotient at both Lattice155 and Theta391, then remove duplicate local singleton theorem once full caller modules compile. Transitional quotient wrapper belongs in Roth/Box.lean.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.weight_single` next. Supporting identities receive their own applicable checks.
+   `Roth.weight_le_card` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.

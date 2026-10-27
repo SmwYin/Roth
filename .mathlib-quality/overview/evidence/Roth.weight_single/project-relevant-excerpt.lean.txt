@@ -1,0 +1,41 @@
+namespace WeightSingleAssessment
+variable {σ : Type*} [Fintype σ]
+#check @Roth.weight_single
+#check @Finsupp.sum_fintype
+#check @Finsupp.sum_single_index
+#check @Finsupp.weight_single
+#print axioms Roth.weight_single
+theorem replay (r : σ → ℕ) (j : σ) (n : ℕ) :
+    Roth.weight r (Finsupp.single j n) = n / r j := by
+  classical
+  simp [Roth.weight, Finsupp.single_apply, ite_div]
+theorem four_named_facts (r : σ → ℕ) (j : σ) (n : ℕ) :
+    Roth.weight r (Finsupp.single j n) = n / r j := by
+  have hzero : ∀ i : σ, ((0 : ℕ) : ℝ) / (r i : ℝ) = 0 := fun i ↦
+    (congrArg (fun x : ℝ ↦ x / (r i : ℝ)) (Nat.cast_zero (R := ℝ))).trans (zero_div _)
+  exact (Finsupp.sum_fintype (Finsupp.single j n)
+    (fun i m ↦ (m : ℝ) / r i) hzero).symm.trans
+      (Finsupp.sum_single_index (hzero j))
+#print axioms replay
+#print axioms four_named_facts
+end WeightSingleAssessment
+
+namespace WeightSingleConsumerChecks
+variable {τ : Type*} [Fintype τ]
+theorem option_split (r : Option τ → ℕ) (d : τ →₀ ℕ) (n : ℕ) :
+    Roth.weight r (d.mapDomain some + Finsupp.single none n) =
+      Roth.weight (r ∘ some) d + n / r none := by
+  rw [Roth.weight_add, Roth.weight_mapDomain (Option.some_injective _),
+    WeightSingleAssessment.four_named_facts]
+theorem fin_split (n : ℕ) (r : Fin (n + 1) → ℕ) (d : Fin n →₀ ℕ) (i : ℕ) :
+    Roth.weight r (d.mapDomain Fin.castSucc + Finsupp.single (Fin.last n) i) =
+      Roth.weight (r ∘ Fin.castSucc) d + i / r (Fin.last n) := by
+  rw [Roth.weight_add, Roth.weight_mapDomain (Fin.castSucc_injective n),
+    WeightSingleAssessment.four_named_facts]
+theorem reversed (r : τ → ℕ) (j : τ) (n : ℕ) :
+    (n : ℝ) / r j = Roth.weight r (Finsupp.single j n) :=
+  (WeightSingleAssessment.four_named_facts r j n).symm
+#print axioms option_split
+#print axioms fin_split
+#print axioms reversed
+end WeightSingleConsumerChecks

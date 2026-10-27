@@ -1,0 +1,84 @@
+{
+  "request": {
+    "code": "import Mathlib.Data.Finsupp.Weight\nimport Mathlib.Basic.Real.Basic\n#check_failure Roth.weight_single\nnamespace RawWeightSingleAssessment\nvariable {\u03c3 : Type*}\nnoncomputable def original [Fintype \u03c3] (r : \u03c3 \u2192 \u2115) (d : \u03c3 \u2192\u2080 \u2115) : \u211d :=\n  \u2211 j, (d j : \u211d) / r j\ntheorem original_four_facts [Fintype \u03c3] (r : \u03c3 \u2192 \u2115) (j : \u03c3) (n : \u2115) :\n    original r (Finsupp.single j n) = n / r j := by\n  have hzero : \u2200 i : \u03c3, ((0 : \u2115) : \u211d) / (r i : \u211d) = 0 := fun i \u21a6\n    (congrArg (fun x : \u211d \u21a6 x / (r i : \u211d)) (Nat.cast_zero (R := \u211d))).trans (zero_div _)\n  exact (Finsupp.sum_fintype (Finsupp.single j n)\n    (fun i m \u21a6 (m : \u211d) / r i) hzero).symm.trans\n      (Finsupp.sum_single_index (hzero j))\ntheorem arbitrary_weight {M K : Type*} [Semiring K] [AddCommMonoid M] [Module K M]\n    (w : \u03c3 \u2192 M) (j : \u03c3) (n : K) :\n    Finsupp.weight w (Finsupp.single j n) = n \u2022 w j :=\n  Finsupp.weight_single w j n\ntheorem finite_kernel [Fintype \u03c3] {A B : Type*} [Zero A] [AddCommMonoid B]\n    (g : \u03c3 \u2192 A \u2192 B) (hg : \u2200 i, g i 0 = 0) (j : \u03c3) (a : A) :\n    (\u2211 i, g i ((Finsupp.single j a) i)) = g j a :=\n  (Finsupp.sum_fintype (Finsupp.single j a) g hg).symm.trans\n    (Finsupp.sum_single_index (hg j))\ntheorem finite_division [Fintype \u03c3] {K : Type*} [DivisionSemiring K]\n    (r : \u03c3 \u2192 K) (j : \u03c3) (n : K) :\n    (\u2211 i, (Finsupp.single j n) i / r i) = n / r j :=\n  (Finsupp.sum_fintype (Finsupp.single j n) (fun i a \u21a6 a / r i)\n    (fun i \u21a6 zero_div (r i))).symm.trans\n      (Finsupp.sum_single_index (zero_div (r j)))\ntheorem support_division {K : Type*} [DivisionSemiring K]\n    (r : \u03c3 \u2192 K) (j : \u03c3) (n : K) :\n    (Finsupp.single j n).sum (fun i a \u21a6 a / r i) = n / r j :=\n  Finsupp.sum_single_index (zero_div (r j))\ntheorem via_bundled [Fintype \u03c3] (r : \u03c3 \u2192 \u2115) (j : \u03c3) (n : \u2115) :\n    original r (Finsupp.single j n) = n / r j := by\n  simpa [original, Finsupp.weight_eq_sum, nsmul_eq_mul, div_eq_mul_inv] using\n    Finsupp.weight_single (fun i \u21a6 (r i : \u211d)\u207b\u00b9) j n\nexample : Finsupp.weight (fun n : \u2115 \u21a6 (n : \u211d)) (Finsupp.single 100 3) = 3 \u2022 (100 : \u211d) :=\n  Finsupp.weight_single _ _ _\nexample : original (fun _ : Unit \u21a6 0) (Finsupp.single () 1) = 0 := by\n  simp [original]\nexample : original (fun _ : Unit \u21a6 1) (Finsupp.single () 1) = 1 := by\n  simp [original]\nexample : \u00ac original (fun _ : Unit \u21a6 1) (Finsupp.single () 1) = 0 := by\n  simp [original]\n#print axioms original_four_facts\n#print axioms arbitrary_weight\n#print axioms finite_kernel\n#print axioms finite_division\n#print axioms support_division\n#print axioms via_bundled\nend RawWeightSingleAssessment\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.weight_single`\",\n      \"line\": 3,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'RawWeightSingleAssessment.original_four_facts' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 46,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'RawWeightSingleAssessment.arbitrary_weight' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 47,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'RawWeightSingleAssessment.finite_kernel' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 48,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'RawWeightSingleAssessment.finite_division' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 49,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'RawWeightSingleAssessment.support_division' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 50,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'RawWeightSingleAssessment.via_bundled' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 51,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.weight_single`",
+          "line": 3,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'RawWeightSingleAssessment.original_four_facts' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 46,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'RawWeightSingleAssessment.arbitrary_weight' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 47,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'RawWeightSingleAssessment.finite_kernel' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 48,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'RawWeightSingleAssessment.finite_division' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 49,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'RawWeightSingleAssessment.support_division' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 50,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'RawWeightSingleAssessment.via_bundled' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 51,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 434
+}
