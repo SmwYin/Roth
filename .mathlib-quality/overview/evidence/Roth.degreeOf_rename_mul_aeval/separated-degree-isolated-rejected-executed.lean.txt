@@ -1,0 +1,80 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+#check_failure Roth.degreeOf_rename_mul_aeval
+#check MvPolynomial.degreeOf_mul_eq
+#check MvPolynomial.degreeOf_rename_of_injective
+#check Polynomial.toMvPolynomial_eq_rename_comp
+#check Polynomial.toMvPolynomial_injective
+#check MvPolynomial.degreeOf_C_mul
+namespace SeparatedDegree163
+open MvPolynomial
+variable {R τ σ : Type*} [CommSemiring R] [NoZeroDivisors R]
+theorem abstract_degree_zero (P Q : MvPolynomial σ R) (hQ : Q ≠ 0)
+    (j : σ) (hdegree : degreeOf j Q = 0) : degreeOf j (P * Q) = degreeOf j P := by
+  by_cases hP : P = 0
+  · simp [hP]
+  rw [degreeOf_mul_eq hP hQ, hdegree, add_zero]
+theorem semiring (U : MvPolynomial τ R) {V : Polynomial R} (hV : V ≠ 0) (j : τ) :
+    degreeOf (some j) (rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) R) V) =
+      degreeOf j U := by
+  classical
+  by_cases hU : U = 0
+  · simp [hU]
+  rw [degreeOf_mul_eq ((rename_eq_zero_iff_of_injective U (Option.some_injective τ)).not.mpr hU)
+      ((map_ne_zero_iff (Polynomial.aeval (X none))
+        (Polynomial.toMvPolynomial_injective none)).2 hV),
+    degreeOf_rename_of_injective (Option.some_injective τ)]
+  rw [AlgHom.congr_fun (Polynomial.toMvPolynomial_eq_rename_comp none) V]
+  simp [degreeOf, degrees_rename_of_injective (Function.injective_of_subsingleton _),
+    Multiset.mem_replicate]
+example (U : MvPolynomial τ R) {V : Polynomial R} (hV : V ≠ 0) (j : τ) :
+    degreeOf (some j) (rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) R) V) =
+      degreeOf j U := by
+  by_cases hU : U = 0
+  · simp [hU]
+  fail_if_success
+    exact degreeOf_mul_eq
+      ((rename_eq_zero_iff_of_injective U (Option.some_injective τ)).not.mpr hU)
+      ((map_ne_zero_iff (Polynomial.aeval (X none))
+        (Polynomial.toMvPolynomial_injective none)).2 hV)
+  exact semiring U hV j
+example (V : Polynomial R) (j : τ) :
+    degreeOf (some j) (rename some (0 : MvPolynomial τ R) *
+      Polynomial.aeval (X none : MvPolynomial (Option τ) R) V) = degreeOf j (0 : MvPolynomial τ R) := by
+  simp
+theorem nonzeroNecessary : ¬ (∀ (U : MvPolynomial Unit ℤ) (V : Polynomial ℤ),
+    degreeOf (some ()) (rename some U *
+      Polynomial.aeval (X none : MvPolynomial (Option Unit) ℤ) V) = degreeOf () U) := by
+  intro h
+  have hh := h (X ()) 0
+  simpa using hh
+-- Nonzero constants in a coefficient ring with zero divisors can annihilate a positive-degree term.
+theorem noZeroDivisorsNecessary : ¬ (∀ (U : MvPolynomial Unit (ℤ × ℤ)) (V : Polynomial (ℤ × ℤ)), V ≠ 0 →
+    degreeOf (some ()) (rename some U *
+      Polynomial.aeval (X none : MvPolynomial (Option Unit) (ℤ × ℤ)) V) = degreeOf () U) := by
+  intro h
+  have hv : (Polynomial.C ((0, 1) : ℤ × ℤ)) ≠ 0 := by simp
+  have hh := h (C ((1, 0) : ℤ × ℤ) * X ()) (Polynomial.C (0, 1)) hv
+  have hp : rename some (C ((1, 0) : ℤ × ℤ) * X ()) *
+      Polynomial.aeval (X none : MvPolynomial (Option Unit) (ℤ × ℤ))
+        (Polynomial.C (0, 1)) = 0 := by
+    simp only [map_mul, rename_C, rename_X, Polynomial.aeval_C, algebraMap_eq]
+    rw [mul_right_comm, ← C_mul]
+    simp
+  rw [hp] at hh
+  have hd : degreeOf () (C ((1, 0) : ℤ × ℤ) * X ()) = 1 := by
+    rw [C_mul_X_eq_monomial, degreeOf_monomial_eq _ _ (by simp)]
+    simp
+  simp [hd] at hh
+#print axioms nonzeroNecessary
+#print axioms noZeroDivisorsNecessary
+#print axioms abstract_degree_zero
+#print axioms semiring
+end SeparatedDegree163

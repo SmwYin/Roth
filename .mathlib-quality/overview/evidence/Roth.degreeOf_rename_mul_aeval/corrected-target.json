@@ -1,0 +1,51 @@
+{
+  "file": "Roth/Separation.lean",
+  "line": 197,
+  "name": "Roth.degreeOf_rename_mul_aeval",
+  "short": "degreeOf_rename_mul_aeval",
+  "kind": "theorem",
+  "visibility": "public",
+  "end_line": 208,
+  "source": "theorem degreeOf_rename_mul_aeval (U : MvPolynomial \u03c4 R) {V : Polynomial R} (hV : V \u2260 0) (j : \u03c4) :\n    degreeOf (some j) (rename some U * Polynomial.aeval (X none : MvPolynomial (Option \u03c4) R) V) =\n      degreeOf j U := by\n  classical\n  by_cases hU : U = 0\n  \u00b7 simp [hU]\n  rw [degreeOf_mul_eq ((rename_eq_zero_iff_of_injective U (Option.some_injective \u03c4)).not.mpr hU)\n      ((map_ne_zero_iff (Polynomial.aeval (X none))\n        (Polynomial.toMvPolynomial_injective none)).2 hV),\n    degreeOf_rename_of_injective (Option.some_injective \u03c4)]\n  simp [aeval_X_eq_rename, degreeOf,\n    degrees_rename_of_injective (Function.injective_of_subsingleton _), Multiset.mem_replicate]",
+  "signature": "theorem degreeOf_rename_mul_aeval (U : MvPolynomial \u03c4 R) {V : Polynomial R} (hV : V \u2260 0) (j : \u03c4) :\n    degreeOf (some j) (rename some U * Polynomial.aeval (X none : MvPolynomial (Option \u03c4) R) V) =\n      degreeOf j U",
+  "body": "by\n  classical\n  by_cases hU : U = 0\n  \u00b7 simp [hU]\n  rw [degreeOf_mul_eq ((rename_eq_zero_iff_of_injective U (Option.some_injective \u03c4)).not.mpr hU)\n      ((map_ne_zero_iff (Polynomial.aeval (X none))\n        (Polynomial.toMvPolynomial_injective none)).2 hV),\n    degreeOf_rename_of_injective (Option.some_injective \u03c4)]\n  simp [aeval_X_eq_rename, degreeOf,\n    degrees_rename_of_injective (Function.injective_of_subsingleton _), Multiset.mem_replicate]",
+  "proof_lines": 10,
+  "sha256": "43bcec94ea729a9c48c617308282496e4392f60726c9284df1d8dbe108c5b69e",
+  "what": "Multiplication by a nonzero separated univariate factor preserves the degree in each ordinary variable.",
+  "how": "Use degreeOf_mul_eq and degreeOf_rename_of_injective; aeval_X_eq_rename shows the other factor has degree zero in those variables.",
+  "hypotheses": "Integral-domain coefficients; the univariate factor is nonzero.",
+  "source_body_refs": [
+    "Roth.aeval_X_eq_rename"
+  ],
+  "source_type_refs": [],
+  "source_callers": [
+    {
+      "name": "Roth.exists_det_eq_mul",
+      "file": "Roth/Separation.lean",
+      "line": 542
+    }
+  ],
+  "notes": [],
+  "input_file_sha256": "4ac885af6c9973d40f68bd2e6c42185f02a9996271ccaa67d4932d27e85a7d0e",
+  "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+  "section_context": "Namespace Roth; open MvPolynomial. Ambient \u03c4 : Type*. Domain section: R : Type*, [CommRing R], [IsDomain R]. Ambient [Fintype \u03c4] and [DecidableEq \u03c4] are explicitly omitted around general declarations; unused section instances are not implicit mathematical hypotheses. Inline binders override/add context. ",
+  "uses_from_project": [
+    "Roth.aeval_X_eq_rename"
+  ],
+  "used_by_in_file": [
+    "Roth.exists_det_eq_mul"
+  ],
+  "used_by_other_files": [],
+  "assignment_offset": 216,
+  "project_body_refs": [
+    "Roth.aeval_X_eq_rename"
+  ],
+  "project_type_refs": [],
+  "project_callers": [
+    {
+      "name": "Roth.exists_det_eq_mul",
+      "file": "Roth/Separation.lean",
+      "line": 542
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
+#check_failure Roth.degreeOf_rename_mul_aeval
+namespace SeparatedDegree163Composition
+open MvPolynomial
+variable {R σ τ : Type*} [CommSemiring R] [NoZeroDivisors R]
+theorem generic (P Q : MvPolynomial σ R) (hP : P ≠ 0) (hQ : Q ≠ 0)
+    (j : σ) (hdegree : degreeOf j Q = 0) : degreeOf j (P * Q) = degreeOf j P := by
+  simpa only [hdegree, add_zero] using (degreeOf_mul_eq (n := j) hP hQ)
+theorem normalizationGap (U : MvPolynomial τ R) {V : Polynomial R}
+    (hU : U ≠ 0) (hV : V ≠ 0) (j : τ) : True := by
+  have hp := (rename_eq_zero_iff_of_injective U (Option.some_injective τ)).not.mpr hU
+  have hq := (map_ne_zero_iff (Polynomial.aeval (X none : MvPolynomial (Option τ) R))
+    (Polynomial.toMvPolynomial_injective none)).2 hV
+  have : degreeOf (some j)
+      (rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) R) V) =
+        degreeOf j U := by
+    fail_if_success
+      exact degreeOf_mul_eq (n := some j) hp hq
+    fail_if_success
+      simpa only [degreeOf_rename_of_injective (Option.some_injective τ)] using
+        (degreeOf_mul_eq (n := some j) hp hq)
+    rw [degreeOf_mul_eq hp hq,
+      degreeOf_rename_of_injective (Option.some_injective τ)]
+    rw [show Polynomial.aeval (X none : MvPolynomial (Option τ) R) V =
+        rename (fun _ : Unit ↦ none) ((uniqueAlgEquiv R Unit).symm V) from
+          AlgHom.congr_fun (Polynomial.toMvPolynomial_eq_rename_comp none) V]
+    simp [degreeOf, degrees_rename_of_injective (Function.injective_of_subsingleton _),
+      Multiset.mem_replicate]
+  trivial
+#print axioms generic
+#print axioms normalizationGap
+end SeparatedDegree163Composition

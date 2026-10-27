@@ -1,0 +1,55 @@
+{
+  "declaration": "Roth.degreeOf_rename_mul_aeval",
+  "kind": "theorem",
+  "type": "@Roth.degreeOf_rename_mul_aeval : \u2200 {\u03c4 : Type u_1} {R : Type u_2} [inst : CommRing R] [IsDomain R]\n  (U : MvPolynomial \u03c4 R) {V : Polynomial R},\n  V \u2260 0 \u2192\n    \u2200 (j : \u03c4),\n      MvPolynomial.degreeOf (some j) ((MvPolynomial.rename some) U * (Polynomial.aeval (MvPolynomial.X none)) V) =\n        MvPolynomial.degreeOf j U",
+  "what": "Multiplication by a nonzero univariate factor in a disjoint variable preserves every old-variable partial degree, allowing the other factor to be zero.",
+  "how": "Split U=0; use degreeOf_mul_eq, injective rename preservation and singleton-renaming normalization to show the other factor contributes zero.",
+  "hypotheses": [
+    "arbitrary \u03c4 and R universes",
+    "CommRing R",
+    "IsDomain R",
+    "U arbitrary including zero",
+    "V\u22600",
+    "j:\u03c4; no Fintype/DecidableEq assumptions"
+  ],
+  "project_dependencies": [
+    "Roth.aeval_X_eq_rename"
+  ],
+  "caller_summary": {
+    "explicit_use_count": 1,
+    "external_to_file_use_count": 0,
+    "explicit_call_sites": [
+      {
+        "file": "Roth/Separation.lean",
+        "line": 554,
+        "caller": "Roth.exists_det_eq_mul",
+        "pattern": "rw [\u2190 degreeOf_rename_mul_aeval U hV j, \u2190 hFUV]"
+      }
+    ],
+    "direct_kernel_value_consumers": [
+      "Roth.exists_det_eq_mul"
+    ],
+    "inline_derivations": [],
+    "verified_replay": "Entire original Finite \u03c4 caller checked with inline mathlib proof; target absent from new region."
+  },
+  "mathlib_api_audit": {
+    "verdict": "BORDERLINE-needs-human",
+    "positive_candidates": [
+      "MvPolynomial.degreeOf_mul_eq",
+      "MvPolynomial.degreeOf_rename_of_injective",
+      "Polynomial.toMvPolynomial_eq_rename_comp",
+      "Polynomial.toMvPolynomial_injective",
+      "MvPolynomial.degreeOf_C_mul"
+    ],
+    "search_cells": 15,
+    "canonical_bridge": "Actual mathlib aeval/rename bridge replaces Roth.aeval_X_eq_rename; independent-degree normalization remains proof."
+  },
+  "moral_duplications": [
+    "Product-degree additivity plus injective renaming are existing mathlib facts.",
+    "Analogous none-variable theorem is distinct because its RHS is V.natDegree."
+  ],
+  "generalization": "CommSemiring R + NoZeroDivisors R complete proof compiled; arbitrary-degree-zero-factor principle compiled separately; hV and nonannihilation guards compiled. NoZeroDivisors is a sufficient global condition; weakest point-local nonannihilation alternatives are not claimed.",
+  "missing_api": "Design choice between degree preservation under multiplication by a nonzero zero-degree factor and degree zero outside the range of a renaming. No global absence claim.",
+  "junk": "Not junk: one explicit project use and one direct kernel-value consumer.",
+  "action": "Keep local while deciding three upstream API questions; semiring weakening verified; sole caller can inline accepted derivation without changing original interface."
+}

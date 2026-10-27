@@ -1,0 +1,111 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\n#check_failure Roth.degreeOf_rename_mul_aeval\n#check MvPolynomial.degreeOf_mul_eq\n#check MvPolynomial.degreeOf_rename_of_injective\n#check Polynomial.toMvPolynomial_eq_rename_comp\n#check Polynomial.toMvPolynomial_injective\n#check MvPolynomial.degreeOf_C_mul\nnamespace SeparatedDegree163\nopen MvPolynomial\nvariable {R τ σ : Type*} [CommSemiring R] [NoZeroDivisors R]\ntheorem abstract_degree_zero (P Q : MvPolynomial σ R) (hQ : Q ≠ 0)\n    (j : σ) (hdegree : degreeOf j Q = 0) : degreeOf j (P * Q) = degreeOf j P := by\n  by_cases hP : P = 0\n  · simp [hP]\n  rw [degreeOf_mul_eq hP hQ, hdegree, add_zero]\ntheorem semiring (U : MvPolynomial τ R) {V : Polynomial R} (hV : V ≠ 0) (j : τ) :\n    degreeOf (some j) (rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) R) V) =\n      degreeOf j U := by\n  classical\n  by_cases hU : U = 0\n  · simp [hU]\n  rw [degreeOf_mul_eq ((rename_eq_zero_iff_of_injective U (Option.some_injective τ)).not.mpr hU)\n      ((map_ne_zero_iff (Polynomial.aeval (X none))\n        (Polynomial.toMvPolynomial_injective none)).2 hV),\n    degreeOf_rename_of_injective (Option.some_injective τ)]\n  rw [show Polynomial.aeval (X none : MvPolynomial (Option τ) R) V =\n      rename (fun _ : Unit ↦ none) ((uniqueAlgEquiv R Unit).symm V) from\n        AlgHom.congr_fun (Polynomial.toMvPolynomial_eq_rename_comp none) V]\n  simp [degreeOf, degrees_rename_of_injective (Function.injective_of_subsingleton _),\n    Multiset.mem_replicate]\nexample (U : MvPolynomial τ R) {V : Polynomial R} (hV : V ≠ 0) (j : τ) :\n    degreeOf (some j) (rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) R) V) =\n      degreeOf j U := by\n  by_cases hU : U = 0\n  · simp [hU]\n  fail_if_success\n    exact degreeOf_mul_eq\n      ((rename_eq_zero_iff_of_injective U (Option.some_injective τ)).not.mpr hU)\n      ((map_ne_zero_iff (Polynomial.aeval (X none))\n        (Polynomial.toMvPolynomial_injective none)).2 hV)\n  exact semiring U hV j\nexample (V : Polynomial R) (j : τ) :\n    degreeOf (some j) (rename some (0 : MvPolynomial τ R) *\n      Polynomial.aeval (X none : MvPolynomial (Option τ) R) V) =\n      degreeOf j (0 : MvPolynomial τ R) := by\n  simp\ntheorem nonzeroNecessary : ¬ (∀ (U : MvPolynomial Unit ℤ) (V : Polynomial ℤ),\n    degreeOf (some ()) (rename some U *\n      Polynomial.aeval (X none : MvPolynomial (Option Unit) ℤ) V) = degreeOf () U) := by\n  intro h\n  have hh := h (X ()) 0\n  simp at hh\n-- Nonzero constants in a coefficient ring with zero divisors can annihilate a positive-degree term.\ntheorem noZeroDivisorsNecessary : ¬ (∀ (U : MvPolynomial Unit (ℤ × ℤ)) (V : Polynomial (ℤ × ℤ)),\n    V ≠ 0 →\n    degreeOf (some ()) (rename some U *\n      Polynomial.aeval (X none : MvPolynomial (Option Unit) (ℤ × ℤ)) V) = degreeOf () U) := by\n  intro h\n  have hv : (Polynomial.C ((0, 1) : ℤ × ℤ)) ≠ 0 := by simp\n  have hh := h (C ((1, 0) : ℤ × ℤ) * X ()) (Polynomial.C ((0, 1) : ℤ × ℤ)) hv\n  have hp : rename some (C ((1, 0) : ℤ × ℤ) * X ()) *\n      Polynomial.aeval (X none : MvPolynomial (Option Unit) (ℤ × ℤ))\n        (Polynomial.C ((0, 1) : ℤ × ℤ)) = 0 := by\n    simp only [map_mul, rename_C, rename_X, Polynomial.aeval_C, algebraMap_eq]\n    rw [mul_right_comm, ← C_mul]\n    simp\n  rw [hp] at hh\n  have hd : degreeOf () (C ((1, 0) : ℤ × ℤ) * X ()) = 1 := by\n    rw [C_mul_X_eq_monomial, degreeOf_monomial_eq _ _ (by simp)]\n    simp\n  simp [hd] at hh\n#print axioms nonzeroNecessary\n#print axioms noZeroDivisorsNecessary\n#print axioms abstract_degree_zero\n#print axioms semiring\nend SeparatedDegree163\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.degreeOf_rename_mul_aeval`\",\n      \"line\": 11,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"MvPolynomial.degreeOf_mul_eq.{u_1, u_2} {R : Type u_1} {σ : Type u_2} {n : σ} [CommSemiring R] {p q : MvPolynomial σ R}\\n  [NoZeroDivisors R] (hp : p ≠ 0) (hq : q ≠ 0) :\\n  MvPolynomial.degreeOf n (p * q) = MvPolynomial.degreeOf n p + MvPolynomial.degreeOf n q\",\n      \"line\": 12,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"MvPolynomial.degreeOf_rename_of_injective.{u, u_1, u_2} {R : Type u} {σ : Type u_1} {τ : Type u_2} [CommSemiring R]\\n  {p : MvPolynomial σ R} {f : σ → τ} (h : Function.Injective f) (i : σ) :\\n  MvPolynomial.degreeOf (f i) ((MvPolynomial.rename f) p) = MvPolynomial.degreeOf i p\",\n      \"line\": 13,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Polynomial.toMvPolynomial_eq_rename_comp.{u_1, u_3} {R : Type u_1} {σ : Type u_3} [CommSemiring R] (i : σ) :\\n  Polynomial.toMvPolynomial i = (MvPolynomial.rename fun x ↦ i).comp ↑(MvPolynomial.uniqueAlgEquiv R Unit).symm\",\n      \"line\": 14,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Polynomial.toMvPolynomial_injective.{u_1, u_3} {R : Type u_1} {σ : Type u_3} [CommSemiring R] (i : σ) :\\n  Function.Injective ⇑(Polynomial.toMvPolynomial i)\",\n      \"line\": 15,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"MvPolynomial.degreeOf_C_mul.{u_1, u_2} {R : Type u_1} {σ : Type u_2} [CommSemiring R] {p : MvPolynomial σ R} (j : σ)\\n  (c : R) (hc : c ∈ nonZeroDivisors R) : MvPolynomial.degreeOf j (MvPolynomial.C c * p) = MvPolynomial.degreeOf j p\",\n      \"line\": 16,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'SeparatedDegree163.nonzeroNecessary' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 81,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'SeparatedDegree163.noZeroDivisorsNecessary' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 82,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'SeparatedDegree163.abstract_degree_zero' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 83,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'SeparatedDegree163.semiring' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 84,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.degreeOf_rename_mul_aeval`",
+          "line": 11,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "MvPolynomial.degreeOf_mul_eq.{u_1, u_2} {R : Type u_1} {σ : Type u_2} {n : σ} [CommSemiring R] {p q : MvPolynomial σ R}\n  [NoZeroDivisors R] (hp : p ≠ 0) (hq : q ≠ 0) :\n  MvPolynomial.degreeOf n (p * q) = MvPolynomial.degreeOf n p + MvPolynomial.degreeOf n q",
+          "line": 12,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "MvPolynomial.degreeOf_rename_of_injective.{u, u_1, u_2} {R : Type u} {σ : Type u_1} {τ : Type u_2} [CommSemiring R]\n  {p : MvPolynomial σ R} {f : σ → τ} (h : Function.Injective f) (i : σ) :\n  MvPolynomial.degreeOf (f i) ((MvPolynomial.rename f) p) = MvPolynomial.degreeOf i p",
+          "line": 13,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Polynomial.toMvPolynomial_eq_rename_comp.{u_1, u_3} {R : Type u_1} {σ : Type u_3} [CommSemiring R] (i : σ) :\n  Polynomial.toMvPolynomial i = (MvPolynomial.rename fun x ↦ i).comp ↑(MvPolynomial.uniqueAlgEquiv R Unit).symm",
+          "line": 14,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Polynomial.toMvPolynomial_injective.{u_1, u_3} {R : Type u_1} {σ : Type u_3} [CommSemiring R] (i : σ) :\n  Function.Injective ⇑(Polynomial.toMvPolynomial i)",
+          "line": 15,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "MvPolynomial.degreeOf_C_mul.{u_1, u_2} {R : Type u_1} {σ : Type u_2} [CommSemiring R] {p : MvPolynomial σ R} (j : σ)\n  (c : R) (hc : c ∈ nonZeroDivisors R) : MvPolynomial.degreeOf j (MvPolynomial.C c * p) = MvPolynomial.degreeOf j p",
+          "line": 16,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'SeparatedDegree163.nonzeroNecessary' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 81,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'SeparatedDegree163.noZeroDivisorsNecessary' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 82,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'SeparatedDegree163.abstract_degree_zero' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 83,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'SeparatedDegree163.semiring' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 84,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 430
+}

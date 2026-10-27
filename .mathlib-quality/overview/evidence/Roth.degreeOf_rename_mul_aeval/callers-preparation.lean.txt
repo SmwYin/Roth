@@ -1,0 +1,40 @@
+namespace SeparatedDegree163Caller
+open Roth MvPolynomial
+variable {τ : Type*}
+elab "ratFactors163%" : term =>
+  Lean.Meta.mkConstWithFreshMVarLevels
+    (Lean.mkPrivateNameCore `Roth.Separation `Roth.exists_rat_factors_det_hasseDeriv_aux)
+theorem exists_det_eq_mul [Finite τ] {P : MvPolynomial (Option τ) ℤ} (hP : P ≠ 0) {r : Option τ → ℕ}
+    (hr : ∀ j, degreeOf j P ≤ r j) : ∃ l, 1 ≤ l ∧ l ≤ r none + 1 ∧ ∃ D : Fin l → (τ →₀ ℕ),
+      (∀ μ, (D μ).degree ≤ μ) ∧ ∃ (U : MvPolynomial τ ℤ) (V : Polynomial ℤ), U ≠ 0 ∧ V ≠ 0 ∧
+        (∀ j, degreeOf j U ≤ l * r (some j)) ∧ V.natDegree ≤ l * r none ∧
+        (Matrix.of fun μ ν : Fin l ↦
+            hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) P).det = rename some U *
+          Polynomial.aeval (X none : MvPolynomial (Option τ) ℤ) V := by
+  classical
+  obtain ⟨l, hl1, hl2, D, hD, U', V', hU', hV', hFmap⟩ :=
+    ratFactors163% hP (hr none)
+  obtain ⟨U, V, hU, hV, hFUV, -, -⟩ := exists_int_factors hU' hV' hFmap
+  refine ⟨l, hl1, hl2, D, hD, U, V, hU, hV, fun j ↦ ?_, ?_, hFUV⟩
+  · have hdegree : degreeOf (some j)
+        (rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) ℤ) V) =
+          degreeOf j U := by
+      rw [degreeOf_mul_eq
+        ((rename_eq_zero_iff_of_injective U (Option.some_injective τ)).not.mpr hU)
+        ((map_ne_zero_iff (Polynomial.aeval (X none))
+          (Polynomial.toMvPolynomial_injective none)).2 hV),
+        degreeOf_rename_of_injective (Option.some_injective τ)]
+      rw [show Polynomial.aeval (X none : MvPolynomial (Option τ) ℤ) V =
+          rename (fun _ : Unit ↦ none) ((uniqueAlgEquiv ℤ Unit).symm V) from
+            AlgHom.congr_fun (Polynomial.toMvPolynomial_eq_rename_comp none) V]
+      simp [degreeOf, degrees_rename_of_injective (Function.injective_of_subsingleton _),
+        Multiset.mem_replicate]
+    rw [← hdegree, ← hFUV]
+    exact degreeOf_det_hasseDeriv_le
+      (fun μ ν : Fin l ↦ (D μ).mapDomain some + Finsupp.single none (ν : ℕ)) P hr (some j)
+  · rw [← degreeOf_none_rename_mul_aeval hU V, ← hFUV]
+    exact degreeOf_det_hasseDeriv_le
+      (fun μ ν : Fin l ↦ (D μ).mapDomain some + Finsupp.single none (ν : ℕ)) P hr none
+
+#print axioms exists_det_eq_mul
+end SeparatedDegree163Caller

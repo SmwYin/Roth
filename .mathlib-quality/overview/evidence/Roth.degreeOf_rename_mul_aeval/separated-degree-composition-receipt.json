@@ -1,0 +1,48 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\n#check_failure Roth.degreeOf_rename_mul_aeval\nnamespace SeparatedDegree163Composition\nopen MvPolynomial\nvariable {R σ τ : Type*} [CommSemiring R] [NoZeroDivisors R]\ntheorem generic (P Q : MvPolynomial σ R) (hP : P ≠ 0) (hQ : Q ≠ 0)\n    (j : σ) (hdegree : degreeOf j Q = 0) : degreeOf j (P * Q) = degreeOf j P := by\n  simpa only [hdegree, add_zero] using (degreeOf_mul_eq (n := j) hP hQ)\ntheorem normalizationGap (U : MvPolynomial τ R) {V : Polynomial R}\n    (hU : U ≠ 0) (hV : V ≠ 0) (j : τ) : True := by\n  classical\n  have hp := (rename_eq_zero_iff_of_injective U (Option.some_injective τ)).not.mpr hU\n  have hq := (map_ne_zero_iff (Polynomial.aeval (X none : MvPolynomial (Option τ) R))\n    (Polynomial.toMvPolynomial_injective none)).2 hV\n  have : degreeOf (some j)\n      (rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) R) V) =\n        degreeOf j U := by\n    fail_if_success\n      exact degreeOf_mul_eq (n := some j) hp hq\n    fail_if_success\n      simpa only [degreeOf_rename_of_injective (Option.some_injective τ)] using\n        (degreeOf_mul_eq (n := some j) hp hq)\n    rw [degreeOf_mul_eq hp hq,\n      degreeOf_rename_of_injective (Option.some_injective τ)]\n    rw [show Polynomial.aeval (X none : MvPolynomial (Option τ) R) V =\n        rename (fun _ : Unit ↦ none) ((uniqueAlgEquiv R Unit).symm V) from\n          AlgHom.congr_fun (Polynomial.toMvPolynomial_eq_rename_comp none) V]\n    simp [degreeOf, degrees_rename_of_injective (Function.injective_of_subsingleton _),\n      Multiset.mem_replicate]\n  trivial\n#print axioms generic\n#print axioms normalizationGap\nend SeparatedDegree163Composition\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.degreeOf_rename_mul_aeval`\",\n      \"line\": 11,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'SeparatedDegree163Composition.generic' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 40,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'SeparatedDegree163Composition.normalizationGap' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 41,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.degreeOf_rename_mul_aeval`",
+          "line": 11,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'SeparatedDegree163Composition.generic' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 40,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'SeparatedDegree163Composition.normalizationGap' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 41,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 608
+}

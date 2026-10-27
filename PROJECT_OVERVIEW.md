@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 162/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 163/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 162; remaining: 131.
-- Verdicts: 18 NO-composable-from-mathlib, 13 YES-add-as-is, 20 YES-but-generalise-first, 36 NO-mathlib-has-it, 48 BORDERLINE-needs-human, 27 SKIP.
+- Completed applicable assessments: 163; remaining: 130.
+- Verdicts: 18 NO-composable-from-mathlib, 13 YES-add-as-is, 20 YES-but-generalise-first, 36 NO-mathlib-has-it, 49 BORDERLINE-needs-human, 27 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -1806,6 +1806,21 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: explicit use count: 2; external to file use count: 1; explicit call sites: {'name': 'Roth.degreeOf_none_rename_mul_aeval', 'file': 'Roth/Separation.lean', 'line': 226}, {'name': 'Roth.index_separated_mul_le_aux', 'visibility': 'private', 'file': 'Roth/Theta.lean', 'line': 427}; direct kernel value consumers: Roth.degreeOf_none_rename_mul_aeval, _private.Roth.Theta.0.Roth.index_separated_mul_le_aux; inline derivations: None; complete replays verified: True
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.degreeOf_uniqueAlgEquiv_symm.md).
 
+### Completed: `Roth.degreeOf_rename_mul_aeval`
+
+- Type: `@Roth.degreeOf_rename_mul_aeval : ∀ {τ : Type u_1} {R : Type u_2} [inst : CommRing R] [IsDomain R]
+  (U : MvPolynomial τ R) {V : Polynomial R},
+  V ≠ 0 →
+    ∀ (j : τ),
+      MvPolynomial.degreeOf (some j) ((MvPolynomial.rename some) U * (Polynomial.aeval (MvPolynomial.X none)) V) =
+        MvPolynomial.degreeOf j U`
+- What: Multiplication by a nonzero univariate factor in a disjoint variable preserves every old-variable partial degree, allowing the other factor to be zero.
+- How: Split U=0; use degreeOf_mul_eq, injective rename preservation and singleton-renaming normalization to show the other factor contributes zero.
+- Hypotheses: arbitrary τ and R universes, CommRing R, IsDomain R, U arbitrary including zero, V≠0, j:τ; no Fintype/DecidableEq assumptions
+- Project dependencies: Roth.aeval_X_eq_rename
+- Caller summary: explicit use count: 1; external to file use count: 0; explicit call sites: {'file': 'Roth/Separation.lean', 'line': 554, 'caller': 'Roth.exists_det_eq_mul', 'pattern': 'rw [← degreeOf_rename_mul_aeval U hV j, ← hFUV]'}; direct kernel value consumers: Roth.exists_det_eq_mul; inline derivations: None; verified replay: Entire original Finite τ caller checked with inline mathlib proof; target absent from new region.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.degreeOf_rename_mul_aeval.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -2156,6 +2171,8 @@ Completed `Roth.coeff_uniqueAlgEquiv_symm`: existing: MvPolynomial.coeff_uniqueA
 
 Completed `Roth.degreeOf_uniqueAlgEquiv_symm`: verdict: BORDERLINE-needs-human; existing canonical law: MvPolynomial.degreeOf_eq_natDegree; other hits: MvPolynomial.natDegree_optionEquivLeft, MvPolynomial.coeff_uniqueAlgEquiv_symm, Polynomial.natDegree_map_eq_of_injective, MvPolynomial.C_injective, MvPolynomial.degreeOf_eq_sup, Polynomial.supDegree_eq_natDegree; exact target located: False; new bridge required: True; cells: 15; local index: unavailable; source hits checked natively
 
+Completed `Roth.degreeOf_rename_mul_aeval`: verdict: BORDERLINE-needs-human; positive candidates: MvPolynomial.degreeOf_mul_eq, MvPolynomial.degreeOf_rename_of_injective, Polynomial.toMvPolynomial_eq_rename_comp, Polynomial.toMvPolynomial_injective, MvPolynomial.degreeOf_C_mul; search cells: 15; canonical bridge: Actual mathlib aeval/rename bridge replaces Roth.aeval_X_eq_rename; independent-degree normalization remains proof.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -2481,6 +2498,8 @@ Completed `Roth.hasseDeriv_rename_mul_aeval`: Univariate constant outer-factor H
 Completed `Roth.coeff_uniqueAlgEquiv_symm`: The Roth law is the singleton-exponent specialization of the existing arbitrary-finsupp law, not a namespace-aware prefilter hit.
 
 Completed `Roth.degreeOf_uniqueAlgEquiv_symm`: The selected-variable/natDegree content exists canonically, but a genuine newly proved presentation bridge is needed to apply it to uniqueAlgEquiv. No automatic inherited NO from coefficient theorem161.
+
+Completed `Roth.degreeOf_rename_mul_aeval`: Product-degree additivity plus injective renaming are existing mathlib facts., Analogous none-variable theorem is distinct because its RHS is V.natDegree.
 
 ## Part 5: Generalization opportunities
 
@@ -2811,6 +2830,8 @@ Completed `Roth.coeff_uniqueAlgEquiv_symm`: status: More general exponent form a
 
 Completed `Roth.degreeOf_uniqueAlgEquiv_symm`: Already maximal for fixed CommSemiring/Unique interface; arbitrary coordinate is checked equivalent restatement. Arbitrary selected-variable general law is already in mathlib; Semiring interface drop and Bool uniqueness drop rejected.
 
+Completed `Roth.degreeOf_rename_mul_aeval`: CommSemiring R + NoZeroDivisors R complete proof compiled; arbitrary-degree-zero-factor principle compiled separately; hV and nonannihilation guards compiled. NoZeroDivisors is a sufficient global condition; weakest point-local nonannihilation alternatives are not claimed.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -3137,6 +3158,8 @@ Completed `Roth.hasseDeriv_rename_mul_aeval`: Upstream multivariate Hasse deriva
 Completed `Roth.coeff_uniqueAlgEquiv_symm`: None
 
 Completed `Roth.degreeOf_uniqueAlgEquiv_symm`: Potential named uniqueAlgEquiv degree rewrite or normalization bridge; upstream design choice rather than established mathematical gap.
+
+Completed `Roth.degreeOf_rename_mul_aeval`: Design choice between degree preservation under multiplication by a nonzero zero-degree factor and degree zero outside the range of a renaming. No global absence claim.
 
 ## Part 7: Junk / removable
 
@@ -3467,6 +3490,8 @@ Completed `Roth.coeff_uniqueAlgEquiv_symm`: No explicit callers and no direct ca
 
 Completed `Roth.degreeOf_uniqueAlgEquiv_symm`: Not dead: two actual source uses and two exact native direct kernel-value consumers.
 
+Completed `Roth.degreeOf_rename_mul_aeval`: Not junk: one explicit project use and one direct kernel-value consumer.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -3633,6 +3658,7 @@ Completed `Roth.degreeOf_uniqueAlgEquiv_symm`: Not dead: two actual source uses 
 | 160 | `Roth.hasseDeriv_rename_mul_aeval` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.hasseDeriv_rename_mul_aeval.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.hasseDeriv_rename_mul_aeval/root-acceptance.json) |
 | 161 | `Roth.coeff_uniqueAlgEquiv_symm` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.coeff_uniqueAlgEquiv_symm.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.coeff_uniqueAlgEquiv_symm/root-acceptance.json) |
 | 162 | `Roth.degreeOf_uniqueAlgEquiv_symm` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.degreeOf_uniqueAlgEquiv_symm.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.degreeOf_uniqueAlgEquiv_symm/root-acceptance.json) |
+| 163 | `Roth.degreeOf_rename_mul_aeval` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.degreeOf_rename_mul_aeval.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.degreeOf_rename_mul_aeval/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -3956,12 +3982,14 @@ Completed `Roth.coeff_uniqueAlgEquiv_symm` action: Recommend delete Roth.coeff_u
 
 Completed `Roth.degreeOf_uniqueAlgEquiv_symm` action: Retain locally pending upstream API choice: direct singleton degree rewrite, normalization bridge, and default versus arbitrary coordinate signature. Both full caller replacements compiled; no production edits made.
 
+Completed `Roth.degreeOf_rename_mul_aeval` action: Keep local while deciding three upstream API questions; semiring weakening verified; sole caller can inline accepted derivation without changing original interface.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.degreeOf_rename_mul_aeval` next. Supporting identities receive their own applicable checks.
+   `Roth.degreeOf_none_rename_mul_aeval` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 
