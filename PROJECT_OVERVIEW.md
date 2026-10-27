@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 134/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 135/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 134; remaining: 159.
-- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 17 YES-but-generalise-first, 22 NO-mathlib-has-it, 42 BORDERLINE-needs-human, 26 SKIP.
+- Completed applicable assessments: 135; remaining: 158.
+- Verdicts: 14 NO-composable-from-mathlib, 13 YES-add-as-is, 17 YES-but-generalise-first, 23 NO-mathlib-has-it, 42 BORDERLINE-needs-human, 26 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -1485,6 +1485,17 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: 4 explicit source caller declarations, all in Index.lean; 4 direct original value consumers. Exact separate lists retained. Entire Index module proof bodies replay successfully with fresh target name.
 - Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.mem_support_taylor_iff.md).
 
+### Completed: `Roth.index_le_weight`
+
+- Type: `Roth.index_le_weight.{u_1} {σ : Type u_1} [Fintype σ] {P : MvPolynomial σ ℝ} {α : σ → ℝ} {r : σ → ℕ} {d : σ →₀ ℕ}
+  (h : (MvPolynomial.eval α) ((MvPolynomial.hasseDeriv d) P) ≠ 0) : Roth.index P α r ≤ Roth.weight r d`
+- What: Nonzero evaluated Hasse coefficient bounds the point index above by its weight.
+- How: csInf_le on the finite image of Taylor support, using the private coefficient membership equivalence.
+- Hypotheses: arbitrary σ with Fintype σ, real polynomial P and center α, natural parameters r, including zero entries, multi-index d with eval α (hasseDeriv d P) ≠ 0; no P≠0 or positivity assumptions
+- Project dependencies: Roth.index, Roth.weight, MvPolynomial.taylor, MvPolynomial.hasseDeriv, MvPolynomial.coeff_taylor, private Roth.mem_support_taylor_iff
+- Caller summary: explicit declarations: 6; occurrences: 6; within module: 5; outside module: 1; kernel direct consumers: 6; files: Roth/Index.lean, Roth/Main.lean
+- Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/Roth.index_le_weight.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -1779,6 +1790,8 @@ Completed `Roth.index`: existing: AddMonoidAlgebra.infDegree; other positive: Mv
 
 Completed `Roth.mem_support_taylor_iff`: A multi-index lies in the Taylor support exactly when its Taylor coefficient is nonzero. mem_support_iff gives the coefficient criterion, and coeff_taylor identifies that coefficient with evaluation of the Hasse derivative. The private bridge is the common support-to-derivative interface for the index bound, attainment, lower-bound characterization and degree estimate. It is distinct from the quantitative inequalities it supports and requires no finite variable-type instance.
 
+Completed `Roth.index_le_weight`: verdict: NO-mathlib-has-it; reaim parent: AddMonoidAlgebra.infDegree; analogous law: Finset.inf_le; projection: WithTop.untopD_le; premise: Finsupp.mem_support_iff; verified native: True
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -2048,6 +2061,8 @@ Completed `Roth.card_filter_weight_le`: Not Roth arithmetic-progression/Behrend 
 Completed `Roth.index`: Generic support minimum is already infDegree., Natural weightedOrder is a positive-integral-parameter alternate interface; its project bridge is actual proof, not an existing library call.
 
 Completed `Roth.mem_support_taylor_iff`: The helper has a distinct role in the index proof as described in the structural review; no duplicate full construction is introduced.
+
+Completed `Roth.index_le_weight`: Finite infimum is bounded by each member, independently of the degree map; already Finset.inf_le.
 
 ## Part 5: Generalization opportunities
 
@@ -2322,6 +2337,8 @@ Completed `Roth.index`: Verified arbitrary variable types, CommSemiring coeffici
 
 Completed `Roth.mem_support_taylor_iff`: No public generality claim under the private prefilter; preserve the existing definition and interface.
 
+Completed `Roth.index_le_weight`: Compiled abstract Semiring/any support-degree map/any SemilatticeInf OrderTop target, and translated CommSemiring arbitrary-variable arbitrary-real-degree version without Fintype.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -2592,6 +2609,8 @@ Completed `Roth.card_filter_weight_le`: Design choice: named finite-product norm
 Completed `Roth.index`: No new generic minimum-support definition needed. A named point-index wrapper and normalization bridge can remain local; infinity-preserving API is distinct at zero.
 
 Completed `Roth.mem_support_taylor_iff`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
+
+Completed `Roth.index_le_weight`: No missing generic upper-bound law. Parent finite-sInf/infDegree projection bridge is normalization glue; coeff_taylor is separate project API.
 
 ## Part 7: Junk / removable
 
@@ -2866,6 +2885,8 @@ Completed `Roth.index`: False
 
 Completed `Roth.mem_support_taylor_iff`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
 
+Completed `Roth.index_le_weight`: False
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -3004,6 +3025,7 @@ Completed `Roth.mem_support_taylor_iff`: Retain a live private proof interface. 
 | 132 | `Roth.card_filter_weight_le` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.card_filter_weight_le.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.card_filter_weight_le/root-acceptance.json) |
 | 133 | `Roth.index` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.index.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.index/root-acceptance.json) |
 | 134 | `Roth.mem_support_taylor_iff` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.mem_support_taylor_iff.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.mem_support_taylor_iff/root-acceptance.json) |
+| 135 | `Roth.index_le_weight` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.index_le_weight.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.index_le_weight/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -3271,12 +3293,14 @@ Completed `Roth.index` action: Retain Roth.index in Roth/Index.lean as the proje
 
 Completed `Roth.mem_support_taylor_iff` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
 
+Completed `Roth.index_le_weight` action: Keep as a local manuscript convenience, or migrate parent to infDegree and replace all six applications with the generic projected bound. Full six-caller replay verified; no upstream PR for this theorem.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.index_le_weight` next. Supporting identities receive their own applicable checks.
+   `Roth.exists_weight_eq_index` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

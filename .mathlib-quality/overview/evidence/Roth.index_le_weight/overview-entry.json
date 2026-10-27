@@ -1,0 +1,47 @@
+{
+  "declaration": "Roth.index_le_weight",
+  "kind": "theorem",
+  "type": "Roth.index_le_weight.{u_1} {σ : Type u_1} [Fintype σ] {P : MvPolynomial σ ℝ} {α : σ → ℝ} {r : σ → ℕ} {d : σ →₀ ℕ}\n  (h : (MvPolynomial.eval α) ((MvPolynomial.hasseDeriv d) P) ≠ 0) : Roth.index P α r ≤ Roth.weight r d",
+  "what": "Nonzero evaluated Hasse coefficient bounds the point index above by its weight.",
+  "how": "csInf_le on the finite image of Taylor support, using the private coefficient membership equivalence.",
+  "hypotheses": [
+    "arbitrary σ with Fintype σ",
+    "real polynomial P and center α",
+    "natural parameters r, including zero entries",
+    "multi-index d with eval α (hasseDeriv d P) ≠ 0; no P≠0 or positivity assumptions"
+  ],
+  "project_dependencies": [
+    "Roth.index",
+    "Roth.weight",
+    "MvPolynomial.taylor",
+    "MvPolynomial.hasseDeriv",
+    "MvPolynomial.coeff_taylor",
+    "private Roth.mem_support_taylor_iff"
+  ],
+  "caller_summary": {
+    "explicit_declarations": 6,
+    "occurrences": 6,
+    "within_module": 5,
+    "outside_module": 1,
+    "kernel_direct_consumers": 6,
+    "files": [
+      "Roth/Index.lean",
+      "Roth/Main.lean"
+    ]
+  },
+  "mathlib_api_audit": {
+    "verdict": "NO-mathlib-has-it",
+    "reaim_parent": "AddMonoidAlgebra.infDegree",
+    "analogous_law": "Finset.inf_le",
+    "projection": "WithTop.untopD_le",
+    "premise": "Finsupp.mem_support_iff",
+    "verified_native": true
+  },
+  "moral_duplications": [
+    "Finite infimum is bounded by each member, independently of the degree map; already Finset.inf_le."
+  ],
+  "generalization": "Compiled abstract Semiring/any support-degree map/any SemilatticeInf OrderTop target, and translated CommSemiring arbitrary-variable arbitrary-real-degree version without Fintype.",
+  "missing_api": "No missing generic upper-bound law. Parent finite-sInf/infDegree projection bridge is normalization glue; coeff_taylor is separate project API.",
+  "junk": false,
+  "action": "Keep as a local manuscript convenience, or migrate parent to infDegree and replace all six applications with the generic projected bound. Full six-caller replay verified; no upstream PR for this theorem."
+}

@@ -1,0 +1,662 @@
+[
+  {
+    "method": "mcp__lean_lsp__lean_leanfinder",
+    "query": "Roth polynomial index at a point is at most weight of multiindex with nonzero Hasse derivative evaluation",
+    "result": {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.numBound\",\n      \"informal_name\": \"Numerical Bound for Multivariate Polynomials in Chevalley's Theorem\",\n      \"kind\": \"definition\",\n      \"type\": \"ℕ → (ℕ → ℕ) → ℕ → ℕ\",\n      \"informal_description\": \"A function that takes a natural number $n$, a function $f : \\\\mathbb{N} \\\\to \\\\mathbb{N}$, and another natural number $m$, returning a natural number used to establish well-founded recursion in the context of multivariate polynomials and Chevalley's theorem. It computes bounds by recursively applying $f$ to $n$ and decrementing $m$.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.degBound\",\n      \"informal_name\": \"Degree Bound for Multivariate Polynomials in Chevalley's Theorem\",\n      \"kind\": \"definition\",\n      \"type\": \"ℕ → (ℕ → ℕ) → ℕ → ℕ\",\n      \"informal_description\": \"A function that computes a degree bound for multivariate polynomials, taking a natural number $n$, a function $f : \\\\mathbb{N} \\\\to \\\\mathbb{N}$, and an element of the sum type $\\\\mathbb{N} \\\\oplus \\\\mathbb{N}$. For left components, it applies $f$ to $n$, and for right components, it returns $n$ directly. This is used in the proof of Chevalley's theorem to establish well-founded recursion for multivariate polynomial constructions.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"Polynomial.derivRootWeight\",\n      \"informal_name\": \"Derivative Root Weight Function\",\n      \"kind\": \"definition\",\n      \"type\": \"Polynomial ℂ → ℂ → ℂ → ℝ\",\n      \"informal_description\": \"For a polynomial $ P $ over $ \\\\mathbb{C} $ and complex numbers $ z, w $, this function returns $ 1 $ if $ z $ is a root of $ P $ and $ w = z $, $ 0 $ if $ z $ is a root but $ w \\\\neq z $, and otherwise returns $ \\\\frac{\\\\text{mult}_P(w)}{\\\\|z - w\\\\|^2} $, where $ \\\\text{mult}_P(w) $ is the multiplicity of $ w $ as a root of $ P $ and $ \\\\|z - w\\\\| $ is the complex modulus of $ z - w $.\",\n      \"path\": \"Mathlib.Analysis.Complex.Polynomial.GaussLucas\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.degBound\",\n      \"informal_name\": \"Degree Bound for Chevalley's Theorem Using Multiset of Finite Elements\",\n      \"kind\": \"definition\",\n      \"type\": \"ℕ → (m : ℕ) → ℕ → Multiset (Fin m) → ℕ\",\n      \"informal_description\": \"The function computes a degree bound for Chevalley's theorem by taking $k + n$ and a function that adds 1 to the count of each natural number obtained from mapping $\\\\text{Fin.val}$ over the multiset $d$ of type $\\\\text{Fin} \\\\, m$. This constructs a degree bound used in the proof of Chevalley's theorem for multivariate polynomial recursions.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.numBound\",\n      \"informal_name\": \"Numerical Bound for Chevalley's Theorem in Multivariate Polynomials with Multiset Counts\",\n      \"kind\": \"definition\",\n      \"type\": \"ℕ → (m : ℕ) → ℕ → Multiset (Fin m) → ℕ\",\n      \"informal_description\": \"A function that computes a numerical bound used in the context of Chevalley's theorem for multivariate polynomials. It takes natural numbers $k$, $m$, $n$ and a multiset $d$ of elements of type $\\\\text{Fin}\\\\, m$, and returns a natural number obtained by applying the multivariate polynomial bound function to $k + n$ and a function that counts the occurrences of each element in the multiset $d$ after mapping each element to its value in $\\\\mathbb{N}$, then adding 1.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.schwartz_zippel_sup_sum\",\n      \"informal_name\": \"Schwartz-Zippel Lemma: Root Bound via Supremum of Exponent Ratios\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] [IsDomain R] [inst_2 : DecidableEq R] {n : ℕ} {p : MvPolynomial (Fin n) R},\\n  p ≠ 0 →\\n    ∀ (S : Fin n → Finset R),\\n      ↑{x ∈ Fintype.piFinset fun i => S i | (MvPolynomial.eval x) p = 0}.card / ∏ i, ↑(S i).card ≤\\n        p.support.sup fun s => ∑ i, ↑(s i) / ↑(S i).card\",\n      \"informal_description\": \"For any non-zero multivariate polynomial $ p $ in $ n $ variables over a commutative semiring $ R $, and for any finite subsets $ S_i \\\\subseteq R $ for each variable, the ratio of the number of roots of $ p $ in the product set $ S_1 \\\\times \\\\cdots \\\\times S_n $ to the product of the cardinalities $ \\\\prod_{i=1}^n |S_i| $ is at most the supremum over all monomials $ s $ in the support of $ p $ of the sum $ \\\\sum_{i=1}^n \\\\frac{s_i}{|S_i|} $, where $ s_i $ denotes the exponent of the $ i $-th variable in the monomial $ s $. All divisions are performed in the non-negative rational numbers $ \\\\mathbb{Q}_{\\\\geq 0} $.\",\n      \"path\": \"Mathlib.Algebra.MvPolynomial.SchwartzZippel\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "formal_name": "ChevalleyThm.MvPolynomialC.numBound",
+              "informal_name": "Numerical Bound for Multivariate Polynomials in Chevalley's Theorem",
+              "kind": "definition",
+              "type": "ℕ → (ℕ → ℕ) → ℕ → ℕ",
+              "informal_description": "A function that takes a natural number $n$, a function $f : \\mathbb{N} \\to \\mathbb{N}$, and another natural number $m$, returning a natural number used to establish well-founded recursion in the context of multivariate polynomials and Chevalley's theorem. It computes bounds by recursively applying $f$ to $n$ and decrementing $m$.",
+              "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+            },
+            {
+              "formal_name": "ChevalleyThm.MvPolynomialC.degBound",
+              "informal_name": "Degree Bound for Multivariate Polynomials in Chevalley's Theorem",
+              "kind": "definition",
+              "type": "ℕ → (ℕ → ℕ) → ℕ → ℕ",
+              "informal_description": "A function that computes a degree bound for multivariate polynomials, taking a natural number $n$, a function $f : \\mathbb{N} \\to \\mathbb{N}$, and an element of the sum type $\\mathbb{N} \\oplus \\mathbb{N}$. For left components, it applies $f$ to $n$, and for right components, it returns $n$ directly. This is used in the proof of Chevalley's theorem to establish well-founded recursion for multivariate polynomial constructions.",
+              "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+            },
+            {
+              "formal_name": "Polynomial.derivRootWeight",
+              "informal_name": "Derivative Root Weight Function",
+              "kind": "definition",
+              "type": "Polynomial ℂ → ℂ → ℂ → ℝ",
+              "informal_description": "For a polynomial $ P $ over $ \\mathbb{C} $ and complex numbers $ z, w $, this function returns $ 1 $ if $ z $ is a root of $ P $ and $ w = z $, $ 0 $ if $ z $ is a root but $ w \\neq z $, and otherwise returns $ \\frac{\\text{mult}_P(w)}{\\|z - w\\|^2} $, where $ \\text{mult}_P(w) $ is the multiplicity of $ w $ as a root of $ P $ and $ \\|z - w\\| $ is the complex modulus of $ z - w $.",
+              "path": "Mathlib.Analysis.Complex.Polynomial.GaussLucas"
+            },
+            {
+              "formal_name": "ChevalleyThm.degBound",
+              "informal_name": "Degree Bound for Chevalley's Theorem Using Multiset of Finite Elements",
+              "kind": "definition",
+              "type": "ℕ → (m : ℕ) → ℕ → Multiset (Fin m) → ℕ",
+              "informal_description": "The function computes a degree bound for Chevalley's theorem by taking $k + n$ and a function that adds 1 to the count of each natural number obtained from mapping $\\text{Fin.val}$ over the multiset $d$ of type $\\text{Fin} \\, m$. This constructs a degree bound used in the proof of Chevalley's theorem for multivariate polynomial recursions.",
+              "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+            },
+            {
+              "formal_name": "ChevalleyThm.numBound",
+              "informal_name": "Numerical Bound for Chevalley's Theorem in Multivariate Polynomials with Multiset Counts",
+              "kind": "definition",
+              "type": "ℕ → (m : ℕ) → ℕ → Multiset (Fin m) → ℕ",
+              "informal_description": "A function that computes a numerical bound used in the context of Chevalley's theorem for multivariate polynomials. It takes natural numbers $k$, $m$, $n$ and a multiset $d$ of elements of type $\\text{Fin}\\, m$, and returns a natural number obtained by applying the multivariate polynomial bound function to $k + n$ and a function that counts the occurrences of each element in the multiset $d$ after mapping each element to its value in $\\mathbb{N}$, then adding 1.",
+              "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+            },
+            {
+              "formal_name": "MvPolynomial.schwartz_zippel_sup_sum",
+              "informal_name": "Schwartz-Zippel Lemma: Root Bound via Supremum of Exponent Ratios",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} [inst : CommRing R] [IsDomain R] [inst_2 : DecidableEq R] {n : ℕ} {p : MvPolynomial (Fin n) R},\n  p ≠ 0 →\n    ∀ (S : Fin n → Finset R),\n      ↑{x ∈ Fintype.piFinset fun i => S i | (MvPolynomial.eval x) p = 0}.card / ∏ i, ↑(S i).card ≤\n        p.support.sup fun s => ∑ i, ↑(s i) / ↑(S i).card",
+              "informal_description": "For any non-zero multivariate polynomial $ p $ in $ n $ variables over a commutative semiring $ R $, and for any finite subsets $ S_i \\subseteq R $ for each variable, the ratio of the number of roots of $ p $ in the product set $ S_1 \\times \\cdots \\times S_n $ to the product of the cardinalities $ \\prod_{i=1}^n |S_i| $ is at most the supremum over all monomials $ s $ in the support of $ p $ of the sum $ \\sum_{i=1}^n \\frac{s_i}{|S_i|} $, where $ s_i $ denotes the exponent of the $ i $-th variable in the monomial $ s $. All divisions are performed in the non-negative rational numbers $ \\mathbb{Q}_{\\geq 0} $.",
+              "path": "Mathlib.Algebra.MvPolynomial.SchwartzZippel"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "method": "mcp__lean_lsp__lean_loogle",
+    "query": "MvPolynomial, (_ ≤ _)",
+    "result": {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.coeffs_one\",\n      \"type\": \" {R : Type u} {σ : Type u_1} [CommSemiring R] : MvPolynomial.coeffs 1 ⊆ {1}\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Basic\"\n    },\n    {\n      \"name\": \"MvPolynomial.coeffs_C_subset\",\n      \"type\": \" {R : Type u} {σ : Type u_1} [CommSemiring R] (r : R) : (MvPolynomial.C r).coeffs ⊆ {r}\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Basic\"\n    },\n    {\n      \"name\": \"MvPolynomial.support_sum\",\n      \"type\": \" {R : Type u} {σ : Type u_1} [CommSemiring R] {α : Type u_2} [DecidableEq σ] {s : Finset α} {f : α → MvPolynomial σ R} : (∑ x ∈ s, f x).support ⊆ s.biUnion fun x => (f x).support\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Basic\"\n    },\n    {\n      \"name\": \"MvPolynomial.support_add\",\n      \"type\": \" {R : Type u} {σ : Type u_1} [CommSemiring R] {p q : MvPolynomial σ R} [DecidableEq σ] : (p + q).support ⊆ p.support ∪ q.support\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Basic\"\n    },\n    {\n      \"name\": \"MvPolynomial.support_sdiff_support_subset_support_add\",\n      \"type\": \" {R : Type u} {σ : Type u_1} [CommSemiring R] [DecidableEq σ] (p q : MvPolynomial σ R) : p.support \\\\ q.support ⊆ (p + q).support\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Basic\"\n    },\n    {\n      \"name\": \"MvPolynomial.support_smul\",\n      \"type\": \" {R : Type u} {σ : Type u_1} [CommSemiring R] {S₁ : Type u_2} [SMulZeroClass S₁ R] {a : S₁} {f : MvPolynomial σ R} : (a • f).support ⊆ f.support\",\n      \"module\": \"Mathlib.Algebra.MvPolynomial.Basic\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "MvPolynomial.coeffs_one",
+              "type": " {R : Type u} {σ : Type u_1} [CommSemiring R] : MvPolynomial.coeffs 1 ⊆ {1}",
+              "module": "Mathlib.Algebra.MvPolynomial.Basic"
+            },
+            {
+              "name": "MvPolynomial.coeffs_C_subset",
+              "type": " {R : Type u} {σ : Type u_1} [CommSemiring R] (r : R) : (MvPolynomial.C r).coeffs ⊆ {r}",
+              "module": "Mathlib.Algebra.MvPolynomial.Basic"
+            },
+            {
+              "name": "MvPolynomial.support_sum",
+              "type": " {R : Type u} {σ : Type u_1} [CommSemiring R] {α : Type u_2} [DecidableEq σ] {s : Finset α} {f : α → MvPolynomial σ R} : (∑ x ∈ s, f x).support ⊆ s.biUnion fun x => (f x).support",
+              "module": "Mathlib.Algebra.MvPolynomial.Basic"
+            },
+            {
+              "name": "MvPolynomial.support_add",
+              "type": " {R : Type u} {σ : Type u_1} [CommSemiring R] {p q : MvPolynomial σ R} [DecidableEq σ] : (p + q).support ⊆ p.support ∪ q.support",
+              "module": "Mathlib.Algebra.MvPolynomial.Basic"
+            },
+            {
+              "name": "MvPolynomial.support_sdiff_support_subset_support_add",
+              "type": " {R : Type u} {σ : Type u_1} [CommSemiring R] [DecidableEq σ] (p q : MvPolynomial σ R) : p.support \\ q.support ⊆ (p + q).support",
+              "module": "Mathlib.Algebra.MvPolynomial.Basic"
+            },
+            {
+              "name": "MvPolynomial.support_smul",
+              "type": " {R : Type u} {σ : Type u_1} [CommSemiring R] {S₁ : Type u_2} [SMulZeroClass S₁ R] {a : S₁} {f : MvPolynomial σ R} : (a • f).support ⊆ f.support",
+              "module": "Mathlib.Algebra.MvPolynomial.Basic"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "method": "mcp__lean_lsp__lean_leansearch",
+    "query": "The weighted index of polynomial at a point is bounded by the weight of every nonzero Taylor coefficient",
+    "result": {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPowerSeries.weightedOrder_le\",\n      \"module_name\": \"Mathlib.RingTheory.MvPowerSeries.Order\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ) {f : MvPowerSeries σ R} {d : σ →₀ ℕ},\\n  (MvPowerSeries.coeff d) f ≠ 0 → MvPowerSeries.weightedOrder w f ≤ ↑((Finsupp.weight w) d)\"\n    },\n    {\n      \"name\": \"MvPowerSeries.weightedOrder_monomial\",\n      \"module_name\": \"Mathlib.RingTheory.MvPowerSeries.Order\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ) {d : σ →₀ ℕ} {a : R} [inst_1 : Decidable (a = 0)],\\n  MvPowerSeries.weightedOrder w ((MvPowerSeries.monomial d) a) = if a = 0 then ⊤ else ↑((Finsupp.weight w) d)\"\n    },\n    {\n      \"name\": \"MvPolynomial.IsWeightedHomogeneous\",\n      \"module_name\": \"Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u_1} →\\n  {M : Type u_2} → [inst : CommSemiring R] → {σ : Type u_3} → [AddCommMonoid M] → (σ → M) → MvPolynomial σ R → M → Prop\"\n    },\n    {\n      \"name\": \"MvPowerSeries.weightedOrder\",\n      \"module_name\": \"Mathlib.RingTheory.MvPowerSeries.Order\",\n      \"kind\": \"definition\",\n      \"type\": \"{σ : Type u_1} → {R : Type u_2} → [Semiring R] → (σ → ℕ) → MvPowerSeries σ R → ℕ∞\"\n    },\n    {\n      \"name\": \"MvPolynomial.IsWeightedHomogeneous.coeff_eq_zero\",\n      \"module_name\": \"Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {M : Type u_2} [inst : CommSemiring R] {σ : Type u_3} [inst_1 : AddCommMonoid M] {φ : MvPolynomial σ R}\\n  {n : M} {w : σ → M},\\n  MvPolynomial.IsWeightedHomogeneous w φ n → ∀ (d : σ →₀ ℕ), (Finsupp.weight w) d ≠ n → MvPolynomial.coeff d φ = 0\"\n    },\n    {\n      \"name\": \"MvPowerSeries.le_weightedOrder\",\n      \"module_name\": \"Mathlib.RingTheory.MvPowerSeries.Order\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ) {f : MvPowerSeries σ R} {n : ℕ∞},\\n  (∀ (d : σ →₀ ℕ), ↑((Finsupp.weight w) d) < n → (MvPowerSeries.coeff d) f = 0) → n ≤ MvPowerSeries.weightedOrder w f\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "MvPowerSeries.weightedOrder_le",
+              "module_name": "Mathlib.RingTheory.MvPowerSeries.Order",
+              "kind": "theorem",
+              "type": "∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ) {f : MvPowerSeries σ R} {d : σ →₀ ℕ},\n  (MvPowerSeries.coeff d) f ≠ 0 → MvPowerSeries.weightedOrder w f ≤ ↑((Finsupp.weight w) d)"
+            },
+            {
+              "name": "MvPowerSeries.weightedOrder_monomial",
+              "module_name": "Mathlib.RingTheory.MvPowerSeries.Order",
+              "kind": "theorem",
+              "type": "∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ) {d : σ →₀ ℕ} {a : R} [inst_1 : Decidable (a = 0)],\n  MvPowerSeries.weightedOrder w ((MvPowerSeries.monomial d) a) = if a = 0 then ⊤ else ↑((Finsupp.weight w) d)"
+            },
+            {
+              "name": "MvPolynomial.IsWeightedHomogeneous",
+              "module_name": "Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous",
+              "kind": "definition",
+              "type": "{R : Type u_1} →\n  {M : Type u_2} → [inst : CommSemiring R] → {σ : Type u_3} → [AddCommMonoid M] → (σ → M) → MvPolynomial σ R → M → Prop"
+            },
+            {
+              "name": "MvPowerSeries.weightedOrder",
+              "module_name": "Mathlib.RingTheory.MvPowerSeries.Order",
+              "kind": "definition",
+              "type": "{σ : Type u_1} → {R : Type u_2} → [Semiring R] → (σ → ℕ) → MvPowerSeries σ R → ℕ∞"
+            },
+            {
+              "name": "MvPolynomial.IsWeightedHomogeneous.coeff_eq_zero",
+              "module_name": "Mathlib.RingTheory.MvPolynomial.WeightedHomogeneous",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} {M : Type u_2} [inst : CommSemiring R] {σ : Type u_3} [inst_1 : AddCommMonoid M] {φ : MvPolynomial σ R}\n  {n : M} {w : σ → M},\n  MvPolynomial.IsWeightedHomogeneous w φ n → ∀ (d : σ →₀ ℕ), (Finsupp.weight w) d ≠ n → MvPolynomial.coeff d φ = 0"
+            },
+            {
+              "name": "MvPowerSeries.le_weightedOrder",
+              "module_name": "Mathlib.RingTheory.MvPowerSeries.Order",
+              "kind": "theorem",
+              "type": "∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ) {f : MvPowerSeries σ R} {n : ℕ∞},\n  (∀ (d : σ →₀ ℕ), ↑((Finsupp.weight w) d) < n → (MvPowerSeries.coeff d) f = 0) → n ≤ MvPowerSeries.weightedOrder w f"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "method": "mcp__lean_lsp__lean_local_search",
+    "query": "index_le_weight",
+    "result": {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"IndexSupportAssessment.index_le_weight\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/roth-overview-session/GenWronskianChecks.lean\"\n    },\n    {\n      \"name\": \"Roth.index_le_weight\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/Index.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "IndexSupportAssessment.index_le_weight",
+              "kind": "theorem",
+              "file": ".lake/roth-overview-session/GenWronskianChecks.lean"
+            },
+            {
+              "name": "Roth.index_le_weight",
+              "kind": "theorem",
+              "file": "Roth/Index.lean"
+            }
+          ],
+          "index": "unavailable"
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "method": "mcp__lean_lsp__lean_leanfinder",
+    "query": "weighted order power series at most weight of exponent of a nonzero coefficient",
+    "result": {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"MvPowerSeries.weightedOrder_le\",\n      \"informal_name\": \"Weighted Order Upper Bound for Multivariate Power Series\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ) {f : MvPowerSeries σ R} {d : σ →₀ ℕ},\\n  (MvPowerSeries.coeff d) f ≠ 0 → MvPowerSeries.weightedOrder w f ≤ ↑((Finsupp.weight w) d)\",\n      \"informal_description\": \"For a multivariate power series $ f $ over a semiring $ R $ with variables indexed by $ \\\\sigma $ and a weight function $ w : \\\\sigma \\\\to \\\\mathbb{N} $, if the coefficient of a monomial $ d $ in $ f $ is non-zero, then the weighted order of $ f $ is less than or equal to the weight of $ d $, i.e., $ \\\\operatorname{weightedOrder}_w(f) \\\\leq \\\\sum_{i \\\\in \\\\operatorname{support} d} w(i) \\\\cdot d(i) $.\",\n      \"path\": \"Mathlib.RingTheory.MvPowerSeries.Order\"\n    },\n    {\n      \"formal_name\": \"MvPowerSeries.nat_le_weightedOrder\",\n      \"informal_name\": \"Weighted Order Lower Bound for Multivariate Power Series\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ) {f : MvPowerSeries σ R} {n : ℕ},\\n  (∀ (d : σ →₀ ℕ), (Finsupp.weight w) d < n → (MvPowerSeries.coeff d) f = 0) → ↑n ≤ MvPowerSeries.weightedOrder w f\",\n      \"informal_description\": \"For a multivariate power series $ f $ over a semiring $ R $ with variables indexed by $ \\\\sigma $ and a weight function $ w : \\\\sigma \\\\to \\\\mathbb{N} $, if every monomial $ d $ with weighted sum $ \\\\sum_{i \\\\in \\\\text{support } d} w(i) \\\\cdot d(i) < n $ has zero coefficient in $ f $, then the weighted order of $ f $ with respect to $ w $ satisfies $ n \\\\leq \\\\text{weightedOrder}_w(f) $.\",\n      \"path\": \"Mathlib.RingTheory.MvPowerSeries.Order\"\n    },\n    {\n      \"formal_name\": \"MvPowerSeries.le_weightedOrder\",\n      \"informal_name\": \"Lower Bound on Weighted Order of Multivariate Power Series\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ) {f : MvPowerSeries σ R} {n : ℕ∞},\\n  (∀ (d : σ →₀ ℕ), ↑((Finsupp.weight w) d) < n → (MvPowerSeries.coeff d) f = 0) → n ≤ MvPowerSeries.weightedOrder w f\",\n      \"informal_description\": \"For any extended natural number $n$, if every monomial $d$ with $\\\\text{weight}(w, d) < n$ has zero coefficient in the multivariate power series $f$, then $n \\\\leq \\\\text{weightedOrder}(f, w)$, where $\\\\text{weightedOrder}(f, w)$ denotes the weighted order of $f$ with respect to the weight function $w$.\",\n      \"path\": \"Mathlib.RingTheory.MvPowerSeries.Order\"\n    },\n    {\n      \"formal_name\": \"MvPowerSeries.weightedOrder_eq_nat\",\n      \"informal_name\": \"Weighted Order Equals n iff Existence of Minimal Non-Zero Coefficient\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ) {f : MvPowerSeries σ R} {n : ℕ},\\n  MvPowerSeries.weightedOrder w f = ↑n ↔\\n    (∃ d, (MvPowerSeries.coeff d) f ≠ 0 ∧ (Finsupp.weight w) d = n) ∧\\n      ∀ (d : σ →₀ ℕ), (Finsupp.weight w) d < n → (MvPowerSeries.coeff d) f = 0\",\n      \"informal_description\": \"For a multivariate power series $ f $ over a semiring $ R $ with variables indexed by $ \\\\sigma $ and a weight function $ w : \\\\sigma \\\\to \\\\mathbb{N} $, the weighted order of $ f $ is equal to $ n $ if and only if there exists a monomial $ d $ with non-zero coefficient in $ f $ such that the weighted sum $ \\\\sum_{i \\\\in \\\\text{support } d} w(i) \\\\cdot d(i) = n $, and every monomial with weighted sum less than $ n $ has zero coefficient in $ f $.\",\n      \"path\": \"Mathlib.RingTheory.MvPowerSeries.Order\"\n    },\n    {\n      \"formal_name\": \"MvPowerSeries.exists_coeff_ne_zero_and_weightedOrder\",\n      \"informal_name\": \"Existence of Non-Zero Coefficient at Weighted Order in Multivariate Power Series\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ) {f : MvPowerSeries σ R},\\n  ↑(MvPowerSeries.weightedOrder w f).toNat = MvPowerSeries.weightedOrder w f →\\n    ∃ d, (MvPowerSeries.coeff d) f ≠ 0 ∧ ↑((Finsupp.weight w) d) = MvPowerSeries.weightedOrder w f\",\n      \"informal_description\": \"For a multivariate power series $ f $ over a semiring $ R $ with variables indexed by $ \\\\sigma $, and a weight function $ w : \\\\sigma \\\\to \\\\mathbb{N} $, if the weighted order of $ f $ is a natural number, then there exists a monomial $ d $ such that the coefficient of $ d $ in $ f $ is non-zero and the weighted sum $ \\\\sum_{i \\\\in \\\\text{support } d} w(i) \\\\cdot d(i) $ equals the weighted order of $ f $.\",\n      \"path\": \"Mathlib.RingTheory.MvPowerSeries.Order\"\n    },\n    {\n      \"formal_name\": \"MvPowerSeries.weightedOrder\",\n      \"informal_name\": \"Weighted order of a multivariate power series\",\n      \"kind\": \"definition\",\n      \"type\": \"{σ : Type u_1} → {R : Type u_2} → [Semiring R] → (σ → ℕ) → MvPowerSeries σ R → ℕ∞\",\n      \"informal_description\": \"For a multivariate power series $ f $ over a semiring $ R $ with variables indexed by $ \\\\sigma $ and a weight function $ w : \\\\sigma \\\\to \\\\mathbb{N} $, the weighted order of $ f $ is the minimal natural number $ n $ such that there exists a monomial $ d $ with non-zero coefficient in $ f $ where the weighted sum $ \\\\sum_{i \\\\in \\\\text{support } d} w(i) \\\\cdot d(i) $ equals $ n $. If $ f $ is the zero series, the weighted order is $ \\\\top $ (infinity).\",\n      \"path\": \"Mathlib.RingTheory.MvPowerSeries.Order\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "formal_name": "MvPowerSeries.weightedOrder_le",
+              "informal_name": "Weighted Order Upper Bound for Multivariate Power Series",
+              "kind": "theorem",
+              "type": "∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ) {f : MvPowerSeries σ R} {d : σ →₀ ℕ},\n  (MvPowerSeries.coeff d) f ≠ 0 → MvPowerSeries.weightedOrder w f ≤ ↑((Finsupp.weight w) d)",
+              "informal_description": "For a multivariate power series $ f $ over a semiring $ R $ with variables indexed by $ \\sigma $ and a weight function $ w : \\sigma \\to \\mathbb{N} $, if the coefficient of a monomial $ d $ in $ f $ is non-zero, then the weighted order of $ f $ is less than or equal to the weight of $ d $, i.e., $ \\operatorname{weightedOrder}_w(f) \\leq \\sum_{i \\in \\operatorname{support} d} w(i) \\cdot d(i) $.",
+              "path": "Mathlib.RingTheory.MvPowerSeries.Order"
+            },
+            {
+              "formal_name": "MvPowerSeries.nat_le_weightedOrder",
+              "informal_name": "Weighted Order Lower Bound for Multivariate Power Series",
+              "kind": "theorem",
+              "type": "∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ) {f : MvPowerSeries σ R} {n : ℕ},\n  (∀ (d : σ →₀ ℕ), (Finsupp.weight w) d < n → (MvPowerSeries.coeff d) f = 0) → ↑n ≤ MvPowerSeries.weightedOrder w f",
+              "informal_description": "For a multivariate power series $ f $ over a semiring $ R $ with variables indexed by $ \\sigma $ and a weight function $ w : \\sigma \\to \\mathbb{N} $, if every monomial $ d $ with weighted sum $ \\sum_{i \\in \\text{support } d} w(i) \\cdot d(i) < n $ has zero coefficient in $ f $, then the weighted order of $ f $ with respect to $ w $ satisfies $ n \\leq \\text{weightedOrder}_w(f) $.",
+              "path": "Mathlib.RingTheory.MvPowerSeries.Order"
+            },
+            {
+              "formal_name": "MvPowerSeries.le_weightedOrder",
+              "informal_name": "Lower Bound on Weighted Order of Multivariate Power Series",
+              "kind": "theorem",
+              "type": "∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ) {f : MvPowerSeries σ R} {n : ℕ∞},\n  (∀ (d : σ →₀ ℕ), ↑((Finsupp.weight w) d) < n → (MvPowerSeries.coeff d) f = 0) → n ≤ MvPowerSeries.weightedOrder w f",
+              "informal_description": "For any extended natural number $n$, if every monomial $d$ with $\\text{weight}(w, d) < n$ has zero coefficient in the multivariate power series $f$, then $n \\leq \\text{weightedOrder}(f, w)$, where $\\text{weightedOrder}(f, w)$ denotes the weighted order of $f$ with respect to the weight function $w$.",
+              "path": "Mathlib.RingTheory.MvPowerSeries.Order"
+            },
+            {
+              "formal_name": "MvPowerSeries.weightedOrder_eq_nat",
+              "informal_name": "Weighted Order Equals n iff Existence of Minimal Non-Zero Coefficient",
+              "kind": "theorem",
+              "type": "∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ) {f : MvPowerSeries σ R} {n : ℕ},\n  MvPowerSeries.weightedOrder w f = ↑n ↔\n    (∃ d, (MvPowerSeries.coeff d) f ≠ 0 ∧ (Finsupp.weight w) d = n) ∧\n      ∀ (d : σ →₀ ℕ), (Finsupp.weight w) d < n → (MvPowerSeries.coeff d) f = 0",
+              "informal_description": "For a multivariate power series $ f $ over a semiring $ R $ with variables indexed by $ \\sigma $ and a weight function $ w : \\sigma \\to \\mathbb{N} $, the weighted order of $ f $ is equal to $ n $ if and only if there exists a monomial $ d $ with non-zero coefficient in $ f $ such that the weighted sum $ \\sum_{i \\in \\text{support } d} w(i) \\cdot d(i) = n $, and every monomial with weighted sum less than $ n $ has zero coefficient in $ f $.",
+              "path": "Mathlib.RingTheory.MvPowerSeries.Order"
+            },
+            {
+              "formal_name": "MvPowerSeries.exists_coeff_ne_zero_and_weightedOrder",
+              "informal_name": "Existence of Non-Zero Coefficient at Weighted Order in Multivariate Power Series",
+              "kind": "theorem",
+              "type": "∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ) {f : MvPowerSeries σ R},\n  ↑(MvPowerSeries.weightedOrder w f).toNat = MvPowerSeries.weightedOrder w f →\n    ∃ d, (MvPowerSeries.coeff d) f ≠ 0 ∧ ↑((Finsupp.weight w) d) = MvPowerSeries.weightedOrder w f",
+              "informal_description": "For a multivariate power series $ f $ over a semiring $ R $ with variables indexed by $ \\sigma $, and a weight function $ w : \\sigma \\to \\mathbb{N} $, if the weighted order of $ f $ is a natural number, then there exists a monomial $ d $ such that the coefficient of $ d $ in $ f $ is non-zero and the weighted sum $ \\sum_{i \\in \\text{support } d} w(i) \\cdot d(i) $ equals the weighted order of $ f $.",
+              "path": "Mathlib.RingTheory.MvPowerSeries.Order"
+            },
+            {
+              "formal_name": "MvPowerSeries.weightedOrder",
+              "informal_name": "Weighted order of a multivariate power series",
+              "kind": "definition",
+              "type": "{σ : Type u_1} → {R : Type u_2} → [Semiring R] → (σ → ℕ) → MvPowerSeries σ R → ℕ∞",
+              "informal_description": "For a multivariate power series $ f $ over a semiring $ R $ with variables indexed by $ \\sigma $ and a weight function $ w : \\sigma \\to \\mathbb{N} $, the weighted order of $ f $ is the minimal natural number $ n $ such that there exists a monomial $ d $ with non-zero coefficient in $ f $ where the weighted sum $ \\sum_{i \\in \\text{support } d} w(i) \\cdot d(i) $ equals $ n $. If $ f $ is the zero series, the weighted order is $ \\top $ (infinity).",
+              "path": "Mathlib.RingTheory.MvPowerSeries.Order"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "method": "mcp__lean_lsp__lean_loogle",
+    "query": "MvPowerSeries.weightedOrder, (_ ≤ _)",
+    "result": {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPowerSeries.le_weightedOrder_mul\",\n      \"type\": \" {σ : Type u_1} {R : Type u_2} [Semiring R] (w : σ → ℕ) {f g : MvPowerSeries σ R} : MvPowerSeries.weightedOrder w f + MvPowerSeries.weightedOrder w g ≤ MvPowerSeries.weightedOrder w (f * g)\",\n      \"module\": \"Mathlib.RingTheory.MvPowerSeries.Order\"\n    },\n    {\n      \"name\": \"MvPowerSeries.le_weightedOrder_prod\",\n      \"type\": \" {σ : Type u_1} {R : Type u_3} [CommSemiring R] {ι : Type u_4} (w : σ → ℕ) (f : ι → MvPowerSeries σ R) (s : Finset ι) : ∑ i ∈ s, MvPowerSeries.weightedOrder w (f i) ≤ MvPowerSeries.weightedOrder w (∏ i ∈ s, f i)\",\n      \"module\": \"Mathlib.RingTheory.MvPowerSeries.Order\"\n    },\n    {\n      \"name\": \"MvPowerSeries.weightedOrder_mul_ge\",\n      \"type\": \" {σ : Type u_1} {R : Type u_2} [Semiring R] (w : σ → ℕ) {f g : MvPowerSeries σ R} : MvPowerSeries.weightedOrder w f + MvPowerSeries.weightedOrder w g ≤ MvPowerSeries.weightedOrder w (f * g)\",\n      \"module\": \"Mathlib.RingTheory.MvPowerSeries.Order\"\n    },\n    {\n      \"name\": \"MvPowerSeries.le_weightedOrder_pow\",\n      \"type\": \" {σ : Type u_1} {R : Type u_2} [Semiring R] (w : σ → ℕ) {f : MvPowerSeries σ R} (n : ℕ) : n • MvPowerSeries.weightedOrder w f ≤ MvPowerSeries.weightedOrder w (f ^ n)\",\n      \"module\": \"Mathlib.RingTheory.MvPowerSeries.Order\"\n    },\n    {\n      \"name\": \"MvPowerSeries.min_weightedOrder_le_add\",\n      \"type\": \" {σ : Type u_1} {R : Type u_2} [Semiring R] (w : σ → ℕ) {f g : MvPowerSeries σ R} : min (MvPowerSeries.weightedOrder w f) (MvPowerSeries.weightedOrder w g) ≤ MvPowerSeries.weightedOrder w (f + g)\",\n      \"module\": \"Mathlib.RingTheory.MvPowerSeries.Order\"\n    },\n    {\n      \"name\": \"MvPowerSeries.le_weightedOrder_map\",\n      \"type\": \" {σ : Type u_1} {R : Type u_2} [Semiring R] (w : σ → ℕ) {f : MvPowerSeries σ R} {S : Type u_3} [Semiring S] (φ : R →+* S) : MvPowerSeries.weightedOrder w f ≤ MvPowerSeries.weightedOrder w ((MvPowerSeries.map φ) f)\",\n      \"module\": \"Mathlib.RingTheory.MvPowerSeries.Order\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "MvPowerSeries.le_weightedOrder_mul",
+              "type": " {σ : Type u_1} {R : Type u_2} [Semiring R] (w : σ → ℕ) {f g : MvPowerSeries σ R} : MvPowerSeries.weightedOrder w f + MvPowerSeries.weightedOrder w g ≤ MvPowerSeries.weightedOrder w (f * g)",
+              "module": "Mathlib.RingTheory.MvPowerSeries.Order"
+            },
+            {
+              "name": "MvPowerSeries.le_weightedOrder_prod",
+              "type": " {σ : Type u_1} {R : Type u_3} [CommSemiring R] {ι : Type u_4} (w : σ → ℕ) (f : ι → MvPowerSeries σ R) (s : Finset ι) : ∑ i ∈ s, MvPowerSeries.weightedOrder w (f i) ≤ MvPowerSeries.weightedOrder w (∏ i ∈ s, f i)",
+              "module": "Mathlib.RingTheory.MvPowerSeries.Order"
+            },
+            {
+              "name": "MvPowerSeries.weightedOrder_mul_ge",
+              "type": " {σ : Type u_1} {R : Type u_2} [Semiring R] (w : σ → ℕ) {f g : MvPowerSeries σ R} : MvPowerSeries.weightedOrder w f + MvPowerSeries.weightedOrder w g ≤ MvPowerSeries.weightedOrder w (f * g)",
+              "module": "Mathlib.RingTheory.MvPowerSeries.Order"
+            },
+            {
+              "name": "MvPowerSeries.le_weightedOrder_pow",
+              "type": " {σ : Type u_1} {R : Type u_2} [Semiring R] (w : σ → ℕ) {f : MvPowerSeries σ R} (n : ℕ) : n • MvPowerSeries.weightedOrder w f ≤ MvPowerSeries.weightedOrder w (f ^ n)",
+              "module": "Mathlib.RingTheory.MvPowerSeries.Order"
+            },
+            {
+              "name": "MvPowerSeries.min_weightedOrder_le_add",
+              "type": " {σ : Type u_1} {R : Type u_2} [Semiring R] (w : σ → ℕ) {f g : MvPowerSeries σ R} : min (MvPowerSeries.weightedOrder w f) (MvPowerSeries.weightedOrder w g) ≤ MvPowerSeries.weightedOrder w (f + g)",
+              "module": "Mathlib.RingTheory.MvPowerSeries.Order"
+            },
+            {
+              "name": "MvPowerSeries.le_weightedOrder_map",
+              "type": " {σ : Type u_1} {R : Type u_2} [Semiring R] (w : σ → ℕ) {f : MvPowerSeries σ R} {S : Type u_3} [Semiring S] (φ : R →+* S) : MvPowerSeries.weightedOrder w f ≤ MvPowerSeries.weightedOrder w ((MvPowerSeries.map φ) f)",
+              "module": "Mathlib.RingTheory.MvPowerSeries.Order"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "method": "mcp__lean_lsp__lean_leansearch",
+    "query": "weightedOrder_le of nonzero coefficient weighted power series",
+    "result": {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPowerSeries.weightedOrder_le\",\n      \"module_name\": \"Mathlib.RingTheory.MvPowerSeries.Order\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ) {f : MvPowerSeries σ R} {d : σ →₀ ℕ},\\n  (MvPowerSeries.coeff d) f ≠ 0 → MvPowerSeries.weightedOrder w f ≤ ↑((Finsupp.weight w) d)\"\n    },\n    {\n      \"name\": \"MvPowerSeries.weightedOrder\",\n      \"module_name\": \"Mathlib.RingTheory.MvPowerSeries.Order\",\n      \"kind\": \"definition\",\n      \"type\": \"{σ : Type u_1} → {R : Type u_2} → [Semiring R] → (σ → ℕ) → MvPowerSeries σ R → ℕ∞\"\n    },\n    {\n      \"name\": \"MvPowerSeries.weightedOrder_monomial\",\n      \"module_name\": \"Mathlib.RingTheory.MvPowerSeries.Order\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ) {d : σ →₀ ℕ} {a : R} [inst_1 : Decidable (a = 0)],\\n  MvPowerSeries.weightedOrder w ((MvPowerSeries.monomial d) a) = if a = 0 then ⊤ else ↑((Finsupp.weight w) d)\"\n    },\n    {\n      \"name\": \"MvPowerSeries.weightedOrder_eq_nat\",\n      \"module_name\": \"Mathlib.RingTheory.MvPowerSeries.Order\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ) {f : MvPowerSeries σ R} {n : ℕ},\\n  MvPowerSeries.weightedOrder w f = ↑n ↔\\n    (∃ d, (MvPowerSeries.coeff d) f ≠ 0 ∧ (Finsupp.weight w) d = n) ∧\\n      ∀ (d : σ →₀ ℕ), (Finsupp.weight w) d < n → (MvPowerSeries.coeff d) f = 0\"\n    },\n    {\n      \"name\": \"MvPowerSeries.nat_le_weightedOrder\",\n      \"module_name\": \"Mathlib.RingTheory.MvPowerSeries.Order\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ) {f : MvPowerSeries σ R} {n : ℕ},\\n  (∀ (d : σ →₀ ℕ), (Finsupp.weight w) d < n → (MvPowerSeries.coeff d) f = 0) → ↑n ≤ MvPowerSeries.weightedOrder w f\"\n    },\n    {\n      \"name\": \"MvPowerSeries.weightedOrder_monomial_of_ne_zero\",\n      \"module_name\": \"Mathlib.RingTheory.MvPowerSeries.Order\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ) {d : σ →₀ ℕ} {a : R},\\n  a ≠ 0 → MvPowerSeries.weightedOrder w ((MvPowerSeries.monomial d) a) = ↑((Finsupp.weight w) d)\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "MvPowerSeries.weightedOrder_le",
+              "module_name": "Mathlib.RingTheory.MvPowerSeries.Order",
+              "kind": "theorem",
+              "type": "∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ) {f : MvPowerSeries σ R} {d : σ →₀ ℕ},\n  (MvPowerSeries.coeff d) f ≠ 0 → MvPowerSeries.weightedOrder w f ≤ ↑((Finsupp.weight w) d)"
+            },
+            {
+              "name": "MvPowerSeries.weightedOrder",
+              "module_name": "Mathlib.RingTheory.MvPowerSeries.Order",
+              "kind": "definition",
+              "type": "{σ : Type u_1} → {R : Type u_2} → [Semiring R] → (σ → ℕ) → MvPowerSeries σ R → ℕ∞"
+            },
+            {
+              "name": "MvPowerSeries.weightedOrder_monomial",
+              "module_name": "Mathlib.RingTheory.MvPowerSeries.Order",
+              "kind": "theorem",
+              "type": "∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ) {d : σ →₀ ℕ} {a : R} [inst_1 : Decidable (a = 0)],\n  MvPowerSeries.weightedOrder w ((MvPowerSeries.monomial d) a) = if a = 0 then ⊤ else ↑((Finsupp.weight w) d)"
+            },
+            {
+              "name": "MvPowerSeries.weightedOrder_eq_nat",
+              "module_name": "Mathlib.RingTheory.MvPowerSeries.Order",
+              "kind": "theorem",
+              "type": "∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ) {f : MvPowerSeries σ R} {n : ℕ},\n  MvPowerSeries.weightedOrder w f = ↑n ↔\n    (∃ d, (MvPowerSeries.coeff d) f ≠ 0 ∧ (Finsupp.weight w) d = n) ∧\n      ∀ (d : σ →₀ ℕ), (Finsupp.weight w) d < n → (MvPowerSeries.coeff d) f = 0"
+            },
+            {
+              "name": "MvPowerSeries.nat_le_weightedOrder",
+              "module_name": "Mathlib.RingTheory.MvPowerSeries.Order",
+              "kind": "theorem",
+              "type": "∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ) {f : MvPowerSeries σ R} {n : ℕ},\n  (∀ (d : σ →₀ ℕ), (Finsupp.weight w) d < n → (MvPowerSeries.coeff d) f = 0) → ↑n ≤ MvPowerSeries.weightedOrder w f"
+            },
+            {
+              "name": "MvPowerSeries.weightedOrder_monomial_of_ne_zero",
+              "module_name": "Mathlib.RingTheory.MvPowerSeries.Order",
+              "kind": "theorem",
+              "type": "∀ {σ : Type u_1} {R : Type u_2} [inst : Semiring R] (w : σ → ℕ) {d : σ →₀ ℕ} {a : R},\n  a ≠ 0 → MvPowerSeries.weightedOrder w ((MvPowerSeries.monomial d) a) = ↑((Finsupp.weight w) d)"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "method": "mcp__lean_lsp__lean_local_search",
+    "query": "weightedOrder_le",
+    "result": {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPowerSeries.weightedOrder_le\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Order.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "MvPowerSeries.weightedOrder_le",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/MvPowerSeries/Order.lean"
+            }
+          ],
+          "index": "unavailable"
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "method": "mcp__lean_lsp__lean_leanfinder",
+    "query": "infimum support degree monoid algebra is at most degree of every nonzero coefficient Finset.inf_le",
+    "result": {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"AddMonoidAlgebra.infDegree\",\n      \"informal_name\": \"Infimum degree of an element in the additive monoid algebra\",\n      \"kind\": \"abbrev\",\n      \"type\": \"{R : Type u_1} →\\n  {A : Type u_3} →\\n    {T : Type u_4} →\\n      [inst : Semiring R] → [inst_1 : SemilatticeInf T] → [OrderTop T] → (A → T) → AddMonoidAlgebra R A → T\",\n      \"informal_description\": \"For an element $ f $ in the additive monoid algebra $ R[A] $, this function computes the infimum (greatest lower bound) of the degrees of the elements in its support, where the support consists of the non-zero terms of $ f $. The infimum is taken with respect to the degree ordering $ D $ on the additive monoid $ A $, starting from the top element and iteratively combining with the degrees of each term in the support.\",\n      \"path\": \"Mathlib.Algebra.MonoidAlgebra.Degree\"\n    },\n    {\n      \"formal_name\": \"AddMonoidAlgebra.le_inf_support_pow\",\n      \"informal_name\": \"Lower bound on degree of support under exponentiation in additive monoid algebra\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {A : Type u_3} {T : Type u_4} [inst : SemilatticeInf T] [inst_1 : OrderTop T] [inst_2 : Semiring R]\\n  [inst_3 : AddMonoid A] [inst_4 : AddMonoid T] [AddLeftMono T] [AddRightMono T] {degt : A → T},\\n  0 ≤ degt 0 →\\n    (∀ (a b : A), degt a + degt b ≤ degt (a + b)) →\\n      ∀ (n : ℕ) (f : AddMonoidAlgebra R A), n • f.support.inf degt ≤ (f ^ n).support.inf degt\",\n      \"informal_description\": \"Let $ R $ be a semiring and $ A $ an additive monoid. For any function $ \\\\deg : A \\\\to \\\\mathbb{R} $ satisfying $ \\\\deg(0) \\\\geq 0 $ and $ \\\\deg(a + b) \\\\geq \\\\deg(a) + \\\\deg(b) $ for all $ a, b \\\\in A $, and for any $ f \\\\in R[A] $ and $ n \\\\in \\\\mathbb{N} $, the inequality $ n \\\\cdot \\\\inf_{a \\\\in \\\\text{supp}(f)} \\\\deg(a) \\\\leq \\\\inf_{a \\\\in \\\\text{supp}(f^n)} \\\\deg(a) $ holds, where $ \\\\text{supp}(f) $ denotes the support of $ f $.\",\n      \"path\": \"Mathlib.Algebra.MonoidAlgebra.Degree\"\n    },\n    {\n      \"formal_name\": \"AddMonoidAlgebra.le_inf_support_finset_prod\",\n      \"informal_name\": \"Infimum Degree Inequality in Additive Monoid Algebra Product\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {A : Type u_3} {T : Type u_4} {ι : Type u_6} [inst : SemilatticeInf T] [inst_1 : OrderTop T]\\n  [inst_2 : CommSemiring R] [inst_3 : AddCommMonoid A] [inst_4 : AddCommMonoid T] [AddLeftMono T] [AddRightMono T]\\n  {degt : A → T},\\n  0 ≤ degt 0 →\\n    (∀ (a b : A), degt a + degt b ≤ degt (a + b)) →\\n      ∀ (s : Finset ι) (f : ι → AddMonoidAlgebra R A), ∑ i ∈ s, (f i).support.inf degt ≤ (∏ i ∈ s, f i).support.inf degt\",\n      \"informal_description\": \"For a commutative semiring $ R $ and an additive commutative monoid $ A $, let $ \\\\text{degt} : A \\\\to \\\\mathbb{R} $ satisfy $ \\\\text{degt}(0) \\\\geq 0 $ and $ \\\\text{degt}(a + b) \\\\geq \\\\text{degt}(a) + \\\\text{degt}(b) $. For any finite set $ s $ and function $ f : s \\\\to R[A] $, the sum of the infima of $ \\\\text{degt} $ over the supports of each $ f(i) $ is less than or equal to the infimum of $ \\\\text{degt} $ over the support of the product $ \\\\prod_{i \\\\in s} f(i) $.\",\n      \"path\": \"Mathlib.Algebra.MonoidAlgebra.Degree\"\n    },\n    {\n      \"formal_name\": \"AddMonoidAlgebra.le_inf_support_list_prod\",\n      \"informal_name\": \"Inequality for Infimum of Degrees in Additive Monoid Algebra\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {A : Type u_3} {T : Type u_4} [inst : SemilatticeInf T] [inst_1 : OrderTop T] [inst_2 : Semiring R]\\n  [inst_3 : AddMonoid A] [inst_4 : AddMonoid T] [AddLeftMono T] [AddRightMono T] {degt : A → T},\\n  0 ≤ degt 0 →\\n    (∀ (a b : A), degt a + degt b ≤ degt (a + b)) →\\n      ∀ (l : List (AddMonoidAlgebra R A)), (List.map (fun f => f.support.inf degt) l).sum ≤ l.prod.support.inf degt\",\n      \"informal_description\": \"Given a degree function $\\\\text{degt}$ on an additive monoid algebra $R[A]$ satisfying $\\\\text{degt}(0) \\\\geq 0$ and $\\\\text{degt}(a) + \\\\text{degt}(b) \\\\leq \\\\text{degt}(a + b)$ for all $a, b \\\\in A$, and a list $l$ of elements in $R[A]$, the sum of the infima of $\\\\text{degt}$ over the supports of each element in $l$ is less than or equal to the infimum of $\\\\text{degt}$ over the support of the product of all elements in $l$.\",\n      \"path\": \"Mathlib.Algebra.MonoidAlgebra.Degree\"\n    },\n    {\n      \"formal_name\": \"AddMonoidAlgebra.le_inf_support_add\",\n      \"informal_name\": \"Meet of Infima of Supports is Less Than or Equal to Infimum of Support of Sum\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {A : Type u_3} {T : Type u_4} [inst : SemilatticeInf T] [inst_1 : OrderTop T] [inst_2 : Semiring R]\\n  (degt : A → T) (f g : AddMonoidAlgebra R A), f.support.inf degt ⊓ g.support.inf degt ≤ (f + g).support.inf degt\",\n      \"informal_description\": \"For elements $ f $ and $ g $ in the additive monoid algebra $ R[M] $, the infimum of their supports with respect to the degree function satisfies $ \\\\inf(\\\\text{supp}(f)) \\\\sqcap \\\\inf(\\\\text{supp}(g)) \\\\leq \\\\inf(\\\\text{supp}(f + g)) $.\",\n      \"path\": \"Mathlib.Algebra.MonoidAlgebra.Degree\"\n    },\n    {\n      \"formal_name\": \"AddMonoidAlgebra.le_inf_support_mul\",\n      \"informal_name\": \"Subadditivity of Support Infimum under Multiplication in Additive Monoid Algebra\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {A : Type u_3} {T : Type u_4} [inst : SemilatticeInf T] [inst_1 : OrderTop T] [inst_2 : Semiring R]\\n  [inst_3 : Add A] [inst_4 : Add T] [AddLeftMono T] [AddRightMono T] {degt : A → T},\\n  (∀ (a b : A), degt a + degt b ≤ degt (a + b)) →\\n    ∀ (f g : AddMonoidAlgebra R A), f.support.inf degt + g.support.inf degt ≤ (f * g).support.inf degt\",\n      \"informal_description\": \"For any subadditive degree function $\\\\deg : A \\\\to T$ on an additive monoid $A$, and for all elements $f, g$ in the additive monoid algebra $R[A]$, the sum of the infima of the supports of $f$ and $g$ under $\\\\deg$ is less than or equal to the infimum of the support of their product $f \\\\cdot g$ under $\\\\deg$. Formally, $\\\\inf_{\\\\text{supp}(f)} \\\\deg + \\\\inf_{\\\\text{supp}(g)} \\\\deg \\\\leq \\\\inf_{\\\\text{supp}(f \\\\cdot g)} \\\\deg$.\",\n      \"path\": \"Mathlib.Algebra.MonoidAlgebra.Degree\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "formal_name": "AddMonoidAlgebra.infDegree",
+              "informal_name": "Infimum degree of an element in the additive monoid algebra",
+              "kind": "abbrev",
+              "type": "{R : Type u_1} →\n  {A : Type u_3} →\n    {T : Type u_4} →\n      [inst : Semiring R] → [inst_1 : SemilatticeInf T] → [OrderTop T] → (A → T) → AddMonoidAlgebra R A → T",
+              "informal_description": "For an element $ f $ in the additive monoid algebra $ R[A] $, this function computes the infimum (greatest lower bound) of the degrees of the elements in its support, where the support consists of the non-zero terms of $ f $. The infimum is taken with respect to the degree ordering $ D $ on the additive monoid $ A $, starting from the top element and iteratively combining with the degrees of each term in the support.",
+              "path": "Mathlib.Algebra.MonoidAlgebra.Degree"
+            },
+            {
+              "formal_name": "AddMonoidAlgebra.le_inf_support_pow",
+              "informal_name": "Lower bound on degree of support under exponentiation in additive monoid algebra",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} {A : Type u_3} {T : Type u_4} [inst : SemilatticeInf T] [inst_1 : OrderTop T] [inst_2 : Semiring R]\n  [inst_3 : AddMonoid A] [inst_4 : AddMonoid T] [AddLeftMono T] [AddRightMono T] {degt : A → T},\n  0 ≤ degt 0 →\n    (∀ (a b : A), degt a + degt b ≤ degt (a + b)) →\n      ∀ (n : ℕ) (f : AddMonoidAlgebra R A), n • f.support.inf degt ≤ (f ^ n).support.inf degt",
+              "informal_description": "Let $ R $ be a semiring and $ A $ an additive monoid. For any function $ \\deg : A \\to \\mathbb{R} $ satisfying $ \\deg(0) \\geq 0 $ and $ \\deg(a + b) \\geq \\deg(a) + \\deg(b) $ for all $ a, b \\in A $, and for any $ f \\in R[A] $ and $ n \\in \\mathbb{N} $, the inequality $ n \\cdot \\inf_{a \\in \\text{supp}(f)} \\deg(a) \\leq \\inf_{a \\in \\text{supp}(f^n)} \\deg(a) $ holds, where $ \\text{supp}(f) $ denotes the support of $ f $.",
+              "path": "Mathlib.Algebra.MonoidAlgebra.Degree"
+            },
+            {
+              "formal_name": "AddMonoidAlgebra.le_inf_support_finset_prod",
+              "informal_name": "Infimum Degree Inequality in Additive Monoid Algebra Product",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} {A : Type u_3} {T : Type u_4} {ι : Type u_6} [inst : SemilatticeInf T] [inst_1 : OrderTop T]\n  [inst_2 : CommSemiring R] [inst_3 : AddCommMonoid A] [inst_4 : AddCommMonoid T] [AddLeftMono T] [AddRightMono T]\n  {degt : A → T},\n  0 ≤ degt 0 →\n    (∀ (a b : A), degt a + degt b ≤ degt (a + b)) →\n      ∀ (s : Finset ι) (f : ι → AddMonoidAlgebra R A), ∑ i ∈ s, (f i).support.inf degt ≤ (∏ i ∈ s, f i).support.inf degt",
+              "informal_description": "For a commutative semiring $ R $ and an additive commutative monoid $ A $, let $ \\text{degt} : A \\to \\mathbb{R} $ satisfy $ \\text{degt}(0) \\geq 0 $ and $ \\text{degt}(a + b) \\geq \\text{degt}(a) + \\text{degt}(b) $. For any finite set $ s $ and function $ f : s \\to R[A] $, the sum of the infima of $ \\text{degt} $ over the supports of each $ f(i) $ is less than or equal to the infimum of $ \\text{degt} $ over the support of the product $ \\prod_{i \\in s} f(i) $.",
+              "path": "Mathlib.Algebra.MonoidAlgebra.Degree"
+            },
+            {
+              "formal_name": "AddMonoidAlgebra.le_inf_support_list_prod",
+              "informal_name": "Inequality for Infimum of Degrees in Additive Monoid Algebra",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} {A : Type u_3} {T : Type u_4} [inst : SemilatticeInf T] [inst_1 : OrderTop T] [inst_2 : Semiring R]\n  [inst_3 : AddMonoid A] [inst_4 : AddMonoid T] [AddLeftMono T] [AddRightMono T] {degt : A → T},\n  0 ≤ degt 0 →\n    (∀ (a b : A), degt a + degt b ≤ degt (a + b)) →\n      ∀ (l : List (AddMonoidAlgebra R A)), (List.map (fun f => f.support.inf degt) l).sum ≤ l.prod.support.inf degt",
+              "informal_description": "Given a degree function $\\text{degt}$ on an additive monoid algebra $R[A]$ satisfying $\\text{degt}(0) \\geq 0$ and $\\text{degt}(a) + \\text{degt}(b) \\leq \\text{degt}(a + b)$ for all $a, b \\in A$, and a list $l$ of elements in $R[A]$, the sum of the infima of $\\text{degt}$ over the supports of each element in $l$ is less than or equal to the infimum of $\\text{degt}$ over the support of the product of all elements in $l$.",
+              "path": "Mathlib.Algebra.MonoidAlgebra.Degree"
+            },
+            {
+              "formal_name": "AddMonoidAlgebra.le_inf_support_add",
+              "informal_name": "Meet of Infima of Supports is Less Than or Equal to Infimum of Support of Sum",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} {A : Type u_3} {T : Type u_4} [inst : SemilatticeInf T] [inst_1 : OrderTop T] [inst_2 : Semiring R]\n  (degt : A → T) (f g : AddMonoidAlgebra R A), f.support.inf degt ⊓ g.support.inf degt ≤ (f + g).support.inf degt",
+              "informal_description": "For elements $ f $ and $ g $ in the additive monoid algebra $ R[M] $, the infimum of their supports with respect to the degree function satisfies $ \\inf(\\text{supp}(f)) \\sqcap \\inf(\\text{supp}(g)) \\leq \\inf(\\text{supp}(f + g)) $.",
+              "path": "Mathlib.Algebra.MonoidAlgebra.Degree"
+            },
+            {
+              "formal_name": "AddMonoidAlgebra.le_inf_support_mul",
+              "informal_name": "Subadditivity of Support Infimum under Multiplication in Additive Monoid Algebra",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} {A : Type u_3} {T : Type u_4} [inst : SemilatticeInf T] [inst_1 : OrderTop T] [inst_2 : Semiring R]\n  [inst_3 : Add A] [inst_4 : Add T] [AddLeftMono T] [AddRightMono T] {degt : A → T},\n  (∀ (a b : A), degt a + degt b ≤ degt (a + b)) →\n    ∀ (f g : AddMonoidAlgebra R A), f.support.inf degt + g.support.inf degt ≤ (f * g).support.inf degt",
+              "informal_description": "For any subadditive degree function $\\deg : A \\to T$ on an additive monoid $A$, and for all elements $f, g$ in the additive monoid algebra $R[A]$, the sum of the infima of the supports of $f$ and $g$ under $\\deg$ is less than or equal to the infimum of the support of their product $f \\cdot g$ under $\\deg$. Formally, $\\inf_{\\text{supp}(f)} \\deg + \\inf_{\\text{supp}(g)} \\deg \\leq \\inf_{\\text{supp}(f \\cdot g)} \\deg$.",
+              "path": "Mathlib.Algebra.MonoidAlgebra.Degree"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "method": "mcp__lean_lsp__lean_loogle",
+    "query": "Finset.inf, (_ ≤ _)",
+    "result": {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finset.le_inf_const\",\n      \"type\": \" {α : Type u_2} {β : Type u_3} [SemilatticeInf α] [OrderTop α] {s : Finset β} {a : α} : a ≤ s.inf fun x => a\",\n      \"module\": \"Mathlib.Data.Finset.Lattice.Fold\"\n    },\n    {\n      \"name\": \"Finset.exists_inf_le\",\n      \"type\": \" {α : Type u_2} {β : Type u_3} [SemilatticeInf β] [OrderTop β] [WellFoundedLT β] (f : α → β) : ∃ t, ∀ (a : α), t.inf f ≤ f a\",\n      \"module\": \"Mathlib.Data.Finset.Lattice.Fold\"\n    },\n    {\n      \"name\": \"Finset.inf_le\",\n      \"type\": \" {α : Type u_2} {β : Type u_3} [SemilatticeInf α] [OrderTop α] {s : Finset β} {f : β → α} {b : β} (hb : b ∈ s) : s.inf f ≤ f b\",\n      \"module\": \"Mathlib.Data.Finset.Lattice.Fold\"\n    },\n    {\n      \"name\": \"Finset.inf_mono\",\n      \"type\": \" {α : Type u_2} {β : Type u_3} [SemilatticeInf α] [OrderTop α] {s₁ s₂ : Finset β} {f : β → α} (h : s₁ ⊆ s₂) : s₂.inf f ≤ s₁.inf f\",\n      \"module\": \"Mathlib.Data.Finset.Lattice.Fold\"\n    },\n    {\n      \"name\": \"Finset.inf_le_of_le\",\n      \"type\": \" {α : Type u_2} {β : Type u_3} [SemilatticeInf α] [OrderTop α] {s : Finset β} {f : β → α} {a : α} {b : β} (hb : b ∈ s) (h : f b ≤ a) : s.inf f ≤ a\",\n      \"module\": \"Mathlib.Data.Finset.Lattice.Fold\"\n    },\n    {\n      \"name\": \"Finset.le_inf\",\n      \"type\": \" {α : Type u_2} {β : Type u_3} [SemilatticeInf α] [OrderTop α] {s : Finset β} {f : β → α} {a : α} : (∀ b ∈ s, a ≤ f b) → a ≤ s.inf f\",\n      \"module\": \"Mathlib.Data.Finset.Lattice.Fold\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "Finset.le_inf_const",
+              "type": " {α : Type u_2} {β : Type u_3} [SemilatticeInf α] [OrderTop α] {s : Finset β} {a : α} : a ≤ s.inf fun x => a",
+              "module": "Mathlib.Data.Finset.Lattice.Fold"
+            },
+            {
+              "name": "Finset.exists_inf_le",
+              "type": " {α : Type u_2} {β : Type u_3} [SemilatticeInf β] [OrderTop β] [WellFoundedLT β] (f : α → β) : ∃ t, ∀ (a : α), t.inf f ≤ f a",
+              "module": "Mathlib.Data.Finset.Lattice.Fold"
+            },
+            {
+              "name": "Finset.inf_le",
+              "type": " {α : Type u_2} {β : Type u_3} [SemilatticeInf α] [OrderTop α] {s : Finset β} {f : β → α} {b : β} (hb : b ∈ s) : s.inf f ≤ f b",
+              "module": "Mathlib.Data.Finset.Lattice.Fold"
+            },
+            {
+              "name": "Finset.inf_mono",
+              "type": " {α : Type u_2} {β : Type u_3} [SemilatticeInf α] [OrderTop α] {s₁ s₂ : Finset β} {f : β → α} (h : s₁ ⊆ s₂) : s₂.inf f ≤ s₁.inf f",
+              "module": "Mathlib.Data.Finset.Lattice.Fold"
+            },
+            {
+              "name": "Finset.inf_le_of_le",
+              "type": " {α : Type u_2} {β : Type u_3} [SemilatticeInf α] [OrderTop α] {s : Finset β} {f : β → α} {a : α} {b : β} (hb : b ∈ s) (h : f b ≤ a) : s.inf f ≤ a",
+              "module": "Mathlib.Data.Finset.Lattice.Fold"
+            },
+            {
+              "name": "Finset.le_inf",
+              "type": " {α : Type u_2} {β : Type u_3} [SemilatticeInf α] [OrderTop α] {s : Finset β} {f : β → α} {a : α} : (∀ b ∈ s, a ≤ f b) → a ≤ s.inf f",
+              "module": "Mathlib.Data.Finset.Lattice.Fold"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "method": "mcp__lean_lsp__lean_leansearch",
+    "query": "infDegree AddMonoidAlgebra infimum support is bounded by degree of nonzero coefficient",
+    "result": {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"AddMonoidAlgebra.infDegree\",\n      \"module_name\": \"Mathlib.Algebra.MonoidAlgebra.Degree\",\n      \"kind\": \"abbrev\",\n      \"type\": \"{R : Type u_1} →\\n  {A : Type u_3} →\\n    {T : Type u_4} →\\n      [inst : Semiring R] → [inst_1 : SemilatticeInf T] → [OrderTop T] → (A → T) → AddMonoidAlgebra R A → T\"\n    },\n    {\n      \"name\": \"Polynomial.le_degree_of_mem_supp\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Degree.Support\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Semiring R] {p : Polynomial R}, ∀ a ∈ p.support, ↑a ≤ p.degree\"\n    },\n    {\n      \"name\": \"AddMonoidAlgebra.supDegree_mem_support\",\n      \"module_name\": \"Mathlib.Algebra.MonoidAlgebra.Degree\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {A : Type u_3} {B : Type u_5} [inst : Semiring R] [inst_1 : LinearOrder B] [inst_2 : OrderBot B]\\n  {p : AddMonoidAlgebra R A} {D : A → B} [inst_3 : AddZeroClass A],\\n  Function.Injective D → p ≠ 0 → Function.invFun D (AddMonoidAlgebra.supDegree D p) ∈ p.support\"\n    },\n    {\n      \"name\": \"AddMonoidAlgebra.le_inf_support_finset_prod\",\n      \"module_name\": \"Mathlib.Algebra.MonoidAlgebra.Degree\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {A : Type u_3} {T : Type u_4} {ι : Type u_6} [inst : SemilatticeInf T] [inst_1 : OrderTop T]\\n  [inst_2 : CommSemiring R] [inst_3 : AddCommMonoid A] [inst_4 : AddCommMonoid T] [AddLeftMono T] [AddRightMono T]\\n  {degt : A → T},\\n  0 ≤ degt 0 →\\n    (∀ (a b : A), degt a + degt b ≤ degt (a + b)) →\\n      ∀ (s : Finset ι) (f : ι → AddMonoidAlgebra R A), ∑ i ∈ s, (f i).support.inf degt ≤ (∏ i ∈ s, f i).support.inf degt\"\n    },\n    {\n      \"name\": \"Finsupp.le_degree\",\n      \"module_name\": \"Mathlib.Data.Finsupp.Weight\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {σ : Type u_1} {R : Type u_5} [inst : AddCommMonoid R] [inst_1 : PartialOrder R] [CanonicallyOrderedAdd R] (s : σ)\\n  (f : σ →₀ R), f s ≤ Finsupp.degree f\"\n    },\n    {\n      \"name\": \"AddMonoidAlgebra.supDegree_mem_range\",\n      \"module_name\": \"Mathlib.Algebra.MonoidAlgebra.Degree\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} {A : Type u_3} {B : Type u_5} [inst : Semiring R] [inst_1 : LinearOrder B] [inst_2 : OrderBot B]\\n  {p : AddMonoidAlgebra R A} (D : A → B), p ≠ 0 → AddMonoidAlgebra.supDegree D p ∈ Set.range D\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "AddMonoidAlgebra.infDegree",
+              "module_name": "Mathlib.Algebra.MonoidAlgebra.Degree",
+              "kind": "abbrev",
+              "type": "{R : Type u_1} →\n  {A : Type u_3} →\n    {T : Type u_4} →\n      [inst : Semiring R] → [inst_1 : SemilatticeInf T] → [OrderTop T] → (A → T) → AddMonoidAlgebra R A → T"
+            },
+            {
+              "name": "Polynomial.le_degree_of_mem_supp",
+              "module_name": "Mathlib.Algebra.Polynomial.Degree.Support",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} [inst : Semiring R] {p : Polynomial R}, ∀ a ∈ p.support, ↑a ≤ p.degree"
+            },
+            {
+              "name": "AddMonoidAlgebra.supDegree_mem_support",
+              "module_name": "Mathlib.Algebra.MonoidAlgebra.Degree",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} {A : Type u_3} {B : Type u_5} [inst : Semiring R] [inst_1 : LinearOrder B] [inst_2 : OrderBot B]\n  {p : AddMonoidAlgebra R A} {D : A → B} [inst_3 : AddZeroClass A],\n  Function.Injective D → p ≠ 0 → Function.invFun D (AddMonoidAlgebra.supDegree D p) ∈ p.support"
+            },
+            {
+              "name": "AddMonoidAlgebra.le_inf_support_finset_prod",
+              "module_name": "Mathlib.Algebra.MonoidAlgebra.Degree",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} {A : Type u_3} {T : Type u_4} {ι : Type u_6} [inst : SemilatticeInf T] [inst_1 : OrderTop T]\n  [inst_2 : CommSemiring R] [inst_3 : AddCommMonoid A] [inst_4 : AddCommMonoid T] [AddLeftMono T] [AddRightMono T]\n  {degt : A → T},\n  0 ≤ degt 0 →\n    (∀ (a b : A), degt a + degt b ≤ degt (a + b)) →\n      ∀ (s : Finset ι) (f : ι → AddMonoidAlgebra R A), ∑ i ∈ s, (f i).support.inf degt ≤ (∏ i ∈ s, f i).support.inf degt"
+            },
+            {
+              "name": "Finsupp.le_degree",
+              "module_name": "Mathlib.Data.Finsupp.Weight",
+              "kind": "theorem",
+              "type": "∀ {σ : Type u_1} {R : Type u_5} [inst : AddCommMonoid R] [inst_1 : PartialOrder R] [CanonicallyOrderedAdd R] (s : σ)\n  (f : σ →₀ R), f s ≤ Finsupp.degree f"
+            },
+            {
+              "name": "AddMonoidAlgebra.supDegree_mem_range",
+              "module_name": "Mathlib.Algebra.MonoidAlgebra.Degree",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} {A : Type u_3} {B : Type u_5} [inst : Semiring R] [inst_1 : LinearOrder B] [inst_2 : OrderBot B]\n  {p : AddMonoidAlgebra R A} (D : A → B), p ≠ 0 → AddMonoidAlgebra.supDegree D p ∈ Set.range D"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "method": "mcp__lean_lsp__lean_local_search",
+    "query": "inf_le",
+    "result": {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"Lean.Order.inf_le\",\n      \"kind\": \"theorem\",\n      \"file\": \".lean-stdlib/lean/Init/Internal/Order/Basic.lean\"\n    },\n    {\n      \"name\": \"Ideal.IsPrime.inf_le\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/Ideal/Operations.lean\"\n    },\n    {\n      \"name\": \"Ideal.IsPrime.inf_le'\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/Ideal/Operations.lean\"\n    },\n    {\n      \"name\": \"Codisjoint.inf_left\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Order/Disjoint.lean\"\n    },\n    {\n      \"name\": \"Disjoint.inf_left\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Order/Disjoint.lean\"\n    },\n    {\n      \"name\": \"PointedCone.IsFaceOf.inf_left\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Geometry/Convex/Cone/Face/Basic.lean\"\n    },\n    {\n      \"name\": \"Subgroup.Commensurable.inf_left\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/GroupTheory/Commensurable.lean\"\n    },\n    {\n      \"name\": \"Disjoint.inf_left'\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Order/Disjoint.lean\"\n    },\n    {\n      \"name\": \"Sym2.inf_le_sup\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Data/Sym/Sym2/Order.lean\"\n    },\n    {\n      \"name\": \"inf_le_sup\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Order/Lattice.lean\"\n    },\n    {\n      \"name\": \"CategoryTheory.Subobject.inf_le_left\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/CategoryTheory/Subobject/Lattice.lean\"\n    },\n    {\n      \"name\": \"CauSeq.inf_le_left\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Order/CauSeq/Basic.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "Lean.Order.inf_le",
+              "kind": "theorem",
+              "file": ".lean-stdlib/lean/Init/Internal/Order/Basic.lean"
+            },
+            {
+              "name": "Ideal.IsPrime.inf_le",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/Ideal/Operations.lean"
+            },
+            {
+              "name": "Ideal.IsPrime.inf_le'",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/RingTheory/Ideal/Operations.lean"
+            },
+            {
+              "name": "Codisjoint.inf_left",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Order/Disjoint.lean"
+            },
+            {
+              "name": "Disjoint.inf_left",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Order/Disjoint.lean"
+            },
+            {
+              "name": "PointedCone.IsFaceOf.inf_left",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Geometry/Convex/Cone/Face/Basic.lean"
+            },
+            {
+              "name": "Subgroup.Commensurable.inf_left",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/GroupTheory/Commensurable.lean"
+            },
+            {
+              "name": "Disjoint.inf_left'",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Order/Disjoint.lean"
+            },
+            {
+              "name": "Sym2.inf_le_sup",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Data/Sym/Sym2/Order.lean"
+            },
+            {
+              "name": "inf_le_sup",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Order/Lattice.lean"
+            },
+            {
+              "name": "CategoryTheory.Subobject.inf_le_left",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/CategoryTheory/Subobject/Lattice.lean"
+            },
+            {
+              "name": "CauSeq.inf_le_left",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/Order/CauSeq/Basic.lean"
+            }
+          ],
+          "index": "unavailable"
+        },
+        "isError": false
+      }
+    }
+  }
+]

@@ -1,0 +1,21 @@
+namespace IndexLeWeight135
+open MvPolynomial
+universe u
+theorem originalReplacement {σ : Type u} [Fintype σ] {P : MvPolynomial σ ℝ}
+    {α : σ → ℝ} {r : σ → ℕ} {d : σ →₀ ℕ}
+    (h : eval α (hasseDeriv d P) ≠ 0) : Roth.index P α r ≤ Roth.weight r d := by
+  rw [IndexConsumers133.targetBridge]
+  exact WithTop.untopD_le (Finset.inf_le (by
+    change d ∈ (taylor α P).support
+    rwa [mem_support_iff, coeff_taylor]))
+theorem expandedReplacement {σ : Type u} [Fintype σ] {P : MvPolynomial σ ℝ}
+    {α : σ → ℝ} {r : σ → ℕ} {d : σ →₀ ℕ}
+    (h : eval α (hasseDeriv d P) ≠ 0) : Roth.index P α r ≤ Roth.weight r d := by
+  rw [IndexExpanded133.fullyExpandedBridge]
+  rw [← IndexExpanded133.weightBridge r d]
+  exact WithTop.untopD_le (Finset.inf_le (by
+    change d ∈ (taylor α P).support
+    rwa [mem_support_iff, coeff_taylor]))
+#print axioms originalReplacement
+#print axioms expandedReplacement
+end IndexLeWeight135

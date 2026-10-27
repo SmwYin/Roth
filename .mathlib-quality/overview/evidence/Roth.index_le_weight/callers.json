@@ -1,0 +1,74 @@
+[
+  {
+    "declaration": "Roth.le_index_iff",
+    "file": "Roth/Index.lean",
+    "line": 85,
+    "source_sha256": "e22ab0acd820d9ae765e6f70279edbc0d626052372611806c4d5464ca3d377f1",
+    "identifier_occurrences": 1,
+    "reference_lines": [
+      87
+    ],
+    "source_fragment": "theorem le_index_iff {P : MvPolynomial σ ℝ} (hP : P ≠ 0) {α : σ → ℝ} {r : σ → ℕ} {c : ℝ} :\n    c ≤ index P α r ↔ ∀ d, eval α (hasseDeriv d P) ≠ 0 → c ≤ weight r d := by\n  refine ⟨fun h d hd ↦ h.trans (index_le_weight hd), fun h ↦ ?_⟩\n  refine le_csInf (by simpa using hP) ?_\n  rintro _ ⟨d, hd, rfl⟩\n  exact h d (mem_support_taylor_iff.1 hd)\n\n/-- The index is nonnegative. Source: §4, first lemma on the index (\"We have `ind(P) ≥ 0`\"). -/\n",
+    "plan": "Replace the indicated index_le_weight application with the projected infDegree bound after rewriting IndexConsumers133.targetBridge and converting the nonzero evaluated Hasse derivative to Taylor support via coeff_taylor. Preserve all caller hypotheses and subsequent transitivity/simp arithmetic; caller replay uses this exact replacement locally."
+  },
+  {
+    "declaration": "Roth.index_eq_zero_iff",
+    "file": "Roth/Index.lean",
+    "line": 98,
+    "source_sha256": "e22ab0acd820d9ae765e6f70279edbc0d626052372611806c4d5464ca3d377f1",
+    "identifier_occurrences": 1,
+    "reference_lines": [
+      105
+    ],
+    "source_fragment": "theorem index_eq_zero_iff {P : MvPolynomial σ ℝ} (hP : P ≠ 0) {r : σ → ℕ} (hr : ∀ j, 0 < r j)\n    (α : σ → ℝ) : index P α r = 0 ↔ eval α P ≠ 0 := by\n  refine ⟨fun h ↦ ?_, fun h ↦ (index_nonneg P α r).antisymm' ?_⟩\n  · obtain ⟨d, hd, hdw⟩ := exists_weight_eq_index hP α r\n    rw [h, weight_eq_zero_iff hr] at hdw\n    subst hdw\n    simpa [hasseDeriv_zero_apply] using hd\n  · simpa using index_le_weight (r := r) (d := 0) (by simpa [hasseDeriv_zero_apply] using h)\n\n/-- Applying `Δ_k` lowers the index by at most the weight of `k`.\nSource: §4, Lemma `lem:index-of-derivative` (\"`ind(Δ_k P) ≥ ind(P) - ∑ k_j / r_j`\"). -/\n",
+    "plan": "Replace the indicated index_le_weight application with the projected infDegree bound after rewriting IndexConsumers133.targetBridge and converting the nonzero evaluated Hasse derivative to Taylor support via coeff_taylor. Preserve all caller hypotheses and subsequent transitivity/simp arithmetic; caller replay uses this exact replacement locally."
+  },
+  {
+    "declaration": "Roth.index_sub_weight_le_index_hasseDeriv",
+    "file": "Roth/Index.lean",
+    "line": 109,
+    "source_sha256": "e22ab0acd820d9ae765e6f70279edbc0d626052372611806c4d5464ca3d377f1",
+    "identifier_occurrences": 1,
+    "reference_lines": [
+      114
+    ],
+    "source_fragment": "theorem index_sub_weight_le_index_hasseDeriv {P : MvPolynomial σ ℝ} {k : σ →₀ ℕ}\n    (hk : hasseDeriv k P ≠ 0) (α : σ → ℝ) (r : σ → ℕ) :\n    index P α r - weight r k ≤ index (hasseDeriv k P) α r := by\n  obtain ⟨i, hi, hiw⟩ := exists_weight_eq_index hk α r\n  rw [hasseDeriv_hasseDeriv, smul_eq_C_mul, map_mul, eval_C, mul_ne_zero_iff] at hi\n  exact sub_le_iff_le_add.2 (by simpa [weight_add, hiw] using index_le_weight (r := r) hi.2)\n\n/-- Source: §4, Lemma 4-1 (\"`ind(P + Q) ≥ min(ind P, ind Q)`\"), in the form used in the proof of\nLemma 6 (a common lower bound for the nonzero summands is a lower bound for a nonzero sum). -/\n",
+    "plan": "Replace the indicated index_le_weight application with the projected infDegree bound after rewriting IndexConsumers133.targetBridge and converting the nonzero evaluated Hasse derivative to Taylor support via coeff_taylor. Preserve all caller hypotheses and subsequent transitivity/simp arithmetic; caller replay uses this exact replacement locally."
+  },
+  {
+    "declaration": "Roth.index_eq_weightedOrder_div",
+    "file": "Roth/Index.lean",
+    "line": 143,
+    "source_sha256": "e22ab0acd820d9ae765e6f70279edbc0d626052372611806c4d5464ca3d377f1",
+    "identifier_occurrences": 1,
+    "reference_lines": [
+      153
+    ],
+    "source_fragment": "theorem index_eq_weightedOrder_div {P : MvPolynomial σ ℝ} (hP : P ≠ 0) {r : σ → ℕ}\n    (hr : ∀ j, 0 < r j) (α : σ → ℝ) : index P α r =\n      (((taylor α P : MvPowerSeries σ ℝ).weightedOrder fun j ↦ (∏ i, r i) / r j).toNat : ℝ) /\n        ∏ i, r i := by\n  set w : σ → ℕ := fun j ↦ (∏ i, r i) / r j\n  set F : MvPowerSeries σ ℝ := ↑(taylor α P)\n  obtain ⟨d, hd, hdw⟩ := MvPowerSeries.exists_coeff_ne_zero_and_weightedOrder w (f := F)\n    ((MvPowerSeries.ne_zero_iff_weightedOrder_finite w).1 (by simpa [F] using hP))\n  apply le_antisymm\n  · rw [← hdw, ENat.toNat_natCast, ← weight_eq_finsuppWeight_div hr]\n    exact index_le_weight (by simpa [F, MvPolynomial.coeff_coe, coeff_taylor] using hd)\n  · refine (le_index_iff hP).2 fun e he ↦ ?_\n    rw [weight_eq_finsuppWeight_div hr]\n    refine div_le_div_of_nonneg_right ?_ (Nat.cast_nonneg _)\n    exact_mod_cast ENat.toNat_le_toNat (MvPowerSeries.weightedOrder_le w (f := F) (d := e)\n      (by simpa [F, MvPolynomial.coeff_coe, coeff_taylor] using he)) (by simp)\n\n/-- The index is additive on products of nonzero polynomials.\nSource: §4, Lemma 4-1 (\"`ind(P Q) = ind(P) + ind(Q)`\"). -/\n",
+    "plan": "Replace the indicated index_le_weight application with the projected infDegree bound after rewriting IndexConsumers133.targetBridge and converting the nonzero evaluated Hasse derivative to Taylor support via coeff_taylor. Preserve all caller hypotheses and subsequent transitivity/simp arithmetic; caller replay uses this exact replacement locally."
+  },
+  {
+    "declaration": "Roth.index_unique",
+    "file": "Roth/Index.lean",
+    "line": 234,
+    "source_sha256": "e22ab0acd820d9ae765e6f70279edbc0d626052372611806c4d5464ca3d377f1",
+    "identifier_occurrences": 1,
+    "reference_lines": [
+      245
+    ],
+    "source_fragment": "theorem index_unique [Unique σ] {P : MvPolynomial σ ℝ} (hP : P ≠ 0) (α : σ → ℝ) (r : σ → ℕ) :\n    index P α r =\n      (Polynomial.rootMultiplicity (α default) (uniqueAlgEquiv ℝ σ P) : ℝ) / r default := by\n  set q := Polynomial.taylor (α default) (uniqueAlgEquiv ℝ σ P) with hqdef\n  have key (d : σ →₀ ℕ) : eval α (hasseDeriv d P) = q.coeff (d default) := by\n    rw [Polynomial.taylor_coeff, ← uniqueAlgEquiv_hasseDeriv, ← Finsupp.unique_single d]\n    exact (eval₂_uniqueAlgEquiv (f := hasseDeriv d P) (φ := RingHom.id ℝ) (a := α)).symm\n  have hq : q ≠ 0 := by\n    rwa [hqdef, Ne, Polynomial.taylor_eq_zero, map_eq_zero_iff _ (uniqueAlgEquiv ℝ σ).injective]\n  rw [Polynomial.rootMultiplicity_eq_natTrailingDegree, ← Polynomial.taylor_apply]\n  apply le_antisymm\n  · simpa [weight, hqdef] using index_le_weight (P := P) (α := α) (r := r)\n      (d := Finsupp.single default q.natTrailingDegree)\n      (by simpa [key] using Polynomial.trailingCoeff_nonzero_iff_nonzero.2 hq)\n  · refine (le_index_iff hP).2 fun d hd ↦ ?_\n    simpa [weight, hqdef] using div_le_div_of_nonneg_right\n      (by exact_mod_cast Polynomial.natTrailingDegree_le_of_ne_zero (key d ▸ hd))\n      (Nat.cast_nonneg (r default))\n\nend Roth\n",
+    "plan": "Replace the indicated index_le_weight application with the projected infDegree bound after rewriting IndexConsumers133.targetBridge and converting the nonzero evaluated Hasse derivative to Taylor support via coeff_taylor. Preserve all caller hypotheses and subsequent transitivity/simp arithmetic; caller replay uses this exact replacement locally."
+  },
+  {
+    "declaration": "Roth.abs_eval_lt_of_le_index",
+    "file": "Roth/Main.lean",
+    "line": 380,
+    "source_sha256": "7750d80bac40feb9427f760f9524e30cb633d0a749d36e83e3c1376db4e10e29",
+    "identifier_occurrences": 1,
+    "reference_lines": [
+      401
+    ],
+    "source_fragment": "theorem abs_eval_lt_of_le_index {m : ℕ} [NeZero m] {Q : MvPolynomial (Fin m) ℝ} {r : Fin m → ℕ}\n    (hd : ∀ j, degreeOf j Q ≤ r j) {α c : ℝ} (hidx : c ≤ index Q (fun _ ↦ α) r) {h : Fin m → ℤ}\n    {q : Fin m → ℕ} (hq : ∀ j, 0 < q j) {κ : ℝ} (hκ : 0 ≤ κ)\n    (happ : ∀ j, |α - (h j : ℝ) / q j| ≤ 1 / (q j : ℝ) ^ κ)\n    (hqr : ∀ j, (q 0 : ℝ) ^ ((r 0 : ℝ) / r j) ≤ q j) {C : ℝ}\n    (hC : ∀ i : Fin m →₀ ℕ, |eval (fun _ ↦ α) (hasseDeriv i Q)| < C) :\n    |eval (fun j ↦ (h j : ℝ) / q j) Q| < (∏ j, ((r j : ℝ) + 1)) * C *\n      (q 0 : ℝ) ^ (-(r 0 : ℝ) * c * κ) := by\n  have hT : 0 < (q 0 : ℝ) ^ (-(r 0 : ℝ) * c * κ) :=\n    Real.rpow_pos_of_pos (by exact_mod_cast hq 0) _\n  rw [eval_eq_sum_box (fun _ ↦ α) (fun j ↦ (h j : ℝ) / q j) r Q hd]\n  -- each term of the Taylor expansion is small\n  have hterm : ∀ d ∈ box r, |eval (fun _ ↦ α) (hasseDeriv d Q) *\n      ∏ j, ((h j : ℝ) / q j - α) ^ d j| < C * (q 0 : ℝ) ^ (-(r 0 : ℝ) * c * κ) := by\n    intro d _\n    by_cases h0 : eval (fun _ ↦ α) (hasseDeriv d Q) = 0\n    · rw [h0, zero_mul, abs_zero]\n      exact mul_pos (lt_of_le_of_lt (abs_nonneg _) (hC 0)) hT\n    rw [abs_mul]\n    exact mul_lt_mul_of_lt_of_le_of_nonneg_of_pos (hC d)\n      (abs_prod_pow_le_rpow_of_le_weight hq hκ (fun j ↦ by\n        simpa only [abs_sub_comm] using happ j) hqr d (hidx.trans (index_le_weight h0)))\n      (abs_nonneg _) hT\n  refine (Finset.abs_sum_le_sum_abs _ _).trans_lt ?_\n  convert Finset.sum_lt_sum_of_nonempty ⟨0, mem_box.2 fun j ↦ Nat.zero_le _⟩ hterm using 1\n  rw [Finset.sum_const, card_box, nsmul_eq_mul]\n  push_cast\n  ring\n\n-- Choose the polynomial, coefficient bound, dimension and delta with compatible constraints.\n",
+    "plan": "Replace the indicated index_le_weight application with the projected infDegree bound after rewriting IndexConsumers133.targetBridge and converting the nonzero evaluated Hasse derivative to Taylor support via coeff_taylor. Preserve all caller hypotheses and subsequent transitivity/simp arithmetic; caller replay uses this exact replacement locally."
+  }
+]

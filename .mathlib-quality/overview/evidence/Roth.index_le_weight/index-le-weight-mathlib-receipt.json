@@ -1,0 +1,84 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\n#check_failure Roth.index_le_weight\n#check @Finset.inf_le\n#check @WithTop.untopD_le\n#check @Finsupp.mem_support_iff\nnamespace IndexLeWeight135\nopen MvPolynomial\nuniverse u v w\ntheorem abstractLaw {A : Type u} {R : Type v} [Semiring R]\n    {T : Type w} [SemilatticeInf T] [OrderTop T] (D : A → T)\n    (P : AddMonoidAlgebra R A) {d : A} (h : P.coeff d ≠ 0) :\n    AddMonoidAlgebra.infDegree D P ≤ D d :=\n  Finset.inf_le (Finsupp.mem_support_iff.mpr h)\ntheorem projectedLaw {A : Type u} {R : Type v} [Semiring R]\n    (D : A → ℝ) (P : AddMonoidAlgebra R A) {d : A} (h : P.coeff d ≠ 0) :\n    (AddMonoidAlgebra.infDegree (fun a ↦ (D a : WithTop ℝ)) P).untopD 0 ≤ D d :=\n  WithTop.untopD_le (Finset.inf_le (Finsupp.mem_support_iff.mpr h))\ntheorem expandedLaw {σ : Type u} {R : Type v} [CommSemiring R]\n    (P : MvPolynomial σ R) (α : σ → R) (D : (σ →₀ ℕ) → ℝ) {d : σ →₀ ℕ}\n    (h : (aeval (fun j ↦ X j + C (α j)) P).coeff d ≠ 0) :\n    (AddMonoidAlgebra.infDegree (fun a ↦ (D a : WithTop ℝ))\n      (aeval (fun j ↦ X j + C (α j)) P)).untopD 0 ≤ D d :=\n  WithTop.untopD_le (Finset.inf_le (Finsupp.mem_support_iff.mpr h))\n#print axioms abstractLaw\n#print axioms projectedLaw\n#print axioms expandedLaw\nend IndexLeWeight135\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.index_le_weight`\",\n      \"line\": 8,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finset.inf_le : ∀ {α : Type u_1} {β : Type u_2} [inst : SemilatticeInf α] [inst_1 : OrderTop α] {s : Finset β}\\n  {f : β → α} {b : β}, b ∈ s → s.inf f ≤ f b\",\n      \"line\": 9,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@WithTop.untopD_le : ∀ {α : Type u_1} [inst : PartialOrder α] {y : WithTop α} {a b : α}, y ≤ ↑b → WithTop.untopD a y ≤ b\",\n      \"line\": 10,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finsupp.mem_support_iff : ∀ {α : Type u_1} {M : Type u_2} [inst : Zero M] {f : α →₀ M} {a : α}, a ∈ f.support ↔ f a ≠ 0\",\n      \"line\": 11,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'IndexLeWeight135.abstractLaw' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 30,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'IndexLeWeight135.projectedLaw' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 31,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'IndexLeWeight135.expandedLaw' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 32,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.index_le_weight`",
+          "line": 8,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finset.inf_le : ∀ {α : Type u_1} {β : Type u_2} [inst : SemilatticeInf α] [inst_1 : OrderTop α] {s : Finset β}\n  {f : β → α} {b : β}, b ∈ s → s.inf f ≤ f b",
+          "line": 9,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@WithTop.untopD_le : ∀ {α : Type u_1} [inst : PartialOrder α] {y : WithTop α} {a b : α}, y ≤ ↑b → WithTop.untopD a y ≤ b",
+          "line": 10,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finsupp.mem_support_iff : ∀ {α : Type u_1} {M : Type u_2} [inst : Zero M] {f : α →₀ M} {a : α}, a ∈ f.support ↔ f a ≠ 0",
+          "line": 11,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'IndexLeWeight135.abstractLaw' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 30,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'IndexLeWeight135.projectedLaw' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 31,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'IndexLeWeight135.expandedLaw' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 32,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 1751
+}
