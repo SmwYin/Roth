@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 38/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 39/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 38; remaining: 255.
-- Verdicts: 8 NO-composable-from-mathlib, 11 YES-add-as-is, 0 YES-but-generalise-first, 5 NO-mathlib-has-it, 11 BORDERLINE-needs-human, 3 SKIP.
+- Completed applicable assessments: 39; remaining: 254.
+- Verdicts: 8 NO-composable-from-mathlib, 11 YES-add-as-is, 0 YES-but-generalise-first, 6 NO-mathlib-has-it, 11 BORDERLINE-needs-human, 3 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -425,6 +425,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: Zero explicit source callers; no simp tag. Related Theta.lean494-508 real-ratio bound reuses proof technique but is not the exact statement or a migrated consumer.
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.weight_le_degree_div.md).
 
+### Completed: `Roth.weight_mapDomain`
+
+- Type: `∀ {σ : Type u_3} [Fintype σ] {τ : Type u_4} [Fintype τ] {f : σ → τ}, Function.Injective f → ∀ (r : τ → ℕ) (d : σ →₀ ℕ), Roth.weight r (Finsupp.mapDomain f d) = Roth.weight (r ∘ f) d`
+- What: Weighted evaluation of a multi-index is preserved by injective relabelling with pulled-back denominator parameters; actually arbitrary maps work.
+- How: Original proof applies sum_mapDomain_index_inj then normalizes Finsupp.sum to the finite ambient sum. Re-aimed proof is exact existing linearCombination_mapDomain.
+- Hypotheses: Fintype σ and Fintype τ required by fixed parent weight interface, Injective f removable, natively verified, no DecidableEq, positivity, or nonzero denominator assumptions
+- Project dependencies: Roth.weight
+- Caller summary: explicit references: 3; files: Roth/Lattice.lean:155, Roth/Index.lean:219, Roth/Theta.lean:391; inline duplicates: 0; scope: source-level explicit references, not kernel/simp closure
+- Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/Roth.weight_mapDomain.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -527,6 +537,8 @@ Completed `Roth.weight_mul_left`: Genuine generator-family law supplied by (Fins
 
 Completed `Roth.weight_le_degree_div`: Actual Finder/Loogle/LeanSearch/rg/local searches on original, weighted-degree and abstract linearCombination forms. Existing Finsupp.weight/degree relations and sum/division order primitives inspected; no analogous bundled upper-bound hit established.
 
+Completed `Roth.weight_mapDomain`: Finsupp.linearCombination_mapDomain at Mathlib/LinearAlgebra/Finsupp/LinearCombination.lean:158 is exact generic analogue on Finsupp.weight; finite sum/division bridge is propositional.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -604,6 +616,8 @@ Completed `Roth.weight_le_card`: Instance of generic finite-sum upper bound. Par
 Completed `Roth.weight_mul_left`: Finsupp.bilinearCombination.map_smul, Finsupp.linearCombination generator linearity
 
 Completed `Roth.weight_le_degree_div`: Finset.sum_le_sum + div_le_div_of_nonneg_left proof pattern, Finsupp.sum_le_sum aggregation, Related real-ratio proof in Roth.weight_le_delta_aux
+
+Completed `Roth.weight_mapDomain`: Naturality of free-module evaluation under generator relabelling, Finsupp.linearCombination_comp_lmapDomain bundled companion
 
 ## Part 5: Generalization opportunities
 
@@ -686,6 +700,8 @@ Completed `Roth.weight_mul_left`: Native arbitrary semiring/module generator sca
 
 Completed `Roth.weight_le_degree_div`: Verified support-local and conditional nonzero-denominator hypotheses; arbitrary ambient index set; ordered Semifield reciprocal-weight comparison. hm cannot be dropped: Unit m0,r1,d1.
 
+Completed `Roth.weight_mapDomain`: Drop hf in unchanged statement; on existing parent Finsupp.weight drop both Fintype instances, permit semiring coefficients and arbitrary module values.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -764,6 +780,8 @@ Completed `Roth.weight_le_card`: Potential ordered Finsupp.weight upper bound by
 Completed `Roth.weight_mul_left`: No mathematical API gap established; dedicated weight_smul spelling would wrap bundled linearity.
 
 Completed `Roth.weight_le_degree_div`: Potential support-local weight monotonicity or constant/degree upper bound; design choice, not an existing verified law.
+
+Completed `Roth.weight_mapDomain`: None
 
 ## Part 7: Junk / removable
 
@@ -846,6 +864,8 @@ Completed `Roth.weight_mul_left`: No sorry/unsafe/raised limits; active one-cons
 
 Completed `Roth.weight_le_degree_div`: No sorry/unsafe/raised limits. Zero explicit callers is only source-level evidence, not proof of dead public API.
 
+Completed `Roth.weight_mapDomain`: Useful local API with three callers; redundant upstream analogue, not unused/dead code.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -888,6 +908,7 @@ Completed `Roth.weight_le_degree_div`: No sorry/unsafe/raised limits. Zero expli
 | 36 | `Roth.weight_le_card` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.weight_le_card.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.weight_le_card/root-acceptance.json) |
 | 37 | `Roth.weight_mul_left` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.weight_mul_left.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.weight_mul_left/root-acceptance.json) |
 | 38 | `Roth.weight_le_degree_div` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.weight_le_degree_div.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.weight_le_degree_div/root-acceptance.json) |
+| 39 | `Roth.weight_mapDomain` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.weight_mapDomain.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.weight_mapDomain/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -963,11 +984,13 @@ Completed `Roth.weight_mul_left` action: NO-mathlib-has-it via verified parent r
 
 Completed `Roth.weight_le_degree_div` action: BORDERLINE-needs-human. Keep local while deciding whether to add general Finsupp generator comparison API; no production change or PR. Three concrete upstream design questions in report.
 
+Completed `Roth.weight_mapDomain` action: NO-mathlib-has-it. Future recommendation only: in a future parent migration (not performed or authorized by this read-only overview), migrate weight to reciprocal-generator Finsupp.weight, use linearCombination_mapDomain at all three callers, and delete the wrapper; alternatively retain a local no-hf compatibility lemma in Roth/Box.lean. Keep index_rename injectivity for support. Current production remains unchanged.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.weight_mapDomain` next. Supporting identities receive their own applicable checks.
+   `Roth.wronskianMatrix` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.

@@ -1,0 +1,38 @@
+{
+  "declaration": "Roth.weight_mapDomain",
+  "kind": "theorem",
+  "type": "\u2200 {\u03c3 : Type u_3} [Fintype \u03c3] {\u03c4 : Type u_4} [Fintype \u03c4] {f : \u03c3 \u2192 \u03c4}, Function.Injective f \u2192 \u2200 (r : \u03c4 \u2192 \u2115) (d : \u03c3 \u2192\u2080 \u2115), Roth.weight r (Finsupp.mapDomain f d) = Roth.weight (r \u2218 f) d",
+  "file": "Roth/Box.lean",
+  "line": 127,
+  "canonical_order": 39,
+  "what": "Weighted evaluation of a multi-index is preserved by injective relabelling with pulled-back denominator parameters; actually arbitrary maps work.",
+  "how": "Original proof applies sum_mapDomain_index_inj then normalizes Finsupp.sum to the finite ambient sum. Re-aimed proof is exact existing linearCombination_mapDomain.",
+  "hypotheses": [
+    "Fintype \u03c3 and Fintype \u03c4 required by fixed parent weight interface",
+    "Injective f removable, natively verified",
+    "no DecidableEq, positivity, or nonzero denominator assumptions"
+  ],
+  "project_dependencies": [
+    "Roth.weight"
+  ],
+  "caller_summary": {
+    "explicit_references": 3,
+    "files": [
+      "Roth/Lattice.lean:155",
+      "Roth/Index.lean:219",
+      "Roth/Theta.lean:391"
+    ],
+    "inline_duplicates": 0,
+    "scope": "source-level explicit references, not kernel/simp closure"
+  },
+  "mathlib_api_audit": "Finsupp.linearCombination_mapDomain at Mathlib/LinearAlgebra/Finsupp/LinearCombination.lean:158 is exact generic analogue on Finsupp.weight; finite sum/division bridge is propositional.",
+  "moral_duplications": [
+    "Naturality of free-module evaluation under generator relabelling",
+    "Finsupp.linearCombination_comp_lmapDomain bundled companion"
+  ],
+  "generalization": "Drop hf in unchanged statement; on existing parent Finsupp.weight drop both Fintype instances, permit semiring coefficients and arbitrary module values.",
+  "missing_api": [],
+  "junk": "Useful local API with three callers; redundant upstream analogue, not unused/dead code.",
+  "action": "NO-mathlib-has-it. Future recommendation only: in a future parent migration (not performed or authorized by this read-only overview), migrate weight to reciprocal-generator Finsupp.weight, use linearCombination_mapDomain at all three callers, and delete the wrapper; alternatively retain a local no-hf compatibility lemma in Roth/Box.lean. Keep index_rename injectivity for support. Current production remains unchanged.",
+  "verdict": "NO-mathlib-has-it"
+}

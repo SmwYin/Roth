@@ -3,7 +3,7 @@
 Status: **in_progress**, 2026-10-26. Branch: `ramin-cleanup`.
 Production Lean files and all pins match baseline `99f19fd`.
 
-**Completed: 38 / 293 written declarations.**
+**Completed: 39 / 293 written declarations.**
 This counts the current overview assessments, separately from the earlier code cleanup.
 
 | # | Completed declaration | Applicable workflow | Verdict | Report |
@@ -46,8 +46,9 @@ This counts the current overview assessments, separately from the earlier code c
 | 36 | `Roth.weight_le_card` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.weight_le_card.md) |
 | 37 | `Roth.weight_mul_left` | full-mathlibable; accepted complete | NO-mathlib-has-it | [Detailed report](mathlibable/Roth.weight_mul_left.md) |
 | 38 | `Roth.weight_le_degree_div` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.weight_le_degree_div.md) |
+| 39 | `Roth.weight_mapDomain` | full-mathlibable; accepted complete | NO-mathlib-has-it | [Detailed report](mathlibable/Roth.weight_mapDomain.md) |
 
-**Next declaration: `Roth.weight_mapDomain`**, `Roth/Box.lean:127`.
+**Next declaration: `Roth.wronskianMatrix`**, `Roth/Wronskian.lean:56`.
 Only the listed assessments are complete. No partial assessment was committed.
 
 On restart: read [README](README.md), [machine progress](progress.json), and

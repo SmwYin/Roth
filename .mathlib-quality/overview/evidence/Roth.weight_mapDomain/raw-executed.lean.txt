@@ -1,0 +1,43 @@
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.Basic.Real.Basic
+import Mathlib.Algebra.BigOperators.Field
+#check_failure Roth.weight_mapDomain
+namespace WeightMapDomainRaw
+theorem generic {σ τ R M : Type*} [Semiring R] [AddCommMonoid M] [Module R M]
+    (w : τ → M) (f : σ → τ) (d : σ →₀ R) :
+    Finsupp.weight w (d.mapDomain f) = Finsupp.weight (w ∘ f) d :=
+  Finsupp.linearCombination_mapDomain R f d
+noncomputable def original {σ : Type*} [Fintype σ] (r : σ → ℕ) (d : σ →₀ ℕ) : ℝ :=
+  ∑ j, (d j : ℝ) / r j
+theorem no_injective {σ τ : Type*} [Fintype σ] [Fintype τ]
+    (f : σ → τ) (r : τ → ℕ) (d : σ →₀ ℕ) :
+    original r (d.mapDomain f) = original (r ∘ f) d := by
+  have h : Finsupp.weight (fun j ↦ (r j : ℝ)⁻¹) (d.mapDomain f) =
+      Finsupp.weight ((fun j ↦ (r j : ℝ)⁻¹) ∘ f) d :=
+    Finsupp.linearCombination_mapDomain ℕ f d
+  simpa [Finsupp.weight_eq_sum, original, nsmul_eq_mul, div_eq_mul_inv] using h
+example : ¬ Function.Injective (fun _ : Bool ↦ ()) := by
+  intro h
+  have hbad : true = false := h rfl
+  cases hbad
+theorem collision_aggregation :
+    Finsupp.mapDomain (fun _ : Bool ↦ ())
+      (Finsupp.single true 1 + Finsupp.single false 2 : Bool →₀ ℕ) = Finsupp.single () 3 := by
+  rw [Finsupp.mapDomain_add, Finsupp.mapDomain_single, Finsupp.mapDomain_single,
+    ← Finsupp.single_add]
+example (r : Unit → ℕ) :
+    original r (Finsupp.mapDomain (fun _ : Bool ↦ ())
+      (Finsupp.single true 1 + Finsupp.single false 2)) =
+        original (r ∘ (fun _ : Bool ↦ ())) (Finsupp.single true 1 + Finsupp.single false 2) :=
+  no_injective _ _ _
+example (d : ℕ →₀ ℕ) :
+    Finsupp.weight (fun n : ℕ ↦ (n : ℝ)) (d.mapDomain Nat.succ) =
+      Finsupp.weight ((fun n : ℕ ↦ (n : ℝ)) ∘ Nat.succ) d :=
+  Finsupp.linearCombination_mapDomain ℕ Nat.succ d
+example (d : ℕ →₀ ℕ) :
+    Finsupp.weight (fun _ : Unit ↦ (0 : ℝ)) (d.mapDomain (fun _ ↦ ())) = 0 :=
+  by simp [Finsupp.weight_apply]
+#print axioms generic
+#print axioms no_injective
+#print axioms collision_aggregation
+end WeightMapDomainRaw

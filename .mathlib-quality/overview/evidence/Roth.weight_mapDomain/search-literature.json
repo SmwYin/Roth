@@ -1,0 +1,191 @@
+{
+  "form": "literature",
+  "requests": {
+    "finder": "Pushforward finitely supported weighted sum equals original sum with pulled back weights",
+    "leansearch": "Pushforward finitely supported weighted sum equals original sum with pulled back weights",
+    "loogle": "Finsupp.mapDomain, Finsupp.sum",
+    "local": "sum_mapDomain_index"
+  },
+  "results": [
+    {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Finsupp.sum_comapDomain\",\n      \"informal_name\": \"Sum of Comapped Finite Support Functions under Bijection\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_2} {M : Type u_5} {N : Type u_6} [inst : Zero M] [inst_1 : AddCommMonoid N] (f : α → β)\\n  (l : β →₀ M) (g : β → M → N) (hf : Set.BijOn f (f ⁻¹' ↑l.support) ↑l.support),\\n  (Finsupp.comapDomain f l ⋯).sum (g ∘ f) = l.sum g\",\n      \"informal_description\": \"Given a function $ f : \\\\alpha \\\\to \\\\beta $ that is bijective on the preimage of the support of a finite support function $ l : \\\\beta \\\\to_0 M $, and a function $ g : \\\\beta \\\\to M \\\\to N $ where $ N $ is an additive commutative monoid, the sum of the comapped finite support function $ \\\\text{comapDomain}(f, l) $ evaluated with $ g \\\\circ f $ equals the sum of $ l $ evaluated with $ g $. Formally, $ (\\\\text{comapDomain}\\\\, f\\\\, l).\\\\text{sum}(g \\\\circ f) = l.\\\\text{sum}(g) $.\",\n      \"path\": \"Mathlib.Data.Finsupp.Basic\"\n    },\n    {\n      \"formal_name\": \"Finsupp.mapDomain_sum\",\n      \"informal_name\": \"Domain Mapping Commutes with Summation for Finite Support Functions\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_2} {M : Type u_5} {N : Type u_6} [inst : AddCommMonoid M] [inst_1 : Zero N] {f : α → β}\\n  {s : α →₀ N} {v : α → N → α →₀ M}, Finsupp.mapDomain f (s.sum v) = s.sum fun a b => Finsupp.mapDomain f (v a b)\",\n      \"informal_description\": \"For any function $ f : \\\\alpha \\\\to \\\\beta $, finite support function $ s : \\\\alpha \\\\to_0 N $, and function $ v : \\\\alpha \\\\times N \\\\to \\\\alpha \\\\to_0 M $, the domain mapping operation commutes with summation: applying $ \\\\text{mapDomain} $ to the sum of $ v $ over $ s $ is equivalent to summing the results of applying $ \\\\text{mapDomain} $ to each individual term $ v(a, b) $. Formally, $ \\\\text{mapDomain}_f \\\\left( \\\\sum_{a, b} v(a, b) \\\\right) = \\\\sum_{a, b} \\\\text{mapDomain}_f(v(a, b)) $, where the sums are over finite supports.\",\n      \"path\": \"Mathlib.Data.Finsupp.Basic\"\n    },\n    {\n      \"formal_name\": \"Finsupp.sum_mapRange_index\",\n      \"informal_name\": \"Compatibility of Sum and MapRange for Finsupp Functions with Zero-Preserving Maps\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {M : Type u_8} {M' : Type u_9} {N : Type u_10} [inst : Zero M] [inst_1 : Zero M']\\n  [inst_2 : AddCommMonoid N] {f : M → M'} {hf : f 0 = 0} {g : α →₀ M} {h : α → M' → N},\\n  (∀ (a : α), h a 0 = 0) → (Finsupp.mapRange f hf g).sum h = g.sum fun a b => h a (f b)\",\n      \"informal_description\": \"For functions $ f: M \\\\to M' $ preserving zero ($ f(0) = 0 $) and $ h: \\\\alpha \\\\times M' \\\\to N $ vanishing at zero ($ h(a, 0) = 0 $), the sum over the Finsupp function $ g: \\\\alpha \\\\to_0 M $ after applying $ \\\\text{mapRange}(f) $ to $ g $ equals the sum of $ g $ with $ h $ composed with $ f $, i.e., $ \\\\sum (\\\\text{mapRange}(f, g)).h = \\\\sum g.(\\\\lambda a, h(a, f(-))) $.\",\n      \"path\": \"Mathlib.Algebra.BigOperators.Finsupp.Basic\"\n    },\n    {\n      \"formal_name\": \"Finsupp.sum_mapDomain_index\",\n      \"informal_name\": \"Sum Preservation under Domain Mapping for Additive Homomorphisms\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_2} {M : Type u_5} {N : Type u_6} [inst : AddCommMonoid M] [inst_1 : AddCommMonoid N]\\n  {f : α → β} {s : α →₀ M} {h : β → M → N},\\n  (∀ (b : β), h b 0 = 0) →\\n    (∀ (b : β) (m₁ m₂ : M), h b (m₁ + m₂) = h b m₁ + h b m₂) →\\n      (Finsupp.mapDomain f s).sum h = s.sum fun a m => h (f a) m\",\n      \"informal_description\": \"For any function $f : \\\\alpha \\\\to \\\\beta$, finite support function $s : \\\\alpha \\\\to_0 M$, and function $h : \\\\beta \\\\times M \\\\to N$ satisfying $h(b, 0) = 0$ and $h(b, m_1 + m_2) = h(b, m_1) + h(b, m_2)$ for all $b \\\\in \\\\beta$ and $m_1, m_2 \\\\in M$, the sum over $\\\\beta$ of $h(b, (\\\\text{mapDomain } f \\\\, s)(b))$ equals the sum over $\\\\alpha$ of $h(f(a), s(a))$.\",\n      \"path\": \"Mathlib.Data.Finsupp.Basic\"\n    },\n    {\n      \"formal_name\": \"Finsupp.sum_mapDomain_index_inj\",\n      \"informal_name\": \"Sum Preservation under Injective Domain Mapping for Finite Support Functions\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_2} {M : Type u_5} {N : Type u_6} [inst : AddCommMonoid M] [inst_1 : AddCommMonoid N]\\n  {f : α → β} {s : α →₀ M} {h : β → M → N},\\n  Function.Injective f → (Finsupp.mapDomain f s).sum h = s.sum fun a b => h (f a) b\",\n      \"informal_description\": \"If $ f : \\\\alpha \\\\to \\\\beta $ is an injective function and $ s : \\\\alpha \\\\to_0 M $ is a finite support function, then for any function $ h : \\\\beta \\\\to M \\\\to N $, the sum of $ h $ over the domain-mapped finite support function $ \\\\text{mapDomain}(f, s) $ equals the sum of $ h(f(a), b) $ over the original finite support function $ s $. Formally, $ \\\\left(\\\\text{mapDomain}(f, s)\\\\right).\\\\text{sum}(h) = s.\\\\text{sum}\\\\left(\\\\lambda a \\\\, b, h(f(a), b)\\\\right) $.\",\n      \"path\": \"Mathlib.Data.Finsupp.Basic\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "formal_name": "Finsupp.sum_comapDomain",
+              "informal_name": "Sum of Comapped Finite Support Functions under Bijection",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} {β : Type u_2} {M : Type u_5} {N : Type u_6} [inst : Zero M] [inst_1 : AddCommMonoid N] (f : α → β)\n  (l : β →₀ M) (g : β → M → N) (hf : Set.BijOn f (f ⁻¹' ↑l.support) ↑l.support),\n  (Finsupp.comapDomain f l ⋯).sum (g ∘ f) = l.sum g",
+              "informal_description": "Given a function $ f : \\alpha \\to \\beta $ that is bijective on the preimage of the support of a finite support function $ l : \\beta \\to_0 M $, and a function $ g : \\beta \\to M \\to N $ where $ N $ is an additive commutative monoid, the sum of the comapped finite support function $ \\text{comapDomain}(f, l) $ evaluated with $ g \\circ f $ equals the sum of $ l $ evaluated with $ g $. Formally, $ (\\text{comapDomain}\\, f\\, l).\\text{sum}(g \\circ f) = l.\\text{sum}(g) $.",
+              "path": "Mathlib.Data.Finsupp.Basic"
+            },
+            {
+              "formal_name": "Finsupp.mapDomain_sum",
+              "informal_name": "Domain Mapping Commutes with Summation for Finite Support Functions",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} {β : Type u_2} {M : Type u_5} {N : Type u_6} [inst : AddCommMonoid M] [inst_1 : Zero N] {f : α → β}\n  {s : α →₀ N} {v : α → N → α →₀ M}, Finsupp.mapDomain f (s.sum v) = s.sum fun a b => Finsupp.mapDomain f (v a b)",
+              "informal_description": "For any function $ f : \\alpha \\to \\beta $, finite support function $ s : \\alpha \\to_0 N $, and function $ v : \\alpha \\times N \\to \\alpha \\to_0 M $, the domain mapping operation commutes with summation: applying $ \\text{mapDomain} $ to the sum of $ v $ over $ s $ is equivalent to summing the results of applying $ \\text{mapDomain} $ to each individual term $ v(a, b) $. Formally, $ \\text{mapDomain}_f \\left( \\sum_{a, b} v(a, b) \\right) = \\sum_{a, b} \\text{mapDomain}_f(v(a, b)) $, where the sums are over finite supports.",
+              "path": "Mathlib.Data.Finsupp.Basic"
+            },
+            {
+              "formal_name": "Finsupp.sum_mapRange_index",
+              "informal_name": "Compatibility of Sum and MapRange for Finsupp Functions with Zero-Preserving Maps",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} {M : Type u_8} {M' : Type u_9} {N : Type u_10} [inst : Zero M] [inst_1 : Zero M']\n  [inst_2 : AddCommMonoid N] {f : M → M'} {hf : f 0 = 0} {g : α →₀ M} {h : α → M' → N},\n  (∀ (a : α), h a 0 = 0) → (Finsupp.mapRange f hf g).sum h = g.sum fun a b => h a (f b)",
+              "informal_description": "For functions $ f: M \\to M' $ preserving zero ($ f(0) = 0 $) and $ h: \\alpha \\times M' \\to N $ vanishing at zero ($ h(a, 0) = 0 $), the sum over the Finsupp function $ g: \\alpha \\to_0 M $ after applying $ \\text{mapRange}(f) $ to $ g $ equals the sum of $ g $ with $ h $ composed with $ f $, i.e., $ \\sum (\\text{mapRange}(f, g)).h = \\sum g.(\\lambda a, h(a, f(-))) $.",
+              "path": "Mathlib.Algebra.BigOperators.Finsupp.Basic"
+            },
+            {
+              "formal_name": "Finsupp.sum_mapDomain_index",
+              "informal_name": "Sum Preservation under Domain Mapping for Additive Homomorphisms",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} {β : Type u_2} {M : Type u_5} {N : Type u_6} [inst : AddCommMonoid M] [inst_1 : AddCommMonoid N]\n  {f : α → β} {s : α →₀ M} {h : β → M → N},\n  (∀ (b : β), h b 0 = 0) →\n    (∀ (b : β) (m₁ m₂ : M), h b (m₁ + m₂) = h b m₁ + h b m₂) →\n      (Finsupp.mapDomain f s).sum h = s.sum fun a m => h (f a) m",
+              "informal_description": "For any function $f : \\alpha \\to \\beta$, finite support function $s : \\alpha \\to_0 M$, and function $h : \\beta \\times M \\to N$ satisfying $h(b, 0) = 0$ and $h(b, m_1 + m_2) = h(b, m_1) + h(b, m_2)$ for all $b \\in \\beta$ and $m_1, m_2 \\in M$, the sum over $\\beta$ of $h(b, (\\text{mapDomain } f \\, s)(b))$ equals the sum over $\\alpha$ of $h(f(a), s(a))$.",
+              "path": "Mathlib.Data.Finsupp.Basic"
+            },
+            {
+              "formal_name": "Finsupp.sum_mapDomain_index_inj",
+              "informal_name": "Sum Preservation under Injective Domain Mapping for Finite Support Functions",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} {β : Type u_2} {M : Type u_5} {N : Type u_6} [inst : AddCommMonoid M] [inst_1 : AddCommMonoid N]\n  {f : α → β} {s : α →₀ M} {h : β → M → N},\n  Function.Injective f → (Finsupp.mapDomain f s).sum h = s.sum fun a b => h (f a) b",
+              "informal_description": "If $ f : \\alpha \\to \\beta $ is an injective function and $ s : \\alpha \\to_0 M $ is a finite support function, then for any function $ h : \\beta \\to M \\to N $, the sum of $ h $ over the domain-mapped finite support function $ \\text{mapDomain}(f, s) $ equals the sum of $ h(f(a), b) $ over the original finite support function $ s $. Formally, $ \\left(\\text{mapDomain}(f, s)\\right).\\text{sum}(h) = s.\\text{sum}\\left(\\lambda a \\, b, h(f(a), b)\\right) $.",
+              "path": "Mathlib.Data.Finsupp.Basic"
+            }
+          ]
+        },
+        "isError": false
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"FunOnFinite.map\",\n      \"module_name\": \"Mathlib.LinearAlgebra.Finsupp.Pi\",\n      \"kind\": \"definition\",\n      \"type\": \"{M : Type u_5} →\\n  [AddCommMonoid M] → {X : Type u_6} → {Y : Type u_7} → [Finite X] → [Finite Y] → (X → Y) → (X → M) → Y → M\"\n    },\n    {\n      \"name\": \"MeasureTheory.FiniteMeasure.map\",\n      \"module_name\": \"Mathlib.MeasureTheory.Measure.FiniteMeasure\",\n      \"kind\": \"definition\",\n      \"type\": \"{Ω : Type u_1} →\\n  {Ω' : Type u_2} →\\n    [inst : MeasurableSpace Ω] →\\n      [inst_1 : MeasurableSpace Ω'] → MeasureTheory.FiniteMeasure Ω → (Ω → Ω') → MeasureTheory.FiniteMeasure Ω'\"\n    },\n    {\n      \"name\": \"MeasureTheory.FiniteMeasure.toMeasure_map\",\n      \"module_name\": \"Mathlib.MeasureTheory.Measure.FiniteMeasure\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {Ω : Type u_1} {Ω' : Type u_2} [inst : MeasurableSpace Ω] [inst_1 : MeasurableSpace Ω']\\n  (ν : MeasureTheory.FiniteMeasure Ω) (f : Ω → Ω'), ↑(ν.map f) = MeasureTheory.Measure.map f ↑ν\"\n    },\n    {\n      \"name\": \"MeasureTheory.Measure.map_add\",\n      \"module_name\": \"Mathlib.MeasureTheory.Measure.Map\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_2} {mα : MeasurableSpace α} {mβ : MeasurableSpace β} (μ ν : MeasureTheory.Measure α)\\n  {f : α → β},\\n  Measurable f → MeasureTheory.Measure.map f (μ + ν) = MeasureTheory.Measure.map f μ + MeasureTheory.Measure.map f ν\"\n    },\n    {\n      \"name\": \"MeasureTheory.Measure.mapₗ\",\n      \"module_name\": \"Mathlib.MeasureTheory.Measure.Map\",\n      \"kind\": \"definition\",\n      \"type\": \"{α : Type u_1} →\\n  {β : Type u_2} →\\n    [inst : MeasurableSpace α] →\\n      [inst_1 : MeasurableSpace β] → (α → β) → MeasureTheory.Measure α →ₗ[ENNReal] MeasureTheory.Measure β\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "FunOnFinite.map",
+              "module_name": "Mathlib.LinearAlgebra.Finsupp.Pi",
+              "kind": "definition",
+              "type": "{M : Type u_5} →\n  [AddCommMonoid M] → {X : Type u_6} → {Y : Type u_7} → [Finite X] → [Finite Y] → (X → Y) → (X → M) → Y → M"
+            },
+            {
+              "name": "MeasureTheory.FiniteMeasure.map",
+              "module_name": "Mathlib.MeasureTheory.Measure.FiniteMeasure",
+              "kind": "definition",
+              "type": "{Ω : Type u_1} →\n  {Ω' : Type u_2} →\n    [inst : MeasurableSpace Ω] →\n      [inst_1 : MeasurableSpace Ω'] → MeasureTheory.FiniteMeasure Ω → (Ω → Ω') → MeasureTheory.FiniteMeasure Ω'"
+            },
+            {
+              "name": "MeasureTheory.FiniteMeasure.toMeasure_map",
+              "module_name": "Mathlib.MeasureTheory.Measure.FiniteMeasure",
+              "kind": "theorem",
+              "type": "∀ {Ω : Type u_1} {Ω' : Type u_2} [inst : MeasurableSpace Ω] [inst_1 : MeasurableSpace Ω']\n  (ν : MeasureTheory.FiniteMeasure Ω) (f : Ω → Ω'), ↑(ν.map f) = MeasureTheory.Measure.map f ↑ν"
+            },
+            {
+              "name": "MeasureTheory.Measure.map_add",
+              "module_name": "Mathlib.MeasureTheory.Measure.Map",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} {β : Type u_2} {mα : MeasurableSpace α} {mβ : MeasurableSpace β} (μ ν : MeasureTheory.Measure α)\n  {f : α → β},\n  Measurable f → MeasureTheory.Measure.map f (μ + ν) = MeasureTheory.Measure.map f μ + MeasureTheory.Measure.map f ν"
+            },
+            {
+              "name": "MeasureTheory.Measure.mapₗ",
+              "module_name": "Mathlib.MeasureTheory.Measure.Map",
+              "kind": "definition",
+              "type": "{α : Type u_1} →\n  {β : Type u_2} →\n    [inst : MeasurableSpace α] →\n      [inst_1 : MeasurableSpace β] → (α → β) → MeasureTheory.Measure α →ₗ[ENNReal] MeasureTheory.Measure β"
+            }
+          ]
+        },
+        "isError": false
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"Finsupp.sum_mapDomain_index_inj\",\n      \"type\": \" {α : Type u_1} {β : Type u_2} {M : Type u_5} {N : Type u_6} [AddCommMonoid M] [AddCommMonoid N] {f : α → β} {s : α →₀ M} {h : β → M → N} (hf : Function.Injective f) : (Finsupp.mapDomain f s).sum h = s.sum fun a b => h (f a) b\",\n      \"module\": \"Mathlib.Data.Finsupp.Basic\"\n    },\n    {\n      \"name\": \"Finsupp.mapDomain_sum\",\n      \"type\": \" {α : Type u_1} {β : Type u_2} {M : Type u_5} {N : Type u_6} [AddCommMonoid M] [Zero N] {f : α → β} {s : α →₀ N} {v : α → N → α →₀ M} : Finsupp.mapDomain f (s.sum v) = s.sum fun a b => Finsupp.mapDomain f (v a b)\",\n      \"module\": \"Mathlib.Data.Finsupp.Basic\"\n    },\n    {\n      \"name\": \"Finsupp.mapDomain_apply\",\n      \"type\": \" {α : Type u_1} {β : Type u_2} {M : Type u_5} [AddCommMonoid M] (f : α → β) (x : α →₀ M) (b : β) : (Finsupp.mapDomain f x) b = x.sum fun a m => (fun₀ | f a => m) b\",\n      \"module\": \"Mathlib.Data.Finsupp.Basic\"\n    },\n    {\n      \"name\": \"Finsupp.sum_mapDomain_index\",\n      \"type\": \" {α : Type u_1} {β : Type u_2} {M : Type u_5} {N : Type u_6} [AddCommMonoid M] [AddCommMonoid N] {f : α → β} {s : α →₀ M} {h : β → M → N} (h_zero : ∀ (b : β), h b 0 = 0) (h_add : ∀ (b : β) (m₁ m₂ : M), h b (m₁ + m₂) = h b m₁ + h b m₂) : (Finsupp.mapDomain f s).sum h = s.sum fun a m => h (f a) m\",\n      \"module\": \"Mathlib.Data.Finsupp.Basic\"\n    },\n    {\n      \"name\": \"Finsupp.sum_mapDomain_index_addMonoidHom\",\n      \"type\": \" {α : Type u_1} {β : Type u_2} {M : Type u_5} {N : Type u_6} [AddCommMonoid M] [AddCommMonoid N] {f : α → β} {s : α →₀ M} (h : β → M →+ N) : ((Finsupp.mapDomain f s).sum fun b m => (h b) m) = s.sum fun a m => (h (f a)) m\",\n      \"module\": \"Mathlib.Data.Finsupp.Basic\"\n    },\n    {\n      \"name\": \"Algebra.Generators.comp_σ\",\n      \"type\": \" {R : Type u} {S : Type v} {ι : Type w} [CommRing R] [CommRing S] [Algebra R S] {ι' : Type u_1} {T : Type u_2} [CommRing T] [Algebra R T] [Algebra S T] [IsScalarTower R S T] (Q : Algebra.Generators S T ι') (P : Algebra.Generators R S ι) (x : T) : (Q.comp P).σ x = (Q.σ x).coeff.sum fun n r => (MvPolynomial.rename Sum.inr) (P.σ r) * (MvPolynomial.monomial (Finsupp.mapDomain Sum.inl n)) 1\",\n      \"module\": \"Mathlib.RingTheory.Extension.Generators\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "Finsupp.sum_mapDomain_index_inj",
+              "type": " {α : Type u_1} {β : Type u_2} {M : Type u_5} {N : Type u_6} [AddCommMonoid M] [AddCommMonoid N] {f : α → β} {s : α →₀ M} {h : β → M → N} (hf : Function.Injective f) : (Finsupp.mapDomain f s).sum h = s.sum fun a b => h (f a) b",
+              "module": "Mathlib.Data.Finsupp.Basic"
+            },
+            {
+              "name": "Finsupp.mapDomain_sum",
+              "type": " {α : Type u_1} {β : Type u_2} {M : Type u_5} {N : Type u_6} [AddCommMonoid M] [Zero N] {f : α → β} {s : α →₀ N} {v : α → N → α →₀ M} : Finsupp.mapDomain f (s.sum v) = s.sum fun a b => Finsupp.mapDomain f (v a b)",
+              "module": "Mathlib.Data.Finsupp.Basic"
+            },
+            {
+              "name": "Finsupp.mapDomain_apply",
+              "type": " {α : Type u_1} {β : Type u_2} {M : Type u_5} [AddCommMonoid M] (f : α → β) (x : α →₀ M) (b : β) : (Finsupp.mapDomain f x) b = x.sum fun a m => (fun₀ | f a => m) b",
+              "module": "Mathlib.Data.Finsupp.Basic"
+            },
+            {
+              "name": "Finsupp.sum_mapDomain_index",
+              "type": " {α : Type u_1} {β : Type u_2} {M : Type u_5} {N : Type u_6} [AddCommMonoid M] [AddCommMonoid N] {f : α → β} {s : α →₀ M} {h : β → M → N} (h_zero : ∀ (b : β), h b 0 = 0) (h_add : ∀ (b : β) (m₁ m₂ : M), h b (m₁ + m₂) = h b m₁ + h b m₂) : (Finsupp.mapDomain f s).sum h = s.sum fun a m => h (f a) m",
+              "module": "Mathlib.Data.Finsupp.Basic"
+            },
+            {
+              "name": "Finsupp.sum_mapDomain_index_addMonoidHom",
+              "type": " {α : Type u_1} {β : Type u_2} {M : Type u_5} {N : Type u_6} [AddCommMonoid M] [AddCommMonoid N] {f : α → β} {s : α →₀ M} (h : β → M →+ N) : ((Finsupp.mapDomain f s).sum fun b m => (h b) m) = s.sum fun a m => (h (f a)) m",
+              "module": "Mathlib.Data.Finsupp.Basic"
+            },
+            {
+              "name": "Algebra.Generators.comp_σ",
+              "type": " {R : Type u} {S : Type v} {ι : Type w} [CommRing R] [CommRing S] [Algebra R S] {ι' : Type u_1} {T : Type u_2} [CommRing T] [Algebra R T] [Algebra S T] [IsScalarTower R S T] (Q : Algebra.Generators S T ι') (P : Algebra.Generators R S ι) (x : T) : (Q.comp P).σ x = (Q.σ x).coeff.sum fun n r => (MvPolynomial.rename Sum.inr) (P.σ r) * (MvPolynomial.monomial (Finsupp.mapDomain Sum.inl n)) 1",
+              "module": "Mathlib.RingTheory.Extension.Generators"
+            }
+          ]
+        },
+        "isError": false
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"SkewMonoidAlgebra.sum_mapDomain_index\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/SkewMonoidAlgebra/Basic.lean\"\n    },\n    {\n      \"name\": \"sum_mapDomain_index_addMonoidHom\",\n      \"kind\": \"theorem\",\n      \"file\": \".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_rename/mathlib-mapDomain-excerpt.lean\"\n    },\n    {\n      \"name\": \"Finsupp.sum_mapDomain_index_addMonoidHom\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Data/Finsupp/Basic.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "SkewMonoidAlgebra.sum_mapDomain_index",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Algebra/SkewMonoidAlgebra/Basic.lean"
+            },
+            {
+              "name": "sum_mapDomain_index_addMonoidHom",
+              "kind": "theorem",
+              "file": ".mathlib-quality/overview/evidence/MvPolynomial.hasseDeriv_rename/mathlib-mapDomain-excerpt.lean"
+            },
+            {
+              "name": "Finsupp.sum_mapDomain_index_addMonoidHom",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Data/Finsupp/Basic.lean"
+            }
+          ],
+          "index": "unavailable"
+        },
+        "isError": false
+      }
+    }
+  ]
+}
