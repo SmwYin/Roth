@@ -11,8 +11,8 @@ declaration is complete only when its report passes
 
 Last regenerated: 2026-10-27
 
-- Declarations completed: **236/293**
-- Next declaration: **#237 `Roth.four_lt_rpow`** (Roth/MainLemma.lean:122)
+- Declarations completed: **237/293**
+- Next declaration: **#238 `Roth.mul_log_div_two_lt_log_mainCoeffBound`** (Roth/MainLemma.lean:149)
 - Project-wide synthesis (Steps 3–8 cross-declaration analyses): pending (runs after the last declaration)
 
 ## Completed declarations
@@ -255,10 +255,10 @@ Last regenerated: 2026-10-27
 | 234 | `Roth.eta_lt_gam_iff` | Roth/MainLemma.lean:100 | NO-composable-from-mathlib | [report](mathlibable/Roth.eta_lt_gam_iff.md) |
 | 235 | `Roth.sqrt_lt_nat_floor_aux` | Roth/MainLemma.lean:104 | SKIP | [report](mathlibable/Roth.sqrt_lt_nat_floor_aux.md) |
 | 236 | `Roth.sqrt_lt_floor` | Roth/MainLemma.lean:115 | BORDERLINE-needs-human | [report](mathlibable/Roth.sqrt_lt_floor.md) |
+| 237 | `Roth.four_lt_rpow` | Roth/MainLemma.lean:122 | BORDERLINE-needs-human | [report](mathlibable/Roth.four_lt_rpow.md) |
 
 ## Remaining declarations (in processing order)
 
-- #237 `Roth.four_lt_rpow` (Roth/MainLemma.lean:122, public theorem)
 - #238 `Roth.mul_log_div_two_lt_log_mainCoeffBound` (Roth/MainLemma.lean:149, public theorem)
 - #239 `Roth.two_lt_rpow_aux` (Roth/MainLemma.lean:156, private lemma)
 - #240 `Roth.three_small_factors` (Roth/MainLemma.lean:180, public theorem)
