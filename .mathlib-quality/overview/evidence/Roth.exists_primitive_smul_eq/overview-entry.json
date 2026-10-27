@@ -1,0 +1,88 @@
+{
+  "type": "∀ {σ : Type u_2} {G : MvPolynomial σ ℚ},\n  G ≠ 0 →\n    ∃ (g : ℚ) (U : MvPolynomial σ ℤ),\n      g ≠ 0 ∧ (map (Int.castRingHom ℚ)) U = g • G ∧ (U.support.gcd fun (d : σ →₀ ℕ) ↦ U.coeff d) = 1",
+  "kind": "theorem",
+  "what": "Every nonzero rational multivariate polynomial admits a nonzero rational scalar multiple which has integral coefficients with normalized coefficient gcd one.",
+  "how": "Clear denominators; Finset.extract_gcd; reconstruct divided coefficients as a polynomial; prove nonzero gcd, coefficient scaling and support equality.",
+  "hypotheses": [
+    "Arbitrary universe-polymorphic variable type σ, no Fintype/Finite/DecidableEq instances.",
+    "G : MvPolynomial σ ℚ, G ≠ 0 essential."
+  ],
+  "project_dependencies": [
+    "Roth.exists_nat_smul_eq_map (denominator clearing); this is a project helper, not an existing mathlib building block."
+  ],
+  "caller_summary": {
+    "explicit_use_count": 1,
+    "declaration_occurrences": 1,
+    "callers": [
+      {
+        "name": "Roth.exists_int_factors",
+        "file": "Roth/Separation.lean",
+        "line": 491,
+        "role": "Uses all scalar/map/gcd1 conclusions to descend separated factors and preserve degrees."
+      }
+    ],
+    "direct_kernel_value_consumers": [
+      "Roth.exists_int_factors"
+    ],
+    "inline_rederivations": 0,
+    "scope": "Complete canonical production inventory, git grep and rg --no-ignore; direct kernel values are distinct from transitive/simp dependencies."
+  },
+  "mathlib_api_audit": {
+    "verdict": "YES-but-generalise-first",
+    "fifteen_actual_search_cells": true,
+    "building_blocks": [
+      "Finset.extract_gcd",
+      "Finset.gcd_eq_zero_iff",
+      "MvPolynomial.isLocalization",
+      "IsLocalization.exists_integer_multiple",
+      "IsFractionRing.injective"
+    ],
+    "near_misses": [
+      "Polynomial.primPart/content/IsPrimitive concern univariate polynomials.",
+      "IsFractionRing.exists_reduced_fraction concerns one fraction.",
+      "Projectivization.exists_smul_eq_mk_rep does not enforce integral gcd1 coordinates."
+    ],
+    "composition": "No verified ≤3-existing-call composition; polynomial reconstruction, mapped-scalar normalization and support-gcd transport remain genuine proof."
+  },
+  "moral_duplications": [
+    "Classical content/primitive-part normalization underlying Gauss lemma, not the whole product-primitivity law.",
+    "Finite-function gcd extraction is already mathlib; the multivariate/fraction-field bridge is additional."
+  ],
+  "generalization": {
+    "current": "Fixed ℤ/ℚ interface; all variable-type and nonzero assumptions essential or already unrestricted.",
+    "expanded": "CommRing R + IsDomain R + NormalizedGCDMonoid R, Field K + Algebra R K + IsFractionRing R K, preserving g ≠ 0, map(algebraMap R K) U = g • G, gcd1.",
+    "scope": "Full normalized-GCD-domain/fraction-field theorem native-checked, preserves every conclusion, no parent-definition migration. Concrete one-call specialization checked separately.",
+    "false_generalization_guard": "gcd1 does not imply unit-ideal/unimodular coordinates over arbitrary GCD domains. No arbitrary field unrelated to R, no zero input, no infinite series."
+  },
+  "missing_api": "MvPolynomial primitive representatives over a normalized GCD domain and its fraction field, with mapped scalar identity and coefficient gcd one. Finset.extract_gcd and localization are existing ingredients, not the full result.",
+  "junk": "Not dead code: one explicit consumer uses every conclusion. Not safely deletable as a three-call wrapper.",
+  "action": {
+    "verdict": "YES-but-generalise-first",
+    "reason": "MODERN-IDIOM",
+    "declaration": "MvPolynomial.exists_primitive_smul_eq",
+    "upstream_file": "Mathlib/RingTheory/MvPolynomial/Content.lean",
+    "new_file": true,
+    "pr_title": "feat(MvPolynomial): primitive representatives over fraction fields",
+    "checklist": [
+      "/generalise Roth.exists_primitive_smul_eq",
+      "/cleanup Roth/Separation.lean Roth.exists_primitive_smul_eq",
+      "Verify minimal new-module imports, generic signature, concrete specialization and full caller.",
+      "/pre-submit before PR"
+    ],
+    "grouping": [
+      "Roth.exists_separated_representation",
+      "Roth.hasseDeriv_rename_mul_aeval"
+    ],
+    "local_destination": "Roth/Separation.lean until upstream acceptance.",
+    "caller_refactor": "Roth.exists_int_factors:491 specializes new generic theorem with R := ℤ, K := ℚ, preserving witnesses and all conclusions.",
+    "optional_followups": [
+      "MvPolynomial content/IsPrimitive/primPart interface",
+      "Finsupp finite-coefficient gcd normalization; do not conflate gcd-primitive and unimodular."
+    ],
+    "reviewer_candidates": [
+      "Junyan Xu",
+      "Kim Morrison"
+    ],
+    "reviewer_evidence": "reviewers.json"
+  }
+}

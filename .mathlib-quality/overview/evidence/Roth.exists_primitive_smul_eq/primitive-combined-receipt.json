@@ -1,0 +1,228 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\n\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\n-- Required additional imports: Mathlib.RingTheory.MvPolynomial.Localization\n-- Mathlib.RingTheory.Localization.Integer; Mathlib.RingTheory.Localization.FractionRing\n#check_failure Roth.exists_primitive_smul_eq\n#check @MvPolynomial.isLocalization\n#check @IsLocalization.exists_integer_multiple\n#check @IsLocalization.exist_integer_multiples\n#check @MvPolynomial.algebraMvPolynomial\n#check @Int.natCast_natAbs\n#check @Int.natAbs_of_nonneg\nnamespace ClearDenoms171\nopen MvPolynomial\ntheorem originalProbe171 {σ : Type*} (G : MvPolynomial σ ℚ) :\n    ∃ (N : ℕ) (U : MvPolynomial σ ℤ), 0 < N ∧\n      map (Int.castRingHom ℚ) U = (N : ℚ) • G := by\n  let : Algebra (MvPolynomial σ ℤ) (MvPolynomial σ ℚ) :=\n    MvPolynomial.algebraMvPolynomial\n  obtain ⟨⟨_, n, hn, rfl⟩, U, hU⟩ :=\n    IsLocalization.exists_integer_multiple\n      ((Submonoid.pos ℤ).map (C (σ := σ))) G\n  have hn' : (0 : ℤ) < n := hn\n  have hnat : (n.natAbs : ℤ) = n := Int.natAbs_of_nonneg hn'.le\n  have hcast : (n.natAbs : ℚ) = (n : ℚ) := by\n    simpa only [Int.cast_natCast] using congrArg (fun z : ℤ ↦ (z : ℚ)) hnat\n  refine ⟨n.natAbs, U, Int.natAbs_pos.mpr (ne_of_gt hn'), ?_⟩\n  have hU' : map (Int.castRingHom ℚ) U = C (n : ℚ) * G := by\n    simpa only [MvPolynomial.algebraMap_def, Algebra.smul_def, map_C, algebraMap_int_eq,\n      Int.coe_castRingHom] using hU\n  simpa only [smul_eq_C_mul, hcast] using hU'\n\n#print axioms ClearDenoms171.originalProbe171\nend ClearDenoms171\n\nopen MvPolynomial\nnamespace Clear171Generic\nvariable {σ R S : Type*} [CommRing R] [CommRing S] [Algebra R S]\n    (M : Submonoid R) [IsLocalization M S]\nattribute [local instance] MvPolynomial.algebraMvPolynomial\n-- Existing generic theorem, exact one-call specialization, no project dependencies.\ntheorem clear (G : MvPolynomial σ S) :\n    ∃ b : M.map (C (σ := σ)),\n      IsLocalization.IsInteger (MvPolynomial σ R) ((b : MvPolynomial σ R) • G) :=\n  IsLocalization.exists_integer_multiple (M.map (C (σ := σ))) G\n#print axioms clear\n-- The coefficient-family route works over commutative semirings already.\ntheorem finiteFamily {A B ι : Type*} [CommSemiring A] [CommSemiring B] [Algebra A B]\n    (T : Submonoid A) [IsLocalization T B] (s : Finset ι) (f : ι → B) :\n    ∃ b : T, ∀ i ∈ s, IsLocalization.IsInteger A ((b : A) • f i) :=\n  IsLocalization.exist_integer_multiples T s f\n#print axioms finiteFamily\nend Clear171Generic\n\n\nnamespace Primitive172\nopen MvPolynomial\ntheorem primitive172 {σ : Type*} {G : MvPolynomial σ ℚ} (hG : G ≠ 0) :\n    ∃ (g : ℚ) (U : MvPolynomial σ ℤ), g ≠ 0 ∧ map (Int.castRingHom ℚ) U = g • G ∧\n      U.support.gcd (fun d ↦ U.coeff d) = 1 := by\n  classical\n  obtain ⟨N, U0, hN, hU0⟩ := ClearDenoms171.originalProbe171 G\n  have hne : U0.support.Nonempty := support_nonempty.mpr fun h ↦ by\n    simpa [h, smul_eq_zero, hN.ne', hG] using hU0.symm\n  obtain ⟨g', hg', hg1⟩ := Finset.extract_gcd (fun d ↦ U0.coeff d) hne\n  set g0 := U0.support.gcd (fun d ↦ U0.coeff d) with hg0def\n  have hg0 : g0 ≠ 0 := by\n    obtain ⟨d, hd⟩ := hne\n    rw [hg0def, Ne, Finset.gcd_eq_zero_iff]\n    exact fun h ↦ mem_support_iff.1 hd (h d hd)\n  set U := ∑ d ∈ U0.support, monomial d (g' d) with hUdef\n  have hUcoeff : ∀ d, U.coeff d = if d ∈ U0.support then g' d else 0 := by\n    simp [hUdef, coeff_monomial, Finset.sum_ite_eq']\n  have hU0coeff : ∀ d, U0.coeff d = g0 * U.coeff d := by\n    intro d\n    by_cases hd : d ∈ U0.support\n    · simpa [hUcoeff, hd] using hg' d hd\n    · simp [hUcoeff, hd, notMem_support_iff.1 hd]\n  refine ⟨N / g0, U, div_ne_zero (by exact_mod_cast hN.ne') (by exact_mod_cast hg0), ?_, ?_⟩\n  · ext d\n    have h1 := congrArg (fun P ↦ P.coeff d) hU0\n    simp only [coeff_map, coeff_smul, smul_eq_mul, eq_intCast] at h1 ⊢\n    rw [hU0coeff] at h1\n    push_cast at h1\n    rwa [div_mul_eq_mul_div, eq_div_iff (by exact_mod_cast hg0), mul_comm]\n  · have hsupp : U.support = U0.support := by\n      ext d\n      simp [mem_support_iff, hU0coeff d, hg0]\n    rw [hsupp, ← hg1]\n    exact Finset.gcd_congr rfl fun d hd ↦ by rw [hUcoeff, ite_eq_left hd]\n#print axioms primitive172\nend Primitive172\n\nopen MvPolynomial\nnamespace Primitive172Generic\ntheorem extract {σ R : Type*} [CommRing R] [IsDomain R] [NormalizedGCDMonoid R]\n    {P : MvPolynomial σ R} (hP : P ≠ 0) :\n    ∃ U : MvPolynomial σ R,\n      P = C (P.support.gcd P.coeff) * U ∧ U.support.gcd U.coeff = 1 := by\n  classical\n  have hne : P.support.Nonempty := support_nonempty.mpr hP\n  obtain ⟨g', hg', hg1⟩ := Finset.extract_gcd P.coeff hne\n  set g0 := P.support.gcd P.coeff with hg0def\n  have hg0 : g0 ≠ 0 := by\n    obtain ⟨d, hd⟩ := hne\n    rw [hg0def, Ne, Finset.gcd_eq_zero_iff]\n    exact fun h ↦ mem_support_iff.1 hd (h d hd)\n  set U := ∑ d ∈ P.support, monomial d (g' d) with hUdef\n  have hUcoeff : ∀ d, U.coeff d = if d ∈ P.support then g' d else 0 := by\n    simp [hUdef, coeff_monomial, Finset.sum_ite_eq']\n  have hPcoeff : ∀ d, P.coeff d = g0 * U.coeff d := by\n    intro d\n    by_cases hd : d ∈ P.support\n    · simpa [hUcoeff, hd] using hg' d hd\n    · simp [hUcoeff, hd, notMem_support_iff.1 hd]\n  refine ⟨U, ?_, ?_⟩\n  · ext d\n    simpa only [coeff_C_mul] using hPcoeff d\n  · have hsupp : U.support = P.support := by\n      ext d\n      simp [mem_support_iff, hPcoeff d, hg0]\n    rw [hsupp, ← hg1]\n    exact Finset.gcd_congr rfl fun d hd ↦ by rw [hUcoeff, ite_eq_left hd]\n#print axioms extract\nend Primitive172Generic\n\nnamespace Primitive172Guards\n-- Nonzero is essential: mapping an integer polynomial to zero forces gcd zero.\ntheorem zeroImpossible {σ : Type*} :\n    ¬ ∃ (g : ℚ) (U : MvPolynomial σ ℤ), g ≠ 0 ∧\n      map (Int.castRingHom ℚ) U = g • (0 : MvPolynomial σ ℚ) ∧\n      U.support.gcd U.coeff = 1 := by\n  rintro ⟨g, U, hg, hU, hc⟩\n  have hU0 : U = 0 := MvPolynomial.map_injective _ Int.cast_injective (by simpa using hU)\n  simp [hU0] at hc\n-- Dropping both scalar nonvanishing and primitivity permits a vacuous zero choice.\ntheorem vacuous {σ : Type*} (G : MvPolynomial σ ℚ) :\n    ∃ (g : ℚ) (U : MvPolynomial σ ℤ), map (Int.castRingHom ℚ) U = g • G := by\n  exact ⟨0, 0, by simp⟩\n#print axioms zeroImpossible\n#print axioms vacuous\nend Primitive172Guards\n\nopen MvPolynomial\nnamespace Primitive172FullGeneric\nvariable {σ R K : Type*} [CommRing R] [IsDomain R] [NormalizedGCDMonoid R]\n    [Field K] [Algebra R K] [IsFractionRing R K]\ntheorem primitive {G : MvPolynomial σ K} (hG : G ≠ 0) :\n    ∃ (g : K) (U : MvPolynomial σ R), g ≠ 0 ∧ map (algebraMap R K) U = g • G ∧\n      U.support.gcd U.coeff = 1 := by\n  classical\n  let : Algebra (MvPolynomial σ R) (MvPolynomial σ K) :=\n    MvPolynomial.algebraMvPolynomial\n  obtain ⟨⟨_, N, hNmem, rfl⟩, U0, hU0raw⟩ :=\n    IsLocalization.exists_integer_multiple ((nonZeroDivisors R).map (C (σ := σ))) G\n  have hN : N ≠ 0 := mem_nonZeroDivisors_iff_ne_zero.mp hNmem\n  have hinj : Function.Injective (algebraMap R K) := IsFractionRing.injective R K\n  have hNcast : algebraMap R K N ≠ 0 := (map_ne_zero_iff _ hinj).mpr hN\n  have hU0 : map (algebraMap R K) U0 = algebraMap R K N • G := by\n    have h : map (algebraMap R K) U0 = C (algebraMap R K N) * G := by\n      simpa only [MvPolynomial.algebraMap_def, Algebra.smul_def, map_C] using hU0raw\n    simpa only [smul_eq_C_mul] using h\n  have hne : U0.support.Nonempty := support_nonempty.mpr fun h ↦ by\n    exact smul_ne_zero hNcast hG (by simpa only [h, map_zero] using hU0.symm)\n  obtain ⟨g', hg', hg1⟩ := Finset.extract_gcd (fun d ↦ U0.coeff d) hne\n  set g0 := U0.support.gcd (fun d ↦ U0.coeff d) with hg0def\n  have hg0 : g0 ≠ 0 := by\n    obtain ⟨d, hd⟩ := hne\n    rw [hg0def, Ne, Finset.gcd_eq_zero_iff]\n    exact fun h ↦ mem_support_iff.1 hd (h d hd)\n  set U := ∑ d ∈ U0.support, monomial d (g' d) with hUdef\n  have hUcoeff : ∀ d, U.coeff d = if d ∈ U0.support then g' d else 0 := by\n    simp [hUdef, coeff_monomial, Finset.sum_ite_eq']\n  have hU0coeff : ∀ d, U0.coeff d = g0 * U.coeff d := by\n    intro d\n    by_cases hd : d ∈ U0.support\n    · simpa [hUcoeff, hd] using hg' d hd\n    · simp [hUcoeff, hd, notMem_support_iff.1 hd]\n  refine ⟨algebraMap R K N / algebraMap R K g0, U,\n    div_ne_zero hNcast ((map_ne_zero_iff _ hinj).mpr hg0), ?_, ?_⟩\n  · ext d\n    have h1 := congrArg (fun P ↦ P.coeff d) hU0\n    simp only [coeff_map, coeff_smul, smul_eq_mul] at h1 ⊢\n    rw [hU0coeff] at h1\n    rw [map_mul] at h1\n    rwa [div_mul_eq_mul_div, eq_div_iff ((map_ne_zero_iff _ hinj).mpr hg0), mul_comm]\n  · have hsupp : U.support = U0.support := by\n      ext d\n      simp [mem_support_iff, hU0coeff d, hg0]\n    rw [hsupp, ← hg1]\n    exact Finset.gcd_congr rfl fun d hd ↦ by rw [hUcoeff, ite_eq_left hd]\n\n\n#print axioms primitive\nend Primitive172FullGeneric\n\n#check @Finset.extract_gcd\n#check @Finset.gcd_eq_zero_iff\n#check @IsLocalization.exists_integer_multiple\n#check @IsFractionRing.injective\n#check_failure MvPolynomial.primPart\n#check_failure MvPolynomial.content\n#check_failure MvPolynomial.IsPrimitive\nopen MvPolynomial\nnamespace Primitive172Candidates\ntheorem routes {σ : Type*} {G : MvPolynomial σ ℚ} (hG : G ≠ 0) :\n    ∃ (g : ℚ) (U : MvPolynomial σ ℤ), g ≠ 0 ∧ map (Int.castRingHom ℚ) U = g • G ∧\n      U.support.gcd U.coeff = 1 := by\n  let : Algebra (MvPolynomial σ ℤ) (MvPolynomial σ ℚ) :=\n    MvPolynomial.algebraMvPolynomial\n  fail_if_success\n    exact IsLocalization.exists_integer_multiple ((Submonoid.pos ℤ).map (C (σ := σ))) G\n  fail_if_success\n    exact Finset.extract_gcd G.coeff (support_nonempty.mpr hG)\n  exact Primitive172.primitive172 hG\n#print axioms routes\nend Primitive172Candidates\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.exists_primitive_smul_eq`\",\n      \"line\": 18,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPolynomial.isLocalization : ∀ {σ : Type u_1} {R : Type u_2} [inst : CommRing R] (M : Submonoid R) (S : Type u_3)\\n  [inst_1 : CommRing S] [inst_2 : Algebra R S] [IsLocalization M S],\\n  IsLocalization (Submonoid.map MvPolynomial.C M) (MvPolynomial σ S)\",\n      \"line\": 19,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@IsLocalization.exists_integer_multiple : ∀ {R : Type u_1} [inst : CommSemiring R] (M : Submonoid R) {S : Type u_2}\\n  [inst_1 : CommSemiring S] [inst_2 : Algebra R S] [IsLocalization M S] (a : S),\\n  ∃ b, IsLocalization.IsInteger R (↑b • a)\",\n      \"line\": 20,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@IsLocalization.exist_integer_multiples : ∀ {R : Type u_1} [inst : CommSemiring R] (M : Submonoid R) {S : Type u_2}\\n  [inst_1 : CommSemiring S] [inst_2 : Algebra R S] [IsLocalization M S] {ι : Type u_3} (s : Finset ι) (f : ι → S),\\n  ∃ b, ∀ i ∈ s, IsLocalization.IsInteger R (↑b • f i)\",\n      \"line\": 21,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@MvPolynomial.algebraMvPolynomial : {R : Type u_1} →\\n  {S : Type u_2} →\\n    {σ : Type u_3} →\\n      [inst : CommSemiring R] →\\n        [inst_1 : CommSemiring S] → [Algebra R S] → Algebra (MvPolynomial σ R) (MvPolynomial σ S)\",\n      \"line\": 22,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Int.natCast_natAbs : ∀ (n : ℤ), ↑n.natAbs = |n|\",\n      \"line\": 23,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Int.natAbs_of_nonneg : ∀ {a : ℤ}, 0 ≤ a → ↑a.natAbs = a\",\n      \"line\": 24,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'ClearDenoms171.originalProbe171' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 45,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Clear171Generic.clear' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 58,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Clear171Generic.finiteFamily' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 64,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Primitive172.primitive172' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 103,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Primitive172Generic.extract' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 136,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Primitive172Guards.zeroImpossible' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 152,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Primitive172Guards.vacuous' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 153,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Primitive172FullGeneric.primitive' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 206,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finset.extract_gcd : ∀ {α : Type u_1} {β : Type u_2} [inst : CommMonoidWithZero α] [inst_1 : NormalizedGCDMonoid α]\\n  {s : Finset β} (f : β → α), s.Nonempty → ∃ g, (∀ b ∈ s, f b = s.gcd f * g b) ∧ s.gcd g = 1\",\n      \"line\": 209,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Finset.gcd_eq_zero_iff : ∀ {α : Type u_1} {β : Type u_2} [inst : CommMonoidWithZero α] [inst_1 : NormalizedGCDMonoid α]\\n  {s : Finset β} {f : β → α}, s.gcd f = 0 ↔ ∀ x ∈ s, f x = 0\",\n      \"line\": 210,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@IsLocalization.exists_integer_multiple : ∀ {R : Type u_1} [inst : CommSemiring R] (M : Submonoid R) {S : Type u_2}\\n  [inst_1 : CommSemiring S] [inst_2 : Algebra R S] [IsLocalization M S] (a : S),\\n  ∃ b, IsLocalization.IsInteger R (↑b • a)\",\n      \"line\": 211,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"IsFractionRing.injective : ∀ (R : Type u_1) [inst : CommRing R] (K : Type u_2) [inst_1 : CommRing K]\\n  [inst_2 : Algebra R K] [IsFractionRing R K], Function.Injective ⇑(algebraMap R K)\",\n      \"line\": 212,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown constant `MvPolynomial.primPart`\",\n      \"line\": 213,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown constant `MvPolynomial.content`\",\n      \"line\": 214,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown constant `MvPolynomial.IsPrimitive`\",\n      \"line\": 215,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Primitive172Candidates.routes' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 228,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.exists_primitive_smul_eq`",
+          "line": 18,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPolynomial.isLocalization : ∀ {σ : Type u_1} {R : Type u_2} [inst : CommRing R] (M : Submonoid R) (S : Type u_3)\n  [inst_1 : CommRing S] [inst_2 : Algebra R S] [IsLocalization M S],\n  IsLocalization (Submonoid.map MvPolynomial.C M) (MvPolynomial σ S)",
+          "line": 19,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@IsLocalization.exists_integer_multiple : ∀ {R : Type u_1} [inst : CommSemiring R] (M : Submonoid R) {S : Type u_2}\n  [inst_1 : CommSemiring S] [inst_2 : Algebra R S] [IsLocalization M S] (a : S),\n  ∃ b, IsLocalization.IsInteger R (↑b • a)",
+          "line": 20,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@IsLocalization.exist_integer_multiples : ∀ {R : Type u_1} [inst : CommSemiring R] (M : Submonoid R) {S : Type u_2}\n  [inst_1 : CommSemiring S] [inst_2 : Algebra R S] [IsLocalization M S] {ι : Type u_3} (s : Finset ι) (f : ι → S),\n  ∃ b, ∀ i ∈ s, IsLocalization.IsInteger R (↑b • f i)",
+          "line": 21,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@MvPolynomial.algebraMvPolynomial : {R : Type u_1} →\n  {S : Type u_2} →\n    {σ : Type u_3} →\n      [inst : CommSemiring R] →\n        [inst_1 : CommSemiring S] → [Algebra R S] → Algebra (MvPolynomial σ R) (MvPolynomial σ S)",
+          "line": 22,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Int.natCast_natAbs : ∀ (n : ℤ), ↑n.natAbs = |n|",
+          "line": 23,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Int.natAbs_of_nonneg : ∀ {a : ℤ}, 0 ≤ a → ↑a.natAbs = a",
+          "line": 24,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'ClearDenoms171.originalProbe171' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 45,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Clear171Generic.clear' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 58,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Clear171Generic.finiteFamily' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 64,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Primitive172.primitive172' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 103,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Primitive172Generic.extract' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 136,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Primitive172Guards.zeroImpossible' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 152,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Primitive172Guards.vacuous' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 153,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Primitive172FullGeneric.primitive' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 206,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finset.extract_gcd : ∀ {α : Type u_1} {β : Type u_2} [inst : CommMonoidWithZero α] [inst_1 : NormalizedGCDMonoid α]\n  {s : Finset β} (f : β → α), s.Nonempty → ∃ g, (∀ b ∈ s, f b = s.gcd f * g b) ∧ s.gcd g = 1",
+          "line": 209,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Finset.gcd_eq_zero_iff : ∀ {α : Type u_1} {β : Type u_2} [inst : CommMonoidWithZero α] [inst_1 : NormalizedGCDMonoid α]\n  {s : Finset β} {f : β → α}, s.gcd f = 0 ↔ ∀ x ∈ s, f x = 0",
+          "line": 210,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@IsLocalization.exists_integer_multiple : ∀ {R : Type u_1} [inst : CommSemiring R] (M : Submonoid R) {S : Type u_2}\n  [inst_1 : CommSemiring S] [inst_2 : Algebra R S] [IsLocalization M S] (a : S),\n  ∃ b, IsLocalization.IsInteger R (↑b • a)",
+          "line": 211,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "IsFractionRing.injective : ∀ (R : Type u_1) [inst : CommRing R] (K : Type u_2) [inst_1 : CommRing K]\n  [inst_2 : Algebra R K] [IsFractionRing R K], Function.Injective ⇑(algebraMap R K)",
+          "line": 212,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown constant `MvPolynomial.primPart`",
+          "line": 213,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown constant `MvPolynomial.content`",
+          "line": 214,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown constant `MvPolynomial.IsPrimitive`",
+          "line": 215,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Primitive172Candidates.routes' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 228,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 1223
+}

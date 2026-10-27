@@ -1,0 +1,51 @@
+open MvPolynomial
+namespace Primitive172FullGeneric
+variable {σ R K : Type*} [CommRing R] [IsDomain R] [NormalizedGCDMonoid R]
+    [Field K] [Algebra R K] [IsFractionRing R K]
+theorem primitive {G : MvPolynomial σ K} (hG : G ≠ 0) :
+    ∃ (g : K) (U : MvPolynomial σ R), g ≠ 0 ∧ map (algebraMap R K) U = g • G ∧
+      U.support.gcd U.coeff = 1 := by
+  classical
+  let : Algebra (MvPolynomial σ R) (MvPolynomial σ K) :=
+    MvPolynomial.algebraMvPolynomial
+  obtain ⟨⟨_, N, hNmem, rfl⟩, U0, hU0raw⟩ :=
+    IsLocalization.exists_integer_multiple ((nonZeroDivisors R).map (C (σ := σ))) G
+  have hN : N ≠ 0 := mem_nonZeroDivisors_iff_ne_zero.mp hNmem
+  have hinj : Function.Injective (algebraMap R K) := IsFractionRing.injective R K
+  have hNcast : algebraMap R K N ≠ 0 := (map_ne_zero_iff _ hinj).mpr hN
+  have hU0 : map (algebraMap R K) U0 = algebraMap R K N • G := by
+    simpa only [MvPolynomial.algebraMap_def, Algebra.smul_def, map_C,
+      algebraMap_eq] using hU0raw
+  have hne : U0.support.Nonempty := support_nonempty.mpr fun h ↦ by
+    simpa [h, smul_eq_zero, hNcast, hN, hG] using hU0.symm
+  obtain ⟨g', hg', hg1⟩ := Finset.extract_gcd (fun d ↦ U0.coeff d) hne
+  set g0 := U0.support.gcd (fun d ↦ U0.coeff d) with hg0def
+  have hg0 : g0 ≠ 0 := by
+    obtain ⟨d, hd⟩ := hne
+    rw [hg0def, Ne, Finset.gcd_eq_zero_iff]
+    exact fun h ↦ mem_support_iff.1 hd (h d hd)
+  set U := ∑ d ∈ U0.support, monomial d (g' d) with hUdef
+  have hUcoeff : ∀ d, U.coeff d = if d ∈ U0.support then g' d else 0 := by
+    simp [hUdef, coeff_monomial, Finset.sum_ite_eq']
+  have hU0coeff : ∀ d, U0.coeff d = g0 * U.coeff d := by
+    intro d
+    by_cases hd : d ∈ U0.support
+    · simpa [hUcoeff, hd] using hg' d hd
+    · simp [hUcoeff, hd, notMem_support_iff.1 hd]
+  refine ⟨algebraMap R K N / algebraMap R K g0, U,
+    div_ne_zero hNcast ((map_ne_zero_iff _ hinj).mpr hg0), ?_, ?_⟩
+  · ext d
+    have h1 := congrArg (fun P ↦ P.coeff d) hU0
+    simp only [coeff_map, coeff_smul, smul_eq_mul] at h1 ⊢
+    rw [hU0coeff] at h1
+    rw [map_mul] at h1
+    rwa [div_mul_eq_mul_div, eq_div_iff ((map_ne_zero_iff _ hinj).mpr hg0), mul_comm]
+  · have hsupp : U.support = U0.support := by
+      ext d
+      simp [mem_support_iff, hU0coeff d, hg0]
+    rw [hsupp, ← hg1]
+    exact Finset.gcd_congr rfl fun d hd ↦ by rw [hUcoeff, ite_eq_left hd]
+
+
+#print axioms primitive
+end Primitive172FullGeneric

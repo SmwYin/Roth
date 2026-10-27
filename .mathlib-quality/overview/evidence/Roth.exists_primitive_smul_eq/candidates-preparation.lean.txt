@@ -1,0 +1,19 @@
+#check @Finset.extract_gcd
+#check @Finset.gcd_eq_zero_iff
+#check @IsLocalization.exists_integer_multiple
+#check @IsFractionRing.injective
+#check_failure MvPolynomial.primPart
+#check_failure MvPolynomial.content
+#check_failure MvPolynomial.IsPrimitive
+open MvPolynomial
+namespace Primitive172Candidates
+theorem routes {σ : Type*} {G : MvPolynomial σ ℚ} (hG : G ≠ 0) :
+    ∃ (g : ℚ) (U : MvPolynomial σ ℤ), g ≠ 0 ∧ map (Int.castRingHom ℚ) U = g • G ∧
+      U.support.gcd U.coeff = 1 := by
+  fail_if_success
+    exact IsLocalization.exists_integer_multiple ((Submonoid.pos ℤ).map (C (σ := σ))) G
+  fail_if_success
+    exact Finset.extract_gcd G.coeff (support_nonempty.mpr hG)
+  exact Primitive172.primitive172 hG
+#print axioms routes
+end Primitive172Candidates

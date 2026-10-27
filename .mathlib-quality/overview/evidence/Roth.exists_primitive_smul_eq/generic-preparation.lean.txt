@@ -1,0 +1,56 @@
+open MvPolynomial
+namespace Primitive172Generic
+theorem extract {σ R : Type*} [CommRing R] [IsDomain R] [NormalizedGCDMonoid R]
+    {P : MvPolynomial σ R} (hP : P ≠ 0) :
+    ∃ U : MvPolynomial σ R,
+      P = C (P.support.gcd P.coeff) * U ∧ U.support.gcd U.coeff = 1 := by
+  classical
+  have hne : P.support.Nonempty := support_nonempty.mpr hP
+  obtain ⟨g', hg', hg1⟩ := Finset.extract_gcd P.coeff hne
+  set g0 := P.support.gcd P.coeff with hg0def
+  have hg0 : g0 ≠ 0 := by
+    obtain ⟨d, hd⟩ := hne
+    rw [hg0def, Ne, Finset.gcd_eq_zero_iff]
+    exact fun h ↦ mem_support_iff.1 hd (h d hd)
+  set U := ∑ d ∈ P.support, monomial d (g' d) with hUdef
+  have hUcoeff : ∀ d, U.coeff d = if d ∈ P.support then g' d else 0 := by
+    simp [hUdef, coeff_monomial, Finset.sum_ite_eq']
+  have hPcoeff : ∀ d, P.coeff d = g0 * U.coeff d := by
+    intro d
+    by_cases hd : d ∈ P.support
+    · simpa [hUcoeff, hd] using hg' d hd
+    · simp [hUcoeff, hd, notMem_support_iff.1 hd]
+  refine ⟨U, ?_, ?_⟩
+  · ext d
+    simpa only [coeff_C_mul] using hPcoeff d
+  · have hsupp : U.support = P.support := by
+      ext d
+      simp [mem_support_iff, hPcoeff d, hg0]
+    rw [hsupp, ← hg1]
+    exact Finset.gcd_congr rfl fun d hd ↦ by rw [hUcoeff, ite_eq_left hd]
+#print axioms extract
+end Primitive172Generic
+
+namespace Primitive172Guards
+-- Nonzero is essential: mapping an integer polynomial to zero forces gcd zero.
+theorem zeroImpossible {σ : Type*} :
+    ¬ ∃ (g : ℚ) (U : MvPolynomial σ ℤ), g ≠ 0 ∧
+      map (Int.castRingHom ℚ) U = g • (0 : MvPolynomial σ ℚ) ∧
+      U.support.gcd U.coeff = 1 := by
+  rintro ⟨g, U, hg, hU, hc⟩
+  have hU0 : U = 0 := MvPolynomial.map_injective _ Int.cast_injective (by simpa using hU)
+  simp [hU0] at hc
+-- Losing primitivity makes the scalar-zero choice vacuous.
+theorem vacuous {σ : Type*} (G : MvPolynomial σ ℚ) :
+    ∃ (g : ℚ) (U : MvPolynomial σ ℤ), map (Int.castRingHom ℚ) U = g • G := by
+  exact ⟨0, 0, by simp⟩
+theorem boundedRoute {σ : Type*} {G : MvPolynomial σ ℚ} (hG : G ≠ 0) :
+    ∃ (g : ℚ) (U : MvPolynomial σ ℤ), g ≠ 0 ∧ map (Int.castRingHom ℚ) U = g • G ∧
+      U.support.gcd U.coeff = 1 := by
+  fail_if_success
+    solve | aesop
+  exact Primitive172.primitive172 hG
+#print axioms zeroImpossible
+#print axioms vacuous
+#print axioms boundedRoute
+end Primitive172Guards

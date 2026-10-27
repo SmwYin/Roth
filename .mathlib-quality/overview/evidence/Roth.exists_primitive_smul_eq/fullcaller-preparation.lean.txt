@@ -1,0 +1,67 @@
+namespace Primitive172Caller
+open MvPolynomial
+variable {τ : Type*}
+theorem exists_int_eq_of_gcd_eq_one {ι : Type*} {s : Finset ι} {u : ι → ℤ} (hu : s.gcd u = 1)
+    {v : ℚ} (hv : ∀ a ∈ s, ∃ z : ℤ, (u a : ℚ) * v = z) : ∃ z : ℤ, v = z := by
+  classical
+  obtain ⟨z, hz⟩ := exists_sum_mul_eq_gcd s u
+  rw [hu] at hz
+  choose! w hw using hv
+  refine ⟨∑ i ∈ s, z i * w i, ?_⟩
+  calc v = ((∑ i ∈ s, z i * u i : ℤ) : ℚ) * v := by simp [hz]
+    _ = ((∑ i ∈ s, z i * w i : ℤ) : ℚ) := by
+        push_cast
+        rw [Finset.sum_mul]
+        exact Finset.sum_congr rfl fun i hi ↦ by rw [mul_assoc, hw i hi]
+
+private lemma rescale_separated_factor_aux {K : Type*} [Field K] {U' U : MvPolynomial τ K}
+    {V' : Polynomial K} {F : MvPolynomial (Option τ) K} {g : K} (hg : g ≠ 0) (hUmap : U = g • U')
+    (hF : F = rename some U' * Polynomial.aeval (X none : MvPolynomial (Option τ) K) V') :
+    F = rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) K)
+      (Polynomial.C g⁻¹ * V') := by
+  rw [hF, hUmap, map_mul, Polynomial.aeval_C, algebraMap_eq, smul_eq_C_mul, map_mul,
+    rename_C, mul_mul_mul_comm, ← C_mul, mul_inv_cancel₀ hg, C_1, one_mul]
+
+private lemma exists_int_polynomial_of_primitive_factor_aux {U : MvPolynomial τ ℤ}
+    {V' : Polynomial ℚ} {F : MvPolynomial (Option τ) ℤ} (hgcd : U.support.gcd U.coeff = 1)
+    (hF : map (Int.castRingHom ℚ) F = rename some (map (Int.castRingHom ℚ) U) *
+      Polynomial.aeval (X none : MvPolynomial (Option τ) ℚ) V') :
+    ∃ V : Polynomial ℤ, V.map (Int.castRingHom ℚ) = V' := by
+  apply (Polynomial.mem_map_range (Int.castRingHom ℚ)).2
+  intro b
+  obtain ⟨z, hz⟩ := exists_int_eq_of_gcd_eq_one hgcd fun a _ ↦
+    ⟨F.coeff (a.mapDomain some + Finsupp.single none b), by
+      have h := congrArg (fun P ↦ P.coeff (a.mapDomain some + Finsupp.single none b)) hF
+      simp only [coeff_rename_mul_aeval, coeff_map] at h
+      simpa using h.symm⟩
+  exact ⟨z, hz.symm⟩
+
+/-- If an integer polynomial `F` factors over `ℚ` as `U'(x_τ) V'(x_none)` with nonzero factors,
+then it factors over `ℤ` as `U(x_τ) V(x_none)` with the same partial degrees.
+Source: §2, proof of Lemma 2 ("Thus `U, V` are integral and nonzero, as required"), together
+with the degree comparison at the end of the proof. -/
+theorem exists_int_factors {U' : MvPolynomial τ ℚ} {V' : Polynomial ℚ} (hU : U' ≠ 0) (hV : V' ≠ 0)
+    {F : MvPolynomial (Option τ) ℤ} (hF : map (Int.castRingHom ℚ) F =
+      rename some U' * Polynomial.aeval (X none : MvPolynomial (Option τ) ℚ) V') :
+    ∃ (U : MvPolynomial τ ℤ) (V : Polynomial ℤ), U ≠ 0 ∧ V ≠ 0 ∧
+      F = rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) ℤ) V ∧
+      (∀ j, degreeOf j U = degreeOf j U') ∧ V.natDegree = V'.natDegree := by
+  obtain ⟨g, U, hg, hUmap, hgcd⟩ := Primitive172.primitive172 hU
+  have hF' := rescale_separated_factor_aux hg hUmap hF
+  obtain ⟨V, hVmap⟩ := exists_int_polynomial_of_primitive_factor_aux hgcd hF'
+  refine ⟨U, V, ?_, ?_, ?_, fun j ↦ ?_, ?_⟩
+  · exact fun h ↦ smul_ne_zero hg hU (by simpa [h] using hUmap.symm)
+  · exact fun h ↦ mul_ne_zero (Polynomial.C_ne_zero.2 (inv_ne_zero hg)) hV
+      (by simpa [h] using hVmap.symm)
+  · apply MvPolynomial.map_injective (Int.castRingHom ℚ) Int.cast_injective
+    rw [hF', map_mul (map (Int.castRingHom ℚ)), map_rename,
+      Polynomial.map_aeval_eq_aeval_map (φ := Int.castRingHom ℚ) (Subsingleton.elim _ _), map_X,
+      hVmap]
+  · rw [degreeOf, ← degrees_map_of_injective U (f := Int.castRingHom ℚ) Int.cast_injective,
+      hUmap, ← degreeOf, smul_eq_C_mul, degreeOf_C_mul j g (mem_nonZeroDivisors_of_ne_zero hg)]
+  · rw [← Polynomial.natDegree_map_eq_of_injective (f := Int.castRingHom ℚ)
+      (RingHom.injective_int _), hVmap, Polynomial.natDegree_C_mul (inv_ne_zero hg)]
+
+
+#print axioms exists_int_factors
+end Primitive172Caller

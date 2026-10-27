@@ -1,0 +1,14 @@
+#check @Polynomial.primPart
+#check @Polynomial.content
+#check @Polynomial.IsPrimitive
+#check @Polynomial.eq_C_content_mul_primPart
+#check @Polynomial.content_primPart
+#check @Polynomial.isUnit_or_eq_zero_of_isUnit_integerNormalization_primPart
+namespace Primitive172Specialization
+open MvPolynomial
+theorem original {σ : Type*} {G : MvPolynomial σ ℚ} (hG : G ≠ 0) :
+    ∃ (g : ℚ) (U : MvPolynomial σ ℤ), g ≠ 0 ∧ map (Int.castRingHom ℚ) U = g • G ∧
+      U.support.gcd U.coeff = 1 :=
+  Primitive172FullGeneric.primitive (R := ℤ) (K := ℚ) hG
+#print axioms original
+end Primitive172Specialization
