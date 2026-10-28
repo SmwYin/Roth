@@ -1,0 +1,645 @@
+[
+  {
+    "form": "current",
+    "method": "finder",
+    "request": {
+      "query": "An integer polynomial is divisible over the integers by the primitive linear rational-root factor to the power of the rational root multiplicity",
+      "num_results": 5
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.pow_rootMultiplicity_dvd\",\n      \"informal_name\": \"Divisibility by $(X - a)^{k}$ for Root Multiplicity $k$\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Ring R] (p : Polynomial R) (a : R),\\n  (Polynomial.X - Polynomial.C a) ^ Polynomial.rootMultiplicity a p ∣ p\",\n      \"informal_description\": \"For any polynomial $ p \\\\in R[X] $ and any root $ a \\\\in R $, the polynomial $ (X - a)^{k} $, where $ k $ is the multiplicity of $ a $ in $ p $, divides $ p $. This asserts that the factor corresponding to a root raised to its multiplicity is a divisor of the polynomial.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Div\"\n    },\n    {\n      \"formal_name\": \"Polynomial.pow_mul_divByMonic_rootMultiplicity_eq\",\n      \"informal_name\": \"Polynomial Factorization via Root Multiplicity Equality\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Ring R] (p : Polynomial R) (a : R),\\n  (Polynomial.X - Polynomial.C a) ^ Polynomial.rootMultiplicity a p *\\n      (p /ₘ (Polynomial.X - Polynomial.C a) ^ Polynomial.rootMultiplicity a p) =\\n    p\",\n      \"informal_description\": \"For any polynomial $ p \\\\in R[X] $ and element $ a \\\\in R $, it holds that $ (X - a)^{\\\\operatorname{rootMultiplicity}(a, p)} \\\\cdot \\\\left( p / (X - a)^{\\\\operatorname{rootMultiplicity}(a, p)} \\\\right) = p $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Div\"\n    },\n    {\n      \"formal_name\": \"Polynomial.exists_eq_pow_rootMultiplicity_mul_and_not_dvd\",\n      \"informal_name\": \"Polynomial Factorization with Root Multiplicity and Non-Divisibility\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Ring R] (p : Polynomial R),\\n  p ≠ 0 →\\n    ∀ (a : R),\\n      ∃ q,\\n        p = (Polynomial.X - Polynomial.C a) ^ Polynomial.rootMultiplicity a p * q ∧ ¬Polynomial.X - Polynomial.C a ∣ q\",\n      \"informal_description\": \"For any non-zero polynomial $ p \\\\in R[X] $ and element $ a \\\\in R $, there exists a polynomial $ q \\\\in R[X] $ such that $ p = (X - a)^{\\\\operatorname{rootMultiplicity}(a, p)} \\\\cdot q $ and $ (X - a) $ does not divide $ q $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Div\"\n    },\n    {\n      \"formal_name\": \"num_dvd_of_is_root\",\n      \"informal_name\": \"Rational Root Theorem: Numerator Divides Constant Term\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {A : Type u_1} {K : Type u_2} [inst : CommRing A] [inst_1 : IsDomain A] [inst_2 : UniqueFactorizationMonoid A]\\n  [inst_3 : Field K] [inst_4 : Algebra A K] [inst_5 : IsFractionRing A K] {p : Polynomial A} {r : K},\\n  (Polynomial.aeval r) p = 0 → IsFractionRing.num A r ∣ p.coeff 0\",\n      \"informal_description\": \"If $ r $ is a root of the polynomial $ p $ in the fraction ring $ K $ of a commutative semiring $ A $, then the numerator of $ r $ divides the constant term $ p(0) $ of $ p $.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.RationalRoot\"\n    },\n    {\n      \"formal_name\": \"Polynomial.pow_rootMultiplicity_not_dvd\",\n      \"informal_name\": \"Non-Divisibility by $(X - a)^{m+1}$ for Root Multiplicity $m$\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : CommRing R] {p : Polynomial R},\\n  p ≠ 0 → ∀ (a : R), ¬(Polynomial.X - Polynomial.C a) ^ (Polynomial.rootMultiplicity a p + 1) ∣ p\",\n      \"informal_description\": \"For any non-zero polynomial $p$ in the polynomial ring $R[X]$ and any element $a \\\\in R$, the polynomial $(X - a)$ raised to the power of the multiplicity $m$ of $a$ as a root of $p$ plus one does not divide $p$.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Div\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Polynomial.pow_rootMultiplicity_dvd",
+            "informal_name": "Divisibility by $(X - a)^{k}$ for Root Multiplicity $k$",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : Ring R] (p : Polynomial R) (a : R),\n  (Polynomial.X - Polynomial.C a) ^ Polynomial.rootMultiplicity a p ∣ p",
+            "informal_description": "For any polynomial $ p \\in R[X] $ and any root $ a \\in R $, the polynomial $ (X - a)^{k} $, where $ k $ is the multiplicity of $ a $ in $ p $, divides $ p $. This asserts that the factor corresponding to a root raised to its multiplicity is a divisor of the polynomial.",
+            "path": "Mathlib.Algebra.Polynomial.Div"
+          },
+          {
+            "formal_name": "Polynomial.pow_mul_divByMonic_rootMultiplicity_eq",
+            "informal_name": "Polynomial Factorization via Root Multiplicity Equality",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : Ring R] (p : Polynomial R) (a : R),\n  (Polynomial.X - Polynomial.C a) ^ Polynomial.rootMultiplicity a p *\n      (p /ₘ (Polynomial.X - Polynomial.C a) ^ Polynomial.rootMultiplicity a p) =\n    p",
+            "informal_description": "For any polynomial $ p \\in R[X] $ and element $ a \\in R $, it holds that $ (X - a)^{\\operatorname{rootMultiplicity}(a, p)} \\cdot \\left( p / (X - a)^{\\operatorname{rootMultiplicity}(a, p)} \\right) = p $.",
+            "path": "Mathlib.Algebra.Polynomial.Div"
+          },
+          {
+            "formal_name": "Polynomial.exists_eq_pow_rootMultiplicity_mul_and_not_dvd",
+            "informal_name": "Polynomial Factorization with Root Multiplicity and Non-Divisibility",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : Ring R] (p : Polynomial R),\n  p ≠ 0 →\n    ∀ (a : R),\n      ∃ q,\n        p = (Polynomial.X - Polynomial.C a) ^ Polynomial.rootMultiplicity a p * q ∧ ¬Polynomial.X - Polynomial.C a ∣ q",
+            "informal_description": "For any non-zero polynomial $ p \\in R[X] $ and element $ a \\in R $, there exists a polynomial $ q \\in R[X] $ such that $ p = (X - a)^{\\operatorname{rootMultiplicity}(a, p)} \\cdot q $ and $ (X - a) $ does not divide $ q $.",
+            "path": "Mathlib.Algebra.Polynomial.Div"
+          },
+          {
+            "formal_name": "num_dvd_of_is_root",
+            "informal_name": "Rational Root Theorem: Numerator Divides Constant Term",
+            "kind": "theorem",
+            "type": "∀ {A : Type u_1} {K : Type u_2} [inst : CommRing A] [inst_1 : IsDomain A] [inst_2 : UniqueFactorizationMonoid A]\n  [inst_3 : Field K] [inst_4 : Algebra A K] [inst_5 : IsFractionRing A K] {p : Polynomial A} {r : K},\n  (Polynomial.aeval r) p = 0 → IsFractionRing.num A r ∣ p.coeff 0",
+            "informal_description": "If $ r $ is a root of the polynomial $ p $ in the fraction ring $ K $ of a commutative semiring $ A $, then the numerator of $ r $ divides the constant term $ p(0) $ of $ p $.",
+            "path": "Mathlib.RingTheory.Polynomial.RationalRoot"
+          },
+          {
+            "formal_name": "Polynomial.pow_rootMultiplicity_not_dvd",
+            "informal_name": "Non-Divisibility by $(X - a)^{m+1}$ for Root Multiplicity $m$",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : CommRing R] {p : Polynomial R},\n  p ≠ 0 → ∀ (a : R), ¬(Polynomial.X - Polynomial.C a) ^ (Polynomial.rootMultiplicity a p + 1) ∣ p",
+            "informal_description": "For any non-zero polynomial $p$ in the polynomial ring $R[X]$ and any element $a \\in R$, the polynomial $(X - a)$ raised to the power of the multiplicity $m$ of $a$ as a root of $p$ plus one does not divide $p$.",
+            "path": "Mathlib.Algebra.Polynomial.Div"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "current",
+    "method": "loogle",
+    "request": {
+      "query": "Polynomial.rootMultiplicity, _ ∣ _",
+      "num_results": 8
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.rootMultiplicity_le_rootMultiplicity_of_dvd\",\n      \"type\": \" {R : Type u} [CommRing R] {p q : Polynomial R} (hq : q ≠ 0) (hpq : p ∣ q) (x : R) : Polynomial.rootMultiplicity x p ≤ Polynomial.rootMultiplicity x q\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Div\"\n    },\n    {\n      \"name\": \"Polynomial.pow_rootMultiplicity_dvd\",\n      \"type\": \" {R : Type u} [Ring R] (p : Polynomial R) (a : R) : (Polynomial.X - Polynomial.C a) ^ Polynomial.rootMultiplicity a p ∣ p\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Div\"\n    },\n    {\n      \"name\": \"Polynomial.le_rootMultiplicity_iff\",\n      \"type\": \" {R : Type u} [Ring R] {p : Polynomial R} (p0 : p ≠ 0) {a : R} {n : ℕ} : n ≤ Polynomial.rootMultiplicity a p ↔ (Polynomial.X - Polynomial.C a) ^ n ∣ p\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Div\"\n    },\n    {\n      \"name\": \"Polynomial.pow_rootMultiplicity_not_dvd\",\n      \"type\": \" {R : Type u} [Ring R] {p : Polynomial R} (p0 : p ≠ 0) (a : R) : ¬(Polynomial.X - Polynomial.C a) ^ (Polynomial.rootMultiplicity a p + 1) ∣ p\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Div\"\n    },\n    {\n      \"name\": \"Polynomial.rootMultiplicity_le_iff\",\n      \"type\": \" {R : Type u} [Ring R] {p : Polynomial R} (p0 : p ≠ 0) (a : R) (n : ℕ) : Polynomial.rootMultiplicity a p ≤ n ↔ ¬(Polynomial.X - Polynomial.C a) ^ (n + 1) ∣ p\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Div\"\n    },\n    {\n      \"name\": \"Polynomial.exists_eq_pow_rootMultiplicity_mul_and_not_dvd\",\n      \"type\": \" {R : Type u} [Ring R] (p : Polynomial R) (hp : p ≠ 0) (a : R) : ∃ q, p = (Polynomial.X - Polynomial.C a) ^ Polynomial.rootMultiplicity a p * q ∧ ¬Polynomial.X - Polynomial.C a ∣ q\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Div\"\n    },\n    {\n      \"name\": \"Polynomial.rootMultiplicity_eq_natFind_of_ne_zero\",\n      \"type\": \" {R : Type u} [Ring R] {p : Polynomial R} (p0 : p ≠ 0) {a : R} [DecidablePred fun n => ¬(Polynomial.X - Polynomial.C a) ^ (n + 1) ∣ p] : Polynomial.rootMultiplicity a p = Nat.find ⋯\",\n      \"module\": \"Mathlib.Algebra.Polynomial.Div\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.rootMultiplicity_le_rootMultiplicity_of_dvd",
+            "type": " {R : Type u} [CommRing R] {p q : Polynomial R} (hq : q ≠ 0) (hpq : p ∣ q) (x : R) : Polynomial.rootMultiplicity x p ≤ Polynomial.rootMultiplicity x q",
+            "module": "Mathlib.Algebra.Polynomial.Div"
+          },
+          {
+            "name": "Polynomial.pow_rootMultiplicity_dvd",
+            "type": " {R : Type u} [Ring R] (p : Polynomial R) (a : R) : (Polynomial.X - Polynomial.C a) ^ Polynomial.rootMultiplicity a p ∣ p",
+            "module": "Mathlib.Algebra.Polynomial.Div"
+          },
+          {
+            "name": "Polynomial.le_rootMultiplicity_iff",
+            "type": " {R : Type u} [Ring R] {p : Polynomial R} (p0 : p ≠ 0) {a : R} {n : ℕ} : n ≤ Polynomial.rootMultiplicity a p ↔ (Polynomial.X - Polynomial.C a) ^ n ∣ p",
+            "module": "Mathlib.Algebra.Polynomial.Div"
+          },
+          {
+            "name": "Polynomial.pow_rootMultiplicity_not_dvd",
+            "type": " {R : Type u} [Ring R] {p : Polynomial R} (p0 : p ≠ 0) (a : R) : ¬(Polynomial.X - Polynomial.C a) ^ (Polynomial.rootMultiplicity a p + 1) ∣ p",
+            "module": "Mathlib.Algebra.Polynomial.Div"
+          },
+          {
+            "name": "Polynomial.rootMultiplicity_le_iff",
+            "type": " {R : Type u} [Ring R] {p : Polynomial R} (p0 : p ≠ 0) (a : R) (n : ℕ) : Polynomial.rootMultiplicity a p ≤ n ↔ ¬(Polynomial.X - Polynomial.C a) ^ (n + 1) ∣ p",
+            "module": "Mathlib.Algebra.Polynomial.Div"
+          },
+          {
+            "name": "Polynomial.exists_eq_pow_rootMultiplicity_mul_and_not_dvd",
+            "type": " {R : Type u} [Ring R] (p : Polynomial R) (hp : p ≠ 0) (a : R) : ∃ q, p = (Polynomial.X - Polynomial.C a) ^ Polynomial.rootMultiplicity a p * q ∧ ¬Polynomial.X - Polynomial.C a ∣ q",
+            "module": "Mathlib.Algebra.Polynomial.Div"
+          },
+          {
+            "name": "Polynomial.rootMultiplicity_eq_natFind_of_ne_zero",
+            "type": " {R : Type u} [Ring R] {p : Polynomial R} (p0 : p ≠ 0) {a : R} [DecidablePred fun n => ¬(Polynomial.X - Polynomial.C a) ^ (n + 1) ∣ p] : Polynomial.rootMultiplicity a p = Nat.find ⋯",
+            "module": "Mathlib.Algebra.Polynomial.Div"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "leansearch",
+    "request": {
+      "query": "A primitive polynomial over a GCD domain divides another polynomial if it divides after mapping to the fraction field",
+      "num_results": 5
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.IsPrimitive.dvd_of_fraction_map_dvd_fraction_map\",\n      \"module_name\": \"Mathlib.RingTheory.Polynomial.GaussLemma\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] {K : Type u_2} [inst_1 : Field K] [inst_2 : Algebra R K] [IsFractionRing R K]\\n  [IsDomain R] [Nonempty (NormalizedGCDMonoid R)] {p q : Polynomial R},\\n  p.IsPrimitive → q.IsPrimitive → Polynomial.map (algebraMap R K) p ∣ Polynomial.map (algebraMap R K) q → p ∣ q\"\n    },\n    {\n      \"name\": \"Polynomial.IsPrimitive.dvd_iff_fraction_map_dvd_fraction_map\",\n      \"module_name\": \"Mathlib.RingTheory.Polynomial.GaussLemma\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] (K : Type u_2) [inst_1 : Field K] [inst_2 : Algebra R K] [IsFractionRing R K]\\n  [IsDomain R] [Nonempty (NormalizedGCDMonoid R)] {p q : Polynomial R},\\n  p.IsPrimitive → q.IsPrimitive → (p ∣ q ↔ Polynomial.map (algebraMap R K) p ∣ Polynomial.map (algebraMap R K) q)\"\n    },\n    {\n      \"name\": \"Polynomial.IsPrimitive.Int.dvd_iff_map_cast_dvd_map_cast\",\n      \"module_name\": \"Mathlib.RingTheory.Polynomial.GaussLemma\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (p q : Polynomial ℤ),\\n  p.IsPrimitive → q.IsPrimitive → (p ∣ q ↔ Polynomial.map (Int.castRingHom ℚ) p ∣ Polynomial.map (Int.castRingHom ℚ) q)\"\n    },\n    {\n      \"name\": \"Polynomial.IsPrimitive.dvd_primPart_iff_dvd\",\n      \"module_name\": \"Mathlib.RingTheory.Polynomial.Content\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] [inst_1 : NormalizedGCDMonoid R] {p q : Polynomial R},\\n  p.IsPrimitive → q ≠ 0 → (p ∣ q.primPart ↔ p ∣ q)\"\n    },\n    {\n      \"name\": \"Polynomial.Monic.dvd_of_fraction_map_dvd_fraction_map\",\n      \"module_name\": \"Mathlib.RingTheory.Polynomial.GaussLemma\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] {K : Type u_2} [inst_1 : Field K] [inst_2 : Algebra R K] [IsFractionRing R K]\\n  [IsIntegrallyClosed R] {p q : Polynomial R},\\n  p.Monic → q.Monic → Polynomial.map (algebraMap R K) q ∣ Polynomial.map (algebraMap R K) p → q ∣ p\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.IsPrimitive.dvd_of_fraction_map_dvd_fraction_map",
+            "module_name": "Mathlib.RingTheory.Polynomial.GaussLemma",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommRing R] {K : Type u_2} [inst_1 : Field K] [inst_2 : Algebra R K] [IsFractionRing R K]\n  [IsDomain R] [Nonempty (NormalizedGCDMonoid R)] {p q : Polynomial R},\n  p.IsPrimitive → q.IsPrimitive → Polynomial.map (algebraMap R K) p ∣ Polynomial.map (algebraMap R K) q → p ∣ q"
+          },
+          {
+            "name": "Polynomial.IsPrimitive.dvd_iff_fraction_map_dvd_fraction_map",
+            "module_name": "Mathlib.RingTheory.Polynomial.GaussLemma",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommRing R] (K : Type u_2) [inst_1 : Field K] [inst_2 : Algebra R K] [IsFractionRing R K]\n  [IsDomain R] [Nonempty (NormalizedGCDMonoid R)] {p q : Polynomial R},\n  p.IsPrimitive → q.IsPrimitive → (p ∣ q ↔ Polynomial.map (algebraMap R K) p ∣ Polynomial.map (algebraMap R K) q)"
+          },
+          {
+            "name": "Polynomial.IsPrimitive.Int.dvd_iff_map_cast_dvd_map_cast",
+            "module_name": "Mathlib.RingTheory.Polynomial.GaussLemma",
+            "kind": "theorem",
+            "type": "∀ (p q : Polynomial ℤ),\n  p.IsPrimitive → q.IsPrimitive → (p ∣ q ↔ Polynomial.map (Int.castRingHom ℚ) p ∣ Polynomial.map (Int.castRingHom ℚ) q)"
+          },
+          {
+            "name": "Polynomial.IsPrimitive.dvd_primPart_iff_dvd",
+            "module_name": "Mathlib.RingTheory.Polynomial.Content",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommRing R] [inst_1 : NormalizedGCDMonoid R] {p q : Polynomial R},\n  p.IsPrimitive → q ≠ 0 → (p ∣ q.primPart ↔ p ∣ q)"
+          },
+          {
+            "name": "Polynomial.Monic.dvd_of_fraction_map_dvd_fraction_map",
+            "module_name": "Mathlib.RingTheory.Polynomial.GaussLemma",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommRing R] {K : Type u_2} [inst_1 : Field K] [inst_2 : Algebra R K] [IsFractionRing R K]\n  [IsIntegrallyClosed R] {p q : Polynomial R},\n  p.Monic → q.Monic → Polynomial.map (algebraMap R K) q ∣ Polynomial.map (algebraMap R K) p → q ∣ p"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "current",
+    "method": "local",
+    "request": {
+      "query": "rootMultiplicity",
+      "limit": 15
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.rootMultiplicity\",\n      \"kind\": \"def\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Div.lean\"\n    },\n    {\n      \"name\": \"Polynomial.rootMultiplicity_C\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Div.lean\"\n    },\n    {\n      \"name\": \"Polynomial.rootMultiplicity_add\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Div.lean\"\n    },\n    {\n      \"name\": \"Polynomial.rootMultiplicity_mul\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/RingDivision.lean\"\n    },\n    {\n      \"name\": \"Polynomial.rootMultiplicity_pos\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Div.lean\"\n    },\n    {\n      \"name\": \"Polynomial.rootMultiplicity_mul'\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/RingDivision.lean\"\n    },\n    {\n      \"name\": \"Polynomial.rootMultiplicity_pos'\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Div.lean\"\n    },\n    {\n      \"name\": \"Polynomial.rootMultiplicity_zero\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Div.lean\"\n    },\n    {\n      \"name\": \"Polynomial.Chebyshev.rootMultiplicity_T_real\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Analysis/SpecialFunctions/Trigonometric/Chebyshev/RootsExtrema.lean\"\n    },\n    {\n      \"name\": \"Polynomial.Chebyshev.rootMultiplicity_U_real\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Analysis/SpecialFunctions/Trigonometric/Chebyshev/RootsExtrema.lean\"\n    },\n    {\n      \"name\": \"Polynomial.rootMultiplicity_expand\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Expand.lean\"\n    },\n    {\n      \"name\": \"Polynomial.rootMultiplicity_le_iff\",\n      \"kind\": \"lemma\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Div.lean\"\n    },\n    {\n      \"name\": \"Polynomial.rootMultiplicity_X_sub_C\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/RingDivision.lean\"\n    },\n    {\n      \"name\": \"Polynomial.rootMultiplicity_eq_zero\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Div.lean\"\n    },\n    {\n      \"name\": \"Polynomial.rootMultiplicity_expand_pow\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Expand.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.rootMultiplicity",
+            "kind": "def",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Div.lean"
+          },
+          {
+            "name": "Polynomial.rootMultiplicity_C",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Div.lean"
+          },
+          {
+            "name": "Polynomial.rootMultiplicity_add",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Div.lean"
+          },
+          {
+            "name": "Polynomial.rootMultiplicity_mul",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/RingDivision.lean"
+          },
+          {
+            "name": "Polynomial.rootMultiplicity_pos",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Div.lean"
+          },
+          {
+            "name": "Polynomial.rootMultiplicity_mul'",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/RingDivision.lean"
+          },
+          {
+            "name": "Polynomial.rootMultiplicity_pos'",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Div.lean"
+          },
+          {
+            "name": "Polynomial.rootMultiplicity_zero",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Div.lean"
+          },
+          {
+            "name": "Polynomial.Chebyshev.rootMultiplicity_T_real",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Analysis/SpecialFunctions/Trigonometric/Chebyshev/RootsExtrema.lean"
+          },
+          {
+            "name": "Polynomial.Chebyshev.rootMultiplicity_U_real",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Analysis/SpecialFunctions/Trigonometric/Chebyshev/RootsExtrema.lean"
+          },
+          {
+            "name": "Polynomial.rootMultiplicity_expand",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Expand.lean"
+          },
+          {
+            "name": "Polynomial.rootMultiplicity_le_iff",
+            "kind": "lemma",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Div.lean"
+          },
+          {
+            "name": "Polynomial.rootMultiplicity_X_sub_C",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/RingDivision.lean"
+          },
+          {
+            "name": "Polynomial.rootMultiplicity_eq_zero",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Div.lean"
+          },
+          {
+            "name": "Polynomial.rootMultiplicity_expand_pow",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/Algebra/Polynomial/Expand.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "current",
+    "method": "leansearch",
+    "request": {
+      "query": "The rational root factor (q X - h) to the multiplicity of h/q divides an integer polynomial",
+      "num_results": 6
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.prod_multiset_X_sub_C_dvd\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Roots\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : CommRing R] [inst_1 : IsDomain R] (p : Polynomial R),\\n  (Multiset.map (fun a => Polynomial.X - Polynomial.C a) p.roots).prod ∣ p\"\n    },\n    {\n      \"name\": \"Polynomial.pow_rootMultiplicity_dvd\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Div\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Ring R] (p : Polynomial R) (a : R),\\n  (Polynomial.X - Polynomial.C a) ^ Polynomial.rootMultiplicity a p ∣ p\"\n    },\n    {\n      \"name\": \"exists_integer_of_is_root_of_monic\",\n      \"module_name\": \"Mathlib.RingTheory.Polynomial.RationalRoot\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {A : Type u_1} {K : Type u_2} [inst : CommRing A] [IsDomain A] [UniqueFactorizationMonoid A] [inst_3 : Field K]\\n  [inst_4 : Algebra A K] [IsFractionRing A K] {p : Polynomial A},\\n  p.Monic → ∀ {r : K}, (Polynomial.aeval r) p = 0 → ∃ r', r = (algebraMap A K) r' ∧ r' ∣ p.coeff 0\"\n    },\n    {\n      \"name\": \"Polynomial.rootMultiplicity\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Div\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} → [inst : Ring R] → R → Polynomial R → ℕ\"\n    },\n    {\n      \"name\": \"num_dvd_of_is_root\",\n      \"module_name\": \"Mathlib.RingTheory.Polynomial.RationalRoot\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {A : Type u_1} {K : Type u_2} [inst : CommRing A] [inst_1 : IsDomain A] [inst_2 : UniqueFactorizationMonoid A]\\n  [inst_3 : Field K] [inst_4 : Algebra A K] [inst_5 : IsFractionRing A K] {p : Polynomial A} {r : K},\\n  (Polynomial.aeval r) p = 0 → IsFractionRing.num A r ∣ p.coeff 0\"\n    },\n    {\n      \"name\": \"Dvd.dvd.scaleRoots\",\n      \"module_name\": \"Mathlib.RingTheory.Polynomial.ScaleRoots\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommSemiring R] (p q : Polynomial R) {r : R} [NoZeroDivisors R],\\n  p ∣ q → p.scaleRoots r ∣ q.scaleRoots r\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.prod_multiset_X_sub_C_dvd",
+            "module_name": "Mathlib.Algebra.Polynomial.Roots",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : CommRing R] [inst_1 : IsDomain R] (p : Polynomial R),\n  (Multiset.map (fun a => Polynomial.X - Polynomial.C a) p.roots).prod ∣ p"
+          },
+          {
+            "name": "Polynomial.pow_rootMultiplicity_dvd",
+            "module_name": "Mathlib.Algebra.Polynomial.Div",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : Ring R] (p : Polynomial R) (a : R),\n  (Polynomial.X - Polynomial.C a) ^ Polynomial.rootMultiplicity a p ∣ p"
+          },
+          {
+            "name": "exists_integer_of_is_root_of_monic",
+            "module_name": "Mathlib.RingTheory.Polynomial.RationalRoot",
+            "kind": "theorem",
+            "type": "∀ {A : Type u_1} {K : Type u_2} [inst : CommRing A] [IsDomain A] [UniqueFactorizationMonoid A] [inst_3 : Field K]\n  [inst_4 : Algebra A K] [IsFractionRing A K] {p : Polynomial A},\n  p.Monic → ∀ {r : K}, (Polynomial.aeval r) p = 0 → ∃ r', r = (algebraMap A K) r' ∧ r' ∣ p.coeff 0"
+          },
+          {
+            "name": "Polynomial.rootMultiplicity",
+            "module_name": "Mathlib.Algebra.Polynomial.Div",
+            "kind": "definition",
+            "type": "{R : Type u} → [inst : Ring R] → R → Polynomial R → ℕ"
+          },
+          {
+            "name": "num_dvd_of_is_root",
+            "module_name": "Mathlib.RingTheory.Polynomial.RationalRoot",
+            "kind": "theorem",
+            "type": "∀ {A : Type u_1} {K : Type u_2} [inst : CommRing A] [inst_1 : IsDomain A] [inst_2 : UniqueFactorizationMonoid A]\n  [inst_3 : Field K] [inst_4 : Algebra A K] [inst_5 : IsFractionRing A K] {p : Polynomial A} {r : K},\n  (Polynomial.aeval r) p = 0 → IsFractionRing.num A r ∣ p.coeff 0"
+          },
+          {
+            "name": "Dvd.dvd.scaleRoots",
+            "module_name": "Mathlib.RingTheory.Polynomial.ScaleRoots",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommSemiring R] (p q : Polynomial R) {r : R} [NoZeroDivisors R],\n  p ∣ q → p.scaleRoots r ∣ q.scaleRoots r"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "standard",
+    "method": "finder",
+    "request": {
+      "query": "Gauss lemma primitive polynomial divisibility descends from fraction field to a GCD domain",
+      "num_results": 6
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Polynomial.IsPrimitive.dvd_of_fraction_map_dvd_fraction_map\",\n      \"informal_name\": \"Divisibility of Primitive Polynomials via Fraction Ring Extension\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] {K : Type u_2} [inst_1 : Field K] [inst_2 : Algebra R K] [IsFractionRing R K]\\n  [IsDomain R] [Nonempty (NormalizedGCDMonoid R)] {p q : Polynomial R},\\n  p.IsPrimitive → q.IsPrimitive → Polynomial.map (algebraMap R K) p ∣ Polynomial.map (algebraMap R K) q → p ∣ q\",\n      \"informal_description\": \"Let $ R $ be a commutative ring and $ K $ its fraction field. If $ p $ and $ q $ are primitive polynomials in $ R[X] $, and the image of $ p $ under the canonical ring homomorphism $ R \\\\to K $ divides the image of $ q $ in $ K[X] $, then $ p $ divides $ q $ in $ R[X] $.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.GaussLemma\"\n    },\n    {\n      \"formal_name\": \"Polynomial.IsPrimitive.dvd_iff_fraction_map_dvd_fraction_map\",\n      \"informal_name\": \"Divisibility of Primitive Polynomials in Fraction Rings\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] (K : Type u_2) [inst_1 : Field K] [inst_2 : Algebra R K] [IsFractionRing R K]\\n  [IsDomain R] [Nonempty (NormalizedGCDMonoid R)] {p q : Polynomial R},\\n  p.IsPrimitive → q.IsPrimitive → (p ∣ q ↔ Polynomial.map (algebraMap R K) p ∣ Polynomial.map (algebraMap R K) q)\",\n      \"informal_description\": \"For primitive polynomials $ p $ and $ q $ over a commutative ring $ R $, $ p $ divides $ q $ in $ R[X] $ if and only if their images under the canonical map to the fraction ring $ K $ satisfy $ p_{K} \\\\mid q_{K} $ in $ K[X] $.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.GaussLemma\"\n    },\n    {\n      \"formal_name\": \"Polynomial.IsPrimitive.Int.dvd_iff_map_cast_dvd_map_cast\",\n      \"informal_name\": \"Gauss's Lemma for Divisibility of Primitive Integer Polynomials\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (p q : Polynomial ℤ),\\n  p.IsPrimitive → q.IsPrimitive → (p ∣ q ↔ Polynomial.map (Int.castRingHom ℚ) p ∣ Polynomial.map (Int.castRingHom ℚ) q)\",\n      \"informal_description\": \"For any two primitive polynomials $ p, q \\\\in \\\\mathbb{Z}[X] $, $ p $ divides $ q $ in $ \\\\mathbb{Z}[X] $ if and only if the image of $ p $ under the canonical embedding $ \\\\mathbb{Z} \\\\hookrightarrow \\\\mathbb{Q} $ divides the image of $ q $ in $ \\\\mathbb{Q}[X] $.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.GaussLemma\"\n    },\n    {\n      \"formal_name\": \"Polynomial.IsPrimitive.dvd_primPart_iff_dvd\",\n      \"informal_name\": \"Divisibility by Primitive Part iff Original Polynomial\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] [inst_1 : NormalizedGCDMonoid R] {p q : Polynomial R},\\n  p.IsPrimitive → q ≠ 0 → (p ∣ q.primPart ↔ p ∣ q)\",\n      \"informal_description\": \"Let $ p $ and $ q $ be polynomials over a commutative ring $ R $. If $ p $ is primitive and $ q \\neq 0 $, then $ p $ divides the primitive part of $ q $ if and only if $ p $ divides $ q $.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.Content\"\n    },\n    {\n      \"formal_name\": \"Polynomial.Monic.dvd_of_fraction_map_dvd_fraction_map\",\n      \"informal_name\": \"Gauss's Lemma for Monic Polynomials over Integrally Closed Domains\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] {K : Type u_2} [inst_1 : Field K] [inst_2 : Algebra R K] [IsFractionRing R K]\\n  [IsIntegrallyClosed R] {p q : Polynomial R},\\n  p.Monic → q.Monic → Polynomial.map (algebraMap R K) q ∣ Polynomial.map (algebraMap R K) p → q ∣ p\",\n      \"informal_description\": \"Let $ R $ be an integrally closed domain with fraction field $ K $. If $ p, q \\\\in R[X] $ are monic polynomials and the image of $ q $ in $ K[X] $ divides the image of $ p $ in $ K[X] $, then $ q $ divides $ p $ in $ R[X] $.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.GaussLemma\"\n    },\n    {\n      \"formal_name\": \"Polynomial.dvd_iff_content_dvd_content_and_primPart_dvd_primPart\",\n      \"informal_name\": \"Divisibility Criterion for Polynomials via Content and Primitive Parts\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] [inst_1 : NormalizedGCDMonoid R] {p q : Polynomial R},\\n  q ≠ 0 → (p ∣ q ↔ p.content ∣ q.content ∧ p.primPart ∣ q.primPart)\",\n      \"informal_description\": \"For non-zero polynomials $ p $ and $ q $ over a commutative ring $ R $, $ p $ divides $ q $ if and only if the content of $ p $ divides the content of $ q $ and the primitive part of $ p $ divides the primitive part of $ q $. Here, the content of a polynomial is the greatest common divisor of its coefficients, and the primitive part is the polynomial normalized to have content 1.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.Content\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Polynomial.IsPrimitive.dvd_of_fraction_map_dvd_fraction_map",
+            "informal_name": "Divisibility of Primitive Polynomials via Fraction Ring Extension",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommRing R] {K : Type u_2} [inst_1 : Field K] [inst_2 : Algebra R K] [IsFractionRing R K]\n  [IsDomain R] [Nonempty (NormalizedGCDMonoid R)] {p q : Polynomial R},\n  p.IsPrimitive → q.IsPrimitive → Polynomial.map (algebraMap R K) p ∣ Polynomial.map (algebraMap R K) q → p ∣ q",
+            "informal_description": "Let $ R $ be a commutative ring and $ K $ its fraction field. If $ p $ and $ q $ are primitive polynomials in $ R[X] $, and the image of $ p $ under the canonical ring homomorphism $ R \\to K $ divides the image of $ q $ in $ K[X] $, then $ p $ divides $ q $ in $ R[X] $.",
+            "path": "Mathlib.RingTheory.Polynomial.GaussLemma"
+          },
+          {
+            "formal_name": "Polynomial.IsPrimitive.dvd_iff_fraction_map_dvd_fraction_map",
+            "informal_name": "Divisibility of Primitive Polynomials in Fraction Rings",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommRing R] (K : Type u_2) [inst_1 : Field K] [inst_2 : Algebra R K] [IsFractionRing R K]\n  [IsDomain R] [Nonempty (NormalizedGCDMonoid R)] {p q : Polynomial R},\n  p.IsPrimitive → q.IsPrimitive → (p ∣ q ↔ Polynomial.map (algebraMap R K) p ∣ Polynomial.map (algebraMap R K) q)",
+            "informal_description": "For primitive polynomials $ p $ and $ q $ over a commutative ring $ R $, $ p $ divides $ q $ in $ R[X] $ if and only if their images under the canonical map to the fraction ring $ K $ satisfy $ p_{K} \\mid q_{K} $ in $ K[X] $.",
+            "path": "Mathlib.RingTheory.Polynomial.GaussLemma"
+          },
+          {
+            "formal_name": "Polynomial.IsPrimitive.Int.dvd_iff_map_cast_dvd_map_cast",
+            "informal_name": "Gauss's Lemma for Divisibility of Primitive Integer Polynomials",
+            "kind": "theorem",
+            "type": "∀ (p q : Polynomial ℤ),\n  p.IsPrimitive → q.IsPrimitive → (p ∣ q ↔ Polynomial.map (Int.castRingHom ℚ) p ∣ Polynomial.map (Int.castRingHom ℚ) q)",
+            "informal_description": "For any two primitive polynomials $ p, q \\in \\mathbb{Z}[X] $, $ p $ divides $ q $ in $ \\mathbb{Z}[X] $ if and only if the image of $ p $ under the canonical embedding $ \\mathbb{Z} \\hookrightarrow \\mathbb{Q} $ divides the image of $ q $ in $ \\mathbb{Q}[X] $.",
+            "path": "Mathlib.RingTheory.Polynomial.GaussLemma"
+          },
+          {
+            "formal_name": "Polynomial.IsPrimitive.dvd_primPart_iff_dvd",
+            "informal_name": "Divisibility by Primitive Part iff Original Polynomial",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommRing R] [inst_1 : NormalizedGCDMonoid R] {p q : Polynomial R},\n  p.IsPrimitive → q ≠ 0 → (p ∣ q.primPart ↔ p ∣ q)",
+            "informal_description": "Let $ p $ and $ q $ be polynomials over a commutative ring $ R $. If $ p $ is primitive and $ q \neq 0 $, then $ p $ divides the primitive part of $ q $ if and only if $ p $ divides $ q $.",
+            "path": "Mathlib.RingTheory.Polynomial.Content"
+          },
+          {
+            "formal_name": "Polynomial.Monic.dvd_of_fraction_map_dvd_fraction_map",
+            "informal_name": "Gauss's Lemma for Monic Polynomials over Integrally Closed Domains",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommRing R] {K : Type u_2} [inst_1 : Field K] [inst_2 : Algebra R K] [IsFractionRing R K]\n  [IsIntegrallyClosed R] {p q : Polynomial R},\n  p.Monic → q.Monic → Polynomial.map (algebraMap R K) q ∣ Polynomial.map (algebraMap R K) p → q ∣ p",
+            "informal_description": "Let $ R $ be an integrally closed domain with fraction field $ K $. If $ p, q \\in R[X] $ are monic polynomials and the image of $ q $ in $ K[X] $ divides the image of $ p $ in $ K[X] $, then $ q $ divides $ p $ in $ R[X] $.",
+            "path": "Mathlib.RingTheory.Polynomial.GaussLemma"
+          },
+          {
+            "formal_name": "Polynomial.dvd_iff_content_dvd_content_and_primPart_dvd_primPart",
+            "informal_name": "Divisibility Criterion for Polynomials via Content and Primitive Parts",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommRing R] [inst_1 : NormalizedGCDMonoid R] {p q : Polynomial R},\n  q ≠ 0 → (p ∣ q ↔ p.content ∣ q.content ∧ p.primPart ∣ q.primPart)",
+            "informal_description": "For non-zero polynomials $ p $ and $ q $ over a commutative ring $ R $, $ p $ divides $ q $ if and only if the content of $ p $ divides the content of $ q $ and the primitive part of $ p $ divides the primitive part of $ q $. Here, the content of a polynomial is the greatest common divisor of its coefficients, and the primitive part is the polynomial normalized to have content 1.",
+            "path": "Mathlib.RingTheory.Polynomial.Content"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "standard",
+    "method": "loogle",
+    "request": {
+      "query": "Polynomial.IsPrimitive, Polynomial.map, _ ∣ _",
+      "num_results": 8
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.IsPrimitive.Int.dvd_iff_map_cast_dvd_map_cast\",\n      \"type\": \" (p q : Polynomial ℤ) (hp : p.IsPrimitive) : p ∣ q ↔ Polynomial.map (Int.castRingHom ℚ) p ∣ Polynomial.map (Int.castRingHom ℚ) q\",\n      \"module\": \"Mathlib.RingTheory.Polynomial.GaussLemma\"\n    },\n    {\n      \"name\": \"Polynomial.IsPrimitive.dvd_of_fraction_map_dvd_fraction_map\",\n      \"type\": \" {R : Type u_1} [CommRing R] {K : Type u_2} [Field K] [Algebra R K] [IsFractionRing R K] [IsDomain R] [IsGCDMonoid R] {p q : Polynomial R} (hp : p.IsPrimitive) (h_dvd : Polynomial.map (algebraMap R K) p ∣ Polynomial.map (algebraMap R K) q) : p ∣ q\",\n      \"module\": \"Mathlib.RingTheory.Polynomial.GaussLemma\"\n    },\n    {\n      \"name\": \"Polynomial.IsPrimitive.dvd_iff_fraction_map_dvd_fraction_map\",\n      \"type\": \" {R : Type u_1} [CommRing R] (K : Type u_2) [Field K] [Algebra R K] [IsFractionRing R K] [IsDomain R] [IsGCDMonoid R] {p q : Polynomial R} (hp : p.IsPrimitive) : p ∣ q ↔ Polynomial.map (algebraMap R K) p ∣ Polynomial.map (algebraMap R K) q\",\n      \"module\": \"Mathlib.RingTheory.Polynomial.GaussLemma\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.IsPrimitive.Int.dvd_iff_map_cast_dvd_map_cast",
+            "type": " (p q : Polynomial ℤ) (hp : p.IsPrimitive) : p ∣ q ↔ Polynomial.map (Int.castRingHom ℚ) p ∣ Polynomial.map (Int.castRingHom ℚ) q",
+            "module": "Mathlib.RingTheory.Polynomial.GaussLemma"
+          },
+          {
+            "name": "Polynomial.IsPrimitive.dvd_of_fraction_map_dvd_fraction_map",
+            "type": " {R : Type u_1} [CommRing R] {K : Type u_2} [Field K] [Algebra R K] [IsFractionRing R K] [IsDomain R] [IsGCDMonoid R] {p q : Polynomial R} (hp : p.IsPrimitive) (h_dvd : Polynomial.map (algebraMap R K) p ∣ Polynomial.map (algebraMap R K) q) : p ∣ q",
+            "module": "Mathlib.RingTheory.Polynomial.GaussLemma"
+          },
+          {
+            "name": "Polynomial.IsPrimitive.dvd_iff_fraction_map_dvd_fraction_map",
+            "type": " {R : Type u_1} [CommRing R] (K : Type u_2) [Field K] [Algebra R K] [IsFractionRing R K] [IsDomain R] [IsGCDMonoid R] {p q : Polynomial R} (hp : p.IsPrimitive) : p ∣ q ↔ Polynomial.map (algebraMap R K) p ∣ Polynomial.map (algebraMap R K) q",
+            "module": "Mathlib.RingTheory.Polynomial.GaussLemma"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "standard",
+    "method": "leansearch",
+    "request": {
+      "query": "For a rational root a/b in lowest terms, (b X - a)^multiplicity divides the integer polynomial",
+      "num_results": 6
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.pow_rootMultiplicity_dvd\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Div\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Ring R] (p : Polynomial R) (a : R),\\n  (Polynomial.X - Polynomial.C a) ^ Polynomial.rootMultiplicity a p ∣ p\"\n    },\n    {\n      \"name\": \"Polynomial.prod_multiset_X_sub_C_dvd\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Roots\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : CommRing R] [inst_1 : IsDomain R] (p : Polynomial R),\\n  (Multiset.map (fun a => Polynomial.X - Polynomial.C a) p.roots).prod ∣ p\"\n    },\n    {\n      \"name\": \"Polynomial.pow_rootMultiplicity_not_dvd\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Div\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : CommRing R] {p : Polynomial R},\\n  p ≠ 0 → ∀ (a : R), ¬(Polynomial.X - Polynomial.C a) ^ (Polynomial.rootMultiplicity a p + 1) ∣ p\"\n    },\n    {\n      \"name\": \"num_dvd_of_is_root\",\n      \"module_name\": \"Mathlib.RingTheory.Polynomial.RationalRoot\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {A : Type u_1} {K : Type u_2} [inst : CommRing A] [inst_1 : IsDomain A] [inst_2 : UniqueFactorizationMonoid A]\\n  [inst_3 : Field K] [inst_4 : Algebra A K] [inst_5 : IsFractionRing A K] {p : Polynomial A} {r : K},\\n  (Polynomial.aeval r) p = 0 → IsFractionRing.num A r ∣ p.coeff 0\"\n    },\n    {\n      \"name\": \"Polynomial.le_rootMultiplicity_iff\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Div\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : CommRing R] {p : Polynomial R},\\n  p ≠ 0 → ∀ {a : R} {n : ℕ}, n ≤ Polynomial.rootMultiplicity a p ↔ (Polynomial.X - Polynomial.C a) ^ n ∣ p\"\n    },\n    {\n      \"name\": \"Polynomial.rootMultiplicity\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Div\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} → [inst : Ring R] → R → Polynomial R → ℕ\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.pow_rootMultiplicity_dvd",
+            "module_name": "Mathlib.Algebra.Polynomial.Div",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : Ring R] (p : Polynomial R) (a : R),\n  (Polynomial.X - Polynomial.C a) ^ Polynomial.rootMultiplicity a p ∣ p"
+          },
+          {
+            "name": "Polynomial.prod_multiset_X_sub_C_dvd",
+            "module_name": "Mathlib.Algebra.Polynomial.Roots",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : CommRing R] [inst_1 : IsDomain R] (p : Polynomial R),\n  (Multiset.map (fun a => Polynomial.X - Polynomial.C a) p.roots).prod ∣ p"
+          },
+          {
+            "name": "Polynomial.pow_rootMultiplicity_not_dvd",
+            "module_name": "Mathlib.Algebra.Polynomial.Div",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : CommRing R] {p : Polynomial R},\n  p ≠ 0 → ∀ (a : R), ¬(Polynomial.X - Polynomial.C a) ^ (Polynomial.rootMultiplicity a p + 1) ∣ p"
+          },
+          {
+            "name": "num_dvd_of_is_root",
+            "module_name": "Mathlib.RingTheory.Polynomial.RationalRoot",
+            "kind": "theorem",
+            "type": "∀ {A : Type u_1} {K : Type u_2} [inst : CommRing A] [inst_1 : IsDomain A] [inst_2 : UniqueFactorizationMonoid A]\n  [inst_3 : Field K] [inst_4 : Algebra A K] [inst_5 : IsFractionRing A K] {p : Polynomial A} {r : K},\n  (Polynomial.aeval r) p = 0 → IsFractionRing.num A r ∣ p.coeff 0"
+          },
+          {
+            "name": "Polynomial.le_rootMultiplicity_iff",
+            "module_name": "Mathlib.Algebra.Polynomial.Div",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : CommRing R] {p : Polynomial R},\n  p ≠ 0 → ∀ {a : R} {n : ℕ}, n ≤ Polynomial.rootMultiplicity a p ↔ (Polynomial.X - Polynomial.C a) ^ n ∣ p"
+          },
+          {
+            "name": "Polynomial.rootMultiplicity",
+            "module_name": "Mathlib.Algebra.Polynomial.Div",
+            "kind": "definition",
+            "type": "{R : Type u} → [inst : Ring R] → R → Polynomial R → ℕ"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "standard",
+    "method": "local",
+    "request": {
+      "query": "dvd_iff_map_cast_dvd_map_cast",
+      "limit": 10
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.IsPrimitive.Int.dvd_iff_map_cast_dvd_map_cast\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/Polynomial/GaussLemma.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.IsPrimitive.Int.dvd_iff_map_cast_dvd_map_cast",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/RingTheory/Polynomial/GaussLemma.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "finder",
+    "request": {
+      "query": "In a GCD domain, a coprime linear polynomial (qX-h) to its root multiplicity in the fraction field divides a polynomial",
+      "num_results": 6
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"den_dvd_of_is_root\",\n      \"informal_name\": \"Denominator Divides Leading Coefficient for Roots in Fraction Ring\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {A : Type u_1} {K : Type u_2} [inst : CommRing A] [inst_1 : IsDomain A] [inst_2 : UniqueFactorizationMonoid A]\\n  [inst_3 : Field K] [inst_4 : Algebra A K] [inst_5 : IsFractionRing A K] {p : Polynomial A} {r : K},\\n  (Polynomial.aeval r) p = 0 → ↑(IsFractionRing.den A r) ∣ p.leadingCoeff\",\n      \"informal_description\": \"For a polynomial $ p $ over a commutative semiring $ A $ and an element $ r $ in the fraction ring $ K $ of $ A $, if $ r $ is a root of $ p $ (i.e., $ \\\\text{aeval}(r, p) = 0 $), then the denominator $ \\\\text{den}(r) $ of $ r $ (as defined in the fraction ring) divides the leading coefficient of $ p $. This generalizes the classical Rational Root Theorem to fraction rings of commutative semirings.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.RationalRoot\"\n    },\n    {\n      \"formal_name\": \"num_dvd_of_is_root\",\n      \"informal_name\": \"Rational Root Theorem: Numerator Divides Constant Term\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {A : Type u_1} {K : Type u_2} [inst : CommRing A] [inst_1 : IsDomain A] [inst_2 : UniqueFactorizationMonoid A]\\n  [inst_3 : Field K] [inst_4 : Algebra A K] [inst_5 : IsFractionRing A K] {p : Polynomial A} {r : K},\\n  (Polynomial.aeval r) p = 0 → IsFractionRing.num A r ∣ p.coeff 0\",\n      \"informal_description\": \"If $ r $ is a root of the polynomial $ p $ in the fraction ring $ K $ of a commutative semiring $ A $, then the numerator of $ r $ divides the constant term $ p(0) $ of $ p $.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.RationalRoot\"\n    },\n    {\n      \"formal_name\": \"Polynomial.isCoprime_of_is_root_of_eval_derivative_ne_zero\",\n      \"informal_name\": \"Coprime Polynomial and Quotient Given Non-Zero Derivative at Root\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {K : Type u_1} [inst : Field K] (f : Polynomial K) (a : K),\\n  Polynomial.eval a (Polynomial.derivative f) ≠ 0 →\\n    IsCoprime (Polynomial.X - Polynomial.C a) (f /ₘ (Polynomial.X - Polynomial.C a))\",\n      \"informal_description\": \"For a polynomial $ f $ over a field $ K $, if $ a $ is a root of $ f $ and the derivative of $ f $ evaluated at $ a $ is non-zero, then the linear polynomial $ X - a $ and the quotient polynomial $ f / (X - a) $ are coprime in $ K[X] $.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.FieldDivision\"\n    },\n    {\n      \"formal_name\": \"Polynomial.pow_rootMultiplicity_dvd\",\n      \"informal_name\": \"Divisibility by $(X - a)^{k}$ for Root Multiplicity $k$\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Ring R] (p : Polynomial R) (a : R),\\n  (Polynomial.X - Polynomial.C a) ^ Polynomial.rootMultiplicity a p ∣ p\",\n      \"informal_description\": \"For any polynomial $ p \\\\in R[X] $ and any root $ a \\\\in R $, the polynomial $ (X - a)^{k} $, where $ k $ is the multiplicity of $ a $ in $ p $, divides $ p $. This asserts that the factor corresponding to a root raised to its multiplicity is a divisor of the polynomial.\",\n      \"path\": \"Mathlib.Algebra.Polynomial.Div\"\n    },\n    {\n      \"formal_name\": \"Polynomial.IsPrimitive.dvd_of_fraction_map_dvd_fraction_map\",\n      \"informal_name\": \"Divisibility of Primitive Polynomials via Fraction Ring Extension\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] {K : Type u_2} [inst_1 : Field K] [inst_2 : Algebra R K] [IsFractionRing R K]\\n  [IsDomain R] [Nonempty (NormalizedGCDMonoid R)] {p q : Polynomial R},\\n  p.IsPrimitive → q.IsPrimitive → Polynomial.map (algebraMap R K) p ∣ Polynomial.map (algebraMap R K) q → p ∣ q\",\n      \"informal_description\": \"Let $ R $ be a commutative ring and $ K $ its fraction field. If $ p $ and $ q $ are primitive polynomials in $ R[X] $, and the image of $ p $ under the canonical ring homomorphism $ R \\\\to K $ divides the image of $ q $ in $ K[X] $, then $ p $ divides $ q $ in $ R[X] $.\",\n      \"path\": \"Mathlib.RingTheory.Polynomial.GaussLemma\"\n    },\n    {\n      \"formal_name\": \"RatFunc.num_div_dvd'\",\n      \"informal_name\": \"Divisibility by Normalized Coprime Polynomial Factor\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {K : Type u} [inst : Field K] (p : Polynomial K) {q : Polynomial K},\\n  q ≠ 0 → Polynomial.C (q / gcd p q).leadingCoeff⁻¹ * (p / gcd p q) ∣ p\",\n      \"informal_description\": \"For any polynomial $ p $ and non-zero polynomial $ q $ over a field $ K $, the product of the constant polynomial with coefficient equal to the inverse of the leading coefficient of $ q / \\\\gcd(p, q) $ and the polynomial $ p / \\\\gcd(p, q) $ divides $ p $. This constructs a normalized coprime divisor of $ p $ by adjusting the leading coefficient of the coprime part of $ q $.\",\n      \"path\": \"Mathlib.FieldTheory.RatFunc.Basic\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "den_dvd_of_is_root",
+            "informal_name": "Denominator Divides Leading Coefficient for Roots in Fraction Ring",
+            "kind": "theorem",
+            "type": "∀ {A : Type u_1} {K : Type u_2} [inst : CommRing A] [inst_1 : IsDomain A] [inst_2 : UniqueFactorizationMonoid A]\n  [inst_3 : Field K] [inst_4 : Algebra A K] [inst_5 : IsFractionRing A K] {p : Polynomial A} {r : K},\n  (Polynomial.aeval r) p = 0 → ↑(IsFractionRing.den A r) ∣ p.leadingCoeff",
+            "informal_description": "For a polynomial $ p $ over a commutative semiring $ A $ and an element $ r $ in the fraction ring $ K $ of $ A $, if $ r $ is a root of $ p $ (i.e., $ \\text{aeval}(r, p) = 0 $), then the denominator $ \\text{den}(r) $ of $ r $ (as defined in the fraction ring) divides the leading coefficient of $ p $. This generalizes the classical Rational Root Theorem to fraction rings of commutative semirings.",
+            "path": "Mathlib.RingTheory.Polynomial.RationalRoot"
+          },
+          {
+            "formal_name": "num_dvd_of_is_root",
+            "informal_name": "Rational Root Theorem: Numerator Divides Constant Term",
+            "kind": "theorem",
+            "type": "∀ {A : Type u_1} {K : Type u_2} [inst : CommRing A] [inst_1 : IsDomain A] [inst_2 : UniqueFactorizationMonoid A]\n  [inst_3 : Field K] [inst_4 : Algebra A K] [inst_5 : IsFractionRing A K] {p : Polynomial A} {r : K},\n  (Polynomial.aeval r) p = 0 → IsFractionRing.num A r ∣ p.coeff 0",
+            "informal_description": "If $ r $ is a root of the polynomial $ p $ in the fraction ring $ K $ of a commutative semiring $ A $, then the numerator of $ r $ divides the constant term $ p(0) $ of $ p $.",
+            "path": "Mathlib.RingTheory.Polynomial.RationalRoot"
+          },
+          {
+            "formal_name": "Polynomial.isCoprime_of_is_root_of_eval_derivative_ne_zero",
+            "informal_name": "Coprime Polynomial and Quotient Given Non-Zero Derivative at Root",
+            "kind": "theorem",
+            "type": "∀ {K : Type u_1} [inst : Field K] (f : Polynomial K) (a : K),\n  Polynomial.eval a (Polynomial.derivative f) ≠ 0 →\n    IsCoprime (Polynomial.X - Polynomial.C a) (f /ₘ (Polynomial.X - Polynomial.C a))",
+            "informal_description": "For a polynomial $ f $ over a field $ K $, if $ a $ is a root of $ f $ and the derivative of $ f $ evaluated at $ a $ is non-zero, then the linear polynomial $ X - a $ and the quotient polynomial $ f / (X - a) $ are coprime in $ K[X] $.",
+            "path": "Mathlib.Algebra.Polynomial.FieldDivision"
+          },
+          {
+            "formal_name": "Polynomial.pow_rootMultiplicity_dvd",
+            "informal_name": "Divisibility by $(X - a)^{k}$ for Root Multiplicity $k$",
+            "kind": "theorem",
+            "type": "∀ {R : Type u} [inst : Ring R] (p : Polynomial R) (a : R),\n  (Polynomial.X - Polynomial.C a) ^ Polynomial.rootMultiplicity a p ∣ p",
+            "informal_description": "For any polynomial $ p \\in R[X] $ and any root $ a \\in R $, the polynomial $ (X - a)^{k} $, where $ k $ is the multiplicity of $ a $ in $ p $, divides $ p $. This asserts that the factor corresponding to a root raised to its multiplicity is a divisor of the polynomial.",
+            "path": "Mathlib.Algebra.Polynomial.Div"
+          },
+          {
+            "formal_name": "Polynomial.IsPrimitive.dvd_of_fraction_map_dvd_fraction_map",
+            "informal_name": "Divisibility of Primitive Polynomials via Fraction Ring Extension",
+            "kind": "theorem",
+            "type": "∀ {R : Type u_1} [inst : CommRing R] {K : Type u_2} [inst_1 : Field K] [inst_2 : Algebra R K] [IsFractionRing R K]\n  [IsDomain R] [Nonempty (NormalizedGCDMonoid R)] {p q : Polynomial R},\n  p.IsPrimitive → q.IsPrimitive → Polynomial.map (algebraMap R K) p ∣ Polynomial.map (algebraMap R K) q → p ∣ q",
+            "informal_description": "Let $ R $ be a commutative ring and $ K $ its fraction field. If $ p $ and $ q $ are primitive polynomials in $ R[X] $, and the image of $ p $ under the canonical ring homomorphism $ R \\to K $ divides the image of $ q $ in $ K[X] $, then $ p $ divides $ q $ in $ R[X] $.",
+            "path": "Mathlib.RingTheory.Polynomial.GaussLemma"
+          },
+          {
+            "formal_name": "RatFunc.num_div_dvd'",
+            "informal_name": "Divisibility by Normalized Coprime Polynomial Factor",
+            "kind": "theorem",
+            "type": "∀ {K : Type u} [inst : Field K] (p : Polynomial K) {q : Polynomial K},\n  q ≠ 0 → Polynomial.C (q / gcd p q).leadingCoeff⁻¹ * (p / gcd p q) ∣ p",
+            "informal_description": "For any polynomial $ p $ and non-zero polynomial $ q $ over a field $ K $, the product of the constant polynomial with coefficient equal to the inverse of the leading coefficient of $ q / \\gcd(p, q) $ and the polynomial $ p / \\gcd(p, q) $ divides $ p $. This constructs a normalized coprime divisor of $ p $ by adjusting the leading coefficient of the coprime part of $ q $.",
+            "path": "Mathlib.FieldTheory.RatFunc.Basic"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "loogle",
+    "request": {
+      "query": "Polynomial.IsPrimitive, IsFractionRing, _ ∣ _",
+      "num_results": 8
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.IsPrimitive.dvd_of_fraction_map_dvd_fraction_map\",\n      \"type\": \" {R : Type u_1} [CommRing R] {K : Type u_2} [Field K] [Algebra R K] [IsFractionRing R K] [IsDomain R] [IsGCDMonoid R] {p q : Polynomial R} (hp : p.IsPrimitive) (h_dvd : Polynomial.map (algebraMap R K) p ∣ Polynomial.map (algebraMap R K) q) : p ∣ q\",\n      \"module\": \"Mathlib.RingTheory.Polynomial.GaussLemma\"\n    },\n    {\n      \"name\": \"Polynomial.IsPrimitive.dvd_iff_fraction_map_dvd_fraction_map\",\n      \"type\": \" {R : Type u_1} [CommRing R] (K : Type u_2) [Field K] [Algebra R K] [IsFractionRing R K] [IsDomain R] [IsGCDMonoid R] {p q : Polynomial R} (hp : p.IsPrimitive) : p ∣ q ↔ Polynomial.map (algebraMap R K) p ∣ Polynomial.map (algebraMap R K) q\",\n      \"module\": \"Mathlib.RingTheory.Polynomial.GaussLemma\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.IsPrimitive.dvd_of_fraction_map_dvd_fraction_map",
+            "type": " {R : Type u_1} [CommRing R] {K : Type u_2} [Field K] [Algebra R K] [IsFractionRing R K] [IsDomain R] [IsGCDMonoid R] {p q : Polynomial R} (hp : p.IsPrimitive) (h_dvd : Polynomial.map (algebraMap R K) p ∣ Polynomial.map (algebraMap R K) q) : p ∣ q",
+            "module": "Mathlib.RingTheory.Polynomial.GaussLemma"
+          },
+          {
+            "name": "Polynomial.IsPrimitive.dvd_iff_fraction_map_dvd_fraction_map",
+            "type": " {R : Type u_1} [CommRing R] (K : Type u_2) [Field K] [Algebra R K] [IsFractionRing R K] [IsDomain R] [IsGCDMonoid R] {p q : Polynomial R} (hp : p.IsPrimitive) : p ∣ q ↔ Polynomial.map (algebraMap R K) p ∣ Polynomial.map (algebraMap R K) q",
+            "module": "Mathlib.RingTheory.Polynomial.GaussLemma"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  {
+    "form": "abstract",
+    "method": "local",
+    "request": {
+      "query": "dvd_of_fraction_map_dvd_fraction_map",
+      "limit": 10
+    },
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"name\": \"Polynomial.IsPrimitive.dvd_of_fraction_map_dvd_fraction_map\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/Polynomial/GaussLemma.lean\"\n    },\n    {\n      \"name\": \"Polynomial.Monic.dvd_of_fraction_map_dvd_fraction_map\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/RingTheory/Polynomial/GaussLemma.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "name": "Polynomial.IsPrimitive.dvd_of_fraction_map_dvd_fraction_map",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/RingTheory/Polynomial/GaussLemma.lean"
+          },
+          {
+            "name": "Polynomial.Monic.dvd_of_fraction_map_dvd_fraction_map",
+            "kind": "theorem",
+            "file": ".lake/packages/mathlib/Mathlib/RingTheory/Polynomial/GaussLemma.lean"
+          }
+        ],
+        "index": "unavailable"
+      },
+      "isError": false
+    }
+  }
+]

@@ -1,0 +1,90 @@
+{
+  "request": {
+    "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+    "timeout_s": 45
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"partial\": false,\n  \"still_elaborating_lines\": null,\n  \"success\": true,\n  \"timed_out\": false,\n  \"items\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Roth.exists_eq_pow_mul_of_rootMultiplicity : ∀ {R : Polynomial ℤ} {h : ℤ} {q : ℕ},\\n  0 < q →\\n    IsCoprime h ↑q →\\n      ∃ Q,\\n        R =\\n          (Polynomial.C ↑q * Polynomial.X - Polynomial.C h) ^\\n              Polynomial.rootMultiplicity (↑h / ↑q) (Polynomial.map (Int.castRingHom ℚ) R) *\\n            Q\",\n      \"line\": 15,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"theorem Roth.exists_eq_pow_mul_of_rootMultiplicity : ∀ {R : Polynomial ℤ} {h : ℤ} {q : ℕ},\\n  0 < q →\\n    IsCoprime h ↑q →\\n      ∃ Q,\\n        R =\\n          (Polynomial.C ↑q * Polynomial.X - Polynomial.C h) ^\\n              Polynomial.rootMultiplicity (↑h / ↑q) (Polynomial.map (Int.castRingHom ℚ) R) *\\n            Q :=\\nfun {R} {h} {q} hq hcop ↦\\n  let t := Polynomial.rootMultiplicity (↑h / ↑q) (Polynomial.map (Int.castRingHom ℚ) R);\\n  Eq.mpr\\n    (id\\n      (congrArg (fun _a ↦ ∃ Q, R = (Polynomial.C ↑q * Polynomial.X - Polynomial.C h) ^ _a * Q)\\n        (have this := rfl;\\n        this)))\\n    (have hq' :=\\n      cast (Eq.symm (Eq.trans (congrArg (Ne ↑q) (Eq.symm Nat.cast_zero)) (congrArg Not Nat.cast_inj._simp_1)))\\n        (LT.lt.ne' hq);\\n    have hmap :=\\n      Eq.mpr\\n        (id\\n          (congrArg (fun _a ↦ _a = Polynomial.C ↑q * (Polynomial.X - Polynomial.C (↑h / ↑q)))\\n            (Polynomial.map_sub (Int.castRingHom ℚ))))\\n        (Eq.mpr\\n          (id\\n            (congrArg\\n              (fun _a ↦\\n                _a - Polynomial.map (Int.castRingHom ℚ) (Polynomial.C h) =\\n                  Polynomial.C ↑q * (Polynomial.X - Polynomial.C (↑h / ↑q)))\\n              (Polynomial.map_mul (Int.castRingHom ℚ))))\\n          (Eq.mpr\\n            (id\\n              (congrArg\\n                (fun _a ↦\\n                  _a * Polynomial.map (Int.castRingHom ℚ) Polynomial.X -\\n                      Polynomial.map (Int.castRingHom ℚ) (Polynomial.C h) =\\n                    Polynomial.C ↑q * (Polynomial.X - Polynomial.C (↑h / ↑q)))\\n                (Polynomial.map_C (Int.castRingHom ℚ))))\\n            (Eq.mpr\\n              (id\\n                (congrArg\\n                  (fun _a ↦\\n                    Polynomial.C ((Int.castRingHom ℚ) ↑q) * _a - Polynomial.map (Int.castRingHom ℚ) (Polynomial.C h) =\\n                      Polynomial.C ↑q * (Polynomial.X - Polynomial.C (↑h / ↑q)))\\n                  (Polynomial.map_X (Int.castRingHom ℚ))))\\n              (Eq.mpr\\n                (id\\n                  (congrArg\\n                    (fun _a ↦\\n                      Polynomial.C ((Int.castRingHom ℚ) ↑q) * Polynomial.X - _a =\\n                        Polynomial.C ↑q * (Polynomial.X - Polynomial.C (↑h / ↑q)))\\n                    (Polynomial.map_C (Int.castRingHom ℚ))))\\n                (Eq.mpr\\n                  (id\\n                    (congrArg\\n                      (fun _a ↦\\n                        Polynomial.C ((Int.castRingHom ℚ) ↑q) * Polynomial.X - Polynomial.C ((Int.castRingHom ℚ) h) =\\n                          _a)\\n                      (mul_sub (Polynomial.C ↑q) Polynomial.X (Polynomial.C (↑h / ↑q)))))\\n                  (Eq.mpr\\n                    (id\\n                      (congrArg\\n                        (fun _a ↦\\n                          Polynomial.C ((Int.castRingHom ℚ) ↑q) * Polynomial.X - Polynomial.C ((Int.castRingHom ℚ) h) =\\n                            Polynomial.C ↑q * Polynomial.X - _a)\\n                        (Eq.symm Polynomial.C_mul)))\\n                    (Eq.mpr\\n                      (id\\n                        (congrArg\\n                          (fun _a ↦\\n                            Polynomial.C ((Int.castRingHom ℚ) ↑q) * Polynomial.X -\\n                                Polynomial.C ((Int.castRingHom ℚ) h) =\\n                              Polynomial.C ↑q * Polynomial.X - Polynomial.C _a)\\n                          (mul_div_cancel₀ (↑h) hq')))\\n                      (of_eq_true\\n                        (Eq.trans\\n                          (congr\\n                            (congrArg Eq\\n                              (congr\\n                                (congrArg HSub.hSub\\n                                  (congrFun'\\n                                    (congrArg HMul.hMul\\n                                      (Eq.trans (congrArg (⇑Polynomial.C) (map_natCast (Int.castRingHom ℚ) q))\\n                                        (map_natCast Polynomial.C q)))\\n                                    Polynomial.X))\\n                                (Eq.trans (congrArg (⇑Polynomial.C) (eq_intCast (Int.castRingHom ℚ) h))\\n                                  (map_intCast Polynomial.C h))))\\n                            (congr\\n                              (congrArg HSub.hSub\\n                                (congrFun' (congrArg HMul.hMul (map_natCast Polynomial.C q)) Polynomial.X))\\n                              (map_intCast Polynomial.C h)))\\n                          (eq_self (↑q * Polynomial.X - ↑h)))))))))));\\n    (Polynomial.IsPrimitive.Int.dvd_iff_map_cast_dvd_map_cast ((Polynomial.C ↑q * Polynomial.X - Polynomial.C h) ^ t) R\\n          (Roth.isPrimitive_pow✝ (Roth.isPrimitive_linear✝ hcop) t)).mpr\\n      (Eq.mpr\\n        (id (congrArg (fun _a ↦ _a ∣ Polynomial.map (Int.castRingHom ℚ) R) (Polynomial.map_pow (Int.castRingHom ℚ) t)))\\n        (Eq.mpr (id (congrArg (fun _a ↦ _a ^ t ∣ Polynomial.map (Int.castRingHom ℚ) R) hmap))\\n          (Eq.mpr\\n            (id\\n              (congrArg (fun _a ↦ _a ∣ Polynomial.map (Int.castRingHom ℚ) R)\\n                (mul_pow (Polynomial.C ↑q) (Polynomial.X - Polynomial.C (↑h / ↑q)) t)))\\n            (Eq.mpr\\n              (id\\n                (congrArg\\n                  (fun _a ↦ _a * (Polynomial.X - Polynomial.C (↑h / ↑q)) ^ t ∣ Polynomial.map (Int.castRingHom ℚ) R)\\n                  (Eq.symm Polynomial.C_pow)))\\n              (Eq.mpr (id (congrArg (fun _a ↦ _a) (propext (Polynomial.C_mul_dvd (pow_ne_zero t hq')))))\\n                (Polynomial.pow_rootMultiplicity_dvd (Polynomial.map (Int.castRingHom ℚ) R) (↑h / ↑q))))))))\",\n      \"line\": 16,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Roth.exists_eq_pow_mul_of_rootMultiplicity' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 17,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"ROOTFACTOR196_FULL_TYPE: ∀ {R : Polynomial ℤ} {h : ℤ} {q : ℕ},\\n  0 < q →\\n    IsCoprime h ↑q →\\n      ∃ (Q : Polynomial ℤ),\\n        R =\\n          (Polynomial.C ↑q * Polynomial.X - Polynomial.C h) ^\\n              Polynomial.rootMultiplicity (↑h / ↑q) (Polynomial.map (Int.castRingHom ℚ) R) *\\n            Q\",\n      \"line\": 18,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"ROOTFACTOR196_DIRECT_CONSUMER: Roth.pow_rootMultiplicity_le\",\n      \"line\": 24,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"ROOTFACTOR196_AUDIT: requested=293; unique=293\",\n      \"line\": 24,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"ROOTFACTOR196_AUDIT_PRESENT: present=293; values=293\",\n      \"line\": 24,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ],\n  \"failed_dependencies\": []\n}"
+      }
+    ],
+    "structuredContent": {
+      "result": {
+        "partial": false,
+        "still_elaborating_lines": null,
+        "success": true,
+        "timed_out": false,
+        "items": [
+          {
+            "severity": "info",
+            "message": "@Roth.exists_eq_pow_mul_of_rootMultiplicity : ∀ {R : Polynomial ℤ} {h : ℤ} {q : ℕ},\n  0 < q →\n    IsCoprime h ↑q →\n      ∃ Q,\n        R =\n          (Polynomial.C ↑q * Polynomial.X - Polynomial.C h) ^\n              Polynomial.rootMultiplicity (↑h / ↑q) (Polynomial.map (Int.castRingHom ℚ) R) *\n            Q",
+            "line": 15,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "theorem Roth.exists_eq_pow_mul_of_rootMultiplicity : ∀ {R : Polynomial ℤ} {h : ℤ} {q : ℕ},\n  0 < q →\n    IsCoprime h ↑q →\n      ∃ Q,\n        R =\n          (Polynomial.C ↑q * Polynomial.X - Polynomial.C h) ^\n              Polynomial.rootMultiplicity (↑h / ↑q) (Polynomial.map (Int.castRingHom ℚ) R) *\n            Q :=\nfun {R} {h} {q} hq hcop ↦\n  let t := Polynomial.rootMultiplicity (↑h / ↑q) (Polynomial.map (Int.castRingHom ℚ) R);\n  Eq.mpr\n    (id\n      (congrArg (fun _a ↦ ∃ Q, R = (Polynomial.C ↑q * Polynomial.X - Polynomial.C h) ^ _a * Q)\n        (have this := rfl;\n        this)))\n    (have hq' :=\n      cast (Eq.symm (Eq.trans (congrArg (Ne ↑q) (Eq.symm Nat.cast_zero)) (congrArg Not Nat.cast_inj._simp_1)))\n        (LT.lt.ne' hq);\n    have hmap :=\n      Eq.mpr\n        (id\n          (congrArg (fun _a ↦ _a = Polynomial.C ↑q * (Polynomial.X - Polynomial.C (↑h / ↑q)))\n            (Polynomial.map_sub (Int.castRingHom ℚ))))\n        (Eq.mpr\n          (id\n            (congrArg\n              (fun _a ↦\n                _a - Polynomial.map (Int.castRingHom ℚ) (Polynomial.C h) =\n                  Polynomial.C ↑q * (Polynomial.X - Polynomial.C (↑h / ↑q)))\n              (Polynomial.map_mul (Int.castRingHom ℚ))))\n          (Eq.mpr\n            (id\n              (congrArg\n                (fun _a ↦\n                  _a * Polynomial.map (Int.castRingHom ℚ) Polynomial.X -\n                      Polynomial.map (Int.castRingHom ℚ) (Polynomial.C h) =\n                    Polynomial.C ↑q * (Polynomial.X - Polynomial.C (↑h / ↑q)))\n                (Polynomial.map_C (Int.castRingHom ℚ))))\n            (Eq.mpr\n              (id\n                (congrArg\n                  (fun _a ↦\n                    Polynomial.C ((Int.castRingHom ℚ) ↑q) * _a - Polynomial.map (Int.castRingHom ℚ) (Polynomial.C h) =\n                      Polynomial.C ↑q * (Polynomial.X - Polynomial.C (↑h / ↑q)))\n                  (Polynomial.map_X (Int.castRingHom ℚ))))\n              (Eq.mpr\n                (id\n                  (congrArg\n                    (fun _a ↦\n                      Polynomial.C ((Int.castRingHom ℚ) ↑q) * Polynomial.X - _a =\n                        Polynomial.C ↑q * (Polynomial.X - Polynomial.C (↑h / ↑q)))\n                    (Polynomial.map_C (Int.castRingHom ℚ))))\n                (Eq.mpr\n                  (id\n                    (congrArg\n                      (fun _a ↦\n                        Polynomial.C ((Int.castRingHom ℚ) ↑q) * Polynomial.X - Polynomial.C ((Int.castRingHom ℚ) h) =\n                          _a)\n                      (mul_sub (Polynomial.C ↑q) Polynomial.X (Polynomial.C (↑h / ↑q)))))\n                  (Eq.mpr\n                    (id\n                      (congrArg\n                        (fun _a ↦\n                          Polynomial.C ((Int.castRingHom ℚ) ↑q) * Polynomial.X - Polynomial.C ((Int.castRingHom ℚ) h) =\n                            Polynomial.C ↑q * Polynomial.X - _a)\n                        (Eq.symm Polynomial.C_mul)))\n                    (Eq.mpr\n                      (id\n                        (congrArg\n                          (fun _a ↦\n                            Polynomial.C ((Int.castRingHom ℚ) ↑q) * Polynomial.X -\n                                Polynomial.C ((Int.castRingHom ℚ) h) =\n                              Polynomial.C ↑q * Polynomial.X - Polynomial.C _a)\n                          (mul_div_cancel₀ (↑h) hq')))\n                      (of_eq_true\n                        (Eq.trans\n                          (congr\n                            (congrArg Eq\n                              (congr\n                                (congrArg HSub.hSub\n                                  (congrFun'\n                                    (congrArg HMul.hMul\n                                      (Eq.trans (congrArg (⇑Polynomial.C) (map_natCast (Int.castRingHom ℚ) q))\n                                        (map_natCast Polynomial.C q)))\n                                    Polynomial.X))\n                                (Eq.trans (congrArg (⇑Polynomial.C) (eq_intCast (Int.castRingHom ℚ) h))\n                                  (map_intCast Polynomial.C h))))\n                            (congr\n                              (congrArg HSub.hSub\n                                (congrFun' (congrArg HMul.hMul (map_natCast Polynomial.C q)) Polynomial.X))\n                              (map_intCast Polynomial.C h)))\n                          (eq_self (↑q * Polynomial.X - ↑h)))))))))));\n    (Polynomial.IsPrimitive.Int.dvd_iff_map_cast_dvd_map_cast ((Polynomial.C ↑q * Polynomial.X - Polynomial.C h) ^ t) R\n          (Roth.isPrimitive_pow✝ (Roth.isPrimitive_linear✝ hcop) t)).mpr\n      (Eq.mpr\n        (id (congrArg (fun _a ↦ _a ∣ Polynomial.map (Int.castRingHom ℚ) R) (Polynomial.map_pow (Int.castRingHom ℚ) t)))\n        (Eq.mpr (id (congrArg (fun _a ↦ _a ^ t ∣ Polynomial.map (Int.castRingHom ℚ) R) hmap))\n          (Eq.mpr\n            (id\n              (congrArg (fun _a ↦ _a ∣ Polynomial.map (Int.castRingHom ℚ) R)\n                (mul_pow (Polynomial.C ↑q) (Polynomial.X - Polynomial.C (↑h / ↑q)) t)))\n            (Eq.mpr\n              (id\n                (congrArg\n                  (fun _a ↦ _a * (Polynomial.X - Polynomial.C (↑h / ↑q)) ^ t ∣ Polynomial.map (Int.castRingHom ℚ) R)\n                  (Eq.symm Polynomial.C_pow)))\n              (Eq.mpr (id (congrArg (fun _a ↦ _a) (propext (Polynomial.C_mul_dvd (pow_ne_zero t hq')))))\n                (Polynomial.pow_rootMultiplicity_dvd (Polynomial.map (Int.castRingHom ℚ) R) (↑h / ↑q))))))))",
+            "line": 16,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'Roth.exists_eq_pow_mul_of_rootMultiplicity' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 17,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "ROOTFACTOR196_FULL_TYPE: ∀ {R : Polynomial ℤ} {h : ℤ} {q : ℕ},\n  0 < q →\n    IsCoprime h ↑q →\n      ∃ (Q : Polynomial ℤ),\n        R =\n          (Polynomial.C ↑q * Polynomial.X - Polynomial.C h) ^\n              Polynomial.rootMultiplicity (↑h / ↑q) (Polynomial.map (Int.castRingHom ℚ) R) *\n            Q",
+            "line": 18,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "ROOTFACTOR196_DIRECT_CONSUMER: Roth.pow_rootMultiplicity_le",
+            "line": 24,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "ROOTFACTOR196_AUDIT: requested=293; unique=293",
+            "line": 24,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "ROOTFACTOR196_AUDIT_PRESENT: present=293; values=293",
+            "line": 24,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          }
+        ],
+        "failed_dependencies": []
+      }
+    },
+    "isError": false
+  },
+  "elapsed_ms": 1004
+}

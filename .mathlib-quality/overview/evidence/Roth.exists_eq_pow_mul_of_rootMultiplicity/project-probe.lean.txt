@@ -1,0 +1,120 @@
+-- Append to the stable 15-import prefix, including Polynomial.GaussLemma.
+#check @Polynomial.IsPrimitive.dvd_of_fraction_map_dvd_fraction_map
+#check @Polynomial.IsPrimitive.dvd_iff_fraction_map_dvd_fraction_map
+#check @Polynomial.IsPrimitive.Int.dvd_iff_map_cast_dvd_map_cast
+#check @Polynomial.pow_rootMultiplicity_dvd
+#check @Polynomial.C_mul_dvd
+#check @Polynomial.IsPrimitive.mul
+#check @isCoprime_zero_right
+namespace Factor196ProjectRelPrime
+open Polynomial
+variable {A K : Type*} [CommRing A] [IsDomain A] [NormalizedGCDMonoid A]
+  [Field K] [Algebra A K] [IsFractionRing A K]
+omit [IsDomain A] [NormalizedGCDMonoid A] in
+theorem primitive_linear {h q : A} (hcop : IsRelPrime h q) :
+    (Polynomial.C q * Polynomial.X - Polynomial.C h).IsPrimitive := by
+  intro c hc
+  rw [Polynomial.C_dvd_iff_dvd_coeff] at hc
+  exact hcop (by simpa using hc 0)
+    (by simpa only [Polynomial.coeff_sub, Polynomial.coeff_C_mul, Polynomial.coeff_X_one,
+      Polynomial.coeff_C, mul_one, one_ne_zero, ↓reduceIte, sub_zero] using hc 1)
+omit [IsDomain A] in
+theorem primitive_pow {p : Polynomial A} (hp : p.IsPrimitive) (t : ℕ) :
+    (p ^ t).IsPrimitive :=
+  Nat.rec Polynomial.isPrimitive_one (fun t ih ↦ by simpa [pow_succ] using ih.mul hp) t
+theorem generic_nonzero {R : Polynomial A} {h q : A} (hq : q ≠ 0)
+    (hcop : IsRelPrime h q) :
+    (Polynomial.C q * Polynomial.X - Polynomial.C h) ^
+      rootMultiplicity (algebraMap A K h / algebraMap A K q)
+      (R.map (algebraMap A K)) ∣ R := by
+  set t := rootMultiplicity (algebraMap A K h / algebraMap A K q)
+    (R.map (algebraMap A K))
+  have hq' : algebraMap A K q ≠ 0 :=
+    (map_ne_zero_iff _ (IsFractionRing.injective A K)).2 hq
+  have hmap : (Polynomial.C q * Polynomial.X - Polynomial.C h).map (algebraMap A K) =
+      Polynomial.C (algebraMap A K q) *
+        (Polynomial.X - Polynomial.C (algebraMap A K h / algebraMap A K q)) := by
+    rw [Polynomial.map_sub, Polynomial.map_mul, Polynomial.map_C, Polynomial.map_X,
+      Polynomial.map_C, mul_sub, ← Polynomial.C_mul, mul_div_cancel₀ _ hq']
+  apply (primitive_pow (primitive_linear hcop) t).dvd_of_fraction_map_dvd_fraction_map
+    (K := K)
+  rw [Polynomial.map_pow, hmap, mul_pow, ← Polynomial.C_pow,
+    Polynomial.C_mul_dvd (pow_ne_zero _ hq')]
+  exact pow_rootMultiplicity_dvd _ _
+theorem generic {R : Polynomial A} {h q : A} (hcop : IsRelPrime h q) :
+    (Polynomial.C q * Polynomial.X - Polynomial.C h) ^
+      rootMultiplicity (algebraMap A K h / algebraMap A K q)
+      (R.map (algebraMap A K)) ∣ R := by
+  by_cases hq : q = 0
+  · subst q
+    have hh : IsUnit h := isRelPrime_zero_right.mp hcop
+    simpa only [Polynomial.C_0, zero_mul, zero_sub] using
+      (((hh.map Polynomial.C).neg).pow
+        (rootMultiplicity (algebraMap A K h / algebraMap A K 0)
+          (R.map (algebraMap A K)))).dvd
+  · exact generic_nonzero hq hcop
+theorem original_without_hq {R : Polynomial ℤ} {h : ℤ} {q : ℕ}
+    (hcop : IsCoprime h (q : ℤ)) : ∃ Q : Polynomial ℤ, R =
+      (Polynomial.C (q : ℤ) * Polynomial.X - Polynomial.C h) ^
+      Polynomial.rootMultiplicity ((h : ℚ) / q) (R.map (Int.castRingHom ℚ)) * Q := by
+  exact generic (K := ℚ) hcop.isRelPrime
+#print axioms primitive_linear
+#print axioms primitive_pow
+#print axioms generic_nonzero
+#print axioms generic
+#print axioms original_without_hq
+end Factor196ProjectRelPrime
+
+namespace Factor196ProjectGCD
+open Polynomial
+theorem generic {A K : Type*} [CommRing A] [IsDomain A] [IsGCDMonoid A]
+    [Field K] [Algebra A K] [IsFractionRing A K] {R : Polynomial A} {h q : A}
+    (hcop : IsRelPrime h q) :
+    (Polynomial.C q * Polynomial.X - Polynomial.C h) ^
+      rootMultiplicity (algebraMap A K h / algebraMap A K q)
+      (R.map (algebraMap A K)) ∣ R := by
+  let : NormalizedGCDMonoid A := Classical.choice inferInstance
+  exact Factor196ProjectRelPrime.generic (K := K) hcop
+#check @generic
+#print axioms generic
+#check @Factor196ProjectRelPrime.original_without_hq
+end Factor196ProjectGCD
+namespace Factor196ProjectNecessity
+open Polynomial
+theorem no_coprime_dvd :
+    ¬ (Polynomial.C (2 : ℤ) * Polynomial.X - Polynomial.C 2) ∣ Polynomial.X - Polynomial.C 1 := by
+  rintro ⟨Q, hQ⟩
+  have hv := congrArg (fun p : Polynomial ℤ => p.eval 0) hQ
+  simp only [eval_sub, eval_mul, eval_C, eval_X, mul_zero, zero_sub] at hv
+  omega
+#print axioms no_coprime_dvd
+end Factor196ProjectNecessity
+
+namespace Factor196ProjectGCD
+theorem original_without_hq {R : Polynomial ℤ} {h : ℤ} {q : ℕ}
+    (hcop : IsCoprime h (q : ℤ)) : ∃ Q : Polynomial ℤ, R =
+      (Polynomial.C (q : ℤ) * Polynomial.X - Polynomial.C h) ^
+      Polynomial.rootMultiplicity ((h : ℚ) / q) (R.map (Int.castRingHom ℚ)) * Q := by
+  exact generic (K := ℚ) hcop.isRelPrime
+#print axioms original_without_hq
+end Factor196ProjectGCD
+
+namespace Factor196Caller
+theorem caller_pow_rootMultiplicity_le {R : Polynomial ℤ} (hR : R ≠ 0) {h : ℤ} {q : ℕ} (hq : 0 < q)
+    (hcop : IsCoprime h (q : ℤ)) {B : ℝ} (hB : |(R.leadingCoeff : ℝ)| ≤ B) :
+    (q : ℝ) ^ Polynomial.rootMultiplicity ((h : ℚ) / q) (R.map (Int.castRingHom ℚ)) ≤ B := by
+  obtain ⟨Q, hQ⟩ := Factor196ProjectGCD.original_without_hq (R := R) hcop
+  set t := Polynomial.rootMultiplicity ((h : ℚ) / q) (R.map (Int.castRingHom ℚ))
+  have hlc : R.leadingCoeff = (q : ℤ) ^ t * Q.leadingCoeff := by
+    rw [hQ, Polynomial.leadingCoeff_mul, Polynomial.leadingCoeff_pow, sub_eq_add_neg,
+      ← Polynomial.C_neg, Polynomial.leadingCoeff_linear (by exact_mod_cast hq.ne')]
+  have h1 : (1 : ℝ) ≤ |(Q.leadingCoeff : ℝ)| := by
+    exact_mod_cast Int.one_le_abs (Polynomial.leadingCoeff_ne_zero.2
+      (right_ne_zero_of_mul (hQ ▸ hR)))
+  rw [hlc] at hB
+  push_cast at hB
+  rw [abs_mul, abs_pow, Nat.abs_cast] at hB
+  exact (le_mul_of_one_le_right (by positivity) h1).trans hB
+
+#print axioms caller_pow_rootMultiplicity_le
+end Factor196Caller

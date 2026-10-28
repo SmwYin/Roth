@@ -3,7 +3,7 @@
 Status: **in_progress**, 2026-10-27. Branch: `ramin-cleanup`.
 Production Lean files and all pins match baseline `99f19fd`.
 
-**Completed: 195 / 293 written declarations.**
+**Completed: 196 / 293 written declarations.**
 This counts the current overview assessments, separately from the earlier code cleanup.
 
 | # | Completed declaration | Applicable workflow | Verdict | Report |
@@ -203,8 +203,9 @@ This counts the current overview assessments, separately from the earlier code c
 | 193 | `Roth.Θ_equiv` | full-mathlibable; accepted complete | BORDERLINE-needs-human | [Detailed report](mathlibable/Roth.Θ_equiv.md) |
 | 194 | `Roth.isPrimitive_linear` | overview-private-prefilter; accepted complete | SKIP | [Detailed report](mathlibable/Roth.isPrimitive_linear.md) |
 | 195 | `Roth.isPrimitive_pow` | overview-private-prefilter; accepted complete | SKIP | [Detailed report](mathlibable/Roth.isPrimitive_pow.md) |
+| 196 | `Roth.exists_eq_pow_mul_of_rootMultiplicity` | full-mathlibable; accepted complete | YES-but-generalise-first | [Detailed report](mathlibable/Roth.exists_eq_pow_mul_of_rootMultiplicity.md) |
 
-**Next declaration: `Roth.exists_eq_pow_mul_of_rootMultiplicity`**, `Roth/Theta.lean:184`.
+**Next declaration: `Roth.pow_rootMultiplicity_le`**, `Roth/Theta.lean:206`.
 Only the listed assessments are complete. No partial assessment was committed.
 
 On restart: read [README](README.md), [machine progress](progress.json), and

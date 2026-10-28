@@ -1,0 +1,128 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.RingTheory.Polynomial.GaussLemma
+-- Append to the stable 15-import prefix, including Polynomial.GaussLemma.
+#check_failure Roth.exists_eq_pow_mul_of_rootMultiplicity
+#check @Polynomial.IsPrimitive.dvd_of_fraction_map_dvd_fraction_map
+#check @Polynomial.IsPrimitive.dvd_iff_fraction_map_dvd_fraction_map
+#check @Polynomial.IsPrimitive.Int.dvd_iff_map_cast_dvd_map_cast
+#check @Polynomial.pow_rootMultiplicity_dvd
+#check @Polynomial.C_mul_dvd
+#check @Polynomial.IsPrimitive.mul
+#check @isCoprime_zero_right
+namespace Factor196RelPrime
+open Polynomial
+variable {A K : Type*} [CommRing A] [IsDomain A] [NormalizedGCDMonoid A]
+  [Field K] [Algebra A K] [IsFractionRing A K]
+omit [IsDomain A] [NormalizedGCDMonoid A] in
+theorem primitive_linear {h q : A} (hcop : IsRelPrime h q) :
+    (C q * X - C h).IsPrimitive := by
+  intro c hc
+  rw [C_dvd_iff_dvd_coeff] at hc
+  exact hcop (by simpa using hc 0)
+    (by simpa only [coeff_sub, coeff_C_mul, coeff_X_one,
+      coeff_C, mul_one, one_ne_zero, ↓reduceIte, sub_zero] using hc 1)
+omit [IsDomain A] in
+theorem primitive_pow {p : A[X]} (hp : p.IsPrimitive) (t : ℕ) :
+    (p ^ t).IsPrimitive :=
+  Nat.rec isPrimitive_one (fun t ih ↦ by simpa [pow_succ] using ih.mul hp) t
+theorem generic_nonzero {R : A[X]} {h q : A} (hq : q ≠ 0)
+    (hcop : IsRelPrime h q) :
+    (C q * X - C h) ^ rootMultiplicity (algebraMap A K h / algebraMap A K q)
+      (R.map (algebraMap A K)) ∣ R := by
+  set t := rootMultiplicity (algebraMap A K h / algebraMap A K q)
+    (R.map (algebraMap A K))
+  have hq' : algebraMap A K q ≠ 0 :=
+    (map_ne_zero_iff _ (IsFractionRing.injective A K)).2 hq
+  have hmap : (C q * X - C h).map (algebraMap A K) =
+      C (algebraMap A K q) * (X - C (algebraMap A K h / algebraMap A K q)) := by
+    rw [Polynomial.map_sub, Polynomial.map_mul, Polynomial.map_C, Polynomial.map_X,
+      Polynomial.map_C, mul_sub, ← C_mul, mul_div_cancel₀ _ hq']
+  apply (primitive_pow (primitive_linear hcop) t).dvd_of_fraction_map_dvd_fraction_map
+    (K := K)
+  rw [Polynomial.map_pow, hmap, mul_pow, ← C_pow, C_mul_dvd (pow_ne_zero _ hq')]
+  exact pow_rootMultiplicity_dvd _ _
+theorem generic {R : A[X]} {h q : A} (hcop : IsRelPrime h q) :
+    (C q * X - C h) ^ rootMultiplicity (algebraMap A K h / algebraMap A K q)
+      (R.map (algebraMap A K)) ∣ R := by
+  by_cases hq : q = 0
+  · subst q
+    have hh : IsUnit h := isRelPrime_zero_right.mp hcop
+    simpa only [C_0, zero_mul, zero_sub] using
+      (((hh.map C).neg).pow
+        (rootMultiplicity (algebraMap A K h / algebraMap A K 0)
+          (R.map (algebraMap A K)))).dvd
+  · exact generic_nonzero hq hcop
+theorem original_without_hq {R : Polynomial ℤ} {h : ℤ} {q : ℕ}
+    (hcop : IsCoprime h (q : ℤ)) : ∃ Q : Polynomial ℤ, R =
+      (Polynomial.C (q : ℤ) * Polynomial.X - Polynomial.C h) ^
+      Polynomial.rootMultiplicity ((h : ℚ) / q) (R.map (Int.castRingHom ℚ)) * Q := by
+  exact generic (K := ℚ) hcop.isRelPrime
+#print axioms primitive_linear
+#print axioms primitive_pow
+#print axioms generic_nonzero
+#print axioms generic
+#print axioms original_without_hq
+end Factor196RelPrime
+
+namespace Factor196GCD
+open Polynomial
+theorem generic {A K : Type*} [CommRing A] [IsDomain A] [IsGCDMonoid A]
+    [Field K] [Algebra A K] [IsFractionRing A K] {R : A[X]} {h q : A}
+    (hcop : IsRelPrime h q) :
+    (C q * X - C h) ^ rootMultiplicity (algebraMap A K h / algebraMap A K q)
+      (R.map (algebraMap A K)) ∣ R := by
+  let : NormalizedGCDMonoid A := Classical.choice inferInstance
+  exact Factor196RelPrime.generic (K := K) hcop
+#check @generic
+#print axioms generic
+#check @Factor196RelPrime.original_without_hq
+end Factor196GCD
+namespace Factor196Necessity
+open Polynomial
+theorem no_coprime_dvd : ¬ (C (2 : ℤ) * X - C 2) ∣ X - C 1 := by
+  rintro ⟨Q, hQ⟩
+  have hv := congrArg (fun p : Polynomial ℤ => p.eval 0) hQ
+  simp only [eval_sub, eval_mul, eval_C, eval_X, mul_zero, zero_sub] at hv
+  omega
+#print axioms no_coprime_dvd
+end Factor196Necessity
+
+namespace Factor196Composition
+open Polynomial
+theorem current_form {R : Polynomial ℤ} {h : ℤ} {q : ℕ}
+    (hcop : IsCoprime h (q : ℤ)) : ∃ Q : Polynomial ℤ, R =
+      (C (q : ℤ) * X - C h) ^
+      rootMultiplicity ((h : ℚ) / q) (R.map (Int.castRingHom ℚ)) * Q := by
+  fail_if_success
+    exact Polynomial.pow_rootMultiplicity_dvd _ _
+  fail_if_success
+    simpa only [Polynomial.map_pow, Polynomial.map_sub, Polynomial.map_mul,
+      Polynomial.map_C, Polynomial.map_X] using
+      Polynomial.pow_rootMultiplicity_dvd (R.map (Int.castRingHom ℚ)) ((h : ℚ) / q)
+  exact Factor196GCD.generic (K := ℚ) hcop.isRelPrime
+theorem zero_polynomial {h : ℤ} {q : ℕ} : ∃ Q : Polynomial ℤ, (0 : Polynomial ℤ) =
+    (C (q : ℤ) * X - C h) ^
+      rootMultiplicity ((h : ℚ) / q) ((0 : Polynomial ℤ).map (Int.castRingHom ℚ)) * Q := by
+  exact ⟨0, (mul_zero _).symm⟩
+theorem counterexample_multiplicity :
+    rootMultiplicity ((2 : ℚ) / 2)
+      ((X - C 1 : Polynomial ℤ).map (Int.castRingHom ℚ)) = 1 := by
+  norm_num only [div_self (by norm_num : (2 : ℚ) ≠ 0), Polynomial.map_sub,
+    Polynomial.map_X, Polynomial.map_C, Int.cast_one, rootMultiplicity_X_sub_C]
+#print axioms current_form
+#print axioms zero_polynomial
+#print axioms counterexample_multiplicity
+end Factor196Composition

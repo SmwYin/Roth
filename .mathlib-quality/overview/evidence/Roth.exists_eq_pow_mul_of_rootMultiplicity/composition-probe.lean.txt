@@ -1,0 +1,24 @@
+namespace Factor196Composition
+open Polynomial
+theorem current_form {R : Polynomial ℤ} {h : ℤ} {q : ℕ}
+    (hcop : IsCoprime h (q : ℤ)) : ∃ Q : Polynomial ℤ, R =
+      (C (q : ℤ) * X - C h) ^
+      rootMultiplicity ((h : ℚ) / q) (R.map (Int.castRingHom ℚ)) * Q := by
+  fail_if_success
+    simpa only [Polynomial.map_pow, Polynomial.map_sub, Polynomial.map_mul,
+      Polynomial.map_C, Polynomial.map_X] using
+      Polynomial.pow_rootMultiplicity_dvd (R.map (Int.castRingHom ℚ)) ((h : ℚ) / q)
+  exact Factor196GCD.generic (K := ℚ) hcop.isRelPrime
+theorem zero_polynomial {h : ℤ} {q : ℕ} : ∃ Q : Polynomial ℤ, (0 : Polynomial ℤ) =
+    (C (q : ℤ) * X - C h) ^
+      rootMultiplicity ((h : ℚ) / q) ((0 : Polynomial ℤ).map (Int.castRingHom ℚ)) * Q := by
+  exact ⟨0, (mul_zero _).symm⟩
+theorem counterexample_multiplicity :
+    rootMultiplicity ((2 : ℚ) / 2)
+      ((X - C 1 : Polynomial ℤ).map (Int.castRingHom ℚ)) = 1 := by
+  norm_num only [div_self (by norm_num : (2 : ℚ) ≠ 0), Polynomial.map_sub,
+    Polynomial.map_X, Polynomial.map_C, map_one, rootMultiplicity_X_sub_C]
+#print axioms current_form
+#print axioms zero_polynomial
+#print axioms counterexample_multiplicity
+end Factor196Composition

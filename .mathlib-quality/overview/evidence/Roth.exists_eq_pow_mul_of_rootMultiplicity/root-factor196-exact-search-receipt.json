@@ -1,0 +1,111 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\n-- Append to the stable 15-import prefix, including Polynomial.GaussLemma.\n#check_failure Roth.exists_eq_pow_mul_of_rootMultiplicity\n#check @Polynomial.IsPrimitive.dvd_of_fraction_map_dvd_fraction_map\n#check @Polynomial.IsPrimitive.dvd_iff_fraction_map_dvd_fraction_map\n#check @Polynomial.IsPrimitive.Int.dvd_iff_map_cast_dvd_map_cast\n#check @Polynomial.pow_rootMultiplicity_dvd\n#check @Polynomial.C_mul_dvd\n#check @Polynomial.IsPrimitive.mul\n#check @isCoprime_zero_right\nnamespace Factor196RelPrime\nopen Polynomial\nvariable {A K : Type*} [CommRing A] [IsDomain A] [NormalizedGCDMonoid A]\n  [Field K] [Algebra A K] [IsFractionRing A K]\nomit [IsDomain A] [NormalizedGCDMonoid A] in\ntheorem primitive_linear {h q : A} (hcop : IsRelPrime h q) :\n    (C q * X - C h).IsPrimitive := by\n  intro c hc\n  rw [C_dvd_iff_dvd_coeff] at hc\n  exact hcop (by simpa using hc 0)\n    (by simpa only [coeff_sub, coeff_C_mul, coeff_X_one,\n      coeff_C, mul_one, one_ne_zero, ↓reduceIte, sub_zero] using hc 1)\nomit [IsDomain A] in\ntheorem primitive_pow {p : A[X]} (hp : p.IsPrimitive) (t : ℕ) :\n    (p ^ t).IsPrimitive :=\n  Nat.rec isPrimitive_one (fun t ih ↦ by simpa [pow_succ] using ih.mul hp) t\ntheorem exact_search {R : A[X]} {h q : A} (hq : q ≠ 0)\n    (hcop : IsRelPrime h q) :\n    (C q * X - C h) ^ rootMultiplicity (algebraMap A K h / algebraMap A K q)\n      (R.map (algebraMap A K)) ∣ R := by\n  exact?\n#print axioms exact_search\nend Factor196RelPrime\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": false,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.exists_eq_pow_mul_of_rootMultiplicity`\",\n      \"line\": 17,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.IsPrimitive.dvd_of_fraction_map_dvd_fraction_map : ∀ {R : Type u_1} [inst : CommRing R] {K : Type u_2}\\n  [inst_1 : Field K] [inst_2 : Algebra R K] [IsFractionRing R K] [IsDomain R] [IsGCDMonoid R] {p q : Polynomial R},\\n  p.IsPrimitive → Polynomial.map (algebraMap R K) p ∣ Polynomial.map (algebraMap R K) q → p ∣ q\",\n      \"line\": 18,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.IsPrimitive.dvd_iff_fraction_map_dvd_fraction_map : ∀ {R : Type u_1} [inst : CommRing R] (K : Type u_2)\\n  [inst_1 : Field K] [inst_2 : Algebra R K] [IsFractionRing R K] [IsDomain R] [IsGCDMonoid R] {p q : Polynomial R},\\n  p.IsPrimitive → (p ∣ q ↔ Polynomial.map (algebraMap R K) p ∣ Polynomial.map (algebraMap R K) q)\",\n      \"line\": 19,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Polynomial.IsPrimitive.Int.dvd_iff_map_cast_dvd_map_cast : ∀ (p q : Polynomial ℤ),\\n  p.IsPrimitive → (p ∣ q ↔ Polynomial.map (Int.castRingHom ℚ) p ∣ Polynomial.map (Int.castRingHom ℚ) q)\",\n      \"line\": 20,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.pow_rootMultiplicity_dvd : ∀ {R : Type u_1} [inst : Ring R] (p : Polynomial R) (a : R),\\n  (Polynomial.X - Polynomial.C a) ^ Polynomial.rootMultiplicity a p ∣ p\",\n      \"line\": 21,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.C_mul_dvd : ∀ {R : Type u_1} {a : R} [inst : Field R] {p q : Polynomial R},\\n  a ≠ 0 → (Polynomial.C a * p ∣ q ↔ p ∣ q)\",\n      \"line\": 22,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Polynomial.IsPrimitive.mul : ∀ {R : Type u_1} [inst : CommRing R] [NormalizedGCDMonoid R] {p q : Polynomial R},\\n  p.IsPrimitive → q.IsPrimitive → (p * q).IsPrimitive\",\n      \"line\": 23,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@isCoprime_zero_right : ∀ {R : Type u_1} [inst : CommSemiring R] {x : R}, IsCoprime x 0 ↔ IsUnit x\",\n      \"line\": 24,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"(deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached\\n\\nNote: Use `set_option maxHeartbeats <num>` to set the limit.\\n\\nHint: Additional diagnostic information may be available using the `set_option diagnostics true` command.\",\n      \"line\": 45,\n      \"column\": 3,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Factor196RelPrime.exact_search' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 46,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": false,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.exists_eq_pow_mul_of_rootMultiplicity`",
+          "line": 17,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.IsPrimitive.dvd_of_fraction_map_dvd_fraction_map : ∀ {R : Type u_1} [inst : CommRing R] {K : Type u_2}\n  [inst_1 : Field K] [inst_2 : Algebra R K] [IsFractionRing R K] [IsDomain R] [IsGCDMonoid R] {p q : Polynomial R},\n  p.IsPrimitive → Polynomial.map (algebraMap R K) p ∣ Polynomial.map (algebraMap R K) q → p ∣ q",
+          "line": 18,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.IsPrimitive.dvd_iff_fraction_map_dvd_fraction_map : ∀ {R : Type u_1} [inst : CommRing R] (K : Type u_2)\n  [inst_1 : Field K] [inst_2 : Algebra R K] [IsFractionRing R K] [IsDomain R] [IsGCDMonoid R] {p q : Polynomial R},\n  p.IsPrimitive → (p ∣ q ↔ Polynomial.map (algebraMap R K) p ∣ Polynomial.map (algebraMap R K) q)",
+          "line": 19,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Polynomial.IsPrimitive.Int.dvd_iff_map_cast_dvd_map_cast : ∀ (p q : Polynomial ℤ),\n  p.IsPrimitive → (p ∣ q ↔ Polynomial.map (Int.castRingHom ℚ) p ∣ Polynomial.map (Int.castRingHom ℚ) q)",
+          "line": 20,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.pow_rootMultiplicity_dvd : ∀ {R : Type u_1} [inst : Ring R] (p : Polynomial R) (a : R),\n  (Polynomial.X - Polynomial.C a) ^ Polynomial.rootMultiplicity a p ∣ p",
+          "line": 21,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.C_mul_dvd : ∀ {R : Type u_1} {a : R} [inst : Field R] {p q : Polynomial R},\n  a ≠ 0 → (Polynomial.C a * p ∣ q ↔ p ∣ q)",
+          "line": 22,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Polynomial.IsPrimitive.mul : ∀ {R : Type u_1} [inst : CommRing R] [NormalizedGCDMonoid R] {p q : Polynomial R},\n  p.IsPrimitive → q.IsPrimitive → (p * q).IsPrimitive",
+          "line": 23,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@isCoprime_zero_right : ∀ {R : Type u_1} [inst : CommSemiring R] {x : R}, IsCoprime x 0 ↔ IsUnit x",
+          "line": 24,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "(deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached\n\nNote: Use `set_option maxHeartbeats <num>` to set the limit.\n\nHint: Additional diagnostic information may be available using the `set_option diagnostics true` command.",
+          "line": 45,
+          "column": 3,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Factor196RelPrime.exact_search' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 46,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 13889
+}
