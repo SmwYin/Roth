@@ -1,0 +1,161 @@
+Since $\alpha$ is an algebraic integer, by definition, there is a polynomial
+$$
+f(x) = x^n + a_1 x^{n-1} + \cdots + a_n
+$$
+with integral coefficients such that $f(\alpha)=0$. Its degree $n$ is at least $2$, since $\alpha$ is irrational. For future reference we let
+\begin{equation}
+    \label{roth:eq28}
+    A = \max(1, |a_1|, \dots, |a_n|).
+\end{equation}
+
+\begin{lem}\label{lem:m-delta}
+    For every integer $m>16n^2$ there is a real $\delta>0$ such that
+    \begin{equation}
+        \label{roth:eq29}
+0 < \delta < m^{-1}
+    \end{equation}
+    and
+    \begin{equation}
+        \label{roth:eq30}
+        10^m \delta^{(1/2)^m} + 2(1+3 \delta) n m^{1/2} < \frac{1}{2}m.
+    \end{equation}
+\end{lem}
+\begin{proof}
+Write the second inequality as
+\[
+2n\sqrt m+
+\left(10^m\delta^{2^{-m}}+6\delta n\sqrt m\right)
+<\frac m2.
+\]
+For fixed $m$, the expression in parentheses tends to $0$ as $\delta\to 0^+$. Thus the desired $\delta$ can exist precisely when
+\[
+2n\sqrt m<\frac m2,
+\]
+or equivalently,
+\[
+m>16n^2.
+\]
+
+More generally, for any fixed integer $m>16n^2$, put
+$E=m/2-2n\sqrt m>0$ and choose
+\[
+\delta=\frac12\min\left\{\frac1m,\frac{E}{12n\sqrt m},
+              \left(\frac{E}{2\cdot10^m}\right)^{2^m}\right\}.
+\]
+All entries are positive. This gives
+$10^m\delta^{2^{-m}}<E/2$ and $6\delta n\sqrt m<E/2$, proving the
+claim for the fixed $m$. Every smaller positive $\delta$ also works,
+since the left-hand side of \eqref{roth:eq30} is strictly increasing in
+$\delta$. A convenient explicit choice of $m$ is
+\[
+\boxed{m=(4n+1)^2.}
+\]
+Then $\sqrt m=4n+1$, and hence
+\[
+\frac m2-2n\sqrt m
+=\frac{\sqrt m}{2}.
+\]
+
+Now choose
+\[
+\boxed{
+\delta=
+\frac12\min\left\{
+\frac1m,
+\frac1{24n},
+\left(\frac{\sqrt m}{4\cdot 10^m}\right)^{2^m}
+\right\}.
+}
+\]
+
+Indeed, the first entry in the minimum gives
+\[
+0<\delta<\frac 1 m.
+\]
+The third entry gives
+\[
+\delta^{(1/2)^{m}} < \frac{\sqrt m}{4\cdot10^m},
+\]
+and therefore
+\[
+10^m\delta^{2^{-m}}<\frac{\sqrt m}{4}.
+\]
+The second entry gives
+\[
+6\delta n\sqrt m<\frac{\sqrt m}{4}.
+\]
+Consequently,
+
+\begin{align*}
+10^m \delta^{(1/2)^{m}} +2(1+3\delta)n\sqrt m
+&=
+2n\sqrt m+
+10^m\delta^{(1/2)^{m}}
++6\delta n\sqrt m \\
+&<
+2n\sqrt m+\frac{\sqrt m}{2} \\
+&=\frac m2.
+\end{align*}
+
+Thus this explicit pair $(m,\delta)$ satisfies both required inequalities,
+and the preceding construction proves the stronger assertion for each
+fixed $m>16n^2$.
+\end{proof}
+
+\lean{For each fixed $m>16n^2$, prove the stronger statement that some
+$\delta_0>0$ makes \eqref{roth:eq29} and \eqref{roth:eq30} hold for every
+$0<\delta<\delta_0$. The explicit positive-minimum construction above
+can provide this threshold. The final theorem must choose $m$ using
+$\kappa$ and may then shrink $\delta$ further, so do not fix $m$ globally
+to the special example $(4n+1)^2$.}
+
+Let $m$ and $\delta$ be as in the lemma. We choose positive integers $r_1, \dots, r_m$ such that
+\begin{equation}
+    \label{roth:eq31}
+    r_m > 10 \delta^{-1}, \quad r_{j-1}/r_j > \delta^{-1}, \quad 2 \leq j \leq m.
+\end{equation}
+This is easily arranged. Next, we pick a positive integer $q_1>1$ such that
+\begin{equation}
+    \label{roth:eq32}
+    \delta^2 \log q_1 > 2m+1 + 2m \log (1+A) + 2m \log (1 + |\alpha|),
+\end{equation}
+with $A$ as in Equation \eqref{roth:eq28}.
+
+Next, we pick positive integers $q_2, \dots, q_m$ such that
+\begin{equation}
+    \label{roth:eq33}
+    r_j \log q_j \geq r_1 \log q_1, \quad 2 \leq j \leq m.
+\end{equation}
+
+\begin{lem}\label{lem:lem7-satisfied}
+    If $m, \delta, r_1, \dots, r_m, q_1, \dots, q_m$ satisfy Equations \eqref{roth:eq29}-\eqref{roth:eq33} then they satisfy the conditions of Lemma \ref{roth:lem7}.
+\end{lem}
+\begin{proof}
+    We just need to verify $\delta \log q_1 > m (2m+1)$ but this is immediate from \eqref{roth:eq29} and \eqref{roth:eq32}.
+\end{proof}
+
+Define $\lambda, \gamma, \eta, B_1$ by
+\begin{equation}
+    \label{roth:eq34}
+    \lambda = 4(1+3 \delta)nm^{1/2},
+\end{equation}
+\begin{equation}
+    \label{roth:eq35}
+    \gamma = \frac{1}{2}(m - \lambda),
+\end{equation}
+\begin{equation}
+    \label{roth:eq36}
+    \eta = 10^m \delta^{(1/2)^m},
+\end{equation}
+\begin{equation}
+    \label{roth:eq37}
+    B_1= [q_1^{\delta r_1}].
+\end{equation}
+
+Inequality \eqref{roth:eq30} is equivalent to
+\begin{equation}
+    \label{roth:eq38}
+    \eta < \gamma.
+\end{equation}
+We also note that $B_1$ is a \emph{large} integer, because
+$$

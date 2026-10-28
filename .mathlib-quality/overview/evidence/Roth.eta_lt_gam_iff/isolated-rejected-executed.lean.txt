@@ -1,0 +1,69 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.RingTheory.Polynomial.GaussLemma
+import Mathlib.RingTheory.Polynomial.RationalRoot
+import Mathlib.Algebra.Polynomial.DenomsClearable
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+
+#check_failure Roth.eta_lt_gam_iff
+#check_failure Roth.eta
+#check_failure Roth.gam
+#check_failure Roth.lam
+namespace Gap235Isolated
+#check @lt_sub_iff_add_lt
+#check @sub_div
+#check @div_sub_div_same
+#check @mul_div_cancel_left₀
+#check @lt_div_iff₀
+-- Exactly three existing theorem calls, plus equality substitution and Iff symmetry.
+theorem three_calls (a b c d : ℝ) (hd : d ≠ 0) :
+    a + b < c / d ↔ a < (c - d * b) / d :=
+  (mul_div_cancel_left₀ b hd) ▸
+    ((div_sub_div_same c (d * b) d) ▸ lt_sub_iff_add_lt.symm)
+-- Removing coefficient normalization gives an existing abstract translation law.
+theorem additive {G : Type*} [AddGroup G] [LT G] [AddRightStrictMono G] (a b c : G) :
+    a + b < c ↔ a < c - b := lt_sub_iff_add_lt.symm
+-- This is a new generic proof with arithmetic normalization, not an existing replacement.
+theorem generic {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (a b c : K) : a + 2 * b < c / 2 ↔ a < (c - 4 * b) / 2 := by
+  rw [lt_sub_iff_add_lt, sub_div]
+  ring_nf
+-- Actual original arithmetic with every project definition expanded.
+theorem expanded (δ : ℝ) (n m : ℕ) :
+    10 ^ m * δ ^ ((1 / 2 : ℝ) ^ m) + 2 * (1 + 3 * δ) * n * √(m : ℝ) < m / 2 ↔
+      10 ^ m * δ ^ ((1 / 2 : ℝ) ^ m) <
+        ((m : ℝ) - 4 * (1 + 3 * δ) * n * √(m : ℝ)) / 2 := by
+  fail_if_success
+    exact three_calls _ _ _ (2 : ℝ) two_ne_zero
+  fail_if_success
+    exact lt_sub_iff_add_lt.symm
+  grind
+-- Strictness is preserved; no positivity of a, b, c or the original δ is used.
+theorem weak (a b c : ℝ) : a + 2 * b ≤ c / 2 ↔ a ≤ (c - 4 * b) / 2 := by
+  constructor <;> intro h <;> linarith
+-- The coefficient relation matters: replacing 4 with 2 is false.
+theorem false_coefficient : ¬ ((0 : ℝ) + 2 * 1 < 3 / 2 ↔ 0 < (3 - 2 * 1) / 2) := by
+  norm_num
+-- Division by a negative d does not invalidate translation once no scaling step is used.
+theorem negative_d (a b c : ℝ) : a + b < c / (-1) ↔ a < (c - (-1) * b) / (-1) :=
+  three_calls a b c (-1) (by norm_num)
+end Gap235Isolated
+#print axioms Gap235Isolated.three_calls
+#print axioms Gap235Isolated.additive
+#print axioms Gap235Isolated.generic
+#print axioms Gap235Isolated.expanded
+#print axioms Gap235Isolated.weak
+#print axioms Gap235Isolated.false_coefficient
+#print axioms Gap235Isolated.negative_d

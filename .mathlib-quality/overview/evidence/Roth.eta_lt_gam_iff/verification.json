@@ -1,0 +1,117 @@
+{
+  "declaration": "Roth.eta_lt_gam_iff",
+  "unresolved": [],
+  "standard_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "accepted": [
+    {
+      "label": "original",
+      "format": "disk",
+      "source": "original-executed.lean.txt",
+      "source_sha256": "83e05883e49743f576b10e86c5a412918354e0627e45256de4bb602ba6fa0403",
+      "receipt": "original-receipt.json",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "native_region_start_line": 15,
+      "required_info": [
+        "GAP235_FULL_TYPE:",
+        "GAP235_AUDIT: requested=293; unique=293",
+        "GAP235_AUDIT_PRESENT: present=293; values=293"
+      ]
+    },
+    {
+      "label": "isolated",
+      "format": "raw",
+      "source": "isolated-executed.lean.txt",
+      "source_sha256": "7f915916afd63fa0f449491bd0b394c3a9d5351bddcf0b441cc6f50b75bdc7b5",
+      "receipt": "isolated-receipt.json",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.eta_lt_gam_iff\n#check_failure Roth.eta\n#check_failure Roth.gam\n#check_failure Roth.lam\nnamespace Gap235Isolated\n#check @lt_sub_iff_add_lt\n#check @sub_div\n#check @div_sub_div_same\n#check @mul_div_cancel_left₀\n#check @lt_div_iff₀\n-- Exactly three existing theorem calls; no arithmetic normalization tactic.\ntheorem three_calls (a b c d : ℝ) (hd : d ≠ 0) :\n    a + b < c / d ↔ a < (c - d * b) / d := by\n  rw [← div_sub_div_same, mul_div_cancel_left₀ b hd, lt_sub_iff_add_lt]\ntheorem three_term (a b c d : ℝ) (hd : d ≠ 0) :\n    a + b < c / d ↔ a < (c - d * b) / d :=\n  Eq.ndrec (motive := fun z ↦ a + b < c / d ↔ a < z)\n    (Eq.ndrec (motive := fun z ↦ a + b < c / d ↔ a < c / d - z)\n      (show a + b < c / d ↔ a < c / d - b from lt_sub_iff_add_lt.symm)\n      (mul_div_cancel_left₀ b hd).symm) (div_sub_div_same c (d * b) d)\n-- Removing coefficient normalization gives an existing abstract translation law.\ntheorem additive {G : Type*} [AddGroup G] [LT G] [AddRightStrictMono G] (a b c : G) :\n    a + b < c ↔ a < c - b := lt_sub_iff_add_lt.symm\n-- This is a new generic proof with arithmetic normalization, not an existing replacement.\ntheorem generic {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]\n    (a b c : K) : a + 2 * b < c / 2 ↔ a < (c - 4 * b) / 2 := by\n  grind\n-- Actual original arithmetic with every project definition expanded.\ntheorem expanded (δ : ℝ) (n m : ℕ) :\n    10 ^ m * δ ^ ((1 / 2 : ℝ) ^ m) + 2 * (1 + 3 * δ) * n * √(m : ℝ) < m / 2 ↔\n      10 ^ m * δ ^ ((1 / 2 : ℝ) ^ m) <\n        ((m : ℝ) - 4 * (1 + 3 * δ) * n * √(m : ℝ)) / 2 := by\n  fail_if_success\n    exact three_calls _ _ _ (2 : ℝ) two_ne_zero\n  fail_if_success\n    exact lt_sub_iff_add_lt.symm\n  grind\n-- Strictness is preserved; no positivity of a, b, c or the original δ is used.\ntheorem weak (a b c : ℝ) : a + 2 * b ≤ c / 2 ↔ a ≤ (c - 4 * b) / 2 := by\n  constructor <;> intro h <;> linarith\n-- The coefficient relation matters: replacing 4 with 2 is false.\ntheorem false_coefficient : ¬ ((0 : ℝ) + 2 * 1 < (3 : ℝ) / 2 ↔ 0 < ((3 : ℝ) - 2 * 1) / 2) := by\n  norm_num\n-- Division by a negative d does not invalidate translation once no scaling step is used.\ntheorem negative_d (a b c : ℝ) : a + b < c / (-1) ↔ a < (c - (-1) * b) / (-1) :=\n  three_calls a b c (-1) (by norm_num)\nend Gap235Isolated\n#print axioms Gap235Isolated.three_term\n#print axioms Gap235Isolated.three_calls\n#print axioms Gap235Isolated.additive\n#print axioms Gap235Isolated.generic\n#print axioms Gap235Isolated.expanded\n#print axioms Gap235Isolated.weak\n#print axioms Gap235Isolated.false_coefficient\n#print axioms Gap235Isolated.negative_d\n"
+      },
+      "native_region_start_line": 19,
+      "required_info": [
+        "'Gap235Isolated.three_term' depends on axioms:",
+        "'Gap235Isolated.generic' depends on axioms:",
+        "'Gap235Isolated.expanded' depends on axioms:",
+        "'Gap235Isolated.false_coefficient' depends on axioms:"
+      ]
+    },
+    {
+      "label": "inline",
+      "format": "disk",
+      "source": "inline-executed.lean.txt",
+      "source_sha256": "ea5c5f9e8a3bd8e74aee7a601f66eff93eed6465acd4f512406ffd09af6c1f00",
+      "receipt": "inline-receipt.json",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "native_region_start_line": 15,
+      "required_info": [
+        "GAP235_INLINE: two actual caller proofs; original signatures retained"
+      ]
+    },
+    {
+      "label": "project",
+      "format": "disk",
+      "source": "project-executed.lean.txt",
+      "source_sha256": "0af8604a28d28b02cf36f8d4cad75dd6b0713ebb050e714fa449077cb63b5c6f",
+      "receipt": "project-receipt.json",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "native_region_start_line": 15,
+      "required_info": [
+        "GAP235_PROJECT: arbitrary eta, normalization bridge, explicit existing law verified",
+        "GAP235_PROJECT_BODY_EDGE: Roth.eta_lt_gam_iff -> [Roth.eta_lt_gam_iff._proof_1_3]"
+      ]
+    }
+  ],
+  "rejected": [
+    {
+      "source": "isolated-rejected-executed.lean.txt",
+      "receipt": "isolated-rejected-receipt.json",
+      "reason": "Initial equality-substitution motive and rewrite orientation were wrong; numeric counterexample had unintended Nat divisions. Recovered sorryAx is rejected."
+    },
+    {
+      "source": "isolated-rejected2-executed.lean.txt",
+      "receipt": "isolated-rejected2-receipt.json",
+      "reason": "Successful compilation had two tactic-linter warnings; replaced by clean generic proof, not accepted."
+    }
+  ],
+  "warming": [
+    {
+      "source": "original-executed.lean.txt",
+      "receipt": "original-warming-receipt.json"
+    }
+  ],
+  "audit": {
+    "source": "original-executed.lean.txt",
+    "receipt": "original-receipt.json",
+    "requested": 293,
+    "unique": 293,
+    "present": 293,
+    "values": 293
+  },
+  "canonical_direct_consumers": [
+    "Roth.exists_delta",
+    "Roth.roth_of_isIntegral"
+  ],
+  "canonical_direct_type_consumers": [],
+  "composition": {
+    "strict_three_existing_call_term_normalized_verified": true,
+    "strict_three_existing_call_term_original_verified": false,
+    "new_generic_is_existing_mathlib": false,
+    "exact_expanded_original_verified": true,
+    "normalization_bridge_new_proof": true,
+    "actual_caller_replays": 2,
+    "original_signatures_retained_by_defeq": true,
+    "imported_transitive_target_freedom_claimed": false
+  }
+}

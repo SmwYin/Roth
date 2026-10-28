@@ -1,0 +1,192 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.eta_lt_gam_iff\n#check_failure Roth.eta\n#check_failure Roth.gam\n#check_failure Roth.lam\nnamespace Gap235Isolated\n#check @lt_sub_iff_add_lt\n#check @sub_div\n#check @div_sub_div_same\n#check @mul_div_cancel_left₀\n#check @lt_div_iff₀\n-- Exactly three existing theorem calls, plus equality substitution and Iff symmetry.\ntheorem three_calls (a b c d : ℝ) (hd : d ≠ 0) :\n    a + b < c / d ↔ a < (c - d * b) / d := by\n  rw [← div_sub_div_same, mul_div_cancel_left₀ b hd, lt_sub_iff_add_lt]\n-- Removing coefficient normalization gives an existing abstract translation law.\ntheorem additive {G : Type*} [AddGroup G] [LT G] [AddRightStrictMono G] (a b c : G) :\n    a + b < c ↔ a < c - b := lt_sub_iff_add_lt.symm\n-- This is a new generic proof with arithmetic normalization, not an existing replacement.\ntheorem generic {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]\n    (a b c : K) : a + 2 * b < c / 2 ↔ a < (c - 4 * b) / 2 := by\n  rw [sub_div, ← lt_sub_iff_add_lt]\n  congr 2 <;> ring\n-- Actual original arithmetic with every project definition expanded.\ntheorem expanded (δ : ℝ) (n m : ℕ) :\n    10 ^ m * δ ^ ((1 / 2 : ℝ) ^ m) + 2 * (1 + 3 * δ) * n * √(m : ℝ) < m / 2 ↔\n      10 ^ m * δ ^ ((1 / 2 : ℝ) ^ m) <\n        ((m : ℝ) - 4 * (1 + 3 * δ) * n * √(m : ℝ)) / 2 := by\n  fail_if_success\n    exact three_calls _ _ _ (2 : ℝ) two_ne_zero\n  fail_if_success\n    exact lt_sub_iff_add_lt.symm\n  grind\n-- Strictness is preserved; no positivity of a, b, c or the original δ is used.\ntheorem weak (a b c : ℝ) : a + 2 * b ≤ c / 2 ↔ a ≤ (c - 4 * b) / 2 := by\n  constructor <;> intro h <;> linarith\n-- The coefficient relation matters: replacing 4 with 2 is false.\ntheorem false_coefficient : ¬ ((0 : ℝ) + 2 * 1 < (3 : ℝ) / 2 ↔ 0 < ((3 : ℝ) - 2 * 1) / 2) := by\n  norm_num\n-- Division by a negative d does not invalidate translation once no scaling step is used.\ntheorem negative_d (a b c : ℝ) : a + b < c / (-1) ↔ a < (c - (-1) * b) / (-1) :=\n  three_calls a b c (-1) (by norm_num)\nend Gap235Isolated\n#print axioms Gap235Isolated.three_calls\n#print axioms Gap235Isolated.additive\n#print axioms Gap235Isolated.generic\n#print axioms Gap235Isolated.expanded\n#print axioms Gap235Isolated.weak\n#print axioms Gap235Isolated.false_coefficient\n#print axioms Gap235Isolated.negative_d\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.eta_lt_gam_iff`\",\n      \"line\": 20,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.eta`\",\n      \"line\": 21,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.gam`\",\n      \"line\": 22,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.lam`\",\n      \"line\": 23,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@lt_sub_iff_add_lt : ∀ {α : Type u_1} [inst : AddGroup α] [inst_1 : LT α] [AddRightStrictMono α] {a b c : α},\\n  a < c - b ↔ a + b < c\",\n      \"line\": 25,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@sub_div : ∀ {K : Type u_1} [inst : DivisionRing K] (a b c : K), (a - b) / c = a / c - b / c\",\n      \"line\": 26,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@div_sub_div_same : ∀ {K : Type u_1} [inst : DivisionRing K] (a b c : K), a / c - b / c = (a - b) / c\",\n      \"line\": 27,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@mul_div_cancel_left₀ : ∀ {M₀ : Type u_1} [inst : CommMonoidWithZero M₀] [inst_1 : Div M₀] [MulDivCancelClass M₀]\\n  (b : M₀) {a : M₀}, a ≠ 0 → a * b / a = b\",\n      \"line\": 28,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@lt_div_iff₀ : ∀ {G₀ : Type u_1} [inst : GroupWithZero G₀] [inst_1 : PartialOrder G₀] [MulPosReflectLT G₀] {a b c : G₀},\\n  0 < c → (a < b / c ↔ a * c < b)\",\n      \"line\": 29,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Try this:\\n  [apply] ring_nf\\n  \\n  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.\\n    \\n  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.\",\n      \"line\": 41,\n      \"column\": 15,\n      \"lean_tags\": null,\n      \"category\": \"suggestion\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"warning\",\n      \"message\": \"Unused tactic linter: `congr 2` does nothing\\n\\nNote: This linter can be disabled with `set_option linter.unusedTactic false`\",\n      \"line\": 41,\n      \"column\": 3,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"warning\",\n      \"message\": \"Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice\\n\\nNote: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`\",\n      \"line\": 41,\n      \"column\": 11,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Gap235Isolated.three_calls' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 62,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Gap235Isolated.additive' depends on axioms: [propext]\",\n      \"line\": 63,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Gap235Isolated.generic' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 64,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Gap235Isolated.expanded' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 65,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Gap235Isolated.weak' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 66,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Gap235Isolated.false_coefficient' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 67,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Gap235Isolated.negative_d' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 68,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.eta_lt_gam_iff`",
+          "line": 20,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.eta`",
+          "line": 21,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.gam`",
+          "line": 22,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.lam`",
+          "line": 23,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@lt_sub_iff_add_lt : ∀ {α : Type u_1} [inst : AddGroup α] [inst_1 : LT α] [AddRightStrictMono α] {a b c : α},\n  a < c - b ↔ a + b < c",
+          "line": 25,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@sub_div : ∀ {K : Type u_1} [inst : DivisionRing K] (a b c : K), (a - b) / c = a / c - b / c",
+          "line": 26,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@div_sub_div_same : ∀ {K : Type u_1} [inst : DivisionRing K] (a b c : K), a / c - b / c = (a - b) / c",
+          "line": 27,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@mul_div_cancel_left₀ : ∀ {M₀ : Type u_1} [inst : CommMonoidWithZero M₀] [inst_1 : Div M₀] [MulDivCancelClass M₀]\n  (b : M₀) {a : M₀}, a ≠ 0 → a * b / a = b",
+          "line": 28,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@lt_div_iff₀ : ∀ {G₀ : Type u_1} [inst : GroupWithZero G₀] [inst_1 : PartialOrder G₀] [MulPosReflectLT G₀] {a b c : G₀},\n  0 < c → (a < b / c ↔ a * c < b)",
+          "line": 29,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Try this:\n  [apply] ring_nf\n  \n  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.\n    \n  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.",
+          "line": 41,
+          "column": 15,
+          "lean_tags": null,
+          "category": "suggestion",
+          "hint": null
+        },
+        {
+          "severity": "warning",
+          "message": "Unused tactic linter: `congr 2` does nothing\n\nNote: This linter can be disabled with `set_option linter.unusedTactic false`",
+          "line": 41,
+          "column": 3,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "warning",
+          "message": "Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice\n\nNote: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`",
+          "line": 41,
+          "column": 11,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Gap235Isolated.three_calls' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 62,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Gap235Isolated.additive' depends on axioms: [propext]",
+          "line": 63,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Gap235Isolated.generic' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 64,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Gap235Isolated.expanded' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 65,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Gap235Isolated.weak' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 66,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Gap235Isolated.false_coefficient' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 67,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Gap235Isolated.negative_d' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 68,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 697
+}

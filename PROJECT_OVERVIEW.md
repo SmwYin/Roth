@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-28. **IN PROGRESS — 234/293 declaration assessments complete.**
+Updated: 2026-10-28. **IN PROGRESS — 235/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 234; remaining: 59.
-- Verdicts: 20 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 76 BORDERLINE-needs-human, 54 SKIP.
+- Completed applicable assessments: 235; remaining: 58.
+- Verdicts: 20 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 77 BORDERLINE-needs-human, 54 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -2878,6 +2878,17 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: One source caller and one canonical direct kernel-value consumer: Roth.exists_delta at Main.lean:227 (target call line231). It uses the returned bound at0 (denominator gap) and chosen δ (29/30). No canonical direct type consumers; no target simp attribute.
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.exists_delta_bound.md).
 
+### Completed: `Roth.eta_lt_gam_iff`
+
+- Type: `∀ (δ : ℝ) (n m : ℕ),
+  Roth.eta δ m + 2 * (1 + 3 * δ) * ↑n * √↑m < ↑m / 2 ↔ Roth.eta δ m < Roth.gam δ n m`
+- What: The numerical small-delta inequality (30) is equivalent to eta being smaller than gamma.
+- How: Unfold gamma and lambda, distribute division over subtraction, and collect the scalar factor: half of the lambda term is the error term in (30).
+- Hypotheses: No sign, nonzero-dimension, or degree assumptions: delta is any real and n,m are arbitrary naturals.
+- Project dependencies: Roth.gam, Roth.lam
+- Caller summary: Unused in MainLemma; two body occurrences in Main.exists_delta (241) and Main.roth_of_isIntegral (560); both full proofs replayed with inline arithmetic and original signatures.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.eta_lt_gam_iff.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -3372,6 +3383,8 @@ Completed `Roth.boxFamily`: Finset.finsupp/card_finsupp and Finsupp.card_Iic enu
 
 Completed `Roth.exists_delta_bound`: Existing ContinuousAt.eventually_lt, Real.continuousAt_rpow_const and mem_nhdsGE_iff_exists_Icc_subset cover separate stages. Full fixed-m arithmetic result is not verified as ≤3 existing calls; the complete supplied-event transport is two existing calls.
 
+Completed `Roth.eta_lt_gam_iff`: lt_sub_iff_add_lt is the canonical additive order law. sub_div/div_sub_div_same and mul_div_cancel_left₀ give the normalized scalar version; the exact old spelling also needs coefficient and association normalization.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -3841,6 +3854,8 @@ Completed `Roth.mainCoeffBound`: Same floor-of-power pattern appears as Cn in ex
 Completed `Roth.boxFamily`: RSet differs by nonzero and symmetric absolute bounds; restrictSupport omits coefficient bounds. No exact duplicate established.
 
 Completed `Roth.exists_delta_bound`: Shares neighborhood shrinking with Roth.exists_delta; its strict square-root gap is independent content. No other source inlining of this exact bound found.
+
+Completed `Roth.eta_lt_gam_iff`: The exact eta formula has no role in the equivalence. Morally a translated strict inequality; exists_delta_bound supplies a substantive numerical bound rather than this equivalence.
 
 ## Part 5: Generalization opportunities
 
@@ -4322,6 +4337,8 @@ Completed `Roth.boxFamily`: Verified CommSemiring coefficient-family with monomi
 
 Completed `Roth.exists_delta_bound`: No removable original premise: native sharp iff. Verified new arbitrary-real C,D,b,r,a and positive-exponent p perturbation theorem; specialization still needs the square-root gap and a normalization proof. This is a proposed generic API, not a previously existing mathlib result.
 
+Completed `Roth.eta_lt_gam_iff`: Verified arbitrary e:ℝ in place of eta and arbitrary a,b,c in a Field K with LinearOrder K and IsStrictOrderedRing K: a + 2*b < c/2 ↔ a < (c-4*b)/2. This is a new generic proof, not an existing mathlib declaration; the underlying additive law already holds for AddGroup G, LT G, AddRightStrictMono G.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -4792,6 +4809,8 @@ Completed `Roth.mainCoeffBound`: No missing arithmetic API needed for this defin
 Completed `Roth.boxFamily`: Potential general degree-box/coefficient-family image bridge; whether a named family belongs upstream is an API choice.
 
 Completed `Roth.exists_delta_bound`: Possible convenience helper for positive-power perturbations on a closed right interval; generic topology transport already exists. Whether to add that helper is an upstream API choice.
+
+Completed `Roth.eta_lt_gam_iff`: No established mathematical gap; upstream naming of the normalized scalar identity or a future Roth parameter API remains a design question.
 
 ## Part 7: Junk / removable
 
@@ -5266,6 +5285,8 @@ Completed `Roth.boxFamily`: Not dead: seven actual consumers and semantic-name e
 
 Completed `Roth.exists_delta_bound`: Used, nontrivial 16-line proof; not established redundant. Inlining is possible and verified at the sole caller but adds the entire arithmetic/continuity argument.
 
+Completed `Roth.eta_lt_gam_iff`: Not dead: two critical proof consumers. Full caller inlining works, but removing the stable named bridge is a local API decision.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -5504,6 +5525,7 @@ Completed `Roth.exists_delta_bound`: Used, nontrivial 16-line proof; not establi
 | 232 | `Roth.mainCoeffBound` | NO-composable-from-mathlib | [Report](.mathlib-quality/overview/mathlibable/Roth.mainCoeffBound.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.mainCoeffBound/root-acceptance.json) |
 | 233 | `Roth.boxFamily` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.boxFamily.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.boxFamily/root-acceptance.json) |
 | 234 | `Roth.exists_delta_bound` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_delta_bound.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_delta_bound/root-acceptance.json) |
+| 235 | `Roth.eta_lt_gam_iff` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.eta_lt_gam_iff.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.eta_lt_gam_iff/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -5971,12 +5993,14 @@ Completed `Roth.boxFamily` action: BORDERLINE-needs-human: retain local boxFamil
 
 Completed `Roth.exists_delta_bound` action: BORDERLINE-needs-human: retain project-local theorem for now. Three concrete future upstream API questions in the detailed report; assessment complete, no current user blocker.
 
+Completed `Roth.eta_lt_gam_iff` action: BORDERLINE-needs-human: retain locally in Roth/MainLemma.lean pending future parameter-API design; use the three concrete upstream questions in the report. No production edits proposed or performed by this assessment.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.eta_lt_gam_iff` next. Supporting identities receive their own applicable checks.
+   `Roth.sqrt_lt_nat_floor_aux` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 
