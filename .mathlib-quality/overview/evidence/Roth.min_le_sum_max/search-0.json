@@ -1,0 +1,73 @@
+{
+  "form": "current",
+  "method": "Finder",
+  "request": {
+    "query": "Lower bound min(l theta/2, r theta^2/3) for sum over natural nu<l of max(0, theta-nu/r)",
+    "num_results": 6
+  },
+  "status": "fulfilled",
+  "value": {
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"HurwitzKernelBounds.F_nat\",\n      \"informal_name\": \"Infinite sum of Hurwitz kernel bound functions\",\n      \"kind\": \"definition\",\n      \"type\": \"ℕ → ℝ → ℝ → ℝ\",\n      \"informal_description\": \"The function $ F(k, a, t) $ is defined as the infinite sum over all natural numbers $ n $ of $ (n + a)^k e^{-\\\\pi (n + a)^2 t} $. This sum arises in the context of bounds related to the Jacobi theta function.\",\n      \"path\": \"Mathlib.NumberTheory.ModularForms.JacobiTheta.Bounds\"\n    },\n    {\n      \"formal_name\": \"AkraBazziRecurrence.sumTransform\",\n      \"informal_name\": \"Sum Transformation in Akra-Bazzi Recurrence\",\n      \"kind\": \"definition\",\n      \"type\": \"ℝ → (ℝ → ℝ) → ℕ → ℕ → ℝ\",\n      \"informal_description\": \"For real number $ p $, function $ g : \\\\mathbb{R} \\\\to \\\\mathbb{R} $, and natural numbers $ n_0 \\\\leq n $, this expression computes $ n^p $ multiplied by the finite sum $ \\\\sum_{u = n_0}^n \\\\frac{g(u)}{u^{p+1}} $.\",\n      \"path\": \"Mathlib.Computability.AkraBazzi.SumTransform\"\n    },\n    {\n      \"formal_name\": \"HurwitzKernelBounds.f_le_g_nat\",\n      \"informal_name\": \"Norm Bound for Hurwitz Kernel Function $ f_{\\\\text{nat}} $\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (k : ℕ) {a t : ℝ}, 0 ≤ a → 0 < t → ∀ (n : ℕ), ‖HurwitzKernelBounds.f_nat k a t n‖ ≤ HurwitzKernelBounds.g_nat k a t n\",\n      \"informal_description\": \"For natural numbers $ k, n $, real numbers $ a \\\\geq 0 $ and $ t > 0 $, the norm of the Hurwitz kernel function $ f_{\\\\text{nat}}(k, a, t, n) = (n + a)^k e^{-\\\\pi (n + a)^2 t} $ is bounded above by $ g_{\\\\text{nat}}(k, a, t, n) = (n + a)^k e^{-\\\\pi (n + a^2) t} $. This inequality establishes that $ \\\\|f_{\\\\text{nat}}\\\\| \\\\leq g_{\\\\text{nat}} $ under the specified parameter constraints.\",\n      \"path\": \"Mathlib.NumberTheory.ModularForms.JacobiTheta.Bounds\"\n    },\n    {\n      \"formal_name\": \"AkraBazziRecurrence.eventually_atTop_sumTransform_ge\",\n      \"informal_name\": \"Lower Bound for Sum Transformation in Akra-Bazzi Recurrence\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} [inst : Fintype α] {T : ℕ → ℝ} {g : ℝ → ℝ} {a b : α → ℝ} {r : α → ℕ → ℕ} [inst_1 : Nonempty α]\\n  (R : AkraBazziRecurrence T g a b r),\\n  ∃ c > 0,\\n    ∀ᶠ (n : ℕ) in Filter.atTop,\\n      ∀ (i : α), c * g ↑n ≤ AkraBazziRecurrence.sumTransform (AkraBazziRecurrence.p a b) g (r i n) n\",\n      \"informal_description\": \"There exists a positive constant $ c $ such that for sufficiently large natural numbers $ n $, the sum transformation $ n^p \\\\sum_{u=n_0}^n \\\\frac{g(u)}{u^{p+1}} $ (defined using the critical exponent $ p $ satisfying $ \\\\sum_{i \\\\in \\\\alpha} a_i b_i^p = 1 $) satisfies $ c \\\\cdot g(n) \\\\leq \\\\text{sumTransform}(p, g, r(i,n), n) $ for all indices $ i $.\",\n      \"path\": \"Mathlib.Computability.AkraBazzi.SumTransform\"\n    },\n    {\n      \"formal_name\": \"sum_div_nat_floor_pow_sq_le_div_sq\",\n      \"informal_name\": \"Upper Bound for Sum of Reciprocals of Squared Floor Powers\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (N : ℕ) {j : ℝ},\\n  0 < j → ∀ {c : ℝ}, 1 < c → ∑ i ∈ Finset.range N with j < ↑⌊c ^ i⌋₊, 1 / ↑⌊c ^ i⌋₊ ^ 2 ≤ c ^ 5 * (c - 1)⁻¹ ^ 3 / j ^ 2\",\n      \"informal_description\": \"For any natural number $N$, real numbers $j > 0$ and $c > 1$, the sum over $i$ in $\\\\{0, 1, ..., N-1\\\\}$ with $j < \\\\lfloor c^i \\\\rfloor$ of $\\\\frac{1}{\\\\lfloor c^i \\\\rfloor^2}$ is bounded above by $\\\\frac{c^5}{(c - 1)^3 j^2}$.\",\n      \"path\": \"Mathlib.Analysis.SpecificLimits.FloorPow\"\n    },\n    {\n      \"formal_name\": \"ArithmeticFunction.vonMangoldt.LSeries_residueClass_lower_bound\",\n      \"informal_name\": \"Lower Bound for Dirichlet Series of Von Mangoldt Function in Residue Class\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {q : ℕ} [NeZero q] {a : ZMod q},\\n  IsUnit a →\\n    ∃ C,\\n      ∀ {x : ℝ},\\n        x ∈ Set.Ioc 1 2 →\\n          (↑q.totient)⁻¹ / (x - 1) - C ≤ ∑' (n : ℕ), ArithmeticFunction.vonMangoldt.residueClass a n / ↑n ^ x\",\n      \"informal_description\": \"For a unit $a$ modulo $q$, there exists a constant $C$ such that for all $x$ in the interval $(1, 2]$, the Dirichlet series $\\\\sum_{n=1}^\\\\infty \\\\frac{\\\\Lambda_{a,q}(n)}{n^x}$ satisfies $\\\\frac{1}{\\\\varphi(q)(x - 1)} - C \\\\leq \\\\sum_{n=1}^\\\\infty \\\\frac{\\\\Lambda_{a,q}(n)}{n^x}$, where $\\\\Lambda_{a,q}(n)$ is the von Mangoldt function restricted to integers $n \\\\equiv a \\\\mod q$ and $\\\\varphi(q)$ is Euler's totient function.\",\n      \"path\": \"Mathlib.NumberTheory.LSeries.PrimesInAP\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "HurwitzKernelBounds.F_nat",
+            "informal_name": "Infinite sum of Hurwitz kernel bound functions",
+            "kind": "definition",
+            "type": "ℕ → ℝ → ℝ → ℝ",
+            "informal_description": "The function $ F(k, a, t) $ is defined as the infinite sum over all natural numbers $ n $ of $ (n + a)^k e^{-\\pi (n + a)^2 t} $. This sum arises in the context of bounds related to the Jacobi theta function.",
+            "path": "Mathlib.NumberTheory.ModularForms.JacobiTheta.Bounds"
+          },
+          {
+            "formal_name": "AkraBazziRecurrence.sumTransform",
+            "informal_name": "Sum Transformation in Akra-Bazzi Recurrence",
+            "kind": "definition",
+            "type": "ℝ → (ℝ → ℝ) → ℕ → ℕ → ℝ",
+            "informal_description": "For real number $ p $, function $ g : \\mathbb{R} \\to \\mathbb{R} $, and natural numbers $ n_0 \\leq n $, this expression computes $ n^p $ multiplied by the finite sum $ \\sum_{u = n_0}^n \\frac{g(u)}{u^{p+1}} $.",
+            "path": "Mathlib.Computability.AkraBazzi.SumTransform"
+          },
+          {
+            "formal_name": "HurwitzKernelBounds.f_le_g_nat",
+            "informal_name": "Norm Bound for Hurwitz Kernel Function $ f_{\\text{nat}} $",
+            "kind": "theorem",
+            "type": "∀ (k : ℕ) {a t : ℝ}, 0 ≤ a → 0 < t → ∀ (n : ℕ), ‖HurwitzKernelBounds.f_nat k a t n‖ ≤ HurwitzKernelBounds.g_nat k a t n",
+            "informal_description": "For natural numbers $ k, n $, real numbers $ a \\geq 0 $ and $ t > 0 $, the norm of the Hurwitz kernel function $ f_{\\text{nat}}(k, a, t, n) = (n + a)^k e^{-\\pi (n + a)^2 t} $ is bounded above by $ g_{\\text{nat}}(k, a, t, n) = (n + a)^k e^{-\\pi (n + a^2) t} $. This inequality establishes that $ \\|f_{\\text{nat}}\\| \\leq g_{\\text{nat}} $ under the specified parameter constraints.",
+            "path": "Mathlib.NumberTheory.ModularForms.JacobiTheta.Bounds"
+          },
+          {
+            "formal_name": "AkraBazziRecurrence.eventually_atTop_sumTransform_ge",
+            "informal_name": "Lower Bound for Sum Transformation in Akra-Bazzi Recurrence",
+            "kind": "theorem",
+            "type": "∀ {α : Type u_1} [inst : Fintype α] {T : ℕ → ℝ} {g : ℝ → ℝ} {a b : α → ℝ} {r : α → ℕ → ℕ} [inst_1 : Nonempty α]\n  (R : AkraBazziRecurrence T g a b r),\n  ∃ c > 0,\n    ∀ᶠ (n : ℕ) in Filter.atTop,\n      ∀ (i : α), c * g ↑n ≤ AkraBazziRecurrence.sumTransform (AkraBazziRecurrence.p a b) g (r i n) n",
+            "informal_description": "There exists a positive constant $ c $ such that for sufficiently large natural numbers $ n $, the sum transformation $ n^p \\sum_{u=n_0}^n \\frac{g(u)}{u^{p+1}} $ (defined using the critical exponent $ p $ satisfying $ \\sum_{i \\in \\alpha} a_i b_i^p = 1 $) satisfies $ c \\cdot g(n) \\leq \\text{sumTransform}(p, g, r(i,n), n) $ for all indices $ i $.",
+            "path": "Mathlib.Computability.AkraBazzi.SumTransform"
+          },
+          {
+            "formal_name": "sum_div_nat_floor_pow_sq_le_div_sq",
+            "informal_name": "Upper Bound for Sum of Reciprocals of Squared Floor Powers",
+            "kind": "theorem",
+            "type": "∀ (N : ℕ) {j : ℝ},\n  0 < j → ∀ {c : ℝ}, 1 < c → ∑ i ∈ Finset.range N with j < ↑⌊c ^ i⌋₊, 1 / ↑⌊c ^ i⌋₊ ^ 2 ≤ c ^ 5 * (c - 1)⁻¹ ^ 3 / j ^ 2",
+            "informal_description": "For any natural number $N$, real numbers $j > 0$ and $c > 1$, the sum over $i$ in $\\{0, 1, ..., N-1\\}$ with $j < \\lfloor c^i \\rfloor$ of $\\frac{1}{\\lfloor c^i \\rfloor^2}$ is bounded above by $\\frac{c^5}{(c - 1)^3 j^2}$.",
+            "path": "Mathlib.Analysis.SpecificLimits.FloorPow"
+          },
+          {
+            "formal_name": "ArithmeticFunction.vonMangoldt.LSeries_residueClass_lower_bound",
+            "informal_name": "Lower Bound for Dirichlet Series of Von Mangoldt Function in Residue Class",
+            "kind": "theorem",
+            "type": "∀ {q : ℕ} [NeZero q] {a : ZMod q},\n  IsUnit a →\n    ∃ C,\n      ∀ {x : ℝ},\n        x ∈ Set.Ioc 1 2 →\n          (↑q.totient)⁻¹ / (x - 1) - C ≤ ∑' (n : ℕ), ArithmeticFunction.vonMangoldt.residueClass a n / ↑n ^ x",
+            "informal_description": "For a unit $a$ modulo $q$, there exists a constant $C$ such that for all $x$ in the interval $(1, 2]$, the Dirichlet series $\\sum_{n=1}^\\infty \\frac{\\Lambda_{a,q}(n)}{n^x}$ satisfies $\\frac{1}{\\varphi(q)(x - 1)} - C \\leq \\sum_{n=1}^\\infty \\frac{\\Lambda_{a,q}(n)}{n^x}$, where $\\Lambda_{a,q}(n)$ is the von Mangoldt function restricted to integers $n \\equiv a \\mod q$ and $\\varphi(q)$ is Euler's totient function.",
+            "path": "Mathlib.NumberTheory.LSeries.PrimesInAP"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  "elapsed_ms": 4055
+}

@@ -1,0 +1,22 @@
+  rwa [map_eq_zero_iff _ (uniqueAlgEquiv ℤ Unit).symm.injective]
+
+private lemma index_numeric_bound_aux {θ Φ δ rp l : ℝ} (hΦ : 0 ≤ Φ) (hδ1 : δ ≤ 1) (hrp : 3 ≤ rp)
+    (hl : 0 < l) (hl' : l ≤ rp + 1) (hmin : min (l * θ / 2) (rp * θ ^ 2 / 3) ≤ l * (Φ + δ)) :
+    θ ≤ 2 * (Φ + √Φ + √δ) := by
+  -- The small-index comparison `δ ≤ √δ` also controls the linear bound.
+  have hsΦ : 0 ≤ √Φ := Real.sqrt_nonneg _
+  have hrp0 : 0 < rp := (by norm_num : (0 : ℝ) < 3).trans_le hrp
+  rcases min_le_iff.1 hmin with hk | hk
+  · have hθ : θ ≤ 2 * (Φ + δ) := by
+      rwa [mul_div_assoc, mul_le_mul_iff_right₀ hl, div_le_iff₀ (by norm_num), mul_comm] at hk
+    linarith only [hθ, Real.le_sqrt_self_iff.2 hδ1, hsΦ]
+  · have hsq : θ ^ 2 ≤ 4 * (Φ + δ) := (mul_le_mul_iff_right₀ hrp0).1 (by
+      have hsize : 3 * l ≤ 4 * rp := by linarith only [hl', hrp]
+      linear_combination 3 * hk + mul_le_mul_of_nonneg_right hsize
+        (nonneg_of_mul_nonneg_right
+          ((div_nonneg (mul_nonneg hrp0.le (sq_nonneg θ)) (by norm_num)).trans hk) hl))
+    have hθ : θ ≤ 2 * (√Φ + √δ) := le_of_sq_le_sq (by
+      linear_combination hsq + 4 * ((le_max_left δ 0).trans_eq (Real.sq_sqrt').symm) +
+        4 * (Real.sq_sqrt hΦ).symm + 8 * mul_nonneg hsΦ (Real.sqrt_nonneg δ)) (by positivity)
+    linarith only [hθ, hΦ]
+

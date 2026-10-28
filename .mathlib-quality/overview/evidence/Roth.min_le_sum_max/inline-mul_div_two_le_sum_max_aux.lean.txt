@@ -1,0 +1,17 @@
+    l * θ / 2 ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / r) := by
+  rcases Nat.eq_zero_or_pos l with rfl | hl0
+  · simp
+  by_cases hθ : θ ≤ 0
+  · exact (div_nonpos_of_nonpos_of_nonneg
+      (mul_nonpos_of_nonneg_of_nonpos (Nat.cast_nonneg l) hθ) (by norm_num)).trans
+        (Finset.sum_nonneg fun _ _ ↦ le_max_left _ _)
+  have hr := pos_of_mul_pos_right ((Nat.cast_pos.mpr hl0).trans_le hl) (le_of_not_ge hθ)
+  have hsum := congrArg (Nat.cast (R := ℝ)) (Finset.sum_range_id_mul_two l)
+  push_cast [Nat.cast_sub hl0] at hsum
+  refine le_trans ?_ (Finset.sum_le_sum fun ν _ ↦ le_max_right 0 (θ - ν / r))
+  rw [Finset.sum_sub_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul,
+    ← Finset.sum_div, le_sub_iff_add_le, div_add_div _ _ (by norm_num) hr.ne',
+    div_le_iff₀ (by positivity)]
+  linarith only [hsum, (Nat.cast_nonneg l : (0 : ℝ) ≤ l),
+    mul_nonneg (Nat.cast_nonneg l) (sub_nonneg.mpr hl)]
+

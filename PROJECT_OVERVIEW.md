@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-28. **IN PROGRESS — 205/293 declaration assessments complete.**
+Updated: 2026-10-28. **IN PROGRESS — 206/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 205; remaining: 88.
-- Verdicts: 19 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 62 BORDERLINE-needs-human, 40 SKIP.
+- Completed applicable assessments: 206; remaining: 87.
+- Verdicts: 19 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 63 BORDERLINE-needs-human, 40 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -2379,6 +2379,17 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: 1 explicit source caller declarations, all in Theta.lean; 1 direct original value consumers. Exact separate lists retained. Entire Theta module proof bodies replay successfully with fresh target name.
 - Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.mul_sq_div_three_le_sum_max_aux.md).
 
+### Completed: `Roth.min_le_sum_max`
+
+- Type: `∀ {θ : ℝ} {rp : ℕ} (l : ℕ),
+  min (↑l * θ / 2) (↑rp * θ ^ 2 / 3) ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ↑ν / ↑rp)`
+- What: For every real theta and natural scale rp,length l, the positive-part arithmetic-progression sum bounds min(l*theta/2,rp*theta²/3). No source positivity/size premises remain.
+- How: If theta≤0 use nonnegative sum; otherwise split at l≤theta*rp and combine the linear and quadratic private branch estimates with min_le_left/right. Branch proofs use Gauss summation, cutoff and nonnegative remainders.
+- Hypotheses: theta:real;rp,l:natural, No positivity or size hypotheses; ambient finite-type/decidable-equality parameters absent from native type.
+- Project dependencies: Roth.mul_div_two_le_sum_max_aux, Roth.mul_sq_div_three_le_sum_max_aux, Roth.mul_sq_div_three_le_sum_max_of_pos_aux
+- Caller summary: One explicit call index_le_lem6 at Theta:586, one canonical direct value consumer, zero type consumers among293ordered unique proof constants. Complete module replay through Theta_lt and complete inline actual caller pass.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.min_le_sum_max.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -2815,6 +2826,8 @@ Completed `Roth.mul_sq_div_three_le_sum_max_of_pos_aux`: Set n to the natural fl
 
 Completed `Roth.mul_sq_div_three_le_sum_max_aux`: If r≤0 the desired lower bound is nonpositive while every summand is nonnegative. For r>0 split θr≤l into strict inequality, handled by mul_sq_div_three_le_sum_max_of_pos_aux, and equality. At equality, use mul_div_two_le_sum_max_aux for lθ/2 and the identity l=θr to compare rθ²/3 with rθ²/2. This closes sign and boundary cases missing from the positive strict-length helper and supplies the quadratic branch of min_le_sum_max.
 
+Completed `Roth.min_le_sum_max`: 15actual cells across current/standard/abstract forms plus qualified Loogle retries. Gauss sum, finite subset sum, min and floor/findGreatest APIs verified. No existing theorem or strict ≤3-existing-call term established; index warming is not absence.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -3226,6 +3239,8 @@ Completed `Roth.mul_div_two_le_sum_max_aux`: The helper has a distinct role in t
 Completed `Roth.mul_sq_div_three_le_sum_max_of_pos_aux`: The helper has a distinct role in the polynomial-index transport and bounding proofs as described in the structural review; no duplicate full construction is introduced.
 
 Completed `Roth.mul_sq_div_three_le_sum_max_aux`: The helper has a distinct role in the polynomial-index transport and bounding proofs as described in the structural review; no duplicate full construction is introduced.
+
+Completed `Roth.min_le_sum_max`: Three private helpers are complementary branches, not independent unconditional minimum duplicates. index_numeric_bound_aux consumes a bound. Paper floor FACTs are bypassed by stronger direct remainder proof.
 
 ## Part 5: Generalization opportunities
 
@@ -3649,6 +3664,8 @@ Completed `Roth.mul_sq_div_three_le_sum_max_of_pos_aux`: No public generality cl
 
 Completed `Roth.mul_sq_div_three_le_sum_max_aux`: No public generality claim under the private prefilter; preserve the existing definition and interface.
 
+Completed `Roth.min_le_sum_max`: Verified arbitrary scalar scale over ordered Field. FloorSemiring eliminated via bounded Nat.findGreatest. Quadratic /2 estimate verified; it strengthens original natural-scale /3 endpoint, whose bridge uses Nat.cast_nonneg. No uniform coefficient comparison for negative scale, minimal hierarchy or optimal constant claim.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -4061,6 +4078,8 @@ Completed `Roth.mul_div_two_le_sum_max_aux`: No new primitive is needed for this
 Completed `Roth.mul_sq_div_three_le_sum_max_of_pos_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 Completed `Roth.mul_sq_div_three_le_sum_max_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
+
+Completed `Roth.min_le_sum_max`: Potential finite positive-part arithmetic-progression estimate at ordered-field level, with quadratic denominator2; audience and public endpoint versus branch API remain design questions. All candidate helpers are newly proved.
 
 ## Part 7: Junk / removable
 
@@ -4477,6 +4496,8 @@ Completed `Roth.mul_sq_div_three_le_sum_max_of_pos_aux`: Retain a live private p
 
 Completed `Roth.mul_sq_div_three_le_sum_max_aux`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
 
+Completed `Roth.min_le_sum_max`: Not dead: sole explicit determinant-index consumer is substantive; no simp attribute or external deadness claim.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -4686,6 +4707,7 @@ Completed `Roth.mul_sq_div_three_le_sum_max_aux`: Retain a live private proof in
 | 203 | `Roth.mul_div_two_le_sum_max_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.mul_div_two_le_sum_max_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.mul_div_two_le_sum_max_aux/root-acceptance.json) |
 | 204 | `Roth.mul_sq_div_three_le_sum_max_of_pos_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.mul_sq_div_three_le_sum_max_of_pos_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.mul_sq_div_three_le_sum_max_of_pos_aux/root-acceptance.json) |
 | 205 | `Roth.mul_sq_div_three_le_sum_max_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.mul_sq_div_three_le_sum_max_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.mul_sq_div_three_le_sum_max_aux/root-acceptance.json) |
+| 206 | `Roth.min_le_sum_max` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.min_le_sum_max.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.min_le_sum_max/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -5095,12 +5117,14 @@ Completed `Roth.mul_sq_div_three_le_sum_max_of_pos_aux` action: Keep unchanged; 
 
 Completed `Roth.mul_sq_div_three_le_sum_max_aux` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
 
+Completed `Roth.min_le_sum_max` action: BORDERLINE-needs-human: decide general positive-part sum demand and /2 ordered-field endpoint grain. Keep local numerical theorem pending that decision; actual caller may specialize new general proof or inline verified project case split. No production edits.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.min_le_sum_max` next. Supporting identities receive their own applicable checks.
+   `Roth.sum_max_sub_le_index_det` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

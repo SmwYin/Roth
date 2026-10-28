@@ -1,0 +1,13 @@
+        ((Nat.floor_lt (mul_nonneg hθ hr.le)).2 hl))
+        fun _ _ _ ↦ le_max_left _ _
+
+private lemma mul_sq_div_three_le_sum_max_aux {θ r : ℝ} (hθ : 0 ≤ θ) {l : ℕ} (hl : θ * r ≤ l) :
+    r * θ ^ 2 / 3 ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / r) := by
+  rcases le_or_gt r 0 with hr | hr
+  · exact (div_nonpos_of_nonpos_of_nonneg (mul_nonpos_of_nonpos_of_nonneg hr (sq_nonneg θ))
+      (by norm_num)).trans (Finset.sum_nonneg fun _ _ ↦ le_max_left _ _)
+  rcases lt_or_eq_of_le hl with hl | hl
+  · exact mul_sq_div_three_le_sum_max_of_pos_aux hr hθ hl
+  · linarith only [mul_div_two_le_sum_max_aux hl.ge, congrArg (· * θ) hl,
+      mul_nonneg hr.le (sq_nonneg θ)]
+

@@ -1,0 +1,14 @@
+{
+  "request": [
+    "rg",
+    "--no-ignore",
+    "-n",
+    "min.*theta|min.*θ|sum_max|max 0 \\(.* - .* /|sum_range_id_mul_two",
+    "Roth",
+    "Roth.lean"
+  ],
+  "exit_code": 0,
+  "stdout": "Roth/Theta.lean:291:  have hsum := congrArg (Nat.cast (R := ℝ)) (Finset.sum_range_id_mul_two (⌊a⌋₊ + 1))\nRoth/Theta.lean:304:private lemma mul_div_two_le_sum_max_aux {θ r : ℝ} {l : ℕ} (hl : (l : ℝ) ≤ θ * r) :\nRoth/Theta.lean:305:    l * θ / 2 ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / r) := by\nRoth/Theta.lean:313:  have hsum := congrArg (Nat.cast (R := ℝ)) (Finset.sum_range_id_mul_two l)\nRoth/Theta.lean:322:private lemma mul_sq_div_three_le_sum_max_of_pos_aux {θ r : ℝ} (hr : 0 < r) (hθ : 0 ≤ θ) {l : ℕ}\nRoth/Theta.lean:323:    (hl : θ * r < l) : r * θ ^ 2 / 3 ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / r) := by\nRoth/Theta.lean:327:  have hsum := congrArg (Nat.cast (R := ℝ)) (Finset.sum_range_id_mul_two (n + 1))\nRoth/Theta.lean:339:    _ ≤ ∑ ν ∈ Finset.range (n + 1), max 0 (θ - ν / r) := by\nRoth/Theta.lean:342:    _ ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / r) :=\nRoth/Theta.lean:347:private lemma mul_sq_div_three_le_sum_max_aux {θ r : ℝ} (hθ : 0 ≤ θ) {l : ℕ} (hl : θ * r ≤ l) :\nRoth/Theta.lean:348:    r * θ ^ 2 / 3 ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / r) := by\nRoth/Theta.lean:353:  · exact mul_sq_div_three_le_sum_max_of_pos_aux hr hθ hl\nRoth/Theta.lean:354:  · linarith only [mul_div_two_le_sum_max_aux hl.ge, congrArg (· * θ) hl,\nRoth/Theta.lean:357:/-- If `θ r_p > 10`, then `min(lθ/2, r_p θ²/3) ≤ ∑_{ν<l} max(0, θ - ν/r_p)`.\nRoth/Theta.lean:359:`∑_{ν<l} max(0, θ - ν/r_p) ≥ min(lθ/2, r_p θ²/3)`\", the two cases `θ r_p < l` and\nRoth/Theta.lean:362:theorem min_le_sum_max {θ : ℝ} {rp : ℕ} (l : ℕ) :\nRoth/Theta.lean:363:    min (l * θ / 2) (rp * θ ^ 2 / 3) ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / rp) := by\nRoth/Theta.lean:369:  · exact (min_le_left _ _).trans (mul_div_two_le_sum_max_aux hl)\nRoth/Theta.lean:370:  · exact (min_le_right _ _).trans (mul_sq_div_three_le_sum_max_aux (le_of_not_ge hθ) hl.le)\nRoth/Theta.lean:376:theorem sum_max_sub_le_index_det {R : MvPolynomial (Option τ) ℝ} {l : ℕ} (D : Fin l → (τ →₀ ℕ))\nRoth/Theta.lean:381:    ∑ ν ∈ Finset.range l, max 0 (index R α r - ν / r none) - l * δ ≤\nRoth/Theta.lean:388:      max 0 (index R α r - ν / r none) - δ ≤ index (E μ ν) α r := by\nRoth/Theta.lean:408:    ← Fin.sum_univ_eq_sum_range (fun ν : ℕ ↦ max 0 (index R α r - ν / r none)) l]\nRoth/Theta.lean:532:    (hl : 0 < l) (hl' : l ≤ rp + 1) (hmin : min (l * θ / 2) (rp * θ ^ 2 / 3) ≤ l * (Φ + δ)) :\nRoth/Theta.lean:576:  have hlower := sum_max_sub_le_index_det D hD (mapped_det_ne_zero_aux hU hV hF) α hr0\nRoth/Theta.lean:586:  exact (min_le_sum_max (θ := index (map (Int.castRingHom ℝ) R) α r) (rp := r none) l).trans\n",
+  "stderr": "",
+  "elapsed_ms": 9
+}

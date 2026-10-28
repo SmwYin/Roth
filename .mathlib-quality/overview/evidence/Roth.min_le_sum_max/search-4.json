@@ -1,0 +1,73 @@
+{
+  "form": "standard",
+  "method": "Finder",
+  "request": {
+    "query": "Lower bound for finite sum positive parts of decreasing arithmetic progression by linear or quadratic bound; truncated triangular sum",
+    "num_results": 6
+  },
+  "status": "fulfilled",
+  "value": {
+    "response": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Finset.sum_schlomilch_le\",\n      \"informal_name\": \"Schlomilch's Inequality for Bounded Difference Sequences\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {M : Type u_1} [inst : AddCommMonoid M] [inst_1 : PartialOrder M] [IsOrderedAddMonoid M] {f : ℕ → M} {u : ℕ → ℕ}\\n  {C : ℕ},\\n  (∀ ⦃m n : ℕ⦄, 1 < m → m ≤ n → f n ≤ f m) →\\n    (∀ (n : ℕ), 0 < u n) →\\n      (∀ (n : ℕ), 0 ≤ f n) →\\n        Monotone u →\\n          SuccDiffBounded C u →\\n            ∀ (n : ℕ),\\n              ∑ k ∈ Finset.range (n + 1), (u (k + 1) - u k) • f (u k) ≤\\n                (u 1 - u 0) • f (u 0) + C • ∑ k ∈ Finset.Ico (u 0 + 1) (u n + 1), f k\",\n      \"informal_description\": \"For a monotone sequence $u : \\\\mathbb{N} \\\\to \\\\mathbb{N}$ with successive differences bounded by a constant $C$ (i.e., $u(n+2) - u(n+1) \\\\leq C(u(n+1) - u(n))$), and a non-negative function $f : \\\\mathbb{N} \\\\to \\\\mathbb{R}_{\\\\geq 0}$ satisfying $f(n) \\\\leq f(m)$ whenever $1 < m \\\\leq n$, the inequality $$\\\\sum_{k=0}^{n} (u(k+1) - u(k)) \\\\cdot f(u(k)) \\\\leq (u(1) - u(0)) \\\\cdot f(u(0)) + C \\\\cdot \\\\sum_{k=u(0)+1}^{u(n)+1} f(k)$$ holds for all $n \\\\in \\\\mathbb{N}$.\",\n      \"path\": \"Mathlib.Analysis.PSeries\"\n    },\n    {\n      \"formal_name\": \"Finset.le_sum_schlomilch'\",\n      \"informal_name\": \"Schlomilch's Inequality for Decreasing Functions\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {M : Type u_1} [inst : AddCommMonoid M] [inst_1 : PartialOrder M] [IsOrderedAddMonoid M] {f : ℕ → M} {u : ℕ → ℕ},\\n  (∀ ⦃m n : ℕ⦄, 0 < m → m ≤ n → f n ≤ f m) →\\n    (∀ (n : ℕ), 0 < u n) →\\n      Monotone u → ∀ (n : ℕ), ∑ k ∈ Finset.Ico (u 0) (u n), f k ≤ ∑ k ∈ Finset.range n, (u (k + 1) - u k) • f (u k)\",\n      \"informal_description\": \"For a decreasing function $f : \\\\mathbb{N} \\\\to \\\\mathbb{R}$ on positive integers, a positive monotonic sequence $u : \\\\mathbb{N} \\\\to \\\\mathbb{N}$, and any $n \\\\in \\\\mathbb{N}$, the sum of $f(k)$ over the interval $[u(0), u(n))$ is bounded above by the sum over $k = 0$ to $n-1$ of $(u(k+1) - u(k)) \\\\cdot f(u(k))$. Formally: $\\\\sum_{k \\\\in [u(0), u(n))} f(k) \\\\leq \\\\sum_{k=0}^{n-1} (u(k+1) - u(k)) \\\\cdot f(u(k))$.\",\n      \"path\": \"Mathlib.Analysis.PSeries\"\n    },\n    {\n      \"formal_name\": \"Finset.le_sum_condensed'\",\n      \"informal_name\": \"Condensed Sum Inequality for Non-Increasing Functions\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {M : Type u_1} [inst : AddCommMonoid M] [inst_1 : PartialOrder M] [IsOrderedAddMonoid M] {f : ℕ → M},\\n  (∀ ⦃m n : ℕ⦄, 0 < m → m ≤ n → f n ≤ f m) →\\n    ∀ (n : ℕ), ∑ k ∈ Finset.Ico 1 (2 ^ n), f k ≤ ∑ k ∈ Finset.range n, 2 ^ k • f (2 ^ k)\",\n      \"informal_description\": \"For a non-increasing function $ f : \\\\mathbb{N} \\\\to M $ where $ M $ is an additive commutative monoid, and for any natural number $ n $, the sum of $ f(k) $ over the interval $ [1, 2^n) $ satisfies $ \\\\sum_{k=1}^{2^n-1} f(k) \\\\leq \\\\sum_{k=0}^{n-1} 2^k \\\\cdot f(2^k) $. This inequality compares the original sum to a condensed version grouping terms at powers of two.\",\n      \"path\": \"Mathlib.Analysis.PSeries\"\n    },\n    {\n      \"formal_name\": \"Finset.le_sum_condensed\",\n      \"informal_name\": \"Condensed Sum Inequality for Non-Increasing Functions\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {M : Type u_1} [inst : AddCommMonoid M] [inst_1 : PartialOrder M] [IsOrderedAddMonoid M] {f : ℕ → M},\\n  (∀ ⦃m n : ℕ⦄, 0 < m → m ≤ n → f n ≤ f m) →\\n    ∀ (n : ℕ), ∑ k ∈ Finset.range (2 ^ n), f k ≤ f 0 + ∑ k ∈ Finset.range n, 2 ^ k • f (2 ^ k)\",\n      \"informal_description\": \"For a function $ f : \\\\mathbb{N} \\\\to M $ into an additive commutative monoid $ M $ satisfying $ f(n) \\\\leq f(m) $ for all $ 0 < m \\\\leq n $, and for any natural number $ n $, the sum $ \\\\sum_{k=0}^{2^n - 1} f(k) $ is bounded above by $ f(0) + \\\\sum_{k=0}^{n-1} 2^k \\\\cdot f(2^k) $. This establishes an inequality relating the total sum over $ 2^n $ terms to a condensed sum involving powers-of-two weighted terms at positions $ 2^k $.\",\n      \"path\": \"Mathlib.Analysis.PSeries\"\n    },\n    {\n      \"formal_name\": \"Finset.sum_condensed_le\",\n      \"informal_name\": \"Condensed Sum Inequality for Decreasing Functions\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {M : Type u_1} [inst : AddCommMonoid M] [inst_1 : PartialOrder M] [IsOrderedAddMonoid M] {f : ℕ → M},\\n  (∀ ⦃m n : ℕ⦄, 1 < m → m ≤ n → f n ≤ f m) →\\n    ∀ (n : ℕ), ∑ k ∈ Finset.range (n + 1), 2 ^ k • f (2 ^ k) ≤ f 1 + 2 • ∑ k ∈ Finset.Ico 2 (2 ^ n + 1), f k\",\n      \"informal_description\": \"For a function $ f : \\\\mathbb{N} \\\\to M $ (where $ M $ is an additive commutative monoid) satisfying $ f(n) \\\\leq f(m) $ whenever $ 1 < m \\\\leq n $, and for any natural number $ n $, the sum $ \\\\sum_{k=0}^n 2^k \\\\cdot f(2^k) $ is less than or equal to $ f(1) + 2 \\\\cdot \\\\sum_{k=2}^{2^n + 1} f(k) $. This inequality compares a condensed sum over powers of two to an expanded sum over natural numbers.\",\n      \"path\": \"Mathlib.Analysis.PSeries\"\n    },\n    {\n      \"formal_name\": \"Finset.le_sum_schlomilch\",\n      \"informal_name\": \"Schlömilch's Inequality for Sums of Decreasing Functions\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {M : Type u_1} [inst : AddCommMonoid M] [inst_1 : PartialOrder M] [IsOrderedAddMonoid M] {f : ℕ → M} {u : ℕ → ℕ},\\n  (∀ ⦃m n : ℕ⦄, 0 < m → m ≤ n → f n ≤ f m) →\\n    (∀ (n : ℕ), 0 < u n) →\\n      Monotone u →\\n        ∀ (n : ℕ),\\n          ∑ k ∈ Finset.range (u n), f k ≤\\n            ∑ k ∈ Finset.range (u 0), f k + ∑ k ∈ Finset.range n, (u (k + 1) - u k) • f (u k)\",\n      \"informal_description\": \"Let $ f : \\\\mathbb{N} \\\\to \\\\mathbb{R} $ be a decreasing function and $ u : \\\\mathbb{N} \\\\to \\\\mathbb{N} $ a positive monotone sequence. For any natural number $ n $, the sum $ \\\\sum_{k=0}^{u(n)-1} f(k) $ is bounded above by $ \\\\sum_{k=0}^{u(0)-1} f(k) + \\\\sum_{k=0}^{n-1} (u(k+1) - u(k)) \\\\cdot f(u(k)) $, where $ \\\\cdot $ denotes natural number scalar multiplication.\",\n      \"path\": \"Mathlib.Analysis.PSeries\"\n    }\n  ]\n}"
+        }
+      ],
+      "structuredContent": {
+        "items": [
+          {
+            "formal_name": "Finset.sum_schlomilch_le",
+            "informal_name": "Schlomilch's Inequality for Bounded Difference Sequences",
+            "kind": "theorem",
+            "type": "∀ {M : Type u_1} [inst : AddCommMonoid M] [inst_1 : PartialOrder M] [IsOrderedAddMonoid M] {f : ℕ → M} {u : ℕ → ℕ}\n  {C : ℕ},\n  (∀ ⦃m n : ℕ⦄, 1 < m → m ≤ n → f n ≤ f m) →\n    (∀ (n : ℕ), 0 < u n) →\n      (∀ (n : ℕ), 0 ≤ f n) →\n        Monotone u →\n          SuccDiffBounded C u →\n            ∀ (n : ℕ),\n              ∑ k ∈ Finset.range (n + 1), (u (k + 1) - u k) • f (u k) ≤\n                (u 1 - u 0) • f (u 0) + C • ∑ k ∈ Finset.Ico (u 0 + 1) (u n + 1), f k",
+            "informal_description": "For a monotone sequence $u : \\mathbb{N} \\to \\mathbb{N}$ with successive differences bounded by a constant $C$ (i.e., $u(n+2) - u(n+1) \\leq C(u(n+1) - u(n))$), and a non-negative function $f : \\mathbb{N} \\to \\mathbb{R}_{\\geq 0}$ satisfying $f(n) \\leq f(m)$ whenever $1 < m \\leq n$, the inequality $$\\sum_{k=0}^{n} (u(k+1) - u(k)) \\cdot f(u(k)) \\leq (u(1) - u(0)) \\cdot f(u(0)) + C \\cdot \\sum_{k=u(0)+1}^{u(n)+1} f(k)$$ holds for all $n \\in \\mathbb{N}$.",
+            "path": "Mathlib.Analysis.PSeries"
+          },
+          {
+            "formal_name": "Finset.le_sum_schlomilch'",
+            "informal_name": "Schlomilch's Inequality for Decreasing Functions",
+            "kind": "theorem",
+            "type": "∀ {M : Type u_1} [inst : AddCommMonoid M] [inst_1 : PartialOrder M] [IsOrderedAddMonoid M] {f : ℕ → M} {u : ℕ → ℕ},\n  (∀ ⦃m n : ℕ⦄, 0 < m → m ≤ n → f n ≤ f m) →\n    (∀ (n : ℕ), 0 < u n) →\n      Monotone u → ∀ (n : ℕ), ∑ k ∈ Finset.Ico (u 0) (u n), f k ≤ ∑ k ∈ Finset.range n, (u (k + 1) - u k) • f (u k)",
+            "informal_description": "For a decreasing function $f : \\mathbb{N} \\to \\mathbb{R}$ on positive integers, a positive monotonic sequence $u : \\mathbb{N} \\to \\mathbb{N}$, and any $n \\in \\mathbb{N}$, the sum of $f(k)$ over the interval $[u(0), u(n))$ is bounded above by the sum over $k = 0$ to $n-1$ of $(u(k+1) - u(k)) \\cdot f(u(k))$. Formally: $\\sum_{k \\in [u(0), u(n))} f(k) \\leq \\sum_{k=0}^{n-1} (u(k+1) - u(k)) \\cdot f(u(k))$.",
+            "path": "Mathlib.Analysis.PSeries"
+          },
+          {
+            "formal_name": "Finset.le_sum_condensed'",
+            "informal_name": "Condensed Sum Inequality for Non-Increasing Functions",
+            "kind": "theorem",
+            "type": "∀ {M : Type u_1} [inst : AddCommMonoid M] [inst_1 : PartialOrder M] [IsOrderedAddMonoid M] {f : ℕ → M},\n  (∀ ⦃m n : ℕ⦄, 0 < m → m ≤ n → f n ≤ f m) →\n    ∀ (n : ℕ), ∑ k ∈ Finset.Ico 1 (2 ^ n), f k ≤ ∑ k ∈ Finset.range n, 2 ^ k • f (2 ^ k)",
+            "informal_description": "For a non-increasing function $ f : \\mathbb{N} \\to M $ where $ M $ is an additive commutative monoid, and for any natural number $ n $, the sum of $ f(k) $ over the interval $ [1, 2^n) $ satisfies $ \\sum_{k=1}^{2^n-1} f(k) \\leq \\sum_{k=0}^{n-1} 2^k \\cdot f(2^k) $. This inequality compares the original sum to a condensed version grouping terms at powers of two.",
+            "path": "Mathlib.Analysis.PSeries"
+          },
+          {
+            "formal_name": "Finset.le_sum_condensed",
+            "informal_name": "Condensed Sum Inequality for Non-Increasing Functions",
+            "kind": "theorem",
+            "type": "∀ {M : Type u_1} [inst : AddCommMonoid M] [inst_1 : PartialOrder M] [IsOrderedAddMonoid M] {f : ℕ → M},\n  (∀ ⦃m n : ℕ⦄, 0 < m → m ≤ n → f n ≤ f m) →\n    ∀ (n : ℕ), ∑ k ∈ Finset.range (2 ^ n), f k ≤ f 0 + ∑ k ∈ Finset.range n, 2 ^ k • f (2 ^ k)",
+            "informal_description": "For a function $ f : \\mathbb{N} \\to M $ into an additive commutative monoid $ M $ satisfying $ f(n) \\leq f(m) $ for all $ 0 < m \\leq n $, and for any natural number $ n $, the sum $ \\sum_{k=0}^{2^n - 1} f(k) $ is bounded above by $ f(0) + \\sum_{k=0}^{n-1} 2^k \\cdot f(2^k) $. This establishes an inequality relating the total sum over $ 2^n $ terms to a condensed sum involving powers-of-two weighted terms at positions $ 2^k $.",
+            "path": "Mathlib.Analysis.PSeries"
+          },
+          {
+            "formal_name": "Finset.sum_condensed_le",
+            "informal_name": "Condensed Sum Inequality for Decreasing Functions",
+            "kind": "theorem",
+            "type": "∀ {M : Type u_1} [inst : AddCommMonoid M] [inst_1 : PartialOrder M] [IsOrderedAddMonoid M] {f : ℕ → M},\n  (∀ ⦃m n : ℕ⦄, 1 < m → m ≤ n → f n ≤ f m) →\n    ∀ (n : ℕ), ∑ k ∈ Finset.range (n + 1), 2 ^ k • f (2 ^ k) ≤ f 1 + 2 • ∑ k ∈ Finset.Ico 2 (2 ^ n + 1), f k",
+            "informal_description": "For a function $ f : \\mathbb{N} \\to M $ (where $ M $ is an additive commutative monoid) satisfying $ f(n) \\leq f(m) $ whenever $ 1 < m \\leq n $, and for any natural number $ n $, the sum $ \\sum_{k=0}^n 2^k \\cdot f(2^k) $ is less than or equal to $ f(1) + 2 \\cdot \\sum_{k=2}^{2^n + 1} f(k) $. This inequality compares a condensed sum over powers of two to an expanded sum over natural numbers.",
+            "path": "Mathlib.Analysis.PSeries"
+          },
+          {
+            "formal_name": "Finset.le_sum_schlomilch",
+            "informal_name": "Schlömilch's Inequality for Sums of Decreasing Functions",
+            "kind": "theorem",
+            "type": "∀ {M : Type u_1} [inst : AddCommMonoid M] [inst_1 : PartialOrder M] [IsOrderedAddMonoid M] {f : ℕ → M} {u : ℕ → ℕ},\n  (∀ ⦃m n : ℕ⦄, 0 < m → m ≤ n → f n ≤ f m) →\n    (∀ (n : ℕ), 0 < u n) →\n      Monotone u →\n        ∀ (n : ℕ),\n          ∑ k ∈ Finset.range (u n), f k ≤\n            ∑ k ∈ Finset.range (u 0), f k + ∑ k ∈ Finset.range n, (u (k + 1) - u k) • f (u k)",
+            "informal_description": "Let $ f : \\mathbb{N} \\to \\mathbb{R} $ be a decreasing function and $ u : \\mathbb{N} \\to \\mathbb{N} $ a positive monotone sequence. For any natural number $ n $, the sum $ \\sum_{k=0}^{u(n)-1} f(k) $ is bounded above by $ \\sum_{k=0}^{u(0)-1} f(k) + \\sum_{k=0}^{n-1} (u(k+1) - u(k)) \\cdot f(u(k)) $, where $ \\cdot $ denotes natural number scalar multiplication.",
+            "path": "Mathlib.Analysis.PSeries"
+          }
+        ]
+      },
+      "isError": false
+    }
+  },
+  "elapsed_ms": 2857
+}

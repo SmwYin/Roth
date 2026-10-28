@@ -1,0 +1,200 @@
+{
+  "declaration": "Roth.min_le_sum_max",
+  "unresolved": [],
+  "standard_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "accepted": [
+    {
+      "label": "original",
+      "format": "disk",
+      "source": "minsum206-original-executed.lean.txt",
+      "source_sha256": "622bc2741bc7855b22f0880c6a55d61b6a12f33c43c253a942e891f9101244d5",
+      "receipt": "minsum206-original-receipt.json",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean"
+      },
+      "native_region_start_line": 15,
+      "required_info": [
+        "'Roth.min_le_sum_max' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "MINSUM206_FULL_TYPE: ∀ {θ : ℝ} {rp : ℕ} (l : ℕ),\n  min (↑l * θ / 2) (↑rp * θ ^ 2 / 3) ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ↑ν / ↑rp)",
+        "MINSUM206_DIRECT_CONSUMER: Roth.index_le_lem6",
+        "MINSUM206_AUDIT: requested=293; unique=293",
+        "MINSUM206_AUDIT_PRESENT: present=293; values=293"
+      ]
+    },
+    {
+      "label": "isolated",
+      "format": "raw",
+      "source": "minsum206-isolated-executed.lean.txt",
+      "source_sha256": "9b0805bb2710ab5ade4149c2dc01fe783ba11a6a76e3b30fa042e05162d88baa",
+      "receipt": "minsum206-isolated-receipt.json",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.min_le_sum_max\n#check @Finset.sum_range_id_mul_two\n#check @Finset.sum_le_sum_of_subset_of_nonneg\n#check @Nat.floor_lt\n#check @Nat.floor_le\n#check @Nat.lt_floor_add_one\n#check @min_le_iff\nnamespace MinSum206\nvariable {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K] [FloorSemiring K]\n\ntheorem mul_div_two_le_sum_max_aux {θ r : K} {l : ℕ} (hl : (l : K) ≤ θ * r) :\n    l * θ / 2 ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / r) := by\n  rcases Nat.eq_zero_or_pos l with rfl | hl0\n  · simp\n  by_cases hθ : θ ≤ 0\n  · exact (div_nonpos_of_nonpos_of_nonneg\n      (mul_nonpos_of_nonneg_of_nonpos (Nat.cast_nonneg l) hθ) (by norm_num)).trans\n        (Finset.sum_nonneg fun _ _ ↦ le_max_left _ _)\n  have hr := pos_of_mul_pos_right ((Nat.cast_pos.mpr hl0).trans_le hl) (le_of_not_ge hθ)\n  have hsum := congrArg (Nat.cast (R := K)) (Finset.sum_range_id_mul_two l)\n  push_cast [Nat.cast_sub hl0] at hsum\n  refine le_trans ?_ (Finset.sum_le_sum fun ν _ ↦ le_max_right 0 (θ - ν / r))\n  rw [Finset.sum_sub_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul,\n    ← Finset.sum_div, le_sub_iff_add_le, div_add_div _ _ (by norm_num) hr.ne',\n    div_le_iff₀ (by positivity)]\n  linarith only [hsum, (Nat.cast_nonneg l : (0 : K) ≤ l),\n    mul_nonneg (Nat.cast_nonneg l) (sub_nonneg.mpr hl)]\n\ntheorem mul_sq_div_three_le_sum_max_of_pos_aux {θ r : K} (hr : 0 < r) (hθ : 0 ≤ θ) {l : ℕ}\n    (hl : θ * r < l) : r * θ ^ 2 / 3 ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / r) := by\n  set n := ⌊θ * r⌋₊\n  have hnle : (n : K) ≤ θ * r := Nat.floor_le (mul_nonneg hθ hr.le)\n  have hnlt : θ * r < n + 1 := Nat.lt_floor_add_one _\n  have hsum := congrArg (Nat.cast (R := K)) (Finset.sum_range_id_mul_two (n + 1))\n  push_cast [Nat.add_sub_cancel] at hsum\n  have hbound : (θ * r) ^ 2 / 3 ≤ ∑ ν ∈ Finset.range (n + 1), (θ * r - ν) := by\n    rw [Finset.sum_sub_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul]\n    push_cast\n    generalize θ * r = a at hnle hnlt ⊢\n    linear_combination hsum / 2 + sq_nonneg a / 6 + (le_trans (Nat.cast_nonneg n) hnle) / 2 +\n      mul_nonneg (sub_nonneg.mpr hnle) (sub_nonneg.mpr hnlt.le) / 2\n  calc\n    r * θ ^ 2 / 3 = (θ * r) ^ 2 / 3 / r := (eq_div_iff hr.ne').2 (by ring)\n    _ ≤ (∑ ν ∈ Finset.range (n + 1), (θ * r - ν)) / r :=\n      (div_le_div_iff_of_pos_right hr).2 hbound\n    _ ≤ ∑ ν ∈ Finset.range (n + 1), max 0 (θ - ν / r) := by\n      simp only [Finset.sum_div, sub_div, mul_div_cancel_right₀ _ hr.ne']\n      exact Finset.sum_le_sum fun ν _ ↦ le_max_right _ _\n    _ ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / r) :=\n      Finset.sum_le_sum_of_subset_of_nonneg (Finset.range_subset_range.2\n        ((Nat.floor_lt (mul_nonneg hθ hr.le)).2 hl))\n        fun _ _ _ ↦ le_max_left _ _\n\ntheorem mul_sq_div_three_le_sum_max_aux {θ r : K} (hθ : 0 ≤ θ) {l : ℕ} (hl : θ * r ≤ l) :\n    r * θ ^ 2 / 3 ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / r) := by\n  rcases le_or_gt r 0 with hr | hr\n  · exact (div_nonpos_of_nonpos_of_nonneg (mul_nonpos_of_nonpos_of_nonneg hr (sq_nonneg θ))\n      (by norm_num)).trans (Finset.sum_nonneg fun _ _ ↦ le_max_left _ _)\n  rcases lt_or_eq_of_le hl with hl | hl\n  · exact mul_sq_div_three_le_sum_max_of_pos_aux hr hθ hl\n  · linarith only [mul_div_two_le_sum_max_aux hl.ge, congrArg (· * θ) hl,\n      mul_nonneg hr.le (sq_nonneg θ)]\n\ntheorem generic {θ rp : K} (l : ℕ) :\n    min (l * θ / 2) (rp * θ ^ 2 / 3) ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / rp) := by\n  fail_if_success solve | exact?\n  fail_if_success solve | simp\n  fail_if_success solve | positivity\n  by_cases hθ : θ ≤ 0\n  · exact (min_le_left _ _).trans ((div_nonpos_of_nonpos_of_nonneg\n      (mul_nonpos_of_nonneg_of_nonpos (Nat.cast_nonneg l) hθ) (by norm_num)).trans\n        (Finset.sum_nonneg fun _ _ ↦ le_max_left _ _))\n  rcases le_or_gt (l : K) (θ * rp) with hl | hl\n  · exact (min_le_left _ _).trans (mul_div_two_le_sum_max_aux hl)\n  · exact (min_le_right _ _).trans (mul_sq_div_three_le_sum_max_aux (le_of_not_ge hθ) hl.le)\n\ntheorem realScale {θ rp : ℝ} (l : ℕ) :\n    min (l * θ / 2) (rp * θ ^ 2 / 3) ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / rp) :=\n  generic l\n\ntheorem original {θ : ℝ} {rp : ℕ} (l : ℕ) :\n    min (l * θ / 2) (rp * θ ^ 2 / 3) ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / rp) := by\n  exact generic l\n\ntheorem noMinLinearFails : ¬ ((4 : ℝ) * 1 / 2 ≤\n    ∑ ν ∈ Finset.range 4, max 0 ((1 : ℝ) - ν / 1)) := by\n  norm_num [Finset.sum_range_succ]\n\ntheorem noMinQuadraticFails : ¬ ((3 : ℝ) * 2 ^ 2 / 3 ≤\n    ∑ ν ∈ Finset.range 0, max 0 ((2 : ℝ) - ν / 3)) := by norm_num\n\ntheorem strictFails : ¬ (min ((0 : ℝ) * 1 / 2) (3 * 1 ^ 2 / 3) <\n    ∑ ν ∈ Finset.range 0, max 0 ((1 : ℝ) - ν / 3)) := by norm_num\n\ntheorem noMaxFails : ¬ (min ((4 : ℝ) * 1 / 2) (1 * 1 ^ 2 / 3) ≤\n    ∑ ν ∈ Finset.range 4, ((1 : ℝ) - ν / 1)) := by norm_num\n\ntheorem negativeScale : min ((2 : ℝ) * 1 / 2) ((-1) * 1 ^ 2 / 3) ≤\n    ∑ ν ∈ Finset.range 2, max 0 ((1 : ℝ) - ν / (-1)) := realScale 2\n\n#print axioms generic\n#print axioms realScale\n#print axioms original\n#print axioms noMinLinearFails\n#print axioms noMinQuadraticFails\n#print axioms strictFails\n#print axioms noMaxFails\n#print axioms negativeScale\nend MinSum206\n"
+      },
+      "native_region_start_line": 20,
+      "required_info": [
+        "'MinSum206.generic' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'MinSum206.realScale' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'MinSum206.original' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'MinSum206.noMinLinearFails' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'MinSum206.noMinQuadraticFails' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'MinSum206.strictFails' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'MinSum206.noMaxFails' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'MinSum206.negativeScale' depends on axioms: [propext, Classical.choice, Quot.sound]"
+      ]
+    },
+    {
+      "label": "composition-initial",
+      "format": "raw",
+      "source": "minsum206-composition-initial-executed.lean.txt",
+      "source_sha256": "0a9a3229dbd9af6d2064b374d6cf89c2c20cb2a00ea6c3e5ab8837644a8f18ed",
+      "receipt": "minsum206-composition-initial-receipt.json",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.min_le_sum_max\nnamespace MinSum206Composition\ntheorem freshExistingGate {θ : ℝ} {rp : ℕ} (l : ℕ) :\n    min (l * θ / 2) (rp * θ ^ 2 / 3) ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / rp) := by\n  fail_if_success solve | exact?\n  fail_if_success solve | simp\n  fail_if_success solve | positivity\n  have mul_div_two_le_sum_max_aux {θ r : ℝ} {l : ℕ} (hl : (l : ℝ) ≤ θ * r) :\n      l * θ / 2 ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / r) := by\n    rcases Nat.eq_zero_or_pos l with rfl | hl0\n    · simp\n    by_cases hθ : θ ≤ 0\n    · exact (div_nonpos_of_nonpos_of_nonneg\n        (mul_nonpos_of_nonneg_of_nonpos (Nat.cast_nonneg l) hθ) (by norm_num)).trans\n          (Finset.sum_nonneg fun _ _ ↦ le_max_left _ _)\n    have hr := pos_of_mul_pos_right ((Nat.cast_pos.mpr hl0).trans_le hl) (le_of_not_ge hθ)\n    have hsum := congrArg (Nat.cast (R := ℝ)) (Finset.sum_range_id_mul_two l)\n    push_cast [Nat.cast_sub hl0] at hsum\n    refine le_trans ?_ (Finset.sum_le_sum fun ν _ ↦ le_max_right 0 (θ - ν / r))\n    rw [Finset.sum_sub_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul,\n      ← Finset.sum_div, le_sub_iff_add_le, div_add_div _ _ (by norm_num) hr.ne',\n      div_le_iff₀ (by positivity)]\n    linarith only [hsum, (Nat.cast_nonneg l : (0 : ℝ) ≤ l),\n      mul_nonneg (Nat.cast_nonneg l) (sub_nonneg.mpr hl)]\n  have mul_sq_div_three_le_sum_max_of_pos_aux {θ r : ℝ} (hr : 0 < r) (hθ : 0 ≤ θ) {l : ℕ}\n      (hl : θ * r < l) : r * θ ^ 2 / 3 ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / r) := by\n    set n := ⌊θ * r⌋₊\n    have hnle : (n : ℝ) ≤ θ * r := Nat.floor_le (mul_nonneg hθ hr.le)\n    have hnlt : θ * r < n + 1 := Nat.lt_floor_add_one _\n    have hsum := congrArg (Nat.cast (R := ℝ)) (Finset.sum_range_id_mul_two (n + 1))\n    push_cast [Nat.add_sub_cancel] at hsum\n    have hbound : (θ * r) ^ 2 / 3 ≤ ∑ ν ∈ Finset.range (n + 1), (θ * r - ν) := by\n      rw [Finset.sum_sub_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul]\n      push_cast\n      generalize θ * r = a at hnle hnlt ⊢\n      linear_combination hsum / 2 + sq_nonneg a / 6 + (le_trans (Nat.cast_nonneg n) hnle) / 2 +\n        mul_nonneg (sub_nonneg.mpr hnle) (sub_nonneg.mpr hnlt.le) / 2\n    calc\n      r * θ ^ 2 / 3 = (θ * r) ^ 2 / 3 / r := (eq_div_iff hr.ne').2 (by ring)\n      _ ≤ (∑ ν ∈ Finset.range (n + 1), (θ * r - ν)) / r :=\n        (div_le_div_iff_of_pos_right hr).2 hbound\n      _ ≤ ∑ ν ∈ Finset.range (n + 1), max 0 (θ - ν / r) := by\n        simp only [Finset.sum_div, sub_div, mul_div_cancel_right₀ _ hr.ne']\n        exact Finset.sum_le_sum fun ν _ ↦ le_max_right _ _\n      _ ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / r) :=\n        Finset.sum_le_sum_of_subset_of_nonneg (Finset.range_subset_range.2\n          ((Nat.floor_lt (mul_nonneg hθ hr.le)).2 hl))\n          fun _ _ _ ↦ le_max_left _ _\n  have mul_sq_div_three_le_sum_max_aux {θ r : ℝ} (hθ : 0 ≤ θ) {l : ℕ} (hl : θ * r ≤ l) :\n      r * θ ^ 2 / 3 ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / r) := by\n    rcases le_or_gt r 0 with hr | hr\n    · exact (div_nonpos_of_nonpos_of_nonneg (mul_nonpos_of_nonpos_of_nonneg hr (sq_nonneg θ))\n        (by norm_num)).trans (Finset.sum_nonneg fun _ _ ↦ le_max_left _ _)\n    rcases lt_or_eq_of_le hl with hl | hl\n    · exact mul_sq_div_three_le_sum_max_of_pos_aux hr hθ hl\n    · linarith only [mul_div_two_le_sum_max_aux hl.ge, congrArg (· * θ) hl,\n        mul_nonneg hr.le (sq_nonneg θ)]\n  by_cases hθ : θ ≤ 0\n  · exact (min_le_left _ _).trans ((div_nonpos_of_nonpos_of_nonneg\n      (mul_nonpos_of_nonneg_of_nonpos (Nat.cast_nonneg l) hθ) (by norm_num)).trans\n        (Finset.sum_nonneg fun _ _ ↦ le_max_left _ _))\n  rcases le_or_gt (l : ℝ) (θ * rp) with hl | hl\n  · exact (min_le_left _ _).trans (mul_div_two_le_sum_max_aux hl)\n  · exact (min_le_right _ _).trans (mul_sq_div_three_le_sum_max_aux (le_of_not_ge hθ) hl.le)\n\n\n#print axioms freshExistingGate\nend MinSum206Composition\n"
+      },
+      "native_region_start_line": 20,
+      "required_info": [
+        "'MinSum206Composition.freshExistingGate' depends on axioms: [propext, Classical.choice, Quot.sound]"
+      ]
+    },
+    {
+      "label": "composition",
+      "format": "raw",
+      "source": "minsum206-composition-executed.lean.txt",
+      "source_sha256": "d987aae548c61dade36a46245d918620aa0665dcb2d1defab8f5fc5e4416d1b0",
+      "receipt": "minsum206-composition-receipt.json",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.min_le_sum_max\nnamespace MinSum206Composition\ntheorem freshExistingGate {θ : ℝ} {rp : ℕ} (l : ℕ) :\n    min (l * θ / 2) (rp * θ ^ 2 / 3) ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / rp) := by\n  fail_if_success solve | exact?\n  fail_if_success solve | simp\n  fail_if_success solve | positivity\n  fail_if_success\n    exact (min_le_left (l * θ / 2) (rp * θ ^ 2 / 3)).trans\n      (Finset.sum_nonneg fun ν (_ : ν ∈ Finset.range l) ↦ le_max_left 0 (θ - ν / rp))\n  fail_if_success\n    exact (min_le_right (l * θ / 2) (rp * θ ^ 2 / 3)).trans\n      (Finset.sum_nonneg fun ν (_ : ν ∈ Finset.range l) ↦ le_max_left 0 (θ - ν / rp))\n  have mul_div_two_le_sum_max_aux {θ r : ℝ} {l : ℕ} (hl : (l : ℝ) ≤ θ * r) :\n      l * θ / 2 ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / r) := by\n    rcases Nat.eq_zero_or_pos l with rfl | hl0\n    · simp\n    by_cases hθ : θ ≤ 0\n    · exact (div_nonpos_of_nonpos_of_nonneg\n        (mul_nonpos_of_nonneg_of_nonpos (Nat.cast_nonneg l) hθ) (by norm_num)).trans\n          (Finset.sum_nonneg fun _ _ ↦ le_max_left _ _)\n    have hr := pos_of_mul_pos_right ((Nat.cast_pos.mpr hl0).trans_le hl) (le_of_not_ge hθ)\n    have hsum := congrArg (Nat.cast (R := ℝ)) (Finset.sum_range_id_mul_two l)\n    push_cast [Nat.cast_sub hl0] at hsum\n    refine le_trans ?_ (Finset.sum_le_sum fun ν _ ↦ le_max_right 0 (θ - ν / r))\n    rw [Finset.sum_sub_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul,\n      ← Finset.sum_div, le_sub_iff_add_le, div_add_div _ _ (by norm_num) hr.ne',\n      div_le_iff₀ (by positivity)]\n    linarith only [hsum, (Nat.cast_nonneg l : (0 : ℝ) ≤ l),\n      mul_nonneg (Nat.cast_nonneg l) (sub_nonneg.mpr hl)]\n  have mul_sq_div_three_le_sum_max_of_pos_aux {θ r : ℝ} (hr : 0 < r) (hθ : 0 ≤ θ) {l : ℕ}\n      (hl : θ * r < l) : r * θ ^ 2 / 3 ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / r) := by\n    set n := ⌊θ * r⌋₊\n    have hnle : (n : ℝ) ≤ θ * r := Nat.floor_le (mul_nonneg hθ hr.le)\n    have hnlt : θ * r < n + 1 := Nat.lt_floor_add_one _\n    have hsum := congrArg (Nat.cast (R := ℝ)) (Finset.sum_range_id_mul_two (n + 1))\n    push_cast [Nat.add_sub_cancel] at hsum\n    have hbound : (θ * r) ^ 2 / 3 ≤ ∑ ν ∈ Finset.range (n + 1), (θ * r - ν) := by\n      rw [Finset.sum_sub_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul]\n      push_cast\n      generalize θ * r = a at hnle hnlt ⊢\n      linear_combination hsum / 2 + sq_nonneg a / 6 + (le_trans (Nat.cast_nonneg n) hnle) / 2 +\n        mul_nonneg (sub_nonneg.mpr hnle) (sub_nonneg.mpr hnlt.le) / 2\n    calc\n      r * θ ^ 2 / 3 = (θ * r) ^ 2 / 3 / r := (eq_div_iff hr.ne').2 (by ring)\n      _ ≤ (∑ ν ∈ Finset.range (n + 1), (θ * r - ν)) / r :=\n        (div_le_div_iff_of_pos_right hr).2 hbound\n      _ ≤ ∑ ν ∈ Finset.range (n + 1), max 0 (θ - ν / r) := by\n        simp only [Finset.sum_div, sub_div, mul_div_cancel_right₀ _ hr.ne']\n        exact Finset.sum_le_sum fun ν _ ↦ le_max_right _ _\n      _ ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / r) :=\n        Finset.sum_le_sum_of_subset_of_nonneg (Finset.range_subset_range.2\n          ((Nat.floor_lt (mul_nonneg hθ hr.le)).2 hl))\n          fun _ _ _ ↦ le_max_left _ _\n  have mul_sq_div_three_le_sum_max_aux {θ r : ℝ} (hθ : 0 ≤ θ) {l : ℕ} (hl : θ * r ≤ l) :\n      r * θ ^ 2 / 3 ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / r) := by\n    rcases le_or_gt r 0 with hr | hr\n    · exact (div_nonpos_of_nonpos_of_nonneg (mul_nonpos_of_nonpos_of_nonneg hr (sq_nonneg θ))\n        (by norm_num)).trans (Finset.sum_nonneg fun _ _ ↦ le_max_left _ _)\n    rcases lt_or_eq_of_le hl with hl | hl\n    · exact mul_sq_div_three_le_sum_max_of_pos_aux hr hθ hl\n    · linarith only [mul_div_two_le_sum_max_aux hl.ge, congrArg (· * θ) hl,\n        mul_nonneg hr.le (sq_nonneg θ)]\n  by_cases hθ : θ ≤ 0\n  · exact (min_le_left _ _).trans ((div_nonpos_of_nonpos_of_nonneg\n      (mul_nonpos_of_nonneg_of_nonpos (Nat.cast_nonneg l) hθ) (by norm_num)).trans\n        (Finset.sum_nonneg fun _ _ ↦ le_max_left _ _))\n  rcases le_or_gt (l : ℝ) (θ * rp) with hl | hl\n  · exact (min_le_left _ _).trans (mul_div_two_le_sum_max_aux hl)\n  · exact (min_le_right _ _).trans (mul_sq_div_three_le_sum_max_aux (le_of_not_ge hθ) hl.le)\n\n\n#print axioms freshExistingGate\nend MinSum206Composition\n"
+      },
+      "native_region_start_line": 20,
+      "required_info": [
+        "'MinSum206Composition.freshExistingGate' depends on axioms: [propext, Classical.choice, Quot.sound]"
+      ]
+    },
+    {
+      "label": "stronger",
+      "format": "raw",
+      "source": "minsum206-stronger-executed.lean.txt",
+      "source_sha256": "ae904f775702ac1d86447c661b8038de44b80d26eb49f1116f2f3695886aad79",
+      "receipt": "minsum206-stronger-receipt.json",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.min_le_sum_max\nnamespace MinSum206Stronger\nvariable {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K] [FloorSemiring K]\n\ntheorem mul_div_two_le_sum_max_aux {θ r : K} {l : ℕ} (hl : (l : K) ≤ θ * r) :\n    l * θ / 2 ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / r) := by\n  rcases Nat.eq_zero_or_pos l with rfl | hl0\n  · simp\n  by_cases hθ : θ ≤ 0\n  · exact (div_nonpos_of_nonpos_of_nonneg\n      (mul_nonpos_of_nonneg_of_nonpos (Nat.cast_nonneg l) hθ) (by norm_num)).trans\n        (Finset.sum_nonneg fun _ _ ↦ le_max_left _ _)\n  have hr := pos_of_mul_pos_right ((Nat.cast_pos.mpr hl0).trans_le hl) (le_of_not_ge hθ)\n  have hsum := congrArg (Nat.cast (R := K)) (Finset.sum_range_id_mul_two l)\n  push_cast [Nat.cast_sub hl0] at hsum\n  refine le_trans ?_ (Finset.sum_le_sum fun ν _ ↦ le_max_right 0 (θ - ν / r))\n  rw [Finset.sum_sub_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul,\n    ← Finset.sum_div, le_sub_iff_add_le, div_add_div _ _ (by norm_num) hr.ne',\n    div_le_iff₀ (by positivity)]\n  linarith only [hsum, (Nat.cast_nonneg l : (0 : K) ≤ l),\n    mul_nonneg (Nat.cast_nonneg l) (sub_nonneg.mpr hl)]\n\ntheorem mul_sq_div_three_le_sum_max_of_pos_aux {θ r : K} (hr : 0 < r) (hθ : 0 ≤ θ) {l : ℕ}\n    (hl : θ * r < l) : r * θ ^ 2 / 2 ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / r) := by\n  set n := ⌊θ * r⌋₊\n  have hnle : (n : K) ≤ θ * r := Nat.floor_le (mul_nonneg hθ hr.le)\n  have hnlt : θ * r < n + 1 := Nat.lt_floor_add_one _\n  have hsum := congrArg (Nat.cast (R := K)) (Finset.sum_range_id_mul_two (n + 1))\n  push_cast [Nat.add_sub_cancel] at hsum\n  have hbound : (θ * r) ^ 2 / 2 ≤ ∑ ν ∈ Finset.range (n + 1), (θ * r - ν) := by\n    rw [Finset.sum_sub_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul]\n    push_cast\n    generalize θ * r = a at hnle hnlt ⊢\n    linear_combination hsum / 2 + (le_trans (Nat.cast_nonneg n) hnle) / 2 +\n      mul_nonneg (sub_nonneg.mpr hnle) (sub_nonneg.mpr hnlt.le) / 2\n  calc\n    r * θ ^ 2 / 2 = (θ * r) ^ 2 / 2 / r := (eq_div_iff hr.ne').2 (by ring)\n    _ ≤ (∑ ν ∈ Finset.range (n + 1), (θ * r - ν)) / r :=\n      (div_le_div_iff_of_pos_right hr).2 hbound\n    _ ≤ ∑ ν ∈ Finset.range (n + 1), max 0 (θ - ν / r) := by\n      simp only [Finset.sum_div, sub_div, mul_div_cancel_right₀ _ hr.ne']\n      exact Finset.sum_le_sum fun ν _ ↦ le_max_right _ _\n    _ ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / r) :=\n      Finset.sum_le_sum_of_subset_of_nonneg (Finset.range_subset_range.2\n        ((Nat.floor_lt (mul_nonneg hθ hr.le)).2 hl))\n        fun _ _ _ ↦ le_max_left _ _\n\ntheorem mul_sq_div_three_le_sum_max_aux {θ r : K} (hθ : 0 ≤ θ) {l : ℕ} (hl : θ * r ≤ l) :\n    r * θ ^ 2 / 2 ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / r) := by\n  rcases le_or_gt r 0 with hr | hr\n  · exact (div_nonpos_of_nonpos_of_nonneg (mul_nonpos_of_nonpos_of_nonneg hr (sq_nonneg θ))\n      (by norm_num)).trans (Finset.sum_nonneg fun _ _ ↦ le_max_left _ _)\n  rcases lt_or_eq_of_le hl with hl | hl\n  · exact mul_sq_div_three_le_sum_max_of_pos_aux hr hθ hl\n  · linarith only [mul_div_two_le_sum_max_aux hl.ge, congrArg (· * θ) hl,\n      mul_nonneg hr.le (sq_nonneg θ)]\n\ntheorem generic {θ rp : K} (l : ℕ) :\n    min (l * θ / 2) (rp * θ ^ 2 / 2) ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / rp) := by\n  fail_if_success solve | exact?\n  fail_if_success solve | simp\n  fail_if_success solve | positivity\n  by_cases hθ : θ ≤ 0\n  · exact (min_le_left _ _).trans ((div_nonpos_of_nonpos_of_nonneg\n      (mul_nonpos_of_nonneg_of_nonpos (Nat.cast_nonneg l) hθ) (by norm_num)).trans\n        (Finset.sum_nonneg fun _ _ ↦ le_max_left _ _))\n  rcases le_or_gt (l : K) (θ * rp) with hl | hl\n  · exact (min_le_left _ _).trans (mul_div_two_le_sum_max_aux hl)\n  · exact (min_le_right _ _).trans (mul_sq_div_three_le_sum_max_aux (le_of_not_ge hθ) hl.le)\n\ntheorem originalViaStronger {θ : ℝ} {rp : ℕ} (l : ℕ) :\n    min (l * θ / 2) (rp * θ ^ 2 / 3) ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / rp) := by\n  refine (min_le_min_left _ ?_).trans (generic l)\n  nlinarith only [mul_nonneg (Nat.cast_nonneg rp : (0 : ℝ) ≤ rp) (sq_nonneg θ)]\n\n#print axioms generic\n#print axioms originalViaStronger\nend MinSum206Stronger\n"
+      },
+      "native_region_start_line": 20,
+      "required_info": [
+        "'MinSum206Stronger.generic' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'MinSum206Stronger.originalViaStronger' depends on axioms: [propext, Classical.choice, Quot.sound]"
+      ]
+    },
+    {
+      "label": "finite",
+      "format": "raw",
+      "source": "minsum206-finite-executed.lean.txt",
+      "source_sha256": "dbac4b65567e780232ab65a099046f0004c2a25542c667d085baf1fab17d1281",
+      "receipt": "minsum206-finite-receipt.json",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.min_le_sum_max\n#check @Nat.findGreatest_spec\n#check @Nat.findGreatest_is_greatest\nnamespace MinSum206Finite\nvariable {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]\n\ntheorem mul_div_two_le_sum_max_aux {θ r : K} {l : ℕ} (hl : (l : K) ≤ θ * r) :\n    l * θ / 2 ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / r) := by\n  rcases Nat.eq_zero_or_pos l with rfl | hl0\n  · simp\n  by_cases hθ : θ ≤ 0\n  · exact (div_nonpos_of_nonpos_of_nonneg\n      (mul_nonpos_of_nonneg_of_nonpos (Nat.cast_nonneg l) hθ) (by norm_num)).trans\n        (Finset.sum_nonneg fun _ _ ↦ le_max_left _ _)\n  have hr := pos_of_mul_pos_right ((Nat.cast_pos.mpr hl0).trans_le hl) (le_of_not_ge hθ)\n  have hsum := congrArg (Nat.cast (R := K)) (Finset.sum_range_id_mul_two l)\n  push_cast [Nat.cast_sub hl0] at hsum\n  refine le_trans ?_ (Finset.sum_le_sum fun ν _ ↦ le_max_right 0 (θ - ν / r))\n  rw [Finset.sum_sub_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul,\n    ← Finset.sum_div, le_sub_iff_add_le, div_add_div _ _ (by norm_num) hr.ne',\n    div_le_iff₀ (by positivity)]\n  linarith only [hsum, (Nat.cast_nonneg l : (0 : K) ≤ l),\n    mul_nonneg (Nat.cast_nonneg l) (sub_nonneg.mpr hl)]\n\ntheorem mul_sq_div_three_le_sum_max_of_pos_aux {θ r : K} (hr : 0 < r) (hθ : 0 ≤ θ) {l : ℕ}\n    (hl : θ * r < l) : r * θ ^ 2 / 2 ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / r) := by\n  let n := Nat.findGreatest (fun k : ℕ ↦ (k : K) ≤ θ * r) l\n  have hnle : (n : K) ≤ θ * r := Nat.findGreatest_spec (P := fun k : ℕ ↦ (k : K) ≤ θ * r)\n    (Nat.zero_le l) (by simpa only [Nat.cast_zero] using mul_nonneg hθ hr.le)\n  have hnl : n < l := by exact_mod_cast hnle.trans_lt hl\n  have hnlt : θ * r < (n : K) + 1 := by\n    have h := Nat.findGreatest_is_greatest (P := fun k : ℕ ↦ (k : K) ≤ θ * r)\n      (Nat.lt_succ_self n) (Nat.succ_le_of_lt hnl)\n    simpa only [Nat.cast_succ] using lt_of_not_ge h\n  have hsum := congrArg (Nat.cast (R := K)) (Finset.sum_range_id_mul_two (n + 1))\n  push_cast [Nat.add_sub_cancel] at hsum\n  have hbound : (θ * r) ^ 2 / 2 ≤ ∑ ν ∈ Finset.range (n + 1), (θ * r - ν) := by\n    rw [Finset.sum_sub_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul]\n    push_cast\n    generalize θ * r = a at hnle hnlt ⊢\n    linear_combination hsum / 2 + (le_trans (Nat.cast_nonneg n) hnle) / 2 +\n      mul_nonneg (sub_nonneg.mpr hnle) (sub_nonneg.mpr hnlt.le) / 2\n  calc\n    r * θ ^ 2 / 2 = (θ * r) ^ 2 / 2 / r := (eq_div_iff hr.ne').2 (by ring)\n    _ ≤ (∑ ν ∈ Finset.range (n + 1), (θ * r - ν)) / r :=\n      (div_le_div_iff_of_pos_right hr).2 hbound\n    _ ≤ ∑ ν ∈ Finset.range (n + 1), max 0 (θ - ν / r) := by\n      simp only [Finset.sum_div, sub_div, mul_div_cancel_right₀ _ hr.ne']\n      exact Finset.sum_le_sum fun ν _ ↦ le_max_right _ _\n    _ ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / r) :=\n      Finset.sum_le_sum_of_subset_of_nonneg (Finset.range_subset_range.2\n        (Nat.succ_le_of_lt hnl))\n        fun _ _ _ ↦ le_max_left _ _\n\ntheorem mul_sq_div_three_le_sum_max_aux {θ r : K} (hθ : 0 ≤ θ) {l : ℕ} (hl : θ * r ≤ l) :\n    r * θ ^ 2 / 2 ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / r) := by\n  rcases le_or_gt r 0 with hr | hr\n  · exact (div_nonpos_of_nonpos_of_nonneg (mul_nonpos_of_nonpos_of_nonneg hr (sq_nonneg θ))\n      (by norm_num)).trans (Finset.sum_nonneg fun _ _ ↦ le_max_left _ _)\n  rcases lt_or_eq_of_le hl with hl | hl\n  · exact mul_sq_div_three_le_sum_max_of_pos_aux hr hθ hl\n  · linarith only [mul_div_two_le_sum_max_aux hl.ge, congrArg (· * θ) hl,\n      mul_nonneg hr.le (sq_nonneg θ)]\n\ntheorem generic {θ rp : K} (l : ℕ) :\n    min (l * θ / 2) (rp * θ ^ 2 / 2) ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / rp) := by\n  fail_if_success solve | exact?\n  fail_if_success solve | simp\n  fail_if_success solve | positivity\n  by_cases hθ : θ ≤ 0\n  · exact (min_le_left _ _).trans ((div_nonpos_of_nonpos_of_nonneg\n      (mul_nonpos_of_nonneg_of_nonpos (Nat.cast_nonneg l) hθ) (by norm_num)).trans\n        (Finset.sum_nonneg fun _ _ ↦ le_max_left _ _))\n  rcases le_or_gt (l : K) (θ * rp) with hl | hl\n  · exact (min_le_left _ _).trans (mul_div_two_le_sum_max_aux hl)\n  · exact (min_le_right _ _).trans (mul_sq_div_three_le_sum_max_aux (le_of_not_ge hθ) hl.le)\n\ntheorem originalViaStronger {θ : ℝ} {rp : ℕ} (l : ℕ) :\n    min (l * θ / 2) (rp * θ ^ 2 / 3) ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / rp) := by\n  refine (min_le_min_left _ ?_).trans (generic l)\n  nlinarith only [mul_nonneg (Nat.cast_nonneg rp : (0 : ℝ) ≤ rp) (sq_nonneg θ)]\n\n#print axioms generic\n#print axioms originalViaStronger\nend MinSum206Finite\n"
+      },
+      "native_region_start_line": 20,
+      "required_info": [
+        "'MinSum206Finite.generic' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'MinSum206Finite.originalViaStronger' depends on axioms: [propext, Classical.choice, Quot.sound]"
+      ]
+    },
+    {
+      "label": "fullmodule-initial",
+      "format": "disk",
+      "source": "minsum206-fullmodule-initial-executed.lean.txt",
+      "source_sha256": "982fc8d5706fa01110e1d453b48dc61f6baa29412386048be5a32ca08ebe6731",
+      "receipt": "minsum206-fullmodule-initial-receipt.json",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean"
+      },
+      "native_region_start_line": 447,
+      "required_info": [
+        "'MinSum206Module.min_le_sum_max' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'MinSum206Module.index_le_lem6' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'MinSum206Module.inlineConsumer' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'MinSum206Module.Θ_option_le' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'MinSum206Module.Θ_lt' depends on axioms: [propext, Classical.choice, Quot.sound]"
+      ]
+    },
+    {
+      "label": "fullmodule",
+      "format": "disk",
+      "source": "minsum206-fullmodule-executed.lean.txt",
+      "source_sha256": "accc03d7e91a2f4a565116e51e5fb0bfac79f142249a45ab92c70d9579bdbd16",
+      "receipt": "minsum206-fullmodule-receipt.json",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean"
+      },
+      "native_region_start_line": 530,
+      "required_info": [
+        "'MinSum206Module.min_le_sum_max' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'MinSum206Module.index_le_lem6' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'MinSum206Module.inlineConsumer' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'MinSum206Module.Θ_option_le' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'MinSum206Module.Θ_lt' depends on axioms: [propext, Classical.choice, Quot.sound]"
+      ]
+    }
+  ],
+  "rejected": [
+    {
+      "source": "minsum206-isolated-rejected-executed.lean.txt",
+      "source_sha256": "64b54c9d77853a05e26e4ecf04b7f9318c5ca35c240048faf55af0f73483fb2c",
+      "receipt": "minsum206-isolated-rejected-receipt.json",
+      "reason": "Missed generic scalar annotation, malformed multiline tactic, finite sum normalization; alias-contaminated exact? guard. Recovered sorryAx is excluded.",
+      "accepted": false
+    },
+    {
+      "source": "minsum206-finite-rejected-executed.lean.txt",
+      "source_sha256": "8e2d30e53ff108d9c63c1ae681f0d0ba1c073b89fda92a2351f4f0a6aef2cbce",
+      "receipt": "minsum206-finite-rejected-receipt.json",
+      "reason": "Cast of Nat.succ not normalized by Nat.cast_add; fixed using Nat.cast_succ. Recovered sorryAx is excluded.",
+      "accepted": false
+    }
+  ],
+  "audit": {
+    "source": "minsum206-original-executed.lean.txt",
+    "receipt": "minsum206-original-receipt.json",
+    "marker": "MINSUM206",
+    "requested": 293,
+    "unique": 293,
+    "present": 293,
+    "values": 293
+  },
+  "canonical_direct_consumers": [
+    "Roth.index_le_lem6"
+  ],
+  "canonical_direct_type_consumers": [],
+  "composition": {
+    "strict_three_existing_call_term_verified": false,
+    "parent_project_helpers_counted_as_mathlib_blocks": false,
+    "new_helpers_counted_as_existing": false,
+    "actual_caller_replays": 1,
+    "actual_call_occurrences": 1,
+    "inline_caller_replays": 1,
+    "no_circular_use_of_target_in_new_proof": true,
+    "no_global_absence_claim": true,
+    "full_module_replay": true,
+    "pre_helper_existing_gate_source": "minsum206-composition-executed.lean.txt",
+    "generic_isolated_guards_after_new_helpers": true,
+    "exact_search_before_new_helpers": true
+  },
+  "active_virtual_import_count": 18,
+  "persistent_disk_import_count": 9,
+  "generalization": {
+    "arbitrary_scale_verified": true,
+    "ordered_field_verified": true,
+    "floor_structure_removed": true,
+    "bounded_findGreatest_cutoff_verified": true,
+    "quadratic_denominator_two_verified": true,
+    "strengthens_original_natural_scale": true,
+    "no_uniform_negative_scale_coefficient_comparison": true,
+    "no_minimal_hierarchy_claim": true,
+    "no_optimal_constant_claim": true
+  }
+}
