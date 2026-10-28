@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 191/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 192/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 191; remaining: 102.
-- Verdicts: 19 NO-composable-from-mathlib, 13 YES-add-as-is, 25 YES-but-generalise-first, 44 NO-mathlib-has-it, 57 BORDERLINE-needs-human, 33 SKIP.
+- Completed applicable assessments: 192; remaining: 101.
+- Verdicts: 19 NO-composable-from-mathlib, 13 YES-add-as-is, 25 YES-but-generalise-first, 44 NO-mathlib-has-it, 57 BORDERLINE-needs-human, 34 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -2208,6 +2208,17 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: call occurrences: 2; distinct declarations: 2; external to file: 0; statement occurrences: 0; documentation occurrences: 1; callers: {'name': 'Roth.theta_scaled_unique_le_aux', 'visibility': 'private', 'file': 'Roth/Theta.lean', 'line': 758, 'reference': 'refine (Θ_mono hM1 hM _).trans', 'refactor': 'Inline csSup_le_csSup at s=indexSet M (fun _:Unit ↦ q₂) (fun _ ↦ l*r₂), t=indexSet (q₁^(δ*(l*r₁))) same q/r; retain indexSet_bddAbove, indexSet_nonempty hM1 and height inclusion using hM; preserve full Θ_unique_le/arithmetic continuation'}, {'name': 'Roth.theta_prefix_lt_aux', 'visibility': 'private', 'file': 'Roth/Theta.lean', 'line': 790, 'reference': 'refine (Θ_mono hM1 hM _).trans_lt', 'refactor': 'Inline csSup_le_csSup at q=(fun j:Fin(n+1) ↦ q j.castSucc), r=(fun j ↦ l*r j.castSucc), heights M and q0^(ε*(l*r0)); retain project boundedness/nonempty and height inclusion using hM; preserve hCeq/ih/finite-index arithmetic continuation'}
 - Verdict: NO-mathlib-has-it; [complete report](.mathlib-quality/overview/mathlibable/Roth.Θ_mono.md).
 
+### Completed: `Roth.indexSet_comp_subset`
+
+- Type: `∀ {σ : Type u_1} [inst : Fintype σ] {τ : Type u_2}
+  [inst_1 : Fintype τ] (e : σ ≃ τ) (B : ℝ) (q r : τ → ℕ), Roth.indexSet B (q ∘ ⇑e) (r ∘ ⇑e) ⊆ Roth.indexSet B q r`
+- What: Renaming variables along an equivalence carries every admissible polynomial index into the corresponding family with the renamed denominator and weight vectors.
+- How: Rename polynomial and numerator witnesses, preserve coefficients through coeff_rename_mapDomain, and use index_rename to preserve index.
+- Hypotheses: Finite variable types and a bijection between them. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.
+- Project dependencies: Roth.indexSet, Roth.index_rename
+- Caller summary: One source caller, Θ_equiv, applies the helper twice (e and e.symm); one direct original value consumer and no claim about transitive closure. Entire Theta module replay succeeds with a fresh target name.
+- Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.indexSet_comp_subset.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -2616,6 +2627,8 @@ Completed `Roth.Θ_le_of_forall_index_le`: NO-mathlib-has-it: independently veri
 
 Completed `Roth.Θ_mono`: existing: csSup_le_csSup; path: Mathlib/Order/ConditionallyCompleteLattice/Basic.lean:209; isolated verified: True; bridge: Θ = sSup indexSet is definitional; height-family inclusion is a new explicit project-specific proof, verified separately.; project helpers not mathlib blocks: Roth.indexSet_bddAbove, Roth.indexSet_nonempty
 
+Completed `Roth.indexSet_comp_subset`: Rename the polynomial, transport nonvanishing through injective renaming, degree bounds through the variable equivalence, and coefficient bounds through surjectivity of exponent mapDomain. Compose the numerator vector with the inverse equivalence, preserve its coprimality, then use index_rename and map_rename to identify index values. This is a live private transport component of Θ_equiv, distinct from the final two-sided equality of suprema.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -2999,6 +3012,8 @@ Completed `Roth.Θ_le_card`: indexSet_bddAbove repeats the same arithmetic point
 Completed `Roth.Θ_le_of_forall_index_le`: Structural supremum law shared with Real.sSup_le in Θ_le_card; unlike the preceding substantive bound, the full pointwise arithmetic premise is supplied here.
 
 Completed `Roth.Θ_mono`: The analogous monotonicity law for sSup already exists in csSup_le_csSup; apply the parent re-aim rule rather than proposing a Roth-specific upstream law.
+
+Completed `Roth.indexSet_comp_subset`: The inclusion transport is used in both directions by Θ_equiv; it is distinct from the final equality of suprema and from height monotonicity. Retain this private transport boundary.
 
 ## Part 5: Generalization opportunities
 
@@ -3394,6 +3409,8 @@ Completed `Roth.Θ_le_of_forall_index_le`: Abstract csSup_le handles arbitrary c
 
 Completed `Roth.Θ_mono`: verified hypothesis deletion: hB can be dropped for this actual family: Real.sSup_le plus le_csSup, height inclusion, and Θ_nonneg. Native all_bounds/monotone_all verified.; abstract form: csSup_le_csSup over any ConditionallyCompleteLattice, already in mathlib.; interface constraint: Fintype remains needed by Θ/index fixed signatures; removing it from the abstract set theorem is a change of interface.; false generalization guard: Subset alone is false for real sSup: ∅ ⊆ {-1}, with sSup∅=0 > -1. No CompleteLattice/OrderBot instance for ℝ assumed.
 
+Completed `Roth.indexSet_comp_subset`: No public generality claim under the private prefilter; preserve the existing definition and interface.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -3778,6 +3795,8 @@ Completed `Roth.Θ_le_card`: Whether a Taylor coordinate-degree/cardinality enve
 Completed `Roth.Θ_le_of_forall_index_le`: No missing supremum-upper-bound API. image2 transport exists as Set.forall_mem_image2; arithmetic polynomial bounds remain separate.
 
 Completed `Roth.Θ_mono`: No missing generic supremum monotonicity law. A local indexSet-height inclusion helper may improve organization; it is not an existing mathlib replacement. This does not resolve the substantive boundedness API assessment.
+
+Completed `Roth.indexSet_comp_subset`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 ## Part 7: Junk / removable
 
@@ -4166,6 +4185,8 @@ Completed `Roth.Θ_le_of_forall_index_le`: Not dead: two explicit applications a
 
 Completed `Roth.Θ_mono`: Used twice in private Lemma7 helpers; not dead code. No explicit type consumers or external-to-file callers. Not a simp theorem.
 
+Completed `Roth.indexSet_comp_subset`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -4361,6 +4382,7 @@ Completed `Roth.Θ_mono`: Used twice in private Lemma7 helpers; not dead code. N
 | 189 | `Roth.Θ_le_card` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.Θ_le_card.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.Θ_le_card/root-acceptance.json) |
 | 190 | `Roth.Θ_le_of_forall_index_le` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.Θ_le_of_forall_index_le.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.Θ_le_of_forall_index_le/root-acceptance.json) |
 | 191 | `Roth.Θ_mono` | NO-mathlib-has-it | [Report](.mathlib-quality/overview/mathlibable/Roth.Θ_mono.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.Θ_mono/root-acceptance.json) |
+| 192 | `Roth.indexSet_comp_subset` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.indexSet_comp_subset.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.indexSet_comp_subset/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -4742,12 +4764,14 @@ Completed `Roth.Θ_le_of_forall_index_le` action: Do not upstream. In a separate
 
 Completed `Roth.Θ_mono` action: Do not upstream Θ_mono separately. In Roth/Theta.lean either keep this convenient wrapper, strengthen it locally by deleting hB, or inline csSup_le_csSup with the verified family inclusion at both identified callers. Production remains unchanged.
 
+Completed `Roth.indexSet_comp_subset` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.indexSet_comp_subset` next. Supporting identities receive their own applicable checks.
+   `Roth.Θ_equiv` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

@@ -1,0 +1,55 @@
+{
+  "file": "Roth/Theta.lean",
+  "line": 141,
+  "name": "Roth.indexSet_comp_subset",
+  "short": "indexSet_comp_subset",
+  "kind": "lemma",
+  "visibility": "private",
+  "end_line": 154,
+  "source": "private lemma indexSet_comp_subset {τ : Type*} [Fintype τ] (e : σ ≃ τ) (B : ℝ) (q r : τ → ℕ) :\n    indexSet B (q ∘ e) (r ∘ e) ⊆ indexSet B q r := by\n  rintro _ ⟨R, ⟨hR0, hRd, hRc⟩, h, hh, rfl⟩\n  refine ⟨rename e R, ⟨?_, ?_, ?_⟩, h ∘ e.symm, ?_, ?_⟩\n  · simpa [rename_eq_zero_iff_of_injective R e.injective] using hR0\n  · intro j\n    obtain ⟨i, rfl⟩ := e.surjective j\n    simpa [degreeOf_rename_of_injective e.injective] using hRd i\n  · intro d\n    obtain ⟨d, rfl⟩ := Finsupp.mapDomain_surjective e.surjective d\n    simpa [coeff_rename_mapDomain _ e.injective] using hRc d\n  · intro j\n    simpa using hh (e.symm j)\n  · simp [map_rename, index_rename e.injective, Function.comp_def]",
+  "signature": "private lemma indexSet_comp_subset {τ : Type*} [Fintype τ] (e : σ ≃ τ) (B : ℝ) (q r : τ → ℕ) :\n    indexSet B (q ∘ e) (r ∘ e) ⊆ indexSet B q r",
+  "body": "by\n  rintro _ ⟨R, ⟨hR0, hRd, hRc⟩, h, hh, rfl⟩\n  refine ⟨rename e R, ⟨?_, ?_, ?_⟩, h ∘ e.symm, ?_, ?_⟩\n  · simpa [rename_eq_zero_iff_of_injective R e.injective] using hR0\n  · intro j\n    obtain ⟨i, rfl⟩ := e.surjective j\n    simpa [degreeOf_rename_of_injective e.injective] using hRd i\n  · intro d\n    obtain ⟨d, rfl⟩ := Finsupp.mapDomain_surjective e.surjective d\n    simpa [coeff_rename_mapDomain _ e.injective] using hRc d\n  · intro j\n    simpa using hh (e.symm j)\n  · simp [map_rename, index_rename e.injective, Function.comp_def]",
+  "proof_lines": 13,
+  "sha256": "0b595c8f27461453f15a2a3b2a93c21212eb3881e04e1d68398430e9791f40f2",
+  "what": "Renaming variables by an equivalence sends admissible indices into the corresponding index set.",
+  "how": "Rename polynomial and numerator witnesses, preserve coefficients through coeff_rename_mapDomain, and use index_rename to preserve index.",
+  "hypotheses": "Finite variable types and a bijection between them.",
+  "source_body_refs": [
+    "Roth.index_rename"
+  ],
+  "source_type_refs": [
+    "Roth.indexSet"
+  ],
+  "source_callers": [
+    {
+      "name": "Roth.Θ_equiv",
+      "file": "Roth/Theta.lean",
+      "line": 159
+    }
+  ],
+  "notes": [],
+  "input_file_sha256": "ea447150977f3acf5259cb27889019b9ac32195614f91bc78ed3454c26ca82f5",
+  "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+  "section_context": "Namespace Roth; open MvPolynomial. Ambient σ : Type*, [Fintype σ], [DecidableEq σ]; Lemma6 additionally τ : Type*, [Fintype τ], [DecidableEq τ]. The source explicitly omits DecidableEq for most results and both instances for fully general helpers. Only instances actually required by the displayed expression/proof are generalized by Lean; see omit directives in the source evidence. ",
+  "uses_from_project": [
+    "Roth.index_rename"
+  ],
+  "used_by_in_file": [
+    "Roth.Θ_equiv"
+  ],
+  "used_by_other_files": [],
+  "assignment_offset": 143,
+  "project_body_refs": [
+    "Roth.index_rename"
+  ],
+  "project_type_refs": [
+    "Roth.indexSet"
+  ],
+  "project_callers": [
+    {
+      "name": "Roth.Θ_equiv",
+      "file": "Roth/Theta.lean",
+      "line": 159
+    }
+  ]
+}
