@@ -1,0 +1,249 @@
+{
+  "tool": "lean_run_code",
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\nopen MvPolynomial\nnamespace Box233Generic\n#check_failure Roth.boxFamily\n#check @Finset.finsupp\n#check @Finset.mem_finsupp_iff\n#check @Finset.card_finsupp\n#check @Finsupp.card_Iic\n#check @AddMonoidAlgebra.coeffEquiv\n#check @AddMonoidAlgebra.ofCoeff_injective\n#check @MvPolynomial.degreeOf_le_iff\n#check @MvPolynomial.monomial_le_degreeOf\n#check @MvPolynomial.degreesLE\ndef family {σ R : Type*} [CommSemiring R] (r : σ → ℕ) (t : (σ →₀ ℕ) → Set R) :\n    Set (MvPolynomial σ R) := {P | (∀ j, degreeOf j P ≤ r j) ∧ ∀ d, P.coeff d ∈ t d}\ntheorem family_eq_image {σ R : Type*} [CommSemiring R] (r : σ →₀ ℕ)\n    (t : (σ →₀ ℕ) → Finset R) (h0 : ∀ d, 0 ∈ t d) :\n    family r (fun d ↦ (t d : Set R)) = AddMonoidAlgebra.ofCoeff ''\n      (↑((Finset.Iic r).finsupp t) : Set ((σ →₀ ℕ) →₀ R)) := by\n  classical\n  ext P\n  constructor\n  · intro hP\n    refine ⟨P.coeff, ?_, rfl⟩\n    rw [Finset.mem_coe, Finset.mem_finsupp_iff]\n    exact ⟨fun d hd ↦ Finset.mem_Iic.2 fun j ↦\n      (monomial_le_degreeOf j hd).trans (hP.1 j), fun d _ ↦ hP.2 d⟩\n  · rintro ⟨c, hc, rfl⟩\n    obtain ⟨hs, hc⟩ := Finset.mem_finsupp_iff.1 hc\n    refine ⟨fun j ↦ degreeOf_le_iff.2 fun d hd ↦ (Finset.mem_Iic.1 (hs hd)) j, fun d ↦ ?_⟩\n    by_cases hd : d ∈ Finset.Iic r\n    · exact hc d hd\n    · simpa [Finsupp.notMem_support_iff.1 (fun h ↦ hd (hs h))] using h0 d\ntheorem family_finite {σ R : Type*} [CommSemiring R] (r : σ →₀ ℕ)\n    (t : (σ →₀ ℕ) → Finset R) (h0 : ∀ d, 0 ∈ t d) :\n    (family r (fun d ↦ (t d : Set R))).Finite := by\n  rw [family_eq_image r t h0]\n  exact (Finset.finite_toSet _).image _\ntheorem family_ncard {σ R : Type*} [CommSemiring R] (r : σ →₀ ℕ)\n    (t : (σ →₀ ℕ) → Finset R) (h0 : ∀ d, 0 ∈ t d) :\n    (family r (fun d ↦ (t d : Set R))).ncard = ∏ d ∈ Finset.Iic r, (t d).card := by\n  rw [family_eq_image r t h0, Set.ncard_image_of_injective _\n    AddMonoidAlgebra.ofCoeff_injective, Set.ncard_coe_finset, Finset.card_finsupp]\ntheorem zero_mem {σ : Type*} (r : σ → ℕ) (B : ℕ) :\n    (0 : MvPolynomial σ ℤ) ∈ family r (fun _ ↦ Set.Icc (0 : ℤ) B) := by\n  simp [family]\ntheorem zero_bound {σ : Type*} (r : σ → ℕ) :\n    family r (fun _ ↦ Set.Icc (0 : ℤ) 0) = {0} := by\n  ext P\n  constructor\n  · intro h\n    apply Set.mem_singleton_iff.2\n    apply MvPolynomial.ext\n    intro d\n    simpa using le_antisymm (h.2 d).2 (h.2 d).1\n  · rintro rfl\n    exact zero_mem r 0\ntheorem degree_support {σ R : Type*} [CommSemiring R] (P : MvPolynomial σ R) (r : σ → ℕ) :\n    (∀ j, degreeOf j P ≤ r j) ↔ ∀ d ∈ P.support, ∀ j, d j ≤ r j := by\n  constructor\n  · exact fun h d hd j ↦ (monomial_le_degreeOf j hd).trans (h j)\n  · exact fun h j ↦ degreeOf_le_iff.2 fun d hd ↦ h d hd j\ntheorem member_X (i : ℕ) :\n    X i ∈ family (fun _ : ℕ ↦ 1) (fun _ ↦ Set.Icc (0 : ℤ) 1) := by\n  constructor\n  · intro j\n    by_cases h : i = j\n    · subst j\n      simp\n    · simp [degreeOf_X_of_ne h.symm]\n  · intro d\n    simp only [MvPolynomial.coeff_X]\n    split_ifs <;> norm_num\ntheorem X_injective : Function.Injective (fun i : ℕ ↦ (X i : MvPolynomial ℕ ℤ)) := by\n  intro i j h\n  exact MvPolynomial.X_injective h\ntheorem infinite_family : (family (fun _ : ℕ ↦ 1) (fun _ ↦ Set.Icc (0 : ℤ) 1)).Infinite :=\n  Set.infinite_range_of_injective X_injective |>.mono (Set.range_subset_iff.2 member_X)\n#print axioms family_eq_image\n#print axioms family_finite\n#print axioms family_ncard\n#print axioms zero_mem\n#print axioms zero_bound\n#print axioms degree_support\n#print axioms infinite_family\nend Box233Generic\n"
+  },
+  "elapsed_ms": 99220,
+  "raw": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": false,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.boxFamily`\",\n      \"line\": 22,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"Unknown constant `Finset.finsupp`\",\n      \"line\": 23,\n      \"column\": 9,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"Unknown constant `Finset.mem_finsupp_iff`\",\n      \"line\": 24,\n      \"column\": 9,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"Unknown constant `Finset.card_finsupp`\",\n      \"line\": 25,\n      \"column\": 9,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"Unknown constant `Finsupp.card_Iic`\",\n      \"line\": 26,\n      \"column\": 9,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@AddMonoidAlgebra.coeffEquiv : {R : Type u_1} → {M : Type u_2} → [inst : Semiring R] → AddMonoidAlgebra R M ≃ (M →₀ R)\",\n      \"line\": 27,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@AddMonoidAlgebra.ofCoeff_injective : ∀ {R : Type u_1} {M : Type u_2} [inst : Semiring R],\\n  Function.Injective AddMonoidAlgebra.ofCoeff\",\n      \"line\": 28,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@degreeOf_le_iff : ∀ {R : Type u_1} {σ : Type u_2} [inst : CommSemiring R] {n : σ} {f : MvPolynomial σ R} {d : ℕ},\\n  degreeOf n f ≤ d ↔ ∀ m ∈ f.support, m n ≤ d\",\n      \"line\": 29,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@monomial_le_degreeOf : ∀ {R : Type u_1} {σ : Type u_2} [inst : CommSemiring R] (i : σ) {f : MvPolynomial σ R}\\n  {m : σ →₀ ℕ}, m ∈ f.support → m i ≤ degreeOf i f\",\n      \"line\": 30,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"degreesLE : (R : Type u_1) → (σ : Type u_2) → [inst : CommSemiring R] → Multiset σ → Submodule R (MvPolynomial σ R)\",\n      \"line\": 31,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"failed to synthesize instance of type class\\n  LocallyFiniteOrderBot (σ →₀ ℕ)\\n\\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.\",\n      \"line\": 37,\n      \"column\": 11,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"Unknown constant `Finset.mem_finsupp_iff`\",\n      \"line\": 47,\n      \"column\": 24,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"Tactic `rcases` failed: `x✝ : ?m.78` is not an inductive datatype\",\n      \"line\": 47,\n      \"column\": 12,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"warning\",\n      \"message\": \"declaration uses `sorry`\",\n      \"line\": 52,\n      \"column\": 9,\n      \"lean_tags\": null,\n      \"category\": \"sorry\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"failed to synthesize instance of type class\\n  LocallyFiniteOrderBot (σ →₀ ℕ)\\n\\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.\",\n      \"line\": 59,\n      \"column\": 54,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"Invalid field `symm`: The environment does not contain `Function.symm`, so it is not possible to project the field `symm` from an expression\\n  h\\nof type `i = j → False`\",\n      \"line\": 88,\n      \"column\": 32,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"unsolved goals\\ncase neg\\ni j : ℕ\\nh : ¬i = j\\n⊢ degreeOf j (X i) ≤ 1\",\n      \"line\": 88,\n      \"column\": 5,\n      \"lean_tags\": [\n        \"unsolvedGoals\"\n      ],\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"warning\",\n      \"message\": \"Unused tactic linter: `exact (Finset.finite_toSet _).image _` does nothing\\n\\nNote: This linter can be disabled with `set_option linter.unusedTactic false`\",\n      \"line\": 56,\n      \"column\": 3,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Box233Generic.family_eq_image' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 97,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Box233Generic.family_finite' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 98,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Box233Generic.family_ncard' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 99,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Box233Generic.zero_mem' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 100,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Box233Generic.zero_bound' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 101,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Box233Generic.degree_support' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 102,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Box233Generic.infinite_family' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 103,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": false,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.boxFamily`",
+          "line": 22,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "Unknown constant `Finset.finsupp`",
+          "line": 23,
+          "column": 9,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "Unknown constant `Finset.mem_finsupp_iff`",
+          "line": 24,
+          "column": 9,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "Unknown constant `Finset.card_finsupp`",
+          "line": 25,
+          "column": 9,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "Unknown constant `Finsupp.card_Iic`",
+          "line": 26,
+          "column": 9,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@AddMonoidAlgebra.coeffEquiv : {R : Type u_1} → {M : Type u_2} → [inst : Semiring R] → AddMonoidAlgebra R M ≃ (M →₀ R)",
+          "line": 27,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@AddMonoidAlgebra.ofCoeff_injective : ∀ {R : Type u_1} {M : Type u_2} [inst : Semiring R],\n  Function.Injective AddMonoidAlgebra.ofCoeff",
+          "line": 28,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@degreeOf_le_iff : ∀ {R : Type u_1} {σ : Type u_2} [inst : CommSemiring R] {n : σ} {f : MvPolynomial σ R} {d : ℕ},\n  degreeOf n f ≤ d ↔ ∀ m ∈ f.support, m n ≤ d",
+          "line": 29,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@monomial_le_degreeOf : ∀ {R : Type u_1} {σ : Type u_2} [inst : CommSemiring R] (i : σ) {f : MvPolynomial σ R}\n  {m : σ →₀ ℕ}, m ∈ f.support → m i ≤ degreeOf i f",
+          "line": 30,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "degreesLE : (R : Type u_1) → (σ : Type u_2) → [inst : CommSemiring R] → Multiset σ → Submodule R (MvPolynomial σ R)",
+          "line": 31,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "failed to synthesize instance of type class\n  LocallyFiniteOrderBot (σ →₀ ℕ)\n\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.",
+          "line": 37,
+          "column": 11,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "Unknown constant `Finset.mem_finsupp_iff`",
+          "line": 47,
+          "column": 24,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "Tactic `rcases` failed: `x✝ : ?m.78` is not an inductive datatype",
+          "line": 47,
+          "column": 12,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "warning",
+          "message": "declaration uses `sorry`",
+          "line": 52,
+          "column": 9,
+          "lean_tags": null,
+          "category": "sorry",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "failed to synthesize instance of type class\n  LocallyFiniteOrderBot (σ →₀ ℕ)\n\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.",
+          "line": 59,
+          "column": 54,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "Invalid field `symm`: The environment does not contain `Function.symm`, so it is not possible to project the field `symm` from an expression\n  h\nof type `i = j → False`",
+          "line": 88,
+          "column": 32,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "unsolved goals\ncase neg\ni j : ℕ\nh : ¬i = j\n⊢ degreeOf j (X i) ≤ 1",
+          "line": 88,
+          "column": 5,
+          "lean_tags": [
+            "unsolvedGoals"
+          ],
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "warning",
+          "message": "Unused tactic linter: `exact (Finset.finite_toSet _).image _` does nothing\n\nNote: This linter can be disabled with `set_option linter.unusedTactic false`",
+          "line": 56,
+          "column": 3,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Box233Generic.family_eq_image' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 97,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Box233Generic.family_finite' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 98,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Box233Generic.family_ncard' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 99,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Box233Generic.zero_mem' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 100,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Box233Generic.zero_bound' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 101,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Box233Generic.degree_support' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 102,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Box233Generic.infinite_family' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 103,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  }
+}

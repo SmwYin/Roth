@@ -1,0 +1,70 @@
+{
+  "method": "leanfinder",
+  "form": "abstract",
+  "request": {
+    "query": "finitely supported functions supported on finite set with values in prescribed finite sets",
+    "num_results": 6
+  },
+  "elapsed_ms": 3098,
+  "raw": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Finset.finsupp\",\n      \"informal_name\": \"Finite support functions from finite set product\",\n      \"kind\": \"definition\",\n      \"type\": \"{ι : Type u_1} → {α : Type u_2} → [inst : Zero α] → Finset ι → (ι → Finset α) → Finset (ι →₀ α)\",\n      \"informal_description\": \"Given a finite set $ s $ over a type $ \\\\iota $ and a function $ t $ assigning to each $ i \\\\in s $ a finite set $ t(i) $, this constructs the finite set of all finite support functions $ f : \\\\iota \\\\to_0 \\\\alpha $ such that $ f(i) \\\\in t(i) $ for each $ i \\\\in s $. This is achieved by first forming the dependent product of the $ t(i) $ over $ s $, then applying an injective indicator function that maps these functions to their finite support representations with zero extension outside $ s $.\",\n      \"path\": \"Mathlib.Data.Finset.Finsupp\"\n    },\n    {\n      \"formal_name\": \"Finset.dfinsupp\",\n      \"informal_name\": \"Dependent product of finite sets as finite support functions\",\n      \"kind\": \"definition\",\n      \"type\": \"{ι : Type u_1} →\\n  {α : ι → Type u_2} →\\n    [DecidableEq ι] → [inst : (i : ι) → Zero (α i)] → Finset ι → ((i : ι) → Finset (α i)) → Finset (Π₀ (i : ι), α i)\",\n      \"informal_description\": \"Given a finite set $ s $ over an index type $ \\\\iota $ and a family of finite sets $ t(i) $ for each $ i \\\\in s $, this constructs the finite set of all dependent functions with finite support in $ s $, where each function assigns to $ i \\\\in s $ an element of $ t(i) $ and is zero elsewhere. The result is formed by taking the product of the $ t(i) $ over $ s $ and mapping it to dependent finite support functions via zero extension.\",\n      \"path\": \"Mathlib.Data.DFinsupp.Interval\"\n    },\n    {\n      \"formal_name\": \"Finsupp.pi\",\n      \"informal_name\": \"Cartesian product of a finitely supported family of finite sets\",\n      \"kind\": \"definition\",\n      \"type\": \"{ι : Type u_1} → {α : Type u_2} → [inst : Zero α] → (ι →₀ Finset α) → Finset (ι →₀ α)\",\n      \"informal_description\": \"Let $f$ be a function from a type $\\\\iota$ to the finite subsets of a type $\\\\alpha$ with finite support (meaning $f(i)$ is the empty set for all but finitely many $i$). The function `Finsupp.pi f` computes the Cartesian product of the sets $f(i)$ over the support of $f$. The result is a finite set of functions $g$ from $\\\\iota$ to $\\\\alpha$ with finite support, where each $g$ is constructed by selecting an element from each non-empty set $f(i)$ for $i$ in the support of $f$, and is zero outside this support.\",\n      \"path\": \"Mathlib.Data.Finset.Finsupp\"\n    },\n    {\n      \"formal_name\": \"Finset.mem_dfinsupp_iff\",\n      \"informal_name\": \"Membership in Dependent Finite Support Functions iff Support Subset and Value Conditions\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {α : ι → Type u_2} [inst : DecidableEq ι] [inst_1 : (i : ι) → Zero (α i)] {s : Finset ι}\\n  {f : Π₀ (i : ι), α i} {t : (i : ι) → Finset (α i)} [inst_2 : (i : ι) → DecidableEq (α i)],\\n  f ∈ s.dfinsupp t ↔ f.support ⊆ s ∧ ∀ i ∈ s, f i ∈ t i\",\n      \"informal_description\": \"A dependent finite support function $ f $ belongs to the set $ s.\\\\text{dfinsupp} \\\\, t $ if and only if two conditions hold: (1) the support of $ f $ (the set of indices $ i $ where $ f(i) \\\\neq 0 $) is a subset of $ s $, and (2) for every index $ i \\\\in s $, the value $ f(i) $ lies in the corresponding finite set $ t(i) $.\",\n      \"path\": \"Mathlib.Data.DFinsupp.Interval\"\n    },\n    {\n      \"formal_name\": \"DFinsupp.pi\",\n      \"informal_name\": \"Pi-type finite set of dependent functions with finite support\",\n      \"kind\": \"definition\",\n      \"type\": \"{ι : Type u_1} →\\n  {α : ι → Type u_2} →\\n    [inst : (i : ι) → Zero (α i)] →\\n      [DecidableEq ι] → [(i : ι) → DecidableEq (α i)] → (Π₀ (i : ι), Finset (α i)) → Finset (Π₀ (i : ι), α i)\",\n      \"informal_description\": \"Given a family of finite sets $ f(i) $ indexed by $ i $, this constructs the finite set of all dependent functions with finite support that assign to each index $ i $ an element from $ f(i) $ and are zero elsewhere. The construction is formed by taking the product of the $ f(i) $ over the support and mapping it to dependent finite support functions via zero extension.\",\n      \"path\": \"Mathlib.Data.DFinsupp.Interval\"\n    },\n    {\n      \"formal_name\": \"Finset.mem_finsupp_iff\",\n      \"informal_name\": \"Membership Criterion for Finite Support Functions\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {α : Type u_2} [inst : Zero α] {s : Finset ι} {f : ι →₀ α} {t : ι → Finset α},\\n  f ∈ s.finsupp t ↔ f.support ⊆ s ∧ ∀ i ∈ s, f i ∈ t i\",\n      \"informal_description\": \"A finite support function $ f $ belongs to the set $ s.\\\\text{finsupp} \\\\, t $ if and only if two conditions hold: (1) the support of $ f $ (i.e., the set of indices where $ f $ is non-zero) is contained in the finite set $ s $, and (2) for every index $ i \\\\in s $, the value $ f(i) $ lies in the corresponding finite set $ t(i) $. Symbolically, $ f \\\\in s.\\\\text{finsupp} \\\\, t \\\\iff \\\\text{support}(f) \\\\subseteq s \\\\land (\\\\forall i \\\\in s, f(i) \\\\in t(i)) $.\",\n      \"path\": \"Mathlib.Data.Finset.Finsupp\"\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "items": [
+        {
+          "formal_name": "Finset.finsupp",
+          "informal_name": "Finite support functions from finite set product",
+          "kind": "definition",
+          "type": "{ι : Type u_1} → {α : Type u_2} → [inst : Zero α] → Finset ι → (ι → Finset α) → Finset (ι →₀ α)",
+          "informal_description": "Given a finite set $ s $ over a type $ \\iota $ and a function $ t $ assigning to each $ i \\in s $ a finite set $ t(i) $, this constructs the finite set of all finite support functions $ f : \\iota \\to_0 \\alpha $ such that $ f(i) \\in t(i) $ for each $ i \\in s $. This is achieved by first forming the dependent product of the $ t(i) $ over $ s $, then applying an injective indicator function that maps these functions to their finite support representations with zero extension outside $ s $.",
+          "path": "Mathlib.Data.Finset.Finsupp"
+        },
+        {
+          "formal_name": "Finset.dfinsupp",
+          "informal_name": "Dependent product of finite sets as finite support functions",
+          "kind": "definition",
+          "type": "{ι : Type u_1} →\n  {α : ι → Type u_2} →\n    [DecidableEq ι] → [inst : (i : ι) → Zero (α i)] → Finset ι → ((i : ι) → Finset (α i)) → Finset (Π₀ (i : ι), α i)",
+          "informal_description": "Given a finite set $ s $ over an index type $ \\iota $ and a family of finite sets $ t(i) $ for each $ i \\in s $, this constructs the finite set of all dependent functions with finite support in $ s $, where each function assigns to $ i \\in s $ an element of $ t(i) $ and is zero elsewhere. The result is formed by taking the product of the $ t(i) $ over $ s $ and mapping it to dependent finite support functions via zero extension.",
+          "path": "Mathlib.Data.DFinsupp.Interval"
+        },
+        {
+          "formal_name": "Finsupp.pi",
+          "informal_name": "Cartesian product of a finitely supported family of finite sets",
+          "kind": "definition",
+          "type": "{ι : Type u_1} → {α : Type u_2} → [inst : Zero α] → (ι →₀ Finset α) → Finset (ι →₀ α)",
+          "informal_description": "Let $f$ be a function from a type $\\iota$ to the finite subsets of a type $\\alpha$ with finite support (meaning $f(i)$ is the empty set for all but finitely many $i$). The function `Finsupp.pi f` computes the Cartesian product of the sets $f(i)$ over the support of $f$. The result is a finite set of functions $g$ from $\\iota$ to $\\alpha$ with finite support, where each $g$ is constructed by selecting an element from each non-empty set $f(i)$ for $i$ in the support of $f$, and is zero outside this support.",
+          "path": "Mathlib.Data.Finset.Finsupp"
+        },
+        {
+          "formal_name": "Finset.mem_dfinsupp_iff",
+          "informal_name": "Membership in Dependent Finite Support Functions iff Support Subset and Value Conditions",
+          "kind": "theorem",
+          "type": "∀ {ι : Type u_1} {α : ι → Type u_2} [inst : DecidableEq ι] [inst_1 : (i : ι) → Zero (α i)] {s : Finset ι}\n  {f : Π₀ (i : ι), α i} {t : (i : ι) → Finset (α i)} [inst_2 : (i : ι) → DecidableEq (α i)],\n  f ∈ s.dfinsupp t ↔ f.support ⊆ s ∧ ∀ i ∈ s, f i ∈ t i",
+          "informal_description": "A dependent finite support function $ f $ belongs to the set $ s.\\text{dfinsupp} \\, t $ if and only if two conditions hold: (1) the support of $ f $ (the set of indices $ i $ where $ f(i) \\neq 0 $) is a subset of $ s $, and (2) for every index $ i \\in s $, the value $ f(i) $ lies in the corresponding finite set $ t(i) $.",
+          "path": "Mathlib.Data.DFinsupp.Interval"
+        },
+        {
+          "formal_name": "DFinsupp.pi",
+          "informal_name": "Pi-type finite set of dependent functions with finite support",
+          "kind": "definition",
+          "type": "{ι : Type u_1} →\n  {α : ι → Type u_2} →\n    [inst : (i : ι) → Zero (α i)] →\n      [DecidableEq ι] → [(i : ι) → DecidableEq (α i)] → (Π₀ (i : ι), Finset (α i)) → Finset (Π₀ (i : ι), α i)",
+          "informal_description": "Given a family of finite sets $ f(i) $ indexed by $ i $, this constructs the finite set of all dependent functions with finite support that assign to each index $ i $ an element from $ f(i) $ and are zero elsewhere. The construction is formed by taking the product of the $ f(i) $ over the support and mapping it to dependent finite support functions via zero extension.",
+          "path": "Mathlib.Data.DFinsupp.Interval"
+        },
+        {
+          "formal_name": "Finset.mem_finsupp_iff",
+          "informal_name": "Membership Criterion for Finite Support Functions",
+          "kind": "theorem",
+          "type": "∀ {ι : Type u_1} {α : Type u_2} [inst : Zero α] {s : Finset ι} {f : ι →₀ α} {t : ι → Finset α},\n  f ∈ s.finsupp t ↔ f.support ⊆ s ∧ ∀ i ∈ s, f i ∈ t i",
+          "informal_description": "A finite support function $ f $ belongs to the set $ s.\\text{finsupp} \\, t $ if and only if two conditions hold: (1) the support of $ f $ (i.e., the set of indices where $ f $ is non-zero) is contained in the finite set $ s $, and (2) for every index $ i \\in s $, the value $ f(i) $ lies in the corresponding finite set $ t(i) $. Symbolically, $ f \\in s.\\text{finsupp} \\, t \\iff \\text{support}(f) \\subseteq s \\land (\\forall i \\in s, f(i) \\in t(i)) $.",
+          "path": "Mathlib.Data.Finset.Finsupp"
+        }
+      ]
+    },
+    "isError": false
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "callers": [
+    {
+      "name": "Roth.boxFamily_eq_image_finsupp_aux",
+      "file": "Roth/MainLemma.lean",
+      "line": 280,
+      "end_line": 297,
+      "visibility": "private",
+      "source": "private lemma boxFamily_eq_image_finsupp_aux {σ : Type*} (r : σ → ℕ) [Finite (Function.support r)]\n    (B : ℕ) : boxFamily r B = AddMonoidAlgebra.ofCoeff ''\n      (↑((Finset.Iic (Finsupp.ofSupportFinite r (Set.toFinite _))).finsupp\n        fun _ ↦ Finset.Icc (0 : ℤ) B) : Set ((σ →₀ ℕ) →₀ ℤ)) := by\n  classical\n  ext W\n  constructor\n  · intro hW\n    refine ⟨W.coeff, ?_, rfl⟩\n    rw [Finset.mem_coe, Finset.mem_finsupp_iff]\n    refine ⟨fun d hd ↦ ?_, fun d _ ↦ Finset.mem_Icc.2 (hW.2 d)⟩\n    exact Finset.mem_Iic.2 fun j ↦ (monomial_le_degreeOf j hd).trans (hW.1 j)\n  · rintro ⟨c, hc, rfl⟩\n    obtain ⟨hs, hc⟩ := Finset.mem_finsupp_iff.1 hc\n    refine ⟨fun j ↦ degreeOf_le_iff.2 fun d hd ↦ (Finset.mem_Iic.1 (hs hd)) j, fun d ↦ ?_⟩\n    by_cases hd : d ∈ Finset.Iic (Finsupp.ofSupportFinite r (Set.toFinite _))\n    · exact Finset.mem_Icc.1 (hc d hd)\n    · simp [Finsupp.notMem_support_iff.1 (fun h ↦ hd (hs h))]",
+      "sha256": "e9da4d7398b22401afb7bf5a8ddeae798e1c908086541dca65dbbae627d8f480",
+      "signature": "private lemma boxFamily_eq_image_finsupp_aux {σ : Type*} (r : σ → ℕ) [Finite (Function.support r)]\n    (B : ℕ) : boxFamily r B = AddMonoidAlgebra.ofCoeff ''\n      (↑((Finset.Iic (Finsupp.ofSupportFinite r (Set.toFinite _))).finsupp\n        fun _ ↦ Finset.Icc (0 : ℤ) B) : Set ((σ →₀ ℕ) →₀ ℤ))",
+      "body": "by\n  classical\n  ext W\n  constructor\n  · intro hW\n    refine ⟨W.coeff, ?_, rfl⟩\n    rw [Finset.mem_coe, Finset.mem_finsupp_iff]\n    refine ⟨fun d hd ↦ ?_, fun d _ ↦ Finset.mem_Icc.2 (hW.2 d)⟩\n    exact Finset.mem_Iic.2 fun j ↦ (monomial_le_degreeOf j hd).trans (hW.1 j)\n  · rintro ⟨c, hc, rfl⟩\n    obtain ⟨hs, hc⟩ := Finset.mem_finsupp_iff.1 hc\n    refine ⟨fun j ↦ degreeOf_le_iff.2 fun d hd ↦ (Finset.mem_Iic.1 (hs hd)) j, fun d ↦ ?_⟩\n    by_cases hd : d ∈ Finset.Iic (Finsupp.ofSupportFinite r (Set.toFinite _))\n    · exact Finset.mem_Icc.1 (hc d hd)\n    · simp [Finsupp.notMem_support_iff.1 (fun h ↦ hd (hs h))]",
+      "occurrences": 1
+    },
+    {
+      "name": "Roth.boxFamily_finite",
+      "file": "Roth/MainLemma.lean",
+      "line": 301,
+      "end_line": 305,
+      "visibility": "public",
+      "source": "theorem boxFamily_finite {σ : Type*} (r : σ → ℕ) [Finite (Function.support r)] (B : ℕ) :\n    (boxFamily r B).Finite := by\n  classical\n  rw [boxFamily_eq_image_finsupp_aux]\n  exact (Finset.finite_toSet _).image _",
+      "sha256": "17f4b403f253e7df4680f0bcb60c1c14577a1c6ad83d4b6b8b7b6f5e09992e8c",
+      "signature": "theorem boxFamily_finite {σ : Type*} (r : σ → ℕ) [Finite (Function.support r)] (B : ℕ) :\n    (boxFamily r B).Finite",
+      "body": "by\n  classical\n  rw [boxFamily_eq_image_finsupp_aux]\n  exact (Finset.finite_toSet _).image _",
+      "occurrences": 1
+    },
+    {
+      "name": "Roth.ncard_boxFamily",
+      "file": "Roth/MainLemma.lean",
+      "line": 311,
+      "end_line": 318,
+      "visibility": "public",
+      "source": "theorem ncard_boxFamily {σ : Type*} (r : σ → ℕ) [Finite (Function.support r)] (B : ℕ) :\n    (boxFamily r B).ncard = (B + 1) ^ ∏ᶠ j, (r j + 1) := by\n  rw [boxFamily_eq_image_finsupp_aux, Set.ncard_image_of_injective _\n    AddMonoidAlgebra.ofCoeff_injective, Set.ncard_coe_finset, Finset.card_finsupp]\n  simp only [Int.card_Icc, sub_zero, Finset.prod_const, Finsupp.card_Iic, Nat.card_Iic]\n  congr 1\n  exact (finprod_eq_prod_of_mulSupport_subset _ fun j hj ↦ by\n    simpa [Finsupp.ofSupportFinite_support, Function.support, Function.mulSupport] using hj).symm",
+      "sha256": "8470ec7dbae941f08b8e5afd7979ad136e9afd155dd46811dde6a529d416a9c3",
+      "signature": "theorem ncard_boxFamily {σ : Type*} (r : σ → ℕ) [Finite (Function.support r)] (B : ℕ) :\n    (boxFamily r B).ncard = (B + 1) ^ ∏ᶠ j, (r j + 1)",
+      "body": "by\n  rw [boxFamily_eq_image_finsupp_aux, Set.ncard_image_of_injective _\n    AddMonoidAlgebra.ofCoeff_injective, Set.ncard_coe_finset, Finset.card_finsupp]\n  simp only [Int.card_Icc, sub_zero, Finset.prod_const, Finsupp.card_Iic, Nat.card_Iic]\n  congr 1\n  exact (finprod_eq_prod_of_mulSupport_subset _ fun j hj ↦ by\n    simpa [Finsupp.ofSupportFinite_support, Function.support, Function.mulSupport] using hj).symm",
+      "occurrences": 1
+    },
+    {
+      "name": "Roth.exists_ne_modByMonic_eq",
+      "file": "Roth/MainLemma.lean",
+      "line": 359,
+      "end_line": 379,
+      "visibility": "public",
+      "source": "theorem exists_ne_modByMonic_eq {σ : Type*} (r : σ → ℕ) [Finite (Function.support r)] (B : ℕ)\n    {f : Polynomial ℤ} (hf : f.Monic) (J : Finset (σ →₀ ℕ)) (C : ℕ)\n    (hC : ∀ W ∈ boxFamily r B, ∀ j ∈ J, ∀ i < f.natDegree,\n      |(diag (hasseDeriv j W) %ₘ f).coeff i| ≤ C)\n    (hcount : ((2 * C + 1 : ℕ) : ℝ) ^ (f.natDegree * J.card) < ((B : ℝ) + 1) ^ ∏ᶠ j, (r j + 1)) :\n    ∃ W' ∈ boxFamily r B, ∃ W'' ∈ boxFamily r B, W' ≠ W'' ∧\n      ∀ j ∈ J, diag (hasseDeriv j W') %ₘ f = diag (hasseDeriv j W'') %ₘ f := by\n  classical\n  let : Fintype (boxFamily r B) := (boxFamily_finite r B).fintype\n  let F (W : boxFamily r B) (p : J × Fin f.natDegree) : Set.Icc (-(C : ℤ)) C :=\n    ⟨(diag (hasseDeriv p.1.1 W.1) %ₘ f).coeff p.2, abs_le.1 (hC W.1 W.2 p.1.1 p.1.2 p.2.1 p.2.2)⟩\n  obtain ⟨W', W'', hne, h⟩ := Fintype.exists_ne_map_eq_of_card_lt F <| by\n    simpa only [Fintype.card_fun, Fintype.card_ofFinset, Int.card_Icc, sub_neg_eq_add,\n      Fintype.card_prod, Fintype.card_coe, Fintype.card_fin, mul_comm, Set.fintypeCard_eq_ncard,\n      ncard_boxFamily, show ((C : ℤ) + 1 + C).toNat = 2 * C + 1 by lia] using\n      (show (2 * C + 1) ^ (f.natDegree * J.card) < (B + 1) ^ ∏ᶠ j, (r j + 1) by\n        exact_mod_cast hcount)\n  refine ⟨W', W'.2, W'', W''.2, Subtype.coe_ne_coe.2 hne, fun j hj ↦ ?_⟩\n  simpa [F, Polynomial.sum_modByMonic_coeff hf Polynomial.degree_le_natDegree] using\n    congrArg (fun g ↦ ∑ i : Fin f.natDegree, Polynomial.monomial (i : ℕ)\n      (g (⟨j, hj⟩, i) : ℤ)) h",
+      "sha256": "ce954bda5fe58acf65591ae7cb1ad09559476bb8b100710eedaa6a3cdc0a081f",
+      "signature": "theorem exists_ne_modByMonic_eq {σ : Type*} (r : σ → ℕ) [Finite (Function.support r)] (B : ℕ)\n    {f : Polynomial ℤ} (hf : f.Monic) (J : Finset (σ →₀ ℕ)) (C : ℕ)\n    (hC : ∀ W ∈ boxFamily r B, ∀ j ∈ J, ∀ i < f.natDegree,\n      |(diag (hasseDeriv j W) %ₘ f).coeff i| ≤ C)\n    (hcount : ((2 * C + 1 : ℕ) : ℝ) ^ (f.natDegree * J.card) < ((B : ℝ) + 1) ^ ∏ᶠ j, (r j + 1)) :\n    ∃ W' ∈ boxFamily r B, ∃ W'' ∈ boxFamily r B, W' ≠ W'' ∧\n      ∀ j ∈ J, diag (hasseDeriv j W') %ₘ f = diag (hasseDeriv j W'') %ₘ f",
+      "body": "by\n  classical\n  let : Fintype (boxFamily r B) := (boxFamily_finite r B).fintype\n  let F (W : boxFamily r B) (p : J × Fin f.natDegree) : Set.Icc (-(C : ℤ)) C :=\n    ⟨(diag (hasseDeriv p.1.1 W.1) %ₘ f).coeff p.2, abs_le.1 (hC W.1 W.2 p.1.1 p.1.2 p.2.1 p.2.2)⟩\n  obtain ⟨W', W'', hne, h⟩ := Fintype.exists_ne_map_eq_of_card_lt F <| by\n    simpa only [Fintype.card_fun, Fintype.card_ofFinset, Int.card_Icc, sub_neg_eq_add,\n      Fintype.card_prod, Fintype.card_coe, Fintype.card_fin, mul_comm, Set.fintypeCard_eq_ncard,\n      ncard_boxFamily, show ((C : ℤ) + 1 + C).toNat = 2 * C + 1 by lia] using\n      (show (2 * C + 1) ^ (f.natDegree * J.card) < (B + 1) ^ ∏ᶠ j, (r j + 1) by\n        exact_mod_cast hcount)\n  refine ⟨W', W'.2, W'', W''.2, Subtype.coe_ne_coe.2 hne, fun j hj ↦ ?_⟩\n  simpa [F, Polynomial.sum_modByMonic_coeff hf Polynomial.degree_le_natDegree] using\n    congrArg (fun g ↦ ∑ i : Fin f.natDegree, Polynomial.monomial (i : ℕ)\n      (g (⟨j, hj⟩, i) : ℤ)) h",
+      "occurrences": 5
+    },
+    {
+      "name": "Roth.sub_mem_RSet",
+      "file": "Roth/MainLemma.lean",
+      "line": 388,
+      "end_line": 394,
+      "visibility": "public",
+      "source": "theorem sub_mem_RSet {σ : Type*} {r : σ → ℕ} {B : ℕ} {W' W'' : MvPolynomial σ ℤ}\n    (h' : W' ∈ boxFamily r B) (h'' : W'' ∈ boxFamily r B) (hne : W' ≠ W'') :\n    W' - W'' ∈ RSet B r := by\n  refine ⟨sub_ne_zero.2 hne, fun j ↦ (degreeOf_sub_le j W' W'').trans\n    (max_le (h'.1 j) (h''.1 j)), fun d ↦ ?_⟩\n  rw [coeff_sub, ← Int.cast_abs]\n  exact_mod_cast abs_sub_le_of_nonneg_of_le (h'.2 d).1 (h'.2 d).2 (h''.2 d).1 (h''.2 d).2",
+      "sha256": "1139c568454efb108d65dfe60c22e1409f5ec07bc6e451231d8b8665841e4a83",
+      "signature": "theorem sub_mem_RSet {σ : Type*} {r : σ → ℕ} {B : ℕ} {W' W'' : MvPolynomial σ ℤ}\n    (h' : W' ∈ boxFamily r B) (h'' : W'' ∈ boxFamily r B) (hne : W' ≠ W'') :\n    W' - W'' ∈ RSet B r",
+      "body": "by\n  refine ⟨sub_ne_zero.2 hne, fun j ↦ (degreeOf_sub_le j W' W'').trans\n    (max_le (h'.1 j) (h''.1 j)), fun d ↦ ?_⟩\n  rw [coeff_sub, ← Int.cast_abs]\n  exact_mod_cast abs_sub_le_of_nonneg_of_le (h'.2 d).1 (h'.2 d).2 (h''.2 d).1 (h''.2 d).2",
+      "occurrences": 2
+    },
+    {
+      "name": "Roth.exists_mem_RSet_le_index_aux",
+      "file": "Roth/MainLemma.lean",
+      "line": 550,
+      "end_line": 567,
+      "visibility": "private",
+      "source": "private lemma exists_mem_RSet_le_index_aux {σ : Type*} [Fintype σ] {f : Polynomial ℤ} {α : ℝ}\n    (hf : f.Monic) (hfα : Polynomial.aeval α f = 0) (r : σ → ℕ) (B C : ℕ) (J : Finset (σ →₀ ℕ))\n    {γ : ℝ} (hC : ∀ W ∈ boxFamily r B, ∀ j ∈ J, ∀ i < f.natDegree,\n      |(diag (hasseDeriv j W) %ₘ f).coeff i| ≤ (C : ℤ))\n    (hcount : ((2 * C + 1 : ℕ) : ℝ) ^ (f.natDegree * J.card) < ((B : ℝ) + 1) ^ (∏ k, (r k + 1) : ℕ))\n    (hJ : ∀ d, (∀ k, d k ≤ r k) → weight r d < γ → d ∈ J) : ∃ P : MvPolynomial σ ℤ, P ∈ RSet B r ∧\n      γ ≤ index (map (Int.castRingHom ℝ) P) (fun _ ↦ α) r := by\n  obtain ⟨W', hW', W'', hW'', hne, hWeq⟩ := exists_ne_modByMonic_eq r B hf J C hC\n    (by simpa [finprod_eq_prod_of_fintype] using hcount)\n  -- `W* = W' - W''`\n  have hP := sub_mem_RSet hW' hW'' hne\n  refine ⟨W' - W'', hP, ?_⟩\n  exact le_index_of_forall_eval_eq_zero\n    ((map_ne_zero_iff _ (MvPolynomial.map_injective _ Int.cast_injective)).2 hP.1)\n    (by simpa only [degreeOf,\n          degrees_map_of_injective _ (f := Int.castRingHom ℝ) Int.cast_injective]\n        using hP.2.1) (fun _ ↦ α)\n    fun d hd hw ↦ eval_hasseDeriv_sub_eq_zero hfα (hWeq d (hJ d hd hw))",
+      "sha256": "acc391440f39f8916ce72ebead5f80d3222f6d10c73030138668cdcf500bca97",
+      "signature": "private lemma exists_mem_RSet_le_index_aux {σ : Type*} [Fintype σ] {f : Polynomial ℤ} {α : ℝ}\n    (hf : f.Monic) (hfα : Polynomial.aeval α f = 0) (r : σ → ℕ) (B C : ℕ) (J : Finset (σ →₀ ℕ))\n    {γ : ℝ} (hC : ∀ W ∈ boxFamily r B, ∀ j ∈ J, ∀ i < f.natDegree,\n      |(diag (hasseDeriv j W) %ₘ f).coeff i| ≤ (C : ℤ))\n    (hcount : ((2 * C + 1 : ℕ) : ℝ) ^ (f.natDegree * J.card) < ((B : ℝ) + 1) ^ (∏ k, (r k + 1) : ℕ))\n    (hJ : ∀ d, (∀ k, d k ≤ r k) → weight r d < γ → d ∈ J) : ∃ P : MvPolynomial σ ℤ, P ∈ RSet B r ∧\n      γ ≤ index (map (Int.castRingHom ℝ) P) (fun _ ↦ α) r",
+      "body": "by\n  obtain ⟨W', hW', W'', hW'', hne, hWeq⟩ := exists_ne_modByMonic_eq r B hf J C hC\n    (by simpa [finprod_eq_prod_of_fintype] using hcount)\n  -- `W* = W' - W''`\n  have hP := sub_mem_RSet hW' hW'' hne\n  refine ⟨W' - W'', hP, ?_⟩\n  exact le_index_of_forall_eval_eq_zero\n    ((map_ne_zero_iff _ (MvPolynomial.map_injective _ Int.cast_injective)).2 hP.1)\n    (by simpa only [degreeOf,\n          degrees_map_of_injective _ (f := Int.castRingHom ℝ) Int.cast_injective]\n        using hP.2.1) (fun _ ↦ α)\n    fun d hd hw ↦ eval_hasseDeriv_sub_eq_zero hfα (hWeq d (hJ d hd hw))",
+      "occurrences": 1
+    },
+    {
+      "name": "Roth.exists_mem_RSet_le_index_of_rpow_bound_aux",
+      "file": "Roth/MainLemma.lean",
+      "line": 581,
+      "end_line": 616,
+      "visibility": "private",
+      "source": "private lemma exists_mem_RSet_le_index_of_rpow_bound_aux {f : Polynomial ℤ} {α A : ℝ} (hf : f.Monic)\n    (hfα : Polynomial.aeval α f = 0) (hA : ∀ i, |(f.coeff i : ℝ)| ≤ A) {m : ℕ} (hm : 0 < m)\n    (r : Fin m → ℕ) (hr : ∀ j, 0 < r j) {c β : ℝ} {B s : ℕ} (hB : 0 < B) (hs : ∑ j, r j ≤ s)\n    (hAβ : (1 + A) ^ s ≤ β) (hpow : (B : ℝ) * β ^ 3 ≤ (B : ℝ) ^ c) : ∃ P : MvPolynomial (Fin m) ℤ,\n      P ∈ RSet B r ∧ ((m : ℝ) - 4 * c * f.natDegree * √(m : ℝ)) / 2 ≤\n        index (map (Int.castRingHom ℝ) P) (fun _ ↦ α) r := by\n  have hA1 : 1 ≤ A := by simpa [hf.coeff_natDegree] using hA f.natDegree\n  have h2 : (2 : ℝ) ^ s ≤ β :=\n    (pow_le_pow_left₀ (by norm_num) (by linarith : (2 : ℝ) ≤ 1 + A) s).trans hAβ\n  have hc : 1 ≤ c := by\n    by_contra! hc\n    have hBc : (B : ℝ) ^ c ≤ B := by\n      simpa using Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast hB) hc.le\n    have hs0 : 0 < s := (hr ⟨0, hm⟩).trans_le\n      ((Finset.single_le_sum (fun j _ ↦ Nat.zero_le (r j)) (Finset.mem_univ _)).trans hs)\n    have hβ : 1 < β := (one_lt_pow₀ (by norm_num : (1 : ℝ) < 2) hs0.ne').trans_le h2\n    exact (not_lt_of_ge hBc) ((lt_mul_of_one_lt_right (Nat.cast_pos.2 hB)\n      (one_lt_pow₀ hβ (by decide : 3 ≠ 0))).trans_le hpow)\n  -- the bound `C` for the remainders\n  let Cn := ⌊(B : ℝ) ^ c⌋₊\n  have hC : ∀ W ∈ boxFamily r B, ∀ j i,\n      |(diag (hasseDeriv j W) %ₘ f).coeff i| ≤ (Cn : ℤ) := by\n    intro W hW j i\n    have hcW : ∀ e, |(W.coeff e : ℝ)| ≤ B := fun e ↦ by\n      exact_mod_cast (abs_of_nonneg (hW.2 e).1).trans_le (hW.2 e).2\n    exact (abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux\n      hA hW.1 hcW hs h2 hAβ j i).trans (by exact_mod_cast Nat.floor_mono hpow)\n  let J := (box r).filter fun d ↦\n    weight r d ≤ ((m : ℝ) - 4 * c * f.natDegree * √(m : ℝ)) / 2\n  -- the counting inequality\n  have hD : c * f.natDegree * J.card ≤ ((∏ j, (r j + 1) : ℕ) : ℝ) / 2 := by\n    simpa [J, mul_assoc] using mul_card_filter_weight_le_aux hm r hr (c * f.natDegree)\n  exact exists_mem_RSet_le_index_aux hf hfα r B Cn J\n    (fun W hW j _ i _ ↦ hC W hW j i)\n    (pigeonhole_count (Nat.cast_pos.2 hB) hc (Finset.prod_pos fun j _ ↦ Nat.succ_pos _) hD)\n    (fun d hd hw ↦ Finset.mem_filter.2 ⟨mem_box.2 hd, hw.le⟩)",
+      "sha256": "d35def09cffea3966d19da542844f090f77e574715d58bf15e9275290b95d73e",
+      "signature": "private lemma exists_mem_RSet_le_index_of_rpow_bound_aux {f : Polynomial ℤ} {α A : ℝ} (hf : f.Monic)\n    (hfα : Polynomial.aeval α f = 0) (hA : ∀ i, |(f.coeff i : ℝ)| ≤ A) {m : ℕ} (hm : 0 < m)\n    (r : Fin m → ℕ) (hr : ∀ j, 0 < r j) {c β : ℝ} {B s : ℕ} (hB : 0 < B) (hs : ∑ j, r j ≤ s)\n    (hAβ : (1 + A) ^ s ≤ β) (hpow : (B : ℝ) * β ^ 3 ≤ (B : ℝ) ^ c) : ∃ P : MvPolynomial (Fin m) ℤ,\n      P ∈ RSet B r ∧ ((m : ℝ) - 4 * c * f.natDegree * √(m : ℝ)) / 2 ≤\n        index (map (Int.castRingHom ℝ) P) (fun _ ↦ α) r",
+      "body": "by\n  have hA1 : 1 ≤ A := by simpa [hf.coeff_natDegree] using hA f.natDegree\n  have h2 : (2 : ℝ) ^ s ≤ β :=\n    (pow_le_pow_left₀ (by norm_num) (by linarith : (2 : ℝ) ≤ 1 + A) s).trans hAβ\n  have hc : 1 ≤ c := by\n    by_contra! hc\n    have hBc : (B : ℝ) ^ c ≤ B := by\n      simpa using Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast hB) hc.le\n    have hs0 : 0 < s := (hr ⟨0, hm⟩).trans_le\n      ((Finset.single_le_sum (fun j _ ↦ Nat.zero_le (r j)) (Finset.mem_univ _)).trans hs)\n    have hβ : 1 < β := (one_lt_pow₀ (by norm_num : (1 : ℝ) < 2) hs0.ne').trans_le h2\n    exact (not_lt_of_ge hBc) ((lt_mul_of_one_lt_right (Nat.cast_pos.2 hB)\n      (one_lt_pow₀ hβ (by decide : 3 ≠ 0))).trans_le hpow)\n  -- the bound `C` for the remainders\n  let Cn := ⌊(B : ℝ) ^ c⌋₊\n  have hC : ∀ W ∈ boxFamily r B, ∀ j i,\n      |(diag (hasseDeriv j W) %ₘ f).coeff i| ≤ (Cn : ℤ) := by\n    intro W hW j i\n    have hcW : ∀ e, |(W.coeff e : ℝ)| ≤ B := fun e ↦ by\n      exact_mod_cast (abs_of_nonneg (hW.2 e).1).trans_le (hW.2 e).2\n    exact (abs_coeff_diag_hasseDeriv_modByMonic_le_floor_aux\n      hA hW.1 hcW hs h2 hAβ j i).trans (by exact_mod_cast Nat.floor_mono hpow)\n  let J := (box r).filter fun d ↦\n    weight r d ≤ ((m : ℝ) - 4 * c * f.natDegree * √(m : ℝ)) / 2\n  -- the counting inequality\n  have hD : c * f.natDegree * J.card ≤ ((∏ j, (r j + 1) : ℕ) : ℝ) / 2 := by\n    simpa [J, mul_assoc] using mul_card_filter_weight_le_aux hm r hr (c * f.natDegree)\n  exact exists_mem_RSet_le_index_aux hf hfα r B Cn J\n    (fun W hW j _ i _ ↦ hC W hW j i)\n    (pigeonhole_count (Nat.cast_pos.2 hB) hc (Finset.prod_pos fun j _ ↦ Nat.succ_pos _) hD)\n    (fun d hd hw ↦ Finset.mem_filter.2 ⟨mem_box.2 hd, hw.le⟩)",
+      "occurrences": 1
+    }
+  ],
+  "distinct_declarations": 7,
+  "external_to_file_files": 0,
+  "external_to_file_declarations": 0,
+  "executable_occurrences": 12
+}
