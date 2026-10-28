@@ -1,0 +1,107 @@
+{
+  "declaration": "Roth.sq_div_three_lt_floor_sq_div_two",
+  "unresolved": [],
+  "standard_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "accepted": [
+    {
+      "label": "original",
+      "format": "disk",
+      "source": "floorcompare202-original-executed.lean.txt",
+      "source_sha256": "04ae371ffd595ca1f78d5b8c2a5d7361a05fd9468518bc327b223e216c7e6a40",
+      "receipt": "floorcompare202-original-receipt.json",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean"
+      },
+      "native_region_start_line": 15,
+      "required_info": [
+        "'Roth.sq_div_three_lt_floor_sq_div_two' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "FLOORCOMPARE202_FULL_TYPE: ∀ {a : ℝ}, 10 < a → a ^ 2 / 3 < ↑⌊a⌋₊ ^ 2 / 2",
+        "FLOORCOMPARE202_AUDIT: requested=293; unique=293",
+        "FLOORCOMPARE202_AUDIT_PRESENT: present=293; values=293"
+      ]
+    },
+    {
+      "label": "isolated",
+      "format": "raw",
+      "source": "floorcompare202-isolated-executed.lean.txt",
+      "source_sha256": "b8d0a6d326071e2d67468a8762af841c6d2d64c212835eda067b378a6ef15b0a",
+      "receipt": "floorcompare202-isolated-receipt.json",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.sq_div_three_lt_floor_sq_div_two\n#check @Nat.lt_floor_add_one\n#check @Nat.sub_one_lt_floor\n#check @Nat.le_floor\n#check @Nat.floor_eq_iff\n#check @sq_lt_sq₀\n#check @sq_lt_sq'\nnamespace FloorCompare202\n\ntheorem closureGuards {a : ℝ} (ha : 10 < a) :\n    a ^ 2 / 3 < (⌊a⌋₊ : ℝ) ^ 2 / 2 := by\n  fail_if_success solve | exact?\n  fail_if_success solve | simp\n  fail_if_success solve | linarith [Nat.lt_floor_add_one a]\n  nlinarith [Nat.lt_floor_add_one a]\n\ntheorem genericOriginal {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]\n    [FloorSemiring K] {a : K} (ha : 10 < a) :\n    a ^ 2 / 3 < (⌊a⌋₊ : K) ^ 2 / 2 := by\n  nlinarith [Nat.lt_floor_add_one a]\n\ntheorem floorFree {K : Type*} [CommRing K] [LinearOrder K] [IsStrictOrderedRing K]\n    {a n : K} (ha : 0 ≤ a) (hn : 5 ≤ n) (hlt : a < n + 1) :\n    2 * a ^ 2 < 3 * n ^ 2 := by\n  nlinarith [mul_nonneg (sub_nonneg.mpr hn) (sub_nonneg.mpr hn)]\n\ntheorem genericFive {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]\n    [FloorSemiring K] {a : K} (ha : 5 ≤ a) :\n    a ^ 2 / 3 < (⌊a⌋₊ : K) ^ 2 / 2 := by\n  have hn : (5 : K) ≤ ⌊a⌋₊ := by exact_mod_cast Nat.le_floor ha\n  have h := floorFree (by linarith : 0 ≤ a) hn (Nat.lt_floor_add_one a)\n  nlinarith only [h]\n\ntheorem realFive {a : ℝ} (ha : 5 ≤ a) :\n    a ^ 2 / 3 < (⌊a⌋₊ : ℝ) ^ 2 / 2 := genericFive ha\n\ntheorem thresholdFourFails :\n    ¬ ((99 / 20 : ℝ) ^ 2 / 3 < (⌊(99 / 20 : ℝ)⌋₊ : ℝ) ^ 2 / 2) := by\n  have hf : ⌊(99 / 20 : ℝ)⌋₊ = 4 := (Nat.floor_eq_iff (by norm_num)).2 (by norm_num)\n  rw [hf]\n  norm_num\n\ntheorem noLowerBoundFails : ¬ ((0 : ℝ) ^ 2 / 3 < (⌊(0 : ℝ)⌋₊ : ℝ) ^ 2 / 2) := by\n  norm_num\n\ntheorem realSpecialization {a : ℝ} (ha : 10 < a) :\n    a ^ 2 / 3 < (⌊a⌋₊ : ℝ) ^ 2 / 2 := genericFive (by linarith)\n\n#print axioms closureGuards\n#print axioms genericOriginal\n#print axioms floorFree\n#print axioms genericFive\n#print axioms realFive\n#print axioms thresholdFourFails\n#print axioms noLowerBoundFails\n#print axioms realSpecialization\nend FloorCompare202\n"
+      },
+      "native_region_start_line": 19,
+      "required_info": [
+        "'FloorCompare202.closureGuards' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'FloorCompare202.genericOriginal' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'FloorCompare202.floorFree' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'FloorCompare202.genericFive' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'FloorCompare202.realFive' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'FloorCompare202.thresholdFourFails' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'FloorCompare202.noLowerBoundFails' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'FloorCompare202.realSpecialization' depends on axioms: [propext, Classical.choice, Quot.sound]"
+      ]
+    },
+    {
+      "label": "composition",
+      "format": "raw",
+      "source": "floorcompare202-composition-executed.lean.txt",
+      "source_sha256": "3ce844c41739841db91ee2e0392862a9870ada6e9ce518a850caab3a24277002",
+      "receipt": "floorcompare202-composition-receipt.json",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.sq_div_three_lt_floor_sq_div_two\nnamespace FloorCompare202Composition\n\ntheorem viaSubOne {a : ℝ} (ha : 10 < a) :\n    a ^ 2 / 3 < (⌊a⌋₊ : ℝ) ^ 2 / 2 := by\n  nlinarith [Nat.sub_one_lt_floor a]\n\ntheorem viaSquareMonotonicity {a : ℝ} (ha : 5 ≤ a) :\n    a ^ 2 / 3 < (⌊a⌋₊ : ℝ) ^ 2 / 2 := by\n  have hn : (5 : ℝ) ≤ ⌊a⌋₊ := by exact_mod_cast Nat.le_floor ha\n  have hs : a ^ 2 < ((⌊a⌋₊ : ℝ) + 1) ^ 2 :=\n    (sq_lt_sq₀ (by linarith : 0 ≤ a) (by positivity)).2 (Nat.lt_floor_add_one a)\n  nlinarith [sq_nonneg ((⌊a⌋₊ : ℝ) - 5)]\n\ntheorem negativeInputFails : ¬ (2 * (-100 : ℝ) ^ 2 < 3 * (5 : ℝ) ^ 2) := by\n  norm_num\n\ntheorem sqrtComparison {X : ℝ} (hX : 2 ≤ X) : √X < ⌊X⌋₊ := by\n  have hfloor : (2 : ℝ) ≤ ⌊X⌋₊ := by exact_mod_cast Nat.le_floor hX\n  exact (Real.sqrt_lt' (by positivity)).2\n    (by nlinarith only [Nat.lt_floor_add_one X, hfloor])\n\n#print axioms viaSubOne\n#print axioms viaSquareMonotonicity\n#print axioms negativeInputFails\n#print axioms sqrtComparison\nend FloorCompare202Composition\n"
+      },
+      "native_region_start_line": 19,
+      "required_info": [
+        "'FloorCompare202Composition.viaSubOne' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'FloorCompare202Composition.viaSquareMonotonicity' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'FloorCompare202Composition.negativeInputFails' depends on axioms: [propext, Classical.choice, Quot.sound]",
+        "'FloorCompare202Composition.sqrtComparison' depends on axioms: [propext, Classical.choice, Quot.sound]"
+      ]
+    },
+    {
+      "label": "fullmodule",
+      "format": "disk",
+      "source": "floorcompare202-fullmodule-executed.lean.txt",
+      "source_sha256": "4b671dc8378e1cf368261d6247968eb1345b0bbff78ff18b4a9af66c57841c42",
+      "receipt": "floorcompare202-fullmodule-receipt.json",
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean"
+      },
+      "native_region_start_line": 1285,
+      "required_info": [
+        "'FloorCompare202Module.sq_div_three_lt_floor_sq_div_two' depends on axioms: [propext, Classical.choice, Quot.sound]"
+      ]
+    }
+  ],
+  "rejected": [],
+  "audit": {
+    "source": "floorcompare202-original-executed.lean.txt",
+    "receipt": "floorcompare202-original-receipt.json",
+    "marker": "FLOORCOMPARE202",
+    "requested": 293,
+    "unique": 293,
+    "present": 293,
+    "values": 293
+  },
+  "canonical_direct_consumers": [],
+  "canonical_direct_type_consumers": [],
+  "composition": {
+    "strict_three_existing_call_term_verified": false,
+    "parent_project_helpers_counted_as_mathlib_blocks": false,
+    "new_helpers_counted_as_existing": false,
+    "actual_caller_replays": 0,
+    "actual_call_occurrences": 0,
+    "caller_replay_na": "No explicit callers or canonical direct consumers. Whole original Theta body replayed; related sqrt helper separately replayed as a neighboring comparison, not a caller.",
+    "no_circular_use_of_target_in_new_proof": true,
+    "no_global_absence_claim": true,
+    "full_module_replay": true,
+    "all_actual_floor_premises_discharged": true,
+    "exact_search_before_new_helpers": true
+  },
+  "active_virtual_import_count": 18,
+  "persistent_disk_import_count": 9
+}

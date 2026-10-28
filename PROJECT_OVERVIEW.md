@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 201/293 declaration assessments complete.**
+Updated: 2026-10-28. **IN PROGRESS — 202/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 201; remaining: 92.
-- Verdicts: 19 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 61 BORDERLINE-needs-human, 37 SKIP.
+- Completed applicable assessments: 202; remaining: 91.
+- Verdicts: 19 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 62 BORDERLINE-needs-human, 37 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -2336,6 +2336,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: No explicit source callers; no direct type/value consumers among all293 canonical constants; no simp attribute. Related stronger triangular-sum arithmetic occurs in two private helpers.
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.floor_sq_div_two_le_sum.md).
 
+### Completed: `Roth.sq_div_three_lt_floor_sq_div_two`
+
+- Type: `∀ {a : ℝ}, 10 < a → a ^ 2 / 3 < ↑⌊a⌋₊ ^ 2 / 2`
+- What: For real a>10, a²/3 is strictly smaller than natural floor(a)²/2.
+- How: Nonlinear arithmetic from Nat.lt_floor_add_one and natural-floor nonnegativity.
+- Hypotheses: a:ℝ, ha:10<a; verified sufficient weakening5≤a;4≤a fails at99/20
+- Project dependencies: None
+- Caller summary: Zero explicit source callers and zero canonical direct value/type consumers among293constants; no simp attribute. Whole Theta body replayed successfully.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.sq_div_three_lt_floor_sq_div_two.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -2764,6 +2774,8 @@ Completed `Roth.one_le_lem6M`: Pinned one_le_mul_of_one_le_of_one_le, one_le_pow
 
 Completed `Roth.floor_sq_div_two_le_sum`: All five methods on current/standard/abstract forms. Pinned Gauss sum, finite sum distribution and Nat.floor_le verified. No exact existing replacement or strict three-call existing composition established.
 
+Completed `Roth.sq_div_three_lt_floor_sq_div_two`: All15cells of five methods on current/standard/abstract forms executed. Pinned Nat floor-error/monotonicity and square-monotonicity APIs checked and used. No exact replacement or strict three-existing-call composition established.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -3167,6 +3179,8 @@ Completed `Roth.Θ_unique_le`: {'other': 'Roth.Θ_le_of_forall_index_le', 'same_
 Completed `Roth.one_le_lem6M`: {'other': 'List.one_le_prod', 'same_statement': False, 'same_proof': 'abstract product induction subsumes multiplication stage', 'assessment': 'Actual four factor inequalities must still be established; list normalization is explicit.'}, {'other': 'one_le_mul_of_one_le_of_one_le', 'same_statement': False, 'same_proof': 'three assembly calls', 'assessment': 'Does not include power and factorial premises.'}, {'other': 'Roth.lem6M', 'same_statement': False, 'same_proof': False, 'assessment': 'Parent defines envelope; theorem supplies its lower bound.'}
 
 Completed `Roth.floor_sq_div_two_le_sum`: Gauss summation already in Finset.sum_range_id_mul_two/sum_range_id. Nearby mul_div_two_le_sum_max_aux and mul_sq_div_three_le_sum_max_of_pos_aux repeat cast/sum normalization, with different full conclusions.
+
+Completed `Roth.sq_div_three_lt_floor_sq_div_two`: Private mul_sq_div_three_le_sum_max_of_pos_aux directly proves a²/3≤sum using Gauss identity and nonnegative remainders; it bypasses but does not rederive strict floor-square comparison. MainLemma sqrt comparison is related, with a different conclusion.
 
 ## Part 5: Generalization opportunities
 
@@ -3582,6 +3596,8 @@ Completed `Roth.one_le_lem6M`: Expanded formula compiles over Semiring K, Partia
 
 Completed `Roth.floor_sq_div_two_le_sum`: Verified Field/LinearOrder/IsStrictOrderedRing/FloorSemiring statement; arbitrary n≤a removes floor; stronger division-free n²+n≤2sum works for CommRing/PartialOrder/IsOrderedRing. ha cannot simply be dropped.
 
+Completed `Roth.sq_div_three_lt_floor_sq_div_two`: Verified Field/LinearOrder/IsStrictOrderedRing/FloorSemiring with5≤a; floor-free2*a²<3*n² for ordered CommRing from0≤a,5≤n,a<n+1. Certified99/20 and0counterexamples, plus negative abstract-input guard. No optimal cutoff/minimal hierarchy claim.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -3986,6 +4002,8 @@ Completed `Roth.Θ_unique_le`: Upstream decision on coefficient/degree-bounded a
 Completed `Roth.one_le_lem6M`: No missing elementary order arithmetic API identified. Open upstream choice is whether a named proof-specific coefficient envelope and its lower-bound certificate belong in Roth auxiliary-polynomial infrastructure.
 
 Completed `Roth.floor_sq_div_two_le_sum`: Potential exact affine arithmetic-series normalization or arbitrary natural-cutoff lower-bound API; these are newly proved candidates, not existing hits.
+
+Completed `Roth.sq_div_three_lt_floor_sq_div_two`: Potential numeric floor-square comparison or arbitrary approximation polynomial-comparison API; demand and statement grain remain design questions. All proposed helpers are new proofs.
 
 ## Part 7: Junk / removable
 
@@ -4394,6 +4412,8 @@ Completed `Roth.one_le_lem6M`: Not dead: one actual private consumer theta_phi_l
 
 Completed `Roth.floor_sq_div_two_le_sum`: Unused within this tracked project; no claim of external deadness. Source faithfully records a local fact from the paper.
 
+Completed `Roth.sq_div_three_lt_floor_sq_div_two`: Unused by current source and canonical direct consumers; no external-deadness claim. Paper-facing second FACT is bypassed by the stronger direct-sum argument.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -4599,6 +4619,7 @@ Completed `Roth.floor_sq_div_two_le_sum`: Unused within this tracked project; no
 | 199 | `Roth.Θ_unique_le` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.Θ_unique_le.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.Θ_unique_le/root-acceptance.json) |
 | 200 | `Roth.one_le_lem6M` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.one_le_lem6M.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.one_le_lem6M/root-acceptance.json) |
 | 201 | `Roth.floor_sq_div_two_le_sum` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.floor_sq_div_two_le_sum.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.floor_sq_div_two_le_sum/root-acceptance.json) |
+| 202 | `Roth.sq_div_three_lt_floor_sq_div_two` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.sq_div_three_lt_floor_sq_div_two.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.sq_div_three_lt_floor_sq_div_two/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -5000,12 +5021,14 @@ Completed `Roth.one_le_lem6M` action: BORDERLINE: retain in Roth/Theta.lean besi
 
 Completed `Roth.floor_sq_div_two_le_sum` action: BORDERLINE-needs-human: choose upstream exact sum versus arbitrary-cutoff inequality versus floor corollary; retain project-local or remove unused endpoint if upstream API is not desired. No production edits.
 
+Completed `Roth.sq_div_three_lt_floor_sq_div_two` action: BORDERLINE-needs-human: decide upstream demand and floor-free versus floor corollary grain. Future authorized local refactor can consider removing unused public endpoint; zero explicit callers to update, retain only if documentary purpose is intentional. No production edits.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.sq_div_three_lt_floor_sq_div_two` next. Supporting identities receive their own applicable checks.
+   `Roth.mul_div_two_le_sum_max_aux` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

@@ -1,0 +1,25 @@
+
+private lemma mul_sq_div_three_le_sum_max_of_pos_aux {θ r : ℝ} (hr : 0 < r) (hθ : 0 ≤ θ) {l : ℕ}
+    (hl : θ * r < l) : r * θ ^ 2 / 3 ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / r) := by
+  set n := ⌊θ * r⌋₊
+  have hnle : (n : ℝ) ≤ θ * r := Nat.floor_le (mul_nonneg hθ hr.le)
+  have hnlt : θ * r < n + 1 := Nat.lt_floor_add_one _
+  have hsum := congrArg (Nat.cast (R := ℝ)) (Finset.sum_range_id_mul_two (n + 1))
+  push_cast [Nat.add_sub_cancel] at hsum
+  have hbound : (θ * r) ^ 2 / 3 ≤ ∑ ν ∈ Finset.range (n + 1), (θ * r - ν) := by
+    rw [Finset.sum_sub_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul]
+    push_cast
+    generalize θ * r = a at hnle hnlt ⊢
+    linear_combination hsum / 2 + sq_nonneg a / 6 + (le_trans (Nat.cast_nonneg n) hnle) / 2 +
+      mul_nonneg (sub_nonneg.mpr hnle) (sub_nonneg.mpr hnlt.le) / 2
+  calc
+    r * θ ^ 2 / 3 = (θ * r) ^ 2 / 3 / r := (eq_div_iff hr.ne').2 (by ring)
+    _ ≤ (∑ ν ∈ Finset.range (n + 1), (θ * r - ν)) / r :=
+      (div_le_div_iff_of_pos_right hr).2 hbound
+    _ ≤ ∑ ν ∈ Finset.range (n + 1), max 0 (θ - ν / r) := by
+      simp only [Finset.sum_div, sub_div, mul_div_cancel_right₀ _ hr.ne']
+      exact Finset.sum_le_sum fun ν _ ↦ le_max_right _ _
+    _ ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / r) :=
+      Finset.sum_le_sum_of_subset_of_nonneg (Finset.range_subset_range.2
+        ((Nat.floor_lt (mul_nonneg hθ hr.le)).2 hl))
+        fun _ _ _ ↦ le_max_left _ _

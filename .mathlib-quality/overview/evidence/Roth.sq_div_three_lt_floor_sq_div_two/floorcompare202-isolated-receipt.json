@@ -1,0 +1,156 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.sq_div_three_lt_floor_sq_div_two\n#check @Nat.lt_floor_add_one\n#check @Nat.sub_one_lt_floor\n#check @Nat.le_floor\n#check @Nat.floor_eq_iff\n#check @sq_lt_sq₀\n#check @sq_lt_sq'\nnamespace FloorCompare202\n\ntheorem closureGuards {a : ℝ} (ha : 10 < a) :\n    a ^ 2 / 3 < (⌊a⌋₊ : ℝ) ^ 2 / 2 := by\n  fail_if_success solve | exact?\n  fail_if_success solve | simp\n  fail_if_success solve | linarith [Nat.lt_floor_add_one a]\n  nlinarith [Nat.lt_floor_add_one a]\n\ntheorem genericOriginal {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]\n    [FloorSemiring K] {a : K} (ha : 10 < a) :\n    a ^ 2 / 3 < (⌊a⌋₊ : K) ^ 2 / 2 := by\n  nlinarith [Nat.lt_floor_add_one a]\n\ntheorem floorFree {K : Type*} [CommRing K] [LinearOrder K] [IsStrictOrderedRing K]\n    {a n : K} (ha : 0 ≤ a) (hn : 5 ≤ n) (hlt : a < n + 1) :\n    2 * a ^ 2 < 3 * n ^ 2 := by\n  nlinarith [mul_nonneg (sub_nonneg.mpr hn) (sub_nonneg.mpr hn)]\n\ntheorem genericFive {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]\n    [FloorSemiring K] {a : K} (ha : 5 ≤ a) :\n    a ^ 2 / 3 < (⌊a⌋₊ : K) ^ 2 / 2 := by\n  have hn : (5 : K) ≤ ⌊a⌋₊ := by exact_mod_cast Nat.le_floor ha\n  have h := floorFree (by linarith : 0 ≤ a) hn (Nat.lt_floor_add_one a)\n  nlinarith only [h]\n\ntheorem realFive {a : ℝ} (ha : 5 ≤ a) :\n    a ^ 2 / 3 < (⌊a⌋₊ : ℝ) ^ 2 / 2 := genericFive ha\n\ntheorem thresholdFourFails :\n    ¬ ((99 / 20 : ℝ) ^ 2 / 3 < (⌊(99 / 20 : ℝ)⌋₊ : ℝ) ^ 2 / 2) := by\n  have hf : ⌊(99 / 20 : ℝ)⌋₊ = 4 := (Nat.floor_eq_iff (by norm_num)).2 (by norm_num)\n  rw [hf]\n  norm_num\n\ntheorem noLowerBoundFails : ¬ ((0 : ℝ) ^ 2 / 3 < (⌊(0 : ℝ)⌋₊ : ℝ) ^ 2 / 2) := by\n  norm_num\n\ntheorem realSpecialization {a : ℝ} (ha : 10 < a) :\n    a ^ 2 / 3 < (⌊a⌋₊ : ℝ) ^ 2 / 2 := genericFive (by linarith)\n\n#print axioms closureGuards\n#print axioms genericOriginal\n#print axioms floorFree\n#print axioms genericFive\n#print axioms realFive\n#print axioms thresholdFourFails\n#print axioms noLowerBoundFails\n#print axioms realSpecialization\nend FloorCompare202\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.sq_div_three_lt_floor_sq_div_two`\",\n      \"line\": 20,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Nat.lt_floor_add_one : ∀ {R : Type u_1} [inst : Semiring R] [inst_1 : LinearOrder R] [inst_2 : FloorSemiring R]\\n  (a : R), a < ↑⌊a⌋₊ + 1\",\n      \"line\": 21,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Nat.sub_one_lt_floor : ∀ {R : Type u_1} [inst : Ring R] [inst_1 : LinearOrder R] [IsStrictOrderedRing R]\\n  [inst_3 : FloorSemiring R] (a : R), a - 1 < ↑⌊a⌋₊\",\n      \"line\": 22,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Nat.le_floor : ∀ {α : Type u_1} [inst : Semiring α] [inst_1 : PartialOrder α] [inst_2 : FloorSemiring α] {a : α}\\n  {n : ℕ}, ↑n ≤ a → n ≤ ⌊a⌋₊\",\n      \"line\": 23,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Nat.floor_eq_iff : ∀ {R : Type u_1} [inst : Semiring R] [inst_1 : LinearOrder R] [inst_2 : FloorSemiring R] {a : R}\\n  {n : ℕ}, 0 ≤ a → (⌊a⌋₊ = n ↔ ↑n ≤ a ∧ a < ↑n + 1)\",\n      \"line\": 24,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@sq_lt_sq₀ : ∀ {M₀ : Type u_1} [inst : MonoidWithZero M₀] [inst_1 : LinearOrder M₀] [PosMulStrictMono M₀] {a b : M₀}\\n  [MulPosMono M₀], 0 ≤ a → 0 ≤ b → (a ^ 2 < b ^ 2 ↔ a < b)\",\n      \"line\": 25,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@sq_lt_sq' : ∀ {α : Type u_1} [inst : Ring α] [inst_1 : LinearOrder α] [IsStrictOrderedRing α] {a b : α},\\n  -b < a → a < b → a ^ 2 < b ^ 2\",\n      \"line\": 26,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'FloorCompare202.closureGuards' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 68,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'FloorCompare202.genericOriginal' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 69,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'FloorCompare202.floorFree' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 70,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'FloorCompare202.genericFive' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 71,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'FloorCompare202.realFive' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 72,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'FloorCompare202.thresholdFourFails' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 73,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'FloorCompare202.noLowerBoundFails' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 74,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'FloorCompare202.realSpecialization' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 75,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.sq_div_three_lt_floor_sq_div_two`",
+          "line": 20,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Nat.lt_floor_add_one : ∀ {R : Type u_1} [inst : Semiring R] [inst_1 : LinearOrder R] [inst_2 : FloorSemiring R]\n  (a : R), a < ↑⌊a⌋₊ + 1",
+          "line": 21,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Nat.sub_one_lt_floor : ∀ {R : Type u_1} [inst : Ring R] [inst_1 : LinearOrder R] [IsStrictOrderedRing R]\n  [inst_3 : FloorSemiring R] (a : R), a - 1 < ↑⌊a⌋₊",
+          "line": 22,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Nat.le_floor : ∀ {α : Type u_1} [inst : Semiring α] [inst_1 : PartialOrder α] [inst_2 : FloorSemiring α] {a : α}\n  {n : ℕ}, ↑n ≤ a → n ≤ ⌊a⌋₊",
+          "line": 23,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Nat.floor_eq_iff : ∀ {R : Type u_1} [inst : Semiring R] [inst_1 : LinearOrder R] [inst_2 : FloorSemiring R] {a : R}\n  {n : ℕ}, 0 ≤ a → (⌊a⌋₊ = n ↔ ↑n ≤ a ∧ a < ↑n + 1)",
+          "line": 24,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@sq_lt_sq₀ : ∀ {M₀ : Type u_1} [inst : MonoidWithZero M₀] [inst_1 : LinearOrder M₀] [PosMulStrictMono M₀] {a b : M₀}\n  [MulPosMono M₀], 0 ≤ a → 0 ≤ b → (a ^ 2 < b ^ 2 ↔ a < b)",
+          "line": 25,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@sq_lt_sq' : ∀ {α : Type u_1} [inst : Ring α] [inst_1 : LinearOrder α] [IsStrictOrderedRing α] {a b : α},\n  -b < a → a < b → a ^ 2 < b ^ 2",
+          "line": 26,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'FloorCompare202.closureGuards' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 68,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'FloorCompare202.genericOriginal' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 69,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'FloorCompare202.floorFree' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 70,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'FloorCompare202.genericFive' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 71,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'FloorCompare202.realFive' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 72,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'FloorCompare202.thresholdFourFails' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 73,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'FloorCompare202.noLowerBoundFails' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 74,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'FloorCompare202.realSpecialization' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 75,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 81787
+}

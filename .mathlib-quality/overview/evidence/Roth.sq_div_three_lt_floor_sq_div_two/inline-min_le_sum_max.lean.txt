@@ -1,0 +1,9 @@
+theorem min_le_sum_max {θ : ℝ} {rp : ℕ} (l : ℕ) :
+    min (l * θ / 2) (rp * θ ^ 2 / 3) ≤ ∑ ν ∈ Finset.range l, max 0 (θ - ν / rp) := by
+  by_cases hθ : θ ≤ 0
+  · exact (min_le_left _ _).trans ((div_nonpos_of_nonpos_of_nonneg
+      (mul_nonpos_of_nonneg_of_nonpos (Nat.cast_nonneg l) hθ) (by norm_num)).trans
+        (Finset.sum_nonneg fun _ _ ↦ le_max_left _ _))
+  rcases le_or_gt (l : ℝ) (θ * rp) with hl | hl
+  · exact (min_le_left _ _).trans (mul_div_two_le_sum_max_aux hl)
+  · exact (min_le_right _ _).trans (mul_sq_div_three_le_sum_max_aux (le_of_not_ge hθ) hl.le)

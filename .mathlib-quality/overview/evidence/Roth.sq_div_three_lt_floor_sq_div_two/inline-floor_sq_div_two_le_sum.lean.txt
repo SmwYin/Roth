@@ -1,0 +1,8 @@
+theorem floor_sq_div_two_le_sum {a : ℝ} (ha : 0 ≤ a) :
+    (⌊a⌋₊ : ℝ) ^ 2 / 2 ≤ ∑ ν ∈ Finset.range (⌊a⌋₊ + 1), (a - ν) := by
+  have hsum := congrArg (Nat.cast (R := ℝ)) (Finset.sum_range_id_mul_two (⌊a⌋₊ + 1))
+  simp only [Nat.add_sub_cancel] at hsum
+  push_cast at hsum
+  rw [Finset.sum_sub_distrib, Finset.sum_const, Finset.card_range, nsmul_eq_mul]
+  push_cast
+  nlinarith [Nat.floor_le ha]

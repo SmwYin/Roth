@@ -1,0 +1,46 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.RingTheory.Polynomial.GaussLemma
+import Mathlib.RingTheory.Polynomial.RationalRoot
+import Mathlib.Algebra.Polynomial.DenomsClearable
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+
+#check_failure Roth.sq_div_three_lt_floor_sq_div_two
+namespace FloorCompare202Composition
+
+theorem viaSubOne {a : ℝ} (ha : 10 < a) :
+    a ^ 2 / 3 < (⌊a⌋₊ : ℝ) ^ 2 / 2 := by
+  nlinarith [Nat.sub_one_lt_floor a]
+
+theorem viaSquareMonotonicity {a : ℝ} (ha : 5 ≤ a) :
+    a ^ 2 / 3 < (⌊a⌋₊ : ℝ) ^ 2 / 2 := by
+  have hn : (5 : ℝ) ≤ ⌊a⌋₊ := by exact_mod_cast Nat.le_floor ha
+  have hs : a ^ 2 < ((⌊a⌋₊ : ℝ) + 1) ^ 2 :=
+    (sq_lt_sq₀ (by linarith : 0 ≤ a) (by positivity)).2 (Nat.lt_floor_add_one a)
+  nlinarith [sq_nonneg ((⌊a⌋₊ : ℝ) - 5)]
+
+theorem negativeInputFails : ¬ (2 * (-100 : ℝ) ^ 2 < 3 * (5 : ℝ) ^ 2) := by
+  norm_num
+
+theorem sqrtComparison {X : ℝ} (hX : 2 ≤ X) : √X < ⌊X⌋₊ := by
+  have hfloor : (2 : ℝ) ≤ ⌊X⌋₊ := by exact_mod_cast Nat.le_floor hX
+  exact (Real.sqrt_lt' (by positivity)).2
+    (by nlinarith only [Nat.lt_floor_add_one X, hfloor])
+
+#print axioms viaSubOne
+#print axioms viaSquareMonotonicity
+#print axioms negativeInputFails
+#print axioms sqrtComparison
+end FloorCompare202Composition

@@ -1,0 +1,76 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.RingTheory.Polynomial.GaussLemma
+import Mathlib.RingTheory.Polynomial.RationalRoot
+import Mathlib.Algebra.Polynomial.DenomsClearable
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+
+#check_failure Roth.sq_div_three_lt_floor_sq_div_two
+#check @Nat.lt_floor_add_one
+#check @Nat.sub_one_lt_floor
+#check @Nat.le_floor
+#check @Nat.floor_eq_iff
+#check @sq_lt_sq₀
+#check @sq_lt_sq'
+namespace FloorCompare202
+
+theorem closureGuards {a : ℝ} (ha : 10 < a) :
+    a ^ 2 / 3 < (⌊a⌋₊ : ℝ) ^ 2 / 2 := by
+  fail_if_success solve | exact?
+  fail_if_success solve | simp
+  fail_if_success solve | linarith [Nat.lt_floor_add_one a]
+  nlinarith [Nat.lt_floor_add_one a]
+
+theorem genericOriginal {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    [FloorSemiring K] {a : K} (ha : 10 < a) :
+    a ^ 2 / 3 < (⌊a⌋₊ : K) ^ 2 / 2 := by
+  nlinarith [Nat.lt_floor_add_one a]
+
+theorem floorFree {K : Type*} [CommRing K] [LinearOrder K] [IsStrictOrderedRing K]
+    {a n : K} (ha : 0 ≤ a) (hn : 5 ≤ n) (hlt : a < n + 1) :
+    2 * a ^ 2 < 3 * n ^ 2 := by
+  nlinarith [mul_nonneg (sub_nonneg.mpr hn) (sub_nonneg.mpr hn)]
+
+theorem genericFive {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    [FloorSemiring K] {a : K} (ha : 5 ≤ a) :
+    a ^ 2 / 3 < (⌊a⌋₊ : K) ^ 2 / 2 := by
+  have hn : (5 : K) ≤ ⌊a⌋₊ := by exact_mod_cast Nat.le_floor ha
+  have h := floorFree (by linarith : 0 ≤ a) hn (Nat.lt_floor_add_one a)
+  nlinarith only [h]
+
+theorem realFive {a : ℝ} (ha : 5 ≤ a) :
+    a ^ 2 / 3 < (⌊a⌋₊ : ℝ) ^ 2 / 2 := genericFive ha
+
+theorem thresholdFourFails :
+    ¬ ((99 / 20 : ℝ) ^ 2 / 3 < (⌊(99 / 20 : ℝ)⌋₊ : ℝ) ^ 2 / 2) := by
+  have hf : ⌊(99 / 20 : ℝ)⌋₊ = 4 := (Nat.floor_eq_iff (by norm_num)).2 (by norm_num)
+  rw [hf]
+  norm_num
+
+theorem noLowerBoundFails : ¬ ((0 : ℝ) ^ 2 / 3 < (⌊(0 : ℝ)⌋₊ : ℝ) ^ 2 / 2) := by
+  norm_num
+
+theorem realSpecialization {a : ℝ} (ha : 10 < a) :
+    a ^ 2 / 3 < (⌊a⌋₊ : ℝ) ^ 2 / 2 := genericFive (by linarith)
+
+#print axioms closureGuards
+#print axioms genericOriginal
+#print axioms floorFree
+#print axioms genericFive
+#print axioms realFive
+#print axioms thresholdFourFails
+#print axioms noLowerBoundFails
+#print axioms realSpecialization
+end FloorCompare202
