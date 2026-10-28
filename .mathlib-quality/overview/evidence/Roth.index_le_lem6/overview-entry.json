@@ -1,0 +1,40 @@
+{
+  "declaration": "Roth.index_le_lem6",
+  "kind": "theorem",
+  "type": "∀ {τ : Type u_2} [inst : Fintype τ] {δ : ℝ},\n  0 ≤ δ →\n    δ ≤ 1 →\n      ∀ {r : Option τ → ℕ},\n        3 ≤ ↑(r none) →\n          (∀ (j : τ), ↑(r none) ≤ δ * ↑(r (some j))) →\n            ∀ {r₁ : ℕ},\n              (∀ (j : Option τ), r j ≤ r₁) →\n                ∀ {q : Option τ → ℕ},\n                  (∀ (j : Option τ), 0 < q j) →\n                    ∀ {B : ℝ} {R : MvPolynomial (Option τ) ℤ},\n                      R ∈ Roth.RSet B r →\n                        ∀ {h : Option τ → ℤ},\n                          (∀ (j : Option τ), IsCoprime (h j) ↑(q j)) →\n                            ∃ l,\n                              1 ≤ l ∧\n                                l ≤ r none + 1 ∧\n                                  Roth.index ((map (Int.castRingHom ℝ)) R) (fun j ↦ ↑(h j) / ↑(q j)) r ≤\n                                    2 *\n                                      (Roth.lem6Φ q r (Roth.lem6M (Fintype.card τ + 1) r₁ B l) l +\n                                          √(Roth.lem6Φ q r (Roth.lem6M (Fintype.card τ + 1) r₁ B l) l) +\n                                        √δ)",
+  "what": "For each bounded-height integer polynomial at a coprime rational tuple, some determinant rank1≤l≤r_p+1 gives its weighted index at most2(Φ_l+√Φ_l+√δ).",
+  "how": "Choose the separated determinant using exists_det_eq_mul. The mapped_det_ne_zero_aux and weight_le_delta_aux helpers feed sum_max_sub_le_index_det, while index_det_le provides its upper index bound. Combine these with min_le_sum_max, Θ_nonneg and index_numeric_bound_aux to obtain the square-root bound.",
+  "hypotheses": "Finite complementary variable family;0≤δ≤1;distinguished natural weight≥3 and coordinate ratios;uniform degree ceiling;RSet integer polynomial;coprime numerator tuple;positive denominators retained but unused. The endpoint is freshly verified without denominator positivity and with distinguished weight≥1 via a new stronger finite-sum ingredient.",
+  "project_dependencies": [
+    "MvPolynomial.hasseDeriv_map",
+    "Roth.exists_det_eq_mul",
+    "Roth.index",
+    "Roth.index_det_le",
+    "Roth.index_numeric_bound_aux",
+    "Roth.lem6M",
+    "Roth.lem6Φ",
+    "Roth.mapped_det_ne_zero_aux",
+    "Roth.min_le_sum_max",
+    "Roth.sum_max_sub_le_index_det",
+    "Roth.weight_le_delta_aux",
+    "Roth.Θ_nonneg",
+    "Roth.RSet"
+  ],
+  "caller_summary": {
+    "explicit_callers": 1,
+    "application_occurrences": 1,
+    "names": [
+      "Roth.Θ_option_le"
+    ],
+    "direct_kernel_value_consumers": [
+      "Roth.Θ_option_le"
+    ],
+    "validation": "Original wholeTheta replay, no-q wholeTheta replay, stronger-weight wholeTheta replay with unchanged caller/Θ_lt statements, and complete actual caller inlining all clean."
+  },
+  "mathlib_api_audit": "Five actual methods on current, literature and abstract forms plus five parent-infDegree reaim searches. Existing weightedOrder multiplication and determinant absolute-value bounds are ingredients, not the complete arithmetic witness/recursive-Θ endpoint; local warming/error and one retried Loogle error are disclosed.",
+  "moral_duplications": "Generic index/order ingredients can use infDegree or weightedOrder after explicit bridges; this endpoint additionally chooses a nonzero separated Hasse determinant, controls integer factors and applies a substantive numerical estimate. The individual witness and following supremum theorem are distinct.",
+  "generalization": "Compiled removal of _hq and weakening r_none≥3 to≥1 using newly re-proved /2 finite-sum and numerical bounds; whole actual caller statements preserved. Independently compiled arbitrary nonnegative Φ(l) numerical witness core. No claim zero distinguished weight is impossible or full arbitrary-coefficient endpoint is verified.",
+  "missing_api": "Potential reusable numerical witness and stronger finite-sum interfaces, plus generic determinant-order and separated integer factor-height prerequisites; whole upstream audience/module remains a design choice.",
+  "junk": "The live sole caller Θ_option_le uses the existential rank before taking a finite maximum and supremum. Complete inlining compiles but expands the mathematical argument and is not a recommendation to delete this proof-stage theorem.",
+  "action": "Retain in Roth/Theta.lean. Prefer the verified no-q, positive-natural-weight interface if later editing; decide future upstream leaf vs reusable ingredient scope separately. No production source change in this overview."
+}

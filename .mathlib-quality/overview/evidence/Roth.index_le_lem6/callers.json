@@ -1,0 +1,70 @@
+[
+  {
+    "file": "Roth/Theta.lean",
+    "line": 593,
+    "name": "Roth.Θ_option_le",
+    "short": "Θ_option_le",
+    "kind": "theorem",
+    "visibility": "public",
+    "end_line": 603,
+    "source": "theorem Θ_option_le {δ : ℝ} (hδ0 : 0 ≤ δ) (hδ1 : δ ≤ 1) {r : Option τ → ℕ} (hrp : 3 ≤ (r none : ℝ))\n    (hratio : ∀ j, (r none : ℝ) ≤ δ * r (some j)) {r₁ : ℕ} (hr₁ : ∀ j, r j ≤ r₁) {q : Option τ → ℕ}\n    (hq : ∀ j, 0 < q j) {B : ℝ} (hB : 1 ≤ B) :\n    Θ B q r ≤ 2 * (Finset.Icc 1 (r none + 1)).sup' (Finset.nonempty_Icc.2 (by lia))\n      (fun l ↦ lem6Φ q r (lem6M (Fintype.card τ + 1) r₁ B l) l +\n        √(lem6Φ q r (lem6M (Fintype.card τ + 1) r₁ B l) l) + √δ) := by\n  refine Θ_le_of_forall_index_le hB fun R hR h hh ↦ ?_\n  obtain ⟨l, hl, hl', hle⟩ := index_le_lem6 hδ0 hδ1 hrp hratio hr₁ hq hR hh\n  refine hle.trans (mul_le_mul_of_nonneg_left ?_ (by norm_num))\n  exact Finset.le_sup' (fun l ↦ lem6Φ q r (lem6M (Fintype.card τ + 1) r₁ B l) l +\n    √(lem6Φ q r (lem6M (Fintype.card τ + 1) r₁ B l) l) + √δ) (Finset.mem_Icc.2 ⟨hl, hl'⟩)",
+    "signature": "theorem Θ_option_le {δ : ℝ} (hδ0 : 0 ≤ δ) (hδ1 : δ ≤ 1) {r : Option τ → ℕ} (hrp : 3 ≤ (r none : ℝ))\n    (hratio : ∀ j, (r none : ℝ) ≤ δ * r (some j)) {r₁ : ℕ} (hr₁ : ∀ j, r j ≤ r₁) {q : Option τ → ℕ}\n    (hq : ∀ j, 0 < q j) {B : ℝ} (hB : 1 ≤ B) :\n    Θ B q r ≤ 2 * (Finset.Icc 1 (r none + 1)).sup' (Finset.nonempty_Icc.2 (by lia))\n      (fun l ↦ lem6Φ q r (lem6M (Fintype.card τ + 1) r₁ B l) l +\n        √(lem6Φ q r (lem6M (Fintype.card τ + 1) r₁ B l) l) + √δ)",
+    "body": "by\n  refine Θ_le_of_forall_index_le hB fun R hR h hh ↦ ?_\n  obtain ⟨l, hl, hl', hle⟩ := index_le_lem6 hδ0 hδ1 hrp hratio hr₁ hq hR hh\n  refine hle.trans (mul_le_mul_of_nonneg_left ?_ (by norm_num))\n  exact Finset.le_sup' (fun l ↦ lem6Φ q r (lem6M (Fintype.card τ + 1) r₁ B l) l +\n    √(lem6Φ q r (lem6M (Fintype.card τ + 1) r₁ B l) l) + √δ) (Finset.mem_Icc.2 ⟨hl, hl'⟩)",
+    "proof_lines": 6,
+    "sha256": "97e2066894ea763c6322f1a573ce93ba5f3703e007deaf86ac6465a570631385",
+    "what": "The extremal index in an Option variable family is controlled by a finite supremum of lower-dimensional bounds.",
+    "how": "Use Θ_le_of_forall_index_le, obtain the polynomial-wise size from index_le_lem6 and dominate it by Finset.le_sup'.",
+    "hypotheses": "Lemma6 degree-ratio hypotheses, positive denominators and coefficient bound at least one.",
+    "source_body_refs": [
+      "Roth.index_le_lem6",
+      "Roth.lem6M",
+      "Roth.lem6Φ",
+      "Roth.Θ_le_of_forall_index_le"
+    ],
+    "source_type_refs": [
+      "Roth.lem6M",
+      "Roth.lem6Φ",
+      "Roth.Θ"
+    ],
+    "source_callers": [
+      {
+        "name": "Roth.theta_lt_succ_aux",
+        "file": "Roth/Theta.lean",
+        "line": 891
+      }
+    ],
+    "notes": [],
+    "input_file_sha256": "ea447150977f3acf5259cb27889019b9ac32195614f91bc78ed3454c26ca82f5",
+    "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+    "section_context": "Namespace Roth; open MvPolynomial. Ambient σ : Type*, [Fintype σ], [DecidableEq σ]; Lemma6 additionally τ : Type*, [Fintype τ], [DecidableEq τ]. The source explicitly omits DecidableEq for most results and both instances for fully general helpers. Only instances actually required by the displayed expression/proof are generalized by Lean; see omit directives in the source evidence. ",
+    "uses_from_project": [
+      "Roth.index_le_lem6",
+      "Roth.lem6M",
+      "Roth.lem6Φ",
+      "Roth.Θ_le_of_forall_index_le"
+    ],
+    "used_by_in_file": [
+      "Roth.theta_lt_succ_aux"
+    ],
+    "used_by_other_files": [],
+    "assignment_offset": 461,
+    "project_body_refs": [
+      "Roth.index_le_lem6",
+      "Roth.lem6M",
+      "Roth.lem6Φ",
+      "Roth.Θ_le_of_forall_index_le"
+    ],
+    "project_type_refs": [
+      "Roth.lem6M",
+      "Roth.lem6Φ",
+      "Roth.Θ"
+    ],
+    "project_callers": [
+      {
+        "name": "Roth.theta_lt_succ_aux",
+        "file": "Roth/Theta.lean",
+        "line": 891
+      }
+    ]
+  }
+]

@@ -1,0 +1,93 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.index_le_lem6\nnamespace LemSix213Isolated\ntheorem numeric {θ Φ δ rp l : ℝ} (hΦ : 0 ≤ Φ) (hδ1 : δ ≤ 1) (hrp : 3 ≤ rp)\n    (hl : 0 < l) (hl' : l ≤ rp + 1) (hmin : min (l * θ / 2) (rp * θ ^ 2 / 3) ≤ l * (Φ + δ)) :\n    θ ≤ 2 * (Φ + √Φ + √δ) := by\n  -- The small-index comparison `δ ≤ √δ` also controls the linear bound.\n  have hsΦ : 0 ≤ √Φ := Real.sqrt_nonneg _\n  have hrp0 : 0 < rp := (by norm_num : (0 : ℝ) < 3).trans_le hrp\n  rcases min_le_iff.1 hmin with hk | hk\n  · have hθ : θ ≤ 2 * (Φ + δ) := by\n      rwa [mul_div_assoc, mul_le_mul_iff_right₀ hl, div_le_iff₀ (by norm_num), mul_comm] at hk\n    linarith only [hθ, Real.le_sqrt_self_iff.2 hδ1, hsΦ]\n  · have hsq : θ ^ 2 ≤ 4 * (Φ + δ) := (mul_le_mul_iff_right₀ hrp0).1 (by\n      have hsize : 3 * l ≤ 4 * rp := by linarith only [hl', hrp]\n      linear_combination 3 * hk + mul_le_mul_of_nonneg_right hsize\n        (nonneg_of_mul_nonneg_right\n          ((div_nonneg (mul_nonneg hrp0.le (sq_nonneg θ)) (by norm_num)).trans hk) hl))\n    have hθ : θ ≤ 2 * (√Φ + √δ) := le_of_sq_le_sq (by\n      linear_combination hsq + 4 * ((le_max_left δ 0).trans_eq (Real.sq_sqrt').symm) +\n        4 * (Real.sq_sqrt hΦ).symm + 8 * mul_nonneg hsΦ (Real.sqrt_nonneg δ)) (by positivity)\n    linarith only [hθ, hΦ]\n\n\ntheorem improvedNumeric {θ Φ δ rp l : ℝ} (hΦ : 0 ≤ Φ) (hδ1 : δ ≤ 1) (hrp : 1 ≤ rp)\n    (hl : 0 < l) (hl' : l ≤ rp + 1) (hmin : min (l * θ / 2) (rp * θ ^ 2 / 2) ≤ l * (Φ + δ)) :\n    θ ≤ 2 * (Φ + √Φ + √δ) := by\n  -- The small-index comparison `δ ≤ √δ` also controls the linear bound.\n  have hsΦ : 0 ≤ √Φ := Real.sqrt_nonneg _\n  have hrp0 : 0 < rp := (by norm_num : (0 : ℝ) < 1).trans_le hrp\n  rcases min_le_iff.1 hmin with hk | hk\n  · have hθ : θ ≤ 2 * (Φ + δ) := by\n      rwa [mul_div_assoc, mul_le_mul_iff_right₀ hl, div_le_iff₀ (by norm_num), mul_comm] at hk\n    linarith only [hθ, Real.le_sqrt_self_iff.2 hδ1, hsΦ]\n  · have hsq : θ ^ 2 ≤ 4 * (Φ + δ) := (mul_le_mul_iff_right₀ hrp0).1 (by\n      have hsize : 2 * l ≤ 4 * rp := by linarith only [hl', hrp]\n      linear_combination 2 * hk + mul_le_mul_of_nonneg_right hsize\n        (nonneg_of_mul_nonneg_right\n          ((div_nonneg (mul_nonneg hrp0.le (sq_nonneg θ)) (by norm_num)).trans hk) hl))\n    have hθ : θ ≤ 2 * (√Φ + √δ) := le_of_sq_le_sq (by\n      linear_combination hsq + 4 * ((le_max_left δ 0).trans_eq (Real.sq_sqrt').symm) +\n        4 * (Real.sq_sqrt hΦ).symm + 8 * mul_nonneg hsΦ (Real.sqrt_nonneg δ)) (by positivity)\n    linarith only [hθ, hΦ]\n\n\ntheorem abstractWitness {θ δ rp : ℝ} {Φ : ℕ → ℝ} (hδ : δ ≤ 1) (hrp : 1 ≤ rp)\n    (hΦ : ∀ l, 0 ≤ Φ l)\n    (hw : ∃ l : ℕ, 1 ≤ l ∧ (l : ℝ) ≤ rp + 1 ∧\n      min (l * θ / 2) (rp * θ ^ 2 / 2) ≤ l * (Φ l + δ)) :\n    ∃ l : ℕ, 1 ≤ l ∧ (l : ℝ) ≤ rp + 1 ∧ θ ≤ 2 * (Φ l + √(Φ l) + √δ) := by\n  obtain ⟨l, hl, hl', hm⟩ := hw\n  refine ⟨l, hl, hl', ?_⟩\n  exact improvedNumeric (hΦ l) hδ hrp (by exact_mod_cast hl) hl' hm\n\ntheorem zero_denominator_semantics : (1 : ℝ) / (0 : ℕ) = 0 := by norm_num\n\ntheorem integer_height_not_rational : |(100 : ℚ) * (1 / 100)| = 1 ∧ 1 < |(100 : ℚ)| := by\n  norm_num\n\ntheorem missing_phi_nonneg_guard :\n    min ((4 : ℝ) * (6 / 5) / 2) (3 * (6 / 5) ^ 2 / 3) ≤ 4 * (-1 / 2 + 1) ∧\n      ¬(6 / 5 : ℝ) ≤ 2 * (-1 / 2 + √(-1 / 2) + √1) := by\n  norm_num\n\ntheorem missing_positive_l_guard :\n    min ((0 : ℝ) * 10 / 2) (3 * 10 ^ 2 / 3) ≤ 0 * (0 + 0) ∧\n      ¬(10 : ℝ) ≤ 2 * (0 + √0 + √0) := by norm_num\n\ntheorem weightedOrder_hit {σ A : Type*} [CommSemiring A] [NoZeroDivisors A]\n    (w : σ → ℕ) (f g : MvPowerSeries σ A) :\n    MvPowerSeries.weightedOrder w (f * g) =\n      MvPowerSeries.weightedOrder w f + MvPowerSeries.weightedOrder w g := by\n  exact MvPowerSeries.weightedOrder_mul w f g\n\n#print axioms numeric\n#print axioms improvedNumeric\n#print axioms abstractWitness\n#print axioms zero_denominator_semantics\n#print axioms integer_height_not_rational\n#print axioms missing_positive_l_guard\n#print axioms weightedOrder_hit\nend LemSix213Isolated\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": true,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.index_le_lem6`\",\n      \"line\": 20,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSix213Isolated.numeric' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 93,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSix213Isolated.improvedNumeric' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 94,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSix213Isolated.abstractWitness' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 95,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSix213Isolated.zero_denominator_semantics' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 96,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSix213Isolated.integer_height_not_rational' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 97,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSix213Isolated.missing_positive_l_guard' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 98,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSix213Isolated.weightedOrder_hit' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 99,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": true,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.index_le_lem6`",
+          "line": 20,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'LemSix213Isolated.numeric' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 93,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'LemSix213Isolated.improvedNumeric' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 94,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'LemSix213Isolated.abstractWitness' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 95,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'LemSix213Isolated.zero_denominator_semantics' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 96,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'LemSix213Isolated.integer_height_not_rational' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 97,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'LemSix213Isolated.missing_positive_l_guard' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 98,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'LemSix213Isolated.weightedOrder_hit' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 99,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 89989
+}

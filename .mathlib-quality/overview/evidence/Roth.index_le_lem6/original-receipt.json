@@ -1,0 +1,342 @@
+{
+  "request": {
+    "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+    "timeout_s": 45
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"partial\": false,\n  \"still_elaborating_lines\": null,\n  \"success\": true,\n  \"timed_out\": false,\n  \"items\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Roth.index_le_lem6 : ∀ {τ : Type u_1} [inst : Fintype τ] {δ : ℝ},\\n  0 ≤ δ →\\n    δ ≤ 1 →\\n      ∀ {r : Option τ → ℕ},\\n        3 ≤ ↑(r none) →\\n          (∀ (j : τ), ↑(r none) ≤ δ * ↑(r (some j))) →\\n            ∀ {r₁ : ℕ},\\n              (∀ (j : Option τ), r j ≤ r₁) →\\n                ∀ {q : Option τ → ℕ},\\n                  (∀ (j : Option τ), 0 < q j) →\\n                    ∀ {B : ℝ} {R : MvPolynomial (Option τ) ℤ},\\n                      R ∈ Roth.RSet B r →\\n                        ∀ {h : Option τ → ℤ},\\n                          (∀ (j : Option τ), IsCoprime (h j) ↑(q j)) →\\n                            ∃ l,\\n                              1 ≤ l ∧\\n                                l ≤ r none + 1 ∧\\n                                  Roth.index ((map (Int.castRingHom ℝ)) R) (fun j ↦ ↑(h j) / ↑(q j)) r ≤\\n                                    2 *\\n                                      (Roth.lem6Φ q r (Roth.lem6M (Fintype.card τ + 1) r₁ B l) l +\\n                                          √(Roth.lem6Φ q r (Roth.lem6M (Fintype.card τ + 1) r₁ B l) l) +\\n                                        √δ)\",\n      \"line\": 958,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"theorem Roth.index_le_lem6.{u_2} : ∀ {τ : Type u_2} [inst : Fintype τ] {δ : ℝ},\\n  0 ≤ δ →\\n    δ ≤ 1 →\\n      ∀ {r : Option τ → ℕ},\\n        3 ≤ ↑(r none) →\\n          (∀ (j : τ), ↑(r none) ≤ δ * ↑(r (some j))) →\\n            ∀ {r₁ : ℕ},\\n              (∀ (j : Option τ), r j ≤ r₁) →\\n                ∀ {q : Option τ → ℕ},\\n                  (∀ (j : Option τ), 0 < q j) →\\n                    ∀ {B : ℝ} {R : MvPolynomial (Option τ) ℤ},\\n                      R ∈ Roth.RSet B r →\\n                        ∀ {h : Option τ → ℤ},\\n                          (∀ (j : Option τ), IsCoprime (h j) ↑(q j)) →\\n                            ∃ l,\\n                              1 ≤ l ∧\\n                                l ≤ r none + 1 ∧\\n                                  Roth.index ((map (Int.castRingHom ℝ)) R) (fun j ↦ ↑(h j) / ↑(q j)) r ≤\\n                                    2 *\\n                                      (Roth.lem6Φ q r (Roth.lem6M (Fintype.card τ + 1) r₁ B l) l +\\n                                          √(Roth.lem6Φ q r (Roth.lem6M (Fintype.card τ + 1) r₁ B l) l) +\\n                                        √δ) :=\\nfun {τ} [Fintype τ] {δ} hδ0 hδ1 {r} hrp hratio {r₁} hr₁ {q} _hq {B} {R} hR {h} hh ↦\\n  have hrp0 :=\\n    LT.lt.trans_le\\n      (Mathlib.Meta.NormNum.isNat_lt_true (Mathlib.Meta.NormNum.isNat_ofNat ℝ Nat.cast_zero)\\n        (Mathlib.Meta.NormNum.isNat_ofNat ℝ (Eq.refl 3)) (Eq.refl false))\\n      hrp;\\n  have hr0 := fun j ↦\\n    Option.casesOn (motive := fun t ↦ j = t → 0 < r j) j\\n      (fun h ↦\\n        Eq.symm h ▸\\n          cast (Eq.trans (congrFun' (congrArg LT.lt (Eq.symm Nat.cast_zero)) ↑(r none)) Nat.cast_lt._simp_1) hrp0)\\n      (fun j_1 h ↦\\n        Eq.symm h ▸\\n          cast (Eq.trans (congrFun' (congrArg LT.lt (Eq.symm Nat.cast_zero)) ↑(r (some j_1))) Nat.cast_lt._simp_1)\\n            (pos_of_mul_pos_right (LT.lt.trans_le hrp0 (hratio j_1)) hδ0))\\n      (Eq.refl j);\\n  Exists.casesOn (Roth.exists_det_eq_mul hR.left hR.right.left) fun l h_1 ↦\\n    And.casesOn h_1 fun hl right ↦\\n      And.casesOn right fun hl' right ↦\\n        Exists.casesOn right fun D h_2 ↦\\n          And.casesOn h_2 fun hD right ↦\\n            Exists.casesOn right fun U h_3 ↦\\n              Exists.casesOn h_3 fun V h_4 ↦\\n                And.casesOn h_4 fun hU right ↦\\n                  And.casesOn right fun hV right ↦\\n                    And.casesOn right fun hUd right ↦\\n                      And.casesOn right fun hVd hF ↦\\n                        Exists.intro l\\n                          ⟨hl,\\n                            ⟨hl',\\n                              let α := fun j ↦ ↑(h j) / ↑(q j);\\n                              let Φ := Roth.lem6Φ q r (Roth.lem6M (Fintype.card τ + 1) r₁ B l) l;\\n                              have hlower :=\\n                                Roth.sum_max_sub_le_index_det D hD (Roth.mapped_det_ne_zero_aux✝ hU hV hF) α hr0\\n                                  fun d hd ↦\\n                                  Roth.weight_le_delta_aux✝ hδ0 hratio (LE.le.trans hd (Nat.sub_le_iff_le_add.mpr hl'));\\n                              have hupper := Roth.index_det_le hr0 hr₁ hR hh hl hU hV hUd hVd hF;\\n                              Roth.index_numeric_bound_aux✝\\n                                (add_nonneg (Roth.Θ_nonneg fun x ↦ q none) (Roth.Θ_nonneg (q ∘ some))) hδ1 hrp\\n                                (cast\\n                                  (Eq.symm\\n                                    (Eq.trans (congrFun' (congrArg LT.lt (Eq.symm Nat.cast_zero)) ↑l)\\n                                      Nat.cast_lt._simp_1))\\n                                  (have this := hl;\\n                                  this))\\n                                (cast\\n                                  (Eq.symm\\n                                    (Eq.trans\\n                                      (congrArg (LE.le ↑l) (congrArg (HAdd.hAdd ↑(r none)) (Eq.symm Nat.cast_one)))\\n                                      (Eq.trans (congrArg (LE.le ↑l) (Nat.cast_add._simp_1 (r none) 1))\\n                                        Nat.cast_le._si\\n\\n[... 3237 characters elided; set LEAN_MCP_MAX_OUTPUT_CHARS=0 for the full text ...]\\n\\n\\n                                                        (Matrix.of fun μ ν ↦\\n                                                          (hasseDeriv\\n                                                              (Finsupp.mapDomain some (D μ) + Finsupp.single none ↑ν))\\n                                                            R))\\n                                                      (Matrix.det.congr_simp\\n                                                        ((map (Int.castRingHom ℝ)).mapMatrix\\n                                                          (Matrix.of fun μ ν ↦\\n                                                            (hasseDeriv\\n                                                                (Finsupp.mapDomain some (D μ) + Finsupp.single none ↑ν))\\n                                                              R))\\n                                                        (Matrix.of fun i j ↦\\n                                                          (map (Int.castRingHom ℝ))\\n                                                            ((hasseDeriv\\n                                                                (Finsupp.mapDomain some (D i) + Finsupp.single none ↑j))\\n                                                              R))\\n                                                        (RingHom.mapMatrix_apply (map (Int.castRingHom ℝ))\\n                                                          (Matrix.of fun μ ν ↦\\n                                                            (hasseDeriv\\n                                                                (Finsupp.mapDomain some (D μ) + Finsupp.single none ↑ν))\\n                                                              R)))))\\n                                                  fun j ↦ ↑(h j) / ↑(q j))\\n                                                r))\\n                                            (↑l * Roth.lem6Φ q r (Roth.lem6M (Fintype.card τ + 1) r₁ B l) l))\\n                                          hupper)))))⟩⟩\",\n      \"line\": 959,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Roth.index_le_lem6' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 960,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSix213.RSet' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 961,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSix213.indexSet' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 962,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSix213.Θ' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 963,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSix213.one_mem_RSet' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 964,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSix213.indexSet_nonempty' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 965,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSix213.indexSet_bddAbove' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 966,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSix213.index_le_Θ' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 967,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSix213.Θ_nonneg' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 968,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSix213.Θ_le_card' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 969,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSix213.Θ_le_of_forall_index_le' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 970,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSix213.Θ_mono' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 971,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSix213.Θ_equiv' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 972,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSix213.exists_eq_pow_mul_of_rootMultiplicity' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 973,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSix213.pow_rootMultiplicity_le' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 974,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSix213.Θ_unique_le' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 975,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSix213.lem6M' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 976,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSix213.lem6Φ' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 977,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSix213.one_le_lem6M' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 978,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSix213.floor_sq_div_two_le_sum' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 979,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSix213.sq_div_three_lt_floor_sq_div_two' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 980,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSix213.min_le_sum_max' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 981,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSix213.sum_max_sub_le_index_det' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 982,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSix213.index_det_le' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 983,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSix213.replay' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 984,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSix213.Θ_option_le' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 985,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSix213.lem6M_lt' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 986,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSix213.lem7_Φ_bound' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 987,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSix213.lem7_numeric' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 988,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'LemSix213.Θ_lt' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 989,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"LEMSIX213_DIRECT_CONSUMER: Roth.Θ_option_le\",\n      \"line\": 992,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"LEMSIX213_AUDIT: requested=293; unique=293\",\n      \"line\": 992,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"LEMSIX213_AUDIT_PRESENT: present=293; values=293\",\n      \"line\": 992,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ],\n  \"failed_dependencies\": []\n}"
+      }
+    ],
+    "structuredContent": {
+      "result": {
+        "partial": false,
+        "still_elaborating_lines": null,
+        "success": true,
+        "timed_out": false,
+        "items": [
+          {
+            "severity": "info",
+            "message": "@Roth.index_le_lem6 : ∀ {τ : Type u_1} [inst : Fintype τ] {δ : ℝ},\n  0 ≤ δ →\n    δ ≤ 1 →\n      ∀ {r : Option τ → ℕ},\n        3 ≤ ↑(r none) →\n          (∀ (j : τ), ↑(r none) ≤ δ * ↑(r (some j))) →\n            ∀ {r₁ : ℕ},\n              (∀ (j : Option τ), r j ≤ r₁) →\n                ∀ {q : Option τ → ℕ},\n                  (∀ (j : Option τ), 0 < q j) →\n                    ∀ {B : ℝ} {R : MvPolynomial (Option τ) ℤ},\n                      R ∈ Roth.RSet B r →\n                        ∀ {h : Option τ → ℤ},\n                          (∀ (j : Option τ), IsCoprime (h j) ↑(q j)) →\n                            ∃ l,\n                              1 ≤ l ∧\n                                l ≤ r none + 1 ∧\n                                  Roth.index ((map (Int.castRingHom ℝ)) R) (fun j ↦ ↑(h j) / ↑(q j)) r ≤\n                                    2 *\n                                      (Roth.lem6Φ q r (Roth.lem6M (Fintype.card τ + 1) r₁ B l) l +\n                                          √(Roth.lem6Φ q r (Roth.lem6M (Fintype.card τ + 1) r₁ B l) l) +\n                                        √δ)",
+            "line": 958,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "theorem Roth.index_le_lem6.{u_2} : ∀ {τ : Type u_2} [inst : Fintype τ] {δ : ℝ},\n  0 ≤ δ →\n    δ ≤ 1 →\n      ∀ {r : Option τ → ℕ},\n        3 ≤ ↑(r none) →\n          (∀ (j : τ), ↑(r none) ≤ δ * ↑(r (some j))) →\n            ∀ {r₁ : ℕ},\n              (∀ (j : Option τ), r j ≤ r₁) →\n                ∀ {q : Option τ → ℕ},\n                  (∀ (j : Option τ), 0 < q j) →\n                    ∀ {B : ℝ} {R : MvPolynomial (Option τ) ℤ},\n                      R ∈ Roth.RSet B r →\n                        ∀ {h : Option τ → ℤ},\n                          (∀ (j : Option τ), IsCoprime (h j) ↑(q j)) →\n                            ∃ l,\n                              1 ≤ l ∧\n                                l ≤ r none + 1 ∧\n                                  Roth.index ((map (Int.castRingHom ℝ)) R) (fun j ↦ ↑(h j) / ↑(q j)) r ≤\n                                    2 *\n                                      (Roth.lem6Φ q r (Roth.lem6M (Fintype.card τ + 1) r₁ B l) l +\n                                          √(Roth.lem6Φ q r (Roth.lem6M (Fintype.card τ + 1) r₁ B l) l) +\n                                        √δ) :=\nfun {τ} [Fintype τ] {δ} hδ0 hδ1 {r} hrp hratio {r₁} hr₁ {q} _hq {B} {R} hR {h} hh ↦\n  have hrp0 :=\n    LT.lt.trans_le\n      (Mathlib.Meta.NormNum.isNat_lt_true (Mathlib.Meta.NormNum.isNat_ofNat ℝ Nat.cast_zero)\n        (Mathlib.Meta.NormNum.isNat_ofNat ℝ (Eq.refl 3)) (Eq.refl false))\n      hrp;\n  have hr0 := fun j ↦\n    Option.casesOn (motive := fun t ↦ j = t → 0 < r j) j\n      (fun h ↦\n        Eq.symm h ▸\n          cast (Eq.trans (congrFun' (congrArg LT.lt (Eq.symm Nat.cast_zero)) ↑(r none)) Nat.cast_lt._simp_1) hrp0)\n      (fun j_1 h ↦\n        Eq.symm h ▸\n          cast (Eq.trans (congrFun' (congrArg LT.lt (Eq.symm Nat.cast_zero)) ↑(r (some j_1))) Nat.cast_lt._simp_1)\n            (pos_of_mul_pos_right (LT.lt.trans_le hrp0 (hratio j_1)) hδ0))\n      (Eq.refl j);\n  Exists.casesOn (Roth.exists_det_eq_mul hR.left hR.right.left) fun l h_1 ↦\n    And.casesOn h_1 fun hl right ↦\n      And.casesOn right fun hl' right ↦\n        Exists.casesOn right fun D h_2 ↦\n          And.casesOn h_2 fun hD right ↦\n            Exists.casesOn right fun U h_3 ↦\n              Exists.casesOn h_3 fun V h_4 ↦\n                And.casesOn h_4 fun hU right ↦\n                  And.casesOn right fun hV right ↦\n                    And.casesOn right fun hUd right ↦\n                      And.casesOn right fun hVd hF ↦\n                        Exists.intro l\n                          ⟨hl,\n                            ⟨hl',\n                              let α := fun j ↦ ↑(h j) / ↑(q j);\n                              let Φ := Roth.lem6Φ q r (Roth.lem6M (Fintype.card τ + 1) r₁ B l) l;\n                              have hlower :=\n                                Roth.sum_max_sub_le_index_det D hD (Roth.mapped_det_ne_zero_aux✝ hU hV hF) α hr0\n                                  fun d hd ↦\n                                  Roth.weight_le_delta_aux✝ hδ0 hratio (LE.le.trans hd (Nat.sub_le_iff_le_add.mpr hl'));\n                              have hupper := Roth.index_det_le hr0 hr₁ hR hh hl hU hV hUd hVd hF;\n                              Roth.index_numeric_bound_aux✝\n                                (add_nonneg (Roth.Θ_nonneg fun x ↦ q none) (Roth.Θ_nonneg (q ∘ some))) hδ1 hrp\n                                (cast\n                                  (Eq.symm\n                                    (Eq.trans (congrFun' (congrArg LT.lt (Eq.symm Nat.cast_zero)) ↑l)\n                                      Nat.cast_lt._simp_1))\n                                  (have this := hl;\n                                  this))\n                                (cast\n                                  (Eq.symm\n                                    (Eq.trans\n                                      (congrArg (LE.le ↑l) (congrArg (HAdd.hAdd ↑(r none)) (Eq.symm Nat.cast_one)))\n                                      (Eq.trans (congrArg (LE.le ↑l) (Nat.cast_add._simp_1 (r none) 1))\n                                        Nat.cast_le._si\n\n[... 3237 characters elided; set LEAN_MCP_MAX_OUTPUT_CHARS=0 for the full text ...]\n\n\n                                                        (Matrix.of fun μ ν ↦\n                                                          (hasseDeriv\n                                                              (Finsupp.mapDomain some (D μ) + Finsupp.single none ↑ν))\n                                                            R))\n                                                      (Matrix.det.congr_simp\n                                                        ((map (Int.castRingHom ℝ)).mapMatrix\n                                                          (Matrix.of fun μ ν ↦\n                                                            (hasseDeriv\n                                                                (Finsupp.mapDomain some (D μ) + Finsupp.single none ↑ν))\n                                                              R))\n                                                        (Matrix.of fun i j ↦\n                                                          (map (Int.castRingHom ℝ))\n                                                            ((hasseDeriv\n                                                                (Finsupp.mapDomain some (D i) + Finsupp.single none ↑j))\n                                                              R))\n                                                        (RingHom.mapMatrix_apply (map (Int.castRingHom ℝ))\n                                                          (Matrix.of fun μ ν ↦\n                                                            (hasseDeriv\n                                                                (Finsupp.mapDomain some (D μ) + Finsupp.single none ↑ν))\n                                                              R)))))\n                                                  fun j ↦ ↑(h j) / ↑(q j))\n                                                r))\n                                            (↑l * Roth.lem6Φ q r (Roth.lem6M (Fintype.card τ + 1) r₁ B l) l))\n                                          hupper)))))⟩⟩",
+            "line": 959,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'Roth.index_le_lem6' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 960,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSix213.RSet' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 961,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSix213.indexSet' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 962,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSix213.Θ' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 963,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSix213.one_mem_RSet' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 964,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSix213.indexSet_nonempty' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 965,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSix213.indexSet_bddAbove' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 966,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSix213.index_le_Θ' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 967,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSix213.Θ_nonneg' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 968,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSix213.Θ_le_card' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 969,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSix213.Θ_le_of_forall_index_le' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 970,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSix213.Θ_mono' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 971,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSix213.Θ_equiv' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 972,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSix213.exists_eq_pow_mul_of_rootMultiplicity' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 973,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSix213.pow_rootMultiplicity_le' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 974,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSix213.Θ_unique_le' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 975,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSix213.lem6M' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 976,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSix213.lem6Φ' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 977,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSix213.one_le_lem6M' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 978,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSix213.floor_sq_div_two_le_sum' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 979,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSix213.sq_div_three_lt_floor_sq_div_two' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 980,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSix213.min_le_sum_max' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 981,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSix213.sum_max_sub_le_index_det' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 982,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSix213.index_det_le' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 983,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSix213.replay' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 984,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSix213.Θ_option_le' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 985,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSix213.lem6M_lt' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 986,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSix213.lem7_Φ_bound' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 987,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSix213.lem7_numeric' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 988,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "'LemSix213.Θ_lt' depends on axioms: [propext, Classical.choice, Quot.sound]",
+            "line": 989,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "LEMSIX213_DIRECT_CONSUMER: Roth.Θ_option_le",
+            "line": 992,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "LEMSIX213_AUDIT: requested=293; unique=293",
+            "line": 992,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          },
+          {
+            "severity": "info",
+            "message": "LEMSIX213_AUDIT_PRESENT: present=293; values=293",
+            "line": 992,
+            "column": 1,
+            "lean_tags": null,
+            "category": "diagnostic",
+            "hint": null
+          }
+        ],
+        "failed_dependencies": []
+      }
+    },
+    "isError": false
+  },
+  "elapsed_ms": 52
+}

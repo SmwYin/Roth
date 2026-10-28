@@ -1,0 +1,157 @@
+{
+  "declaration": "Roth.index_le_lem6",
+  "unresolved": [],
+  "standard_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "accepted": [
+    {
+      "label": "original",
+      "source": "original-executed.lean.txt",
+      "source_sha256": "a2fdb09671dea12bf39535635100ad334aa42b4ecd48db2508d547b997e7c598",
+      "receipt": "original-receipt.json",
+      "format": "disk",
+      "native_region_start_line": 16,
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "required_info": [
+        "'LemSix213.replay' depends on axioms:",
+        "'LemSix213.Θ_option_le' depends on axioms:",
+        "'LemSix213.Θ_lt' depends on axioms:"
+      ]
+    },
+    {
+      "label": "noq",
+      "source": "noq-executed.lean.txt",
+      "source_sha256": "95dbc3c35bdda4eb9e9b7a7529dec4c6989bead5630ecf262bd4a3ca6d84e1cd",
+      "receipt": "noq-receipt.json",
+      "format": "disk",
+      "native_region_start_line": 16,
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "required_info": [
+        "'LemSix213NoQ.replay' depends on axioms:",
+        "'LemSix213NoQ.Θ_option_le' depends on axioms:",
+        "'LemSix213NoQ.Θ_lt' depends on axioms:"
+      ]
+    },
+    {
+      "label": "lowdegree",
+      "source": "lowdegree-executed.lean.txt",
+      "source_sha256": "4c8b445ee1321b23ea8789489cc873d6170f6b3c70e7c2aa8a5af4408d4a6b2c",
+      "receipt": "lowdegree-receipt.json",
+      "format": "disk",
+      "native_region_start_line": 16,
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "required_info": [
+        "'LemSix213LowDegree.replay' depends on axioms:",
+        "'LemSix213LowDegree.Θ_option_le' depends on axioms:",
+        "'LemSix213LowDegree.Θ_lt' depends on axioms:",
+        "'LemSix213Finite.generic' depends on axioms:"
+      ]
+    },
+    {
+      "label": "inline",
+      "source": "inline-executed.lean.txt",
+      "source_sha256": "84b2a778a90609daf175b1b196d18b6b5cf5b3f6bd2f93550253ab162eaaa913",
+      "receipt": "inline-receipt.json",
+      "format": "disk",
+      "native_region_start_line": 958,
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "required_info": [
+        "'LemSix213NoQ.inlineCaller' depends on axioms:"
+      ]
+    },
+    {
+      "label": "isolated",
+      "source": "isolated-executed.lean.txt",
+      "source_sha256": "687c6df1bfc988fd24ecd37b3af289f1b9b57ac39cbca9a2977a02709cc956e0",
+      "receipt": "isolated-receipt.json",
+      "format": "raw",
+      "native_region_start_line": 20,
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.index_le_lem6\nnamespace LemSix213Isolated\ntheorem numeric {θ Φ δ rp l : ℝ} (hΦ : 0 ≤ Φ) (hδ1 : δ ≤ 1) (hrp : 3 ≤ rp)\n    (hl : 0 < l) (hl' : l ≤ rp + 1) (hmin : min (l * θ / 2) (rp * θ ^ 2 / 3) ≤ l * (Φ + δ)) :\n    θ ≤ 2 * (Φ + √Φ + √δ) := by\n  -- The small-index comparison `δ ≤ √δ` also controls the linear bound.\n  have hsΦ : 0 ≤ √Φ := Real.sqrt_nonneg _\n  have hrp0 : 0 < rp := (by norm_num : (0 : ℝ) < 3).trans_le hrp\n  rcases min_le_iff.1 hmin with hk | hk\n  · have hθ : θ ≤ 2 * (Φ + δ) := by\n      rwa [mul_div_assoc, mul_le_mul_iff_right₀ hl, div_le_iff₀ (by norm_num), mul_comm] at hk\n    linarith only [hθ, Real.le_sqrt_self_iff.2 hδ1, hsΦ]\n  · have hsq : θ ^ 2 ≤ 4 * (Φ + δ) := (mul_le_mul_iff_right₀ hrp0).1 (by\n      have hsize : 3 * l ≤ 4 * rp := by linarith only [hl', hrp]\n      linear_combination 3 * hk + mul_le_mul_of_nonneg_right hsize\n        (nonneg_of_mul_nonneg_right\n          ((div_nonneg (mul_nonneg hrp0.le (sq_nonneg θ)) (by norm_num)).trans hk) hl))\n    have hθ : θ ≤ 2 * (√Φ + √δ) := le_of_sq_le_sq (by\n      linear_combination hsq + 4 * ((le_max_left δ 0).trans_eq (Real.sq_sqrt').symm) +\n        4 * (Real.sq_sqrt hΦ).symm + 8 * mul_nonneg hsΦ (Real.sqrt_nonneg δ)) (by positivity)\n    linarith only [hθ, hΦ]\n\n\ntheorem improvedNumeric {θ Φ δ rp l : ℝ} (hΦ : 0 ≤ Φ) (hδ1 : δ ≤ 1) (hrp : 1 ≤ rp)\n    (hl : 0 < l) (hl' : l ≤ rp + 1) (hmin : min (l * θ / 2) (rp * θ ^ 2 / 2) ≤ l * (Φ + δ)) :\n    θ ≤ 2 * (Φ + √Φ + √δ) := by\n  -- The small-index comparison `δ ≤ √δ` also controls the linear bound.\n  have hsΦ : 0 ≤ √Φ := Real.sqrt_nonneg _\n  have hrp0 : 0 < rp := (by norm_num : (0 : ℝ) < 1).trans_le hrp\n  rcases min_le_iff.1 hmin with hk | hk\n  · have hθ : θ ≤ 2 * (Φ + δ) := by\n      rwa [mul_div_assoc, mul_le_mul_iff_right₀ hl, div_le_iff₀ (by norm_num), mul_comm] at hk\n    linarith only [hθ, Real.le_sqrt_self_iff.2 hδ1, hsΦ]\n  · have hsq : θ ^ 2 ≤ 4 * (Φ + δ) := (mul_le_mul_iff_right₀ hrp0).1 (by\n      have hsize : 2 * l ≤ 4 * rp := by linarith only [hl', hrp]\n      linear_combination 2 * hk + mul_le_mul_of_nonneg_right hsize\n        (nonneg_of_mul_nonneg_right\n          ((div_nonneg (mul_nonneg hrp0.le (sq_nonneg θ)) (by norm_num)).trans hk) hl))\n    have hθ : θ ≤ 2 * (√Φ + √δ) := le_of_sq_le_sq (by\n      linear_combination hsq + 4 * ((le_max_left δ 0).trans_eq (Real.sq_sqrt').symm) +\n        4 * (Real.sq_sqrt hΦ).symm + 8 * mul_nonneg hsΦ (Real.sqrt_nonneg δ)) (by positivity)\n    linarith only [hθ, hΦ]\n\n\ntheorem abstractWitness {θ δ rp : ℝ} {Φ : ℕ → ℝ} (hδ : δ ≤ 1) (hrp : 1 ≤ rp)\n    (hΦ : ∀ l, 0 ≤ Φ l)\n    (hw : ∃ l : ℕ, 1 ≤ l ∧ (l : ℝ) ≤ rp + 1 ∧\n      min (l * θ / 2) (rp * θ ^ 2 / 2) ≤ l * (Φ l + δ)) :\n    ∃ l : ℕ, 1 ≤ l ∧ (l : ℝ) ≤ rp + 1 ∧ θ ≤ 2 * (Φ l + √(Φ l) + √δ) := by\n  obtain ⟨l, hl, hl', hm⟩ := hw\n  refine ⟨l, hl, hl', ?_⟩\n  exact improvedNumeric (hΦ l) hδ hrp (by exact_mod_cast hl) hl' hm\n\ntheorem zero_denominator_semantics : (1 : ℝ) / (0 : ℕ) = 0 := by norm_num\n\ntheorem integer_height_not_rational : |(100 : ℚ) * (1 / 100)| = 1 ∧ 1 < |(100 : ℚ)| := by\n  norm_num\n\ntheorem missing_phi_nonneg_guard :\n    min ((4 : ℝ) * (6 / 5) / 2) (3 * (6 / 5) ^ 2 / 3) ≤ 4 * (-1 / 2 + 1) ∧\n      ¬(6 / 5 : ℝ) ≤ 2 * (-1 / 2 + √(-1 / 2) + √1) := by\n  norm_num\n\ntheorem missing_positive_l_guard :\n    min ((0 : ℝ) * 10 / 2) (3 * 10 ^ 2 / 3) ≤ 0 * (0 + 0) ∧\n      ¬(10 : ℝ) ≤ 2 * (0 + √0 + √0) := by norm_num\n\ntheorem weightedOrder_hit {σ A : Type*} [CommSemiring A] [NoZeroDivisors A]\n    (w : σ → ℕ) (f g : MvPowerSeries σ A) :\n    MvPowerSeries.weightedOrder w (f * g) =\n      MvPowerSeries.weightedOrder w f + MvPowerSeries.weightedOrder w g := by\n  exact MvPowerSeries.weightedOrder_mul w f g\n\n#print axioms numeric\n#print axioms improvedNumeric\n#print axioms abstractWitness\n#print axioms zero_denominator_semantics\n#print axioms integer_height_not_rational\n#print axioms missing_positive_l_guard\n#print axioms weightedOrder_hit\nend LemSix213Isolated\n"
+      },
+      "required_info": [
+        "'LemSix213Isolated.numeric' depends on axioms:",
+        "'LemSix213Isolated.improvedNumeric' depends on axioms:",
+        "'LemSix213Isolated.abstractWitness' depends on axioms:",
+        "'LemSix213Isolated.weightedOrder_hit' depends on axioms:"
+      ]
+    },
+    {
+      "label": "isolated-final",
+      "source": "isolated-final-executed.lean.txt",
+      "source_sha256": "ad7d74eec823103d6ce3353b43940c433a029285e64039f0a4c4e7c0eb77c52f",
+      "receipt": "isolated-final-receipt.json",
+      "format": "raw",
+      "native_region_start_line": 20,
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.index_le_lem6\nnamespace LemSix213Isolated\ntheorem numeric {θ Φ δ rp l : ℝ} (hΦ : 0 ≤ Φ) (hδ1 : δ ≤ 1) (hrp : 3 ≤ rp)\n    (hl : 0 < l) (hl' : l ≤ rp + 1) (hmin : min (l * θ / 2) (rp * θ ^ 2 / 3) ≤ l * (Φ + δ)) :\n    θ ≤ 2 * (Φ + √Φ + √δ) := by\n  fail_if_success solve | simp\n  fail_if_success solve | positivity\n  -- The small-index comparison `δ ≤ √δ` also controls the linear bound.\n  have hsΦ : 0 ≤ √Φ := Real.sqrt_nonneg _\n  have hrp0 : 0 < rp := (by norm_num : (0 : ℝ) < 3).trans_le hrp\n  rcases min_le_iff.1 hmin with hk | hk\n  · have hθ : θ ≤ 2 * (Φ + δ) := by\n      rwa [mul_div_assoc, mul_le_mul_iff_right₀ hl, div_le_iff₀ (by norm_num), mul_comm] at hk\n    linarith only [hθ, Real.le_sqrt_self_iff.2 hδ1, hsΦ]\n  · have hsq : θ ^ 2 ≤ 4 * (Φ + δ) := (mul_le_mul_iff_right₀ hrp0).1 (by\n      have hsize : 3 * l ≤ 4 * rp := by linarith only [hl', hrp]\n      linear_combination 3 * hk + mul_le_mul_of_nonneg_right hsize\n        (nonneg_of_mul_nonneg_right\n          ((div_nonneg (mul_nonneg hrp0.le (sq_nonneg θ)) (by norm_num)).trans hk) hl))\n    have hθ : θ ≤ 2 * (√Φ + √δ) := le_of_sq_le_sq (by\n      linear_combination hsq + 4 * ((le_max_left δ 0).trans_eq (Real.sq_sqrt').symm) +\n        4 * (Real.sq_sqrt hΦ).symm + 8 * mul_nonneg hsΦ (Real.sqrt_nonneg δ)) (by positivity)\n    linarith only [hθ, hΦ]\n\n\ntheorem improvedNumeric {θ Φ δ rp l : ℝ} (hΦ : 0 ≤ Φ) (hδ1 : δ ≤ 1) (hrp : 1 ≤ rp)\n    (hl : 0 < l) (hl' : l ≤ rp + 1) (hmin : min (l * θ / 2) (rp * θ ^ 2 / 2) ≤ l * (Φ + δ)) :\n    θ ≤ 2 * (Φ + √Φ + √δ) := by\n  fail_if_success solve | simp\n  fail_if_success solve | positivity\n  -- The small-index comparison `δ ≤ √δ` also controls the linear bound.\n  have hsΦ : 0 ≤ √Φ := Real.sqrt_nonneg _\n  have hrp0 : 0 < rp := (by norm_num : (0 : ℝ) < 1).trans_le hrp\n  rcases min_le_iff.1 hmin with hk | hk\n  · have hθ : θ ≤ 2 * (Φ + δ) := by\n      rwa [mul_div_assoc, mul_le_mul_iff_right₀ hl, div_le_iff₀ (by norm_num), mul_comm] at hk\n    linarith only [hθ, Real.le_sqrt_self_iff.2 hδ1, hsΦ]\n  · have hsq : θ ^ 2 ≤ 4 * (Φ + δ) := (mul_le_mul_iff_right₀ hrp0).1 (by\n      have hsize : 2 * l ≤ 4 * rp := by linarith only [hl', hrp]\n      linear_combination 2 * hk + mul_le_mul_of_nonneg_right hsize\n        (nonneg_of_mul_nonneg_right\n          ((div_nonneg (mul_nonneg hrp0.le (sq_nonneg θ)) (by norm_num)).trans hk) hl))\n    have hθ : θ ≤ 2 * (√Φ + √δ) := le_of_sq_le_sq (by\n      linear_combination hsq + 4 * ((le_max_left δ 0).trans_eq (Real.sq_sqrt').symm) +\n        4 * (Real.sq_sqrt hΦ).symm + 8 * mul_nonneg hsΦ (Real.sqrt_nonneg δ)) (by positivity)\n    linarith only [hθ, hΦ]\n\n\ntheorem abstractWitness {θ δ rp : ℝ} {Φ : ℕ → ℝ} (hδ : δ ≤ 1) (hrp : 1 ≤ rp)\n    (hΦ : ∀ l, 0 ≤ Φ l)\n    (hw : ∃ l : ℕ, 1 ≤ l ∧ (l : ℝ) ≤ rp + 1 ∧\n      min (l * θ / 2) (rp * θ ^ 2 / 2) ≤ l * (Φ l + δ)) :\n    ∃ l : ℕ, 1 ≤ l ∧ (l : ℝ) ≤ rp + 1 ∧ θ ≤ 2 * (Φ l + √(Φ l) + √δ) := by\n  obtain ⟨l, hl, hl', hm⟩ := hw\n  refine ⟨l, hl, hl', ?_⟩\n  exact improvedNumeric (hΦ l) hδ hrp (by exact_mod_cast hl) hl' hm\n\ntheorem zero_denominator_semantics : (1 : ℝ) / (0 : ℕ) = 0 := by norm_num\n\ntheorem integer_height_not_rational : |(100 : ℚ) * (1 / 100)| = 1 ∧ 1 < |(100 : ℚ)| := by\n  norm_num\n\ntheorem missing_phi_nonneg_guard :\n    min ((4 : ℝ) * (6 / 5) / 2) (3 * (6 / 5) ^ 2 / 3) ≤ 4 * (-1 / 2 + 1) ∧\n      ¬(6 / 5 : ℝ) ≤ 2 * (-1 / 2 + √(-1 / 2) + √1) := by\n  norm_num\n\ntheorem missing_positive_l_guard :\n    min ((0 : ℝ) * 10 / 2) (3 * 10 ^ 2 / 3) ≤ 0 * (0 + 0) ∧\n      ¬(10 : ℝ) ≤ 2 * (0 + √0 + √0) := by norm_num\n\ntheorem weightedOrder_hit {σ A : Type*} [CommSemiring A] [NoZeroDivisors A]\n    (w : σ → ℕ) (f g : MvPowerSeries σ A) :\n    MvPowerSeries.weightedOrder w (f * g) =\n      MvPowerSeries.weightedOrder w f + MvPowerSeries.weightedOrder w g := by\n  exact MvPowerSeries.weightedOrder_mul w f g\n\n#print axioms missing_phi_nonneg_guard\n#print axioms numeric\n#print axioms improvedNumeric\n#print axioms abstractWitness\n#print axioms zero_denominator_semantics\n#print axioms integer_height_not_rational\n#print axioms missing_positive_l_guard\n#print axioms weightedOrder_hit\nend LemSix213Isolated\n"
+      },
+      "required_info": [
+        "'LemSix213Isolated.numeric' depends on axioms:",
+        "'LemSix213Isolated.improvedNumeric' depends on axioms:",
+        "'LemSix213Isolated.abstractWitness' depends on axioms:",
+        "'LemSix213Isolated.missing_phi_nonneg_guard' depends on axioms:",
+        "'LemSix213Isolated.missing_positive_l_guard' depends on axioms:",
+        "'LemSix213Isolated.weightedOrder_hit' depends on axioms:"
+      ]
+    }
+  ],
+  "rejected": [],
+  "incomplete_not_accepted": [
+    "original-warming-receipt.json"
+  ],
+  "preparation_rejected": [
+    "Width guard caught extended helper call before source write/native; wrapped and checked subsequent exact source."
+  ],
+  "audit": {
+    "source": "original-executed.lean.txt",
+    "receipt": "original-receipt.json",
+    "marker": "LEMSIX213",
+    "requested": 293,
+    "unique": 293,
+    "present": 293,
+    "values": 293
+  },
+  "canonical_direct_consumers": [
+    "Roth.Θ_option_le"
+  ],
+  "composition": {
+    "strict_three_existing_call_term_verified": false,
+    "project_helpers_counted_as_mathlib": false,
+    "new_helpers_counted_as_existing": false,
+    "source_callers": 1,
+    "actual_caller_replays": 1,
+    "inline_caller_replays": 1,
+    "whole_original_module_replay": true,
+    "whole_broader_module_replay": true,
+    "original_caller_statements_preserved": true,
+    "no_circular_target_use": true
+  },
+  "generalization": {
+    "positive_denominator_removed": true,
+    "natural_weight_three_to_one": true,
+    "new_quadratic_half_bound": true,
+    "original_quadratic_third_not_conflated": true,
+    "generic_numeric_witness": true,
+    "zero_weight_necessity_claimed": false,
+    "full_coefficient_ring_generalization_claimed": false,
+    "maximality_claimed": false
+  },
+  "active_virtual_import_count": 18,
+  "persistent_disk_import_count": 9
+}
