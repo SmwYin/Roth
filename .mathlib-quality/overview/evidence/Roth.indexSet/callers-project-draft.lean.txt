@@ -1,0 +1,49 @@
+namespace IndexSet180Callers
+open MvPolynomial Roth
+variable {σ : Type*} [Fintype σ]
+theorem theta_inline (B : ℝ) (q r : σ → ℕ) : Θ B q r =
+    sSup (Set.image2 (fun R (h : σ → ℤ) =>
+      index (map (Int.castRingHom ℝ) R) (fun j => (h j : ℝ) / (q) j) (r))
+      (RSet B (r)) {h : σ → ℤ | ∀ j, IsCoprime (h j) ((q) j : ℤ)}) := rfl
+#print axioms theta_inline
+theorem bounded_inline (B : ℝ) (q : σ → ℕ) {r : σ → ℕ} :
+    BddAbove (Set.image2 (fun R (h : σ → ℤ) =>
+      index (map (Int.castRingHom ℝ) R) (fun j => (h j : ℝ) / (q) j) (r))
+      (RSet B (r)) {h : σ → ℤ | ∀ j, IsCoprime (h j) ((q) j : ℤ)}) := by
+  classical
+  refine ⟨Fintype.card σ, ?_⟩
+  rintro _ ⟨R, ⟨hR0, hRd, -⟩, h, -, rfl⟩
+  exact index_le_card ((map_ne_zero_iff _ (map_injective _ Int.cast_injective)).2 hR0)
+    (by simpa [degreeOf, degrees_map_of_injective R (f := Int.castRingHom ℝ)
+          Int.cast_injective] using hRd) _
+
+#print axioms bounded_inline
+theorem renamed_inline {τ : Type*} [Fintype τ] (e : σ ≃ τ) (B : ℝ) (q r : τ → ℕ) :
+    Set.image2 (fun R (h : σ → ℤ) =>
+      index (map (Int.castRingHom ℝ) R) (fun j => (h j : ℝ) / (q ∘ e) j) (r ∘ e))
+      (RSet B (r ∘ e)) {h : σ → ℤ | ∀ j, IsCoprime (h j) ((q ∘ e) j : ℤ)} ⊆
+    Set.image2 (fun R (h : τ → ℤ) =>
+      index (map (Int.castRingHom ℝ) R) (fun j => (h j : ℝ) / (q) j) (r))
+      (RSet B (r)) {h : τ → ℤ | ∀ j, IsCoprime (h j) ((q) j : ℤ)} := by
+  rintro _ ⟨R, ⟨hR0, hRd, hRc⟩, h, hh, rfl⟩
+  refine ⟨rename e R, ⟨?_, ?_, ?_⟩, h ∘ e.symm, ?_, ?_⟩
+  · simpa [rename_eq_zero_iff_of_injective R e.injective] using hR0
+  · intro j
+    obtain ⟨i, rfl⟩ := e.surjective j
+    simpa [degreeOf_rename_of_injective e.injective] using hRd i
+  · intro d
+    obtain ⟨d, rfl⟩ := Finsupp.mapDomain_surjective e.surjective d
+    simpa [coeff_rename_mapDomain _ e.injective] using hRc d
+  · intro j
+    simpa using hh (e.symm j)
+  · simp [map_rename, index_rename e.injective, Function.comp_def]
+
+#print axioms renamed_inline
+theorem no_automatic_unfold (B : ℝ) (q r : σ → ℕ) :
+    indexSet B q r = {x | ∃ R ∈ RSet B r, ∃ h : σ → ℤ,
+      (∀ j, IsCoprime (h j) (q j : ℤ)) ∧
+      index (map (Int.castRingHom ℝ) R) (fun j => (h j : ℝ) / q j) r = x} := by
+  fail_if_success simp only
+  rfl
+#print axioms no_automatic_unfold
+end IndexSet180Callers

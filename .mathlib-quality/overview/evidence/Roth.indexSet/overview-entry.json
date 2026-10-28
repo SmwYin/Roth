@@ -1,0 +1,78 @@
+{
+  "declaration": "Roth.indexSet",
+  "kind": "def",
+  "type": "{σ : Type u_1} → [Fintype σ] → ℝ → (σ → ℕ) → (σ → ℕ) → Set ℝ",
+  "what": "Set of all real polynomial indices from nonzero integer polynomials with each degree and every coefficient bounded, evaluated at coordinatewise coprime integer numerators over fixed natural denominators.",
+  "how": "Two independent bounded existential choices are exactly Set.image2 of the index-evaluation map over RSet and the coprime numerator set. Native bridge is rfl; the expanded index infDegree bridge requires finite-order normalization.",
+  "hypotheses": "Arbitrary universe-polymorphic σ, Fintype σ, B : ℝ, q r : σ → ℕ. No captured DecidableEq, positivity, nonempty variable type, positive denominators or weights.",
+  "project_dependencies": [
+    "Roth.RSet",
+    "Roth.index"
+  ],
+  "mathlib_dependencies": [
+    "Set.image2",
+    "MvPolynomial.map",
+    "Int.castRingHom",
+    "IsCoprime"
+  ],
+  "caller_summary": {
+    "explicit_external_occurrences": 0,
+    "external_files": [],
+    "within_module_callers": 4,
+    "within_module_code_occurrences_excluding_definition": 5,
+    "direct_value_consumers": [
+      "Roth.Θ",
+      "Roth.indexSet_nonempty",
+      "Roth.indexSet_bddAbove",
+      "Roth.index_le_Θ",
+      "Roth.Θ_nonneg",
+      "Roth.Θ_le_card",
+      "Roth.Θ_le_of_forall_index_le",
+      "Roth.Θ_mono",
+      "_private.Roth.Theta.0.Roth.indexSet_comp_subset",
+      "Roth.Θ_equiv"
+    ],
+    "direct_type_consumers": [
+      "Roth.indexSet_nonempty",
+      "Roth.indexSet_bddAbove",
+      "_private.Roth.Theta.0.Roth.indexSet_comp_subset"
+    ],
+    "scope": "293 canonical production declarations only; source references distinct from direct kernel consumers and transitive/simp closure"
+  },
+  "mathlib_api_audit": {
+    "methods": 5,
+    "forms": 3,
+    "cells": 15,
+    "verified_candidates": [
+      "Set.image2",
+      "Set.mem_image2",
+      "Set.mem_image2_of_mem",
+      "Set.Nonempty.image2",
+      "Set.image2_nonempty_iff",
+      "Set.image2_subset",
+      "Set.forall_mem_image2",
+      "Set.image2_congr'",
+      "AddMonoidAlgebra.infDegree"
+    ],
+    "limitations": "Initial standard Loogle sSup query rejected and corrected with SupSet.sSup. Local target index unavailable. Remote indexes may differ from pinned signatures."
+  },
+  "moral_duplications": [
+    "Exact generic outer binary-image construction already exists.",
+    "Parent index normalization re-aims to infDegree/Finsupp.weight/aeval, with explicit default0 projection."
+  ],
+  "generalization": {
+    "status": "No mechanically removable class while keeping parent index signature. Existing image2 abstracts independent source/target types and universes. Expanded index representation supports arbitraryσ; finite specialization checked.",
+    "rejected": "Do not omit nonzero/degree/coefficient/coprimality restrictions, impose positive q in all-input comparison, change default0 to infinity, or replace by submodule/total degree."
+  },
+  "missing_api": [
+    "No missing generic image API established; possible arithmetic-height/support laws require separate assessments."
+  ],
+  "junk": "Live local semantic alias with4 textual caller declarations/5 occurrences and10 direct kernel value consumers; retain in Theta.",
+  "action": {
+    "verdict": "NO-mathlib-has-it",
+    "existing_declaration": "Set.image2",
+    "existing_path": "Mathlib/Data/Set/Operations.lean",
+    "local_destination": "Roth/Theta.lean",
+    "recommendation": "Retain alias; if eliminating, replace all5 textual occurrences with exact image2 term. Θ uses sSup, nonempty uses image2_nonempty_iff, boundedness and renaming preserve source proofs. No production edits in this assessment."
+  }
+}

@@ -1,0 +1,17 @@
+namespace IndexSet180Generality
+open MvPolynomial Roth
+universe u
+noncomputable def arbitrary_variable_image {σ : Type u} (B : ℝ) (q r : σ → ℕ) : Set ℝ :=
+  Set.image2 (fun R (h : σ → ℤ) =>
+    (AddMonoidAlgebra.infDegree
+      (fun d : σ →₀ ℕ =>
+        (Finsupp.weight (R := ℕ) (fun j => (r j : ℝ)⁻¹) d : WithTop ℝ))
+      (aeval (fun j => X j + C ((h j : ℝ) / q j))
+        (map (Int.castRingHom ℝ) R))).untopD 0)
+    (RSet B r) {h : σ → ℤ | ∀ j, IsCoprime (h j) (q j : ℤ)}
+theorem specialize {σ : Type u} [Fintype σ] (B : ℝ) (q r : σ → ℕ) :
+    indexSet B q r = arbitrary_variable_image B q r :=
+  IndexSet180Expanded.expanded_image2 B q r
+#print axioms arbitrary_variable_image
+#print axioms specialize
+end IndexSet180Generality

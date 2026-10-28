@@ -1,0 +1,28 @@
+namespace IndexSet180Probe
+open MvPolynomial Roth
+variable {σ : Type*} [Fintype σ]
+theorem image2_bridge (B : ℝ) (q r : σ → ℕ) :
+    indexSet B q r = Set.image2
+      (fun R h => index (map (Int.castRingHom ℝ) R) (fun j => (h j : ℝ) / q j) r)
+      (RSet B r) {h : σ → ℤ | ∀ j, IsCoprime (h j) (q j : ℤ)} := rfl
+#print axioms image2_bridge
+
+theorem image2_caller_nonempty {B : ℝ} (hB : 1 ≤ B) (q r : σ → ℕ) :
+    (indexSet B q r).Nonempty :=
+  Set.Nonempty.image2 (f := fun R h =>
+    index (map (Int.castRingHom ℝ) R) (fun j => (h j : ℝ) / q j) r)
+    ⟨1, one_mem_RSet hB r⟩ ⟨fun _ => 1, fun _ => isCoprime_one_left⟩
+#print axioms image2_caller_nonempty
+
+theorem image2_member {B : ℝ} {q r : σ → ℕ} {R : MvPolynomial σ ℤ}
+    (hR : R ∈ RSet B r) {h : σ → ℤ} (hh : ∀ j, IsCoprime (h j) (q j : ℤ)) :
+    index (map (Int.castRingHom ℝ) R) (fun j => (h j : ℝ) / q j) r ∈ indexSet B q r :=
+  Set.mem_image2_of_mem hR hh
+#print axioms image2_member
+
+theorem zero_denominator_allowed (B : ℝ) (r : σ → ℕ) :
+    indexSet B (fun _ => 0) r = Set.image2
+      (fun R h => index (map (Int.castRingHom ℝ) R) (fun j => (h j : ℝ) / (0 : ℝ)) r)
+      (RSet B r) {h : σ → ℤ | ∀ j, IsCoprime (h j) (0 : ℤ)} := rfl
+#print axioms zero_denominator_allowed
+end IndexSet180Probe

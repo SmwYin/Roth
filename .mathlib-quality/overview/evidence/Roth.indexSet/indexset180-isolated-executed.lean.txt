@@ -1,0 +1,40 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.RingTheory.Polynomial.GaussLemma
+#check_failure Roth.indexSet
+#check @Set.image2
+#check @Set.mem_image2
+#check @Set.Nonempty.image2
+#check @Set.image2_subset
+#check @Set.forall_mem_image2
+#check @Set.image2_congr'
+#check @AddMonoidAlgebra.infDegree
+namespace IndexSet180Isolated
+universe u v w
+variable {A : Type u} {H : Type v} {V : Type w}
+theorem exact_image2 (f : A → H → V) (s : Set A) (t : Set H) :
+    {x | ∃ a ∈ s, ∃ h ∈ t, f a h = x} = Set.image2 f s t := rfl
+theorem nonempty (f : A → H → V) {s : Set A} {t : Set H}
+    (hs : s.Nonempty) (ht : t.Nonempty) : (Set.image2 f s t).Nonempty := hs.image2 ht
+theorem mono (f : A → H → V) {s s' : Set A} {t : Set H} (hs : s ⊆ s') :
+    Set.image2 f s t ⊆ Set.image2 f s' t := Set.image2_subset hs Set.Subset.rfl
+theorem point_bound (f : A → H → ℝ) (s : Set A) (t : Set H) (c : ℝ) :
+    (∀ z ∈ Set.image2 f s t, z ≤ c) ↔ ∀ a ∈ s, ∀ h ∈ t, f a h ≤ c :=
+  Set.forall_mem_image2
+#print axioms exact_image2
+#print axioms nonempty
+#print axioms mono
+#print axioms point_bound
+end IndexSet180Isolated
