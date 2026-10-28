@@ -1,0 +1,16 @@
+{
+  "declaration": "Roth.two_pow_lt_rpow_aux",
+  "kind": "lemma",
+  "type": "∀ {p r₁ l : ℕ},\n  0 < p →\n    ∀ {δ q : ℝ},\n      0 < δ →\n        0 ≤ q →\n          ↑p * (2 * ↑p + 1) / δ ≤ Real.log q → 0 < l * r₁ → 2 ^ ((2 * p + 1) * r₁ * l) < q ^ (δ / ↑p * (↑l * ↑r₁))",
+  "what": "A logarithmic lower bound on a nonnegative real q makes its positive real power strictly exceed the explicit power-of-two combinatorial envelope.",
+  "how": "Derive q>1 using Real.log_pos_iff, establish log 2<1 with Real.log_lt_sub_one_of_pos, and rearrange the logarithmic lower bound. Rewrite powers through Real.rpow_def_of_pos and use Real.exp_lt_exp after multiplying the exponent comparison by the positive l*r₁.",
+  "hypotheses": "Positive dimension, delta and degree-size product; nonnegative base and the stated logarithmic lower bound. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.",
+  "project_dependencies": [],
+  "caller_summary": "1 explicit source caller declarations, all in Theta.lean; 1 direct original value consumers. Exact separate lists retained. Entire Theta module proof bodies replay successfully with fresh target name.",
+  "mathlib_api_audit": "Positivity of p and δ makes the logarithmic threshold positive, so Real.log_pos_iff yields q>1. Use Real.log_lt_sub_one_of_pos to obtain log 2<1 and rearrange the threshold into 2p+1≤log(q)δ/p. Multiply strictly by the positive natural product l*r₁, rewrite both powers via Real.rpow_def_of_pos and compare exponents using Real.exp_lt_exp. This supplies the strict exponential stage of lem6M_lt after the separate natural factorial envelope bound.",
+  "moral_duplications": "The preceding factorial_coefficient_le_two_pow_aux is a weak natural combinatorial bound. This helper makes the strict comparison with a q-power via logarithms, and lem6M_lt composes the two stages with the height factor.",
+  "generalization": "No public generality claim under the private prefilter; preserve the existing definition and interface.",
+  "missing_api": "No new primitive is needed for this internal organization; full public contribution search is explicitly not run.",
+  "junk": "Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.",
+  "action": "Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration."
+}

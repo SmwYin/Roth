@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-28. **IN PROGRESS — 215/293 declaration assessments complete.**
+Updated: 2026-10-28. **IN PROGRESS — 216/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 215; remaining: 78.
-- Verdicts: 19 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 67 BORDERLINE-needs-human, 45 SKIP.
+- Completed applicable assessments: 216; remaining: 77.
+- Verdicts: 19 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 67 BORDERLINE-needs-human, 46 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -2581,6 +2581,21 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: 1 explicit source caller declarations, all in Theta.lean; 1 direct original value consumers. Exact separate lists retained. Entire Theta module proof bodies replay successfully with fresh target name.
 - Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.factorial_coefficient_le_two_pow_aux.md).
 
+### Completed: `Roth.two_pow_lt_rpow_aux`
+
+- Type: `∀ {p r₁ l : ℕ},
+  0 < p →
+    ∀ {δ q : ℝ},
+      0 < δ →
+        0 ≤ q →
+          ↑p * (2 * ↑p + 1) / δ ≤ Real.log q → 0 < l * r₁ → 2 ^ ((2 * p + 1) * r₁ * l) < q ^ (δ / ↑p * (↑l * ↑r₁))`
+- What: A logarithmic lower bound on a nonnegative real q makes its positive real power strictly exceed the explicit power-of-two combinatorial envelope.
+- How: Derive q>1 using Real.log_pos_iff, establish log 2<1 with Real.log_lt_sub_one_of_pos, and rearrange the logarithmic lower bound. Rewrite powers through Real.rpow_def_of_pos and use Real.exp_lt_exp after multiplying the exponent comparison by the positive l*r₁.
+- Hypotheses: Positive dimension, delta and degree-size product; nonnegative base and the stated logarithmic lower bound. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.
+- Project dependencies: None
+- Caller summary: 1 explicit source caller declarations, all in Theta.lean; 1 direct original value consumers. Exact separate lists retained. Entire Theta module proof bodies replay successfully with fresh target name.
+- Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.two_pow_lt_rpow_aux.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -3037,6 +3052,8 @@ Completed `Roth.Θ_option_le`: 15 actual search cells across current/literature/
 
 Completed `Roth.factorial_coefficient_le_two_pow_aux`: Use Nat.lt_two_pow_self to bound r₁+1 by 2^r₁. Bound l factorial by l^l using Nat.factorial_le_pow, then use l≤2^r₁ and Nat.pow_le_pow_left. Multiply the nonnegative natural bounds and combine the powers with pow_mul and pow_add; polynomial exponent arithmetic gives the final exponent (2p+1)r₁l. This is the combinatorial-envelope stage of lem6M_lt, separate from the strict logarithmic comparison with q.
 
+Completed `Roth.two_pow_lt_rpow_aux`: Positivity of p and δ makes the logarithmic threshold positive, so Real.log_pos_iff yields q>1. Use Real.log_lt_sub_one_of_pos to obtain log 2<1 and rearrange the threshold into 2p+1≤log(q)δ/p. Multiply strictly by the positive natural product l*r₁, rewrite both powers via Real.rpow_def_of_pos and compare exponents using Real.exp_lt_exp. This supplies the strict exponential stage of lem6M_lt after the separate natural factorial envelope bound.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -3468,6 +3485,8 @@ Completed `Roth.index_le_lem6`: Generic index/order ingredients can use infDegre
 Completed `Roth.Θ_option_le`: The outer supremum/finite-maximum step is existing order theory, while index_le_lem6 is a distinct arithmetic existential endpoint. Reaiming Θ at SupSet.sSup and index at infDegree does not supply that whole recursive height/rank law.
 
 Completed `Roth.factorial_coefficient_le_two_pow_aux`: This natural factorial/power envelope controls the non-height factors in lem6M_lt; two_pow_lt_rpow_aux instead proves the strict logarithmic comparison with a real power of q. They are successive, different inequalities.
+
+Completed `Roth.two_pow_lt_rpow_aux`: The preceding factorial_coefficient_le_two_pow_aux is a weak natural combinatorial bound. This helper makes the strict comparison with a q-power via logarithms, and lem6M_lt composes the two stages with the height factor.
 
 ## Part 5: Generalization opportunities
 
@@ -3911,6 +3930,8 @@ Completed `Roth.Θ_option_le`: Jointly compiled no q>0, arbitrary real B, and r_
 
 Completed `Roth.factorial_coefficient_le_two_pow_aux`: No public generality claim under the private prefilter; preserve the existing definition and interface.
 
+Completed `Roth.two_pow_lt_rpow_aux`: No public generality claim under the private prefilter; preserve the existing definition and interface.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -4343,6 +4364,8 @@ Completed `Roth.index_le_lem6`: Potential reusable numerical witness and stronge
 Completed `Roth.Θ_option_le`: No missing order-transport primitive. Possible upstream material lies in reusable determinant, factor-height, numerical witness and finite-sum ingredients; the specialized recursive Θ endpoint needs a separate audience/interface decision.
 
 Completed `Roth.factorial_coefficient_le_two_pow_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
+
+Completed `Roth.two_pow_lt_rpow_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 ## Part 7: Junk / removable
 
@@ -4779,6 +4802,8 @@ Completed `Roth.Θ_option_le`: The live sole caller theta_lt_succ_aux uses this 
 
 Completed `Roth.factorial_coefficient_le_two_pow_aux`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
 
+Completed `Roth.two_pow_lt_rpow_aux`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -4998,6 +5023,7 @@ Completed `Roth.factorial_coefficient_le_two_pow_aux`: Retain a live private pro
 | 213 | `Roth.index_le_lem6` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.index_le_lem6.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.index_le_lem6/root-acceptance.json) |
 | 214 | `Roth.Θ_option_le` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.Θ_option_le.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.Θ_option_le/root-acceptance.json) |
 | 215 | `Roth.factorial_coefficient_le_two_pow_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.factorial_coefficient_le_two_pow_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.factorial_coefficient_le_two_pow_aux/root-acceptance.json) |
+| 216 | `Roth.two_pow_lt_rpow_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.two_pow_lt_rpow_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.two_pow_lt_rpow_aux/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -5427,12 +5453,14 @@ Completed `Roth.Θ_option_le` action: Retain the named Lemma6 endpoint in Roth/T
 
 Completed `Roth.factorial_coefficient_le_two_pow_aux` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
 
+Completed `Roth.two_pow_lt_rpow_aux` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.two_pow_lt_rpow_aux` next. Supporting identities receive their own applicable checks.
+   `Roth.lem6M_lt` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

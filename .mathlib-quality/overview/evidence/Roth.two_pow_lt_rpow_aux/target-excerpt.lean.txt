@@ -1,0 +1,24 @@
+private lemma two_pow_lt_rpow_aux {p r₁ l : ℕ} (hp : 0 < p) {δ q : ℝ} (hδ : 0 < δ) (hq : 0 ≤ q)
+    (hlog : (p : ℝ) * (2 * p + 1) / δ ≤ Real.log q) (hlr : 0 < l * r₁) :
+    (2 : ℝ) ^ ((2 * p + 1) * r₁ * l) < q ^ (δ / p * (l * r₁)) := by
+  have hp0 : (0 : ℝ) < p := by exact_mod_cast hp
+  replace hq : 0 < q := zero_lt_one.trans <|
+    (Real.log_pos_iff hq).1 <| lt_of_lt_of_le (by positivity) hlog
+  have hlog2 : Real.log 2 < 1 := by
+    exact (Real.log_lt_sub_one_of_pos (by norm_num : (0 : ℝ) < 2) (by norm_num)).trans_eq
+      (by norm_num)
+  have h3 : (2 * p + 1 : ℝ) ≤ Real.log q * (δ / p) := by
+    rw [mul_div_assoc', le_div_iff₀ hp0]
+    rw [div_le_iff₀ hδ] at hlog
+    linarith
+  rw [← Real.rpow_natCast, Real.rpow_def_of_pos (by norm_num), Real.rpow_def_of_pos hq,
+    Real.exp_lt_exp]
+  calc
+    Real.log 2 * (((2 * p + 1) * r₁ * l : ℕ) : ℝ)
+        = Real.log 2 * (2 * p + 1) * (l * r₁) := by
+          push_cast
+          ring
+    _ < Real.log q * (δ / p) * (l * r₁) :=
+      mul_lt_mul_of_pos_right
+        ((mul_lt_of_lt_one_left (by positivity) hlog2).trans_le h3) (by exact_mod_cast hlr)
+    _ = Real.log q * (δ / p * (l * r₁)) := by ring
