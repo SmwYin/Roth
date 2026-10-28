@@ -1,0 +1,20 @@
+{
+  "declaration": "Roth.mapped_det_ne_zero_aux",
+  "kind": "lemma",
+  "type": "∀ {τ : Type u_2} {R : MvPolynomial (Option τ) ℤ} {l : ℕ}\n  {D : Fin l → τ →₀ ℕ} {U : MvPolynomial τ ℤ} {V : Polynomial ℤ},\n  U ≠ 0 →\n    V ≠ 0 →\n      (Matrix.of fun μ ν ↦ (hasseDeriv (Finsupp.mapDomain some (D μ) + Finsupp.single none ↑ν)) R).det =\n          (rename some) U * (Polynomial.aeval (X none)) V →\n        (Matrix.of fun μ ν ↦\n              (hasseDeriv (Finsupp.mapDomain some (D μ) + Finsupp.single none ↑ν)) ((map (Int.castRingHom ℝ)) R)).det ≠\n          0",
+  "what": "A Hasse-derivative determinant over the reals is nonzero when its integer precursor factors into nonzero complementary-variable and distinguished-variable integer factors.",
+  "how": "Use RingHom.map_det and hasseDeriv_map to identify the mapped integer determinant with the real determinant. Apply map_injective, rename_injective, aeval_X_eq_rename and uniqueAlgEquiv injectivity to transport the nonzero separated factors through coefficient maps and variable embeddings.",
+  "hypotheses": "Nonzero separated integer factors and a factorization identity. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.",
+  "project_dependencies": [
+    "MvPolynomial.hasseDeriv",
+    "MvPolynomial.hasseDeriv_map",
+    "Roth.aeval_X_eq_rename"
+  ],
+  "caller_summary": "1 explicit source caller declarations, all in Theta.lean; 1 direct original value consumers. Exact separate lists retained. Entire Theta module proof bodies replay successfully with fresh target name.",
+  "mathlib_api_audit": "Commute the integer-to-real coefficient map through the determinant using RingHom.map_det and through every Hasse derivative using hasseDeriv_map. Injectivity of the coefficient map reduces nonvanishing to the integer determinant. Substitute the separated factorization, split the nonzero product, and use injective complementary renaming and the aeval_X_eq_rename identification with uniqueAlgEquiv to transport nonvanishing of both factors. This supplies the nonzero determinant premise of sum_max_sub_le_index_det inside index_le_lem6, independently of the row-weight and scalar arithmetic helpers.",
+  "moral_duplications": "This is the nonvanishing bridge for the determinant lower estimate; weight_le_delta_aux proves the independent derivative-weight bound and index_numeric_bound_aux closes the scalar inequality.",
+  "generalization": "No public generality claim under the private prefilter; preserve the existing definition and interface.",
+  "missing_api": "No new primitive is needed for this internal organization; full public contribution search is explicitly not run.",
+  "junk": "Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.",
+  "action": "Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration."
+}

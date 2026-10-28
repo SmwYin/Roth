@@ -1,0 +1,61 @@
+{
+  "file": "Roth/Theta.lean",
+  "line": 511,
+  "name": "Roth.mapped_det_ne_zero_aux",
+  "short": "mapped_det_ne_zero_aux",
+  "kind": "lemma",
+  "visibility": "private",
+  "end_line": 529,
+  "source": "private lemma mapped_det_ne_zero_aux {R : MvPolynomial (Option τ) ℤ} {l : ℕ} {D : Fin l → (τ →₀ ℕ)}\n    {U : MvPolynomial τ ℤ} {V : Polynomial ℤ} (hU : U ≠ 0) (hV : V ≠ 0)\n    (hF : (Matrix.of fun μ ν : Fin l ↦\n      hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) R).det =\n        rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) ℤ) V) :\n    (Matrix.of fun μ ν : Fin l ↦ hasseDeriv ((D μ).mapDomain some +\n      Finsupp.single none (ν : ℕ)) (map (Int.castRingHom ℝ) R)).det ≠ 0 := by\n  have hmapdet : map (Int.castRingHom ℝ) (Matrix.of fun μ ν : Fin l ↦\n      hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) R).det =\n      (Matrix.of fun μ ν : Fin l ↦ hasseDeriv ((D μ).mapDomain some +\n        Finsupp.single none (ν : ℕ)) (map (Int.castRingHom ℝ) R)).det := by\n    rw [RingHom.map_det]\n    congr 1\n    exact Matrix.ext fun μ ν ↦ by simp [hasseDeriv_map]\n  rw [← hmapdet, ne_eq, map_eq_zero_iff _ (map_injective _ Int.cast_injective), hF,\n    mul_eq_zero, not_or, map_eq_zero_iff _ (rename_injective _ (Option.some_injective _))]\n  refine ⟨hU, ?_⟩\n  rw [aeval_X_eq_rename, map_eq_zero_iff _ (rename_injective _ fun a b _ ↦ Subsingleton.elim a b)]\n  rwa [map_eq_zero_iff _ (uniqueAlgEquiv ℤ Unit).symm.injective]",
+  "signature": "private lemma mapped_det_ne_zero_aux {R : MvPolynomial (Option τ) ℤ} {l : ℕ} {D : Fin l → (τ →₀ ℕ)}\n    {U : MvPolynomial τ ℤ} {V : Polynomial ℤ} (hU : U ≠ 0) (hV : V ≠ 0)\n    (hF : (Matrix.of fun μ ν : Fin l ↦\n      hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) R).det =\n        rename some U * Polynomial.aeval (X none : MvPolynomial (Option τ) ℤ) V) :\n    (Matrix.of fun μ ν : Fin l ↦ hasseDeriv ((D μ).mapDomain some +\n      Finsupp.single none (ν : ℕ)) (map (Int.castRingHom ℝ) R)).det ≠ 0",
+  "body": "by\n  have hmapdet : map (Int.castRingHom ℝ) (Matrix.of fun μ ν : Fin l ↦\n      hasseDeriv ((D μ).mapDomain some + Finsupp.single none (ν : ℕ)) R).det =\n      (Matrix.of fun μ ν : Fin l ↦ hasseDeriv ((D μ).mapDomain some +\n        Finsupp.single none (ν : ℕ)) (map (Int.castRingHom ℝ) R)).det := by\n    rw [RingHom.map_det]\n    congr 1\n    exact Matrix.ext fun μ ν ↦ by simp [hasseDeriv_map]\n  rw [← hmapdet, ne_eq, map_eq_zero_iff _ (map_injective _ Int.cast_injective), hF,\n    mul_eq_zero, not_or, map_eq_zero_iff _ (rename_injective _ (Option.some_injective _))]\n  refine ⟨hU, ?_⟩\n  rw [aeval_X_eq_rename, map_eq_zero_iff _ (rename_injective _ fun a b _ ↦ Subsingleton.elim a b)]\n  rwa [map_eq_zero_iff _ (uniqueAlgEquiv ℤ Unit).symm.injective]",
+  "proof_lines": 13,
+  "sha256": "9ece631738d85f551f1932d677786844ae4890c5d83eeefa7c77282c7f134a88",
+  "what": "The real coefficient image of the separated derivative determinant remains nonzero.",
+  "how": "Commute map with determinant and hasseDeriv_map, then use injectivity of coefficient maps, renaming and singleton polynomial equivalence.",
+  "hypotheses": "Nonzero separated integer factors and a factorization identity.",
+  "source_body_refs": [
+    "MvPolynomial.hasseDeriv",
+    "MvPolynomial.hasseDeriv_map",
+    "Roth.aeval_X_eq_rename"
+  ],
+  "source_type_refs": [
+    "MvPolynomial.hasseDeriv"
+  ],
+  "source_callers": [
+    {
+      "name": "Roth.index_le_lem6",
+      "file": "Roth/Theta.lean",
+      "line": 556
+    }
+  ],
+  "notes": [],
+  "input_file_sha256": "ea447150977f3acf5259cb27889019b9ac32195614f91bc78ed3454c26ca82f5",
+  "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+  "section_context": "Namespace Roth; open MvPolynomial. Ambient σ : Type*, [Fintype σ], [DecidableEq σ]; Lemma6 additionally τ : Type*, [Fintype τ], [DecidableEq τ]. The source explicitly omits DecidableEq for most results and both instances for fully general helpers. Only instances actually required by the displayed expression/proof are generalized by Lean; see omit directives in the source evidence. ",
+  "uses_from_project": [
+    "MvPolynomial.hasseDeriv",
+    "MvPolynomial.hasseDeriv_map",
+    "Roth.aeval_X_eq_rename"
+  ],
+  "used_by_in_file": [
+    "Roth.index_le_lem6"
+  ],
+  "used_by_other_files": [],
+  "assignment_offset": 513,
+  "project_body_refs": [
+    "MvPolynomial.hasseDeriv",
+    "MvPolynomial.hasseDeriv_map",
+    "Roth.aeval_X_eq_rename"
+  ],
+  "project_type_refs": [
+    "MvPolynomial.hasseDeriv"
+  ],
+  "project_callers": [
+    {
+      "name": "Roth.index_le_lem6",
+      "file": "Roth/Theta.lean",
+      "line": 556
+    }
+  ]
+}
