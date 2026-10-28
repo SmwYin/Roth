@@ -1,0 +1,18 @@
+{
+  "declaration": "Roth.weight_le_delta_aux",
+  "kind": "lemma",
+  "type": "∀ {τ : Type u_2} [inst : Fintype τ] {δ : ℝ},\n  0 ≤ δ →\n    ∀ {r : Option τ → ℕ},\n      (∀ (j : τ), ↑(r none) ≤ δ * ↑(r (some j))) →\n        ∀ {d : τ →₀ ℕ}, Finsupp.degree d ≤ r none → Roth.weight (r ∘ some) d ≤ δ",
+  "what": "An exponent vector of total degree at most the distinguished natural weight has complementary reciprocal-weight sum at most δ when each complementary weight dominates the distinguished one by the given δ ratio.",
+  "how": "Split the zero distinguished-weight case using Finsupp.degree_eq_zero_iff. Otherwise use div_le_div_iff₀ for coordinate comparisons, Finset.sum_le_sum and Finsupp.degree_eq_sum to obtain weight ≤ δ times degree divided by the distinguished weight, then apply the degree bound.",
+  "hypotheses": "Nonnegative delta and distinguished weight at most delta times every other weight; derivative order at most distinguished weight. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.",
+  "project_dependencies": [
+    "Roth.weight"
+  ],
+  "caller_summary": "1 explicit source caller declarations, all in Theta.lean; 1 direct original value consumers. Exact separate lists retained. Entire Theta module proof bodies replay successfully with fresh target name.",
+  "mathlib_api_audit": "If the distinguished weight is zero, the degree bound forces the exponent vector to vanish, and δ nonnegativity closes the result. Otherwise its positivity and the ratio assumption force positive complementary weights. Compare each reciprocal-weight summand using div_le_div_iff₀ and the ratio bound, sum with Finset.sum_le_sum, identify the exponent degree with Finsupp.degree_eq_sum, and finish using the degree bound. This supplies the row-order weight estimate in index_le_lem6 from the determinant derivative-degree bounds; it is distinct from determinant nonvanishing and the final scalar index inequality.",
+  "moral_duplications": "This ratio-to-weight estimate supplies derivative-row admissibility in index_le_lem6; mapped_det_ne_zero_aux instead proves determinant nonvanishing, and index_numeric_bound_aux closes a scalar real inequality. These are distinct proof obligations.",
+  "generalization": "No public generality claim under the private prefilter; preserve the existing definition and interface.",
+  "missing_api": "No new primitive is needed for this internal organization; full public contribution search is explicitly not run.",
+  "junk": "Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.",
+  "action": "Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration."
+}

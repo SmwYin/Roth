@@ -1,0 +1,15 @@
+private lemma weight_le_delta_aux {δ : ℝ} (hδ : 0 ≤ δ) {r : Option τ → ℕ}
+    (hratio : ∀ j, (r none : ℝ) ≤ δ * r (some j)) {d : τ →₀ ℕ} (hd : d.degree ≤ r none) :
+    weight (r ∘ some) d ≤ δ := by
+  classical
+  by_cases hr : r none = 0
+  · rw [(Finsupp.degree_eq_zero_iff d).1 (Nat.eq_zero_of_le_zero (hr ▸ hd))]
+    simpa [weight] using hδ
+  have hrp : (0 : ℝ) < r none := by exact_mod_cast Nat.pos_of_ne_zero hr
+  calc weight (r ∘ some) d = ∑ j, (d j : ℝ) / r (some j) := rfl
+    _ ≤ ∑ j, (d j : ℝ) * δ / r none := Finset.sum_le_sum fun j _ ↦ by
+        rw [div_le_div_iff₀ (pos_of_mul_pos_right (hrp.trans_le (hratio j)) hδ) hrp, mul_assoc]
+        exact mul_le_mul_of_nonneg_left (hratio j) (Nat.cast_nonneg _)
+    _ = δ * d.degree / r none := by
+        rw [← Finset.sum_div, ← Finset.sum_mul, Finsupp.degree_eq_sum, Nat.cast_sum, mul_comm]
+    _ ≤ δ := (div_le_iff₀ hrp).2 (mul_le_mul_of_nonneg_left (by exact_mod_cast hd) hδ)

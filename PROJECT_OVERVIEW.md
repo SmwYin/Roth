@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-28. **IN PROGRESS — 209/293 declaration assessments complete.**
+Updated: 2026-10-28. **IN PROGRESS — 210/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 209; remaining: 84.
-- Verdicts: 19 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 65 BORDERLINE-needs-human, 41 SKIP.
+- Completed applicable assessments: 210; remaining: 83.
+- Verdicts: 19 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 65 BORDERLINE-needs-human, 42 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -2468,6 +2468,20 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: explicit callers: 1; application occurrences: 1; names: Roth.index_le_lem6; direct kernel value consumers: Roth.index_le_lem6; validation: Original whole Theta module replay, complete caller via generic core, and full local inlining compiled separately.
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.index_det_le.md).
 
+### Completed: `Roth.weight_le_delta_aux`
+
+- Type: `∀ {τ : Type u_2} [inst : Fintype τ] {δ : ℝ},
+  0 ≤ δ →
+    ∀ {r : Option τ → ℕ},
+      (∀ (j : τ), ↑(r none) ≤ δ * ↑(r (some j))) →
+        ∀ {d : τ →₀ ℕ}, Finsupp.degree d ≤ r none → Roth.weight (r ∘ some) d ≤ δ`
+- What: An exponent vector of total degree at most the distinguished natural weight has complementary reciprocal-weight sum at most δ when each complementary weight dominates the distinguished one by the given δ ratio.
+- How: Split the zero distinguished-weight case using Finsupp.degree_eq_zero_iff. Otherwise use div_le_div_iff₀ for coordinate comparisons, Finset.sum_le_sum and Finsupp.degree_eq_sum to obtain weight ≤ δ times degree divided by the distinguished weight, then apply the degree bound.
+- Hypotheses: Nonnegative delta and distinguished weight at most delta times every other weight; derivative order at most distinguished weight. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.
+- Project dependencies: Roth.weight
+- Caller summary: 1 explicit source caller declarations, all in Theta.lean; 1 direct original value consumers. Exact separate lists retained. Entire Theta module proof bodies replay successfully with fresh target name.
+- Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.weight_le_delta_aux.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -2912,6 +2926,8 @@ Completed `Roth.index_separated_mul_le_aux`: Represent the univariate factor as 
 
 Completed `Roth.index_det_le`: 20 actual search cells: five methods on current, standard and abstract forms plus parent infDegree re-aim. Pinned Int.one_le_abs and weightedOrder_mul are ingredients, not the complete arithmetic extremal bound; local index warming/error is not absence.
 
+Completed `Roth.weight_le_delta_aux`: If the distinguished weight is zero, the degree bound forces the exponent vector to vanish, and δ nonnegativity closes the result. Otherwise its positivity and the ratio assumption force positive complementary weights. Compare each reciprocal-weight summand using div_le_div_iff₀ and the ratio bound, sum with Finset.sum_le_sum, identify the exponent degree with Finsupp.degree_eq_sum, and finish using the degree bound. This supplies the row-order weight estimate in index_le_lem6 from the determinant derivative-degree bounds; it is distinct from determinant nonvanishing and the final scalar index inequality.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -3331,6 +3347,8 @@ Completed `Roth.sum_max_sub_le_index_det`: Abstract determinant-order argument p
 Completed `Roth.index_separated_mul_le_aux`: The helper has a distinct role in the polynomial-index transport and bounding proofs as described in the structural review; no duplicate full construction is introduced.
 
 Completed `Roth.index_det_le`: Index support-minimum and multiplication have generic mathlib counterparts; the determinant envelope and separated integer factor-height membership proof remain project/new content.
+
+Completed `Roth.weight_le_delta_aux`: This ratio-to-weight estimate supplies derivative-row admissibility in index_le_lem6; mapped_det_ne_zero_aux instead proves determinant nonvanishing, and index_numeric_bound_aux closes a scalar real inequality. These are distinct proof obligations.
 
 ## Part 5: Generalization opportunities
 
@@ -3762,6 +3780,8 @@ Completed `Roth.index_separated_mul_le_aux`: No public generality claim under th
 
 Completed `Roth.index_det_le`: Compiled arbitrary derivative matrix E, direct input degree/coeff bounds, no RSet nonzero, no hl including l=0, and zero-factor endpoint cases under real index(0)=0. Separately derived both factor degree bounds under the original coupled nonzero interface. No full arbitrary-coefficient or maximality claim.
 
+Completed `Roth.weight_le_delta_aux`: No public generality claim under the private prefilter; preserve the existing definition and interface.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -4182,6 +4202,8 @@ Completed `Roth.sum_max_sub_le_index_det`: Upstream design choice: generic deter
 Completed `Roth.index_separated_mul_le_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 Completed `Roth.index_det_le`: Potential reusable separated coefficient-height transfer with size≥1 witnesses; audience and primary extremal-index endpoint remain future upstream scope questions.
+
+Completed `Roth.weight_le_delta_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 ## Part 7: Junk / removable
 
@@ -4606,6 +4628,8 @@ Completed `Roth.index_separated_mul_le_aux`: Retain a live private proof interfa
 
 Completed `Roth.index_det_le`: The theorem has the live sole caller Roth.index_le_lem6 and supplies its determinant upper estimate; the caller and inline experiments establish useful proof structure, not a claim that the theorem can be removed.
 
+Completed `Roth.weight_le_delta_aux`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -4819,6 +4843,7 @@ Completed `Roth.index_det_le`: The theorem has the live sole caller Roth.index_l
 | 207 | `Roth.sum_max_sub_le_index_det` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.sum_max_sub_le_index_det.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.sum_max_sub_le_index_det/root-acceptance.json) |
 | 208 | `Roth.index_separated_mul_le_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.index_separated_mul_le_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.index_separated_mul_le_aux/root-acceptance.json) |
 | 209 | `Roth.index_det_le` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.index_det_le.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.index_det_le/root-acceptance.json) |
+| 210 | `Roth.weight_le_delta_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.weight_le_delta_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.weight_le_delta_aux/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -5236,12 +5261,14 @@ Completed `Roth.index_separated_mul_le_aux` action: Keep unchanged; complete pri
 
 Completed `Roth.index_det_le` action: Keep in Roth/Theta.lean; consider extracting the independent factor-height stage and use the verified broader interfaces before any future upstream leaf. BORDERLINE questions concern API scope, not pending verification.
 
+Completed `Roth.weight_le_delta_aux` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.weight_le_delta_aux` next. Supporting identities receive their own applicable checks.
+   `Roth.mapped_det_ne_zero_aux` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

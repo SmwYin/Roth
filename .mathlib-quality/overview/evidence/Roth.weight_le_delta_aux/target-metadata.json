@@ -1,0 +1,55 @@
+{
+  "file": "Roth/Theta.lean",
+  "line": 494,
+  "name": "Roth.weight_le_delta_aux",
+  "short": "weight_le_delta_aux",
+  "kind": "lemma",
+  "visibility": "private",
+  "end_line": 508,
+  "source": "private lemma weight_le_delta_aux {δ : ℝ} (hδ : 0 ≤ δ) {r : Option τ → ℕ}\n    (hratio : ∀ j, (r none : ℝ) ≤ δ * r (some j)) {d : τ →₀ ℕ} (hd : d.degree ≤ r none) :\n    weight (r ∘ some) d ≤ δ := by\n  classical\n  by_cases hr : r none = 0\n  · rw [(Finsupp.degree_eq_zero_iff d).1 (Nat.eq_zero_of_le_zero (hr ▸ hd))]\n    simpa [weight] using hδ\n  have hrp : (0 : ℝ) < r none := by exact_mod_cast Nat.pos_of_ne_zero hr\n  calc weight (r ∘ some) d = ∑ j, (d j : ℝ) / r (some j) := rfl\n    _ ≤ ∑ j, (d j : ℝ) * δ / r none := Finset.sum_le_sum fun j _ ↦ by\n        rw [div_le_div_iff₀ (pos_of_mul_pos_right (hrp.trans_le (hratio j)) hδ) hrp, mul_assoc]\n        exact mul_le_mul_of_nonneg_left (hratio j) (Nat.cast_nonneg _)\n    _ = δ * d.degree / r none := by\n        rw [← Finset.sum_div, ← Finset.sum_mul, Finsupp.degree_eq_sum, Nat.cast_sum, mul_comm]\n    _ ≤ δ := (div_le_iff₀ hrp).2 (mul_le_mul_of_nonneg_left (by exact_mod_cast hd) hδ)",
+  "signature": "private lemma weight_le_delta_aux {δ : ℝ} (hδ : 0 ≤ δ) {r : Option τ → ℕ}\n    (hratio : ∀ j, (r none : ℝ) ≤ δ * r (some j)) {d : τ →₀ ℕ} (hd : d.degree ≤ r none) :\n    weight (r ∘ some) d ≤ δ",
+  "body": "by\n  classical\n  by_cases hr : r none = 0\n  · rw [(Finsupp.degree_eq_zero_iff d).1 (Nat.eq_zero_of_le_zero (hr ▸ hd))]\n    simpa [weight] using hδ\n  have hrp : (0 : ℝ) < r none := by exact_mod_cast Nat.pos_of_ne_zero hr\n  calc weight (r ∘ some) d = ∑ j, (d j : ℝ) / r (some j) := rfl\n    _ ≤ ∑ j, (d j : ℝ) * δ / r none := Finset.sum_le_sum fun j _ ↦ by\n        rw [div_le_div_iff₀ (pos_of_mul_pos_right (hrp.trans_le (hratio j)) hδ) hrp, mul_assoc]\n        exact mul_le_mul_of_nonneg_left (hratio j) (Nat.cast_nonneg _)\n    _ = δ * d.degree / r none := by\n        rw [← Finset.sum_div, ← Finset.sum_mul, Finsupp.degree_eq_sum, Nat.cast_sum, mul_comm]\n    _ ≤ δ := (div_le_iff₀ hrp).2 (mul_le_mul_of_nonneg_left (by exact_mod_cast hd) hδ)",
+  "proof_lines": 13,
+  "sha256": "41eb1986a04c21c7cd8dacf0d82b243a0079af3447475d8c33793e91774addf8",
+  "what": "Coordinate degree ratios bound the weighted degree of every derivative of bounded total order.",
+  "how": "Handle zero distinguished weight separately; otherwise use degree_eq_sum and reciprocal coordinate comparisons to bound weight by delta.",
+  "hypotheses": "Nonnegative delta and distinguished weight at most delta times every other weight; derivative order at most distinguished weight.",
+  "source_body_refs": [
+    "Roth.weight"
+  ],
+  "source_type_refs": [
+    "Roth.weight"
+  ],
+  "source_callers": [
+    {
+      "name": "Roth.index_le_lem6",
+      "file": "Roth/Theta.lean",
+      "line": 556
+    }
+  ],
+  "notes": [],
+  "input_file_sha256": "ea447150977f3acf5259cb27889019b9ac32195614f91bc78ed3454c26ca82f5",
+  "type_provenance": "Exact source signature plus section context; fresh compiler type extraction timed out, not claimed.",
+  "section_context": "Namespace Roth; open MvPolynomial. Ambient σ : Type*, [Fintype σ], [DecidableEq σ]; Lemma6 additionally τ : Type*, [Fintype τ], [DecidableEq τ]. The source explicitly omits DecidableEq for most results and both instances for fully general helpers. Only instances actually required by the displayed expression/proof are generalized by Lean; see omit directives in the source evidence. ",
+  "uses_from_project": [
+    "Roth.weight"
+  ],
+  "used_by_in_file": [
+    "Roth.index_le_lem6"
+  ],
+  "used_by_other_files": [],
+  "assignment_offset": 192,
+  "project_body_refs": [
+    "Roth.weight"
+  ],
+  "project_type_refs": [
+    "Roth.weight"
+  ],
+  "project_callers": [
+    {
+      "name": "Roth.index_le_lem6",
+      "file": "Roth/Theta.lean",
+      "line": 556
+    }
+  ]
+}
