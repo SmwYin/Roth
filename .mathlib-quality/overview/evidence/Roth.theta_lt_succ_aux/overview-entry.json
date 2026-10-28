@@ -1,0 +1,23 @@
+{
+  "declaration": "Roth.theta_lt_succ_aux",
+  "kind": "lemma",
+  "type": "∀ {n : ℕ} {δ : ℝ},\n  0 < δ →\n    δ ≤ 1 / (↑n + 1 + 1) →\n      ∀ {r q : Fin (n + 2) → ℕ},\n        3 ≤ ↑(r (Fin.last (n + 1))) →\n          (∀ (i : Fin (n + 1)), ↑(r i.succ) ≤ δ * ↑(r i.castSucc)) →\n            (↑n + 1 + 1) * (2 * (↑n + 1 + 1) + 1) / δ ≤ Real.log ↑(q 0) →\n              (∀ (j : Fin (n + 2)), ↑(r 0) * Real.log ↑(q 0) ≤ ↑(r j) * Real.log ↑(q j)) →\n                (∀ {δ : ℝ},\n                    0 < δ →\n                      δ ≤ 1 / (↑n + 1) →\n                        ∀ {r q : Fin (n + 1) → ℕ},\n                          3 ≤ ↑(r (Fin.last n)) →\n                            (∀ (i : Fin n), ↑(r i.succ) ≤ δ * ↑(r i.castSucc)) →\n                              (↑n + 1) * (2 * (↑n + 1) + 1) / δ ≤ Real.log ↑(q 0) →\n                                (∀ (j : Fin (n + 1)), ↑(r 0) * Real.log ↑(q 0) ≤ ↑(r j) * Real.log ↑(q j)) →\n                                  Roth.Θ (↑(q 0) ^ (δ * ↑(r 0))) q r < 10 ^ (n + 1) * δ ^ (1 / 2) ^ (n + 1)) →\n                  Roth.Θ (↑(q 0) ^ (δ * ↑(r 0))) q r < 10 ^ (n + 2) * δ ^ (1 / 2) ^ (n + 2)",
+  "what": "The lower-dimensional extremal-index induction bound implies the next-dimensional bound in the small-δ regime with decreasing weights and balanced denominator logarithms.",
+  "how": "Derive positive denominators and antitone degrees; transport through Θ_equiv to Option variables, apply Θ_option_le and bound every finite-supremum term with theta_phi_lt_aux.",
+  "hypotheses": "Small positive delta, minimum last degree, adjacent degree ratios, denominator logarithm growth, balanced products and induction hypothesis. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.",
+  "project_dependencies": [
+    "Roth.lem6Φ",
+    "Roth.theta_denominators_one_lt_aux",
+    "Roth.theta_phi_lt_aux",
+    "Roth.Θ",
+    "Roth.Θ_equiv",
+    "Roth.Θ_option_le"
+  ],
+  "caller_summary": "1 explicit source caller declarations, all in Theta.lean; 1 direct original value consumers. Exact separate lists retained. Entire Theta module proof bodies replay successfully with fresh target name.",
+  "mathlib_api_audit": "Derive δ<1, antitonicity of r, positive denominators and the distinguished-coordinate ratio. Transport the variables from Fin(n+2) to Option(Fin(n+1)) using Θ_equiv and finSuccEquivLast. Apply Θ_option_le, unfold the two Φ terms and use Finset.sup'_lt_iff; theta_phi_lt_aux bounds every rank. This is the small-error successor branch of Θ_lt.",
+  "moral_duplications": "Converts the recursive Option-coordinate supremum bound into the next-dimensional target by uniformly bounding every rank. The per-rank theta_phi_lt_aux proves the numerical input; this helper supplies variable transport and finite-maximum aggregation, while the large-delta branch uses a different dimension bound.",
+  "generalization": "No public generality claim under the private prefilter; preserve the existing definition and interface.",
+  "missing_api": "No new primitive is needed for this internal organization; full public contribution search is explicitly not run.",
+  "junk": "Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.",
+  "action": "Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration."
+}
