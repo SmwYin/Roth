@@ -1,0 +1,24 @@
+namespace RSet179Composition
+open MvPolynomial
+example {σ : Type*} (B : ℝ) (r : σ → ℕ) :
+    Roth.RSet B r = {P : MvPolynomial σ ℤ | P ≠ 0 ∧
+      P ∈ MvPolynomial.restrictSupport ℤ {d | ∀ j, d j ≤ r j} ∧
+      ∀ d, |((P.coeff d : ℤ) : ℝ)| ≤ B} := by
+  ext P
+  simp only [Roth.RSet, Set.mem_setOf_eq, MvPolynomial.mem_restrictSupport_iff,
+    Set.subset_def, Finset.mem_coe, MvPolynomial.degreeOf_le_iff]
+  constructor
+  · rintro ⟨h0, hd, hc⟩
+    exact ⟨h0, fun d h j ↦ hd j d h, hc⟩
+  · rintro ⟨h0, hd, hc⟩
+    exact ⟨h0, fun j d h ↦ hd d h j, hc⟩
+example {σ : Type*} (B : ℝ) (r : σ → ℕ) (hB : B < 0) : Roth.RSet B r = ∅ := by
+  apply Set.eq_empty_iff_forall_notMem.mpr
+  intro P hP
+  exact (not_le_of_gt hB) ((abs_nonneg _).trans (hP.2.2 0))
+example {σ : Type*} (r : σ → ℕ) : (0 : MvPolynomial σ ℤ) ∉ Roth.RSet 1 r := by
+  exact fun h ↦ h.1 rfl
+example {σ : Type*} (B : ℝ) (r : σ → ℕ) : Roth.RSet B r =
+    {P : MvPolynomial σ ℤ | P ≠ 0 ∧ (∀ j, degreeOf j P ≤ r j) ∧
+      ∀ d, |((P.coeff d : ℤ) : ℝ)| ≤ B} := rfl
+end RSet179Composition

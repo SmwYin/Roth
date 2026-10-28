@@ -1,0 +1,33 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.RingTheory.Polynomial.GaussLemma
+#check_failure Roth.RSet
+namespace RSet179Isolated
+open MvPolynomial
+#check MvPolynomial.restrictSupport
+#check MvPolynomial.mem_restrictSupport_iff
+#check MvPolynomial.basisRestrictSupport
+#check MvPolynomial.restrictSupport_add
+#check MvPolynomial.mem_restrictDegree
+#check MvPolynomial.degreeOf_le_iff
+theorem degree_support_bridge {σ : Type*} {R : Type*} [CommSemiring R]
+    (P : MvPolynomial σ R) (r : σ → ℕ) :
+    (∀ j, degreeOf j P ≤ r j) ↔
+      P ∈ MvPolynomial.restrictSupport R {d | ∀ j, d j ≤ r j} := by
+  simp only [MvPolynomial.mem_restrictSupport_iff, Set.subset_def, Finset.mem_coe,
+    MvPolynomial.degreeOf_le_iff]
+  exact ⟨fun h d hd j ↦ h j d hd, fun h j d hd ↦ h d hd j⟩
+#print axioms degree_support_bridge
+end RSet179Isolated

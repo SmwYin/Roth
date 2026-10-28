@@ -1,0 +1,83 @@
+{
+  "request": {
+    "query": "Finsupp support contained in a set and all coefficient values in closed intervals",
+    "num_results": 8
+  },
+  "response": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Finset.mem_finsupp_iff\",\n      \"informal_name\": \"Membership Criterion for Finite Support Functions\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {α : Type u_2} [inst : Zero α] {s : Finset ι} {f : ι →₀ α} {t : ι → Finset α},\\n  f ∈ s.finsupp t ↔ f.support ⊆ s ∧ ∀ i ∈ s, f i ∈ t i\",\n      \"informal_description\": \"A finite support function $ f $ belongs to the set $ s.\\\\text{finsupp} \\\\, t $ if and only if two conditions hold: (1) the support of $ f $ (i.e., the set of indices where $ f $ is non-zero) is contained in the finite set $ s $, and (2) for every index $ i \\\\in s $, the value $ f(i) $ lies in the corresponding finite set $ t(i) $. Symbolically, $ f \\\\in s.\\\\text{finsupp} \\\\, t \\\\iff \\\\text{support}(f) \\\\subseteq s \\\\land (\\\\forall i \\\\in s, f(i) \\\\in t(i)) $.\",\n      \"path\": \"Mathlib.Data.Finset.Finsupp\"\n    },\n    {\n      \"formal_name\": \"DFinsupp.rangeIcc\",\n      \"informal_name\": \"Interval between dependent finite support functions\",\n      \"kind\": \"definition\",\n      \"type\": \"{ι : Type u_1} →\\n  {α : ι → Type u_2} →\\n    [inst : (i : ι) → Zero (α i)] →\\n      [inst_1 : (i : ι) → PartialOrder (α i)] →\\n        [(i : ι) → LocallyFiniteOrder (α i)] → (Π₀ (i : ι), α i) → (Π₀ (i : ι), α i) → Π₀ (i : ι), Finset (α i)\",\n      \"informal_description\": \"For dependent finite support functions $f$ and $g$ with values in a family of locally finite ordered types $\\\\alpha_i$, this function returns the dependent finite support function whose value at each index $i$ is the closed interval $[f(i), g(i)]$ in $\\\\alpha_i$. The support of the resulting function is contained in the union of the supports of $f$ and $g$, ensuring finite support since both $f$ and $g$ have finite support.\",\n      \"path\": \"Mathlib.Data.DFinsupp.Interval\"\n    },\n    {\n      \"formal_name\": \"Finsupp.rangeIcc\",\n      \"informal_name\": \"Finite support function of closed intervals between two finite support functions\",\n      \"kind\": \"definition\",\n      \"type\": \"{ι : Type u_1} →\\n  {α : Type u_2} →\\n    [inst : Zero α] →\\n      [inst_1 : PartialOrder α] → [LocallyFiniteOrder α] → [DecidableEq ι] → (ι →₀ α) → (ι →₀ α) → ι →₀ Finset α\",\n      \"informal_description\": \"The function maps each index $ i $ to the closed interval $[f(i), g(i)]$ in $ \\\\alpha $, with support consisting of indices $ i $ where this interval is non-empty. Here, $ \\\\alpha $ is a type equipped with a partial order and locally finite order structure, ensuring that each interval is finite.\",\n      \"path\": \"Mathlib.Data.Finsupp.Interval\"\n    },\n    {\n      \"formal_name\": \"Finset.mem_dfinsupp_iff\",\n      \"informal_name\": \"Membership in Dependent Finite Support Functions iff Support Subset and Value Conditions\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {α : ι → Type u_2} [inst : DecidableEq ι] [inst_1 : (i : ι) → Zero (α i)] {s : Finset ι}\\n  {f : Π₀ (i : ι), α i} {t : (i : ι) → Finset (α i)} [inst_2 : (i : ι) → DecidableEq (α i)],\\n  f ∈ s.dfinsupp t ↔ f.support ⊆ s ∧ ∀ i ∈ s, f i ∈ t i\",\n      \"informal_description\": \"A dependent finite support function $ f $ belongs to the set $ s.\\\\text{dfinsupp} \\\\, t $ if and only if two conditions hold: (1) the support of $ f $ (the set of indices $ i $ where $ f(i) \\\\neq 0 $) is a subset of $ s $, and (2) for every index $ i \\\\in s $, the value $ f(i) $ lies in the corresponding finite set $ t(i) $.\",\n      \"path\": \"Mathlib.Data.DFinsupp.Interval\"\n    },\n    {\n      \"formal_name\": \"DFinsupp.support_rangeIcc_subset\",\n      \"informal_name\": \"Support of Interval Between Dependent Finite Support Functions is Subset of Union of Supports\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {α : ι → Type u_2} [inst : (i : ι) → Zero (α i)] [inst_1 : (i : ι) → PartialOrder (α i)]\\n  [inst_2 : (i : ι) → LocallyFiniteOrder (α i)] {f g : Π₀ (i : ι), α i} [inst_3 : DecidableEq ι]\\n  [inst_4 : (i : ι) → DecidableEq (α i)], (f.rangeIcc g).support ⊆ f.support ∪ g.support\",\n      \"informal_description\": \"For dependent finite support functions $f$ and $g$ with values in a family of locally finite ordered types, the support of the interval function $[f(i), g(i)]$ at each index $i$ is contained in the union of the supports of $f$ and $g$. This ensures that the resulting function has finite support since both $f$ and $g$ have finite support.\",\n      \"path\": \"Mathlib.Data.DFinsupp.Interval\"\n    },\n    {\n      \"formal_name\": \"Finsupp.Icc_eq\",\n      \"informal_name\": \"Closed Interval of Finite Support Functions as Product over Union of Supports\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {α : Type u_2} [inst : PartialOrder α] [inst_1 : Zero α] [inst_2 : LocallyFiniteOrder α]\\n  [inst_3 : DecidableEq ι] [inst_4 : DecidableEq α] (f g : ι →₀ α),\\n  Finset.Icc f g = (f.support ∪ g.support).finsupp ⇑(f.rangeIcc g)\",\n      \"informal_description\": \"For finite support functions $ f $ and $ g $ with values in a locally finite ordered type $ \\\\alpha $, the closed interval $[f, g]$ consists precisely of all finite support functions $ h $ such that $ h(i) \\\\in [f(i), g(i)] $ for every index $ i $ in the union of the supports of $ f $ and $ g $, and $ h(i) = 0 $ otherwise. This is constructed by taking the dependent product over the union $ \\\\operatorname{support}(f) \\\\cup \\\\operatorname{support}(g) $ of the intervals $[f(i), g(i)]$ at each index $ i $.\",\n      \"path\": \"Mathlib.Data.Finsupp.Interval\"\n    },\n    {\n      \"formal_name\": \"Finset.mem_finsupp_iff_of_support_subset\",\n      \"informal_name\": \"Membership in Finsupp Constructed from Subset Support\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {α : Type u_2} [inst : Zero α] {s : Finset ι} {f : ι →₀ α} {t : ι →₀ Finset α},\\n  t.support ⊆ s → (f ∈ s.finsupp ⇑t ↔ ∀ (i : ι), f i ∈ t i)\",\n      \"informal_description\": \"An element $ f $ belongs to the finite set $ s.\\text{finsupp}(t) $ if and only if for every index $ i $, the value $ f(i) $ is contained in the finite set $ t(i) $, under the condition that the support of $ t $ is a subset of $ s $.\",\n      \"path\": \"Mathlib.Data.Finset.Finsupp\"\n    },\n    {\n      \"formal_name\": \"DFinsupp.Icc_eq\",\n      \"informal_name\": \"Interval of Dependent Finite Support Functions Equals Product of Component Intervals\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {ι : Type u_1} {α : ι → Type u_2} [inst : DecidableEq ι] [inst_1 : (i : ι) → DecidableEq (α i)]\\n  [inst_2 : (i : ι) → PartialOrder (α i)] [inst_3 : (i : ι) → Zero (α i)] [inst_4 : (i : ι) → LocallyFiniteOrder (α i)]\\n  (f g : Π₀ (i : ι), α i), Finset.Icc f g = (f.support ∪ g.support).dfinsupp ⇑(f.rangeIcc g)\",\n      \"informal_description\": \"For dependent finite support functions $f$ and $g$ with values in a family of locally finite ordered types, the closed interval $[f, g]$ (under the pointwise order) is equal to the set of all dependent finite support functions whose support is contained in the union of the supports of $f$ and $g$, and whose values at each index $i$ lie in the closed interval $[f(i), g(i)]$ in the corresponding ordered type.\",\n      \"path\": \"Mathlib.Data.DFinsupp.Interval\"\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "items": [
+        {
+          "formal_name": "Finset.mem_finsupp_iff",
+          "informal_name": "Membership Criterion for Finite Support Functions",
+          "kind": "theorem",
+          "type": "∀ {ι : Type u_1} {α : Type u_2} [inst : Zero α] {s : Finset ι} {f : ι →₀ α} {t : ι → Finset α},\n  f ∈ s.finsupp t ↔ f.support ⊆ s ∧ ∀ i ∈ s, f i ∈ t i",
+          "informal_description": "A finite support function $ f $ belongs to the set $ s.\\text{finsupp} \\, t $ if and only if two conditions hold: (1) the support of $ f $ (i.e., the set of indices where $ f $ is non-zero) is contained in the finite set $ s $, and (2) for every index $ i \\in s $, the value $ f(i) $ lies in the corresponding finite set $ t(i) $. Symbolically, $ f \\in s.\\text{finsupp} \\, t \\iff \\text{support}(f) \\subseteq s \\land (\\forall i \\in s, f(i) \\in t(i)) $.",
+          "path": "Mathlib.Data.Finset.Finsupp"
+        },
+        {
+          "formal_name": "DFinsupp.rangeIcc",
+          "informal_name": "Interval between dependent finite support functions",
+          "kind": "definition",
+          "type": "{ι : Type u_1} →\n  {α : ι → Type u_2} →\n    [inst : (i : ι) → Zero (α i)] →\n      [inst_1 : (i : ι) → PartialOrder (α i)] →\n        [(i : ι) → LocallyFiniteOrder (α i)] → (Π₀ (i : ι), α i) → (Π₀ (i : ι), α i) → Π₀ (i : ι), Finset (α i)",
+          "informal_description": "For dependent finite support functions $f$ and $g$ with values in a family of locally finite ordered types $\\alpha_i$, this function returns the dependent finite support function whose value at each index $i$ is the closed interval $[f(i), g(i)]$ in $\\alpha_i$. The support of the resulting function is contained in the union of the supports of $f$ and $g$, ensuring finite support since both $f$ and $g$ have finite support.",
+          "path": "Mathlib.Data.DFinsupp.Interval"
+        },
+        {
+          "formal_name": "Finsupp.rangeIcc",
+          "informal_name": "Finite support function of closed intervals between two finite support functions",
+          "kind": "definition",
+          "type": "{ι : Type u_1} →\n  {α : Type u_2} →\n    [inst : Zero α] →\n      [inst_1 : PartialOrder α] → [LocallyFiniteOrder α] → [DecidableEq ι] → (ι →₀ α) → (ι →₀ α) → ι →₀ Finset α",
+          "informal_description": "The function maps each index $ i $ to the closed interval $[f(i), g(i)]$ in $ \\alpha $, with support consisting of indices $ i $ where this interval is non-empty. Here, $ \\alpha $ is a type equipped with a partial order and locally finite order structure, ensuring that each interval is finite.",
+          "path": "Mathlib.Data.Finsupp.Interval"
+        },
+        {
+          "formal_name": "Finset.mem_dfinsupp_iff",
+          "informal_name": "Membership in Dependent Finite Support Functions iff Support Subset and Value Conditions",
+          "kind": "theorem",
+          "type": "∀ {ι : Type u_1} {α : ι → Type u_2} [inst : DecidableEq ι] [inst_1 : (i : ι) → Zero (α i)] {s : Finset ι}\n  {f : Π₀ (i : ι), α i} {t : (i : ι) → Finset (α i)} [inst_2 : (i : ι) → DecidableEq (α i)],\n  f ∈ s.dfinsupp t ↔ f.support ⊆ s ∧ ∀ i ∈ s, f i ∈ t i",
+          "informal_description": "A dependent finite support function $ f $ belongs to the set $ s.\\text{dfinsupp} \\, t $ if and only if two conditions hold: (1) the support of $ f $ (the set of indices $ i $ where $ f(i) \\neq 0 $) is a subset of $ s $, and (2) for every index $ i \\in s $, the value $ f(i) $ lies in the corresponding finite set $ t(i) $.",
+          "path": "Mathlib.Data.DFinsupp.Interval"
+        },
+        {
+          "formal_name": "DFinsupp.support_rangeIcc_subset",
+          "informal_name": "Support of Interval Between Dependent Finite Support Functions is Subset of Union of Supports",
+          "kind": "theorem",
+          "type": "∀ {ι : Type u_1} {α : ι → Type u_2} [inst : (i : ι) → Zero (α i)] [inst_1 : (i : ι) → PartialOrder (α i)]\n  [inst_2 : (i : ι) → LocallyFiniteOrder (α i)] {f g : Π₀ (i : ι), α i} [inst_3 : DecidableEq ι]\n  [inst_4 : (i : ι) → DecidableEq (α i)], (f.rangeIcc g).support ⊆ f.support ∪ g.support",
+          "informal_description": "For dependent finite support functions $f$ and $g$ with values in a family of locally finite ordered types, the support of the interval function $[f(i), g(i)]$ at each index $i$ is contained in the union of the supports of $f$ and $g$. This ensures that the resulting function has finite support since both $f$ and $g$ have finite support.",
+          "path": "Mathlib.Data.DFinsupp.Interval"
+        },
+        {
+          "formal_name": "Finsupp.Icc_eq",
+          "informal_name": "Closed Interval of Finite Support Functions as Product over Union of Supports",
+          "kind": "theorem",
+          "type": "∀ {ι : Type u_1} {α : Type u_2} [inst : PartialOrder α] [inst_1 : Zero α] [inst_2 : LocallyFiniteOrder α]\n  [inst_3 : DecidableEq ι] [inst_4 : DecidableEq α] (f g : ι →₀ α),\n  Finset.Icc f g = (f.support ∪ g.support).finsupp ⇑(f.rangeIcc g)",
+          "informal_description": "For finite support functions $ f $ and $ g $ with values in a locally finite ordered type $ \\alpha $, the closed interval $[f, g]$ consists precisely of all finite support functions $ h $ such that $ h(i) \\in [f(i), g(i)] $ for every index $ i $ in the union of the supports of $ f $ and $ g $, and $ h(i) = 0 $ otherwise. This is constructed by taking the dependent product over the union $ \\operatorname{support}(f) \\cup \\operatorname{support}(g) $ of the intervals $[f(i), g(i)]$ at each index $ i $.",
+          "path": "Mathlib.Data.Finsupp.Interval"
+        },
+        {
+          "formal_name": "Finset.mem_finsupp_iff_of_support_subset",
+          "informal_name": "Membership in Finsupp Constructed from Subset Support",
+          "kind": "theorem",
+          "type": "∀ {ι : Type u_1} {α : Type u_2} [inst : Zero α] {s : Finset ι} {f : ι →₀ α} {t : ι →₀ Finset α},\n  t.support ⊆ s → (f ∈ s.finsupp ⇑t ↔ ∀ (i : ι), f i ∈ t i)",
+          "informal_description": "An element $ f $ belongs to the finite set $ s.\text{finsupp}(t) $ if and only if for every index $ i $, the value $ f(i) $ is contained in the finite set $ t(i) $, under the condition that the support of $ t $ is a subset of $ s $.",
+          "path": "Mathlib.Data.Finset.Finsupp"
+        },
+        {
+          "formal_name": "DFinsupp.Icc_eq",
+          "informal_name": "Interval of Dependent Finite Support Functions Equals Product of Component Intervals",
+          "kind": "theorem",
+          "type": "∀ {ι : Type u_1} {α : ι → Type u_2} [inst : DecidableEq ι] [inst_1 : (i : ι) → DecidableEq (α i)]\n  [inst_2 : (i : ι) → PartialOrder (α i)] [inst_3 : (i : ι) → Zero (α i)] [inst_4 : (i : ι) → LocallyFiniteOrder (α i)]\n  (f g : Π₀ (i : ι), α i), Finset.Icc f g = (f.support ∪ g.support).dfinsupp ⇑(f.rangeIcc g)",
+          "informal_description": "For dependent finite support functions $f$ and $g$ with values in a family of locally finite ordered types, the closed interval $[f, g]$ (under the pointwise order) is equal to the set of all dependent finite support functions whose support is contained in the union of the supports of $f$ and $g$, and whose values at each index $i$ lie in the closed interval $[f(i), g(i)]$ in the corresponding ordered type.",
+          "path": "Mathlib.Data.DFinsupp.Interval"
+        }
+      ]
+    },
+    "isError": false
+  }
+}

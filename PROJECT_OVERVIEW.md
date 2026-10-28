@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-26. **IN PROGRESS — 178/293 declaration assessments complete.**
+Updated: 2026-10-26. **IN PROGRESS — 179/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 178; remaining: 115.
-- Verdicts: 18 NO-composable-from-mathlib, 13 YES-add-as-is, 25 YES-but-generalise-first, 37 NO-mathlib-has-it, 52 BORDERLINE-needs-human, 33 SKIP.
+- Completed applicable assessments: 179; remaining: 114.
+- Verdicts: 18 NO-composable-from-mathlib, 13 YES-add-as-is, 25 YES-but-generalise-first, 37 NO-mathlib-has-it, 53 BORDERLINE-needs-human, 33 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -2064,6 +2064,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: source calls: 1; files: 1; callers: {'name': 'Roth.index_le_lem6', 'file': 'Roth/Theta.lean', 'declaration_line': 556, 'call_line': 571, 'plan': 'Apply generic theorem at R=ℤ; full caller replay verified with every original bound and hypothesis.'}; kernel direct consumers: Roth.index_le_lem6; inline rederivations: None
 - Verdict: YES-but-generalise-first; [complete report](.mathlib-quality/overview/mathlibable/Roth.exists_det_eq_mul.md).
 
+### Completed: `Roth.RSet`
+
+- Type: `{σ : Type u_1} → ℝ → (σ → ℕ) → Set (MvPolynomial σ ℤ)`
+- What: Nonzero integer multivariate polynomials with individual degrees bounded by r and every real-cast coefficient absolute value bounded by B.
+- How: Constructs a Set by conjoining nonzero, degreeOf bounds, and all coefficient absolute-value bounds. The degree component is equivalent to the carrier of MvPolynomial.restrictSupport ℤ {d | ∀ j, d j ≤ r j}; this needs degreeOf_le_iff plus quantifier reordering, not a definitional replacement of the whole set.
+- Hypotheses: Arbitrary universe-polymorphic σ, B : ℝ, r : σ → ℕ; no Fintype, DecidableEq, positivity, or finite-support assumption is captured.
+- Project dependencies: None
+- Caller summary: explicit external occurrences: 6; external files: Roth/MainLemma.lean; within module code occurrences excluding definition: 9; direct value consumers: Roth.indexSet, Roth.indexSet_nonempty, Roth.indexSet_bddAbove, Roth.index_le_Θ, Roth.Θ_nonneg, Roth.Θ_le_card, Roth.Θ_le_of_forall_index_le, Roth.Θ_mono, _private.Roth.Theta.0.Roth.indexSet_comp_subset, Roth.Θ_unique_le, _private.Roth.Theta.0.Roth.index_separated_mul_le_aux, Roth.index_det_le, Roth.index_le_lem6, Roth.Θ_option_le, _private.Roth.MainLemma.0.Roth.exists_mem_RSet_le_index_aux, _private.Roth.MainLemma.0.Roth.exists_mem_RSet_le_index_of_log_bound_aux, _private.Roth.MainLemma.0.Roth.exists_auxiliary_polynomial_of_log_bound_aux, _private.Roth.MainLemma.0.Roth.exists_auxiliary_polynomial_with_index_gap_aux, Roth.main_lemma; direct type consumers: Roth.one_mem_RSet, Roth.index_le_Θ, Roth.Θ_le_of_forall_index_le, _private.Roth.Theta.0.Roth.index_separated_mul_le_aux, Roth.index_det_le, Roth.index_le_lem6, Roth.sub_mem_RSet, _private.Roth.MainLemma.0.Roth.exists_mem_RSet_le_index_aux, _private.Roth.MainLemma.0.Roth.exists_mem_RSet_le_index_of_rpow_bound_aux, _private.Roth.MainLemma.0.Roth.exists_mem_RSet_le_index_of_log_bound_aux, _private.Roth.MainLemma.0.Roth.exists_auxiliary_polynomial_of_log_bound_aux, _private.Roth.MainLemma.0.Roth.exists_auxiliary_polynomial_with_index_gap_aux; scope: 293 canonical source declarations only; not full transitive or simp closure
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.RSet.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -2446,6 +2456,8 @@ Completed `Roth.exists_rat_factors_det_hasseDeriv_aux`: Map the polynomial injec
 
 Completed `Roth.exists_det_eq_mul`: 15 actual search cells; positive univariate Hasse/binary Wronskian/matrix determinant/localization/degree-map building blocks inspected and native checked; no verified ≤3 existing-call replacement. Index unavailable is recorded, not absence.
 
+Completed `Roth.RSet`: methods: 5; forms: 3; cells: 15; verified candidates: MvPolynomial.restrictSupport, MvPolynomial.mem_restrictSupport_iff, MvPolynomial.basisRestrictSupport, MvPolynomial.restrictSupport_add, MvPolynomial.mem_restrictDegree, MvPolynomial.degreeOf_le_iff; limitations: Online revision may differ. Local search reports index unavailable. No complete ≤3 existing-call replacement verified.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -2803,6 +2815,8 @@ Completed `Roth.exists_int_factors`: Gauss-type descent; univariate Gauss integr
 Completed `Roth.exists_rat_factors_det_hasseDeriv_aux`: The helper has a distinct role in the separated polynomial proof as described in the structural review; no duplicate full construction is introduced.
 
 Completed `Roth.exists_det_eq_mul`: det_mul and map_det cover transport but not bounded derivative-row selection, nonvanishing and original-ring separated descent. Binary Polynomial.wronskian is not the finite-family construction.
+
+Completed `Roth.RSet`: Degree component is the existing restrictSupport carrier., Finite coefficient-array boxes compose with Finset.finsupp under extra finite exponent-box data., Polynomial.supNorm is univariate; projective Height and ℓ¹ norm are not the same bound.
 
 ## Part 5: Generalization opportunities
 
@@ -3172,6 +3186,8 @@ Completed `Roth.exists_rat_factors_det_hasseDeriv_aux`: No public generality cla
 
 Completed `Roth.exists_det_eq_mul`: verified: True; coefficient ring: [CommRing R] [IsDomain R] [NormalizedGCDMonoid R] [CharZero R]; variables: arbitrary τ; remove Finite τ by finite-support bridge; fraction field: FractionRing R internal; arbitrary external K variant also proved; preserved: 1 ≤ l, l ≤ r none + 1, ∀ μ, (D μ).degree ≤ μ, U ≠ 0, V ≠ 0, ∀ j, degreeOf j U ≤ l * r (some j), V.natDegree ≤ l * r none, exact determinant factorization; parent interface: Field-only genWronskian remains over fraction field; base-ring Hasse API already valid.
 
+Completed `Roth.RSet`: status: already broad variable/bound parameters; no mechanically droppable instance; verified: Generic degree/support bridge over arbitrary σ and CommSemiring; not a generic arithmetic development.; rejected: Do not replace by total degree, projective height, submodule including zero, or finite box without extra assumptions.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -3530,6 +3546,8 @@ Completed `Roth.exists_int_factors`: Generic multivariate primitive representati
 Completed `Roth.exists_rat_factors_det_hasseDeriv_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 Completed `Roth.exists_det_eq_mul`: Finite-family Hasse Wronskian nonvanishing with bounded row orders, Separated original-ring factor descent over normalized GCD domains, Generic CommRing degree bound for Hasse derivative determinants, Synthesis theorem preserving separated nonzero factors and all individual bounds
+
+Completed `Roth.RSet`: Potential generic multivariate naive coefficient-height interface and support/degree bridges; not an established upstream design.
 
 ## Part 7: Junk / removable
 
@@ -3892,6 +3910,8 @@ Completed `Roth.exists_rat_factors_det_hasseDeriv_aux`: Retain a live private pr
 
 Completed `Roth.exists_det_eq_mul`: False
 
+Completed `Roth.RSet`: Retain: live local arithmetic API; no dead-code/deletion recommendation. For B<0 the set is empty; zero is always excluded. Zero degree limits and empty/infinite variable types are valid inputs. All coefficients, including absent ones, are tested.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -4074,6 +4094,7 @@ Completed `Roth.exists_det_eq_mul`: False
 | 176 | `Roth.exists_int_factors` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_int_factors.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_int_factors/root-acceptance.json) |
 | 177 | `Roth.exists_rat_factors_det_hasseDeriv_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_rat_factors_det_hasseDeriv_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_rat_factors_det_hasseDeriv_aux/root-acceptance.json) |
 | 178 | `Roth.exists_det_eq_mul` | YES-but-generalise-first | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_det_eq_mul.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_det_eq_mul/root-acceptance.json) |
+| 179 | `Roth.RSet` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.RSet.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.RSet/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -4429,12 +4450,14 @@ Completed `Roth.exists_rat_factors_det_hasseDeriv_aux` action: Keep unchanged; c
 
 Completed `Roth.exists_det_eq_mul` action: verdict: YES-but-generalise-first; location: Mathlib/RingTheory/MvPolynomial/Separation.lean; title: feat(MvPolynomial): bounded Hasse determinants with separated factors; grouping: Roth.genWronskian, Roth.exists_genWronskian_ne_zero, Roth.exists_separated_representation, Roth.exists_primitive_smul_eq, Roth.exists_int_factors; checklist: /generalise Roth.exists_det_eq_mul: adopt exact verified arbitraryτ GCD-domain theorem, /cleanup Mathlib/RingTheory/MvPolynomial/Separation.lean MvPolynomial.exists_det_eq_mul, Reviewers Justus Springer and Junyan Xu based on focused relevant history; local destination: Roth/Separation.lean until layered API is upstreamed
 
+Completed `Roth.RSet` action: verdict: BORDERLINE-needs-human; local destination: Roth/Theta.lean; recommendation: Retain the local stable name; choose generic upstream coefficient-height/support API before proposing this exact intersection. No edits requested.; questions: Generic multivariate coefficient sup-height API with RSet left local?, Include zero in a public bounded-coefficient body?, Arbitrary support set as primary degree parameter?, Independent uses for exact integer/real-bound/nonzero conjunction?
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.RSet` next. Supporting identities receive their own applicable checks.
+   `Roth.indexSet` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

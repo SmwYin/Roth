@@ -1,0 +1,14 @@
+namespace RSet179Callers
+open MvPolynomial
+example {σ : Type*} {r : σ → ℕ} {B : ℕ} {W' W'' : MvPolynomial σ ℤ}
+    (h' : W' ∈ Roth.boxFamily r B) (h'' : W'' ∈ Roth.boxFamily r B) (hne : W' ≠ W'') :
+    W' - W'' ≠ 0 ∧ (∀ j, degreeOf j (W' - W'') ≤ r j) ∧
+      ∀ d, |(((W' - W'').coeff d : ℤ) : ℝ)| ≤ B := by
+  exact Roth.sub_mem_RSet h' h'' hne
+example {σ : Type*} [Fintype σ] {B : ℝ} {q r : σ → ℕ}
+    {P : MvPolynomial σ ℤ} (hP : P ≠ 0 ∧ (∀ j, degreeOf j P ≤ r j) ∧
+      ∀ d, |((P.coeff d : ℤ) : ℝ)| ≤ B) {h : σ → ℤ}
+    (hh : ∀ j, IsCoprime (h j) (q j : ℤ)) :
+    Roth.index (map (Int.castRingHom ℝ) P) (fun j ↦ (h j : ℝ) / q j) r ≤ Roth.Θ B q r :=
+  Roth.index_le_Θ hP hh
+end RSet179Callers
