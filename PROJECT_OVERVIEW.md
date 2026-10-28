@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-28. **IN PROGRESS — 235/293 declaration assessments complete.**
+Updated: 2026-10-28. **IN PROGRESS — 236/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 235; remaining: 58.
-- Verdicts: 20 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 77 BORDERLINE-needs-human, 54 SKIP.
+- Completed applicable assessments: 236; remaining: 57.
+- Verdicts: 20 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 77 BORDERLINE-needs-human, 55 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -2889,6 +2889,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: Unused in MainLemma; two body occurrences in Main.exists_delta (241) and Main.roth_of_isIntegral (560); both full proofs replayed with inline arithmetic and original signatures.
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.eta_lt_gam_iff.md).
 
+### Completed: `Roth.sqrt_lt_nat_floor_aux`
+
+- Type: `∀ {X : ℝ}, 2 ≤ X → √X < ↑⌊X⌋₊`
+- What: For a real X at least2, its square root is strictly below the natural floor.
+- How: Use Nat.le_floor and Nat.lt_floor_add_one to compare squares via Real.sqrt_lt'.
+- Hypotheses: Real input at least two. The exact captured parameters and existing ambient types are printed; no additional project-defined structure is captured.
+- Project dependencies: None
+- Caller summary: One explicit source caller, all in MainLemma.lean; one direct original value consumer. Exact separate lists retained. Entire MainLemma module proof bodies replay successfully with fresh target name.
+- Verdict: SKIP; [complete report](.mathlib-quality/overview/mathlibable/Roth.sqrt_lt_nat_floor_aux.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -3385,6 +3395,8 @@ Completed `Roth.exists_delta_bound`: Existing ContinuousAt.eventually_lt, Real.c
 
 Completed `Roth.eta_lt_gam_iff`: lt_sub_iff_add_lt is the canonical additive order law. sub_div/div_sub_div_same and mul_div_cancel_left₀ give the normalized scalar version; the exact old spelling also needs coefficient and association normalization.
 
+Completed `Roth.sqrt_lt_nat_floor_aux`: Nat.le_floor gives floorX>=2, while Nat.lt_floor_add_one bounds X<floorX+1. Together these force X<floorX squared. Apply Real.sqrt_lt' with positive floor. This is the strict lower-bound half of the public two-sided floor statement, distinct from Nat.floor_le.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -3856,6 +3868,8 @@ Completed `Roth.boxFamily`: RSet differs by nonzero and symmetric absolute bound
 Completed `Roth.exists_delta_bound`: Shares neighborhood shrinking with Roth.exists_delta; its strict square-root gap is independent content. No other source inlining of this exact bound found.
 
 Completed `Roth.eta_lt_gam_iff`: The exact eta formula has no role in the equivalence. Morally a translated strict inequality; exists_delta_bound supplies a substantive numerical bound rather than this equivalence.
+
+Completed `Roth.sqrt_lt_nat_floor_aux`: The helper proves the strict lower bound used by sqrt_lt_floor, while Nat.floor_le supplies its non-strict upper bound; the two halves are distinct mathematical facts.
 
 ## Part 5: Generalization opportunities
 
@@ -4339,6 +4353,8 @@ Completed `Roth.exists_delta_bound`: No removable original premise: native sharp
 
 Completed `Roth.eta_lt_gam_iff`: Verified arbitrary e:ℝ in place of eta and arbitrary a,b,c in a Field K with LinearOrder K and IsStrictOrderedRing K: a + 2*b < c/2 ↔ a < (c-4*b)/2. This is a new generic proof, not an existing mathlib declaration; the underlying additive law already holds for AddGroup G, LT G, AddRightStrictMono G.
 
+Completed `Roth.sqrt_lt_nat_floor_aux`: No public generality claim under the private prefilter; preserve the existing definition and interface.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -4811,6 +4827,8 @@ Completed `Roth.boxFamily`: Potential general degree-box/coefficient-family imag
 Completed `Roth.exists_delta_bound`: Possible convenience helper for positive-power perturbations on a closed right interval; generic topology transport already exists. Whether to add that helper is an upstream API choice.
 
 Completed `Roth.eta_lt_gam_iff`: No established mathematical gap; upstream naming of the normalized scalar identity or a future Roth parameter API remains a design question.
+
+Completed `Roth.sqrt_lt_nat_floor_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 ## Part 7: Junk / removable
 
@@ -5287,6 +5305,8 @@ Completed `Roth.exists_delta_bound`: Used, nontrivial 16-line proof; not establi
 
 Completed `Roth.eta_lt_gam_iff`: Not dead: two critical proof consumers. Full caller inlining works, but removing the stable named bridge is a local API decision.
 
+Completed `Roth.sqrt_lt_nat_floor_aux`: Retain a live private proof interface. No placeholders, unsafe proof, new axiom, TODO or raised limit.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -5526,6 +5546,7 @@ Completed `Roth.eta_lt_gam_iff`: Not dead: two critical proof consumers. Full ca
 | 233 | `Roth.boxFamily` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.boxFamily.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.boxFamily/root-acceptance.json) |
 | 234 | `Roth.exists_delta_bound` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.exists_delta_bound.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.exists_delta_bound/root-acceptance.json) |
 | 235 | `Roth.eta_lt_gam_iff` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.eta_lt_gam_iff.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.eta_lt_gam_iff/root-acceptance.json) |
+| 236 | `Roth.sqrt_lt_nat_floor_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.sqrt_lt_nat_floor_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.sqrt_lt_nat_floor_aux/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -5995,12 +6016,14 @@ Completed `Roth.exists_delta_bound` action: BORDERLINE-needs-human: retain proje
 
 Completed `Roth.eta_lt_gam_iff` action: BORDERLINE-needs-human: retain locally in Roth/MainLemma.lean pending future parameter-API design; use the three concrete upstream questions in the report. No production edits proposed or performed by this assessment.
 
+Completed `Roth.sqrt_lt_nat_floor_aux` action: Keep unchanged; complete private-prefilter SKIP, then resume the next tracked declaration.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.sqrt_lt_nat_floor_aux` next. Supporting identities receive their own applicable checks.
+   `Roth.sqrt_lt_floor` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 
