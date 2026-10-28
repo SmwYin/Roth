@@ -1,0 +1,711 @@
+[
+  {
+    "status": "fulfilled",
+    "value": {
+      "form": "current",
+      "method": "lean_leanfinder",
+      "request": {
+        "query": "The index set of bounded nonzero integer multivariate polynomials at coprime rational points is nonempty"
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.degBound_pos\",\n      \"informal_name\": \"Positivity of Degree Bound in Chevalley's Theorem\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (k : ℕ) (D : ℕ → ℕ) (n : ℕ), 0 < ChevalleyThm.MvPolynomialC.degBound k D n\",\n      \"informal_description\": \"For any natural number $k$ and function $D : \\\\mathbb{N} \\\\to \\\\mathbb{N}$, the degree bound $\\\\text{degBound}\\\\,k\\\\,D\\\\,n$ satisfies $0 < \\\\text{degBound}\\\\,k\\\\,D\\\\,n$ for all $n \\\\in \\\\mathbb{N}$.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.numBound_zero\",\n      \"informal_name\": \"Base Case for Numerical Bound in Chevalley's Theorem\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ (k : ℕ) (D : ℕ → ℕ), ChevalleyThm.MvPolynomialC.numBound k D 0 = k\",\n      \"informal_description\": \"For any natural numbers $k$ and $D$, the numerical bound function evaluated at $k$, $D$, and $0$ returns $k$, establishing the base case for recursion in the context of multivariate polynomials and Chevalley's theorem.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.combinatorial_nullstellensatz_exists_eval_nonzero\",\n      \"informal_name\": \"Combinatorial Nullstellensatz: Existence of Non-Vanishing Evaluation\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] {σ : Type u_2} [Finite σ] [IsDomain R] (f : MvPolynomial σ R) (t : σ →₀ ℕ),\\n  MvPolynomial.coeff t f ≠ 0 →\\n    f.totalDegree = Finsupp.degree t →\\n      ∀ (S : σ → Finset R), (∀ (i : σ), t i < (S i).card) → ∃ s, (∀ (i : σ), s i ∈ S i) ∧ (MvPolynomial.eval s) f ≠ 0\",\n      \"informal_description\": \"Let $ R $ be an integral domain, $ f $ a multivariate polynomial in $ R[\\\\sigma] $, and $ t $ a monomial with nonzero coefficient in $ f $ such that the total degree of $ f $ equals the degree of $ t $. For any family of finite subsets $ S_i \\\\subseteq R $ indexed by $ \\\\sigma $, if each $ S_i $ has cardinality strictly greater than the exponent of $ t $ in variable $ i $, then there exists an evaluation $ s : \\\\sigma \\\\to R $ with $ s(i) \\\\in S_i $ for all $ i $, such that $ f(s) \\\\neq 0 $. This is the combinatorial Nullstellensatz existence theorem.\",\n      \"path\": \"Mathlib.Combinatorics.Nullstellensatz\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.numBound\",\n      \"informal_name\": \"Numerical Bound for Multivariate Polynomials in Chevalley's Theorem\",\n      \"kind\": \"definition\",\n      \"type\": \"ℕ → (ℕ → ℕ) → ℕ → ℕ\",\n      \"informal_description\": \"A function that takes a natural number $n$, a function $f : \\\\mathbb{N} \\\\to \\\\mathbb{N}$, and another natural number $m$, returning a natural number used to establish well-founded recursion in the context of multivariate polynomials and Chevalley's theorem. It computes bounds by recursively applying $f$ to $n$ and decrementing $m$.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.exists_mem_support_not_dvd_of_forall_totalDegree_le\",\n      \"informal_name\": \"Existence of a Monomial with Non-Divisible Exponent in Polynomial Support\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {k : Type u_1} {K : Type u_2} {ι : Type u_3} [inst : Field k] [inst_1 : Field K] [inst_2 : Algebra k K] (p : ℕ),\\n  Nat.Prime p →\\n    (∀ (s : Finset K), LinearIndepOn k id ↑s → LinearIndepOn k (fun x => x ^ p) ↑s) →\\n      ∀ {a : ι → K} {F : MvPolynomial ι k},\\n        (∀ (F' : MvPolynomial ι k), F' ≠ 0 → (MvPolynomial.aeval a) F' = 0 → F.totalDegree ≤ F'.totalDegree) →\\n          F ≠ 0 → (MvPolynomial.aeval a) F = 0 → ∃ i, ∃ σ ∈ F.support, ¬p ∣ σ i\",\n      \"informal_description\": \"Let $ R $ be a commutative semiring, $ \\\\sigma $ a type of variables, and $ p $ a prime number. If $ F \\\\in R[\\\\sigma] $ is a nonzero multivariate polynomial such that $ F(a) = 0 $ for some assignment $ a : \\\\sigma \\\\to S $ into an $ R $-algebra $ S $, then there exists an index $ i : \\\\sigma $ and a monomial $ \\\\sigma \\\\in \\\\text{support}(F) $ such that $ p $ does not divide the exponent $ \\\\sigma(i) $ of the variable $ i $ in $ \\\\sigma $.\",\n      \"path\": \"Mathlib.FieldTheory.SeparablyGenerated\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.MvPolynomialC.degBound\",\n      \"informal_name\": \"Degree Bound for Multivariate Polynomials in Chevalley's Theorem\",\n      \"kind\": \"definition\",\n      \"type\": \"ℕ → (ℕ → ℕ) → ℕ → ℕ\",\n      \"informal_description\": \"A function that computes a degree bound for multivariate polynomials, taking a natural number $n$, a function $f : \\\\mathbb{N} \\\\to \\\\mathbb{N}$, and an element of the sum type $\\\\mathbb{N} \\\\oplus \\\\mathbb{N}$. For left components, it applies $f$ to $n$, and for right components, it returns $n$ directly. This is used in the proof of Chevalley's theorem to establish well-founded recursion for multivariate polynomial constructions.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"ChevalleyThm.numBound\",\n      \"informal_name\": \"Numerical Bound for Chevalley's Theorem in Multivariate Polynomials with Multiset Counts\",\n      \"kind\": \"definition\",\n      \"type\": \"ℕ → (m : ℕ) → ℕ → Multiset (Fin m) → ℕ\",\n      \"informal_description\": \"A function that computes a numerical bound used in the context of Chevalley's theorem for multivariate polynomials. It takes natural numbers $k$, $m$, $n$ and a multiset $d$ of elements of type $\\\\text{Fin}\\\\, m$, and returns a natural number obtained by applying the multivariate polynomial bound function to $k + n$ and a function that counts the occurrences of each element in the multiset $d$ after mapping each element to its value in $\\\\mathbb{N}$, then adding 1.\",\n      \"path\": \"Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity\"\n    },\n    {\n      \"formal_name\": \"MvPolynomial.combinatorial_nullstellensatz_exists_linearCombination\",\n      \"informal_name\": \"Combinatorial Nullstellensatz: Existence of Linear Combination Representation\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] {σ : Type u_2} [Finite σ] [IsDomain R] (S : σ → Finset R),\\n  (∀ (i : σ), (S i).Nonempty) →\\n    ∀ (f : MvPolynomial σ R),\\n      (∀ (x : σ → R), (∀ (i : σ), x i ∈ S i) → (MvPolynomial.eval x) f = 0) →\\n        ∃ h,\\n          (∀ (i : σ), ((∏ s ∈ S i, (MvPolynomial.X i - MvPolynomial.C s)) * h i).totalDegree ≤ f.totalDegree) ∧\\n            f =\\n              (Finsupp.linearCombination (MvPolynomial σ R) fun i => ∏ r ∈ S i, (MvPolynomial.X i - MvPolynomial.C r)) h\",\n      \"informal_description\": \"Let $ R $ be a commutative ring with no zero divisors, $ \\\\sigma $ a type, and $ S_i \\\\subseteq R $ finite non-empty subsets for each $ i \\\\in \\\\sigma $. If a multivariate polynomial $ f \\\\in R[\\\\sigma] $ vanishes on all points $ x : \\\\sigma \\\\to R $ with $ x(i) \\\\in S_i $ for all $ i $, then there exist polynomials $ h_i \\\\in R[\\\\sigma] $ such that $ f $ can be expressed as a linear combination $ f = \\\\sum_{i} \\\\left( \\\\prod_{s \\\\in S_i} (X_i - s) \\\\cdot h_i \\\\right) $, where each term satisfies $ \\\\deg\\\\left( \\\\prod_{s \\\\in S_i} (X_i - s) \\\\cdot h_i \\\\right) \\\\leq \\\\deg(f) $. This representation guarantees that $ f $ is in the ideal generated by the polynomials $ \\\\prod_{s \\\\in S_i} (X_i - s) $ for each coordinate $ i $. The theorem establishes a foundational result in algebraic combinatorics, providing a certificate for polynomial identities over grids.\",\n      \"path\": \"Mathlib.Combinatorics.Nullstellensatz\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "formal_name": "ChevalleyThm.MvPolynomialC.degBound_pos",
+              "informal_name": "Positivity of Degree Bound in Chevalley's Theorem",
+              "kind": "theorem",
+              "type": "∀ (k : ℕ) (D : ℕ → ℕ) (n : ℕ), 0 < ChevalleyThm.MvPolynomialC.degBound k D n",
+              "informal_description": "For any natural number $k$ and function $D : \\mathbb{N} \\to \\mathbb{N}$, the degree bound $\\text{degBound}\\,k\\,D\\,n$ satisfies $0 < \\text{degBound}\\,k\\,D\\,n$ for all $n \\in \\mathbb{N}$.",
+              "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+            },
+            {
+              "formal_name": "ChevalleyThm.MvPolynomialC.numBound_zero",
+              "informal_name": "Base Case for Numerical Bound in Chevalley's Theorem",
+              "kind": "theorem",
+              "type": "∀ (k : ℕ) (D : ℕ → ℕ), ChevalleyThm.MvPolynomialC.numBound k D 0 = k",
+              "informal_description": "For any natural numbers $k$ and $D$, the numerical bound function evaluated at $k$, $D$, and $0$ returns $k$, establishing the base case for recursion in the context of multivariate polynomials and Chevalley's theorem.",
+              "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+            },
+            {
+              "formal_name": "MvPolynomial.combinatorial_nullstellensatz_exists_eval_nonzero",
+              "informal_name": "Combinatorial Nullstellensatz: Existence of Non-Vanishing Evaluation",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} [inst : CommRing R] {σ : Type u_2} [Finite σ] [IsDomain R] (f : MvPolynomial σ R) (t : σ →₀ ℕ),\n  MvPolynomial.coeff t f ≠ 0 →\n    f.totalDegree = Finsupp.degree t →\n      ∀ (S : σ → Finset R), (∀ (i : σ), t i < (S i).card) → ∃ s, (∀ (i : σ), s i ∈ S i) ∧ (MvPolynomial.eval s) f ≠ 0",
+              "informal_description": "Let $ R $ be an integral domain, $ f $ a multivariate polynomial in $ R[\\sigma] $, and $ t $ a monomial with nonzero coefficient in $ f $ such that the total degree of $ f $ equals the degree of $ t $. For any family of finite subsets $ S_i \\subseteq R $ indexed by $ \\sigma $, if each $ S_i $ has cardinality strictly greater than the exponent of $ t $ in variable $ i $, then there exists an evaluation $ s : \\sigma \\to R $ with $ s(i) \\in S_i $ for all $ i $, such that $ f(s) \\neq 0 $. This is the combinatorial Nullstellensatz existence theorem.",
+              "path": "Mathlib.Combinatorics.Nullstellensatz"
+            },
+            {
+              "formal_name": "ChevalleyThm.MvPolynomialC.numBound",
+              "informal_name": "Numerical Bound for Multivariate Polynomials in Chevalley's Theorem",
+              "kind": "definition",
+              "type": "ℕ → (ℕ → ℕ) → ℕ → ℕ",
+              "informal_description": "A function that takes a natural number $n$, a function $f : \\mathbb{N} \\to \\mathbb{N}$, and another natural number $m$, returning a natural number used to establish well-founded recursion in the context of multivariate polynomials and Chevalley's theorem. It computes bounds by recursively applying $f$ to $n$ and decrementing $m$.",
+              "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+            },
+            {
+              "formal_name": "MvPolynomial.exists_mem_support_not_dvd_of_forall_totalDegree_le",
+              "informal_name": "Existence of a Monomial with Non-Divisible Exponent in Polynomial Support",
+              "kind": "theorem",
+              "type": "∀ {k : Type u_1} {K : Type u_2} {ι : Type u_3} [inst : Field k] [inst_1 : Field K] [inst_2 : Algebra k K] (p : ℕ),\n  Nat.Prime p →\n    (∀ (s : Finset K), LinearIndepOn k id ↑s → LinearIndepOn k (fun x => x ^ p) ↑s) →\n      ∀ {a : ι → K} {F : MvPolynomial ι k},\n        (∀ (F' : MvPolynomial ι k), F' ≠ 0 → (MvPolynomial.aeval a) F' = 0 → F.totalDegree ≤ F'.totalDegree) →\n          F ≠ 0 → (MvPolynomial.aeval a) F = 0 → ∃ i, ∃ σ ∈ F.support, ¬p ∣ σ i",
+              "informal_description": "Let $ R $ be a commutative semiring, $ \\sigma $ a type of variables, and $ p $ a prime number. If $ F \\in R[\\sigma] $ is a nonzero multivariate polynomial such that $ F(a) = 0 $ for some assignment $ a : \\sigma \\to S $ into an $ R $-algebra $ S $, then there exists an index $ i : \\sigma $ and a monomial $ \\sigma \\in \\text{support}(F) $ such that $ p $ does not divide the exponent $ \\sigma(i) $ of the variable $ i $ in $ \\sigma $.",
+              "path": "Mathlib.FieldTheory.SeparablyGenerated"
+            },
+            {
+              "formal_name": "ChevalleyThm.MvPolynomialC.degBound",
+              "informal_name": "Degree Bound for Multivariate Polynomials in Chevalley's Theorem",
+              "kind": "definition",
+              "type": "ℕ → (ℕ → ℕ) → ℕ → ℕ",
+              "informal_description": "A function that computes a degree bound for multivariate polynomials, taking a natural number $n$, a function $f : \\mathbb{N} \\to \\mathbb{N}$, and an element of the sum type $\\mathbb{N} \\oplus \\mathbb{N}$. For left components, it applies $f$ to $n$, and for right components, it returns $n$ directly. This is used in the proof of Chevalley's theorem to establish well-founded recursion for multivariate polynomial constructions.",
+              "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+            },
+            {
+              "formal_name": "ChevalleyThm.numBound",
+              "informal_name": "Numerical Bound for Chevalley's Theorem in Multivariate Polynomials with Multiset Counts",
+              "kind": "definition",
+              "type": "ℕ → (m : ℕ) → ℕ → Multiset (Fin m) → ℕ",
+              "informal_description": "A function that computes a numerical bound used in the context of Chevalley's theorem for multivariate polynomials. It takes natural numbers $k$, $m$, $n$ and a multiset $d$ of elements of type $\\text{Fin}\\, m$, and returns a natural number obtained by applying the multivariate polynomial bound function to $k + n$ and a function that counts the occurrences of each element in the multiset $d$ after mapping each element to its value in $\\mathbb{N}$, then adding 1.",
+              "path": "Mathlib.RingTheory.Spectrum.Prime.ChevalleyComplexity"
+            },
+            {
+              "formal_name": "MvPolynomial.combinatorial_nullstellensatz_exists_linearCombination",
+              "informal_name": "Combinatorial Nullstellensatz: Existence of Linear Combination Representation",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} [inst : CommRing R] {σ : Type u_2} [Finite σ] [IsDomain R] (S : σ → Finset R),\n  (∀ (i : σ), (S i).Nonempty) →\n    ∀ (f : MvPolynomial σ R),\n      (∀ (x : σ → R), (∀ (i : σ), x i ∈ S i) → (MvPolynomial.eval x) f = 0) →\n        ∃ h,\n          (∀ (i : σ), ((∏ s ∈ S i, (MvPolynomial.X i - MvPolynomial.C s)) * h i).totalDegree ≤ f.totalDegree) ∧\n            f =\n              (Finsupp.linearCombination (MvPolynomial σ R) fun i => ∏ r ∈ S i, (MvPolynomial.X i - MvPolynomial.C r)) h",
+              "informal_description": "Let $ R $ be a commutative ring with no zero divisors, $ \\sigma $ a type, and $ S_i \\subseteq R $ finite non-empty subsets for each $ i \\in \\sigma $. If a multivariate polynomial $ f \\in R[\\sigma] $ vanishes on all points $ x : \\sigma \\to R $ with $ x(i) \\in S_i $ for all $ i $, then there exist polynomials $ h_i \\in R[\\sigma] $ such that $ f $ can be expressed as a linear combination $ f = \\sum_{i} \\left( \\prod_{s \\in S_i} (X_i - s) \\cdot h_i \\right) $, where each term satisfies $ \\deg\\left( \\prod_{s \\in S_i} (X_i - s) \\cdot h_i \\right) \\leq \\deg(f) $. This representation guarantees that $ f $ is in the ideal generated by the polynomials $ \\prod_{s \\in S_i} (X_i - s) $ for each coordinate $ i $. The theorem establishes a foundational result in algebraic combinatorics, providing a certificate for polynomial identities over grids.",
+              "path": "Mathlib.Combinatorics.Nullstellensatz"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "form": "current",
+      "method": "lean_leansearch",
+      "request": {
+        "query": "The index set of bounded nonzero integer multivariate polynomials at coprime rational points is nonempty"
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"MvPolynomial.combinatorial_nullstellensatz_exists_eval_nonzero\",\n      \"module_name\": \"Mathlib.Combinatorics.Nullstellensatz\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] {σ : Type u_2} [Finite σ] [IsDomain R] (f : MvPolynomial σ R) (t : σ →₀ ℕ),\\n  MvPolynomial.coeff t f ≠ 0 →\\n    f.totalDegree = Finsupp.degree t →\\n      ∀ (S : σ → Finset R), (∀ (i : σ), t i < (S i).card) → ∃ s, (∀ (i : σ), s i ∈ S i) ∧ (MvPolynomial.eval s) f ≠ 0\"\n    },\n    {\n      \"name\": \"MvPolynomial.schwartz_zippel_totalDegree\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.SchwartzZippel\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] [IsDomain R] [inst_2 : DecidableEq R] {n : ℕ} {p : MvPolynomial (Fin n) R},\\n  p ≠ 0 →\\n    ∀ (S : Finset R),\\n      ↑{f ∈ Fintype.piFinset fun x => S | (MvPolynomial.eval f) p = 0}.card / ↑S.card ^ n ≤ ↑p.totalDegree / ↑S.card\"\n    },\n    {\n      \"name\": \"Poly\",\n      \"module_name\": \"Mathlib.NumberTheory.Dioph\",\n      \"kind\": \"definition\",\n      \"type\": \"Type u → Type (max 0 u)\"\n    },\n    {\n      \"name\": \"MvPolynomial.support_nonempty\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] {p : MvPolynomial σ R}, p.support.Nonempty ↔ p ≠ 0\"\n    },\n    {\n      \"name\": \"Poly.instInhabited\",\n      \"module_name\": \"Mathlib.NumberTheory.Dioph\",\n      \"kind\": \"instance\",\n      \"type\": \"(α : Type u_3) → Inhabited (Poly α)\"\n    },\n    {\n      \"name\": \"Polynomial.coeffs_nonempty_iff\",\n      \"module_name\": \"Mathlib.Algebra.Polynomial.Basic\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u} [inst : Semiring R] {p : Polynomial R}, p.coeffs.Nonempty ↔ p ≠ 0\"\n    },\n    {\n      \"name\": \"MvPolynomial.schwartz_zippel_sup_sum\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.SchwartzZippel\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {R : Type u_1} [inst : CommRing R] [IsDomain R] [inst_2 : DecidableEq R] {n : ℕ} {p : MvPolynomial (Fin n) R},\\n  p ≠ 0 →\\n    ∀ (S : Fin n → Finset R),\\n      ↑{x ∈ Fintype.piFinset fun i => S i | (MvPolynomial.eval x) p = 0}.card / ∏ i, ↑(S i).card ≤\\n        p.support.sup fun s => ∑ i, ↑(s i) / ↑(S i).card\"\n    },\n    {\n      \"name\": \"MvPolynomial.support\",\n      \"module_name\": \"Mathlib.Algebra.MvPolynomial.Basic\",\n      \"kind\": \"definition\",\n      \"type\": \"{R : Type u} → {σ : Type u_1} → [inst : CommSemiring R] → MvPolynomial σ R → Finset (σ →₀ ℕ)\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "MvPolynomial.combinatorial_nullstellensatz_exists_eval_nonzero",
+              "module_name": "Mathlib.Combinatorics.Nullstellensatz",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} [inst : CommRing R] {σ : Type u_2} [Finite σ] [IsDomain R] (f : MvPolynomial σ R) (t : σ →₀ ℕ),\n  MvPolynomial.coeff t f ≠ 0 →\n    f.totalDegree = Finsupp.degree t →\n      ∀ (S : σ → Finset R), (∀ (i : σ), t i < (S i).card) → ∃ s, (∀ (i : σ), s i ∈ S i) ∧ (MvPolynomial.eval s) f ≠ 0"
+            },
+            {
+              "name": "MvPolynomial.schwartz_zippel_totalDegree",
+              "module_name": "Mathlib.Algebra.MvPolynomial.SchwartzZippel",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} [inst : CommRing R] [IsDomain R] [inst_2 : DecidableEq R] {n : ℕ} {p : MvPolynomial (Fin n) R},\n  p ≠ 0 →\n    ∀ (S : Finset R),\n      ↑{f ∈ Fintype.piFinset fun x => S | (MvPolynomial.eval f) p = 0}.card / ↑S.card ^ n ≤ ↑p.totalDegree / ↑S.card"
+            },
+            {
+              "name": "Poly",
+              "module_name": "Mathlib.NumberTheory.Dioph",
+              "kind": "definition",
+              "type": "Type u → Type (max 0 u)"
+            },
+            {
+              "name": "MvPolynomial.support_nonempty",
+              "module_name": "Mathlib.Algebra.MvPolynomial.Basic",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} {σ : Type u_1} [inst : CommSemiring R] {p : MvPolynomial σ R}, p.support.Nonempty ↔ p ≠ 0"
+            },
+            {
+              "name": "Poly.instInhabited",
+              "module_name": "Mathlib.NumberTheory.Dioph",
+              "kind": "instance",
+              "type": "(α : Type u_3) → Inhabited (Poly α)"
+            },
+            {
+              "name": "Polynomial.coeffs_nonempty_iff",
+              "module_name": "Mathlib.Algebra.Polynomial.Basic",
+              "kind": "theorem",
+              "type": "∀ {R : Type u} [inst : Semiring R] {p : Polynomial R}, p.coeffs.Nonempty ↔ p ≠ 0"
+            },
+            {
+              "name": "MvPolynomial.schwartz_zippel_sup_sum",
+              "module_name": "Mathlib.Algebra.MvPolynomial.SchwartzZippel",
+              "kind": "theorem",
+              "type": "∀ {R : Type u_1} [inst : CommRing R] [IsDomain R] [inst_2 : DecidableEq R] {n : ℕ} {p : MvPolynomial (Fin n) R},\n  p ≠ 0 →\n    ∀ (S : Fin n → Finset R),\n      ↑{x ∈ Fintype.piFinset fun i => S i | (MvPolynomial.eval x) p = 0}.card / ∏ i, ↑(S i).card ≤\n        p.support.sup fun s => ∑ i, ↑(s i) / ↑(S i).card"
+            },
+            {
+              "name": "MvPolynomial.support",
+              "module_name": "Mathlib.Algebra.MvPolynomial.Basic",
+              "kind": "definition",
+              "type": "{R : Type u} → {σ : Type u_1} → [inst : CommSemiring R] → MvPolynomial σ R → Finset (σ →₀ ℕ)"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "form": "current",
+      "method": "lean_loogle",
+      "request": {
+        "query": "Set.Nonempty, MvPolynomial"
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": []\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": []
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "form": "current",
+      "method": "lean_local_search",
+      "request": {
+        "query": "indexSet_nonempty"
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"Roth.indexSet_nonempty\",\n      \"kind\": \"theorem\",\n      \"file\": \"Roth/Theta.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "Roth.indexSet_nonempty",
+              "kind": "theorem",
+              "file": "Roth/Theta.lean"
+            }
+          ],
+          "index": "unavailable"
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "form": "standard",
+      "method": "lean_leanfinder",
+      "request": {
+        "query": "The image of the product of two nonempty sets under a binary function is nonempty"
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Set.Nonempty.image2\",\n      \"informal_name\": \"Nonempty Image of Binary Function on Nonempty Sets\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} {f : α → β → γ} {s : Set α} {t : Set β},\\n  s.Nonempty → t.Nonempty → (Set.image2 f s t).Nonempty\",\n      \"informal_description\": \"If $s$ and $t$ are nonempty subsets of types $\\\\alpha$ and $\\\\beta$ respectively, then the image of a binary function $f : \\\\alpha \\\\to \\\\beta \\\\to \\\\gamma$ on $s \\\\times t$ is also nonempty. In other words, if $s \\\\neq \\\\emptyset$ and $t \\\\neq \\\\emptyset$, then $\\\\{c \\\\in \\\\gamma \\\\mid \\\\exists a \\\\in s, \\\\exists b \\\\in t, f(a, b) = c\\\\} \\\\neq \\\\emptyset$.\",\n      \"path\": \"Mathlib.Data.Set.NAry\"\n    },\n    {\n      \"formal_name\": \"Set.image2_nonempty_iff\",\n      \"informal_name\": \"Non-Empty Image of Binary Function iff Both Sets Non-Empty\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} {f : α → β → γ} {s : Set α} {t : Set β},\\n  (Set.image2 f s t).Nonempty ↔ s.Nonempty ∧ t.Nonempty\",\n      \"informal_description\": \"The image of a binary function $ f : \\\\alpha \\\\to \\\\beta \\\\to \\\\gamma $ on sets $ s \\\\subseteq \\\\alpha $ and $ t \\\\subseteq \\\\beta $ is non-empty if and only if both $ s $ and $ t $ are non-empty.\",\n      \"path\": \"Mathlib.Data.Set.NAry\"\n    },\n    {\n      \"formal_name\": \"Finset.Nonempty.image₂\",\n      \"informal_name\": \"Image of Binary Function on Non-empty Finite Sets is Non-empty\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} [inst : DecidableEq γ] {f : α → β → γ} {s : Finset α} {t : Finset β},\\n  s.Nonempty → t.Nonempty → (Finset.image₂ f s t).Nonempty\",\n      \"informal_description\": \"If $ s $ and $ t $ are non-empty finite sets, and $ f : \\\\alpha \\\\to \\\\beta \\\\to \\\\gamma $ is a binary function, then the set $ \\\\{ f(a, b) \\\\mid a \\\\in s, b \\\\in t \\\\} $ is non-empty.\",\n      \"path\": \"Mathlib.Data.Finset.NAry\"\n    },\n    {\n      \"formal_name\": \"Finset.image₂_nonempty_iff\",\n      \"informal_name\": \"Non-emptiness of Binary Image iff Both Sets are Non-empty\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} [inst : DecidableEq γ] {f : α → β → γ} {s : Finset α} {t : Finset β},\\n  (Finset.image₂ f s t).Nonempty ↔ s.Nonempty ∧ t.Nonempty\",\n      \"informal_description\": \"The finite set of all $ f(a, b) $ for $ a \\\\in s $ and $ b \\\\in t $ is non-empty if and only if both $ s $ and $ t $ are non-empty.\",\n      \"path\": \"Mathlib.Data.Finset.NAry\"\n    },\n    {\n      \"formal_name\": \"Nonempty.map2\",\n      \"informal_name\": \"Binary Function Preserves Nonempty Types\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Sort u_3} {β : Sort u_4} {γ : Sort u_5} (f : α → β → γ), Nonempty α → Nonempty β → Nonempty γ\",\n      \"informal_description\": \"If $\\\\alpha$ and $\\\\beta$ are nonempty types, and $f : \\\\alpha \\\\times \\\\beta \\\\to \\\\gamma$ is a function, then $\\\\gamma$ is also nonempty.\",\n      \"path\": \"Mathlib.Logic.Nonempty\"\n    },\n    {\n      \"formal_name\": \"Set.Nonempty.of_image2_left\",\n      \"informal_name\": \"Nonempty Image of Binary Function Implies Left Domain is Nonempty\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} {f : α → β → γ} {s : Set α} {t : Set β},\\n  (Set.image2 f s t).Nonempty → s.Nonempty\",\n      \"informal_description\": \"If the image of a binary function $ f : \\\\alpha \\\\to \\\\beta \\\\to \\\\gamma $ over the Cartesian product of sets $ s \\\\subseteq \\\\alpha $ and $ t \\\\subseteq \\\\beta $ is nonempty, then the set $ s $ must be nonempty. Formally, if $ \\\\{f(a, b) \\\\mid a \\\\in s, b \\\\in t\\\\} $ is nonempty, then $ s $ contains at least one element.\",\n      \"path\": \"Mathlib.Data.Set.NAry\"\n    },\n    {\n      \"formal_name\": \"Set.Nonempty.of_image2_right\",\n      \"informal_name\": \"Nonempty Image Implies Right Set Nonempty\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} {f : α → β → γ} {s : Set α} {t : Set β},\\n  (Set.image2 f s t).Nonempty → t.Nonempty\",\n      \"informal_description\": \"If the image of a binary function $f : \\\\alpha \\\\to \\\\beta \\\\to \\\\gamma$ on sets $s \\\\subseteq \\\\alpha$ and $t \\\\subseteq \\\\beta$ is nonempty, then the set $t$ is nonempty. Formally, if $\\\\{c \\\\in \\\\gamma \\\\mid \\\\exists a \\\\in s, \\\\exists b \\\\in t, f(a, b) = c\\\\}$ is nonempty, then $t$ contains at least one element.\",\n      \"path\": \"Mathlib.Data.Set.NAry\"\n    },\n    {\n      \"formal_name\": \"Set.Nonempty.mul\",\n      \"informal_name\": \"Product of Nonempty Sets is Nonempty\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_2} [inst : Mul α] {s t : Set α}, s.Nonempty → t.Nonempty → (s * t).Nonempty\",\n      \"informal_description\": \"If $s$ and $t$ are nonempty subsets of a type $\\\\alpha$ equipped with a multiplication operation, then their product set $s \\\\cdot t = \\\\{a \\\\cdot b \\\\mid a \\\\in s, b \\\\in t\\\\}$ is also nonempty.\",\n      \"path\": \"Mathlib.Algebra.Group.Pointwise.Set.Basic\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "formal_name": "Set.Nonempty.image2",
+              "informal_name": "Nonempty Image of Binary Function on Nonempty Sets",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} {f : α → β → γ} {s : Set α} {t : Set β},\n  s.Nonempty → t.Nonempty → (Set.image2 f s t).Nonempty",
+              "informal_description": "If $s$ and $t$ are nonempty subsets of types $\\alpha$ and $\\beta$ respectively, then the image of a binary function $f : \\alpha \\to \\beta \\to \\gamma$ on $s \\times t$ is also nonempty. In other words, if $s \\neq \\emptyset$ and $t \\neq \\emptyset$, then $\\{c \\in \\gamma \\mid \\exists a \\in s, \\exists b \\in t, f(a, b) = c\\} \\neq \\emptyset$.",
+              "path": "Mathlib.Data.Set.NAry"
+            },
+            {
+              "formal_name": "Set.image2_nonempty_iff",
+              "informal_name": "Non-Empty Image of Binary Function iff Both Sets Non-Empty",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} {f : α → β → γ} {s : Set α} {t : Set β},\n  (Set.image2 f s t).Nonempty ↔ s.Nonempty ∧ t.Nonempty",
+              "informal_description": "The image of a binary function $ f : \\alpha \\to \\beta \\to \\gamma $ on sets $ s \\subseteq \\alpha $ and $ t \\subseteq \\beta $ is non-empty if and only if both $ s $ and $ t $ are non-empty.",
+              "path": "Mathlib.Data.Set.NAry"
+            },
+            {
+              "formal_name": "Finset.Nonempty.image₂",
+              "informal_name": "Image of Binary Function on Non-empty Finite Sets is Non-empty",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} [inst : DecidableEq γ] {f : α → β → γ} {s : Finset α} {t : Finset β},\n  s.Nonempty → t.Nonempty → (Finset.image₂ f s t).Nonempty",
+              "informal_description": "If $ s $ and $ t $ are non-empty finite sets, and $ f : \\alpha \\to \\beta \\to \\gamma $ is a binary function, then the set $ \\{ f(a, b) \\mid a \\in s, b \\in t \\} $ is non-empty.",
+              "path": "Mathlib.Data.Finset.NAry"
+            },
+            {
+              "formal_name": "Finset.image₂_nonempty_iff",
+              "informal_name": "Non-emptiness of Binary Image iff Both Sets are Non-empty",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} [inst : DecidableEq γ] {f : α → β → γ} {s : Finset α} {t : Finset β},\n  (Finset.image₂ f s t).Nonempty ↔ s.Nonempty ∧ t.Nonempty",
+              "informal_description": "The finite set of all $ f(a, b) $ for $ a \\in s $ and $ b \\in t $ is non-empty if and only if both $ s $ and $ t $ are non-empty.",
+              "path": "Mathlib.Data.Finset.NAry"
+            },
+            {
+              "formal_name": "Nonempty.map2",
+              "informal_name": "Binary Function Preserves Nonempty Types",
+              "kind": "theorem",
+              "type": "∀ {α : Sort u_3} {β : Sort u_4} {γ : Sort u_5} (f : α → β → γ), Nonempty α → Nonempty β → Nonempty γ",
+              "informal_description": "If $\\alpha$ and $\\beta$ are nonempty types, and $f : \\alpha \\times \\beta \\to \\gamma$ is a function, then $\\gamma$ is also nonempty.",
+              "path": "Mathlib.Logic.Nonempty"
+            },
+            {
+              "formal_name": "Set.Nonempty.of_image2_left",
+              "informal_name": "Nonempty Image of Binary Function Implies Left Domain is Nonempty",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} {f : α → β → γ} {s : Set α} {t : Set β},\n  (Set.image2 f s t).Nonempty → s.Nonempty",
+              "informal_description": "If the image of a binary function $ f : \\alpha \\to \\beta \\to \\gamma $ over the Cartesian product of sets $ s \\subseteq \\alpha $ and $ t \\subseteq \\beta $ is nonempty, then the set $ s $ must be nonempty. Formally, if $ \\{f(a, b) \\mid a \\in s, b \\in t\\} $ is nonempty, then $ s $ contains at least one element.",
+              "path": "Mathlib.Data.Set.NAry"
+            },
+            {
+              "formal_name": "Set.Nonempty.of_image2_right",
+              "informal_name": "Nonempty Image Implies Right Set Nonempty",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} {f : α → β → γ} {s : Set α} {t : Set β},\n  (Set.image2 f s t).Nonempty → t.Nonempty",
+              "informal_description": "If the image of a binary function $f : \\alpha \\to \\beta \\to \\gamma$ on sets $s \\subseteq \\alpha$ and $t \\subseteq \\beta$ is nonempty, then the set $t$ is nonempty. Formally, if $\\{c \\in \\gamma \\mid \\exists a \\in s, \\exists b \\in t, f(a, b) = c\\}$ is nonempty, then $t$ contains at least one element.",
+              "path": "Mathlib.Data.Set.NAry"
+            },
+            {
+              "formal_name": "Set.Nonempty.mul",
+              "informal_name": "Product of Nonempty Sets is Nonempty",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_2} [inst : Mul α] {s t : Set α}, s.Nonempty → t.Nonempty → (s * t).Nonempty",
+              "informal_description": "If $s$ and $t$ are nonempty subsets of a type $\\alpha$ equipped with a multiplication operation, then their product set $s \\cdot t = \\{a \\cdot b \\mid a \\in s, b \\in t\\}$ is also nonempty.",
+              "path": "Mathlib.Algebra.Group.Pointwise.Set.Basic"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "form": "standard",
+      "method": "lean_leansearch",
+      "request": {
+        "query": "The image of the product of two nonempty sets under a binary function is nonempty"
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"Set.Nonempty.image2\",\n      \"module_name\": \"Mathlib.Data.Set.NAry\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} {f : α → β → γ} {s : Set α} {t : Set β},\\n  s.Nonempty → t.Nonempty → (Set.image2 f s t).Nonempty\"\n    },\n    {\n      \"name\": \"Finset.image₂_nonempty_iff\",\n      \"module_name\": \"Mathlib.Data.Finset.NAry\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} [inst : DecidableEq γ] {f : α → β → γ} {s : Finset α} {t : Finset β},\\n  (Finset.image₂ f s t).Nonempty ↔ s.Nonempty ∧ t.Nonempty\"\n    },\n    {\n      \"name\": \"Set.image2_nonempty_iff\",\n      \"module_name\": \"Mathlib.Data.Set.NAry\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} {f : α → β → γ} {s : Set α} {t : Set β},\\n  (Set.image2 f s t).Nonempty ↔ s.Nonempty ∧ t.Nonempty\"\n    },\n    {\n      \"name\": \"Nonempty.map2\",\n      \"module_name\": \"Mathlib.Logic.Nonempty\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Sort u_3} {β : Sort u_4} {γ : Sort u_5} (f : α → β → γ), Nonempty α → Nonempty β → Nonempty γ\"\n    },\n    {\n      \"name\": \"Set.image2\",\n      \"module_name\": \"Mathlib.Data.Set.Operations\",\n      \"kind\": \"definition\",\n      \"type\": \"{α : Type u} → {β : Type v} → {γ : Type w} → (α → β → γ) → Set α → Set β → Set γ\"\n    },\n    {\n      \"name\": \"Set.image2_eq_empty_iff\",\n      \"module_name\": \"Mathlib.Data.Set.NAry\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} {f : α → β → γ} {s : Set α} {t : Set β},\\n  Set.image2 f s t = ∅ ↔ s = ∅ ∨ t = ∅\"\n    },\n    {\n      \"name\": \"Finset.Nonempty.image₂\",\n      \"module_name\": \"Mathlib.Data.Finset.NAry\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} [inst : DecidableEq γ] {f : α → β → γ} {s : Finset α} {t : Finset β},\\n  s.Nonempty → t.Nonempty → (Finset.image₂ f s t).Nonempty\"\n    },\n    {\n      \"name\": \"Finset.image₂_eq_empty_iff\",\n      \"module_name\": \"Mathlib.Data.Finset.NAry\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} [inst : DecidableEq γ] {f : α → β → γ} {s : Finset α} {t : Finset β},\\n  Finset.image₂ f s t = ∅ ↔ s = ∅ ∨ t = ∅\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "Set.Nonempty.image2",
+              "module_name": "Mathlib.Data.Set.NAry",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} {f : α → β → γ} {s : Set α} {t : Set β},\n  s.Nonempty → t.Nonempty → (Set.image2 f s t).Nonempty"
+            },
+            {
+              "name": "Finset.image₂_nonempty_iff",
+              "module_name": "Mathlib.Data.Finset.NAry",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} [inst : DecidableEq γ] {f : α → β → γ} {s : Finset α} {t : Finset β},\n  (Finset.image₂ f s t).Nonempty ↔ s.Nonempty ∧ t.Nonempty"
+            },
+            {
+              "name": "Set.image2_nonempty_iff",
+              "module_name": "Mathlib.Data.Set.NAry",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} {f : α → β → γ} {s : Set α} {t : Set β},\n  (Set.image2 f s t).Nonempty ↔ s.Nonempty ∧ t.Nonempty"
+            },
+            {
+              "name": "Nonempty.map2",
+              "module_name": "Mathlib.Logic.Nonempty",
+              "kind": "theorem",
+              "type": "∀ {α : Sort u_3} {β : Sort u_4} {γ : Sort u_5} (f : α → β → γ), Nonempty α → Nonempty β → Nonempty γ"
+            },
+            {
+              "name": "Set.image2",
+              "module_name": "Mathlib.Data.Set.Operations",
+              "kind": "definition",
+              "type": "{α : Type u} → {β : Type v} → {γ : Type w} → (α → β → γ) → Set α → Set β → Set γ"
+            },
+            {
+              "name": "Set.image2_eq_empty_iff",
+              "module_name": "Mathlib.Data.Set.NAry",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} {f : α → β → γ} {s : Set α} {t : Set β},\n  Set.image2 f s t = ∅ ↔ s = ∅ ∨ t = ∅"
+            },
+            {
+              "name": "Finset.Nonempty.image₂",
+              "module_name": "Mathlib.Data.Finset.NAry",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} [inst : DecidableEq γ] {f : α → β → γ} {s : Finset α} {t : Finset β},\n  s.Nonempty → t.Nonempty → (Finset.image₂ f s t).Nonempty"
+            },
+            {
+              "name": "Finset.image₂_eq_empty_iff",
+              "module_name": "Mathlib.Data.Finset.NAry",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} [inst : DecidableEq γ] {f : α → β → γ} {s : Finset α} {t : Finset β},\n  Finset.image₂ f s t = ∅ ↔ s = ∅ ∨ t = ∅"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "form": "standard",
+      "method": "lean_loogle",
+      "request": {
+        "query": "Set.image2, Set.Nonempty"
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"Set.image2_left\",\n      \"type\": \" {α : Type u_1} {β : Type u_3} {s : Set α} {t : Set β} (h : t.Nonempty) : Set.image2 (fun x x_1 => x) s t = s\",\n      \"module\": \"Mathlib.Data.Set.NAry\"\n    },\n    {\n      \"name\": \"Set.image2_right\",\n      \"type\": \" {α : Type u_1} {β : Type u_3} {s : Set α} {t : Set β} (h : s.Nonempty) : Set.image2 (fun x y => y) s t = t\",\n      \"module\": \"Mathlib.Data.Set.NAry\"\n    },\n    {\n      \"name\": \"Set.Nonempty.of_image2_left\",\n      \"type\": \" {α : Type u_1} {β : Type u_3} {γ : Type u_5} {f : α → β → γ} {s : Set α} {t : Set β} (h : (Set.image2 f s t).Nonempty) : s.Nonempty\",\n      \"module\": \"Mathlib.Data.Set.NAry\"\n    },\n    {\n      \"name\": \"Set.Nonempty.of_image2_right\",\n      \"type\": \" {α : Type u_1} {β : Type u_3} {γ : Type u_5} {f : α → β → γ} {s : Set α} {t : Set β} (h : (Set.image2 f s t).Nonempty) : t.Nonempty\",\n      \"module\": \"Mathlib.Data.Set.NAry\"\n    },\n    {\n      \"name\": \"Set.Nonempty.image2\",\n      \"type\": \" {α : Type u_1} {β : Type u_3} {γ : Type u_5} {f : α → β → γ} {s : Set α} {t : Set β} : s.Nonempty → t.Nonempty → (Set.image2 f s t).Nonempty\",\n      \"module\": \"Mathlib.Data.Set.NAry\"\n    },\n    {\n      \"name\": \"Set.image2_nonempty_iff\",\n      \"type\": \" {α : Type u_1} {β : Type u_3} {γ : Type u_5} {f : α → β → γ} {s : Set α} {t : Set β} : (Set.image2 f s t).Nonempty ↔ s.Nonempty ∧ t.Nonempty\",\n      \"module\": \"Mathlib.Data.Set.NAry\"\n    },\n    {\n      \"name\": \"le_sInf_bihimp_sInf\",\n      \"type\": \" {α : Type u} [Order.Frame α] {s t : Set α} (hs : s.Nonempty) (ht : t.Nonempty) : sInf (Set.image2 (fun x1 x2 => bihimp x1 x2) s t) ≤ bihimp (sInf s) (sInf t)\",\n      \"module\": \"Mathlib.Order.CompleteBooleanAlgebra\"\n    },\n    {\n      \"name\": \"sSup_symmDiff_sSup_le\",\n      \"type\": \" {α : Type u} [Order.Coframe α] {s t : Set α} (hs : s.Nonempty) (ht : t.Nonempty) : symmDiff (sSup s) (sSup t) ≤ sSup (Set.image2 (fun x1 x2 => symmDiff x1 x2) s t)\",\n      \"module\": \"Mathlib.Order.CompleteBooleanAlgebra\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "Set.image2_left",
+              "type": " {α : Type u_1} {β : Type u_3} {s : Set α} {t : Set β} (h : t.Nonempty) : Set.image2 (fun x x_1 => x) s t = s",
+              "module": "Mathlib.Data.Set.NAry"
+            },
+            {
+              "name": "Set.image2_right",
+              "type": " {α : Type u_1} {β : Type u_3} {s : Set α} {t : Set β} (h : s.Nonempty) : Set.image2 (fun x y => y) s t = t",
+              "module": "Mathlib.Data.Set.NAry"
+            },
+            {
+              "name": "Set.Nonempty.of_image2_left",
+              "type": " {α : Type u_1} {β : Type u_3} {γ : Type u_5} {f : α → β → γ} {s : Set α} {t : Set β} (h : (Set.image2 f s t).Nonempty) : s.Nonempty",
+              "module": "Mathlib.Data.Set.NAry"
+            },
+            {
+              "name": "Set.Nonempty.of_image2_right",
+              "type": " {α : Type u_1} {β : Type u_3} {γ : Type u_5} {f : α → β → γ} {s : Set α} {t : Set β} (h : (Set.image2 f s t).Nonempty) : t.Nonempty",
+              "module": "Mathlib.Data.Set.NAry"
+            },
+            {
+              "name": "Set.Nonempty.image2",
+              "type": " {α : Type u_1} {β : Type u_3} {γ : Type u_5} {f : α → β → γ} {s : Set α} {t : Set β} : s.Nonempty → t.Nonempty → (Set.image2 f s t).Nonempty",
+              "module": "Mathlib.Data.Set.NAry"
+            },
+            {
+              "name": "Set.image2_nonempty_iff",
+              "type": " {α : Type u_1} {β : Type u_3} {γ : Type u_5} {f : α → β → γ} {s : Set α} {t : Set β} : (Set.image2 f s t).Nonempty ↔ s.Nonempty ∧ t.Nonempty",
+              "module": "Mathlib.Data.Set.NAry"
+            },
+            {
+              "name": "le_sInf_bihimp_sInf",
+              "type": " {α : Type u} [Order.Frame α] {s t : Set α} (hs : s.Nonempty) (ht : t.Nonempty) : sInf (Set.image2 (fun x1 x2 => bihimp x1 x2) s t) ≤ bihimp (sInf s) (sInf t)",
+              "module": "Mathlib.Order.CompleteBooleanAlgebra"
+            },
+            {
+              "name": "sSup_symmDiff_sSup_le",
+              "type": " {α : Type u} [Order.Coframe α] {s t : Set α} (hs : s.Nonempty) (ht : t.Nonempty) : symmDiff (sSup s) (sSup t) ≤ sSup (Set.image2 (fun x1 x2 => symmDiff x1 x2) s t)",
+              "module": "Mathlib.Order.CompleteBooleanAlgebra"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "form": "standard",
+      "method": "lean_local_search",
+      "request": {
+        "query": "image2_nonempty"
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"Set.image2_nonempty_iff\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Data/Set/NAry.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "Set.image2_nonempty_iff",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Data/Set/NAry.lean"
+            }
+          ],
+          "index": "unavailable"
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "form": "abstract",
+      "method": "lean_leanfinder",
+      "request": {
+        "query": "Set.Nonempty.image2 image2_nonempty_iff arbitrary sets binary map"
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"formal_name\": \"Set.Nonempty.image2\",\n      \"informal_name\": \"Nonempty Image of Binary Function on Nonempty Sets\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} {f : α → β → γ} {s : Set α} {t : Set β},\\n  s.Nonempty → t.Nonempty → (Set.image2 f s t).Nonempty\",\n      \"informal_description\": \"If $s$ and $t$ are nonempty subsets of types $\\\\alpha$ and $\\\\beta$ respectively, then the image of a binary function $f : \\\\alpha \\\\to \\\\beta \\\\to \\\\gamma$ on $s \\\\times t$ is also nonempty. In other words, if $s \\\\neq \\\\emptyset$ and $t \\\\neq \\\\emptyset$, then $\\\\{c \\\\in \\\\gamma \\\\mid \\\\exists a \\\\in s, \\\\exists b \\\\in t, f(a, b) = c\\\\} \\\\neq \\\\emptyset$.\",\n      \"path\": \"Mathlib.Data.Set.NAry\"\n    },\n    {\n      \"formal_name\": \"Set.image2_nonempty_iff\",\n      \"informal_name\": \"Non-Empty Image of Binary Function iff Both Sets Non-Empty\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} {f : α → β → γ} {s : Set α} {t : Set β},\\n  (Set.image2 f s t).Nonempty ↔ s.Nonempty ∧ t.Nonempty\",\n      \"informal_description\": \"The image of a binary function $ f : \\\\alpha \\\\to \\\\beta \\\\to \\\\gamma $ on sets $ s \\\\subseteq \\\\alpha $ and $ t \\\\subseteq \\\\beta $ is non-empty if and only if both $ s $ and $ t $ are non-empty.\",\n      \"path\": \"Mathlib.Data.Set.NAry\"\n    },\n    {\n      \"formal_name\": \"Set.Nonempty.of_image2_left\",\n      \"informal_name\": \"Nonempty Image of Binary Function Implies Left Domain is Nonempty\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} {f : α → β → γ} {s : Set α} {t : Set β},\\n  (Set.image2 f s t).Nonempty → s.Nonempty\",\n      \"informal_description\": \"If the image of a binary function $ f : \\\\alpha \\\\to \\\\beta \\\\to \\\\gamma $ over the Cartesian product of sets $ s \\\\subseteq \\\\alpha $ and $ t \\\\subseteq \\\\beta $ is nonempty, then the set $ s $ must be nonempty. Formally, if $ \\\\{f(a, b) \\\\mid a \\\\in s, b \\\\in t\\\\} $ is nonempty, then $ s $ contains at least one element.\",\n      \"path\": \"Mathlib.Data.Set.NAry\"\n    },\n    {\n      \"formal_name\": \"Set.Nonempty.of_image2_right\",\n      \"informal_name\": \"Nonempty Image Implies Right Set Nonempty\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} {f : α → β → γ} {s : Set α} {t : Set β},\\n  (Set.image2 f s t).Nonempty → t.Nonempty\",\n      \"informal_description\": \"If the image of a binary function $f : \\\\alpha \\\\to \\\\beta \\\\to \\\\gamma$ on sets $s \\\\subseteq \\\\alpha$ and $t \\\\subseteq \\\\beta$ is nonempty, then the set $t$ is nonempty. Formally, if $\\\\{c \\\\in \\\\gamma \\\\mid \\\\exists a \\\\in s, \\\\exists b \\\\in t, f(a, b) = c\\\\}$ is nonempty, then $t$ contains at least one element.\",\n      \"path\": \"Mathlib.Data.Set.NAry\"\n    },\n    {\n      \"formal_name\": \"Finset.image₂_nonempty_iff\",\n      \"informal_name\": \"Non-emptiness of Binary Image iff Both Sets are Non-empty\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} [inst : DecidableEq γ] {f : α → β → γ} {s : Finset α} {t : Finset β},\\n  (Finset.image₂ f s t).Nonempty ↔ s.Nonempty ∧ t.Nonempty\",\n      \"informal_description\": \"The finite set of all $ f(a, b) $ for $ a \\\\in s $ and $ b \\\\in t $ is non-empty if and only if both $ s $ and $ t $ are non-empty.\",\n      \"path\": \"Mathlib.Data.Finset.NAry\"\n    },\n    {\n      \"formal_name\": \"Finset.Nonempty.image₂\",\n      \"informal_name\": \"Image of Binary Function on Non-empty Finite Sets is Non-empty\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} [inst : DecidableEq γ] {f : α → β → γ} {s : Finset α} {t : Finset β},\\n  s.Nonempty → t.Nonempty → (Finset.image₂ f s t).Nonempty\",\n      \"informal_description\": \"If $ s $ and $ t $ are non-empty finite sets, and $ f : \\\\alpha \\\\to \\\\beta \\\\to \\\\gamma $ is a binary function, then the set $ \\\\{ f(a, b) \\\\mid a \\\\in s, b \\\\in t \\\\} $ is non-empty.\",\n      \"path\": \"Mathlib.Data.Finset.NAry\"\n    },\n    {\n      \"formal_name\": \"Nonempty.map2\",\n      \"informal_name\": \"Binary Function Preserves Nonempty Types\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Sort u_3} {β : Sort u_4} {γ : Sort u_5} (f : α → β → γ), Nonempty α → Nonempty β → Nonempty γ\",\n      \"informal_description\": \"If $\\\\alpha$ and $\\\\beta$ are nonempty types, and $f : \\\\alpha \\\\times \\\\beta \\\\to \\\\gamma$ is a function, then $\\\\gamma$ is also nonempty.\",\n      \"path\": \"Mathlib.Logic.Nonempty\"\n    },\n    {\n      \"formal_name\": \"Finset.Nonempty.of_image₂_left\",\n      \"informal_name\": \"Non-Empty Binary Image Implies Left Set Non-Empty\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} [inst : DecidableEq γ] {f : α → β → γ} {s : Finset α} {t : Finset β},\\n  (Finset.image₂ f s t).Nonempty → s.Nonempty\",\n      \"informal_description\": \"If the image of a binary function $ f : \\\\alpha \\\\to \\\\beta \\\\to \\\\gamma $ on finite sets $ s \\\\subseteq \\\\alpha $ and $ t \\\\subseteq \\\\beta $ is non-empty, then the finite set $ s $ must be non-empty. In symbols: If $ \\\\{ f(a, b) \\\\mid a \\\\in s, b \\\\in t \\\\} $ is non-empty, then $ s \\\\neq \\\\emptyset $.\",\n      \"path\": \"Mathlib.Data.Finset.NAry\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "formal_name": "Set.Nonempty.image2",
+              "informal_name": "Nonempty Image of Binary Function on Nonempty Sets",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} {f : α → β → γ} {s : Set α} {t : Set β},\n  s.Nonempty → t.Nonempty → (Set.image2 f s t).Nonempty",
+              "informal_description": "If $s$ and $t$ are nonempty subsets of types $\\alpha$ and $\\beta$ respectively, then the image of a binary function $f : \\alpha \\to \\beta \\to \\gamma$ on $s \\times t$ is also nonempty. In other words, if $s \\neq \\emptyset$ and $t \\neq \\emptyset$, then $\\{c \\in \\gamma \\mid \\exists a \\in s, \\exists b \\in t, f(a, b) = c\\} \\neq \\emptyset$.",
+              "path": "Mathlib.Data.Set.NAry"
+            },
+            {
+              "formal_name": "Set.image2_nonempty_iff",
+              "informal_name": "Non-Empty Image of Binary Function iff Both Sets Non-Empty",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} {f : α → β → γ} {s : Set α} {t : Set β},\n  (Set.image2 f s t).Nonempty ↔ s.Nonempty ∧ t.Nonempty",
+              "informal_description": "The image of a binary function $ f : \\alpha \\to \\beta \\to \\gamma $ on sets $ s \\subseteq \\alpha $ and $ t \\subseteq \\beta $ is non-empty if and only if both $ s $ and $ t $ are non-empty.",
+              "path": "Mathlib.Data.Set.NAry"
+            },
+            {
+              "formal_name": "Set.Nonempty.of_image2_left",
+              "informal_name": "Nonempty Image of Binary Function Implies Left Domain is Nonempty",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} {f : α → β → γ} {s : Set α} {t : Set β},\n  (Set.image2 f s t).Nonempty → s.Nonempty",
+              "informal_description": "If the image of a binary function $ f : \\alpha \\to \\beta \\to \\gamma $ over the Cartesian product of sets $ s \\subseteq \\alpha $ and $ t \\subseteq \\beta $ is nonempty, then the set $ s $ must be nonempty. Formally, if $ \\{f(a, b) \\mid a \\in s, b \\in t\\} $ is nonempty, then $ s $ contains at least one element.",
+              "path": "Mathlib.Data.Set.NAry"
+            },
+            {
+              "formal_name": "Set.Nonempty.of_image2_right",
+              "informal_name": "Nonempty Image Implies Right Set Nonempty",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} {f : α → β → γ} {s : Set α} {t : Set β},\n  (Set.image2 f s t).Nonempty → t.Nonempty",
+              "informal_description": "If the image of a binary function $f : \\alpha \\to \\beta \\to \\gamma$ on sets $s \\subseteq \\alpha$ and $t \\subseteq \\beta$ is nonempty, then the set $t$ is nonempty. Formally, if $\\{c \\in \\gamma \\mid \\exists a \\in s, \\exists b \\in t, f(a, b) = c\\}$ is nonempty, then $t$ contains at least one element.",
+              "path": "Mathlib.Data.Set.NAry"
+            },
+            {
+              "formal_name": "Finset.image₂_nonempty_iff",
+              "informal_name": "Non-emptiness of Binary Image iff Both Sets are Non-empty",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} [inst : DecidableEq γ] {f : α → β → γ} {s : Finset α} {t : Finset β},\n  (Finset.image₂ f s t).Nonempty ↔ s.Nonempty ∧ t.Nonempty",
+              "informal_description": "The finite set of all $ f(a, b) $ for $ a \\in s $ and $ b \\in t $ is non-empty if and only if both $ s $ and $ t $ are non-empty.",
+              "path": "Mathlib.Data.Finset.NAry"
+            },
+            {
+              "formal_name": "Finset.Nonempty.image₂",
+              "informal_name": "Image of Binary Function on Non-empty Finite Sets is Non-empty",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} [inst : DecidableEq γ] {f : α → β → γ} {s : Finset α} {t : Finset β},\n  s.Nonempty → t.Nonempty → (Finset.image₂ f s t).Nonempty",
+              "informal_description": "If $ s $ and $ t $ are non-empty finite sets, and $ f : \\alpha \\to \\beta \\to \\gamma $ is a binary function, then the set $ \\{ f(a, b) \\mid a \\in s, b \\in t \\} $ is non-empty.",
+              "path": "Mathlib.Data.Finset.NAry"
+            },
+            {
+              "formal_name": "Nonempty.map2",
+              "informal_name": "Binary Function Preserves Nonempty Types",
+              "kind": "theorem",
+              "type": "∀ {α : Sort u_3} {β : Sort u_4} {γ : Sort u_5} (f : α → β → γ), Nonempty α → Nonempty β → Nonempty γ",
+              "informal_description": "If $\\alpha$ and $\\beta$ are nonempty types, and $f : \\alpha \\times \\beta \\to \\gamma$ is a function, then $\\gamma$ is also nonempty.",
+              "path": "Mathlib.Logic.Nonempty"
+            },
+            {
+              "formal_name": "Finset.Nonempty.of_image₂_left",
+              "informal_name": "Non-Empty Binary Image Implies Left Set Non-Empty",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} [inst : DecidableEq γ] {f : α → β → γ} {s : Finset α} {t : Finset β},\n  (Finset.image₂ f s t).Nonempty → s.Nonempty",
+              "informal_description": "If the image of a binary function $ f : \\alpha \\to \\beta \\to \\gamma $ on finite sets $ s \\subseteq \\alpha $ and $ t \\subseteq \\beta $ is non-empty, then the finite set $ s $ must be non-empty. In symbols: If $ \\{ f(a, b) \\mid a \\in s, b \\in t \\} $ is non-empty, then $ s \\neq \\emptyset $.",
+              "path": "Mathlib.Data.Finset.NAry"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "form": "abstract",
+      "method": "lean_leansearch",
+      "request": {
+        "query": "Set.Nonempty.image2 image2_nonempty_iff arbitrary sets binary map"
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"Set.Nonempty.image2\",\n      \"module_name\": \"Mathlib.Data.Set.NAry\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} {f : α → β → γ} {s : Set α} {t : Set β},\\n  s.Nonempty → t.Nonempty → (Set.image2 f s t).Nonempty\"\n    },\n    {\n      \"name\": \"Set.image2_nonempty_iff\",\n      \"module_name\": \"Mathlib.Data.Set.NAry\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} {f : α → β → γ} {s : Set α} {t : Set β},\\n  (Set.image2 f s t).Nonempty ↔ s.Nonempty ∧ t.Nonempty\"\n    },\n    {\n      \"name\": \"Finset.image₂_nonempty_iff\",\n      \"module_name\": \"Mathlib.Data.Finset.NAry\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} [inst : DecidableEq γ] {f : α → β → γ} {s : Finset α} {t : Finset β},\\n  (Finset.image₂ f s t).Nonempty ↔ s.Nonempty ∧ t.Nonempty\"\n    },\n    {\n      \"name\": \"Finset.Nonempty.image₂\",\n      \"module_name\": \"Mathlib.Data.Finset.NAry\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} [inst : DecidableEq γ] {f : α → β → γ} {s : Finset α} {t : Finset β},\\n  s.Nonempty → t.Nonempty → (Finset.image₂ f s t).Nonempty\"\n    },\n    {\n      \"name\": \"Set.Nonempty.of_image2_left\",\n      \"module_name\": \"Mathlib.Data.Set.NAry\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} {f : α → β → γ} {s : Set α} {t : Set β},\\n  (Set.image2 f s t).Nonempty → s.Nonempty\"\n    },\n    {\n      \"name\": \"Nonempty.map2\",\n      \"module_name\": \"Mathlib.Logic.Nonempty\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Sort u_3} {β : Sort u_4} {γ : Sort u_5} (f : α → β → γ), Nonempty α → Nonempty β → Nonempty γ\"\n    },\n    {\n      \"name\": \"Set.Nonempty.of_image\",\n      \"module_name\": \"Mathlib.Data.Set.Image\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_2} {f : α → β} {s : Set α}, (f '' s).Nonempty → s.Nonempty\"\n    },\n    {\n      \"name\": \"Set.Nonempty.of_image2_right\",\n      \"module_name\": \"Mathlib.Data.Set.NAry\",\n      \"kind\": \"theorem\",\n      \"type\": \"∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} {f : α → β → γ} {s : Set α} {t : Set β},\\n  (Set.image2 f s t).Nonempty → t.Nonempty\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "Set.Nonempty.image2",
+              "module_name": "Mathlib.Data.Set.NAry",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} {f : α → β → γ} {s : Set α} {t : Set β},\n  s.Nonempty → t.Nonempty → (Set.image2 f s t).Nonempty"
+            },
+            {
+              "name": "Set.image2_nonempty_iff",
+              "module_name": "Mathlib.Data.Set.NAry",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} {f : α → β → γ} {s : Set α} {t : Set β},\n  (Set.image2 f s t).Nonempty ↔ s.Nonempty ∧ t.Nonempty"
+            },
+            {
+              "name": "Finset.image₂_nonempty_iff",
+              "module_name": "Mathlib.Data.Finset.NAry",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} [inst : DecidableEq γ] {f : α → β → γ} {s : Finset α} {t : Finset β},\n  (Finset.image₂ f s t).Nonempty ↔ s.Nonempty ∧ t.Nonempty"
+            },
+            {
+              "name": "Finset.Nonempty.image₂",
+              "module_name": "Mathlib.Data.Finset.NAry",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} [inst : DecidableEq γ] {f : α → β → γ} {s : Finset α} {t : Finset β},\n  s.Nonempty → t.Nonempty → (Finset.image₂ f s t).Nonempty"
+            },
+            {
+              "name": "Set.Nonempty.of_image2_left",
+              "module_name": "Mathlib.Data.Set.NAry",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} {f : α → β → γ} {s : Set α} {t : Set β},\n  (Set.image2 f s t).Nonempty → s.Nonempty"
+            },
+            {
+              "name": "Nonempty.map2",
+              "module_name": "Mathlib.Logic.Nonempty",
+              "kind": "theorem",
+              "type": "∀ {α : Sort u_3} {β : Sort u_4} {γ : Sort u_5} (f : α → β → γ), Nonempty α → Nonempty β → Nonempty γ"
+            },
+            {
+              "name": "Set.Nonempty.of_image",
+              "module_name": "Mathlib.Data.Set.Image",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} {β : Type u_2} {f : α → β} {s : Set α}, (f '' s).Nonempty → s.Nonempty"
+            },
+            {
+              "name": "Set.Nonempty.of_image2_right",
+              "module_name": "Mathlib.Data.Set.NAry",
+              "kind": "theorem",
+              "type": "∀ {α : Type u_1} {β : Type u_3} {γ : Type u_5} {f : α → β → γ} {s : Set α} {t : Set β},\n  (Set.image2 f s t).Nonempty → t.Nonempty"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "form": "abstract",
+      "method": "lean_loogle",
+      "request": {
+        "query": "Set.Nonempty, Set.image"
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"Set.Nonempty.image\",\n      \"type\": \" {α : Type u_1} {β : Type u_2} (f : α → β) {s : Set α} : s.Nonempty → (f '' s).Nonempty\",\n      \"module\": \"Mathlib.Data.Set.Image\"\n    },\n    {\n      \"name\": \"Set.Nonempty.of_image\",\n      \"type\": \" {α : Type u_1} {β : Type u_2} {f : α → β} {s : Set α} : (f '' s).Nonempty → s.Nonempty\",\n      \"module\": \"Mathlib.Data.Set.Image\"\n    },\n    {\n      \"name\": \"Set.image_nonempty\",\n      \"type\": \" {α : Type u_1} {β : Type u_2} {f : α → β} {s : Set α} : (f '' s).Nonempty ↔ s.Nonempty\",\n      \"module\": \"Mathlib.Data.Set.Image\"\n    },\n    {\n      \"name\": \"Set.Nonempty.image_const\",\n      \"type\": \" {α : Type u_1} {β : Type u_2} {s : Set α} (hs : s.Nonempty) (a : β) : (fun x => a) '' s = {a}\",\n      \"module\": \"Mathlib.Data.Set.Image\"\n    },\n    {\n      \"name\": \"Set.image_inter_nonempty_iff\",\n      \"type\": \" {α : Type u_1} {β : Type u_2} {f : α → β} {s : Set α} {t : Set β} : (f '' s ∩ t).Nonempty ↔ (s ∩ f ⁻¹' t).Nonempty\",\n      \"module\": \"Mathlib.Data.Set.Image\"\n    },\n    {\n      \"name\": \"Set.fst_image_prod\",\n      \"type\": \" {α : Type u_1} {β : Type u_2} (s : Set β) {t : Set α} (ht : t.Nonempty) : Prod.fst '' s ×ˢ t = s\",\n      \"module\": \"Mathlib.Data.Set.Prod\"\n    },\n    {\n      \"name\": \"Set.snd_image_prod\",\n      \"type\": \" {α : Type u_1} {β : Type u_2} {s : Set α} (hs : s.Nonempty) (t : Set β) : Prod.snd '' s ×ˢ t = t\",\n      \"module\": \"Mathlib.Data.Set.Prod\"\n    },\n    {\n      \"name\": \"Set.eval_image_univ_pi\",\n      \"type\": \" {ι : Type u_1} {α : ι → Type u_2} {t : (i : ι) → Set (α i)} {i : ι} (ht : (Set.univ.pi t).Nonempty) : (fun f => f i) '' Set.univ.pi t = t i\",\n      \"module\": \"Mathlib.Data.Set.Prod\"\n    }\n  ]\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "Set.Nonempty.image",
+              "type": " {α : Type u_1} {β : Type u_2} (f : α → β) {s : Set α} : s.Nonempty → (f '' s).Nonempty",
+              "module": "Mathlib.Data.Set.Image"
+            },
+            {
+              "name": "Set.Nonempty.of_image",
+              "type": " {α : Type u_1} {β : Type u_2} {f : α → β} {s : Set α} : (f '' s).Nonempty → s.Nonempty",
+              "module": "Mathlib.Data.Set.Image"
+            },
+            {
+              "name": "Set.image_nonempty",
+              "type": " {α : Type u_1} {β : Type u_2} {f : α → β} {s : Set α} : (f '' s).Nonempty ↔ s.Nonempty",
+              "module": "Mathlib.Data.Set.Image"
+            },
+            {
+              "name": "Set.Nonempty.image_const",
+              "type": " {α : Type u_1} {β : Type u_2} {s : Set α} (hs : s.Nonempty) (a : β) : (fun x => a) '' s = {a}",
+              "module": "Mathlib.Data.Set.Image"
+            },
+            {
+              "name": "Set.image_inter_nonempty_iff",
+              "type": " {α : Type u_1} {β : Type u_2} {f : α → β} {s : Set α} {t : Set β} : (f '' s ∩ t).Nonempty ↔ (s ∩ f ⁻¹' t).Nonempty",
+              "module": "Mathlib.Data.Set.Image"
+            },
+            {
+              "name": "Set.fst_image_prod",
+              "type": " {α : Type u_1} {β : Type u_2} (s : Set β) {t : Set α} (ht : t.Nonempty) : Prod.fst '' s ×ˢ t = s",
+              "module": "Mathlib.Data.Set.Prod"
+            },
+            {
+              "name": "Set.snd_image_prod",
+              "type": " {α : Type u_1} {β : Type u_2} {s : Set α} (hs : s.Nonempty) (t : Set β) : Prod.snd '' s ×ˢ t = t",
+              "module": "Mathlib.Data.Set.Prod"
+            },
+            {
+              "name": "Set.eval_image_univ_pi",
+              "type": " {ι : Type u_1} {α : ι → Type u_2} {t : (i : ι) → Set (α i)} {i : ι} (ht : (Set.univ.pi t).Nonempty) : (fun f => f i) '' Set.univ.pi t = t i",
+              "module": "Mathlib.Data.Set.Prod"
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "form": "abstract",
+      "method": "lean_local_search",
+      "request": {
+        "query": "Nonempty.image2"
+      },
+      "response": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\n  \"items\": [\n    {\n      \"name\": \"Set.Nonempty.image2\",\n      \"kind\": \"theorem\",\n      \"file\": \".lake/packages/mathlib/Mathlib/Data/Set/NAry.lean\"\n    }\n  ],\n  \"index\": \"unavailable\"\n}"
+          }
+        ],
+        "structuredContent": {
+          "items": [
+            {
+              "name": "Set.Nonempty.image2",
+              "kind": "theorem",
+              "file": ".lake/packages/mathlib/Mathlib/Data/Set/NAry.lean"
+            }
+          ],
+          "index": "unavailable"
+        },
+        "isError": false
+      }
+    }
+  }
+]

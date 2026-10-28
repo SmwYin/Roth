@@ -1,0 +1,67 @@
+namespace Nonempty185
+open MvPolynomial
+variable {σ : Type*} [Fintype σ]
+theorem bridge (B : ℝ) (q r : σ → ℕ) :
+    Roth.indexSet B q r =
+      Set.image2
+        (fun (R : MvPolynomial σ ℤ) (h : σ → ℤ) ↦
+          Roth.index (map (Int.castRingHom ℝ) R) (fun j ↦ (h j : ℝ) / q j) r)
+        (Roth.RSet B r) {h | ∀ j, IsCoprime (h j) (q j : ℤ)} := by
+  rfl
+theorem replacement {B : ℝ} (hB : 1 ≤ B) (q r : σ → ℕ) :
+    (Roth.indexSet B q r).Nonempty := by
+  rw [bridge]
+  exact Set.Nonempty.image2 (f := fun R h ↦ Roth.index (map (Int.castRingHom ℝ) R)
+      (fun j ↦ (h j : ℝ) / q j) r) ⟨1, Roth.one_mem_RSet hB r⟩
+    ⟨fun _ ↦ 1, fun _ ↦ isCoprime_one_left⟩
+theorem replacement_expanded {B : ℝ} (hB : 1 ≤ B) (q r : σ → ℕ) :
+    (Roth.indexSet B q r).Nonempty := by
+  rw [bridge]
+  refine Set.Nonempty.image2 (f := fun R h ↦ Roth.index (map (Int.castRingHom ℝ) R)
+      (fun j ↦ (h j : ℝ) / q j) r) ⟨1, ?_⟩ ⟨fun _ ↦ 1, fun _ ↦ isCoprime_one_left⟩
+  classical
+  simp [Roth.RSet, coeff_one, apply_ite, ite_apply, hB, zero_le_one.trans hB]
+theorem caller_bound {B : ℝ} (hB : 1 ≤ B) {q r : σ → ℕ} {c : ℝ}
+    (hc : ∀ R ∈ Roth.RSet B r, ∀ h : σ → ℤ,
+      (∀ j, IsCoprime (h j) (q j : ℤ)) →
+      Roth.index (map (Int.castRingHom ℝ) R) (fun j ↦ (h j : ℝ) / q j) r ≤ c) :
+    Roth.Θ B q r ≤ c := by
+  refine csSup_le (replacement hB q r) ?_
+  rintro _ ⟨R, hR, h, hh, rfl⟩
+  exact hc R hR h hh
+theorem caller_mono {B B' : ℝ} (hB : 1 ≤ B) (hBB' : B ≤ B')
+    (q : σ → ℕ) {r : σ → ℕ} : Roth.Θ B q r ≤ Roth.Θ B' q r := by
+  refine csSup_le_csSup (Roth.indexSet_bddAbove B' q) (replacement hB q r) ?_
+  rintro _ ⟨R, ⟨hR0, hRd, hRc⟩, h, hh, rfl⟩
+  exact ⟨R, ⟨hR0, hRd, fun d ↦ (hRc d).trans hBB'⟩, h, hh, rfl⟩
+theorem family_nonempty_iff (B : ℝ) (r : σ → ℕ) :
+    (Roth.RSet B r).Nonempty ↔ 1 ≤ B := by
+  constructor
+  · rintro ⟨R, hR0, _, hRc⟩
+    obtain ⟨d, hd⟩ := MvPolynomial.ne_zero_iff.mp hR0
+    have h1 : (1 : ℝ) ≤ |(R.coeff d : ℝ)| := by
+      exact_mod_cast Int.one_le_abs hd
+    exact h1.trans (hRc d)
+  · intro hB
+    exact ⟨1, Roth.one_mem_RSet hB r⟩
+theorem nonempty_iff (B : ℝ) (q r : σ → ℕ) :
+    (Roth.indexSet B q r).Nonempty ↔ 1 ≤ B := by
+  constructor
+  · intro h
+    rw [bridge] at h
+    exact (family_nonempty_iff B r).mp h.of_image2_left
+  · intro hB
+    exact replacement hB q r
+theorem zero_bound_empty (q r : σ → ℕ) : Roth.indexSet 0 q r = ∅ := by
+  apply Set.not_nonempty_iff_eq_empty.mp
+  rw [nonempty_iff]
+  norm_num
+#print axioms family_nonempty_iff
+#print axioms nonempty_iff
+#print axioms zero_bound_empty
+#print axioms bridge
+#print axioms replacement
+#print axioms replacement_expanded
+#print axioms caller_bound
+#print axioms caller_mono
+end Nonempty185
