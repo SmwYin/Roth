@@ -1,0 +1,16 @@
+{
+  "declaration": "Roth.lam",
+  "kind": "def",
+  "type": "ℝ → ℕ → ℕ → ℝ",
+  "what": "Defines the explicit real cutoff λ(δ,n,m)=4(1+3δ)n√m chosen in Roth’s auxiliary-polynomial construction.",
+  "how": "Forms the delta-dependent coefficient-loss factor 1+3δ, scales it by four and the polynomial degree, and multiplies by the square root of the number of variables. The choice converts the lattice-count factor 2√m/λ into the half-budget bound needed for pigeonholing.",
+  "hypotheses": "Any real δ and natural degree n and dimension m; no positivity hypotheses. The definition is total, including δ<0 and n=0 or m=0.",
+  "project_dependencies": [],
+  "caller_summary": "Four executable source occurrences in four declarations: gam, eta_lt_gam_iff, private exists_mem_RSet_le_index_of_log_bound_aux, and Main.exists_delta; three in MainLemma and one in Main. Fresh canonical293 audit: two direct kernel value consumers (gam, exists_delta), zero direct type consumers. Lattice lam tokens are binders.",
+  "mathlib_api_audit": "Uses existing Real.sqrt (Mathlib/Analysis/Real/Sqrt.lean), HMul.hMul/HAdd.hAdd and Nat.cast. No existing equivalent named cutoff was verified. Search hits for additive-combinatorics Roth or Dioph are different mathematics. Full isolated formula construction, general scalar representation, normalization and continuity compile using mathlib only.",
+  "moral_duplications": "The literal cutoff reappears as 4*c*f.natDegree*sqrt m in the more general project auxiliary-polynomial helper; the new scaled a formula unifies the arithmetic after reassociation, not the substantive theorem. gam is an affine cutoff derived from lam, eta a different error term, and Lattice lam a free real variable; these are not duplicate declarations.",
+  "generalization": "No hypotheses/typeclasses to weaken. A real n/m extension and arbitrary semiring expression with supplied square-root-like function compile, but are representation extensions, not verified standard semantic weakenings. The meaningful abstraction is an admissible cutoff or a=(1+3δ)n in the count bound; scaleCount verifies its normalization. Do not claim YES-generalise-first merely by replacing casts or sqrt with an arbitrary function.",
+  "missing_api": "No missing basic sqrt/arithmetic/continuity API shown. Potential reusable cutoff/count theorem boundary must be designed together with the auxiliary-polynomial and lattice estimates; scratch scaleCount is a new generic proof, not an existing mathlib lemma.",
+  "junk": "Not dead code: four executable consumers and a local semantic/API-name exemption. Fully inlinable with all four original signatures and both full modules verified; public upstream status remains an API-grain question.",
+  "action": "BORDERLINE-needs-human. Keep the documented project parameter pending an eventual upstream Roth API choice; choose public named lambda versus local/private abbreviation and arbitrary admissible cutoff versus fixed arithmetic choice. Do not open a standalone parameter-only PR. All assessment work is complete; the two future design questions do not block the overview."
+}

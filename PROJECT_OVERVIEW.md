@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-28. **IN PROGRESS — 228/293 declaration assessments complete.**
+Updated: 2026-10-28. **IN PROGRESS — 229/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 228; remaining: 65.
-- Verdicts: 19 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 71 BORDERLINE-needs-human, 54 SKIP.
+- Completed applicable assessments: 229; remaining: 64.
+- Verdicts: 19 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 72 BORDERLINE-needs-human, 54 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -2816,6 +2816,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: explicit callers: 1; application occurrences: 1; external to file modules: 1; names: Roth.theta_lt_eta_of_sq_log_bound_aux; direct kernel value consumers: _private.Roth.MainLemma.0.Roth.theta_lt_eta_of_sq_log_bound_aux; validation: Complete originalΘ module and293 private-aware direct audit; complete MainLemma replay with broadened endpoint and caller statement preserved; exact original endpoint proof inlined into actual caller and complete MainLemma replay.
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.Θ_lt.md).
 
+### Completed: `Roth.lam`
+
+- Type: `ℝ → ℕ → ℕ → ℝ`
+- What: Defines the explicit real cutoff λ(δ,n,m)=4(1+3δ)n√m chosen in Roth’s auxiliary-polynomial construction.
+- How: Forms the delta-dependent coefficient-loss factor 1+3δ, scales it by four and the polynomial degree, and multiplies by the square root of the number of variables. The choice converts the lattice-count factor 2√m/λ into the half-budget bound needed for pigeonholing.
+- Hypotheses: Any real δ and natural degree n and dimension m; no positivity hypotheses. The definition is total, including δ<0 and n=0 or m=0.
+- Project dependencies: None
+- Caller summary: Four executable source occurrences in four declarations: gam, eta_lt_gam_iff, private exists_mem_RSet_le_index_of_log_bound_aux, and Main.exists_delta; three in MainLemma and one in Main. Fresh canonical293 audit: two direct kernel value consumers (gam, exists_delta), zero direct type consumers. Lattice lam tokens are binders.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.lam.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -3298,6 +3308,8 @@ Completed `Roth.theta_lt_of_large_delta_aux`: Use Θ_le_card for the dimension b
 
 Completed `Roth.Θ_lt`: All15 actual Finder/Loogle/LeanSearch/rg/local cells on current, literature and abstract forms; external indexes revision-distinct and local warming. Pinned csSup_le/Real.sSup_le/finite strict-sup/weighted-order signatures and actual generic transports compiled. Reconstructed mathlib-only arithmetic endpoint exact? probe did not close. Supremum and weighted-support APIs do not supply its arithmetic uniform-bound premise.
 
+Completed `Roth.lam`: Uses existing Real.sqrt (Mathlib/Analysis/Real/Sqrt.lean), HMul.hMul/HAdd.hAdd and Nat.cast. No existing equivalent named cutoff was verified. Search hits for additive-combinatorics Roth or Dioph are different mathematics. Full isolated formula construction, general scalar representation, normalization and continuity compile using mathlib only.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -3755,6 +3767,8 @@ Completed `Roth.theta_lt_succ_aux`: Converts the recursive Option-coordinate sup
 Completed `Roth.theta_lt_of_large_delta_aux`: This large-delta branch uses only the dimension upper bound and scalar power comparisons. The small-delta base uses a logarithmic singleton estimate, and the successor uses determinant/finite-maximum induction; their conclusions agree on different premise regimes.
 
 Completed `Roth.Θ_lt`: Θ is a sSup and index has weighted-support representations; generic upper/strict supremum laws organize bounds already supplied. Schwartz–Zippel counts roots over finite products, and additive Roth bounds/Chevalley complexity are different mathematics. No identified exact existing-law replacement of the full quantitative endpoint.
+
+Completed `Roth.lam`: The literal cutoff reappears as 4*c*f.natDegree*sqrt m in the more general project auxiliary-polynomial helper; the new scaled a formula unifies the arithmetic after reassociation, not the substantive theorem. gam is an affine cutoff derived from lam, eta a different error term, and Lattice lam a free real variable; these are not duplicate declarations.
 
 ## Part 5: Generalization opportunities
 
@@ -4224,6 +4238,8 @@ Completed `Roth.theta_lt_of_large_delta_aux`: No public generality claim under t
 
 Completed `Roth.Θ_lt`: Verified full theorem last degree≥1, and natural-positive form; complete sole caller adapts. Stronger finite-sum /2 and Lemma6 numeric proofs are carried explicitly, not existing mathlib. One-variable case only needsq>1 andr>0;δ=0 counterexample meets other public premises. No joint numeric extension, zero-weight necessity, general-field theorem or maximality claim.
 
+Completed `Roth.lam`: No hypotheses/typeclasses to weaken. A real n/m extension and arbitrary semiring expression with supplied square-root-like function compile, but are representation extensions, not verified standard semantic weakenings. The meaningful abstraction is an admissible cutoff or a=(1+3δ)n in the count bound; scaleCount verifies its normalization. Do not claim YES-generalise-first merely by replacing casts or sqrt with an arbitrary function.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -4682,6 +4698,8 @@ Completed `Roth.theta_lt_succ_aux`: No new primitive is needed for this internal
 Completed `Roth.theta_lt_of_large_delta_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 Completed `Roth.Θ_lt`: Potential reusable generalized-Wronskian separation, determinant coefficient-height estimates and rational-point weighted-index API. No missing generic supremum transport. Upstream inclusion/grain of the specialized10^m endpoint remains an explicit bounded design question.
+
+Completed `Roth.lam`: No missing basic sqrt/arithmetic/continuity API shown. Potential reusable cutoff/count theorem boundary must be designed together with the auxiliary-polynomial and lattice estimates; scratch scaleCount is a new generic proof, not an existing mathlib lemma.
 
 ## Part 7: Junk / removable
 
@@ -5144,6 +5162,8 @@ Completed `Roth.theta_lt_of_large_delta_aux`: Retain a live private proof interf
 
 Completed `Roth.Θ_lt`: Live sole direct caller supplies the strictΘ<eta estimate used in the auxiliary-polynomial index gap and main lemma. Complete inlining compiles but retains the same project arithmetic proof; neither dead code nor≤3 existing-call redundancy.
 
+Completed `Roth.lam`: Not dead code: four executable consumers and a local semantic/API-name exemption. Fully inlinable with all four original signatures and both full modules verified; public upstream status remains an API-grain question.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -5376,6 +5396,7 @@ Completed `Roth.Θ_lt`: Live sole direct caller supplies the strictΘ<eta estima
 | 226 | `Roth.theta_lt_succ_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.theta_lt_succ_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.theta_lt_succ_aux/root-acceptance.json) |
 | 227 | `Roth.theta_lt_of_large_delta_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.theta_lt_of_large_delta_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.theta_lt_of_large_delta_aux/root-acceptance.json) |
 | 228 | `Roth.Θ_lt` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.Θ_lt.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.Θ_lt/root-acceptance.json) |
+| 229 | `Roth.lam` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.lam.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.lam/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -5831,12 +5852,14 @@ Completed `Roth.theta_lt_of_large_delta_aux` action: Keep unchanged; complete pr
 
 Completed `Roth.Θ_lt` action: Keep Roth/Theta.lean endpoint. A future edit can adopt≥1/positive-natural last weight together with the proven stronger Lemma6/finite-sum and private induction interfaces, using the verified sole caller adaptation. Resolve upstream API grain before proposing a mathlib contribution; no production edits in this review.
 
+Completed `Roth.lam` action: BORDERLINE-needs-human. Keep the documented project parameter pending an eventual upstream Roth API choice; choose public named lambda versus local/private abbreviation and arbitrary admissible cutoff versus fixed arithmetic choice. Do not open a standalone parameter-only PR. All assessment work is complete; the two future design questions do not block the overview.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.lam` next. Supporting identities receive their own applicable checks.
+   `Roth.gam` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

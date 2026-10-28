@@ -1,0 +1,52 @@
+{
+  "executable_occurrences": 4,
+  "distinct_declarations": 4,
+  "same_file_declarations": 3,
+  "external_to_file_declarations": 1,
+  "external_to_file_files": 1,
+  "external_projects_observed": 0,
+  "callers": [
+    {
+      "name": "Roth.exists_delta",
+      "file": "Roth/Main.lean",
+      "line": 227,
+      "end_line": 249,
+      "visibility": "public",
+      "source": "theorem exists_delta {n m : ℕ} (hm : 16 * n ^ 2 < m) {κ : ℝ}\n    (h47' : 2 * m / (m - 4 * n * √(m : ℝ)) < κ) : ∃ δ : ℝ, 0 < δ ∧ δ < 1 / m ∧\n    eta δ m + 2 * (1 + 3 * δ) * n * √(m : ℝ) < m / 2 ∧\n    (m : ℝ) * (1 + 4 * δ) / (gam δ n m - eta δ m) < κ := by\n  obtain ⟨δ₀, hδ₀, hδ₀'⟩ := exists_delta_bound hm\n  have hc : ContinuousAt (fun δ ↦\n      (m : ℝ) * (1 + 4 * δ) / (gam δ n m - eta δ m)) 0 :=\n    (show ContinuousAt (fun δ : ℝ ↦ (m : ℝ) * (1 + 4 * δ)) 0 from\n      continuousAt_const.mul (continuousAt_const.add (continuousAt_const.mul continuousAt_id))).div\n      ((show ContinuousAt (fun δ ↦ gam δ n m) 0 from\n        (continuousAt_const.sub (((continuousAt_const.mul\n          (continuousAt_const.add (continuousAt_const.mul continuousAt_id))).mul\n            continuousAt_const).mul continuousAt_const)).div_const 2).sub\n        ((Real.continuousAt_rpow_const 0 _ (.inr (by positivity))).const_mul _))\n      (sub_pos.mpr ((eta_lt_gam_iff 0 n m).mp (hδ₀' 0 le_rfl hδ₀.le).2)).ne'\n  obtain ⟨ε, hε, hbound⟩ := Metric.eventually_nhds_iff.mp\n    (hc.eventually_lt continuousAt_const (by\n      simpa [gam, lam, eta, Real.zero_rpow (by positivity : (1 / 2 : ℝ) ^ m ≠ 0),\n        div_div_eq_mul_div, mul_comm] using h47'))\n  obtain ⟨δ, hδ, hlt⟩ := exists_between (lt_min hδ₀ hε)\n  obtain ⟨h29, h30⟩ := hδ₀' δ hδ.le (hlt.trans_le (min_le_left _ _)).le\n  exact ⟨δ, hδ, h29, h30,\n    hbound (y := δ) (by simpa [Real.dist_eq, abs_of_pos hδ] using hlt.trans_le (min_le_right _ _))⟩",
+      "plan": "With gamma expanded, remove lam from the simplification at delta=0, leaving gam, eta and the existing rpow/division/multiplication normalization. Full Main module replay verifies it."
+    },
+    {
+      "name": "Roth.gam",
+      "file": "Roth/MainLemma.lean",
+      "line": 63,
+      "end_line": 63,
+      "visibility": "public",
+      "source": "noncomputable def gam (δ : ℝ) (n m : ℕ) : ℝ := ((m : ℝ) - lam δ n m) / 2",
+      "plan": "Replace lam δ n m with 4 * (1 + 3 * δ) * n * √(m : ℝ) inside the existing gamma definition; no statement changes."
+    },
+    {
+      "name": "Roth.eta_lt_gam_iff",
+      "file": "Roth/MainLemma.lean",
+      "line": 100,
+      "end_line": 102,
+      "visibility": "public",
+      "source": "theorem eta_lt_gam_iff (δ : ℝ) (n m : ℕ) : eta δ m + 2 * (1 + 3 * δ) * n * √(m : ℝ) < m / 2 ↔\n    eta δ m < gam δ n m := by\n  grind [gam, lam]",
+      "plan": "With gamma expanded, remove lam from grind [gam, lam], leaving grind [gam]. The entire original proof is replayed with this edit."
+    },
+    {
+      "name": "Roth.exists_mem_RSet_le_index_of_log_bound_aux",
+      "file": "Roth/MainLemma.lean",
+      "line": 618,
+      "end_line": 641,
+      "visibility": "private",
+      "source": "private lemma exists_mem_RSet_le_index_of_log_bound_aux {f : Polynomial ℤ} {α A : ℝ} (hf : f.Monic)\n    (hfα : Polynomial.aeval α f = 0) (hA : ∀ i, |(f.coeff i : ℝ)| ≤ A) {m q₁ r₁ : ℕ} (hm : 0 < m)\n    (r : Fin m → ℕ) (hr : ∀ j, 0 < r j) (hs : ∑ j, r j ≤ m * r₁) {δ : ℝ} (hδ0 : 0 ≤ δ)\n    (hL : 2 * m + 1 + 2 * m * Real.log (1 + A) ≤ δ ^ 2 * Real.log q₁) :\n    ∃ P : MvPolynomial (Fin m) ℤ, P ∈ RSet (mainCoeffBound δ q₁ r₁) r ∧\n      gam δ f.natDegree m ≤ index (map (Int.castRingHom ℝ) P) (fun _ ↦ α) r := by\n  have hA1 : 1 ≤ A := by simpa [hf.coeff_natDegree] using hA f.natDegree\n  have hr₁ : 0 < r₁ := Nat.pos_of_mul_pos_left <| (hr ⟨0, hm⟩).trans_le\n    ((Finset.single_le_sum (fun j _ ↦ Nat.zero_le (r j)) (Finset.mem_univ _)).trans hs)\n  have hq : 3 ≤ δ ^ 2 * Real.log q₁ := by\n    have hmR : (1 : ℝ) ≤ m := by exact_mod_cast hm\n    nlinarith only [hL, hmR, mul_nonneg (by positivity : (0 : ℝ) ≤ 2 * m)\n      (Real.log_nonneg (by linarith : 1 ≤ 1 + A))]\n  obtain ⟨_, hTA, _⟩ := three_small_factors (m := m) (q₁ := q₁) (α := 0)\n    hδ0 hr₁ (zero_le_one.trans hA1) (by simpa using hL)\n  have hpow : (mainCoeffBound δ q₁ r₁ : ℝ) ^ (1 + 3 * δ) =\n      mainCoeffBound δ q₁ r₁ * ((mainCoeffBound δ q₁ r₁ : ℝ) ^ δ) ^ 3 := by\n    rw [Real.rpow_add_of_nonneg (by positivity) zero_le_one (by positivity), Real.rpow_one,\n      ← Real.rpow_mul_natCast (by positivity)]\n    simp [mul_comm]\n  simpa only [gam, lam] using\n    exists_mem_RSet_le_index_of_rpow_bound_aux (B := mainCoeffBound δ q₁ r₁) hf hfα hA\n    hm r hr (Nat.floor_pos.2 <| (by norm_num : (1 : ℝ) ≤ 4).trans\n      (four_lt_rpow hδ0 hr₁ hq).le) hs hTA.le hpow.ge",
+      "plan": "With gamma expanded, change simpa only [gam, lam] to simpa only [gam]; retain the complete original auxiliary-polynomial argument and signature."
+    }
+  ],
+  "excluded": "All Lattice lam tokens are locally bound real variables. MainLemma module-docstring mention and own declaration are noncallers.",
+  "canonical_value_consumers": [
+    "Roth.gam",
+    "Roth.exists_delta"
+  ],
+  "canonical_type_consumers": []
+}
