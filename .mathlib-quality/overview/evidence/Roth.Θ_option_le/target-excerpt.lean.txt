@@ -1,0 +1,11 @@
+theorem Θ_option_le {δ : ℝ} (hδ0 : 0 ≤ δ) (hδ1 : δ ≤ 1) {r : Option τ → ℕ} (hrp : 3 ≤ (r none : ℝ))
+    (hratio : ∀ j, (r none : ℝ) ≤ δ * r (some j)) {r₁ : ℕ} (hr₁ : ∀ j, r j ≤ r₁) {q : Option τ → ℕ}
+    (hq : ∀ j, 0 < q j) {B : ℝ} (hB : 1 ≤ B) :
+    Θ B q r ≤ 2 * (Finset.Icc 1 (r none + 1)).sup' (Finset.nonempty_Icc.2 (by lia))
+      (fun l ↦ lem6Φ q r (lem6M (Fintype.card τ + 1) r₁ B l) l +
+        √(lem6Φ q r (lem6M (Fintype.card τ + 1) r₁ B l) l) + √δ) := by
+  refine Θ_le_of_forall_index_le hB fun R hR h hh ↦ ?_
+  obtain ⟨l, hl, hl', hle⟩ := index_le_lem6 hδ0 hδ1 hrp hratio hr₁ hq hR hh
+  refine hle.trans (mul_le_mul_of_nonneg_left ?_ (by norm_num))
+  exact Finset.le_sup' (fun l ↦ lem6Φ q r (lem6M (Fintype.card τ + 1) r₁ B l) l +
+    √(lem6Φ q r (lem6M (Fintype.card τ + 1) r₁ B l) l) + √δ) (Finset.mem_Icc.2 ⟨hl, hl'⟩)

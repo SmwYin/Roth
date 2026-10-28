@@ -1,0 +1,32 @@
+{
+  "declaration": "Roth.Θ_option_le",
+  "kind": "theorem",
+  "type": "∀ {τ : Type u_2} [inst : Fintype τ] {δ : ℝ},\n  0 ≤ δ →\n    δ ≤ 1 →\n      ∀ {r : Option τ → ℕ},\n        3 ≤ ↑(r none) →\n          (∀ (j : τ), ↑(r none) ≤ δ * ↑(r (some j))) →\n            ∀ {r₁ : ℕ},\n              (∀ (j : Option τ), r j ≤ r₁) →\n                ∀ {q : Option τ → ℕ},\n                  (∀ (j : Option τ), 0 < q j) →\n                    ∀ {B : ℝ},\n                      1 ≤ B →\n                        Roth.Θ B q r ≤\n                          2 *\n                            (Finset.Icc 1 (r none + 1)).sup' ⋯ fun l ↦\n                              Roth.lem6Φ q r (Roth.lem6M (Fintype.card τ + 1) r₁ B l) l +\n                                  √(Roth.lem6Φ q r (Roth.lem6M (Fintype.card τ + 1) r₁ B l) l) +\n                                √δ",
+  "what": "Lemma6 bounds the supremum of integer-polynomial indices by twice a finite maximum of Φ(l)+√Φ(l)+√δ, reducing the distinguished-variable problem to one variable and the complementary variables.",
+  "how": "Use Θ_le_of_forall_index_le to pass to each polynomial and numerator tuple. The substantive project theorem index_le_lem6 supplies a rank l in the finite interval; Finset.le_sup' and mul_le_mul_of_nonneg_left then dominate its bound by twice the finite maximum.",
+  "hypotheses": "Fintype τ;0≤δ≤1;distinguished natural weight≥3;coordinate degree ratios and uniform degree ceiling;positive natural denominators;B≥1. Fresh whole-module experiments remove denominator positivity and B≥1 and weaken distinguished weight to≥1, with new/project numerical ingredients explicitly retained.",
+  "project_dependencies": [
+    "Roth.index_le_lem6",
+    "Roth.lem6M",
+    "Roth.lem6Φ",
+    "Roth.Θ_le_of_forall_index_le",
+    "Roth.Θ"
+  ],
+  "caller_summary": {
+    "explicit_callers": 1,
+    "application_occurrences": 1,
+    "names": [
+      "Roth.theta_lt_succ_aux"
+    ],
+    "direct_kernel_value_consumers": [
+      "_private.Roth.Theta.0.Roth.theta_lt_succ_aux"
+    ],
+    "validation": "Complete original module and all public axiom checks; complete original successor caller with target proof inlined; broader complete modules preserve the caller and Θ_lt statements."
+  },
+  "mathlib_api_audit": "15 actual search cells across current/literature/abstract forms plus5 infDegree/weightedOrder parent reaim cells. Existing csSup_le, Real.sSup_le and Finset.le_sup'_of_le cover the order-only transport, but assume rather than prove the arithmetic pointwise rank witness. Native pinned signatures and independent transport proofs verified; external indexes are revision-distinct and local indexes warming.",
+  "moral_duplications": "The outer supremum/finite-maximum step is existing order theory, while index_le_lem6 is a distinct arithmetic existential endpoint. Reaiming Θ at SupSet.sSup and index at infDegree does not supply that whole recursive height/rank law.",
+  "generalization": "Jointly compiled no q>0, arbitrary real B, and r_none≥1. Real.sSup_le uses nonnegative RHS to cover empty families; independently compiled B<1⇒indexSet=∅ and Θ=0. The≥1 branch carries213’s new /2 finite-sum and numeric proofs, not existing mathlib API. Abstract outer transport verified for arbitrary conditionally complete linear orders with nonempty input family.",
+  "missing_api": "No missing order-transport primitive. Possible upstream material lies in reusable determinant, factor-height, numerical witness and finite-sum ingredients; the specialized recursive Θ endpoint needs a separate audience/interface decision.",
+  "junk": "The live sole caller theta_lt_succ_aux uses this recursion before bounding each finite-maximum term. Complete inlining compiles but preserves the same mathematical argument; it is not evidence of dead code or a recommendation to delete the named Lemma6 stage.",
+  "action": "Retain the named Lemma6 endpoint in Roth/Theta.lean. If editing later, prefer the verified arbitrary-B/no-positive-denominator/positive-distinguished-weight interface and update the sole caller as demonstrated. Consider upstreaming reusable ingredients separately; no production edits in this review."
+}

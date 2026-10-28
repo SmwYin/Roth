@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-28. **IN PROGRESS — 213/293 declaration assessments complete.**
+Updated: 2026-10-28. **IN PROGRESS — 214/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 213; remaining: 80.
-- Verdicts: 19 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 66 BORDERLINE-needs-human, 44 SKIP.
+- Completed applicable assessments: 214; remaining: 79.
+- Verdicts: 19 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 67 BORDERLINE-needs-human, 44 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -2543,6 +2543,33 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: explicit callers: 1; application occurrences: 1; names: Roth.Θ_option_le; direct kernel value consumers: Roth.Θ_option_le; validation: Original wholeTheta replay, no-q wholeTheta replay, stronger-weight wholeTheta replay with unchanged caller/Θ_lt statements, and complete actual caller inlining all clean.
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.index_le_lem6.md).
 
+### Completed: `Roth.Θ_option_le`
+
+- Type: `∀ {τ : Type u_2} [inst : Fintype τ] {δ : ℝ},
+  0 ≤ δ →
+    δ ≤ 1 →
+      ∀ {r : Option τ → ℕ},
+        3 ≤ ↑(r none) →
+          (∀ (j : τ), ↑(r none) ≤ δ * ↑(r (some j))) →
+            ∀ {r₁ : ℕ},
+              (∀ (j : Option τ), r j ≤ r₁) →
+                ∀ {q : Option τ → ℕ},
+                  (∀ (j : Option τ), 0 < q j) →
+                    ∀ {B : ℝ},
+                      1 ≤ B →
+                        Roth.Θ B q r ≤
+                          2 *
+                            (Finset.Icc 1 (r none + 1)).sup' ⋯ fun l ↦
+                              Roth.lem6Φ q r (Roth.lem6M (Fintype.card τ + 1) r₁ B l) l +
+                                  √(Roth.lem6Φ q r (Roth.lem6M (Fintype.card τ + 1) r₁ B l) l) +
+                                √δ`
+- What: Lemma6 bounds the supremum of integer-polynomial indices by twice a finite maximum of Φ(l)+√Φ(l)+√δ, reducing the distinguished-variable problem to one variable and the complementary variables.
+- How: Use Θ_le_of_forall_index_le to pass to each polynomial and numerator tuple. The substantive project theorem index_le_lem6 supplies a rank l in the finite interval; Finset.le_sup' and mul_le_mul_of_nonneg_left then dominate its bound by twice the finite maximum.
+- Hypotheses: Fintype τ;0≤δ≤1;distinguished natural weight≥3;coordinate degree ratios and uniform degree ceiling;positive natural denominators;B≥1. Fresh whole-module experiments remove denominator positivity and B≥1 and weaken distinguished weight to≥1, with new/project numerical ingredients explicitly retained.
+- Project dependencies: Roth.index_le_lem6, Roth.lem6M, Roth.lem6Φ, Roth.Θ_le_of_forall_index_le, Roth.Θ
+- Caller summary: explicit callers: 1; application occurrences: 1; names: Roth.theta_lt_succ_aux; direct kernel value consumers: _private.Roth.Theta.0.Roth.theta_lt_succ_aux; validation: Complete original module and all public axiom checks; complete original successor caller with target proof inlined; broader complete modules preserve the caller and Θ_lt statements.
+- Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.Θ_option_le.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -2995,6 +3022,8 @@ Completed `Roth.index_numeric_bound_aux`: Split min_le_iff into a linear and qua
 
 Completed `Roth.index_le_lem6`: Five actual methods on current, literature and abstract forms plus five parent-infDegree reaim searches. Existing weightedOrder multiplication and determinant absolute-value bounds are ingredients, not the complete arithmetic witness/recursive-Θ endpoint; local warming/error and one retried Loogle error are disclosed.
 
+Completed `Roth.Θ_option_le`: 15 actual search cells across current/literature/abstract forms plus5 infDegree/weightedOrder parent reaim cells. Existing csSup_le, Real.sSup_le and Finset.le_sup'_of_le cover the order-only transport, but assume rather than prove the arithmetic pointwise rank witness. Native pinned signatures and independent transport proofs verified; external indexes are revision-distinct and local indexes warming.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -3422,6 +3451,8 @@ Completed `Roth.mapped_det_ne_zero_aux`: This is the nonvanishing bridge for the
 Completed `Roth.index_numeric_bound_aux`: This scalar real inequality closes index_le_lem6 once min_le_sum_max and the two determinant bounds have been combined. It neither establishes determinant nonvanishing nor proves derivative-weight admissibility, the separate roles of the two preceding helpers.
 
 Completed `Roth.index_le_lem6`: Generic index/order ingredients can use infDegree or weightedOrder after explicit bridges; this endpoint additionally chooses a nonzero separated Hasse determinant, controls integer factors and applies a substantive numerical estimate. The individual witness and following supremum theorem are distinct.
+
+Completed `Roth.Θ_option_le`: The outer supremum/finite-maximum step is existing order theory, while index_le_lem6 is a distinct arithmetic existential endpoint. Reaiming Θ at SupSet.sSup and index at infDegree does not supply that whole recursive height/rank law.
 
 ## Part 5: Generalization opportunities
 
@@ -3861,6 +3892,8 @@ Completed `Roth.index_numeric_bound_aux`: No public generality claim under the p
 
 Completed `Roth.index_le_lem6`: Compiled removal of _hq and weakening r_none≥3 to≥1 using newly re-proved /2 finite-sum and numerical bounds; whole actual caller statements preserved. Independently compiled arbitrary nonnegative Φ(l) numerical witness core. No claim zero distinguished weight is impossible or full arbitrary-coefficient endpoint is verified.
 
+Completed `Roth.Θ_option_le`: Jointly compiled no q>0, arbitrary real B, and r_none≥1. Real.sSup_le uses nonnegative RHS to cover empty families; independently compiled B<1⇒indexSet=∅ and Θ=0. The≥1 branch carries213’s new /2 finite-sum and numeric proofs, not existing mathlib API. Abstract outer transport verified for arbitrary conditionally complete linear orders with nonempty input family.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -4289,6 +4322,8 @@ Completed `Roth.mapped_det_ne_zero_aux`: No new primitive is needed for this int
 Completed `Roth.index_numeric_bound_aux`: No new primitive is needed for this internal organization; full public contribution search is explicitly not run.
 
 Completed `Roth.index_le_lem6`: Potential reusable numerical witness and stronger finite-sum interfaces, plus generic determinant-order and separated integer factor-height prerequisites; whole upstream audience/module remains a design choice.
+
+Completed `Roth.Θ_option_le`: No missing order-transport primitive. Possible upstream material lies in reusable determinant, factor-height, numerical witness and finite-sum ingredients; the specialized recursive Θ endpoint needs a separate audience/interface decision.
 
 ## Part 7: Junk / removable
 
@@ -4721,6 +4756,8 @@ Completed `Roth.index_numeric_bound_aux`: Retain a live private proof interface.
 
 Completed `Roth.index_le_lem6`: The live sole caller Θ_option_le uses the existential rank before taking a finite maximum and supremum. Complete inlining compiles but expands the mathematical argument and is not a recommendation to delete this proof-stage theorem.
 
+Completed `Roth.Θ_option_le`: The live sole caller theta_lt_succ_aux uses this recursion before bounding each finite-maximum term. Complete inlining compiles but preserves the same mathematical argument; it is not evidence of dead code or a recommendation to delete the named Lemma6 stage.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -4938,6 +4975,7 @@ Completed `Roth.index_le_lem6`: The live sole caller Θ_option_le uses the exist
 | 211 | `Roth.mapped_det_ne_zero_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.mapped_det_ne_zero_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.mapped_det_ne_zero_aux/root-acceptance.json) |
 | 212 | `Roth.index_numeric_bound_aux` | SKIP | [Report](.mathlib-quality/overview/mathlibable/Roth.index_numeric_bound_aux.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.index_numeric_bound_aux/root-acceptance.json) |
 | 213 | `Roth.index_le_lem6` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.index_le_lem6.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.index_le_lem6/root-acceptance.json) |
+| 214 | `Roth.Θ_option_le` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.Θ_option_le.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.Θ_option_le/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -5363,12 +5401,14 @@ Completed `Roth.index_numeric_bound_aux` action: Keep unchanged; complete privat
 
 Completed `Roth.index_le_lem6` action: Retain in Roth/Theta.lean. Prefer the verified no-q, positive-natural-weight interface if later editing; decide future upstream leaf vs reusable ingredient scope separately. No production source change in this overview.
 
+Completed `Roth.Θ_option_le` action: Retain the named Lemma6 endpoint in Roth/Theta.lean. If editing later, prefer the verified arbitrary-B/no-positive-denominator/positive-distinguished-weight interface and update the sole caller as demonstrated. Consider upstreaming reusable ingredients separately; no production edits in this review.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.Θ_option_le` next. Supporting identities receive their own applicable checks.
+   `Roth.factorial_coefficient_le_two_pow_aux` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

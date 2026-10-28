@@ -1,0 +1,55 @@
+import Mathlib.Algebra.MonoidAlgebra.Degree
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Order.ConditionallyCompleteLattice.Finset
+import Mathlib.Basic.Real.Basic
+import Mathlib.Data.Finsupp.Weight
+import Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors
+import Mathlib.Tactic
+import Mathlib.Algebra.Polynomial.RingDivision
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Algebra.MvPolynomial.NoZeroDivisors
+import Mathlib.LinearAlgebra.FreeModule.PID
+import Mathlib.RingTheory.MvPolynomial.Localization
+import Mathlib.RingTheory.Localization.Integer
+import Mathlib.RingTheory.Localization.FractionRing
+import Mathlib.RingTheory.Polynomial.GaussLemma
+import Mathlib.RingTheory.Polynomial.RationalRoot
+import Mathlib.Algebra.Polynomial.DenomsClearable
+import Mathlib.Algebra.Order.Archimedean.Real.Basic
+
+#check_failure Roth.Θ_option_le
+#check @Real.sSup_le
+#check @csSup_le
+#check @Finset.le_sup'_of_le
+#check @Finset.le_sup'_iff
+#check @Finset.sup'_le_iff
+#check @AddMonoidAlgebra.infDegree
+#check @MvPowerSeries.weightedOrder_mul
+namespace ThetaOption214Isolated
+theorem abstract {α ι : Type*} [ConditionallyCompleteLinearOrder α] {S : Set α}
+    (hS : S.Nonempty) {s : Finset ι} (hs : s.Nonempty) (g : ι → α)
+    (h : ∀ x ∈ S, ∃ i ∈ s, x ≤ g i) : sSup S ≤ s.sup' hs g :=
+  csSup_le hS fun x hx ↦ by
+    obtain ⟨i, hi, hxi⟩ := h x hx
+    exact Finset.le_sup'_of_le g hi hxi
+theorem real {ι : Type*} {S : Set ℝ} {s : Finset ι} (hs : s.Nonempty) (g : ι → ℝ)
+    (h : ∀ x ∈ S, ∃ i ∈ s, x ≤ g i) (h0 : 0 ≤ s.sup' hs g) :
+    sSup S ≤ s.sup' hs g :=
+  Real.sSup_le (fun x hx ↦ by
+    obtain ⟨i, hi, hxi⟩ := h x hx
+    exact Finset.le_sup'_of_le g hi hxi) h0
+theorem witness_iff {ι : Type*} {s : Finset ι} (hs : s.Nonempty)
+    (g : ι → ℝ) (a : ℝ) : a ≤ s.sup' hs g ↔ ∃ i ∈ s, a ≤ g i :=
+  Finset.le_sup'_iff hs
+theorem empty_guard :
+    (∀ x ∈ (∅ : Set ℝ), x ≤ -1) ∧ ¬sSup (∅ : Set ℝ) ≤ -1 := by
+  simp [Real.sSup_empty]
+theorem zero_order_guard (w : Unit → ℕ) :
+    MvPowerSeries.weightedOrder w (0 : MvPowerSeries Unit ℝ) = ⊤ :=
+  MvPowerSeries.weightedOrder_zero w
+#print axioms abstract
+#print axioms real
+#print axioms witness_iff
+#print axioms empty_guard
+#print axioms zero_order_guard
+end ThetaOption214Isolated

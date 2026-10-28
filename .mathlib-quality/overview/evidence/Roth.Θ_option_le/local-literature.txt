@@ -1,0 +1,126 @@
+
+Let $m$ be a natural number $m \geq 1$. For positive integers $r_1, \dots, r_m$ and a real number $B \geq 1$ we let
+$$
+\mathcal R_m = \mathcal R_m (B; r_1, \dots, r_m)
+$$
+be the set of polynomials $R(x_1, \dots, x_m)$ in the variables $x_1, \dots, x_m$ such that:
+\begin{enumerate}
+    \item $R$ has integral coefficients and is not identically zero;
+    \item $R$ has degree at most $r_j$ in $x_j$ for $1 \leq j \leq m$;
+    \item the coefficients of $R$ have absolute values not exceeding $B$.
+\end{enumerate}
+
+Let $q_1, \dots, q_m$ denote positive integers. We define
+$$
+\Theta_m(B; q_1, \dots, q_m; r_1, \dots, r_m)
+$$
+to be the supremum of the numbers
+$$
+\ind (R; \frac{h_1}{q_1}, \dots, \frac{h_m}{q_m}; r_1, \dots, r_m)
+$$
+over all $R \in \mathcal R_m(B; r_1, \dots, r_m)$ and integers $h_i$, $1 \leq i \leq m$, with $\gcd(h_i, q_i)=1$.
+This supremum is well-defined and satisfies $0\leq\Theta_m\leq m$:
+the constant polynomial $1$ with every $h_i=1$ is allowed, and Taylor's theorem gives a nonzero
+derivative with $0\leq i_j\leq r_j$, of weight at most $m$.
+Also, $\Theta_m$ is nondecreasing in $B$, since increasing $B$ enlarges the
+set of allowed polynomials.
+
+\begin{lem}\label{roth:lem5}
+    Suppose additionally that $q_1>1$. Then we have
+    $$
+    \Theta_1(B; q_1; r_1) \leq \frac{\log B}{r_1 \log q_1}.
+    $$
+\end{lem}
+\begin{proof}
+    Let $R\in\mathcal R_1(B;r_1)$ and $\gcd(h_1,q_1)=1$.
+    Let $t\in\N$ be the multiplicity of $h_1/q_1$ as a root of $R$;
+    Taylor's theorem gives $\theta=\ind(R;h_1/q_1;r_1)=t/r_1$.
+    The polynomial $(q_1x_1-h_1)^t$ is primitive and divides $R$ over $\Q$.
+    Gauss's lemma therefore gives a nonzero $Q\in\Z[x_1]$ with
+    \[
+    R(x_1)=(q_1x_1-h_1)^tQ(x_1).
+    \]
+    Comparing nonzero leading coefficients yields
+    \[
+    B\geq|\operatorname{lc}(R)|
+       =q_1^t|\operatorname{lc}(Q)|\geq q_1^t.
+    \]
+    Since $\log q_1>0$ and $r_1>0$, taking logarithms gives
+    $\theta\leq\log B/(r_1\log q_1)$. Taking the supremum proves the claim.
+\end{proof}
+
+\lean{First identify the one-variable index with $t/r_1$, where $t$ is the
+natural-number root multiplicity. Use
+Gauss's lemma\footnote{\url{https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/Polynomial/GaussLemma.html}}
+for the primitive polynomial $(q_1X-h_1)^t$, compare leading coefficients
+in $\Z$, and only then cast to $\R$ and take logarithms, using $q_1>1$.
+For $\Theta_m$, record nonemptiness and boundedness of the defining family,
+together with lemmas for bounding an individual index and monotonicity in
+$B$, before using the supremum.}
+
+\begin{lem}\label{roth:lem6}
+    Let $p \geq 2$ be a positive integer, and let $0 < \delta <1$. Let $r_1, \dots, r_p$ be positive integers satisfying
+    $$
+    r_p > 10 \delta^{-1}, \quad r_{j-1}/r_j > \delta^{-1}, \text{ for } 2 \leq j \leq p.
+    $$
+    Also, let $q_1, \dots, q_p$ be positive integers. Then
+    \begin{equation}\label{roth:eq13}
+    \Theta_p(B; q_1, \dots, q_p; r_1, \dots, r_p) \leq
+    2 \max_l (\Phi + \Phi^{1/2}+ \delta^{1/2}),
+    \end{equation}
+    where the maximum is taken over integers $l$ satisfying
+    $$
+    1 \leq l \leq r_p +1,
+    $$
+    and where
+    \begin{equation}\label{roth:eq15}
+    \Phi = \Theta_1(M; q_p; lr_p) + \Theta_{p-1}(M; q_1, \dots, q_{p-1}; lr_1, \dots, lr_{p-1})
+    \end{equation}
+    and
+    \begin{equation}\label{roth:eq16}
+    M= (r_1+1)^{pl} l! B^l 2^{plr_1}.
+    \end{equation}
+\end{lem}
+\begin{proof}
+    Let $R\in\mathcal R_p(B;r_1,\dots,r_p)$ and choose integers $h_1,\dots,h_p$ with $\gcd(h_i,q_i)=1$ for every $i$. We need to show that the index
+    $$
+    \ind(R; \frac{h_1}{q_1}, \dots, \frac{h_p}{q_p}; r_1, \dots, r_p)
+    $$
+    is bounded by the right hand side of \eqref{roth:eq13}.
+
+
+       >\delta_1^{-1}(p-1)(2p-1).
+    \]
+    The balanced-logarithm inequalities are unchanged when every degree is
+    multiplied by $l$. Hence all four hypotheses hold. By the induction hypothesis,
+    $$
+    \Theta_{p-1}(q_1^{\delta_1 l r_1}; q_1, \dots, q_{p-1}; lr_1, \dots, lr_{p-1}) < 10^{p-1} \delta_1^{(1/2)^{p-1}}.
+    $$
+    Then
+    $$
+    \Phi < \delta_1 +  10^{p-1} \delta_1^{(1/2)^{p-1}} = \delta (1+p^{-1}) + 10^{p-1} \delta^{(1/2)^{p-1}} (1+p^{-1})^{(1/2)^{p-1}}
+    $$
+    $$
+    < 2 \delta + 2 \cdot 10^{p-1} \delta^{(1/2)^{p-1}} < 3\cdot 10^{p-1} \delta^{(1/2)^{p-1}}.
+    $$
+    Here we have used the fact that $\delta_1 < 2 \delta$ and
+    $$
+    (1+p^{-1})^{(1/2)^{p-1}} < 2,
+    $$
+    which are both easily verified. Also $0<\delta<1$, so
+    $\delta\leq\delta^{2^{-(p-1)}}$, justifying the last absorption above.
+    For every allowed $l$, Lemma \ref{roth:lem6} therefore gives the same
+    strict upper bound, and the maximum is over a nonempty finite set.
+    Set $a=\delta^{2^{-p}}$. Then
+    $\delta^{2^{-(p-1)}}=a^2\leq a$ and $\delta^{1/2}\leq a$. Consequently,
+    \begin{align*}
+    \Theta_p(q_1^{\delta r_1};q_1,\dots,q_p;r_1,\dots,r_p)
+    &<2\left(3\cdot10^{p-1}a^2+
+       \sqrt3\,10^{(p-1)/2}a+\delta^{1/2}\right)\\
+    &\leq2\left(\frac3{10}+\frac{\sqrt3}{10^{(p+1)/2}}
+                         +\frac1{10^p}\right)10^pa\\
+    &\leq2\left(\frac3{10}+\frac{\sqrt3}{10^{3/2}}
+                         +\frac1{10^2}\right)10^pa
+      <10^pa.
+    \end{align*}
+    Here $p\geq2$ and the numerical coefficient in the last line is less

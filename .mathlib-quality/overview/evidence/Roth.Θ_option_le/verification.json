@@ -1,0 +1,164 @@
+{
+  "declaration": "Roth.Θ_option_le",
+  "unresolved": [],
+  "standard_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "accepted": [
+    {
+      "label": "original",
+      "format": "disk",
+      "source": "original-executed.lean.txt",
+      "source_sha256": "08253d14821fcc490552225a9ee689ffa211edacd397845c641f3a0cd9d7df25",
+      "receipt": "original-receipt.json",
+      "native_region_start_line": 16,
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "required_info": [
+        "'ThetaOption214.replay' depends on axioms:",
+        "'ThetaOption214.Θ_lt' depends on axioms:"
+      ]
+    },
+    {
+      "label": "broader",
+      "format": "disk",
+      "source": "broader-executed.lean.txt",
+      "source_sha256": "339e8fac39eea45c1a0b3f5c5579fe14a6252ef82c49af0184bf77255f4c6686",
+      "receipt": "broader-receipt.json",
+      "native_region_start_line": 16,
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "required_info": [
+        "'ThetaOption214Broader.replay' depends on axioms:",
+        "'ThetaOption214Broader.Θ_lt' depends on axioms:"
+      ]
+    },
+    {
+      "label": "lowdegree",
+      "format": "disk",
+      "source": "lowdegree-executed.lean.txt",
+      "source_sha256": "051e37507fb92e1140a51fb1e244623093b2ced430fb3103444617b2cd102c9e",
+      "receipt": "lowdegree-receipt.json",
+      "native_region_start_line": 16,
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "required_info": [
+        "'ThetaOption214Low.replay' depends on axioms:",
+        "'ThetaOption214Low.Θ_lt' depends on axioms:"
+      ]
+    },
+    {
+      "label": "inline",
+      "format": "disk",
+      "source": "inline-executed.lean.txt",
+      "source_sha256": "f113e307858077e8a31baa8c309bc1f9b53991ace0fea05ad959053f2fea8ed7",
+      "receipt": "inline-receipt.json",
+      "native_region_start_line": 958,
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "required_info": [
+        "'ThetaOption214.callerInline' depends on axioms:"
+      ]
+    },
+    {
+      "label": "guards",
+      "format": "disk",
+      "source": "guards-executed.lean.txt",
+      "source_sha256": "5c8bb2087cd42cdfc532112d50e8beaed20ee71a6f30a69471d86a7bf07e1c1a",
+      "receipt": "guards-receipt.json",
+      "native_region_start_line": 1016,
+      "original_execution_request": {
+        "file_path": ".lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 45
+      },
+      "required_info": [
+        "'ThetaOption214Guards.smallB_empty' depends on axioms:",
+        "'ThetaOption214Guards.smallB_theta_zero' depends on axioms:"
+      ]
+    },
+    {
+      "label": "isolated",
+      "format": "raw",
+      "source": "isolated-executed.lean.txt",
+      "source_sha256": "8f8d215347d23e9dfed734cbe9a2f4bcad35519c303740edc63ba3a49fed9315",
+      "receipt": "isolated-receipt.json",
+      "native_region_start_line": 20,
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.Θ_option_le\n#check @Real.sSup_le\n#check @csSup_le\n#check @Finset.le_sup'_of_le\n#check @Finset.le_sup'_iff\n#check @Finset.sup'_le_iff\n#check @AddMonoidAlgebra.infDegree\n#check @MvPowerSeries.weightedOrder_mul\nnamespace ThetaOption214Isolated\ntheorem abstract {α ι : Type*} [ConditionallyCompleteLinearOrder α] {S : Set α}\n    (hS : S.Nonempty) {s : Finset ι} (hs : s.Nonempty) (g : ι → α)\n    (h : ∀ x ∈ S, ∃ i ∈ s, x ≤ g i) : sSup S ≤ s.sup' hs g :=\n  csSup_le hS fun x hx ↦ by\n    obtain ⟨i, hi, hxi⟩ := h x hx\n    exact Finset.le_sup'_of_le g hi hxi\ntheorem real {ι : Type*} {S : Set ℝ} {s : Finset ι} (hs : s.Nonempty) (g : ι → ℝ)\n    (h : ∀ x ∈ S, ∃ i ∈ s, x ≤ g i) (h0 : 0 ≤ s.sup' hs g) :\n    sSup S ≤ s.sup' hs g :=\n  Real.sSup_le (fun x hx ↦ by\n    obtain ⟨i, hi, hxi⟩ := h x hx\n    exact Finset.le_sup'_of_le g hi hxi) h0\ntheorem witness_iff {ι : Type*} {s : Finset ι} (hs : s.Nonempty)\n    (g : ι → ℝ) (a : ℝ) : a ≤ s.sup' hs g ↔ ∃ i ∈ s, a ≤ g i :=\n  Finset.le_sup'_iff hs\ntheorem empty_guard :\n    (∀ x ∈ (∅ : Set ℝ), x ≤ -1) ∧ ¬sSup (∅ : Set ℝ) ≤ -1 := by\n  simp [Real.sSup_empty]\ntheorem zero_order_guard (w : Unit → ℕ) :\n    MvPowerSeries.weightedOrder w (0 : MvPowerSeries Unit ℝ) = ⊤ :=\n  MvPowerSeries.weightedOrder_zero w\n#print axioms abstract\n#print axioms real\n#print axioms witness_iff\n#print axioms empty_guard\n#print axioms zero_order_guard\nend ThetaOption214Isolated\n"
+      },
+      "required_info": [
+        "'ThetaOption214Isolated.abstract' depends on axioms:",
+        "'ThetaOption214Isolated.real' depends on axioms:",
+        "'ThetaOption214Isolated.witness_iff' depends on axioms:",
+        "'ThetaOption214Isolated.empty_guard' depends on axioms:",
+        "'ThetaOption214Isolated.zero_order_guard' depends on axioms:"
+      ]
+    }
+  ],
+  "rejected": [
+    {
+      "source": "broader-rejected-executed.lean.txt",
+      "receipt": "broader-rejected-receipt.json",
+      "reason": "The prior213 caller used _hq; draft binding removal missed it and hB, leaving arguments at the changed caller. Recovered sorryAx is excluded from accepted executions."
+    },
+    {
+      "source": "inline-rejected-executed.lean.txt",
+      "receipt": "inline-rejected-receipt.json",
+      "reason": "Appended caller in a new namespace could not access private module helpers; local Type* binder also introduced an escaping universe. Fixed by reopening the replay namespace and specializing the local inline helper to Type, sufficient for the actual Fin caller."
+    }
+  ],
+  "incomplete_not_accepted": [
+    "original-warming-receipt.json"
+  ],
+  "preparation_notes": [
+    "Inline width guard failed before write/native and was corrected.",
+    "One binding-removal preparation assertion failed; an accidental unchanged diagnostic query repeated the already rejected broader draft. It adds no accepted evidence and was superseded by the clean corrected source."
+  ],
+  "audit": {
+    "source": "original-executed.lean.txt",
+    "receipt": "original-receipt.json",
+    "marker": "THETAOPTION214",
+    "requested": 293,
+    "unique": 293,
+    "present": 293,
+    "values": 293
+  },
+  "canonical_direct_consumers": [
+    "_private.Roth.Theta.0.Roth.theta_lt_succ_aux"
+  ],
+  "composition": {
+    "strict_three_existing_call_whole_endpoint": false,
+    "outer_transport_existing_mathlib": true,
+    "project_rank_witness_not_existing_mathlib": true,
+    "new_helpers_not_existing_mathlib": true,
+    "source_callers": 1,
+    "complete_actual_caller_inline": true,
+    "whole_original_module": true,
+    "whole_broader_modules": true,
+    "original_caller_statement_preserved": true,
+    "original_Θ_lt_statement_preserved": true
+  },
+  "generalization": {
+    "positive_denominator_removed": true,
+    "B_threshold_removed": true,
+    "natural_distinguished_weight_three_to_one": true,
+    "new_quadratic_half_proof_carried": true,
+    "small_B_empty_family_zero_supremum": true,
+    "arbitrary_order_outer_transport": true,
+    "full_coefficient_ring_generalization_claimed": false,
+    "zero_distinguished_weight_necessity_claimed": false,
+    "maximality_claimed": false
+  },
+  "active_virtual_import_count": 18,
+  "persistent_disk_import_count": 9
+}
