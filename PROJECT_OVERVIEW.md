@@ -1,6 +1,6 @@
 # Project overview: Roth
 
-Updated: 2026-10-28. **IN PROGRESS — 231/293 declaration assessments complete.**
+Updated: 2026-10-28. **IN PROGRESS — 232/293 declaration assessments complete.**
 
 ## Executive summary
 
@@ -28,8 +28,8 @@ a partial assessment of the remaining declarations. See the completed-only
 
 - Production Lean files: 14; written declarations: 293 (28 definitions,191 theorems,74 lemmas).
 - Visibility:215 public,78 private; root Roth.lean has no declarations.
-- Completed applicable assessments: 231; remaining: 62.
-- Verdicts: 19 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 74 BORDERLINE-needs-human, 54 SKIP.
+- Completed applicable assessments: 232; remaining: 61.
+- Verdicts: 20 NO-composable-from-mathlib, 13 YES-add-as-is, 27 YES-but-generalise-first, 44 NO-mathlib-has-it, 74 BORDERLINE-needs-human, 54 SKIP.
 - Baseline full build:PASS,2,467 jobs; sources and pins unchanged.
 
 ## Part 1: Declaration inventory
@@ -2846,6 +2846,16 @@ entries are published only after the corresponding full applicable workflow is c
 - Caller summary: 18 executable lexical occurrences in eight declarations (five MainLemma, three Main); eight direct kernel types and eight direct values with different member sets. Full written proofs replayed with all eight original signatures; kernel-only roth_of_isIntegral also replayed.
 - Verdict: BORDERLINE-needs-human; [complete report](.mathlib-quality/overview/mathlibable/Roth.eta.md).
 
+### Completed: `Roth.mainCoeffBound`
+
+- Type: `ℝ → ℕ → ℕ → ℕ`
+- What: Chooses the natural coefficient cutoff B₁=⌊q₁^(δr₁)⌋ for the main lemma counting argument.
+- How: Applies the existing natural floor to a real power with exponent δ times the natural degree cast to ℝ.
+- Hypotheses: Any real δ and natural q₁,r₁, with no positivity hypotheses; zero exponent yields1 even at q₁=0, whereas q₁>1,r₁>0,δ<0 yields0.
+- Project dependencies: None
+- Caller summary: 21 executable lexical occurrences in8 declarations (6 MainLemma,2 Main); direct kernel8 type consumers and9 value consumers. Full actual proofs in both modules replayed; all8 original signatures preserved; final integral Roth theorem replayed too.
+- Verdict: NO-composable-from-mathlib; [complete report](.mathlib-quality/overview/mathlibable/Roth.mainCoeffBound.md).
+
 ## Part 2: Cross-file dependencies
 
 | File | Project imports | Written declarations |
@@ -3334,6 +3344,8 @@ Completed `Roth.gam`: Real subtraction, division, Nat.cast and Real.sqrt already
 
 Completed `Roth.eta`: Uses existing natural power, multiplication, division and Real.rpow. Real.rpow_mul/sqrt_eq_rpow support a new nonnegative iterated-root bridge; NNReal.coe_rpow gives a typed representation bridge. Neither representation is an existing named eta counterpart. All15 formal cells completed; external index revisions differ and local index reported error.
 
+Completed `Roth.mainCoeffBound`: Nat.floor + Real.rpow + multiplication gives strict3 existing-operation construction; checked rfl against original and independently in mathlib-only context. Nat.floor_le/lt_floor_add_one preserve both endpoints; floor_pos and Int.le_floor cover positivity and integral coefficient transport. All15 formal cells run; local symbol index error and external snapshot differences disclosed.
+
 ## Part 4: Moral duplications
 
 For the completed declaration, no second independent implementation of the same support
@@ -3797,6 +3809,8 @@ Completed `Roth.lam`: The literal cutoff reappears as 4*c*f.natDegree*sqrt m in 
 Completed `Roth.gam`: Expanded cutoff occurs in private rpow-bound/counting helpers with c replacing 1+3δ. This is a specialization link, not a duplicate declaration to delete.
 
 Completed `Roth.eta`: The same dyadic profile occurs in Roth.lem7_Φ_bound with factor3; the exact eta expression occurs in Roth.lem7_numeric and Θ_lt endpoints/helpers. A future shared name must precede Theta to avoid MainLemma→Theta import cycle. lam is a square-root dimension loss; gam is the large-index threshold; neither equals this nonlinear small-index error.
+
+Completed `Roth.mainCoeffBound`: Same floor-of-power pattern appears as Cn in exists_mem_RSet_le_index_of_rpow_bound_aux and in pigeonhole_count, with different bases/exponents. Existing sqrt_lt_floor already isolates the generic square-root floor argument; the named B1 is its application, not new rounding machinery.
 
 ## Part 5: Generalization opportunities
 
@@ -4272,6 +4286,8 @@ Completed `Roth.gam`: Compiled real-parameter formula and polymorphic Field half
 
 Completed `Roth.eta`: Compiled new profile (C b δ : ℝ) (m : ℕ) ↦ C^m*δ^(b^m), its dimension0/zero/positive laws, nonnegative root interpretation and NNReal bridge. These are expanded representations, not a verified literature-standard weakening of a hypothesis. Real.rpow negative-base cosine convention prevents blanket replacement by iterated principal roots or NNReal.
 
+Completed `Roth.mainCoeffBound`: Compiled floorPower (q e : ℝ) := ⌊q^e⌋₊ and an arbitrary FloorSemiring order characterization using existing Nat.le_floor_iff. These are expanded representations/existing infrastructure rather than a new literature-standard hypothesis weakening. Replacing the natural output with raw real power or globally claiming continuity changes the interface.
+
 ## Part 6: API improvements
 
 A named coefficient may belong with a coherent multivariate Hasse derivative package.
@@ -4736,6 +4752,8 @@ Completed `Roth.lam`: No missing basic sqrt/arithmetic/continuity API shown. Pot
 Completed `Roth.gam`: No arithmetic infrastructure gap. A gamma continuity lemma can shorten exists_delta locally; proof compiled by fun_prop after unfolding. The substantive reusable index/counting API should be assessed separately.
 
 Completed `Roth.eta`: No arithmetic infrastructure gap. A local eta continuity/zero API could shorten exists_delta_bound and exists_delta; project-context proofs compile with existing Real.continuous_rpow_const/zero_rpow. Upstream reusable index-estimate semantics remain an API design question.
+
+Completed `Roth.mainCoeffBound`: No missing arithmetic API needed for this definition. The isolated sqrtLower proof is new assessment evidence of the earlier project generic floor estimate, not an existing mathlib replacement or an automatic verdict for that theorem.
 
 ## Part 7: Junk / removable
 
@@ -5204,6 +5222,8 @@ Completed `Roth.gam`: Used semantic parameter; not dead code. One-line public ve
 
 Completed `Roth.eta`: Used semantic parameter, not dead code. Full inlining is mechanically possible, but one-line construction alone does not settle public versus local status.
 
+Completed `Roth.mainCoeffBound`: Used local numerical notation, not dead code. Redundant as a standalone mathlib contribution because the exact construction uses3 existing operations; local semantic convenience remains valid.
+
 ## Part 8: Mathlibable assessment
 
 | # | Declaration | Verdict | Detail and evidence |
@@ -5439,6 +5459,7 @@ Completed `Roth.eta`: Used semantic parameter, not dead code. Full inlining is m
 | 229 | `Roth.lam` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.lam.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.lam/root-acceptance.json) |
 | 230 | `Roth.gam` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.gam.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.gam/root-acceptance.json) |
 | 231 | `Roth.eta` | BORDERLINE-needs-human | [Report](.mathlib-quality/overview/mathlibable/Roth.eta.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.eta/root-acceptance.json) |
+| 232 | `Roth.mainCoeffBound` | NO-composable-from-mathlib | [Report](.mathlib-quality/overview/mathlibable/Roth.mainCoeffBound.md) · [Acceptance](.mathlib-quality/overview/evidence/Roth.mainCoeffBound/root-acceptance.json) |
 
 All remaining declarations are unfinished; none has an assigned final verdict here.
 
@@ -5900,12 +5921,14 @@ Completed `Roth.gam` action: BORDERLINE-needs-human: retain project definition d
 
 Completed `Roth.eta` action: BORDERLINE-needs-human: retain during read-only overview; settle two future upstream API questions about shared dyadic-error naming and dependency placement. No production change or import-cycle introduced.
 
+Completed `Roth.mainCoeffBound` action: NO-composable-from-mathlib. For upstream preparation inline ⌊(q : ℝ)^(δ*r)⌋₊ at all8 callers and remove only the name/unfold entry, retaining all Nat/Int/Real casts. A project-local definition or scoped notation in Roth/MainLemma.lean remains a sensible alternative. Production unchanged.
+
 ## Recommended action plan
 
 1. Retain the useful local coefficient alias while assessing the complete Hasse API.
 2. Do not submit a standalone PR for this direct two-operation definition.
 3. Prepare the multivariate Hasse operator for a future coherent mathlib contribution; assess
-   `Roth.mainCoeffBound` next. Supporting identities receive their own applicable checks.
+   `Roth.boxFamily` next. Supporting identities receive their own applicable checks.
 4. Preserve all per-declaration query/proof/log evidence and publish only accepted complete assessments.
 5. Keep production Lean sources and pins unchanged; use a warm server and bounded, batched scratch checks.
 

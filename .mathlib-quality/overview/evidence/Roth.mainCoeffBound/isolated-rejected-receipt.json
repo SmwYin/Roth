@@ -1,0 +1,320 @@
+{
+  "request": {
+    "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.mainCoeffBound\n#check_failure Roth.sqrt_lt_floor\n#check @Nat.floor\n#check @Real.rpow\n#check @Nat.floor_le\n#check @Nat.lt_floor_add_one\n#check @Nat.floor_pos\n#check @Nat.le_floor_iff\n#check @FloorSemiring.gc_floor\n#check @Int.natCast_floor_eq_floor\n#check @Int.le_floor\n#check @Real.zero_rpow\n#check @Real.rpow_lt_one_of_one_lt_of_neg\nnamespace Coeff232Isolated\nnoncomputable def formula (δ : ℝ) (q r : ℕ) : ℕ :=\n  Nat.floor (Real.rpow (q : ℝ) (δ * (r : ℝ)))\nnoncomputable def floorPower (q e : ℝ) : ℕ := ⌊q ^ e⌋₊\ntheorem direct (δ : ℝ) (q r : ℕ) :\n    formula δ q r = Nat.floor (Real.rpow (q : ℝ) (δ * (r : ℝ))) := rfl\ntheorem expanded (δ : ℝ) (q r : ℕ) : formula δ q r = floorPower q (δ * r) := rfl\ntheorem endpoints (q e : ℝ) (hq : 0 ≤ q) :\n    (floorPower q e : ℝ) ≤ q ^ e ∧ q ^ e < (floorPower q e : ℝ) + 1 :=\n  ⟨Nat.floor_le (Real.rpow_nonneg hq e), Nat.lt_floor_add_one _⟩\ntheorem coefficientInterval (X : ℝ) (hX : 0 ≤ X) (z : ℤ) :\n    |z| ≤ (⌊X⌋₊ : ℤ) ↔ |(z : ℝ)| ≤ X := by\n  rw [Int.natCast_floor_eq_floor hX, Int.le_floor, Int.cast_abs]\ntheorem positive (δ : ℝ) (q r : ℕ) :\n    0 < formula δ q r ↔ 1 ≤ (q : ℝ) ^ (δ * r) := Nat.floor_pos\ntheorem zeroExponent (q : ℝ) : floorPower q 0 = 1 := by simp [floorPower]\ntheorem deltaZero (q r : ℕ) : formula 0 q r = 1 := by simp [formula]\ntheorem degreeZero (δ : ℝ) (q : ℕ) : formula δ q 0 = 1 := by simp [formula]\ntheorem baseOne (δ : ℝ) (r : ℕ) : formula δ 1 r = 1 := by simp [formula]\ntheorem baseZero (δ : ℝ) (r : ℕ) :\n    formula δ 0 r = if δ * (r : ℝ) = 0 then 1 else 0 := by\n  by_cases h : δ * (r : ℝ) = 0\n  · simp [formula, h]\n  · simp [formula, Real.zero_rpow h, h]\ntheorem negativeDelta (δ : ℝ) (q r : ℕ) (hδ : δ < 0) (hq : 1 < q) (hr : 0 < r) :\n    formula δ q r = 0 := by\n  apply Nat.floor_eq_zero.2\n  exact Real.rpow_lt_one_of_one_lt_of_neg (by exact_mod_cast hq)\n    (mul_neg_of_neg_of_pos hδ (by exact_mod_cast hr))\ntheorem negativeExample : formula (-1) 2 1 = 0 := negativeDelta _ _ _ (by norm_num)\n  (by norm_num) (by norm_num)\ntheorem natExponent (q r : ℕ) : formula 1 q r = q ^ r := by\n  simp [formula, Real.rpow_natCast]\ntheorem integerEndpoint : (formula 1 2 1 : ℝ) = (2 : ℝ) ^ (1 * (1 : ℕ)) := by\n  norm_num [natExponent]\ntheorem sqrtLower {X : ℝ} (hX : 2 ≤ X) : √X < ⌊X⌋₊ := by\n  have hf : (2 : ℝ) ≤ ⌊X⌋₊ := by exact_mod_cast Nat.le_floor hX\n  exact (Real.sqrt_lt' (by positivity)).2\n    (by nlinarith only [Nat.lt_floor_add_one X, hf])\ntheorem abstractFloor {K : Type*} [Semiring K] [PartialOrder K] [FloorSemiring K]\n    {x : K} (hx : 0 ≤ x) (n : ℕ) : n ≤ ⌊x⌋₊ ↔ (n : K) ≤ x := Nat.le_floor_iff hx\n#check_failure (inferInstance : CoeFun ℕ (fun _ : ℕ ↦ ℝ → ℝ))\n#print axioms formula\n#print axioms floorPower\n#print axioms direct\n#print axioms expanded\n#print axioms endpoints\n#print axioms coefficientInterval\n#print axioms positive\n#print axioms zeroExponent\n#print axioms deltaZero\n#print axioms degreeZero\n#print axioms baseOne\n#print axioms baseZero\n#print axioms negativeDelta\n#print axioms negativeExample\n#print axioms natExponent\n#print axioms integerEndpoint\n#print axioms sqrtLower\n#print axioms abstractFloor\nend Coeff232Isolated\n"
+  },
+  "result": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"success\": false,\n  \"timed_out\": false,\n  \"diagnostics\": [\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.mainCoeffBound`\",\n      \"line\": 20,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Unknown identifier `Roth.sqrt_lt_floor`\",\n      \"line\": 21,\n      \"column\": 16,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Nat.floor : {α : Type u_1} → [inst : Semiring α] → [inst_1 : PartialOrder α] → [FloorSemiring α] → α → ℕ\",\n      \"line\": 22,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"Real.rpow : ℝ → ℝ → ℝ\",\n      \"line\": 23,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Nat.floor_le : ∀ {R : Type u_1} [inst : Semiring R] [inst_1 : LinearOrder R] [inst_2 : FloorSemiring R] {a : R},\\n  0 ≤ a → ↑⌊a⌋₊ ≤ a\",\n      \"line\": 24,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Nat.lt_floor_add_one : ∀ {R : Type u_1} [inst : Semiring R] [inst_1 : LinearOrder R] [inst_2 : FloorSemiring R]\\n  (a : R), a < ↑⌊a⌋₊ + 1\",\n      \"line\": 25,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Nat.floor_pos : ∀ {R : Type u_1} [inst : Semiring R] [inst_1 : LinearOrder R] [inst_2 : FloorSemiring R] {a : R}\\n  [IsStrictOrderedRing R], 0 < ⌊a⌋₊ ↔ 1 ≤ a\",\n      \"line\": 26,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Nat.le_floor_iff : ∀ {α : Type u_1} [inst : Semiring α] [inst_1 : PartialOrder α] [inst_2 : FloorSemiring α] {a : α}\\n  {n : ℕ}, 0 ≤ a → (n ≤ ⌊a⌋₊ ↔ ↑n ≤ a)\",\n      \"line\": 27,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@FloorSemiring.gc_floor : ∀ {α : Type u_1} {inst : Semiring α} {inst_1 : PartialOrder α} [self : FloorSemiring α]\\n  {a : α} {n : ℕ}, 0 ≤ a → (n ≤ FloorSemiring.floor a ↔ ↑n ≤ a)\",\n      \"line\": 28,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Int.natCast_floor_eq_floor : ∀ {R : Type u_1} [inst : Ring R] [inst_1 : LinearOrder R] [inst_2 : FloorRing R] {a : R},\\n  0 ≤ a → ↑⌊a⌋₊ = ⌊a⌋\",\n      \"line\": 29,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Int.le_floor : ∀ {α : Type u_1} [inst : Ring α] [inst_1 : LinearOrder α] [inst_2 : FloorRing α] {z : ℤ} {a : α},\\n  z ≤ ⌊a⌋ ↔ ↑z ≤ a\",\n      \"line\": 30,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.zero_rpow : ∀ {x : ℝ}, x ≠ 0 → 0 ^ x = 0\",\n      \"line\": 31,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"@Real.rpow_lt_one_of_one_lt_of_neg : ∀ {x z : ℝ}, 1 < x → z < 0 → x ^ z < 1\",\n      \"line\": 32,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"error\",\n      \"message\": \"unsolved goals\\nq r : ℕ\\n⊢ ⌊↑q ^ r⌋₊ = q ^ r\",\n      \"line\": 64,\n      \"column\": 58,\n      \"lean_tags\": [\n        \"unsolvedGoals\"\n      ],\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"failed to synthesize instance of type class\\n  CoeFun ℕ fun x ↦ ℝ → ℝ\\n\\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.\",\n      \"line\": 74,\n      \"column\": 17,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Coeff232Isolated.formula' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 75,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Coeff232Isolated.floorPower' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 76,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Coeff232Isolated.direct' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 77,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Coeff232Isolated.expanded' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 78,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Coeff232Isolated.endpoints' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 79,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Coeff232Isolated.coefficientInterval' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 80,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Coeff232Isolated.positive' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 81,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Coeff232Isolated.zeroExponent' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 82,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Coeff232Isolated.deltaZero' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 83,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Coeff232Isolated.degreeZero' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 84,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Coeff232Isolated.baseOne' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 85,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Coeff232Isolated.baseZero' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 86,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Coeff232Isolated.negativeDelta' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 87,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Coeff232Isolated.negativeExample' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 88,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Coeff232Isolated.natExponent' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 89,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Coeff232Isolated.integerEndpoint' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]\",\n      \"line\": 90,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Coeff232Isolated.sqrtLower' depends on axioms: [propext, Classical.choice, Quot.sound]\",\n      \"line\": 91,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    },\n    {\n      \"severity\": \"info\",\n      \"message\": \"'Coeff232Isolated.abstractFloor' does not depend on any axioms\",\n      \"line\": 92,\n      \"column\": 1,\n      \"lean_tags\": null,\n      \"category\": \"diagnostic\",\n      \"hint\": null\n    }\n  ]\n}"
+      }
+    ],
+    "structuredContent": {
+      "success": false,
+      "timed_out": false,
+      "diagnostics": [
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.mainCoeffBound`",
+          "line": 20,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Unknown identifier `Roth.sqrt_lt_floor`",
+          "line": 21,
+          "column": 16,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Nat.floor : {α : Type u_1} → [inst : Semiring α] → [inst_1 : PartialOrder α] → [FloorSemiring α] → α → ℕ",
+          "line": 22,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "Real.rpow : ℝ → ℝ → ℝ",
+          "line": 23,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Nat.floor_le : ∀ {R : Type u_1} [inst : Semiring R] [inst_1 : LinearOrder R] [inst_2 : FloorSemiring R] {a : R},\n  0 ≤ a → ↑⌊a⌋₊ ≤ a",
+          "line": 24,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Nat.lt_floor_add_one : ∀ {R : Type u_1} [inst : Semiring R] [inst_1 : LinearOrder R] [inst_2 : FloorSemiring R]\n  (a : R), a < ↑⌊a⌋₊ + 1",
+          "line": 25,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Nat.floor_pos : ∀ {R : Type u_1} [inst : Semiring R] [inst_1 : LinearOrder R] [inst_2 : FloorSemiring R] {a : R}\n  [IsStrictOrderedRing R], 0 < ⌊a⌋₊ ↔ 1 ≤ a",
+          "line": 26,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Nat.le_floor_iff : ∀ {α : Type u_1} [inst : Semiring α] [inst_1 : PartialOrder α] [inst_2 : FloorSemiring α] {a : α}\n  {n : ℕ}, 0 ≤ a → (n ≤ ⌊a⌋₊ ↔ ↑n ≤ a)",
+          "line": 27,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@FloorSemiring.gc_floor : ∀ {α : Type u_1} {inst : Semiring α} {inst_1 : PartialOrder α} [self : FloorSemiring α]\n  {a : α} {n : ℕ}, 0 ≤ a → (n ≤ FloorSemiring.floor a ↔ ↑n ≤ a)",
+          "line": 28,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Int.natCast_floor_eq_floor : ∀ {R : Type u_1} [inst : Ring R] [inst_1 : LinearOrder R] [inst_2 : FloorRing R] {a : R},\n  0 ≤ a → ↑⌊a⌋₊ = ⌊a⌋",
+          "line": 29,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Int.le_floor : ∀ {α : Type u_1} [inst : Ring α] [inst_1 : LinearOrder α] [inst_2 : FloorRing α] {z : ℤ} {a : α},\n  z ≤ ⌊a⌋ ↔ ↑z ≤ a",
+          "line": 30,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.zero_rpow : ∀ {x : ℝ}, x ≠ 0 → 0 ^ x = 0",
+          "line": 31,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "@Real.rpow_lt_one_of_one_lt_of_neg : ∀ {x z : ℝ}, 1 < x → z < 0 → x ^ z < 1",
+          "line": 32,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "error",
+          "message": "unsolved goals\nq r : ℕ\n⊢ ⌊↑q ^ r⌋₊ = q ^ r",
+          "line": 64,
+          "column": 58,
+          "lean_tags": [
+            "unsolvedGoals"
+          ],
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "failed to synthesize instance of type class\n  CoeFun ℕ fun x ↦ ℝ → ℝ\n\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.",
+          "line": 74,
+          "column": 17,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Coeff232Isolated.formula' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 75,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Coeff232Isolated.floorPower' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 76,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Coeff232Isolated.direct' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 77,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Coeff232Isolated.expanded' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 78,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Coeff232Isolated.endpoints' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 79,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Coeff232Isolated.coefficientInterval' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 80,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Coeff232Isolated.positive' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 81,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Coeff232Isolated.zeroExponent' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 82,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Coeff232Isolated.deltaZero' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 83,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Coeff232Isolated.degreeZero' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 84,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Coeff232Isolated.baseOne' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 85,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Coeff232Isolated.baseZero' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 86,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Coeff232Isolated.negativeDelta' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 87,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Coeff232Isolated.negativeExample' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 88,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Coeff232Isolated.natExponent' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 89,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Coeff232Isolated.integerEndpoint' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]",
+          "line": 90,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Coeff232Isolated.sqrtLower' depends on axioms: [propext, Classical.choice, Quot.sound]",
+          "line": 91,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        },
+        {
+          "severity": "info",
+          "message": "'Coeff232Isolated.abstractFloor' does not depend on any axioms",
+          "line": 92,
+          "column": 1,
+          "lean_tags": null,
+          "category": "diagnostic",
+          "hint": null
+        }
+      ]
+    },
+    "isError": false
+  },
+  "elapsed_ms": 117190
+}

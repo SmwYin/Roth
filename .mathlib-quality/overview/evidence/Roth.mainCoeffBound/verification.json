@@ -1,0 +1,167 @@
+{
+  "declaration": "Roth.mainCoeffBound",
+  "unresolved": [],
+  "standard_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "accepted": [
+    {
+      "label": "original",
+      "source": "original-executed.lean.txt",
+      "receipt": "original-receipt.json",
+      "source_sha256": "184883761bf3232365a6fb5e6725488130ca363a427eb631fbc353158f71994c",
+      "format": "disk",
+      "original_execution_request": {
+        "file_path": "/Users/ramin/LEAN/Roth/.lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 50
+      },
+      "native_region_start_line": 16,
+      "required_info": [
+        "COEFF232_FULL_TYPE: ℝ → ℕ → ℕ → ℕ",
+        "COEFF232_AUDIT: requested=293; unique=293",
+        "COEFF232_AUDIT_PRESENT: present=293; values=293"
+      ]
+    },
+    {
+      "label": "isolated",
+      "source": "isolated-executed.lean.txt",
+      "receipt": "isolated-receipt.json",
+      "source_sha256": "a8062b69e807d4bbe8538e6d796c82bd0b68d993806c22b3c12d2733bc2ca946",
+      "format": "raw",
+      "original_execution_request": {
+        "code": "import Mathlib.Algebra.MonoidAlgebra.Degree\nimport Mathlib.Algebra.MvPolynomial.Eval\nimport Mathlib.Order.ConditionallyCompleteLattice.Finset\nimport Mathlib.Basic.Real.Basic\nimport Mathlib.Data.Finsupp.Weight\nimport Mathlib.RingTheory.MvPowerSeries.NoZeroDivisors\nimport Mathlib.Tactic\nimport Mathlib.Algebra.Polynomial.RingDivision\nimport Mathlib.Algebra.Polynomial.Taylor\nimport Mathlib.Algebra.MvPolynomial.NoZeroDivisors\nimport Mathlib.LinearAlgebra.FreeModule.PID\nimport Mathlib.RingTheory.MvPolynomial.Localization\nimport Mathlib.RingTheory.Localization.Integer\nimport Mathlib.RingTheory.Localization.FractionRing\nimport Mathlib.RingTheory.Polynomial.GaussLemma\nimport Mathlib.RingTheory.Polynomial.RationalRoot\nimport Mathlib.Algebra.Polynomial.DenomsClearable\nimport Mathlib.Algebra.Order.Archimedean.Real.Basic\n\n#check_failure Roth.mainCoeffBound\n#check_failure Roth.sqrt_lt_floor\n#check @Nat.floor\n#check @Real.rpow\n#check @Nat.floor_le\n#check @Nat.lt_floor_add_one\n#check @Nat.floor_pos\n#check @Nat.le_floor_iff\n#check @FloorSemiring.gc_floor\n#check @Int.natCast_floor_eq_floor\n#check @Int.le_floor\n#check @Real.zero_rpow\n#check @Real.rpow_lt_one_of_one_lt_of_neg\nnamespace Coeff232Isolated\nnoncomputable def formula (δ : ℝ) (q r : ℕ) : ℕ :=\n  Nat.floor (Real.rpow (q : ℝ) (δ * (r : ℝ)))\nnoncomputable def floorPower (q e : ℝ) : ℕ := ⌊q ^ e⌋₊\ntheorem direct (δ : ℝ) (q r : ℕ) :\n    formula δ q r = Nat.floor (Real.rpow (q : ℝ) (δ * (r : ℝ))) := rfl\ntheorem expanded (δ : ℝ) (q r : ℕ) : formula δ q r = floorPower q (δ * r) := rfl\ntheorem endpoints (q e : ℝ) (hq : 0 ≤ q) :\n    (floorPower q e : ℝ) ≤ q ^ e ∧ q ^ e < (floorPower q e : ℝ) + 1 :=\n  ⟨Nat.floor_le (Real.rpow_nonneg hq e), Nat.lt_floor_add_one _⟩\ntheorem coefficientInterval (X : ℝ) (hX : 0 ≤ X) (z : ℤ) :\n    |z| ≤ (⌊X⌋₊ : ℤ) ↔ |(z : ℝ)| ≤ X := by\n  rw [Int.natCast_floor_eq_floor hX, Int.le_floor, Int.cast_abs]\ntheorem positive (δ : ℝ) (q r : ℕ) :\n    0 < formula δ q r ↔ 1 ≤ (q : ℝ) ^ (δ * r) := Nat.floor_pos\ntheorem zeroExponent (q : ℝ) : floorPower q 0 = 1 := by simp [floorPower]\ntheorem deltaZero (q r : ℕ) : formula 0 q r = 1 := by simp [formula]\ntheorem degreeZero (δ : ℝ) (q : ℕ) : formula δ q 0 = 1 := by simp [formula]\ntheorem baseOne (δ : ℝ) (r : ℕ) : formula δ 1 r = 1 := by simp [formula]\ntheorem baseZero (δ : ℝ) (r : ℕ) :\n    formula δ 0 r = if δ * (r : ℝ) = 0 then 1 else 0 := by\n  by_cases h : δ * (r : ℝ) = 0\n  · simp [formula, h]\n  · simp [formula, Real.zero_rpow h, h]\ntheorem negativeDelta (δ : ℝ) (q r : ℕ) (hδ : δ < 0) (hq : 1 < q) (hr : 0 < r) :\n    formula δ q r = 0 := by\n  apply Nat.floor_eq_zero.2\n  exact Real.rpow_lt_one_of_one_lt_of_neg (by exact_mod_cast hq)\n    (mul_neg_of_neg_of_pos hδ (by exact_mod_cast hr))\ntheorem negativeExample : formula (-1) 2 1 = 0 := negativeDelta _ _ _ (by norm_num)\n  (by norm_num) (by norm_num)\ntheorem natExponent (q r : ℕ) : formula 1 q r = q ^ r := by\n  unfold formula\n  rw [one_mul, Real.rpow_eq_pow, Real.rpow_natCast, ← Nat.cast_pow, Nat.floor_natCast]\ntheorem integerEndpoint : (formula 1 2 1 : ℝ) = (2 : ℝ) ^ (1 * (1 : ℕ)) := by\n  norm_num [natExponent]\ntheorem sqrtLower {X : ℝ} (hX : 2 ≤ X) : √X < ⌊X⌋₊ := by\n  have hf : (2 : ℝ) ≤ ⌊X⌋₊ := by exact_mod_cast Nat.le_floor hX\n  exact (Real.sqrt_lt' (by positivity)).2\n    (by nlinarith only [Nat.lt_floor_add_one X, hf])\ntheorem abstractFloor {K : Type*} [Semiring K] [PartialOrder K] [FloorSemiring K]\n    {x : K} (hx : 0 ≤ x) (n : ℕ) : n ≤ ⌊x⌋₊ ↔ (n : K) ≤ x := Nat.le_floor_iff hx\n#check_failure (inferInstance : CoeFun ℕ (fun _ : ℕ ↦ ℝ → ℝ))\n#print axioms formula\n#print axioms floorPower\n#print axioms direct\n#print axioms expanded\n#print axioms endpoints\n#print axioms coefficientInterval\n#print axioms positive\n#print axioms zeroExponent\n#print axioms deltaZero\n#print axioms degreeZero\n#print axioms baseOne\n#print axioms baseZero\n#print axioms negativeDelta\n#print axioms negativeExample\n#print axioms natExponent\n#print axioms integerEndpoint\n#print axioms sqrtLower\n#print axioms abstractFloor\nend Coeff232Isolated\n"
+      },
+      "native_region_start_line": 19,
+      "required_info": [
+        "'Coeff232Isolated.coefficientInterval' depends on axioms:",
+        "'Coeff232Isolated.negativeDelta' depends on axioms:",
+        "'Coeff232Isolated.sqrtLower' depends on axioms:"
+      ]
+    },
+    {
+      "label": "inline",
+      "source": "inline-executed.lean.txt",
+      "receipt": "inline-receipt.json",
+      "source_sha256": "755798314d181476976ea4b0ba4c02fc37a04e7feacd4e0a7180a15117bea143",
+      "format": "disk",
+      "original_execution_request": {
+        "file_path": "/Users/ramin/LEAN/Roth/.lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 50
+      },
+      "native_region_start_line": 16,
+      "required_info": [
+        "COEFF232_INLINE_ALL8_ORIGINAL_SIGNATURES: PASS",
+        "'Coeff232MainInline.roth_of_isIntegral' depends on axioms:"
+      ]
+    },
+    {
+      "label": "project",
+      "source": "project-executed.lean.txt",
+      "receipt": "project-receipt.json",
+      "source_sha256": "fb97232bb79fba492dfaf6556b05e2f0ab290365066ff682de67eaa42dcd459b",
+      "format": "disk",
+      "original_execution_request": {
+        "file_path": "/Users/ramin/LEAN/Roth/.lake/roth-overview-session/GenWronskianChecks.lean",
+        "timeout_s": 50
+      },
+      "native_region_start_line": 16,
+      "required_info": [
+        "COEFF232_UNIVERSE_PARAMETERS: []",
+        "COEFF232_STRICT3_CONSTRUCTION: PASS",
+        "'Coeff232Project.coeffBound' depends on axioms:"
+      ]
+    }
+  ],
+  "rejected": [
+    {
+      "source": "inline-rejected-executed.lean.txt",
+      "receipt": "inline-rejected-receipt.json",
+      "reason": "Orphan target docstring after deleting definition caused syntax error; entire run rejected despite successful later signature diagnostics."
+    },
+    {
+      "source": "isolated-rejected-executed.lean.txt",
+      "receipt": "isolated-rejected-receipt.json",
+      "reason": "Naive simp did not rewrite explicit Real.rpow natural exponent; recovered sorryAx rejected."
+    },
+    {
+      "source": "isolated-rejected2-executed.lean.txt",
+      "receipt": "isolated-rejected2-receipt.json",
+      "reason": "Simplifier list still missed explicit rpow_eq_pow; unused arguments and recovered sorryAx rejected."
+    },
+    {
+      "source": "isolated-rejected3-executed.lean.txt",
+      "receipt": "isolated-rejected3-receipt.json",
+      "reason": "change before one_mul normalization not defeq; recovered sorryAx rejected."
+    },
+    {
+      "source": "project-rejected-executed.lean.txt",
+      "receipt": "project-rejected-receipt.json",
+      "reason": "Coe ℕ ℝ is not direct class used by numeral cast; NatCast ℝ is correct synthesis probe. Entire run rejected."
+    }
+  ],
+  "warming": [
+    {
+      "source": "original-executed.lean.txt",
+      "receipt": "original-warming-receipt.json",
+      "reason": "Cold partial loading; not accepted success."
+    }
+  ],
+  "audit": {
+    "source": "original-executed.lean.txt",
+    "receipt": "original-receipt.json",
+    "requested": 293,
+    "unique": 293,
+    "present": 293,
+    "values": 293
+  },
+  "canonical_direct_consumers": [
+    "Roth.mul_log_div_two_lt_log_mainCoeffBound",
+    "Roth.three_small_factors",
+    "_private.Roth.MainLemma.0.Roth.exists_mem_RSet_le_index_of_log_bound_aux",
+    "_private.Roth.MainLemma.0.Roth.exists_auxiliary_polynomial_of_log_bound_aux",
+    "_private.Roth.MainLemma.0.Roth.exists_auxiliary_polynomial_with_index_gap_aux",
+    "Roth.main_lemma",
+    "_private.Roth.Main.0.Roth.one_lt_roth_eval_bound_aux",
+    "_private.Roth.Main.0.Roth.roth_product_bound_aux",
+    "Roth.roth_of_isIntegral"
+  ],
+  "canonical_direct_type_consumers": [
+    "Roth.mul_log_div_two_lt_log_mainCoeffBound",
+    "Roth.three_small_factors",
+    "_private.Roth.MainLemma.0.Roth.exists_mem_RSet_le_index_of_log_bound_aux",
+    "_private.Roth.MainLemma.0.Roth.exists_auxiliary_polynomial_of_log_bound_aux",
+    "_private.Roth.MainLemma.0.Roth.exists_auxiliary_polynomial_with_index_gap_aux",
+    "Roth.main_lemma",
+    "_private.Roth.Main.0.Roth.one_lt_roth_eval_bound_aux",
+    "_private.Roth.Main.0.Roth.roth_product_bound_aux"
+  ],
+  "composition": {
+    "strict_three_existing_call_term_verified": true,
+    "term": "Nat.floor (Real.rpow (q : ℝ) (δ * (r : ℝ)))",
+    "operations": [
+      "Nat.floor",
+      "Real.rpow",
+      "HMul.hMul"
+    ],
+    "cast_note": "Two standard natural-to-real casts retained; operation count refers to mathematical floor/rpow/mul, not every kernel dictionary application.",
+    "new_generic_floorPower_is_existing_mathlib": false,
+    "new_sqrtLower_proof_is_existing_mathlib": false,
+    "coefficientInterval_is_new_verification_proof": true,
+    "actual_caller_occurrences": 21,
+    "actual_caller_replays": 8,
+    "additional_kernel_only_value_consumer_replayed": "Roth.roth_of_isIntegral",
+    "full_modules_replayed": [
+      "Roth/MainLemma.lean",
+      "Roth/Main.lean"
+    ],
+    "original_signatures_retained_by_defeq": true,
+    "imported_transitive_target_freedom_claimed": false,
+    "global_absence_claimed": false
+  },
+  "file_end_build": {
+    "required": false,
+    "reason": "Not file endpoint; fresh17 hashes match successful2467job baseline. Prior file endpoint228 build accepted; next266."
+  }
+}
